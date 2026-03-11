@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B52FD88D3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 01:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55536FD88D4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 01:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E4F36B0089; Tue, 10 Mar 2026 21:01:14 -0400 (EDT)
+	id 940396B008A; Tue, 10 Mar 2026 21:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39DEC6B008A; Tue, 10 Mar 2026 21:01:14 -0400 (EDT)
+	id 8CDC86B008C; Tue, 10 Mar 2026 21:01:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C9556B008C; Tue, 10 Mar 2026 21:01:14 -0400 (EDT)
+	id 7A7386B0092; Tue, 10 Mar 2026 21:01:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 19F6E6B0089
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:01:14 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAD7C14049A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A3FA6B008A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:01:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00AD25911E
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:01:15 +0000 (UTC)
+X-FDA: 84531978552.04.18EB2B4
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3E652120013
 	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:01:13 +0000 (UTC)
-X-FDA: 84531978426.06.B355DF7
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D6C55A0014
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:01:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LgHUGpls;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mENMEn6+;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773190872;
+	s=arc-20220608; t=1773190874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1zI0HjdpVIeLf9hsutuK6PY4JFf5qAhFtdlVI8aS1sw=;
-	b=M3MoHmDMN2Bbbopj+4tL7G6uK3u1cpl43KC7JhqTxJLgMcrmd5Pj0ZPEal7L02wkugRN83
-	RGwjtshfORrRq9F/pgrrn6I5lg+YLxzpJyIWrg7o5+4AvFq0QgWuGOJoB42fSYuyUtuXwM
-	ZYWgw739GYUlSuD9PP8CDRjN4OUsLns=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LgHUGpls;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773190872; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qk+QKL+WWCN38YTC4yYy3ziupLEe6KfdX1avXXt55Pw=;
+	b=qbVXXVp9rEhlazH+wrg7IJ1F0n5DSE5cNt/dG5VDUd3hQ4o2BJu8Bw7ZZA1uO5hOnt8PKC
+	Y3u8ofuhyOU8rm3ozFLFvsIpUL5CyVfELamiIWBskX7KjgeLmqOkYwef031RD/IpWwmxPN
+	ISlNzWpIooCD7H1IIcs29cCbZ8XdAj4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773190874; a=rsa-sha256;
 	cv=none;
-	b=mOadFSBsGrawYZruJA76zo1MTDNxhmvudwy4/DFEdZUBa+lsTrXLLfPq4/mrrB+UkBnI8D
-	EfKseGgQt0PROOFfd8rzc8jUg9YABC/TAGwdgUz+4G2hJ6pP/d19W2fNAtmp1jG2Dfx43J
-	EvBU/5eLPlgVTEQnw6GBtGYBvFdpinM=
+	b=z+Q+PbfP+SoshmsTla0mzd4KsKmhTt6pygAIb9C6QEhBpXrb8rkq95YHT/CNZ8JlL/bQPw
+	3UmnGMBgjMOw4GUnmw8lbyCVdnWE/FkAckb/UCJHvHEvjL6qUmHCpAo82WeQOY+ljE6ZRA
+	D7wNCbPQeWZ4YqKwtoQESquZyljph7E=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mENMEn6+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773190869;
+	t=1773190872;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1zI0HjdpVIeLf9hsutuK6PY4JFf5qAhFtdlVI8aS1sw=;
-	b=LgHUGplsk2p9syAn/wJWFocufn0GBEBbF/HLE+Hy6ni8L7uAVzEcVw7Zi4W98y97igwNd3
-	ct3hRgGLQHsuKtE95Av+ETz/CnvanrSyODESwHGyblTNbf6APrdMKTbSSTKZRvOn7KUPk/
-	Ju7/rXEFjmtKd1lL3Ymwc6MgnShnvxA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qk+QKL+WWCN38YTC4yYy3ziupLEe6KfdX1avXXt55Pw=;
+	b=mENMEn6+BnsiU6XV1NWHpmL1SS60MUkAa0TYha8EuJ+HcpgFsTh3g3+yZWm2JbmUzTk60x
+	5ZI+gQXEPI0d31SneW9hVgYfrQqPcyApjeizbDMb/HcJg1y90MgywSWKPH3aOHmYtdIuOp
+	KI7aT5tKCeWCb35clfum+yD1/0FaEio=
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Tejun Heo <tj@kernel.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
@@ -69,20 +70,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	netdev@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/3] cgroup: improve cgroup_file_notify() scalability
-Date: Tue, 10 Mar 2026 18:00:58 -0700
-Message-ID: <20260311010101.3306366-1-shakeel.butt@linux.dev>
+Subject: [PATCH v2 1/3] cgroup: reduce cgroup_file_kn_lock hold time in cgroup_file_notify()
+Date: Tue, 10 Mar 2026 18:00:59 -0700
+Message-ID: <20260311010101.3306366-2-shakeel.butt@linux.dev>
+In-Reply-To: <20260311010101.3306366-1-shakeel.butt@linux.dev>
+References: <20260311010101.3306366-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D6C55A0014
-X-Stat-Signature: jdjp5phpa4udsch3it8ts3bg56q9yqmr
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3E652120013
+X-Stat-Signature: db9oospaot9t1o8pfupuhp8j8h9zos7d
 X-Rspam-User: 
-X-HE-Tag: 1773190871-985747
-X-HE-Meta: U2FsdGVkX1+oHxFKwCh2pA9qMBdAivFwhAloprJKG7+8JhkV6u4pyHLjyYZ9xhV2XT48xuMIQxN8hlHkud9IyfdHevp7OaPmhD+I7nH/FMcGOprPfQ1WwTYmDE0DQHWDZWTxqarmcV8b3kfkz32b6BOJqZeEZCxWzER/L0XRfMbhCZYBHL9K6jPZCUNdOvbqHqmm1gMT/nEL+GRuClpWnBXHtfpILelxMIMthshOdV8pylT0e3skWVDtUumEp+PsF1Xm1P7Jl5zXd8YraNGM9xHijj/Zy4nEn+TIKQQ557mGdAutQ3fDXqhrThwvQsyXijBmkNKYcSrqDLacP+DR4MLqb5a14w6UbfRIaTPn+pL51dZ3lNrc6NYSSknoHY8vHTx4S4aEh6YMdBQxLxxVdSKSipOQHtFygscTDXRWgwDnUE+HAGN3m+zRONuHgdBFipelkbQoVQ6FOupE9oFShNSB7lROJtnuI8OuIFFRqre0IPmtORKsBP0ZdJHjN59o8cA+SqaPEn5uGhSAp1MthENIGeaF0F7NMXa919U2b6H2K+5kKZf0YDqATVhx2OiiHugtIa2g1b3rk74a5ig5httTVmPjOs6Pe7y2Mu7q6pTA8mbZmRyQbUrED+kOLgn/Xl8kYPd8tevChnUKZuGMlO8izJrW9WY/U8+g5JCd9Ci24t/pi+ERLbsxdUogCPcmT9cauqXAkCVTk+YcTZ974d6N3rH1CsAxZeLy7ymJ2oU4CkrN/QPjwJYJyvbF9L+/iiJqMjpBjygolMBl2kBNLFp8iD0h1n+zl/RB2+tn/dbQuCJn0vGwUVo+iLJlWG2HqdECjAEU9lvcYD6J4TYYofRNTq1Mv+dpat570aVMvB58saUu92vWCgawu3HwK7bJNroaXWpLhDAjlR2/VZy2KXBf0Xh4gneHp+h4hS/3Kba60aZgLFCZg/vr/csazECth5/TzOvBljyHBBGD4Ml
- WI7LrJfF
- LhXTNg1xoihRtqjygmii40p2TOp3KU4/arpbUNleF6flJrOwVfzpfbcEo5Dla3+pblOevtwo3NZFpeDRpBGXq+nAD5FcUKFDVY/gQnpuNFLOi7GIR5bjLjyU0k+Hwq9g2DuXWihwAXKMdst8Lvqm9nmJ6tZ222QM60ePzsaRC4KbLvuVGp2IV696GIkMh4wpk7Mc05SIfi8toXUDz8JqLyVMCulkIoxIczNyZLke3f/AJ4vHhWSjfoeWynA==
+X-HE-Tag: 1773190873-58797
+X-HE-Meta: U2FsdGVkX1+o4p3NvgZrvC5GmB3MrZjcv5yj+6OkbscL8gR1dMAKf9+ZAXd8XFzAjnhmMyUtArQrDKZvM4o7EiVlw+5kLcTh+pfOZfIeo4VX3xQ5qSDHR0fW/0TnYeaMmzqCcdZReyYLjy/ZOQTJbaqy1pUnlIfo3unkp4kpPfG4vROnK+hAD9LIr4nniK9k0j2uzi4QzR93MZFP2lY4vIK/PKQmEaLHSnFNXUKGeY0OES0kKJ0Ll1GaaE3aVdhRGl8hx6QjDLCYlXootC8wN9KgVOF1KJXiEUornM5AoKDY09IzAv93R528CIHnOjbYSC1TBr7uqfkoi9Ie3aICoO7Pd52QqaawwrBraavX2enzAkz75oE+7uhxfQh+Ytx8X6+MgxUD+32LEg2cid35vCoNdPI+DUcSdxZB03Imbgl/fN5b7MAkVFNBXJxVHGWsiprW7JbwF0PkuIU1ObcjfdwY2iUJEN46LZk9pRwuCCYK4V5UYxhdh03wfudxLZymaRHhHd40t7nSgBa/fXtP1S6+Ml8Hva3AYrB+b+pX8ZkNUZEFwOQWyxC4cVzvjplvKkbrD2J3p/yKs1+7F4GrLVB/iOV5A3kjWl5fqE22y5wjxU3EBqFsGiVKVMwFb3CEyrs9T/GnIXeBkyB7YaM5pgYpmWZM3g3/2PU6czwjR6XclUZ1Jk3eDjimi6p8nQi3ooRwXAH6I5/37T+wN3+qCAM/cONaEBVtXZxRSvffyfCzfp9EWUDhJxHtMkdg9OPmKgGDBbAQWz3M8lKxR00rYM8mzacPxXlW5zZYWkS4VbrbDFfJULZly3NPtOpVt5tYUwX34x/a2FbTQNd86+iMEs5qWsbowCihAVXAsD1aWZSgiWG4AtzdttIcWvMd22p+U55q5KKwNkYWA/HqB+Vb9byDQNIT69GsX3Q4gql4fwgeH80V1kHsmUoYzB1x38eDFaiJ6pZ2EHbD/D5a+Tt
+ ZOByMWVd
+ cnyg2T0H3vTAztUiy3F8DKPlW/iEXBcAkv03NKuvTf8pv7QHVXQm5I6Y0ohgDOAb8bjm5ZWRhgb8l3yyX8IgBJvyMJuvyuHXD7Yq00YEKCeCVhJV84YQRs13+KsXYxQPrjXDYm846dtQdTkntn62cj2Cg2gyysr50V9LJovgJ221xUL+hBi4xtclXXB4cS62UEYKM0TtkGvU1XqdXSoGkNAS4u5MJuUc8GbiGqk+jWDYW4ICv5emubNY0CcueV6IOGE7A04a8uXXfIp4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,37 +93,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jakub Kicinski reported that after the commit d929525c2e30 ("memcg:
-net: track network throttling due to memcg memory pressure"), in
-Meta fleet, the network intensive workloads started seeing extensive
-spinlock contention in the rx path in the function
-cgroup_file_notify().
+cgroup_file_notify() calls kernfs_notify() while holding the global
+cgroup_file_kn_lock.  kernfs_notify() does non-trivial work including
+wake_up_interruptible() and acquisition of a second global spinlock
+(kernfs_notify_lock), inflating the hold time.
 
-cgroup_file_notify() uses a single global spinlock to protect the
-cfile->kn pointer across all cgroups.  On systems with many cgroups
-under memory pressure, this becomes a bottleneck as multiple CPUs in
-reclaim call __memcg_memory_event(), which walks the cgroup hierarchy
-calling cgroup_file_notify() at each level -- all serialized on the
-same lock.
+Take a kernfs_get() reference under the lock and call kernfs_notify()
+after dropping it, following the pattern from cgroup_file_show().
 
-This series reduces the lock hold time by moving kernfs_notify()
-outside the critical section, adds lockless fast-path checks to avoid
-the lock entirely in common cases (torn-down files and rate-limited
-bursts), and replaces the global lock with a per-cgroup_file lock to
-eliminate cross-cgroup contention.
-
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
 Changes since v1:
-- Second patch moves rate-limiting code out of lock 
+- N/A
 
-Shakeel Butt (3):
-  cgroup: reduce cgroup_file_kn_lock hold time in cgroup_file_notify()
-  cgroup: add lockless fast-path checks to cgroup_file_notify()
-  cgroup: replace global cgroup_file_kn_lock with per-cgroup_file lock
+ kernel/cgroup/cgroup.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
- include/linux/cgroup-defs.h |  1 +
- kernel/cgroup/cgroup.c      | 53 ++++++++++++++++++++-----------------
- 2 files changed, 29 insertions(+), 25 deletions(-)
-
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 7e99258e9090..b3fbeadb2b5a 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -4686,6 +4686,7 @@ int cgroup_add_legacy_cftypes(struct cgroup_subsys *ss, struct cftype *cfts)
+ void cgroup_file_notify(struct cgroup_file *cfile)
+ {
+ 	unsigned long flags;
++	struct kernfs_node *kn = NULL;
+ 
+ 	spin_lock_irqsave(&cgroup_file_kn_lock, flags);
+ 	if (cfile->kn) {
+@@ -4695,11 +4696,17 @@ void cgroup_file_notify(struct cgroup_file *cfile)
+ 		if (time_in_range(jiffies, last, next)) {
+ 			timer_reduce(&cfile->notify_timer, next);
+ 		} else {
+-			kernfs_notify(cfile->kn);
++			kn = cfile->kn;
++			kernfs_get(kn);
+ 			cfile->notified_at = jiffies;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&cgroup_file_kn_lock, flags);
++
++	if (kn) {
++		kernfs_notify(kn);
++		kernfs_put(kn);
++	}
+ }
+ EXPORT_SYMBOL_GPL(cgroup_file_notify);
+ 
 -- 
 2.52.0
 
