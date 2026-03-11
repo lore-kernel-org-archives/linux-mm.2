@@ -4,128 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0B51049526
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 09:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C94D1049527
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 09:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFE2C6B0005; Wed, 11 Mar 2026 05:56:24 -0400 (EDT)
+	id 7367A6B0005; Wed, 11 Mar 2026 05:57:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA7D16B0089; Wed, 11 Mar 2026 05:56:24 -0400 (EDT)
+	id 6E0DF6B0089; Wed, 11 Mar 2026 05:57:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA3B06B008A; Wed, 11 Mar 2026 05:56:24 -0400 (EDT)
+	id 5DCF56B008A; Wed, 11 Mar 2026 05:57:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4BFC6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:56:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 482A5160790
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:56:24 +0000 (UTC)
-X-FDA: 84533327088.13.8473498
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 18A9814000A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:56:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L4gJM2KD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FIfZdxZL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L4gJM2KD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FIfZdxZL;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C6A6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:57:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4C68BAA9A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:57:51 +0000 (UTC)
+X-FDA: 84533330742.21.FE3CC51
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D34971C0004
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:57:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="AzVT/dDt";
+	spf=pass (imf21.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773222982;
+	s=arc-20220608; t=1773223069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N7bzVvzdWc5ep0b7yb3gm0vq2rmlvwDapRWBJqvHgS8=;
-	b=DJ2N9cllc9Rux1Srz2SRAA0rAwBilG4yNsCdTk/r+SrDcFfI6gQ6wlic6EHtC5e4tFOjLe
-	147DTlKTIRvyhygzmtlszpV6cLwG8wMqHfumLWzqueNKXvL7UN/yr698fTUXpu+M2ELJLc
-	xkt5Jida0liTuzLKMLHBAdVEL15jBgo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L4gJM2KD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FIfZdxZL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L4gJM2KD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FIfZdxZL;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773222982; a=rsa-sha256;
+	bh=iOemOY3GRBon+h/gNtOxQ4VEEGmdm3FWxbjJem+FfZM=;
+	b=vfgNqsiTQfGQDQ97KuMNOpQRH2A+v3DYAkEXQyGaBQo5ZAs9cca/xdYOLa6+Kl1cCcuy5e
+	NJVGHD96Ip6uzRm3p6D4ypt9peSyDH3a4VdgjbhSPcIm1MR+bCE8u86WRzVy0mcLHVbziH
+	j7BEZlAQ7U52Qf9DLgXdbdWoVNYNFas=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773223069; a=rsa-sha256;
 	cv=none;
-	b=NvcaJ+NhfpKDiZYaHJsAXx9uxoW8G+mPHMePTAUYLWiDAzaLMhL+Sy+Horbbc3iF/vpBVc
-	qBoyDuxk4hHK6mNW0+IowqU9AaljzfEUzu/EIR5vgxVmGQeLJzqW8hDmE6erhGpbGoK3fd
-	uVbgT6ypAP6o31W8kMnXTqj0NGzIBGM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8B0584D1F6;
-	Wed, 11 Mar 2026 09:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773222980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N7bzVvzdWc5ep0b7yb3gm0vq2rmlvwDapRWBJqvHgS8=;
-	b=L4gJM2KDJO76PDAnMK9hmf9Wqfxee8YFW2bhh5aGGFmxtCvjM6ocknSK/iRPvJ+93SYNB8
-	Pth8eua16VngWk5Qza2xmwQJFWAXcxlvqknJLK9zfAgcEGjWdhMFB286j2lN20EIKKn69B
-	KQQvzs9bX49SAqA7ZqZUPRzyLN4FASI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773222980;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N7bzVvzdWc5ep0b7yb3gm0vq2rmlvwDapRWBJqvHgS8=;
-	b=FIfZdxZLuee18ApOiH2YZ2mTWgPzOWVvmAEg4X+kpJiWY6LEPoC87Akx4tsa63okNSh3dc
-	nkwA6zOKtQ5z7sBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773222980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N7bzVvzdWc5ep0b7yb3gm0vq2rmlvwDapRWBJqvHgS8=;
-	b=L4gJM2KDJO76PDAnMK9hmf9Wqfxee8YFW2bhh5aGGFmxtCvjM6ocknSK/iRPvJ+93SYNB8
-	Pth8eua16VngWk5Qza2xmwQJFWAXcxlvqknJLK9zfAgcEGjWdhMFB286j2lN20EIKKn69B
-	KQQvzs9bX49SAqA7ZqZUPRzyLN4FASI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773222980;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N7bzVvzdWc5ep0b7yb3gm0vq2rmlvwDapRWBJqvHgS8=;
-	b=FIfZdxZLuee18ApOiH2YZ2mTWgPzOWVvmAEg4X+kpJiWY6LEPoC87Akx4tsa63okNSh3dc
-	nkwA6zOKtQ5z7sBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8FFE43F963;
-	Wed, 11 Mar 2026 09:56:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EK7wH0M8sWlzcgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 11 Mar 2026 09:56:19 +0000
-Date: Wed, 11 Mar 2026 09:56:17 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Anthony Yznaga <anthony.yznaga@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jannh@google.com, Jason@zx2c4.com, shuah@kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
- locked
-Message-ID: <ci3s76cywghceblvsjccphbmidr4yop37dupcj6jyccqzipzwy@4rk6gdjq2gum>
-References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
- <20260310155821.17869-2-anthony.yznaga@oracle.com>
+	b=twFSSScpku2fyOosN5TKlnTheWRabIGcJPNyZ7isADJCyT/XlN1SpLlTuc0viVpMzUuFJl
+	qQ6n2/ILFHYmmRBl7TNysCIbDVTIeiQK6jfshJW/xq9/wfD//BdCKrJS2t3ViT3ZDhPpSq
+	d2V3HvMUG+e4vvD4ICeJ9V3FFJd8HAM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="AzVT/dDt";
+	spf=pass (imf21.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-8299f1ca86fso2504209b3a.0
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 02:57:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773223069; x=1773827869; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iOemOY3GRBon+h/gNtOxQ4VEEGmdm3FWxbjJem+FfZM=;
+        b=AzVT/dDtcELWwafhXDoR07UFAaczuB+mpE5+wtjWm5epnxDUk7UzsN3FltCSG2RPRw
+         rzS15IodTUhux75XEzH1tqJ0Og8Gv3ZcKZtS4/su9eZft/LxiRWYYe0rFZa4dpbYAUZI
+         oeLweh3KEimerlqnb5ksHjfTy5nAj/2ZDsxA47rMsLcbDsDE+hIDJ27OQP2Yn9rsjta+
+         /TvaCw8EMI2KoPuQ+QDfynvb5vAt69EW8ewOCc1aEZVauH11evhai0GizSx6x8hjQGas
+         IOn64Wt2W/BxpRT7Q1O51X6aqz4fEcqgHP0rFSgKDCxhuPn/EvgngaMENBg5Af6ZB4DO
+         h2BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773223069; x=1773827869;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iOemOY3GRBon+h/gNtOxQ4VEEGmdm3FWxbjJem+FfZM=;
+        b=m4mt+GJGQOR1FZQU/UzygkImDZqX+CLff3tmVpK9yXIhNAM3pIWtmdXVsAwtiqHf0X
+         +lHXjG3cdr9odsPz8R3mkUkn2tBpZ3Ww0aMAVETYt88gGHnavWP8puxCCbtyir2287Yl
+         syYZS6zaQdFEy55xSQWUEsBkgoFCxlIPs9Hp8/OcArWDP7rjWntJY2HriSb8kh57s4S/
+         BYx51qj1rznn2/JXw/5J3Rml4fGSqlPdeQF8iiEXTmwtVjihmUTLgyB/q9i6FzRTvPZS
+         fSFjBFXc81ZWA6ac5pggDGxv73v4Br7J/1pPC4+iIJXFmviyhGE8RMT76Z1tGcjZiUWX
+         hoYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTAmEyY7ga0hJ41W4WsqYh7oqO0lbWiovJDj5IAsqcj4hTW+jJO5wdXwj5hSe5sq3mQpAoQfojZw==@kvack.org
+X-Gm-Message-State: AOJu0YyWlBsR5tRSwJ5q0tHJke+chrl2K5MNL6605+wJmCia8Pyg63cG
+	sq6GzufudEcW0sa4ns80G23HMmjbNnmVYU0t/18NkMadVueBcWbnj6OU
+X-Gm-Gg: ATEYQzzXm6U3I16Vy12rLgyiVk+E5kWhYuQ4r9xLXxCz3urmP9JYcOn9xJfN7gSi6Wf
+	Ow581TI/RlZtlUFTSKDykOSr/n03nkByjkuUgwryXEGTBAlQ6VsVv+NYZz1nJUjtvAvmBO1LRXq
+	WWSfp/d1EzaiZ6+ZEb5MyZyXmJgJz+YSNeAqdF8pqLspPTIDgUxv+HzZOBZURIhSxVE2BS8n+YQ
+	5NhTEs1bdkzU4C2IM6ld1GvsKGvN1Fv+8KFQonzmpnBmMGx/yOoclc2KQhwxdalydyYfAgWiq63
+	Bw0HdoUgIrnoIDDyPwEDD9immJtNMcVq/wbSjbQ0snCnyIecz8XKk/eOaLmhcy1eOjx8ecX1W7K
+	rUyODbDX/5uxg6MwMJQl1r0YfsdWhmjwzNstg3W/x/C6xcV8HO+SxoUiPMlF+WskunBFj9TTccB
+	ChL7EFxj6WdtXq9KoKbj4reCWXwQqqEUjWIDq/wchb0DKjw+RQM0J/hwT78xvr
+X-Received: by 2002:a05:6a00:1304:b0:81f:3fbd:ccf with SMTP id d2e1a72fcca58-829f7094b3bmr1933452b3a.23.1773223068600;
+        Wed, 11 Mar 2026 02:57:48 -0700 (PDT)
+Received: from lima-ubuntu.hz.ali.com ([47.246.98.213])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829f6dc83cfsm1799712b3a.7.2026.03.11.02.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 02:57:48 -0700 (PDT)
+From: Qing Wang <wangqing7171@gmail.com>
+To: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	chao@kernel.org,
+	jaegeuk@kernel.org,
+	jannh@google.com,
+	linkinjeon@kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	pfalcato@suse.de,
+	sj1557.seo@samsung.com,
+	syzkaller-bugs@googlegroups.com,
+	vbabka@suse.cz
+Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+Date: Wed, 11 Mar 2026 17:57:38 +0800
+Message-Id: <20260311095738.4177239-1-wangqing7171@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310155821.17869-2-anthony.yznaga@oracle.com>
-X-Stat-Signature: hnek1rbaadrgq796w9zkaoe1abejuhuy
-X-Rspamd-Server: rspam09
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 18A9814000A
-X-HE-Tag: 1773222981-552543
-X-HE-Meta: U2FsdGVkX18wSZj193SVP1Q3FP3P2AQBL0b/ODZrgJwZGH4cA1HdDqvUeM77gN5HK+E6ICOF0q2faKJTTR11Uq6yAtbfYG1E/Ltlt2Gvaas39YwB+F9gHjGr0vAfIuKBc/OrSfC8aPT+6ocV1zdrJqvn9mSEtEoP10WUgvp56H3vZPQTLDvlB2JRbWhzAIPvmwZRGY4HUNr5msgzZ/Zs9Vr07NQI1xYSJ16PO5TtQDghMQBgEMH713WA+DxYw8YltnC/uheTUmFp18XxX2Vns/0xeb4guARDV9Q4s1wd8WUU0hwWN7Pk2zRVyrrQIfK9v6PyLirLpX3EnDN3g++MMaH6AGYQ/C2GxRU2ITw/e34vwq2iWM3+8Qzl9KakwHMjqjrroBSksImEQNAGVbjbPIkYAvpxCo9HU7jBZQI6lXTYuRneH+qNrrCD4qzR+VtLi9JOCgF7rF4sDY63CW1spYJParmRLkh5p40bt1FYpsEYs/64EeEkE5Gf9XknscA1PNxQFPJQv/OWn8ZMjcVPYqQYiYwwtB+LgClbAfUY5tONoTHILIqsZufd+v0I0Jd2QZwzcaAnd66yYAbFgch8dHEeKSePiFJqXPACFsUIiQ5Ooep6Z0TfeR2qI2fLNTsvnRoFTFBl8oAI9CIR7UHCHqhYmkvvdeNw46gO1WSMFtL9DgYk1Cap+X1ErWRom4WukcbpsBwwCTxakZQbdwRRlfHmh28bIvhB1B8azbTid3ESzXTbyszpofHIPk42mdsmhBRQ6DzyWhpT9RmavGHVI8tUyEpn7BfyYe9rB6iZ+HYyUfUGJQEHWciQEo402rydixwzmvSY6Nil1HzUSaPumNnKSyzV4LVUGu+/V4M2AdyPMGR/NLjc+hLFAasQy9OcUfnoLUGuQncfw4P9IZE87fvaXfk8gvj8Zodg7pZqqRFEZcHv5m7r4f6HRWV44SFHnQ2TqesorrIJ1FkzvDg
- zR92dRbO
- AfutGbv1XimPfslWbHwBq4c4uNomeVoSbp8fy97ah9Hm0rp0GkFqzo17XBPVkltWHkIwpCpCeENxBMzS8wBugLbyxAbeCx3yo+eLLG/VO38AGjFKTi7joI17am+kU/IYowtUMz5joZsgdw6VzQi7WD5R/f38LcIY3IX6DxMdUN6JRhWKNVk14a7UrKNChJQeqBvISQ0gHggh7fB6F7VZZJso8N+9IQ7ge6QL4yIXwMzN/BU+Rt4VuwHy0FOQRiTGEYMzs3iIf5/tAobT6a2FgeAU0l5OOVrVeBa+J9DSXiVeeB2MiwVZfOTK91wxzlWKMxMnasyGnnxIIZK0Q1qsQj5sEenk2Xl++e44dhKqbFGv/2O4qLb4ABdUKiRjKOqgYGsYtDsmC+qdJdUyzd/mqyc4+6EUUgUAAlOuN
+X-Stat-Signature: s5sg1psgxekn3piz5yfpwzp85j8wbo5r
+X-Rspamd-Queue-Id: D34971C0004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773223069-754975
+X-HE-Meta: U2FsdGVkX1/Q6CLdQY1/dTRjr40NDPiCo93C7jwQyoUv8SOYpbDojNqW6qgUOip9t1LuVITUmTzm6SzAGAMoFPJAHQ8+s3H62f3EheAK0IsEDKhGXWAllpVloXlkVdhzQ0UAuDagnnzm5pyXHmvMOoYpOQwg7QPiAUGfkwb47qLCEWNnsSYiCjaI7xuCeK7ih3+SJNXTE9QHRPZDVy6NX2HRkv1EnYN0RCC92L5qQ3x9cGmN6Z0enP82JE0qTDVb1hKdNqpIDGy1dbEkR9cr0Z4puZP+STpHlErq1QILi/iA3y3dFqC1O6mZ7XVS5KSOPrq56efE4b0VhZ5vt0MEhJyRcYul28tbARDEMNn+gaC6dqmorA32ZWNRgA7K2s+sGIVYD0hBgCm/tov4m7gl3t5wZZFCzSYWUInr172uVkdU4H2+RHqRDEO9aPPsTLw3qtuVlMUtStk+N4zxroHrzeiG/aUd7SWQ7nRML67aoYmG2cy+QOFEgZezvSTGNxhZEFPn1UEjlGxQYQuw6627S4GOPhXmTMO4UoyqFCq/Mv/GuAEeXgyQr3RwJ9l0JlnbMYffI+cQ0Zp0Gz29IU8+ViV/I9kzJGNtMOYvZMIC7gGrMs1t9gBSg61BKNGCdmMfBoW3R+eyGLxnsxSXxttn+WyBHxSrhyxkMMy3cxedrCfs/1bv4U3trOf3zIBrfjQRz3z/jpGIOaaFvc5foQvWk16syeDI5tw4NRcwShJvpLVXmiCA+GjJDlchxf9rqbzYlFzGuWi69zq/me693OfHTSwdH7t6IhMgcJA5XIUOZv86xlhiRB30jTrCnDJn44nnXjFdU4xGle5ZNsvc+dMLI01Vft9wVxhkjKzZMhWOLcJ3a+vlNY8n97V/q03a5Sk0OpvQsrSxmcBntTQ7TcG7dmalzDQuALkwL5P2gQnj7zdh2E/XQcd0WqqiLs7GtAil/MqsuE2g94+T1/+ma0X
+ efole9h0
+ m/DTD+SheCUgRjhXVgNc/czGCyQPB1Z2FqyG9nm/XygLWyJ9biKf7LQinHp1zBIw8VvNuMapAPQbkQjtQMEIaDeTjyQQ663/JjK6NSfloALkklGOdYMXgsUCG5p93odLy1X0FfaZQ+FUIhhrxAfOH5qWwFeffYCUuJa5lKB07A26xvZOjiU7A7ocOSzywAK31ALTD/Mqn9bXl5QNXbgt3YpXfFGTf9d7PDgGYlEMX61HABgRwxQaGaBrdo/6YnfuA+HeZyYUEItdwJ1pAPgr74tQIsJxrXettJk9MQxPa9OTi0/3rGkBtCK4bCAoxxFj/nO/MGEPCzf9AKLryOa1sOat9voMLnVJyAE0N/kQ+2BA86t1vYL0h+ikWS3GhDrEXYHHaMHntSSaB+e1mTebPiyNmGc2Ay7YtuexcMBIzHHeipmuVOuv9byhfojOwfjHBvPwd682XOukT46BUwHEIOi0nBxPt2xKmuI+xkw+dUvWztq4j7gPwHCXqzg5bchcXXbLNQsVFMaASlHTJRkJJrG84atHVmK6SxKbtXwwJXEbWzZ5sN1gavWJ6qfI7Q25Pey3y1yWJEN9OuluMs9qRBwtTSLesLuBL96/at1buZLCQFM+bx9QhiFiaa+Urpr/8MFVYt7atE2MXOrtSJuOXO/FXFvExz0maCGyN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,15 +130,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10, 2026 at 08:58:21AM -0700, Anthony Yznaga wrote:
-> Verify that a mapping created with MAP_DROPPABLE cannot be locked
-> via mlock(), and that it will not be locked if it's created after
-> mlockall(MCL_FUTURE).
-> 
-> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+#syz test
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
+diff --git a/mm/slub.c b/mm/slub.c
+index cdc1e652ec52..f029003e7368 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2629,6 +2629,7 @@ static struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp)
+ 
+ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
+ {
++	WARN_ON(sheaf->size > 0);
+ 	kfree(sheaf);
+ 
+ 	stat(s, SHEAF_FREE);
+@@ -2660,6 +2661,7 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 	return 0;
+ }
+ 
++static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf);
+ 
+ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+ {
+@@ -2669,6 +2671,7 @@ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+ 		return NULL;
+ 
+ 	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC)) {
++		sheaf_flush_unused(s, sheaf);
+ 		free_empty_sheaf(s, sheaf);
+ 		return NULL;
+ 	}
+@@ -5027,6 +5030,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 			 * we must be very low on memory so don't bother
+ 			 * with the barn
+ 			 */
++			sheaf_flush_unused(s, empty);
+ 			free_empty_sheaf(s, empty);
+ 		}
+ 	} else {
 
