@@ -4,127 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93D62112580C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F23F1125823
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:57:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1F476B0089; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
+	id 58ADA6B0005; Wed, 11 Mar 2026 09:57:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA2546B008A; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
+	id 538F96B0089; Wed, 11 Mar 2026 09:57:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 983FD6B008C; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
+	id 419E36B008A; Wed, 11 Mar 2026 09:57:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E87F6B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FBC31401AB
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:47:12 +0000 (UTC)
-X-FDA: 84533908704.27.930665C
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3C0574000F
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:47:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IClbwMek;
-	spf=pass (imf27.hostedemail.com: domain of coefficriwan@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=coefficriwan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 205AF6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:57:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AD61E139688
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:57:23 +0000 (UTC)
+X-FDA: 84533934366.07.D2EB2E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AA1241C0011
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:57:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ThdfCY7u;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773236830;
+	s=arc-20220608; t=1773237441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=qFaa8x68fHFwhe04fiR5haFh7BniLVb44DlzlpBkbAw=;
-	b=W10FBlUpR3iQYOE9aU9LHQEuXGKAgsmu3pKqXo1OuB0q1/bCUiTaJ0RD7JWF3rOBf9PhBe
-	poC4bDdLN4Y15NP2eBOsj8nlwtj+fyDfTpB8XZ/cHQnZr+C4ohXCOTa1wcr7CTtIfPO01y
-	EM8F8/yr0ybNLbnuFrDlx2bxWddbMq0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9X+P6xh1RRwRS0BS6v9pl8/dn7CGCNu57hnaPYTTGMI=;
+	b=QShRb5TFwuqrHDQSBRkR3xzQBYUlF2Ubj2Kn/LHNV2Usl0aNlxuXIPxeL/g7iCJ3h9yI4R
+	mT5mfP23zoARXv5ky3/PGxszThUS9TuXyF1O9zAtX3HwSSB8PLE8h8lzrRpLkjvkMQbiqj
+	yc7Tq9JR25bcSXTXFs8WKLPoRPh3bvM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IClbwMek;
-	spf=pass (imf27.hostedemail.com: domain of coefficriwan@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=coefficriwan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773236830; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ThdfCY7u;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773237441; a=rsa-sha256;
 	cv=none;
-	b=NsHtSqoz+d7MwICt71m6M+2oKHBofishbUA6SM/bhv9Spl5BSh3aBUqbSE2UQFEyoLiAyW
-	iLbnQWVBBHLiXBvV2hOqyGjf1fTXcyqZUrhZLsmdYhWGSgPyxUhnTwQmMRNCVmcsw3tLou
-	amv9LqmMlXo9wkOPSRGSHXAehlUQuy0=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b886fc047d5so2307574666b.3
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:47:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773236829; x=1773841629; darn=kvack.org;
-        h=to:date:message-id:subject:mime-version:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qFaa8x68fHFwhe04fiR5haFh7BniLVb44DlzlpBkbAw=;
-        b=IClbwMekmTeePbRcS6Z3HJQB6D5SPBfRraGsy/uJ62EcZkHB6ulabuuIU5UVj+nFpG
-         cDKks8ivqnr/OADMhI+u3YdeGNTv3L6dEEq6LEXNG8/GsDcErOa4aDksafjyfQxbwbQF
-         D/kaGj15YrgCu5fC3FMQqyvyFJE39sCZmLy38ASyOS6Ke6lW2i+ulc+NvMior4zapFk0
-         Ry+iifjPujmkDjcdc2TzydOSS/2Maj3D5hYGbF9ShRdCFPcA9UegaM5ii9rMFfd639Ye
-         P2J/S8Y3uhrGUA2vuatijZHPO4PEnd7QpwJieugUwBQZVC7Qa32/MsKUaFO3MCDc511F
-         4F3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773236829; x=1773841629;
-        h=to:date:message-id:subject:mime-version:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qFaa8x68fHFwhe04fiR5haFh7BniLVb44DlzlpBkbAw=;
-        b=shl23KGse+EwSJKSAuPvKz9hxCKuPLGxTK6hOxmTs9YenSK+RX7L3am0eFW1Rl3I85
-         8peusMUyRAfMTNMukeYim2q6q1FJxh2jQFSD4o+t22V04ALG1NzDuvNWhvGfdogKVR+H
-         4soVOnOAYAjUoh9TREUs8UpKFRJYhP+5X8XtD16oqdyln5hglee+MP0323mmC+N1iu72
-         R1LZytvqIVsM/OlczTsuZtsIa+FLDk+vGf0XvhTrlzO0g3gKF4/a+RN9xC8oQg6XYmwL
-         Ki41FZHRu0Kr41x01cjOxsi74rlp8FA1cODuajxDu0d8j2zCyuqQQQgG+9djVRNw6Rk3
-         Q+ng==
-X-Forwarded-Encrypted: i=1; AJvYcCXa+WJTgMZYjxF1+27KXH9AcojUaQAjOUDmkcQn9Kza+C4SBbFHGK+6CfuYX0spJ+YwegZSm0vWxQ==@kvack.org
-X-Gm-Message-State: AOJu0YxOUjMZ7J7gCCKSlVVZai/j9h3YoPHE8SsQ9h82lwIE5U97H5C5
-	bH44HzOpMjnovzZTf11wJdsnfjl0177H32DMZzuiIZXykt4dL4DNK3A5
-X-Gm-Gg: ATEYQzzfghvXFv3qudn+pIn/YstbJ+OBEfp/tdIjoRWsX9Gl00djTIQmkd/r7+I8kau
-	FDEsI/K+oIwnf1WE6hL445I6dXF599SNInV/e6ej3OGOmHqzI6wxJoEuui3zWXWaIHsALXCrP1B
-	+qiJzqYqr9WOQXq2JhAFy5pGvdIasWZvjAFxRyy6eFrL/Ga9dEWSdBLWNLZYH9hMIWb6C7B2nZf
-	r8wVB14E62jfVsf5F0kVdzud8xHjnPOuNK37xGf9vx2thXNMMIRaUxvrfF3VVFLFm792SeuKPdY
-	hU3qZOfPZjg0vqqpJBpepMjQGW5RR4pn13CnrYERhj6z+te1XUwjuJCfn5ArkRhqw4zghPHl35I
-	tif4FF36eW1VGUePDDUEBMG7K8dKqgbGBHpj2yBbDwlBSPM4JcXJQTW1xteVIsJPaJraCriZCIO
-	N+y9MaRb2SM/3iNuOljeC73BH8LOQJKEHQHumOMQyidxQ7+9DzVBPK/WLT5eiCnSzriYZXegxNP
-	Hf2f3kS
-X-Received: by 2002:a17:907:944f:b0:b94:1224:c620 with SMTP id a640c23a62f3a-b972e24d9cfmr150447766b.16.1773236828196;
-        Wed, 11 Mar 2026 06:47:08 -0700 (PDT)
-Received: from smtpclient.apple (linkchronicle.wifi.rsr.lip6.fr. [132.227.77.197])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6631503c903sm523871a12.20.2026.03.11.06.47.06
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Mar 2026 06:47:07 -0700 (PDT)
-From: Riwan <coefficriwan@gmail.com>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: mm/rmap: Should vma_migratable be checked in try_to_migrate_one?
-Message-Id: <83E1B606-C461-4FC1-BFF8-FC2BEFDCE2B6@gmail.com>
-Date: Wed, 11 Mar 2026 14:46:55 +0100
-To: "Andrew Morton (maintainer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <akpm@linux-foundation.org>,
- "David Hildenbrand (maintainer:MEMORY MANAGEMENT - RMAP (REVERSE
- MAPPING))" <david@kernel.org>,
- "Lorenzo Stoakes (maintainer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <lorenzo.stoakes@oracle.com>,
- "Rik van Riel (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <riel@surriel.com>,
- "Liam R. Howlett (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <vbabka@suse.cz>,
- "Harry Yoo (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <harry.yoo@oracle.com>,
- "Jann Horn (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <jannh@google.com>,
- "Zi Yan (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <ziy@nvidia.com>,
- "Matthew Brost (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <matthew.brost@intel.com>,
- "Joshua Hahn (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <joshua.hahnjy@gmail.com>,
- "Rakie Kim (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <rakie.kim@sk.com>,
- "Byungchul Park (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND
- MIGRATION)" <byungchul@sk.com>,
- "Gregory Price (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <gourry@gourry.net>,
- "Ying Huang (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <ying.huang@linux.alibaba.com>,
- "Alistair Popple (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND
- MIGRATION)" <apopple@nvidia.com>,
- "open list:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)" <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>
-X-Mailer: Apple Mail (2.3864.400.21)
-X-Rspamd-Queue-Id: 3C0574000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 615edyghiixupzwjbujhqfzihsqdicks
+	b=0hGylXDaIor6tZeeHohXBhwhVfiOIbIWr1649GdfJsYh1Hefl6QP3u+TZF4V6IUY+Gr8Qi
+	AEEFpSTQYqueOF/29S5jqbokr6NInG5XXMgS1IC2feie/c/uHiuDM3IaFE6KEGp+4Eny2S
+	J9SFyMOmz5ekQ9lOW6Rh+vKn982opKw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4AD68439D6;
+	Wed, 11 Mar 2026 13:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453AFC4CEF7;
+	Wed, 11 Mar 2026 13:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773237440;
+	bh=FufJY4hvTCH40qFLkuAK2NFVy71xbnZqN98KKnD052s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ThdfCY7uv+bCmSMV0tDzf6VHVA6Jdq9XCJ+RRUYsmyC8OV3SYwg2agPWYsoJkT1hs
+	 NXctXTMpjZMDBVaWzYrLsQc6ibzOn3JMEYneFHA4YJQXdbpwuAj8iW7a9mRHJCZENv
+	 ycv8hQgqpCPRxCUIVE1fi+2sQs0DVfe8+4gGTt1JfujcfyT41J/2E9fkU/74c9cRk2
+	 iYjH1+abmn4GcSECttN30LIj2KDjX030XG6Gh6z2GWivGTXlCcRH6+3oaCkAjF258i
+	 +cWKoMyEugZ2xSLLklhvgVw5kze4EAvzLhM4NZSxN2F5zgg5B42A3x0Qj7ThFMNhOY
+	 MnAtuI1Wr829g==
+Message-ID: <6678200f-92dc-4ab4-8bc0-d956bcea528a@kernel.org>
+Date: Wed, 11 Mar 2026 14:57:15 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: migrate: transfer large_rmappable flag in
+ folio_migrate_flags()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+ willy@infradead.org, linux-mm@kvack.org, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260311132342.3193160-1-usama.arif@linux.dev>
+ <46edc7f1-f97e-4ff3-bf11-a56feb8e33b4@kernel.org>
+ <1DA53E52-795E-4057-81F5-E39B85D7CF05@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1DA53E52-795E-4057-81F5-E39B85D7CF05@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pe7bbht8cenyuqfer5g9xt9b673uia8q
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773236829-200526
-X-HE-Meta: U2FsdGVkX1/9vxylI+CBc/oY1KcgmtvZJZcPPPru0YkVMnN65ZCUSo1pGXDsXnHpBNJl5TmbGgJUkwYCBfsmMbjeeTKINAIvnV+OtmOV0WKyw0sImpQ+1Nlo4aZGxXvXCQUbH3zau4uo2Q+tU/gCrSpILXLG0fryBoCQp0Udg0IN6VgxZpgvzgt4QQ+YCGnQiXyX40XEugFDQc0abeV4JVcw2rUm0pSaGLslZ6wSWcDQsoOxBV8tU2hsevotfsolVvL8ToJsCgJ1L0bEWtvuG/FT5jfoOKN2EE+xmv6VTRgjPnGov890wfuUTKMVOAX3ku61bpuOyRKsJcL5+OnLx9OCWDxyORwEqytSUHdt474kl5XoP43g3gZKppigmvsT1FDfTNgLji0vjrp9zlCX8Af2prWSfQaUXauFowOVA0LeoQaVaaohpc1UGnLvi0K3Ce0cOo64NTGp62Ssxh4ooEFT8ClOwmFspY9ie4ROJFJUjySzKnQdBQ77lrvILITX3S0x2T4OwSyycGLZ4FeDsvRpRrzpqCyr3uejqxL6JzkDCmC1JLKCf/q+JY214e7c/AZOLr6wW8hBZcPO2x/TJUyTYr1cb5Gc5IbsDd66jTLxHta06wtPOaWSalmhlZXzdiv+dl2xYU4XCEBHQiiCUDWsHQ8sry78rAVIElrjTeeQ3XhW2u5qC3y+XK6DkfUFoBCk+r8SrGEnDTqqwdzQ/Hq/e4uHrtTarcrjKZIvS+aeW1PEMOja1QBxsJ94VnMc4BOmEnrtqh7KUdh9+D5EzzkesspOdQxDimCOY6ntJne50Vv8k7RrwsdgYIsv23dr8CmyZE7nKPpmtbAGv/iZJ0MIkfM/+P7UyOY8xGqzjRauoiNpD1v+toBNBgeS+zTSHIqAfb+TO+jFKJ00FbSgNnjTuPNW06va2GGe3bdigFliHdCKbNDjETqHHIKWKIIxPJZbXikAfEVWTdyfF+x
- XolGvjGf
- fYkB7SGu2Dx/yFs3ZjQM1cBbpzizcV3U7q5LVmfgSvYZ/8XLl9T+7x3EQ5IY+kvUEK0zH5HZi/vtYQ9QF4bOIjf8pknfKmeRt4y8Iz9Ell6bKJ1w3zTCyJ4yyUfa6/CDs0uz22/AD+RSVZyFzzqrrXdeYJlV0iuuwsHeZUx/+kNuarex450B3nMW5fXDsjhkQH52IE8an/k11ws+xwL5kZvPJD5o4yn0A1n42y4QAWcfq+8m+4A34McF6u4EtbNx0D26lijSmE61/qd46DofMV0RLvdu0085MmG0cMwnskKA5sPtQxGaYDKOx35yT2JuJc/wedTXf6E6PtptLnYYoQ2gMfJQLZVdIz8DajhREN0D8pPFUSLNwYYITmBXZhWQrEydas9u2X/iPr9iOz0LNH76zM4/N+6G8vsCR2zPcMeuVkSQPyEmHRuluwhF7jA9fIqNkN3Of+iMVqposqcFSduf9+6eHIWVpFDwG9J9NetTKEojRKRDsB6DptlaUFSM0RwtiAdW35wjpsPMJe2A6cT3sbEiVBPrsqEncZT3CjpuEc/9Q+sg9rmvorMnPugbe0xeYG/jv2oRF15Cfgvq7MGCo4rUvZiezX8TSOiDMsI1rbVsNTFx3plSTPPaiOouZv63CNiMulQz+1t/P5WPzMXZILJc+Fdd0QZ5h3SgstzxEdREpEk7rPeOJx7U/vBocFDbwvKd7QQaZwvsSGC8MQIoD9QLQZTRIf2saYRdbZSDvcY8o4ZLJ4QosVuURVdcLerMayA7ogaAb20RI0oOmArWMiA==
+X-Rspamd-Queue-Id: AA1241C0011
+X-HE-Tag: 1773237441-508203
+X-HE-Meta: U2FsdGVkX18pCou2yE0CHugueVb0NpffXE4Cm4ohI2bmkCp9DnDX/G51s9Iy1iVMG6hUtYSlbqEdIUR6QZBlHMykYjfwyRQph3DhQ7CnfSaslTBkeUIXAlV6TkcIp5NmaAzU8zpcBfClxid/NHnO8S2PgCzK3Qan6PhOInsPlLonR7825O0HDxdXsGudYx5KrXBWW2ORA9KmuItnkfI1DjavSDf8jjlvQjrzoCWLYavKPnjGqIKhYQSfYNF/gTsyNV/2OQRyNKtFojFJP3IWsRAMJUz1cxmco707Bjz/0s5Ko785CiSAFQ2ntKkgrz1nNZrOPbPlZXJ+Oddcc7RU/N5Cf+ehD8pGV2KRjruc63a+RDovqH3h2odEeEHglnAGcYUZdPOQrXyMv+CvvlpUKj51wRO86YeXxOXc4MuFEJUwsF/M6R0WwsrafLqiskgPR4S9hpt/12HdsAWDLHQ6nbKiLQhwl0r2FKwJOyU8Vb7MmdU3JZysrHJ8He5ZNLAnm1Bqj6s+bmq2qU7CbVHrXtJ8QQg6+xjkJIK7jtTXEZ9W33DqafDl6M4wVCPH4jjNVmaGdUH8eljqaFtF01naZHu9X4IYt1BlHpJNB+FB8swu9IEQCZyX4l1YNInPWAE2NZNquqPEtzeIuVFoFI+FzRUyGdcER5Z3pl3xXMIci04MA4fd6J4GjRIl4+dhCh2HSmgEY1/OpHV1JhA5cPqb5vIK5xHXrwJ7yzovRp78+lxxFB/C9JYw8ugXNp15Br0q9j5a0qyuSlk7yvtBSnQeYylrpYexUzxljAM7TZN/BjIuUWJpQr3k1bXfL2eHC3P6ZPe37+NTVd4FMpmkVR/MNNYidy25osr3HHKyxTRkBrdWjkTbxxam+GRJe18Sk1hZBP5Y2YdLvcRSs+9m/UcWym4nWl+Z7Sli8xk8IEmGLFUqnBurRj44JaW+8wGvXQzxfXObxgQpgLUq27NpaKE
+ MvOFEkl7
+ gQOgC4175xHtpvSwKq7At9m2OLPEwxilXPCWzZs2ymKgw2yJEXhH8KlzTxQJO+tMyfFKg0JlInA3IiF9PtMbS07ssXTY/7YgTge3fVJxUM+/HIkxL5RJlxuh+56JHQLmUgYn2VJQveZ+UDqraREMcwy1HixyUnsjucq2g4w2VNy9efOiEc+JIQuaivYbU+d3zBePphMeNXQm7BkDzb8n/p26rQUOIQdzRH7W67D2ML6PtAKCSgLVM96zM9jcHhthTGAkbXPL6hUrhNFC/np502iIrppn4tx5KpbDQVmOHwgrIEwQC/8yayajtuT2SvHqIz+Ki0g03EMVazy1rud1M/d0nRUJRW/czylH6hmRvIQVzzAmK/x2PDx4KnlqT3qdWbf5X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,83 +144,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/11/26 14:38, Zi Yan wrote:
+> On 11 Mar 2026, at 9:33, David Hildenbrand (Arm) wrote:
+> 
+>> On 3/11/26 14:23, Usama Arif wrote:
+>>> folio_migrate_flags() transfers folio state from source to destination
+>>> during migration, but does not transfer the large_rmappable flag.
+>>>
+>>> Migration allocators like alloc_migration_target() and
+>>> alloc_misplaced_dst_folio() use __folio_alloc() directly without
+>>> wrapping the result in page_rmappable_folio(), so the destination folio
+>>> never gets large_rmappable set.
+>>>
+>>> This becomes a problem when a folio on the deferred split queue is
+>>> migrated: the destination folio can be added to the deferred split queue
+>>> via deferred_split_folio() (which does not check large_rmappable), but
+>>> when the folio is later freed, folio_unqueue_deferred_split() bails out
+>>> early because large_rmappable is not set:
+>>>
+>>>   if (folio_order(folio) <= 1 || !folio_test_large_rmappable(folio))
+>>>       return false;
+>>>
+>>> This leaves a stale entry on the deferred split queue, leading to
+>>> use-after-free when the shrinker walks the list.
+>>>
+>>> Fix this by transferring large_rmappable in folio_migrate_flags(),
+>>> consistent with how all other folio flags are handled.
+>>>
+>>> Fixes: dafff3f4c850 ("mm: split underused THPs")
+>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>> ---
+>>>  mm/migrate.c | 3 +++
+>>>  1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index 3380021fd3db..ee1c7bc851dd 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -846,6 +846,9 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+>>>  	folio_copy_owner(newfolio, folio);
+>>>  	pgalloc_tag_swap(newfolio, folio);
+>>>
+>>> +	if (folio_test_large_rmappable(folio))
+>>> +		folio_set_large_rmappable(newfolio);
+>>> +
+>>>  	mem_cgroup_migrate(folio, newfolio);
+>>>  }
+>>>  EXPORT_SYMBOL(folio_migrate_flags);
+>>
+>> compaction_alloc_noprof() does the page_rmappable_folio() at the end.
+>>
+>> I'd assume that all migration allocation functions must take care of that.
+>>
+>> It's a responsibility of the folio allocation code, not folio migration
+>> code.
+> 
+> I agree. The migration allocation function needs to give a folio or other
+> types of page matching the original one. Do we want to turn this into
+> a WARN to make sure newfolio matches folio's large_rmappable state?
 
---Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+VM_WARN, sounds reasonable.
 
-Hi, I=E2=80=99m a phd student working on memory management and I have =
-the following question:
-Is it intentional to not check for `vma_migratable` in =
-`try_to_migrate_one` ?
-If the vma is not migratable, it would be logical to cancel the page =
-migration at this point.
+-- 
+Cheers,
 
-=46rom what I understand, `vma_migratable` is called to check if a pages =
-in a specific VMA can be migrated or not.
-=46rom what I can see, user-facing migration paths (mbind, move_pages) =
-and NUMA balancing already check wether migration is possible or not =
-with `vma_migratable`, but other migration path, such as compaction with =
-kcompactd, ignore this check.
-As `try_to_migrate_one` is the only place where we have access to the =
-vma (due to reverse mapping), it would be logical to check here for =
-`vma_migratable` (before we only have access to the folio).
-
-I=E2=80=99m still new to the Linux Kernel, and may have missed critical =
-subsystem / behavior, and I would be curious to know if this was =
-overlooked or if there is a reason behind not calling `vma_migratable`.
-
-=46rom what I could get, here is the relevant context:
-- Implem of vma_migratable : mm/mempolicy: check hugepage migration is =
-supported by arch in vma_migratable() =
-(https://lore.kernel.org/all/20200402041052.Y4zsoYman%25akpm@linux-foundat=
-ion.org/)
-- Implem of try_to_migrate_one, previously managed in try_to_unmap_one : =
-mm/rmap: split migration into its own function =
-(https://lore.kernel.org/all/20210701015416.0t4MkxtDR%25akpm@linux-foundat=
-ion.org/)
-
-Thanks a lot
-
-Riwan Co=C3=ABffic=
-
---Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><div>Hi, I=E2=80=99m a phd student =
-working on memory management and I have the following question:</div>Is =
-it intentional to not check for `vma_migratable` in `try_to_migrate_one` =
-?<br>If the vma is not migratable, it would be logical to cancel the =
-page migration at this point.<br><br>=46rom what I understand, =
-`vma_migratable` is called to check if a pages in a specific VMA can be =
-migrated or not.<br>=46rom what I can see, user-facing migration paths =
-(mbind, move_pages) and NUMA balancing already check wether migration is =
-possible or not with `vma_migratable`, but other migration path, such as =
-compaction with kcompactd, ignore this check.<br>As `try_to_migrate_one` =
-is the only place where we have access to the vma (due to reverse =
-mapping), it would be logical to check here for `vma_migratable` (before =
-we only have access to the folio).<br><br>I=E2=80=99m still new to the =
-Linux Kernel, and may have missed critical subsystem / behavior, and I =
-would be curious to know if this was overlooked or if there is a reason =
-behind not calling `vma_migratable`.<br><br>=46rom what I could get, =
-here is the relevant context:<br>- Implem of vma_migratable : =
-mm/mempolicy: check hugepage migration is supported by arch in =
-vma_migratable() (<a =
-href=3D"https://lore.kernel.org/all/20200402041052.Y4zsoYman%25akpm@linux-=
-foundation.org/">https://lore.kernel.org/all/20200402041052.Y4zsoYman%25ak=
-pm@linux-foundation.org/</a>)<br>- Implem of try_to_migrate_one, =
-previously managed in try_to_unmap_one : mm/rmap: split migration into =
-its own function (<a =
-href=3D"https://lore.kernel.org/all/20210701015416.0t4MkxtDR%25akpm@linux-=
-foundation.org/">https://lore.kernel.org/all/20210701015416.0t4MkxtDR%25ak=
-pm@linux-foundation.org/</a>)<div><br></div><div>Thanks a =
-lot</div><div><br></div><div>Riwan Co=C3=ABffic</div></body></html>=
-
---Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6--
+David
 
