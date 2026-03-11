@@ -4,108 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52E731062868
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 11:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3B61062868
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 11:25:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A17F6B0089; Wed, 11 Mar 2026 07:24:33 -0400 (EDT)
+	id 498756B008A; Wed, 11 Mar 2026 07:25:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8452A6B008A; Wed, 11 Mar 2026 07:24:33 -0400 (EDT)
+	id 4431B6B008C; Wed, 11 Mar 2026 07:25:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71D616B008C; Wed, 11 Mar 2026 07:24:33 -0400 (EDT)
+	id 386086B0092; Wed, 11 Mar 2026 07:25:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E3906B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:24:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E95081A0128
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:24:32 +0000 (UTC)
-X-FDA: 84533549184.11.472A3E1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A6CF54000D
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:24:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="PG3lUej/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1607C6B008A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:25:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1DF387456
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:25:38 +0000 (UTC)
+X-FDA: 84533551956.02.6147373
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1EB4DC0009
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:25:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OLWyz3wL;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773228270;
+	s=arc-20220608; t=1773228337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RU+rcs31a/v5hO2cCxiaDgl0I9IyoEi+IhVH3pVqJa0=;
-	b=jBSBaigElpGwtkUa+Cu4ql45jJXCAvSUEHs6Fjd/h83vDhKwTaPw1PLnkH0LiHKcU1LAfL
-	gcoyLZP4Icirb4zAippDD/7YYyM8hJLU9PcYuHnpBSTA/Oj999afIJkIKU+drdFmm/kFS0
-	a8B+jdOkfaqXHHSX5vdHQ5SS8oDEppM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="PG3lUej/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773228270; a=rsa-sha256;
+	bh=Pn67ISwRgfM/OxPq5DgWNy6SqvqrfQpKI3MEziuo1j8=;
+	b=if/qDBXsy2EwmPspLM/5wd3Be75eCqg8EHHVSzvTBv96hS+Abc2/R2BqO1YDEPph4Wp4HI
+	HKUpWGHeNc/bKQhskQtn6LohGn95Hs6vR/HeScdvNVCayic3c2q75B+823MwWamRLcxdiY
+	pHYBVLQ2lPqpZNkOHOjv4Y5EH/GjkdM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773228337; a=rsa-sha256;
 	cv=none;
-	b=B1zb5NOsFXD035Enoq6SudpOazgBOva2yIhfKCqxcjTYpJlCG4GqOcX1mjXePT11Cgvb4U
-	j/ZHQkIBcpxKiMnpkpKzQESJMQgGjk3IT2e+3Kb7EISdtc0O2auzZl4bGhedCAvErmVOav
-	x4AhhwP9U4XYStpwaPDBLzXC7hrBM6M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773228271; x=1804764271;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MrItGMIwck97yHNleIjnWht9bi1GncmtA9PeyGCwBMs=;
-  b=PG3lUej/LozGcCGbjM7PXqamQrwEgRn6GShtey4cXTeniO6K4QGtDC9h
-   eoKwQoj19f3NsDLa8L0M4f/NRB9vPfGN/u0+HHnBMKc4p6HMn23MKOXBI
-   3F0PZLralRbEOdln2ikobiHJVfmE2ctv1zjUFImYbDVRS40Ue2RnEh8ES
-   2XVu3h2iS8whYjtpg1iE6OQV6eAK/+UnD373OMvV2QW+wO8XFEWPJFjoQ
-   c60bd7s3lxR2SUEdPNBkm0FmxfiMbjtuXbpBK8cOFj9eOT8NeRBGXNpIK
-   a8m1ApW5d8v5eMInysrL3C0IARoqMBsVDH6YjBUZKBz0RzxgzMc6Yijf8
-   w==;
-X-CSE-ConnectionGUID: JF+tllLkQtaPYA5P9MCavw==
-X-CSE-MsgGUID: pRPd2DBOQ3+fch2Vxw8pdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="76903773"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="76903773"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 04:24:29 -0700
-X-CSE-ConnectionGUID: fw1E74arR96VolAP3q/Egw==
-X-CSE-MsgGUID: gTH9KMjeTPWUWgVUI7QD2Q==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 11 Mar 2026 04:24:25 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0Hfr-0000000014P-0HV2;
-	Wed, 11 Mar 2026 11:24:23 +0000
-Date: Wed, 11 Mar 2026 19:23:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Brian Geffon <bgeffon@google.com>, John Stultz <jstultz@google.com>,
-	Ian Rogers <irogers@google.com>,
-	Suleiman Souhlal <suleiman@google.com>
-Subject: Re: [PATCH v2 1/3] tracing: Have futex syscall trace event show
- specific user data
-Message-ID: <202603111911.zAWpiGlz-lkp@intel.com>
-References: <20260310201036.542627924@kernel.org>
+	b=nWO7mfXDF5Ecc4W0kw1HH9ooiGHQER+dG9K1hska81xsNeMB4JRf90P7TL+gghwI1utOck
+	gYt051BeYHVsEAbwjh9NhU4Afu3HsW4cyJ8op5aHMCMAB/Gcox1rHK+Jb/3OfQ3q0yEm8r
+	RGkXgSDQw4qdiuASJ2If0A7HiNtgAWw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OLWyz3wL;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 674A060145;
+	Wed, 11 Mar 2026 11:25:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BA3C2BC86;
+	Wed, 11 Mar 2026 11:25:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773228336;
+	bh=g2Y9MMMbhifyD8xLlvkjBkRE67yfHE5Dqvk7AeX9N9w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OLWyz3wL7cjrXH3nCYFFOCr6iBlPMoNfNKuHBkEz9i9TuXzLeg51ZAzTrQu/IqSN8
+	 7wfMjDnru52+BTWs5gMNyWzcHWvW9yt4WnxGvGye9oFDTy3ZQeUEYt7WAiI1c5hNN3
+	 bp/fhfoY2U0wSt4a1+z0iV1aJ5Q+1fPSTRP7uPyvRnRqi6D3OQWX1kkRb3hWyuzeiN
+	 TVLwxtL1hiZgkuXCs/ofSIfFSLHf5Aa1kq67BoqxaLLsJJEZ1b+7pZ+d6CsmaKl1O6
+	 XMgI3i4yJloFaaemM9iBUiPo72GHO6foAkw7xbjShZjFd/MKLRgWmbcPtB2/+umUEA
+	 uzPjNC4TqgD2A==
+Date: Wed, 11 Mar 2026 11:25:30 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, 
+	shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
+ locked
+Message-ID: <55662200-c212-4146-bc23-7f3d210de3ee@lucifer.local>
+References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
+ <20260310155821.17869-2-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310201036.542627924@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A6CF54000D
-X-Stat-Signature: 1bx1d3okx8skkosjrdcsqzyd7dhjg79b
+In-Reply-To: <20260310155821.17869-2-anthony.yznaga@oracle.com>
+X-Stat-Signature: xwso491ussd5r5kfsihy1bcxdbx7f1s5
 X-Rspam-User: 
-X-HE-Tag: 1773228270-828074
-X-HE-Meta: U2FsdGVkX1+766lXrm1B21zM+QeAeWhZ3QJdtRwlyO97JQMvj5kFfRcsiIokVzramvXHU9fpa68c/liNatRoOxr9XUsL4v+OvmqOIIOxVCp5R3PmR9na4F0snK4FQmWKRJC70i4l8mAMV15lUGscpHAx8x0op8HCh0ruZcMtpO1mDUTqKuc1+A6L9fdt+LLgrBVFIMaquS7kvESN0wgHwaocO5XXE3/Z2hch3dsnM7mr9vmMD1pxSMCWB31M4Z5FZGasg7hmDC7lPKy88QJ6NZnYpaRkvbPodq/aYhjiqUD3xpsI5hqqYYyTk44OzB8jiabgPZi+v/AUVY8W0mzlA9nkvYWOJhPs+0Rj6kLIyPqqN/rRzEXopZVfrsOejhHFjqRhqTQSIUrIPJqBwD/JtYinpWOEU9cwDa3AMsyF6A739at0ltuvX9qWnzMo/mUPBZ1vZc+3BEtTQe8C93ZPlnSIXtfeVr8Hi8TJLnEKdBe8gE5KmGJ3OSFTe3ugrpoqu0xF5KAN0KVDZtPKCu9ZUh1pwjuVoJaX7rzlUgPfbO9c9gKkMkQpEvBtYpkBF+4qdrZ2fVxTE5wpyr/Me1snOCpSLLkiHasfbhKiv5+qSyNX5yALmW7AZYHzRkd8BiEjCjh9t7mByHhfLPZPRdWbcZgINUuFYV2baUItamRJSk1JWwoEA1bIlPnY9UH9jSxgBZLQE7RSwBf3xwENDXE4Tk5FF4ZDtaAko+W5Z0X+jYLew1/8i8O/rljWc00qtOZaLQQkHPwX1FEjvNte5MxiD2DAZox63fd3P9YR4wJrag+OH8Xun1/Hxx9NPkTWWkDwg1MfpgAQBEe/RC27YHXFmMzd0wPIuO7SmFb/FqZ9z8gdfp7bCKfN09yj2cZjDDv4yJK7UXnLn/q29u6ewiNtpsHPKtBVeKWL+rr8CT+2P/mXrGJSS7Ga3IZis/sVtyN5ExEvRXEyIO3W05Za/BW
- wQ+dr7vK
- xj2yE09aDov52Kr+Hm4v7v8gb9+U1MIVZQ76Hlm3mrxvW8ikl+OIzFgh6hp3N0Kejnm/14L6R42P7RWpEeiCc3TN77o0mHRJ9JBvdG5fI1xJSoOtB3WnpyeyC2Ycu56wSEQahjqjLtCTYoLFF1tTqOTLmZjwlZjyz+mwas1xM4p2W6tZcg73pMKEdJYANRWfXP835sF7qRusG6e4kQkGiD5hgDLO0wbl5UYRmbHImTsFf3kO8FAmo/mPVl7Ev5ILZR4wSEPzvWsC+rrpknnPoJcCzgfZXLWpB9IE9rmetReOtplwxRVWk3ccsIfuycwYgWzy/jaNyukhfI23CkeLB9xLHtFdGa2jeqPkm
+X-Rspamd-Queue-Id: 1EB4DC0009
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773228336-437078
+X-HE-Meta: U2FsdGVkX18FrDPBwZiOyW4Jkq+zh44jmRPgpfk9+oikoO4fcNnNVCRJ+O/b0NtlBLvqGpiSM3btf3n7Yqs+6K39o7wDWxt2hQwLSEi+DcoidCWk2SmUoqLkKcuDLivWLEd264+3wjJgPdMDpP11q7QvWPVmcijT1qNKazI3oz+oCcVA1agMHUEQ2oUnAQGNUmtt8xuUW/3h61eV5xeQMU6/sinDzq/pN+dT7qQ9Jk+Hc7xZpr/SJKm7HEEcGHhW3/yM8XBvLIqhpm4epwEcCRgbXd2fXzYFENxkCFrL3lDWGU0PcHNdIXBBt93BPQxL9UPO99qSFB3mkw7KzvzUaOi8W/3vF0iVtQbijwRQs8XdMlkhfsu+Q87Q8WbEoTPUpVJBGG/T29QKEkLCdOQ4oCajU90bo3tkuWMJMUgDCm8Re8B1iwU9BfVM3Pp56lXe1wCWL6kPk9mTLQCJ80kjEtKT32BM4GDy+GJnd+8rHbHkUcf0WeKzD8JFDU4W9+QmCCJ597RRQnhCnU7LBX6z+R3/9fHLrLuJtwPQ3pUZsJeBqVI0mvoFsHyUmCtbm/2UxiVBn1PcVHkfGVa0A6R49Y5GAenJcnS8mQdVirONLik0Y/MUYJ67UnfxqXK21pfDVuMwd6NTiHwyPKwV43kUJOviOE99SriXtMTnHdE3SFeSEpDs6viW2qHqDdKJ8E1WHbBGR7e3BA04mGEtpElBZc4EgDPNCTAoZsoPCREEqzPO/TgeBLjkBGrgVXm+Y8PUb9Y0IutpiVwPeQqac24C7Bslsl93Y0Z1r3683jI/vEXA+zi42e3r2fAQzbH6BErbA8xY9Y8S+z/nFYkE9DfVa9aVubuOEz7WbrlPxKxaj0/AoB26T47pOQYAfsJqXA7IDGmEh4z83b727cLw0PyRgSIE4L5biGnBwxJNlwYe+/Clrzu/+prK2ZNz8ETsteo3bDPr59kTeUNq6dRaSna
+ mWYwTtYi
+ MxU9Tp2YzzF4xvG3iukYTCTsrnCfKJT5FKKp6G54cg0W8ERFTNe3XYfxqrbCXNsSDFmc1mvDqaM/FrJGYVdAtocUxGigwYJ7JhhedQl6l1J6UMy2ZogSLYbKqI8vFjktEllS2sNI5MOYzaEQGL1DALDoLMkp5NzAAXDEPmPKH5Yj8bZIzqTgbPV/rwF3WUXaY8vLfKTEjcVJoqx0y2q5s5UHeyJmC4sJV1SYeCNHr8dBcBRPCc/nqSpfvKSFgimbzIfgU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,72 +95,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+On Tue, Mar 10, 2026 at 08:58:21AM -0700, Anthony Yznaga wrote:
+> Verify that a mapping created with MAP_DROPPABLE cannot be locked
+> via mlock(), and that it will not be locked if it's created after
+> mlockall(MCL_FUTURE).
+>
+> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-kernel test robot noticed the following build warnings:
+Can confirm this test fails before your patch and passes after, so LGTM :)
 
-[auto build test WARNING on tip/locking/core]
-[also build test WARNING on trace/for-next akpm-mm/mm-everything linus/master v7.0-rc3 next-20260310]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Tested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Have-futex-syscall-trace-event-show-specific-user-data/20260311-041422
-base:   tip/locking/core
-patch link:    https://lore.kernel.org/r/20260310201036.542627924%40kernel.org
-patch subject: [PATCH v2 1/3] tracing: Have futex syscall trace event show specific user data
-config: arc-randconfig-001-20260311 (https://download.01.org/0day-ci/archive/20260311/202603111911.zAWpiGlz-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 14.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260311/202603111911.zAWpiGlz-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603111911.zAWpiGlz-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   kernel/trace/trace_syscalls.c: In function 'syscall_get_futex':
->> kernel/trace/trace_syscalls.c:807:15: warning: variable 'buf' set but not used [-Wunused-but-set-variable]
-     807 |         char *buf;
-         |               ^~~
-
-
-vim +/buf +807 kernel/trace/trace_syscalls.c
-
-   801	
-   802	static int
-   803	syscall_get_futex(unsigned long *args, char **buffer, int *size, int buf_size)
-   804	{
-   805		struct syscall_user_buffer *sbuf;
-   806		const char __user *ptr;
- > 807		char *buf;
-   808	
-   809		/* buf_size of zero means user doesn't want user space read */
-   810		if (!buf_size)
-   811			return -1;
-   812	
-   813		/* If the syscall_buffer is NULL, tracing is being shutdown */
-   814		sbuf = READ_ONCE(syscall_buffer);
-   815		if (!sbuf)
-   816			return -1;
-   817	
-   818		ptr = (char __user *)args[0];
-   819	
-   820		*buffer = trace_user_fault_read(&sbuf->buf, ptr, 4, NULL, NULL);
-   821		if (!*buffer)
-   822			return -1;
-   823	
-   824		/* Add room for the value */
-   825		*size += 4;
-   826	
-   827		buf = *buffer;
-   828	
-   829		return 0;
-   830	}
-   831	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>  tools/testing/selftests/mm/mlock2-tests.c | 78 ++++++++++++++++++++---
+>  1 file changed, 69 insertions(+), 9 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/mlock2-tests.c b/tools/testing/selftests/mm/mlock2-tests.c
+> index b474f2b20def..b5790e717dd6 100644
+> --- a/tools/testing/selftests/mm/mlock2-tests.c
+> +++ b/tools/testing/selftests/mm/mlock2-tests.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #define _GNU_SOURCE
+>  #include <sys/mman.h>
+> +#include <linux/mman.h>
+>  #include <stdint.h>
+>  #include <unistd.h>
+>  #include <string.h>
+> @@ -163,14 +164,17 @@ static int lock_check(unsigned long addr)
+>  	return (vma_rss == vma_size);
+>  }
+>
+> -static int unlock_lock_check(char *map)
+> +static int unlock_lock_check(char *map, bool mlock_supported)
+>  {
+> -	if (is_vmflag_set((unsigned long)map, LOCKED)) {
+> +	if (!is_vmflag_set((unsigned long)map, LOCKED))
+> +		return 0;
+> +
+> +	if (mlock_supported)
+>  		ksft_print_msg("VMA flag %s is present on page 1 after unlock\n", LOCKED);
+> -		return 1;
+> -	}
+> +	else
+> +		ksft_print_msg("VMA flag %s is present on an unsupported VMA\n", LOCKED);
+>
+> -	return 0;
+> +	return 1;
+>  }
+>
+>  static void test_mlock_lock(void)
+> @@ -196,7 +200,7 @@ static void test_mlock_lock(void)
+>  		ksft_exit_fail_msg("munlock(): %s\n", strerror(errno));
+>  	}
+>
+> -	ksft_test_result(!unlock_lock_check(map), "%s: Unlocked\n", __func__);
+> +	ksft_test_result(!unlock_lock_check(map, true), "%s: Unlocked\n", __func__);
+>  	munmap(map, 2 * page_size);
+>  }
+>
+> @@ -296,7 +300,7 @@ static void test_munlockall0(void)
+>  		ksft_exit_fail_msg("munlockall(): %s\n", strerror(errno));
+>  	}
+>
+> -	ksft_test_result(!unlock_lock_check(map), "%s: No locked memory\n", __func__);
+> +	ksft_test_result(!unlock_lock_check(map, true), "%s: No locked memory\n", __func__);
+>  	munmap(map, 2 * page_size);
+>  }
+>
+> @@ -336,7 +340,61 @@ static void test_munlockall1(void)
+>  		ksft_exit_fail_msg("munlockall() %s\n", strerror(errno));
+>  	}
+>
+> -	ksft_test_result(!unlock_lock_check(map), "%s: No locked memory\n", __func__);
+> +	ksft_test_result(!unlock_lock_check(map, true), "%s: No locked memory\n", __func__);
+> +	munmap(map, 2 * page_size);
+> +}
+> +
+> +/*
+> + * Droppable memory should not be lockable.
+> + */
+> +static void test_mlock_droppable(void)
+> +{
+> +	char *map;
+> +	unsigned long page_size = getpagesize();
+> +
+> +	/*
+> +	 * Ensure MCL_FUTURE is not set.
+> +	 */
+> +	if (mlockall(MCL_CURRENT))
+> +		ksft_exit_fail_msg("mlockall(MCL_CURRENT): %s\n", strerror(errno));
+> +	if (munlockall())
+> +		ksft_exit_fail_msg("munlockall() %s\n", strerror(errno));
+> +
+> +	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
+> +		   MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
+> +	if (map == MAP_FAILED)
+> +		ksft_exit_fail_msg("mmap error: %s", strerror(errno));
+> +
+> +	if (mlock2_(map, 2 * page_size, 0)) {
+> +		munmap(map, 2 * page_size);
+> +		ksft_exit_fail_msg("mlock2(0): %s\n", strerror(errno));
+> +	}
+> +
+> +	ksft_test_result(!unlock_lock_check(map, false), "%s: droppable memory not locked\n",
+> +			__func__);
+> +
+> +	munmap(map, 2 * page_size);
+> +}
+> +
+> +static void test_mlockall_future_droppable(void)
+> +{
+> +	char *map;
+> +	unsigned long page_size = getpagesize();
+> +
+> +	if (mlockall(MCL_CURRENT | MCL_FUTURE))
+> +		ksft_exit_fail_msg("mlockall(MCL_CURRENT | MCL_FUTURE): %s\n", strerror(errno));
+> +
+> +	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
+> +		   MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
+> +
+> +	ksft_test_result(!unlock_lock_check(map, false), "%s: droppable memory not locked\n",
+> +			__func__);
+> +
+> +	if (munlockall()) {
+> +		munmap(map, 2 * page_size);
+> +		ksft_exit_fail_msg("munlockall() %s\n", strerror(errno));
+> +	}
+> +
+>  	munmap(map, 2 * page_size);
+>  }
+>
+> @@ -442,7 +500,7 @@ int main(int argc, char **argv)
+>
+>  	munmap(map, size);
+>
+> -	ksft_set_plan(13);
+> +	ksft_set_plan(15);
+>
+>  	test_mlock_lock();
+>  	test_mlock_onfault();
+> @@ -451,6 +509,8 @@ int main(int argc, char **argv)
+>  	test_lock_onfault_of_present();
+>  	test_vma_management(true);
+>  	test_mlockall();
+> +	test_mlock_droppable();
+> +	test_mlockall_future_droppable();
+>
+>  	ksft_finished();
+>  }
+> --
+> 2.47.3
+>
 
