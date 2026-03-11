@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7598F1125857
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 17:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D28E1125856
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 17:26:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAC916B0005; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
+	id DFF206B0089; Wed, 11 Mar 2026 13:26:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5A926B0089; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
+	id D54646B008A; Wed, 11 Mar 2026 13:26:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9914C6B008A; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
+	id C56E26B008C; Wed, 11 Mar 2026 13:26:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8719A6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 300FA1B747A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:25:58 +0000 (UTC)
-X-FDA: 84534459996.25.41F4AF0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A7D611C0007
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:25:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPLPa2CU;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id A70276B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:26:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 624061B7513
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:26:01 +0000 (UTC)
+X-FDA: 84534460122.03.4D2DAEC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BA13540013
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:25:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qe3bY2RU;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773249956;
+	s=arc-20220608; t=1773249959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=BJFe0x//KxSzwLsu3xStya7OhlWi59dNRqczuhy856s=;
-	b=0HxSosEir3khMrW/k19u8KKPf/Oy9wx7NwU6iuIDmnoVbIVywUBpvj9EzGI+bBCwDMi5Ls
-	BZSualK8ZoC3LpCl852NXcXMpMXA/T/jjoFXS6itW8wKUpoibcgnPoweMDkqs6f3HGeqor
-	ymL1G0avpqNxLLLz7cYaqFxUVCDFFvk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPLPa2CU;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773249956; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r/dYtKie2EDAH1N6gAamtjbKp+ewYXgV1yjTT1oA0Do=;
+	b=PNRJXVCNbMKMZDmZtvu9aWZPkvdC60hzzETZiPVtWnl1mZGA2P2rYOXBoAPgsd2HyYbX/I
+	dh0owfa/u4kgTOele9ZjOBKI7BtJGaS0Ok8ByrY4bmkO297xJh+Fro/b1Pws1drgg9g5Fw
+	L0vKLjrtSIkK9bAK67ETrbKB2fVH4Xo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773249959; a=rsa-sha256;
 	cv=none;
-	b=wyYHi6ukDceVLNrYmGbQoHfINYi1Tt5WORCt8r6yleCqb95zHIqqyuLtQJ0cll7YRsFEiO
-	IKVU70nuMhkHsMWrMMZ+KkDzShGxwjR30u6OhzQryMOLs11lbylr/TwsK/kYtX3HnQNeMj
-	9Lp+JGQ/WueC0p2GDtubjpCdhNOo04U=
+	b=Dae2epsS6VxS25z7VwlCdSyF7RcRX7HWx28XCmYQwfa9CtVv0iqP35oSsoxiZi8bMFGvTT
+	Qcz+4CdQJNq5t6KEFBgw+/15I8gMl80ph3EhwyhEYdxTxjliBTIWf5YYvZokZCwNCpSbPV
+	ExuD7XGg0pmzxuLCkMRz8VHcDW2hMHw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qe3bY2RU;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A9F960142;
-	Wed, 11 Mar 2026 17:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5183BC4CEF7;
-	Wed, 11 Mar 2026 17:25:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9198140504;
+	Wed, 11 Mar 2026 17:25:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106F6C4CEF7;
+	Wed, 11 Mar 2026 17:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773249955;
-	bh=aUye9KyAnijpM8t7yxcnEfZ0jMtzTOhR9HCsDeyezjc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KPLPa2CUmTcJ/Xw/KOnEKshZF90ialrN0hcYgGIHwwPmnG2WGPys4IwEaqv4HMYRP
-	 rQ6CIc9ptLaXS/hYCQ2XygZzluExwhRygmY12nXriHv8p1DcNkhW5ti799gmA65dnd
-	 KENAG2CeJPzUGE7mSbe6Jo1yO17mZQv2cHTyYeLkbTZChwBlEOjVV1XiCrgOtfNxL7
-	 7Fnb7Mxl3ypSh3jyCq22Kw3IyyZ/OnjwjPvKCwmcWt8rzgDoskQ+u3n0+pP+WR8HLm
-	 I1snb6c4rVJ5zSh8HOp8b8Xp1s2ZeaN5i2LV8Gb2OdDlHR2aJIT7b9OE2Y7VKJ8R1y
-	 kdnWdbkYa7hIg==
+	s=k20201202; t=1773249958;
+	bh=NC89/X0UAtd6MuroNMC9+3geZS5DQaThc4yCOgVtpXo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Qe3bY2RUv/zBO5L9kyWgdabVDnUmRfSKgnDu+VxZsOoTw7XgAl77B0zM+jZbdqD63
+	 IAdVUwTVGnR7umyDxUkU5dKsTjQZTGT1JJ3Bq8oQ3JmMmMPGeoQ1W0yCu3he/g7cnn
+	 Cpj81nEAPcZRCZmFdKtOiBUqO60tUv0r21EF96FlvYRgvefpxXIiAiM9YBAgXwA901
+	 60TCtAc/BZFiFtsXov+c9Vd8obfjDf1MonXvz7CSoKCk1Uc146mbVN3rfzO3Rw9eCw
+	 6mpHhgyTrTsgqBw2HuTj5m6Jo6RLsLL8mE7E7NuM6ijtPDIXvJdsFKZsE4FrCfJ/Hh
+	 Pg7Sl19O3+Ohw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
@@ -76,20 +76,20 @@ Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	linux-kernel@vger.kernel.org,
 	Jianzhou Zhao <luckd0g@163.com>,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH 0/3] mm: improve map count checks
-Date: Wed, 11 Mar 2026 17:24:35 +0000
-Message-ID: <cover.1773249037.git.ljs@kernel.org>
+Subject: [PATCH 1/3] mm/mremap: correct invalid map count check
+Date: Wed, 11 Mar 2026 17:24:36 +0000
+Message-ID: <73e218c67dcd197c5331840fb011e2c17155bfb0.1773249037.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1773249037.git.ljs@kernel.org>
+References: <cover.1773249037.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A7D611C0007
-X-Stat-Signature: r9j373774upbno56a6qwwmuwuy931a99
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BA13540013
+X-Stat-Signature: sca4fs1uq5riwm9t45c436jmsuz3bohu
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773249956-332337
-X-HE-Meta: U2FsdGVkX1+ojYpYvaMtVzfhARRCKIXjzKoGGaxsDggTHXvD2hAi4z/sWbiLgeFBLRR3o4GBwDeQST+BbnXlJ/v7MCdCa41jKoCU1IgwlGfUjAbLD17mgZ0r5g0pcBBQfnyRBngZxnackVYAvThEs/xUbsarXY1+kdlVouVLLT2WEnYxCm/QdSXzlixmPyv/j7VCL9KRCbxpgx4URUVbmespa/w2IM2akJLezGDN7fFog31hecZwKJJPwSgt2xBa67WE2lMk0XWDQiNe3KCh2pNcfDoKa9vtf9E3Qtw7W7v4mG0MfAPccm2H7Gm06/vGCmBaCLkmEyfY7xUV4RXSyc2aTL10unQjVz9o7Qh/Opmvbe2ea2TA3C8wJDj8tMpFVhFQ+7FATqbPZjKmfIplQaTPIkC3QeBHgJ5eOqCM7wMelbIwEM+Qc83hq1FDq1C/72CcWidI8CjRLsvpULzEUkZ3IX05L0PvN085c9aV9BaTF+KgePjh8P6u1fTBm3U3mfifBqlMITwMACpyLOhq9T0beOCAujl1h9WbpVqv/fu+lBmHGB5SBXpPEXtPCYWCBkXTfaJed0wg0aKVcUmQXcRKXKC1qvm/wAw/TtG/cILOUdngmUoN2FpdiD3tLIOCmAPqL2QTQzhbyFydDbeq4hIpoQKMkpQyfvvr522xgh80TwiNGIVjqsV4Z5/58dC3dkG9yRN9h/FgXfBXqsit7ZOoegr1TStEuhotz0qqAh7UFs9IuH09r+pc+LGoGkbFueoI0jk1h4Y56YINbJ6vALgOIkqA62SeOIFPurTgoXhgGAbUhKRZyA4Sw0Hkis7hffa3kQyhUwrsROLFi6Rc/+b2krMUPuFn96WwFl7bImc9oqPFbTX7bzgo0IF2puTQkcwfAfU2oJQG5h+5//ToTK44UU9xpAN2Ewj0bBhzdSPVtVCvQ1OE6QYJLUCAO/nBF7RldiPqFNc6QtFhF6D
- pcitih50
- fV7JXqP0US39KJkA+lcBM5npo9iKNa6RhV29uJschJWtNBsWDU9dhEAa1v2x3N7Q2n5IuEtkQn7e8xwtzPY+Y/ZjqZ0AKnEvKMVOLCHvub5yDHCo8DtZ9ofsB8vW55OPyLGuZ/1pVE0n+eZeXUd9f7tGjkges52x25MU4f3fAennhYMRhu7o2F/h1Gko9IToWkyqA5xn7CvbYsnE=
+X-HE-Tag: 1773249959-248912
+X-HE-Meta: U2FsdGVkX1/tv0nTlgLaNTuvzv7uuV0OKzPB1etFu7uh5cdIObF5Mn3ne24Um+L7b0dPYoD4rwRrj1tDY5MgeyU0c6RU3rYHouevdCErrn0jMA08FbWvaUrhN850RlEOSVcsG8R47T22g3DTS8Ndel0CHolt6dPbLLjsjqQNQAYxlpPy6t28MUInMHYsm9x1ufhq/RIhJ0KbHDd035S/dldhyYeawAM4JhZYyaO1mWH21CyHOujGMJnGJL/PyWSYKiN1KezUTLF83NzweKq5fXJXhR+pPyKjysCN2B63Eomz4F+XQPTVDEzw6NPWFGBO7IBJk6qxv02bfDzdpgV1VH4PZ6hSADmj2ZPmNor0RgtgxGfXU41bzqpvzx03dvbb+M38gNOCh97Qvh1X7CffwWDH+QhT9oQieGoGUzndyaSeqqpYNZOmvu+mtmr/vTXztgQvq6j/5wQGGXYcbtOWOrNxhcL7/gwZ1nRQgrp/ZQUyROUVRlCrQB1LhSVIdMwrcR45UU4Jx91DzK/H6NVKCe533tneocWOHjJSrF7zM8ENI3dsTnBI70yEUEtG/IKecSIxaJMLjXv2QZrfnWkkMBsr01f/PD73cCRklZIp/RD8Q72tG9LZ4ehLhmMWiXHe0PXzG9lUsCKWXad/uhlc3RKXbrEX1dqLaK4oIVpbgjYxK1WHE2bDZv46D9qU9RDNDhzl53SYn4SS4JTCswE61c6NUEUmm54QMG2qEezbkb8eLF8jIoWJBR3IcizKuf7DjtZU0flG3E4KveeE4Kl4kBRKtqtJdqwyXh3tw0BSiih4Rix5+mrGx58LnKdEP//aI7dxSssEwNSrPtH82cCqIPRlGYRi0SS7Y2E8c4K58dBFK1DYRfmv4y9mXx3WActbG0GMbcAfOVQ5OD2xw12CnyNDUI7p4faExPciMjQZuXTdBY6Q7Q+FGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,50 +97,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Firstly, in mremap(), it appears that our map count checks have been overly
-conservative - there is simply no reason to require that we have headroom
-of 4 mappings prior to moving the VMA, we only need headroom of 2 VMAs
-since commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
-temporarily exceeded in munmap()").
+We currently check to see, if on moving a VMA when doing mremap(), if it
+might violate the sys.vm.max_map_count limit.
 
-Likely the original headroom of 4 mappings was a mistake, and 3 was
-actually intended.
+This was introduced in the mists of time prior to 2.6.12.
 
-Next, we access sysctl_max_map_count in a number of places without being
-all that careful about how we do so.
+At this point in time, as now, the move_vma() operation would copy the
+VMA (+1 mapping if not merged), then potentially split the source VMA upon
+unmap.
 
-We introduces a simple helper that READ_ONCE()'s the field
-(get_sysctl_max_map_count()) to ensure that the field is accessed
-correctly. The WRITE_ONCE() side is already handled by the sysctl procfs
-code in proc_int_conv().
+Prior to commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
+temporarily exceeded in munmap()"), a VMA split would check whether
+mm->map_count >= sysctl_max_map_count prior to a split before it ran.
 
-We also move this field to internal.h as there's no reason for anybody else
-to access it outside of mm. Unfortunately we have to maintain the extern
-variable, as mmap.c implements the procfs code.
+On unmap of the source VMA, if we are moving a partial VMA, we might split
+the VMA twice.
 
-Finally, we are accessing current->mm->map_count without holding the mmap
-write lock, which is also not correct, so this series ensures the lock is
-head before we access it.
+This would mean, on invocation of split_vma() (as was), we'd check whether
+mm->map_count >= sysctl_max_map_count with a map count elevated by one,
+then again with a map count elevated by two, ending up with a map count
+elevated by three.
 
-We also abstract the check to a helper function, and add ASCII diagrams to
-explain why we're doing what we're doing.
+At this point we'd reduce the map count on unmap.
 
-Lorenzo Stoakes (Oracle) (3):
-  mm/mremap: correct invalid map count check
-  mm: abstract reading sysctl_max_map_count, and READ_ONCE()
-  mm/mremap: check map count under mmap write lock and abstract
+At the start of move_vma(), there was a check that has remained throughout
+mremap()'s history of mm->map_count >= sysctl_max_map_count - 3 (which
+implies mm->mmap_count + 4 > sysctl_max_map_count - that is, we must have
+headroom for 4 additional mappings).
 
- include/linux/mm.h                 |  2 -
- mm/internal.h                      |  6 ++
- mm/mmap.c                          |  2 +-
- mm/mremap.c                        | 98 ++++++++++++++++++++++++------
- mm/nommu.c                         |  2 +-
- mm/vma.c                           |  6 +-
- tools/testing/vma/include/custom.h |  3 -
- tools/testing/vma/include/dup.h    |  9 +++
- tools/testing/vma/main.c           |  2 +
- 9 files changed, 100 insertions(+), 30 deletions(-)
+After mm->map_count is elevated by 3, it is decremented by one once the
+unmap completes. The mmap write lock is held, so nothing else will observe
+mm->map_count > sysctl_max_map_count.
 
---
+It appears this check was always incorrect - it should have either be one
+of 'mm->map_count > sysctl_max_map_count - 3' or 'mm->map_count >=
+sysctl_max_map_count - 2'.
+
+After commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
+temporarily exceeded in munmap()"), the map count check on split is
+eliminated in the newly introduced __split_vma(), which the unmap path
+uses, and has that path check whether mm->map_count >=
+sysctl_max_map_count.
+
+This is valid since, net, an unmap can only cause an increase in map count
+of 1 (split both sides, unmap middle).
+
+Since we only copy a VMA and (if MREMAP_DONTUNMAP is not set) unmap
+afterwards, the maximum number of additional mappings that will actually be
+subject to any check will be 2.
+
+Therefore, update the check to assert this corrected value. Additionally,
+update the check introduced by commit ea2c3f6f5545 ("mm,mremap: bail out
+earlier in mremap_to under map pressure") to account for this.
+
+While we're here, clean up the comment prior to that.
+
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+---
+ mm/mremap.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 2be876a70cc0..e8c3021dd841 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1041,10 +1041,11 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
+ 	vm_flags_t dummy = vma->vm_flags;
+ 
+ 	/*
+-	 * We'd prefer to avoid failure later on in do_munmap:
+-	 * which may split one vma into three before unmapping.
++	 * We'd prefer to avoid failure later on in do_munmap: we copy a VMA,
++	 * which may not merge, then (if MREMAP_DONTUNMAP is not set) unmap the
++	 * source, which may split, causing a net increase of 2 mappings.
+ 	 */
+-	if (current->mm->map_count >= sysctl_max_map_count - 3)
++	if (current->mm->map_count + 2 > sysctl_max_map_count)
+ 		return -ENOMEM;
+ 
+ 	if (vma->vm_ops && vma->vm_ops->may_split) {
+@@ -1804,20 +1805,15 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+ 		return -EINVAL;
+ 
+ 	/*
+-	 * move_vma() need us to stay 4 maps below the threshold, otherwise
+-	 * it will bail out at the very beginning.
+-	 * That is a problem if we have already unmapped the regions here
+-	 * (new_addr, and old_addr), because userspace will not know the
+-	 * state of the vma's after it gets -ENOMEM.
+-	 * So, to avoid such scenario we can pre-compute if the whole
+-	 * operation has high chances to success map-wise.
+-	 * Worst-scenario case is when both vma's (new_addr and old_addr) get
+-	 * split in 3 before unmapping it.
+-	 * That means 2 more maps (1 for each) to the ones we already hold.
+-	 * Check whether current map count plus 2 still leads us to 4 maps below
+-	 * the threshold, otherwise return -ENOMEM here to be more safe.
++	 * We may unmap twice before invoking move_vma(), that is if new_len <
++	 * old_len (shrinking), and in the MREMAP_FIXED case, unmapping part of
++	 * a VMA located at the destination.
++	 *
++	 * In the worst case, both unmappings will cause splits, resulting in a
++	 * net increased map count of 2. In move_vma() we check for headroom of
++	 * 2 additional mappings, so check early to avoid bailing out then.
+ 	 */
+-	if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3)
++	if (current->mm->map_count + 4 > sysctl_max_map_count)
+ 		return -ENOMEM;
+ 
+ 	return 0;
+-- 
 2.53.0
+
 
