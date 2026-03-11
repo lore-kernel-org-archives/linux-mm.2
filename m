@@ -4,84 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2B81125811
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 18:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87D081125868
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 18:49:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F03DA6B0005; Wed, 11 Mar 2026 14:28:05 -0400 (EDT)
+	id 9CCD06B0005; Wed, 11 Mar 2026 14:49:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB9936B0089; Wed, 11 Mar 2026 14:28:05 -0400 (EDT)
+	id 97A5A6B0089; Wed, 11 Mar 2026 14:49:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFA246B008A; Wed, 11 Mar 2026 14:28:05 -0400 (EDT)
+	id 8868F6B008A; Wed, 11 Mar 2026 14:49:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C9A8F6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:28:05 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 733C98B56D
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:28:05 +0000 (UTC)
-X-FDA: 84534616530.27.2970BFD
-Received: from mail-106119.protonmail.ch (mail-106119.protonmail.ch [79.135.106.119])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A6F4D40018
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:28:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=eGsrYbRV;
-	spf=pass (imf27.hostedemail.com: domain of tj.iam.tj@proton.me designates 79.135.106.119 as permitted sender) smtp.mailfrom=tj.iam.tj@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 759576B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:49:15 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B1A31403A2
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:49:15 +0000 (UTC)
+X-FDA: 84534669870.06.42DC6BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5E83C8000F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:49:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JgEdtbB2;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773253683;
+	s=arc-20220608; t=1773254953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V2dNayaBL5eKt6s5/rNfnULinc8m7UJIH8MLEilLX2c=;
-	b=4tj25/iZJ8Ays8SFKY2uylxZJ5IZe+c95C8BR4VVeSeCWh3p4k6m7Re45pcR2+rf6zVTE8
-	VV9q2e0r78WYyUX2WU5T3VLnsW1dUe/aTHQKfoNFF9ODqnkh8QRDR9YwknEs2mtbXBNrUE
-	4+qAgs+ZXYu9eQm9P5k8JvwwtPRLCTs=
+	bh=BY0FMQVFhHJxY5PSlqRNAZr+kG7EJORMbhFJkh2sEa4=;
+	b=VsbP6oefGcCU0va+fbOqbkekwyCmOCkqGrp0U7P4CEJJFH09qgjGHA4ULZ5y6Yk19f+GiY
+	lj+m9HzDjwm7m0kPbX7Qz8h48WMTd6EpBsO/8AfeZjopr9erRxSrkxR7Bcgt2TbXJWLtKG
+	OKM4xKdEPWU1UyZmSsnriKI3eyI2VV8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=eGsrYbRV;
-	spf=pass (imf27.hostedemail.com: domain of tj.iam.tj@proton.me designates 79.135.106.119 as permitted sender) smtp.mailfrom=tj.iam.tj@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773253683; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JgEdtbB2;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773254953; a=rsa-sha256;
 	cv=none;
-	b=iE3Kvwo2Gozp69VHPZtoKMM0dfcGiV16ohUpWzNsmG3rzb+UAQXSZMOV5MNut2EoZz2ojh
-	JGHmZX9uc0G5bil0QIo9DoI6J23U5DFWBRWzIS3iRiMA75uRyCgZk7Ne0fUteJu7LFERIl
-	46slNnIBTqWXY2dc9ECotZANbV4OtSA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1773253680; x=1773512880;
-	bh=V2dNayaBL5eKt6s5/rNfnULinc8m7UJIH8MLEilLX2c=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=eGsrYbRVVOk4yqYxgBVXbdu9YJj2IgJrQPT5TGr4kYyK9xzH9rpDE/zlOlduUcpyI
-	 WWtqsP8U0WDmFKkvUiuuQZlZbCK5YtRsW2OTwR7s2zkH7oJcjWvRKAlDOUIsTrPzCm
-	 SEog6OlJv0i5ORqwCD6OnDWnf1V8XjtzGBww1YK//YkNWYn8iZH9p9i6v/2pUQzhgb
-	 yH8QbtMBGBMq2NnUJ3fSV6Fhgdk6R2MVTWwMRBrdyVgv5Y+UmchuLyxbQiigdsRQJV
-	 RuhNeBcndS6zSxJE6zZpn4m8nyA22mUr5fClpx8Qs90h4M2Hvak2x47cY+pcbhqS+s
-	 mDFm2/oIT5HLA==
-Date: Wed, 11 Mar 2026 18:27:57 +0000
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-From: Tj <tj.iam.tj@proton.me>
-Cc: linux-mm@kvack.org
-Subject: Re: BUG: Bad page state in process kworker/u32:1
-Message-ID: <2fc7c354-4e05-49d8-87c4-d80854033759@proton.me>
-In-Reply-To: <9115acdf-edf8-4abf-a59c-8980c1375e67@kernel.org>
-References: <4df99438-637c-4919-96dd-1fbe6dce70cb@proton.me> <9115acdf-edf8-4abf-a59c-8980c1375e67@kernel.org>
-Feedback-ID: 113488376:user:proton
-X-Pm-Message-ID: 328c4da44210ea01697433e3453ddf77692c65ef
+	b=pU09LM6zLC0H3AEPQEm/ntW6m3FUl0RM57eces5jCtAOJ8L46t0w5VitBfJs8H4wrfKVHD
+	VpqxwkUlg0Z3HcI10HP0+eLsWCOShthR7pmTcPfEvRNDsbl7yq8af93gzlq9tyoMWm2RIl
+	4fUI4MlvtCICMer2K5+qEpHSrObWOek=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ECD0A41922;
+	Wed, 11 Mar 2026 18:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BED4C19425;
+	Wed, 11 Mar 2026 18:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773254951;
+	bh=V6cFeRkZqby++mC9llt12uQIBRckotBb4PevLS2Zh7A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JgEdtbB2552lw+CZNF+iT4qjBWPNoUdaJrGRaWJeqan1Mdfi5a9y3+1uJSR/wv32s
+	 QX4boMvXHOGzj77PQo1BGxHTnoQO0v/eCIx/awqOamXHSnQ99EQsHhBPgznbBS0lWi
+	 mCrjHiikGeOlJUuB75XBJmwWEMFGMt9uY1e77zsOHq+K45kQ56DZ7NqDw8GFvVZkL1
+	 DYO4WEaT0z6xMrEYBaptEqaIKq/SgXAXI1elpkm3mhjePR1FtlZ+1sJYrAr0FYZ5nl
+	 x92uuR21FLfkhDt1132NzhtHFAe4pC6zGlSi1bT1bhetb8YrwM5mbjw20h3PWQcnig
+	 aOoRuubqwjihw==
+Date: Wed, 11 Mar 2026 20:49:00 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 07/15] userfaultfd: introduce vm_uffd_ops
+Message-ID: <abG5HFV8yoEHOFkh@kernel.org>
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-8-rppt@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A6F4D40018
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306171815.3160826-8-rppt@kernel.org>
+X-Rspamd-Queue-Id: 5E83C8000F
 X-Rspamd-Server: rspam07
-X-Stat-Signature: yaneb3qtoh4reegafr79wkqh9qh7u1we
+X-Stat-Signature: jm7c1xd866wjdu9nccwsecc9zmxhbmeo
 X-Rspam-User: 
-X-HE-Tag: 1773253683-665142
-X-HE-Meta: U2FsdGVkX1+qUUutqppi5FLW0SKI1WvyLCNGenLng0mwn5wtul5hfD7aHjZnyB28i1/FwOmCWQFqAe5qsX+tjR86w4ITAzYkBlc6dwD2KLIR9S2FO7oCDAa76XyLhf1s/cC6O8gWmyRfeKK5FbOJbNqCSJXgDPIDtGmS2AETCCkHyR4K1K6fnbFmg9zRFGLEBjxj+y1Ix896zfta0fiAQvyNXX3W5ghUsHXmInIh9uPOlYVasv5wXCQvJriUMM9sYLswb2LdvaqPEYF5VxL0e4uuiNrQHCC9/c5nT7Y34QqPGRpJm6Is8n5wQi7RVM8Rt0DMAzHRc2RPFnxwzjeRWvrD3yLj2No3mS8LppI3NCG4R1vNETENGrWyEt9Sqt4/G4DsUlc0l/PPcxWQZFZT+ZvViVpP1IUiVwOz9eUN+CZ/2yAtASwXERyObqUrCmAWXN2P2S4lkZ0r6bQNxhlyhtg9yqd1MK9WFypzCyMknIzp167XTbEWEAwhD8KWleOHsuI7AMW+bPWgcgJhspHOSl9QzdJZKbVrEmScAZsPr/98D0MXsxI54K8o+Ij5Ci63qwcz6MrwpULNQkvOT5sU38Rmw3/fcq9K0kmlGiQTv+2muLDZNkhIOXnaHqLSC5eI+CKf1KdrnNsSuuJ7T1scQN8QKktvscrxpPxzOVYBho4kTaEjj8cNODPvZhLqCqpxYCwuUTPmizZ4bW0IljSIhkv/5IT10BZj9O61SHZDuXzoNFAmi3grTmU3F3P2qXUBeYylsiXJr5pvsROX7QlQJGdKE0JwvSjFYh5Hr71g0jaHKTEpdca/dP2ScdD70HX9SwSAGe/fKQpnjzSIvzSwdyPbEgUmOwX17a59+qYC8UcHpb+VjbxZU3bFiThl38Dw579oQmqwLhpz722Iw0OvYgr88RPFALezxIdN9wEdrKevimZRU0Lt9REEk7xMKE2UQSZnIi4jF4xdtaUAqYu
- 6bRryNZJ
- 33efPila7+CrfZjQqaaPErZ+gkdhiL7X3/9lxXdWOJhAmRfQOiZXxr5xf/L1jDi2hNaS9bJccuIvBTFyJ8kU3hv0XD048FW2erDSKJuVFyq/oadzCgG4MCSPF491pVyGdGy0HYXbo6cNvG8jMipMnkdSR066/9XZ2kksAw5Gibzf7RbIDI0/Ql2kaf4oGZoPjLokiDX819dGLstyGrzFEqsWX0Km9neeL6IRrJruJYfsMMHBEOaff24a0UNyE2HocdWZ6657El1Qqx5kkIX4PR8Z3MjI7aFFOJM2fSkoUk5ynZ807WHisvtct7fFEbeqJkZ/RPbCHulcPW2Z0K2WHfORN3ZU/uo4g6igjhSRmD8w4SNJw3DHoeJWbdrfW8am6mPjXAyiHLjwACQo=
+X-HE-Tag: 1773254953-864494
+X-HE-Meta: U2FsdGVkX1/2FMP4wxUQNMzxkiHR95xCK8bAcjFRKESypVPHN5bX7iC0I90G/r7i897D8aLvMxXdChLdqVrgZQFmi7Zh9hB/xfgOL8bfnzpV4VUQ/uSy0Efv/FK6YijDOzsN66EY7i7Z0WwDiwaY8r+i+wDudafEUQq53LDk+zNmx+5ScRjx3tVLwoHwQ6fYoV+H2080rJkC2uEYd2TaovrVfCbTnWKwMDy1Ye2XnJWprM9qi3pEJ3TBNvQ7rbaWwvr9PxewCWkiQPTM8QE6rpHvYF/vv39KhZAm94asn+6UqLj1YEDdqDwAXDYGXwEV88ymKBZzG0rK2ablNE1j5/VBXO36LXXwO3lnKFK96BXaO/9C45aNK3Y87MfrOAPgh8KlK160ckotVbB6YVHlI7VOFW4i+NhMuMp4CbVTSOhrJbxERj1ZTsxSQ0XCUNfs8wlxyCaEYahnRbpx8VH9TOFFHNBVmiETLwPIQR96W9e+UsswQ4trxWVUjQAOenwZoTkGostoq3T62shnRXlnpE6QYQQ2cWGkpwTrBos87iiQhCmzeJ16UwENc/x3d9ERDNdjd6dNhp2PIOFashqzguH7TwIrj5xl0CQ2sx2IX07bo4+K2srV6gRPPqJ9A7m8dh2M6b8f5J7vpdPNuruHvu+1l8zyuDT2Fwz8r9uJ1cQlUym4TvRm4MTB5dCKyAMyelJWGSyLciWKeQqPTV6Wx1I4cU0J/Bu9LaSnKlN3DJu5diwxKMBaPfODl9wAK4FktrXWF0IzzNpY29Uxsv2KgnWp/E5Mfg3l9BENO22v95oeqiTx0HuNvQUlfLjmvex2B+mKJKj5HaptkN9f7aaNItrGGhWLF6tVzn3+xDf28V9/M8M8TDCr/4ugktrz8cbk6DDRZwvH7Yri5JWldGta8PJjdpJ4nFgvaO/76X6uGew3Q5Hnj8PJuKo6Pz5MalKfQlvci9qciJSCtz8x+jI
+ qabC1CCh
+ HK5R5lEHYGd/YGUxSk5ea4cmc/d3+EN15uL25C/qj9CpesHZodbzQqHq8JOUC2tY8gJLb7vJk59JW3QlCAl1DJysSP8O6h/RVAzi2+EhcYuQ1OIY1KErkf4CffVrjV3/SqBEYptk27CIVEBLAj6/jwDKEnKXo8chYWS3yWx6GkOh5wvWsXJYn7LiHB7JECIlABHmtpcKCsHXnQAY+swi/pkvDWlkdemHUBb/mC/F3PnweF0Muvj7Ah3Hvn7PnExboe8bkZnzYTd3lGO5z9sQOLNX1gnw0BBj7v3FkLHzuK02HWItxQ10p1kyIml1HKD5koKYdHtPJf1Trim4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,60 +108,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-That fixed it, thank-you. Lost a week due to this thinking I'd done=20
-something wrong since I'm working on getting kernel working on Samsung=20
-Galaxy Book2 W737 and many bits from device-tree to drivers are problematic=
-.
+On Fri, Mar 06, 2026 at 07:18:07PM +0200, Mike Rapoport wrote:
+>  bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+>  		       bool wp_async)
+>  {
+> -	vm_flags &= __VM_UFFD_FLAGS;
+> +	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+>  
+> -	if (vma->vm_flags & VM_DROPPABLE)
+> +	/* only VMAs that implement vm_uffd_ops are supported */
+> +	if (!ops)
+>  		return false;
 
-On 11/03/2026 16:17, David Hildenbrand (Arm) wrote:
-> On 3/11/26 17:12, Tj wrote:
->> On arm64, Qualcomm sdm845, an attempt to allocate and release a CMA for
->> DMA fails. It seems to be caused by the recent commit 9bda131c6093e9c4
->> "mm: cma: add cma_alloc_frozen{_compound}()" where cma_alloc() now calls
->> set_page_refcounted() but cma_release() or its callees do not undo it,
->> resulting in:
->>
->> kernel: BUG: Bad page state in process kworker/u32:1=C2=A0 pfn:f4b00
->> kernel: page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0
->> pfn:0xf4b00
->> kernel: flags: 0x1ffe00000000000(node=3D0|zone=3D0|lastcpupid=3D0xfff) C=
-MA
->> kernel: raw: 01ffe00000000000 fffffdffc1d2c048 ffff800080353608
->> 0000000000000000
->> kernel: raw: 0000000000000000 0000000000000000 00000001ffffffff
->> 0000000000000000
->> kernel: page dumped because: nonzero _refcount
->>
->> I've enabled pr_debug plus added in my own pr_info()s to track the
->> callers. The following shows, first, my manual dump_stack() in
->> __cma_alloc_frozen() in order to understand the callers, and immediately
->> after the BUG.
-> This might be fixed by
->
-> commit f4355d6bb39fc8e53d772fa0654c8441b214e349
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Tue Feb 24 22:12:31 2026 -0500
->
->      mm/cma: move put_page_testzero() out of VM_WARN_ON in cma_release()
->
->      When CONFIG_DEBUG_VM is not set, VM_WARN_ON is a NOP.  Putting any
->      statement with side effect inside it is incorrect.  Collect all
->      !put_page_testzero() results and check the sum using WARN instead af=
-ter
->      the loop.  It restores the same check in free_contig_range() before =
-commit
->      e0c1326779cc ("mm: page_alloc: add alloc_contig_frozen_{range,pages}=
-()"),
->      the commit prior to the Fixes one.
->
->      Link: https://lkml.kernel.org/r/20260225031231.2352011-1-ziy@nvidia.=
-com
->
-> Can you double-check?
->
-> --
-> Cheers,
->
-> David
+Just found out that rejecting a VMA that does not have uffd_ops but was
+registered in WP-only mode with WP_ASYNC uffd context breaks
+pagemap_ioctl() test and more broadly it breaks tracking of writes in SysV
+shared memory areas.
+
+This is weird that it's possible to use uffd with SysV SHM, but it's out
+there for some time and I afraid we can't change that :/
+
+Andrew, can you apply this as a fixup please
+
+From 6e3319ceab93d84558e735e1f4f451e80c85b267 Mon Sep 17 00:00:00 2001
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Wed, 11 Mar 2026 20:21:38 +0200
+Subject: [PATCH 1/1] userfaultfd: allow registration of WP_ASYNC for any VMA
+
+Registration of a VMA with WP_ASYNC userfaulfd context in write-protect
+mode does not require any VMA-specific resolution of user faults and
+these faults are completely handled by the generic page fault handler.
+
+This functionality existed since the introduction of WP_ASYNC mode and
+it allows tracking writes to SysV shared memory mappings (shmget(2) and
+shmat(2)).
+
+Move the check for WP mode before checking for presence of ->uffd_ops in a
+VMA to restore the original behaviour.
+
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/userfaultfd.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index b55d4a8d88cc..436795bf218e 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2044,22 +2044,22 @@ bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+ {
+ 	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+ 
+-	/* only VMAs that implement vm_uffd_ops are supported */
+-	if (!ops)
+-		return false;
+-
+ 	vm_flags &= __VM_UFFD_FLAGS;
+ 
+-	if (vma->vm_flags & VM_DROPPABLE)
+-		return false;
+-
+ 	/*
+-	 * If wp async enabled, and WP is the only mode enabled, allow any
++	 * If WP is the only mode enabled and context is wp async, allow any
+ 	 * memory type.
+ 	 */
+ 	if (wp_async && (vm_flags == VM_UFFD_WP))
+ 		return true;
+ 
++	/* For any other mode reject VMAs that don't implement vm_uffd_ops */
++	if (!ops)
++		return false;
++
++	if (vma->vm_flags & VM_DROPPABLE)
++		return false;
++
+ 	/*
+ 	 * If user requested uffd-wp but not enabled pte markers for
+ 	 * uffd-wp, then only anonymous memory is supported
+-- 
+2.51.0
 
 
