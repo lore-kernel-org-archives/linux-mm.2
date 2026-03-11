@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B7241125852
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89A951125855
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:54:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7117D6B0005; Wed, 11 Mar 2026 12:39:56 -0400 (EDT)
+	id EBDAC6B0005; Wed, 11 Mar 2026 12:54:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E96F6B008A; Wed, 11 Mar 2026 12:39:56 -0400 (EDT)
+	id E75106B0089; Wed, 11 Mar 2026 12:54:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6292C6B008C; Wed, 11 Mar 2026 12:39:56 -0400 (EDT)
+	id DA8CE6B008A; Wed, 11 Mar 2026 12:54:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B9F46B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:39:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B34B0583AA
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:39:55 +0000 (UTC)
-X-FDA: 84534343950.30.462711E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2EB64180019
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:39:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BvffOP3n;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B99376B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:54:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E6C15259C
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:54:47 +0000 (UTC)
+X-FDA: 84534381414.03.6FBC1E5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9F04E40006
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:54:45 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BaiyyMN3;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773247194;
+	s=arc-20220608; t=1773248085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGpXyALhfc9ipUvUx2Rb3/Cd1rhguI2Q8MDX4D4dbLI=;
-	b=gEORUQQrQP5EkHQJd18kWVAXVapo5ZBeh11Qyr4KJ4aVuIOle4Q2Y0nCK1Ej41/UcjHsPb
-	uulM2rw/WhWVzyMPbdehKyilcl148QskZz8yzgGiGrei6hDJli18RucIod2Ra3Ta9VpqL6
-	kre/2uxjcObMKPoBL3lYxbLpT5sUkEk=
+	bh=5rXplPTSsUfDX+N6u2AZ8zaR2MAtbfPX1G+RveTOfqI=;
+	b=KLCidcXdNnmvM7ihAPWVtRtV1263tEI7P1DYFZiDRCEtWvRky1UNJ8ctR2Cvcu+Nb+n6qP
+	TEk6tu+6LBpS8oT5PJ6Wr+oIxMINk1mCBo8KPIG71A7PAKKkowo2tRTNrNBeEjZ2m4X9Ib
+	Y9s0qfmgYy7VnKLOunWMxapsDlBCwb4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BvffOP3n;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BaiyyMN3;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773247194; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773248085; a=rsa-sha256;
 	cv=none;
-	b=I9n/jTjg/gSK6qtvIoynxN2h141p4AwNtfxdiFM1udmavc4S2aA+72QYGa30Uc8ZH1k37J
-	vX4o93DSWmY6J3Zxj68vlfZnOhCSoIDubBnVSMgnxbOJy9RTy6MrK9g9Rekolr5ps+lHzg
-	HHbhRxCr9HvK37HxEXoctPyIL6pOS9M=
+	b=GoNY84kTcX845sgGdcIF9BcuzBxYPRuA7FzqDUSzrZmbD/bQjH/KJL7vp7J1NCXqiL1aGq
+	Bk10wpvIAQR412IkTPyE+3ekpeUnctntOGmGqCH3nnvro5+bwslcDuy++f3/m7HRk0tTrx
+	cfkqupbCPJBZLvR1dooVIuJIVC904YY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED61440700;
-	Wed, 11 Mar 2026 16:39:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8770C4CEF7;
-	Wed, 11 Mar 2026 16:39:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E734660142;
+	Wed, 11 Mar 2026 16:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A9CC19425;
+	Wed, 11 Mar 2026 16:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773247192;
-	bh=sGpXyALhfc9ipUvUx2Rb3/Cd1rhguI2Q8MDX4D4dbLI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BvffOP3ncDcKlNtNMsTMQistyIfSztVrCJQPOZ2HzPGHem2ozXIJFuRof8aTDuGl+
-	 ffDtSyzeUfE8ED2h1dGDHLkFJpfxNLkAPlD3xmsPrWI/ukYrdArKTpmRWfz4P/XttV
-	 vENoSeMlovMxFyXtuKXyN+DLSmcg6/zpz2pbdM7zxJMr8aiknMcaOhhsovNeBVvDWM
-	 Z039ULAcS+Vg7jcSg+2U2qhj1oV51vIrB/LAsBce3wW1YsKQLmz92hFwxPn9hVeaCo
-	 axLAtRQse4yPVCtXMz/CgJXetVk0h8MSaXKIkJ+nvVe0cqnNIKCOz3472hXF2Ybny+
-	 YQbAh/kARzirw==
-Date: Wed, 11 Mar 2026 16:39:48 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Jianzhou Zhao <luckd0g@163.com>, akpm@linux-foundation.org, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: BUG: KCSAN: data-race in do_mremap / vma_complete
-Message-ID: <7464e0be-7e5a-47a1-afd7-1ef20ec57aa5@lucifer.local>
-References: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
- <abaad620-bc19-4a3b-9bef-6a1ad4335ce3@lucifer.local>
- <u7wzfkse7au4aganufewx2ykz5xg2lgzaf2eu3tfkmowcmsobb@4xubw3ikany2>
- <3c0873a2-6b9c-4842-b2d3-c3ffe908afbe@lucifer.local>
+	s=k20201202; t=1773248084;
+	bh=91qlieLRgYOSO9XaMOoUeKdKgp5MSyhzDjaJY4o2/5s=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=BaiyyMN38qaU8eVJpkSJb+UwLI0Hhj1dt3L+OUCHNHOI2B/jmnlEbqApjU1uA900O
+	 SUzuUoh7VLARxP3yJgifBHMAStBHPRIuzxHlW+MJwYRc7lkQu+doCU/T9lbLvd2Ckq
+	 BdZ9CLenSLwr7DqwIzuwVIi1wOt28LooVRxbprzYhmBfCe+eFoiSjGGqpmXElrloGO
+	 LhBEn5UMLjyrQC0bBtV/BpRmdZhVk2xzH2uekf75l821lJVNIhQ7B526tN/TpoMREJ
+	 iX8J7YXM162DAc4Z04Uae5SLguC6hYe2uxDhKZ3h9T0D0GsdoLgJZhinhp9kJkwywf
+	 6r2oDDLPUFWNw==
+Message-ID: <272f1848-e2c8-471c-9b0d-e6706b464d11@kernel.org>
+Date: Wed, 11 Mar 2026 17:54:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c0873a2-6b9c-4842-b2d3-c3ffe908afbe@lucifer.local>
-X-Rspamd-Queue-Id: 2EB64180019
-X-Stat-Signature: o5iug4wjyfm4w81m4gmfehw8eyjjm8dh
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH] slab: fix memory leak when refill_sheaf() fails
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>, Qing Wang <wangqing7171@gmail.com>,
+ Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260311093617.4155965-1-wangqing7171@gmail.com>
+ <thhmlnu6phtuucz7jo3xoqeiv64rs4ynkt63qoxvtwgfh3aofw@lo75dus27vyk>
+ <tak4kjtw65fk5r4inuvddqt2pooqbfu76i3smzxsfjoiz2p6oz@qwpmlhmpqlwz>
+In-Reply-To: <tak4kjtw65fk5r4inuvddqt2pooqbfu76i3smzxsfjoiz2p6oz@qwpmlhmpqlwz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6izc1zx8w9yjktn5ujb9k38bd58gb7bw
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773247194-302178
-X-HE-Meta: U2FsdGVkX19bbKRWmo77n37BCTq+ByAx3m/Ucyi4ORlvDB5AkT8GoFnWzZui+mxiG0wO4s+j5TQd7oOIQ9CFiBRE1/qHU1LPjtvbnoZyO3XRW2pvnF92dStb3zis6QXCRoqjbbbj2j0RwQ9QsWpSbS10zVT63W6MDRX9ZM5fSenH5C1b7JzBXg+uZGa66snC1dAWFJZ1EZ3yG0Zq0iSzA5gxzkBiErV57jjRCJVRcAs9PAUR/IYGWgj+L35V6mreqQdmv4KMRuq/keU0/HP2/NJDC+kCBk7ROSEeZqC15ToHNwxMN5IzXxgKEDBWAC754SXV9Semrzt830pYAFn9dqFBdEr6whpA/D5h6s2sEJ6wE63ND15fobv/FM7f27xAeKWT/f2dA62JltPVwD3A2dpgwJ0LYyHcjSbHjS41UewU77plTCydyXBjxG5g0JcAvHbui2fJ2Q78i8/duk6VsFzX7ST+hCfSFtCYo1CEc3fbuftEcyQJgwFlJkNTdKuov1fqW/IJ/x+hY6HDHexv24cBjiPIIJ3EvZyqovIXh3QOacqXUdORZdn0H0igeusqJcwgIA02JPYFhKVmiqFlNoe2+Bt720LgEKfN8PVL8FF/d2VztYwrXdh/MgDcguHcFU0A4e7d3pvdMfVhfu/NHCfoMEz3MZo52mdW5bcS5tSiGHLinoSBSgShU9Ld1v2Qx4owybeyvVMaoqVuyj4ikkLm0OfmjrPkinvgWgNyOvghuYgjDVX7DHri9XPgVAMJSYgrLC76M5AmF+op+gNa+k2kQr546nR2qV1+mi8+l+IA+y+UxhFAaQ3tqBd66cym3X/KJjqOxfRc/S26vtZ5kERg6GohnOteGW2MAxq5B316Dwc90FHgCYNE5MvF4JzoIPrZP50SZXm6p4nSkWzQY1m9R3LRkaluGSVhHspKjrXHZxgq7wOhWg==
+X-Rspamd-Queue-Id: 9F04E40006
+X-HE-Tag: 1773248085-423493
+X-HE-Meta: U2FsdGVkX18LmhcwCBJsr2MJQBmqFZvcOHJpWD/6xqTOkxWdKsArYPkJ5t3oPms0mhCU/lEH7E54QROqRakyaIq2Gd0+m+9vLROdUV9kwvQfx6HRpnOn3Rk/eucJYhUOpcP5UW1QUcYClXJ5jp0Z+cR3IbmQ1Dt++luRoofd7+4sti68DEHYm0RPTeATxnmjx5EOjRapG83QhOwKmz7x9qLAY/72KxTh4OXIwArFl67ORynMca2o5o2lmtP2ixaA4EDUVxZxG4p8leCrYkz9QaeDtUPedxPWY8ZFQKUu4sRII/hbg0E4KyVFybMlJ6sWp4cuFkYWKkiHP/MQqk9yVJiHqlKT3eadwsoT2nutLgnvYh9G07VzjalM/xqI5azHWkhNixCkOlE0dO27/SYlOUFWaXf3K7QgaH/j5gApD7WrGCBk9SOcQ4gn7/HQ7GTJMsT0ojoG4fsSYn46KjQsfxABAGAi1MGDz2bxTOuUgIqfz8+YYOAs6vdULamjX51RGltKHFzP+PwEOPKgrQs1vw7laBN9e/wIapo0M3poqxRcaGUqenKUxsJIPLTcCnZSK6cb/vo10RuMTpNMPTD+3TkxtoK/gODPKD0gvYc6RT/fN5w0DmnwuecrXWh1Ac2L+llClKws+iCH2SSOpT2ToGn2u49b05qEs7DYzEwafipTYzo4u2+C/BFXcH92zXIuTUnDGQdbBcLPwIK3nlKVMFyxmdx6cjlF/yGIPXkcqYi2A1QNfMoGD+cNBMK6WMn7QKNAbb+vHCJSGqSJdcCJ4DhMQ4MiTBp2tLqe+wKbWOoDOoARe+NkjqVkuRbif5S2d2q/UIpbuZV2Krex4qSyV02j+/3S7SY7BavxAo1ZVNALtRQUxKfNuFuZmNI/K4NmGGWANfLjMiva0dFiBqUVvTvPCMpsDypYDXUIcJfMU0Bq0VL+64Ktnc15l2C5t82KBjCK0FzKb6hWIxLuU2V
+ VFhyvCsB
+ gLu230E8VwPcq5qP3oEfkrMINT53q0Z6cqEEDVsdIaQuIbC38Q1A9T3fe1osJ/SgIG+pI/xOxxkBKpg2D7XBXuDMAAGNIJckrWcCIWRzXZZiFMkI7JZkxlyanEjYFuRyAaFon/k24BFYD3VSMaRyM7QPBRpe6cnRHmIAEdDo2tzR28E5FIJuHrL6NXj65xmqDeHI5KTdbOw3Wewbq3HxDiyXMbJnHCbYo9H9CNfc8+dSG2SKLtDKREPNAaX+V//CENLyeIzM0fyZ8QlbFVHYnD1DI95wbyKPCuXh0IIL6pg7wMGxaBHXxiLO1TQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,23 +99,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 04:17:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> On Wed, Mar 11, 2026 at 10:27:32AM +0000, Pedro Falcato wrote:
-> > Well, the problem is that the data_race() is incorrect. It would only be okay
-> > if the check could fail (with no bad side-effects). Otherwise, we need READ_ONCE()
-> > and WRITE_ONCE().
->
-> Yeah true, also a user can update sysctl_max_map_count without any mmap locks
-> held obviously.
->
-> So we're probably in a state of sin generally that we've previously tolerated.
->
-> Anyway, that check seems to be wrong, so I'm going to send a patch that fixes
-> it, and I'll update the logic to READ_ONCE() this variable. (proc_int_conv()
-> already does a WRITE_ONCE()).
+On 3/11/26 17:30, Hao Li wrote:
+>> 
+>> I also want to bring up another point here, although it may be outside the
+>> scope of the current fix.
+>> 
+>> When I looked into the refill_sheaf() path, I found a refill failure does not
+>> guarantee that the sheaf remains intact: refill_sheaf() can partially fill the
+>> sheaf before failing. This non-intact behavior propagates to its caller,
+>> __prefill_sheaf_pfmemalloc(), which therefore also cannot assume that the sheaf
+>> is still intact after a refill failure.
+>> 
+>> However, the comment for kmem_cache_refill_sheaf() says that "if the refill
+>> fails (returning -ENOMEM), the existing sheaf is left intact." That means the
+>> behavior of __prefill_sheaf_pfmemalloc() - where the sheaf may be left
+>> partially filled on refill failure - contradicts the API contract of
+>> kmem_cache_refill_sheaf().
+>> 
+>> Maybe we can add rollback logic to __prefill_sheaf_pfmemalloc() so that it
+>> provides intact semantics, preventing the non-intact behavior of refill_sheaf()
+>> from propagating up to kmem_cache_refill_sheaf().
+> 
+> Looking at this a bit more, after checking the current callers, it seems that
+> the existing callers of kmem_cache_refill_sheaf() are not relying on the sheaf
+> remaining intact on refill failure.
+> 
+> If so, then another possible option might be to update the comment for
+> kmem_cache_refill_sheaf() to match the current behavior, rather than adding
+> rollback logic.
 
-Also, updating to only check this once mmap write lock held, so avoid the
-racey situation altogether.
+I agree with this option. Having possibly more objects than before the call
+shouldn't be an issue for the callers.
 
-Cheers, Lorenzo
+> So it may just come down to whether we want to preserve the documented
+> semantics in the implementation, or adjust the comment to reflect what the code
+> already does.
+> 
+> I may be missing some intended dependency here, though.
+> 
+
 
