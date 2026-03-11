@@ -4,147 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF7381049528
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 09:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE4D104BEC7
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:11:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035146B0005; Wed, 11 Mar 2026 05:59:18 -0400 (EDT)
+	id 22D7B6B0005; Wed, 11 Mar 2026 06:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F215A6B0089; Wed, 11 Mar 2026 05:59:17 -0400 (EDT)
+	id 1D6826B0089; Wed, 11 Mar 2026 06:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E282F6B008A; Wed, 11 Mar 2026 05:59:17 -0400 (EDT)
+	id 0E6246B008A; Wed, 11 Mar 2026 06:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B5C6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:59:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C8CD1B88BA
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:59:17 +0000 (UTC)
-X-FDA: 84533334354.12.AAA34D8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D97526B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:11:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F95F1A070F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:11:26 +0000 (UTC)
+X-FDA: 84533364972.18.E5877CA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8D480C0009
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:59:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GE3fBRAr;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id CBD9D180010
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:11:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vORWu92q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773223155;
+	s=arc-20220608; t=1773223884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vs99GcGFdxVlcNduLaezfOqApYTIq9q/y0UMK90fge8=;
-	b=sWUNT4ixQos4GI+WcNqS0RsfAaelxx3DiZAxXFzi+hjLP3QdusJP8x+53zaT8MhIhyV3nV
-	OK7ISJ+6IkyIWMRR8YhUIy24wcPf3tUzf+zsvb2S5N9lWboYqMiGPJIRwe0wwnwmaDf0aP
-	cb/Z5XDAX/yLXfU3SWl2DIS0qCcKO1U=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GE3fBRAr;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773223155; a=rsa-sha256;
+	bh=hdOJL1yYTnsO411MaFPrt8EI5lpClWJ2queE70PRRaQ=;
+	b=DYaHr5L1u3dDr9ugHgQOdKk6GxzN5qCXcYD5AnuiJrssfYK/r/BamV0zA+xlaafddtWwSg
+	E/VqDQ3TdpLZvfhT10q3V9t9Wqhs0edC7uBCqusLGizr53cg7KlqkAjvJ14DOXIOV7OtgE
+	t2MmU3obkZ7l/0c4iGlQoS+Rd+ts3vI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773223884; a=rsa-sha256;
 	cv=none;
-	b=udWPxbXY8RbNFghV9w24yWHe3qp0ugU46DrDPODrofF5sIqoY0SpTrH3HYnf2ANOZz+kAR
-	7r9QgBESJZxL0H3t6KKocwDxl7QWRWFpYdIOgR1NvXdQ2QTKt0keUw5Pk1UBjOpgDirnXx
-	cyCk08EHsNTIiOGHzh+N42GErcI5pP0=
+	b=X/ceCo/5U1iaAxS9fSiS4X784DxEy0FaKNCoXvFElby0fsvcEAcgfP9F7cPlyyAz4Mz6ri
+	u7Dxg1hwFNcRT4JzMi3LlypmWq1IU+kzil3e8rAkoM9vZa7VVLiYr+md695F7t8bQikyd2
+	lJAWlXkNfUOaRhnmNrVCmtAD/qbDouo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vORWu92q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F3F57600B0;
-	Wed, 11 Mar 2026 09:59:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B46EC4CEF7;
-	Wed, 11 Mar 2026 09:59:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E1E46600B0;
+	Wed, 11 Mar 2026 10:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B9AC4CEF7;
+	Wed, 11 Mar 2026 10:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773223154;
-	bh=Z5NUwYdO4gon+w2RD6G1dYtfGgOROmoRXV9koOGJKd8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GE3fBRArehqOWxNpJmM5YDSEj3wW4xPPQuT2vIxwWBjmryEYuo25dK7VFxbSzNXBd
-	 K1uD3p9/Fy0LVnjhXFG4TjesehsCaQhTq5YDbpdYVVjvSFQWQlooopyk5rFupsurrk
-	 0xagwO6SlrdldzpCv6BBu68ChDRPlwWFjyj/DTcxEVmxyB9dJUU+FxS+jmxgzDSIPy
-	 cAnj6e6BNviJY+cxnCSBHq/QqhYbjJ+E/yWrTUe8twO75oiGbh2YVl3MHcuWuciO4B
-	 QN17cJrMkLTvAwiaY64G0iBd7Rg9DAPQeMmVUE/LwRlNWDph5wG4Be15NzTYKL4hOk
-	 5XTtfdhikQDvw==
-Message-ID: <5fb9beef-b6fe-401a-aa24-aade48b795d4@kernel.org>
-Date: Wed, 11 Mar 2026 10:59:10 +0100
+	s=k20201202; t=1773223883;
+	bh=LCBZgY/aamBuvWc1+VzQD3H9HM4ufxSjmpZJ92W5bvk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vORWu92q6D3w4sohkY61ALK9H2VgoICnSF9jtg/EfSS9Xf7VFwnDduwbWLSiY2pJt
+	 q9TAuqhB7by8fgQZ+LFuJ3uOG0cVE3feGj9rw/tA5G8kW8exk6yQixWp+n4CPlcWFw
+	 28LxQHJeeocPn7q3xXmo3PFWAqbxlJy6Y9wpR4NuSXrR5Fe9pb4E/wv4s6S3S8QQmy
+	 IZBbN7eZ57qrwzO+1ojlTLvHQ8QC11l/wQKTD6+eBsntkOVIe6ahTc3LS5rK9f8j4P
+	 WrItiND+pdNKTdyq4+J20jN5FjpDN7BZ/Wg7QMDOSD+D7gaq9nRTnCNjmPqdRq/vNF
+	 YOdjn5m7Ky75w==
+Date: Wed, 11 Mar 2026 10:11:20 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Jianzhou Zhao <luckd0g@163.com>
+Cc: pfalcato@suse.de, akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, jannh@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: BUG: KCSAN: data-race in do_mremap / vma_complete
+Message-ID: <abaad620-bc19-4a3b-9bef-6a1ad4335ce3@lucifer.local>
+References: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
-To: "Boone, Max" <mboone@akamai.com>, Alex Williamson <alex@shazbot.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
- "Pelland, Matt" <mpelland@akamai.com>
-References: <20260309174949.2514565-1-mboone@akamai.com>
- <20260309174949.2514565-2-mboone@akamai.com>
- <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
- <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
- <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
- <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
- <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
- <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8D480C0009
-X-Stat-Signature: 6f8u6t4kfcyjhp7y1awwuwetcrx1i5qr
+In-Reply-To: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CBD9D180010
+X-Stat-Signature: yrxzbrjwtxuz9dn3sdrqy633yud6byu5
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773223155-234641
-X-HE-Meta: U2FsdGVkX18LF6oRoPJxAwLq7P/xOFLmD8K8cg6xSAa7niAhCQdQPg2fh3FjxyI8djjDMKXzrCB61+K5LuB/ibbvRLPU8Ew/p4vKfsgVKkDSfihA6MtPy4ghd9/eDtkru2hhAuNjwfh8MCLYYpS15ITYc6Am2uvQiBRKtdeHnGF1qngcBgajqMN0EkN0vrkR9iyJG2y80ru8UJpFKLoSgeNTWkv424MJxDvFTqgziHUvCk3ntWkGfELQZZODMJIFo9knJItmPyeyZCHUcK3O6nHTySl3OcIQWLtQply0Gx62F6sBy2pF2l/M6bpFx7Iz651SKsGgQyedCp6nU+UenZbw0ALqtfaUqgxGjYw9kN5boluVVZ4eTbT6WNHN26qZs4upryjzBDG9A24OByM6SNf8xowaoYWN4eSNHOCq2beA5rRgBwnH+69ibDRDk+F/GnD94O8PbXkSyL7oSxOx2+U3AcgC3fNh+dHj2HbDCHHbTccD/aPLMGjeQdg9nKd8LRkSWSfYJmtuH+624L0x3XZm4dWwX975uhA+kYRzWdAEkhuPI+wrvV/bAJohjQmyIgEleIt7W3EgKc1fF7E9VFQWqbVlRQWl0g4hp5k90IXWTlt9eYt6BxuLFkFulm9QnX1F+anKJT3upPifab73nbyBX9X3RgPqXPR463X2XDidloR3b9VbwRF9T7UIeXqHTNF4Kat3VmTcXlMQ8FZ2nAqL//sItW0vVnklLt1IHeUqunBaAC5++gdRaAjfXc3zL5X5+0vPMJ+CtP+eQ7jBUY/hxmDkrwfYoSGmRNykhJTVn1xG9WTR+KYXDR6VvwjQdZW9MjHxsqJ9gGTmse0zdun/pxwfR4f/DZLletzld4fgKTgiwrqWh+DOp57qX/Yqfjnd+rqLRPxkrBCuwDNGMco4B9iMiKmOz/Odex4slBIxWiuSAF/1er5qroDbRkmRQg8LfmlZOaNzZWoDAAH
- ogjvj2iP
- VygY4DZd/4RC4EkVwOiVyeZHAkxRuAiCX8wyJ39HSdMkgcObmkiDbPuSwQqyWudDiZlGbLYlgvHONidpHiWSd2cWsKzRQVzTswTjhpG9fVV5B8q7GX5m0Mm3EblKl5a7dn6OeJ/OaKCxSE2vMjDN5tJsbBZzsJqBitsg7XbzGV3LlZHhuMxJI294cvSKurIpG967lEYkYHcMyvRq0LViIzlS6ujrs/+AfnI9QVUZZCsS3/jZZ0y3V/DjPGB87QSH5tkXB/1fw1WrLqt5btWMBf+Ijpk3e6N14/rUEzdvGGclfJh8tMmDhLSkNDvqFuAI8NELl
+X-HE-Tag: 1773223884-651850
+X-HE-Meta: U2FsdGVkX1/cpG2KeUAMfWvnhxtz02x6lIkj8RZFh0OON/T+CqgncroGf2pBPqXg/SMTP5G6lEeuYlkKb5G00atsCZYMtKU0Jg/XfEgGmjoqpf8FkumTa3CQPYIMD0TE/fVrLwsfvoGSXy6+TODcgjE7pWttBEdxvZabT8cSvgpEenfCkUgRALDZUPZ2BgNPqLa+mvfWT3MeER6S3nSyEHl1TpWUrnqv5VjQOrh9/g+nHxOw074wviWJhS/jiU+4pyNC71yvoA+4HR/aBGwEZ2Rzdkgt/hf+2fQ/bUXEijrYHgZE7m7C0js1s+D8OJV4nKNzb2E8HXNmxrldZGzIHrCX1PjiUqW/rmR6Npt0TJESKrnX9U0aDlhEw9F6cA5u9NR2sllwS6vBN5R1pvDTQDW5MJ7ruKMQ2JNzzNP8tRJ32FvhbFA7kLkcif8ylqkE5eGRz8RIU73jX7/YnAu1V+gvFmFKtGPJwzPA92EjYWFxQkBBhj8eotdAzMhjwKaNW3YUteCwzlKmsbMkLtKPQMf8oxJsDLY0XbZZtaoMs7y11cTUyVHSBofjzgEkjcjMwcL8k607TJDuP9564IaXCwVMs2UbJdaQNhzw8E365WGgTdk7gAq/qgExgnb4NhJKXGuufOpJnBx9mj09HcGA8NCSJP2zDOHhNvA4UT0MHliYPWm1dn9T8qjle2MGIwfs3Y6YtsL/6ZHV6xe9FEg1A8FpQbbyRKKyfFSlV5kZAbeukKiaIorg7/IJr2KaweWvzUKbeW2w/TWZ2LehdopGaqjmtKcXxqDtUJ/OsCVznebwt/KUpDzBYiVUnyAPk6CJaNCnngf58hKJmUWA6ZARGr0xjC49Lh4k6ILgxDKawJ/CUgRWDm9x6vSLew8prBnWVjvDnmfRkf4hkoTfwgdlmbpTQNF4UXeL82/HQxtYdogtAJhxz7gyCCY0kcZ9j6YrEHgIFfWXVDzRyuPREnK
+ MaDpssqV
+ PEcuOThsRysqgJVECeHF1kYgUVZ91kpnSfSSvCo3BNr9hRKbhG3rNbtPVYgZ0lrsS/Dd+Y7Dn1ohxMb43snA1rZg4G0aO6fAKEifqw8B3eWRfIetL5Vd1rF2xFd8bFwNyckt1UuRgLdNQYipubf1P/SWanV6CheDloRe2gVb/Yw8UKZnPZTCudc2RvCpqFg3qD3HlNEj5/g4S+RDdjarCjXkJqV8qWgslWh/AJo0NN2p1jkag6UuQiizZ+j7vDXkf/hlwd79/M9nrWY1eQFJVE6fOEacum5gxEpACFslPduBVxyGfKi0AVmOHDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,20 +93,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The -EINVAL originates from:
-> 
-> vfio_dma_do_map -> vfio_pin_map_dma -> vfio_pin_pages_remote
-> -> vaddr_get_pfns -> pin_user_pages_remote (mm/gup.c)
-> 
-> Possibly thatâ€™s also the origin of the concurrent PUD modification that requires
-> the retry in the walker in this patch.
+(Removing incorrect mail, I know it'll take a while to propagate the mail
+change :)
 
-We'd have to find out why we manage to trigger a -EINVAL here. I don't
-see how anything that this patch does could trigger that. So maybe a
-problem in user space? (calling it on unsupported VMAs?).
+On Wed, Mar 11, 2026 at 03:58:55PM +0800, Jianzhou Zhao wrote:
+>
+> Subject: [BUG] mm/mremap: KCSAN: data-race in do_mremap / vma_complete
+> Dear Maintainers,
+> We are writing to report a KCSAN-detected data race vulnerability within the memory management subsystem, specifically involving `vma_complete` and `check_mremap_params`. This bug was found by our custom fuzzing tool, RacePilot. The race occurs when `vma_complete` increments the `mm->map_count` concurrently while `check_mremap_params` evaluates the same `current->mm->map_count` without holding the appropriate `mmap_lock` or using atomic snapshot primitives (`READ_ONCE`). We observed this bug on the Linux kernel version 6.18.0-08691-g2061f18ad76e-dirty.
+> Call Trace & Context
+> ==================================================================
+> BUG: KCSAN: data-race in do_mremap / vma_complete
+> write to 0xffff88800c232348 of 4 bytes by task 27920 on cpu 1:
+>  vma_complete+0x6d2/0x8a0 home/kfuzz/linux/mm/vma.c:354
+>  __split_vma+0x5fb/0x6f0 home/kfuzz/linux/mm/vma.c:567
+>  vms_gather_munmap_vmas+0xe5/0x6a0 home/kfuzz/linux/mm/vma.c:1369
+>  do_vmi_align_munmap+0x2a3/0x450 home/kfuzz/linux/mm/vma.c:1538
+>  do_vmi_munmap+0x19c/0x2e0 home/kfuzz/linux/mm/vma.c:1596
+>  do_munmap+0x97/0xc0 home/kfuzz/linux/mm/mmap.c:1068
+>  mremap_to+0x179/0x240 home/kfuzz/linux/mm/mremap.c:1374
+>  ...
+>  __x64_sys_mremap+0x66/0x80 home/kfuzz/linux/mm/mremap.c:1961
+> read to 0xffff88800c232348 of 4 bytes by task 27919 on cpu 0:
+>  check_mremap_params home/kfuzz/linux/mm/mremap.c:1816 [inline]
+>  do_mremap+0x352/0x1090 home/kfuzz/linux/mm/mremap.c:1920
+>  __do_sys_mremap+0x129/0x160 home/kfuzz/linux/mm/mremap.c:1993
+>  __se_sys_mremap home/kfuzz/linux/mm/mremap.c:1961 [inline]
+>  __x64_sys_mremap+0x66/0x80 home/kfuzz/linux/mm/mremap.c:1961
+>  ...
+> value changed: 0x0000001f -> 0x00000020
+> Reported by Kernel Concurrency Sanitizer on:
+> CPU: 0 UID: 0 PID: 27919 Comm: syz.7.1375 Not tainted 6.18.0-08691-g2061f18ad76e-dirty #42 PREEMPT(voluntary)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+> ==================================================================
+> Execution Flow & Code Context
+> In `mm/vma.c`, the `vma_complete()` function finalizes VMA alterations such as insertions. When a new VMA is successfully attached (e.g., during splitting), the function increments the process's `map_count` while holding the necessary `mmap_lock` in write mode from the calling context:
+> ```c
+> // mm/vma.c
+> static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+>     struct mm_struct *mm)
+> {
+>  ...
+>  } else if (vp->insert) {
+>   /* ... split ... */
+>   vma_iter_store_new(vmi, vp->insert);
+>   mm->map_count++; // <-- Plain concurrent write
+>  }
+>  ...
+> }
+> ```
+> Conversely, the `mremap` syscall validation sequence preemptively evaluates `check_mremap_params()` *before* acquiring the `mmap_lock`. This allows dropping malformed syscalls fast but leaves the map quota check unsynchronized:
+> ```c
+> // mm/mremap.c
+> static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+> {
+>  ...
+>  /* Worst-scenario case ... */
+>  if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3) // <-- Plain concurrent read
+>   return -ENOMEM;
+>  return 0;
+> }
+> ```
+> At `mm/mremap.c:1924`, the `mmap_write_lock_killable(mm)` is only acquired *after* `check_mremap_params()` successfully returns.
+> Root Cause Analysis
+> A KCSAN data race arises because the `mremap` parameters validator attempts to enact an early heuristic rejection based on the current threshold of `mm->map_count`. However, this evaluation executes entirely without locks (`mmap_lock` is taken subsequently in `do_mremap`). This establishes a plain, lockless read racing against concurrent threads legitimately mutating `mm->map_count` (such as `vma_complete` splitting areas and incrementing the count under the protection of `mmap_lock`). The lack of `READ_ONCE()` combined with a mutating operation provokes the KCSAN alarm and potentially permits compiler load shearing.
+> Unfortunately, we were unable to generate a reproducer for this bug.
+> Potential Impact
+> This data race technically threatens the deterministic outcome of the `mremap` heuristic limit guard. Because `map_count` spans 4 bytes, severe compiler load tearing across cache lines theoretically could trick `check_mremap_params` into accepting or rejecting expansions erratically. Functionally, as a heuristic pre-check, it is virtually benign since a stricter bounded evaluation takes place later under safety locks, but fixing it stops sanitizing infrastructure exhaustion and formalizes the lockless memory access.
+> Proposed Fix
+> To inform the compiler and memory models that the read access of `map_count` inside `check_mremap_params` deliberately operates locklessly, we should wrap the evaluation using the `data_race()` macro to suppress KCSAN warnings effectively while conveying intent.
+> ```diff
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1813,7 +1813,7 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+>    * Check whether current map count plus 2 still leads us to 4 maps below
+>    * the threshold, otherwise return -ENOMEM here to be more safe.
+>    */
+> -	if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3)
+> +	if ((data_race(current->mm->map_count) + 2) >= sysctl_max_map_count - 3)
+>    return -ENOMEM;
 
--- 
-Cheers,
+Ack, this used to be checked under the mmap write lock.
 
-David
+I'll send a patch that factors out these kinds of checks + potentially does a
+speculative check ahead of time and then re-checks once lock established.
+
+With a:
+
+Suggested-by: Jianzhou Zhao <luckd0g@163.com>
+
+>   return 0;
+> ```
+> We would be highly honored if this could be of any help.
+
+Thanks, much appreciated :)
+
+> Best regards,
+> RacePilot Team
+
+Cheers, Lorenzo
 
