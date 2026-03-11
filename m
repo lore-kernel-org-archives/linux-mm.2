@@ -4,134 +4,280 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3995FD88D4
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE2F1FD88D4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:11:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DDDC6B0088; Tue, 10 Mar 2026 20:03:48 -0400 (EDT)
+	id AF0BE6B0088; Tue, 10 Mar 2026 20:11:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 287A46B008A; Tue, 10 Mar 2026 20:03:48 -0400 (EDT)
+	id AC9D66B0089; Tue, 10 Mar 2026 20:11:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 178776B008C; Tue, 10 Mar 2026 20:03:48 -0400 (EDT)
+	id 91FB66B008A; Tue, 10 Mar 2026 20:11:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E9FD96B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:03:47 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6BF981A0326
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:03:47 +0000 (UTC)
-X-FDA: 84531833694.06.023E957
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 540AC20008
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:03:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SxbpFxWt;
-	spf=pass (imf13.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A5C86B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:11:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06C1013A9F8
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:11:44 +0000 (UTC)
+X-FDA: 84531853728.05.FA34DDA
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 61E1B100002
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:11:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=rsZWNNzp;
+	spf=none (imf14.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
+	dmarc=pass (policy=none) header.from=armlinux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773187425;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773187902;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Th9+VLFBVmNjfXAWGXevm/XrdfOj2rwXBpkvnIti7NM=;
-	b=5xSu7aPwzPaWJvjn8bwEYxx9C+jwJqNBSim5BTiZjQlkzYM43SCbULhLqwELrek9LvDfrJ
-	P49a4ipRrm00IpFJwQ3zdKGv0b4ftc99E1yvS8yLxuMc+1l3Ex2MYHE1eJbNtAP3MCA4BQ
-	ebNryQGut3LhoL2BzV5KNbf4dbC3HF8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SxbpFxWt;
-	spf=pass (imf13.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773187425; a=rsa-sha256;
+	bh=7hV5LSkoaULvfWpcA92IONFe2jiU8FtnTFTGMKYHxiU=;
+	b=mTJBZfOCGxe1sWiqxHqOQl/t92YhbSrJlKkGQ4u7V2BAZ2FoNObYG+9vjEdgP7eFNEIUWm
+	7Ts3EgH/ZKPoCTnFQVyPCDAVim6BPS23PLPooeDiWVa7saOuChc1Ue9vJisNgC5VV7udh1
+	HEFcGoxMuWzpPIV6iKYB8Naxs1ayphI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773187902; a=rsa-sha256;
 	cv=none;
-	b=4nwqB7dhiGEqwnhTKXItxBF4Eac4vOATCbCBX+xBJYVBOh4ysTPCeM/I/cup5e0b1lINgl
-	eps1eMVVhfd9CCuR214cpsR5yJuC6uAMEFBJbEdxTf3NTrXiSP/mxNK8VOEPevB2IN6cqS
-	jiNOT7obWhUi8EwHv5j8EydAxUeB3bs=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4853510b4f3so46030195e9.0
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:03:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773187424; x=1773792224; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Th9+VLFBVmNjfXAWGXevm/XrdfOj2rwXBpkvnIti7NM=;
-        b=SxbpFxWtdozcVaYZJ5cTOlR4fCVUOFNJMi113tQVVXyTMJ3nO2n8v2QRjIeqOkNWGk
-         VaV+XRnaxPlI1lDtuW2PxuhHHtQFFYoT+0jGyYo6DDx4WHUm+6NnGH/dSvwqtd3X9Xa9
-         r6c1fA1lTIIYLa56lWbv4iVjAFzCnF3ki9+dKVqzZ5jGpManJ+oDl6roTyoj2AY7KUDk
-         bysTsD/8Mft2wnSIwedy4G85CHvomaBc640oYPxoGd5w4TjrrFMY8WeP8ZaBKNYCELqM
-         O7qWW3NEEEnxAmMkfYwdS4+bFUsseMfsAhH7rSoHeGbFbY0eR/AyM3lZf36mxtEHzEsi
-         TADw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773187424; x=1773792224;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Th9+VLFBVmNjfXAWGXevm/XrdfOj2rwXBpkvnIti7NM=;
-        b=OlzU62CEhwWfySXR4+KVCwiL8VWBahdwYP+5VnXzMAoqFD1aPJt6x2lgm+Kdf3B9Ue
-         wg6lhs6c9NvRtTs3TeLfjNu3frdbGQ6klri2Bcwa6NcdShGuLrU1H6bUXtefOM7hiVPa
-         Gv89in/f99y4bIwZkpjo57vK6yFQHJ7autrAz5U1dEy772e/y3C2n/IadyLEWYQRl/ks
-         pJfgL7Yb/RfhdAjGPSJL6MM5wU71ZXsSL3Jhk2dtS3m4gSyO5ZdJ0mBgzo0lTYDNns0B
-         +/tMyO0xJg2x89ALS96dedvtIaI+ek6rLpehD5UiD9qy7lvzKkb9PuErGiGlspV1CKlY
-         fA2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUSSpENy4AhK03D/tgiDrgB9gFeM2N3ZUJmq+XyUFKg63h0oIbyyMHkGMCPFFhsLo7CeE3Xrzg8Ag==@kvack.org
-X-Gm-Message-State: AOJu0Ywb3sety6bV49Q0gC2c/RU9s0u4ehNEEoXElcCZ4O4o5e7k4mOs
-	DMa2lSQ3wu6OrBT0qcU9MibrEk/YQ06vI9NLbrex3rd0HnFifkfSj8Wd
-X-Gm-Gg: ATEYQzy1EQYYTktZVyuJDRQRU95nJHPNFFaR8a4J8v4yAEaDWqB3ChA2uxVx6i+eK1y
-	ohxUWfpH2tg1ipybZMbveJWedEC4GO8Yw7Vi7gZ17jRjth8dhhus5YCkgIhAyOLEZHhttu70MVn
-	No0IO+bVn9qtvrsGQjH48ULSioUtr3QOu7cDKzMHHJJ2LHFcRjlCWX5/anRKlihVZPQdzoe7Qsa
-	mWH7uJBbA7y+Yh3LbLeYb0aLl35eQJs1vqZ0W8rzs3JV66M44kdQrBrKMjcx8vxF02YLZuaOqeO
-	G3zTjtr7sMVTztAzgu+6a9Uh6N9fk2pCUCeRBLzMPS8Ph7qnQnO91s0ThJ1JgXDzSLF3OzSoUHN
-	PhfjEm7DjlD3WuQ5VqKfu8q+UY+IFmnps3vJ9d8wvB4Hs6XYmu3nCwiKLAXKZmZfIu0blB35ORX
-	5LcCXdBmzcmBekoC9DcXZ/gTE0L60aCD0ojGdI0wAi1aGzsA==
-X-Received: by 2002:a05:600c:4510:b0:483:c35d:367f with SMTP id 5b1f17b1804b1-4854b0fe742mr10028125e9.21.1773187423502;
-        Tue, 10 Mar 2026 17:03:43 -0700 (PDT)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541ac17f2sm105012385e9.6.2026.03.10.17.03.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 17:03:43 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+	b=sEtmbOfri8L02viH+AwxtmQ2nQ4hUoOPYwPONZfwWZY1g56EqnDA/6k7zNgy0zTFQmYP/g
+	+RmzYI8JFmdU/XuV/7lYDb3PhKX6k83SQKjQnLx5e5HB/JRqSX+fK2OtkOX7LV09NY8B6x
+	eC41m0w+rfXd59eTFCc45Yk66qRGmKQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=rsZWNNzp;
+	spf=none (imf14.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
+	dmarc=pass (policy=none) header.from=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=7hV5LSkoaULvfWpcA92IONFe2jiU8FtnTFTGMKYHxiU=; b=rsZWNNzpN6nJksHTEkajq/n1Fi
+	36oPDej5oPfE2xw7j/8liweJ40O8Y0rBYAawwkQr0/sJRg1ts8hN1ZWdPPuu/S+9wTI5BZjFWFDn/
+	6VM0HaPK6l/WG/KwNwIc0bS6+oKrv1v0dTQCkIL4TyM4C1voCXZuHAyDW2/Bgql9xoNiDgpnuxFbm
+	Bc71fMVSzRm+pq3372pS1Xq8Ouufm8Njzwja33Sc4G+rmZ9dNuCAJtMq0TJedL4OAoV/4ImwmK35b
+	TUHQq3VDfaWDfmQ6l7uWAqtoP6Cr7hJRMUWJfb9Rs80koZ5DcRmLK8FvDMNhR9mVwMAz/6MWBcbRm
+	dCGRuMnQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57602)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w079p-000000005ZQ-1adR;
+	Wed, 11 Mar 2026 00:10:37 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w079B-000000005hV-0rNO;
+	Wed, 11 Mar 2026 00:09:57 +0000
+Date: Wed, 11 Mar 2026 00:09:57 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Jan Kara <jack@suse.com>, Phillip Lougher <phillip@squashfs.org.uk>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Date: Tue, 10 Mar 2026 21:03:41 -0300
-Message-ID: <abCxXZCJPgNuOPG2@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <abCL8vE3cttL1Yq0@tpad>
-References: <aYxviLoWsrLqDU7o@tpad> <aYywl1hdBQP2_slo@tiehlicka> <aZDw6xI2izFDfuuu@WindFlash> <aZL45yORfkNvS9Rs@tiehlicka> <aZjY9h3XXMNY-Ytd@WindFlash> <aZwYmNuucBspCYhk@tiehlicka> <aaJDjmnfuo8AM6J9@WindFlash> <aaYpICV55B70U1I2@tpad> <aa20uDGqnmiqYJ1w@WindFlash> <abCL8vE3cttL1Yq0@tpad>
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Jon Maloy <jmaloy@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	John Crispin <john@phrozen.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Zhenyu Wang <zhenyuw.linux@gmail.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Sandy Huang <hjc@rock-chips.com>,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <mchan@broadcom.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Taras Chornyi <taras.chornyi@plvision.eu>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>, Linus Walleij <linusw@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Mark Greer <mgreer@animalcreek.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Dave Penkler <dpenkler@gmail.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Justin Sanders <justin@coraid.com>,
+	Jens Axboe <axboe@kernel.dk>, Georgi Djakov <djakov@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
+ check - refactor
+Message-ID: <abCy1Xs9yQx0Sjbn@shell.armlinux.org.uk>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 540AC20008
-X-Stat-Signature: hjniijooozsh5cypn4ncmua19mouzzuk
+In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773187425-914309
-X-HE-Meta: U2FsdGVkX181308WlAJoAgU2q9QS2Ky5s58zTOz7UReSad8L7BTlYpvX48GaEa0GeTILAlWLyA3l+ZVNUlgAsm1rrpHCKtWBHwm4VRpmABNyBaTKDkwBxN9QxmDQ/Z8D1otJ3iHO575vmpZwLlMsIeN0Uj8Qvkvv/tLEL/imodpbyFexhZLvFZg+HKra05WfDQRtnPX+77zmc6kmBh5n32q1GHbsbl7WHdmwItTGw4j8pGiezaSW+J5r8M8L/eHEeemK34z2x7pRfsUukCWxplMUPYQTcOcbvuxURQgebPBqJC9/GgmgD1yS0U5KyxAFNF48cXxfKkakmAqWBMOYKy2m15FJ1EJAKDzkVXmlqVly3H8DiSGsyGNHUSM+1NI9KYKY8ko4vLcyz9Fzy2G1S23Oa/tBDKEHtVN12rtiIKPqFcXLmwqR34gyd9JmPY1x2Jo5FqLNx5HPW9QNfNq5YBBx+E4XH4nAmfwyB12gvhkyMRVkRV+4irriibUoU4+30tQPglrXFohys8kkN9oyZMzHLKZkjGe+ROAS0y26F0imCJDWIlg3HM5bjxSh62kXQEEZC+0nES0MSdFKME4ASbZqSuXyKAz58kJcKiRmz65xoCEXmE65pnbAHWyN2EGDGYdtuD0O9v4XdxS2gT0uf+314fZkdYkk+cJxH0abMhM8pGfxUB8/kSE7ZGxAo6Ro7pSw0Pld/DePgMp4PumVDqgSkouc98SsA27azMaSITOrsTwihJ0XvX3MPSX9oBWBhLE7RN8Op9lkqex5fzaavX4ofzpeSiCS6Pv1yAe8bwxPg+JKwy4ZAl9kgqCsDc9RtE8HkeTjaRmKMQjUNxqeuCtzgtyb1dlN3psGPMF4CuqV5lczeZGU/Hqv7LcZvIB6ZEvwpF1Ob5vaP748UqgNXdxf/Xka1pvNoZ5AsoX9BpjcuUQtwfCj4EKvVoiBdW7SomgID4ubhG9LT3sRLqT
- T/ByEkMI
- FMQknYfMotyBmmfONuh/cOzHRKO1/viWeiA8wqq0i4ShMxOtTZ5ObWy+nQ+nxRLYyYtED7XZNR33ObMy2F4Dyul6+Gvuc6/F0cxIIiLn7lscLl8Gh+iR87TcnEQhjatByer8vojpv9ZTebWfmf0gg34KTtxA8SCR/YgSRbgrQr+84MIUCFTgy8UOs05XzyE5ZH31seSqR9llX0SCbFEhhMb5emcnZSD5ykROdgPVeSLM5dAUykvh9UCnM2TWf4CaWKhRShTtmpfIGXbj/3FzJQt5OGqNOFIK2BRTOsG5Jl6EM/IHaAbSf150fPR3xAoP1NAmKoctlO7uRAl/UDrnQLn6YsbM3ylTBPcmakGCDDXWCw9Yqm75UoODmwlNi9UwWepyzyKXSjL9XU+bYvqpsKjo1Ro9w9Jk2DYuQe52myKfHcPAt7Ja1+keox7sMwalzAIQGjUCLNNMhzUNgswh370b1OfSVbt5hoLs+EoL/hkY06WaT7qXw0+Q47BXlEDLoqqPcWI7C9wUUDj4FPU8T4I9ilRf/5gHd+Luxkt3/e0mvcU5E8cX0HHmoYUPvpaTgX0fCG62fxMEyHBuh6hK30f1H+0IuiLCCj4yj1Ar685ln5vEJnlC9F5B1nhket4zrMSVp09WdgJv/bsryHXNwELFE1g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 61E1B100002
+X-Stat-Signature: assjxauqx115ux9pdjxan3xx3k4fkqh3
+X-HE-Tag: 1773187901-336579
+X-HE-Meta: U2FsdGVkX1+5CMteODhpXrh4MorXIJiSRRS9X0GoFQniAs6wsXucpOw1KkzEBh3j95arUO5cdXs9k7JGyd720gfKZ2ZZvC9ednWvJtQKmV9bCZn3dVS6Xuexj5JSBkwfUE8aJ+Y5Rk8PJ1fEhUbclsP9s4bQsC9p9jrN6YZ+E34K9pPLIAbZewuhO9kgeWS+8ciN4I2F/7j939vQNMtTXrxjaKRXbUFlYJAijW4hKkdI/XiS0rOx3Chpd3SY2Z75m90BmxzBkbfVRi1ls6wbbd6dp8zfN7Or2YGF70NHVV3265ozy6BiQpxrziE/aaV6kIqo4znUC+aUp1K8SPFKEw495NoMWEtp9vOZVgGMqcLPP61KhtEWaADPX7QH6v3cXpKVMqgnIYf4/dxGoCAnTYrPfGlA2iQZlL2QfvV8key8Vda+REjYhmD3z07ymIhBKMsVt/CrMWUIUkm7bXEMcj9bqi+e/6NzjoQkmKmer7mrYH9sePBd85JOQghtRpnP/rAPAOlhVovTkHZlhQ0O3rbtooKhCx6S1l5t8Dmj3I9UBvc86CAMRsIAn1eOhhH39+L2/kday2UKOUmJjnSExbLbeo0ODegW5jC1/r6aLptBFgnQJ18jiXhKfJSK0tOErAwlco91Zhf8w0q30teP2yPRnDntXfLBua9jCL3flpBRid217Jo5kawuze8OgdZIZzEtK+khMwXuujxyOB2vqdC8jOcrQyjaA+wcyii0PFiAYolrN9gqLg7gXc/Kx7W8HORwztVVDU8LMwyS5rPisSFhgKz3MYBeQoBUQvpk8Ce26pe18n9ZmG/gcYlIYcW2XpWLHIAoy8swUWtgo6NoB3rPtulqLEEjpHMsMmVWZ+VxSGJebKCX7u8mteXOQPQdlmdApkvNHa8CePNhPBqDHIp4zU72rCbyALDTlBKuCID8tYj1WmpF6g0NLxU+ERVHLEJXooM9P2DK16rzuIZ
+ TbXNp8D5
+ a3Ro2BEBI3XsgSqDh8jatwAQqGCIwVq7Z2DraOGSiXoaegYAJqAyGxNIH9jlYir4+M58cedyufjlO9fKqe+ocnts3RGaNNyZCBNH4Py+LnoLJrgcepwAEjQ0ZSEx6P48MZdkgsfEcTCM9MopyW8pZRsHRkPR+iqmUe39x7LKMSsLTaFmBdD/ahu6ggyh12jVRzhbB1qSoy4NyMdmOa1D5HDhfSRd1IC96u4O7tsarQ/J8tZF/yiu8JeJsgereQs7PYzj1JUohSfJiKj7vqmFRar952UcKVgwRGdcUB0XQvP9ZGEGpbkiAPf603HJ7FVIWmE/9hvPMo5VVVNGbMZ60rRWgi1NuHV4fxwZnNk1gf0zNoA6qxHaUMi+ftpHHMSEU4Lr9oWsSQcsPShLCaB0QiqHuWoP780UkFOIe5Zohf8GKd4JHxJpXKxTawU4j0YyyNOMIZ6ZKQK7JKitR1Mk1K7gVkgBVwX2PI/vKG8sdqyym7SAX6tZc135jxtqORfqzbu2u6QN6F3EwYH42YSwKrOxxqy2E7EYKkHKW3Za/qup+pxrK2jHeuzR9N8pr50CFurlH99DBfNk5LWmrEwjUutal4WN3kxnQjLbul02XBQz4fwc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,183 +285,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10, 2026 at 06:24:02PM -0300, Marcelo Tosatti wrote:
-> On Sun, Mar 08, 2026 at 02:41:12PM -0300, Leonardo Bras wrote:
-> > On Mon, Mar 02, 2026 at 09:19:44PM -0300, Marcelo Tosatti wrote:
-> > > On Fri, Feb 27, 2026 at 10:23:27PM -0300, Leonardo Bras wrote:
-> > > > On Mon, Feb 23, 2026 at 10:06:32AM +0100, Michal Hocko wrote:
-> > > > > On Fri 20-02-26 18:58:14, Leonardo Bras wrote:
-> > > > > > On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
-> > > > > > > On Sat 14-02-26 19:02:19, Leonardo Bras wrote:
-> > > > > > > > On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
-> > > > > > > > > On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
-> > > > > > > > > > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
-> > > > > > > > > [...]
-> > > > > > > > > > > What about !PREEMPT_RT? We have people running isolated workloads and
-> > > > > > > > > > > these sorts of pcp disruptions are really unwelcome as well. They do not
-> > > > > > > > > > > have requirements as strong as RT workloads but the underlying
-> > > > > > > > > > > fundamental problem is the same. Frederic (now CCed) is working on
-> > > > > > > > > > > moving those pcp book keeping activities to be executed to the return to
-> > > > > > > > > > > the userspace which should be taking care of both RT and non-RT
-> > > > > > > > > > > configurations AFAICS.
-> > > > > > > > > > 
-> > > > > > > > > > Michal,
-> > > > > > > > > > 
-> > > > > > > > > > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
-> > > > > > > > > > boot option qpw=y/n, which controls whether the behaviour will be
-> > > > > > > > > > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
-> > > > > > > > > 
-> > > > > > > > > My bad. I've misread the config space of this.
-> > > > > > > > > 
-> > > > > > > > > > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
-> > > > > > > > > > (and remote work via work_queue) is used.
-> > > > > > > > > > 
-> > > > > > > > > > What "pcp book keeping activities" you refer to ? I don't see how
-> > > > > > > > > > moving certain activities that happen under SLUB or LRU spinlocks
-> > > > > > > > > > to happen before return to userspace changes things related 
-> > > > > > > > > > to avoidance of CPU interruption ?
-> > > > > > > > > 
-> > > > > > > > > Essentially delayed operations like pcp state flushing happens on return
-> > > > > > > > > to the userspace on isolated CPUs. No locking changes are required as
-> > > > > > > > > the work is still per-cpu.
-> > > > > > > > > 
-> > > > > > > > > In other words the approach Frederic is working on is to not change the
-> > > > > > > > > locking of pcp delayed work but instead move that work into well defined
-> > > > > > > > > place - i.e. return to the userspace.
-> > > > > > > > > 
-> > > > > > > > > Btw. have you measure the impact of preempt_disbale -> spinlock on hot
-> > > > > > > > > paths like SLUB sheeves?
-> > > > > > > > 
-> > > > > > > > Hi Michal,
-> > > > > > > > 
-> > > > > > > > I have done some study on this (which I presented on Plumbers 2023):
-> > > > > > > > https://lpc.events/event/17/contributions/1484/ 
-> > > > > > > > 
-> > > > > > > > Since they are per-cpu spinlocks, and the remote operations are not that 
-> > > > > > > > frequent, as per design of the current approach, we are not supposed to see 
-> > > > > > > > contention (I was not able to detect contention even after stress testing 
-> > > > > > > > for weeks), nor relevant cacheline bouncing.
-> > > > > > > > 
-> > > > > > > > That being said, for RT local_locks already get per-cpu spinlocks, so there 
-> > > > > > > > is only difference for !RT, which as you mention, does preemtp_disable():
-> > > > > > > > 
-> > > > > > > > The performance impact noticed was mostly about jumping around in 
-> > > > > > > > executable code, as inlining spinlocks (test #2 on presentation) took care 
-> > > > > > > > of most of the added extra cycles, adding about 4-14 extra cycles per 
-> > > > > > > > lock/unlock cycle. (tested on memcg with kmalloc test)
-> > > > > > > > 
-> > > > > > > > Yeah, as expected there is some extra cycles, as we are doing extra atomic 
-> > > > > > > > operations (even if in a local cacheline) in !RT case, but this could be 
-> > > > > > > > enabled only if the user thinks this is an ok cost for reducing 
-> > > > > > > > interruptions.
-> > > > > > > > 
-> > > > > > > > What do you think?
-> > > > > > > 
-> > > > > > > The fact that the behavior is opt-in for !RT is certainly a plus. I also
-> > > > > > > do not expect the overhead to be really be really big. 
-> > > > > > 
-> > > > > > Awesome! Thanks for reviewing!
-> > > > > > 
-> > > > > > > To me, a much
-> > > > > > > more important question is which of the two approaches is easier to
-> > > > > > > maintain long term. The pcp work needs to be done one way or the other.
-> > > > > > > Whether we want to tweak locking or do it at a very well defined time is
-> > > > > > > the bigger question.
-> > > > > > 
-> > > > > > That crossed my mind as well, and I went with the idea of changing locking 
-> > > > > > because I was working on workloads in which deferring work to a kernel 
-> > > > > > re-entry would cause deadline misses as well. Or more critically, the 
-> > > > > > drains could take forever, as some of those tasks would avoid returning to 
-> > > > > > kernel as much as possible. 
-> > > > > 
-> > > > > Could you be more specific please?
-> > > > 
-> > > > Hi Michal,
-> > > > Sorry for the delay
-> > > > 
-> > > > I think Marcelo covered some of the main topics earlier in this 
-> > > > thread:
-> > > > 
-> > > > https://lore.kernel.org/all/aZ3ejedS7nE5mnva@tpad/
-> > > > 
-> > > > But in syntax:
-> > > > - There are workloads that are projected not avoid as much as possible 
-> > > > return to kernelspace, as they are either cpu intensive, or latency 
-> > > > sensitive (RT workloads) such as low-latency automation.
-> > > > 
-> > > > There are scenarios such as industrial automation in which 
-> > > > the applications are supposed to reply a request in less than 50us since it 
-> > > > was generated (IIRC), so sched-out, dealing with interruptions, or syscalls 
-> > > > are a no-go. In those cases, using cpu isolation is a must, and since it 
-> > > > can stay really long running in userspace, it may take a very long time to 
-> > > > do any syscall to actually perform the scheduled flush.
-> > > > 
-> > > > - Other workloads may need to use syscalls, or rely in interrupts, such as 
-> > > > HPC, but it's also not interesting to take long on them, as the time spent 
-> > > > there is time not used for processing the required data.
-> > > > 
-> > > > Let's say that for the sake of cpu isolation, a lot of different
-> > > > requests made to given isolated cpu are batched to be run on syscall 
-> > > > entry/exit. It means the next syscall may take much longer than 
-> > > > usual.
-> > > > - This may break other RT workloads such as  sensor/sound/image sampling, 
-> > > > which could be generally ok with some of the faster syscalls for their 
-> > > > application, and now may perceive an error because one of those syscalls 
-> > > > took too long. 
-> > > > 
-> > > > While the qpw approach may cost a few extra cycles, it operates remotelly 
-> > > > and makes the system a bit more predictable. 
-> > > > 
-> > > > Also, when I was planning the mechanism, I remember it was meant to add 
-> > > > zero overhead in case of CONFIG_QPW=n, very little overhead in case of 
-> > > > CONFIG_QPW=y + qpw=0 (a couple of static branches, possibly with the 
-> > > > cost removed by the cpu branch predictor),  and only add a few cycles in 
-> > > > case of qpw=1 + !RT. Which means we may be missing just a few adjustments 
-> > > > to get there.
-> > > 
-> > > Leo,
-> > > 
-> > > v2 of the patchset adds only 2 cycles to CONFIG_QPW=y + qpw=0. 
-> > > The larger overhead was due to migrate_disable, which is now (on v2)
-> > > hidden inside the static branch.
-> > > My bad.
-> > 
-> > Hi Marcelo,
-> > 
-> > Great, hiding migrate_disable under the static branch is the best scenario.
-> > 
-> > I wonder why we spend 2 cycles on the static branches, though, should be 
-> > close to nothing unless the branch predictor is too busy already. Well, we 
-> > can always try to optimize in a different way.
-> > 
-> > Thanks for the effort on this!
-> 
-> Leo,
-> 
-> migrate_enable was leaking out of the static key section 
-> into the common error path.
-> 
-> With preempt_disable, as suggested by Vlastimil, those 2 cycles are
-> gone:
-> 
-> [   61.217232] kmalloc_bench: Avg cycles per kmalloc: 164
-> [   68.047789] kmalloc_bench: Avg cycles per kmalloc: 165
-> [   73.266568] kmalloc_bench: Avg cycles per kmalloc: 165
-> [  120.634168] kmalloc_bench: Avg cycles per kmalloc: 164
-> [  127.617872] kmalloc_bench: Avg cycles per kmalloc: 164
-> [  157.803679] kmalloc_bench: Avg cycles per kmalloc: 163
-> [root@fedvm kmalloc-perf-test]# dmesg | grep qpw
-> [    0.000000] Command line: BOOT_IMAGE=(hd0,gpt2)/vmlinuz-tip root=UUID=35cfa00b-ed70-483f-b7b2-1964e14f719e ro rootflags=subvol=root console=ttyS0,115200 qpw=0 skew_tick=1 tsc=reliable rcupdate.rcu_normal_after_boot=1 rcutree.nohz_full_patience_delay=1000 isolcpus=managed_irq,domain,14,15 amd_pstate=disable nosoftlockup crashkernel=1024M
-> [    0.118274] Kernel command line: BOOT_IMAGE=(hd0,gpt2)/vmlinuz-tip root=UUID=35cfa00b-ed70-483f-b7b2-1964e14f719e ro rootflags=subvol=root console=ttyS0,115200 qpw=0 skew_tick=1 tsc=reliable rcupdate.rcu_normal_after_boot=1 rcutree.nohz_full_patience_delay=1000 isolcpus=managed_irq,domain,14,15 amd_pstate=disable nosoftlockup crashkernel=1024M
-> 
+On Tue, Mar 10, 2026 at 12:48:26PM +0100, Philipp Hahn wrote:
+> While doing some static code analysis I stumbled over a common pattern,
+> where IS_ERR() is combined with a NULL check. For that there is
+> IS_ERR_OR_NULL().
 
-Ohh, awesome then.
-That means we can have a QPW-enabled kernel and zero overhead perceived if 
-qpw=0, right?
+One thing you need to check for each of these cases is whether the tests
+are actually correct.
 
-(Yeah, instruction cache will have to fetch extra instructions, but 
-hopefully that stays hidden enough.)
+There are certainly cases amongst those that you have identified where
+the check for NULL is redundant.
 
-Thanks!
-Leo
+For example, get_phy_device() never returns NULL, yet in your netdev
+patch, you have at least one instance where the return value of
+get_phy_device() is checked for NULL and IS_ERR() which you then
+turn into IS_ERR_OR_NULL(). Instead, the NULL check should be dropped
+(as a separate patch.)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
