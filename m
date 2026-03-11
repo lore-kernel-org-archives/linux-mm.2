@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2025FD88D3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27ABAFD88D3
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:03:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E15296B0088; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
+	id 38AED6B0089; Tue, 10 Mar 2026 20:03:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2BF6B0089; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
+	id 336116B008A; Tue, 10 Mar 2026 20:03:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEC216B008A; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
+	id 2256B6B008C; Tue, 10 Mar 2026 20:03:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A93356B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55B158B441
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:02:14 +0000 (UTC)
-X-FDA: 84531829788.23.70503BE
-Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 879DA40007
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:02:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F2A1B6B0089
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:03:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90EEB1B7B0F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:03:01 +0000 (UTC)
+X-FDA: 84531831762.03.3126D95
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 03A88C0009
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:02:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X0aDpCOm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773187332;
+	s=arc-20220608; t=1773187380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=edd6vuu24+x3xfdeQnQc3m+ptFgMAuq1lyXlt7zXBpQ=;
-	b=MAPgmiS90pUYSO64PVHqWI4I+mGrTPqzCcnw6bZgyij9b2fA/JjoYSb2GItJZg1X+3mSk+
-	3f+67oxWiffBNFh7AxkV7kWZv8Q1qURP2FSeZnMQo/Bp1ik6OhYum05MmXKRbmH0qq3yI/
-	bsDBa5gmaCzDwrkHCj9eJixNDYkRYTc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773187332; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Yxj7r9wH3pzid38977WanAD9mEZHOMtbGNJB/MLLSuo=;
+	b=Rb9ccsxl6occb2tcJG+OtVPvyPEwa0RaEOZN+PJ7zQP55qFEw+3mHLcayea3U6/y80ByJk
+	V0rNjcucmqq8F2K2y50GRlh27Epx0TXpvGahLc4izPmD6gGoCHiIPZvT3hZLh4tYyhsXjc
+	j2VFeE0VgyhLGM1bZY9WceeUJfxjw6Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773187380; a=rsa-sha256;
 	cv=none;
-	b=SHdW8ZB9MHwBrUxd81VbZtjod5YsscmxKybo5wV0AO9XP6Nz/JIj6ZQABNWAWP6z/xkpOI
-	yRZxiecjKLHvTZHNw/9KlAFxwANTw5B98WRPfCMyAGSM66V/etO4m05HE3E1RkogCo6hZk
-	6d+PXVbgYDgn9i5sQ2yyeljo3d6f8DI=
-Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BCB113A961;
-	Wed, 11 Mar 2026 00:02:10 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 85BFC20027;
-	Wed, 11 Mar 2026 00:02:06 +0000 (UTC)
-Date: Tue, 10 Mar 2026 20:02:17 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- linux-nfs@vger.kernel.org, bpf@vger.kernel.org, kunit-dev@googlegroups.com,
- linux-doc@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- netfs@lists.linux.dev, io-uring@vger.kernel.org, audit@vger.kernel.org,
- rcu@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, Christian Loehle
- <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] tree-wide: rename do_exit() to task_exit()
-Message-ID: <20260310200217.451cf37e@gandalf.local.home>
-In-Reply-To: <20260310-work-kernel-exit-v2-2-30711759d87b@kernel.org>
-References: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
-	<20260310-work-kernel-exit-v2-2-30711759d87b@kernel.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=BuhLal4OR2ryy0WPHK/ZLioLjqZlXxw5Gh/86ik4mhX/AohfyuBHqyUxcy4/74vzH/Rpl5
+	17FX7YgGraI4kSCUobcvrmKOGiKcanE7YgUmU91F8KtLyFtvhzSmDSg291T5Z0diHfdNF8
+	0iRjOMbucH4LFvaax0um+tkLTKcyBrk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X0aDpCOm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49431600B0;
+	Wed, 11 Mar 2026 00:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF54C19423;
+	Wed, 11 Mar 2026 00:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773187379;
+	bh=gAo8pIpamNKNwt/umJfrAxt22Tj7aXcndH4imspEA14=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=X0aDpCOm8sxO8E04vKcPXSSuW9A/LnB6sSr8h33EbNA1n2ceJET0kYl+RnAVm/OKt
+	 M/ivmJ52Jj50SKUfeORGMT2cmDLTr9gLITDK/H8h4RZuqFFostn/7us5r/cUhi2mi1
+	 ganYQToKkx50yRtVRfFxM4dtMzMQXkkLYMQR/3TmzLYMWPnT8gkuqhEFsIfRbGg9bY
+	 BapKRT/mT3Sb9eTC+1iFsGRf4Q85l1wo91fQACABBMqXq/uVZlmUqnJ6NyW9a3F6BN
+	 pSE7FqG1ztRQg3FOchbpKugNWh8T8UZMfSDYybyv4Zua6XhqT0C7xB7UzCY1sLegko
+	 NExKtC3XqcEBw==
+From: SeongJae Park <sj@kernel.org>
+To: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org
+Subject: Re: [PATCH] docs: mm: fix typo in numa_memory_policy.rst
+Date: Tue, 10 Mar 2026 17:02:50 -0700
+Message-ID: <20260311000251.89967-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260310151837.5888-1-akinobu.mita@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18LHCHZ+vV3JFPf+Z89JvS/nvAKMsv+FAI=
-X-HE-Meta: U2FsdGVkX1/3tMWPLwyG4JCc4wkqvh9SiSPSlhJp6Tv4W/fwSwUFhWXG3UBrBxSzLq3p72eu37Xu4WWh77aTVVkk97xFw9hCg2Tn+gfwvdW114asIqtfy8xHhNrVuERS2G/65ce3/BsvZjC5d8Vnvs35vga+tnTJklfjQ+UttgL5bwbjp5oOgQNdAzx3oibQ4Mzt0N8V0YHeM+nhQRgwSGhlB1291Y2eHefZmXFBYTpQLIIP1XDBd9pac8iHtBZirKQZfE9I0NK+xzIHdGI0aui4vMm56FkppnHJDf/mUfgi8cC8UEAJB61JKAsSDfwj7R599Re8N4CNbTJgYcDwKo1gfVDZt4y9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 03A88C0009
+X-Stat-Signature: ffo6454zspzcdsixegyj348gkp9irefe
 X-Rspam-User: 
-X-HE-Tag-Orig: 1773187326-98008
-X-Rspamd-Queue-Id: 879DA40007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 5bg3rrg18jbru7uwkfxn1hbh397psca6
-X-HE-Tag: 1773187332-577390
-X-HE-Meta: U2FsdGVkX1+xfLfbHcqvpwoX4ZuT0RHbPvm8Fkfz61X3hquSzV7kYcDvjB4n/ngprXUMbEUg8Gbr6QaAdfYmGrLE5mB5r83JESDQA/aSxMUAU6mqP153pK0G+0a4T6NJ1nbpnwZ7j7f26wkdE1TIxwJ9rPyYmewyZq6e1b04kDJpQdf1q3RQ/v4iaQuS2slbiRNtl7+tgrqjKiSqTwEQWkng+bl31nj0qKmlKzvDH/7TqwEjeSicElg+cw0kEDvGR6p6mPvZlkzhFuPaUDg/bjMxTYCT6rjlfhss1mXNurXjsf8Yq7oI+wZ0HzeJKnJv4wqiVA8ExYnY5eB9tFRW26WtIfsYzGIe15Bw2lEam8ZEwjhBoZpGQX8WoaM5Mt1ZYKOHNIXCWTae/72MqDY6o1CP8PQaTFDtdEtWv2smrR3ZzPyTV3FUeNZSau2e/mNaB7H+qi8Fzt1BaUlRWn5qNJ2W7ZuoKdJ7ChO0ORewJSmjrrZkpng+BQM3xMF1B00h+Sjgrn1ozU4HXC55HGD3qfg8axcAbCZX3HxOMDv07/4y/sfFTTB2roXqQpfjLTM9O+2N4W3g/H4bUEAX7sYIVULacf+QtbXBIKraQfKNsTOeLM4ld/r9IWpuIemT2wc9aebFgNaOVRaINMGDMyseTVhKqBaMPUGGkxpuPI0fk1KGg1FY01AkC4Ugvz1TSjZvipz7i7ISuopzu652tc1hcUcea3oPOlX3KZmt1fUXooLuGfSg0hc2KjJgMX8/glhN2ILgQWnyUCuSO+ZQQGzcEoCJW73Sdj0wOXQHV6EB+Ckuf2UUJLzNSFJQ3sSJB4kP2PhaHhmvAAB2SNCBgCLBmNjYCf4Z8Y9TgavPslngg92pjLEg+g3Gvfa5b4Z0/Kga2eslVykuS8KShkidqIBU0eNUHxqk3cSdAuTcvZPHrt5ERulnR5eRfTakqEI8/nUjQjrOsgZdWTv1znh7Ej3
- PP7K7B9D
- PAOHB
+X-HE-Tag: 1773187379-406561
+X-HE-Meta: U2FsdGVkX18Pv8Cf1Ioz/IbQoiIE2nMYh0pjgFBOCpiuXgsudaCn6ox3X3jeYcA51oGJTlSm+Nc6QwcnzVnodApu2uEwqlIQt0JcOe0RR81jBP0XaZuKIP3lX+DTQ5gbNtS5l65cLB2oyDiXBNtDQF4QZVfqgSTNkGWFj44FxKq/saOeopzCH0akieOYs+H7OKiqw6viqVTWgyj6jdBRojoVzmMTYR2iRd+PUV17+FeRIYuUXX/9VwKHcmxF2IsUp/PrHXPEr2l7+VTqZPTUomVV8g+GP1U0ZV7WzV9sAYfQTxUs7qGRSE+XDPBlMDXl5HQvTV7deCB42DDg22NTXKkuCXFIR41jiK+Z7R1Kiq4hg7vHhbLeQLZxbPQt4fS2XUiZht+UykTxVFd9SVlcr/UN+T2pBavJdcRndxnQL08uLxvvPl/5vhnPCeAkv/pXB9dVfMHyu9kFNKTBFrJaXGxyCORd0eyLab5kGXJSwdX07yoIMfaSO+QgZ+Vq+jhVBVNK2NvZDDpbHTWKaM8NvGL0XjG2Vb6AxRP/KQy+dsXREkVAXZhgSLZRO6IKHozBtrl0h9KY6fXJ5PDJEAYbUkcVtNBw5t/FLnY9qGVF+/DLsqchtuNAOz8FeKTHr7faerDwwA5qjRwEfCM2ugfOYhqqYwEUC6iWT5TXTygkNHZ9ZCYCpSa5xmf9wZIjkYxK+KnleMChbfCUf6Y6siab1JSCjM+DwwRaqUbycrQZUEZG2wb1r9jz72iaH0c641ojZzVLDTo04ACG/q9MOaVINTA/TMxMEMzRnsLQ8glG8UphdWXR0fzDx/83u2rcKH/SAnYc1i4R3JHHVHU8QoyFtuMwDzVwtuBIz6IGer8AZifiU6OPVOK8OjAetyMIbZm+U4aR5IfLpWie4weSaUr/uqgoD8ZcokWCgr2TlCBYvUhK2Y3C/Y0SOtY6y4DFKmNKi823HC6wEAZKQHi6alU
+ BiJhnj/K
+ ks1TTgT0eekO3LK1Z54mAog4JN0w1gMNU99r1QMqOkLcnLymRQKBBy1niM8iKSF0mueoUNKUgboGgLm7bJYsBBv8u2lePIggLV5qOysgF/6/7Vg7KYtNEUFWLKQYOvcLcTqeKgWpiwWZ7NyfKWfrDitnHnZyDCnCSzts2KkQyfgum4upUOmoK1qgqjxZ6JN1UOQ61yThqnDOqgCZ/GOQAsceOoOw5uT58sCzyojXX/vKF3oDoHBg3J7iT021wSvSxcnVloH4kCP/3J1VEFt7D8KcNOv4M1aGf7eEK3Us8I4UUMDa524OmFyp4YAta23Hnb8/LLzio9VfSEncrAs6xB+vSBmVaBF177dhkzFWZjWP32cT+kHpOBTjZLxZflmH95m5WZdhJr2X0Iak=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,69 +93,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 10 Mar 2026 15:56:10 +0100
-Christian Brauner <brauner@kernel.org> wrote:
+On Wed, 11 Mar 2026 00:18:37 +0900 Akinobu Mita <akinobu.mita@gmail.com> wrote:
 
-> diff --git a/tools/testing/selftests/bpf/progs/tracing_failure.c b/tools/testing/selftests/bpf/progs/tracing_failure.c
-> index 65e485c4468c..5144f4cc5787 100644
-> --- a/tools/testing/selftests/bpf/progs/tracing_failure.c
-> +++ b/tools/testing/selftests/bpf/progs/tracing_failure.c
-> @@ -25,7 +25,7 @@ int BPF_PROG(tracing_deny)
->  	return 0;
->  }
->  
-> -SEC("?fexit/do_exit")
-> +SEC("?fexit/task_exit")
->  int BPF_PROG(fexit_noreturns)
->  {
->  	return 0;
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
-> index fee479295e2f..7e00d8ecd110 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
-> @@ -82,7 +82,7 @@ check_error 'f vfs_read arg1=^'			# NO_ARG_BODY
->  # multiprobe errors
->  if grep -q "Create/append/" README && grep -q "imm-value" README; then
->  echo "f:fprobes/testevent $FUNCTION_FORK" > dynamic_events
-> -check_error '^f:fprobes/testevent do_exit%return'	# DIFF_PROBE_TYPE
-> +check_error '^f:fprobes/testevent task_exit%return'	# DIFF_PROBE_TYPE
->  
->  # Explicitly use printf "%s" to not interpret \1
->  printf "%s" "f:fprobes/testevent $FUNCTION_FORK abcd=\\1" > dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> index f0d5b7777ed7..a95e3824690a 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> @@ -5,7 +5,7 @@
->  
->  # Choose 2 symbols for target
->  SYM1=$FUNCTION_FORK
-> -SYM2=do_exit
-> +SYM2=task_exit
->  EVENT_NAME=kprobes/testevent
->  
->  DEF1="p:$EVENT_NAME $SYM1"
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> index 8f1c58f0c239..b55ea3c05cfa 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> @@ -87,7 +87,7 @@ esac
->  # multiprobe errors
->  if grep -q "Create/append/" README && grep -q "imm-value" README; then
->  echo "p:kprobes/testevent $FUNCTION_FORK" > kprobe_events
-> -check_error '^r:kprobes/testevent do_exit'	# DIFF_PROBE_TYPE
-> +check_error '^r:kprobes/testevent task_exit'	# DIFF_PROBE_TYPE
->  
->  # Explicitly use printf "%s" to not interpret \1
->  printf "%s" "p:kprobes/testevent $FUNCTION_FORK abcd=\\1" > kprobe_events
+> Fix a typo: MPOL_INTERLEAVED -> MPOL_INTERLEAVE.
 
-These tests need to pass on old kernels too. So we can't just do a
-"s/do_exit/task_exit/" conversion. It needs to test for task_exit first,
-and if not found, fallback to do_exit.
+Nice catch.
 
-See how we handled the _do_fork() > kernel_clone() rename:
+> 
+> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/ftrace/test.d/functions#n182
+Acked-by: SeongJae Park <sj@kernel.org>
 
--- Steve
+
+Thanks,
+SJ
+
+[...]
 
