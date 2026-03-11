@@ -4,136 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D57103E2E7
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 21:28:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A622F103E2E4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 21:34:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 900D56B0005; Wed, 11 Mar 2026 17:28:03 -0400 (EDT)
+	id E35CD6B0005; Wed, 11 Mar 2026 17:34:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D8ED6B0089; Wed, 11 Mar 2026 17:28:03 -0400 (EDT)
+	id DE3A96B0089; Wed, 11 Mar 2026 17:34:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D7A66B008A; Wed, 11 Mar 2026 17:28:03 -0400 (EDT)
+	id CBB5B6B008A; Wed, 11 Mar 2026 17:34:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 67EF86B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:28:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BCC11A0431
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:28:03 +0000 (UTC)
-X-FDA: 84535070046.15.7F62195
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1AE0C4000A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:28:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="pKkQ/L3r";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of nogikh@google.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=nogikh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773264481;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B9C226B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:34:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C3BC14044D
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:34:26 +0000 (UTC)
+X-FDA: 84535086132.07.DFD7CB2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C705B180006
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:34:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h7wdytT+;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773264864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-	b=Y0WSJPNEODSYrQkDCOg5qZIpPrXzYaVdp/u57Wr5CziEEwLiGRLf8O5y6X3WtSlJnT2mxo
-	wmvsWCO9wI+mS+5wX0U/GYdQO/mVJj4KYRPe7UTxiZPBBbQdrkfganvDhCXarbMuJpX4cU
-	xoHJhlWxbYJ38sQgNXluGk5tl+kCDlc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773264481; a=rsa-sha256;
-	cv=pass;
-	b=ws8R7ei/iuLQEvi7ufd+W0pNHNgagOFZ48tRGw391k6LAJAeQHQYmt6DcKxRJRWqyyGNev
-	D4B5U9lOfs2ro5lt5fTxnkLOecUAAaU0Yhq4dXEPnfgFpGWmCvNVgftICBD84dJLgFVkrb
-	dkeVKKTHGQGezJlbMlsRY4OA9uc5Df4=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="pKkQ/L3r";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of nogikh@google.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=nogikh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-67bb5e4d06eso161529eaf.1
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:28:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773264480; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QHSkD63Y3CbQgUWuNkTzgUidwK3w/sdG93kVKCY7Kiak4IREzDfseVTAf28l9Lezrs
-         nDx0+bIiP8V7DYCmYQd1rMf1FTJRV0AB2+yScSvwCRBQtnFs5hzwMzX5udEBYgKTkVCl
-         Syi6sJnCmxqwF6xcwuJPEQpUm1yIe1uVhM9S7WSzP0K6k19HvrP/KcKTHDlm6il3NcQT
-         VMz3nDYQ1MpTjfeFmqRLH8T2Z0ASjDnSxZSsElqdvCuVbI4RZoxfBKesHorND4KPbmyk
-         NxSOLqimYCvPwPwlPg/pwPFI7/3us1tiwz1yOGZw6CaK3ZVImjPVmsXeYYMkgr2VKN4l
-         SKQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-        fh=HrOMzg78Cd5ZyvYdmtuJOmyRjWwlU6wlESAQiNseeVk=;
-        b=crX9af1mfVmQwJikwjytL//zjhtXuCcdSM3XwKYjp8A2yG2ZRuRp7+XrYdueI+wGCx
-         k0XUEZyUzQAe1bfmge3equxYUvfMsn/nnxuwkzvSTgUNcqeYyvKbLKsFF8ifrN9Pu++c
-         +UIvaGrOdNAkjgD+mD6YstX0tSH9efnlGUDz9xQiiBNzJDeHtMYESP9u1XacQlsYq4K9
-         mXQrxFldMbQdke7D9y3zVlXs5EXmdyQiapAHxbTZ6Ld62/QY2hQyg2/qEPJpXkQzGODW
-         /JB3SjMekJRxEj04P4dI9ai6pr78WRcdlKKuC0daXxoIzN+wWMLzVs6Q7TfWGbKnr3zR
-         X0bA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773264480; x=1773869280; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-        b=pKkQ/L3rmGVNkSZYixK19jbAdjn8eOm8iH9umijUSTChwmO+IknEXGS8r80+2egJrC
-         m3T0CbunDxJCsu6IUUwenJIycD3VBa+AUT7YawPGN9OAY7WzfyWeWrS28O4wZtxfJwgv
-         FAF8c+h29+cllYQiLXEGfJXDYBBl2euhdr2y2L9RhjeSGrMDJ4raTIg8GK3hteli6Hqo
-         SqDGmBCcpOX6RZicmyuuJLXKlik8gigrB3F/GhxQKqTzDH9mub9qH7GvXxkU+Fp/xCxZ
-         8dkmwUKqeX09P0XJ+5mldMClNQHZG+GBil9wQdoe0XOC1Rylk9lKnoX6hUeSpY4tKw4k
-         mzPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773264480; x=1773869280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-        b=At0MiVYb8m2apY3nTHY5/HpX4Gv47dSn4Yzf80ve4dZdcwfXdHiqDB389vvA9LILKA
-         9FDO9exSsHTYRu8YqdRSGHjQTzpJf0rabouz/5Iug9adUy8mycvmk9LNXxdZalTQYC0y
-         4u5q+i43dFN9ur5EGj2ZxQLVnYhWoY+4+FWavwaef/HvBHk+yvYaHURrl2dz6kjXW0hY
-         76CsyUwaaT6Bmd5JFM1qhXY8QC22xtr3ebHlgwwOewLEKudtc6hOLdpOlvbYvD0tojRk
-         FmZ++R0rq7cIUgxMsxN9ncYRZsasuT8XEDd43vdabcPgD6gxKlXEta/VgDN6kM0cJ6/t
-         O37A==
-X-Forwarded-Encrypted: i=1; AJvYcCXeE2lIXcHoKDc+8DYqvVQthQehI4DHj5MI1jEe1+zFCjaYD6W7jWHvGW42iK7bmDtELxM8m3hs0w==@kvack.org
-X-Gm-Message-State: AOJu0YzdCWf6rsdEvinZdhLCNqhphCF4+CI/HD0djSU6o41tkc0RQbPq
-	7Q/pY75YcBB03ePJxgg8qk+6bH+fLdePhRwNF6jrhNnQ5VD1E/Djn8XSImLJSfaStdW0UyeYwKY
-	u2A/0unZTERiApARoaAL381yNfkVK0BE5mERQUBom
-X-Gm-Gg: ATEYQzyYq2CP+rbfwH33Dvdc/cS3RnBlQScDyGL3pk+EhZhipwzt/odHZUkKQoKTd1x
-	Aa57j4PNmGgrkZmumlTS+TJYM7wSjzNvTaVbuAxb3o3hx1wX2eSCvudAbRyM5n+JxsK1KT9YEK/
-	RyufuoW9fKiZ6viGI/2wPTHdLqga69s4noVil0EgQfx0t6XlhWfk2QgAKu+NjHOoX52SfYFpn0y
-	zeSnI0N20t1ldSpYm6Fw/+HhkrlZv6xhKVjs/eDDTATF+cMmT04zfuYPwzyBQldGSQHPbCNqaQj
-	Qt7gZ8ZOwHrxJK+dPT3po9HsQbnygijoLYnk/oDR0TrUj9UAq2YjuSdMvS98aYTThWCgNAw9EWE
-	3/8EGtA==
-X-Received: by 2002:a4a:ec43:0:b0:67b:b4b3:821e with SMTP id
- 006d021491bc7-67bc8a5a4c1mr2166715eaf.64.1773264479583; Wed, 11 Mar 2026
- 14:27:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260216173716.2279847-1-nogikh@google.com> <CACT4Y+b1UZpV_i68cSP3XOBsr9EfbX+SAbXRdL3btmAnSvmMBA@mail.gmail.com>
-In-Reply-To: <CACT4Y+b1UZpV_i68cSP3XOBsr9EfbX+SAbXRdL3btmAnSvmMBA@mail.gmail.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Wed, 11 Mar 2026 21:27:48 +0000
-X-Gm-Features: AaiRm51S07yNuW3cPcrVSq28S7hXGinZghFBDdce6BA-XJE8j8KP7kq7NftJAfo
-Message-ID: <CANp29Y6xexyfGo0umf38JK=6k4Mg+EGRyDmVfuxyAgpX8FxE9Q@mail.gmail.com>
-Subject: Re: [PATCH] x86/kexec: Disable KCOV instrumentation after load_segments()
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=xVgwRLu5iXuLc54q//zu8ktDqdMc0lUI71g9flpG7k8=;
+	b=GT9/HXvxrqyDUHuhqKlzKEb4L1aNSbviiZnjq7GGDVGV1nZjtb/p4rWrk4hFTn2N0ociKP
+	SyoQPqCusmuU/BrcgxlXYJJe0n+CdmSQJnfDhkkRv9cPKamnxXywogt5gkc5/kIWGZe7OM
+	bEz1AOJlw1DTn6VjVNqqRVXYYglJGx0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773264864; a=rsa-sha256;
+	cv=none;
+	b=CDTQqwD9YUNWMmv7OeGNa5slU+7CXa1BhxKH3VR66EszwXHNzOrS8frVfhfd47N1POwPGx
+	0CKFCPxf2zdkSqVl5wuwRB5LFS69IssstBTly5XNZBimGRVOK1/tVltAaewAvGc8ruzxlX
+	wWdsDsQOSveRau6b9mq4FkqMn6z6+NY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h7wdytT+;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B1C4560142;
+	Wed, 11 Mar 2026 21:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE42C4CEF7;
+	Wed, 11 Mar 2026 21:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773264863;
+	bh=CctnsvPHlBhyigdAST5vd/olihCES868mxNRQkvgQEM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=h7wdytT+0G04oWXIn4P8iMAVXw/0nNjJWboWgVafbBUSnfeOGQ9xC6ncpr4ylbuwC
+	 m2rm7wNoJOMEEjRNsfTs8w+9bx5OJtNtzr8YzDs8nggI7WPnidn3lgjZp87kGQ4ouw
+	 e74fF0QSsCjVOEPx/1DrG3KZfu/ujr6Nf3LZb88E=
+Date: Wed, 11 Mar 2026 14:34:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
+ anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
+ cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
+ david@kernel.org, dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org,
+ hughd@google.com, jackmanb@google.com, jack@suse.cz, jannh@google.com,
+ jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org,
+ lance.yang@linux.dev, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v3 0/5] mm: khugepaged cleanups and mTHP
+ prerequisites
+Message-Id: <20260311143420.54537eb3962c16228862fdc0@linux-foundation.org>
+In-Reply-To: <20260311211315.450947-1-npache@redhat.com>
+References: <20260311211315.450947-1-npache@redhat.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1AE0C4000A
-X-Stat-Signature: 6mmtyghz8b3jrnu4patd411kewt63fzz
+X-Rspamd-Queue-Id: C705B180006
+X-Stat-Signature: tqgtz9daadd1c3xmb9yk85egmqooxq76
 X-Rspam-User: 
-X-HE-Tag: 1773264480-705853
-X-HE-Meta: U2FsdGVkX1+ZU3A6Bb6kiMVb+A/mA8BlZOndouE41y0n41tNoFsWyVhskzH6QkHLgDQ6H9kk5+Xjpjhao4ul1IzVaX+MXHs/l6qFnReh5IGVQyk8Kyb7aXQp0lT19YOQ9uR+lFft1DMnedUaFj3puHq28BAwWvuiuLQo4LS7fcxk3jpn5Jg2jhgNpPXPdY9sfxZk7q9U2FoCywCVFwz7iuDnLZXHOQxZhvcLkbeUPQHn2M9Koq4nmAfQrNcTZ6BeX6gdSUMJfEcAvmjnZQy8oEquso1V4sT568Pm+akTGFnkXYorSdcVKlQYqHl+9ZIgEBGyWP5vz8AwJD+Jwnajq7WqYPZYg06fb6R6ZGMnA0gJg/s4dKY4l731pN1JFnjL1xmmlqa+M4T1o/SGdzA8fS6K57Kb9DFkTIfqc8pB4EgLDbfvhuCP4n/t8TIJKwKn61RzqEijhR+T5I0wpjewoSYJGAdC+qan0x5vRU85wVuqKb00Yw6Y1EAwrMCEC2eAP0i7oi9thQOLPJsOVHfarSNCk5ACdpKKl7Fd2X2fpDhjR/PAwF4xArOSwsudQy1J2Ig3SIOhLdkYR3R/Rqa8RE9OVtNww6PtIXwlrXy2+xXHDMFJI+rGuYp14DooTxeXqAN8BHkoHgqH+gfo8SiMe+whRQ24sOFCIJnkbP1w3ZIH45Yuxagc8OnaC51MDnRVsVWzY3gjDgymTBm0j8CKhEppzDovlC1+yN/lJ+ygfRG4ugolILo4eRpvKGgeJMNZ/xWD3rWSu67uEm49i1oebn9j2m1PqH7KviSWFTT18Uph76aL5jOTo/3taLTKmvIE6fxpqUTWlcIpbD7RvYSHvc1NJq2PY1R3eIr36BPgODGsRAHJHwhyS054m0gDSiOgqMfpc+iPiqbGgTvTDMiVMryZw4PqNxGNNTtgxp/v46gefy7KooT9LqwB0LMsMFqztsQMBCQT+orMnicHBLI
- lI1eou/x
- iafEyMEuBkXXEce0qtm5xkZxsCemQHtfnz6nV0bGN0jq4+392Pu5cjYs94kSIclqRbUqt6jm28O6892fyrTS6HQ7ob4aQAq+yhzXFGYlPBRHupmYr9/lAO3ipvIlKU5tHIZXyfJi+pcAFO06bPqHNJOZjZhtOTq3g4P1a1nkBeob0weL8IzKcuDEjhzJ3ghWNblUmkrzynhgqk49DQvnDtCEDOh9gAqJZmZozPOeVVvaWHEkTeAoNiFNWNzSYDG6LQSVL1j2nCXLB/Wo0+8uKA3JyzxkISXncXsYNPNL4PJgs3WIMW4t9uUR4yX25dbsPJgGXAkJc9cJIVHs=
+X-HE-Tag: 1773264864-984942
+X-HE-Meta: U2FsdGVkX18AOrMi/zPcDg6kjPpqnDoKoYHj0niM/DvlW0lRAfX1FkXCluBM1WwlsNAQJAn0GzN6GsXVlMsEVzdAPqhBkkzEADe8CLU8ab/cpCncuYoaHJ6OVrsYA8i+1jbzejKzmwlYBDfMFIUgYUczwXk0SXPwVLk9a2ErIzc7dF5bkQ1Y7IEaihsF6VLB8EiaPHKFMnl1k0ieGusJ2xlGDSEtHOyt7ZG8D5Ix/jyEdk41Omjr3eNIA/wuijoIPPA5HheMXPuhKel+jYzyVFbknAF8neRlsiT3Qe00x6i52mg1QGE62xy3/46k69w9GuzPbwMDhDaResMnw6Apl1hbhJYXRdjGRiB+1nvB2Hk79JTVHc4PZfVSOd8Rv5OIlXz9Y8egjqA5vmggsecOVXdxzJgaTl+DC/R3HcDWiHjwcH89eki0n/Hvma/aHMIcSvgX3Lfbq42AKwWh2wgUKnRjn3wNtIHndjYipeaNliGLq1w/oMIGnvPtOc6C4AmUL9uy1NfYcexIwVHM2f9Frc9L7ztoQExYxe9SFYMVolsGwdF3qp9h8Hj6Ko6NExvkve8SFuF8e+aMVoAFYvjDrWG3lB+Oh6cDNYKBjq7xMdX1+7O5Ji+vFqL6jsOe9SKhdyih5eJrxh8l3obFBPR/193PcAouaJswI3CQQekOArKgUI3Z4BtAu763nyBbYqfQisFYsLbtFsrZCAIhlLWMhGGAthkJcs+l/RiSnu9ONcTFc4uWqFZMRRFTo2nu7hofueZFx92cbLeFjmsDj4vQB7QFF+WALVjZZ5SouMVgkeQLEc/Xg06NGppCsdWs1fSb8qoN9eUJPYtXjwZ7m7BtH6/cbIfq3fHsDmPKMyRkmTmb4Oa8zeZHlt4Kmi56dwsrgNTnfTvx0Oo511nuzqab/4bg5Kp1eU1IvBzVYg9KUmOg4gAwGR8W/wiRt24KS7edhosPJAw7OyWl/3MBadr
+ ycoLdUI+
+ LFC2NTF6MemRQfWdy59vkmv967S9VV3Mp0POTw0rvvjqGoSg0eUxMhfbyxKcrMma5mjQT/MRxV6bFY9OIfHcAqSTsjSdYDCUWQyQsSo+GWY+EC+pBRITSz4u+NxhDbVbjL8zvbNtYfzM1fHd8jvlOYirEgnPQah1XTuv0Fo9iGDr0eHDDduYtXJm/FZXw+BF8DRNN6lhqYWRZlmCvaW0RVRDWsDcb2u7m6h3C4k3QZPcGecn/m9SFU3RAIwy2lvrsghCKbmtada8BMr1sxmKwKIYAUwMzJkoyEpE+hvJyb/BlTJAOQ3mGsWMdsVTWGwQhCILf9JU8SuQKoxcEMJp+hx29QA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,76 +106,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc linux-mm
+On Wed, 11 Mar 2026 15:13:10 -0600 Nico Pache <npache@redhat.com> wrote:
 
-On Fri, Feb 27, 2026 at 2:26=E2=80=AFPM Dmitry Vyukov <dvyukov@google.com> =
-wrote:
->
-> On Mon, 16 Feb 2026 at 18:37, Aleksandr Nogikh <nogikh@google.com> wrote:
-> >
-> > The load_segments() function changes segment registers, invalidating
-> > GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
-> > enabled, any subsequent instrumented C code call (e.g.
-> > native_gdt_invalidate()) begins crashing the kernel in an
-> > endless loop.
-> >
-> > To reproduce the problem, it's sufficient to do kexec on a
-> > KCOV-instrumented kernel:
-> > $ kexec -l /boot/otherKernel
-> > $ kexec -e
-> >
-> > (additional problems arise when the kernel is booting into a crash
-> > kernel)
-> >
-> > Disabling instrumentation for the individual functions would be too
-> > fragile, so let's fix the bug by disabling KCOV instrumentation for
-> > the whole machine_kexec_64.c and physaddr.c.
-> >
-> > The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
-> > supported there.
-> >
-> > Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-> > Cc: stable@vger.kernel.org
->
-> Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
->
-> > ---
-> >  arch/x86/kernel/Makefile | 4 ++++
-> >  arch/x86/mm/Makefile     | 4 ++++
-> >  2 files changed, 8 insertions(+)
-> >
-> > diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> > index e9aeeeafad173..5703fa6027866 100644
-> > --- a/arch/x86/kernel/Makefile
-> > +++ b/arch/x86/kernel/Makefile
-> > @@ -43,6 +43,10 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o                 =
- :=3D n
-> >  KCOV_INSTRUMENT_unwind_orc.o                           :=3D n
-> >  KCOV_INSTRUMENT_unwind_frame.o                         :=3D n
-> >  KCOV_INSTRUMENT_unwind_guess.o                         :=3D n
-> > +# When a kexec kernel is loaded, calling load_segments() breaks all
-> > +# subsequent KCOV instrumentation until new kernel takes control.
-> > +# Keep KCOV instrumentation disabled to prevent kernel crashes.
-> > +KCOV_INSTRUMENT_machine_kexec_64.o                     :=3D n
-> >
-> >  CFLAGS_head32.o :=3D -fno-stack-protector
-> >  CFLAGS_head64.o :=3D -fno-stack-protector
-> > diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-> > index 5b9908f13dcfd..a678a38a40266 100644
-> > --- a/arch/x86/mm/Makefile
-> > +++ b/arch/x86/mm/Makefile
-> > @@ -4,6 +4,10 @@ KCOV_INSTRUMENT_tlb.o                  :=3D n
-> >  KCOV_INSTRUMENT_mem_encrypt.o          :=3D n
-> >  KCOV_INSTRUMENT_mem_encrypt_amd.o      :=3D n
-> >  KCOV_INSTRUMENT_pgprot.o               :=3D n
-> > +# When a kexec kernel is loaded, calling load_segments() breaks all
-> > +# subsequent KCOV instrumentation until new kernel takes control.
-> > +# Keep KCOV instrumentation disabled to prevent kernel crashes.
-> > +KCOV_INSTRUMENT_physaddr.o             :=3D n
-> >
-> >  KASAN_SANITIZE_mem_encrypt.o           :=3D n
-> >  KASAN_SANITIZE_mem_encrypt_amd.o       :=3D n
-> > --
-> > 2.53.0.273.g2a3d683680-goog
-> >
+> The following series contains cleanups and prerequisites for my work on
+> khugepaged mTHP support [1]. These have been separated out to ease review.
+
+Thanks, I'll add[1] these to mm.git's mm-new branch for testing.  Later (a
+few days) I'll hopefully move them into the mm-unstable branch, where
+they will get linux-next exposure.
+
+[1]: I'll suppress the usual added-to-mm emails.  What a lot of cc's.
 
