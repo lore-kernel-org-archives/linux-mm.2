@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4811E1062872
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 12:09:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7325104C00D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 12:09:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CAAF6B0005; Wed, 11 Mar 2026 08:09:49 -0400 (EDT)
+	id 2F33C6B0089; Wed, 11 Mar 2026 08:09:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1761F6B0096; Wed, 11 Mar 2026 08:09:49 -0400 (EDT)
+	id 28E856B0095; Wed, 11 Mar 2026 08:09:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE4F16B0093; Wed, 11 Mar 2026 08:09:48 -0400 (EDT)
+	id 0CAC56B0089; Wed, 11 Mar 2026 08:09:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C5BF86B0089
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CDF246B0092
 	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:09:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 609661BD1E
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5AD04139064
 	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:09:48 +0000 (UTC)
-X-FDA: 84533663256.23.57AD001
+X-FDA: 84533663256.25.C9B6A9C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4AC89A000E
+	by imf16.hostedemail.com (Postfix) with ESMTP id 407EF180011
 	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:09:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JePPqiHZ;
-	spf=pass (imf15.hostedemail.com: domain of devnull+lenohou.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+lenohou.gmail.com@kernel.org;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UYRl4yvJ;
+	spf=pass (imf16.hostedemail.com: domain of devnull+lenohou.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+lenohou.gmail.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773230986;
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qj15DOb5gdiSu/xfU7HGzTI1nePsYdlvEeqKA/QAOOQ=;
-	b=Sl2R05NFsX0WDEznNuLXgk4CiK2kVgp9oGdJ6Clobcrxm47DDSBhqdsFq5MmTedOOTG4PP
-	h53dL+e0evhCBs4WoY/nuftd4DAq8scLTpFKtZdJcX/mYQAKC5QQSY9dnwkXFWBfe3I3O+
-	kzxBEla2u/TBgw/rGQx1m7KvUKN9jB0=
+	bh=fQfBx1d18iCcvkLiGqjBF027ddFJUBvJQ40fNsY+Q6k=;
+	b=dYk+jCpIzN6q1nOwVq+RW4WgfctKzQyhWeDJ55u75UbafYIUKCgGn5DetMAldWtG+fj92U
+	wpHuldROQ4+n8QFKMC7HPuANnQ/kesq4tvytmg2+kLAw7YWtcaO9/dQhbOe9a6QgpQkJzE
+	K3FAW/DQ+UVnY9ALoWbBezw2Yxv3mGo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JePPqiHZ;
-	spf=pass (imf15.hostedemail.com: domain of devnull+lenohou.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+lenohou.gmail.com@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UYRl4yvJ;
+	spf=pass (imf16.hostedemail.com: domain of devnull+lenohou.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+lenohou.gmail.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773230986; a=rsa-sha256;
 	cv=none;
-	b=CnzCU9AzrbyxwoxvRiRivCrWMZb6jWHNxrbxCG2207SQXRmHfAmNAKos6du0d2jKTFYCZJ
-	CR6yxGJ/UproX0wflrEbk68ePJCLzvjaM2t/FW6qi7uST6Ya/KcdsMNP/97DGI+4S02thV
-	hXvr0gg3X4DhRA/ZQDZD0JanbBY/K18=
+	b=LC7piRqzo+4LDJv7F3tSiuRXKXCB715Qm/NB8cqYrFVWOPVtx23eObSgQiHzM8Mxc38VG7
+	gEowZSRHbCtoDmTI434ZmHa8/bn0yJg8iqaml16Ex4G1sEfT72C9EUMej8GzuDS2hCa1O3
+	jP+fJs0mSNwObS+j0Y5KBrj5H3QuKjE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2C2DD44344;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B9E7444BD;
 	Wed, 11 Mar 2026 12:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F084FC2BC9E;
-	Wed, 11 Mar 2026 12:09:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0F8F7C116C6;
+	Wed, 11 Mar 2026 12:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773230985;
-	bh=uDUuKYE7WPm2ghmNppN87QCMZ2Ntaheuuv+6690ZBXc=;
+	bh=rC4pO0IWDnF30bVsp69mvTMcZsws+nEtxbxlusOjQe0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=JePPqiHZanxzWwjAQCps+2qdNnfHKE/YXdvtRJmUnbrIWrX49OUJwT5a5rgQQO0cr
-	 FGtBklj/F1uhndB3vvLYTGX9nmwCNnM81OEeiL2WDdLki9xTHx3tS8mMQ5IGc+QftT
-	 QOerwzFr4JMuUnDcGyTMbiwuhgRCvSdqrdqFTpzqmtz+AJM7ITdcRzICS6cpy6LVWu
-	 2tOAcYXvYxACAymb0KI5r3CCpxRT3KJrS3JGyZEixyOeA2SB/hgllk3Y2Jl2MGcR79
-	 OjYkrDFKD+du5fsbn2D7Zl0WaBIDvu4lnjN/QhXeMiSGTAZOgAKIgUstdol2DkOi5K
-	 vJAlM7I9bhOHw==
+	b=UYRl4yvJ1o4wr+mqNseUyHMbQOZURSNHbP4V4dIZl3aZ0sIr866pecEB7LC+GkH66
+	 P7fmi3kYTdCBkV9apJ+2jzqAEoZ0jKUbqQRNZ8gxAoNcegC0fbdlw7MefpE10Ya10s
+	 f37nIaa836ItyxNF6I/aWcnb0dysRdFLY677hYIKbShDb95Ma2x3wnMBA+jZMQfp+n
+	 Xlf6BFnXXhPEpCy+Ni1tdppTXFd2zAk2dlrzMvtMrCidOzOi/i6m/uFbGfKekcWcCQ
+	 xs6GPZXZMA/oFd0AqfYoPzLaNVDaZTdh4TLBAoRDDgUGqfZbeeKNocE2+8Jm0JrXil
+	 yBfB2Vxo2PK4A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0A5C106286D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F38861062874;
 	Wed, 11 Mar 2026 12:09:44 +0000 (UTC)
 From: Leno Hou via B4 Relay <devnull+lenohou.gmail.com@kernel.org>
-Date: Wed, 11 Mar 2026 20:09:42 +0800
-Subject: [PATCH v2 1/2] mm/mglru: fix cgroup OOM during MGLRU state
- switching
+Date: Wed, 11 Mar 2026 20:09:43 +0800
+Subject: [PATCH v2 2/2] mm/mglru: maintain workingset refault context
+ across state transitions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-b4-switch-mglru-v2-v2-1-080cb9321463@gmail.com>
+Message-Id: <20260311-b4-switch-mglru-v2-v2-2-080cb9321463@gmail.com>
 References: <20260311-b4-switch-mglru-v2-v2-0-080cb9321463@gmail.com>
 In-Reply-To: <20260311-b4-switch-mglru-v2-v2-0-080cb9321463@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -86,25 +86,25 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Leno Hou <lenohou@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773230982; l=9504;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773230982; l=5011;
  i=lenohou@gmail.com; s=20260311; h=from:subject:message-id;
- bh=tFWHXkGhpgsi30y22v+vy7TlYveQq5dfwpqWnM8x6p4=;
- b=Rgna2s5Of0mtAYeppCOfpRVCYSTggsfNLOAXPDZBgmHH5PiJH3V8UnWaEwe5CKCAfj3rzSTs4
- EJfPo9cDfmIBUxe4S8jTETCrtXs1iUMzqFPFBc4DlQpBzKol71Q3XLB
+ bh=mpnWMW6S89qGDIwaKivQjNoGDsv2soTWaW1Gf6K14EE=;
+ b=xcndljvTygCcwBzsgj8nOw/iRC7PBqzNOjNrqjCnt1Bogi0UldgGc+rLPInShme/2seEjuxVE
+ 5txGqDKNySACcCOr+H31oDye4fgESyq3o03RYnnnbcViC1fsrV+Y3ed
 X-Developer-Key: i=lenohou@gmail.com; a=ed25519;
  pk=8AVHXYurzu1kOGjk9rwvxovwSCynBkv2QAcOvSIe1rw=
 X-Endpoint-Received: by B4 Relay for lenohou@gmail.com/20260311 with
  auth_id=674
 X-Original-From: Leno Hou <lenohou@gmail.com>
 Reply-To: lenohou@gmail.com
-X-Rspamd-Queue-Id: 4AC89A000E
-X-Stat-Signature: xwa3y15gxeqnwx395wc9dnemgn67b56p
+X-Stat-Signature: uuqaf3a5hc1qpqkbt3ra3te9jxkdpxq1
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773230986-991491
-X-HE-Meta: U2FsdGVkX1/hIVmna6uQqJitvZfPpFIGor3KOGKGYeJREsLRhZTzjh3HHch7sftmkDPRJn1yFKrVpPoUVFZLo63LEAjFhbr8yjnMFcT5iwnI45rNCLADH94ONor3jFr1Mys1xvaN+wG9ZzPu4msu90K1C3SC8bK/OuaWWPJbPtglQoCiAz5DNvfg4kRJiM1U05UtEHCwNj0tiXbvWRhcbEclYMvaFbt1c4/D6zVzMsvda3Oe/jiO9zsgsZXNNPeE+WiQ0JRSIVWs0lBkDPYnjq1qMsHxLGxC2dq/s2rdexYDgeJq7KPUaD0oREQnKLkPSV7oxPXhOJiD0571xOkWj35WGxD5id49fDL+Nu+kip/Aw3vqGuDrK9TFSuEQ3Ikx9lQ9aYINfFu1qMlVLYh7I/5QJiSQq2cKjJ5M0SR2EpbE2qxg5NSvugu4zsvN/BOBnJX7v4xzUvcPlMvcAwMSHWWJDYUWnR3bl0lqhCLu/1eKDrxPrCnFXAo59He7zRyQK8BWun3R1C9g9v367FKGQx4FCgB28pwS+q+sw60iDvK2WUNmwcW30WouE28Tc0rpgDA7RLiEfm0up+mGUV3jEcuPFdE/AdMDOZk2Wa+x8BeTxgUNwNX684sV+P3vDYEe6PKQLeCNPXVib2DF0ItLAVY9uPHlqaF2Q7igjGnYTeuXhvgLaot1A2TXKDWZYh+tCHWaWnwK81v/wk3hYDPkTaVP8YDy/ouemopIy9Hv2Bmz+6LP+SPuH3qYpPu2w+pFlkxNTbyRoLh+1bX4ylIs/u5ya9xdJRzyjHrXBx7XAiz1aZQb/dIVPd7FGBmHtAA+Nu5r4FTYHbTrxNsjJdFifGRv8fQ+39bTJ7jdxO+BUJpDV3Xzbwa/Ah0kimxAYhT7Rw+1PuegFU5Tcv8Q4N9l5wm4RjSLWMVgzaPsGx8O5Ozo5Kl80SVNZXRYtqTFzD7UjjDQevsaxHDlcTpJo6p
- P0vbWzip
- XKgqiNOzCJXpjPx4dixAKEAcqpkbB41oFdplNADUPf6deiChuwF95eih8XxUnxVk3jlLGQkOEJwU0NiXJW/JzMd7CHuBt6fci99TB0FRmi4YGWOAD93iIHec1SFR5jAWkAXbEMExj/xR4LdMZwFiYggmoeghlvzxeSqj7MktbgYibCNw3tJf+Z+9Ywl0jLBttQrZQ0zf75ZLdUgqk7xXmt8zloBeDuwo/9vxNeToPhYON3fFfYfw85S1HRH9m9mzNyMilhU5pfySW2XeEq2KS/aGJC7tU5QEX/v00c9YmLEWW7zLHogMOTOSNoQahnscJpdWDJwDs5vCMnyJJRTdHvZSSe/105HimrJ8C8kyrA2gVfRsgOw1aDDsN1LKPsfwIzm9JE919ixonc9BYlqspfRUjhVCn3OlC7Mspm/RcCjIA1vPtGkKLwnpa0hkRtzG/L4XXgKdOt8zDUBneYvcemwgaKR9dWRc/ZedZWXP6Ca1UXQYeyL5AvduShVIgfAHVpY6+JDZC5HGgYtdXCazaiLslLSeVJEuwe1J3f8bqGE0c9IsnvOjRQPFfAmVA4xmLQHYrw2lTfOd+qp7h26fjnhFcoJRGQ9YU4WJ+3w2paK6/rh4xG72HN/EuhfEtMmrD4bAeoHPs4hRCxSPh1RDuqEDJnGMkizkSMB1mrfLyqtimi0kK1VY6+IvSpBhcsl0UGG1WvDmKTPadXHQ=
+X-Rspamd-Queue-Id: 407EF180011
+X-HE-Tag: 1773230986-415515
+X-HE-Meta: U2FsdGVkX1/kauxTGGJjZ+5297FeiDP81yYMAutpmZUTwvVUq4Sh5Zyzh5r4uTFesGrrLgR+agExnDiRwYALVx/6Nlmh90xK5R9HcTnLtu+yLpeRWF9XSl581uD/BBrcQSjjOMkSIe2fy4FEEt4tscCxvgZDQymxQuwttBVSy8w7oqAkT5nP8sC2Cz8XyT5RNKTkbosZ8I6tPxDmzw5O748joYqU0pf6gqpIS7PXKjamH2gBBa5LXXgrU9L3eWzBi/NkPXbXp6jITt141nkL7PBhU8LZvTDYx7VUtZLBuOnGIJM/OLRVXtsaxuIQOoaeX68rEt3GBxpmIRjoEAZTSJck24t/aomz6UbebJy+j0MhFgrJdwaBC7rx62Pc+Dv3pqqFxS6/GS7ROhyOiozboTFWJJ204fv23DgjvAtCIHNbJsBOxRl8rioqIF89mY3zQ+LO4iTtSK/quaqq0mvOC2cZfExi0KrQs94L5TtD76S4RxFatBPTtEb7pUFZ4Lf4Xe3gpAMYpxSUtO27A3KHoW8q/JZ35gwnRql4rtaqY7DTQLzA8sUVrVvbm+K56u5fU6xJfvctJ6ceUNiliKLcvdxwGBrchNpEE9lafEAk0tFDu4Tckz+Q9OdP+r05yAUg1Oa2Y1Fdx3bJLkIbzbhVI4uRW4uLmLI3mfVntDwACajhq1zKUU60oi9O/eD4HnZLGMoYvxyiF/OqoWi0Z3aBX+IXOtWtMlQfFZKl+UEEsYF6iiUz0R0KUnKT0LNA00WjlzgVGgjhlpon2g86j1YTyMQ7tpqflZMeol5t3sa0hmXVD5i55zBI0KTpTT8OJCV5DvMgjnzXOMf20NG0hiDKoJPzY3lacjWv7+RxsVm9pcMVEl47yVdQOgFEYl5ZV8xSdnm4gKmV09bH2JQYY0d1R/vSh9ke8wHsFbawS0MLIAL9SEOOljWR3kza/xS2Z6xxFdqkBsJa1u8WkD+Cood
+ /VbbCmkp
+ SIgczUP3SRYy5lRR5p37OKov/gBT1lbEEULHgbFRwZaX415Js3xCabju3vmZmI9oGtxU1gm0rFri3R06VuFAqABu8aqcxf/MlIwOi8Rd/w7Bt8YnLeVBku+qqvSU0LxwQQxH2sKhpASQxaQTjHWmbEjIpzwHAMAsNEBHdwjStVJhSem6kPMsVsf4qJpxZImDhNV+AKkfaAsoIBL2Qoq9uWS1QQmZGGPcLx4QobAt71W1bPRYO0gmQKUI4Q6MB1/oPtiMjNaQNPSAxpVAzvq8LdA+SJrNGvR92GOewKavhb6gYHIZiOBbvXcLc6zHXNjHm0FYdIb/Y5CcM8AxaG1PBYgMbA4HcmfkXWV7+6fs4Anex9Fo6EGhr6ihu112Akz9n4i8yEtj1O1eA9I/gFPdA+O83AMnSjqXvhZry2dFfqsa/1F5JgMQCwbL5a+Xw2G/t6/G0YHTC3abY2AuprBBxHD/4O5bpp2/I0AV8VNxwiPSQsE84xCMXNuXCjLQhW5mzFqpgSSM6oON8UCquhK3bVb53DNOFW+z2VfVpe9Z4S23tB9VMXk3sMr1qC2zo2gzuTa50/Pa9XrWKHwl8mObX0cFgqpOme6jDs3MCNjozGQvlUP4iY1Mbd7AVbFo8U8vgQwdsO1eBTnmAWq4SfE9XB10OijgqXdO5k0dgtfLq27+cyNQo5mw79X3Z9ybNZoxmZ8aYbBq/Kp70Bk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,56 +114,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leno Hou <lenohou@gmail.com>
 
-When the Multi-Gen LRU (MGLRU) state is toggled dynamically, a race
-condition exists between the state switching and the memory reclaim
-path. This can lead to unexpected cgroup OOM kills, even when plenty of
-reclaimable memory is available.
+When MGLRU state is toggled dynamically, existing shadow entries (eviction
+tokens) lose their context. Traditional LRU and MGLRU handle workingset
+refaults using different logic. Without context, shadow entries
+re-activated by the "wrong" reclaim logic trigger excessive page
+activations (pgactivate) and system thrashing, as the kernel cannot
+correctly distinguish if a refaulted page was originally managed by
+MGLRU or the traditional LRU.
 
-Problem Description
-==================
+This patch introduces shadow entry context tracking:
 
-The issue arises from a "reclaim vacuum" during the transition.
+- Encode MGLRU origin: Introduce WORKINGSET_MGLRU_SHIFT into the shadow
+  entry (eviction token) encoding. This adds an 'is_mglru' bit to shadow
+  entries, allowing the kernel to correctly identify the originating
+  reclaim logic for a page even after the global MGLRU state has been
+  toggled.
 
-1. When disabling MGLRU, lru_gen_change_state() sets lrugen->enabled to
-   false before the pages are drained from MGLRU lists back to
-   traditional LRU lists.
-2. Concurrent reclaimers in shrink_lruvec() see lrugen->enabled as false
-   and skip the MGLRU path.
-3. However, these pages might not have reached the traditional LRU lists
-   yet, or the changes are not yet visible to all CPUs due to a lack of
-   synchronization.
-4. get_scan_count() subsequently finds traditional LRU lists empty,
-   concludes there is no reclaimable memory, and triggers an OOM kill.
+- Refault logic dispatch: Use this 'is_mglru' bit in workingset_refault()
+  and workingset_test_recent() to dispatch refault events to the correct
+  handler (lru_gen_refault vs. traditional workingset refault).
 
-A similar race can occur during enablement, where the reclaimer sees
-the new state but the MGLRU lists haven't been populated via
-fill_evictable() yet.
-
-
-Solution
-=======
-
-Introduce a 'draining' state (`lru_drain_core`) to bridge the
-transition. When transitioning, the system enters this intermediate state
-where the reclaimer is forced to attempt both MGLRU and traditional reclaim
-paths sequentially. This ensures that folios remain visible to at least
-one reclaim mechanism until the transition is fully materialized across all
-CPUs.
-
-Changes
-=======
-
-- Adds a static branch `lru_drain_core` to track the transition state.
-- Updates shrink_lruvec(), shrink_node(), and kswapd_age_node() to allow
-  a "joint reclaim" period during the transition.
-- Ensures all LRU helpers correctly identify page state by checking
-  folio_lru_gen(folio) != -1 instead of relying solely on global flags.
-
-This effectively eliminates the race window that previously triggered OOMs
-under high memory pressure.
-
-The issue was consistently reproduced on v6.1.157 and v6.18.3 using
-a high-pressure memory cgroup (v1) environment.
+This ensures that refaulted pages are handled by the appropriate reclaim
+logic regardless of the current MGLRU enabled state, preventing
+unnecessary thrashing and state-inconsistent refault activations during
+state transitions.
 
 To: Andrew Morton <akpm@linux-foundation.org>
 To: Axel Rasmussen <axelrasmussen@google.com>
@@ -179,228 +153,99 @@ Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Leno Hou <lenohou@gmail.com>
 ---
- include/linux/mm_inline.h |  5 +++++
- mm/rmap.c                 |  2 +-
- mm/swap.c                 | 14 ++++++++------
- mm/vmscan.c               | 49 ++++++++++++++++++++++++++++++++++++++---------
- 4 files changed, 54 insertions(+), 16 deletions(-)
+ mm/workingset.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index fa2d6ba811b5..e6443e22bf67 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -321,6 +321,11 @@ static inline bool lru_gen_in_fault(void)
- 	return false;
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 13422d304715..baa766daac24 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -180,8 +180,10 @@
+  * refault distance will immediately activate the refaulting page.
+  */
+ 
++#define WORKINGSET_MGLRU_SHIFT  1
+ #define WORKINGSET_SHIFT 1
+ #define EVICTION_SHIFT	((BITS_PER_LONG - BITS_PER_XA_VALUE) +	\
++			 WORKINGSET_MGLRU_SHIFT + \
+ 			 WORKINGSET_SHIFT + NODES_SHIFT + \
+ 			 MEM_CGROUP_ID_SHIFT)
+ #define EVICTION_MASK	(~0UL >> EVICTION_SHIFT)
+@@ -197,12 +199,13 @@
+ static unsigned int bucket_order __read_mostly;
+ 
+ static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
+-			 bool workingset)
++			 bool workingset, bool is_mglru)
+ {
+ 	eviction &= EVICTION_MASK;
+ 	eviction = (eviction << MEM_CGROUP_ID_SHIFT) | memcgid;
+ 	eviction = (eviction << NODES_SHIFT) | pgdat->node_id;
+ 	eviction = (eviction << WORKINGSET_SHIFT) | workingset;
++	eviction = (eviction << WORKINGSET_MGLRU_SHIFT) | is_mglru;
+ 
+ 	return xa_mk_value(eviction);
+ }
+@@ -214,6 +217,7 @@ static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat,
+ 	int memcgid, nid;
+ 	bool workingset;
+ 
++	entry >>= WORKINGSET_MGLRU_SHIFT;
+ 	workingset = entry & ((1UL << WORKINGSET_SHIFT) - 1);
+ 	entry >>= WORKINGSET_SHIFT;
+ 	nid = entry & ((1UL << NODES_SHIFT) - 1);
+@@ -254,7 +258,7 @@ static void *lru_gen_eviction(struct folio *folio)
+ 	hist = lru_hist_from_seq(min_seq);
+ 	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
+ 
+-	return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, workingset);
++	return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, workingset, true);
  }
  
-+static inline int folio_lru_gen(const struct folio *folio)
-+{
-+	return -1;
-+}
-+
- static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
- {
- 	return false;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 0f00570d1b9e..488bcdca65ed 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -958,7 +958,7 @@ static bool folio_referenced_one(struct folio *folio,
- 			return false;
- 		}
+ /*
+@@ -390,7 +394,7 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+ 	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
  
--		if (lru_gen_enabled() && pvmw.pte) {
-+		if ((folio_lru_gen(folio) != -1) && pvmw.pte) {
- 			if (lru_gen_look_around(&pvmw))
- 				referenced++;
- 		} else if (pvmw.pte) {
-diff --git a/mm/swap.c b/mm/swap.c
-index bb19ccbece46..a2397b44710a 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -456,7 +456,7 @@ void folio_mark_accessed(struct folio *folio)
- {
- 	if (folio_test_dropbehind(folio))
- 		return;
--	if (lru_gen_enabled()) {
-+	if (folio_lru_gen(folio) != -1) {
- 		lru_gen_inc_refs(folio);
- 		return;
- 	}
-@@ -553,7 +553,7 @@ void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma)
-  */
- static void lru_deactivate_file(struct lruvec *lruvec, struct folio *folio)
- {
--	bool active = folio_test_active(folio) || lru_gen_enabled();
-+	bool active = folio_test_active(folio) || (folio_lru_gen(folio) != -1);
- 	long nr_pages = folio_nr_pages(folio);
- 
- 	if (folio_test_unevictable(folio))
-@@ -596,7 +596,9 @@ static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
- {
- 	long nr_pages = folio_nr_pages(folio);
- 
--	if (folio_test_unevictable(folio) || !(folio_test_active(folio) || lru_gen_enabled()))
-+	if (folio_test_unevictable(folio) ||
-+		!(folio_test_active(folio) ||
-+		(folio_lru_gen(folio) != -1)))
- 		return;
- 
- 	lruvec_del_folio(lruvec, folio);
-@@ -618,7 +620,7 @@ static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
- 
- 	lruvec_del_folio(lruvec, folio);
- 	folio_clear_active(folio);
 -	if (lru_gen_enabled())
 +	if (folio_lru_gen(folio) != -1)
- 		lru_gen_clear_refs(folio);
- 	else
- 		folio_clear_referenced(folio);
-@@ -689,7 +691,7 @@ void deactivate_file_folio(struct folio *folio)
- 	if (folio_test_unevictable(folio) || !folio_test_lru(folio))
- 		return;
+ 		return lru_gen_eviction(folio);
  
--	if (lru_gen_enabled() && lru_gen_clear_refs(folio))
-+	if ((folio_lru_gen(folio) != -1) && lru_gen_clear_refs(folio))
- 		return;
- 
- 	folio_batch_add_and_move(folio, lru_deactivate_file);
-@@ -708,7 +710,7 @@ void folio_deactivate(struct folio *folio)
- 	if (folio_test_unevictable(folio) || !folio_test_lru(folio))
- 		return;
- 
--	if (lru_gen_enabled() ? lru_gen_clear_refs(folio) : !folio_test_active(folio))
-+	if ((folio_lru_gen(folio) != -1) ? lru_gen_clear_refs(folio) : !folio_test_active(folio))
- 		return;
- 
- 	folio_batch_add_and_move(folio, lru_deactivate);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 0fc9373e8251..38d38edda471 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -873,11 +873,23 @@ static bool lru_gen_set_refs(struct folio *folio)
- 	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
- 	return true;
+ 	lruvec = mem_cgroup_lruvec(target_memcg, pgdat);
+@@ -400,7 +404,7 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+ 	eviction >>= bucket_order;
+ 	workingset_age_nonresident(lruvec, folio_nr_pages(folio));
+ 	return pack_shadow(memcgid, pgdat, eviction,
+-				folio_test_workingset(folio));
++				folio_test_workingset(folio), false);
  }
-+
-+DEFINE_STATIC_KEY_FALSE(lru_drain_core);
-+static inline bool lru_gen_draining(void)
-+{
-+	return static_branch_unlikely(&lru_drain_core);
-+}
-+
- #else
- static bool lru_gen_set_refs(struct folio *folio)
- {
- 	return false;
- }
-+static inline bool lru_gen_draining(void)
-+{
-+	return false;
-+}
-+
- #endif /* CONFIG_LRU_GEN */
  
- static enum folio_references folio_check_references(struct folio *folio,
-@@ -905,7 +917,7 @@ static enum folio_references folio_check_references(struct folio *folio,
- 	if (referenced_ptes == -1)
- 		return FOLIOREF_KEEP;
+ /**
+@@ -426,8 +430,10 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 	int memcgid;
+ 	struct pglist_data *pgdat;
+ 	unsigned long eviction;
++	unsigned long entry = xa_to_value(shadow);
++	bool is_mglru = !!(entry & WORKINGSET_MGLRU_SHIFT);
  
 -	if (lru_gen_enabled()) {
-+	if (folio_lru_gen(folio) != -1) {
- 		if (!referenced_ptes)
- 			return FOLIOREF_RECLAIM;
++	if (is_mglru) {
+ 		bool recent;
  
-@@ -2319,7 +2331,7 @@ static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
- 	unsigned long file;
- 	struct lruvec *target_lruvec;
- 
--	if (lru_gen_enabled())
-+	if (lru_gen_enabled() && !lru_gen_draining())
- 		return;
- 
- 	target_lruvec = mem_cgroup_lruvec(sc->target_mem_cgroup, pgdat);
-@@ -5178,6 +5190,8 @@ static void lru_gen_change_state(bool enabled)
- 	if (enabled == lru_gen_enabled())
- 		goto unlock;
- 
-+	static_branch_enable_cpuslocked(&lru_drain_core);
-+
- 	if (enabled)
- 		static_branch_enable_cpuslocked(&lru_gen_caps[LRU_GEN_CORE]);
- 	else
-@@ -5208,6 +5222,9 @@ static void lru_gen_change_state(bool enabled)
- 
- 		cond_resched();
- 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
-+
-+	static_branch_disable_cpuslocked(&lru_drain_core);
-+
- unlock:
- 	mutex_unlock(&state_mutex);
- 	put_online_mems();
-@@ -5780,9 +5797,12 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	bool proportional_reclaim;
- 	struct blk_plug plug;
- 
--	if (lru_gen_enabled() && !root_reclaim(sc)) {
-+	if ((lru_gen_enabled() || lru_gen_draining()) && !root_reclaim(sc)) {
- 		lru_gen_shrink_lruvec(lruvec, sc);
--		return;
-+
-+		if (!lru_gen_draining())
-+			return;
-+
- 	}
- 
- 	get_scan_count(lruvec, sc, nr);
-@@ -6041,11 +6061,17 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
- 	unsigned long nr_reclaimed, nr_scanned, nr_node_reclaimed;
- 	struct lruvec *target_lruvec;
- 	bool reclaimable = false;
-+	s8 priority = sc->priority;
- 
--	if (lru_gen_enabled() && root_reclaim(sc)) {
-+	if ((lru_gen_enabled() || lru_gen_draining()) && root_reclaim(sc)) {
- 		memset(&sc->nr, 0, sizeof(sc->nr));
- 		lru_gen_shrink_node(pgdat, sc);
--		return;
-+
-+		if (!lru_gen_draining())
-+			return;
-+
-+		sc->priority = priority;
-+
- 	}
- 
- 	target_lruvec = mem_cgroup_lruvec(sc->target_mem_cgroup, pgdat);
-@@ -6315,7 +6341,7 @@ static void snapshot_refaults(struct mem_cgroup *target_memcg, pg_data_t *pgdat)
- 	struct lruvec *target_lruvec;
- 	unsigned long refaults;
- 
--	if (lru_gen_enabled())
-+	if (lru_gen_enabled() && !lru_gen_draining())
- 		return;
- 
- 	target_lruvec = mem_cgroup_lruvec(target_memcg, pgdat);
-@@ -6703,10 +6729,15 @@ static void kswapd_age_node(struct pglist_data *pgdat, struct scan_control *sc)
- {
- 	struct mem_cgroup *memcg;
+ 		rcu_read_lock();
+@@ -539,10 +545,11 @@ void workingset_refault(struct folio *folio, void *shadow)
  	struct lruvec *lruvec;
-+	s8 priority = sc->priority;
+ 	bool workingset;
+ 	long nr;
++	unsigned long entry = xa_to_value(shadow);
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
  
 -	if (lru_gen_enabled()) {
-+	if (lru_gen_enabled() || lru_gen_draining()) {
- 		lru_gen_age_node(pgdat, sc);
--		return;
-+
-+		if (!lru_gen_draining())
-+			return;
-+
-+		sc->priority = priority;
++	if (entry & ((1UL << WORKINGSET_MGLRU_SHIFT) - 1)) {
+ 		lru_gen_refault(folio, shadow);
+ 		return;
  	}
- 
- 	lruvec = mem_cgroup_lruvec(NULL, pgdat);
 
 -- 
 2.52.0
