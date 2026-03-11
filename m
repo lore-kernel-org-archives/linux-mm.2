@@ -4,87 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFC39FCC9B0
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 05:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 915D1FD88FF
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 05:30:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60B636B0093; Wed, 11 Mar 2026 01:29:35 -0400 (EDT)
+	id C65A66B0095; Wed, 11 Mar 2026 01:30:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B91F6B0096; Wed, 11 Mar 2026 01:29:35 -0400 (EDT)
+	id C05936B0096; Wed, 11 Mar 2026 01:30:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C1556B0095; Wed, 11 Mar 2026 01:29:35 -0400 (EDT)
+	id B07F86B0098; Wed, 11 Mar 2026 01:30:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E5F06B0098
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:29:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2E21160620
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:29:34 +0000 (UTC)
-X-FDA: 84532654668.06.DD683E6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 27F561C0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:29:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUFZR4CD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 88BE66B0095
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:30:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B9A21B8551
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:30:04 +0000 (UTC)
+X-FDA: 84532655928.20.7B1C16A
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3A0BA140009
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:30:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=F5+GiQwM;
+	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773206973;
+	s=arc-20220608; t=1773207002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n2dE3Uwu9fE6iIISJltr2A/Nq8qzAWYcl88tLtMysBQ=;
-	b=cBG6w7mz2BnaD6cvj3QnPuCU3gBsG223eIKgv3RSYbrEr1wNLjnLUAd/L4rpKR1StBMVP/
-	4WDtVD8zpdHXrdkLpMoL5Qw71vCA38byAxGshm4LVl89NA4b1KQMxsoW5adoT/JnPEx3mV
-	WgyDg6glSyhzu81XZHGTTHNTzeAeZos=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773206973; a=rsa-sha256;
-	cv=none;
-	b=3WpVFZIR3h6Rm1Lp06G3kz0TTnvtAnuqaHWACLCnfVXd3n3vLBSkdeoIHXylqlVahrUmax
-	mJUUzuhv5wpOSZGx7PR9ReGOVGEeofMRF82U8PqUqdK4igNP/IVAaTbYtTUD1+Z7g8Orjm
-	7xy9xY3GXLT/9qqQYnRZEjiY0rJoBps=
+	bh=tpIlh++gNSqrjxti8e+fCN/v6IbpRXIC+wi7lGmEm8w=;
+	b=bsSQ8IgW31jXR+MBaH+wbGr1X9leuGR5ceJqwO+ZvCOue36mT2x/xD1rg2MWy4w+wIVKRM
+	BCobXYW1ruYJJUvBzLufkG9sOjJXEGNMrKVZNr15QMvdmUiMVwpuKM+wSi4J0oaAC9Q1w1
+	PLTL39A6yiQVJ46/wZrPOVdyj/a20+s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUFZR4CD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4AF1C4454C;
-	Wed, 11 Mar 2026 05:29:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3B9C19425;
-	Wed, 11 Mar 2026 05:29:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773206972;
-	bh=ESvZf4UkUBS6SSFEGCLnD8WnAsHOvLPTsDE9mnF1u0Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUFZR4CDVcc+9x4268CeSuiPQAG7y6RnDcoFnSLsGZUpeyOlKbFXFR57tXoUAc2Pz
-	 MuyXRVn698cI6fITK9reHO5e0sjhJzUrk5FvfdQ47VdrcLkn5lQLSHt2R954aGQCVP
-	 tnkYnn7+hYO3K1C+qNX7KkQDIhMPc9eEHdwQbOXQee2BJkDBoenu/6/vfUsW5bHIP8
-	 +dJJMg8up4CPyIqSXPrEwm3voEah2VnWzmB+HYdboVkdY+xwYo0q+umhxbQjpyXl1x
-	 nw1r0XKO0aso+lFc7m6N4okCw+Gjer4L/UsDsLL4zfCM8UITryigJQrAEYZ7Jphb+J
-	 Fjahs/sBzuY0w==
-From: SeongJae Park <sj@kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=F5+GiQwM;
+	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773207002; a=rsa-sha256;
+	cv=none;
+	b=PbEeXvPuPGwVoiDcnj+OrqfPw+cZsNHPEgKImCGcfltKzTO0RpStp3TsFWheJVNYRRZ3zI
+	GnkhLmuWT8tOBuqypuc+D8EqMkR/1XUdUBHYNlZT0nTNUT7dwcllQcEhwohsApkww7cINx
+	TANKS7WRpkruXCtw4V2xYWql1r+yk5Y=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so150264705ad.2
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 22:30:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773207001; x=1773811801; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tpIlh++gNSqrjxti8e+fCN/v6IbpRXIC+wi7lGmEm8w=;
+        b=F5+GiQwMn1naYpV1X6baaMPl7X4iIGGWg+ZVQsgJAvM/2n6pQ1l8VsjntVYzXMw/Ie
+         FIaKqlw6h/zhktk0IjxSNkvA9/PGe4m/Hi45LkIe8sF+uBearQz57pJjJvM9tagjHr/V
+         0FR4M+spe2DdJOwjtpX0Xdyayl5HXO2FJVTWE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773207001; x=1773811801;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tpIlh++gNSqrjxti8e+fCN/v6IbpRXIC+wi7lGmEm8w=;
+        b=GbID8i5hr3BG0Z/MODCoFCp0Ld76++yubLmlQaDoc9t5s+cG/CTixyPOvycS2t/Iuw
+         xnkDTWk8C66NmZGaK1gl7t6JuLj6jH2a/nAWC+QKONqrAphJwH7S1J9ByIeUK6JiJTTJ
+         pkOQ8CWXXoFZnYoD8V9S1scTQNTINsUGu8gdHKK8OSoLmKra3IjXRTYsoeM3g06gwQOc
+         3xc9X5Y7hHHsdgAlavNAqd25XahAbL4+GjpHSe306fGyDEfD97xVQTOqj7sp/0AppCb+
+         gZfhj5KjLQTwqR+WSno9BVyP7rZsUAVqVGctONWMXesblezvGbnAwz3HJnyLuC1k0Z0N
+         LzIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2J4NlpjfU4UEgYmc/vZUMP6v97DeGjGmnruWVmWVquZXJgu3Kp0bXk8vIhlnpCdbB1k31MATpYg==@kvack.org
+X-Gm-Message-State: AOJu0YxnnGofsexMWY7k76u0y/GxcmuQc3thuE4tdwfyw+/xis1H38VD
+	z8AjJPz2Nln6Ab/C8miXKulvln3DUAmT279BUwlCp2A8jMs/yuwy6rgtTGOyqnLKCQ==
+X-Gm-Gg: ATEYQzztqiuZvLYCI1sYVPx1AapUjZeQnx9KMKXSmjzFx2hh9rgFqeLHpCIGJd9kQDn
+	QTRQIb08eJSHOsIswdl/4yv4y3oD9JOZly4XldEqvLJTfAQCl2ATePztiGkFDapGFqYhrQkWfTs
+	1UCJ//DX6To8YjsfqXB0zWhhEo55zopXjboIfqHu6ThNEcN1vJxljJjz9FLrIP9AsCjdf5oGiGg
+	M8w52AW6/5iAnaPlzREl6bjHk1pQfD5pQLjdV1qmRmBHE68gg1qn0Dg74uMz5YeOfOl+JDjtsII
+	BWJ92loWu+oZob6XsIpR+cHp0B6Piv/yaWVMyM/ilA8UP+0HYylcFVzK3BdEBzGZi5PsO6XHumi
+	Kg43LK4z2Cv7ogOUDA2mhdQ+fv8B913L+ym+nPYnsyUnjL6bCe89AZJh6+bPxna8lQi4/xJrfGF
+	Ck8z1t1RPt9C/W+WrW44AdlnFeR4VsHvIqyImoNerIPLvOgzbENmTFeeqt2IViV/I=
+X-Received: by 2002:a17:902:c951:b0:2ae:46df:5643 with SMTP id d9443c01a7336-2aeae763812mr14917185ad.11.1773207000953;
+        Tue, 10 Mar 2026 22:30:00 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:93a4:8281:fe98:426a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae222a2dsm9964165ad.17.2026.03.10.22.29.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 22:30:00 -0700 (PDT)
+Date: Wed, 11 Mar 2026 14:29:57 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 5/5] mm/damon/lru_sort: respect addr_unit on default monitoring region setup
-Date: Tue, 10 Mar 2026 22:29:26 -0700
-Message-ID: <20260311052927.93921-6-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260311052927.93921-1-sj@kernel.org>
-References: <20260311052927.93921-1-sj@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org, Brian Geffon <bgeffon@google.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH 3/5] zram: recompression priority param should override
+ algo
+Message-ID: <abD9faU5BcoCNcfY@google.com>
+References: <8a5d53d19a8dbd51d7d81d153676895163e0735e.1772180459.git.senozhatsky@chromium.org>
+ <831636c74ca6d72317de02d96585cc6833d082e6.1772180459.git.senozhatsky@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 27F561C0005
-X-Stat-Signature: ne3db6u1e9atcwwcja8terafmp8raf16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <831636c74ca6d72317de02d96585cc6833d082e6.1772180459.git.senozhatsky@chromium.org>
+X-Stat-Signature: fe96tsr33k1d7dmpopne5wtfdidhbsrr
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773206972-217158
-X-HE-Meta: U2FsdGVkX19h/i9PAfI9vobNBQyTaXsCWts1ahxfMqUjaG5oaXAwBDlRYADy3R8tpXtqoBVpQGc4KY7vEya4hZiVD81pXfsfdTXG1EVAhEdxPvAXxxTHPrZdzJhps04zfGrx3ykXopU7dKJrHwvYcxDnmPZqCdew9i8pYquiJdPPqTN4oz3yxnDTw4m3KRp3eVTqc3so0mYBA0fBTFoJw5skP5oYh7yk1wOEj494vdTaiz+RmOOwy+BOIexdS6/DVU7S0cfztYLM8PIYk2/Qr6M2+mSW4ADFb9k8tmCD10yaz3308t1RCOPCDmrDJe0o35hczaHiZXXtoP3h2OCeO72M5g3jI8D7dMYo3Q+ePUos+pdIfJEfYn6ObFMf0jPJ2UmpDYI5m27mP/L5jcZRjNeuRWnYprxRwpdyPNRnTx+XfYrXQd36FQ/ZZxCWaJc0Cn8Q9ScHnsQBZ8245zcTCMNVH3qpV1C8n6rUcf+Q+lOA5rVmss2N9lQc7GnQ3no00a53/ENT/PpIZ2c8eGUif23J37gXIyQ7nO4vIjvWPXsPlNH12f0mVhEVPEJqxyTDPTdsgPOcCAFSJFXrAdR2wxAX4COXyznirxKxtDiLj4XkO6jpLb+frJUpWMDsn4/HiefkEaEr1kY/9o9k1zYEisUc/B8I7EO8KM6JF3gEkz5ocUwSnr+WQU4FwHn8ohftDvAfSfwA5GERxzY1DZkyPSFhne69xHskmUZvog4Jv9gLPLUf7IM42ytXNL5gDEGBLkWUW/s67cOzOTUnp903T3ktu5HK5s7/cm1dlAOFtrrHZcE6AuaZr3wuPV1wfvdH8113NRC3gvnsIGZi4+IrIZpE6QUiHy4O3/GiM/OcdVt//8d14upO46311KlHAsZmxozjqN//Qp0F7x2lX8FhXQeJxwMnvM3MFFaahzg+bYO6Zybxfmw6RO21W1ztQvvYJA64w7cu6VyyRE7oedQ
- n6iWDgEX
- S3hldaLquOjICDIm2gzkirSr7fP4eNAbu7tHZUFzhUC6wQswG4jS10VvY2rg8E3fqDnzD4WLHrhbHq05Led3FWAuIaTI7pAiyUrgSnIqH+aWOMl9l5ftatE6VNBFsnqR7P9nYgwoPmbpY2710si0upUxGACTGChzlabXIVi6Bbf+jpXxHK1sNbaQhD2qY3cpjYVpd/SVRz9fQmc8m58VOYueqNjr70r1QXx5FJi4ZLMwb6PcbFTtoUqsv9IKaLmMesc/ULOWr1bYWyBwOyEITTW45pQ==
+X-Rspamd-Queue-Id: 3A0BA140009
+X-HE-Tag: 1773207002-467055
+X-HE-Meta: U2FsdGVkX1+DboU5h2h3MnEkCUvxFjAapjnYzK8J+qk5WryoxbbkMPMt8tZjebvWL5ozgqm6BQSs+VPPUa+3OQiJGynnUY24/PVCFEPI4/ZpTqn6nzJuXoxI333pmibSZnF76Az0lgDgKy3U/Wt/LmpDDRPaim1gzNas2SmdcD4SQkRwMqXw33NtgW5Uqnd2olTm5/+4/s63R5SqDu46P/OYvMEX3kwMqRySnHJMR8Wvh1X3mkYkAsChjY5cTLkxWQtogZ+wn/Clc8x+Ea61bfq/RiwBnIZxWXzO5oF6LQT4X84AxDg8UNaBHyKDnaOk6tKmoOI2R+E2sNaRjBJDDXR4musdvaokq8jgR7Qar+BFQnoOi7gpd8EG3O1kwtdJQYD3P6MR0eKzkkjjjypKzdnwtcDigJi/zhITtdpYfQgsWQbljkULFerHuXNK/OksGMls7JMzhjiud2PGBOmC8IGBXu1bXO6SvgJxs+fUrRUor/rQnVFYVk7umZ8ivg0wioEbsSAH/iI4Kr53QCcuihURyx6wAoVQQK4jTxxfFgcDD1ax99SooVA6e+3Lw1VxZrdM45GNw68L45yilFpI48yfFPr3RuNZrfCou+/wVNNL5WiKFbIWT6mnZGOMks5RerYKvQyIWNC8Xn8u8b6Fgj0YhQQqp9HUxDFLEhFyx1VirjxBZ1K5IEL4RAhb61gzDzjOqP/wqWFNnxJ/v9D7rZAcYudcpr57PSZwL4W+1RHpiFzTFusIDA3zZoEx8QWeW737fp/gAi6RKxSRN0f4Sr8Ki/PUcEcXKJ4WLgl4PPC2U7W78aAAKBu5RL4whYN0lOHKd/bx67OZZXyvSBpFEjoXJ/du/sxyDoT5DUP1b+i/ncZdJaWtCUXumuuuQA45Id+6T1u95HYOf424HRtRG4sjUGIcJ/i+ylKIuEimaofrjfoj+zCaDvSJePT874LcwMFyRcMIi66VRkVGk5q
+ NHJ0WmxR
+ +idcs5c0VA/fg1LQUeNwsfpPgOdOPFbrGFbXhc/BiqPrPPcUGzTytCX6BF12jOSsPPCHsgxcTy8IuxuzxV8uthRqeBSPiqB3wud246FJ7z5h+xzG1LqAR2X6/PXpj5QVC23Xpt/R5Gz33b5aPrDQUj4r11AwnKMGRLuw27x/lmMSdRq9OdbpwDuEum/AHcoyCjV/hvL70YcjQFDVfU5TvhJfEu+oXz10FZUySE3GWUQudHpnDOIXL8AUTkzJjYbvDdpVkXqel1DFB7n0wgUg9LMSMJF7tDz5VhT4c9+2G6/2nEHX444KkwuGYHwrlA7CUu+OLfuLF/B2BjccItOKBKnmsujpMFrUJfJLsc7xyUyhzQcI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +116,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the past, damon_set_region_biggest_system_ram_default(), which is the
-core function for setting the default monitoring target region of
-DAMON_LRU_SORT, didn't support addr_unit.  Hence DAMON_LRU_SORT was
-silently ignoring the user input for addr_unit when the user doesn't
-explicitly set the monitoring target regions, and therefore the default
-target region is being used.  No real problem from that ignorance was
-reported so far.  But, the implicit rule is only making things
-confusing.  Also, the default target region setup function is updated to
-support addr_unit.  Hence there is no reason to keep ignoring it.
-Respect the user-passed addr_unit for the default target monitoring
-region use case.
+On (26/02/27 17:21), Sergey Senozhatsky wrote:
+> Recompression algorithm lookup by name is ambiguous and
+> can lead to unexpected results.  The problem is that
+> the system can configure the same algorithm but with
+> different parameters (compression level, C/D-dicts, etc.)
+> multiple times:
+> 
+>     [zstd clevel=3] [zstd clevel=8 dict=/etc/dict]
+> 
+> making it impossible to distinguish compressors by name.
+> It is advised to always use "priority".  Additionally,
+> override "algo" with "priority", when both params are
+> provided.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/lru_sort.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 133ea17e258df..554559d729760 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -291,12 +291,6 @@ static int damon_lru_sort_apply_parameters(void)
- 	if (err)
- 		return err;
- 
--	/*
--	 * If monitor_region_start/end are unset, always silently
--	 * reset addr_unit to 1.
--	 */
--	if (!monitor_region_start && !monitor_region_end)
--		addr_unit = 1;
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
--- 
-2.47.3
+I don't like this patch.  Andrew, can you drop that whole
+series?  I'll send a v2.
 
