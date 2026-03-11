@@ -4,114 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC336FD88F9
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A284FD88FD
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 05:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E5EB6B0005; Wed, 11 Mar 2026 00:59:22 -0400 (EDT)
+	id 71E0E6B0005; Wed, 11 Mar 2026 01:07:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19B966B0089; Wed, 11 Mar 2026 00:59:22 -0400 (EDT)
+	id 6F5746B0089; Wed, 11 Mar 2026 01:07:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 074036B008A; Wed, 11 Mar 2026 00:59:22 -0400 (EDT)
+	id 5F4246B008A; Wed, 11 Mar 2026 01:07:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DC21C6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:59:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7398C1401B3
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:59:21 +0000 (UTC)
-X-FDA: 84532578522.09.1BC8D37
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 322C96B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:07:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A513E8C0C3
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:07:10 +0000 (UTC)
+X-FDA: 84532598220.06.282D29E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D9B15C000A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:59:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7QWHNq5;
-	spf=pass (imf22.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3FB4D40007
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:07:09 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUxX34tx;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773205159;
+	s=arc-20220608; t=1773205629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HYqmy7AhteoWd7btCXx2BOmJQ8zsXIG+24a7NHfSMRU=;
-	b=UVD3WX+48sAJEsJdWr4LPCQDL1GkfsPq6xcZeQaCkitylcNgK99xGzHtbuAZ5JhcbaWrFo
-	WXqoDgTsJJ1kEg6bJq2mfnB8jicIT2QZQ+rfSRxqydPg6sTa8TeVllECIVG2VH05ESjmnS
-	WVo+CZVMwP27SSQPwI/yhp6TgBzFwlg=
+	bh=22+qCSypJfYdCYbxatNIm6AZwnDwrgSpA+TT0A7a+k4=;
+	b=OIuKfYXLTRMSgoYQxYmpXoMQxf0uYFbSx8pD9QbegaHLc41ZoiAq6ST1o/BT3f0Z1RhgPo
+	Wtn3ghLucXJYv+o8PYuGMEdwgW9CGJuX0/GOVnC8foTlORe4KKI/21Z90XPfD17SwJjK6y
+	oA4ZHJxsX+m28Tsv3XE5pvJ7brDjJqU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7QWHNq5;
-	spf=pass (imf22.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUxX34tx;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773205159; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773205629; a=rsa-sha256;
 	cv=none;
-	b=2QNoidQU4lFpwDlJumsN4wFILWe2VqaMnLUCizW710DJObZOJV2waJDFMC8AjBxNrZNa/y
-	x/tFqBHQwe5GlkgxFWB8O4mKcTugtaHWRX4TeHr7aWdDRscHuyQx8rdocREx7B4VJly/k7
-	vsJ/4CGLjDBMrGSTOPlhW/iZm65LqkU=
+	b=dZ9TKpZTkp2379GoPAmfpwOGnT0Ezouf4Nm8wNb2LDw9xnD2XXIIFkoMpSlf8SdRt5wRCU
+	Biyt7gjkmKsGL995bZtfyijziJ4k0AaGStl3m4YIPmaA9AaAWDoP+1TgaAx98rV46h+KRr
+	vviST7TuCZRu4CHYokigRrHGzl/XwxU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3382160054;
-	Wed, 11 Mar 2026 04:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C9CC4CEF7;
-	Wed, 11 Mar 2026 04:59:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6F5760054;
+	Wed, 11 Mar 2026 05:07:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D134C2BCAF;
+	Wed, 11 Mar 2026 05:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773205158;
-	bh=hs7h01zebVZ3Cw5TSlyQoCCjwzUa+l8Cgq+3i/i+v4I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R7QWHNq5KYIpTwVo6Up5GHHSOdSE2gpk5GaKkIBbqjAR4gbzmNPFWIlQW10KkTPof
-	 EwepFELDieEhDwLa7MFg7ekO96kgeq0l/+LlK0SmYNrKgD9B5JFn2p8cKdN19q4bAB
-	 ZH5nM61a+EeP1bfo59H2leGLnAv8MA9DVbVTjKyoY75UQZCsrcqb+6U4ml2aryZAOd
-	 53HkEOSnemZkK807SePgE6JYJ0qIK9ypnQbQrEKCx7cEo9CjlroOKs6BchxOV0buhD
-	 E4Ehzc8FteV6XUFhu9KE6nGI0Pkr7s204WVgcSsEwXmzro7D3LuhuKd0AU39V1R3Ja
-	 2cWkRLISF31UQ==
-Date: Wed, 11 Mar 2026 13:59:11 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
- bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
- dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
- gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Philipp Zabel
- <p.zabel@pengutronix.de>
-Subject: Re: [PATCH 57/61] reset: Prefer IS_ERR_OR_NULL over manual NULL
- check
-Message-Id: <20260311135911.ced50d67e940cdf933a98d1a@kernel.org>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-57-bd63b656022d@avm.de>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
-	<20260310-b4-is_err_or_null-v1-57-bd63b656022d@avm.de>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D9B15C000A
-X-Stat-Signature: dp491fa5o4q4imwmfheeha7beih7t6yn
+	s=k20201202; t=1773205628;
+	bh=faeJo8ihjOE+9bWVu9ZNPRNm5sUDD91envks+mZlquc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eUxX34txTmCrHmBEwuTeX0N2rpfmmyw7vSLIbdrfUhGHvYen2D3nlcS7kHTAZ+Z1A
+	 GUFkyVbUUwu3tXLqv5QAjs/Zijsc5DaUaNNvLfjcYosEsaISjSmVLClWXpnTpRSnw7
+	 fZKd8Aa8LuIi8kIqa+W7gvj0FsVAUZFU02Va6nH3QdUmeOLtSYYLt3bsJjgvre/vtM
+	 l+zQyxgPnnJ2yF+ez78OhMgdEGGLgJpt4XWDgZ+kmrA+uZBSWWluYswLOlLG8Brf2I
+	 Ckgs9c7qbaQzBIUPCc+rBUvKRVa/94GOOmwyDspxn19WoMIjJt0OpSsvMQWf0HsERP
+	 Ju27I8kYUStAQ==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/4] mm/damon: Support hot application detections
+Date: Tue, 10 Mar 2026 22:07:00 -0700
+Message-ID: <20260311050701.91686-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3FB4D40007
+X-Stat-Signature: o7df4mrhb1tygakeeacoqa69p5mfrpkj
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1773205159-449146
-X-HE-Meta: U2FsdGVkX1/RJl/5px6MFOY5LFShK03NzTbg2VL3X+sAwbqgvYxu5e+6ufBftRiguXgFxp84IZzd75w5MU65xo/SMw7vZNgS8QtoCzvkLzk4tMgqxhyFoLE5t+cKDmOeTQZ34o67iSXEYNfk9CYRKNDIe40z6SZql5sZufA6grcv1kwlQxw5OxroV6dlxXsUKkDjNlIGSpHxjtv61NAWwI0sU4k2UeQhsCwm52u9kSs799tiLHTMpqmYtNkL8DsyRef7R1pdv1AEfhGOga88gQ0xUDln1P1xJZZ65Mdkf9eIIhDFtQF/dtpxI89HXPOENnl5mWXddDNwGz0tsl2bfbCJNyDlQJD4o/u11bD94/oV3rRHPV/LcDkAjq1wsj/Sl7tTAdrBhi87331M72ShmRPx1JrFgja2MgJqjA4vqHeksb45mYF2FyhaYNT9nJEFR2xbxMvjdO8ZPDOLBSIJSra+xtYMbea6/qI/t7curdHvCdvdRdNpu5Sll9De5QyTJ29u/RRsphCA7XZHKbafpAxaFSdXH+eLxIXevv/0D89/VfSXaAIGPodGEGydRJLxe62zrUI7Fadv9KXlzMpTQ4O7tib72Rg5nugjPksU8c3ZiqR9gPjY24ZdJniJcHu/Xnwawb/Y/y459YzR4pYowTqRy34t9cJ878BtE8MkDNjVIoS2fQG/crkcPWNZJ7G/2org8LOqcJ99GBHCacs+lUoiaOumkM+sbXJmx8QcMN5ymCJ7RMXCC7iRxN21qugvTtkI7RAc37wi8YHJP7Iaufw1YT+owPEW+HJ/x4sF/53LNlRo3tBIQEwHGR6d9ecbt4mvnZMBe3OZOrgdvKLsInosVGQvXq4HW6O2OhCH8FfZY+YUwsGBQWuOHXzs357FV0uJAS0jNbiLMs5m23SfCk+1hofCdAHIAMoGgf+qOfau8sPOUbjaXKQLspaDNBaH/9J49GsWiziGA2lpVhD
- wBH4+1M3
- LxArP+SM0k0cCgWgKUJ742MlkbwO9wWlQhcqOOxi0x72z3sGOY8W7EyngfQaYOaSzF8Occ3qpxsFURoef+yVFLYSuM9uFkXtVHRSeSPTnDYBAIPNMzDMwE5K0jS8u5BzujP0IVE9d04VvZE/KiiRIXir2xqnrEdvRtAR26S64+qMaja/lmP2uWedAqNYEPxJpMYQtoMEs/x8dGk8iqewMNlYA9VhtO1thYwdknjnU9oc6mpMPZ8DVwJHTPWQOKJrpCAv4dELnIF1VbXPj9iKxKiq0vpzZhAaxMwcwNa2UhJL1sb28XZCMXDqDV5LUieM1koqbpGvVy5X8fxaNVCF4iJW5aLAmQtxqAt+GaTPeGSfX+cwAyVf0wiS81vkFW/tsKIlT3lVbjILkJmg=
+X-HE-Tag: 1773205629-535017
+X-HE-Meta: U2FsdGVkX19H7IdAH21cP6JWMPSOT3ehPzvWGTlu0ZZx6Yk6LP1bsfOwMcAlKUayiy0bXFaGVumn1oEeCfmxB3u2maiGJGN+kaYS3gJyNNkbqgeqgr7O0I+de+LbsSmaPMXly/eQJAuF5iZmajt3pdj8nyoVYiEyn7XGDweeuxmckyhomBfd6Qrfh7CtCdxFGg3BJIi1o25uDrUcPjfarbjvqf8BBLphUndFR1iWIqcGe/ARkwtTQ0YZpeMS8rGnBd+YXG126xQgW5Y/FayvhdCRAj007OpRBhIApdEYSQeL0LLRP8UiT1Dn905iuNaEm86x7pNXfjlqtapvNcmCfERgcSEWbgKgHx8DKksPBQ4GXAV9qcuLwT9mmPtmM11h6dHIWDo33ApdwWXHtNj92+3Ay/XEoNUoTeTYR/3lF8CJFJmBUqR1ZjAtPUyU+bjtu5xR3cBArisvkLdeUwwAsBmhfzZO4LEDJgO9v2liVCD7VZst8OSmKvWFrIV/LtYo79vIYxMAUaorq0F4eFozbL14jDE4WevHXFI3ZpIN7MXfldpfvFfmDk+cIZw5MoFnkkryLuGVsMFWkZQ74zeZTKugVWqDd+TmpfiMWqNnxQI/ma7OWh2/SHTu+GAnUwkHYx4cETrKXReWRtoSn7ZhJExfvx95BeSHjWylJ6eIuIhWtFsCI8O/JOtpW5iuid+Ruq/QlCizsGLuiHaJb6nnc7Npz82SvNk/+ZAKASO/p17XVtgCxN9eCEk7/40DYVKGmtOm48/x2NDA9GeGZAmEJn6UeUgfmsIzGcPZFiMn5U4J0zYvzmKr8EeilbmOpTyct60OaZF3DgLshnBZWa4wJG2XBBxsTIl1d4v+3ys+jv0FBsI4yG7k1HNqmdlpFPtcYPr8wSAhQ52WSZ18PASGrATXMqj0jIcwagOX1033iNSAkktPE4BR5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,51 +96,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 10 Mar 2026 12:49:23 +0100
-Philipp Hahn <phahn-oss@avm.de> wrote:
+Hello Asier,
 
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
-> 
-> Semantich change: Previously the code only printed the warning on error,
-> but not when the pointer was NULL. Now the warning is printed in both
-> cases!
-> 
-> Change found with coccinelle.
-> 
-> To: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/reset/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-> index fceec45c8afc1e74fe46311bdc023ff257e8d770..649bb4ebabb20a09349ccbfc62f8280621df450e 100644
-> --- a/drivers/reset/core.c
-> +++ b/drivers/reset/core.c
-> @@ -715,7 +715,7 @@ EXPORT_SYMBOL_GPL(reset_control_bulk_acquire);
->   */
->  void reset_control_release(struct reset_control *rstc)
->  {
-> -	if (!rstc || WARN_ON(IS_ERR(rstc)))
-> +	if (WARN_ON(IS_ERR_OR_NULL(rstc)))
 
-This changes the behavior when rstc == NULL.
-WARN_ON does not hit when rstc == NULL in the original code.
+Thank you for continuing this work!
 
-Thanks,
+On Tue, 10 Mar 2026 16:24:16 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
->  		return;
->  
->  	if (reset_control_is_array(rstc))
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> 
+> Overview
+> ----------
+
+Let's make the legnth of the subject and the length of the underline same.
+
+> 
+> This patch set introduces a new dynamic mechanism for detecting hot applications
+> and hot regions in those applications.
+
+Seems now you offload the hot applications detection to the user space.  If I'm
+not wrong, you should remove "hot applications and" on the above sentence.
+
+> 
+> Motivation
+> -----------
+> 
+> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
+> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
+> fragmentation and memory waste. For this reason, most application guides and
+> system administrators suggest to disable THP.
+> 
+> 
+> Solution
+> -----------
+> 
+> A new Linux kernel module that uses DAMON to detect hot regions and collapse
+> those regions into huge pages. The user supplies a set of PIDs using a module
+> parameter,
+
+This sounds reasonable to me.
+
+> and then, the module launches a new kdamond thread to monitor each
+> of the tasks.
+> 
+> In each kdamond, we start with a high min_access value. Our goal is to find the
+> "maximum" min_access value at which point the DAMON action is applied. In each
+> cycle, if no action is applied, we lower the min_access.
+
+So, this patch series introduces a sort of auto-tuning of the hugepages
+collapse hotness threshold, that implemented in the new module.
+
+We already have a sort of DAMOS auto-tuning feature, namely goal-based DAMOS
+quota auto-tuning [1].  Have you considered using that?  Of course, it might
+not be able to be used as is.  Some extensions, e.g., introduction of new goal
+metric, may be needed.
+
+Yet another approach would be implementing the auto-tuning in the user-space.
+Because DAMON parameters can be updated online, updating the min_access from
+the user space should be doable?  Given the fact the module anyway require
+user-space control for feeding the list of applications to apply access-aware
+huge pages collapsing, I find no problem at user space driven auto-tuning.
+
+If the goal-based DAMOS quota auto-tuning or the user-space based auto-tuning
+are feasible, all the controls can be done using DAMON sysfs interface.
+Introduction of the new kernel module might not really be needed in the case.
+
+We have DAMON modules in addition to DAMON sysfs interface for users who want
+to use DAMON for a given specific use case with only minimum or near-zero
+user-space control.  In this case, because it is already aimed to ask the
+user-space to feed the list of applications to apply DAMOS-based hugepages
+collapsing, it seems a new module is not really needed, to me.
+
+But I guess your use case might have some special restrictions that really
+require use of the module instead of offloading the auto-tuning to the
+user-space or DAMON core.  Is that the case?  If so, can you share more details
+about it?
+
+> 
+> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
+> collapse synchronously and avoid polluting khugepaged and other parts of the MM
+> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
+> which needs the correct vm_flags_t set.
+
+This makes sense to me.  I expect DAMOS_COLLAPSE to have some advantages over
+DAMOS_HUGEPAGE for some use cases, similar to MADV_COLLAPSE vs MADV_HUGEPAGE.
+
+From my perspective, this patch series is introducing three things.
+1) hugepage collapsing hotness threshold auto-tuning, 2) the module for running
+the auto-tuning, and 3) DAMOS_COLLAPSE.  To me, it is unclear if the first two
+changes are really needed.  I will wait your answer.
+
+Meanwhile, the third change seems reasonable and not necessarily need to be
+blocked for the other two changes.  I think separating the third change from
+this patch series and upstreaming it first could also be a path forward.
+Because the change is simple and sound, convincing me would be easy.  I'd be
+convinced if at least some reasonable test results can be shown.  I'm not
+saying we should drop the other two changes.  We can keep discussing those in
+parallel.  Rather, upstreaming the third change first could help finding real
+benefits of the other two changes, since the testing will be easier.  The
+decision is up to Asier, of course.  I'm just sharing my two cents.
+
+> 
+> 
+> -----------
+> Changes in v2:
+
+Let's keep calling this "RFC" here.  When you drop the "RFC" tag, this might
+confuse some people.
+
+Also, when you add a changelog of a patch, adding a link to the previous
+version [2] can help reviewing.
+
+> - Previously there was a mechanism to automatically detect hot applications.
+>   Based on SeongJae Park's feedback [1], this was removed from the module, leaving
+>   it entirely to the user space.
+> - All allocations now use kzalloc_obj.
+> - Since the user space provides now the list of pids to monitor, a commit_input
+>   parameter is added to allow changing the pids while the module runs.
+> - Renamed the module from dynamic_hugepages to hugepages
+
+Thank you for doing this, Asier.
+
+> 
+> [1]: https://lore.kernel.org/all/20260211150902.70066-1-sj@kernel.org/
+> 
+> Asier Gutierrez (4):
+>   Damon_modules_new_paddr_ctx_target. This works  only for physical
+>     contexts. In case of virtual addresses, we should  duplicate the
+>     code.
+>   Support for huge pages collapse, which will be used by
+>     dynamic_hugepages module.
+>   This new module launches a new kdamond thread for each of them. The
+>     purpose is to detect hot regions in a given list of tasks and
+>     collapse them into huge pages.
+>   DAMON_HOT_HUGEPAGE documentation
+> 
+>  .../admin-guide/mm/damon/hugepage.rst (new)   | 186 ++++++++
+>  include/linux/damon.h                         |   1 +
+>  mm/damon/Kconfig                              |   7 +
+>  mm/damon/Makefile                             |   1 +
+>  mm/damon/hugepage.c (new)                     | 441 ++++++++++++++++++
+>  mm/damon/lru_sort.c                           |   5 +-
+>  mm/damon/modules-common.c                     |   6 +-
+>  mm/damon/modules-common.h                     |   4 +-
+>  mm/damon/reclaim.c                            |   5 +-
+>  mm/damon/vaddr.c                              |   3 +
+>  10 files changed, 650 insertions(+), 9 deletions(-)
+>  create mode 100644 Documentation/admin-guide/mm/damon/hugepage.rst
+>  create mode 100644 mm/damon/hugepage.c
 > 
 > -- 
 > 2.43.0
-> 
-> 
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/design.html#aim-oriented-feedback-driven-auto-tuning
+[2] https://docs.kernel.org/process/submitting-patches.html#commentary
 
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Thanks,
+SJ
 
