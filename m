@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A80FD88D8
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 01:39:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD7FFD88D8
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 02:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE4756B0088; Tue, 10 Mar 2026 21:39:45 -0400 (EDT)
+	id D63F86B0088; Tue, 10 Mar 2026 22:07:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67D66B0089; Tue, 10 Mar 2026 21:39:45 -0400 (EDT)
+	id D3CD86B0089; Tue, 10 Mar 2026 22:07:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C69B36B008A; Tue, 10 Mar 2026 21:39:45 -0400 (EDT)
+	id C1D856B008A; Tue, 10 Mar 2026 22:07:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A10816B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:39:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FBDB595CA
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:39:45 +0000 (UTC)
-X-FDA: 84532075530.13.4A050C4
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E9F4D20005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:39:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=W9VI3k9Q;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E80C6B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 22:07:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 333221B7DAC
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 02:07:01 +0000 (UTC)
+X-FDA: 84532144242.01.1E84116
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3BF0E4000E
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 02:06:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GFawb3gi;
+	spf=pass (imf01.hostedemail.com: domain of rob_garcia@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=rob_garcia@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773193183;
+	s=arc-20220608; t=1773194819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6rlL3rMH7IAqCMlpwtM16c9Atr/f+hEaClH0Myc424I=;
-	b=qWtfqBl0NI1pHvoscnjoLceWAyC5E4g4XNTCdtW+VSFX+XWWiBy8ojPAr4y52NBo4/70C9
-	+I287BXkQ8Xgsuvm7l0NFNwdvH/yCoasoeGqMR50F3rdmnIKLxmKo8kSWKTzdwLT36/XKX
-	oYIcg2HqfloO7iIW6GFI4bLIWAvNnJk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773193183; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=11rxilNzodvuvzCLO3MeHRDznxrP0FHOC7bmEuqJ1b8=;
+	b=JqLvmBzzx1G+Vuk2cCmMK1uXvr6kHhWb9Ps/M+pxEfpAsz1XrRxioqJHNKWCUf1uOPPgjt
+	G+r3J+nZvmSeULedKVSaRmvOEHkwQn8ZmAJ1oauA4t7kM16A91pYPzEL7qCdclsuZyuE1i
+	zRGU5DSSZ2wft1WlaI2mEmt7n2zYLCY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773194819; a=rsa-sha256;
 	cv=none;
-	b=ify5Qe82nFb9si3vhcgm6TwPO57rIlZksxOBvQ8SDZEOm3BjlBPEx+M/q4f2jh8Yixk40a
-	Lah+56biDusFxYfhXPEQe9i3nQLrr0JcnsFyyPSwbaTxRmYZQzql3rou7YB/lxhfOvHDyV
-	B2ufjRnM8Xvz0EtywqXMJ01RK9quPvE=
+	b=BpRcOx/SkrDBY/OkaSjlg3ZhBe+FqAPANQj7E/AOkybgPsjNTPCv7JoMK50kHMLvaiFnmZ
+	l39OpC3RZZ4rbDO4+i/e4JvYEF10jhejdLzhmJsB/fBv94TNZQff9Baoed6Lb68YBQrKyr
+	XM4RXUrJThg9iaHCWLK+2TtAZtbOO+U=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=W9VI3k9Q;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773193178; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6rlL3rMH7IAqCMlpwtM16c9Atr/f+hEaClH0Myc424I=;
-	b=W9VI3k9Qy3hGWkmkk/XIJjMUMhn5mSr3cM2KiypI5P10oChDRpKsaNEzurNi6xbZuf1UjcWzNFgC7O7tHYyZ9XAFOlIW1p4ZaN7mwa6zQ1FWsnXRYD+ThnmEuTmrvZs0r1eLBkcQzRMMAWA1baKiS97QC4VQl3LQXtr2mohoXes=
-Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-hr21m_1773193177 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Mar 2026 09:39:37 +0800
-Message-ID: <5f3f7b93-5e22-47a9-82b7-dd961a80f532@linux.alibaba.com>
-Date: Wed, 11 Mar 2026 09:39:36 +0800
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GFawb3gi;
+	spf=pass (imf01.hostedemail.com: domain of rob_garcia@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=rob_garcia@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=11
+	rxilNzodvuvzCLO3MeHRDznxrP0FHOC7bmEuqJ1b8=; b=GFawb3gikhiyWsj5on
+	PJquTZ2rs7aDllf5iGz3f3JX0tjcgLPoclScVyPz84iKOWkZ575hVjGRtKa+1fmZ
+	hYcxy+zRAB9xlXpcJfuPFV5OgEJGj7+LCCoDAX93ZmzNYjgmwSdVLpLhBjKxMy3u
+	lImlppAKKWayCknO2mUtsCL7g=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wAHRmQlzrBpECQpAQ--.39464S2;
+	Wed, 11 Mar 2026 10:06:30 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Robert Garcia <rob_garcia@163.com>,
+	Jan Kara <jack@suse.cz>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Lior Ribak <liorribak@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y] binfmt_misc: restore write access before closing files opened by open_exec()
+Date: Wed, 11 Mar 2026 10:06:29 +0800
+Message-Id: <20260311020629.465757-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] mm: huge_memory: refactor enabled_store() with
- change_enabled()
-To: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, usamaarif642@gmail.com,
- kas@kernel.org, kernel-team@meta.com,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-References: <20260310-thp_logs-v5-0-686099175bf6@debian.org>
- <20260310-thp_logs-v5-3-686099175bf6@debian.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260310-thp_logs-v5-3-686099175bf6@debian.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAHRmQlzrBpECQpAQ--.39464S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4fGF48tw1UurW8AF1DWrg_yoW8WF4Dpr
+	W5K34UtrZIqryj9ayvyas8XF15G3Z7Gr12vr4kWw1xXF1rXrs0gFZ2g3yj93W0y397A3yF
+	qF4rC3sYyryUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UoCJQUUUUU=
+X-Originating-IP: [60.247.85.88]
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5QZDrmmwziZAtAAA3L
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3BF0E4000E
+X-Stat-Signature: trxtto5dbi7jkhcbueyrw1gro8557xat
 X-Rspam-User: 
-X-Stat-Signature: ktu4dd9jem9bs4qphhpud74xmwh5gxkr
-X-Rspamd-Queue-Id: E9F4D20005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773193181-953731
-X-HE-Meta: U2FsdGVkX1/w88MBK4vex2z7e5Rlnw68T6FY/5AxHsG4Y2nUmi7XV0C0q4kKAylQdkE02MyBsdHHyM1NFuf72Uuvwp/PXZ7zjSZcG33wWMMtM1A+dYHIgzw8h+lqqlr3DQzD09jOSDaDtNzyYw86c1rcaxYRlVk9YbeWcBKQ5RIwt2lk1sDuYTPFB4wClY9dh25tconOYYA5IxRVR9wdrshpqUYspty18EiFsMvLEXCHhvx36p7lgmoVdWI17Lip97adSzjQdSAvTkX22vY6bIIm0fafadzg0fCDmhR7LOxEJiGRmy6tTXQEoVRqEe5iZP+gdKgC3bGMVRhl33wKeqs2O8fSlN6BMqtxojJEtnlH82aCet1A98lDUM67zVQMLmLfxxYLAe5Gyd0w3i+jgpAotfw6Vp2h4uRCJbXb7AS3VCn18hws488e7T2li4dqgAio53wMcbnpcXf6bGV0bbUSRF7zpHwKS37PKY+Spn4wws1oKyDpu6WZC7uMQJDhklYYC/589ZwdDBlMOR4hB4lRKnV6VxITe11F1+obfcq7ngX5FFbTXNSDeCOy3ecj91jI8UpvWLn14n3+8UO5PylPrv0+ASyMRi3Vl9HP6JeRhtAFxrHRQBkBnH2hs5rjBVposi1AHhgzGsUrJ9r+ivPvOl1l2WybQJhL2v12I3BPOLG+SBlmY+xyssSJRUwIzoT5No28yJV/Nw6MAl14T7J31D5GbwGS+YV3Jn4i0gPTsW70b865N7Bphat81X79SyAT0XW2jFCFROYYKfqYAihMMrF98eZwB6sjS52dDxMJeQdFFiO/kZBkv5hnitJ69Y42jsComeRZq1a4D7qYhAWaBYxgk9BL721KRrfxkR1VU0ZmGZPYPmTMYc+1l5ZEA4DSy4rz3cNtR8q9Ro+iNczlwPukHWdnjlGU2Rh8ygqTYkIMbHEGCoOo6071P6NpyjG2Z5c4z/cU+bsuefa
- OxAeuBHY
- 1I4aJl2DKxoSGW88NtbybPqdY9o63Lw1G6u/7MOQRz+MKWR5MFVHGjr42jX78oljjRwF2oV5ICD+skjpuDJsRlW1B1s02vKrl4bugPNxHn05q+MEXFhTXXGczI3jGI5/ks86AwQPtuEl1MUN1EuQnyuSVIFacHAeLqSgeueqrOcWLR+sxcWr2hZpuTD0rqv1StsiL4JZLO5tWDsQydKo1ANqy1hDhflOv+qKiLbHktnGOBFmDKHGmibOXQjtYKkxs5BDY+c+zOm47hV/6R3RICvYCmXtI2RHNo7cJi+RXf0DTN//8PLuTsrI5dNsGqIz8EjMFi0HBYpAP0YWYOaV9lt037bFhc9DOAY/Cg7kATbV0lI4vWdrU8X4p+BlUK+5VmrDGnlGWW6lAKLb9McUTnI9Zo4hR7noIDm//mBnrxG1htbI=
+X-HE-Tag: 1773194817-309667
+X-HE-Meta: U2FsdGVkX1+fVdQgvfPqvtlyKnPYmcDKQ/RXJHDWw6gzp1z8aRmjFSsL4s1tNp9D9VpvPXSeckXEL7igIcm0Y9h4INQxDUmZzYp00MrAsUv50MbUhn1CpT+8bppGENT9p9yNTMYEoZRIbG5g72/DJ6wbcac+siI26RoAvoVtV4QiZAy8DA3Yhw+4xfbyGKugf2BalZ3+/Y64FvxvDbFdfujQ4m0azUnm2PDnbj2YCX/Ld/K5X/45nZsYssSpBd/myHkHbptSR4+mPhKeiNAIMITcCwJmoHPWPbO22L0zSmUqYSu9UtEFHiEymMyafMLCEPjayH5i3UBsHWcRxFeNE15hzJkZn+urv916rZ15FHmBiUuC3b89PHTXT7bWRYPUxHDv+JlYeXKF6rIu+vUNV8WANELRiuHZ46NGO5T5yDRIJopT0CG8xUmn2T2RjZv3TnKNPlbgQzFgL09aGRbIGkS6vR//oMhyIIFllqGQlLnTg5L5aZ7DAIgQU/OlH4Y0C01zerkDHRMwWi38Gu8ud8xxF8+DbRMoMYsgK2Fkp5pVrX6TfciO91LxGTc0FAGHoCPuhtPHgmpf5ELvKrJKjzhxXFU6uSOB5OUuLVRtcwh7DcJpU258Bo3trdJ8KQ1ZkzxMxQhISCZgzONz5N04bQW6kzJou/SeudfPcATFNSTXhmvYPXud/z7M16unARGJ95bQXzIz2X6P4FXmweC8nwxjU6n608fEx0kBV3S3NpAJEl9XD4wudyZpwcAZ5oSSWbg+8SGjU8a09Ct6QDzOC2pPB42lCFNSQoXp1jt+wGl2RkATouitcPoSd039+/X5PbncYHfSpX9Sr+ciCY4EtxAmLUeH14CgTaAsKkuh0csBc/eNZSzM6iRYqqPT9SCxMc/kV9mb71xBlRSTSK68uoHLdHFoaVBCG49NChtelkMC3+7QU9LD1PJpIWFxI6Uhns0cGbkxPIH32VrvbJ9
+ 0Waf8x2H
+ iPvYZvZokOZxEbPYlI4VZmnCP0aFsKIeOUR6zqHejI4Xhx1y6ODEkN03BplDj16CDuwaBVWZxQIpWeRF1+dJzBkZIU3GGuKEirid3oYXzKoehT1aN+5j57/1NcCU20BXY8U3AJwqwBX9R4XLpqM3agcuvb1X6yDlb3SHfw1h/S2J6SkNFKajtYtzSCwf6eXfxuw3GUaZjiFYP+LPR/NnLEECvvkcQLNvWG9F4jtBYnHBMjRuJ2M8f8Sg9OJpxV5+1lax7B48ImFc8UnTCrFXSg+aY1v/KEytHUMG+AEmqFrN5ZmjSKX8JFdAWtd4VKDPS+RPOHfbGTrhCUp3JzWXnaZ88yUrObaM46Ic9c1dc3kK9rwfrAnQRD5+eylAUMAyBopg0+2vgTz4Jbv//lFyNCMfkxzArFSN4y3k1fXAhgq7GE3uBo5pWpCeH5KcU/2b1kVca8NfHE4O/CfQU3PIpoD4ZtF+VW2P32Rs9HKvxsH1VvtFgonK8PsduLVjc9gTTsltOH/SuxR+ZYOFdN+jjP4kmV/kRkgtHtVFb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,29 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Zilin Guan <zilin@seu.edu.cn>
 
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
 
-On 3/11/26 1:57 AM, Breno Leitao wrote:
-> Refactor enabled_store() to use a new change_enabled() helper.
-> Introduce a separate enum global_enabled_mode and
-> global_enabled_mode_strings[], mirroring the anon_enabled_mode
-> pattern from the previous commit.
-> 
-> A separate enum is necessary because the global THP setting does
-> not support "inherit", only "always", "madvise", and "never".
-> Reusing anon_enabled_mode would leave a NULL gap in the string
-> array, causing sysfs_match_string() to stop early and fail to
-> match entries after the gap.
-> 
-> The helper uses the same loop pattern as set_anon_enabled_mode(),
-> iterating over an array of flag bit positions and using
-> __test_and_set_bit()/__test_and_clear_bit() to track whether the state
-> actually changed.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> ---
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
+
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
+
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ fs/binfmt_misc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index 740dac1012ae..05c235309421 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -816,8 +816,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
+-- 
+2.34.1
+
 
