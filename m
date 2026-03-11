@@ -4,118 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3266E1062894
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 12:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D461062894
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 12:46:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1748D6B0005; Wed, 11 Mar 2026 08:45:44 -0400 (EDT)
+	id 74E106B0089; Wed, 11 Mar 2026 08:45:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11EAF6B0089; Wed, 11 Mar 2026 08:45:44 -0400 (EDT)
+	id 7198E6B008A; Wed, 11 Mar 2026 08:45:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 016D76B008A; Wed, 11 Mar 2026 08:45:43 -0400 (EDT)
+	id 5FACB6B008C; Wed, 11 Mar 2026 08:45:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D21D36B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:45:43 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 3DCD76B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:45:59 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71A6A8889D
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:45:43 +0000 (UTC)
-X-FDA: 84533753766.01.EA32574
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 60D7440006
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:45:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="VT/3kzUi";
-	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4F968859D
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:45:58 +0000 (UTC)
+X-FDA: 84533754396.01.00DA4D8
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E1AED180003
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:45:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lA1fIAR9;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773233141;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773233157;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yP/ZBBLN23AWwEEAdVB0ZzTgoRWK0abJkbcKiseHvC4=;
-	b=Qu3/IrEoNpLowEHNysjqt6STNyuwU4BThhLGoMSLfkvWl0tGvDdpB8SPZDhTi0G7a0YqvE
-	KXrly15Y2l4GfN6gx8SveKbEsufZkzCJxRbwwnkmfNlEjm7RRdwugVrRsfi2MwSxMLC2Vf
-	LaiJiBDhFz7itBI6CQoeuca2wzqeHnU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773233141; a=rsa-sha256;
-	cv=none;
-	b=W2qB7LTEGYqQs+pK8+qxDdOGeyny3OrCOM2UAI0xagdHK0EYhOusEFVkDAGMgqtPWGJo58
-	QzhRDuefKdX50jPnws0AXXn65Wcrj1GCONLuKVmSXi+ZpSoEQBmQ1bYwl9BnIhUlI1EvsL
-	UaZutkudDfcKCjXAh4jPF015q45X5nw=
+	bh=NqD0PaWCyAkS2OLodKpw+KFK1MpnwVPzgxREHBBvcmY=;
+	b=bJLQaUOz6FDo2BtggGhJcJMiCBZmWUfpoBJz+WvXiPABnFiUJ0uO/LGJvfUWpPleEWTd41
+	1nJhG/PhxVh2Ko9UO0/VFbCzySBJ4xhshOKgHV8APyqZ1axfyM+ot/X8yt8QgBvuU6ISC+
+	zbfa6E2osfsntlr3+JYBs9bh/6Mwj/w=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="VT/3kzUi";
-	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-439c9bdc1eeso4532860f8f.3
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:45:41 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lA1fIAR9;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773233157; a=rsa-sha256;
+	cv=none;
+	b=t2Y1YiUVSUNiZC6m0gT6bOCE4p9ZCV2j/JRdAk5aDchq9eJQlTW5ZrvFjDMKFPRfSpUaiv
+	Jor2ATNi8n8CJstdls9e6iVwdrwrYFy7y6OA4a1BR6pUQkPDSwf3GhjSuQoIfA+Cfmc4/9
+	U3vLRxEOQIUDBWbIOsjOb8Mo3AvpDdA=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4853e1ce427so36672225e9.3
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:45:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773233140; x=1773837940; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yP/ZBBLN23AWwEEAdVB0ZzTgoRWK0abJkbcKiseHvC4=;
-        b=VT/3kzUiqRWolEt/0Yp34CGqvo58LJpWGFmxQtC//+FKbWU+jvHJzjoMLmnrA44roy
-         TvDfGCF6E+WSP+XIJjY5B8T7+s6B+QSKooWnyspTQhKniTAdH3zeyJklw6JYorZ8QzME
-         2lcU19cy5DYAChphlkekSOrm9OA+s4LvlXUXM9I3bO7go5xgwF8fgkUD7RZusblxduA9
-         TgN0wkgC6igg2uB/6BdNMPK7tzNzFGonv2X+q3T6V7/6ZO7tJbQ+mEEi91Os0xM0x5kq
-         RMkfzlfXKldrjiYe9XbvCoGw8Jeb2mH2KAtEUGtKDKIZ2sRxhzwbyIGoxWTJqBcNDiTL
-         fxSw==
+        d=gmail.com; s=20230601; t=1773233155; x=1773837955; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NqD0PaWCyAkS2OLodKpw+KFK1MpnwVPzgxREHBBvcmY=;
+        b=lA1fIAR9OjUk/TzcMV1C37Tp7I96ShcflhezcoeYDle+muclHLSfiYjHHSuXL2qUS7
+         JCnvjuDr5WgOsnEf2k8N1YmR10CY9+46eKOZpTmGCEQu3wRfMKK3xc/TcqNozI9xytIe
+         Tx6LS3M7joZO04htzFj5GXHxFg8DmNrHQhzT3e//uBaCPKX1p//y/LDdkgE8PkTqRJQu
+         qOpiQHNz33LgemQbB7HfUGDYzRxrqPnjn1oc87ovkdrdq5G4kj7LMuuNsB8A5hYMaUWQ
+         eiwKc1yYvHlX2saH0yko4UNqPdwph8hpRZUm6JbNsLXLZyBUwGF717C1tZ3ep3r9L8H8
+         Ebsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773233140; x=1773837940;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yP/ZBBLN23AWwEEAdVB0ZzTgoRWK0abJkbcKiseHvC4=;
-        b=S7/4hUagDyc63RLVrMVVbRhd4C1AD3ssBkdgajUTvz9LGSYmXuqr30hAB82PJD6Saf
-         RO1uARZPP/u2cIokAMiarKtTygGGKU/Y0vva7eGAU0dVBLA6DKH7cgwacQ1F82ae+hsn
-         GfzlNiJeEeOENJAQOh+TlbsBxZYXvFYuf56cftMa6pdOutXPeSaIuELsFsaDHT4zCOu+
-         1nS5u4JUA6+hwTBlg8Q0tkt8sl5G1MCdNAsv+gxEdpTjxm5wiRqMvRjNzdm2OXEMez4s
-         DLrjhybIftA2u1HqY6ZR1xUx6mYrePCRt6kWYJVwaX7Q71gCUohmf3YEiYvsl6h+H49n
-         Bg7A==
-X-Forwarded-Encrypted: i=1; AJvYcCUvNayi017wfqxfGPNB2l0jticZBykws9b333Cvxdi2tA6ThIUzpaJk2nSDBxA6s92+ilGTpwYbMg==@kvack.org
-X-Gm-Message-State: AOJu0YwaIFzMzF0NOZA5CMPPAapqqzULjSHRHuICmxjYiXs1XDGqd601
-	fXby+nvPaRbL69d5Jl+EQxzYZUOl+37E7zZpd0YuuqbpghOzk3WsxDkbusEVbYp5960=
-X-Gm-Gg: ATEYQzwVls+8I82r1ZfG2ogQ7HF8r/H4z4763pNZ1pJp79pYxv1DVxLIEoLJfuZa1Sf
-	Z65BugGVhqD0sc+0vS0d1vhCf57ja3/6rqDrpcWkzropxR2If+q7igf5J0dxi5gTrBV4PJXedxF
-	X8UgDCp4qOghv49AF4p/c6EJmg0q8EIZsWwIuKCSZH78SiRbxI8Lh+MG+tXaeEdDqSWqd9vxHNF
-	pUUuATSnR0LMpJ1iH9CAm/LHe0gWlSJTZIbEYcZ0lSYcFrumiIORl5LfcInsw2IBUkEoC6zJYnv
-	h/pbzSTQJX8UvpxijH0KHJLBnT47LN1B9UHw87woZPod1LhLqoWtG4RB+r7z/khD0mCqsuasG4I
-	TwSjEt8qGk8v/cGpnr0FaoNG3K3lUNyeN/tgDuRqOibv/rTphtd/jzAdyp3j7daXAO/eNxesaXX
-	7xpzL3lRB9PdvT8++16dE1XKfufs939gwF+Ior
-X-Received: by 2002:a05:6000:2584:b0:439:cd26:ce0c with SMTP id ffacd0b85a97d-439f8200be0mr4368266f8f.17.1773233139665;
-        Wed, 11 Mar 2026 05:45:39 -0700 (PDT)
-Received: from localhost (109-81-87-209.rct.o2.cz. [109.81.87.209])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fc0ba972sm1404494f8f.24.2026.03.11.05.45.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 05:45:39 -0700 (PDT)
-Date: Wed, 11 Mar 2026 13:45:38 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Mikulas Patocka <mpatocka@redhat.com>, linux-mm@kvack.org,
-	Vishal Moola <vishal.moola@gmail.com>, Baoquan He <bhe@redhat.com>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
-Message-ID: <abFj8gwNrpv0qQsJ@tiehlicka>
-References: <20260302114740.2668450-1-urezki@gmail.com>
- <20260302114740.2668450-2-urezki@gmail.com>
- <a8010888-ce49-9232-f132-338de8e18cee@redhat.com>
- <aaXcLRdhq0IyoNIG@tiehlicka>
- <20260310155914.9c03a9f4cc2f433fc741e222@linux-foundation.org>
- <abEq9eX3-7yeNHVB@pc636>
+        d=1e100.net; s=20230601; t=1773233155; x=1773837955;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NqD0PaWCyAkS2OLodKpw+KFK1MpnwVPzgxREHBBvcmY=;
+        b=n0wPP2xHnGtkN13nflnRrCxEnlrpeF2Cz5/kSRZ7G76OWh5/wADiJSuBV0omtENqgf
+         I3NrjulW3qlJuIg5oHN78pTi5kkMJ+mabC+MQS88FR7XnnnDKJ/z1e/GjRb4zE1EskMI
+         olT3cLClmPtBprAtar98JhxhtN1anuPwjdz3yZlGw0bOm6nVHGlk6dKAnrgxnqYvbKzi
+         rFJ0qTlfgZu5wAuMSaJFN7BB95x8rJqfw4wWcxl6oWt89z8CWW/tI6tG66yD6OARVoW+
+         JvFXEQEHwj1ym3CbGwZQv2pncEqONFUXdXDx/BASP0YpECLH5ZTE/LGovgym786OcWEe
+         simg==
+X-Forwarded-Encrypted: i=1; AJvYcCXc/svQLSqXy7r0xh7LEsWLJGM38f6bVBZmn+bw2rR50+fMRb5PDf5vy4vaT0vrHoeD7G3wjdv7Kw==@kvack.org
+X-Gm-Message-State: AOJu0YwRKtU0/67UrbXmEfahUw97N4FgOngvJN06bSJH3YREELsNqntG
+	lL7GlGOAGsrNI+v0PZU7dq5Rav+UJxgc+eqnY0igBoaqSmABcwdtl2+U
+X-Gm-Gg: ATEYQzwc4h8Fpig/PgsCYdepIKGSrbn5m1iiHHpgZilyZVYjzoBkkEQAX9XafT+jeP0
+	HZYsZzq0QKAg3eM9Z0aodcHltlrUfoqaMMD1HB0SQDLt4eKr4w0poqHWVL7ahnwZ24er33d82b0
+	YbBLY+xz4E8liBe8ScvQRaIQN9ka/axQN9/CG9pgc5i2bO8Y4YnAsUsPjFe534jzah1SMfFUA+a
+	XWVh7ZGSFocrI7BzkZGNlRrZTsDB4ELJ1VPlwR66SUQd+scQRfsnZ1reRtwBCqNncj36bw6bF6C
+	CdF7tDhaHkmL6iO2PQIRzZ8NavoMWJb8XAcMr0DxMb3GKXca/DxYqyUPeAxJJjtYyka3g9ZkvKf
+	49it1Dk3IlYz0zGjQcNOhiESBN7qQgLRbR6WdJE3mapCxTYvOR+rBjGlKWvZ3OK9qKp6vXo5XvU
+	tjjsqAKZ2SQmf17Ss6erSj4EWmjE5xEux5
+X-Received: by 2002:a05:600c:3551:b0:485:3f72:324d with SMTP id 5b1f17b1804b1-4854b0cabe4mr43611225e9.14.1773233155263;
+        Wed, 11 Mar 2026 05:45:55 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854e67ea40sm13055285e9.7.2026.03.11.05.45.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 11 Mar 2026 05:45:54 -0700 (PDT)
+Date: Wed, 11 Mar 2026 12:45:54 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+	david@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+	hannes@cmpxchg.org, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/migrate_device: document folio_get requirement
+ before frozen PMD split
+Message-ID: <20260311124554.uqdqyvx44vkvclz4@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260309212502.3922825-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abEq9eX3-7yeNHVB@pc636>
-X-Stat-Signature: cp9b7qamx3y3ozs3wrzcz9z4meayc8rc
+In-Reply-To: <20260309212502.3922825-1-usama.arif@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: E1AED180003
+X-Stat-Signature: hqh51brcegufeafqs4zisfs3d61u8ey6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60D7440006
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773233141-98983
-X-HE-Meta: U2FsdGVkX18LbB6vBZMqLufaNsicirst+sIZGtss/wEwm87XsVCzcqMPdMuu1enupiO73sic9h7cZyFZigh4i8PLUqUA69jkThlPF4JTRIfBKuPuueK+XEuOw1UqKQtXJVjWhS7hsQx0mfrVzTFfQcKKHKrxsGYmZiCC1Cg3bBSryWXxkNrKAvhRRTErHaV+ZePSLnpk2328/ijlfWxF/csXB8x4AmlqYSAO756CUPrWBZNN8cIww+aI8RSMYhWntbUwiubdBnPFqmgR3uaV9I8bcjBPuIz/7dzgrqVf5P/X4ohWJSFPnCnSQkl+lRBBBheKQrSQP5bI7iT/czEuJP06Bmsr9PZY3CK0NgNVzOE3vKtJ/oT7z03Ed4erq3uZIlb5Cs/ETosiACONBo4p9vr/hlzvqqr7k2J3mNMBIZYM8F0UrwuvuydZhKTzTuHkehoLvaea1n9UvX2k+vQezyRXmXx5m0Kg3eb1LT5FdFNybl5aN5xOaQfX8JQ73Ffm9osm/3PtQ1FdQ2pb5y4mqkjaPCmRM1kfxKjLKDAROEusJYYmT6pYxFxlV/RwuH233sbHpEWAz9gr02VKU2sBqu2BGOQr/z+/SAnBCuuLin21V9qbrYjGNQmwikG0LaKJ46Rn27oNqLkl+F0iJFYV4Ep9pdlLXR/r4V94+k8hu8uiPvkUTNKPKNISJ2mK7TDvNjsN0tShYMpw1jj1534h2bbx+neroK/syuE1XziKLastsVPjpZaGyCxchMlY2HTeUpxab8o86NDTIlNtFluXTy6YUnoDBmNQ4zeCIfQkPDrgIXVA/TxsaPm8r68SKAL8U56DRRHJ6dJJpt+2AMRvnNHyamntfO/0CpuY6rxmcgYhsMv/1Kq2pTaN8DvQf8Pz7gQY96NNASd15b2yU9h93KgIl8RX7MAl5OxXACrEBn0gJIsteYJcjXtRVgq0AykoY5jTR6hZcqPRKMfuhiw
- 7OJL8/Tf
- 7ozj34Q7RFpwKTje1QkdeHIlaNk7QTJ8zBPTNn6WnDczrV0amm1I6zFLcyk1yFrHXtml8VteMWozgZiPeNXhGkpIjDTAzFo7sz95BqXWysZwHYgUs+OhYkpE9+pzbjwhlbVI0DYofXxvSlzi2mBfeHFHAjy8wRDlB1wKWCAWzb86LNXJJwRiRGQoZvkY7H3+F7JiTXamAsyEhu84BQEmx/9UGu7S6cYEAOcdpBacYoSfE3tTx9IbwU3MHJDisgdYKF7jjFiNR++b3jdyi71EQikHHffDw1dNMihz1qHyUDf7lKusCr6WvPoy3H0P760lxzkomsLSgWnOFradiaGd8y59W20zaj87B5faGREiy05kPc87bF+JogkwTkbQ/65OgQEW7jWdtNKG0Yfm+ALefTCjZHug5C/oRBWQS+DLH1PdamTDaX1oONC2xMIdC1F1g9Cfk0o6NbhvdgyTPMYHRvLlV+vu/4iSK2uqXXFXZNZ2Md6+814pscORdmwMmomreeefHelPhZ+SdQ8HGE4MPMcxyTRWrfaR7hQGAq/3Y7Pqq+n7giXHDDwA/9A6OR5WKtpNIZr2qeSzcvrJAhmx4c1/+WKGYHNssa6zqgFux12DumhdL8HTKC1hBXHoopxWlA8bIEk1tPOg/bOPsnnNQzvgjgg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773233156-740072
+X-HE-Meta: U2FsdGVkX18dKNaw+kzB5m0GBxh12XGmqVx9CpiOrIZqLzW1OxzDvTJ1gtf6jqnmu5ed16PcoLUobemjzfM4EufnegM474NKNd+L4x1W+ghHcrMgA4TRAQrJQCs2gqS7bcXk82xILRKrKd1s+B8PqJI1oSmmgMgNi1m+RwmitFaGYUZUy+GHzov9b+0lTuQYL6OAQ3RgnGN14oVG9kpLroUO13SzbLexR7EMokTCf4D7Z0ZvpUz7rwBqfahhWmmy5a6+5t58xuDDIRi0ob7ZGbmaNxmCnHaTkU4wKWKsMoGr7KEG6w/daHvnh2xFF0lNQpVI2CsnFc2mgD2Y602M781KCejiWLMmQvqxJv7SXuQlgXuEuGGt7QPZqq/NvmzZzbLGg4Q6sRIjzWicK0ryWOcJWRmH9cymHcrH/J+qnsyrBpjdbhSYCtby4vJ5B9XAhHD1JM62+qyXyONmnGNcse2tCcE5ZWRfFZL2LVs0cWTwyV63GQqYSVvwZLZmdpaAW+vT2jnYHyag/gMViJsxGD7jjfI1n3vhzMqSh8XtLu023jNxkO0e5wvj17EuIdEgayhSVPfCfIU6KvHwEop+qzgYgMG8nd5jA6RZf2SN1f7x1nrq0TB19W/TK141zGeVrJt/bgW6qszruesFT3hphu87dKKShALX8cgnKcNordnddUuDq3LFiJaiE8lXGywuN3tXAQd8ZilnPtI7gXbCL8h41HdKBa6JCOtcJ/RioCREOWewf9aOCL2Mzlzhs+UP8FbSLnr3jlkzWA4Cif2gT72RHeXsNbfXxRiDs1Nzt9cG612L9SLlUdJMdCe8R7EhPEAjvGYuOKUWvOUW1Oi9qxdGUzjOJiv/vWnWPRGGiZfkun2HjafOyrKQ9yvF5jiAyWOyzUolpNC0+o93yMKr8vBRPFQmEWyAe4KMfyOpYKw5QP3d2ryVuU/plLsOiMQr19PC5I18kQERC+WNE/J
+ 6WQrZorD
+ FuksUB1cm0geWllx9QOucHzMl1AzV+arP+Xbe1LcCfLcCmAdS17ueZQobAGDDTfBp9h1LBHtThaJRstkgAOTub5z+yC9QsiUslPn05Qv4C86k0DEzw9WRMjlIAyU/IUujs9OIxY5XlBc3Hu6NLJl+0swFi7qunvZRqI68pmYguwo+O4oqZp/Uh8lkNhK5FKkEM/IkwH1O4eAvae6NmLnjJ/RSIoMc7es2D76o2w9E7IJBvLJL15n5ypNR7lg/U2uVI4e98V+SWmeim5bfa+JGvphWWSNkq4PV0wiubopsAYy5CYeTjeceGBYOXpVne2QFu+f3qVdovpE+wtqU07feGSf9uv8l0U+KXT7kHbI11UmfjhqObDxlNMHOOnpQtvBNcynOjqmBMbUtaNY7Zi0upXuFv1eCMKyK0Lp9jElvlQKhULCOF55BH+PB0CatWyZ4rIAh/CsVNbITeH2Z7txUADMmKr6F55IJNFaLJAtNXEWx3KPBduzIfBfSbFKNa+LvXVBdQmP2HiD4iSIL0nN95OylyCvkKkbLSu7hdOIuhR+G/O5AeCnjKFvja4AaTZANDFWM5ONNOBAO6d009dNSEOvYSdDmXnHcKkiK9oxJz3mbxXs+NBG+KK5PJrViEZepK3J8oT9FyJOvB1HfaYNZWUhFTQthKJYLmJr3pW2b6T4lU1kxzs+FdwBnfsFaiRrYPLmj0av0igCSouLdRk4/ioS4ircCQUUch9fgopzG3g5eiIxaut+NBINuwz3EgQ6yLnwoNicMBRv5d+vtch8kwU5ParBQffATC5PBdke/Tu796d+ebd33uyqDQtmrzutC55+x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,66 +124,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 11-03-26 09:42:29, Uladzislau Rezki wrote:
-> On Tue, Mar 10, 2026 at 03:59:14PM -0700, Andrew Morton wrote:
-> > On Mon, 2 Mar 2026 19:51:25 +0100 Michal Hocko <mhocko@suse.com> wrote:
-> > 
-> > > > I wouldn't do this because:
-> > > > 
-> > > > 1. it makes the __GFP_RETRY_MAYFAIL allocations unreliable.
-> > > 
-> > > __GFP_RETRY_MAYFAIL doesn't provide any reliability. It just promisses
-> > > to not OOM while trying hard. I believe this implementation doesn't
-> > > break that promise.
-> > > 
-> > > > 2. The comment at memalloc_noreclaim_save says that it may deplete memory 
-> > > > reserves: "This should only be used when the caller guarantees the 
-> > > > allocation will allow more memory to be freed very shortly, i.e. it needs 
-> > > > to allocate some memory in the process of freeing memory, and cannot 
-> > > > reclaim due to potential recursion."
-> > > 
-> > > yes, this allocation clearly doesn't guaratee to free more memory. That
-> > > comment is rather dated. Anyway, the crux is to make sure that the
-> > > allocation is not unbound. The idea behind this decision is that the
-> > > page tables are only a tiny fraction of the resulting memory allocated.
-> > > Moreover this virtually allocated space is recycled so over time there
-> > > should be less and less of page tables allocated as well.
-> > >  
-> > > > I think that the cleanest solution to this problem would be to get rid of 
-> > > > PF_MEMALLOC_NOFS and PF_MEMALLOC_NOIO and instead introduce two per-thread 
-> > > > variables "gfp_t set_flags" and "gfp_t clear_flags" and set and clear gfp 
-> > > > flags according to them in the allocator: "gfp = (gfp | 
-> > > > current->set_flags) & ~current->clear_flags";
-> > > 
-> > > We've been through discussions like this one way too many times and the
-> > > conclusion is that, no this will not work. The gfp space we have and
-> > > need to support without rewriting a large part of the kernel is simply
-> > > incompatible with a more sane interface. Yeah, I hate that as well but
-> > > here we are. We need to be creative to keep sensible and not introduce
-> > > even more weirdness to the interface.
-> > 
-> > Was that an ack?
-> > 
-> > I'm still sitting on Mikulas's "mm: allow __GFP_RETRY_MAYFAIL in
-> > vmalloc", which has
-> > 
-> > 	Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
-> > 	Acked-by: SeongJae Park <sj@kernel.org>
-> > 	Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> > 
-> > I'm unsure how to proceed here?
-> >
-> IMO, we should drop the patch as it is not complete and replace it by the
+On Mon, Mar 09, 2026 at 02:25:02PM -0700, Usama Arif wrote:
+>split_huge_pmd_address() with freeze=true splits a PMD migration entry
+>into PTE migration entries, consuming one folio reference in the
+>process.  The folio_get() before it provides this reference.
+>
+>Add a comment explaining this relationship. The expected folio refcount
+>at the start of migrate_vma_split_unmapped_folio() is 1.
+>
+>Suggested-by: Zi Yan <ziy@nvidia.com>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Reviewed-by: Nico Pache <npache@redhat.com>
+>Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Yes, that patch is not really correct as it allows to trigger OOM killer
-during pte allocation.
- 
-> [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+Another thing come up my mind.
+
+>---
+>v1 -> v2:
+>- Remove warning if folio refcount !=1 at the start of
+>  migrate_vma_split_unmapped_folio() (David)
+>---
+> mm/migrate_device.c | 4 ++++
+> 1 file changed, 4 insertions(+)
+>
+>diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>index 78c7acf02461..fbfe5715f635 100644
+>--- a/mm/migrate_device.c
+>+++ b/mm/migrate_device.c
+>@@ -908,6 +908,10 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+> 	unsigned long flags;
+> 	int ret = 0;
 > 
-> https://lore.kernel.org/lkml/20260302114740.2668450-2-urezki@gmail.com/
+>+	/*
+>+	 * take a reference, since split_huge_pmd_address() with freeze = true
+>+	 * drops a reference at the end.
+>+	 */
+> 	folio_get(folio);
+> 	split_huge_pmd_address(migrate->vma, addr, true);
+> 	ret = folio_split_unmapped(folio, 0);
 
-ack
+This makes me think why we need an extra refcount, while other user of
+split_huge_pmd_locked(@freeze = true) not.
+
+The put_page() when @freeze = true in __split_huge_pmd_locked() is to balance
+refcount for the mapping count change.  Since after freeze, the folio is
+removed from one pmd mapping.
+
+So we need an extra refcount here, as this folio is not mapped before split as
+the function name indicated.
+
+If my analysis above is correct, I am curious about the put_page() in
+__split_huge_pmd_locked() now.
+
+Currently we always drop refcount if @freeze = true. But when
+pmd_is_migration_entry(), we already unmap it and drop one refcount in
+set_pmd_migration_entry(). Would it be a problem to put_page() when
+pmd_is_migration_entry()?
+
 -- 
-Michal Hocko
-SUSE Labs
+Wei Yang
+Help you, Help me
 
