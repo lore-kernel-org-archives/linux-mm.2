@@ -4,91 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0761FD88DF
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 02:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03426FD88DF
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 03:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0FBF6B0088; Tue, 10 Mar 2026 22:58:04 -0400 (EDT)
+	id 311876B0089; Tue, 10 Mar 2026 23:02:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BCDA6B0089; Tue, 10 Mar 2026 22:58:04 -0400 (EDT)
+	id 2BB406B008A; Tue, 10 Mar 2026 23:02:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C06D6B008A; Tue, 10 Mar 2026 22:58:04 -0400 (EDT)
+	id 1C8956B008C; Tue, 10 Mar 2026 23:02:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69C1C6B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 22:58:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1662140375
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 02:58:03 +0000 (UTC)
-X-FDA: 84532272846.11.DE5D337
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4C7171C0003
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 02:58:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aObveawp;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EBC8C6B0089
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 23:02:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63A6C59431
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:42 +0000 (UTC)
+X-FDA: 84532284564.01.D133114
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9640710000B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LM7CDlsL;
+	spf=pass (imf14.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773197882;
+	s=arc-20220608; t=1773198160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KCqCXWA7676dPICIruRpxokb7vPTtkgULujt8gpuiuM=;
-	b=ialyhTptSc98iNVIeTZ/mplE0y5JZaio83Wz2dYsfXzbzAlxlE2Wd2mkOixx+SKGQB/ORX
-	ByUvSTdliz4btxpE3kGt9ghSFsCEgz8rDjjzvaHR+I8upNOt0MD78+mc1tlNoHiximuivx
-	18Ok8iI3I8BWH8PhPvsCQTMcDtvozLQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773197882; a=rsa-sha256;
-	cv=none;
-	b=nCK/PZVcSFDY5A8l1j56cAsJ2NMU6lXCEdwJj1MqYr4zbU2UnsZbjc1YW9lx8xtscppLOb
-	VVMeZ1W1f99q8xZ9ETHEPthxvB+tWYNfropQ5r6kKFWhRQq26I8yPWT5yXK85LLRFtfbRZ
-	I9ISg0HbBrVbTO6clQ1kEaZpNZE+wSw=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=vO8RhD7fGikYRNYtDoD/8DClVqthT19fczPJykhciJA=;
+	b=78Rxv6D2ECNcuTmLk9Bw7fJrN9T/MAplYPqEfuGg+6jdutAhOS2EeINf6N8UhKlez0KvFC
+	W+vvAqZb3TMNoAysEZJsP+uqFD3rmSyLZSfYrbc3Ymd8pQismNpXLC3vFDXX8sVMhbnX3D
+	P0ruA3tD2UYPOjoNu36Ub9nvOKtqJsE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aObveawp;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773197877; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=KCqCXWA7676dPICIruRpxokb7vPTtkgULujt8gpuiuM=;
-	b=aObveawpwdup4wMqZdsQvqHUF2VSgeg+r1iCXuBeieZCdCPuq+Ntf5iQsZ8T6hAoF+I0WP4mOwPCGtoXMuGVdCbl8hcx2AMcpmoNgDddeHlUIfNwLV9NxCmxq0y9YfUmOv5y6MaIgk3Tg+3HacCPAo7meHKscFEHaj7aE8DfhsI=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X-iF9Lj_1773197800 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Mar 2026 10:57:56 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org,  akpm@linux-foundation.org,  mhocko@suse.com,
-  vbabka@suse.cz,  apopple@nvidia.com,  axelrasmussen@google.com,
-  byungchul@sk.com,  cgroups@vger.kernel.org,  david@kernel.org,
-  eperezma@redhat.com,  gourry@gourry.net,  jasowang@redhat.com,
-  hannes@cmpxchg.org,  joshua.hahnjy@gmail.com,  Liam.Howlett@oracle.com,
-  linux-kernel@vger.kernel.org,  lorenzo.stoakes@oracle.com,
-  matthew.brost@intel.com,  mst@redhat.com,  rppt@kernel.org,
-  muchun.song@linux.dev,  zhengqi.arch@bytedance.com,  rakie.kim@sk.com,
-  roman.gushchin@linux.dev,  shakeel.butt@linux.dev,  surenb@google.com,
-  virtualization@lists.linux.dev,  weixugc@google.com,
-  xuanzhuo@linux.alibaba.com,  yuanchu@google.com,  ziy@nvidia.com,
-  kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-In-Reply-To: <977dc43d-622c-411d-99a6-4204fa26c21e@linux.dev> (JP Kobryn's
-	message of "Sun, 8 Mar 2026 21:31:27 -0700")
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
-	<87seabu8np.fsf@DESKTOP-5N7EMDA>
-	<977dc43d-622c-411d-99a6-4204fa26c21e@linux.dev>
-Date: Wed, 11 Mar 2026 10:56:38 +0800
-Message-ID: <87cy1boyzd.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LM7CDlsL;
+	spf=pass (imf14.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773198160; a=rsa-sha256;
+	cv=none;
+	b=RxuOqx1vkENC02tUI+Lgxkm4VBi2UVwlFJzDIFK+CXhuaw/2pwShsfqg1PMd2KrfomZ+K3
+	bZYj+zHmYKNaEDVAroQ9D75z0E5leOnsKaiaylzixTWAFMLp7QfCytRrmj1qpPn9vy1Uiv
+	/ictg1KWpXj/QhDB/EeEG7wj6Z5joN8=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c73a12af63cso2602230a12.0
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773198159; x=1773802959; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vO8RhD7fGikYRNYtDoD/8DClVqthT19fczPJykhciJA=;
+        b=LM7CDlsLN5+Ryr1tflBuX1oyWjjO1ZmQZmtSooY7Ku7HmgSF5vE26E33MN47fe3HXS
+         EBtMu9FMfurj+BVbqBa28ASMXvsclUEu6BscsvwaMTVXvoMtDlHG0UlrYXOTgYZFK9r4
+         7kaoUM6v7DLa4Bduvv7C8AxfZgVYT8JjMFPQeUaxlqJwEcnLRX+YIcMfbxRDTWu/uVbp
+         j1pVrZM2qzPne1d4mK5bCMNHxa/U18iw/nZX0MZIt3qM4Ag5hN3NAOrWNA5/yyDfJdGv
+         UsPXnOP0sj/gwEbD36+9CGXEFhf7jzKROnXtBdw3UC3daP+LEjbKvIQFEZxw3HQpmJ9V
+         vXOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773198159; x=1773802959;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vO8RhD7fGikYRNYtDoD/8DClVqthT19fczPJykhciJA=;
+        b=Xqu497IU8K6EoPPALkrJTGKmOSDzBbi5SsJ9Jsvr/OE8nEH/LhneGl5DVBJ22VjJcr
+         27Am1eBfzsioakeUpIQnZQRDNAkyh9vKLPWqKCf1Je0GPLjSFRkU6KRgz/j6ysILuE9P
+         CPDbrQM3Bwb/KbM2v0MUaEfr8JZp4R7Idzdmv2jk3fZaToMeeqYaPeKKYqZos7DFjLNi
+         wkZur5nLBNXMQfCTl28HJ4J/CMYKM0Vlt0ax1Gouw9uIhuXiaHeWL17VkflDFH75diBf
+         Ej/XOtJuy4mxoHnP2viHOHp3ACHZYB6qj4Jt1Dgs6aPKS+4XNH/FrLwvtquCtKkYHV7B
+         4hLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWXlUqstyhS6WGs3yQT7fKYoTaY6Zaed65nqjgjXqW580WLX76MDXQJ3fMhQhh21TnhNounC3DBUw==@kvack.org
+X-Gm-Message-State: AOJu0YwHUw7HGw5qVTMAiOTNsbgiP9VRjr5iDYNuGONGDUIJZPMAWJfY
+	sCYgoJgcqYU4ZnVytvthG653+zb/aUNcLqPdHcuqIEV35wEuG/6OwxIc
+X-Gm-Gg: ATEYQzx+J1gqUIeQytJUsITwuL4lpLSonpO2hTrTWjvGY4HyHQfIgKcO4bFIHBUGz5+
+	yVqrzfC0UVPhgl1dkzKf5Ec8imjRxdfcsMO/GNOaUEo0fuFxbW9fdEPkLtyQ1BSSdBERNBIRZWl
+	4EaOGR0GYlBBVYalAI42jZdRM6or4AkisHANVLcKjOqUiW2v4CjFq3JL1HzGwV6Cnd+YEz9Pzrp
+	6MqzSNjgkZvkKxLA06gss641fChSRrc5JkUZppDLcApSY95PQyCZSfiOc8gvE8dZ+DLBAaZwTWK
+	hV5Kh1bK0/lW8eoHkw51CaQcqohZG4IAGTrUUmW8qsppqepMCir5qrmPk+Rl+052VKxdLrdWdb8
+	yzzkLvkXxVqgvgaPwTt6oIHfmE9D+OfRGnvdVocbPq2HN1CzHlXM/rXIwLlQAD7TmSOaDIja4ju
+	Tb/UITKfFzhyxn9m/bHoZ9jg==
+X-Received: by 2002:a05:6a21:38a:b0:398:778f:6973 with SMTP id adf61e73a8af0-398c60e5857mr818593637.40.1773198159334;
+        Tue, 10 Mar 2026 20:02:39 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73cdf2725csm548196a12.13.2026.03.10.20.02.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 20:02:38 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Pasha Tatashin <pasha.tatashin@soleen.com>, Andrew Morton <akpm@linux-foundation.org>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/4] mm/page_table_check: Pass mm_struct to pxx_user_accessible_page()
+In-Reply-To: <ca77f3489453c2fe01b25e50e53b778929e0dfc5.1772812343.git.agordeev@linux.ibm.com>
+Date: Wed, 11 Mar 2026 08:29:53 +0530
+Message-ID: <zf4ft6ja.ritesh.list@gmail.com>
+References: <cover.1772812343.git.agordeev@linux.ibm.com> <ca77f3489453c2fe01b25e50e53b778929e0dfc5.1772812343.git.agordeev@linux.ibm.com>
+X-Rspamd-Queue-Id: 9640710000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: t7946kxm75w7utjpw3gzo1wiyd6fye9c
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4C7171C0003
-X-Stat-Signature: peowwzhtmhmczsomrg8g1q9s5zqmhfqq
-X-HE-Tag: 1773197880-720180
-X-HE-Meta: U2FsdGVkX1/oHyQjKrajyXvw3AT7P5t/Op/o64uUL5+O8pYG19L1DFfkCdP3hi+4uoglKvteGT66e7XxdjXlpcRAUbCZ0k9314OX2c/HDNZZjue9A5SmL3T92o5cCe+W8S6oCiGOW84Bt9Y+bh8Lj/MK+5GHAIJdZVdOni3nVRm5O6wgD1TOkHxwTrDeQx7asTO1rIxNwKYxSSxXsl00eFQ00JEGDBGXvlAwCulQdIsEUeBKwT6FkGZFGq6cid+aiEgNs7yIUriUYmsizmnv/bqN5qKaxHHUgE0RAYp5tUHBf/Y+MtJsKuqGh41Yn6HUDEmL9rXU8XYUw2k0TD0vDq+hU4sgjk8MeTTklLFlVfpxwa0b0OOFBEAI81utZrz/4rgrBnyMldnRzzlvNioncsaize1RanRtbAb+0PV17M7kA9fbqHdTfFYbe+xLi1Qfe/cCTme1AKM9b3LdnLMs6f905xOHRqR2ucBxV1wYrDPq+9Ay/3Ebr6lWC0ASRuk/L9PeUB2r+V765aJvaXMynvlzKZWu3OZYvnVuE8Q7Ql4GRIX2Bzlgk06HVDVdxx2SV1QvxOQsxMnoVbuB4ObUK4qUB71lK5SH8TSxPqRzcnK7mB1lZobRcZAkk+iaZ/BR2LyJbYl1naEhDDHBPFD1u1wOgvADD+zzBXKL8T4j823JRUTL2+/5VzCgNWOuHrr+qi8x82l/DF8DMM3xVQfg3iKT/lnaP3fS5JvWY10+UsV3g3X6Cu1TfWcXGu2f42YJ5gefXnVvg/t3f8huQwhosGxalXiZRjvXAW/T632ySvFYr3XijazCrHrK+/k8CEQ6QqD1blxLBefZdtjCQjSo1XcqTMupb4NkG8IX1T3k9ewyDFappA/+42dLgiI4g5dZdIj5gun4dXNH7nuZchKcb8Sbcxo1HMf2EhObA6bv+bs5ZrBaSnfQNJOBqf6znHY3bnMrunZeBLBehZv/mnu
- GUuxXndX
- 7s1CL9Pj+TvB3bMZnSdjxohxUhIoZiGypkZDU8KTlqhVOgPUTGwLaTahWM4be6A2AWygavR1ASLb5QbRystdspR9Yhh8yGT5TEoI9Efx3App6uWh0uP4SaIW2lwNlmPfRdes0rJRA4iUtfg9Yv4QS3tZ69eRJdtlvD15FlS4YY82xg14qWIETsBywb4PCB0yUVqZ/Ygo4Bh3Le7KFTrvJ16OYMdJBsrd3aijacWZ0vgKGRmcDyhs2yJClIQagZO7xXhlPiWZlwj6Orw3rfAg7a2W1dmRza+qWSgWulkUqKYVmv2ol38AhkPEc4YYtgj0s74XTFXfBkHEGWNYnk65rFwK9KZam6V1JFipHRwfA5msbdk80FL2/B5uyxh0Mesa6zf1oeM3YU+K22xo=
+X-HE-Tag: 1773198160-20539
+X-HE-Meta: U2FsdGVkX18RyPaOIKufoNzQ7sW5Q6gRk/aE7PQeo+f7CFptoVHcR4OahSlkxdiEu0BIxmSVFw8OSO2HqppZxJhbi3aLL+Ys5uoDj3ZfIU/j6wGiyyBuOTHtpxdM9X8iiY1p0M6rbA88YRQ/WIMSeSbXUYJXqTLZ6Pgqy+ybldijVpWCHFX7OU78XWnoqG1iTtAIMXmPGxhxRfsVlsRwyxVW3WdyzxJDQ+9bzwUI4xv82O8exbhL8F1u8ZLtGOzIO21UZGtEJnFrz0rFs/O594popepZ7opRtA9u2DlA6RCGqfvU1J12zxba2CFSeJp5uz+L15wVTfXdoGq3W0VzKqizG7s1ikEHPagUoxB3J0Y3P85SrLmehLkExTWgNBIBhRRoffM/B+785IHR2RVh8G0EyCiUb3e/mqDaEcWPEEKBYuanjDSHWIFrkwAvUxn2N9SDhhf/LVgznoaQAVOUXBswblA9YfFPvEW8i6IjO4I12oFpRsRQ/lW2YEbNrPsfeZspFBa6G45qSevNq/1gtcyZlRgg7rd5ZR2YxzY9M6IDbbxICXQoKm05J6+ZPHlmqBLHvEGEPh1twSzJz3k2j6B5P3+vwYWXwmd/1l39WBdN0jZEXtBMzc6tMdqKiF6OeEIV5Ice5e6xYmtBE9Q325gsQCh6ODEYpOi9QmnBfA04Kz65TJkQGYud5+E3gLb0rXQD4XfXNoUMBsrg9hwHoCtE3Ci6XTZLRZ5GYI07EN7i5XQhdunzzKeD5MGHOpxUi/Vkxnpr46+50gYCVX/Tg9EzerVBPi6mmrf2z4unhh+qG9H9n0ud2+NWaCZ/XEGj/Ky+tSma4Epw08Dgl3jfYVs8EE71XX8G8I3yvrFhXeYgSaO0xZ41+MVwUOCXG2hbYOz1liGkxktb+X8hn0fcWMFT1awGCdNBflkibMijWNKaUDyMwaVa4lijTp6wlJXVfuuRD1t/lt/FEwmBQ1T
+ 0vuZjMal
+ tKEfRxeYnTpK0pGGzPkwModp3fsY+KD87Y8KuDDE69+6kLH9GH8/KMA/cR9haEL6BXANMXmvgfSJ0SPa33ABhavkEH7KSW0YpUd52Wg9ZfEEQCgD3ADf6oSzRwpAlwLxztt4mV7vNnhzvBAOtJshPvsdLq+iTkNEiS9cYcdy8mqwN9CVVO6mM9p/jlDM9uYR1YVDG8nt680d3+H2FciRzrYsLewzU+Ni5X7EbyNFgn2lcHpgffxfFXq8Du6jWRT5arCXMuZ2b1TXjBFmU/2CiyKh9azT9BCu+1Dpio12wVkK0o0b1l6fBhjuTyG/+pXXAM9bE1h3EZ2iMD4MiDnu1iYnPp2Vra/0U5fJkrAOGe2rgHC7sFfqQV3hkUlQTDqwkgRRCQK3QG66wxDE24mQsG50LkN5w7YJbzxUd7b/rtkcacCjnnu+lC9kL8zb7aleJ3pjtcIl8OZgFA9XO9gYCtYS1aG3BkLHo0wGRnUz+X+xfPQnPmZF3hBex3iBc9+nWJsxjGOL8ALAaMfidIw5v21d5JWUHKaoi42QqosOb3bXJ3E24c/M4B4efjs3tBJWWV2/W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,85 +111,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
+Alexander Gordeev <agordeev@linux.ibm.com> writes:
 
-> On 3/7/26 4:27 AM, Huang, Ying wrote:
->> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
->> 
->>> When investigating pressure on a NUMA node, there is no straightforward way
->>> to determine which policies are driving allocations to it.
->>>
->>> Add per-policy page allocation counters as new node stat items. These
->>> counters track allocations to nodes and also whether the allocations were
->>> intentional or fallbacks.
->>>
->>> The new stats follow the existing numa hit/miss/foreign style and have the
->>> following meanings:
->>>
->>>    hit
->>>      - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
->>>      - for other policies, allocation succeeded on intended node
->>>      - counted on the node of the allocation
->>>    miss
->>>      - allocation intended for other node, but happened on this one
->>>      - counted on other node
->>>    foreign
->>>      - allocation intended on this node, but happened on other node
->>>      - counted on this node
->>>
->>> Counters are exposed per-memcg, per-node in memory.numa_stat and globally
->>> in /proc/vmstat.
->> IMHO, it may be better to describe your workflow as an example to
->> use
->> the newly added statistics.  That can describe why we need them.  For
->> example, what you have described in
->> https://lore.kernel.org/linux-mm/9ae80317-f005-474c-9da1-95462138f3c6@gmail.com/
->> 
->>> 1) Pressure/OOMs reported while system-wide memory is free.
->>> 2) Check per-node pgscan/pgsteal stats (provided by patch 2) to narrow
->>> down node(s) under pressure. They become available in
->>> /sys/devices/system/node/nodeN/vmstat.
->>> 3) Check per-policy allocation counters (this patch) on that node to
->>> find what policy was driving it. Same readout at nodeN/vmstat.
->>> 4) Now use /proc/*/numa_maps to identify tasks using the policy.
->> 
+> From: Tobias Huschle <huschle@linux.ibm.com>
 >
-> Good call. I'll add a workflow adapted for the current approach in
-> the next revision. I included it in another response in this thread, but
-> I'll repeat here because it will make it easier to answer your question
-> below.
+> Unlike other architectures, s390 does not have means to
+> distinguish kernel vs user page table entries - neither
+> an entry itself, nor the address could be used for that.
+> It is only the mm_struct that indicates whether an entry
+> in question is mapped to a user space. So pass mm_struct
+> to pxx_user_accessible_page() callbacks.
 >
-> 1) Pressure/OOMs reported while system-wide memory is free.
-> 2) Check /proc/zoneinfo or per-node stats in .../nodeN/vmstat to narrow
->    down node(s) under pressure.
-> 3) Check per-policy hit/miss/foreign counters (added by this patch) on
->    node(s) to see what policy is driving allocations there (intentional
->    vs fallback).
-> 4) Use /proc/*/numa_maps to identify tasks using the policy.
+> [agordeev@linux.ibm.com: rephrased commit message, removed braces]
 >
->> One question.  If we have to search /proc/*/numa_maps, why can't we
->> find all necessary information via /proc/*/numa_maps?  For example,
->> which VMA uses the most pages on the node?  Which policy is used in the
->> VMA? ...
->> 
->
-> There's a gap in the flow of information if we go straight from a node
-> in question to numa_maps. Without step 3 above, we can't distinguish
-> whether pages landed there intentionally, as a fallback, or were
-> migrated sometime after the allocation. These new counters track the
-> results of allocations at the time they happen, preserving that
-> information regardless of what may happen later on.
+> Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+> Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h             |  6 +++---
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
+>  arch/powerpc/include/asm/book3s/64/pgtable.h | 10 +++++-----
+>  arch/powerpc/include/asm/nohash/pgtable.h    |  2 +-
+>  arch/powerpc/include/asm/pgtable.h           |  4 ++--
 
-Sorry for late reply.
+straightforward change for adding mm struct param in the page table
+check calls. Also verified building different powerpc configs using ci.
 
-IMHO, step 3) doesn't add much to the flow.  It only counts allocation,
-not migration, freeing, etc.  I'm afraid that it may be misleading.  For
-example, if a lot of pages have been allocated with a mempolicy, then
-these pages are freed.  /proc/*/numa_maps are more useful stats for the
-goal.  To get all necessary information, I think that more thorough
-tracing is necessary.
+The changes looks good to me. Please feel free to add:
 
----
-Best Regards,
-Huang, Ying
+Reviewed-by Ritesh Harjani (IBM) <ritesh.list@gmail.com> #powerpc
+
 
