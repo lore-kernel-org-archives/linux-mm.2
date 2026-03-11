@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D74F2FD88F9
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C81F5FD88F4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13AAC6B0093; Wed, 11 Mar 2026 00:56:28 -0400 (EDT)
+	id D79AF6B0095; Wed, 11 Mar 2026 00:57:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1C06B0095; Wed, 11 Mar 2026 00:56:28 -0400 (EDT)
+	id D1D786B0096; Wed, 11 Mar 2026 00:57:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F25EF6B0096; Wed, 11 Mar 2026 00:56:27 -0400 (EDT)
+	id C49E96B0098; Wed, 11 Mar 2026 00:57:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0F16B0093
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:56:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5593759A9C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:56:27 +0000 (UTC)
-X-FDA: 84532571214.28.716FEE3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 83C2F80012
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:56:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A48356B0095
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:57:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 402F7BA13E
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:57:52 +0000 (UTC)
+X-FDA: 84532574784.29.929CD35
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 69DEF40008
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:57:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sbp4mhfo;
+	spf=pass (imf27.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773204985;
+	s=arc-20220608; t=1773205070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Se1ojWA+3hlBR7Amx6VKpGIjPAM1tcSgKCDNIviHObI=;
-	b=Udw2J8Hzvphe3C1b6ZHe3YF7Yg0BiahIPvKa3EOH9NIsYuAqXCaXxfD9SZ0rHvwYLfPgpX
-	9ibTwSaxAImqsubFpD5p7NjiPAW3j0Rik8H5Bj/Hrys2Lrl8Sz1MqThSghEGgvhTzeNTPo
-	BhyFxxXPGenaTO/vQJlIty94WqNf5go=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773204985; a=rsa-sha256;
-	cv=none;
-	b=AZ/o5Y1wblQK7fyZX4Rzn4h+FoPOjMB6wZfKlrQw1ldHSFtC8MovTeRBjzDxa+pGOb9tC4
-	emQkbGDw/lEzszcS39SxP9tUowkanbtpMrDqILwOsdUaEtBMnjR5JqqMXOcn9Au0ebCNav
-	ysf9ONulLz/0LDGXLIwhjqGAGteK690=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o3GKruKazSJqdxffywFhZhbdqtqrnzIQRTyoTECkXVo=;
+	b=Qu4cElSCFranQRC1+uJcC86GL22gIQHMNlUJ73rHnc2xzUH50SuZofU3cmajVDJKB1kVt2
+	lYkC1su47ERQNpqxl8Ev6b58qL1QHJ05jymEA/3pxztDdYfiHmIBc95aEydW8+tgC4Z4cq
+	ZZzwQc2qA80ZVBX2Gz5eM0qnVUTFSiw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21107165C;
-	Tue, 10 Mar 2026 21:56:18 -0700 (PDT)
-Received: from [10.164.148.48] (unknown [10.164.148.48])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C532F3F73B;
-	Tue, 10 Mar 2026 21:56:14 -0700 (PDT)
-Message-ID: <5b44d878-b187-4764-8c67-51ae690b4b91@arm.com>
-Date: Wed, 11 Mar 2026 10:26:11 +0530
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sbp4mhfo;
+	spf=pass (imf27.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773205070; a=rsa-sha256;
+	cv=none;
+	b=WyEAFDlla+5EBlvlg1wOwj8kQIQTuei8CUm8GDj33RaShdsKk5v+RSQTkCUUbnn6xPsHSZ
+	8YpW9yqc/KHSGkclqI93djK090VWhObs3291QB4ZlfVxq9neoztJTZxLPkwletTE+81a3n
+	3eF+paGkScCQOR+AXtPLMjI6CNVcsTc=
+Message-ID: <6076b8c2-c198-442d-974f-b3084a0cd1b1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773205068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o3GKruKazSJqdxffywFhZhbdqtqrnzIQRTyoTECkXVo=;
+	b=sbp4mhfoNFMO/ByBa4DmfjKKiA8zcPlX7AW9UF/OTfNksyWsS2ot7SrdPIb22cwO09a4xr
+	EL+cfpi3wKA0WxxPXvqO6jYyxaK7cO4EbbyqMIhO647x4QAgjJLZ7LiHDz2wfu4NiZa/Ef
+	ScU0Q4SPXXS0QqHFyUuN4BLAsDwFpjE=
+Date: Wed, 11 Mar 2026 12:57:34 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/9] mm/rmap: batch unmap folios belonging to uffd-wp VMAs
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
- david@kernel.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
- weixugc@google.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com,
- kas@kernel.org, willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260310073013.4069309-1-dev.jain@arm.com>
- <20260310073013.4069309-6-dev.jain@arm.com>
- <00f65edd-5b16-4f9e-a9fa-b923eba052b7@lucifer.local>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <00f65edd-5b16-4f9e-a9fa-b923eba052b7@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
+To: Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Alexei Starovoitov <ast@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Hui Zhu <hui.zhu@linux.dev>, JP Kobryn <inwardvessel@gmail.com>,
+ Muchun Song <muchun.song@linux.dev>, Geliang Tang <geliang@kernel.org>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Emil Tsalapatis <emil@etsalapatis.com>, David Rientjes
+ <rientjes@google.com>, Martin KaFai Lau <martin.lau@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260307182424.2889780-1-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 83C2F80012
-X-Stat-Signature: 934k9hdt6saxwzabt4ehtj7kdup7adr3
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 69DEF40008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: s3xexky6akf5gq4i3ymyqp6bjjz3n5p6
 X-Rspam-User: 
-X-HE-Tag: 1773204985-203196
-X-HE-Meta: U2FsdGVkX19kU1rTLOXV4/Qu/7qze9YNgyDW/Ysgd8UYKH5R+CCNwWgZyDyz8aFXQ1nyq2KCS7SAuDxF47GU/QMAzh4id/xJnoXTVtVrtdiBjyud3SnFFoHc3LyqFwdPrer2OJoi4zHFK1Dc3YOYMEP2/Jx2BmSGw12CRcEHWNFs4ByMXzBeYcpgCsTAR06M9VSWv+G+jthQCABY0CCUSKqlZ5oaFjNEdDy1ahVJyjVsSrEUrmGrAy/j7NJ8UU+rHCYTs0+mSg8BoCiZp5W3nDfl1uUti/8VOadA3TYChSHAxElSf+Ougfvjyl4BYIMaz+qhcxA5JLVayid8azHO4V7K8Dzi7UeQXpeGbR7GNq413BwrXrrCdR0PqK4SqhX2Qrww/SB7LJG8hkiC7xEl8qbV1i7IbYZ04CGU2GZ5hGczCHjcLbce8b91gdlN9/TBwlC7coB4ogalK2aQZiI03y1Y+rXwV2Y1DiQU7fLpGl5IE0EuAeURZAhjHiReC9dPKL6268ceSqSZQyN7myCLqiHWP2TKV3dXYntgPMqgJv0q3VUJVLD4z53MDsgPQNfQKrTEK6u0Ng4VJ8m9ITQglRVH+Rl6yLWyJKPT5x5iQKVk2WBumoceOGU0BqcuYRhuBhoY5hkdI+/Z5OeF2vaw7mqKmev4F74xMy8gkSs0ko0FgHVbSIexAOQ2HIR3SyeXXPbGaoYN4hR/cKn5uOYyKlDQ6VEg9Ix9/aLtGZNvTYWJtJDckteVEZ/FWcQxv3eCdpg03HJVjelg/Vg9h/9RDABFLIlG4bc8sT3j2W5WgewrP4HLQA1o4rSBWrx3AoHKTquqzoYx/JtWfMuQEJPBU+JIj2D6KSv/F2uUY++x+pO4O3VAH5iQmTGRKSKu9/lJCMl7IjjaofkN/AxAc1bPlRgTRBps9ZUbnuhxCkPKhxdbq04k/TTOlOSGX33Fl+HAdzReLJF4Voo191h/M24
- tL/4y0J8
- VTT5vftd9GbtOFdybrSBpOgu4q3DU61s3asS5bNL9qjviRlAPwrffc1Lo/Mt4MDxf/q1LbuHC1vncgwPlLXrSXJwQk6IQFpFELg17upMv0m8BMLnp6TtMWQE8LW7E7yL4pHHuD8Oxqvvy8HYRB3bSEMwlRWkmUzUTi0i1120M2Me+vDRSNwFAv/uA6J1Egq9NfJ8Z688yZcCCLBc=
+X-HE-Tag: 1773205070-443501
+X-HE-Meta: U2FsdGVkX1/gXgRTA/dvht1mzwW8yxgPkJ/gqMEOOByoQWZNfDkH28PdnziokEG9cV/+N3LOHkG/FYiYlGDX1J2bfCmW37jb1Zny8L0RfwEMbvcn56YKFBKr2r0AcuV6dGKepVPtl7GCQd4NUpzx5rbbiGKglsXbfwjxcHNvlOIF6mXwD/hIk2AxRg3mgmFOHqwPCg79c5FvlL9YNWJmefzE5DNue50nq0WB7VWdx9Df9pDi8b6WAHOqrTbEj/422JDpFHt/KZRvC067tBPI1mkzrY0GaangM6+hrx1qjIgj/x8GvTDaRTYwtHuTJe/d3Wr7zHlAxcvnqFp1HublcA+doOxhxWiplu9n3W495/s9p3vMTNGNN4A4fcilvEUoJNXegBpK+KyWSs2SjAj5PYZtr5XnnEvgdHtSO0UKnfaB99xDLbFhMnneiCVZ5qI9dKMwnL/qm/hlD3CcmCrhefP1zRjyMkFOKuGvFO2eo4CDVC5pL4b+600xlyDad8eJ0wfzjRhbTxaiZfO5vtjWpUFjkqtlZzCbZVkc5hfCxFpOhMUQJMmpF3vam9hYr0pFKnuOzuIPUCEfSyZhzd1j3eaT4fioX3FKuN13jmBEV48+WN8EQOpNKlmkJcIoI6/b0b+Q8MxJkCBc45w6rbzlDTY2bGgC1sqlsop9+FSrg/mJvLHlfjm2dn+WLJYRXY60PaX2G4hVsqiApqHPDKZtAxUpzoMkX8WZdjcl1UtejN/g5mbuBvXBuNOdJgr1u7pucLHmJdLd6W3DxeYhM9NyWqTZUydR7W/EcD+B+hk/XMRT3XrBE8VDWJNGmQCtfiyXd1Y1OfEh2tzpMUWn7qYXfko45073wfD91sF5wq3/fSlEDv06OfH/Guj9gK8o/tCOLEuXY2DbN13cpTcewjbrUexlUSNnlrkiTh0n/eQITcHcxBzn/BXOtCm39rcFPAw6sWWWkpI/D4wFNm8BvXm
+ BAJm00UQ
+ AjmXcDeT+JszpJAKOwKHXiWugKYjcPYE/Gx+YoAR0kJQDbrF1sEtSF30LGDD+OWOcLLjFJx/Vgj6EU99J2lLemjuduMD67yaGLToD4wIl+0Pv4+fcq0VEbc21jcV5PKWp115xP1CvGYpCAM4VjI9q20MWxLyH99VMMTnHKA6cCFD/ljq4H4Q8MgaOECJjK4bToXo7UzsoCIwEfYJqz8mXXNPcc7v1GtFnCsd8tvFVZ7h1NTH2kreXKBn+BHo/GJZf/GvB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,133 +98,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On 3/8/26 2:24 AM, Shakeel Butt wrote:
+> Over the last couple of weeks, I have been brainstorming on how I would go
+> about redesigning memcg, taking inspiration from sched_ext and bpfoom, with a
+> focus on existing challenges and issues. This proposal outlines the high-level
+> direction. Followup emails and patch series will cover and brainstorm the
+> mechanisms (of course BPF) to achieve these goals.
+>
+> Memory cgroups provide memory accounting and the ability to control memory usage
+> of workloads through two categories of limits. Throttling limits (memory.max and
+> memory.high) cap memory consumption. Protection limits (memory.min and
+> memory.low) shield a workload's memory from reclaim under external memory
+> pressure.
+>
+> Challenges
+> ----------
+>
+> - Workload owners rarely know their actual memory requirements, leading to
+>    overprovisioned limits, lower utilization, and higher infrastructure costs.
+>
+> - Throttling limit enforcement is synchronous in the allocating task's context,
+>    which can stall latency-sensitive threads.
+>
+> - The stalled thread may hold shared locks, causing priority inversion -- all
+>    waiters are blocked regardless of their priority.
+>
+> - Enforcement is indiscriminate -- there is no way to distinguish a
+>    performance-critical or latency-critical allocator from a latency-tolerant
+>    one.
+>
+> - Protection limits assume static working sets size, forcing owners to either
+>    overprovision or build complex userspace infrastructure to dynamically adjust
+>    them.
+>
+> Feature Wishlist
+> ----------------
+>
+> Here is the list of features and capabilities I want to enable in the
+> redesigned memcg limit enforcement world.
+>
+> Per-Memcg Background Reclaim
+>
+> In the new memcg world, with the goal of (mostly) eliminating direct synchronous
+> reclaim for limit enforcement, provide per-memcg background reclaimers which can
+> scale across CPUs with the allocation rate.
 
-On 10/03/26 2:04 pm, Lorenzo Stoakes (Oracle) wrote:
-> On Tue, Mar 10, 2026 at 01:00:09PM +0530, Dev Jain wrote:
->> The ptes are all the same w.r.t belonging to the same type of VMA, and
->> being marked with uffd-wp or all being not marked. Therefore we can batch
->> set uffd-wp markers through install_uffd_wp_ptes_if_needed, and enable
->> batched unmapping of folios belonging to uffd-wp VMAs by dropping that
->> condition from folio_unmap_pte_batch.
->>
->> It may happen that we don't batch over the entire folio in one go, in which
->> case, we must skip over the current batch. Add a helper to do that -
->> page_vma_mapped_walk_jump() will increment the relevant fields of pvmw
->> by nr pages.
->>
->> I think that we can get away with just incrementing pvmw->pte
->> and pvmw->address, since looking at the code in page_vma_mapped.c,
->> pvmw->pfn and pvmw->nr_pages are used in conjunction, and pvmw->pgoff
->> and pvmw->nr_pages (in vma_address_end()) are used in conjunction,
->> cancelling out the increment and decrement in the respective fields. But
->> let us not rely on the pvmw implementation and keep this simple.
-> 
-> This isn't simple...
-> 
->>
->> Export this function to rmap.h to enable future reuse.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  include/linux/rmap.h | 10 ++++++++++
->>  mm/rmap.c            |  8 +++-----
->>  2 files changed, 13 insertions(+), 5 deletions(-)
->>
->> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
->> index 8dc0871e5f001..1b7720c66ac87 100644
->> --- a/include/linux/rmap.h
->> +++ b/include/linux/rmap.h
->> @@ -892,6 +892,16 @@ static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
->>  		spin_unlock(pvmw->ptl);
->>  }
->>
->> +static inline void page_vma_mapped_walk_jump(struct page_vma_mapped_walk *pvmw,
->> +		unsigned int nr)
-> 
-> unsigned long nr_pages... 'nr' is meaningless and you're mixing + matching types
-> for no reason.
-> 
->> +{
->> +	pvmw->pfn += nr;
->> +	pvmw->nr_pages -= nr;
->> +	pvmw->pgoff += nr;
->> +	pvmw->pte += nr;
->> +	pvmw->address += nr * PAGE_SIZE;
->> +}
-> 
-> I absolutely hate this. It's extremely confusing, especially since you're now
-> going from looking at 1 page to nr_pages - 1, jump doesn't really mean anything
-> here, you're losing sight of the batch size and exposing a silly detail to the
-> caller, and I really don't want to 'export' this at this time.
-> 
-> If we must have this, can you please make it static in rmap.c at least for the
-> time being.
-> 
-> Or perhaps instead, have a batched variant of page_vma_mapped_walk(), like
-> page_vma_mapped_walk_batch()?
-> 
-> I think that makes a lot more sense...
-> 
-> I mean I kind of hate the pvmw interface in general, this is a hack to handle
-> batching clamped on to the side of it, let's figure out how to do this sensibly
-> and do what's needed rather than adding yet more hacks-on-hacks please.
-> 
->> +
->>  /**
->>   * page_vma_mapped_walk_restart - Restart the page table walk.
->>   * @pvmw: Pointer to struct page_vma_mapped_walk.
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index a7570cd037344..dd638429c963e 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -1953,9 +1953,6 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>  	if (pte_unused(pte))
->>  		return 1;
->>
->> -	if (userfaultfd_wp(vma))
->> -		return 1;
->> -
->>  	/*
->>  	 * If unmap fails, we need to restore the ptes. To avoid accidentally
->>  	 * upgrading write permissions for ptes that were not originally
->> @@ -2235,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  		 * we may want to replace a none pte with a marker pte if
->>  		 * it's file-backed, so we don't lose the tracking info.
->>  		 */
->> -		install_uffd_wp_ptes_if_needed(vma, address, pvmw.pte, pteval, 1);
->> +		install_uffd_wp_ptes_if_needed(vma, address, pvmw.pte, pteval, nr_pages);
->>
->>  		/* Update high watermark before we lower rss */
->>  		update_hiwater_rss(mm);
->> @@ -2359,8 +2356,9 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  		 * If we are sure that we batched the entire folio and cleared
->>  		 * all PTEs, we can just optimize and stop right here.
->>  		 */
->> -		if (nr_pages == folio_nr_pages(folio))
->> +		if (likely(nr_pages == folio_nr_pages(folio)))
-> 
-> Please don't add random likely()'s based on what you think is likely(). This
-> kind of thing should only be done based on profiling.
+This sounds like a very useful approach. I have a few questions I'm 
+thinking through:
 
-Okay.
+How would you approach implementing this background reclaim? I'm imagining
+something like asynchronous memory.reclaim operations - is that in line
+with your thinking?
 
-> 
->>  			goto walk_done;
->> +		page_vma_mapped_walk_jump(&pvmw, nr_pages - 1);
-> 
-> (You're now passing a signed long to an unsigned int...!)
+And regarding cold page identification - do you have a preferred approach?
+I'm curious what the most practical way would be to accurately identify
+which pages to reclaim.
 
-Will fix all instances of nr_pages to unsigned long.
+Would be great to hear your perspective.
 
-> 
-> 
->>  		continue;
->>  walk_abort:
->>  		ret = false;
->> --
->> 2.34.1
->>
-> 
-> Thanks, Lorenzo
 
 
