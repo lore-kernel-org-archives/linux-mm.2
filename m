@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4965AFD88F9
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AFE4FD88F4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:52:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6303B6B0005; Wed, 11 Mar 2026 00:52:24 -0400 (EDT)
+	id E1DA96B0089; Wed, 11 Mar 2026 00:52:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DAB96B0089; Wed, 11 Mar 2026 00:52:24 -0400 (EDT)
+	id DD1406B008A; Wed, 11 Mar 2026 00:52:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E6EA6B008A; Wed, 11 Mar 2026 00:52:24 -0400 (EDT)
+	id CD3A96B008C; Wed, 11 Mar 2026 00:52:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 27DD86B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:52:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D1A01403E7
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:52:23 +0000 (UTC)
-X-FDA: 84532560966.14.ADC5130
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AA837A000E
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:52:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YgPf4gzY;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AE27C6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:52:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41681C22C9
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:52:47 +0000 (UTC)
+X-FDA: 84532561974.26.8E92C1D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3AB271C0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:52:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773204742;
+	s=arc-20220608; t=1773204765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vcx2tEiM5H2TyNtKlNF/IXle4ed2aOsVuUva7tVU4ck=;
-	b=UPVD/2pXA2udJqnMYnTxi4Ga2fDosKpw1uzj0nkU32DFBk2vAQSrz3hZoLTgweK/lUhAV3
-	fBvovceb+fiDawZZIr73oy4mQRZVQLAfco6DEeD0y4ONi8vKaGpzVXN8fNV7QWcR11QllV
-	kXXN2rYHnYBnibcOxJwL1o1VYs9LwxY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YgPf4gzY;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773204742; a=rsa-sha256;
-	cv=none;
-	b=DIGaHm8YUVQ3DhmROPapnIQTWfH4lcSoZ+0wlBiLLCVb+93+pQWrmhXmj4p46VZqM72zBA
-	eX3BE9kiMy981WjE3Zl/e4ij1Yi5Qw1wRiqotvrIYKfpnbu8Ijg9CK8XKccMl0mowyBnjL
-	MHeOzptWcRZWS7TsfHzkps6cgb6kr/M=
-Message-ID: <be82a89f-aef2-4fd9-9304-a5c9b4e3e125@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773204739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vcx2tEiM5H2TyNtKlNF/IXle4ed2aOsVuUva7tVU4ck=;
-	b=YgPf4gzYEQFnc2G2R71vHKH2wNhu/NkhsvJENqvp6gxGBcUCh2KRtpTtTaVSAoN1E+H5Ud
-	+TPEdKlc5NZpMYuA/F7u2br/L4behR5oIf4nDTpHfXXZS5Knx9645OuyL8op5axLAWqubH
-	ikU6AJ2BLGupt/sqhbtQ/Dy8Xm8yeyU=
-Date: Wed, 11 Mar 2026 12:52:02 +0800
+	bh=/AIPRsL72xS4TiVirHb6urVqK3vGu73T6WRDQu18bZY=;
+	b=lI73iGaajkomp4/0V4k/hiGtciPk0KN8zWKuJtO3kSyIiCw/h1Ny6xnTT8V7ZUQyRT6z/y
+	8YMUOuQUVMQIwIjwwMHeDl1AxCX+RsPUq2NPtw4OT1EL9bkXKUd1qVMeQehBPaAcLvAxWK
+	p1+c7/q3wI+5Sx26wLlRhs6QF2EcuZs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773204765; a=rsa-sha256;
+	cv=none;
+	b=knit1TiLgnB6kj0QtSpm20qxmccFuX3Vl/Vhb3jRhflOALZY0uupxxwfkB6+7jPjMfXkUd
+	uMCEX6vWAHyVK9dfFrZpC3gTbrevVy2ldoD1YuTAKMiRieCyjgzoLZw8gY1KMVw8BAOs3b
+	nk/XwRMmZ6zfsUy3RyxIE8j9T9klwgA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5C93165C;
+	Tue, 10 Mar 2026 21:52:37 -0700 (PDT)
+Received: from [10.164.148.48] (unknown [10.164.148.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 09EB13F73B;
+	Tue, 10 Mar 2026 21:52:33 -0700 (PDT)
+Message-ID: <2b9146bb-31e9-4bbd-843e-221f13a7097c@arm.com>
+Date: Wed, 11 Mar 2026 10:22:24 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 2/4] mm: huge_memory: refactor anon_enabled_store()
- with change_anon_orders()
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/9] mm/rmap: batch unmap folios belonging to uffd-wp VMAs
+To: Barry Song <21cnbao@gmail.com>, "Lorenzo Stoakes (Oracle)"
+ <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ david@kernel.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
+ weixugc@google.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org,
+ willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260310073013.4069309-1-dev.jain@arm.com>
+ <20260310073013.4069309-6-dev.jain@arm.com>
+ <00f65edd-5b16-4f9e-a9fa-b923eba052b7@lucifer.local>
+ <CAGsJ_4zMQReykifGVmXJEgPqORhRoFBKKJq_bjBzDGT5hfGGwQ@mail.gmail.com>
+ <CAGsJ_4wmrV0+wxiXAgEWRxBpv1QT9Sm__Pi+yREGvT9YH2n4uQ@mail.gmail.com>
 Content-Language: en-US
-To: Wei Yang <richard.weiyang@gmail.com>, Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org,
- kernel-team@meta.com, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-References: <20260310-thp_logs-v5-0-686099175bf6@debian.org>
- <20260310-thp_logs-v5-2-686099175bf6@debian.org>
- <20260311031229.mloqvlmmqipr7k2h@master>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260311031229.mloqvlmmqipr7k2h@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ur4e5c68qkrth8c61ufao9b63ktefot4
-X-Rspamd-Server: rspam09
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAGsJ_4wmrV0+wxiXAgEWRxBpv1QT9Sm__Pi+yREGvT9YH2n4uQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: x5bxkpktst58hhmxst3p6jg75ugby3ot
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA837A000E
-X-HE-Tag: 1773204741-187813
-X-HE-Meta: U2FsdGVkX1+Zj4aa3s6QHp9yBKe4zhwA+V9RRMVf4VuiObfNSQnERJNVC7Y+ULA3L0220EDJa7O4QuQGuxH0LAwcOYe5TIl9D2JYMAZNSuCVrycZT6QVWQ9J3/hPghpMDBQKuxLXu60w3AHHpZpgMXLBny8vclH5W/swcUp/HVpsk/8vo0MVJoZEOiZ3If7K2/6ZH6UCGxBNv5wt9zzbjfnTH/8AClsxU0g9Kqmt1ijl6FGs6e3dTGs+X5KxfRsRC4HKVoFx/hqsVm1RON8JCRP3NRdLL9PYGW2isudDgmyS3ntUOPlc/1BIUTaYJsg78Z9ytv6+hYQTJ8DeXJRfQruWnCMMnGwuKlwiY6YA1J5j88QRRo4KuS+DN2SZPqiH/sJk63nicrf3dRhRuQq+ksawdqExcJP1ZYSdOoutIniOR5w3SiOI0cJckR8ZsbCdKQg8aPD4jZYkvV8pI1ydWCt9IuLYBySoJa9qwUG15e1R9lGjOiWe17cJquCzfAe8mvgpDENEeo4qBeeuTfu0dX1G70A8JbAnJPZLAh/dNDTaRD1E48/SPy52y4Q1jkRIee09q6746zvMvRL5Ft4h7kak3p0N8avtsWVOKbrV6/o2tYrN19bqf05rjHG6rjxpubt9JrQVLfdzgZW0PzZd4W17eUFKPbuqXhkWvqOz+8haV5/jIicSw4L0PTUij1vUF1uSuvJ0VsyvrwXvRcdmkdxv+RaeaVuIqS6u97KVO3FUoKebFo89A94G1QgJq/pwYum3GHq4UeydOGsko+w6v3U1400mlv1Q7lgiTJzScdfCsXSPt44peSfCqOv/plbghLxDcQfdIolq3GGvGf6CoNWec9W7jxNf7lboGGaSs9ouT7WRIEjbVXbXAahqQY6GOGEFkkDxhsVWrE0ChCIOVbzzi1o2HY9IFg0aZSTH5mwsh1ZP9ljTxEALxAiYWL7AWHb3nv2rxIXSiKYvIfm
- nrJPaxw4
- aw1yc7yp0L/Sr1GOuj6qjUZZc1o+dwWz6ARcZjDY0tztrA/rv6FUXkzBVa9qO9XX3RR7vblaaNywROtk1MEgbYfimwTm6RjWi/Lbq34OpCswkarzNesAGlhu+rW9WrDyh0frFlTZukVAdiGPwuzAnN53EW1NRScgAPbZYVhGnBY5L7kjJNIH/YdN5Q2wHinA6GpaeInxXzDJrJHlA+k210JToS/VvlSBiWzfZOdoxpOTSxirYgvtgXGdsehyTYxhjYq9t3PwjHE4XDv7Pr5eubHL9CSKzfD4R0iDVfuR5qQ3tWcmgXUEs3JVJMGCo0+lIWW1CbNCqOnTZRhCWNeNvvQG6RPCFC2rwyVJVfMldha8+GD6Ia/3Hlj3+fw==
+X-Rspamd-Queue-Id: 3AB271C0005
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773204765-165580
+X-HE-Meta: U2FsdGVkX1/pdumlfYd7OrCQ53yHL/9sEI2LbbEAOaLZk0OPcPvBS7s1k2U0ntiVjmXVbi9imcU6XWJJ54OUh5/ZAvl1X03wcpnY2VInEnemoyJmDKY7nnz4w4Ndn8WFueqkSxLOyFMe8MlUDXLm8i8+ZHGUqbqRWXo0z91wFkhFAgw+ySdTNrkVYLn/BA/Rl4/fuYdFOn40L1EIcCj5MCVgVbaliX2SDhqMj2lFWI5HQMfe+NfvU2gDg1LjXtmBySKw6K0R3d2WknGXoGeoU2L8rzWCgDkcxpzg6kNPB2rp3m+0p52/6SLYNpjlNMf0M9FAhl7K/OjzjtCxAT6OCfiah6d9iXvlOil9NgbSc3VQmzu6mRB/Euz8E1MkLEPPO23gPOx2DL4un4LY9v6E9tZccWaWDg+kiKy20MUmypY4Y+mX81lLRz+z6YmULVn5fXpDmja35GTHUSntDqKwnk3EtYVT+vdAsiR9rZPeJzDI4k+DRKEILa63LeC8yvXA4UhW7UGdiIJCl+mOw9+pLwRK3A8SQMSzFtRnXH2kQIlVp2qdFVI+G+qvVXkZT6pc3KU1UGgpQoyB3HxjI4d7ie6UcIm+IA8tX2a5h8Uewv/qNsFVRXplTXh6OEHXAz9g1EO+z9xVsXBiPuqKqaes6aMtz+w7jUeoJhQj/nSGiCn/OD5P+Z6zF6qxiDpZKAJoKKggoxYM05hvyrnkKmekmI0U02PMmfAREqvUzfuuhAPgM6Q+eQD43D4qg4NAHk8A+4s2VYTPW9EabQR4j9USM42BUxL1UtwrTPZlDg93CN0ehyrvbGkuyc9v9kJKJ1rFTAaGQU/rNYJ2Z8QrlO9kPA7CpE36JQN4eVFNfBrCW5OGyKu0kxamHbIhwxa8+SILMgL7UkTmtIdqiFYA+vG72cQuTnHUkl11sSPLPyL9E+0rHN+RbTjaINChUB36vTye3HPxai9TRiRob41/Vf5
+ NKu9Th3X
+ F/QhgqluMc44/1tQTx1dcMJ6mjJhsAjnddD3IFFVwQJqesJN+SGwT+vc3J4wxcGjeA+vK38Acokbbq2rFvx7M8ChTcyTQxGK4RU4QLXiy+4Qhl8uuuEhKFjzVHBHtqCDhFNrhkF7HFW0rv1yt5DFaPIbmX8i3vqF8gAHDY1EI9770qwdgw3JkkuE36GG72iIJ4ucbp4dAXLebNl/1+VG9CSDNsD3yiiuLqv61lWLh4jdDxLtaFgJug10DZnfudUxeyR9FlDir6Bx6i0mRI50G7ImYvLOWtlVgNKQNlVvxERHlGjMtL+rROsyMWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,66 +98,150 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/3/11 11:12, Wei Yang wrote:
-> On Tue, Mar 10, 2026 at 10:57:08AM -0700, Breno Leitao wrote:
->> Consolidate the repeated spin_lock/set_bit/clear_bit pattern in
->> anon_enabled_store() into a new change_anon_orders() helper that
->> loops over an orders[] array, setting the bit for the selected mode
->> and clearing the others.
+On 11/03/26 9:44 am, Barry Song wrote:
+> On Wed, Mar 11, 2026 at 7:32 AM Barry Song <21cnbao@gmail.com> wrote:
 >>
->> Introduce enum anon_enabled_mode and anon_enabled_mode_strings[]
->> for the per-order anon THP setting.
+>> On Tue, Mar 10, 2026 at 4:34 PM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
+>>>
+>>> On Tue, Mar 10, 2026 at 01:00:09PM +0530, Dev Jain wrote:
+>>>> The ptes are all the same w.r.t belonging to the same type of VMA, and
+>>>> being marked with uffd-wp or all being not marked. Therefore we can batch
+>>>> set uffd-wp markers through install_uffd_wp_ptes_if_needed, and enable
+>>>> batched unmapping of folios belonging to uffd-wp VMAs by dropping that
+>>>> condition from folio_unmap_pte_batch.
+>>>>
+>>>> It may happen that we don't batch over the entire folio in one go, in which
+>>>> case, we must skip over the current batch. Add a helper to do that -
+>>>> page_vma_mapped_walk_jump() will increment the relevant fields of pvmw
+>>>> by nr pages.
+>>>>
+>>>> I think that we can get away with just incrementing pvmw->pte
+>>>> and pvmw->address, since looking at the code in page_vma_mapped.c,
+>>>> pvmw->pfn and pvmw->nr_pages are used in conjunction, and pvmw->pgoff
+>>>> and pvmw->nr_pages (in vma_address_end()) are used in conjunction,
+>>>> cancelling out the increment and decrement in the respective fields. But
+>>>> let us not rely on the pvmw implementation and keep this simple.
+>>>
+>>> This isn't simple...
+>>>
+>>>>
+>>>> Export this function to rmap.h to enable future reuse.
+>>>>
+>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>>> ---
+>>>>  include/linux/rmap.h | 10 ++++++++++
+>>>>  mm/rmap.c            |  8 +++-----
+>>>>  2 files changed, 13 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+>>>> index 8dc0871e5f001..1b7720c66ac87 100644
+>>>> --- a/include/linux/rmap.h
+>>>> +++ b/include/linux/rmap.h
+>>>> @@ -892,6 +892,16 @@ static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
+>>>>               spin_unlock(pvmw->ptl);
+>>>>  }
+>>>>
+>>>> +static inline void page_vma_mapped_walk_jump(struct page_vma_mapped_walk *pvmw,
+>>>> +             unsigned int nr)
+>>>
+>>> unsigned long nr_pages... 'nr' is meaningless and you're mixing + matching types
+>>> for no reason.
+>>>
+>>>> +{
+>>>> +     pvmw->pfn += nr;
+>>>> +     pvmw->nr_pages -= nr;
+>>>> +     pvmw->pgoff += nr;
+>>>> +     pvmw->pte += nr;
+>>>> +     pvmw->address += nr * PAGE_SIZE;
+>>>> +}
+>>>
+>>> I absolutely hate this. It's extremely confusing, especially since you're now
+>>> going from looking at 1 page to nr_pages - 1, jump doesn't really mean anything
+>>> here, you're losing sight of the batch size and exposing a silly detail to the
+>>> caller, and I really don't want to 'export' this at this time.
 >>
->> Use sysfs_match_string() with the anon_enabled_mode_strings[] table
->> to replace the if/else chain of sysfs_streq() calls.
+>> I’m fairly sure I raised the same concern when Dev first suggested this,
+>> but somehow it seems my comment was completely overlooked. :-)
+
+I do recall, perhaps I was lazy to look at the pvmw code :) But I should
+have just looked at this earlier, it's fairly simple. See below.
+
 >>
->> The helper uses test_and_set_bit()/test_and_clear_bit() to track
->> whether the state actually changed, so start_stop_khugepaged() is
->> only called when needed. When the mode is unchanged,
->> set_recommended_min_free_kbytes() is called directly to preserve
->> the watermark recalculation behavior of the original code.
+>>>
+>>> If we must have this, can you please make it static in rmap.c at least for the
+>>> time being.
+>>>
+>>> Or perhaps instead, have a batched variant of page_vma_mapped_walk(), like
+>>> page_vma_mapped_walk_batch()?
 >>
->> Signed-off-by: Breno Leitao <leitao@debian.org>
->> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->> ---
->> mm/huge_memory.c | 84 +++++++++++++++++++++++++++++++++++---------------------
->> 1 file changed, 52 insertions(+), 32 deletions(-)
+>> Right now, for non-anon pages we face the same issues, but
+>> page_vma_mapped_walk() can skip those PTEs once it finds that
+>> nr - 1 PTEs are none.
 >>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 8e2746ea74adf..e19dda5aaf195 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -316,6 +316,20 @@ static ssize_t enabled_show(struct kobject *kobj,
->> 	return sysfs_emit(buf, "%s\n", output);
+>> next_pte:
+>>                 do {
+>>                         pvmw->address += PAGE_SIZE;
+>>                         if (pvmw->address >= end)
+>>                                 return not_found(pvmw);
+>>                         /* Did we cross page table boundary? */
+>>                         if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) == 0) {
+>>                                 if (pvmw->ptl) {
+>>                                         spin_unlock(pvmw->ptl);
+>>                                         pvmw->ptl = NULL;
+>>                                 }
+>>                                 pte_unmap(pvmw->pte);
+>>                                 pvmw->pte = NULL;
+>>                                 pvmw->flags |= PVMW_PGTABLE_CROSSED;
+>>                                 goto restart;
+>>                         }
+>>                         pvmw->pte++;
+>>                 } while (pte_none(ptep_get(pvmw->pte)));
+>>
+>> The difference now is that swap entries cannot be skipped.
+>>
+>> If we're trying to find `page_vma_mapped_walk_batch()`, I suppose
+>> it could be like this?
+>>
+>> bool page_vma_mapped_walk_batch(struct page_vma_mapped_walk *pvmw,
+>> unsigned long nr)
+>> {
+>> ...
 >> }
 >>
->> +enum anon_enabled_mode {
->> +	ANON_ENABLED_ALWAYS	= 0,
->> +	ANON_ENABLED_MADVISE	= 1,
->> +	ANON_ENABLED_INHERIT	= 2,
->> +	ANON_ENABLED_NEVER	= 3,
->> +};
->> +
->> +static const char * const anon_enabled_mode_strings[] = {
->> +	[ANON_ENABLED_ALWAYS]	= "always",
->> +	[ANON_ENABLED_MADVISE]	= "madvise",
->> +	[ANON_ENABLED_INHERIT]	= "inherit",
->> +	[ANON_ENABLED_NEVER]	= "never",
->> +};
->> +
+>> static inline bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>> {
+>>         return page_vma_mapped_walk_batch(pvmw, 1);
+>> }
 > 
-> Just one trivial thing, maybe keep the sequence as the sysfs output?
+> Another approach might be to introduce a flag so that
+> page_vma_mapped_walk() knows we are doing batched unmaps
+> and can skip nr - 1 swap entries.
 > 
-> Currently the output of /sys/kernel/transparent_hugepage/hugepages-xxxkB is
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index 8dc0871e5f00..bf03ae006366 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -856,6 +856,9 @@ struct page *make_device_exclusive(struct
+> mm_struct *mm, unsigned long addr,
+>  /* Look for migration entries rather than present PTEs */
+>  #define PVMW_MIGRATION         (1 << 1)
 > 
->      always inherit madvise [never]
-> 
-> But no strong opinion on this.
+> +/* Batched unmap: skip swap entries. */
+> +#define PVMW_BATCH_UNMAP       (1 << 2)
 
-Yeah, keeping the enum order consistent with the sysfs output looks 
-sensible :)
+Exactly, I just also came up with the same solution and saw your reply :)
+We can just name this PVMW_BATCH_PRESENT, the comment saying
+"Look for present entries", and fix the comment above PVMW_MIGRATION to
+drop the "rather than present PTEs" because that is wrong, we are currently
+also looking for softleaf entries by default.
 
-Apart from that, LGTM.
+> +
+>  /* Result flags */
+> 
+>  /* The page is mapped across page table boundary */
+> 
+> 
+> Thanks
+> Barry
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
