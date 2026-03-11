@@ -4,85 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 591DE112584F
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B9F61125852
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 358C46B0005; Wed, 11 Mar 2026 12:30:50 -0400 (EDT)
+	id 3B3E16B0005; Wed, 11 Mar 2026 12:37:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 306A46B0089; Wed, 11 Mar 2026 12:30:50 -0400 (EDT)
+	id 361826B0089; Wed, 11 Mar 2026 12:37:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E8986B008A; Wed, 11 Mar 2026 12:30:50 -0400 (EDT)
+	id 2608C6B008A; Wed, 11 Mar 2026 12:37:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC44D6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:30:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 888E51A02FC
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:30:49 +0000 (UTC)
-X-FDA: 84534321018.13.CAB8C6B
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6D76E40014
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:30:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SfU7syW3;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F30646B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:37:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7387C1A02C8
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:37:49 +0000 (UTC)
+X-FDA: 84534338658.29.A94C2F6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7AA6BC000D
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:37:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BfkeOdDF;
+	spf=pass (imf28.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773246647;
+	s=arc-20220608; t=1773247067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+462tfttOHg75m2xiVykhsaW8+IAkOZyHSJhxHwmIUs=;
-	b=EJcg9bZDcGTR4aLCuRIn678bEWaaiCdUpEFeOWiw46Aq2I/XyBWcw/aaNp/rQU86GojlPi
-	0XS2LYcrvnHRpogvGNQ/dGSqIDwdNJKSOgnqioaizUzaQ1rZ1iYMpRWVPvB9E7xhPSzlPk
-	wof423XByIoXc3tCitXF9PG5CY7OV6k=
+	bh=R/zsIrZ3k0UmQpOmPvuPlBsjs52eW5q3aaq8jYkZIKQ=;
+	b=EH2SM4tBBDUYWxQz5ckRAofB3/gtYYvhJngUc1i9chkhNz9SexdEbIOK+2wKB2sX50xA8C
+	18kGQfVcqcYdVHkvCf267+GUvalfgd+6cyNOn+tiqks4zzJdZQyIz+exXyLrvjXFUQwU/s
+	bODz3lMMvDGa+m1cdKceD2b1aGD+ogE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SfU7syW3;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773246647; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BfkeOdDF;
+	spf=pass (imf28.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773247067; a=rsa-sha256;
 	cv=none;
-	b=cHFPjFwyx9SK52zVdVhb3tRrDAcA9E6qjAylfutJ/GSlJ+yHgUtpUPL7RbeDtYktWkMHCg
-	uV3xjOYaVaCAKksbi3PxTb3FuewikQBku3nCH+X+Wke0BzRn8bfPsJ0doedRibuRVDHdJt
-	m/lyaYI01d/9RbNgztCqutelMKm54fE=
-Date: Thu, 12 Mar 2026 00:30:24 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773246645;
+	b=7TtWAkLWbdylltBpgFatwLj2kTQpGmUKf/GMyriAMSCHtQ6oyPKzJGyFX7pXKBwWfrr6Nw
+	tN8/CS3xsHZS3K40Gk7vgtEWclKmCge9zfjFJNiBsdwRjaFP3y+De01LZnXpqiO4w1WkQP
+	8u7+Guo2ipdsFjFFt804SSDtxxlUI6c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773247066;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+462tfttOHg75m2xiVykhsaW8+IAkOZyHSJhxHwmIUs=;
-	b=SfU7syW3VRl+TpZDWcq3dBmuJjk+K2BuNz3R/iGwxp30tv6jlRLSML5e+Iy7OQv0CBNCOg
-	RuzIrI1xDgHY/yz79UPlsKaj9wkOgHxEARE9pVuG6N0oVyYnAG5n5GGpbVpBCvGBjc6+TT
-	GWcQBeIEfVgbVdIWPu621qU6oggWvXo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Qing Wang <wangqing7171@gmail.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] slab: fix memory leak when refill_sheaf() fails
-Message-ID: <tak4kjtw65fk5r4inuvddqt2pooqbfu76i3smzxsfjoiz2p6oz@qwpmlhmpqlwz>
-References: <20260311093617.4155965-1-wangqing7171@gmail.com>
- <thhmlnu6phtuucz7jo3xoqeiv64rs4ynkt63qoxvtwgfh3aofw@lo75dus27vyk>
+	bh=R/zsIrZ3k0UmQpOmPvuPlBsjs52eW5q3aaq8jYkZIKQ=;
+	b=BfkeOdDFZdJMFo0zlFvIq05jSh253gqHGZIHMRjs4QkSrBMa5QbmS8uCui0RV0vgurVF5B
+	2mjAbQ+NfJQ0XhaCjrJeH0eeqCs9G1XNdVUyu+z0Oq+pdrFQfei+bQhHwSnaf1Ghg4b2t+
+	Jp4kqXkyjAzLRQrMiG5Ae/9Zo2hnWp8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-032I48B1PwuD_vNs1Xdqig-1; Wed,
+ 11 Mar 2026 12:37:44 -0400
+X-MC-Unique: 032I48B1PwuD_vNs1Xdqig-1
+X-Mimecast-MFC-AGG-ID: 032I48B1PwuD_vNs1Xdqig_1773247060
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 855CE195609E;
+	Wed, 11 Mar 2026 16:37:39 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.6])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0FC843000223;
+	Wed, 11 Mar 2026 16:37:36 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id 71EC1401E2187; Wed, 11 Mar 2026 07:23:32 -0300 (-03)
+Date: Wed, 11 Mar 2026 07:23:32 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <abFCpCTB64NACMH2@tpad>
+References: <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash>
+ <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZjY9h3XXMNY-Ytd@WindFlash>
+ <aZwYmNuucBspCYhk@tiehlicka>
+ <aaJDjmnfuo8AM6J9@WindFlash>
+ <aaYpICV55B70U1I2@tpad>
+ <aa20uDGqnmiqYJ1w@WindFlash>
+ <abCL8vE3cttL1Yq0@tpad>
+ <abCxXZCJPgNuOPG2@WindFlash>
 MIME-Version: 1.0
+In-Reply-To: <abCxXZCJPgNuOPG2@WindFlash>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: kGM1i38hPSY4cxPrCu2whmeJs7m0QfQNKT0EjB7Hc2M_1773247060
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <thhmlnu6phtuucz7jo3xoqeiv64rs4ynkt63qoxvtwgfh3aofw@lo75dus27vyk>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6D76E40014
-X-Stat-Signature: fd9mmpebnne76mrfbypb1bzfey6z44t1
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773246647-393199
-X-HE-Meta: U2FsdGVkX1+yWCKdXdiX7z04fWeIU+/KW8v6tBuPU379MKBjGLh6z4jyuUZJzDrXDEtO2Qon27bri7qZbMAQbeIvLKRWuVxPS19N92/6TUfCCvL72fIxmIGxH0bQM5Wi1fFsWCPoCRSOhlMuj+a3UoBNytmwpS/S3IHW1u+SHGVWPgc7+ZiXQCAP+uFUMis/VrtiJ+7mIEGn1B+DurkbeuewalByoHb8J+IpAaKClGf71liYPhSIxhS0gMrc3tE/Emw6N1Oa/bj2LIygfwbicWKAabX5HvnT/6AhFpU8LrnNj/20QxiaJpl+Tb70KzNszvBjrq8pK+PXO9VzyP7OrT/fQxqDVbk6foVDo1y1Lr2MUqD4+g1JmxPmYZD+plNxj7GtkKAz8Jc7JcEWWYlX4qqKku8gdDYH2R8tKDr5ADQ2TUi5G+qMGRJxRe2Z7knhQ/OMY7Ed9/wg4ayqBm7GLM2m06UE+1+vlaXkpWwfJu2tbe2ZsN50x2ylvLtBv1P+WtjfLSBwGyfX+V3FbAqmCcTFABBXwl9YJtdd+8YuwtGKxi90nmae68iGOeZv4Ju+NgF4vZ5cnWIqzV/rAli5i+JZLymUKv8+/678Oo9xNH4jZvUdcP7ylAopWfwpebF5sepxfIUPjDxFLyCAiXURmdB2sPPqb82F586PmAReBfYjN+6aE8nLfsQvOonapN/8XRV517qZSBR/jUYph+ryiQktR8e7ZG1lulbN4Fq7QJZcc1jHTZPgfknteB8rG6nVbSdRApVdUMOn9DA/lXmJShCavj+5CtIPhEe0VSMzSMTK0qH0dNjPOxWHBti1hAW6P+J1prv/EHzOtMq9hs1LG3O6W5mAiZ0a8uZRC21aHwNUv/tEWk0ChTVYSzUhAHti7T18u+XNDi5r9H4nAJdDBaaVU9i48TsIlEQNmElw3T1YF04aianY7z43uoQxFmUndWIUcknhBf4VxIqagms
- KuMaLsLq
- ZQ9AGunaKmVApIanL8t8EwdAAzjTFGlRnMdL9zbnK6JIsEBufgA2Dj0E6w40eYow+5mLbBOwNhDUyowziXrffR7FA2XniPcc1P0a8WzzgUEMk8bYD+teXQsh3KGODDRty6J5PjB2jpEk4wKLpSY9OryENQ912G0XPFvTs0tepxGu1Ejit8zTxUjOwq209aUt0WXuCBN6jbZYrXmHajpf4vUEZ5fBFzdMZ6TBy7x1KWy9sSe0eJJ1tECEAcFwtZbUxFskcExlVY5Ex0IouWsSHj0PZaw==
+X-Rspamd-Queue-Id: 7AA6BC000D
+X-Rspamd-Server: rspam08
+X-Stat-Signature: k4fegxhqw7ih4my6a9w4ck5di3y81xho
+X-HE-Tag: 1773247067-903320
+X-HE-Meta: U2FsdGVkX1/DERoSy8YKnX5a4zyLhTsEMjvcQSjmtkpdkSrv9zE71BUyf4M9rPRP25tAI7fsQlrH8/TbucOa3gz+8K2+ba4N5tucaA4I9REB2w55uNmyedXsui5zDAWn9w7VVxABoSuRiF3ofPThZ7AM9jBC4eDgBMfZ/lyzE0K8fkb2V9BMSRASIiA7u380LsT/hyyBkjz8SQwVKgBYtIz05AtgYN7F1QdHyJ9+huHrTLYQZS60KlPW5dXyCXsPK+OEeXAgwKKJsURMsdlWIOsymaWfM49u50XCthsW2Lj5wX/Sf9Xwx18wkz0jakVXz+DehhW1cCUDxbriHt7BbVnVb0AbfI9cRoRjR3UriHwguyLi5EjBsKT3wApRqI5qWkUd6t989z/m1JV12czDclMfxQ3ekA5MG1XokTzqsOiuTxfrobowqho61s3wamjhnfMMpne1NA8lG9rrrRlk5A2N85ygVegUvFGJszDRlEirgz4iHDoVHA8EumLZYSC78ZwflW/vGfGxkD+5CrAKO8Ijzf3aB8eDD0OyZEsj1OgFeAqUzhZC4jty8+bIorkF5kjRWb/gHHOnUBQpUPVrXmTtgOjeEN43DPLWgNvTMjWUqB8TULIlOn6QerLa+krVREIrr+nPbL/89lJc51aekvDVPqIYagn5Xe4zuPWgsx4oQAV5XquMKSVRKpOfS3mST5NOMhmyumsFtncje+Lzd67/9+GSwlK+SPKU4cSkre+G9agcP3I4bqso3KLCOfinrMLpOOEi8mBXhD9W0bhPbReyh9fGHssyR/2wINNCJE4gbdsJ0iPLT1WdBWynEtDy+u9rSUHCbuqvq/nbwc16yOlNzT9cttgMaa02fRqvU1k0BOgKhbdhK+Aa9aeM1JTqU8iuZHCfUr1/DlXi+F6+TEcwhzO6ju5xd7HjlajTCN64sDyHE9ti3Hj01EVK+mt3MxoHUKnY9VH/vkbwq5K
+ 6J93WIcm
+ Hh/aa4XQnbCcPrBVhpjkY806lsDZLAEylTgJqahzXt6OfvhcsJfipOYg67w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,62 +128,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 10:46:23PM +0800, Hao Li wrote:
-> On Wed, Mar 11, 2026 at 05:36:17PM +0800, Qing Wang wrote:
-> > When refill_sheaf() partially fills one sheaf (e.g., fills 5 objects
-> > but need to fill 10), it will update sheaf->size and return -ENOMEM.
-> > However, the callers (alloc_full_sheaf() and __pcs_replace_empty_main())
-> > directly call free_empty_sheaf() on failure, which only does kfree(sheaf),
-> > causing the partially allocated objects memory in sheaf->objects[] leaked.
+On Tue, Mar 10, 2026 at 09:03:41PM -0300, Leonardo Bras wrote:
+> On Tue, Mar 10, 2026 at 06:24:02PM -0300, Marcelo Tosatti wrote:
+> > On Sun, Mar 08, 2026 at 02:41:12PM -0300, Leonardo Bras wrote:
+> > > On Mon, Mar 02, 2026 at 09:19:44PM -0300, Marcelo Tosatti wrote:
+> > > > On Fri, Feb 27, 2026 at 10:23:27PM -0300, Leonardo Bras wrote:
+> > > > > On Mon, Feb 23, 2026 at 10:06:32AM +0100, Michal Hocko wrote:
+> > > > > > On Fri 20-02-26 18:58:14, Leonardo Bras wrote:
+> > > > > > > On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
+> > > > > > > > On Sat 14-02-26 19:02:19, Leonardo Bras wrote:
+> > > > > > > > > On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
+> > > > > > > > > > On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
+> > > > > > > > > > > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
+> > > > > > > > > > [...]
+> > > > > > > > > > > > What about !PREEMPT_RT? We have people running isolated workloads and
+> > > > > > > > > > > > these sorts of pcp disruptions are really unwelcome as well. They do not
+> > > > > > > > > > > > have requirements as strong as RT workloads but the underlying
+> > > > > > > > > > > > fundamental problem is the same. Frederic (now CCed) is working on
+> > > > > > > > > > > > moving those pcp book keeping activities to be executed to the return to
+> > > > > > > > > > > > the userspace which should be taking care of both RT and non-RT
+> > > > > > > > > > > > configurations AFAICS.
+> > > > > > > > > > > 
+> > > > > > > > > > > Michal,
+> > > > > > > > > > > 
+> > > > > > > > > > > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
+> > > > > > > > > > > boot option qpw=y/n, which controls whether the behaviour will be
+> > > > > > > > > > > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
+> > > > > > > > > > 
+> > > > > > > > > > My bad. I've misread the config space of this.
+> > > > > > > > > > 
+> > > > > > > > > > > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
+> > > > > > > > > > > (and remote work via work_queue) is used.
+> > > > > > > > > > > 
+> > > > > > > > > > > What "pcp book keeping activities" you refer to ? I don't see how
+> > > > > > > > > > > moving certain activities that happen under SLUB or LRU spinlocks
+> > > > > > > > > > > to happen before return to userspace changes things related 
+> > > > > > > > > > > to avoidance of CPU interruption ?
+> > > > > > > > > > 
+> > > > > > > > > > Essentially delayed operations like pcp state flushing happens on return
+> > > > > > > > > > to the userspace on isolated CPUs. No locking changes are required as
+> > > > > > > > > > the work is still per-cpu.
+> > > > > > > > > > 
+> > > > > > > > > > In other words the approach Frederic is working on is to not change the
+> > > > > > > > > > locking of pcp delayed work but instead move that work into well defined
+> > > > > > > > > > place - i.e. return to the userspace.
+> > > > > > > > > > 
+> > > > > > > > > > Btw. have you measure the impact of preempt_disbale -> spinlock on hot
+> > > > > > > > > > paths like SLUB sheeves?
+> > > > > > > > > 
+> > > > > > > > > Hi Michal,
+> > > > > > > > > 
+> > > > > > > > > I have done some study on this (which I presented on Plumbers 2023):
+> > > > > > > > > https://lpc.events/event/17/contributions/1484/ 
+> > > > > > > > > 
+> > > > > > > > > Since they are per-cpu spinlocks, and the remote operations are not that 
+> > > > > > > > > frequent, as per design of the current approach, we are not supposed to see 
+> > > > > > > > > contention (I was not able to detect contention even after stress testing 
+> > > > > > > > > for weeks), nor relevant cacheline bouncing.
+> > > > > > > > > 
+> > > > > > > > > That being said, for RT local_locks already get per-cpu spinlocks, so there 
+> > > > > > > > > is only difference for !RT, which as you mention, does preemtp_disable():
+> > > > > > > > > 
+> > > > > > > > > The performance impact noticed was mostly about jumping around in 
+> > > > > > > > > executable code, as inlining spinlocks (test #2 on presentation) took care 
+> > > > > > > > > of most of the added extra cycles, adding about 4-14 extra cycles per 
+> > > > > > > > > lock/unlock cycle. (tested on memcg with kmalloc test)
+> > > > > > > > > 
+> > > > > > > > > Yeah, as expected there is some extra cycles, as we are doing extra atomic 
+> > > > > > > > > operations (even if in a local cacheline) in !RT case, but this could be 
+> > > > > > > > > enabled only if the user thinks this is an ok cost for reducing 
+> > > > > > > > > interruptions.
+> > > > > > > > > 
+> > > > > > > > > What do you think?
+> > > > > > > > 
+> > > > > > > > The fact that the behavior is opt-in for !RT is certainly a plus. I also
+> > > > > > > > do not expect the overhead to be really be really big. 
+> > > > > > > 
+> > > > > > > Awesome! Thanks for reviewing!
+> > > > > > > 
+> > > > > > > > To me, a much
+> > > > > > > > more important question is which of the two approaches is easier to
+> > > > > > > > maintain long term. The pcp work needs to be done one way or the other.
+> > > > > > > > Whether we want to tweak locking or do it at a very well defined time is
+> > > > > > > > the bigger question.
+> > > > > > > 
+> > > > > > > That crossed my mind as well, and I went with the idea of changing locking 
+> > > > > > > because I was working on workloads in which deferring work to a kernel 
+> > > > > > > re-entry would cause deadline misses as well. Or more critically, the 
+> > > > > > > drains could take forever, as some of those tasks would avoid returning to 
+> > > > > > > kernel as much as possible. 
+> > > > > > 
+> > > > > > Could you be more specific please?
+> > > > > 
+> > > > > Hi Michal,
+> > > > > Sorry for the delay
+> > > > > 
+> > > > > I think Marcelo covered some of the main topics earlier in this 
+> > > > > thread:
+> > > > > 
+> > > > > https://lore.kernel.org/all/aZ3ejedS7nE5mnva@tpad/
+> > > > > 
+> > > > > But in syntax:
+> > > > > - There are workloads that are projected not avoid as much as possible 
+> > > > > return to kernelspace, as they are either cpu intensive, or latency 
+> > > > > sensitive (RT workloads) such as low-latency automation.
+> > > > > 
+> > > > > There are scenarios such as industrial automation in which 
+> > > > > the applications are supposed to reply a request in less than 50us since it 
+> > > > > was generated (IIRC), so sched-out, dealing with interruptions, or syscalls 
+> > > > > are a no-go. In those cases, using cpu isolation is a must, and since it 
+> > > > > can stay really long running in userspace, it may take a very long time to 
+> > > > > do any syscall to actually perform the scheduled flush.
+> > > > > 
+> > > > > - Other workloads may need to use syscalls, or rely in interrupts, such as 
+> > > > > HPC, but it's also not interesting to take long on them, as the time spent 
+> > > > > there is time not used for processing the required data.
+> > > > > 
+> > > > > Let's say that for the sake of cpu isolation, a lot of different
+> > > > > requests made to given isolated cpu are batched to be run on syscall 
+> > > > > entry/exit. It means the next syscall may take much longer than 
+> > > > > usual.
+> > > > > - This may break other RT workloads such as  sensor/sound/image sampling, 
+> > > > > which could be generally ok with some of the faster syscalls for their 
+> > > > > application, and now may perceive an error because one of those syscalls 
+> > > > > took too long. 
+> > > > > 
+> > > > > While the qpw approach may cost a few extra cycles, it operates remotelly 
+> > > > > and makes the system a bit more predictable. 
+> > > > > 
+> > > > > Also, when I was planning the mechanism, I remember it was meant to add 
+> > > > > zero overhead in case of CONFIG_QPW=n, very little overhead in case of 
+> > > > > CONFIG_QPW=y + qpw=0 (a couple of static branches, possibly with the 
+> > > > > cost removed by the cpu branch predictor),  and only add a few cycles in 
+> > > > > case of qpw=1 + !RT. Which means we may be missing just a few adjustments 
+> > > > > to get there.
+> > > > 
+> > > > Leo,
+> > > > 
+> > > > v2 of the patchset adds only 2 cycles to CONFIG_QPW=y + qpw=0. 
+> > > > The larger overhead was due to migrate_disable, which is now (on v2)
+> > > > hidden inside the static branch.
+> > > > My bad.
+> > > 
+> > > Hi Marcelo,
+> > > 
+> > > Great, hiding migrate_disable under the static branch is the best scenario.
+> > > 
+> > > I wonder why we spend 2 cycles on the static branches, though, should be 
+> > > close to nothing unless the branch predictor is too busy already. Well, we 
+> > > can always try to optimize in a different way.
+> > > 
+> > > Thanks for the effort on this!
 > > 
-> > Fix this by calling sheaf_flush_unused() before free_empty_sheaf() to
-> > free objects of sheaf->objects[]. And also add a WARN_ON() in
-> > free_empty_sheaf() to catch any future cases where a non-empty sheaf is
-> > being freed.
+> > Leo,
 > > 
-> > Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
-> > Signed-off-by: Qing Wang <wangqing7171@gmail.com>
-> > ---
+> > migrate_enable was leaking out of the static key section 
+> > into the common error path.
+> > 
+> > With preempt_disable, as suggested by Vlastimil, those 2 cycles are
+> > gone:
+> > 
+> > [   61.217232] kmalloc_bench: Avg cycles per kmalloc: 164
+> > [   68.047789] kmalloc_bench: Avg cycles per kmalloc: 165
+> > [   73.266568] kmalloc_bench: Avg cycles per kmalloc: 165
+> > [  120.634168] kmalloc_bench: Avg cycles per kmalloc: 164
+> > [  127.617872] kmalloc_bench: Avg cycles per kmalloc: 164
+> > [  157.803679] kmalloc_bench: Avg cycles per kmalloc: 163
+> > [root@fedvm kmalloc-perf-test]# dmesg | grep qpw
+> > [    0.000000] Command line: BOOT_IMAGE=(hd0,gpt2)/vmlinuz-tip root=UUID=35cfa00b-ed70-483f-b7b2-1964e14f719e ro rootflags=subvol=root console=ttyS0,115200 qpw=0 skew_tick=1 tsc=reliable rcupdate.rcu_normal_after_boot=1 rcutree.nohz_full_patience_delay=1000 isolcpus=managed_irq,domain,14,15 amd_pstate=disable nosoftlockup crashkernel=1024M
+> > [    0.118274] Kernel command line: BOOT_IMAGE=(hd0,gpt2)/vmlinuz-tip root=UUID=35cfa00b-ed70-483f-b7b2-1964e14f719e ro rootflags=subvol=root console=ttyS0,115200 qpw=0 skew_tick=1 tsc=reliable rcupdate.rcu_normal_after_boot=1 rcutree.nohz_full_patience_delay=1000 isolcpus=managed_irq,domain,14,15 amd_pstate=disable nosoftlockup crashkernel=1024M
+> > 
 > 
-> This fix looks good to me.
-> So feel free to add:
-> 
-> Reviewed-by: Hao Li <hao.li@linux.dev>
-> 
-> I also want to bring up another point here, although it may be outside the
-> scope of the current fix.
-> 
-> When I looked into the refill_sheaf() path, I found a refill failure does not
-> guarantee that the sheaf remains intact: refill_sheaf() can partially fill the
-> sheaf before failing. This non-intact behavior propagates to its caller,
-> __prefill_sheaf_pfmemalloc(), which therefore also cannot assume that the sheaf
-> is still intact after a refill failure.
-> 
-> However, the comment for kmem_cache_refill_sheaf() says that "if the refill
-> fails (returning -ENOMEM), the existing sheaf is left intact." That means the
-> behavior of __prefill_sheaf_pfmemalloc() - where the sheaf may be left
-> partially filled on refill failure - contradicts the API contract of
-> kmem_cache_refill_sheaf().
-> 
-> Maybe we can add rollback logic to __prefill_sheaf_pfmemalloc() so that it
-> provides intact semantics, preventing the non-intact behavior of refill_sheaf()
-> from propagating up to kmem_cache_refill_sheaf().
+> Ohh, awesome then.
+> That means we can have a QPW-enabled kernel and zero overhead perceived if 
+> qpw=0, right?
 
-Looking at this a bit more, after checking the current callers, it seems that
-the existing callers of kmem_cache_refill_sheaf() are not relying on the sheaf
-remaining intact on refill failure.
+Yes.
 
-If so, then another possible option might be to update the comment for
-kmem_cache_refill_sheaf() to match the current behavior, rather than adding
-rollback logic.
+> (Yeah, instruction cache will have to fetch extra instructions, but 
+> hopefully that stays hidden enough.)
 
-So it may just come down to whether we want to preserve the documented
-semantics in the implementation, or adjust the comment to reflect what the code
-already does.
-
-I may be missing some intended dependency here, though.
-
--- 
-Thanks,
-Hao
 
