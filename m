@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2031125865
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 18:22:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB1A71125865
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 18:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58A326B0005; Wed, 11 Mar 2026 14:22:04 -0400 (EDT)
+	id 09D016B0005; Wed, 11 Mar 2026 14:22:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55BF16B0089; Wed, 11 Mar 2026 14:22:04 -0400 (EDT)
+	id 074C66B0089; Wed, 11 Mar 2026 14:22:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 477DA6B008A; Wed, 11 Mar 2026 14:22:04 -0400 (EDT)
+	id ECD106B008A; Wed, 11 Mar 2026 14:22:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 387566B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:22:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B2F7C1903
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:22:02 +0000 (UTC)
-X-FDA: 84534601284.01.D50C277
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DCEBA6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:22:48 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F85A140369
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:22:48 +0000 (UTC)
+X-FDA: 84534603216.30.B897D3D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 40E4B140012
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:22:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ZTLDV5b;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf20.hostedemail.com (Postfix) with ESMTP id 896A81C000A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:22:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FmCu2eCm;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773253320;
+	s=arc-20220608; t=1773253366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K51mV8xHVRqL4ATdsOz9OcUdmjp6hVXN9X/Q1yzV1Ic=;
-	b=A0xmBGE5aezdhzO14NFHof1GH4A7388CRWV92CcSSO17sXQPjQel588YNkOY8eJ7WtGGV4
-	sCXIT65dwvGHNlKVulIKFHCaUfGg97822fiTkNF84pLomfs6GyLvZjaTamaamce4UFdGWa
-	209Ym82Poy4vpwMAYQPmrNmRFN+exCk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773253320; a=rsa-sha256;
-	cv=none;
-	b=nON6MXGFJ1CwTS+9o+WpoCDS3byOtYPslEwp8kCY8G74hMgOGIKtzt0iyaAOuMKd0AtJ8Y
-	CEXlvYaaiN/pY1W6wpfM835togcb/3bfNqwQ4Gkq9oJ1lZ1e/w2irCsS2RkptVr1XVi98L
-	DWudCUqAh8GWRgmGz7Ef+B3EbTdWZRY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=R9Z26hAtPMOOd7zeDFeVkXPBNRIy08j+Q79+RyxCgUY=;
+	b=aciGuXel7rIBNOJt+PANIHzXohmNvqIur/3N6IlrD/pvdVdm3iFL980QNOdgvyQPp41XXU
+	v9U80WEF9F/ONoM74/gyWzh/oMPJHRO8ZjEKIfhc1LAq1QVSJVjtc11qnZNwEoSIqBrmJP
+	5STuAYQ9bgjAqWJyfXQkHmW/YX/Yz80=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ZTLDV5b;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FmCu2eCm;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773253366; a=rsa-sha256;
+	cv=none;
+	b=SlGIPHXR7aAzaNQqT2H88qxeTCR8LmrxXlRku1bThOR3miLH+axe6Mo1VoeZvhMr7lHAAC
+	aWbYtzTprcSUL8fd0D/z/TWWrEc2CpBgkx7xis3wyHh+oltv7SOl4k3iT/tE8OPVdX3fsh
+	yODBgh3eRw6Zl8o8i2xC4y660EmUQjo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 435C343EAD;
-	Wed, 11 Mar 2026 18:21:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE1AC19421;
-	Wed, 11 Mar 2026 18:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773253319;
-	bh=uJL5nolgHMfKqwJE4prr8rQoMXwMjSQPaEOX8Cr/DgA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=1ZTLDV5bI+S0u+Qpa+2tMbyDnzC0XBuUpKTFw/hKMpA7av/Lc9SSd7LdpKpiYGvF8
-	 P+YBWf/9Vfg7ajQCvBnae2oug3n/heE8ROBI7oPKqkMXzNAzNRc7J01Smyk1m5vShd
-	 0nb3CRfu5aRYatJIefpkXMRzLnhmpvt1/HjZ5L7Q=
-Date: Wed, 11 Mar 2026 11:21:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Mikulas Patocka
- <mpatocka@redhat.com>, linux-mm@kvack.org, Vishal Moola
- <vishal.moola@gmail.com>, Baoquan He <bhe@redhat.com>, LKML
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
-Message-Id: <20260311112158.7e423b5d82b3c03ac327e572@linux-foundation.org>
-In-Reply-To: <abFj8gwNrpv0qQsJ@tiehlicka>
-References: <20260302114740.2668450-1-urezki@gmail.com>
-	<20260302114740.2668450-2-urezki@gmail.com>
-	<a8010888-ce49-9232-f132-338de8e18cee@redhat.com>
-	<aaXcLRdhq0IyoNIG@tiehlicka>
-	<20260310155914.9c03a9f4cc2f433fc741e222@linux-foundation.org>
-	<abEq9eX3-7yeNHVB@pc636>
-	<abFj8gwNrpv0qQsJ@tiehlicka>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by sea.source.kernel.org (Postfix) with ESMTP id A7307435AC;
+	Wed, 11 Mar 2026 18:22:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736F3C19421;
+	Wed, 11 Mar 2026 18:22:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773253365;
+	bh=0JJV5PdU67v1Ylt2HTvrKQMniMwA9sO7ZQpFQJb6PAo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=FmCu2eCmtf0r0qFr0xEHctcuykykfT/lLM3pc341wa0bEbIDmvHUpkS3KdzhDfqE/
+	 VMaS+Lyh55nd/Q1W2kvSvkNQ6ycduW5miiOhty1UgyqJf1Oi82nHel/a+rZ1kolBcG
+	 MQdvuaeQ200g4k40Zwo0N7d9FyiBzsfD9RHNR3i+yYI+K7VeJqWcBOCaGPlZ3iSWPq
+	 qAYfNxG36ZqXhfoX5cCofjWJ3/xx/ZRcC94oIBRJkD3811MgeUCoLpaADmFMJQwP4F
+	 xoQlZ2bH/VJRZoDBfinbqWtBStkoA5BNe1JKgHIavKq491S1k2VQDzsWWyYLnohbKx
+	 4Jkn3880W/V6w==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Wed, 11 Mar 2026 19:22:33 +0100
+Subject: [PATCH] slab: remove alloc_full_sheaf()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 87p59i377aqzfa1w4nauni6471c5y5py
+Message-Id: <20260311-b4-slab-remove-alloc_full_sheaf-v1-1-c4c5bb587ae5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOiysWkC/x3NQQqEMAxA0atI1hNotSPiVYZBWk01EO3QoAji3
+ S2zfJv/L1DKTAp9dUGmg5XTVmBfFYyL32ZCnoqhNnVrGmsxOFTxATOt6SD0Imkc4i4y6EI+Ymi
+ ccV1nJ/eOUCq/TJHP/+Hzve8HrSOsqHEAAAA=
+X-Change-ID: 20260311-b4-slab-remove-alloc_full_sheaf-b3404881d45f
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Hao Li <hao.li@linux.dev>, Qing Wang <wangqing7171@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3535; i=vbabka@kernel.org;
+ h=from:subject:message-id; bh=0JJV5PdU67v1Ylt2HTvrKQMniMwA9sO7ZQpFQJb6PAo=;
+ b=owGbwMvMwMG4+8GG0kuuHbMYT6slMWRu3PT+7fsfsWfYmM3XLk9RVP3T9MbvkyjztlleVg410
+ dskvB26Ohn9WRgYORgsxRRZqnefcBSdqewxzcP3I8wgViaQKdIiDQxAwMLAl5uYV2qkY6Rnqm2o
+ Zwhk6BgxcHEKwFSrzeNgWPCiaSL/r40pnnYv9kpbKbE//1xsdGNq4aWG02UBJ35VSO82PR3FI/D
+ bt2ul9T6zdTt7NbMmql6dv3TyiWquz1EnDDZO4DlVfP6WeKfoI+WwZJmNW9K2L0nWXXnZN3zW0V
+ 9rnn71YY1j4GxnfcTLIjPvwo60n29fP3+dfjJ2omJf/umDXhvk68t05T9YXmj9Em2y/ex65W+7n
+ 0rO3bn6woesD1n3Hi+a22DQWTH1QaXTzLyeZ1syO666zpH04QlkYZhvzGg/b9fuDT1Ky4N22fUz
+ TH7Y0rpWOrK+4Kr/5Z7lu8S4Z3ZKlvA6+F7eevKpH4sNZ7Lu7UN2L+pEl2XEmn61V8lY7MMk1fK
+ rRmbhQQA=
+X-Developer-Key: i=vbabka@kernel.org; a=openpgp;
+ fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
+X-Rspamd-Queue-Id: 896A81C000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sckeewqo3nrnzpu63y7jdq9r8wp8apy3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40E4B140012
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773253320-29587
-X-HE-Meta: U2FsdGVkX1/DoSIjUko/v0vIlvohQRDlNCGDoUG1nzJA6xINUd7pP0VbwQ1j0v1/6rxaagmARLvCXW7Ec7BWNpFyEt8DE0e/rNw/rQforDfnjR9y/U2fppgZDLKjqcjd2qoQOttsVM/XjlNbHY6C/XTxW1NEOK8f/YFFkvN6Nanhwd2xOpmOWTi4kpTZKxwCZgaFgexNQQx854Hd/7GshvoCHjgssfHMdR9ZnNkpkreA9em+U+KWhJY23x1blJ754Qi1L238xCNaTN75dGoW1laiKuDqeGeGwT2ApFS+qay3/ddkL+DY/ER8qOqXtCYbfAslIz5XIMfdb9vyDaD6cmlQZi6Q0HzGIpx6yElMbu1bB5ykjGDzuFWOkuEu7dEBkJpBFlufRnlGaVj8wUaaZfGBVPaTayqEq3anaj9/ItxVV82/TGe5Jw56ov8iJPve7v9j6vja6Tid7OgtEAn9SUXz8U7s2VjXalW4k3uUBr9FcBZHKc5Hkh7DosUbOMDOJO0+Z56zXTn0NqWxIDF59dkgxL6TrJnFNNz57IUnkJyfbQNd0Gt26x2t9GWUv6zI+Q/A9bV6MeZQH4ckDS16EJKIRC2/xXXUGFBv7LIMXTqbuXhtFC4Us3CiGxD9mqeC1uh8zoTMw3F9+SK0NKcmJG7NoRDO9iU6S+7q9poFDsqOFrHO9hH6COu/I6q4DnAR+5C3KBkdFTpS2PJ7b5P8W1+PefSe7iAdM9Um6/dCVxoTONmxeTOp4zhA5RCMHX8JZoL1Rmjcp/24NKhCVJy/IZORfyDDmEpg5idgj0y+itLv+6zcr3mpbmgMOZIlcVvWc1rKCih6WHU3fhdIDFkDKpIAvBoB8kEDiq0Vu0KrhbZ8aPmnilGgiNooFT6fPufFFEXgt8wewihJ9I4XtKPcLULGXRNPLE/5mmXf9yB7Yy6Pzn7Fr2VR6rD9av2CE0JnHDeEfT+fpmWq3GOWRAi
- kuGVyB2f
- dJnoUPu6870UavIxTwQpWUcAbdCOcLZLloaj0tAVyWex2jzsSaPMwOHkrKFB9kcxyVFM9W2Uwx9nux0If5QAYRT3ZcmWQIpSKSjm2GLOZYoffdZwy1zWz9idRiHYVgR2rvcfCGQ1L2NHaFW8LDzAefNQxvKT+xIwmlrhdKn1IpLjM+Q/tEoB2VeeAaZHL9Wi87Waab89oQaIv4/Ao7S71JcQR3ktz9VxFOWJoksT/OdGqcaM4mEifCpTHV/HwecqUrNGND3QFU5odUoLEAssCnGSpXSast90q0nM7oefSI1y6ykFml1uhsimPCo5rqaDRCX/gtl+K0kZ3zRhpNuqfwS/AqciaaxQTU9cY91JWBALi8SDJeMb/Iju1jo4NJROjHIWaN27QMdI3ctPOYD+yStMeJUAnXfoolYoMTudmJWpV/I2D8WcNA3JCj5WI2IaHM9i+W3L0jydaxYvN2gXSYfFgOpB7UxU8J5Nt
+X-HE-Tag: 1773253366-329913
+X-HE-Meta: U2FsdGVkX1/zdnNwC0o4FspkBCWSIJXSVSp61A/8osi9x85ZMzxotet3EUDSsFB0fJQ17uVPSdEOSkLZQDUvBWxEjqQrQ9K5HkwAZJa1M58vUScd/5rPCYOde9ex33u0yRZ0yVOCHa76ZuNQt3IbE5HZf5lFfCdAoH1U/004DlmdonJ1KgBz0Hw7iDfPXa/jA4ds2RVq6p+N89Txj7jM4g5tEdaQz5TEid4VGq9NKngOY8W705ICWoV6+xIKOZnUjsb8Ci0uNPPuXg6wocsxJcBrujbQAZ3cgpvsNsVYxhaQFlYph5M4P9t3Pqw8oRf82gI5Mi/b8cRDfuvIrx8rCuAyOn+J3MctH94alA0pFpp7NYYx70Tmx9lvN2sf3pOxl7Zt/uBhHNdyakivOWm2Fvq45rB1qOXcviAyP4s1La2yLV2pxg2emgABvpl+0mf56WQ2Itzp2WIPoLK3KmLlOS57H1yiF/7QMGhnDt+W7UFYS0wmTm4QqezNbGhWm56TwKtKa+TwEzY7pCi+YK/UKYDQlwYrZMQsLEBYObQQajhlCtvA06eycIaGi36HoA2KM6/oRkQWTDfVOHLZePCLfuXV1OQUs8d7UlCSkzade8RC5xdNs9IcsZxmP/f/J5/SyAjQ82JTBpxBuil8mE8BF0q/gMFnkFJ9bZNCpVNj+P1mdH1buLwTaECvG/bBFvwU0FfczmKn7de9sUNm2K6s8ecl3vfEsIki2rSyJPCwVpNmKSxW71ia2GAtUt2D3ohtutYgYD4LqFmU3WWovZPHX8BXhte+e+gyQTDH7O4BT7yZOXsYzQoMLKegNzx89wrjliAb25gKL3aEa9Abb1fhHvmibJdpr3YxXok+jjtCAZzy8xrmECffMmPKXFEk+IblAxgdcyjpnO0hjozaFOQJxKa+my7UkyFhOQW2Xul3CwUa3Ns7nDsNYqmK7VjTydtIVz8GZGhQoVSsy1ggnev
+ Ka7nUfCy
+ a7AAFR0pUh7/USvKpVMhrCq+Pl+lXRvgfTVAZGVayqR53rCph+MPkjkdpruMvSJtrxH+n2jdRc1P43MA+B9OTXoge+EXL92T4NZAtwXcN+UQNU4vwQBRcpb90vtwt3I2uy8DmL6DdoZNrdo9UaVXBIGFt1i0FSFOUbSX36BcWXat0r3fXcFBjFeXgVs2rtJM8QlcprLZ2UUy9QOBX2t52DnjUlQDFz+u+OYDf1nyvs1k1sEuF3JH8qwAAWgbxLqxspRmWW7orMqfs4vtXxVVbGUmGOxac83C2XIfu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,23 +108,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Mar 2026 13:45:38 +0100 Michal Hocko <mhocko@suse.com> wrote:
+The function allocates and then refills and empty sheaf. It's only
+called from __pcs_replace_empty_main(), which can also in some cases
+refill an empty sheaf. We can therefore consolidate this code.
 
-> > IMO, we should drop the patch as it is not complete and replace it by the
-> 
-> Yes, that patch is not really correct as it allows to trigger OOM killer
-> during pte allocation.
->  
-> > [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
-> > 
-> > https://lore.kernel.org/lkml/20260302114740.2668450-2-urezki@gmail.com/
-> 
-> ack
+Remove alloc_full_sheaf() and refactor __pcs_replace_empty_main() so it
+will call alloc_empty_sheaf() when necessary, and then use the
+pre-existing refill_sheaf(). The result should be simpler to follow and
+less duplicated code.
 
-OK, 
+Also adjust the comment about returning sheaves to barn, the part about
+where the empty sheaf we'd be returning comes from is incorrect.
 
-"mm/vmalloc: fix incorrect size reporting on allocation failure" and
-"vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY"
+No functional change intended.
 
-have been in mm-new and mm-unstable for a week now.
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+Just something I noticed when applying Qing's hotfix, thus a followup.
+But since it's a cleanup, it would be for 7.1.
+---
+ mm/slub.c | 57 ++++++++++++++++++++-------------------------------------
+ 1 file changed, 20 insertions(+), 37 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 2b2d33cc735c..a8347b79e46f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2822,24 +2822,6 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 	return 0;
+ }
+ 
+-static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf);
+-
+-static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+-{
+-	struct slab_sheaf *sheaf = alloc_empty_sheaf(s, gfp);
+-
+-	if (!sheaf)
+-		return NULL;
+-
+-	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+-		sheaf_flush_unused(s, sheaf);
+-		free_empty_sheaf(s, sheaf);
+-		return NULL;
+-	}
+-
+-	return sheaf;
+-}
+-
+ /*
+  * Maximum number of objects freed during a single flush of main pcs sheaf.
+  * Translates directly to an on-stack array size.
+@@ -4611,34 +4593,35 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 	if (!allow_spin)
+ 		return NULL;
+ 
+-	if (empty) {
+-		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+-			full = empty;
+-		} else {
+-			/*
+-			 * we must be very low on memory so don't bother
+-			 * with the barn
+-			 */
+-			sheaf_flush_unused(s, empty);
+-			free_empty_sheaf(s, empty);
+-		}
+-	} else {
+-		full = alloc_full_sheaf(s, gfp);
++	if (!empty) {
++		empty = alloc_empty_sheaf(s, gfp);
++		if (!empty)
++			return NULL;
+ 	}
+ 
+-	if (!full)
++	if (refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
++		/*
++		 * we must be very low on memory so don't bother
++		 * with the barn
++		 */
++		sheaf_flush_unused(s, empty);
++		free_empty_sheaf(s, empty);
++
+ 		return NULL;
++	}
++
++	full = empty;
++	empty = NULL;
+ 
+ 	if (!local_trylock(&s->cpu_sheaves->lock))
+ 		goto barn_put;
+ 	pcs = this_cpu_ptr(s->cpu_sheaves);
+ 
+ 	/*
+-	 * If we are returning empty sheaf, we either got it from the
+-	 * barn or had to allocate one. If we are returning a full
+-	 * sheaf, it's due to racing or being migrated to a different
+-	 * cpu. Breaching the barn's sheaf limits should be thus rare
+-	 * enough so just ignore them to simplify the recovery.
++	 * If we put any empty or full sheaf to the barn below, it's due to
++	 * racing or being migrated to a different cpu. Breaching the barn's
++	 * sheaf limits should be thus rare enough so just ignore them to
++	 * simplify the recovery.
+ 	 */
+ 
+ 	if (pcs->main->size == 0) {
+
+---
+base-commit: 464b1c115852fe025635ae2065e00caced184d92
+change-id: 20260311-b4-slab-remove-alloc_full_sheaf-b3404881d45f
+
+Best regards,
+-- 
+Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
