@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B1EA103E2E4
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 21:36:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30F43103E2E6
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 21:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A42F06B0005; Wed, 11 Mar 2026 17:36:23 -0400 (EDT)
+	id 39F406B0005; Wed, 11 Mar 2026 17:59:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ED016B0089; Wed, 11 Mar 2026 17:36:23 -0400 (EDT)
+	id 345826B0089; Wed, 11 Mar 2026 17:59:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EF876B008A; Wed, 11 Mar 2026 17:36:23 -0400 (EDT)
+	id 227926B008A; Wed, 11 Mar 2026 17:59:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E28E6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:36:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FF78B9383
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:36:23 +0000 (UTC)
-X-FDA: 84535091046.10.707CF3E
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 97C3020002
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:36:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WTIWSTrJ;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1283D6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:59:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B354313AE11
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:59:35 +0000 (UTC)
+X-FDA: 84535149510.01.F17B067
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DD942140006
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:59:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcXW+dQM;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773264981;
+	s=arc-20220608; t=1773266373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Telfpf5ptlGpB/om4pC5uPZFX+x6oNBegoretK0UrkE=;
-	b=Q0M3s/zZF7/thhbVIbn2+MhLe40MMoZsNsCFwf5y9/N8VpoRcRk8sLTYB43xMwhF3IliwN
-	obADqEh1bhNmhdTFEhUYpvrvg/dHz7k2aTctoXeGKmddlGWM1pXtnczBB9X3mgJ1PmFNK5
-	iduTuYF3zjAFxJmnvCaurlx6mZYG8ng=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773264981; a=rsa-sha256;
+	bh=5zVb+OxDqSjGUfwQzmjE94zOu/RnPssCymz9zuJYtuc=;
+	b=gf0INF7o33iKRIvJjkMstXPIpa4y9S+ar8rLmTaliXEkEhVlctVgwc+HgBq/wrfp1x4R3H
+	3/ZGx9GWEKGBxYo/1L+/JGmybEQhYhaigsz0NzzBumjfSO6gxqgpXSa2pR5ft1LT0W0VGX
+	ohD631Qr4sGK58fkKLjOjavWEcZDUwo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773266373; a=rsa-sha256;
 	cv=none;
-	b=NRIqCnljt+8Cca+roAMYoh7CWSY0xtIjYC+JUkdZqqPoAKC+0Hicf/7qR+BeyBlpOHazHU
-	KXg6c7YihEIV6DNSBGIBeMb7GghykWjo/zGKkgYjZFmwhNzeT3duskFa3lbGof7icROiel
-	rRT8owZBTaWsFDBNoQDhm7ffefaAGhg=
+	b=DjKBRwPjc6KjUvPVzvLYDV4lQQB63aPW0rbZlN7Nq+DFqgIWYl8rRGRBQtDvUk6RxPEqPD
+	vgoz/3cobVIDiCSbRD1CflPFEkvM0S/nAo4WDGfaARa9+Zn1P7tNHE6Gmo/XBulIfnTimJ
+	npgFdsYHJTTanN9FIzbOVz4kdynvvFc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WTIWSTrJ;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 11 Mar 2026 14:35:50 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773264975;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Telfpf5ptlGpB/om4pC5uPZFX+x6oNBegoretK0UrkE=;
-	b=WTIWSTrJNE/IH8KAHN4q6P27nFGK3ez/6AduhtafzWVM2kHwhzgvWyg3lqR4of8XKkrgfW
-	m8ZXwdWVbuDEouJn7z57FXHM0Opn/jUXqzyxQkSBC1o0LeZRCQaovR0fruTt9ZtvQXY8JG
-	yfdxyedVzx8yQu1uB/i8i2YiG4TwzV0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Greg Thelen <gthelen@google.com>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hui Zhu <hui.zhu@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Muchun Song <muchun.song@linux.dev>, Geliang Tang <geliang@kernel.org>, 
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	David Rientjes <rientjes@google.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
-Message-ID: <abHWslV0KmjF7x80@linux.dev>
-References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
- <CAHH2K0ZBJV1peAZVZC9Lm=rFRzSfxsvbrxRjyB=+0xkHGRcdLA@mail.gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcXW+dQM;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A46D60142
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A42C2BCAF
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:59:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773266372;
+	bh=5zVb+OxDqSjGUfwQzmjE94zOu/RnPssCymz9zuJYtuc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KcXW+dQMHzrMWnhn826Wb/waJzLtVGpKCcsOFICPmKf8lmI9n0MjzIS3ZoVP56rwL
+	 zUDD6s9qOrMgKcopB7/4MFQD8yUMJtuuyxU12KRRejbKDqk66UwPXF6nfjKRYdpxHo
+	 sD1nvMq24ZwDouef/yXa1cEYx1DH9sS6LJvT4q9nO821+VyMyJzMVywQOPQHLYbjc8
+	 pwR2vXlCA/2tDGEKwhUQ8pe5sVtlCUzaMuOobHsBT1FUV7tmc5y99oU9E0ghnNDV8J
+	 YYmep2Xfp7CJ8xOFkcwd3/dGq8L5ZwvABvG2WNV/NmCoMY/0hJu38wVWdBBjvtyD9S
+	 B5EFdGOcHTVuQ==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b96d784828bso43231566b.3
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:59:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXuwUbJVqXYVw8aO8prNTxn/muUqheruQHgrgoMLD86FeMiesgL9mR+HSZW6yNPXe0TcrecLzBx/w==@kvack.org
+X-Gm-Message-State: AOJu0Yz+pssGvnNveqbuSBAFn8a36lgb+5eIahlsfkZF0EXyUyQtYROr
+	pMSk8gQM+WwYulxdIsCShUxpP2lx8EjIMvuzn+17aijTf7vsfrXCdPeruu4wW1IL0ucrt/lzIAk
+	GSPg8hDuglTEx79YzWYvO4yfzIqy6Jdk=
+X-Received: by 2002:a17:907:26cc:b0:b96:f0a0:c7d4 with SMTP id
+ a640c23a62f3a-b972e5dbd4bmr236173166b.46.1773266371618; Wed, 11 Mar 2026
+ 14:59:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHH2K0ZBJV1peAZVZC9Lm=rFRzSfxsvbrxRjyB=+0xkHGRcdLA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20260311154358.150977-1-hannes@cmpxchg.org> <050ce5bd-4725-468e-acaf-7fca72b84d06@linux.dev>
+ <abGpgxsDKeSc6cjR@cmpxchg.org> <abHBYss1GDYX4uWe@cmpxchg.org> <abHLtmDvYl5QYCv0@linux.dev>
+In-Reply-To: <abHLtmDvYl5QYCv0@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 11 Mar 2026 14:59:19 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zM_fY_9nqQ2YHy9xTtdsesuOdQU_LntbZk149gL0gE=Kw@mail.gmail.com>
+X-Gm-Features: AaiRm50Pn79_B3iDgllhhqIH4NVAWHZ1hIoA8TzSQAYNbCqtZDrOIafXeFL2hLU
+Message-ID: <CAO9r8zM_fY_9nqQ2YHy9xTtdsesuOdQU_LntbZk149gL0gE=Kw@mail.gmail.com>
+Subject: Re: [PATCH] mm: switch deferred split shrinker to list_lru
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Dave Chinner <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: k8i8kmbr7ccwi7ctbjdaq8facyu6sn6s
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 97C3020002
-X-Stat-Signature: cmgx3ejdy5f6usafqkaa9hdemsqjb58m
-X-HE-Tag: 1773264979-145522
-X-HE-Meta: U2FsdGVkX18ni2T+v5saDLYdYRShudkHmVNcCZw52lyzAnlrjq9RZs1J1QeES95Irim2UMXo+QgBKjEEZ238XPNfX1zbD+EGCYaNpMkgkdtKSW8qijgn+pq0DzQu7nK2zvCoue6Y9IW4ZQiMwzuZPYBfOWQjKKaKzIeOeKs5xHwt2krFnaVwZCQgwvxe4wuyrd8UKTaO9EH9qXKICKzxK6kxPT271HU84Eeqh4MmSklV5ThYnmCVtR1BvQTSWVWPjjVVvTT7RwlVm1rYmPFElKoPK7Zj3Y5T2oSLTiD/G9+is9Ucl+mMoK74zDt4JdM+sEsBbtApdFCh3TL99RnNbEvwbPFL/qlxFB71TRuDufVrWSawRdhUTUgddAYdTgCvXugxwJ9pL1EzauTdq2+8nlEU+GeaFNQA5yjA26lUdLexXfyAcX4zEcUewkvNptTMYRIF5C5yf4Ilom6iIMMBK0I4oc7ZCoF6zAEhtJEZxhG7TsB0HbBq9EZUApHYUC8xQLi+GiaBqgM2IiHOhSIJfNtYHx+G+Rsattstemnm5PgBx9R+owntgY1QJvt21QuMgKbpgLgYIF9Kd+UI9AKhCRCrFzWwO0YMn49U+surHrB9Bi9sc8yD5fgXryvklRz5EGAePI8oI/Ov2ZGDR17oMzzcji8nmx7L5h+3+4KuC6ltYK9wwJSRS/MVBtOJi28ntiByP2nmJ1HuVOgUk4wYneYw/Qz/nzNRUMVqydUrLNV+HAkhBK3GGo9Dz/n392THB5qOxot3JWQe2TKQIjRUhOaQCbdui31yoKuW8Al/R7tptQfBxy4bNRIp6jNGfqxZZGaEWFjWvrcAPyNbYmNFQUXeQHynVkXCGEE4tYozLymVWH3TZOfHniaDsg0+had8r4PtWixmgO+kGLUggZHplfsljJhZGMfkab3m7EPw0556AIWvqMyTiJE38G8lRLrdJYsjuaqr1DxwNXBGa9O
- G+PFSfg0
- noidqlRRw+DUM9gLG0XAOK8xM6j5WaJrmq+5KG3kOt3Lopl0GjH0I9TJd5/WSd6qayhiOyDU270ypBfRsrHNwwliSmYP5n+7/jCS4Jc3uTTHylS5d7d3lPQI/vUjpavO5wcgkWjRR3qnug3KPC03M0xhbt49SFOXQBF8pgxvn6bhahQvpKS8wAWAWXPtohllx0RpmK6qH3k6+RHuSfkgMhebjRLs1p/5iDa4xIr1zy9tUbCzZhkBmMBfOOzJCDZQKhsLoXeP5VkKzpYqc9KrOgps8oA==
+X-Rspamd-Queue-Id: DD942140006
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773266373-467730
+X-HE-Meta: U2FsdGVkX18TOwF12jTFLBNwXed4p/v957yP8keyx4tCwlUuNDF7fgMy0LaEiWQQqXnmb0GvUjL+BTHGryQOJxHyn9Xym1Pl/AX9Tz+2qVOcjJcMSxdipAR6mjdRCyFISVlETdTL+VR90WAM62VTC+qu6uX1j8kttH+E13ftMSoTB6DYKPWwtNSuKTCMRU08g2RX0/oxqIjqgKfUmIj7YPZR0Bdm5IidCRKCENsMPoDRdlE8Px5Fs82ZSRVSKoxlOcxHT2d9H23Xch4FM+Ph14deG2GF9bK+sasEwdogo70hINQ31jcv4nRCxODQcbDNLuwb01aq5TJ9WxH8HhwR6zMY8XCI6aFQHcSEFXqnEBYMz2AYYOaB5hA5SG+DJdWgGayu5BTzaroIpgPRPpAK2HneV2H/Y/GIDc2N6FKjDFLeaj8NsWvqcU8q2ViaDgMqO2hgTDQa2TFi1vjJ1/TdRuEURkR+MT4Yex35dCDTnIQ8mtnlU0iktgI3BJVDaRzxCP7U2NtSJ1ysNUFVSLng+F+VmrOKlUoXkpifDgJ8OrZHgbmSfP1VAODhnlj+QKn+FLL4jAmXubIeXo404I5qKTxS4s9PeI8rNQjGqIuAM7fYU2j5PnZfXjebzTiDmbxnP9U1pqyQrbYYTP8OC8QEWxVRqIPhJBSKEQ32lYj0DuCWr4R2Go/5xA02mSFyLf+HWBgDZO7ii1UHZOACEU/VZM+yu5wDbpkZQSiZ/ZsIxdDHFTVuqD8ZwH5Mh3/JqxrpOOLAlMmAMG72wBY5Gyehyp85t21KG7TgLRJr5tEZz7HXklnqcTscRUgOMcMddZca3GKFDbq3Fjm2XcaPU29FGXru6e6USbYnLz+z63D9Ye1kMRLl9Xwisl2MOsovOXyU9MOO6Egxi4BMBHNKC9z6j0bpmn5sFhadzNyjcVEn0f2zkoHf0zKRorDXh46qydgfKzBy94z2ebCaYkKg2Ij
+ mOD4LDRx
+ bAZk2y2IN2r+ITBNAbfFZZcr1rrUAeu8dNX+M7yKgksmB7gflHc9t8SDO7eUulXCHPCqOv0DNUAnWqLKGs6yG+Z7I26XUs+/LuOJ3RvOwZExK7VKUU2LzthIvf+SuJ0GncWk/ZPZEth1Xgb7le/1Qqq169vd1yOUb+YBntasAn2qLO+bXEbcDBcqz17mObEPjMEQlMLd4TgK7GgFi2fqt4I6a++8T9fam60cOiPoQjMEDwsZvjuhhEGH/0cgvNzeJTUM7d5s9HlU03YeLtRJ5aiBhiiPv2MZrKm2cE5Xg97dWOE3vfKr6IQvKMNXQ5IZt+I1zmqwUG2LqTR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,50 +104,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Greg,
-
-On Wed, Mar 11, 2026 at 12:29:45AM -0700, Greg Thelen wrote:
-> On Sat, Mar 7, 2026 at 10:24 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > Okay, lockdep actually does warn. rcu_read_lock_held() is explicit and
+> > not appeased by implicit RCU sections.
 > >
+> > Paul pointed me to rcu_read_lock_any_held(), which we could use in
+> > obj_cgroup_memcg() to suppress the splat and permit implicit RCU.
 > >
-> 
-> Very interesting set of topics. A few more come to mind.
+> > Or we can make rcu_read_lock() explicit in the above code.
+> >
+> > Any preferences for how we want to handle this in MM code?
+>
+> I would vote for explicit rcu_read_lock() to be consistent with other places.
 
-Thanks.
-
-> 
-> I've wondered about preallocating memory or guaranteeing access to
-> physical memory for a job. Memcg has max limits and min protections,
-> but no preallocation (i.e. no conceptual memcg free list). So if a job
-> is configured with 1GB min workingset protection that only ensures 1GB
-> won't be reclaimed, not that 1GB can be allocated in a reasonable
-> amount of time. This isn't just a job startup problem: if a page is
-> freed with MADV_DONTNEED a subsequent pgfault may require a lot of
-> time to handle, even if usage is below min.
-
-This is indeed correct i.e. protection limits protect the workload from external
-reclaim but does not provide any gurantee on allocating memory in a reasonable
-cheap way (without triggering reclaim/compaction). This is one of the challenge
-to implement userspace oom-killer in an aggressively overcommitted environment.
-
-However to me providing memory allocation guarantees is more of a system level
-feature and orthogonal to memcg. And I see your next para is about that :)
-
-Anyways I think if we keep system memory utilization below some value and
-guarantee there is always some free memory (this can be done by having common
-ancestor of all workloads and ancestor has a limit or node controller maintains
-the condition that the sum of limits of all top level cgroups is below some
-percentage of total memory) then we might not need memcg free list or similar
-mechanisms (most of the time, I think).
-
-> 
-> Initial allocation policies are controlled by mempolicy/cpuset. Should
-> we continue to keep allocation policies and resource accounting
-> separate? It's a little strange that memcg can (1) cap max usage of
-> tier X memory, and (2) provide minimum protection for tier X usage,
-> but has no influence on where memory is initially allocated?
-
-I think I understand your point but I think the implementation would be too
-messy. This is orthogonal to the proposal but I would say a good topic for
-LSFMMBPF if you want to lead the discussion.
++1
 
