@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 425B4FD88E3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 03:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCAAAFD88E2
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 03:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 467256B008A; Tue, 10 Mar 2026 23:02:46 -0400 (EDT)
+	id 02F3F6B008C; Tue, 10 Mar 2026 23:02:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41B566B008C; Tue, 10 Mar 2026 23:02:46 -0400 (EDT)
+	id F251D6B0092; Tue, 10 Mar 2026 23:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3473D6B0092; Tue, 10 Mar 2026 23:02:46 -0400 (EDT)
+	id DD2766B0093; Tue, 10 Mar 2026 23:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C01A6B008A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 23:02:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9FCE41604FD
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:45 +0000 (UTC)
-X-FDA: 84532284690.23.2040862
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D065780003
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=drK03i1f;
-	spf=pass (imf30.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB7A46B008C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 23:02:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EAE8140539
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:50 +0000 (UTC)
+X-FDA: 84532284900.29.ABE55B2
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6F41E20002
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=U3YBpXDz;
+	spf=pass (imf03.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
 	dmarc=pass (policy=reject) header.from=shopee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773198164;
+	s=arc-20220608; t=1773198168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oS86FXpKkrcQ5DT8L/I/9XrEEUz5zSdMQ8sRGkPb+gk=;
-	b=MMc3amIk14R6zFVNPbXI5PHPPwIp9tiIiKP95leeV0MeSaM98pUvvirxzTZuVWyBvBgEBD
-	KBDn4gwLT6mrRlAx2zt48a3OjKrSb34ofaB3rvZk4i9roFpTfmQZsG7B3f6pP3rLnrWs7u
-	kATZ3m/2LfWAAIfnUduPl5TDbXGrk9A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=drK03i1f;
-	spf=pass (imf30.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773198164; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IJuSJm3X4xhlOG3+qvokrBOrPsbIME05pWUjl43X0aE=;
+	b=qJfHLcw5bTs8LRyrTM2XUlEF2hQJS/myee6BW3F/zsv/vpxcLBPOyCxijaVmI/QlZeMWrl
+	47TFR4iqh1ZBTdXhflDn9ADxREny0WUMqxpMu7i9Z0v2ICaQ9yZrprl5TsAgwYNMFKELDa
+	fAfVUvBCfwZ2ssDiMw9X3+eYT0xoqkw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773198168; a=rsa-sha256;
 	cv=none;
-	b=tOurin0kpJRvJHlf8XQhwc9XzdgBX8jCaemlikie4l3Wh6vur9gY+WZqJpL65/1d9DPvJa
-	K+Uae/TbzqSqiNeUpazL20g9TZfAo1JfmELmKj/vZBGpDJfuDRxgofNjDvZY0U3jrXkIzJ
-	3oP39oVgXUobz/Cv1cIY7k/qZYBXhUo=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ae5423b02aso64607015ad.1
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:43 -0700 (PDT)
+	b=q2EAjtsYovXCDUoRQR3zwXhuWG+XlZzXPc2jHRGnmFZYPAdwfRJUWnZhiF1lEJjy85AlRG
+	2U6OYGQAVJcLECUnhYUTupRsYnXeTjgnQX+OxVMfy8i+/n6g5kNmRx1/NDPeU/dxmP8cY0
+	I9jdHncCG1Sl0IGr34wAyJBWODFGTz0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=U3YBpXDz;
+	spf=pass (imf03.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aaed195901so62468065ad.0
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1773198163; x=1773802963; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oS86FXpKkrcQ5DT8L/I/9XrEEUz5zSdMQ8sRGkPb+gk=;
-        b=drK03i1fi4y6rNIuXRtHBCZVRObAsaV2oDPMtei9oTm7UGlVjvAJAXqtbqu/Ixhgga
-         WTTwIGi6S76qjfoCbxkB0dacwQQgERh+D/yD+R9Gdlxv8o3d5GyNYIpG30JRExxkNYie
-         V+hpCAJQpjiu/CANq7O3t0j/tYBZ9hVwvcXFBpqBnPTV7XUDtU0TmJb4DSu6V4isusJ+
-         DGT6biltPgBuOAEdFYjajcMPNeKbGYo++n0HvtdbDynraNxxeQQbJgjCakRSB8Nkfc3q
-         /EgcX1DXaCcykMzodGiSiB1pDLDaU3brGuV65kH8qdtiaGgSxqKjc999g+WmXtNjuK4+
-         l1aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773198163; x=1773802963;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=shopee.com; s=shopee.com; t=1773198167; x=1773802967; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oS86FXpKkrcQ5DT8L/I/9XrEEUz5zSdMQ8sRGkPb+gk=;
-        b=iCA9/wv8iRzJ2Y2eEVjehNtanjMZG5Wm6IwH53FA2UL5+XRGKdhshLmPF+bnMZW2Cc
-         SX4XNGq9zGJdZUkEcWWvwCi/Ga+Vic+6CcIMIltjyjJ3f26MCOLLmYBp1w71b4nq1H8x
-         lJvVu4+/6x9GEJAfqEJdrCJeHyaBnOSDpXJjcestH2B19cAcZYVfxmEltZAjtugOEy67
-         nNuVgxfK3RFxwUP4yOCSUENKB2WH0akKTb57xAxlChl4tMKQwDRtBeSjBmybrPgw5DU4
-         ku82+gYl9lHjwSn1asYeYBUPJoMvRDCcs1pHJobe5PGauu4FkWKr79GNSZX2mefDFXfy
-         +/RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXAX2tUWckdnvG9ARkV6l3ZT8SniaPgFr9l8RmZFtsG19nXYR46C9CYT1DW4/vzqgKziDptFMxb2g==@kvack.org
-X-Gm-Message-State: AOJu0Yz2COW3ZoT7nR35Jx7oaKmNGt4LkH/Frd4g/aJfN/Wwn26hCbaL
-	ojPlOSfcMk0VlQc9XENVSnw0rgm5Yt3oTdXwHMy+Tny5I75CaJW1SN83qXLWp7CXU0A=
-X-Gm-Gg: ATEYQzzHarW2rIwTLOuKzLIhMRtXHtzBcjB4T27jnDjzQ4NzQyO9qajZ7PIDpMrZTY+
-	cQSpd7ilkV51amblM1/saKCEttl5tVy8XgO0Ii4nEmtFqfeqz3hqcBfZeqiJjEbPX4PtmENIu6B
-	zCKL1kOutXhrO458lKK0Ow5E+ipumsFjM2VxsMEGLR7OtAnbzrOfCRojyO8r+pJPdH+RvVPLadz
-	boSKkbvwVaZXJlDgw07MMAt0cQfif036UES86RcRcWeJrm8sLD0pXBK8Y64Z+S+ShXYpXZBWqgw
-	48FpQj2ECExTzr/wtdv66ECIWskadfYaJdUVoO3qemn/9V8qnekBRO/FgyQbU9fUdrJIdYrHKUG
-	En3CoSiWW4RCrZPaEu8O7rQYeS1Kk7zP0QV9cJ9TfPQi0Thg3N/KSS5ueHbTVVtBd0iA2buPUrN
-	549+WDb7tDAZYRsytQjPJGVTvTt0iOMcYOMX1nzQ==
-X-Received: by 2002:a17:902:d2d2:b0:2ae:50e2:edd with SMTP id d9443c01a7336-2aeae8919demr9978055ad.31.1773198162527;
-        Tue, 10 Mar 2026 20:02:42 -0700 (PDT)
+        bh=IJuSJm3X4xhlOG3+qvokrBOrPsbIME05pWUjl43X0aE=;
+        b=U3YBpXDzh3d0+JLyq3efP07XvIfe/OowQIoDKN9X2AvoPlisPS1puY80g5ZyOvhC6n
+         48ers/oU3FFYTfBMdkRrCLwEUGjw+fmCBIKCZl9hDHuagQOifCvpQaYcTXg0cq3hWe1A
+         ZU85Ka6OI02Nk57XKvLeqWTO0LEgpI5CQwvzmrHJfhrgm9eWzk+1s3FQTEevGSuiyahR
+         6llMD9rcsXYhgs/ll4ByIomKJCkfBrVkbBPPN/5JLkeAesnVWXKArJJiRSHL0wi5TT2g
+         e1SCYTYktiuYcdR1zLRg3ypT+eFfEtc/JbDxmhd5vDdXpmg5EMFhljH9bdRmEcGeTobO
+         T00A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773198167; x=1773802967;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IJuSJm3X4xhlOG3+qvokrBOrPsbIME05pWUjl43X0aE=;
+        b=UL4stkLv6maGR62rY44t2f68BuSCouN8+6cuMMf1uCy1l8+zLpXYOt76qmfi/jJfDe
+         ztrxGLX/JeXwA8oLBvHm0cC7NP0fkpGbj0EvI6YJdluS9YcNe7JfWv7lIO9gASvNUWDx
+         qFvTQysBCtbvT/vkmk88rzMXAS5cSvdJq+1tLaG+M2kXNnfOUuYHuBSdxAl0htVXFVTl
+         /5HBBPY79f+b2ie3gO9IXxkXYQ8it0rX3Oe+VjhIdJjn3sqIviPz3J44NY+Q6nEFaaXl
+         yRrH/5XK3KQ8eP761WdpgLJ4qSxnEr42yhzdxKNQ0jClNXOQREztAwqwbMlc5thMsF4d
+         M9YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdO9/S0QQ7NMNuNEuMvEmkPXi8CGD6ioxP0QxBfKO8zl8NTkDTagClsAoyr58rsv+iUpxxlZiDbQ==@kvack.org
+X-Gm-Message-State: AOJu0YxSxNZL6cwrpGiRtD92I1WIvw8DsJQFgb6auDuCyjBZcKhW5hTF
+	J2hQHZsrd7BMoiZeVfc/WS3ua41yXUPT1zX5yuKaTYiDzmMIQJHq2Iu/4zAdehaW7rY=
+X-Gm-Gg: ATEYQzx9CkTBPr+zXVI/ekAUsYRETfV2TVzneMWJQdgBlrv6Q/Hoqj6YOZzl055G7O1
+	hq7dVC+ZWfDNGlvJUhyz3jL1vSovBnRcVXNFcU4eSiJCAxeCH9yJ5tuckT58DUHdn07Kwd9K36g
+	cWIPxnZLIBcsme9cEpvVJNNdQ2d/RsZyvvSZJlW7nbCgVy1HupWzC9zrvwg/6UbHr2J0ZqxSQrW
+	Sp2MFF4wLkiE102UcvtdDPq3cKntN8x9Tz8Bt1qb+OSq1Nvm5mKQ/f5OJJ9x0IVOvC6iBNkOhlS
+	Suxw/1vmV8FmJCGiaT44yMQa2PUUetpbHGktC6nQaIQ//DRHHdzo3glHSKfEf6b07Ia0HbTZSHD
+	v7NeuiuaVGPkWIpCX4PCEeYn+ht6LodxL8Dy2YiGobToTz1VJ0TosVTFMYfdjID6GrFU0mkritp
+	LjtVtCzZ3JfY4XMY8/4BoHIGeunj8yt2LNSyD4aQ==
+X-Received: by 2002:a17:903:41c4:b0:2ae:4f81:2f14 with SMTP id d9443c01a7336-2aeae81642fmr10076395ad.24.1773198167284;
+        Tue, 10 Mar 2026 20:02:47 -0700 (PDT)
 Received: from localhost.localdomain ([147.136.157.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae378974sm6251555ad.82.2026.03.10.20.02.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae378974sm6251555ad.82.2026.03.10.20.02.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 20:02:42 -0700 (PDT)
+        Tue, 10 Mar 2026 20:02:46 -0700 (PDT)
 From: Haifeng Xu <haifeng.xu@shopee.com>
 To: akpm@linux-foundation.org,
 	david@fromorbit.com,
@@ -102,20 +103,22 @@ Cc: zhengqi.arch@bytedance.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Haifeng Xu <haifeng.xu@shopee.com>
-Subject: [PATCH V3 0/4] record non-slab shrinkers for non-root memcgs when kmem is disabled
-Date: Wed, 11 Mar 2026 11:02:31 +0800
-Message-ID: <20260311030235.240953-1-haifeng.xu@shopee.com>
+Subject: [PATCH V3 1/4] mm: shrinker: add one more parameter in shrinker_id()
+Date: Wed, 11 Mar 2026 11:02:32 +0800
+Message-ID: <20260311030235.240953-2-haifeng.xu@shopee.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260311030235.240953-1-haifeng.xu@shopee.com>
+References: <20260311030235.240953-1-haifeng.xu@shopee.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D065780003
-X-Stat-Signature: pns69oh1t18wchhcihtxo4uzk6jypzkq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773198163-314753
-X-HE-Meta: U2FsdGVkX1+4dnvGodXQ8lgo4okBu/k+n3RWPU3MMbx7J7RXoYg8ig6W965iJurvgbiehnrVYZxLAM10IK1ORb1wkI1+HnTpDVHi9QNp8z9TsYQp9DyGFqBeeIBqWZKjLimC4gJyMSVSVhmh8UPbke6gegZWvtlud9MaOSq3cCYTGhHiuIjbk9yQpXFVVMjKpxUivqnrtVh1AinLXyAxvaPP692H9Z4/ZgTqgvadfbE+VUbgKYXQ2k1H9kpNk/vep/ilYIrHpUCYdzIqVnwJzNdGZwcNX1bE87zSrh9zkJmtmcTMCqTTtuzlLpxaN3yXtDN7iklqwRi6kAH6x7T4qF8emJQV5YT3Y5PLK/i6sbHcszx0UK/vbqRe/SUJOQnYeCwnEu0WTMux5f0B+QRy+NYoBN36M+VceED5fE3E9ahDPJOHs+toANTu4iylCRBFDyZmGKVx2vvV+OyhfaJbjR3bJ2xRKj00qHJv82R+eu9JtH9ba6EzJ2+MifpzK9hAbZ6GxzqpoNBo4NyEYA8g0ohLnhWBuC3i/rCBVALE479nCLy6pqF2vcpNcqLxXBOOtOhO2soER0R0jcEOd/Nq6LnSMtG6mVnorm8nKAhxWAJbM8rsKSvCxpX5gvQE0HfFCeHMDKV+sq5cHV0mD/2q96vIYMQVO0+EjwMoBX1EIP3fOCvZfAPT8jt3foOu6vg42A843xK0J/gCLBgX09FyBwCRG9kZDoEiyd3TAISPA0fiI/IBnUaC4cutuYHe6RsQcAGILHlr0alo1bsD6uKPl7hNm2ZN8psXvTpfxN1M4yRQzqvewHdW0fzFhcfF6iZGAyIffHSAEfemEw7pL7wB4DWzJjq9zFDStARut72m1ay+UpBRgThmyY5cqkeLZXf94a8Fk/uukWdQ8cjUHeVdwChbbRZlBkxrsM995QMoxHlvKAK0P470LIssui+KD2jcv3NkYbr5IYXwqj0WRfi
- 4KgvDr/x
- l2MfPnVbKwc56GR2vBQA1ujz5IvoXDLSeteu0TLLAWABGDT7d4vHib7X/XskDLvMfM2hUOcjn878NgSNpVl/iqzeiBeQvEVW+KvRP/hRX6NwjwZSfUcMlCxJglbcWuOEpvqbwidLMZg7cam+iknTf+Hm8foTDlB8ZAakMJDpOa0Vx0SrWgel+R1MTCKRTDoyfKzTMf7lItdytJTjwPljxV5+xHWSWI3ZqAfxlbdLx5BDPlt/rtbHhHwaYzQs9IVH0Be2YfKSlE7A0DLnM4chlztb66UlZHN3VfMYXS0N3KGftmgXxthIiWe6JV0aUhbeaX7TXeYOuH7wY2yF6Wv77VIAReCY06qDesVfj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6F41E20002
+X-Stat-Signature: b8t1584swcoi68mbb4w9tsdkk5sp75nn
+X-HE-Tag: 1773198168-155479
+X-HE-Meta: U2FsdGVkX1933dFHc9POGqSOkY70b+FyFdxbOWzoBfxxiUl1FoxVH2LZNTBrM61/4Us4BNhTnzQokwvj0m2pF20Ob5ywDkE3I58B4xkvc4mIvj8OIQCsczK7Dht12rb1btXwTl64K0MrZoN9aAVc4gxpUXFOX560hfpX+VQS96qZYZcSNfbSSpx9aiq2ia7UibEhaqxgnyX0y2dleZ2yn2YaCSf+xy1//EeOy16Hi2/nKOSjTW39RdYGgmMGX80v0QVPXjnPjQ73cpUVnqI2WuK/Q8RnXQIDU6gwC3W1Wn7DF+6qiPS9PKTp8e/OyppcRUSf17oVEPbr83f6b/NnE6iY7oWivmxEaguwd0QeQjSN/yBb/D5TjTLYATcFzUxUwIa45EVNdIAe9m6v5gOF3d+Goia/3dKruOJw0VwQDXja46ztqFOOFSyqRmwNuqpZSHQsOp9VtZklFcuPaZBwcioJLT4TRp41QkJKUPQuTMaCcUtA5YsYZk0kjmmfjt9jqS9Wf0oMHgPJC98FCXa8EyQCQS5t14vwY66zyE9AMSreHOcwVxIDs/66z1NTRCvP7ULbpWzg6VGqxxPwRaC9tfFI/wOp4eL60NpRy3tZUgum4PwexfkMJPJXXlQU7LgSYU4tDeeTJwNEO2fu5q8vnOAvpc7BU8cXLHjsXiihyi4xvj2uc1Tvnh633Om7wL97m4FVpjATjHPl6f2i74jto6BNj+5MxM2cgmlmeWIdD7DSxfWbvouNRrRkfbitlNLet9uV1UwByQPmDD+EiKJGldFLQVTGIhYUSLvK4VEWal9y+c7dfkcaBiiQXAqpSfP+f0g+qSt/K/7mVA8p29LYRnciTHKB2hEJDUdcMgxrHVtmRou2ij5XDlFIf0NLroX6gnCWrl2QC0G2+ar+gfQCdtmbc2qLqWUWPRsmB9WM/E0KCa7rfNk9UF1SyScEZRCphyEEscvG0EUxngRw5EK
+ /0NEjeWl
+ TDJ8E/7AlNYR8IPLMVIN4+D94b6Fib4vmPztwj8iKbfSX6uie/as8O7baLqP9ZIo5uFp/V1mLkFs5RUMFUReuZdv5KbSwiMU/KPLkVLH7U8RvAd5zQYfJy/S/gmJRrDX4lSHEAyQ3hVnz2TS84YzO95OcTJ+SfOsyQFLtrL1tEpgBHDFY0Fwz5+aydflDPnaLfHWKVl6TZ/Cmdq5LXM1SAkXiM/8QmYyF0xLZU2Sry52ljTbKK1G/zrJPB7II54jgt52+LUHfEScvtsataCKi8udKteki0hFXF3xwNuG0s0mrPnktOzzH9cCnlt7v2ibPVwodV2TkMaLPrTcQOWnajDEiBMBJoG/EgslsEQ7lFDwZV9mTkOtc/9veQkYIgAHpQCpqZFKV9W66l0p0Roa6N6uZdeePOH2lKTGN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,41 +126,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When registering new shrinkers, all memcgs need to expand shrinker info
-if new allocated id exceeds shrinker_nr_max. But if kmem is disabled,
-only non-slab shrinkers is useful in memcg slab shrink. So in this case,
-it is enough to allocate non-slab shrinker info for non-root memcg. This
-can save a bit of memory and reduce the holding time of shrinker lock.
+Add a parameter points to target memory cgroup in shrinker_id().
+The following patch will use it to decide the id of shrinker.
+No functional change here.
 
-With this optimization, the finish time of pod creation in our internal
-test is reduced from 150 seconds to 69 seconds. We test it based on
-stable kernel 6.6.102.
+Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+---
+ include/linux/memcontrol.h |  4 ++--
+ mm/huge_memory.c           |  4 ++--
+ mm/shrinker.c              | 12 ++++++++----
+ 3 files changed, 12 insertions(+), 8 deletions(-)
 
-Changes since V2:
-- read shrinker_nonslab_nr_max and shrinker_nr_max under after acquring
-  the shrinker_mutex.
-
-https://lore.kernel.org/all/20260310031250.289851-1-haifeng.xu@shopee.com/
-
-Changes since V1:
-- reuse shrinker_id() to retrieve the id of shrinker, this also fix the
-  build error without CONFIG_MEMCG.
-
-https://lore.kernel.org/all/20260306075757.198887-1-haifeng.xu@shopee.com/
-
-Haifeng Xu (4):
-  mm: shrinker: add one more parameter in shrinker_id()
-  mm: shrinker: move shrinker_id() code block below memcg_kmem_online()
-  mm: shrinker: optimize the allocation of shrinker_info when setting
-    cgroup_memory_nokmem
-  mm: shrinker: remove unnecessary check in shrink_slab_memcg()
-
- include/linux/memcontrol.h | 194 +++++++++++++++++++------------------
- include/linux/shrinker.h   |   3 +
- mm/huge_memory.c           |   4 +-
- mm/shrinker.c              | 134 +++++++++++++++++++++----
- 4 files changed, 218 insertions(+), 117 deletions(-)
-
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 70b685a85bf4..a583dbc0adcc 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1634,7 +1634,7 @@ void free_shrinker_info(struct mem_cgroup *memcg);
+ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
+ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
+ 
+-static inline int shrinker_id(struct shrinker *shrinker)
++static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
+ {
+ 	return shrinker->id;
+ }
+@@ -1670,7 +1670,7 @@ static inline void set_shrinker_bit(struct mem_cgroup *memcg,
+ {
+ }
+ 
+-static inline int shrinker_id(struct shrinker *shrinker)
++static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
+ {
+ 	return -1;
+ }
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 8e2746ea74ad..6050f8d71587 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4353,7 +4353,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 		ds_queue->split_queue_len++;
+ 		if (memcg)
+ 			set_shrinker_bit(memcg, folio_nid(folio),
+-					 shrinker_id(deferred_split_shrinker));
++					 shrinker_id(memcg, deferred_split_shrinker));
+ 	}
+ 	split_queue_unlock_irqrestore(ds_queue, flags);
+ }
+@@ -4509,7 +4509,7 @@ void reparent_deferred_split_queue(struct mem_cgroup *memcg)
+ 	ds_queue->split_queue_len = 0;
+ 
+ 	for_each_node(nid)
+-		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
++		set_shrinker_bit(parent, nid, shrinker_id(parent, deferred_split_shrinker));
+ 
+ unlock:
+ 	spin_unlock(&parent_ds_queue->split_queue_lock);
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7b61fc0ee78f..61dbb6afae52 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -255,11 +255,13 @@ static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
+ 	struct shrinker_info *info;
+ 	struct shrinker_info_unit *unit;
+ 	long nr_deferred;
++	int id;
+ 
+ 	rcu_read_lock();
++	id = shrinker_id(memcg, shrinker);
+ 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
+-	unit = info->unit[shrinker_id_to_index(shrinker->id)];
+-	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
++	unit = info->unit[shrinker_id_to_index(id)];
++	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(id)], 0);
+ 	rcu_read_unlock();
+ 
+ 	return nr_deferred;
+@@ -271,12 +273,14 @@ static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
+ 	struct shrinker_info *info;
+ 	struct shrinker_info_unit *unit;
+ 	long nr_deferred;
++	int id;
+ 
+ 	rcu_read_lock();
++	id = shrinker_id(memcg, shrinker);
+ 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
+-	unit = info->unit[shrinker_id_to_index(shrinker->id)];
++	unit = info->unit[shrinker_id_to_index(id)];
+ 	nr_deferred =
+-		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
++		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(id)]);
+ 	rcu_read_unlock();
+ 
+ 	return nr_deferred;
 -- 
 2.43.0
 
