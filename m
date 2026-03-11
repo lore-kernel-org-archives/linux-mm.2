@@ -4,124 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06E0CFD88D4
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F1CFFD88D4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:30:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2E156B0088; Tue, 10 Mar 2026 20:25:10 -0400 (EDT)
+	id 456836B0088; Tue, 10 Mar 2026 20:30:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDA7F6B0089; Tue, 10 Mar 2026 20:25:10 -0400 (EDT)
+	id 3D7FE6B0089; Tue, 10 Mar 2026 20:30:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C67BC6B008A; Tue, 10 Mar 2026 20:25:10 -0400 (EDT)
+	id 281486B008A; Tue, 10 Mar 2026 20:30:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8169A6B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:25:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0896A1C455
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:25:10 +0000 (UTC)
-X-FDA: 84531887580.23.4A5E3AC
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 88C711C0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:25:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SqdhMprQ;
-	spf=pass (imf20.hostedemail.com: domain of sy8704051@gmail.com designates 209.85.208.66 as permitted sender) smtp.mailfrom=sy8704051@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D77FC6B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:30:40 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72E1D1C44F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:30:40 +0000 (UTC)
+X-FDA: 84531901440.20.E3EF31D
+Received: from mail-ed1-f65.google.com (mail-ed1-f65.google.com [209.85.208.65])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 34F1D40006
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:30:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cipJsJl4;
+	spf=pass (imf04.hostedemail.com: domain of sy8704051@gmail.com designates 209.85.208.65 as permitted sender) smtp.mailfrom=sy8704051@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773188707;
+	s=arc-20220608; t=1773189038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=T9a+yxUSFlSJjlyG+IRJxwApdviB9HV+tTJ4Lc9xO9Q=;
-	b=N6U4IKXUTpkxoUPUj5lVwao1PGF5ea8rvNwJIkyU/A/N0nwsiREyP1gjpeMTDxlnf1YL0T
-	6inghLZIASJ6d8+qp3cTcaKS3/kqQqlLPbm32VdKfSZwaZiF1m5u3cscBuWjPOv9R6Dmjj
-	FRTJ8eDl1eCON44FU9ZN9w3rDDLdQh0=
+	 references:dkim-signature; bh=eSHxGVEtvImHRk0IGLMoZFPafX7z4/Nm986ZAF9YZBI=;
+	b=bJMW97NfSb96NT6Ls5Bbu5PRxXSCOw9Mg2N/A6Dd+6ZD4FIlJnxMA6heI+xIjDLUlwI0D7
+	9CP0bavlbw66JYmGIdGLBy/y0SSxqg9wYm1e0U58WExvklB5ptz7Vw53feepQM5SJ80/Z8
+	40E3gJdvm0JO3xaX2QH1r6nckayeguo=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SqdhMprQ;
-	spf=pass (imf20.hostedemail.com: domain of sy8704051@gmail.com designates 209.85.208.66 as permitted sender) smtp.mailfrom=sy8704051@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cipJsJl4;
+	spf=pass (imf04.hostedemail.com: domain of sy8704051@gmail.com designates 209.85.208.65 as permitted sender) smtp.mailfrom=sy8704051@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773188708; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773189038; a=rsa-sha256;
 	cv=pass;
-	b=2WSN9Apj+DT8Ib9302pdUZxkPYYp0n0DHanhU1anxjb5LInIu4eZ47UcNukFBdndinylmJ
-	jkz3rzL+CP2eptU160wXQujisAVPrkSHt4hbULXVag4W0+Wq4m2ABS1BV0ZO6hLHrNnktm
-	azOVd32r1qdUU0EE3gyvE/ipZA5TLtg=
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-66281b1018bso4564162a12.2
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:25:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773188706; cv=none;
+	b=OQ58mOXJXsH4rfpWdfFkR5hNvqpX5QpJ9wcJo9fNA+A2Vzdyqn+ewscF6nzfy7RxvdIrbR
+	ZBZgqX7/XWpE86UmAlEAbsAVbNEdNPY06Rw6ww67LrLr77HYl7eZ/jXuxuBQf/WbQf1cVV
+	1YZ0Fo8RUOZu5FABCeV35UFn5lIQq7M=
+Received: by mail-ed1-f65.google.com with SMTP id 4fb4d7f45d1cf-660a58841d4so10123031a12.0
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:30:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773189037; cv=none;
         d=google.com; s=arc-20240605;
-        b=b9KIuBFmvKwUktpq8VAJ3yGb5+YGpaxdLfZgPNNcb531tm5yvegOEWebbJO6zRuvSn
-         VbclCNeTTOSUIqVfngzGli5OAqDiMRY+MDZfSVlcZAWKWCFcPfTnBCM0uqiMuLNPfewk
-         6pdDWEWlgNeSUrxILo7zL+Kic/aQPZ2r72SNOgLbhnS4aDmVwa8z/FgJq+4QzOXuguZE
-         uUoP4onzLoRdWpGz4iQH/8GJDwQoLZNN9YE9qX16dL/DzlIZu8lWPtS1jF89Bt60rv6w
-         d65YyInxT98w7OZOGDnUGrXsnQQZFeDuhWKLx/PhuO+tjVH/2rMnLLrO3qk1Nemf/ReA
-         +wTQ==
+        b=NR/jKJsByglegJWbbqWbVqrVVomZx6Apj3/GSnqOHlJfwS8GBD4sfb3mbe/AvCJcBr
+         2cN/qvgfZhzPE6t7/hT8HXBEWiw90B5GV1FtjiQFc9dUAqlogiJZpwRqAmv7jrV3pwMu
+         NmpvLJaTW7uP7ggkMxCC1br4yh4BbUfvlxmVNjniZHD4JZ3lHERg4wOE0fuR3prmX/Vt
+         IV5uM1A7/shAb41Fywk/JANV3ZFEAf1OQ1mSFig+cmzRXdUDP0j6UZdxYOri0g07C1Jn
+         gPSexLyBcsYWA4IE6jfQVoTJAqAPPOmt6vtMkqoxm0I3h1UT/VR89NojF5u1YEwlb4HK
+         NNiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=T9a+yxUSFlSJjlyG+IRJxwApdviB9HV+tTJ4Lc9xO9Q=;
-        fh=BmPgWPBl8KjM2pl2NFqDeTMwhWu2EVRnf6t3Rnx1ERU=;
-        b=awksdQMc+qGX86Z1V/KY7wmHgRZEwTHqLFeKlgEShzsGeb0xVXhWEWHGTAhHuJWq8E
-         vMAiqDEdtdCv64yVjRKgT5rmeG4/lXpwK4Yzwp/rURcgv4344yTo5oIKOh1QbxPn2BOw
-         v2WukGiaKfru//QNmOUPrJKHooDtjeED/HUiHwXumPsoz9PoBeOISbKkZAKOjEbCGuBp
-         MRhJ34d6Qt9gut8hiz/69LG4MRO3usnzQh+m7RBtkaRpV4U9h8jkSXNuZLpj8jLeVHNb
-         2ANCp+teTpTSQFHwnUQIz6PwOu6mpysUbG/5HOIHNXFtaTRRf+FPn3zxwgaV6y6YWlsx
-         5tFQ==;
+        bh=eSHxGVEtvImHRk0IGLMoZFPafX7z4/Nm986ZAF9YZBI=;
+        fh=pLp3VqiOOWzqeJqSBxprElUV7hBK+Bo9641WiYWUZPo=;
+        b=eN18HhQ9OBtyIV6RsGnzIqWozVZ32fReYVnsX92roiF42VWHCu1QDezo2L0KuYojIR
+         7zORHzKxcOK3yJiJflEvRB3l69Jl+bBC5MZXMZ8ihck3naAI6iRlhFwVbO4+10oD6710
+         8ASsEee8/Igg/5Ro8bZwBV+rFz4ykLvR1A29s3hc2BRgy+l3XtyZeReDfEaakQoPYIq5
+         ECSrGncctM87of1w5VJv1qt50rokXsafyJCRJrFYYUJMNGE9JY6744PWXRFX6sxoY/Az
+         6ZQI52X3unln7IUcno/uJfejt91qncP+K4UGPRT5iQBmva5A1QSVT0iP0L0jkx2Jh0wf
+         hOKg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773188706; x=1773793506; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773189037; x=1773793837; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=T9a+yxUSFlSJjlyG+IRJxwApdviB9HV+tTJ4Lc9xO9Q=;
-        b=SqdhMprQ1O4YYItW1bm/fW9ErM79UpGeSkNPKl0/eomgqqzTr84s4Np4Ri27QMPXpX
-         Y63i0UeiwQXvu2G4aGM3I3TnD+uYhK0i/PTTLEpe7lVNL+/QATevbvvJo+iN+ZK+w+4x
-         eaAtopuBuBR8juOFHjJZ2pFPSOxPa3j5e2I33QEemm+Y5ayOHEuI2PG3nZ4TgRBcv1A3
-         /v6ax3MmW+c6gCawfdJRtMGzkewPK65JrWZyWX6rJAvuQIgjYfuJBFgroNqydWCEjlVf
-         M/cGYmeODoOXS5HRRU2vP9m6uHqJ969/ECvMfASOquFnljGMrFMAQ5i3x+ZFOo9C4nID
-         ujvA==
+        bh=eSHxGVEtvImHRk0IGLMoZFPafX7z4/Nm986ZAF9YZBI=;
+        b=cipJsJl4gc8zBOCfZ6f7Rk8wGQXjPHaOBSWoYQJVIBHTyepEcwB4NQQZrhoa/gsYLz
+         ws6HCvwt/WR46hok+n1fxLelxhq1hDrnRqJWTBB0ktN+TrhPmXPKaDZaSdXgXkTZjYa7
+         zlJcfx0HwSE4HPly6OxmfpgOK28AeW/g7rbJEeFD6GVOaaZ6hXCsKB4AziqCVJ/JaBi2
+         0GQPzSwh+dTlu8J3TDDn3REenr+rmPWeAy12XPhaAMH/XiDQN98cLNyPY6HzsyUAGU9P
+         DaFXvCBKEgFZLyGhWR11RMKLAD9dITqsnQe+DqrFlJFT2AY9fW1X01ilmmao/OGU6fxz
+         nLyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773188706; x=1773793506;
+        d=1e100.net; s=20230601; t=1773189037; x=1773793837;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T9a+yxUSFlSJjlyG+IRJxwApdviB9HV+tTJ4Lc9xO9Q=;
-        b=OiT8oB+vgbJq89ZHWaGPOQYHEbVEp/+RSOm/y6OUVOJDGgitC7yh5+G95RU3R850Kh
-         WikWutid4F8O+CCXgdXjCiFp9ewslpT/0QDnNy5tSeVWFxk6exybujayCQQY69IiSQH4
-         VBIHx2+wCCezX3VV70mTYKpxdHJ1h34ZGVuEDBXzxL3ZxCRQQbs+PLfXtIAwHczkiPFq
-         g1yIAoeWof3VphJD7S/tXoMd5ygHC2vKX2fvR4f9SKz4QZvZLs2c+LC2Net31I+fQQ6W
-         h8/VoeuIBduTDIpghumvAzcnkZGmjLnmGloOD9uAn5KRTzaMQn+Q/ShKzon+NqtBVmaC
-         AUYQ==
-X-Gm-Message-State: AOJu0YxwUZf5twJ7xUsv9R7VgKfzqW1nUHDGMp0uCQLOQ/UH3xSwPCFt
-	zqsue7QCuceonAxxNOJF20rNJaCn2i9QTvjRa3trsJRBc/XcgzVxTbQIInrfZmqXyMELs8YpVPX
-	rI68t8CTLx5Aw/hx6cmxxf1Lf9ttznM8ZUbdlYAHRvOnX
-X-Gm-Gg: ATEYQzwozF61gnvT/r4iKhALsB7IcpgtkpOnt4V3yPxChI+3ciVSX1qIYz5Wo1fGppV
-	CD0p/6jzf5Sfx2PpyaTKKYK9FBx2hFXARQ3xbJx0S6UW3mwMEIPFTCWPFhuOOMvOvD9OvATia4p
-	/SfQTM9TrmJ88OKIFeBgWe2LtyRvdc390su0urw9BjmcNPzp8wAOc7uoHb9TwSuxu9+p5seGMZ0
-	WymnLxvOv1UosNGmOR2DCgA4U+0x0BVUyV0XVGt+1yDmKTgJ3cP+GAuOvHYG48yfESnwR9Vu0kO
-	zYlXiw==
-X-Received: by 2002:a17:907:944f:b0:b94:1224:c620 with SMTP id
- a640c23a62f3a-b972e24d9cfmr19866966b.16.1773188705517; Tue, 10 Mar 2026
- 17:25:05 -0700 (PDT)
+        bh=eSHxGVEtvImHRk0IGLMoZFPafX7z4/Nm986ZAF9YZBI=;
+        b=r5r1z50LwOrf5uyrKQVCo7Fmx3CsjYjJGnsiSo5Jhf7hdenJqnN5KDvn2Pdd4UVxjP
+         xclmCOLfTLb3OtPTuMB9BStzFMPBpToYM1aZZL/fO5dcP3g3FhL8YMiPkOpY7V42cLjU
+         UV6Jccjb2KAvmKG6GllLBdGSlCh8JHrQJKf4sUih3TOTmPT12va90EfXlq/HonKbDqt7
+         EuCtOtmqD6274RAdl/UTKcB3wwkfYHSA+pFbUzLVh9vdEMu6FjSOfeOsShZHBZslM8C1
+         EG8E3fxO7Vy9rNrRCFei79bfgh8tHH/VhDjsm8pm0lqDqScgP28jQU7Bp5eKK3GvpV/B
+         MZ+w==
+X-Gm-Message-State: AOJu0YwjMnYiBIxp+KCpcqpb0ZEKy3KnK68AZEAgzN5iV3CKyeLRzbMk
+	I6e69dqMfpekQVPXlmxOcCKnOTNY7ylU47FV3GtD+kVi7FJoZfQn7l+sAVFda3Rt4XQEKdZdOQ1
+	fEYbHHfYAFbbkZi1fK8yxfRNoxBOFY4M=
+X-Gm-Gg: ATEYQzzLlCgFdGHs3I0FID5gNA3QumiPz4lUYhX/5CMrcS5wZJPsGjBe8+WEzScunve
+	WFqsLNL7xm9o3zrBuJtKflJvqLzcVzha6dFspkHVZvSRkiLGTmftIeJ46RAJxs3T/RkqavqbY0V
+	nVQLWIVY9knVhlJpYOanDCsDTwlqV+S7eupY5dsKWkhVZZO/qu2acY2H1AAJTWFlz9sAsKPjZCW
+	mB8YiyGif3sWD1j1sk06XKMyNYjQIIyNYK7eVC4UmoK94ZBzTSZsUGYYl0nMS9a/omw5j6uWafB
+	hTGl2S3iJNJ/xEXh
+X-Received: by 2002:a17:906:f59e:b0:b96:dac1:60b with SMTP id
+ a640c23a62f3a-b972e58de39mr22635866b.49.1773189036366; Tue, 10 Mar 2026
+ 17:30:36 -0700 (PDT)
 MIME-Version: 1.0
 From: song yang <sy8704051@gmail.com>
-Date: Wed, 11 Mar 2026 08:24:54 +0800
-X-Gm-Features: AaiRm53Db4HiUuooJSE5l-PEVKLeMpRCCwBjmldPpM8a3taj4YKGAOAXJ1An2is
-Message-ID: <CAGfhM4AaEygReogOAmkmu5UfRYwoBXAMdLMBi4jbakNONbpsMw@mail.gmail.com>
-Subject: [BUG] Regression in 7.0-rc2: WARNING in maple_tree during
+Date: Wed, 11 Mar 2026 08:30:24 +0800
+X-Gm-Features: AaiRm51UDH5ELXdR6k9qItLNTPFR4bq8qL5AkdRn_-_yS28m1b9UzKxv6ZkXO6I
+Message-ID: <CAGfhM4CyWFtMF+7gw7hv_aePR_NkOeMUQUmcBQLW6pkyw68GDA@mail.gmail.com>
+Subject: BUG] [REGRESSION] Regression in 7.0-rc2: WARNING in maple_tree during
  __mmap_region error path
-To: liamsg@oracle.com
+To: Liam.Howlett@oracle.com
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: multipart/mixed; boundary="000000000000e9b735064cb4aa8f"
-X-Rspamd-Queue-Id: 88C711C0005
-X-Stat-Signature: es1oaorausko5rjggtufuoswkpydtqkn
+Content-Type: multipart/mixed; boundary="000000000000a21ade064cb4be52"
+X-Stat-Signature: pu1cmrxtzkwjq35ie8z8rn5bzhoge6o8
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773188707-297545
-X-HE-Meta: U2FsdGVkX1/KbHl0ZcGEr/0KKmNv1NjpTUVkG1niB+MgvhQt9oWdAE2bR3rPO+jt4wWouPLyju9clwXR2t8dXTXGUquR3ulsuUSygV0zN9dZ+EXBHrsPYwup1ZkSvbtyLjgeoQapMknDVJpFXwBCpcPM9wlA0X42lmxNFp9+wP/OCimmr++5exwvahfEgFMKhyzXrqfxT6EMWOKTZ0GUdsudgIW7RUarPCt8GtanVPXuPUblL2Vy2j35CSb4jaykkOCJEpkUoUbj36rBGTp+kOlFhaOk/AQndFTm4cBhG+iFuMZPnwbls2rhshBzXKU39iuqYb0RWND+16rZJYz92gUvw+sI2DD+kl9+z+nKPd4kMV9G1Vn/hs8OSNu94nByddV32i+Ax8IZU6WYyjOsEUGwoA5APgu2BvA8VUFzTc1x+jNXbXkiqhzwVhDVtyws7PrzRLhaEwo4J7iTRiIg6528H5Oae56v98NOXhn2PQI9zAnLyI2XZ5qrVIbS0c+e5sgniREbsH9wWiW9sv0YOTZWQBmr+pK3PP1FLSlxweQ4hv55zYN4V+FY5aBeaK4r3lQRTGeruq9lLeIHw9rKkgAns8/H6CBVEhk2tv8TLmXG0zvF9MmkD/c8Ziim7gaEMVnErolI/bHs5YMCTAhLZG/gMe2DSj9RfkeIsQLz8uhgdwqNgNubZotfXKkQgOeFaWvMcMDJdg7LvfJiv1Q2IMUuslWwdEpOpGyVIy5f3MTwHNIcWDVO+Q7F3z+dCtcGJZrGTadLx/Mmvtk6TGszu1PaYEPOW4U6YvNzLYSOM1qHIHJNPMQCWKd7wgi1T9o+JdlVFRZGYpCBtPpuaJQ3vsnR04GTUO7/hB6dW9Uu/QhMhKICHAGnI3zYLrU+/zrhwV15J3tbMc1siXxubi08YicHbLj+U3nY90kwRLv9o/EVlIV53jUqQGzERjTz9EgDcZuCKx7rpkVT2oUyEn5
- m7F7km94
- o7BYmjn5rSyhkPDllc7brZQEtWeeUJbQ7/wFNT5AXzhycoN+diGvOYXAzQh+FT3BxZk706jFWUpprXXdOJTL0EIZSR5T2VK4cwXDACRQJw2wsSq+LM7vVhNpY45k+Z2R0uLdTAOWo01PDUn6wTqjdsFSwqk4ZtC4Y/QLBl7pJSfeX8iUifLDPx+O3tczI6KeWQem1mG6SP6as/xqHJiRACqK8UPjwZwwQhvsJZcpCfbr6oNK2TUdjBY37wxXbSLnjwnNki9H7LIYCBPq2oetMcPAYfDzBuvR5UVW7ULtZYzMG5dqBRHoh24KjfVSuq7o4sCTkEPcgdr3GonT0E9GyC+nuPBYzsOtCIUuaK5jOmHtMnhAfUwhfIbcEjYaWCeHMG7MyXF+9jkimZiQhaFQdfj3povNGghu2EpgquMYFPol6t1x/SmMyq+yiAGpmwLEz866QDfZwTlKLr46ZxC5tGNkag6MZLB0hokQ9GTBFRzMPT4MSppxQfOB+yIf0+3v247wvcuAVte5C+zXJoQN0/rGojy3hGzAQQj2cMOG/wiuz/pfFpdUvb2crZVLZys1pzg+cq+ZzgPLB1AjBlzi7xdVzwgqKIAWlpElhcY9VIx0/TGGztNuuaSeT1adKzXtFIfOdWspob3k7ofs/vulHEJLJUAyHErlkaeUWBABT5KxKFzAlQdVWpQVV6u5UiszR6DCDtF9B7tuZw3gPZpR5Ex7mKBtLlQ2RX5oHbF+yb5fXaOjuy5iDE9U4GSyt3RRmxNVLNT8IN8RRdXpuPtLaiwiRJc9AI6DI5MncTw3NNnX99FRoYM0tcLMTntYlbrkmkcAbRG8oawp34CwWa7mjVn4XJ4yqI9qWOuaDi8b8A/kGHE6pN2iuEArbO1BMcqcLQIGajhdJSQ4qdbLQFKdshCt9iw==
+X-Rspamd-Queue-Id: 34F1D40006
+X-HE-Tag: 1773189037-375909
+X-HE-Meta: U2FsdGVkX1/SZD46qvcAggWNGLSa4wRTmj2BFwfHBNfQ35p1irl4nyGjE1qXgpTbRYOUIwHlh8cvR9ifxZi+f6/kc9dUnhCD8DSd04AyzY9LAvi4hz+oZgA6Dj5zmcKon/iHbCDKJpvN/BwSwaRHiwTOVXdcUJrCjtL0iUw4BJ+d04A/bhlQB6UO2n4tu+zcqmCW5OL4e3DG6WLBi8/UGbZormHp9MJGP+U7oRbMVUiQA55hwKvFFuZMKVH5loc/4O5f2L3sH6pKv8+7WuE8AMfV7FYGj6gLv9AoJHPknSBsRF3bNFDBRJ49dYqADBH6tV60rPmEIVg3g09WVJWpIMc7gBwQ2j5d7wGTWnMDbxOrjkC0q9moJVLZaprpVOgnSJ0SPIc4YsYemvWYW655Kuq/w7FBhWP7csN4Joa0uWvimDUJrsrosbnx8VTvcgXPcRr7wq2MxHw9hZUjF3VR4BodRFGsOsm/E2baIuvpxBPb16/a1R9g6GEBiK/j2gP+FHBZkaguoRZ66gXj24YYaKs142ETS1i6uPWm9+CgiGkCWUalgSOg6UFft7FdJMXDuLZJD0M6S6NyttOzhlO3RJcDQJs7+Lj894yb+1N012eGdhU9ktzCNCIj/yHkLweKxQrt6CaUog3NUksJLKOqtjhKYBxth+EpcNkSCJQbvmyx5GiN8abpKG/dMiDsvl6XFUmUuHGEYq82KuZM823seClXzpQrKlo9IU7pxB+UjvuihsSkj8+0r5wypwChkgrcNmZTnxRNl39zGwSl4/W9/YEktAa5NcNKU+mD1ieD7qL5ckp2dAE6TuNYx21mkNQ3sV1j+Bacxz7BMrjA6QFSJY67Eq3rzCRQhjqRv5FR2ujomn6Hwu0C1rcld/FyJx11A9M32mGP4xqrtXQGEIHrHVnBjRKTOJ/bKBc06gX+/TtoPgVFAPF5ud0qAXR9TOjOpZoimH6nnCVJDdBSzP2
+ 8jeByI2h
+ smf5ORN1V23zjFM9YbaN16E8SWoEjbQndRGXdezOTaPfIiKj+l37QrzecqwOky5NZxz6537vaxCWhnjVuumCUABmqHrZSjz8r08TADmTl5RRx3ughfUwhP6PK7kM8J8Stps1FytzMrqQmMOEP0oncst0QT/86iWiEyoAeJIopZulTCFAtPs2bx2XhtHXKjZryiRSXU8MUuPFIjd7QkDGahE09ycYV+0ftGRy6lazBVB3uxflSJXhbLuXVyEYa1vXrDCu4vx20YKkSUoCPf34K0O9kQkRrURDPiPbfvrE164VAdf49EPPAREEuAmNNMz1FtYENtTG5UnSsLql6UdhlYGsoSJMyeb/B/H1xKYavLr0P8zHGTS4RLooq59X7tc0VFI4HcInmOigiXHcTgcOSe6tkA7EiLWfm2dbXoat3tyzDHrdlT22SKfFPzebFW2KEFWfccpeqzat4qKPLLlmN01w8ZJBuVkUuqE93s1E1wHZuDCq5A6hdD2pO3KArwWbcXBwKoOzSywTzxUFb17eohaw2EanVcSaLJ1HDuOMmS90X+siWSR6Cu15r9kGqztYVKdleQYlIauz8pJhAc+oklpCTb1V42UqVgHavUrnfpocsIEAESP1Fg92GeAYtuyJNZj5qlrHA/HaMZYWP1FwPFRpocPNkfgWUjA/mjaPs/Piu41w7koZypzqitjNwmDKEZw3J9rNmFjNHh40GjAI5Jj/BzqPu5gOMrb2DA5+RHS3yk37yhJw0Ks5I26GkdOgHfjPYqcj5sBb+TwkMKhYDTEBa4SR4SejWOMYZqW1hdEXqDtc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,184 +129,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000e9b735064cb4aa8f
-Content-Type: multipart/alternative; boundary="000000000000e9b733064cb4aa8d"
-
---000000000000e9b733064cb4aa8d
+--000000000000a21ade064cb4be52
 Content-Type: text/plain; charset="UTF-8"
 
-*1. Summary*
+Hi Liam and MM maintainers,
 
-A regression was identified in the *7.0.0-rc2* kernel where a WARNING is
-triggered at include/linux/maple_tree.h:749 during an error rollback in
-__mmap_region. The issue occurs when fault injection (failslab) is used to
-simulate an allocation failure during a mmap operation that involves a VMA
-split. This suggests the Maple Tree iterator enters an inconsistent state
-during the error handling path.
-*2. Environment Information*
+I have identified a regression in the Linux 7.0-rc2 kernel involving
+the Maple Tree iterator during a VMA split error path.
+The issue triggers a MAS_WARN_ON in the Maple Tree headers when
+fault injection is used to simulate memory allocation failures.
 
-   -
+1. Kernel Information:
+- Version: 7.0.0-rc2-g5ee8dbf54602
+- Architecture: x86_64
+- Relevant Configs: CONFIG_FAULT_INJECTION, CONFIG_DEBUG_VM_MAPLE_TREE
 
-   *Kernel Version:* 7.0.0-rc2-g5ee8dbf54602.
-   -
+2. Problem Description:
+A WARNING is triggered at include/linux/maple_tree.h:749 within
+__mmap_region+0x1a82/0x2650. This occurs during
+a MAP_FIXED mmap call that requires splitting an existing VMA.
 
-   *Architecture:* x86_64.
-   -
+When vm_area_dup or similar allocations fail due to fault injection
+(via /proc/thread-self/fail-nth), the error rollback path attempts
+to reconfigure the VMA iterator.
+However, the iterator (mas) appears to be in an inconsistent state
+where the new start address exceeds the recorded last address.
 
-   *Config:* CONFIG_FAULT_INJECTION=y, CONFIG_DEBUG_VM_MAPLE_TREE=y.
-   -
+Log evidence (register state):
+- RSI (start address): 00002000001e3000
+- R13 (mas->last):      00002000001e2fff
+Violation: start > mas->last.
 
-   *Hardware:* QEMU Ubuntu 24.04 PC v2.
-
-*3. Detailed Description*
-
-The WARNING occurs in __mas_set_range when the iterator is active and a new
-range is set where the start address exceeds the current recorded end of
-the range.
-
-In the provided logs, the register state shows:
-
-   -
-
-   *RSI (start):* 00002000001e3000
-   -
-
-   *R13 (mas->last):* 00002000001e2fff
-
-Because start > mas->last, the assertion MAS_WARN_ON(mas,
-mas_is_active(mas) && (mas->index > start || mas->last < start)) fails.
-This happens during the rollback of a failed mmap call initiated via do_mmap
-and mmap_region.
-*4. Call Trace*
-Plaintext
-
+3. Call Trace Snippet:
 [   26.423091] WARNING: ./include/linux/maple_tree.h:749 at
 __mmap_region+0x1a82/0x2650
 ...
-[   26.427870] RIP: 0010:__mmap_region+0x1a82/0x2650
-...
-[   26.439165] Call Trace:
-[   26.439499]  <TASK>
-[   26.443459]  ? mm_get_unmapped_area_vmflags+0xd7/0x130
 [   26.444142]  mmap_region+0x19c/0x360
 [   26.444653]  do_mmap+0xcc7/0x11f0
 [   26.446925]  vm_mmap_pgoff+0x20a/0x380
-[   26.449541]  ksys_mmap_pgoff+0xdb/0x5a0
-[   26.452189]  __x64_sys_mmap+0x125/0x190
 [   26.452704]  do_syscall_64+0xf1/0x530
 
-*(Full log provided in attachment)*
-*5. Reproducer*
+4. Security Impact:
+While currently manifesting as a warning, this inconsistency suggests
+a foundational failure in the Maple Tree state machine during error
+recovery. This could potentially lead to
+Use-After-Free (UAF) scenarios or overlapping VMAs, which are
+exploitable for local privilege escalation.
 
-The issue can be reproduced consistently by running the attached C program
-under a fault-injection-enabled kernel. The program targets address
-0x2000001e3000 with MAP_FIXED and utilizes /proc/thread-self/fail-nth to
-trigger a slab allocation failure.
+5. Reproducer:
+The issue was discovered using syzkaller-based fuzzing.
+A simplified C reproducer is attached below that utilizes
+fault-injection to trigger the failure path.
 
-*Steps to reproduce:*
+Reproduction steps:
+# echo 13 > /proc/thread-self/fail-nth
+# ./repro
 
-   1.
+Best regards,
+Song Yang
 
-   Compile the reproducer: gcc -static repro.c -o repro -lpthread.
-   2.
-
-   Enable fault injection: echo 1 > /sys/kernel/debug/failslab/cache-filter.
-   3.
-
-   Run the binary as root: ./repro.
-
-*6. Potential Root Cause*
-
-The transition to the new VMA management logic in 7.0 seems to have
-introduced an edge case in __mmap_region. When a helper like anon_vma_clone
-fails, the error path attempts to reconfigure the VMA iterator for cleanup
-without resetting its state (e.g., via mas_reset), leading to a range
-violation if the iterator was positioned at the boundary of the previous
-slot.
-
---000000000000e9b733064cb4aa8d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><h3><b>1. Summary</b></h3><p>A regression was identified i=
-n the <b>7.0.0-rc2</b> kernel where a <code>WARNING</code> is triggered at =
-<code>include/linux/maple_tree.h:749</code> during an error rollback in <co=
-de>__mmap_region</code>. The issue occurs when fault injection (failslab) i=
-s used to simulate an allocation failure during a <code>mmap</code> operati=
-on that involves a VMA split. This suggests the Maple Tree iterator enters =
-an inconsistent state during the error handling path.</p><h3><b>2. Environm=
-ent Information</b></h3><ul><li><p><b>Kernel Version:</b> 7.0.0-rc2-g5ee8db=
-f54602.</p></li><li><p><b>Architecture:</b> x86_64.</p></li><li><p><b>Confi=
-g:</b> <code>CONFIG_FAULT_INJECTION=3Dy</code>, <code>CONFIG_DEBUG_VM_MAPLE=
-_TREE=3Dy</code>.</p></li><li><p><b>Hardware:</b> QEMU Ubuntu 24.04 PC v2.<=
-/p></li></ul><h3><b>3. Detailed Description</b></h3><p>The <code>WARNING</c=
-ode> occurs in <code>__mas_set_range</code> when the iterator is active and=
- a new range is set where the start address exceeds the current recorded en=
-d of the range.</p><p>In the provided logs, the register state shows:</p><u=
-l><li><p><b>RSI (start):</b> <code>00002000001e3000</code></p></li><li><p><=
-b>R13 (mas-&gt;last):</b> <code>00002000001e2fff</code></p></li></ul><p>Bec=
-ause <code>start &gt; mas-&gt;last</code>, the assertion <code>MAS_WARN_ON(=
-mas, mas_is_active(mas) &amp;&amp; (mas-&gt;index &gt; start || mas-&gt;las=
-t &lt; start))</code> fails. This happens during the rollback of a failed <=
-code>mmap</code> call initiated via <code>do_mmap</code> and <code>mmap_reg=
-ion</code>.</p><h3><b>4. Call Trace</b></h3><span class=3D"gmail-"><span cl=
-ass=3D"gmail-ng-tns-c579876944-195 gmail-ng-star-inserted"><div class=3D"gm=
-ail-code-block gmail-ng-tns-c579876944-195 gmail-ng-animate-disabled gmail-=
-ng-trigger gmail-ng-trigger-codeBlockRevealAnimation"><div class=3D"gmail-c=
-ode-block-decoration gmail-header-formatted gmail-gds-title-s gmail-ng-tns-=
-c579876944-195 gmail-ng-star-inserted"><span class=3D"gmail-ng-tns-c5798769=
-44-195">Plaintext</span><div class=3D"gmail-buttons gmail-ng-tns-c579876944=
--195 gmail-ng-star-inserted"><button aria-label=3D"=E5=A4=8D=E5=88=B6=E4=BB=
-=A3=E7=A0=81" class=3D"gmail-mdc-icon-button gmail-mat-mdc-icon-button gmai=
-l-mat-mdc-button-base gmail-mat-mdc-tooltip-trigger gmail-copy-button gmail=
--ng-tns-c579876944-195 gmail-mat-unthemed gmail-ng-star-inserted"><span cla=
-ss=3D"gmail-mat-mdc-button-persistent-ripple gmail-mdc-icon-button__ripple"=
-></span><span role=3D"img" class=3D"gmail-mat-icon gmail-notranslate gmail-=
-gds-icon-s gmail-google-symbols gmail-mat-ligature-font gmail-mat-icon-no-c=
-olor" aria-hidden=3D"true"></span><span class=3D"gmail-mat-focus-indicator"=
-></span><span class=3D"gmail-mat-mdc-button-touch-target"></span></button><=
-/div></div><div class=3D"gmail-formatted-code-block-internal-container gmai=
-l-ng-tns-c579876944-195"><div class=3D"gmail-animated-opacity gmail-ng-tns-=
-c579876944-195"><pre class=3D"gmail-ng-tns-c579876944-195"><code role=3D"te=
-xt" class=3D"gmail-code-container gmail-formatted gmail-ng-tns-c579876944-1=
-95">[   26.423091] WARNING: ./include/linux/maple_tree.h:749 at __mmap_regi=
-on+0x1a82/0x2650
-...
-[   26.427870] RIP: 0010:__mmap_region+0x1a82/0x2650
-...
-[   26.439165] Call Trace:
-[   26.439499]  &lt;TASK&gt;
-[   26.443459]  ? mm_get_unmapped_area_vmflags+0xd7/0x130
-[   26.444142]  mmap_region+0x19c/0x360
-[   26.444653]  do_mmap+0xcc7/0x11f0
-[   26.446925]  vm_mmap_pgoff+0x20a/0x380
-[   26.449541]  ksys_mmap_pgoff+0xdb/0x5a0
-[   26.452189]  __x64_sys_mmap+0x125/0x190
-[   26.452704]  do_syscall_64+0xf1/0x530
-</code></pre></div></div></div></span></span><p><i>(Full log provided in at=
-tachment)</i></p><h3><b>5. Reproducer</b></h3><p>The issue can be reproduce=
-d consistently by running the attached C program under a fault-injection-en=
-abled kernel. The program targets address <code>0x2000001e3000</code> with =
-<code>MAP_FIXED</code> and utilizes <code>/proc/thread-self/fail-nth</code>=
- to trigger a slab allocation failure.</p><p><b>Steps to reproduce:</b></p>=
-<ol start=3D"1"><li><p>Compile the reproducer: <code>gcc -static repro.c -o=
- repro -lpthread</code>.</p></li><li><p>Enable fault injection: <code>echo =
-1 &gt; /sys/kernel/debug/failslab/cache-filter</code>.</p></li><li><p>Run t=
-he binary as root: <code>./repro</code>.</p></li></ol><h3><b>6. Potential R=
-oot Cause</b></h3><p>The transition to the new VMA management logic in 7.0 =
-seems to have introduced an edge case in <code>__mmap_region</code>. When a=
- helper like <code>anon_vma_clone</code> fails, the error path attempts to =
-reconfigure the VMA iterator for cleanup without resetting its state (e.g.,=
- via <code>mas_reset</code>), leading to a range violation if the iterator =
-was positioned at the boundary of the previous slot.</p></div>
-
---000000000000e9b733064cb4aa8d--
---000000000000e9b735064cb4aa8f
+--000000000000a21ade064cb4be52
 Content-Type: application/octet-stream; name="repro.c"
 Content-Disposition: attachment; filename="repro.c"
 Content-Transfer-Encoding: base64
-Content-ID: <f_mmlapim40>
-X-Attachment-Id: f_mmlapim40
+Content-ID: <f_mmlawaos1>
+X-Attachment-Id: f_mmlawaos1
 
 Ly8gYXV0b2dlbmVyYXRlZCBieSBzeXprYWxsZXIgKGh0dHBzOi8vZ2l0aHViLmNvbS9nb29nbGUv
 c3l6a2FsbGVyKQoKI2RlZmluZSBfR05VX1NPVVJDRQoKI2luY2x1ZGUgPGVuZGlhbi5oPgojaW5j
@@ -553,12 +440,12 @@ ICBpZiAoKHJlYXNvbiA9IHNldHVwX2ZhdWx0KCkpKQogICAgcHJpbnRmKCJ0aGUgcmVwcm9kdWNl
 ciBtYXkgbm90IHdvcmsgYXMgZXhwZWN0ZWQ6IGZhdWx0IGluamVjdGlvbiBzZXR1cCAiCiAgICAg
 ICAgICAgImZhaWxlZDogJXNcbiIsCiAgICAgICAgICAgcmVhc29uKTsKICBkb19zYW5kYm94X25v
 bmUoKTsKICByZXR1cm4gMDsKfQo=
---000000000000e9b735064cb4aa8f
+--000000000000a21ade064cb4be52
 Content-Type: application/octet-stream; name="kernel_crash.log"
 Content-Disposition: attachment; filename="kernel_crash.log"
 Content-Transfer-Encoding: base64
-Content-ID: <f_mmlapx1d1>
-X-Attachment-Id: f_mmlapx1d1
+Content-ID: <f_mmlawaom0>
+X-Attachment-Id: f_mmlawaom0
 
 WyAgICAwLjAwMDAwMF0gTGludXggdmVyc2lvbiA3LjAuMC1yYzItZzVlZThkYmY1NDYwMiAoc3Bv
 b2tAc3Bvb2stSmlhb2xvbmctU2VyaWVzLUdLN05SMFIpIChnY2MgKFVidW50dSAxMy4zLjAtNnVi
@@ -1594,5 +1481,5 @@ MDAwMDIxDQpbICAgMjYuNTEyMzc3XSBSMTM6IDAwMDAwMDAwMDAwMDAwMDIgUjE0OiAwMDAwN2Zm
 ZWM3ODBiYjkwIFIxNTogMDAwMDdmYTA4NThiZTAwMA0KWyAgIDI2LjUxMzM4NF0gIDwvVEFTSz4N
 ClsgICAyNi41MTM5MjFdIEtlcm5lbCBPZmZzZXQ6IGRpc2FibGVkDQpbICAgMjYuNTE0NDM0XSBS
 ZWJvb3RpbmcgaW4gMSBzZWNvbmRzLi4NCg==
---000000000000e9b735064cb4aa8f--
+--000000000000a21ade064cb4be52--
 
