@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCAAAFD88E2
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 03:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17685FD88DF
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 03:02:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02F3F6B008C; Tue, 10 Mar 2026 23:02:51 -0400 (EDT)
+	id 51AD46B0092; Tue, 10 Mar 2026 23:02:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F251D6B0092; Tue, 10 Mar 2026 23:02:50 -0400 (EDT)
+	id 4F8976B0093; Tue, 10 Mar 2026 23:02:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2766B0093; Tue, 10 Mar 2026 23:02:50 -0400 (EDT)
+	id 3DE2B6B0095; Tue, 10 Mar 2026 23:02:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BB7A46B008C
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 23:02:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EAE8140539
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:50 +0000 (UTC)
-X-FDA: 84532284900.29.ABE55B2
+	by kanga.kvack.org (Postfix) with ESMTP id 1A7206B0092
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 23:02:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD6A18B91E
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:54 +0000 (UTC)
+X-FDA: 84532285068.08.0F3753B
 Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6F41E20002
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=U3YBpXDz;
-	spf=pass (imf03.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id EE1B720008
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:02:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=SuEB6uUm;
+	spf=pass (imf13.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
 	dmarc=pass (policy=reject) header.from=shopee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773198168;
+	s=arc-20220608; t=1773198173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IJuSJm3X4xhlOG3+qvokrBOrPsbIME05pWUjl43X0aE=;
-	b=qJfHLcw5bTs8LRyrTM2XUlEF2hQJS/myee6BW3F/zsv/vpxcLBPOyCxijaVmI/QlZeMWrl
-	47TFR4iqh1ZBTdXhflDn9ADxREny0WUMqxpMu7i9Z0v2ICaQ9yZrprl5TsAgwYNMFKELDa
-	fAfVUvBCfwZ2ssDiMw9X3+eYT0xoqkw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773198168; a=rsa-sha256;
+	bh=+OzUwreO0Fx04kzL8hUKy9/smwpH8GzkcqgpiyONa3A=;
+	b=NaiKjLZ0mYSLFq0zjxn20rgSkm4YgVEWNfAyqroCeaoknjs4zmM/AkDNzirE3KGbGeYsyT
+	tKjyen9BVXqyatXDUxj+T9NLXi1UEiKoUBu2faSjcTWK+a/SYGd6JQOewJ31kIqLSPp48G
+	q/0vdhjAJZLl3Ybd6b7Gepl/9RNGozE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773198173; a=rsa-sha256;
 	cv=none;
-	b=q2EAjtsYovXCDUoRQR3zwXhuWG+XlZzXPc2jHRGnmFZYPAdwfRJUWnZhiF1lEJjy85AlRG
-	2U6OYGQAVJcLECUnhYUTupRsYnXeTjgnQX+OxVMfy8i+/n6g5kNmRx1/NDPeU/dxmP8cY0
-	I9jdHncCG1Sl0IGr34wAyJBWODFGTz0=
+	b=5BLWZqpPQn4ulnepl3wRMvS8pzl0o7R6qznCMNXOGaSc8azvuKND0zygZ2dEIB/M7bpkOy
+	AaoEqrLysGo5ceG3ROBl0+8UddipZfAxgCEAuvil5HnjXzc9m/KQ6o16r4vx4mjXwjk03D
+	UI7o3+d57Rt4ZaSB6RDEJvEsHvYkipo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=U3YBpXDz;
-	spf=pass (imf03.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=SuEB6uUm;
+	spf=pass (imf13.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
 	dmarc=pass (policy=reject) header.from=shopee.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aaed195901so62468065ad.0
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:48 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ae50a33ff8so72229595ad.3
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1773198167; x=1773802967; darn=kvack.org;
+        d=shopee.com; s=shopee.com; t=1773198172; x=1773802972; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IJuSJm3X4xhlOG3+qvokrBOrPsbIME05pWUjl43X0aE=;
-        b=U3YBpXDzh3d0+JLyq3efP07XvIfe/OowQIoDKN9X2AvoPlisPS1puY80g5ZyOvhC6n
-         48ers/oU3FFYTfBMdkRrCLwEUGjw+fmCBIKCZl9hDHuagQOifCvpQaYcTXg0cq3hWe1A
-         ZU85Ka6OI02Nk57XKvLeqWTO0LEgpI5CQwvzmrHJfhrgm9eWzk+1s3FQTEevGSuiyahR
-         6llMD9rcsXYhgs/ll4ByIomKJCkfBrVkbBPPN/5JLkeAesnVWXKArJJiRSHL0wi5TT2g
-         e1SCYTYktiuYcdR1zLRg3ypT+eFfEtc/JbDxmhd5vDdXpmg5EMFhljH9bdRmEcGeTobO
-         T00A==
+        bh=+OzUwreO0Fx04kzL8hUKy9/smwpH8GzkcqgpiyONa3A=;
+        b=SuEB6uUmLbibaAS+8puTf1RZv5cEvFhhxbOO9vClZii0LyHotd1eEp6s+MORHM+TPg
+         oYqQPe9qp2qGmmiF/p6EU0nDvX+o7xfgcMWSQcAtbiyFPepqk334Dek/QApzctbJg3UM
+         hjqhSZEHpzGJXvbvPQOPWzQq9ycyhahBluXojzSmntC7l1tlNElfhPhJZfv/O09zoPnQ
+         +khYXRqindIPfYqfPyVrpJKMlr2cMI1RE+QcuDNLpUFQa5iiD6SBapy7ghsxWTX0a+MC
+         TzGgcvI55RU/2PB9y87f/dXVjmMLs+t30UYaVwELGW373391Kd2hbSsxHNFvsbEv0WpK
+         P7nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773198167; x=1773802967;
+        d=1e100.net; s=20230601; t=1773198172; x=1773802972;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=IJuSJm3X4xhlOG3+qvokrBOrPsbIME05pWUjl43X0aE=;
-        b=UL4stkLv6maGR62rY44t2f68BuSCouN8+6cuMMf1uCy1l8+zLpXYOt76qmfi/jJfDe
-         ztrxGLX/JeXwA8oLBvHm0cC7NP0fkpGbj0EvI6YJdluS9YcNe7JfWv7lIO9gASvNUWDx
-         qFvTQysBCtbvT/vkmk88rzMXAS5cSvdJq+1tLaG+M2kXNnfOUuYHuBSdxAl0htVXFVTl
-         /5HBBPY79f+b2ie3gO9IXxkXYQ8it0rX3Oe+VjhIdJjn3sqIviPz3J44NY+Q6nEFaaXl
-         yRrH/5XK3KQ8eP761WdpgLJ4qSxnEr42yhzdxKNQ0jClNXOQREztAwqwbMlc5thMsF4d
-         M9YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdO9/S0QQ7NMNuNEuMvEmkPXi8CGD6ioxP0QxBfKO8zl8NTkDTagClsAoyr58rsv+iUpxxlZiDbQ==@kvack.org
-X-Gm-Message-State: AOJu0YxSxNZL6cwrpGiRtD92I1WIvw8DsJQFgb6auDuCyjBZcKhW5hTF
-	J2hQHZsrd7BMoiZeVfc/WS3ua41yXUPT1zX5yuKaTYiDzmMIQJHq2Iu/4zAdehaW7rY=
-X-Gm-Gg: ATEYQzx9CkTBPr+zXVI/ekAUsYRETfV2TVzneMWJQdgBlrv6Q/Hoqj6YOZzl055G7O1
-	hq7dVC+ZWfDNGlvJUhyz3jL1vSovBnRcVXNFcU4eSiJCAxeCH9yJ5tuckT58DUHdn07Kwd9K36g
-	cWIPxnZLIBcsme9cEpvVJNNdQ2d/RsZyvvSZJlW7nbCgVy1HupWzC9zrvwg/6UbHr2J0ZqxSQrW
-	Sp2MFF4wLkiE102UcvtdDPq3cKntN8x9Tz8Bt1qb+OSq1Nvm5mKQ/f5OJJ9x0IVOvC6iBNkOhlS
-	Suxw/1vmV8FmJCGiaT44yMQa2PUUetpbHGktC6nQaIQ//DRHHdzo3glHSKfEf6b07Ia0HbTZSHD
-	v7NeuiuaVGPkWIpCX4PCEeYn+ht6LodxL8Dy2YiGobToTz1VJ0TosVTFMYfdjID6GrFU0mkritp
-	LjtVtCzZ3JfY4XMY8/4BoHIGeunj8yt2LNSyD4aQ==
-X-Received: by 2002:a17:903:41c4:b0:2ae:4f81:2f14 with SMTP id d9443c01a7336-2aeae81642fmr10076395ad.24.1773198167284;
-        Tue, 10 Mar 2026 20:02:47 -0700 (PDT)
+        bh=+OzUwreO0Fx04kzL8hUKy9/smwpH8GzkcqgpiyONa3A=;
+        b=t7C+wHsAMyXfJvbeKEsTsgZjhfr514yQDaqzjkoNgtG1Kw/ZEJT8tLGGxQbNXdPdXn
+         y7HtZT65Z5bWob+WFXMgOwc6o6m1mO6jDeOPaO0rb6+t267zWGlGOA3a4gh/57M47xQX
+         uzrKCvc05bs43GA+I6PCJHR28p2Zh8dm3gQL9r7PFnmQWpE24lyxaNXzKzWkpFlxA/Xy
+         xJPXv2isbeQcIz+HElTxgpRrE+rq5q/TvkPuWsBFEkDUBRSlaPaGX/JK/znIPi6nBz4C
+         QJRlfJfvAtZpK8PP+nj6sgnfqX/5qMyXFXONLcKzse8el+UfmSNAq245hau948CzXEh+
+         NXDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUw/IQ1SLhT0x5kfMOyplOpjJ3oGr0RGyZIMelIG7b51loBk1www7RI90ZL2XJ2OnuJcwDwhuMnFQ==@kvack.org
+X-Gm-Message-State: AOJu0YyVcLC8NmEDVioOpdGqRiVDJ0YNpq55EPWqaXaJK8KYjsus6AVx
+	8gAZQDSCxghICEsZzuTA+CVq+cmVK8bdVFaK+Nqf4M7bbIw08/8as4YouMS15vumHrc=
+X-Gm-Gg: ATEYQzz4iZkpXCrPGXWioWSfo+Mjavk3VD2SCqELlAXvmAl6gdov7tBba7dYvSGBsqh
+	PqYoZQqUGP+QhQoeQfaXOiVkcyR7fca7bhtCqr09PPnw42ptPcI+uQcRtBRUOh3rTLFgVMSxDfe
+	Bym3BPMO+qGFmw6g1BLHbdzeaw3erRNyg8eDBpVYrfDowXus/tCpvmgUCsG33wSKKK2wrx0Mnpw
+	AePGlRhiAQUWjHb7A8OiuI8oov6oSS63WVM/eZGrea5gvFson/H3/Y9g3MwqH7KGHiqO9yLVPbr
+	5P4v/nNPJnOxrSAbmphKnbWBOPaF60SadNlZQ1FjTisDnQNHmvW8pu8yDCiIQR6VyCTLoaawUXw
+	y7mLMVkcho4wLz21pZR31ibwBZsd1K8rpBWet7MUsx5dAq2KkrDaNS6rm5J9+IW9IHC2RofqWQ4
+	xwfT3LpVM/sDZCfZBZoy5mR6YS8ak6bgjpuudv6Q==
+X-Received: by 2002:a17:903:3c2d:b0:2ae:46b9:c653 with SMTP id d9443c01a7336-2aeae8945b1mr11721805ad.33.1773198171778;
+        Tue, 10 Mar 2026 20:02:51 -0700 (PDT)
 Received: from localhost.localdomain ([147.136.157.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae378974sm6251555ad.82.2026.03.10.20.02.44
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae378974sm6251555ad.82.2026.03.10.20.02.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 20:02:46 -0700 (PDT)
+        Tue, 10 Mar 2026 20:02:51 -0700 (PDT)
 From: Haifeng Xu <haifeng.xu@shopee.com>
 To: akpm@linux-foundation.org,
 	david@fromorbit.com,
@@ -103,22 +103,22 @@ Cc: zhengqi.arch@bytedance.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Haifeng Xu <haifeng.xu@shopee.com>
-Subject: [PATCH V3 1/4] mm: shrinker: add one more parameter in shrinker_id()
-Date: Wed, 11 Mar 2026 11:02:32 +0800
-Message-ID: <20260311030235.240953-2-haifeng.xu@shopee.com>
+Subject: [PATCH V3 2/4] mm: shrinker: move shrinker_id() code block below memcg_kmem_online()
+Date: Wed, 11 Mar 2026 11:02:33 +0800
+Message-ID: <20260311030235.240953-3-haifeng.xu@shopee.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260311030235.240953-1-haifeng.xu@shopee.com>
 References: <20260311030235.240953-1-haifeng.xu@shopee.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: b9mmh77wptpqnty6wsjrgp3cgjribuy8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6F41E20002
-X-Stat-Signature: b8t1584swcoi68mbb4w9tsdkk5sp75nn
-X-HE-Tag: 1773198168-155479
-X-HE-Meta: U2FsdGVkX1933dFHc9POGqSOkY70b+FyFdxbOWzoBfxxiUl1FoxVH2LZNTBrM61/4Us4BNhTnzQokwvj0m2pF20Ob5ywDkE3I58B4xkvc4mIvj8OIQCsczK7Dht12rb1btXwTl64K0MrZoN9aAVc4gxpUXFOX560hfpX+VQS96qZYZcSNfbSSpx9aiq2ia7UibEhaqxgnyX0y2dleZ2yn2YaCSf+xy1//EeOy16Hi2/nKOSjTW39RdYGgmMGX80v0QVPXjnPjQ73cpUVnqI2WuK/Q8RnXQIDU6gwC3W1Wn7DF+6qiPS9PKTp8e/OyppcRUSf17oVEPbr83f6b/NnE6iY7oWivmxEaguwd0QeQjSN/yBb/D5TjTLYATcFzUxUwIa45EVNdIAe9m6v5gOF3d+Goia/3dKruOJw0VwQDXja46ztqFOOFSyqRmwNuqpZSHQsOp9VtZklFcuPaZBwcioJLT4TRp41QkJKUPQuTMaCcUtA5YsYZk0kjmmfjt9jqS9Wf0oMHgPJC98FCXa8EyQCQS5t14vwY66zyE9AMSreHOcwVxIDs/66z1NTRCvP7ULbpWzg6VGqxxPwRaC9tfFI/wOp4eL60NpRy3tZUgum4PwexfkMJPJXXlQU7LgSYU4tDeeTJwNEO2fu5q8vnOAvpc7BU8cXLHjsXiihyi4xvj2uc1Tvnh633Om7wL97m4FVpjATjHPl6f2i74jto6BNj+5MxM2cgmlmeWIdD7DSxfWbvouNRrRkfbitlNLet9uV1UwByQPmDD+EiKJGldFLQVTGIhYUSLvK4VEWal9y+c7dfkcaBiiQXAqpSfP+f0g+qSt/K/7mVA8p29LYRnciTHKB2hEJDUdcMgxrHVtmRou2ij5XDlFIf0NLroX6gnCWrl2QC0G2+ar+gfQCdtmbc2qLqWUWPRsmB9WM/E0KCa7rfNk9UF1SyScEZRCphyEEscvG0EUxngRw5EK
- /0NEjeWl
- TDJ8E/7AlNYR8IPLMVIN4+D94b6Fib4vmPztwj8iKbfSX6uie/as8O7baLqP9ZIo5uFp/V1mLkFs5RUMFUReuZdv5KbSwiMU/KPLkVLH7U8RvAd5zQYfJy/S/gmJRrDX4lSHEAyQ3hVnz2TS84YzO95OcTJ+SfOsyQFLtrL1tEpgBHDFY0Fwz5+aydflDPnaLfHWKVl6TZ/Cmdq5LXM1SAkXiM/8QmYyF0xLZU2Sry52ljTbKK1G/zrJPB7II54jgt52+LUHfEScvtsataCKi8udKteki0hFXF3xwNuG0s0mrPnktOzzH9cCnlt7v2ibPVwodV2TkMaLPrTcQOWnajDEiBMBJoG/EgslsEQ7lFDwZV9mTkOtc/9veQkYIgAHpQCpqZFKV9W66l0p0Roa6N6uZdeePOH2lKTGN
+X-Rspamd-Queue-Id: EE1B720008
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773198172-894674
+X-HE-Meta: U2FsdGVkX1/tU7XDF8vbfqYMQcUKn2SM9BSvcY3MlP8sLu4IGFZqYljNELKnHN4JlzlKoNihX8WnxfWzV52Lhk3PD6R7JdrV30SPChIvkm+6pOMTO4Dkd/upmgw30FNkiCHGgjv13si/GTHCCg2Sh3qVAO0h7qYyHuGN4Nlbv4++id26fcZOPDRf2er7W3TMUcJCJ8DSkvpmUxCYE7D3R0BMiHyprko4Ek2WCkJ9OS9jjBjNl/gkwTk+ONDF01/Jx7nTVmvPxH7I4hifyzoqzLgHkkv8JVLvQ3+gfcL0YoZ8nWi0MZLbynWAnsOF4KFlmGyEG8gOqWqrqiQ2sakfEYSWqxubDge+yqEXHGQPOEN5RRKKWMyy39xGr0DuPT5Y32WI8hKa0QnI8LMSDT06o0Hl0AaFtB2EFWmkRNq4iBInVY1pK3DIlEoYf032l4FjslJPN50R3fL3FYP9BPjgfk2mNBT0LtHutzUZWl+CczdG3NNv8Q7dYewcBqPLYlZsLGPt7SnDiNkQB81qsApe9OZ64d/blI83vLFjxivdqwF/KHk9r8tfZw6mkR8wrNS6PsNnL2IQJ9WJjewQNlcKg5pfaLw+WXlEBPgdU/6yAuRzFA9Q0FH2yIln2yUQr7thNnUu4D37WLa95WjCMvI2R36BxPWzMhlVQUOIqKSrdhlHkY6wKU0HL4IhW8CjRhFiMkPOPfW9SnALuPtBdR5rXGieOCRKfNG0PutHAxwrubyJQAiBV0HUSGAUem0VLg5YcI6OmgjYll0HmPWtLhOvzytW/XS61uIj0kSnBIt74+9ZQ+5MFDI5xJPt7QXWR1PmI7vaf3fdVckuRZ3M/D6OwajtVWXjvgr7EhC0+kxKv1V5KlgFphp7AdZgB5jlVidEj7xA+5+jZLmSLlcR73fSKsVoxBs5T2v+2+PIkTLZF1KmS5aZm80s8Nsxdsy4K8jCb9Npkx4B11x6QdXkmUD
+ 8m9LlrqG
+ T3PhFmBbIBonBxaDeGPalySK2m29vsQwgnP2yB2vAhCYNKXpODYvA7GAxJM+3lYRh+JeMNl88P/O2M1WlwtgveJm21Lx5baoKpf3hk0Rej6fpWAB8zZYaGKcszj8bPBr1IJ63mqVOtGlaDjX9zYSW8tN0xhx3DP1SWmGbgpjqdP0kWlowoOMth35fcQV0jrKY1fnnapZSV1W6MhXfDm7w8iiOALuk6hIwR/x1rkU19BtYpQpu6yoNVr0oEh8TbSN1PFZnzz9du9nH1W2eSTXFM98JEAG8HSHFg3PY1pFRxVdrf0KrW1zxLetdlZj1O6muIcsAN6n7DRxnOrIe8OdnEx9IFxHBrgWE8kya5ZQZpw2D3S/wgN4TXb6NSGujfL/UvKbBDN2R5NFYA35ZmT+Q8aHaSyYYOV9RsLRY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,98 +126,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a parameter points to target memory cgroup in shrinker_id().
-The following patch will use it to decide the id of shrinker.
+The following patch will use memcg_kmem_online() to decide the id
+of shrinker, so move the code block down to reduce the diff noise
+in the following patch.
+
 No functional change here.
 
 Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
 ---
- include/linux/memcontrol.h |  4 ++--
- mm/huge_memory.c           |  4 ++--
- mm/shrinker.c              | 12 ++++++++----
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ include/linux/memcontrol.h | 188 ++++++++++++++++++-------------------
+ 1 file changed, 94 insertions(+), 94 deletions(-)
 
 diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 70b685a85bf4..a583dbc0adcc 100644
+index a583dbc0adcc..ce7b5101bc02 100644
 --- a/include/linux/memcontrol.h
 +++ b/include/linux/memcontrol.h
-@@ -1634,7 +1634,7 @@ void free_shrinker_info(struct mem_cgroup *memcg);
- void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
- void reparent_shrinker_deferred(struct mem_cgroup *memcg);
+@@ -1582,100 +1582,6 @@ static inline void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
  
--static inline int shrinker_id(struct shrinker *shrinker)
+ #endif	/* CONFIG_CGROUP_WRITEBACK */
+ 
+-struct sock;
+-#ifdef CONFIG_MEMCG
+-extern struct static_key_false memcg_sockets_enabled_key;
+-#define mem_cgroup_sockets_enabled static_branch_unlikely(&memcg_sockets_enabled_key)
+-
+-void mem_cgroup_sk_alloc(struct sock *sk);
+-void mem_cgroup_sk_free(struct sock *sk);
+-void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk);
+-bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
+-			  gfp_t gfp_mask);
+-void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages);
+-
+-#if BITS_PER_LONG < 64
+-static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
+-{
+-	u64 val = get_jiffies_64() + HZ;
+-	unsigned long flags;
+-
+-	write_seqlock_irqsave(&memcg->socket_pressure_seqlock, flags);
+-	memcg->socket_pressure = val;
+-	write_sequnlock_irqrestore(&memcg->socket_pressure_seqlock, flags);
+-}
+-
+-static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
+-{
+-	unsigned int seq;
+-	u64 val;
+-
+-	do {
+-		seq = read_seqbegin(&memcg->socket_pressure_seqlock);
+-		val = memcg->socket_pressure;
+-	} while (read_seqretry(&memcg->socket_pressure_seqlock, seq));
+-
+-	return val;
+-}
+-#else
+-static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
+-{
+-	WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
+-}
+-
+-static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
+-{
+-	return READ_ONCE(memcg->socket_pressure);
+-}
+-#endif
+-
+-int alloc_shrinker_info(struct mem_cgroup *memcg);
+-void free_shrinker_info(struct mem_cgroup *memcg);
+-void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
+-void reparent_shrinker_deferred(struct mem_cgroup *memcg);
+-
+-static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
+-{
+-	return shrinker->id;
+-}
+-#else
+-#define mem_cgroup_sockets_enabled 0
+-
+-static inline void mem_cgroup_sk_alloc(struct sock *sk)
+-{
+-}
+-
+-static inline void mem_cgroup_sk_free(struct sock *sk)
+-{
+-}
+-
+-static inline void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk)
+-{
+-}
+-
+-static inline bool mem_cgroup_sk_charge(const struct sock *sk,
+-					unsigned int nr_pages,
+-					gfp_t gfp_mask)
+-{
+-	return false;
+-}
+-
+-static inline void mem_cgroup_sk_uncharge(const struct sock *sk,
+-					  unsigned int nr_pages)
+-{
+-}
+-
+-static inline void set_shrinker_bit(struct mem_cgroup *memcg,
+-				    int nid, int shrinker_id)
+-{
+-}
+-
+-static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
+-{
+-	return -1;
+-}
+-#endif
+-
+ #ifdef CONFIG_MEMCG
+ bool mem_cgroup_kmem_disabled(void);
+ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order);
+@@ -1844,6 +1750,100 @@ static inline bool memcg_is_dying(struct mem_cgroup *memcg)
+ }
+ #endif /* CONFIG_MEMCG */
+ 
++struct sock;
++#ifdef CONFIG_MEMCG
++extern struct static_key_false memcg_sockets_enabled_key;
++#define mem_cgroup_sockets_enabled static_branch_unlikely(&memcg_sockets_enabled_key)
++
++void mem_cgroup_sk_alloc(struct sock *sk);
++void mem_cgroup_sk_free(struct sock *sk);
++void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk);
++bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
++			  gfp_t gfp_mask);
++void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages);
++
++#if BITS_PER_LONG < 64
++static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
++{
++	u64 val = get_jiffies_64() + HZ;
++	unsigned long flags;
++
++	write_seqlock_irqsave(&memcg->socket_pressure_seqlock, flags);
++	memcg->socket_pressure = val;
++	write_sequnlock_irqrestore(&memcg->socket_pressure_seqlock, flags);
++}
++
++static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
++{
++	unsigned int seq;
++	u64 val;
++
++	do {
++		seq = read_seqbegin(&memcg->socket_pressure_seqlock);
++		val = memcg->socket_pressure;
++	} while (read_seqretry(&memcg->socket_pressure_seqlock, seq));
++
++	return val;
++}
++#else
++static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
++{
++	WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
++}
++
++static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
++{
++	return READ_ONCE(memcg->socket_pressure);
++}
++#endif
++
++int alloc_shrinker_info(struct mem_cgroup *memcg);
++void free_shrinker_info(struct mem_cgroup *memcg);
++void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
++void reparent_shrinker_deferred(struct mem_cgroup *memcg);
++
 +static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
- {
- 	return shrinker->id;
- }
-@@ -1670,7 +1670,7 @@ static inline void set_shrinker_bit(struct mem_cgroup *memcg,
- {
- }
- 
--static inline int shrinker_id(struct shrinker *shrinker)
++{
++	return shrinker->id;
++}
++#else
++#define mem_cgroup_sockets_enabled 0
++
++static inline void mem_cgroup_sk_alloc(struct sock *sk)
++{
++}
++
++static inline void mem_cgroup_sk_free(struct sock *sk)
++{
++}
++
++static inline void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk)
++{
++}
++
++static inline bool mem_cgroup_sk_charge(const struct sock *sk,
++					unsigned int nr_pages,
++					gfp_t gfp_mask)
++{
++	return false;
++}
++
++static inline void mem_cgroup_sk_uncharge(const struct sock *sk,
++					  unsigned int nr_pages)
++{
++}
++
++static inline void set_shrinker_bit(struct mem_cgroup *memcg,
++				    int nid, int shrinker_id)
++{
++}
++
 +static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
- {
- 	return -1;
- }
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 8e2746ea74ad..6050f8d71587 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4353,7 +4353,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
- 		ds_queue->split_queue_len++;
- 		if (memcg)
- 			set_shrinker_bit(memcg, folio_nid(folio),
--					 shrinker_id(deferred_split_shrinker));
-+					 shrinker_id(memcg, deferred_split_shrinker));
- 	}
- 	split_queue_unlock_irqrestore(ds_queue, flags);
- }
-@@ -4509,7 +4509,7 @@ void reparent_deferred_split_queue(struct mem_cgroup *memcg)
- 	ds_queue->split_queue_len = 0;
- 
- 	for_each_node(nid)
--		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-+		set_shrinker_bit(parent, nid, shrinker_id(parent, deferred_split_shrinker));
- 
- unlock:
- 	spin_unlock(&parent_ds_queue->split_queue_lock);
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 7b61fc0ee78f..61dbb6afae52 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -255,11 +255,13 @@ static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
- 	struct shrinker_info *info;
- 	struct shrinker_info_unit *unit;
- 	long nr_deferred;
-+	int id;
- 
- 	rcu_read_lock();
-+	id = shrinker_id(memcg, shrinker);
- 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	unit = info->unit[shrinker_id_to_index(shrinker->id)];
--	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
-+	unit = info->unit[shrinker_id_to_index(id)];
-+	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(id)], 0);
- 	rcu_read_unlock();
- 
- 	return nr_deferred;
-@@ -271,12 +273,14 @@ static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
- 	struct shrinker_info *info;
- 	struct shrinker_info_unit *unit;
- 	long nr_deferred;
-+	int id;
- 
- 	rcu_read_lock();
-+	id = shrinker_id(memcg, shrinker);
- 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	unit = info->unit[shrinker_id_to_index(shrinker->id)];
-+	unit = info->unit[shrinker_id_to_index(id)];
- 	nr_deferred =
--		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
-+		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(id)]);
- 	rcu_read_unlock();
- 
- 	return nr_deferred;
++{
++	return -1;
++}
++#endif
++
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
+ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
+ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
 -- 
 2.43.0
 
