@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85491125856
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 17:22:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7598F1125857
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 17:25:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18A776B0089; Wed, 11 Mar 2026 13:22:17 -0400 (EDT)
+	id AAC916B0005; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 138DB6B008A; Wed, 11 Mar 2026 13:22:17 -0400 (EDT)
+	id A5A926B0089; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010686B008C; Wed, 11 Mar 2026 13:22:16 -0400 (EDT)
+	id 9914C6B008A; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E26B06B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:22:16 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7309613A787
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:22:16 +0000 (UTC)
-X-FDA: 84534450672.10.FC6CC34
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A66844000C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:22:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dy76PaxH;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8719A6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:25:58 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 300FA1B747A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:25:58 +0000 (UTC)
+X-FDA: 84534459996.25.41F4AF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A7D611C0007
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:25:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPLPa2CU;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773249734;
+	s=arc-20220608; t=1773249956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ODGrdIv+ZjAlvaofPPbJMPK5lyA498il7o831Rt1dLI=;
-	b=cuav+lS4MxCvIg+GyNfAgCPIndBPtTn4oRW4oOPyCh+E7OYOP2nbmEn6uOyfyMr3S2RXWC
-	kAq08rhXImnnIrKSacbgAuMclJT+HE2jzOsnWcPgvZe7pnIaW55L1574yTXCkl30ZBcOOa
-	t+ZrCa0kbLL5JUCAOJqRDeaPLe+O5wI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773249734; a=rsa-sha256;
-	cv=none;
-	b=yFB1y+8cjj/cXrLFYHmu3eqZkKXADTyfegbSVCHwlouXYC7P0r+o30Bve74K9op444ymU1
-	ZP8UnuHVXde+NkdSfbY7jsJ/O3tFXYCO3NUH2zyeDxcUqOhHdw4wfdQGRlZ7K9UAhUV8lC
-	umLgFwqLA7/WGU+EX6TaW6yt/lzRPQU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BJFe0x//KxSzwLsu3xStya7OhlWi59dNRqczuhy856s=;
+	b=0HxSosEir3khMrW/k19u8KKPf/Oy9wx7NwU6iuIDmnoVbIVywUBpvj9EzGI+bBCwDMi5Ls
+	BZSualK8ZoC3LpCl852NXcXMpMXA/T/jjoFXS6itW8wKUpoibcgnPoweMDkqs6f3HGeqor
+	ymL1G0avpqNxLLLz7cYaqFxUVCDFFvk=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dy76PaxH;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPLPa2CU;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773249956; a=rsa-sha256;
+	cv=none;
+	b=wyYHi6ukDceVLNrYmGbQoHfINYi1Tt5WORCt8r6yleCqb95zHIqqyuLtQJ0cll7YRsFEiO
+	IKVU70nuMhkHsMWrMMZ+KkDzShGxwjR30u6OhzQryMOLs11lbylr/TwsK/kYtX3HnQNeMj
+	9Lp+JGQ/WueC0p2GDtubjpCdhNOo04U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E45340B81;
-	Wed, 11 Mar 2026 17:22:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DF0C19424;
-	Wed, 11 Mar 2026 17:22:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A9F960142;
+	Wed, 11 Mar 2026 17:25:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5183BC4CEF7;
+	Wed, 11 Mar 2026 17:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773249733;
-	bh=Miq7+lC80ZgL5Yf3eBrK42td0FFVlYsHEdd1Nbdlllg=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=Dy76PaxHIrMoUsao+pkkgSxDgouEEKufXWOeSd4MCWdjjQ9Tuw9yVFON6zbiZiveg
-	 C3HRl/drhOHw83iC2bqbK4+zxDC9B/Db3PMNg9EZj/thATTgWyE18gO4N/gvgANtu1
-	 0bOKbFYTTlwl6WfYjjZIzCO2asbX84SfSWjnmGk0+DjEjYWQa3PlG/oCrt4WTv0atw
-	 peCjRDEphzCz9XnMAwb2lJope/fGqguX0MxeoA4OXOaNpdcHGEgqNtMxsbC6eXdsUR
-	 W+4zW1Pc2EEENU+QnQpPZ7WjlMh9l+F38pbXByPzmt6lprRBcEpNP4E+E1mDBjtSF8
-	 8RPpdk/oBvt6A==
-Message-ID: <8ab58ecb-1fc1-42a1-b67a-c3107de2ece4@kernel.org>
-Date: Wed, 11 Mar 2026 18:22:09 +0100
+	s=k20201202; t=1773249955;
+	bh=aUye9KyAnijpM8t7yxcnEfZ0jMtzTOhR9HCsDeyezjc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KPLPa2CUmTcJ/Xw/KOnEKshZF90ialrN0hcYgGIHwwPmnG2WGPys4IwEaqv4HMYRP
+	 rQ6CIc9ptLaXS/hYCQ2XygZzluExwhRygmY12nXriHv8p1DcNkhW5ti799gmA65dnd
+	 KENAG2CeJPzUGE7mSbe6Jo1yO17mZQv2cHTyYeLkbTZChwBlEOjVV1XiCrgOtfNxL7
+	 7Fnb7Mxl3ypSh3jyCq22Kw3IyyZ/OnjwjPvKCwmcWt8rzgDoskQ+u3n0+pP+WR8HLm
+	 I1snb6c4rVJ5zSh8HOp8b8Xp1s2ZeaN5i2LV8Gb2OdDlHR2aJIT7b9OE2Y7VKJ8R1y
+	 kdnWdbkYa7hIg==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Jianzhou Zhao <luckd0g@163.com>,
+	Oscar Salvador <osalvador@suse.de>
+Subject: [PATCH 0/3] mm: improve map count checks
+Date: Wed, 11 Mar 2026 17:24:35 +0000
+Message-ID: <cover.1773249037.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: Re: [PATCH 0/3] slab: support memoryless nodes with sheaves
-Content-Language: en-US
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <abE6uqdzMUv8k0mU@fedora>
-In-Reply-To: <abE6uqdzMUv8k0mU@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A7D611C0007
+X-Stat-Signature: r9j373774upbno56a6qwwmuwuy931a99
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A66844000C
-X-Stat-Signature: g8cfg8uh1mhicu6my4zhpwnzt9bfxpte
-X-HE-Tag: 1773249734-13734
-X-HE-Meta: U2FsdGVkX19D1M58mLNaZMQBbfZZ8geT7FMCjBPXTHyo1rFSNjD3dmzGAmZ8V92GYXBI11SGQjkRwnoZTjgh/yoIiFgAveyTjsC8ZLsAkWc9W2UqBUBPcIPizVA02ZCR5/6C6lxYJswZRv79pkv2Slq/jG8IM/CbbvImNfTycnXmrPh9jm6Gz0Qk7UaPotKVFA+NF+zIfXcRjVLgSDK0holuJZTVi4Krf6wRwIW7FMCqxRn153TQkvBr6Wz3MmIv3P2wT+sq3hTXyuEIfcDq7hvWU+FtHHyXAS/0PWsAjPUH+oIIjq7mBQsivKg5emLJXhM1g3plUp19r6V7qSfFEoZt0P6b6byvul01PHICgSnjMVSqdHoqw/3RiYQeYEcu4xd1fvz5GmDcYQpe6GuzJIoWzsbr45RVP1ENVLMv9eDYQrtyBHFe4WcHPz7gAN1iqGeHgjJV1ZBbVYUCE4ep4E3ve9V0s2slShJvnAxdB5nCP5/NzIOs7Anp7nqOIjqRIyBK2nk9yu0XRRKAitFYo19tcRoLJst8TNRqMtx46FumbXAKXxmQGlIsNMH6vQXmNy/cGtt0e5ercMDvk6ovdF1bV6ieRUxmyP7aXDwEYHkkjaXQYkEnVR6tKbp1/XyN8FYpgDz2aE40wHfx4s9MC4pv+/h1ZJuNIo47zrXtnrPhZdTSHwSIlXBijBc+i9qYQkdsZgo8s8ZcyPxG9oPfNsXKHH2PNYf+j/UwaMJOKfru9Cmc+POnO/QsqQX94gogoiB/l+sYXQzEkEIh3upjaYexCUadYMfdbo8CLIo9oR32oa51umhBjD/zcf8vqw4Pij0sOuxEjbsZNh0nGQ5ZVsMNIkZp6wXbXjj0nv5VYgCFe/tQyB9iZPqLJO9NjPKCi1xHbgz9DTHO3wfKIeRPary1veCmZMe76t7Cgi8sZyoJl6ISIvubBhHJn0MRa7GIX40SN8DTt+G5MgKLq9k
- +/sn6PVC
- Q2slldazmb+ex/G8Phn0yDM2VoMHeXp04Jm2bOwvt+0ylXwv1xJRKToAr8O5kcAqn/XsR/TfEYeEdpbNUPeaoW4GHr9qe+Si289Sdx+BA7KvgXS19EjbKChFRzYnWiglq9vE4T+27Itt/nabOcV77RS12+MssJUp08PeYnYi8dCzzKNBbqpWpbIUF56ADFV5zmFe8TMEO2qhs8Xo1de8ZPzhMTLexVsRemajV5OcNcUepZDnhFRy2BkgU9vU2f0mFg6d9ErvQ5aK1XVa5ubMSGDHE/g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773249956-332337
+X-HE-Meta: U2FsdGVkX1+ojYpYvaMtVzfhARRCKIXjzKoGGaxsDggTHXvD2hAi4z/sWbiLgeFBLRR3o4GBwDeQST+BbnXlJ/v7MCdCa41jKoCU1IgwlGfUjAbLD17mgZ0r5g0pcBBQfnyRBngZxnackVYAvThEs/xUbsarXY1+kdlVouVLLT2WEnYxCm/QdSXzlixmPyv/j7VCL9KRCbxpgx4URUVbmespa/w2IM2akJLezGDN7fFog31hecZwKJJPwSgt2xBa67WE2lMk0XWDQiNe3KCh2pNcfDoKa9vtf9E3Qtw7W7v4mG0MfAPccm2H7Gm06/vGCmBaCLkmEyfY7xUV4RXSyc2aTL10unQjVz9o7Qh/Opmvbe2ea2TA3C8wJDj8tMpFVhFQ+7FATqbPZjKmfIplQaTPIkC3QeBHgJ5eOqCM7wMelbIwEM+Qc83hq1FDq1C/72CcWidI8CjRLsvpULzEUkZ3IX05L0PvN085c9aV9BaTF+KgePjh8P6u1fTBm3U3mfifBqlMITwMACpyLOhq9T0beOCAujl1h9WbpVqv/fu+lBmHGB5SBXpPEXtPCYWCBkXTfaJed0wg0aKVcUmQXcRKXKC1qvm/wAw/TtG/cILOUdngmUoN2FpdiD3tLIOCmAPqL2QTQzhbyFydDbeq4hIpoQKMkpQyfvvr522xgh80TwiNGIVjqsV4Z5/58dC3dkG9yRN9h/FgXfBXqsit7ZOoegr1TStEuhotz0qqAh7UFs9IuH09r+pc+LGoGkbFueoI0jk1h4Y56YINbJ6vALgOIkqA62SeOIFPurTgoXhgGAbUhKRZyA4Sw0Hkis7hffa3kQyhUwrsROLFi6Rc/+b2krMUPuFn96WwFl7bImc9oqPFbTX7bzgo0IF2puTQkcwfAfU2oJQG5h+5//ToTK44UU9xpAN2Ewj0bBhzdSPVtVCvQ1OE6QYJLUCAO/nBF7RldiPqFNc6QtFhF6D
+ pcitih50
+ fV7JXqP0US39KJkA+lcBM5npo9iKNa6RhV29uJschJWtNBsWDU9dhEAa1v2x3N7Q2n5IuEtkQn7e8xwtzPY+Y/ZjqZ0AKnEvKMVOLCHvub5yDHCo8DtZ9ofsB8vW55OPyLGuZ/1pVE0n+eZeXUd9f7tGjkges52x25MU4f3fAennhYMRhu7o2F/h1Gko9IToWkyqA5xn7CvbYsnE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,114 +97,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/11/26 10:49, Ming Lei wrote:
-> On Wed, Mar 11, 2026 at 09:25:54AM +0100, Vlastimil Babka (SUSE) wrote:
->> This is the draft patch from [1] turned into a proper series with
->> incremental changes. It's based on v7.0-rc3. It's too intrusive for a
->> 7.0 hotfix, so we'll only be able to fix/reduce the regression in 7.1. I
->> hope it's acceptable given it's a non-standard configuration, 7.0 is not
->> a LTS, and it's a perf regression, not functionality.
->> 
->> Ming can you please retest this on top of v7.0-rc3, which already has
->> fb1091febd66 ("mm/slab: allow sheaf refill if blocking is not
->> allowed"). Separate data point for v7.0-rc3 could be also useful.
->> 
->> [1] https://lore.kernel.org/all/c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org/
->> 
->> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> ---
->> Vlastimil Babka (SUSE) (3):
->>       slab: decouple pointer to barn from kmem_cache_node
->>       slab: create barns for online memoryless nodes
->>       slab: free remote objects to sheaves on memoryless nodes
-> 
-> Hi Vlastimil and Guys,
-> 
-> I re-run the test case used in https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/
-> 
-> - v6.19-rc5: 34M
-> 
-> - 815c8e35511d Merge branch 'slab/for-7.0/sheaves' into slab/for-next: 13M
-> 
-> - v7.0-rc3: 13M
+Firstly, in mremap(), it appears that our map count checks have been overly
+conservative - there is simply no reason to require that we have headroom
+of 4 mappings prior to moving the VMA, we only need headroom of 2 VMAs
+since commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
+temporarily exceeded in munmap()").
 
-Thanks, that's in line with your previous testing of "mm/slab: allow sheaf
-refill if blocking is not allowed" making no difference here. At least we
-just learned it helps other benchmarks :)
+Likely the original headroom of 4 mappings was a mistake, and 3 was
+actually intended.
 
-> - v7.0-rc3 + the three patches: 24M
+Next, we access sysctl_max_map_count in a number of places without being
+all that careful about how we do so.
 
-OK. So now it might be really the total per-cpu caching capacity difference.
+We introduces a simple helper that READ_ONCE()'s the field
+(get_sysctl_max_map_count()) to ensure that the field is accessed
+correctly. The WRITE_ONCE() side is already handled by the sysctl procfs
+code in proc_int_conv().
 
-> # Test Machines
-> 
-> - AMD Zen4, dual sockets, 64 cores, 8 NUMA node(configure BIOS to use per-CCD numa, just 2 memory node)
-> 
-> - numactl -H:
-> 
-> https://lore.kernel.org/all/aZ7p9uF8H8u6RxrK@fedora/
-> 
-> # slab stat log
-> 
-> root@tomsrv:~/temp/mm/7.0-rc3/patched# (cd /sys/kernel/slab/bio-256/ && find . -type f -exec grep -aH . {} \;)
-> ./remote_node_defrag_ratio:100
-> ./total_objects:7344 N1=3417 N5=3927
-> ./alloc_fastpath:476106437 C0=128 C1=26852005 C2=128 C3=27291181 C4=65 C5=35617011 C6=97 C7=34258221 C8=96 C9=28158690 C11=26433128 C12=128 C13=31715794 C15=28819773 C16=97 C17=26168947 C19=30768051 C20=128 C21=32964376 C23=34696825 C25=26471644 C26=130 C27=27844688 C28=97 C29=28480054 C31=29564950 C40=1 C42=2 C63=2
-> ./cpu_slabs:0
-> ./objects:7265 N1=3374 N5=3891
-> ./sheaf_return_slow:0
-> ./objects_partial:533 N1=212 N5=321
-> ./sheaf_return_fast:0
-> ./cpu_partial:0
-> ./free_slowpath:295 C4=158 C6=136 C20=1
-> ./barn_get_fail:270 C0=5 C1=16 C2=5 C3=6 C4=3 C5=21 C6=4 C7=14 C8=2 C9=7 C11=23 C12=3 C13=10 C15=19 C16=3 C17=4 C19=25 C20=5 C21=22 C23=6 C25=21 C26=5 C27=6 C28=1 C29=4 C31=27 C40=1 C42=1 C63=1
-> ./sheaf_prefill_oversize:0
-> ./skip_kfence:0
-> ./min_partial:5
-> ./order_fallback:0
-> ./sheaf_capacity:28
-> ./sheaf_flush:0
-> ./free_rcu_sheaf:0
-> ./sheaf_alloc:179 C0=9 C1=1 C2=4 C4=8 C5=1 C6=4 C7=65 C8=3 C10=10 C11=1 C12=2 C14=11 C15=1 C16=5 C18=8 C19=1 C20=8 C21=1 C22=5 C24=8 C25=1 C26=5 C28=5 C30=8 C31=1 C40=1 C42=1 C63=1
-> ./sheaf_free:0
-> ./sheaf_prefill_slow:0
-> ./sheaf_prefill_fast:0
-> ./poison:0
-> ./red_zone:0
-> ./free_slab:0
-> ./slabs:144 N1=67 N5=77
-> ./barn_get:17003547 C1=958985 C3=974680 C5=1272016 C7=1223494 C8=2 C9=1005661 C11=944018 C12=2 C13=1132697 C15=1029259 C16=1 C17=934602 C19=1098834 C21=1177278 C23=1239167 C25=945395 C27=994448 C28=3 C29=1017141 C31=1055864
-> ./alloc_slowpath:0
-> ./destroy_by_rcu:1
-> ./free_rcu_sheaf_fail:0
-> ./barn_put:17003623 C0=958995 C2=974679 C4=1272023 C6=1223496 C8=1005661 C10=944030 C12=1132701 C14=1029267 C16=934598 C18=1098848 C20=1177293 C22=1239162 C24=945405 C26=994447 C28=1017138 C30=1055880
-> ./usersize:0
-> ./sanity_checks:0
-> ./barn_put_fail:0
-> ./align:64
-> ./alloc_node_mismatch:0
-> ./alloc_slab:144 C0=2 C1=8 C2=3 C3=2 C4=1 C5=5 C6=1 C7=3 C8=2 C9=4 C11=14 C12=2 C13=7 C15=11 C16=2 C17=3 C19=20 C20=1 C21=5 C23=1 C25=13 C26=4 C27=5 C29=1 C31=21 C40=1 C42=1 C63=1
-> ./free_remove_partial:0
-> ./aliases:0
-> ./store_user:0
-> ./trace:0
-> ./reclaim_account:0
-> ./order:2
-> ./sheaf_refill:7560 C0=140 C1=448 C2=140 C3=168 C4=84 C5=588 C6=112 C7=392 C8=56 C9=196 C11=644 C12=84 C13=280 C15=532 C16=84 C17=112 C19=700 C20=140 C21=616 C23=168 C25=588 C26=140 C27=168 C28=28 C29=112 C31=756 C40=28 C42=28 C63=28
-> ./object_size:256
-> ./free_fastpath:476102026 C0=26851883 C2=27291053 C4=35616664 C6=34257923 C8=28158529 C9=1 C10=26432875 C11=2 C12=31715665 C14=28819520 C16=26168783 C18=30767788 C20=32964224 C21=2 C22=34696578 C24=26471388 C26=27844558 C27=2 C28=28479894 C30=29564692 C31=2
-> ./hwcache_align:1
-> ./cmpxchg_double_fail:0
-> ./objs_per_slab:51
-> ./partial:12 N1=5 N5=7
-> ./slabs_cpu_partial:0(0)
-> ./free_add_partial:143 C0=3 C1=8 C2=2 C3=4 C4=11 C5=16 C6=13 C7=9 C9=3 C11=8 C12=1 C13=3 C15=8 C16=1 C17=1 C19=5 C20=5 C21=17 C23=5 C25=8 C26=1 C27=1 C28=1 C29=3 C31=6
-> ./slab_size:320
-> ./cache_dma:0
-> 
-> 
-> Thanks,
-> Ming
-> 
+We also move this field to internal.h as there's no reason for anybody else
+to access it outside of mm. Unfortunately we have to maintain the extern
+variable, as mmap.c implements the procfs code.
 
+Finally, we are accessing current->mm->map_count without holding the mmap
+write lock, which is also not correct, so this series ensures the lock is
+head before we access it.
+
+We also abstract the check to a helper function, and add ASCII diagrams to
+explain why we're doing what we're doing.
+
+Lorenzo Stoakes (Oracle) (3):
+  mm/mremap: correct invalid map count check
+  mm: abstract reading sysctl_max_map_count, and READ_ONCE()
+  mm/mremap: check map count under mmap write lock and abstract
+
+ include/linux/mm.h                 |  2 -
+ mm/internal.h                      |  6 ++
+ mm/mmap.c                          |  2 +-
+ mm/mremap.c                        | 98 ++++++++++++++++++++++++------
+ mm/nommu.c                         |  2 +-
+ mm/vma.c                           |  6 +-
+ tools/testing/vma/include/custom.h |  3 -
+ tools/testing/vma/include/dup.h    |  9 +++
+ tools/testing/vma/main.c           |  2 +
+ 9 files changed, 100 insertions(+), 30 deletions(-)
+
+--
+2.53.0
 
