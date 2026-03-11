@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B452103E2EA
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 22:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22DA8103E2EF
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 23:03:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72E896B0088; Wed, 11 Mar 2026 18:47:45 -0400 (EDT)
+	id 3A4506B0088; Wed, 11 Mar 2026 19:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DC7C6B0089; Wed, 11 Mar 2026 18:47:45 -0400 (EDT)
+	id 3520E6B0089; Wed, 11 Mar 2026 19:03:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BE456B008A; Wed, 11 Mar 2026 18:47:45 -0400 (EDT)
+	id 25DB56B008A; Wed, 11 Mar 2026 19:03:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A0536B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:47:45 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E1A268BA86
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:47:44 +0000 (UTC)
-X-FDA: 84535270848.14.6E119C0
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DFF8980003
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:47:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="J3/Q3jJl";
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 13E4C6B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:03:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80EF71B7D6A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:03:47 +0000 (UTC)
+X-FDA: 84535311294.08.402858E
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 34C8DA000B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:03:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=ideasonboard.com header.s=mail header.b=WxcdvAR4;
+	spf=pass (imf25.hostedemail.com: domain of kieran.bingham@ideasonboard.com designates 213.167.242.64 as permitted sender) smtp.mailfrom=kieran.bingham@ideasonboard.com;
+	dmarc=pass (policy=none) header.from=ideasonboard.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773269263;
+	s=arc-20220608; t=1773270226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=idJIoDyRymSwYZXU6eln9CZA4jpBWR8zpwLI0BXP8sA=;
-	b=w1oJ/MdbZti1H09ojoJHbCp6zrGCsp7dSsrakockMROoa1DiTE00ezl+0lSIaRNl4VFWHR
-	F9PXJVUtYvCDwwVigWqSq76A+m4m+sch7btCTA9HUvOrH6Co/7Xqr1z7mo0CEKdxAzsKKK
-	dbG2odcgyerlXn/0QjJhPqW+TlJ1TfM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="J3/Q3jJl";
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773269263; a=rsa-sha256;
+	bh=33EAGUBLBYod3tzyGg7m09477vqXsAXQIQrUfRFHjU8=;
+	b=iw8Cz2DlQYr7WI+XldNftTIeOUZHVaja2B95B7OGoRFOHrflNVHIgGsCj6u2Cti87OFpDX
+	VkWwKpnrfPLr4josgnMMBMNf1WPR9gS0zfduuhNTN4LR4GL74qE/ZgWgt02m3L7aVcYXNR
+	+Hru15Pd/WLEYtv+tojWVOjadYHr/Pw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773270226; a=rsa-sha256;
 	cv=none;
-	b=gOQdkqkZYgJ0rgdhNEqeeWJHIeoGPTNljrlL8EL1U55tcGKx3QshRs+aCtv+4GQnUTyuvP
-	zYSF5U5IGsEHuJOr9YfHWyoA/GDI+SwBDh9iH1+8cOBfA3Wh2djOzMT2jQ0jtWwgrJkl9f
-	8oEcmo1Q2KoWGXEYRobImJeyQnxgRtM=
-Date: Wed, 11 Mar 2026 15:47:31 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773269260;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=idJIoDyRymSwYZXU6eln9CZA4jpBWR8zpwLI0BXP8sA=;
-	b=J3/Q3jJlcBtYWHhvfiCDAHeSGCSlT63Vi8A2HqV+6c/5XDOdfLpWbNuGt1jCGMEAnhkiGv
-	1pDFkLzGdte5uWGuunLt/DbDcC3xMOZwa0IS5kUmCFRjhAUMgzzSqde38mxX34LAABpGOn
-	V55eKMA2a90nM1sz4o6MVtdgvrJp+Wg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hui Zhu <hui.zhu@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Muchun Song <muchun.song@linux.dev>, Geliang Tang <geliang@kernel.org>, 
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	David Rientjes <rientjes@google.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
-Message-ID: <abHkgYHEq5U7G7rF@linux.dev>
-References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
- <abFsDg5m3lp2vVOX@cmpxchg.org>
+	b=DDr+E897LjHy5AUk/q4BRcNP6owwDEIZV8JHevYsCdKw7YNtZuq8WmMz+ce+VqctFYXL6S
+	sp9SnZGUrbjggqIuvJIaEk9EbdCOBY/7G+eaPuMlKpkOsUY+9asmdbF1voxUg68LILdXrx
+	BC8JasOHFJ1/ws55GXgCr00y8yLAbdc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=ideasonboard.com header.s=mail header.b=WxcdvAR4;
+	spf=pass (imf25.hostedemail.com: domain of kieran.bingham@ideasonboard.com designates 213.167.242.64 as permitted sender) smtp.mailfrom=kieran.bingham@ideasonboard.com;
+	dmarc=pass (policy=none) header.from=ideasonboard.com
+Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CD91E448;
+	Thu, 12 Mar 2026 00:02:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773270149;
+	bh=ATo3aRyKmYSXuSYD8x/NeBUp5LJcLKbzHVpozNXQJC0=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=WxcdvAR4zphcUuTNTLXCbLGiiCOKCwemLRMbnRdmW3ARcBHAWQiYVeysDpnfCIDuk
+	 B8rMCjKjDjoWJdgj4Zp0scfHxrPnr5P3xl9hFANY/wyWKZBZYHzyf2qsFxVEe9S31Y
+	 m9r/HjFnopry9bsUUdk6/id/Q3d97jYK/FiMa+Qw=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abFsDg5m3lp2vVOX@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260310-b4-is_err_or_null-v1-49-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-49-bd63b656022d@avm.de>
+Subject: Re: [PATCH 49/61] media: Prefer IS_ERR_OR_NULL over manual NULL check
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+	apparmor@lists.ubuntu.com, bpf@vger.kernel.org,
+	ceph-devel@vger.kernel.org, cocci@inria.fr, dm-devel@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev,
+	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-modules@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-phy@lists.infradead.org,
+	lin@kvack.org, ux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Date: Wed, 11 Mar 2026 23:03:33 +0000
+Message-ID: <177327021364.3167621.11851238159935183684@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DFF8980003
-X-Rspamd-Server: rspam08
-X-Stat-Signature: am6trgnansnactkrcsuixuzhfam65h8c
-X-HE-Tag: 1773269262-870105
-X-HE-Meta: U2FsdGVkX19pjxcPzKV+RIIy/I0LYvqC3v1hAp+tBcKClLRVjniRYnEs5D1sNtWHwpWdLMWuvOsf5WIwTtJ10C8EcValsUgqrGi97jPC6ELCXt/dk6HV+EgEljweCO9oyCTZGnuMj46vnODay8l2kwAutI4gBRNNu4hrUAO6VdP7PdavnSHNNlYEzP7pHrqg5y8shzG4Ed/y4xQtcC/LUYTm/OaN5BSrEiUvBJcZWs/WO6rye7fy4//tRwclS2w7sIE3p2t/kt7tZ3oZ48zKN3ECtOYxt7GKZ/I7nGdIFA/waLGLhfQgfR2IMkJXTQrTTernI842/9+vZgOZ6PWDS3Xv3mlHSKBbWDkdj9ekUYV5gVZLp6WUy0gawyJ7wkBDq/haBhi1hSQgHnLuQPXi7RD3sOgDilBuuDIioTjPP5yTdYa7pwVLNTI+g6a/XmrtJDvHYeFiXTkJkQCzFPRd95tCyUz/8ikXTkwB7ExkArFLFDPF9pNEl5DW9vWcXfQqE2wqAqbfW6Bnjntf7imeKIp/CFjaH0ZQLHAXfjpntrtEtd86ymongWeWS5e6hF+NPKcvRjaACx+AhBKbX5jmMInrjsrn4dsAM+WGvTXnuui7lR2Tu5jCNB0cOEt3uAeQCNcpEkeODyHqDd1v619KRlslj+SkgWmD0lbXBR/6PhVY25YBPXmtT70DnDzlTUKdSbupLBPU5vUzo9ioNN6Wd7No428qBcuVv4FdroZtd+18+Aumene5PBs5im8p3sfq5UAuQwD6gZ4YMTNUdM2+dTZCxrDKuG22eEelj2wSyO/hmluLQrdkaw/CuJO0/R6CC9oY+QTsPfMElyVdlyYsPheVIo8z4YIn0L/PaZDRpoi5K5ZKpxMDE24lCSICNet2EZIA51RE5VzkOlCpeVCEHJOFXfN2LuEZ9SalhMlP8a84tiEYasl556c63jhVv4RSJ31XTYBNjWjGfdw3B9z
- Pnf+oMpB
- BU5En/q9HZeM9YLL7s/p494g0OZAyI81wt7K01IEK/Mx08cOunzTtp1D30Ch+fQYR4s3/SVbFm46XKBb7tBhUkaa3ax7HSRBNjUp28TaIDD1Hi+cvwhDgy96JuuO3ICd6heAQFPUCBmJubFZInISLNbYRVghRuI5awgPnY7h5Gcm+4znmr8q3jGPkC5vWVS5i7NcahVWXYqerrwtZ4iSXUgWP7a4Sw+uZXovCM5Ke5717MO0itozw8NPH2Ag/wN3GSFS26NIAyBN1OzLzceZ+F7cmgoH5SLED4a/s6ncIGYZTkKsMG/qketbFPUSYE1lVXLKUrGEz67kQdhl0/KKJ1PiVqg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 34C8DA000B
+X-Stat-Signature: psyjbukm6jk6uuw59itguopnp7uyihcx
+X-HE-Tag: 1773270224-596993
+X-HE-Meta: U2FsdGVkX184V1XAcHGSd3N73j/SvcYcEN+uz5e1NZ1gzGFlXelaMTCfYj2cAXoS0woxChSRtMPik+sKATVo+PhVlDm9g7ACZq5SjTS2LqFdV+OrKFaRKXcTGoSYopsi9LO8llP5nt/mIJUsXig79wYLq2g43NfHpUm1H72qMgvdiLbnZUXzoDbLbzGCKdrSLUFafsQzKkJuTMrVUJzXVQPWqBF0NC2IZCseOjf6lM8y4OP1EHOpqXdd/WSsaEgj45bZtSCO78ksO23SV7I8PqjFgFd+EWbfwy2Ea/WiOPLrEgfkuWUjIjyGy37XjuBTQ8NjRTK1G3/CTJOCXO/sBFgf8085oO7jpMp9DFIxRAa11mQCOy3rbzCS4zf70PgXgSbOavbUdEUhPk4FfYbjUrVlbDwTudDyc9on3udoxCNvyAmus6aEluQEuofycMyiEgzXvJUWgr5xlGL8jqvwPRYuINKYFAB6jgkT4Bn6mbITpIzzOdaSYizkktvuLecg74KpiRxqDQ20qJHjlT+8zPIx0iRpgpU/lbczPLqTMUbsMVdzo3troGH3SYE90HaFwtk9pDaDoe8ACCsiapEvAmbKVB1fGTgeptQ/1TgGxgKBQiX7NPSuGncvtd1Ea/o2RuwPFu2CH5s9ONKm9nt8HDBFJXedDsJRVeB3QFzHQdwg4cdk8q5Huz+9a0IGyxx4m4BrX8TIDasEgC2HP+QcPShP0ZrsK1S/bxgNDdYszHZcNniR/pIU53gxw0gUWfsl43i4I4A45a20QpEtYCBglsn5D8Cu+QfxVaFP/+QxR/FkkWu9rtb54m311cEMXm8acU3TmqK0HjW3dZ0TrKV2SwHUW9SdkN2mxY5EgUc5XV4VXeP/G8oDqvjdEZiw6NOcrfordotTupU6wYHnUyPG0JfmG2IiQLsCalcuZWF4WoY1WNgImJcezMfuS48mnhm5mBvZ3cfp8dnMBjSLZNR
+ ZAiafVrY
+ KIk4rE8hjJHRkOacXR7dpy0frEW7AClBCMkmAXDyCs+J4iGVLF9TMyxJ0wfi84GHnxjihXTCVfyo32/CD+2QJLBs8i15L7eHj3Z6BS4nw7BCHiEJ/nc28b4t2aZxFw/jwEh07WZNqnfucgUmwpdszl7ZDKGwr8QCO4VHllZm2q+vwUXsGBelMiG5+2IGFVPjF74rZuc+OM+vL5QEVavqRDpUAMO3txt4s7bK/U+Z+3RI/Lmd1IYJ17QMydCB80zBwhtjNn/b0kxOiCwaDTdxkxB280hstzozotpDnsZwxzjcOBdZ1U8Me3wMytVlmi6cMazl4lH/mJPr9s6vifDHMDrAzCIZvvReMiEsatz+GyOXtM58rYgt6pwJ2jWf5Mk96RjtAlqtotgIvLGWkQIMKsGnIoxqmlllyyWvP6yLs84UtR4AGRW2zscgQJahDA9O6aRk4cXX1SkAywjHsqe1ivaujvVEieqOGKGXkrP0KnLnZQec=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,169 +113,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 09:20:14AM -0400, Johannes Weiner wrote:
-> On Sat, Mar 07, 2026 at 10:24:24AM -0800, Shakeel Butt wrote:
+Quoting Philipp Hahn (2026-03-10 11:49:15)
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+>=20
+> Change generated with coccinelle.
+>=20
+> To: Shuah Khan <skhan@linuxfoundation.org>
+> To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> To: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  drivers/media/test-drivers/vimc/vimc-streamer.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/media/test-drivers/vimc/vimc-streamer.c b/drivers/me=
+dia/test-drivers/vimc/vimc-streamer.c
+> index 15d863f97cbf96b7ca7fbf3d7b6b6ec39fcc8ae3..da5aca50bcb4990c06f28e5a8=
+83eb398606991e9 100644
+> --- a/drivers/media/test-drivers/vimc/vimc-streamer.c
+> +++ b/drivers/media/test-drivers/vimc/vimc-streamer.c
+> @@ -167,7 +167,7 @@ static int vimc_streamer_thread(void *data)
+>                 for (i =3D stream->pipe_size - 1; i >=3D 0; i--) {
+>                         frame =3D stream->ved_pipeline[i]->process_frame(
+>                                         stream->ved_pipeline[i], frame);
+> -                       if (!frame || IS_ERR(frame))
+> +                       if (IS_ERR_OR_NULL(frame))
 
-[...]
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
 
-> > 
-> > - Workload owners rarely know their actual memory requirements, leading to
-> >   overprovisioned limits, lower utilization, and higher infrastructure costs.
-> 
-> Is this actually a challenge?
-> 
-> It appears to me proactive reclaim is fairly widespread at this point,
-> giving workload owners, job schedulers, and capacity planners
-> real-world, long-term profiles of memory usage.
-> 
-> Workload owners can use this to adjust their limits accordingly, of
-> course, but even that is less relevant if schedulers and planners go
-> off of the measured information. The limits become failsafes, no
-> longer the declarative source of truth for memory size.
-
-Yes for sophisticated users, this is a solved problem, particularly for
-workloads with consistent memory usage behavior. I think workloads with
-inconsistent or sporadic usage behavior is still a challenge. 
-
-> 
-> > 
-> > Per-Memcg Background Reclaim
-> > 
-> > In the new memcg world, with the goal of (mostly) eliminating direct synchronous
-> > reclaim for limit enforcement, provide per-memcg background reclaimers which can
-> > scale across CPUs with the allocation rate.
-> 
-> Meta has been carrying this patch for half a decade:
-> 
-> https://lore.kernel.org/linux-mm/20200219181219.54356-1-hannes@cmpxchg.org/
-> 
-> It sounds like others have carried similar patches.
-
-Yeah ByteDance has something similar too.
-
-> 
-> The relevance of this, too, has somewhat faded with proactive
-> reclaim. But I think it would still be worthwhile to have. The primary
-> objection was a lack of attribution of the consumed CPU cycles.
-> 
-> > Lock-Aware Throttling
-> > 
-> > The ability to avoid throttling an allocating task that is holding locks, to
-> > prevent priority inversion. In Meta's fleet, we have observed lock holders stuck
-> > in memcg reclaim, blocking all waiters regardless of their priority or
-> > criticality.
-> > 
-> > Thread-Level Throttling Control
-> > 
-> > Workloads should be able to indicate at the thread level which threads can be
-> > synchronously throttled and which cannot. For example, while experimenting with
-> > sched_ext, we drastically improved the performance of AI training workloads by
-> > prioritizing threads interacting with the GPU. Similarly, applications can
-> > identify the threads or thread pools on their performance-critical paths and
-> > the memcg enforcement mechanism should not throttle them.
-> 
-> I'm struggling to envision this.
-> 
-> CPU and GPU are renewable resources where a bias in access time and
-> scheduling delays over time is naturally compensated.
-> 
-> With memory access past the limit, though, such a bias adds up over
-> time. How do you prevent high priority threads from runaway memory
-> consumption that ends up OOMing the host?
-
-Oh don't consider this feature in isolation. In practice there definitely will
-be background reclaimers running here. The way I am envisioning the scenario for
-this feature is something like: At some usage threshold, we will start the
-background reclaimers, at the next threshold, we will start synchronously
-throttle the threads that are allowed by the workload and at next threshold
-point we may decide to just kill the workload.
-
-> 
-> > Combined Memory and Swap Limits
-> > 
-> > Some users (Google actually) need the ability to enforce limits based on
-> > combined memory and swap usage, similar to cgroup v1's memsw limit, providing a
-> > ceiling on total memory commitment rather than treating memory and swap
-> > independently.
-> > 
-> > Dynamic Protection Limits
-> > 
-> > Rather than static protection limits, the kernel should support defining
-> > protection based on the actual working set of the workload, leveraging signals
-> > such as working set estimation, PSI, refault rates, or a combination thereof to
-> > automatically adapt to the workload's current memory needs.
-> 
-> This should be possible with today's interfaces of memory.reclaim,
-> memory.pressure and memory.low, right?
-
-Yes, node controller or workload can dynamically their protection limit based on
-psi or refaults or some other metrics.
-
-> 
-> > Shared Memory Semantics
-> > 
-> > With more flexibility in limit enforcement, the kernel should be able to
-> > account for memory shared between workloads (cgroups) during enforcement.
-> > Today, enforcement only looks at each workload's memory usage independently.
-> > Sensible shared memory semantics would allow the enforcer to consider
-> > cross-cgroup sharing when making reclaim and throttling decisions.
-> 
-> My understanding is that this hasn't been a problem of implementation,
-> but one of identifying reasonable, predictable semantics - how exactly
-> the liability of shared resources are allocated to participating groups.
-> 
-
-This particular feature is hand-wavy at the moment particulary due to lack of
-mechanism that tells how much memory is really shared.
-
-The high level idea is when we know there is shared memory/fs between different
-workloads, during throttling decision, we can consider their memory usage
-excluding the shared usage. So, mainly their exclusive memory usage. Will this
-help or is useful, I need to brainstorm more.
-
-> > Memory Tiering
-> > 
-> > With a flexible limit enforcement mechanism, the kernel can balance memory
-> > usage of different workloads across memory tiers based on their performance
-> > requirements. Tier accounting and hotness tracking are orthogonal, but the
-> > decisions of when and how to balance memory between tiers should be handled by
-> > the enforcer.
-> > 
-> > Collaborative Load Shedding
-> > 
-> > Many workloads communicate with an external entity for load balancing and rely
-> > on their own usage metrics like RSS or memory pressure to signal whether they
-> > can accept more or less work. This is guesswork. Instead of the
-> > workload guessing, the limit enforcer -- which is actually managing the
-> > workload's memory usage -- should be able to communicate available headroom or
-> > request the workload to shed load or reduce memory usage. This collaborative
-> > load shedding mechanism would allow workloads to make informed decisions rather
-> > than reacting to coarse signals.
-> > 
-> > Cross-Subsystem Collaboration
-> > 
-> > Finally, the limit enforcement mechanism should collaborate with the CPU
-> > scheduler and other subsystems that can release memory. For example, dirty
-> > memory is not reclaimable and the memory subsystem wakes up flushers to trigger
-> > writeback. However, flushers need CPU to run -- asking the CPU scheduler to
-> > prioritize them ensures the kernel does not lack reclaimable memory under
-> > stressful conditions. Similarly, some subsystems free memory through workqueues
-> > or RCU callbacks. While this may seem orthogonal to limit enforcement, we can
-> > definitely take advantage by having visibility into these situations.
-> 
-> It sounds like the lock holder problem would also fit into this
-> category: Identifying critical lock holders and allowing them
-> temporary access past the memory and CPU limits.
-> 
-> But as per above, I'm not sure if blank check exemptions are workable
-> for memory. It makes sense for allocations in the reclaim path for
-> example, because it doesn't leave us wondering who will pay for the
-> excess through a deficit. It's less obvious for a path that is
-> involved with further expansion of the cgroup's footprint.
-
-No need to have blank check. Same as above for the thread throttling, the lock
-holder not getting throttled will be, in practice, in the presense of background
-reclaimers and may get killed if going over board too much.
-
-Thanks for taking a look and poking holes.
+>                                 break;
+>                 }
+>                 //wait for 60hz
+>=20
+> --=20
+> 2.43.0
+>
 
