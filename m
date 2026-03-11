@@ -4,93 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1963FFD88F3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C008FD88F5
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 04:14:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E387D6B0005; Wed, 11 Mar 2026 00:11:20 -0400 (EDT)
+	id 6E0776B0005; Wed, 11 Mar 2026 00:14:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5ED6B0089; Wed, 11 Mar 2026 00:11:20 -0400 (EDT)
+	id 68E7A6B0089; Wed, 11 Mar 2026 00:14:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC77D6B008A; Wed, 11 Mar 2026 00:11:20 -0400 (EDT)
+	id 56F7A6B008A; Wed, 11 Mar 2026 00:14:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A00706B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:11:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FF2E1C89C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:11:20 +0000 (UTC)
-X-FDA: 84532457520.25.C7C8124
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4BBB3160009
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:11:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dkCKacih;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773202278;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF366B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:14:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AED211B84A0
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:14:49 +0000 (UTC)
+X-FDA: 84532466298.02.2782DA2
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B0F72180002
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:14:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NIFVvK6c;
+	spf=pass (imf16.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773202487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MxNrh/prlo3FTVy26JoujkSDtTdrolCRelMz5VTwBws=;
-	b=6Y0YArruMNU+KW74RGYPABDjyq9TY22razsEuunAlhS1NUMhWGZCbmo4iTI/P0MImE5NcQ
-	P+5k801/q3drbeFZzYXbkILI4NxixF4uyFn5E0UiCtkognoASAilIi3o2bXZRTxxh8Wi1i
-	z81oDPHi6kUJbbn4I4HKqVDzKAPQ+90=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773202278; a=rsa-sha256;
-	cv=none;
-	b=Jh94Jfnko9jN9mRYkoKuV6aIH9OH6nIO3MjoeAbsQWgWGOE1vtlhoLXb+Si4/hPVkLwoKL
-	kQW2ZZ8ic5Iut2iRyUbv6KOz+xCII2QLep5kZYkqoPN13cgFdA2FRlphAiiUE/Zx24Etlz
-	BXr91GLeEpBfeornNTDKeMt0w/dXIRo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dkCKacih;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92AF360054;
-	Wed, 11 Mar 2026 04:11:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E48C4CEF7;
-	Wed, 11 Mar 2026 04:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773202277;
-	bh=OV8xKNkM1lTIjzVY56jIU2qUQkIswDMK0jS3aipi+Vc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkCKacihvC0mHnWg/nsVPIcFsrgntvJYWlU6DiH5a4SPMi8/FDC+pLOLL7aIJYYe9
-	 krgtImmUX4Q2iEWG/2ciEzYyVk3bd5TxyXmIn16JZ7EHK6y9RsxtapZ8k3QPg6XbOp
-	 Y33/UZP4MEfNVBCX8zBfcdzHj/Y0S+EVICm31jAREy0fm4jNVQ7rUaO/ZPYtpcCqyL
-	 YafiCPWmRZNIWvj44dQ0x/P0fZqfq0sk5SJYx3AJ2H+a+Rc6jZQ2vrd5HdgLjqrrXK
-	 nHWw+rYSGp5wFvLGGk6C+vU9Ub3HaOgYsw3zsCVt90wAr2C18NQVMG8XM9JZXYGYOK
-	 UWzohTDdJM31Q==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] mm/damon: New module with hot application detection
-Date: Tue, 10 Mar 2026 21:11:13 -0700
-Message-ID: <20260311041114.91406-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260310162420.4180562-4-gutierrez.asier@huawei-partners.com>
-References: 
+	bh=1g5jdArW7KW9y5pBH1n4YAUphDc+Fz6HVl2Kp/NF71Q=;
+	b=hT9OUILeqbuI08rBYlRw+PIQE4o6bfTv2ul2adHi9FsWIEp6b0IsPRE0OS0EVdZGF/02MW
+	2CAQAHV1eBwc4i7EhitJ3FVlCZ+3wf1SUfilMPhvnTHpmmTml2437O9/5tkoOZofNeXs7O
+	QJRpMU59GbpI6Vf7FdI8QzdJ45rdCmk=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NIFVvK6c;
+	spf=pass (imf16.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773202487; a=rsa-sha256;
+	cv=pass;
+	b=C8bCsDHBVPii9U33y6P8dZT+VKvmMqJa1MUaf1nGVEJOl905jjyZvQu4JNwgCMtCYetgmb
+	FK/0NzfsYR5JCRzwaqsiHbZQ+lzdP3JlPPtiVqZCZE/2So0KZ/pTIDZx7TuV7v3tgDFrNg
+	cs7kgg7w2LRrbi8XYRp6yFQF8FkgGGA=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50902b1006cso33855251cf.3
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:14:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773202487; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YorrRIdwcvIneojhfLs/i94C5C9kJ2GweQUmHjhdF1UeO88HzeLUQD8DjsIID8pxbu
+         vWmsCGKFmUDYflba0Er1FbRfOg8Bmf2WiSDJ4Cq2TpV5E1uY2lowMY83f2YYNSl7ztp+
+         D9W1SfWiULwWL+ROCPpP42Pvn92BsCwK5M0BKcpSHqV1nj3MFjyn0Rf9LS2V0C09Rnrs
+         Scwu+tWhd95UZG02O+LKGbPTs0smuNpJHCNu6hq/6gozX2w291+6xZt2dl/Txv2ZOZKp
+         dgNbacjRcMJc4BHKgF4Dk26xF7ZPDSwKQBJ6cbdn4QSasu7niW93RWY6H+7Gy8XArMUO
+         tNPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1g5jdArW7KW9y5pBH1n4YAUphDc+Fz6HVl2Kp/NF71Q=;
+        fh=QwZBMUqR26V+gDg+0eKSw5On7a3idq8iwr9U38mfEu8=;
+        b=YxzESWv5GYAZpxWgn48AXev8ZTUmVCGe+Uy+TXVsGrme8Ryj2hbMUf+PhavDap08aG
+         5NEIZ6JXSlCtX/JRhAB9fXdL6DjcOPyB9qXz41bGHj4BfE0m9o4xeKJlhUYI7R04Zr1T
+         uFD2GoFvAZbRRH6TVZUmrWSSruIq5J6FfvedppRbvhjqwXoiFGPXOJemT41G5NYjUtlH
+         XTFbuDEzzifIwROUMwCqRg0K3Wn8hhcTdrhlwY4+p8kWswQkswPyZzae6zUaEAHf460h
+         EDgsedQogboK1zU4WUFVnYuRc3owOCVY6ulXT0Y4ronpPgi7ri/5+2tJMVWTkBS2RFHo
+         JoBQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773202487; x=1773807287; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1g5jdArW7KW9y5pBH1n4YAUphDc+Fz6HVl2Kp/NF71Q=;
+        b=NIFVvK6cY554NOVtFalXw6zw9Y0eJrlLF0h5eB8Kyu24H4rWFsegjue69zoxYg4GHA
+         GFGtMA9dC36wRBuap8KI30c/+smjaWEaZ7AVSdYJs/ieNM8b+HB32db03eBNVNPKpeHZ
+         AX7wziYiepcVqj4ruv3UMsGpmtzsxUeV4SFBsVZEnsCrgABnkcj9YT/WUtP/b3BcmLlG
+         4GKH9ijnvuF0YraZMlBibGfwROcLwUDejghg+QBaO4Ut9Pd9w69KYsQ8Ucp+F44CWSub
+         pnUPNSSTkdmgScsYf7iagfZyI1hP4N7pCnpZjsMW1YMudzUFSCu/CDE9tGh1D0XQ0Fjl
+         t51A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773202487; x=1773807287;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1g5jdArW7KW9y5pBH1n4YAUphDc+Fz6HVl2Kp/NF71Q=;
+        b=o+1y3UfRj7EtUNDaYpR3pjrUEDgHBU1/NfNBV+0NWak3TEd87peKv9v+aPzyC5ls9Y
+         LOHXQdvFm0yWxxoLMWqGNnk+HaAYjNX8J5SVmRUHLRQUOmeuOuscuyYIqCa6exo9FX0S
+         6kE6BnoCzultPSMnPF31VeBROtcKJyoJfj/d4wt1WT+BYhjRy042c6hyqx6C1340YrUM
+         U4hooZ2sN66viIHyiEe9Dh/Z+TUtUxF7CwWN+lNp2LjfyA4R+VIww9wm7Rq0OFDTjK2r
+         iNGQWysvg31PD0NNa5n36AlRI7qcwePvBY/cTsGSvrXgwRnN+A3QJGSdq2ISP8pVBGwa
+         lZUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXD+AttAEwAA7idL/HtKtmO1KC9ai/htV9xYh+UMDBjtuLDDEhxdwUaTc8zAvw2ugP04w9pVpT0uA==@kvack.org
+X-Gm-Message-State: AOJu0YydOd4k36joGCWF4vCb018L8A4zpTFyDHd+9kBlf2BgwM0BTwmK
+	wS9rFhKq/jS8gLGwsSM+vHSJQyFJ98VYihDhW0t4zeQHcibtCUEO5EoGEVFkhrO2smmgxUkAWT4
+	p9fcyPkf2yKsE+8w6rU6PweOM59dXhM12+lPy
+X-Gm-Gg: ATEYQzxw7v4Mw7WpVVaelfc7wPw9jZSxbMeeuza9D5neQrd+EDxXhnNjykc6lhtls1n
+	TD0YbA4q0VH6eOejZpY/eqhy4sFtzpQpQUicDb0ces2VOk5sx+qLnbtlKSexmExtMQb1DhKSrnh
+	uBfyE9J28GGy7SeoVn7qxrkOwV0o1nTJ1FlnfI94bhXNPW21odwTAugEolRnZUnl4XefWLJrTQf
+	qIsyrmLWeA8tyjZH40PpDe6OedWBCyejlJGEpBcQ86XC+TE3zWaJGXZiDu2PYW6NbTyCJ7s7449
+	DEniCw==
+X-Received: by 2002:a05:622a:1920:b0:509:219f:8e37 with SMTP id
+ d75a77b69052e-50939f53887mr14519361cf.3.1773202486401; Tue, 10 Mar 2026
+ 21:14:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4BBB3160009
-X-Stat-Signature: 3hmc9bzxrnhi6jycc6xktb54ffnqwzjm
+References: <20260310073013.4069309-1-dev.jain@arm.com> <20260310073013.4069309-6-dev.jain@arm.com>
+ <00f65edd-5b16-4f9e-a9fa-b923eba052b7@lucifer.local> <CAGsJ_4zMQReykifGVmXJEgPqORhRoFBKKJq_bjBzDGT5hfGGwQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zMQReykifGVmXJEgPqORhRoFBKKJq_bjBzDGT5hfGGwQ@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 11 Mar 2026 12:14:35 +0800
+X-Gm-Features: AaiRm52JwJxovBYjuRWLazi3MPILl1B7Q-7qpErbhd4bUK1nVgbGGsdlwXjx-PE
+Message-ID: <CAGsJ_4wmrV0+wxiXAgEWRxBpv1QT9Sm__Pi+yREGvT9YH2n4uQ@mail.gmail.com>
+Subject: Re: [PATCH 5/9] mm/rmap: batch unmap folios belonging to uffd-wp VMAs
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	yuanchu@google.com, david@kernel.org, hughd@google.com, chrisl@kernel.org, 
+	kasong@tencent.com, weixugc@google.com, Liam.Howlett@oracle.com, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de, 
+	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org, 
+	willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B0F72180002
+X-Stat-Signature: xbaow9yaj1ts4d1ps4esgacetae91brq
 X-Rspam-User: 
-X-HE-Tag: 1773202278-66879
-X-HE-Meta: U2FsdGVkX19xeisSjXom7csO/8MNVlYHhfjJi0+H19n/X9KEyx5QnGkYFpcVY4dhqBN76bzl5P/hIrlzeolhC6w+tcpLSIXLKGyI5zz/UfmxCHvyryBTeaCNoMJzdCSnx7U57APEE+UdQpce2WAXVE76D7FWgkSxwLlgI1ZdLI2EjxiqrVf+iYE7NJahaBT7wnhL0AOPkDP894XwvKm5U7/mJHZKmPWtkmTMOngvSjQoJXqdjsyG37t/edeOqemxo0SrbGmKf8PR/5zTWpMBDuYRREJLI+1o7uzIj4u0eU8GEOqemay1Olp9IzvYq5/XJWkhdBMC/ICVpXWmsrIp0uq0DVCveMImMW+Md383Y/e4aMhRGATGQEtt5vH4B6PxPiuMPkAXFy9WwNDSBAhczj3w8ksWYG1fWGz5JbQrq/b9cDNdT/i+uAMWVcCHZ4JxSMGixQpNNjZB68XTaJvu7PtiNS/BzopF1lRXpGCJ6kYFgz+ic9CTm+c3kAZYdAAPVOjelBgu5QUYnGqUctae4v6iNmEutqa88cTCpsst/zsb2hDV3pfVdh70q2JtIL4Cgq+tHL4tkU8AO8ZpInHPcbUpOAEF/ral2a3LgZ2YPbskDlQCmEP6q6gKWubiR5LS1vhCPmk215aHdJNul4qiaH49c3olFyB0tQxV9ZpyyA7U0uYCdBwGsIMvIfooqACc0Vw7NqlOWIRYbDZ3QwdFeDNirU18WfOHAhPn3bgtJMC8+MUWBkNeI7Z3QsGnWKiDCYHVd/frZD6qJ0ys3Ja13VX7emhNU2kZcCHAriJZAr62p3B4/Z7RnwTc4Rt7LYhckQNwGn5WUO9jVOwvKItS72y+8oYncW/jiNioMRBdSgm8fvgf17RoA8OARbF15mMZMLDvl6efLdymlW8nblavwGkV+gHzFmIm6E8eViAbyPU0X5dG0Pw8T2mVvqz0Wa5Imdc4ITuPeDgaivTzApR
- p9UUHbjI
- 0W4BBPKqSm/F3rgkjpkiHkPQiXc9zQxH0Vvua4fdNMuGFXbZphWsmyoXzJCSXtrv8KcDgWDPckhDMUTnqnZzY3T9pyDJq8GgDSSHv+Gmr77aErv74SXu2956CyirmzEN+iLMyrnB/IVLjRT0tH8OOvpqqLcvY6xZIEjfdV9A2pmOPpqEBpHjwoCrlkzob7M30HMrG3WVv1UCeI0dwZuoH1KidEhOxcoqA2h5uJINSWjJ9yxt37Tev6kPVmOEkDbyFcWkXXGmTQkRGeWphC0hfPkSQzVMogRTKN/xMdjur+RhUhKySL5ujPopvKQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773202487-562020
+X-HE-Meta: U2FsdGVkX18f2RPy7S+9y4/kC0KhC1L+ppbyYO43swWdeb12OlLuYnOVjBkPg/Skr0sPRO5IRsvSMR/QtW0IZSgt4I0OO4pSZsR2Ky05quNLuqDTsky9pwEHC+EoebuRLaBAMt0T68n8/x57vOAl7nTKUb7du5qXJxy7KuM663UFUzZzTEzABoJkjKEkpbaAlBBSUoWQysSAm3ZiSgCRse+M63AX7a4e0LWU8sQ928aFoM7vS99bZXKMkEfI/mXqhz/vGgOgU4DUR/MSCEzv5Fc16SJ+3T5R4NclG65zU0PauiE694m/OnOJ5syvUIa+hw5O7AedcOyD50tTZuq4Zmw/CyBZPf+vDNxSXdEnhYWNz3uWVPH+ziYsHuYOHE+aGxu3bToBcvPE69LU7Dm/VOeza2yL2TiqHt3ncSZDz+b4B0CY+3fgl7RUJFRmG4nSYnD0TbJpdwLIlmWuUSS0JC/oK8jPW/VXeMBh/vO5Itp+ILakBJ+m9onxPfkBKBv4R3FXoNQfFRV6eK+2N1WGqDmCUSQ45J2BOxdHEAYZvVnhyXioO++jLjTz54jFKu9INnHUNTwQ9eM4uMws6OHtwQH37rZfg4iIvvzoCbzo+eIpRzzZ27gBqWux7yXBDMKSbIt7DVvE9eJdSAkrNcN07VYkw0PjKpfv9k48GaSBnqUl8H5z8J31MrgduMuq7jIBFIxcWLywl3zUY3gNCEd57ZpcATsdRntamcqXYk2ESO1hx4TqZqA6Y01buh1VcsvJTVAMi4Gowf5GCiw7K8e/gB89yGiXwdRd25S8Dy2XWR9/WBZ9//Wxejm/BRXWhl1gSeQ7y8OFnd7YBsycAbZquaMuMeyqgE0AtFzfiTKqK8i1zdvqyysfWiQlc4TnPRhGOlUASLgEGTD87ERxv0LPlyc6/jmU0jbfd4CevdsvTJMwe5AkMvwFBNw6newtHCBjMSnn0mBAg8JPrdndDeW
+ PbRGHlyP
+ mmgvuBKesunoMvrGdYWdkh2KlH77q3JUFYpU38mzWJvEM0dgJ1qtrmKjHOnvAkHFncxsX9nhT3udXnK/DmsWUA1pP0FPfBgJehebRyXHqbKcVm7F1Encd39+5qB4xUtaHLSLIQdzGCwBdu8JWS8FlP7sVEMbNLCj5VbwE3FmrhoFDDtbyckcN7fGfFEbMpsA8OqccvYdsq/Za9mhdNBl3YFA9o9COFkoUCS3OMmjHIrqe2X7bL8mW3tQQIlKPwWV+MA0EMNHAuswLoKX0swNMpdxmV/Df4tLEiLLksIn2WDzPQPJcVvSkz37sSaXJsm1qzjLWqKiyz6zsADm91xKV80S613lGBDRHxbC/1ZWjeqYRMs65wNNvjLvON9n5ub0ZpDWixKzQxKJlRAKoUuduYhwT+0pMG56ElhqDX512m9lDyRNlqiJRd20luJw/a6oJJ5uovi+svJMjnpp8WkrhedQFOEyeW+PlgiN8rhOt4oFyq4ynyGv2hra3qbHzM26LlKfQXwnVEpWH+DC0DdE7uL/JhGMX2UsEvJQM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,593 +146,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 10 Mar 2026 16:24:19 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+On Wed, Mar 11, 2026 at 7:32=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Mar 10, 2026 at 4:34=E2=80=AFPM Lorenzo Stoakes (Oracle) <ljs@ker=
+nel.org> wrote:
+> >
+> > On Tue, Mar 10, 2026 at 01:00:09PM +0530, Dev Jain wrote:
+> > > The ptes are all the same w.r.t belonging to the same type of VMA, an=
+d
+> > > being marked with uffd-wp or all being not marked. Therefore we can b=
+atch
+> > > set uffd-wp markers through install_uffd_wp_ptes_if_needed, and enabl=
+e
+> > > batched unmapping of folios belonging to uffd-wp VMAs by dropping tha=
+t
+> > > condition from folio_unmap_pte_batch.
+> > >
+> > > It may happen that we don't batch over the entire folio in one go, in=
+ which
+> > > case, we must skip over the current batch. Add a helper to do that -
+> > > page_vma_mapped_walk_jump() will increment the relevant fields of pvm=
+w
+> > > by nr pages.
+> > >
+> > > I think that we can get away with just incrementing pvmw->pte
+> > > and pvmw->address, since looking at the code in page_vma_mapped.c,
+> > > pvmw->pfn and pvmw->nr_pages are used in conjunction, and pvmw->pgoff
+> > > and pvmw->nr_pages (in vma_address_end()) are used in conjunction,
+> > > cancelling out the increment and decrement in the respective fields. =
+But
+> > > let us not rely on the pvmw implementation and keep this simple.
+> >
+> > This isn't simple...
+> >
+> > >
+> > > Export this function to rmap.h to enable future reuse.
+> > >
+> > > Signed-off-by: Dev Jain <dev.jain@arm.com>
+> > > ---
+> > >  include/linux/rmap.h | 10 ++++++++++
+> > >  mm/rmap.c            |  8 +++-----
+> > >  2 files changed, 13 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> > > index 8dc0871e5f001..1b7720c66ac87 100644
+> > > --- a/include/linux/rmap.h
+> > > +++ b/include/linux/rmap.h
+> > > @@ -892,6 +892,16 @@ static inline void page_vma_mapped_walk_done(str=
+uct page_vma_mapped_walk *pvmw)
+> > >               spin_unlock(pvmw->ptl);
+> > >  }
+> > >
+> > > +static inline void page_vma_mapped_walk_jump(struct page_vma_mapped_=
+walk *pvmw,
+> > > +             unsigned int nr)
+> >
+> > unsigned long nr_pages... 'nr' is meaningless and you're mixing + match=
+ing types
+> > for no reason.
+> >
+> > > +{
+> > > +     pvmw->pfn +=3D nr;
+> > > +     pvmw->nr_pages -=3D nr;
+> > > +     pvmw->pgoff +=3D nr;
+> > > +     pvmw->pte +=3D nr;
+> > > +     pvmw->address +=3D nr * PAGE_SIZE;
+> > > +}
+> >
+> > I absolutely hate this. It's extremely confusing, especially since you'=
+re now
+> > going from looking at 1 page to nr_pages - 1, jump doesn't really mean =
+anything
+> > here, you're losing sight of the batch size and exposing a silly detail=
+ to the
+> > caller, and I really don't want to 'export' this at this time.
+>
+> I=E2=80=99m fairly sure I raised the same concern when Dev first suggeste=
+d this,
+> but somehow it seems my comment was completely overlooked. :-)
+>
+> >
+> > If we must have this, can you please make it static in rmap.c at least =
+for the
+> > time being.
+> >
+> > Or perhaps instead, have a batched variant of page_vma_mapped_walk(), l=
+ike
+> > page_vma_mapped_walk_batch()?
+>
+> Right now, for non-anon pages we face the same issues, but
+> page_vma_mapped_walk() can skip those PTEs once it finds that
+> nr - 1 PTEs are none.
+>
+> next_pte:
+>                 do {
+>                         pvmw->address +=3D PAGE_SIZE;
+>                         if (pvmw->address >=3D end)
+>                                 return not_found(pvmw);
+>                         /* Did we cross page table boundary? */
+>                         if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) =3D=
+=3D 0) {
+>                                 if (pvmw->ptl) {
+>                                         spin_unlock(pvmw->ptl);
+>                                         pvmw->ptl =3D NULL;
+>                                 }
+>                                 pte_unmap(pvmw->pte);
+>                                 pvmw->pte =3D NULL;
+>                                 pvmw->flags |=3D PVMW_PGTABLE_CROSSED;
+>                                 goto restart;
+>                         }
+>                         pvmw->pte++;
+>                 } while (pte_none(ptep_get(pvmw->pte)));
+>
+> The difference now is that swap entries cannot be skipped.
+>
+> If we're trying to find `page_vma_mapped_walk_batch()`, I suppose
+> it could be like this?
+>
+> bool page_vma_mapped_walk_batch(struct page_vma_mapped_walk *pvmw,
+> unsigned long nr)
+> {
+> ...
+> }
+>
+> static inline bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw=
+)
+> {
+>         return page_vma_mapped_walk_batch(pvmw, 1);
+> }
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Another approach might be to introduce a flag so that
+page_vma_mapped_walk() knows we are doing batched unmaps
+and can skip nr - 1 swap entries.
 
-I'd like to discuss about this in a high level, but I'd like to do that on the
-cover letter.  To this patch, I'm therefore adding comments for only details
-that stand out immeadiately to me.
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..bf03ae006366 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -856,6 +856,9 @@ struct page *make_device_exclusive(struct
+mm_struct *mm, unsigned long addr,
+ /* Look for migration entries rather than present PTEs */
+ #define PVMW_MIGRATION         (1 << 1)
 
-> 
-> 1. It first launches a new kthread called damon_dynamic. This thread
-> will behave as a supervisor, launching new kdamond threads for all
-> the processes we want to montiored. The tasks are sorted
-> by utime delta. For the top N tasks, a new kdamond thread will be
-> launched.
++/* Batched unmap: skip swap entries. */
++#define PVMW_BATCH_UNMAP       (1 << 2)
++
+ /* Result flags */
 
-If I read the cover letter and the code of this patch correctly, seems the last
-two sentences of the above paragraph is outdated.  Please correct me if I'm
-wrong.
-
-> Applications which turn cold will have their kdamond
-> stopped.
-> 
-> The processes are supplied by the monitored_pids parameter. When the
-> module is enabled, it will go through all the monitored_pids, start
-> the supervisor and a new kdamond thread for each of the tasks. This
-> tasks can be modified and applied using the commit_input parameters.
-> In that case, we will stop any kdamond thread for tasks that are not
-> going to be monitored anymore, and start a new kdamond thread for each
-> new task to be monitored. For tasks that were monitored before and are
-> still monitored after commiting a new monitored_pids list, kdamond
-> threads are left intact.
-> 
-> 2. Initially we don't know the min_access for each of the task. We
-> want to find the highest min_access when collapses start happening.
-> For that we have an initial threashold of 90, which we will lower
-> until a collpase occurs.
-> 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
-> ---
->  mm/damon/Kconfig          |   7 +
->  mm/damon/Makefile         |   1 +
->  mm/damon/hugepage.c (new) | 441 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 449 insertions(+)
-> 
-> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-> index 8c868f7035fc..2355aacb6d12 100644
-> --- a/mm/damon/Kconfig
-> +++ b/mm/damon/Kconfig
-> @@ -110,4 +110,11 @@ config DAMON_STAT_ENABLED_DEFAULT
->  	  Whether to enable DAMON_STAT by default.  Users can disable it in
->  	  boot or runtime using its 'enabled' parameter.
->  
-> +config DAMON_HOT_HUGEPAGE
-
-I'd suggest renaming to DAMON_HUGEPAGE.
-
-> +	bool "Build DAMON-based collapse of hot regions (DAMON_HOT_HUGEPAGES)"
-> +	depends on DAMON_VADDR
-> +	help
-> +	 Collapse hot region into huge pages. Hot regions are determined by
-> +	 DAMON-based sampling
-> +
->  endmenu
-> diff --git a/mm/damon/Makefile b/mm/damon/Makefile
-> index d8d6bf5f8bff..ac3afbc81cc7 100644
-> --- a/mm/damon/Makefile
-> +++ b/mm/damon/Makefile
-> @@ -7,3 +7,4 @@ obj-$(CONFIG_DAMON_SYSFS)	+= sysfs-common.o sysfs-schemes.o sysfs.o
->  obj-$(CONFIG_DAMON_RECLAIM)	+= modules-common.o reclaim.o
->  obj-$(CONFIG_DAMON_LRU_SORT)	+= modules-common.o lru_sort.o
->  obj-$(CONFIG_DAMON_STAT)	+= modules-common.o stat.o
-> +obj-$(CONFIG_DAMON_HOT_HUGEPAGE)	+= modules-common.o hugepage.o
-> diff --git a/mm/damon/hugepage.c b/mm/damon/hugepage.c
-> new file mode 100644
-> index 000000000000..ccd31c48d391
-> --- /dev/null
-> +++ b/mm/damon/hugepage.c
-> @@ -0,0 +1,441 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2026 HUAWEI, Inc.
-> + *             https://www.huawei.com
-> + *
-> + * Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> + */
-> +
-> +#define pr_fmt(fmt) "damon-hugepage: " fmt
-> +
-> +#include <linux/damon.h>
-> +#include <linux/kstrtox.h>
-> +#include <linux/module.h>
-> +
-> +#include "modules-common.h"
-> +
-> +#ifdef MODULE_PARAM_PREFIX
-> +#undef MODULE_PARAM_PREFIX
-> +#endif
-> +#define MODULE_PARAM_PREFIX "damon_hugepage."
-> +
-> +#define MAX_MONITORED_PIDS 100
-> +#define HIGHEST_MIN_ACCESS 90
-> +#define HIGH_ACC_THRESHOLD 50
-> +#define MID_ACC_THRESHOLD 15
-> +#define LOW_ACC_THRESHOLD 2
-
-On your setup where the sampling interval is 5ms and the aggregation interval
-is 100ms, nr_accesses of each DAMON region can be up to only 20.  So above
-thresholds may better to be lowered.
-
-> +
-> +static struct task_struct *monitor_thread;
-> +
-> +struct mutex enable_disable_lock;
-> +
-> +/*
-> + * Enable or disable DAMON_HUGEPAGE.
-> + *
-> + * You can enable DAMON_HUGEPAGE by setting the value of this parameter
-> + * as ``Y``. Setting it as ``N`` disables DAMON_HOT_HUGEPAGE.  Note that
-> + * DAMON_HOT_HUGEPAGE could do no real monitoring and reclamation due to the
-
-s/DAMON_HOT_HUGEPAGE/DAMON_HUGEPAGE/ ?
-
-> + * watermarks-based activation condition.  Refer to below descriptions for the
-> + * watermarks parameter for this.
-
-On RFC v1 discussion [1], you mentioned you will update this comment.  But I
-find no change?
-
-> + */
-> +static bool enabled __read_mostly;
-> +
-> +/*
-> + * Make DAMON_HUGEPAGE reads the input parameters again, except ``enabled``.
-> + *
-> + * Input parameters that updated while DAMON_HUGEPAGE is running are not applied
-> + * by default.  Once this parameter is set as ``Y``, DAMON_HUGEPAGE reads values
-> + * of parametrs except ``enabled`` again.  Once the re-reading is done, this
-> + * parameter is set as ``N``.  If invalid parameters are found while the
-> + * re-reading, DAMON_HUGEPAGE will be disabled.
-> + */
-> +static bool commit_inputs __read_mostly;
-> +module_param(commit_inputs, bool, 0600);
-> +
-> +/*
-> + * DAMON_HUGEPAGE monitoring period in microseconds.
-> + * 5000000 = 5s
-> + */
-> +static unsigned long monitor_period __read_mostly = 5000000;
-> +module_param(monitor_period, ulong, 0600);
-> +
-> +static long monitored_pids[MAX_MONITORED_PIDS];
-> +static int num_monitored_pids;
-> +module_param_array(monitored_pids, long, &num_monitored_pids, 0600);
-> +
-> +static struct damos_quota damon_hugepage_quota = {
-> +	/* use up to 10 ms time, reclaim up to 128 MiB per 1 sec by default */
-> +	.ms = 10,
-> +	.sz = 0,
-> +	.reset_interval = 1000,
-> +	/* Within the quota, page out older regions first. */
-> +	.weight_sz = 0,
-> +	.weight_nr_accesses = 0,
-> +	.weight_age = 1
-
-You may want to prioritize hot memory region under the quota.  If so, you would
-need to set weight_nr_acceses to non-zero.
-
-> +};
-> +DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(damon_hugepage_quota);
-> +
-> +static struct damos_watermarks damon_hugepage_wmarks = {
-> +	.metric = DAMOS_WMARK_FREE_MEM_RATE,
-> +	.interval = 5000000, /* 5 seconds */
-> +	.high = 900, /* 90 percent */
-> +	.mid = 800, /* 80 percent */
-> +	.low = 50, /* 5 percent */
-> +};
-> +DEFINE_DAMON_MODULES_WMARKS_PARAMS(damon_hugepage_wmarks);
-
-In the RFC v1 discussion, you also mentioned you will remove the above, but
-seems it is forgotten?
-
-Also, my understadning of your reply on the previous discussion was that you
-don't really want to use watermarks in this module, and therefore you want to
-remove it.  Am I correct?  If I'm not, maybe I'm still not understanding the
-intention of the watermarks.  Can you please enlighten me?
-
-> +
-> +static struct damon_attrs damon_hugepage_mon_attrs = {
-> +	.sample_interval = 5000, /* 5 ms */
-> +	.aggr_interval = 100000, /* 100 ms */
-> +	.ops_update_interval = 0,
-
-Is ops_update_interval = 0 really your intention?
-
-> +	.min_nr_regions = 10,
-> +	.max_nr_regions = 1000,
-> +};
-> +DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_hugepage_mon_attrs);
-> +
-> +struct hugepage_task {
-> +	struct damon_ctx *ctx;
-> +	int pid;
-> +	struct damon_target *target;
-> +	struct damon_call_control call_control;
-> +	struct list_head list;
-> +};
-> +
-> +static struct damos *damon_hugepage_new_scheme(int min_access,
-> +						   enum damos_action action)
-> +{
-> +	struct damos_access_pattern pattern = {
-> +		/* Find regions having PAGE_SIZE or larger size */
-
-s/PAGE_SIZE/PMD_SIZE/ ?
-
-> +		.min_sz_region = PMD_SIZE,
-> +		.max_sz_region = ULONG_MAX,
-> +		/* and not accessed at all */
-
-Seems the above comment should be updated.
-
-> +		.min_nr_accesses = min_access,
-> +		.max_nr_accesses = 100,
-
-Because you set sampling interval 5ms and aggregatin interval 100ms,
-nr_accesses of each DAMON region can be up to only 20 (100ms / 5ms).
-max_nr_accesses may better to be 20 to clarifyt that.
-
-> +		/* for min_age or more micro-seconds */
-> +		.min_age_region = 0,
-> +		.max_age_region = UINT_MAX,
-> +	};
-> +
-> +	return damon_new_scheme(
-> +		&pattern,
-> +		/* synchrounous partial collapse as soon as found */
-> +		action, 0,
-> +		/* under the quota. */
-> +		&damon_hugepage_quota,
-> +		/* (De)activate this according to the watermarks. */
-> +		&damon_hugepage_wmarks, NUMA_NO_NODE);
-
-Again, I'm not sure if you really want to use watermarks, and if so, what is
-the intention.
-
-> +}
-> +
-> +static int damon_hugepage_apply_parameters(
-> +				struct hugepage_task *monitored_task,
-> +				int min_access,
-> +				enum damos_action action)
-> +{
-> +	struct damos *scheme;
-> +	struct damon_ctx *param_ctx;
-> +	struct damon_target *param_target;
-> +	struct damos_filter *filter;
-> +	int err;
-> +	struct pid *spid;
-> +
-> +	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
-> +					   DAMON_OPS_VADDR);
-> +	if (err)
-> +		return err;
-
-You should deallocate param_ctx before returning the error.
-
-> +
-> +	spid = find_get_pid(monitored_task->pid);
-> +	if (!spid)
-> +		return err;
-
-Again, please deallocate param_ctx before returning the error.
-
-> +
-> +	param_target->pid = spid;
-> +
-> +	err = damon_set_attrs(param_ctx, &damon_hugepage_mon_attrs);
-> +	if (err)
-> +		goto out;
-> +
-> +	err = -ENOMEM;
-> +	scheme = damon_hugepage_new_scheme(min_access, action);
-> +	if (!scheme)
-> +		goto out;
-> +
-> +	damon_set_schemes(param_ctx, &scheme, 1);
-> +
-> +	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true, false);
-> +	if (!filter)
-> +		goto out;
-> +	damos_add_filter(scheme, filter);
-
-What's the intention of the above filter?
-
-> +
-> +	err = damon_commit_ctx(monitored_task->ctx, param_ctx);
-> +out:
-> +	damon_destroy_ctx(param_ctx);
-> +	return err;
-> +}
-> +
-> +static int damon_hugepage_damon_call_fn(void *arg)
-> +{
-> +	struct hugepage_task *monitored_task = arg;
-> +	struct damon_ctx *ctx = monitored_task->ctx;
-> +	struct damos *scheme;
-> +	int err = 0;
-> +	int min_access;
-> +	struct damos_stat stat;
-> +
-> +	damon_for_each_scheme(scheme, ctx)
-> +		stat = scheme->stat;
-> +	scheme = list_first_entry(&ctx->schemes, struct damos, list);
-> +
-> +	if (ctx->passed_sample_intervals < scheme->next_apply_sis)
-> +		return err;
-> +
-> +	if (stat.nr_applied)
-> +		return err;
-> +
-> +	min_access = scheme->pattern.min_nr_accesses;
-> +
-> +	if (min_access > HIGH_ACC_THRESHOLD) {
-> +		min_access = min_access - 10;
-> +		err = damon_hugepage_apply_parameters(
-> +			monitored_task, min_access, DAMOS_COLLAPSE);
-> +	} else if (min_access > MID_ACC_THRESHOLD) {
-> +		min_access = min_access - 5;
-> +		err = damon_hugepage_apply_parameters(
-> +			monitored_task, min_access, DAMOS_COLLAPSE);
-> +	} else if (min_access > LOW_ACC_THRESHOLD) {
-> +		min_access = min_access - 1;
-> +		err = damon_hugepage_apply_parameters(
-> +			monitored_task, min_access, DAMOS_COLLAPSE);
-> +	}
-> +	return err;
-> +}
-> +
-> +static int damon_hugepage_init_task(struct hugepage_task *monitored_task)
-> +{
-> +	int err = 0;
-> +	struct damon_ctx *ctx = monitored_task->ctx;
-> +	struct damon_target *target = monitored_task->target;
-> +	struct pid *spid;
-> +
-> +	if (!ctx || !target)
-> +		damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_VADDR);
-> +
-> +	if (damon_is_running(ctx))
-> +		return 0;
-> +
-> +	spid = find_get_pid(monitored_task->pid);
-> +	if (!spid)
-> +		return err;
-> +
-> +	target->pid = spid;
-> +
-> +	monitored_task->call_control.fn = damon_hugepage_damon_call_fn;
-> +	monitored_task->call_control.repeat = true;
-> +	monitored_task->call_control.data = monitored_task;
-> +
-> +	struct damos *scheme = damon_hugepage_new_scheme(
-> +			HIGHEST_MIN_ACCESS, DAMOS_COLLAPSE);
-> +	if (!scheme)
-> +		return -ENOMEM;
-> +
-> +	damon_set_schemes(ctx, &scheme, 1);
-> +
-> +	monitored_task->ctx = ctx;
-> +	err = damon_start(&monitored_task->ctx, 1, false);
-> +	if (err)
-> +		return err;
-> +
-> +	return damon_call(monitored_task->ctx, &monitored_task->call_control);
-> +}
-> +
-> +static int add_monitored_task(int pid, struct list_head *task_monitor)
-> +{
-> +	struct hugepage_task *new_hugepage_task;
-> +	int err;
-> +
-> +	new_hugepage_task = kzalloc_obj(*new_hugepage_task);
-> +	if (!new_hugepage_task)
-> +		return -ENOMEM;
-> +
-> +	new_hugepage_task->pid = pid;
-> +	INIT_LIST_HEAD(&new_hugepage_task->list);
-> +	err = damon_hugepage_init_task(new_hugepage_task);
-> +	if (err)
-> +		return err;
-> +	list_add(&new_hugepage_task->list, task_monitor);
-> +	return 0;
-> +}
-> +
-> +static int damon_hugepage_handle_commit_inputs(
-> +		struct list_head *monitored_tasks)
-> +{
-> +	int i = 0;
-> +	int err = 0;
-> +	bool found;
-> +	struct hugepage_task *monitored_task, *tmp;
-> +
-> +	if (!commit_inputs)
-> +		return 0;
-> +
-> +	while (i < MAX_MONITORED_PIDS) {
-> +		if (!monitored_pids[i])
-> +			break;
-> +
-> +		found = false;
-> +
-> +		rcu_read_lock();
-> +		if (!find_vpid(monitored_pids[i])) {
-> +			rcu_read_unlock();
-> +			continue;
-> +		}
-> +
-> +		rcu_read_unlock();
-> +
-> +		list_for_each_entry_safe(monitored_task, tmp, monitored_tasks, list) {
-
-Please wrap lines for the 80 columns limit.
-
-> +			if (monitored_task->pid == monitored_pids[i]) {
-> +				list_move(&monitored_task->list, monitored_tasks);
-> +				found = true;
-> +				break;
-> +			}
-> +		}
-> +		if (!found) {
-> +			err = add_monitored_task(monitored_pids[i], monitored_tasks);
-> +			/* Skip failed tasks */
-> +			if (err)
-> +				continue;
-> +		}
-> +		i++;
-> +	}
-> +
-> +	i = 0;
-> +	list_for_each_entry_safe(monitored_task, tmp, monitored_tasks, list) {
-> +		i++;
-> +		if (i <= num_monitored_pids)
-> +			continue;
-> +
-> +		err = damon_stop(&monitored_task->ctx, 1);
-> +		damon_destroy_ctx(monitored_task->ctx);
-> +		list_del(&monitored_task->list);
-> +		kfree(monitored_task);
-> +	}
-> +
-> +	commit_inputs = false;
-> +	return err;
-> +}
-> +
-> +static int damon_manager_monitor_thread(void *data)
-> +{
-> +	int err = 0;
-> +	int i;
-> +	struct hugepage_task *entry, *tmp;
-> +
-> +	LIST_HEAD(monitored_tasks);
-> +
-> +	for (i = 0; i < MAX_MONITORED_PIDS; i++) {
-> +		if (!monitored_pids[i])
-> +			break;
-> +
-> +		rcu_read_lock();
-> +		if (!find_vpid(monitored_pids[i])) {
-> +			rcu_read_unlock();
-> +			continue;
-> +		}
-> +		rcu_read_unlock();
-> +
-> +		add_monitored_task(monitored_pids[i], &monitored_tasks);
-> +	}
-> +
-> +
-> +	while (!kthread_should_stop()) {
-> +		schedule_timeout_idle(usecs_to_jiffies(monitor_period));
-> +		err = damon_hugepage_handle_commit_inputs(&monitored_tasks);
-> +		if (err)
-> +			break;
-> +	}
-> +
-> +	list_for_each_entry_safe(entry, tmp, &monitored_tasks, list) {
-> +		err = damon_stop(&entry->ctx, 1);
-> +		damon_destroy_ctx(entry->ctx);
-> +	}
-> +
-> +	for (int i = 0; i < MAX_MONITORED_PIDS;) {
-
-You can just resue i after initializing here, instead of defining it again.
-
-> +		monitored_pids[i] = 0;
-> +		i++;
-> +	}
-> +	return err;
-> +}
-> +
-> +static int damon_hugepage_start_monitor_thread(void)
-> +{
-> +	num_monitored_pids = 0;
-> +	monitor_thread = kthread_create(damon_manager_monitor_thread, NULL,
-> +				 "damon_dynamic");
-> +
-> +	if (IS_ERR(monitor_thread))
-> +		return PTR_ERR(monitor_thread);
-> +
-> +	wake_up_process(monitor_thread);
-> +	return 0;
-> +}
-> +
-> +static int damon_hugepage_turn(bool on)
-> +{
-> +	int err = 0;
-> +
-> +	mutex_lock(&enable_disable_lock);
-> +	if (!on) {
-> +		if (monitor_thread) {
-> +			kthread_stop(monitor_thread);
-> +			monitor_thread = NULL;
-> +		}
-> +		goto out;
-> +	}
-> +	err = damon_hugepage_start_monitor_thread();
-> +out:
-> +	mutex_unlock(&enable_disable_lock);
-> +	return err;
-> +}
-> +
-> +static int damon_hugepage_enabled_store(const char *val,
-> +				const struct kernel_param *kp)
-> +{
-> +	bool is_enabled = enabled;
-> +	bool enable;
-> +	int err;
-> +
-> +	err = kstrtobool(val, &enable);
-> +	if (err)
-> +		return err;
-> +
-> +	if (is_enabled == enable)
-> +		return 0;
-> +
-> +	err = damon_hugepage_turn(enable);
-> +	if (err)
-> +		return err;
-> +
-> +	enabled = enable;
-> +	return err;
-> +}
-> +
-> +static const struct kernel_param_ops enabled_param_ops = {
-> +	.set = damon_hugepage_enabled_store,
-> +	.get = param_get_bool,
-> +};
-> +
-> +module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
-> +MODULE_PARM_DESC(enabled,
-> +	"Enable or disable DAMON_DYNAMIC_HUGEPAGES (default: disabled)");
-
-s/DYNAMIC_// ?
-
-> +
-> +static int __init damon_hugepage_init(void)
-> +{
-> +	int err;
-> +
-> +	/* 'enabled' has set before this function, probably via command line */
-> +	if (enabled)
-> +		err = damon_hugepage_turn(true);
-> +
-> +	if (err && enabled)
-> +		enabled = false;
-> +	return err;
-> +}
-> +
-> +module_init(damon_hugepage_init);
-> -- 
-> 2.43.0
-
-[1] https://lore.kernel.org/00aa6914-8e52-49a2-9875-588efc096c5e@huawei-partners.com
+ /* The page is mapped across page table boundary */
 
 
-Thanks,
-SJ
+Thanks
+Barry
 
