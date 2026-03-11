@@ -4,126 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 038D3104BEDB
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02C91104C001
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FFEA6B0005; Wed, 11 Mar 2026 06:43:32 -0400 (EDT)
+	id 217276B0089; Wed, 11 Mar 2026 06:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ADFA6B0089; Wed, 11 Mar 2026 06:43:32 -0400 (EDT)
+	id 1C4C06B008A; Wed, 11 Mar 2026 06:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEEA46B008A; Wed, 11 Mar 2026 06:43:31 -0400 (EDT)
+	id 0A6286B008C; Wed, 11 Mar 2026 06:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C92576B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:43:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8271E1A073C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:43:31 +0000 (UTC)
-X-FDA: 84533445822.04.F85C42D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3389E160008
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:43:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PklujyXJ;
-	spf=pass (imf08.hostedemail.com: domain of minlei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=minlei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D68346B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:45:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 694671B896A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:45:59 +0000 (UTC)
+X-FDA: 84533452038.03.8BFDE7D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AFA01180009
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:45:57 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OpPNZqf5;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773225809;
+	s=arc-20220608; t=1773225957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Xjw8yXZWjS7rmwloovrXF0TGyPb8EZi/Ah7SDvpbN0=;
-	b=u6ZpOLpbtLyrG2H71JcCxye4Ba6r63TyKDGuOH+JBzY57v/URNS/juRaziZ5C9ICRoqs5F
-	G6IxXlSveqALMEFcwSnOBxwfwtytT8e1jsBjQUhm6lBjVVEdL2BWlRyswmyZjOLkbQnZ6f
-	Dtl/Y9w3gyzAzZIgmxNwORvYpoPx50A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773225809; a=rsa-sha256;
+	bh=M7Ch0jEkUeaMt35ROrcluzgUTMynhreVy4fnfUChxBQ=;
+	b=AlEI7IcYH2gxFAolqSKLG3Q02umFzg5xS/OmTkjTwNtJKcpkz1sDkIeALAdcTSz2Aw3vKp
+	C9SeEej2XVyLooF6BrROQjoEhMI7RGgjxuG9zeK57KmoyqIHis/gNgZJRdTJXFDFCLBi1M
+	TJyACCOV7M7TgX8iREiJD4Yo0LH3HkY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773225957; a=rsa-sha256;
 	cv=none;
-	b=PKcKO35NfPZhvVsmcKIQQXl81Eo74IBRr1mW8HHVTIUWZt3uRgAwvvYcUOWXe2rvYy7rzh
-	WG/9RztpXRBSR/MIQFMpeCv5vhMuo/+Z/EU0SLIhrmiKsahe8XUlCwy6IQl95Je1Mf6M/B
-	K7IXhu6O8q9eBFf/IJ3hiAjICrvYwQ0=
+	b=kb3bAjap+TG3JGvjFCl9rN86+liWs5sDzYs41jCYWsj5QmL1zjLWolkFVECBP8u3niRD2+
+	fHRZ/EC2ZJzNbEnC9YpWVka6IRIzQKKzfC92XhpNpQQofqNgSugFGMv5nHGixCBuGxGQRE
+	BjnxAJtdKLPXMY4kvKW5b1x3wle+imI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PklujyXJ;
-	spf=pass (imf08.hostedemail.com: domain of minlei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=minlei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773225808;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6Xjw8yXZWjS7rmwloovrXF0TGyPb8EZi/Ah7SDvpbN0=;
-	b=PklujyXJYSQ1h7jaMy1HuO1CiVJI1MsgCYXT+8msyYNgBKFX9SeUYjnpGDeMIIUYc64WSn
-	hakNNosFYb6OsI5AQub7Yta8PVMKZg9bF61SllZLhceMq/+Oq4Vdnyh3gWiw+4ERcuQo3G
-	g5+nH09oevUzj3tEk/XjwGsHUnaEWkc=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-3dYXyzt2OcqBJOJV7GKSkQ-1; Wed, 11 Mar 2026 06:43:27 -0400
-X-MC-Unique: 3dYXyzt2OcqBJOJV7GKSkQ-1
-X-Mimecast-MFC-AGG-ID: 3dYXyzt2OcqBJOJV7GKSkQ_1773225807
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-9483c030e3bso11933966241.1
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:43:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773225806; x=1773830606;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6Xjw8yXZWjS7rmwloovrXF0TGyPb8EZi/Ah7SDvpbN0=;
-        b=HSF4LTvjBXUcA3pSkYdIJNpDni5YYsN3kEYFcBeMEHA9ckfDMmch9MND+VU4+GQDhX
-         3sU7N2DQzjnu74QfWOxG9rrfk+U6+L1cwhwphTmldx5FseSPIqHvpVTSvQoscKx4XOGU
-         TFJGRiLwKCx+UfbvgL+3qJN1YzOpk37PJlljmx4b91dOz2a5JTcmhQCSd+0hNdGh4RFN
-         xCDY+1+1XqLzRhjG2u/0uVf1H2XEKg2ZPVCl3yAKZy06eyqjAARLhl7/Rw0EL1OUm3dy
-         ta3SuMjZp3LNXm7dFeS5DJRTBDuqklBoECtz69MAu+c7GG+JuvP6C7VXT2Lc4XteBqpp
-         p3Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaG7sapENZLYeLc+Xth5tdwtj4/MoL5mTqPrSW73BkhHKga1Bmn5QsQ6kv6RSK/FCI7hMvEE8ETg==@kvack.org
-X-Gm-Message-State: AOJu0YxkOk1g1zp+QTrCJMLwDP9h+fH2hq9817/FWSpfTK1NKuugZ6V0
-	mX7OqUN3L7Ue09+OxNasiGSuHXztv4whl3wf6SwQvWJMNfQDDPewafWwdWtK+VhpU0xCtxQERxv
-	/omLaS62Dd0IJVgb4rAfh1hzMSyI7HOGo/UO+B6oK4DFwRAU2OJEbTNKFyqp/Zr1bJOuALrmMOm
-	0nDePYGDE0nIhUuI1azLvwONJ1vP8=
-X-Gm-Gg: ATEYQzwpNiSVuLg6p9sQmFmRXsqtnOKH2cY2hlTv+UM5C/aEZobabgZ77OLbIhatcAZ
-	1F9NZjuzXS4Ja1gvIqKi1parrtL85CnaM4wl8qCDu0mXROiVYBDrP2gBwQ2c5f+fEAsdOaGgIOY
-	9ChlhFVALhQqvOb/RtWaFfONjgMMPdlNgIxVAic9SDhyj4XZKZaRMYoVgdMD1YVavOVC3UdQksA
-	KD+wpPZ0p0YH29/Ag4l6YThlhBPSyrlfIi7mDU=
-X-Received: by 2002:a05:6102:6ca:b0:5ff:bbc1:50a7 with SMTP id ada2fe7eead31-601df72aa68mr781425137.15.1773225805993;
-        Wed, 11 Mar 2026 03:43:25 -0700 (PDT)
-X-Received: by 2002:a05:6102:6ca:b0:5ff:bbc1:50a7 with SMTP id
- ada2fe7eead31-601df72aa68mr781415137.15.1773225805639; Wed, 11 Mar 2026
- 03:43:25 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OpPNZqf5;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0392D6013E;
+	Wed, 11 Mar 2026 10:45:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D805CC4CEF7;
+	Wed, 11 Mar 2026 10:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773225956;
+	bh=IFPP8xL/tyriR55iyTpoF7cQe6VFY5o0GCPBN3AxF4Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OpPNZqf52sw1+ys4j6//RMTYfTxUs+fksOxNdTQIvRjACvzEw/MbBmu1rMdts4EfE
+	 HR3aF9xIow9QKz1UpWeNS52ACh1bQflI3fU6rOaYeRdKuhUBUYXJA6QAXWG2UPCwoK
+	 SIHRj1skIUxdMMEhTPPk0IVqWDgjMBq5Wh0064yVsx9n4ikeQ+WViyZAVXyFLD1EGT
+	 UKztsBIdcNz2qc2QVzWnz9ozpRk/veaabyvZqRUPAzS3lyJmhGyB/suJUs7udMtGp9
+	 8kB3Bf9fmcoGQNCfExhPW93R7LIiBwsJrP0S4JAwkXtHWYbnpdAgQ5B03jeSUgtdI9
+	 1yQ0dYhItV4oA==
+Message-ID: <d7f3c613-92f5-4400-812e-a368bee45a41@kernel.org>
+Date: Wed, 11 Mar 2026 11:45:52 +0100
 MIME-Version: 1.0
-References: <aZ0SbIqaIkwoW2mB@fedora> <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
- <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org> <aZ7BbosIr2FvZFAe@fedora>
- <c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org> <aapeVb_L5zohWRRe@hyeyoo>
- <d5cd4eb4-1703-41af-9c71-842ae33edbdf@kernel.org> <aaqq7YmUcOht3GWH@fedora>
- <abDA9UrJBT1wXh22@hyeyoo> <abFA17ZmsW6RgcYI@fedora>
-In-Reply-To: <abFA17ZmsW6RgcYI@fedora>
-From: Ming Lei <ming.lei@redhat.com>
-Date: Wed, 11 Mar 2026 18:43:14 +0800
-X-Gm-Features: AaiRm506C_nISMUep0Od2dqpUzuzhQzDUy4U2M3p2Tx9SR_kxDokMrc0Dva4Nao
-Message-ID: <CAFj5m9KutWuGfPN4cfAd-CjFNTCC+fLw0DtMsFFQrRBEeK-8LQ@mail.gmail.com>
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	Hao Li <hao.li@linux.dev>, Christoph Hellwig <hch@infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 17ENYYbK2swAQ-7tnOI-ky1_VcoST3OFxJ7UR3UAOcw_1773225807
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
+To: "Boone, Max" <mboone@akamai.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
+ "Pelland, Matt" <mpelland@akamai.com>
+References: <20260309174949.2514565-1-mboone@akamai.com>
+ <20260309174949.2514565-2-mboone@akamai.com>
+ <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
+ <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
+ <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
+ <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
+ <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
+ <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
+ <5fb9beef-b6fe-401a-aa24-aade48b795d4@kernel.org>
+ <0A734214-9E4B-4A65-AFB1-055883639358@akamai.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <0A734214-9E4B-4A65-AFB1-055883639358@akamai.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 16rkjgm7tg5pcidhn5m56yb5umezd9kb
 X-Rspam-User: 
-X-Stat-Signature: 44w1hxw1xyuz48rywpuh5pre69cr7ioc
-X-Rspamd-Queue-Id: 3389E160008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773225809-604063
-X-HE-Meta: U2FsdGVkX19Cs9wlRkKwXQ8ABgxhUYYOotciz1p5oVnOM+8+RAY9DnFO66aLfkNzEKT/Aq0bNgoi+bfC9k4UoSj0Q5WpIxOVTbiEvruE7GPikz7ZNx8iYIVJiYpbeQ04urdjihlhW5iVyVNBKOF9C4Urvq67+Liad0tYpNurAWgnb6JY8rWwczDpDekNuS4a6S54gNHd59Pc8equjLUwtTXQwVC1IYXr6WX/oWlZTWCJGAI81pDWitBQmPcIqVkkKGEvT0kLxx2RYRthm5vfv6izZPSTgw3551vDTVeCJXGFEpvtYXJZpQ3hHiy+8T662S6un2O0a+ikVkaqdYVtHif7msHWkbXBi4av3lOfdwDH65XwOl03yL8Fq6fOSqbKp1FuyNfosr2znWABL4d2lQbRKuF5gV08qGn8NqZHqe/ZOCX66GzC1pIOuRINW6Vws/hSYsevv1Pu14Q81LIzMWrWSN828dhiF2ssAfdYeEengKxjuLi6b+6efXKdjQLLAskE3QXshD9IqBvTVv/NrK/H/WcJsqvDa3HmfRyaSTiMBJNMWBsvTV+Jh8EUEKBfPAgALHmH63y47F3/1bRKrjwUWlXWBp1gCy6Zuto8QHfVh0zNziiWHSN98Y7ECMOhqzmRefYVhw64yfftNGGGukgoT1NB49zp8wEhJzP8PeFrvCtc5Ziwi00NLFfxHqad5qEoIHS5pkbqu7ZF2WWqih+cyNIC4yLSrL6xkN/swxzCTZpr628m7MXL6LXEeNAbTwltmshqG74y7IKnQGs07nXLRp79qA5yhrDRIa3QTrlS8qUqO6h5FC4kZdV+iEeg68qV6jtKFfcKb+3/tat4cXMpaTW0AIHz3g/MS+CGzc8z+lHJTUcVlYU5N1cQzVjWPdbKFZ0phWJ2Z6weqLboAINDlYUqC4MwsR75PIKHZ7eLhNMbOJIOuDOtO4dove8wrzn0orW0Aeu0Reknh5p
- fEvS60kb
- XgcaIN3zP7cyU/n5ZOeK8Sh7HUfus6oD+dPGB6zVI3SoBqlHhXBO71KCaXnilFgYKAMj5Un97EqqQ+LqPy/rrSxLBgYT6959P8e2lZhL/IxIWvnIup5mTSZkm2bw+uZeJpGLhI/J3B5Jh+Fl7t4A+FKFdblW87VMxmsQt6bpM7I6xN7jwH07B2VJSiaVoK6q3MSRJpb1f/t51DmRs8CDpNKHeV+OKlwOcGoML07Selpx6qHDtI2+h36J78VFs3nbBHQXgYS16mj4W3FO6PSzYbKM7EsJdxpH3oKmleWFYNMTVmGl2ZBvibkx9bueZiqhC4mgR3JRQtt0n34KLipP+oZU+N09+EYS0bwzw8C5KKPsykCaERkVh2AckgMNBixpqApg0vwyTQlSHP2jbf+bACmrvK6UERG/NhcOAZRwqZ/qq6WMUuBAKy6bOWDnnBvLAU1I+2PuAFQcpj64RcXh/gdT8t62e+J272ibq
+X-Rspamd-Queue-Id: AFA01180009
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773225957-877029
+X-HE-Meta: U2FsdGVkX19aImH3wpqvNabFzF5Fxkmlg4HdLzzJTqqfT/vjCJFLWanr4FkgsHrnCA9I78DtsnO/bc91q8YOUFraLI0vAXqqEDPfqFy55K+8SUA6BMVc3YTuIRhADYfqrnGsbViAU39MamLJVzb0HqdH0btEAs5qQpKXD58bzaeIWv2qYZnenVMnYDM48XxJiCo0MFmIYhylVgE8fD4MEU6fvefisij9PPLptWeD+R4ZXdXm1iUV3ie/ikJFIcgGAM0QHO6cr4ie/vYHzEv5ecbjX04uCDpAvpPOUHTmX2WPqaP0o27yUG+nFjo2ZrpDPsm4N/Ihk84SCxLUB1s6MMBuycctNu85YCp1vaPbvGo9HkXAmjlvHd/j9HyQPO1ctvheMPvMxiAC4pjCm6FGWeSHy4hSTIiewHL5b1ZE2V9Zb8QBn5jwQ/yDD0GXLzVaH+rnh8drhtMYC8dlktCdWrsWmeRMDWgPhL0b4/Oyq5H+9ehU0g4Gi4jzY9DBCG2BSQY2TCrXT+Z4gDLNuku3C7jeJfj5eWD8SBOZnjQS3zoElNyJv7qHqTcb2JH9XJ/CclKG0kfDp+Z7HV//sSH5OVZiEA/SPlB5ggWhTmPQHE8hydZQIjwNtaZW/TmFb2joEp7DdGBZyyr8bEp7ydwIOmSuEm3SMPLtiTqll4Gi9mr5p7dTKCBgxTCgJQ2n8mskOUUm0IZLUt8WACLk5Pc3zP4lezLFCtj8IhrsildbnVDZe3WUuAwI3Pp9eZbj/C/Q/3jdTuRBixgHgQNwi9xpVQSRIywUirgfU5lhXnuB0S+LQ9id7YYY1gKAt/30V7riBzAMgtv6+iR2XeQsZaofFBiYIAVoeIwmubuiN+IDUfaUfwzqe91UXGnLhK5BoNNI/E33nwB6DFCAkhfBff5ehC0HsU1qKBVZ2yF+B81pb9sncnoenhxDpyhQML693m9eJ55kc+Q809DppphOOhm
+ qOVwkvBN
+ yEeKn1d0XqBIeSpRmjGdDaJhFxwAhxucv9DHz/VVovH811snCK5OtnMAoyyJJypClXQzWomgI0HLaKJs8V9QEmsYMBjRw/1mwbomkwphjsZIlai/6xHEXRzaqvfHYCHZHU/i8xLQSJIeI2Y2NjqnC364FukI4LxPOZhPl8K3MKHk9AGzGET6oOwg2QI5/GpnraVrdZXoxmBoxAQ70PNmB6QLESxNeZlGIO9P8FANGLMwlRO4yx8ePPa3JTSZ+GX3bll39GC+CqU3r/0Yi3sTtT8Vwftej8L28SmgXvTDO5WB40B8/H6tGacQMoHZINzsOT1XRFBhf1mMGm+DfY9hc4l5Q5U0WDLeNxc8U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,168 +155,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 6:16=E2=80=AFPM Ming Lei <ming.lei@redhat.com> wrot=
-e:
->
-> On Wed, Mar 11, 2026 at 10:10:13AM +0900, Harry Yoo wrote:
-> > On Fri, Mar 06, 2026 at 06:22:37PM +0800, Ming Lei wrote:
-> > > On Fri, Mar 06, 2026 at 09:47:27AM +0100, Vlastimil Babka (SUSE) wrot=
-e:
-> > > > On 3/6/26 05:55, Harry Yoo wrote:
-> > > > > On Thu, Feb 26, 2026 at 07:02:11PM +0100, Vlastimil Babka (SUSE) =
-wrote:
-> > > > >> On 2/25/26 10:31, Ming Lei wrote:
-> > > > >> > Hi Vlastimil,
-> > > > >> >
-> > > > >> > On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUS=
-E) wrote:
-> > > > >> >> On 2/24/26 21:27, Vlastimil Babka wrote:
-> > > > >> >> >
-> > > > >> >> > It made sense to me not to refill sheaves when we can't rec=
-laim, but I
-> > > > >> >> > didn't anticipate this interaction with mempools. We could =
-change them
-> > > > >> >> > but there might be others using a similar pattern. Maybe it=
- would be for
-> > > > >> >> > the best to just drop that heuristic from __pcs_replace_emp=
-ty_main()
-> > > > >> >> > (but carefully as some deadlock avoidance depends on it, we=
- might need
-> > > > >> >> > to e.g. replace it with gfpflags_allow_spinning()). I'll se=
-nd a patch
-> > > > >> >> > tomorrow to test this theory, unless someone beats me to it=
- (feel free to).
-> > > > >> >> Could you try this then, please? Thanks!
-> > > > >> >
-> > > > >> > Thanks for working on this issue!
-> > > > >> >
-> > > > >> > Unfortunately the patch doesn't make a difference on IOPS in t=
-he perf test,
-> > > > >> > follows the collected perf profile on linus tree(basically 7.0=
--rc1 with your patch):
-> > > > >>
-> > > > >> what about this patch in addition to the previous one? Thanks.
-> > > > >>
-> > > > >> ----8<----
-> > > > >> From d3e8118c078996d1372a9f89285179d93971fdb2 Mon Sep 17 00:00:0=
-0 2001
-> > > > >> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-> > > > >> Date: Thu, 26 Feb 2026 18:59:56 +0100
-> > > > >> Subject: [PATCH] mm/slab: put barn on every online node
-> > > > >>
-> > > > >> Including memoryless nodes.
-> > > > >>
-> > > > >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > > > >> ---
-> > > > >
-> > > > > Just taking a quick grasp...
-> > > > >
-> > > > >> @@ -6121,7 +6122,8 @@ void slab_free(struct kmem_cache *s, struc=
-t slab *slab, void *object,
-> > > > >>        if (unlikely(!slab_free_hook(s, object, slab_want_init_on=
-_free(s), false)))
-> > > > >>                return;
-> > > > >>
-> > > > >> -      if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) =3D=
-=3D numa_mem_id())
-> > > > >> +      if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) =
-=3D=3D numa_mem_id())
-> > > > >> +                      || !node_isset(slab_nid(slab), slab_nodes=
-))
-> > > > >
-> > > > > I think you intended !node_isset(numa_mem_id(), slab_nodes)?
-> > > > >
-> > > > > "Skip freeing to pcs if it's remote free, but memoryless nodes is
-> > > > >  an exception".
-> > > >
-> > > > Indeed, thanks! Ming, could you retry with that fixed up please?
-> > >
-> > > After applying the following change, IOPS is ~25M:
-> > >
-> > > - delta change on the two patches
-> > >
-> > > diff --git a/mm/slub.c b/mm/slub.c
-> > > index 085fe49eec68..56fe8bd956c0 100644
-> > > --- a/mm/slub.c
-> > > +++ b/mm/slub.c
-> > > @@ -6142,7 +6142,7 @@ void slab_free(struct kmem_cache *s, struct sla=
-b *slab, void *object,
-> > >                 return;
-> > >
-> > >         if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) =3D=3D=
- numa_mem_id())
-> > > -                       || !node_isset(slab_nid(slab), slab_nodes))
-> > > +                       || !node_isset(numa_mem_id(), slab_nodes))
-> > >             && likely(!slab_test_pfmemalloc(slab))) {
-> > >                 if (likely(free_to_pcs(s, object, true)))
-> > >                         return;
-> > >
-> >
-> > Hi Ming, thanks a lot for helping testing!
-> >
-> > The stats look quite fine to me, but we're still seeing suboptimal IOPS=
-.
-> >
-> > > - slab stat on patched `815c8e35511d Merge branch 'slab/for-7.0/sheav=
-es' into slab/for-next`
-> >
-> > Does that doesn't include Vlastimil's (fb1091febd66 mm/slab: allow shea=
-f
-> > refill if blocking is not allowed)?
->
-> No, because fb1091febd66 isn't included into `815c8e35511d Merge branch
-> 'slab/for-7.0/sheaves'.
->
-> >
-> > Next time when testing it, could you please test on top of 7.0-rc3 w/
-> > the memoryless node patch (w/ the delta above) applied?
->
-> IOPS is same between `815c8e35511d Merge branch 'slab/for-7.0/sheaves' in=
-to slab/for-next`
-> and 7.0-rc3 with the two patches.
->
-> IMO, it should be more easier to compare & investigate by focusing on
-> 815c8e35511d, given there is only 41 patches between v6.19-rc5 and
-> commit 815c8e35511d.
->
-> >
-> > Also, let us check a few things...
-> >
-> > 1) Does bumping up sheaf capacity change the slab stats & IOPS?
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 0c906fefc31b..5207279417e2 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -7611,13 +7611,13 @@ static unsigned int calculate_sheaf_capacity(st=
-ruct kmem_cache *s,
-> >        * should result in similar lock contention (barn or list_lock)
-> >        */
-> >       if (s->size >=3D PAGE_SIZE)
-> > -             capacity =3D 4;
-> > +             capacity =3D 6;
-> >       else if (s->size >=3D 1024)
-> > -             capacity =3D 12;
-> > +             capacity =3D 24;
-> >       else if (s->size >=3D 256)
-> > -             capacity =3D 26;
-> > +             capacity =3D 52;
-> >       else
-> > -             capacity =3D 60;
-> > +             capacity =3D 120;
-> >
-> >       /* Increment capacity to make sheaf exactly a kmalloc size bucket=
- */
-> >       size =3D struct_size_t(struct slab_sheaf, objects, capacity);
->
-> IOPS can be increased from 24M to 29M with this patch, against 7.0-rc3 wi=
-th
-> Vlastimil's today patchset.
+On 3/11/26 11:34, Boone, Max wrote:
+> 
+> 
+>> On Mar 11, 2026, at 10:59 AM, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> !-------------------------------------------------------------------|
+>>  This Message Is From an External Sender
+>>  This message came from outside your organization.
+>> |-------------------------------------------------------------------!
+>>
+>>> The -EINVAL originates from:
+>>>
+>>> vfio_dma_do_map -> vfio_pin_map_dma -> vfio_pin_pages_remote
+>>> -> vaddr_get_pfns -> pin_user_pages_remote (mm/gup.c)
+>>>
+>>> Possibly that’s also the origin of the concurrent PUD modification that requires
+>>> the retry in the walker in this patch.
+>>
+>> We'd have to find out why we manage to trigger a -EINVAL here. I don't
+>> see how anything that this patch does could trigger that. So maybe a
+>> problem in user space? (calling it on unsupported VMAs?).
+>>
+> 
+> It looks like I was mistaken the EINVAL being from pin_user_pages_remote, 
+> rather it originates from:
+> 
+> vfio_dma_do_map
+>   -> vfio_pin_map_dma
+>     -> vfio_pin_pages_remote
+>       -> vaddr_get_pfns
+>         -> follow_fault_pfn
+>           -> follow_pfnmap_start (mm/memory.c)
+> 
+> In vfio_iommu_type1.c, follow_fault_pfn first checks whether follow_pfnmap_start
+> returns an error; if it does, it calls fixup_user_fault to fault the mapping in and then 
+> retries follow_pfnmap_start to obtain the PFN.
+> 
+> Sounds to me that the walker is likely re-splitting the PUD entry between 
+> the fixup_user_fault and follow_pfnmap_start calls?
 
-BTW, the improvement looks unstable; sometimes it reaches 28=E2=80=9329M, b=
-ut sometimes
-it doesn't, just 25=E2=80=9326M.
+Could be. IIRC, there are also scenarios where handle_mm_fault() just
+returns success even though nothing was faulted in (e.g., when it
+detects some races).
 
-Thanks,
+The code in follow_fault_pfn() should likely be updated to handle more
+than one attempt. That's also what GUP does.
 
+Likely, follow_fault_pfn() was never taught about PFNMAP mappings that
+can be faulted+zapped (in the past they were always static).
+
+If you turn that into a (possibly) endless loop, does the problem go away?
+
+-- 
+Cheers,
+
+David
 
