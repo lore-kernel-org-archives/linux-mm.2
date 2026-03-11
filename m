@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18AABFD0651
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 14:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03D85FD0651
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 14:24:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30E776B0089; Wed, 11 Mar 2026 10:18:06 -0400 (EDT)
+	id EBAB26B0005; Wed, 11 Mar 2026 10:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D3A96B008A; Wed, 11 Mar 2026 10:18:06 -0400 (EDT)
+	id E68126B008C; Wed, 11 Mar 2026 10:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BF1B6B008C; Wed, 11 Mar 2026 10:18:06 -0400 (EDT)
+	id D499D6B0092; Wed, 11 Mar 2026 10:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EEC3A6B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:18:05 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8105B139CB9
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:18:05 +0000 (UTC)
-X-FDA: 84533986530.09.EEE13C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B70784000B
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:18:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJcweLKm;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B2C086B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:24:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3258E89716
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:24:58 +0000 (UTC)
+X-FDA: 84534003876.15.B168405
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2361FC0003
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:24:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z0y7nMAQ;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773238683;
+	s=arc-20220608; t=1773239096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AC2U3mmRonwdJEe9Za0niCObP4jB8XCHVibzx8Qg188=;
-	b=pugLHdAY9B1PXubLotBNal90AcuPBiKpoRo0DxJO5TbSR/R7Oy4GR+r3UCZvhlrzlh/OA1
-	Qqbas48tEK5Kw25uqZvwocu2kpdckSevOqF003Fn0q5q29fgx/K2Qh8zZda8gMQFmLUqZ1
-	J0illtp1OxqMlxRyUsj5VhwYfY9Qdmo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJcweLKm;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773238683; a=rsa-sha256;
+	bh=5Q6Luiv9qiVEnzjVEL5Hi88cV3Oz/GVyjOjLLRkZ23I=;
+	b=2e490rQFe4y4OEAmwfOeiIUCAy6ZuvQvuvsS8IEBHKUMwZmbVjgZgoUBDcRud0wocd+Zvf
+	aKtsgT/9uLYwdj3qtITcxXwkfeCOP0eoxgLqSMmSnkiezfXvD9h0bGaTVcPf1C8iVyO1/7
+	wF7xrFqATqbtQhcUORV2beEBW9wmHfQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773239096; a=rsa-sha256;
 	cv=none;
-	b=jPCqnY6KoQ4ESU8Chu/ezr9KpDeVrNuXztWF1lgAdBxviW7A47gJqLBT+sB2+5/LUWnhqs
-	DnbWhHypkwJqlGbvejFZ6w/nP3AzGAb1GLcq0hB5Eai0sP7CvWnwEtkL+GyBms6/Ho60PM
-	Dg4SCA5CZvmpyXQ0wIW9OjWEuNNjib8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C0438400FB;
-	Wed, 11 Mar 2026 14:18:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C25EC4CEF7;
-	Wed, 11 Mar 2026 14:18:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773238682;
-	bh=thMAcRBBlSWiPQMxkurkltMdIsa+zjOuygZaQbtIy1s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJcweLKm9pp8NQp9VuqHN9g8KhPIAgSKYkkfrCK91Dse76Jy5LNRsMJfgggHjy0WJ
-	 n+GgtNlQX1XEejWmDfSv4eh5QAFpi4qDOdZgkNn01QVPdoFDAc1K9wx5kBji1fRo1d
-	 zDe10WErzLLJjshSAEyqrIcJVt57pk7/pHxMJk0JnJ+69U44Uw7Q1oSM6fPCb/dlUo
-	 /Og7UF/JioKTYZ3ynhkxgylF0e631eLBsIeWimgQytJWU5CGOEcvuCLC2Mt1ETLSoF
-	 kN9hZihzKQlvGBFKRqJiSs6zCWZPbBx8I2mTPKzPr5PhV3hrIqOQUci0OCL3YBhHrd
-	 qV0POmeC7KNxA==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] mm/damon: Support for synchrounous huge pages collapse
-Date: Wed, 11 Mar 2026 07:17:53 -0700
-Message-ID: <20260311141753.96543-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <0c3068da-4dcb-4bc7-a762-2f529cb5abc2@huawei-partners.com>
-References: 
+	b=8LTuVqWtP0sPM4O35pwzcTqUk9sNAe1WgUHfodQGm53WKsi+Bpls5NW1jQhloAeOraa1L5
+	+7KaqjTe1aSgxqHlXgI/u7UG0ZYCCSxxEIbkU3iyr/0rECnovOTNqUHfKczcvyewxG+D78
+	KMAfdQ2d5zIUg6YRGeeBIWLgQcjnk+o=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z0y7nMAQ;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <eb83276f-60f0-47f4-b164-998a2f11e817@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773239093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Q6Luiv9qiVEnzjVEL5Hi88cV3Oz/GVyjOjLLRkZ23I=;
+	b=Z0y7nMAQf6k0KtZFyhCOdCaRdFaGhBDk8Zzp0CYUoTHhwh5K6vchZWkSxaYmfe9RFWyekQ
+	cMyM3G+r+YzYPmwgcXqTROWwZ/uPb3IaA2wgpFNFTGSjQBchnQYimWD+0plN110RChU0xz
+	yZUCkDQK+bvC5IyRqiLrs9L+2O8cKmM=
+Date: Wed, 11 Mar 2026 17:24:48 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B70784000B
-X-Stat-Signature: io7faqnmm3mea5sdiigzkgj6wz17stax
+Subject: Re: [PATCH] mm: migrate: transfer large_rmappable flag in
+ folio_migrate_flags()
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+ willy@infradead.org, linux-mm@kvack.org, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260311132342.3193160-1-usama.arif@linux.dev>
+ <46edc7f1-f97e-4ff3-bf11-a56feb8e33b4@kernel.org>
+ <1DA53E52-795E-4057-81F5-E39B85D7CF05@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <1DA53E52-795E-4057-81F5-E39B85D7CF05@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1773238683-415981
-X-HE-Meta: U2FsdGVkX1/11p+GluvgrOuhGRnpR3QTNDGisDRpSUc4pe7cVsD7S3u3Llmp4qsdzK+YdI+RNijbNUYYMTnGyGRGd/QE/Wf0kQQby+ezUTWDdPGoarUOH8pIUQWDCVgyWX68uFeI4ayDWW+vx9wPY9Djq1mmNq2HCL2cwyFhgbINw8le7YBJWzj2bD+sexGD0FolZNnL86JhOcw7E4bBF1VTSGU1mnthSZvAuw0+jERwp0ez6FNqxfne7emtRoQYNMG78BK0vD5DrwXV0f/Gm4rNHeIr4TlLBIHDF0WehExFIumf3fGaWeMh+AYfltpytE+M0XDGJVyeEzWgYtdWRIbBzPu9K2jkHaLm52aWEXEmNMEGwju06/q1jthDWn6nQcnuan1k6oIMDb6cBamDiLsEO/hXWsW6tj8QzDJs+PJ/CHJFRpqouCLaNCMVfG1edhA3q01gKYqn6NlirKAOL0R5/k8Gh1NEyV/t12y4wqiuBYCqhtjAFgPFZSo1jHdyYS4cqjE3V2p1k6VWSsS8Kl7QeVOnAJ9KG5wWVd8DgtgRvd1/gaFznNSLXi7ceDETFvlGixhn1Hc/06mpCxNOfO7DoN4gW4fTNdzaNi8PsA25gmC35IMPkomxWuxMuTcZiyUcDnBML3ZDqzradlmIzh5oHMFzp1VOm5xZQofc5o8AZPIWhBNoou+BZdpdIouPSaHx2QtZ/nNZWdNqwMymGogkawxSkHymErGNNgpVeVMC52GI7YSzjzjnW4m0mMCBJVRqTq7yoGtufZG+J/HFDrN96XJw866O0aX/9Az2blvAmfp9rS9KNFFSk7+OiJ9+La6VLK06S5DihI3RrH9dTvtgIdPlNdRXi9Wtb74bU/Zwsrzebep0tAc53zHFnWUwHIAmMZOolcKkCgRkGfox5l6KO7R1GqMmygXH0L8Apswmdyu7aKTxKmCBY5EYy74Zdgvog18UgLDPNwOX80d
- 5X16oaRD
- A8Vui4ThhrZrURtwdCv8XUMOYh7G2RPY92aWW8ty37ILvUU36cTW8JnIM1yPp/CkaXo6BzqZD0rgaQlBbqy47n1e9RMLxOUyN6TFYbj6xjGAezanrAfIReJ61lgdQpmkAL2Rp4bOBieR3G3tLj5h0c9hrKAifHWMp3j00SwZMHzTEpn3zHdE3lmy7NklvegldHGnyyUgDTMLuqaz+DmOPqsBrhlh2JMTgA2fDgsnOmh7Xnxf/ah8Ocxtz2EbdanF5tD2TP0yF6uBcFu94Ns0ifaeKqJZbcnIESHQaWVo1oRDc3X5ui4GvKlpnHQ==
+X-Stat-Signature: gmja3sye85neto8jb64q6ierf6bhcnfa
+X-Rspamd-Queue-Id: 2361FC0003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773239095-695320
+X-HE-Meta: U2FsdGVkX1834bI4HuKwCRG4EQoWNhgeeawzDD03qWR1eXRnrnYd73/gb4Hrv7FbMdWlWZAmUo3p9yZ8wiuJPMhWG/VK7jRgrhB8WilDKI8cak/jvGMSoROfhP5mkTqvEOCl7QRlO3ZrFmSb9ucce9ZsZaAulo+nwb188hEKaBuRIwP3yN+RtZCAdKijduPq8djgVQqrZy9jx40iIDDhc/j3IFbCFUsnfZ3yrpubp36EFVyxyf3ZZdrOEeamc9XP7X//C0L1PNuqiG+dWqa+6LuVQsmeBueLz/i/I3I9oOXCzaJnY0LYphXjQdVCmQO0vgRghx/tNji8QtmFIBNn2tpgocdnGC8I2W9uhMdf5VvgcjabsTm5KsNivVjWs6iJmH40Buej31PxiLgxp2d6CdEXeKeMGwRPp4YLysP27/YV90a3OKgFWdCn1zXlLmh/ZZhj4mE9O37xSsRB7W16SQmIEvd7zJz97c0ZuBoj4L2xUsCrYWnqRSwOA0vESFbJP0TDjDa9cWbbUzVbgH9W+fec+PAmEWo4egUMaawbV9NPsxFqW1u7OP5UPVgB/vH7/9/tAdiPsA51sWJ29aG9fEwFhprMImCQDwt/BRCb4EfrUokvX3nhTJluNYXTBrwRiWcOt9S+1pK7Iyz1SmAju1a4xBN04PHm5vpoSNgmm5MXAfPr582RT+29hYTzNwKXlYF7YljwuHxLL24gDSdIhbTTbMPmeyAPekz+FzUpEEBghaC/Zr5wRNEWMj45PNswhEMclTDFn8vAoRd5pfwhGYTfLhb9aevL9rtrHmvp61JRKAqe1Wp53MZ4+g9yXx3JU7U9aDlYOSNfqERgDtYmQLenBz5U+Z0k6v4Vq1boPcEbfKE1Gy8XmJSxRfcf+GMF/YICa2NZyTm3njTvxdkBdu85hLI7AQCtm5DZKxhxhI/4udoxDobK1IW0omW39U8uV/NXDghilzo3Kbf/v68
+ MZVuC4x1
+ TpfnjMEaAiAX0cYYq+upcrhs2bSDNN2n2sbrnAhg7xfVeH6OlUo5HgLHUQH4MQM7hL3UJlHTaXtPhnQnCwqKfZPKb+141KaOuKpC8Zmk9EaTnWHm8ShotCfzhYvCLQwAPIaFLYPjcG9Z2CksYL+vNs/NLp9M5AhsC3kvtmoILqjaUNu2jHdF9V0wlgS34F3Ss13KNiER27WTHEZpmex4hCVnfBdIb2c2y4t1cozN9xpcHP+I7Mfj019ESWTwO+Xzl8nu3zB4Th3UuhwnJPtV/vcLZ85kGP95FbxW0UOKWGSsq9ZLm+rJGRbhJ9Cdkg++TfLyieQDw3TO0Z8k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,32 +95,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Mar 2026 16:11:12 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
+
+On 11/03/2026 16:38, Zi Yan wrote:
+> On 11 Mar 2026, at 9:33, David Hildenbrand (Arm) wrote:
 > 
+>> On 3/11/26 14:23, Usama Arif wrote:
+>>> folio_migrate_flags() transfers folio state from source to destination
+>>> during migration, but does not transfer the large_rmappable flag.
+>>>
+>>> Migration allocators like alloc_migration_target() and
+>>> alloc_misplaced_dst_folio() use __folio_alloc() directly without
+>>> wrapping the result in page_rmappable_folio(), so the destination folio
+>>> never gets large_rmappable set.
+>>>
+>>> This becomes a problem when a folio on the deferred split queue is
+>>> migrated: the destination folio can be added to the deferred split queue
+>>> via deferred_split_folio() (which does not check large_rmappable), but
+>>> when the folio is later freed, folio_unqueue_deferred_split() bails out
+>>> early because large_rmappable is not set:
+>>>
+>>>   if (folio_order(folio) <= 1 || !folio_test_large_rmappable(folio))
+>>>       return false;
+>>>
+>>> This leaves a stale entry on the deferred split queue, leading to
+>>> use-after-free when the shrinker walks the list.
+>>>
+>>> Fix this by transferring large_rmappable in folio_migrate_flags(),
+>>> consistent with how all other folio flags are handled.
+>>>
+>>> Fixes: dafff3f4c850 ("mm: split underused THPs")
+>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>> ---
+>>>  mm/migrate.c | 3 +++
+>>>  1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index 3380021fd3db..ee1c7bc851dd 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -846,6 +846,9 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+>>>  	folio_copy_owner(newfolio, folio);
+>>>  	pgalloc_tag_swap(newfolio, folio);
+>>>
+>>> +	if (folio_test_large_rmappable(folio))
+>>> +		folio_set_large_rmappable(newfolio);
+>>> +
+>>>  	mem_cgroup_migrate(folio, newfolio);
+>>>  }
+>>>  EXPORT_SYMBOL(folio_migrate_flags);
+>>
+>> compaction_alloc_noprof() does the page_rmappable_folio() at the end.
+>>
+>> I'd assume that all migration allocation functions must take care of that.
+>>
+>> It's a responsibility of the folio allocation code, not folio migration
+>> code.
 > 
-> On 3/11/2026 4:02 AM, SeongJae Park wrote:
-> > On Tue, 10 Mar 2026 16:24:18 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> > 
-> > Please add more descriptions of the change, including the motivation.
-> > 
-> > I assume the motivation is similar to MADV_COLLAPSE that aims to make
-> > synchronous and therefore faster huge page collapsing impacts copared to
-> > MADV_HUGEPAGE?  It would be nice to make it clear here.  Also, if my assumption
-> > is not wrong, adding a test results showing the benefit of DAMOS_COLLAPSE over
-> > DAMOS_HUGEPAGE here would be nice.
+> I agree. The migration allocation function needs to give a folio or other
+> types of page matching the original one. Do we want to turn this into
+> a WARN to make sure newfolio matches folio's large_rmappable state?
 > 
-> You are right. I will make it more clear in the cover letter for the next
-> version.
 
-Sounds good.  But please add a brief commit message in addition to the subject
-here, too.  Some people complains blank commit message looks odd.
+hmm its done in compaction_alloc() and alloc_migration_target_by_mpol() but I
+dont see this being done in alloc_migration_target() and alloc_misplaced_dst_folio().
+I think alloc_misplaced_dst_folio() is used by NUMA balancing and alloc_migration_target()
+by hotplug and memory failure?
 
-
-Thanks,
-SJ
-
-[...]
+I am not very familiar with migration code, so maybe I am missing where its being done
+in these paths?
 
