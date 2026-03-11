@@ -4,101 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24961112588E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 20:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58D5C1125826
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 20:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D1B06B009B; Wed, 11 Mar 2026 16:19:58 -0400 (EDT)
+	id B5B5C6B00A5; Wed, 11 Mar 2026 16:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A6516B009D; Wed, 11 Mar 2026 16:19:58 -0400 (EDT)
+	id B05476B00A6; Wed, 11 Mar 2026 16:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E0276B009E; Wed, 11 Mar 2026 16:19:58 -0400 (EDT)
+	id 9FE366B00A7; Wed, 11 Mar 2026 16:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 399366B009B
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:19:58 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DABF48B75A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:19:57 +0000 (UTC)
-X-FDA: 84534898434.28.BD06FAC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E6F804000A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:19:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IiIVDxS/";
-	spf=pass (imf17.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB3C6B00A5
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:20:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33AB916039A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:20:42 +0000 (UTC)
+X-FDA: 84534900324.10.AF1BFA3
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 89BF1C0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:20:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mpNkqc7I;
+	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773260396;
+	s=arc-20220608; t=1773260440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4fkRrO1FIhf1XZUOOD2/4H4AAO3+yjDIWwnQVBW3QLc=;
-	b=naEp9o4iM6JBm2Ajoz0IM1GUUEeqGgX3xN4xqdGlpGHJ4jAqBjEYsUF+wQopNIIPCp2lzW
-	oZKY7m/vTYE4So55NM+lgtRDEkuXN5h5I6I3QIKU1l+VpWt5SH/yxMHwZ7OMzOk3ljopZz
-	YfE5xDbJOwIqUIGkKYNfff59+QwpodU=
+	bh=L3yE0fOt9QsxeZmuU8QoQzZqCv9ze5YFahl5XE1THs8=;
+	b=1YCOmzov9Sw4tJGKN87GzD2K0aWvu3j4vuby0ESBZI2weelOov4tlg1oSgiyylSQj4i7wO
+	kRNzyb/LbGQi0PBTokPjCucfqPiYjri45TKk/gp3NDMlWocRTu/2gx45PG+XZqMRUaMZvx
+	Hev8LX3DZ2qxQG8TbFyqi2oE9eq8nmk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IiIVDxS/";
-	spf=pass (imf17.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773260396; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mpNkqc7I;
+	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773260440; a=rsa-sha256;
 	cv=none;
-	b=u+u5bZn7iuXR0eaasV38IPh3Fz0FRWwdOwIuSr8NUV8mud8orl53DjZFruQRO6kQmzhWuQ
-	iPi9WTVunpZl57q1R8V27TAcSbT5mwhOz07JcBgGEOqEH+WmZnOPF4tfdEWMxm0byvpZer
-	43AFbYobX3dAuzRxFzwCQiDyFEtHi+4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A88464416A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:19:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89343C4AF09
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:19:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773260394;
-	bh=Pa2jL2apofSyxbio8rnUG2GbSKIL5k8URnG7ZyGge7k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IiIVDxS/a0quM8sXkb3+BEwJwyCZipD9xI4sUfSzdMuygf1qn8RLEMjY1dGhV1zAi
-	 iK/a3jClhSnzSax7jy7mne/oaT89N4DfPKWJbADyUqsEKEP0gyALW4uyTp49EZboAb
-	 A59P5lZgJhwfOjbmjb5ewa28Bx7v7QYtdEXGgNZOuNLJhMzafGSzg2XxVNqsoM7g9Z
-	 gcuyygEy1RIkJh/oGcdJfWjKbV1Q0ebKm515Jlx8M0ZT6rXKGA4Y0xllvmsTLXBxRZ
-	 wlqgCQpCHQ3G5PEZtDkh76y9Rzx+D69hDt81xa5c+zfVAknzFhfXOAFGE6/HUVxdXd
-	 t0rnnPMgUz6dg==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b9434f706a2so29096166b.1
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:19:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU9/78/+EEAbe73Qq7OSaIpW9GiiG5ehkmF0lOva/yJwmyhKf9HdiPm1jteprIBiEBrMiuEvia2GQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzgzr8cj4fLoOwessj6VLtUf5Mx9gOjWImE6pMTMjbWJO8UtUNX
-	vqXIK07b1hEhpkmbsWv3ubxTi/HWykD7hv/H2gOow9YuTcnN3KpZ7Hd6tso9b07HzZhQdcciYCA
-	Yo7bMDbBAJYo9mimlVQQIRZzimEVV18o=
-X-Received: by 2002:a17:907:da17:b0:b96:d6cd:29e6 with SMTP id
- a640c23a62f3a-b972e1b00e0mr194279666b.2.1773260393379; Wed, 11 Mar 2026
- 13:19:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260311195153.4013476-1-joshua.hahnjy@gmail.com>
- <20260311195153.4013476-4-joshua.hahnjy@gmail.com> <abHNog8CV0mWummY@cmpxchg.org>
-In-Reply-To: <abHNog8CV0mWummY@cmpxchg.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 11 Mar 2026 13:19:41 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPeL9j81bYMZ+8DGGj8KbUxh36RQXVwTxqHve_7nHV1JQ@mail.gmail.com>
-X-Gm-Features: AaiRm52cagu4YYiBOSaKEy5MarD058OxU_wI3U6DBSzp2_XvMZJFVYn8nici7_Q
-Message-ID: <CAO9r8zPeL9j81bYMZ+8DGGj8KbUxh36RQXVwTxqHve_7nHV1JQ@mail.gmail.com>
-Subject: Re: [PATCH 03/11] mm/zsmalloc: Introduce conditional memcg awareness
- to zs_pool
+	b=Si97hsDEpyldljmukUFzAe90FryQiOKIi95LVGzw4DP3kKEanMAuuqAWE2uA9mUsGGmr1x
+	wiWLWo0PGUJunRI/pTVHzBVyIKOABFnEKaCF4zeg26+l7BjokN9mvGD+KZFxGMWyy8jBHW
+	SeH5YkWiq3IpcuewNSv5ttjyOqJ32+8=
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-464bc03efd8so231865b6e.2
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:20:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773260439; x=1773865239; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L3yE0fOt9QsxeZmuU8QoQzZqCv9ze5YFahl5XE1THs8=;
+        b=mpNkqc7Ik6TSSbDFS6WUw8soNvUa8fzPvCqq4mJaQ9xTaWiGjf8FTsVmhj6g4Gh64o
+         3O15foKjIFVQl45mennlKexmHPJPXZgWm0hLS+1uzf9ITIRhbRNEa+TQifAaqZVUYhTQ
+         89F957yS9oCQENCThPcHovu2UzUjaNhSa+qp21ofK2FiWagQ/cNC+kuUm4ASOS98jD9h
+         O7hoXZNyT0YPE0x/wgQqP90BCj6w8nvoLVd6e4BrQdhU7cIZt4VtcmCfhka0n65WLC5U
+         Zd7J+NTMdp6mZ3aZa7IMiBzYMNUXFfoNalYDBLQ2tWN9zKC8Zpz2Fh1g6HT7sYEYnjc2
+         1yCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773260439; x=1773865239;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L3yE0fOt9QsxeZmuU8QoQzZqCv9ze5YFahl5XE1THs8=;
+        b=C94WbPzL/0WbwOPS2GNOaaH3+JiliB3+mHvHRH76D2W7QOuD8gX5Dj5y5120EXAVqs
+         VJHwPiN9tkrNXbRJxVjOHzSJ2B9MArOGUGcXFUic1D070bsOSUeCrVL6qaLXUIusgKUw
+         Rsszg/4h1bFslLd/lAUjrpD6dF5zU7TiCg4nVMsnXRPiMk+gfAlCtzU3NYQeDLSia7r0
+         oudUTgoKWCh+KWmK0tFvhYDdlc8wfhOz8Co+hSdXq14GUTY/2siY5wJPXrHm1R6chDEC
+         CQfar2tUtupBz29dWThVhSaIPfj3yVbqrGAcJXYjs0oEcH2ug7gmPtd0iaOO9Njod35h
+         hrvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ5Njh2k2bwXcaLhJ72RR8o2PP9AQh/2Hc+4wspfFNuR04vP0I9xcyVsG/+/t8FmlttBmkAGAe7A==@kvack.org
+X-Gm-Message-State: AOJu0YyfrTeghD4xO/kpR4Oz2Zya+oni2HcndyNveCunkJY+rHGdurkK
+	TB8P07t8EmLCdJzM175OhbC7KgMnQuBgLFL34MgOucwIy0tbRRTYqUW0
+X-Gm-Gg: ATEYQzx3sY/qeQS1KHQ3PSLNSuf5MDPG/Z9pzoG4ujdt6yRi6bDKkzZszSfUT1o3eSZ
+	awYijdZ69kIJ5oJa5cAyb4sDHUx/nyaX+o8PU0BE12Lmq7FDFX7vpFXpkxVQddbbZBTl0NPIslE
+	e5SmE+h11cnxa9FiNs0x4nXs2A8zR9M4NWGtyL+4BC4eLDPwzXGRwvDuXoU61Y2I+rORo01GFqK
+	A/YOjQjgm9Jz2oEsLKqauzBnE+2r8YFTlDc28W/J+ztUDzSbqHPofB15KMWU/cgP/QC6UmCKxUz
+	EhQ8KxfO+rS6tyr3mZeITcy4lgRnS0cUBjKYa74iMgMExhIuXBWAlmpSvDFGqO5bpXFI/+wWGxx
+	BHijlvAqd4ExLNpYZduLxfeAUSI8aZpOS2YJsUwRTEZm4oCrg3cJvt+9G9hHbbCRfEcUdVhp7UG
+	lIpr7zkqBNKRH0LkIWS6MpGw==
+X-Received: by 2002:a05:6808:4f6b:b0:459:b569:702f with SMTP id 5614622812f47-46733431a6emr1950640b6e.15.1773260439503;
+        Wed, 11 Mar 2026 13:20:39 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:53::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-467342c0382sm1914583b6e.10.2026.03.11.13.20.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 13:20:38 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Nhat Pham <hoangnhat.pham@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <hoangnhat.pham@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ft5thouy3cbrry3ybbmf43cy8996twey
-X-Rspamd-Server: rspam09
+Subject: Re: [PATCH 03/11] mm/zsmalloc: Introduce conditional memcg awareness to zs_pool
+Date: Wed, 11 Mar 2026 13:20:37 -0700
+Message-ID: <20260311202037.265101-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <abHNog8CV0mWummY@cmpxchg.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E6F804000A
-X-HE-Tag: 1773260395-553989
-X-HE-Meta: U2FsdGVkX194mn35lscUPoZNNI5wMWJIrLOm+VY8oWCe1ANxjNCX7Fqv2ta4l3CfRubmLDHD9zMX6str15Eq5MI9EJAfzJdhzasgyV2HewaTdjHwa55Ib/ZQub7GijxECUG2xXKjDzCHaHQ+U4f0OohndF+M94QejhbB2cwetL0Cmn0h99cowzFFI2SUVzepmeIMBSV9AWopYwJfG23/xxGsbD2iiDb3u4i+RugpE0B+cM4nXQqIb+yiZ1m4W+kyuiLWfcr15gcScgqll0sItl4q3jnAnRBqnuJCl28B2NO4053b8niRCMi0+FenaE9Fm35YTWIsQl64cd8/wVisI5x6xu8vPjFeVpi/RKjGrvtXrGA/srBJBJFjS3PeVYwZ9hvxVZ5mloir5gGclaQ88/DTs7xK3BUGclelsGc3jeA6PDJzqCk42mAvOzu1JZmeBSQGnSnkqRt1xCT/iQlTpKpEmXRgb9U3cYken2cod6iUf9Wxp9SMdB0I4GWEU+Ms07UBeXBCazGls9f7mK7z9E+8PAkF+Fc4BoXlkGYp6rvMlwN5X00y2HyKqUdn+Rz315xInYgHShcsbE4gKK5lTbr9Fq0+Y8UfgmQuyG+2tZEq+B7+C9PMNA8yo09TaSM99rB6FjxDSsmrZJjEIiwttOt/hAjfxZHE6XHmqY7thD8/fWuVCoiba1wPkwhLA0PjAISKKHkIitqg5CmDGIme92xbh2pRdEMNFMJwsIQHjlwwBjnp30jVPCRTq9Z09InUAbk/DLeYfv2aViG9YUD9rqqeylBSvpMQy52Ie19H9sZ/JAKi36pYYcCUoy2w0bKpGm9LaqhJV1t3t3xN7SsDaNlYFs+2CaKcZ2LxlGjx01veYAhB7nkm9g00ypbMJS4ozn5uodq3GL3QJwj7DX98Z4y1NPkcpmgj+2SZrRNkWGNyrU4RAny3F4mum4KacbLTHM/MRo8cTX5hNAoVJoJ
- ynARVFkj
- 767O3uD1B75w5i+r/LNBf1+RPyop+f50ytqcR2ye5cjuMEwhZFrI2pP56Xn7ci8sq6UDeOGhE8K+3uolrnil0NdtNtl8t761BzGLOK20cDJuA/QQ9DH6l7FScv/yHbJvda34T7Puc4Dnfc1UzFpdKlc4dg6lmnwnja/6a53GyxpWO0uHP+ER7+4Rgq6KfMvINn0oYC+TCflb+SftEnhhAI5K1aukif55rULlgmPoNetgVvXeGiS4/zUzkX8DqWuZXizxUp3l78guDTH7mI2vSh5Z0hQZvxeTVESdNpo5LUtOZ7KUX9sK0Jg6GCas/+MC/S+dVBiFrjaU5g9fZJRqFO6auuyldKWBksRAGl+cy/vRfH7pIzMAlkAebP2zrvrKOrOAvyG6PhOH+92jVVQwJprtIwQ==
+X-Rspamd-Queue-Id: 89BF1C0005
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 7w48kcdnzyinjo3yh4r5r7utybuefkzs
+X-HE-Tag: 1773260440-711651
+X-HE-Meta: U2FsdGVkX18u6wPkXEZR6LF3bB9M5r5NFwVOtJruf+onZQB3t9OI5JLA2Hhjo3yA/GxyGC9fsQi7c6RMsGQrAmoS4hD/ub0fgP96oRoHLaxj9nRlUuslIQuMi3nyW0t+RTGVbMyrERXIIJUnmS4L+Y7evr4d1o7uqaVL0KhpmsJ4QPcXPptfrY4LyA/pwYw6dMc+QMrL0bQmqjX2ctp9y6TWmOqppWiyJAWouHZcgueysbBCsMjrs4SC0+G6V4fR8kQGr3K8xidPuJcKDK3lT3Fu6noWsC0a5cbaBsgALwcIhXIyPG6k/mNY+yNDg3xMel5PCKaKUJSAXwN0tpng4ou6vtNxVPULuDlxOJNNX/AtjboU+R2mcdsv60HCmm0xPBt3k4d+83uf+uLKkqgppwEbRgClmtuXHD4p1j741n27eKXeQIgKU5gupn9VBTmUz2NZmiNDd7jhnlRe5ND0hezU0EFgRdMj9HyLE8/ABrdB5F7veuPqLyHwfHgB+n/pxay5AbIv9t1logNCKasoR1vvb0q9jLOSgT66CrnJGzlt5LLKZ9Bvq/QU7Lfc9CpB5cX9zNkb/QAdhXqAlvyjXxjuc5IqCcNEXW4wZMAkdF0x+BrBPZHb9RZHlQzktvz2usmxYYekJAabiLG8b2MWIBNvEfiMvEtbOslY3fE2so8QItGVbaq4WsbtNE1gJskYiirfizhbZq6M1ltfkrpM05XdTIa5MD5TuAg72hKRyJ/RxelOtiTk/zcNRLwDIaiOR3KWzFWKTw5TZ5CjwmLkzD0Lyi+Q+zYUe/ym70wfgNEPhITlDcNCDp3THixlHdTkeMWSqfgViuONip1znJycAEpKYf95dvBtqw8NxvIxDMFTudDVK8GRV5TVFG+46Ds/VqfnEfKp0sDwEOz0NCxVFEiszpL0vPJbje4Fa4gBWowSTjhMdXqCUG2n7/2Bx8gfcVt+eBxVDaYyWFmwK5t
+ wnGDPwyv
+ hwv+9KuUun56qm1dZni0wxz7YCso+d0uKdJui0yVH3R0XdS4HlyjRp60UiwvNA1XafVFZp/NCDKOnQFD3RpYQ95b5aR9JoOTVHIQcNiaryBIKPJB1kaAsB6ExzMIZ2U5P2TIvkkaMqTz/tdh2PdwZQM7F+nHF19KPM57OFIALOy7/weTpaXliqaBndw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,44 +126,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 11 Mar 2026 16:16:34 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+
+> On Wed, Mar 11, 2026 at 12:51:40PM -0700, Joshua Hahn wrote:
+> > Introduce 3 new fields to struct zs_pool to allow individual zpools to
+> > be "memcg-aware": memcg_aware, compressed_stat, and uncompressed_stat.
+> > 
+> > memcg_aware is used in later patches to determine whether memory
+> > should be allocated to keep track of per-compresed object objgs.
+> > compressed_stat and uncompressed_stat are enum indices that point into
+> > memcg (node) stats that zsmalloc will account towards.
+> > 
+> > In reality, these fields help distinguish between the two users of
+> > zsmalloc, zswap and zram. The enum indices compressed_stat and
+> > uncompressed_stat are parametrized to minimize zswap-specific hardcoding
+> > in zsmalloc.
+> > 
+> > Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> >  drivers/block/zram/zram_drv.c |  3 ++-
+> >  include/linux/zsmalloc.h      |  5 ++++-
+> >  mm/zsmalloc.c                 | 13 ++++++++++++-
+> >  mm/zswap.c                    |  3 ++-
+> >  4 files changed, 20 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> > index bca33403fc8b..d1eae5c20df7 100644
+> > --- a/drivers/block/zram/zram_drv.c
+> > +++ b/drivers/block/zram/zram_drv.c
+> > @@ -1980,7 +1980,8 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+> >  	if (!zram->table)
+> >  		return false;
+> >  
+> > -	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
+> > +	/* zram does not support memcg accounting */
+> > +	zram->mem_pool = zs_create_pool(zram->disk->disk_name, false, 0, 0);
+
+Hello Johannes,
+
+Thank you for your review! I hope you are doing well : -)
+
 > It's a bit awkward that 0 is valid (MEMCG_SWAP). Plus you store these
 > values in every pool, even though they're always the same for all
 > zswap pools.
->
+
+Agreed. Originally I thought of removing memcg_aware and doing a bitwise
+OR check of the two stats, but thought this was also a bit strange
+(also because 0 is not a valid enum state for memcg_stat_item anyways)
+
 > How about:
->
+> 
 > /* zsmalloc.h */
 > struct zs_memcg_params {
->         enum memcg_stat_item compressed;
->         enum memcg_stat_item uncompressed;
+> 	enum memcg_stat_item compressed;
+> 	enum memcg_stat_item uncompressed;
 > };
 > struct zs_pool *zs_create_pool(const char *name, struct zs_memcg_params *memcg_params);
->
+> 
 > /* zswap.c */
 > static struct zs_memcg_params zswap_memcg_params = {
->         .compressed = MEMCG_ZSWAP_B,
->         .uncompressed = MEMCG_ZSWAPPED,
+> 	.compressed = MEMCG_ZSWAP_B,
+> 	.uncompressed = MEMCG_ZSWAPPED,
 > };
->
+> 
 > then pass &zswap_memcg_params from zswap and NULL from zram.
->
+> 
 > > @@ -2071,6 +2079,9 @@ struct zs_pool *zs_create_pool(const char *name)
-> >       rwlock_init(&pool->lock);
-> >       atomic_set(&pool->compaction_in_progress, 0);
-> >
-> > +     pool->memcg_aware = memcg_aware;
-> > +     pool->compressed_stat = compressed_stat;
-> > +     pool->uncompressed_stat = uncompressed_stat;
->
->         pool->memcg_params = memcg_params;
->
+> >  	rwlock_init(&pool->lock);
+> >  	atomic_set(&pool->compaction_in_progress, 0);
+> >  
+> > +	pool->memcg_aware = memcg_aware;
+> > +	pool->compressed_stat = compressed_stat;
+> > +	pool->uncompressed_stat = uncompressed_stat;
+> 
+> 	pool->memcg_params = memcg_params;
+> 
 > And then use if (pool->memcg_params) to gate in zsmalloc.c.
 
-I like this.
+These definitely look a lot cleaner. Will make these changes in v3!
 
-I also didn't like the suggested prototype for zs_create_pool(), and
-didn't like that compressed_stat and uncompressed_stat did not have
-memcg anywhere in the name. Was going to suggest adding a warning if
-memcg_aware=false but the stat indices are non-zero, but your
-suggestion is so much cleaner.
+Thanks again. I hope you have a great day!
+Joshua
 
