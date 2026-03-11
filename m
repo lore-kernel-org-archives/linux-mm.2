@@ -4,89 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 531CB106289D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C63A1125807
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:20:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8481F6B0099; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
+	id 59B456B0005; Wed, 11 Mar 2026 09:20:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E8EE6B009D; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
+	id 549556B0089; Wed, 11 Mar 2026 09:20:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 722DB6B009E; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
+	id 42AA06B008A; Wed, 11 Mar 2026 09:20:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BED26B0099
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFBF11A01DA
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:11:17 +0000 (UTC)
-X-FDA: 84533818194.30.3F1B798
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CF7A8A001F
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:11:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B1E96B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:20:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC3901A01A4
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:20:22 +0000 (UTC)
+X-FDA: 84533841084.02.F06FEAC
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 73B5C140017
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:20:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=qrqKU90p;
+	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773234676;
+	s=arc-20220608; t=1773235220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aB8bB87GXT5l61YUdgvdLYmu8krexDzk3Lgvx96XokQ=;
-	b=lk1nwW2USOLIHxwwnkNCIQJ85We5BolAE8tbVVLY6U7ZJeOCmxStC4zGbDiDrW4JetOHeT
-	VmJNsyIupeXHr5WUOZNOuDITrMLYAbLGz3+c/E3biKGxiXoC1jdc1aT9bwOymPbIgU4Ltt
-	RPaZuZvmprhzXvR6szd21QojjJvF95M=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bMIMU3sHJZlvMpoRZjdCQwXY7BleqcJF6IN8V8A9OHU=;
+	b=UXBrHLqOoOGSqinUb+TLsFr2ZtbBgT7YSNmIbWc3OHr+KR5AGR+pEjxf3uH8CTB79ZXghS
+	tdK0lG5KHxmZe23XFUNl52iAi0QDWxwX4peBAe4SQt6HFIXjZlN+K4SmIRF1ZFh9ll9Q1x
+	5qnwvhRLA1Hfz8Jf4dQuHCIDemFrTek=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773234676; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=qrqKU90p;
+	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773235220; a=rsa-sha256;
 	cv=none;
-	b=v0Ur0lN59UJpJOyJmlX07ZnCl7abfmTis7Jm+D7OOIsI7Psw8LYjoHAC61ccSZ+cP00n03
-	pXC0q0wmp966PYi36/ljEUDZ8xOKWPSpwZSnu3ItL1CJgmuXycq8fW06o++tCLfrm/iXlp
-	ePgjMsxfUISb2Wo3PhCGWdY7Q8xB95c=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWB1v2vZKzJ46Yd;
-	Wed, 11 Mar 2026 21:10:27 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id A1FA440086;
-	Wed, 11 Mar 2026 21:11:13 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 11 Mar 2026 16:11:13 +0300
-Message-ID: <0c3068da-4dcb-4bc7-a762-2f529cb5abc2@huawei-partners.com>
-Date: Wed, 11 Mar 2026 16:11:12 +0300
+	b=PtxNPrpByycxZXzu7/Xpn+plIxIGcicacSdjwsbDuDPh3l+xLfygvjGbFxdE6IN8t3svZN
+	YoxCQIReCXyjfGAzzabRyiwLYFD4U/Ywb0yvfBBoz57aDkAMBEaJI+8QnXtnBfl64c12qk
+	xxYsnF9i6eJMavLMIpF+PgKOGZkzmlw=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50939f851d1so6967991cf.3
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:20:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1773235219; x=1773840019; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bMIMU3sHJZlvMpoRZjdCQwXY7BleqcJF6IN8V8A9OHU=;
+        b=qrqKU90pmGdkyWu8WBc4eu9dFSnyNdJUXrFswwqMGm9/Y8RvWwI/jTZdhugm2GQyzu
+         uYyV23A5Fv45i/rhOP7nxhV9fGRKGjL8fsiO8iIrzr+bZkoLtVWNNM+mRiraWBaBc0uf
+         SwkL4+PocUh+7D4FfJl1YW4M7TVUcTyv3RiHMEOKakFHsL+CILcLnDUlMjyL76eYgWep
+         NiiSBIqRo7d4P9sa+ucilYZ108rggYoVyVF1BMvMkCqVwhX0IltBn5Wq/eVfuJIWlX33
+         3fxYtV/hPjft1hBYWSYxi7tMJnfVhOeiE5L9MoLAooOpdgba6IdFzdjzR5BO2q9PcKl1
+         oZ7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773235219; x=1773840019;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bMIMU3sHJZlvMpoRZjdCQwXY7BleqcJF6IN8V8A9OHU=;
+        b=ElXVk84Mzy9uy5xxYQwOuHKF2O6L7lG8/CFi/KyHRn2z+KAU0whxOgbZJF7iQAa5bO
+         t4y0E+3YqaAWIHWWx7GcJ9hV0mx//skju7vLizhod+GG5C2ZiDjZ96NPm3j5Jlv8WE+c
+         SoRFGtqAnheCa3eDoDdZoajj9jcCREfTlKsztwNWFmdgtgB0smgS7jaqeEQtPaZTIrpG
+         tQlhV/XpcOHfx31yadRm3Q5JYS2ETZrzYlDVpBnPhpV1qqq1z0yXNr50KAnvjkpRYkw2
+         +OeElM3fkVInKT7H19Av6RrmY3EsXVC8GqCZpBP5HWQJVX2zZ1mgy/c4OZWdjAvWoXwU
+         ZltA==
+X-Forwarded-Encrypted: i=1; AJvYcCXvfRC3U6epkCmv2hV18wp0/kJFeS5FnSwuLZo+bh6l2/bweZPfb4FqIf1OP2or68leZDkaKjLC/Q==@kvack.org
+X-Gm-Message-State: AOJu0YycmPzdTP3201nxD1aFUYCpHtyVF0NWGeOk1KYrctJN+FCvhHil
+	+oqwUBI4MirQ0xB9zI5HHfG6JOsndeCUm7vkuZrp7AZUGMxzi9DlVQ+P1dnzZ1+g6Wg=
+X-Gm-Gg: ATEYQzzR3FvyxLQqmYJgqr4xf7QLB04Ep+nNuAy0fzi1o7Mh8/+u+uWsWGQ2G4PV3rP
+	uy5VpsCDo4IXs4aj16BKjugdYz5/IZp1gwo4Gl38a/eQl8omjtDwTP5uzpz59fV+flIEyZp/Fpr
+	PdjJnKRLBlxN6mia3xf8RqpBq4BuaktmsD6y7w5ANACR5Xi6XREdNaD04dDSUvs/WChK1pqGHzj
+	4qiWmMmq6CPap7HM87ZRy61EXPV+BA4RO3YogtZK1Mp/OJbHrIPAddr6x6HHLSY5/Pwv31jKljm
+	CJbS3XBztNL5GqTBRdAPcadvKteMgzsodkkdq1uHDCWXYVV97Z8QwTDllolTNXqOlULx1zeGeNa
+	DaD7CMgFp3GRZkHALzUcgNxJi/3N3/DHLe5UtAgP7tM1qZ0IdLnPFPGCGli6DkjlLozv8bpbwv6
+	t2+tbFQorEQ5WsuzSA1BlQxw==
+X-Received: by 2002:ac8:7fd6:0:b0:4ff:a946:7958 with SMTP id d75a77b69052e-50939fbfa52mr30872141cf.32.1773235219250;
+        Wed, 11 Mar 2026 06:20:19 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65ce1c9esm13950426d6.27.2026.03.11.06.20.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 06:20:18 -0700 (PDT)
+Date: Wed, 11 Mar 2026 09:20:14 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: lsf-pc@lists.linux-foundation.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hui Zhu <hui.zhu@linux.dev>, JP Kobryn <inwardvessel@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Geliang Tang <geliang@kernel.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	David Rientjes <rientjes@google.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
+Message-ID: <abFsDg5m3lp2vVOX@cmpxchg.org>
+References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/4] mm/damon: Support for synchrounous huge pages
- collapse
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260311010222.90548-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260311010222.90548-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: CF7A8A001F
-X-Stat-Signature: ztz8qspkh81jptiof4eatebpa7ksp8ej
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260307182424.2889780-1-shakeel.butt@linux.dev>
+X-Rspamd-Queue-Id: 73B5C140017
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jit8eo486ax594o3ppojx85yd6d33b7f
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773234675-384777
-X-HE-Meta: U2FsdGVkX1//8+rqCinQ5LJJ4XlpNWUQGQx0RzTbjJ+d12gaqVP671pMAwRr6zt6kGoOKz8d19XPefUQI9Gvobm/yf1RfQ2sdUeXP3Mto+3HhhS9xEFbpdhFOLmzBoAwWYeTu2krtbxx8VQo/N6fJfZwFyYAj9XdoZlM2BAk3D5WO5Fwhrz9rrrWGuT7sqBVPQjZPSHCJLP+uyc9UvXgyfSxSEARV6VBZY3Ut2+M4AcnvxlmATjSGp85ErihsA64Qy+teG8nP5Uyb6Kg4DNmqYrB9uCDOnGyhPVJavGeYjgUS4a23D1+cVqMXoSYf/mAejWgYHP8c82ykABtUDo63+6tSlXN16baG/Y4bS+ZMWidx9TEUwMejwf+OV9ONr116yKW2sGA96YSIx8jnU2mYDsGPDwHA7CZJOm7SB0YZ5z2fl63H0S60kdz974BL7bMz4DkYpZoR2I/hEHrmyl3TKdPLDW7jr4ief4Bq6lvHOUiKNF+d+acxG6U8ouc1t2VtU3Wneb7doCwEDl1oyJN8BMwndA5o6RENH7W5Mg9YiAc3TE1hGf0t7LP47aBj+BhS2z/gz5z5LKmPZH7iBaBcDESgcKe1bF2xyBHh1pOAhyQaov7SoiQg25zGy+yYRnP6f53aY9igAUTZyOxlYDyGci+ynIvxuLtj9kC8LHSgdVYF5ruW+Tc+LTH9cJVqlepxdNejaf07JL0hDgh1LR/6e7ZHCFmPyQ0HHQFivO+J/e90DiI6tPK2PqIm4+i2QTt6O0XBrqUisvrcr9Wo+Qfv8ndqmxhN1UWxilxuwj+PprWst7Ge6yGAyWCE0A9D31UK0E/QjfHipscdYOkpANDPWvB39C83jbiYVF7szmel11I+Zl3V852j2GDBYIaasn3WPxgLpo+X/4LjtG+PW05NviDzkYLkIZSTIl5b8ukq+Uk9HIrdxOwzWhD2thozUa1chD7ggjAdQLohGfAcRN
- BCjWl28j
- 2E0/7z76DRh+efQa/sbgjekar9ADV0Z8JFuBpXn8P46dPAZbMCUaZNd3kUmQNEZ4IesmH3y1wACTmyxCpFNLfwY1Lq/ZNBQC/s8vXr66GtDLQXobzr5gDWPSD3Ux2RF3m1E1NYOCt9fvX3DQv/TlEHcR2PXBAK+pmr1MRmBd2/T0pOhnddiITpwz8+qRuPKdnoDAUr4FxPBBdQkZ2gJ+Uc68dcSd7l58bdBRW1/CXZRn2acJG0Q+vOoeyR7/aekQv4WUk8p6equYQhi59a6WbYcpgJSbFDNrkvrNUHYULN/68tKzUOHYnfASmAQ==
+X-HE-Tag: 1773235220-587151
+X-HE-Meta: U2FsdGVkX1/5IP+grGuir8l53Kx2tXjYO5aO4dSxLZ5F7O2sVZQwA03jvuJBSp/lIF0Y64SgiVOQroUs8XQ+NStHUWqVf3SS5bVtKWFeIAhICpm4eTF7K1kQ75gXYbEIv/Ana5uCS5K2GslrNDCAwDirWYz7yz49XaAHAtuty5ljsd2vWS46QbYtmoi7YT31oMR1YLz/R259IXAKOZgEceBhTDSbXsD+ECOfcShDSmX6J73XAOc2dp2sdM09I53XwJurjMDMoQU4wTB2Lt+PurwWnlisrkeyXo6aUSKn0I1MMuuTlbVhvjk3ergjq58N/d5W3xZ4vSQnvAUUjrkdVKawie6H/6FI2hwQNdZavGywp7OrLEv7warE6u+2JXR7OT2OVosRqQPauJQmOsCc4hcpJia1gjscrbIrNTeaIz3iEoB6iEM/31ScojbTGVPYoT5jE4fPh8jFRS4anJmTvrr4Wh8mY/3rUm/w/UQmMVK6LvpoXnRhdfILHcN0xpyUtp08PUX5NXJ/B6Dwxp1f7vcu2j6PshORvyV/xBmpG4akErnOJZ5H7S9DtU90jPXlib+tZSdxDbRijSiZ80kwA7HLjMbyL5AiG9AdBSM9zl+wgcS1eej4E6WtQ/VIdWm+sqicDge6vgjJrmk5z8mFvguQY6gpjfJ1sK7OQ5eAGJOWxBgl+s9AMRDsIHMPhz1J9Gm/yBGYJkODYsEjj6vs4L7Z17OzALfG9NpwyuIX27XxY40YEU03izKUy/OwvbeliR8B5DbOd3pdr4ypP049BfIl5GhQG4D+E4ydVskaOeUUdM8Ls9Wo8wr7AWV5RF5LInu9+5nZX+2XpVTqTbb/i7Eu49suBbmU6uPDXWZCtgdf0uyZmWMi+4iHMlDtiRKWGVp3Il6WqGA226/HGYfkzJKCrCwelIFkOchTru12GDq9IkqCivyWkCy5ziXVwnOIPC7SCwscgsXIDvtK+7J
+ AfkmicK2
+ LaGqOhM4ZkHxB1BDUbE4VwblfXsV0Ua1gsNVFpvdCSTTz5vMgwZvBIk88ulK6qsy0gjoEIyImC0NXNK7h+7HSpmETCW6wpDfMg6P/h9X6A70PJiiivwYGCuTlCqn3R/SDRVKyF76iJa7OTFgk0BKqWelrA0XgQZo631RsqRIUPsXbAB5+iISZuAFE5+FK7AhldvsotLffUoAoZC5M1AkdpyPT54Wwp1F4BLj6D7MpXkxqNanCFzCeWYwH4UWFMcVRUPYcuLOJaEvriKWJISulo4mzjKQJO6t1dh8v3phLjYxCwUGD0CFLDfSrvGAn/VdMspsO5KXFbecre10o9WSGJR3FDmXQNodsFfFqzQ3LyY+RFObjuPLfhUtFG5EN88C4G0mMmCdOK4j2k/qBlQdPJPHAPWjYJxX1uZNeRGBSutxrEKkMTh2pApfCK/NiM12rNOHaXL6vS6lHJmcsIcR47djYzl7YwsvNDh6XV+ZhFY4slksxIoGPdh1qOB5i8DOlAgM9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,73 +130,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Mar 07, 2026 at 10:24:24AM -0800, Shakeel Butt wrote:
+> Over the last couple of weeks, I have been brainstorming on how I would go
+> about redesigning memcg, taking inspiration from sched_ext and bpfoom, with a
+> focus on existing challenges and issues. This proposal outlines the high-level
+> direction. Followup emails and patch series will cover and brainstorm the
+> mechanisms (of course BPF) to achieve these goals.
+> 
+> Memory cgroups provide memory accounting and the ability to control memory usage
+> of workloads through two categories of limits. Throttling limits (memory.max and
+> memory.high) cap memory consumption. Protection limits (memory.min and
+> memory.low) shield a workload's memory from reclaim under external memory
+> pressure.
+> 
+> Challenges
+> ----------
+> 
+> - Workload owners rarely know their actual memory requirements, leading to
+>   overprovisioned limits, lower utilization, and higher infrastructure costs.
 
+Is this actually a challenge?
 
-On 3/11/2026 4:02 AM, SeongJae Park wrote:
-> On Tue, 10 Mar 2026 16:24:18 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> Please add more descriptions of the change, including the motivation.
-> 
-> I assume the motivation is similar to MADV_COLLAPSE that aims to make
-> synchronous and therefore faster huge page collapsing impacts copared to
-> MADV_HUGEPAGE?  It would be nice to make it clear here.  Also, if my assumption
-> is not wrong, adding a test results showing the benefit of DAMOS_COLLAPSE over
-> DAMOS_HUGEPAGE here would be nice.
+It appears to me proactive reclaim is fairly widespread at this point,
+giving workload owners, job schedulers, and capacity planners
+real-world, long-term profiles of memory usage.
 
-You are right. I will make it more clear in the cover letter for the next
-version.
+Workload owners can use this to adjust their limits accordingly, of
+course, but even that is less relevant if schedulers and planners go
+off of the measured information. The limits become failsafes, no
+longer the declarative source of truth for memory size.
 
+> - Throttling limit enforcement is synchronous in the allocating task's context,
+>   which can stall latency-sensitive threads.
+>
+> - The stalled thread may hold shared locks, causing priority inversion -- all
+>   waiters are blocked regardless of their priority.
 > 
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
->> ---
->>  include/linux/damon.h | 1 +
->>  mm/damon/vaddr.c      | 3 +++
->>  2 files changed, 4 insertions(+)
->>
->> diff --git a/include/linux/damon.h b/include/linux/damon.h
->> index a4fea23da857..a9cf17b9e8fa 100644
->> --- a/include/linux/damon.h
->> +++ b/include/linux/damon.h
->> @@ -142,6 +142,7 @@ enum damos_action {
->>  	DAMOS_LRU_DEPRIO,
->>  	DAMOS_MIGRATE_HOT,
->>  	DAMOS_MIGRATE_COLD,
->> +	DAMOS_COLLAPSE,
->>  	DAMOS_STAT,		/* Do nothing but only record the stat */
->>  	NR_DAMOS_ACTIONS,
->>  };
->> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
->> index 729b7ffd3565..36791a9a1094 100644
->> --- a/mm/damon/vaddr.c
->> +++ b/mm/damon/vaddr.c
->> @@ -969,6 +969,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
->>  	case DAMOS_NOHUGEPAGE:
->>  		madv_action = MADV_NOHUGEPAGE;
->>  		break;
->> +	case DAMOS_COLLAPSE:
->> +		madv_action = MADV_COLLAPSE;
->> +		break;
->>  	case DAMOS_MIGRATE_HOT:
->>  	case DAMOS_MIGRATE_COLD:
->>  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
->> -- 
->> 2.43.0
+> - Enforcement is indiscriminate -- there is no way to distinguish a
+>   performance-critical or latency-critical allocator from a latency-tolerant
+>   one.
 > 
-> The code looks good to me.
+> - Protection limits assume static working sets size, forcing owners to either
+>   overprovision or build complex userspace infrastructure to dynamically adjust
+>   them.
 > 
+> Feature Wishlist
+> ----------------
 > 
-> Thanks,
-> SJ
+> Here is the list of features and capabilities I want to enable in the
+> redesigned memcg limit enforcement world.
 > 
-> [...]
+> Per-Memcg Background Reclaim
 > 
+> In the new memcg world, with the goal of (mostly) eliminating direct synchronous
+> reclaim for limit enforcement, provide per-memcg background reclaimers which can
+> scale across CPUs with the allocation rate.
 
--- 
-Asier Gutierrez
-Huawei
+Meta has been carrying this patch for half a decade:
 
+https://lore.kernel.org/linux-mm/20200219181219.54356-1-hannes@cmpxchg.org/
+
+It sounds like others have carried similar patches.
+
+The relevance of this, too, has somewhat faded with proactive
+reclaim. But I think it would still be worthwhile to have. The primary
+objection was a lack of attribution of the consumed CPU cycles.
+
+> Lock-Aware Throttling
+> 
+> The ability to avoid throttling an allocating task that is holding locks, to
+> prevent priority inversion. In Meta's fleet, we have observed lock holders stuck
+> in memcg reclaim, blocking all waiters regardless of their priority or
+> criticality.
+> 
+> Thread-Level Throttling Control
+> 
+> Workloads should be able to indicate at the thread level which threads can be
+> synchronously throttled and which cannot. For example, while experimenting with
+> sched_ext, we drastically improved the performance of AI training workloads by
+> prioritizing threads interacting with the GPU. Similarly, applications can
+> identify the threads or thread pools on their performance-critical paths and
+> the memcg enforcement mechanism should not throttle them.
+
+I'm struggling to envision this.
+
+CPU and GPU are renewable resources where a bias in access time and
+scheduling delays over time is naturally compensated.
+
+With memory access past the limit, though, such a bias adds up over
+time. How do you prevent high priority threads from runaway memory
+consumption that ends up OOMing the host?
+
+> Combined Memory and Swap Limits
+> 
+> Some users (Google actually) need the ability to enforce limits based on
+> combined memory and swap usage, similar to cgroup v1's memsw limit, providing a
+> ceiling on total memory commitment rather than treating memory and swap
+> independently.
+> 
+> Dynamic Protection Limits
+> 
+> Rather than static protection limits, the kernel should support defining
+> protection based on the actual working set of the workload, leveraging signals
+> such as working set estimation, PSI, refault rates, or a combination thereof to
+> automatically adapt to the workload's current memory needs.
+
+This should be possible with today's interfaces of memory.reclaim,
+memory.pressure and memory.low, right?
+
+> Shared Memory Semantics
+> 
+> With more flexibility in limit enforcement, the kernel should be able to
+> account for memory shared between workloads (cgroups) during enforcement.
+> Today, enforcement only looks at each workload's memory usage independently.
+> Sensible shared memory semantics would allow the enforcer to consider
+> cross-cgroup sharing when making reclaim and throttling decisions.
+
+My understanding is that this hasn't been a problem of implementation,
+but one of identifying reasonable, predictable semantics - how exactly
+the liability of shared resources are allocated to participating groups.
+
+> Memory Tiering
+> 
+> With a flexible limit enforcement mechanism, the kernel can balance memory
+> usage of different workloads across memory tiers based on their performance
+> requirements. Tier accounting and hotness tracking are orthogonal, but the
+> decisions of when and how to balance memory between tiers should be handled by
+> the enforcer.
+> 
+> Collaborative Load Shedding
+> 
+> Many workloads communicate with an external entity for load balancing and rely
+> on their own usage metrics like RSS or memory pressure to signal whether they
+> can accept more or less work. This is guesswork. Instead of the
+> workload guessing, the limit enforcer -- which is actually managing the
+> workload's memory usage -- should be able to communicate available headroom or
+> request the workload to shed load or reduce memory usage. This collaborative
+> load shedding mechanism would allow workloads to make informed decisions rather
+> than reacting to coarse signals.
+> 
+> Cross-Subsystem Collaboration
+> 
+> Finally, the limit enforcement mechanism should collaborate with the CPU
+> scheduler and other subsystems that can release memory. For example, dirty
+> memory is not reclaimable and the memory subsystem wakes up flushers to trigger
+> writeback. However, flushers need CPU to run -- asking the CPU scheduler to
+> prioritize them ensures the kernel does not lack reclaimable memory under
+> stressful conditions. Similarly, some subsystems free memory through workqueues
+> or RCU callbacks. While this may seem orthogonal to limit enforcement, we can
+> definitely take advantage by having visibility into these situations.
+
+It sounds like the lock holder problem would also fit into this
+category: Identifying critical lock holders and allowing them
+temporary access past the memory and CPU limits.
+
+But as per above, I'm not sure if blank check exemptions are workable
+for memory. It makes sense for allocations in the reclaim path for
+example, because it doesn't leave us wondering who will pay for the
+excess through a deficit. It's less obvious for a path that is
+involved with further expansion of the cgroup's footprint.
 
