@@ -4,93 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2974112583A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 14:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 235A6112583A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 14:46:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99B5C6B0089; Wed, 11 Mar 2026 10:39:25 -0400 (EDT)
+	id F3CFD6B0005; Wed, 11 Mar 2026 10:46:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948B46B008A; Wed, 11 Mar 2026 10:39:25 -0400 (EDT)
+	id EE42E6B0089; Wed, 11 Mar 2026 10:46:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 854996B008C; Wed, 11 Mar 2026 10:39:25 -0400 (EDT)
+	id DF0336B008A; Wed, 11 Mar 2026 10:46:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 64AC56B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:39:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DAB91140252
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:39:24 +0000 (UTC)
-X-FDA: 84534040248.29.343D0C8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 16C7A140013
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:39:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LT2IU5HN;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC0DF6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:46:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50A638961D
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:46:29 +0000 (UTC)
+X-FDA: 84534058098.08.DAD2E9E
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4A61A40007
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:46:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EV3Nv7B3;
+	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773239963;
+	s=arc-20220608; t=1773240387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hLaRO9HrLdWWHPt+r6T/FIB8Wh+F9CShB8UYXFZt6pQ=;
-	b=yRxB4cGZEqKmI3hW+kGUI1EsYVihao4AMnar2GNn5wjLUmBmDlMwUqSalHTOqa4/ZnxOGW
-	E/T7h12xWD8M0hv9PPhEyuxVGqaS9S7jH0K50b9VpL5H9+eY9JXxeUOssbAN+ICc19v7wa
-	ociwDm/svuEjV31lEdO1IRNo9bKCnbo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773239963; a=rsa-sha256;
-	cv=none;
-	b=VRETR5XDoNyigW6X6fV3SKFwalCCRByj+b4HUpBYVxAKusJGsYO5EJ7rHUTlndlydtEjqL
-	Kl4AypSJ0sLhMYTY0MgJFG13URtNpLkCwqvDbX6MGxG5B8d0XrtDzMtCxGEj/WN4Yj01fF
-	HUH0kWDT28VFlQ2zxddLZJxJ5Ee9IPk=
+	bh=Lqxt3+98LXnQUiUM1k9vne7JM+5GQLArojh167aHDjw=;
+	b=ukaunXukdbyJ4PMleEwjgmvEaDMUuqswhmec2MJzor11qZX0ncTiSjplyYcgNEnqSpKIRj
+	pI7DO2axjj6OKdBlhR9i2aKaTKnm4JocUnZgFUyUywqMaKTht5KRs9PNhRdlJoO9rI0Uad
+	3CqM2fumidaFsfn8wZTk1o7WQJ6Ymc0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LT2IU5HN;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1CD154404D;
-	Wed, 11 Mar 2026 14:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26ABC4CEF7;
-	Wed, 11 Mar 2026 14:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773239962;
-	bh=NJ10AZXdscg+DvMqnyYzr0It1WL0JuhQV8FD7xqijPs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LT2IU5HNWxB0iJ9LuNGYfyn0SEQ15nR4YpdC9Swgnko7sYltMJyqQ00h5IO0OnX3w
-	 httHIieCaSHUABplizTeBVYaHellks5Rqr0UrYpFiMAgvWA5sQUIovsx1bEsKUuCFc
-	 zepKlIOgdIPkU+S0gO64kMVMzNLTavCytAnoqpeye8ANKiclih2r8wIF7XHvb/pE5L
-	 20Z1s0unzplcxO5ABRZH5WyjR93reDTgeIpd9l6kHQXZQSvNgFQw0teErwsKaTHSep
-	 0i0mZKTHeRpoTka4EQQ8pNUdofPmuInPebfnmcd02gmrKku+fCdzsTCjfD4YsnNJFX
-	 v4ZzV6uQrObLQ==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EV3Nv7B3;
+	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773240387; a=rsa-sha256;
+	cv=none;
+	b=T+J2Orx8jZj7T8YO7MavnwFzLvgQ9qyVk/RkpJFOPfKPl0E7hu9pv48F4yHvnkM6pxmOD/
+	U03CAXtE711/ep9NIL48e8oaal2T8LlV6t3/cCn94RjtDTWkpnhxKfLETyfcX0R513PFwX
+	QV/5a8HfDufRMz1QD08tU2pT/vv6Nds=
+Date: Wed, 11 Mar 2026 22:45:59 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773240383;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lqxt3+98LXnQUiUM1k9vne7JM+5GQLArojh167aHDjw=;
+	b=EV3Nv7B3dDh/w/HQscqjSxzv0UlCDHy3aGkKU38zdQhrRUOiy3D32xyWQurdEp0iMzButd
+	i1IT4RFemLDY8rgxNVXtgCoNyNF8RyH4eS2lWFG06J2wFdtqKANSxnd8Nk+pKyCaGN0eBh
+	CryR7pE59n51UlwDBL+S4wjD9+6Q34Q=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Qing Wang <wangqing7171@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] mm/damon: Support hot application detections
-Date: Wed, 11 Mar 2026 07:39:12 -0700
-Message-ID: <20260311143912.96834-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <577a2b92-3507-400c-acbd-32c914d374b7@huawei-partners.com>
-References: 
+Subject: Re: [PATCH] slab: fix memory leak when refill_sheaf() fails
+Message-ID: <thhmlnu6phtuucz7jo3xoqeiv64rs4ynkt63qoxvtwgfh3aofw@lo75dus27vyk>
+References: <20260311093617.4155965-1-wangqing7171@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 16C7A140013
-X-Stat-Signature: xkjhhizdsksf3jmynfsb8cwufr4anuin
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260311093617.4155965-1-wangqing7171@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 4A61A40007
+X-Stat-Signature: hznaqsjx6ngcwepe8cpwkmwobmzr1mjq
 X-Rspam-User: 
-X-HE-Tag: 1773239962-442326
-X-HE-Meta: U2FsdGVkX19cnH73+AkNMTIPfC0PDPjI8Mm4mNYYxzZV9QYC2bjGBLFoywtIG3K5tSENSZVswpeDNIKCYXEAlSYCcdtMIE9SsfsUz2a2i6WmDuUUjrYgOdZNbVZn9v72BFbqednJ2egh4s1cJaFWlWdhj07VLVFtc7oY1Jg94N848ecMwEz4YbvlhQjODW9HzMcizTYrFJb69WZxCWbpoIVL25n0+WQA+ERigSVTluDHWMh1vXCt4Pz/5tCSZlKL4ZsiZG7nUBvZZq24z6QmVvhrn8pde+FKDin7rmUsdb9WLi4w9asZIXh8kE4v4PZYcSISu7nDBusbP8TLcdsmttrckdXXctiunMD2OlxA40Cl1DH/ckDvcyvDbDs8Pp8tukM4PxTJMTwaQpVeBaBzCqMjYYHYhUy5yEbR7J4MuJ2VEOznD8Eoy8toUUgX8I/0+KjCA3qDvX7V0Lwt2O6npyv/Ay4EkkvF18cqIFibB2b5rVW+syGqmfw1XWeJV7vGsvc30BYu7GjQH1DMVxhoKZmrk2xJhXUmqbYyz+UcDuLgJL8fneBsNqLQ7gdaPR2hUna11lCwSBVTjiE0bzJ0LtlK7Ds0i/3SZ59pcK0PQjgm9CKTwTQq7vkG3kKn2TnhqrHOZboXi72fezWBl/uiVDwB71u+Y0QWTJFWUsU4KkNb4vF1zgVEX7oE0cY/1WyAG66X05Aws8XQxdCLi6+jDW8Yvm/narQxV8u7G+YBo0buq6rZoi8V2wzgNVHdTJ246iLa2Y/wSFHkF+0CFgFvj/lHTN5A3oeDDFMk7VqZD/c+fPa5h0MFkLZqIf73LUrb3ByVpCAB9//b5BA7WvhaC6InM/F4adT1wqN8sz5HsXJdRv/spsRoZovuMThOhlxa9ZT9hWR5uw8L3HlsivbZ+24ym/f+NZSRsTR1M0gPaQfsS/7z1/lPFbz2BLZzIcaXqJ2cNMFe2eeylcjvAUJ
- p8yYSEd4
- rXMKsKgzXrWzPe1AjMCTbSounIxNjyYSI/zVKeer+H3iXnM+cbxQKZhQQ4XFxEyvaLXkx5nrKO9fkcNTUZIaUeocWggIosd6Sws5CHeNZFe+0yORN9ffeT183NstggKvNzV+FLm4a8YXaNI3mGE/hid6LOhpYs/8/9/e0PykJL3sVezl/FhUm6V/v+CPQv3Q0qv32U8b42EKL82IOGZbIEsmo0GuJMDZMSgnmxw0lfX9al8CTtNyZc2Bw8y3HpwvwjEbORBdUZU8Zl+o=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773240386-640812
+X-HE-Meta: U2FsdGVkX18v2RfhbWaFgPH3bOoputD+6YBnrBXs3lx6pT/QtaLQavmEyQUOL0VESbunY1c8EAVD3fRA1s47YnUpJwwL56/5a+y55cQQ6ZSqaXz/P7QmD0nGqHbArCYTUbgNCbFdnD9SYJ7SuLapC8YfvaBV4WBCiG19+GfzN/XSk/ExCM4phJzbplNOpIwg3R9FWAVmRRAQJslMSh8SnvwFTuX5p93pbIhMuA4pSfBj9C1TAXlzE2bTlWIsZcNNWqrFHx0CgmJKqg9/K/LgC72yRRux6xPnuXE9Mmt+8qUrtfkYMea1+L2c1y6Drwed8Et9+lxbNj1k7k8XeL/q3vZ5JQa9mv5rvW66HFG9iuUtwzYHYtNe6/BXiEA9gA7vU/9mxwtStaUu/jeoWfDc1pWjuE3C3SJePly1dcsCV0Gi6qlDFOqCNqTUlCNOrTMFgbMEWi1FnuP0Ntmq7pnQa4aDQKm980eb1Zp4v9xtY08St9pSWjhRXSzqly3Ok0sLyZetlBKtAPnwiLhau49/Q0LV8EIcRLQ9Kjm3V8iSJhV4pWh5LgG6IqL2cpLDk7ySqo9rnFgbDKHdIdVRdplcin9tp40amTWOMYSQkG5zsa80iLY+vapPb3aDnU3o8+EZYcgyoMQmmAFUaThLsST3a0eRn160T+SHIEDVjBP+vD3WfE9IDbvSnxqn8RPnMUrYLFQW/gCwx3eH8ZMH7tAQvheWolpKc/h0ZVZD2XapnNmtb1dZLq5+BU4N/QcSVXqasr21mOvT9WvKAGI1GhMN9SKC4F9s0/lvcKRmNvLO7rWKb9vTEuVvp3PfFfrrgoIytHOH1n2HHHEKMj/vNSM1RXErBqMds7gSI9BqXNDq1/sSQBBj2tI1I29m9iVYQfr3yMj2Y8sCQ3kQAFdRjOy/tZjOh1ydVjj6ALdj7TZgY12DImF8E3icHG9Wino3X5SDEwcfl2hakjUCXVDGXxd
+ 8mag1MJw
+ VirJmvu+wV8VEeCbPvCi8yTigknOablWBjm7j9hyxo9my03OiYqoXvKLO2XvUKCUBKqZVbkdLNEEpzNYGO/6AigCXmTBuVDtKSTNe6eTOcM67GcxEfmQCLK7sTpYe4zB13EkQ78zcnyz6aj2YJfmLLzgRpb6HozAFBN8dTBq1mN9XrDCU8c3PanL+HD2/iVLpuWRimJAioAqA8Md3KXP4/B6G3G4NgePHSw7VeqdeA+PO1ZYIKSByz2yg9qQtlpE21mqk1Cq/qNwgj6ZhQtyew5M24Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,145 +89,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Mar 2026 16:08:56 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-
-> Hi SeongJae,
+On Wed, Mar 11, 2026 at 05:36:17PM +0800, Qing Wang wrote:
+> When refill_sheaf() partially fills one sheaf (e.g., fills 5 objects
+> but need to fill 10), it will update sheaf->size and return -ENOMEM.
+> However, the callers (alloc_full_sheaf() and __pcs_replace_empty_main())
+> directly call free_empty_sheaf() on failure, which only does kfree(sheaf),
+> causing the partially allocated objects memory in sheaf->objects[] leaked.
 > 
-> On 3/11/2026 8:07 AM, SeongJae Park wrote:
-> > Hello Asier,
-> > 
-> > 
-> > Thank you for continuing this work!
-> > 
-> > On Tue, 10 Mar 2026 16:24:16 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>
-> >> Overview
-> >> ----------
-> > 
-> > Let's make the legnth of the subject and the length of the underline same.
-> > 
-> >>
-> >> This patch set introduces a new dynamic mechanism for detecting hot applications
-> >> and hot regions in those applications.
-> > 
-> > Seems now you offload the hot applications detection to the user space.  If I'm
-> > not wrong, you should remove "hot applications and" on the above sentence.
+> Fix this by calling sheaf_flush_unused() before free_empty_sheaf() to
+> free objects of sheaf->objects[]. And also add a WARN_ON() in
+> free_empty_sheaf() to catch any future cases where a non-empty sheaf is
+> being freed.
 > 
-> You're right. I was not sure whether changing the RFC subject was right or not.
-> I will change it for the next RFC version.
+> Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
+> Signed-off-by: Qing Wang <wangqing7171@gmail.com>
+> ---
 
-It's fine to change the subject.  Please feel free to do so in the next version
-:)
+This fix looks good to me.
+So feel free to add:
 
-> 
-> >>
-> >> Motivation
-> >> -----------
-> >>
-> >> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
-> >> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
-> >> fragmentation and memory waste. For this reason, most application guides and
-> >> system administrators suggest to disable THP.
-> >>
-> >>
-> >> Solution
-> >> -----------
-> >>
-> >> A new Linux kernel module that uses DAMON to detect hot regions and collapse
-> >> those regions into huge pages. The user supplies a set of PIDs using a module
-> >> parameter,
-> > 
-> > This sounds reasonable to me.
-> > 
-> >> and then, the module launches a new kdamond thread to monitor each
-> >> of the tasks.
-> >>
-> >> In each kdamond, we start with a high min_access value. Our goal is to find the
-> >> "maximum" min_access value at which point the DAMON action is applied. In each
-> >> cycle, if no action is applied, we lower the min_access.
-> > 
-> > So, this patch series introduces a sort of auto-tuning of the hugepages
-> > collapse hotness threshold, that implemented in the new module.
-> > 
-> > We already have a sort of DAMOS auto-tuning feature, namely goal-based DAMOS
-> > quota auto-tuning [1].  Have you considered using that?  Of course, it might
-> > not be able to be used as is.  Some extensions, e.g., introduction of new goal
-> > metric, may be needed.
-> > 
-> > Yet another approach would be implementing the auto-tuning in the user-space.
-> > Because DAMON parameters can be updated online, updating the min_access from
-> > the user space should be doable?  Given the fact the module anyway require
-> > user-space control for feeding the list of applications to apply access-aware
-> > huge pages collapsing, I find no problem at user space driven auto-tuning.
-> > 
-> > If the goal-based DAMOS quota auto-tuning or the user-space based auto-tuning
-> > are feasible, all the controls can be done using DAMON sysfs interface.
-> > Introduction of the new kernel module might not really be needed in the case.
-> > 
-> > We have DAMON modules in addition to DAMON sysfs interface for users who want
-> > to use DAMON for a given specific use case with only minimum or near-zero
-> > user-space control.  In this case, because it is already aimed to ask the
-> > user-space to feed the list of applications to apply DAMOS-based hugepages
-> > collapsing, it seems a new module is not really needed, to me.
-> > 
-> > But I guess your use case might have some special restrictions that really
-> > require use of the module instead of offloading the auto-tuning to the
-> > user-space or DAMON core.  Is that the case?  If so, can you share more details
-> > about it?
-> 
-> I haven't figured out how I can use goal autotune to change the min_access.
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
-Indeed, it is not a very straightforward feature.
+I also want to bring up another point here, although it may be outside the
+scope of the current fix.
 
-> Your suggestion about moving this to the user space sound good.
+When I looked into the refill_sheaf() path, I found a refill failure does not
+guarantee that the sheaf remains intact: refill_sheaf() can partially fill the
+sheaf before failing. This non-intact behavior propagates to its caller,
+__prefill_sheaf_pfmemalloc(), which therefore also cannot assume that the sheaf
+is still intact after a refill failure.
 
-If it works for you, maybe that is best for you :)
+However, the comment for kmem_cache_refill_sheaf() says that "if the refill
+fails (returning -ENOMEM), the existing sheaf is left intact." That means the
+behavior of __prefill_sheaf_pfmemalloc() - where the sheaf may be left
+partially filled on refill failure - contradicts the API contract of
+kmem_cache_refill_sheaf().
 
-> 
-> The idea was to stop lowering the min_access as soon as collapses occur,
-> since we don't want to lower so much that we start collapsing regions that
-> are not very hot.
-> 
-> Maybe you can suggest a better way to do it. Maybe with autotuning.
+Maybe we can add rollback logic to __prefill_sheaf_pfmemalloc() so that it
+provides intact semantics, preventing the non-intact behavior of refill_sheaf()
+from propagating up to kmem_cache_refill_sheaf().
 
-I will add more detailed suggestion soon, by tomorrow or a day after.
-
-> 
-> > 
-> >>
-> >> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
-> >> collapse synchronously and avoid polluting khugepaged and other parts of the MM
-> >> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
-> >> which needs the correct vm_flags_t set.
-> > 
-> > This makes sense to me.  I expect DAMOS_COLLAPSE to have some advantages over
-> > DAMOS_HUGEPAGE for some use cases, similar to MADV_COLLAPSE vs MADV_HUGEPAGE.
-> > 
-> > From my perspective, this patch series is introducing three things.
-> > 1) hugepage collapsing hotness threshold auto-tuning, 2) the module for running
-> > the auto-tuning, and 3) DAMOS_COLLAPSE.  To me, it is unclear if the first two
-> > changes are really needed.  I will wait your answer.
-
-Please answer the above questions when you get a chance.
-
-> > 
-> > Meanwhile, the third change seems reasonable and not necessarily need to be
-> > blocked for the other two changes.  I think separating the third change from
-> > this patch series and upstreaming it first could also be a path forward.
-> > Because the change is simple and sound, convincing me would be easy.  I'd be
-> > convinced if at least some reasonable test results can be shown.  I'm not
-> > saying we should drop the other two changes.  We can keep discussing those in
-> > parallel.  Rather, upstreaming the third change first could help finding real
-> > benefits of the other two changes, since the testing will be easier.  The
-> > decision is up to Asier, of course.  I'm just sharing my two cents.
-
-I'm also curious what you think about this.
-
-
+-- 
 Thanks,
-SJ
-
-[...]
+Hao
 
