@@ -4,95 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD1A7104BEC5
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:17:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 621331049515
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:19:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D538E6B0089; Wed, 11 Mar 2026 06:17:06 -0400 (EDT)
+	id 92A4C6B008A; Wed, 11 Mar 2026 06:19:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D35356B008A; Wed, 11 Mar 2026 06:17:06 -0400 (EDT)
+	id 913276B008C; Wed, 11 Mar 2026 06:19:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C55376B008C; Wed, 11 Mar 2026 06:17:06 -0400 (EDT)
+	id 80E416B008C; Wed, 11 Mar 2026 06:19:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A345C6B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:17:06 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 44CA713B923
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:17:06 +0000 (UTC)
-X-FDA: 84533379252.13.AAC516C
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 81BDF40011
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:17:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of 3H0GxaQkbALox34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3H0GxaQkbALox34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F57C6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:19:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01C3B1A06E8
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:19:29 +0000 (UTC)
+X-FDA: 84533385300.07.6298207
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 11A6E2000A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:19:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=XVBQbI+T
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773224224;
+	s=arc-20220608; t=1773224368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=UnHGnobw61SFIXjoQkpFSTWAD2vDTpEuCDpynbfiFco=;
-	b=PYArEG3I1bRd8OQymq3P5/1XTJPcihbHUJkAKCN9jrWshljWLLKypdvEsr6tcrC4qJL2++
-	5C2jUId7FmwB56AXMl/lpAe9a1G8M+zXHBqg0EYCMMlTnygxaeQglGP8j24GMZHo+G+Zlu
-	1Gcrv3q4hG9Yd4sl6OKdSp/MaSdIi/8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of 3H0GxaQkbALox34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3H0GxaQkbALox34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773224224; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BPJtUVDvDbQT34GAqQpc6v3iTpP2btLxeJFBbCq2WRM=;
+	b=fjP2+SXFTCPEUMp9OLAtKCm038iwMRzIWuJAtuaVx/WbUNMUHmBfYxdJj2oLHPJ513Mfjw
+	x5T6is+nvSo3O3hOuryZlNBGW6+jyiluD0h5fZlbUyhv0qut+tjdgIdEeWw44PInEiE2Jp
+	aYsDSVnuss8DujlntaZhe/lNc8QqtKw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773224368; a=rsa-sha256;
 	cv=none;
-	b=sUeN87Lj1G0SagFup/593B1Fe+bC63aqj2XyAYpq5un/CC5E00d+yEVCUay2ibsLLYooNy
-	hCK5WZPsiX8tPZ9DbW/sSoC0ReIcK0Vf4WaV4/yDURP6YL/Za23ecBszNYajlFfMPt61Qd
-	ZIiUR+DqOqYv6dLML55Oxc4UJWuX+as=
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-679c5ed0942so152880045eaf.1
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:17:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773224223; x=1773829023;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UnHGnobw61SFIXjoQkpFSTWAD2vDTpEuCDpynbfiFco=;
-        b=a3u9AZ21lbgNkMNaTBfbub8m1r2yLm8d2RMr7GbfFTKywkC0ZCmRLJc8FgudPIiTDO
-         R0jXuTZVUldtKQJ/bw1qQORs7PDMuvsDzSbjxNEs/ldjXnqfio3To2u4voXQz0K7O2Vg
-         vq7ahzN05P7+G49qWnRu6Un6Rrwm5cbhhXLYpQ1BIysXVVCbYnVFCj3q1cxuGRh5X1Eu
-         tBzId2Bd+AvmaGeR+GXMnb+BrwAJg7JXRshmWotD+F0GdOvMeMihigpLmvhfdSn1pG7F
-         FMOh6fXHYWJU/RfgLJvRXeLfZ65A2rVaUtQV7CRrUyp8RBQC/27Cxuubwt5ORrEwsYM6
-         vh6w==
-X-Forwarded-Encrypted: i=1; AJvYcCXSMwUaSMT2aGqp2WTBCoSum25mX8C8YBQ5JNEXI5Qc1sduz+u0BYBS8kxa1a8klDKrs7qk9U5xNg==@kvack.org
-X-Gm-Message-State: AOJu0YzQBczS/cFPsP+o2ka/2gEcL0v7ngw85Q1SVwczMNbPznBPi8Ai
-	axc374xowUGNFLVWQFXdHCkB0imjMwbiRkYyOuwx1uoC56MEpxpBNhK5OvIbyD5YScBdnqn7rxH
-	+bvzLGxwkEz1BDRG7s9QkNhAxlLGfO7fmUKUurWcuCsPNVMnNRU++sVUaUxU=
+	b=xMhexWMxFJE8wxfUt1JYFeJnC0J2LnE0x29/DeRq4Fe42dVCcWicX/RX0GTx9ZBPXHnOcq
+	Qm10SaTbVF+V8ua4nw6GAGy1N2pbkOuz1F28AXr3GGPCyNe0t54HoBI26YxXBvFGzlAf59
+	TMpt3skDy7M4URtVIvPt2IgjvUHPqsk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=XVBQbI+T;
+	spf=none (imf03.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=BPJtUVDvDbQT34GAqQpc6v3iTpP2btLxeJFBbCq2WRM=; b=XVBQbI+T0XuAMVugCeeJ7CCDPi
+	DC9VW/0WUAxXJwIh421a0BIXWbJArjYdDcy3Sc6UZ1oW5HdIYLOpkRKpFJrkm+uiRmWWI7TSq8Ej4
+	u10cym2dIZ8nDb554SR4Fzmwe4fA3IkpA820f7iq/uu8wryu5Ln7zhiIGJBOYJAFAOkETSqFApNvz
+	ByUEvSdI21QzMIKP683gGTviBGpkJFYFXSHhkOJe7cZ2eDVxQ3XRM4Qv2AK4B8LraztbkZEb925Po
+	p2IdEJiCSVVjZCdpi9PItccBli2loXYUGPqH1KDW6XnR+Airfc2TAoNrnL2YGDCeAcroY8/gJ4wpR
+	GWXPRwYA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1w0Gek-003hKP-VQ; Wed, 11 Mar 2026 10:19:11 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v6 0/4] mm: thp: reduce unnecessary start_stop_khugepaged()
+ calls
+Date: Wed, 11 Mar 2026 03:17:46 -0700
+Message-Id: <20260311-thp_logs-v6-0-421e30d881e0@debian.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1c8d:b0:67b:c122:d2a1 with SMTP id
- 006d021491bc7-67bc8995cbfmr1247313eaf.37.1773224223623; Wed, 11 Mar 2026
- 03:17:03 -0700 (PDT)
-Date: Wed, 11 Mar 2026 03:17:03 -0700
-In-Reply-To: <20260311095738.4177239-1-wangqing7171@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69b1411f.050a0220.209d0e.0000.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
-From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, chao@kernel.org, jaegeuk@kernel.org, 
-	jannh@google.com, liam.howlett@oracle.com, linkinjeon@kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	pfalcato@suse.de, sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz, wangqing7171@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEtBsWkC/2XN3WqEMBCG4VsJOd4pk78x8Wjvo5RiTNSUoktip
+ WXx3otbSlM8HPied+68xJxi4S278xy3VNIy85bRhfF+6uYxQgq8ZVyiJFSoYJ1ur+/LWACNC+Q
+ tDhSIXxi/5Tikz0fq+eXnLh/+Lfbr4Y/FlMq65K/Hr00cu9+s/stuAhCMQ2WlsJ006hqiT938t
+ OSRH91N1tJUUgKCI6+60DhjnT5JVcumkgoQOm2C7O2gyJqT1LV0ldTHT0neWY1oVTxJU0mBlTS
+ AQJbQOdEYP9A/ue/7N00TtG2bAQAA
+X-Change-ID: 20260303-thp_logs-059d6b80f6d6
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+ Breno Leitao <leitao@debian.org>, Wei Yang <richard.weiyang@gmail.com>
+X-Mailer: b4 0.15-dev-363b9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3437; i=leitao@debian.org;
+ h=from:subject:message-id; bh=SlcRmMAd9e7RilnQBzhjPWgJcym8P4Qfi/tBeqY+WfU=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpsUGYe0n4Emg0DgcwLIYYEzbtgFsgQN1fXoCb6
+ QuGYo05/qWJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCabFBmAAKCRA1o5Of/Hh3
+ bU0mD/4wVqEHYUQmFAk4UC+Lq8RIr56qC7E3dYy5PHZGyTcZ334GuwtbcSyrnlWYY+UnrGJNkKz
+ v0VVHjxfyoGTzFrfNp6X13LtsJl/PMggi+K6IaGHqsvXTAP3g2HYLQYGBy4hHQGcY1USVYREHda
+ gbLMtq4sm7ytz6KD4Q/5xBwG3bLrs569OYrULDNgF5m/wL4ily3Cf25GO/ATBJ2SjDyr+zFZuLy
+ PAjq+9z3NTrVZG1fgN/0U+1HkwQGJIag5i6wAhTUQxHF3NV7V8H+er631GpYupTlzlIdzkrXeLd
+ O7Q4CKLJGEhr2FsjYdjAi29k6CUibx8fzb1l7AGbDaMIRrpCnbH/DtbRv688K9G9lEeoy1T/l8L
+ EqVrLjBlOnDZxDjAbUMJHeajeVyZy5whaUmwMUfECXYDAO0P/YfexMad2vtDPtkKHjRq/TLK2sv
+ /roSFUIV7YUd0o6XMxHPryq8yBbTbVglac47f1JZWopLNUc/tH9X87pr0P2UieMijZdlF/zuxZk
+ T9AVT0IKbd8+3jB+auV/9N2H+khIO0vRv1HFJdY1Z+B2Tuk342sSs1eZgkIrd7Rx7My4i16++qz
+ 07O3PVNLquxXaXRS7b/3OfGM0sF8/NrAIF01YSRgoxYRS/b2H6ZP7Mug29NXFxJ1bnhgfdPsCpL
+ u8yUhmZMnDhoAJQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81BDF40011
-X-Rspamd-Server: rspam08
-X-Stat-Signature: e8yzhtx3h1oiuuoewqysie9nueybh7df
-X-HE-Tag: 1773224224-836213
-X-HE-Meta: U2FsdGVkX18uzQ7Xaf9lE+twjiaoRka1C6+2ABcSMPA5pALdxEH/lXBg1XYzFnpRv0yxW5WYr8aFfIrodDnRHlb1NQyh7THxhQYQvIOjoB4AgPqoz3eWCzzJv07FoyPJqaVo99fodyyJkU/v0mLdfHs5Rpdu7Kz2kvKU/DKMEoCHEVjnttgMeBEmbrfKTA2HibU1QcRSYhp+3vv6aU0ZNwFTyEyO+OOBLIoiFPxnETM8aCe7vaxogasy9AHxcm969YEX0kPzVEKtQ2v9h9AbCdqEKI6qUa0Dvg5gUgvGZN6iXO42Otoqll293Nt5PW20cFykaW8LuNJgGrXL/WmtW+iWBaEwrvhwEzlMlj2Fqoy3qmBBf59u+GjNd9qVKpqkdkQUElWiWwVKyhXTadnYaPt+H6zRowhCc8frdx84NuYiHlz8Ai511qXldab1wGEp/5bbNBPPEBqFpIlI7qzCVFE1YW1pwpdfx69BCgOuXQhkvgkCb2KF6FzXKJO9qqTaObwXzxC6q0dRs6HIXwtYwIdePbkFdiNHXB8pmb4ss5KQrUICLdi88HqII6CyaxqRi7QGL382QM9x9NoLlylqhenlQCFr03/ORMCBUnQH0nZavJcQZ+dDxJzgeJcLGs03OjWY6kateIKIyqkOs4/LOcK/AI6yap4HmwNpwr8UrhFUed7Zt0EiN0aIS0N0ZsYtz1mm4FB+G/AsIIV+YItVnfkbRGkX8yDbkcYyy2D9y1IbaX/RO7zA8mcmM+xmtaYiJkT+i55uXTzM3IEOG8OGt2S5G3/Oadwpy/ytIgCOBsevtJVNtwz9+IYrg5hDG+HbqCK5/7GDNjSy4RyXW52o5YjdpKtR+k/1OVcueGQ4k6I38TyfRrSQfn+AM330nuDsD5/8Ii1q5gBUulIB7i4nqjalzm96GPzO25CO/NGdiniyyuFcCGxgH8iuTlWmSk4DWTTVbxlxF9Pj8i6ZO7K
- 1I/dz7zO
- FcJdyzT59TO4do7Xp5rz2tr4UQRunDGUWObYvb45VPKJQ3pPelOlB4rD9ZCrFLQ3LSiCb4KBf1uAeYkPi4qEfvqyGiiNAydbNGUh6mo9QXqojLbXt/DRNmsEiy3MhzL7hXiJIUnwhvnw+/D7ydAd4UmWpNQsUzM7J9xFLRBQ4mDoTCREm6rzfvSbSnVMoU9ApQdrFWq5+hLiPz0S28bKsMSjqnqB7q2hnaMD7RihgMFQ2HMTqWIz1kQpVHAPJegB0LBFZaSVKBYRJq5++PubPPTZ/GX+BHmrvR8Xd/9kKjf8e2xrHq2smoH3sNyDAgQqSRlZb6zzIHK46u8opn3qGgta07Ldu8rV5/JwXd2Bk0gDNhGfIoydurPWfvt/bhdzhPWQSQHJR0At2jCaSAmgh5JCK6ZYPVziSj90smfvNskAJ3kT+L9l1KM0GFcayAbDS5dJLJv+oXRTPY2rxf4SKxHFE3zQ0d5SFRbUZYTblgwJthGF8OQmDoDCZVsoLOcGfA8nI02k0vZSPF+iDMOQ3JM1QFdpCP5Uiym+c7+85XBWrhzaA2ULv7fcqLQVSNuYcUh9O4/liav8yJOL20u4d0DCCoGe0e+Vc6oFzf3ZCLfC17oA5ZBkpD0BJiShFLkDq5AFMooAgNUtj+V1wcpIGRWErC8vNjOni0A1VUbcpr8UtjvmqwlYAqrXF4Dmtk2n5PEDVfuBZUjn2Q2dD7umdjOJFfGAlfZBScjj5KNfLtuk09yoTfZu0205jU7FMPLg5GBzaTAISYZ7hZSCV8G1i4A/kmDnW4A+PyWSYWULfAFwKndH2H+lkb+cptBOlVdTsXH41C/I2fs2JUzR4QB2BkUimm9xExQyi7qeJrTwzoN2TG0eZgezREUO2l3fsFk/QOSZoiNNn6+IBTQAH4Bi6X8bdtSM0uHrYRtPD9+sOpl1GHuDgfNE6Lat7mYyILFY7HRsdZAJE/51+MYAEcdW6hRoWl/SX
- 0ulygIOo
- csUd5Rh89D8lXFuOao1Cn/CzCWe8RzB6Tr6+aUraWv/AGPZzHqe/Bzu0aYG6Ynu2JR13dwQOpIw=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 11A6E2000A
+X-Stat-Signature: mxx6zcmeghzp1srmg9tqr76e346hmr3u
+X-HE-Tag: 1773224367-927447
+X-HE-Meta: U2FsdGVkX18uJVd5IsSuvKdK3BfPLE/Yz5WE3oJJfhYngD3UAnmyIokfjkuk3RjpCW4ysZvURm1cRLND2jYWURIB6VUNKc1PWUbnqXPGwCI7LWDweFGaQ8wR4mGXuMbwkKVnowYlzlNdIIRgkNccRO19KJ5kCh3+U1D6LTk96WAxQMruc/ghrEP9y35iuAhD6Cv0eLINZZdtvA3zH/QxwQ0xnT2ncd0PHNu03fI6j5VwvSs2Wo9lC/s/0dHbQzSuRsqhcyuJklR7SzYpMKCdX6vSiFxc7pyHoPCTLxNStk4j+SmAwBJhWpuntPcMQOlbXSCGSwl+VAWnI8/F+2E5SMyBu/WcIkEvyY2sIvqmFQpGemRyqw0raNRQAwUTlEzr+4sHMwp+N0a9C/8n1jM0Q9pfwXDFL/PzqplQMvpyNrtXHc1yJI8qgGlRBjDZeUF0Fh+3poAM4Q/8AR/7GNEu8NMrsZy0XjKOC4eBrovNGX9XL/VPc8FyldnxDqFWUIWY54X4BSCvLfiYCNor3lZEelZsNVges7mIyESbslXbarbYf2ywDKSLxQgRcsuqLjfbKn6jnYT7N/svEoArzCW/GRI8Fs/b0Ns6hS4VFwSKbs3v4ikqqtN8Qpn6kWEnfuaZ7y7wqG10D+GQiPI8rQOI/p+T+dNtXIXXbvCcJUkMr05DuM04sKkPhgx544kz6JO2y/K1gqQqs0PSIQlSGX6TQ9REj8UdHHINZhrCERXPdEoqvlyDpOhHal2QT3J9GyvwhL4jSWT76KfNcl1lrmpVB6T26K0j5XP8o5tDiT3Vu5oMhyR0KPhs+QMRrE59/e+gPnwqrGNLxyUQ2SaDA+ANZhX+A8rsC8hDhnoA2LlCplI/b5K5TLR3CAaZxBPFDL2fZLBY1Px2ZhOCAPUrlHhiS5U+tKek6LRQwZy+nanOEEgnWFCvahdKjPnS14bry+cNSHkg98NyDJkl55hbf/G
+ P7r5oymt
+ J9saN+0PGmg2kMfJAwD7HmwUGxy+WH7RDaEyS4K1ZTy4qP1Ck8YYk8daZE5EW+dyIvNpgGP8OVbmQaHRPipLL/OcfHSygb9m4A8EpEy5WSG3Ql8MXd/ldVI5Txb4feq3ptdOoUuXnvR3bWlaqAlq6IV+XdnR0ZX4vnyn7TVQRrvow/JBMSialAApMaM+fO/jrJ0HzZrkhwBRnKur7wwzz/ThNlR6++nbvLUSsJrcUnp3+DtNo8UA2ltEpJj6aIVDQfFbRHcu2KciMrC6gXqoI8iXIq3l9SBNY1LT2tPDNQthU7lmLe1VATCg7UsbP5zKCdvIIcuXY0puyBCOlBUqnxCQWqdYNYpaH0UyNtYjctF5ZNBU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,27 +122,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Writing to /sys/kernel/mm/transparent_hugepage/enabled causes
+start_stop_khugepaged() called independent of any change.
+start_stop_khugepaged() SPAMs the printk ring buffer overflow with the
+exact same message, even when nothing changes.
 
-syzbot tried to test the proposed patch but the build/boot failed:
+For instance, if you have a custom vm.min_free_kbytes, just touching
+/sys/kernel/mm/transparent_hugepage/enabled causes a printk message.
+Example:
 
-failed to apply patch:
-checking file mm/slub.c
-Hunk #1 FAILED at 2629.
-Hunk #2 succeeded at 2828 (offset 168 lines).
-Hunk #3 FAILED at 2670.
-Hunk #4 succeeded at 4624 (offset -404 lines).
-2 out of 4 hunks FAILED
+      # sysctl -w vm.min_free_kbytes=112382
+      # for i in $(seq 100); do echo never > /sys/kernel/mm/transparent_hugepage/enabled ; done
 
+and you have 100 WARN messages like the following, which is pretty dull:
 
+      khugepaged: min_free_kbytes is not updated to 112381 because user defined value 112382 is preferred
 
-Tested on:
+A similar message shows up when setting thp to "always":
 
-commit:         b29fb882 Merge tag 'v7.0-rc3-ksmbd-server-fixes' of gi..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9d7d0fbecb37bff8
-dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=14156f5a580000
+      # for i in $(seq 100); do
+      #       echo 1024 > /proc/sys/vm/min_free_kbytes
+      #       echo always > /sys/kernel/mm/transparent_hugepage/enabled
+      # done
+
+And then, we have 100 messages like:
+
+      khugepaged: raising min_free_kbytes from 1024 to 67584 to help transparent hugepage allocations
+
+This is more common when you have a configuration management system that
+writes the THP configuration without an extra read, assuming that
+nothing will happen if there is no change in the configuration, but it
+prints these annoying messages.
+
+For instance, at Meta's fleet, ~10K servers were producing 3.5M of
+these messages per day.
+
+Fix this by making the sysfs _store helpers easier to digest and
+ratelimiting the message.
+
+This version is heavily based on Lorenzo's suggestion on V1.
+
+---
+Changes in v6:
+- Keep the anon_enabled_mode_strings[] ordered similarly to sysfs format (Wei)
+- Link to v5: https://patch.msgid.link/20260310-thp_logs-v5-0-686099175bf6@debian.org
+
+Changes in v5:
+- Used the lockless __test_and_set_bit() primitives (David)
+- Rename the functions and variables to match the code (David)
+- Link to v4: https://patch.msgid.link/20260309-thp_logs-v4-0-926b9840083e@debian.org
+
+Changes in v4:
+- Use the enum instead of int in the new functions (akpm).
+- Explicitly initialize the enum values (akpm).
+- Link to v3: https://patch.msgid.link/20260307-thp_logs-v3-0-a45d2c8f3685@debian.org
+
+Changes in v3:
+- Extra ratelimit patch.
+- Create two enums, one for anon and one for global. (Lorenzo)
+- Remove the `extern` from set_recommended_min_free_kbytes (Lorenzo)
+- Export set_recommended_min_free_kbytes() definition to mm/internal.h
+  (Lorenzo)
+- Link to v2: https://patch.msgid.link/20260305-thp_logs-v2-0-96b3ad795894@debian.org
+
+Changes in v2:
+- V2 is heavily based on Lorenzo and Kiryl feedback on v1.
+- Link to v1: https://patch.msgid.link/20260304-thp_logs-v1-0-59038218a253@debian.org
+
+---
+Breno Leitao (4):
+      mm: khugepaged: export set_recommended_min_free_kbytes()
+      mm: huge_memory: refactor anon_enabled_store() with change_anon_orders()
+      mm: huge_memory: refactor enabled_store() with change_enabled()
+      mm: ratelimit min_free_kbytes adjustment messages
+
+ mm/huge_memory.c | 147 +++++++++++++++++++++++++++++++++++++------------------
+ mm/internal.h    |   5 ++
+ mm/khugepaged.c  |   6 +--
+ mm/page_alloc.c  |   4 +-
+ 4 files changed, 110 insertions(+), 52 deletions(-)
+---
+base-commit: 9dd5012f78d699f7a6051583dc53adeb401e28f0
+change-id: 20260303-thp_logs-059d6b80f6d6
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
