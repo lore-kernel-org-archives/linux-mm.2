@@ -4,110 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD9EFD065A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ADDAFD065C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:43:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 208D26B0005; Wed, 11 Mar 2026 04:43:34 -0400 (EDT)
+	id 9E4106B0089; Wed, 11 Mar 2026 04:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B5FE6B0089; Wed, 11 Mar 2026 04:43:34 -0400 (EDT)
+	id 98EEB6B008A; Wed, 11 Mar 2026 04:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A1776B008A; Wed, 11 Mar 2026 04:43:34 -0400 (EDT)
+	id 871816B008C; Wed, 11 Mar 2026 04:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DDE066B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:43:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 620868C138
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:33 +0000 (UTC)
-X-FDA: 84533143506.08.EBC1D15
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 91A6040003
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=RM6qnaC7;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 64F3F6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:43:35 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0804A13B4DC
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:35 +0000 (UTC)
+X-FDA: 84533143590.12.83C2367
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2C939A0004
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=cMKC+mH9;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773218611;
+	s=arc-20220608; t=1773218613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LeDMkbax8m50ldc7k8TQfgLLao3Zaj4KnHyl4VPdUU4=;
-	b=oWruHh2TG4Iy+1GS6EKnzdPmgAIaJ1K6RKHJwFTW3l9obJw+746VyP9yAG/vSyUIamrEuc
-	z0RrdnqzkJEqVLw1lLvr2ZJp5vvPm/K9ZNETDR62/BsvAlsqlBIdzSOS3F5RoHSQjzuUaK
-	a/W/C7oF1H4kRgQ2u6AIO5y3aQEeWjE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773218611; a=rsa-sha256;
-	cv=none;
-	b=5DjSHHvcs4rPO9Qks5HIhqv0mrzsZWs35GvGQzzakCNHiOaIu1YNoNHzqEIx2AdVX5YEQg
-	eny/Fyu8hkq3Ec+NQM6ywitYuHxX4B9EdatuaN3Y0PLzkAUmAjErP9nUFRMI7CAUGKgf83
-	R0NQTt9V6qjhR9jjqT12e4gobmF6Q/g=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=opLhtgMBHI5PHBJ/QKK1QZfBQHPqKZenu2IgsOh/g3c=;
+	b=yLUY8dU9quy0lGHDKSImy+lxpJ5F0cgKowbphj2zpClI6syFgyf1OJa7sTVKQTjptn00gV
+	FiX7gzuLsikR3g6dLY7gPHNV7YiGRuqh727/LaSydXeZWPUPNUtPh3CHUfSASKyWW9Mz2k
+	Qss6A8FdRygdKtrS5OZO/Ul+ASlW8sY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=RM6qnaC7;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=cMKC+mH9;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ae82df847bso33577265ad.2
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:43:31 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773218613; a=rsa-sha256;
+	cv=none;
+	b=G2VzoEA0Prvvzdmn8po/3GPfR6ypuhPIHUxFQ0sUgGDhLwG9uIXS24kLLVUZg+SP0U8l+c
+	9YRD//bILHrvdJB0i6HY+f8+FXO/or1WqB0tFKiQtb7TNUTmyfy6IxG8/bAkvOotqnCb/Z
+	WORFL6LsgQgQ+61tX4gjl0O8LdhL+v4=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ae43042ea7so115667455ad.0
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:43:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773218610; x=1773823410; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LeDMkbax8m50ldc7k8TQfgLLao3Zaj4KnHyl4VPdUU4=;
-        b=RM6qnaC7ZgrRXjBd7d3IP45+QhPFYxkqhzgEpHr6WqQqlDwp+yCnVKxOrO1L4h1vgl
-         N8LP0w3eWMvd5DCSAoIUmC5BO5/i+Ffl1Z2mWlFla5EFPdSX5wAjuVImiNPe39tTwPaO
-         dmvbHMSkOlAHr7EZVW1kaVmCfOFykhKc2EtkU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773218610; x=1773823410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1773218612; x=1773823412; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LeDMkbax8m50ldc7k8TQfgLLao3Zaj4KnHyl4VPdUU4=;
-        b=KtYw5R6enNaVPmT/vK+Bp0huGZAwUGI1DIS+3Oju6tSU86E+Y/JUZL4jco4PzXlyZg
-         qnQMy+HUf86dXkmnnHvOQRMQhpqBzSJUO/Xi3SZz/MXKnZx3/6AKQp6T07CS7v4Qq3ut
-         CgvxWSLBBWefS6n4iAGqKvsch1gCTw1GwcNo/SHuyqe0E9jltMN6RLZ7OZiUP9sOG/4q
-         YSYG0CsijnqgudJInNI3skAxKMC90kgXzsYWRW+ZK/I6F8isaTDN+uFy7XrajR/e0zD2
-         LP3b8a7hLVCGYwYPsjm/IYCDcf/2+vLvoVwwX0+Q7sZc1HC1i/MaMkFkpC85WPJVt4p+
-         1vww==
-X-Forwarded-Encrypted: i=1; AJvYcCV6O0MWoG/TCfv/5DpOqCV7tZv6swH9+B8qxkSxp3h/RfbNm161ZSVlBzBJ9c2DpJyUysfIoPg7MA==@kvack.org
-X-Gm-Message-State: AOJu0YyrhH2d/xMz8BO+GkPGj8b03gDZpIB3orq7+GpVmhM0waJfrSgK
-	XTk2evvAz49XtaAXUMvTUqPCBHMJZG8tX9avOKVnNMAgMavfB4dAyVKe9qK5OMdjHA==
-X-Gm-Gg: ATEYQzxXXJAH/f4f8PM7P27LRMHGH6mFu6Ca/sHoi3jR9xPaGJ1/lj7wQwWevZ0zROm
-	8OSsi+74rImMmg2g4yLE1O4t87r0NHulvWzalHzzMCm2kptQ/UrcllzW4mNrQ43sImIoCrmUp/Z
-	5G6xi7XXS/YMwKzpqFJP5/wFY/f7mmWLMTTdmXO1ID6vk1gJwCMBNG91uWaFuYPOj0TdGGiodBY
-	r22SlGe2aHKZ0IWMcii2PNfYweytOOrOLzuNr73ltyA31BpsypEtTY8B4u8XnwfIXTVVx/tlSmK
-	4Aydvx2Ky/Aa4EUFn/jh1fWOC9Sfn5bXcZLkVKu3IUNdXFB14DEV60njbt8e6eR0hQwygmXqdEf
-	mG/8a4N2RCeP7usjOwDSjQ8IMg2v7+NJOBwl2qYvSjUpJc1O7kwLUC2hFn+Rz8b7hxAel9fidfq
-	/VXZK9gyULDFjRQLXgJPW49UobK3uD+fsjyNyjfi5KP74GDI7JDxtGJn4AaxE61b2fIh7HzMFzo
-	5t9Yns5WV3RtA==
-X-Received: by 2002:a17:902:f651:b0:2ae:3a77:a1f4 with SMTP id d9443c01a7336-2aeae7d8956mr21121285ad.24.1773218610440;
-        Wed, 11 Mar 2026 01:43:30 -0700 (PDT)
+        bh=opLhtgMBHI5PHBJ/QKK1QZfBQHPqKZenu2IgsOh/g3c=;
+        b=cMKC+mH9vIR12S1sANsalGbOjN3kOOzeht2ps8anDeHHjjHCOE5JfI9yR5Hb+OHnxO
+         oycMLjlkLqv8H/S2fqSxJzhRw+XQmFX/2KDoHm/ep8P6lvEAxvSsB8+9CRghAJOaeZgi
+         //PuxYiY96ry99vKsEl/+iGNV12VjC6ksFjg0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773218612; x=1773823412;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=opLhtgMBHI5PHBJ/QKK1QZfBQHPqKZenu2IgsOh/g3c=;
+        b=HRrkBI0IZ0M+nz7IVJoRm9NbmfwrJpih+0HD+1vg+gXkwQmCSHndN+MNFdiskRfnPC
+         xemSl6BdpR6fdZnaCzq//ztDNJEtpUFUDaXGB9n/LJ+QDVboz6Y1/vEXditGNUg4q/W7
+         kgj6USwAmt1qf8bmwrLls4ragCrmRTIbXK4VIiXdKHF4qUJid19dtOee99QPwY0zyY6R
+         UJY47S9MZzOMUyIW1HDgIjMIJbfkN+825t2k0QKyjSwe8TqGrYC92/Uzgj4DwY4TuGk6
+         eOSdS1JbkxNzBFq7Hn4sEgCMKOApZ3YmXYcKLTWqaFKJjH54uTDv+m2dFICkfof31noK
+         n50Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUVnVs4FXeQBJUcSFXT1CsB+6Gn8jXVtrchunKTnHzyLGzZffdLwF3fOqbc+bDEaTGoofOwHEswnA==@kvack.org
+X-Gm-Message-State: AOJu0YxqHWMHyHf1NqYUuPK3Dvv8Cp0tWwOkz/l0088rzTgLK603nyLs
+	3Q+EvzXpjD/ChF3x1cHlEMdqRz2GFnpoXZYThvotdvNfZpnaJ0BNc11iJu6pDHamPA==
+X-Gm-Gg: ATEYQzwGvTk4GJJFExtzeXn/xsE+zKsUMlx58u1CJNpTBTOlugrLS/wHv7RL8ocvbyO
+	j8VaTa+dTks9VXFg6c6qygBBKd+YHiSydt8IalBjnaQdM+LayqC5RBlKH5AWglUCW9eNh1zgxKc
+	f9OGGuJjGafNHIFGOwldoERbDRjU5XE1jZuTQ6dgHApY5WMwxOEo0k57T7WHIQX6w2aED+gS/g3
+	Ux2s6UgvNgd2h1s9lYBCzdNfEU3tKxsvN7TaPbTEEDxFzy9eRTdQ4qocQQF3FFh1rWeUHZDkHwn
+	mvvOuNejVrXJub5ka2yn5zXwWF9jYCf7CwnJE/3BJ+CayAWKcXg5vzFxjO010WMIcdRjOmaWmK5
+	Ji6hFodPN2u2i7Osni92eqbeyh+FekOwL/dWgfS7jPGaZLg4k/uqwbFT3wJBafmEzv46Z7YQNcB
+	q3WJuJ739uPurC/NbThqEb/Vvx5H/G0xE55LyW5Ha0DBx3MEbVLZDp+r+WIPTcGdbKmZwpBgDtu
+	mDQg/SKTKvFiw==
+X-Received: by 2002:a17:902:cece:b0:2ae:3dcc:eb1d with SMTP id d9443c01a7336-2aeae7b425cmr18071985ad.18.1773218612065;
+        Wed, 11 Mar 2026 01:43:32 -0700 (PDT)
 Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:93a4:8281:fe98:426a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae261077sm16062035ad.40.2026.03.11.01.43.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae261077sm16062035ad.40.2026.03.11.01.43.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 01:43:29 -0700 (PDT)
+        Wed, 11 Mar 2026 01:43:31 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Minchan Kim <minchan@kernel.org>,
 	Brian Geffon <bgeffon@google.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v2 0/6] zram: recompression cleanups and tweaks
-Date: Wed, 11 Mar 2026 17:42:43 +0900
-Message-ID: <20260311084312.1766036-1-senozhatsky@chromium.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	gao xu <gaoxu2@honor.com>
+Subject: [PATCH v2 1/6] zram: do not permit params change after init
+Date: Wed, 11 Mar 2026 17:42:44 +0900
+Message-ID: <20260311084312.1766036-2-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+In-Reply-To: <20260311084312.1766036-1-senozhatsky@chromium.org>
+References: <20260311084312.1766036-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: okb6aw5iubts3a6f4ymjoykt8j5a41ec
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2C939A0004
+X-Stat-Signature: 5j1tyapqw47k4s16d5oxnsyps1y94wqh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91A6040003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773218611-841379
-X-HE-Meta: U2FsdGVkX19bcKtHsgF9QIkOV4rMn7Vrw6Ocfl6t4I3/Yb/8NAF83Xf0iTWt5kowX2HtQXfncJOjntUJZRSXy7aZbhSKE5BRxVMD103Qf7xtluF5CducvLOI1CrxMGWhX/RORIu/tAv+lIUOiuXkfYD7hgph+vHhQ8aukrpeJ/l90Qt4pfMtZqz5jcX6r0+cpV/9tQVR3cMW8AzDO2hltUQt60HzPPBjLDatx2+L0T5maQpSoS8dTzBkk0KDzqJp2XktvlMCO3M5caUceJ7HZ9CzdCuKEmChgKmWoMCeO72E3+sBom0A/tmsEo/8bH+yl7DCEogJdbqzxrxtyrQBjNfU9FfruIKNWoDyj0XjWOZ+AuCbveK311ft6Ct6eYtbRFtpqtJUoJtYiMZ9mREiSvDCHdyZG53gT1QvxLY5MCBI2ybyMQzwnqSZVzU8hofS6xagI4kIRQpK4HjQqVndz5Zl1cXwUPVSl3LdxQR3DRAYhIvbA6xisOJtepVWYwgOFstmyC44gfuLo343v8kubfJfYQRt0ESe7gwPOBgxdk6rHDvVmx8SGl4k8/m4M266wlwEqBkA7ASugMkwnwy8EqwZFKBplpLQD+Ma1cbLr/aBILKJHUpir/kuWUOA7/c2UvDrW+NHgWwDuK6R5ACtvWICSwdWAWnbWOE/eO6bz0k8n6QNU38LDcn8mzVRKJZU8PTKqOT2fQ/D2rbGfZ9ZXUWZcKqez0W3QwltmL9e2sbe5dCwOopMeyqDOqpWkErBrgWNCVQdE4JT26eOIB2b1/TXsEesBjC0Q9my1a9qdzp53ZMhJN/7N1u0CAo/66LPsLie89Z9NtepWeVFg/j6vVOU5+1YAwB1ZYS/i8G+Ebpf+yY7s841N8KxaFdL0nk4UY7aFJ9JuWJ1L5H4sKmrllKG9OsSwndq3KC9J/A4XLsdi82kY6QFolqC2MsIkcxW2heFl+LmDzeGOaots1d
- PIAmRl4u
- ftYhq0QwKj4pHqmflu0/VTylABy7qgvQmc+S2mFt6EtF4kCiRh3NKE5ApYEU0poNbgx2tm7ay2kVDypPi1pS6Hd/EsmXc6XuCcq6HRd7r9P52oIiWoZlMy3ssWpnNXys7/kwHlvLmcFYiLobcsqJ6hs5RseCgOI1Z4mtTDVVWhKPV3cVnxWG6vzaEruj7UPsWGlcJngFVTk+2CqHRq6kl1Byykzj92fF0sg27YMC3RkIpGSPfzVMpxo2yKkO1oVJ/NjXAbjyudXv4Rdyr/UVmnH7UKNASGAt1hnIVDtiR0AHQWEQTXlQuK+X3JbsgVVrw7cpR
+X-HE-Tag: 1773218612-509276
+X-HE-Meta: U2FsdGVkX1/LXQNP0SGDOu2iguF3ficLJ0CWDtTsZzZy8jEUrIf8TiV0eQry9Sg3xhM5ydhN0Fgewk3L1p3h/vNEBv46xGQgKedcGk/hNG/oSf0/Qv61aNXX16nUkgYQsHzzp+Xr8r3gFcA2ACdu57hsi3D7pnbXIQafpVgbSeRsPPcbIjjqK0noLlv2jWSbobcz97cnixxfUu+k2f6LOBJYP3ZtGW8znV6j6ApRnNcPuMDsfDpyP+5gt8ZP8/djKblORKXR6PbUT0lDYw2Bv7GmGH1t29M5lzBSk91gikuk/AuUJFhVRDLwxANLubEaIBt9S0TKLf8RclFtpGzpoE/gK5F916u86XuCOKPX5rCS79clGXnEjmFTt+b96udSTxxeIXsRj2+qRn8ehxhnjoAAfFzyDVBKIro71vgo1AzXN/mVcdiGP/1flN/0SfugxWwdVRtIQ3E+AMK08FKJCwc3h/V5FhElX4xGkvrhmPj0wLlBVGQ6gdte/qDg7RDOQ46tlBb8sodP2JqoNHj91pVrjnxoEQPIuGRr4JnczeAyAx2XasDF76QVDVMdyl8YVJOSYcd2LH+RB2MJImnVTDQQ0Ag06dBqmb8mwx2/fm8sSduXQ47+B7EsOyUuu2nR/2P+8wdNlt7Q23CZTpn5tyG/SjJ5Ra72iLF11CUD+TCHbYhesdd4MSGYr5Tbi4zQPzm9FGJ7LABQhHXyhnhQlEh9X38wGg7VLbA1YT3BUGr2Nq1Xqr2yfsPpewxPfFuhtVegiVCfldKobMWh0OcbkTr9zyqrdDRRDTOL/ygqBr2p3Z+FfXrlzag/bX2fz2jUgX2zIuL7t9GJ0Ms6TDd1RWHxgKGgqpBsxB+CL97aijM5m4g6OD/DsusCu3JyTb+Px/1buah2MPqZLF4qfBahpVvEwiBkPBuDwqSwRp/CmsQ4IxtIerLUqzroA6Fa/EYuLF95cK4141ycOqJyI5S
+ UM4cVrUJ
+ ORNJ6a+d5iVBr26hr8DLeyJoyV957ADxl8A1nFHsitBndjc74N1I9LMO3apitSl0JZFAVBKF4qrE+d41wgp09hBEO3U0B6bpfOzeDdRQDcT9bQoT+HIN8w9uO5z7fkiHxUPPci+0cEAGSLrXxmR8FH5BUpq5SRWJkvWT+cRyOMHr+rxJweOOEwhrA55xW8yP65XZqcAtOl2d/80Wj97+9nn6WQv10JmaCnKxHNqyh/zTGXkABexdANUdRmlXyyjR0RjV49ENXpgoIrAm5GcR34Hgiemwba7Gsz+aDBkcUMwxD4rRZf3ASTJomkVVgdRCNfEYb0zXPf2yLfmGhLwPx4bqy2fmuPMrpXtbr7muIPtC/2So+qFpioopuAuXobJNuVkUT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,32 +119,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series is a somewhat random mix of fixups,
-recompression cleanups and improvements partly based
-on internal conversations.  A few patches in the series
-remove unexpected or confusing behaviour, e.g. auto
-correction of bad priority= param for recompression,
-which should have always been just an error.  Then it
-also removes "chain recompression" which has a tricky,
-unexpected and confusing behaviour at times.  We also
-unify and harden the handling of algo/priority params.
-There is also an addition of missing device lock in
-algorithm_params_store() which previously permitted
-modification of algo params while the device is active.
+First, algorithm_params_store(), like any sysfs handler,
+should grab device lock.
 
-Sergey Senozhatsky (6):
-  zram: do not permit params change after init
-  zram: do not autocorrect bad recompression parameters
-  zram: drop ->num_active_comps
-  zram: update recompression documentation
-  zram: remove chained recompression
-  zram: unify and harden algo/priority params handling
+Second, like any write() sysfs handler, it should grab
+device lock in exclusive mode.
 
- Documentation/admin-guide/blockdev/zram.rst |  49 ++---
- drivers/block/zram/zram_drv.c               | 214 ++++++++++----------
- drivers/block/zram/zram_drv.h               |   1 -
- 3 files changed, 123 insertions(+), 141 deletions(-)
+Third, it should not permit change of algos' parameters
+after device init, as this doesn't make sense - we cannot
+compress with one C/D dict and then just change C/D dict
+to a different one, for example.
 
+Another thing to notice is that algorithm_params_store()
+accesses device's ->comp_algs for algo priority lookup,
+which should be protected by device lock in exclusive
+mode in general.
+
+Fixes: 4eac932103a5d ("zram: introduce algorithm_params device attribute")
+Acked-by: Brian Geffon <bgeffon@google.com>
+Cc: gao xu <gaoxu2@honor.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index fa38d26119ec..db862179cf59 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1750,6 +1750,10 @@ static ssize_t algorithm_params_store(struct device *dev,
+ 		}
+ 	}
+ 
++	guard(rwsem_write)(&zram->dev_lock);
++	if (init_done(zram))
++		return -EBUSY;
++
+ 	/* Lookup priority by algorithm name */
+ 	if (algo) {
+ 		s32 p;
 -- 
 2.53.0.473.g4a7958ca14-goog
 
