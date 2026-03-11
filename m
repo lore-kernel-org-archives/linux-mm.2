@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12061105D26E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 11:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E38F5105D26E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 11:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46D5C6B0092; Wed, 11 Mar 2026 07:03:57 -0400 (EDT)
+	id 230E46B0093; Wed, 11 Mar 2026 07:04:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403C16B0093; Wed, 11 Mar 2026 07:03:57 -0400 (EDT)
+	id 1F1E26B0095; Wed, 11 Mar 2026 07:04:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35B0F6B0095; Wed, 11 Mar 2026 07:03:57 -0400 (EDT)
+	id 11B1A6B0096; Wed, 11 Mar 2026 07:04:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 132396B0092
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:03:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 992951A074F
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:03:56 +0000 (UTC)
-X-FDA: 84533497272.12.D06DA87
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E37586B0093
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:04:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 76E651A0752
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:04:01 +0000 (UTC)
+X-FDA: 84533497482.06.FDEF35C
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9C27B40011
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:03:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.197 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	by imf06.hostedemail.com (Postfix) with ESMTP id 86BE518000A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 11:03:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.197 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773227034;
+	s=arc-20220608; t=1773227039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YDOcdxayX2Dacmq8PCNMbYZCBcwJJYR/d2ycAVdR0Xc=;
-	b=LldvFfmIqLEX4nMFrXfs/l9E46EMd6Bc9ojCtdLn9w80EIRmMcF7FIVQdKAearWJhJQngh
-	iUhRfzHLCpN3lLXGKsEVtZsL1PbYV9VVNBftyXxisw+zj/6iay6ioq2dUdA6lSE7xWUpkO
-	BzXmzxtk/Buzs72yItKuTnwZwY4BZmY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.197 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773227034; a=rsa-sha256;
+	bh=FnHQ3bIdAi8wEjmBqXkx8ht9ABbXk7RHu/RXzBRYxKc=;
+	b=iV64g2/LIHP/Fw+kkpd0BH+XM6RpIkwu0BmfYUgMGGhFlHXu/wt2N7pZH2J8ALMHPTWDeX
+	POZL/VFzPxzgFwaqEQSbJa9g4cN4b7WPvJqjPGun/v65vpaPV9lT94VBDR+qTq3ZUBoADj
+	fyBgMNFXW9ZpVpvXCrRJziMlmusAf7Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773227039; a=rsa-sha256;
 	cv=none;
-	b=63UsPc1BeAddGiZQ9MA/B1X43LL4+/uJ2MpNTjKVFB19PTN+xcOhG7oSR+TSHqRs9QsdAu
-	kN9gJ6OCgrnRMCVa+MYUvTUPkVEFkstWlX6GuMMFqbNI2glpgSE7PTqbk9szyt7Ekf2jtF
-	k1snYb8UYiwSDQbVcKa83FAFdTiLWBY=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 26B45432F5;
-	Wed, 11 Mar 2026 11:03:49 +0000 (UTC)
+	b=ekvbJabcOVwwo/dvlr76XG6npasMHY+sKrfs5Ha7c6vqALais/0I7GhMq4B0HDyFKqXdK4
+	xnAypP8PHqg06owSogvMxMU5pNz0XhSPt45lx8SYnob1qybp9XJDZqmQykFzFMTYUQ4sVv
+	uR/AWV7uq+Va+ITOzg2J2Vls97NfYK8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.197 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B34EA4333F;
+	Wed, 11 Mar 2026 11:03:53 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: akpm@linux-foundation.org
 Cc: alexghiti@kernel.org,
@@ -76,29 +76,31 @@ Cc: alexghiti@kernel.org,
 	ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH 2/4] mm: Rename node_get_allowed_targets() to make it more explicit
-Date: Wed, 11 Mar 2026 12:02:41 +0100
-Message-ID: <20260311110314.237315-3-alex@ghiti.fr>
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Bing Jiao <bingjiao@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after setting GFP_TRANSHUGE
+Date: Wed, 11 Mar 2026 12:02:42 +0100
+Message-ID: <20260311110314.237315-4-alex@ghiti.fr>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260311110314.237315-1-alex@ghiti.fr>
 References: <20260311110314.237315-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeefjeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpefhjeejtdelteefuedvffduheeifeeggeefudevfefhleduvdeutdeiteeukeegveenucfkphepvdeivddtmedutdgumegttdelvdemgedttdemmeehmeefrgeivgenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedviedvtdemuddtugemtgdtledvmeegtddtmeemheemfegriegvpdhhvghloheprghlvgigghhhihhtihdqfhgvughorhgrqdfrhfegofekiedvrfdrthhhvghfrggtvggsohhokhdrtghomhdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhqihgupedvieeugeehgeefvdfhhedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigghhhihhtiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghkihhnohgsu
- hhmihhtr
- gesghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomh
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeefjeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhepledufffftefhjeefhfefueekveffheejtdeilefgkeejtdeugeefudfhieefgfdunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdeivddtmedutdgumegttdelvdemgedttdemmeehmeefrgeivgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedviedvtdemuddtugemtgdtledvmeegtddtmeemheemfegriegvpdhhvghloheprghlvgigghhhihhtihdqfhgvughorhgrqdfrhfegofekiedvrfdrthhhvghfrggtvggsohhokhdrtghomhdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhqihgupeeufeeggfetgeeffeefhfdpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeeftddprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigghhhihhtiheskhgvrhhnvghlrdhorhhgpdhrtghpt
+ hhtohepk
+ hgvrhhnvghlqdhtvggrmhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghkihhnohgsuhhmihhtrgesghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomh
 X-GND-State: clean
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 86BE518000A
+X-Stat-Signature: o6bomf73buoxbee1ac949d7y5gkqzsca
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C27B40011
-X-Rspamd-Server: rspam08
-X-Stat-Signature: rdm7r7jd7srjk75b71a56dwhsgza4416
-X-HE-Tag: 1773227034-620385
-X-HE-Meta: U2FsdGVkX1/VUuktU/mKgTW1JAYCQkLhc3szgdJ9iGjsaTKaeXEvWlGpFks2bnJLAEtl3wGo8w0P2vqCAmAS+IE3cGYUS01hpNAUTz4nB97yWeOs10MhNN0m0DC/MqpHoXoCi4TVsh3pcwkmNhhgX0nIFwQoFh167M7HwxBs+wfyA+rkOvMcFd9hKALm4YbbmVzFrjfUYSI79hgp88VAt5zuVyINY6sfm5SAjxv3l+PVWtGVOl40vg+lzKxVH4j1QvHRXvwthd6T8TIXdqKhcxPz2yuvRl3GhhtohyE2tnikm14+P/3++9LfzLEVLigfG34U2M31gNDxTXkERAAxu7/MAx9k9X7FQ70SB2491PkiglJexoteAAbmcuuOUogUFN8PbDYja20j6mpqiwOO0BabVUbZX7p6Ed4jdxeRBubR3TvArjgbb6BIc1oZ0WTAyBBZWf8Yi9nFaJYCmUeMgnIuwHjaByj96BoDpG2bH4xBp1lfNfzq3fV5EDyLtmjKeXncDZ7AJ3mdsJnkJ96nKOlWZe92mZfYNfjQ70qJtZ9ncmav3fGtxk7nUm5OpcQ8e5LsEG6O5k6gTeushwReFR7JeD8zqUuSzwxfFkJXR0ZGiBfebgTyhxUHc/NlTvZDuxEKUjKLGg3pm7zBW4pHDLZnkrMl+912Ubno5PcnafuivZ5waN2VIeuM9H/0yOtHg6oxRHUCUav3+kx6lbFxQ+t/GDVS2a8gacttsn7kt2RkK2CnG3O6WJW+neAbN9eKgioTdR86k4iBk4Y1wG9zUncYIFCXBFqdoSFQgs5Dk1Qo+Ku210RcWfeASX1FxjSjLtGPRICypUtWMe6ptsNSoozm1yjrFK2Wt5Vd895bhZZZ1v5wOSaM3UPLdFFldmsYK6epmrvT2x/hVC18uv8YWs137ri7pxCOlX/O2tRdQTaDcJf8UMT4WmmGMdBiid+wDIdiP3d85v7F553muKn
- yk7FlTNN
- tyPRNn//7+06IrWT0uIsBtNGQrhA5L0+4Thlrh95Jx1xTQveiJv0b2iEzsJgAZS9LfWyXWH+e2T9qVBdmvYlFtmuPxfZ7im+pnSZWQft9pg8ExMr++iVJaaVtw2lwPTvXI0tH8UB10g7oAFWXkDJHu2BFfr420juKNmOI
+X-HE-Tag: 1773227039-300178
+X-HE-Meta: U2FsdGVkX1+BysdBnof378F2hMd1h784slo5RQzmnXN/JcA1VJrSJmBrXx/4n7LWS2uhUyj/zZ8fbko7vMYe+1luCcgljMTwaRfrcQQUf2iQI7cwWGwsDF7cOo3oAjw9UIMag+F8iR/QzJedqN05DAsxOcuMuThu/0scWOqzUT2PdTU1hzJoQ/rbPWard2oxqURFC10Lvxnebe8nrcbbnkNiSn2fgGgNYiazNbCfJ2R+MdbiF8pdCv5lcOWTykEpPHLrsVdHULN/Rv6Q+96+9xnO8dfMK5yVKxx7JpfaCNY6i+92W5RLC4XgldcNmJ0CcDFpYpoBPO4KX9kiyzbjV9jJRc+eZVZJ4W4VuuPiMMIlnp3d5fiZMyVWCh+BinT3I349YYenC6LGSwsF552fryxNol2KoG9UhEMbnOBuZvO7N7God4BuI4ZlD//s7U52no7AWe2a8a3nvelx30MD8E10ZAw5oR5oMAZUxGBB4+8j62FV08yVqEHz+F6fMyRrZsdS5nTdYL2Pnl8VuN75o8uoWIEeTY9X4lHMhNjCyCI8uDRa39EUj0SBS/dxc6JIT5T+nKFZlwLzaivlyJkfI6gHqJ1NWFsUuwjBoOen7wNjAgVE2lwY6LoWmWzTlnFwVvuarcP+rik3g1NVLp3A1pkhiuQvPX0mWIn6vnNPFS3hJeYFZJoSJD46SVEQpIQ/9wxAnjn4S9N+tUARAgpmBXgBPM8i66olwuBRykhQ3V7cE1gDjIJ2Ai/SPg1KK3rm1lI8fs4i9SfNFQ/LgvqMroSgQ0aB5Z0Ip0tXZaD4ViorIP6W/ic1g3vr27x+Wg7uc1RFO6OXkktYtZlFXxzllz6IRV3lz+XqFgF6k/cLjgc+V6XjQxxB8fWp7nayQxwHmncCbuoNaTCilZc/wg/oMjCUqv1kQqe1d4KJL6ToPTN2V1kZT4Av2U4ffvTwIJJwnNnmxSal0okDQH5jk3a
+ Fu2U8GEp
+ L9jJge5Tv6mRoUj+vm7NaGLlpGfSQ0kyd4GxvIaIU84L9jjMJDFYUy+1pdSrqXxyhdqxC/NwvYJWxIibBrMLZJhOhU7tydxhLqlCeXbv62S+tcNKm9/b5T5cobp49y6AX7BGzPA+u3qFFZKtaZce+5QP8FrDEma9AwEoP3pZyUIL0saZDlwcnk92xGYs3Nwju4f1gmuq3P5x+HCk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,84 +108,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This function actually returns the tier nodes that are targeted during a
-demotion, so rename it to be more explicit.
+GFP_TRANSHUGE sets __GFP_DIRECT_RECLAIM so we must clear GFP_RECLAIM
+after, not before.
 
-No functional change intended.
-
+Reported-by: Bing Jiao <bingjiao@google.com>
+Closes: https://lore.kernel.org/linux-mm/aXlKOxGGI9zne8sl@google.com/
+Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
+Cc: stable@vger.kernel.org
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- include/linux/memory-tiers.h | 6 +++---
- mm/memory-tiers.c            | 4 ++--
- mm/vmscan.c                  | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 0bf0d002939e..ec39dc3c39e6 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -54,7 +54,7 @@ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
- void mt_put_memory_types(struct list_head *memory_types);
- #ifdef CONFIG_MIGRATION
- int next_demotion_node(int node, const nodemask_t *allowed_mask);
--void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
-+void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets);
- bool node_is_toptier(int node);
- unsigned int mt_demote_folios(struct list_head *demote_folios,
- 			      struct pglist_data *pgdat,
-@@ -65,7 +65,7 @@ static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
- 	return NUMA_NO_NODE;
- }
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 2c3d489ecf51..ee533a4d38db 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2190,12 +2190,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ 	}
  
--static inline void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-+static inline void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets)
- {
- 	*targets = NODE_MASK_NONE;
- }
-@@ -117,7 +117,7 @@ static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
- 	return NUMA_NO_NODE;
- }
- 
--static inline void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-+static inline void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets)
- {
- 	*targets = NODE_MASK_NONE;
- }
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index afdf21738a54..19ecc9b6bbda 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -300,7 +300,7 @@ bool node_is_toptier(int node)
- 	return toptier;
- }
- 
--void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-+void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets)
- {
- 	struct memory_tier *memtier;
- 
-@@ -428,7 +428,7 @@ unsigned int mt_demote_folios(struct list_head *demote_folios,
- 	if (list_empty(demote_folios))
- 		return 0;
- 
--	node_get_allowed_targets(pgdat, &allowed_mask);
-+	node_get_allowed_demotion_targets(pgdat, &allowed_mask);
- 	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
- 	if (nodes_empty(allowed_mask))
- 		return 0;
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 5e0138b94480..11a97ee8f583 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -351,7 +351,7 @@ static bool can_demote(int nid, struct scan_control *sc,
- 	if (sc && sc->no_demotion)
- 		return false;
- 
--	node_get_allowed_targets(pgdat, &allowed_mask);
-+	node_get_allowed_demotion_targets(pgdat, &allowed_mask);
- 	if (nodes_empty(allowed_mask))
- 		return false;
- 
+ 	if (folio_test_large(src)) {
++		gfp_mask |= GFP_TRANSHUGE;
+ 		/*
+ 		 * clear __GFP_RECLAIM to make the migration callback
+ 		 * consistent with regular THP allocations.
+ 		 */
+ 		gfp_mask &= ~__GFP_RECLAIM;
+-		gfp_mask |= GFP_TRANSHUGE;
+ 		order = folio_order(src);
+ 	}
+ 	zidx = folio_zonenum(src);
 -- 
 2.53.0
 
