@@ -4,89 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FCA21125821
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:45:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93D62112580C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED2346B0088; Wed, 11 Mar 2026 09:45:14 -0400 (EDT)
+	id B1F476B0089; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78C66B0089; Wed, 11 Mar 2026 09:45:14 -0400 (EDT)
+	id AA2546B008A; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D599B6B008A; Wed, 11 Mar 2026 09:45:14 -0400 (EDT)
+	id 983FD6B008C; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A389B6B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:45:14 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43AFA1601CF
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:45:14 +0000 (UTC)
-X-FDA: 84533903748.20.48E44E9
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 500E840008
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:45:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E87F6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:47:12 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FBC31401AB
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:47:12 +0000 (UTC)
+X-FDA: 84533908704.27.930665C
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3C0574000F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:47:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IClbwMek;
+	spf=pass (imf27.hostedemail.com: domain of coefficriwan@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=coefficriwan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773236712;
+	s=arc-20220608; t=1773236830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p0GQEnmOojhZ2crtcMaz3qNU9XJfPZRSWaczd0xtofA=;
-	b=qbhI/T05MnRikQgWD41asr1HSr79IWPncMMpYGQSqzfs9TUR35ZsBXO5+T0/VWLMePdqqi
-	Rhb3iJRdGLCwxvnjjEiZEH3ywRVQURDJg1aTUx8B65pmHLmuF4gJENZvE/xCS5yQ/aMZiC
-	f5o8NWj81jlCv2pIW/HisHhv9VNURxU=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qFaa8x68fHFwhe04fiR5haFh7BniLVb44DlzlpBkbAw=;
+	b=W10FBlUpR3iQYOE9aU9LHQEuXGKAgsmu3pKqXo1OuB0q1/bCUiTaJ0RD7JWF3rOBf9PhBe
+	poC4bDdLN4Y15NP2eBOsj8nlwtj+fyDfTpB8XZ/cHQnZr+C4ohXCOTa1wcr7CTtIfPO01y
+	EM8F8/yr0ybNLbnuFrDlx2bxWddbMq0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773236712; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IClbwMek;
+	spf=pass (imf27.hostedemail.com: domain of coefficriwan@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=coefficriwan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773236830; a=rsa-sha256;
 	cv=none;
-	b=TzkKWTX6BE0JxIoE7LMdP2J3SGIp+31+Jl/Lv8f6mw/EeCUwz7ZrwgrgRwMYn3B6tP4azu
-	JNf1+o7zihgpJ2xmzQMaJKcvDkblInRYaIgsKDKVu+n7KdtpY3dYCLdtORDZWYtzlkgqvN
-	VGRMm3E0s4RuFdcdXfJ7Ls2HPNfxRRs=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWBnl37nczHnGh7;
-	Wed, 11 Mar 2026 21:44:59 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 319F640569;
-	Wed, 11 Mar 2026 21:45:07 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 11 Mar 2026 16:45:06 +0300
-Message-ID: <2895abe3-96f7-4428-8161-a8223ec758b7@huawei-partners.com>
-Date: Wed, 11 Mar 2026 16:45:06 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 3/4] mm/damon: New module with hot application
- detection
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260311041114.91406-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260311041114.91406-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: 500E840008
-X-Stat-Signature: j4yre93k8bh78n3dys9orqouh37334s6
+	b=NsHtSqoz+d7MwICt71m6M+2oKHBofishbUA6SM/bhv9Spl5BSh3aBUqbSE2UQFEyoLiAyW
+	iLbnQWVBBHLiXBvV2hOqyGjf1fTXcyqZUrhZLsmdYhWGSgPyxUhnTwQmMRNCVmcsw3tLou
+	amv9LqmMlXo9wkOPSRGSHXAehlUQuy0=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b886fc047d5so2307574666b.3
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:47:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773236829; x=1773841629; darn=kvack.org;
+        h=to:date:message-id:subject:mime-version:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qFaa8x68fHFwhe04fiR5haFh7BniLVb44DlzlpBkbAw=;
+        b=IClbwMekmTeePbRcS6Z3HJQB6D5SPBfRraGsy/uJ62EcZkHB6ulabuuIU5UVj+nFpG
+         cDKks8ivqnr/OADMhI+u3YdeGNTv3L6dEEq6LEXNG8/GsDcErOa4aDksafjyfQxbwbQF
+         D/kaGj15YrgCu5fC3FMQqyvyFJE39sCZmLy38ASyOS6Ke6lW2i+ulc+NvMior4zapFk0
+         Ry+iifjPujmkDjcdc2TzydOSS/2Maj3D5hYGbF9ShRdCFPcA9UegaM5ii9rMFfd639Ye
+         P2J/S8Y3uhrGUA2vuatijZHPO4PEnd7QpwJieugUwBQZVC7Qa32/MsKUaFO3MCDc511F
+         4F3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773236829; x=1773841629;
+        h=to:date:message-id:subject:mime-version:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFaa8x68fHFwhe04fiR5haFh7BniLVb44DlzlpBkbAw=;
+        b=shl23KGse+EwSJKSAuPvKz9hxCKuPLGxTK6hOxmTs9YenSK+RX7L3am0eFW1Rl3I85
+         8peusMUyRAfMTNMukeYim2q6q1FJxh2jQFSD4o+t22V04ALG1NzDuvNWhvGfdogKVR+H
+         4soVOnOAYAjUoh9TREUs8UpKFRJYhP+5X8XtD16oqdyln5hglee+MP0323mmC+N1iu72
+         R1LZytvqIVsM/OlczTsuZtsIa+FLDk+vGf0XvhTrlzO0g3gKF4/a+RN9xC8oQg6XYmwL
+         Ki41FZHRu0Kr41x01cjOxsi74rlp8FA1cODuajxDu0d8j2zCyuqQQQgG+9djVRNw6Rk3
+         Q+ng==
+X-Forwarded-Encrypted: i=1; AJvYcCXa+WJTgMZYjxF1+27KXH9AcojUaQAjOUDmkcQn9Kza+C4SBbFHGK+6CfuYX0spJ+YwegZSm0vWxQ==@kvack.org
+X-Gm-Message-State: AOJu0YxOUjMZ7J7gCCKSlVVZai/j9h3YoPHE8SsQ9h82lwIE5U97H5C5
+	bH44HzOpMjnovzZTf11wJdsnfjl0177H32DMZzuiIZXykt4dL4DNK3A5
+X-Gm-Gg: ATEYQzzfghvXFv3qudn+pIn/YstbJ+OBEfp/tdIjoRWsX9Gl00djTIQmkd/r7+I8kau
+	FDEsI/K+oIwnf1WE6hL445I6dXF599SNInV/e6ej3OGOmHqzI6wxJoEuui3zWXWaIHsALXCrP1B
+	+qiJzqYqr9WOQXq2JhAFy5pGvdIasWZvjAFxRyy6eFrL/Ga9dEWSdBLWNLZYH9hMIWb6C7B2nZf
+	r8wVB14E62jfVsf5F0kVdzud8xHjnPOuNK37xGf9vx2thXNMMIRaUxvrfF3VVFLFm792SeuKPdY
+	hU3qZOfPZjg0vqqpJBpepMjQGW5RR4pn13CnrYERhj6z+te1XUwjuJCfn5ArkRhqw4zghPHl35I
+	tif4FF36eW1VGUePDDUEBMG7K8dKqgbGBHpj2yBbDwlBSPM4JcXJQTW1xteVIsJPaJraCriZCIO
+	N+y9MaRb2SM/3iNuOljeC73BH8LOQJKEHQHumOMQyidxQ7+9DzVBPK/WLT5eiCnSzriYZXegxNP
+	Hf2f3kS
+X-Received: by 2002:a17:907:944f:b0:b94:1224:c620 with SMTP id a640c23a62f3a-b972e24d9cfmr150447766b.16.1773236828196;
+        Wed, 11 Mar 2026 06:47:08 -0700 (PDT)
+Received: from smtpclient.apple (linkchronicle.wifi.rsr.lip6.fr. [132.227.77.197])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6631503c903sm523871a12.20.2026.03.11.06.47.06
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Mar 2026 06:47:07 -0700 (PDT)
+From: Riwan <coefficriwan@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: mm/rmap: Should vma_migratable be checked in try_to_migrate_one?
+Message-Id: <83E1B606-C461-4FC1-BFF8-FC2BEFDCE2B6@gmail.com>
+Date: Wed, 11 Mar 2026 14:46:55 +0100
+To: "Andrew Morton (maintainer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <akpm@linux-foundation.org>,
+ "David Hildenbrand (maintainer:MEMORY MANAGEMENT - RMAP (REVERSE
+ MAPPING))" <david@kernel.org>,
+ "Lorenzo Stoakes (maintainer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <lorenzo.stoakes@oracle.com>,
+ "Rik van Riel (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <riel@surriel.com>,
+ "Liam R. Howlett (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <vbabka@suse.cz>,
+ "Harry Yoo (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <harry.yoo@oracle.com>,
+ "Jann Horn (reviewer:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING))" <jannh@google.com>,
+ "Zi Yan (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <ziy@nvidia.com>,
+ "Matthew Brost (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <matthew.brost@intel.com>,
+ "Joshua Hahn (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <joshua.hahnjy@gmail.com>,
+ "Rakie Kim (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <rakie.kim@sk.com>,
+ "Byungchul Park (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND
+ MIGRATION)" <byungchul@sk.com>,
+ "Gregory Price (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <gourry@gourry.net>,
+ "Ying Huang (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION)" <ying.huang@linux.alibaba.com>,
+ "Alistair Popple (reviewer:MEMORY MANAGEMENT - MEMORY POLICY AND
+ MIGRATION)" <apopple@nvidia.com>,
+ "open list:MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)" <linux-mm@kvack.org>,
+ open list <linux-kernel@vger.kernel.org>
+X-Mailer: Apple Mail (2.3864.400.21)
+X-Rspamd-Queue-Id: 3C0574000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 615edyghiixupzwjbujhqfzihsqdicks
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773236711-299112
-X-HE-Meta: U2FsdGVkX1+Fs0SWwp7FA3576Yj1YtlnVlE03BEjr2NnPv9GFLOuOYybL5Fh9fFVlPW1w7lEO6QaB1/Csrv+q1SbVVBvEhY5fn80qhE4G9Kvw3HJXNTB1uq5O5Qzq3iTTwN2AuMxHS5wljmVz/3cS9cH97oPHD/6TxtDDQ1qnigAho/ai06rHFAu/c0czNRknxjILN4sbecAHdVOJIbVkLG7VajBkDwvFA2Qxv9xc/S/r02R3aoCjRfI1tDS3BdrcvX2aTuK1HLhoLWpg6tx4k5sGg1FkxMakdBxvQ1GvCtRsdIYc81CrZpk09k/yvGPjoCWWi98MOQfCVrFmRqq3PlL73AmY9xPMzYYgiNz1oCl2JfMX/is59r5Fu/9B+JgE2J58hUANSeJl8+Lm0uSDB7cE5vu8FeNAz+smLIbDXd06UUDU/AuXqfZiUxptnw8N5bAULdFxTel6/xoK9FgAGh3kPizp2b/iD/TwxnQ19ONRuPztRCuywuHokCNfU4V5c5LV9ol37wROcOuA7bq/EkMG7XqRcX/5hPn77SBzmU86Z6ZNzTCVROXUkFTKl0xq9R160XlGLQcsuNqn+Pf7FEyr06pt+7ARuF0Nne+Pf2U2mwuGxIUrWLqMW0REPP+VfPS8SwQxZsCN1WxqP93dHsHILrg5TAJG/DYt+83M9GaG6/dCqkUiD2NUlPtrlBBv4GAhmR5n+c3AZdt0L2oenPScKtSqWq9CgjeR6uwP+IynlsCWZHzVKDVCnZzxD/D4CfC1W/HBwkqs2XK+Fc6umCcfn5jVBrfnX6iGQQIeCNshLIoDhfAdLdgOVELx7U0ypzpBuCI72BNmJsCjDQJoKSkSct3h2o8QUs98g4ale4RUCrfZbOArIGSYRpVRBV846XceHxqr2egjP7dDyItN7bk2vsgjqYh2suGZvAUDMgrztGtNQ0ywsqOydWDwIVS+ceT0RHKj+O4X9N3ywD
- a8/rJ2s7
- 6cK0zf6dAtGWaPjRpJYTa14da3J/ammJaaXfXJJTSRrYean72aOhbGgotSkmJssQVngx45t8FpZJXeh6Bq7ho52cMIfPQd01ulLTMw9A4rbeb7YXdipjovae+m/NkEl315a2RwmzzIqTpC0DIou77rDyWSxpVkRqGG3FxUVGh8oAiefcoThNlkL4PTrxMdp5xBJu3dfdVIeYYD0BNpCEeOnZFqiIdKvGbqji3J6LOP7dsw6yTZ7E3OzPE7ZzlcN2SqmzoFOjFKz/GDT6yI8IPrRvIU8CUvkDNd2VwWapOidKQI/hbuV5Ms6jaULzJbm5YeoI1niBTMXu+ZVc=
+X-HE-Tag: 1773236829-200526
+X-HE-Meta: U2FsdGVkX1/9vxylI+CBc/oY1KcgmtvZJZcPPPru0YkVMnN65ZCUSo1pGXDsXnHpBNJl5TmbGgJUkwYCBfsmMbjeeTKINAIvnV+OtmOV0WKyw0sImpQ+1Nlo4aZGxXvXCQUbH3zau4uo2Q+tU/gCrSpILXLG0fryBoCQp0Udg0IN6VgxZpgvzgt4QQ+YCGnQiXyX40XEugFDQc0abeV4JVcw2rUm0pSaGLslZ6wSWcDQsoOxBV8tU2hsevotfsolVvL8ToJsCgJ1L0bEWtvuG/FT5jfoOKN2EE+xmv6VTRgjPnGov890wfuUTKMVOAX3ku61bpuOyRKsJcL5+OnLx9OCWDxyORwEqytSUHdt474kl5XoP43g3gZKppigmvsT1FDfTNgLji0vjrp9zlCX8Af2prWSfQaUXauFowOVA0LeoQaVaaohpc1UGnLvi0K3Ce0cOo64NTGp62Ssxh4ooEFT8ClOwmFspY9ie4ROJFJUjySzKnQdBQ77lrvILITX3S0x2T4OwSyycGLZ4FeDsvRpRrzpqCyr3uejqxL6JzkDCmC1JLKCf/q+JY214e7c/AZOLr6wW8hBZcPO2x/TJUyTYr1cb5Gc5IbsDd66jTLxHta06wtPOaWSalmhlZXzdiv+dl2xYU4XCEBHQiiCUDWsHQ8sry78rAVIElrjTeeQ3XhW2u5qC3y+XK6DkfUFoBCk+r8SrGEnDTqqwdzQ/Hq/e4uHrtTarcrjKZIvS+aeW1PEMOja1QBxsJ94VnMc4BOmEnrtqh7KUdh9+D5EzzkesspOdQxDimCOY6ntJne50Vv8k7RrwsdgYIsv23dr8CmyZE7nKPpmtbAGv/iZJ0MIkfM/+P7UyOY8xGqzjRauoiNpD1v+toBNBgeS+zTSHIqAfb+TO+jFKJ00FbSgNnjTuPNW06va2GGe3bdigFliHdCKbNDjETqHHIKWKIIxPJZbXikAfEVWTdyfF+x
+ XolGvjGf
+ fYkB7SGu2Dx/yFs3ZjQM1cBbpzizcV3U7q5LVmfgSvYZ/8XLl9T+7x3EQ5IY+kvUEK0zH5HZi/vtYQ9QF4bOIjf8pknfKmeRt4y8Iz9Ell6bKJ1w3zTCyJ4yyUfa6/CDs0uz22/AD+RSVZyFzzqrrXdeYJlV0iuuwsHeZUx/+kNuarex450B3nMW5fXDsjhkQH52IE8an/k11ws+xwL5kZvPJD5o4yn0A1n42y4QAWcfq+8m+4A34McF6u4EtbNx0D26lijSmE61/qd46DofMV0RLvdu0085MmG0cMwnskKA5sPtQxGaYDKOx35yT2JuJc/wedTXf6E6PtptLnYYoQ2gMfJQLZVdIz8DajhREN0D8pPFUSLNwYYITmBXZhWQrEydas9u2X/iPr9iOz0LNH76zM4/N+6G8vsCR2zPcMeuVkSQPyEmHRuluwhF7jA9fIqNkN3Of+iMVqposqcFSduf9+6eHIWVpFDwG9J9NetTKEojRKRDsB6DptlaUFSM0RwtiAdW35wjpsPMJe2A6cT3sbEiVBPrsqEncZT3CjpuEc/9Q+sg9rmvorMnPugbe0xeYG/jv2oRF15Cfgvq7MGCo4rUvZiezX8TSOiDMsI1rbVsNTFx3plSTPPaiOouZv63CNiMulQz+1t/P5WPzMXZILJc+Fdd0QZ5h3SgstzxEdREpEk7rPeOJx7U/vBocFDbwvKd7QQaZwvsSGC8MQIoD9QLQZTRIf2saYRdbZSDvcY8o4ZLJ4QosVuURVdcLerMayA7ogaAb20RI0oOmArWMiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,644 +133,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+--Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-On 3/11/2026 7:11 AM, SeongJae Park wrote:
-> On Tue, 10 Mar 2026 16:24:19 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> I'd like to discuss about this in a high level, but I'd like to do that on the
-> cover letter.  To this patch, I'm therefore adding comments for only details
-> that stand out immeadiately to me.
+Hi, I=E2=80=99m a phd student working on memory management and I have =
+the following question:
+Is it intentional to not check for `vma_migratable` in =
+`try_to_migrate_one` ?
+If the vma is not migratable, it would be logical to cancel the page =
+migration at this point.
 
-I will update the cover letter to add more details for the next version.
+=46rom what I understand, `vma_migratable` is called to check if a pages =
+in a specific VMA can be migrated or not.
+=46rom what I can see, user-facing migration paths (mbind, move_pages) =
+and NUMA balancing already check wether migration is possible or not =
+with `vma_migratable`, but other migration path, such as compaction with =
+kcompactd, ignore this check.
+As `try_to_migrate_one` is the only place where we have access to the =
+vma (due to reverse mapping), it would be logical to check here for =
+`vma_migratable` (before we only have access to the folio).
 
->>
->> 1. It first launches a new kthread called damon_dynamic. This thread
->> will behave as a supervisor, launching new kdamond threads for all
->> the processes we want to montiored. The tasks are sorted
->> by utime delta. For the top N tasks, a new kdamond thread will be
->> launched.
-> 
-> If I read the cover letter and the code of this patch correctly, seems the last
-> two sentences of the above paragraph is outdated.  Please correct me if I'm
-> wrong.
+I=E2=80=99m still new to the Linux Kernel, and may have missed critical =
+subsystem / behavior, and I would be curious to know if this was =
+overlooked or if there is a reason behind not calling `vma_migratable`.
 
-Correct, I forgot to delete it.
+=46rom what I could get, here is the relevant context:
+- Implem of vma_migratable : mm/mempolicy: check hugepage migration is =
+supported by arch in vma_migratable() =
+(https://lore.kernel.org/all/20200402041052.Y4zsoYman%25akpm@linux-foundat=
+ion.org/)
+- Implem of try_to_migrate_one, previously managed in try_to_unmap_one : =
+mm/rmap: split migration into its own function =
+(https://lore.kernel.org/all/20210701015416.0t4MkxtDR%25akpm@linux-foundat=
+ion.org/)
 
-> 
->> Applications which turn cold will have their kdamond
->> stopped.
->>
->> The processes are supplied by the monitored_pids parameter. When the
->> module is enabled, it will go through all the monitored_pids, start
->> the supervisor and a new kdamond thread for each of the tasks. This
->> tasks can be modified and applied using the commit_input parameters.
->> In that case, we will stop any kdamond thread for tasks that are not
->> going to be monitored anymore, and start a new kdamond thread for each
->> new task to be monitored. For tasks that were monitored before and are
->> still monitored after commiting a new monitored_pids list, kdamond
->> threads are left intact.
->>
->> 2. Initially we don't know the min_access for each of the task. We
->> want to find the highest min_access when collapses start happening.
->> For that we have an initial threashold of 90, which we will lower
->> until a collpase occurs.
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
->> ---
->>  mm/damon/Kconfig          |   7 +
->>  mm/damon/Makefile         |   1 +
->>  mm/damon/hugepage.c (new) | 441 ++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 449 insertions(+)
->>
->> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
->> index 8c868f7035fc..2355aacb6d12 100644
->> --- a/mm/damon/Kconfig
->> +++ b/mm/damon/Kconfig
->> @@ -110,4 +110,11 @@ config DAMON_STAT_ENABLED_DEFAULT
->>  	  Whether to enable DAMON_STAT by default.  Users can disable it in
->>  	  boot or runtime using its 'enabled' parameter.
->>  
->> +config DAMON_HOT_HUGEPAGE
-> 
-> I'd suggest renaming to DAMON_HUGEPAGE.
+Thanks a lot
 
-OK
+Riwan Co=C3=ABffic=
 
-> 
->> +	bool "Build DAMON-based collapse of hot regions (DAMON_HOT_HUGEPAGES)"
->> +	depends on DAMON_VADDR
->> +	help
->> +	 Collapse hot region into huge pages. Hot regions are determined by
->> +	 DAMON-based sampling
->> +
->>  endmenu
->> diff --git a/mm/damon/Makefile b/mm/damon/Makefile
->> index d8d6bf5f8bff..ac3afbc81cc7 100644
->> --- a/mm/damon/Makefile
->> +++ b/mm/damon/Makefile
->> @@ -7,3 +7,4 @@ obj-$(CONFIG_DAMON_SYSFS)	+= sysfs-common.o sysfs-schemes.o sysfs.o
->>  obj-$(CONFIG_DAMON_RECLAIM)	+= modules-common.o reclaim.o
->>  obj-$(CONFIG_DAMON_LRU_SORT)	+= modules-common.o lru_sort.o
->>  obj-$(CONFIG_DAMON_STAT)	+= modules-common.o stat.o
->> +obj-$(CONFIG_DAMON_HOT_HUGEPAGE)	+= modules-common.o hugepage.o
->> diff --git a/mm/damon/hugepage.c b/mm/damon/hugepage.c
->> new file mode 100644
->> index 000000000000..ccd31c48d391
->> --- /dev/null
->> +++ b/mm/damon/hugepage.c
->> @@ -0,0 +1,441 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2026 HUAWEI, Inc.
->> + *             https://www.huawei.com
->> + *
->> + * Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> + */
->> +
->> +#define pr_fmt(fmt) "damon-hugepage: " fmt
->> +
->> +#include <linux/damon.h>
->> +#include <linux/kstrtox.h>
->> +#include <linux/module.h>
->> +
->> +#include "modules-common.h"
->> +
->> +#ifdef MODULE_PARAM_PREFIX
->> +#undef MODULE_PARAM_PREFIX
->> +#endif
->> +#define MODULE_PARAM_PREFIX "damon_hugepage."
->> +
->> +#define MAX_MONITORED_PIDS 100
->> +#define HIGHEST_MIN_ACCESS 90
->> +#define HIGH_ACC_THRESHOLD 50
->> +#define MID_ACC_THRESHOLD 15
->> +#define LOW_ACC_THRESHOLD 2
-> 
-> On your setup where the sampling interval is 5ms and the aggregation interval
-> is 100ms, nr_accesses of each DAMON region can be up to only 20.  So above
-> thresholds may better to be lowered.
-> 
->> +
->> +static struct task_struct *monitor_thread;
->> +
->> +struct mutex enable_disable_lock;
->> +
->> +/*
->> + * Enable or disable DAMON_HUGEPAGE.
->> + *
->> + * You can enable DAMON_HUGEPAGE by setting the value of this parameter
->> + * as ``Y``. Setting it as ``N`` disables DAMON_HOT_HUGEPAGE.  Note that
->> + * DAMON_HOT_HUGEPAGE could do no real monitoring and reclamation due to the
-> 
-> s/DAMON_HOT_HUGEPAGE/DAMON_HUGEPAGE/ ?
+--Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
 
-I will change it.
+<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
+content=3D"text/html; charset=3Dutf-8"></head><body =
+style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
+line-break: after-white-space;"><div>Hi, I=E2=80=99m a phd student =
+working on memory management and I have the following question:</div>Is =
+it intentional to not check for `vma_migratable` in `try_to_migrate_one` =
+?<br>If the vma is not migratable, it would be logical to cancel the =
+page migration at this point.<br><br>=46rom what I understand, =
+`vma_migratable` is called to check if a pages in a specific VMA can be =
+migrated or not.<br>=46rom what I can see, user-facing migration paths =
+(mbind, move_pages) and NUMA balancing already check wether migration is =
+possible or not with `vma_migratable`, but other migration path, such as =
+compaction with kcompactd, ignore this check.<br>As `try_to_migrate_one` =
+is the only place where we have access to the vma (due to reverse =
+mapping), it would be logical to check here for `vma_migratable` (before =
+we only have access to the folio).<br><br>I=E2=80=99m still new to the =
+Linux Kernel, and may have missed critical subsystem / behavior, and I =
+would be curious to know if this was overlooked or if there is a reason =
+behind not calling `vma_migratable`.<br><br>=46rom what I could get, =
+here is the relevant context:<br>- Implem of vma_migratable : =
+mm/mempolicy: check hugepage migration is supported by arch in =
+vma_migratable() (<a =
+href=3D"https://lore.kernel.org/all/20200402041052.Y4zsoYman%25akpm@linux-=
+foundation.org/">https://lore.kernel.org/all/20200402041052.Y4zsoYman%25ak=
+pm@linux-foundation.org/</a>)<br>- Implem of try_to_migrate_one, =
+previously managed in try_to_unmap_one : mm/rmap: split migration into =
+its own function (<a =
+href=3D"https://lore.kernel.org/all/20210701015416.0t4MkxtDR%25akpm@linux-=
+foundation.org/">https://lore.kernel.org/all/20210701015416.0t4MkxtDR%25ak=
+pm@linux-foundation.org/</a>)<div><br></div><div>Thanks a =
+lot</div><div><br></div><div>Riwan Co=C3=ABffic</div></body></html>=
 
-> 
->> + * watermarks-based activation condition.  Refer to below descriptions for the
->> + * watermarks parameter for this.
-> 
-> On RFC v1 discussion [1], you mentioned you will update this comment.  But I
-> find no change?
-
-I will add links to future discuessions.
-
-> 
->> + */
->> +static bool enabled __read_mostly;
->> +
->> +/*
->> + * Make DAMON_HUGEPAGE reads the input parameters again, except ``enabled``.
->> + *
->> + * Input parameters that updated while DAMON_HUGEPAGE is running are not applied
->> + * by default.  Once this parameter is set as ``Y``, DAMON_HUGEPAGE reads values
->> + * of parametrs except ``enabled`` again.  Once the re-reading is done, this
->> + * parameter is set as ``N``.  If invalid parameters are found while the
->> + * re-reading, DAMON_HUGEPAGE will be disabled.
->> + */
->> +static bool commit_inputs __read_mostly;
->> +module_param(commit_inputs, bool, 0600);
->> +
->> +/*
->> + * DAMON_HUGEPAGE monitoring period in microseconds.
->> + * 5000000 = 5s
->> + */
->> +static unsigned long monitor_period __read_mostly = 5000000;
->> +module_param(monitor_period, ulong, 0600);
->> +
->> +static long monitored_pids[MAX_MONITORED_PIDS];
->> +static int num_monitored_pids;
->> +module_param_array(monitored_pids, long, &num_monitored_pids, 0600);
->> +
->> +static struct damos_quota damon_hugepage_quota = {
->> +	/* use up to 10 ms time, reclaim up to 128 MiB per 1 sec by default */
->> +	.ms = 10,
->> +	.sz = 0,
->> +	.reset_interval = 1000,
->> +	/* Within the quota, page out older regions first. */
->> +	.weight_sz = 0,
->> +	.weight_nr_accesses = 0,
->> +	.weight_age = 1
-> 
-> You may want to prioritize hot memory region under the quota.  If so, you would
-> need to set weight_nr_acceses to non-zero.
-> 
->> +};
->> +DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(damon_hugepage_quota);
->> +
->> +static struct damos_watermarks damon_hugepage_wmarks = {
->> +	.metric = DAMOS_WMARK_FREE_MEM_RATE,
->> +	.interval = 5000000, /* 5 seconds */
->> +	.high = 900, /* 90 percent */
->> +	.mid = 800, /* 80 percent */
->> +	.low = 50, /* 5 percent */
->> +};
->> +DEFINE_DAMON_MODULES_WMARKS_PARAMS(damon_hugepage_wmarks);
-> 
-> In the RFC v1 discussion, you also mentioned you will remove the above, but
-> seems it is forgotten?
-> 
-> Also, my understadning of your reply on the previous discussion was that you
-> don't really want to use watermarks in this module, and therefore you want to
-> remove it.  Am I correct?  If I'm not, maybe I'm still not understanding the
-> intention of the watermarks.  Can you please enlighten me?
-
-Since I refactored heavily the previous code, I forgot to delete this bit.
-I will remove it now.
-
->> +
->> +static struct damon_attrs damon_hugepage_mon_attrs = {
->> +	.sample_interval = 5000, /* 5 ms */
->> +	.aggr_interval = 100000, /* 100 ms */
->> +	.ops_update_interval = 0,
-> 
-> Is ops_update_interval = 0 really your intention?
-
-I didn't think about it. I will set it to 60 seconds, as in other modules.
-
-> 
->> +	.min_nr_regions = 10,
->> +	.max_nr_regions = 1000,
->> +};
->> +DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_hugepage_mon_attrs);
->> +
->> +struct hugepage_task {
->> +	struct damon_ctx *ctx;
->> +	int pid;
->> +	struct damon_target *target;
->> +	struct damon_call_control call_control;
->> +	struct list_head list;
->> +};
->> +
->> +static struct damos *damon_hugepage_new_scheme(int min_access,
->> +						   enum damos_action action)
->> +{
->> +	struct damos_access_pattern pattern = {
->> +		/* Find regions having PAGE_SIZE or larger size */
-> 
-> s/PAGE_SIZE/PMD_SIZE/ ?
-> 
->> +		.min_sz_region = PMD_SIZE,
->> +		.max_sz_region = ULONG_MAX,
->> +		/* and not accessed at all */
-> 
-> Seems the above comment should be updated.
-> 
->> +		.min_nr_accesses = min_access,
->> +		.max_nr_accesses = 100,
-> 
-> Because you set sampling interval 5ms and aggregatin interval 100ms,
-> nr_accesses of each DAMON region can be up to only 20 (100ms / 5ms).
-> max_nr_accesses may better to be 20 to clarifyt that.
-> 
->> +		/* for min_age or more micro-seconds */
->> +		.min_age_region = 0,
->> +		.max_age_region = UINT_MAX,
->> +	};
->> +
->> +	return damon_new_scheme(
->> +		&pattern,
->> +		/* synchrounous partial collapse as soon as found */
->> +		action, 0,
->> +		/* under the quota. */
->> +		&damon_hugepage_quota,
->> +		/* (De)activate this according to the watermarks. */
->> +		&damon_hugepage_wmarks, NUMA_NO_NODE);
-> 
-> Again, I'm not sure if you really want to use watermarks, and if so, what is
-> the intention.
-
-Right, I will remove this code.
-
->> +}
->> +
->> +static int damon_hugepage_apply_parameters(
->> +				struct hugepage_task *monitored_task,
->> +				int min_access,
->> +				enum damos_action action)
->> +{
->> +	struct damos *scheme;
->> +	struct damon_ctx *param_ctx;
->> +	struct damon_target *param_target;
->> +	struct damos_filter *filter;
->> +	int err;
->> +	struct pid *spid;
->> +
->> +	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
->> +					   DAMON_OPS_VADDR);
->> +	if (err)
->> +		return err;
-> 
-> You should deallocate param_ctx before returning the error.
-
-Not sure about this. As far as I know, damon_modules_new_paddr_ctx_target
-will destroy the context in case there is an error. In fact, reclaim and 
-lru_sort modules just return error when damon_modules_new_paddr_ctx_target
-fails, no cleanup used.
-
-> 
->> +
->> +	spid = find_get_pid(monitored_task->pid);
->> +	if (!spid)
->> +		return err;
-> 
-> Again, please deallocate param_ctx before returning the error.
-
-OK
-
-> 
->> +
->> +	param_target->pid = spid;
->> +
->> +	err = damon_set_attrs(param_ctx, &damon_hugepage_mon_attrs);
->> +	if (err)
->> +		goto out;
->> +
->> +	err = -ENOMEM;
->> +	scheme = damon_hugepage_new_scheme(min_access, action);
->> +	if (!scheme)
->> +		goto out;
->> +
->> +	damon_set_schemes(param_ctx, &scheme, 1);
->> +
->> +	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true, false);
->> +	if (!filter)
->> +		goto out;
->> +	damos_add_filter(scheme, filter);
-> 
-> What's the intention of the above filter?
-
-Also, I will remove it.
-
->> +
->> +	err = damon_commit_ctx(monitored_task->ctx, param_ctx);
->> +out:
->> +	damon_destroy_ctx(param_ctx);
->> +	return err;
->> +}
->> +
->> +static int damon_hugepage_damon_call_fn(void *arg)
->> +{
->> +	struct hugepage_task *monitored_task = arg;
->> +	struct damon_ctx *ctx = monitored_task->ctx;
->> +	struct damos *scheme;
->> +	int err = 0;
->> +	int min_access;
->> +	struct damos_stat stat;
->> +
->> +	damon_for_each_scheme(scheme, ctx)
->> +		stat = scheme->stat;
->> +	scheme = list_first_entry(&ctx->schemes, struct damos, list);
->> +
->> +	if (ctx->passed_sample_intervals < scheme->next_apply_sis)
->> +		return err;
->> +
->> +	if (stat.nr_applied)
->> +		return err;
->> +
->> +	min_access = scheme->pattern.min_nr_accesses;
->> +
->> +	if (min_access > HIGH_ACC_THRESHOLD) {
->> +		min_access = min_access - 10;
->> +		err = damon_hugepage_apply_parameters(
->> +			monitored_task, min_access, DAMOS_COLLAPSE);
->> +	} else if (min_access > MID_ACC_THRESHOLD) {
->> +		min_access = min_access - 5;
->> +		err = damon_hugepage_apply_parameters(
->> +			monitored_task, min_access, DAMOS_COLLAPSE);
->> +	} else if (min_access > LOW_ACC_THRESHOLD) {
->> +		min_access = min_access - 1;
->> +		err = damon_hugepage_apply_parameters(
->> +			monitored_task, min_access, DAMOS_COLLAPSE);
->> +	}
->> +	return err;
->> +}
->> +
->> +static int damon_hugepage_init_task(struct hugepage_task *monitored_task)
->> +{
->> +	int err = 0;
->> +	struct damon_ctx *ctx = monitored_task->ctx;
->> +	struct damon_target *target = monitored_task->target;
->> +	struct pid *spid;
->> +
->> +	if (!ctx || !target)
->> +		damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_VADDR);
->> +
->> +	if (damon_is_running(ctx))
->> +		return 0;
->> +
->> +	spid = find_get_pid(monitored_task->pid);
->> +	if (!spid)
->> +		return err;
->> +
->> +	target->pid = spid;
->> +
->> +	monitored_task->call_control.fn = damon_hugepage_damon_call_fn;
->> +	monitored_task->call_control.repeat = true;
->> +	monitored_task->call_control.data = monitored_task;
->> +
->> +	struct damos *scheme = damon_hugepage_new_scheme(
->> +			HIGHEST_MIN_ACCESS, DAMOS_COLLAPSE);
->> +	if (!scheme)
->> +		return -ENOMEM;
->> +
->> +	damon_set_schemes(ctx, &scheme, 1);
->> +
->> +	monitored_task->ctx = ctx;
->> +	err = damon_start(&monitored_task->ctx, 1, false);
->> +	if (err)
->> +		return err;
->> +
->> +	return damon_call(monitored_task->ctx, &monitored_task->call_control);
->> +}
->> +
->> +static int add_monitored_task(int pid, struct list_head *task_monitor)
->> +{
->> +	struct hugepage_task *new_hugepage_task;
->> +	int err;
->> +
->> +	new_hugepage_task = kzalloc_obj(*new_hugepage_task);
->> +	if (!new_hugepage_task)
->> +		return -ENOMEM;
->> +
->> +	new_hugepage_task->pid = pid;
->> +	INIT_LIST_HEAD(&new_hugepage_task->list);
->> +	err = damon_hugepage_init_task(new_hugepage_task);
->> +	if (err)
->> +		return err;
->> +	list_add(&new_hugepage_task->list, task_monitor);
->> +	return 0;
->> +}
->> +
->> +static int damon_hugepage_handle_commit_inputs(
->> +		struct list_head *monitored_tasks)
->> +{
->> +	int i = 0;
->> +	int err = 0;
->> +	bool found;
->> +	struct hugepage_task *monitored_task, *tmp;
->> +
->> +	if (!commit_inputs)
->> +		return 0;
->> +
->> +	while (i < MAX_MONITORED_PIDS) {
->> +		if (!monitored_pids[i])
->> +			break;
->> +
->> +		found = false;
->> +
->> +		rcu_read_lock();
->> +		if (!find_vpid(monitored_pids[i])) {
->> +			rcu_read_unlock();
->> +			continue;
->> +		}
->> +
->> +		rcu_read_unlock();
->> +
->> +		list_for_each_entry_safe(monitored_task, tmp, monitored_tasks, list) {
-> 
-> Please wrap lines for the 80 columns limit.
-
-Interesting, when check it, i was less than 80 columns. Even if I copy this line
-and paste it into any text editor, I still get less than 80 characters.
-
-> 
->> +			if (monitored_task->pid == monitored_pids[i]) {
->> +				list_move(&monitored_task->list, monitored_tasks);
->> +				found = true;
->> +				break;
->> +			}
->> +		}
->> +		if (!found) {
->> +			err = add_monitored_task(monitored_pids[i], monitored_tasks);
->> +			/* Skip failed tasks */
->> +			if (err)
->> +				continue;
->> +		}
->> +		i++;
->> +	}
->> +
->> +	i = 0;
->> +	list_for_each_entry_safe(monitored_task, tmp, monitored_tasks, list) {
->> +		i++;
->> +		if (i <= num_monitored_pids)
->> +			continue;
->> +
->> +		err = damon_stop(&monitored_task->ctx, 1);
->> +		damon_destroy_ctx(monitored_task->ctx);
->> +		list_del(&monitored_task->list);
->> +		kfree(monitored_task);
->> +	}
->> +
->> +	commit_inputs = false;
->> +	return err;
->> +}
->> +
->> +static int damon_manager_monitor_thread(void *data)
->> +{
->> +	int err = 0;
->> +	int i;
->> +	struct hugepage_task *entry, *tmp;
->> +
->> +	LIST_HEAD(monitored_tasks);
->> +
->> +	for (i = 0; i < MAX_MONITORED_PIDS; i++) {
->> +		if (!monitored_pids[i])
->> +			break;
->> +
->> +		rcu_read_lock();
->> +		if (!find_vpid(monitored_pids[i])) {
->> +			rcu_read_unlock();
->> +			continue;
->> +		}
->> +		rcu_read_unlock();
->> +
->> +		add_monitored_task(monitored_pids[i], &monitored_tasks);
->> +	}
->> +
->> +
->> +	while (!kthread_should_stop()) {
->> +		schedule_timeout_idle(usecs_to_jiffies(monitor_period));
->> +		err = damon_hugepage_handle_commit_inputs(&monitored_tasks);
->> +		if (err)
->> +			break;
->> +	}
->> +
->> +	list_for_each_entry_safe(entry, tmp, &monitored_tasks, list) {
->> +		err = damon_stop(&entry->ctx, 1);
->> +		damon_destroy_ctx(entry->ctx);
->> +	}
->> +
->> +	for (int i = 0; i < MAX_MONITORED_PIDS;) {
-> 
-> You can just resue i after initializing here, instead of defining it again.
-
-Again, left overs from the previous refactor. My bad.
-
-> 
->> +		monitored_pids[i] = 0;
->> +		i++;
->> +	}
->> +	return err;
->> +}
->> +
->> +static int damon_hugepage_start_monitor_thread(void)
->> +{
->> +	num_monitored_pids = 0;
->> +	monitor_thread = kthread_create(damon_manager_monitor_thread, NULL,
->> +				 "damon_dynamic");
->> +
->> +	if (IS_ERR(monitor_thread))
->> +		return PTR_ERR(monitor_thread);
->> +
->> +	wake_up_process(monitor_thread);
->> +	return 0;
->> +}
->> +
->> +static int damon_hugepage_turn(bool on)
->> +{
->> +	int err = 0;
->> +
->> +	mutex_lock(&enable_disable_lock);
->> +	if (!on) {
->> +		if (monitor_thread) {
->> +			kthread_stop(monitor_thread);
->> +			monitor_thread = NULL;
->> +		}
->> +		goto out;
->> +	}
->> +	err = damon_hugepage_start_monitor_thread();
->> +out:
->> +	mutex_unlock(&enable_disable_lock);
->> +	return err;
->> +}
->> +
->> +static int damon_hugepage_enabled_store(const char *val,
->> +				const struct kernel_param *kp)
->> +{
->> +	bool is_enabled = enabled;
->> +	bool enable;
->> +	int err;
->> +
->> +	err = kstrtobool(val, &enable);
->> +	if (err)
->> +		return err;
->> +
->> +	if (is_enabled == enable)
->> +		return 0;
->> +
->> +	err = damon_hugepage_turn(enable);
->> +	if (err)
->> +		return err;
->> +
->> +	enabled = enable;
->> +	return err;
->> +}
->> +
->> +static const struct kernel_param_ops enabled_param_ops = {
->> +	.set = damon_hugepage_enabled_store,
->> +	.get = param_get_bool,
->> +};
->> +
->> +module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
->> +MODULE_PARM_DESC(enabled,
->> +	"Enable or disable DAMON_DYNAMIC_HUGEPAGES (default: disabled)");
-> 
-> s/DYNAMIC_// ?
-
-OK
-
-> 
->> +
->> +static int __init damon_hugepage_init(void)
->> +{
->> +	int err;
->> +
->> +	/* 'enabled' has set before this function, probably via command line */
->> +	if (enabled)
->> +		err = damon_hugepage_turn(true);
->> +
->> +	if (err && enabled)
->> +		enabled = false;
->> +	return err;
->> +}
->> +
->> +module_init(damon_hugepage_init);
->> -- 
->> 2.43.0
-> 
-> [1] https://lore.kernel.org/00aa6914-8e52-49a2-9875-588efc096c5e@huawei-partners.com
-> 
-> 
-> Thanks,
-> SJ
-> 
-
--- 
-Asier Gutierrez
-Huawei
-
+--Apple-Mail=_6D4A7EA0-4316-4252-9B1B-1539839BDEF6--
 
