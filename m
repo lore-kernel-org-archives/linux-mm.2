@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9ED1125857
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA9E1125854
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 17:00:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E4D96B0005; Wed, 11 Mar 2026 12:59:11 -0400 (EDT)
+	id 8F3D76B0005; Wed, 11 Mar 2026 13:00:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093386B0089; Wed, 11 Mar 2026 12:59:11 -0400 (EDT)
+	id 89E4B6B0089; Wed, 11 Mar 2026 13:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE0F06B008A; Wed, 11 Mar 2026 12:59:10 -0400 (EDT)
+	id 7AE0C6B008A; Wed, 11 Mar 2026 13:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C871E6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:59:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F8BDB8061
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:59:10 +0000 (UTC)
-X-FDA: 84534392460.21.4B9D2AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B63AD40007
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:59:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lMmXpJ7u;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55F2C6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:00:17 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCE5E140307
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:00:16 +0000 (UTC)
+X-FDA: 84534395232.05.544F36F
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3154F40022
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 17:00:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pjqpT2QE;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773248348;
+	s=arc-20220608; t=1773248414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v28KtvC2GBFu5RpPUkG/xanGqU0AEH1tzZxsgoFKRG0=;
-	b=mKUcS0TWwj8gNB21SbUIfKGGW1ZzdG1aWtv3C/rcejf8jJX3Gz15RF6YdESRmLizJOlQj0
-	Ld5PXk5c2EUmwYKnP/0MV4pZuOW0wcPnnU1kYn7xS/83EX8uo0psn0d4dg8holnJEsoQG2
-	wN31o7DV7+VeHHZsPH9Xrnn2zGWaiCg=
+	bh=8u7gOfH94HKLacZFGszI8Rx3/Wm+sBV0C+t5lK8/D3g=;
+	b=mmtI5Ice3DWePfaJ8HfRvtup7PzLzJE692PMrSkMJN5osG4SJa57fTx5KlpOjuavZ6RU7n
+	w1Q4AXcK8EMEHUE+wC5wTjb7LyEza3NXasjZtGaEYvsw9XKnNZAHCiKasvSrJkky+TsLGE
+	uAHzF6rqoY/qfZuAmstOIP2u7vjLQ9E=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lMmXpJ7u;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773248348; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pjqpT2QE;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773248414; a=rsa-sha256;
 	cv=none;
-	b=APaVmLSMJc/nUFJA2gQj+J1etNSXKqYSL9sv1qAFGmKQkFpkU3f1RwbfE46L28xDRlhidF
-	LBuQ+KOIufDpoxT+knJAD2IgTyKtrkoHIux5V8Gqh5ib8ciOmUV7HIZOdqfAG8vsk8+RaS
-	Q8N94lFjFXsWD7LkB6w/lMW7CyA3Tys=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA61E406F4;
-	Wed, 11 Mar 2026 16:59:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF58AC4CEF7;
-	Wed, 11 Mar 2026 16:59:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773248347;
-	bh=LxU4Jmzb48ECfIuqmqY9+SrwRi4R0KnxC2jMteOCe2Y=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=lMmXpJ7uxf0MVzwxwAT6gSFDWQu4bT/fhhtR0TSooudyOHbNkFA0faH9lwiAX/Ybv
-	 hsrE0g/ShaDhSJGCmu5htgQoXY13cFtDQmUZkhsAYqJdnoZIyqGqfZvTPK0ChAMRYc
-	 Q2dpbDdTB14iUOvhByk6iA9pLdUedS9bFxGpFyQQGErMGXW/cXEoGaCmyIEohs72aK
-	 fRxJ/HLbPrZ3iJ4YoNtZD+dszZ0bZ6bqOTJ5MoLs+piZhDQx9mrBdPbkgFC2DEbns4
-	 SMpxLyorOE0PFnw0fW/kYN44S+QWhRwIZthigs64+FNn9mig0ue9PiqsSPtYRCYVqs
-	 US4TGh46xZWgA==
-Message-ID: <7791ab6a-4707-44b4-a868-d88b93502b1f@kernel.org>
-Date: Wed, 11 Mar 2026 17:59:03 +0100
+	b=zSW6MqVe3rGC4N9HQAhkWHOubZyjYkYAl8NW/9G/08o1IBRYpH4afb6o6PrF/PU8poLx9j
+	LXNbJtdenH5NM8FerD4zuUlK7voP1cmx+Wyy3bhZWg+lHSa0i1341IzNVVIxsoEUhkei4u
+	C6VU7MRspaBEG4t3YEoAoJaNmIDjA7o=
+Date: Wed, 11 Mar 2026 10:00:05 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773248411;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8u7gOfH94HKLacZFGszI8Rx3/Wm+sBV0C+t5lK8/D3g=;
+	b=pjqpT2QEx4QK4mt9WWipNl59lZpDJsmlzMJx2BS0z9m7lFDATjsn4sT7L1t5WG0S8BWeR7
+	30jtKuIoe2+ew2uhWL2YcasG+2v14BUqCRQ1kfYnUQH31uq5teDA8hxaVhrB9tOQ0locxG
+	WlaeoTQ+EuQzlgyi0SYgYA6788FQ2UM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: lsf-pc@lists.linux-foundation.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hui Zhu <hui.zhu@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
+	Muchun Song <muchun.song@linux.dev>, Geliang Tang <geliang@kernel.org>, 
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	David Rientjes <rientjes@google.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
+Message-ID: <abGdmslfvNTiQUJm@linux.dev>
+References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
+ <6076b8c2-c198-442d-974f-b3084a0cd1b1@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH] slab: fix memory leak when refill_sheaf() fails
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Qing Wang <wangqing7171@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260311093617.4155965-1-wangqing7171@gmail.com>
- <abFPHpBDe5DsPL2u@hyeyoo>
-In-Reply-To: <abFPHpBDe5DsPL2u@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xcxc4kr1joq7n6qxkeuq6z718wtjzdhc
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6076b8c2-c198-442d-974f-b3084a0cd1b1@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B63AD40007
-X-HE-Tag: 1773248348-932864
-X-HE-Meta: U2FsdGVkX18fUrZf0yoZGumreuZq+c6a5eTMhOCvsicv4mQE+8Vo+8S9EogP5zdyZQEM/sxUlJTdrwflKlSRjTcItfBOJ7vNx2Rf0GbbrRvJIuxc5zgUm4Y5dPuG6Cq0wkRINbfDacajuo/YB3watAObWvQA22n5aZukCe01XF0UOnG8F7QOGhNUlvITns4qGYrpGG8eMxGbBttAvg/2Ozj6ktUjpWdBjneAbwwoGuAgZb5ZcNu2GqYNAeNXDNTST54nA+Y8w640dg8OmJs4ff74VtF+xk3VEdB8NXw+03/WBn/39tS2+5Zf+wclW6ENM6y96sVGW86epre1Y83Y7NvH6PyB4NtkmheDLFdgImSi/wIL5fV8R/Rugq/udsFg2C+DYiu74cPU6R/jFjwAAtmdACCXVOpvr1eReMscuYx1uz2O6ab0Lij0F8HtbK/A6ktuCR/ZR2jy5UNUkOpYSjZdxXjZYX+x0J022niqoe8QhTV8BrpN33tf43wM+uJSBDCzWtKOyTtW8/depFrRP/hittDGYCPinV1BouA3uohonICrcXjRDZO80b+rFRUml6wWVsUwCGI/iDEI/O1f/wStghNU8RxZ7tUNdNnHUThD4O8Bl7NRrJ4swvnrvom33LxkeWXpgXtqRrgZoXMoJxpt0fgTqL6hLA0NxSpWjhE2vKe6ubVGK27uPCaPXFnLtZDfUs0yANgTsyk19D3A0UHRpRVIMUL1a49ArTLyErfvqn59ryhVqn9Pu8XeL+kb1GS4puG/6iJfXGGcI2gXJrgz2ZFoH/4LmStCMVv8Ag+rvQSUSmRz7uEksX9UQJCDw0QkOFNYXJwb888HWmAQitZrupGmUlSgrBrsLA4KlBpsiuro3VR/vpW324pfrY7T+IRTE2lktXlWBBVWQE9IDmEEPBagg6zAS9GRwpMHIhDa7DV++1RC0TlcujK9oOObyxEDuru8rT1BJx1vvVk
- 177Q8r2r
- claeS0HCH488d7QsGWNdZXHBWOUWLcKtsopT+L34HfDyLibJU3JaHKfZlQi9zi+ArsF6BbFZEyxXKHvZ7YYJnS8EkrhDxy3R+OBXFDSCN5Jxieap+IVwPduCqR+eAkrDCryZjdezvneGJeXe9OiDQNgbTy3KYSYPVTLCs8MNYVrHZHf9gU290ja9T2gQzETOdIzSxQm9JICQJz2jtezAnfPKIGz5G6SoN60ESosp135Qh6MLMKuPZxfhaeZ9Zoz9MA9CGDLhOxcDKQfsJWSZXJGygcpQBk5EZCCQwDyICV7jU082ytZvt2lSiB5b35pG82HJh9aRHOo3tDDV3WJEc29WB9Qatbp14hgffWlBDg8ep2nJTU3FPwlWMY8KVwJoipjJR
+X-Rspamd-Queue-Id: 3154F40022
+X-Rspamd-Server: rspam08
+X-Stat-Signature: agizoaqt8oeyyy7qymf9bwcfwoxaj6gd
+X-HE-Tag: 1773248413-288832
+X-HE-Meta: U2FsdGVkX1+5hW1RemEdH251JN/tXfwbCPAUjapubzPB6GaZe/yGVYIQxyO49IXFDagQVIjIIoH3bhOuAcv+sea8CJe/KqKXMwnIzacOg7khiyOoNlimg9lW/nLhS8q0FEibeATCRECm6JeR+VuOV8V0VkC+QJ0LfwAhrCLYESFRMYXv7hChKZu1eZ2eIxt689uz0FSJYxpxlJx2BypGHv7hSQrsEP/C6Pb4NQ/8ritz39ChE51Ok8bVv9P9f6YgzQYqjkd6SsNwFvAKjXQn86bOJUm5k25KYhyW2zlYPkvL5AjFwjVQKmDVf5CFCr39ZGHXRys6o6JBM2wLWnzjog5Zf9lcII+B0kEzwMBPnew1Zg7VDEnEUsAFm3YqD89kWX4WWLNbK1q1o1ZPBWm+VxwXgOOpMJbyeCJm7qYOhMCK6ERw88WM3PjDeBAZuLMMc7KzOou/OHIIn06FRn4WOc7jJ0FtMwaKBMXQqXi/fjwIchoYGFCmLWnzILpz/IScFSccaSwanTFWpYSYIA8kByydtAJ2FLQMttmEp0onomJ4ST/qTftfdjflCFasdF+Ix7Inm286SCaODmCClMBYzNu41H+BUJIKZlpWQhkWacmpyB91isJrGB+pXAuvS88LNRkLrH7c0F9XU8JQq3P5whSkX45W66gD+H4oWLJdpxDLMD5JCNJ6y4/9OBKAV21ZY4BtYKUFhyx76bioPFMyx81ugF1iyNbIPKWZvxPN6ZZ7RP1BzxiCzu3fdiBgBLLqdz2zhxyayUMqVyrD/k+tZh2Bm8ciHr13864zJzWB50b3GnlF9M0m0WEYNZIYQydRG+2lESTEi0EhHi+Ghgh3Hf10sW+80OQEX0jKpiuJRIe9uasitQOzfmuYn3MdM5OVuKoQS+yniNLewKjEKhK5QZZPRKn6+RC6XuuC4QkQnhuRntQRbYMdc09jz+qYuZfCdYiSvgorzoR2WWU4iGN
+ tgq7ukfD
+ 3HF6dcqoJ9iL9rPQq+aD2Vxfi8GWVyt0fHBviHnGmadbFXDiIlz3ebW8q/Sw4gFhkznSmJkbEOeMZwKcZZB6TW/kIJjjyVqbSYDgXF6f8zcjPa7e/f6BZmwQ9xWbp+k/fXhtaHOMMd+tj1hqjKMmTtN/YAei/XEUNQbarQQI6YbyLiT9F11OVFBMOK6HY0ni6THATmbKjgIscW1NwB7XxfvYyfWKSWBFTwDifhLEbRZIc8w5UxZJ3g85T36rTxO8bbpC0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,62 +95,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/11/26 12:16, Harry Yoo wrote:
-> On Wed, Mar 11, 2026 at 05:36:17PM +0800, Qing Wang wrote:
->> When refill_sheaf() partially fills one sheaf (e.g., fills 5 objects
->> but need to fill 10), it will update sheaf->size and return -ENOMEM.
->> However, the callers (alloc_full_sheaf() and __pcs_replace_empty_main())
->> directly call free_empty_sheaf() on failure, which only does kfree(sheaf),
->> causing the partially allocated objects memory in sheaf->objects[] leaked.
+On Wed, Mar 11, 2026 at 12:57:34PM +0800, Jiayuan Chen wrote:
 > 
-> Nice catch, thanks!
-
-Indeed, thanks!
-
-> Probably the need to fail new_slab() made it quite hard to trigger and notice.
-
-Agreed.
-
->> Fix this by calling sheaf_flush_unused() before free_empty_sheaf() to
->> free objects of sheaf->objects[]. And also add a WARN_ON() in
->> free_empty_sheaf() to catch any future cases where a non-empty sheaf is
->> being freed.
->> 
->> Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
-
-Actually I think that commit was fine as it was using bulk alloc to refill
-and that was undoing any partial successes. I think this one is correct and
-replaced it so:
-
-Fixes: ed30c4adfc2b ("slab: add optimized sheaf refill from partial list")
-
-> I think we need to add Cc: stable@vger.kernel.org
-
-And therefore we don't, unless I'm mistaken.
-
->> Signed-off-by: Qing Wang <wangqing7171@gmail.com>
->> ---
->>  mm/slub.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 20cb4f3b636d..73b2cfd0e123 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -2797,6 +2797,7 @@ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
->>  	if (s->flags & SLAB_KMALLOC)
->>  		mark_obj_codetag_empty(sheaf);
->>  
->> +	WARN_ON(sheaf->size > 0);
+> On 3/8/26 2:24 AM, Shakeel Butt wrote:
+[...]
+> > 
+> > Per-Memcg Background Reclaim
+> > 
+> > In the new memcg world, with the goal of (mostly) eliminating direct synchronous
+> > reclaim for limit enforcement, provide per-memcg background reclaimers which can
+> > scale across CPUs with the allocation rate.
 > 
-> nit: perhaps VM_WARN_ON_ONCE(); will be enough?
-
-Yep replaced it too.
-
-Added to slab/for-next-fixes, thanks!
-
-> Otherwise looks good to me, so:
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> This sounds like a very useful approach. I have a few questions I'm thinking
+> through:
 > 
+> How would you approach implementing this background reclaim? I'm imagining
+> something like asynchronous memory.reclaim operations - is that in line
+> with your thinking?
 
+Yes something similar. I still need to figure out the details of the mechanism
+but it will be calling try_to_free_mem_cgroup_pages(). More specifically the
+context need more thought because we need to account the CPU consumption of
+those background reclaimers to corresponding cgroup. Will we be using BPF
+workqueues or something else, need more investigation.
+
+> 
+> And regarding cold page identification - do you have a preferred approach?
+> I'm curious what the most practical way would be to accurately identify
+> which pages to reclaim.
+
+That's orthogonal and is the job of the reclaim mechanism which can traditional
+LRU or MGLRU.
+> 
 
