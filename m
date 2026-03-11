@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BFDFD064F
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 07:59:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB06BFD064E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:09:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F209C6B0089; Wed, 11 Mar 2026 03:59:07 -0400 (EDT)
+	id B131A6B0005; Wed, 11 Mar 2026 04:09:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF8966B008A; Wed, 11 Mar 2026 03:59:07 -0400 (EDT)
+	id AC0F16B0089; Wed, 11 Mar 2026 04:09:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE3806B008C; Wed, 11 Mar 2026 03:59:07 -0400 (EDT)
+	id 9CC5E6B008A; Wed, 11 Mar 2026 04:09:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BAE0A6B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:59:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C6181A0698
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:59:07 +0000 (UTC)
-X-FDA: 84533031534.07.714BBAE
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7761A100005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:59:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="C jhogH7";
-	spf=pass (imf14.hostedemail.com: domain of luckd0g@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=luckd0g@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 74C716B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:09:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 169085A3E7
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:09:41 +0000 (UTC)
+X-FDA: 84533058162.13.0F6FD36
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 04A1612000C
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:09:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773215945;
+	s=arc-20220608; t=1773216579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0YiAcAXrlUy/GCM8H1IaXXD7uF4euM1CcQTkXvWyop0=;
-	b=k0BDS0TJ3xj9NLtnbfcKWQiHzggMoi8GLwVjST7As7AjfNh+eQAzETMaGT9uu5fgy1LNLZ
-	BohGuzhLBF0r2uZpu2lZZRqUpKpUYAYKt1kiguc8t1/CEtoL6ExUUjmzDHqGvmiOxp9Ue0
-	wdrxehr6GWq0odV/srJDPGXLMWIUNYA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="C jhogH7";
-	spf=pass (imf14.hostedemail.com: domain of luckd0g@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=luckd0g@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773215945; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8588WXIlGxdI88sSbf+mUXGvcOTg3AGxb2i0pO6tW6o=;
+	b=eVOD1Fx2Y289htRMYWidU/HZMi4pyqoI2hB3BIkzyklMIjRh8TioJOja1+ogErL6/dJ9DS
+	XCbUYw+pC2YZtoetMiLJJUNVVDRy8PN6BDaegIQK6IyCBi0m7GqELj4PLx9Jxp4xNRd69H
+	2mzTA8bCuMcmUL9K8brX6HLdCJCguHA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773216579; a=rsa-sha256;
 	cv=none;
-	b=Afxqp5mPpPnb8rhh9wNAkSMGtQ4nqoXw/fxdcuoAuYh45egobj1oC8WMI4FHnG9nKsX0ij
-	u+W9zHucqZj+LJ6GuQNrBz9d1ZMR0FidVwK8zrTfBlZgr3NsD3BsW5PCcG1jFfce/1sN9m
-	KHK6Do6NTfC9E2CtmiPN9lm2yOyaoho=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=0YiAcAXrlUy/GCM8H1IaXXD7uF4euM1CcQTkXvWyop0=; b=C
-	jhogH7rjU4rmb4YcyhL23taH1NMy9YPYy9y47nYCKOz6YYm7ehS+aNq1ctA+qFIu
-	EcNZqY0kKrk7L0NbxjkDAbYMb5oaQP0QBAFMewnHer4l7sMSqZRDSti8DQ3N48tD
-	0tj2OvWT2JcxOBI+YjqxTLCi/7DfZesYKdrfWSM/5A=
-Received: from luckd0g$163.com ( [183.205.138.18] ) by
- ajax-webmail-wmsvr-40-127 (Coremail) ; Wed, 11 Mar 2026 15:58:55 +0800
- (CST)
-X-Originating-IP: [183.205.138.18]
-Date: Wed, 11 Mar 2026 15:58:55 +0800 (CST)
-From: "Jianzhou Zhao" <luckd0g@163.com>
-To: pfalcato@suse.de, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, vbabka@suse.cz, jannh@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: BUG: KCSAN: data-race in do_mremap / vma_complete
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20251222(83accb85) Copyright (c) 2002-2026 www.mailtech.cn 163com
-X-NTES-SC: AL_Qu2cAf6aukEo4yKYY+kfmU4Rhug7UMO3uf8n24JfPJ9wjA/p2yseUUF9NmPf88CwFTuXvxiGfTNO1/ZAU5BifrwxtnJfSAt/wE4bfhBSt5bTNw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	b=CjW4+FKGWuYh2HtKioMY5jhm1TruQA36yYk5hiXgVh+OtKHFLqtjUAqWKu8YHeER/TGp9D
+	wO+85jl5yB9DoSZhTSlx9hBgZm0DFrW7p+Bn2X4RB3SSEMRqfCwEXgVLnbM71mK8EbNkNg
+	vdpC6idkZ0y24TOvXuk73KpgIuETfjE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96E93165C;
+	Wed, 11 Mar 2026 01:09:31 -0700 (PDT)
+Received: from [10.164.19.59] (unknown [10.164.19.59])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E1E1C3F73B;
+	Wed, 11 Mar 2026 01:09:28 -0700 (PDT)
+Message-ID: <aeb28e78-4943-4330-b323-799dd80207f2@arm.com>
+Date: Wed, 11 Mar 2026 13:39:25 +0530
 MIME-Version: 1.0
-Message-ID: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:fygvCgBXU7G_ILFpcMF2AA--.25454W
-X-CM-SenderInfo: poxfyvkqj6il2tof0z/xtbC9h-9iGmxIL-cIgAA3l
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/9] mm/rmap: introduce folio_try_share_anon_rmap_ptes
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ david@kernel.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
+ weixugc@google.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com,
+ kas@kernel.org, willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260310073013.4069309-1-dev.jain@arm.com>
+ <20260310073013.4069309-9-dev.jain@arm.com>
+ <3ff22f08-5617-4c05-8fa0-1d808806e322@lucifer.local>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <3ff22f08-5617-4c05-8fa0-1d808806e322@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 04A1612000C
+X-Stat-Signature: cacqhi6aawsw96ame178nyh8fpy4abof
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7761A100005
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ty1desrq3fz953m9gm3odwpytuxhhqaq
-X-HE-Tag: 1773215944-903387
-X-HE-Meta: U2FsdGVkX1/q14pe/PRv/pCb/n87xWjulWGe8l6ZGwARlwwD6HqNdx1VixnVlj7UgJHPsBpyvHHVmw6bh8JGcdxY1fmnTyI4AmLSTVTlPpa1ikSU9B8EDqn32JYGZ1wXgSAT08ixFA94M6gpLhq1gwtUzGH2bsldBXJzqc2e/hZdNw7UgUaP+EuEXlscV7VEk0VyiaDC9ICIbAHN8mX8jKiE5BMxIOtyFRYYpHl1V/zNpyzJVRLw/8p41dtrPAYtoQ7qgeHEaJDrINkxOXglEEIRF4J0+Xh+jSRmZ9dxsqxl/bZq/iPPy1SBXcIW/FA3q7z+j5t28pt9BFVJ2XqbeVz/gJR0ZxHGFNEQ0oCfj3zZdne/vP+JEO4JfVf7idlnOG8LESS9igBzXtGJeNJG+/KyJl7dK6j4LskkIqYe9oQZoFZ2GGMLMv3oks48DPcmsdT+ZubiEMjvHw3pZHJ+FOescEjhPWsqF3/DL2i86k6VLlNvHJDQt3pE+ki+pAypRAK4zHgUTOJ7Sb0JnJQtj4EtKMyX/+miR2Y0GOcokJuSSXkoFqDl2ftbvtqXnquH9UmM7ZEyiUeDa/1Q4kf82utUBj/LrBxq176e1jkE3+8ossEWikvqUWecHdZgSAUw449iaT9RV7gl7iu+RZ8dT0OT9Xy6zrpfgk8B4lT2FWj2a1JmPgbOywTu/VJ7eV4eEHnrh24JqNS26bXOkX6gAUHHjoUQpd+iD7/Crs3/jy/n2PSS3qYQPwPQZ1ngtBGvL7Dfl2gZDm8XPE7GK3DNbLymeObE/jubWB0iQZsE2N0F5jyY5DECfbr5Dppp6gBySRWf7nTeeKv7hNEq0xQ2hDIwuoTAs7a5U6hGB1t1s16kKjbGpgcI1/vxEyt2faAaleGr56Cr/zXKb/MUI6q9ODUVbq+y7+baIMz93Q7lutMLFlK+FrwQyoVU0eaUwsY9bHkHIRRigoq44t7VG8e
- GFrTJX02
- 1mhMmNQRkCkVPDQe5suZptLhNIFam7u31VyK1giEG0pR7rWmTXvTRxOOOzzzAEL6SlcM6Gf2WtvGcBjfd/jQmlh24qYb1skhnptjlaJigFhFDJ6tgA5Na3ymWFEd8zsskgU9HyYLhKApSJoW/EWHXAYF6KtAku3wH0BP7Bkvjrj5AmO7/s30wqPntiUQ4+nqjboYJR6zWDch4EC3HNAlMkz3lUtHkE/IQmcqrww7UgG+LqofzePtMt8OVELs/dpe8F5EWmgxkmM78UJ7qbdQF/vTAeGynyKrlIOuFIJBzclEOdF919R5fEaJynRI3aSJxT3JP8Zd87/r4ALYOn0+TQLQRrbkqrhzuU5CUmgRJJGHge3QBxj5GQwi5wV2hrbXPfPyqBr6kowIC//TbbmqVwwiwiCC3OGJSKAViTJVzYOexYxRu3u+P1EYVAx66tHVPzj3MZoNCXJHesOJBSvMDQ8d2E6hU5LWRJ+/4gUfsxeaHsfH33KEwNWyWVOQv5h1xDuXms+STSsOTqYA=
+X-HE-Tag: 1773216578-97133
+X-HE-Meta: U2FsdGVkX19KabP/FoHf9+3XWPfuR77+pfQy3lgt4rmMsajddw5eLxuYJ9R3SCBNoHYB1mJPQKUwyAcLEyJ84XOM61gESUS0Nam5cdQ2qONxygirF3n7V+Bpsk3HgsgzUmHe+WSpbpOpRvQmwP3RluZm3yPrJUKFyT66jOUlpyQ7ehuOHZO7xZrRlyeadeosHVh7208V+x8TQ3ao7RSL6UPVHXdeczvoMDNddPa34q/v76BualjwyGdSaqxEGV+fzswgUGSEZWTw/jjvfw//jVBMTpbQEVpjb/jJdLpCXztOQ0wQem8X9J/yAyK1Magu+k83chVaKhradSUuF/Lmua/aREYZRueaY86IxTXRay3gcG/oOZ6rmnh3hn3XFTjODswU0tVCcyJQ/chzCsx+UVcTFIAECnfoSWzM+mINcbQlyBLM4r3lv+1p+XOTP5ACzxd2Hi7HnySu+qm9mWQ6AnDlnTtZjTl5TP9uTBUoNEc4f7jCY6G1Ju24Mi9ocTjoWYnMOAFQ4hWDqyp2y0n4IxtHnbc7mqrnsPbsi/fRu9x01rjVqrByy0RmjpUZXMzYkWPNKfY6gR8g1yDjvw+qNxqpuymk8FbBLreKAr8wawhUUuGyYzUefo8wPOX3A4/s82rPgvyMiR8ll7psmg9r/Ahsnydzo/VKjr+O6eM4xrMJB7gGOyTXK4w36NazlL9WhyaJzTrVJP4Jb02TdbWqWAwNZ4AqWocuYskRZn7Drps0WS5lPiI+6zWTAcZf1nSksHOh5LVEXyx5R/kDp8HpWIOnMwGyTw61/TT3foBSZt6kHjqiksZlYYLlWA1Hbabn6lElENs447sDs3wreJCgO9gw1RPoUNHrmUUEYIhCP4sECL6xs1JR9zTBdE0SH5tLg/yvAthIz6u1jeh5bLVqyeo1eH5P+3ly/xvvmIivNxKRbPcYAtvs3H7FbCFTDnXzf1zQFO0o4ULWhgye4GG
+ p0IlMslc
+ rak+jQtD3fycHY7uqSy0HJJ5bcSoRgwWMcpu4UH4/jxChcdWN3liVWmZmLD3Dt7Rrj9WvSOwyMFcnFTVVWlpFHlkeruhcUshIEc3STehb1IUAxVtmnN4WyHD9O/blfoBOgzdQDwwi+8hP/yn96Hwz/5HltHxrn2oYVHMf5WQADwiIXzeYCVN1vRBhSLzla7tdiR8vI9jXGs2+snP4LFaTU/lrr3u0jR+LSi8lx2YcmNd0Y0K7eIvyD/6gKBiG0zHgQdEQq58Wi1EblA/epBEBEDtUD6i7ZqHzJ/YSGARpbkfibZE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,99 +93,294 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ClN1YmplY3Q6IFtCVUddIG1tL21yZW1hcDogS0NTQU46IGRhdGEtcmFjZSBpbiBkb19tcmVtYXAg
-LyB2bWFfY29tcGxldGUKRGVhciBNYWludGFpbmVycywKV2UgYXJlIHdyaXRpbmcgdG8gcmVwb3J0
-IGEgS0NTQU4tZGV0ZWN0ZWQgZGF0YSByYWNlIHZ1bG5lcmFiaWxpdHkgd2l0aGluIHRoZSBtZW1v
-cnkgbWFuYWdlbWVudCBzdWJzeXN0ZW0sIHNwZWNpZmljYWxseSBpbnZvbHZpbmcgYHZtYV9jb21w
-bGV0ZWAgYW5kIGBjaGVja19tcmVtYXBfcGFyYW1zYC4gVGhpcyBidWcgd2FzIGZvdW5kIGJ5IG91
-ciBjdXN0b20gZnV6emluZyB0b29sLCBSYWNlUGlsb3QuIFRoZSByYWNlIG9jY3VycyB3aGVuIGB2
-bWFfY29tcGxldGVgIGluY3JlbWVudHMgdGhlIGBtbS0+bWFwX2NvdW50YCBjb25jdXJyZW50bHkg
-d2hpbGUgYGNoZWNrX21yZW1hcF9wYXJhbXNgIGV2YWx1YXRlcyB0aGUgc2FtZSBgY3VycmVudC0+
-bW0tPm1hcF9jb3VudGAgd2l0aG91dCBob2xkaW5nIHRoZSBhcHByb3ByaWF0ZSBgbW1hcF9sb2Nr
-YCBvciB1c2luZyBhdG9taWMgc25hcHNob3QgcHJpbWl0aXZlcyAoYFJFQURfT05DRWApLiBXZSBv
-YnNlcnZlZCB0aGlzIGJ1ZyBvbiB0aGUgTGludXgga2VybmVsIHZlcnNpb24gNi4xOC4wLTA4Njkx
-LWcyMDYxZjE4YWQ3NmUtZGlydHkuCkNhbGwgVHJhY2UgJiBDb250ZXh0Cj09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQpCVUc6
-IEtDU0FOOiBkYXRhLXJhY2UgaW4gZG9fbXJlbWFwIC8gdm1hX2NvbXBsZXRlCndyaXRlIHRvIDB4
-ZmZmZjg4ODAwYzIzMjM0OCBvZiA0IGJ5dGVzIGJ5IHRhc2sgMjc5MjAgb24gY3B1IDE6CsKgdm1h
-X2NvbXBsZXRlKzB4NmQyLzB4OGEwIGhvbWUva2Z1enovbGludXgvbW0vdm1hLmM6MzU0CsKgX19z
-cGxpdF92bWErMHg1ZmIvMHg2ZjAgaG9tZS9rZnV6ei9saW51eC9tbS92bWEuYzo1NjcKwqB2bXNf
-Z2F0aGVyX211bm1hcF92bWFzKzB4ZTUvMHg2YTAgaG9tZS9rZnV6ei9saW51eC9tbS92bWEuYzox
-MzY5CsKgZG9fdm1pX2FsaWduX211bm1hcCsweDJhMy8weDQ1MCBob21lL2tmdXp6L2xpbnV4L21t
-L3ZtYS5jOjE1MzgKwqBkb192bWlfbXVubWFwKzB4MTljLzB4MmUwIGhvbWUva2Z1enovbGludXgv
-bW0vdm1hLmM6MTU5NgrCoGRvX211bm1hcCsweDk3LzB4YzAgaG9tZS9rZnV6ei9saW51eC9tbS9t
-bWFwLmM6MTA2OArCoG1yZW1hcF90bysweDE3OS8weDI0MCBob21lL2tmdXp6L2xpbnV4L21tL21y
-ZW1hcC5jOjEzNzQKwqAuLi4KwqBfX3g2NF9zeXNfbXJlbWFwKzB4NjYvMHg4MCBob21lL2tmdXp6
-L2xpbnV4L21tL21yZW1hcC5jOjE5NjEKcmVhZCB0byAweGZmZmY4ODgwMGMyMzIzNDggb2YgNCBi
-eXRlcyBieSB0YXNrIDI3OTE5IG9uIGNwdSAwOgrCoGNoZWNrX21yZW1hcF9wYXJhbXMgaG9tZS9r
-ZnV6ei9saW51eC9tbS9tcmVtYXAuYzoxODE2IFtpbmxpbmVdCsKgZG9fbXJlbWFwKzB4MzUyLzB4
-MTA5MCBob21lL2tmdXp6L2xpbnV4L21tL21yZW1hcC5jOjE5MjAKwqBfX2RvX3N5c19tcmVtYXAr
-MHgxMjkvMHgxNjAgaG9tZS9rZnV6ei9saW51eC9tbS9tcmVtYXAuYzoxOTkzCsKgX19zZV9zeXNf
-bXJlbWFwIGhvbWUva2Z1enovbGludXgvbW0vbXJlbWFwLmM6MTk2MSBbaW5saW5lXQrCoF9feDY0
-X3N5c19tcmVtYXArMHg2Ni8weDgwIGhvbWUva2Z1enovbGludXgvbW0vbXJlbWFwLmM6MTk2MQrC
-oC4uLgp2YWx1ZSBjaGFuZ2VkOiAweDAwMDAwMDFmIC0+IDB4MDAwMDAwMjAKUmVwb3J0ZWQgYnkg
-S2VybmVsIENvbmN1cnJlbmN5IFNhbml0aXplciBvbjoKQ1BVOiAwIFVJRDogMCBQSUQ6IDI3OTE5
-IENvbW06IHN5ei43LjEzNzUgTm90IHRhaW50ZWQgNi4xOC4wLTA4NjkxLWcyMDYxZjE4YWQ3NmUt
-ZGlydHkgIzQyIFBSRUVNUFQodm9sdW50YXJ5KSAKSGFyZHdhcmUgbmFtZTogUUVNVSBTdGFuZGFy
-ZCBQQyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1MgMS4xNS4wLTEgMDQvMDEvMjAxNAo9PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT0KRXhlY3V0aW9uIEZsb3cgJiBDb2RlIENvbnRleHQKSW4gYG1tL3ZtYS5jYCwgdGhlIGB2
-bWFfY29tcGxldGUoKWAgZnVuY3Rpb24gZmluYWxpemVzIFZNQSBhbHRlcmF0aW9ucyBzdWNoIGFz
-IGluc2VydGlvbnMuIFdoZW4gYSBuZXcgVk1BIGlzIHN1Y2Nlc3NmdWxseSBhdHRhY2hlZCAoZS5n
-LiwgZHVyaW5nIHNwbGl0dGluZyksIHRoZSBmdW5jdGlvbiBpbmNyZW1lbnRzIHRoZSBwcm9jZXNz
-J3MgYG1hcF9jb3VudGAgd2hpbGUgaG9sZGluZyB0aGUgbmVjZXNzYXJ5IGBtbWFwX2xvY2tgIGlu
-IHdyaXRlIG1vZGUgZnJvbSB0aGUgY2FsbGluZyBjb250ZXh0OgpgYGBjCi8vIG1tL3ZtYS5jCnN0
-YXRpYyB2b2lkIHZtYV9jb21wbGV0ZShzdHJ1Y3Qgdm1hX3ByZXBhcmUgKnZwLCBzdHJ1Y3Qgdm1h
-X2l0ZXJhdG9yICp2bWksCsKgIMKgIHN0cnVjdCBtbV9zdHJ1Y3QgKm1tKQp7CsKgLi4uCsKgfSBl
-bHNlIGlmICh2cC0+aW5zZXJ0KSB7CsKgIC8qIC4uLiBzcGxpdCAuLi4gKi8KwqAgdm1hX2l0ZXJf
-c3RvcmVfbmV3KHZtaSwgdnAtPmluc2VydCk7CsKgIG1tLT5tYXBfY291bnQrKzsgLy8gPC0tIFBs
-YWluIGNvbmN1cnJlbnQgd3JpdGUKwqB9CsKgLi4uCn0KYGBgCkNvbnZlcnNlbHksIHRoZSBgbXJl
-bWFwYCBzeXNjYWxsIHZhbGlkYXRpb24gc2VxdWVuY2UgcHJlZW1wdGl2ZWx5IGV2YWx1YXRlcyBg
-Y2hlY2tfbXJlbWFwX3BhcmFtcygpYCAqYmVmb3JlKiBhY3F1aXJpbmcgdGhlIGBtbWFwX2xvY2tg
-LiBUaGlzIGFsbG93cyBkcm9wcGluZyBtYWxmb3JtZWQgc3lzY2FsbHMgZmFzdCBidXQgbGVhdmVz
-IHRoZSBtYXAgcXVvdGEgY2hlY2sgdW5zeW5jaHJvbml6ZWQ6CmBgYGMKLy8gbW0vbXJlbWFwLmMK
-c3RhdGljIHVuc2lnbmVkIGxvbmcgY2hlY2tfbXJlbWFwX3BhcmFtcyhzdHJ1Y3Qgdm1hX3JlbWFw
-X3N0cnVjdCAqdnJtKQp7CsKgLi4uCsKgLyogV29yc3Qtc2NlbmFyaW8gY2FzZSAuLi4gKi8KwqBp
-ZiAoKGN1cnJlbnQtPm1tLT5tYXBfY291bnQgKyAyKSA+PSBzeXNjdGxfbWF4X21hcF9jb3VudCAt
-IDMpIC8vIDwtLSBQbGFpbiBjb25jdXJyZW50IHJlYWQKwqAgcmV0dXJuIC1FTk9NRU07CsKgcmV0
-dXJuIDA7Cn0KYGBgCkF0IGBtbS9tcmVtYXAuYzoxOTI0YCwgdGhlIGBtbWFwX3dyaXRlX2xvY2tf
-a2lsbGFibGUobW0pYCBpcyBvbmx5IGFjcXVpcmVkICphZnRlciogYGNoZWNrX21yZW1hcF9wYXJh
-bXMoKWAgc3VjY2Vzc2Z1bGx5IHJldHVybnMuClJvb3QgQ2F1c2UgQW5hbHlzaXMKQSBLQ1NBTiBk
-YXRhIHJhY2UgYXJpc2VzIGJlY2F1c2UgdGhlIGBtcmVtYXBgIHBhcmFtZXRlcnMgdmFsaWRhdG9y
-IGF0dGVtcHRzIHRvIGVuYWN0IGFuIGVhcmx5IGhldXJpc3RpYyByZWplY3Rpb24gYmFzZWQgb24g
-dGhlIGN1cnJlbnQgdGhyZXNob2xkIG9mIGBtbS0+bWFwX2NvdW50YC4gSG93ZXZlciwgdGhpcyBl
-dmFsdWF0aW9uIGV4ZWN1dGVzIGVudGlyZWx5IHdpdGhvdXQgbG9ja3MgKGBtbWFwX2xvY2tgIGlz
-IHRha2VuIHN1YnNlcXVlbnRseSBpbiBgZG9fbXJlbWFwYCkuIFRoaXMgZXN0YWJsaXNoZXMgYSBw
-bGFpbiwgbG9ja2xlc3MgcmVhZCByYWNpbmcgYWdhaW5zdCBjb25jdXJyZW50IHRocmVhZHMgbGVn
-aXRpbWF0ZWx5IG11dGF0aW5nIGBtbS0+bWFwX2NvdW50YCAoc3VjaCBhcyBgdm1hX2NvbXBsZXRl
-YCBzcGxpdHRpbmcgYXJlYXMgYW5kIGluY3JlbWVudGluZyB0aGUgY291bnQgdW5kZXIgdGhlIHBy
-b3RlY3Rpb24gb2YgYG1tYXBfbG9ja2ApLiBUaGUgbGFjayBvZiBgUkVBRF9PTkNFKClgIGNvbWJp
-bmVkIHdpdGggYSBtdXRhdGluZyBvcGVyYXRpb24gcHJvdm9rZXMgdGhlIEtDU0FOIGFsYXJtIGFu
-ZCBwb3RlbnRpYWxseSBwZXJtaXRzIGNvbXBpbGVyIGxvYWQgc2hlYXJpbmcuClVuZm9ydHVuYXRl
-bHksIHdlIHdlcmUgdW5hYmxlIHRvIGdlbmVyYXRlIGEgcmVwcm9kdWNlciBmb3IgdGhpcyBidWcu
-ClBvdGVudGlhbCBJbXBhY3QKVGhpcyBkYXRhIHJhY2UgdGVjaG5pY2FsbHkgdGhyZWF0ZW5zIHRo
-ZSBkZXRlcm1pbmlzdGljIG91dGNvbWUgb2YgdGhlIGBtcmVtYXBgIGhldXJpc3RpYyBsaW1pdCBn
-dWFyZC4gQmVjYXVzZSBgbWFwX2NvdW50YCBzcGFucyA0IGJ5dGVzLCBzZXZlcmUgY29tcGlsZXIg
-bG9hZCB0ZWFyaW5nIGFjcm9zcyBjYWNoZSBsaW5lcyB0aGVvcmV0aWNhbGx5IGNvdWxkIHRyaWNr
-IGBjaGVja19tcmVtYXBfcGFyYW1zYCBpbnRvIGFjY2VwdGluZyBvciByZWplY3RpbmcgZXhwYW5z
-aW9ucyBlcnJhdGljYWxseS4gRnVuY3Rpb25hbGx5LCBhcyBhIGhldXJpc3RpYyBwcmUtY2hlY2ss
-IGl0IGlzIHZpcnR1YWxseSBiZW5pZ24gc2luY2UgYSBzdHJpY3RlciBib3VuZGVkIGV2YWx1YXRp
-b24gdGFrZXMgcGxhY2UgbGF0ZXIgdW5kZXIgc2FmZXR5IGxvY2tzLCBidXQgZml4aW5nIGl0IHN0
-b3BzIHNhbml0aXppbmcgaW5mcmFzdHJ1Y3R1cmUgZXhoYXVzdGlvbiBhbmQgZm9ybWFsaXplcyB0
-aGUgbG9ja2xlc3MgbWVtb3J5IGFjY2Vzcy4KUHJvcG9zZWQgRml4ClRvIGluZm9ybSB0aGUgY29t
-cGlsZXIgYW5kIG1lbW9yeSBtb2RlbHMgdGhhdCB0aGUgcmVhZCBhY2Nlc3Mgb2YgYG1hcF9jb3Vu
-dGAgaW5zaWRlIGBjaGVja19tcmVtYXBfcGFyYW1zYCBkZWxpYmVyYXRlbHkgb3BlcmF0ZXMgbG9j
-a2xlc3NseSwgd2Ugc2hvdWxkIHdyYXAgdGhlIGV2YWx1YXRpb24gdXNpbmcgdGhlIGBkYXRhX3Jh
-Y2UoKWAgbWFjcm8gdG8gc3VwcHJlc3MgS0NTQU4gd2FybmluZ3MgZWZmZWN0aXZlbHkgd2hpbGUg
-Y29udmV5aW5nIGludGVudC4KYGBgZGlmZgotLS0gYS9tbS9tcmVtYXAuYworKysgYi9tbS9tcmVt
-YXAuYwpAQCAtMTgxMyw3ICsxODEzLDcgQEAgc3RhdGljIHVuc2lnbmVkIGxvbmcgY2hlY2tfbXJl
-bWFwX3BhcmFtcyhzdHJ1Y3Qgdm1hX3JlbWFwX3N0cnVjdCAqdnJtKQrCoCDCoCogQ2hlY2sgd2hl
-dGhlciBjdXJyZW50IG1hcCBjb3VudCBwbHVzIDIgc3RpbGwgbGVhZHMgdXMgdG8gNCBtYXBzIGJl
-bG93CsKgIMKgKiB0aGUgdGhyZXNob2xkLCBvdGhlcndpc2UgcmV0dXJuIC1FTk9NRU0gaGVyZSB0
-byBiZSBtb3JlIHNhZmUuCsKgIMKgKi8KLQlpZiAoKGN1cnJlbnQtPm1tLT5tYXBfY291bnQgKyAy
-KSA+PSBzeXNjdGxfbWF4X21hcF9jb3VudCAtIDMpCisJaWYgKChkYXRhX3JhY2UoY3VycmVudC0+
-bW0tPm1hcF9jb3VudCkgKyAyKSA+PSBzeXNjdGxfbWF4X21hcF9jb3VudCAtIDMpCsKgIMKgcmV0
-dXJuIC1FTk9NRU07CsKgIHJldHVybiAwOwpgYGAKV2Ugd291bGQgYmUgaGlnaGx5IGhvbm9yZWQg
-aWYgdGhpcyBjb3VsZCBiZSBvZiBhbnkgaGVscC4KQmVzdCByZWdhcmRzLApSYWNlUGlsb3QgVGVh
-bQoKCgoKIAoKCgoKCgoKCgoKCgoKCg==
+
+
+On 10/03/26 3:08 pm, Lorenzo Stoakes (Oracle) wrote:
+> On Tue, Mar 10, 2026 at 01:00:12PM +0530, Dev Jain wrote:
+>> In the quest of enabling batched unmapping of anonymous folios, we need to
+>> handle the sharing of exclusive pages. Hence, a batched version of
+>> folio_try_share_anon_rmap_pte is required.
+>>
+>> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+>> to do some rmap sanity checks. Add helpers to set and clear the
+>> PageAnonExclusive bit on a batch of nr_pages. Note that
+>> __folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR from the
+>> PMD path, but currently we only clear the bit on the head page. Retain this
+>> behaviour by setting nr_pages = 1 in case the caller is
+>> folio_try_share_anon_rmap_pmd.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  include/linux/page-flags.h | 11 +++++++++++
+>>  include/linux/rmap.h       | 28 ++++++++++++++++++++++++++--
+>>  mm/rmap.c                  |  2 +-
+>>  3 files changed, 38 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>> index 0e03d816e8b9d..1d74ed9a28c41 100644
+>> --- a/include/linux/page-flags.h
+>> +++ b/include/linux/page-flags.h
+>> @@ -1178,6 +1178,17 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
+>>  	__clear_bit(PG_anon_exclusive, &PF_ANY(page, 1)->flags.f);
+>>  }
+>>
+>> +static __always_inline void ClearPagesAnonExclusive(struct page *page,
+>> +		unsigned int nr)
+> 
+> You're randomly moving between nr and nr_pages, can we just consistently use
+> nr_pages please.
+
+Okay.
+
+> 
+>> +{
+>> +	for (;;) {
+>> +		ClearPageAnonExclusive(page);
+>> +		if (--nr == 0)
+> 
+> You really require nr to != 0 here or otherwise you're going to be clearing 4
+> billion pages :)
+
+I'm following the pattern in pgtable.h, see set_ptes,
+clear_young_dirty_ptes, etc.
+
+> 
+>> +			break;
+>> +		++page;
+>> +	}
+>> +}
+> 
+> Can we put this in mm.h or somewhere else please, and can we do away with this
+
+What is the problem with page-flags.h? I am not very aware on which
+function to put in which header file semantically, so please educate me on
+this.
+
+> HorribleNamingConvention, this is new, we can 'get away' with making it
+> something sensible :)
+
+I'll name it folio_clear_pages_anon_exclusive.
+
+
+> 
+> I wonder if we shouldn't also add a folio pointer here, and some
+> VM_WARN_ON_ONCE()'s. Like:
+> 
+> static inline void folio_clear_page_batch(struct folio *folio,
+> 					  struct page *first_subpage,
+> 					  unsigned int nr_pages)
+> {
+> 	struct page *subpage = first_subpage;
+> 
+> 	VM_WARN_ON_ONCE(!nr_pages);
+> 	VM_WARN_ON_ONCE(... check first_subpage in folio ...);
+> 	VM_WARN_ON_ONCE(... check first_subpage -> first_subpage + nr_pages in folio ...);
+
+I like what you are saying, but __folio_rmap_sanity_checks in the caller
+checks exactly this :)
+
+> 
+> 	while (nr_pages--)
+> 		ClearPageAnonExclusive(subpage++);
+> }
+> 
+>> +
+>>  #ifdef CONFIG_MMU
+>>  #define __PG_MLOCKED		(1UL << PG_mlocked)
+>>  #else
+>> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+>> index 1b7720c66ac87..7a67776dca3fe 100644
+>> --- a/include/linux/rmap.h
+>> +++ b/include/linux/rmap.h
+>> @@ -712,9 +712,13 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+>>  	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
+>>  	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+>>
+>> +	/* We only clear anon-exclusive from head page of PMD folio */
+> 
+> Is this accurate? David? I thought anon exclusive was per-subpage for any large
+> folio...?
+
+The current behaviour is to do this only. I was also surprised with this,
+so I had dug in and found out:
+
+https://lore.kernel.org/all/20220428083441.37290-13-david@redhat.com/
+
+where David says:
+
+"Long story short: once
+PTE-mapped, we have to track information about exclusivity per sub-page,
+but until then, we can just track it for the compound page in the head
+page and not having to update a whole bunch of subpages all of the time
+for a simple PMD mapping of a THP."
+
+
+> 
+> If we're explicitly doing this for some reason here, then why introduce it?
+> 
+>> +	if (level == PGTABLE_LEVEL_PMD)
+>> +		nr_pages = 1;
+>> +
+>>  	/* device private folios cannot get pinned via GUP. */
+>>  	if (unlikely(folio_is_device_private(folio))) {
+>> -		ClearPageAnonExclusive(page);
+>> +		ClearPagesAnonExclusive(page, nr_pages);
+> 
+> I really kind of hate this 'we are looking at subpage X with variable page in
+> folio Y, but we don't mention Y' thing. It's super confusing that we have a
+> pointer to a thing which sometimes we deref and treat as a value we care about
+> and sometimes treat as an array.
+> 
+> This pattern exists throughout all the batched stuff and I kind of hate it
+> everywhere.
+> 
+> I guess the batching means that we are looking at a sub-folio range.
+> 
+> If C had a better type system we could somehow have a type that encoded this,
+> but it doesn't :>)
+> 
+> But I wonder if we shouldn't just go ahead and rename page -> pages and be
+> consistent about this?
+
+Agreed. You are correct in saying that this function should receive struct
+folio to assert that we are essentially in a page array, and some sanity
+checking should happen. But the callers are already doing the checking
+in folio_rmap_sanity_checks. Let me think on this.
+
+
+> 
+>>  		return 0;
+>>  	}
+>>
+>> @@ -766,7 +770,7 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+>>
+>>  	if (unlikely(folio_maybe_dma_pinned(folio)))
+>>  		return -EBUSY;
+>> -	ClearPageAnonExclusive(page);
+>> +	ClearPagesAnonExclusive(page, nr_pages);
+>>
+>>  	/*
+>>  	 * This is conceptually a smp_wmb() paired with the smp_rmb() in
+>> @@ -804,6 +808,26 @@ static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
+>>  	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
+>>  }
+>>
+>> +/**
+>> + * folio_try_share_anon_rmap_ptes - try marking exclusive anonymous pages
+>> + *				    mapped by PTEs possibly shared to prepare
+>> + *				   for KSM or temporary unmapping
+> 
+> This description is very confusing. 'Try marking exclusive anonymous pages
+> [... marking them as what?] mapped by PTEs[, or (]possibly shared[, or )] to
+> prepare for KSM[under what circumstances? Why mention KSM here?] or temporary
+> unmapping [why temporary?]
+> 
+> OK I think you mean to say 'marking' them as 'possibly' shared.
+> 
+> But really by 'shared' you mean clearing anon exclusive right? So maybe the
+> function name and description should reference that instead.
+> 
+> But this needs clarifying. This isn't an exercise in minimum number of words to
+> describe the function.
+> 
+> Ohhh now I see this is what the comment is in folio_try_share_anon_rmap_pte() :P
+> 
+> Well, I wish we could update the original too ;) but OK this is fine as-is to
+> matc that then.
+> 
+>> + * @folio:	The folio to share a mapping of
+>> + * @page:	The first mapped exclusive page of the batch
+>> + * @nr_pages:	The number of pages to share (batch size)
+>> + *
+>> + * See folio_try_share_anon_rmap_pte for full description.
+>> + *
+>> + * Context: The caller needs to hold the page table lock and has to have the
+>> + * page table entries cleared/invalidated. Those PTEs used to map consecutive
+>> + * pages of the folio passed here. The PTEs are all in the same PMD and VMA.
+> 
+> Can we VM_WARN_ON_ONCE() any of this? Not completely a necessity.
+
+Again, we have WARN checks in folio_rmap_sanity_checks, and even in
+folio_pte_batch. I am afraid of duplication.
+
+> 
+>> + */
+>> +static inline int folio_try_share_anon_rmap_ptes(struct folio *folio,
+>> +		struct page *page, unsigned int nr)
+>> +{
+>> +	return __folio_try_share_anon_rmap(folio, page, nr, PGTABLE_LEVEL_PTE);
+>> +}
+>> +
+>>  /**
+>>   * folio_try_share_anon_rmap_pmd - try marking an exclusive anonymous page
+>>   *				   range mapped by a PMD possibly shared to
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 42f6b00cced01..bba5b571946d8 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2300,7 +2300,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>
+>>  			/* See folio_try_share_anon_rmap(): clear PTE first. */
+>>  			if (anon_exclusive &&
+>> -			    folio_try_share_anon_rmap_pte(folio, subpage)) {
+>> +			    folio_try_share_anon_rmap_ptes(folio, subpage, 1)) {
+> 
+> I guess this is because you intend to make this batched later with >1, but I
+> don't see the point of adding this since folio_try_share_anon_rmap_pte() already
+> does what you're doing here.
+> 
+> So why not just change this when you actually batch?
+
+It is generally the consensus to introduce a new function along with its
+caller. Although one may argue that the caller introduced here is not
+a functional change (still passing nr_pages = 1). So I am fine doing
+what you suggest.
+
+> 
+> Buuuut.... haven't you not already changed this whole function to now 'jump'
+> ahead if batched, so why are we only specifying nr_pages = 1 here?
+
+Because...please bear with the insanity :) currently we are in a ridiculous
+situation where
+
+nr_pages can be > 1 for file folios, and lazyfree folios, *and* it is
+required that the VMA is non-uffd.
+
+So, the "jump" thingy I was doing in the previous patch was adding support
+for file folios, belonging to uffd VMAs (see pte_install_uffd_wp_if_needed,
+we need to handle uffd-wp marker for file folios only, and also I should
+have mentioned "file folio" in the subject line of that patch, of course
+I missed that because reasoning through this code is very difficult)
+
+To answer your question, currently for anon folios nr_pages == 1, so
+the jump is a no-op.
+
+When I had discovered the uffd-wp bug some weeks back, I was pushing
+back against the idea of hacking around it by disabling batching
+for uffd-VMAs in folio_unmap_pte_batch, but solve it then and there
+properly. Now we have too many cases - first we added lazyfree support,
+then file-non-uffd support, my patch 5 adds file-uffd support, and
+last patch finally completes this with anon support.
+
+
+> 
+> Honestly I think this function needs to be fully refactored away from the
+> appalling giant-ball-of-string mess it is now before we try to add in batching
+> to be honest.
+> 
+> Let's not accumulate more technical debt.
+
+I agree, I am happy to help in cleaning up this function.
+
+> 
+> 
+>>  				folio_put_swap(folio, subpage, 1);
+>>  				set_pte_at(mm, address, pvmw.pte, pteval);
+>>  				goto walk_abort;
+>> --
+>> 2.34.1
+>>
+> 
+> Thanks, Lorenzo
+
 
