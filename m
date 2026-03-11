@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 596BA1125892
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 19:52:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D3A1125876
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 19:52:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6D036B0099; Wed, 11 Mar 2026 15:52:08 -0400 (EDT)
+	id 3F4C36B009B; Wed, 11 Mar 2026 15:52:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E10F46B009B; Wed, 11 Mar 2026 15:52:08 -0400 (EDT)
+	id 380746B009D; Wed, 11 Mar 2026 15:52:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB10A6B009D; Wed, 11 Mar 2026 15:52:08 -0400 (EDT)
+	id 1363C6B009E; Wed, 11 Mar 2026 15:52:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B57956B0099
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 15:52:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F2EA140378
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:52:08 +0000 (UTC)
-X-FDA: 84534828336.11.48CCFFE
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9928518000B
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:52:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BzuUMR5a;
-	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F229E6B009B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 15:52:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA48D888F9
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:52:09 +0000 (UTC)
+X-FDA: 84534828378.19.2E05F9F
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E3B8312000D
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:52:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LmjL2AGJ;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.171 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773258726;
+	s=arc-20220608; t=1773258727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9uGTcZbp7r+H1UaYa68xNPMIKqxUKJCwYhvaf1Y6xf8=;
-	b=V2h4P5NFvAfT6mrM9d5P9GQ7ER/NkDbgPMlOtMXCAQ3g53RQHBj5XYXc0sA7pY5RQMc3Ii
-	9blteRIcVdXutbqaDmPDxcchC3PHIxheTnXdnIjFldFqCiQcgzLq5MblXH+o5HZh/QYxua
-	rhIrd/dfsstCcwgxVkILQpn9cXegh2A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773258726; a=rsa-sha256;
+	bh=e4vnZsb9mXNhtrNGbaJxIgoiKf+xedfYV6/25GSFY7Q=;
+	b=y9fcy7Xz97W7UzD9DZlLqRR+c7rHynuoLeu+xl5yPoIUeFGnXJzO9HELAf3GM+XVUwL2uY
+	RKTwxDr1yWZwbYtv7HE3t/hFlGnhtR6BtcQXYckNRyJklBwbCU3CWTb23Q3m10sMwne1nh
+	45rw8lwZ1Hyy6ZQCEHI+g8DyLtLfa3U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773258728; a=rsa-sha256;
 	cv=none;
-	b=tzOZyNNCbd0NaMXfUxDAfQT5YL6qb6Tyxenlvy2dBq3zK21MYz/KVMobcqY2RWgRwplkCo
-	rCBwhtyHDShMThEdTalIzLN3K0sLJ8jzxcldgJrMvdE2n4NeHm/ZIBPiz7EL4vSJQaXrru
-	SS3fHP/D1IBxFfd0aQwAyyEWiWvdsNY=
+	b=vWZU9QUWGLuKYQGMhoCFnBPMzm+PQjBCPMN/5068KV/oLJOAczR+h1Kng3QqEf8tHAZEVp
+	THrz7B0R8Dq6pOGE3xaU4tYTma7J65hCsTUKcV9EkfcqGw7d6L7sSSZwL1vM27aHESN51X
+	w9FYT9Eg5xXW9C3ZaNPhbYbg1vRweRQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BzuUMR5a;
-	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LmjL2AGJ;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.171 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-415b23dd6e5so120848fac.3
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:52:06 -0700 (PDT)
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-466f00535cfso224577b6e.1
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:52:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773258725; x=1773863525; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773258727; x=1773863527; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9uGTcZbp7r+H1UaYa68xNPMIKqxUKJCwYhvaf1Y6xf8=;
-        b=BzuUMR5aKMR2KECBsEdNLLhmm0tuItv/vwASXYNdNLdHoc7Hgwefe23Oc8nbWDActf
-         OQm+/ryeBh4RDBIc4B+MdARW6fsMoELpJ80BQifSsL1RRctZYAvAlcPNIrnbSGM0QSP1
-         U2ju6W2XgV5IDZLq4prwupybRg1EttiGkEmwoCSerrU+N0fJnu/r6EaVqpw0wcZKqcvH
-         j0VEqzeyFZWy0pjj/+U0xztp3ugc++x88H1zJcCYSE/wSl6mO6yWvceq0CM+GX11Xi8l
-         0wW33b0cy789DOHvlD7h33fimdjWcP0FEqYhTWDNCIUUmfe22EGrL00LZPkqC9Ae7zr4
-         YwUA==
+        bh=e4vnZsb9mXNhtrNGbaJxIgoiKf+xedfYV6/25GSFY7Q=;
+        b=LmjL2AGJUAPCpdlqUzEtSFcHmFMP4+5s28W8F8XPD38pDduzibmLvbrb8rutOZ9xQh
+         VIDpbIXJFu8PwNPJ3DYj92PqfxSnrZ63Bsqx6nKdr4tcDIK08yIJTLWh5jOzq2CSCmIS
+         ln5ViMxbXgTJGvS+I7uGstnS1FvRhuLC7EdtZSI+qCMUJE7kPKb75bbzOdHuix2bCPTv
+         N8IiO/Za8nWAiTCYyha5knK/9sKnkxu5Vj1WzrTI8smVHOFwSWJ6zCgXg08hhU9y2bVF
+         qU2mMTsg/2rIsbKF985wlCl3Cth/tGY2WkaG6+sgJEzW/ea7C5TzR/qokd/gCtfrDsWk
+         5t0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773258725; x=1773863525;
+        d=1e100.net; s=20230601; t=1773258727; x=1773863527;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9uGTcZbp7r+H1UaYa68xNPMIKqxUKJCwYhvaf1Y6xf8=;
-        b=SLjsmKHhzNpE9PMxQ4Ov7h3SrFCU3YTGpRISSFR9sNWEn5lT7TtFJxHRw25b8CrxWl
-         XFSeANpFIbI/OuefEOmz9sUg9yQZuvEiNnnz2JMyxsKl3sTqC5H7bnKv5mM8BfN96XD0
-         +Q/+ac3YePIXTm6bGBB82sZnV+jcY2sla0DA7mrHtbzRoN9sGVLsM6simmt7WpEztniH
-         vv4ZbP8l7n8xtOGyw4XXoxL/iY//h6Be8P8zOkLt0T+tS1H2h6fKYuTKMUAVZwhm3nX+
-         6q+OQ8ynVf3b/1jxLq6YQFSjMOCSvEw246Cx0IAc9jBsZyr3DtZIiDaiuVATeXm2VVfd
-         7t1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVLqkleqmcD/oGdZig8O3wrJARWnzxhLBqQ9kzFNN690nGi0NEeykdJiL0pRlrXLBRVy5muldwy+Q==@kvack.org
-X-Gm-Message-State: AOJu0YzjLQV6jVJtI4wbc56xnUIGsaWwAkBJXMIdH+3r5oJYoxg4Ymxm
-	pBUCsmFFvZPXjkPuFLro0MprPKtnMA8zlMuSDvLFcp7bpVeh1rwtGJLk
-X-Gm-Gg: ATEYQzz8Dm8TURazK2VpEtYX2xuF2vM2WkII+EZjPoAebVNu6BDU0EuHW1/TWK992t9
-	yH93AxIXOks3+LQvcqbvPCV/Z98qd0lcmhzvP5VRJJF8/SOS0uwlS4k22dGB/f5k4stzBp0NNUt
-	GghCp7gUXC4b78Ro72gaNRsb2PIhlqnPxP42aTKjW8/Izc3OgLzsFI2+0+AOJjOdBOAWtee3jGx
-	RjAdlo00JO6QDmV2tRAf+HFIwGlkdw4VkEHH7JqFCSg2mEDr8oOnhvYlKVM6AvCZxT6k9L4Eh4S
-	ESXIm8dIKOY1EtqpNO20alGHM9Ng3gqQD8UJVHlI2j3p1nu+QtIqlRaqRUXfEm15h5ivezV3qbH
-	FFbPzroqjyC13lDoEOxKQYr7Kiqw5uIzip1wAuk0ZIsCwDqGpUQO7IOjwqaK3ZNKrkZVlY6evVv
-	iZRg4O5SpHvcJxQVapyWft5g==
-X-Received: by 2002:a05:6870:3c8b:b0:417:31f3:5def with SMTP id 586e51a60fabf-4177ca59b45mr2303457fac.32.1773258725506;
-        Wed, 11 Mar 2026 12:52:05 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:46::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e64a931sm3100861fac.14.2026.03.11.12.52.04
+        bh=e4vnZsb9mXNhtrNGbaJxIgoiKf+xedfYV6/25GSFY7Q=;
+        b=MXvrIqLlrri220b1o9hIpzLtcdHGIkNlpf1fJhd4GcgMHDaEXl1BRg31/0LoCLUNGw
+         2wsKRT21MVRJY1NJKYCOvZ2FFUOP6POIFj8IsZf1KsNpFedU8spk8WBdDfZhDIJvlBTK
+         KgphmPdLZpEbAgGsLvUVcyhwft57BAtbKltGOHPrgfaR83Ocj0WvpnUfvfSvGNuyAJIu
+         Kp5V2UwvbSFd//IwKyi3McfT1M72y4dTzMy9UTA0YE5NNpTuu62bGwgSIn9MXLi73c2m
+         1YiWsFbsGYgoRiPb4pPkEQ7dkuRA6tkQ099QK4Hb8wDIOftkpp4VXQcF7MFL86Id3bZE
+         U57Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUV6vSlDCq8Bj9OfmVaGYJ5+zR2f0OMioDKSI4MjnPS+KZSePETAAh17NE1DMcQtMAXWDyQnnQKBg==@kvack.org
+X-Gm-Message-State: AOJu0YxHRrMMzjbmIaZ0kKmFPf4cRWFYG8Yag2R+JEYTbUf/cZVzIbFw
+	ZPVpntbd+8b3k+A/esiP1bSo6dsmqeULk/1EcltWftBwLYnAUG/Ipn4Z
+X-Gm-Gg: ATEYQzz6hpdNCROoHNfKFKqTJSjxqOHo3NS5Z1oenOJEMD+HeKfiIqJOg7HFfUkX4Ac
+	9exo0xqSHQkFwNzsmXon8AqG/GvcFDtLC4TYmf19gLdx5nqvhzjKZCvyy9tXQHC6IouhUOxHVRO
+	Hvufm0xDpvmJuYOKwO7POo5mNmbG2q9S95wNAFuBMgLcU3bcvrZrspZb02L2DyOBtz0qztne1/e
+	rCWQyCA9VlW9lO1gjwZs0omLMqXY3ey0e2EEVZdkStHdtWf0w7yO3e8Fl2ZbtvtJX93lPy0c4gf
+	mFPJTcofS4oGpODUMtQsfTftQPAsa+J77vy3EkDR/jKY10Pv59jP/ppy8OcETxeK9YIpLCsKE/8
+	BuQIQl+YLI7+ZYFZHQF7+KxOZX5REfUPHYU7/kBP/zDJ+xKAjdekAG7f6qipYZcgr2VBwSZ5FPW
+	XpXxg7ilwKDu0QAcOs8LF1AGxeY1ntq2X8
+X-Received: by 2002:a05:6820:c92:b0:67b:af79:4c1c with SMTP id 006d021491bc7-67bc887c1e1mr2569350eaf.2.1773258726845;
+        Wed, 11 Mar 2026 12:52:06 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:47::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67bc9354e59sm1922332eaf.16.2026.03.11.12.52.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 12:52:05 -0700 (PDT)
+        Wed, 11 Mar 2026 12:52:06 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Minchan Kim <minchan@kernel.org>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
@@ -102,27 +102,36 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 08/11] mm/memcontrol: Track MEMCG_ZSWAPPED in bytes
-Date: Wed, 11 Mar 2026 12:51:45 -0700
-Message-ID: <20260311195153.4013476-9-joshua.hahnjy@gmail.com>
+Subject: [PATCH 09/11] mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B per-memcg-lruvec
+Date: Wed, 11 Mar 2026 12:51:46 -0700
+Message-ID: <20260311195153.4013476-10-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260311195153.4013476-1-joshua.hahnjy@gmail.com>
 References: <20260311195153.4013476-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ei6nwwewghsksw99o157ck7rf4ehss87
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9928518000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773258726-883642
-X-HE-Meta: U2FsdGVkX18b9Dmv35UbcJz3jrMffaSpq+F0nPd9n3NFcNXJWQ7xgZSwjiOkFS7NXVHX4FUIxQ3DIy7xv3Z9z6qXPI5icw6lCHmGnOi6SogosKE4B+XSG5Zx1c0mtdtdbruXMkR4Ny+vyftZA4GZcICntw6cTqGkpYDbGWnsnFNNliL27pwEZcAZCw4tVROToBmSG7QzJbLS4+1H82HYW8X7BAFX1LdbBbdxGOtAB/63c7DPrMSSCHpc6D2Khn5odY69wZUTSacu4XxBYucdnhbnxG+vu8Hi3DMeQUow9oFuoWivxJ2wTwHcXOdiLwFScB73vZlA5aJiuZIoLtF+Wtv95ADm3m5IdsuE/+ZOqJtnkk3o4tptYs6P8Cq0yNm4urvor1shqY9kblr7RJjkZ5+H7ApPgjsj06i9mEgT3B36+jt02YSHuoJHyK0GKXvv4eX6SYqsZ1eoaYkW1zC+/etOclpqy0TMn2l2HdUGBumxG/eXkVMmW6QRukGapI08s1X3HrJRL/DRGR9acWii/BUoFLHWSbTvrorhbUQr3XiJL592/Uk1GV8RxwTn+KVnID/jAr7jTmuQJhqeBGZWKNQXoYl8QEBq4/HKyADwpg4p6NhR9V2JeVDz2Fq4lZYXbIBhjFDdTX6PKezVAqfSU9ywQRTtLw/0Z3BtmCzlbK3dedamlZfbXBkHDk2Zy/7JhkrCTgblhUEs9jr4OwP8hJJ4sF3XJV+FK/138kotrZU/UQfXaq2t50D1N2r9p7QBupi70Bg2KToBmPUZdWRDjS6Udva59FMikZemnyiE6l5rI/YpkDwcVw/kn2MEwwfWtS8s9f45DvrCAINKtQ3Ypc4D5GnTsqeUvn5O5h6O438nef796VFl4eiKhpAHar80+fabCq78izpDj6xbIkTMsWAB+YNfmUIGY4erfAPIi1UkejSdwgT5j7TOaBYPXEAVsqhYXiQEpehuQv9KN1v
- CA692CN5
- zjYPTaZV325vPZC5f7yCcIYjuPUB+qNtEe+5+2Yzcj3GqfZfw6Npcn6691XDkeNMkVo+Ay7gxO7rLBPqzAvQw3zemt6h/R40QOL3V5qiiwMUSvtSTufZHpi/cvn9h6d0lFb3TWnLGUeJbaWMzr7GiDdsNQjRwzEWB6IRZrcHx21T/P6NJT943XTW8++ejB4T5YRN8/hESiiL8NDAouBH3nq4fIJ9iISA0LkNnYIezr2ZpnezmZ4r5hh+hpy/fN+xzO/nRqW0hbsucXOPjsNeYDsLS835b6GWwsTTLc6htXlS/VXDhkqBUuhXqRYocWcNJ0tj9r/2DPsG20N99yihIDHiMM2QfEolKitJJhub4xAeAXsOC+v+Dw5tFmGixGylns0y8zplqUkYVhCEcK08eoepggZu2wHv7mUXoaYRx11IkY/GpWIWG3pAFhc6pUIaWDhVAaSmWvKcfjHs1GTfO1S4Zoqb+f9KBgMCQB7Iv31eRnRSvQpS7z3n1Q1Dls9i8892cLJPVDok2M9xgQLMM3+EYt2vQQb7Y25G7eec89UXjl4TeGpr1ylVhRwNIHnCm6VeDOtVYdsu9ssU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E3B8312000D
+X-Stat-Signature: gm7ach3p6oy791sjyprqicn6a4ii3fwx
+X-HE-Tag: 1773258727-845454
+X-HE-Meta: U2FsdGVkX1/pJhX8m3C4L53Qqmn7L6RNso4P15q+nXcRm8nciGKmwX7RoCwoF1t31+/tVDzib7/psBRTTpwHQeKFFNeGLZYqBJ2K3hn+c3IONKgQrDDMN/hiv7ZxZhli0hx+HBFm+ClhFfSoVDkCmmuHxW43tPJBZpKbmECAuk8Efwqch7RrnYpjOLNyrRBDTmQZzCuBM+yhg1LzVwV4b7Gi/PGkV/spYilO+8rPGRXwEcceMnpFUXKHhkQto7FRP+PhvYtIEXCpI9bDmpTcilMaMa0dYgRTlP2jSZdnxJoOCxP0b/X1g7poGGXESfuIj7tH/3wPkRKBlUD6SJA3X/MJXkxSJzq1qX1C9cl6p9SxpTHwTH9eNRb8aoT1IZMwnlaUL6Eu3XeqQrWzstPQBwI8/o0jgd0hXLRvKR10kPoBZGNlCyoV1aQe/Kk2xMmecwM310D6PbuzZAayHYrA0suqF15GMWdy0rDc6tyENBN7wgqSUV3REYyzop0IfuUKgEtC4eCs93/3RWhK5M6soGQlT1s1IV/vXQC5WkUVLXGmKJPGaTEvPk9sqwVQOi5D8XPVUw5pAiYJ42d5rdOkUVzubp9GQ6w4+jzmANp9FdQ9Md9kIMABtWujsLH/eo77i/TZK5GsHeC4R/Kp2ZVn1VTXPPIpJfJhgNSp/cQvPin2nQvrDxloXSuDGI3krhqIbvkWHt1ADrMsnUYPyQT829AOnWANjG19efjHS6sK8i0Ky5g54i0lQH+1XEmM/1ZUbB0M5MNmjwC655WfCjZrejKr6QMxkFuGASuC2G7KanxW7efRjvb80R6efdUbECWY0/B9MvvKgzN3Su+tP+Rgk+sixw56Nf4p7d1mmrlzCx0GGY0wXf1he3V7q3Klcf0NyORZOjvi+0nruxJGyq35l8XaVgna9qjv26w3OXtlgppo4K8g3i0knShathwJzbLXIasu1Sk97fchHjcj4s2
+ vO7VBd/k
+ Adx2a6Qa32pFujHfqgoFNyJ80uQujKwKmx+E1RCpiQpCc0/5DF1XQyLHmZf8s++1+G7M9qkZ8vbIrztLcKSCigB8Y4cCoD/lrOWVmag+t6BnLOpHTLxtfPv2ukuIBzX33NU8gL0pROTI1qqngMgf0VZP1GYSclwilOE1buMIqFFOPAOv9TWgDtSWx/You9bW0G9KMrK3bYSPhQACCb7KLGhine174GAobwikYvCB+PwIBU0cSl1x05H5TCjuEqegtzLyMXzpMAeaC+q5YkXrj2S0M7YvISQqZiBHjjRamYTrffGMOXexWyA9b6MBOam9pqsOlkj3T+84xjVVb3kLn4qTi07o34k+nrwh9f5cXeBOQ+H6dPB3k/ygaYDkSuFjekReOeKPly+8MTv4O6oJ+eoT6xJyGQy8cO71LCFVtwV6+kL3PqQjlJ7P0gcmrkqQQRe2fC/GEBlX66uNuzHOheWTCw6gFeRkfa9T6dQdfCtfG/1vRyMUWRrl4Tpp14jtV4bK/5jN6U3MDXAFSxJadzX8s9+Wa5bffdLd+pywKF4Lf+4cDm7rfHLWtVFqfTy1sZbFJUiPqEGDgCZM9xcDOLwLmxnpVrNayMelq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,117 +139,416 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Zswap compresses and uncompresses in PAGE_SIZE units, which simplifies
-the accounting for how much memory it has compressed. However, when a
-compressed object is stored at the boundary of two zspages, accounting
-at a PAGE_SIZE granularity makes it difficult to fractionally charge
-each backing zspage with the ratio of memory it backs for the
-compressed object.
+Now that memcg charging happens in the zsmalloc layer where we have both
+objcg and page information, we can specify which node's memcg lruvec
+zswapped memory should be accounted to.
 
-To make sub-PAGE_SIZE granularity charging possible for MEMCG_ZSWAPPED,
-track the value in bytes and adjust its accounting accordingly.
+Move MEMCG_ZSWAP_B and MEMCG_ZSWAPPED_B from enum memcg_stat_item to
+enum node_stat_item. Reanme their prefixes from MEMCG to NR to reflect
+this move as well.
 
-No functional changes intended.
+In addition, decouple the updates of node stats (vmstat) and
+memcg-lruvec stats, since node stats can only track values at a
+PAGE_SIZE granularity.
 
+As a result of tracking zswap statistics at a finer granularity, the
+charging from zsmalloc also gets more complicated to cover the cases
+when the compressed object spans two zpdescs, which both live on
+different nodes. In this case, the memcg-lruvec of both node-memcg
+combinations are partially charged.
+
+memcg-lruvec stats are now updated precisely and proportionally when
+compressed objects are split across pages. Unfortunately for node stats,
+only NR_ZSWAP_B can be kept accurate. NR_ZSWAPPED_B works as a good
+best-effort value, but cannot proportionally account for compressed
+objects split across nodes due to the coarse PAGE_SIZE granularity of
+node stats. For such objects, NR_ZSWAPPED_B is accounted to the first
+zpdesc's node stats.
+
+Note that this is not a new inaccuracy, but one that is simply left
+unable to be fixed as part of these changes. The small inaccuracy is
+accepted in place of invasive changes across all of vmstat
+infrastructure to begin tracking stats at byte granularity.
+
+Finally, note that handling of objcg migrations across zspages (and
+their subsequent migrations across nodes) are handled in the next patch.
+
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/memcontrol.h | 2 +-
- mm/memcontrol.c            | 5 +++--
- mm/zsmalloc.c              | 4 ++--
- mm/zswap.c                 | 8 +++++---
- 4 files changed, 11 insertions(+), 8 deletions(-)
+ include/linux/memcontrol.h |   5 +-
+ include/linux/mmzone.h     |   2 +
+ include/linux/zsmalloc.h   |   6 +--
+ mm/memcontrol.c            |  22 ++++----
+ mm/vmstat.c                |   2 +
+ mm/zsmalloc.c              | 104 +++++++++++++++++++++++++++----------
+ mm/zswap.c                 |   7 ++-
+ 7 files changed, 102 insertions(+), 46 deletions(-)
 
 diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 701d9ab6fef1..ce2e598b5963 100644
+index ce2e598b5963..b03501e0c09b 100644
 --- a/include/linux/memcontrol.h
 +++ b/include/linux/memcontrol.h
-@@ -38,7 +38,7 @@ enum memcg_stat_item {
+@@ -37,8 +37,6 @@ enum memcg_stat_item {
+ 	MEMCG_PERCPU_B,
  	MEMCG_VMALLOC,
  	MEMCG_KMEM,
- 	MEMCG_ZSWAP_B,
--	MEMCG_ZSWAPPED,
-+	MEMCG_ZSWAPPED_B,
+-	MEMCG_ZSWAP_B,
+-	MEMCG_ZSWAPPED_B,
  	MEMCG_NR_STAT,
  };
  
+@@ -927,6 +925,9 @@ struct mem_cgroup *mem_cgroup_get_oom_group(struct task_struct *victim,
+ 					    struct mem_cgroup *oom_domain);
+ void mem_cgroup_print_oom_group(struct mem_cgroup *memcg);
+ 
++void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++			    int val);
++
+ /* idx can be of type enum memcg_stat_item or node_stat_item */
+ void mod_memcg_state(struct mem_cgroup *memcg,
+ 		     enum memcg_stat_item idx, int val);
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 3e51190a55e4..ae16a90491ac 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -258,6 +258,8 @@ enum node_stat_item {
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+ #endif
++	NR_ZSWAP_B,
++	NR_ZSWAPPED_B,
+ 	NR_BALLOON_PAGES,
+ 	NR_KERNEL_FILE_PAGES,
+ 	NR_VM_NODE_STAT_ITEMS
+diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+index 6010d8dac9ff..fd79916c7740 100644
+--- a/include/linux/zsmalloc.h
++++ b/include/linux/zsmalloc.h
+@@ -24,11 +24,11 @@ struct zs_pool_stats {
+ struct zs_pool;
+ struct scatterlist;
+ struct obj_cgroup;
+-enum memcg_stat_item;
++enum node_stat_item;
+ 
+ struct zs_pool *zs_create_pool(const char *name, bool memcg_aware,
+-			       enum memcg_stat_item compressed_stat,
+-			       enum memcg_stat_item uncompressed_stat);
++			       enum node_stat_item compressed_stat,
++			       enum node_stat_item uncompressed_stat);
+ void zs_destroy_pool(struct zs_pool *pool);
+ 
+ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 68139be66a4f..1cb02d2febe8 100644
+index 1cb02d2febe8..d87bc4beff16 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -342,7 +342,7 @@ static const unsigned int memcg_stat_items[] = {
+@@ -333,6 +333,8 @@ static const unsigned int memcg_node_stat_items[] = {
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+ #endif
++	NR_ZSWAP_B,
++	NR_ZSWAPPED_B,
+ };
+ 
+ static const unsigned int memcg_stat_items[] = {
+@@ -341,8 +343,6 @@ static const unsigned int memcg_stat_items[] = {
+ 	MEMCG_PERCPU_B,
  	MEMCG_VMALLOC,
  	MEMCG_KMEM,
- 	MEMCG_ZSWAP_B,
--	MEMCG_ZSWAPPED,
-+	MEMCG_ZSWAPPED_B,
+-	MEMCG_ZSWAP_B,
+-	MEMCG_ZSWAPPED_B,
  };
  
  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
-@@ -1364,7 +1364,7 @@ static const struct memory_stat memory_stats[] = {
+@@ -737,9 +737,8 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+ }
+ #endif
+ 
+-static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+-				     enum node_stat_item idx,
+-				     int val)
++void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++			    int val)
+ {
+ 	struct mem_cgroup_per_node *pn;
+ 	struct mem_cgroup *memcg;
+@@ -766,6 +765,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 
+ 	put_cpu();
+ }
++EXPORT_SYMBOL(mod_memcg_lruvec_state);
+ 
+ /**
+  * mod_lruvec_state - update lruvec memory statistics
+@@ -1363,8 +1363,8 @@ static const struct memory_stat memory_stats[] = {
+ 	{ "vmalloc",			MEMCG_VMALLOC			},
  	{ "shmem",			NR_SHMEM			},
  #ifdef CONFIG_ZSWAP
- 	{ "zswap",			MEMCG_ZSWAP_B			},
--	{ "zswapped",			MEMCG_ZSWAPPED			},
-+	{ "zswapped",			MEMCG_ZSWAPPED_B		},
+-	{ "zswap",			MEMCG_ZSWAP_B			},
+-	{ "zswapped",			MEMCG_ZSWAPPED_B		},
++	{ "zswap",			NR_ZSWAP_B			},
++	{ "zswapped",			NR_ZSWAPPED_B			},
  #endif
  	{ "file_mapped",		NR_FILE_MAPPED			},
  	{ "file_dirty",			NR_FILE_DIRTY			},
-@@ -1412,6 +1412,7 @@ static int memcg_page_state_unit(int item)
+@@ -1411,8 +1411,8 @@ static int memcg_page_state_unit(int item)
+ {
  	switch (item) {
  	case MEMCG_PERCPU_B:
- 	case MEMCG_ZSWAP_B:
-+	case MEMCG_ZSWAPPED_B:
+-	case MEMCG_ZSWAP_B:
+-	case MEMCG_ZSWAPPED_B:
++	case NR_ZSWAP_B:
++	case NR_ZSWAPPED_B:
  	case NR_SLAB_RECLAIMABLE_B:
  	case NR_SLAB_UNRECLAIMABLE_B:
  		return 1;
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 291194572a09..24665d7cd4a9 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1047,7 +1047,7 @@ static void zs_charge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
- 	rcu_read_lock();
- 	memcg = obj_cgroup_memcg(objcg);
- 	mod_memcg_state(memcg, pool->compressed_stat, size);
--	mod_memcg_state(memcg, pool->uncompressed_stat, 1);
-+	mod_memcg_state(memcg, pool->uncompressed_stat, PAGE_SIZE);
- 	rcu_read_unlock();
+@@ -5482,7 +5482,7 @@ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+ 
+ 		/* Force flush to get accurate stats for charging */
+ 		__mem_cgroup_flush_stats(memcg, true);
+-		pages = memcg_page_state(memcg, MEMCG_ZSWAP_B) / PAGE_SIZE;
++		pages = memcg_page_state(memcg, NR_ZSWAP_B) / PAGE_SIZE;
+ 		if (pages < max)
+ 			continue;
+ 		ret = false;
+@@ -5511,7 +5511,7 @@ static u64 zswap_current_read(struct cgroup_subsys_state *css,
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
+ 
+ 	mem_cgroup_flush_stats(memcg);
+-	return memcg_page_state(memcg, MEMCG_ZSWAP_B);
++	return memcg_page_state(memcg, NR_ZSWAP_B);
  }
  
-@@ -1066,7 +1066,7 @@ static void zs_uncharge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
- 	rcu_read_lock();
- 	memcg = obj_cgroup_memcg(objcg);
- 	mod_memcg_state(memcg, pool->compressed_stat, -size);
--	mod_memcg_state(memcg, pool->uncompressed_stat, -1);
-+	mod_memcg_state(memcg, pool->uncompressed_stat, -(int)PAGE_SIZE);
- 	rcu_read_unlock();
+ static int zswap_max_show(struct seq_file *m, void *v)
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 86b14b0f77b5..389ff986ceac 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1279,6 +1279,8 @@ const char * const vmstat_text[] = {
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	[I(NR_HUGETLB)]				= "nr_hugetlb",
+ #endif
++	[I(NR_ZSWAP_B)]				= "zswap",
++	[I(NR_ZSWAPPED_B)]			= "zswapped",
+ 	[I(NR_BALLOON_PAGES)]			= "nr_balloon_pages",
+ 	[I(NR_KERNEL_FILE_PAGES)]		= "nr_kernel_file_pages",
+ #undef I
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 24665d7cd4a9..ab085961b0e2 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -216,8 +216,8 @@ struct zs_pool {
+ 	struct work_struct free_work;
+ #endif
+ 	bool memcg_aware;
+-	enum memcg_stat_item compressed_stat;
+-	enum memcg_stat_item uncompressed_stat;
++	enum node_stat_item compressed_stat;
++	enum node_stat_item uncompressed_stat;
+ 	/* protect zspage migration/compaction */
+ 	rwlock_t lock;
+ 	atomic_t compaction_in_progress;
+@@ -823,6 +823,9 @@ static void __free_zspage(struct zs_pool *pool, struct size_class *class,
+ 		reset_zpdesc(zpdesc);
+ 		zpdesc_unlock(zpdesc);
+ 		zpdesc_dec_zone_page_state(zpdesc);
++		if (pool->memcg_aware)
++			dec_node_page_state(zpdesc_page(zpdesc),
++					    pool->compressed_stat);
+ 		zpdesc_put(zpdesc);
+ 		zpdesc = next;
+ 	} while (zpdesc != NULL);
+@@ -974,6 +977,9 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
+ 		__zpdesc_set_zsmalloc(zpdesc);
+ 
+ 		zpdesc_inc_zone_page_state(zpdesc);
++		if (pool->memcg_aware)
++			inc_node_page_state(zpdesc_page(zpdesc),
++					    pool->compressed_stat);
+ 		zpdescs[i] = zpdesc;
+ 	}
+ 
+@@ -985,6 +991,9 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
+ err:
+ 	while (--i >= 0) {
+ 		zpdesc_dec_zone_page_state(zpdescs[i]);
++		if (pool->memcg_aware)
++			dec_node_page_state(zpdesc_page(zpdescs[i]),
++					    pool->compressed_stat);
+ 		free_zpdesc(zpdescs[i]);
+ 	}
+ 	if (pool->memcg_aware)
+@@ -1029,10 +1038,48 @@ static bool zspage_empty(struct zspage *zspage)
+ }
+ 
+ #ifdef CONFIG_MEMCG
+-static void zs_charge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
+-			    int size)
++static void __zs_mod_memcg_lruvec(struct zs_pool *pool, struct zpdesc *zpdesc,
++				  struct obj_cgroup *objcg, int size,
++				  int sign, unsigned long offset)
+ {
+ 	struct mem_cgroup *memcg;
++	struct lruvec *lruvec;
++	int compressed_size = size, original_size = PAGE_SIZE;
++	int nid = page_to_nid(zpdesc_page(zpdesc));
++	int next_nid = nid;
++
++	if (offset + size > PAGE_SIZE) {
++		struct zpdesc *next_zpdesc = get_next_zpdesc(zpdesc);
++
++		next_nid = page_to_nid(zpdesc_page(next_zpdesc));
++		if (nid != next_nid) {
++			compressed_size = PAGE_SIZE - offset;
++			original_size = (PAGE_SIZE * compressed_size) / size;
++		}
++	}
++
++	rcu_read_lock();
++	memcg = obj_cgroup_memcg(objcg);
++	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
++	mod_memcg_lruvec_state(lruvec, pool->compressed_stat,
++			       sign * compressed_size);
++	mod_memcg_lruvec_state(lruvec, pool->uncompressed_stat,
++			       sign * original_size);
++
++	if (nid != next_nid) {
++		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(next_nid));
++		mod_memcg_lruvec_state(lruvec, pool->compressed_stat,
++				       sign * (size - compressed_size));
++		mod_memcg_lruvec_state(lruvec, pool->uncompressed_stat,
++				       sign * (PAGE_SIZE - original_size));
++	}
++	rcu_read_unlock();
++}
++
++static void zs_charge_objcg(struct zs_pool *pool, struct zpdesc *zpdesc,
++			    struct obj_cgroup *objcg, int size,
++			    unsigned long offset)
++{
+ 
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		return;
+@@ -1044,18 +1091,19 @@ static void zs_charge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
+ 	if (obj_cgroup_charge(objcg, GFP_KERNEL, size))
+ 		VM_WARN_ON_ONCE(1);
+ 
+-	rcu_read_lock();
+-	memcg = obj_cgroup_memcg(objcg);
+-	mod_memcg_state(memcg, pool->compressed_stat, size);
+-	mod_memcg_state(memcg, pool->uncompressed_stat, PAGE_SIZE);
+-	rcu_read_unlock();
++	__zs_mod_memcg_lruvec(pool, zpdesc, objcg, size, 1, offset);
++
++	/*
++	 * Node-level vmstats are charged in PAGE_SIZE units. As a best-effort,
++	 * always charge the uncompressed stats to the first zpdesc.
++	 */
++	inc_node_page_state(zpdesc_page(zpdesc), pool->uncompressed_stat);
+ }
+ 
+-static void zs_uncharge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
+-			      int size)
++static void zs_uncharge_objcg(struct zs_pool *pool, struct zpdesc *zpdesc,
++			      struct obj_cgroup *objcg, int size,
++			      unsigned long offset)
+ {
+-	struct mem_cgroup *memcg;
+-
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		return;
+ 
+@@ -1063,20 +1111,24 @@ static void zs_uncharge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
+ 
+ 	obj_cgroup_uncharge(objcg, size);
+ 
+-	rcu_read_lock();
+-	memcg = obj_cgroup_memcg(objcg);
+-	mod_memcg_state(memcg, pool->compressed_stat, -size);
+-	mod_memcg_state(memcg, pool->uncompressed_stat, -(int)PAGE_SIZE);
+-	rcu_read_unlock();
++	__zs_mod_memcg_lruvec(pool, zpdesc, objcg, size, -1, offset);
++
++	/*
++	 * Node-level vmstats are charged in PAGE_SIZE units. As a best-effort,
++	 * always uncharged the uncompressed stats from the first zpdesc.
++	 */
++	dec_node_page_state(zpdesc_page(zpdesc), pool->uncompressed_stat);
  }
  #else
+-static void zs_charge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
+-			    int size)
++static void zs_charge_objcg(struct zs_pool *pool, struct zpdesc *zpdesc,
++			    struct obj_cgroup *objcg, int size,
++			    unsigned long offset)
+ {
+ }
+ 
+-static void zs_uncharge_objcg(struct zs_pool *pool, struct obj_cgroup *objcg,
+-			      int size)
++static void zs_uncharge_objcg(struct zs_pool *pool, struct zpdesc *zpdesc,
++			      struct obj_cgroup *objcg, int size,
++			      unsigned long offset)
+ {
+ }
+ #endif
+@@ -1298,7 +1350,7 @@ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+ 		WARN_ON_ONCE(!pool->memcg_aware);
+ 		zspage->objcgs[obj_idx] = objcg;
+ 		obj_cgroup_get(objcg);
+-		zs_charge_objcg(pool, objcg, class->size);
++		zs_charge_objcg(pool, zpdesc, objcg, class->size, off);
+ 	}
+ 
+ 	if (!ZsHugePage(zspage))
+@@ -1477,7 +1529,7 @@ static void obj_free(int class_size, unsigned long obj)
+ 	if (pool->memcg_aware && zspage->objcgs[f_objidx]) {
+ 		struct obj_cgroup *objcg = zspage->objcgs[f_objidx];
+ 
+-		zs_uncharge_objcg(pool, objcg, class_size);
++		zs_uncharge_objcg(pool, f_zpdesc, objcg, class_size, f_offset);
+ 		obj_cgroup_put(objcg);
+ 		zspage->objcgs[f_objidx] = NULL;
+ 	}
+@@ -2191,8 +2243,8 @@ static int calculate_zspage_chain_size(int class_size)
+  * otherwise NULL.
+  */
+ struct zs_pool *zs_create_pool(const char *name, bool memcg_aware,
+-			       enum memcg_stat_item compressed_stat,
+-			       enum memcg_stat_item uncompressed_stat)
++			       enum node_stat_item compressed_stat,
++			       enum node_stat_item uncompressed_stat)
+ {
+ 	int i;
+ 	struct zs_pool *pool;
 diff --git a/mm/zswap.c b/mm/zswap.c
-index bca29a6e18f3..d81e2db4490b 100644
+index d81e2db4490b..2e9352b46693 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -257,7 +257,7 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+@@ -256,8 +256,7 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+ 
  	/* unique name for each pool specifically required by zsmalloc */
  	snprintf(name, 38, "zswap%x", atomic_inc_return(&zswap_pools_count));
- 	pool->zs_pool = zs_create_pool(name, true, MEMCG_ZSWAP_B,
--				       MEMCG_ZSWAPPED);
-+				       MEMCG_ZSWAPPED_B);
+-	pool->zs_pool = zs_create_pool(name, true, MEMCG_ZSWAP_B,
+-				       MEMCG_ZSWAPPED_B);
++	pool->zs_pool = zs_create_pool(name, true, NR_ZSWAP_B, NR_ZSWAPPED_B);
  	if (!pool->zs_pool)
  		goto error;
  
-@@ -1214,8 +1214,10 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
+@@ -1214,9 +1213,9 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
  	 */
  	if (!mem_cgroup_disabled()) {
  		mem_cgroup_flush_stats(memcg);
--		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
--		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
-+		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B);
-+		nr_backing >>= PAGE_SHIFT;
-+		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED_B);
-+		nr_stored >>= PAGE_SHIFT;
+-		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B);
++		nr_backing = memcg_page_state(memcg, NR_ZSWAP_B);
+ 		nr_backing >>= PAGE_SHIFT;
+-		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED_B);
++		nr_stored = memcg_page_state(memcg, NR_ZSWAPPED_B);
+ 		nr_stored >>= PAGE_SHIFT;
  	} else {
  		nr_backing = zswap_total_pages();
- 		nr_stored = atomic_long_read(&zswap_stored_pages);
 -- 
 2.52.0
 
