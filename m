@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F406EFD0650
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C4BFD064E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AD966B0005; Wed, 11 Mar 2026 04:11:07 -0400 (EDT)
+	id 133E56B0089; Wed, 11 Mar 2026 04:11:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 178D16B0089; Wed, 11 Mar 2026 04:11:07 -0400 (EDT)
+	id 0FEBF6B008A; Wed, 11 Mar 2026 04:11:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 067796B008A; Wed, 11 Mar 2026 04:11:07 -0400 (EDT)
+	id 034D16B008C; Wed, 11 Mar 2026 04:11:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D997E6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:11:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 850DE1CA7A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:11:06 +0000 (UTC)
-X-FDA: 84533061732.06.CA01504
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 208B1100007
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:11:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D521E6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:11:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B9EBC2244
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:11:48 +0000 (UTC)
+X-FDA: 84533063496.10.3C55D2D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C9F1510000A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:11:46 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gZtpidJb;
-	spf=pass (imf14.hostedemail.com: domain of rob_garcia@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=rob_garcia@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773216664;
+	s=arc-20220608; t=1773216706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=11rxilNzodvuvzCLO3MeHRDznxrP0FHOC7bmEuqJ1b8=;
-	b=CUq51AUk3q5I+728QUHBpaApjSTXsBjwP4/E6h2kjS35VuEg/Ibez9A9jcE+3xuOcFPoPM
-	ttjeuCGp0fo7TjPljVmqvY7ze3Ph14+We/luxVzNyUDgHytp0G5bbQHz2iGRP1PWs8o3k4
-	wIvxwt1BespdO/5bjzvBtHvVJWr2DUE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAtuy9Tg4GtbuHvuyqKT6iCZycvzMtXiMyS7f9pUOoU=;
+	b=GagV4x2fpibV/cyQWj/gb+TcHRCmlaYfWjWvH7nhMH6Byuf6c6ue+RZgOeTb2LIf4P28uj
+	XGCt9SV7ELG1mmaMx/xmRat9MyZBUlQ8Iy2tJGQmho6t7QqG9sJHTPFDcEDeAO1wzvmEEz
+	v2laPh4LLxAx/rK7trfZmqHgJW2NlUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773216706; a=rsa-sha256;
+	cv=none;
+	b=JQo9cnqOWS5Ef2KfR+iQdS3eGCkKjvsNq+MWUXVdecQIrymtvys2y6YrAdxH34aPWDDRHJ
+	MTrylLWz5BYpe/7nbcmLnanXbdAPc4fUIhyMlJS+uIEis95Fnx8rBQ9HteRId/riM9D1Nw
+	rtOAkEyONTMPRJ4CjPpk+tGcjL67wW8=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gZtpidJb;
-	spf=pass (imf14.hostedemail.com: domain of rob_garcia@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=rob_garcia@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773216664; a=rsa-sha256;
-	cv=none;
-	b=xMKCqxMZmLONPxKKUDA4ReEmFXr1lz9wsqwsed9Kn92HzkSPpQbLCKQFVM0BnFTvXA8ebF
-	AOpglcsnm8h2oOXQMMT6G+X79vSvVS9sJP+vXOu7YJEm7HmnG1DGf1OLuJlxdUiI2cYxuy
-	QOvzbn6EoxnlRzqEsuYoIxDkl49JfEQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=11
-	rxilNzodvuvzCLO3MeHRDznxrP0FHOC7bmEuqJ1b8=; b=gZtpidJbqu4n7DCX9M
-	y1MOcYlubfMsNlT+LZFEqmgpl/36dSR0LIRlnMVAS5pys8b7t8827OwBL3kbkOmh
-	LgCLRKq/dW6+gNLQOi2CRc3leEJgSY8iQdJLkirx4Dg8UxzRRkngM/3NMzydaufs
-	gEaiGpgWYKDdgevh3mCNsVRRs=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3v8OGI7FpmUFfAQ--.47091S2;
-	Wed, 11 Mar 2026 16:10:48 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Robert Garcia <rob_garcia@163.com>,
-	Jan Kara <jack@suse.cz>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Helge Deller <deller@gmx.de>,
-	Lior Ribak <liorribak@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] binfmt_misc: restore write access before closing files opened by open_exec()
-Date: Wed, 11 Mar 2026 16:10:46 +0800
-Message-Id: <20260311081046.1668003-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 80C5E165C;
+	Wed, 11 Mar 2026 01:11:39 -0700 (PDT)
+Received: from [10.164.19.59] (unknown [10.164.19.59])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C08313F73B;
+	Wed, 11 Mar 2026 01:11:37 -0700 (PDT)
+Message-ID: <3fb1c538-e666-4bb3-b3f4-6f631f4db325@arm.com>
+Date: Wed, 11 Mar 2026 13:41:35 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v8OGI7FpmUFfAQ--.47091S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4fGF48tw1UurW8AF1DWrg_yoW8WF4Dpr
-	W5K34UtrZIqryj9ayvyas8XF15G3Z7Gr12vr4kWw1xXF1rXrs0gFZ2g3yj93W0y397A3yF
-	qF4rC3sYyryUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UxWrZUUUUU=
-X-Originating-IP: [60.247.85.88]
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5gmxHWmxI4mC7wAA3c
-X-Rspamd-Queue-Id: 208B1100007
-X-Stat-Signature: 83zikfjqcaf7b8tzpmgmu9ytmqxte5i9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] mm/rmap: Optimize anonymous large folio unmapping
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ anshuman.khandual@arm.com, axelrasmussen@google.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, bhe@redhat.com, chrisl@kernel.org,
+ david@kernel.org, harry.yoo@oracle.com, hughd@google.com, jannh@google.com,
+ kas@kernel.org, kasong@tencent.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com,
+ pfalcato@suse.de, riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com,
+ shikemeng@huaweicloud.com, surenb@google.com, vbabka@kernel.org,
+ weixugc@google.com, willy@infradead.org, youngjun.park@lge.com,
+ yuanchu@google.com, yuzhao@google.com, ziy@nvidia.com
+References: <20260310073013.4069309-1-dev.jain@arm.com>
+ <20260310125940.39707-1-lance.yang@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260310125940.39707-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773216663-332490
-X-HE-Meta: U2FsdGVkX19HaIcadIxrN9+TMp9dtrWGrvPPj9Cz6YYL8TQsfJKT5My+3JWVgAFFwQWZjhrcTSEjl4dvDC8RD6s6nQ3iVV5gn6DsGzjkc7lw5228YpvKjBNvY+KjKpMd5wjNMy/GBOvWLqy8t/tpDQSlI7FTKIPk/lD0vSa1dM62Jr5X9HEIUn462NwZYtuTiw7ktZe44Zmw8RTE4/Ee4/H3PMhtGBvjabgC7N3ItA1wuRCug2stySxd6M/0Xkp2n5RxrAduqEG7EFE/jeeVJz6xvrxmcGinip/lsydAz3GAoxRXiYej6DHYq5OT0KTfMJt0mU/2Ds87MrdaTNoDh6KR3dC8QweoWagaECx6qLT3uglcslGK8fW55j3Zi3Mg/qTIEq/UswVKuMvE53INJ8s8yM+rk6UMznuEpXcCFTeE8fdhyRrJVOMiSrwFPIHaWtQXmi6JLb3D4+pVXO79nQjuZ9hZWVtyDNUyPeSWSTMQaSSpJ3ap14wivMtBHV1Q7aOWzD1fs5GsV7j8XafR0QycFyi4p2Q5Tj09yGD8efAXdIZJtuyITcZ9FxOCMsQtr+4wVKEQ9QcazWg/ThkhAJHd43ff1xL7C16r0BFdpFsIhB1YtTdW9L+DtiNkjMLAUbtDTDTv8Kw0MKWD+cIkq+//liUFqUMn0MvmmqGIds82qJnkT/gzh1fr6+zPgxf3FH/e4zvMSbcY1yipVScTJrMyiFj0bA4BFbVirchE9f+p0l64JedG3sKIGDpKYZyn/aE3PtRqfj7UjSYPRByXS2+mWjY/I6M886fJqKfsCvzkwG41uXAAygPABDUmq+OlxTreyM6mzIS6dhcayju2aXhzEHY7ACw/M83x153dZ4SGqclLXr+cFExv6ZvGxPpv46I+TjA9l4cIMKQKQaBTFi1J6I28erklQ5Vz91mO6cDRRoLF2S06BnVYKbdkiyv2GGKV3uWJHChS1sZ72CT
- aTr8cGeg
- Hw1qjuxgHDkLppxwwrg5/CsV8lirPlXTKi2ZgA2+dXEQuu3zKYlR2EhxhCS6TmbMB1m2g+odDgTc9UrWjiMsdBmPzIXCR7KhUxVADwyCPsAzX8uTqqbxw0Vh8cdm/0DvOTSkLxU3tvskTiSaUMguQi2ArawonYcB70cz+0A78jNKTlWig0ZpCf1TH0D1f0yyT7XHqlUQADp9YeQlEc014aAN8Zs1RCsbdNpxUA0MeM39LZ2UhfegZZ9iiZBUlKAHRmT363F9eCWkb+cNSL9cXlZemy//DdbSjB0lH+YH2Eydmtw/RnDn+3FtDkoKpx0nKIdfR2/1VRUoXY1ChUwpPsR8DGZFG/Ag3CyRzbmt/9XlXMJZoYeCFJwCg0fc+4bVgTpvBxmwafO07conHTVaiPIrZMfak288GmF+fxu6fgdUa6TKzh7F3pUpEwvF+9xhW23I/nkJ/v5QNwOgv7vilqpoEl/61XTu9IzoTs8PmPW3R8ijQcWeN6tijtTsJgnOBPnu0HX3jHC/1SQiel+UwknXihjA3vsfrOJmS
+X-Stat-Signature: uq3ciryr8hs1royzeejyrcfg6sefwinx
+X-Rspamd-Queue-Id: C9F1510000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773216706-897469
+X-HE-Meta: U2FsdGVkX1+fbmpsYhJkHRVmguUu1s4DwN/PaB6allKhryRDppoTeuUpXyLlrwgFikzWhcOuuBW/tgUuFhGr0DUL8xTymXhDSOIztfahqJ5VwpqTFzXluC8FhxAQ9n57MGcTUnCfKKUCWmeRz1lCnMNUketCy9QOs1zxyA9ZBlYICgMin+yM0gdDlNsj3f7nUUF1Gq2FClfZgPV7MN5TN9FL9MxUaqeUt805tFe0h1HrFxEpdaIPrJCSvzkL78CIVvpp2dyJcnNIsjK1HZ/Jqmb5tCtYZa18EI7LCYUwNbP0MuZlV9QpFM2gtii4cTuDjDJeliRtjmLtisVHup5fgLUNuWow6w1gJkhEHpxsGm7YPAcikvwzDdgBwlIIy3vHtqVIwdGY79P2l9iBNh3osALqwsFtGVYKCkS3kLpMuVzxKraqU3d+LrOXFaXWbZo7x24m54fNGUaSSO43fR67FHmggi0GuyADEAosRDe1BWsPyTj3BclFaB6uGcAFamuVWrfdcjV2EVpyxBCdj55GG5/ohzrkLVLafMn6mND5N73H4DqdyRgCnVHixkXTrR7pFi7Yaa/Ye2z40P+sHodmXOiXLAkpcwdh6ffNScmUSc6U3WCv8ap9NsT86P8/dLEI+I9iThJS4qzIJu5kuHQvAUqpoqk5Y9ODOLX1pY9ASNtFBKztClyZVCBFRJsg0i42tNJCO87G0M5ylJPmWMURc9n3hyvU8tkm/ojQGn7QbKorN1nWz0/7d6XsdQ/3gXmwgp5hDJ2z/V+CJbZNa7xMGZGFDlgdVy2dhqrSTLBtayQG2DGvZsgtbCCroG5tYCvYrCchR9CGRiA2Gn+WA/yXN9BZo+WOron90vLCCY5KR+Qm3hZlX3PAaBmAOiEzCZqXb6ohl9I6Fy3FsZtwyrrHcwiuWA4gaMuP69RNdP5Pd8vPPGQEPoIlN27No1kTQLMlSxsGsMc8bPfMWzEIM8f
+ qxyCF4FW
+ fUPfchrCm2j6TaJnmKmAGMbMDd//OqoHsSsv9bismgVpr11cAwtP5NfTflhxrHiyQ+tbKoIdsVqhmd/5iwJpb1gfACDKBMEoWw8BwmKz7zJbfl/eRnIGae8YDUa8B8nSnROH1SNeDj4P2vj0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,50 +93,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
 
-bm_register_write() opens an executable file using open_exec(), which
-internally calls do_open_execat() and denies write access on the file to
-avoid modification while it is being executed.
+On 10/03/26 6:29 pm, Lance Yang wrote:
+> 
+> On Tue, Mar 10, 2026 at 01:00:04PM +0530, Dev Jain wrote:
+>> Speed up unmapping of anonymous large folios by clearing the ptes, and
+>> setting swap ptes, in one go.
+>>
+>> The following benchmark (stolen from Barry at [1]) is used to measure the
+>> time taken to swapout 256M worth of memory backed by 64K large folios:
+>>
+>> #define _GNU_SOURCE
+>> #include <stdio.h>
+>> #include <stdlib.h>
+>> #include <sys/mman.h>
+>> #include <string.h>
+>> #include <time.h>
+>> #include <unistd.h>
+>> #include <errno.h>
+>>
+>> #define SIZE_MB 256
+>> #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+>>
+>> int main() {
+>>     void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+>>                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>     if (addr == MAP_FAILED) {
+>>         perror("mmap failed");
+>>         return 1;
+>>     }
+>>
+>>     memset(addr, 0, SIZE_BYTES);
+>>
+>>     struct timespec start, end;
+>>     clock_gettime(CLOCK_MONOTONIC, &start);
+>>
+>>     if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+>>         perror("madvise(MADV_PAGEOUT) failed");
+>>         munmap(addr, SIZE_BYTES);
+>>         return 1;
+>>     }
+>>
+>>     clock_gettime(CLOCK_MONOTONIC, &end);
+>>
+>>     long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+>>                        (end.tv_nsec - start.tv_nsec);
+>>     printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+>>            duration_ns, duration_ns / 1e6);
+>>
+>>     munmap(addr, SIZE_BYTES);
+>>     return 0;
+>> }
+>>
+>> On arm64, only showing one of the middle values in the distribution:
+>>
+>> without patch:
+>> madvise(MADV_PAGEOUT) took 52192959 ns (52.193 ms)
+>>
+>> with patch:
+>> madvise(MADV_PAGEOUT) took 26676625 ns (26.677 ms)
+> 
+> Good numbers! Just tested on x86 KVM with THP=never, no performance
+> regression observed.
 
-However, when an error occurs, bm_register_write() closes the file using
-filp_close() directly. This does not restore the write permission, which
-may cause subsequent write operations on the same file to fail.
+Thanks Lance!
 
-Fix this by calling exe_file_allow_write_access() before filp_close() to
-restore the write permission properly.
+Although still I'll try to get no-regression numbers and perf-boost
+numbers on x86 myself and post it in next version.
 
-Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Use allow_write_access() instead of exe_file_allow_write_access()
-according to commit 0357ef03c94ef
-("fs: don't block write during exec on pre-content watched files"). ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- fs/binfmt_misc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 740dac1012ae..05c235309421 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -816,8 +816,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
- 	inode_unlock(d_inode(root));
- 
- 	if (err) {
--		if (f)
-+		if (f) {
-+			allow_write_access(f);
- 			filp_close(f, NULL);
-+		}
- 		kfree(e);
- 		return err;
- 	}
--- 
-2.34.1
+> 
+> Cheers,
+> Lance
+> 
 
 
