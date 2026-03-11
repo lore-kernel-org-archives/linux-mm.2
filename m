@@ -4,95 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABF4B104C00E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:48:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC667104C007
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:49:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFF856B0005; Wed, 11 Mar 2026 06:48:45 -0400 (EDT)
+	id D2F356B008A; Wed, 11 Mar 2026 06:49:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B927A6B008A; Wed, 11 Mar 2026 06:48:45 -0400 (EDT)
+	id D10636B008C; Wed, 11 Mar 2026 06:49:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6ABE6B008C; Wed, 11 Mar 2026 06:48:45 -0400 (EDT)
+	id BE9026B0092; Wed, 11 Mar 2026 06:49:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87A576B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:48:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2402D1C98C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:48:45 +0000 (UTC)
-X-FDA: 84533459010.28.EE329A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7161B8000C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:48:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uu+F6xCI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D41C6B008A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:49:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2818A1404F0
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:49:12 +0000 (UTC)
+X-FDA: 84533460144.12.79E9DC1
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 470B11C0011
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:49:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cGT8nIFQ;
+	spf=pass (imf18.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773226123;
+	s=arc-20220608; t=1773226150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iI0Y8OCqpatH5PQ6fQUiMS3OKfY0KsP3vA4irqAbNak=;
-	b=TmMJZnVPqJYpdHDTSFjLdA+1r9M2CUKyxx4R+QkVYcWV2q74L52uNyhbZM66FmnHkJrmsC
-	0JVO48TMumFPZLsg79d2+6AtghBFIPuVM6tWl5a6lhXihpOfx8FRrKgcWYj4cDh0oxO8jj
-	SZBgxs4i24ddNRvx700AwQ3v0ojr5aQ=
+	bh=icJ5IiXPMSMLmdnRhvkeTHga2mUYWqcZGNxqizcbQDw=;
+	b=vjUVkoQEZD25bo9EDlnaN4Jan3Kx3oLe9Ypx6iGsl72Y4/+HAVLOJ+VpfBLYt2QnFmbmRE
+	WaxovdzycexxhAVQSdOwC5+9AEd2oTmpXS67hxmMEAbYPtVcE+4IXKDNNHevWjDxlM9yJa
+	VximjwMmZYXdXVO3xuPv5VSRT9e7CRY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uu+F6xCI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773226123; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cGT8nIFQ;
+	spf=pass (imf18.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773226150; a=rsa-sha256;
 	cv=none;
-	b=esulzBQGcLCAP9yu8PzboxwOEGW5RZtAhHX1MEhavSQY/0aq0Ulh+8zdmksCQv6UFng2f8
-	luzB+EdU/gco6fn1Xe7oviYJRb6qOtscOcxLA+HqArXSDRtQlrtMrzap5zyEjU7hiqe0Yi
-	LnACnnLv8106iD8zbHGf6Ig9DuUjXIo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D3A744047
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E128C2BCB0
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773226122;
-	bh=8Dgof/Z7x1Qc9gRxnBoa99P7lAcsBojgHpheLsI+VQo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Uu+F6xCIilv+2+ugGLjKVWecSvbtjDTATAU1+6QaKqllCqeMFAlfXpa+xLQOLHc17
-	 kyV2nyl6GTjvN2sQEOcEGE7e4EqjNwEwoGUlLHDPdQCgOKiIacai5MxWlAO31PSw1a
-	 xOteKOnJtBA0vgkaLQDsJ1DawRRfqBYX1VSLpR5+2eqUUsMTxiiLUlbHrjxw36+LtI
-	 1v3/ZEveMgzEPnqBadyU65kQxD/GqlayfjrMmgYihl/X21UXwh3QlV3oUrxJ3aLD8N
-	 d2ItxhTw+FyyRfGvkmxqEmqlVbyRGU/6EUXNqXw/kYSUAQYbN88HkUYB2oeamfy6Cr
-	 ATgN1ZCOSbMfQ==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b96da7b2e2eso588496666b.2
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:48:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXHkZiz96H80ruwjVOZXjHo4Qt/i1QZCs5w7+zBUCZhUjBzSPIb2Zqp+OM/p00FKB/6iRycuR9WTg==@kvack.org
-X-Gm-Message-State: AOJu0Yw0rRZF93z2en4oodFdUh3pO73qRjmWUYlC1es4E0l9eQulzU5f
-	0YuAYdlfGVbFDvQAco5+7wreQBsYxf6FjPBvsko5eYBy+PZz/RIJlcNuPIGDxxIFX43n6BSSj+C
-	Hi17dWiom2GAO59DTqh6Q1ycqSekoAgc=
-X-Received: by 2002:a17:907:26c5:b0:b90:ba21:62c2 with SMTP id
- a640c23a62f3a-b972e604280mr92627866b.61.1773226120836; Wed, 11 Mar 2026
- 03:48:40 -0700 (PDT)
+	b=crY6xhkKUpricddBMdDea2V98icqpEO2ye4BRVhggqE/qmc9wma43dczey2jVGFEW3nCbo
+	obmOXOhbiW0BJ+JlVOvoC3IwE9Z4xegPYm/BPsAe6ICeP75wTl7Uy/tjfKilcgptiQfjNs
+	tsrATbRVT/XS8JX1JTdgb103sZO2VJA=
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so43100805e9.2
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:49:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773226149; x=1773830949; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=icJ5IiXPMSMLmdnRhvkeTHga2mUYWqcZGNxqizcbQDw=;
+        b=cGT8nIFQMgA3YTsy3ph7PZuQc5eezWCJnyMX4Tx+D6wQCxVzO+HHrxIHfHdz85IUbB
+         V5M/aKuzI5S6awA4pWnyaonWzkSsIV7DUKMwFGUxbY0JnaF7kihE0rDS6nLDtuB8hXBk
+         1wr7xuwB0ZmZRoVR2xXJpBoFIN8G26spfPixlBbexm8NzKlLeuTWIa2V47Gn6iQwG+cY
+         idl1jPbtyjIlpgk8XBbm0rcE58NseOLXqNAHeNgtjP04b2XmxWq/LF3O7uQNfYDPVKrI
+         f/HzgKETd9WnrwzYlcSOD4tJs8L9dz0kttBK0E1ZNwfsdpowdcUTUoTpzLLeFttNyudk
+         ox4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773226149; x=1773830949;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=icJ5IiXPMSMLmdnRhvkeTHga2mUYWqcZGNxqizcbQDw=;
+        b=vZ1uvaAIQloC/mu07BO9wjDq2Fya2XxjMRQJc9rwMgHSFC84rlRiTVZV3NJmFrX6lg
+         INZwNyAgLoFer1M1v52YknlaDbPPjET5sFYwG+FWQ9IQL/StNAO8OWhW8Qjo7jyyQ5Vn
+         Pxx/N0yWNLax/DYhVeyS5ymZpkYF5aaJDXPGzQcD+d+MSvhc8kmF2rqv2agAAZKvU2bM
+         A/jhJwjUVW0/enaLeTYDz/qMQmVYVJK7HVJEkSsd72MylzFGNxKr2SnSazPqpFBgtFnW
+         DKLtW9LpWDeb0WM5IHxHQp2bZwVosj5SMx/1xictsUBeKhITTpz+BTFkBfV9jcRj4CO6
+         Zq2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX5rKMmbrypH/kRI4wIszGo19jF/okvfnPdiQfC2ZUveVzJHgItiOyd1n5UllzGq42hICLVhLZR0A==@kvack.org
+X-Gm-Message-State: AOJu0YxHaE/2ziCZmiySaR9tUPSeG6bO1zWduS5e5V3GYt+IsWfdHzHg
+	rWv0TEnk//5xvMQgoOAZJmxs9ZLlItqMg05u01j8vlidjd7UWREAG19H
+X-Gm-Gg: ATEYQzzQ0TmbE4VtP1hMzfDF0he06qCKalLySAx4a00NdxfZZC22GEvwqFrVG4io62p
+	LwP9USJNtiKniCpoBMirvYATDjU6EBJYmD2Aa3524/O578ErjazTy7DqjA3JNll68cKdCXUjY4r
+	F6vR3iOlhAvM8PbBemmt97+JUMfpOBc4GWg2DIWA7Bd4pR9t8m76KU8JjN2I20HNRfcU1mUvb1c
+	pjEeV7GaunpAi8+PwQE6ZHJdLQR1q8E5UbUIWv6G8VI7QtFPaS2SBDg+og5luZGuGz8zEU9VDr/
+	1kgXBATr1I4Jc59nAcDeUM6djBhNcoCl56EgV43wYpWGUJXFCtzFr/ruW7OLrLHVcIHi5RC0XjM
+	7EN6+zbupauC89e5Aao1Qc/KnU7+WCq/j1Gge1NoJ0K1A4+iGYVg4MVYqYFy8xgNICbQ600BCIk
+	+fZUQyxgsLYLTtI7nMF4RD2gu7LXjmIkJsQoA8+PZE0Gj109W2Zg==
+X-Received: by 2002:a05:600c:a4b:b0:477:9b35:3e49 with SMTP id 5b1f17b1804b1-4854b0a71f3mr37638525e9.3.1773226148617;
+        Wed, 11 Mar 2026 03:49:08 -0700 (PDT)
+Received: from lima-ubuntu.hz.ali.com ([47.246.98.213])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b0febd2sm15459265e9.32.2026.03.11.03.49.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 03:49:07 -0700 (PDT)
+From: Qing Wang <wangqing7171@gmail.com>
+To: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	chao@kernel.org,
+	jaegeuk@kernel.org,
+	jannh@google.com,
+	linkinjeon@kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	pfalcato@suse.de,
+	sj1557.seo@samsung.com,
+	syzkaller-bugs@googlegroups.com,
+	vbabka@suse.cz
+Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+Date: Wed, 11 Mar 2026 18:48:55 +0800
+Message-Id: <20260311104855.102050-1-wangqing7171@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
 MIME-Version: 1.0
-References: <57fac928.7af6.19cdc162036.Coremail.luckd0g@163.com>
-In-Reply-To: <57fac928.7af6.19cdc162036.Coremail.luckd0g@163.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 11 Mar 2026 19:48:28 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8BPPrEiD+F7LkiFwXo360-VGqADw93ptwCwp5ZVWkGYw@mail.gmail.com>
-X-Gm-Features: AaiRm52zNbsQ4AjZ3BM5nUvsyqQmAWlDZXO6qpuDcu2dtSoJgolzDKM6VaA7H34
-Message-ID: <CAKYAXd8BPPrEiD+F7LkiFwXo360-VGqADw93ptwCwp5ZVWkGYw@mail.gmail.com>
-Subject: Re: KASAN: vmalloc-out-of-bounds Write in vfree_atomic
-To: Jianzhou Zhao <luckd0g@163.com>
-Cc: urezki@gmail.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7161B8000C
-X-Stat-Signature: jujg8n4ejy1kcje6krznt73utybbhf6y
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jigankj1uco7b1szbynxkecwh6exq65e
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773226123-617118
-X-HE-Meta: U2FsdGVkX18yOi2X78T35ygVhWPXSxu0XGFor8rf8nWBCww/lb1sg5Pzvp3j9a9UKgkD1CPq0esjnzjfNAGmg5xdC1y7nqUSUHmFW65XoVoO7AX0yi354qoZqOZQpRenkjUyaNRghqXZw38/qO4jboUZurAHaCkVNMbd0Nj3XOH6yPxomwpSJEaGzLJIdAxqNqbCr0US+5DEo01l5LiBsVKRna8v+GbHkSTH+9yxQQUhQHGnaQjjBe0Y1pAAeEZew9JGxj4K89lEFToXBo7zNt6QPlYLbaILcM3yCfu9J9h6SqhL/r/n0XETHfgjQ7HI/3ASJJIyDgS1G8oKEYd+5dKguzZSvM1IhtZEjgwqNdsbBD9yKQQQh2hSHDoiHu7hTePC/Yy5VZd0RTmBujyWXOKmIemwER0PdkbuBZ24/V/ZIsjXS2QrPRs3gJdG/Muv/sVLwkxyoDOCtBjGp1AQkKw/TAonbr5LgIaP8xv8IxDVx0Bdut9Xpe/jKTy353M2KVOq43RS8XqajVyuH2IeJPxTy1VfL3KLLaI3ZtysaTaZuqf3IytCGpakSrv/2KXVadDdADFuYut/MQNghHQEzqa7krKfRxeM6lF+CvJdtY2tIhBj6C++t+2CZ6GBN/p/cF/2pPs66Cw0FehBVSmpQuTBY9nvdrsXISSiS4dSy3APdCK53n6+PbWT9b4yy4muWIFPuY9yc3HuM8zO9cJBr5Mr9BL+kIoiyHrViNk3d8CYR1FTVlEB1bq8gD1v7tLYI7QtrmSzVoY3k83sdvCY2ubSVGYe00sUNhSH9nHATbeJK1x/GFnqoQ2597uFpZ8fCoo9GJzBJHA/gbPafYL6GVQpTRiXBC19IFlHwDjqPOTQjI/y4spN2hFuW08/QwoJPZ/dGjyaXFUMCfKw6lyn6ZkRliDEioH2lN7G9uUUu7TGl9YiydAYesKBrJjYwQJPd4FlYVUu651g2mIusEk
- dG5AItAT
- IltuUkVEsS78ps6s8wIQOvJyv7xO0aPqupL63
+X-Rspamd-Queue-Id: 470B11C0011
+X-HE-Tag: 1773226150-596304
+X-HE-Meta: U2FsdGVkX1+4OUreLn3s8SZg54O7ZwIlENVUg/K843bBzkN7de88aREtc4KlcSv9uNeh60tiEgsne74wbTIsnnPcGqwIVEL2FtP/zUh24hYrmRVdwEfaFjP2Zc0q0yzdOCDbIPDUKcnl7Hdpk2CE7A93Zthr0V0yMu4l3EWWkRYnuuIFcNUOQEabyJ+SdgUl4/VzDzb6CQEbcnO6SHuqso9jBtEWP+OtdGlbcStgkbRrpPYwxJPnSJEoezFZ+B1IGudAZrvcryWRHCPKUPmPbEzvAt8SHLn2JdLP8jb7FWtzENjBS6BIXbiPD/bLbx9OsAXWEkRBHWLEDs4iUFulOYEauq3oI8OhiMo5rIgKp+ufPbTs6BRO4/1sNUMVf60HWBtempYMIjBu6LtN+NioMotAmPVe5rosweRC0fMTN4h8k2Xm2Xwjigtzp2es7lUwed3slPfnrrzNZWdnGhbz59J4HSL/p0/lwuDHzG22O6RLezdUGPAGUhNUpUKbNPDao5J4jjnJohxk/SwXC2elCZvM3cKHy1mA2AzYDYismy7kj9zhFgEKe3j4iCdp1ACHZi+cbpwI1KHU6NCu0NdJiUsL9NodTsDajgwPLsMoz8vvLgkMzScgpCh+0DowVathe9MsJwndzy3fNvs4nTUyeW4AqiD5m8L8I3B/09K+LmaUmQdtObTSkKSmFOvvrIyufzlPzLMdDWaC9ACsI0bDZetVWFyrZvCJjMgSvmmlLuEIo7skhYU8mYG8DMZtwxBOcZEia10e4ph1Dv92eQSBaRZe0zRwY4TTDluA5ql6W6GhoiN18ZKLt5WgWXYWPiSZR77oOS1iigdSNgrTaDoEfPn541o+rAOTgxfUqC5aqRASOobPOeRFOZUUHxliY8Naj1RrHMrDt6KjGmeSnZ+r04hmgDmcaY+YOwgq6SZ/QQzSFwEUFsvxRGzox4pwvX8trMz2v4Vdi+CEEDtY/cB
+ ZH4gjcFn
+ 1h+dSK4s0GvHi7in/ONBPLzkzPeZAOBUzanqslSy1JhTeV5kcL6epMQFgwSg/+8zRqNsg7Tc+adDGwPG90moBcQB8icdJJ+1o7lH/FrzsOE7jZErd3u++4kzy6mFFbEK2vpYkuK/iiKjS3ALIwwKPgeNVOxQx6DuEe3rCeEwXTUhYw7n+Rd+In5t+1/+WwBWZePwMovWG/OeAgCmcdFPtsgfuNT1drzLkLYcArVjKcGJUiqM+k6P0XCdhOgjpkJARLl7RH9aw1L9WoLVSZKbatLowx6e310l0vvneJdAM+WlYNe3IXqiU0OpZds3DJQw7LA+wPJGgRz+KX5exnYnEEZ5azLgcePii3kBiB3++vdANsSLetLbUVmKNOsBEQ2Gwa7QLpMXIOx3J/Nc5cSx/7knWSL4SOvGoPtVy/L65nWluhYWvY82s4pmDzBK2m9+VVto3C13GWa9rHc0xkUFswHMtKlbo3md4NBkSPfSLuJ3OzFXaDdmTo03tv09xYyT8cZw1e0c5BuYE4ie94cFY58rUEIDZdT5lXPdUl7UsLmXxqpGW9yvzqxzh+OemCPvG7mqXUIqPg5YYFnuQSlitkaQMiEWfU9iphriOnpzojLFgCNNCCtraBOzNrSrEdI9jj595sM8rOTHeULsnilTLs9SX+rBF21hF45BQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,17 +130,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> ### Proposed Fix:
->
-> The solution is natively simple: nullify `sbi->vol_utbl` directly inside `exfat_free_upcase_table()` after freeing it. This safely converts the secondary asynchronous `kvfree` into a no-op.
->
-> ```c
->  void exfat_free_upcase_table(struct exfat_sb_info *sbi)
->  {
->         kvfree(sbi->vol_utbl);
-> +       sbi->vol_utbl = NULL;
->  }
-> ```
-It was already fixed back in early 2025 with commit 1f3d9724e16d
-('exfat: fix double free in delayed_free').
+#syz test
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 20cb4f3b636d..73b2cfd0e123 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2797,6 +2797,7 @@ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
+ 	if (s->flags & SLAB_KMALLOC)
+ 		mark_obj_codetag_empty(sheaf);
+ 
++	WARN_ON(sheaf->size > 0);
+ 	kfree(sheaf);
+ 
+ 	stat(s, SHEAF_FREE);
+@@ -2828,6 +2829,7 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 	return 0;
+ }
+ 
++static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf);
+ 
+ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+ {
+@@ -2837,6 +2839,7 @@ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+ 		return NULL;
+ 
+ 	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
++		sheaf_flush_unused(s, sheaf);
+ 		free_empty_sheaf(s, sheaf);
+ 		return NULL;
+ 	}
+@@ -4623,6 +4626,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 			 * we must be very low on memory so don't bother
+ 			 * with the barn
+ 			 */
++			sheaf_flush_unused(s, empty);
+ 			free_empty_sheaf(s, empty);
+ 		}
+ 	} else {
 
