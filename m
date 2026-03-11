@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69020FD065A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C77DFD065D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:43:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DBF96B0093; Wed, 11 Mar 2026 04:43:42 -0400 (EDT)
+	id A0FBE6B0095; Wed, 11 Mar 2026 04:43:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 431046B0095; Wed, 11 Mar 2026 04:43:42 -0400 (EDT)
+	id 999626B0096; Wed, 11 Mar 2026 04:43:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C86A6B0096; Wed, 11 Mar 2026 04:43:42 -0400 (EDT)
+	id 850976B0098; Wed, 11 Mar 2026 04:43:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 003896B0093
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:43:41 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 839B21A0637
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 61DDC6B0095
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:43:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2FC9140637
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:42 +0000 (UTC)
+X-FDA: 84533143884.07.2EEFE6D
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2D2B320007
 	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:41 +0000 (UTC)
-X-FDA: 84533143842.18.6585CB8
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A7917C0009
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:43:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="h/aFc+7L";
-	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=St2tcqrg;
+	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773218619;
+	s=arc-20220608; t=1773218621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3J71zgPkooXiG75+C8zjSqtAWOtBSB5HTzljq+F1tO8=;
-	b=KEfltFCTCcp7eBQQfXKiKYWLF4/e3mYNEi2kjGoKt5AJ6pVg7/SZBN9WA1EzXTmd3FiFMc
-	y6pDWdUtm7+5Lakzo3A7rtgQFam9wZiTKFvU2EQOb+Bw+LckLpqLN4wLj84/KdLIC3e94K
-	3mZ8uSh2dJXbGSpfAWXrb8u7orj3h7M=
+	bh=/gbLLG6edQ0IM8f9elrHyPvt9TZ4LSyReKqdPmz9Fwc=;
+	b=6DGeTLELjuH6jnHnA1Bz86D7KIy4H7ygrKfeP83OZhcqzGVaPURxaOINf95bPmK4MHjRho
+	JHhGtzpBpofzqfPihKVGx7Hvle0ayMlJ07G3FkwTeZujo0OXVVUXapmOOMpHv9Mvofuxvi
+	M3zRdagqjQNajK+Wn8IL7Sg6h06TMwI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="h/aFc+7L";
-	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=St2tcqrg;
+	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773218619; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773218621; a=rsa-sha256;
 	cv=none;
-	b=0/z3e65qqWN+jIVMOfNnU2NxbPcT2orOo3sIaMSuR4kclnouEB8E5+DPDBlNjb/907ujl1
-	WGqCPFO8Ftn+YAKG6B31DyqZxA5pyA03o04AjgA8Xp2aSsfcBnz8WsybK+p3Gyl9AzVc+n
-	fFaggagFyVCQ25IbIO3GPxw2AzGEFHw=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aaf59c4f7cso60708605ad.1
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:43:39 -0700 (PDT)
+	b=FUefmesYOfwIWWi2STRRtuRtDETu6udO1BI5T9Ab4bSowNCLoOZMJqH+3uIq9o/x70EFw6
+	KV5IFdDnh/tue9Aq5Q7veL2c1cf3rKW5cl5uNYR1t/Bp2bvlM8Z8b6CJuSUjWPIACf8tZq
+	7IOhsSo7yCBbaMucfr7OVCT7uKaSkPc=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2adff872068so66311345ad.1
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:43:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773218618; x=1773823418; darn=kvack.org;
+        d=chromium.org; s=google; t=1773218620; x=1773823420; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3J71zgPkooXiG75+C8zjSqtAWOtBSB5HTzljq+F1tO8=;
-        b=h/aFc+7LrGQLGj2plRrFRs6emmO5lr3/fgCspC4DqonbL5+x+6eZ+j3WKN47KhZSFU
-         D3PTaSo2Jnk7Wds+C/wnojWBjFggUvcnfjRJIq97lGKrkHj/gqFkBw+KQAbFltmSIjsx
-         w/VU0o1eHSTUXvdmuWSPFWU6hUaG0xhzl336A=
+        bh=/gbLLG6edQ0IM8f9elrHyPvt9TZ4LSyReKqdPmz9Fwc=;
+        b=St2tcqrg3+8vX1rAjaua1Xub5baJLfyXDukgfRzeOqyMCHPA/pyNy17s9qwHfWpBSA
+         /+peRVX/I2HAOBWRKV+rSQ+5uLrFSKAL8/DC0fgBmjTYeERW3H3kBmIzRfbsQHLFTQMW
+         El9As3Ai4bXBHMBSZ2SGtZQiKe3zyx61mKfmo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773218618; x=1773823418;
+        d=1e100.net; s=20230601; t=1773218620; x=1773823420;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3J71zgPkooXiG75+C8zjSqtAWOtBSB5HTzljq+F1tO8=;
-        b=rg8njhlDToyw97uCxw2MOWM5qWHU5c1j8KAtqGxsCQasWdcE4Jwcup07TkJ4aaqWYb
-         AYl5o9WcQHS+W4y7bkqSrQiVrTqRWqixgjpDjUOaRrncdbsRIwbipG80knNa0xYoc7Yr
-         ZmlooGgvWiUAgai6WWysP/lNmi6Qh/AqTgzZZ9OTLMhngKr7zVOi+/zoK3T+SzxCPKD7
-         w2Y/o7PrjjbKsYzje3URbGtBtHXTpuV0qappB0fvfpAe/Lh8TZVUvVlRtHcZSz25Q+p+
-         5T1cqiEvX8aUhyNcih62u6MWB7Dh26RCBIZXlon0aKtq454spdZhaobrafyPMGDekcV0
-         K8jA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnHHiWCd4PyXxUaNEPRqBTxfEjsy7+NCqTeBqhSozmXbGEp8S9bm8X1RIF3mMjZwtl65OVI5Y6fw==@kvack.org
-X-Gm-Message-State: AOJu0Yyn7RHpTpEkIWB8Etgfpmlvr+cikwI7IXx84Cgzh6G7I3PRj/g2
-	zJc7ILT1cnjjjAvngrv3AKN9R+FAJVbMsQQ4SATOkP+oeXt4P6ChuQ9tfawGpH+HEw==
-X-Gm-Gg: ATEYQzxjPUNmIDIKtqOtKBG3DQqLiqqBjr5QPEzlnjv4ZMxmApbQlN/d7DMArdDZLhN
-	ov8BKFVH0VjajtkKwECd93X9e/mHXeFzlkvRYlvusB2RSk8MJ1s4uMAdXLO+ZChQAE5x2Ppgkvz
-	sh5aKMkEEp78ppjLgLEwaJYE0+v0VF1eZPNIXaKLhLcZfYmtRB7QpPveMtljPL77Utdk4Zvf74C
-	GHVfjc46KpkpgePRaG5FzhrIja+UKBQvWc8OVUy4QL30WrnHR2DA18taKRED7++DOvDl6Zs3hVw
-	Ed1HHgkrv8+ClApxOYDRwl4JTHnJFjqWhe4IHVq+TCBPEqwW2j4/rsAuy1pdg67mVhB4tAkjFVl
-	Q3KJMKIvIPT4WklCaGYUgwxI6Wa6eYsfpwURUxoJGL+IPfHRjFWRQYu4b1i5bqwnTSPTCXq1QlQ
-	F8BruQyBbbcf7RmwrFCn26SWbCRNx45Dl5C3gNZXYxDHRrPWRGaj32Ka8paymCt+hNX/kd1s+yp
-	g42akvbtOTiVNWUR244UaBQ
-X-Received: by 2002:a17:903:2f8d:b0:2ae:3fb9:2690 with SMTP id d9443c01a7336-2aeae7ef14amr17051225ad.19.1773218618446;
-        Wed, 11 Mar 2026 01:43:38 -0700 (PDT)
+        bh=/gbLLG6edQ0IM8f9elrHyPvt9TZ4LSyReKqdPmz9Fwc=;
+        b=RMrrG5qTAXbI4d6sUbqqkHMU1zF8Xmifaf+V+VboRZxmk8fALAW4yH1bFHs4jw197A
+         3ewyO3NhdxoI8aWxyqjuKsr3RloJBKv4wQ8HZUJUlS6B8JKrb1VCbzg+3aJ+yyNAwyBd
+         TbBizFZqKslXxb8/wvl3SuSy4esmE8YHX69E3ez9Tsz5aGKpAP8+y6TQmOgmBIqtjXpc
+         Z2b7ojT/1o0m1cSxHU4kiUIxScTryos6+436scIcsXVTf95ZBQA8LLHQBhXAP5+4cRvE
+         b3IFw9AkhNpzzg7ZFvpKW4hDe3bIQP2Az4tWMlbPfDFpEpEYp6nHh3XDkCwRa8JTEBcM
+         4vGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ9mcHNovGrYQrQbTPx+fwyqwiAHHx/gF6o+gEX3HUGVHJkSta16juvD9J3PIp72tJxol7tRXqBQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy1dtlLA7dEYbcLMmIOZR59h8smFhhG6T6IWtRhDVYAZ5T2E1aT
+	iWtqJ4ks4PX+4jwIfsbf9B+qtu7NgEDIAJjgVbheBG5BV7k8N4KIrXTGr2z9z9fKFg==
+X-Gm-Gg: ATEYQzyWW+6o4xlDgiCn3QZXqnCTiwUV/RLG63HxxKyUVKzPZrJwDtvsLwdx/LNW+PV
+	TA7Hl7nyzZGe5WfXnQkRnnq36+XZy7ZEUzFll8xWL3kq7jbvVL1nrAWPF7Irjqw/cOZApznlEng
+	oP6Sal/UL/Mbkvi3h4Unvzbnnc3RapO+AhYz1Bfl0RrYjVtfqStXQ/UPYQCe+X5HdCd14/udpmL
+	AQvNcccsnTiYSwanAHcownnXZtaJy0LpZSZklkI5vrprK8pYCNwuB8nCubzeJBRBm6GM1y9+RF6
+	4HTmCjVPd8X4BP67a2zGQMeLqGJUtuzB8gsWw0L51h4gCuddZpJFgPyIypRHbY1Lb/jTJ2tpgjQ
+	GsmZuH1+9BIATg7IR+886Q5BjkE9EAGvUAtunQa1w9A3eRoReFxBZ9gQCLD8rhHm4iIpvgi29fL
+	UAcbtJmcxIyJ03rKoR/dlSM7hGv2fHypSX8yZCvqKFcofrsoiyhgDUbp9dS9kLUIkoWH7AllTJ8
+	UzP5iaCkATiWQ==
+X-Received: by 2002:a17:903:2288:b0:2a0:fe9f:1884 with SMTP id d9443c01a7336-2aeae95b193mr19030295ad.55.1773218620088;
+        Wed, 11 Mar 2026 01:43:40 -0700 (PDT)
 Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:93a4:8281:fe98:426a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae261077sm16062035ad.40.2026.03.11.01.43.37
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae261077sm16062035ad.40.2026.03.11.01.43.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 01:43:37 -0700 (PDT)
+        Wed, 11 Mar 2026 01:43:39 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Minchan Kim <minchan@kernel.org>,
@@ -95,22 +95,22 @@ Cc: Minchan Kim <minchan@kernel.org>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v2 5/6] zram: remove chained recompression
-Date: Wed, 11 Mar 2026 17:42:48 +0900
-Message-ID: <20260311084312.1766036-6-senozhatsky@chromium.org>
+Subject: [PATCH v2 6/6] zram: unify and harden algo/priority params handling
+Date: Wed, 11 Mar 2026 17:42:49 +0900
+Message-ID: <20260311084312.1766036-7-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
 In-Reply-To: <20260311084312.1766036-1-senozhatsky@chromium.org>
 References: <20260311084312.1766036-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dixx1i47awpt9pwadtg5ze8t9o4haod4
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2D2B320007
+X-Stat-Signature: xwjfgigimyibayr8te6uk7rd8y3oqeub
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A7917C0009
-X-HE-Tag: 1773218619-322411
-X-HE-Meta: U2FsdGVkX19mcaiu3FD7tgbSE3APeAZMDI+ky574Z0mFQ5qYlEjdsikOg8lSKTuucsgXhYxq/TPOE44zfL8GarTAcoBJTFr3wp/YKmJwZWEUbzAM4a12bf/0/P38TeD6GjmREwHMoUT1QbbvlOIr0/IzoSBhrs+HSQZro+lw82jG4cIWMADgsY+hdFl6F4bcsreKaymvDMQwqFMaM0+zksTZbyjpYiw+12jCEtiQcB6uwPZFCKJGzO0/VFmSkmQ4tbqVNZC8o22/FyrzVYCmA2NNh1qAdZMmPw4O4C8Nw+DgpnnYGmHbcslB9YD1FOhGkI8RPWqXK2mBXOa6K4OMXpcGHWjpCZnQh/dbqtHIK1axA4NMjTmLJSsRHSb0SXAXKjesEIKKsHcHmfWf2ICXzJ0wrKprruDnwSAX3qQjc0lJp6gMc+lhP+PUTfqfdbgFRDUtcA+zN/sENlPtghZuw+AjQrlU+JJZ26xmU8YllJoF9C1Ls6eua3hiFGkIA73Lp/acB47sDeAilqVQhQXwGmj+jkd5sJ7Z2F8kcXR1tOL+BTixanEUrQGulFWnaf+11nWgBf0WGUV0cSRPUzE9WsKKwiyRN94LMXyRG9FGDG/d8TYc+sLM9YvrJ8LVPlTJElcfp0LOQX+rCxJSEizErfe3UerTVeC2lLn4qXCj/iqxd2XXLpl3snbKcjWa2S/3n00oteAY0g9kvY222AIwMumId7pZHaNLiBdnuovqRFEpYkHM2ybzTSxmsB1bworNrzb4PIJdOrgKMXHFm4fSG4gUwBdG0A+xyURJSP3nx7W+ugCAOjr9WyX69wL80HE8FQUSxTC2zrgARo9Z1Wf230x/qXypn40td1E6NYJryGGuvj2wIXShc7hK8hr7bULCLjsomYX8ofHm/M8An/x5yAF/MP+bA71AGuaxBbYoCquMRfY86NXptsI3YLbzE8JGJJlGoNRCeqMLmNZG+H7
- 9/suZ860
- AEjQ9fB6X2pZDqXSuLMyAVLY/7wThjFnNp/JEmR4yJj1I1uQgkzhqPKsasbT96U/Wl7EReG1MpJm1hnLPD9yr7l3rfma86YuVkqd9wEblfvBGFkp4kebhgKAv1Z6IQjy711GN2l0U4SS0EYlbeQqDMYDtWa+RloeiYY6BTy6A3s2tdLLeq2R1NIxWYrR4JA4xqTc4z86WJfPtQinRQ+RcFPjY/ZBRYOP95ncf9P4raf2pGXhYloloSztE1nXkLWkQghlrhtQpfsrDVALX9GagPJItHKi5l05pKgphkjbC2o+vshrRoL+277T0cQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773218621-998567
+X-HE-Meta: U2FsdGVkX18mGVNJyvI1PNYcAzKS8UsL5ZHIShyeIDw/h2DlpdmgfN8h89CmjkFCTJsozNk2/2RBEPKeS2Hj3T+4zlr7ZAgBZhxE/KETYo6VKEn7Bu+TUvTpwA29Cv1qQ2pLYfFo6EKEkrw/D+3pnGDjfx6CNH5qFKSBt4mHHCcW49S5WcZg3W7DTLzipRVWBmJuYT8ssV+9qcgIMS7DptVgwMzH9E3M9o1DCI2XCgIg9KuuiEZAd4ZYQuE0RDYmcM2eZF7/FHZhDZhfD4OJqiPoqF97U8R4ig2I1bWVFEpfV0YC6AzBVr1YZ5w6pdQnvVcwW4xP6T0g5x22WQn6zaFGfSIWhSh4SsBDCJo+neZPnkGpklBoucMcqb5JayxngIzw2kmks+TgXG7jTJSCwURM4CvNFeHo5dmPUMLd2SB79CTArLHNRhV+9cE50Sgvzrr+6328nburEvaIeruEKSHnaXimc2CrK/dUwjgv5RdKKtyebJtEWGfR+7dX1JL7iJZK0DhAS92QcXWY92Pat2kYKPb2L/mGPnmOU7xwHXCQMKOnQ12ur2q0kiuwPfz7Wb6ij4lW/hAU2XuxsxDEvG31tC0vQwxnuV5IMhB6Kxhcrw6aU15GHUeTn8lYzvFkKZDCvfn6Ihvn80iH5HW1fJQdsJr+RV1A4OIVXubKaRZ3MFGfS7NJZeOyr587qprhPSHOS3eEuTbGNagebFXUyU66JXBtggbO+P+eeM/I82DiKpeHiQFqb8lJ71vcCWfFw5yqIPYvZGRh0lWG0Q7UUBgluisLWGDnDzRdFw1A5QNKqhaYOdYQpzMHoao9d13ZJTCOLHnGTyZfW/WxkEGA/qBNFyTfNLIPfpCvJtz9Afs93An3Lo26vTfE/u5mBXmrc34Shv4DNa3PgA1tuZ+4vVsIy9JdD75YAKekurJ4ccHwTZeTeZRA9GAL5A+pHGnCdvLXb1Ex7fnclnGdo3l
+ KDUowBUr
+ tLYGUV8qzdEYuzinPIM+BoVy/yiMGk8zBY0CsrQtwPJv6HtkiQQR9b2hdVK+iQEBMt75VdsCGrfMxI2K8Vu7HxUjQt7N1wnAqcEUaBOUm6zlGJ5PWigxmZRzq4ik94rOYsvdjIfd+Vm/Z+py7fW0jQupHjtxnv+TYvj715PkJPKaofR2dhaO1MzP61WZq44GF69WB1GVaykFS1ZUK6vrQPGFWR0uvQvcEkxcqa5wQrC3RV+BYhroVDI24YUFTpZJi6xcW05BBSRZnsnunRicaAdXSU5AzlkfSak1bLA396KF/59wMPK/okm4E5uzqT6rJJK7P6dKYToOT6Ao=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,224 +118,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Chained recompression has unpredictable behavior and is not useful
-in practice.
+We have two functions that accept algo= and priority=
+params - algorithm_params_store() and recompress_store().
+This patch unifies and hardens handling of those
+parameters.
 
-First, systems usually configure just one alternative recompression
-algorithm, which has slower compression/decompression but better
-compression ratio.  A single alternative algorithm doesn't need
-chaining.
+There are 4 possible cases:
 
-Second, even with multiple recompression algorithms, chained
-recompression is suboptimal.  If a lower priority algorithm
-succeeds, the page is never attempted with a higher priority
-algorithm, leading to worse memory savings.  If a lower priority
-algorithm fails, the page is still attempted with a higher priority
-algorithm, wasting resources on the failed lower priority attempt.
+- only priority= provided [recommended]
+  We need to verify that provided priority value is
+  within permitted range for each particular function.
 
-In either case, the system would be better off targeting a specific
-priority directly.
+- both algo= and priority= provided
+  We cannot prioritize one over another.  All we should
+  do is to verify that zram is configured in the way
+  that user-space expects it to be.  Namely that zram
+  indeed has compressor algo= setup at given priority=.
 
-Chained recompression also significantly complicates the code.
-Remove it.
+- only algo= provided [not recommended]
+  We should lookup priority in compressors list.
 
+- none provided [not recommended]
+  Just use function's defaults.
+
+Suggested-by: Minchan Kim <minchan@kernel.org>
 Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- Documentation/admin-guide/blockdev/zram.rst |  9 ---
- drivers/block/zram/zram_drv.c               | 84 ++++++---------------
- 2 files changed, 24 insertions(+), 69 deletions(-)
+ drivers/block/zram/zram_drv.c | 106 +++++++++++++++++++++-------------
+ 1 file changed, 66 insertions(+), 40 deletions(-)
 
-diff --git a/Documentation/admin-guide/blockdev/zram.rst b/Documentation/admin-guide/blockdev/zram.rst
-index 967b58c3aad2..60b07a7e30cd 100644
---- a/Documentation/admin-guide/blockdev/zram.rst
-+++ b/Documentation/admin-guide/blockdev/zram.rst
-@@ -533,15 +533,6 @@ unexpected results when the same algorithm is configured with different
- priorities (e.g. different parameters).  `priority` is the only way to
- guarantee that the expected algorithm will be used.
- 
--During re-compression for every page, that matches re-compression criteria,
--ZRAM iterates the list of registered alternative compression algorithms in
--order of their priorities. ZRAM stops either when re-compression was
--successful (re-compressed object is smaller in size than the original one)
--and matches re-compression criteria (e.g. size threshold) or when there are
--no secondary algorithms left to try. If none of the secondary algorithms can
--successfully re-compressed the page such a page is marked as incompressible,
--so ZRAM will not attempt to re-compress it in the future.
--
- memory tracking
- ===============
- 
 diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 0c3e83787d9d..02fb70f35ae8 100644
+index 02fb70f35ae8..676b1602d817 100644
 --- a/drivers/block/zram/zram_drv.c
 +++ b/drivers/block/zram/zram_drv.c
-@@ -2347,7 +2347,7 @@ static bool highest_priority_algorithm(struct zram *zram, u32 prio)
- 	return true;
- }
+@@ -1635,6 +1635,37 @@ static void zram_debugfs_register(struct zram *zram) {};
+ static void zram_debugfs_unregister(struct zram *zram) {};
+ #endif
  
--static int scan_slots_for_recompress(struct zram *zram, u32 mode, u32 prio_max,
-+static int scan_slots_for_recompress(struct zram *zram, u32 mode, u32 prio,
- 				     struct zram_pp_ctl *ctl)
++/* Only algo parameter given, lookup by algo name */
++static int lookup_algo_priority(struct zram *zram, const char *algo,
++				u32 min_prio)
++{
++	s32 prio;
++
++	for (prio = min_prio; prio < ZRAM_MAX_COMPS; prio++) {
++		if (!zram->comp_algs[prio])
++			continue;
++
++		if (!strcmp(zram->comp_algs[prio], algo))
++			return prio;
++	}
++
++	return -EINVAL;
++}
++
++/* Both algo and priority parameters given, validate them */
++static int validate_algo_priority(struct zram *zram, const char *algo, u32 prio)
++{
++	if (prio >= ZRAM_MAX_COMPS)
++		return -EINVAL;
++	/* No algo at given priority */
++	if (!zram->comp_algs[prio])
++		return -EINVAL;
++	/* A different algo at given priority */
++	if (strcmp(zram->comp_algs[prio], algo))
++		return -EINVAL;
++	return 0;
++}
++
+ static void comp_algorithm_set(struct zram *zram, u32 prio, const char *alg)
  {
- 	unsigned long nr_pages = zram->disksize >> PAGE_SHIFT;
-@@ -2373,8 +2373,8 @@ static int scan_slots_for_recompress(struct zram *zram, u32 mode, u32 prio_max,
- 		    test_slot_flag(zram, index, ZRAM_INCOMPRESSIBLE))
- 			goto next;
+ 	zram->comp_algs[prio] = alg;
+@@ -1707,6 +1738,7 @@ static ssize_t algorithm_params_store(struct device *dev,
+ 	char *args, *param, *val, *algo = NULL, *dict_path = NULL;
+ 	struct deflate_params deflate_params;
+ 	struct zram *zram = dev_to_zram(dev);
++	bool prio_param = false;
+ 	int ret;
  
--		/* Already compressed with same of higher priority */
--		if (get_slot_comp_priority(zram, index) + 1 >= prio_max)
-+		/* Already compressed with same or higher priority */
-+		if (get_slot_comp_priority(zram, index) >= prio)
- 			goto next;
+ 	deflate_params.winbits = ZCOMP_PARAM_NOT_SET;
+@@ -1719,6 +1751,7 @@ static ssize_t algorithm_params_store(struct device *dev,
+ 			return -EINVAL;
  
- 		ok = place_pp_slot(zram, ctl, index);
-@@ -2395,8 +2395,7 @@ static int scan_slots_for_recompress(struct zram *zram, u32 mode, u32 prio_max,
-  * Corresponding ZRAM slot should be locked.
-  */
- static int recompress_slot(struct zram *zram, u32 index, struct page *page,
--			   u64 *num_recomp_pages, u32 threshold, u32 prio,
--			   u32 prio_max)
-+			   u64 *num_recomp_pages, u32 threshold, u32 prio)
- {
- 	struct zcomp_strm *zstrm = NULL;
- 	unsigned long handle_old;
-@@ -2408,6 +2407,9 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
+ 		if (!strcmp(param, "priority")) {
++			prio_param = true;
+ 			ret = kstrtoint(val, 10, &prio);
+ 			if (ret)
+ 				return ret;
+@@ -1754,24 +1787,22 @@ static ssize_t algorithm_params_store(struct device *dev,
+ 	if (init_done(zram))
+ 		return -EBUSY;
+ 
+-	/* Lookup priority by algorithm name */
+-	if (algo) {
+-		s32 p;
+-
+-		prio = -EINVAL;
+-		for (p = ZRAM_PRIMARY_COMP; p < ZRAM_MAX_COMPS; p++) {
+-			if (!zram->comp_algs[p])
+-				continue;
++	if (prio_param) {
++		if (prio < ZRAM_PRIMARY_COMP || prio >= ZRAM_MAX_COMPS)
++			return -EINVAL;
++	}
+ 
+-			if (!strcmp(zram->comp_algs[p], algo)) {
+-				prio = p;
+-				break;
+-			}
+-		}
++	if (algo && prio_param) {
++		ret = validate_algo_priority(zram, algo, prio);
++		if (ret)
++			return ret;
+ 	}
+ 
+-	if (prio < ZRAM_PRIMARY_COMP || prio >= ZRAM_MAX_COMPS)
+-		return -EINVAL;
++	if (algo && !prio_param) {
++		prio = lookup_algo_priority(zram, algo, ZRAM_PRIMARY_COMP);
++		if (prio < 0)
++			return -EINVAL;
++	}
+ 
+ 	ret = comp_params_store(zram, prio, level, dict_path, &deflate_params);
+ 	return ret ? ret : len;
+@@ -2407,9 +2438,6 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
  	void *src;
  	int ret = 0;
+ 
+-	if (!zram->comps[prio])
+-		return -EINVAL;
+-
+ 	handle_old = get_slot_handle(zram, index);
+ 	if (!handle_old)
+ 		return -EINVAL;
+@@ -2511,10 +2539,11 @@ static ssize_t recompress_store(struct device *dev,
+ 	char *args, *param, *val, *algo = NULL;
+ 	u64 num_recomp_pages = ULLONG_MAX;
+ 	struct zram_pp_ctl *ctl = NULL;
+-	u32 prio = ZRAM_SECONDARY_COMP;
+-	struct zram_pp_slot *pps;
++	s32 prio = ZRAM_SECONDARY_COMP;
+ 	u32 mode = 0, threshold = 0;
++	struct zram_pp_slot *pps;
+ 	struct page *page = NULL;
++	bool prio_param = false;
+ 	ssize_t ret;
+ 
+ 	args = skip_spaces(buf);
+@@ -2562,7 +2591,8 @@ static ssize_t recompress_store(struct device *dev,
+ 		}
+ 
+ 		if (!strcmp(param, "priority")) {
+-			ret = kstrtouint(val, 10, &prio);
++			prio_param = true;
++			ret = kstrtoint(val, 10, &prio);
+ 			if (ret)
+ 				return ret;
+ 			continue;
+@@ -2576,30 +2606,26 @@ static ssize_t recompress_store(struct device *dev,
+ 	if (!init_done(zram))
+ 		return -EINVAL;
+ 
+-	if (algo) {
+-		bool found = false;
+-
+-		for (; prio < ZRAM_MAX_COMPS; prio++) {
+-			if (!zram->comp_algs[prio])
+-				continue;
+-
+-			if (!strcmp(zram->comp_algs[prio], algo)) {
+-				found = true;
+-				break;
+-			}
+-		}
++	if (prio_param) {
++		if (prio < ZRAM_SECONDARY_COMP || prio >= ZRAM_MAX_COMPS)
++			return -EINVAL;
++	}
+ 
+-		if (!found) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++	if (algo && prio_param) {
++		ret = validate_algo_priority(zram, algo, prio);
++		if (ret)
++			return ret;
+ 	}
+ 
+-	if (prio < ZRAM_SECONDARY_COMP || prio >= ZRAM_MAX_COMPS) {
+-		ret = -EINVAL;
+-		goto out;
++	if (algo && !prio_param) {
++		prio = lookup_algo_priority(zram, algo, ZRAM_SECONDARY_COMP);
++		if (prio < 0)
++			return -EINVAL;
+ 	}
  
 +	if (!zram->comps[prio])
 +		return -EINVAL;
 +
- 	handle_old = get_slot_handle(zram, index);
- 	if (!handle_old)
- 		return -EINVAL;
-@@ -2430,51 +2432,10 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 	 */
- 	clear_slot_flag(zram, index, ZRAM_IDLE);
- 
--	class_index_old = zs_lookup_class_index(zram->mem_pool, comp_len_old);
--
--	prio = max(prio, get_slot_comp_priority(zram, index) + 1);
--	/*
--	 * Recompression slots scan should not select slots that are
--	 * already compressed with a higher priority algorithm, but
--	 * just in case
--	 */
--	if (prio >= prio_max)
--		return 0;
--
--	/*
--	 * Iterate the secondary comp algorithms list (in order of priority)
--	 * and try to recompress the page.
--	 */
--	for (; prio < prio_max; prio++) {
--		if (!zram->comps[prio])
--			continue;
--
--		zstrm = zcomp_stream_get(zram->comps[prio]);
--		src = kmap_local_page(page);
--		ret = zcomp_compress(zram->comps[prio], zstrm,
--				     src, &comp_len_new);
--		kunmap_local(src);
--
--		if (ret) {
--			zcomp_stream_put(zstrm);
--			zstrm = NULL;
--			break;
--		}
--
--		class_index_new = zs_lookup_class_index(zram->mem_pool,
--							comp_len_new);
--
--		/* Continue until we make progress */
--		if (class_index_new >= class_index_old ||
--		    (threshold && comp_len_new >= threshold)) {
--			zcomp_stream_put(zstrm);
--			zstrm = NULL;
--			continue;
--		}
--
--		/* Recompression was successful so break out */
--		break;
--	}
-+	zstrm = zcomp_stream_get(zram->comps[prio]);
-+	src = kmap_local_page(page);
-+	ret = zcomp_compress(zram->comps[prio], zstrm, src, &comp_len_new);
-+	kunmap_local(src);
- 
- 	/*
- 	 * Decrement the limit (if set) on pages we can recompress, even
-@@ -2485,11 +2446,18 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 	if (*num_recomp_pages)
- 		*num_recomp_pages -= 1;
- 
--	/* Compression error */
--	if (ret)
-+	if (ret) {
-+		zcomp_stream_put(zstrm);
- 		return ret;
-+	}
-+
-+	class_index_old = zs_lookup_class_index(zram->mem_pool, comp_len_old);
-+	class_index_new = zs_lookup_class_index(zram->mem_pool, comp_len_new);
-+
-+	if (class_index_new >= class_index_old ||
-+	    (threshold && comp_len_new >= threshold)) {
-+		zcomp_stream_put(zstrm);
- 
--	if (!zstrm) {
- 		/*
- 		 * Secondary algorithms failed to re-compress the page
- 		 * in a way that would save memory.
-@@ -2539,11 +2507,11 @@ static ssize_t recompress_store(struct device *dev,
- 				struct device_attribute *attr,
- 				const char *buf, size_t len)
- {
--	u32 prio = ZRAM_SECONDARY_COMP, prio_max = ZRAM_MAX_COMPS;
- 	struct zram *zram = dev_to_zram(dev);
- 	char *args, *param, *val, *algo = NULL;
- 	u64 num_recomp_pages = ULLONG_MAX;
- 	struct zram_pp_ctl *ctl = NULL;
-+	u32 prio = ZRAM_SECONDARY_COMP;
- 	struct zram_pp_slot *pps;
- 	u32 mode = 0, threshold = 0;
- 	struct page *page = NULL;
-@@ -2597,8 +2565,6 @@ static ssize_t recompress_store(struct device *dev,
- 			ret = kstrtouint(val, 10, &prio);
- 			if (ret)
- 				return ret;
--
--			prio_max = min(prio + 1, ZRAM_MAX_COMPS);
- 			continue;
- 		}
- 	}
-@@ -2618,7 +2584,6 @@ static ssize_t recompress_store(struct device *dev,
- 				continue;
- 
- 			if (!strcmp(zram->comp_algs[prio], algo)) {
--				prio_max = min(prio + 1, ZRAM_MAX_COMPS);
- 				found = true;
- 				break;
- 			}
-@@ -2647,7 +2612,7 @@ static ssize_t recompress_store(struct device *dev,
- 		goto out;
- 	}
- 
--	scan_slots_for_recompress(zram, mode, prio_max, ctl);
-+	scan_slots_for_recompress(zram, mode, prio, ctl);
- 
- 	ret = len;
- 	while ((pps = select_pp_slot(ctl))) {
-@@ -2661,8 +2626,7 @@ static ssize_t recompress_store(struct device *dev,
- 			goto next;
- 
- 		err = recompress_slot(zram, pps->index, page,
--				      &num_recomp_pages, threshold,
--				      prio, prio_max);
-+				      &num_recomp_pages, threshold, prio);
- next:
- 		slot_unlock(zram, pps->index);
- 		release_pp_slot(zram, pps);
+ 	page = alloc_page(GFP_KERNEL);
+ 	if (!page) {
+ 		ret = -ENOMEM;
 -- 
 2.53.0.473.g4a7958ca14-goog
 
