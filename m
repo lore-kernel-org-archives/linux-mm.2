@@ -4,134 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9ECEFD88D4
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2025FD88D3
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 00:02:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 605B96B0088; Tue, 10 Mar 2026 20:01:08 -0400 (EDT)
+	id E15296B0088; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C7C36B0089; Tue, 10 Mar 2026 20:01:08 -0400 (EDT)
+	id DC2BF6B0089; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ACB26B008A; Tue, 10 Mar 2026 20:01:08 -0400 (EDT)
+	id CEC216B008A; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 25E306B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:01:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FF618B61A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:01:07 +0000 (UTC)
-X-FDA: 84531826974.03.D27FA8B
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7BB9110000B
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:01:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="lEGFw/ly";
-	spf=pass (imf14.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A93356B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:02:14 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55B158B441
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:02:14 +0000 (UTC)
+X-FDA: 84531829788.23.70503BE
+Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 879DA40007
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:02:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773187265;
+	s=arc-20220608; t=1773187332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/eEDdOnuoN+4uXFeXQVdnNuy5kSNMswYGhV2JxYSYJ0=;
-	b=Kam/NgTbMR9oVnc5AU8egYx6eCMjtkJMirU+CJNSX1hEB6yQsttmXNyVuXdEJJo/4zbrpI
-	qU0egbPwrPu9MlTHgdaSirEeiW9opVyg8cM96h56y8xf2dTep/IR+495vwkPNMgrijPcJz
-	9O/xq8nsujd1dAG9rLA0RJYr70bW4pc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773187265; a=rsa-sha256;
-	cv=none;
-	b=DXKLw2/8qwq6NltxrdBwMWN8QRZmRq3E1BAyQzYBwtgw70G3FVUIQtkrrK18c3HWHqOQOj
-	rzA1R71z1XToFWNh8XiCHiCu+GEkM9ytiL1/r4MrfwSApFEG/JXeFQ9PDVGm+VuZ2JChAE
-	W+DqAEEe4DkLR9hHqp8DK0fSdU/+5MQ=
+	 in-reply-to:in-reply-to:references:references;
+	bh=edd6vuu24+x3xfdeQnQc3m+ptFgMAuq1lyXlt7zXBpQ=;
+	b=MAPgmiS90pUYSO64PVHqWI4I+mGrTPqzCcnw6bZgyij9b2fA/JjoYSb2GItJZg1X+3mSk+
+	3f+67oxWiffBNFh7AxkV7kWZv8Q1qURP2FSeZnMQo/Bp1ik6OhYum05MmXKRbmH0qq3yI/
+	bsDBa5gmaCzDwrkHCj9eJixNDYkRYTc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="lEGFw/ly";
-	spf=pass (imf14.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48534237460so35216905e9.3
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:01:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773187264; x=1773792064; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/eEDdOnuoN+4uXFeXQVdnNuy5kSNMswYGhV2JxYSYJ0=;
-        b=lEGFw/lyA+JKunU+LsWRaOYdUOut8HJV4RIe8CsgbBRNpxtfSOop5oNJQ1+dwQkzhy
-         jCzOUY/0CfED1QGulufZSwYMVGbwfz+8v5wWNCZWhFo+sEfDlKEUvD+toD86T8qwRCQs
-         EqGzCFm+WVKkwtVf6NOvaEvrcN+JoBj2SC7JARIrEvIpaJYKUJyxigazfTWvZy9yNNus
-         djolCH3pn+JMQnYSJB88bR4Wg0GHFh776fQV5ysr6h83nTvj2mFwVdBuY9B1CB/TACpT
-         U9UkBDj7NdlRAsQ3vGGJSyxtLjjlKQfqaqJTGDI9QX5i0eklwF/6JruPv47PFB6rHNBS
-         co3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773187264; x=1773792064;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/eEDdOnuoN+4uXFeXQVdnNuy5kSNMswYGhV2JxYSYJ0=;
-        b=n+bz1DUR7MlAPrkrLBpVBzhX9DmvnXgxdohucXu3I7HcdEgI3iOLCZriQZ5Q6gyL5d
-         DGyvkPWp/pH8Ha8AejCeOM/ggfWQNZcdLHLi5oiLrSUkMC6cf4iW7TpfxWRwiVDjU0Eu
-         DiCDaZgL1lG8Jgxr+iVcqLBE+NzEr7S+MmqLGX2nkeB8+N5VZsSUtXKsGCw3hNdSl9uR
-         08MHdQmMAtKqOq1DKXYDc+jOx9UPov1sz9412d3o8ayQk3Muru1ZM+SOkeyKW0REQGMV
-         hgyEbr8/6CymyCp3ZGlE4mJS+YpzKsRMsTcKL1ndaC0i+Q9IvxtJUAdd6u56be5ysfaN
-         5NXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxqnf55CcOfZ+oi7K9cYz3uLzy0eOGeSUyybtLvacEP5CeyEOCgymQ//2yldSkR8ap6wmEW0UvMg==@kvack.org
-X-Gm-Message-State: AOJu0Yw3eDNaBJedL7Q+26livW9FV/5n7FA4fK/WTxnavOHJrEeN2dO1
-	EGnVWAMEgmC4IHxslYEl/djdxEraKuRErhPxhl+ZObczTIx5cYo7aT5t
-X-Gm-Gg: ATEYQzwBE/h5NzXx8Xayc67m0cxCNEeZBw538LeD8T960YqxhHO29bM/VGUFsTAx6Sf
-	TElzynbuC2UqTgZbmm+yLfIA+Wr5cLuJ68Hbk7M8MaECs3TYbGQ/AjAtuXxf1EC0sHLK+1glkF9
-	NpRF91HI4R3dqBugtgQ2JzPpLsdjapYiZ0rnJl71CnioC12cudmeTorvOGwvkzdANIr2cR9Bhc6
-	C7uqQ7ZK5MpbfNfNhoUtDW/9C5NJuqu/xtNWedy1GT7PDlBEBvDuqcYtz8yguL7VNquFyPn3vxf
-	xr0OijkED07UbsAlul3yGbIIbZjM2mgELjhvJ8DstqbX46LJFvcOpgpJ3JqcrjCJ04j1vo22dEA
-	IlNR2rCmoqWn3e7bZtFpdgukzf5nEPfVqLBNBw+4EWZSPhgQ/9bHSfLHKfR2VfEhO1Uv4Jv3j/P
-	a2dL6wayr2rQEThNASL0L53HhsZDvTgsHKifA=
-X-Received: by 2002:a05:600c:1383:b0:485:2fe9:3375 with SMTP id 5b1f17b1804b1-4854b0bff59mr10920345e9.15.1773187263637;
-        Tue, 10 Mar 2026 17:01:03 -0700 (PDT)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b0bff95sm7638015e9.3.2026.03.10.17.01.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 17:01:02 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Date: Tue, 10 Mar 2026 21:01:00 -0300
-Message-ID: <abCwvB36SLGC_7Yg@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cbd42744-31e1-439c-b0f0-0cad052d3d9b@kernel.org>
-References: <aYxviLoWsrLqDU7o@tpad> <aYywl1hdBQP2_slo@tiehlicka> <aZDw6xI2izFDfuuu@WindFlash> <aZL45yORfkNvS9Rs@tiehlicka> <aZjY9h3XXMNY-Ytd@WindFlash> <aZwYmNuucBspCYhk@tiehlicka> <aaJDjmnfuo8AM6J9@WindFlash> <aaYpICV55B70U1I2@tpad> <aa20uDGqnmiqYJ1w@WindFlash> <cbd42744-31e1-439c-b0f0-0cad052d3d9b@kernel.org>
+	imf04.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773187332; a=rsa-sha256;
+	cv=none;
+	b=SHdW8ZB9MHwBrUxd81VbZtjod5YsscmxKybo5wV0AO9XP6Nz/JIj6ZQABNWAWP6z/xkpOI
+	yRZxiecjKLHvTZHNw/9KlAFxwANTw5B98WRPfCMyAGSM66V/etO4m05HE3E1RkogCo6hZk
+	6d+PXVbgYDgn9i5sQ2yyeljo3d6f8DI=
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BCB113A961;
+	Wed, 11 Mar 2026 00:02:10 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 85BFC20027;
+	Wed, 11 Mar 2026 00:02:06 +0000 (UTC)
+Date: Tue, 10 Mar 2026 20:02:17 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-nfs@vger.kernel.org, bpf@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ netfs@lists.linux.dev, io-uring@vger.kernel.org, audit@vger.kernel.org,
+ rcu@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, Christian Loehle
+ <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] tree-wide: rename do_exit() to task_exit()
+Message-ID: <20260310200217.451cf37e@gandalf.local.home>
+In-Reply-To: <20260310-work-kernel-exit-v2-2-30711759d87b@kernel.org>
+References: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
+	<20260310-work-kernel-exit-v2-2-30711759d87b@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dm318x1x9ak79a85d8j1owygjysg4oh7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18LHCHZ+vV3JFPf+Z89JvS/nvAKMsv+FAI=
+X-HE-Meta: U2FsdGVkX1/3tMWPLwyG4JCc4wkqvh9SiSPSlhJp6Tv4W/fwSwUFhWXG3UBrBxSzLq3p72eu37Xu4WWh77aTVVkk97xFw9hCg2Tn+gfwvdW114asIqtfy8xHhNrVuERS2G/65ce3/BsvZjC5d8Vnvs35vga+tnTJklfjQ+UttgL5bwbjp5oOgQNdAzx3oibQ4Mzt0N8V0YHeM+nhQRgwSGhlB1291Y2eHefZmXFBYTpQLIIP1XDBd9pac8iHtBZirKQZfE9I0NK+xzIHdGI0aui4vMm56FkppnHJDf/mUfgi8cC8UEAJB61JKAsSDfwj7R599Re8N4CNbTJgYcDwKo1gfVDZt4y9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7BB9110000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773187265-949308
-X-HE-Meta: U2FsdGVkX1+J0b8J0oDhkig6eAZfr6x0DicipxLcuCjhQn1FTpGhdvZ8ENSV+W0XPVZ17AyPidNX64W43+U/70MmeSQIQ/qrrFBTh8iWJOJBT+3mCFRq18fvRrPPnacB42YdNZlksjw+00L+EWXetgdd4AglKYcJd27fDtu+t/ZIRKG4P+gm9DnAtm6x2ZEmciNRsyKHUr2r0xE2JcKy6Yn7HdKU/LFRBUpIrsak73kFBWqKBgfDTvsVzhrEAIFDV1FwWC1H64PnRBX2T3dGxvx/gpuNfoJc8Pq3XGvo0MxKpLa6l9rz/WRZcyAIbiMG06ce4IWA8uHQgcOoywy4FSzcu+NiG26OVQ1wUbT+FNsDNfzU8umenDqNyC8I7Sl1p3GSDYjxePcOitST6Tt7ptvdIOs9TWlTCDCaHz7kV34EA1OKL5TpFoNOp+866oYW7gxBzlryG/hJ/5mAaV6tyD29cO8DRjEk2gdkvcpFlolBHPSXgOTXM1Z3VqBsWPkcSGdGs3vqqFam4omSOumbhl+PD2XViDND1NuWE5tuJOaLQzIKw9pyAUor2F4CJS7v0U8XtWEd+aEHCP3ZeLH+mqcLDUGEhpBhkBH2VMTbJGFxE+fURB/w1MXr2EGgIzAPmMUBjt0WrScetStZU7wVliR9Jjp8OJ/kM99cWz6kmizcDL1WBp4PUfMG/px/sEYuZAUJBKSsImRrAeL5o2GSvruZtW8ec+uxSaOsx0/2QcmHwbXHR/0EQ+dFCDX/n1KKxGVVFuJ4Dc0ZrWYnS2CC03EVtACH2ZWkhoWiMhYXU2UOA9AQqQeLCd0V1L90ujgIIrDiOE1i29+P43osixE1xWeagmaE1U1thhUF9XC0NJ9UfjhuJBuCD/XZyHZCU8//hYM1k50GL2HeBvdqPpwoltbggXc7JIX2rUN2kgpPfBzqNkL3miU3n30DdRXlmW2Awlwq2nbPcz2siaxPiaD
- c2g0ngVF
- D1mYrR84xoJPIUiFha+sTwFTMS+C4NfOB1jm3xTyA4goa2FQfiq8EF0hvyzNYYJ8COWetx6uHtGw5V807oiPt9grEF4B41Dtobxdo9aYjO6NoLUHUdxajOe1AtvewZ0HZNFpiuqDXkfvf9a8nfJRyrTxk0lPB4frtLUekB64HSN3rGErsFVOU4OTnfiN5tkrUkDqG4uLCoVDgf+kZqp62xr3wYN3xeIXgR/0CrET6pLDPcAemMmt9MKe6wyVGzeMrz0tJaIJwNsNShHw+KQpfz1tWrfAmaPpiAY6m/mlSiNsOAsNhsbM+qyC8KXPqPmfV9oJXjEGxVeFMaWfmLKiJX638avn+QHBiNaXrS2pXYNtWw6/hDXTtgOuucj0JLQDYCTv76dfd6UYLLbPqijhndbYXjkVDD3UjCNkJ+fnLOKC6Cww7SujenZWG0O1QVYa+eocatHdH63P6G4V2WIYfJL0qm3eYd5b7Q7YsOelG1ZtAYjeZtk7U8J86eEbBS6IU5ui64HF8xzhhJFYT+/8pOCdzCwEJq4zwwJnXklWgKV36ylabyxhtebpbzsqnpCRl+4IYA+XaByCFVJg=
+X-HE-Tag-Orig: 1773187326-98008
+X-Rspamd-Queue-Id: 879DA40007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 5bg3rrg18jbru7uwkfxn1hbh397psca6
+X-HE-Tag: 1773187332-577390
+X-HE-Meta: U2FsdGVkX1+xfLfbHcqvpwoX4ZuT0RHbPvm8Fkfz61X3hquSzV7kYcDvjB4n/ngprXUMbEUg8Gbr6QaAdfYmGrLE5mB5r83JESDQA/aSxMUAU6mqP153pK0G+0a4T6NJ1nbpnwZ7j7f26wkdE1TIxwJ9rPyYmewyZq6e1b04kDJpQdf1q3RQ/v4iaQuS2slbiRNtl7+tgrqjKiSqTwEQWkng+bl31nj0qKmlKzvDH/7TqwEjeSicElg+cw0kEDvGR6p6mPvZlkzhFuPaUDg/bjMxTYCT6rjlfhss1mXNurXjsf8Yq7oI+wZ0HzeJKnJv4wqiVA8ExYnY5eB9tFRW26WtIfsYzGIe15Bw2lEam8ZEwjhBoZpGQX8WoaM5Mt1ZYKOHNIXCWTae/72MqDY6o1CP8PQaTFDtdEtWv2smrR3ZzPyTV3FUeNZSau2e/mNaB7H+qi8Fzt1BaUlRWn5qNJ2W7ZuoKdJ7ChO0ORewJSmjrrZkpng+BQM3xMF1B00h+Sjgrn1ozU4HXC55HGD3qfg8axcAbCZX3HxOMDv07/4y/sfFTTB2roXqQpfjLTM9O+2N4W3g/H4bUEAX7sYIVULacf+QtbXBIKraQfKNsTOeLM4ld/r9IWpuIemT2wc9aebFgNaOVRaINMGDMyseTVhKqBaMPUGGkxpuPI0fk1KGg1FY01AkC4Ugvz1TSjZvipz7i7ISuopzu652tc1hcUcea3oPOlX3KZmt1fUXooLuGfSg0hc2KjJgMX8/glhN2ILgQWnyUCuSO+ZQQGzcEoCJW73Sdj0wOXQHV6EB+Ckuf2UUJLzNSFJQ3sSJB4kP2PhaHhmvAAB2SNCBgCLBmNjYCf4Z8Y9TgavPslngg92pjLEg+g3Gvfa5b4Z0/Kga2eslVykuS8KShkidqIBU0eNUHxqk3cSdAuTcvZPHrt5ERulnR5eRfTakqEI8/nUjQjrOsgZdWTv1znh7Ej3
+ PP7K7B9D
+ PAOHB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,33 +90,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 10:52:55AM +0100, Vlastimil Babka (SUSE) wrote:
-> On 3/8/26 18:41, Leonardo Bras wrote:
-> > Hi Marcelo,
-> > 
-> > Great, hiding migrate_disable under the static branch is the best scenario.
-> > 
-> > I wonder why we spend 2 cycles on the static branches, though, should be 
-> > close to nothing unless the branch predictor is too busy already. Well, we 
-> 
-> AFAIK static branches are runtime patched to non-conditional jumps or nops,
-> so there's nothing left for the branch predictor to do. Or maybe I
-> misunderstand your comment.
-> It does however increase code footprint and thus instruction cache usage, so
-> maybe that's an effect of that.
+On Tue, 10 Mar 2026 15:56:10 +0100
+Christian Brauner <brauner@kernel.org> wrote:
 
-Oh, I was not aware of that part. Since we can actually change the the 
-branch decision variable in runtime, I guessed that it was just a optimized 
-way for the processor to use the branch predictor.
+> diff --git a/tools/testing/selftests/bpf/progs/tracing_failure.c b/tools/testing/selftests/bpf/progs/tracing_failure.c
+> index 65e485c4468c..5144f4cc5787 100644
+> --- a/tools/testing/selftests/bpf/progs/tracing_failure.c
+> +++ b/tools/testing/selftests/bpf/progs/tracing_failure.c
+> @@ -25,7 +25,7 @@ int BPF_PROG(tracing_deny)
+>  	return 0;
+>  }
+>  
+> -SEC("?fexit/do_exit")
+> +SEC("?fexit/task_exit")
+>  int BPF_PROG(fexit_noreturns)
+>  {
+>  	return 0;
+> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
+> index fee479295e2f..7e00d8ecd110 100644
+> --- a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
+> @@ -82,7 +82,7 @@ check_error 'f vfs_read arg1=^'			# NO_ARG_BODY
+>  # multiprobe errors
+>  if grep -q "Create/append/" README && grep -q "imm-value" README; then
+>  echo "f:fprobes/testevent $FUNCTION_FORK" > dynamic_events
+> -check_error '^f:fprobes/testevent do_exit%return'	# DIFF_PROBE_TYPE
+> +check_error '^f:fprobes/testevent task_exit%return'	# DIFF_PROBE_TYPE
+>  
+>  # Explicitly use printf "%s" to not interpret \1
+>  printf "%s" "f:fprobes/testevent $FUNCTION_FORK abcd=\\1" > dynamic_events
+> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
+> index f0d5b7777ed7..a95e3824690a 100644
+> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
+> @@ -5,7 +5,7 @@
+>  
+>  # Choose 2 symbols for target
+>  SYM1=$FUNCTION_FORK
+> -SYM2=do_exit
+> +SYM2=task_exit
+>  EVENT_NAME=kprobes/testevent
+>  
+>  DEF1="p:$EVENT_NAME $SYM1"
+> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> index 8f1c58f0c239..b55ea3c05cfa 100644
+> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> @@ -87,7 +87,7 @@ esac
+>  # multiprobe errors
+>  if grep -q "Create/append/" README && grep -q "imm-value" README; then
+>  echo "p:kprobes/testevent $FUNCTION_FORK" > kprobe_events
+> -check_error '^r:kprobes/testevent do_exit'	# DIFF_PROBE_TYPE
+> +check_error '^r:kprobes/testevent task_exit'	# DIFF_PROBE_TYPE
+>  
+>  # Explicitly use printf "%s" to not interpret \1
+>  printf "%s" "p:kprobes/testevent $FUNCTION_FORK abcd=\\1" > kprobe_events
 
-If it makes a non-conditional branch is even better then.
+These tests need to pass on old kernels too. So we can't just do a
+"s/do_exit/task_exit/" conversion. It needs to test for task_exit first,
+and if not found, fallback to do_exit.
 
-Thanks!
-Leo
+See how we handled the _do_fork() > kernel_clone() rename:
 
-> 
-> > can always try to optimize in a different way.
-> > 
-> > Thanks for the effort on this!
-> > Leo
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/ftrace/test.d/functions#n182
+
+-- Steve
 
