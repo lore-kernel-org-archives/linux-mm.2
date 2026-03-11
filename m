@@ -4,80 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF9AA112584E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E57CC1125847
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:17:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95C346B0005; Wed, 11 Mar 2026 12:12:14 -0400 (EDT)
+	id A68F46B0089; Wed, 11 Mar 2026 12:17:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 909DA6B0089; Wed, 11 Mar 2026 12:12:14 -0400 (EDT)
+	id A16DE6B008A; Wed, 11 Mar 2026 12:17:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809116B008A; Wed, 11 Mar 2026 12:12:14 -0400 (EDT)
+	id 922696B008C; Wed, 11 Mar 2026 12:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 58CD46B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:12:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D20E11A0256
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:12:13 +0000 (UTC)
-X-FDA: 84534274146.10.B35BB26
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 09E864000C
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:12:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=j62F5tC1;
-	spf=pass (imf04.hostedemail.com: domain of tj.iam.tj@proton.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=tj.iam.tj@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FCB56B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:17:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0855A8AEC1
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:17:16 +0000 (UTC)
+X-FDA: 84534286872.20.B087DCC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5239F8001B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:17:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G148Rhjt;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773245532;
+	s=arc-20220608; t=1773245834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=M2SJ/HP/rau99jkUDcUZWMfXlp0BxhTsL5PKAYM5ffQ=;
-	b=M2UZhm8zy7I/F7IEZM3OJLNCAOD3XSwYt095S3vpg8u5Hh4nIkCNUF024+AE5gLEcJBdUM
-	B8YtOaIha2AYi3auheLide+rJWkl2/DJaQXxRkMBykYhpR/BKDfh9LKxFDqhIMLTMPKXYC
-	005dfLn15IXPtX9Zd7VvdCj5gIvW4Fw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zR5i46xDbhmeSJjq4XdGFBMV3VCpEvqNMXuKaXWMMqc=;
+	b=8ClfNw17VxKbiCfSA4cMQ52Y1zyvM92MF+HV0eXxaNIuyMZdTclzetArX9BFya04cPtjjm
+	J2J93s/gJWpkLSMFoNf3vQk92tRlDBc/ac8Sml7M662yY6RsDchTANz2sUD60DMTCdmYYI
+	TLUGaSMaKczRSg0QYtlMTmBKV02ypb4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=j62F5tC1;
-	spf=pass (imf04.hostedemail.com: domain of tj.iam.tj@proton.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=tj.iam.tj@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773245532; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G148Rhjt;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773245834; a=rsa-sha256;
 	cv=none;
-	b=6maoqPrHAVKa1ATR/NK8ezphBRY9IIIyE4LibQragZnQLX4gQIo6BQXFsdiVGxZUzuD+ez
-	UQtCflhsvjqufQViq4TqkVn2kWDEyJgrRCCkEKBIHgUmJyl+Qz7dGFl6fklvNLyLg+yjuM
-	XX6dLFg3PX31kjS8U4I3PxqE9Fm8vcs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1773245529; x=1773504729;
-	bh=M2SJ/HP/rau99jkUDcUZWMfXlp0BxhTsL5PKAYM5ffQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=j62F5tC1zJJIVh63mB5Qn3kdtIHn4fkm3yd0NcF7wCXnVN99/h9lKI7RHXuZmfDjo
-	 NxgzdhnR7YK34w/221hHK4l00lP45KHubh/84O2Y0PTShG/wke/aHXj3JmAy9baN9L
-	 aR86j5dATlHOt8mWdqTZzEN7rDRluwScfU6rp3rFt3YK5Kzzzan9UvFebPj6bID11x
-	 PlCUv5KYQng/0kxjyb79tcPn7DArLVroVWYAIaiiaKwi1NAbbJ53554qDC0uJMClTq
-	 ybw9Hqtt0dEkK6criiIS5/wqN5kl+8Cg5ZxUmewqsY1Kn3U3S//B2pThk4yo8gipOM
-	 YzIrOzcysLxeA==
-Date: Wed, 11 Mar 2026 16:12:07 +0000
-To: david@kernel.org
-From: Tj <tj.iam.tj@proton.me>
-Cc: linux-mm@kvack.org
-Subject: BUG: Bad page state in process kworker/u32:1
-Message-ID: <4df99438-637c-4919-96dd-1fbe6dce70cb@proton.me>
-Feedback-ID: 113488376:user:proton
-X-Pm-Message-ID: f53130e8a6e4458503759000244b585a4d5d177c
+	b=kbEs7NuKKfVf9SHVbsBRAtyj3kKXluvuOQhj1OkGdPvRATSxi+8MLkzQ0rfSNFscWwChKe
+	V0TJKpUxHfGxmEcOGGFRN1uGhAkTPqorof3ixO9zF3s/auGl2lSZRWuE5O80oqBBvBnN4J
+	gMK8rvPRBPG9ZtC1jVuvYMja2+TvV5Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C491F60054;
+	Wed, 11 Mar 2026 16:17:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846CFC4CEF7;
+	Wed, 11 Mar 2026 16:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773245833;
+	bh=6MCIQ808NMrvAI2QdBiCz63I6Hb0yQa9/67NPihhF1Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G148RhjtorvNmtM/B23TFD0QAwyjQa0UC7lMWG/QX4NdAS0zBCqJBxH5BfYn1DKl3
+	 eJIKz1fdTyC3AYum2JIexVmYllHDIqXQTOZNxLsXXqFS8a30YmoWzOqGFy5eriDZIl
+	 zp2ailBw3DqT/cl80PlRE9DWSr6Dj4jzOhKzFD++/F4OypTCaogEt3B25m9iW9Rn6T
+	 kluyvePcdOzxNMZLHlrbRsEP7MMqa1g2cj9FhWzRIGuEdF0bbFzEPQcMNcJmY3kBV6
+	 +7oKytCs9RdaRtxFCVf3EEOy2I9DRRBcpsCuhSuzzyQZfGRfq9Qd5eDRx8V4/ZFMDx
+	 YTa2RqHxUv4Hg==
+Date: Wed, 11 Mar 2026 16:17:09 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Jianzhou Zhao <luckd0g@163.com>, akpm@linux-foundation.org, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, jannh@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: BUG: KCSAN: data-race in do_mremap / vma_complete
+Message-ID: <3c0873a2-6b9c-4842-b2d3-c3ffe908afbe@lucifer.local>
+References: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
+ <abaad620-bc19-4a3b-9bef-6a1ad4335ce3@lucifer.local>
+ <u7wzfkse7au4aganufewx2ykz5xg2lgzaf2eu3tfkmowcmsobb@4xubw3ikany2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 09E864000C
-X-Stat-Signature: wmzjt6eo3ckpeqyddbiiw84ioyyy45hb
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <u7wzfkse7au4aganufewx2ykz5xg2lgzaf2eu3tfkmowcmsobb@4xubw3ikany2>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773245531-876482
-X-HE-Meta: U2FsdGVkX1/ojrXu12r34msGyX7V6VPQM3ifRnNO+e4ssO7RqVrfQo//7mXVr3rB4gVGhFKic48OK5z4NwEU7WIA32EjmrXm4w6dSBM6G4y0thfrEYszISkoqCwVpnqg6DFsmcC1rfG39XXrZvN2T0RtaWzsTCBMjbfU8a6Jg352+iymIh/gQXXHNVCaIM4hguY9AovQdOLh2VQbVUWFmE+gEE+L9GH2dxOK9Vjy4UsBEUShg4Ge3k6N44to45bInlu0TEIJSgqVrs3Onmq1SKyDFoXHv8lhK+wYqeBhke1X8J2UM4rq5sdO4EXCgwKw4Qft5By0cR+fady8RzDU2882a1UxsIkKMLSlRTkIhxtuhQQxnRloJYphRaqM4YxPACXFUr2DxXwGiVmMeFiNIMrf/uAQbWrwED4KbncC+kVSl5+asje99od+Y4zq420dKlROTN6DZQaqt2UbFcg90fMfbhd3UUv1jgoLCVsj1P7OLWZZg8n7+pJRaaxBPNwbR1LtF64WBpYA7tC0Y+5OTqP+JkvfMfO8DNRiOC2ZzDrjRB8n4dKkGelgrHir6HzRBhc//y5whViHt0k36dKkryj2uT7MT/e/iIyFiWdBKQabat07UT1cu+SN976QjtQj0ohQ0TAPPOFw4wXaaKfzaJrXBFqpBApOzlvdaJgjA9OO9/qJr7VLVK5UGOOrqVhArIH5u3FiHUrcqGCrhZwO0gCd7rJLyNtnJ/Ors4X4AYi3OClo0wJObzOqkOJ4xbBorFzKH7y+rSg7tjzhrD5vLhLQpktp+pvcZZfTWZh60q5M3N7GMKcqn6qbjB4GZm4yuUCHCjev1H2t5yOpYqFenO0hvVWj9tkcGLh36ga439HLNlQuw3X7QxG66JwwpngANcM2wSBF14N9AA0zn3gKpi6DiMXoBjpbxewvJS25q9K4IZqAKRa7U+ChsciDGDxp7QDozOIS/q81AdP2PqZ
- eCfXP62/
- p2WS1zTgD117fVFrYjqUX5D+kgH9s18mS8aE+D+tsID9qbWOKCCs9gmArC2bOu2vfUO/34R9PjB5xAAuFjPzxXWwX7Ve6/HLBapwCDmmpZoiahV1aCZMGqdg/7p2LSe+kR9tM7AdVrSZ+CZ1moAro5tz5Q/0WvtDTAojIXj9/iNUqVZh9xe5jrbpW1+LkGbQJVWY+POdkvobuDXpSBAMj/aPyDw0r0pr5LX8o61Qb8UDYW87ueg6729xAyoeSbEEn9GaYX6twm2FpcxQE2CN7i+Isd9EyNCWEVbYFMvAFFl3l5CrAiq/1ve6KJ2WZhpfhiV3pj4NsSMcd5BXuiVQjIOj79g==
+X-Rspamd-Queue-Id: 5239F8001B
+X-Rspamd-Server: rspam08
+X-Stat-Signature: i4zn8hy3aweag8geiwgft4bwtud8pqdt
+X-HE-Tag: 1773245834-837009
+X-HE-Meta: U2FsdGVkX18ypQnYO7UbZ/cqetvCM6Ij8b6B37o1f3ZYlsxS0udCo0xDoamkyB7GbVuF971btBSmabmwHDOGDS59BidPp116nJ2MTUaYSAbfICoPaVYM0wNrlJaaHhROIvkcmgOjJOJBXfPJr6rCZbX9sS04vlKpKzFImVgRDbFxWvpSivGtcKMGsnmiZZ1fbPn1d6zjcWAv/f+kw6quT+FT/Ez26SFMDpak+BcauEJ/EZV+MIQwCfTCpDqUgWOilykmDVAsB15c30/gOdgTOiJJ3e79gNqWbx38FrVdVIZPHnXO3B11CZqTOCvUD5R0c22ZJQi/VDt5quWb77C2zRab/dKBOJS5IDavc1DJQyhegNphml9huA+aITxKedrrBUduA1KdDGre0eS32/v764rEID9+qaUAi4w4/333jOMpr3bcrGbP1tSDbMs2bd8Tq4KvbQjofLFBjQyPYX1kCCvdXocia53Lwg5zjvGMd+3TtjscTPR75tGAOdg2FAV6KGUpjQba6JS4E2Ig8D5VG3LQ6F9+hSWxiIVk+ibNRPJ+W0u7Bo24JF+BBMj4pViogXvfxRQ5IrfVPqJS47eokX0qnqvZJHcmtpKtpZj4s2yjBq1X5sVwfKOd76Dfa+bMSu0KtE0IHT4WRJPqdp4TcuUVJv2t2pzVK+p3WTYg7lQ+wPkHXISF6UndjCdSOpbOPH3KFGnCgm9R1zduRLDCPjZyLuuD38Bcmde0linV9zhSVAYPq8c93E+G4mCshssHuzAjUYLVjiQL+mOqUhecUjgrl1jDkE0c7CB42s5PPK95bzHUWHozx8m4UJl3Tekuj33RIgM/EOg7SvfkTwOdDCR3H2+aFGqC57oh1pWxAydnON94IGI5Dd3vN7MZi3jVCnPqrsTIyeAHIIh0pgG+jPuEnH/TTDRLFRQUH9P7JmfYDo6zBQ+PUUnQM/sCkh+k6UaQJ3camkRW01pvqur
+ Sj4OcDz8
+ lQ8m1ETC3wTKikyVPRnf8HwEDGkMHEUc/agp/h1fdcvJ/SZqz+0puGvenXCU8Jbzte5li1tJos2tyrA3JN+TPNMPuy12tit3tabMXr+dEw79znRot8RsIqpGS5EjUw1dOuxsShNqdbNNKJ9u2+elSBpfKSoqm8lyZrFq7GAeivYhLVO3popd76kXQc7YjpqwxjrbOKC/Dwj2zdZFJmuCVPV5dAwKk2ncxtYyPEAn3a0OKivCQGbrRUlbJrfWCeynVj/RN5R7YV8WaFMz4qvRxhFOy8pj/dwcuxRh9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,134 +95,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On arm64, Qualcomm sdm845, an attempt to allocate and release a CMA for=20
-DMA fails. It seems to be caused by the recent commit 9bda131c6093e9c4=20
-"mm: cma: add cma_alloc_frozen{_compound}()" where cma_alloc() now calls=20
-set_page_refcounted() but cma_release() or its callees do not undo it,=20
-resulting in:
+On Wed, Mar 11, 2026 at 10:27:32AM +0000, Pedro Falcato wrote:
+> On Wed, Mar 11, 2026 at 10:11:20AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > (Removing incorrect mail, I know it'll take a while to propagate the mail
+> > change :)
+> >
+> > On Wed, Mar 11, 2026 at 03:58:55PM +0800, Jianzhou Zhao wrote:
+> > >
+> > > Subject: [BUG] mm/mremap: KCSAN: data-race in do_mremap / vma_complete
+> > > Dear Maintainers,
+> > > We are writing to report a KCSAN-detected data race vulnerability within the memory management subsystem, specifically involving `vma_complete` and `check_mremap_params`. This bug was found by our custom fuzzing tool, RacePilot. The race occurs when `vma_complete` increments the `mm->map_count` concurrently while `check_mremap_params` evaluates the same `current->mm->map_count` without holding the appropriate `mmap_lock` or using atomic snapshot primitives (`READ_ONCE`). We observed this bug on the Linux kernel version 6.18.0-08691-g2061f18ad76e-dirty.
+> > > Call Trace & Context
+> > > ==================================================================
+> > > BUG: KCSAN: data-race in do_mremap / vma_complete
+> > > write to 0xffff88800c232348 of 4 bytes by task 27920 on cpu 1:
+> > >  vma_complete+0x6d2/0x8a0 home/kfuzz/linux/mm/vma.c:354
+> > >  __split_vma+0x5fb/0x6f0 home/kfuzz/linux/mm/vma.c:567
+> > >  vms_gather_munmap_vmas+0xe5/0x6a0 home/kfuzz/linux/mm/vma.c:1369
+> > >  do_vmi_align_munmap+0x2a3/0x450 home/kfuzz/linux/mm/vma.c:1538
+> > >  do_vmi_munmap+0x19c/0x2e0 home/kfuzz/linux/mm/vma.c:1596
+> > >  do_munmap+0x97/0xc0 home/kfuzz/linux/mm/mmap.c:1068
+> > >  mremap_to+0x179/0x240 home/kfuzz/linux/mm/mremap.c:1374
+> > >  ...
+> > >  __x64_sys_mremap+0x66/0x80 home/kfuzz/linux/mm/mremap.c:1961
+> > > read to 0xffff88800c232348 of 4 bytes by task 27919 on cpu 0:
+> > >  check_mremap_params home/kfuzz/linux/mm/mremap.c:1816 [inline]
+> > >  do_mremap+0x352/0x1090 home/kfuzz/linux/mm/mremap.c:1920
+> > >  __do_sys_mremap+0x129/0x160 home/kfuzz/linux/mm/mremap.c:1993
+> > >  __se_sys_mremap home/kfuzz/linux/mm/mremap.c:1961 [inline]
+> > >  __x64_sys_mremap+0x66/0x80 home/kfuzz/linux/mm/mremap.c:1961
+> > >  ...
+> > > value changed: 0x0000001f -> 0x00000020
+> > > Reported by Kernel Concurrency Sanitizer on:
+> > > CPU: 0 UID: 0 PID: 27919 Comm: syz.7.1375 Not tainted 6.18.0-08691-g2061f18ad76e-dirty #42 PREEMPT(voluntary)
+> > > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+> > > ==================================================================
+> > > Execution Flow & Code Context
+> > > In `mm/vma.c`, the `vma_complete()` function finalizes VMA alterations such as insertions. When a new VMA is successfully attached (e.g., during splitting), the function increments the process's `map_count` while holding the necessary `mmap_lock` in write mode from the calling context:
+> > > ```c
+> > > // mm/vma.c
+> > > static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+> > >     struct mm_struct *mm)
+> > > {
+> > >  ...
+> > >  } else if (vp->insert) {
+> > >   /* ... split ... */
+> > >   vma_iter_store_new(vmi, vp->insert);
+> > >   mm->map_count++; // <-- Plain concurrent write
+> > >  }
+> > >  ...
+> > > }
+> > > ```
+> > > Conversely, the `mremap` syscall validation sequence preemptively evaluates `check_mremap_params()` *before* acquiring the `mmap_lock`. This allows dropping malformed syscalls fast but leaves the map quota check unsynchronized:
+> > > ```c
+> > > // mm/mremap.c
+> > > static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+> > > {
+> > >  ...
+> > >  /* Worst-scenario case ... */
+> > >  if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3) // <-- Plain concurrent read
+> > >   return -ENOMEM;
+> > >  return 0;
+> > > }
+> > > ```
+> > > At `mm/mremap.c:1924`, the `mmap_write_lock_killable(mm)` is only acquired *after* `check_mremap_params()` successfully returns.
+> > > Root Cause Analysis
+> > > A KCSAN data race arises because the `mremap` parameters validator attempts to enact an early heuristic rejection based on the current threshold of `mm->map_count`. However, this evaluation executes entirely without locks (`mmap_lock` is taken subsequently in `do_mremap`). This establishes a plain, lockless read racing against concurrent threads legitimately mutating `mm->map_count` (such as `vma_complete` splitting areas and incrementing the count under the protection of `mmap_lock`). The lack of `READ_ONCE()` combined with a mutating operation provokes the KCSAN alarm and potentially permits compiler load shearing.
+> > > Unfortunately, we were unable to generate a reproducer for this bug.
+> > > Potential Impact
+> > > This data race technically threatens the deterministic outcome of the `mremap` heuristic limit guard. Because `map_count` spans 4 bytes, severe compiler load tearing across cache lines theoretically could trick `check_mremap_params` into accepting or rejecting expansions erratically. Functionally, as a heuristic pre-check, it is virtually benign since a stricter bounded evaluation takes place later under safety locks, but fixing it stops sanitizing infrastructure exhaustion and formalizes the lockless memory access.
+> > > Proposed Fix
+> > > To inform the compiler and memory models that the read access of `map_count` inside `check_mremap_params` deliberately operates locklessly, we should wrap the evaluation using the `data_race()` macro to suppress KCSAN warnings effectively while conveying intent.
+>
+> PLEASE WRAP YOUR LINES. thank you.
 
-kernel: BUG: Bad page state in process kworker/u32:1=C2=A0 pfn:f4b00
-kernel: page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0=20
-pfn:0xf4b00
-kernel: flags: 0x1ffe00000000000(node=3D0|zone=3D0|lastcpupid=3D0xfff) CMA
-kernel: raw: 01ffe00000000000 fffffdffc1d2c048 ffff800080353608=20
-0000000000000000
-kernel: raw: 0000000000000000 0000000000000000 00000001ffffffff=20
-0000000000000000
-kernel: page dumped because: nonzero _refcount
+:>) Please.
 
-I've enabled pr_debug plus added in my own pr_info()s to track the=20
-callers. The following shows, first, my manual dump_stack() in=20
-__cma_alloc_frozen() in order to understand the callers, and immediately=20
-after the BUG.
+>
+> > > ```diff
+> > > --- a/mm/mremap.c
+> > > +++ b/mm/mremap.c
+> > > @@ -1813,7 +1813,7 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+> > >    * Check whether current map count plus 2 still leads us to 4 maps below
+> > >    * the threshold, otherwise return -ENOMEM here to be more safe.
+> > >    */
+> > > -	if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3)
+> > > +	if ((data_race(current->mm->map_count) + 2) >= sysctl_max_map_count - 3)
+> > >    return -ENOMEM;
+> >
+> > Ack, this used to be checked under the mmap write lock.
+> >
+> > I'll send a patch that factors out these kinds of checks + potentially does a
+> > speculative check ahead of time and then re-checks once lock established.
+> >
 
-The high-level activity is the Qualcomm coprocessor firmware loading=20
-that is preparing to set up a DMA buffer to pass data to the coprocessor.
+>
+> Well, the problem is that the data_race() is incorrect. It would only be okay
+> if the check could fail (with no bad side-effects). Otherwise, we need READ_ONCE()
+> and WRITE_ONCE().
 
-kernel: ipa 1e40000.ipa: ipa_probe()
-kernel: ipa 1e40000.ipa: ipa_firmware_loader()
-kernel: ipa 1e40000.ipa: channel 4 limited to 256 TREs
-kernel: ipa 1e40000.ipa: IPA driver initialized
-kernel: ipa 1e40000.ipa: ipa_firmware_load()
-kernel: ipa 1e40000.ipa: request_firmware()
-kernel: ipa 1e40000.ipa: fw_get_filesystem_firmware()
-kernel: ipa 1e40000.ipa: Firmware loaded:=20
-qcom/sdm850/samsung/w737/ipa_fws.elf
-kernel: ipa 1e40000.ipa: ipa_firmware_load() =3D 0
-kernel: ipa 1e40000.ipa: ipa_firmware_load() calling qcom_mdt_load()
-kernel: ipa 1e40000.ipa: qcom_mdt_load()
-kernel: ipa 1e40000.ipa: __qcom_mdt_pas_init()
-kernel: qcom_scm firmware:scm: qcom_scmp_pas_init_image( id=3D15,=20
-metadata=3D00000000239bef84, size=3D6812, ctx=3D0000000000000000 )
-kernel: cma: __cma_alloc_frozen(cma 000000003df15a7c, name: reserved,=20
-count 2, align 1)
-kernel: CPU: 1 UID: 0 PID: 56 Comm: kworker/u32:1 Not tainted=20
-7.0.0-rc2-sdm845 #78 PREEMPTLAZY
-kernel: Hardware name: SAMSUNG ELECTRONICS CO., LTD. Galaxy=20
-Book2/SM-W737YZSBTEL, BIOS P02AHG.005.190624.WY.1359 06/24/2019
-kernel: Workqueue: events_unbound deferred_probe_work_func
-kernel: Call trace:
-kernel:=C2=A0 show_stack+0x20/0x38 (C)
-kernel:=C2=A0 dump_stack_lvl+0x78/0x90
-kernel:=C2=A0 dump_stack+0x18/0x28
-kernel:=C2=A0 __cma_alloc_frozen+0x4c/0xa98
-kernel:=C2=A0 cma_alloc+0x30/0x98
-kernel:=C2=A0 cma_alloc_aligned+0x48/0x78
-kernel:=C2=A0 dma_alloc_contiguous+0x38/0x58
-kernel:=C2=A0 __dma_direct_alloc_pages.constprop.0+0xd4/0x430
-kernel:=C2=A0 dma_direct_alloc+0xdc/0x3d0
-kernel:=C2=A0 dma_alloc_attrs+0x98/0x488
-kernel:=C2=A0 qcom_scm_pas_init_image+0x148/0x228
-kernel:=C2=A0 __qcom_mdt_pas_init+0x138/0x240
-kernel:=C2=A0 qcom_mdt_load+0x6c/0xb8
-kernel:=C2=A0 ipa_probe+0xe80/0x13c0
-kernel:=C2=A0 platform_probe+0x64/0xa8
-kernel:=C2=A0 really_probe+0xc8/0x3f0
-kernel:=C2=A0 __driver_probe_device+0x88/0x190
-kernel:=C2=A0 driver_probe_device+0x44/0x120
-kernel:=C2=A0 __device_attach_driver+0xc4/0x178
-kernel:=C2=A0 bus_for_each_drv+0x8c/0xf0
-kernel:=C2=A0 __device_attach+0xa4/0x1d0
-kernel:=C2=A0 device_initial_probe+0x58/0x68
-kernel:=C2=A0 bus_probe_device+0x40/0xb8
-kernel:=C2=A0 deferred_probe_work_func+0xc0/0x128
-kernel:=C2=A0 process_one_work+0x17c/0x4e8
-kernel:=C2=A0 worker_thread+0x198/0x330
-kernel:=C2=A0 kthread+0x13c/0x150
-kernel:=C2=A0 ret_from_fork+0x10/0x20
-kernel: cma: __cma_alloc_frozen(): returned 00000000585b858d
-kernel: qcom_scm firmware:scm: __qcom_scmp_pas_init_image()
-kernel: qcom_scm firmware:scm:=C2=A0 =C2=A0qcom_scm_call) =3D 0
-kernel: qcom_scm firmware:scm:=C2=A0 =C2=A0called qcom_scm_bw_disable()
-kernel: qcom_scm firmware:scm:=C2=A0 =C2=A0called qcom_scm_clk_disable()
-kernel: qcom_scm firmware:scm: __qcom_scmp_pas_init_image() =3D 0
-kernel: cma: find_cma_memrange(page 00000000585b858d, count 2)
-kernel: cma: __cma_release_frozen(page 00000000585b858d, count 2)
-kernel: BUG: Bad page state in process kworker/u32:1=C2=A0 pfn:f4b00
-kernel: page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0=20
-pfn:0xf4b00
-kernel: flags: 0x1ffe00000000000(node=3D0|zone=3D0|lastcpupid=3D0xfff) CMA
-kernel: raw: 01ffe00000000000 fffffdffc1d2c048 ffff800080353608=20
-0000000000000000
-kernel: raw: 0000000000000000 0000000000000000 00000001ffffffff=20
-0000000000000000
-kernel: page dumped because: nonzero _refcount
-kernel: Modules linked in:
-kernel: CPU: 4 UID: 0 PID: 56 Comm: kworker/u32:1 Not tainted=20
-7.0.0-rc2-sdm845 #78 PREEMPTLAZY
-kernel: Hardware name: SAMSUNG ELECTRONICS CO., LTD. Galaxy=20
-Book2/SM-W737YZSBTEL, BIOS P02AHG.005.190624.WY.1359 06/24/2019
-kernel: Workqueue: events_unbound deferred_probe_work_func
-kernel: Call trace:
-kernel:=C2=A0 show_stack+0x20/0x38 (C)
-kernel:=C2=A0 dump_stack_lvl+0x78/0x90
-kernel:=C2=A0 dump_stack+0x18/0x28
-kernel:=C2=A0 bad_page+0x8c/0x138
-kernel:=C2=A0 __free_frozen_pages+0x4dc/0x778
-kernel:=C2=A0 free_contig_frozen_range+0xd8/0x128
-kernel:=C2=A0 cma_release+0xf8/0x378
-kernel:=C2=A0 dma_free_contiguous+0x34/0x88
-kernel:=C2=A0 dma_direct_free+0x100/0x188
-kernel:=C2=A0 dma_free_attrs+0x90/0x248
-kernel:=C2=A0 qcom_scm_pas_init_image+0x1a4/0x228
-kernel:=C2=A0 __qcom_mdt_pas_init+0x138/0x240
-kernel:=C2=A0 qcom_mdt_load+0x6c/0xb8
-kernel:=C2=A0 ipa_probe+0xe80/0x13c0
-kernel:=C2=A0 platform_probe+0x64/0xa8
-kernel:=C2=A0 really_probe+0xc8/0x3f0
-kernel:=C2=A0 __driver_probe_device+0x88/0x190
-kernel:=C2=A0 driver_probe_device+0x44/0x120
-kernel:=C2=A0 __device_attach_driver+0xc4/0x178
-kernel:=C2=A0 bus_for_each_drv+0x8c/0xf0
-kernel:=C2=A0 __device_attach+0xa4/0x1d0
-kernel:=C2=A0 device_initial_probe+0x58/0x68
-kernel:=C2=A0 bus_probe_device+0x40/0xb8
-kernel:=C2=A0 deferred_probe_work_func+0xc0/0x128
-kernel:=C2=A0 process_one_work+0x17c/0x4e8
-kernel:=C2=A0 worker_thread+0x198/0x330
-kernel:=C2=A0 kthread+0x13c/0x150
-kernel:=C2=A0 ret_from_fork+0x10/0x20
-kernel: Disabling lock debugging due to kernel taint
+Yeah true, also a user can update sysctl_max_map_count without any mmap locks
+held obviously.
 
+So we're probably in a state of sin generally that we've previously tolerated.
 
+Anyway, that check seems to be wrong, so I'm going to send a patch that fixes
+it, and I'll update the logic to READ_ONCE() this variable. (proc_int_conv()
+already does a WRITE_ONCE()).
+
+>
+> --
+> Pedro
+
+Cheers, Lorenzo
 
