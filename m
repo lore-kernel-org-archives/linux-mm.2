@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3ABE106ACF1
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 22:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885A5106ACEF
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 22:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD5006B00C8; Thu, 12 Mar 2026 18:44:25 -0400 (EDT)
+	id DB5546B0088; Thu, 12 Mar 2026 18:44:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B586C6B00CB; Thu, 12 Mar 2026 18:44:25 -0400 (EDT)
+	id D96786B008A; Thu, 12 Mar 2026 18:44:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A63F96B00CC; Thu, 12 Mar 2026 18:44:25 -0400 (EDT)
+	id C99716B008C; Thu, 12 Mar 2026 18:44:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 93F006B00C8
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:44:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BD301C38E
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:25 +0000 (UTC)
-X-FDA: 84538891290.29.C22D784
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 48A7E20004
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FEs5j9oS;
-	spf=pass (imf03.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id BAA496B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:44:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 819231B7E75
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:50 +0000 (UTC)
+X-FDA: 84538892340.18.0A5E7BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C81AC1C0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rA8piUuD;
+	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773355463;
+	s=arc-20220608; t=1773355488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MagPqVsbkz0mIL5nlBd9cVPZ7LxdFHiUc+nKZ0NPEYs=;
-	b=S81yh0ebeaMyqtQ8DRTd7zuYXosaeQ8aZp0o89Pc4Rjzs63q04dA5l7WAspdVVIwD++ClE
-	Nizz3gYwpf/7YyR6QEIE7KRUW4u6Ax6MIw/wgoUn0WV/+RWUwKfCCk8dXND1eTb9aQVHKP
-	5tLrfwekFng4g3t3SpiisokkUpiW/oA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773355463; a=rsa-sha256;
+	bh=kma/+9t4PzKNAzAya5hNCtBvXuUuO5Jw0yY7xb6jglI=;
+	b=G4TFX+QgZQyB3FlHHHLj0MoTYHu4NyGzai5CgPmmsFSER2XABkwDyffd/GJBz+ROahSIz0
+	XvcBAh8AjPGjK+9sZFwq5H50nDp9311wq824O5BU2PoOJiu6++1h+ScrVGq+dsHGt+X2Cm
+	vbCVn264ubjtqgldXS+z9053NVl+fWI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773355488; a=rsa-sha256;
 	cv=none;
-	b=jTHjbPSckq/79+hb+iFzZGyY4oqlDwQl/RTTvQQSK/PHsCC/mUXZq8dBBpOLwjoXvNjgpq
-	OMfr2dXDugUEEM/pyGCVn5Kgl358jAZVcqRpLLuS8pq3BOn8mIguhNI40PanEtB7hGYnaX
-	DpI2U8WErV43lDOatOdK756fbh1AxAI=
+	b=f2/asSiUD5BYGfZNlQ/CaLDVec9b87zvwjISjwdexqHH5hoIVyX/hA+a6CG0JOOAlITf/w
+	rZTNHpmeasHUetz67FT6jIu500mUablzdNXuRlvXAMxdaOetOY1uW5/BOf+f8WfYZKjUob
+	0/g1ALvTQhlUW6Z+2jF62l5CHCSzVWQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FEs5j9oS;
-	spf=pass (imf03.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rA8piUuD;
+	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 601914434F
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34383C2BC86
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3132261334
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D19C19425
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773355462;
-	bh=MagPqVsbkz0mIL5nlBd9cVPZ7LxdFHiUc+nKZ0NPEYs=;
+	s=k20201202; t=1773355487;
+	bh=PZ+ExTNvH3r1z7OlgBOP6Su9+77UcJ9UthTuCroOJOc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FEs5j9oSSv9qmxXAP7HGJxCzg9zFwU/bpRr0BDh7y+IlVktt/8vxoHm9F8SWod3yb
-	 xN/huMkckl9svPCk8pfPZ9MpKEuQ6M0sclA5uYSzmrbEKf6TIvVdSqpj14nwTiqU37
-	 GnZsIrcyB5aWUa6EWJ9USMzFzEfkn32KfJGneuxxHhsjfAPW4Ail4Sq/04Rmb89xip
-	 XImI8Np9mUufFLG0oFAE4mnYpgGveztlp003GPJwJsGYhAxcqPBldnzD4pIe5jXun8
-	 F1/Y2XVE8r4zI8jK/iMOc0jCbBbNoak02rFAvRxWDLEXWry2y4TZv2A+8cbcJFxEaA
-	 Ut+LA8AHuA/ww==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b96da7b2e2eso233537166b.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:44:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXt8BrdsaRMszxC9lA/YQziUVabTtxzGJSyU+0QwYKJNLqfgY9TD4WXcnAczckKCqAd0NHSyAXiOQ==@kvack.org
-X-Gm-Message-State: AOJu0YxpmcZenMTUWdiyOYtg2O9Z31EMBFOyQYCz7Rleyi6endJ/Aevd
-	I+AuBqOa//HSoFlDRMjDR+Z+BYPVArAg6ZcEnQzL9b6vkcdDrgXlnkPpChYr5c+lZNhZ5Mz9LsZ
-	6QiL6x+mOB9KT8eHn23DBoKTwy7/kfhw=
-X-Received: by 2002:a17:907:3cd2:b0:b97:3bbe:e42e with SMTP id
- a640c23a62f3a-b976514cb8amr58819066b.33.1773355460946; Thu, 12 Mar 2026
- 15:44:20 -0700 (PDT)
+	b=rA8piUuDVFXKQYUsfrjwk6SaEVW+aIAdCTLFC3sNlVOzwGiPKiQZU1ZBSikNbvUWt
+	 4Acz8vgJGkGrocuoJVXBHZGhdvb3j3Fz7smyS2aHMocoCPqtL1Fa0EaYhflf5oJxx2
+	 D+jLJGWHgUYTnQ5t11eseHtl1+dSi1QIDLVShM20IJMYOyUr1MZYC2qSDGDpKWv9Vh
+	 VIMkPvixw1SBlKil0/ZRRTICkLZvbgqo4Pb++7CnAv4ffb546afArIAiPKQFKwjwnz
+	 FtQEqjUjtkLlfXC43LtftVvAJ4uqgBMXXhC6G5u/BTcjRCPEA+jL1w3W/14We73tQ0
+	 tCv4hxESzn3ew==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b96d784828bso232305966b.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:44:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUD9mrXmGM6R18R9ovY6nAzWspH7QMWSoOaHFJFV/1QjjmQ9kqg2x0LJ4/X0K3Y1w1E6vZgY6Qkhg==@kvack.org
+X-Gm-Message-State: AOJu0YzrQ/vPNuyBTquG8hviERQ8/wQ9VM9vjdcSg0R2zTAkrfSQag9F
+	EtD80cLJ6zgUgK5HK/lPLZ27j/2u7IluvzUIpfQLN1hRXH5uCMHkdPD7Y33JXtohb81aTtM1zwb
+	to6lOrkjwwrnIR3pLVKlaELVInYxv030=
+X-Received: by 2002:a17:906:3184:b0:b88:7431:3942 with SMTP id
+ a640c23a62f3a-b97651d185emr51530266b.33.1773355486758; Thu, 12 Mar 2026
+ 15:44:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260312040627.55257-1-liwang@redhat.com> <20260312040627.55257-6-liwang@redhat.com>
-In-Reply-To: <20260312040627.55257-6-liwang@redhat.com>
+References: <20260312040627.55257-1-liwang@redhat.com> <20260312040627.55257-7-liwang@redhat.com>
+In-Reply-To: <20260312040627.55257-7-liwang@redhat.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 12 Mar 2026 15:44:09 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNfR5Z3g=SkU9-eEeA-DDY=rp0Tcw8sXKYDpkZtJtQ0sQ@mail.gmail.com>
-X-Gm-Features: AaiRm50vDEtOUq0fV0iULrsrYBSyRiSP_BhVBXrE0buJ28vyLlqKpO06m_wmxQg
-Message-ID: <CAO9r8zNfR5Z3g=SkU9-eEeA-DDY=rp0Tcw8sXKYDpkZtJtQ0sQ@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] selftests/cgroup: replace hardcoded page size
- values in test_zswap
+Date: Thu, 12 Mar 2026 15:44:35 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zM=EHSsmkZMfc0TEqaviHUW=43=r_PW60enjaoxJXGgEw@mail.gmail.com>
+X-Gm-Features: AaiRm524PNfkYxfVrpc2St54DerNH44DRfyB07Ocb7QbsQotuUYK5q2n16rFokU
+Message-ID: <CAO9r8zM=EHSsmkZMfc0TEqaviHUW=43=r_PW60enjaoxJXGgEw@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] selftest/cgroup: fix zswap attempt_writeback() on
+ 64K pagesize system
 To: Li Wang <liwang@redhat.com>
 Cc: mkoutny@suse.com, yosryahmed@google.com, linux-kselftest@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
@@ -91,14 +91,14 @@ Cc: mkoutny@suse.com, yosryahmed@google.com, linux-kselftest@vger.kernel.org,
 	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 48A7E20004
-X-Stat-Signature: zph34c4qrc5z9s8iapfqmq18uxr9zsxq
+X-Stat-Signature: uhd9uajf1f9w3mpzj5c4w1en8ze7d4am
 X-Rspam-User: 
-X-HE-Tag: 1773355463-194297
-X-HE-Meta: U2FsdGVkX1/jc/icQUPi8SofcnIBsohJExHrGXzf+xmOpc2Bl4L/znJN0VMviRnDhHCzeXiUXR6lvftKSIaHgHFxzg3NhKb0TiZy8pumkan61wbwwm8OXMWRXhjS+4evqFkvACkZhGSbD6gPMuB2cZII2nMZeeNClhDg7+fy8M/74WsR9Xp0iLLcWyoTh7OlAn5E5ZOZ8BAowbUghBheqTLM9ASEikgeIw/ROw38Bu9dBiiq0mQBTUowlX4lH6o1ELYoJRWsCD643+q0BnG6LkI6HxgeKJ3HuW/wE/Rp4yHAFGC2zGPMeLSRwUZkAgbbfmhTTnTag+gOe3obK+1cdPatqNgt+FoSqp9lQ2ASAqksIC9NDeQ7w5OEpnSQoPtoir/fPxQGh3ph/JLPG7Njpz4tHL7ZOi0Fx++TAng3+ZdAKUPqhuLZCva9xDpT1Lk65UwTTHp0dJ/FVPbwE+PNFPUpnFrGfw+r5DbIrQrBOQ0EzttUdn+Nxt9EBc706PkkDAZASsW6AogWPyFVMmkhVXQ9okjYYKlI5RDDRrGlL2L18PC1JB7+MqiTiSY8bmYaevYujHDfjh+b84rcN6q5u306HSFrTCGusclz8Vc6+Hy7rzsJwvgGyCB38Hu9N+McNIIFzfl7cjYUnsyLL6ffn6BaHQ1II+h6KKKLC0tgrZXvvxSXDcCI8S60Gdg3W2P5QrkcBPMbC0OkCbDWhIKLIFBa1PmNb7oRdvQZAUwpTjUkp+/zTWjbxK7UL9ZwloJo/lK2MGobtwz77zDp0Jf/+kA7lugKHOiYcfaebOrscFzrtCvB3povBVwUPMvJTBucglXTSZMXf4slbUW0Ie8IrdmFl5MlbLZvU0iMxvZNU986GHG2cLkrnkaK/cP8vZIfeIWL/8q0N4lc2DliuBJ4b384WGARtdT+z6bSNExUbfMX1HT8EmYrlp8guNmIxsDDd6820UJR6lSmnJwm3Wk
- 9IiQLYwU
- sfh/dwSabYqve/ckq5wa/p5RidcIdjxiJUpDesb3ksTSGPXgQx/yZOMUaUN32rgbfkyoxLRw1U9M3N+fdav3VgnrPif65uoO90G3Ws4VzsywL/8oxZLJ9LzrhuX4Gowdgyu7+9JUM3P+ooQWXW5TvCCFuSMPNg/UX/9AIzQGSsq/GXLuOf4ZMSqmPVZRajIiNvBz2pMSmZbec4NsPdRdodcgOfcTOVEvDb+9Ibh528LafEEtA6Ng8GUU4hC2zYgwbdvRNhdsOAwFyB17sPS8bB8ZvTk7uQivc+7k9MXuz5ph/qMT1BysrdtLqzOKq2ddUPznXb/82yhVJ62DS6XveT9CpsyBiJOu8jbpd8BZUjF+Tz8tUgMkK4h3IahzN65AWNwziPt/nxvN0rFzOahtcz9t2B4TxWhHGDHjLbnZBG3zX8Lio8Y0QVAOni7WpaB3dJerSObO/FtUtEfCbiQsrYS+yZy3TKrNAJxn/1hjjdnIg6whLa1lprdKOryQhcseaCaxC6cTIRtTu7yJo6IB6HvxDHWJQNvuXOI90
+X-Rspamd-Queue-Id: C81AC1C0005
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773355488-437147
+X-HE-Meta: U2FsdGVkX18z5ZFhWSd09PLQY+jAFDiaMCiFWetpGOScntG5fOf3cjsjtMXnRjyx/nCWTZEyjcyV9XXOpq/PvRU3h/GHqLfZL1/KWxN/YU4IrG/PBKFNTmZqPSYTS7lCOuS5EBTFtmHsCDrZmZniIyfO1W/sokNu3DAEbPZPTB42KC7sqKtgxoF0Ncx0apG4SMTKYn9yebV8KEiBYP5bIWHjQtVpoGAAMrs9a7ns4NGmgr9UzlE62P10jvelXhCR5NcRdLKuciPHEZxOYnxm848a99Ts/nXRTL/ihJ81p3omflpBuHVoN1p947DEAPn8Q7ovm6+so8VdjEgfm3KtwGPxOT9IHSEYzjYm29OGwOpSwzJgNZkqZAt/WPpEZjNJ7OArn9oSr0S5Ia3Vi++9qi++0kXxmtChu21JswMT18UOBmloQsaEAZcyF90tCrQocx1ZrNxGtjvl41MnW/ddsl4ypjefWLqqW+8VCQy5GzM6NHujWbNxIOb3iqFN9YSnMFvmYVX+dsfmbymNdLNWdPSjES9h07ZMJ8RtCSAv2+Bi8LDAsZ/waVt3JOTCfRXX3ohko6LrchuG807gcS/2oTuHFifpWA49SB4nfZL1MgpkBbkI0877K6RrrUdXWX3L5dR9ju2WcIEAVXqY11wkL8eyWgmOB6JvyHJlx4vu4ZKsDVEyvuH/mVs6lH2o753kZSTB24MqOoBPu/54z/oz7mIzrR+V7nE1IpoaSelSvReAN1wn5Ooxloc6fVSRX1RoyyTzQJT8Cy6TXkQKYfvmQoWhlZVPhtOPPth85ALDymkOtVGcO9h+KqQ2p57EJzu8sIG/ewRjMfFeafUr9inlhTYTeBMUnKixp7d1AZ8NnEZZ4uwVNG6gqK/EUgsL9xbpXVcerW6skEPdmlEqYv7hSkcdIB0B8mDBJorSjKvYTQUE2nDK0Miixzs4K/kzRlmK8sVF7/bmbN5443kyR8G
+ iUb36Rwn
+ C3TpIrVSaqynbOB1PYDnPSNmtj3yZ+5sjEEfp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,17 +108,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Wed, Mar 11, 2026 at 9:07=E2=80=AFPM Li Wang <liwang@redhat.com> wrote:
 >
-> test_zswap uses hardcoded values of 4095 and 4096 throughout as page
-> stride and page size, which are only correct on systems with a 4K page
-> size. On architectures with larger pages (e.g., 64K on arm64 or ppc64),
-> these constants cause memory to be touched at sub-page granularity,
-> leading to inefficient access patterns and incorrect page count
-> calculations, which can cause test failures.
+> In attempt_writeback(), a memsize of 4M only covers 64 pages on 64K
+> page size systems. When memory.reclaim is called, the kernel prefers
+> reclaiming clean file pages (binary, libc, linker, etc.) over swapping
+> anonymous pages. With only 64 pages of anonymous memory, the reclaim
+> target can be largely or entirely satisfied by dropping file pages,
+> resulting in very few or zero anonymous pages being pushed into zswap.
 >
-> Replace all hardcoded 4095 and 4096 values with a global pagesize
-> variable initialized from sysconf(_SC_PAGESIZE) at startup, and remove
-> the redundant local sysconf() calls scattered across individual
-> functions. No functional change on 4K page size systems.
+> This causes zswap_usage to be extremely small or zero, making
+> zswap_usage/2 insufficient to create meaningful writeback pressure.
+> The test then fails because no writeback is triggered.
+>
+> On 4K page size systems this is not an issue because 4M covers 1024
+> pages, and file pages are a small fraction of the reclaim target.
+>
+> Fix this by always allocating 1024 pages regardless of page size.
+> This ensures enough anonymous pages to reliably populate zswap and
+> trigger writeback, while keeping the original 4M allocation on 4K
+> page size systems.
+>
+> =3D=3D=3D Error Log =3D=3D=3D
+>   # uname -rm
+>   6.12.0-211.el10.ppc64le ppc64le
+>
+>   # getconf PAGESIZE
+>   65536
+>
+>   # ./test_zswap
+>   TAP version 13
+>   1..7
+>   ok 1 test_zswap_usage
+>   ok 2 test_swapin_nozswap
+>   ok 3 test_zswapin
+>   not ok 4 test_zswap_writeback_enabled
+>   ...
 >
 > Signed-off-by: Li Wang <liwang@redhat.com>
 > Cc: Johannes Weiner <hannes@cmpxchg.org>
@@ -131,6 +154,5 @@ On Wed, Mar 11, 2026 at 9:07=E2=80=AFPM Li Wang <liwang@redhat.com> wrote:
 > Cc: Shakeel Butt <shakeel.butt@linux.dev>
 > Cc: Yosry Ahmed <yosryahmed@google.com>
 
-It makes more sense to have this patch first, replacing all hardcoded
-values, then patch 5 doing the necessary changes on top.
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
