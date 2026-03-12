@@ -4,144 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDCEA105A594
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:57:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A54105A595
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:58:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13A536B0095; Thu, 12 Mar 2026 08:57:35 -0400 (EDT)
+	id A9EA86B009B; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11BF66B009B; Thu, 12 Mar 2026 08:57:35 -0400 (EDT)
+	id A552C6B00A2; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01EA86B009D; Thu, 12 Mar 2026 08:57:34 -0400 (EDT)
+	id 957D36B00A4; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E41D16B0095
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:57:34 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C3F61401D7
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:57:34 +0000 (UTC)
-X-FDA: 84537412428.26.43EB27B
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AD9141C0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:57:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=bFTTNyhm;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.179 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 84EC76B009B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 550E156F30
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:58:18 +0000 (UTC)
+X-FDA: 84537414276.19.8CB5F00
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BC56E180006
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:58:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RaHxunvW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773320252;
+	s=arc-20220608; t=1773320296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
-	b=u+B7pzMc+arKHF+HAzHTJ0zpXX67NYowT2OFLAxNiH0uEKJV/FQ6tQKhQgDIO/DwGOt9M7
-	72ac67ytZn6S7OnV3Kjn6ZGInaH0blue+RZKY8cF7eRd5/Z82icWrjDYAycGqCeO5vJ6K1
-	LAl9wh6BQ4yY/rLDfoyEyHet2BbZJ5E=
+	bh=WWmGakTAuBOaXs12cOlovdF8h6ptXGeKrnQGoZnLCaE=;
+	b=ez8xhnGYqtVk6NYSZV2WzmmDVWNXYwoWALrTf6t7RUk5tMi307+VjtgM1hJ8QlQR5ZFndj
+	jQtQY761uD8S13Sopu0WWzmYodUZf7yeHNNvViBDCc/ZR8ZNqGFYYJCySudV+ZgFlHhxK3
+	61PjFpl8zy8l3e7eepwBSOU7DfsbhFc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=bFTTNyhm;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.179 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773320252; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RaHxunvW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773320296; a=rsa-sha256;
 	cv=none;
-	b=hQBYb0ZAG+M6vor1FVXaQRO/KPvd885ncuLhQ4eNXBV2oyBVyUhHA/SrTdGlLjq6q8wEOb
-	S8velr7vGdc+04AzA/2ZZgNeAk13E71VTx1MERvuerbQopmF32YY3nV0LdHNwGX24OcrXE
-	xrBmDPTuKY+QEu5AoUuRoJ3NHAEBFCE=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8cd80f56b27so89289185a.1
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:57:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773320252; x=1773925052; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
-        b=bFTTNyhmKSR+OJsrqRO7ZVFJtpMc4s3h7tB/rF49QID5YM6UyNw07jmKGC7e+GllEg
-         WrN1kYGSVAarKaj6CHXbcq6bBoWU2suPsP8dJ95bAeynLfxN1tmwncBGyKCgqkvYwzFj
-         f4XjuybkobGn+XT3+LkRzJe3OgQHPjPtRusyMHCnUbUtSC3k7lh/9VIuKc5Lto2VnTgZ
-         zZmtHjw1gefh5wSVouVwWhr+8IQdp615GWoEnfjMUeSqliZbo3J6KlYzXzTy2CDek9LV
-         TmiwQZ6m9yaEcqANifqB7fFCtadB0FHJ8/ENIeq04tlFD9OXhnYj6kY1GsafOnmrarGY
-         0R/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773320252; x=1773925052;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
-        b=d5U466fD3nL2hhCU0hsB3Pv6gjp79B4PKQT9Kf20kfVXzP2aUY+csCRrQQbnABeQI+
-         TYO5f/m8kJiMKDr83hKft/RRHqcSd1esKr1Q/h29KY0E2+PIJD0Q01/FKH46Lg17GPOH
-         ee6x3eZf9o2dM/gBjNrIVKcuD2lbTyqLHfUwVjfclRCNiyNNat1K10RXlkCgF6SAHHEX
-         fW+XlYQxFmJY8k0fnL3ZTishH9xuMGuhMdGcNvtd+4g94jJaU1SWd5fpUUYUqdCXC+M7
-         /kkMuolnlRqHwWUJHLWRnhb4msbIY2RGuy1usqGb8P2JDFxSMbqV+XCiESChmNQU1BI/
-         W38Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUizJyK1TQrAligdBq78FNIHh87JzH6W17+8faKw8CDssUlhZlt7GrLCvMTb2y5ppGCOEcTM/5c6w==@kvack.org
-X-Gm-Message-State: AOJu0YxWfKzoE9m46wn+wMdq0EO098lCnLRbu7r8TfW6bMd2bYuhgRVI
-	2pvVIMc5Virt/OHfRKdDPSwvVdd+4o+u7JAunUX/CIuqAzOtrd44LRGlyOY18oUs4hE=
-X-Gm-Gg: ATEYQzweSdYHv12OTaBsF1q12AEQsHVeYRnuGt86BEpPLmEKbfvCIhtbjpPRL6jwNgn
-	41jLmd1XQHe6saF9jUIknjAz+ruV6fSNFHZHfgfL86QNHG/vRMZ6xqs3MFcia5x3KX7RHeU5jXk
-	J6Fw7N21eNx8DU9LI2lrisu8JTA+MPLatZQ9QrztpCidVdbnozKyJJoiY2liIxO/w75F7QKjEMR
-	YB8WlfHrZOzKeTYbRaBE+b5vImOgYza/sjadpJSwBUS5DmSNT2sxhNyjES7DhRSHyvPZ9ZMOacd
-	uMgITRSlhf3WS6TBqxH1TlS7WGfxcbPROyCSp01whVYBPOlvzt4/s8kWp1zFJfadWOC/LdXybis
-	QVxWzFQLV38Os5LZoIphX4GhDYeFCgokcLchJL3prnJK8uP7J2T6Bek0VjYvDRxCCHZdhNrgnCe
-	bbJhabSSiaJfrYwsjqmG+vBJ2W/xPef3A9kC9gDyxEYt4EJBSiJAc/gUdvxsBVKjOO2kNNzN56t
-	hyHFbRh
-X-Received: by 2002:ac8:5d4d:0:b0:509:cbc:127b with SMTP id d75a77b69052e-5093a1bd58fmr77950521cf.60.1773320251710;
-        Thu, 12 Mar 2026 05:57:31 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65bd318fsm33341196d6.8.2026.03.12.05.57.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 05:57:31 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w0fbW-00000006fKD-1POa;
-	Thu, 12 Mar 2026 09:57:30 -0300
-Date: Thu, 12 Mar 2026 09:57:30 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
-	apparmor@lists.ubuntu.com, bpf@vger.kernel.org,
-	ceph-devel@vger.kernel.org, cocci@inria.fr,
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
-Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
- check - refactor
-Message-ID: <20260312125730.GI1469476@ziepe.ca>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <abBlpGKO842B3yl9@google.com>
+	b=kcplg2HgdVcU/B6fGdyWgCzsXjzfEuW5jVtCUc+uWDWgz3S8UNDBLBnEylyKciLsRlbGWG
+	ZboqocXr8IcgTM8GpVFdmCzEKHNKnBDbdqGpQruoQjRbYKopBiUhXTSSfLLFOfz9Du7Htp
+	RFDfk4oYtZIFRjVuQ79SwmmrhoXdOdw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1863D60054;
+	Thu, 12 Mar 2026 12:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F7CC4CEF7;
+	Thu, 12 Mar 2026 12:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773320295;
+	bh=gBep5553txKudcWrJjtiLDf2/nYBl1x0tWwim114nHk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RaHxunvWc775N6DoRn2pN90dVZoeFWgrpJ7+jfJyZ6O3Zea15fV0WJLuDTRsB9GCZ
+	 YA7K1fWEjJZs3MxMrKj3Jjdis6B0IkCLLELznFgMiATBpcCbbknnADJNDa42n53jsb
+	 qeQW8XXXDJZDUbuS72taYDtkFt6zwVqB6pE+Iu88vEnsiPAgeenD5irTONM+XhQGty
+	 KnK00EYdzl7UTaeQCi1WL/X6MeVvOr4fnhZwcltKpdfz+bgWBp9jLeN0yYZJ0eCMOp
+	 9tZ972GKZjgFuHN4j46U2n9dhdz2AoJEBMg2BnPcz98Kk5cyHRkxRwRcA2eHyk2SoM
+	 BsN84yxHZiuow==
+Message-ID: <0761a728-34ef-45b1-9aaf-0e6c5c360299@kernel.org>
+Date: Thu, 12 Mar 2026 13:58:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abBlpGKO842B3yl9@google.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AD9141C0005
-X-Stat-Signature: zx3e9mof6gtf9iqg8rp8kddub1o9gsf5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] mm: Rename node_get_allowed_targets() to make it more
+ explicit
+To: Byungchul Park <byungchul@sk.com>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: akpm@linux-foundation.org, alexghiti@kernel.org, kernel-team@meta.com,
+ akinobu.mita@gmail.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ hannes@cmpxchg.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ gourry@gourry.net, apopple@nvidia.com, joshua.hahnjy@gmail.com,
+ matthew.brost@intel.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel_team@skhynix.com
+References: <20260311110314.237315-1-alex@ghiti.fr>
+ <20260311110314.237315-3-alex@ghiti.fr>
+ <20260312052831.GA60352@system.software.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260312052831.GA60352@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BC56E180006
+X-Stat-Signature: 8pnseksyyw37egmko84cmgwc5rx4hhc1
 X-Rspam-User: 
-X-HE-Tag: 1773320252-382931
-X-HE-Meta: U2FsdGVkX19F/4rVLXXo91YWRLue441mKSQQ2s2F5mJ6V1lIloRwqkFGtr0xWQUDE43lkUhDPAuRTeknlRw/9hfeJj2x2Pi0ep4UkyUKucqNjMdlv/RwnIKP2FbqhPLnQiKzpE4Y49EIWazdZ/9tsi4WIjF8YldLDquem4l58/dSj7ydlgQvJwnzxticWurLCwcb0Kflq7YGm2QLEnm+4D8d6BkryS8Gbvuw1U2IqeTgUS+3DnkC0O8EDISu/vtWlTP6fXBugB7nBkV2Ol0l/hpqk0QwMhAt83PsiR+4+hMuFQii1yta3GQVPf//xD+xk5eADqXe+Syy58aIT4sb+rH/TSFgui1v+33XNQeCz72bBm0Qvrj0P7WgJgJ0UeCqSIlQjSVKJ7hpY4BWTsyBXlt6t2Tu4aFSyLm2rrv+CsODWjINi/t5GBFtxSzDh9bqSYlDtOg5snlgiycdw3zCr7ynj7eHBjOAljUM63kAENIEl9E7jZbb59c2fiK5pjdH3qOKDVK47vLoPpaiWxEVoqQcPi5oO/w/OU/vdB0reJ0A15oOR+ENu5Vdf6EI2oWvhr0jCU+OyhgYIvyK7eXYNqWEqKhxABF73xBq1eXp62+xdbiB5ph7DjfBrAhyWfp1QsciNtIVzl6T/Hh5rhzKDo8pIl2H4qQ7FwJgN4FE/aInHAv3sqO/L/w2YvsTeq+VJRc7zyhWpW48sxpsN3V4cg/u5DtvVjgAeN3DC8b4UV1wUoIxGgLG8XMEFDJDAnmo+yvqVKj1LmzKEljWQLlMx+/RuBol7KDP3faItF3k4EgYZH9jaBnReE9HBUL3V0xBbVtoFQjzaPktZAPZSO6rv/vSdzYFooV9suixaIzxICEo0lbKUUK1H19x/XgfeqjMlt4d8fZU/2OKTc349CR6dx5lYdK0MWosCOrkWYodU59xFu3Zew25i1cACQClRKJDYX85hHzY5YiZCOvdSy4
- /UlGKbi4
- six8vxL9EtsDxEOjtw7uiFNAGCrlD8CA3HZgs3sg5SCOqpTyLk4m27CdpDEY4B0oi3xDlhznDszygW7oY6TVwscTbCUy/DteaCXbBHvrKpkBaACsz4c1Rqt4dtPgMZjBAOI86doDUS3pm9hmzLSuwvQ4lzusrvNo1tg+adAUHpcqcqYcl/DSoBS1ADLVe2GNkHy2fTvMsRaTbMgXNPcV4kGrB2pfZhrdvNaAk0GxcTE0AjftMVQRplQmyyZcN2nf3H/D4ln2EugQQAH+EiFfT3v/SHlLewWemjI8SDEPtBWUKvAWHUYWT8nf5TNV6cSEh/D382nKY9R7JcdHojHFd98otfGMQuOtkA9l0i4e83hX4GJbLl97clIGixg==
+X-HE-Tag: 1773320296-803263
+X-HE-Meta: U2FsdGVkX1+cQVHGbIL6wz0OYbajFqCTmUse37zuGKV0ZqW8SnY3laPfddeXYHE46QgXh4rr+qyK2xeq91X+NctrRZUcyo41DQW8U4gk0DAgUHsLJap5JJE0it4wR0JOqFzHaNfjcxtQC+jd5DsSa0Ib8zkT9ZKrZ85HejXY+/QVaCgbeXBUrsXQ5IDEVEP/hpcz+URd+wc2y7BzAabX6mrXrdTWBaxlTOJ0irw0Upg3z1/ymbLrFJefNDD9Ia4QxKrDF5iejDJMLjy/Y3huybsikwKXV5rANUPPEKRiqWKqHmxCm47TOBXMc0UqqBsdGd4LPdxrndVBoNEdjVKvkKrx+4TXav4IyxM75n1+w6nr25+COPuT07pbnjOr3gHrtS8BcJDht91roajaUQL9KnUxmffKy02fsb0/bvC0E2VigNFXg+vWpP5DoafSOtczkB/NiwX/A8t43GBaTmXezaFWVuK4wV5z8JP0+60hujxqsfDcqJ2NUZdPdH/25dz1tLoVJjumUouPP6WEqSbVlL5t8aBxgsKb8DprcalcaHbyCXOx+0BEwPGbU2ahbgA/fldADZvO4ZRlgLp2vWnOQRymMMEdEuU3CvEGf6m2yTIityOtEc+bQ2xvVbaudsde0vDybCATzEb4QXc50yt0oKpofIDijVMSB52lesvgjUFecUjNiOkYNE+590ac/VEdd5bDalAhg4LJTVwH2BFL3Q+UqrDZ+l/pNMVUybXcgo0z8B1lJJQXxUiFoDn3WdDDNMpwigZDLN4T2BrZ3uxuOOFLa1oy+ZB6/HOeNKWuMD750kFUwNJT8zznbxJ4gCyIRAxgdsOHQSkQOhU/YjdsJsWKWKjo1A3r+jt4Rzxhcs3y1L4KH3eFnsXNzzHcxW0EJw6TtMLHzMc2cBwahSckEvPy3HsOxioVkHanGJZwmMhjVqGt8o2Y/gC5vN5jkIBIMSdInGlEV6/o7pQ4ygj
+ 1y53mo/m
+ R6U6QLW5lNlFQxRYn4tpgUxE3y8tununFkBghw68PVtfShDY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,23 +147,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
-
-> IMHO, the necessity of IS_ERR_OR_NULL() often highlights a confusing or
-> flawed API design. It usually implies that the caller is unsure whether
-> a failure results in an error pointer or a NULL pointer. 
+On 3/12/26 06:28, Byungchul Park wrote:
+> On Wed, Mar 11, 2026 at 12:02:41PM +0100, Alexandre Ghiti wrote:
+>> This function actually returns the tier nodes that are targeted during a
+>> demotion, so rename it to be more explicit.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+>> ---
+>>  include/linux/memory-tiers.h | 6 +++---
+>>  mm/memory-tiers.c            | 4 ++--
+>>  mm/vmscan.c                  | 2 +-
+>>  3 files changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+>> index 0bf0d002939e..ec39dc3c39e6 100644
+>> --- a/include/linux/memory-tiers.h
+>> +++ b/include/linux/memory-tiers.h
+>> @@ -54,7 +54,7 @@ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+>>  void mt_put_memory_types(struct list_head *memory_types);
+>>  #ifdef CONFIG_MIGRATION
+>>  int next_demotion_node(int node, const nodemask_t *allowed_mask);
+>> -void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+>> +void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets);
+> 
+> Look better than before to me.
+> 
+> What about just node_get_demotion_targets()?
 
 +1
 
-IS_ERR_OR_NULL() should always be looked on with suspicion. Very
-little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
-pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
-implies ERR and NULL are semanticly the same, so fix the things to
-always use ERR.
+Maybe throw in the mt_ prefix and call it
 
-If you want to improve things work to get rid of the NULL checks this
-script identifies. Remove ERR or NULL because only one can ever
-happen, or fix the source to consistently return ERR.
+mt_get_node_demotion_targets()
 
-Jason
+-- 
+Cheers,
+
+David
 
