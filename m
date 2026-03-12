@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66F20106ACEA
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B5C7106ACEC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:22:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1776B00BB; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
+	id CBABD6B00BB; Thu, 12 Mar 2026 17:22:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9682E6B00BE; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
+	id C68666B00C0; Thu, 12 Mar 2026 17:22:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86A7E6B00C0; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
+	id B404F6B00C1; Thu, 12 Mar 2026 17:22:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7404A6B00BB
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A71BB955C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:19:49 +0000 (UTC)
-X-FDA: 84538678098.03.6A79BF5
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A22746B00BB
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:22:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D69C1C4A8
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:22:38 +0000 (UTC)
+X-FDA: 84538685196.10.5E7366E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 81A884000F
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:19:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAmgV2ar;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9B65940008
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:22:36 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mro02dO+;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773350387;
+	s=arc-20220608; t=1773350556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UJW95MAAwk02Yo5Bqs/qbwpbpbptX/VVoXNWJEuoRrQ=;
-	b=IMrTmx1dTyJNHbJ2VcIQVEkLyhvGWKEK6zPVXm5Oy2X3uHxGkVWvw9AvrvcA57YV3K81r9
-	BWgL6TYaon8tS86l8sRCCChvrwBhwihL6/pDXlDZ/a8GPpcXPEJhxxs24MDAlDKzWH2V4Q
-	S+T0Ro1a+wl4+m0bopSW1NXF1BAxBxE=
+	bh=mcvt3vTqaYpb8zOMMJjOAabgH69xQpu814FDAheHjpA=;
+	b=F7SaTGNi12QtRfN2y59vjg4WuQeibdawtTiRegFyVmDcR7qaeBrD5xzpFWUNUm+bwUovI4
+	OuOw0zMXpWWr6BrYzrpieHIKIPszcAqJ6viwzdwcdy6aMFVt4WrPpxSdoZmdpZd0tmyH8M
+	JAgJkJVrItYFuiXLkIYSwL/Qz2WFgD4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAmgV2ar;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773350387; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mro02dO+;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773350556; a=rsa-sha256;
 	cv=none;
-	b=aty9ZMxHJDYDPdCjgtzcUIiLIxsVPRyKHhW4CzYgow9MpHBlbbls3l8oLBDaUh/6tKokBH
-	HfOVNaRyvSHpD2f0xNtuvKcFwiS64JULOwq9D72eEpKsmJJ97rm12Pw8wrenh0v8OkYqyJ
-	xw/OMdYzqqTTtdMgcOWLahZAvpscCos=
+	b=KS/ve+YT5D1xF8dpQHm8z1ss3+7kv7o5CNpb5Psyqu9rvuIl4GRX6XgUzBLOtiSw2FvRkh
+	K5syJzfW56RDe/QmWz2WV4mZaplIqkKcJLGFYPDVaiCpkrUc7XsstmUBAHxXx4y0hw52Cz
+	ZTBdjL1LXqGxtDSHKnXzR4i5Tz05gTQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A8CA860142;
-	Thu, 12 Mar 2026 21:19:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE64C4CEF7;
-	Thu, 12 Mar 2026 21:19:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D243560142;
+	Thu, 12 Mar 2026 21:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0807C4CEF7;
+	Thu, 12 Mar 2026 21:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773350386;
-	bh=b/n1AB5/3Poo0rQsSnXTnJrEIrDJtXE5V+mRQh+spI4=;
+	s=k20201202; t=1773350555;
+	bh=vXrfk40UtZbX0SqCHHqsOdP16LoMR78nLHdRm76+ZlE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oAmgV2arw8JwtUgPzmUkQXEI7qwOzfCbG1n6XzBr808nXkT+OTjcRoZGUbQVs225r
-	 9oL/+sG4BcrmV3hycYoRG47G00JbqB8hTMHM0ptNJU7mjsuefL4tvMRzuId6W14LfC
-	 IhC3XdsJFW4ICAXdSYDHW57MGspUq0ZIKv9UDCO2lWLUNOBuhtz5raqUE/EXj07yKw
-	 lSTutMzLLYbUh0c0Tgi5w3ADbIccOK0ATm2IM7ZQRhFJKmmxtB8JJh2aueu/1QEbET
-	 doHY7gQJmOOlG2DNwXemCr96moZ7CqMMX0kfhuAXOVJR/pnLfkaz6t22RHEZ5xmisP
-	 wmCkSME14rwIQ==
-Message-ID: <ef97dc96-2525-4694-aaea-34ef67a05caa@kernel.org>
-Date: Thu, 12 Mar 2026 22:19:27 +0100
+	b=Mro02dO+YyFgDnaGXuPbgLN5GgvpSjomBgjxPOEDX8QhxT0RJ7M5QeY7EQTFblHwn
+	 +jQLoHj3heOq50guPlmWTSueQqnadlOF0cjmjDAJAeoZ0IwvheYmgnDA9AfZMPvK8A
+	 kLLNXq/lTRvjded7buEA4WfHzkiiksMRkdp37DEyve9lxrJtWc3YQ4GBaczagMg79u
+	 UJI21S55B02VO2qlDVdoypuBc7vsHK4YIZjDjvtmovRH2N1Ex3nEjvR7ZlKeEUXoiG
+	 OWeMTrLJKxZIWdaij9GFkwu0sovQMmaDh8ICqasn3ISfKMJqzY2KHFpZiUgxabqhXI
+	 vwvPREQtBRXOQ==
+Message-ID: <b001eb8e-3e12-4713-aff5-8cfcfea792e6@kernel.org>
+Date: Thu, 12 Mar 2026 22:22:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v15 11/13] mm/khugepaged: avoid unnecessary
- mTHP collapse attempts
+Subject: Re: [PATCH mm-unstable v15 12/13] mm/khugepaged: run khugepaged for
+ all orders
 To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org
@@ -92,7 +92,7 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  willy@infradead.org, yang@os.amperecomputing.com,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
 References: <20260226031741.230674-1-npache@redhat.com>
- <20260226032631.234234-1-npache@redhat.com>
+ <20260226032650.234386-1-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260226032631.234234-1-npache@redhat.com>
+In-Reply-To: <20260226032650.234386-1-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 81A884000F
-X-Stat-Signature: 4ubcbtwgo8e5p7q881ekkka4yi9cao3n
+X-Rspamd-Queue-Id: 9B65940008
+X-Stat-Signature: p5nxye46yayj8keaybkxwuo6pntuqq93
 X-Rspam-User: 
-X-HE-Tag: 1773350387-905631
-X-HE-Meta: U2FsdGVkX1/zqxg0Fp3k2DFcpClSEo3qWlzq7uxh/7GqY2PuUH7tGkaPGA1GNeO5AKj+y2/9JkbyrBiYd338uQ8gmEn38C5y15TvoEO0WgfbsWSAoSl7TWdYpuI3q3XjY+r+QNvCtWRlKU/+lxxTAPTPiM+wcAj1OOt+b9gBV/8giGPf6pmtcRtFVvV7euebREglSfQ0xfqm/7c4Gq6gCTHuC3+MK1k5PC78/XQIvNnWKhJFP3ruPUgW40LPcl1F8yIoPLFyiwe3izA2cGMAjX/sgUed3gzbeVe+y7T2ObIFeefD7nxqTJfO/GocMf+eW+Lb8C+zk55xz1FoQ4HEAtdYXWOCCYAWLlm8llzQz/G2bzEO4d2gXCaPDMwyHGOkbVL35Ermx0Ss47cfYBuiMzVOFBPfaxMX34y+oqqAzc2WObLnWmYwp6/g/37dynOkyRKNKaQN50W7Ub3JU4EcuPsWKfYwJxoN+s59kET/vo3wtQ3H7Ul555fHNEL4eoy6+GQkvCIJJwVbFG3KJY2qKjPhfstedCUbTMokBHmcPK036dhFuxRXja3YsHMBn92NSyAYTQ/nNtEME7BeIfPrjjNTNvKcYjne2CNuTcOQHDkpM61b3V+r+kU2WFOBGH42V66Fraw8pZTji37VCDQ8QV1wO0yo4rKdHMQAlp5LHq64Q2FWNQZ906d7CayBGLcwZCcmPgkGdNIbHiw99wWmr43Wl19qN9BkRHV1dAhmfbtJFJW+WkTINTV1qoIr1NBP1MWloP++ueG7Z+j5z+HOtZBtEbvcRg1FNa5KcUCOu4tahcpf/GbL1rcxoP4fUrt2nSgPbweA9PAqyTLVq7zpsn4vAgDeBfRXktu+hnY//hgbnl5XYtHZQz5M6dpLcg6PVnSGm+ijG8nOqAdiufcSIYanSnBKCIsx/iLKwXgt/6j5Q8NBjJB7uPUGecdHFoSW005Rivl77cwSgDdGP2d
- ruJcqxUo
- WtF/T5pqTKGjO3rAes2LUYN9Kg5HOI5B+ve7y
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773350556-547780
+X-HE-Meta: U2FsdGVkX1/lGucNL3Ii2j3TbNfEkdyCtwjqIltPcZaQzckf5murjNPJP5mHNvF0PnlCHHFvAouR6nJ0RIFVANisj4Ef6/NAVxPgPcV+ijGH2mR0HOFPobSh3WKeSfzVT2A/eaK/uhfyCI+n/XBAMwqpQlVm/TfQMBwFeBxqJKkbj2m1+GIDXcDYBZQHqCMbShtxNaeAAX9secacMDNHOZAiIq+jlf7BLtmWZRFuxFdtI/FHEmdutbVPxBhb5JD0LGLM833baWH+UrPbfZB77sXIGisqPMqkSq/IB0f/oTZwE1swakFVu6hGWzgwRVrOZgl8xdanuopaqS2Nz5xPQ+GfP+MZzpuAErGy6OSQNyqOZ4htGzdx3zJSIPP6cQBLYCI+riB5BMxeAvZUlJNaoOREYEZqBClJC2OrpasOD59f4oStHFJCfZMdLQChKnpoV6PBiBNbCGKjBpAcm9FDs31CBSpSbmxEHaE+eyM7Bj2Dz5nv08tpzargfjYV6/jlSCa8BpKU65GUHIEDRjfsaovPwsiS3tOEEid69EXWRqanlV73QlUWPEQ1D7bHdsIOzSVEF5hWL1LtxLtgWH5fD43wOncV7vEruqdrrenN4C5qzAHSAfkxPmz58SOqSHafcp2hChwvPNV9iS7ciNPq8WKYKFLixxX+IAziU+xJ/vu6qtqo9dYfgxDpXAYrGymFuEoFGPapWO+IvW0vGTodJiXPCesNxyHFYsl3mm0JlhHgIH4zhZFlqA0p1fxcWXpCdtQhVen7aTHLX0oKJloS2xyQx6I3YBTn6hJIZUwi55TX4GLEg172as6nVyA7IdIHRWWeAgt2Q2ZhGSpywZCbuWNdHi6fZeIaEbei1B6T7JKcEmE8TZoEeCNp2MyolOa2DmY8JYcoSQh72SbKERoMIggjM4/bGhi2D4b65iAO4SKN5OI8bYLqyfHWKPyM5hkvB8xMRXBzVfKX31JSML/
+ 0/pAkLZN
+ NAgx0v36M7ntDjMY9FnUbfCcGIVeQbP4lotGqHsbek7WXKW29qEmVgTNVH/BJ3gdts87cXBFN9tnqtjdtW1hmaTygITJ6lGE/oboApEFLwbdy/Hc6LV/IgOaexZ6B6h9PLh3hWahCoG2x85a8yryFEHHTRBfNhQEJQ+DMnyJNXidwdYlIDqfz5Qf+EiCdMbk3a6DfDOGMZ6QxhvfGaNelDCP/JauJgL0f4ityBGef7WDiDHenpZBb93s4B/A78RP+GZJvhFBNLxaZ54irQ9AggMT2IQntUCYI3Vw5ECu583xxtIxPj29rr3xoxa+N7kLsEW3Bgk+7yUWIQgmNfylrHz5X4o2LDpgp1CFs96aRauEPOlg/l9DqFbDkTIj7tJuggM5HCkI3basJVo+xkCCg5UfG5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,71 +158,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/26/26 04:26, Nico Pache wrote:
-> There are cases where, if an attempted collapse fails, all subsequent
-> orders are guaranteed to also fail. Avoid these collapse attempts by
-> bailing out early.
+> From: Baolin Wang <baolin.wang@linux.alibaba.com>
 > 
+> If any order (m)THP is enabled we should allow running khugepaged to
+> attempt scanning and collapsing mTHPs. In order for khugepaged to operate
+> when only mTHP sizes are specified in sysfs, we must modify the predicate
+> function that determines whether it ought to run to do so.
+> 
+> This function is currently called hugepage_pmd_enabled(), this patch
+> renames it to hugepage_enabled() and updates the logic to check to
+> determine whether any valid orders may exist which would justify
+> khugepaged running.
+> 
+> We must also update collapse_allowable_orders() to check all orders if
+> the vma is anonymous and the collapse is khugepaged.
+> 
+> After this patch khugepaged mTHP collapse is fully enabled.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Signed-off-by: Nico Pache <npache@redhat.com>
 > ---
->  mm/khugepaged.c | 35 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 34 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1c3711ed4513..388d3f2537e2 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1492,9 +1492,42 @@ static int mthp_collapse(struct mm_struct *mm, unsigned long address,
->  			ret = collapse_huge_page(mm, collapse_address, referenced,
->  						 unmapped, cc, mmap_locked,
->  						 order);
-> -			if (ret == SCAN_SUCCEED) {
-> +
-> +			switch (ret) {
-> +			/* Cases were we continue to next collapse candidate */
-> +			case SCAN_SUCCEED:
->  				collapsed += nr_pte_entries;
-> +				fallthrough;
-> +			case SCAN_PTE_MAPPED_HUGEPAGE:
->  				continue;
-> +			/* Cases were lower orders might still succeed */
-> +			case SCAN_LACK_REFERENCED_PAGE:
-> +			case SCAN_EXCEED_NONE_PTE:
-> +			case SCAN_EXCEED_SWAP_PTE:
-> +			case SCAN_EXCEED_SHARED_PTE:
-> +			case SCAN_PAGE_LOCK:
-> +			case SCAN_PAGE_COUNT:
-> +			case SCAN_PAGE_LRU:
-> +			case SCAN_PAGE_NULL:
-> +			case SCAN_DEL_PAGE_LRU:
-> +			case SCAN_PTE_NON_PRESENT:
-> +			case SCAN_PTE_UFFD_WP:
-> +			case SCAN_ALLOC_HUGE_PAGE_FAIL:
-> +				goto next_order;
-> +			/* Cases were no further collapse is possible */
-> +			case SCAN_CGROUP_CHARGE_FAIL:
-> +			case SCAN_COPY_MC:
-> +			case SCAN_ADDRESS_RANGE:
-> +			case SCAN_NO_PTE_TABLE:
-> +			case SCAN_ANY_PROCESS:
-> +			case SCAN_VMA_NULL:
-> +			case SCAN_VMA_CHECK:
-> +			case SCAN_SCAN_ABORT:
-> +			case SCAN_PAGE_ANON:
-> +			case SCAN_PMD_MAPPED:
-> +			case SCAN_FAIL:
-> +			default:
-> +				return collapsed;
->  			}
->  		}
->  
 
-LGTM, but I do wonder, given that you have the "default" case, why spell
-out the ones that fall into the "default" category? I'd strip those
-
-/* For all other cases no futher collapse is possible */
-default:
-	return collapsed;
-
+Nothing jumped at me
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
