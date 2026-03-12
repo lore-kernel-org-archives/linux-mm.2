@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C977DFED2C8
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 04:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E2FBFED2C7
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 04:34:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C2666B0095; Thu, 12 Mar 2026 00:16:25 -0400 (EDT)
+	id 35E466B008A; Thu, 12 Mar 2026 00:34:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 270506B0096; Thu, 12 Mar 2026 00:16:25 -0400 (EDT)
+	id 336A96B008C; Thu, 12 Mar 2026 00:34:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 148486B0099; Thu, 12 Mar 2026 00:16:25 -0400 (EDT)
+	id 239516B0092; Thu, 12 Mar 2026 00:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 03F866B0095
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 00:16:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8B3F213B9DB
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:16:24 +0000 (UTC)
-X-FDA: 84536099088.24.B3ABC6A
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 95225A0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:16:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=jMc+mcfx;
-	spf=pass (imf15.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 148F46B008A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 00:34:25 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9D3A160364
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:34:24 +0000 (UTC)
+X-FDA: 84536144448.05.804B139
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 11A6240004
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:34:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=icdKWQ8p;
+	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773288982;
+	s=arc-20220608; t=1773290063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MhwVEJ1jJKHsVGKZZDwnOv+DL99Qt0PgcKelrAIpHWw=;
-	b=HrD2d7fr9amvczjskJMcohzRm96V+wPCqL1ZNW1bBEcM9IA1mNTz38ze0FERN3mHmB3vz8
-	ZaRUBHEGMzBl3e1As7kcE1iy4NUKV83MkWI2jLf8uSV7+NfOADZxlr1KhwYBd7dLQfDJnq
-	S9tAd5JVBhtIMP/l7iiIjPVm5lGPL+E=
+	bh=W/GdNouIWyw/Hxd+Cg8eyY6MPPfVnuc4KC8I179/6Oo=;
+	b=Emh0wGcaps3lqNMqfIIh0SrOdwZh3A+/VranM3m1AC4UtedK/mBQV2z7f9Owb76ghrn0J8
+	+UKj5eMRaw8ItjsTgeTBTmLekXRtZR4qiNb8Y5FBKdor/Snwp073sb6IiSY+doM3riEvNU
+	0eAZTyiWz1mduUnmmMtbPwHeMBQCiOQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=jMc+mcfx;
-	spf=pass (imf15.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773288982; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=icdKWQ8p;
+	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773290063; a=rsa-sha256;
 	cv=none;
-	b=TXvlyKaFAJ90YLQgdGkDw9ShNUmnRybrXmaH4WUIjOtSC8++PIr24RtqdYvpGb6fGgT6Ad
-	gldDLh6bhk/HeXJzimXCqz5Qpe8883JW5T3rqOnQrSjxeYKQJQqB4RAgd1hRPKxBPsw6/C
-	HtKJzq4s6yyDiGKq8cVjt8GWasnyQZE=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c73c990a96dso161670a12.0
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1773288981; x=1773893781; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MhwVEJ1jJKHsVGKZZDwnOv+DL99Qt0PgcKelrAIpHWw=;
-        b=jMc+mcfxbZYGxB36yBc5WStKKwiySo8vawqn3JSsJjnlAMyRnTSoWt4J45DQLLsjO5
-         6Uypaw1XQyrz8e1ZNqPy07B+00lejN/le2ZhSyKgfgmLu0kgnRvq//h8pHZfWASQI+Mj
-         WJFyVGl9gWslnPhvaC9JZw9LZ/Z4BRq8WIsKCtuO3Wyo0FTjV7D1htdDdSGeJOfnM07O
-         Dt2fYbInSib0luJjrTyPDXF7JmbZr6AhOa+s2Wz6fTybFD1dI23UhrL/+ebyO9og2AEZ
-         2QYm2/ocTr3UAU83u7ltbXzD72/+BZEBCaWqVLWJ4HFOxRyOFvFjDuv9PMVrYUGEd99f
-         22cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773288981; x=1773893781;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MhwVEJ1jJKHsVGKZZDwnOv+DL99Qt0PgcKelrAIpHWw=;
-        b=GYBACFbmtnxZugU1x5OQD9HibqIl6P5twNzFyDXCjwUoMlTrfvurl6sRPEXI0Y5Bns
-         XjGrnw1pgJYXx0Lx1Orig7UmJXPL/Bg+kSzczpNSYh69EEChP+z6+Vl37abvXJbD6GyN
-         F8csIIqTAyk7al8arfrsKRUJjzhxUkgBAKc8dG+V0ZLmSS8+V5GAWdbUO1/S3TrAUChb
-         GGaWRHugPUIyo52XtS1TsS7BPJLe3OIbjSnubEoJT74gisel6ytpHazJcgUuJdx1VmkM
-         NIO8s+WAN2WDTOnlFYqWBuLjbuCOK4bPahXLAH5HCoC1Tx66AcfGp2hTpWLVVA6el3Cl
-         uKLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXf+nJ+9QJ1889D+TyId0EvWfvWYe+axZhtU/S1I392uyM66KUQCv20v/ixnNVSiNZxcHsXsRRhAA==@kvack.org
-X-Gm-Message-State: AOJu0Yyywn89EWtMbQNCBhXg+TY2GGeZ0rmwnok7fVr9TQk5JLB1kEmY
-	jWE99REeHgjhcVqb2FNQ8h40pT7UpRH4dW/PQj3RbDa8fxK+yBnN+OUvL6o/GHl/IMs=
-X-Gm-Gg: ATEYQzxWdLVElhkS7ottFSagG/pPQwkgjg/K5duG77Jg1NdfLzOON7QJS11AW+3tJyO
-	tNp4oFdk5eRjUXlrYXUxSGiwiG1j6KsdFEAuM00nArQ9v3FWaX9agB/5PAnC2Y2fGy5sXp7ot85
-	+X88Nq70F1qXBD7G6yZfcriufOxncyIIJgvR1JTQAukVkC2SC1hXOXobLv7T4HlGzr9+MNdBCKt
-	mLdIeGoqn3GVyEuWz4qYXBkLZ03SnZ9fS2/rgrdkVHRtpdRbiS65ZzypTUngPzR+v34VuJkusB4
-	zYZ8C3VaK71YmlZQpNMoSf1mhtHolJzBKi7f2DZaB1y9ncUa60itdmMUZ64wkPUISBzmYai+Rj1
-	znBQaAAHRS4jf2poLKVcKiJyc7aLjCgbrnJ5d6lYY9yP3Z0616DtPxaER0qxFL6L7qRKdtnJ+DN
-	1RoZ1thT/Zj8ddpyGoUemXdcTLluYz5PhsEKvhYSFpwSPwt8A=
-X-Received: by 2002:a05:6a21:38c:b0:398:7c6b:8615 with SMTP id adf61e73a8af0-398c5e58d14mr4512612637.6.1773288981346;
-        Wed, 11 Mar 2026 21:16:21 -0700 (PDT)
-Received: from [10.54.26.107] ([143.92.118.3])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73cdf9f4f3sm3780255a12.25.2026.03.11.21.16.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Mar 2026 21:16:20 -0700 (PDT)
-Message-ID: <26ddcfcf-cdde-436f-860a-4cdf574e51bc@shopee.com>
-Date: Thu, 12 Mar 2026 12:16:15 +0800
+	b=nGMDCi/zqMeQUG9wN7zXrBwRRTP0udzjgTPQeZmtMQJjbbwBReA5mWbsVUQ1jeQeRjGsu1
+	/Th8xSadvPwRF0CmmJ2EKmfKPOd3ay+Ndvi8sANFjh3vMbIfhjFPJnbwdnY27AWl2f34Gr
+	MfoXnNNKUNM4OnKEbHh4npvSWc6etm0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=W/GdNouIWyw/Hxd+Cg8eyY6MPPfVnuc4KC8I179/6Oo=; b=icdKWQ8pM7+BfYu6G/Y782mRO3
+	ZX3/3xRZ9+vCXzzSlrbsiZVR7HH4GWF/miznAlW4YdW0B+VOUA/Hu8SmAyIVK9mlkRz0C3rd5S1oK
+	6uVWDOjBPgZ7l9f5N2V/h6V7x61cwzmp6c0knIkykh+vUWtKrpx9bAwcWSVoTjaOdFdc9oPf9r1i1
+	fvV/WCMCscSDcOuE7AD4/vKXaQZAqSQg3yhEOECDAmsmi9Q279WdIBbrfdM3q0wUg8BqI2J7tEBN/
+	eNC51BScMZXvhdWygSXkDxNWWGThaGq8c7RkkfIbyPpT0s2CVD2O1neaXgrP/SSJM8OdqCtnCxHR6
+	8/3/7IHw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w0Xk8-0000000DGZs-2BrU;
+	Thu, 12 Mar 2026 04:33:52 +0000
+Message-ID: <1418e495-8725-45fb-a865-b75fb87477f6@infradead.org>
+Date: Wed, 11 Mar 2026 21:33:50 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 3/4] mm: shrinker: optimize the allocation of
- shrinker_info when setting cgroup_memory_nokmem
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@fromorbit.com, roman.gushchin@linux.dev, hannes@cmpxchg.org,
- mhocko@kernel.org, shakeel.butt@linux.dev, zhengqi.arch@bytedance.com,
- muchun.song@linux.dev, usama.arif@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260311030235.240953-1-haifeng.xu@shopee.com>
- <20260311030235.240953-4-haifeng.xu@shopee.com>
- <20260311141928.b4291eae43f99a2f6912cd2d@linux-foundation.org>
-From: Haifeng Xu <haifeng.xu@shopee.com>
-In-Reply-To: <20260311141928.b4291eae43f99a2f6912cd2d@linux-foundation.org>
+Subject: Re: [PATCH v2 01/25] kernel: Introduce meminspect
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Eugen Hristev <eugen.hristev@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kees Cook <kees@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, Petr Mladek <pmladek@suse.com>,
+ John Ogness <john.ogness@linutronix.de>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>
+Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, linux-arm-msm@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
+References: <20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com>
+ <20260311-minidump-v2-v2-1-f91cedc6f99e@oss.qualcomm.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260311-minidump-v2-v2-1-f91cedc6f99e@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 95225A0005
-X-Stat-Signature: 9ehut5q1ke3rioddnnc4gz4q9pyyaffq
+X-Stat-Signature: x3q8jsmfss7rp4dn68gaikmt7wtey81u
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773288982-876901
-X-HE-Meta: U2FsdGVkX1/KdUxbaxVHlpDV/rEYfBgItremjUUfWoxcGBS43ZDSTI6MHnlmDlKFtT0C6aJcmjrI7pk0bCXn3u0lQRF/VQk6b3DL9op2OAVsm3IIrKH9KSQjNG5zdCq4H/ec36NLjCs6kLe9sVLSs9ERNVJca0y/OTb6aj2DiIFq6YUOBlfj5DrMXLsbCrqVpPLlAnsB+bc5Xa5nASVWiJx4TYJjSuAL0xfksUgqa/gMcSv0CxVN7vKMlJb3hHaTbDTRb5EkxkSyLvnHMOfBCUSXRsEcZGYCh+i/68BliasoqjQ5wmjfPzaKQMkpFV97C3zv73eKcZFmrcmRbgy/sY69qckL0W7GpFCtdoFRrel9KMSsjXHV03b0jk48cg3IWNV5qMXFunO2VLutcXoe8xim10x7kM5wy3hAvVCEjI11/IWdCbASQLMWN9zMcQRZGd/h1oiPN9z+5l0KOL2O2A1YW8NRLJct8XGY0DIg7fd89emQ6qKL9ZxazwgskgoriCfl/zVoHu3KmstNK1DWjIKfdrZQPTip0CJw/bKZUo11VZnglI99Jhx/r5F0mH0zHYPp8/eV4k45Z2s7y+6hO8/EFZRL7qTJDX1pbvagA7JT6reCZe9PNJr45HHP+cv/7kJp2sHc95vFJI6DcaHihkiz7oMeSKJhPViIbbNru4dVG7QDJCD6AJESGD+d6Hy0eOahfU4d7WXDO1hr/+DF7ytSHnPtLoaYDrioLx84ZEnXzetu3W0/DazfCTxK1YSZ2MaKZSHHg5piDgQeK9JWMG2BT0D8EPTaEyIsNI2UURui0raYut9Ws/eDVQaOmYHCuE9KEVHFghBmtQjJQNjMDLWqcFp9G6800/GKttt7886FEGbvk+f5m7oRml7STiCif8fQfBuhdvcFR4JIa9o3M9MQI+bI0dJhoTaTQtXZ2i5y+KCLWcA/O6utLg6FLmNAH55Uy3Cl0c8a9FnamYi
- sOYuh8Rd
- ymtkDhKK5o6q4j9StukWorGfeEd8FlYUVPlGX3R/kv0ien/5704FcnMQgd/ZzxryrBlgTFKMe68MMT7ff+aTOqOfYzhG2XZ/k7ktjCrQL9F94h4QHuMtT7lgHnoDAq25OSa14wtQtfJ4qJmM+M/KrmJnNw0lruSpXz74u3PHSqvDqNj0ST2MERWqvFIwZENdLECF5SqGoSAZPipxA/ghSgNvHH7tbY7SoXROjw8Q/T/Sf8B+MXMUbn/5/b3FNgmlVNLgscisW8cJpGYG3CRas6uyLBIYMjznOj6uz2A+YceXCluQigVvMPeLxhbpsAEg9iHv3Il7Gkwl/8Zr6SSWnJU29aIajyOAlgHCB/DOjjqqEWlsEecsV407G+C3+hPtSQKuqNlCv36OYrwoodjxfdE8hvA6oKF7Dwj2Zyx7o92iZFmw=
+X-Rspamd-Queue-Id: 11A6240004
+X-HE-Tag: 1773290061-530092
+X-HE-Meta: U2FsdGVkX1+xvc/cJRa6CD8xAmAZQZZcFk8HTNiat64sRDAxrXemfL2Yl1G9kfWumec5wiW2plGtDABFEG4nNpTdvLuqxmzET2s6888pMVH4afDC/y0dQnOZreqoBT5xR5wFSYhpDLPbCALqtDDs6AV/XTAeNh1kUVs84Oxy7IjicJBO6ahye8M+j3KHFjo7wBT6cXv6nfD3/OV/n//Wpt4b/9/mcqlWCJZG8tP+nTMYPTd2q42TB5AtLNRVaZRIvOnydvGEjQBqmei5iV6GQEkls/gHld9Mo53srcqOu2LbHFXgo7e+ZJPicoXUThhGawrAeCGu6hDT2bsPjPYqg5ayYTg+egt+1Ru5LioFXPD0sXMK+X5d/1ab/G8qTmp2IUN/8lfO0MzaWnGPDxT4CU+4SHw0GXLSAmj6JhyixEGK1OTwTuMSU0TkwXmjkmPTAmoA49nHnewdPFDAdkDNNEovTRjgz+5QGOt6D+aXf9c5VJo2tER0Z4jjYA7meJr9gnwC9tN+T5vkmftwI+a//LsljwVNCGugLEoxGulYaniuMCqlzaJuWiR9Q/ouubv9PBj7Wgkz7ZWJNyNbXyKm7V5POK3Z7RZWii0N+LusWiosxV9IcL3hJlMPy0xGZC9G4sOipT5S7oYKAMoLwbrgIrKfhcLE8x4S0+NGH6tocgAJaPeUnSSZBTkssaCWCBZg1udKbim/BELrXFUS4RVY+FvDECsmWxqGDsoHhz68rpSvPnC9Zbw/OVlFXFouZlmWIzdd9jRt7Z26qYvHnrB2caJlEQutd12LKHc6eH8zB719XJJuIUtQaXDg6k3wBD1mAZyZZEEpFlKpoWOJdgYkHE4KOscEGOijIJ2esO4BUEUiW0ROqiDKAoP/owgEOkVLtzJwtI7ApCIGWt37DOP/UepBQtCU//wqEB5V1QZqczqPZaeLHXxhZ3q21nAaV86ryvRWyn97uqLTwnROFLH
+ 7nHntVPz
+ 4Tn8IWHt/05irV7yoC0F93+vx6aSiKqxOhcdKi8GOUS7q6kSv1hN7p1o5dqtpyJ0S2cNYOsGGAlXoiBdw1afoKTbafh3Cg2XkkbPN2DSldiQWNcM4BucWmRTfKX0+oNxJYvRkRkNH0X7TQunAH6o9DtLfk+hNbvnQntrCnUbGDOpxMxIZCuoKn0PC5W8JVlknnnj3tUZS/PyjjOj0VpL0RADzGDS4f5cGkYOB1k7dmLiAQ4xiH47XqHujIqCF9OteYmc2OuZNe48V6hpt+Yjk8nnPMAGR01imkom06Imjwmh2mgyIrmTuRh0Gu1VazL1goOGvqWw1tlIEzY8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,14 +127,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/3/12 05:19, Andrew Morton wrote:
-> On Wed, 11 Mar 2026 11:02:34 +0800 Haifeng Xu <haifeng.xu@shopee.com> wrote:
-> 
->> When kmem is disabled, memcg slab shrink only call non-slab shrinkers,
->> so just allocates shrinker info for non-slab shrinkers to non-root memcgs.
-> 
-> What happens if memcg kmem is enabled later on?
+On 3/10/26 1:15 PM, Mukesh Ojha wrote:
+> diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
+> new file mode 100644
+> index 000000000000..fa2b5a84b251
+> --- /dev/null
+> +++ b/kernel/meminspect/Kconfig
+> @@ -0,0 +1,19 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +config MEMINSPECT
+> +	bool "Allow the kernel to register memory regions for inspection purpose"
 
-cgroup_memory_nokmem is a boot parameter. If memcg kmem is enabled, all things
-keep same as before, root and non-root memcgs allocate id from shrinker_idr.
+	                                                                 purposes"
+
+> +	help
+> +	  Inspection mechanism allows registration of a specific memory
+> +	  area(or object) for later inspection purpose.
+
+	  area (or object)                     purposes.
+
+> +	  Ranges are being added into an inspection table, which can be
+
+	         are added
+
+> +	  requested and analyzed by specific drivers.
+> +	  Drivers would interface any hardware mechanism that will allow
+> +	  inspection of the data, including but not limited to: dumping
+> +	  for debugging, creating a coredump, analysis, or statistical
+> +	  information.
+> +	  Inspection table is created ahead of time such that it can be later
+
+	  The inspection table
+
+> +	  used regardless of the state of the kernel (running, frozen, crashed,
+> +	  or any particular state).
+> +
+> +	  Note that modules using this feature must be rebuilt if option
+
+	                                                       if this option
+
+> +	  changes.
+
+-- 
+~Randy
+
 
