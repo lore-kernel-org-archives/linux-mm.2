@@ -4,127 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8532106ACE5
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47159106ACE5
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:27:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8D146B0005; Thu, 12 Mar 2026 16:19:27 -0400 (EDT)
+	id 6F3FD6B008C; Thu, 12 Mar 2026 16:27:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D10816B0088; Thu, 12 Mar 2026 16:19:27 -0400 (EDT)
+	id 6774E6B0092; Thu, 12 Mar 2026 16:27:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE6306B0089; Thu, 12 Mar 2026 16:19:27 -0400 (EDT)
+	id 54C186B0093; Thu, 12 Mar 2026 16:27:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA08D6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:19:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 491F71B7E00
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:19:27 +0000 (UTC)
-X-FDA: 84538525974.22.19A1872
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A5AC1A0004
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:19:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 414F46B008C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:27:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0791EC1991
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:27:52 +0000 (UTC)
+X-FDA: 84538547184.29.571A9ED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4B616A0002
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:27:50 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="G6/NlaGZ";
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=craZlvZb;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773346765;
+	s=arc-20220608; t=1773347270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LcIOVw7wvVMb4DrAoPJvycUtJI5vMnqTo+pR1xmv5I4=;
-	b=4PqD/jtwPqLJ2q7jJFwWUCnvjjplfzWMrHVA/gUa69bhTcaPE05cjRE8jAvgIUlbH9y/20
-	Zr2Yq686WAuYNQXCJ4jpugho84IpyNtW3sysDWmEHtfVqbOaWbGxpNSWrnCWhHm8IboZzx
-	F5VHxz2OxCz6LFJy0U3Q1+GqHjODNoc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sgQXO/ryo2VmHBve+QKX1iYBHSNvGPYhUAhfv2518aQ=;
+	b=FovV5+LxEgtmEn7XfeOVCX1yj8R8gtOy8wGhuxa4XdoUUr14yiDwzye+zpNQOehShYHgxm
+	IMdgYvrZ3uqcz+WaHz/0a8c6XetKgGUBbnfhaRZctivTg+R/YKZI1ZsaSs72JI9eIqYOZZ
+	HccYpMAzY20qOrAozDEzPZZLq4H9/HQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773347270; a=rsa-sha256;
+	cv=none;
+	b=78GwOXiH2FVUjIJQqOLVx2GjvaWlAlsVOswmgsQCt8z9GyjKm/1++TA0vvUSY3GkXOdkXt
+	JzzRaIp3/+SrCbR9VAeoJ3pXbCNiKYhgXTN2WuzWGgnBn9o+W9QKS+V2eAFIVxq/wiOVll
+	mKB0I/EYOmRu5ZJSa1a0eKwMJV0st+0=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="G6/NlaGZ";
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773346765; a=rsa-sha256;
-	cv=none;
-	b=ZD5aQt/wG89ZR9t02piT4V2zsKlF+E8uR3FidZHNKkTWuDhSSGsL8+lZMYAV8qu8io0GO9
-	+R0zjXDIn8Cyz3mlXOod0oXXzzMmLERbsXgMhLDq2H++eoi4fIaDw8vg95msLBDuxwois+
-	sZv3vk7Hfocbu/xdj/5gt098oS+A+v0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773346764; x=1804882764;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=q9i0aNYEP5JbHJFthJWj0hPcbi62cBIHgZdzs8kAjUM=;
-  b=G6/NlaGZSqkar3c1Mym1SAH53QTDjleyCt6xeFD3G2OnFvG+45ueYEKf
-   lVAUxhty0zeS7PHvah9O08pPhWwW5Jxlf6z26fQZ2RuNKnOjZN+I5z53A
-   nconfWEyqC3DQlsuGWiTOJn7b71nGDTI1vUcFMgxn6alo8ZDe3Ak9Zmph
-   UnaVn9D5hONRp1339yGUtqCn2yoLVVcRZSzxVO5osY6LUElcNnAcXVvVt
-   ++/zkXamJgMtsEwHpiPHK5wq3TOftqi6khj1iS+glk9nopw13Y1mbrDSQ
-   vJtD5PBHEQphM0chCnm779lyVQXEVetSyOHxr++KstOQjFMOEzSxD2a5u
-   A==;
-X-CSE-ConnectionGUID: X3i6w2YeTEOR1YBPcuJQyA==
-X-CSE-MsgGUID: HCGvA2YPTmC4SIeW8dqvbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74335547"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74335547"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:19:22 -0700
-X-CSE-ConnectionGUID: AYg91w3STzKB947nCvtOpw==
-X-CSE-MsgGUID: 631cUlyuSmizJuoqoO5P2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="220027894"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 12 Mar 2026 13:19:14 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0mUw-000000002wx-3Wq3;
-	Thu, 12 Mar 2026 20:19:10 +0000
-Date: Fri, 13 Mar 2026 04:18:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=craZlvZb;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 12A1E4417D;
+	Thu, 12 Mar 2026 20:27:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0DDC4CEF7;
+	Thu, 12 Mar 2026 20:27:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773347268;
+	bh=UHRT8qRmUgXL60CxpkG8XqJ40rRzobM0A/lzS/hpZy8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=craZlvZb5CGklOhHfqyBv/N2B4J7VOxsEGxAyy49uaJyF1Jyg/1A800kZeyO1k4yW
+	 d4nk35Hw7zkQKIqmK7i3AotkuZ9aCNg5kxBohTKgQiC/uPu/S8LiGo/e5ToGK1QfhL
+	 xDjyWyVf4HhkL/qRL1ZknbK8aS+MIfLKHEYCRjLEBYMJlSBM9eRsvDIYzl4YfSpmsj
+	 iB7IBjXqGYz+BNhwdRbqTNlG379au2uoUSMc6AvVYa8NoaP28LQ32Omvd8/6aW2CWE
+	 MvfLMlDkSAkFhGIFTmwORZMdnQ9l/wOcUhOFUQoYNegqsXtG1QaNKdM6TFCpqdII1U
+	 /nFm+u8VpBCFA==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Bodo Stroesser <bostroesser@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 03/25] mm/percpu: Annotate static information into
- meminspect
-Message-ID: <202603130444.K3MmZnxY-lkp@intel.com>
-References: <20260311-minidump-v2-v2-3-f91cedc6f99e@oss.qualcomm.com>
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org,
+	linux-staging@lists.linux.dev,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 00/15] mm: expand mmap_prepare functionality and usage
+Date: Thu, 12 Mar 2026 20:27:15 +0000
+Message-ID: <cover.1773346620.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311-minidump-v2-v2-3-f91cedc6f99e@oss.qualcomm.com>
-X-Stat-Signature: hdtfu3ies3nm9rffj8wnrdrz8ouausgs
-X-Rspamd-Server: rspam09
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A5AC1A0004
-X-HE-Tag: 1773346763-140837
-X-HE-Meta: U2FsdGVkX19tgRpiiY2PyIWfOLLspPb+RUh20tPz27z1lxAMQf4Ygv4aL3LnVJnp6FoMpOa3k0ZuD40o1vzm2zZoXPKJjxTN3D/UAzD4f4h/WXeQFPYtw2O8lmKnFcnP2WjH5o43FoORpLI0XDkLD0mY0pfwUF/iPx7F6SY1RKh9yXKjy3VCdz5FpNgKC2n77ISOPNWsoXtRcefD3e6KBYoiRmjxWyGrloSvwSBBDYj55N36Se0KFzYGVigCxjO0nXetAbI6yLAvr8Lv/FFIhqv2jWagTdqGboLZuMD3zVsGhHar23v1IzUzWUT+/DqVDpEV9rtJxjXg31HpsncmDZYCfuU4SAwc4YUWlxB4uh7lmOXPAZsI9Fc62Es5WARkgg5dbX18ahoCR1i8SXC6fMVm/HDrebDrrPLKgAE0MjBu/qKuKLXIC4LVASZh2RaoGhgkhGdYbYfqZwhh1WCderBYT/Bli/smjP8ZnXXpcUUadFngM+Bu5Ze/Zjkbw6Zkwb/2epc3AQBSCDcagoZWyKsS13X/kQNnX8CSie3Ea7fM6dODImMwFguuSeoSEtUHVf89vc2taX8hmM/rH7Y/KNs0bJdiVIKyjNzUDA/Wab9UkMtjQLVry2Eoz1KBcAHVGB8gLkqR+QApSGUbBMNxRu5ag6DMpBuT3JBAEUTBLFXpras84Gc251dSr5Zo92pMXwU6YFNl8jjjQ6frCiezhlX2QNmLOCV2+r0/oyvuFh352tYgeS8alScohl0KnVQbnHECA1Qp6BXBh1eYV4LswL021QCBS7ApwCM5AGxprEFQLpPGLSsii807HuWzIStjNmVP3NTElVR9dyxuyLOUn+KC8ouC/YjzkSGamySgXnyHrPR8BDOgAvM35A6i5mfnyfskf/F80Il8n9FUVuorRH03ixzojM7FY1Wk3e7LS3JCTCa2a9fiVfZAeskY6tl7W3EjeqBjuy0Gzla5W4J
- lwr6bVU5
- pFlvhg56gxPDQZAsIABAVkGLWx5K0jjDS+UpUaz8YwJw9U+r0p/LnR8tvRJOaars8nouNB10GBYHDL5gFAXCYeexoBegGkRF9x+Swy7vKizHMFbOm3OYeNBHBdB2IkZKgfHV3JzMWfyEd6hNRgnLBSGzYPJS2Xh3pIVoYcdPQoHo5VvLMXYCK64iu8EhOXiayHnxQTqjIi8TFpb92mvVx8xI3q5n30jm2dAmVKAgoLLy/yhSk4dNlzEyKaZrZn+0PgHPKFrj75l1nDQiRlHxXFJNLiJxoW+STmLM8Py30O8oO29vN9SHmSFGDvNmB/cI/mXjsblpV44PDFNoP07t0V9r9uF7o9LxdRGqm
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4B616A0002
+X-Stat-Signature: nguq6ynqrrsyi1w7g9qguoahz53tuutm
+X-HE-Tag: 1773347270-202056
+X-HE-Meta: U2FsdGVkX18kn3w4+LlNJzwGdChd+BuJuOVhMNQhETNUJoyy+TOrYbIptCXSmzd5ULXrzkgJFY300PrmNtpvhjIeXA9s7SHSbFSB1coSJD1pXQ73W01COw1F4agiK6QaAICiS7Pf+UV6snpTvr2LHtwEkcqI60MM8aezHgLc0H1Pxj2FsnexrRGz38A710paJlG0hfwyBA03RFQhgCWc2BwYsZilQ50krXIbZWBgeFZfKnvvVILhhpjY6FPpSgVPoUGpkvr4yUA62b/k73B/lK8fnA/TViBP+nD1LZ2htHQsJ72w8eEf/yJAvf45FLH6Wwzt5eirO3bYqBgP/GcHE8VktkQfJP/QoblBqAeNJhsX2RPKcgKkXBax/Kl+ekrryhmCMX1SStXooS/rakMU0d/6nEpxv9gh0JRpIjq3x7swdHNsXKR0odux1QPH9zhShe8DmvXNKzv+e63PqhcjGRGdV7z9737LY1bf11iqKPPRh98l+Jr60B3TUFKJ5Ox1HaRdPy6DTKGGcucG0GR4POpfHRDp9T56851J7Ed763rOCs/HH1dg+/XsOVXH/wtrfllZmAuc/7UnGXMILr7QbeFE++NmsBTpVQrKDC+5vlZ179AZXwyRr4l+BDiFfsLMBM4NzzurCyTyS8B9sA0InrNgCq49dkR9zSsgo7xr0x4NYtDUJFmedJc0pE2YJ5JTm4ybmJZc8V+vkxioSzi0kceIPILankBG9ACSggnRKJegARogvW65NgKan7ytUT1EpANe63jHSHOjWoRKPYfjA4UGgvHTpuuz6zBpLXho25tb51cWEgsjnV+WxOLZ29mW0SAQZ2gq7bpi1f4t/BoB4m4kPqFoaXrdRKHjQ7JcRai+SG1Krfouhn2d19HCT9zHAtlq5Mv0cV/p1SBZTXMEB7dsm8juoD3PSzIZxOQUVTxkjFEIuF0aY3y5kdT5l3tTdtzA+2TNG/aCx7fTaGt
+ 78Z1TCaq
+ BW6sRQM670akaWTnIccLnZ4BK4w9qsqggB4B0y+LNhVkfU6yYbLEa4w/JG0CMAY5b7GG1zWs5yVhJo7/+hh69OUJarFiXvb6BJ5QsxSW6VLgOci1VNaJn9dtbLcKKTmelNwfXDnqSWEwLV9K5aEtBYYw7HfFI6DKfvnXIGwqp/AKiSMNTG/XaMPpcm/WfIleB6S9crAoKo4a8PJhoL6nfyh49QibOvSdHcuep80USQHqa8cDPkJ1pU0VWhP6y1bPvCN0Oi3fdZKW2rLRjkNIrYtuSgj7Rr3TrzVRjjujxKskW665Xrua9WoNVNsCXhoe+6kfHzADdEzRqgd0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,87 +129,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mukesh,
+This series expands the mmap_prepare functionality, which is intended to
+replace the deprecated f_op->mmap hook which has been the source of bugs
+and security issues for some time.
 
-kernel test robot noticed the following build errors:
+This series starts with some cleanup of existing mmap_prepare logic, then
+adds documentation for the mmap_prepare call to make it easier for
+filesystem and driver writers to understand how it works.
 
-[auto build test ERROR on 343f51842f4ed7143872f3aa116a214a5619a4b9]
+It then importantly adds a vm_ops->mapped hook, a key feature that was
+missing from mmap_prepare previously - this is invoked when a driver which
+specifies mmap_prepare has successfully been mapped but not merged with
+another VMA.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Ojha/kernel-Introduce-meminspect/20260311-042334
-base:   343f51842f4ed7143872f3aa116a214a5619a4b9
-patch link:    https://lore.kernel.org/r/20260311-minidump-v2-v2-3-f91cedc6f99e%40oss.qualcomm.com
-patch subject: [PATCH v2 03/25] mm/percpu: Annotate static information into meminspect
-config: sparc64-allmodconfig (https://download.01.org/0day-ci/archive/20260313/202603130444.K3MmZnxY-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 7d47b695929cc7f85eeb0f87d0189adc04c1c629)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260313/202603130444.K3MmZnxY-lkp@intel.com/reproduce)
+Importantly, mmap_prepare is invoked prior to a merge being attempted, so
+you cannot manipulate state such as reference counts as if it were a new
+mapping.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603130444.K3MmZnxY-lkp@intel.com/
+The vm_ops->mapped hook allows a driver to perform tasks required at this
+stage, and provides symmetry against subsequent vm_ops->open,close calls.
 
-All errors (new ones prefixed by >>):
+The series uses this to correct the afs implementation which wrongly
+manipulated reference count at mmap_prepare time.
 
->> mm/percpu.c:3363:25: error: use of undeclared identifier '__per_cpu_offset'; did you mean '__per_cpu_start'?
-    3363 | MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
-         |                         ^~~~~~~~~~~~~~~~
-         |                         __per_cpu_start
-   include/linux/meminspect.h:103:40: note: expanded from macro 'MEMINSPECT_SIMPLE_ENTRY'
-     103 |         MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sizeof(sym))
-         |                                               ^~~
-   include/linux/meminspect.h:94:19: note: expanded from macro 'MEMINSPECT_ENTRY'
-      94 |                 .va = (void *)&(sym),                                           \
-         |                                 ^~~
-   include/asm-generic/sections.h:42:13: note: '__per_cpu_start' declared here
-      42 | extern char __per_cpu_start[], __per_cpu_end[];
-         |             ^
->> mm/percpu.c:3363:25: error: use of undeclared identifier '__per_cpu_offset'; did you mean '__per_cpu_start'?
-    3363 | MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
-         |                         ^~~~~~~~~~~~~~~~
-         |                         __per_cpu_start
-   include/linux/meminspect.h:103:52: note: expanded from macro 'MEMINSPECT_SIMPLE_ENTRY'
-     103 |         MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sizeof(sym))
-         |                                                           ^~~
-   include/linux/meminspect.h:95:12: note: expanded from macro 'MEMINSPECT_ENTRY'
-      95 |                 .size = (sz),                                                   \
-         |                          ^~
-   include/asm-generic/sections.h:42:13: note: '__per_cpu_start' declared here
-      42 | extern char __per_cpu_start[], __per_cpu_end[];
-         |             ^
->> mm/percpu.c:3363:1: error: invalid application of 'sizeof' to an incomplete type 'char[]'
-    3363 | MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/meminspect.h:103:51: note: expanded from macro 'MEMINSPECT_SIMPLE_ENTRY'
-     103 |         MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sizeof(sym))
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
-   include/linux/meminspect.h:95:12: note: expanded from macro 'MEMINSPECT_ENTRY'
-      95 |                 .size = (sz),                                                   \
-         |                          ^~
-   3 errors generated.
+It then adds an mmap_prepare equivalent of vm_iomap_memory() -
+mmap_action_simple_ioremap(), then uses this to update a number of drivers.
 
+It then splits out the mmap_prepare compatibility layer (which allows for
+invocation of mmap_prepare hooks in an mmap() hook) in such a way as to
+allow for more incremental implementation of mmap_prepare hooks.
 
-vim +3363 mm/percpu.c
+It then uses this to extend mmap_prepare usage in drivers.
 
-  3362	
-> 3363	MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
-  3364	/*
-  3365	 * pcpu_nr_pages - calculate total number of populated backing pages
-  3366	 *
-  3367	 * This reflects the number of pages populated to back chunks.  Metadata is
-  3368	 * excluded in the number exposed in meminfo as the number of backing pages
-  3369	 * scales with the number of cpus and can quickly outweigh the memory used for
-  3370	 * metadata.  It also keeps this calculation nice and simple.
-  3371	 *
-  3372	 * RETURNS:
-  3373	 * Total number of populated backing pages in use by the allocator.
-  3374	 */
-  3375	unsigned long pcpu_nr_pages(void)
-  3376	{
-  3377		return data_race(READ_ONCE(pcpu_nr_populated)) * pcpu_nr_units;
-  3378	}
-  3379	
+Finally it adds an mmap_prepare equivalent of vm_map_pages(), which lays
+the foundation for future work which will extend mmap_prepare to DMA
+coherent mappings.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Lorenzo Stoakes (Oracle) (15):
+  mm: various small mmap_prepare cleanups
+  mm: add documentation for the mmap_prepare file operation callback
+  mm: document vm_operations_struct->open the same as close()
+  mm: add vm_ops->mapped hook
+  fs: afs: correctly drop reference count on mapping failure
+  mm: add mmap_action_simple_ioremap()
+  misc: open-dice: replace deprecated mmap hook with mmap_prepare
+  hpet: replace deprecated mmap hook with mmap_prepare
+  mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+  stm: replace deprecated mmap hook with mmap_prepare
+  staging: vme_user: replace deprecated mmap hook with mmap_prepare
+  mm: allow handling of stacked mmap_prepare hooks in more drivers
+  drivers: hv: vmbus: replace deprecated mmap hook with mmap_prepare
+  uio: replace deprecated mmap hook with mmap_prepare in uio_info
+  mm: add mmap_action_map_kernel_pages[_full]()
+
+ Documentation/driver-api/vme.rst           |   2 +-
+ Documentation/filesystems/mmap_prepare.rst | 141 ++++++++++++++
+ drivers/char/hpet.c                        |  12 +-
+ drivers/hv/hyperv_vmbus.h                  |   4 +-
+ drivers/hv/vmbus_drv.c                     |  27 ++-
+ drivers/hwtracing/stm/core.c               |  31 ++-
+ drivers/misc/open-dice.c                   |  19 +-
+ drivers/mtd/mtdchar.c                      |  21 +-
+ drivers/staging/vme_user/vme.c             |  20 +-
+ drivers/staging/vme_user/vme.h             |   2 +-
+ drivers/staging/vme_user/vme_user.c        |  51 +++--
+ drivers/target/target_core_user.c          |  26 ++-
+ drivers/uio/uio.c                          |  10 +-
+ drivers/uio/uio_hv_generic.c               |  11 +-
+ fs/afs/file.c                              |  20 +-
+ include/linux/fs.h                         |  14 +-
+ include/linux/hyperv.h                     |   4 +-
+ include/linux/mm.h                         | 158 +++++++++++++--
+ include/linux/mm_types.h                   |  17 +-
+ include/linux/uio_driver.h                 |   4 +-
+ mm/internal.h                              |  41 ++--
+ mm/memory.c                                | 174 ++++++++++++-----
+ mm/util.c                                  | 213 +++++++++++++++------
+ mm/vma.c                                   |  56 ++++--
+ mm/vma.h                                   |   2 +-
+ tools/testing/vma/include/dup.h            | 143 ++++++++++----
+ tools/testing/vma/include/stubs.h          |   9 +-
+ 27 files changed, 933 insertions(+), 299 deletions(-)
+ create mode 100644 Documentation/filesystems/mmap_prepare.rst
+
+--
+2.53.0
 
