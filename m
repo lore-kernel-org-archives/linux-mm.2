@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A862106ACE9
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78FDD106ACE4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDB0D6B00A3; Thu, 12 Mar 2026 16:28:08 -0400 (EDT)
+	id C94636B00A5; Thu, 12 Mar 2026 16:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC6EB6B00A5; Thu, 12 Mar 2026 16:28:08 -0400 (EDT)
+	id C2BD76B00A7; Thu, 12 Mar 2026 16:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 920C36B00A6; Thu, 12 Mar 2026 16:28:08 -0400 (EDT)
+	id B41036B00A8; Thu, 12 Mar 2026 16:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CD536B00A3
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:28:08 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5483C1B7D15
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9226C6B00A5
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:28:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45B751C498
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:10 +0000 (UTC)
+X-FDA: 84538547940.02.3894994
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 98C7D18000F
 	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:08 +0000 (UTC)
-X-FDA: 84538547856.24.48B42A3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8B83B140017
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c8Lr4cy6;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=erAoF0sk;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773347286;
+	s=arc-20220608; t=1773347288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W9B3pMfcmhUvrwYQMqWpFT270OgRuERYObMYNPfb0lo=;
-	b=sgSRq47OFz3fLOGx7AvOCEJzflFdxT3Mib09797JPswyOKZ0aqtLLhr0ASC1l1POpBHh6Z
-	n9TTfAJe3e4lRvOkLWiEgbdpkcPRlfPo+ZHd7LPXlBWN/pQ1aOnQdfGCT7R/ut7nXtwX7u
-	6g29h1tlqZUBxcVlX7V+L82LzY7SRXA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773347286; a=rsa-sha256;
-	cv=none;
-	b=Rn5Vm+Zyd7PFakKwQ3Iv3gRvz5oMADmnI81syh9QMpKrnT+STm+UN4GV0DWlZTtNhbI78o
-	Iqk1sh2a+iN3KiOrusSB2ZD5Rh+RgB9Xej9Lyy5p7oPjLftStH49lvXD0IgqSgAySOQgoU
-	/Zc/03Gkuxux+gEBcgiOZUev/D/uSYE=
+	bh=eLQ5/+dAFTyleEjPQjbNA1FoFbhiHvxjMg5pI0fqPpk=;
+	b=3HrEQ2LS260vSLSqtsoG373siPooVtbQXAWziYV7iMnDH0xVfsI17/yV+juspKvTadDM3i
+	H08kwqeucb+oKbsdTXjSRZmmc52QGyuUkg/lNUXIU1b/agUT7lIFZGWAS2gbuy9NbSaFDK
+	+ygZG+djNPtDKHl+XmeLyTHAwUoYP2o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c8Lr4cy6;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=erAoF0sk;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773347288; a=rsa-sha256;
+	cv=none;
+	b=hNDHoULxuNr4u7VDpivoD7qlN13elZ2eIrDCVEv7zaOrxx+37Zbi+nlTjluLtcRDukyJuz
+	KUaUDkaQTvz84DrH/bdGcCUy2fkUJ4vEdpwnPX5S8ZKFR3AXT8y8u51hpX8bKdfxYd8Fj3
+	bHaaiLfK6VpuGcjMrS5yaMapveQbE1I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0C0B44542;
-	Thu, 12 Mar 2026 20:28:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049CDC2BCAF;
-	Thu, 12 Mar 2026 20:28:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F2526133B;
+	Thu, 12 Mar 2026 20:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED4CC2BCB0;
+	Thu, 12 Mar 2026 20:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773347285;
-	bh=Ety6uMqPsqMphsUZjHWQlJPo7xJz901fcYuIgrq0DKg=;
+	s=k20201202; t=1773347287;
+	bh=N35PsY/nqCRIMm5eMpyBBuhak2KyJHh8Z/VDZF7nLys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8Lr4cy6WpIq5NFpjNJkHw+vaaT5zBpjWw7ea2sJ1hu4elzSc3C40x74CEkq5xY1Y
-	 Q+XCS4Xmz+p8a2LUr/gK2AxG79b/5ANj+Dm8VpZpE/ycrhElZJ7fYp+Ydb1iI7sjks
-	 2AHRsN1B7zv0ajZoq+/vhPDx2WPyqc/aOt9grFeK5nlxyoHB7qPFPwWaE2kg6Oftss
-	 HK64YjkYpdwPendsINx3umhhLQA8GGowKg0BH8krGexcUy9WWvAIJQKjfcmTEz8f/P
-	 /cZ2qo8YyD5AeyTGzgbcDMoCDn8v4qphivqaAA7q1C0R0Xh0b1Ii+jexXmgaw0JDAp
-	 cqXv2YE7AqCKw==
+	b=erAoF0skWhig2sy2XGQocOISTOPTHwY4byPzMCoxIUmvRIWtVFSlgvfuHzcn4wLJ1
+	 O9AHxaTCKMABBZwnuuxfeI6PX0jVhab441MFdtVS0RIijBkqEqWFFsBTcBz+gH2hs5
+	 GrmB2CPU0Ji2lyaV7Gr2QRueT8DLBehn7LcMbJKynkYWepvqbcHXwbsLd/AYItxfAc
+	 EJ11iPF+R4matvTGKIYfOtftwYlSPKGg5g67cdXwOsS0jI5DGts3Hxb5D3hzDIqZm7
+	 K/bmvlykPz44dERrspFs5AiNY5JbCnQlueXfiBEF6A1aHQL7oIcOia7Iqh5RA0cMNm
+	 FQ0UA4BiN93tA==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -108,22 +108,22 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 07/15] misc: open-dice: replace deprecated mmap hook with mmap_prepare
-Date: Thu, 12 Mar 2026 20:27:22 +0000
-Message-ID: <0d5534f0baa8761795d2d92b1a8bbad08aae5f8d.1773346620.git.ljs@kernel.org>
+Subject: [PATCH 08/15] hpet: replace deprecated mmap hook with mmap_prepare
+Date: Thu, 12 Mar 2026 20:27:23 +0000
+Message-ID: <6f9fdf902dede78143c26099b9a2b82ecef35a83.1773346620.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773346620.git.ljs@kernel.org>
 References: <cover.1773346620.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 98C7D18000F
+X-Stat-Signature: 5em8e1yqrzxijx3zb3bo7cfwix6d88t5
 X-Rspam-User: 
-X-Stat-Signature: xt9oxpb1oizbqga37jqh33chabibmqqe
-X-Rspamd-Queue-Id: 8B83B140017
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773347286-631967
-X-HE-Meta: U2FsdGVkX1+yGzWP5I1xqQEBGoIW26uYUbnFgUOlso8lio3pYZ8Vebo+q7hIDfJ4x7BHp/DhN8oFRxCyfBDxpPX6Fv+RaMOcHIJFzrCdnXkVQUayQ6ml3GlXIUyrYne/nHKSX+nB8XgHIU8wCkaJuabbqkhDIdyieX2wEAPbk3kI6Cf4GIzvkCmhxitV/YsXhc6emq4d9brSGxPtWlHukauHBbABIbgZDWmenF4G3bkFuZb5xlGyPH/+3hOjQGOdV8Q+BVNpbfNLJGurJ01z9LZxVjYCEFrrM3YecDcG1cAqfJDtZq7S2GDobnRaMMBwQ5UbDaNWl5BTtNic8MUpw2OTIDqYvSfSNeaehNlFAXB820/+klgrr8EY1WhyKTKyY1ZvVcxIw7AuxHM7AmfqVpMtPO1HAFexEFPYJbcpnoeEzd88OWXwxKfRq9T/pAHZSUOyC105Y9C2a85C4QGXhAO/tbQqEJwdW/5Jc5rh1O6CYqJMq4RNQ9zrr9/06JViczzICsgXMU6yhNaJkNgn049dV7MuVEDfjrN3Lmnm/NdpMZTQWRrZs6TLbVxmN3MhmZpj0rQ5EgmDO7rYy/OSoTRVWDrReIXMxSx7UkWrtfr4Fd7RluWEg0naxbr3dGELhqC88FarxA16fh+BV63yT/6JCwlChGYwqFKE1GqIfkHFP8LFiosJ84uLdOuXc5LIyQ8DlOpuSEjZD7yXmfKUJqqX29ugDg+/FeDLTb9tOZownyYgYN+zcyPUvzUY+pyF9Q3Bjzhggil4GQ86erlNHtCHIquPLu6Y+Ib+SL19ZkL+6ZFKHaYcAxAqJIz4USiPtugBkcTIHhN18hsapJuMlgLfAFJNE0F3lGldRlG8dijBImZbe4aYwls/6E8Lnwoove8XiHspQlDLiNZhaDvbZtzSduehgxHgRESyYWFBBfLiHiDjs3bnBiuc20NBPi0o8uysSQN7KVORN37YOd9
- g2VhVTYs
- 6zu7YNKjOZ5uKt84IbzTqF+4FWZkxMoZNqnOPMoTfFo5P8xuRXcW0Pl/5JlnUH+DW5n+14bDH/YoKRmZ9Lx7GbSgFwISH5dap5zfPp7HRUCMA6v4WnAB+eu1vTvMEds1Xf5j9TQaOw/dBl0gBpKTp3VLvwsdk67eHeHV9D+Qj5w1cj99vxOPjFOC3mJbsc1lv7VzgpUzRdPLbYjxmehBG1McaIzSysDdMQmyIi73BZe2whXT0i15lCKDVAa/Qryiaf+QXy8hMzdBlnxoGq5EB4wmbpYGZnI2tjo9m2gSlKKwdDI5uvFmvbKCcFAT6WV8W2wcA34qkd3eU4AGRguERCVVq7g2x5SToB2YP
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773347288-887616
+X-HE-Meta: U2FsdGVkX19GeEHEh9qRnn4ecFoL6Vy44+gJeHKUcSnSkDk3mrlFapfOaKQmRarcSzB9h/QxMpCMtNUQmc+0QJsljRkhNZfXsZl3qlPjbXmXyRrQrQolKcxrAncta8ocIiR9eMNQBJ3azekqVfiBP8nL4CmXJFIBXSeXbH3NLawWZk4/I8IXDsyRXAyw3OZSdB0gbnH8du2WduJukDkyR+XRdH7UNvl97FIk43rJ9RkHk6UeGtgEJCQTWC7/YX2vU7lhgmfYkyp9k59o5MnmF94GfbT9ypCv7o1y77+kK9scwnukLovfVR6KcMUcBkHiW4HBSKGFVxZ412XJKhJggcJzz5ntPPNPaBeOyVMTpgULjMBhMo2Jy2ZCfM5rzia0MXjYYR86C64AujUUda2/HqnkyeS17o532jSLSiKv7RcCQ2RH7eE+vesdZXgcBmnJVFehn6a0pcVkqbO0np5HDIV+AVeUqjed9yYvygHkuhMLfOcbZbq4hkykJDzL5+LSTujXuapvUHEl+NHzYofA3EW9mMiekbE0/5QOzga0Xy7ZpBpl04cWL2iKeaifFVI0qhwyA4Ve8IwuvgZCa3v3OR/lxOB8LEiAhwO1t43mjqOcY1QRirMzdpI0eocddLRXpB3M2DOmzYZ2P0I4n2nsc4uzRFoSzlzzVowU2oH0IpfadLhZ5qymXsCCWPK676H5WEYhy27U5MLQ9KlwlRO0T6Aq7U7OcvtCBfjo3tBZP0nfX2oT6qdOqe7IGT8yt43xRSsNXdc49AQHVTtanhgVrOYvbe9p324X1P32IwL/YuDvug/ocIYTteY4um98/ScEl64nmxrHXyQ8y2mC/V8hXvDwkXInj/YeMQlIGUyfpgcNN6Ef9WBfYqBH01KdwXGjtowTc+/dfM9HRIDtfr0vG0Pk4jYMJBDmTF6qP4y9VpN1lG8IWGVUbJsOiQn/qiiQ5z59P6xKufVVu9UQKOT
+ ZAOVQk96
+ nRB2rh3hiOC+dFnEtuXKSecLadwDBQj0KCLc5n6PyVnqZE7x+Tq+NZsTm9OMuYLi5Sx6e5lyPiDfh8x98F+2W4lnzrb4bYFugqVGa4w35U1UXQ9E9bfSlUZ79gsm8JqMC+26ynGjeAbhssXz8FKO/y7Pkvwz2W9nwanRth3+mceqNwc/oG5a6xGOPszY+Cbbo0plvIKZXQd1StHHju5NHTYb/1x3R5vjamsaKr0dNo3Ewg+SLQk9hNHIiZvG4iFIcXlqrAtBSF1JBAQ2YMAY4EKflRvnkRataUXRO+NVrLMIKZOysCKCd/0FlmZU2g7vmjk9+M1Orj3WA2cVq9/D9A8NDhdflmP9aR0P0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,54 +139,49 @@ with its mmap_prepare equivalent, mmap_action_simple_ioremap().
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- drivers/misc/open-dice.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/char/hpet.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/open-dice.c b/drivers/misc/open-dice.c
-index 24c29e0f00ef..45060fb4ea27 100644
---- a/drivers/misc/open-dice.c
-+++ b/drivers/misc/open-dice.c
-@@ -86,29 +86,32 @@ static ssize_t open_dice_write(struct file *filp, const char __user *ptr,
- /*
-  * Creates a mapping of the reserved memory region in user address space.
-  */
--static int open_dice_mmap(struct file *filp, struct vm_area_struct *vma)
-+static int open_dice_mmap_prepare(struct vm_area_desc *desc)
+diff --git a/drivers/char/hpet.c b/drivers/char/hpet.c
+index 60dd09a56f50..8f128cc40147 100644
+--- a/drivers/char/hpet.c
++++ b/drivers/char/hpet.c
+@@ -354,8 +354,9 @@ static __init int hpet_mmap_enable(char *str)
+ }
+ __setup("hpet_mmap=", hpet_mmap_enable);
+ 
+-static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
++static int hpet_mmap_prepare(struct vm_area_desc *desc)
  {
-+	struct file *filp = desc->file;
- 	struct open_dice_drvdata *drvdata = to_open_dice_drvdata(filp);
++	struct file *file = desc->file;
+ 	struct hpet_dev *devp;
+ 	unsigned long addr;
  
--	if (vma->vm_flags & VM_MAYSHARE) {
-+	if (vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
- 		/* Do not allow userspace to modify the underlying data. */
--		if (vma->vm_flags & VM_WRITE)
-+		if (vma_desc_test(desc, VMA_WRITE_BIT))
- 			return -EPERM;
- 		/* Ensure userspace cannot acquire VM_WRITE later. */
--		vm_flags_clear(vma, VM_MAYWRITE);
-+		vma_desc_clear_flags(desc, VMA_MAYWRITE_BIT);
- 	}
+@@ -368,11 +369,12 @@ static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
+ 	if (addr & (PAGE_SIZE - 1))
+ 		return -ENOSYS;
  
- 	/* Create write-combine mapping so all clients observe a wipe. */
--	vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
--	vm_flags_set(vma, VM_DONTCOPY | VM_DONTDUMP);
--	return vm_iomap_memory(vma, drvdata->rmem->base, drvdata->rmem->size);
-+	desc->page_prot = pgprot_writecombine(desc->page_prot);
-+	vma_desc_set_flags(desc, VMA_DONTCOPY_BIT, VMA_DONTDUMP_BIT);
-+	mmap_action_simple_ioremap(desc, drvdata->rmem->base,
-+				   drvdata->rmem->size);
+-	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	return vm_iomap_memory(vma, addr, PAGE_SIZE);
++	desc->page_prot = pgprot_noncached(desc->page_prot);
++	mmap_action_simple_ioremap(desc, addr, PAGE_SIZE);
 +	return 0;
  }
- 
- static const struct file_operations open_dice_fops = {
- 	.owner = THIS_MODULE,
- 	.read = open_dice_read,
- 	.write = open_dice_write,
--	.mmap = open_dice_mmap,
-+	.mmap_prepare = open_dice_mmap_prepare,
+ #else
+-static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
++static int hpet_mmap_prepare(struct vm_area_desc *desc)
+ {
+ 	return -ENOSYS;
+ }
+@@ -710,7 +712,7 @@ static const struct file_operations hpet_fops = {
+ 	.open = hpet_open,
+ 	.release = hpet_release,
+ 	.fasync = hpet_fasync,
+-	.mmap = hpet_mmap,
++	.mmap_prepare = hpet_mmap_prepare,
  };
  
- static int __init open_dice_probe(struct platform_device *pdev)
+ static int hpet_is_known(struct hpet_data *hdp)
 -- 
 2.53.0
 
