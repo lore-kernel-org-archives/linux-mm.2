@@ -4,152 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA155106ACEA
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:09:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5150C106ACEE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:09:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 305E16B00BB; Thu, 12 Mar 2026 17:09:25 -0400 (EDT)
+	id B0C726B00BF; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD976B00BF; Thu, 12 Mar 2026 17:09:25 -0400 (EDT)
+	id AB6C26B00C1; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B2CC6B00C0; Thu, 12 Mar 2026 17:09:25 -0400 (EDT)
+	id 9E37F6B00C2; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ABE36B00BB
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:09:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A2C3A1A0289
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:24 +0000 (UTC)
-X-FDA: 84538651848.05.EF5D514
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 90AD56B00BF
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 679E31C3B7
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:46 +0000 (UTC)
+X-FDA: 84538652772.15.3B18903
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DACEA20004
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nOqke5uH;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 852FE4000E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:44 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ePwUi5U/";
+	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773349763;
+	s=arc-20220608; t=1773349784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JtSPrg3d/bsrsxkOxGYb2djj98brgdbcSeDCm3QOpI4=;
-	b=tLXYxshxun2ePvvx7OQ/0URsB4qQ4lSXZGwFPWM9dYEt1clm7V6m6Son+2rnhqf7m5ym5T
-	LhGnf5Z+IRE04YhKcNAitCO14FsN6jTT+x/XGAAiIZ/W1J322++/u+SqqmdiME1Tum9mhY
-	xGi04Bp9IlY1Fu4XMQvAc9hclqVyNpA=
+	bh=5BZG/lOoPxijsQyAR1VNis3jzuhD7eY+vw2pm73Y4tQ=;
+	b=7Xz/whAu7bFLRCH2d3EIaGOVxxvkX3mz7Yk8WxVia84jSgAvq1oGLWzHWyGi5pirRXDEAv
+	rKWuZkSmNlr81zAPTFEYeSrTbLFALlPFSUSQv7vpen/zAXjLjBjwtRgQbHuBB5RAs44vKr
+	+76Ki9dM2iFIxlLckx5Z6y+INLZ9lmQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nOqke5uH;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ePwUi5U/";
+	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773349763; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773349784; a=rsa-sha256;
 	cv=none;
-	b=nr2n9fZeI4lHi7fvm4oJovHiyu81Cd+weAshoX/TEWKTZpjYvFOoWBu7a6h0HRTwSmjZF+
-	WlE3pjE2F24yA06lz5zEHr1M0Rs2xYVwuaoqUn2sCkeXkVv3iXwnEwRsQsY4gdXNPmaufq
-	juVr9ORhiKF1RbnRXXEKol1cp++sn/Y=
+	b=GyBB/Wh3wrBWDfOAc0+5RkEc5PerjR5Pb13Tc+iQ8TD+GdHDY9zJzxE+R67m3+Nfxp2UHH
+	Za8UW1UEMg44a7ZmtA0vkSmuOZXoDkDSrEtyyvJy8QFXrqFvgxzNfIiMHabAoFVB+BcWy2
+	CuiNfjf4cOJ2z43evjtKh5SJHqXdBu8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E479B42E41;
-	Thu, 12 Mar 2026 21:09:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C8AC4CEF7;
-	Thu, 12 Mar 2026 21:09:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B474643EBB
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DA8C4AF0D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773349761;
-	bh=KgadnpunSgn4gbBZJyKyKq3y6aZd94JO3aK4Pmn9t+s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nOqke5uHz3c8Omr8Fn2jbW5MHHG5OuPLMw1lLfed1JGaFfykgXJjuqzL1Hi+4WtoG
-	 +jBvLMTkMO1mVi4JSWlb6t2S4RsyCiq1zpMPMbbpxzeU7XAO4F2eUlYJM72UZcmZL+
-	 u1z923V6dbF2O4hgLytDjQISNB8FtPCew/kW7K9UCjrqkX0VZhX+xsAKN/GSUvUxFu
-	 jF9+3tI1AUG764wYWaMQ1Bi0bgL4Akk+KL/qH7U6sGl9TR34BpOrqoFymyLNhC5576
-	 WhHptdIK9xAkNPvKggauQNvE7aW/o+HhQrqkCUm3XWvORXkEylaRApJRREPATEeb94
-	 WRcgh8sTsEksA==
-Message-ID: <7f850a9a-0ac8-473d-a4ec-914462e4014d@kernel.org>
-Date: Thu, 12 Mar 2026 22:09:04 +0100
+	s=k20201202; t=1773349783;
+	bh=Nan4354/w2AKj06fXE4TsNtEJsUA5rTTezTgjUEvs+U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ePwUi5U/kAn16q7Gt/5NMasYNAQczY7ZMZflPM8b4atI4UJDIvGL7kGI4r3yIsAGT
+	 51AJe1ZV12dtSvQf57t7pqpuFlh/FTiMqk7K6Bigg7MgH+ApromBpSXrBzsDuQvnOR
+	 9p86l6n6twCIdtlOU4O5HRn5amVUqQqDIfO9Zy8c/rzbY1+VCZ47z/Y3jyR+YhU85P
+	 9gb0Iu+a9Op37FKsTUzg9eR91wJR9G/L9XOYiBuwgGSgX89iTp9MXp+/CAil439D9i
+	 6ZcO+CQbtirV8WgIq5nhSiTO7BN39oKMj+/tQN9V3S31AFL5tC9BzrTyUUUlIJBcUU
+	 U4TniQpnnSa/w==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b96da7b2e2eso223455066b.2
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:09:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVucjMs0IunniFggmrUnI/y9NEENx9aTCu2nLUCrsKn8gf7riPGC2kswe3dwPCXCEbDRvSY+5z0+Q==@kvack.org
+X-Gm-Message-State: AOJu0YxcXVd2FoebyvpZoxMAChTLSLcpnjaucv4c8m1G1VQLmIYgdkli
+	Ex+7YM+ro8Th53xz1WQsYtNhQijXkIwRQ3WY7e4R0gUOfOjm5vlfKhQtH5VvpFq0QyKC7Ox0mSo
+	uhVS0yTebgzIUO+z/wiWTSWWEF9n5wUY=
+X-Received: by 2002:a17:906:817:b0:b90:3593:654c with SMTP id
+ a640c23a62f3a-b9765028beamr40772866b.21.1773349782192; Thu, 12 Mar 2026
+ 14:09:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v15 09/13] mm/khugepaged: introduce
- collapse_allowable_orders helper function
-To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260226031741.230674-1-npache@redhat.com>
- <20260226032542.233891-1-npache@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260226032542.233891-1-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260312040627.55257-1-liwang@redhat.com> <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
+In-Reply-To: <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 12 Mar 2026 14:09:30 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com>
+X-Gm-Features: AaiRm506sQlNtTd5yCay-yVuxaOgovvr4LCr2fiyeyxDv_MRp7ui-D0aS7YoY0o
+Message-ID: <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] selftests/cgroup: skip test_zswap if zswap is
+ globally disabled
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Li Wang <liwang@redhat.com>, mkoutny@suse.com, yosryahmed@google.com, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DACEA20004
+X-Rspamd-Queue-Id: 852FE4000E
 X-Rspamd-Server: rspam08
-X-Stat-Signature: ff558364myseth56age85pcd77tryt8q
-X-HE-Tag: 1773349762-429320
-X-HE-Meta: U2FsdGVkX1+MrFTcw/e+sPze9S9uwN29RX9coTFPPXKN/U4RPnLByhwtiMZQi9IUOC/Qmghx/w9eE8iSHaJE9CX7iR0qDgSm11qleLhRtqHSQaXzstMDyC7GeeDzRqDz04wUTYO23MkndBxOf8JZFE5Tkh8YY92oNMZdPciymCEXRNXKO3zvOBsVSmAqqwh0QVnFU0fkTB2aHhU8QwDSKtlh7aFEH3K2735wsmHAasbD55ExSah2qBMXaTmRqVN3ltkivxj21I61GvPLupv6P9AFhJDO3pyBy5lOuoIuKez2HyyB201dmIuYz3KFq3p1sw491GjfOtXkPKwF3pzAvlBcjs8PbSv3EK/seXoZgBk+eWDdWoQnb2Anbdfp2qFuEGg6NNuevsKOicBn7IVVoBPU8SttbIzl+TJ1QhHJm4pZj8GMD5TKWgmNHxcbw8aKkhANj/PntT1caF8Waumk/rzPnVukuFg1iZbTOJLkbot0jc8CmO2k7gwWPmb2HsTP23KgUrVIMj5H6Q3dDSyDxX9B+S9aIeKvBJk9W1ttM1+9cYqF8G3yyhtXZ3pgtaRn5ABqYpD7oZ755GsyAoe2302n83MmSv7uq+aWQmdnx8qT3TBT8SSUWkGTaczhvmrpzysY0mwc1wn6e9zDx3Xbw9CaLEX25wP5PxVTCurfevNTw6vt8GbHmNfFvr4pbhiTX6UbYtw82Kj3i+30TcbRtcePBCNuEtxZkkPSW6bHaV4TVkyl/MndV9h9Tmr7nv9slcPsCr2HstOsWd52fCrpCdoaz8ZyGJgcOPw8dqG2QpJDdKS4Tgq3UTTDkeqZNEd2WiUcBLTaUF1jlvqM43suTwdXzjQ2WSyhU+cdj3GGb1R4KRTiXa1icvrS0jVpCfMnV7iMOXggXJg8891vwKC/hjioOkxN4QLQOkb9rjrAWtA5baub4KRfK7o97MKJukcRs+stu10j2GzNMJeHCCv
- aT2RWxmg
- o/DeWay280QxRlgr6QN03p+v9y9Z/bgRr5ex/e6gbWHBGoQbSZ85xvtquqC2yQtg34LNAksP/qpxgrLk=
+X-Stat-Signature: 9g181szdwapj95hr3qfhp9pygudqc3e9
+X-HE-Tag: 1773349784-76575
+X-HE-Meta: U2FsdGVkX18csxjCDHbJjT6Zr0HIORz4bM+NGrp73eWdT+ZSamL0VaIQwM4eaaNP1ILr1P0FwYP6sWFW4jDs/zQaAl29I4SNjjzcuO5kL+vS6/G4fLKXDE85Okrhx0lcsVx+/hwBIzuTK55JuhfAYchk54WS8MgJPO5uMb0kf4RlEtnB701rwKAxLapUbXBgGAFtLsd5NEcn+quJh4IutH2MLATrYU6GHUO3yP57BlE+zDhxRKoHoP0ikAOM6Y+RoetihdI/ucfJPIKtONUc7mvX9ZP+VXBx6U+Tyv6PAkpQ5wm6Mq6euMB0WIjJBV9rLeCnihtlYB9lodHV+/H7lI6xmwzZYA08gzH2kVg5tuEW2XVrXGJ/SW8fCLMYdwr+7J9ZnGQCu/C27GSDOmzXy6KLn/rTBDN2yEbKgLNcXVsebFJUDrjAr6nb5Hd5dBxbz4jWHQRoAV926pHxjPxvZQ/UYsXIk4T3SK66QA1W2ospfXs3TGxnwCrQ7p9JaPMR0irSFIkeoa5qZgLn5RrHRB+pkZjdbuCmQeAXADuuMMiqxH4Kw1rgVu357eUU3Ltx2dqtEnn5NFBDEsd9YzZrRdVVSVxg8WXIK6fmBCiErq2vInF5IIzVQvJWEHycSpvizab2x9cq9rwyidmUtOGk8KCr2AJHb5W4tgPjg+xOnjYTT8bFy+EUlfGVWLr4XnPJBO1H1cOwpclQCzka2xjrOhjG8rb/o2moV1fQqUNeKLbFRp2IZBoABpAIqWaLejNMgaPfGZ0a2PFvw39ZTMNdOyT5fN50zmG76O035joDyK3KbVjFZEsN2Os7+ykjyJIDXxmRL5C0dTit6uD3Gga/vvIaMRSA+lojXCDIq7+SsKw/T/oFn2Phrp4JuT75CMj2bsU2TOcpusEhCdskFNLNp7nMW781aJigRdlE3GrM5VEMeWUBTHM7f/fUuQuyHjysJoOLD21bdrPRP2VHDaJ
+ Q3mVgHRu
+ YYEkrTtqiVPxZ4IlzEVNcR97MTbQr4LRxWow63oSPP9ApVMGfbmNGCDLPoLREkLZj3pvCoi9I5j1kYYr6Jn06qwyofsDoB7e3xdf9/zhhDHdUFs/QZtBxT7aTBi2Xrx82vqRLvA7Gr0mYWIvq0VX4m/nSNVLuiZo+qqaiDcNkgPObA327hwLV4Y4GjCGZiRMLGnm2X4KIiDthiXLJH14bPCPjedMnuhgHzn1MpMFtYlzjHBt+9dip+zPD+UkaEWKfaDaqUfboE7giIcZj2/D80IAibdrRClwabFQu4lOfybcSKVc0CWM6h8KiladeOKUacO51oYQnFFjsR9M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,70 +104,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/26/26 04:25, Nico Pache wrote:
-> Add collapse_allowable_orders() to generalize THP order eligibility. The
-> function determines which THP orders are permitted based on collapse
-> context (khugepaged vs madv_collapse).
-> 
-> This consolidates collapse configuration logic and provides a clean
-> interface for future mTHP collapse support where the orders may be
-> different.
-> 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
->  mm/khugepaged.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 2e66d660ee8e..2fdfb6d42cf9 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -486,12 +486,22 @@ static unsigned int collapse_max_ptes_none(unsigned int order)
->  	return -EINVAL;
->  }
->  
-> +/* Check what orders are allowed based on the vma and collapse type */
-> +static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
-> +			vm_flags_t vm_flags, bool is_khugepaged)
+> > diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+> > index 64ebc3f3f203..ec64daaa2f5a 100644
+> > --- a/tools/testing/selftests/cgroup/test_zswap.c
+> > +++ b/tools/testing/selftests/cgroup/test_zswap.c
+> > @@ -589,23 +589,41 @@ struct zswap_test {
+> >  };
+> >  #undef T
+> >
+> > -static bool zswap_configured(void)
+> > +static int zswap_enabled(void)
+> >  {
+> > -       return access("/sys/module/zswap", F_OK) == 0;
+> > +       char buf[16];
+> > +       ssize_t n;
+> > +
+> > +       if (access("/sys/module/zswap", F_OK))
+> > +               ksft_exit_skip("zswap isn't configured\n");
+> > +
+> > +       n = read_text("/sys/module/zswap/parameters/enabled", buf, sizeof(buf));
+> > +       if (n <= 0)
+> > +               return -1;
+> > +
+> > +       if (buf[0] == 'Y')
+> > +               return 1;
+> > +       else if (buf[0] == 'N')
+> > +               return 0;
+> > +
+> > +       return -1;
+> >  }
+> >
+> >  int main(int argc, char **argv)
+> >  {
+> >         char root[PATH_MAX];
+> > -       int i;
+> > +       int i, state;
+> >
+> >         ksft_print_header();
+> >         ksft_set_plan(ARRAY_SIZE(tests));
+> >         if (cg_find_unified_root(root, sizeof(root), NULL))
+> >                 ksft_exit_skip("cgroup v2 isn't mounted\n");
+> >
+> > -       if (!zswap_configured())
+> > -               ksft_exit_skip("zswap isn't configured\n");
+> > +       state = zswap_enabled();
+> > +       if (state == 0)
+> > +               ksft_exit_skip("zswap is disabled (hint: echo 1 > /sys/module/zswap/parameters/enabled)\n");
+> > +       else if (state < 0)
+> > +               ksft_exit_fail_msg("Failed to read zswap state\n");
+> >
+> >         /*
+> >          * Check that memory controller is available:
+> > --
+> > 2.53.0
+> >
+>
+> Seems a bit convoluted. You ksft_exit_skip() for one case in
+> zswap_enabled(), but return some value in other cases. This value is
+> checked in the caller (main()) and then used to decide whether to skip
+> or fail as well?
+>
+> Why don't you just consolidate them in one place. If zswap_enabled()
+> has no other callers, let's just open code it, yeah?
 
-Nit: one tab to much
+Hmm I actually like having the helper. What if we move all the
+ksft_exit_skip() and ksft_exit_fail_msg() calls inside and rename it
+to check_zswap_enabled()? We can also just read one character:
 
-> +{
-> +	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
-> +	unsigned long orders = BIT(HPAGE_PMD_ORDER);
-> +
-> +	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
-> +}
-> +
->  void khugepaged_enter_vma(struct vm_area_struct *vma,
->  			  vm_flags_t vm_flags)
->  {
->  	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
->  	    hugepage_pmd_enabled()) {
-> -		if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
-> +		if (collapse_allowable_orders(vma, vm_flags, /*is_khugepaged=*/true))
->  			__khugepaged_enter(vma->vm_mm);
->  	}
->  }
-> @@ -2637,7 +2647,7 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *
->  			progress++;
->  			break;
->  		}
-> -		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
-> +		if (!collapse_allowable_orders(vma, vma->vm_flags, /*is_khugepaged=*/true)) {
+static void check_zswap_enabled(void)
+{
+       char value;
 
-I'm not sure if converting from a perfectly readable enum to a boolean
-is an improvement?
+       if (access("/sys/module/zswap", F_OK))
+               ksft_exit_skip("zswap isn't configured\n");
 
-I would just keep the TVA_KHUGEPAGED / TVA_FORCED_COLLAPSE here/
+       if (read_text("/sys/module/zswap/parameters/enabled", value,
+sizeof(value)) <= 0)
+               ksft_exit_fail_msg("Failed to read
+/sys/module/zswap/parameters/enabled\n");
 
-If you want to catch callers passing in something else, you could likely
-use a BUILD_BUG_ON in there.
-
-
--- 
-Cheers,
-
-David
+       if (value == 'N')
+               ksft_exit_skip("zswap is disabled (hint: echo 1 >
+/sys/module/zswap/parameters/enabled)\n");
+}
 
