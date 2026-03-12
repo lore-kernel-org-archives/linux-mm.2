@@ -4,129 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6D99106ACDF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DCD7106ACE3
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:39:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C47A26B00A8; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
+	id 881A56B00A6; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1BBF6B00A9; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
+	id 838B76B00A7; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD946B00AA; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
+	id 73A4A6B00A9; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A089C6B00A8
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49090B942C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:33:49 +0000 (UTC)
-X-FDA: 84538410978.29.4AEBC8A
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F3E721C000D
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:33:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63E906B00A6
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17E4B13AB8D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:39:42 +0000 (UTC)
+X-FDA: 84538425804.10.1739A97
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 463D540008
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:39:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="T8O/K0UU";
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773344027;
+	s=arc-20220608; t=1773344380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VQ4I1//oujMg/wMbvtHZ1fNg62i5rEhIWcPKRohhj4U=;
-	b=DIZ5GSqVJZ/m9cUVN5UPfPtfB9byrZmpo3U9W0YlxxWpaV20fH+Ldlgnu9xXH+eVe+N2Tg
-	miUBMuICRYgrpDl2ZwZ19do/tYgxLOnpOP2bdPPXhT6Gg4RT+NGBCF0HdC0nFptPDm14Ep
-	ayaMBR4pjA9VDixjTW8VEgVyCJP4jeQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344027; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ynywz4qMacx8bCkCP72uySnQ/WanBZP31Ud5GxXzPMw=;
+	b=i9c7FmlOFSlIgy2jHx3CacocSEAOPAuskb6/f1RUaRI0oSzpQEPX3DoTiHmZCw7eSZf6mG
+	zHfKqRQ3HUyNP2bbG3LFFOJO4dd7yqmMPPxbG3ijHccpXovbdyx666MaFiFR1+gwS6X9Kr
+	eocqIjmeUPy+TfD+K0suFQ+QVf3c9bk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344380; a=rsa-sha256;
 	cv=none;
-	b=5+iqbacqrIZhnxC0O41gxkP9MevmVR/KuVb9phR83L62+qBriBxmaHmJttUxaJk42loVE1
-	r4Ffzwz48cOBGaBJuCTWOJ+anCo9wArtnGWKHfzFAMhKhKURkYCRUKIjdhE1o8CsQaWrsr
-	JZ1hc1vqB9wdwX7u1lhpoYYUiiTLY/c=
+	b=RzVBRjNcx5F3x82limJ8Oa66a1yvJ4eFbdmMMxGuJeYf6pM2dPHKhv6RuGjhhMbCN0mOCL
+	PzFaELpAkrUbtO97TLkIV5OMZgKJW9BPLqnobYL/FMhdWM5MbfmYnOJWUtSRAUAwQDMaFv
+	GtMcGx/Iae5fzUmbAEts+zpkNVA9Iik=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 4DE582C14A8;
-	Thu, 12 Mar 2026 20:33:44 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id yCwNT8mwVvHB; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 8A34D2C14AA;
-	Thu, 12 Mar 2026 20:33:43 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3HN7guaAFMsE; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id ABF4A2C14A6;
-	Thu, 12 Mar 2026 20:33:42 +0100 (CET)
-Date: Thu, 12 Mar 2026 20:33:42 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx <amd-gfx@lists.freedesktop.org>, 
-	apparmor <apparmor@lists.ubuntu.com>, bpf <bpf@vger.kernel.org>, 
-	ceph-devel <ceph-devel@vger.kernel.org>, cocci <cocci@inria.fr>, 
-	dm-devel@lists.linux.dev, 
-	DRI mailing list <dri-devel@lists.freedesktop.org>, 
-	gfs2 <gfs2@lists.linux.dev>, 
-	intel-gfx <intel-gfx@lists.freedesktop.org>, 
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linux-block <linux-block@vger.kernel.org>, 
-	linux-bluetooth@vger.kernel.org, 
-	linux-btrfs <linux-btrfs@vger.kernel.org>, 
-	linux-cifs <linux-cifs@vger.kernel.org>, linux-clk@vger.kernel.org, 
-	linux-erofs <linux-erofs@lists.ozlabs.org>, 
-	linux-ext4 <linux-ext4@vger.kernel.org>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	linux-gpio@vger.kernel.org, 
-	linux-hyperv <linux-hyperv@vger.kernel.org>, 
-	linux-input@vger.kernel.org, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-leds@vger.kernel.org, 
-	linux-media <linux-media@vger.kernel.org>, 
-	linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, linux-modules@vger.kernel.org, 
-	linux-mtd <linux-mtd@lists.infradead.org>, 
-	linux-nfs <linux-nfs@vger.kernel.org>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	linux-phy@lists.infradead.org, linux-pm <linux-pm@vger.kernel.org>, 
-	linux-rockchip <linux-rockchip@lists.infradead.org>, 
-	linux-s390 <linux-s390@vger.kernel.org>, 
-	linux-scsi <linux-scsi@vger.kernel.org>, linux-sctp@vger.kernel.org, 
-	LSM <linux-security-module@vger.kernel.org>, 
-	linux-sh <linux-sh@vger.kernel.org>, 
-	linux-sound <linux-sound@vger.kernel.org>, 
-	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, 
-	linux-usb@vger.kernel.org, 
-	linux-wireless <linux-wireless@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, ntfs3 <ntfs3@lists.linux.dev>, 
-	samba-technical <samba-technical@lists.samba.org>, 
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
-	tipc-discussion@lists.sourceforge.net, v9fs <v9fs@lists.linux.dev>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <1584421372.26258.1773344022512.JavaMail.zimbra@nod.at>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
-Subject: Re: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="T8O/K0UU";
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 82C8A60142;
+	Thu, 12 Mar 2026 19:39:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BACC4CEF7;
+	Thu, 12 Mar 2026 19:39:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773344379;
+	bh=TXVSzQZhiMZdafgJRSHJ3MWsp1fIXx8Jo2DaRMJV8T0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=T8O/K0UUKi2CvMAbunh4JaL6YLo/f8dyHT851u/j99qXZo97VgKb4+y6ykdfZSo3U
+	 Nv5I7l5d43msX0bJWB2KH3dAL3vcvnsVWuWa3WoINtbamo2DbcHLJL7nG9Dou+kSLY
+	 /ccIY80gPQ/fsQ54v/bzMWnxWRRtshxyRhEC6m5vsyrtXRdGXknCVS6wZ0uC+ZWOVD
+	 NrFWJvEkxRjEbCqcYOyml3aaBafIrStlr6HoNDnbnIuoW0meqzx48VXAVRixevGMYS
+	 KDbC2e/Vx/Qpik3PGHo+ggwlJK+3mJa8kEw97kQIb35ZlL4lfsZ7wzh1G9FKn/UiXb
+	 vZhagA8E7zuPA==
+Message-ID: <dca1580e-96fc-4ca7-bd21-abeddb3c8c44@kernel.org>
+Date: Thu, 12 Mar 2026 20:39:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF148 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Prefer IS_ERR_OR_NULL over manual NULL check
-Thread-Index: 0l8CyewQmrWlgaG6N3QgQFfukutRbA==
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F3E721C000D
-X-Stat-Signature: 6p7jb57nuhgjia81yd8r79upjigi7a8r
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] selftests/mm: skip several tests when thp is not
+ available
+To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
+ shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+References: <20260312114027.634559-1-chuhu@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260312114027.634559-1-chuhu@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 463D540008
+X-Stat-Signature: 699yhep9be67t3eszd4b69ecod3stbj6
 X-Rspam-User: 
-X-HE-Tag: 1773344026-394769
-X-HE-Meta: U2FsdGVkX18fgzFZZ+X3Dqw1Q6dZB9LQkt5jwvp39funDEC/P+AYuTW6Y6kmMXJ7V9EIutXAEY9IBBIsL0E/zi16XdzyHkv+rDmR15X4gQ5pTG1RGVsG+XoxACO8J0jRSSlT1YFpCF5r+aXCXloDi5alpBiYRnT/M9KtviTnQVSF60fyDQLx89LDv7wed+/NxDokMTNGlkgASaHlutoTus281ekZj3wFIS9/8Igk2RXQFJz/x5Qyyn+OXwfDdvG+H1FzUG+O27ii3cjUsBFzolkIjUu145ZGv5BaKBMNlJGH/3v1gl47W5pIDOby7pOLwO9Z1Eso7+sJcxOAH55Hy6yum6zDHRnGLoNaIEDh15FBIwiXpuGjgZovUSfzbQyMJliOY+RyRsV97zeGQVwbMHyoCU+wXSJEfqn3AKuRdWPt72EU+ADjahgSWa37mikPawwGsqdVzSg2B9rFwKmTS5bfngcWydOSHfzLXdTKmj2/kcaZ1Ok/sl4Sk0N7KmfPZ0SOrjS0KNXOtqApeVM/4yahWOfGBSrla71TDrEuZ9c9Cx2ZawCozAkuriWl7gn3sX8ryYVtX9ss6XnAb1LEfmxXAQILw7nYflfc3qadNzEM0XL6iKii0XPOA1aPaZNVUFd8+JkAKD+PLuCP3DxgN2a7kUaDgvfBMMEyrRAT00N+6dMuPjHf22mAsy8yejr9udbogT0KL+sFwzGurz1NAbhzxKvB82N2MxmUuGjEWGlgr0JOGGPenSoVYgOqI5IkgLM1ma61Iy7+52bRuReuIrJSAi0ovY0fh99UPRpSvRlTVVgjTfo6ys0wVwS1vsCe7wtRgkwXl91EY+8E7HvqaDshqxsqoWXZRj2Dn8vWK2cVOoXbFerU0Ya31G1LLcK3fV7uATa60ck7YoVEaTvnba7ppfK/bAHoR5bCv4MeQ2Q=
+X-HE-Tag: 1773344380-994356
+X-HE-Meta: U2FsdGVkX1/MkyNIHliXvzswsxV43qzbp/3V+Tfm3SbaslQVrAfQKE2V1yN2Wh4PcPKhBKzYV5fPNCakik1AGlQTC0naBmYkw5FQI46J2obO+eugzwjfVIH8Sr1fTSuTXJlnNMUGXc54JRf8BUzieI9YJtErp+aUxIn4n7uP+bHvrpEwDzlGQPxPjVKFYK1ZTa9IWNAMlL6lIdKDUI1145Y1xeZFsu7TLZ3BkNwxwaN/YS2xY6n7V+6XNHMwZe6XQVR1Hdx3Sp24Hiwc4XqYRNi67l/pqU/TvrUYJ/l6ZMM2eoOvD8BtrKs87YzgoIYLqrcVpWwW2+2E6ipMsq0ugJ6c167/ZLJXDLMAfK6KU67JIEic52oA9ISSwdTvSz/X/AkGvxoaxEtDP9Jbbt15PtI7Jgd0e7Bu2+LYn7HpUguNSBUAJVDgxA1XjU0p6UBcCDy8gA7xOsokeWQKSajJggG/8u0PjTa1D9PJtovKLqF5iZSsBOP5+iM0/FY5vcFJHXOmtBX+LxEkGyy2UsVPQlZbNhSGFQZBVS6tFXpta+M6IS3hmD6NmyvxU1wfYtdQtub937NORAaR/VVKkevVN4znUB5BN+5UaEFSprJHxH2i5n/Nm3pgx2O23VIEentc7NnJvPzXiDTVswdGxV/MTBTBMdXjSGfldV5az3ngyDFlv2xSOuJ4WKEofZieUOTGbPvHIbFXrNm90PWm3gflKht08hhWtMueiWwPKA1OIEMydUKDNwDKCZwd2jEWrMpcgljPhcsdMW1K2ykyZXnXw5VSowsqMXnD1R5+AQ/LyK3cgOsnfbAUg+x+nugycrWqZy5lgvwLAz2H1YtLI9bSXVIXj0pB2oYRif3BGUjRL7sxshOGIPwl+MA/jmnZGzXq8BQE1taQeAQ0AyTJ6njJhWsFjPUSsJs52zxAsaWPMO/0n24X+0Wbx0u47dK9ZtcS84E/qMm6sbVaMvx/xY5
+ nWlH8iO0
+ BRi4IIYr0LeQDpCeIAfL7c6tXkkdYtE1Boz7xLmBEO5mmr42OELPsaFuVtRrWwpz4Y1MSfr+jAhPZFY2cAFXRBM2uN743xA+zxq8eiCyH1Ks9sc6joSecIcX2h96zGcedVvmwXyz1KN9O+FWIwCJ9X7sZqBtvAPIpvr22kNRO4Q9wTS9r/VXjv6bkBDHBodEAM6CuP9BrbACRY90LGrfU9I9rPnXWOmTNW0xNu+vKkUdgrAVObv7ndViUmqcotL98Oj+d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,15 +142,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Philipp Hahn" <phahn-oss@avm.de>
-> -=09if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
-> +=09if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+On 3/12/26 12:40, Chunyu Hu wrote:
+> There are several tests requires transprarent hugepages, when run on thp
+> disabled kernel such as realtime kernel, there will be false positve.
+> Mark those tests as skip when thp is not available.
 
-No, please don't.
+We expend that people that run the tests have the configs as contained in
 
-This makes reading the code not easier.
+	tools/testing/selftests/mm/config
 
-Thanks,
-//richard
+enabled.
+
+I'm fine with teaching the tests that that is no longer required.
+
+Should we then remove
+
+	CONFIG_TRANSPARENT_HUGEPAGE=y
+
+from the file, or leave it in there for people building their configs to
+know what to enable for best test coverage? (I doubt people do use it
+for that purpose)
+
+-- 
+Cheers,
+
+David
 
