@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 520EE106ACE6
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E731106ACDD
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABA6E6B00B8; Thu, 12 Mar 2026 15:17:26 -0400 (EDT)
+	id 83E6D6B00AB; Thu, 12 Mar 2026 15:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A84CA6B00B9; Thu, 12 Mar 2026 15:17:26 -0400 (EDT)
+	id 7EC2C6B00AC; Thu, 12 Mar 2026 15:29:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908A76B00BA; Thu, 12 Mar 2026 15:17:26 -0400 (EDT)
+	id 6CDEA6B00AD; Thu, 12 Mar 2026 15:29:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A3AC6B00B8
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:17:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 196FA1A03B8
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:17:25 +0000 (UTC)
-X-FDA: 84538369650.03.3085582
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7AD5120005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:17:23 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jnBYUgG9;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BD416B00AB
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:29:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 010CB13AB0A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:29:08 +0000 (UTC)
+X-FDA: 84538399218.04.4E0460A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5037FA000F
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:29:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D5HD7ub6;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773343043;
+	s=arc-20220608; t=1773343747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4OFTViZHiADqcLP8TQuuXhpyhGY2vtPeK3aRtavst+M=;
-	b=GLtLF3iTf7NyHGszX+5LwpE6b5vySuGYjdIxEOn4A7oW7iuRjqyuDeMkLr/RIKITR5W/TD
-	M5F64tVOizqwn8vEh1OpnKccRahU560n5mJV+nP4AZR4FvE+ttEE9HPQcn74eHkvNV0bu7
-	WSQs7eMFl0bwy1I8CPfWzGfS9lpf1eA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jnBYUgG9;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773343043; a=rsa-sha256;
+	bh=McqqJ/O8xeq2UYW4/r1rFqCQDgZ0JT5zmWWDDok3uPA=;
+	b=tWJt++v5maMMv8SjU0Vbho+jojWj6aIiZ7nNIMepVQQtbwVKlAR6S21qwmmQz1lIXBQHZo
+	TgLRgd4RpQ9PzG93JBRfXGXiANd6x65ggVTWLwVgt8ac4XviAojIj0nOtf1uRlwz6Spbr1
+	FVlSxlhtRKKnVsmlAK6TgDJhRk1FI2A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773343747; a=rsa-sha256;
 	cv=none;
-	b=Bd4hg8MgWm7ecO4r8mt6AstL+gPbxx07ebZF9HMyqD/YD/X+7ayRXosAk2PaiB8K95RiN8
-	mFjUme//pqV++BkUoKM2+LBql9u3d9POtjAOYcApwDpu2jtqzQ84Br1uilNOlGM2WAYv7C
-	mm1lcN7aBhvgHbXcgiS5F7OE6tKfXGI=
+	b=7iX7N66UFGrJNTw6YErRaC9+bVpiyOaBF/xKSysTsMnE6Rmyd/yfiFX+VvHuC3kEO9UsuN
+	HAHbD2AWpJ5BrP8n3EqGdZc7nJ98DKMRtfSDbG0pjHLhaMtU9olWxpOgjxvLIBNMs9gore
+	bQOFKiMAi5lrRGfRAr6BJCKsHMcQeqI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D5HD7ub6;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8833D4451F;
-	Thu, 12 Mar 2026 19:17:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED79C19425;
-	Thu, 12 Mar 2026 19:17:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FB6D60142;
+	Thu, 12 Mar 2026 19:29:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1CFC4CEF7;
+	Thu, 12 Mar 2026 19:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773343042;
-	bh=pg0T76j/N32JhkU5ECSbsl9XX6BIzfUDuUrJ9c8YHoY=;
+	s=k20201202; t=1773343746;
+	bh=YOpLJ11dYkodZx+8r67n8RhJ76dQINyNi6epYf/ZdHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnBYUgG9ROVQOQA7o4uXyhxKFRh3HGnBguHY88Rj8rrN7em/ef0pnXl6wFIaLU5ey
-	 0MlyqsuHb8qHRTwtRnAqND1Ya5t98qTEvS/KcPKUYHAcN8w4Xfq2xVuyvliEAPvLuB
-	 vyhGDHh6GucdU/bhKySDj7P/5FsYJ6lUStnnD1hTDjHlVZ7VvBOYMCuWDvvHmw2ywY
-	 dFrTU2ovocsfUU2XjLurxH3U2EcuKmlpgnpDS6/F2RlghElXgMmCF1Zbys52ETDOrq
-	 xH1HHgLE3UqRLW6TONFJcGYCbFg9aMLgEBjKe0JcATYR952B9wUnxnKg/ES5Zr+BRq
-	 hann7VoKJa7mQ==
+	b=D5HD7ub66roaJWE7nrlmZAdflnSN0hO7otfgMZKtfYptdRiQTxOped1BoFkMJPpjl
+	 mH9m12adCkTI8dW3Uw2bSQccqFmWiGxOgZgwkl8VEI3kLYpji0j6otmhnt2X8pJBkS
+	 d9n2kEACyQQ233Akhzuf1EUppbZ76a/Fh6nI/O3LY0UyrGQfiYI/qFTHHZzhUlZ0Wc
+	 RH11N4B7/2JfpXNL3XfCBwtHe1XgaZATYAGzrYiPQoeKPR1+AKl6IpUrkktXCzQFV2
+	 xZs80hRlOi6SdjYJHSHauWWQ+yIS/dw25//+hVMfrNvAegcqoCSuk8G1c2FCRi4X5A
+	 9x6bga13XCQVw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,22 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH 20/20] mm/vma: convert __mmap_region() to use vma_flags_t
-Date: Thu, 12 Mar 2026 19:16:18 +0000
-Message-ID: <b62003b4a12913f927b48925dc6a8272fcf117be.1773342102.git.ljs@kernel.org>
+Subject: [PATCH 02/20] tools/testing/vma: add unit tests flag empty, diff_pair, and[_mask]
+Date: Thu, 12 Mar 2026 19:28:57 +0000
+Message-ID: <ae25ef9cd48e20553babaad3868da1cf74f16af1.1773342102.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773342102.git.ljs@kernel.org>
 References: <cover.1773342102.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7AD5120005
-X-Stat-Signature: r545bgsa74jagn351569uj7ib4s7yckc
+X-Stat-Signature: hobwx83i14qymt8kj1hg7bk1s15z6gm3
 X-Rspam-User: 
-X-HE-Tag: 1773343043-236187
-X-HE-Meta: U2FsdGVkX1+FkxeAQziEdaigZdb8NP2LVdy7syALaiU2gUPrKohbVQUL1x1kKOG6bnTDKyX0OQTKQYv6/cNTg8Vjq1aJlFAU4Px9tQL1xV4SBBub+nBw8Wk2977oA51ICZLipFlbwlMOuSNSe+uDOeAKviQ6TvzhXVpu1G+kyP577lCcViqs2BKcgtlOWLZsc11CWmu51b0yHSaEZQgqDiUk5CWTnrwPjUaroEwK0M0I5Pbo+6rlo8YpnTmPG0xHAXpSy9Vln9Cq2W1Ufiqegbi4N+/qJnn7jSVhR0EGCWfimcT6+e9HG13AOodvTdAUjj2c4j8JeQ8APsEKdRGe246sGTPde5WzkF/jbsUDhRqcphW4KoQ8SeWlyCnXY6c2DXAY7fG2fCYMvstPJ+TY+FBXO0pv8UNCDcRkQFUVUH341zjcTomaEw5epCTQxhuYuzPbuqQNmxVLeceulrqv4GZZjZxtoK/N0A5HPvU80FZriyi/XcRwYtn/fHnrRE/PhwO/6FL13uo+iUWgtWyBG+sc3JZxr/qN0Eqy3LkwKhRUlexK+O9IngGc0GYFhV5ES56XKAeFNPUo5XhAF+wroheN5uGNQ0qV5A/kDuca3O9d6UMFE1iLSjpdSZ2Uf81e7ntxSHQnVsslzwj2FFgcHFBYXbNE6dtSZuuu0eNLSBzEzQrpcEFtEefJrXRUyW+E1nLELIuVfg9RugNoPlTf8qM4ieyRt6HuNta+bDXWOqe4yvKs6wvhTAdE7LFSijK4xUxvV3hQyxMlOOD2P3gT5A+uwwiCFjrZwZDJZGU3PAZiZjSqfENaUFRJ9pZKQIqPzROT4gV5UB59GLBNPM2HkEOzCPLoz9n3kAHe4Bcp/S2dzYsRc4WGMC+D0hMJvzYwmC0ZcMd3zI1XajVF/IF2d1OaJpHgEouXHxA9uy07l589FiKmxrLEgHBaCumEJPwMBPVsKueBjmTcrNr9m3U
- WRAjlmkg
- pKm4j0PUY4QQysxGPvTKAP/pGW5OlWTYuc9SkZT8DEYnNNHRk0eVputz8HJDQrlt0cTd5KL+nfaI/RxjvaFNHNjRXIW3yrtPLBjKBex/8r5wLgQGgn+7n53Vwog==
+X-Rspamd-Queue-Id: 5037FA000F
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773343747-675167
+X-HE-Meta: U2FsdGVkX19yz8/MnbVwDYz4d66pbf4e4nRemJFsJo2fhIhOqjNgsrg0kQRWYp96McsK2/AQoIG7P0LGBGBfzeGHD6eHr6U3+vNnze45n+WnM6Tgyt4L7mYg77f7X806Bb6FYFpRQbJ+/25E/VOHIzsYKTjctfxie39RTBXd0zKZckpyPBxYqbYbePnB5NtYlE5gdvF8KscYPRctkcX3NTkISelQi31b6dindg5CPLqUbJMan0nxIJUYuGtpPTa75owJWN/3sZEvCDnSXqLlPTYCI1yq8OyOiImG498+glWhuMN8l9G83RYiR/hICODU/nuzQxaZEkrN6sPdkw/enfMArLcLLeM7x1i7vh2yXf1+ZAoc2iE2TqHN8Qb2GSLWT3Oy1A/rkebruLFE4EPPhB4JJOtJQ+w2MRuBoeLWeftnnrDW6+8ICLaevRcBaCXA4AmXdFxqHWZdDbu24oSRbdFT88QoyBcAy/bXE9CPdjKgOZG3mWNghDYI8Kf7B4bKME7/yUPb12XOX/xctOkwpTRbdI+BM9+QgCdQGc2DhswynKKSJrcKPAIgfgR9AfAxoUl1SMHdejdIqBEQulKp+mFB8ERihUQYB+IpxZ6DomXs0p+pQo4Swyd2LK06HKVL03R9Xw1PmNpOjahts4NwLIfvuc3aF0SE/sk98SCstwKD3UwrNoiACda9/wbbv4AVlzYxkKukOkQrYC2yQd7b87QYz4qOqDcfRhVkufB4kCwGKp2TCV/n0CoB3rnu9Bsdbp/poGtnPEYKl9W8cX4auiFrSPJlIKtFo9tLoJxfteFht0qwOe2TjKHxrHugvW6WKtkU4bVmuCxTEx3bu1WiSsk+jPxndGY8klVEzW/YSP85htEGpBp9hu/QpE6ME+HH7dr5O0yoangzmATfaFeP8Sz+LbPwbVdN0FtgwyN+CBae4uNF4L45aIbaQ7wgZByJqGgABmTZc0tghL3hrUw
+ u/4/7BUd
+ PY7B+aJFGlWsGJundiyuoRZRNdpS0j7fOoowg88LyRcmkYuiFA3y1Nl8KMNx6kmjQHVVAYFzrC6yswZKIewsHS/5WC1fowkuFG8i3soYbVDVaPz8Ld7dIbkjV5MiVgMORwIPCLeqSR3wzE9MvCjbctOEa97Hq+hkQF9eXt0Fxy3kq60ybmJ9Xi9zCpkKOquseST2NZoAAxd2u6EAdBSn5Q1ebx12e7tW9Tnjx1tXDbCQvj1IyvoNEwYJ7QlvWCa7MhuxxREDMN0Djs2PSMjpi47gD6tJ50LEmcUAlVEEcGp6HTv+fnLVcXQCyNZrPdjyACRkrD2n22QNrTEbawZrjfEtdOvm6N/IoGI9y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,416 +149,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the mmap() implementation logic implemented in __mmap_region() and
-functions invoked by it. The mmap_region() function converts its input
-vm_flags_t parameter to a vma_flags_t value which it then passes to
-__mmap_region() which uses the vma_flags_t value consistently from then on.
+Add VMA unit tests to assert that:
 
-As part of the change, we convert map_deny_write_exec() to using
-vma_flags_t (it was incorrectly using unsigned long before), and place it
-in vma.h, as it is only used internal to mm.
+* vma_flags_empty()
+* vma_flags_diff_pair()
+* vma_flags_and_mask()
+* vma_flags_and()
 
-With this change, we eliminate the legacy is_shared_maywrite_vm_flags()
-helper function which is now no longer required.
+All function as expected.
 
-We are also able to update the MMAP_STATE() and VMG_MMAP_STATE() macros to
-use the vma_flags_t value.
+In additional to the added tests, in order to make testing easier, add
+vma_flags_same_mask() and vma_flags_same() for testing only. If/when these
+are required in kernel code, they can be moved over.
 
-Finally, we update the VMA tests to reflect the change.
+Also add ASSERT_FLAGS_[NOT_]SAME[_MASK](), ASSERT_FLAGS_[NON]EMPTY() test
+helpers to make asserting flag state easier and more convenient.
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- include/linux/mm.h              | 18 ++++++++----
- include/linux/mman.h            | 49 -------------------------------
- mm/mprotect.c                   |  4 ++-
- mm/vma.c                        | 25 ++++++++--------
- mm/vma.h                        | 51 +++++++++++++++++++++++++++++++++
- tools/testing/vma/include/dup.h | 34 +++++-----------------
- tools/testing/vma/tests/mmap.c  | 18 ++++--------
- 7 files changed, 92 insertions(+), 107 deletions(-)
+ tools/testing/vma/include/custom.h |  12 +++
+ tools/testing/vma/shared.h         |  18 ++++
+ tools/testing/vma/tests/vma.c      | 137 +++++++++++++++++++++++++++++
+ 3 files changed, 167 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index fd873a9467f8..34b587531f1b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1485,12 +1485,6 @@ static inline bool vma_is_accessible(const struct vm_area_struct *vma)
- 	return vma->vm_flags & VM_ACCESS_FLAGS;
+diff --git a/tools/testing/vma/include/custom.h b/tools/testing/vma/include/custom.h
+index 833ff4d7f799..ce056e790817 100644
+--- a/tools/testing/vma/include/custom.h
++++ b/tools/testing/vma/include/custom.h
+@@ -118,3 +118,15 @@ static __always_inline vma_flags_t __mk_vma_flags(size_t count,
+ 			vma_flags_set_flag(&flags, bits[i]);
+ 	return flags;
  }
- 
--static inline bool is_shared_maywrite_vm_flags(vm_flags_t vm_flags)
--{
--	return (vm_flags & (VM_SHARED | VM_MAYWRITE)) ==
--		(VM_SHARED | VM_MAYWRITE);
--}
--
- static inline bool is_shared_maywrite(const vma_flags_t *flags)
- {
- 	return vma_flags_test_all(flags, VMA_SHARED_BIT, VMA_MAYWRITE_BIT);
-@@ -4285,12 +4279,24 @@ static inline bool range_in_vma(const struct vm_area_struct *vma,
- 
- #ifdef CONFIG_MMU
- pgprot_t vm_get_page_prot(vm_flags_t vm_flags);
 +
-+static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
++/* Place here until needed in the kernel code. */
++static __always_inline bool vma_flags_same_mask(vma_flags_t *flags,
++						vma_flags_t flags_other)
 +{
-+	const vm_flags_t vm_flags = vma_flags_to_legacy(vma_flags);
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_other = flags_other.__vma_flags;
 +
-+	return vm_get_page_prot(vm_flags);
++	return bitmap_equal(bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
 +}
++#define vma_flags_same(flags, ...) \
++	vma_flags_same_mask(flags, mk_vma_flags(__VA_ARGS__))
+diff --git a/tools/testing/vma/shared.h b/tools/testing/vma/shared.h
+index 6c64211cfa22..e2e5d6ef6bdd 100644
+--- a/tools/testing/vma/shared.h
++++ b/tools/testing/vma/shared.h
+@@ -35,6 +35,24 @@
+ #define ASSERT_EQ(_val1, _val2) ASSERT_TRUE((_val1) == (_val2))
+ #define ASSERT_NE(_val1, _val2) ASSERT_TRUE((_val1) != (_val2))
+
++#define ASSERT_FLAGS_SAME_MASK(_flags, _flags_other) \
++	ASSERT_TRUE(vma_flags_same_mask((_flags), (_flags_other)))
 +
- void vma_set_page_prot(struct vm_area_struct *vma);
- #else
- static inline pgprot_t vm_get_page_prot(vm_flags_t vm_flags)
- {
- 	return __pgprot(0);
++#define ASSERT_FLAGS_NOT_SAME_MASK(_flags, _flags_other) \
++	ASSERT_FALSE(vma_flags_same_mask((_flags), (_flags_other)))
++
++#define ASSERT_FLAGS_SAME(_flags, ...) \
++	ASSERT_TRUE(vma_flags_same(_flags, __VA_ARGS__))
++
++#define ASSERT_FLAGS_NOT_SAME(_flags, ...) \
++	ASSERT_FALSE(vma_flags_same(_flags, __VA_ARGS__))
++
++#define ASSERT_FLAGS_EMPTY(_flags) \
++	ASSERT_TRUE(vma_flags_empty(_flags))
++
++#define ASSERT_FLAGS_NONEMPTY(_flags) \
++	ASSERT_FALSE(vma_flags_empty(_flags))
++
+ #define IS_SET(_val, _flags) ((_val & _flags) == _flags)
+
+ extern bool fail_prealloc;
+diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+index f6edd44f4e9e..4a7b11a8a285 100644
+--- a/tools/testing/vma/tests/vma.c
++++ b/tools/testing/vma/tests/vma.c
+@@ -363,6 +363,140 @@ static bool test_vma_flags_clear(void)
+ 	return true;
  }
-+static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
+
++/* Ensure that vma_flags_empty() works correctly. */
++static bool test_vma_flags_empty(void)
 +{
-+	return __pgprot(0);
-+}
- static inline void vma_set_page_prot(struct vm_area_struct *vma)
- {
- 	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
-diff --git a/include/linux/mman.h b/include/linux/mman.h
-index 0ba8a7e8b90a..389521594c69 100644
---- a/include/linux/mman.h
-+++ b/include/linux/mman.h
-@@ -170,53 +170,4 @@ static inline bool arch_memory_deny_write_exec_supported(void)
- }
- #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
- #endif
--
--/*
-- * Denies creating a writable executable mapping or gaining executable permissions.
-- *
-- * This denies the following:
-- *
-- * 	a)	mmap(PROT_WRITE | PROT_EXEC)
-- *
-- *	b)	mmap(PROT_WRITE)
-- *		mprotect(PROT_EXEC)
-- *
-- *	c)	mmap(PROT_WRITE)
-- *		mprotect(PROT_READ)
-- *		mprotect(PROT_EXEC)
-- *
-- * But allows the following:
-- *
-- *	d)	mmap(PROT_READ | PROT_EXEC)
-- *		mmap(PROT_READ | PROT_EXEC | PROT_BTI)
-- *
-- * This is only applicable if the user has set the Memory-Deny-Write-Execute
-- * (MDWE) protection mask for the current process.
-- *
-- * @old specifies the VMA flags the VMA originally possessed, and @new the ones
-- * we propose to set.
-- *
-- * Return: false if proposed change is OK, true if not ok and should be denied.
-- */
--static inline bool map_deny_write_exec(unsigned long old, unsigned long new)
--{
--	/* If MDWE is disabled, we have nothing to deny. */
--	if (!mm_flags_test(MMF_HAS_MDWE, current->mm))
--		return false;
--
--	/* If the new VMA is not executable, we have nothing to deny. */
--	if (!(new & VM_EXEC))
--		return false;
--
--	/* Under MDWE we do not accept newly writably executable VMAs... */
--	if (new & VM_WRITE)
--		return true;
--
--	/* ...nor previously non-executable VMAs becoming executable. */
--	if (!(old & VM_EXEC))
--		return true;
--
--	return false;
--}
--
- #endif /* _LINUX_MMAN_H */
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 2b8a85689ab7..ef09cd1aa33f 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -882,6 +882,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 	tmp = vma->vm_start;
- 	for_each_vma_range(vmi, vma, end) {
- 		vm_flags_t mask_off_old_flags;
-+		vma_flags_t new_vma_flags;
- 		vm_flags_t newflags;
- 		int new_vma_pkey;
- 
-@@ -904,6 +905,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 		new_vma_pkey = arch_override_mprotect_pkey(vma, prot, pkey);
- 		newflags = calc_vm_prot_bits(prot, new_vma_pkey);
- 		newflags |= (vma->vm_flags & ~mask_off_old_flags);
-+		new_vma_flags = legacy_to_vma_flags(newflags);
- 
- 		/* newflags >> 4 shift VM_MAY% in place of VM_% */
- 		if ((newflags & ~(newflags >> 4)) & VM_ACCESS_FLAGS) {
-@@ -911,7 +913,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 			break;
- 		}
- 
--		if (map_deny_write_exec(vma->vm_flags, newflags)) {
-+		if (map_deny_write_exec(&vma->flags, &new_vma_flags)) {
- 			error = -EACCES;
- 			break;
- 		}
-diff --git a/mm/vma.c b/mm/vma.c
-index c2c649b23465..1b00d6a2cc8d 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -44,7 +44,7 @@ struct mmap_state {
- 	bool file_doesnt_need_get :1;
- };
- 
--#define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, vm_flags_, file_) \
-+#define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, vma_flags_, file_) \
- 	struct mmap_state name = {					\
- 		.mm = mm_,						\
- 		.vmi = vmi_,						\
-@@ -52,9 +52,9 @@ struct mmap_state {
- 		.end = (addr_) + (len_),				\
- 		.pgoff = pgoff_,					\
- 		.pglen = PHYS_PFN(len_),				\
--		.vm_flags = vm_flags_,					\
-+		.vma_flags = vma_flags_,				\
- 		.file = file_,						\
--		.page_prot = vm_get_page_prot(vm_flags_),		\
-+		.page_prot = vma_get_page_prot(vma_flags_),		\
- 	}
- 
- #define VMG_MMAP_STATE(name, map_, vma_)				\
-@@ -63,7 +63,7 @@ struct mmap_state {
- 		.vmi = (map_)->vmi,					\
- 		.start = (map_)->addr,					\
- 		.end = (map_)->end,					\
--		.vm_flags = (map_)->vm_flags,				\
-+		.vma_flags = (map_)->vma_flags,				\
- 		.pgoff = (map_)->pgoff,					\
- 		.file = (map_)->file,					\
- 		.prev = (map_)->prev,					\
-@@ -2747,14 +2747,14 @@ static int call_action_complete(struct mmap_state *map,
- }
- 
- static unsigned long __mmap_region(struct file *file, unsigned long addr,
--		unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
--		struct list_head *uf)
-+		unsigned long len, vma_flags_t vma_flags,
-+		unsigned long pgoff, struct list_head *uf)
- {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma = NULL;
- 	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
- 	VMA_ITERATOR(vmi, mm, addr);
--	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, vm_flags, file);
-+	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, vma_flags, file);
- 	struct vm_area_desc desc = {
- 		.mm = mm,
- 		.file = file,
-@@ -2838,16 +2838,17 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
-  * been performed.
-  */
- unsigned long mmap_region(struct file *file, unsigned long addr,
--			  unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
--			  struct list_head *uf)
-+			  unsigned long len, vm_flags_t vm_flags,
-+			  unsigned long pgoff, struct list_head *uf)
- {
- 	unsigned long ret;
- 	bool writable_file_mapping = false;
-+	const vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
- 
- 	mmap_assert_write_locked(current->mm);
- 
- 	/* Check to see if MDWE is applicable. */
--	if (map_deny_write_exec(vm_flags, vm_flags))
-+	if (map_deny_write_exec(&vma_flags, &vma_flags))
- 		return -EACCES;
- 
- 	/* Allow architectures to sanity-check the vm_flags. */
-@@ -2855,7 +2856,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 		return -EINVAL;
- 
- 	/* Map writable and ensure this isn't a sealed memfd. */
--	if (file && is_shared_maywrite_vm_flags(vm_flags)) {
-+	if (file && is_shared_maywrite(&vma_flags)) {
- 		int error = mapping_map_writable(file->f_mapping);
- 
- 		if (error)
-@@ -2863,7 +2864,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 		writable_file_mapping = true;
- 	}
- 
--	ret = __mmap_region(file, addr, len, vm_flags, pgoff, uf);
-+	ret = __mmap_region(file, addr, len, vma_flags, pgoff, uf);
- 
- 	/* Clear our write mapping regardless of error. */
- 	if (writable_file_mapping)
-diff --git a/mm/vma.h b/mm/vma.h
-index 270008e5babc..adc18f7dd9f1 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -704,4 +704,55 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
- int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift);
- #endif
- 
-+#ifdef CONFIG_MMU
-+/*
-+ * Denies creating a writable executable mapping or gaining executable permissions.
-+ *
-+ * This denies the following:
-+ *
-+ *	a)	mmap(PROT_WRITE | PROT_EXEC)
-+ *
-+ *	b)	mmap(PROT_WRITE)
-+ *		mprotect(PROT_EXEC)
-+ *
-+ *	c)	mmap(PROT_WRITE)
-+ *		mprotect(PROT_READ)
-+ *		mprotect(PROT_EXEC)
-+ *
-+ * But allows the following:
-+ *
-+ *	d)	mmap(PROT_READ | PROT_EXEC)
-+ *		mmap(PROT_READ | PROT_EXEC | PROT_BTI)
-+ *
-+ * This is only applicable if the user has set the Memory-Deny-Write-Execute
-+ * (MDWE) protection mask for the current process.
-+ *
-+ * @old specifies the VMA flags the VMA originally possessed, and @new the ones
-+ * we propose to set.
-+ *
-+ * Return: false if proposed change is OK, true if not ok and should be denied.
-+ */
-+static inline bool map_deny_write_exec(const vma_flags_t *old,
-+				       const vma_flags_t *new)
-+{
-+	/* If MDWE is disabled, we have nothing to deny. */
-+	if (!mm_flags_test(MMF_HAS_MDWE, current->mm))
-+		return false;
++	vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
++					 VMA_EXEC_BIT, 64, 65);
 +
-+	/* If the new VMA is not executable, we have nothing to deny. */
-+	if (!vma_flags_test(new, VMA_EXEC_BIT))
-+		return false;
-+
-+	/* Under MDWE we do not accept newly writably executable VMAs... */
-+	if (vma_flags_test(new, VMA_WRITE_BIT))
-+		return true;
-+
-+	/* ...nor previously non-executable VMAs becoming executable. */
-+	if (!vma_flags_test(old, VMA_EXEC_BIT))
-+		return true;
-+
-+	return false;
-+}
++	ASSERT_FLAGS_NONEMPTY(&flags);
++	vma_flags_clear(&flags, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++#if NUM_VMA_FLAG_BITS > 64
++	ASSERT_FLAGS_NONEMPTY(&flags);
++	vma_flags_clear(&flags, 64, 65);
++	ASSERT_FLAGS_EMPTY(&flags);
++#else
++	ASSERT_FLAGS_EMPTY(&flags);
 +#endif
 +
- #endif	/* __MM_VMA_H */
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 71bb3559682d..f35c9d31aad3 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -1094,12 +1094,6 @@ static __always_inline void vma_desc_clear_flags_mask(struct vm_area_desc *desc,
- #define vma_desc_clear_flags(desc, ...) \
- 	vma_desc_clear_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
- 
--static inline bool is_shared_maywrite_vm_flags(vm_flags_t vm_flags)
--{
--	return (vm_flags & (VM_SHARED | VM_MAYWRITE)) ==
--		(VM_SHARED | VM_MAYWRITE);
--}
--
- static inline bool is_shared_maywrite(const vma_flags_t *flags)
- {
- 	return vma_flags_test_all(flags, VMA_SHARED_BIT, VMA_MAYWRITE_BIT);
-@@ -1416,27 +1410,6 @@ static inline bool mlock_future_ok(const struct mm_struct *mm,
- 	return locked_pages <= limit_pages;
- }
- 
--static inline bool map_deny_write_exec(unsigned long old, unsigned long new)
--{
--	/* If MDWE is disabled, we have nothing to deny. */
--	if (mm_flags_test(MMF_HAS_MDWE, current->mm))
--		return false;
--
--	/* If the new VMA is not executable, we have nothing to deny. */
--	if (!(new & VM_EXEC))
--		return false;
--
--	/* Under MDWE we do not accept newly writably executable VMAs... */
--	if (new & VM_WRITE)
--		return true;
--
--	/* ...nor previously non-executable VMAs becoming executable. */
--	if (!(old & VM_EXEC))
--		return true;
--
--	return false;
--}
--
- static inline int mapping_map_writable(struct address_space *mapping)
- {
- 	return atomic_inc_unless_negative(&mapping->i_mmap_writable) ?
-@@ -1482,3 +1455,10 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
- #ifndef pgtable_supports_soft_dirty
- #define pgtable_supports_soft_dirty()	IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
- #endif
-+
-+static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
-+{
-+	const vm_flags_t vm_flags = vma_flags_to_legacy(vma_flags);
-+
-+	return vm_get_page_prot(vm_flags);
++	return true;
 +}
-diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
-index bded4ecbe5db..c85bc000d1cb 100644
---- a/tools/testing/vma/tests/mmap.c
-+++ b/tools/testing/vma/tests/mmap.c
-@@ -2,6 +2,8 @@
- 
- static bool test_mmap_region_basic(void)
++
++/* Ensure that vma_flags_diff_pair() works correctly. */
++static bool test_vma_flags_diff(void)
++{
++	vma_flags_t flags1 = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
++					  VMA_EXEC_BIT, 64, 65);
++	vma_flags_t flags2 = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
++					  VMA_EXEC_BIT, VMA_MAYWRITE_BIT,
++					  VMA_MAYEXEC_BIT, 64, 65, 66, 67);
++	vma_flags_t diff = vma_flags_diff_pair(&flags1, &flags2);
++
++#if NUM_VMA_FLAG_BITS > 64
++	ASSERT_FLAGS_SAME(&diff, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT, 66, 67);
++#else
++	ASSERT_FLAGS_SAME(&diff, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT);
++#endif
++	/* Should be the same even if re-ordered. */
++	diff = vma_flags_diff_pair(&flags2, &flags1);
++#if NUM_VMA_FLAG_BITS > 64
++	ASSERT_FLAGS_SAME(&diff, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT, 66, 67);
++#else
++	ASSERT_FLAGS_SAME(&diff, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT);
++#endif
++
++	/* Should be no difference when applied against themselves. */
++	diff = vma_flags_diff_pair(&flags1, &flags1);
++	ASSERT_FLAGS_EMPTY(&diff);
++	diff = vma_flags_diff_pair(&flags2, &flags2);
++	ASSERT_FLAGS_EMPTY(&diff);
++
++	/* One set of flags against an empty one should equal the original. */
++	flags2 = EMPTY_VMA_FLAGS;
++	diff = vma_flags_diff_pair(&flags1, &flags2);
++	ASSERT_FLAGS_SAME_MASK(&diff, flags1);
++
++	/* A subset should work too. */
++	flags2 = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT);
++	diff = vma_flags_diff_pair(&flags1, &flags2);
++#if NUM_VMA_FLAG_BITS > 64
++	ASSERT_FLAGS_SAME(&diff, VMA_EXEC_BIT, 64, 65);
++#else
++	ASSERT_FLAGS_SAME(&diff, VMA_EXEC_BIT);
++#endif
++
++	return true;
++}
++
++/* Ensure that vma_flags_and() and friends work correctly. */
++static bool test_vma_flags_and(void)
++{
++	vma_flags_t flags1 = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
++					  VMA_EXEC_BIT, 64, 65);
++	vma_flags_t flags2 = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
++					  VMA_EXEC_BIT, VMA_MAYWRITE_BIT,
++					  VMA_MAYEXEC_BIT, 64, 65, 66, 67);
++	vma_flags_t flags3 = mk_vma_flags(VMA_IO_BIT, VMA_MAYBE_GUARD_BIT,
++					  68, 69);
++	vma_flags_t and = vma_flags_and_mask(&flags1, flags2);
++
++#if NUM_VMA_FLAG_BITS > 64
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT,
++			  64, 65);
++#else
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++#endif
++
++	and = vma_flags_and_mask(&flags1, flags1);
++	ASSERT_FLAGS_SAME_MASK(&and, flags1);
++
++	and = vma_flags_and_mask(&flags2, flags2);
++	ASSERT_FLAGS_SAME_MASK(&and, flags2);
++
++	and = vma_flags_and_mask(&flags1, flags3);
++	ASSERT_FLAGS_EMPTY(&and);
++	and = vma_flags_and_mask(&flags2, flags3);
++	ASSERT_FLAGS_EMPTY(&and);
++
++	and = vma_flags_and(&flags1, VMA_READ_BIT);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT);
++
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT);
++
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++
++#if NUM_VMA_FLAG_BITS > 64
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT,
++			    64);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT, 64);
++
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT,
++			    64, 65);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT, 64,
++			  65);
++#endif
++
++	/* And against some missing values. */
++
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT,
++			    VMA_IO_BIT);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT,
++			    VMA_IO_BIT, VMA_RAND_READ_BIT);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++
++#if NUM_VMA_FLAG_BITS > 64
++	and = vma_flags_and(&flags1, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT,
++			    VMA_IO_BIT, VMA_RAND_READ_BIT, 69);
++	ASSERT_FLAGS_SAME(&and, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
++#endif
++
++	return true;
++}
++
+ static void run_vma_tests(int *num_tests, int *num_fail)
  {
-+	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-+			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
- 	struct mm_struct mm = {};
- 	unsigned long addr;
- 	struct vm_area_struct *vma;
-@@ -10,27 +12,19 @@ static bool test_mmap_region_basic(void)
- 	current->mm = &mm;
- 
- 	/* Map at 0x300000, length 0x3000. */
--	addr = __mmap_region(NULL, 0x300000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x300, NULL);
-+	addr = __mmap_region(NULL, 0x300000, 0x3000, vma_flags, 0x300, NULL);
- 	ASSERT_EQ(addr, 0x300000);
- 
- 	/* Map at 0x250000, length 0x3000. */
--	addr = __mmap_region(NULL, 0x250000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x250, NULL);
-+	addr = __mmap_region(NULL, 0x250000, 0x3000, vma_flags, 0x250, NULL);
- 	ASSERT_EQ(addr, 0x250000);
- 
- 	/* Map at 0x303000, merging to 0x300000 of length 0x6000. */
--	addr = __mmap_region(NULL, 0x303000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x303, NULL);
-+	addr = __mmap_region(NULL, 0x303000, 0x3000, vma_flags, 0x303, NULL);
- 	ASSERT_EQ(addr, 0x303000);
- 
- 	/* Map at 0x24d000, merging to 0x250000 of length 0x6000. */
--	addr = __mmap_region(NULL, 0x24d000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x24d, NULL);
-+	addr = __mmap_region(NULL, 0x24d000, 0x3000, vma_flags, 0x24d, NULL);
- 	ASSERT_EQ(addr, 0x24d000);
- 
- 	ASSERT_EQ(mm.map_count, 2);
--- 
+ 	TEST(copy_vma);
+@@ -372,4 +506,7 @@ static void run_vma_tests(int *num_tests, int *num_fail)
+ 	TEST(vma_flags_test);
+ 	TEST(vma_flags_test_any);
+ 	TEST(vma_flags_clear);
++	TEST(vma_flags_empty);
++	TEST(vma_flags_diff);
++	TEST(vma_flags_and);
+ }
+--
 2.53.0
-
 
