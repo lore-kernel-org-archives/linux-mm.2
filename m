@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1B36106ACD0
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 16:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F80106ACCF
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 16:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 383196B0089; Thu, 12 Mar 2026 12:46:29 -0400 (EDT)
+	id 201F16B008A; Thu, 12 Mar 2026 12:47:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 330026B008A; Thu, 12 Mar 2026 12:46:29 -0400 (EDT)
+	id 1E3C76B008C; Thu, 12 Mar 2026 12:47:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 211536B008C; Thu, 12 Mar 2026 12:46:29 -0400 (EDT)
+	id 110EB6B0092; Thu, 12 Mar 2026 12:47:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 11AD66B0089
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:46:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0F26139D95
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:46:28 +0000 (UTC)
-X-FDA: 84537989256.27.B73E462
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 00BA66B008A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:47:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 970841C393
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:47:53 +0000 (UTC)
+X-FDA: 84537992826.11.29D8117
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 07A171A0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:46:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AZmu8XZn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id DA5054000C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:47:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sk2jgHEx;
+	spf=pass (imf04.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773333987;
+	s=arc-20220608; t=1773334072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=29oqf5KVgFdF/aOJVVVofvCsqM/zUxBmhbUZyRVKZ4M=;
-	b=QS13Ra6USlZPi4Sj9NAOSV0fJANDKVyLwlJziyiRJxBQeOqO4yemFIC20zvla1cjoOG5ec
-	bKHGz7z6cUeEf8xrgSHpiRhyziFzMfv/BDVCaJ7xaC03Lhl6R8YHevhNivlIG+SOdmjSV1
-	H6YcQ4KKCt7deVtUmZli7LLE/kxHjAw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AZmu8XZn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773333987; a=rsa-sha256;
+	bh=n5rcVNrIGFHHabNrtksNEJRyhpjC7StOpagdUtZ5YEE=;
+	b=fr7eWgm8J2IIIZzZUx7Lgb0xCI9a46+NShm61aQCdvgHzI1FA38d611FrY6doVw6/NEe/n
+	0CNhzIn916llKKAG5INXwcNu+egm9MheKIwFAzuXGI4XE0IOmrov8HhEf+4wzG3EidVV4B
+	J0a2qtiO+/cpX//jgsQXZyG4H3j4QR4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773334072; a=rsa-sha256;
 	cv=none;
-	b=A3aiBZefzyp0pvY2ixVz+84GViPlCXMPzu0s87vhL6c8Yy4a8umvKI2EtEqHbAyiWQrwRH
-	c2hoXEyjo9mypxAC2iJubfw1pmWVSkacpZ16DlXcTQ8RRP+DAkHKPpB3qsDlSvXS7mO76n
-	TxrERekJCDPEQFXCLfjnFp1WweaKVEg=
+	b=SrRulnIiqqU1edjLL7SY+jBwqBjOfSOI8yR03SClDgleLUzSx73nu5rnDCuJtgHfu76r8R
+	ltPeBAylZsdj+hg1eLYwfhrn/LiiC8gb+gFxfzAuXE7tqeC4GIUtVh96gpY132R81DGUJJ
+	gxtehgxbFCL8jfO0/HWxX/oW+kkIPqE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sk2jgHEx;
+	spf=pass (imf04.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 026FD405BD;
-	Thu, 12 Mar 2026 16:46:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E9EC4CEF7;
-	Thu, 12 Mar 2026 16:46:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D5F2E4403D;
+	Thu, 12 Mar 2026 16:47:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4EEC4CEF7;
+	Thu, 12 Mar 2026 16:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773333985;
-	bh=g4W57IAgppszhhmuom1c6GdIWffwgLTuE6LrTOJwXps=;
+	s=k20201202; t=1773334070;
+	bh=bgaeZYcsitfVCRSp3Rb+I23Wjj9WuTcz7df8k9CxCU0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AZmu8XZnuXQA+Zlr+DGheTwhpLckrEO2t6JNHpcxW0vx7U575iAJy32RP6EXBhWw6
-	 eBEt4hHQC6MmOaapPF0E0vmRmScasxsxx+W1xSJCpjsIJb5Rxt9yi+poJlX1dA9KHR
-	 doFbcFgH+JNRk8+fY7aFKcFVBKHMLTKw8lW75K7b2L8zlLxtABKvR0f2TNL7Fc7kuM
-	 n5diM3RZ+ujPHLJoj6PqBRojByoKgqXep+yXPg2a5K8Eb8QXHhr7WqRwTdcaLIbzx8
-	 7hiitACIX5AqL902Vp5+AQyG4SquimpfkKuxsVAi/vLG5ezGXH0PJvYL+F3BkyVjOk
-	 BbhQwqQ69ra8A==
-Date: Thu, 12 Mar 2026 18:46:22 +0200
+	b=Sk2jgHEx9bowGHuBUzaTSIxN6dUlkVZ5hiKf7nbs7hz2diGk+BqZlhbT3RVHASW+t
+	 Chek9Pxn+aNegRCgrWLKCc41aGJFNL429DoAlqDkqrfAksE8bx8qjVtW8qPl/E9554
+	 fL5fjcd2PTMR53v0L6TdvU2THoyhfWVUwsHZx0z557SH71dZ32MbJ2/ROUh1+f43Mw
+	 y2hPlFqV7pRvRCga0doEN8wd1K3aoRv147GHVkDLPuW/0DGR3VKjHMbdgaQXZ1IcBb
+	 9xrq+LkDTQ+VuDVm22x3MJM+kg1e5RtiEnHVaUwye0odgqLVuMwo08x+iJeBE7/abI
+	 +kiyEnpHUEX8A==
+Date: Thu, 12 Mar 2026 18:47:47 +0200
 From: Leon Romanovsky <leon@kernel.org>
 To: Jason Gunthorpe <jgg@ziepe.ca>
 Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
@@ -82,24 +82,24 @@ Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
 	virtualization@lists.linux.dev, linux-rdma@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 4/8] dma-mapping: Introduce DMA require coherency
- attribute
-Message-ID: <20260312164622.GZ12611@unreal>
+Subject: Re: [PATCH v2 5/8] dma-direct: prevent SWIOTLB path when
+ DMA_ATTR_REQUIRE_COHERENT is set
+Message-ID: <20260312164747.GA12611@unreal>
 References: <20260311-dma-debug-overlap-v2-0-e00bc2ca346d@nvidia.com>
- <20260311-dma-debug-overlap-v2-4-e00bc2ca346d@nvidia.com>
- <20260312121937.GD1469476@ziepe.ca>
+ <20260311-dma-debug-overlap-v2-5-e00bc2ca346d@nvidia.com>
+ <20260312122058.GE1469476@ziepe.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260312121937.GD1469476@ziepe.ca>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 07A171A0005
-X-Stat-Signature: dnazw3kbixtq7se3yezwhg3qp86ier89
+In-Reply-To: <20260312122058.GE1469476@ziepe.ca>
 X-Rspam-User: 
-X-HE-Tag: 1773333986-79323
-X-HE-Meta: U2FsdGVkX1/n4AIxaznetw6of6jDbFHVAE40S+K56hGKNrfksSwenWDE9rWIDNbUJNrbn0iPtwUvF1QPxF8HJehjn1wghHrNyiyFruzKYzhSgGUqh6hYMc/gMZnfMAL+B1FnG3PgEPMQjoiRZ3nTnKGnunmz3gZcWnN9AZb2ZwyD4l9bLoN55Tbno5nUgVgArIpzGRrYhQLUdT1oyi5Z6B4cFjCSMKqvDbC3MLNxugvNf3OeAm+AhhERsomA2p77vavgEuautGoVAxrMwQ99v3h7X5pmTNATzTGm55jYLd3U+V1iT8yUfOm3u0ixxJgZ5k3Bcbv335V6NBcCplf2jP3uAXjCgtfLXd8mmjTFKl8NEU1issvSTIax36dFV0izWVKH2SLVzHpyDQfWg9uAQYv6kdn5CdLLtarh9XeJF/eDkDtEBvhLdnLqWf8TT1i4XDW12X7HkpXSiZTl9X7cjNSdUBW0oT5P5VECb2i3EcoW4oOBXGcgbUJ3hJn5+U6Z78Wut0SmN/1P3JruhkO8ahgheXDv7CLAEhXmT3Ds4PLztLBWYXR8+tAFhqtIx4OA8i12/pm4j80yNGhzuYnfpFI39nVExICYFvaQzdcrUo3Cn50ZGEBqcHGKgaOR3Jus8q8N3uYw7EPrla0j+OwUrN3qWy0J/JalmrE4Ofq/qzbChVaQosRTZ/yN5hH4IzpbS6GILi0yZjv+x4yLByV+nHW/18AXN8canhSLHQUvhtB1y6IfFg6V2XOQnDiH8Dl/VBmaKrdIcs0oxlUpi5oWo3nkNcjQNh1XUFZyvCABJ2o1wfCMpD/AULwGzOqq4boWGLfKsZrwOo4XoXOroc9NhREFG8BS5Tv3w31MjtKEiYhxnQP4Rps7f9GT5nGeKpc4Kk2XeJICmfXlzgp3vAiGlJV7tsymeJQEFbOAshhFaaR4tuL0yd/D8AdQRa0sMk7j53IOzhNCyeEMQLblBu8
- xGIEjMo0
- xokrCQOfZgvoE7MFQzxOOVUWs9PpDXVzYrskCwOqYVacQvVjuDWcj+Zrnm7CIx3G57g6/XrTGBPD7trssm46C05L9DMz7imaXap4e8b/Boft/eSr1fcv+/N9rf+QyhO2JfCBWErzeiiWJvop7A7mOvONzyLKvIg+NNaelA9q53YlPg0fjvF4LhYW1VhAU3C5zmsCaAJ5ypLpBCdI2zmlvyYHe6uPQUk7zmpYkS54VgvOMIfywxPG0Zd3WJoBSoNod9gMbm06kwh7ftLUkzxal+/ariw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DA5054000C
+X-Stat-Signature: 88m89c6auhc3oehuxd1quti4n4d7o98q
+X-HE-Tag: 1773334071-987493
+X-HE-Meta: U2FsdGVkX1/4S9BXH5zVpnevfeAYBS7S0w9IqlmLH+GJ/49ykMB9tzBlrAgZRLuI1+BAQ7o7S6u8CznEHVFOK8U/e2TYMdkFBmGGZk2/AoazyZo6g13GMUVBRCZj6vFgFC06A+Vq5HTktYKnCxvgFbx2/dA7/GvrOWOUA9voCn55BSWGdw1Hj81wEqqf9MZAaBqAGMHnb8uq4piIS0RlsvOzpN4+h/yoluoie5Jda1JX8EcrPt5bUpQSGkgPc+9x80EIFQ0Mv68RgbwhaQeUn1Ko+8vHeSgpAGQEDNjyKl7j1mxd6MowZha5iPtYpZXMFqm0zYLH0ThQ5LXL9RArSe1J0QDYIi8Jk9A2V2ZcGAZJQb5hODJpGIkWkohrrHF3tni24RgBrDlym/uLfgIW1GMl+4YeQwlkrhoNJBszRTUXN9vJYmqm+3iua6Ey3AfhkJjhnKg/CtfKKHE49MP+LmCGhoEC2dx24VYg5mza/Qre5K1s3NN3z+CTU2nVd8oagP+/PAZNKwaP778WRe6YFzl9yhK2HRQkITu7X41/Q2BBPhpmM7Gy/G3ivZXYkJsU+0caoQ5SdVqOJF5HJH3EPH3qKwAACTgu93AOwlaCpVC1aeUOTnujM+u8SeKeKfgerFt/lvAKR3GFPzBRhKb0i7Nb5d6nPCyP49M0ID4w0/BrADrP1iDAOx4akS58TkgVmwEPdOiWQSVJ4ZpB2r54tdOxZHjfsSd7h03EzAs9adHVY/u664vsFWr49acpX/TllHY2AZhNnbuyCSl6IL5i81WMaCPe64SkhYZ2gwfuqF/YDxu0RRexaHHCxceTw9MilXWqZ0OzV/m9UCyh/SWS3KCCzwT3NoVoW9bMrXzEWJYj4158yVhiTO6E1ibJOaFWz1RGxlRbyls0tZmMpUKgAqma7a9V48Ox4Y82LQ9Dg7e4MP7Zddr27dmk2m/fxtWqNWpFKv0pS2I0YPGhMJO
+ +tIUTz5K
+ ax2kVlMIGoY+i6L2fRf4h+E9iwFOiHzNQa8ltxtbjZD+4f3nYR/j1TRoHxXP760MnlY2Sv7/46MQbwTnw6lZW4PFCfrL/caQZ/a1QIyDQC3wQ4xOWJuefKc6foO415PX0v7+BU7Xo1IQvaFyK1yrpC0AKfSpaqGh9m7m3+okz7qLOz/WEuKxxLb1nOPu/EoVqXCSdcwjPJtJnLtr0IuQ6TxybovhUwXcrNMX6vpXsHOLf2GSScBXfUT0JJne9AVanCMmBXlEA1ZMU1D9c+MyFE9Q4H8cBPEE4RVl8qjhy33MCLZ/+pesJzFxyHdss8cC+DDT3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,75 +107,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 09:19:37AM -0300, Jason Gunthorpe wrote:
-> On Wed, Mar 11, 2026 at 09:08:47PM +0200, Leon Romanovsky wrote:
+On Thu, Mar 12, 2026 at 09:20:58AM -0300, Jason Gunthorpe wrote:
+> On Wed, Mar 11, 2026 at 09:08:48PM +0200, Leon Romanovsky wrote:
 > > From: Leon Romanovsky <leonro@nvidia.com>
 > > 
-> > The mapping buffers which carry this attribute require DMA coherent system.
-> > This means that they can't take SWIOTLB path, can perform CPU cache overlap
-> > and doesn't perform cache flushing.
+> > DMA_ATTR_REQUIRE_COHERENT indicates that SWIOTLB must not be used.
+> > Ensure the SWIOTLB path is declined whenever the DMA direct path is
+> > selected.
 > > 
 > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 > > ---
-> >  Documentation/core-api/dma-attributes.rst | 12 ++++++++++++
-> >  include/linux/dma-mapping.h               |  7 +++++++
-> >  include/trace/events/dma.h                |  3 ++-
-> >  kernel/dma/debug.c                        |  3 ++-
-> >  kernel/dma/mapping.c                      |  6 ++++++
-> >  5 files changed, 29 insertions(+), 2 deletions(-)
+> >  kernel/dma/direct.h | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
 > > 
-> > diff --git a/Documentation/core-api/dma-attributes.rst b/Documentation/core-api/dma-attributes.rst
-> > index 48cfe86cc06d7..69d094f144c70 100644
-> > --- a/Documentation/core-api/dma-attributes.rst
-> > +++ b/Documentation/core-api/dma-attributes.rst
-> > @@ -163,3 +163,15 @@ data corruption.
+> > diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+> > index e89f175e9c2d0..6184ff303f080 100644
+> > --- a/kernel/dma/direct.h
+> > +++ b/kernel/dma/direct.h
+> > @@ -84,7 +84,7 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+> >  	dma_addr_t dma_addr;
 > >  
-> >  All mappings that share a cache line must set this attribute to suppress DMA
-> >  debug warnings about overlapping mappings.
-> > +
-> > +DMA_ATTR_REQUIRE_COHERENT
-> > +-------------------------
-> > +
-> > +The mapping buffers which carry this attribute require DMA coherent system. This means
-> > +that they can't take SWIOTLB path, can perform CPU cache overlap and doesn't perform
-> > +cache flushing.
-> 
-> DMA mapping requests with the DMA_ATTR_REQUIRE_COHERENT fail on any
-> system where SWIOTLB or cache management is required. This should only
-> be used to support uAPI designs that require continuous HW DMA
-> coherence with userspace processes, for example RDMA and DRM. At a
-> minimum the memory being mapped must be userspace memory from
-> pin_user_pages() or similar.
-> 
-> Drivers should consider using dma_mmap_pages() instead of this
-> interface when building their uAPIs, when possible.
-> 
-> It must never be used in an in-kernel driver that only works with
-> kernal memory.
-> 
-> > @@ -164,6 +164,9 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
-> >  	if (WARN_ON_ONCE(!dev->dma_mask))
-> >  		return DMA_MAPPING_ERROR;
+> >  	if (is_swiotlb_force_bounce(dev)) {
+> > -		if (attrs & DMA_ATTR_MMIO)
+> > +		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+> >  			return DMA_MAPPING_ERROR;
 > >  
-> > +	if (!dev_is_dma_coherent(dev) && (attrs & DMA_ATTR_REQUIRE_COHERENT))
-> > +		return DMA_MAPPING_ERROR;
+> >  		return swiotlb_map(dev, phys, size, dir, attrs);
 > 
-> This doesn't capture enough conditions.. is_swiotlb_force_bounce(),
-> dma_kmalloc_needs_bounce(), dma_capable(), etc all need to be blocked
-> too
+> Oh here it is, still maybe it is better to put it in swiotlb_map() ?
 
-These checks exist in dma_direct_map_phys() and here is the common check
-between direct and IOMMU modes.
+It is better do not call function which is not going to work. We have
+same flow for DMA_ATTR_REQUIRE_COHERENT and DMA_ATTR_MMIO, which both
+don't work with SWIOTLB.
 
 Thanks
 
 > 
-> So check it inside swiotlb_map() too, and maybe shift the above
-> into the existing branches:
-> 
->         if (!dev_is_dma_coherent(dev) &&
->             !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO)))
->                 arch_sync_dma_for_device(phys, size, dir);
-> 
 > Jason
+> 
 
