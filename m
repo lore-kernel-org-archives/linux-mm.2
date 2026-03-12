@@ -4,117 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5800B106703B
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:27:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB8A106703C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B74876B0089; Thu, 12 Mar 2026 10:27:13 -0400 (EDT)
+	id D7D136B008A; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B28926B008A; Thu, 12 Mar 2026 10:27:13 -0400 (EDT)
+	id D2AE46B008C; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2E996B008C; Thu, 12 Mar 2026 10:27:13 -0400 (EDT)
+	id BFF1A6B0092; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C7396B0089
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:27:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F26B989DE0
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:27:12 +0000 (UTC)
-X-FDA: 84537638304.04.ED002EC
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0E0A240005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:27:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=RHQl8LoY;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AD09D6B008A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 777061401D9
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:29:50 +0000 (UTC)
+X-FDA: 84537644940.29.44B2865
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3BE5E1C0016
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:29:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aOdcUHgS;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773325631;
+	s=arc-20220608; t=1773325788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abaAiQ/E4WeFRyf1X1ywTrn72K8d6oU3/W8FRhft/hs=;
-	b=uTpL+NCeq+NED4U4WFjC6sRD1V+6G5onboeyXQWoQNSHC8JYZ0tQAjSXWxJJSqLdkv0dly
-	wSs1U8fdEv4v/9s0E24k4BI7WuBfja5XoqBBL2Qtf9bAt5PkhUjH0lAAtnIt9aRploOMu+
-	3LiMlH1XL0qh3jj16DTxSeYZzPs3N1I=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=RHQl8LoY;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773325631; a=rsa-sha256;
+	bh=Q3sgA+5xvHiUIUrR8LGZnCr/90wuIFp1Jeb0b0kcwnw=;
+	b=yCARoRbS58c1hzR9foucAK3lqD/FywXVQPpILmQ61NRLCW2S31tFPM+SEPrbe+32+PVsTW
+	MPtXnYz4kBjjUOfsExucCgGoqFH5/VddLfjPTqiP1T/C8AYT6K+XMpgtDpKa5zfdUo2csM
+	A+z2UWw4CeJCEgtxFLbNOG9a4+OC8TM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773325788; a=rsa-sha256;
 	cv=none;
-	b=Nvf/cHyNY4vWdJDFueTfybpjxdgHtEI9mUL5xKpQ1AK835EOiK4Rqab/lOohadqnSfJoZ3
-	I/h+i+2CJcnIFq8YrYC0e96XGKMj/jtpcLl3ekcFVnEqg6hvGMF/Xq8zcpUKsagP5V5caV
-	iz8zc+Xb0wdOyH7jTnIRt43iOlNTw8Q=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cd767d2d70so115561085a.3
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:27:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773325630; x=1773930430; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=abaAiQ/E4WeFRyf1X1ywTrn72K8d6oU3/W8FRhft/hs=;
-        b=RHQl8LoY0CsUVnddRhSU2CSnduZj/xLMy+MYCGXROxeBx9eNI4N6CKPZ2NE19JH1+g
-         y7s6BBjK0foCHcdLksn666IWip2H0Z8tMJVknvXyTS8Gyr8HiRknerNntjN8MgJvKzxS
-         pPDpVZ64HB2i8cRZnbSM08oBuUqSxO75JkCLpfAo6sk2hGtibnn+kDzZdmv9U+jCiXQ4
-         esDvUDksUzOou/J/AWwTBCpYgk7xoh+vaFhbPMYq90TIpCTLV9Diqz9x1lcpX3gS/pOW
-         NX3Ch7OhOOamBMAavBZm37/pVhizu3XuPXL2yukqxRSU+gbsZTUTi7piQA6U10bxqqgw
-         4ABg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773325630; x=1773930430;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=abaAiQ/E4WeFRyf1X1ywTrn72K8d6oU3/W8FRhft/hs=;
-        b=NalGTR6XmX1NUrbgWZBmHVBkzGkw5VF/5mawe6RvzEuqkFy0AZfp1b1Ygr021WZPu1
-         nzefrluYIgwD4emMKdLPaUB5D/lvHtxqBCscRQWgyCLvuLk8OEOtMy5Bl2UZuoaKqpm9
-         2jvy3PJ7/bPre8d9hlV0hIZspe1XfEIDLQd/x7T18TSQYo6YWNVFXe9CgZt2Zm9xHEUl
-         9ZXKvi6FpXrTFYZ80o4hnVxDqovlf7Ms0MIrF5ohhnUxztaEM7uw5iVFomLGEt8qmfr5
-         gm7uJ1kkdIti6UZlRiMIxVYrbZ/a2ZtG05u9NFIUo45/7S2rcms6tDvy2pZIqWFJWvGY
-         oBAw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5wRSZs/XmTylyF1zCsdyiRrNBhwZxj46N8AjKxmq/AN3RxKqd9oFvvcB2GzpHLA5xLJUsdr++TQ==@kvack.org
-X-Gm-Message-State: AOJu0YytSt2xBiMD+h41wPmaD/acbg18GS1BxEG/wkMECzCmRef8qgZM
-	jWmU0h/TeCjuCMf+7eI4ds/9PHYFSE/H0yGEQ33mhC2LHC6SfXx50pvZmbLs2l9G3nI=
-X-Gm-Gg: ATEYQzzFD7ZlXBfgcJy3R0Z1E3YUU9segWNI60/WtGVm/5w0KJgMuWFrZ1ROLYaADVF
-	yA52svuDOgiOPL8vS5pROigwFOvad3QwKLjLHx8gMquEV3sSHNckK5U6U2Osrs6d3ui+gIlwy/t
-	zPOReLXZHpi12Me1A4r6UadsSD5GjDREDE90+01MbZ5XjocPF9mlghoCJiYfJDzlFgQ58Xm+UyG
-	9ZiSRzCcG6Y6ESgA6Sg4J89QA6BqwTAQvTKe9jmftgX5sRxSG2U9nBsNM2VxHwhyswBfL4JEFep
-	pFTMkF6QWwFy8q6e1AWf9laiZTxUU+Tf9zxLNMaHDT8xPoSjfPoWeCQQsnv42PAzY0EhGuzLnoq
-	24mzgHgBNhwSCF/qJ8FUtr8HHi2HabHsH5XCwZS8skqMh67n0o1wAW7gPd4a5Z6O+K/yqTS2vnd
-	BJZxT/9FZKAsfU/5WdSjTImQ==
-X-Received: by 2002:a05:620a:6cc5:b0:8cd:93b7:ebc7 with SMTP id af79cd13be357-8cda1a7cf07mr806659185a.74.1773325629905;
-        Thu, 12 Mar 2026 07:27:09 -0700 (PDT)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda71834d9sm291561885a.14.2026.03.12.07.27.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 07:27:09 -0700 (PDT)
-Date: Thu, 12 Mar 2026 10:27:08 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
-	david@kernel.org, ziy@nvidia.com, willy@infradead.org,
-	linux-mm@kvack.org, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	richard.weiyang@gmail.com
-Subject: Re: [PATCH v3] mm: migrate: requeue destination folio on deferred
- split queue
-Message-ID: <abLNPEFw9g0Vp8Rh@cmpxchg.org>
-References: <20260312104723.1351321-1-usama.arif@linux.dev>
+	b=blO48FQ7dB1ufAJYp94vZtWfzddvRQTfZveRzZOc5SLRC77TCzDGwoL5M+BWeu/LggH7/Z
+	x2lNd+Dt4Qx/LswOYBLNoSBg7exhM2d+KsJQ2y5EzmDP1X6P3iZ4LsSVVzJ6r/vB9tKT/o
+	u3JLIDgTchN7cxrn5cWTjpWyxxNmi3g=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aOdcUHgS;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773325786; x=1804861786;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=U6h2kSkaL3m+HufZ+v4XEQzA63uvN0k+ygU09TQOjv8=;
+  b=aOdcUHgSV4abyZsv83d8rq5gVuwxbbg5CjWpho6kRbAMwYJtu/5HHvP2
+   AoXnXNbpc/vl8rUn4zBcjmusLp1rpjQ+qp/5fNqWx5AKku5RX/2sU8d6/
+   LxH0H0oH1TrynlgrUm8p7HnsSaQ6ajhoQo5mBHF8RMyA6zZZhwJ82RlYL
+   9QfvJbAZe4o4Sj287Np1i1em1qTOHMnNBUGjSN3zsXaaGDobcqLPTd5Ad
+   v3K/Fx/UwU/6un3fhdTZvQnfHYk31rPLc1nXQSWrJrOQ9b7y+LO/wMOkU
+   mxniSLlRYeCteSu/qvycT2OwUbDJjC9YUXqZEujJVhdIRJ46lRieSIe+9
+   Q==;
+X-CSE-ConnectionGUID: RjGyXSFnQyOLnQpxcGz2Mg==
+X-CSE-MsgGUID: lE6kMTL1T5m8jIbBCuiPuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85773985"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="85773985"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:29:45 -0700
+X-CSE-ConnectionGUID: 4MKoUK6kRgGlaA8Dhfivaw==
+X-CSE-MsgGUID: 5lbBIi/WTwK4sairjG9Ekg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="218641912"
+Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 12 Mar 2026 07:29:38 -0700
+Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w0h2c-000000002Yj-1R2Q;
+	Thu, 12 Mar 2026 14:29:34 +0000
+Date: Thu, 12 Mar 2026 22:28:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 13/25] mm/init-mm: Annotate static information into
+ meminspect
+Message-ID: <202603122259.3cXlDDN9-lkp@intel.com>
+References: <20260311-minidump-v2-v2-13-f91cedc6f99e@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260312104723.1351321-1-usama.arif@linux.dev>
-X-Rspamd-Queue-Id: 0E0A240005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: b1mm3rp6j33g3wfifumx87gybrym8gp5
+In-Reply-To: <20260311-minidump-v2-v2-13-f91cedc6f99e@oss.qualcomm.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3BE5E1C0016
+X-Stat-Signature: ga3ubj86dcxzxryx8a1tf9z7149wh6z8
 X-Rspam-User: 
-X-HE-Tag: 1773325630-722481
-X-HE-Meta: U2FsdGVkX19SZr7XCZ+P72PbpjqmOlJ8XFYJJWKDYX+WzEktAaqiJ7aW7j0XGbyKI04NcPtv5/sOX3E0LSAGYoEnvNmCxRUSSGoAjqrIwxLqOm28WaegB3kLors0BdzAP+2teIDdl+1FdRDG/ZEwPeg2eaAR6KcKvw7M1TVNwn1tOOQrApEtq86gNwYd05UzUxpoOVbelOY/ffXN8FQSl2kno4mGWPCfzROYLIfMF1GPZv9rzkWIGp6TIDbr7jfo+gcby6o+GodVO9T40vaJO7IEDIHbzyQW5EovRsMsFpgb1Z0+izb1SqtlkzGBYGFI9ezvORcdW2mYxg/YiCjKLEW2M6TVGQ8DwuQOUDoNwOWAzEqiXMdd21IbODQ8tCDlPdDWmPErzNo1Sgg1OUNbpibOSNltoznCpXWVRP6K9j1U5p/ARGjC5KF+9G7psKJ81poNTMWU2pKsVzsS3G/gkgShJxzUagfAvoxb5Qh5kotfZeAGhPAqX4HixLccJL+u6DBFNwe1XUASGgNbvdMECJDRpEI4k6qd7nckrmdrBDEZ7fwi0yPaPK1MsiD/yzwuKffzSZcflRveXRWXmUuIZ2RdJ7F0ru4zqryNQ/I4hMV0j6LWy4wrGwh4B3eJ2zxG45H+MEd8c9iVuHmXtPt3DW63W/3tyTWsm+UJw9wsPUNtEAImOrl7gzbRBTD+If0nCVpuK2Se0amRiXe4vuy/NsM8pS+OOTe4SfTqj/IP0BntYDHyAhvcE05CCOTEBh4SaRQgOgzPaTQreNmNzzMYwuJWzaaBKJONJe1rk/n2CMn1vBkUG+cA5UsqBNadeFAgwR1+sb+5PbbFyLaB8K+BfjKPlOPAzyrDoubWEuwHqttb5/Nrlfg6ioW55eUpEdbISL6rn0+T6Z62amM4qrEBVGjFB4L+umpAuhe9iyjm4Gxe0+Qmazgm/A08oLj4kiSS+tvyvtI58/aPdDDvAoY
- 8XRP/P7I
- cnagLzf79n+i3sbLnNjbnDLhY3bAVd+m1fNQ8v5NrXAnKCzDSP8BXkQmzilc7r6RKydj68vXzxF5eLJC6HMTGzxCFcurFRg3ZRa0F7k2JRlo/HVP+ipyaW79UEqNOBUAwK2Wu4MjKGgS7lafY3ANnOybEno4Bpca6Auq2XDJagpGydhL9zZvfA6JsXckaNUXYfc+ylDwkQiMNZT5j7O42bymgh0w1vDmgJ9yFUck8ewK7xsXX4tymAhFHA1A8f3rVc1GEtlLlSK6Fo0jrD35cXwWPTocDAigzszVmgEeRnwoti2lmN9kiwiqkKIMATiAQnV1xV72aqpG6WHk/Zcb4hpW6q9+h7B5kXtjcxwJLOPFsLwnhXtAadNItNe7HQlWMJx+7mixlbVc/HKBPznCfSJEx0JWxTN875PK/mdiNuzmCYjlRiLInfFOxXKt5giBs7EznOucpLz05Z5E/HOqx51G8lTp9kBj+3wEi09rLXA+Nmq/oVMGYcBZz4hLUQw6pLLr20JJnC1Twk3DVfMvIkVSsu9kGAg6FM6VF+qUaYtn498w=
+X-HE-Tag: 1773325786-661239
+X-HE-Meta: U2FsdGVkX1/x+zq6b/OyeeqJujETSYH+CQIbfbykWqAOB7wKP5PdsHWRYT8TlBK5iAgjVA5otCyY7WwcGYFWfIgpjX0p/GIDAWvtURFCKwmvw9ETgPs0Q3iOXKSXdLhzSMGmYeTR28Bjb5BbenlWFP8YlL7AFltllb8npQRfYh5gc1F7DXwRJ7xsxzdfny5bdbn1fzWmqCwnjE3FyfGxDWTdAbDuFbUbcTIoSHd6OZDB3psDSvwbRu1QG/7898sBb4272y82vP8X1/fXpV3GEj3PECTsVlE12PtlkCcs/5Ho8xVzzDSc/AOhn6XN6GfozbEDMM0tCDPqOCfkgHBzMDZy9DWco0IGDCq1DveLI1g1DZQnRElAYLp9kBclyw+yrTR9qK4aGxL3AgLRGtYjrhjr5tFhNpxrUi14l9qy+LTn/xtLtEgFSDlAtZ87FVEu0FDpNUqtVj6pdlIga/gRuxP2wn0U4G/4LGO6bufPcHP0ZevHZg7mkA9uLXHg2gz0CXtdy0gfOI/LkK1sf8Om21d5bejQSeTKK2kqf6swYWWx7sCEAI0ZWnKOD2Z/cZFJcLQUK+ZayIHHq3jJVojxZuePXr/RNGbL+2VmV1Ctm2jvBTgF77oJZIsPP2ORCBn5jAf3L8Cq++qXTd30UYm1ngQ6uWWHv2uzw7rUAMmsfAWCg+ZkJ26kyBXpf5LJaFrmfvb4obmo7YVp211EMOGInNTsgEkOwviIjsE8GNjfFK2RuloEXYucMX0dsPgR2Mp+oyprFnAEj20nmIiEVu8eQkmLhGN0veywRALPb57netCZyLiFheRFyHVxBo86A71dZWufWDkPy0FfNGnifgsIAWg5Cjv+V0m0G58MSHvUyRDs1WIOy9+45SZe8EFXscqPVXrRaMb3cJ0eyQcl0DLVDTyo55Q/DT48STLAz+zZnf4rewesGuN8xXMDzIvxrbhSGBzI5apf0HUaifdam41
+ BQW/GJJ0
+ 6KtLAm082EgQC4sql90jaA2PmxDhBdq7Wk7HjHBY9Vnoq0ZpKTOgk6PVQAqQ4ArTOlqsS4RKdn/AYHjhvXfjqP4oTJpaIcrbAEhwoQpmfahjn3tkXcR9TzllL6KSbEwTuMiAOCBVTP+7g+38fn1EB1IzTe0M0uv3L+pzAvcZ9MHAQMIv8DVHoB3xySWewybxbXB9PYig5bDsYea4pRa//I+/ve6nv3wRdvREoB0gzXeSsdK2AhOaFQ4my0Hwhh1JHQgDNHe+52Y1CdnJdf14puL8X5xmXwQjOwus5eXbp527urNitS4wf4n4SutJ6WtD760xorW9lBvjG/BUcinOBF9M8hu1iCAR7zRns
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,30 +132,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 03:47:23AM -0700, Usama Arif wrote:
-> During folio migration, __folio_migrate_mapping() removes the source
-> folio from the deferred split queue, but the destination folio is never
-> re-queued.  This causes underutilized THPs to escape the shrinker after
-> NUMA migration, since they silently drop off the deferred split list.
-> 
-> Fix this by recording whether the source folio was on the deferred split
-> queue and its partially mapped state before move_to_new_folio() unqueues
-> it, and re-queuing the destination folio after a successful migration if
-> it was.
-> 
-> By the time migrate_folio_move() runs, partially mapped folios without a
-> pin have already been split by migrate_pages_batch().  So only two cases
-> remain on the deferred list at this point:
->   1. Partially mapped folios with a pin (split failed).
->   2. Fully mapped but potentially underused folios.
-> The recorded partially_mapped state is forwarded to deferred_split_folio()
-> so that the destination folio is correctly re-queued in both cases.
-> 
-> Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-> Fixes: dafff3f4c850 ("mm: split underused THPs")
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Hi Mukesh,
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 343f51842f4ed7143872f3aa116a214a5619a4b9]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Ojha/kernel-Introduce-meminspect/20260311-042334
+base:   343f51842f4ed7143872f3aa116a214a5619a4b9
+patch link:    https://lore.kernel.org/r/20260311-minidump-v2-v2-13-f91cedc6f99e%40oss.qualcomm.com
+patch subject: [PATCH v2 13/25] mm/init-mm: Annotate static information into meminspect
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20260312/202603122259.3cXlDDN9-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603122259.3cXlDDN9-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603122259.3cXlDDN9-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/init-mm.c:23:23: error: use of undeclared identifier '_sinittext'
+      23 | MEMINSPECT_AREA_ENTRY(_sinittext, sizeof(void *));
+         |                       ^
+>> mm/init-mm.c:24:23: error: use of undeclared identifier '_einittext'
+      24 | MEMINSPECT_AREA_ENTRY(_einittext, sizeof(void *));
+         |                       ^
+>> mm/init-mm.c:25:23: error: use of undeclared identifier '_end'
+      25 | MEMINSPECT_AREA_ENTRY(_end, sizeof(void *));
+         |                       ^
+>> mm/init-mm.c:26:23: error: use of undeclared identifier '_text'
+      26 | MEMINSPECT_AREA_ENTRY(_text, sizeof(void *));
+         |                       ^
+>> mm/init-mm.c:27:23: error: use of undeclared identifier '_stext'
+      27 | MEMINSPECT_AREA_ENTRY(_stext, sizeof(void *));
+         |                       ^
+>> mm/init-mm.c:28:23: error: use of undeclared identifier '_etext'
+      28 | MEMINSPECT_AREA_ENTRY(_etext, sizeof(void *));
+         |                       ^
+   6 errors generated.
+
+
+vim +/_sinittext +23 mm/init-mm.c
+
+    22	
+  > 23	MEMINSPECT_AREA_ENTRY(_sinittext, sizeof(void *));
+  > 24	MEMINSPECT_AREA_ENTRY(_einittext, sizeof(void *));
+  > 25	MEMINSPECT_AREA_ENTRY(_end, sizeof(void *));
+  > 26	MEMINSPECT_AREA_ENTRY(_text, sizeof(void *));
+  > 27	MEMINSPECT_AREA_ENTRY(_stext, sizeof(void *));
+  > 28	MEMINSPECT_AREA_ENTRY(_etext, sizeof(void *));
+    29	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
