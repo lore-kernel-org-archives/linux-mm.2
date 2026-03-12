@@ -4,92 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D5BE103E304
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 03:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40920103E2F4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 03:18:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE2B46B0089; Wed, 11 Mar 2026 23:06:19 -0400 (EDT)
+	id 1E91D6B0088; Wed, 11 Mar 2026 23:18:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8D106B008A; Wed, 11 Mar 2026 23:06:19 -0400 (EDT)
+	id 1974B6B0089; Wed, 11 Mar 2026 23:18:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBA076B008C; Wed, 11 Mar 2026 23:06:19 -0400 (EDT)
+	id 076856B008A; Wed, 11 Mar 2026 23:18:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A97646B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:06:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 588AB1606E3
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:06:19 +0000 (UTC)
-X-FDA: 84535922478.09.F67C1F7
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B2368180003
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:06:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pyJEnX9t;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E86A36B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:18:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BD911CAAC
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:18:36 +0000 (UTC)
+X-FDA: 84535953432.17.E662C37
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9CA0640003
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:18:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZN0Lz3w5;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773284777;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773285514;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BGFurI1HMiVQpe/Es2aqTyJkXs9oXmKfRP7Wks7PWJc=;
-	b=TtYRjzNQiGbQ7euQma67absMI3ohVM8Xfjo6Gaz29nnYC7mOoOUloPUqjWCsjzPuXBuxxN
-	eyCyks+vBSDcROKxJypvrCzP9NKD7JYfpzxVajZwe3Gp/wZa8jeGbX2IOa42h//MsA0dZn
-	jNSNKvSQ6kCFJAS9dyl5P9YVCzaSOcs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773284777; a=rsa-sha256;
-	cv=none;
-	b=Zlx1jH6nQ9kwoMC35xgp4l4RVmqivXl7TLaPpa9w9Ex4/Y+0NgemLS+9k5pDUXu+APBa0r
-	EW+9PkYkJ3AeISP/Mf+RH0eY08GmijL3fP6PZ4tHV+pQKa5N9T+XtddIZK3VLRnMtHci3p
-	ih65/MJkLjxLzc8cnwwjmHS24JZ5jPY=
+	bh=Dm2zCVu+a2rsibDge+oUz5GDb5YRFWaHQ3feSYuG1h4=;
+	b=uSzOdEa3kZzUO1wiv6/WcMHN1fjxabizd4CYoiBEDJxlF6kbrT8s2ELg7p+SPLG6/tKUFq
+	6ZpKn7YNwXEQ18wXV3Y7N5U3ckYSwagvL11MMb/3cH319y+QcBPa+kcTllUbZmIlzYrG8O
+	FO7B8l906+oK8BppiExdaCExfCfrCmY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pyJEnX9t;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZN0Lz3w5;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773285514; a=rsa-sha256;
+	cv=none;
+	b=A1vR+iqcFwleKDJz6nTQzJkoCQQzErc1sXGeSXq3hS2UM+GN5ZILmGsZdP3e7wG30tBurf
+	LVzv6TfTq+CED/TytG9thtnoCXfiNs9cnvqCjFcAFFK7BxbS2NCVpiYETZnNg78V/vbL0A
+	vQxdycLLVZ+/S+c/G/MXLQIuXtEesRY=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4852ff06541so5033265e9.2
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 20:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773285513; x=1773890313; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dm2zCVu+a2rsibDge+oUz5GDb5YRFWaHQ3feSYuG1h4=;
+        b=ZN0Lz3w5vJtAkPPX/gb7FplpILoWsXNT7H/bQ0bZg65p+ovS8syuKKRg7Q18/xHSrq
+         959TNwTPRrxBVfCTUYCcdAIVa9VwtK4DE73F/KJ9Nik0FOeZ1LugqYnlTzGY5i0U309C
+         tuQagMv0y+WY7iFcV+eGXBPH74ueBQttS3fSKlImn+nbTAKoZ9n41fkYEFiN3OIGlhkd
+         RPZWgTExlJvQAqHz8jgn57flPqIdMIyJgt0qqwr839zahJNTODV15RmcTgh3YWxy4QpI
+         z7d5e14jpyuG/yq6NooEQk6Iu0+uH2Lkgfne1OOmVrefoSTMve+zW5To/Dm8fiajh51v
+         VGJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773285513; x=1773890313;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dm2zCVu+a2rsibDge+oUz5GDb5YRFWaHQ3feSYuG1h4=;
+        b=eD4iLbsvqFe71oAnSVORlPQVNgwvNGyby//0EPXyryiLZyJNByEIer2e9+SuwiLXEa
+         pgqeRQhLEy+BKvDJ/rtnPFoh4UZ06I5ADykIELgHU5ubTeYQJzahqVI+4awVismGal6p
+         gQ1KmJBcSDDSrffBnYZBhox7h4xDJmCZg+ULgZ046CfizvdredThF5ohjPYvaUBDOkEy
+         iqiv1oFoERQ4Un7KeqEL2gCgBnlm35uPhhbf7AUxC8ODwrb970nYPHxaxH0LBv3grG86
+         CAjSprQ+vDpU6W9/0JhflQYqrlxFJIx7136NFprg8ZJ9HIX5HjEFXEaXUI6dCZIloK6W
+         /F7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCULbocPGKNgr5kxQF1PudX/4wi7NroVVl/4e4Ftcb3UKEOBP7J9oulAjWcSZOsDak/7AA5rXjgbtQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz0m6RdbVxnQ7g0xMu2dI4ePa2zJCM6P1WSQ4E3zbskANZhPoQE
+	p7K3tE+Ih4MnLaU9IU/GFeZF+37X15/X3KSX+1tkPnqKp5pWLIb1cuec
+X-Gm-Gg: ATEYQzx3jXt24897TPLqKK1LOuC40dxSotwh1f9wwGq/g3xCqsOePYrXNdg4je+qSML
+	MsE1j5JeRacIfHdG2jQinD6czbKdOGiuOpK3EMtMrz8t3J1cj4HzRY1/m8TM44EopBmfNuNhSv2
+	liMXCzBh66aJ5N9+Y6iSX16IuIxKAHLqg/vbpyCNdYu9riMabNzetGfBJ2iNDqh+5Ie1xwFOUXv
+	SAR6MGiqaT/VRRUFFJVzUSfpVJm+WgBeklyrWowSKPY/DIHaBJF0vDvR/BpxrA+uhP5Q+osmLRv
+	tHknqNyZUsEFyA0MFhRR1fslV4TmUT7o9D3s6GD/6uFqQ74TncaJUc4ypv/ky69KHi/etciHMTU
+	vsL6o/ojDaZ39KRr8ob/S6JDZ0JmEjl/jBSW0CUSpPA9jMQJxYOgpQq7oqQutfqmY4SWrJi3qS+
+	1+lp2mFAlyT6y9+M4wDp2gEw==
+X-Received: by 2002:a05:600c:8b26:b0:485:3d43:7c9a with SMTP id 5b1f17b1804b1-4854b10c856mr71235035e9.25.1773285512686;
+        Wed, 11 Mar 2026 20:18:32 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b0f0b5dsm32170905e9.26.2026.03.11.20.18.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 11 Mar 2026 20:18:32 -0700 (PDT)
+Date: Thu, 12 Mar 2026 03:18:31 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+	david@kernel.org, ziy@nvidia.com, willy@infradead.org,
+	linux-mm@kvack.org, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm: migrate: requeue destination folio on deferred
+ split queue
+Message-ID: <20260312031831.xb6rvrelhw54cmio@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260310105419.3256755-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773284773;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BGFurI1HMiVQpe/Es2aqTyJkXs9oXmKfRP7Wks7PWJc=;
-	b=pyJEnX9tlRFDhTKkp80yezWuK2gIgc9vl+h3GItPkMF87DL/OK/8rlPY4hhNx5BPULTuui
-	Wi40eGSovMFNAU+BtvJDgBWC0lM6qKR1FKBmKGUKXoZw3KfKJhaQ9RuuD5nH+6LXoogTNg
-	zrm+4j5Av+dwyOI1ru5JFur2V3/H51c=
-Date: Thu, 12 Mar 2026 03:06:04 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: hui.zhu@linux.dev
-Message-ID: <e0390b058eb5123c99e6c8a72306efe7a1770411@linux.dev>
-TLS-Required: No
-Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
-To: "Shakeel Butt" <shakeel.butt@linux.dev>,
- lsf-pc@lists.linux-foundation.org
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Tejun Heo" <tj@kernel.org>,
- "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Alexei Starovoitov" <ast@kernel.org>, "=?utf-8?B?TWljaGFsIEtvdXRuw70=?="
- <mkoutny@suse.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "JP
- Kobryn" <inwardvessel@gmail.com>, "Muchun Song" <muchun.song@linux.dev>,
- "Geliang Tang" <geliang@kernel.org>, "Sweet Tea Dorminy"
- <sweettea-kernel@dorminy.me>, "Emil Tsalapatis" <emil@etsalapatis.com>,
- "David Rientjes" <rientjes@google.com>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Meta kernel team" <kernel-team@meta.com>,
- linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260307182424.2889780-1-shakeel.butt@linux.dev>
-References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B2368180003
-X-Stat-Signature: yhzkeq17hhqy7heezih9443as8p7zchu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310105419.3256755-1-usama.arif@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 9CA0640003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qe34q46oswkjqtem48hszwh97s7c58er
 X-Rspam-User: 
-X-HE-Tag: 1773284777-618262
-X-HE-Meta: U2FsdGVkX18CtEbbN0QdHH4uQxobPOC0CkCp9skCqj6DJJZC483r7KUntSO82JEiQJofetIjEFhMztIin0HhHq6hwo96+L4eQOZH6TbjhyZFOzkCb08JsrBUoX+TFAIuC8dxaG4ERi85AnpwUL35mU8ULZexsUKh6Hqkit+aKSfY2jewWzS9p0VKiHxNJSxuDpz6TDb5kbEtzFDbsL1IpNhNIXrcE3BmMMSD0rvmcfyyPfwCi+CheWiF4EZgsYUlru490HLY/wUvuMwaFVbYVKq9FJtXWlCT9Aio/PdLJQi3QQfg+T1M3MWOUrFnFsVqajrgj+FAAzrn1nTO1dRjGAg2Fi25aM83KOEr4KihFm1UJ5gwLQJacuQJyRDsWTLvt9ib//pF2ScXSif5p8pdWXsMsNsB9cobHn/64OCFlhSDEkTjaxsSoeCietUyTt5M57L3i7CGbfOAEjtDwNxnuiQS9oNBf8xD3Hp+A4wogLniqZgsLYCrPoc2cZKUJVZGGwZ2c0CXHVBJVNzoT7479wAzz/t3d4/kLzpWQy2sWtItkW7JN7yRmkMg6hmJuMzMBlQ+Z8CdHojV6r9btbMJxVkcC/pOU91dD063f/qIuZ9HeV8E3+LRHAHhKHDrFLodbJB71MDmUsX7pFFr7UqmF4YKKIg6bOj6YtqxXXJ7RjHPnlh7IgvZ6di0lQN8f/yYi7vtEzM5O8Wf/ZvCaec/P8KqiXGBtQicJa4jxo9p3nqj3CC5F9ROnLq11ptK7Pha38TF3zCaAYLlAKl+0P0xqALd3RlZFsoK4jt3A1AV+KA89rA4L9ycuAOlGlBT98jY0pSNb+2IUzTvR/kvssBgMppqPQMQlpKsfrfj9sXmdHH2EuX83t7Zupb8PL1ELd1125/u6HDJ8erzyH06fYpKhOePwKznlmnz
+X-HE-Tag: 1773285514-820525
+X-HE-Meta: U2FsdGVkX1+L3w7cC25HxaYdHsl5WPW+M2rQgD4p7DFF0s4b0J+zHC7W7Cuty5UkiJEDxg9N7cmeHlvgt0q9QDUF0um0lf/yFfBy3lLQ/H9WqHCdR3+ts5Ot2qDjY9rhqKtwBwAJyMCoV4uzKeXEeUAT7TWkl1X8wrKUDvrM1qUB7+SNLiUJxs08zS14i1xINLMNZofNrtsWRPN78UrE+FFtrpXb6+w44hlaPuNM3TQFIs5zjNYsacdrBNlCO5Biy4qIiIP+cM2v00qNvKjLIiWXMNlVgY5cLhmMNESLk4BqesKKhGN4aLoOR5BNDhdc8dAJgVxY4mVsFBIhEWDOrol1h9MnPWzLSvNxZF3tp598RBvP7OxCHew5WRU72rs5iDxa15fgRSdD4tiz7Qwj+sraJTNz/E/x/oQgz0BLZJ3aEuiwhe9RO8qjsYUZJszEFtXRk6MxDVqlo9nsIh15MPQJtRM8vAOO9Y5X8RQ3R+oXE30ULRYHq92VWD90Z+akTbEohSh6X3aq+xkEHR7DSY00QMQ/tEuOC9Yp7/5DvCPO4+ZG2MKm4oxLmTSuvYUhADf+1VBMBW0/HTNcEK3d+xmVp13d0qn/m8TQ4CBeDDA6/cIi+NCPEG6j9eYU6E5ymgRLsR1AdcZNjG+DlRSXhbGQCIqOJSYsNZ+S5iFfPzBUjCXj6GArbZYwLgNTKnnszZKqw2XngmpKtsVs5Wo1bnLmqzOn0rxTUqA9V7Y2NXGcI4DyscWt8uGvuWY0p8XSSb4eGNYvFbDnRN6PNwnjTiy5/B2nph3AXS34voYXBr4Uyyz8RlUveCiDIF4lxbO89frK1MRI8UTPGSC230U+68PsPZS2E90xk4p2P0MsefXySwv5PHxkG2BS8LhggdQCiUdeko+DjKSs5EIFEl7lmYOyjbmb7BGFBMzBF73hdtGWsjOZslDKQUNoGOd9Fziy9t2lZ6IBPuNAhpNnyrN
+ ce5amT+b
+ IFTz5dHx1zbymgGi0KUd0oewlciRg1z5MFwSd5JqqNJQJHYwMA1dE+R7Ro3XemDfmZXfbHK+i9DvVL1nik0T8xv7MeZOBEWrPoR4JbKhKzhqiBZrgvwNXuRdt/TvHGy4X2OpWUJDJBNYbEbpXnP87kGF0Zdnar2oilQg9RUOwL4QI+UsSn/5aa+LC1eGalpqarZu7teJUwtAdXHSRMYD/x+Cm70FylbPCT8TeFUMf9CC+34yC94yHQY9ud+U4IFELpaflJMSN1B6i7oKfy9ClomW//W+M8FxiDaIG2a5/txx6K4sKW/Lq9FZs5Dk/gfX3J0ETV1sqU3M+B8kJ6n8yuqalCWzLmgsw8PbKoZqaTXcpphb7UL9aNYFyxrV2N4LBPWDWW24x+FmDjTYJKTCGPoKQDuS1tvUTjXgpoM16Kb7XgNoK6qaBaiWFFOoONXgi8Fmw/Zh+c5NiakkedDczSdq4dyPQhXmrmHY1s+JIvp7HGxaXcm/Ao/RavThwgzvYR6pflMLHTFptqq8buO2xpKC9Mp35BD2Di/2d0NJz8dzo/8zVnKonsd1Li+6wv/5Rfwl4uFi0A12kBGxwrOy/Qyy4HAMNjbACLfvvV9HNGcnFSqK6FJXXvEZSTyPiCv4n2d0fz8fhkyLbDyF/e7eNpGSBXPktAUes+57Z0QRMiEIBmERCaUGmLgxZ8FZQdwT62tu0gK3wNUhh0EHrZjp5gqvtB7b+7xftUSkFz8jJJzvuYxGSAABVDFgOM2K5sx4tUjzT4lQxFpeX6aO5TW8uUYBLohRc13jWO0mS8O0QQdrW0dpgNUrWe0r6cUZKeVa2C7SCJCVdVpAlAuKXfq4+Wbk7zl5ZVKDVPV25
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,212 +125,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B43=E6=9C=888=E6=97=A5 02:24, "Shakeel Butt" <shakeel.butt@lin=
-ux.dev mailto:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshake=
-el.butt%40linux.dev%3E > =E5=86=99=E5=88=B0:
-
-
->=20
->=20Over the last couple of weeks, I have been brainstorming on how I wou=
-ld go
-> about redesigning memcg, taking inspiration from sched_ext and bpfoom, =
-with a
-> focus on existing challenges and issues. This proposal outlines the hig=
-h-level
-> direction. Followup emails and patch series will cover and brainstorm t=
-he
-> mechanisms (of course BPF) to achieve these goals.
->=20
->=20Memory cgroups provide memory accounting and the ability to control m=
-emory usage
-> of workloads through two categories of limits. Throttling limits (memor=
-y.max and
-> memory.high) cap memory consumption. Protection limits (memory.min and
-> memory.low) shield a workload's memory from reclaim under external memo=
-ry
-> pressure.
->=20
->=20Challenges
-> ----------
->=20
->=20- Workload owners rarely know their actual memory requirements, leadi=
-ng to
->  overprovisioned limits, lower utilization, and higher infrastructure c=
-osts.
->=20
->=20- Throttling limit enforcement is synchronous in the allocating task'=
-s context,
->  which can stall latency-sensitive threads.
->=20
->=20- The stalled thread may hold shared locks, causing priority inversio=
-n -- all
->  waiters are blocked regardless of their priority.
->=20
->=20- Enforcement is indiscriminate -- there is no way to distinguish a
->  performance-critical or latency-critical allocator from a latency-tole=
-rant
->  one.
->=20
->=20- Protection limits assume static working sets size, forcing owners t=
-o either
->  overprovision or build complex userspace infrastructure to dynamically=
- adjust
->  them.
->=20
->=20Feature Wishlist
-> ----------------
->=20
->=20Here is the list of features and capabilities I want to enable in the
-> redesigned memcg limit enforcement world.
-
-Thanks for summarizing and categorizing all of this.
-
->=20
->=20Per-Memcg Background Reclaim
->=20
->=20In the new memcg world, with the goal of (mostly) eliminating direct =
-synchronous
-> reclaim for limit enforcement, provide per-memcg background reclaimers =
-which can
-> scale across CPUs with the allocation rate.
->=20
->=20Lock-Aware Throttling
->=20
->=20The ability to avoid throttling an allocating task that is holding lo=
-cks, to
-> prevent priority inversion. In Meta's fleet, we have observed lock hold=
-ers stuck
-> in memcg reclaim, blocking all waiters regardless of their priority or
-> criticality.
->=20
->=20Thread-Level Throttling Control
->=20
->=20Workloads should be able to indicate at the thread level which thread=
-s can be
-> synchronously throttled and which cannot. For example, while experiment=
-ing with
-> sched_ext, we drastically improved the performance of AI training workl=
-oads by
-> prioritizing threads interacting with the GPU. Similarly, applications =
-can
-> identify the threads or thread pools on their performance-critical path=
-s and
-> the memcg enforcement mechanism should not throttle them.
-
-Does this mean that different threads within the same memcg can be
-selectively exempt from throttling control via BPF?
-
->=20
->=20Combined Memory and Swap Limits
->=20
->=20Some users (Google actually) need the ability to enforce limits based=
- on
-> combined memory and swap usage, similar to cgroup v1's memsw limit, pro=
-viding a
-> ceiling on total memory commitment rather than treating memory and swap
-> independently.
->=20
->=20Dynamic Protection Limits
->=20
->=20Rather than static protection limits, the kernel should support defin=
-ing
-> protection based on the actual working set of the workload, leveraging =
-signals
-> such as working set estimation, PSI, refault rates, or a combination th=
-ereof to
-> automatically adapt to the workload's current memory needs.
-
-This part is what we are interesting now.
-https://www.spinics.net/lists/kernel/msg6037006.html this is the RFC for =
-it.
-
-Best,
-Hui
-
->=20
->=20Shared Memory Semantics
->=20
->=20With more flexibility in limit enforcement, the kernel should be able=
- to
-> account for memory shared between workloads (cgroups) during enforcemen=
-t.
-> Today, enforcement only looks at each workload's memory usage independe=
-ntly.
-> Sensible shared memory semantics would allow the enforcer to consider
-> cross-cgroup sharing when making reclaim and throttling decisions.
->=20
->=20Memory Tiering
->=20
->=20With a flexible limit enforcement mechanism, the kernel can balance m=
-emory
-> usage of different workloads across memory tiers based on their perform=
-ance
-> requirements. Tier accounting and hotness tracking are orthogonal, but =
-the
-> decisions of when and how to balance memory between tiers should be han=
-dled by
-> the enforcer.
->=20
->=20Collaborative Load Shedding
->=20
->=20Many workloads communicate with an external entity for load balancing=
- and rely
-> on their own usage metrics like RSS or memory pressure to signal whethe=
-r they
-> can accept more or less work. This is guesswork. Instead of the
-> workload guessing, the limit enforcer -- which is actually managing the
-> workload's memory usage -- should be able to communicate available head=
-room or
-> request the workload to shed load or reduce memory usage. This collabor=
-ative
-> load shedding mechanism would allow workloads to make informed decision=
-s rather
-> than reacting to coarse signals.
->=20
->=20Cross-Subsystem Collaboration
->=20
->=20Finally, the limit enforcement mechanism should collaborate with the =
-CPU
-> scheduler and other subsystems that can release memory. For example, di=
-rty
-> memory is not reclaimable and the memory subsystem wakes up flushers to=
- trigger
-> writeback. However, flushers need CPU to run -- asking the CPU schedule=
-r to
-> prioritize them ensures the kernel does not lack reclaimable memory und=
-er
-> stressful conditions. Similarly, some subsystems free memory through wo=
-rkqueues
-> or RCU callbacks. While this may seem orthogonal to limit enforcement, =
-we can
-> definitely take advantage by having visibility into these situations.
->=20
->=20Putting It All Together
-> -----------------------
->=20
->=20To illustrate the end goal, here is an example of the scenario I want=
- to
-> enable. Suppose there is an AI agent controlling the resources of a hos=
-t. I
-> should be able to provide the following policy and everything should wo=
-rk out
-> of the box:
->=20
->=20Policy: "keep system-level memory utilization below 95 percent;
-> avoid priority inversions by not throttling allocators holding locks; t=
-rim each
-> workload's usage to its working set without regressing its relevant per=
-formance
-> metrics; collaborate with workloads on load shedding and memory trimmin=
-g
-> decisions; and under extreme memory pressure, collaborate with the OOM =
-killer
-> and the central job scheduler to kill and clean up a workload."
->=20
->=20Initially I added this example for fun, but from [1] it seems like th=
-ere is a
-> real need to enable such capabilities.
->=20
->=20[1] https://arxiv.org/abs/2602.09345
+On Tue, Mar 10, 2026 at 03:54:19AM -0700, Usama Arif wrote:
+>During folio migration, __folio_migrate_mapping() removes the source
+>folio from the deferred split queue, but the destination folio is never
+>re-queued.  This causes underutilized THPs to escape the shrinker after
+>NUMA migration, since they silently drop off the deferred split list.
 >
+>Fix this by recording whether the source folio was on the deferred split
+>queue and its partially mapped state before move_to_new_folio() unqueues
+>it, and re-queuing the destination folio after a successful migration if
+>it was.
+>
+>By the time migrate_folio_move() runs, partially mapped folios without a
+>pin have already been split by migrate_pages_batch().  So only two cases
+>remain on the deferred list at this point:
+>  1. Partially mapped folios with a pin (split failed).
+>  2. Fully mapped but potentially underused folios.
+>The recorded partially_mapped state is forwarded to deferred_split_folio()
+>so that the destination folio is correctly re-queued in both cases.
+>
+>Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+>Fixes: dafff3f4c850 ("mm: split underused THPs")
+>Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>---
+>v1 -> v2:
+>- record whether source folio was on the deferred split queue before
+>  move_to_folio() (David)
+>- record partially mapped state and update commit message (Zi)
+>---
+> mm/migrate.c | 17 +++++++++++++++++
+> 1 file changed, 17 insertions(+)
+>
+>diff --git a/mm/migrate.c b/mm/migrate.c
+>index ece77ccb2ec0..61013d258eb4 100644
+>--- a/mm/migrate.c
+>+++ b/mm/migrate.c
+>@@ -1360,6 +1360,8 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+> 	int rc;
+> 	int old_page_state = 0;
+> 	struct anon_vma *anon_vma = NULL;
+>+	bool src_deferred_split = false;
+>+	bool src_partially_mapped = false;
+> 	struct list_head *prev;
+> 
+> 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
+>@@ -1373,6 +1375,12 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+> 		goto out_unlock_both;
+> 	}
+> 
+>+	if (folio_test_large(src) && folio_test_large_rmappable(src) &&
+>+	    !data_race(list_empty(&src->_deferred_list))) {
+
+We usually check order > 1, before accessing _deferred_list, because it is in
+subpage 2.
+
+I am not sure why we don't do it here. Do I miss something?
+
+>+		src_deferred_split = true;
+>+		src_partially_mapped = folio_test_partially_mapped(src);
+>+	}
+>+
+> 	rc = move_to_new_folio(dst, src, mode);
+> 	if (rc)
+> 		goto out;
+>@@ -1393,6 +1401,15 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+> 	if (old_page_state & PAGE_WAS_MAPPED)
+> 		remove_migration_ptes(src, dst, 0);
+> 
+>+	/*
+>+	 * Requeue the destination folio on the deferred split queue if
+>+	 * the source was on the queue.  The source is unqueued in
+>+	 * __folio_migrate_mapping(), so we recorded the state from
+>+	 * before move_to_new_folio().
+>+	 */
+>+	if (src_deferred_split)
+>+		deferred_split_folio(dst, src_partially_mapped);
+>+
+> out_unlock_both:
+> 	folio_unlock(dst);
+> 	folio_set_owner_migrate_reason(dst, reason);
+>-- 
+>2.47.3
+>
+
+-- 
+Wei Yang
+Help you, Help me
 
