@@ -4,111 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403A3106ACEF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8472E106ACEF
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:58:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A17E76B00E3; Thu, 12 Mar 2026 17:58:16 -0400 (EDT)
+	id E5E516B008C; Thu, 12 Mar 2026 17:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D8C46B00E5; Thu, 12 Mar 2026 17:58:16 -0400 (EDT)
+	id E46066B00C2; Thu, 12 Mar 2026 17:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0E36B00E6; Thu, 12 Mar 2026 17:58:16 -0400 (EDT)
+	id D2BD36B00E5; Thu, 12 Mar 2026 17:58:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75E756B00E3
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:58:16 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 489378B853
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:58:16 +0000 (UTC)
-X-FDA: 84538774992.13.B95D736
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BFE3F6B008C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:58:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5AF64140474
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:58:33 +0000 (UTC)
+X-FDA: 84538775706.18.E63E7CE
 Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 42ADB100011
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:58:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b="Aiv/eft0";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=1OKI1aeP;
-	spf=pass (imf05.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5491118000B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:58:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=WfHfWNbc;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Qx5rCR2g;
+	spf=pass (imf16.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773352694;
+	s=arc-20220608; t=1773352711;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MUCVEDpSf+0EP+yvqNrKKgbgS6k/EkMfChZKLZ22YF8=;
-	b=NnYrWLEiQ0r7lhSeYmxWbFE+QpMKO7zRXTGH6ilmPfmEi+sKNsQlkG9cFyvbdvVnDY8MEv
-	FJ6TXdg5sUeWtVbxvF38z37Q/z/6Xj1wjan332CmeHAm1X7b7yjAwVhXpk1EFPgcB46BXM
-	DxdsvogmAbGnDwlJy/Wz3orbbmt/FSM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352694; a=rsa-sha256;
-	cv=none;
-	b=QoQVfsKTvqT9l4j6QC3Y2M5YTlcg8hE56mqZqvytdsWn1UD8K5G5ia8OSatdk80QEdBgYJ
-	d2hK8ndt9cNY1MUfcBdOtapFhpUjZpTQmdr+7xX/DS5NSzR1m+gsxqVPd4JgM8lfnRtZrR
-	stdVrqGfUV2OsAUqrl1t3VN+is16aIo=
+	bh=1h/4KUNGDnlL7CBwVpO5v6kJjyfz+9NwtNaAhRC9U10=;
+	b=kzt8u9nRNOORK/J3UHuMXlBR92JiMSazaWHD733NPhj126v6VC6Ppot9eiu0KiEm2rMMET
+	RBMJfBnCSxPkP+XxIx8DGeIYNgOY6ZublNGl7h4gHG4eOGd77QNJu0cuEhiyFzNVBE7ue2
+	axECbhFU1iXi44J5xyr1qqTmlO92urc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b="Aiv/eft0";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=1OKI1aeP;
-	spf=pass (imf05.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=WfHfWNbc;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Qx5rCR2g;
+	spf=pass (imf16.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailflow.stl.internal (Postfix) with ESMTP id 531271301B68;
-	Thu, 12 Mar 2026 17:58:12 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Thu, 12 Mar 2026 17:58:13 -0400
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352711; a=rsa-sha256;
+	cv=none;
+	b=kjwl6FjhlahS6FZS4MZ5zxP+LLD8BbCzeIzKtfggJwZMknqK5ifZ26dZMoe7Mj7IGVFYrs
+	c2oHfHcGqpqL1GrtanC6Wn6sTk9PLZ2YNFHw5WVeEIIeypHMA3Zb7Zspz4mJ7OTvMZrsVN
+	/1K4ld47qPDeSNeo1ndHQiK7EhrOROg=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.stl.internal (Postfix) with ESMTP id 6F3A01301B63;
+	Thu, 12 Mar 2026 17:58:29 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 12 Mar 2026 17:58:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352692;
-	 x=1773359892; bh=MUCVEDpSf+0EP+yvqNrKKgbgS6k/EkMfChZKLZ22YF8=; b=
-	Aiv/eft0lgPfT980cKxeTnbansdx69JMDdu3/JvECSezFjIw35T8po0J7Dr8uNz3
-	sIBBHBdSe4MXUrEF8Fj06jbhW2EE7JC8gaPZzvxL4boq4YxDZ+CRXvvNlgYjU+ad
-	zVo48RhaQGZQOjrYGJTHjDPxeGvcjtjerjOc4eh0NjzqVTlyohkpdmmv2NUqgUY0
-	kGTPr9S74jE/j+NCuYF03/ks4uS34m9TEH/qtCulLr0zXqcwhZT0jqA18NZMxYk8
-	7Q7QidM3FocAj62Z/Xs8FMUmSkMlrAh0Tu4ZwGqs+fXuxjjYBw4q/KLFBSxgulO/
-	O8xZvAKjbOCAu8Ctbd/xlw==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352709;
+	 x=1773359909; bh=1h/4KUNGDnlL7CBwVpO5v6kJjyfz+9NwtNaAhRC9U10=; b=
+	WfHfWNbch9UGB+eGabQxTdEvIDD4DFelol7k3LjdQO/lb65xfuejEmzAoM8pvQ4+
+	gJ4ol9X9HCBFTIzeKB0Viue1L3jG1Q9bqBwZUTphx4m6U3Rk2ls8GfzEdN0PiZi5
+	LCTknHndu4dqomidg/k3sGUcGTijbG2dTWjKHVNypIRljDAxdhO3oxfrhMJkCel/
+	D96BUDM2dcr86sPQiHqSYInXl70rtCkrmk8TxgB7ddCaXEgipNdaZIjXJPrb/0fJ
+	BpP944NRphZdvubke4smP5FoL2inwaqZC6E92n9ErQLi+cdxDBeLIX0EUFb3yR9T
+	sC3KzRrjSgOF44kCJiHBIA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773352692; x=1773359892; bh=M
-	UCVEDpSf+0EP+yvqNrKKgbgS6k/EkMfChZKLZ22YF8=; b=1OKI1aeP/URdJ6EVy
-	Z+vyP9J8PKZrd0kY//3qj71VewKCNrnBkJOvFWrxGJymoeibivc952VMmJ0Wmphn
-	GdXCcWC2chTiQ8YEYimV8Wfe46qK2KFxr0eSSwm2kf+ajXccqEga9+LHL5oUW84X
-	yEB8WJoc/CtgIS9uwc4JfckT9M7HIIj9BkYyKEc7UKLYbnFaA3YX1pZd7rtnIM7X
-	0CSikuFS9fiJ8+Et3mu0UkfKU4IGmFqiDYedmOmjR/0tGilyq8lfTDvk4GLhoa0C
-	FKHKzDyWUSwTK3s6Ka962SMkXym18zo7X8d44IXEmqoskkODbePuGhcnghfwNyOh
-	65kZw==
-X-ME-Sender: <xms:8zazaZFnoL8nTaaYepHGpsupAfToMV1lBcOZjtfZuL-x6VPw3SWcTA>
-    <xme:8zazaSAZo4J78ZKHviJoQ10vRcZP6ii2DtWlvfEKAp3RekpRuw90IejAvYRzXDFwn
-    Yc4RlxEYTkb05EfEfYvmJjkVqqbfriM8oqn-yznpG8ry3DPhg>
-X-ME-Received: <xmr:8zazaWOA1gfEptRTXhBFBUUqip5J9NWoLsZfbbynxyjbB4YaJqvofFlgOJi-xvcNcJEMzCUijUyS1Q2aXEJGU1Wh6GK96JOVcKRNeRYsjKcL>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773352709; x=1773359909; bh=1
+	h/4KUNGDnlL7CBwVpO5v6kJjyfz+9NwtNaAhRC9U10=; b=Qx5rCR2gTxh9pg1aW
+	AjDwaxfHDw0YiqmAUCgdlStHI0PQga3+vcnB8gfVa/y4ZBpWzH0QrLbujnOmZKv8
+	6tBLD2DKb69VB5WgrYmfGt41UvEtR9qwufkNY6SmUVXS1uuj8MG8L6/WcUbufqDc
+	tGCfJnZa7u52el6AobUREmziO6p1gxAhhfQlvnqIsQf2Ry0YMLdAYgehYR7OvjBg
+	Hf7z6Fv/FTfS3TEpRoly9oXmw9v58aAJTrvP/BMYbLSbx0Zd0jSOWF8jkC76ErM+
+	pvhKfqXWeCDyRvi7kvD8qfxdIcxMmWn10jVuo8IUlE8Mq9uzo+hkJ6Se7a+KyFPv
+	Jtq8g==
+X-ME-Sender: <xms:BDezaeDk-tf73yJk64NfYXpVkLe13Fb67FhI36-hmpCPXbhrmSx06A>
+    <xme:BDezaQGTbVnpuP2GT1EBX8QC0ET_IzkqZcSSEIBFgFdxLd_hU-UQGFfd5VrmpR1oO
+    kIL6kOb_d_BurdrJW7IFO2WbFmlfQdOaEgUMsInBgI5DCaGNYY>
+X-ME-Received: <xmr:BDezaZKa3oxupZo6pLYX2hZHOPFFEp4_zBAzHVrWEsRCvcx9iIozV_Brb3ypPGSD9f1gTokDI8bTrgruheFv_l6J6loqMa10nUDMBYaV9oQ1>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejledvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnefuuh
-    gsshhtuchvrghrshculdehtddmnecujfgurhephffvvefufffkofgjfhhrggfgsedtkeer
-    tdertddtnecuhfhrohhmpefpvghilheurhhofihnuceonhgvihhlsgesohifnhhmrghilh
-    drnhgvtheqnecuggftrfgrthhtvghrnhepveevkeffudeuvefhieeghffgudektdelkeej
-    iedtjedugfeukedvkeffvdefvddunecuvehluhhsthgvrhfuihiivgepudenucfrrghrrg
-    hmpehmrghilhhfrhhomhepnhgvihhlsgesohifnhhmrghilhdrnhgvthdpnhgspghrtghp
-    thhtohephedupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehvihhrohesiigvnh
-    hivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheplhhinhhugidqgihfshesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhunhhiohhnfhhsse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqthhrrggtvgdq
-    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
-    dqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
-    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqvgigthegsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
-    dqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:9Dazach7av5MJT8wwTcG8MKSecwRaPCM_rUgbieUz9-plDpwI6zy9g>
-    <xmx:9DazaU2BJC8dq5eg3cq_PE4esCqPkCfcmRsZ9j1K6OYny_6Tiy29xg>
-    <xmx:9DazaWrD5GSVDOaic2AawCbj7ijw4e0hSyT9fTNC10lRFnoKpI1HXQ>
-    <xmx:9DazaZ3IuPVJmTmgR8W3UIMoIjUFqPw7tpd4R62FV11LjodKC9RNvg>
-    <xmx:9DazaVRBxjCwEQEOkYevKr9zMpuJ2elXpo_n74CoZdvgrzBnIBgDvJIG>
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgjfhhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epveevkeffudeuvefhieeghffgudektdelkeejiedtjedugfeukedvkeffvdefvddunecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohephedupdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhunhhiohhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqthhrrggtvgdqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:BDezacuDcaEYuf-NLXhpOb2dLaFha1-HNF0jmkqey_I7OUu43PF9yw>
+    <xmx:BDezaerX6an-TitZCLXTy6rc8NohWgzxNAAI-NSV7MHuvd-1hJsd_A>
+    <xmx:BDezaYUBkgN3WmTPYxbF5g9BtCM-3qEWtWav9KPyAbUOWWYAxhSR5g>
+    <xmx:BDezaaEbljsEZbwl3e31dk7jT6eFmUkQYIViwoCP6MmaL9bzcl5zYQ>
+    <xmx:BTezaecpo7eNRtrIb1aUD4dNUl5iVrgPYnQFKaYDhtW8iJl5a4T4S-T7>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 17:57:59 -0400 (EDT)
+ 12 Mar 2026 17:58:15 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -151,23 +151,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 51/53] VFS: use d_alloc_parallel() in lookup_one_qstr_excl().
-Date: Fri, 13 Mar 2026 08:12:38 +1100
-Message-ID: <20260312214330.3885211-52-neilb@ownmail.net>
+Subject: [PATCH 52/53] VFS: lift d_alloc_parallel above inode_lock
+Date: Fri, 13 Mar 2026 08:12:39 +1100
+Message-ID: <20260312214330.3885211-53-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
 References: <20260312214330.3885211-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 42ADB100011
-X-Stat-Signature: io557e695petrqzuuhg9rpudpgdmczjp
+X-Stat-Signature: nm5s73xodahpjz4nhjtgmf8iofbg4brj
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773352694-504713
-X-HE-Meta: U2FsdGVkX19D5DJTxOXWfgJO7IPcWGyYc/1VFUdGKxRsZvGkoysfGqrfPxme8OJQRk3SFtyFkguZVxylqcnPgf8l5tLrYOGLEXxTMEaC4wYtLd2y/di7twUFfbYtIKF46N82GjnHzHb2wmfAMjOsJrODlJiXqjxZFydXxdIDonCOsgwie6aoDIMUHZgvEkreu/XQ1EwpIFgfenKrfEBZ6LJw5Z4K1jEzpKLMULX7UNySjJCW3H1yo54TkMAlt0JadpRAgx2nMMzOZS2HF+Qy3yWNvlXLZ33BhXzUl6j6G3hKQKzvcaqRumj3ouWcdRkPRkFWgyIQOhdAMABqHycIRqmEm7wiaiCrDqXM6esagn1j7vcPlc2swhUvaYuXWKJ/R1OJjftukPmuGmlWTtmIJzyy6/g9iyQRBi+qjkHNSeKFKhBSqKL4Vti+dPFX8wN6/pJDN5EcOse7W0W/K/rjHKQIVqfTs4Q+apxQqhT7rQm25jIOs4E19H4p6kVjo4d+L55Wv+KxWn3Qv5dtMRZNzItF/mNCRl/PnN9N3i8fGVhDS4i12PU06yNPoKkvjbB58NskysiIpxh4ZctrI907PQbak2BqEiQIFP+z0rX+TgHnSQccaStknmPv6n+7XmKS+M7BgDMVYL58887cpo3FOx1BiYgAZMr909vfM8M988NI3483r7FVTESnbi52Oy9QUlrk7UjQ6hiF06DHs2Ego9lJcMk1wA+aqJYUbeImzbmnulIqBe+jmLZT1WmSdiX+raLg1PIVj22AOJjytZ6o9rwMrgmznl58SB0X6zJ8/ZxbK3fxVomo31/yTOIyz842Sd/kv3/yuYjzXFY/kpIqccGSup/zTiuo8yELrgUUctCzfh+7mG1WLozMetSzOIj06h7p/X4iKbXL4SmVy7L6N1oQyRgp0sk5ZqK2wKvjpxj2oQMISqR851/ZQR4q5R4ybAgebjg6725DJ5fsyFC
- BsjTqKvJ
- TODKQXB+yLnfYl6J/NaAWnF0HWm9Lwj/fZ5ZJFLv5hVDwvvf8H0ICWKf0Q8wgGCyMXcrGMufpyfzxVJWjGt2Piz8+UeJyuc9x6U/i2a+QnJJfXoakoAnfvfk+eNKAe+BO4SD57mz76mRgWF1qt7zDXV9naJs8gM7DG6iavpvan3Sj9fYAHzV4aYsqrHIeA+QsLVvm8YqV71mGz+MFrLA66rn7XSb3p153FbkCzURU/RfBeU0czZ0USoPVt1qvHSxccM5SoAUQ67ag7gIQbFxeNhAtr+09frUAmbYCG8FpV0ojcSniN3lmF46w6soajifpEWyTjbG1lMayxeDTkzRppAah/yobQZWewG/vtPASfWWZ+9Yxwof3jSWhTwjujKhj63VTtqdk5LPiUqsTJr+N3E7fpgddVkHC5Faee0YQZMNRHXl3NUbWjMQYV/g/jHrMCB0OtDanJk3EZDDMULzk6kuPu2N39giGgHvj9sV40mXxDDeRVUjs69YrSFnuqUrd8NP3o2hxVEdaknYFnBBRVr8+7OvVot2D/q2igtHQLWlEko3i0e2H+Vy1uQUBRxMBeOlMqZ2LdwyIxUNd1BMkdAXeQLeWbQGk4ydKXtPYuwPaWdTB4snM6ZJl4Q7mA0nFPIB8M3B+MTCwUZ5HralNw6TGadq4ueMbruTwzM6F4WAlvs4=
+X-Rspamd-Queue-Id: 5491118000B
+X-HE-Tag: 1773352711-807324
+X-HE-Meta: U2FsdGVkX1+TD1cwnHfodxqCIY7DaKCjDnVIhzW+EJGIUz8eo0bdsGIXUY5HP5MPi+3xfvxRB/sEqPy8MINAVChib+F+xtKMxQHtPJS3AgS7iAe/p/d7c7VaJqcePFZliz7MS/rZPooqpvAlwRJ44nbANoCMk8vfQEQ/vzb63Lb87RcfTRWtGJGrkxx61qKWSgUfhloX5Pag3RNTMJUjjWFzxSaIdlw9x13H2QtYntwClMhjaVJUI1451su4Aj9eg7kdJOiQgHa/c5wzqe3fvCcI3EsLte5k2BMMxUsuHgGqUBIseUEH/GEiwD9Z430pCJqSzwvUayoLFrZpt00E+9iW11w25aUfexbhbW/s6xu73UKhOZWG4Uo7+3PebypnNGuAvEQCt0j0OUB3/XRvbC2fn/b4WoTPLFGEC2WtD1oTo//X0HXemnMvw1LZwLm1pe9cd8frSpqkgdZ7JcTnScQdV4RrACmI51kcw82dHYbfTolkRpk6Rd9R3QflZF2kZo67mYQ3sqCAsQd/faftH7w7ClOS+x0mls5QAEjtfCZIYrOSaRXhUCF4jJHa2tTZAmyH2EluTRnOyPYNi+gnClVkH0gEXYDqFHA18Ml004nXTRvmdlntLU5gcnbaGYIxGUrXEQfqN3RXwF8RyZOb+O+dXANWO2YZeuQPBT34M+Ye3YwqDvHGn9Jqs33Z3oX+mFTZMhXV13ws/xWc5XNN/8SxXL2+uRWxeiVhuvIcJLyDswtdqJEWHyF2e7dvvvKSQ1Mn8sWAq+lgxBFnqnQ6ITTRBhv5XxwKP2A2zCCoAiincivPOViMOv8fhgSpiyNVRGVIIKxqs14S/QaVP0WRwTEcsuWNsibqcmACfKGs3syRCa/yNVUUz3v8mfO0oClVyxesOyGrNXgH5XTSsIungxXqoqjKVVJqV5XoYe2RsNhJeHb456x6qkBZKA7C2T86hd3zfbO+0hP9XzSl6z5
+ pXciLQxL
+ PnsX/IPu8EtzSPWBP76ONlbBm+FuHce5EIV3NHHf2NKmBKfRhUS3bSl23vRblz/yRNXnzH1DeDyKqF1ivuM5OCQIFHiUd9+sWAl0roKcZjNvuInIZK1lmc+EvwUshLbFikV3CE2r7GnnV+ij5VUGhEXqM46kB85CwXa+u76YPd9+0bhb3JnqSXcehl42tv+gKssu2yfscZR5ijiEVXExvcuCG1OHntpxVQeOu9d+o0YDeZKGFjWMX8D4Nz8e+0poK8U8Hc/WQYNBUZLAOKYmkNWCPmbVjrF/LPy/l5PwhCjZzy24kLKBhTeVxgmCkFT0nP9ihiamm+FQEY+60GHjOj/E2J7pKzu2NYTSzMvBYGJoyCDpX+34Vu9OiHr764u21WkkakBZCfMEzC0Z9ucCnF+s2E7ejR2/9uIHJ1nrgl8Hmz2kN5yawOd+RzaaiwL1Uh0hOffUZrXFXD6btpT1tgbRC4gQoeOlVaegMK5XmniH8jKJD+0NgjrPm47fptKso1AIMHzakpbyrRxww4xui59aDhge0u5lpyEqqGqnhL6Zg+vWChkeAAIph7XdMKtFi+vhXoHKfbBzs5jb++kYCivFFKgOWsyi/uBIvvb/nVlCHhm+bsFTnPa8ru/JAVLPdpnMP3bfGjUN5szOGGib5bS50O/gYmlAHyaK3ttI33+kWiwo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,200 +177,485 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-lookup_one_qstr_excl() is used for lookups prior to directory
-modifications (other than open(O_CREATE)), whether create, remove,
-or rename.
+d_alloc_parallel() can block waiting on a d_in_lookup() dentry
+so it is important to order it consistently with other blocking locks
+such as inode_lock().
 
-A future patch will lift lookup out of the i_rwsem lock that protects
-the directory during these operations (only taking a shared lock if the
-target name is not yet in the dcache).
+Currenty d_alloc_parallel() is ordered after inode_lock(): it can be
+called while the inode is locked, and so the inode cannot be locked
+while a d_in_lookup() dentry is held.
 
-To prepare for this change and particularly to allow lookup to
-always be done outside the parent i_rwsem, change lookup_one_qstr_excl()
-to use d_alloc_parallel().
+This patch reverses that order.  d_alloc_parallel() must now be called
+*before* locking the directory, and must not be called afterwards.  This
+allows directory locking to be moved closer to the filesystem
+operations, and ultimately into those operations.
 
-For the target of create and rename some filesystems skip the
-preliminary lookup and combine it with the main operation.  This is only
-safe if the operation has exclusive access to the dentry.  Currently
-this is guaranteed by an exclusive lock on the directory.
-d_alloc_parallel() provides alternate exclusive access (in the case
-where the name isn't in the dcache and ->lookup will be called).
+lookup_one_qstr_excl() is now called without an lock held, exclusive or
+otherwise, so the "_excl" is dropped - it is now lookup_one_qstr().
 
-As a result of this change, ->lookup is now only ever called with a
-d_in_lookup() dentry.  Consequently we can remove the d_in_lookup()
-check from d_add_ci() which is only used in ->lookup.
+As a lock is taken *after* lookup, start_dirop() and start_renaming()
+must ensure that if the dentry isn't d_in_lookup() that after the lock
+is taken the parent is still correct and the dentry is still hashed.
 
-If LOOKUP_EXCL or LOOKUP_RENAME_TARGET is passed, the caller must ensure
-d_lookup_done() is called at an appropriate time, and must not assume
-that it can test for positive or negative dentries without confirming
-that the dentry is no longer d_in_lookup() - unless it is filesystem
-code acting on itself and *knows* that ->lookup() always completes the
-lookup (currently true for all filesystems other than NFS).
-This is all handled in start_creating() and end_dirop() and friends.
+lookup_one_qstr() and lookup_slow() don't need to re-check the parent as
+the dentry is always d_in_lookup() so parent cannot change.
 
-Note that as lookup_one_qstr_excl() is called with an exclusive lock on
-the directory, d_alloc_parallel() cannot race with another thread and
-cannot return a non-in-lookup dentry.  However that is expected to
-change so that case is handled with this patch.
+The locking in lookup_slow() is moved into __lookup_slow() immediately
+before/after ->lookup, and lookup_slow() just sets the task state for
+waiting.
+
+Parent locking is removed from open_last_lookups() and performed in
+lookup_open().  A shared lock is taken if ->lookup() needs to be called.
+An exclusive lock is taken separately if ->create() needs to be called -
+with checks that the dentry hasn't become positive.
+
+If ->atomic_open is needed we take exclusive or shared parent lock as
+appropriate and check for a positive dentry or DEAD parent.
+
+The fsnotify_create() call is kept inside the locked region in
+lookup_open().  I don't know if this is important.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- Documentation/filesystems/porting.rst | 14 ++++++++++
- fs/dcache.c                           | 16 +++--------
- fs/namei.c                            | 38 ++++++++++++++++++++-------
- 3 files changed, 46 insertions(+), 22 deletions(-)
+ fs/namei.c | 239 ++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 154 insertions(+), 85 deletions(-)
 
-diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
-index 7e83bd3c5a12..5ddc5ecfcc64 100644
---- a/Documentation/filesystems/porting.rst
-+++ b/Documentation/filesystems/porting.rst
-@@ -1403,3 +1403,17 @@ you really don't want it.
- lookup_one() and lookup_noperm() are no longer available.  Use
- start_creating() or similar instead.
- 
-+
-+---
-+
-+**mandatory**
-+
-+All start_creating and start_renaming functions may return a
-+d_in_lookup() dentry if passed "O_CREATE|O_EXCL" or "O_RENAME_TARGET".
-+end_dirop() calls the necessary d_lookup_done().  If the caller
-+*knows* which filesystem is being used, it may know that this is not
-+possible.  Otherwise it must be careful testing if the dentry is
-+positive or negative as the lookup may not have been performed yet.
-+
-+inode_operations.lookup() is now only ever called with a d_in_lookup()
-+dentry.
-diff --git a/fs/dcache.c b/fs/dcache.c
-index abb96ad8e015..f573716d1a04 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -2261,18 +2261,10 @@ struct dentry *d_add_ci(struct dentry *dentry, struct inode *inode,
- 		inode_unlock_shared(d_inode(dentry->d_parent));
- 	else
- 		inode_unlock(d_inode(dentry->d_parent));
--	if (d_in_lookup(dentry)) {
--		found = d_alloc_parallel(dentry->d_parent, name);
--		if (IS_ERR(found) || !d_in_lookup(found)) {
--			iput(inode);
--			return found;
--		}
--	} else {
--		found = d_alloc(dentry->d_parent, name);
--		if (!found) {
--			iput(inode);
--			return ERR_PTR(-ENOMEM);
--		}
-+	found = d_alloc_parallel(dentry->d_parent, name);
-+	if (IS_ERR(found) || !d_in_lookup(found)) {
-+		iput(inode);
-+		return found;
- 	}
- 	if (shared)
- 		inode_lock_shared(d_inode(dentry->d_parent));
 diff --git a/fs/namei.c b/fs/namei.c
-index cb80490a869f..bba419f2fc53 100644
+index bba419f2fc53..3d213070a515 100644
 --- a/fs/namei.c
 +++ b/fs/namei.c
-@@ -1774,13 +1774,14 @@ static struct dentry *lookup_dcache(const struct qstr *name,
+@@ -1773,8 +1773,19 @@ static struct dentry *lookup_dcache(const struct qstr *name,
+ 	return dentry;
  }
  
++static inline bool inode_lock_shared_state(struct inode *inode, unsigned int state)
++{
++	if (state == TASK_KILLABLE) {
++		if (down_read_killable(&inode->i_rwsem) != 0) {
++			return false;
++		}
++	} else {
++		inode_lock_shared(inode);
++	}
++	return true;
++}
++
  /*
-- * Parent directory has inode locked exclusive.  This is one
-- * and only case when ->lookup() gets called on non in-lookup
-- * dentries - as the matter of fact, this only gets called
-- * when directory is guaranteed to have no in-lookup children
-- * at all.
-- * Will return -ENOENT if name isn't found and LOOKUP_CREATE wasn't passed.
-- * Will return -EEXIST if name is found and LOOKUP_EXCL was passed.
-+ * Parent directory has inode locked.
-+ * If Lookup_EXCL or LOOKUP_RENAME_TARGET is set
-+ * d_lookup_done() must be called before the dentry is dput()
-+ * If the dentry is not d_in_lookup():
-+ *   Will return -ENOENT if name isn't found and LOOKUP_CREATE wasn't passed.
-+ *   Will return -EEXIST if name is found and LOOKUP_EXCL was passed.
-+ * If it is d_in_lookup() then these conditions can only be checked by the
-+ * file system when carrying out the intent (create or rename).
+- * Parent directory has inode locked.
+  * If Lookup_EXCL or LOOKUP_RENAME_TARGET is set
+  * d_lookup_done() must be called before the dentry is dput()
+  * If the dentry is not d_in_lookup():
+@@ -1783,8 +1794,9 @@ static struct dentry *lookup_dcache(const struct qstr *name,
+  * If it is d_in_lookup() then these conditions can only be checked by the
+  * file system when carrying out the intent (create or rename).
   */
- static struct dentry *lookup_one_qstr_excl(const struct qstr *name,
- 					   struct dentry *base, unsigned int flags)
-@@ -1798,18 +1799,27 @@ static struct dentry *lookup_one_qstr_excl(const struct qstr *name,
- 	if (unlikely(IS_DEADDIR(dir)))
- 		return ERR_PTR(-ENOENT);
- 
--	dentry = d_alloc(base, name);
--	if (unlikely(!dentry))
--		return ERR_PTR(-ENOMEM);
-+	dentry = d_alloc_parallel(base, name);
-+	if (unlikely(IS_ERR(dentry)))
-+		return dentry;
-+	if (unlikely(!d_in_lookup(dentry)))
-+		/* Raced with another thread which did the lookup */
-+		goto found;
- 
- 	old = dir->i_op->lookup(dir, dentry, flags);
- 	if (unlikely(old)) {
-+		d_lookup_done(dentry);
- 		dput(dentry);
- 		dentry = old;
- 	}
- found:
- 	if (IS_ERR(dentry))
- 		return dentry;
-+	if (d_in_lookup(dentry))
-+		/* We cannot check for errors - the caller will have to
-+		 * wait for any create-etc attempt to get relevant errors.
-+		 */
-+		return dentry;
- 	if (d_is_negative(dentry) && !(flags & LOOKUP_CREATE)) {
- 		dput(dentry);
- 		return ERR_PTR(-ENOENT);
-@@ -2921,6 +2931,8 @@ static struct dentry *__start_dirop(struct dentry *parent, struct qstr *name,
-  * The lookup is performed and necessary locks are taken so that, on success,
-  * the returned dentry can be operated on safely.
-  * The qstr must already have the hash value calculated.
-+ * The dentry may be d_in_lookup() if %LOOKUP_EXCL or %LOOKUP_RENAME_TARGET
-+ * is given, depending on the filesystem.
-  *
-  * Returns: a locked dentry, or an error.
-  *
-@@ -2942,6 +2954,7 @@ void end_dirop(struct dentry *de)
+-static struct dentry *lookup_one_qstr_excl(const struct qstr *name,
+-					   struct dentry *base, unsigned int flags)
++static struct dentry *lookup_one_qstr(const struct qstr *name,
++				      struct dentry *base, unsigned int flags,
++				      unsigned int state)
  {
- 	if (!IS_ERR(de)) {
- 		inode_unlock(de->d_parent->d_inode);
-+		d_lookup_done(de);
- 		dput(de);
- 	}
+ 	struct dentry *dentry;
+ 	struct dentry *old;
+@@ -1806,7 +1818,16 @@ static struct dentry *lookup_one_qstr_excl(const struct qstr *name,
+ 		/* Raced with another thread which did the lookup */
+ 		goto found;
+ 
+-	old = dir->i_op->lookup(dir, dentry, flags);
++	if (!inode_lock_shared_state(dir, state)) {
++		d_lookup_done(dentry);
++		dput(dentry);
++		return ERR_PTR(-EINTR);
++	}
++	if (unlikely(IS_DEADDIR(dir)))
++		old = ERR_PTR(-ENOENT);
++	else
++		old = dir->i_op->lookup(dir, dentry, flags | LOOKUP_SHARED);
++	inode_unlock_shared(dir);
+ 	if (unlikely(old)) {
+ 		d_lookup_done(dentry);
+ 		dput(dentry);
+@@ -1897,7 +1918,8 @@ static struct dentry *lookup_fast(struct nameidata *nd)
+ /* Fast lookup failed, do it the slow way */
+ static struct dentry *__lookup_slow(const struct qstr *name,
+ 				    struct dentry *dir,
+-				    unsigned int flags)
++				    unsigned int flags,
++				    unsigned int state)
+ {
+ 	struct dentry *dentry, *old;
+ 	struct inode *inode = dir->d_inode;
+@@ -1920,8 +1942,17 @@ static struct dentry *__lookup_slow(const struct qstr *name,
+ 			dput(dentry);
+ 			dentry = ERR_PTR(error);
+ 		}
++	} else if (!inode_lock_shared_state(inode, state)) {
++		d_lookup_done(dentry);
++		dput(dentry);
++		return ERR_PTR(-EINTR);
+ 	} else {
+-		old = inode->i_op->lookup(inode, dentry, flags);
++		if (unlikely(IS_DEADDIR(inode)))
++			old = ERR_PTR(-ENOENT);
++		else
++			old = inode->i_op->lookup(inode, dentry,
++						  flags | LOOKUP_SHARED);
++		inode_unlock_shared(inode);
+ 		d_lookup_done(dentry);
+ 		if (unlikely(old)) {
+ 			dput(dentry);
+@@ -1935,26 +1966,14 @@ static noinline struct dentry *lookup_slow(const struct qstr *name,
+ 				  struct dentry *dir,
+ 				  unsigned int flags)
+ {
+-	struct inode *inode = dir->d_inode;
+-	struct dentry *res;
+-	inode_lock_shared(inode);
+-	res = __lookup_slow(name, dir, flags | LOOKUP_SHARED);
+-	inode_unlock_shared(inode);
+-	return res;
++	return __lookup_slow(name, dir, flags | LOOKUP_SHARED, TASK_NORMAL);
  }
-@@ -3854,8 +3867,10 @@ __start_renaming(struct renamedata *rd, int lookup_flags,
+ 
+ static struct dentry *lookup_slow_killable(const struct qstr *name,
+ 					   struct dentry *dir,
+ 					   unsigned int flags)
+ {
+-	struct inode *inode = dir->d_inode;
+-	struct dentry *res;
+-
+-	if (inode_lock_shared_killable(inode))
+-		return ERR_PTR(-EINTR);
+-	res = __lookup_slow(name, dir, flags | LOOKUP_SHARED);
+-	inode_unlock_shared(inode);
+-	return res;
++	return __lookup_slow(name, dir, flags | LOOKUP_SHARED, TASK_KILLABLE);
+ }
+ 
+ static inline int may_lookup(struct mnt_idmap *idmap,
+@@ -2908,18 +2927,26 @@ static struct dentry *__start_dirop(struct dentry *parent, struct qstr *name,
+ 	struct dentry *dentry;
+ 	struct inode *dir = d_inode(parent);
+ 
+-	if (state == TASK_KILLABLE) {
+-		int ret = down_write_killable_nested(&dir->i_rwsem,
+-						     I_MUTEX_PARENT);
+-		if (ret)
+-			return ERR_PTR(ret);
+-	} else {
+-		inode_lock_nested(dir, I_MUTEX_PARENT);
+-	}
+-	dentry = lookup_one_qstr_excl(name, parent, lookup_flags);
+-	if (IS_ERR(dentry))
++	while(1) {
++		dentry = lookup_one_qstr(name, parent, lookup_flags, state);
++		if (IS_ERR(dentry))
++			return dentry;
++		if (state == TASK_KILLABLE) {
++			if (down_write_killable_nested(&dir->i_rwsem, I_MUTEX_PARENT) != 0) {
++				d_lookup_done(dentry);
++				dput(dentry);
++				return ERR_PTR(-EINTR);
++			}
++		} else {
++			inode_lock_nested(dir, I_MUTEX_PARENT);
++		}
++		if (d_in_lookup(dentry) ||
++		    (!d_unhashed(dentry) && dentry->d_parent == parent))
++			return dentry;
+ 		inode_unlock(dir);
+-	return dentry;
++		d_lookup_done(dentry);
++		dput(dentry);
++	}
+ }
+ 
+ /**
+@@ -3830,26 +3857,37 @@ __start_renaming(struct renamedata *rd, int lookup_flags,
+ 	if (rd->flags & RENAME_NOREPLACE)
+ 		target_flags |= LOOKUP_EXCL;
+ 
+-	trap = lock_rename(rd->old_parent, rd->new_parent);
+-	if (IS_ERR(trap))
+-		return PTR_ERR(trap);
+-
+-	d1 = lookup_one_qstr_excl(old_last, rd->old_parent,
+-				  lookup_flags);
++retry:
++	d1 = lookup_one_qstr(old_last, rd->old_parent,
++			     lookup_flags, TASK_NORMAL);
+ 	err = PTR_ERR(d1);
+ 	if (IS_ERR(d1))
+-		goto out_unlock;
++		goto out_err;
+ 
+-	d2 = lookup_one_qstr_excl(new_last, rd->new_parent,
+-				  lookup_flags | target_flags);
++	d2 = lookup_one_qstr(new_last, rd->new_parent,
++			     lookup_flags | target_flags, TASK_NORMAL);
+ 	err = PTR_ERR(d2);
+ 	if (IS_ERR(d2))
+ 		goto out_dput_d1;
+ 
++	trap = lock_rename(rd->old_parent, rd->new_parent);
++	err = PTR_ERR(trap);
++	if (IS_ERR(trap))
++		goto out_unlock;
++
++	if (unlikely((!d_in_lookup(d1) && d_unhashed(d1)) || d1->d_parent != rd->old_parent ||
++		     (!d_in_lookup(d2) && d_unhashed(d2)) || d2->d_parent != rd->new_parent)) {
++		unlock_rename(rd->old_parent, rd->new_parent);
++		d_lookup_done(d1); dput(d1);
++		d_lookup_done(d2); dput(d2);
++		dput(trap);
++		goto retry;
++	}
++
+ 	if (d1 == trap) {
+ 		/* source is an ancestor of target */
+ 		err = -EINVAL;
+-		goto out_dput_d2;
++		goto out_unlock;
+ 	}
+ 
+ 	if (d2 == trap) {
+@@ -3858,7 +3896,7 @@ __start_renaming(struct renamedata *rd, int lookup_flags,
+ 			err = -EINVAL;
+ 		else
+ 			err = -ENOTEMPTY;
+-		goto out_dput_d2;
++		goto out_unlock;
+ 	}
+ 
+ 	rd->old_dentry = d1;
+@@ -3866,14 +3904,14 @@ __start_renaming(struct renamedata *rd, int lookup_flags,
+ 	dget(rd->old_parent);
  	return 0;
  
- out_dput_d2:
-+	d_lookup_done(d2);
+-out_dput_d2:
++out_unlock:
++	unlock_rename(rd->old_parent, rd->new_parent);
+ 	d_lookup_done(d2);
  	dput(d2);
  out_dput_d1:
-+	d_lookup_done(d1);
+ 	d_lookup_done(d1);
  	dput(d1);
- out_unlock:
- 	unlock_rename(rd->old_parent, rd->new_parent);
-@@ -3950,6 +3965,7 @@ __start_renaming_dentry(struct renamedata *rd, int lookup_flags,
+-out_unlock:
+-	unlock_rename(rd->old_parent, rd->new_parent);
++out_err:
+ 	return err;
+ }
+ 
+@@ -3927,10 +3965,22 @@ __start_renaming_dentry(struct renamedata *rd, int lookup_flags,
+ 	if (rd->flags & RENAME_NOREPLACE)
+ 		target_flags |= LOOKUP_EXCL;
+ 
+-	/* Already have the dentry - need to be sure to lock the correct parent */
++retry:
++	d2 = lookup_one_qstr(new_last, rd->new_parent,
++			     lookup_flags | target_flags, TASK_NORMAL);
++	err = PTR_ERR(d2);
++	if (IS_ERR(d2))
++		goto out_unlock;
++
++	/*
++	 * Already have the old_dentry - need to be sure to lock
++	 * the correct parent
++	 */
+ 	trap = lock_rename_child(old_dentry, rd->new_parent);
++	err = PTR_ERR(trap);
+ 	if (IS_ERR(trap))
+-		return PTR_ERR(trap);
++		goto out_dput_d2;
++
+ 	if (d_unhashed(old_dentry) ||
+ 	    (rd->old_parent && rd->old_parent != old_dentry->d_parent)) {
+ 		/* dentry was removed, or moved and explicit parent requested */
+@@ -3938,16 +3988,19 @@ __start_renaming_dentry(struct renamedata *rd, int lookup_flags,
+ 		goto out_unlock;
+ 	}
+ 
+-	d2 = lookup_one_qstr_excl(new_last, rd->new_parent,
+-				  lookup_flags | target_flags);
+-	err = PTR_ERR(d2);
+-	if (IS_ERR(d2))
+-		goto out_unlock;
++	if (unlikely((!d_in_lookup(d2) && d_unhashed(d2)) ||
++		     d2->d_parent != rd->new_parent)) {
++		/* d2 was moved/removed before lock - repeat lookup */
++		unlock_rename(old_dentry->d_parent, rd->new_parent);
++		d_lookup_done(d2); dput(d2);
++		dput(trap);
++		goto retry;
++	}
+ 
+ 	if (old_dentry == trap) {
+ 		/* source is an ancestor of target */
+ 		err = -EINVAL;
+-		goto out_dput_d2;
++		goto out_unlock;
+ 	}
+ 
+ 	if (d2 == trap) {
+@@ -3956,7 +4009,7 @@ __start_renaming_dentry(struct renamedata *rd, int lookup_flags,
+ 			err = -EINVAL;
+ 		else
+ 			err = -ENOTEMPTY;
+-		goto out_dput_d2;
++		goto out_unlock;
+ 	}
+ 
+ 	rd->old_dentry = dget(old_dentry);
+@@ -3964,11 +4017,11 @@ __start_renaming_dentry(struct renamedata *rd, int lookup_flags,
+ 	rd->old_parent = dget(old_dentry->d_parent);
  	return 0;
  
++out_unlock:
++	unlock_rename(old_dentry->d_parent, rd->new_parent);
  out_dput_d2:
-+	d_lookup_done(d2);
+ 	d_lookup_done(d2);
  	dput(d2);
- out_unlock:
- 	unlock_rename(old_dentry->d_parent, rd->new_parent);
-@@ -4059,6 +4075,8 @@ EXPORT_SYMBOL(start_renaming_two_dentries);
+-out_unlock:
+-	unlock_rename(old_dentry->d_parent, rd->new_parent);
+ 	return err;
+ }
  
- void end_renaming(struct renamedata *rd)
+@@ -4319,8 +4372,19 @@ static struct dentry *atomic_open(const struct path *path, struct dentry *dentry
+ 
+ 	file->__f_path.dentry = DENTRY_NOT_SET;
+ 	file->__f_path.mnt = path->mnt;
+-	error = dir->i_op->atomic_open(dir, dentry, file,
+-				       open_to_namei_flags(open_flag), mode);
++
++	if (open_flag & O_CREAT)
++		inode_lock(dir);
++	else
++		inode_lock_shared(dir);
++	if (dentry->d_inode)
++		error = finish_no_open(file, NULL);
++	else if (unlikely(IS_DEADDIR(dir)))
++		error = -ENOENT;
++	else
++		error = dir->i_op->atomic_open(dir, dentry, file,
++					       open_to_namei_flags(open_flag),
++					       mode);
+ 	d_lookup_done(dentry);
+ 	if (!error) {
+ 		if (file->f_mode & FMODE_OPENED) {
+@@ -4339,6 +4403,13 @@ static struct dentry *atomic_open(const struct path *path, struct dentry *dentry
+ 				error = -ENOENT;
+ 		}
+ 	}
++	if (!error && (file->f_mode & FMODE_CREATED))
++		fsnotify_create(dir, dentry);
++	if (open_flag & O_CREAT)
++		inode_unlock(dir);
++	else
++		inode_unlock_shared(dir);
++
+ 	if (error) {
+ 		dput(dentry);
+ 		dentry = ERR_PTR(error);
+@@ -4372,10 +4443,6 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+ 	struct dentry *dentry;
+ 	int error, create_error = 0;
+ 	umode_t mode = op->mode;
+-	unsigned int shared_flag = (op->open_flag & O_CREAT) ? 0 : LOOKUP_SHARED;
+-
+-	if (unlikely(IS_DEADDIR(dir_inode)))
+-		return ERR_PTR(-ENOENT);
+ 
+ 	file->f_mode &= ~FMODE_CREATED;
+ 	dentry = d_lookup(dir, &nd->last);
+@@ -4420,7 +4487,7 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+ 	if (open_flag & O_CREAT) {
+ 		if (open_flag & O_EXCL)
+ 			open_flag &= ~O_TRUNC;
+-		mode = vfs_prepare_mode(idmap, dir->d_inode, mode, mode, mode);
++		mode = vfs_prepare_mode(idmap, dir_inode, mode, mode, mode);
+ 		if (likely(got_write))
+ 			create_error = may_o_create(idmap, &nd->path,
+ 						    dentry, mode);
+@@ -4439,8 +4506,15 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+ 	}
+ 
+ 	if (d_in_lookup(dentry)) {
+-		struct dentry *res = dir_inode->i_op->lookup(dir_inode, dentry,
+-							     nd->flags | shared_flag);
++		struct dentry *res;
++
++		inode_lock_shared(dir_inode);
++		if (IS_DEADDIR(dir_inode))
++			res = ERR_PTR(-ENOENT);
++		else
++			res = dir_inode->i_op->lookup(dir_inode, dentry,
++						      nd->flags | LOOKUP_SHARED);
++		inode_unlock_shared(dir_inode);
+ 		d_lookup_done(dentry);
+ 		if (unlikely(res)) {
+ 			if (IS_ERR(res)) {
+@@ -4459,15 +4533,22 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+ 		if (error)
+ 			goto out_dput;
+ 
+-		file->f_mode |= FMODE_CREATED;
+-		audit_inode_child(dir_inode, dentry, AUDIT_TYPE_CHILD_CREATE);
+-		if (!dir_inode->i_op->create) {
+-			error = -EACCES;
+-			goto out_dput;
+-		}
++		inode_lock(dir_inode);
++		if (!dentry->d_inode && !unlikely(IS_DEADDIR(dir_inode))) {
++			file->f_mode |= FMODE_CREATED;
++			audit_inode_child(dir_inode, dentry, AUDIT_TYPE_CHILD_CREATE);
++			if (!dir_inode->i_op->create) {
++				error = -EACCES;
++				goto out_dput;
++			}
+ 
+-		error = dir_inode->i_op->create(idmap, dir_inode, dentry,
+-						mode, open_flag & O_EXCL);
++			error = dir_inode->i_op->create(idmap, dir_inode, dentry,
++							mode, open_flag & O_EXCL);
++			if (!error)
++				fsnotify_create(dir_inode, dentry);
++		} else if (!dentry->d_inode)
++			error = -ENOENT;
++		inode_unlock(dir_inode);
+ 		if (error)
+ 			goto out_dput;
+ 	}
+@@ -4522,7 +4603,6 @@ static const char *open_last_lookups(struct nameidata *nd,
+ 		   struct file *file, const struct open_flags *op)
  {
-+	d_lookup_done(rd->old_dentry);
-+	d_lookup_done(rd->new_dentry);
- 	unlock_rename(rd->old_parent, rd->new_parent);
- 	dput(rd->old_dentry);
- 	dput(rd->new_dentry);
+ 	struct delegated_inode delegated_inode = { };
+-	struct dentry *dir = nd->path.dentry;
+ 	int open_flag = op->open_flag;
+ 	bool got_write = false;
+ 	struct dentry *dentry;
+@@ -4562,22 +4642,11 @@ static const char *open_last_lookups(struct nameidata *nd,
+ 		 * dropping this one anyway.
+ 		 */
+ 	}
+-	if (open_flag & O_CREAT)
+-		inode_lock(dir->d_inode);
+-	else
+-		inode_lock_shared(dir->d_inode);
+ 	dentry = lookup_open(nd, file, op, got_write, &delegated_inode);
+ 	if (!IS_ERR(dentry)) {
+-		if (file->f_mode & FMODE_CREATED)
+-			fsnotify_create(dir->d_inode, dentry);
+ 		if (file->f_mode & FMODE_OPENED)
+ 			fsnotify_open(file);
+ 	}
+-	if (open_flag & O_CREAT)
+-		inode_unlock(dir->d_inode);
+-	else
+-		inode_unlock_shared(dir->d_inode);
+-
+ 	if (got_write)
+ 		mnt_drop_write(nd->path.mnt);
+ 
 -- 
 2.50.0.107.gf914562f5916.dirty
 
