@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A54105A595
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0944E105A597
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:59:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9EA86B009B; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
+	id 5E9296B0096; Thu, 12 Mar 2026 08:59:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A552C6B00A2; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
+	id 5A0D66B009F; Thu, 12 Mar 2026 08:59:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 957D36B00A4; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
+	id 4A2236B00A2; Thu, 12 Mar 2026 08:59:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 84EC76B009B
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:58:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 550E156F30
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:58:18 +0000 (UTC)
-X-FDA: 84537414276.19.8CB5F00
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3836C6B0096
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:59:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B86FB1A0218
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:59:14 +0000 (UTC)
+X-FDA: 84537416628.16.71AC009
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BC56E180006
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:58:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RaHxunvW;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 18705180005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:59:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kUbVAO1x;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773320296;
+	s=arc-20220608; t=1773320353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WWmGakTAuBOaXs12cOlovdF8h6ptXGeKrnQGoZnLCaE=;
-	b=ez8xhnGYqtVk6NYSZV2WzmmDVWNXYwoWALrTf6t7RUk5tMi307+VjtgM1hJ8QlQR5ZFndj
-	jQtQY761uD8S13Sopu0WWzmYodUZf7yeHNNvViBDCc/ZR8ZNqGFYYJCySudV+ZgFlHhxK3
-	61PjFpl8zy8l3e7eepwBSOU7DfsbhFc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RaHxunvW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773320296; a=rsa-sha256;
+	bh=IT35hmMkpJTLydYg6h4wYE27b29UZK0Yg3i1Ba0pR/o=;
+	b=PNfdEULEJvQXDu4X/G3R2oz/dVKQuZhRJ4/nys0aZ4CymWOWlG6n+63wJpNOcQTcdfoWvs
+	GHOO5teASuwIF/LL93DBVgCX545xL7hGznyfAZS4cHNtT6vp3vydtAwfgbij7u0xVU9W6H
+	sjzHbDSrRkVe+MnK8hfqp61ziAGCDwg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773320353; a=rsa-sha256;
 	cv=none;
-	b=kcplg2HgdVcU/B6fGdyWgCzsXjzfEuW5jVtCUc+uWDWgz3S8UNDBLBnEylyKciLsRlbGWG
-	ZboqocXr8IcgTM8GpVFdmCzEKHNKnBDbdqGpQruoQjRbYKopBiUhXTSSfLLFOfz9Du7Htp
-	RFDfk4oYtZIFRjVuQ79SwmmrhoXdOdw=
+	b=5pbZan/wqy9iEUjg8MPGpSt2IN5oV6HdjIPTVb95Bz0KmnZZdLp7fTYaZRiboC75hmVxOT
+	BCe/xrm0Jj1dRyrrlsRoacslx13TT/Bzkit2eF0OJz40cQjIcvAsS8RuAgQhTjnHGkVe4R
+	VjDWZ9YkP1obA1dNyPPuis8aLF0sjVw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kUbVAO1x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1863D60054;
-	Thu, 12 Mar 2026 12:58:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F7CC4CEF7;
-	Thu, 12 Mar 2026 12:58:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 82E0E60131;
+	Thu, 12 Mar 2026 12:59:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0BAC4CEF7;
+	Thu, 12 Mar 2026 12:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773320295;
-	bh=gBep5553txKudcWrJjtiLDf2/nYBl1x0tWwim114nHk=;
+	s=k20201202; t=1773320352;
+	bh=4EEyl9P2phGX+HwpLUxMhA+JCF9RdOHB4xQY9FxOTGY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RaHxunvWc775N6DoRn2pN90dVZoeFWgrpJ7+jfJyZ6O3Zea15fV0WJLuDTRsB9GCZ
-	 YA7K1fWEjJZs3MxMrKj3Jjdis6B0IkCLLELznFgMiATBpcCbbknnADJNDa42n53jsb
-	 qeQW8XXXDJZDUbuS72taYDtkFt6zwVqB6pE+Iu88vEnsiPAgeenD5irTONM+XhQGty
-	 KnK00EYdzl7UTaeQCi1WL/X6MeVvOr4fnhZwcltKpdfz+bgWBp9jLeN0yYZJ0eCMOp
-	 9tZ972GKZjgFuHN4j46U2n9dhdz2AoJEBMg2BnPcz98Kk5cyHRkxRwRcA2eHyk2SoM
-	 BsN84yxHZiuow==
-Message-ID: <0761a728-34ef-45b1-9aaf-0e6c5c360299@kernel.org>
-Date: Thu, 12 Mar 2026 13:58:08 +0100
+	b=kUbVAO1x91zfStXxxANoYTJv0Ff+JvcWOyNXKg04nWwHWPqw+FmjGa8mF1Moh0X90
+	 ahrl1iH3mybRF0h74/6OP9S7PSQ4zKMWF450ufAzpVnEEKlYItYxLBFnihDbCbW/eN
+	 OqICOUjm+w9EhVZ7EW5nADKF8fRWxpQ/Aywyn7StT3t3ubt5S0ti14CA244FJfXQeC
+	 MK/JATDYt6zmDbpxCl0cgT+SBhTlUpfrHnkRPfVPIdERcxb6kjTf38ZdW9J5VGWGNG
+	 wAsKsbfZuxUFDneMJ0LqJmT27+ZoaXBPMQyhj6dY3Q0VVaazw21XN/I/34tIJd+A1d
+	 q38WzRCGvLQDA==
+Message-ID: <38a2ee9b-9bd6-4bb4-a522-db6552eedd34@kernel.org>
+Date: Thu, 12 Mar 2026 13:59:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: Rename node_get_allowed_targets() to make it more
- explicit
-To: Byungchul Park <byungchul@sk.com>, Alexandre Ghiti <alex@ghiti.fr>
-Cc: akpm@linux-foundation.org, alexghiti@kernel.org, kernel-team@meta.com,
- akinobu.mita@gmail.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- hannes@cmpxchg.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+Subject: Re: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after
+ setting GFP_TRANSHUGE
+To: Andrew Morton <akpm@linux-foundation.org>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: alexghiti@kernel.org, kernel-team@meta.com, akinobu.mita@gmail.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
  axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- gourry@gourry.net, apopple@nvidia.com, joshua.hahnjy@gmail.com,
- matthew.brost@intel.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com,
- ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel_team@skhynix.com
+ gourry@gourry.net, apopple@nvidia.com, byungchul@sk.com,
+ joshua.hahnjy@gmail.com, matthew.brost@intel.com, rakie.kim@sk.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Bing Jiao <bingjiao@google.com>,
+ stable@vger.kernel.org
 References: <20260311110314.237315-1-alex@ghiti.fr>
- <20260311110314.237315-3-alex@ghiti.fr>
- <20260312052831.GA60352@system.software.com>
+ <20260311110314.237315-4-alex@ghiti.fr>
+ <20260311100646.81819c0f02eec5d3f1dcaa70@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260312052831.GA60352@system.software.com>
+In-Reply-To: <20260311100646.81819c0f02eec5d3f1dcaa70@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BC56E180006
-X-Stat-Signature: 8pnseksyyw37egmko84cmgwc5rx4hhc1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 18705180005
+X-Stat-Signature: s3qhg9r6jfd8m8fds6zgzhq1kwcjx49x
 X-Rspam-User: 
-X-HE-Tag: 1773320296-803263
-X-HE-Meta: U2FsdGVkX1+cQVHGbIL6wz0OYbajFqCTmUse37zuGKV0ZqW8SnY3laPfddeXYHE46QgXh4rr+qyK2xeq91X+NctrRZUcyo41DQW8U4gk0DAgUHsLJap5JJE0it4wR0JOqFzHaNfjcxtQC+jd5DsSa0Ib8zkT9ZKrZ85HejXY+/QVaCgbeXBUrsXQ5IDEVEP/hpcz+URd+wc2y7BzAabX6mrXrdTWBaxlTOJ0irw0Upg3z1/ymbLrFJefNDD9Ia4QxKrDF5iejDJMLjy/Y3huybsikwKXV5rANUPPEKRiqWKqHmxCm47TOBXMc0UqqBsdGd4LPdxrndVBoNEdjVKvkKrx+4TXav4IyxM75n1+w6nr25+COPuT07pbnjOr3gHrtS8BcJDht91roajaUQL9KnUxmffKy02fsb0/bvC0E2VigNFXg+vWpP5DoafSOtczkB/NiwX/A8t43GBaTmXezaFWVuK4wV5z8JP0+60hujxqsfDcqJ2NUZdPdH/25dz1tLoVJjumUouPP6WEqSbVlL5t8aBxgsKb8DprcalcaHbyCXOx+0BEwPGbU2ahbgA/fldADZvO4ZRlgLp2vWnOQRymMMEdEuU3CvEGf6m2yTIityOtEc+bQ2xvVbaudsde0vDybCATzEb4QXc50yt0oKpofIDijVMSB52lesvgjUFecUjNiOkYNE+590ac/VEdd5bDalAhg4LJTVwH2BFL3Q+UqrDZ+l/pNMVUybXcgo0z8B1lJJQXxUiFoDn3WdDDNMpwigZDLN4T2BrZ3uxuOOFLa1oy+ZB6/HOeNKWuMD750kFUwNJT8zznbxJ4gCyIRAxgdsOHQSkQOhU/YjdsJsWKWKjo1A3r+jt4Rzxhcs3y1L4KH3eFnsXNzzHcxW0EJw6TtMLHzMc2cBwahSckEvPy3HsOxioVkHanGJZwmMhjVqGt8o2Y/gC5vN5jkIBIMSdInGlEV6/o7pQ4ygj
- 1y53mo/m
- R6U6QLW5lNlFQxRYn4tpgUxE3y8tununFkBghw68PVtfShDY=
+X-HE-Tag: 1773320352-851837
+X-HE-Meta: U2FsdGVkX19hJ1OYkc6XQS/tjj2jcFYHmUV/u24HZKHcPAVKmOWj2wZTa21iLB5KR86Q20+WuZf47/rSJ00JUDDqD6BOckpG5brr+rUvHqq0p9wNNZtE2AFOqeoTXsSdpiSfosp1w73XuBth/OBiCRauv/MuSqpas4H1oiFipid8cyCvPaJqstxtGMHrJ4tUmCjgr57cm8j2iLYp3D8w1RImNHlsHAdIa6zxfjweZpvVx4rE0tlJlo4lmFR9MiIinJnh5WJg5C25FDrDQWKmvSkoBQDPKvfA9MjyBS9jAZXiJteoe26bdRQG4GkA8fuc4iLoMdb3JrTmpeBIZvJ3bNWjEI8yGFPk3owI6zv1SCFwRbM4oWPGQ7HkJFZTu60W6DO4ialGnJHG2Ktas0KwuHugIVW/+iRRzHxtg5PpzHloXl450s31OULC52Da9+As/FJjGlWvmK0s+J7K30zgorNNc/2Rr6X15jx3Sp9X2GM3uaX8sdyemAA9J/i8tBsykfTKxOeTDKw/tlVHi845vU7p+biWbIRhlhiCa8rgnzm6JzCZPLP64NzpTrdbULTHzzJ67gpTk5rWU4Nl1HB/w1SPxytghnUQThazXGaLNmVqiMngUgYb8A8QVLh0AV5L+giFZcw/64TRTsg6UB+Ku1wzfzeoUTZJBhvfKiOBd9Njpgybj3SoBSh+OLFZstXUtuGXdcnlpg+T++QlF1OJ9BkC/66ozh2gjht1OTlfB6zTwMuXPIrPP8aQ6J+MHlGqfa9NGklU/pPj+LK8kU8PoApcfxKkoLbgxgN2dx5jolERFmb1fbYbiq1QfUZJqVYB0NrCwXcOSYHrGJ3/e8qi+UtxDATMcRdUV7BjmLzsr7SOMzwJbq2P19CmZDd9CCFwIUw5C3rwPCXA093MQe99T7Jmivx1iCXH9fb9tclUyGTNYzrOyx14xvhbTSUtOFE20iBhcvwCAQuUuzdaBNQ
+ 81FiKgc4
+ XwNTqQ9s7TIpKDJP+EwgleDGqI7mh+HNOIrg+yEdWvT+KgWpGCs97f3cnYGLI70BrvBYrIf29FyKKI1/fLJnH9rfQYEyS6Xpb2guNaUNedG361OcPF4yIyl8KK32ZYeSm7kuIYpErfzeWrMOV5vY6tNiLd2TyGVx23jqoIRRqtegCupJQ048kZpFK/o6RILXl9XtKKE9Z6zZOJm3N5YG4xPF/in8+5NLbzu+ysGSKdGCWwhMSDY3zsLPjab8Dp+NxPX0Bxx/BKsZDiHBmJfvUTLkSLP38zutnggCAdEtIoHhpaIKzMJXGcNnt64YrpoYXeX/9XlUIQwFbjxoei+OtYHkm023lOtrK7UZfo9NTo+TLoHJ9xBDvJsIjqjz7ulnTR5VXcUVZNxKT3alNnpyJVc8mAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,40 +148,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 06:28, Byungchul Park wrote:
-> On Wed, Mar 11, 2026 at 12:02:41PM +0100, Alexandre Ghiti wrote:
->> This function actually returns the tier nodes that are targeted during a
->> demotion, so rename it to be more explicit.
->>
->> No functional change intended.
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
->>  include/linux/memory-tiers.h | 6 +++---
->>  mm/memory-tiers.c            | 4 ++--
->>  mm/vmscan.c                  | 2 +-
->>  3 files changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
->> index 0bf0d002939e..ec39dc3c39e6 100644
->> --- a/include/linux/memory-tiers.h
->> +++ b/include/linux/memory-tiers.h
->> @@ -54,7 +54,7 @@ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
->>  void mt_put_memory_types(struct list_head *memory_types);
->>  #ifdef CONFIG_MIGRATION
->>  int next_demotion_node(int node, const nodemask_t *allowed_mask);
->> -void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
->> +void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets);
+On 3/11/26 18:06, Andrew Morton wrote:
+> On Wed, 11 Mar 2026 12:02:42 +0100 Alexandre Ghiti <alex@ghiti.fr> wrote:
 > 
-> Look better than before to me.
+>> Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
+>> Cc: stable@vger.kernel.org
 > 
-> What about just node_get_demotion_targets()?
+> Please let's have the cc:stable fixes separated out from the cleanups,
+> and prepared against current -linus mainline.
+> 
+> Also, when proposing backportable fixes please ensure that the
+> changelogs carefully describe the userspace-visible runtime effects of
+> the bug.
 
-+1
-
-Maybe throw in the mt_ prefix and call it
-
-mt_get_node_demotion_targets()
+Also, please move fixes to the very beginning of the patch set, or
+better, send them independently.
 
 -- 
 Cheers,
