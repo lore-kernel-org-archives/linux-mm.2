@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D634106ACEC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:53:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5743E106ACED
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35CAD6B00A4; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
+	id B626D6B00A6; Thu, 12 Mar 2026 16:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DFFD6B00A6; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
+	id B37FE6B00A7; Thu, 12 Mar 2026 16:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B8436B00A7; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
+	id 9F9EF6B00A8; Thu, 12 Mar 2026 16:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B1346B00A4
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B055B8B5B4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA996B00A6
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:53:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45CE61B7E48
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:34 +0000 (UTC)
+X-FDA: 84538611948.27.C1431AC
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6F3FF4000B
 	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:32 +0000 (UTC)
-X-FDA: 84538611864.29.55873EB
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9A7BE2000B
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=L9VE7G8O;
-	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=bo90t1Eo;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773348811;
+	s=arc-20220608; t=1773348812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=QV2CFG026yzLrH1KSoyywnXP2sha9Q6L0bPhjH46BqY=;
-	b=yYjlaUzTQnHqHn4xdFcM0VE/Fko1vB+VSHuIdHVTpZfcKlZllxZQ4Nco00ZunUKd1cchrb
-	cQNx8o7uRWdXW3mbjIe0//9OjJLQT+eeqB8YrzDMfLldD97EtWNoWzaYeYWixELWC+qE+L
-	HkFS+hJ/B/QbtjC2LvnajPYBckvh7I0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Aqbg0K2IsgJ/qrqREwPFlBusaMsCq6IazOmM3TBzhTA=;
+	b=G9mJWAFUQLWykKqGRHeA53vOOZZs/s/YsuMSYGrd6yM8i+1S4VAv5ZlKKAjxXs1fpNZF+i
+	v78wu6KgH3vjONqYuYsXpLEA1Y5UtzrqnDtsB7xHVFQCxb+AWxXbGnjVboOgLBh93+1EUz
+	VcUyaPOr/6JFhwDdOxamGiuvU5XRvEM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=L9VE7G8O;
-	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=bo90t1Eo;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773348811; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773348812; a=rsa-sha256;
 	cv=none;
-	b=qrSxuLiKP+wzv7twWTHFQrbHxfuUnkn8XYaG5q6PCVRoXHRY5NT7hwvRPKvlBOM0X+eCUZ
-	adliGdEG2c+gp1g+yLrfs20OXRuaES/zXcs6IIxtlnceDwRGjTZOHLalShMsox2xLg7ZjY
-	rCTONh3LQsbbNub1wQBCRjOJdnrX3ug=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cb20bcff5aso144240285a.3
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:53:30 -0700 (PDT)
+	b=XfxY8wr/kF44Ip//EMWX7cCZ9V/sviRYWZN6rdzHCZNGavqeknaS9xfvWgi9SOoSJgvaME
+	cx0f5wbP/Ri6ZfBrSzyy2MWwuzpFqoHPFRZhGjmUWyVORLYMjjLgUeKZBFMeJKBcpTrcnw
+	M+FkfpF3YQ0lAFunEsHGYSBjR4qcB/E=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-89a465bd7edso11375366d6.0
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773348810; x=1773953610; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QV2CFG026yzLrH1KSoyywnXP2sha9Q6L0bPhjH46BqY=;
-        b=L9VE7G8OrF02FdN/JVu4gorKvMIcsZKmJ5f+o9sl5IxFNjBKpSfJFvs35LS1lw6+qq
-         pKlbXm5zCfg59mCd1kSfkcH2Lu7BkXt5slAT+hyvPTJvwg+1W/gPDkwlFgRylO7QQD38
-         fx+BzZ60yEucewuqJv9XVQHM0sf1rOB/ANQhOCzjackmtVkD5OzZeNwj0fE+Vhbv7R45
-         rQZ5OdMSWyuYk6XEmj9ANwSJ421F9f0mP/UAxhN42ms7vsnVy6glXPoiICPSrpZL9nOI
-         Gd8CXfezr3yoJg5t4V1hVx5x1EK2MkSpXJmcDc/h4At9gQSdrlb48AY63NK4DYbRexV1
-         QSSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773348810; x=1773953610;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=cmpxchg.org; s=google; t=1773348811; x=1773953611; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QV2CFG026yzLrH1KSoyywnXP2sha9Q6L0bPhjH46BqY=;
-        b=N9/5p9bBPEh7B2lNYaLrWe3sGdA68YVkJS1qNu1NdXmv/fUTEv1970YNW/FaOh/CcN
-         XDeij/rQg/gnHGccBgfVSD47qJb6kGBBCeCqbbSqkmawj4xSZLLBiqzLK3OpDEAsv6tg
-         C8qnKdQ4EA8S8nK9RTZrUFPLPHkpVumZGftvBtMdZMteaZgWy85cyIzEKysjl6TNBdu7
-         1oZQcb90B3MdPdRseD9XSBIVyZhz37os0BvXxmp/strQQmX4lP8imb7vkUa1Jtk/s8HF
-         lEuxFhvtR4avA02/l29Ayldp7VZyseO2Ta6Q7uio7auWhyPs9rdS6rUjAJImECQxPUh1
-         SLSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYpHsKZTdIxu+qJFOvUiWEHRYlV5gt1n+kEjutDNnPFupng3bKEGJc0k2Gn7fXyJGdlOUv4XVtPA==@kvack.org
-X-Gm-Message-State: AOJu0YxRG+dAa7nY/x2vKIosmSa4IXYMnFtYyG9/lg+i6A3JFbQ2Jqi/
-	lni3+i6VGN/ciLiOHn2COSGgc4GayBLm6/YkGgG4DnoyRIAbK7wA4CMMlfQHKN8Xdho=
-X-Gm-Gg: ATEYQzz+t2E/pJn2Ned/xv7Acg3SB8K7FNB6hyNzbD1xNUS1HBkhyMyrGQPCzpwGiXY
-	xoH4Y/QFniqiQ7IAYSZAYOx1F6OhuaOZfGb6GKhmDc+uMCKHLEurtbMMg6L8QySsJ2630u2G5a3
-	YPIBoEejvr2GVeNkMOZRLNtGuS8Hy8Vmqdk7SYCaJwi5i0Tuv5qQ3HGn0L7lLcOF90tCgOUC5XG
-	B7NpXZsty8mZlIGLgZRKpDB3AOHE57VfcW56xVAgNcuLS6D+oswD+zck0n32ErFW07Gt3PhBpu4
-	m7eKo8NuhTjRnbkyMiMMLXi6eKsoUktjLzvNSZS/pohDfCYtnJEo1W7wx+hzyb0mH7KqSHfS1q6
-	4fwn/fqyLsz9h6e1J3c4XfbChLHti2VF+Hr2gs2g+UOBCZLG3/e1pOJ/pKDW2KPJl3aVtEZdaQw
-	kTWXSX7rICYVYPLVEsY/TmLw==
-X-Received: by 2002:a05:620a:3709:b0:8cd:9599:b7c7 with SMTP id af79cd13be357-8cdb5a5c90bmr169145985a.23.1773348809607;
-        Thu, 12 Mar 2026 13:53:29 -0700 (PDT)
+        bh=Aqbg0K2IsgJ/qrqREwPFlBusaMsCq6IazOmM3TBzhTA=;
+        b=bo90t1EoljYFUtC49qy03Aq6wt2qHzsccBA8K2IfmdbBkDqzjsJN03S8c9tC63K50i
+         mffrSxYttKtHohJ74D23fbyLB6sAfl+JLycvFs8R7gWAHRbs4Ev7hHTsrAre5hbXf3PE
+         Te0EeXdJFaUBORila3opH8lLMvl+uag5K6yapKKNoklGhbQUDG33KUyZsFGTziu4cuhz
+         6Rpmvx0C4CZo20jz3CFEGrc3owyWVg+FiIgxHVEbW5Gas6sGo7RQL9EjryYILx9piZtx
+         66m2bGp2Z3hj2AwceD3yzzFiyqxq9/5rvjc784hFTq3nf4XT4ZN6RVGj9IQKxTXUBdJY
+         QxVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773348811; x=1773953611;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Aqbg0K2IsgJ/qrqREwPFlBusaMsCq6IazOmM3TBzhTA=;
+        b=MHbuh9kHD4lUbuVhYOTS+Z4BnM9Y/LNbGTsDuc2aosnuRbUZtDIUPWe46UAR76u0cg
+         3GauPZhp3bqhAoxu+U1o3nnMxqxTb7ibInTeoFbovgO8PzerL7j/3jz4xUGVyXzAjctQ
+         cMuEhL5FOpRW0v4bKJ6+Xx8MFISP+fD8nOqAocWtNs5/vak+IdymxwVDuF0P3axuUJul
+         ybjpRgolKKrZ0fhGzh7Ju7pdigRX7Gu3yH/ZBdXcrPJDaz+aZyzP4Hx7q17e9Qm5Su7S
+         ghVLT1q0WqBb6IiWssbBuRK7FNJ1Cb+iwToIsGRia9K4NmPxDyBXJhk5AMH9s4BNo0GX
+         Ckaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTGwidKjKjZ38k6wS1LNxP7eTcPFVkAuinfRnO+gSnVEKTVSC6+tDSjKwXUP6uWwvLaDh59zux8w==@kvack.org
+X-Gm-Message-State: AOJu0YwikPDCTDIQAz+zsGml8NLdSK57pupRXTvP8mywPsX6U6rfyGn6
+	ykcrrtigLes0KbLiRaAOjgOi2StJqkXPCKBUSgynwukrzifA600GQECFglujh7Z1wEE=
+X-Gm-Gg: ATEYQzyWbCEDLeDZ92erESPHiegdJqjgO19GzivvbD0Kqcgg9m4fdeBW+tzG1ZoG1uq
+	8YkzIUhgiSkldjgE4CRw0UbtYJLlR72kgtcy/nqpHw1NrENJXBkxv6YaK0RTowDm8fJ3nTgsxod
+	jnwQm9OxJHPMI4vkF9TT5Aoor8xKI7Z7mOD+NQXKofGAcK578rQcU2P0KoGPzVWjqMKWEmDgbIm
+	qAmzBxmOYrQcgUgSYM8+FY11z4ZUibr8N8D+JdXDItudyweJIjTba17+L4ZVT5RRYlNqynsyrNk
+	pAGvkM0Qj0SB1BbqJHZC68IN5fcVtetBq5NQ6UfsJBDtc5jAokgfLkHsnISJgafnYFi73RJD3fF
+	NDphRon1Lshi4gymNCdDJRh+3FiaO5eOCBaWn9RPP1IfdbTvJhVJcWjszxdCOaKx8uVqQ0StDFc
+	X5Zmblj5mvuOr+jDZxU2C9Xg==
+X-Received: by 2002:a05:6214:1c41:b0:896:fa50:4c0c with SMTP id 6a1803df08f44-89a81f5282emr14261866d6.53.1773348811497;
+        Thu, 12 Mar 2026 13:53:31 -0700 (PDT)
 Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fbd120sm412847685a.7.2026.03.12.13.53.28
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65c0d327sm42509556d6.22.2026.03.12.13.53.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 13:53:28 -0700 (PDT)
+        Thu, 12 Mar 2026 13:53:30 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -102,20 +103,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/7] mm: switch THP shrinker to list_lru
-Date: Thu, 12 Mar 2026 16:51:48 -0400
-Message-ID: <20260312205321.638053-1-hannes@cmpxchg.org>
+Subject: [PATCH v2 1/7] mm: list_lru: lock_list_lru_of_memcg() cannot return NULL if !skip_empty
+Date: Thu, 12 Mar 2026 16:51:49 -0400
+Message-ID: <20260312205321.638053-2-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260312205321.638053-1-hannes@cmpxchg.org>
+References: <20260312205321.638053-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9A7BE2000B
-X-Stat-Signature: 6br9edfd9ymfqhciwnnrcfxrqzaozezh
 X-Rspam-User: 
-X-HE-Tag: 1773348810-285261
-X-HE-Meta: U2FsdGVkX1+YjGQzQ0ZgDhFE+rE2O9FZJ0nxBFx6ysLg3XG0GfiqeeNsaAjMxrF+j5Fhm/PpqYpvHLAQdvDLVEyFClihxA2kA9msOi7yP/jJNsiCXdtj8N1BPI3aBqlZPqBQ1MtI3iKPS3WZTNLrMDT1Gwt7PUawdjAe6Eai5WyudU838NwbtvtanlSb4ccji8w474QMtB7wT/B2qpnlc+KeaZncgaIXBap9cVfTRRIsi4iNhNDffQgoO73YPxReejqH0nPOAV7hXVll1tbXbQ4oGtavScqvUeWAm8dPc2goHod/YcVmnBc2GhGhaPb2PnbGx/HNifgfw33+v9sdLby4rRx0d9QTJF7FGWVnp9hZL7596R5Rp2Hcf0dPdIcM9ljX++ZeqhFW/I6EHl6R2U6lVORvm9CojqvRLHM9En5m71hgittXmohQhE82wyezwd9TBiM6yFRk883hNtEF1UOCOxsKhqNpuv6dyR3e/eYB2rcDMkyW+mzNbmtti1NMdvENgjFfZaatdOqVZMcskSZS0s5i2KVXO7ZlgGezQ0+uDWQMwPKGx2kDV3n0kHy0Xg/3+NR4ePfQBwcoltl+BpwXrxHOElb+P1I4bCuqg6hhnC1ila3Rr5uz6BETLUjHAj8ajm/yQuboiD7Maz3itn+6vXpCh9j+0daQgcrMItrZqnyMBQgqQFnNDzmgQ4UJp5vvBJhLRW9jkOGnQLRfaVQQVrkGWUrWYlvSEduBrQi72HHm/kZQj6N3lTpwOLjH4cluiNDor1XiVT/e5rVLMNxVIRZ+a6PjvpgroX4smAW1dbz/WVCEnXb5dZO/kreAbU4tyC3TKr534ttt5kR5/SoS+ADVdytKo65ouMx0zmufZtJGeSjvs7fUlsHsJqhJDXchmNIzCD3fGktIjH4fAK0D0+RBW+kzOIW6dc/cR0O86m4RssRDGd4HX8/5xrjCzygHYqQFJLty+iCtz+g
- BrRb3CUs
- h9zlQnvRowXvDuKVwtPqoduwKl7rJxKBw6HC2wS8eylz8HhKwDgj30Fpz6QCtKe4kohCzgoeU11+s+9NlYj/SEkeFVjc0YAKqSe0IXfmchF05lIySQSIdS7TN0hOA/WBzXhRSnWc1G7sLKq5AIlWXJLrgpStNgP73JetCNVdbDkZ+1YlBmdcf2xu5nQrvONxKJxtP4z0EoUrfbywS6tG4jGpEKg6Ss4MGOhKbV3Oy5Rjejz460WKrirT9TNuPeoe901SNhh6aDx0EVHINRXiPH96SxDYVSO2+lXAYPGnQQBB0GH9uiW9tZmRSdNgRiFf4kRTpwEyeydShg+fkM9jFyNK90VgG2S2c1P5CJqG/Jqx5jQhqcG33MStVrA+49ulGnLaAA5qoQYU4x8XoEuOr84dTxesnT91Du5WY
+X-Rspamd-Queue-Id: 6F3FF4000B
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 4mizp5cx8d9p1by7wa3cjrq8cq56um8j
+X-HE-Tag: 1773348812-240300
+X-HE-Meta: U2FsdGVkX18DvogDDXwfJ9O8c9xxcocpr1BKC1r3ZTi/xFuOfc539AWeUj9+AVx1vL0vSTB+6OGaGO2t/g10x3Jp2o9r2fVh88MI/CPyjkHKJUc0dSEaz8q/OEDzqI40rL6DrhJ2OoOMLUYL9+qRBQRdsMLKhdzK3BWgjy/FlIALXxJk1n9d+UbC6zofWpwmGzwjTuUZbDltzg+a8mF+ZR32f5UacZYThMWdigoorC0Orh9+h5gvgNPQr5lXpK+Lqa47A6SwLPrK4WX/e99Bm8i/ojMC350SwdbSMZStEw8ymGGIYIbfUMCaSVF5JGLSGEw1O6cSR80brzS7NuY6vGJqyvG8IJJASCEiyrJUqidSI7fc7r8KSgYepBcX3YrHHRJELJo3+S+9eUoVFflRnXtXS9RC2pVhKXZ8vPWBkWiGKbkSTNw52j/jV5M2jX3xwOiRuVsIutdll+JZFRKeaP7PYnW3p/mbz14JqiUGuMEJsvumQ50pQSu1Wl/rxRqZ2iIdXoXEbNVnAw57jR0l6Db/tQr3PkrjoLoSc7mJCAI4Klj/SPx2JTPAE4R8RTeTnVuaf7c0jFntBs0STZgf1eiw/mB8lmbvZfpoC+ARE7Sebjw8+ndfnTEuKG3XhqGdxyBum3j0+pY2eztFJ+GdNpQfFF6fGbcT32TwMfix2SmHWwo/Dm7Lai7M5vVSJXdWTEf8ATTxBpdntr7lORl432CKuTKxLivsV0fSGD8svNdNu1vlpSxbuXoabrdEGd6ZByHp/3nX2rEy0D734fkKJZIBs4PdBrOsm2lDQTLCQjQIdbkINCyk7fXv3H3oitc8LV6hnLztz65MKFu1MpDIC6xB/Le5dRT03OYyZtQ9XPsbjrvzXbMy0LuDm2dMM317P0L8qja8Sgb12rpx+aZiMQ1IdalkajHS8bkCiap6m/2hmKsZDmeGO4s3/CkTJim4iEOe+Izgxq2z5IAe41m
+ cowTwIv+
+ Uq7M4Hc0MK/tlG+OsSISd1F01T7RT542l9H5Q+2PJ+rPcj6Xa+xmqyouMyD7+yXlkMymzZ47pEmhUHCeyZDUv4ukLdlUeaTak/CVLs0h4y7wfQ5JSzqvjVZ9sH6vWMBS7WEEXzLE+/T20GN3ahwNeWD+8fXs3TsDB0c7xs6mc6DITdLUT50CAweM3gqMDJIxNmmcU3zHq57feN5AaofI8AX3VRYdi4RGvzXtf9MhGUAsDnqCIY7K8pVnL/HOTXWsr/nV020QJmnairW2x+Lehf4lVorIXyzkjXnzFxhPyIOpOBaZJzBApdBmyfKk8pJmfDXgCkjtKtsnV+1tQW7lyzNKIs7BS/Mh9COLpj0oMFVrZthHQx7E/Wp/lm8IF9om20MmLL4mNDVSbtDSe0eRWs8dl9tX6EcuhWiGVyvCCI2DendF/aTYRPbG+y/cuvG5GfFMte4BVI9kpARawdYrruHpf2FDMlmjCH8Gt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,46 +126,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is version 2 of switching the THP shrinker to list_lru. I fixed
-the lockdep splat Usama had called out - with explicit rcu_read_lock()
-annotation based on list feedback (thanks!). I also split out the
-list_lru prep bits, per Dave's request, to make review a bit easier.
+skip_empty is only for the shrinker to abort and skip a list that's
+empty or whose cgroup is being deleted.
 
-I was initially looking at mm/shrinker.c and the scalability issues
-resulting from shrinker_alloc -> for_each_nid -> for_each_memcg. In
-the process of working on that, though, the open-coded THP shrinker
-queue started getting in the way. Switching it to list_lru seemed like
-a good bugfix and cleanup (9 files changed, 140 insertions(+), 300
-deletions(-)) in its own right, so here goes.
+For list additions and deletions, the cgroup hierarchy is walked
+upwards until a valid list_lru head is found, or it will fall back to
+the node list. Acquiring the lock won't fail. Remove the NULL checks
+in those callers.
 
-Patches 1-4 are cleanups and small refactors in list_lru code. They're
-basically independent, but make the THP shrinker conversion easier.
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/list_lru.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Patch 5 extends the list_lru API to allow the caller to control the
-locking scope. The THP shrinker has private state it needs to keep
-synchronized with the LRU state.
-
-Patch 6 extends the list_lru API with a convenience helper to do
-list_lru head allocation (memcg_list_lru_alloc) when coming from a
-folio. Anon THPs are instantiated in several places, and with the
-folio reparenting patches pending, folio_memcg() access is now a more
-delicate dance. This avoids having to replicate that dance everywhere.
-
-Patch 7 finally switches the deferred_split_queue to list_lru.
-
-Based on mm-unstable.
-
- include/linux/huge_mm.h    |   6 +-
- include/linux/list_lru.h   |  46 ++++++
- include/linux/memcontrol.h |   4 -
- include/linux/mmzone.h     |  12 --
- mm/huge_memory.c           | 330 +++++++++++++------------------------------
- mm/internal.h              |   2 +-
- mm/khugepaged.c            |   7 +
- mm/list_lru.c              | 193 ++++++++++++++++---------
- mm/memcontrol.c            |  12 +-
- mm/memory.c                |  52 ++++---
- mm/mm_init.c               |  15 --
- 11 files changed, 309 insertions(+), 370 deletions(-)
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 26463ae29c64..d96fd50fc9af 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -165,8 +165,6 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+ 	struct list_lru_one *l;
+ 
+ 	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
+-	if (!l)
+-		return false;
+ 	if (list_empty(item)) {
+ 		list_add_tail(item, &l->list);
+ 		/* Set shrinker bit if the first element was added */
+@@ -203,9 +201,8 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
+ {
+ 	struct list_lru_node *nlru = &lru->node[nid];
+ 	struct list_lru_one *l;
++
+ 	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
+-	if (!l)
+-		return false;
+ 	if (!list_empty(item)) {
+ 		list_del_init(item);
+ 		l->nr_items--;
+-- 
+2.53.0
 
 
