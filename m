@@ -4,152 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6328C106ACE6
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C358D106ACE7
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9E6B6B009E; Thu, 12 Mar 2026 16:05:29 -0400 (EDT)
+	id 0AA4E6B009D; Thu, 12 Mar 2026 16:08:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A451C6B009F; Thu, 12 Mar 2026 16:05:29 -0400 (EDT)
+	id 061B76B009F; Thu, 12 Mar 2026 16:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91CA36B00A0; Thu, 12 Mar 2026 16:05:29 -0400 (EDT)
+	id EA32D6B00A0; Thu, 12 Mar 2026 16:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 81B256B009E
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:05:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A6F316040C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:05:29 +0000 (UTC)
-X-FDA: 84538490778.27.AF9BAEF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 51D682000D
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:05:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nE67XPBA;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773345927;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D9F1E6B009D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:08:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9AE5C160440
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:08:43 +0000 (UTC)
+X-FDA: 84538498926.08.4701F53
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9AA1A18000B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:08:41 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="eF/t88l8";
+	spf=pass (imf16.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773346121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KA5HScsMOG5+qL/gVHwDXuFS2tHhQoAAnfb+lrfoqY4=;
-	b=RHpriyDOA9KZ4DMFJ7LBaPt8kNJyiCkYn/BnBpVqfVhl3kejEBvm/mRBRMIgAa9gkKqPzs
-	c2snVlQO/PkTL5Aefu3eSNShqyBOUIw5tlhAsEIouiMb9ymmBhPrMrGi+pdGJPPdBSiNqb
-	CPDIeKnKrBFoj3jLCvtjdSrH3DBTd6Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773345927; a=rsa-sha256;
-	cv=none;
-	b=s4WDkeLrkBhuORCOgYbsR5/hUGgHdDhwDJwO0l3dCNNDcO2fRQdyUzb2hgu5JJaWHxAlFV
-	5mq/3K4p8iwqYtCeTaExvMv/9T1Qm5N01LlmspCPAzePCR9QtF/T1Zw++5fyTPDGaST2r2
-	qtgqqqCNZERgh+8lU5c3+lvKO5h+ccw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nE67XPBA;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AC064382A;
-	Thu, 12 Mar 2026 20:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C30CC4CEF7;
-	Thu, 12 Mar 2026 20:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773345926;
-	bh=TKrYFGOjRsvMAxAukqQ/oXF7qrP1ca6vGO7fAHdp7ZI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nE67XPBA7vjZW0whcqJr6w1GSmX9V6Ku9FUqgFH00BwXvNGmdQMnHvvoKpEh4r5r/
-	 X9hObAopEkZBinjHsbBEq0jcDIEpkQMRSapqZlUrgtrjBz0s8mqbqQSFdzlI91qp4/
-	 W7yxa2aQWPeUacEmmTgqKlUrnvK8mD7CkZoURXMymRGo90IKwD88CbbuzqFB2LYquY
-	 0a8c56YQKwT0iPEGFIqOEq/f0GwpzCNpIcIAEMHDjKzCgtMO3OliI56LI6o1Ynnqop
-	 8yjiBbnHCAEZ8VbWToSgcLqQ6KDvW0l0vQXWLSP3jDx9NH14XzHlBD91PobwzILqTi
-	 0v84HgsT52z0Q==
-Message-ID: <e4378d7d-2425-4cb9-b863-5a4cd1b85d83@kernel.org>
-Date: Thu, 12 Mar 2026 21:05:06 +0100
+	bh=vI+2f0BK18gOdclBPROWIuuyekk+4frl3myDaAZuGkk=;
+	b=m61H/GvLvtczxKXblmz7TH2AcogOdXWiGHSUXbPiPK+4SpnLqHRlsuz+xQz9k+dVObxl8+
+	6MLRU0YPzOunye3gK5M7PG7cX6ybqOytFKJEIOzYmulOjTObHf6IsTulVjWSAC3aJ1Ke2k
+	omm1VIv1zJJLL6u9A68X6UhEETl0uJI=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="eF/t88l8";
+	spf=pass (imf16.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773346121; a=rsa-sha256;
+	cv=pass;
+	b=qezoHZFZYOuQrHeZtDU5LSNmBw0/iioytLfPMfafIuTm43vVDegMwf0dTsEve12UwaiLJE
+	N+71GTi9TwaJJEFFTKPMVW1Zsppc/o2nF8avcICYBFW4l/utdf5kGiDRuheElGS25wLUrS
+	258CsotGBcyxj0+eqWq5KbtY3cc2Jkc=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8cd79e43da3so146605285a.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:08:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773346121; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Y8tVDf0nOQoSXK45D+JsVEHjYAJiil+xMj/OLCQnKHyiaA8ifGnsTOwr6EfBF7vDd0
+         BSq+vg5FZcVDyZs1dt9Me2eerRUqwqDSndb45UnVcU9OuC557/qfhkEe+iTkwopxzWrc
+         ABlSD1AD+zpyPJXxyl4t+TEWOYEXV1Jfd7Tn+v2NfO4BflnIZ7l+x6+jg2xqhJ9KiwAM
+         +pvCfos9pfxaiOyQzGqTYAzwh+DjL0IkqWYWfKwzUNPGwQX3/+T5HsgHxTdZ9GBOrMak
+         QhBfLqPZO+XJA03XvUIOnCpS2dGiTugzSUV8gu6bMv3NKkfWCvHCdnGmzrQ+AFr+ZFoG
+         sGjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vI+2f0BK18gOdclBPROWIuuyekk+4frl3myDaAZuGkk=;
+        fh=N9Zg3O40RinlG/uVanLOlmFpCSoO/Gqi1cIOglADxWU=;
+        b=YoCiNcQjXSYXZbJZ+ZG+gaGWqm6phzGVq3uQ6BOjtijNZf2b8pON9SwWoEIfGmRl61
+         200qNKq8J7F5wA2CCaeOSh6fDQJw/9kJtYjOLLXipkZrqoPprc8ZKnwTcMy3FuWgIMC6
+         odTyePJRJY/CLQPMFsEqahtODGwFalZoV80QbjQkyxx/prfK1pvLqREobwOUYAxpo5DV
+         vvmMm8FLwPFEkahdH9UyKYfDLF07wMftVkmXaqOqJqi/ZDw7pyVocp3um/qi5m+Z4S6I
+         7fPf24sRn8cnJXx8ydvdDohwBTk7TaRQsTgRK2RWorIlq4BwWxTveQUB6eKs94UqF87D
+         HirA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773346121; x=1773950921; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vI+2f0BK18gOdclBPROWIuuyekk+4frl3myDaAZuGkk=;
+        b=eF/t88l8a+o1ZnssIAV6TmyFF0invcOMrPlZ6N10/mlfbEzghxSoREI3/3JBlxZP0Y
+         FjL/3MG/cfmAEuekN7A6FdiplOOX2TZskke1qLnFgJw6aGMSU0y2oWVFIBCxmqttuU8U
+         n9VL6t68ROEGKHu7erJMVhRu/tERrmjg/po1c3Ow6GTOawbdy+YbJBzdJCPk+oBEFOcT
+         wkCkEe00R5/gxb7HyKhInh4LJMnTiOW+pA18uqQgU2lK9NxTbXkVs44WTnoS1bCo/T6R
+         EegpKtLiwiDj2qvUxlzBcYLe2krfj0wsK0JDmUQZsFuzACvpzULxxMW5oDd0ayVE6g+O
+         Q+0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773346121; x=1773950921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vI+2f0BK18gOdclBPROWIuuyekk+4frl3myDaAZuGkk=;
+        b=BtI27r3ne5ngxMJDYMeG8QANUpXlF0VB5vK/S1noIO2emhAKq7FsmS+oHd22CR2vmR
+         F/tMUSUyxSMBVVWrc9AHwuVcs6sZllknF+7TjgeiIIzyaFTO43BPSKd/lxjP5MCbPaKx
+         6BECcnGHBPcwT3Qdpo06qxDTJIdfFf+NenMS3pmi7HLda9EF+8FC4g/uvg4v97Kqof2s
+         ad+2vPVe9nUssX0FzzxnYB90zpaseW1omaleebxNq6q/Toxj53Ml2N2xSY71P+S9lAFh
+         huAQvep8c1Rqo0NDukEADZt16K+1aSx05tGMG0T8f1vSSl3TPUFZadeBmT5s/KWrh4Lz
+         ayDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYZOZR7+Bv2pv/vj8j276fXMCTOL6N37IgSatlXbDXoO9DO2g8BGSdlFGbAGlaGd+UUo+hikQGkQ==@kvack.org
+X-Gm-Message-State: AOJu0YxTRSpqd3dvpyuHNvjDUGUMFs+1QikiDaz1zHI+4lR7l43pAliJ
+	f6l+StyA8GasCJe3laZRILrUp1NdFs45Uf8bWQ7wg+gZ16ijl2fiy9NP8zCKrledmUXw6SU+sWp
+	3ujKWeySAWpS8BKd0vDDs4XXbc/AmnjE=
+X-Gm-Gg: ATEYQzznyKh2IgOFEOVbCnaysGfIYTXAcw8xWYAZMPvMpIs8M2ifYCxRQkni1DrFDQk
+	HKe/DCs1cdMf1DMIMbzxRP0iln0X6i3wQEBP0KNA4WkVxzHXX2DaXCWTvyDcTtJW0w8auap0Es8
+	TkW+GDlJx3y7hfGnoqzP8xvYsxV+YvyT3V3OjUG55numf6RXjbHiLQLv5VKFeZzj5O0mnBioLux
+	fqhTdcEZvCBpOq34HRZf3IZBis11NeqoHqbDghFtl5LFmKzX8xvXJd54BJN6divL1WIk+6wR0c/
+	j43iNg==
+X-Received: by 2002:a05:620a:6cc2:b0:8cd:b4e8:5288 with SMTP id
+ af79cd13be357-8cdb5a5a948mr144533485a.23.1773346120360; Thu, 12 Mar 2026
+ 13:08:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v15 02/13] mm/khugepaged: generalize
- alloc_charge_folio()
-To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260226031741.230674-1-npache@redhat.com>
- <20260226032326.232770-1-npache@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260226032326.232770-1-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wcahxkeb3k8rtbmtouehu5trdx6gpt7e
+References: <20260311-b4-switch-mglru-v2-v2-0-080cb9321463@gmail.com>
+ <20260311-b4-switch-mglru-v2-v2-1-080cb9321463@gmail.com> <CAGsJ_4xxXD68pHfsEf2=AygDDbp8+hEJm3KQL9WCPr6xfjtMng@mail.gmail.com>
+ <CAGQVrL9AmqOeGa4Ovv6v-0qdy_+4MeupEeU_HQ=-YWm5wRV_ag@mail.gmail.com>
+In-Reply-To: <CAGQVrL9AmqOeGa4Ovv6v-0qdy_+4MeupEeU_HQ=-YWm5wRV_ag@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 13 Mar 2026 04:08:29 +0800
+X-Gm-Features: AaiRm50gJZ50RmmnBF6i8e_M0hLXKg_vyYw6XbMmx19yl-sbVO9fFyYsbEvgM2c
+Message-ID: <CAGsJ_4zeEpdGmDLKb8Z1NP7q+o2uqvzb1-u1oXZ8SaqOw_CJkg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: Leno Hou <lenohou@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Jialing Wang <wjl.linux@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9AA1A18000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: uyajtbmc3hzj55b8t999gwczh834xwrr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51D682000D
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773345927-679234
-X-HE-Meta: U2FsdGVkX18NF+0cv1txg2jWV/CPijZKRbm4gDbDKRO4eVFz/pWMY3J2lr7L1c8zc6mBCpFnno1P87wfvHd8v9g4g09WWC4S44pFxVttwqR4/sfYrrNforcUVlVVV2dx8vmflQVBaEzTFt5WDg9P9VacjGE4odSzwDGa42yZCMPwS3GQb87j4lc/x+2ULEIbfC+1LoQKVXrLxqdm5D/NX4F6qSGDCehGLqkX5tIjH4XXeu36fe6JW9MjL1gmAj/dScmGa0TuOLO9mFVFyq4tIbqWL6QH95RCGhIA4rVlKtpXuntOmu4B7V1ZHGn9dTH4biMzf8uVUyXbxaLi0KxMZNHQkrfaeieKj+rl4AgmyI0gL9TjO+VoFSgSm2cqhqXKfOHOnFLAmk5GVAg6MLBn2J/tUKsKAZy2ZThKVTa0B/rcc92f+2C0cRi+jk0MbWaRZrQPbIyNR5n1ebUqGHSKVJgpC9yswuAtReEJb2+qyTyWgaTWDb21jcaZLdDRGOzbqDZLxdFyzMaLIIauh58GsndAPkt+oCrbIZPEvn27tRj0oSFoUDJEGTHb/H5N5UWEHRMlVqe0+2OJFDBjK2wQKg3LO/JtTZyPK37VOaJiu87vDmZ4TlaRsXEeRbaoRTW++jf8wri0lgBaHe8mNtDd/Ok1LUjIlLpLoK9gupoGEQxhB6HuFOOTw2jl//8eFmRcuHNXW78LHHL/l1bh66xWfcve2vV0AqRpyufMOh8lrkdHzaGMwPatXC+ExnUN15sKzH/Ir4VsRvjZXTON9QbAfSYpbaB+bZkxAyPy0/a1cuhgBEH3pgN2ygQ/zKFHWLRzf+4LOxcUmsuK1HuG4rS1Gfqym743mr0WmY7AcB2bGu6g8yVJwdkJ4EfZalgQMXljjtogNVOXPl39AHw4sTY0lyPb/R/+SLIbkZ/s4NqS2FcDtKt9A8fALS9cVAxL1tC6RazqdRgXve+ZtzpIxI/
- zOrdcsAQ
- tFRJ9BDXBPvTJywYvd6M/4bKbvMcEvdHQXhB5T8ePhxyFLsgmd8z3vtO27eHY/BKsHzNbqrcstnysTuAFBggJ5BtSHeOJ0J9mMU9yWNhLlb3orXScXBLvmtuHjwm0+86g/tRHsxI34vkUQYle4t5LREH3arBBbvBfpHkS2u5gg71RaeoxFvQ+y/Asz3QcDAhBICssRnV/XImO5D3GqD+xX3OnVAyqbiRkGGAz90ntLTWBxmernCbXR5r+q1tBt3d0CJ5wrYmL+zNZXXkPTNsFjHUV9yxpnxYNRQ1P5+iXLNNPNCxQNUwnjbJ3ZCmrnTOXAYKg5swLLguwKZAjUCSEZz0R6Ze0agOWaKk+yhGhEt+6d/ZUOMDQSV0MU8JqGFXr8euRd1YzQjTUYZdxrn+HrdXeZrFm+s/ip0ZPgDpaJd4JLLZoViTcGTNyB4VEBRWitMonM3cH9kHOtmWTYfmy/tOrTweX3P31U+xzqVfoZwXmGwQ/aKjYSDt/uxGhMeZ2PO4epeP2o/F/hTudUc5AbueDKeFYcUVSXNO2zF9J2PV8Ll9OHK0QtsnMyBx2I0UHsHgW
+X-HE-Tag: 1773346121-941207
+X-HE-Meta: U2FsdGVkX1+Frhu6COwa9lc+8nayeZO3Oipv0FH9jXaVmV+xdupNUYveGirSXIEsuR3p4CDqevzwUsXzl+0V7J6ZNlgdG8fX5hgcJsY9ZqtiW9HdYxLSYJlqRpA2BdR0w3uMhhZsm+b6q+oRwKIaSj5ByBomu63hTbfN8AufPB0oGBIziwgLTlU05O1L1bWkAyiAMtbMe0Gzn4UZFFi3r/7DjqthdDdJEk4l7AvzMId+BYBOyKgvkJWJxfQaCS46JFiZwC7v1cganeedr155bVXYvpJ4gFQYJvWfKTNl+N2w1TxaBy7EHq7oc6uWdFmyrG2Mzo42IgFg9uFuenJwp1Ku1GdzbE0HOIylg8z/7ezaPsRWa4LD/AR6w/hl5mNWjP8yHNY42Y7nygQ2sLLQG8YcHdfg4zvqNAunpH+D8P0QW2QgoSPp174VEdRTzl+qUy/+V7tUMMJG5FLCyXRV/65DcSFh0few+AgXoTniEsBpXsR19UysHQBm8bdMEbkd/9Xfy99Z/YepzZVUeP9VSK/XTxsoKQULcxh0D6dSSS/xWhEnXEIYHJPm2wo6s04JO0o1/Y2+DQQ1cwq9cJviIaBu150kWve0BEET55Ul4K2mh4GJfGz/o8OV+oWG5WtfkUYrSmb6MMLu3p6pPMDfeD2YKd4RHDvePOJ7jZulhsBsl2WnPrOo/AFSXG1pnlkqs/h3zzUOFelOrUQKjBKx0XKIyBQ63MvJYScnnpMnSZKN8cjhHcG34qaGHJ9kAlrbsbnIk62w7bjDa01QjJiadxdziGeC1vLBN37EXd8qAAdKL+LMLF2l9dGipHaaUQTpc3luomY5M98S82I6e+h6KHAHAa1zGnDyX6efUffsjTVOmetsrkjTq5z7ttGz36sFvLf83LvFec5LH3b0IEb5vW0vCwWOsfMFzQWsY4kJttwQEMcdy+Z4vPkq2gFGKcn/jGbiJYA/ZFshi1/r+9c
+ onqwn2D0
+ fdmlpuCJdJNhnlgM6NBFRJEDgLSl+5e4euEZuTBluhyDhs0H2r+B8RK3eth4Hg2USfpORZ0nvOAXdQyxPBeor5DgY+U2I9JPTehRrjAHujPMM4aNFMdPlovGROLsr7AApTBq9oYB4kVuGU19hEjkFxeN0a6X5fmliAZkIxqmFwyghkZ3pzDek7A8KtVg9rFXXB1eo0to6qgFrn4MSPphURwQC4HIJj4vwKzkas5I8LR7A58f4TBlyf7kJEjgsnfMCw1JLbfjC4Wiu7rOA3IxDWztU7bewHmAWgplFBMS4SEMz5GU7PTQEdCZmfWMKS4fww5yJERow/Vx7XFup12HlmhHEVCNaBGaPlzAn2p2Os0RwnvBLI0rFODh2noJUBJ5oPh9yufP+YWxF2D0p5hyLt/iueelcC3xduB+WvsuvDwmSOwkZ3xwp8uvx7Kl1v976AhXjPFwLpMRmn4TE3cnD1YBBfXN88mVqw2u+qkJ7OVkRZ4JrKXoHnBEF34SlkPxp8Y+e4FspGOfTJMLZXuDVTz82pYL8eGNBngJyphtqQXzUlAxf3umqM/NAgeCraCaJ3MJWBwlabLD2cG4vGMXjgoSC6lZ09BWWnTbF3K5Qxjp3noFSJnPqXaBsiOnNkCaR2xgumB5bm6GIJn8gGOz1Uq7SNFs24IMAPiK22cXx+QP0boQiqMq/+epkAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,25 +143,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/26/26 04:23, Nico Pache wrote:
-> From: Dev Jain <dev.jain@arm.com>
-> 
-> Pass order to alloc_charge_folio() and update mTHP statistics.
-> 
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Co-developed-by: Nico Pache <npache@redhat.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
+On Fri, Mar 13, 2026 at 12:44=E2=80=AFAM Leno Hou <lenohou@gmail.com> wrote=
+:
+>
+> On 3/12/26 2:02 PM, Barry Song wrote:
+> [...]
+> >> This effectively eliminates the race window that previously triggered =
+OOMs
+> >> under high memory pressure.
+> >
+> > I don't think this eliminates the race window, but it does reduce it.
+> > There is nothing preventing the draining state from changing while
+> > you are shrinking.
+> >
+> Hi Barry=EF=BC=8C
+>
+> You raise a valid point about the race window.
+>
+> While the window exists, I believe the impact is effectively mitigated by
+> The reclaim retry mechanism: Even if the reclaimer makes a suboptimal pat=
+h
+>  decision due to the race,  the kernel's reclaim loop (in do_try_to_free_=
+pages)
+> provides multiple retries. If the first pass fails to reclaim  memory
+> due to the
+> race or an inconsistent state, the subsequent retry will observe the upda=
+ted
+> draining state and correctly direct the scan to the appropriate LRU lists=
+.
+>
+> Anyway=EF=BC=8Cthanks correct me and i'll updating the commit message.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I=E2=80=99m fine with this race condition as long as it is clearly document=
+ed
+in the commit message.
 
--- 
-Cheers,
+>
+> >>
+> >> The issue was consistently reproduced on v6.1.157 and v6.18.3 using
+> >> a high-pressure memory cgroup (v1) environment.
+> >>
+> >> To: Andrew Morton <akpm@linux-foundation.org>
+> >> To: Axel Rasmussen <axelrasmussen@google.com>
+> >> To: Yuanchu Xie <yuanchu@google.com>
+> >> To: Wei Xu <weixugc@google.com>
+> >> To: Barry Song <21cnbao@gmail.com>
+> >> To: Jialing Wang <wjl.linux@gmail.com>
+> >> To: Yafang Shao <laoar.shao@gmail.com>
+> >> To: Yu Zhao <yuzhao@google.com>
+> >> To: Kairui Song <ryncsn@gmail.com>
+> >> To: Bingfang Guo <bfguo@icloud.com>
+> >> Cc: linux-mm@kvack.org
+> >> Cc: linux-kernel@vger.kernel.org
+> >> Signed-off-by: Leno Hou <lenohou@gmail.com>
+> >> ---
+> >>   include/linux/mm_inline.h |  5 +++++
+> >>   mm/rmap.c                 |  2 +-
+> >>   mm/swap.c                 | 14 ++++++++------
+> >>   mm/vmscan.c               | 49 +++++++++++++++++++++++++++++++++++++=
++---------
+> >>   4 files changed, 54 insertions(+), 16 deletions(-)
+> >>
+> >> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> >> index fa2d6ba811b5..e6443e22bf67 100644
+> >> --- a/include/linux/mm_inline.h
+> >> +++ b/include/linux/mm_inline.h
+> >> @@ -321,6 +321,11 @@ static inline bool lru_gen_in_fault(void)
+> >>          return false;
+> >>   }
+> >>
+> >> +static inline int folio_lru_gen(const struct folio *folio)
+> >> +{
+> >> +       return -1;
+> >> +}
+> >> +
+> >>   static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct f=
+olio *folio, bool reclaiming)
+> >>   {
+> >>          return false;
+> >> diff --git a/mm/rmap.c b/mm/rmap.c
+> >> index 0f00570d1b9e..488bcdca65ed 100644
+> >> --- a/mm/rmap.c
+> >> +++ b/mm/rmap.c
+> >> @@ -958,7 +958,7 @@ static bool folio_referenced_one(struct folio *fol=
+io,
+> >>                          return false;
+> >>                  }
+> >>
+> >> -               if (lru_gen_enabled() && pvmw.pte) {
+> >> +               if ((folio_lru_gen(folio) !=3D -1) && pvmw.pte) {
+> >
+> > I am not quite sure if a folio's gen is set to -1 when it is isolated
+> > from MGLRU for reclamation. If so, I don't think this would work.
+> >
+>
+> Thanks for your feedback. You are absolutely right=E2=80=94relying solely=
+ on
+> folio_lru_gen(folio) !=3D -1 is insufficient because the generation tag
+> is cleared during isolation in lru_gen_del_folio().
+>
+> In the current implementation, once a page is isolated, its generation
+> information is lost, causing the logic to fall back to the traditional LR=
+U
+> path prematurely.
+>
+> To address this, I am changing the logic to:
+> ```c
+> @@ -966,7 +966,7 @@ static bool folio_referenced_one(struct folio *folio,
+>                         nr =3D folio_pte_batch(folio, pvmw.pte, pteval, m=
+ax_nr);
+>                 }
+>
+> -               if (lru_gen_enabled() && pvmw.pte) {
+> +               if (lru_gen_enabled() && !lru_gen_draining() && pvmw.pte)=
+ {
+>                         if (lru_gen_look_around(&pvmw, nr))
+>                                 referenced++;
+>                 } else if (pvmw.pte) {
+> ```
+> The rationale is that lru_gen_look_around() is an MGLRU-specific optimiza=
+tion
+> that promotes pages based on generation aging. During the draining
+> transition, we should strictly rely on traditional RMAP-based reference
+> auditing to ensure that pages are correctly migrated to traditional LRU
+> lists without being spuriously promoted by MGLRU logic. This avoids
+> mixing MGLRU's generation-based promotion with traditional LRU's 'active'
+> status, preventing potential reclaim state inconsistencies during the
+> transition period."
 
-David
+Right, using folio_lru_gen(folio) !=3D -1 is dangerous because it
+implicitly depends on whether the folio is still on the LRU list.
+Even if we never switch between MGLRU and the active/inactive LRU,
+the check can become invalid once the folio is removed from the LRU
+for various reasons=E2=80=94for example, during isolate_folio().
+
+So if possible, we should identify the real issue that led us to rely
+on folio_lru_gen(folio) !=3D -1 in the first place, and avoid inventing
+this kind of unstable condition check.
+
+Please DO NOT depend on folio_lru_gen(folio) !=3D -1. If it is
+unavoidable, limit its use to the smallest scope possible.
+
+Thanks
+Barry
 
