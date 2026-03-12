@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 455E2105A59B
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 13:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843BF105A596
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 13:15:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8025E6B0098; Thu, 12 Mar 2026 09:15:02 -0400 (EDT)
+	id C836E6B0099; Thu, 12 Mar 2026 09:15:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DA026B0099; Thu, 12 Mar 2026 09:15:02 -0400 (EDT)
+	id C5F016B009B; Thu, 12 Mar 2026 09:15:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D85F6B009B; Thu, 12 Mar 2026 09:15:02 -0400 (EDT)
+	id AE4AC6B009D; Thu, 12 Mar 2026 09:15:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 54E7A6B0098
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:15:02 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 056101B6E6B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AD636B0099
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:15:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E4138A592
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:15:04 +0000 (UTC)
+X-FDA: 84537456528.19.88CA2FB
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AC873C000A
 	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:15:02 +0000 (UTC)
-X-FDA: 84537456444.17.9BDE865
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3EC5740005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:14:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=T+f6+AIK;
-	spf=pass (imf12.hostedemail.com: domain of 3UryyaQYKCOkSXLkfcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--hmazur.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3UryyaQYKCOkSXLkfcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--hmazur.bounces.google.com;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GEUlsQap;
+	spf=pass (imf10.hostedemail.com: domain of 3VbyyaQYKCOwVaOnifUccUZS.QcaZWbil-aaYjOQY.cfU@flex--hmazur.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3VbyyaQYKCOwVaOnifUccUZS.QcaZWbil-aaYjOQY.cfU@flex--hmazur.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773321300;
+	s=arc-20220608; t=1773321302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dWSTF95QRNDxT+WTc7E7E1G9atdgc+PIwxyOxtBYOHY=;
-	b=cL5Dh+k7SqVwnCPH3SBUZWNP5UUeoKHjUaFvhmA71HDUX0dk0zdg2gbRleRsugnkXhx0zW
-	wvsnpuWeH3dC7m0Dcqg+BTGKK03DVPiiOJjka1rBq7uKhzvXWKqv0FukpmLUhXyMmoBJar
-	tGaWez596o0mWA2UQJhigf6eX/fT2QM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773321300; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IsWJwxKJY/UUzozHqxJ3RR8tHHBCBI46iF/uMypPY4E=;
+	b=nLFktErhJ30HZ87L+a6XGQ0Qy+kaM0j1b20GvgHe/32GjqYgBeHaqGCodrJwfSc80AcPWS
+	MajYZmtun1/8N0gblqJnO4xxHDIpjK4TKu179knLSi+jbAd9babVPXmrgBwHOXY/ypkhTA
+	JYHz+qEAwMVhNcDfpuTEkucdtUp+SHY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773321302; a=rsa-sha256;
 	cv=none;
-	b=fuiizlI13zs+9QIYmaNzSGMvVPc90hEfK7lDBo8/MEcs/3d+hf1cxoiTgNqYZAvlq4FPLD
-	60BuA9EEfNpuwwp00yMNF30eLefjOwcNNOHrSya/oBQ8ZnOhOUnQjxTlyKwoaBb3Wxzn78
-	mH7109N//zJu9Q2vgpAgsYey2YtwZT4=
+	b=adNce/qfszNUGJ0iNMHphLQ8b8zbuMChs/vl7D2xvZq1B2XO81e0ziP0N1LBMfNsQhU/5c
+	5dj4wFx47/zwlg+5VjchTjNPnHmBmi7cMS7Zb131AsgGIz5DBfXSVCQTFQOqeFyEhIBIFB
+	Hh8YU8dVOKiffHJ1NYcTG0l0cJjPBds=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=T+f6+AIK;
-	spf=pass (imf12.hostedemail.com: domain of 3UryyaQYKCOkSXLkfcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--hmazur.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3UryyaQYKCOkSXLkfcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--hmazur.bounces.google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GEUlsQap;
+	spf=pass (imf10.hostedemail.com: domain of 3VbyyaQYKCOwVaOnifUccUZS.QcaZWbil-aaYjOQY.cfU@flex--hmazur.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3VbyyaQYKCOwVaOnifUccUZS.QcaZWbil-aaYjOQY.cfU@flex--hmazur.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853ab1cae0so10363245e9.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 06:14:59 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48542d5aa9eso7245405e9.0
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 06:15:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773321298; x=1773926098; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dWSTF95QRNDxT+WTc7E7E1G9atdgc+PIwxyOxtBYOHY=;
-        b=T+f6+AIKOO9lS2nZhejSKR2W4B7zrj87IgRI5PX3AyxxKZBsocEy00TTu+TqyB8w1e
-         Nl5/s8vzLn7RYgRiWfp2xBZpRBB4dXi5FkMrkvZ668B1DT7CI7XLq5v4e8qpXVn0Qe4X
-         4xoAGc5WmJV1FrGZN8DFC/hCZsK8qAzUUdg8wnXGpg7PtDDszJ/UslQi64xd/eg1dEvw
-         9xkKmyQi/bUJuoY52DgAwBraolrZ2ZbD4TBspaNiIdTL9Jc9hCH9gpP16FEvxPLJWtXU
-         ab1cjVgxPf3Koq+s2pK6RtJsaPJ5u9NuwZROa7WDwNRt/yzMfjG5RqYWt0rkbuuZe+L9
-         KSdw==
+        d=google.com; s=20230601; t=1773321301; x=1773926101; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IsWJwxKJY/UUzozHqxJ3RR8tHHBCBI46iF/uMypPY4E=;
+        b=GEUlsQapKKRkXlvjNjAqOU7Q9urcR4YLb3DLN21C16Y5oyAsZ242eCNTwN8aadGtM9
+         XHNiwFDaat2tqGVMlLWB2Wlgfzsz2Xho95PwPsG1xr7B58lqLRcSR1YoGaIK+HiYuP+V
+         klQ+9B+owdN7XFxxQ5uWcVBmOJxKHmUQYJHRqv2449EL1EDn3BgcFzXtBdiH6A28YuYZ
+         /gbMwblh/XAqf3sc0p16Rv6GKW26PtHut4tY94CH5tjkYSWUWg6ybdpdIYiRxbJDj6v4
+         Ph/tWyuZTQaAvB2vQR2uTLNVG74DzsQ058rcY7N2c09L2daa1QaD3/Zq3/dMRv5jKbpk
+         vEMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773321298; x=1773926098;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dWSTF95QRNDxT+WTc7E7E1G9atdgc+PIwxyOxtBYOHY=;
-        b=bWNDxLhTYvXcmcrecKZKD3jVboNeN9kuFLoHegLGkIsZew3HLPZz6rkZ7AVjLWJWYE
-         79j849xS26m5mSVqVZPeIPQR33arfxhtDoY/E1DmhCx1XWe4M0q6n2cenbOsRMUEMgac
-         ITrKRm+BCN6L4Bj/fVKpNFRhaN1JxMW9Qt5ql5WGAhpV0lp+RF+qfqGqe1GZjSYa5LUK
-         Wd5IKRonMgka3IF7dg15v8Q3YonKHqisYu4DJNCmoQjJMLYxPxg1aSLSb150BWiwcy81
-         RADwIj1LjPGOAofhJAprRIYPm8KStookcPLti3+cupE4MZkhhuuImm3fthHTY9rvW5mA
-         093w==
-X-Forwarded-Encrypted: i=1; AJvYcCVf91HVoC3WmKhPZ/oHhKM0COYUotH0UhyvaVUxJef10ZteaYbYJvcdaMoXa1iTCMe5ovOReHOoiQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx14/iHZ4bK62V2Ia1K5pG33oZPCU7xyhbnCdmQWV+j7E7Bf3of
-	mHsQJNowoutTXRBlxDfNwZu020WRmvIFMXB+XpcCilvnDMDWCgeCfD95suB3otJiloq5Y5anI+C
-	D38444g==
-X-Received: from wmqu11.prod.google.com ([2002:a05:600c:19cb:b0:483:71ce:bfb])
- (user=hmazur job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3511:b0:485:3473:d48b
- with SMTP id 5b1f17b1804b1-4854b139161mr108804515e9.35.1773321298259; Thu, 12
- Mar 2026 06:14:58 -0700 (PDT)
-Date: Thu, 12 Mar 2026 13:14:37 +0000
+        d=1e100.net; s=20230601; t=1773321301; x=1773926101;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IsWJwxKJY/UUzozHqxJ3RR8tHHBCBI46iF/uMypPY4E=;
+        b=Q44PjSVhUGhiFjCo8u0VOT37u8ytY4s5oBAhnSyxqlZX3OnL5PqWtvL4fNNt22CqWQ
+         nojI/XVDyxzWUXc3NM70A2E5L0STHcD2fQCoJj46to8jL5wyO9ZLc9COFqQW5V70MtaI
+         LZqPVCqozD3+VXb81VpuQha0SKw55VJmKip8BKgWcqdJYKRyRgzXtoH4DkjUE2qp1gLk
+         4Rx1SxVkcpQxCBeuJ/OfxiXRD6zO453+0vRB7Xjrz51zYv0YFBGxEePrXTv1JsuJUnBt
+         6TnjeIbXORnbb6AV3ZXo8vK3r/rm23Y4A81Uv6vwH0/mf84pmEBcRTPTw3Ile7f4tSGy
+         sdUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUx2i2mIWB8W+HXMOguwEVOSH+YLbqJhf7R2j8H8DJG3HK3mxPuw6LAr0PqIbhukZ7ejOpKn6vTEQ==@kvack.org
+X-Gm-Message-State: AOJu0YyBVkeK4Gbs+yfEZWK/jLt+U3+RG04hIS6X2hTpMA+3NWEVml0G
+	09+tlZ3115RzMYoiiknsayx2XJQdVwgO3Ed85OkiUrYfSZmgCwVEqCx8ulOUtp1vKB0/p6pdbWb
+	uqFwPtA==
+X-Received: from wmbjp16.prod.google.com ([2002:a05:600c:5590:b0:485:3f41:e111])
+ (user=hmazur job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:458e:b0:485:3ae8:2231
+ with SMTP id 5b1f17b1804b1-4854b11a321mr95492355e9.30.1773321301146; Thu, 12
+ Mar 2026 06:15:01 -0700 (PDT)
+Date: Thu, 12 Mar 2026 13:14:38 +0000
+In-Reply-To: <20260312131438.361746-1-hmazur@google.com>
 Mime-Version: 1.0
+References: <20260312131438.361746-1-hmazur@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260312131438.361746-1-hmazur@google.com>
-Subject: [PATCH v1 0/1] Fix race condition in the memory management system
+Message-ID: <20260312131438.361746-2-hmazur@google.com>
+Subject: [PATCH v1 1/1] mm: fix race condition in the memory management
 From: Hubert Mazur <hmazur@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stanislaw Kardach <skardach@google.com>, 
@@ -92,13 +95,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stanislaw Kardach <skardach
 	Hubert Mazur <hmazur@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3EC5740005
-X-Stat-Signature: 4pq7r5847hhb9xjdr4e88andxt678sib
+X-Rspamd-Queue-Id: AC873C000A
+X-Stat-Signature: bwfz6bx8ehahptqstmj8gjfdc4tej755
 X-Rspam-User: 
-X-HE-Tag: 1773321299-614147
-X-HE-Meta: U2FsdGVkX1/SjZl2gacqop246GfUSUGYuDrHDbMiBLK3Mnpx60i+n2OJ5K4QVQHfkWk+mk1HJcviIdbEwSImlHlII6r6GSyTYAKWrfprbRe4ooycDtbYA6oPeSCBUYZMI3PfayEk1wZnXAExrkkGvFlu/vfQaU1k3iMPs0f9izHDfFyIszgTxaPnpjyVIQTOC4UYWI76EdND1sb5IEHk5e8ml1yVAVkT2iyuzVTjTPQ0/jcQUfcwNkfplmY/ISpojx3FylbEcx1zmykMCrse1PchwuZn4KH1O1/DQIxg8cStjvOO0BM7jzxk5Idfyodhf6cpmBEyrueDSzpzANP9a1nNsfmzdmVDwRelAsIyvss29HZA3UWned0jsFyrLDNjlqg7tNMPkTrvGHhLIQgbqfxD7BxEifMDSwSDgVVI6+bwMoeNC5nhvuGgEgNwq37U/sFBiRhMqwzCgQqXOfnmpLKX1qgdpQ/2IPSxWHc2FFr6WwRCtRTXKn36ykPSfmkbPg0+PXgXj5s8+3rz3ESOK3hNSIasIy1DBYxZgR2YVaJick1Wbux8nauemvIuZz+ykCsrXiv2JQjnVVwS74UDOTmwM6q5JI+BTEQocW4ZkLdv+RC81jMb4gjSOIZ5QdGKb7GAEkNJ3jfD04v27aGnQzrmIHTpXCYBoLDiK/3ClcRzjwkmhfKDhlK+NtaSqwZSmupmOCbqa6MF0dunjm9+piQTxDCw2rVOv9ZGqf1YopZQ/wN9MwVlIicfi+LkE0i+QXOzYLpJ7q9HxdLW/2ac52m4V2ItJ3e8G/mVW6WOYpoJzosAOhWjaMCB2r0MmH0vNEe9tYqEZuZ3zUDVl3cNxucelXYvyl39TSfKGa6UMvbciSKXrmab01QlolIIM2Gda67GfG98GYnb+MRQ3VnO6BHVptwQh8vbsYnANrvs0s+6rSAowDT43oB4XZRBpNXrMfVjQnB3U3mWhNpLwzq
- ad4RNu5z
- MWnTai/4zBPIRl37UJjQpRIDKVG4TWKTIUPWivVu/m+trD/tDyyOw7JW9hS7OPXCLOk9iMdJyivwWcfS114W3B77gyPgZms6FsooQ2uqlyB/zE7h8pkOf34WWeAHVN13AICqOiWzrU6W6szEC5kmeikcqSILGga0NhE8TX2pMu398GbIw9FsyCgJPXlCEzW60rZX9WacFZU8ClUN6CJCx9arpCLXIacn/blBmurMj6GW6FaMF9XXg65jjdCqS5VPX+z/sVDedphayxGzzEPLR9KcwTzue6p/q+VJJAzcPKEG64Lxb2tXHisdIhiXA1QudXiKzQ2cZEqfxSSvgYup8vobk7mtFZ7OjWDZhfrGdidqcvMPZmmUvUGKEPNASR0zfAMiDrqAG5lhwfZrSKSip8agIbTlb4RE8PZil/hhjft088PnMn+Ula2CnCtPg+/seHb5KSIFcQQpJrejXHsnDdRYjZZQ04aaUsHt1Mv55dL70cx6/reYN7FlShRnAQ9s86iNzW9YgHG02bDEfE2yQ14yHbD72rcnLDAYMqtkkVEvn+sA=
+X-HE-Tag: 1773321302-575382
+X-HE-Meta: U2FsdGVkX1+fQB5mSFan6OFzbgb9uC7OYdOtYS2GGffe78/qWY/MmHBJcBhqxTeqjD3BszYa2TU3XvnPBhHEcUO5sgfezGBWTeFZDyiFdkAhkzhw20b9wVGH8HDfHSbTmASw72L5HhZSYBWFjV4P2i3Azeh7QLqG/7YVLBoaqEmz+c7mmah6EpMpdYMPHWWya8k5Y8avqpDGqAcpUWhiqKR3qyALZa0aD7mljsQEVMXW29RayLpieLcDMkex95ElUAMV1gvI6TwqcdQ0aGNsrLXUuoB6VeAG7/US9cNBZ+V8cAOduc/oMBryPQiMt+28vj4OtVE9pY2VkZmy1VlZ9jW13Z+DHoiOHjWi6vmup6baH4iwhVM8Pn3c5KaMZu6mXipwFREvMCnhQwKO46ehxFLLq2V+b2lAoy7WsrEaSbpYe0b59JfKBvUtOf6dx3aHmGmBAwBjqCwEEWubU0TILOaVqEW5DKmnGgA++Cel4aCbrNfAwnNhjrT2pA4cFYl5im5I/Kl9L7K6cQidGMZ6qRe2GJlWIXZH2UA359NM9W0nDki9dge9RhCyvmPpo9C1pZrOnLsGy/mDSoNJs5asv7mz1xVrCrMX8SGJVZWjNGz7eYqUf3gSRcdQSFOs2sSoKUdGMZirNgSlEWLL+bi6/sbI+rOLN8jCAMbSBKh+a+b1Jj1ZsaG5qahLE1V97QoJ5K+UFtH0VJ1h+qPCax1nRkig2WmXMH3LfefTFqyDdztDax6Hmeo+oFTd/5hYJZFcmHCxYxcPFYW1O9T/ZBqWgA184Sqq2puD0HbgyZd5/hvXEdKYYfPWFRYDQBDv4023x5PTYfjAGN24dGL5CxSXh7NB4kZ6oiJ440Izk+/GEIcamspUs987BddRkjjWEnRIO+mthhqeoloXLHex3B/e4UcYDhEpEyJniHQtKDhlyudASTYPe/j19i4oN9IGXOwasn/22hBZkBDv+x5q3+w
+ lN1/kCNO
+ wKAd6HGfH0yWCSaRvzecQcPESNGanXZOLTtu42Lp5EDVYxtY2m7NDUkBPj9fzW5/SU6upABFxLfTf78D9cR8IAEz1xK5RAx2mhs2G3EJhwXXza+U9F+ythmkbuHmrEsNfGo8/wdH1RXHEfOgljVSms9vEGSbzCcmSWWqgeDqVPuZSvMHRSRGWNDEATndry4c7/Byb2GddqzonWhiC6xqmrrDZn5RBw1knS/bFBk2Om+1m/t6RwZIkhXRgvrd6Pon+NhYd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,12 +125,106 @@ pointer to memory. This simplifies the allocation logic since we don't
 firstly extend the free areas just to take it a bit later. In case the
 new memory allocation is required - do it and return to the caller.
 
-Hubert Mazur (1):
-  mm: fix race condition in the memory management
-
+Signed-off-by: Hubert Mazur <hmazur@google.com>
+---
  mm/execmem.c | 36 +++++++++++++++++-------------------
  1 file changed, 17 insertions(+), 19 deletions(-)
 
+diff --git a/mm/execmem.c b/mm/execmem.c
+index 810a4ba9c924..8aa44d19ec73 100644
+--- a/mm/execmem.c
++++ b/mm/execmem.c
+@@ -203,13 +203,6 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
+ 	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
+ }
+ 
+-static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
+-{
+-	guard(mutex)(&execmem_cache.mutex);
+-
+-	return execmem_cache_add_locked(ptr, size, gfp_mask);
+-}
+-
+ static bool within_range(struct execmem_range *range, struct ma_state *mas,
+ 			 size_t size)
+ {
+@@ -225,7 +218,7 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
+ 	return false;
+ }
+ 
+-static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
++static void *__execmem_cache_lookup(struct execmem_range *range, size_t size)
+ {
+ 	struct maple_tree *free_areas = &execmem_cache.free_areas;
+ 	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
+@@ -278,10 +271,12 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+ 	return ptr;
+ }
+ 
+-static int execmem_cache_populate(struct execmem_range *range, size_t size)
++static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+ {
++	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
+ 	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+ 	struct vm_struct *vm;
++	unsigned long addr;
+ 	size_t alloc_size;
+ 	int err = -ENOMEM;
+ 	void *p;
+@@ -294,7 +289,7 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
+ 	}
+ 
+ 	if (!p)
+-		return err;
++		return NULL;
+ 
+ 	vm = find_vm_area(p);
+ 	if (!vm)
+@@ -307,32 +302,35 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
+ 	if (err)
+ 		goto err_free_mem;
+ 
+-	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
++	/* Set new allocation as an already busy fragment */
++	addr = (unsigned long)p;
++	MA_STATE(mas, busy_areas, addr - 1, addr + 1);
++	mas_set_range(&mas, addr, addr+size - 1);
++
++	mutex_lock(&execmem_cache.mutex);
++	err = mas_store_gfp(&mas, (void *)addr, GFP_KERNEL);
++	mutex_unlock(&execmem_cache.mutex);
++
+ 	if (err)
+ 		goto err_reset_direct_map;
+ 
+-	return 0;
++	return p;
+ 
+ err_reset_direct_map:
+ 	execmem_set_direct_map_valid(vm, true);
+ err_free_mem:
+ 	vfree(p);
+-	return err;
++	return NULL;
+ }
+ 
+ static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
+ {
+ 	void *p;
+-	int err;
+ 
+-	p = __execmem_cache_alloc(range, size);
++	p = __execmem_cache_lookup(range, size);
+ 	if (p)
+ 		return p;
+ 
+-	err = execmem_cache_populate(range, size);
+-	if (err)
+-		return NULL;
+-
+ 	return __execmem_cache_alloc(range, size);
+ }
+ 
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
