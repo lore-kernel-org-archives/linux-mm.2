@@ -4,107 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11730106ACEA
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35849106ACEE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 706B16B008C; Thu, 12 Mar 2026 17:23:22 -0400 (EDT)
+	id 4896E6B00B4; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E86F6B0092; Thu, 12 Mar 2026 17:23:22 -0400 (EDT)
+	id 437876B00B5; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EB166B0093; Thu, 12 Mar 2026 17:23:22 -0400 (EDT)
+	id 343356B00B6; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E9406B008C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:23:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E737058D95
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:23:21 +0000 (UTC)
-X-FDA: 84538687002.08.72566F4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4C879180002
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:23:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EYhKsPwq;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 256FA6B00B4
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C775A1A0448
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:42:09 +0000 (UTC)
+X-FDA: 84538734378.17.0FC2F73
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B4DD580009
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:42:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=cw+Tl5i7;
+	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773350600;
+	s=arc-20220608; t=1773351728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HZSrZjttw5gIUDbdiKoMciwBk/FMfdKMYI3liALwtx4=;
-	b=sCBbTFyiZHqTDb9W/3DhvNsTWfpnaz+YYBGUImR/WPsV2vuw8d8C91f1XHJM73z/u3HBKc
-	WMj29MYew4s4KU76jdDY9qKT/2PLiJSbR1ISZbE3L6D4vZvtUSU3ij1xm1Ci4DjRwPE8Yl
-	efzREmluHEV+a1phuuhH1OvofjUCym4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EYhKsPwq;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773350600; a=rsa-sha256;
+	bh=LyceMyfiqLdgt3XmH3cZvfSKhUu32FwkvwXjXF/XZck=;
+	b=Q3oFOC8VrC6rdBwhZB7ztmDsnL4y2vIjJUC2pljQR5/KujimgjW4PKx3Pr/5wmWKAzGi/E
+	/H6zIgOl72ZfmI4EfO78RB1GhGAAXaMY0npVW8o32Aq7pU7fidJDHQzgkmKgQ0M2wXor4I
+	iGYVy7SAEp+WTbGJspSKalMSC3f90VY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773351728; a=rsa-sha256;
 	cv=none;
-	b=iPcbx8g3SVhpcPXbWObL/VA/F5PIBWrRtzMmbMpqrbn3fKn35C001n1iuarPr9NPFEuAfi
-	9wIPBUkiK/dQlTcw3jFqSNv5TzW+9L/U6Zdl72JOHjJUAAaO8pNJsUZX6/Jqj66U/oxG05
-	X6CPyhAnQaJXEaeaUAad0Vj79sbEsnQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C3CDB60053;
-	Thu, 12 Mar 2026 21:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740EDC4CEF7;
-	Thu, 12 Mar 2026 21:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773350599;
-	bh=HZSrZjttw5gIUDbdiKoMciwBk/FMfdKMYI3liALwtx4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EYhKsPwqoBLREVvoZGgMgVZ6fu+bk+U2fKxToofPR2Up6V9uTgSYZfuyjhIb7C3ZE
-	 7oPxkujHeeUdd441hNsgqAm8c7M0uwByLtnOWXAMkXuUFJ05Rb/GBA1Y8B9jmAfc8h
-	 IikXAtFu3AD5I04crV7xx4fJQZ2Bm8TZEbEULr8U=
-Date: Thu, 12 Mar 2026 14:23:14 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, Alexander
- Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen"
- <martin.petersen@oracle.com>, David Howells <dhowells@redhat.com>, Marc
- Dionne <marc.dionne@auristor.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Ryan Roberts
- <ryan.roberts@arm.com>
-Subject: Re: [PATCH 00/15] mm: expand mmap_prepare functionality and usage
-Message-Id: <20260312142314.0f7fc516c0ebaffa6ec9fa7c@linux-foundation.org>
-In-Reply-To: <cover.1773346620.git.ljs@kernel.org>
-References: <cover.1773346620.git.ljs@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=cqhjDz3ICCIgRhyjSFjsf7p3aZSL2ykhVceDRfhpJdjPbcRnGkU6EJ6Yx61hNiasNYsmYD
+	BME0e7Fi8Emz7HNxv/V1vFCdmGZIwSd/VseSuR56lcUWZd0PZRKDgeBLC9pMsGrM1KpbJU
+	KkDmDZJw0E8YD4gO6g1qzaEF8VrHaIo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=cw+Tl5i7;
+	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cd73c4a827so140991085a.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:42:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1773351726; x=1773956526; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LyceMyfiqLdgt3XmH3cZvfSKhUu32FwkvwXjXF/XZck=;
+        b=cw+Tl5i7pTjs0Twu6d4KFWgmYjRkSEEoWjKHWf9GEC8x6R7vEdmgqGOYoZbj/6wmDD
+         2862B5eGHVjC+9xkOLTrwTuEmk8NB/vYqKRZzvHiGEngOvWGPVYWLHGjpR5BgIFtwQDq
+         FKs8rjFkj5vUSz5Ju1nJfYlBTwtu68sO2Vh77FBjRG7/DaNlSYelcQgc7REsLew3YFAr
+         ve4Tm122KVFaLeGsf2kjA3dMTAf9zJboTwKWYAJinW3VY+FVfS99CW6yMvskO4y9aknz
+         8/BSTBYwKAFxKxiyPqvKWMoFm5r68RU54MmfGxzQR6fAJAsAT81f1GCDQMFAul70Wruc
+         CVSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773351726; x=1773956526;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LyceMyfiqLdgt3XmH3cZvfSKhUu32FwkvwXjXF/XZck=;
+        b=OoieHYKCRY3tqntin0SVD0nkejFsv95vA2/KWlLMdENmRCgPueBSIaXpkHDDL1lbZ8
+         eEUJ+ElGNHXioRcDQ+xHe2IcUp/4ZjGvryr6HYQFuUsiGhxxKRtWpjroljvVpHJ9kM2q
+         256V9tjEp+aVFwYBfy8553Ay1VWUqcwUlBUdAUpVxjfmgv4t3KQ+8S1ko28W54OZXUm9
+         ebqf1XMuDZkMVXMWbYMsQvGbpR0P8yD25JFbqyJwOPPyzsUf2sbNSUlDvdxPuclCN5Tz
+         cOvM65QAQ/oPitGCN9g+IGaQBYYfrFAinD7Z+Y1BeOkmnJdPdSmA9fUmfq1MWzygeJZs
+         3Q9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW+NRnECov1mayhVBSVteE7yAyOCyTZYqOBn/D07Zt3OMeN6gX5o2p05zNdq3al+ifityczUHttqw==@kvack.org
+X-Gm-Message-State: AOJu0YzhG3UFA+nWiQA52sCtqnCvrV1iitswNY78MeUTPSOUnjXctnKW
+	yw1Fnn4cRaTzdOTRDpsWoEYThnmlrUd8lqI2Rd3CIJFm5CO4GhQhcsjcYOPXz7HEjM0=
+X-Gm-Gg: ATEYQzxwjV8gFOonFhWa/fAbC1418CF0je75zWM2ZAFRFW8Baj36rKfJRyqE2rfdb0i
+	pEtzbCTrJQJDqFEtS7ynkKg4AuIo7qWfBl/Vtnxk4A6L7JdvyfDz44GjVQk4QIeBZEhCEv1wXe2
+	LRg2lK4MYybcMgV4lcmdp+qgx/FDLUDQPBCPFLhlAIfdAJx+BFC38Ve9aJCs3E1o/a8sjxP1yMJ
+	65kYfg3cCNfVCS9XX5nQgMwIpTaK43SvEZ85edZpVoVIteyrn6SMknWzV4m0U+9AOfYaRKGJFf9
+	NtOjK/9Jlgx4xhBE2u6Uiw+NWJDMNCar0dQBzGDuORCQtYU1inmvKmk7tc/NXfVJYo+TfjJD0Zl
+	WfmYLxHXko7QBFJPfZpLxWZLAQXGQXT4zS+RCBsDjqR0XhLrFXXDlS5RmIrP5PYg/t0pQ4lda1H
+	Vw2lDtiW1nVK00WabbJY6NEQ==
+X-Received: by 2002:a05:620a:269a:b0:8cd:9b31:23b1 with SMTP id af79cd13be357-8cdb5b1b1ebmr170750085a.53.1773351726619;
+        Thu, 12 Mar 2026 14:42:06 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda2151db2sm404907185a.44.2026.03.12.14.42.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 14:42:05 -0700 (PDT)
+Date: Thu, 12 Mar 2026 17:42:01 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <hoangnhat.pham@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 07/11] mm/zsmalloc, zswap: Handle objcg charging and
+ lifetime in zsmalloc
+Message-ID: <abMzKa27khxDLO_D@cmpxchg.org>
+References: <20260311195153.4013476-1-joshua.hahnjy@gmail.com>
+ <20260311195153.4013476-8-joshua.hahnjy@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260311195153.4013476-8-joshua.hahnjy@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B4DD580009
+X-Stat-Signature: 8fm91zntgdrxwop7w94kkk5ntuq4owyn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4C879180002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: qb1zdyzqoaikrnirx5qrd5tw9qtjyk7z
-X-HE-Tag: 1773350600-994441
-X-HE-Meta: U2FsdGVkX19I2eXzRBwgM0rQrVWodtjEY09r6pfbsxPTapecxyqhZJpgySLMajAGvI4ZJuFjE/clPcgt6AjHsk2P7H111oocJqrF24FLPQPjzhuHBZUASsgZ/OfNiqxdWMPqHGJY8YdHdbN7Yv2Sr/JrNic4/0bw838Z6KJ3Eys+tqPDxgPj0qlDQwe5UJ58+4yjFliD3i5CWIxqJJBqEXC4qg7kZ6Voc8ihSpYAeTHc1oFX21MbggnqA/sm9HX09rGLB9PFb6YDv5adu6pkcDeDI6DoqYZqJTUERyDJYWp26ohexg3Ncg9nWUjnwsHvPpgnA7zq91+kaY7ZEnlJ959wgWerlaRIYtdFwCaVilnGCGPsc6+z2CqUul2fyE4fQ0wHqUjfs0I3rGuDALD9FKAfZweQWl1LjcVxpOY4IitlBv9VJAlVsOM3+sNZYoG42Pvl5RXIjKkpMBqS142RBRvWzv7fYvXyJbCENl16FfVt9rKF/yi0MBsWH7i8bR/gE+M6ZbRqSyBGSUHW9rhjq4mSaft6N9pAUyvR2BAw8j+zLPe3j9dC++PHKtDRI3CXgQfVSjoN7lFzcdGdCUI4oVoy+HIZgshJJlvARK4mtIIWTBsHo+Qv8946Pm7rdxlNScKETZ1AlErYDsZSSSMMBgMPUsyLKfHU3luel+IC1aOnZo9jK4nPEfbF/zKQAtXf1mFQWIfT7UKJOXQeGdCaOG1rzWUNlh3oDVJ83Qm7ZcdcM8VdrZVFBnn8aR2ksXr/r56+fat9CIViDuzoq1i7j49fRNgU+zqfi0tznu25fds0RU2ZV1IX2vIPaX17BfcGfSP8xDQS4EKxs0G/J5Pk+tvO+J+J7uwvP+G3k44NEJ1gk3WOlHC9L/sekdEWpkk3iGyRuGHo5HBybpPzMEAA3boiB712u5iat0d6eRVuuyxI1PmYkdy/GhndmgPT9I80DAesIwW01uzNacX4IMh
- 42JSWmio
- zQzx76ZDj2LsrkMv8lGMYOLUSnrHK42+Lc02eXhjiKaz3JRNxoPUT1qvGAj91Eik6RuPqxkJjQe1rD0NFhgUXsmo5mcP4GnAAFEjSe0nJAsfqIZWfwFQQ/pvCG6ke5PGzmxMp0ZUrvAJxQUBJeVaPDPeo0b9uMs8v7rb1QqEJOVL6wE+cswdli1m/+3KrhjcDi0ML3VmBI+S/vlT7eQoLu+eyZIDg0y+f5iWz8Ri/LfmWJTvWEyV+fyP6/8OHaidJwnt9HBU8pNxyz4QN4aUXvXTq48iviZT8Af2lbMpHKKHhWtBj7gPoI7m67Bpy6P7cdij7eZ//kPNyQ0f5fC+DeWSpyV7ppWKFdmhrIYcjPJJ82cZg1OspIBxbXMzg+bNP0sCc/tE6HdiEi450KDgqH4YPvBmY+wlWHqyK
+X-HE-Tag: 1773351727-962153
+X-HE-Meta: U2FsdGVkX1+NjtAW5WdBUzk1XHXIFTUstB5OQJeIYA2pG9gJbTOWayaludyLy1V/jSo2/87NmsYDnsTnsnjJ5WDrPxmmfHaYOrmT5Uk/P+decmz6NhAPZ5hP3JLLT4lZ8jENjQIKWGvztER5G+ucs+km+D83+l4HS4EVX6g98muWtfJkEhkpoUCNRr5jvYkYmANu+NeMGRT2RvTAhJ1kw8hDzuudhQ2WY7J11Bb9AwGtFI30+AKVfBiuKVI4VUskrEaT/yxXGub/DR2JsoVLoYI5B6/qROg4r1Oq+LRLxTziiMDxkOJKnOgyIlSlg4ioh6iv/BcUGUE22X4jrHtX4v9kmgq0yrOYFoM6FNSFKi76yedkq9MK3Fk6uqAUX44U5ppWXvdXnkSP/Q8er3RTedXYWlJszWa4IbS2vzxIwAXyN10ouVQ3anoZmgsF9GDk/m5wt10YIeyTP3FpA96B+cbCbR+SCbvIMKfGpsJ0DTOdYrwfY9e4CptHe6+PhOxoxmu1GzZRTCVHXuV0xKF2/u3JqLwHvrD2HtduugMIkqlvigBKSeBiluzpWtqhfD0rrhfZVPWKct4lCd/mEUBdUQMN/9mAohSciiBVBI6yBckIS8tsK2zE7lQ76HDTEdzQTBwu5m2IcG7rymUTLS1r2zlFztEbo9wH6OZnxGx/W0uzAs0F2hdYTzno7CZP7cFS4LKhL1bDniwliwBUCpsm4kE+FIh5ZJEMwZJRS5OGtNA7OoUaXdSgyACmOQD2aEa3b0j2eIb7nxxyMuewpRE5SeR3ta1uTZKcJOdPZMfZQVIsZsEIh7g2NCq8SmvzjqnFLPFbMu3E39CJ3mUYnh7L8SyShbZmHXuOV/i0JLw1wCm/h5w5+Y/5xJv1/ImTYNJk5UrNGbkNriTlnz9ltEI349fBoYAM3iR5TeHmR1nmjxSqfCkzxPJGiG0J/sNVZidHFtUX4S7eAHP1NerWa19
+ J9w4DTz/
+ +6h1lByx0faJdOlRDB8L2VC01byG+ZyikeGwgYBmInwmK2rBE+kUXVOYsdWBewn8hk2b329TgFayDNGQErtGavRe4/ruAqPvrSFapRhCOPGi3PUkwqWY8+QmrpYwROfYkIXFJJ6zfGNX9jPDa66VoaAIDEwEIqwOfJufoA6hBmJ6zNzhd08LM6pidIR27hYk5wqmEwro2touvb8c74VuziOBHeyMnSUSkG/6LHV1aa9Zx9YpMRxzKEEo28T8uw8Ed4Uj3zJJP8+rQ3oOycoVadj3eRJZxlwOLZdVuK9oIlKuK/IiqdUws0/e01yOx3hS95xzSjDoy998cepR3tQMGbju4iA3UuLp6NNpGR6D+8NUulwqx71YbfDeKMCojqpQUpGuKnPCl6bWg6P3mSGvh3NXCcvByM0M4XC89gSiXbklt82QqpMSt1oZMGvZpaGmk6oBtdrkNn2tQcNAWuWPwoiFIIwxEELlT83sj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,11 +128,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 12 Mar 2026 20:27:15 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On Wed, Mar 11, 2026 at 12:51:44PM -0700, Joshua Hahn wrote:
+> @@ -1244,6 +1297,8 @@ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+>  	if (objcg) {
+>  		WARN_ON_ONCE(!pool->memcg_aware);
+>  		zspage->objcgs[obj_idx] = objcg;
+> +		obj_cgroup_get(objcg);
+> +		zs_charge_objcg(pool, objcg, class->size);
+>  	}
+>  
+>  	if (!ZsHugePage(zspage))
 
-> This series expands the mmap_prepare functionality, which is intended to
-> replace the deprecated f_op->mmap hook which has been the source of bugs
-> and security issues for some time.
+Note that the obj_cgroup_get() reference is for the pointer, not the
+charge. I think it all comes out right in the end, but it's a bit
+confusing to follow and verify through the series.
 
-Thanks, I've added this to mm.git's mm-new branch.
+IOW, it's better move that obj_cgroup_get() when you add and store
+zspage->objcgs[]. If zswap stil has a reference at that point in the
+series, then it's fine for there to be two separate obj_cgroup_get()
+as well, with later patches deleting the zswap one when its
+entry->objcg pointer disappears.
+
+> @@ -711,10 +711,6 @@ static void zswap_entry_free(struct zswap_entry *entry)
+>  	zswap_lru_del(&zswap_list_lru, entry, objcg);
+>  	zs_free(entry->pool->zs_pool, entry->handle);
+>  	zswap_pool_put(entry->pool);
+> -	if (objcg) {
+> -		obj_cgroup_uncharge_zswap(objcg, entry->length);
+> -		obj_cgroup_put(objcg);
+> -	}
+>  	if (entry->length == PAGE_SIZE)
+>  		atomic_long_dec(&zswap_stored_incompressible_pages);
+>  	zswap_entry_cache_free(entry);
+
+[ I can see that this was misleading. It was really getting a
+  reference for the entry->objcg = objcg a few lines down, hitching a
+  ride on that existing `if (objcg)`. ]
 
