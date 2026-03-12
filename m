@@ -4,102 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 188A5106ACFC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:38:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13FBE106ACFC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:39:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21E556B009F; Thu, 12 Mar 2026 19:38:54 -0400 (EDT)
+	id 6A2866B00A0; Thu, 12 Mar 2026 19:39:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CC846B00A0; Thu, 12 Mar 2026 19:38:54 -0400 (EDT)
+	id 66C796B00A2; Thu, 12 Mar 2026 19:39:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CEB36B00A1; Thu, 12 Mar 2026 19:38:54 -0400 (EDT)
+	id 565E36B00A4; Thu, 12 Mar 2026 19:39:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F2B8B6B009F
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:38:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8346916048F
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:38:53 +0000 (UTC)
-X-FDA: 84539028546.12.C2C28A1
-Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BA32B80013
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:38:51 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	none
+	by kanga.kvack.org (Postfix) with ESMTP id 45A146B00A0
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:39:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F8DCB992C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:39:55 +0000 (UTC)
+X-FDA: 84539031150.23.0046AF4
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2D58E40004
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:39:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="wfKBQHk/";
+	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773358731;
+	s=arc-20220608; t=1773358793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4/Q8pFxyBmtONaF+22Ch0U+54nC2LFmKyMcLHCniHfU=;
-	b=1WCNZv2NtsANC7bBaeukcpRPkOWDuKIs9OPhb1CXSrcWhYAmUfgchTFlPykIPK+9cACA/U
-	41xFAfwdIf3KtttC5eHM7woaYbdyHMbRpSSppL1oDuQS8O4rw4Oy1YgNmFdQSS6rUyVXlW
-	IKFxxA6WxVaYxj2M8Yj++Rc9obY2okU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773358731; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tuWxuj0biLq2l1xmhqHdX16m/kzH5EhGtvvF3ksAcvQ=;
+	b=Ltvh2tgoUl4l/ACnSOb6vBUsNLH+lf21MdbTo2iKLeMCafDWFH3hrzhicFTXal5BZqLL/5
+	h4ble4V6b4HsY9hDtvfuHQfDeTNC0GaiZ+3EFEj/sDAbwl3D7eTMkA10Lzih1y+FpdOVKR
+	NwiM6WiYkkR14MoMKlm4Qw7tMlbJRuE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773358793; a=rsa-sha256;
 	cv=none;
-	b=0vfQxGemJTRSpT6UxirPZNdKnYO3k6PzDicKcVeo6DLtVhkGNgLfqHnCCZxu2jKXdvsVAe
-	o6jvYSGDK6zlMUmkxoSoftuZLRVUVbf6uyAXLklZWUpoThVbW70O+Bolty+q4ZXN1fGcm5
-	L2wB3DG+mvSmykerdZnMFOMFRDuXu90=
-Received: from omf04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75BA61A0463;
-	Thu, 12 Mar 2026 23:38:47 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf04.hostedemail.com (Postfix) with ESMTPA id 437DE20024;
-	Thu, 12 Mar 2026 23:38:32 +0000 (UTC)
-Date: Thu, 12 Mar 2026 19:38:47 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: NeilBrown <neilb@ownmail.net>
-Cc: NeilBrown <neil@brown.name>, Linus Torvalds
- <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Jeff
- Layton <jlayton@kernel.org>, Trond Myklebust <trondmy@kernel.org>, Anna
- Schumaker <anna@kernel.org>, Carlos Maiolino <cem@kernel.org>, Miklos
- Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, Jan
- Harkes <jaharkes@cs.cmu.edu>, Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, David Howells <dhowells@redhat.com>, Marc
- Dionne <marc.dionne@auristor.com>, Steve French <sfrench@samba.org>, Namjae
- Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>,
- Yuezhang Mo <yuezhang.mo@sony.com>, Andreas Hindborg
- <a.hindborg@kernel.org>, Breno Leitao <leitao@debian.org>, "Theodore Ts'o"
- <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, Masami
- Hiramatsu <mhiramat@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Alex
- Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- Tyler Hicks <code@tyhicks.com>, Andreas Gruenbacher <agruenba@redhat.com>,
- Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel
- <ardb@kernel.org>, linux-fsdevel@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-unionfs@vger.kernel.org, coda@cs.cmu.edu, linux-mm@kvack.org,
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ceph-devel@vger.kernel.org,
- ecryptfs@vger.kernel.org, gfs2@lists.linux.dev,
- linux-um@lists.infradead.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH RFC 00/53] lift lookup out of exclive lock for dir ops
-Message-ID: <20260312193847.28c32a2c@gandalf.local.home>
-In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
-References: <20260312214330.3885211-1-neilb@ownmail.net>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=1q5G98xqMBo9jmYMwdVIE/wt7Qe10LBqCvaspSVFwzYgFWNffcd/1JJGgt/zNq0whBotmV
+	YEXVz/Cn6ZOSL3YgTw6BxFTyzK17ACNYONv5xyGi9HtPVS/zKW8MQhVlK1j7S4bZ9+ufxT
+	kkEoVqlAmdn9479wotXxoztonznKsI4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="wfKBQHk/";
+	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ae4988e039so17948955ad.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773358792; x=1773963592; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tuWxuj0biLq2l1xmhqHdX16m/kzH5EhGtvvF3ksAcvQ=;
+        b=wfKBQHk/+ixdGVt1v9vjv0Bhbiw/3WT/Seng0SmGQg8hDZv8xx/MQvLLHbGkB63st5
+         Q3HNGEuohNP/mHpYZpu1B6ooT1QL/QrEFemzVZzxaHY4y2BPwHHJvN1hJJ65ySJS228D
+         +dks0bmuyZu92wKSC4CvFZRNn4eHGjcPr4LwGULhgNvfJk1tkuFQ9fBebC9EnGh1e3+5
+         yIQ3jnysS1xbUE7wejcPlph50AwqaZhG/MxT45L4UucMVUyzJgfxe2u/rF8ScRMQIDwQ
+         2A3Jr8S1zM+dZ8nIiDkPU/uGoS4DVyRx5CCm9/Kv1yogbh3U4fXm0lzqselBAyRAdLdE
+         Ta4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773358792; x=1773963592;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tuWxuj0biLq2l1xmhqHdX16m/kzH5EhGtvvF3ksAcvQ=;
+        b=WeQ8MOUyKzOUtk5aV5DmC6uxoj7PABl4Lkl/S13K0zyXB71Sn2dewOFQHYktDKOqeo
+         15gYH/DHU+6cv+gacT57q7cqUNoI1R6hGfJGSH/AGeW2WEbWfZnbymxLkflx+DBWBOgm
+         jffAGzBIOWV9vDooLDCDTZzC9gdVrGt6m/tyfWVnrQuRaGkbWXVhu3Ni1jto7l6/u8Hb
+         XLaijdt/kPdou2K7uGWIfsWLUVkVwOYDfNsqr1kaxJ/UZAieDekIF2yOfqr/nMag9XYO
+         3yzQuNOM7fZ+VgvpF64Fg1gl5872tTrunIPs1j1nkhNjJylcDkxniCYpscIYgedqC02s
+         Cujg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXEzw4UN+sSfKo9zzzIMUXMpycd3GkrMO7uLC5Q6gRKgoaFFAzKp+XgLOhGCw9dSHFE5Nb5ct+tw==@kvack.org
+X-Gm-Message-State: AOJu0YzAmM5jnjuL9I4rm8S8d6+gMv7dKX3a2qk1HBHMrhUHi46TXCZF
+	OqF5/2qchihh2rqBGqEDd3GxODKGIMP66Jp1nTUTw3BPpcdo/Rh1RPQl183RYfpl9g==
+X-Gm-Gg: ATEYQzz2L+7O3EQap+CdYZIXgfvIRrr5HO5CCng1roQOtpH41nYq0HVgiyoiPVJjqmO
+	D0DkMWT9F7OP/XhAsMhyWCWjOv9OlfzJH6WGu/p3UVY3xNImx+G/Pc+0rR/lQob2eimZtSEpDuB
+	6OuGt7NsLjwZvUCHLHq1Mb/mHOsQXVEfEYwOB1lavkuvzstfhcHh6HhXMBzTbniVsgRKPfebE2R
+	jLTsV5+o1iEbQeXb4KfxFQ8x9io2bhk0OgImGinGCxMCIYf1Nkk85MSP0cv/ceVvqgR196k09JU
+	nNvYd7VZynLJo5JU9C2L669BWjenK4xxOEU1sChlQFltappOnRoKW8iFG504xV7/wnAJ7OSPDA/
+	op4oXU3UZgZywbRzzAAR+aH6irJ2DUPMWtt1MoqiTa2SXMEB1TJjIkFP90GiZKs2/lBs/Cjfyph
+	SHj/GlkNj8ekMREj43y+SeI6QJfNKF/g7cYcKEx+93zJ1Dzot9EvtMuaZE0Qw31w==
+X-Received: by 2002:a17:90b:3d4b:b0:35a:117:9521 with SMTP id 98e67ed59e1d1-35a21fdb67bmr847337a91.10.1773358791623;
+        Thu, 12 Mar 2026 16:39:51 -0700 (PDT)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a03034401sm6609677a91.16.2026.03.12.16.39.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 16:39:49 -0700 (PDT)
+Date: Thu, 12 Mar 2026 23:39:45 +0000
+From: David Matlack <dmatlack@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <abNOwcOTXqxCxNzt@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-11-dmatlack@google.com>
+ <20260226170030.5a938c74@shazbot.org>
+ <aaDqhjdLyf1qSTSh@google.com>
+ <20260227084658.3767d801@shazbot.org>
+ <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+ <20260227105720.522ca97f@shazbot.org>
+ <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX188/YrC5TApof6JUD5+VNztl2shXsvgY5o=
-X-HE-Meta: U2FsdGVkX1+OxQ2+Isx7vF4UixzzITSWoLGanhQdmOUQzHc1ErHaC2HhfFr20UjnVfuApzdY0CnNI9X2EzaFzoxWkp+inh8h89+ue9tsCje/WXI2p8TViZKD1rgZ9aRmWPzAaOFt9AR3SlccruGvmKX1nd3X2qcHF/Qj4v2Ic2F2kBtdL+HvK1KWscULRrzA7ZXclvIVR+DpEPprYwt/KKB72qtNEyxLFZN/ZdoFOmgI0OmUW9WSqFmPDtGp6NNUkGL68vmGr0d1dJsWkcANTfDGT58FCBs3Q3TWI/CNur9ihaDpBPfKeDQH86AL8k3ONIIfeCwhZyBEr7FfTAOuyi2fOWNNYZopJrxvZi0zu3x2dKf/Woo8mIogKoo/MSw6
-X-Rspamd-Queue-Id: BA32B80013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qbqxydr4m3ujjwdoyrh7ow1jb1hgeqj6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D58E40004
+X-Stat-Signature: 63kfpffngb16pp5sn5mik5mx38j3oz91
 X-Rspam-User: 
-X-HE-Tag-Orig: 1773358712-902307
-X-HE-Tag: 1773358731-493676
-X-HE-Meta: U2FsdGVkX19gEcaAoHOahvzynnGVvJxapD93aaquoaZYv5AbGeYemq5x+GA7/uin9g0G29ZXscMDdgr0XzMMupf3HIvJ1aLHdyicZYLQgF6Ma5vBCki8EtvAdxz3tYabzP6eH+nf+EShZb88roKRN4As+rcywsnr81TH+r3zLj+4MjlS/29C3XIt/lPEqAF2g4B1OtGmUByZ66OCayHNKN/nPFscM2AU6Q9Uro0LbIzbIi6zDDgrn12PrjH8QXpjh7K2b3oNWPI7vhdoph4LKknh/gRQ3cdIedXKnNZdcKl/OyoJIf8CVVVu7qP4t0Ky0XHO7haaH4DIxujQq8TiI5LJdABYZMwR5D/u9yMF8ugDWsPtaDTQI3DR1+gqgYFDCFfkZqpWMWK8cJCYUNEORgAzT9ZX+lmasiZpiffc9pTc/yCHiM71vH2PwosiAyeuJRQ57XiuoascPmc+SMJrTbvBIZBNJG6rbWkjU0oLLlf03Fx24qjDAB8ljRLrF/16CJdpEExSzt9Eyejwz44sJnGf2tX499uAXgoce6aOY8k/UKSq6GjXqBQb4NMlZE3Pw6nI2SJOEBpvhc1nKh2Z8B4SKfr4IrjJNPqfMfng0Ucracq6qw7aocOdOpUaaPvk6UuRY2QOPNNeStXLxVuZGxc9do6LFW6ov3NkdZZcJvoeCGoQl6/V8MvWGfyX2IHXglQuKkHPqjnF6y2PbP2rId2rL1RJEi73rhHnz0UYeniwN2/r5tMUQc9auzactDJ9aY7ZJcMAsN9qV9D02jJ0UPMpDH7zVURrEXO7Of9dT6lsOJeCMaUwdPgZE+04gwHRVlmQNDh43sPd7viJ+Pvt6Y67yv8h8zfgFnkCGCndaHaUbxZ4Y1/ZGKwa+P1bWSv15BfkRoO1aHbmBytIRiOYna+HVg8NJfBN3XErnkWFOYk8rIpPit+Axqga2VBJuS9bmLfxCk39/3V/kXVw8FY
- ipLtACYq
- NCElmK6q2w4w/WwB8Dd/O+4AIcLTGIsovZ0Tl
+X-HE-Tag: 1773358792-744650
+X-HE-Meta: U2FsdGVkX19b4pUMLCG5OZnrAN16QNMnK3kpnYuEvbsIuDqpVYs0IQ7kGj7fsdNlMlbnw/cily71IQ+GXOj6zqJIC2GrSlr3OWY3vmmMvHZwUjrd11ak98t9pZnv6pviYQAPVM8OYOFoXG2gYSm4aVjQyNfqDczGG4R8spL96T+HSz66QGnRIyLwPTtWUIA+b1ld98usFczVj5V9FAHFp/8T18EIGHWK7E/5YXiQl6oQugmCWeS93llN4gBL5sybGDyMx/cb7C5OB80RdhBdciqFBUqTa3Y79v1whSm1Z9HlQKqZd3J7AXx9oHEvvZlMLPdXLfDCoa6cYbftzDhpHqLczMx5Q0VfqbYHVgHBVOaMp52b6FS+NOqzv7WEM/KC2trpTU6nEoK5ptpoRL0V1JYkr9CzgKg3ZGvS4Gy8jBUtr7h9gYW9pjlU4Gey7wgD3u7x16PZDmvA1Kj1i7JPxy/JoqRhzeq8u/rn5Nt+ef12cmvRuOzuTG4eJDnhOUmrs9P/S32df4Ueo8yWJlVrikjFWGL4Et5ki8y67pGeflygmVLtIYrlE0mLVbdIdcV4Ckvst1VOWYU3+8uC2zmgbgIWptJe1ueaHvmBj12SrngvGI/I/SOvAUg8wchEVXIfeUaKVcOwyv7RThonm/LSuA82Voym3pUKpGl03eeF1tv2eQE0bSyuugl3xkW0hk8qBEB4DXmiJviJBm7tWjHivhrhAcBwWMR/5t1BbVhqelCfmV15IxpE0K0/6dH7uR5FosU8tN/V9xUHJhoTHaJmuA6mSKDnEeEmw1jNaatMVHj0GoDLNImJfJHzCd3BQjXmAmmHqVHiM+vKlrOtK2GizhLX0EZ463UKWP5tCzZGTblQDvX3FeiUOQo4cK2DbabBa67h3WVOuvA5fR1qunpz/xOiPwa4Pbl3rFEEv+IdhwST10OyGtnpxz17ZHmMqrqZDPQ21Ct5HCE3ylscz3k
+ TVvltgGT
+ u2YFa9GOcZhbKGY/w3197h4QD1gdcfewlP/HZy0FaPJJtqYDSvjq1kkivXgdjeI4L91/wvurt+vZeotNp0QI5Wn6Pzs0ucOuouke6qMETJCnpQtZdCc/aDEFDCAVlERZ0vivHXScWypxwJ7uedOX8FibMZhtNcVmr4Vr0C9ol7NUKLVMYVrtFAmzMzrVUzw/7CZfwNuQyPfaIRns3+QJmet5cs9c490okxwiAXnL5vCj2yv1WP0vs5AeDaLPLltQNhSUOL4NVU2HudEwH19DgEyqfqoTq0z/WjtTWRFrjPoK/GOwbgv7nKytFeAXtMzKEhMVJW+u8K0Xd4/Ww6ABjpWe3TObv0tX/AGxTdFsPdEUul/70GxBJj4bObJ1jNEsyRLQXXPXPUDXNVPa7EY/IL+35Ug+O+VJs14du+og+C6Dho/ZhpRgcXkv1wDiU6NeSTaPb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,32 +157,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Mar 2026 08:11:47 +1100
-NeilBrown <neilb@ownmail.net> wrote:
+On 2026-03-09 10:32 AM, David Matlack wrote:
+> On Fri, Feb 27, 2026 at 9:57 AM Alex Williamson <alex@shazbot.org> wrote:
 
-> *[PATCH 26/53] smb/client: don't unhashed and rehash to prevent new
-> *[PATCH 27/53] smb/client: use d_splice_alias() in atomic_open
->  [PATCH 28/53] smb/client: Use d_alloc_noblock() in
-> *[PATCH 29/53] exfat: simplify exfat_lookup()
-> *[PATCH 30/53] configfs: remove d_add() calls before
->  [PATCH 31/53] configfs: stop using d_add().
-> *[PATCH 32/53] ext4: move dcache modifying code out of __ext4_link()
-> *[PATCH 33/53] ext4: use on-stack dentries in
+> > Sorry if I don't have the whole model in my head yet, but is exposing
+> > the restriction to the vfio user of the device sufficient to manage the
+> > liveupdate orchestration?  For example, a VFIO_DEVICE_INFO_CAP pushes
+> > the knowledge to QEMU... what does QEMU do with that knowledge?  Who
+> > imposes the policy decision to decide what support is sufficient?
+> 
+> Hm.. good questions. I don't think we want userspace inspecting bits
+> exposed by the kernel and trying to infer exactly what's being
+> preserved and whether it's "good enough" to use. And such a UAPI would
+> become tech debt once we finish development, I suspect.
+> 
+> A better approach would be to hide this support from userspace until
+> we decide it is ready for production use-cases.
+> 
+> To enable development and testing, we can add an opt-in mechanism
 
->  [PATCH 34/53] tracefs: stop using d_add().
+Here is what I am trending towards sending in v3 as the opt-in mechanism:
 
-Hmm, another reason I hate being Cc'd on every patch of a patch bomb where
-I only need to look at one (and maybe the first) patch.
+diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+index 1e82b44bda1a..770231554221 100644
+--- a/drivers/vfio/pci/Kconfig
++++ b/drivers/vfio/pci/Kconfig
+@@ -58,6 +58,27 @@ config VFIO_PCI_ZDEV_KVM
+ config VFIO_PCI_DMABUF
+        def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
 
-For some reason, I'm missing several patches, and this is one of them :-p
++config VFIO_PCI_LIVEUPDATE
++       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
++       depends on LIVEUPDATE && VFIO_PCI
++       help
++         Support for preserving devices bound to vfio-pci across a Live
++         Update. The eventual goal is that preserved devices can run
++         uninterrupted during a Live Update, including DMA to preserved
++         memory buffers and P2P. However there are many steps still needed to
++         achieve this, including:
++
++          - Preservation of iommufd files
++          - Preservation of IOMMU driver state
++          - Preservation of PCI state (BAR resources, device state, ...)
++          - Preservation of vfio-pci driver state
++
++         This option should only be enabled by developers working on
++         implementing this support. Once enough support has landed in the
++         kernel, this option will no longer be marked EXPERIMENTAL.
++
++         If you don't know what to do here, say N.
++
+ source "drivers/vfio/pci/mlx5/Kconfig"
 
--- Steve
+ source "drivers/vfio/pci/hisilicon/Kconfig"
 
-
->  [PATCH 35/53] cephfs: stop using d_add().
-> *[PATCH 36/53] cephfs: remove d_alloc from CEPH_MDS_OP_LOOKUPNAME
->  [PATCH 37/53] cephfs: Use d_alloc_noblock() in
->  [PATCH 38/53] cephfs: Don't d_drop() before d_splice_alias()
->  [PATCH 39/53] ecryptfs: stop using d_add().
->  [PATCH 40/53] gfs2: stop using d_add().
 
