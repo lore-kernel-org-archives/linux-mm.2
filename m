@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEF8B106ACEF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A672106ACEC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D5DD6B00C7; Thu, 12 Mar 2026 17:47:40 -0400 (EDT)
+	id 897B96B00C9; Thu, 12 Mar 2026 17:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C0E06B00C9; Thu, 12 Mar 2026 17:47:40 -0400 (EDT)
+	id 883076B00CB; Thu, 12 Mar 2026 17:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 290356B00CA; Thu, 12 Mar 2026 17:47:40 -0400 (EDT)
+	id 751AD6B00CC; Thu, 12 Mar 2026 17:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1724C6B00C7
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:47:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC082160431
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:47:39 +0000 (UTC)
-X-FDA: 84538748238.11.DB97484
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6157F6B00C9
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:47:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F7011B6F5D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:47:57 +0000 (UTC)
+X-FDA: 84538748994.10.C04A118
 Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1914040007
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:47:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=iPWOSxqZ;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="unIU//e+";
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf04.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1F38E14000D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:47:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b="c/pw77uh";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=MVii9L11;
+	spf=pass (imf26.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773352058;
+	s=arc-20220608; t=1773352075;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IQfPF8qsPDD4y8gX0swga1hVwNgQjqyWwNEjHrIDNRM=;
-	b=n22l6cg/4sRJeDYuFKelakDFcR5XcSmZ+7MJLR8xGKVVZewg0YXHGmLUfaQHB2vVAKwFCd
-	MQT092hDRqo3WYOPwVoYAT+5eQBppJTFXcgCU2vbSUh4bHw16NXImGO2sug5urCGB0WfQe
-	aT5LOufKk4wL20NydRv8lsNRK5wEX5I=
+	bh=W/Ak1KPwTmCaYgI05wA4foboiqmq4A6jkZq9iOG+AdU=;
+	b=OMY/Ea1YUMTxAtHG38Gy+pOn1aXwpPV8sjFvbOe1qKgqiOXCnr5vTKGRgNpz8U3uWMS27x
+	+k8vviBOFHOPsWmZLXRb1GdDXxW2X3R2YGTalFpu1jBUtXBB1vsWzGYCvy+o2AqsNOszDb
+	atIliIJwg+ZtxA4alvQSaGMlqOISAXw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=iPWOSxqZ;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="unIU//e+";
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf04.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352058; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b="c/pw77uh";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=MVii9L11;
+	spf=pass (imf26.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352075; a=rsa-sha256;
 	cv=none;
-	b=k/6tOVGZowlT4mAuJyvhIHtUCDrDdnliUCO96B8GTCqRjphO83nVu35xQC3oO7/IacLmMK
-	IDaezOpyjN5IPxrVNn89GSG0hf5IgwDSNzQX95YGQAaP1bxPlVe0oUnfVYpxNPczBRHkFz
-	Zz1CkxhZ6usNvtlMuScpP/emCkHl1EE=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id E848C1301B68;
-	Thu, 12 Mar 2026 17:47:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 12 Mar 2026 17:47:37 -0400
+	b=VsK6RRmrlWTMce89WD9ioGHlqx2Pqo3TnIzOuO/PUvQnYTntjYZqe00LDkUOBdqpEwrOQC
+	7pOhiVdh8y7UJjRTPYYlFCjlqgLbwszKcLr6ubkk4e4t5YZi+zGnhbgw2UzxXU9NkULsEa
+	sRQz4yhjJABWM9WkvjnLDJyRrQF0IaU=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.stl.internal (Postfix) with ESMTP id 3C2BB1301B70;
+	Thu, 12 Mar 2026 17:47:53 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Thu, 12 Mar 2026 17:47:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352055;
-	 x=1773359255; bh=IQfPF8qsPDD4y8gX0swga1hVwNgQjqyWwNEjHrIDNRM=; b=
-	iPWOSxqZlSqyPdU6zTigaodUHhIuXMhwcY2p486hgesZ4N7bhchW/j7ATJHN9FBW
-	oKMrqPBlqBMt3lkYCgSSFCKYXJmW9ODmThws66AtdxwYimzVfOz9cBugmFraUhdV
-	YoO+Tg3MdlfJnhcIN9JfefQc+OGsJZ24NInAWQKWdb3ofc6nEyQw44fO+K1AQ1pL
-	PckIAJ6PEuGLH3OUpr4l+1OppEhqfHtePP18EAfy8H3V1DfBdKsDc1LWDBmYxKsc
-	1007QHUZL97zu3IXO53mSATagMEzl3Qlsr521UnNLtczRjXcqKEV2fA3ORrfY0a3
-	MpOs5Xw5kf4wMfV1RUUcDg==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352073;
+	 x=1773359273; bh=W/Ak1KPwTmCaYgI05wA4foboiqmq4A6jkZq9iOG+AdU=; b=
+	c/pw77uhzQwtu+x2rfy8YAQ8ODHIH6TqF5gjkDP3PnFVgS1yE39XzRUPiB7FP2sc
+	RbT2SpGQkTPfjMjryKRQmCrUB49ETvDmOW/QLdaS3hsyuXpnCKPp4KpaG/88uh2b
+	ZXJ9+VfUjmAlAqwi0KyMt/q9CW2hdecgqwGPYM6ENHXeNa2d3fgGwlvb8qBCnbPl
+	x8pPfpV5ACsdJEY+vFgnJ5ttUL/vZ5lzs0FJW0pNjeM98B1mNj3S1TLDNNkpQ85G
+	mrIMwkNyGULMNnaoWm3wi2W8zO4ZyGTiZJ5fNsPnxumyHNOH7BM2cdOc/C+ceQbo
+	7ROxYdy3UdkLgEgWoNY5Lg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773352055; x=1773359255; bh=I
-	QfPF8qsPDD4y8gX0swga1hVwNgQjqyWwNEjHrIDNRM=; b=unIU//e+8gYENP4K1
-	FVVmPPrZh+cW9to8xynIOLL2gjLoSBNBWQceiEYqrtNCGzla1+3dWZUcITjMgi/X
-	uuL46Ngko2u2uNp1O1vKehEFbTUjc4NkhiutBEF1BzxX5CZ/RVgo9uua3IfTb1U4
-	NGa3YLqzHArKaIKtpRK98PwLIBxeoOcWX+A+OTTeQa5687EfcLW0m0JQ4OCHV0qj
-	k505GHZtj/bSahn2aOVVCe3jQhaIxFFRjMcooWaTHAaqasI9A/H+N3+vQ1i3PxZy
-	LueNtc+7viQ3EYAT0DTVcQn6YEP2Q1GLKATntEhtaDEKcbXPcerB8IzWARCsLvWM
-	IvM2Q==
-X-ME-Sender: <xms:dzSzadR1MAsZAitEgQpRqkE1Ohgad2kzGcH263o1t7TXTRgxjdqYeQ>
-    <xme:dzSzaaddjVsxxqrJg6cd61V4ey9u8NiPzMREsyhWiuAlorEYRpPofNSDIMwtQieXj
-    imi6hPyKXjSImt3TlbHBCxZzDmVo8J_ehFyBdBFkz1_tFAlXQ>
-X-ME-Received: <xmr:dzSzad73mhvPgvYL751N9h1IuqZDC9qCfyFWvhd2UO8UNcD9DN87JGATxBceAdvuqD6UcBlC44Ws0fF9LuFEhaLI_3yzuN6FXCQu9kMzkMg6>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773352073; x=1773359273; bh=W
+	/Ak1KPwTmCaYgI05wA4foboiqmq4A6jkZq9iOG+AdU=; b=MVii9L11GlwWtMhzZ
+	n7iyDbPToR7JKb8T+MC59sZyBmXHZlJqZHj7ZQZrD1S9ZmYRwTLXpkBTfH/AH0ql
+	XbK/noTmtQpNxvag+selT8UbNrzr/8IJl3kNxMvGZTLR+moT9KOT8al3IGiwNRoX
+	j8ioh/jBUoLeJqAxmuqIyXvmtjLlIL56VrRHOV7H7mbB6T8HJiTueMd0tykadvXM
+	ZaBajRtT7ugnSgBwWXivnDrJCmaH1qiDVbS3t+bJW+z4Vbk9MiVqyz7miWcV9qju
+	MqrU8tjGSX+VM6REOR8up7aRz4q4674wBNNCUAlZBuJh49XTJzmrGGb3vo1RiPrw
+	yZczg==
+X-ME-Sender: <xms:iDSzadf1MovIDDvvqQ6m703oltGBhRnngp3beiLGJSJZjewqpRJxtA>
+    <xme:iDSzaU7kFxhIoJWxE1RTDf2t8oqexnxdhjkbXG5N5FUMS8uwy6w-AM73SOEtbiuBF
+    uOE7IwJJi0kM5W5JqOt7ALX4wYtbeJh1HFlYN-92h_1c4Q>
+X-ME-Received: <xmr:iDSzadcoq5CrRqaaWti1CkFPSfX6M4RqKzQeN0yflSVg43UjwueDpXwh5Ys-4gY0lPdS2gJL-7qQvNFXh932_SMPRpiOg_iMtCeNxLYNWhUq>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejledtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -101,14 +101,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejledtucetufdote
     hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
     vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
     drohhrgh
-X-ME-Proxy: <xmx:dzSzaSfdzbvlo8FTUtQUSZHaX9m1SDibKD-faF9-7T1qyLf0BGRfRw>
-    <xmx:dzSzacBQhEFOtMEi4Yv-yULYFv_4Nk0yU79ngB4PUfLkpukgxYwauw>
-    <xmx:dzSzaWFpFURMotSUNpKLQepIDtDYxPIhrb9wtRHKaYgRNylCCa9-YA>
-    <xmx:dzSzachcP-QQRCqfvyqvZXN2FVihxCh2TfPpAiVTFvwqP43nNdJpFg>
-    <xmx:dzSzaUsQ6Hj2-q3E5VjcI00qQ9mNWzPtWkKoAtnPKz8E6T1iivMLl0S0>
+X-ME-Proxy: <xmx:iDSzabCq_RvYJXtjKj-mxXj8cgaSwK2kgE6I7mhCH7RkS1KGGqql6Q>
+    <xmx:iDSzaZFUzlkcAnxW7y-rWbMhjamfWq-Vptqs2x39yx-7jXjO5-Yr2Q>
+    <xmx:iDSzaTigiLe8tZx1JISL5ztxucDTqZ8xpdT2bkQm4n8qOh17tO6pbw>
+    <xmx:iDSzabteC8QKWKodA79F8ezpVRGSzyCRtk90G-w-YL6UtlIT-rMcpg>
+    <xmx:iTSzaXvLLx8QlN8PNoj_x62VFUWwQFufxUedui_IHwRwfAfxnUhgOhIG>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 17:47:22 -0400 (EDT)
+ 12 Mar 2026 17:47:39 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -151,23 +151,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 11/53] nfs: don't d_drop() before d_splice_alias()
-Date: Fri, 13 Mar 2026 08:11:58 +1100
-Message-ID: <20260312214330.3885211-12-neilb@ownmail.net>
+Subject: [PATCH 12/53] nfs: don't d_drop() before d_splice_alias() in atomic_create.
+Date: Fri, 13 Mar 2026 08:11:59 +1100
+Message-ID: <20260312214330.3885211-13-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
 References: <20260312214330.3885211-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1914040007
-X-Stat-Signature: jgnnrfxdhgcpsb6z9m6ag8rwy9p94z9n
 X-Rspam-User: 
-X-HE-Tag: 1773352057-611098
-X-HE-Meta: U2FsdGVkX18uWlEUB6ABv4bNCnHTHWKFa+WMaym8v5IBzBApJK4waFlJ1SiuyjLgn+4t5uJ25fzM3gfNjDB1k3f0UjKuEUEhyNiGj44tV81qwf5wsLzZCRSNh2pqHRlpez0NRCZPoGCwmSl1vpuJ5Pzo1PEMxkOTP4/2h7ph7FuW5QV4kAuFk/9IRHtGYxfgC2fEO36z/gB/yqP27PNaks1z+NtZ7/vMWQGteWwxyN5VuGarbx5CCRaJwscCu3byUxNX7SciRbVCOUTFI3OO01+KjebF15XIq/qxXz/Q0fhCN/ccT5xeunPXExn9Fe/07+s08FfOsMuSGxp9u6Ub/6ta40iwoEazcweHCBa/XO8r8wjCrvIiud95js0yVUA1/VgQdevGLDeO6JGw28Iw1oX1jGohG2VhjNq4uaoXP6ridGXUHoZslSOAuXtNtJoQ8xoyFW49rKTgHxZRDfFh9PBhzunT5HCyZUKfijL+fZL0ntVSb7zHSZtFSJHq+OnCaW8tfA+iG/YbE2tdU8l9C2Xz92r2ZXISfqlrOoXB5aRLY7m+xv8samOJEuRepzJhapAgNqnuIhR4fdQgFjWC3ATsl6Y47j2ZEOAPOsdwTRCVhH70Pd1VoX/KvlDBrvCU33CbjPgxEMwvTUVLBXi9LyDIsZpZqorKr5J8offdWisUOWS0BCMddO3k1bW35QwDvosXEvCrJuSEo00J1T8EDdRMe9OI4Ou6lNTWjc4cvxwaQWnku+9uTazrIbHbXu+TR+fTU64Hu2ZWIK7nYwa+9uQRfOe1iltaqEBbnDQ+hi/+2hLOwsK66GBqNBuppnA3XNbBBMSSeqdOAHdnND51yxvBkNgLRu9t2eC9YebINLvkbf5cCF9U01YbeMqA9rWC0Lf6tBahuji7oCq7JCNCnQr0MZPnFLk0aRLSIYoll34fnpyHOvVN+wvriM6P+Ov2XebLLjKQTW788vxcj4g
- 1ufAlZzN
- BO81GQ5Srx+Pc4R9qiGPjgRqqzKFEvRncMUTxG56rcFkzM1KnW78UHFYakmfNFhx+Lmt5Up3+XVVrivc2dbIIaauILSvsjVBnz23MulwenebRKq0+q253iSwJxhNk4+4PazPXyl5hj5FeU7KZv8/zfrtjtTQhfCP0THjPbFZAxb7mA6iw+ec7uvWLcReaF+pEdXTgCj4YdgjJOHEV2ocouWCS8McFWALD6cT+g7qnggZB6bdT90UG5gyJZ9yYdDGmnmKs7arJj9m+hrAD5DUHLcslNg3ou5XMRoDr8fgVFVBdHuFoF+bmsUm3gA0eE0mmqYZoScJLVrSX2FY=
+X-Rspamd-Queue-Id: 1F38E14000D
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 6uzyzjy9d1ghjja5txf9duog6fao88mx
+X-HE-Tag: 1773352074-21473
+X-HE-Meta: U2FsdGVkX1/tGiG6hMZcnoFcAkdE97yutCUO+P6XHG8BbD1LKgW1DYp9dVq+LqDt3wV4ph/VvQZeKHK4+DgIUQc+DB23K55szBLqQiEt+1d5XFLMeVXSdIgA2Jz+rXF+7y8ymVC0xGp+boD/AVeyAy8pia2PKa3khX1Us1feGFtVZtJIRH0V2GNehaTYvPuhiklteNS8E6/lk4iN+m4OTqh6GT1RAUshmUEz5eLEgrP53TeqHj4Y1Y7YgOKo5Z5OZbORlrfsIXKWlIbW4SJMvZ4fGx7pv2DLRTzPYud1B0QAUj9l7MpYS+EsbK8lBzS3jN6qPPLb2r87BE1PXXoB6ZYH531dSTas7zlAT5/A94A4EQTItS2bKMhn2Fxmv96O4GBTkRRogvTY6p/qrIr9BzGrnJw9nkERd2T6ovbW04K6wCvGp+VASJ/JBSaAkxZ0UjKJas6qq8Oglwy3oDUSJrenvjhioYx/PpYS5AqtctT/+AwCb/av7GjWCp7rR6RCNeHHFmhisBCMh3oiZqu6tZDpNe//w5PswUiaEpC0VhaXRetWCwWrekjjaLJwo9b74D9orQi3FKt987nQ+r/KanV6qM++zApcu26/Bl53tLaZuuPq50p4LxruA+FPXtkeLD+WkKCLHVOp3TcNYqBF3jU+JIi0myj4Vp7tcNENuucFCTkG4xApjvqQEdfdKWk6F+R23P82dGcJZuDSddwjzYktln1hP85tSntnZSKDEKrHKzSeMwpG/ISjrgOx3fR+t+cZNIt7Jm8/tYjhUuIfEYrpsD2Jj9oWuels5P3knyDrj4jIPXluhZfIDvyqpbwz6KMo8QO8U9cXcBqJNUv6OgnVRxwo8gAmYGzN67womHYpVc9TBwb4t5biug8BKYFuPSMN5Z+9ZFwZTFn1XN09ap5x4WjlophI8cvZCu8aC5VxPiv71fq42E2NhMs97gNa9ImhKlxDUit1qkQtz+g
+ chxshGbU
+ 17FXpMsMUDm4dj0pCPWKpFlKxYTNottzZmRwiM/6BlR+LcSneVZvmp0qJEorwu494L5zgdSaskxLF9JASqJaTQ4pqsMdhIn0N0bHzTa77MAeTcMLO8VuGiIf/lHJMeUzSeZJj0K5n6pDJLgquztC5s5rVfQO/I6SoXZVUMdQhKDy787D2F3bIjbR1PGgwfbVWxe1kzEk4mlNBnxqpUOqAOPZkTe40hXxhP+sUpda63J9MfpdinY6nlKdYxlj1OXDUha6swHh/lrRzc9yAFqksRhlBuUIQZKJEjzwH6wxKlalwUp749NmPLPX00ncKs1sNKRjTRBnJFgF51LYffx8BVzpVdonZzo2HCp5sqmyPfMhpPvXfg7UDWQRyyYCHGKCJrsTBf7tTZrLGoDdgQ0VlLV8/vxM1kz595dhZtFVTXlN9eWtulOusosUWPSQMQ/YsmvCqYxRqOm3eWmRxT93d2HD+pCszHU3O9G2ybi+pvXUuaFremPnwvAs43VQ78tV5QuVJ3v1zRz1azLVLx3Q8Q8BTiXbuxzQsBsr8WmcXz6qT30X7BwYSj0yZPJbTpze+GdDGk8orwEGcHA0mjxhauFJuMRaeqnCYfudyX1qHk/FHkG6RZ78qsK1iveDdwyGgiiWSVgcfKB9KcGM/8qjyyP7SNQHCHbyyVrYccQoTUmclTXw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,62 +177,47 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-nfs_add_or_obtain() is used, often via nfs_instantiate(), to attach a
-newly created inode to the appropriate dentry - or to provide an
-alternate dentry.
-It has to drop the dentry first, which is problematic for proposed
-locking changes.
+When atomic_create fails with -ENOENT we currently d_drop() the dentry
+and then re-add it (d_splice_alias()) with a NULL inode.
+This drop-and-re-add will not work with proposed locking changes.
 
-As d_splice_alias() now works with hashed dentries, the d_drop() is no
-longer needed.
-
-However we still d_drop() on error as the status of the name is
-uncertain.
-
-nfs_open_and_get_state() is only used for files so we should be able to
-use d_instantiate().  However as that depends on the server for
-correctness, it is safer to stay with the current code pattern and use
-d_splice_alias() there too.
+As d_splice_alias() now supports hashed dentries, we don't need the
+d_drop() until it is determined that some other error has occurred.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- fs/nfs/dir.c      | 3 +--
- fs/nfs/nfs4proc.c | 1 -
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ fs/nfs/dir.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index a188b09c9a54..f92ea11aea44 100644
+index f92ea11aea44..ffba4de3df01 100644
 --- a/fs/nfs/dir.c
 +++ b/fs/nfs/dir.c
-@@ -2330,8 +2330,6 @@ nfs_add_or_obtain(struct dentry *dentry, struct nfs_fh *fhandle,
- 	struct dentry *d;
- 	int error;
- 
--	d_drop(dentry);
--
- 	if (fhandle->size == 0) {
- 		error = NFS_PROTO(dir)->lookup(dir, dentry, &dentry->d_name,
- 					       fhandle, fattr);
-@@ -2352,6 +2350,7 @@ nfs_add_or_obtain(struct dentry *dentry, struct nfs_fh *fhandle,
- 	dput(parent);
- 	return d;
- out_error:
-+	d_drop(dentry);
- 	d = ERR_PTR(error);
- 	goto out;
- }
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 91bcf67bd743..a4ee0c0b4567 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3099,7 +3099,6 @@ static int _nfs4_open_and_get_state(struct nfs4_opendata *opendata,
- 	nfs_set_verifier(dentry, dir_verifier);
- 	if (d_really_is_negative(dentry)) {
- 		struct dentry *alias;
+@@ -2179,7 +2179,6 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 		err = PTR_ERR(inode);
+ 		trace_nfs_atomic_open_exit(dir, ctx, open_flags, err);
+ 		put_nfs_open_context(ctx);
 -		d_drop(dentry);
- 		alias = d_splice_alias(igrab(state->inode), dentry);
- 		/* d_splice_alias() can't fail here - it's a non-directory */
- 		if (alias) {
+ 		switch (err) {
+ 		case -ENOENT:
+ 			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
+@@ -2188,7 +2187,7 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 				dir_verifier = nfs_save_change_attribute(dir);
+ 			nfs_set_verifier(dentry, dir_verifier);
+ 			d_splice_alias(NULL, dentry);
+-			break;
++			goto out;
+ 		case -EISDIR:
+ 		case -ENOTDIR:
+ 			goto no_open;
+@@ -2200,6 +2199,7 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 		default:
+ 			break;
+ 		}
++		d_drop(dentry);
+ 		goto out;
+ 	}
+ 	file->f_mode |= FMODE_CAN_ODIRECT;
 -- 
 2.50.0.107.gf914562f5916.dirty
 
