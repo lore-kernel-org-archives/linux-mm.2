@@ -4,103 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F2BFED2E9
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:51:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB1251067040
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:00:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2986A6B0088; Thu, 12 Mar 2026 10:51:14 -0400 (EDT)
+	id C05ED6B0088; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 245F96B0089; Thu, 12 Mar 2026 10:51:14 -0400 (EDT)
+	id BB4DE6B0089; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 128086B008A; Thu, 12 Mar 2026 10:51:14 -0400 (EDT)
+	id AB23B6B008A; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 01A286B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:51:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EE90160282
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:51:13 +0000 (UTC)
-X-FDA: 84537698826.02.3BE03F6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8DD9FC0008
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:51:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B5dUpUTJ;
-	spf=pass (imf28.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 985386B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 105AA1602D2
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:00:28 +0000 (UTC)
+X-FDA: 84537722136.06.6779479
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 08005140019
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:00:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="JAFcq/oX";
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773327071;
+	s=arc-20220608; t=1773327626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lE1rb2S8uojZcRiMtzZiFU8yO1ZMQjlNk6yVeVq/BwU=;
-	b=6bg9uaxYr9eR6GfiUwTCoxBGSTiIMUNLSubRQkq1C1uB0OQe97vkYWuosOBvSVU3bGbTqA
-	rjLkf0KOBiQJHCgQBp4HzpAFqaH+fwdMWTbscNq2yR0lKkYqim8yq31hL756WWT8tB0I4R
-	7Je1bofBC/bafNuZr0VvFjLkrVwNEDo=
+	bh=zZGtiJN9y4ZZ4JfI9NE8H692/RL57MUDkhcDsED4q1E=;
+	b=eV4hNyNOIa3BQ+5pHXVEcMoZqGvHtOWeqgwGNEevJ0qRM4EEadd+MwzzQKCA3KyMDPanGY
+	ERQ1jVKUKBgOcdINQilWCr9jWyhE3mKyZa3wRbPmMUzdlMgfO1ny6QHTrD96YrFQP6DS+v
+	Ln84Nk1R93XWn5qVSMxXeTGXqyoWRIs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B5dUpUTJ;
-	spf=pass (imf28.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773327071; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="JAFcq/oX";
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773327626; a=rsa-sha256;
 	cv=none;
-	b=yC8HRCWN/aM6pli64eb3uvVnWGsKJZKLVznTe5GLDC8xbN9O/1FTXuM/BdGd2FmddiKSyt
-	m56wYBavfZGCnZUR+ULTl7f6BiotnxEiH81kkjn2DEQATbPKkvM5vWKwcOaxIcqaD7ggAA
-	IzDSPv7iQiXnbhTDLls+UJ3y/Zs2k5w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773327070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lE1rb2S8uojZcRiMtzZiFU8yO1ZMQjlNk6yVeVq/BwU=;
-	b=B5dUpUTJNmzvA1AgYolYGYe9s13Tx5OMmUKTVaXvBeKrKz+r5t5XfvdlOd313vGFXpTipB
-	W49zLlMkkN0Z68a/WJ9AiX3baimzmtrBJ12OwF3niRV+/a5UbaSgjGFur1j9ZdXqLBN6MV
-	2HnG5mmzi6cQzE+ZW0TjKWBhyaabQjA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-vTJ5wrXXNF2xbUlIumCVbA-1; Thu,
- 12 Mar 2026 10:51:09 -0400
-X-MC-Unique: vTJ5wrXXNF2xbUlIumCVbA-1
-X-Mimecast-MFC-AGG-ID: vTJ5wrXXNF2xbUlIumCVbA_1773327063
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54CD8195609E;
-	Thu, 12 Mar 2026 14:50:52 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.147])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4849A1800759;
-	Thu, 12 Mar 2026 14:50:45 +0000 (UTC)
-Date: Thu, 12 Mar 2026 22:50:32 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Hao Li <hao.li@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <abLSuHU3eJrel6KI@fedora>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <fbssy5y6kpyjlefacmabuojiustr3nocj7timpgejpchkj3lw7@qfss5ffmwdxa>
- <abKp7-HzFT6llbYT@fedora>
- <iypdqo2s5oobenjrmoqqplgshsz65bwegih7kxhgd547fcofm7@yb6xqors6snx>
+	b=lNRbmxbpCJYIOFwG0JwFFjEvL4AqZPivlk4oQyD1/AytQWv6UnrunRIZ36vkwDmnL41IoX
+	tLJEo7ywCHw/qjuvONaWGPYinjVkmDIhTXW5eCUQlv+qioo5OhDNoVr/P3SNJCZziWLNQa
+	RmNfIE5XnLZ+DAbiErO9Ry78Wst89WU=
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-40ee9b945d5so732865fac.0
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:00:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773327625; x=1773932425; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zZGtiJN9y4ZZ4JfI9NE8H692/RL57MUDkhcDsED4q1E=;
+        b=JAFcq/oX0BIHjP0RDp3aNMY+3NbbeUeOl59SqK2Bd1OlPdePeOWei87coaVpOwrPaN
+         x5q5ZlKucAnZ2fJ2WY1+Op9lXXGY6vzyE4x4kJ00LziVt9PNDnQETzfz1+YTWNm0IKt8
+         CUDufc+vLUKkt9CX2ca7Z+aZVLN4oYaHrQihh66/ibnaTWQpcqrQTkM1PL5HZoajNGMo
+         Ojq5aLyshsK72iADH8axdBNKNMe+8NhZXrFyB6fOPFKu1MnC4Gkcy6EuXAoYm/FZFxxU
+         QrckheZp262K97fpEU06BcGX9b4SIKomb0qkLwg6SiLdUV72HZOxUf4hoOrFxXq5rGLD
+         Y7Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773327625; x=1773932425;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zZGtiJN9y4ZZ4JfI9NE8H692/RL57MUDkhcDsED4q1E=;
+        b=h2nka8U+ZjcpiY248qvXUtmMS+1VLNQB9dOKvx3Dn1w6q5IWII4fJsaHX4E5AzKDWq
+         aPo0OmeKguET9MpuuePR2vCaeRixj+rLxrDsXzNEcmVoaj6GJww6B04svLC6FOIx2Wmf
+         owejSxgm2QwoTD1WRn/ymJRztOc17eF8YdzFNj3bCOkP/+E8WCGAh17mdCMvIGYxhfHt
+         vORvTQ0hAmXpnhz6STwoytCLy8iOZWeY/dO4If9Q0FlfDpISodKg+2j3LhecexpHMIlI
+         GbhydDCzzc3qEFjydlnpD571HdI3eh6vMmcjZQtY9uyFvuy08NByq4lXhpBtDNnjy03x
+         bs5A==
+X-Forwarded-Encrypted: i=1; AJvYcCXdGwk5h8t/bQa8p4CCLdl+DYnHMKGEy/A1peyzGHI8lmKougealFBHPN5pnxTHrm3Cljpbug+OUg==@kvack.org
+X-Gm-Message-State: AOJu0YxSUjpQOqt6cauhX2GOH5YpJvtFzkfKDOZ28Agt8B+Iz1Oo4Zn5
+	f7qXXjunGfdnQZtmfyIdcHHWlB+YAEQqAo94Fr6ioSv3QEj/6UPb5Q+V
+X-Gm-Gg: ATEYQzyXwNjiphE1QdAhqkNPHAc8kTAuUJXzmvj3qHeSkeOXtnAIIGwfB6NhY/dMHwi
+	6NahxdkpGfThpIzraIprRbpYyb47ZFhda3mKInyDEwT86e3ovIP++nwDcYux5jEYO69LvFCyNTA
+	c9SzPobsb5cm+WINjNZBSADgXGRAyjc3XxCbltTcfPbko0nNPwQ925+hnmDjNe0xnmLD6ibq7tI
+	/5XVzDJAhUgb3LSNYlcnRincq32HTV429jzl7BasR+RGR21l208xXqJMGtWfwJfYuQAHj/nur3L
+	VDNTP9tfYXgS5r37uh3a1fiwwgyeoV62lBmJQ1Vm/KSUpwxBVHlI+znionWb6L69cDyDZufl44n
+	ls81vxneHYYHNu2gw9p5hmXw1nsiKRZ3s1BnMkR5iF8Lj7AR/IjuxOvvknRMyv885CyNAz23rHG
+	ahPr2izF4TAlO4dvF9BApKnDdszlpsINo=
+X-Received: by 2002:a05:6870:798d:b0:409:9a0b:b733 with SMTP id 586e51a60fabf-4177c5d49d7mr4215501fac.10.1773327624652;
+        Thu, 12 Mar 2026 08:00:24 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:6::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e5e9f53sm5583147fac.13.2026.03.12.08.00.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 08:00:24 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: YeeLi <seven.yi.lee@gmail.com>
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	dan.j.williams@intel.com,
+	ying.huang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org,
+	Jonathan.Cameron@huawei.com,
+	linux-cxl@vger.kernel.org,
+	dave.jiang@intel.com,
+	gourry@gourry.next
+Subject: Re: [PATCH] mm/mempolicy: add sysfs interface to override NUMA node bandwidth
+Date: Thu, 12 Mar 2026 08:00:21 -0700
+Message-ID: <20260312150022.1373486-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260312091207.2016518-1-seven.yi.lee@gmail.com>
+References: 
 MIME-Version: 1.0
-In-Reply-To: <iypdqo2s5oobenjrmoqqplgshsz65bwegih7kxhgd547fcofm7@yb6xqors6snx>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: dYSVDxGnNFLpYzGy8k-yYjltgOu4HJni96cun0mKorQ_1773327063
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: jyq96szfo489nwbzsuxgjbqzi1fd9pwe
-X-Rspamd-Server: rspam09
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 08005140019
+X-Stat-Signature: knnb7y1jik7kdemsxz7snownmjpc1oj5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8DD9FC0008
-X-HE-Tag: 1773327071-472631
-X-HE-Meta: U2FsdGVkX19GGNL/jyjzY5yk1O7us+kBgESTiSuEh9xWice6G6TSPk6R0J+794tXGnnyRoDLDGRKbIaNdmoduvhMBP6HxeFrako/xSCcbp2VxyNCKQt5dtD/0HEb93EEtGyxdwqliIP5ppxW1YTsd4M8TFeKq5xGwS0O68xzSSDmUQVl0+COIduRiM9fpPdGeTkG6px+jgR6Nn2ruebyKzubujw5WVBLhDmSStxvM2hGJFQLyoh9h3Jeb5/eGLjfAhCctzNCnkcoCgKTZONvJ7sluSd0v18YFUmIQ/72DcqmxyxkI22BMxnHAOSmX6iUGnQW4FV+eAwxVFabtJ70MUcgkr7wia2qBNvH++q9ELjOKoz5apC7TCV3a399jmMT2XS5P0PqEolPNXIEhuIhhRFgLP0xmeSkH+ANcx2+HnyYKBCrV1Q1sNgLU0VyJk14g944ytfloSdz2YTzGKNGRopm5qMaLKdlVTJDNmXGGbpA4bscR2fa9/Buom8G7drtvYTl3PVadZFJg07+MOvGZC4E8MjgvE/8RJCh/jl3WIAoG2UnCsS7wothCbDV112DBwdKfVRiy1mXi43DICJ07OiIsqVfyw92IsUcwndBXvfuiBFNuMim4TXsAPWj/4E8Ly6voD8RJgMb3cZq03MJZu2eE1OYWhSm426lQIw8J6T6k5QHhQTpxduWDPoUR//KwAaL10poHnV70B7/W0XZpyQI/nMH6jQ5EVjYGno2/Z1VUAXwRUGyqe9nW20f8YN2Zivh7J/+W3fdZRT3NspsjLP+7pkyNmS8BYcyCPDb1iCG4AfLEws6GGWOf+4VFfqP3EutD4ASod5l1QoXQUNDiTPirFMNf7W7Gdp/bP1McyqszlLewPuvyyW4d6yk1Yr3siCQijLkUef0B/Ip2DVbvvD+rRjndsID6ycKpSChU5IgMGS+W+0rUL3a+tFS8JnMjDQwQnPJRrdAh4W/IZp
- mJRHl82n
- 4kAvw9ErrneVHIzEKgoPAZ8PPFbELvF9OFV0gU/nsI7qbs40xDqGh5vWJyWfuPN/o3Yw24uzL0eDY3wYjukW49s/o0pnkU5snBCxUuxIevVfuD9IFQTqKTAZ/wfyI+a8GPzNMknZ7/CmRycVw5QTPBoJwLO7+GOoAXKR8MV0c8YdXrHBA+icVZX28+ja1u/AOebYiCG6u17EZKMWPdVCfqQ6z8iQS4dvxLRi4LHC5I5G5HeOApI19IKUTqQuHzLahcHZpIlPFl/G4m2t5rgdB0t13YOOUGc9LNghvrO8jBknYrHNUGDJ9a8KDs0UU9HCAJOuGnGWeTzp4sMu91pXLBC1rPQ==
+X-HE-Tag: 1773327625-81408
+X-HE-Meta: U2FsdGVkX18C1nZEo/4ljjerFPNZmwD078mNgAkQdsSZlEqrg2zAl09+PbJRjdKIzQKcupsDSFnDtgk/MPhSfZFHjZByQRNpPknU4PzXvkJ9BCLbHxTa9ClfzssJm/X4XEdMU9PJ9BrcTl9iU8WDYoul9aTKPqIIiqL4CWOgIAsWYBaX0v3L8cyNUFG+1TvHRi8j0gP0MsgFEAL8JqbwctuH8DOvHBCPfRlDa4+zYenTujUt/wK6podH4MKmizyIaN6bOWx7GwEPRVhUEquvfdO3fubjEfmuAAVbovKQVkpO7MYULr60JG0vkw+Gi/gvfQ5vnyDx2b5hPHF5jA7IKa4Op226rJOu+UrB+pcn45uqHm3vDv2uA9d9gf8miQBnOG4GnUKLfEOkavJy8lDupGeeCYRd2f/IQP9yhI3LcouUcgaImoibUi+XwWnUDQYZ322Km5zS7M24wo9Z/slBhJ4XBwBZT16NfH2p8ls5OAmQPeypkAw8wlwvbtztdex644TloK74SIrZzmv4PLxfb9njuG2QD5M/CLVeBVtDIBz5jcIxUzybqA1vXXIhR3dl1fBcn1q40Z7HiYxLubNVH8Ff+8TOBsQykiquoKXEbP/QgbP+twcKD5qtm+bfVoszPVKcXJVW0icpB8MaaeT6feys/ZbTeODDO42PIz43sRItH/1Peu5QKT6dgXCZWPLehSDW6qpEQf9Jz1sjdTGdQFVwYbPsc0FoUW99K8JFvGA9/JSTb8MnWDWFYNGggxrwevwuHteTTK8BkVjaU5zo8QgNOW403NbVoIpZbp5HuMcvuvebxH6b8VILle2OIwmq8olrEDrYsvGKNaYT47HyolM1JGGvhnDeVdeVqugTQLkEWP0rH13l+w8jeZX6JvlqMbZXg7T1qn0C/d7tMrEq/VIGo/oSArOJGjJxWGG7hCuc4jH7bivW0M3jaZJmD/N9KqRedvFzT4YXiykjBXO
+ fDKrHkN3
+ o8jrlTDVKFToxWPS304xM7EREudHumlvm2Bg93HD+gTFPxoBN3CZ4zkGQTeGs2G2jbgxqjZYyGm2yI3kPrZaWP80/cZOAywLHQZ5V+g9XzqpeW7oQAV6/CZxKT06jlOecUqeu1aLVXcPkAhGelxegQJnI1xzqCBeBVoFmU0RBSMBDMGE7XVVS632fsKeDRAs0UFZhwypwELndwqDtoD6i3y9QNXZEpnC+R5gtVEeeg58+JMIhNb+Alme8BuQXr/1qTxex956EehSVW9ZSqmsoIMgvuTbeQczvWFx3n9kt2CtVBo+MtLWTGZRHe0dfGi/l3RsRDwqu+CasakRBmMJp9Fqs+vS33dWiJFDEQ8zA+9aFMBefC4pouMds6rj2iwmmzi663KwD9a+RoMOQ5iBweEj3GgvG8C0a16H/a2mTe1xIf3b2uTwXaRNBiHoPydFPX7UgMWWEOPZ2oX83B8RRlyWw+T4PRcTlwQ7nxWrucpV37YQRXFd2AtbsI6ltQpVfVzUlPQhYdfmQiZbqAtLGx+1oeif8HdYcmQilaKSGM8AY68QIjZbWP2JCFa7aXzTADlCtNgJMEntGcv42XxwhpuVzOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,135 +126,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 08:13:18PM +0800, Hao Li wrote:
-> On Thu, Mar 12, 2026 at 07:56:31PM +0800, Ming Lei wrote:
-> > On Thu, Mar 12, 2026 at 07:26:28PM +0800, Hao Li wrote:
-> > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
-> > > > Hello Vlastimil and MM guys,
-> > > > 
-> > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
-> > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
-> > > > performance regression for workloads with persistent cross-CPU
-> > > > alloc/free patterns. ublk null target benchmark IOPS drops
-> > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
-> > > > drop).
-> > > > 
-> > > > Bisecting within the sheaves series is blocked by a kernel panic at
-> > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
-> > > > paths"), so the exact first bad commit could not be identified.
-> > > > 
-> > > > Reproducer
-> > > > ==========
-> > > > 
-> > > > Hardware: NUMA machine with >= 32 CPUs
-> > > > Kernel:   v7.0-rc (with slab/for-7.0/sheaves merged)
-> > > > 
-> > > >     # build kublk selftest
-> > > >     make -C tools/testing/selftests/ublk/
-> > > > 
-> > > >     # create ublk null target device with 16 queues
-> > > >     tools/testing/selftests/ublk/kublk add -t null -q 16
-> > > > 
-> > > >     # run fio/t/io_uring benchmark: 16 jobs, 20 seconds, non-polled
-> > > >     taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-> > > > 
-> > > >     # cleanup
-> > > >     tools/testing/selftests/ublk/kublk del -n 0
-> > > > 
-> > > > Good: v6.19 (and 41f1a08645ab, the mainline parent of the slab merge)
-> > > > Bad:  815c8e35511d (Merge branch 'slab/for-7.0/sheaves' into slab/for-next)
-> > > > 
-> > > 
-> > > Hi Ming,
-> > > 
-> > > I also have a similar machine, but my test results show that the IOPS is below
-> > > 1M, only around 900K. That seems quite strange to me.
-> > > 
-> > > My test commands are:
-> > > 
-> > > ```bash
-> > > tools/testing/selftests/ublk/kublk add -t null -q 16
-> > > taskset -c 24-47 /home/haolee/fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-> > > ```
-> > 
-> > The command line looks similar with mine, just in my tests:
-> > 
-> > taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-> > 
-> > so the test is run cpu 0~31, which covers all 8 numa node.
+On Thu, 12 Mar 2026 17:12:07 +0800 YeeLi <seven.yi.lee@gmail.com> wrote:
+
+Hello YeeLi,
+
+I hope you are doing well! Thank you for the patch, I think it is an
+interesting and helpful debugging tool.
+
+> Automatic tuning for weighted interleaving [1] provides real benefits on
+> systems with CXL support. However, platforms that lack HMAT or CDAT
+> information cannot make use of this feature.
+
+Thank you for the kind words : -) I'm also CCing Gregory Price, who
+is the original author of the weighted interleave mempolicy.
+
+> If the bandwidth reported by firmware or the device deviates from the
+> actual measured bandwidth, administrators also lack a clear way to adjust
+> the per-node weight values.
+
+I just wanted to touch on this. Is this true? Weighted interleave already
+exposes sysfs that lets the user set the weights they want. On one hand
+I think it would be helpful for there to be a tool to see what the
+effects of setting bandwidth information on a system could be, if it
+had other side effects. I'm not sure if there is a strong case to do this
+purely for weighted interleave auto-tuning, which already has a manual
+weight override and pretty simple calculations : -)
+
+> This patch introduces an optional Kconfig option,
+> CONFIG_NUMA_BW_MANUAL_OVERRIDE (default n), which exposes node bandwidth
+> R/W sysfs attributes under:
 > 
-> Oh, yes, this is a difference.
+>   /sys/kernel/mm/mempolicy/weighted_interleave/bw_nodeN
 > 
-> > 
-> > Also what is the single job perf result on your setting?
-> > 
-> > /home/haolee/fio/t/io_uring -p0 -n 1 -r 20 /dev/ublkb0
+> The sysfs files are created and removed dynamically on node hotplug
+> events, in sync with the existing weighted_interleave/nodeN attributes.
 > 
-> If I use this command without taskset, the IOPS is still 900K...
-
-So single job(-n 1) can reach 900K, which is not bad.
-
-But if 16 jobs still can reach 1M, which looks not good.
-
-In my machine, single job can reach 2.7M, 16jobs(taskset -c 0-31) can get 13M
-on v7.0-rc3.
-
-
+> Userspace can write a single bandwidth value (in MB/s) to override both
+> read_bandwidth and write_bandwidth for the corresponding NUMA node. The
+> value is then propagated to the internal node_bw_table via
+> mempolicy_set_node_perf().
 > 
-> > 
-> > > 
-> > > Below are my machine numa info. Could there be something configured incorrectly
-> > > on my side?
-> > > 
-> > > available: 8 nodes (0-7)
-> > > node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-> > > node 0 size: 193175 MB
-> > > node 0 free: 164227 MB
-> > > node 1 cpus: 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
-> > > node 1 size: 0 MB
-> > > node 1 free: 0 MB
-> > > node 2 cpus: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
-> > > node 2 size: 0 MB
-> > > node 2 free: 0 MB
-> > > node 3 cpus: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
-> > > node 3 size: 0 MB
-> > > node 3 free: 0 MB
-> > > node 4 cpus: 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119
-> > > node 4 size: 193434 MB
-> > > node 4 free: 189559 MB
-> > > node 5 cpus: 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
-> > > node 5 size: 0 MB
-> > > node 5 free: 0 MB
-> > > node 6 cpus: 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167
-> > > node 6 size: 0 MB
-> > > node 6 free: 0 MB
-> > > node 7 cpus: 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191
-> > > node 7 size: 0 MB
-> > > node 7 free: 0 MB
-> > > node distances:
-> > > node   0   1   2   3   4   5   6   7
-> > >   0:  10  12  12  12  32  32  32  32
-> > >   1:  12  10  12  12  32  32  32  32
-> > >   2:  12  12  10  12  32  32  32  32
-> > >   3:  12  12  12  10  32  32  32  32
-> > >   4:  32  32  32  32  10  12  12  12
-> > >   5:  32  32  32  32  12  10  12  12
-> > >   6:  32  32  32  32  12  12  10  12
-> > >   7:  32  32  32  32  12  12  12  10
-> > 
-> > The nuam topo is different with mine, please see:
-> > 
-> > https://lore.kernel.org/all/aZ7p9uF8H8u6RxrK@fedora/
-> 
-> Yes, our NUMA topology does have some differences, but I feel there may be some
-> other factors affecting my test results as well.
-> 
-> Even when I run with "-p0 -n 16 -r 20 /dev/ublkb0" without using taskset to pin
-> the CPU affinity, the best performance I can get is only around 10M.
+> This interface is intended for debugging and experimentation only.
 
-What is the data when you run same test on v6.19?
- 
-Thanks,
-Ming
+Thank you for the helpful clarification. Just to be sure, are there
+other intended things that the user can test other than what weights
+weighted interleave would resolve to?
 
+Thank you again for the patch, I hope you have a great day!
+Joshua
+
+> [1] Link:
+> https://lkml.kernel.org/r/20250505182328.4148265-1-joshua.hahnjy@gmail.com
+> 
+> Signed-off-by: yeeli <seven.yi.lee@gmail.com>
+> ---
+>  mm/Kconfig     |  20 +++++++
+>  mm/mempolicy.c | 148 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 168 insertions(+)
 
