@@ -4,119 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2BFE105A589
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 11:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0FA105A58D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 11:43:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EF7B6B00AB; Thu, 12 Mar 2026 07:41:30 -0400 (EDT)
+	id 06F076B009D; Thu, 12 Mar 2026 07:43:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 083396B00AC; Thu, 12 Mar 2026 07:41:30 -0400 (EDT)
+	id F34626B00A6; Thu, 12 Mar 2026 07:43:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9CC66B00AD; Thu, 12 Mar 2026 07:41:29 -0400 (EDT)
+	id E36E86B00AE; Thu, 12 Mar 2026 07:43:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC04C6B00AB
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:41:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A3894138E37
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:41:29 +0000 (UTC)
-X-FDA: 84537220698.10.CD8E3C5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C580620002
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:41:27 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ab1wB6y+;
-	spf=pass (imf03.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D21156B009D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:43:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A4DA81C14A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:43:54 +0000 (UTC)
+X-FDA: 84537226788.05.9A60706
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E8C15140010
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:43:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WNX9KYPI;
+	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773315687;
+	s=arc-20220608; t=1773315833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3FFU11Mi0bBXwJKlMBJvhw89oPXuQQ6MnaqLH21R0oM=;
-	b=vGQo0WH1e09xwdF8fL2hcvfV+OzXI13HAjS4cQrZ3G3OSmZLgBLbe3C4NU7e3Hv9uyaMoD
-	gv7p3UR8m5Nd70w/s1QlzGlSHf6I09aqGhr9wNB1Z6kdBNCPxKtPQl8iM9eeeGnHB0KIBA
-	tiXJPaHRPEYszP8bJUPw+HPXWhYdNNo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773315687; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=H9BJa2FyYR/4Xd2mO+Zu5rjBKkRjbGyZ920JQKQ/ZcU=;
+	b=byDVL9ctN2JwCOW7shUQj6+Zu4cngcl5iNP36WEcmRLKSX2fahVyi5CZY1/qIhgrvLDqZw
+	SBSlNGiJPFMVkOpx4FFh3fitNIrpyPL1FPEhIv3Se7fDdZzVUL0TGD/62FvStiXjJ5x0Nn
+	LgO0/XycIKjfDFR1bcBcOND83OGHM/A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773315833; a=rsa-sha256;
 	cv=none;
-	b=bvgBqIUR02T9Kw8Dh6eJz8crKZ7SfR+EV0AkALNycyqLpfymP4nBO1uTKSgnScZKbn6YqB
-	KuzGE4AIYsL43I6JPkF2ysucrkjjlEUOz6nOwxrDtWWnmWuLrDGlvamBAdM9gI+7MYXqBj
-	jyCpF5ARkFME8H30z2ny8PO22HpMWTs=
+	b=eoI/HBwmNDyc+5YsDsR7J/gj8+MLowQPcLc98Yzt7BlZOGwoFprrWIb3piPOWnmgiOCMZ9
+	xKjUn+AdEXRuykTZAgWARfMuwZ1U6ea0zjcUcRMVqvgUAcIaO2IbJPJIz0Z9xZxvo4FHcC
+	hi/waF1HVO/zPx9nqhtYyoPk6+MWbOw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ab1wB6y+;
-	spf=pass (imf03.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773315687;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WNX9KYPI;
+	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773315830;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3FFU11Mi0bBXwJKlMBJvhw89oPXuQQ6MnaqLH21R0oM=;
-	b=ab1wB6y+ki+kF7klV4XbBfWKXuJ+Zu4OEY9wSUKVc9nqXUM+MmdOuWIyOMd+v+K9Gcqjn/
-	EZKUvj2wARYtt1LG+cK43cg+MDiKF2HAfvcvmhv+VszWx3BAxGAkoxNiyaaP/6xu/O4gmh
-	3QAQz+CeoFTFnhlwOfyV47jIfqiO2KA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-VTST2Oz3P6SVUz4tR9q3BQ-1; Thu,
- 12 Mar 2026 07:41:24 -0400
-X-MC-Unique: VTST2Oz3P6SVUz4tR9q3BQ-1
-X-Mimecast-MFC-AGG-ID: VTST2Oz3P6SVUz4tR9q3BQ_1773315681
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6072E195609F;
-	Thu, 12 Mar 2026 11:41:21 +0000 (UTC)
-Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D58C180035F;
-	Thu, 12 Mar 2026 11:41:12 +0000 (UTC)
-From: Chunyu Hu <chuhu@redhat.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	shuah@kernel.org,
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=H9BJa2FyYR/4Xd2mO+Zu5rjBKkRjbGyZ920JQKQ/ZcU=;
+	b=WNX9KYPIJOBac5XcqnyjqN1C2HNJOyEakSmm+LNQ8BFNEwdYyo5O9rR4+ptnMYvLEmXK+W
+	aLNXY8NTLOqEySImMa3EJFcDcDlopnZAvIJFJVmDOoI5btEENgDJvGOSApFeaiDpRcbjqq
+	d06/2LhOKJsqCvfOWr7x7iYjck961uM=
+From: Hao Li <hao.li@linux.dev>
+To: vbabka@suse.cz,
+	harry.yoo@oracle.com
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
 	linux-mm@kvack.org,
-	ljs@kernel.org
-Cc: linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	chuhu@redhat.com,
-	Li Wang <liwang@redhat.com>
-Subject: [RESEND PATCH 4/4] selftests/mm: transhuge_stress: skip the test when thp not available
-Date: Thu, 12 Mar 2026 19:40:27 +0800
-Message-ID: <20260312114027.634559-5-chuhu@redhat.com>
-In-Reply-To: <20260312114027.634559-1-chuhu@redhat.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
+	Hao Li <hao.li@linux.dev>
+Subject: [PATCH] slub: clarify kmem_cache_refill_sheaf() failure behavior
+Date: Thu, 12 Mar 2026 19:42:25 +0800
+Message-ID: <20260312114309.213731-1-hao.li@linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: x_xVp97rb_cmPVswXH4DRNMdi9qF_Uup4MYpIK62FZk_1773315681
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C580620002
-X-Stat-Signature: rsxpy5y747yups74zzpgujy8rbubr9gz
-X-HE-Tag: 1773315687-450187
-X-HE-Meta: U2FsdGVkX1/EzXPEACQllvIAGe0OdCeVKibE5U5soofewOAB+0RpFdOOiyKKCsNL0dGT0/W28NU8qv0vK3a+JR8d7L76uv17N4A7ZPOevzoR1EJcRFXNNm6QHtFgzibJ9DyMPdsxhg0+mnVH9QuGAcNWr8m//l3lWg9PHyATAxkJOQsAqYFGiyLBkxZb72Sqz7hGS9R/sCR3UVFICqjirLD6xKTnJOvgYpMCjfA0SacbUkk7N7ajS7gq5UqC/nnLyNg+tOlzHZ/knXrT5GmyA81WFEQoYffa4sS9mGzkvP4hUPGz6JACcrmbXfcNbwTW9IWvBQ8fSGMoLDiNBlhvLxZld6zZN6Z6qB5PvDUqqwB3mQxIc/2pIaGzha2jiV3VUKCfLOf3fdTGD+vgNAf27/S6i6c0ty/jooR4BJxAUk0zE3C0Hk0vu0z7YDzFh0xEEGXkm+UTBuKuEevjEQ4LqvXEUyvUBiiAzwFAe2B15ytYdvMnxObzyJ7LSDWunVLV8fxejEwUwwvxyCUb7JyKurd46fymqCsWQl3Oo3zPAo6aTRAQ2NlUNYcu82GQ2BYwsRVuN8oAoBRC4SaWD+Zscw6fe29zIR3WqApNfnshR7qZGjEYbKXvS6KJClo6rCFvVikJ32BGoECNMfSLK/Hxvq9x6eO0yyMYEwKLiQJ4I4ONQNm2yBY4FaJjpcwbBPZB1H+x1z7jEEfvc807P6V7wB4NMg8sBaayWesLdkjbTG9oBAvqLxvFr/woQ4zG+E9/YdOH1IG/8DcuTH0TuPhS6TYqS3p6u4aYsiR30yAak/SF9T8BMlpGOKZX6OMwO8A5paPRdVoarrbcWwPjmwnMvdI3uvgb1BdMZ+mgndFs7EdsmF2fjVNWNhS5JLzkY43MQggkrVh3qTWG59a0Ueqc3lPjmo7+VhUqL1Dm+TUJXm3bvzYGtOU+q1xuE2IYGtv+tdKuN04bEwNwtM+GzJ5
- RQJaCZ0X
- 4Kecuzgk3pqfv4vs3IUJqACcA9zZk7EozCmchdbtj4I/VfdWMvBlki/sTyQG2BxHnATtzaMU6nFVvczE5+RpeuwledgYLLpKXaDef8OiLn874fR4MJF52Y7VPfd4pHkb5HAQXu/C9ktFAy3QEhjDMHIvCLvruw6zSUPUC5gc43dZDLLV3hdanuuK/DTYss+RNirEK5newt0/XSir6ax3ufjjPU4lu5/ZMiBQFqw9AA4nFzPRlFuHs/T3fJoNUCzuciSmTjokG2+HrWnCsXuObK5V8GeAwxsqmNYDfI2GDaCguZS/I8Bnwxc3W4PGTw04weY9blrQLy7V7L2Xdph4DOk2suN2I3g4GABLBznyzNSPdsuTs501Ognv8qvjRMfQapm9TdikzMFiBWnc=
+X-Stat-Signature: 18steysbgbya7xpugxhzyx6xzxnygj1d
+X-Rspamd-Queue-Id: E8C15140010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773315832-700263
+X-HE-Meta: U2FsdGVkX19vQGLVetF6QXD2cVOlL78MMdg+PC8UoSoIZclCpAyFWiIklk5swS4hCQT9SwVXc5CCsaSQ9XkajZnaQV8EJty3CYIWL9wQ7+m9idtl7WWljSQzjYs3kDFkJ/kTNj4NY3ergIq4Fb5EYuB6727KUb735bAmB8pxVWtJidziASXNrCJZJjT6AXc48mZ4AaM8PLUZ64Uv31m7V9Uuk54w/LlysUQScgl/JQ7M9cPYgL52gGiOyBO4WeWEICydVJjhau73S7fYqze5OTa8+rpuAChhefnmG4wLgheqwHsB+KgtyFnZIdilU8FWIGfkr34AFicpX2BCrjoqwj9i4pk8esNl4bcN/JoOCglOeQQzvyCop/L/k4LdVs8k8iY5MK6juf4Sf+SxMVVRsfa8JnswNyENCeJNRgvxsR6p79rRGDUNBVDmBLLfcZ4BEdGxzIWy35lIpLgVxbqrXBz93WouHQKYhyiYDz3Wbn/iAFvEFAh7V6xIFS/4zvX7/u60OQrmK7YG3TNbcGQ+JaN8lz/x5C9VsppSH/F6dgcSwH8QCo7r+KEWNYwTy6Wv78j66gchgyR+qYPuFyk3qbRX1ToZZsplXDFP55mSqbWVPKUlBRWfBaUy2TbsTQMuvswvFMDKBA+OzMsMoKUEABEQoPcCpkzNGQpTFnyGr9PnOMXZM3KPdRNJF7ljoykg/xrWGeryZu3tF3KZeIH25QyDqvNfWvwkD7mq5rNiMK6m6K8cyDQciToUvXC157T+EBoeLquCZhWmfHmWQaICVhWgNaS+s8a1ROujizcolwmAjE0tBLnkEqe1F68RbBfvHn/Bs8RiZK3CVDHusEKIR9CpUkzBHUYPXqxQ3dFTuGCf9ypwn2gHfPn55uSrSIQawLp+YvGpXrqv1PCxGsOfdA1TNhQ/gEzGDWPDwy80In5bhMeDvtjInUNKimqnAIvzUHmy9dUURvlRMWiPJOm
+ Mlvu/B+N
+ XxoH8npyLgIfBScBxethO5vqwc0rHcu81ZmJsqvAqomLKy+YVxTJI8J9faiHksV1iYIZqwXPfar4lU4xKyAZAGn5KB7FDewjso93Zm7xUV1JnajSnALK+dhJeL8piuOd+yMd12aNSrhprZk/ud+rFJFhkDA1qlWbSm13P6nIs8IlpJKctH1xo/LpUKhw1qHo+9MhFx+npjMqE+qgWSP2wUmYjKa2pJD/L/ZDQSztR9auVm1DPES5hLL6WEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,59 +88,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test requires thp, skip the test when thp is not available to avoid
-false positive.
+kmem_cache_refill_sheaf() can fail in two slightly different ways.
+During an in-place refill, some objects may already have been added
+before the function returns -ENOMEM. On the other hand, if allocation of
+a larger replacement sheaf fails, the original sheaf remains unchanged.
 
-Tested with thp disabled kernel.
-Before the fix:
-  # --------------------------------
-  # running ./transhuge-stress -d 20
-  # --------------------------------
-  # TAP version 13
-  # 1..1
-  # transhuge-stress: allocate 1453 transhuge pages, using 2907 MiB virtual memory and 11 MiB of ram
-  # Bail out! MADV_HUGEPAGE# Planned tests != run tests (1 != 0)
-  # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-  # [FAIL]
-  not ok 60 transhuge-stress -d 20 # exit=1
+Update the comment to spell out both cases explicitly for clarity.
 
-After the fix:
-  # --------------------------------
-  # running ./transhuge-stress -d 20
-  # --------------------------------
-  # 1..0 # SKIP Transparent Hugepages not available
-  # [SKIP]
-  ok 5 transhuge-stress -d 20 # SKIP
-
-CC: Li Wang <liwang@redhat.com>
-Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+Signed-off-by: Hao Li <hao.li@linux.dev>
 ---
- tools/testing/selftests/mm/transhuge-stress.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/slub.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
-index bcad47c09518..76316696426d 100644
---- a/tools/testing/selftests/mm/transhuge-stress.c
-+++ b/tools/testing/selftests/mm/transhuge-stress.c
-@@ -17,6 +17,7 @@
- #include <sys/mman.h>
- #include "vm_util.h"
- #include "kselftest.h"
-+#include "thp_settings.h"
+diff --git a/mm/slub.c b/mm/slub.c
+index 11a99bd06ac7..8ae248b5b384 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -5005,14 +5005,23 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ }
  
- int backing_fd = -1;
- int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
-@@ -35,6 +36,9 @@ int main(int argc, char **argv)
- 	int pagemap_fd;
- 	int duration = 0;
- 
-+	if (!thp_is_enabled())
-+		ksft_exit_skip("Transparent Hugepages not available\n");
-+
- 	ksft_print_header();
- 
- 	ram = sysconf(_SC_PHYS_PAGES);
+ /*
+- * refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
+- * the given size
++ * Refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
++ * the given size.
+  *
+- * the sheaf might be replaced by a new one when requesting more than
+- * s->sheaf_capacity objects if such replacement is necessary, but the refill
+- * fails (returning -ENOMEM), the existing sheaf is left intact
++ * On success, the sheaf will contain at least @size objects.
+  *
+- * In practice we always refill to full sheaf's capacity.
++ * On failure, there are two cases:
++ *
++ *     1. If the requested size fits within the current sheaf's capacity, the
++ *     refill is done in place. In that case, a failed refill may still fill
++ *     some additional objects into the existing sheaf before returning -ENOMEM.
++ *
++ *     2. If the requested size exceeds the current sheaf's capacity, a new
++ *     larger sheaf may be allocated to replace the original one. In that case,
++ *     if allocation of the replacement sheaf fails, the original sheaf is left
++ *     unchanged.
++ *
++ * In practice we usually refill to the sheaf's full capacity.
+  */
+ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 			    struct slab_sheaf **sheafp, unsigned int size)
 -- 
-2.53.0
+2.50.1
 
 
