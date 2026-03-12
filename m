@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FCEFED2C2
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 03:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85283FED2C8
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 03:52:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CAC46B0088; Wed, 11 Mar 2026 23:52:40 -0400 (EDT)
+	id E78996B0089; Wed, 11 Mar 2026 23:52:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1792D6B0089; Wed, 11 Mar 2026 23:52:40 -0400 (EDT)
+	id DB16C6B008A; Wed, 11 Mar 2026 23:52:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05ACF6B008A; Wed, 11 Mar 2026 23:52:40 -0400 (EDT)
+	id C9DED6B008C; Wed, 11 Mar 2026 23:52:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E85526B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:52:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 17A405A8D4
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:52:39 +0000 (UTC)
-X-FDA: 84536039238.06.D5C98B7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6676B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:52:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 784B6C2660
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:52:41 +0000 (UTC)
+X-FDA: 84536039322.25.C3CF835
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D0F8F18000D
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:52:35 +0000 (UTC)
+	by imf16.hostedemail.com (Postfix) with ESMTP id 42AE2180007
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:52:39 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kXiyqY1s;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EruP8z4C;
 	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773287556;
+	s=arc-20220608; t=1773287559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MHSJOJ2069+1DMAL/C1TGAvODihTd7SQpfXmTZWQ8N0=;
-	b=y/xk0d2veNgYhX7e/IoQQN03kYYFV/NWCcq0azMSnlNbK2XRIzmwlfWkMfrLgzPCrS6zZy
-	cVpG/0z3LDwP10wFvPwYYZxrZRc5WziaHGQUQdWNHwiL+nk711t1XAbNDGhsJjLQWwBXX+
-	UgK3AuEXOI05+fTcrpd/g9SjzrzhTnM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773287556; a=rsa-sha256;
+	bh=M7NVJ4wab0+MXHzN7IIvue383xYr9h1IOLXe0x45tY8=;
+	b=pURG5Lrq2lU6re3IY4ijdzvI/UvVrQ8+nnQMygAyrJX5KCpT8rIt4bCCfUEpK4YxTzKA4o
+	E5iHm3XvYE9Y96j1VFcvLQbFEC2Ojyjg+E0NSAmIz+e6zg8R2hSfI6vjcfmltGIIGmvl30
+	zV5GDw/mmykPpVDfTfoFvKgvST9lz0U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773287559; a=rsa-sha256;
 	cv=none;
-	b=F+kE4CTzlHPAdWfcFg9qewHlWcoT7fllI5Eawt55cGdGYS+2XoUQZ2yWOhzrpm3TTnO7KA
-	WKIqd0mfu1/fRigwJcjGf6QWh0HgnAiBwSYIW2yDT2om7UteSnwEYKpvVZ0Pne7Y5wKuyM
-	BCIASHuBRzbLon/Up5yIJ3vLzL3hNrI=
+	b=CuU4z19EmtKmai9e0i7iGNjmWDQwQbGGeWvP3oPTduG7GOh/H7ZzyMjLTo2NHs0A50fnbc
+	a7z5ekQ7ldGDaPVVO4URorWhkl1WMbHYQbOsZTV16MBTDg9KiQO/ErZDqvbAaBAl9n2BS8
+	mTjRie40Y/QW8dQvWDCKAWiNe+pBhnk=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kXiyqY1s;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EruP8z4C;
 	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773287556; x=1804823556;
+  t=1773287559; x=1804823559;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=hgT3wFUEL6+EQV3boNcDOYwH0s8O8YUiGYj5Lz8pWeE=;
-  b=kXiyqY1svn1P/Bk+sAZNqGayQ4J3zQriZsnao67Fd8bqOY/nT1ZETiUh
-   sKcb/dGOG+SCiLAXKaLwVjsvuus42D9PGiW47dVTR3tPKK22apX3kQsVh
-   4iBPzppeE5Sz9enh9r7q13oqZ9bTVfCWIQYaEJNDOyKj+N0QEwp+4+azR
-   dBK9GCUs0meY2qq7zOftOKeodVnYzLQiN3x3MpwM1rcX2GpfjD9X0V/IL
-   Qtw/MpeQ1apreCEhXUCHTZ+miD+iHC8TiOFnzvmo4pLkLGa+Cgc0Nr0KF
-   MYk6SuadMJZO1mxnskE5F62Tj0Ch/w9ameEFAROFUlIEmZIi1sUr+oDfy
-   w==;
-X-CSE-ConnectionGUID: qoLjTRe0SzGNwnAwcxTS5A==
-X-CSE-MsgGUID: M389q00iQsmakHmM/o+ZLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91749587"
+  bh=NYSMMxWAdzwBiR4jQuYBqPNH2GBmxUx4Fg6ov9K48nQ=;
+  b=EruP8z4CyDX6S6VBEfBLxOfrVSF1ehhmWZhAW9CNY6g8Kl2GOk4sIee1
+   dBXwwKSWfB5LF2b/I3m3D+fJV6z/r0Ilgwgx6L++CG1kD/If/596Nqwmg
+   Q93Lu3HexmmNkEbgnS+EF67aWRIk+ouAwIoI9uFdtA9AZhpez0GFsElSz
+   Sppab+AmXSvwLfjCZEXA0st5P3qcTrXao1+4hhj9sbQGGmUwdf9KAeryw
+   PdhyyhngYkwVidg2VS5cDnZCm+JZZs326qp6QCvxS8AgVLlb6/3NMlWBm
+   K3A3b91rUX7EjgswroN0EOaJ2r34EPDxv+jpxbEpeBjJCE9Jj3kX58NwB
+   A==;
+X-CSE-ConnectionGUID: sD+bkTX6T5+cT5PxakSA9w==
+X-CSE-MsgGUID: m+/t2990SZCMiL/muwSkKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91749598"
 X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="91749587"
+   d="scan'208";a="91749598"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 20:52:31 -0700
-X-CSE-ConnectionGUID: VcIHKcTrQMaHq4Kxx65oUQ==
-X-CSE-MsgGUID: gEpSBS05SI+Pg21K9z98Cg==
+X-CSE-ConnectionGUID: pDOIVSnKRbS+/9aixbbHnA==
+X-CSE-MsgGUID: P2LnaImdTJCJ3J9r9AYWIQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="220863664"
+   d="scan'208";a="220863665"
 Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 11 Mar 2026 20:52:27 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Mar 2026 20:52:28 -0700
 Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w0X60-0000000022f-3Aoy;
+	id 1w0X60-0000000022d-32hF;
 	Thu, 12 Mar 2026 03:52:24 +0000
-Date: Thu, 12 Mar 2026 11:51:59 +0800
+Date: Thu, 12 Mar 2026 11:51:58 +0800
 From: kernel test robot <lkp@intel.com>
 To: Joshua Hahn <joshua.hahnjy@gmail.com>, Minchan Kim <minchan@kernel.org>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Johannes Weiner <hannes@cmpxchg.org>,
+Cc: oe-kbuild-all@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	Nhat Pham <hoangnhat.pham@linux.dev>,
 	Harry Yoo <harry.yoo@oracle.com>,
@@ -93,20 +92,20 @@ Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
 Subject: Re: [PATCH 10/11] mm/zsmalloc: Handle single object charge migration
  in migrate_zspage
-Message-ID: <202603121158.g93vlc2U-lkp@intel.com>
+Message-ID: <202603121115.dm3Z6KvA-lkp@intel.com>
 References: <20260311195153.4013476-11-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260311195153.4013476-11-joshua.hahnjy@gmail.com>
-X-Stat-Signature: oaptkz1x4b6u75wwamrnjshw3c3kfdqe
+X-Stat-Signature: am65rsmunrn8qpyjg4uxpuucd74rwuun
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0F8F18000D
+X-Rspamd-Queue-Id: 42AE2180007
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773287555-236777
-X-HE-Meta: U2FsdGVkX18Ryvg+p/d4DNH+Nd0k2p3k0Yj1it6KpcOWIe9w6F5sY9ZYzZNg/vo8Bxo2wgKskz1l1zK/toxqkvz1zLd+DU8FgNyexiJK/Ds4l+yGBijA6x3gP5qvwAKIATEwWcJ6IHlrU2kpj+jOEW+8wpSH6dW5KxGWaj9+1jpxFDyH5n4eUDt07ZM35E51RRG690sB/7BlTBwI8V/GM4zCVnaF2IxV1iWhOmrVTsDerseuQ/yH8rpYomFUdOm6OofcnuGvIz7W+ZaHo2wLbWzKFCj29XBXkU2uFyh8mmZOVlgo//WyjhrF5zJ9usy3B6nb9l6CFvtiAMtQeRZqxD3e/wmZ5oOELSidOodaW96c7RcUJDVndD1I7zxh5TOUdZPWSE3sgzUu2MH8SPyxwZEowRZ3m43HsX/fEgieuhE7EZ4gqCEsY5G3yh9eXtJmcGUGWzQxzIj0QYLYVg80cuVW5lzw7bguTHOn6HLn/M9iHncpsarMhtgw97PnUYi08w+yFpCZ5K5qej6728HB0MmexKAP1Mk9FyMJkNCJNQIGCnZufEGVj8Q32WUSZCAwvw4TnwL2TYnZGLh3s/lZUIFeZnAP6ZaH/itkRpwi0MC+HWbpBjnWp2JSOKFcuJ7uwyhyJTV523B/+iyaFoElLCuM5dqnHI5rtk0EYmYJXn9VxeSTpBAJFAnBqlKCY9bChncfLwyQcsLtMFQhr+aab2+/y8/ngEb7/xPwZTO6Y/VmMOGb1ulxqHLY5RaQ0myIUUfEO/4sUxzd4x5iordqpBG5RFS8mKu18AvVS/JAuXnAQ5FzqiIf2Mn8HYQDTsbE4iFp7CDRS4fPT4tMyfWoS20CVkglsvNs8WFW2Lytk3HYIDLoYDkYbt1Lzfapkvrj9DyhZuiFLPRdN82ozu5wKJs9OleohwAXjfE1zq8pDzU8WCCJadCFVgvBJAe7fcFzEd/t1IGkzane9Wneqr+
- oz8BeDtF
- C7e2kB1xPoctLpT0ELGPKTftJ2oP+x7Wmd76URbK9mVopi9Cp/YbmwzNQHT483WhlwdLqxUOQ9ql/qTxwFkt2+B77PWqUqd9TJPyGxCAbLDVfAyadVI0bKGcgGGm5mKm+2aK9vtLvntY4R9leYi0yLIRwpUCg6UCoBowzEovw8b0vFM/Xu1zXP9Oc5fCb+yGmIFzUq6VPWKWyTQ3FsvHGN6ZMtecIedyxCgVUmw2JfpkTOBS7dIRhHYm0HOskeondFe+wzs8xNL+oCiLkTJI949f9bo2vCcbhRMq3Vgj0wbtZIzZ+hmJzoiwf9k7PVVzS8LeUsLXpN0tTP3frdJE1l1P/FhVJCWDHn3yXOe4y6L3wE42JV78xCwbEAGhcDyebEpnKEh/IuUuPVYsfidxHRjO0mYvAh24f7k+BSSyZD8ZwCfO1dPu3HvuUZkTs1fxJU1RfnHTHQookd0eCyATeFwixED1Ka4v0ACGmGssYPYDZTVBDd/w312+ASA==
+X-HE-Tag: 1773287559-215015
+X-HE-Meta: U2FsdGVkX1/9FHvM0OR5BveMAgay4oeRLsFfuI1J8FXDA84DNm27TrwPeawWPfO9TJ92HfK2ejKdXaZG5vdGZvTNr/olO8a3MiLcIZdUvnVXdyUCNXN6WRcqhlbbfeKibGKW8QOG4P6zA6pOML0CV0hgP8HRWa9AtLgObU+s7kUDvm+UND8VBCveK1bqt2bYqvuOrl/JIEzkZ5xgvuoeF9wMxLI5vMBkgTk3/ihsGxBDQ1iWT2v24p/y9Id92zvorKacUgzE9bH//MCjAsnw7kLSDJ/LuLwdcCmpnaf9DOOA3qwO/k7VNNO8OSiy2TPdJo5nqN4PsaO52RUezgYPjYeDK8A3hUE4xHb1WXaLL3Is2pxViQLMUcqHKkckGdLxrb1JUABPrer1waapyHwF96pc5/YCrUUPS8qeURsY2YJgWjguDLRM3B/RdlCOoon5WBzGyLD3B5JhKNSTq0tTJwoFrT4RjRmMNFZQv/pAFy4b6wnn+8h1oMEh1lF8ejORN6umRABHmwJgcnhsw6D1gT+YWkA2dmX9HEGuyji2Q7e57jnfKS+oeX+yVyPLkMghQcF8OOCbGqd55Bl4EuhciwNnKVN68I+TTS9FhbD60OjpWPVD+S2sofIROIa0TFpyahO0ydoj1cVfDpl0bl/XqyDxdThND7dBB/xqOemHfCPzmDeTdoPvInGdIFOT+TAs3vQ7nua9gEt+9sct55A2p084x35qsham5FCt+qFyQhV2FSqcyQWTkYc4VymvFIb1PvNd8Sa/uk7Cx5Eag74BCzigGwbDmXfpyVmhwqdzPl9HH/W1/OLQtEuiUo91MzAyK3l5l1zzRX3lRyr3r9tVoCIfrZ9R1kgWeCwE+0KhEhhXh5dJW4QM0wrt7p9GAjAOE3ulnJ1PUNF2SAch4m5SflzVO+SfMySDN1Tsuv4TfL/mSQZv8z9uSDYtwhEx4sZQ3erBOfHS4hZ1ZZcSgWg
+ RYzrVAf9
+ gg3f1T9Ni8zUrj0KpQdc6VCfrkxSm4Edsaeg1iAeQQU586aOX+FlKl/tjmzV17B/KxHccphMRLnsLVjHNMClWzT2HneFAkhLKi+6nTMHmpHKEobyH9puMDNWBXK8jljh8ewq0UVvSZL0DUDP3ra1ceMbi8XcyfPc9ydt/THZGQRoH4c5USwZsIay6aUwFJhJ5gS568r3iTzyB5HQERacDvCtTj0lGN1n/xKO2uc3c8AZelFnVhEWbExitm+nL/f95NrHvxlWBwXLQgyLOddGtr1Rss1uj7jCD4xeQyYT4a+kp2W+QgfhNMKZ8cj1ynsIMbB7TBHTyO2O2V6WHRBsJKdOGMBtUmzbRnxtwurZXdnYsLL3wPfq64f/NHkOuZ3swDnh+QlBtBpOFaoeP+B76lk1rhLl+gU1Qmabx8BOhJGV4dQhkI3DYWVl0NzG2hd/7N6jxr/PD91IExS37vlS+LF7URqyEqIm7JKygRfFzTTMj2Oj0hiGHy2xgzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,51 +128,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-zsmalloc-R
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux.git for-next
 patch link:    https://lore.kernel.org/r/20260311195153.4013476-11-joshua.hahnjy%40gmail.com
 patch subject: [PATCH 10/11] mm/zsmalloc: Handle single object charge migration in migrate_zspage
-config: x86_64-randconfig-001-20260312 (https://download.01.org/0day-ci/archive/20260312/202603121158.g93vlc2U-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603121158.g93vlc2U-lkp@intel.com/reproduce)
+config: arc-randconfig-001-20260312 (https://download.01.org/0day-ci/archive/20260312/202603121115.dm3Z6KvA-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603121115.dm3Z6KvA-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603121158.g93vlc2U-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603121115.dm3Z6KvA-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
->> mm/zsmalloc.c:1702:6: warning: variable 's_idx' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/zsmalloc.c:1752:45: note: uninitialized use occurs here
-    1752 |         d_zspage->objcgs[d_idx] = s_zspage->objcgs[s_idx];
-         |                                                    ^~~~~
-   mm/zsmalloc.c:1702:2: note: remove the 'if' if its condition is always false
-    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    1703 |                 goto out;
-         |                 ~~~~~~~~
-   mm/zsmalloc.c:1696:20: note: initialize the variable 's_idx' to silence this warning
-    1696 |         unsigned int s_idx, d_idx;
-         |                           ^
-         |                            = 0
->> mm/zsmalloc.c:1702:6: warning: variable 'd_idx' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/zsmalloc.c:1752:19: note: uninitialized use occurs here
-    1752 |         d_zspage->objcgs[d_idx] = s_zspage->objcgs[s_idx];
-         |                          ^~~~~
-   mm/zsmalloc.c:1702:2: note: remove the 'if' if its condition is always false
-    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    1703 |                 goto out;
-         |                 ~~~~~~~~
-   mm/zsmalloc.c:1696:27: note: initialize the variable 'd_idx' to silence this warning
-    1696 |         unsigned int s_idx, d_idx;
-         |                                  ^
-         |                                   = 0
-   2 warnings generated.
+   mm/zsmalloc.c: In function 'zs_compact.part.28':
+>> mm/zsmalloc.c:1696:15: warning: 's_idx' is used uninitialized in this function [-Wuninitialized]
+     unsigned int s_idx, d_idx;
+                  ^~~~~
 
 
-vim +1702 mm/zsmalloc.c
+vim +/s_idx +1696 mm/zsmalloc.c
 
   1686	
   1687	#ifdef CONFIG_MEMCG
@@ -185,13 +157,13 @@ vim +1702 mm/zsmalloc.c
   1693		struct obj_cgroup *objcg;
   1694		struct mem_cgroup *memcg;
   1695		struct lruvec *l;
-  1696		unsigned int s_idx, d_idx;
+> 1696		unsigned int s_idx, d_idx;
   1697		unsigned int s_off, d_off;
   1698		int charges[4], nids[4], partial;
   1699		int s_bytes_in_page, d_bytes_in_page;
   1700		int i;
   1701	
-> 1702		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+  1702		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
   1703			goto out;
   1704	
   1705		obj_to_location(used_obj, &s_zpdesc, &s_idx);
