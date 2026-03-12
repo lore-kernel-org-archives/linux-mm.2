@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5849106ACEC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:53:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E97F9106ACEE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:53:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33FAC6B00AC; Thu, 12 Mar 2026 16:53:42 -0400 (EDT)
+	id 55ECD6B00AD; Thu, 12 Mar 2026 16:53:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 268AB6B00AD; Thu, 12 Mar 2026 16:53:42 -0400 (EDT)
+	id 383D06B00AE; Thu, 12 Mar 2026 16:53:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16A4D6B00AE; Thu, 12 Mar 2026 16:53:41 -0400 (EDT)
+	id 192926B00B1; Thu, 12 Mar 2026 16:53:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E95D16B00AC
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:53:41 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9707DC186D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B1B56B00AD
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:53:44 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C434DC186D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:43 +0000 (UTC)
+X-FDA: 84538612326.27.F9A9F09
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EED611C000D
 	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:41 +0000 (UTC)
-X-FDA: 84538612242.10.CB31F34
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CCD9940014
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=UNnWLHik;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=qs9YxdUC;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773348819;
+	s=arc-20220608; t=1773348822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MfCdMvkJxAeZG14cTtGmM/ZN7/Bzr7yHmjt9XpyWCt8=;
-	b=GxW/bAKN8odR3ZnrSyAdXkQT/gnGdgNlk6sdftjcPiGJHz5truuz1hJVWOIQDm3ntK/+Tg
-	zCA167lpNdJLqpNG0ok/IWbQFSzUtOs1+KpeL9buF+LOzHiVxKQIc1g7yZZw+NFg0fuFdp
-	tDGbvTWICQ850/7R+jaB6IVW2dhhD0Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773348819; a=rsa-sha256;
+	bh=H+fNWmGr+tcL8ctiy45XUsI2tWZ66Zdo3aVc9uo+wjs=;
+	b=nIDU3RI5ZJLyzR3t8+YYIbyvLJqbjc3W+e1vxRWtPU5Av/KHQgvGyUztFiYiBiTjW2TBGR
+	cKTkZSeQ7URZoybeS5bZFn0gK0+W0h8Rp9UrrkX21CCmHzLzTXD4kOPDizJ8FJBQpvsSvb
+	fWBy3uSm67MOBjopyR/lcwpCe+xQYQ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773348822; a=rsa-sha256;
 	cv=none;
-	b=CD4KJzRND0kMGlAoRspzRR7dI5w/gW6s1JxK7t2+IdSOIzvV824Vp4jBjx1cUMeFyuG++6
-	JDWyOi9jXMK4HnCZyoxr4gL9bPHM29ttTXTFMcAJ44ZG2JK0bXmamazcBZW/ABXHUvvvDn
-	dYextrzKk6saxSu0XuWFC8ZtIUzTr74=
+	b=nXzlEXeCV9sfW5vZ9ZiXr3kkrUp7SZAc/LKvKRDi2l8/UrBtotdXa5FGtaA5e4+nXsFDb6
+	+l2VgKiX+pqIne5DqFI2DNla3ecrOmb2VsbokAOfZRn2jfXVckl6T7/HMvMx3iG/IUfQ6+
+	9F2VblK5pHBclyGH1zgwwCVPSx2ipBQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=UNnWLHik;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8cd81963e73so157873885a.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:53:39 -0700 (PDT)
+	imf21.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=qs9YxdUC;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cd7ecedf2cso151201585a.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:53:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773348819; x=1773953619; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1773348821; x=1773953621; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MfCdMvkJxAeZG14cTtGmM/ZN7/Bzr7yHmjt9XpyWCt8=;
-        b=UNnWLHiknN2hAJ5UfjYElpmxj4U9yPOZPR42eq9QwHDyDI6PWjSjN7gTt76E3im995
-         mUwb01mXOiAm1Jkk+L3U0rFzEcdI7YiAlqZeW3oCZcvXmria7Dnv92vPpHgGEyEHvPcc
-         XWwhnnAvX8luox066TMgNX8d+eju06zx+Zp41YPdVEt2M9H9simbNPaJKVt6DKr1y33S
-         13+wpkfth4Apub91nlx/ZdSv9Er9kkLeJdmyn2qFdeD2d+er3T9w3w4ZRL3YtrBIsBsC
-         xhFK/blQ2zSWzmluyYOOFnUZrITHyurADCbIRym26jg2os0Sf4QFY1Rj1GoDBSXkKbPd
-         DkIQ==
+        bh=H+fNWmGr+tcL8ctiy45XUsI2tWZ66Zdo3aVc9uo+wjs=;
+        b=qs9YxdUC/LjRj2xFZKSmsczpJ8B8vla+IjqnY4r6gHrK60L2SfvmZb8cq+9spHueS8
+         MOaS7/ZNEyso645lyzvjqz6afqdfBmn8E6Br6chYOeUcPPhZJZNbbpv21E/BsFTIiO73
+         keuj7tC22wIeXYYSGiyQOYxhFqWUVRIL7LKocArQFw/7iKBk7gExPGiZPdw3LHGP/Pz3
+         uUf4eabX2U0r+n7EQxOT5SRa31JsV26fg6bxB99vxZVu/R3VvGLo9cfA2bm5ZmvXDFTp
+         P6kxvA28Rb6/KI7RGoCD+KBpHsTJdR77gIW5ESIro7gVReUQjkRuo9JpBwzjaRhqwJqT
+         X/5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773348819; x=1773953619;
+        d=1e100.net; s=20230601; t=1773348821; x=1773953621;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MfCdMvkJxAeZG14cTtGmM/ZN7/Bzr7yHmjt9XpyWCt8=;
-        b=I5lQe5K1UDIJzaHrr5DM7i5INDsmthP6W9/GRkvhU53A+KX0TeQ+Ei3IID7BVQZRpF
-         2qspIDNzg2i/HUf0WSXAyetKbSrF9uz3i65rMTYl9N0YNiByFCa+WuQULS/GM521Td1L
-         3VzKd4xpKRiCsLuEotu+ZfI5LuVCvh4eQqlQH+Ih6r2vbxXwJsgZRDCKxzHFjx/E/IaN
-         PVVqlOkML7XxbbR5+MCBCYphaniNQKmITEZIlFHrpx0MI+ZAZ1FISMoikhclmkjzcIV4
-         l1D0D8BhWQrkMkFQCFHVn/hw/Ue68Pj9fqb4lFuoKAvKsMokAZUh5ksTsTK+0IvBA2bq
-         3jBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVVy0yfe9lp4HFOV4pN/97HUqWeS8HpvaVp6ld1ZFrQf9w72WaoAnGgdX2AWpFY+CHbNBW7FfbjfQ==@kvack.org
-X-Gm-Message-State: AOJu0YxAkTJLpNe5oGXpeKCrs/6Sces2L6ewlD1+gcqw+7AjI8E627X/
-	HSGJd0+Nro3h6hcUb8AruwnGXcckBAKXO4RXL6F9k2ZI2Ll+YZjLnRjGyliwFXHyqok=
-X-Gm-Gg: ATEYQzym+tdtPXhP02PqwRdHm8vN7u59+fQlHEWBzI66Y2ncim5XaqkbiH2SptrIy4H
-	g9bpffkUYnAyMAONj0xke921vjWd6m8Vv1ZQDsZ4x7BMXVzlhA/Nu+5Sa5ZT5qtLsl++8TXXn+b
-	RURLTO6/K4+6nXYCCsylD5vhACH+gtZcbIIQxCRMej6kgGEFWXCExUNYHtVLUwLuO80G2Di48K5
-	wlrZtUTE7PH7uSbhmITJqnirUhvXZs98FazsIhJO+PGJew240Fo0vmMy42vDtzI/rxYbSIaL6a4
-	2B8c2FY/WW3F+u4c7ZrVn7NNQerV7huUr+B9uZnVj4CVNCwNadGvL9bZiiXjHw0X8669R8Z5Znk
-	sPK9Fob5U8U9RYzyGBe3JVv0AOw531e2qujV00RrQUGgM37DlctRkxDWIlFTx/7YdRx+Pt+V3wo
-	UR4LMQjLbxDcPMH27JMwsAQQ==
-X-Received: by 2002:a05:620a:1724:b0:8cd:7f7d:b091 with SMTP id af79cd13be357-8cdb5bce7bcmr154603785a.71.1773348818838;
-        Thu, 12 Mar 2026 13:53:38 -0700 (PDT)
+        bh=H+fNWmGr+tcL8ctiy45XUsI2tWZ66Zdo3aVc9uo+wjs=;
+        b=Oji1+0kL7n90sbIKWFD5h68eZVIE8u7yw14g0YXC5yZK9MwZ5ExNyhtCpBSm51kHcB
+         aIuVrZPe983LvAz2nUTZIEUB1jCEKXZ7aYRySuQeNS+2rE9wmhjcUhsBOghZ1PbNRedh
+         uB5sx0pJSN18siKbQA2ulqS1d7M9l1Xoqc8Y7lHtP66uXtQKOntpHJ7fX+/04944kMxy
+         T8mvoreq+4t2xzJbRwCc8YKqcqam2e+ob2YDNAz/DCBV2qGZeJ5f/6qwSQvuO2HsaTN+
+         vO+LoEjyeAdXQLqrmxC71fojUtaI/l0DcEe/TB7c2cpBXdIYHuOQAYggOrhrwkgMFk7P
+         HphA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXfN2gDMwA0ZlYmvPkLVhVQg+VH+1PXmEmGekSdMR3oMJaWwl7ULUVVzVS7X1zpizHhkffvvnYlw==@kvack.org
+X-Gm-Message-State: AOJu0YwV3vpaDhWndjekrEd7HQE4nzw6pEadaHc5B8pmmEx9vgjZnxln
+	G31cBWNvh19C0ecBcTjlnMncr5lpEB2WXxIph6VnYqVQpIOqWPD2jayW0JrYnR/vsQs=
+X-Gm-Gg: ATEYQzyEjCCSEesog6khalvH6KkLx9tMJNBFdtk3Kj5bqC7zQdpkBkcYZ5k9g6ngY72
+	qcAo3CH/jr0jGhZJYbMc/XhivBSef7LwPzbh3iv51GfxcHeSuwZZZy40gu7jvC75UPdwAQ4BHOK
+	TDKHZAXyZekXzJ6qajiv04B348AlplGNu+AjpYbTUU317Dw+/abCuSHEm8hLWrSRVE/OlKuDrPq
+	noSL42YvQrw+haJIoz17Gkc4UR3hV9FPSD6tduyhLJbxCwWwDibMlbDOdtL4Llt3e11n3nQVcwU
+	0rFvY/O1QEQVfOcr2OCvNQX0gur91LXWoKtntqE+pvqHtns6ICeJqwSeGinJeOZ5aI08A9uqlD0
+	JRd1QflptKzXX1mfJNJT+Z2rY7NFGZWDe1iDrtuqxUYobfuuVrLITYulbApveSA0u82GyldppeE
+	DQOC4zFpqiukZ1Rk7Us/3zcA==
+X-Received: by 2002:a05:620a:40d3:b0:8ca:3d7c:e767 with SMTP id af79cd13be357-8cdb5b5f305mr157157385a.52.1773348821047;
+        Thu, 12 Mar 2026 13:53:41 -0700 (PDT)
 Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fbd120sm412873485a.7.2026.03.12.13.53.37
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fbcc5fsm465928085a.4.2026.03.12.13.53.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 13:53:37 -0700 (PDT)
+        Thu, 12 Mar 2026 13:53:40 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -103,22 +103,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/7] mm: list_lru: introduce caller locking for additions and deletions
-Date: Thu, 12 Mar 2026 16:51:53 -0400
-Message-ID: <20260312205321.638053-6-hannes@cmpxchg.org>
+Subject: [PATCH v2 6/7] mm: list_lru: introduce memcg_list_lru_alloc_folio()
+Date: Thu, 12 Mar 2026 16:51:54 -0400
+Message-ID: <20260312205321.638053-7-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312205321.638053-1-hannes@cmpxchg.org>
 References: <20260312205321.638053-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EED611C000D
+X-Stat-Signature: m4uh9q69bcmd9hiaynye18pmnz35qojy
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CCD9940014
-X-Stat-Signature: cgpfo1ksxggdd5kmbbpq1uwn3ejnpfof
-X-HE-Tag: 1773348819-998075
-X-HE-Meta: U2FsdGVkX18ZIyg7wrauL5zICsXmSAjrtC32G2+4dKpCSI5F6lyiUyMpBi/zrk4utFYNsRgckvonFFVOlHw4BtGA7elQ9kdaECKuN+fGmJaB1ctTPz3HsznelcT0Npl6Vjuzno10IsaqCj+Qy9PLNNXoRIo7FUFYySCZLag5npYKKdyraKtz7EwzQKMqi18Y3aBa0qP9mLwC8zgFuGVxM8Q2Ux0v4r7RhB4yWd5Fqzr2IMwUbGHuIkHt/bK+BME4jVHE0I4d9RDQhdZGjl94xnwlQMYakUOmUMP6QZ0uuWdCSpuqdzscMyFbl/qalukMjLz0smcE28QsaKoR/X4JyAW3apFZV1YypbN0oNuY2mJMqDsE9HhHfuNGumurcNcSnOvNWLOdkX1TKQVXmCl5fAbYRJDcDwmTKnNqD8kcDn3k87HmV+dkWffHslH34JLoBFl/mybELDDL1vPz04bfk0SuslsmGzQ4UnWucijZxmIwJsJOmB7r7AJk+GUSjG9MQblq3TguvLlRHPmAM6VNJ7qlMKdhtYsMDsIoWZdGOHGXBcox0oMPFChxU8QG+st5F4VF2BDP4M5k/adyFOs5ahCgHAcrcLGDUKfvUAh2mrRuay73W970uRQXX6eTwA4t+UNcAp+v6CIpkEyF0jYuMOu5mSnGhX+id0wWvy3q/W+5itZa8eyV/wJsZWZ6fX7PIf1HeQnhSPuCL5ZXYCKiZIpYpu42BjrXpOfR8mWrcYBMDr/gxqjK0iQlKn+t4PJkcM8cLWNR8l0KIT9764gxwlNbmhv3b+Ez8SVFKpt/qhk/xlQoma6FPNZb91NaQVwB/UX7bGDdAilQtiJZjHaxlClGGikoLrajLdL6r8OxgheVevqL1aV4Vp0UxkVnrwXHTd6NgKCegt4vXtAeawudAkwUYiG6fRHvmrAsqzR2hfdvWOmqK5LOwCbQSNHRNYUG0v68QlU4ohJrHjwZgWh
- KE8K9vTG
- rIkyX/y5OFOE8oRfB5XlJGGirw5h6Fdg1V4L2SowgCm2FukX2Jp0jKqrqwc8Gvo0KdZITADeJZcAdDVVd/SLcom/zT5FzdPnR2dhLy8BYfus65efDd/A74poAN1WV6DZDTdD3xKuy3N6BhSrB5I0oGBzQu8cPIpBaSGkJ6mlSk/BG2FOElAW1tOqZ8secBlXiUWIzmbjVM4DJwXEOSgda2BzuccqCJUVAaCNDZcC321LYe/X1wRzm7KYX0dHpiKuP+t80PtnSC2hyejnUTG7mcC4v+ifnkphfIGtaBBSXS1mUOmtwO1DIVYbEz8D5lkTjraMle+1HqzdqFPibUYoe67OUhx4lqjlIiLcWa+NoYRK2Ln+4Z68XKLNThnjxxDigbGPonDFdAPT0GULi/YPY0aU5PWb8UJnteRf4gkqvb53pro0oRM7nEpuXgw==
+X-HE-Tag: 1773348821-524977
+X-HE-Meta: U2FsdGVkX195LFt7yhwFfcfRoiEa61VbHw/ey1yS3TKWrC8Eff/GZ3dM3kzpWEELMcsNNNVcp5vybyc9TxCvON9B9cRI8HZIFegRA648xzTS5nPw/VagTxYz8wu1kkQ0gqrl5fvqSXe3egenVl7tm5AIYf5N5kdlj0+1QpX63jdcAAvCcAbqiZVWZ0qliSYXm40HeWvBl1WIi1NVl003F9yYP4EDxmnKmRTXQ2AfsSEhvlWn6VO3zCNA52xgF8NfMopB44XzAuuW/ufH6AEdj64zJnV1wZFULQsvefOdHrrFjmHTPXVuZ9rT3z+Adtc555Y6Mg4Gin39z+k34cKwRELJ0/DsZHKrCfsqZj+jTSZw31U0qVSPJCV8uQQpc1csbUo2+U5im7APOsFFvhtkIbqZMi5p5sftlcsjcnTcbmbCS0V4BrDB2xQ0Jd44613tHuoTN2496rXaVY4hmqgWvaaRVRYtXjDtzt90eMq4bbmW6XBZm6UEJALSLfPyA+UOA5k672JFzItvTVT8cOPDxvcXGZNa1EsE4i9rQeltsHfRuH1wnBT0w7igxm8nQBleJM4x+wb+JqKC4ApjZZ71u84i0chMh9IOg5sPrYWyoAx8lT0ntXp1I2ZI4q1mLWNSU/viYQgwTRPXtIBF0/YFYDDStEO3kgIxT8/1WDs3HGTwc1NtENXxAGKkKIQB4pcMl5hHTROBsaA32+VBojBQSmmvRrrdNe7sIGN6GgjIlTldr9Wtc8lLQMxCoIxBJZabvnmdgZUD3YAfjYqJG7bHs2/6IxRxP5TrGx6iZT3rbN2SND0SkvmkxfBTvRoMRBCnMrSKHlyFauZ5PUoEcLpzO5aJSSVFDBDltLikO8VVUsOkwsJH8nY4dimRhMuhBcPtuLmdJENsNh3FWcx9S6kW0Wmnna/ycUUkspSBjOQMDzBInkrfw3EvP1tVJCnVQ1FMgJcYPrAT6XvNebC1nVB
+ 7gCEHqAT
+ +rsxyzkJQpc54+L0FjneMDlCLY/VsbP8Mh3ndSHp/4B9Q8t1/LSC8crL7+NvOesSk6CuwpqvpC2gioeRD+hxYW3umh1wyQLeiMIKxvh5Xx043hACOAeB5apROBC3+qrXrqgdLMXdScfDQszUagxmi+TBjqHG0rJMzTbnJDU8W7JSz5be62c1eR+SW51UF0gVt6Y7V+onVfNVhx9UAiQwn+3sktB8uNOOv/bJLOuLa3tET1VfmxnWraH0l+8qvu2hIWv+YCFZeggGOQxWAtIJRiRXQ8lhu/AfQm6+nk0HSXsB/SsqZXqSPw1ZtijQfU/JXvYiT8VmzSq7RF6+bEtE0pLh1AAU579ioI+L/X0Njm1rdjXbicENCxQNZkkWE9nkk7kaNbRaq4tG2d5uXGbeNK5URWXaxkikaAE477u+GgchJ0bTkf2gV9zQDYoASHiAoH9IK4KkjhtE/AbD/sT02dhk2Bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,257 +126,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Locking is currently internal to the list_lru API. However, a caller
-might want to keep auxiliary state synchronized with the LRU state.
+memcg_list_lru_alloc() is called every time an object that may end up
+on the list_lru is created. It needs to quickly check if the list_lru
+heads for the memcg already exist, and allocate them when they don't.
 
-For example, the THP shrinker uses the lock of its custom LRU to keep
-PG_partially_mapped and vmstats consistent.
+Doing this with folio objects is tricky: folio_memcg() is not stable
+and requires either RCU protection or pinning the cgroup. But it's
+desirable to make the existence check lightweight under RCU, and only
+pin the memcg when we need to allocate list_lru heads and may block.
 
-To allow the THP shrinker to switch to list_lru, provide normal and
-irqsafe locking primitives as well as caller-locked variants of the
-addition and deletion functions.
+In preparation for switching the THP shrinker to list_lru, add a
+helper function for allocating list_lru heads coming from a folio.
 
 Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- include/linux/list_lru.h |  34 +++++++++++++
- mm/list_lru.c            | 104 +++++++++++++++++++++++++++------------
- 2 files changed, 107 insertions(+), 31 deletions(-)
+ include/linux/list_lru.h | 12 ++++++++++++
+ mm/list_lru.c            | 39 ++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 46 insertions(+), 5 deletions(-)
 
 diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
-index fe739d35a864..4afc02deb44d 100644
+index 4afc02deb44d..df6bd3c64b06 100644
 --- a/include/linux/list_lru.h
 +++ b/include/linux/list_lru.h
-@@ -83,6 +83,40 @@ int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
+@@ -81,6 +81,18 @@ static inline int list_lru_init_memcg_key(struct list_lru *lru, struct shrinker
+ 
+ int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
  			 gfp_t gfp);
++
++#ifdef CONFIG_MEMCG
++int memcg_list_lru_alloc_folio(struct folio *folio, struct list_lru *lru,
++			       gfp_t gfp);
++#else
++static inline int memcg_list_lru_alloc_folio(struct folio *folio,
++					     struct list_lru *lru, gfp_t gfp)
++{
++	return 0;
++}
++#endif
++
  void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *parent);
  
-+/**
-+ * list_lru_lock: lock the sublist for the given node and memcg
-+ * @lru: the lru pointer
-+ * @nid: the node id of the sublist to lock.
-+ * @memcg: the cgroup of the sublist to lock.
-+ *
-+ * Returns the locked list_lru_one sublist. The caller must call
-+ * list_lru_unlock() when done.
-+ *
-+ * You must ensure that the memcg is not freed during this call (e.g., with
-+ * rcu or by taking a css refcnt).
-+ *
-+ * Return: the locked list_lru_one, or NULL on failure
-+ */
-+struct list_lru_one *list_lru_lock(struct list_lru *lru, int nid,
-+		struct mem_cgroup *memcg);
-+
-+/**
-+ * list_lru_unlock: unlock a sublist locked by list_lru_lock()
-+ * @l: the list_lru_one to unlock
-+ */
-+void list_lru_unlock(struct list_lru_one *l);
-+
-+struct list_lru_one *list_lru_lock_irqsave(struct list_lru *lru, int nid,
-+		struct mem_cgroup *memcg, unsigned long *irq_flags);
-+void list_lru_unlock_irqrestore(struct list_lru_one *l,
-+		unsigned long *irq_flags);
-+
-+/* Caller-locked variants, see list_lru_add() etc for documentation */
-+bool __list_lru_add(struct list_lru *lru, struct list_lru_one *l,
-+		struct list_head *item, int nid, struct mem_cgroup *memcg);
-+bool __list_lru_del(struct list_lru *lru, struct list_lru_one *l,
-+		struct list_head *item, int nid);
-+
  /**
-  * list_lru_add: add an element to the lru list's tail
-  * @lru: the lru pointer
 diff --git a/mm/list_lru.c b/mm/list_lru.c
-index 4d74c2e9c2a5..779cb26cec84 100644
+index 779cb26cec84..562b2b1f8c41 100644
 --- a/mm/list_lru.c
 +++ b/mm/list_lru.c
-@@ -15,17 +15,23 @@
- #include "slab.h"
- #include "internal.h"
- 
--static inline void lock_list_lru(struct list_lru_one *l, bool irq)
-+static inline void lock_list_lru(struct list_lru_one *l, bool irq,
-+				 unsigned long *irq_flags)
- {
--	if (irq)
-+	if (irq_flags)
-+		spin_lock_irqsave(&l->lock, *irq_flags);
-+	else if (irq)
- 		spin_lock_irq(&l->lock);
- 	else
- 		spin_lock(&l->lock);
+@@ -534,17 +534,14 @@ static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
+ 	return idx < 0 || xa_load(&lru->xa, idx);
  }
  
--static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
-+static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off,
-+				   unsigned long *irq_flags)
+-int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
+-			 gfp_t gfp)
++static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
++				  struct list_lru *lru, gfp_t gfp)
  {
--	if (irq_off)
-+	if (irq_flags)
-+		spin_unlock_irqrestore(&l->lock, *irq_flags);
-+	else if (irq_off)
- 		spin_unlock_irq(&l->lock);
- 	else
- 		spin_unlock(&l->lock);
-@@ -78,7 +84,7 @@ list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+ 	unsigned long flags;
+ 	struct list_lru_memcg *mlru = NULL;
+ 	struct mem_cgroup *pos, *parent;
+ 	XA_STATE(xas, &lru->xa, 0);
  
- static inline struct list_lru_one *
- lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
--		       bool irq, bool skip_empty)
-+		       bool irq, unsigned long *irq_flags, bool skip_empty)
- {
- 	struct list_lru_one *l;
- 
-@@ -86,12 +92,12 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
- again:
- 	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(memcg));
- 	if (likely(l)) {
--		lock_list_lru(l, irq);
-+		lock_list_lru(l, irq, irq_flags);
- 		if (likely(READ_ONCE(l->nr_items) != LONG_MIN)) {
- 			rcu_read_unlock();
- 			return l;
- 		}
--		unlock_list_lru(l, irq);
-+		unlock_list_lru(l, irq, irq_flags);
- 	}
+-	if (!list_lru_memcg_aware(lru) || memcg_list_lru_allocated(memcg, lru))
+-		return 0;
+-
+ 	gfp &= GFP_RECLAIM_MASK;
  	/*
- 	 * Caller may simply bail out if raced with reparenting or
-@@ -132,37 +138,79 @@ list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+ 	 * Because the list_lru can be reparented to the parent cgroup's
+@@ -585,6 +582,38 @@ int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
  
- static inline struct list_lru_one *
- lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
--		       bool irq, bool skip_empty)
-+		       bool irq, unsigned long *irq_flags, bool skip_empty)
- {
- 	struct list_lru_one *l = &lru->node[nid].lru;
- 
--	lock_list_lru(l, irq);
-+	lock_list_lru(l, irq, irq_flags);
- 
- 	return l;
+ 	return xas_error(&xas);
  }
- #endif /* CONFIG_MEMCG */
- 
--/* The caller must ensure the memcg lifetime. */
--bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
--		  struct mem_cgroup *memcg)
-+struct list_lru_one *list_lru_lock(struct list_lru *lru, int nid,
-+				   struct mem_cgroup *memcg)
++
++int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
++			 gfp_t gfp)
++{
++	if (!list_lru_memcg_aware(lru) || memcg_list_lru_allocated(memcg, lru))
++		return 0;
++	return __memcg_list_lru_alloc(memcg, lru, gfp);
++}
++
++int memcg_list_lru_alloc_folio(struct folio *folio, struct list_lru *lru,
++			       gfp_t gfp)
++{
++	struct mem_cgroup *memcg;
++	int res;
++
++	if (!list_lru_memcg_aware(lru))
++		return 0;
++
++	/* Fast path when list_lru heads already exist */
++	rcu_read_lock();
++	memcg = folio_memcg(folio);
++	res = memcg_list_lru_allocated(memcg, lru);
++	rcu_read_unlock();
++	if (likely(res))
++		return 0;
++
++	/* Allocation may block, pin the memcg */
++	memcg = get_mem_cgroup_from_folio(folio);
++	res = __memcg_list_lru_alloc(memcg, lru, gfp);
++	mem_cgroup_put(memcg);
++	return res;
++}
+ #else
+ static inline void memcg_init_list_lru(struct list_lru *lru, bool memcg_aware)
  {
--	struct list_lru_node *nlru = &lru->node[nid];
--	struct list_lru_one *l;
-+	return lock_list_lru_of_memcg(lru, nid, memcg, false, NULL, false);
-+}
-+
-+void list_lru_unlock(struct list_lru_one *l)
-+{
-+	unlock_list_lru(l, false, NULL);
-+}
-+
-+struct list_lru_one *list_lru_lock_irqsave(struct list_lru *lru, int nid,
-+					   struct mem_cgroup *memcg,
-+					   unsigned long *flags)
-+{
-+	return lock_list_lru_of_memcg(lru, nid, memcg, true, flags, false);
-+}
-+
-+void list_lru_unlock_irqrestore(struct list_lru_one *l, unsigned long *flags)
-+{
-+	unlock_list_lru(l, true, flags);
-+}
- 
--	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-+bool __list_lru_add(struct list_lru *lru, struct list_lru_one *l,
-+		    struct list_head *item, int nid,
-+		    struct mem_cgroup *memcg)
-+{
- 	if (list_empty(item)) {
- 		list_add_tail(item, &l->list);
- 		/* Set shrinker bit if the first element was added */
- 		if (!l->nr_items++)
- 			set_shrinker_bit(memcg, nid, lru_shrinker_id(lru));
--		unlock_list_lru(l, false);
--		atomic_long_inc(&nlru->nr_items);
-+		atomic_long_inc(&lru->node[nid].nr_items);
-+		return true;
-+	}
-+	return false;
-+}
-+
-+bool __list_lru_del(struct list_lru *lru, struct list_lru_one *l,
-+		    struct list_head *item, int nid)
-+{
-+	if (!list_empty(item)) {
-+		list_del_init(item);
-+		l->nr_items--;
-+		atomic_long_dec(&lru->node[nid].nr_items);
- 		return true;
- 	}
--	unlock_list_lru(l, false);
- 	return false;
- }
- 
-+/* The caller must ensure the memcg lifetime. */
-+bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-+		  struct mem_cgroup *memcg)
-+{
-+	struct list_lru_one *l;
-+	bool ret;
-+
-+	l = list_lru_lock(lru, nid, memcg);
-+	ret = __list_lru_add(lru, l, item, nid, memcg);
-+	list_lru_unlock(l);
-+	return ret;
-+}
-+
- bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
- {
- 	bool ret;
-@@ -184,19 +232,13 @@ EXPORT_SYMBOL_GPL(list_lru_add_obj);
- bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
- 		  struct mem_cgroup *memcg)
- {
--	struct list_lru_node *nlru = &lru->node[nid];
- 	struct list_lru_one *l;
-+	bool ret;
- 
--	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
--	if (!list_empty(item)) {
--		list_del_init(item);
--		l->nr_items--;
--		unlock_list_lru(l, false);
--		atomic_long_dec(&nlru->nr_items);
--		return true;
--	}
--	unlock_list_lru(l, false);
--	return false;
-+	l = list_lru_lock(lru, nid, memcg);
-+	ret = __list_lru_del(lru, l, item, nid);
-+	list_lru_unlock(l);
-+	return ret;
- }
- 
- bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
-@@ -269,7 +311,7 @@ __list_lru_walk_one(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
- 	unsigned long isolated = 0;
- 
- restart:
--	l = lock_list_lru_of_memcg(lru, nid, memcg, irq_off, true);
-+	l = lock_list_lru_of_memcg(lru, nid, memcg, irq_off, NULL, true);
- 	if (!l)
- 		return isolated;
- 	list_for_each_safe(item, n, &l->list) {
-@@ -310,7 +352,7 @@ __list_lru_walk_one(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
- 			BUG();
- 		}
- 	}
--	unlock_list_lru(l, irq_off);
-+	unlock_list_lru(l, irq_off, NULL);
- out:
- 	return isolated;
- }
 -- 
 2.53.0
 
