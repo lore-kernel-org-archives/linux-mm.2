@@ -4,94 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 568B8FED2C6
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 03:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FCEFED2C2
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 03:52:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78CF6B0088; Wed, 11 Mar 2026 23:36:30 -0400 (EDT)
+	id 1CAC46B0088; Wed, 11 Mar 2026 23:52:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF90F6B0089; Wed, 11 Mar 2026 23:36:30 -0400 (EDT)
+	id 1792D6B0089; Wed, 11 Mar 2026 23:52:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A25E36B008A; Wed, 11 Mar 2026 23:36:30 -0400 (EDT)
+	id 05ACF6B008A; Wed, 11 Mar 2026 23:52:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 91CF06B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:36:30 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3CDF81B8830
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:36:30 +0000 (UTC)
-X-FDA: 84535998540.21.904F836
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A4BCA1A0016
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:36:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IYZJby7Y;
-	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E85526B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 23:52:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 17A405A8D4
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:52:39 +0000 (UTC)
+X-FDA: 84536039238.06.D5C98B7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D0F8F18000D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:52:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kXiyqY1s;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773286588;
+	s=arc-20220608; t=1773287556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sIeIxnDFvCAVP63KN+jaya1voCxZiwj51bRsQygs0ok=;
-	b=Ih039ooxOAcLsPosIVzXTAr9SU6tbme5hskUez0fYOXpusy8dk6/yO+Df4GDAB5hkC5gmz
-	6kjptilcBrTXeXqSq6EMa0A3qMkWeEjBj1dKGz0dujJEtNu6DgUax89qgqwdFpzg/gV58V
-	pHhQ5oN8neriR9ZM3eNjT9k9x4bIvWk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IYZJby7Y;
-	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773286588; a=rsa-sha256;
+	bh=MHSJOJ2069+1DMAL/C1TGAvODihTd7SQpfXmTZWQ8N0=;
+	b=y/xk0d2veNgYhX7e/IoQQN03kYYFV/NWCcq0azMSnlNbK2XRIzmwlfWkMfrLgzPCrS6zZy
+	cVpG/0z3LDwP10wFvPwYYZxrZRc5WziaHGQUQdWNHwiL+nk711t1XAbNDGhsJjLQWwBXX+
+	UgK3AuEXOI05+fTcrpd/g9SjzrzhTnM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773287556; a=rsa-sha256;
 	cv=none;
-	b=GM9J7X/g0k5lm5A+9+6qNmmmViwi/TEzhZMC66E5tZZUx3r8cuBveodabAchmazMAgO9+N
-	xWwINTGdHTb85naY4DO9MkvQyLVngq1FOdqZJogPQaUq5W593D8tk8BobaVxyAcvWlrrHC
-	5YGga1n1cHjNHu2k1HVt/ENoXMFT96E=
+	b=F+kE4CTzlHPAdWfcFg9qewHlWcoT7fllI5Eawt55cGdGYS+2XoUQZ2yWOhzrpm3TTnO7KA
+	WKIqd0mfu1/fRigwJcjGf6QWh0HgnAiBwSYIW2yDT2om7UteSnwEYKpvVZ0Pne7Y5wKuyM
+	BCIASHuBRzbLon/Up5yIJ3vLzL3hNrI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kXiyqY1s;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773287556; x=1804823556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hgT3wFUEL6+EQV3boNcDOYwH0s8O8YUiGYj5Lz8pWeE=;
+  b=kXiyqY1svn1P/Bk+sAZNqGayQ4J3zQriZsnao67Fd8bqOY/nT1ZETiUh
+   sKcb/dGOG+SCiLAXKaLwVjsvuus42D9PGiW47dVTR3tPKK22apX3kQsVh
+   4iBPzppeE5Sz9enh9r7q13oqZ9bTVfCWIQYaEJNDOyKj+N0QEwp+4+azR
+   dBK9GCUs0meY2qq7zOftOKeodVnYzLQiN3x3MpwM1rcX2GpfjD9X0V/IL
+   Qtw/MpeQ1apreCEhXUCHTZ+miD+iHC8TiOFnzvmo4pLkLGa+Cgc0Nr0KF
+   MYk6SuadMJZO1mxnskE5F62Tj0Ch/w9ameEFAROFUlIEmZIi1sUr+oDfy
+   w==;
+X-CSE-ConnectionGUID: qoLjTRe0SzGNwnAwcxTS5A==
+X-CSE-MsgGUID: M389q00iQsmakHmM/o+ZLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91749587"
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
+   d="scan'208";a="91749587"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 20:52:31 -0700
+X-CSE-ConnectionGUID: VcIHKcTrQMaHq4Kxx65oUQ==
+X-CSE-MsgGUID: gEpSBS05SI+Pg21K9z98Cg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
+   d="scan'208";a="220863664"
+Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 11 Mar 2026 20:52:27 -0700
+Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w0X60-0000000022f-3Aoy;
+	Thu, 12 Mar 2026 03:52:24 +0000
+Date: Thu, 12 Mar 2026 11:51:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <hoangnhat.pham@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 10/11] mm/zsmalloc: Handle single object charge migration
+ in migrate_zspage
+Message-ID: <202603121158.g93vlc2U-lkp@intel.com>
+References: <20260311195153.4013476-11-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773286583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sIeIxnDFvCAVP63KN+jaya1voCxZiwj51bRsQygs0ok=;
-	b=IYZJby7YmNF5PqJObweKxlt2ztpfKjN1MBTXhN0dFwGBJiLYqMS0qgEUy1itQcuW8lfJ/X
-	MlXMyOy3uccORXsDLLBn5YQPZEHeG82Dc6J6io5oum0++DdKfNv9AXbaoxzAnTfsg6ItS1
-	P4z3KYzUznaP8gVpK/Pcy0wg8BxYNT8=
-Date: Thu, 12 Mar 2026 03:36:11 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: hui.zhu@linux.dev
-Message-ID: <12bb0c22707193b94e7740b562daec80300544fe@linux.dev>
-TLS-Required: No
-Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
-To: "Shakeel Butt" <shakeel.butt@linux.dev>,
- lsf-pc@lists.linux-foundation.org
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Tejun Heo" <tj@kernel.org>,
- "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Alexei Starovoitov" <ast@kernel.org>, "=?utf-8?B?TWljaGFsIEtvdXRuw70=?="
- <mkoutny@suse.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "JP
- Kobryn" <inwardvessel@gmail.com>, "Muchun Song" <muchun.song@linux.dev>,
- "Geliang Tang" <geliang@kernel.org>, "Sweet Tea Dorminy"
- <sweettea-kernel@dorminy.me>, "Emil Tsalapatis" <emil@etsalapatis.com>,
- "David Rientjes" <rientjes@google.com>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Meta kernel team" <kernel-team@meta.com>,
- linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260307182424.2889780-1-shakeel.butt@linux.dev>
-References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A4BCA1A0016
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bgi63iubk5x18kjpigtgwasktaxa1twa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260311195153.4013476-11-joshua.hahnjy@gmail.com>
+X-Stat-Signature: oaptkz1x4b6u75wwamrnjshw3c3kfdqe
 X-Rspam-User: 
-X-HE-Tag: 1773286586-593223
-X-HE-Meta: U2FsdGVkX1/+O+D/9cGEmjQAERH33ZnPQP8F/PxiCKOk9QqKdlUpwtiQx86PnbYQWUqJDMQatQ+RqDb7byhYU0dNcdx9772cy/8lI9Dyqdd0e4zbKgZ841JXPTiLRZGvRn8kBB6M96azAJTlZPx6Pef9dl+PheEAvoq6gXQgnjaq0QGEILZ8ttuOQl5xpeHemtHhkZW38ShaHXDG8ew615dNjdO9QD2Phq8glLLO9tJMkOWB4Q7rKORo9na3UNJN1bBlwlLaYcnr0Zemnov6ybbUXE4825IFnQV0QRo6Qzan6fYDnmQwpqLXK7BySy2P+o4tJrucK15d1vs0OgXXXs7MsWGPy5z2n3ft6Yv8xhgG/0yFUSssRBz77KTo3PtK0u0fhyF+lAuNV2Xqqr1aJsJMZFnFWEUanUoo1vAqgqLDZOXw4WTBCwE+48WYRr+IVCZsG1gAX4CGK5+bI4gJY65X+eF3D1ea77W4FKRK2av705BKkbZH0C7M68AxE3aROwv5WpGh6QAzNB+u5mbX5jAVjc/mRpRVvmf3ngtcXmt7ETWjwV+WiYG3XAOmA7nVvKtqEsiRQ15yFmOwO149I7lwiixJ+eYdEWSEQBvg1Q/sRX4n0zqn0xFKdViN1R36cx9bH0Hqzwp/x4kN7FZHNjMJ5gkCOnoCISymKQi7p8pxts+vQPxiMp4By3hcytMTralPmtahOHoXG86hu1nhO4dmVAu8Ad0ApfgY6HYy3hG9MEVPlVP0dlP0DK7vz/feWnMjFsdkWXa272Mis9GjPDuHyV3GBX2jaAvmTby6xGfo40oIGEE/Fv0ddLxT0gdZDAMDgWl//X/zTNElCk4Cs0KMVdwCXttAke7U6nwbEi/LgSr4nM29R/A5dQdHr6qFTbdtm2gbi7gmTQR0ukgIy0/3ldqr3Rym1livBZlq6WmnDJPMkOJ+2jzRYSEWAbfJXry78p8QwuE4wlBA1Vf
- /Bfhfqs+
- 9jMuYfzL188H2sWaMUj7OKyhyl4rf/I0Hfr3P+fvfF07b1kNtt8eCsVK4njc5tP21muTSS08jSKowy2ZTxmILfCZkH5B8IxEzk/PWIJNX0ut/IPUp8hYEEOz8v7SobG2sTQZHW9m9zeHFjmJBI11BtHi1ZOF1K9FoLVoNyrKvNKrPDd6U/C2hk/bsNsfi6R6W69J/P2aTE0pIT+FYKPwVYv1MbdIP+39/J+1TMuu9av+Ej3qtthJ6uXD9pzo/BGF7T7RY9SBAP8kIfk6UeoYBacuuGA==
+X-Rspamd-Queue-Id: D0F8F18000D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773287555-236777
+X-HE-Meta: U2FsdGVkX18Ryvg+p/d4DNH+Nd0k2p3k0Yj1it6KpcOWIe9w6F5sY9ZYzZNg/vo8Bxo2wgKskz1l1zK/toxqkvz1zLd+DU8FgNyexiJK/Ds4l+yGBijA6x3gP5qvwAKIATEwWcJ6IHlrU2kpj+jOEW+8wpSH6dW5KxGWaj9+1jpxFDyH5n4eUDt07ZM35E51RRG690sB/7BlTBwI8V/GM4zCVnaF2IxV1iWhOmrVTsDerseuQ/yH8rpYomFUdOm6OofcnuGvIz7W+ZaHo2wLbWzKFCj29XBXkU2uFyh8mmZOVlgo//WyjhrF5zJ9usy3B6nb9l6CFvtiAMtQeRZqxD3e/wmZ5oOELSidOodaW96c7RcUJDVndD1I7zxh5TOUdZPWSE3sgzUu2MH8SPyxwZEowRZ3m43HsX/fEgieuhE7EZ4gqCEsY5G3yh9eXtJmcGUGWzQxzIj0QYLYVg80cuVW5lzw7bguTHOn6HLn/M9iHncpsarMhtgw97PnUYi08w+yFpCZ5K5qej6728HB0MmexKAP1Mk9FyMJkNCJNQIGCnZufEGVj8Q32WUSZCAwvw4TnwL2TYnZGLh3s/lZUIFeZnAP6ZaH/itkRpwi0MC+HWbpBjnWp2JSOKFcuJ7uwyhyJTV523B/+iyaFoElLCuM5dqnHI5rtk0EYmYJXn9VxeSTpBAJFAnBqlKCY9bChncfLwyQcsLtMFQhr+aab2+/y8/ngEb7/xPwZTO6Y/VmMOGb1ulxqHLY5RaQ0myIUUfEO/4sUxzd4x5iordqpBG5RFS8mKu18AvVS/JAuXnAQ5FzqiIf2Mn8HYQDTsbE4iFp7CDRS4fPT4tMyfWoS20CVkglsvNs8WFW2Lytk3HYIDLoYDkYbt1Lzfapkvrj9DyhZuiFLPRdN82ozu5wKJs9OleohwAXjfE1zq8pDzU8WCCJadCFVgvBJAe7fcFzEd/t1IGkzane9Wneqr+
+ oz8BeDtF
+ C7e2kB1xPoctLpT0ELGPKTftJ2oP+x7Wmd76URbK9mVopi9Cp/YbmwzNQHT483WhlwdLqxUOQ9ql/qTxwFkt2+B77PWqUqd9TJPyGxCAbLDVfAyadVI0bKGcgGGm5mKm+2aK9vtLvntY4R9leYi0yLIRwpUCg6UCoBowzEovw8b0vFM/Xu1zXP9Oc5fCb+yGmIFzUq6VPWKWyTQ3FsvHGN6ZMtecIedyxCgVUmw2JfpkTOBS7dIRhHYm0HOskeondFe+wzs8xNL+oCiLkTJI949f9bo2vCcbhRMq3Vgj0wbtZIzZ+hmJzoiwf9k7PVVzS8LeUsLXpN0tTP3frdJE1l1P/FhVJCWDHn3yXOe4y6L3wE42JV78xCwbEAGhcDyebEpnKEh/IuUuPVYsfidxHRjO0mYvAh24f7k+BSSyZD8ZwCfO1dPu3HvuUZkTs1fxJU1RfnHTHQookd0eCyATeFwixED1Ka4v0ACGmGssYPYDZTVBDd/w312+ASA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,213 +114,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B43=E6=9C=888=E6=97=A5 02:24, "Shakeel Butt" <shakeel.butt@lin=
-ux.dev mailto:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshake=
-el.butt%40linux.dev%3E > =E5=86=99=E5=88=B0:
+Hi Joshua,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on axboe/for-next]
+[also build test WARNING on linus/master v7.0-rc3]
+[cannot apply to akpm-mm/mm-everything next-20260311]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-zsmalloc-Rename-zs_object_copy-to-zs_obj_copy/20260312-035531
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux.git for-next
+patch link:    https://lore.kernel.org/r/20260311195153.4013476-11-joshua.hahnjy%40gmail.com
+patch subject: [PATCH 10/11] mm/zsmalloc: Handle single object charge migration in migrate_zspage
+config: x86_64-randconfig-001-20260312 (https://download.01.org/0day-ci/archive/20260312/202603121158.g93vlc2U-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603121158.g93vlc2U-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603121158.g93vlc2U-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/zsmalloc.c:1702:6: warning: variable 's_idx' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/zsmalloc.c:1752:45: note: uninitialized use occurs here
+    1752 |         d_zspage->objcgs[d_idx] = s_zspage->objcgs[s_idx];
+         |                                                    ^~~~~
+   mm/zsmalloc.c:1702:2: note: remove the 'if' if its condition is always false
+    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1703 |                 goto out;
+         |                 ~~~~~~~~
+   mm/zsmalloc.c:1696:20: note: initialize the variable 's_idx' to silence this warning
+    1696 |         unsigned int s_idx, d_idx;
+         |                           ^
+         |                            = 0
+>> mm/zsmalloc.c:1702:6: warning: variable 'd_idx' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/zsmalloc.c:1752:19: note: uninitialized use occurs here
+    1752 |         d_zspage->objcgs[d_idx] = s_zspage->objcgs[s_idx];
+         |                          ^~~~~
+   mm/zsmalloc.c:1702:2: note: remove the 'if' if its condition is always false
+    1702 |         if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1703 |                 goto out;
+         |                 ~~~~~~~~
+   mm/zsmalloc.c:1696:27: note: initialize the variable 'd_idx' to silence this warning
+    1696 |         unsigned int s_idx, d_idx;
+         |                                  ^
+         |                                   = 0
+   2 warnings generated.
 
 
->=20
->=20Over the last couple of weeks, I have been brainstorming on how I wou=
-ld go
-> about redesigning memcg, taking inspiration from sched_ext and bpfoom, =
-with a
-> focus on existing challenges and issues. This proposal outlines the hig=
-h-level
-> direction. Followup emails and patch series will cover and brainstorm t=
-he
-> mechanisms (of course BPF) to achieve these goals.
->=20
->=20Memory cgroups provide memory accounting and the ability to control m=
-emory usage
-> of workloads through two categories of limits. Throttling limits (memor=
-y.max and
-> memory.high) cap memory consumption. Protection limits (memory.min and
-> memory.low) shield a workload's memory from reclaim under external memo=
-ry
-> pressure.
->=20
->=20Challenges
-> ----------
->=20
->=20- Workload owners rarely know their actual memory requirements, leadi=
-ng to
->  overprovisioned limits, lower utilization, and higher infrastructure c=
-osts.
->=20
->=20- Throttling limit enforcement is synchronous in the allocating task'=
-s context,
->  which can stall latency-sensitive threads.
->=20
->=20- The stalled thread may hold shared locks, causing priority inversio=
-n -- all
->  waiters are blocked regardless of their priority.
->=20
->=20- Enforcement is indiscriminate -- there is no way to distinguish a
->  performance-critical or latency-critical allocator from a latency-tole=
-rant
->  one.
->=20
->=20- Protection limits assume static working sets size, forcing owners t=
-o either
->  overprovision or build complex userspace infrastructure to dynamically=
- adjust
->  them.
->=20
->=20Feature Wishlist
-> ----------------
->=20
->=20Here is the list of features and capabilities I want to enable in the
-> redesigned memcg limit enforcement world.
->=20
->=20Per-Memcg Background Reclaim
->=20
->=20In the new memcg world, with the goal of (mostly) eliminating direct =
-synchronous
-> reclaim for limit enforcement, provide per-memcg background reclaimers =
-which can
-> scale across CPUs with the allocation rate.
+vim +1702 mm/zsmalloc.c
 
-I am aware that several companies maintain out-of-tree patches for
-asynchronous reclaim, though some have not yet attempted to upstream
-them.
+  1686	
+  1687	#ifdef CONFIG_MEMCG
+  1688	static void zs_migrate_objcg(struct zspage *s_zspage, struct zspage *d_zspage,
+  1689				     unsigned long used_obj, unsigned long free_obj,
+  1690				     struct zs_pool *pool, int size)
+  1691	{
+  1692		struct zpdesc *s_zpdesc, *d_zpdesc;
+  1693		struct obj_cgroup *objcg;
+  1694		struct mem_cgroup *memcg;
+  1695		struct lruvec *l;
+  1696		unsigned int s_idx, d_idx;
+  1697		unsigned int s_off, d_off;
+  1698		int charges[4], nids[4], partial;
+  1699		int s_bytes_in_page, d_bytes_in_page;
+  1700		int i;
+  1701	
+> 1702		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+  1703			goto out;
+  1704	
+  1705		obj_to_location(used_obj, &s_zpdesc, &s_idx);
+  1706		obj_to_location(free_obj, &d_zpdesc, &d_idx);
+  1707	
+  1708		objcg = s_zspage->objcgs[s_idx];
+  1709		if (!objcg)
+  1710			goto out;
+  1711	
+  1712		/*
+  1713		 * The object migration here can touch up to 4 nodes.
+  1714		 * Instead of breaking down all possible combinations of node changes,
+  1715		 * just uncharge entirely from the source and charge entirely to the
+  1716		 * destination, even if there is are node overlaps between src and dst.
+  1717		 */
+  1718		s_off = (s_idx * size) % PAGE_SIZE;
+  1719		d_off = (d_idx * size) % PAGE_SIZE;
+  1720		s_bytes_in_page = min_t(int, size, PAGE_SIZE - s_off);
+  1721		d_bytes_in_page = min_t(int, size, PAGE_SIZE - d_off);
+  1722	
+  1723		charges[0] = -s_bytes_in_page;
+  1724		nids[0] = page_to_nid(zpdesc_page(s_zpdesc));
+  1725		charges[1] = -(size - s_bytes_in_page); /* 0 if object doesn't span */
+  1726		if (charges[1])
+  1727			nids[1] = page_to_nid(zpdesc_page(get_next_zpdesc(s_zpdesc)));
+  1728	
+  1729		charges[2] = d_bytes_in_page;
+  1730		nids[2] = page_to_nid(zpdesc_page(d_zpdesc));
+  1731		charges[3] = size - d_bytes_in_page; /* 0 if object doesn't span */
+  1732		if (charges[3])
+  1733			nids[3] = page_to_nid(zpdesc_page(get_next_zpdesc(d_zpdesc)));
+  1734	
+  1735		rcu_read_lock();
+  1736		memcg = obj_cgroup_memcg(objcg);
+  1737		for (i = 0; i < 4; i++) {
+  1738			if (!charges[i])
+  1739				continue;
+  1740	
+  1741			l = mem_cgroup_lruvec(memcg, NODE_DATA(nids[i]));
+  1742			partial = (PAGE_SIZE * charges[i]) / size;
+  1743			mod_memcg_lruvec_state(l, pool->compressed_stat, charges[i]);
+  1744			mod_memcg_lruvec_state(l, pool->uncompressed_stat, partial);
+  1745		}
+  1746		rcu_read_unlock();
+  1747	
+  1748		dec_node_page_state(zpdesc_page(s_zpdesc), pool->uncompressed_stat);
+  1749		inc_node_page_state(zpdesc_page(d_zpdesc), pool->uncompressed_stat);
+  1750	
+  1751	out:
+  1752		d_zspage->objcgs[d_idx] = s_zspage->objcgs[s_idx];
+  1753		s_zspage->objcgs[s_idx] = NULL;
+  1754	}
+  1755	#else
+  1756	static void zs_migrate_objcg(struct zspage *s_zspage, struct zspage *d_zspage,
+  1757				     unsigned long used_obj, unsigned long free_obj,
+  1758				     struct zs_pool *pool, int size)
+  1759	{
+  1760	}
+  1761	#endif
+  1762	
 
-Would it be feasible to introduce a generic memcg asynchronous reclaim
-framework into the upstream kernel, where eBPF is used to orchestrate
-and control the reclaim logic? In this model, the kernel's role would
-be to enforce "guardrails" for these operations=E2=80=94for instance,
-restricting a BPF program to initiating only one asynchronous reclaim
-pass at a time=E2=80=94to ensure system safety and predictability.
-
-Best,
-Hui
-
-
->=20
->=20Lock-Aware Throttling
->=20
->=20The ability to avoid throttling an allocating task that is holding lo=
-cks, to
-> prevent priority inversion. In Meta's fleet, we have observed lock hold=
-ers stuck
-> in memcg reclaim, blocking all waiters regardless of their priority or
-> criticality.
->=20
->=20Thread-Level Throttling Control
->=20
->=20Workloads should be able to indicate at the thread level which thread=
-s can be
-> synchronously throttled and which cannot. For example, while experiment=
-ing with
-> sched_ext, we drastically improved the performance of AI training workl=
-oads by
-> prioritizing threads interacting with the GPU. Similarly, applications =
-can
-> identify the threads or thread pools on their performance-critical path=
-s and
-> the memcg enforcement mechanism should not throttle them.
->=20
->=20Combined Memory and Swap Limits
->=20
->=20Some users (Google actually) need the ability to enforce limits based=
- on
-> combined memory and swap usage, similar to cgroup v1's memsw limit, pro=
-viding a
-> ceiling on total memory commitment rather than treating memory and swap
-> independently.
->=20
->=20Dynamic Protection Limits
->=20
->=20Rather than static protection limits, the kernel should support defin=
-ing
-> protection based on the actual working set of the workload, leveraging =
-signals
-> such as working set estimation, PSI, refault rates, or a combination th=
-ereof to
-> automatically adapt to the workload's current memory needs.
->=20
->=20Shared Memory Semantics
->=20
->=20With more flexibility in limit enforcement, the kernel should be able=
- to
-> account for memory shared between workloads (cgroups) during enforcemen=
-t.
-> Today, enforcement only looks at each workload's memory usage independe=
-ntly.
-> Sensible shared memory semantics would allow the enforcer to consider
-> cross-cgroup sharing when making reclaim and throttling decisions.
->=20
->=20Memory Tiering
->=20
->=20With a flexible limit enforcement mechanism, the kernel can balance m=
-emory
-> usage of different workloads across memory tiers based on their perform=
-ance
-> requirements. Tier accounting and hotness tracking are orthogonal, but =
-the
-> decisions of when and how to balance memory between tiers should be han=
-dled by
-> the enforcer.
->=20
->=20Collaborative Load Shedding
->=20
->=20Many workloads communicate with an external entity for load balancing=
- and rely
-> on their own usage metrics like RSS or memory pressure to signal whethe=
-r they
-> can accept more or less work. This is guesswork. Instead of the
-> workload guessing, the limit enforcer -- which is actually managing the
-> workload's memory usage -- should be able to communicate available head=
-room or
-> request the workload to shed load or reduce memory usage. This collabor=
-ative
-> load shedding mechanism would allow workloads to make informed decision=
-s rather
-> than reacting to coarse signals.
->=20
->=20Cross-Subsystem Collaboration
->=20
->=20Finally, the limit enforcement mechanism should collaborate with the =
-CPU
-> scheduler and other subsystems that can release memory. For example, di=
-rty
-> memory is not reclaimable and the memory subsystem wakes up flushers to=
- trigger
-> writeback. However, flushers need CPU to run -- asking the CPU schedule=
-r to
-> prioritize them ensures the kernel does not lack reclaimable memory und=
-er
-> stressful conditions. Similarly, some subsystems free memory through wo=
-rkqueues
-> or RCU callbacks. While this may seem orthogonal to limit enforcement, =
-we can
-> definitely take advantage by having visibility into these situations.
->=20
->=20Putting It All Together
-> -----------------------
->=20
->=20To illustrate the end goal, here is an example of the scenario I want=
- to
-> enable. Suppose there is an AI agent controlling the resources of a hos=
-t. I
-> should be able to provide the following policy and everything should wo=
-rk out
-> of the box:
->=20
->=20Policy: "keep system-level memory utilization below 95 percent;
-> avoid priority inversions by not throttling allocators holding locks; t=
-rim each
-> workload's usage to its working set without regressing its relevant per=
-formance
-> metrics; collaborate with workloads on load shedding and memory trimmin=
-g
-> decisions; and under extreme memory pressure, collaborate with the OOM =
-killer
-> and the central job scheduler to kill and clean up a workload."
->=20
->=20Initially I added this example for fun, but from [1] it seems like th=
-ere is a
-> real need to enable such capabilities.
->=20
->=20[1] https://arxiv.org/abs/2602.09345
->
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
