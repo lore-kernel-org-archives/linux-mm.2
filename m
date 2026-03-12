@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 671E4106ACEC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96DB0106ACEC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:58:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C64726B00BC; Thu, 12 Mar 2026 16:57:52 -0400 (EDT)
+	id F3DF96B00BD; Thu, 12 Mar 2026 16:58:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C04A26B00BD; Thu, 12 Mar 2026 16:57:52 -0400 (EDT)
+	id F084D6B00BF; Thu, 12 Mar 2026 16:58:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B455A6B00BE; Thu, 12 Mar 2026 16:57:52 -0400 (EDT)
+	id E52836B00C0; Thu, 12 Mar 2026 16:58:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A40096B00BC
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:57:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46E4D1C32C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:57:52 +0000 (UTC)
-X-FDA: 84538622784.30.23081ED
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6047B1C0003
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:57:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fKTUhgpY;
-	spf=pass (imf20.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D3E506B00BD
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:58:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B8171403E8
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:58:01 +0000 (UTC)
+X-FDA: 84538623162.18.43971CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id F24574000B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:57:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FLiV1etm;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773349070;
+	s=arc-20220608; t=1773349080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5TCU3IeL+CM9jwMcCHM5UD2nm48BrqqrHRJzKJccTi0=;
-	b=vO6n913s7Q2kGI+JVPRYmZtcvzpYijB7/CVt8LYg1lp9AyYzzdnSKdtbXyKktMBde4Qd+1
-	Yz82I1K1kS/GqSJ6pRMwu5Mtz/tPtpQjli3pf1OM4WVI5wDTJnUI1b9cIDCuKJ6ZpU1Mec
-	SaNkGpusxj3r7oSop0eXZ1Vt/WhFCAg=
+	bh=0OrgL1iQRwZHOzCyRQIk0lufG4h3ls5sHWCdkmfF4e8=;
+	b=mEL/1KOd6m9S+z2fQBsnSDGysOzE6lYb2TN5DEe/aC1Ao8h3TnDku7G5Nv4dmJBsvxWeO9
+	hB9d/nkzaLQiwCCwHkmreGfxLc4GEhrDX8E75+IlxJx8fhE2HU3Q8syKQeVzuP2pOHcL6m
+	camyDUxMXtJXRyMpOnDyS9n8GenWQNc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fKTUhgpY;
-	spf=pass (imf20.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773349070; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FLiV1etm;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773349080; a=rsa-sha256;
 	cv=none;
-	b=shrTlgdbCD4Zl8m1HclA7WjfuZymYoOdwbsX8Hnee7BevkN1ZaEq4lfXomFd1J2ABFubwf
-	f0/G9b05pfxywv7FpZXDgkuABB+RDZbgbdiY9W9diFxYzNJMNJdKElwNblyt4Wqfntbfmo
-	W+nwrJ9fCp8PnQVKWF25vufutgbxUPk=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48534b59cf3so13308955e9.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:57:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773349069; x=1773953869; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5TCU3IeL+CM9jwMcCHM5UD2nm48BrqqrHRJzKJccTi0=;
-        b=fKTUhgpY8SBfREsdl1PGdy5LUE+FRmtN+7EKtfxq1eVYtctKdqRleEIMTI+q+bPE2w
-         w6a5vfe2iMy5r7S+DZWExxvd6mmFXmYKR944GwCsY3XuzAC7gn6PoSULlqpWc2urT8qr
-         T5FEN0QLvZmuym7MGlndrcD3Dp1QK1gvqy3OLqGx77l2I3qJBixJqVUUbRdpt3Pi0tWL
-         xh0uE6lJaG6YWnedHku8NlC5qkMzUGRP++KmgxZ6SI1knlr9T8NTp96EYQdDeT60+Thg
-         xfhfz8f8lVknLEnkZciZHe0hUCYUDjuHaCmgsFUJw7FrhIi6bGuHJMX2fhbIdguiWhn4
-         q56A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773349069; x=1773953869;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5TCU3IeL+CM9jwMcCHM5UD2nm48BrqqrHRJzKJccTi0=;
-        b=sSHtgMl1hll7TBxADnz6+G56uBt+Qu3acjUC5eogcz4Ix420XKVVMe+RkQ7jgDJQTT
-         aLTlFy9XGR+q5HTKSB3HPV5DgUTEAKhifURlfsxms7FlAxDlJtTTJSh7+/j5KXrob38q
-         TT7w6+MLNeRq532zKUiKKdps59rgOyoAq0Fyp4GOBmzCVqyRmVtkEJMl/16odSxlJP/Y
-         9Ko3zbtP20myOtLPKc++T9JUPe3yZmS7wChwuy5acTml8U0b/WEz4O3jln38GCqRHcMu
-         LNJNOL905gRrMvMGxt/imCl+/LC0j4K7A4u2UFXI42S5crVksI7+Namy1Eyil2TiNmR2
-         83LA==
-X-Forwarded-Encrypted: i=1; AJvYcCWA81i4fsW8K8ci7RPhjElKMHtO7C7rVzb1/mlRjR4TkGq3k5UmlqAcdZAPwnrYWU5G0ijR/O+YRQ==@kvack.org
-X-Gm-Message-State: AOJu0YzNK32zHgVAMcfaJTgQ3TTiZSVEIVn4cq8mhaYkDtVuFDHYV+FC
-	dxcBPD2w4dNdWNL3YG0RImjzrH6dv7waVm3PH/u9V/jkEpakSvFDupGk5A4FMVjXlcs=
-X-Gm-Gg: ATEYQzzEO6fgjzlLlI1wvGBqP+OXvmNtT913RJlCKY8XT6Y1wpVePsUAhPcJSRmI5WU
-	KK3hXV55AAxofmKXWdBPOcVSYLEAZcQ2cfeTyjRBcu8T3ezEzVrOzGxE90yqG6NrKu8555bj2eM
-	v/fMCF2fLc77kYNSJk9XODEhnxu7oBD5b4SK2JGeuAROksKKywLPr8mlHrJ44rWoEgEhRLfybqF
-	BtgXUfZfV3RxqaYNy5k8Igl7wuTfwMeH3kuBxg1X2TrU2CB6QGAVKC5l5gHXhhy4aVbHYIN5cJ3
-	YOgv5QEAsI5HQhkexiWIIT9AbCZAkDNWslrUEJudu5zTgNx26gHLMwWOqsJxEWQeYjZTJz2JOlS
-	A/aik7PRWYNpA2uZ8qu7J4Jnj2toBg5XQLH7YAEGBUIKBoaXXtJzgBumA04tMrTSU+4dXve96oU
-	Hpon98d16DukVEbiThBHFl7u1HWw==
-X-Received: by 2002:a05:600c:4f8f:b0:485:3423:727d with SMTP id 5b1f17b1804b1-4855670c095mr12566595e9.26.1773349068753;
-        Thu, 12 Mar 2026 13:57:48 -0700 (PDT)
-Received: from ?IPv6:::1? ([2a00:23ee:2968:90cb:1c6d:1979:bcad:501a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4855725572csm6531295e9.2.2026.03.12.13.57.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 13:57:48 -0700 (PDT)
-Date: Thu, 12 Mar 2026 20:57:46 +0000
-From: Josh Law <hlcj1234567@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Josh Law <objecting@objecting.org>
-Message-ID: <43bacae7-3891-417e-9384-20cede8eec6e@gmail.com>
-In-Reply-To: <20260312135514.e4fc0fa4c1f50e6fbda2644c@linux-foundation.org>
-References: <20260312181948.20020-1-objecting@objecting.org> <20260312181948.20020-2-objecting@objecting.org> <20260312135514.e4fc0fa4c1f50e6fbda2644c@linux-foundation.org>
-Subject: Re: [PATCH v3 1/2] lib/idr: fix infinite loop in idr_get_next()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <43bacae7-3891-417e-9384-20cede8eec6e@gmail.com>
-X-Rspamd-Queue-Id: 6047B1C0003
-X-Stat-Signature: fac6asa4u5ewc7tag9o3iidxedukb36g
+	b=lXFmT3K0mzglcqSMMgfOgSbfVW4hA+jprTX305dskQmbVHDNjxJOOfXwH06PHa1b5AXydv
+	hsDyLu1NasWnLBli7yP3iAAvZKdw8aXYBtHdcpTK3pBOaPhIF8G9zq7BqCcg9zdOo2EsDX
+	OZTy46IGOiq4fwHTyHQIoaBBqzn7GiQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6134260142;
+	Thu, 12 Mar 2026 20:57:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D739C4CEF7;
+	Thu, 12 Mar 2026 20:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773349079;
+	bh=K9BkTSEP4DAO1oqXkTRgIUsMciXJXXN0g3ET3zAlngE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FLiV1etmYVcSGbbdm/XWzQaxQrtcu+DjcXjI6bdWYsu841NM3z6Xw64cXI54+iaIn
+	 L2BrHY9lnVUqIJ6938urwDNEtRFz9ffekCMe3lr4UZIlR45/w5t14m5ix5+hCEMOxM
+	 z/hIOPZIY6kgBHdLKvnC8iu8NrktiaWhHWtId3+Y=
+Date: Thu, 12 Mar 2026 13:57:57 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vasily Gorbik <gor@linux.ibm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Pasha
+ Tatashin <pasha.tatashin@soleen.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-s390@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org
+Subject: Re: [PATCH v2 1/4] mm/page_table_check: Pass mm_struct to
+ pxx_user_accessible_page()
+Message-Id: <20260312135757.d65e8145d9d39e1ca5bc9666@linux-foundation.org>
+In-Reply-To: <ttbskgg@ub.hpns>
+References: <cover.1772812343.git.agordeev@linux.ibm.com>
+	<ca77f3489453c2fe01b25e50e53b778929e0dfc5.1772812343.git.agordeev@linux.ibm.com>
+	<ttbskgg@ub.hpns>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F24574000B
+X-Stat-Signature: 94d8of5wmxycs3i8zih88gm4gnp3nyep
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1773349070-304706
-X-HE-Meta: U2FsdGVkX18YBNEIIAD6HF+yY+68tmrHqgmIEQAb4Lh3mFv82J3vzdRAxI0PN0BNjW92+cBXZTj9rTRHncfWiG4n7pHNgVxjWNlAWoZGfbSeUWD0qLq/gKk8/+oJwbmmky9gG0hrW8ZAwlIfbSRwBFrz/L1yCVxYyiUDB/Xp0B1x2CnI79LnHo2EdhCaV03XYRp6KtyGCGnXhawJi6EcOhbGlbCmsxYzcj+6I8RVvTNJGCbmnDrwQBIv8kX8tVq7N5gyQow6V/NdXi6Z+GsOg0mkwfK8djcOr66mL6DtXPi0sEpSV696mBojhm9aw3Xo6bVkxcULLJKA65Pnaqyork7lqJQwYGOcFwxtSDSS4KZG8gPuQmdA6U/g1C2DZUl52fX4U/aS/as6iNXqVqrMkoJiEUm3pR6CBGyni7UTRICdB6D0Ik8DSPbg4rLL20sF6TekD53xqr3nLzwxZU+snoofCH9anzUqldoumwZKB/rSnG8LY66PS77okVbBiSVhNA2ZmZyWTiLLIseBXtBAi2U4c43Fy2ZBfiBWeu4/aZ8q1fGCowSWghM383NLTqARprjGrtcbuvvlFNd2LXTVI9q9UnhM5eQuivrHd7P+6rTqef6cH/G4VK20KRDyWY4ohbKTqgj3q8GFUAQ16Q8PAfB26HH4DR46cZ/AeNwoDrqSIUxCWuDQAuMKszGFRwJegy1hKD1s+wQPwBikNo5C6ThRjxlOIOJcKHH8C+wB2y8qPbwIUsm40xbPIWFBrcOVfUtFd4cHSM+x1wh7qydUUxv1+v7iEfaoxsYe1ht1JtD6UWspHR6LSXcEoa2jYj/lMq5H4KHeuFi0CD+DMGSm0Q6RIevRv5vxWI5hWRaUCKAVgEJ7bkWYv15wsCLH18IIwWXCPuRKGzBXNTm996tINGO7k8kCwjotlCskwvK41B4E4kKgPNifFuaxb7Ka0j/6oIOndJk9URZBdwCiRkC
- NjPE3QlE
- 8dZ8W5eFdwqhuY1iAOWK+Q75Wt4Zh+t2gWPUOi5Uvr3joZm2tlvDnzFtzNYmSLzHKw+AFCMrxc13Sxe3tp4OYLv7641ofg0pRUxN8NSxEDuKGwIUT1Z0l5i0EQHJROLKLbU/4oOyTIF5o21bjR/ip4xfm2uYV79TRBOZIyZn7BtUsEXYM8eyqLPuFByS70vzEhsjeepIuAQhxh8S4X1INPMrx+kYoOXE850R4P81NQwIyxA2fGGIC9DJl9YCdZmDYJUiY7mGb3JpTgmivIs0cCVpT+moDP52qoUfEHF4f0EXNmNZnx5niKc52a2+Z/DjEM8A12IpKIELlim9co13xFEWTBXlNWg9Wm2j3Au0yda8joJg3vlRlDebqwPYblgZHURuMMrGelDB5BtuWWfL4jbr7XP3dYXF3S8fvviTrzDJag8WLCKT/4laVcqdn7Zxsria8vazmvo0zvMQXnjZLFVYmh0jq3BlGoxuHR5OkYDU5P8Md4frvyWBXVzOSwzq+APV/u+yIhoIHSEjozMQcY9hQuEJqhWE0+1uujQUWd4QGlNFfm/s12MG/Sg05cMHtr6IY
+X-HE-Tag: 1773349079-329685
+X-HE-Meta: U2FsdGVkX193TznZQxGAlomW1I5Z4+xIWI0gARMw+lNdPXfSLsIHjiwtlYgH5MaDqsj2GaJgSEAe/A0+2BvqFv5oPlqjFacLD+J4GcmaK9kNHWNlkDVXLb0QbD24PU9/LtadBibvdF7Zkt9t97+khT2ppoRXqbX76CpiL9DsmsBPUurR8PkyxoNEqwkOhZvX5dwOsI7I70HmNTxs1kPJAhkGQBvXcpLBm2oBqWjeyjXTaKJJxZij7jwEpGt08geKXDcf8mtBvE7bVRTSaoTf1EvG4GT0Qpmeun29/O/ocL1utD3xkEurlK1RdW+bohFzv6W4re8yK6oyPrcYtEFkO6JTyTL8sszLf6bZToKZ723SDJyde20TB8TA1oEamD9aLv2rLZX6Vst2lOR4fvKuTCWk52mrXT71nLg+J6ng70UFmRFgmDBE8L6iW/TtWkYnl+NN2vMngWa8IXYnWmiJRi8wS6/7rnlm2uKpg60LtG2Be/MGFlbxgznYF1V2J7chvn+JmS7mfg0b+w1BzVcQkYn3zrP6iNvsVBGFLRcvCT1EZCUbqOUg7VoevkDaOtzqh5ZIcO2oKQHCHdIRnYFrcWFop3Z9dqB50twV0BslvT1cSM4I8ogikp/Rn4fWfQRjo7JBpNllSBvfbDnhvW1NbwaalRazZ18ONV+b/IJyybjrkb2xXL3Ujg0YBR3jn5iwdYd/Qv/VR5yB37FNGQxgp+zcrTQkzN+EuAC/fRoIJayxvYHuomp/zKgGPyh19cHJsw0XC/99rARO0nPS3H2/iv7Z97ycNVuhX52JGLQdiaI0Rg8lHgfuxj52JkgD39nF6TdG9k2uUNmkthQqcPO9y//I7XQki7Mk4j+QSSCXC/hmSOq1sRlpzj2loUNyxYtQ+2nOZU5uHc+DzNW+LRiV/Ht9sLJSec0N9EV7ZQ2GE7XVFV+eaGGcgVXPqZH32sEH7gTNPh+zaprsHioL7XH
+ jOGOcAi0
+ aIQfy6cHNsTZ1s8EgP51GNioviTV0V+x+vD83GY4Mm1l1rhhHl9r1LMgtXMLaZQw7z12CuC3FX5sWPjk0bRPW+xJ8sOibOw2yQkiO3G+oqxas93OgML3+Pdrl75soAYlsJo6iU7PCAJ0XRMKbjrmjNp3flEdGP3rqXBB6pcvrqrzcSbf8EFog1UxWnToYRXyvGDer4154nOxYKCfztK/+Brog3IQcsMKLNN9eTtBTz6HFYjLvmU+mwG50CFYE89h5enyWE47D5GDEp2PIB5LMw2F3q8IoR9n0M/eZc7SfOQbnFSGS365lyl3M11v8Kb5IqFU5Ut5xGC7pkQmBHgJjDIEVuwoHy8xKrHFUDYWmzgKvlgWgCyWT00aLTGBZCLCBcLPh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,30 +98,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-12 Mar 2026 20:55:15 Andrew Morton <akpm@linux-foundation.org>:
+On Thu, 12 Mar 2026 16:02:40 +0100 Vasily Gorbik <gor@linux.ibm.com> wrote:
 
-> On Thu, 12 Mar 2026 18:19:47 +0000 Josh Law <hlcj1234567@gmail.com> wrote=
-:
->
->> In idr_get_next(), if the returned id from idr_get_next_ul() is greater
->> than INT_MAX, the function issues a warning and returns NULL without
->> updating the *nextid pointer. This causes a soft lockup for any caller
->> iterating over an IDR (e.g. via idr_for_each_entry) because they will
->> receive NULL, fail to advance their index, and repeatedly query the same
->> state forever.
->
-> This assumes that the idr_get_next() caller ignores the NULL return and
-> just keeps on looping.=C2=A0 Isn't that a caller bug and if so, do we nee=
-d
-> to defend against it here?
+> On Fri, Mar 06, 2026 at 05:16:30PM +0100, Alexander Gordeev wrote:
+> > From: Tobias Huschle <huschle@linux.ibm.com>
+> > 
+> > Unlike other architectures, s390 does not have means to
+> > distinguish kernel vs user page table entries - neither
+> > an entry itself, nor the address could be used for that.
+> > It is only the mm_struct that indicates whether an entry
+> > in question is mapped to a user space. So pass mm_struct
+> > to pxx_user_accessible_page() callbacks.
+> > 
+> > [agordeev@linux.ibm.com: rephrased commit message, removed braces]
+> > 
+> > Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+> > Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+> > Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
+> > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> > ---
+> >  arch/arm64/include/asm/pgtable.h             |  6 +++---
+> >  arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
+> >  arch/powerpc/include/asm/book3s/64/pgtable.h | 10 +++++-----
+> >  arch/powerpc/include/asm/nohash/pgtable.h    |  2 +-
+> >  arch/powerpc/include/asm/pgtable.h           |  4 ++--
+> >  arch/riscv/include/asm/pgtable.h             |  6 +++---
+> >  arch/x86/include/asm/pgtable.h               |  6 +++---
+> >  mm/page_table_check.c                        | 15 ++++++---------
+> >  8 files changed, 24 insertions(+), 27 deletions(-)
+> 
+> Andrew, may I get your Reviewed-by or Ack-by for v2 so I can take it
+> via the s390 tree as well?
 
-The risk isn't just a single loop failure; it's that idr_get_next() breaks =
-the 'forward-progress' guarantee of the iterator.
-In macros like idr_for_each_entry_continue, if idr_get_next() returns NULL =
-without advancing the pointer, the caller is left in a permanent trap. Any =
-attempt to resume or retry the iteration results in an infinite loop of the=
- same warning because the index is never incremented past the problematic I=
-D.
-Advancing the pointer ensures the infrastructure is robust against these 's=
-oft lockups', even if the caller's error handling is imperfect..
+	Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+
+It doesn't look like [1/4] changed significanty since v1?
+
 
