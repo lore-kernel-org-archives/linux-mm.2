@@ -4,87 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9D54103E2FF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 02:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE72103E304
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 02:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F25216B0088; Wed, 11 Mar 2026 22:30:45 -0400 (EDT)
+	id 178666B0088; Wed, 11 Mar 2026 22:47:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED2AE6B0089; Wed, 11 Mar 2026 22:30:45 -0400 (EDT)
+	id 0F5486B0089; Wed, 11 Mar 2026 22:47:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB4376B008A; Wed, 11 Mar 2026 22:30:45 -0400 (EDT)
+	id 0010A6B008A; Wed, 11 Mar 2026 22:47:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CA3A76B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:30:45 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 703D914068A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:30:45 +0000 (UTC)
-X-FDA: 84535832850.21.4D928F8
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A15D280012
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:30:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YuxXe+Gp;
-	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id E47D06B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:47:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 451078B463
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:47:08 +0000 (UTC)
+X-FDA: 84535874136.07.BC8B6EB
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3AC72180002
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:47:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pl1wvej5;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773282643;
+	s=arc-20220608; t=1773283626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Qgm+4fBfeILAFrGgPSJQdkYHwRBAjotjsIQctASgY6U=;
-	b=XOFMLlGJ0Yx4o6v3rKrkGaLSnEga9T9Ojs7eyr+D0pIOv50lJAaPorReLNIFZVFDH7Uvnf
-	z3GIGVpdJZAd6fJahL53Fd3WclcdqC1Mlx3SIczcJeuyEQNvkoPb5K+VA6qyIXPTnbJcR+
-	mP5kZvo1bqIKlbE4/vKKnZ10BVOV2xY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bn22wJ7ckCW5LunWe8zrG07xQ/9uHxRHUmDSBAcb/oU=;
+	b=z8rnpv+Ju1w96GyUjG3RNna3c2VJaLUvOjgjfxFEcUgTjkGWsUKG/kfsorqU0iI89cvgT1
+	OgbRMj+GE0cz7AaH05qp7UrEz3+XZMct2y4nquMFcIN3rkF4l9wQ+DGm7gnrbN/nj45FHY
+	EVWtkpxLy6YCmHs4AcD7+DfnQraaqpM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YuxXe+Gp;
-	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pl1wvej5;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773282643; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773283626; a=rsa-sha256;
 	cv=none;
-	b=4OGJS5XvTasxL87jLzN9nUPkYt9Wgle5Gb295v6eTFeZvSMmGJNDStn3hgsf1PU7FkoHQu
-	OZ1vXoMx6m0kcESgBAVOUQZEf+xgL9m+hKwdPMkRyAYzb2iNZV7sEutTYQc9NSp+TAg2xB
-	uXt9S1y3qcfctFD0COMCXb2tTcicf6E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	b=HRBYg/6rOC6TSP0tsPLOjGtq/WFmJGLZrSgpivWwl/SATVilDh28kvTMk0Oen5igt8XLN6
+	ppiXs0Ookk5nzKbFe++yjFYXiX9YvXrc6IkScGBVwx293Oevxisn3L7HoWHhUXpJJrKCnW
+	D55k1f3QZQJJcsX/GOBTIu+hGo+ayMI=
+Content-Type: text/plain;
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773282641;
+	t=1773283623;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Qgm+4fBfeILAFrGgPSJQdkYHwRBAjotjsIQctASgY6U=;
-	b=YuxXe+Gp80E4cwYpKmKe4p781rH+bTy7rSce3M6WPYkECWPC5k/3RYB7mXjIBEhJ9CFAxO
-	s65Pb3EW5O6uN7yMZFcQBfWZb8loGQyAYOZQj2RH5D2kWWXF71+Ka0iGFRK6nu9nbW0elE
-	suJ1NJDQtqjkjm9kMgRzSHmzGN56z1o=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Geliang Tang <geliang@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v5] mm/swap: strengthen locking assertions and invariants in cluster allocation
-Date: Thu, 12 Mar 2026 10:30:24 +0800
-Message-ID: <20260312023024.903143-1-hui.zhu@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bn22wJ7ckCW5LunWe8zrG07xQ/9uHxRHUmDSBAcb/oU=;
+	b=pl1wvej5D2Yz+aDVoFPsDWCvqwPHXwNrvdxO4nqaau4RsfYAyzqGQIDN8yI6wkuerZ+X4P
+	ZDGbzlOcZxxm4FS8OyTxMRh9hMr0YrKMX3KTPpuJ9UK97OYQeLMnmLqJQCRsk4iXYPnBNm
+	d1zUpjd9ueHL/DhtAMgYjaQcmKsyMQ0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <abHPsCypwo7ZhqIt@linux.dev>
+Date: Thu, 12 Mar 2026 10:46:10 +0800
+Cc: lsf-pc@lists.linux-foundation.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Tejun Heo <tj@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Alexei Starovoitov <ast@kernel.org>,
+ =?utf-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Hui Zhu <hui.zhu@linux.dev>,
+ JP Kobryn <inwardvessel@gmail.com>,
+ Geliang Tang <geliang@kernel.org>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ David Rientjes <rientjes@google.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org,
+ cgroups@vger.kernel.org,
+ bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8F3593EB-9D81-4459-8675-E922426DCB1E@linux.dev>
+References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
+ <3ECC9B38-6C1A-4F60-9C18-98B7A1A56355@linux.dev> <abHPsCypwo7ZhqIt@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A15D280012
+X-Rspamd-Queue-Id: 3AC72180002
 X-Rspamd-Server: rspam07
-X-Stat-Signature: rdocguwqsgu3h1i637j85ijd1ieqdh9h
+X-Stat-Signature: 5sd59os8szoor5r5igbtufd5ybkquhdy
 X-Rspam-User: 
-X-HE-Tag: 1773282643-906662
-X-HE-Meta: U2FsdGVkX1+0bAqYMruCXLhwSy65kkyBmFhKL62n35hwuSutE2u72EARilF0rS26mfg34nYwFQfwONX1Axnmw2EGZht4qqfTRg5MmSBqzP7HOBlAe+OnbLEIqjGgSh265H6ZTwYqOXnglRQDwk9fOFuCU7Dtd4erzzUt/j9hK/n2ObdISisgWUGWkFpZOKVdlvKwyqUEeCEbMS0lNo3SIDW4ulkoyEuwmr0uZnmFNch6ijlHqw0/bZErcFfw8XWvGEqTL7OhxdUidKBy1+mDUaxSGhVH+xMXnwg2nVYMT6fH1btvV6K7d7fEXk6KY9cy38nY2975jSCKoZ7z0qfZImSBuN3GihyH0VNqytY56PXpKc+nKO1M7dijjWY+q2yqN4o7uO6uVl+kHd4eF8RBiAicIzBC33jEe99WRfelnUYwOSWR5kj6+kXboYD8DExBZriG42Aj7d4cGFhe+k+ZhNs0gvbtZpiSw0d5RL/KjsPV+hJq8eP2x0kgMj2X3XVHwJEHMGi+HYXI/jk6MwA0o4vxSf6Rxrr6lQNTNoHp8IkyPNn6q52yZl1Fwd4IGCRItJRd/elLQOcsKaSsfaJGHa4svz/sBKNpRzVAy+SZRascK5pOKyuWti2jQdmVbjZc6BJ8L9k5um/gSSTbAuNw+eCNODpsVkNSSxVFjTIHwM8pGpG6qyavyI1eMJf0SLLqdQFaCzHKPjMhj1vcbVFJzSt+ULGMNKnW1c6EP2O5K9faZLBcUQDkraqzDpOGyfXFngB3XIg+v8jQkxzPgS8knqLSbUQX4SceWZX7z66QiGnwW+hqK+esOXGLSsBXIdlDQlur2zjuNKFcxrKKVFFl+3jXV4pTJMoNNvqmHcCY17UvtVaxaWJzZwqd7xZx+pZ3NWIE0tEChq9TlY2SKHQB8k2h/zQl1wxiRsc1/oudD1bIfHn/3BMW3zDfPJcsjBxyvaQIr/0/Horbwoj0g7O
- JrGWIg3i
- vEMjXpzzobX94UnWSpomrWouy/cbi7zKC7JtTIhSfxLoOQd6XEVe+iBburhVxL3mdJaIYEqM1o4YMYBNqkx3CyIQfhP7JZKG9WeOW0CPFw5DNJw0jLgDwdYbBenMdp/qVHBPUOvlz+xBInbATHO2yLK+wEPip3e6CjazNcUs5GwOdAFoxhqCkV15Akd1TjoRwj5S5+ul/AJLwY39FG1dd3Hd5jDxtBrBgK6BXI0Kr9trsfwZame6BbcK85A==
+X-HE-Tag: 1773283625-952245
+X-HE-Meta: U2FsdGVkX1+zvLL42cgyIe3iC4hO7rgo/FPPqSpyBhh0kjYmxbkbQxxvsgF6wIAN6OHIHcH8bzvQy36cMecWNZvWbni7zVVGLtrdFONBytzPSpTvr5izQIOdAAaePFpd+C+U2sXmMGifaChfR1/Mffp3uck98qt+D6l8YzAGMCdBiw02U+NUsCMx2ydBduvB1SeTrzI2JhabiJPn7WmXrdHWUL747KB+nxmdkoxa5zh3Vyfii8bVXKbAYJMjcZeAQkHRUdmAuEf3IpJfqgG51fUccO0tbsuj+DjoMoJqyTrH5MI3Wxg2F8KcMCIhoyFUpKMf7YbqDaOD/fqDdH+JGZ7nQPnVj4L4rxvEFULeVbIrnt463ghfHTRE/WSZJlWNMR+GN07ZkN1CGYHrN1/bo+rMyOoIVrqLNJVrVYgcDJhku8jFCW+nCassGX6ClR0V0iD8zOVJHkHd53BCQAoyo8c2Hi+SEThP/HGO2/0f5+mIT8YpNYnED11E1e0yk9E5q5CqmZpw7MFtRkpxqqn/qsPrlmdnLIBFaxwNZVX4FalItmLdG5Qf9rsalAhq9nk6n66vAJo6Lki1R/1c+P7kZqJ+SLcFwOXTHGapzCOj250ckDw+sGuCleMlUevhqsJzQFyxNf39wgVSdp2f/R47AfKRXrnynzZsBu0z8JUI/hOT4nwyN4cmU6hrzI1i5NoxSRm1dKV+p4/duRvDhGNRrgn3INv10GIvMhoN1qTO6dUms2a781zobnefg5eNV+OEu+hyFig1vaXsWkrHhsZwR3yBkJ/lPx4GuxJ4hUK3hJoYoT1dfm0rp34yDeN4FhNDrf8zrPdf8C6Jh5l/t4vieWoqzCXe4eH81kScpeNIf+Ku/2fo0U05T4hAGxi8SJ9bjGb83x6d9Dh524Ipo7sKLqrzt8omfEQ+jsvv8KzZE5EmH/mD5BWkMqe7kWwDEUyCacgOf+690467oBRlNNy
+ vmQh3bRE
+ CI0JWEdgGdvj0LI83ipIhbPb834Izz1FLvL4PbkatFUQaC1JrrCHyDwbjYPxibKphoXOkoIs/b0JWQANS3e1wi3U9HKtdKaiEk2N3wAOA40KfuIodXD7he7FRhadC++V5m4cFz0LTc4CXhmD0xY8IEDpiVwP5I3sENLHJDDTzdIuv1McTat+7OkNep00WoTh3xIPqgM17/JWba3gljWxYwzYwYyRZl4xjg1OaCtiEWRrNTF+v+4VmV+NIcaSKH4KE1IPPYFtX2wQJrGv9U/Aw5uyd9UrEou/iPF54/waMwBTKC09YABikCA6S4774LxPY9tKYkQj0LgVq8XU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,103 +108,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
 
-The swap_cluster_alloc_table() function requires several locks to be held
-by its callers: ci->lock, the per-CPU swap_cluster lock, and, for
-non-solid-state devices (non-SWP_SOLIDSTATE), the si->global_cluster_lock.
 
-While most call paths (e.g., via cluster_alloc_swap_entry() or
-alloc_swap_scan_list()) correctly acquire these locks before invocation,
-the path through swap_reclaim_work() -> swap_reclaim_full_clusters() ->
-isolate_lock_cluster() is distinct. This path operates exclusively on
-si->full_clusters, where the swap allocation tables are guaranteed to be
-already allocated. Consequently, isolate_lock_cluster() should never
-trigger a call to swap_cluster_alloc_table() for these clusters.
+> On Mar 12, 2026, at 04:39, Shakeel Butt <shakeel.butt@linux.dev> =
+wrote:
+>=20
+> On Wed, Mar 11, 2026 at 03:19:31PM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Mar 8, 2026, at 02:24, Shakeel Butt <shakeel.butt@linux.dev> =
+wrote:
+>>>=20
+>=20
+> [...]
+>=20
+>>>=20
+>>> Per-Memcg Background Reclaim
+>>>=20
+>>> In the new memcg world, with the goal of (mostly) eliminating direct =
+synchronous
+>>> reclaim for limit enforcement, provide per-memcg background =
+reclaimers which can
+>>> scale across CPUs with the allocation rate.
+>>=20
+>> Hi Shakeel,
+>>=20
+>> I'm quite interested in this. Internally, we privately maintain a set
+>> of code to implement asynchronous reclamation, but we're also trying =
+to
+>> discard these private codes as much as possible. Therefore, we want =
+to
+>> implement a similar asynchronous reclamation mechanism in user space
+>> through the memory.reclaim mechanism. However, currently there's a =
+lack
+>> of suitable policy notification mechanisms to trigger user threads to
+>> proactively reclaim in advance.
+>=20
+> Cool, can you please share what "suitable policy notification =
+mechanisms" you
+> need for your use-case? This will give me more data on the comparison =
+between
+> memory.reclaim and the proposed approach.
 
-Strengthen the locking and state assertions to formalize these invariants:
+If we expect the proactive reclamation to be triggered when the current
+memcg's memory usage reaches a certain point, we have to continuously =
+read
+memory.current to determine whether it has reached our set watermark =
+value
+to trigger asynchronous reclamation. Perhaps we need an event that can =
+notify
+user-space threads when the current memory usage reaches a specific
+watermark value. Currently, the events supported by memory.events may =
+lack
+the capability for custom watermarks.
 
-1. Add a lockdep_assert_held() for si->global_cluster_lock in
-   swap_cluster_alloc_table() for non-SWP_SOLIDSTATE devices.
-2. Reorder existing lockdep assertions in swap_cluster_alloc_table() to
-   match the actual lock acquisition order (per-CPU lock, then global lock,
-   then cluster lock).
-3. Add a VM_WARN_ON_ONCE() in isolate_lock_cluster() to ensure that table
-   allocations are only attempted for clusters being isolated from the
-   free list. Attempting to allocate a table for a cluster from other
-   lists (like the full list during reclaim) indicates a violation of
-   subsystem invariants.
+>=20
+>=20
+>>=20
+>>>=20
+>>> Lock-Aware Throttling
+>>>=20
+>>> The ability to avoid throttling an allocating task that is holding =
+locks, to
+>>> prevent priority inversion. In Meta's fleet, we have observed lock =
+holders stuck
+>>> in memcg reclaim, blocking all waiters regardless of their priority =
+or
+>>> criticality.
+>>=20
+>> This is a real problem we encountered, especially with the jbd =
+handler
+>> resources of the ext4 file system. Our current attempt is to defer
+>> memory reclamation until returning to user space, in order to solve
+>> various priority inversion issues caused by the jbd handler. =
+Therefore,
+>> I would be interested to discuss this topic.
+>=20
+> Awesome, do you use memory.max and memory.high both and defer the =
+reclaim for
+> both? Are you deferring all the reclaims or just the ones where the =
+charging
+> process has the lock? (I need to look what jbd handler is).
+>=20
 
-These changes ensure locking consistency and help catch potential
-synchronization or logic issues during development.
+We do not use memory.high, although it supports deferring memory =
+reclamation
+to user-space, it also attempts to throttle memory allocation speed, =
+which
+introduces significant latency. In our application's case, we would =
+rather
+accept an OOM under such circumstances. We previously attempted to =
+address
+the priority inversion issue caused by the jbd handler separately (which =
+we
+frequently encounter since we use the ext4 file system), and you can =
+refer
+to this [1]. Of course, this solution lacks generality, as it requires
+calling new interfaces for various lock resources. Therefore, we =
+internally
+have a more aggressive idea: defer all reclamation triggered by =
+kernel-space
+memory allocation until just before returning to user-space. This should
+resolve the vast majority of priority inversion problems. The only =
+potential
+issue introduced is that kernel-space memory usage may briefly exceed =
+memory.max.
 
-Changelog:
-v5:
-According to the comments of Chris Li, add the initialization code
-of flags.
-v4:
-According to the comments of Barry Song, remove redundant comment.
-v3:
-According to the comments of Kairui Song, squash patches and fix logic
-bug in isolate_lock_cluster() where flags were cleared before check.
-v2:
-According to the comments of YoungJun Park, Kairui Song and Chris Li,
-change acquire locks in swap_reclaim_work() to adds a VM_WARN_ON in
-isolate_lock_cluster().
-According to the comments of YoungJun Park, add code in patch 2 to Change
-the order of lockdep_assert_held() to match the actual lock acquisition
-order.
+[1] =
+https://lore.kernel.org/linux-mm/cover.1750234270.git.hezhongkun.hzk@byted=
+ance.com/#r
 
-Reviewed-by: Youngjun Park <youngjun.park@lge.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Acked-by: Chris Li <chrisl@kernel.org>
-Acked-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- mm/swapfile.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 94af29d1de88..de1c2203436e 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -476,8 +476,10 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
- 	 * Only cluster isolation from the allocator does table allocation.
- 	 * Swap allocator uses percpu clusters and holds the local lock.
- 	 */
--	lockdep_assert_held(&ci->lock);
- 	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
-+	if (!(si->flags & SWP_SOLIDSTATE))
-+		lockdep_assert_held(&si->global_cluster_lock);
-+	lockdep_assert_held(&ci->lock);
- 
- 	/* The cluster must be free and was just isolated from the free list. */
- 	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
-@@ -577,6 +579,7 @@ static struct swap_cluster_info *isolate_lock_cluster(
- 		struct swap_info_struct *si, struct list_head *list)
- {
- 	struct swap_cluster_info *ci, *found = NULL;
-+	u8 flags = CLUSTER_FLAG_NONE;
- 
- 	spin_lock(&si->lock);
- 	list_for_each_entry(ci, list, list) {
-@@ -589,6 +592,7 @@ static struct swap_cluster_info *isolate_lock_cluster(
- 			  ci->flags != CLUSTER_FLAG_FULL);
- 
- 		list_del(&ci->list);
-+		flags = ci->flags;
- 		ci->flags = CLUSTER_FLAG_NONE;
- 		found = ci;
- 		break;
-@@ -597,6 +601,7 @@ static struct swap_cluster_info *isolate_lock_cluster(
- 
- 	if (found && !cluster_table_is_alloced(found)) {
- 		/* Only an empty free cluster's swap table can be freed. */
-+		VM_WARN_ON_ONCE(flags != CLUSTER_FLAG_FREE);
- 		VM_WARN_ON_ONCE(list != &si->free_clusters);
- 		VM_WARN_ON_ONCE(!cluster_is_empty(found));
- 		return swap_cluster_alloc_table(si, found);
--- 
-2.43.0
+Muchun,
+Thanks.
 
 
