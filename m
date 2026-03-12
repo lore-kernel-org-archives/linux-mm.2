@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E698106705A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17C40106705A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45E096B0005; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
+	id 7307C6B0089; Thu, 12 Mar 2026 11:57:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40BB46B0089; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
+	id 6DE666B008A; Thu, 12 Mar 2026 11:57:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EDA96B008A; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
+	id 5BFA86B008C; Thu, 12 Mar 2026 11:57:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E1516B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 4C7A96B0089
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:57:28 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AABC8B7A90
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:53:26 +0000 (UTC)
-X-FDA: 84537855612.27.56E64A6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CCA10140007
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:53:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d8lFNpuT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16F6AB7F14
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:57:28 +0000 (UTC)
+X-FDA: 84537865776.27.8EC503C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 633FB1A0012
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:57:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ceJNPdeD;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773330805;
+	s=arc-20220608; t=1773331046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QQ3LjaRmVTzt1sd/4FgixfTncgJyPQYJIahrPuld1Og=;
-	b=5VSEMi99JXF2btB4b9fIoar8946QUffRfowDcmsYqPG4LKN8jtT9SjAU96Adxu/OnsPCO2
-	mgx9pKsrWYIE3VaoNPFvXLg9DJp0+e/tZcHaZEd7D8h8rZHvmlnWh4iOTev+Rf7t9eMOKt
-	MaEDFLYfv+OzBJgCKr4czXmhdROVj5s=
+	bh=+qlfOgdmRUAWPLgL9De2K4vaZe3zG/IcMGraYm12MlU=;
+	b=Fomx0CGUWhU2/SjemUoY7NxkUVSuypYeHi8Zlnv11ket6D6OGE4p0Bi0mUMgQYYkYTALiN
+	OeHF84395wntcafBkTKaIXp3wFAX1bzOjL4nfX8PEMvabSuMfuwvKGc+8nf5Jek24sFnc+
+	1FJWwu6nk2ISNo+oNLGkUOty7jBtNr0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d8lFNpuT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773330805; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ceJNPdeD;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773331046; a=rsa-sha256;
 	cv=none;
-	b=I3hlpEzDdkODxdQNYuTgVT2NReS/+0RnCe4ShFLMygtRXpxtiu6Nl8B7t3QC8Q4eCXvYm6
-	Kl/z73Ryni6SIsg0fR2YRE3/T8qkqMjbsqkbkcMzluBImMwZMmuhFhjCL/O1D5STyYBUC0
-	lu3WWMEJuRleyp7WPxbqCRHtXho4gug=
+	b=vx6ee03zXLGTJttCf80mZoatTxoF2mdC1m8yjUpwyR/NJwEbqOGwMrM9CmueAa4C4ZvAJ1
+	DtrfC/XoGUCdyBRTGN7ClRe912SCd+g4PeC/ff38fAb3pS8lsgc0AsQT5yopQb8OgqbdvC
+	aJZxuqGgJ85L8fZMh4fx/KCs7jyMZdM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A22CC44085;
-	Thu, 12 Mar 2026 15:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690D5C4CEF7;
-	Thu, 12 Mar 2026 15:53:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C84AD6012A;
+	Thu, 12 Mar 2026 15:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9288AC4CEF7;
+	Thu, 12 Mar 2026 15:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773330803;
-	bh=narsuI8QHu8jwbyWEKrAT/NVxEMQP93/0vn0hBb11cw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d8lFNpuTJVK5h3GzJ7vhWy0sRKr2WIQJn0BngvBlY3yHXQs76cf8hC7kojjfBRmod
-	 hrh86WXbahlTH18zBuE3NTU53rUK4PkgHi2ZJLeBSd6V+7M+x9XLRNlfqI7RUiS2Ef
-	 GK5hesIXPnF52dCQphPuyBL5s89rhL5RBYPObwpffTiPqnC7D37FDTKz437WVz/19q
-	 /9yRGIr7wuhaU9ZzI6jwSWpZTsf4cpoCagAwt9GlyUWfLtKYDrgV0Zh3jX2nV8o4cQ
-	 qGeRo2gseZDA0W3TYiTgdRmNnNPtam5w94uxUjIAfp4ATEOP3/dHZuU9Ao2ou5CQXk
-	 tvmpv+X7uIpAA==
-Message-ID: <bca4ea00-3052-425b-8f39-729d504fd4db@kernel.org>
-Date: Thu, 12 Mar 2026 16:53:14 +0100
+	s=k20201202; t=1773331045;
+	bh=0lxXbZpZUFDVWnN/96oUxmCbLTJ0sneSV2/Bv1lDlaY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ceJNPdeD9e8GzyqujCfaV5h8YRL8GlW4O8Cpc0dVrs2ir2msTZE3hzWCSKXfxW85b
+	 JvnGAue4B1m3nWKsdg9H67CY7zgnm/DlOJFHOeorjveNwK8Dd/fpaFEjrE985jNUar
+	 NfDLs/o/Q1e3nQSkECkY+MCO7Yz03R6/H4VIhL29OX1mNq5IcVOA72+sZZJw5Jkv+b
+	 0QJksiwUWIowBAK+tXnVZL5riYp6D8qfhgVsEQKNkdGE+K+Ho9vGzi/tMjcDJPjFD4
+	 q3XeRXccHqEYV/73QT8OajUE5QdOWhDykgtxf3pqkQxqyLzbFaySEGhsq+nUE94K6L
+	 wtxCiGL+f8HIw==
+Message-ID: <7937d789-539f-47db-838f-c153ca6cfc50@kernel.org>
+Date: Thu, 12 Mar 2026 16:57:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 1/2] huge_mm: add stubs for THP-disabled configs
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: WANG Rui <r@hev.cc>, Alexander Viro <viro@zeniv.linux.org.uk>,
  Andrew Morton <akpm@linux-foundation.org>,
  Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
@@ -82,7 +83,7 @@ Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260310031138.509730-1-r@hev.cc>
  <20260310031138.509730-2-r@hev.cc>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <bca4ea00-3052-425b-8f39-729d504fd4db@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -128,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260310031138.509730-2-r@hev.cc>
+In-Reply-To: <bca4ea00-3052-425b-8f39-729d504fd4db@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CCA10140007
-X-Stat-Signature: y4fbkedp1urtsxi8ajrh3ymeswam8tse
+X-Rspamd-Queue-Id: 633FB1A0012
+X-Stat-Signature: 1xuajdjfxhdxwqspo1br5egf1mpr6ga4
 X-Rspam-User: 
-X-HE-Tag: 1773330804-452888
-X-HE-Meta: U2FsdGVkX1/Q8NRZVfZQTbzwEVV0A6T0/JFWX3MXF9LI4SeLfHdWSSwCNPDnXsIeLDyxoF66tzgaVG0JOlospClHBXtqnmkPiJbXPBJOLBFNSvte9CtushGkMltiRFmf4TdKFbbuojJpqSjRLvF66aguk4cIAeDWIRLjbneUMaBiI2zVIAXHkq2SIlZZsodgpSiZG3PGY5ubfWX1THI3wjZk/zx8aOMsIhLnRVSspF7BHf/zgccOz+69Es/wb5TzaeZNOVTW816mdhVk6SKeuoSvM+cZAuEJxdcac5XqJp9uiPdRzFRotB7UghzVWne8besQCthBmd5IaDJpUujSG8hzHm31f+mozEnSaSArco6m3ef9TxgXor9GAl/ig1uCeIJtu+jWO6H38+T1u3W5aX5r4I6tdYaSSDRSio+Kt5RNGDEBDbym6bWJlb7LrCD771lbX+/YflqmaGN6d08ii4QB/a7S9elSYAHMUtiR4NFvJX6yU0+7zANBG1AUBYKCBhkTT3oZxVWbO//Unt69XQ+PD7E2EjowEJaCcLYEsKVqgix0xS2Uxnpfn543SsczOBVl1KYUFu4zwZU29r1BsjrJRuMqyFKs0AhgZxZda0w7lg9ZfMR6I9hdfiky7ecqh1PsFjj715SWX6e0nRDi0b6oUuNyG3As5KSNwKfJgv8nCPEAps68yZiB5qwuoCGqJshqfNmSUr2ykjTN5tTis+/3Y1uJRV53nYMLr3nbXtXswgfRNAFpS0Gj8d8ctrxSKrnanFPKw8LDTcQK6PwmexKBl2qb6FFnR3OWzB4oFtDg5+9P6Y+7mal/EZTxMI/6X7W3yUKuhHb9j+kbrlMydrJdXp2wqTKplYxNXEvVs6R4eIvSD0Ivz0iQIRUklv4n/Mdo++j34tZTzOK++E11PP9RGleEaTjWEclUQdp/KeKSnPy80t6SHW4eCAVmU3HI06CsPb/bQ75dnAhjZMb
- FAFeDNvc
- 9yof/y70FouwVOkvx36C9CSVyTxmyhAKLlrefQ5GWJ9ryK7ZsVX3jz1GjS0Bg3GS/JstwMYVqmMpUGW2Tokwk8hOHAGL1/QEG5jBHyWTaKTfU1vcDbbVoWnhu9nYpm+sPnJXtE1FLrTn0Qf9jInJ/dym63nHMI7pyvHt8FZOvKN9yFu49G/fbLbchFXQ8Im3soQgvdGqwHdYOsvGYqmKkUJJtuBuJPKsxMDQ29ljiSJ28/sZXCqGLuY6ss4AH1jVJEVzVKjkntSUlM2FVFuKobAQcGnLgIWPHSYDO7Nqy07yC+BwMaIQgX9ELXlFolks9tyDHdaU3eBem0mhPhRQWkn1Q+w==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773331046-757058
+X-HE-Meta: U2FsdGVkX1+4dqtq3D/UsCtinxUM6iTNUNcwY0X7GhGA5iDlsSwMKW9MSYuCU5fCOkGoEU2H+OQIUq0uyE6sNxocOvrOevvPnpfdeg8u+lExU0XR6PUozz/+b72Lpe9VZZXWSK3ruQNxaDoRUPaTgpDHWK/v899+KBfhbmZCJ4EEDBDJt2Y7uivazO/Phy3KCleREs1bltQysBkM4e7F9ZCE82wWWwfV1/DPpTXi761jA15espa6HiyMirbS/cjs1L4YjAhiSeZP+2Svs7XiKiXT3doz0Xqm3kPdsJhScnOTbq3uA/0NV2hm+U0iA5zwqU1cnFBJzd45I2Q8oexl0Ew8x6ka5Iw8xgjpNmHi4YIhDzVQ/UU08PXbnfkoGMB++VK8+ti51jLZK0cZGbYTXU27ME8+CRiL/xjTZkEDrv/QHLZPcqnnksNLdnF1k/JrimGao7AzP70jzSC9S5Ksbh4euEwVV80TROvxVAQogoSLcWB9gBnohmPeGuVpQLoG1HFbVHjc7EFV1xQ1D/8+wyQw77M3fTu8FsaLmLTjLtOEAc3knUDfZ8HcKTpUieRGqcDQr1Q6HOMVw/PBkm4IrPBLLUvDcILB+i+8UphoeIkWjkohG5UVkC5MlwqYkr0mRp1QsnXlD0V43b8DNSKwrDQuflfHGS5EehXjwvKAgLY/+uRcwaoGCrR6Ym9pjsUthkFNF1/z9r8oAPh/ACLP0k6/96u+7gYtaFJ4RWt72RfBAkt2ChQsyIHVdGiedIbrPwPpAHRd5kwBz8zwH/MPxVx7n+8xhpFQwTZ+NqL3kEfi/NRwL3knbrW/LlCFFoN9ZF4NBWuEVei6VEyvJEcSKjNPhKOUmwaPpF9S5LtR+qShSJ58A7lWd02jY1wEZjlcdLu6THnCZgUIbAKG94OYBIH/WMQ53X8PtQond7ZDEbVCizQCrak+Q1Xkci7AnDZI3OWoANWVHQ7dpg2gjVO
+ cy0OTmDR
+ cjzOSWw/ikTBzBrc0yOUXgX/GH7KSpw6PFx0UiuFTdMcXsru7GQO6XxlRjihFvgOXQnXmH9TQvwn3+Rl4Q24KVzH9kL+VHlbPojc27/ay85C8BWZq1To3kP9y54NdnFIPtEavaDuSHGMrCYtX9GMSOjkSZ/T4h++x5UkvC+BCc/s25ThBMF/7KjIRHvlB09xlceW8C+mJpPBhslnYddf0taw6IwBCY16Xy3cqlOV/zFPL1K00a44CuviQh3QZSQvC3qGBs5aS95RA7oGi+ZnO5cM+gcxsP+CLqXAxczaYMoVcJJ1ULIYcTtsSCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,40 +147,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/10/26 04:11, WANG Rui wrote:
-> hugepage_global_enabled() and hugepage_global_always() only exist
-> when CONFIG_TRANSPARENT_HUGEPAGE is set.  Add inline stubs that
-> return false to let code compile when THP is disabled.
+On 3/12/26 16:53, David Hildenbrand (Arm) wrote:
+> On 3/10/26 04:11, WANG Rui wrote:
+>> hugepage_global_enabled() and hugepage_global_always() only exist
+>> when CONFIG_TRANSPARENT_HUGEPAGE is set.  Add inline stubs that
+>> return false to let code compile when THP is disabled.
+>>
+>> Signed-off-by: WANG Rui <r@hev.cc>
+>> ---
+>>  include/linux/huge_mm.h | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>> index a4d9f964dfde..badeebd4ea98 100644
+>> --- a/include/linux/huge_mm.h
+>> +++ b/include/linux/huge_mm.h
+>> @@ -570,6 +570,16 @@ void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
+>>  
+>>  #else /* CONFIG_TRANSPARENT_HUGEPAGE */
+>>  
+>> +static inline bool hugepage_global_enabled(void)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>> +static inline bool hugepage_global_always(void)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>>  static inline bool folio_test_pmd_mappable(struct folio *folio)
+>>  {
+>>  	return false;
 > 
-> Signed-off-by: WANG Rui <r@hev.cc>
-> ---
->  include/linux/huge_mm.h | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index a4d9f964dfde..badeebd4ea98 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -570,6 +570,16 @@ void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
->  
->  #else /* CONFIG_TRANSPARENT_HUGEPAGE */
->  
-> +static inline bool hugepage_global_enabled(void)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool hugepage_global_always(void)
-> +{
-> +	return false;
-> +}
-> +
->  static inline bool folio_test_pmd_mappable(struct folio *folio)
->  {
->  	return false;
+> There are other ways to enable PMD THP. So I don't quite think this is
+> the right tool for the job.
 
-There are other ways to enable PMD THP. So I don't quite think this is
-the right tool for the job.
+Ah, you care about file THPs ... gah.
+
+Why can't we simply do the alignment without considering the current
+setting?
 
 -- 
 Cheers,
