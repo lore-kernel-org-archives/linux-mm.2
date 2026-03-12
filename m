@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828AA105A591
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D74A105A591
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:22:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C94EC6B0088; Thu, 12 Mar 2026 08:21:03 -0400 (EDT)
+	id C7EBE6B0096; Thu, 12 Mar 2026 08:22:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C56EA6B0089; Thu, 12 Mar 2026 08:21:03 -0400 (EDT)
+	id C3ED46B0098; Thu, 12 Mar 2026 08:22:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B62A86B008C; Thu, 12 Mar 2026 08:21:03 -0400 (EDT)
+	id B4E9E6B009B; Thu, 12 Mar 2026 08:22:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A5AB36B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:21:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F659898DA
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:21:03 +0000 (UTC)
-X-FDA: 84537320406.01.FE85A00
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7583520008
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:21:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=G1aDvRjL;
-	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A460E6B0096
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:22:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E12E1B6E22
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:22:23 +0000 (UTC)
+X-FDA: 84537323766.05.CFD1883
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7FC50C000C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:22:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=otgO+d2l;
+	spf=pass (imf10.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.53 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773318061;
+	s=arc-20220608; t=1773318141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y5rN+Dnt+nngZKc/HxpCY0GaFz9G0vHdC78c5bVshyI=;
-	b=pYR8FPJm/5wuFF+lnkjKSJ7VbV1cCmC4/aZ99U9EWogBV48WLuhUxWWlUXaQM0rpM4V+MV
-	ttJ56UbMogw+PbnJlgElgDiiazDmQnphXKg/+lqsUuQmSVhviWRTnt/v/LNRfwVYtOOaHw
-	OfkqWMVmiCFhG4GGFO1RN2TvgEsvJ/s=
+	bh=TimmS2+Pbosg7L15RHI5hJFu+i/J4kMKaqKEQ2F4CiA=;
+	b=E/TqbMsSVbNvAKp9LjPP32IRmE2e4jhXC3ftxdH62PBIaPCX6zqXQh0kqeVgvmC1xRBsX6
+	oRVeD4tcde93DZVExYmXNm2+/GUM67VJ7XXDBDJETVmQVcvhOPStK3Zzaf+SPS/S32HVNJ
+	P282XK0OHuVJBPrVQbTyVNOi4/l9iV0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=G1aDvRjL;
-	spf=pass (imf03.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	imf10.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=otgO+d2l;
+	spf=pass (imf10.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.53 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773318061; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773318141; a=rsa-sha256;
 	cv=none;
-	b=Bg1Oh7P2ExezoxTBzLmb8Dok9+YCTJ7DcYdDpvbPo4JT2A7T0VH/tn92nnpcDlmOz7hikJ
-	Ys3mqS9rmM9AD2/09EUnXx0mZTXlOJGx+ZbmRe0TNeGsiqPIRgGfOVXOWjroADN6tP4at6
-	6ecbiYD0K+ch5xyHrzG3VP1vm1ZLtYo=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5090c48de85so11226531cf.0
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:21:01 -0700 (PDT)
+	b=p+eh4F6W4pWcv7nlZ1/B0c/kkuNV3OkmHbk4I5UVXAn+p4ZR9jWXCSbzkZTIQ0mO5Bd0jJ
+	eKJH/6UdLtdPw474uNtahewgOgslxa+42v+wtWnn5YBshCMi5Xiy/Dt0Zjnxw5sHi9Z8II
+	EJVxWAyc0Fb1rw8H/npLksPzU16aYJc=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-89a0d53f3d1so12665966d6.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:22:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773318060; x=1773922860; darn=kvack.org;
+        d=ziepe.ca; s=google; t=1773318140; x=1773922940; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y5rN+Dnt+nngZKc/HxpCY0GaFz9G0vHdC78c5bVshyI=;
-        b=G1aDvRjLlbhzN/k9u3/D4LxtDwMYZ6RCMd8+sA5ww7d3H4blhhmZUO38RGD/jzPeLv
-         vp2AJKXAI3j4KNuIlVDQkY0m1eBBe01LZwsHTtdc6KT1GIHoi8cgd1poGsNpNmxjCA6k
-         /PnZOXgkrBlBt5KY2OHkZhwvTtiVpAtUwlupBnk6R7x0qOdl144IRUF+DEuDRajkfeVZ
-         +fEs/kYYyCLnsE934t6ewW+mHwugfsh2ra6yx0xJHMcAgcbBYGZKQaoQtAj0ZlNkiYeY
-         F6Z3A+VHjcLhLGFGm0f5iU6qaIY5nemS+CCr/xEc67XR4sv5rxWxZ69xzbvy81yveb2W
-         iIvg==
+        bh=TimmS2+Pbosg7L15RHI5hJFu+i/J4kMKaqKEQ2F4CiA=;
+        b=otgO+d2lfhmCJcGsARp/V+f2TCOcyrFb9RApsjotn+PbOPedpUl8lR3XbMuM93GtVE
+         HrtLNS6RtYv1JuPteIoTIZlOXH9B1RMo4IifViDZKBGaJ8dxtfmqfGrI7yqIVuzekicC
+         KOTn5e2DvyFRQv8L0Z5//a3T2KRhqYfjUJhPTpg9zm8+0LoppcvyVkZjvk+wxcdpV43v
+         lBjrVH+iaEYMm08FCHIiQrYnF6jk6mVKR0X69jUbK+LX8KhlHkzqUBtqNrTz5vLCayLZ
+         LVPR+XKP4EJXdO+M4oNVBF0Lr6R536HpkJ1oG8R9u6yFfdcub6KTxnT2C0s93xP4fJdd
+         mTGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773318060; x=1773922860;
+        d=1e100.net; s=20230601; t=1773318140; x=1773922940;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y5rN+Dnt+nngZKc/HxpCY0GaFz9G0vHdC78c5bVshyI=;
-        b=DSq0nOkkvych3U/r6F4eB8AUfUdnoG/a/60C4rmsoRucVa+qmfHI6J5EUYtRHuUyNu
-         pW+ll568odlij8vBCxyAlctOSOXfXY3LXCeLeO7Pm8Gbasn4cneZ2oTA8Udk7v6PkkS7
-         51yrPMCMK68qmrRMj4kmlSSSy2SXPSyhLIK4R6UfaFVLqEeHiYiZZ/+u28nTMJtpeFsP
-         U84B/IYMmDgIa62gsMZd6elMTQa+4vLPNla11DoIpL8y9kIobbHHAswav72nDxiWs98g
-         joatwWL7df8+BS3YoVaVWIjGcO/3F/mdNMHQkdu90ei8J+7zMXf0T8vEKIwl5381/48m
-         K6Ug==
-X-Forwarded-Encrypted: i=1; AJvYcCWRWINBBvhmq14OHm55VM/Om0nwpLSDr8yKpBtJwMmYnUxWSpNOuSOa9CYhjYDGgxZ0Ck7mEXnAoQ==@kvack.org
-X-Gm-Message-State: AOJu0YxTQaYUWnYHLbebfSCx2xC5SD8dIVyjhv9RYckqExkHZ3rOroIX
-	4lZS1pLR3U5/rWblmbalmvy5V7RXnl0kX/c39M8H6u+FFBfSnfDa+AYnUG6NDItcOWo=
-X-Gm-Gg: ATEYQzwpi77XqlZU1x75uatzUXjp+2W2haF6Zv7Nl7dViXxR0F/cIgMUOUglC454jY2
-	9z55HGeuZiuHXz71OwEoJL42oWFG+T1+hmHEuxo4CPebhGgs3jMpNWJfRhUA6soDssqwcgMnZA5
-	ZPwDLuOT1g6bPYqzOEJxb+HCN66AwmZhnmWk6rsmow7Bcyyhiv78N+VdmPv06nkOIHdmNHT7ke1
-	xVFLUDLKSG/eIc85Ph+Al9XU4HL8WMTjVwTPtkzbQbJ6mrADhA28S15sN6I9Q3Z86tDpNJfDCPJ
-	IEEEcm+fPBVnGERpPXtgyfL06VbqBpCM87iHXDXDm/8ckQ46jBnt4kKtjGK1QxZNQ0j597c81kZ
-	6DSfkWKUHsc9fAlHJeHiYTDTebftD6ZyqOF2nOfdi6xMq+Zl23g5L2JE06CuZaS0Tuhq92yuicm
-	wSGecdY7VGQp0Ich0oGuSNwXw0CCkPjDdFDp05Yd1KV4VaZSYGnhAqCdM0gIR0oOW/luLKQd4Ef
-	q4yez2bLBN2oj5fUEc=
-X-Received: by 2002:a05:622a:11c1:b0:509:4410:4492 with SMTP id d75a77b69052e-50944104900mr62025551cf.22.1773318060513;
-        Thu, 12 Mar 2026 05:21:00 -0700 (PDT)
+        bh=TimmS2+Pbosg7L15RHI5hJFu+i/J4kMKaqKEQ2F4CiA=;
+        b=Euwd5dekwmch9yeE0QffqQeZQoY1xB+Y2hQHcV0u40eA0ivt1wws1cqAvHXIXJR24c
+         slolaYLHnjnqJmgO/OVYnx7+86fqIjU7tdFRhhui64i6pgXa6yOpHxaj4cflQTS9kjD+
+         kSHzNx3MVVgbl8lC/eJcxF2E/OUKrlE9/bAOInaRlJPir6HivBWtSePOF8IS5WaUtelL
+         3y2U37L8wom45EUQnxnASzw4CTLphpPbn6j6KsikYjefFmgRNeSN8VbBfrA6DH6US1vs
+         HQIsxVNwup+kcmbUbUAHJUJaeXsA1BU+q6ApnhZdYL9zwTe6wSFP3EUxwk3UQKE8nmAS
+         7qiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUy/o1oFEbkUGLgadYpVyy8bIo3MQvnMh6R7ngm6BH1xA4zl9pqhdphbkAHPGE/b0nUUF/tBu03Ig==@kvack.org
+X-Gm-Message-State: AOJu0YxOqXIqGEjSgohym3emS9pILWbz8zIJ7WTXXqsdfDd2wDgDgok8
+	aH4+r7oGF+5SFEEoThcM3CavZ574IC/ByXUr1TpmWip+37eJLVzGswjyzr6adtRcHEc=
+X-Gm-Gg: ATEYQzx9I6AaD3jBuSrhfV/WQ+/LaMSvoYZiN26OtHPp85SQSnfQdeGLBg0YSw/l74Z
+	fzW/K2hUji0K8Yf0PzdvMkqkYrdAK4Gai09FQPmxXoC1ittE0DQeY8yx6VGgGNAa0zeWFVapWN2
+	Q+XM9hEm5esSoYmEKE5ya+Argi9w0UKytttyNF9lkpFMmICaO+EH1krWN5o69V/g3y0iUrEIh+s
+	Vxxwe0g5t3+qXjSFgRW/jBSkkcfA8oULVg6LrRtVhPcCaBm/x6mj6KXpnMG3QXT1aP5FNrzkJbp
+	s4YNR48Mb6EL1LZYq4YjOoC1VXRUm8gFPTmsDbkvvSSfywe/5FypEjRJqPLvHqAo1SKyAfJuYNo
+	okTmsc0PD8iT4pEUr1lJ6l13Le+2U+E6GEUCLBq90lt688JcPl3KLT8KXAsXU34G8wiroAV2cx1
+	XvEemv00sjGogMsYIsIYvtKA+nX3eSVE5d5Z9y5qY/rfYxnnMGRvRSuE0tZDpDJOVira6cRAGVs
+	OJ/GVbE
+X-Received: by 2002:ad4:5aeb:0:b0:89a:149:bef8 with SMTP id 6a1803df08f44-89a66ab8864mr83684736d6.47.1773318140521;
+        Thu, 12 Mar 2026 05:22:20 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50939ec5017sm30688511cf.8.2026.03.12.05.20.59
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65cfd520sm33832386d6.36.2026.03.12.05.22.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 05:20:59 -0700 (PDT)
+        Thu, 12 Mar 2026 05:22:19 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1w0f2A-00000006et5-427z;
-	Thu, 12 Mar 2026 09:20:58 -0300
-Date: Thu, 12 Mar 2026 09:20:58 -0300
+	id 1w0f3S-00000006euK-0fs1;
+	Thu, 12 Mar 2026 09:22:18 -0300
+Date: Thu, 12 Mar 2026 09:22:18 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Leon Romanovsky <leon@kernel.org>
 Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
@@ -113,23 +113,23 @@ Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
 	virtualization@lists.linux.dev, linux-rdma@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 5/8] dma-direct: prevent SWIOTLB path when
- DMA_ATTR_REQUIRE_COHERENT is set
-Message-ID: <20260312122058.GE1469476@ziepe.ca>
+Subject: Re: [PATCH v2 7/8] RDMA/umem: Tell DMA mapping that UMEM requires
+ coherency
+Message-ID: <20260312122218.GF1469476@ziepe.ca>
 References: <20260311-dma-debug-overlap-v2-0-e00bc2ca346d@nvidia.com>
- <20260311-dma-debug-overlap-v2-5-e00bc2ca346d@nvidia.com>
+ <20260311-dma-debug-overlap-v2-7-e00bc2ca346d@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260311-dma-debug-overlap-v2-5-e00bc2ca346d@nvidia.com>
-X-Rspamd-Queue-Id: 7583520008
-X-Stat-Signature: 7wo8a9jsqu9dzx7fyxo3fapfz9go1ezj
+In-Reply-To: <20260311-dma-debug-overlap-v2-7-e00bc2ca346d@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773318061-732300
-X-HE-Meta: U2FsdGVkX19ASZP7eZLYt5GisaljOU+VrEGdEVjVxOUzMPiY1AyTAHX36C7LKmjhOYi+jV9MYlCLwvyng6D3vIFT9EZ6zffeFAd2nU9oD4Kz9aoLtrz3LOeP01D2dXTSOGfZkTX8yAQtDwEM7hP6YCil+gXC1A0qM5S4zPIJhThqZAQqu7zz/USpwIjgYGTujWacUEXaWmovnoZ41a+IC+6l+iz4hmh/J1qhBtKYvboLorK7AOwCB9tB1JDBD5cdOCSL5KT23/MbscpbKuWLyf3/KAxYBRzJd69pA4P7XvTlhId8fiFkt3DXMBnzS+IXYxx/AysHO9LnRq1R0Q67p5D4+pv8/4wQevc6ioztdduihiChk4v6ZI27i4cDiUe/xNYXknUwaMqqWbACaPyOm7m1SKteGSg2kdZap35ceHj5bwZgemnNw1IvpEXH3g0Yb9GdRaGscqOk8Su4+0+R2eEv4tLjXaQjrwLjKGLyRJOn4bBCAfltAtpjCpUbI+skNmUZ9D+8RfuNUr67j58TPGZM/tbsZn3KbhnmsB1ASIMDq2QwGBfUgkW/uisB6CRCPdGUzlPLX/qHso1gA/0DC4bIcvZdTUib5lZSgtNp1nGBicnDfABFz8qsmBZ76C+4xmz8dMkZk8dEGeFKecGyZr7tTtzuXfvE2Xw8rraIOFRQLcES7jpxXVFxbOpBrnJLoSFTTU3s5YN8p88Gun7QmUFjmHWjlt0hmYTbtaLNjOHG36l9bRBN1o3qKRK27BiT7tOw6NrpVoUSopw7Q2ktpbGO7vYdXOutXhetM7zMQjGlx4dsaRW7msxUfh6yoyelH+8/S1zNJ1EuVGgyxh45xaN1nJQ0xTwcc/EwpOrFLD5Dw37F5hWQ5/x+alvpHwNJJPm7IT+FzE+0BDGW1MtGEblYXohSxEpuqbNrUEsMFuyyo2j8YQyXW+dn7vnjRAk3xBHYs9X0U0+uM8gkj7+
- N4336paN
- 3OythK3wGWvJIJWFASYTSAMJY4GgBZAgGqqnkdg00ReO/3oiyaAry9Cvl52HQ1sLP7kwegOKlAKm+Jq8a3IIPKGTtkD0owPy/JrD7Y5Ew92nmDi9sC8/pgPi0L3MmD83TyrxAV2vLyjnMsFTSUkxwQNp2Ecv+YVy55D8mWLT8xzZRf2yqa1bSReQ9G/6xSxo63BjXlGVPCwC6LdaUtJSzycubaPZcDpJi9UWxxi6Ft+xNOvdB/q2FmIO53leyCxlG/X7ZPfJdyKlUmoByhFU+GVKiY0V49eGrhCYoYjqqIy7HM+N1zDsxOrh8dysFiKbXwo1guANmykVEaOD20rV+kigUnjlRMY+L9lGp0AfuMU0bw4s=
+X-Rspamd-Queue-Id: 7FC50C000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: yybhy9xctxpc8oth8se7xuhh7n1qrz18
+X-HE-Tag: 1773318141-555877
+X-HE-Meta: U2FsdGVkX1/Nkk+f/aaNQh8dFeClE0Sjql2cGkqQhvcnxLPhGQq8G0FznZXBB/jMb1vEsHxz80HpAHz/Lm5HSUJQDgyHoYqxguMjJ1M4MGB5olkKhCRYko1qivbeTHOaPWMSW04SkElwR3a8+38LtHrhowGmtu9tPSOTuQ/+sZuG0yiktzMedjiBaLuPlDqp5AJYBPQtjbJ2cLmNcUAX2HCa67ex5HmuBdAnnYg05h2hUrIccpCvuKGhBLlc/Fd8yOucT+7snM+aAwK1c9cHQ2I/+0P/kBBYUTO/kkTdLsuuZS2AAhEMV7lvB0CZNxlPE4pjaTD2g642+rAWJos4Lcf3qa8zPUdAW7equVHbUEggRMID8L9266N5WrwTuKKqLRwXh9fZ7shCz4jkxJyS9vzMn2TeCszPF5d/A58Kk1CMZ4fnt1FtPqjfLwJOxJvB8l2LAd1R19fABFtv68iqXpi0xLY3OtsDKVwPajI+evAfrWNxIhDpyLpKBOMiXLTP4a0AsX6pXO9qtbR1zCQmNCGDRUZ9qvQfnqzRzx0EXpNDzwkbouAhUrpjI8aiaQjzmfI0mXAjStNt6lRrekh5+rG/6TQ1s2015sldxSH59Fozj/DpZTZXS2SaJ5I7bXvkBcVvHIb4dHcZPrFX8rz6GrKaKZx9gEtb7f4/RNPfwujRyVg4t9xwXTchp96l+pHw1yO3NpukuBFGkai/hOt6q0vSfGaVPU3UThnoquD3BKSSkw/WUYArnX6+8serv0P3DQRV7mYXfRAxXdTvXQGlcRq9Env4Ni3fdKFEFc3RZRlbS2miL8jm0qy7Ty5j4YRUVkSgICPiMyRzuplWr0Uf9xM3xIFleroAKzXExrAMIp/cONgpbaDGkDwytVJRXxlf/y6JPZDJrz+8fFe3xNe9lEoii7TIVswrJWClf0eccAcwCUt5vCpeV3MetosuCsyt9q9OaFvqBYNjIqciYoL
+ TkCmNnor
+ Eiz3psRsfxDnBKk86kZdvyIxrX2z1Kdjji6oidyH+4miioKQLZcgydZ9pnZYQt+BPL5VFMusp+i7FSSKoCzeizk4MsajjNX28N+nY77f7klRjFTgymS82H1yZoxUIyemLSaJbTbsWY1wuhdrt0I7VDh+yo2+R9O4oenVmH2XUAIDgsUj/Xz1Tdx+92scMBz2dmcQ92Zh9+ePD7bW7HBFN9+dYGhTgVKaW1sVgkCJ1QxYjJAwgQw4fLWomnaMZYJ0FVzLFuKyKzfwh/0bRPgBxgIAHqhQ9Ad/jjFV/ev0wJaUgg4rA/xkrDGyUInS/NiUt1ZCIn7D9+0yaUYM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,33 +137,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 09:08:48PM +0200, Leon Romanovsky wrote:
+On Wed, Mar 11, 2026 at 09:08:50PM +0200, Leon Romanovsky wrote:
 > From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> DMA_ATTR_REQUIRE_COHERENT indicates that SWIOTLB must not be used.
-> Ensure the SWIOTLB path is declined whenever the DMA direct path is
-> selected.
+> The RDMA subsystem exposes DMA regions through the verbs interface, which
+> assumes a coherent system. Use the DMA_ATTR_REQUIRE_COHERENCE attribute to
+> ensure coherency and avoid taking the SWIOTLB path.
 > 
+> In addition, a given region may be exported multiple times, which will trigger
+> warnings about cacheline overlaps. These warnings are suppressed when using
+> the new attribute.
+ 
 > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 > ---
->  kernel/dma/direct.h | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
-> index e89f175e9c2d0..6184ff303f080 100644
-> --- a/kernel/dma/direct.h
-> +++ b/kernel/dma/direct.h
-> @@ -84,7 +84,7 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
->  	dma_addr_t dma_addr;
->  
->  	if (is_swiotlb_force_bounce(dev)) {
-> -		if (attrs & DMA_ATTR_MMIO)
-> +		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
->  			return DMA_MAPPING_ERROR;
->  
->  		return swiotlb_map(dev, phys, size, dir, attrs);
+>  drivers/infiniband/core/umem.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
-Oh here it is, still maybe it is better to put it in swiotlb_map() ?
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
 Jason
 
