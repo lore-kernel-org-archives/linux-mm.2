@@ -4,112 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138B2106ACDF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6D99106ACDF
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:33:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 772B16B00AC; Thu, 12 Mar 2026 15:30:44 -0400 (EDT)
+	id C47A26B00A8; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 725B16B00AE; Thu, 12 Mar 2026 15:30:44 -0400 (EDT)
+	id C1BBF6B00A9; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 652D36B00B1; Thu, 12 Mar 2026 15:30:44 -0400 (EDT)
+	id AFD946B00AA; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 547D56B00AC
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:30:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1EF3258BAC
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:30:44 +0000 (UTC)
-X-FDA: 84538403208.11.8E6EB7A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 00A07C0019
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:30:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MpZymGjS;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A089C6B00A8
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:33:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49090B942C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:33:49 +0000 (UTC)
+X-FDA: 84538410978.29.4AEBC8A
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F3E721C000D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:33:46 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773343842;
+	s=arc-20220608; t=1773344027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dppx5bZj4+zeqj0N8m+gDYvEY1V3ochaIFGxa6FTN9A=;
-	b=g8t/m4gym7FxvxVrVPfR0vmkhp4Sg2PI/0J3E2omCtBoqzk8w8S//23X0KAoZ6OpRpQi4x
-	vcVsH0KcJCnrWbAdEe8Seh/nJhZllBHvWfQe/KaQzsq7jDBXJTZU1sdWRBTxjjCxIp6tmX
-	ikZXd9w9gDDyzto4jflnGkCkedguDrE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773343842; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VQ4I1//oujMg/wMbvtHZ1fNg62i5rEhIWcPKRohhj4U=;
+	b=DIZ5GSqVJZ/m9cUVN5UPfPtfB9byrZmpo3U9W0YlxxWpaV20fH+Ldlgnu9xXH+eVe+N2Tg
+	miUBMuICRYgrpDl2ZwZ19do/tYgxLOnpOP2bdPPXhT6Gg4RT+NGBCF0HdC0nFptPDm14Ep
+	ayaMBR4pjA9VDixjTW8VEgVyCJP4jeQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344027; a=rsa-sha256;
 	cv=none;
-	b=2u2jSa7m/mgdJPUz6YOP2RSc5Q39ru9MHl2aa7R4IVzoU+Z/RC2lBMMcBIQLs6aAAdwVsc
-	juQp1YAfZUdy+5sJOcmQsf3nsGsXRstBfzETEOC11m1/ye3UryxS4Zkb6CvvbKVx7cxRuM
-	INeROdFYoddWIAicgAh+KgC090Y7qYE=
+	b=5+iqbacqrIZhnxC0O41gxkP9MevmVR/KuVb9phR83L62+qBriBxmaHmJttUxaJk42loVE1
+	r4Ffzwz48cOBGaBJuCTWOJ+anCo9wArtnGWKHfzFAMhKhKURkYCRUKIjdhE1o8CsQaWrsr
+	JZ1hc1vqB9wdwX7u1lhpoYYUiiTLY/c=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MpZymGjS;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 406E160142;
-	Thu, 12 Mar 2026 19:30:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7617AC4CEF7;
-	Thu, 12 Mar 2026 19:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773343839;
-	bh=dppx5bZj4+zeqj0N8m+gDYvEY1V3ochaIFGxa6FTN9A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MpZymGjSfeezPsAxTR8is/y91vPi0xEPN0K7IFHZz77hM83w5Vj26pRQa3IjU+zwy
-	 tbXTe0vQVq6U2m+k9m9HlIImXQzU1M/vS/yGyO63HG8DiJ/vWb+uh3H//T9IyA4hRD
-	 LHmNXH5dbPF1f5a6PD6COunVyQVhVzAFmLKrarzr4fRbA4mQYsRv3xiTnLsrX7/jL3
-	 WHpFX+yadIsp2XaB8uyt+zH82bPt5Vn2z3z5NgdxkOECEMl6n7PpL7zmNASsxMRVme
-	 OdW87Byykc4nbucZ93idCIAIBC9mWbsdzDxSrxwiqiZl0Wrvakg+Vhl50YtatzUzD4
-	 wIPQgYElJZvAQ==
-Date: Thu, 12 Mar 2026 19:30:38 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Kees Cook <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian Cain <bcain@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH 02/20] tools/testing/vma: add unit tests for
- vma_flags_[empty, diff_pair, and]()
-Message-ID: <9198d18c-a1a9-4321-bf34-13e48172eab4@lucifer.local>
-References: <cover.1773340636.git.ljs@kernel.org>
- <87517d01b3973aa43f874164d0741d02cb123537.1773340636.git.ljs@kernel.org>
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 4DE582C14A8;
+	Thu, 12 Mar 2026 20:33:44 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id yCwNT8mwVvHB; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 8A34D2C14AA;
+	Thu, 12 Mar 2026 20:33:43 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3HN7guaAFMsE; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id ABF4A2C14A6;
+	Thu, 12 Mar 2026 20:33:42 +0100 (CET)
+Date: Thu, 12 Mar 2026 20:33:42 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx <amd-gfx@lists.freedesktop.org>, 
+	apparmor <apparmor@lists.ubuntu.com>, bpf <bpf@vger.kernel.org>, 
+	ceph-devel <ceph-devel@vger.kernel.org>, cocci <cocci@inria.fr>, 
+	dm-devel@lists.linux.dev, 
+	DRI mailing list <dri-devel@lists.freedesktop.org>, 
+	gfs2 <gfs2@lists.linux.dev>, 
+	intel-gfx <intel-gfx@lists.freedesktop.org>, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-block <linux-block@vger.kernel.org>, 
+	linux-bluetooth@vger.kernel.org, 
+	linux-btrfs <linux-btrfs@vger.kernel.org>, 
+	linux-cifs <linux-cifs@vger.kernel.org>, linux-clk@vger.kernel.org, 
+	linux-erofs <linux-erofs@lists.ozlabs.org>, 
+	linux-ext4 <linux-ext4@vger.kernel.org>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	linux-gpio@vger.kernel.org, 
+	linux-hyperv <linux-hyperv@vger.kernel.org>, 
+	linux-input@vger.kernel.org, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-leds@vger.kernel.org, 
+	linux-media <linux-media@vger.kernel.org>, 
+	linux-mips <linux-mips@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, linux-modules@vger.kernel.org, 
+	linux-mtd <linux-mtd@lists.infradead.org>, 
+	linux-nfs <linux-nfs@vger.kernel.org>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	linux-phy@lists.infradead.org, linux-pm <linux-pm@vger.kernel.org>, 
+	linux-rockchip <linux-rockchip@lists.infradead.org>, 
+	linux-s390 <linux-s390@vger.kernel.org>, 
+	linux-scsi <linux-scsi@vger.kernel.org>, linux-sctp@vger.kernel.org, 
+	LSM <linux-security-module@vger.kernel.org>, 
+	linux-sh <linux-sh@vger.kernel.org>, 
+	linux-sound <linux-sound@vger.kernel.org>, 
+	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, 
+	linux-usb@vger.kernel.org, 
+	linux-wireless <linux-wireless@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, ntfs3 <ntfs3@lists.linux.dev>, 
+	samba-technical <samba-technical@lists.samba.org>, 
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, v9fs <v9fs@lists.linux.dev>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <1584421372.26258.1773344022512.JavaMail.zimbra@nod.at>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
+Subject: Re: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87517d01b3973aa43f874164d0741d02cb123537.1773340636.git.ljs@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 00A07C0019
-X-Stat-Signature: 8mxfcqx9wi8e8onwfigky9rojkjghmuo
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [195.201.40.130]
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF148 (Linux)/8.8.12_GA_3809)
+Thread-Topic: Prefer IS_ERR_OR_NULL over manual NULL check
+Thread-Index: 0l8CyewQmrWlgaG6N3QgQFfukutRbA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F3E721C000D
+X-Stat-Signature: 6p7jb57nuhgjia81yd8r79upjigi7a8r
 X-Rspam-User: 
-X-HE-Tag: 1773343840-369202
-X-HE-Meta: U2FsdGVkX1/IyF6Ifs0XrxTxSQRZqTmvb2IdcxJ0MkfB0IZzgUyk0jfHNu7CaghZoyp8bbSPdRIJiPzSRzyhaWyILAyIpxKL0Y6VQe8HgCZ4EhHNxwhBBLt1SEEstVEDY8U7TQ00bGeQQNNvj6z+yA3Xu1t2FpEQhqEi4Ooqm2VN2yIiUSzQoBbPKOgF/YBcC23fk21EUZxiRykoXWRx/o8D99V2z0BEH8tCJaV64PUCdtvqcVMB8rLHyvrI/5Y3CsrqQj9nAHEA+KAStMfnFqU3NFB3bDpK4nLBSYoG6FfpTrgKgqeiix1GxPCyZMs8f53v2t2XXpNVOLy1XiZgovVuznpQ0I+BMlDRzIvSJ8StRwBmGjU/4ohgxeIMC99F/4vlLPDyfZT8BJLwgRFtG7AXNw0J1UwEuU0ZkrINmRsulXjFZ0Th9u+7iynxL63jf34ZVVohqiPSaBSOxL5o9vHNZKxDHyIzvgjeqIISizy/1CDT/MRMPJvuEExBGLnwlbCVOXgAEvQ1WN8WvsqpUmgt0MdMEojTftD61WTWCWMFacMA+zh0smWHEGAAdfanb/sCnLpX2s0qIT+EF/BV8XMtyzxkzxcWTz++vu2ab3w5J5gzN2dz3UGmAnRDDkbZA5DUfYwllmAoqq1kyNghERWrWJA3kLX5JasY+oSo8idQNUSbZ+fQIF5GICsfQlifd2a2X6tXUcJUP4dkuz7s5eMRSFb8XdRKhXX2bmSB1R1+/PhcF4dcSlZUKLwFo1OBEfO1o+vf+o2e+FiC4F6O93FNZbwZYi4sv02dxWAt//SxC3C9wEf2hHHhgYHqePK+vwfLJyfatBB0AxMvkwS76LMDxM/fUcbcWH9mwMnCg8PoDbt2UgsEPsbTrGTzAJh/3vYy0GxJgJ7nXtgrAp4Hv1GyYsHgFo1NbFPSPoN4MxX2s8DzDfrCHxcSwBca465l2wcHusiSBtMtAHVraPz
- d76uf3yL
- BL0qvtMxWhe47yqt6oA3ztTjwe6JBgaTaeKh09ypxFJspX7xLS94OjI8EUaBvN316aSVZ2eylk/5j8nNDkHKmG6mQjZRkwbzG3FdDj92LUlzeEINctkwC080h6Ct9aeL+02nBj7hkKbCDB325AjiJJa0186UKMe6rmyGyFgHzrHPjEeARMKePugC+7KI/JhvTX2I5hqvt5dKW84QyG2Rpg9+I6q8Av0WAQRkgds/lDp6JgoFUFvC1bgBMEmSUvuhuAh95dq5+LJ+TVtNjwABHyY2s5En8Kwa5gxUx5/f5ScQpXNIzzm2Y1v7QFx2On0Ct8rcYczag5S9WMUM4F7eerXUzpsICHNAKtzs0xO4AXnlCHQjnFizmFAkGdN0Aw82p4qyL
+X-HE-Tag: 1773344026-394769
+X-HE-Meta: U2FsdGVkX18fgzFZZ+X3Dqw1Q6dZB9LQkt5jwvp39funDEC/P+AYuTW6Y6kmMXJ7V9EIutXAEY9IBBIsL0E/zi16XdzyHkv+rDmR15X4gQ5pTG1RGVsG+XoxACO8J0jRSSlT1YFpCF5r+aXCXloDi5alpBiYRnT/M9KtviTnQVSF60fyDQLx89LDv7wed+/NxDokMTNGlkgASaHlutoTus281ekZj3wFIS9/8Igk2RXQFJz/x5Qyyn+OXwfDdvG+H1FzUG+O27ii3cjUsBFzolkIjUu145ZGv5BaKBMNlJGH/3v1gl47W5pIDOby7pOLwO9Z1Eso7+sJcxOAH55Hy6yum6zDHRnGLoNaIEDh15FBIwiXpuGjgZovUSfzbQyMJliOY+RyRsV97zeGQVwbMHyoCU+wXSJEfqn3AKuRdWPt72EU+ADjahgSWa37mikPawwGsqdVzSg2B9rFwKmTS5bfngcWydOSHfzLXdTKmj2/kcaZ1Ok/sl4Sk0N7KmfPZ0SOrjS0KNXOtqApeVM/4yahWOfGBSrla71TDrEuZ9c9Cx2ZawCozAkuriWl7gn3sX8ryYVtX9ss6XnAb1LEfmxXAQILw7nYflfc3qadNzEM0XL6iKii0XPOA1aPaZNVUFd8+JkAKD+PLuCP3DxgN2a7kUaDgvfBMMEyrRAT00N+6dMuPjHf22mAsy8yejr9udbogT0KL+sFwzGurz1NAbhzxKvB82N2MxmUuGjEWGlgr0JOGGPenSoVYgOqI5IkgLM1ma61Iy7+52bRuReuIrJSAi0ovY0fh99UPRpSvRlTVVgjTfo6ys0wVwS1vsCe7wtRgkwXl91EY+8E7HvqaDshqxsqoWXZRj2Dn8vWK2cVOoXbFerU0Ya31G1LLcK3fV7uATa60ck7YoVEaTvnba7ppfK/bAHoR5bCv4MeQ2Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,7 +134,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(Please ignore this patch, it was sent by mistake, the correct 2/20 is [0])
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Philipp Hahn" <phahn-oss@avm.de>
+> -=09if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
+> +=09if (!IS_ERR_OR_NULL(gpiomtd->nwp))
 
-[0]:https://lore.kernel.org/linux-mm/ae25ef9cd48e20553babaad3868da1cf74f16af1.1773342102.git.ljs@kernel.org/
+No, please don't.
+
+This makes reading the code not easier.
+
+Thanks,
+//richard
 
