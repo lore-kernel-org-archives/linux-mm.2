@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD58106ACEC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6981D106ACEC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:57:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E74D6B00D9; Thu, 12 Mar 2026 17:56:52 -0400 (EDT)
+	id CB1CB6B00DB; Thu, 12 Mar 2026 17:57:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BF446B00DB; Thu, 12 Mar 2026 17:56:52 -0400 (EDT)
+	id C99386B00DD; Thu, 12 Mar 2026 17:57:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A14E6B00DC; Thu, 12 Mar 2026 17:56:52 -0400 (EDT)
+	id B71106B00DE; Thu, 12 Mar 2026 17:57:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 16A2A6B00D9
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:56:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A540658E14
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:56:51 +0000 (UTC)
-X-FDA: 84538771422.10.C42D737
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A71C66B00DB
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:57:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78E691B7F2D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:57:08 +0000 (UTC)
+X-FDA: 84538772136.06.25CE72C
 Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8D6EB40006
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:56:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=We4QHEc5;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=dJKk8gs7;
-	spf=pass (imf17.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7418880003
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:57:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=BW9wEqW3;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=dpUIJhtE;
+	spf=pass (imf30.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773352609;
+	s=arc-20220608; t=1773352626;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gqr5GRMgf06YnKH/0CimKgertEevcw92OqmrRngbywk=;
-	b=MrD5ChDMNkiPPLEJMkCX5hwRYM3c1jOCp3G7oiLx5XyPGt5n+5+dXmoFWxt7TuXgu9nCJf
-	z53Xh0hHTKbNRYLD18EbGBeVPnglp+tQBCspi2ZiuTryQbWOCOna2MPCK4DSc9kjnXMWv5
-	Ljfsrkl6VZIMG+b3WZO1mfsbi4gR9uw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352609; a=rsa-sha256;
-	cv=none;
-	b=pVLhCS/xGu5UPyw+6IfM167LiQivTC96USzOtkgllf3iNu/R9Br/aKM+HHWJbVOvREI33G
-	jdQ63MIq4mS/N2U4r9WuLrXS0Qv0UkTUjB43Fhan+bqcbOBLRhsdLpTm5SE0LZhvF4dXeP
-	JvCldD821F+tSX0RfBiwoxM+yKxhRgY=
+	bh=4l/tn7wsmdY2E32uQtjREu4g7D5gEVnge4bbDSwghlw=;
+	b=FjdM3MVhDdg14r06U2LqZasD0UuF8y8urkaGvK7Iw7myGNmlmOre/ZzBcgtZE5a/vtFi2Q
+	c/hmuu+ZymB+jDLLZ90VIYVLeiq9gpEQ8AFpBPHPAsK7MmThetopW10w+Q3Bz5UPEHhr0L
+	sJWcS8HpU+bTH69wlwM1sCiymAZkzuI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=We4QHEc5;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=dJKk8gs7;
-	spf=pass (imf17.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=BW9wEqW3;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=dpUIJhtE;
+	spf=pass (imf30.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 6A68B1301B63;
-	Thu, 12 Mar 2026 17:56:47 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 12 Mar 2026 17:56:48 -0400
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352626; a=rsa-sha256;
+	cv=none;
+	b=RY9eg7m2rurX1wp1lnsl2BcerlY1H/F4zvUS8Pgn+2+540RLfFIRAyOgu21/eSXbnnEBk7
+	Tkln9f5ey9Jq/jQu4fYzmLCtbJQIFmcBVKkJfH51Gk5m4MlK1XSMYz0Xzzx/QV3co1Tbzr
+	jy5Qie1mENJfCal4qADBEbRBamam3AA=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 8997E1300F6C;
+	Thu, 12 Mar 2026 17:57:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 12 Mar 2026 17:57:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352607;
-	 x=1773359807; bh=Gqr5GRMgf06YnKH/0CimKgertEevcw92OqmrRngbywk=; b=
-	We4QHEc5TNY1r6emZ7SsqEkPBAFl7fjcHi6srpfWQ1jfp9RJyRfEF8fnUh1L1DCn
-	NUV0TnodOWGmPyjahfVZyst7SyBFImTOBbu5reeCNuxZa9HRPVB4nYbPa9eKOqKj
-	CPhvVoePIv8KrFKC9jWx48sJ90oGywC9Kg3zkO5a5jeQQfPK+hJjBscSS6duK7Cb
-	4Pu+8L4kIn61BbJxZZaydewbyuURl9IDnc5JFrYPrp1xqGiRHGGd6dO+zw/46d9v
-	FWLsgwMkK6Rw70z4NcymA80fUToAHDfDhkXCxQcBYAwiDj6lNIFttjsKy3vYkGwg
-	nbi7TF6fILEzY76fZqID3A==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352624;
+	 x=1773359824; bh=4l/tn7wsmdY2E32uQtjREu4g7D5gEVnge4bbDSwghlw=; b=
+	BW9wEqW3sDh/FtKsI2oZym4cN8gfqO7PI+1QZkzeYlyvzzvl6g5EeSeOVu2oQtk6
+	PwPCa0pocxA0zzebqej9hV8+MTj4mW3U1OzGT1coekfj64HMKjiyXojEgdUSfnKR
+	Df6eFbO4K8hWvuP6o0waZ4SVFdfPcjZ7D+C0sJjdqiTmUTmlwI+pXNafNv00dWc+
+	O0BVOVD6z9gx+eoRdkYV7FRCKsnyeYvYtoaEJmptNiWxetbag5RW+Ctd2uja0vfe
+	v/0ZReqHwz02Av+es2ehMtnHwBvblWlCyOd+zaOQ8hfvOrqwfKTb6BsB9u6fjrkN
+	H6TNzQH7wj5p2FUyypeOZA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773352607; x=1773359807; bh=G
-	qr5GRMgf06YnKH/0CimKgertEevcw92OqmrRngbywk=; b=dJKk8gs7CF4KRCcfh
-	89WVjnhITgi2+635oEUJk+087w20YQpJyBQQRSv6sMvRFBFpbSYz45v1LYD7YSEF
-	k5RjCZgWsz/jDYeuZ1/RmyGF7eTyz8EUQ+zX4XOys/kG00CKqN3XP/Hhwoh55q5p
-	PBoqLjFiU/UtroUW0Z+Eqx5GO4FSz7jp/i1vGOgYuK+F9VG42MXubrcWhALXIcE/
-	03DnMHBjvq88RBcy+yoHWGYj8PbashFFwXz6e3vWCTpBOCgBfX3IhkxEH5nO4Y9U
-	amCTP9WGxg1h6I4qU4J31S/WBH+GxRhVgrevtJSzFc1T2ODHmcXC3fIdvp2qeyWc
-	4WATg==
-X-ME-Sender: <xms:njazaWHTeLwg8HFl0eA-5175x08ulAqe44OEWYVyZBi0tuviIsckbg>
-    <xme:njazaRA0Gb8bLbbZ9PJYj159RKvRaGZ4v-UGOqWLi4qeNBwgib7eptgGNmDT5JQbh
-    j4bUDfd43Lze2YmvWr37Ap-O2blTssUYeE45z-APsjUOf_NYg>
-X-ME-Received: <xmr:njazaXFqupynSv3iJKROA_1PIcuCNVCJR58MarljHJa-n4AFWIy4hpgslbt0aUpA9O88AXCbtynh63xcfrCrff1QWeCn3AVMkLl-cXqG_bPh>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejleduucetufdoteggodetrf
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773352624; x=1773359824; bh=4
+	l/tn7wsmdY2E32uQtjREu4g7D5gEVnge4bbDSwghlw=; b=dpUIJhtEj1cBj3j9H
+	unyZT0sMz9m0PJa4w9ml8U0zTMyPTdFWoMrhP+PqHlnb46PZTAI4xBzf/94OZ8au
+	HMMYdpzclow79eg8cITbo/HF3XL3lV3pJvLrnH+UHhYGWNABwaDUEiiSyBi+p058
+	AIT72AIiSjFv8C24PGRRqioFgMW/bXDjAmwY1r7O83Dgv8bls44ABJ3Gy3mhaPVZ
+	p5sA4LBrZzneMleY4pIfAQbq2VSFXST6n79auOxftmCpBxOkbEmLk++Su9Eqt6tE
+	9xo9Ukyjllk9zko/7dVAbA5+W8pX2MGic1YtvXJIew/ovNUl8pHZGrIke+e8ed4X
+	zHmhQ==
+X-ME-Sender: <xms:rzazafHgq5kkJNLQXJ5MsMZvA5C7KDN9tUQQwQNXLndrPr-KUTr36A>
+    <xme:rzazaWBaxSyrDQlnqQ7fCszhaC7GOWJXr034oAZHf9f5Ln_XAnrlsy8lJHZqhtcCa
+    24RJDo5YwjWbYzhkh95fWMs6HGsmK17CJ_FCEE3A2bRWLgAE-E>
+X-ME-Received: <xmr:rzazaYGaMqtlyBo5Byt15BG5PspFOkSK_oM_1CAORCyOKtV1Z5vCxW9Wv0QrAIBd0dvvztUHaL61rYcyjKGMWRqFwlWMac7pDS4ZI1dvlQHE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejledvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheu
     rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
     epveevkeffudeuvefhieeghffgudektdelkeejiedtjedugfeukedvkeffvdefvddunecu
-    vehluhhsthgvrhfuihiivgepfeenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
     esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohephedupdhmohguvgepshhmthhp
     ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
     hrtghpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
@@ -101,14 +101,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejleduucetufdote
     hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
     vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
     drohhrgh
-X-ME-Proxy: <xmx:njazaUL1ZPkYP9m1Bss-8Z85nXjbKoxnUD45JY7Ncb6h-0YY5_dprw>
-    <xmx:njazabtAYMZYIiUJrxC0Gq4Kdum3PlXDqo6uWSqH4VuY2ZK1iX5qaQ>
-    <xmx:njazaRrqjy7qTKaR0gG5Bwk8ilP-5nJFlXzEsHNcBJwz-m13ycXebA>
-    <xmx:njazafXf3hYs30lOiL2kY4FsGcyxLQU9S38eTyi4B5Yclzc2og7KCQ>
-    <xmx:nzazaRcM0XCwpxCRO4D6QGB9oMdD2WOwOSwdrSIdgmftsWaYF_OtH-uO>
+X-ME-Proxy: <xmx:rzazaRLMf0xCbH9DskN6cbfxaFyHjsXPa01ypMC44vm_7j42GQo-XQ>
+    <xmx:rzazaUuXjK3pWNOdt_IrXzDfMiNIFLihdDLGV0rzQsKjCfilR3Fziw>
+    <xmx:rzazaWol9h7ePjrj3Za7I73W-xCiRO1lEYFki_qD-TJ6bQYulpiMtg>
+    <xmx:rzazaQUBcFkXeR7RUWU1cUXNQ1HJd2AgmIhU03afXZwQTCNgbw326Q>
+    <xmx:sDazaWf3sZUuzWbO4fKYzxinLNZ9SCRYKi3Wbk1TTyoldl1UNbQP0RC5>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 17:56:33 -0400 (EDT)
+ 12 Mar 2026 17:56:51 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -151,23 +151,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 46/53] Remove references to d_add() in documentation and comments.
-Date: Fri, 13 Mar 2026 08:12:33 +1100
-Message-ID: <20260312214330.3885211-47-neilb@ownmail.net>
+Subject: [PATCH 47/53] VFS: make d_alloc() local to VFS.
+Date: Fri, 13 Mar 2026 08:12:34 +1100
+Message-ID: <20260312214330.3885211-48-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
 References: <20260312214330.3885211-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: eirk3unzmdezjg8uxsd31cyyd8aye7o1
+X-Stat-Signature: yssgf4otkjd33ctcd3s3xs1wodn3gxuj
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D6EB40006
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773352609-497068
-X-HE-Meta: U2FsdGVkX1/FAHQfH6yZLk0P4aWSaIiiUTYKTMSZQ8eE3nRsy9f1mLvNuVDKTXJywQJVZKvATYx8OdOii+e9VwzHLUxvoaBxfEZNEGy6BGw5g0vFScZH5U1ZV/4pEimbpfG/+x6KrlYMetBcDUlLp3AROT/dwh1yo0VchKiE3s80Akpv1z2mQx0pRidogt7/0TY2qsVvjd+3xVjUkFbYZVAb7arUkmHfbQs4q8b8tzpTiPTTR9VJHOiGVs38lGciS3CDHEa1CAUO8CanIUm26UX4PGVnC6/k6VYjNd1uFN578m16Km/vIeQTQ4n9FavN+YAkiIT+siNQlDPLuTAk+V327oO7wKkif43Y70XXnJ5rZrp6pLYJMJER95WqeHqMpVnNaM/v2Fu2HYZ/tn2XQ1xWc4T0tUqrAWth3fefWi0TDF2UsVqJoEpjrtIIxDq3Lg+OjOVQtZoIRU21UnLQiCegiDdh8rHOqVOz5DvwkNY1f14u8KLPPe0gSZR+HGDLsvktfP840ioBnZ/cFkYj3KWEtlmriv50QGqVluwz5WtqnAz9GFky4Cp3gGnZCrAhEZzdudTUqsBz+VhnCGYLLHM8XdwEeslK54/VCErIMQkXriGI4OFRozY+SthM87K861WQzsNTnrMOoAw3uyZ+mFw6s7+S+n0y/of8sh/0CO/S9duOSLwRqMdrEkSBara8l9Gdwj+/o5BWmpRUbQySU4SAQ3tz6J1tdMOo1CdDe4o3exqSrLOthcTGlRS2oLNNIjOqtZNCm2C/76btxZQBHjJipLrnQIzr0+o1P5QMXbgc3vjEswuzFDbi7YlsW8seLCe4NPpFd159Q1+xZ5LOeyEpj64oRhh+0XG2+pWEPnJiyUfjc0vdARvxJ2V4HE1rB18sPNVA+NowcWfCB0oWoQ01PKKz1cyQQ/ON69zuGF1GZ32dwhgKuxG/1QsS39CDNTH6xmzSEOdkdibmA0k
- QFXDEt2D
- et2RGhVTvbiiHuqjRoC409SH4j14BDvK1WFuC8JoqFFO9kzy6pvHK5BES6QgQwK1Uz+3qIznO3lW4o/L5clDdjkfSGDD+IcMBSrdf16J+UAW2WzG/DS2peSy0Cw8o8KrdXTS0OOczd9br+wlRnC5esHTFc6ebC4EMIg1RF/Mpl+f5/4mcJiy51G39NYWBlA5sgrDDVH9oqiJyhnmJ97C+XQrLPo9/JwQ6l7WpVVBSMBs4h5iJofkpCpJHQGizQIQiedNg63NOTvgcQz9vedVUP4DEJp42Ko1eR4xFNapZl2NwYLWV1gQmiscG5AdXA5qIetUv5asW87YkLb/tSfhA3u3K3ynzLFNS9FdSap2XQ9CIsU50ZjBoySG36Dw+SZtgy3UpMYWBq36NEkgbv+HZIKCWmzOS1MQVIEbE+UbC+ty4TjF39WodhKnN+Hj05ps9IUioYaGAGZSGoh932H9FQCo1LrJste1kMJv9FJpzS8SUJtQlvec1+iiFPJfYpYeb+eAvjLO8bc/NWR/u9d8XB2YZ6NReuxmCB0uBalGQ+TnTAZEKsOPfq29UeWvTvOxmkrCqcD1UlhkBXIFfavC8Xt+aT5L8SiqfvMHTae/Yjq+xutJos9Opl8BWcLrRUTBe0iSdlQec3PkcGlUR9H7/PG6lBkcRx0r4Isi0X4w/sXOv64c=
+X-Rspamd-Queue-Id: 7418880003
+X-HE-Tag: 1773352626-327114
+X-HE-Meta: U2FsdGVkX1+fpTwpoP97dVC8fYArrlPYGbNc3xi3L8xzRMSkIYMAvKx6p/8csCFrRZGKgiu7aPOkYV4KOnjCQRoVNLklQRIR8mr3FnfBBcBjc4v5XjBhOq/DF9DZlb/+okFNDKWpqbEUO+CruGsz/mB9mmXrhaPQnm0VGUhtLmNlbAN93dEZ8ECDe6Md6uzJgb3YCoYxq+knuQoZ5sFHfpeyMsK6opRbDmRuyrfYJZcf/tly4CQ+16gfEZxOlYzLGe0PnDnHLqMUWQ0D3wIlZvABuc9aphSn5m4nWL4rBEdA+FK7HgE/XRpQcMTlZ+XtzZF68w7j9ApO7CmIq5DhKdFkWFLWdQDj3Nn4b7ys4OW5rUqrbjpaTXNSTN76es0bWSSe960baHmWLgYT4T7ECYQ1Pssv4tl6JISVBh5sNjfbX7sXr58goCgjN4WMKG3Ax1NvitaBOY1AETVLg0kAe5Z6ozduFhJtXvviFG3FPXuCJsZLLH1isKKhiwoDkvVFSggq/fiy66X35000SOBNf3kp9nvw26AtF5r1wLWyHfkojRJhitOjYk97CtFhlsioWXw++o/jUxrgT/LeS2VOS4V+d0zqM9tx/4PnOwn0nVsyv+eJPU6AAJH7EBHpbhmOKio2fIYxj1v0Tsann8+OJTHFVN5jk1CLU7xGA/Hl6HBXJVWQr6H41UtlX86EEinQTJOrB77poR2ioWiKQvztYDB2uch7mlzNC3dF54rosMAToJKCOuIxm9H39tX6sGubcCP6Xi9bbsxy3f24GY5f47+/IswkscqMmPzRAfCp1HS8dp7J6Y/tDzA4pRTlUt5HD4Edwt5AhtSa0V2U5IbikwoasV56LRUB6aBEzxiMJK9oTrul3tz7HRsjxSl23x2E8mNX/sxqbpmDtFFIDFL5r7F/ShWnhACO1b/tcxEMuH+twdoeVVlIP5xAWsY1nR3X6TShjSZ4Kf2Uy2qiM1h
+ SCx/RZai
+ PbAd7Usmgh5TuwRUBnUnArhCZqltwRQCbi7K5/z7IXt6GFZS4sZ4fQ79bIyTkMiPnxI+QnxXBDQSyG95vLWx4prQ1GyeWgTOE3eywz1S+U6H9QM3YwUn6oT3Q25tjKHa2SQNUmQJh8c7KkClSnQg3arGb3KIgTA2hT1LzreuTxyQ8yMVed7YbJLNVngVzZ0I0f5sv0xmKRV/4MKdGrS7sH+ik9rsBUsd77q7noh6YtGfnSJrz0BYEhg2gv2dW2nCOZsrVF6VsPQOpC+7Gj7RA9KviX3pcW9sWAZsc4jbaDQXmrY1Mjt40EjhDZzhI6yCZVQFjjXtH0iolJ3d9PhHZqKyRgt1v0mCnQpKar+HMdttXUN3nwAMpo0w1nBCc+KXJfwerHf6/JrVUpf8AlWWmA5sXrwYRAiJuPkNESU1Aeycj6ukWZnL78tjbJcrqxB6IpMKEuq/vnSVuLsqedsGtw+3lf9HNxU5Qe2BYQHzEW+arxRzPFzM93Q7TZmn6qgD1/XvjCaTNxjIE0JoxrmhC/W2hCDiis2g9UtE0Y76os+dQqb1NyoDlBKN0VMqzT++N+TZiNwRDY0AUkSU052mjSoI25sVx0//YXB8+BZY527eDgqDg/uHBohdOVgNZ6WnIounKecgczSadq94=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,121 +177,71 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-It is planned to remove d_add(), so remove all references in
-documentation and comments.
+d_alloc() is not useful.  d_alloc_name() is a better interface for
+those cases where it is safe to allocate a dentry without
+synchronisation with the VFS, and d_alloc_parallel() or
+d_alloc_noblock() shoudl be used when synchronisation is needed.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- Documentation/filesystems/nfs/exporting.rst | 10 ++--------
- Documentation/filesystems/vfs.rst           |  4 ++--
- fs/afs/dir.c                                |  5 +++--
- fs/dcache.c                                 |  2 +-
- fs/ocfs2/namei.c                            |  2 +-
- fs/xfs/xfs_iops.c                           |  6 +++---
- 6 files changed, 12 insertions(+), 17 deletions(-)
+ Documentation/filesystems/porting.rst | 8 ++++++++
+ fs/dcache.c                           | 1 -
+ fs/internal.h                         | 1 +
+ include/linux/dcache.h                | 1 -
+ 4 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/filesystems/nfs/exporting.rst b/Documentation/filesystems/nfs/exporting.rst
-index a01d9b9b5bc3..ccaacdc72576 100644
---- a/Documentation/filesystems/nfs/exporting.rst
-+++ b/Documentation/filesystems/nfs/exporting.rst
-@@ -101,14 +101,8 @@ Filesystem Issues
- For a filesystem to be exportable it must:
+diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
+index 6a507c508ccf..4712403fd98e 100644
+--- a/Documentation/filesystems/porting.rst
++++ b/Documentation/filesystems/porting.rst
+@@ -1381,3 +1381,11 @@ longer available.  Use start_renaming() or similar.
  
-    1. provide the filehandle fragment routines described below.
--   2. make sure that d_splice_alias is used rather than d_add
--      when ->lookup finds an inode for a given parent and name.
--
--      If inode is NULL, d_splice_alias(inode, dentry) is equivalent to::
--
--		d_add(dentry, inode), NULL
--
--      Similarly, d_splice_alias(ERR_PTR(err), dentry) = ERR_PTR(err)
-+   2. Use d_splice_alias() when ->lookup finds an inode for a given 
-+      parent and name.
- 
-       Typically the ->lookup routine will simply end with a::
- 
-diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-index d8df0a84cdba..26dec777ca5c 100644
---- a/Documentation/filesystems/vfs.rst
-+++ b/Documentation/filesystems/vfs.rst
-@@ -460,7 +460,7 @@ otherwise noted.
- ``lookup``
- 	called when the VFS needs to look up an inode in a parent
- 	directory.  The name to look for is found in the dentry.  This
--	method must call d_add() to insert the found inode into the
-+	method must call d_splice_alias() to insert the found inode into the
- 	dentry.  The "i_count" field in the inode structure should be
- 	incremented.  If the named inode does not exist a NULL inode
- 	should be inserted into the dentry (this is called a negative
-@@ -1433,7 +1433,7 @@ manipulate dentries:
- 	d_iput() method is called).  If there are other references, then
- 	d_drop() is called instead
- 
--``d_add``
-+``d_splice_alias``
- 	add a dentry to its parents hash list and then calls
- 	d_instantiate()
- 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index b5c593f50079..f259ca2da383 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -960,8 +960,9 @@ static struct dentry *afs_lookup_atsys(struct inode *dir, struct dentry *dentry,
- 		dput(ret);
- 	}
- 
--	/* We don't want to d_add() the @sys dentry here as we don't want to
--	 * the cached dentry to hide changes to the sysnames list.
-+	/* We don't want to d_splice_alias() the @sys dentry here as we
-+	 * don't want to the cached dentry to hide changes to the
-+	 * sysnames list.
- 	 */
- 	ret = NULL;
- out_s:
+ d_alloc_parallel() no longer requires a waitqueue_head.  It uses one
+ from an internal table when needed.
++
++---
++
++**mandatory**
++
++d_alloc() is no longer exported as its use can be racy.  Use d_alloc_name()
++when object creation is controlled separately from standard filesystem interface,
++and d_alloc_parallel() or d_alloc_noblock() when standard interfaces can be used.
 diff --git a/fs/dcache.c b/fs/dcache.c
-index c48337d95f9a..9a6139013367 100644
+index 9a6139013367..23f04fa05778 100644
 --- a/fs/dcache.c
 +++ b/fs/dcache.c
-@@ -3323,7 +3323,7 @@ struct dentry *d_splice_alias_ops(struct inode *inode, struct dentry *dentry,
-  * @dentry must be negative and may be in-lookup or unhashed or hashed.
-  *
-  * If inode is a directory and has an IS_ROOT alias, then d_move that in
-- * place of the given dentry and return it, else simply d_add the inode
-+ * place of the given dentry and return it, else simply __d_add the inode
-  * to the dentry and return NULL.
-  *
-  * If a non-IS_ROOT directory is found, the filesystem is corrupt, and
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 268b79339a51..0d3116142bd7 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -172,7 +172,7 @@ static struct dentry *ocfs2_lookup(struct inode *dir, struct dentry *dentry,
- 		ocfs2_dentry_attach_gen(dentry);
+@@ -1830,7 +1830,6 @@ struct dentry *d_alloc(struct dentry * parent, const struct qstr *name)
  
- bail_unlock:
--	/* Don't drop the cluster lock until *after* the d_add --
-+	/* Don't drop the cluster lock until *after* the d_splice_alias --
- 	 * unlink on another node will message us to remove that
- 	 * dentry under this lock so otherwise we can race this with
- 	 * the downconvert thread and have a stale dentry. */
-diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-index ec19d3ec7cf0..2641061ba1db 100644
---- a/fs/xfs/xfs_iops.c
-+++ b/fs/xfs/xfs_iops.c
-@@ -356,9 +356,9 @@ xfs_vn_ci_lookup(
- 		if (unlikely(error != -ENOENT))
- 			return ERR_PTR(error);
- 		/*
--		 * call d_add(dentry, NULL) here when d_drop_negative_children
--		 * is called in xfs_vn_mknod (ie. allow negative dentries
--		 * with CI filesystems).
-+		 * call d_splice_alias(NULL, dentry) here when
-+		 * d_drop_negative_children is called in xfs_vn_mknod
-+		 * (ie.  allow negative dentries with CI filesystems).
- 		 */
- 		return NULL;
- 	}
+ 	return dentry;
+ }
+-EXPORT_SYMBOL(d_alloc);
+ 
+ /**
+  * d_duplicate: duplicate a dentry for combined atomic operation
+diff --git a/fs/internal.h b/fs/internal.h
+index cbc384a1aa09..9c637e2d18ef 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -223,6 +223,7 @@ bool sync_lazytime(struct inode *inode);
+ /*
+  * dcache.c
+  */
++struct dentry *d_alloc(struct dentry * parent, const struct qstr *name);
+ extern int d_set_mounted(struct dentry *dentry);
+ extern long prune_dcache_sb(struct super_block *sb, struct shrink_control *sc);
+ extern struct dentry *d_alloc_cursor(struct dentry *);
+diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+index 3b12577ddfbb..18242f9598dc 100644
+--- a/include/linux/dcache.h
++++ b/include/linux/dcache.h
+@@ -242,7 +242,6 @@ extern void d_drop(struct dentry *dentry);
+ extern void d_delete(struct dentry *);
+ 
+ /* allocate/de-allocate */
+-extern struct dentry * d_alloc(struct dentry *, const struct qstr *);
+ extern struct dentry * d_alloc_anon(struct super_block *);
+ extern struct dentry * d_alloc_parallel(struct dentry *, const struct qstr *);
+ extern struct dentry * d_alloc_noblock(struct dentry *, struct qstr *);
 -- 
 2.50.0.107.gf914562f5916.dirty
 
