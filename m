@@ -4,79 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9CCFED2F0
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 08:55:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 420EDFED2F0
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 08:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1692F6B0088; Thu, 12 Mar 2026 04:55:37 -0400 (EDT)
+	id 7BB336B0088; Thu, 12 Mar 2026 04:58:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141C06B008A; Thu, 12 Mar 2026 04:55:37 -0400 (EDT)
+	id 7931E6B0089; Thu, 12 Mar 2026 04:58:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 015F26B008C; Thu, 12 Mar 2026 04:55:36 -0400 (EDT)
+	id 69F1F6B008A; Thu, 12 Mar 2026 04:58:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2DD06B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:55:36 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 844535BF93
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:55:36 +0000 (UTC)
-X-FDA: 84536802672.03.C2AAA1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D543A180002
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:55:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mEzPIQnv;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 571596B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:58:29 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6B241CE80
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:58:28 +0000 (UTC)
+X-FDA: 84536809896.01.9C24204
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C455318000F
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:58:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Osh1CVc0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773305734;
+	s=arc-20220608; t=1773305907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XtiTwh9otkwNbXTac6KoCJC7ZsUiQWhZSi2C4yUd7dk=;
-	b=zZIhZg3SQ7w3qppccox4EuA9+YoseIDiY2B2n2Yi1fgkqJqK0HHgJZaSn2CWx2wgYx0l/f
-	97Yuqp2UGi9MZMjtUZNcnqZIH4ybjaeqpDuBohfPLYiqCzSO5+4sj8GURLo19T/2J6ust/
-	hjL48GAaKL8HVSC1O1GtNrAKL/n0J6c=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mEzPIQnv;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773305734; a=rsa-sha256;
+	bh=M+lYq1wwJXJXUGtuRSDpec/dRwNOiUTB3H57/49iiOk=;
+	b=hJWACjc9o47wlA4o1cmZ2lpMfW1ZOO0kIoqsiZ/Iej+YSDd0D8jIsPwmiUtItxCKu79YrG
+	Nhz+7nQCVkGmuKuY+O3avPLdOROCH5BnP8ufjWpquSX6lDrFFmZarn7eqLP6yhWxfWF2L/
+	dHUf0+ASFv4nWQi+GQ3Cbf5/xN5wZRM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773305907; a=rsa-sha256;
 	cv=none;
-	b=W4UNqVl6kd/QLZ5mqyz5KGBx/J3k2wYETahXlfjFfV2Dec51uP5+xlLz22OUryX4JCsNjs
-	8VlzjMOth0oqPG4IjpUoCaRjE6Yp3wlYGQWct6Im2CJLaGP8ZX8+QmBYAdUUCKOZg0ApEx
-	Hs/Oa0xs70SJvG9yfj0o+36p94JpiXY=
+	b=HRI0QbV5ZE+BlYVcmws56qgPVHSUeYneJru31R7BkBF91rX7vHs/VUWJdYbBfzA8aGEnDs
+	VtGIBaArMI7zIYqeZ/V/Y8Gz5AJ0hymTzwbr5nJm6kO+rE1WvfZvyQ0LahXJe4wANaFLAh
+	niuZw+pwdRWlo7yTX6xfy4kRFxJF22w=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Osh1CVc0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4EF7960141;
-	Thu, 12 Mar 2026 08:55:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3B5C4CEF7;
-	Thu, 12 Mar 2026 08:55:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C44243B33;
+	Thu, 12 Mar 2026 08:58:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3DEC4CEF7;
+	Thu, 12 Mar 2026 08:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773305734;
-	bh=HxJoocjOCYFRNNtremEq4a9gZs6/4+/JZzLejhliau8=;
+	s=k20201202; t=1773305905;
+	bh=DdfFRNTopIu7ar0QnGlnBz30tm5MwFJ5HMPNhu5eWkE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mEzPIQnv7lpcbrKWbQSKEdwI+BmCAqv9+EhC7qg6Um/kMDsgtjDEe93CG4shWLgkg
-	 gqTkxBO8owX1eCgVCyx4jJCC43iB7ou0V0GuWAGcW4rXjypPMQUMV1pHreHaoZSDKe
-	 4doGDFgYMIwDauXbDCHFPPI6z2ZD4esYqqhXADOo1YNu725Iay0VVjaoKiCt1hKmJc
-	 5z1re9/loSTGJ3veQ+m5147YICU/ztkucG7JjDj1XR6jieHJI39l6UJDOsCaKjCuI1
-	 GdaQ43Yxx/XLOEARcmwCeIU/9xKt1ar5josIKAZi6/s6pDw42HW20TQ4j3OQbO9tXM
-	 vv3OIO8m9oBhQ==
-Message-ID: <e467a4ea-2e42-4b27-8179-e97139badd88@kernel.org>
-Date: Thu, 12 Mar 2026 09:55:28 +0100
+	b=Osh1CVc0M0NOKA0+xKrJEUHt5bGEH4FKvRE+lhAgwnte4lb/L6KnsOOdaNBLQs4WW
+	 MLvAOfB+r7k2bnjCNxBiV03ZYvghXBvB8f5VQnx2l+dEIn/Xvcm+JntldNeyIJN5bY
+	 UAHHDUPLQ8qeH4pg/gL7YUeyTa8fsZu1gan6z70R7qyEu5ViGOU13kmeV+nsLZ5J5i
+	 I5oG2YlNJA4lmLTgyH+btArgC7GCV2rgIumUFSMARFKDpcCmp/shVK5+rb+2NBqvIO
+	 NZr1QvGCveZg3JUtq2z7NhJNAkvEbXzCti0OfVfpiq3ZEYCPfa8NpC7N38Tam24WSr
+	 Jqh+HawIfy6DQ==
+Message-ID: <a339c666-79ba-498f-baa6-14d1fa47c3d0@kernel.org>
+Date: Thu, 12 Mar 2026 09:58:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: prevent droppable mappings from being locked
-To: anthony.yznaga@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
-References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
- <ba9a99a0-2ab8-4726-8287-ab21b3da8df5@kernel.org>
- <9d90dd0b-1d60-4e45-922a-84637cab16a3@oracle.com>
+Subject: Re: [PATCH] selftests/mm: pagemap_ioctl: remove hungarian notation
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260311180737.3767545-1-rppt@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <9d90dd0b-1d60-4e45-922a-84637cab16a3@oracle.com>
+In-Reply-To: <20260311180737.3767545-1-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D543A180002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: omkxb9sffgeoody6fox5fqhen16kkxd7
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C455318000F
+X-Stat-Signature: 4nka7ofz7qsdtdmza8oij7qfkd9mw36g
 X-Rspam-User: 
-X-HE-Tag: 1773305734-98621
-X-HE-Meta: U2FsdGVkX19loHcXL2o8Z6pX8LDXdli7xBpQtmdIffTAG3zDGZnQJq9IdGiYDRnEl4c9OO7lYWonvvWZTHIqcFSaN+SO0gWGwh6/dOLvJMcwjU4BGVO5RRQGUuDpe6AvZ9nWWigm3oCpVZnzr+3BAJjaZPW6qW+oqQa/czqUQp+MhC/IM83QgOQ/mg85v4mdKau9WkTPGArPfRwIt1v4ueK2E6vl7uaQ9CQOLGmp6gFr+97L4SuwG3hHJBROF2QT+l991RX+w7pGfN7OUKmJZzIeDbYLCMU4jcW+TH74j2zNzfYCTMBMsszBkKJ8iq6zJ9GFRQ2R+4Od5VyuQfVWkJSH1ZiTygi9HrUuhCHIuFJHtse8uoMA865lmrIW+++QfMqrBVG/y3YwfDaUdax6Ra8FNTJ6BmiesrMJYakIHO1+Bv20xsF0faaMxUZnaX0IGKW/oV/3L5DIIFwGiJx8iWBb23JQShRh3HP8/PIV/5MfWr098O6bOlCR8Zcj6fQ3vG5YQv94pAWCskgZTC/0a4TLuHgibNHIJOB9mvfqVsUwCKdOVuUM+VJvxBwleSRDuzqET+AnddyA57920ncS/2UsKMgVa5Pt4KqNS/hbAf/qlnhxFk34yiBTbOzHOZyyDXmHf8NCCxl0sBsipquqFd2cOzfaoE67KVbozAIq6AeVjdH/H4zqenqTAupSrcAaw8GuZZr5oEaC5m9zd94rAqDS5DbwvpKIsZ+HmQ5nfuKqtQ4iYjb2NwndxTaPbQNtUy6QUKEVA8gJVtjsxw/jazcfsflNwlesNRcTSHInlAHdKv9PE5JgTvb35WCQaxqYm+Ak3Km6xAFA7WQALAnsVH+KLUAz2KY5eZ2PEy1doHsuwM8pEm8XbkapUyalr42eBCqXOslDq0yd0NRaYiI/UB5B9gmCIAF+9ODLKZy87YBu6tyGIOMqJEytJfO5JvBE7bHB3ScTjJ0L9SKdRl6
- mnVQ2w6A
- 9qQoJcu8qb+i8eFMgf1oOdz2X/uQHTio+CgMaQYD7VBZ+vqIWDC9Tr9FbiM8UM+jPqVqWsxwrBa5Yia7Q84SI4tC/P9OjKGY2TjDSCIJiHgtgWaWXVL29jZqZHI2553zGELI/4mWWSs2MCIe/bq0SEHKxO5eex2FZICtxGUaR/s2bwDGwvmWLJ60lkMS9/Jyv5tATbrTxmvJ8VFjf2BHTtNC7qHOoolB9Xb67zg900gn1A5pZHGViBoZ7IkrN+Y4mZOsHaeEzqCK1IR30aZicIyjwgQ==
+X-HE-Tag: 1773305906-938035
+X-HE-Meta: U2FsdGVkX19eWu1QtsrDtTC/43Y1FSZVfoecxo4jzoYP24V8eAcj13LDnMAKzj68JHY8utIgNC3d2KmbEExUPSTnw6Yc9/vEYkaGBaVWkTt0I8/ya5myPUPNMvijAziuekgOxOL3/IaMhswUlcBXfAsl/HgGOg4bxM54DJPbOQIUqi8VjyuSBxJ6ofWsorCJn9BuvXsOhU+T2bP9oZvlpxWn+30EiVPeppQsAFzULhGoaJK0fHnKjOCxS/Y3bsM/Qb27M982S1rs9WLVs3Jzvn/oFhukV5CFfMIaz9Iisyqr5PJeUVpyO6ZhE4G0L9gbxDaodNx3WK8W9cZpJtXxx+ft292TnhK/DVNn7UM9gMgE/LJ65lFqir5Xd4PVB1tIvtPSQfPsZLpInPpa1mXmLEa+sYS5543iaGX5Pd9J1Z3B6XC0Wu+dp+oGYCTULj8btWOsIYoSMTG2njQ6/89zAdn1ThVD9LZ1HhafEkLqpcaoUHKgLaicOlxKkGjrTrt49cTMiZAE5js8OoY0VuQYEL+543QrEbR6nfE+p2B6A+X1r40pyXtCznhfjxrPRMAcoh03xDZgtzUXTHitep/PdekA3B9rWPcmc8TibDJmdLl8zy1ZTx9jxGwSsjfbNBpk357Rk28NEocMpwCrZ60lF5ecIlxijjFtmIa5AdjgVYcMRWMgF8xrsFO60fnPczbtbkYVE4NQ3ccMiS+sm/wQ+Fiqh8t2GNgwpDfgmC/hliaOmcdfrF9KiikOXIk+H81DlueDchjm5lfTx1amdQ6idya1D3eoweQBo7aoB72lGIBcqkwwtK77zF0zrVkmb2Q0z0V49rDV7kwGrUWLZnkJ20kmgmHgOt/lc0BSQ5qtcst7/wbf1wolXS0vH4RthvtNdK0GRNJS/k40CP+6Ar8/Ow+TVTeVUCpRjlraDJhnCWUmcp2NdMKY/A2P6M6YZfuz5Dcq/HrfOWbYYMSo+OP
+ WZN0w3nJ
+ XUTmzpqqu39tfFXNKeX0Nj48o+bBhuc0nhwrncsWKyg99Sp3y/pX6A2NoHDYRVetxN7gIsGYLIUzQBzkjfzFg1RwCznhi/d5VBl6whsx9A0p28Yuz/AdxgogB96YDOEU1KJ5Md2UBLWEvqDG6nn7HxUyBfXQ6H2aYwCcCNV5bCIttyy1CVEH/viT/M6p6DfcLSl18pFZIlgJnthXjUMK6RBz27fDdDl0SZwh/tekNeoEloHnScW05iJLSJQu3wAigkSJw8I+nfvpeuKFtukIn88if5kTLZL27wyUuw0qgJh46GXKEw7TfHTPFxey6f1qrEMIVoD7WamvM4ZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,73 +140,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 03:01, anthony.yznaga@oracle.com wrote:
+On 3/11/26 19:07, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> On 3/11/26 2:27 AM, David Hildenbrand (Arm) wrote:
->> On 3/10/26 16:58, Anthony Yznaga wrote:
->>> Droppable mappings must not be lockable. There is a check for VMAs with
->>> VM_DROPPABLE set in mlock_fixup() along with checks for other types of
->>> unlockable VMAs which ensures this when calling mlock()/mlock2().
->>>
->>> For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.
->>> In apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set,
->>> the
->>> current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
->>> applied to it. VM_LOCKONFAULT is also applied if MCL_ONFAULT is also
->>> set.
->>> When these flags are set as default in this manner they are cleared in
->>> __mmap_complete() for new mappings that do not support mlock. A check
->>> for
->>> VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
->>> mappings created with VM_LOCKED set. To fix this and reduce that
->>> chance of
->>> similar bugs in the future, introduce and use vma_supports_mlock().
->>>
->>> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always
->>> lazily freeable mappings")
->> Should we Cc: stable? I think we should, to fix mlockall(MCL_FUTURE)
->> behavior.
+> Replace lpBaseAddress with addr and dwRegionSize with size.
 > 
-> I found this issue through code inspection while doing mshare dev work.
-> I don't have a strong idea how likely it is to happen in practice. If it
-> did it might not be easily diagnosed so I'm fine adding the tag.
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-IIUC, mlockall(MCL_FUTURE) will result in future MAP_DROPPABLE mappings
-to get mlocked. I assume that implies that all pages will get faulted in
-and might not be reclaimable.
+Thanks :)
 
-With a quick test program that mmaps 4M, we indeed fault in all these
-pages (I assume you test does something similar).
-
-7f5fc4600000-7f5fc4a00000 rw-p 00000000 00:00 0
-Size:               4096 kB
-KernelPageSize:        4 kB
-MMUPageSize:           4 kB
-Rss:                4096 kB
-Pss:                4096 kB
-Pss_Dirty:          4096 kB
-Shared_Clean:          0 kB
-Shared_Dirty:          0 kB
-Private_Clean:         0 kB
-Private_Dirty:      4096 kB
-Referenced:         4096 kB
-Anonymous:          4096 kB
-KSM:                   0 kB
-LazyFree:              0 kB
-AnonHugePages:      4096 kB
-ShmemPmdMapped:        0 kB
-FilePmdMapped:         0 kB
-Shared_Hugetlb:        0 kB
-Private_Hugetlb:       0 kB
-Swap:                  0 kB
-SwapPss:               0 kB
-Locked:             4096 kB
-
-It's a good question whether memory reclaim would still be able to free
-these pages. I'd assume the folios would get mlocked and essentially
-turned unevictable -- breaking the whole concept of droppable mappings.
-
-So I think we should CC stable.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
