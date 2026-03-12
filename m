@@ -4,82 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751C1106ACE3
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:49:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F8F106ACE3
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:54:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF38C6B00A3; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
+	id 15BC06B00A3; Thu, 12 Mar 2026 15:54:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD1AE6B00A5; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
+	id 10A126B00A5; Thu, 12 Mar 2026 15:54:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE0B46B00A6; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
+	id EF9006B00A6; Thu, 12 Mar 2026 15:54:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id ADAED6B00A3
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0901EB946E
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:49:03 +0000 (UTC)
-X-FDA: 84538449366.19.9E14268
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DCC786B00A3
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:54:03 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E16F8B831
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:54:03 +0000 (UTC)
+X-FDA: 84538461966.28.C210DE2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4B063A000A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:49:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A7q8xKWe;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id B275980015
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:54:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eiJpXBPD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773344941;
+	s=arc-20220608; t=1773345241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RGhQIVRYBDhvBIOdgpHL+7ETkA11VtZScmOzWGwDh9s=;
-	b=O8XQwaG6SO50Rz2dyE5VUXJH7I27QpCvanxMsOQ45j4RIUuHubkR6HA/ceskRcxpnqxMeE
-	vVvv/xBg8YxJ0lgTiSU1IIkuYRWFKZ6s+hSaBmEAukxUSkZQUdeyz2LvuokDsSibR6D93q
-	jvpY7kLwbytx624mb2qMJcdW6Ngq3jQ=
+	bh=NEkkZv79jB1u3/uzzWu+eWBtRq2Fy92t4yG0YoYEj6A=;
+	b=G7r2twkmI35Wy+8Hvo6mD9D3VD1gPXRwTpRHrcm0nZue7jVQA127MmKBUk/JoYNgSJ4POE
+	ai36ckEktBuSJ+z8HSaA8deMZzoJ+ArEVEBT1/8fd9m0D2+YXUNK//u4vd8VT9vCm3se8p
+	+iMF3+jlw5zJdlRSsAg5ucJMzhR8GFY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A7q8xKWe;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344941; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eiJpXBPD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773345241; a=rsa-sha256;
 	cv=none;
-	b=aORKpJTsVMkzB2JiMYbuFD0KjxvLN8deY4KvLNssumhB6e4lVfszAm2spZWp9lZQlXDMjv
-	omY3o68JMpNuOs9PN9xL1/hbvKCi/kTuoGDkR6tT6kXziT2+teXRR+emAS66dbb+lbgwvs
-	wBqysukeUF1kBa+V/qP+lemu1eNO2Fw=
+	b=TeU5V+4mGC7ZkcRs9gc4HmtkxQWjE1ixycEeGdiqtejxQeDwxFaNPgVQ+WMB+1faQ3EY7l
+	QM17YXvWChCLm0LsovWsFdefko7oCmcAgLwkaB3lmdWsWJQjOk4bxWj5x6pYFX7jJpArMG
+	tXIYSBpnDIxlgSp2MjylurcLhC9e8gU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 945D261334;
-	Thu, 12 Mar 2026 19:49:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB76C4CEF7;
-	Thu, 12 Mar 2026 19:48:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2DD7960054;
+	Thu, 12 Mar 2026 19:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EF8C2BC86;
+	Thu, 12 Mar 2026 19:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773344940;
-	bh=Egp6YT5L81zRxg/z6CZjK1NmJyVh8nzuj5sen9ywdDc=;
+	s=k20201202; t=1773345240;
+	bh=SbsndnuF0EiVpDNyBSiEFCrM0e8c8nQnCjz1qAUHPcI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=A7q8xKWe3Nq1LDRzDIn39uUn/+/x43FmRrrfuiHz7IkbJ87HjVReQdKZyGNwv+HRx
-	 i0zgJux75nhcVF/W3MY2n7igA3n42fuavOGUECV7EyHjeq98dcCOM1GmR0P1J3Vae0
-	 NbyOemIExhNm/GAwKjRD6F1wjGiPc6zADsbEXPiEQyhe58u4M/P2Cuw2f0Qk6P3qe0
-	 MtKj63OLbka6tNaD+9M9bAHJ4GJZPTcA9/TQRwZ7qIXQx0vFtP0FhOpk1tnQ7cqsnT
-	 U/8VzbnRLmr4Ed/1cfWxGO0hevnmZQ/sGnOTRHvzo8IUBcOqTYBYqFuOjvwTYc+fRY
-	 u6ssEF7nk2FWg==
-Message-ID: <afd70015-bdda-40a2-a842-a2d1dd6f4a20@kernel.org>
-Date: Thu, 12 Mar 2026 20:48:52 +0100
+	b=eiJpXBPDrRIIs9Lzx0RgbMPTUzs2HWG8qWkamTZzP0USBdFToQVuo6bKmnBmjipoN
+	 onQAAPIVhb2m84hHt56opum474gdHZ2tO4XzRP8hw8XDSaf6L0dZIRlcFuiMOCwZ9p
+	 r/w9cb6Yrcn1c5fNQO4ubPQkFcjigUWI1x3Bzp16y4v4mjyc9lCegDsaIAhhwAl6Kq
+	 ldySkfEjvMldXBdfBbaxAhc4yaQDBKFGGerXDe0nbfDZvLLenUuSDEjT1XeJqnOpgs
+	 +pdpPQobY5Ebk9Pv+hfFcd+WGVBAdGUlqO5eNH0GU5oFgu0xfgp5BKkBJAmZD3Tx6M
+	 R+Asn75JvTbyg==
+Message-ID: <231fd45e-3c0a-4c9f-917d-255d03fed6f2@kernel.org>
+Date: Thu, 12 Mar 2026 20:53:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH 1/4] selftests/mm/guard-regions: skip collapse test
- when thp not enabled
-To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
- shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- Li Wang <liwang@redhat.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-2-chuhu@redhat.com>
+Subject: Re: [PATCH v3 01/11] mm: Relocate the page table ceiling and floor
+ definitions
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
+ bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org,
+ Matthew Wilcox <willy@infradead.org>, SeongJae Park <sj@kernel.org>
+References: <20260121164946.2093480-1-Liam.Howlett@oracle.com>
+ <20260121164946.2093480-2-Liam.Howlett@oracle.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +128,16 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260312114027.634559-2-chuhu@redhat.com>
+In-Reply-To: <20260121164946.2093480-2-Liam.Howlett@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8mh9dmkaou4sxs8foc8144x4tzkxki4j
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B275980015
+X-Stat-Signature: juq1ubfraon5za1t6e85n3safgrcw35q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4B063A000A
-X-HE-Tag: 1773344941-663820
-X-HE-Meta: U2FsdGVkX1+T/z2CRTWc4CnTYU0hDiY2DeM9DJXf6eIGC+KRG/L9bcLVQAHNp0AX/C4vyGs9eUj6Sq3ak/0gBR0zYmVtRBt1R3/BrG43ebL1LbruS9MsKUW8Dsx4tHrIZjwT6k8zPqlOHsnjmbrQambfEZdYuxx135Knko0ckehrpNaY9eJK0UbrbMY6pGaGEf0aego9jWXr2pI2vheOcQmPdXKi6U5S6fBEHofafWUMq/6aAEvMk1dVFtgaQbnch3/vKT/G11qYqFOvpm5Glemirt85nmLVbWLcjN34i4lz7tXdU2++X/UgEw98e7IE81QktJqjpVxnipB2I+cYrQ1JW8k+P/XkadbkBENUwGXcQehZ+etjAc4I0ieESfhO47NXmIg4CmXq9rPUJYUL1EXDItBGMFTEOi1GFOU9Aict3saj00orqxEnr2pTJ3/a4CF/ZYMghFyt0RlHTW2OguHVdcwwiNzEVxni593Ee5qVIbp/WIfj8c48vUqfkTgoMpgs1nG90phFXb3K9Ak0V7d7QgdH9LcBdGxgeCyAffKM9Zdnr5aOIGYz0Zd3GBPGrGB87uAFy+kRtir6OJ4CcT0M9URXc8siq83oh7LPP39xwixExIx1xW+N6wk/5Vv0W9skfuDJKJFzZ216+THshWi0uxw0i/00yazdI7Eu0pVvZRdtw7mbC8NV0cgAatJDxj8HaldD+gda7xnwTI6GANKw99oPrc2JJtxxvHEFkL7zNQolMP0XieeI67+X6Vmts7n5wkPbvq0rJo4apvbkG6uAJdSU9W2IcivdpttBT92ejHYTriupEgN6RMB06HhCP5qd5CpV1CDwTmdXlmuF31iDmQGvcoqlYTgYwYRGVSSueVSNi9/+aRo256CmxWdHGnq1ZeGua1b5SMoDa/nT1tntfv4U4O6bmkWjdL61pWKRdvKQGsetm64yxpTyZyFqItjvxrpE1bjqn6AcYzc
- aP162Pu7
- aWPw3D0gXiYyQ4SGQepn0XipXrTacRyc1vFqZpS/ImLeIhrulXH1AYvmM4vQ6ReYLGOLM/EZWnSCLX8EwwkCPuhUVqBjGymfSNLG5+I0Z/UFUGdlpYj+NTr1Xx3IRmABwCIWEIB2jyO+MF2YfmhnD67mbM4qnq2QQLQ507y2W0SNNeh7y7UhXIlWHblRDnHFLAA4+8+Onk0+0Kh9LSLNhX0tJ4UYD7jeBNTSF7QQ2JoAQUuPvXtmQi4d84xH41ftJ8IqPHeVWDjN+gvl8nziLRic9oCUIjeX7xGqpDXJRcN4RbwRaaagL7xjoZw==
+X-HE-Tag: 1773345241-129091
+X-HE-Meta: U2FsdGVkX1+/74DDcIKvOHlresTxqCE4A5A2Vnb3wtjEnkcQUUkVmDAcp5D4B9hSzDPGHBuz8qmh9mg3HOXrbM6oxoNvy/riNO8EWJZs1YSbi1DFuOoJNVBrhDymelmFtUypZN3MdRYDFhwVFy+5k9sIKeUm/JYxlUnoj4WzjS6e5HsRx/wHwd6yAeDZ7Tg7/v+HrmxPwi0+HoQU5FGxrr9KMcAfKYs1aVqJEmA2pa8e0v4w5trffg7LO/mC7ANDVqQlAFr08LLl2J7QK0CxTH806fFc0gBTfhHZ9PjBU9ao8VZ+nOUmB8Q1nfm6hhZdp1ltJR+A41si4SJ8KvzWsGqZ27Gd7P7ONMMmiMwArfWgi1lTUzpCKik26UOWo+ikUHVGKfTzuean9eZ1nf/6i8ebWO5X0pXaTtd17FVSGj2Tx75aK43pEMKp3ElLCusU6pODo1myYRCjL8Hsg1i9D68Uat41VdgfXDp8x9VhYMQwDRfim+IdczVcczCOPzASoKi7LbfFPvhdlTWA7I29uSEA67X0QKqPO2KB8kl6XH9h6tqFT/xYO/FhV/MWdSItFWijTKSlA3JmriTnXMu9i7Lna6VBPmFJTU/WqwOis4JQ40S3vQaTIWx1exjzgXpNZ7RQO7mf1Z4aRJ33r55yF4BTEa4rs7R0qRSRhvFG09/qlrz/ctdHd8oOpEumt6ggsVknbVhN4H/+8BTZ0MP8Z9ZGOWqr0zKCHuiapIwqjaV/xh42f0YRnkviyh9YtKuDn6+E9/5mHnLoIV0bFeWbaLp8fsJ5nbtVJdJmbySQrrxHz9oX/IBHTcEJ1POZXQCnae/Qy0+joTN+3X0JvT7LgK/VbGBOi1+fs79TzpIGuYrR5jrut9RsRbRjNWLgN8HP0AjVOaFq/MtFXw01+OMS58snT1T8a6hhsLjFc6JOOVQLV9CRlqTZfe336rGUdvi8ob6nuxWRzxrFbb7FpxW
+ d/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,42 +145,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 12:40, Chunyu Hu wrote:
-> When thp is not available, just skip the collape tests to avoid the false
-> positive.
+On 1/21/26 17:49, Liam R. Howlett wrote:
+> pgtables.h defines a fallback for ceiling and floor of the page tables
+> within the CONFIG_MMU section.  Moving the definitions to outside the
+> CONFIG_MMU Allows for using them in generic code.
 > 
-> Without the change, run with a thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard
->   <snip/>
->   # #  RUN           guard_regions.file.multi_vma ...
->   # #            OK  guard_regions.file.multi_vma
->   # ok 89 guard_regions.file.multi_vma
->   # #  RUN           guard_regions.file.basic ...
->   # #            OK  guard_regions.file.basic
->   # ok 90 guard_regions.file.basic
->   # # FAILED: 87 / 90 tests passed.
->   # # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
->   # [FAIL]
->   not ok 1 guard-regions # exit=1
->   hwpoison_inject
->   # SUMMARY: PASS=0 SKIP=0 FAIL=1
-> 
-> With this change, run with thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard
->   <snip/>
->   # ok 90 guard_regions.file.basic
->   # # PASSED: 90 / 90 tests passed.
->   # # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
->   # [PASS]
->   ok 1 guard-regions
->   hwpoison_inject
->   # SUMMARY: PASS=1 SKIP=0 FAIL=0
->   1..1
-> CC: Li Wang <liwang@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Suggested-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > ---
+
+
+[...]
+
+> +
+>  /*
+>   * No-op macros that just return the current protection value. Defined here
+>   * because these macros can be used even if CONFIG_MMU is not defined.
+> diff --git a/mm/vma_internal.h b/mm/vma_internal.h
+> index 2f05735ff190c..2da6d224c1a85 100644
+> --- a/mm/vma_internal.h
+> +++ b/mm/vma_internal.h
+> @@ -46,6 +46,7 @@
+>  #include <linux/swap.h>
+>  #include <linux/uprobes.h>
+>  #include <linux/userfaultfd_k.h>
+> +#include <linux/pgtable.h>
+>  
+>  #include <asm/current.h>
+>  #include <asm/tlb.h>
+
+I was also confused by that change. But it's not worth a respin :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
