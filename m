@@ -4,80 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DCD7106ACE3
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE3C106ACE4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:43:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881A56B00A6; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
+	id 6534B6B00A5; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 838B76B00A7; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
+	id 634546B00A6; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73A4A6B00A9; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
+	id 534086B00A7; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 63E906B00A6
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:39:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17E4B13AB8D
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:39:42 +0000 (UTC)
-X-FDA: 84538425804.10.1739A97
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 463D540008
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:39:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="T8O/K0UU";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4048D6B00A5
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06CB91B77E9
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:43:21 +0000 (UTC)
+X-FDA: 84538435002.25.205AC74
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1E4651C000C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:43:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sIf3SM/c";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773344380;
+	s=arc-20220608; t=1773344599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ynywz4qMacx8bCkCP72uySnQ/WanBZP31Ud5GxXzPMw=;
-	b=i9c7FmlOFSlIgy2jHx3CacocSEAOPAuskb6/f1RUaRI0oSzpQEPX3DoTiHmZCw7eSZf6mG
-	zHfKqRQ3HUyNP2bbG3LFFOJO4dd7yqmMPPxbG3ijHccpXovbdyx666MaFiFR1+gwS6X9Kr
-	eocqIjmeUPy+TfD+K0suFQ+QVf3c9bk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344380; a=rsa-sha256;
-	cv=none;
-	b=RzVBRjNcx5F3x82limJ8Oa66a1yvJ4eFbdmMMxGuJeYf6pM2dPHKhv6RuGjhhMbCN0mOCL
-	PzFaELpAkrUbtO97TLkIV5OMZgKJW9BPLqnobYL/FMhdWM5MbfmYnOJWUtSRAUAwQDMaFv
-	GtMcGx/Iae5fzUmbAEts+zpkNVA9Iik=
+	bh=GKk+xT2Xt1KqfWHKAFiwlYlRL4TR5nlSFw8vMkOLeD4=;
+	b=Ae6N73ZXKl537Q7r/G1xZtMtle+kqKygdJLg2nkR26tyZ+DGjYKs/xAIa7BJEpUD3dCYig
+	6OjW5pS9p4T6GNne7v3wDWd/89BumMgVKFUBE68cixhwxDXOb/rsmtgGFY+5PBSthA2FgQ
+	eayLpbb7jIiZdIZ5BkN/BhVVNqSAuPc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="T8O/K0UU";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sIf3SM/c";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344599; a=rsa-sha256;
+	cv=none;
+	b=EsOuzvfw9vBhltIEaA++04V9jnO2we96St8f9GgRbXazfaiYMJyr31vTsHHuwmLfAvHlXr
+	RMpxMqIdbmG75ozMjj97jGB6pk82WuG4HsIAaqguALp53otVokf2nAPa4+fPavE4R9jW1g
+	6b4gCdanPS7CbnAhy12IfJZB+bE422A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82C8A60142;
-	Thu, 12 Mar 2026 19:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BACC4CEF7;
-	Thu, 12 Mar 2026 19:39:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1ADB4443F2;
+	Thu, 12 Mar 2026 19:43:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144FAC19425;
+	Thu, 12 Mar 2026 19:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773344379;
-	bh=TXVSzQZhiMZdafgJRSHJ3MWsp1fIXx8Jo2DaRMJV8T0=;
+	s=k20201202; t=1773344598;
+	bh=1wNpJYeE1dWpshwdESWmB2GY2hIpas7logaSTVcI+gQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T8O/K0UUKi2CvMAbunh4JaL6YLo/f8dyHT851u/j99qXZo97VgKb4+y6ykdfZSo3U
-	 Nv5I7l5d43msX0bJWB2KH3dAL3vcvnsVWuWa3WoINtbamo2DbcHLJL7nG9Dou+kSLY
-	 /ccIY80gPQ/fsQ54v/bzMWnxWRRtshxyRhEC6m5vsyrtXRdGXknCVS6wZ0uC+ZWOVD
-	 NrFWJvEkxRjEbCqcYOyml3aaBafIrStlr6HoNDnbnIuoW0meqzx48VXAVRixevGMYS
-	 KDbC2e/Vx/Qpik3PGHo+ggwlJK+3mJa8kEw97kQIb35ZlL4lfsZ7wzh1G9FKn/UiXb
-	 vZhagA8E7zuPA==
-Message-ID: <dca1580e-96fc-4ca7-bd21-abeddb3c8c44@kernel.org>
-Date: Thu, 12 Mar 2026 20:39:31 +0100
+	b=sIf3SM/cSF4Eys53CHFttBllrEsLPwddPTKvDcu9JiLouK0OX0hZ4RkiuQZJLDkL3
+	 M54xIf5vSAfgWLRiUZYF0lShQvx7EdsznNcJzOGYJ8eN4EVmZK0JIxPSmeY/llVcxG
+	 T2y5h0U83ZqdtAfZ/w9Uj8UwjmYZ8KL+TuREIABbtAOIuGabIPBZlMfpFrDJ7RKXO6
+	 lKQsD1faOACUQshUGZ5r1H9tGi9Gbjb9Gkp+e/D2c3Nn8aKh++FK91r4WsrrmyvuBJ
+	 /y4VnNqfFDUb7NWvhu9ChkLkZlfFFufi/0uzsRjtQ3mpKjPL9Rocmtx5VZWtsX52xd
+	 yLsZfZ4bNaHdg==
+Message-ID: <17254a02-8155-4857-92de-51b9724d4f5e@kernel.org>
+Date: Thu, 12 Mar 2026 20:43:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] selftests/mm: skip several tests when thp is not
- available
+Subject: Re: [RESEND PATCH 2/4] selftests/mm: soft-dirty: skip two tests when
+ thp is not available
 To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
  shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
 Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
  lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
  rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
  baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ Li Wang <liwang@redhat.com>
 References: <20260312114027.634559-1-chuhu@redhat.com>
+ <20260312114027.634559-3-chuhu@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260312114027.634559-1-chuhu@redhat.com>
+In-Reply-To: <20260312114027.634559-3-chuhu@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 463D540008
-X-Stat-Signature: 699yhep9be67t3eszd4b69ecod3stbj6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1E4651C000C
+X-Stat-Signature: j53pr7rtfh7y3tcmrp4s7dr5e36e5385
 X-Rspam-User: 
-X-HE-Tag: 1773344380-994356
-X-HE-Meta: U2FsdGVkX1/MkyNIHliXvzswsxV43qzbp/3V+Tfm3SbaslQVrAfQKE2V1yN2Wh4PcPKhBKzYV5fPNCakik1AGlQTC0naBmYkw5FQI46J2obO+eugzwjfVIH8Sr1fTSuTXJlnNMUGXc54JRf8BUzieI9YJtErp+aUxIn4n7uP+bHvrpEwDzlGQPxPjVKFYK1ZTa9IWNAMlL6lIdKDUI1145Y1xeZFsu7TLZ3BkNwxwaN/YS2xY6n7V+6XNHMwZe6XQVR1Hdx3Sp24Hiwc4XqYRNi67l/pqU/TvrUYJ/l6ZMM2eoOvD8BtrKs87YzgoIYLqrcVpWwW2+2E6ipMsq0ugJ6c167/ZLJXDLMAfK6KU67JIEic52oA9ISSwdTvSz/X/AkGvxoaxEtDP9Jbbt15PtI7Jgd0e7Bu2+LYn7HpUguNSBUAJVDgxA1XjU0p6UBcCDy8gA7xOsokeWQKSajJggG/8u0PjTa1D9PJtovKLqF5iZSsBOP5+iM0/FY5vcFJHXOmtBX+LxEkGyy2UsVPQlZbNhSGFQZBVS6tFXpta+M6IS3hmD6NmyvxU1wfYtdQtub937NORAaR/VVKkevVN4znUB5BN+5UaEFSprJHxH2i5n/Nm3pgx2O23VIEentc7NnJvPzXiDTVswdGxV/MTBTBMdXjSGfldV5az3ngyDFlv2xSOuJ4WKEofZieUOTGbPvHIbFXrNm90PWm3gflKht08hhWtMueiWwPKA1OIEMydUKDNwDKCZwd2jEWrMpcgljPhcsdMW1K2ykyZXnXw5VSowsqMXnD1R5+AQ/LyK3cgOsnfbAUg+x+nugycrWqZy5lgvwLAz2H1YtLI9bSXVIXj0pB2oYRif3BGUjRL7sxshOGIPwl+MA/jmnZGzXq8BQE1taQeAQ0AyTJ6njJhWsFjPUSsJs52zxAsaWPMO/0n24X+0Wbx0u47dK9ZtcS84E/qMm6sbVaMvx/xY5
- nWlH8iO0
- BRi4IIYr0LeQDpCeIAfL7c6tXkkdYtE1Boz7xLmBEO5mmr42OELPsaFuVtRrWwpz4Y1MSfr+jAhPZFY2cAFXRBM2uN743xA+zxq8eiCyH1Ks9sc6joSecIcX2h96zGcedVvmwXyz1KN9O+FWIwCJ9X7sZqBtvAPIpvr22kNRO4Q9wTS9r/VXjv6bkBDHBodEAM6CuP9BrbACRY90LGrfU9I9rPnXWOmTNW0xNu+vKkUdgrAVObv7ndViUmqcotL98Oj+d
+X-HE-Tag: 1773344598-684543
+X-HE-Meta: U2FsdGVkX1/nBmQR2QEYPhFWtSAxlUvTHSXePCs5zjMvjM7FpdaBc8ZNa8KetCm8g8NdQIngOe1C9fAo3BswqZC6u0PsQDf5bamUr/hjgLK5P6N1zu1dsjgPk8hMMua+fmLtUdhteQH1GAdewv++K9xWYn5CHKnB4jQIUR9uGc3zD3wDh6M00rPfFRHaSnw5hS6Xvy9FCjvaRanv2i8Q43vLLQ/ShA0+F/gfZlsPMkj7wNwNExkjqykG56usrJy2fh6CUwO3VCp1Iure45djweLftW6Pc+0m13CXpb8qHdjal7f/V3sj2LLKfgchtNswEDjCkSE3Lnbzrql1BLsSwm6oMzviwKpp1dQlKCa3zvT4+sQoJ5LGUfgUKwIETEcBghUFLHtC3KMGbGt7ewW1xyE+BtyJ/ZuRH1R7c0nU6Nv3mywkCtHS6/YwthEYTevBbv1GUettirWA7q99JX6tACi0bAr8MM5lmoKuKlmJ4aoWP0wMnS1G7KxnP0+moWCYJftvvwwMyCQis635amI00y1/jdyhorQHOwaaLxHwt3nk4fjUU0plfF+wWB9MPYjmi7LgWu2D68xpbTxoE37OriLdwOLnINEDsM51HxXi6DO08gslTuBgo8+2kBVPzpNeK+uATnkjGWqGIrn7tLgg833pRoR4eugbO2Xp6dd0v7Lzxgizg70V9dlMNYcJqoN2m+HIhDliNyCY3JP8gcB/bldZYqerQHzyq6ushdWVyf8FP03XPao67EIYiWOEibZFpbeHxQKsgA6QAOaXWlZIyXCOD2LNOWL88wthJlvl9YPMhY2hqc0hSHitpdz0PT6YQdsVIjvh3ZkEjwW2MHQbFApmtktIINcaxePWnNi/e1FFa5Isc2ExlqmOY8mFzmn5n86nGoxrZiMwr4U9T0Tn4AV+bszru+b3R66YzlWWDckxA7TJa+cA8MvG4/kEoHdERpko9XsNAmg7DFmZ14u
+ TaPWlmUI
+ AxfJkoHXrwcHvrccPxcLkwj+kJRyy6QmhNGkY5Udj8FGci60sFTa0wlWGj4IJkof87AciX/3YBIcifk0UTQiZPJeYtZDobohEpCQ+UeFwCx+jZ3w6OfRjqj7xQiAcuNUMLLMTfUhA6XqECaHCgfNU6ggJdv99e3tBjbDe/lxI1zggoHwE5DAJSr9UxCUQKoMgqkX42RKnVb/436P3R4D2oHJN6kWiAmZmFU2gi5gb0xTLib+m1qp3vDQn9U1J34n2riZ1e8jsi8uJ5lMh1W4FwwS+o50etC+mVnlAAVD+KF9Db/L2nom3/Qb+cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,25 +145,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/12/26 12:40, Chunyu Hu wrote:
-> There are several tests requires transprarent hugepages, when run on thp
-> disabled kernel such as realtime kernel, there will be false positve.
-> Mark those tests as skip when thp is not available.
+> The test_hugepage test contain two sub tests. If just reporting one skip
+> when thp not available, there will be error in the log because the test
+> count don't match the test plan. Change to skip two tests by running the
+> ksft_test_result_skip twice in this case.
+> 
+> Without the fix (run test on thp disabled kernel):
+>   ./run_vmtests.sh -t soft_dirty
+>   # --------------------
+>   # running ./soft-dirty
+>   # --------------------
+>   # TAP version 13
+>   # 1..19
+>   # ok 1 Test test_simple
+>   # ok 2 Test test_vma_reuse dirty bit of allocated page
+>   # ok 3 Test test_vma_reuse dirty bit of reused address page
+>   # ok 4 # SKIP Transparent Hugepages not available
+>   # ok 5 Test test_mprotect-anon dirty bit of new written page
+>   # ok 6 Test test_mprotect-anon soft-dirty clear after clear_refs
+>   # ok 7 Test test_mprotect-anon soft-dirty clear after marking RO
+>   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RW
+>   # ok 9 Test test_mprotect-anon soft-dirty after rewritten
+>   # ok 10 Test test_mprotect-file dirty bit of new written page
+>   # ok 11 Test test_mprotect-file soft-dirty clear after clear_refs
+>   # ok 12 Test test_mprotect-file soft-dirty clear after marking RO
+>   # ok 13 Test test_mprotect-file soft-dirty clear after marking RW
+>   # ok 14 Test test_mprotect-file soft-dirty after rewritten
+>   # ok 15 Test test_merge-anon soft-dirty after remap merge 1st pg
+>   # ok 16 Test test_merge-anon soft-dirty after remap merge 2nd pg
+>   # ok 17 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+>   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+>   # # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Planned tests != run tests (19 != 18)
+>   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
+>   # [FAIL]
+>   not ok 52 soft-dirty # exit=1
+> 
+> With the fix (run test on thp disabled kernel):
+>   ./run_vmtests.sh -t soft_dirty
+>   # --------------------
+>   # running ./soft-dirty
+>   # TAP version 13
+>   # --------------------
+>   # running ./soft-dirty
+>   # --------------------
+>   # TAP version 13
+>   # 1..19
+>   # ok 1 Test test_simple
+>   # ok 2 Test test_vma_reuse dirty bit of allocated page
+>   # ok 3 Test test_vma_reuse dirty bit of reused address page
+>   # # Transparent Hugepages not available
+>   # ok 4 # SKIP Test test_hugepage huge page allocation
+>   # ok 5 # SKIP Test test_hugepage huge page dirty bit
+>   # ok 6 Test test_mprotect-anon dirty bit of new written page
+>   # ok 7 Test test_mprotect-anon soft-dirty clear after clear_refs
+>   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RO
+>   # ok 9 Test test_mprotect-anon soft-dirty clear after marking RW
+>   # ok 10 Test test_mprotect-anon soft-dirty after rewritten
+>   # ok 11 Test test_mprotect-file dirty bit of new written page
+>   # ok 12 Test test_mprotect-file soft-dirty clear after clear_refs
+>   # ok 13 Test test_mprotect-file soft-dirty clear after marking RO
+>   # ok 14 Test test_mprotect-file soft-dirty clear after marking RW
+>   # ok 15 Test test_mprotect-file soft-dirty after rewritten
+>   # ok 16 Test test_merge-anon soft-dirty after remap merge 1st pg
+>   # ok 17 Test test_merge-anon soft-dirty after remap merge 2nd pg
+>   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+>   # ok 19 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+>   # # 2 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:2 error:0
+>   # [PASS]
+>   ok 1 soft-dirty
+>   hwpoison_inject
+>   # SUMMARY: PASS=1 SKIP=0 FAIL=0
+>   1..1
+> CC: Li Wang <liwang@redhat.com>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> ---
 
-We expend that people that run the tests have the configs as contained in
-
-	tools/testing/selftests/mm/config
-
-enabled.
-
-I'm fine with teaching the tests that that is no longer required.
-
-Should we then remove
-
-	CONFIG_TRANSPARENT_HUGEPAGE=y
-
-from the file, or leave it in there for people building their configs to
-know what to enable for best test coverage? (I doubt people do use it
-for that purpose)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
