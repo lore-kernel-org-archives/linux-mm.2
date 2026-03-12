@@ -4,99 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5150C106ACEE
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B8C7106ACEA
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:14:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0C726B00BF; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
+	id 3D1186B00C0; Thu, 12 Mar 2026 17:14:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB6C26B00C1; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
+	id 3548C6B00C1; Thu, 12 Mar 2026 17:14:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E37F6B00C2; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
+	id 261166B00C2; Thu, 12 Mar 2026 17:14:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 90AD56B00BF
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:09:46 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 11AFE6B00C0
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:14:32 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 679E31C3B7
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:46 +0000 (UTC)
-X-FDA: 84538652772.15.3B18903
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0E3A1B74F5
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:14:31 +0000 (UTC)
+X-FDA: 84538664742.15.FA724C9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 852FE4000E
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ePwUi5U/";
-	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0BCC8140013
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:14:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Duh+dhDj;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773349784;
+	s=arc-20220608; t=1773350070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5BZG/lOoPxijsQyAR1VNis3jzuhD7eY+vw2pm73Y4tQ=;
-	b=7Xz/whAu7bFLRCH2d3EIaGOVxxvkX3mz7Yk8WxVia84jSgAvq1oGLWzHWyGi5pirRXDEAv
-	rKWuZkSmNlr81zAPTFEYeSrTbLFALlPFSUSQv7vpen/zAXjLjBjwtRgQbHuBB5RAs44vKr
-	+76Ki9dM2iFIxlLckx5Z6y+INLZ9lmQ=
+	bh=JyaGHRZ3ZkkbnQmXol9kjS74w6GitWq98nUjpBQHQFI=;
+	b=5ZQs/Tac+5x98HON09JcG9G88yg1O99zxFtVU9cvpratgRKSjfgRfX/XEDZoSFiUAwEqtS
+	NDCuhfd0KIJOOvX/PyxIbyUpSt6ZVlyRyeqaIhLZAqxe+iBTrQAppYgWIw1K0L1WJ6k11r
+	rZg5aj39X4SaTtH3V1w0K5QymeYvYdc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ePwUi5U/";
-	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773349784; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Duh+dhDj;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773350070; a=rsa-sha256;
 	cv=none;
-	b=GyBB/Wh3wrBWDfOAc0+5RkEc5PerjR5Pb13Tc+iQ8TD+GdHDY9zJzxE+R67m3+Nfxp2UHH
-	Za8UW1UEMg44a7ZmtA0vkSmuOZXoDkDSrEtyyvJy8QFXrqFvgxzNfIiMHabAoFVB+BcWy2
-	CuiNfjf4cOJ2z43evjtKh5SJHqXdBu8=
+	b=XikSN+gTC1Nptsjbvb71Xdas2aOzKSC09FmVSR7Mr3zrQb1SsCrZx+6nu4BoYBvxfMmBXo
+	WiteTWoCzLj/NbC623ZBOGVxXZd+ZwOZPVibF6A6/fznIqR/oA6152RblmYPa+Et7SQpie
+	IMjrwh0SR1bG5W4+Y6vkpPjOj8tjmXk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B474643EBB
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DA8C4AF0D
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:09:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773349783;
-	bh=Nan4354/w2AKj06fXE4TsNtEJsUA5rTTezTgjUEvs+U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ePwUi5U/kAn16q7Gt/5NMasYNAQczY7ZMZflPM8b4atI4UJDIvGL7kGI4r3yIsAGT
-	 51AJe1ZV12dtSvQf57t7pqpuFlh/FTiMqk7K6Bigg7MgH+ApromBpSXrBzsDuQvnOR
-	 9p86l6n6twCIdtlOU4O5HRn5amVUqQqDIfO9Zy8c/rzbY1+VCZ47z/Y3jyR+YhU85P
-	 9gb0Iu+a9Op37FKsTUzg9eR91wJR9G/L9XOYiBuwgGSgX89iTp9MXp+/CAil439D9i
-	 6ZcO+CQbtirV8WgIq5nhSiTO7BN39oKMj+/tQN9V3S31AFL5tC9BzrTyUUUlIJBcUU
-	 U4TniQpnnSa/w==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b96da7b2e2eso223455066b.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:09:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVucjMs0IunniFggmrUnI/y9NEENx9aTCu2nLUCrsKn8gf7riPGC2kswe3dwPCXCEbDRvSY+5z0+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxcXVd2FoebyvpZoxMAChTLSLcpnjaucv4c8m1G1VQLmIYgdkli
-	Ex+7YM+ro8Th53xz1WQsYtNhQijXkIwRQ3WY7e4R0gUOfOjm5vlfKhQtH5VvpFq0QyKC7Ox0mSo
-	uhVS0yTebgzIUO+z/wiWTSWWEF9n5wUY=
-X-Received: by 2002:a17:906:817:b0:b90:3593:654c with SMTP id
- a640c23a62f3a-b9765028beamr40772866b.21.1773349782192; Thu, 12 Mar 2026
- 14:09:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260312040627.55257-1-liwang@redhat.com> <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
-In-Reply-To: <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 12 Mar 2026 14:09:30 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com>
-X-Gm-Features: AaiRm506sQlNtTd5yCay-yVuxaOgovvr4LCr2fiyeyxDv_MRp7ui-D0aS7YoY0o
-Message-ID: <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] selftests/cgroup: skip test_zswap if zswap is
- globally disabled
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Li Wang <liwang@redhat.com>, mkoutny@suse.com, yosryahmed@google.com, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+	by sea.source.kernel.org (Postfix) with ESMTP id 03C6B44398;
+	Thu, 12 Mar 2026 21:14:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3794C4CEF7;
+	Thu, 12 Mar 2026 21:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773350068;
+	bh=BHIeqMCeZ08yvAl5YqqjtddRClVSOvGwSHug5GXzEz8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Duh+dhDjn9i3oyIucNjLcpV7CKSwWMDBwP1nrAeCAWcyGXtDakHpRp+pm3kMEvL8y
+	 SEaAaWk5jP3gQGaz8kV5kaoD1HdJgTdnHuWBZE8KvOuDSG+7q7krHiTC3YYNdfGDfn
+	 Xpz6tLlo5tMrkq0Sz1LyxlbqOsozNn9yfZFUkN8M=
+Date: Thu, 12 Mar 2026 14:14:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen"
+ <martin.petersen@oracle.com>, David Howells <dhowells@redhat.com>, Marc
+ Dionne <marc.dionne@auristor.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
+ linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Ryan Roberts
+ <ryan.roberts@arm.com>
+Subject: Re: [PATCH 01/15] mm: various small mmap_prepare cleanups
+Message-Id: <20260312141425.1837736829210f2d0b00cac6@linux-foundation.org>
+In-Reply-To: <56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs@kernel.org>
+References: <cover.1773346620.git.ljs@kernel.org>
+	<56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0BCC8140013
+X-Stat-Signature: hp3zqehctpx87iryk8ednhdky7ej7dyz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 852FE4000E
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 9g181szdwapj95hr3qfhp9pygudqc3e9
-X-HE-Tag: 1773349784-76575
-X-HE-Meta: U2FsdGVkX18csxjCDHbJjT6Zr0HIORz4bM+NGrp73eWdT+ZSamL0VaIQwM4eaaNP1ILr1P0FwYP6sWFW4jDs/zQaAl29I4SNjjzcuO5kL+vS6/G4fLKXDE85Okrhx0lcsVx+/hwBIzuTK55JuhfAYchk54WS8MgJPO5uMb0kf4RlEtnB701rwKAxLapUbXBgGAFtLsd5NEcn+quJh4IutH2MLATrYU6GHUO3yP57BlE+zDhxRKoHoP0ikAOM6Y+RoetihdI/ucfJPIKtONUc7mvX9ZP+VXBx6U+Tyv6PAkpQ5wm6Mq6euMB0WIjJBV9rLeCnihtlYB9lodHV+/H7lI6xmwzZYA08gzH2kVg5tuEW2XVrXGJ/SW8fCLMYdwr+7J9ZnGQCu/C27GSDOmzXy6KLn/rTBDN2yEbKgLNcXVsebFJUDrjAr6nb5Hd5dBxbz4jWHQRoAV926pHxjPxvZQ/UYsXIk4T3SK66QA1W2ospfXs3TGxnwCrQ7p9JaPMR0irSFIkeoa5qZgLn5RrHRB+pkZjdbuCmQeAXADuuMMiqxH4Kw1rgVu357eUU3Ltx2dqtEnn5NFBDEsd9YzZrRdVVSVxg8WXIK6fmBCiErq2vInF5IIzVQvJWEHycSpvizab2x9cq9rwyidmUtOGk8KCr2AJHb5W4tgPjg+xOnjYTT8bFy+EUlfGVWLr4XnPJBO1H1cOwpclQCzka2xjrOhjG8rb/o2moV1fQqUNeKLbFRp2IZBoABpAIqWaLejNMgaPfGZ0a2PFvw39ZTMNdOyT5fN50zmG76O035joDyK3KbVjFZEsN2Os7+ykjyJIDXxmRL5C0dTit6uD3Gga/vvIaMRSA+lojXCDIq7+SsKw/T/oFn2Phrp4JuT75CMj2bsU2TOcpusEhCdskFNLNp7nMW781aJigRdlE3GrM5VEMeWUBTHM7f/fUuQuyHjysJoOLD21bdrPRP2VHDaJ
- Q3mVgHRu
- YYEkrTtqiVPxZ4IlzEVNcR97MTbQr4LRxWow63oSPP9ApVMGfbmNGCDLPoLREkLZj3pvCoi9I5j1kYYr6Jn06qwyofsDoB7e3xdf9/zhhDHdUFs/QZtBxT7aTBi2Xrx82vqRLvA7Gr0mYWIvq0VX4m/nSNVLuiZo+qqaiDcNkgPObA327hwLV4Y4GjCGZiRMLGnm2X4KIiDthiXLJH14bPCPjedMnuhgHzn1MpMFtYlzjHBt+9dip+zPD+UkaEWKfaDaqUfboE7giIcZj2/D80IAibdrRClwabFQu4lOfybcSKVc0CWM6h8KiladeOKUacO51oYQnFFjsR9M=
+X-HE-Tag: 1773350069-402089
+X-HE-Meta: U2FsdGVkX19gmlCBlS22O/ykTpmQkkAWrA0x0G0r9SSuXGJQbygfyywQomxZq5GVBxot0TIhmmEzGzKNjwXFZQ4x2YoDbe2Yr0JbOdjzy6qpxHSRTsDQLAe7v1dkhJqaPPGglWcRWM/kW9hbpm7rvjn9LKawuU/MpjyGblMyQk3Eg3RBVSdI4dThUeKyOdZ+7edmt8dka5wYAkKcAuJQ7/v/9MAwWBiFJtC6qLTEenrFtQvQYXsooLPs6EewHJXQwWnFPHdjxYLioxDg2+aO62Zul1bh1tpm4JyOjpDxSjqES/CIdLUQ7AzVc9GCP3MH5P9Iiz0zRAz0NCUJwSsM/Kf1Tizar+rvjN6qIbinqXOyLmuya6cqIIfBtkYDLVg/y208+V1wxXcOuauu+au/B2rw1phIxYeBireaFnV1oEOJEGP1Oa3X7p9Ya6nKiSNY/ZQuvNeD934tsmH4MCHSwh/jiF6Krvp0C0GxjSVrX4SsPmZAwO2Tp6wOu5Y0pti0C4Cpxu50nfOJIru+Xil2WUVGaF43g9PX1yYhl29T3UaNJ27tGf9tnTJ9Gwg3qkP8vnjGdrP9bWBYKZ3s9r44dtVvf91Fo456EbxuOIag4bSvooeZGvFrj65j6dbolCAmRsbpeFd/UEuWfgm/G+jWSwT5kWe/cAIAbAJ3p21F62q+a/dBbJJ05ZzqoFwhzTnA4fBl/LWAURh9R59prXdwXUme009AvJTSY58EutBCsZ3R3/I8FPEC0d+kMgkVSoGabcBtUjpbL4GN438t+dsib/n/C1cZatjailjYSxMyI8VTdyBn+227Gilo7V/BVTIy7vIqNhF3QvYNtN8gyKXLjKBlDkVAQM+lW1dyxsZKe0iB/U9SnT2awyL+zpp9JRZsuhOaGImun/S0kXK3M5JBj9dNcMhwYuv7VDTgYb+uZAJJq0Pr7B8yb2lZYGf/vbjDWUNDBTwua1P+7kp9zSG
+ SwVZxYkt
+ CE3tduz+CarJoUu3eoZ+EwDcIbeB79+39Yhiergj0yH72BlyPk8cG95ZK0/zTxNuSvmi2LxCd507B9Cg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,87 +113,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-> > index 64ebc3f3f203..ec64daaa2f5a 100644
-> > --- a/tools/testing/selftests/cgroup/test_zswap.c
-> > +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> > @@ -589,23 +589,41 @@ struct zswap_test {
-> >  };
-> >  #undef T
-> >
-> > -static bool zswap_configured(void)
-> > +static int zswap_enabled(void)
-> >  {
-> > -       return access("/sys/module/zswap", F_OK) == 0;
-> > +       char buf[16];
-> > +       ssize_t n;
-> > +
-> > +       if (access("/sys/module/zswap", F_OK))
-> > +               ksft_exit_skip("zswap isn't configured\n");
-> > +
-> > +       n = read_text("/sys/module/zswap/parameters/enabled", buf, sizeof(buf));
-> > +       if (n <= 0)
-> > +               return -1;
-> > +
-> > +       if (buf[0] == 'Y')
-> > +               return 1;
-> > +       else if (buf[0] == 'N')
-> > +               return 0;
-> > +
-> > +       return -1;
-> >  }
-> >
-> >  int main(int argc, char **argv)
-> >  {
-> >         char root[PATH_MAX];
-> > -       int i;
-> > +       int i, state;
-> >
-> >         ksft_print_header();
-> >         ksft_set_plan(ARRAY_SIZE(tests));
-> >         if (cg_find_unified_root(root, sizeof(root), NULL))
-> >                 ksft_exit_skip("cgroup v2 isn't mounted\n");
-> >
-> > -       if (!zswap_configured())
-> > -               ksft_exit_skip("zswap isn't configured\n");
-> > +       state = zswap_enabled();
-> > +       if (state == 0)
-> > +               ksft_exit_skip("zswap is disabled (hint: echo 1 > /sys/module/zswap/parameters/enabled)\n");
-> > +       else if (state < 0)
-> > +               ksft_exit_fail_msg("Failed to read zswap state\n");
-> >
-> >         /*
-> >          * Check that memory controller is available:
-> > --
-> > 2.53.0
-> >
->
-> Seems a bit convoluted. You ksft_exit_skip() for one case in
-> zswap_enabled(), but return some value in other cases. This value is
-> checked in the caller (main()) and then used to decide whether to skip
-> or fail as well?
->
-> Why don't you just consolidate them in one place. If zswap_enabled()
-> has no other callers, let's just open code it, yeah?
+On Thu, 12 Mar 2026 20:27:16 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-Hmm I actually like having the helper. What if we move all the
-ksft_exit_skip() and ksft_exit_fail_msg() calls inside and rename it
-to check_zswap_enabled()? We can also just read one character:
+> +int mmap_action_prepare(struct vm_area_desc *desc,
+> +			struct mmap_action *action)
+> +
+>  {
+>  	switch (action->type) {
+>  	case MMAP_NOTHING:
+> -		break;
+> +		return 0;
+>  	case MMAP_REMAP_PFN:
+> -		remap_pfn_range_prepare(desc, action->remap.start_pfn);
+> -		break;
+> +		return remap_pfn_range_prepare(desc, action);
+>  	case MMAP_IO_REMAP_PFN:
+> -		io_remap_pfn_range_prepare(desc, action->remap.start_pfn,
+> -					   action->remap.size);
+> -		break;
+> +		return io_remap_pfn_range_prepare(desc, action);
+>  	}
+>  }
+>  EXPORT_SYMBOL(mmap_action_prepare);
 
-static void check_zswap_enabled(void)
-{
-       char value;
+hm, was this the correct version?
 
-       if (access("/sys/module/zswap", F_OK))
-               ksft_exit_skip("zswap isn't configured\n");
+mm/util.c: In function 'mmap_action_prepare':
+mm/util.c:1451:1: error: control reaches end of non-void function [-Werror=return-type]
+ 1451 | }
 
-       if (read_text("/sys/module/zswap/parameters/enabled", value,
-sizeof(value)) <= 0)
-               ksft_exit_fail_msg("Failed to read
-/sys/module/zswap/parameters/enabled\n");
+--- a/mm/util.c~mm-various-small-mmap_prepare-cleanups-fix
++++ a/mm/util.c
+@@ -1356,6 +1356,8 @@ int mmap_action_prepare(struct vm_area_d
+ 		return remap_pfn_range_prepare(desc, action);
+ 	case MMAP_IO_REMAP_PFN:
+ 		return io_remap_pfn_range_prepare(desc, action);
++	default:
++		BUG();
+ 	}
+ }
+ EXPORT_SYMBOL(mmap_action_prepare);
+_
 
-       if (value == 'N')
-               ksft_exit_skip("zswap is disabled (hint: echo 1 >
-/sys/module/zswap/parameters/enabled)\n");
-}
 
