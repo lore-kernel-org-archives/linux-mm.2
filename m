@@ -4,139 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE3C106ACE4
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B43106ACE3
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:44:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6534B6B00A5; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
+	id 873166B00A5; Thu, 12 Mar 2026 15:44:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 634546B00A6; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
+	id 81A1C6B00A6; Thu, 12 Mar 2026 15:44:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 534086B00A7; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
+	id 727286B00A7; Thu, 12 Mar 2026 15:44:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4048D6B00A5
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:43:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06CB91B77E9
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:43:21 +0000 (UTC)
-X-FDA: 84538435002.25.205AC74
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1E4651C000C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:43:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sIf3SM/c";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 62A016B00A4
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:44:57 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 185F21C447
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:44:57 +0000 (UTC)
+X-FDA: 84538439034.13.8ACAA85
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2974C14000E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:44:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fy9lDL0I;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773344599;
+	s=arc-20220608; t=1773344695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GKk+xT2Xt1KqfWHKAFiwlYlRL4TR5nlSFw8vMkOLeD4=;
-	b=Ae6N73ZXKl537Q7r/G1xZtMtle+kqKygdJLg2nkR26tyZ+DGjYKs/xAIa7BJEpUD3dCYig
-	6OjW5pS9p4T6GNne7v3wDWd/89BumMgVKFUBE68cixhwxDXOb/rsmtgGFY+5PBSthA2FgQ
-	eayLpbb7jIiZdIZ5BkN/BhVVNqSAuPc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sIf3SM/c";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344599; a=rsa-sha256;
+	bh=EHoIsTG7IVfAzcG8vtVaG2KfMTAKD1Mf8pCRYcgobfc=;
+	b=NN+z/gXnr2//ctQIMEdPkKSSXCYnDlMZz+QZaiFgnKY8126oMTC9wSEEKLdNYE8nAAemvM
+	wDMd8PJjJK6L0i0ZjaDDt8LI0ka23PXhjFki/vMGAxvV1O1HTIL2QCcCyiYUngyGHK+AvK
+	x2j8wuHul8PguWjOzm+5dEIDfjz7Xcc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344695; a=rsa-sha256;
 	cv=none;
-	b=EsOuzvfw9vBhltIEaA++04V9jnO2we96St8f9GgRbXazfaiYMJyr31vTsHHuwmLfAvHlXr
-	RMpxMqIdbmG75ozMjj97jGB6pk82WuG4HsIAaqguALp53otVokf2nAPa4+fPavE4R9jW1g
-	6b4gCdanPS7CbnAhy12IfJZB+bE422A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1ADB4443F2;
-	Thu, 12 Mar 2026 19:43:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144FAC19425;
-	Thu, 12 Mar 2026 19:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773344598;
-	bh=1wNpJYeE1dWpshwdESWmB2GY2hIpas7logaSTVcI+gQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sIf3SM/cSF4Eys53CHFttBllrEsLPwddPTKvDcu9JiLouK0OX0hZ4RkiuQZJLDkL3
-	 M54xIf5vSAfgWLRiUZYF0lShQvx7EdsznNcJzOGYJ8eN4EVmZK0JIxPSmeY/llVcxG
-	 T2y5h0U83ZqdtAfZ/w9Uj8UwjmYZ8KL+TuREIABbtAOIuGabIPBZlMfpFrDJ7RKXO6
-	 lKQsD1faOACUQshUGZ5r1H9tGi9Gbjb9Gkp+e/D2c3Nn8aKh++FK91r4WsrrmyvuBJ
-	 /y4VnNqfFDUb7NWvhu9ChkLkZlfFFufi/0uzsRjtQ3mpKjPL9Rocmtx5VZWtsX52xd
-	 yLsZfZ4bNaHdg==
-Message-ID: <17254a02-8155-4857-92de-51b9724d4f5e@kernel.org>
-Date: Thu, 12 Mar 2026 20:43:09 +0100
+	b=1ABBuI3Tof6qJ1h9jfu4V7j5W8U3A8hvnum0tVgOaYBBVrwp0na63aI8BxpvR/F4WRfhRR
+	TZrPUkNoq6pmveLucrzT707b+LJlJK07Jin+cHRYAItGSD5L1ELGKnCPqPOB9uRVfklhRw
+	DJAOIK0H0OxF6V5I1NBm9I5F/4ysVzo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fy9lDL0I;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-41729dc7d7aso637893fac.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773344694; x=1773949494; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EHoIsTG7IVfAzcG8vtVaG2KfMTAKD1Mf8pCRYcgobfc=;
+        b=fy9lDL0Iy8lWiLSWbJtxmxYg/m1o4LFBPZm7oRWeBOckDCvLG7pzMTmSAbhdtFgMaD
+         GpLaFE72U8H19YWzu9c0EzTOECJPSvCU4CoTNQpN7xxmeUifT13H3ioutSs5IlIrL4kF
+         KZFm1cdrTVRh114OBiWuIEpkm+mLbSCko6NkecPFD0IYHNn7GQsfIk4HrQ9A5Cf425ao
+         d1NNNmkjzJkS25RqpU8Ju7rDtO53qMLeTKKQikIQhVpE0ixM0xbqF2H1q30wz9YLY7Gl
+         XOwaNLMFJOwlT0+khNGzwzJatBCaag2vRf2LGYE+uU8ebrdL4WUR+tqk1WN5moqvTm1k
+         SNbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773344694; x=1773949494;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EHoIsTG7IVfAzcG8vtVaG2KfMTAKD1Mf8pCRYcgobfc=;
+        b=E+b1OP1VxsayNy5oRrBt97YwNlL9B3hGFnkVp8nNY0j+rAF7sRe4DwNAALnOih4bE/
+         md36enqzWnrqcViHGFlFAG5pN5VNsD5K9PTLUd84Sn60+heYIBVIkaFdDVhOlEbOJMnH
+         0nLthcSFgXKdmOtOmSzovoVJfVVnWW36mFTsHjwj3LRFWZH9Z9whgG3dU8K9E8zIRZls
+         WTh3JNvxtchCusOeipD2ywYfCWA9k0UJFRc852E1qbeC40esWS12fuoW9wDO+Y6FkBGE
+         q5MUn/mWUzXarAHvmoqyXghsd42yAyhumLb+A3N6VhEgkIOYRLG0sJ7sSMXYpYW5jj1w
+         n2Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQI4iEWpXucP/fa+aoKWHcTB5iOO4T4BqMaHs7R6IvExHgnstiBy5mamdHfBXodTAaY1UmHkBFUQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywgq7ejmOfbU3TFJJ8pfF7cbGnLC9425MIncd9Zhe7fdpj6BFpG
+	ululzH6uHRQ39lEQZ+tzq9ULxsy/0R+DQajEeZE3SmO7CrIeClE9x09s
+X-Gm-Gg: ATEYQzzwl25/iVpIuHiqx0AoWVZ4uBIT3JsFGnO0wGM7cL4pypdc5cVkeG0xLUSTgBX
+	piDS+eCt7aARX1jTLFklxaCEmLyw+YUfkP/jgzgbdgkYgrzfLVxNzYdqLAu2T13RJGdQTbsstJJ
+	5fxEeorgM0EAnWH+hqLh5lCrSUrkFyx23lkN0PwSt8MHi7hec4GNXaCpif330z4Vp3Q1QXuRFkF
+	B66d4C7X1VgEJVKIHxV8qPnMGo1cqcJX+6bVC094cK6s1RLPfKNFXQgqyaDtMaERpMFc7/WXDK2
+	ELREDwWb/TlyEfQ3mtyCUDyRawEVmJoIuPtD06/DWa5Q9i/Hk1+dJsjIyWfoQE69e02ldFhQa1h
+	O/XyE98HwegItV8k5AjtyTcddf165lDwj2afuM7UxTFgKqS2i08+eojQi5hDZ7cSnFWAW7k5Epp
+	qGItmRoUEsPWnKnOj9QAbh2w==
+X-Received: by 2002:a05:6870:8e15:b0:3fa:a43:1f0a with SMTP id 586e51a60fabf-417b93f3d61mr527488fac.37.1773344693894;
+        Thu, 12 Mar 2026 12:44:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:48::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e6c7885sm5549386fac.17.2026.03.12.12.44.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 12:44:53 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Bing Jiao <bingjiao@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [RFC PATCH 6/6] mm/memcontrol: Make memory.high tier-aware
+Date: Thu, 12 Mar 2026 12:44:51 -0700
+Message-ID: <20260312194452.3418042-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <abHnHN74V3okn28D@google.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH 2/4] selftests/mm: soft-dirty: skip two tests when
- thp is not available
-To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
- shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- Li Wang <liwang@redhat.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-3-chuhu@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260312114027.634559-3-chuhu@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1E4651C000C
-X-Stat-Signature: j53pr7rtfh7y3tcmrp4s7dr5e36e5385
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2974C14000E
+X-Stat-Signature: 9gw6b7e7jqirgp84s6qhbyqox6bwff3u
 X-Rspam-User: 
-X-HE-Tag: 1773344598-684543
-X-HE-Meta: U2FsdGVkX1/nBmQR2QEYPhFWtSAxlUvTHSXePCs5zjMvjM7FpdaBc8ZNa8KetCm8g8NdQIngOe1C9fAo3BswqZC6u0PsQDf5bamUr/hjgLK5P6N1zu1dsjgPk8hMMua+fmLtUdhteQH1GAdewv++K9xWYn5CHKnB4jQIUR9uGc3zD3wDh6M00rPfFRHaSnw5hS6Xvy9FCjvaRanv2i8Q43vLLQ/ShA0+F/gfZlsPMkj7wNwNExkjqykG56usrJy2fh6CUwO3VCp1Iure45djweLftW6Pc+0m13CXpb8qHdjal7f/V3sj2LLKfgchtNswEDjCkSE3Lnbzrql1BLsSwm6oMzviwKpp1dQlKCa3zvT4+sQoJ5LGUfgUKwIETEcBghUFLHtC3KMGbGt7ewW1xyE+BtyJ/ZuRH1R7c0nU6Nv3mywkCtHS6/YwthEYTevBbv1GUettirWA7q99JX6tACi0bAr8MM5lmoKuKlmJ4aoWP0wMnS1G7KxnP0+moWCYJftvvwwMyCQis635amI00y1/jdyhorQHOwaaLxHwt3nk4fjUU0plfF+wWB9MPYjmi7LgWu2D68xpbTxoE37OriLdwOLnINEDsM51HxXi6DO08gslTuBgo8+2kBVPzpNeK+uATnkjGWqGIrn7tLgg833pRoR4eugbO2Xp6dd0v7Lzxgizg70V9dlMNYcJqoN2m+HIhDliNyCY3JP8gcB/bldZYqerQHzyq6ushdWVyf8FP03XPao67EIYiWOEibZFpbeHxQKsgA6QAOaXWlZIyXCOD2LNOWL88wthJlvl9YPMhY2hqc0hSHitpdz0PT6YQdsVIjvh3ZkEjwW2MHQbFApmtktIINcaxePWnNi/e1FFa5Isc2ExlqmOY8mFzmn5n86nGoxrZiMwr4U9T0Tn4AV+bszru+b3R66YzlWWDckxA7TJa+cA8MvG4/kEoHdERpko9XsNAmg7DFmZ14u
- TaPWlmUI
- AxfJkoHXrwcHvrccPxcLkwj+kJRyy6QmhNGkY5Udj8FGci60sFTa0wlWGj4IJkof87AciX/3YBIcifk0UTQiZPJeYtZDobohEpCQ+UeFwCx+jZ3w6OfRjqj7xQiAcuNUMLLMTfUhA6XqECaHCgfNU6ggJdv99e3tBjbDe/lxI1zggoHwE5DAJSr9UxCUQKoMgqkX42RKnVb/436P3R4D2oHJN6kWiAmZmFU2gi5gb0xTLib+m1qp3vDQn9U1J34n2riZ1e8jsi8uJ5lMh1W4FwwS+o50etC+mVnlAAVD+KF9Db/L2nom3/Qb+cg==
+X-HE-Tag: 1773344694-2078
+X-HE-Meta: U2FsdGVkX19IYKHDMZRlqpohuxruuDTL0B2jrDX+QjRWcbfd1FSJmxMbowctZ4Kf98WsUIHdP2gZr8Aji3Frqc64s/11OVFU3BZf1wNQ20haHTHrlW6shnwLETq8CB6IDTNh9FQ0ap8cO4cE7Q/rTgPa2S6GtHLvNX9RwA66sOEwPJBitOgIGON3M8wwenULsaEikjCuLtMQDSNwFFM2VmXYP1SEIpCb1e1GpC63zh0CzIP3+XZ+n5rs9xHKDrd7LgYqctdBx23AKhmaNUlyawFAQg/XlTlFFoWCIFl8R+hTopErULnab4SJ6dl+d4yJb3P4Y/ZQ0ravyJq9OANp4QGAAgtmBtFDol0UB/0bgel5wvl9EA1btpBXmNOYXr+KW5B15Sxii+6eWKIxxaoNTTb6MfE5QGhvObs9ZP9OD1kBYBfuyD5d27UXXmom1sD1Y5FqZrmWSVzsxV2pDrTNjZbdj25PGiPe/KEvvwXIArr96qIVoVa94qPgZP+G7vTKYwSwqyvwIb78CC78uUS2Ex7SJMD3t83QMo/KSCnUuZYR2StSqg7LJiyfI2BzN5cT4wfPJ0w3+E8pZB/H8jqJ2jZhL3COhxKFfls+8UzglHpHR229h0E50WISpxQCTNUPmJiOu58kfEmQkK8SUezfToUb2cfsh62Q6yrukbVAwKzoiM/gHh7bb/ZjLA2vrjazGVxfi80K4L2/LcVs64Bhnf4h1KYQlWjgtYLgNaGk5DKbGg67YVCm6aNgH8RfrPKmPNFfIlEMr+Sb1JAy6AJnlmn1thpd9gHIrWyqEKjMlae+Nnec2sm/xn6dMJFkT0O5G5heySvRJwnzaiYF8lZMqBsTQnatVsjYPPpo1CNjBN5vhW73Nx+fFEUsqctqDJidmUA/B2JJUDgSkjcl/PHHA/onHixq0lrzjSei2dgB39kBkX07zNWtyCsUG8Hwmoe9f4BVtpvOYbfQM6W1crn
+ Kv5Cj8VV
+ QofIMvawl/YmIuZYwkjsjlhqdzd7I7Z4xJZmg7xKZcAQf/hVUpty0RQJyDhedit4AbGETfbYyZo7r2o2uNIzeAzvJWNL1bI9fWUTlSXytkJ0RHB9VAYTFRLUmZaOS3IPFi/ID5d0xjXMNV0VbJk25bCQwCMan9oh/BM0ITyt0vqRO9QttkqBqOju1u744a7P5Bft+vdhOuE7sN/P1DkKGLIvvl9SMDTp9ifO/9JQJetGXOWf101Ygm+8yVzlnYDDdtzPPFGVcfmKoRKdFczX7lOB5n19G00A8Uvd0FlXWITw1rdHvx+0OXkb6c+lId7zEyiMUiq+9TV3Y77AKjPjO5EskavsuDZoqGCzdadLqr/b0n9+SSozou4sgv1nfoq2ApiP0VApDX+ftyUnl5V9m/ObUK63URacIZrJiJejbG9G7Lkr7/mPS77MDmxcm1YjLmCTxL9dWIvl/ZdMSQEXG4uc7tQ8gUoglIVL66A0vSs6gOfnai4/nKC/GhmxLlzMKgbLM7v5xxdtosmuG1LlRxtFoQ/Un+KSf+baLo0FSO9SfzDAyNpztF7wYtnoLUor7X/0t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,88 +133,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 12:40, Chunyu Hu wrote:
-> The test_hugepage test contain two sub tests. If just reporting one skip
-> when thp not available, there will be error in the log because the test
-> count don't match the test plan. Change to skip two tests by running the
-> ksft_test_result_skip twice in this case.
+On Wed, 11 Mar 2026 22:05:16 +0000 Bing Jiao <bingjiao@google.com> wrote:
+
+> On Mon, Feb 23, 2026 at 02:38:29PM -0800, Joshua Hahn wrote:
+> > @@ -4485,15 +4527,22 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+> >  		return err;
+> >
+> >  	page_counter_set_high(&memcg->memory, high);
+> > +	toptier_high = page_counter_toptier_high(&memcg->memory);
+> >
+> >  	if (of->file->f_flags & O_NONBLOCK)
+> >  		goto out;
+> >
+> >  	for (;;) {
+> >  		unsigned long nr_pages = page_counter_read(&memcg->memory);
+> > +		unsigned long toptier_pages = mem_cgroup_toptier_usage(memcg);
+> >  		unsigned long reclaimed;
+> > +		unsigned long to_free;
+> > +		nodemask_t toptier_nodes, *reclaim_nodes;
+> > +		bool mem_high_ok = nr_pages <= high;
+> > +		bool toptier_high_ok = !(tier_aware_memcg_limits &&
+> > +					 toptier_pages > toptier_high);
+> >
+> > -		if (nr_pages <= high)
+> > +		if (mem_high_ok && toptier_high_ok)
+> >  			break;
+> >
+> >  		if (signal_pending(current))
+> > @@ -4505,8 +4554,17 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+> >  			continue;
+> >  		}
+> >
+> > -		reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages - high,
+> > -					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL);
+> > +		mt_get_toptier_nodemask(&toptier_nodes, NULL);
+> > +		if (mem_high_ok && !toptier_high_ok) {
+> > +			reclaim_nodes = &toptier_nodes;
+> > +			to_free = toptier_pages - toptier_high;
+> > +		} else {
+> > +			reclaim_nodes = NULL;
+> > +			to_free = nr_pages - high;
+> > +		}
+> > +		reclaimed = try_to_free_mem_cgroup_pages(memcg, to_free,
+> > +					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP,
+> > +					NULL, reclaim_nodes);
+> >
+> >  		if (!reclaimed && !nr_retries--)
+> >  			break;
 > 
-> Without the fix (run test on thp disabled kernel):
->   ./run_vmtests.sh -t soft_dirty
->   # --------------------
->   # running ./soft-dirty
->   # --------------------
->   # TAP version 13
->   # 1..19
->   # ok 1 Test test_simple
->   # ok 2 Test test_vma_reuse dirty bit of allocated page
->   # ok 3 Test test_vma_reuse dirty bit of reused address page
->   # ok 4 # SKIP Transparent Hugepages not available
->   # ok 5 Test test_mprotect-anon dirty bit of new written page
->   # ok 6 Test test_mprotect-anon soft-dirty clear after clear_refs
->   # ok 7 Test test_mprotect-anon soft-dirty clear after marking RO
->   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RW
->   # ok 9 Test test_mprotect-anon soft-dirty after rewritten
->   # ok 10 Test test_mprotect-file dirty bit of new written page
->   # ok 11 Test test_mprotect-file soft-dirty clear after clear_refs
->   # ok 12 Test test_mprotect-file soft-dirty clear after marking RO
->   # ok 13 Test test_mprotect-file soft-dirty clear after marking RW
->   # ok 14 Test test_mprotect-file soft-dirty after rewritten
->   # ok 15 Test test_merge-anon soft-dirty after remap merge 1st pg
->   # ok 16 Test test_merge-anon soft-dirty after remap merge 2nd pg
->   # ok 17 Test test_merge-anon soft-dirty after mprotect merge 1st pg
->   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
->   # # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # # Planned tests != run tests (19 != 18)
->   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
->   # [FAIL]
->   not ok 52 soft-dirty # exit=1
+> Hi Joshua, thanks for the patch.
+
+Hello Bing!
+
+I hope you are doing well, thank you for reviewing my patch : -)
+
+> I have a concern regarding the system behavior when both the total
+> memory.high limit and the new toptier_high limit are breached.
 > 
-> With the fix (run test on thp disabled kernel):
->   ./run_vmtests.sh -t soft_dirty
->   # --------------------
->   # running ./soft-dirty
->   # TAP version 13
->   # --------------------
->   # running ./soft-dirty
->   # --------------------
->   # TAP version 13
->   # 1..19
->   # ok 1 Test test_simple
->   # ok 2 Test test_vma_reuse dirty bit of allocated page
->   # ok 3 Test test_vma_reuse dirty bit of reused address page
->   # # Transparent Hugepages not available
->   # ok 4 # SKIP Test test_hugepage huge page allocation
->   # ok 5 # SKIP Test test_hugepage huge page dirty bit
->   # ok 6 Test test_mprotect-anon dirty bit of new written page
->   # ok 7 Test test_mprotect-anon soft-dirty clear after clear_refs
->   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RO
->   # ok 9 Test test_mprotect-anon soft-dirty clear after marking RW
->   # ok 10 Test test_mprotect-anon soft-dirty after rewritten
->   # ok 11 Test test_mprotect-file dirty bit of new written page
->   # ok 12 Test test_mprotect-file soft-dirty clear after clear_refs
->   # ok 13 Test test_mprotect-file soft-dirty clear after marking RO
->   # ok 14 Test test_mprotect-file soft-dirty clear after marking RW
->   # ok 15 Test test_mprotect-file soft-dirty after rewritten
->   # ok 16 Test test_merge-anon soft-dirty after remap merge 1st pg
->   # ok 17 Test test_merge-anon soft-dirty after remap merge 2nd pg
->   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 1st pg
->   # ok 19 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
->   # # 2 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:2 error:0
->   # [PASS]
->   ok 1 soft-dirty
->   hwpoison_inject
->   # SUMMARY: PASS=1 SKIP=0 FAIL=0
->   1..1
-> CC: Li Wang <liwang@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> ---
+> If both mem_high_ok and toptier_high are false, memory_high_write()
+> invokes try_to_free_mem_cgroup_pages() with reclaim_nodes set to NULL
+> to target all nodes. Under these conditions, the reclaimer might attempt
+> to satisfy the target bytes by demoting pages from the top-tier to lower
+> tiers. While this fulfills the toptier_high requirement, it fails to
+> reduce the total memory charge for the cgroup because the counter tracks
+> the sum across all tiers. Consequently, since the total memory usage
+> remains unchanged, the reclaimer will likely become trapped in the loop
+> until it reaches MAX_RECLAIM_RETRIES and other situations (e.g.,
+> both !reclaimed && !nr_retries–), leading to excessive CPU consumption
+> without successfully bringing the cgroup below its total memory limit,
+> or causing all top-tier pages demoted to far-tier, or causing premature
+> OOM kills.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I agree with everything you mentioned above. However, I would like to note
+that my series preserves the default behavior for when memory.high
+is breached (since toptier_high is always <= memory.high), so
+memory_high_write() would previously have this behavior as well where
+shrink_folio_list would prefer to demote as opposed to swapping and
+lead to the infinite loop.
 
--- 
-Cheers,
+In that sense I think that it might make sense to introduce a fix for this
+that is orthogonal to this series. AFAICT I don't think this is introducing
+any new harmful behaviors.
 
-David
+> Given your tier-aware memcg limits, I think it is better to reclaim from
+> lower tiers to swap to satisfy mem_high_ok by setting the allowed nodemask
+> to far-tier nodes. Then demote pages from top tiers to ensure
+> toptier_high is okay. This also prevents reclaiming pages directly from
+> top tiers to swap and ensures that demotion actually contributes to
+> reaching the targeted memory state without unnecessary performance
+> penalties.
+
+If I understand this correctly, this would mean that each loop would:
+1. swap out low tier
+2. demote top tier
+
+And repeat this cycle until we meet the memory.high limit?
+
+I think this makes sense. I will note that once again I think that this
+change is orthogonal to this series, as it deals with the memory.high
+violation case and not the toptier violation case. Note that if only
+toptier limit is violated, demotion from the toptier does make sense,
+since in this case it will shrink the metric we care about.
+
+> To address the issue where a memcg exceeds its total limit and demotion
+> cannot help to relief the memory memcg pressure, I am considering to
+> introduce a reclaim_options setting that prevents page demotion by
+> setting sc.no_demote = 1. I have a local patch for this and am preparing
+> it for submission.
+
+I think this makes sense. Please do CC me in the patch if/when you do
+send it upstream!
+
+> Please let me know if I have misunderstood any part of your
+> implementation or if you see any issues with this proposed adjustment.
+
+I think you understood my patch completely as I intended : -)
+From my POV though, I just felt that the issues you mentioned actually have
+to do with the standard memory reclaim infrastructure, and not necessarily
+with the toptier high semantics.
+
+And please let me know if you feel that I have not represented your
+perspective as well! I hope you have a great day!!
+Joshua
 
