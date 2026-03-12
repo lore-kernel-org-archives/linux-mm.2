@@ -4,235 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 553FE106ACCA
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 16:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41CE4106ACC7
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 16:14:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD786B008A; Thu, 12 Mar 2026 12:12:49 -0400 (EDT)
+	id 7504D6B0095; Thu, 12 Mar 2026 12:14:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A51A6B008C; Thu, 12 Mar 2026 12:12:49 -0400 (EDT)
+	id 6FD936B0096; Thu, 12 Mar 2026 12:14:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C63C6B0092; Thu, 12 Mar 2026 12:12:49 -0400 (EDT)
+	id 61D376B0098; Thu, 12 Mar 2026 12:14:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F086B008A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:12:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1232B81C1
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:12:48 +0000 (UTC)
-X-FDA: 84537904416.26.574AD40
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DEC43140014
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:12:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jnWRJFOB;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf26.hostedemail.com: domain of przemyslaw.kitszel@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=przemyslaw.kitszel@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773331965;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FD576B0095
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:14:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 22F061C11C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:14:12 +0000 (UTC)
+X-FDA: 84537907944.13.6EBB72E
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 08D9EC000E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:14:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=foV+uUBl;
+	spf=pass (imf22.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773332050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2r3mEx4jaS69b6pg4TeplPYQyNYaMq5f3Q1pXlTbJ4=;
-	b=juEyGWoMdbL+LSAojqloiwH1Gn2yYV52NCcbRDIJn58MTfb0yf2XdxI85s9N221yhb2HnZ
-	x7zgFwWZjiEj1DtcW65dJZlqErjIt46zY7GR/Cds91WXhjz/tM2ml0D1HO7W2xYqGmXPln
-	45tR1rNWepwVdQVvo/0NIkDqxa8CNV8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773331965; a=rsa-sha256;
-	cv=fail;
-	b=5nFdfZQZqkVi1yA/U4m0ECa0TNskD6d71NURhM8MsV60U1yaY8J8Nao+6qxZwKwJMzZZfL
-	JzQWv4ALimbQgy0tmwdq7EOvgcJfGoL6ileoFZhMNsCPi2PB/bWufMYmO/lkEY6KQF71A2
-	9XsANSkP3XEiYcVy6y8kJMQCWuh1e9s=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jnWRJFOB;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf26.hostedemail.com: domain of przemyslaw.kitszel@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=przemyslaw.kitszel@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773331964; x=1804867964;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=5bFRno/x5CuND9g6xv0lanCw5CYbDU9w0cEWHBHlDpc=;
-  b=jnWRJFOBoRsH1P8cPfGY/BDG4vjem5KBG1MsP4QGZ2+vro0ShJhq7WVa
-   jweowqKnaEaZaN9cEC4jNiYltLDTE8PUxHAtLxpQYXBd/GAC1sf42u1ke
-   euKLthZ2VQV5hm3XT4hrRT1KaxAVhUfh/5R7S/P+4Rmj6dJrqxU/yXbyk
-   H/yduMd4qF9fuNijRWmh1GmTy2EaFt4BwjTIOugU9+xOqiX8D7a8+iXtE
-   VF1cTXjiZvXNTx1LoP99Jyf5xNJqe4OajhSKAYS+wBEvLSOpxRJjmkI8H
-   NANcBNlvlIxf8bbhAFdFAgRNJ45SUfsXZkbkuK79+gN13FqKlEREJqork
-   Q==;
-X-CSE-ConnectionGUID: g77QYinbSxGw53/Aurb8eQ==
-X-CSE-MsgGUID: XuZ2zJVWSxCStFZCChOinA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85910044"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="85910044"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 09:12:42 -0700
-X-CSE-ConnectionGUID: wo9a9boLQ3W77nLAysyVeA==
-X-CSE-MsgGUID: UCZc7QZASc6MQg3o49dwnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="221051544"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 09:12:26 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 09:12:16 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 12 Mar 2026 09:12:16 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.16) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 09:12:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aQffyITYkzTS7flG4mkV7DfqRy6p0yvoelsD1vPvzqmebccUjnkt1BqsOASVKXX4x3BQJ0/fhMjJjYTbKnlf3lvYGmjtJVizJ69cNSh5jhuSL2AQ01AGkoVtcw3unypqT9dvuaTwpqb+jjgJ7vlCBtf1HWVN6s4fqOYqq9QZwsk1A9WzGZGdEs/5dSSqLdPPfixlVnwkDluMZyAhItvv5kGdMIcI6g35NEL5jpCBIoBM372SFwDMdrPpAdQ5KcYZcdMKZRMeyPvTlVgDa8AjH2VNO5QGAihTlm5OehOlbQf/y69qehIByv+JbnNkYOFrLMG4EmrTpDQKs37UJp4uYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S2r3mEx4jaS69b6pg4TeplPYQyNYaMq5f3Q1pXlTbJ4=;
- b=BztW+Cme5OBlZFfQyBCT3cw5ysoYvV9bvxO9E6neEsl0PT5FFXC3+hYCwymttBgqy/O1ZLFwr0kDKiWbQkgNkrKS4GIU57Keqr5x34a5354EeTMbgD3X8v5XNkdeHaxX/rr3vxJFgx2JDRU8FQbxz4nMP5ci3XJHEh43dAgT8+mP0ZXNwXUvKgg+BXL7/+njvxLtEkUIMgxIflWkKsSVdgeYD4aMFtVpIeABrP99SEHA1GvIK5GAlGmSYhMUpM5kPkTPOM6wrwVlwR5CjOhT6Qgc7hMTjtxIa8k1CJOgDbe0WZCQKoI2qggdWbyMknWbNKzpzgNtgx2i25vyrDOpjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
- by DS4PPFDA9EFDFDB.namprd11.prod.outlook.com (2603:10b6:f:fc02::55) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Thu, 12 Mar
- 2026 16:12:12 +0000
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::8d98:e538:8d7:6311]) by MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::8d98:e538:8d7:6311%5]) with mapi id 15.20.9723.000; Thu, 12 Mar 2026
- 16:12:12 +0000
-Message-ID: <0da51c50-3afd-464a-aad8-99e475a31339@intel.com>
-Date: Thu, 12 Mar 2026 17:11:56 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 38/61] net: Prefer IS_ERR_OR_NULL over manual NULL check
-To: Philipp Hahn <phahn-oss@avm.de>
-CC: <amd-gfx@lists.freedesktop.org>, <apparmor@lists.ubuntu.com>,
-	<bpf@vger.kernel.org>, <ceph-devel@vger.kernel.org>, <cocci@inria.fr>,
-	<dm-devel@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
-	<gfs2@lists.linux.dev>, <intel-gfx@lists.freedesktop.org>,
-	<intel-wired-lan@lists.osuosl.org>, <iommu@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-block@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<linux-btrfs@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
-	<linux-clk@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>,
-	<linux-ext4@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-gpio@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-leds@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<linux-mips@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-modules@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-	<linux-nfs@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-	<linux-phy@lists.infradead.org>, <linux-pm@vger.kernel.org>,
-	<linux-rockchip@lists.infradead.org>, <linux-s390@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <linux-sctp@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-	<linux-sound@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-	<linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<ntfs3@lists.linux.dev>, <samba-technical@lists.samba.org>,
-	<sched-ext@lists.linux.dev>, <target-devel@vger.kernel.org>,
-	<tipc-discussion@lists.sourceforge.net>, <v9fs@lists.linux.dev>, "Igor
- Russkikh" <irusskikh@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Pavan
- Chebbi <pavan.chebbi@broadcom.com>, Michael Chan <mchan@broadcom.com>,
-	"Potnuri Bharat Teja" <bharat@chelsio.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Taras Chornyi <taras.chornyi@plvision.eu>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
-	<alexandre.torgue@foss.st.com>, Iyappan Subramanian
-	<iyappan@os.amperecomputing.com>, Keyur Chudgar
-	<keyur@os.amperecomputing.com>, Quan Nguyen <quan@os.amperecomputing.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DB9PR05CA0028.eurprd05.prod.outlook.com
- (2603:10a6:10:1da::33) To MN6PR11MB8102.namprd11.prod.outlook.com
- (2603:10b6:208:46d::9)
+	bh=8S9kpSbMrF1j0QA2GDOXqTycEozhSapelcYr5ulLYWk=;
+	b=l5pfJ77ErHvfjt8ApYYXv1pxd66osi2hIt/B37RSHVq04V02Py3FjNEil+NqWymG1ilpwq
+	n/NYlgNp3MPL4GJULJvLqZDZCo3wq8hmakVsZar4ODhKAGt6E5SCe7J+kipfKtzb/T1SM2
+	QoPQg0uXaDRm4CSex1eO6J0TBVsf2l8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=foV+uUBl;
+	spf=pass (imf22.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773332050; a=rsa-sha256;
+	cv=none;
+	b=n629Xx/ubhLHRI8BHuCeRNwG9Ciu1jRc0lZniUU1xu69LoGXNFPg0Dy3H6TKfv2/PE+f5R
+	8g6r/ih6G9+XjC9+YpDOZZSwSEvy6EIAYpEosCjBUDhC80tJyG23ONQefCK5VkQjAStxSz
+	HWcEniibDOzFg4a2iiTIlScJhPF+SZs=
+Message-ID: <343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773332047;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8S9kpSbMrF1j0QA2GDOXqTycEozhSapelcYr5ulLYWk=;
+	b=foV+uUBlJDuw7ebXJrD2UQy+HMDbOyN1uiGoY/VhPevytnn5dXWRnRSayiOqBIlKU0menO
+	48Tcq8P4hlTuSKLvFiNOlHu7YIe1SaoY4Q6TeSKOWGkYQrSs/j2yy1QuQu9eswLlXmMmf0
+	tev69CksT9lwmShZNQ3xpJHFGmHYk4Y=
+Date: Thu, 12 Mar 2026 09:13:49 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|DS4PPFDA9EFDFDB:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f0f9ecc-edd7-4e03-1a3f-08de80521e93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|22082099003|7053199007|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info: 0JzyEtz+ZbY+UJfay1MMx6cC7k0VDpTAisQfHr8ee8fhRS9oZ/3EkK0SYa4H9xO+17cqN8E+INuWd0bDOhg6KyMSzQi4RLCB8yuN8addTN8WfkoDEXNJd3uynlJwQMFvJpVc5/6mTD+E8XvzGrnqrFo3mdW0yJLnV+UL+VFlNvaI7d3JY+amn8fmczN5NWzLWPhGBAt2EMHTRLTc8v8nGb0g73JENOqONAlmDCfKE0GXQx238nSbuoRBzBGsrkpYLX0pGkMHDk5HsKqQySnqWHSIGAs9FIfiQ40DdaWm8mwqbOfnJpoxF8PSYWVX02H6lUXF2NuGRZVoW0O6iEmJTBTtk47r/Uob+aS0SdHobYpGy2JhDE1CFbFyiD8Rhr9YqFpB6I7pUC5CO376reeOmS1ggrEUisVWCJ8UCW/cm7uZVmRS7KJnFOPnJ0H1rbHeXczxrtg13GUOjBpAoeHkI6e72lLPv5Xj5OOdYD8GCbWA6bNGCfVjbZXkKtYzNhOp9gtoZ1NNYTLIklJDjukLNoia6KYo5rUKZkX3sMViba6m8oY1T/8y6T83Q7cSeVNXpdvgJ+D3rUuF66Bn29BhUp50Gss35pc8jsAIvV92tpazJssg2Yfv3zGruCBTbGG6uKoA/+Lyct3jhQyr2suol6i7dMGHlSURpaY/Y65Ye+icJJRzr306I9/r63LzJ5Kl
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(22082099003)(7053199007)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UTh0emRrTjRWY2xrdUwrdmFCeDU4bmVmeGtUQTI5MnZ2MnQ5UmJtWFllN3Nv?=
- =?utf-8?B?WVZpMHFMNGREY2IxMllKYnY1UGxWanZTNlFHTGk1QjdyS0lvTVh4eU9BUkhk?=
- =?utf-8?B?L2tJRUJEN1RQdmlqUUtvY2hhOGgrSis2Y00wTC9uU0U4WXZuOUZWL25kWXNX?=
- =?utf-8?B?eXBRZkprWlpkUFU4M2RPckgxNlFBM0lCZnIxZzJpeWV0UmczVkMweGRHUFM3?=
- =?utf-8?B?Sjh6TWE3WVNJd21XM1RQODMzT1J3c2ZTa1NyUEs4dTdmMlNtQXlzZU5nVzND?=
- =?utf-8?B?K29aRHA4ZDllcmNWRFNZeDBRUTNheWd2dWNWdHY4RjJIVnhuRGNvRG93NVZv?=
- =?utf-8?B?dGhPVkUvYlJSbmhxZDJFMEF5TU5Bb3RkbjlvVktNQWVqWWlRSWMyNlFYei8v?=
- =?utf-8?B?ZFdzUFpFR0xseWs3ZDNRbW5qenowWXM3MEpjTldRc0J6eVdBT0prNTNqQUF2?=
- =?utf-8?B?SjloL0Jzd0lnSC8yTkFvMzJtemJzckxHeEVKU1FmcU5lcXcrT29BWGsvNmFB?=
- =?utf-8?B?SEE0ZlFaTlkvOUNHZDdjRDN2Vzg4Y1lEOFlRRitsOC9IOVJrSi93YnFyRnB0?=
- =?utf-8?B?d1ZjTm1TUWl4TnBQSytnektHR1hzWk1mT1BuTi9ZVlJyaFlWTVJjSnZ1WUo3?=
- =?utf-8?B?MEUyYkUraHNhcTRtMmNMa3VIS1ovVFlVbTYyc2NVMDlYN2svaDRHYmlpa0lz?=
- =?utf-8?B?RjhZaEF0eVZTUDJBREtqZTdaMkNobkkwTURGTmFHOFlnNGUwSTFSRmEvSmFF?=
- =?utf-8?B?TnE5RXp4MmZOeEFzZ0xUZTBZSlh0VWVnams3eWlpWTNOL1JmN3RleEExRVo4?=
- =?utf-8?B?R0JyVUg1ZkxnV21LSUtocHMzSDJ4bTdYTFpBK1VPWjVoTnBEU1NKaHRLUW1z?=
- =?utf-8?B?ODFUYTdUZm9ZUysrUm9pbEd5ZXZXd1J5ZGRsMjV6eXRmWVIvVUkva2FSYjVC?=
- =?utf-8?B?OUFyTVhNQ2xCWkJEdnNjUm1VM0VLM2lEYkVnazRSalVzQUl3cFk3UDhMcHBJ?=
- =?utf-8?B?U2pMWC93eUIzZy9QVGJGQkp6d21rRTR1R1gyWUdScVdkRVo5R1FTcDlvOGI4?=
- =?utf-8?B?cmNLeWdZKzJnaDlYa0xMSXNRamg3YWE5eWhsTldaS21jaUNDVHBKZGdOcEZT?=
- =?utf-8?B?V2wrZWNhOTBCVEdkMnpIdTNWdGt6MlJXTXlRdDIzanYreUEydGsrTU92SVFu?=
- =?utf-8?B?OHluS3JyS0RiR2N0UVU0V01Ub1l0K2hZVjNjeTJiVEFhTklBWm52eHRWQjI3?=
- =?utf-8?B?THByM21VZ3V2QVV2ZWJEWG5SbFNRZzdoR0lnM0F6aDBxSFU3aU1RbEZYa0VL?=
- =?utf-8?B?SUc5ZDRkWXRhWkRvamZxMlh6eDBGSVJJeHZnanBRU0FUaE5lcUZXMzB4WSt2?=
- =?utf-8?B?cFBNRC91b0FlaSthVXpjK1VnZXMrakl2enVYdFMrU09UZHNQbnY1dk15V243?=
- =?utf-8?B?UEdGL05LczgzTHMrUlRVNk9IallyLzFyb0xwbkxYZ0wrZm9PeUx2MXVwbzEx?=
- =?utf-8?B?NTA4Wk9GUlpFRElnUEpNNDZqODAxQ0F0ejdQS1JZaGtmd1V3MG5QYnZ5K1Rs?=
- =?utf-8?B?MGFTK3VsblR1M3dQaDB6NHhkV3pUaUFERTd4UUxQQjlSK2JsZjRQNForNENm?=
- =?utf-8?B?MFpKYjVWc21qOXBKSmR4T1F3TW9uaFpxY0EzWVZZZFRoMW5RWk5HdWNTMmJr?=
- =?utf-8?B?OWtBbG9XODhZNEphWURHbjdwYnNEUlNPcGRQNmtvNHhuSHZQN2VBQ21MWUxD?=
- =?utf-8?B?L04zYzQvRTBzc25HSGtLMHNBWlgzZTFud1VOUGdTVkhRU0lydExMZ1hiRUVk?=
- =?utf-8?B?OEo3SGtYelUxRW1QT05oNG1FVlB6WDIxc05TVU5EMVpQb0w0WjJIdVFVTnNG?=
- =?utf-8?B?eUhPZm5hZU1JeG5tbTRMbUNKR0h6R2xEaEdyWFRSWksrWnE4UkY5NkZlM2ZX?=
- =?utf-8?B?N0h6WSszYVZhQUVOREhCNDdlZmlXV3UvUFMwbG5sbWFjS3pPWEdnMlBqRGxG?=
- =?utf-8?B?ZWpmb1NNUWN6UDg3NVVwTlhKZGZ4RThBdUI5cFJjazZKWUhyTmZyRm9VZ0Nx?=
- =?utf-8?B?VmVXMXg0T0dtODErRndFcndkWG5EeGY5NGNsSDdoYTZRZFpLbDAwU0pDSnRD?=
- =?utf-8?B?NVRYS3RZNkZvRVEwVjNlajFJVTRVZlM0ek9JbnozeFBQY1U0c25BaFkzMGl5?=
- =?utf-8?B?bG1FZlBZdGxZTGdmSnFHdXdjR240OGZGR3JiQ2w4UE1YSHNaVVMydG9CZHo2?=
- =?utf-8?B?OVRkd0hTaENFTEhscWluWVN2N3RCOWUrTnRuTEs5NHRtWVoxK21LSDQvWnpD?=
- =?utf-8?B?WkhKZkp4U3dVVzE2VG9Fc0hERXRBdUFWRHlSWjdGMDNmUEZzYW1VY1lDNEtF?=
- =?utf-8?Q?lEcw5NvkT6Xp+YVo=3D?=
-X-Exchange-RoutingPolicyChecked: k+VKSPAM7KWe+eF9eQg7nB4SNgLOqJ5F7bFdYbbZTeKXANRkNzvGEEYyC8gBkAnYBQbBnLETSuGZzhg7V4slfrEEpJGCeVVYiKSNWO4OGl7pZi68LFMzCHTPrtuvVgpFVD4uDxqt1/HNubsnanmP1G8FAl6IOpxVKnaoPEg/NVcU52Q0KSEBFFkAPBogHPZy7e9fZJLJe3ETdjYg9N6IwBd9le+DB9VqnLVHfYvwevLcu2RqYd8Pnb86MrH17SC1qPrVolB8jsGaZJmKP6DFKbBWzt6ba1ADz8SHmFKvpVy8K5W1mh+EmY5zJIOQfUYIOwbE9LGf9+WF/pWC99LnEQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f0f9ecc-edd7-4e03-1a3f-08de80521e93
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 16:12:12.3882
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NEdWwkLUzCzbtdV4esOcW+KF0h2yXcJdE4EMktG7LaB1JizSgLunmzY78asDDAwWKzmb3uxKUCQCT5c3xwKLv6ET/L3+njS36DMvqibeYL4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFDA9EFDFDB
-X-OriginatorOrg: intel.com
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mhocko@suse.com
+Cc: apopple@nvidia.com, axelrasmussen@google.com, byungchul@sk.com,
+ cgroups@vger.kernel.org, david@kernel.org, eperezma@redhat.com,
+ gourry@gourry.net, jasowang@redhat.com, hannes@cmpxchg.org,
+ joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org,
+ muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
+ virtualization@lists.linux.dev, weixugc@google.com,
+ xuanzhuo@linux.alibaba.com, ying.huang@linux.alibaba.com,
+ yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
+References: <20260307045520.247998-1-jp.kobryn@linux.dev>
+ <3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+In-Reply-To: <3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 08D9EC000E
+X-Stat-Signature: 9p1y7s8qhz3d7ar31h4d7bhhejffjxp8
 X-Rspam-User: 
-X-Stat-Signature: fbboo7tw9toknddkqt7xxirbdw3zws39
-X-Rspamd-Queue-Id: DEC43140014
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773331963-659456
-X-HE-Meta: U2FsdGVkX18jj5ev/IuqGchCX+0ym0WYEKuPgtW5mk/k/qADWO8oIGgAPpzM+rV0OQeatASsgKEfYfe9L7cpLLSeH4hq70wFSE41sKk+H4p7Qon/nqdGrOrilnLpfvICfVpRX9OqDPQl4vlRZ6LwXT5XLl9iDFNy8Sw2M6bO0HdKICurFGpqKXjxdoWiA/N58IQsvtdI7a4vwwCiF5VC+ccdnroCqxgMyGOjhJOyNXjcCGSmirhwx6/tv+7KxKp3gwOiM8NJatZ9PkY8zqtrFkENWCva1vQ0H9lhFgb+SvbGDm18UY7LPeS+0uS6NTCEXd8x4uakEQj8DYpXX2dtNKSlTaHIOhbQ9w2MRKlGZgglxn9AFt92/wqNOnJ5jE8ROs9ljFSL43/B6tW4UIPIYXdAcMsuDYF4BcY0SYe/HwoRcoVZZozHQ7TjUJbvOLaqAAprpGLdhbqERoPSNq8h6QbqhvW4CpBWm4f4bNZO0UTQX7fyrag7QkY51KkZVaPoM3DszKYhZlsU22bOv8jNNlTpIPNkedrUYU+TZlf5LolFU22rsKTYpyA4hBJ+xHme76c2ZcQGk+ZHMXX5EMA7vhL2REC87hBWUaHziaLnbcLCwh+ynhkbW4Y8/+I21TdVhlOuETEuJkUHfYpqqsKWhPDnJwRlGKA7338ALEeanzc6TQttOALUoOnoCyVlR6qNXsLLapV6Z+Kf/LNB3FfwmBE//ewY5fwLQXgHtXq8AnBB1C4LIBD4as0PCSTywJbLPsPQMQiRfy7ihFgIkwBbKey7cWdT1yfx8FqRB1TKC5EFiOTsbT1ohqZL9fvEzs6OEBH1aR5jOU6NJIMOXoZ/eW4h2OzCTcomSrAQi8OGpBlS+eUJL+eqJNiI+Z8CZ6zNq6y7qKyC/cJdB+Xj7Urp7jnfrDG/jKMJhhKuDOmlDB+/w/pZRrFpLj3+SfmNUN7FjpazTB5vIYPyXxcoZRe
- GO3No2pv
- 9iJfO6EjW5rRhLmTerTACLJzy6h5KhyhDgbuxZ+Ih/zJAwRL5L0/65TOFIbgc2mA5HlfXjOvVlqFGoVwZyxx0xK09tdfAdULp+7ReRzO71ApUWHj+9JcfUyYweKX98mSA6aCQMxDU/gbX6jD3pcxeciYmLzan2teI8N0nXws5Aa2MCOSVon447zjOmbkpOhBG4x0jfXY3BkjCjIas44gHgKp3yN/K0xrz4g850hAqMV8V56Z0A0xf5e9aqc0A3OmtKaq/VVbGp2ItQ6NKy9q5+EKqcH6eEqA4IKOsoCcvLY0mfkrnEsmzz44SFRGE94fZeBiqrLlCWrlNZEmMdRKc/OwtiwA6UD8vH2GjWDD9TCeg8mj5z70OeyB9e07pwSz/mqrXZFWlamVYPzjDS8qDhrdOdfWZNUm2EFwcJkkRpiRU4JZ/ZfrPfAI7Ibvk/GjRO56igME8OK4wyhahFv5Q/M39egQ/dm9LcidEMrvlDf2AHDDYPZU69a0S61w5lN2JI1Mt81g4OwAvkCCgOqBM+2fOekvYGJpzN+AikWVkU8hcLQQlcddSmPi2P56N9z1eAKZjZL16h77ipvoWbeBNFzqlPScLdY74gKp6gGLpvg1dZB1hEj5I1Y2GK+j2rd6csDdFVmFGBJyDOifEFcrVF7ItQwH2sJbSg9E0d1gxmsPxMApK/meCXS+Gx452KXd5RXETpiN85c4TEdGX1olPe/VerKxzOKpe/NpbOI6MS4NsxP/5yspN6Xcf4PjtIlwMlctMDMc2ArWVh2EUJTTtezprY8tFmNDhi4jSmYSScIxLObbALm043gt4PBDGLdK/fhM+gCX5E0dYWrEaO9OPLWl6gKpwMlK76LK3Mire5kORMPHOzMmI13msfXDJ3LpdVPobi/PLECPaPot/zLICeq9vtZfA9aLbPTDJ67p0DhpiLjWKwuNmRNuC3DEbYbsjyfgoffVCqx7xdA6O8/3qUstnW+1Z
- gp/NjiQT
- bqJEAvJaDTlTHtdyJVXiSSSlk2GfjuTGLNgZZOXSI9pZrfNdtr+fUZFEcZKouN9mWz6vS1k4b4qvL3aHExn3TAOKD9/+KJHpsF0lFFk7jMhDWlIhUHyl1QIIzNbRO9afOFZhnt+ZwomaCNeXLrW6E91Ti4tlXv/SyaVDwtMFm82j3Obh/CnEnilLTWCFRAdU2fbsKfYj3g4JQ33+jIiF8Bv/B64/KjmWc9fXJZUqOjhEty/7Mvk3quQ3JWSZSCvM9zcNDty5xBBakN2bV5ejkRsBnkLr3XtHBzxPDKUoVstQQ0KIxcBZ5YRQ8n6jQlNH0KIy+2x/oXA2l+K473JinsZKeNQ7JYLqHz9VOs6MrISPFipWRG4aC7AnGcaX6x1yRW4I4g+/unM=
+X-HE-Tag: 1773332049-648026
+X-HE-Meta: U2FsdGVkX1/0ohsWURwglrzL1cbp/uSAvd7Bo1LYAeBlpR0dROUYMO5qhbRdrXIYBnlVQ8Caa/M6xbDlqqGAuCN3gQ6tn3oJNOjVq9R8hf9j/7Km5LoBwyq+nDwk7AcM0eGC7TPnQYbRObajqEpPwIcivOafcnvvUxR8Jgo1Y25XY2p2NPJrRUTP74icjLAx86yt0y54h+7HsVqBt7HRA9R9KK8rjOGsi/t/saxX4TFhtEefSmGDzuv/0/Q+UEV5DoxLfORn7tMQIg8wEXkSmh1lv7WjqqsIElQYYLvfqYGpx06Dlr8NTA9Bg0X5gGg04LmUTzT2PmDg0NPv/K3c+aCCG+nfHn6W/rvn9zxMQV7DU4dcFiw60j08GkqFRm9ApTt82LZEv9HZmWjqz/rebyOZOd3X69xnFrdupADfIbJkGbzz56YLAUPZHPEOYmCTiqbY+rkhv6p7Ryk9Yz9+3y20Zu16fa/hR93AjGpSs6YY4JyVQ7ixuFzQ5NtyUZrn44KbwshRqIrmnDYyff8NHKszFUmmW8QgkduNsVs19vtGv5mlFVTk8oxz2NVM26aU3FuIn/ZjQsXrrdAhSK6tnERTMOQ2fEysQyapx3MH0sdquG/1Q70T3lmNMMonZai//SgEw303iCHCShUqcgca6ftz3mHRbGEiUwmQFwLxAQBgMXy54V2xrMm3XM4PHEqi7EUe5qsdY1JXFhglxtHnec3s8E0JNbCFBllLAR70ij6K64XJBHT/dEImjls4SH/V/QPZjR1eZLZgjcMgwirgKUMAX2H9qv1cpp7YdQt1WtyRaK+46eaXkDY7b+XLmfBfUKtY7FA6ZoR/YvlKOLO0tHeTut8wI1OZINIPaZKAAc1NyvFxcfii9oGvT7HDl9XdJeSSc8Zrv1aCTkwL/8aZw3crRkWHPFRJ8QrgRQOhpwxkOoHi76IJ6EGXc39NZcJj223rg9qkVxDStTnT+7y
+ jxTtfMQt
+ HXPGFQEp1ERl7Vea0dJdwCp6d4+KvoiDqUMCv+2Nm1fOgTdwJ3K0+DcV+d99CbQIQns10flHyYSk2JXhSdN1riv3NPhY7KEIehed3cw4h9Aln3Z1M058Hs8lbmRs8/ErMAelcJcx0MfIc9KzpLggvyj4HaN1MJTvCFi8+er1T2/OINnlcCn6XKwPsNab4jvvgETbBXODFOCmSyzxrewy5mDI3vTkgSKR6izK+jrTIhpaiuwseRNtiD340feHJgCPXtQNH/vSv4hKkf8MYKZzwcWpy9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -240,158 +100,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/10/26 12:49, Philipp Hahn wrote:
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
+On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
+> On 3/7/26 05:55, JP Kobryn (Meta) wrote:
+>> When investigating pressure on a NUMA node, there is no straightforward way
+>> to determine which policies are driving allocations to it.
+>>
+>> Add per-policy page allocation counters as new node stat items. These
+>> counters track allocations to nodes and also whether the allocations were
+>> intentional or fallbacks.
+>>
+>> The new stats follow the existing numa hit/miss/foreign style and have the
+>> following meanings:
+>>
+>>    hit
+>>      - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
+>>      - for other policies, allocation succeeded on intended node
+>>      - counted on the node of the allocation
+>>    miss
+>>      - allocation intended for other node, but happened on this one
+>>      - counted on other node
+>>    foreign
+>>      - allocation intended on this node, but happened on other node
+>>      - counted on this node
+>>
+>> Counters are exposed per-memcg, per-node in memory.numa_stat and globally
+>> in /proc/vmstat.
+>>
+>> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
 > 
-> Change generated with coccinelle.
+> I think I've been on of the folks on previous versions arguing against the
+> many counters, and one of the arguments was it they can't tell the full
+> story anyway (compared to e.g. tracing), but I don't think adding even more
+> counters is the right solution. Seems like a number of other people
+> responding to the thread are providing similar feedback.
 > 
-> To: Igor Russkikh <irusskikh@marvell.com>
-> To: Andrew Lunn <andrew+netdev@lunn.ch>
-> To: "David S. Miller" <davem@davemloft.net>
-> To: Eric Dumazet <edumazet@google.com>
-> To: Jakub Kicinski <kuba@kernel.org>
-> To: Paolo Abeni <pabeni@redhat.com>
-> To: Pavan Chebbi <pavan.chebbi@broadcom.com>
-> To: Michael Chan <mchan@broadcom.com>
-> To: Potnuri Bharat Teja <bharat@chelsio.com>
-> To: Tony Nguyen <anthony.l.nguyen@intel.com>
-> To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> To: Taras Chornyi <taras.chornyi@plvision.eu>
-> To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> To: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> To: Iyappan Subramanian <iyappan@os.amperecomputing.com>
-> To: Keyur Chudgar <keyur@os.amperecomputing.com>
-> To: Quan Nguyen <quan@os.amperecomputing.com>
-> To: Heiner Kallweit <hkallweit1@gmail.com>
-> To: Russell King <linux@armlinux.org.uk>
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: intel-wired-lan@lists.osuosl.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-usb@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-
-this is too trivial change, especially when combined like that
-https://docs.kernel.org/process/maintainer-netdev.html#clean-up-patches
-
-> ---
->   drivers/net/ethernet/aquantia/atlantic/aq_ring.c        | 2 +-
->   drivers/net/ethernet/broadcom/tg3.c                     | 2 +-
->   drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c    | 3 +--
->   drivers/net/ethernet/intel/ice/devlink/devlink.c        | 2 +-
->   drivers/net/ethernet/marvell/prestera/prestera_router.c | 2 +-
->   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
->   drivers/net/mdio/mdio-xgene.c                           | 2 +-
->   drivers/net/usb/r8152.c                                 | 2 +-
->   8 files changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-> index e270327e47fd804cc8ee5cfd53ed1b993c955c41..43edef35c4b1ff606b2f1519a07fad4c9a990ad4 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-> @@ -810,7 +810,7 @@ static int __aq_ring_xdp_clean(struct aq_ring_s *rx_ring,
->   		}
->   
->   		skb = aq_xdp_run_prog(aq_nic, &xdp, rx_ring, buff);
-> -		if (IS_ERR(skb) || !skb)
-> +		if (IS_ERR_OR_NULL(skb))
->   			continue;
->   
->   		if (ptp_hwtstamp_len > 0)
-> diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-> index 2328fce336447eb4a796f9300ccc0ab536ff0a35..8ed79f34f03d81184dcc12e6eaff009cb8f7756e 100644
-> --- a/drivers/net/ethernet/broadcom/tg3.c
-> +++ b/drivers/net/ethernet/broadcom/tg3.c
-> @@ -7943,7 +7943,7 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
->   
->   	segs = skb_gso_segment(skb, tp->dev->features &
->   				    ~(NETIF_F_TSO | NETIF_F_TSO6));
-> -	if (IS_ERR(segs) || !segs) {
-> +	if (IS_ERR_OR_NULL(segs)) {
->   		tnapi->tx_dropped++;
->   		goto tg3_tso_bug_end;
->   	}
-> diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-> index 3307e50426819087ad985178c4a5383f16b8e7b4..1c8a6445d4b2e3535d8f1b7908dd02d8dd2f23fa 100644
-> --- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-> +++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-> @@ -1032,8 +1032,7 @@ static void ch_flower_stats_handler(struct work_struct *work)
->   	do {
->   		rhashtable_walk_start(&iter);
->   
-> -		while ((flower_entry = rhashtable_walk_next(&iter)) &&
-> -		       !IS_ERR(flower_entry)) {
-> +		while (!IS_ERR_OR_NULL((flower_entry = rhashtable_walk_next(&iter)))) {
->   			ret = cxgb4_get_filter_counters(adap->port[0],
->   							flower_entry->filter_id,
->   							&packets, &bytes,
-> diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> index 6c72bd15db6d75a1d4fa04ef8fefbd26fb6e84bd..3d08b9187fd76ca3198af28111b6f1c1765ea01e 100644
-> --- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> +++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-> @@ -791,7 +791,7 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node
->   						  node->parent->rate_node);
->   	}
->   
-> -	if (rate_node && !IS_ERR(rate_node))
-> +	if (!IS_ERR_OR_NULL(rate_node))
->   		node->rate_node = rate_node;
->   
->   traverse_children:
-> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router.c b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-> index b036b173a308b5f994ad8538eb010fa27196988c..4492938e8a3da91d32efe8d45ccbe2eb437c0e49 100644
-> --- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
-> +++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-> @@ -1061,7 +1061,7 @@ static void __prestera_k_arb_hw_state_upd(struct prestera_switch *sw,
->   		n = NULL;
->   	}
->   
-> -	if (!IS_ERR(n) && n) {
-> +	if (!IS_ERR_OR_NULL(n)) {
->   		neigh_event_send(n, NULL);
->   		neigh_release(n);
->   	} else {
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 6827c99bde8c22db42b363d2d36ad6f26075ed50..356a4e9ce04b1fcf8786d7274d31ace404be2cf6 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1275,7 +1275,7 @@ static int stmmac_init_phy(struct net_device *dev)
->   	/* Some DT bindings do not set-up the PHY handle. Let's try to
->   	 * manually parse it
->   	 */
-> -	if (!phy_fwnode || IS_ERR(phy_fwnode)) {
-> +	if (IS_ERR_OR_NULL(phy_fwnode)) {
->   		int addr = priv->plat->phy_addr;
->   		struct phy_device *phydev;
->   
-> diff --git a/drivers/net/mdio/mdio-xgene.c b/drivers/net/mdio/mdio-xgene.c
-> index a8f91a4b7fed0927ee14e408000cd3a2bfb9b09a..09b30b563295c6085dc1358ac361301e5cf6b2a8 100644
-> --- a/drivers/net/mdio/mdio-xgene.c
-> +++ b/drivers/net/mdio/mdio-xgene.c
-> @@ -265,7 +265,7 @@ struct phy_device *xgene_enet_phy_register(struct mii_bus *bus, int phy_addr)
->   	struct phy_device *phy_dev;
->   
->   	phy_dev = get_phy_device(bus, phy_addr, false);
-> -	if (!phy_dev || IS_ERR(phy_dev))
-> +	if (IS_ERR_OR_NULL(phy_dev))
->   		return NULL;
->   
->   	if (phy_device_register(phy_dev))
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 0c83bbbea2e7c322ee6339893e281237663bd3ae..73f17ebd7d40007eec5004f887a46249defd28ab 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-> @@ -2218,7 +2218,7 @@ static void r8152_csum_workaround(struct r8152 *tp, struct sk_buff *skb,
->   
->   		features &= ~(NETIF_F_SG | NETIF_F_IPV6_CSUM | NETIF_F_TSO6);
->   		segs = skb_gso_segment(skb, features);
-> -		if (IS_ERR(segs) || !segs)
-> +		if (IS_ERR_OR_NULL(segs))
->   			goto drop;
->   
->   		__skb_queue_head_init(&seg_list);
+> For example I'm still not sure how it would help me if I knew the
+> hits/misses were due to a preferred vs preferred_many policy, or interleave
+> vs weithed interleave?
 > 
 
+How about I change from per-policy hit/miss/foreign triplets to a single
+aggregated policy triplet (i.e. just 3 new counters which account for
+all policies)? They would follow the same hit/miss/foreign semantics
+already proposed (visible in quoted text above). This would still
+provide the otherwise missing signal of whether policy-driven
+allocations to a node are intentional or fallback.
+
+Note that I am also planning on moving the stats off of the memcg so the
+3 new counters will be global per-node in response to similar feedback.
 
