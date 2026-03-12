@@ -4,85 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0ED105A58D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EAC5105A591
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:19:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BB776B0095; Thu, 12 Mar 2026 08:13:45 -0400 (EDT)
+	id 738906B0095; Thu, 12 Mar 2026 08:19:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 168FF6B0096; Thu, 12 Mar 2026 08:13:45 -0400 (EDT)
+	id 6E5A06B0096; Thu, 12 Mar 2026 08:19:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0757F6B0098; Thu, 12 Mar 2026 08:13:45 -0400 (EDT)
+	id 5E3AC6B0098; Thu, 12 Mar 2026 08:19:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E6B6A6B0095
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:13:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A87D1401EE
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:13:44 +0000 (UTC)
-X-FDA: 84537301968.12.B946B1A
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A02A9180002
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:13:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rIKdLdcF;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B6FB6B0095
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:19:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE7E2C0D9C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:19:42 +0000 (UTC)
+X-FDA: 84537317004.28.A310566
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DB5C7A000F
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:19:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=k+VMyglD;
+	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.172 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773317623;
+	s=arc-20220608; t=1773317981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jEo+AU5jak9Tki+9cRYeuDI/fkIxZPTyffIn30O4KQo=;
-	b=YGNeP7HgXDc+gtb9lw5FSt78sJ9X3KeVtV3fTcftdr3PHg3/jLr7AWf4zOH/VR7cMFGUn6
-	AOIOoqG6WL6JRD0xeVgORz8yI23mJ2QduGCo+xvWTP3jRGlJQbIcCFniZXmf3X3h4FHl1S
-	XFoJvwbxnhI46VhGvIH7njTncu6tWJs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773317623; a=rsa-sha256;
-	cv=none;
-	b=BSssC5kz8QJFS91HWydf1PmtMbvxcQQBnlzRT3uQ69QSr2MXvIa846jSp4ZdjF8ctmNZKw
-	eR0fyuAXczs3dXZLdBCYTOqqdW5k1GVeaPGvLb87viItGm0DEDRkdWe7bfw2N7ZXE/QBge
-	duVq6rA9vc4ks+t2aljjiszhTxTv5Lw=
+	bh=0lXptsQPO/2bR1nDOk4C8coAYtgdswQIgAW2nY2lBKk=;
+	b=LDYww0vxQSP1IJHQeMm9PCjgiPE5ZblfNe3Opm75EoQHz/rdSoQhQ98JxQj9QLHylrryFN
+	1cXOP7vsmgyIAaPQK2ZsryQkDvV/wDTEiNP0RSJCQsc5rQl+Pj5k7wUpJyDpeV7qABws47
+	kUduSHPDuVfpWZdQ2HeCHz9xS7tNF60=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rIKdLdcF;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 12 Mar 2026 20:13:18 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773317619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jEo+AU5jak9Tki+9cRYeuDI/fkIxZPTyffIn30O4KQo=;
-	b=rIKdLdcFCw7xuYn7MgGpUGaSmWH0HYCuC6qQbE9EHLb3k3Afdm8jYOLHP5q8+bbi9hs0cj
-	/DzlykMtdvkZ9RBCEjqkkPUjWf0kbd3vHLWH2STpSVbjtpn+q2FwxxmaKPftg1VXb2k/1V
-	A/TnktqOu5hpsFLnk1WY7/XkKXGwSvg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <iypdqo2s5oobenjrmoqqplgshsz65bwegih7kxhgd547fcofm7@yb6xqors6snx>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <fbssy5y6kpyjlefacmabuojiustr3nocj7timpgejpchkj3lw7@qfss5ffmwdxa>
- <abKp7-HzFT6llbYT@fedora>
+	imf25.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=k+VMyglD;
+	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.172 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773317981; a=rsa-sha256;
+	cv=none;
+	b=FMtaAROz/f8o95Trav9RdeDscA9DYTjW0BLv8OWySmh+cPO+of67LRYhcMj6VwV+igOnjX
+	p9Z73v+eVnd0/6c2HerIzYZdt2E3UrCeOmUD5sl22YuJIB0TjZqIfh1z+BGvHKmGmfvj5r
+	a4hnJ6OoYC+Wz7NqqI1ZmGMp5lP4674=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8cd7aab92dfso118245985a.0
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:19:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1773317980; x=1773922780; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0lXptsQPO/2bR1nDOk4C8coAYtgdswQIgAW2nY2lBKk=;
+        b=k+VMyglDPsNrJPtlLxTS3BIlNQ6/wkj4m+/+0Am8uP9KVdPtGc+fXZpyZtCmKbj0EF
+         rb/CIx7qLZqABAFKCmUTDe41Xy5ZvCobAuY8VxETaET77OzUQNupAxgX3f5rHb+N2gaw
+         VpEaDlsEYYu5kjfg7mKbLMcTlKTHx3gFXE1lU08n0Dxd9UL1we/cy24+ZvK02MiePc5z
+         zXwr8ISAyR5Tszlsvcxc55vWrUeT+8d5P8KkVOWgzZqJyuhOU4okoag+U0w8b20f4ehp
+         q2jp0QG9SE/+ebR4Rcha8CP8TP5zdwLAxQyNRyE+sw2MJHM4G1cxKDVwvHEMMtO4sWXX
+         wHuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773317980; x=1773922780;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0lXptsQPO/2bR1nDOk4C8coAYtgdswQIgAW2nY2lBKk=;
+        b=B68+4HoUbtRUE8xlYEiqe4a4d4Oc1eUxPTwKPrkVR1mQeuESvaOiGBWPzT1lc+RivP
+         DzWq+mzViIsn+iHDBlos0/4Mv8dIL/CnSfGhvdlMTWD7ghjrLsYjybgzkz4jjyPcUSlk
+         G4NnmmrMgmMH3Tbm2NBPLCbOnm9UVA9Jp4ZJrvBGMarHbsPibKSboIgMKLuaqObZjo6I
+         vA1Mp3BSaMnlTvfjx37HJDhHr21i+p/Yv8OSkU13YYXpZfvqK4wFAt53kyrGkWEcENtH
+         OOv7QYltYOYPCdXlEsW/NFTfo644/MLKMOUTg3YupSXW1Wa+wHhG2Fv5npqTGaMV0vWA
+         yU9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVxbhcKmnq0SOhE8n9lwuUce42YOQ75CZQ0aFt+gTZZH5kMNSsiaStE0tsZZGuM7IWO8QLs3Xp6+A==@kvack.org
+X-Gm-Message-State: AOJu0YxCkxMkus7KNC87rAuFOFhlv330AhQ7ET44W7C/SmQQe7wncqzY
+	K9ffDswA7mAyySqBKRq9M+fjQSb1V3GUKWaO+y9C7AjSW0Kr4h8C8XF7g2cteRUzy2A=
+X-Gm-Gg: ATEYQzzy2pLw2VX9eujTt2+4fXyIeY81ptYToITzvflucqoc1LwfjQLiGvnFPm1+N2Y
+	uV5b0wINeDZe73We9xLsKTjttsuNk4YP9QakEgfsUQUVW/3CgOQbUIJ4vXJBO7bMrnVcugQltsg
+	k70XJSOeuA6VlcAreYobN8yVjfQzol937Tai1RYI5tXkkEPTzABWTQsf+iqYnnBjU/MsS+d56ct
+	SSbCHwizCirFuS071Cxu2Y3sbQdRwii2UXkvmUke0vdTDLOjv8exkdC0BDWT4mUFexYPjlfBjjt
+	9L51Rg7upg2E9zITaB0pMW1NI4Xej0gqL6NVhJfV4vDyLzlrS2+c7SM3q+vJvPBQgcaAY7Lyc3f
+	oNe/LBt31v5jNRtIiN6+bFGe8dQQ8NsO0L6B1mb/ee9BS6J+AKyFufXO9DljfCqc92KWk4iPiNP
+	iinKpp13N2h94q377e1ZNNgb735SI6VcR7mIOHODnyHRq4SAcZE28igRnBrEYGTeNPnTRnncunq
+	yahes58
+X-Received: by 2002:a05:620a:4041:b0:8c7:3ff0:d472 with SMTP id af79cd13be357-8cdaa7b6b03mr382866785a.15.1773317979843;
+        Thu, 12 Mar 2026 05:19:39 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda21346a0sm321675885a.34.2026.03.12.05.19.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 05:19:38 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w0f0r-00000006esN-1WXU;
+	Thu, 12 Mar 2026 09:19:37 -0300
+Date: Thu, 12 Mar 2026 09:19:37 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Petr Tesarik <ptesarik@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-rdma@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 4/8] dma-mapping: Introduce DMA require coherency
+ attribute
+Message-ID: <20260312121937.GD1469476@ziepe.ca>
+References: <20260311-dma-debug-overlap-v2-0-e00bc2ca346d@nvidia.com>
+ <20260311-dma-debug-overlap-v2-4-e00bc2ca346d@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abKp7-HzFT6llbYT@fedora>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A02A9180002
-X-Stat-Signature: iqrhkqds1awx1pfefk6ixskccex9hnwc
+In-Reply-To: <20260311-dma-debug-overlap-v2-4-e00bc2ca346d@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1773317622-494799
-X-HE-Meta: U2FsdGVkX181ya1K3nxl5MKiDDPy6oEwh5zT8JuCVReLOytqGOs5jh2+QlO2A9ApXTkSL9QdMfFoU16T2wDCtMr5EwHKjyQTDQexjkfdLRmKKK/VwfS4raRTt6fiSvBvYDsSK+Q0adqx8HFaAgjXqTwb9t3HO+HXbk0AyIG2NhtEPelYBsdc5KXVGKnYMNC10gTDFfHJ8C6ojRH3Zn49Xu8AZp1+QXZ6c6ZgrJulh9MDiJroiAO1TjQT8x3TAHu0htQYU9H2XRN0tlCceyaMNuFyzlGgk6rIOtjLcM51qJ8BI1O9fcMIijL+trfEUw0fY2zMshYlC9f+khAVfPspIPvq7Vu/vwIZkZl1KPeNMhUFMV3Zczw4PbwF1Tvzc1NXBwkIDLS8ZHe77zHLXs/5XhvKfH8dphhJZik2iA/pUa8XtH7Go4cUke+zcw6xZCvucJafDWtSHkijrwhj+yyea3Anr9cLUU3KVnL7z1DjbtIbsbuIRm+hibeGLum3oCP4i9znFuYC4FZKeYSh9YBZQrMC5DgyuuG4ZkksDRQRHuMKMvN0DzrN+klPzS6/MdUs/u0rjniqqFkiWcFGl1nyUTf6W0JrBNWxMzzbSr0hsgqNzuhWimHALsnk3b0MBOIRlulRo0aYjPz9p80rPYFS8KQcs49RBZr0byB5m5/w1hzX8ccWeS869lP91xkWtWhCh6/dTV4u+Cn/G6FFdfSK7L5VHUxD+9xoEJeoB2TP7j+oDnIALxNOC2Y6ZY6ULzN+YtyZDdu2MZBi5J1XqTg8QA6BCW1e46YmoJfk9jtptZ+ELWs8rxPzeQR+fgJEkBEOEO4FP0gqA10V0VpiqRPUSRDIzLtJvZlgrWFOH1IfXQLVsjxCEbFYnWgZWUAq5/jhEulgyivBUZO+ByXZqW1tZQUFo7wEreyDn5gyBtfxwr16QMCWaw3B0B9AVRzwMtEEiOgZ+WF2vhKNYU5ecKk
- Bf/8AxgZ
- W9qnABkTQW2OdROvYz+S8sZ3Dd6vDOY18j3HY/qnttBgQ7UED/3831zCZW2KhDLQBE4oUYmK/bakxl8Z5rP52K/7CN97efzf+2Sjox8igvfrZrhU0kevkA4oU+FooRCyCrWyIa6OJja3BzwCEKJpit2ug3ToFGnZ1jyVh3EYVQndr3j2OSdiz9VlbOB436oGt9+SopzgT0iAfmQdf96L5Ds//lsyPiP1zZV1V
+X-Rspamd-Queue-Id: DB5C7A000F
+X-Rspamd-Server: rspam08
+X-Stat-Signature: u3s5zwutujkw7xf5gudnbwauag67w8za
+X-HE-Tag: 1773317980-80609
+X-HE-Meta: U2FsdGVkX19XNAL3JnsocGLTNNOw49+LzqcJkjBNdHUW5E6I13K1IYHNL9noYFV7nOnF2WCVGYRoaWQQCTuHpqddKPrk1LYdAUggaVB+dm9gOI/2kD21d3h9mg1U0XBxTcOI3VOAdlXi0xThM811ed2XmpV8+vX6vl2OUbVTSNTcAZd4hffl93mHgErr8ijMXA872VKmfsh4PxEPZUVahmy1+NWILFJvfLa6+9AeHILiAEc/kwwqeaTsrE+SaA9pJmcIVs109XwuNwA31TaYHqrhv6A0vlARi1xIe+n2MGueeq6YQvzSPKp5dJXfxO3NTlUWrQBC/DQUPI1WKen2f5PQH817qXS3ehH9nyJmpnYANh3aooq0fiOJzJj6Bo34uOVFDusSYPg0oe4m4DQCqOEV2sZrm313zROW12lsjaUnd2OII0vH8YA9MDe1aLhq4qOKUbg6p9QRbogiGzIRDjTNxq1E7Sp91SP01BCvcFCfsVwsZZvllRGSwVta3e/mjnUownoMtvY/SSQXASd8tY58si8dEoKnDf2Owbz7sQSBjeEIvYTWJSv6fzvzsBptL7s+ce3ha2bVNBuW5ZsjTiF8v73OgBT+T9QnCkRupT/3GfcTCHX6+228GV/xxHiqd3rsn+ssczvHMPemOALzFw15gDYwLxDowtgq1MrtD9ZidkUkGzA+b08MMVnWZ+y9ab7jgFWjmf7DtbN9na/9IrJD2yRWX6egk2PnKc0ClpC0MowRxvNpKIsuLz3Dy0QN60ZvR9F4DxA3H23RNGXp92/1qf3gL6PqHDHtEwfOIc7Fu8YcEW6Tp+LvlZuwJ4RTurJ+D1S//G5K6ZfRewrQFqnIK0xUvk7MIFZWhZykswyS+OKwXvYXQLZcKy3H1Kv3QjvaU3FaqvAMiJDmKytPkW10p2mQPBMIagE36x7ZkHwvVvuB0QU4jQbxzrAD7mCeWcUvwz711GILVYT8aiv
+ HL0IOdzY
+ tobmSkmBNmG+vDGo+NO1ElBVjm1UBn+Shy6M63kGLopczypHyKU6i4sgdvbg20+4xAyyNejlwHdUQZxadd7N93+pLyFVO0kyU+Ezwhok1z7ENexKlExakmzbwmGocj3WLVdGPPaCPqR08pFbmTCNJ92pdZzduNFIw/9jPLe/SA5ma4QJF+AKCkd8FCbjYO8dXaIU9oqvXAe96Uuu+NpFvsCoxyCZAzVN+YCcCJOe1Cr+65rjVPQYczX8bC/+CeYGSgMII/WRiGcTqrnJiK/jHSKxv7gutEreQ/xSf4PNepSmD2DfFUZ4O9PTIGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,125 +137,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 07:56:31PM +0800, Ming Lei wrote:
-> On Thu, Mar 12, 2026 at 07:26:28PM +0800, Hao Li wrote:
-> > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
-> > > Hello Vlastimil and MM guys,
-> > > 
-> > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
-> > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
-> > > performance regression for workloads with persistent cross-CPU
-> > > alloc/free patterns. ublk null target benchmark IOPS drops
-> > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
-> > > drop).
-> > > 
-> > > Bisecting within the sheaves series is blocked by a kernel panic at
-> > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
-> > > paths"), so the exact first bad commit could not be identified.
-> > > 
-> > > Reproducer
-> > > ==========
-> > > 
-> > > Hardware: NUMA machine with >= 32 CPUs
-> > > Kernel:   v7.0-rc (with slab/for-7.0/sheaves merged)
-> > > 
-> > >     # build kublk selftest
-> > >     make -C tools/testing/selftests/ublk/
-> > > 
-> > >     # create ublk null target device with 16 queues
-> > >     tools/testing/selftests/ublk/kublk add -t null -q 16
-> > > 
-> > >     # run fio/t/io_uring benchmark: 16 jobs, 20 seconds, non-polled
-> > >     taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-> > > 
-> > >     # cleanup
-> > >     tools/testing/selftests/ublk/kublk del -n 0
-> > > 
-> > > Good: v6.19 (and 41f1a08645ab, the mainline parent of the slab merge)
-> > > Bad:  815c8e35511d (Merge branch 'slab/for-7.0/sheaves' into slab/for-next)
-> > > 
-> > 
-> > Hi Ming,
-> > 
-> > I also have a similar machine, but my test results show that the IOPS is below
-> > 1M, only around 900K. That seems quite strange to me.
-> > 
-> > My test commands are:
-> > 
-> > ```bash
-> > tools/testing/selftests/ublk/kublk add -t null -q 16
-> > taskset -c 24-47 /home/haolee/fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-> > ```
+On Wed, Mar 11, 2026 at 09:08:47PM +0200, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> The command line looks similar with mine, just in my tests:
+> The mapping buffers which carry this attribute require DMA coherent system.
+> This means that they can't take SWIOTLB path, can perform CPU cache overlap
+> and doesn't perform cache flushing.
 > 
-> taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  Documentation/core-api/dma-attributes.rst | 12 ++++++++++++
+>  include/linux/dma-mapping.h               |  7 +++++++
+>  include/trace/events/dma.h                |  3 ++-
+>  kernel/dma/debug.c                        |  3 ++-
+>  kernel/dma/mapping.c                      |  6 ++++++
+>  5 files changed, 29 insertions(+), 2 deletions(-)
 > 
-> so the test is run cpu 0~31, which covers all 8 numa node.
+> diff --git a/Documentation/core-api/dma-attributes.rst b/Documentation/core-api/dma-attributes.rst
+> index 48cfe86cc06d7..69d094f144c70 100644
+> --- a/Documentation/core-api/dma-attributes.rst
+> +++ b/Documentation/core-api/dma-attributes.rst
+> @@ -163,3 +163,15 @@ data corruption.
+>  
+>  All mappings that share a cache line must set this attribute to suppress DMA
+>  debug warnings about overlapping mappings.
+> +
+> +DMA_ATTR_REQUIRE_COHERENT
+> +-------------------------
+> +
+> +The mapping buffers which carry this attribute require DMA coherent system. This means
+> +that they can't take SWIOTLB path, can perform CPU cache overlap and doesn't perform
+> +cache flushing.
 
-Oh, yes, this is a difference.
+DMA mapping requests with the DMA_ATTR_REQUIRE_COHERENT fail on any
+system where SWIOTLB or cache management is required. This should only
+be used to support uAPI designs that require continuous HW DMA
+coherence with userspace processes, for example RDMA and DRM. At a
+minimum the memory being mapped must be userspace memory from
+pin_user_pages() or similar.
 
-> 
-> Also what is the single job perf result on your setting?
-> 
-> /home/haolee/fio/t/io_uring -p0 -n 1 -r 20 /dev/ublkb0
+Drivers should consider using dma_mmap_pages() instead of this
+interface when building their uAPIs, when possible.
 
-If I use this command without taskset, the IOPS is still 900K...
+It must never be used in an in-kernel driver that only works with
+kernal memory.
 
-> 
-> > 
-> > Below are my machine numa info. Could there be something configured incorrectly
-> > on my side?
-> > 
-> > available: 8 nodes (0-7)
-> > node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-> > node 0 size: 193175 MB
-> > node 0 free: 164227 MB
-> > node 1 cpus: 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
-> > node 1 size: 0 MB
-> > node 1 free: 0 MB
-> > node 2 cpus: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
-> > node 2 size: 0 MB
-> > node 2 free: 0 MB
-> > node 3 cpus: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
-> > node 3 size: 0 MB
-> > node 3 free: 0 MB
-> > node 4 cpus: 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119
-> > node 4 size: 193434 MB
-> > node 4 free: 189559 MB
-> > node 5 cpus: 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
-> > node 5 size: 0 MB
-> > node 5 free: 0 MB
-> > node 6 cpus: 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167
-> > node 6 size: 0 MB
-> > node 6 free: 0 MB
-> > node 7 cpus: 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191
-> > node 7 size: 0 MB
-> > node 7 free: 0 MB
-> > node distances:
-> > node   0   1   2   3   4   5   6   7
-> >   0:  10  12  12  12  32  32  32  32
-> >   1:  12  10  12  12  32  32  32  32
-> >   2:  12  12  10  12  32  32  32  32
-> >   3:  12  12  12  10  32  32  32  32
-> >   4:  32  32  32  32  10  12  12  12
-> >   5:  32  32  32  32  12  10  12  12
-> >   6:  32  32  32  32  12  12  10  12
-> >   7:  32  32  32  32  12  12  12  10
-> 
-> The nuam topo is different with mine, please see:
-> 
-> https://lore.kernel.org/all/aZ7p9uF8H8u6RxrK@fedora/
+> @@ -164,6 +164,9 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+>  	if (WARN_ON_ONCE(!dev->dma_mask))
+>  		return DMA_MAPPING_ERROR;
+>  
+> +	if (!dev_is_dma_coherent(dev) && (attrs & DMA_ATTR_REQUIRE_COHERENT))
+> +		return DMA_MAPPING_ERROR;
 
-Yes, our NUMA topology does have some differences, but I feel there may be some
-other factors affecting my test results as well.
+This doesn't capture enough conditions.. is_swiotlb_force_bounce(),
+dma_kmalloc_needs_bounce(), dma_capable(), etc all need to be blocked
+too
 
-Even when I run with "-p0 -n 16 -r 20 /dev/ublkb0" without using taskset to pin
-the CPU affinity, the best performance I can get is only around 10M.
+So check it inside swiotlb_map() too, and maybe shift the above
+into the existing branches:
 
-My cpu is also AMD Zen 4
+        if (!dev_is_dma_coherent(dev) &&
+            !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO)))
+                arch_sync_dma_for_device(phys, size, dir);
 
--- 
-Thanks,
-Hao
+Jason
 
