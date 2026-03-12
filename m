@@ -4,88 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B07106703F
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F2BFED2E9
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:51:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D05D66B0088; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
+	id 2986A6B0088; Thu, 12 Mar 2026 10:51:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDD1B6B0089; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
+	id 245F96B0089; Thu, 12 Mar 2026 10:51:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C06B06B008A; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
+	id 128086B008A; Thu, 12 Mar 2026 10:51:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AD4B36B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 758AE8AB0A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:42:42 +0000 (UTC)
-X-FDA: 84537677364.20.142C3E6
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DB1024000B
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:42:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 01A286B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:51:13 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EE90160282
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:51:13 +0000 (UTC)
+X-FDA: 84537698826.02.3BE03F6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8DD9FC0008
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:51:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B5dUpUTJ;
+	spf=pass (imf28.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773326560;
+	s=arc-20220608; t=1773327071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J5MpEgXZM2RU+4IMYDviCY6ylONLGtZnlx0+GdH2avk=;
-	b=4/pP0mXLav1aOodDcXE+XJBf6LJjc/mq5v/yXf+Jw6VFwkw9cClzXUyNE63FLF3sLsbUAY
-	jNRziZhDvK2Agrj9OQfcP/v7vj2fcBO+8qXXo0MP/Ng7D7UHmVDabPKdbp/ygn9DNOnXXa
-	WMy8ZrSu9hlmWJCpasCkXXEboMBRdxc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773326560; a=rsa-sha256;
-	cv=none;
-	b=QanOBjGpAVeLk4v2bTM9gb4izO9LBd6vwYNH9/36/VpKoHrglKsyUO2L34ieEDa/Xm7vdt
-	ID8nZAovVA9kSeLew8ZcePDGwDmtkcQfjmMHM96wsmpm5DsGrAfak4N0MVgBmxw0feDY7i
-	D8titZSEsx8ta4kfAo9gP4vuBlqvt9M=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lE1rb2S8uojZcRiMtzZiFU8yO1ZMQjlNk6yVeVq/BwU=;
+	b=6bg9uaxYr9eR6GfiUwTCoxBGSTiIMUNLSubRQkq1C1uB0OQe97vkYWuosOBvSVU3bGbTqA
+	rjLkf0KOBiQJHCgQBp4HzpAFqaH+fwdMWTbscNq2yR0lKkYqim8yq31hL756WWT8tB0I4R
+	7Je1bofBC/bafNuZr0VvFjLkrVwNEDo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWr1b0B1FzHnGd2;
-	Thu, 12 Mar 2026 22:42:27 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id D017E4056B;
-	Thu, 12 Mar 2026 22:42:36 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 12 Mar 2026 17:42:36 +0300
-Message-ID: <2a6c346e-6604-407b-9d52-1cbe15486b66@huawei-partners.com>
-Date: Thu, 12 Mar 2026 17:42:35 +0300
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B5dUpUTJ;
+	spf=pass (imf28.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773327071; a=rsa-sha256;
+	cv=none;
+	b=yC8HRCWN/aM6pli64eb3uvVnWGsKJZKLVznTe5GLDC8xbN9O/1FTXuM/BdGd2FmddiKSyt
+	m56wYBavfZGCnZUR+ULTl7f6BiotnxEiH81kkjn2DEQATbPKkvM5vWKwcOaxIcqaD7ggAA
+	IzDSPv7iQiXnbhTDLls+UJ3y/Zs2k5w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773327070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lE1rb2S8uojZcRiMtzZiFU8yO1ZMQjlNk6yVeVq/BwU=;
+	b=B5dUpUTJNmzvA1AgYolYGYe9s13Tx5OMmUKTVaXvBeKrKz+r5t5XfvdlOd313vGFXpTipB
+	W49zLlMkkN0Z68a/WJ9AiX3baimzmtrBJ12OwF3niRV+/a5UbaSgjGFur1j9ZdXqLBN6MV
+	2HnG5mmzi6cQzE+ZW0TjKWBhyaabQjA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-vTJ5wrXXNF2xbUlIumCVbA-1; Thu,
+ 12 Mar 2026 10:51:09 -0400
+X-MC-Unique: vTJ5wrXXNF2xbUlIumCVbA-1
+X-Mimecast-MFC-AGG-ID: vTJ5wrXXNF2xbUlIumCVbA_1773327063
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54CD8195609E;
+	Thu, 12 Mar 2026 14:50:52 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.147])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4849A1800759;
+	Thu, 12 Mar 2026 14:50:45 +0000 (UTC)
+Date: Thu, 12 Mar 2026 22:50:32 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Hao Li <hao.li@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <abLSuHU3eJrel6KI@fedora>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <fbssy5y6kpyjlefacmabuojiustr3nocj7timpgejpchkj3lw7@qfss5ffmwdxa>
+ <abKp7-HzFT6llbYT@fedora>
+ <iypdqo2s5oobenjrmoqqplgshsz65bwegih7kxhgd547fcofm7@yb6xqors6snx>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/4] mm/damon: Support hot application detections
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260311143912.96834-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260311143912.96834-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: 7itwmpcbo6dyxr95q47bkju97g4tqk9p
+In-Reply-To: <iypdqo2s5oobenjrmoqqplgshsz65bwegih7kxhgd547fcofm7@yb6xqors6snx>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: dYSVDxGnNFLpYzGy8k-yYjltgOu4HJni96cun0mKorQ_1773327063
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: jyq96szfo489nwbzsuxgjbqzi1fd9pwe
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB1024000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773326559-915912
-X-HE-Meta: U2FsdGVkX1/M3ZBMwdnuATownUyDvtxjj8m9wKlkj88ao7KgcbHYIbRPnQHEdF0Hfgn6DEqdRUcmIejZNb56L+rBjAi0OP6GkRZvbfymkVKjYWoKO2huQWyZoMFVKjMOEdFIPz58J19HOI/AF0ZJ1q1UuvU0mrvfE+Dp+ABvdCDBSkR7iPeJkZQ1E94UZWjeGkzL0ueqjPp9ujNpyqHNptkotohSVcM0hBtYVyyH6e8e02j40ylyGcvtrLSvO1gnJc3k0Uc+s1iy3cQ9jkY9/kQP+RMwv6Ua0Scttck+zyoSP++8hhcrr+mcKWngIhWKtbIO6rqWGl2bR2AmXyzHpQZfQVpfSAJ04iJ09ATaAIwTWno6lhBZs+N0jNQBVOASIE8WSI1FVLSKjA+QWIhvlhqSEoWGm0pkvDcXSaB7EX4+OwRuq6rduCxEyWgNCRhY/U//01NnJNirLcEXrZtVIZ1Z9bLu9e76v6YYRrOg7TVH5CBckh5jRC021+m93PmoZ0D41sDBUgYOkEQoPPLxcVSFDJmzGG3je3bGVhsaWGUYLxdYWkvIfqhuTS0NVNPS+a05u1dyoOq5FUo8W70WFS4QTbDEtsRKI/bWWDrwwMYar8G7OKYFZ6CAC07+aGC3mPS6afhKLQkbcZgP71E/nletOS9j0RXKRA8VnXqvk2ZvKxBFbeCkLjp3ZYURsrb30ikicKT4M9eZb8QR83OqbS1vhO/TsPybatr6TedR85GM/3hFlNhSmSxBzQHxF58S9m5oq6rbM9brK1uwLjUYtn63SJTykXa41GMQJhGNgDJmsbZnHyVi/wlje3Y4ebTQNIIVwRwnvJBjYxkUyek2B5IFSHeUjutu6GJX3R8pGbg6ije1iCCU+6qc8cEgrDFgDFj9IP/ws+rVQwpmwquSnwUWhR2D6ClXhzpGLl19w67YZHYH1LkRRmuW3g0YOsZDLYxluGyxIlqGPpDELHh
- BpERXTjZ
- kR84h8wX7Qw08hFYymvb7Pu/IpZ8TPRCBqkf9fnND4Zs39SgrWlJjex9lBQwXT7ZtMrVSOxvO+sJaUOEYAxBbd1eNN+eY1Wx3EdHOZh7B2/sIOffzR+8dwEXWw6MIOXI6NLriXQc6cqLs+7hq92NwCzls4wzik5xJBFO5BZuuO0XfWd0Ivm6c39fWvik4Lkgxv0SuPHwRmUA161DwxKAibzOT7AU8l+lh2Pcw70R0F1YPkUVVhFeEp6Y/zYoCuDknQENwfB/WvdmZQH+CdGTQFCJLvPW9+BUFwzJd
+X-Rspamd-Queue-Id: 8DD9FC0008
+X-HE-Tag: 1773327071-472631
+X-HE-Meta: U2FsdGVkX19GGNL/jyjzY5yk1O7us+kBgESTiSuEh9xWice6G6TSPk6R0J+794tXGnnyRoDLDGRKbIaNdmoduvhMBP6HxeFrako/xSCcbp2VxyNCKQt5dtD/0HEb93EEtGyxdwqliIP5ppxW1YTsd4M8TFeKq5xGwS0O68xzSSDmUQVl0+COIduRiM9fpPdGeTkG6px+jgR6Nn2ruebyKzubujw5WVBLhDmSStxvM2hGJFQLyoh9h3Jeb5/eGLjfAhCctzNCnkcoCgKTZONvJ7sluSd0v18YFUmIQ/72DcqmxyxkI22BMxnHAOSmX6iUGnQW4FV+eAwxVFabtJ70MUcgkr7wia2qBNvH++q9ELjOKoz5apC7TCV3a399jmMT2XS5P0PqEolPNXIEhuIhhRFgLP0xmeSkH+ANcx2+HnyYKBCrV1Q1sNgLU0VyJk14g944ytfloSdz2YTzGKNGRopm5qMaLKdlVTJDNmXGGbpA4bscR2fa9/Buom8G7drtvYTl3PVadZFJg07+MOvGZC4E8MjgvE/8RJCh/jl3WIAoG2UnCsS7wothCbDV112DBwdKfVRiy1mXi43DICJ07OiIsqVfyw92IsUcwndBXvfuiBFNuMim4TXsAPWj/4E8Ly6voD8RJgMb3cZq03MJZu2eE1OYWhSm426lQIw8J6T6k5QHhQTpxduWDPoUR//KwAaL10poHnV70B7/W0XZpyQI/nMH6jQ5EVjYGno2/Z1VUAXwRUGyqe9nW20f8YN2Zivh7J/+W3fdZRT3NspsjLP+7pkyNmS8BYcyCPDb1iCG4AfLEws6GGWOf+4VFfqP3EutD4ASod5l1QoXQUNDiTPirFMNf7W7Gdp/bP1McyqszlLewPuvyyW4d6yk1Yr3siCQijLkUef0B/Ip2DVbvvD+rRjndsID6ycKpSChU5IgMGS+W+0rUL3a+tFS8JnMjDQwQnPJRrdAh4W/IZp
+ mJRHl82n
+ 4kAvw9ErrneVHIzEKgoPAZ8PPFbELvF9OFV0gU/nsI7qbs40xDqGh5vWJyWfuPN/o3Yw24uzL0eDY3wYjukW49s/o0pnkU5snBCxUuxIevVfuD9IFQTqKTAZ/wfyI+a8GPzNMknZ7/CmRycVw5QTPBoJwLO7+GOoAXKR8MV0c8YdXrHBA+icVZX28+ja1u/AOebYiCG6u17EZKMWPdVCfqQ6z8iQS4dvxLRi4LHC5I5G5HeOApI19IKUTqQuHzLahcHZpIlPFl/G4m2t5rgdB0t13YOOUGc9LNghvrO8jBknYrHNUGDJ9a8KDs0UU9HCAJOuGnGWeTzp4sMu91pXLBC1rPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,179 +108,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Mar 12, 2026 at 08:13:18PM +0800, Hao Li wrote:
+> On Thu, Mar 12, 2026 at 07:56:31PM +0800, Ming Lei wrote:
+> > On Thu, Mar 12, 2026 at 07:26:28PM +0800, Hao Li wrote:
+> > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
+> > > > Hello Vlastimil and MM guys,
+> > > > 
+> > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
+> > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
+> > > > performance regression for workloads with persistent cross-CPU
+> > > > alloc/free patterns. ublk null target benchmark IOPS drops
+> > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
+> > > > drop).
+> > > > 
+> > > > Bisecting within the sheaves series is blocked by a kernel panic at
+> > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
+> > > > paths"), so the exact first bad commit could not be identified.
+> > > > 
+> > > > Reproducer
+> > > > ==========
+> > > > 
+> > > > Hardware: NUMA machine with >= 32 CPUs
+> > > > Kernel:   v7.0-rc (with slab/for-7.0/sheaves merged)
+> > > > 
+> > > >     # build kublk selftest
+> > > >     make -C tools/testing/selftests/ublk/
+> > > > 
+> > > >     # create ublk null target device with 16 queues
+> > > >     tools/testing/selftests/ublk/kublk add -t null -q 16
+> > > > 
+> > > >     # run fio/t/io_uring benchmark: 16 jobs, 20 seconds, non-polled
+> > > >     taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
+> > > > 
+> > > >     # cleanup
+> > > >     tools/testing/selftests/ublk/kublk del -n 0
+> > > > 
+> > > > Good: v6.19 (and 41f1a08645ab, the mainline parent of the slab merge)
+> > > > Bad:  815c8e35511d (Merge branch 'slab/for-7.0/sheaves' into slab/for-next)
+> > > > 
+> > > 
+> > > Hi Ming,
+> > > 
+> > > I also have a similar machine, but my test results show that the IOPS is below
+> > > 1M, only around 900K. That seems quite strange to me.
+> > > 
+> > > My test commands are:
+> > > 
+> > > ```bash
+> > > tools/testing/selftests/ublk/kublk add -t null -q 16
+> > > taskset -c 24-47 /home/haolee/fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
+> > > ```
+> > 
+> > The command line looks similar with mine, just in my tests:
+> > 
+> > taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
+> > 
+> > so the test is run cpu 0~31, which covers all 8 numa node.
+> 
+> Oh, yes, this is a difference.
+> 
+> > 
+> > Also what is the single job perf result on your setting?
+> > 
+> > /home/haolee/fio/t/io_uring -p0 -n 1 -r 20 /dev/ublkb0
+> 
+> If I use this command without taskset, the IOPS is still 900K...
+
+So single job(-n 1) can reach 900K, which is not bad.
+
+But if 16 jobs still can reach 1M, which looks not good.
+
+In my machine, single job can reach 2.7M, 16jobs(taskset -c 0-31) can get 13M
+on v7.0-rc3.
 
 
-On 3/11/2026 5:39 PM, SeongJae Park wrote:
-> On Wed, 11 Mar 2026 16:08:56 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 > 
->> Hi SeongJae,
->>
->> On 3/11/2026 8:07 AM, SeongJae Park wrote:
->>> Hello Asier,
->>>
->>>
->>> Thank you for continuing this work!
->>>
->>> On Tue, 10 Mar 2026 16:24:16 +0000 <gutierrez.asier@huawei-partners.com> wrote:
->>>
->>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>>>
->>>> Overview
->>>> ----------
->>>
->>> Let's make the legnth of the subject and the length of the underline same.
->>>
->>>>
->>>> This patch set introduces a new dynamic mechanism for detecting hot applications
->>>> and hot regions in those applications.
->>>
->>> Seems now you offload the hot applications detection to the user space.  If I'm
->>> not wrong, you should remove "hot applications and" on the above sentence.
->>
->> You're right. I was not sure whether changing the RFC subject was right or not.
->> I will change it for the next RFC version.
+> > 
+> > > 
+> > > Below are my machine numa info. Could there be something configured incorrectly
+> > > on my side?
+> > > 
+> > > available: 8 nodes (0-7)
+> > > node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+> > > node 0 size: 193175 MB
+> > > node 0 free: 164227 MB
+> > > node 1 cpus: 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+> > > node 1 size: 0 MB
+> > > node 1 free: 0 MB
+> > > node 2 cpus: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+> > > node 2 size: 0 MB
+> > > node 2 free: 0 MB
+> > > node 3 cpus: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
+> > > node 3 size: 0 MB
+> > > node 3 free: 0 MB
+> > > node 4 cpus: 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119
+> > > node 4 size: 193434 MB
+> > > node 4 free: 189559 MB
+> > > node 5 cpus: 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+> > > node 5 size: 0 MB
+> > > node 5 free: 0 MB
+> > > node 6 cpus: 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167
+> > > node 6 size: 0 MB
+> > > node 6 free: 0 MB
+> > > node 7 cpus: 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191
+> > > node 7 size: 0 MB
+> > > node 7 free: 0 MB
+> > > node distances:
+> > > node   0   1   2   3   4   5   6   7
+> > >   0:  10  12  12  12  32  32  32  32
+> > >   1:  12  10  12  12  32  32  32  32
+> > >   2:  12  12  10  12  32  32  32  32
+> > >   3:  12  12  12  10  32  32  32  32
+> > >   4:  32  32  32  32  10  12  12  12
+> > >   5:  32  32  32  32  12  10  12  12
+> > >   6:  32  32  32  32  12  12  10  12
+> > >   7:  32  32  32  32  12  12  12  10
+> > 
+> > The nuam topo is different with mine, please see:
+> > 
+> > https://lore.kernel.org/all/aZ7p9uF8H8u6RxrK@fedora/
 > 
-> It's fine to change the subject.  Please feel free to do so in the next version
-> :)
+> Yes, our NUMA topology does have some differences, but I feel there may be some
+> other factors affecting my test results as well.
 > 
->>
->>>>
->>>> Motivation
->>>> -----------
->>>>
->>>> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
->>>> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
->>>> fragmentation and memory waste. For this reason, most application guides and
->>>> system administrators suggest to disable THP.
->>>>
->>>>
->>>> Solution
->>>> -----------
->>>>
->>>> A new Linux kernel module that uses DAMON to detect hot regions and collapse
->>>> those regions into huge pages. The user supplies a set of PIDs using a module
->>>> parameter,
->>>
->>> This sounds reasonable to me.
->>>
->>>> and then, the module launches a new kdamond thread to monitor each
->>>> of the tasks.
->>>>
->>>> In each kdamond, we start with a high min_access value. Our goal is to find the
->>>> "maximum" min_access value at which point the DAMON action is applied. In each
->>>> cycle, if no action is applied, we lower the min_access.
->>>
->>> So, this patch series introduces a sort of auto-tuning of the hugepages
->>> collapse hotness threshold, that implemented in the new module.
->>>
->>> We already have a sort of DAMOS auto-tuning feature, namely goal-based DAMOS
->>> quota auto-tuning [1].  Have you considered using that?  Of course, it might
->>> not be able to be used as is.  Some extensions, e.g., introduction of new goal
->>> metric, may be needed.
->>>
->>> Yet another approach would be implementing the auto-tuning in the user-space.
->>> Because DAMON parameters can be updated online, updating the min_access from
->>> the user space should be doable?  Given the fact the module anyway require
->>> user-space control for feeding the list of applications to apply access-aware
->>> huge pages collapsing, I find no problem at user space driven auto-tuning.
->>>
->>> If the goal-based DAMOS quota auto-tuning or the user-space based auto-tuning
->>> are feasible, all the controls can be done using DAMON sysfs interface.
->>> Introduction of the new kernel module might not really be needed in the case.
->>>
->>> We have DAMON modules in addition to DAMON sysfs interface for users who want
->>> to use DAMON for a given specific use case with only minimum or near-zero
->>> user-space control.  In this case, because it is already aimed to ask the
->>> user-space to feed the list of applications to apply DAMOS-based hugepages
->>> collapsing, it seems a new module is not really needed, to me.
->>>
->>> But I guess your use case might have some special restrictions that really
->>> require use of the module instead of offloading the auto-tuning to the
->>> user-space or DAMON core.  Is that the case?  If so, can you share more details
->>> about it?
->>
->> I haven't figured out how I can use goal autotune to change the min_access.
-> 
-> Indeed, it is not a very straightforward feature.
-> 
->> Your suggestion about moving this to the user space sound good.
-> 
-> If it works for you, maybe that is best for you :)
-> 
->>
->> The idea was to stop lowering the min_access as soon as collapses occur,
->> since we don't want to lower so much that we start collapsing regions that
->> are not very hot.
->>
->> Maybe you can suggest a better way to do it. Maybe with autotuning.
-> 
-> I will add more detailed suggestion soon, by tomorrow or a day after.
-> 
->>
->>>
->>>>
->>>> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
->>>> collapse synchronously and avoid polluting khugepaged and other parts of the MM
->>>> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
->>>> which needs the correct vm_flags_t set.
->>>
->>> This makes sense to me.  I expect DAMOS_COLLAPSE to have some advantages over
->>> DAMOS_HUGEPAGE for some use cases, similar to MADV_COLLAPSE vs MADV_HUGEPAGE.
->>>
->>> From my perspective, this patch series is introducing three things.
->>> 1) hugepage collapsing hotness threshold auto-tuning, 2) the module for running
->>> the auto-tuning, and 3) DAMOS_COLLAPSE.  To me, it is unclear if the first two
->>> changes are really needed.  I will wait your answer.
-Yes, I tried to introduce those 3 things. The problem is that I initially found
-goal autotuning quite confusing, so I kind of implemented something that behaves
-like autotuning, but doesn't use DAMON's core algorithm. 
-> 
->>>
->>> Meanwhile, the third change seems reasonable and not necessarily need to be
->>> blocked for the other two changes.  I think separating the third change from
->>> this patch series and upstreaming it first could also be a path forward.
->>> Because the change is simple and sound, convincing me would be easy.  I'd be
->>> convinced if at least some reasonable test results can be shown.  I'm not
->>> saying we should drop the other two changes.  We can keep discussing those in
->>> parallel.  Rather, upstreaming the third change first could help finding real
->>> benefits of the other two changes, since the testing will be easier.  The
->>> decision is up to Asier, of course.  I'm just sharing my two cents.
-> 
-> I'm also curious what you think about this.
+> Even when I run with "-p0 -n 16 -r 20 /dev/ublkb0" without using taskset to pin
+> the CPU affinity, the best performance I can get is only around 10M.
 
-Sure, we can upstream the third change. I will prepare a new patch for with just
-that diff.
-
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
-
-The use case that I had in mind is pretty simple. Few admins use huge pages in
-production, since it leads to memory fragmentation and waste. On the other hand,
-amount of memory increases faster than entries in the TLB, which means more
-TLB misses and more cycles waste. My goal is to balance this. Improve performance
-in applications while keeping the amount of memory waste due to fragmentation to
-a minimum.
-
-Imagine a database server. The sysadmin would like to collapse only hot regions
-of the database task, improving CPU utilization but without wasting too much
-memory.
-
-
-Today I sat down and review the damon code. Given all your feedback, I think
-this I didn't use the right approach or I didn't understand you initially.
-My suggestions:
-
-1. Implement a new goal type for autotuning that uses huge pages.
-2. Implement a module that uses this new goal type.
-
-Would this make sense to you?
-
--- 
-Asier Gutierrez
-Huawei
+What is the data when you run same test on v6.19?
+ 
+Thanks,
+Ming
 
 
