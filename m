@@ -4,124 +4,225 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5239C103E2FC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 01:44:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FAC7103E2FC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 02:01:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD626B0088; Wed, 11 Mar 2026 21:44:17 -0400 (EDT)
+	id 632496B0088; Wed, 11 Mar 2026 22:01:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 252BE6B0089; Wed, 11 Mar 2026 21:44:17 -0400 (EDT)
+	id 5D94E6B0089; Wed, 11 Mar 2026 22:01:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132D86B008A; Wed, 11 Mar 2026 21:44:17 -0400 (EDT)
+	id 4672D6B008A; Wed, 11 Mar 2026 22:01:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F19756B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 21:44:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 324956B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:01:29 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 649D8C2315
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 01:44:16 +0000 (UTC)
-X-FDA: 84535715712.05.1406671
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8D1DCC000A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 01:44:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773279854;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B4EA61A0696
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:01:28 +0000 (UTC)
+X-FDA: 84535759056.05.47E7C39
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0996640011
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:01:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ZOuJZRWc;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Q7huPtm7;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773280885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CqMYUeq1yZk7odldVLJULd1hcKe/rKDr2xEzT/tcoSE=;
-	b=KrVGZ1LSRE/omY0+fghUBmGyzT0U1+81oa+AOS0YLaL+nkVsxoxorN3Qx7DaiveEReAl4W
-	o3DXWhCVfEQCv6r9PQFV6p+uiWH4LP1W6v+vf+sN3FFK61jGvnBWWbgCX15DM8Kh+N9Yfz
-	F0O7YX74oD01JPhy7DeKHlm+bxKZhlI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773279854; a=rsa-sha256;
-	cv=none;
-	b=sikL0wZ9B6SyKNYxkF8zpWOGbN0f/kwATxrnuFuNe2m7UAjj3fzVDm8iu8hLQdOlH9FC/A
-	OaJAFRu3gJyLE8AmiNlYc4og3VDLAFz+tthFbYziDT4gHj5ZB6AKE6cyVEzhzcndPjC9Le
-	6uTCmfUExpGt8RruwpAlMirvCROAer8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
-X-AuditID: a67dfc5b-c2dff70000001609-0e-69b21a6748f9
-Date: Thu, 12 Mar 2026 10:44:01 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Yunseong Kim <ysk@kzalloc.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, gregkh@linuxfoundation.org,
-	kernel-team@lge.com, linux-mm@kvack.org, minchan@kernel.org,
-	harry.yoo@oracle.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	boqun.feng@gmail.com, Waiman Long <longman@redhat.com>,
-	yunseong.kim@ericsson.com, yeoreum.yun@arm.com,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>, intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v18 20/42] dept: apply timeout consideration to dma fence
- wait
-Message-ID: <20260312014401.GA24696@system.software.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-21-byungchul@sk.com>
- <02e5b102-d8e2-4fbf-8818-55863e425c96@kzalloc.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UxPjIXFA7CQ1BsvjimmjcFOQ1zc7lSSboJKxDxrYtBI=;
+	b=z6tvx+uQWAYnlnN8gh0SPb8qlalQoIb7StgGmRNux4FSHybRDKcEqaqKwCksdG4EGRNR+d
+	IQgxBIESPdBfHDRYf5wbmwu6H5Qww3stPMFXCHu00oliC6hsuBPUFF4JfjEyVU+m0hIhXk
+	qjZgNLBLRKF84Zm0DA/E48Q2aCy8oAE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773280885; a=rsa-sha256;
+	cv=pass;
+	b=Oi4MBVqN5U0qQZySuYCTpomcUgSxSmASR6dKD8xSbnYKQyr5APetfofsaJEVDq75JolCzw
+	r53Dh+4OYaXAN6aaar9yZBf3tKRoET3CEkEw9mPJpxwfkmpzXV5jL/f02QlI1Wop3wrtQk
+	8sP5hJDo5+Geobk28u2NDI2ad13i+rU=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ZOuJZRWc;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Q7huPtm7;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BMNsB13508059;
+	Thu, 12 Mar 2026 02:01:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=UxPjIXFA7CQ1BsvjimmjcFOQ1zc7lSSboJKxDxrYtBI=; b=
+	ZOuJZRWcQyEjM3etWgG3uPoFfE5pW10HHDsa6P2+8qZr/M9FxsHN3jJvPP1fWWV2
+	k/uM8lQ+ileZWb+6wU1JQdnBZDazvTIEzCoJfY1iyNxZLpxCdE6g4RW5YKPJSykd
+	J8RSkjH9/tXnraVF75QraDOgFq3UtoyYDB8Z1JeCZU2ODmQepabt/Jxcck5+l51S
+	ubl0A0uHnDHsjZ+GeGOG772JLWjGTkFiIF/RIN0PseL6HyQ1gqq3H1KrGX1r3czH
+	ZtsI002GUHLF1L6dpJ7wrkcE/vpyujkgvaefCTMYMj6Q48hRWP5evKYRH+9gAory
+	rplJDev8k2Y2bX0yTYPNJQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cuh4kg52p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Mar 2026 02:01:19 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62C20C3Q022216;
+	Thu, 12 Mar 2026 02:01:17 GMT
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011057.outbound.protection.outlook.com [52.101.52.57])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cuh5jn2ay-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Mar 2026 02:01:17 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jYSPQOS2Aq+r4t2/MJaD7kC59PgWrxcJXDqVAE7gG6dS+wEc1yR64bPwlGAUXbzrDi0bd4mkgMJjWy82o+tLqadI68U59ibAwP6VhiVvGCIMol9PekKgTRLNdr/MqwLazlu4hCfv1W4LS3Qbg4pI4OUCIB6Fldztmjuh5TNFe9XVmWig8BScK5G1hh0ftOLyTTiHtJdkihi+rCmBV+RUd4IlMf44I3V4E/haLDhgnl0Kdkq3MPVIxqhOtYUxLlKgvtKwLPY8No2+6Y8t7JyRvS7Nn46ZO9vsDiPWSnKBHGpA7n8cNRLJmz+9DV/txBWGcIDrwKd58xu2+IxFemqT5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UxPjIXFA7CQ1BsvjimmjcFOQ1zc7lSSboJKxDxrYtBI=;
+ b=dLIhKvG61w+0wwH+sCUb70IOKWz7ODqVHoEQ4HJpi6xoZqFjQeCK9LNYTm36BYtXKM8qC4wRYXXd4NsR8zQK/thITcyI17Xh3WAR5xs2Nc1oK7LBJTCwLAxeSvd1srkBfNzLmzPtV1IZNVex/dxITP1lxkbsSdXPsMRSfm6pquTjsdFp8mdmb3KuE+7M7L1aOIRcDKJKsjjTNZ9pSz/wkfhiPetvH0mPPXmsFu1Wr3oaFjQKbHkYQFWcCDoQpjdS3yjGu5syBLR673i9wOq9zRx1690fUDsreyGpHpZyeoX0bJOdYdz4zCveWXBFcDMRSZ3qyncWWgv1S4mPv4/jhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UxPjIXFA7CQ1BsvjimmjcFOQ1zc7lSSboJKxDxrYtBI=;
+ b=Q7huPtm7y1zexMwQKpdU/M1iofaBeaZHOLUY6oL0+teNxpzCv2Jb3y5lQ/2eRj/xmp2LenxD9A+lu+eBcox6X9BAsHd/VF05uX+GUC68n4Odb8UchhERLsQMzrFdrngjVWOz8e2Xt0uP0WTkoEwEhQnLm3QivBUtO7UizolNHzk=
+Received: from MW6PR10MB7660.namprd10.prod.outlook.com (2603:10b6:303:24b::12)
+ by MW4PR10MB6559.namprd10.prod.outlook.com (2603:10b6:303:228::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Thu, 12 Mar
+ 2026 02:01:13 +0000
+Received: from MW6PR10MB7660.namprd10.prod.outlook.com
+ ([fe80::c2dc:a34f:6987:1230]) by MW6PR10MB7660.namprd10.prod.outlook.com
+ ([fe80::c2dc:a34f:6987:1230%6]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
+ 02:01:13 +0000
+Message-ID: <9d90dd0b-1d60-4e45-922a-84637cab16a3@oracle.com>
+Date: Wed, 11 Mar 2026 19:01:11 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm: prevent droppable mappings from being locked
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+        vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+        jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
+References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
+ <ba9a99a0-2ab8-4726-8287-ab21b3da8df5@kernel.org>
+Content-Language: en-US
+From: anthony.yznaga@oracle.com
+In-Reply-To: <ba9a99a0-2ab8-4726-8287-ab21b3da8df5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR08CA0059.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::36) To MW6PR10MB7660.namprd10.prod.outlook.com
+ (2603:10b6:303:24b::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <02e5b102-d8e2-4fbf-8818-55863e425c96@kzalloc.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHe89tx9Xg9WT05kJiFYZRaVg8QlgGxYEgiiKpCFt5yFNeYqul
-	UVA4Eg1DI7VWLs2YS9eqqaFdmA3y1s1L6sDMazY1k/JSlllOifry8uP9//k9z4eHp4Us1p+X
-	409IunhtrIZTMsqhefmrjvg75OAyI4aa1lsU2ErPU/B2bJiD5IJ7HDQMTlLQYelj4HuJh4Ls
-	4gIOat+3sND06AYH722/Wei94uTgRVUNA/lfyhgYv6SG+sx0FixjwwporMyjwNE0wsKFVAsL
-	KXc+cNCVYldAU3Pu9FPTiKA6vZICp6lFAdc/OxVgLSinYbDczUL3pSEFlH7KZMH4bh3kjobA
-	aHERB3d/taBNS0Wb2YbEH2PNnPh0PI8RK0ztCjHPcVIssQaJBU/6KdFRlMqJjq+XFWL+Tw8t
-	pg29pcSaqz8Z0Vy7U3Tm2hRix8VqSvSUXEM7/PYpN0RLsbJB0q0JP6iMyc4xouMDBxK/VKw4
-	hzq3pCEfnuBQ0twwRf1lT1cy8jKDlxPrt8+slzkcSNzuCdrLflhDiu93MGlIydO4wofYb1s4
-	bzAf7yZvRt4xXlZhIAN9w7S3JOAcREp7brCzgS+pvdY7U6JxEHFP9U9P5qdZTQqneO+3D95I
-	jKlDM5UFeCmpfFhNeT0El/KkyNjNzm66iDyzupkMhE3/aU3/aU3/tHmILkKCHG+I08qxoatj
-	kuLlxNWHE+IcaPpYLGcn95ejr/W7XAjzSDNPFbztgSywWoM+Kc6FCE9r/FRCm10WVNHapNOS
-	LiFKdzJW0ruQmmc0C1Vrx09FC/iI9oR0TJKOS7q/KcX7+J9DetdNV5tQeCYwtKHEtn1x1PIl
-	kRnru3x9W6kAz+4O81hP1q25QRfPhxsiNtS/apfNdUcDw1x3ekaTRiP2vr77vGqi0BkxuedK
-	XRmqswzOqRaWvZQ3d+aoXdbHA479H9WRaWGHXr56arWz5q3RKYI9zGNI7VsJAcPaKFdMOjap
-	NIw+RhsSROv02j8sQDXmKAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+Z/bjqPBaU06uCJYmkMqExRe6P6hOhVFgWQEkcNOedIt2+bQ
-	Iiom2hZZi+iynFiLNXVpzQuusolFbmg3N21SZlfzki3LW2UXV0R9efnx/J7n20vj0nEihhY0
-	el6rUWUrKDEh3rjYuGBXjFtYZG9WgO/JJQxctUcwCI6GKTDaqyl4PDiJQY+jl4CJmj4MzlTa
-	KfA/7yThjs1PQuBGCQXPXT9JeHPaS0HrPR8BF4frCBgrlsMjy3ESHKNhEbQ3lWHgDnwmodDk
-	IKGo/C0FL4uqRBDosE0dXzuCluNNGHitnSK48MErAqe9AYfBhhAJr4qHRFD73kJCwbMUsI0k
-	wUhlBQVXv3eiFbGcq9SFuK+jHRTXOFZGcB5rt4grc+dyNc4Ezn6rH+PcFSaKc386JeIufuvD
-	OfNQEON8574RXKl/M+e1uURcz7EWjOurOY82RW8TL9nJZwsGXpu4LF2ceeZsAcoZ2J437FEe
-	Ri9WmVEUzTLJbN9LI4owwcSxzvEPZIQpJp4Nhb7gEZYxCrbyWg9hRmIaZzxRbNVlBxURM5hU
-	9uHnZ0SEJQywA71hPFKSMmcRW/u6hPwjprP+829+l3AmgQ396MfMiJ5iOXvlBx2Jo5jlbIFp
-	6HclmpnLNtW3YCeRxPrf2vrf2vpvXYbwCiQTNAa1SshOWajLyszXCHkLM/aq3WjqHRwHJy0N
-	aCSwphkxNFJMkyxaf12QkiqDLl/djFgaV8gk0qdVglSyU5W/n9fu3aHNzeZ1zUhOE4qZknVp
-	fLqU2a3S81k8n8Nr/1qMjoo5jJzUvu7++RnyuzJ9Kb9SYx/I8DycXTiwtTUcypoz0WjY7MvV
-	HcpdurahblZbr1Lp8t82r3wbmNDDHg9RveW+xFAvOxC7ZPyBh0pMtd3sUqo29hqn5a0b61qR
-	7D1RbFEPBu5pEueWb3BmuY6mxDe9axNiP84LmiYdqbNNcauDaQpCl6lKSsC1OtUvyj6eeAoD
-	AAA=
-X-CFilter-Loop: Reflected
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR10MB7660:EE_|MW4PR10MB6559:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42b70252-4b20-4ec2-8ceb-08de7fdb3d21
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|22082099003|7053199007|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	7ynYPfDq+4SqgOLX/tL+QReBeasIslLJh/Hoy4wbsSDcfFSrpiRCU+TjVLrm8BFVKpp8nRJchj9mHJiNfH210NqcDf5yRurbFfjCITrpAMqs0hnxEho0trwK39VUXsKO42qWCUjZ2+Alcuk3+MU9Xmoop9Z+L/UCm6zYYJrCBcb65paIz837qmQRuppcDMRj0hrQbGw3NSuxpktuRildvFdMid/a44yP40W1XbDNQ3gb8yDENYeZsrm/mnVKIdHU/pxH/7dAIitPQ3pirEHszvRw73QRgPCo9yNFg81l3vYN2B2BZNglNt7G6/2PADXW0xB7pzhuYAeDdGShY+VXF8pWvhqEqJUqiC0n9DLXM2/RNLlCY71uDEUsTcA87dP5B77ANksWeev4sW0yJkJ857eYFTteK36h6c+7SQno4CNRymWtjqpbdr7lGspYa6iTBL7vx987v3EgDUQfvWvf9HyHIx7FFnrAi9SIC+xw38ILREzCacjif7RDOQ3QFgcEmz/iQb5+TzBdZSumumOjlhdEMOIXI+57jhW9jRXjAq4dUFoiAS/1TBwFXQ3Q8pQ2+x0qX5ntZZUHdomfhHzb95wxim3cMIjBrSGRTX6AoXurvXjIwdCe7RjW4loPFxny/d0b6Z47gR1Cjuh7/Lm2fxRBhJsOYaBQnkG+imSvQfDmS3EBb0uIcfJ6O3K/k9BT/qqsEFTlKjIyeKXK8uxr9JWdWyF3EzJXyLwdK8+ERzk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR10MB7660.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(22082099003)(7053199007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S3pvYU5mT2UzdXI5UGFMeEFvakZxR2NVbVNMaW1WQ3l0Y3JsVWQ1clVmaFlm?=
+ =?utf-8?B?c0tGNXBVUCtMenlFbzFWemp6d2hSV1ptL0NRbFFyaEVlVHN0WjhoaUZyWDdk?=
+ =?utf-8?B?U3g0elJnUUM3d3V4a0U0ZW5zRDJVYW5zUDdaT0lDbXZpQm14UEVvUHY4bTZE?=
+ =?utf-8?B?Rms1UHE3d1UyeHV6cHRqMlN3MHVFdlJ4d1llbnUxWmtsMFBwMXdaQ2lvNUxr?=
+ =?utf-8?B?bzdNRUlURm5RZ2RreEJlUmRtcE00b09KNXJTSWMyN0lDWGgrWkNlV0c2OC9L?=
+ =?utf-8?B?MGJwMTNYbmEvOHR6SzJPaFA2SEtLVEhKWWtyWnpDNDFqR1htUmN1R0pUSTVv?=
+ =?utf-8?B?VSttTkIzcS9LQklpQnVXQWZFMzZncGJtSW1pUG5jZmlJdmpxd3JQWTZwdHBi?=
+ =?utf-8?B?WEwwblZVNHg2c29mNm9OV3p5eGJOT0sxMHVJWkNpS3lHdytwOTBhcXgxRjhR?=
+ =?utf-8?B?VEZ1cU9yNE9TNHQ0TU5JZHk2MnYvd2ZDK04xRG5laC9acWhkaVlTOVVraE5u?=
+ =?utf-8?B?anJjTFB2ZTRva3FPMU1GSVJIR0x2L3YveklOTTFsbDR3VEp4a3B5b3VJaFVD?=
+ =?utf-8?B?T1llb25WQzlHOHdjbzZabzVDWHNLMm51VEZHdUFSNDJ1Ti9LVklPTm9RNTN0?=
+ =?utf-8?B?amIzcXFsYXFsMXp5R3NtcnkveGJkbVplSmZROVVaTkRQV0hMSXVlU0NkNnF4?=
+ =?utf-8?B?bXBIM3MvcEhrRDlxSDVSOEk2NkR2aFF1MzdvcEJkWXM2U1pHRm8yYmdlUURJ?=
+ =?utf-8?B?emlpb2lHeTN5U2dZNWdEMHMwNEY4NytYR0xTRlduRGVuZzBhSWtsY2Rtcmc1?=
+ =?utf-8?B?V2lGU0tqQy9NK1JZNG8xN211MW1VVDVRZmNYR1BUS0hkRDM2eEdNa3ArTVE4?=
+ =?utf-8?B?SU02SFd0Z1BXejB1cENVWkUzeEprRE16bHd5VmJWc2VvcStYTUJoVm5sb3Zp?=
+ =?utf-8?B?R1RjN2JkSjRqZktKS0pudm1ReFBUYXZMeXkxa0NoYkVMV1hnbFpiWnJCT21U?=
+ =?utf-8?B?YjRURnJiRndkSUJGZFZtc3A0cHNnNEdrUFBUWWlHbkhxcU0xNmI3bUI4MHRx?=
+ =?utf-8?B?OWtXaGs2VjQwVkEzWHFxR1luMDVsNlhucnBjczcxMmdhdTlaSEFhQk03dm9n?=
+ =?utf-8?B?QThhcGFnSmdGbUxSTGZ3bVROTmN1cFcwS0RoNEd1YWRpN2REcnVZcWs2em94?=
+ =?utf-8?B?a3kzUnc2dzRaeHhiV1NYOWl3NEFMeEVsakRtTGhNdHlHclNjRWJ4RE03RHFw?=
+ =?utf-8?B?SzVNbG5vNmxzL0tlSjhCWDRqUHNaOXI2VkhvcG5XMkpPN1JjQk9ZOGJvZGEz?=
+ =?utf-8?B?R3FMZmdkUWhITjNSNzNRNHF5UVQ3VzBGbUVYZXpLUkhYU1M4c3NWa0dPR2Rm?=
+ =?utf-8?B?a0E1RTE0SnU2eG5VWmpROVdIcWVQUWlHbFRBQ2pzbTdaMkY2NUZOWFVva1pv?=
+ =?utf-8?B?R2RZdTRRMHdNY21ab3pxby92ZDFrdkFGd2hrejVhbXBQMFA2YlJQWGlRZDhK?=
+ =?utf-8?B?azdZa0tRYWxQSnVRVVpPa1dsc1AwdzROSVZYbHlxeHcrTEZ1Q0xqQjgxbGdl?=
+ =?utf-8?B?K2FYWE9YWkxFb29PaXNnMVpaK0VjYkllajVLWWVhdmZ2QWpMTmJDd05EVyta?=
+ =?utf-8?B?VmVwV0h1ZE1tMmJQekpQQlZmdVNXQjM3aGhkNjNHS2Vld3VhNytmUnpKTGRG?=
+ =?utf-8?B?RUZrKzIzbENZNlJDVkYxeWR2R3J6QVIxbjU4Y0QzTkErQW9vdzlpNGRMQ1E2?=
+ =?utf-8?B?TnVPNjJCT1FaY2pBcHlMMFFqb2FGcHY2VEI4ek01NEZ4ZEUyck9oaXZSQ09y?=
+ =?utf-8?B?UTdPSXJ2aUU4b2I1dTY1Nk1lckNabXBZd01aemtaaExhZFU4UU50MDUzTUhU?=
+ =?utf-8?B?cWxrWVNSWEZUR0ZDQXYrYzBJdmVVV2tjMUR4UFFZN2cxZjQ1WGNzc2pIODJB?=
+ =?utf-8?B?OHZzcUZiSXBremFsZEZucHFJRExNR0NhOXhPbXM3a1l2NWhHenI0U2hUSUFa?=
+ =?utf-8?B?ak4zK2R4TzBDWE5od1ZHYVpveTRaMnR2dThXakNFNCs5bXVoaHVZeTQvcGg5?=
+ =?utf-8?B?K3REdUo0djFycDYvSDRwc0lzdjArcittMVF1eDVGUmQ5dkphd1J2aGZzK0FQ?=
+ =?utf-8?B?ME16OXc2Zkw4c1JMekN0UDREVTJ3SEh0b0tRRU16TEZFU2w2Q3NYU3RnTnpr?=
+ =?utf-8?B?ZVRjMW9lZk9pU05DNXAwY3BCdFFvVlRnekxxcVNZSjNNT0hMK01sdlErT3p5?=
+ =?utf-8?B?RlRuU2lhMHhtZVg4VDJ5WWNWZVUwTERMYk5VQzFTRTdMUWM0azVJczBOc3Ax?=
+ =?utf-8?B?WU8rYU95aXFjN0pZREV1MWVUNlpSdkZxRlpYVVVheDBOLzVyNzk0WS9IWlNO?=
+ =?utf-8?Q?LxoCCDmS4IC4wxO8=3D?=
+X-Exchange-RoutingPolicyChecked:
+	chotHWcBYcN6BaO2ZfHsudkaP9x4d9d2VqsntnUcCV762+/Auz9HK6pbveqBUFPyycGBV0a02EurxG7BIaC3Iiqjq44i47tTp/aGPKsFjJjuKyBwnXYf0cGr7fvYVyohgtTDn3eMkUUbWU5ZxTCbslCvYFM9FU7PbonGxkxFRTjIHKeLmJ4wNgq0fHacnCDYPmu1zfhnRU90FZefQS3yaM9xWx5LTOPRZ19FGkzmfkSfBb8Hvty9/YB2iS0htkJ4v7EjpRJ5Nktcl8Pr7U+oaOBWEqiEIzLNlRxvvi3f4/VUzRSoVIVS1FRIz7gDEY2cx5SdyvvA3cp+eek2lvdDCw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	5V5MG0Zwid8lo/WrfNzGeHm3rKZDE+pJEPfHg9jXgvTCQ/0cbeYLs4oP3+++iHW/vsiOjUVyKSdLNTFLuQM/nQl1zkj0GP0gzVegxKSBJ+p8AGnCJDxtzoPaP5OoE3u00sYNdrno8pMOPc0BkULHYz93mARX+qtMJVJOPMpnaFJhGKS29es0tfdjtPZSvmQEAwm8i6rtTEBkVfCgvzrk/hEYQKgHqgRKLH8Q0gb7Axo1bVJjWo8mVQoua903RtzXattnn/j1KSNSvfgZAoN87a+vUDL1XpmStfzLnsJXcuJ3s/FO618Tw3aIneEpmhkTkE/C+2HRbJ+Nt5k58dpc4bBQNDw9pCs9qNMK4pd1o1WYc2zRJ11o7mBsNaXErtH4PNiNyg++S6G/41atZuCGSXQNVqoRdsbk5oLSSQaFMcVUm+WhkgFg7zN6DLoypXzQT5xiSLaG+lGXnVRVvVejjIBGYR/c1/BzRi8mDNLR+7HLSdX/szh7826NckRSTiSkjFOaOyDCi1uhp9Ffn2wGoq9wsIANzCztuoXtwYP/YB8gPHM2sNawAHrXy+cIipDLtG8PySfBCEdbLqHcEkawcE6s0S1qPkEmNjr+VRpTQ+g=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42b70252-4b20-4ec2-8ceb-08de7fdb3d21
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR10MB7660.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 02:01:13.5195
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: syRXjJnhJG+7RyS6bQjRb8ns5Q4wOurYxUtR0rY/GzbvpBogrH1R9C0WUHmn2lwzwdE7/PKOoAi8N9pmU4X3S311Qex5xUNiBMI0V8DWwNQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6559
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 mlxscore=0
+ spamscore=0 suspectscore=0 phishscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
+ definitions=main-2603120015
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEyMDAxNCBTYWx0ZWRfXz7zZceTqtoQc
+ ovptcU9A17kj3TNGyS60Ngc3d/ffFvGbgXni/wchPJylFCYOaFu/rLpCp1J6I6p0t1LGjNFz4wR
+ x04aiHctirt8c7w4yIVjh+XdI01fQXntLiGt+ut2UI2knBlyvM4XUVx3HOG99FhTaSyEv+Ip0Zi
+ rA/EY7XrrSaGV7S1jHxNkAq5tLzSddKPAW3nRAiUq+YsMasf5NHjohAat3foJeLW3FhJNWuuY5D
+ itvvI8MmAB+1p8HqtjiK406PCw5x+9eW8jnJzoTBDVTDXjI2CoanNEjqvcek7AvMnMQr31JXrdv
+ wETU5YOgHyJtAZs2tLNVdXUTe3ho7LQx0acQkOUXXOPhK1+KEFBK9rL3nsUcCuuxsNmpaDAGfCf
+ w462BaH7y6jW+AwtqKv62h4pn2UT3LTmkdg7fY1rx4PRKn5Bd1Cpcc93TDGuap7WTks6EDoZtxK
+ KdfahViVGOoBCzGGb3z8J2ASrE4JT9Vi3+Os5Q24=
+X-Proofpoint-GUID: nJotyoWd4U3M1lYEwvJo1T4HxoBw7BKz
+X-Proofpoint-ORIG-GUID: nJotyoWd4U3M1lYEwvJo1T4HxoBw7BKz
+X-Authority-Analysis: v=2.4 cv=Ob2VzxTY c=1 sm=1 tr=0 ts=69b21e6f b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=x0eKOSpe3m1H3M0S9YoZ:22 a=VwQbUJbxAAAA:8
+ a=yPCof4ZbAAAA:8 a=OPzyfgQavzlHH78o-fYA:9 a=QEXdDO2ut3YA:10 cc=ntf
+ awl=host:12271
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8D1DCC000A
-X-Stat-Signature: ba7in73kpa9wye16bcn6q6o9kuaj9jnq
-X-HE-Tag: 1773279852-718839
-X-HE-Meta: U2FsdGVkX1+4cEHGUA4VvoCxkV95y3Zji4bGRTna3e0s7hmYiIWbvHGRS88+qU++l8F2DH63yBU7hFX3Jze0cjk0zotbs8kG3UPM3p3P+AkhyVsyHJYzP88rOe2Wy1uwtlm+uBf/MygSACuIXX5XE+1rSR6M4ybFQQ3m/Zjw9zHdESRMVu/iN1GReCpSJCpVkImCBR5PtFealVsDGJJmzlovYf5T9+aH7dfLvtL6+pcGdBVqSeeO+aS9Jdow5efEUYTqoFR6xZ9nI6J8hwa+JrCRA/9ZYivNfbx3TIC4JgEmH15A0RKVSGidVzOXMHI7adkZyLj5cKTONoUjVAejVaTmHWCkvGoWrgdhnMG/0FwTloo2kYaJERGPkX3Xjw61GsLd17p9iqFECkqNaZrEljnA7TOUix2JciGkAys7uOlgbDffygOYIJcySvsKCkdKhS4GtL6hVgNY0HIq5ZatTkc/akr70yBvwLHKVNfz79vL9y3L2OVQHCCBRMkxzJGmWQUgcGKqh4LE5xrLlLWqqTuI5dUbm9xr6aiM2IyUuOsXwGEd5jJLYhZELu053vJsbOGP4zZMCrzGKbd9lz2gEeXFUx65fnBpMaVD6nqFcsFVtNNAnQiHhKurceqyFriHAWctqtIVh1E2h28GE0ByO7XYzF7ABXdEraJgiJHVveDs8AkiLXYYqDsVkms9DgT15GM+XC9AyiR3K7N/gRZxwO2qqYROi39u93rDrmUrsH5ipwPRk/GDVqIhnJbR+c/5E/p+vddUNYdN8o2t2ZfXVbLq6k102A5sSw9EbGA3FfgoImfNRyUmvbhv4J3tiTdEGTiV40OB6YLROotJLImG4ftI/mYs1n1MAHJFU3aVY9hqsK9W7sIeEJxYMKEI6efNZHAU6Q05k1NVZRSs7jqZ6K8amB7uqk08tXFuf6ieKgusClS4Exn0KBpcv4dDolXxccv5i6b7arbrYobz789
- +OsXhPmw
- BJWZ6upXDaDKcokTfrhlpmYya4VXhP1EGsRtQPmt8C/7J031mcu7yKvzPBgiCO0vE7fwzIznACTfGYUUNKL+a5WPhzED5eXfml+MePNmWcvw8aGg2ewm3Ug4az5Prz6zOjPH5FET8ay+LIvPrrcetpFHx3RxwDaeFxGeP
+X-Stat-Signature: q9hfbo3noimbsy8pebdx7m4nbphrwcer
+X-Rspamd-Queue-Id: 0996640011
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773280884-606424
+X-HE-Meta: U2FsdGVkX1/WWr08X3l/3XTAQtd4/9y1xFDRm8s+PNsDlyXN0gnv1WVgkzHj77AqGKAxn47JznZGmtEJT/1KcHBtexV4qR86sDFK60w5AG1qp5xWNZKCF/ObfZtkYbdxVYLYNrArWpwf1BhTSlSf4RMAtBjzwvxpAKGgY5ecHGiP94a0apMAa05G5rf5JgPAtnpY2gzbSFC2ixbuGhfkqk7FwPCH8xUgstNGgkgWGhxPZipaM9mKOBdufjWdvqTfBj07Tgk6ZhzaQQfwkGNIiR+QAFSw3ZcuHc0ZfIhcnm8pRTS7W0b4C7rrO250GFxpSDaHXfI6nOXPUB1bpetqwO6KcNBGVkNGj1dzUvRQ0/6x2uhsnAyKrTXflnh/bCtRzw+3Vkt0e/ElLl5bWk929c2P9JMwSXMnx2gtWqiSRR6NzNSaMf1C+MFbSx3BNXoyNjUqq5XbfPeJLfQP+P7BoFLHQzvc0vv1EX6EtIssisws9iH8u0D6H5WMGanTrMRmqGbuUzzQ0M5rrI/5p1R8xKzD8UXnAUxqalQzdbYZ+mySWf4D5u2Pj0LSFPSje1WIA916wpTAQn+MjhrqmZLUN2cem/NAiZv0/tEv6r0mZXIG/xln1odDvpX77OpVQWrHabVdQoXtg71WYWX4xybE3D6z7hSRyCyieAaEVGA73Ba6n7B7weRa83cJsX5f7Hc8qSTZ+BVasIdJMLGlFa0fk8E/+wTekL++2xs8xFFNqkZWsvJKzc1VXJg+nSL2sT6NSidYt6D2iyT0tNqzfFc9PNDwljnd3CRHMFpM0LXlUTo0kDmg5dqYMCOcJeB+Yb2nGI9MC322Q/Ujy2WbcLrxOpoTYttfNv0TKGKYKKoZjGNyoEGDip0xy//LnnKLqtUtD3Or12pNhpijiun01bhL/+apAgXLHOA+h0rRcc7PZQzbX4oc5/yiylwzdhN9sqXtoS4pP8rfLAmgdBG5WF6
+ Q+E9qOUC
+ 4uQErzglrfPFVO1FFp+8i1CRMfXJEi1bgs4zQPSv39jcIyRXCJBVLKZVOD/jHIelI16Z6yYdp+/v8wRDpUrhk6iWTTpKeHgdPKa8JHyseYYh+kXi95EmSWyT1gwaqdcyxjf7DLLtlqTFeAAlokNrnVb+7+90Sjzf9YiF+KAsKsLNCuy0hIJmeYCR/4IBXbOQ90m8J4pOGrO4M3PV2R4jC7cSvj0ay7y7aI27IGIg1l6wDfarBNbJ4HVpkQu7RuWsliUberCSUbaZvl5HhiBx0a2XyezlONjkN/p778DGftrXt16lxuvVi8IwhFiUpguzhgSQf2KYt/qtwU5AXl75tv2urDqwaL8Kgfsk0Leg172D49PjvWgQ3L4az/d5woJ6uu71TJh1+10CDCzfgxulFOJO9jk+gXiYzqzjkIr6TUFZ/UdtFHncX1PCgSfrNBGwJwhDTZPdvDpZFy61r2fQCcwywgByz14onFM3WUDpa+hUCx6h9CedCfSWDDz+OqwB8jzEDkyfAaH5CvP7VwpPLRyGPvydNFAbGcp4ujae6ut9G8yRkSupTNx1GFa42iXsvRHhImUxYgUQ+BIYVpunIiokFpTX5WTMlr9nmVEqgH0hhq45iFag46mlYSq3abbeOKvzb6CrIySPw1oRzaEl1o+6ohb1yLvyWg/60A3lvtvusRUvBhOfSr2gCHP8i/AiVb/hKbE9FDxS+hTXmtc6K+bHW2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,261 +230,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 01:38:19AM +0900, Yunseong Kim wrote:
-> Hi all,
-> 
-> I have been investigating repeated Clang build failures of the form:
-> 
->   "cannot jump from this indirect goto statement to one of its possible targets"
->   "note: jump enters a statement expression"
-> 
-> triggered by the interaction between drm_exec's indirect goto
-> (goto *__drm_exec_retry_ptr) and diagnostic macros such as _THIS_IP_,
-> LOCKDEP, and DEPT.
-> 
-> Link: https://lore.kernel.org/all/?q=b%3A%22error%3A+cannot+jump+from+this+indirect+goto+statement+to+one+of+its+possible+targets%22
-> 
-> Notably, failures on DEPT are currently observed on arm64 builds.
-> On arm64, _THIS_IP_ uses the common implementation based on a GNU C
-> statement expression with an address-taken label, relying on compiler
-> optimization rather than an architecture-specific definition. This makes
-> arm64 particularly sensitive to Clang's treatment of address-taken labels
-> and indirect goto targets.
-> 
-> This is also not limited to a single driver. I have observed the same
-> failure pattern in multiple DRM drivers when DEPT instrumentation is in
-> the call path (e.g. dma_fence_wait() -> sdt_might_sleep_start_timeout()
-> -> _THIS_IP_), including msm and others.
-> 
-> $ clang --version
-> clang version 23.0.0git (https://github.com/llvm/llvm-project.git
-> 1ff1e5f10a5c765b4cf1344c4964604dcd09fef3)
-> 
-> drivers/gpu/drm/msm/msm_gem_vma.c:919:3: error: cannot jump from this
-> indirect goto statement to one of its possible targets
->   919 |                 drm_exec_retry_on_contention(&exec);
->       |                 ^
-> ./include/drm/drm_exec.h:123:4: note: expanded from macro
-> 'drm_exec_retry_on_contention'
->   123 |                         goto *__drm_exec_retry_ptr;             \
->       |                         ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:909:3: note: possible target of
-> indirect goto statement
->   909 |                 dma_fence_wait(vm->last_fence, false);
->       |                 ^
-> ./include/linux/dma-fence.h:677:2: note: expanded from macro 'dma_fence_wait'
->   677 |         sdt_might_sleep_start_timeout(NULL,
-> MAX_SCHEDULE_TIMEOUT);      \
->       |         ^
-> ./include/linux/dept_sdt.h:46:31: note: expanded from macro
-> 'sdt_might_sleep_start_timeout'
->    46 |                 unsigned long __this_ip__ = _THIS_IP_;
->          \
->       |                                             ^
-> ./include/linux/instruction_pointer.h:10:41: note: expanded from macro
-> '_THIS_IP_'
->    10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-> long)&&__here; })
->       |                                         ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:909:3: note: jump enters a statement
-> expression
-> ./include/linux/dma-fence.h:677:2: note: expanded from macro 'dma_fence_wait'
->   677 |         sdt_might_sleep_start_timeout(NULL,
-> MAX_SCHEDULE_TIMEOUT);      \
->       |         ^
-> ./include/linux/dept_sdt.h:46:31: note: expanded from macro
-> 'sdt_might_sleep_start_timeout'
->    46 |                 unsigned long __this_ip__ = _THIS_IP_;
->          \
->       |                                             ^
-> ./include/linux/instruction_pointer.h:10:20: note: expanded from macro
-> '_THIS_IP_'
->    10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-> long)&&__here; })
->       |                    ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:909:3: note: jump enters a statement
-> expression
-> ./include/linux/dma-fence.h:673:38: note: expanded from macro 'dma_fence_wait'
->   673 | #define dma_fence_wait(f, intr)
->          \
->       |
->          ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:933:5: error: cannot jump from this
-> indirect goto statement to one of its possible targets
->   933 |                                 drm_exec_retry_on_contention(&exec);
->       |                                 ^
-> ./include/drm/drm_exec.h:123:4: note: expanded from macro
-> 'drm_exec_retry_on_contention'
->   123 |                         goto *__drm_exec_retry_ptr;             \
->       |                         ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:909:3: note: possible target of
-> indirect goto statement
->   909 |                 dma_fence_wait(vm->last_fence, false);
->       |                 ^
-> ./include/linux/dma-fence.h:677:2: note: expanded from macro 'dma_fence_wait'
->   677 |         sdt_might_sleep_start_timeout(NULL,
-> MAX_SCHEDULE_TIMEOUT);      \
->       |         ^
-> ./include/linux/dept_sdt.h:46:31: note: expanded from macro
-> 'sdt_might_sleep_start_timeout'
->    46 |                 unsigned long __this_ip__ = _THIS_IP_;
->          \
->       |                                             ^
-> ./include/linux/instruction_pointer.h:10:41: note: expanded from macro
-> '_THIS_IP_'
->    10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-> long)&&__here; })
->       |                                         ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:909:3: note: jump enters a statement
-> expression
-> ./include/linux/dma-fence.h:677:2: note: expanded from macro 'dma_fence_wait'
->   677 |         sdt_might_sleep_start_timeout(NULL,
-> MAX_SCHEDULE_TIMEOUT);      \
->       |         ^
-> ./include/linux/dept_sdt.h:46:31: note: expanded from macro
-> 'sdt_might_sleep_start_timeout'
->    46 |                 unsigned long __this_ip__ = _THIS_IP_;
->          \
->       |                                             ^
-> ./include/linux/instruction_pointer.h:10:20: note: expanded from macro
-> '_THIS_IP_'
->    10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-> long)&&__here; })
->       |                    ^
-> drivers/gpu/drm/msm/msm_gem_vma.c:909:3: note: jump enters a statement
-> expression
-> ./include/linux/dma-fence.h:673:38: note: expanded from macro 'dma_fence_wait'
->   673 | #define dma_fence_wait(f, intr)
->          \
->       |
->          ^
-> 
-> I was able to find the pattern of the kernel source code that uses this pattern:
-> 
->   $ git grep -n 'goto \*' | grep ';' | grep -v "\*/" | \
->     grep -Ev "(\*[[:space:]]+goto|_goto.*\*\);)"
->   drivers/gpu/drm/xe/xe_validation.h:149:                       goto *__drm_exec_retry_ptr;                     \
->   drivers/misc/lkdtm/cfi.c:129:                 goto *labels[1];
->   drivers/misc/lkdtm/cfi.c:131:                 goto *labels[2];
->   drivers/misc/lkdtm/cfi.c:133:                 goto *labels[3];
->   drivers/misc/lkdtm/cfi.c:135:                 goto *labels[4];
->   include/drm/drm_exec.h:123:                   goto *__drm_exec_retry_ptr;             \
->   kernel/bpf/core.c:1776:       goto *jumptable[insn->code];
->   scripts/gcc-plugins/gcc-common.h:368: return as_a<ggoto *>(stmt);
->   scripts/gcc-plugins/gcc-common.h:373: return as_a<const ggoto *>(stmt);
->   tools/testing/selftests/bpf/progs/bpf_gotox.c:219:    goto *jt[ctx->x & 0xff];
->   tools/testing/selftests/bpf/progs/bpf_gotox.c:261:            goto *jt1[a];
->   tools/testing/selftests/bpf/progs/bpf_gotox.c:263:            goto *jt2[b];
->   tools/testing/selftests/bpf/progs/bpf_gotox.c:284:            goto *jt[a];
->   tools/testing/selftests/bpf/progs/bpf_gotox.c:287:            goto *jt[a + b];
-> 
-> I understand that Clang's behavior here is intentional and conservative:
-> any address-taken label in the same function is treated as a potential
-> indirect goto target, and jumping into a statement expression is diagnosed
-> to avoid semantic issues. This aligns with:
-> 
->   - [Clang] Diagnose jumps into statement expressions (D154696)
->     https://reviews.llvm.org/D154696
-> 
-> At the same time, the kernel is not using _THIS_IP_ for control flow.
-> The label address is used purely for diagnostics (lockdep/DEPT attribution).
-> However, as discussed in:
-> 
->   - LLVM Issue #138272: Add builtin/intrinsic to get current instruction pointer
->     https://github.com/llvm/llvm-project/issues/138272
-> 
-> using blockaddress (&&label) purely to obtain an instruction pointer is
-> problematic in LLVM's model, since blockaddress has defined behavior only
-> when used with indirectbr or for null comparisons.
-> 
-> Similar issues have also been observed in other contexts where indirect
-> goto interacts with address-taken labels, e.g.:
-> 
->   - LLVM Issue #28019: Wrong 'cannot jump from this indirect goto statement'
->     https://github.com/llvm/llvm-project/issues/28019
-> 
-> Given this, I think there is three possible directions:
 
-Hi,
+On 3/11/26 2:27 AM, David Hildenbrand (Arm) wrote:
+> On 3/10/26 16:58, Anthony Yznaga wrote:
+>> Droppable mappings must not be lockable. There is a check for VMAs with
+>> VM_DROPPABLE set in mlock_fixup() along with checks for other types of
+>> unlockable VMAs which ensures this when calling mlock()/mlock2().
+>>
+>> For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.
+>> In apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
+>> current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
+>> applied to it. VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
+>> When these flags are set as default in this manner they are cleared in
+>> __mmap_complete() for new mappings that do not support mlock. A check for
+>> VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
+>> mappings created with VM_LOCKED set. To fix this and reduce that chance of
+>> similar bugs in the future, introduce and use vma_supports_mlock().
+>>
+>> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+> Should we Cc: stable? I think we should, to fix mlockall(MCL_FUTURE)
+> behavior.
 
-Thanks for the clarification of the issue.
+I found this issue through code inspection while doing mshare dev work. 
+I don't have a strong idea how likely it is to happen in practice. If it 
+did it might not be easily diagnosed so I'm fine adding the tag.
 
-Indeed, the issue is inevitable as long as 'THIS_IP' macro is used along
-with 'indirect goto' statement nearby.
 
-> 1) Continue per-callsite structural workarounds
->    Keep separating indirect goto usage from any code that expands _THIS_IP_
->    (e.g. moving PROVE_LOCKING / DEPT paths into helper functions). This avoids
->    the diagnostic but requires ongoing refactoring and does not scale well as
->    similar patterns reappear across drivers.
+>
+>> Suggested-by: David Hildenbrand <david@kernel.org>
+>> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+>> ---
+>> v2:
+>>   - Implement vma_supports_mlock() instead of vma flags mask (DavidH)
+>>   - Add selftests (Lorenzo)
+>>
+>>   include/linux/hugetlb_inline.h    |  2 +-
+>>   mm/internal.h                     | 10 ++++++++++
+>>   mm/mlock.c                        | 10 ++++++----
+>>   mm/vma.c                          |  4 +---
+>>   tools/testing/vma/include/stubs.h |  5 +++++
+>>   5 files changed, 23 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/include/linux/hugetlb_inline.h b/include/linux/hugetlb_inline.h
+>> index 593f5d4e108b..755281fab23d 100644
+>> --- a/include/linux/hugetlb_inline.h
+>> +++ b/include/linux/hugetlb_inline.h
+>> @@ -30,7 +30,7 @@ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
+>>   
+>>   #endif
+>>   
+>> -static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
+>> +static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
+>>   {
+>>   	return is_vm_hugetlb_flags(vma->vm_flags);
+>>   }
+>> diff --git a/mm/internal.h b/mm/internal.h
+>> index cb0af847d7d9..8c67637abcdd 100644
+>> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -1218,6 +1218,16 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
+>>   	}
+>>   	return fpin;
+>>   }
+>> +
+>> +static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
+>> +{
+>> +	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
+>> +		return false;
+>> +	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
+>> +		return false;
+>> +	return vma != get_gate_vma(current->mm);
+> As discussed, it would be great to find out whether checking
+> get_gate_vma() makes any sense here. Likely not. :)
 
-Yes.  This workaround would work anyway.  However, hopefully, we can
-resolve it in a better way if any.
+I do think the get_gate_vma() check can go away, but I figured that was 
+better done in a separate patch. Is that better done as a separate 
+submission or should I tack on patches to this series?
 
-> 2) Introduce a compiler-supported alternative to _THIS_IP_
->    As discussed in LLVM Issue #138272, a dedicated builtin or intrinsic to
->    obtain a best-effort instruction pointer for diagnostics would allow the
->    kernel to avoid address-taken labels entirely and eliminate this class of
->    conflicts.
 
-Or introduce a new attribute to indicate that 'the symbol(label) is not
-used by indirect goto from out of the scope' or something?
-
-> 3) DRM/drm_exec-scoped refactoring as a pragmatic middle ground
->    Since drm_exec is the common convergence point where indirect goto and
->    DEPT/LOCKDEP instrumentation can meet in the same function across multiple
->    DRM drivers, we could refactor the drm_exec usage patterns (or provide a
->    recommended wrapper pattern) to structurally separate the retry/indirect-goto
->    region from instrumentation that expands _THIS_IP_. This would avoid
->    kernel-wide churn while addressing the recurring failures in DRM drivers.
-> 
-> I am not proposing to weaken Clang's diagnostics. Rather, I would like
-> feedback on whether option (3) is considered an acceptable short- to
-> medium-term approach, and whether option (2) is the preferred long-term
-> direction from the compiler side.
-
-I'd also like to hear feedbacks for what you mentioned.
-
-Thanks!
-
-	Byungchul
-
-> Any guidance from the LOCKDEP and kernel LLVM maintainers on the preferred
-> path forward would be greatly appreciated.
-> 
-> On 12/5/25 4:18 PM, Byungchul Park wrote:
-> > Now that CONFIG_DEPT_AGGRESSIVE_TIMEOUT_WAIT was introduced, apply the
-> > consideration to dma fence wait.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >  drivers/dma-buf/dma-fence.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-> > index b313bb59dc9c..f2cc7068af65 100644
-> > --- a/drivers/dma-buf/dma-fence.c
-> > +++ b/drivers/dma-buf/dma-fence.c
-> > @@ -799,7 +799,7 @@ dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
-> >       cb.task = current;
-> >       list_add(&cb.base.node, &fence->cb_list);
-> >
-> > -     sdt_might_sleep_start(NULL);
-> > +     sdt_might_sleep_start_timeout(NULL, timeout);
-> >       while (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) && ret > 0) {
-> >               if (intr)
-> >                       __set_current_state(TASK_INTERRUPTIBLE);
-> > @@ -903,7 +903,7 @@ dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
-> >               }
-> >       }
-> >
-> > -     sdt_might_sleep_start(NULL);
-> > +     sdt_might_sleep_start_timeout(NULL, timeout);
-> >       while (ret > 0) {
-> >               if (intr)
-> >                       set_current_state(TASK_INTERRUPTIBLE);
-> 
-> 
-> Best regards,
-> Yuseong
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>
 
