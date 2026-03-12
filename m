@@ -4,118 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC553106ACE4
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D634106ACEC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:53:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 220906B00A6; Thu, 12 Mar 2026 16:49:26 -0400 (EDT)
+	id 35CAD6B00A4; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F8DE6B00A7; Thu, 12 Mar 2026 16:49:26 -0400 (EDT)
+	id 2DFFD6B00A6; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 104EC6B00A8; Thu, 12 Mar 2026 16:49:26 -0400 (EDT)
+	id 1B8436B00A7; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 004E66B00A6
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:49:25 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A67E2C1B7F
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:49:25 +0000 (UTC)
-X-FDA: 84538601490.02.AED8A5F
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B9F5C1C0004
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:49:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BTBw9zvE;
-	spf=pass (imf21.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B1346B00A4
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:53:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B055B8B5B4
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:32 +0000 (UTC)
+X-FDA: 84538611864.29.55873EB
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9A7BE2000B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:53:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=L9VE7G8O;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773348563;
+	s=arc-20220608; t=1773348811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcxaHBH06BievOHzyx1+73CNXFI2tJTwpc5M6kHZ1Mc=;
-	b=cIU53CCXOn2oU7IKV3BxfkNl9ElLNfN8DlIoE6BNrMFNn4DvQ9ZO06OPYUkEfrKAFcj7OE
-	x+m17ph51YQmbh60Zb0tgdAEf6ErHkWd6ozoFsuyT7NNWpJdT6uo9iDhfwUSZopC8NbUmk
-	OP/akfvMk5gd2gnFVwBma50GcIsxj8c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QV2CFG026yzLrH1KSoyywnXP2sha9Q6L0bPhjH46BqY=;
+	b=yYjlaUzTQnHqHn4xdFcM0VE/Fko1vB+VSHuIdHVTpZfcKlZllxZQ4Nco00ZunUKd1cchrb
+	cQNx8o7uRWdXW3mbjIe0//9OjJLQT+eeqB8YrzDMfLldD97EtWNoWzaYeYWixELWC+qE+L
+	HkFS+hJ/B/QbtjC2LvnajPYBckvh7I0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BTBw9zvE;
-	spf=pass (imf21.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773348563; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=L9VE7G8O;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773348811; a=rsa-sha256;
 	cv=none;
-	b=y1MVESWJSuGvw/KCg47aoq43D060KoLiCFU7P5bjVl9VAHhSKEuEuBkfoFCqFFRfHKZNyY
-	PRbtf4YZy7DxChdTHQm3982VRCXtcCIJ215S/2xUzeERe5F0F2yQFGDMJyL8l1Hxh48B66
-	StiJs/tTUPkBfLG8JMsfncz5WB6FLMo=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-485445e80bdso12747105e9.0
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:49:23 -0700 (PDT)
+	b=qrSxuLiKP+wzv7twWTHFQrbHxfuUnkn8XYaG5q6PCVRoXHRY5NT7hwvRPKvlBOM0X+eCUZ
+	adliGdEG2c+gp1g+yLrfs20OXRuaES/zXcs6IIxtlnceDwRGjTZOHLalShMsox2xLg7ZjY
+	rCTONh3LQsbbNub1wQBCRjOJdnrX3ug=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cb20bcff5aso144240285a.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773348562; x=1773953362; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lcxaHBH06BievOHzyx1+73CNXFI2tJTwpc5M6kHZ1Mc=;
-        b=BTBw9zvEf5+mHhJ+0U0WZGZ/yrRzJTFFPG/A0jrLtbdaslWJKRlO8PrRvK3sJLjNpX
-         wS+iMU5eSnM7/8nm3PDapIiW5PsV9mx/zgOPaJi+PCDAqdTJiyKg3nlxslmpeRD9eA46
-         rcu4sKQAmNERYr4/nH7qOTAU+qEkKu6CKa/doGDBxk461d1rRqFc4BPvW7QAiNOT/smo
-         ZUiBDjKvXM97NngT1AgMCaDJLyAw7gFBRtJR0H8adTmp2Od4md/VthVE44xbzpuMGWAs
-         EPdgmwgjISrDoPbeun89bSYAZPg9E3fzrcPob7srz2Y0PH7gyzYIgqycHuIXeERENDZw
-         6LNw==
+        d=cmpxchg.org; s=google; t=1773348810; x=1773953610; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QV2CFG026yzLrH1KSoyywnXP2sha9Q6L0bPhjH46BqY=;
+        b=L9VE7G8OrF02FdN/JVu4gorKvMIcsZKmJ5f+o9sl5IxFNjBKpSfJFvs35LS1lw6+qq
+         pKlbXm5zCfg59mCd1kSfkcH2Lu7BkXt5slAT+hyvPTJvwg+1W/gPDkwlFgRylO7QQD38
+         fx+BzZ60yEucewuqJv9XVQHM0sf1rOB/ANQhOCzjackmtVkD5OzZeNwj0fE+Vhbv7R45
+         rQZ5OdMSWyuYk6XEmj9ANwSJ421F9f0mP/UAxhN42ms7vsnVy6glXPoiICPSrpZL9nOI
+         Gd8CXfezr3yoJg5t4V1hVx5x1EK2MkSpXJmcDc/h4At9gQSdrlb48AY63NK4DYbRexV1
+         QSSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773348562; x=1773953362;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lcxaHBH06BievOHzyx1+73CNXFI2tJTwpc5M6kHZ1Mc=;
-        b=xPhTpeXQ2BZK/Qicokbx8UGiHthSPS/t0MF/nVquW+c3rdSkcbOwP+t8qfuMXjwv+/
-         kVE6I3RQKMlPsbP70JBeoKwf7SvhyTeVcSmMw9hXPEkIIi+5Lhaq9eDvHtI9M681ewDS
-         T2vmViROJTMJofx2QO7JtrbLsRWbbXCza/uH6+mq6o72lq0OdWcsI3sGpPvfTAZx204F
-         dzAyvOsRgVjwaWuyGzh1gGeDeWeSbOLsTNizGq6VHPsaJ5O8OpQ8FB3ZqYO57tawCZg/
-         sFxsUxTnv2XvH4smOPGQFXcsI6umPEplMtDSUFE1xJA1d2+7BFkL+4tjd2nVbyVdxhOh
-         4IiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUotPP9VjCOc0ak1ZUKW3nyJ3dKrniSR8ScHtVL3NEqvtChpWhcw17z01CuqaHCc5sFR4PqRxFWWg==@kvack.org
-X-Gm-Message-State: AOJu0Yx+DyUbAEsQ+oO3+DwfwYXVv4jgyEFGzQsmIiRw0gdU0AMWQV7T
-	R6ydnpU42m2rucTdpj1Wi85uuXXUlAINLtULT+nLSv1bIIVcELy+OLOn
-X-Gm-Gg: ATEYQzxS/iF1uUAaugMAP30Z1yqDLIi5oh6PjgoWGPuUjOBU6hxN6JGo11vYUtDtBww
-	6v5aFttim0ZcmdbOCbVmrBV4H6i7SkXh1PrxI7kvPEljdx9OzVNu6YzG5qGhndKUEle2hDsgEyt
-	BMSFZvDocfds/s3xgqUpZGeZ+5naNN40ZgCcI2r2E50JmNKI8tIi9L+9KFoVdj31XOBoUNqSRNS
-	WPOEPttwHV0yvDMjb5wNvxzewBaZaksOlKgWYYA55cbyOxLtY6ctpJiyRPbv8imqZRYpM+UXxpF
-	R2Zxs22XZQpowTAtzHiCRMEWgnq0m311b5T4DltUEOfUWpEY9fClvmiSgJxqcXOOip/WxJBlBl9
-	njCaqKlIxIKCei58lnBdyD5E2l7BbtI1c4FkxMhIOsZgGVcUidxBuD6g6sNaE1eK4E0cAcRrmSw
-	YQx3u52lKIKcraWIG5ldcoa9LqhA==
-X-Received: by 2002:a05:600c:46d2:b0:485:3a03:ced1 with SMTP id 5b1f17b1804b1-4855672737fmr12323915e9.28.1773348561566;
-        Thu, 12 Mar 2026 13:49:21 -0700 (PDT)
-Received: from ?IPv6:::1? ([2a00:23ee:2968:90cb:1c6d:1979:bcad:501a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4855778d268sm3646795e9.8.2026.03.12.13.49.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 13:49:21 -0700 (PDT)
-Date: Thu, 12 Mar 2026 20:49:20 +0000
-From: Josh Law <hlcj1234567@gmail.com>
+        d=1e100.net; s=20230601; t=1773348810; x=1773953610;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QV2CFG026yzLrH1KSoyywnXP2sha9Q6L0bPhjH46BqY=;
+        b=N9/5p9bBPEh7B2lNYaLrWe3sGdA68YVkJS1qNu1NdXmv/fUTEv1970YNW/FaOh/CcN
+         XDeij/rQg/gnHGccBgfVSD47qJb6kGBBCeCqbbSqkmawj4xSZLLBiqzLK3OpDEAsv6tg
+         C8qnKdQ4EA8S8nK9RTZrUFPLPHkpVumZGftvBtMdZMteaZgWy85cyIzEKysjl6TNBdu7
+         1oZQcb90B3MdPdRseD9XSBIVyZhz37os0BvXxmp/strQQmX4lP8imb7vkUa1Jtk/s8HF
+         lEuxFhvtR4avA02/l29Ayldp7VZyseO2Ta6Q7uio7auWhyPs9rdS6rUjAJImECQxPUh1
+         SLSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYpHsKZTdIxu+qJFOvUiWEHRYlV5gt1n+kEjutDNnPFupng3bKEGJc0k2Gn7fXyJGdlOUv4XVtPA==@kvack.org
+X-Gm-Message-State: AOJu0YxRG+dAa7nY/x2vKIosmSa4IXYMnFtYyG9/lg+i6A3JFbQ2Jqi/
+	lni3+i6VGN/ciLiOHn2COSGgc4GayBLm6/YkGgG4DnoyRIAbK7wA4CMMlfQHKN8Xdho=
+X-Gm-Gg: ATEYQzz+t2E/pJn2Ned/xv7Acg3SB8K7FNB6hyNzbD1xNUS1HBkhyMyrGQPCzpwGiXY
+	xoH4Y/QFniqiQ7IAYSZAYOx1F6OhuaOZfGb6GKhmDc+uMCKHLEurtbMMg6L8QySsJ2630u2G5a3
+	YPIBoEejvr2GVeNkMOZRLNtGuS8Hy8Vmqdk7SYCaJwi5i0Tuv5qQ3HGn0L7lLcOF90tCgOUC5XG
+	B7NpXZsty8mZlIGLgZRKpDB3AOHE57VfcW56xVAgNcuLS6D+oswD+zck0n32ErFW07Gt3PhBpu4
+	m7eKo8NuhTjRnbkyMiMMLXi6eKsoUktjLzvNSZS/pohDfCYtnJEo1W7wx+hzyb0mH7KqSHfS1q6
+	4fwn/fqyLsz9h6e1J3c4XfbChLHti2VF+Hr2gs2g+UOBCZLG3/e1pOJ/pKDW2KPJl3aVtEZdaQw
+	kTWXSX7rICYVYPLVEsY/TmLw==
+X-Received: by 2002:a05:620a:3709:b0:8cd:9599:b7c7 with SMTP id af79cd13be357-8cdb5a5c90bmr169145985a.23.1773348809607;
+        Thu, 12 Mar 2026 13:53:29 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fbd120sm412847685a.7.2026.03.12.13.53.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 13:53:28 -0700 (PDT)
+From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Josh Law <objecting@objecting.org>, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <b6327414-237a-4262-bf07-c506908fa263@gmail.com>
-In-Reply-To: <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org>
-References: <20260312184054.23481-1-objecting@objecting.org> <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org>
-Subject: Re: [PATCH 1/3] lib/maple_tree: fix potential NULL dereference in
- mas_pop_node()
+Cc: David Hildenbrand <david@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/7] mm: switch THP shrinker to list_lru
+Date: Thu, 12 Mar 2026 16:51:48 -0400
+Message-ID: <20260312205321.638053-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <b6327414-237a-4262-bf07-c506908fa263@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9A7BE2000B
+X-Stat-Signature: 6br9edfd9ymfqhciwnnrcfxrqzaozezh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B9F5C1C0004
-X-Rspamd-Server: rspam08
-X-Stat-Signature: hqngb8e416hbhq5n1fr4g51potdj61uf
-X-HE-Tag: 1773348563-189282
-X-HE-Meta: U2FsdGVkX19zj9MF8/sz2pyP4Zn37Lm4X4Ept9RPU/Zb+ZSPhNthxMdkBDDPxLCeK4RQmnBWBFKnXXnAlz9JHkW8W0afjcUxbY1B/B45nWMkIlwrYS7qjqD9gleGTfc80LtPVVKpp15GkXKbuYtGRxsWAVOqPqWhY+ezZBLN3fffateR+sljlJMYuQKmFEqGRFE1AlOMQ1MBsW6E2AJ1x+50WW3QD9NkHgh3SRSFU3EOqcpv8fNitIx6MlUXVfd0V7NFKBlc3+n8X/TJl0PC9ASRl3owfLhSUqVKOXc3G/Y2gs3BJ41R5VlOdp9uLQAopKze4UuiPVZ7wHhze5FeuHJlTiYmVpaBl3907ieQxHr8DoRf0qpVpTm+MIr9X+HKDBVgdKpDspM4sEzi7fy7f6LdnWjxg/JjMNwV5+dXTdiW7a6IanRSh+pN4UiRmwBhiHIVOkKTZhHocKGYJMg7/p3jXkpMk8Jw/lIXRRRMu6bwWzY9kBpfx9u6vXaB2VqzWIt3QPKUvZrQKOLyOM+dr3nuAFIgW5ke1pylSdss+6IrdJ1bVX8ySvGUpHM+F2SrIixXLvk4TmEJwJN8v+4yYrzN1M+gg8oCOUU6PeTuvbFatza9ZaIgNuXvsJFnEnbwbu5effqFaA1zH83SMKMphCjH8Mn6WUKBjp2IWIetwYXanxeOkkJzsaDUBzDyJ5mZjUyuhxJIwV6vx5rRzMw7auaYVpdTGGIZORVWLrcoyYMrMp9AZ1bqT1b9C7dHKCmSzP9Kq0rj6NRvvRxhnjbsT2VY5DX+SW5wDc41f9q/SFSwL9MY/d9rllWE0O+vOwFsmJRYOAqiPA3wLiomKJ4+OIczncsVQFZy/RdgDngNYItd18nDDSa4aVHwxYZER3zCEPVlBKLJmbofj/PRdw208z9Kk1DwDqxlpbMDTPhXnQiAOFYriNajg/m2ph5sHZzWdK7QKWql9HH+UgCmTJH
- Q7oC1IMF
- 3k0tGY9ryEqEmw/rXii1K6wdIzHToW08EQLMSFt/Um6CVpC5u323OI1dQ5wMKQNH2Vv+fYP/uo13vsIghCQ3fm0MJ8kbWavTAERgqL0jgF8tIqbE03kfhyQCQSYUKxTYKOGMLJAgqiU7rbvj5p0a8TabIo5hg0q7Plb0cZ3s9Gxtm1STn7WcCWSB+OX8DTWRTDdwTvfMfazrDudZym2yaht6kMqpnUutNAYkWkMnxoZ+H1R8TsOCrwogJqm2hNU8OZOvfimTxkU9Yb3Dwrpo/GgII41BWuDRq3+4ZPTtveKjvhT9znwVQdvXr9mZ3fk9VLCrph8S0MAugCzE0orJlmMDq6xVpogGwtYdzswb4X3fQQnLsTtcpg5xXnTlap43b1FkqFpH4U99/VDsx+A0lQH1UbCAW1y89AQqCOMTgoWmqTrfxyf82ldpGeEvAQcPGvDnH6ujyqzS1P+/G9Q4YKkzL1FfDdeD4yWO3KHTTtpaeV0g41/5A6HAisKXC0Cq15gXFa1hgu45ixX7EM+LPys6D+wvwC5eefQF4+2lr4Ei8P2zWl7yv5vl/xRdLR7ve8P7ZdYkSp8v+JcFcN0KED/qHoX7PvW8I4NI5z1vBDCNyTtcGW7F7wGmfqyaf/DwlDm/L
+X-HE-Tag: 1773348810-285261
+X-HE-Meta: U2FsdGVkX1+YjGQzQ0ZgDhFE+rE2O9FZJ0nxBFx6ysLg3XG0GfiqeeNsaAjMxrF+j5Fhm/PpqYpvHLAQdvDLVEyFClihxA2kA9msOi7yP/jJNsiCXdtj8N1BPI3aBqlZPqBQ1MtI3iKPS3WZTNLrMDT1Gwt7PUawdjAe6Eai5WyudU838NwbtvtanlSb4ccji8w474QMtB7wT/B2qpnlc+KeaZncgaIXBap9cVfTRRIsi4iNhNDffQgoO73YPxReejqH0nPOAV7hXVll1tbXbQ4oGtavScqvUeWAm8dPc2goHod/YcVmnBc2GhGhaPb2PnbGx/HNifgfw33+v9sdLby4rRx0d9QTJF7FGWVnp9hZL7596R5Rp2Hcf0dPdIcM9ljX++ZeqhFW/I6EHl6R2U6lVORvm9CojqvRLHM9En5m71hgittXmohQhE82wyezwd9TBiM6yFRk883hNtEF1UOCOxsKhqNpuv6dyR3e/eYB2rcDMkyW+mzNbmtti1NMdvENgjFfZaatdOqVZMcskSZS0s5i2KVXO7ZlgGezQ0+uDWQMwPKGx2kDV3n0kHy0Xg/3+NR4ePfQBwcoltl+BpwXrxHOElb+P1I4bCuqg6hhnC1ila3Rr5uz6BETLUjHAj8ajm/yQuboiD7Maz3itn+6vXpCh9j+0daQgcrMItrZqnyMBQgqQFnNDzmgQ4UJp5vvBJhLRW9jkOGnQLRfaVQQVrkGWUrWYlvSEduBrQi72HHm/kZQj6N3lTpwOLjH4cluiNDor1XiVT/e5rVLMNxVIRZ+a6PjvpgroX4smAW1dbz/WVCEnXb5dZO/kreAbU4tyC3TKr534ttt5kR5/SoS+ADVdytKo65ouMx0zmufZtJGeSjvs7fUlsHsJqhJDXchmNIzCD3fGktIjH4fAK0D0+RBW+kzOIW6dc/cR0O86m4RssRDGd4HX8/5xrjCzygHYqQFJLty+iCtz+g
+ BrRb3CUs
+ h9zlQnvRowXvDuKVwtPqoduwKl7rJxKBw6HC2wS8eylz8HhKwDgj30Fpz6QCtKe4kohCzgoeU11+s+9NlYj/SEkeFVjc0YAKqSe0IXfmchF05lIySQSIdS7TN0hOA/WBzXhRSnWc1G7sLKq5AIlWXJLrgpStNgP73JetCNVdbDkZ+1YlBmdcf2xu5nQrvONxKJxtP4z0EoUrfbywS6tG4jGpEKg6Ss4MGOhKbV3Oy5Rjejz460WKrirT9TNuPeoe901SNhh6aDx0EVHINRXiPH96SxDYVSO2+lXAYPGnQQBB0GH9uiW9tZmRSdNgRiFf4kRTpwEyeydShg+fkM9jFyNK90VgG2S2c1P5CJqG/Jqx5jQhqcG33MStVrA+49ulGnLaAA5qoQYU4x8XoEuOr84dTxesnT91Du5WY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,56 +123,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-12 Mar 2026 20:45:32 Andrew Morton <akpm@linux-foundation.org>:
+This is version 2 of switching the THP shrinker to list_lru. I fixed
+the lockdep splat Usama had called out - with explicit rcu_read_lock()
+annotation based on list feedback (thanks!). I also split out the
+list_lru prep bits, per Dave's request, to make review a bit easier.
 
-> On Thu, 12 Mar 2026 18:40:53 +0000 Josh Law <hlcj1234567@gmail.com> wrote=
-:
->
->> If kmem_cache_alloc_from_sheaf() returns NULL (possible under
->> GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
->> and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
->
-> This is such a glaring bug that I wonder if we're missing something.
->
->> Add a WARN_ON_ONCE NULL check after the sheaf allocation to bail out
->> early, matching the existing pattern for the !mas->sheaf case above.
->>
->> Signed-off-by: Josh Law <objecting@objecting.org>
->> ---
->> lib/maple_tree.c | 2 ++
->> 1 file changed, 2 insertions(+)
->>
->> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
->> index 739918e859e5..87a2ba6468ca 100644
->> --- a/lib/maple_tree.c
->> +++ b/lib/maple_tree.c
->> @@ -1063,6 +1063,8 @@ static __always_inline struct maple_node *mas_pop_=
-node(struct ma_state *mas)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
->>
->> =C2=A0=C2=A0=C2=A0 ret =3D kmem_cache_alloc_from_sheaf(maple_node_cache,=
- GFP_NOWAIT, mas->sheaf);
->> +=C2=A0=C2=A0 if (WARN_ON_ONCE(!ret))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
->
-> If we're going to do this then we may as well restore !__GFP_NOWARN,
-> get more relevant information.
->
-> But a GFP_NOWAIT allocation attempt can fail relatively easily so
-> callers must be equipped to handle it - perhaps no need for any
-> warning.
+I was initially looking at mm/shrinker.c and the scalability issues
+resulting from shrinker_alloc -> for_each_nid -> for_each_memcg. In
+the process of working on that, though, the open-coded THP shrinker
+queue started getting in the way. Switching it to list_lru seemed like
+a good bugfix and cleanup (9 files changed, 140 insertions(+), 300
+deletions(-)) in its own right, so here goes.
 
-Well, fair enough, but WARN_ON is equivalent to a "oops! Something went wro=
-ng! We will continue anyway", NOWARN is quite bad for logging that that wen=
-t wrong, usually it's BUG_ON that causes said kernel panics and that, which=
- is a bit overkill, that's why I didn't add it, and it warns once, then bai=
-ls, that's why I'm a bit on the iffy side about adding NOWARN, what's your =
-opinion on this, do you think a NOWARN is better then warn on once?
+Patches 1-4 are cleanups and small refactors in list_lru code. They're
+basically independent, but make the THP shrinker conversion easier.
 
+Patch 5 extends the list_lru API to allow the caller to control the
+locking scope. The THP shrinker has private state it needs to keep
+synchronized with the LRU state.
 
-V/R
+Patch 6 extends the list_lru API with a convenience helper to do
+list_lru head allocation (memcg_list_lru_alloc) when coming from a
+folio. Anon THPs are instantiated in several places, and with the
+folio reparenting patches pending, folio_memcg() access is now a more
+delicate dance. This avoids having to replicate that dance everywhere.
 
+Patch 7 finally switches the deferred_split_queue to list_lru.
 
+Based on mm-unstable.
 
-Josh law
+ include/linux/huge_mm.h    |   6 +-
+ include/linux/list_lru.h   |  46 ++++++
+ include/linux/memcontrol.h |   4 -
+ include/linux/mmzone.h     |  12 --
+ mm/huge_memory.c           | 330 +++++++++++++------------------------------
+ mm/internal.h              |   2 +-
+ mm/khugepaged.c            |   7 +
+ mm/list_lru.c              | 193 ++++++++++++++++---------
+ mm/memcontrol.c            |  12 +-
+ mm/memory.c                |  52 ++++---
+ mm/mm_init.c               |  15 --
+ 11 files changed, 309 insertions(+), 370 deletions(-)
+
 
