@@ -4,127 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB8A106703C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B07106703F
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:42:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7D136B008A; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
+	id D05D66B0088; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2AE46B008C; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
+	id CDD1B6B0089; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFF1A6B0092; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
+	id C06B06B008A; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AD09D6B008A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:29:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 777061401D9
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:29:50 +0000 (UTC)
-X-FDA: 84537644940.29.44B2865
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3BE5E1C0016
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:29:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=aOdcUHgS;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AD4B36B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:42:42 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 758AE8AB0A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:42:42 +0000 (UTC)
+X-FDA: 84537677364.20.142C3E6
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DB1024000B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:42:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773325788;
+	s=arc-20220608; t=1773326560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q3sgA+5xvHiUIUrR8LGZnCr/90wuIFp1Jeb0b0kcwnw=;
-	b=yCARoRbS58c1hzR9foucAK3lqD/FywXVQPpILmQ61NRLCW2S31tFPM+SEPrbe+32+PVsTW
-	MPtXnYz4kBjjUOfsExucCgGoqFH5/VddLfjPTqiP1T/C8AYT6K+XMpgtDpKa5zfdUo2csM
-	A+z2UWw4CeJCEgtxFLbNOG9a4+OC8TM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773325788; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J5MpEgXZM2RU+4IMYDviCY6ylONLGtZnlx0+GdH2avk=;
+	b=4/pP0mXLav1aOodDcXE+XJBf6LJjc/mq5v/yXf+Jw6VFwkw9cClzXUyNE63FLF3sLsbUAY
+	jNRziZhDvK2Agrj9OQfcP/v7vj2fcBO+8qXXo0MP/Ng7D7UHmVDabPKdbp/ygn9DNOnXXa
+	WMy8ZrSu9hlmWJCpasCkXXEboMBRdxc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773326560; a=rsa-sha256;
 	cv=none;
-	b=blO48FQ7dB1ufAJYp94vZtWfzddvRQTfZveRzZOc5SLRC77TCzDGwoL5M+BWeu/LggH7/Z
-	x2lNd+Dt4Qx/LswOYBLNoSBg7exhM2d+KsJQ2y5EzmDP1X6P3iZ4LsSVVzJ6r/vB9tKT/o
-	u3JLIDgTchN7cxrn5cWTjpWyxxNmi3g=
+	b=QanOBjGpAVeLk4v2bTM9gb4izO9LBd6vwYNH9/36/VpKoHrglKsyUO2L34ieEDa/Xm7vdt
+	ID8nZAovVA9kSeLew8ZcePDGwDmtkcQfjmMHM96wsmpm5DsGrAfak4N0MVgBmxw0feDY7i
+	D8titZSEsx8ta4kfAo9gP4vuBlqvt9M=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=aOdcUHgS;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773325786; x=1804861786;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=U6h2kSkaL3m+HufZ+v4XEQzA63uvN0k+ygU09TQOjv8=;
-  b=aOdcUHgSV4abyZsv83d8rq5gVuwxbbg5CjWpho6kRbAMwYJtu/5HHvP2
-   AoXnXNbpc/vl8rUn4zBcjmusLp1rpjQ+qp/5fNqWx5AKku5RX/2sU8d6/
-   LxH0H0oH1TrynlgrUm8p7HnsSaQ6ajhoQo5mBHF8RMyA6zZZhwJ82RlYL
-   9QfvJbAZe4o4Sj287Np1i1em1qTOHMnNBUGjSN3zsXaaGDobcqLPTd5Ad
-   v3K/Fx/UwU/6un3fhdTZvQnfHYk31rPLc1nXQSWrJrOQ9b7y+LO/wMOkU
-   mxniSLlRYeCteSu/qvycT2OwUbDJjC9YUXqZEujJVhdIRJ46lRieSIe+9
-   Q==;
-X-CSE-ConnectionGUID: RjGyXSFnQyOLnQpxcGz2Mg==
-X-CSE-MsgGUID: lE6kMTL1T5m8jIbBCuiPuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85773985"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="85773985"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:29:45 -0700
-X-CSE-ConnectionGUID: 4MKoUK6kRgGlaA8Dhfivaw==
-X-CSE-MsgGUID: 5lbBIi/WTwK4sairjG9Ekg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="218641912"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 12 Mar 2026 07:29:38 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0h2c-000000002Yj-1R2Q;
-	Thu, 12 Mar 2026 14:29:34 +0000
-Date: Thu, 12 Mar 2026 22:28:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 13/25] mm/init-mm: Annotate static information into
- meminspect
-Message-ID: <202603122259.3cXlDDN9-lkp@intel.com>
-References: <20260311-minidump-v2-v2-13-f91cedc6f99e@oss.qualcomm.com>
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWr1b0B1FzHnGd2;
+	Thu, 12 Mar 2026 22:42:27 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id D017E4056B;
+	Thu, 12 Mar 2026 22:42:36 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 12 Mar 2026 17:42:36 +0300
+Message-ID: <2a6c346e-6604-407b-9d52-1cbe15486b66@huawei-partners.com>
+Date: Thu, 12 Mar 2026 17:42:35 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311-minidump-v2-v2-13-f91cedc6f99e@oss.qualcomm.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3BE5E1C0016
-X-Stat-Signature: ga3ubj86dcxzxryx8a1tf9z7149wh6z8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/4] mm/damon: Support hot application detections
+To: SeongJae Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260311143912.96834-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260311143912.96834-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: 7itwmpcbo6dyxr95q47bkju97g4tqk9p
 X-Rspam-User: 
-X-HE-Tag: 1773325786-661239
-X-HE-Meta: U2FsdGVkX1/x+zq6b/OyeeqJujETSYH+CQIbfbykWqAOB7wKP5PdsHWRYT8TlBK5iAgjVA5otCyY7WwcGYFWfIgpjX0p/GIDAWvtURFCKwmvw9ETgPs0Q3iOXKSXdLhzSMGmYeTR28Bjb5BbenlWFP8YlL7AFltllb8npQRfYh5gc1F7DXwRJ7xsxzdfny5bdbn1fzWmqCwnjE3FyfGxDWTdAbDuFbUbcTIoSHd6OZDB3psDSvwbRu1QG/7898sBb4272y82vP8X1/fXpV3GEj3PECTsVlE12PtlkCcs/5Ho8xVzzDSc/AOhn6XN6GfozbEDMM0tCDPqOCfkgHBzMDZy9DWco0IGDCq1DveLI1g1DZQnRElAYLp9kBclyw+yrTR9qK4aGxL3AgLRGtYjrhjr5tFhNpxrUi14l9qy+LTn/xtLtEgFSDlAtZ87FVEu0FDpNUqtVj6pdlIga/gRuxP2wn0U4G/4LGO6bufPcHP0ZevHZg7mkA9uLXHg2gz0CXtdy0gfOI/LkK1sf8Om21d5bejQSeTKK2kqf6swYWWx7sCEAI0ZWnKOD2Z/cZFJcLQUK+ZayIHHq3jJVojxZuePXr/RNGbL+2VmV1Ctm2jvBTgF77oJZIsPP2ORCBn5jAf3L8Cq++qXTd30UYm1ngQ6uWWHv2uzw7rUAMmsfAWCg+ZkJ26kyBXpf5LJaFrmfvb4obmo7YVp211EMOGInNTsgEkOwviIjsE8GNjfFK2RuloEXYucMX0dsPgR2Mp+oyprFnAEj20nmIiEVu8eQkmLhGN0veywRALPb57netCZyLiFheRFyHVxBo86A71dZWufWDkPy0FfNGnifgsIAWg5Cjv+V0m0G58MSHvUyRDs1WIOy9+45SZe8EFXscqPVXrRaMb3cJ0eyQcl0DLVDTyo55Q/DT48STLAz+zZnf4rewesGuN8xXMDzIvxrbhSGBzI5apf0HUaifdam41
- BQW/GJJ0
- 6KtLAm082EgQC4sql90jaA2PmxDhBdq7Wk7HjHBY9Vnoq0ZpKTOgk6PVQAqQ4ArTOlqsS4RKdn/AYHjhvXfjqP4oTJpaIcrbAEhwoQpmfahjn3tkXcR9TzllL6KSbEwTuMiAOCBVTP+7g+38fn1EB1IzTe0M0uv3L+pzAvcZ9MHAQMIv8DVHoB3xySWewybxbXB9PYig5bDsYea4pRa//I+/ve6nv3wRdvREoB0gzXeSsdK2AhOaFQ4my0Hwhh1JHQgDNHe+52Y1CdnJdf14puL8X5xmXwQjOwus5eXbp527urNitS4wf4n4SutJ6WtD760xorW9lBvjG/BUcinOBF9M8hu1iCAR7zRns
+X-Rspamd-Queue-Id: DB1024000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773326559-915912
+X-HE-Meta: U2FsdGVkX1/M3ZBMwdnuATownUyDvtxjj8m9wKlkj88ao7KgcbHYIbRPnQHEdF0Hfgn6DEqdRUcmIejZNb56L+rBjAi0OP6GkRZvbfymkVKjYWoKO2huQWyZoMFVKjMOEdFIPz58J19HOI/AF0ZJ1q1UuvU0mrvfE+Dp+ABvdCDBSkR7iPeJkZQ1E94UZWjeGkzL0ueqjPp9ujNpyqHNptkotohSVcM0hBtYVyyH6e8e02j40ylyGcvtrLSvO1gnJc3k0Uc+s1iy3cQ9jkY9/kQP+RMwv6Ua0Scttck+zyoSP++8hhcrr+mcKWngIhWKtbIO6rqWGl2bR2AmXyzHpQZfQVpfSAJ04iJ09ATaAIwTWno6lhBZs+N0jNQBVOASIE8WSI1FVLSKjA+QWIhvlhqSEoWGm0pkvDcXSaB7EX4+OwRuq6rduCxEyWgNCRhY/U//01NnJNirLcEXrZtVIZ1Z9bLu9e76v6YYRrOg7TVH5CBckh5jRC021+m93PmoZ0D41sDBUgYOkEQoPPLxcVSFDJmzGG3je3bGVhsaWGUYLxdYWkvIfqhuTS0NVNPS+a05u1dyoOq5FUo8W70WFS4QTbDEtsRKI/bWWDrwwMYar8G7OKYFZ6CAC07+aGC3mPS6afhKLQkbcZgP71E/nletOS9j0RXKRA8VnXqvk2ZvKxBFbeCkLjp3ZYURsrb30ikicKT4M9eZb8QR83OqbS1vhO/TsPybatr6TedR85GM/3hFlNhSmSxBzQHxF58S9m5oq6rbM9brK1uwLjUYtn63SJTykXa41GMQJhGNgDJmsbZnHyVi/wlje3Y4ebTQNIIVwRwnvJBjYxkUyek2B5IFSHeUjutu6GJX3R8pGbg6ije1iCCU+6qc8cEgrDFgDFj9IP/ws+rVQwpmwquSnwUWhR2D6ClXhzpGLl19w67YZHYH1LkRRmuW3g0YOsZDLYxluGyxIlqGPpDELHh
+ BpERXTjZ
+ kR84h8wX7Qw08hFYymvb7Pu/IpZ8TPRCBqkf9fnND4Zs39SgrWlJjex9lBQwXT7ZtMrVSOxvO+sJaUOEYAxBbd1eNN+eY1Wx3EdHOZh7B2/sIOffzR+8dwEXWw6MIOXI6NLriXQc6cqLs+7hq92NwCzls4wzik5xJBFO5BZuuO0XfWd0Ivm6c39fWvik4Lkgxv0SuPHwRmUA161DwxKAibzOT7AU8l+lh2Pcw70R0F1YPkUVVhFeEp6Y/zYoCuDknQENwfB/WvdmZQH+CdGTQFCJLvPW9+BUFwzJd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,60 +93,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mukesh,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 343f51842f4ed7143872f3aa116a214a5619a4b9]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Ojha/kernel-Introduce-meminspect/20260311-042334
-base:   343f51842f4ed7143872f3aa116a214a5619a4b9
-patch link:    https://lore.kernel.org/r/20260311-minidump-v2-v2-13-f91cedc6f99e%40oss.qualcomm.com
-patch subject: [PATCH v2 13/25] mm/init-mm: Annotate static information into meminspect
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20260312/202603122259.3cXlDDN9-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603122259.3cXlDDN9-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603122259.3cXlDDN9-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/init-mm.c:23:23: error: use of undeclared identifier '_sinittext'
-      23 | MEMINSPECT_AREA_ENTRY(_sinittext, sizeof(void *));
-         |                       ^
->> mm/init-mm.c:24:23: error: use of undeclared identifier '_einittext'
-      24 | MEMINSPECT_AREA_ENTRY(_einittext, sizeof(void *));
-         |                       ^
->> mm/init-mm.c:25:23: error: use of undeclared identifier '_end'
-      25 | MEMINSPECT_AREA_ENTRY(_end, sizeof(void *));
-         |                       ^
->> mm/init-mm.c:26:23: error: use of undeclared identifier '_text'
-      26 | MEMINSPECT_AREA_ENTRY(_text, sizeof(void *));
-         |                       ^
->> mm/init-mm.c:27:23: error: use of undeclared identifier '_stext'
-      27 | MEMINSPECT_AREA_ENTRY(_stext, sizeof(void *));
-         |                       ^
->> mm/init-mm.c:28:23: error: use of undeclared identifier '_etext'
-      28 | MEMINSPECT_AREA_ENTRY(_etext, sizeof(void *));
-         |                       ^
-   6 errors generated.
 
 
-vim +/_sinittext +23 mm/init-mm.c
+On 3/11/2026 5:39 PM, SeongJae Park wrote:
+> On Wed, 11 Mar 2026 16:08:56 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+> 
+>> Hi SeongJae,
+>>
+>> On 3/11/2026 8:07 AM, SeongJae Park wrote:
+>>> Hello Asier,
+>>>
+>>>
+>>> Thank you for continuing this work!
+>>>
+>>> On Tue, 10 Mar 2026 16:24:16 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+>>>
+>>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>>>
+>>>> Overview
+>>>> ----------
+>>>
+>>> Let's make the legnth of the subject and the length of the underline same.
+>>>
+>>>>
+>>>> This patch set introduces a new dynamic mechanism for detecting hot applications
+>>>> and hot regions in those applications.
+>>>
+>>> Seems now you offload the hot applications detection to the user space.  If I'm
+>>> not wrong, you should remove "hot applications and" on the above sentence.
+>>
+>> You're right. I was not sure whether changing the RFC subject was right or not.
+>> I will change it for the next RFC version.
+> 
+> It's fine to change the subject.  Please feel free to do so in the next version
+> :)
+> 
+>>
+>>>>
+>>>> Motivation
+>>>> -----------
+>>>>
+>>>> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
+>>>> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
+>>>> fragmentation and memory waste. For this reason, most application guides and
+>>>> system administrators suggest to disable THP.
+>>>>
+>>>>
+>>>> Solution
+>>>> -----------
+>>>>
+>>>> A new Linux kernel module that uses DAMON to detect hot regions and collapse
+>>>> those regions into huge pages. The user supplies a set of PIDs using a module
+>>>> parameter,
+>>>
+>>> This sounds reasonable to me.
+>>>
+>>>> and then, the module launches a new kdamond thread to monitor each
+>>>> of the tasks.
+>>>>
+>>>> In each kdamond, we start with a high min_access value. Our goal is to find the
+>>>> "maximum" min_access value at which point the DAMON action is applied. In each
+>>>> cycle, if no action is applied, we lower the min_access.
+>>>
+>>> So, this patch series introduces a sort of auto-tuning of the hugepages
+>>> collapse hotness threshold, that implemented in the new module.
+>>>
+>>> We already have a sort of DAMOS auto-tuning feature, namely goal-based DAMOS
+>>> quota auto-tuning [1].  Have you considered using that?  Of course, it might
+>>> not be able to be used as is.  Some extensions, e.g., introduction of new goal
+>>> metric, may be needed.
+>>>
+>>> Yet another approach would be implementing the auto-tuning in the user-space.
+>>> Because DAMON parameters can be updated online, updating the min_access from
+>>> the user space should be doable?  Given the fact the module anyway require
+>>> user-space control for feeding the list of applications to apply access-aware
+>>> huge pages collapsing, I find no problem at user space driven auto-tuning.
+>>>
+>>> If the goal-based DAMOS quota auto-tuning or the user-space based auto-tuning
+>>> are feasible, all the controls can be done using DAMON sysfs interface.
+>>> Introduction of the new kernel module might not really be needed in the case.
+>>>
+>>> We have DAMON modules in addition to DAMON sysfs interface for users who want
+>>> to use DAMON for a given specific use case with only minimum or near-zero
+>>> user-space control.  In this case, because it is already aimed to ask the
+>>> user-space to feed the list of applications to apply DAMOS-based hugepages
+>>> collapsing, it seems a new module is not really needed, to me.
+>>>
+>>> But I guess your use case might have some special restrictions that really
+>>> require use of the module instead of offloading the auto-tuning to the
+>>> user-space or DAMON core.  Is that the case?  If so, can you share more details
+>>> about it?
+>>
+>> I haven't figured out how I can use goal autotune to change the min_access.
+> 
+> Indeed, it is not a very straightforward feature.
+> 
+>> Your suggestion about moving this to the user space sound good.
+> 
+> If it works for you, maybe that is best for you :)
+> 
+>>
+>> The idea was to stop lowering the min_access as soon as collapses occur,
+>> since we don't want to lower so much that we start collapsing regions that
+>> are not very hot.
+>>
+>> Maybe you can suggest a better way to do it. Maybe with autotuning.
+> 
+> I will add more detailed suggestion soon, by tomorrow or a day after.
+> 
+>>
+>>>
+>>>>
+>>>> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
+>>>> collapse synchronously and avoid polluting khugepaged and other parts of the MM
+>>>> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
+>>>> which needs the correct vm_flags_t set.
+>>>
+>>> This makes sense to me.  I expect DAMOS_COLLAPSE to have some advantages over
+>>> DAMOS_HUGEPAGE for some use cases, similar to MADV_COLLAPSE vs MADV_HUGEPAGE.
+>>>
+>>> From my perspective, this patch series is introducing three things.
+>>> 1) hugepage collapsing hotness threshold auto-tuning, 2) the module for running
+>>> the auto-tuning, and 3) DAMOS_COLLAPSE.  To me, it is unclear if the first two
+>>> changes are really needed.  I will wait your answer.
+Yes, I tried to introduce those 3 things. The problem is that I initially found
+goal autotuning quite confusing, so I kind of implemented something that behaves
+like autotuning, but doesn't use DAMON's core algorithm. 
+> 
+>>>
+>>> Meanwhile, the third change seems reasonable and not necessarily need to be
+>>> blocked for the other two changes.  I think separating the third change from
+>>> this patch series and upstreaming it first could also be a path forward.
+>>> Because the change is simple and sound, convincing me would be easy.  I'd be
+>>> convinced if at least some reasonable test results can be shown.  I'm not
+>>> saying we should drop the other two changes.  We can keep discussing those in
+>>> parallel.  Rather, upstreaming the third change first could help finding real
+>>> benefits of the other two changes, since the testing will be easier.  The
+>>> decision is up to Asier, of course.  I'm just sharing my two cents.
+> 
+> I'm also curious what you think about this.
 
-    22	
-  > 23	MEMINSPECT_AREA_ENTRY(_sinittext, sizeof(void *));
-  > 24	MEMINSPECT_AREA_ENTRY(_einittext, sizeof(void *));
-  > 25	MEMINSPECT_AREA_ENTRY(_end, sizeof(void *));
-  > 26	MEMINSPECT_AREA_ENTRY(_text, sizeof(void *));
-  > 27	MEMINSPECT_AREA_ENTRY(_stext, sizeof(void *));
-  > 28	MEMINSPECT_AREA_ENTRY(_etext, sizeof(void *));
-    29	
+Sure, we can upstream the third change. I will prepare a new patch for with just
+that diff.
+
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
+
+The use case that I had in mind is pretty simple. Few admins use huge pages in
+production, since it leads to memory fragmentation and waste. On the other hand,
+amount of memory increases faster than entries in the TLB, which means more
+TLB misses and more cycles waste. My goal is to balance this. Improve performance
+in applications while keeping the amount of memory waste due to fragmentation to
+a minimum.
+
+Imagine a database server. The sysadmin would like to collapse only hot regions
+of the database task, improving CPU utilization but without wasting too much
+memory.
+
+
+Today I sat down and review the damon code. Given all your feedback, I think
+this I didn't use the right approach or I didn't understand you initially.
+My suggestions:
+
+1. Implement a new goal type for autotuning that uses huge pages.
+2. Implement a module that uses this new goal type.
+
+Would this make sense to you?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Asier Gutierrez
+Huawei
+
 
