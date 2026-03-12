@@ -4,136 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3657106ACEF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 22:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AABB106ACF3
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:00:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD676B00CE; Thu, 12 Mar 2026 18:46:40 -0400 (EDT)
+	id B33596B0088; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E74696B00CF; Thu, 12 Mar 2026 18:46:40 -0400 (EDT)
+	id B14566B008A; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8DD46B00D0; Thu, 12 Mar 2026 18:46:40 -0400 (EDT)
+	id A16916B008C; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C51F56B00CE
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:46:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FAF61C44E
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:46:40 +0000 (UTC)
-X-FDA: 84538896960.14.E8861CC
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 170AD80009
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:46:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=d5n+sU79;
-	spf=pass (imf30.hostedemail.com: domain of gor@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gor@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 91A356B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FCCC16047E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:00:58 +0000 (UTC)
+X-FDA: 84538932996.07.16C124F
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 33195160003
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:00:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Bqw5yFmT;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773355598;
+	s=arc-20220608; t=1773356456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8zOmmY8eeeaXFLebTpNVG/LsQlaEOKJAHWnrIeNJVA=;
-	b=jfdBparFZZIR8A1xEUKXExUxdNUxr3kmmvgX0hMpakq//oypwTKDtWmAMBqvK/KHibngcg
-	l8r4D6t/Pqxlr1eUsEXAUz4YWSW3Kx/fwMk5Hy2F+Jaf+BdNYAFnBmDVJzmwrb6FKpGDXW
-	q4SM+RlqfQIuxiYhethiNVyDDjZVv0U=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=d5n+sU79;
-	spf=pass (imf30.hostedemail.com: domain of gor@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gor@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773355598; a=rsa-sha256;
+	bh=RahmB0SI0/OXu1AwTitQIvAtW4esW43+GBpFJHtqabU=;
+	b=loHrqqu6Szg2xfIKFwVCYOFNpn88drRsjDfxCKTL9W5vPklUl9N5yEBdV4R378jNolFNfV
+	GwdYLa1B52STrvt4ka1RBh3JqJ4SkjKrvcATGdhcADeO90K4gHKJlwtui1dnH3Rl/wkqIc
+	cFuyiBXk2YrOG+9wy4m3p17DWRnb4Pc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773356456; a=rsa-sha256;
 	cv=none;
-	b=LKNLK9HRCi0MruulQ/vqFqF1cNusk23gfz7aRF3Xgsb1fCfN9kRfr5fDpImJixa/S/MC7g
-	cRTdRql1znx3SSXhQlC2W427/vX6Eawqi7ziUkHajLbwbKnjcW6AnUt3uhA8k/Sr0n1kRs
-	KSUF4zMpjF2UwGajTd4QR/5JE87VrUs=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62CDgn1g2259751;
-	Thu, 12 Mar 2026 22:46:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=D8zOmmY8eeeaXFLebTpNVG/LsQlaEO
-	KJAHWnrIeNJVA=; b=d5n+sU79eoOn9F5TNsG+WjiggtWrEcbsRVXkeBYiV5vWYm
-	ivMwqxRtuuKxHBJLTmN0R/EqcQKgePNMaxtoFO/195J0uARNgOoPFezHGAkG79Gb
-	tnIL4WjD+hjdGThr2+ba0V1/7vl0opoBJ8EpxzsOcustk/WNZ9IiGR5jekM04X2M
-	X3SY1v3FwdqCrjDcUcaePqQc6Uy9a6NrXfEvRVJp3bjvg5L4B6paFgbVwJSrz05M
-	wFsopL+3T8BfZuZN/7q/6aPP6SOL9qSDoFDPzWQDVaNcRJ/y/UFkdI4+tt9KHvUd
-	Fw9mNp3mxrlnWGv8acyW3h8aS65PyJpXirrQulfA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh92d53m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Mar 2026 22:46:29 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62CITFZx025686;
-	Thu, 12 Mar 2026 22:46:28 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cuha8capw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Mar 2026 22:46:28 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62CMkPHL16449894
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Mar 2026 22:46:25 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B0192004F;
-	Thu, 12 Mar 2026 22:46:25 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 279A32004E;
-	Thu, 12 Mar 2026 22:46:24 +0000 (GMT)
-Received: from localhost (unknown [9.111.83.60])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 12 Mar 2026 22:46:24 +0000 (GMT)
-Date: Thu, 12 Mar 2026 23:46:22 +0100
-From: Vasily Gorbik <gor@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Subject: Re: mm/pgtable: Support for page table check on s390
-Message-ID: <ttbt5xa@ub.hpns>
-References: <cover.1772812343.git.agordeev@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1772812343.git.agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XSb0EpCLqP-VvERd6yxhMyLpIuUmwWro
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEyMDE4MSBTYWx0ZWRfX1dmLEh8veiIG
- JPH+TX+SKowHwqfzMq52we/QWAIDL+ZWYZX2jNbNGdZowW55EvpX8g/DRRACVzpVxsDhn+zENCd
- kt+vKYAw/S0oFGmt301uYKsD8hvRqZ8fzz7zhkSDwM+JaLyyhRiAgeGOnJ3hPl8tMmJ3cimrUTc
- QxD42P4vOhD0rEmJgmsyoBM6UnZ2cuDggfUF1CvtrrM+0LTZMLXqib5gODqi8G5g5/v7TOrtO19
- BcefUJ3xyGScJjhjkOzB/bUvD0msMt3gV9bVz0N7NvXQvpjkMyIFQG1IzgLmoPzrwhMTNoxMVFn
- Y0+8Amm8ExMPHkvoKIs8uraV6X8nzMyL0sT+rQUB8TJBgiVffvSrLfCwlAF1YfotN+3Js3OLFLS
- gs6mYwnnXZwsfG731r2xvnOUuIsc631T935DNRics0rmn4wCRiCXWx3KSKEofuyW7vZfthOAG16
- 0tM/zg+0I6iru1bvr5w==
-X-Proofpoint-GUID: XSb0EpCLqP-VvERd6yxhMyLpIuUmwWro
-X-Authority-Analysis: v=2.4 cv=XNk9iAhE c=1 sm=1 tr=0 ts=69b34245 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=euGEXw6tGDjZIu8w7pwA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-12_03,2026-03-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603120181
-X-Rspamd-Queue-Id: 170AD80009
-X-Stat-Signature: r4uucetrwyru4bczo9tqiinby5hncig4
+	b=K7hUWvy6hGpRxESBx9YFh+5pX14qMKLt6HPx4jS7A+TGeGpIaiGkLv2DnVU4k3ct2e8iY4
+	8f9N87BTlRNix9qL8e0xA2IW4FRfoWmXkLDb4IT3C77kTlQ3Q4XChg3d5u77cUYmymlBOy
+	BmE3zEFgdCQiTk6jnMhmUJEX8isUTDg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Bqw5yFmT;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853ab1cae0so15834375e9.2
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:00:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773356454; x=1773961254; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RahmB0SI0/OXu1AwTitQIvAtW4esW43+GBpFJHtqabU=;
+        b=Bqw5yFmTYS7q2lWvSuiR3nRb+javHh7B7xCZS9Nnv7GdyCsWlpgbZ56lMu7maCYLM5
+         FPT/wZ4TSp11b9r6Z6pUhPo0oLrZiFkfcEygcvYRjR97MxpWulloDGf6zq+xJqSuqCQE
+         6694gS0l0/Pqq13ymMT1PTn56Y1r6TJg+G07ltAiIrXKjQGlI3kS4TroU/+RVQsnu7E5
+         eMjQ9jxIhvSeOvFN1VTfBtIuvY5y/peRoTzHUfuQMI9580EyZDi0oQmDHWbkEmOy1aYO
+         RogSTdXTuq97byfVV3oSOtE7s35ExcGaB/2KE4UU+NXlBvIHwI0ElH4dY8RzayF9qLa2
+         9x+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773356454; x=1773961254;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RahmB0SI0/OXu1AwTitQIvAtW4esW43+GBpFJHtqabU=;
+        b=Vz0cmdbED+bDRywgkyOoJiayTitGah1TsPX5NjjP50EdgxmSBFFVynFP+UGGDGv/qx
+         99tqe4zpkdZP8gaxSswEN+0G00zERVOn6BRn0IIxURYjl9aBn1NQqXIjfTaOK6+6CtgC
+         Eyp/m+sjZ+aOlb5c0GMB12JEFGb+qRgt50FzRtAe6GjbGgyw0ZpRs9pjk+EWhwg0gkzD
+         Wal+cRbacgrrNaPqa5xyIHrkpJhDu4C5QtXim7WSjUqZ4mg4WURtk7ZsQkv00zWyADx6
+         PicqiakmBiuObmlTyG+8CJFw/PSU/8eAaJLBDOquerpEV3/NaHT261menP3CYFcjma/J
+         ncQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbKdVCy9NeS8YW7hupN3QnWhjuI0QXXxvz09/FvprNEWQES4bMGqaISjZFRqTY60f9rwOJBYLhWQ==@kvack.org
+X-Gm-Message-State: AOJu0YxCh5lwrmYXyhMDhkP11SRQnGw6aCyTC82N2GP6KWPtE7WCVtyc
+	3YkigAgHz31Vxlk7BDgH5wx9P0+srCYx78hHqAJyyQ5/ilKiFDj+gm/gPjjp8mcgUvz+kGFZZ8c
+	ITmRJzW7GDidVjgmBeg==
+X-Received: from wmoo20.prod.google.com ([2002:a05:600d:114:b0:483:a1ee:5eb8])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:698e:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-485566ca5cdmr17223985e9.6.1773356454305;
+ Thu, 12 Mar 2026 16:00:54 -0700 (PDT)
+Date: Thu, 12 Mar 2026 23:00:53 +0000
+In-Reply-To: <b6327414-237a-4262-bf07-c506908fa263@gmail.com>
+Mime-Version: 1.0
+References: <20260312184054.23481-1-objecting@objecting.org>
+ <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org> <b6327414-237a-4262-bf07-c506908fa263@gmail.com>
+Message-ID: <abNFpSjrhJYr2e_n@google.com>
+Subject: Re: [PATCH 1/3] lib/maple_tree: fix potential NULL dereference in mas_pop_node()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Josh Law <hlcj1234567@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Josh Law <objecting@objecting.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 33195160003
+X-Stat-Signature: an1n5aupht7efrudycis8jugic3pjr4a
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773355597-543767
-X-HE-Meta: U2FsdGVkX19lG3J4ECXn7frLz7f7Kuk74dOYZAU5btp+LIJ8WeqD+FV6nWmOoGc4buWmZUh9PwM8xRaM2O8oA5cAB8fSX1UZowEC1VWzohdWq4IWHj1Y3Phnz2v4voaU2v4rMV27F+P1x4E1baHtWGG/M0Wi6PxGZ425CHskHAZXU7/HwVBNz3TxdRQhwZqpI59J4+nYag+gTcnJIhtZnrOsemvJ/Ry31pvvlC39hjHOkoJVlFyfzJdcZWYZmPodMMcvk1DuDhPPdF16B4sjgDhpomMJ1aaS6iuY1hOShzVkVnGIHLtRh6CFv5zKaZ6rZScCDFovKLDxKmCV9q5Tuif7ANx8tD4J2xDt6r3gAfolOjrX/THJcJVnZX6Wwq1YjyFVGGjc/IH4zh+O/0sWz3o0eLOCzFF94qEb1dXekZAzIfsqZLAeRkS40GibvbDnrV9vBpqrGcrXAS7RJEQ/0rAr3K3Kw2T23zJIk4F8F6i/6miW/2+iOHOJAY2Nd4c9IQ0Y5SzGPD4TPzaAagFDLNbbvIEfE6q6ii060ZaDjtjHbkU259J+pmGClwqkyQ/q+D31prVnF6kfQ0YUCJ9m3ZwFZ4CFBWFnye1lkgiwIyOYILwQiD46wd6PrPTZ6fvSYypptdUGis0s+LXTv4Ob2lBIwwfqNNb/BWnaLpNs5S4emsRc55Q6TF4XThTFyoddcr+CQ0ORL+/xlBAuVk6J1qAsrbqDkJeaoPoLsEnc4ERuBjezC7Wg+B41EeNTi7VoTXt3cXf+znZ2TPVemSGuG0A1YFGNvhFOyoTLCkBNlmgbtObKLbfU/gLqCHpRY7cRZb7rg5JBSDlbH5fi+ZDVyUREYbDBhdt74/wMGcZ5syYgTqiD7SozXHni0XXz1yxAnelKk9/H4SIxF6UktBj0TFoGC0rq+rOiDE6kBvbCjmK7H4D21C5ZmZ1hLI0WEXBpP0rtsPV4O0/3DN3x2gr
- hKv5my1o
- omGXMSKnqESh9wB/lciSlXmCdr758285Miip2iaTmSSNQ3/ZUdx60ZcSD4HuH06yRYmOZwHkzQSjWCtH5wrA8P89GRyOoGSYoFSFjP4H1gtYw1ieJId5AKOOCDnsUrurqXaapdh2c5mJg6pHFwAWRl45BeZ7bonvkEgzyr4Jsjn77fxDR4TSaD4r79EDBUC4BGkzMqUUHovtkFq/kaJ2+T53yz9q3Gk2HODOf7xMjEBuhbLGHTdyfl0FFeFiIqhoeHZWuETaQmz1ilgL8xf3sNWqlh9fKOqo8PMVYGii3L6tHa9k8h6WrkA2VFJQ/pLF1Dk/j
+X-HE-Tag: 1773356455-391463
+X-HE-Meta: U2FsdGVkX1/m0uZjkzFZnkZsRR+1+N+hoaP6XooaFmHV3ftClFy8c05Q47zCWhzhypte8FkhNZ4slypgT5EKuSN1Vb+0Zr+jS//tQiNKntG6cvCHmTILHXaBoSvuFH0oqJpdBbU6aA26yfBzd9biofZLqNlq1ET9ElVsikLn5kNXUxMbGv/0odUEzWzvW9kAQnMDAdTx8/pg/NyN+kSCRodrczw58dVX310NY2bgo6FYfuPRQzRKvz4LuSgMBWDFxuRAcpSscU5ANhFpnieGQu0cYfDhNL7zkIxZxYn22jqaOfxKAhvleMU+syjV6ZGpi00n7gQVLzbWQv8etuuzbkoyxsBObqj5XEJzG4bsC2iFCkhKqvGZNtV1t+MOvxgeLi4WKFh3/jATLAZrIM/X5KZ9YWXYVFRpsj92Q5D26KfhCgjWVmZHlIovPbhnjoB3CZ2EvNTtG7mHQZcZF7fKjRPfXOcoovadFrUQYMMfrRprmXX3t5X9Y9fhgbYLER/rA6LMwDyXEay3nvJhWd4e98CS6ltw95xjuNHY1e38DQaSziv2Cwk2tei7wx+JF3NM9XNYjFSnY2/hMum2IR/6Tx2RVGldWn4Tn1/f8LjOKZG02Wrogp+fQeTeQrQZZJsF/DkPs0NLhy6YdmExvGuZ4Vj06jgZ4Cpo8mAYBSPb98/jKGQQo1nmgv6D2A54vvk3LO9Z4o57h0dRrioo8/X4/R/Aga2nLOkYUJOFx4JzogX4DCSQOJBKcoRqCyPYur7u185luLkur9Gaqh1LdIRnuUNPNUMuL4GJhH/ALoWQdVHndBY3aDkxukYfuzxubv2Hi9uEkmC3Vll5QeQF8DVAQPi6hZVD5VTAcmu07aJBTdVKPiAfbJP4EZSr/xblTPrxUtoWg9dyvlksIP69Vis9vNQUjVOHXQPfMSLYl4ywxFeJk+lDQQBmzvFpduxFOnxBWGu+pO3P/krbe+Chv02
+ I8c9uVty
+ O08rIsa0ahtyNmgKU+8rW8vG+Uyh2amcQdYDO+sBy+MrOMEfgAz085ixhwd4e0Nc+GDVsD8DaZI6S6uwRns65O9s5JAeampAz5qbNQhX/XSLgQvAF5jHdioRXWOvl9VjhSjtpwjyRhTYxvt2n5rsMVuIfngHpJr5aLPAUx+/k+whwH367mvl8WFjbR9xiFgQz7raEweCmfUPc+sNTx/fE/gFl9ZOMJKJ4qLDN6teTp8+2etOJCUvzxmPwLxecdgzG4DK95RUMB06b+r+OPpLscxaTwNythfK16tJGHroQ8DOM6jS90ZsoZEbWle+DHduM3q5Mn5Elb2mSB6fge/uB9CPXbTbrWEfyYYUsrZRWuJDEB4KHr+p7s36aIe7qqywJa5OAkiJMCe43LbeSZi+cd3wwU4UoKeG5vNTPs9iJmezOQxEiFPkyLG5LF5oXubsKYE33wioxHJYlKoINBIc7qjX0BTuWKH6HdmQHAbzkS26Na/dT9xDoPbHKOb4Z4RsmSoC0rnBl0dH5jplz95MB4qPlWszaFixdGGzZvxiM7/Za+Th5SWxOE+49a+gFZtfOdNGutfKOMnOBuiG0Od6jzMuD2t/q1gz0T4rs11oIU5vGR4RZu04FbbTmJpAODnWsmo/uZeRkb1zps+LcLb7XlGo7/R81TZZTtVMpHCk6Of9lsd9IdGFVOW/jT+3RXYaEpGXYQQ7tn7sonXj+6Z3qV8bZyfM4lRibSmMZ475wym2xmaa/O5ebXSE/Xu1xCKOlzMSir4lZ6GtwN+PMD/H0jGClXusjjWyoroKVm97VGfnOGuU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,37 +113,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 05:16:29PM +0100, Alexander Gordeev wrote:
-> Hi All,
-> 
-> In v7.0-rc1 page table check support for PPC was added, which
-> conflicted with this series v1. Thus the only change in v2 is
-> PPC headers update, which still is NOP for non-s390.
-> 
-> I only did compile test for PPC.
-> 
-> Thanks!
-> 
-> Alexander Gordeev (2):
->   s390/pgtable: Use set_pmd_bit() to invalidate PMD entry
->   s390: Enable page table check for debug_defconfig
-> 
-> Tobias Huschle (2):
->   mm/page_table_check: Pass mm_struct to pxx_user_accessible_page()
->   s390/pgtable: Add s390 support for page table check
-> 
->  arch/arm64/include/asm/pgtable.h             |  6 +-
->  arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
->  arch/powerpc/include/asm/book3s/64/pgtable.h | 10 ++--
->  arch/powerpc/include/asm/nohash/pgtable.h    |  2 +-
->  arch/powerpc/include/asm/pgtable.h           |  4 +-
->  arch/riscv/include/asm/pgtable.h             |  6 +-
->  arch/s390/Kconfig                            |  1 +
->  arch/s390/configs/debug_defconfig            |  2 +
->  arch/s390/include/asm/pgtable.h              | 60 +++++++++++++++++---
->  arch/x86/include/asm/pgtable.h               |  6 +-
->  mm/page_table_check.c                        | 15 ++---
->  11 files changed, 80 insertions(+), 34 deletions(-)
+On Thu, Mar 12, 2026 at 08:49:20PM +0000, Josh Law wrote:
+> 12 Mar 2026 20:45:32 Andrew Morton <akpm@linux-foundation.org>:
+>=20
+> > On Thu, 12 Mar 2026 18:40:53 +0000 Josh Law <hlcj1234567@gmail.com> wro=
+te:
+> >
+> >> If kmem_cache_alloc_from_sheaf() returns NULL (possible under
+> >> GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
+> >> and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
+> >
+> > This is such a glaring bug that I wonder if we're missing something.
+> >
+> >> Add a WARN_ON_ONCE NULL check after the sheaf allocation to bail out
+> >> early, matching the existing pattern for the !mas->sheaf case above.
+> >>
+> >> Signed-off-by: Josh Law <objecting@objecting.org>
+> >> ---
+> >> lib/maple_tree.c | 2 ++
+> >> 1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> >> index 739918e859e5..87a2ba6468ca 100644
+> >> --- a/lib/maple_tree.c
+> >> +++ b/lib/maple_tree.c
+> >> @@ -1063,6 +1063,8 @@ static __always_inline struct maple_node *mas_po=
+p_node(struct ma_state *mas)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
+> >>
+> >> =C2=A0=C2=A0=C2=A0 ret =3D kmem_cache_alloc_from_sheaf(maple_node_cach=
+e, GFP_NOWAIT, mas->sheaf);
+> >> +=C2=A0=C2=A0 if (WARN_ON_ONCE(!ret))
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
+> >
+> > If we're going to do this then we may as well restore !__GFP_NOWARN,
+> > get more relevant information.
+> >
+> > But a GFP_NOWAIT allocation attempt can fail relatively easily so
+> > callers must be equipped to handle it - perhaps no need for any
+> > warning.
+>=20
+> Well, fair enough, but WARN_ON is equivalent to a "oops! Something
+> went wrong! We will continue anyway", NOWARN is quite bad for logging
+> that that went wrong, usually it's BUG_ON that causes said kernel
+> panics and that, which is a bit overkill, that's why I didn't add it,
+> and it warns once, then bails, that's why I'm a bit on the iffy side
+> about adding NOWARN, what's your opinion on this, do you think a
+> NOWARN is better then warn on once?
 
-Applied to the s390 tree, thank you!
+The WARN_ON option must only be used for conditions that indicate a
+kernel bug. Memory pressure is not a kernel bug, so WARN_ON is wrong
+here. In fact, depending on kernel configuration, WARN_ON_ONCE may crash
+the kernel.
+
+Alice
 
