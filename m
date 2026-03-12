@@ -4,95 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A7E106ACD5
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 17:47:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19331106ACCD
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 18:19:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 606F16B0005; Thu, 12 Mar 2026 13:47:32 -0400 (EDT)
+	id 00AE66B0093; Thu, 12 Mar 2026 14:19:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B14C6B0088; Thu, 12 Mar 2026 13:47:32 -0400 (EDT)
+	id EB7B26B0092; Thu, 12 Mar 2026 14:19:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B3D76B0089; Thu, 12 Mar 2026 13:47:32 -0400 (EDT)
+	id D1A9F6B0089; Thu, 12 Mar 2026 14:19:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BFE76B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:47:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D30191C42C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:47:31 +0000 (UTC)
-X-FDA: 84538143102.02.3C6DC67
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3CFD320013
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:47:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2B9kvyD0;
-	spf=pass (imf03.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BFAC06B0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:19:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53D8D13AB0E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:19:53 +0000 (UTC)
+X-FDA: 84538224666.29.4768EA9
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5F87F1A0002
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:19:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WILExUZd;
+	spf=pass (imf19.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773337650;
+	s=arc-20220608; t=1773339591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=25cZDt32uGgylAEA7eJVzMgKIHpSK0avVW8XiOOJqdQ=;
-	b=jjIuUcAonhZ+3hbk5lEIy0gT696yaaV5xSN403QpahboWJNYACGuKPED3wK7bWMEKxdUgm
-	SFzq+Fsr9ARB9Voc1ia6DBTFGyAj4KpYl8BSVlcXFEteO/2JLxJx3MGPaFOrgDNWFLoOy9
-	KsK6tk6F2OyxquKDdLZIqRC88RE6K/M=
+	bh=Bd82W9EWXsyf1ygE+4E7KIjySZctQNSmqHpy+W+OXjg=;
+	b=VPBk6p3QDgjrDGSK63LGlSjCHmADDhap4M+dCQLIu65+OXeR722WgWSRogJ9F7eoeMIxUs
+	gI0DNf1N1vDBgkr15GRbyZ8f/2hwuvkF9hHgVsRJziP+LJdnhDAPm/FM8/z+vSB9xcdBZP
+	7KBZCj9lP0mHgNeJhNGyuBkoWnpPd5M=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2B9kvyD0;
-	spf=pass (imf03.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773337650; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WILExUZd;
+	spf=pass (imf19.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773339591; a=rsa-sha256;
 	cv=none;
-	b=BbKooMvVFwzGo46M9RHOricnFRRwO3gF2ftsvCx5w0LcoslueZZLfnv5EUVT/iTwQD/JXy
-	gV50pCKkBzB4LnJ8krjDn6ak1b8LzsGCruMQD8dWBtzSAc7My+ZDlyya3tDNLcSuLMO6ho
-	kkb+uniGMsyhyQvRJsnLAgDYZ16TKyM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B8C644023;
-	Thu, 12 Mar 2026 17:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499C1C4CEF7;
-	Thu, 12 Mar 2026 17:47:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773337648;
-	bh=ehJUvxvid3t2rmAdiav8+vgSkMWongK0fp+rm1Z3YEE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2B9kvyD03M4iobzfw738CUb7Zo4v0G+8mlyNeM7oGWz9mNoWZb0zBB184KYis6Zf9
-	 HyXFlcgGxfAn233Swf9N3op49P3VbypAZmdQxxGquhTZSIXAR0H3yimNZQw3lJpJgk
-	 9mqp242HYiSqz1BWDbPouiQ+EDsYYebthrgMVBVI=
-Date: Thu, 12 Mar 2026 18:47:25 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	linux-mm@kvack.org, Jane Chu <jane.chu@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Rik van Riel <riel@surriel.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH 5.15.y 0/6] mm/hugetlb: fixes for PMD table sharing
- (incl. using mmu_gather)
-Message-ID: <2026031222-vacation-cramp-6fdb@gregkh>
-References: <2026012608-tulip-moisten-c6f6@gregkh>
- <20260218110129.41578-1-david@kernel.org>
- <c6f63b74-d532-4384-a1e6-2b0dcb7b5303@lucifer.local>
+	b=iR/QNMtmzWiXNkv1jt/52Ps4iWX0UhyGW03nlmsadXcSgWykEqECfiwMzSnw6SAQBdjXfK
+	OXrqNZ8X6grq7QeZAVZVyb+npqzlsFVGZGuKa8nBM7A1L5Q4/IVIkR/OYUaPfQy1YRrz83
+	As+7g8xxCBwqFHvY5G33b9PZHuMcM4w=
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59e4989dacdso1593950e87.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773339590; x=1773944390; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bd82W9EWXsyf1ygE+4E7KIjySZctQNSmqHpy+W+OXjg=;
+        b=WILExUZdvctPMmIBzT1KD0xAP9CYnSv8/cLAVdIgcf2pqCv0W/XvHHTrepqomfly/Y
+         /mFpsZxmjbDzkzP11o2q87J+4AdOXxin7Q2cMOLw7J2kU5Eg6wWoFZhVMY/OTibviD75
+         0ndV4l4WhKWvqVJYWUrJLU60YHAZLLee6UIk9ud0vW2HGulf37wRtA8UxKyPsixyVgox
+         qek65/7HkNnp8vnrYi8MjgMs/u70DHFpuCjG0zZYtxMnpTJuHbub343UHI1/T7PiicBP
+         vjR8a8jmR/KZvdFaQDCZ2gbmkNBhiGsjScoCKaSfSNGyYI7sv2B5kWWQcxXJBpHMiWua
+         vOpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773339590; x=1773944390;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Bd82W9EWXsyf1ygE+4E7KIjySZctQNSmqHpy+W+OXjg=;
+        b=PL/OTMU4JTPMa39pFM/RCubbVd/PZ1ksXBwswEUYnivS7Yi/RXGt5+GXorUxpM0gaC
+         MA0XLiNBUc7DDNCzpyzWhve6o3NCZsPZtGkzu0gWcyhG7KymMXYXV46CtWTL3JHFNGv5
+         u4D6cKOdnsHey3OmeFjtodXg5vzCbpLXKeEQApaxraY1lt6jEZWJoX9a3O/c+OVI8Zm6
+         NiT9HxQ9VEfcK0A8QbCJ8F1yGiirCjkXOYv0uvmDMoOpEssFBRxr4S4F0z0fhrLzOUsb
+         cztgD9x/YxcCZy2sOBCMFrsw8pUcGz7BTu3KCK3bcVMtaxwX0OHv41vq8RBHYzj96q5c
+         KRIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyDdfWW7Yzp/YGyejDzIPqNlZZ9KiYmLw4+3UBJCnlF+ERNTgU5EoLAoXmsG/D9W2QD6mVKHaIgw==@kvack.org
+X-Gm-Message-State: AOJu0Yyz8Uzv+Ux7mrE3Z8wyuP6TsVSuBsyw9zm8HsfiA/c2hFyUOlro
+	rf391LdIjJgeAYjZ0yQ7GLjIJ7cxqLiPEiK/51A5d1tILiFZgX/6PKJ5
+X-Gm-Gg: ATEYQzykdnEZaKfnCWq+GMqB9ZHiHfAPclGYryFqo85gnO7BjgpOoBsv3JNrG87Pe5N
+	vrOkGJr/tzLRyS5gJR6SoFMWnVUgBU02JHewYoLVxJhauGjrhaNJBUpMfPV3Hr/+cEhTCEcnTqz
+	negZqYoC56fLsMFhAAaWh+gaITuwpG/rOMa918iTT07CA9pBa/8L8cwQjUL3qwFpHtIeUodu630
+	ot379bAIsYNsBZ5jNQJG+6KBDaim+3kYJwiYwc/K6SPyPJbLv3dCRMQ0gaI44o4nl+DLXz3Ucmp
+	T957XKBwL/xD3ikf2mEXXbdsEEemysnMbSSq72wu+VPVWfOks9/j/OMEh7Ad/EgLX6lKr/y/tca
+	eVGv5NvkBZEctqzEQFYd24Tw/DMZO7yYxfgB9ioxsc549h8w5mQW8MJj/uvmmt222YVrRN/qPA2
+	6bK2KequDGnIkczfKbtFPh6Rt+IKV7mHljowhgRKeoLh2URf4Oj4+iUNNGS69SF8OmIOXO1M1DI
+	3qC6EOe+g==
+X-Received: by 2002:ac2:51d6:0:b0:5a1:3fa6:8c62 with SMTP id 2adb3069b0e04-5a162b0c0e7mr217244e87.24.1773339589410;
+        Thu, 12 Mar 2026 11:19:49 -0700 (PDT)
+Received: from ubuntu.. (static.159.107.27.37.clients.your-server.de. [37.27.107.159])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a15602e7d9sm1085336e87.35.2026.03.12.11.19.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 11:19:49 -0700 (PDT)
+From: Josh Law <hlcj1234567@gmail.com>
+X-Google-Original-From: Josh Law <objecting@objecting.org>
+To: Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Josh Law <objecting@objecting.org>
+Subject: [PATCH v3 1/2] lib/idr: fix infinite loop in idr_get_next()
+Date: Thu, 12 Mar 2026 18:19:47 +0000
+Message-Id: <20260312181948.20020-2-objecting@objecting.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260312181948.20020-1-objecting@objecting.org>
+References: <20260312181948.20020-1-objecting@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c6f63b74-d532-4384-a1e6-2b0dcb7b5303@lucifer.local>
-X-Rspamd-Queue-Id: 3CFD320013
-X-Stat-Signature: fg8ybyoi3r1pqw3ozdaik89fetknn1uz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5F87F1A0002
+X-Stat-Signature: f4679m178rbk9rn34jw83iztmebu45rr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773337650-917147
-X-HE-Meta: U2FsdGVkX1+s17u4BQYbY2C+gQ70cWpJjo7SNGFDM+0ozbQhgC21yH7i6MT+yZgh0rVDBLmKBJ2L16NcOsIju7Jk4OznlavWPAHlCbbvRn2KagOK0M65Ukq4nIYS/UeNYYciXrJEHtjuzbYka8nE7GtC2M7VB5H5A0J9wLRh+32GusuQRgV21NqK6Ys//ndhRj+KDLxRP49wdScwDZ1iPjeu1gdpkPTrmPdXY0cFb51T73P/z+43AKvwqwHBO1FuccXHHS73QV4DRWEZH7FOrAOhqLKPjTWUGgJTZPK4h7HFLbL7aDpBkIwuYmEjCRYj7+pU3Q1lSveSYom0Yntj8ZL6CmyojOJ2lODbSazJ1xjOYJitRFXbzNHqbNWIW7+vcTLrk9pJt/4gioTHhzK09tbC+yUItINPV2kb1VrpesaSc3nkgQjRiNXC2HfMkoIY2aLnw+q8Cj7VIztUlzHNZJvHJ/1v8s6LiU7rDLb+jiBFvsbcRYIxETTM3LYhd1Px6f6n4eifbPdFYT/Yql13c1GcL3mKe4iIdlKiP2qZuwZab986+tYLfPXa6Bq0jNkf+mnWwbQ/0/k9ce4LonLN1TOhJCkJ22GRIzr17rrYC4DSw2HG6n841H9ktmBGf24WSXIiudN5pekA3/4FGoZPF1WUI3K/vwujKSJnwLs/sJW4EMNF+hRiYYqFH5LjEOFlhkp7w/6I9RIm61sPBVWxvh5b9c2oq0u6n/yMdp2b9pnt5u/6T2Zr9OE+scM/jmm3JK/xWGemE/HYd8gbq9hJJrzzkoA+OA4RLqoBsrrZOftMlxdIo0xes5P3avEC9EYuPsmlT+OojNOAY9hbUQBoRUuQgDBsA2JuP25PyqlW6Aj6xd2s77FF7bzKdBNfvqdN4jGlyRjoYFanjiniqdrTA/JX9x2duMybqtNOyFGVoaambYx+3Vw3Uzf9FzilE8NhetVKJPQ4QJfJUNcighv
- xSUaH+K/
- l3IFs8qYYlqTFd5N4XC89iOpBZkm8h3ofHPsEMnLoBMKXJVQk0kNjOedF0zywnMppia04U9V3TpHCGhY=
+X-HE-Tag: 1773339591-734051
+X-HE-Meta: U2FsdGVkX1/csky66UJt51rLGSU+r0ImWLTABUxz0/hhybG2h0CoV4MaKYwTY+shrgUZ0vjNJdggGk9IG2fN+vl5466+2uyNERzJKto6sw8Sz2QrWsuvf9kj2nnupiahHZhCiXX5kEKnXY0b35HdNJBxGRjqRvyGDEBhknFwUeGdAiU9oFcbPI8G8VaS4xeXMOCWGngg22lULcFjJSyD7Op6b5zxIb+gVWgHnuhdHrVM4SL/MwLJ6DbEipivpnmfB2YbWRvu0mJr4gZXrXVAXN80P62BeSGSkKgNawV/ER58WRjWBlxjpLAxMArRWuULIMbi348ixZbkLo55XD9sDXjd4U4gkPUq0rFM9nLRn1XaL/po9zmFS3B5hmYx0MrBgO18IFEAoHMdmNkoSQT86SlrKBM0Mb+4VbxBaxDaFZ6zi+Qcp/whtLJsq2PjkAZziQ4O67YCQBD9zPzOUqTaWCDL2Vlleok/wCgXiIZZQswwaPgMPzDpwV6HCc9tYI0rHcH7mp/HMor2FYD2gpGDi7SO1jkq5AXUVHfG3VNV3GO1jbhTwGqUV7kJoLMt7uY8skYJc6hkgCQRgrDptJdUGgqJ/Aan9lCaUd7UF6BUmA3+sBBkeVYr91PY/v7Wq2qW333lx1Bve/gZtaGW8c0mpFY+7ROTxlTzpv59HGIoVBRTunBchbHDshCp67JZW5Q+dTU97pdw/x28n0eKsIf8BtbvoICXZmvkaLVBi2zlf7p3DjhMvaM4zmBjHe2BCWW91xEv5Ek6uDXepITzMYu792hoB6LtfiMnU8CVCxq555jK9qrdM0wSjyOY7p5mpaZGE/qspuRPqU8k9j5qLJ3iFis8IpMxCf6OMSXD8zNY5LJnqPujFj3Hi64SM4KeIGUspaXVx2B4FSzgdEkN1vEWmDOS1mDErnl6JrhXq9gkiOd1HmDdKguosRz7fhDTUcaRhMsdnq2HXNzyFQcgbi3
+ r9O0qUk2
+ sfcWPCq6YyBDxnTMPY7bItesGceTdNIHOdHnM+VAyowj2D8s86X+9cAYx4hTWGDU4kfjLrSpV5/0P9DDFzJR2TMUoMFpnKnM2hP+Y2BrulHAz5c1FaSbfSvGa+Y7rcFMdRAItVIXbjTWifpWroXBHA91HYV//5hgWNwj2ZQIiQK37bNscjay+TNWtqwvZeBTUYi4A7R+/PoMEjrjJbhQiX3R7wMPI0qKEDwftGXOfiQHyWv/r7rXzMvmnlcyzVwewbEZbQPWIvHfdRhvXuJCrRc53shjRefsDqRXeaubdR8xvYJzUD0JeLqJMwBXXccTTQaVcmDAQDxgvCq0rWgPCUpCnO0rLVh8dA91k3jiPtp3S7kmRzEyOfSxs4cbLDCzfPo1nb9jIpNA2UDLRLLW3kUxTBay51scNMhpl5yuJzQXmQIUIkKnZ5DME7PRkBRMuCHjFIjte/dMyj6Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,21 +122,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 05:42:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> Hi,
-> 
-> This series was sent a ~month ago, is anything holding this up? The underlying
-> issue is causing a really serious regression so it's quite urgent to get this
-> pulled ASAP :)
+In idr_get_next(), if the returned id from idr_get_next_ul() is greater
+than INT_MAX, the function issues a warning and returns NULL without
+updating the *nextid pointer. This causes a soft lockup for any caller
+iterating over an IDR (e.g. via idr_for_each_entry) because they will
+receive NULL, fail to advance their index, and repeatedly query the same
+state forever.
 
-I see 70+ pending 5.15 patches that people have backported that need to
-be queued up as well as the pending upstream patches.  During the -rc1
-cycle the stable trees get flooded, so the older kernels take a while to
-get released as they are on the bottom of our priority list.
+Fix this by setting *nextid to INT_MAX when the bounds check fails,
+ensuring the caller's iteration will terminate.
 
-We'll get to them "soon", they aren't lost.
+Also update the idr_get_next() test case in the radix-tree test suite
+to expect INT_MAX instead of 0 when hitting this condition.
 
-thanks,
+Signed-off-by: Josh Law <objecting@objecting.org>
+---
+ lib/idr.c                           | 4 +++-
+ tools/testing/radix-tree/idr-test.c | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-greg k-h
+diff --git a/lib/idr.c b/lib/idr.c
+index f25bd2b9e9a4..07098eb4ddc3 100644
+--- a/lib/idr.c
++++ b/lib/idr.c
+@@ -268,8 +268,10 @@ void *idr_get_next(struct idr *idr, int *nextid)
+ 	unsigned long id = *nextid;
+ 	void *entry = idr_get_next_ul(idr, &id);
+ 
+-	if (WARN_ON_ONCE(id > INT_MAX))
++	if (WARN_ON_ONCE(id > INT_MAX)) {
++		*nextid = INT_MAX;
+ 		return NULL;
++	}
+ 	*nextid = id;
+ 	return entry;
+ }
+diff --git a/tools/testing/radix-tree/idr-test.c b/tools/testing/radix-tree/idr-test.c
+index 945144e98507..bf6a0da6a50a 100644
+--- a/tools/testing/radix-tree/idr-test.c
++++ b/tools/testing/radix-tree/idr-test.c
+@@ -213,7 +213,7 @@ void idr_u32_test1(struct idr *idr, u32 handle)
+ 	ptr = idr_get_next(idr, &sid);
+ 	if (id > INT_MAX) {
+ 		BUG_ON(ptr != NULL);
+-		BUG_ON(sid != 0);
++		BUG_ON(sid != INT_MAX);
+ 	} else {
+ 		BUG_ON(ptr != DUMMY_PTR);
+ 		BUG_ON(sid != id);
+-- 
+2.34.1
+
 
