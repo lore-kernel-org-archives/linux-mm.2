@@ -4,109 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A46106ACEC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:44:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A685106ACF0
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:44:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 282666B00B5; Thu, 12 Mar 2026 17:44:31 -0400 (EDT)
+	id 96B2C6B00B6; Thu, 12 Mar 2026 17:44:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2304D6B00B6; Thu, 12 Mar 2026 17:44:31 -0400 (EDT)
+	id 915E66B00B8; Thu, 12 Mar 2026 17:44:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DA7F6B00B7; Thu, 12 Mar 2026 17:44:31 -0400 (EDT)
+	id 7EDFA6B00B9; Thu, 12 Mar 2026 17:44:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EFACC6B00B5
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:44:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 994D8140477
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:44:30 +0000 (UTC)
-X-FDA: 84538740300.25.F9EC492
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A8C96B00B6
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:44:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8D4B8B8B1
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:44:47 +0000 (UTC)
+X-FDA: 84538741014.08.F0D1AF4
 Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8B27F1C0009
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:44:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=HynKVXD7;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=sD1IpxmF;
-	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	by imf08.hostedemail.com (Postfix) with ESMTP id C4704160006
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:44:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=PajocoyR;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=eiKEFyzI;
+	spf=pass (imf08.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773351868;
+	s=arc-20220608; t=1773351885;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FHJsH8Kre5d09x8tLYt2s8UM1ZjvIsbiC0DN+DyY4Wk=;
-	b=LIHE8GvKutBuyv2dVBBQVZ7T+I3bod56haQIfLb5Ykvbl0FMY1yyyPlEyg/xURQWt29WAR
-	t12V68C6/v04wQciyVJnUgfGSODzaJrgo/D6M+ph0WDpsv71QwD+IVbGAQrCZsw9P/VkCq
-	APJxpTWPgcuFp1GLjqcKrjsM3ylOwqU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6+mmsaKBniwLTeTPIsSiVJuLQl0gYbnHV92H9IS7A4Y=;
+	b=Gce0gu5aHfd0+tVMc9kokQ+/vf8K5oEodZTqPYaJ8DuNY9pq02I5Ti6ezokmxBpQ6o8AUK
+	hhFHq7hiiI3FzVxcyk+8nkabLkOj01LpZfxoJXjye3VC1F4qqwFNLVrNSu8KUJlXjc7XDD
+	hqTR0fO+56FPvmvdrW8ULPb3Evk0uo0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=HynKVXD7;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=sD1IpxmF;
-	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=PajocoyR;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=eiKEFyzI;
+	spf=pass (imf08.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773351868; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773351885; a=rsa-sha256;
 	cv=none;
-	b=qypACAHV8YabP8yyVdDkIFu5/1VS+97aoXgNQMlUPmSQ6pi6Mepdn8sAUKQm/hY9GmkwxY
-	GilHAHpQXMQ3zOSTXnUdp9xBiY83KUEGP36LFT2Juk2hZ+5m3YVn8zut7eY7+Xa4ekqJhP
-	5FeNqE1SidGKaDLFPavywR1zE4e78ro=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 649AD1300FE6;
-	Thu, 12 Mar 2026 17:44:25 -0400 (EDT)
+	b=sIc/LmMgQYLN1FvpSZis3F3kdkfH1xb4av2fgaM8JOa+9DA/DwHA0GAHWi2dtnUby4YDBY
+	GA7792+3JsSIj8zn8pfbr1DD6OPVoVHjlThPoiqj6MU0WBSS4MXDqXdXBPoqrqY7hnRoEf
+	lD/b0WPUcCUSssFRey0Wowha6Ak4d9I=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id D4BF41301B37;
+	Thu, 12 Mar 2026 17:44:43 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 12 Mar 2026 17:44:27 -0400
+  by phl-compute-04.internal (MEProxy); Thu, 12 Mar 2026 17:44:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:reply-to:subject
-	:subject:to:to; s=fm1; t=1773351865; x=1773359065; bh=FHJsH8Kre5
-	d09x8tLYt2s8UM1ZjvIsbiC0DN+DyY4Wk=; b=HynKVXD7sGiagH9pyAhm4nEmbG
-	vnoLEKsMRIiSoa4G7euyElVNaPJlW0anEmEFcWVt480xGfw7ZBeWqyJHh/ktIp9H
-	PvZZACKxP9UOdtcmm83xJahGzP6ashogKl0QDSMPEPl70AAQ3icBB8PfEnzEFMRq
-	sX3yWNvxvY/eWlaObNEhjpO2PDvl14q8XwgFR80C8mJOcy9vmuKQRaNg5N7I0NBu
-	YzYQ2wP8zbtuE/A1y/UOTxlh7tZ0N66BfUwAQyR2N36DYGboFbAHY0UTwAvDGw1M
-	d6RYVJexiZ6tvhPF9XL+NJ38N7femUBleqpharU4wR7cs3N8FjN0xclTa88Q==
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773351883;
+	 x=1773359083; bh=6+mmsaKBniwLTeTPIsSiVJuLQl0gYbnHV92H9IS7A4Y=; b=
+	PajocoyRnbmUsSEVN0KUCT/oAq8w7rz7XZBiWlFG6mILTzRMZadAVs9BMnUsdgpe
+	VV5nKSfhYha9QGrwq154yebdSuYBX8+hBAeeSZRBxVC9NmmJJAT0nPf+13VMfxtf
+	2Ol/vyXx2RuSHp24+K4OoOZ4c6gWli7I6Ek/EqXSWX0L6Ycuth8+TDu4Nn+2y2ED
+	2AgfW76Z++0l2RrgWXbVFYHI/axuhx47RqBeYoyoaSOtVQOGxiDobmV+Ov+Ax42q
+	yEGDJPGa1eEfseCt4wuoqX31vuuvtEvwijFAgA6thCViI54F0d6a1J/EaB+UANTS
+	Y+5EmuH3P3aCXuDVWH4+1w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1773351865; x=1773359065; bh=FHJsH8Kre5d09x8tLYt2s8UM1Zjv
-	IsbiC0DN+DyY4Wk=; b=sD1IpxmFFBbUWLaj2WkVbBMNwpLBYky36Wu3DMHfzT0X
-	nYRW/ck1rxXdAMzJNXUejfFN/jOa+nMSve9JT7wFkvNE8kcvSIA6yoXL/zieN3xM
-	iZ+dMzyq43JMAdlzXgdWh8E1/CDLAWkabqAdcZh+T2TEs39XC5Dyt8plLkNXPMtI
-	Y+r2Dz3efkKqhCljIQwPhIv8XYGf4dd7RG0/DSMZfTI3O1ghah+7C1QcisTS9EWV
-	p5Ay6DlW7fs9l7Lbcemw1oXfwXFw+gQWGOzjp8GKsZTmGNsABOtouzH+861W6TOI
-	iR7R/iP6i1+Z6AxnjMg7KFFlVxvvm0hDCXBMXVB/MQ==
-X-ME-Sender: <xms:tjOzaYKtAlzNy0f_EhbkSUlhoa8KZMOzdeNH9009TcjkYG6tbvC7Aw>
-    <xme:tjOzab1mfdu_QmTDPbYrOK1x4qA-DPLvzT8zO8FZQfoiZZpM2Q7PewNcOWSFkbzBx
-    CSJqJJgR4xO9u5VcliHKe4FVdaI6_GR5jWwjPvhZ8TLoSIpYA>
-X-ME-Received: <xmr:tjOzaTyaQLH6LrWbZtAo1MENQavCeD4QUFklDYoSz_Wa54OtONiqLZpomwLKI-d-C--YgCofWm54r8ueiEOhXittozc2IECd2HHHlL6ixNjG>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773351883; x=1773359083; bh=6
+	+mmsaKBniwLTeTPIsSiVJuLQl0gYbnHV92H9IS7A4Y=; b=eiKEFyzIZSyNAQzCX
+	d+RQaHTOhHrbknO16+Wz/TPgBVYa1dqTafhGeNTm6HFQaU9Zpg99xU4J09EviScA
+	y2QdwTApDbLsMmmwQnLewGL1vk+AFMuyJLCY975YHn3noQe7ewaX+iAEM/JkzoW9
+	Vi35ja7wL0tPHqJdxf9CnkiDk+wHurPo2EJsT4Ysz215r2GMlN48ywG9FhKqLmQ0
+	6F+5dRWUU121OP6gzdER+0xB/ZU5xIOKe46pmTIbIix1EbrObTt/tmGR45QAFNC3
+	3XUiPSR+383Wu3hyeASY8KiIFdQW9vRKIF9xyFsTBAM0WvDuxihL4Na8gIg6TD/U
+	Eci2g==
+X-ME-Sender: <xms:yjOzaR1f0sP1-tDqkc-RFB88DhONAfQ7RJDh6Q1310ENBPPeSKWd0A>
+    <xme:yjOzabxHYc3FDIwm2KGs43S1htZToWT0kuFPQz12AKa88iHeyCl0cavEsWXgWD5Ad
+    sKlWmPEkWfCDLGogyU2cKxeLanpsWjjlvF4V8I-iOTRuARmQQ>
+X-ME-Received: <xmr:yjOzac-AgPhr0IIPuVmODSMQuKGVoa_-yuRUCTd13VC835lFa_Cq6Qy1nz3l5rOzSvWUKb9o0m49HtwCKxFbn0wNwA9zv1VWGNlKac5VU1zy>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejkeelucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheurhho
-    fihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepge
-    etfeegtddtvdeigfegueevfeelleelgfejueefueektdelieeikeevtdelveelnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsgesoh
-    ifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohephedupdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtg
-    hpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehlihhnuhigqdhunhhiohhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqthhrrggtvgdqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdroh
-    hrgh
-X-ME-Proxy: <xmx:tjOzaS1z3HXh4-ifJRBEJTkKAyUPCr8OJLgJiRXU1S3hJu4gX6A32Q>
-    <xmx:tjOzaU6VCxafI3qHQH8oosSQuqDVIy-CStyT6UaG1DYXnTDBEu-EpA>
-    <xmx:tjOzadctLaB3wfFUZXTX37T5TIQ88OOFc6eu00-UyziGYU-aaSZemw>
-    <xmx:tjOzaQYHqOUYatlEsE5TwG61VUO_YB38t6wNqngJFK5w5KsHFjx8_w>
-    <xmx:uTOzacGeKHU7F90aeYZNDwvYEnwYDWXkCfp88n2OwGQGooB6gIONyBVa>
+    gurhephffvvefufffkofgjfhhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epveevkeffudeuvefhieeghffgudektdelkeejiedtjedugfeukedvkeffvdefvddunecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohephedupdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhunhhiohhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqthhrrggtvgdqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:yjOzacSxvT53D4EC0GJno5_4e0brtZ18j26Kd01CWJ9svUCLgwKo-w>
+    <xmx:yjOzaZnlYqFcjgWQzuZDZGAbmjw_maAnTksL_XOLOhsD2eCla2YaoA>
+    <xmx:yjOzaca_oXXkKSpckA3Bb1Be3OCJ7jvlQjdGUYIA3Ya7PtK_wy3JBA>
+    <xmx:yjOzacnjuk0_ReF6NaVCHibQtn1n7zg_HC6LuvFQee6fXbDucZvpEw>
+    <xmx:yzOzabBhUzPmnBVjwIBIDtJPe-xU3cGBpUcDJ2bjBCdgB3hcXfd8hpa4>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 17:44:08 -0400 (EDT)
+ 12 Mar 2026 17:44:29 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -149,21 +151,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH RFC 00/53] lift lookup out of exclive lock for dir ops
-Date: Fri, 13 Mar 2026 08:11:47 +1100
-Message-ID: <20260312214330.3885211-1-neilb@ownmail.net>
+Subject: [PATCH 01/53] VFS: fix various typos in documentation for start_creating start_removing etc
+Date: Fri, 13 Mar 2026 08:11:48 +1100
+Message-ID: <20260312214330.3885211-2-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
+In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
+References: <20260312214330.3885211-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8B27F1C0009
-X-Stat-Signature: uoipmir9yi57xynaf64c1ad8izeiib9i
+X-Rspamd-Queue-Id: C4704160006
+X-Stat-Signature: w6z3oi1syex9g1ufs7kbckm5iupp3ydi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773351868-124893
-X-HE-Meta: U2FsdGVkX1+8HnS/+VMEIoTeXWpYonfgOVWyIC2+vKcAkXjesL9rqSj0O/ZUqO1JSCWhd8OUltrxZVFm+HccDz/7hJ9LvkcD019tGapqZD/fGb81mjeLZWNa2ODRVMVkBiKlBWgmTeFV3/orLoQJpueX8Qr6m7yRmDUchkVdbKKSgOmZH0Ee+OKP8MUME3hqmV2jGXjV1EtU968j+mmH9CUvtF5iVco0q1GmPpd40dLM59HmkXzKoPW7gg+VVuQYUHgbCRam4m8ELJ3Ec2Ri0CKMpJsZA3UQLMfO2aMYO5n3EDIMamet294zt9jfqc1HR/DCXABKE3nJRzoBGSZyaCH+9wYVEV54W7XkDyLyGAZACQPIr6mZ6RBPUJOR6t0IeCF6iqspqsJApsTaZ0EIei1xTE2lyYjz5MyUQZooeZx3a8QSLIesEj4ZcKFX4KrgV9mkDTO8Vcbem7kHGphxaW0onorUfw77lbSEcX44KmgO5zYWDOQMVwKTMPg1c5rAGYjmpx1JjN2oDDhrFQPhx4NbhqVYTMY6Q0Tyww34mMEOGrhWmOSGKpKP9R3QwynB7SjWHmx5C6l7vXPch005+qVgsk5tOz/gYhUg7mHVlmwdATPc1/vrbAKW5kv/V3O/79so+Ct/Wv8rcl+6JPk3EP6t51z4ol9AsLK8cUvM5kuylpdxTLZW7evG6CdEYUtadSkNwwihjY2mlFXu+qca8ijgDfPe4LUwI+oclgcBBGhqo7/+bFrge+L0quXaa+kfKYKthouJUvJLUfPcC/Dp+jB+pahlnkPmb9m5dXqlXOKa2k25t0QYhe9dgIpjV0dseKlAACAocqrK+0GvtnwZZrl4KXsaUhavmEnGKTRk4FICkb6ECDAJ1Hzl8ro947OXWhcr0XcNK48GlqZ+1mrVgsC41fuqqOvbo0MkCKA1XqSw2heAyCCwlBfGmHb7FkHNnjdmNbmZfBNTnDfXqny
- VO10KEy3
- 0oMmcr+sePEf8SNkjDuJLFPi3my2JUuh3WXTwF6K723ETw3qTXV+Hzs2OFJrG2WAlJnjAF+7nvsp70rwEYjt6wzHCJeiQdxiVZoxQyjtDBbLlgzrzROvI0CJ3C9SSdR0//GUC9Sk4FcNT9SENVygZvHdq4XO5YK7QYIoyDKvR+6El91Y7GQt7v8KbGu77FUptoPAp1vAtVbxp1bqdSnQlAHucYhX8TbVZGMiLgKkwMN6haT+9qqg81wNEgmmTpzH9jIW9PAPvVE1Sxw3/B5we0gTbOQqNgi2Y2/5DWq7kdZrivwe9etGZ290pY0hfCJsuaen/B6K91ia+N27S5uWMyVZ/NC993s5UJ3aAhqPXnPkQpduFqv3sedkXp1TvJAEjGYkD1sGfznv2vwkB7RYk7/IpPxgLxzHV1oJUU3P9XcC0hEyGrR8Bzird88gm5LsU+xWO/5Ub3YN29o6XxuOG8AzKHdIuzorcNAMR/KVQev06oPuezIjJ22hnMp+PRPPykXlTkYubg4CeDQ2FlKNtU4r3UrGp0+c4jmp/yHPDtJZrjjhDo6631q+svNjEpCCoZioMRnCtDxvD5ufpqRUi67T4P6GId58tsOXLgqnP6LKM6ECRDVnqC4IHsZytgiJBOW49
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773351885-25429
+X-HE-Meta: U2FsdGVkX1/OZqXr2OQNJX4wxK5ghLXrGyA77X0lUgkTeXlb7MD1VLEmbSpd6Qwnd40l95gen0K7gKKdZhOHeEwA5qH8fU/Q/lQ0n8J4HnuP3vyeHzSd8fUXFGd1AFMQA5sl08mzf3K/V7qCrt8ZAT2N0KC45ootH1pp79stnQAHn9Waj+LTA2NQftE+OvvhMelXAhp3HWunlLlSMcuYmFNretqOMdwBlXqTO1eWgUGvyLtPEBYgKef2dTDGfk/Opa10BZX1ziAYD1Mqfm0uHb55FygdjgodrKQBVOtmgavcCe5D9rCGJ2UU9oZNaqVpT38YBcIuGYYDrfjpXNyqNtHNhwvghZJ6TtJGJJjLorFmqoq1p2HVoL7wLuF/QV6SYlbBpdEU+dvrdMxAbMgBr9aqF+53sQyHKlpr9TbE0v9Tg9heB2QXcH9fEdRc1sLwFr1vP9M4AXWZnS/DipNJm4ewKKUl7nuTV9cuZ6MvUQ3O3YzSNJ77ZXSgnFt4Pb+s8ewGQIrkzxoiiAqEcnxRR9UulTMPYDUUWtLeBAlL8oAxyFh+6eRJVbY7epbRzKsGvHddpPBIQrwHzSgyXu/dnsDZAZKuFYD6eZ4ir4Zj9Q+JkV8rmC/WyLgdeMLVup/Q0mKysMAeXSzXoaG8Gx91wv4MgS4P/Hj8iyhsnEuoX85QBNwz6ohdLsMRyq8xLHzXzSQAQhuvix7cthFT+4dl3thwhJj+6qjDNEg5rvLiXgDuA/J/osz7EFOOZzL9iJjrJU1Gb5xNq5fWdXhxbI2GSb5iAkHc+a5yDBmtqHu6lTPHcQP6XJD+cUP3JLK4kjBg6kfXJbB3KyeWVhWIbMzrvkM21uPFTjHmGnbRXFU6GrASPy2ijKYI+Dibiua0OBDMxs9ApqbCjRuZUHjMZ1Ms8b99XMIsIO6tT/DeyMAitX3rSWVbZOGxUGkHgpn5dCOfDeRRc5419leNk2oSQgc
+ rc8UqgWl
+ /IWTFg2JEeCI2kR2/NuCHN/fYTojJanyMwO58U8BLIjaB8QKuOMHjbLa1bPBrsXZJqgUC2ufNNhRJNBjb09AX/BeQgHiz3UyRWQkwxNOB9A4zwqjFWenO8ZxCIdM6MnKJ+AIRaKwiUc0ziehWhlNCbpoaAN4dGY5d5qJM7m2lgz/nn3ffkOckvi3VzJKgWzysRZ7WXnTIWzC0cRM4lHh+gWG95v0VT7my0diI53RZS3BbbVOsRw9xJ+qqG3bVekGpuXoCKKFe4B1PzP6dUVBaPLgdQcaLvjZhBLQEwrMtMIF63wk0ibtJ3IPxruz74X/iiYjurim/Gp09hW1IZ1iDdO4soLQ/k2Yh6TSO742MidbhZgFv9EdALtSm/rwG3DqE6kYBnFCyNWZ47HT5YtGyAXwEJuTZzl7m6hqXaBkWSflRxFcmIvQeRnh2kDBoJERR0cMGIZ7KUTQ8PlLZhzY13/iY1zSFxgL6i40AaLf5gTTLE4rka91WjPB6NHkQmpjadXxG7NQ8sKyVgaVzHoar3fTP8lILMefsE71Z0/vyMYwE2YK4l/dLLuB0oO8KFbu44gYDW1GJQmjJWyx6CFQQF1gWOLihjrwukwqaxTiwG25su7s3pfLxGKsxWnEzXK+zLh/dfu5DqhdTYkQJklGLSYQufRXtuBozBDl03AUowLBQEP4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,181 +175,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch set progresses my effort to improve concurrency of
-directory operations and specifically to allow concurrent updates
-in a given directory.
+From: NeilBrown <neil@brown.name>
 
-There are a bunch of VFS patches which introduce some new APIs and
-improve existing ones.  Then a bunch of per-filesystem changes which
-adjust to meet new needs, often using the new APIs, then a final bunch
-of VFS patches which discard some APIs that are no longer wanted, and
-one (the second last) which makes the big change.  Some of the fs
-patches don't depend on any preceeding patch and if maintainers wanted
-to take those early I certainly wouldn't object!  I've put a '*' next
-to patches which I think can be taken at any time.
+Various typos fixes.
+start_creating_dentry() now documented as *creating*, not *removing* the
+entry.
 
-My longer term goal involves pushing the parent-directory locking down
-into filesystems (which can then discard it if it isn't needed) and using
-exclusive dentry locking in the VFS for all directory operations other
-than readdir - which by its nature needs shared locking and will
-continue to use the directory lock.
+Signed-off-by: NeilBrown <neil@brown.name>
+---
+ Documentation/filesystems/porting.rst |  8 +++----
+ fs/namei.c                            | 30 +++++++++++++--------------
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
-The VFS already has exclusive dentry locking for the limited case of
-lookup.  Newly created dentries (when created by d_alloc_parallel()) are
-exclusively locked using the DCACHE_PAR_LOOKUP bit.  They remain
-exclusive locked until they are hashed as negative or positive dentries,
-or they are discarded.
+diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
+index d02aa57e4477..560b473e02d0 100644
+--- a/Documentation/filesystems/porting.rst
++++ b/Documentation/filesystems/porting.rst
+@@ -1203,7 +1203,7 @@ will fail-safe.
+ 
+ ---
+ 
+-** mandatory**
++**mandatory**
+ 
+ lookup_one(), lookup_one_unlocked(), lookup_one_positive_unlocked() now
+ take a qstr instead of a name and len.  These, not the "one_len"
+@@ -1212,7 +1212,7 @@ that filesysmtem, through a mount point - which will have a mnt_idmap.
+ 
+ ---
+ 
+-** mandatory**
++**mandatory**
+ 
+ Functions try_lookup_one_len(), lookup_one_len(),
+ lookup_one_len_unlocked() and lookup_positive_unlocked() have been
+@@ -1229,7 +1229,7 @@ already been performed such as after vfs_path_parent_lookup()
+ 
+ ---
+ 
+-** mandatory**
++**mandatory**
+ 
+ d_hash_and_lookup() is no longer exported or available outside the VFS.
+ Use try_lookup_noperm() instead.  This adds name validation and takes
+@@ -1370,7 +1370,7 @@ lookup_one_qstr_excl() is no longer exported - use start_creating() or
+ similar.
+ ---
+ 
+-** mandatory**
++**mandatory**
+ 
+ lock_rename(), lock_rename_child(), unlock_rename() are no
+ longer available.  Use start_renaming() or similar.
+diff --git a/fs/namei.c b/fs/namei.c
+index 77189335bbcc..6ffb8367b1cf 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -2936,8 +2936,8 @@ struct dentry *start_dirop(struct dentry *parent, struct qstr *name,
+  * end_dirop - signal completion of a dirop
+  * @de: the dentry which was returned by start_dirop or similar.
+  *
+- * If the de is an error, nothing happens. Otherwise any lock taken to
+- * protect the dentry is dropped and the dentry itself is release (dput()).
++ * If the @de is an error, nothing happens. Otherwise any lock taken to
++ * protect the dentry is dropped and the dentry itself is released (dput()).
+  */
+ void end_dirop(struct dentry *de)
+ {
+@@ -3254,7 +3254,7 @@ EXPORT_SYMBOL(lookup_one_unlocked);
+  * the i_rwsem itself if necessary.  If a fatal signal is pending or
+  * delivered, it will return %-EINTR if the lock is needed.
+  *
+- * Returns: A dentry, possibly negative, or
++ * Returns: A positive dentry, or
+  *	   - same errors as lookup_one_unlocked() or
+  *	   - ERR_PTR(-EINTR) if a fatal signal is pending.
+  */
+@@ -3376,7 +3376,7 @@ struct dentry *lookup_noperm_positive_unlocked(struct qstr *name,
+ EXPORT_SYMBOL(lookup_noperm_positive_unlocked);
+ 
+ /**
+- * start_creating - prepare to create a given name with permission checking
++ * start_creating - prepare to access or create a given name with permission checking
+  * @idmap:  idmap of the mount
+  * @parent: directory in which to prepare to create the name
+  * @name:   the name to be created
+@@ -3408,8 +3408,8 @@ EXPORT_SYMBOL(start_creating);
+  * @parent: directory in which to find the name
+  * @name:   the name to be removed
+  *
+- * Locks are taken and a lookup in performed prior to removing
+- * an object from a directory.  Permission checking (MAY_EXEC) is performed
++ * Locks are taken and a lookup is performed prior to removing an object
++ * from a directory.  Permission checking (MAY_EXEC) is performed
+  * against @idmap.
+  *
+  * If the name doesn't exist, an error is returned.
+@@ -3435,7 +3435,7 @@ EXPORT_SYMBOL(start_removing);
+  * @parent: directory in which to prepare to create the name
+  * @name:   the name to be created
+  *
+- * Locks are taken and a lookup in performed prior to creating
++ * Locks are taken and a lookup is performed prior to creating
+  * an object in a directory.  Permission checking (MAY_EXEC) is performed
+  * against @idmap.
+  *
+@@ -3464,7 +3464,7 @@ EXPORT_SYMBOL(start_creating_killable);
+  * @parent: directory in which to find the name
+  * @name:   the name to be removed
+  *
+- * Locks are taken and a lookup in performed prior to removing
++ * Locks are taken and a lookup is performed prior to removing
+  * an object from a directory.  Permission checking (MAY_EXEC) is performed
+  * against @idmap.
+  *
+@@ -3494,7 +3494,7 @@ EXPORT_SYMBOL(start_removing_killable);
+  * @parent: directory in which to prepare to create the name
+  * @name:   the name to be created
+  *
+- * Locks are taken and a lookup in performed prior to creating
++ * Locks are taken and a lookup is performed prior to creating
+  * an object in a directory.
+  *
+  * If the name already exists, a positive dentry is returned.
+@@ -3517,7 +3517,7 @@ EXPORT_SYMBOL(start_creating_noperm);
+  * @parent: directory in which to find the name
+  * @name:   the name to be removed
+  *
+- * Locks are taken and a lookup in performed prior to removing
++ * Locks are taken and a lookup is performed prior to removing
+  * an object from a directory.
+  *
+  * If the name doesn't exist, an error is returned.
+@@ -3538,11 +3538,11 @@ struct dentry *start_removing_noperm(struct dentry *parent,
+ EXPORT_SYMBOL(start_removing_noperm);
+ 
+ /**
+- * start_creating_dentry - prepare to create a given dentry
+- * @parent: directory from which dentry should be removed
+- * @child:  the dentry to be removed
++ * start_creating_dentry - prepare to access or create a given dentry
++ * @parent: directory of dentry
++ * @child:  the dentry to be prepared
+  *
+- * A lock is taken to protect the dentry again other dirops and
++ * A lock is taken to protect the dentry against other dirops and
+  * the validity of the dentry is checked: correct parent and still hashed.
+  *
+  * If the dentry is valid and negative a reference is taken and
+@@ -3575,7 +3575,7 @@ EXPORT_SYMBOL(start_creating_dentry);
+  * @parent: directory from which dentry should be removed
+  * @child:  the dentry to be removed
+  *
+- * A lock is taken to protect the dentry again other dirops and
++ * A lock is taken to protect the dentry against other dirops and
+  * the validity of the dentry is checked: correct parent and still hashed.
+  *
+  * If the dentry is valid and positive, a reference is taken and
+-- 
+2.50.0.107.gf914562f5916.dirty
 
-DCACHE_PAR_LOOKUP currently depends on a shared parent lock to exclude
-directory modifying operations.  This patch set removes this dependency
-so that d_alloc_parallel() can be called without locking and all
-directory modifying operations receive either a hashed dentry or an
-in-lookup dentry (they currently recieve either a hashed or unhashed,
-or sometimes in-lookup (atomic_open only)).
-
-The cases where a filesystem can receive an in-lookup dentry are:
- - lookup. Currently can receive in-lookup or unhashed.  After this patch set
-    it always receives in-lookup
- - atomic_open.  Currently can receive in-lookup or hashed-negative.
-    This doesn't change with this patchset.
- - rename. currently can receive hashed or unhashed.  After this patchset
-    can also receive in-lookup where previously it would receive unhashed.
-    This is only for the target of a rename over NFS.
- - link, mknod, mkdir, symlink.  currently received hashed-negative except for
-    NFS which notices the implied exclusive create and skips the lookup so
-    the filesystem can received unhashed-negative for the operation.
-
-There are two particular needs to be addressed before we can use d_alloc_parallel()
-outside of the directory lock.
-
-1/ d_alloc_parallel() effects a blocking lock so lock ordering is important.
-  If we are to take the directory lock *after* calling d_alloc_parallel() (and 
-  still holding an in-lookup dentry, as happens at least when ->atomic_open
-  is called) then we must never call d_alloc_parallel() while holding the
-  directory lock, even a shared lock.
-  This particularly affects readdir as several filesystems prime the dcache
-  with readdir results and so use d_alloc_parallel() in the ->iterate_shared
-  handler, which will now have deadlock potential.  To address this we
-  introduce d_alloc_noblock() which fails rather than blocking.
-
-  A few other cases of potential lock inversion exist.  These are
-  addressed by dropping the directory lock when it is safe to do so
-  before calling d_alloc_parallel().  This requires the addtion of
-  LOOKUP_SHARED so that ->lookup knows how the parent is locked.  This
-  is ugly but is gone by the end of the series. After the locking is
-  rearranged in the second last patch, ->lookup is only ever called
-  with a shared lock.
-
-
-2/ As d_alloc_parallel() will be able to run without the directory lock,
-  holding that lock exclusively is not enough to protect some dcache
-  manipulations.  In particular, several filesystems d_drop() a dentry
-  and (possibly) re-hash it.  This will no longer be safe as
-  d_alloc_parallel() could run while the dentry was dropped, would find
-  that name doesn't exist in the dcache, and would create a new dentry
-  leading to two uncoordinated dentries with the same name.
-
-  It will still be safe to d_drop() a dentry after the operation has
-  completed, whether in success or failure.  But d_drop()ing before that
-  is best avoided.  An early d_drop() that isn't followed by a rehash is
-  not clearly problematic for a filesystem which still uses parent locking
-  (as all do at present) but is good to discourage that pattern now.
-
-  This is addressed, in part, by changing d_splice_alias() to be able to
-  instantiate any negative dentry, whether hashed, unhashed, or
-  in-lookup.  This removes the need for d_drop() in most cases.
-
-New APIs added are:
-
- - d_alloc_noblock - see patch 05 for details
- - d_duplicate - patch 06
-
-Removed APIs:
-
- - d_alloc
- - d_rehash
- - d_add
- - lookup_one
- - lookup_noperm
-
-Changed APIs:
-
- - d_alloc_paralle - no longer requires a waitqueue_head_t
- - d_splice_alias - now works with in-lookup dentry
- - d_alloc_name - now works with ->d_hash
-
-d_alloc_name() should be used with d_make_persistent().  These don't require
-VFS locking as the filesystem doesn't permit create/remove via VFS calls,
-and provides its own locking to avoid duplicate names.
-
-d_splice_alias() should *always* be used:
-  in ->lookup 
-  in ->iterate_shared for cache priming.
-  in ->atomic_open, possibly via a call to ->lookup
-  in ->mkdir unless d_instantiate_new() can be used.
-  in ->link ->symlink ->mknod if ->lookup skips LOOKUP_CREATE|LOOKUP_EXCL
-
-Thanks for reading this far!  I've been testing NFS but haven't tried
-anything else yet.  As well as the normal review of details I'd love to
-know if I've missed any important conseqeunces of the locking change.
-It is a big conceptual change and there could easily be surprising
-implications.
-
-Thanks,
-NeilBrown
-
-
- [PATCH 01/53] VFS: fix various typos in documentation for
- [PATCH 02/53] VFS: enhance d_splice_alias() to handle in-lookup
- [PATCH 03/53] VFS: allow d_alloc_name() to be used with ->d_hash
- [PATCH 04/53] VFS: use global wait-queue table for d_alloc_parallel()
- [PATCH 05/53] VFS: introduce d_alloc_noblock()
- [PATCH 06/53] VFS: add d_duplicate()
- [PATCH 07/53] VFS: Add LOOKUP_SHARED flag.
- [PATCH 08/53] VFS/xfs: drop parent lock across d_alloc_parallel() in
-*[PATCH 09/53] nfs: remove d_drop()/d_alloc_parallel() from
- [PATCH 10/53] nfs: use d_splice_alias() in nfs_link()
- [PATCH 11/53] nfs: don't d_drop() before d_splice_alias()
- [PATCH 12/53] nfs: don't d_drop() before d_splice_alias() in
- [PATCH 13/53] nfs: Use d_alloc_noblock() in nfs_prime_dcache()
- [PATCH 14/53] nfs: use d_alloc_noblock() in silly-rename
- [PATCH 15/53] nfs: use d_duplicate()
-*[PATCH 16/53] ovl: drop dir lock for lookups in impure readdir
-*[PATCH 17/53] coda: don't d_drop() early.
- [PATCH 18/53] shmem: use d_duplicate()
-*[PATCH 19/53] afs: use d_time instead of d_fsdata
-*[PATCH 20/53] afs: don't unhash/rehash dentries during unlink/rename
- [PATCH 21/53] afs: use d_splice_alias() in afs_vnode_new_inode()
- [PATCH 22/53] afs: use d_alloc_nonblock in afs_sillyrename()
- [PATCH 23/53] afs: lookup_atsys to drop and reclaim lock.
- [PATCH 24/53] afs: use d_duplicate()
-*[PATCH 25/53] smb/client: use d_time to store a timestamp in dentry,
-*[PATCH 26/53] smb/client: don't unhashed and rehash to prevent new
-*[PATCH 27/53] smb/client: use d_splice_alias() in atomic_open
- [PATCH 28/53] smb/client: Use d_alloc_noblock() in
-*[PATCH 29/53] exfat: simplify exfat_lookup()
-*[PATCH 30/53] configfs: remove d_add() calls before
- [PATCH 31/53] configfs: stop using d_add().
-*[PATCH 32/53] ext4: move dcache modifying code out of __ext4_link()
-*[PATCH 33/53] ext4: use on-stack dentries in
- [PATCH 34/53] tracefs: stop using d_add().
- [PATCH 35/53] cephfs: stop using d_add().
-*[PATCH 36/53] cephfs: remove d_alloc from CEPH_MDS_OP_LOOKUPNAME
- [PATCH 37/53] cephfs: Use d_alloc_noblock() in
- [PATCH 38/53] cephfs: Don't d_drop() before d_splice_alias()
- [PATCH 39/53] ecryptfs: stop using d_add().
- [PATCH 40/53] gfs2: stop using d_add().
- [PATCH 41/53] libfs: stop using d_add().
- [PATCH 42/53] fuse: don't d_drop() before d_splice_alias()
- [PATCH 43/53] fuse: Use d_alloc_noblock() in fuse_direntplus_link()
- [PATCH 44/53] hostfs: don't d_drop() before d_splice_alias() in
- [PATCH 45/53] efivarfs: use d_alloc_name()
- [PATCH 46/53] Remove references to d_add() in documentation and
- [PATCH 47/53] VFS: make d_alloc() local to VFS.
- [PATCH 48/53] VFS: remove d_add()
- [PATCH 49/53] VFS: remove d_rehash()
- [PATCH 50/53] VFS: remove lookup_one() and lookup_noperm()
- [PATCH 51/53] VFS: use d_alloc_parallel() in lookup_one_qstr_excl().
- [PATCH 52/53] VFS: lift d_alloc_parallel above inode_lock
- [PATCH 53/53] VFS: remove LOOKUP_SHARED
 
