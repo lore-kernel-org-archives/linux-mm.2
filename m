@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA1F106ACE3
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751C1106ACE3
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:49:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBED06B00A8; Thu, 12 Mar 2026 15:46:34 -0400 (EDT)
+	id CF38C6B00A3; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA0476B00A9; Thu, 12 Mar 2026 15:46:34 -0400 (EDT)
+	id CD1AE6B00A5; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9EFF6B00AA; Thu, 12 Mar 2026 15:46:34 -0400 (EDT)
+	id BE0B46B00A6; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 99F4D6B00A8
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:46:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61F7E140244
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:46:34 +0000 (UTC)
-X-FDA: 84538443108.05.3349265
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 84601C0009
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:46:32 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vv6mlBid;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ADAED6B00A3
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:49:03 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0901EB946E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:49:03 +0000 (UTC)
+X-FDA: 84538449366.19.9E14268
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4B063A000A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:49:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A7q8xKWe;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773344792;
+	s=arc-20220608; t=1773344941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sTT4RH6780QWVmjg6JTHH1UNfZfs6GEfTIRXg8kD86Y=;
-	b=28KZKBDUyh/NDXTQ9V0BP9wgamOJhi3ZFTvv0WrQBuW1LHojPsguNcjCw8pDOI6emMaaV4
-	W+MMaqscMOsSlK3r0PrS4k9VRoZMM4qC57hGAsIebX7XdvApU5bSmHOQ+9UUruDJ7TbNT0
-	DZsmtwVwt2jQo7sG/oA3iwUp58l5ddY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344792; a=rsa-sha256;
-	cv=none;
-	b=LtpTlW76DLR0w9jebzSvgrEKtuukAa3ercGRX+916UnFO4F7RUA9JOUMPEthF0DwN/xEQ4
-	Bxw6t5H/YJdwf8SIsHtcFyaDsGgSpjshSa0nhEdUGsG6NGVcbZZEmpFJXcGDMHiw2SIUFY
-	PLMKztQgh9DbUBoOiXm7cEaAGBI6Sqg=
+	bh=RGhQIVRYBDhvBIOdgpHL+7ETkA11VtZScmOzWGwDh9s=;
+	b=O8XQwaG6SO50Rz2dyE5VUXJH7I27QpCvanxMsOQ45j4RIUuHubkR6HA/ceskRcxpnqxMeE
+	vVvv/xBg8YxJ0lgTiSU1IIkuYRWFKZ6s+hSaBmEAukxUSkZQUdeyz2LvuokDsSibR6D93q
+	jvpY7kLwbytx624mb2qMJcdW6Ngq3jQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vv6mlBid;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A7q8xKWe;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773344941; a=rsa-sha256;
+	cv=none;
+	b=aORKpJTsVMkzB2JiMYbuFD0KjxvLN8deY4KvLNssumhB6e4lVfszAm2spZWp9lZQlXDMjv
+	omY3o68JMpNuOs9PN9xL1/hbvKCi/kTuoGDkR6tT6kXziT2+teXRR+emAS66dbb+lbgwvs
+	wBqysukeUF1kBa+V/qP+lemu1eNO2Fw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81608417C8;
-	Thu, 12 Mar 2026 19:46:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEAEC2BC86;
-	Thu, 12 Mar 2026 19:46:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 945D261334;
+	Thu, 12 Mar 2026 19:49:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB76C4CEF7;
+	Thu, 12 Mar 2026 19:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773344791;
-	bh=rykPRN1FYjIreyRwG0hb5ykSR6iWMPyvxd3LU2ySx+s=;
+	s=k20201202; t=1773344940;
+	bh=Egp6YT5L81zRxg/z6CZjK1NmJyVh8nzuj5sen9ywdDc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Vv6mlBidq0xdvRwE/FEsa7LWXCybJejrdE0R1mR6a/WV2VgVJEoXdFVaSaeD9qXV2
-	 P3rmPZBXXvBfltix156XDzOjUV54aDlByLlxXqO4R0ZrhbBXWLx2frYWWzLFtHbwIj
-	 44Ql8DGtTDeH8K8IHiZje48PLn0NNMgYwPKvSv9Nzv1nFzZPC0BsDntSdxYiLjoqAy
-	 3S4pZxgoszi9RlHHHViFdS58JFGvQTcOJlH/P2J8m5VR0UNWEbZt/99CKaaud8ZjxU
-	 VnHGbwfRjo3i9hNu+mBr10xbvXdwZoErpAA0hT6khurgUvplJ7kKcB/2uUpRQCvL7A
-	 6FpYIjhreupLQ==
-Message-ID: <708647e9-fc49-430c-a12c-f2b44caa273d@kernel.org>
-Date: Thu, 12 Mar 2026 20:46:23 +0100
+	b=A7q8xKWe3Nq1LDRzDIn39uUn/+/x43FmRrrfuiHz7IkbJ87HjVReQdKZyGNwv+HRx
+	 i0zgJux75nhcVF/W3MY2n7igA3n42fuavOGUECV7EyHjeq98dcCOM1GmR0P1J3Vae0
+	 NbyOemIExhNm/GAwKjRD6F1wjGiPc6zADsbEXPiEQyhe58u4M/P2Cuw2f0Qk6P3qe0
+	 MtKj63OLbka6tNaD+9M9bAHJ4GJZPTcA9/TQRwZ7qIXQx0vFtP0FhOpk1tnQ7cqsnT
+	 U/8VzbnRLmr4Ed/1cfWxGO0hevnmZQ/sGnOTRHvzo8IUBcOqTYBYqFuOjvwTYc+fRY
+	 u6ssEF7nk2FWg==
+Message-ID: <afd70015-bdda-40a2-a842-a2d1dd6f4a20@kernel.org>
+Date: Thu, 12 Mar 2026 20:48:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH 4/4] selftests/mm: transhuge_stress: skip the test
- when thp not available
+Subject: Re: [RESEND PATCH 1/4] selftests/mm/guard-regions: skip collapse test
+ when thp not enabled
 To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
  shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
 Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -79,7 +79,7 @@ Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
  dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
  Li Wang <liwang@redhat.com>
 References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-5-chuhu@redhat.com>
+ <20260312114027.634559-2-chuhu@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260312114027.634559-5-chuhu@redhat.com>
+In-Reply-To: <20260312114027.634559-2-chuhu@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8mh9dmkaou4sxs8foc8144x4tzkxki4j
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 84601C0009
-X-Stat-Signature: 6sspot8h1kx48kcoobmdzrg17bk6ffbk
-X-HE-Tag: 1773344792-739787
-X-HE-Meta: U2FsdGVkX1/9FD79DH64cOFqZiYcpQ9xhwDlNY83sQ1FpF7Ekhf0DuG/2qQm9YwjUcybCWdAK4c+H2yle5ba9fxhll3z8QvibeSUdTxSjiBV1BAdz9jL7vkaEdS5DO7yRtfQjqHZUMvgBXY9HxnzT7sMNpI8hXc8ZS+vBKmymoCbOnSduBOkKXw1GdYxvA1m2Mob/sLEbBnwQ2mKV6Y7xl/DDWIN5LT02Y26by1zoAUSpgQ3Gsy14ULNBdbtgNg3zbV/Ctku+mcLHvi4vjDYoZ+YbDp3553Z4fxFhTldu8/5bWwNa3s2EXkGS8lUpE/AhFtTylKQE9av9Zjzl4q5m9CvJv4dW+HBnjNTxXKMYiyP6e/tiMt6wR5hKV7nzrEPP3JklAhOtwd6tQBarkG4+drOfV8HYl4Ap6osdl+6ivfaynzAa2zt1aDvQq2nGZ7J7IoGYkhL5Hfi1/AyZk48o4H7CJXvNOxe1T2K8fGuygpcdqFXoYr1SzaYmcFcR6ZxEbyK4aqBl88RalqnfygHnsF/i/aBxzvUsT2wy2qQxUiaiUG09hSYo1NTwuHtRU95qcjht1usuTuMAOZ4Bs3GlnMZxhnNvlhku6Rz+PIqrT15JXfAN0aa5WgIWZLcciA4c8s+TPu2o4SE1BpBx04wIJ5OWfX/FpZ6aTz4mSuGJhtfJO2WA4IqeyFENn/iFF0dJoS3UGm8jMqGPUwWDVHFjpB1FFAdwwmYeJPwdjfh477Qj339RAzDBTDArx0bp0/tzRSfKDyreHFVjitEOMa+BrJUdYy59WWVAoqwl0ZmLXWbagm6wKgohf6rNYLueznlv5e0WWzQnPdjad3Bwp6CjEMheDL1CqqhHPnz7AuMEPLCgMRrOYhvmMyVKDHzfK+bkzKOm79kAPaKMiMQ/vwxBpqskNBYp8fN65+d7a7eYs33tKlzPLU7pewLkwJYOmyzchUWhJgIydUaKlWUl60
- oWJ0+6/O
- zpZf2ry2i4c7N0W/Ll2YnCo5XLS0qWBcz3gvjJ+jPBahLuUcE9lAyKYJ8jlIBlAvh4cfXJeehdJexROzUzCZGHVJB+awA1vLS4eErDDvf4Vd7irb1+cs6kNSPhg6KmTEnRWGA9vNAS+Gr/3xRww9tZJDxPyeOWLJ2zBXyxRaaGGXbnHrROpQPYXET/b0uby3iWwIeRQRCgn2yFL60tEBHy17NfkrwjpdbWio5dwri8Bv0VRQiZyc2XpTPVZucOfr7MBJDzJ3AYU1icx4AyWk0EJBNLP6bmFQZ2CnX89lkdu8Dkdr710oc62CEJDboOlNFqHW1J2aON0pqLSA=
+X-Rspamd-Queue-Id: 4B063A000A
+X-HE-Tag: 1773344941-663820
+X-HE-Meta: U2FsdGVkX1+T/z2CRTWc4CnTYU0hDiY2DeM9DJXf6eIGC+KRG/L9bcLVQAHNp0AX/C4vyGs9eUj6Sq3ak/0gBR0zYmVtRBt1R3/BrG43ebL1LbruS9MsKUW8Dsx4tHrIZjwT6k8zPqlOHsnjmbrQambfEZdYuxx135Knko0ckehrpNaY9eJK0UbrbMY6pGaGEf0aego9jWXr2pI2vheOcQmPdXKi6U5S6fBEHofafWUMq/6aAEvMk1dVFtgaQbnch3/vKT/G11qYqFOvpm5Glemirt85nmLVbWLcjN34i4lz7tXdU2++X/UgEw98e7IE81QktJqjpVxnipB2I+cYrQ1JW8k+P/XkadbkBENUwGXcQehZ+etjAc4I0ieESfhO47NXmIg4CmXq9rPUJYUL1EXDItBGMFTEOi1GFOU9Aict3saj00orqxEnr2pTJ3/a4CF/ZYMghFyt0RlHTW2OguHVdcwwiNzEVxni593Ee5qVIbp/WIfj8c48vUqfkTgoMpgs1nG90phFXb3K9Ak0V7d7QgdH9LcBdGxgeCyAffKM9Zdnr5aOIGYz0Zd3GBPGrGB87uAFy+kRtir6OJ4CcT0M9URXc8siq83oh7LPP39xwixExIx1xW+N6wk/5Vv0W9skfuDJKJFzZ216+THshWi0uxw0i/00yazdI7Eu0pVvZRdtw7mbC8NV0cgAatJDxj8HaldD+gda7xnwTI6GANKw99oPrc2JJtxxvHEFkL7zNQolMP0XieeI67+X6Vmts7n5wkPbvq0rJo4apvbkG6uAJdSU9W2IcivdpttBT92ejHYTriupEgN6RMB06HhCP5qd5CpV1CDwTmdXlmuF31iDmQGvcoqlYTgYwYRGVSSueVSNi9/+aRo256CmxWdHGnq1ZeGua1b5SMoDa/nT1tntfv4U4O6bmkWjdL61pWKRdvKQGsetm64yxpTyZyFqItjvxrpE1bjqn6AcYzc
+ aP162Pu7
+ aWPw3D0gXiYyQ4SGQepn0XipXrTacRyc1vFqZpS/ImLeIhrulXH1AYvmM4vQ6ReYLGOLM/EZWnSCLX8EwwkCPuhUVqBjGymfSNLG5+I0Z/UFUGdlpYj+NTr1Xx3IRmABwCIWEIB2jyO+MF2YfmhnD67mbM4qnq2QQLQ507y2W0SNNeh7y7UhXIlWHblRDnHFLAA4+8+Onk0+0Kh9LSLNhX0tJ4UYD7jeBNTSF7QQ2JoAQUuPvXtmQi4d84xH41ftJ8IqPHeVWDjN+gvl8nziLRic9oCUIjeX7xGqpDXJRcN4RbwRaaagL7xjoZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,58 +145,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/12/26 12:40, Chunyu Hu wrote:
-> The test requires thp, skip the test when thp is not available to avoid
-> false positive.
+> When thp is not available, just skip the collape tests to avoid the false
+> positive.
 > 
-> Tested with thp disabled kernel.
-> Before the fix:
->   # --------------------------------
->   # running ./transhuge-stress -d 20
->   # --------------------------------
->   # TAP version 13
->   # 1..1
->   # transhuge-stress: allocate 1453 transhuge pages, using 2907 MiB virtual memory and 11 MiB of ram
->   # Bail out! MADV_HUGEPAGE# Planned tests != run tests (1 != 0)
->   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+> Without the change, run with a thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard
+>   <snip/>
+>   # #  RUN           guard_regions.file.multi_vma ...
+>   # #            OK  guard_regions.file.multi_vma
+>   # ok 89 guard_regions.file.multi_vma
+>   # #  RUN           guard_regions.file.basic ...
+>   # #            OK  guard_regions.file.basic
+>   # ok 90 guard_regions.file.basic
+>   # # FAILED: 87 / 90 tests passed.
+>   # # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
 >   # [FAIL]
->   not ok 60 transhuge-stress -d 20 # exit=1
+>   not ok 1 guard-regions # exit=1
+>   hwpoison_inject
+>   # SUMMARY: PASS=0 SKIP=0 FAIL=1
 > 
-> After the fix:
->   # --------------------------------
->   # running ./transhuge-stress -d 20
->   # --------------------------------
->   # 1..0 # SKIP Transparent Hugepages not available
->   # [SKIP]
->   ok 5 transhuge-stress -d 20 # SKIP
-> 
+> With this change, run with thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard
+>   <snip/>
+>   # ok 90 guard_regions.file.basic
+>   # # PASSED: 90 / 90 tests passed.
+>   # # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+>   # [PASS]
+>   ok 1 guard-regions
+>   hwpoison_inject
+>   # SUMMARY: PASS=1 SKIP=0 FAIL=0
+>   1..1
 > CC: Li Wang <liwang@redhat.com>
 > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 > ---
->  tools/testing/selftests/mm/transhuge-stress.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
-> index bcad47c09518..76316696426d 100644
-> --- a/tools/testing/selftests/mm/transhuge-stress.c
-> +++ b/tools/testing/selftests/mm/transhuge-stress.c
-> @@ -17,6 +17,7 @@
->  #include <sys/mman.h>
->  #include "vm_util.h"
->  #include "kselftest.h"
-> +#include "thp_settings.h"
->  
->  int backing_fd = -1;
->  int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
-> @@ -35,6 +36,9 @@ int main(int argc, char **argv)
->  	int pagemap_fd;
->  	int duration = 0;
->  
-> +	if (!thp_is_enabled())
-> +		ksft_exit_skip("Transparent Hugepages not available\n");
-> +
->  	ksft_print_header();
 
-Shouldn't that go under the ksft_print_header(), like you did in patch #3?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
