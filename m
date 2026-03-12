@@ -4,121 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB1251067040
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:00:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D38A21067040
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C05ED6B0088; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
+	id 21FE76B0088; Thu, 12 Mar 2026 11:03:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB4DE6B0089; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
+	id 201246B0089; Thu, 12 Mar 2026 11:03:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB23B6B008A; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
+	id 101CA6B008A; Thu, 12 Mar 2026 11:03:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 985386B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:00:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 105AA1602D2
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:00:28 +0000 (UTC)
-X-FDA: 84537722136.06.6779479
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 08005140019
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:00:25 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="JAFcq/oX";
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F355D6B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:02:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E0041C2E6
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:02:59 +0000 (UTC)
+X-FDA: 84537728478.27.8F2762A
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1DE9F1C001A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:02:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=MC0pt+Pe;
+	spf=pass (imf21.hostedemail.com: domain of gor@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gor@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773327626;
+	s=arc-20220608; t=1773327777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZGtiJN9y4ZZ4JfI9NE8H692/RL57MUDkhcDsED4q1E=;
-	b=eV4hNyNOIa3BQ+5pHXVEcMoZqGvHtOWeqgwGNEevJ0qRM4EEadd+MwzzQKCA3KyMDPanGY
-	ERQ1jVKUKBgOcdINQilWCr9jWyhE3mKyZa3wRbPmMUzdlMgfO1ny6QHTrD96YrFQP6DS+v
-	Ln84Nk1R93XWn5qVSMxXeTGXqyoWRIs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="JAFcq/oX";
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773327626; a=rsa-sha256;
+	bh=9yQLPhF/8tvYIDT5F8gEZIM1Lj5cCvoGcEOmMxBZOxo=;
+	b=s5kSn4TRyLZgYBo3AR2XBnSjbtm+UW2blp0djlD8n0Xt63u5+4zfsGxQJ/Ox9xWCRe4WTF
+	TPiPbvFjNgd8Snkb9pr+OT0zcJc0frP1lSnuf+R1nXzHOugHq8X3/OgBKbbqyxaYYjN1G8
+	3gQHEZ1RZSTSSAhoYqCtJKTI64GwO80=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773327777; a=rsa-sha256;
 	cv=none;
-	b=lNRbmxbpCJYIOFwG0JwFFjEvL4AqZPivlk4oQyD1/AytQWv6UnrunRIZ36vkwDmnL41IoX
-	tLJEo7ywCHw/qjuvONaWGPYinjVkmDIhTXW5eCUQlv+qioo5OhDNoVr/P3SNJCZziWLNQa
-	RmNfIE5XnLZ+DAbiErO9Ry78Wst89WU=
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-40ee9b945d5so732865fac.0
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:00:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773327625; x=1773932425; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zZGtiJN9y4ZZ4JfI9NE8H692/RL57MUDkhcDsED4q1E=;
-        b=JAFcq/oX0BIHjP0RDp3aNMY+3NbbeUeOl59SqK2Bd1OlPdePeOWei87coaVpOwrPaN
-         x5q5ZlKucAnZ2fJ2WY1+Op9lXXGY6vzyE4x4kJ00LziVt9PNDnQETzfz1+YTWNm0IKt8
-         CUDufc+vLUKkt9CX2ca7Z+aZVLN4oYaHrQihh66/ibnaTWQpcqrQTkM1PL5HZoajNGMo
-         Ojq5aLyshsK72iADH8axdBNKNMe+8NhZXrFyB6fOPFKu1MnC4Gkcy6EuXAoYm/FZFxxU
-         QrckheZp262K97fpEU06BcGX9b4SIKomb0qkLwg6SiLdUV72HZOxUf4hoOrFxXq5rGLD
-         Y7Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773327625; x=1773932425;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zZGtiJN9y4ZZ4JfI9NE8H692/RL57MUDkhcDsED4q1E=;
-        b=h2nka8U+ZjcpiY248qvXUtmMS+1VLNQB9dOKvx3Dn1w6q5IWII4fJsaHX4E5AzKDWq
-         aPo0OmeKguET9MpuuePR2vCaeRixj+rLxrDsXzNEcmVoaj6GJww6B04svLC6FOIx2Wmf
-         owejSxgm2QwoTD1WRn/ymJRztOc17eF8YdzFNj3bCOkP/+E8WCGAh17mdCMvIGYxhfHt
-         vORvTQ0hAmXpnhz6STwoytCLy8iOZWeY/dO4If9Q0FlfDpISodKg+2j3LhecexpHMIlI
-         GbhydDCzzc3qEFjydlnpD571HdI3eh6vMmcjZQtY9uyFvuy08NByq4lXhpBtDNnjy03x
-         bs5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXdGwk5h8t/bQa8p4CCLdl+DYnHMKGEy/A1peyzGHI8lmKougealFBHPN5pnxTHrm3Cljpbug+OUg==@kvack.org
-X-Gm-Message-State: AOJu0YxSUjpQOqt6cauhX2GOH5YpJvtFzkfKDOZ28Agt8B+Iz1Oo4Zn5
-	f7qXXjunGfdnQZtmfyIdcHHWlB+YAEQqAo94Fr6ioSv3QEj/6UPb5Q+V
-X-Gm-Gg: ATEYQzyXwNjiphE1QdAhqkNPHAc8kTAuUJXzmvj3qHeSkeOXtnAIIGwfB6NhY/dMHwi
-	6NahxdkpGfThpIzraIprRbpYyb47ZFhda3mKInyDEwT86e3ovIP++nwDcYux5jEYO69LvFCyNTA
-	c9SzPobsb5cm+WINjNZBSADgXGRAyjc3XxCbltTcfPbko0nNPwQ925+hnmDjNe0xnmLD6ibq7tI
-	/5XVzDJAhUgb3LSNYlcnRincq32HTV429jzl7BasR+RGR21l208xXqJMGtWfwJfYuQAHj/nur3L
-	VDNTP9tfYXgS5r37uh3a1fiwwgyeoV62lBmJQ1Vm/KSUpwxBVHlI+znionWb6L69cDyDZufl44n
-	ls81vxneHYYHNu2gw9p5hmXw1nsiKRZ3s1BnMkR5iF8Lj7AR/IjuxOvvknRMyv885CyNAz23rHG
-	ahPr2izF4TAlO4dvF9BApKnDdszlpsINo=
-X-Received: by 2002:a05:6870:798d:b0:409:9a0b:b733 with SMTP id 586e51a60fabf-4177c5d49d7mr4215501fac.10.1773327624652;
-        Thu, 12 Mar 2026 08:00:24 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:6::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e5e9f53sm5583147fac.13.2026.03.12.08.00.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 08:00:24 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: YeeLi <seven.yi.lee@gmail.com>
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	dan.j.williams@intel.com,
-	ying.huang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Jonathan.Cameron@huawei.com,
-	linux-cxl@vger.kernel.org,
-	dave.jiang@intel.com,
-	gourry@gourry.next
-Subject: Re: [PATCH] mm/mempolicy: add sysfs interface to override NUMA node bandwidth
-Date: Thu, 12 Mar 2026 08:00:21 -0700
-Message-ID: <20260312150022.1373486-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260312091207.2016518-1-seven.yi.lee@gmail.com>
-References: 
+	b=RwSgXnAyUPYfWTA96uzatdEWfe9Zy0eFEh0xxaELaa3yEcOMLmIjOlbwFtC4xlj4sjxgzj
+	CwfQXqQesCkT+ggsSAk6DtpolTiphfRjO0xbJ+YLG4F0jzRer3QOsQzWgNEnFuYZNPGfDA
+	hRohJi7wZGoYIZz7RmZYaUmgdUEnlhE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=MC0pt+Pe;
+	spf=pass (imf21.hostedemail.com: domain of gor@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gor@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62CEYoAI2256683;
+	Thu, 12 Mar 2026 15:02:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=9yQLPhF/8tvYIDT5F8gEZIM1Lj5cCv
+	oGcEOmMxBZOxo=; b=MC0pt+PeqJ/Fx0rQPpGYhy4twD3b2Kc3SyGf6uydq7veOf
+	8wSyVumxfYcS/RzLsLeDh8kl9tD8R4upozst/SCAgDPTqUvZAmWAxmio9y7OUnuT
+	z+9VkyVr2PtgAtjQ0Lx8hCSh12XXatgaPxqxwMvKJXGxkJkYajZHeGG8FFjLWuwt
+	A8sSjHM0AL5l7/rGDzvXX3n/TnC1GNUMHMp8KZgOej48GZLIJZLI1hfjuva/1XP4
+	1J3vzIqfnclM5Nt7mo5XR2o0alAXT63fVux788NDDz7JkbrDWVUnoTDzw6dMHvhx
+	oQjkY8po5xcP4wjIRBxqWDT9CJV+bVyXkR6qLRFw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh92b9bm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Mar 2026 15:02:48 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62CEN16g025674;
+	Thu, 12 Mar 2026 15:02:47 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cuha8as0r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Mar 2026 15:02:47 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62CF2hgt59965898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Mar 2026 15:02:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 613C32004E;
+	Thu, 12 Mar 2026 15:02:43 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80C7120043;
+	Thu, 12 Mar 2026 15:02:42 +0000 (GMT)
+Received: from localhost (unknown [9.111.83.60])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 12 Mar 2026 15:02:42 +0000 (GMT)
+Date: Thu, 12 Mar 2026 16:02:40 +0100
+From: Vasily Gorbik <gor@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/4] mm/page_table_check: Pass mm_struct to
+ pxx_user_accessible_page()
+Message-ID: <ttbskgg@ub.hpns>
+References: <cover.1772812343.git.agordeev@linux.ibm.com>
+ <ca77f3489453c2fe01b25e50e53b778929e0dfc5.1772812343.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 08005140019
-X-Stat-Signature: knnb7y1jik7kdemsxz7snownmjpc1oj5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ca77f3489453c2fe01b25e50e53b778929e0dfc5.1772812343.git.agordeev@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 1KsyIx1BDwTPWaT_bYuVWvLadqDOw4WH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEyMDEyMSBTYWx0ZWRfX9FVH7vrUmovR
+ J4ljyZrodPGRPdSk7n1B/Cu0G49IAvTOnb9rnFhx7k/ZMkrjauFEAfl9mgAdqYFQ5AIeON+I65L
+ aBHB+xoH0lQifsBvM+fDapqU7iShTN1mwz6wfd4HDoQHyRNUuL3SE4S+xE7l9cxyu/+VssBqPe8
+ FtomLZUnwBdwc6mhzgyI+QBRIj0VvjIIMzoW/dhIAaRL2RNh8URukhOHG2aIpg3TrvdODgERw94
+ bu/MNsCRkWPsIKbo7rlefYFNmgpmKQz9p4ndZ+DRs20cVYl1l6HF2M4uoujYP0HyT7PBzGeqfT+
+ 8NU/fKpq9pAf5Ac3EfQsegHyszKU98eJp54aJoGeN2WHCSsZHn/zujIQWl+iQTzwRz4TdtyIETZ
+ 5GC2PliLsfoRSNNNxjHHjgzxZZUP16hgpTMMKnK5UhAY3UAhROBg9q4VyPk1g6GDwAdF7Qhb7JE
+ ektOqp8PyzdLfyWK8Og==
+X-Proofpoint-GUID: 1KsyIx1BDwTPWaT_bYuVWvLadqDOw4WH
+X-Authority-Analysis: v=2.4 cv=XNk9iAhE c=1 sm=1 tr=0 ts=69b2d598 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=Z4Rwk6OoAAAA:8 a=qw9MI_8u0g6XvTY13mQA:9 a=QEXdDO2ut3YA:10
+ a=HkZW87K1Qel5hWWM3VKY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-12_01,2026-03-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603120121
+X-Stat-Signature: twq4yx5wd5gzagxbtebpr9aktjonw69p
 X-Rspam-User: 
-X-HE-Tag: 1773327625-81408
-X-HE-Meta: U2FsdGVkX18C1nZEo/4ljjerFPNZmwD078mNgAkQdsSZlEqrg2zAl09+PbJRjdKIzQKcupsDSFnDtgk/MPhSfZFHjZByQRNpPknU4PzXvkJ9BCLbHxTa9ClfzssJm/X4XEdMU9PJ9BrcTl9iU8WDYoul9aTKPqIIiqL4CWOgIAsWYBaX0v3L8cyNUFG+1TvHRi8j0gP0MsgFEAL8JqbwctuH8DOvHBCPfRlDa4+zYenTujUt/wK6podH4MKmizyIaN6bOWx7GwEPRVhUEquvfdO3fubjEfmuAAVbovKQVkpO7MYULr60JG0vkw+Gi/gvfQ5vnyDx2b5hPHF5jA7IKa4Op226rJOu+UrB+pcn45uqHm3vDv2uA9d9gf8miQBnOG4GnUKLfEOkavJy8lDupGeeCYRd2f/IQP9yhI3LcouUcgaImoibUi+XwWnUDQYZ322Km5zS7M24wo9Z/slBhJ4XBwBZT16NfH2p8ls5OAmQPeypkAw8wlwvbtztdex644TloK74SIrZzmv4PLxfb9njuG2QD5M/CLVeBVtDIBz5jcIxUzybqA1vXXIhR3dl1fBcn1q40Z7HiYxLubNVH8Ff+8TOBsQykiquoKXEbP/QgbP+twcKD5qtm+bfVoszPVKcXJVW0icpB8MaaeT6feys/ZbTeODDO42PIz43sRItH/1Peu5QKT6dgXCZWPLehSDW6qpEQf9Jz1sjdTGdQFVwYbPsc0FoUW99K8JFvGA9/JSTb8MnWDWFYNGggxrwevwuHteTTK8BkVjaU5zo8QgNOW403NbVoIpZbp5HuMcvuvebxH6b8VILle2OIwmq8olrEDrYsvGKNaYT47HyolM1JGGvhnDeVdeVqugTQLkEWP0rH13l+w8jeZX6JvlqMbZXg7T1qn0C/d7tMrEq/VIGo/oSArOJGjJxWGG7hCuc4jH7bivW0M3jaZJmD/N9KqRedvFzT4YXiykjBXO
- fDKrHkN3
- o8jrlTDVKFToxWPS304xM7EREudHumlvm2Bg93HD+gTFPxoBN3CZ4zkGQTeGs2G2jbgxqjZYyGm2yI3kPrZaWP80/cZOAywLHQZ5V+g9XzqpeW7oQAV6/CZxKT06jlOecUqeu1aLVXcPkAhGelxegQJnI1xzqCBeBVoFmU0RBSMBDMGE7XVVS632fsKeDRAs0UFZhwypwELndwqDtoD6i3y9QNXZEpnC+R5gtVEeeg58+JMIhNb+Alme8BuQXr/1qTxex956EehSVW9ZSqmsoIMgvuTbeQczvWFx3n9kt2CtVBo+MtLWTGZRHe0dfGi/l3RsRDwqu+CasakRBmMJp9Fqs+vS33dWiJFDEQ8zA+9aFMBefC4pouMds6rj2iwmmzi663KwD9a+RoMOQ5iBweEj3GgvG8C0a16H/a2mTe1xIf3b2uTwXaRNBiHoPydFPX7UgMWWEOPZ2oX83B8RRlyWw+T4PRcTlwQ7nxWrucpV37YQRXFd2AtbsI6ltQpVfVzUlPQhYdfmQiZbqAtLGx+1oeif8HdYcmQilaKSGM8AY68QIjZbWP2JCFa7aXzTADlCtNgJMEntGcv42XxwhpuVzOg==
+X-Rspamd-Queue-Id: 1DE9F1C001A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773327776-935640
+X-HE-Meta: U2FsdGVkX1+ff7+I5VjZ5m9972jwB0LeWCNhaXW6OE3b28EFGjt0wvhdjdYh/P4f1DsybsuvMtQHgrMVZmuCJYhu3wkThp1XGoj4BhpWG/Qtl5AMNh8usr74zTsMrVz3F52+MmWYLLzryCzEnPvj6Lk0Wf6e2bazPywXqUCw9OtJbuC+3Hd6iRrHRXrPYfqbMBKGDYk4/AJJ94c5GxOcKVygdHl3/O4fA0q5Z2nEwPZ0CYvXasAkCFV/2idOBRnUD9A7o8WV/Jvtz//03eRyNDgu6fwDUt7wPfonEcDi3ry2i5foHz8ISIZqO99nqi25eKcGnNts0y3jmyiDBWi7T1dYaF+gMmNlaMMq78YZDefW+BsxbqeeNBzuekH2jg0/4uuYXuwXxsHTWXqMkOdDcJbPvTS+1p10y+E8y9ZKfJQ50xNpGthmufyCF5MMqh5r3iGdyAlqD8oZzUvLQr4Fc4686Kok8J9hXZkl1+d4bfB6L/GeYlHyDfKJqDYvUREvsy3kkiUK9T9m+iQk9VAnTPJ+OHOY7VPkg7S8QN3V87jr0F3xeKgsa3D3AXOGAVdnOOGQMb13khcPsrj216aRqIFLZ5QXXV5+XzTirYKQVt+bfQ/I/K5yx601PXn+kgpAsMmnyb2ZKvjlEfhKmT5Ef3EuunXsAA/X3eJM/wuw9tAFwWK/q05Rdw2xipfNknp0FSkesE2jxgVvvX4Z8F1YDO+UGIvzrwP2g+5lLumXNNMG/8qX+w8zr3cKEUBbl+Ww9YLLFSt0g98ou1EcLLQ7HRj7Ltho6ab2Oi6cHCjhcdipre39O3QOLnb32CiYWv3xmf1Bq4cCJeCGTe8SVmvq78QQH4SabYW9RPYl+Y8jqUPUYNc2L7WqEtqvrAZIIfyd684bp6S+j6brN6IEKzV7zfzt8mUZoqrTAPU9yZr85/Yyn5Tf7gmtEylmcx3yWkcW00q7UInZcc2eDQEu269
+ U78Za/I4
+ mgbTu6IrN7/XKvuIVlXwpF2kzMuHHVOm9XvgZyIlQZ95uKLsrYuDMM1KUqRbpLxTB3BhEJ4Mz8LiXvTGPHAeIdn4Fyvlw2H5OSjIFw9Wqjd4NQ5G5Jpw5bP8sjbmKingJ/KuX541ewW0+bL/WGdgJrTdb4Obj7dXJmbtbtqdgfJG3tRAO7ffQoMQeh2Kx2UqtRv9yhdwOpd1FOZojXsBQ/wWfPBu9vPK60Cbyi3pBvqaGSF+A5NUprLf84ycsRKue2cdVM5E9NETLsfW8PwLkTlNWSGLX6zz1cOSj2QSOC/2JyCt7Wa+MgVaP6MWE9Poo58ApwJrNc5Ffd571qcoJ5QOSJT5/IvTBuSOPAvgMlqkjtDWSVm/t/4Q6sX/oedU7JNKW+kAmJkxZHertdWD5xFU61XYB5mCtKT/D86g97Va5769yRo9IjlBDAUuAm2dT063chnQjZx0vE4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,61 +145,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 12 Mar 2026 17:12:07 +0800 YeeLi <seven.yi.lee@gmail.com> wrote:
-
-Hello YeeLi,
-
-I hope you are doing well! Thank you for the patch, I think it is an
-interesting and helpful debugging tool.
-
-> Automatic tuning for weighted interleaving [1] provides real benefits on
-> systems with CXL support. However, platforms that lack HMAT or CDAT
-> information cannot make use of this feature.
-
-Thank you for the kind words : -) I'm also CCing Gregory Price, who
-is the original author of the weighted interleave mempolicy.
-
-> If the bandwidth reported by firmware or the device deviates from the
-> actual measured bandwidth, administrators also lack a clear way to adjust
-> the per-node weight values.
-
-I just wanted to touch on this. Is this true? Weighted interleave already
-exposes sysfs that lets the user set the weights they want. On one hand
-I think it would be helpful for there to be a tool to see what the
-effects of setting bandwidth information on a system could be, if it
-had other side effects. I'm not sure if there is a strong case to do this
-purely for weighted interleave auto-tuning, which already has a manual
-weight override and pretty simple calculations : -)
-
-> This patch introduces an optional Kconfig option,
-> CONFIG_NUMA_BW_MANUAL_OVERRIDE (default n), which exposes node bandwidth
-> R/W sysfs attributes under:
+On Fri, Mar 06, 2026 at 05:16:30PM +0100, Alexander Gordeev wrote:
+> From: Tobias Huschle <huschle@linux.ibm.com>
 > 
->   /sys/kernel/mm/mempolicy/weighted_interleave/bw_nodeN
+> Unlike other architectures, s390 does not have means to
+> distinguish kernel vs user page table entries - neither
+> an entry itself, nor the address could be used for that.
+> It is only the mm_struct that indicates whether an entry
+> in question is mapped to a user space. So pass mm_struct
+> to pxx_user_accessible_page() callbacks.
 > 
-> The sysfs files are created and removed dynamically on node hotplug
-> events, in sync with the existing weighted_interleave/nodeN attributes.
+> [agordeev@linux.ibm.com: rephrased commit message, removed braces]
 > 
-> Userspace can write a single bandwidth value (in MB/s) to override both
-> read_bandwidth and write_bandwidth for the corresponding NUMA node. The
-> value is then propagated to the internal node_bw_table via
-> mempolicy_set_node_perf().
-> 
-> This interface is intended for debugging and experimentation only.
-
-Thank you for the helpful clarification. Just to be sure, are there
-other intended things that the user can test other than what weights
-weighted interleave would resolve to?
-
-Thank you again for the patch, I hope you have a great day!
-Joshua
-
-> [1] Link:
-> https://lkml.kernel.org/r/20250505182328.4148265-1-joshua.hahnjy@gmail.com
-> 
-> Signed-off-by: yeeli <seven.yi.lee@gmail.com>
+> Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+> Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 > ---
->  mm/Kconfig     |  20 +++++++
->  mm/mempolicy.c | 148 +++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 168 insertions(+)
+>  arch/arm64/include/asm/pgtable.h             |  6 +++---
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
+>  arch/powerpc/include/asm/book3s/64/pgtable.h | 10 +++++-----
+>  arch/powerpc/include/asm/nohash/pgtable.h    |  2 +-
+>  arch/powerpc/include/asm/pgtable.h           |  4 ++--
+>  arch/riscv/include/asm/pgtable.h             |  6 +++---
+>  arch/x86/include/asm/pgtable.h               |  6 +++---
+>  mm/page_table_check.c                        | 15 ++++++---------
+>  8 files changed, 24 insertions(+), 27 deletions(-)
+
+Andrew, may I get your Reviewed-by or Ack-by for v2 so I can take it
+via the s390 tree as well?
+
+Thank you.
 
