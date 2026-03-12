@@ -4,132 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B279B105A593
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FC43105A593
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21AAD6B008A; Thu, 12 Mar 2026 08:35:15 -0400 (EDT)
+	id 40D2E6B009D; Thu, 12 Mar 2026 08:43:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2336B0093; Thu, 12 Mar 2026 08:35:15 -0400 (EDT)
+	id 3F8996B009F; Thu, 12 Mar 2026 08:43:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D4C86B0096; Thu, 12 Mar 2026 08:35:15 -0400 (EDT)
+	id 2FB2D6B00A2; Thu, 12 Mar 2026 08:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE7886B008A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:35:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 905F41601F6
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:35:14 +0000 (UTC)
-X-FDA: 84537356148.15.0CA16BB
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 490431A0014
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:35:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=TFlOXVGC;
-	spf=pass (imf19.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FD476B009D
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:43:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B631A1396F3
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:43:45 +0000 (UTC)
+X-FDA: 84537377610.04.4E3AA9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2FD2BC0007
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:43:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eRUBf3dX;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773318912;
+	s=arc-20220608; t=1773319424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6bVLYsZeqdLLR0Cw+BVzWgzWP+lyAr3AqcCFZTxFfl4=;
-	b=Iinsu0o7CXOROoY6p/FDBcMi526VD8NVXY5/jo9DEFlfJvuie/1upBerNgAFgbzlDq1ok8
-	dkYgoZGen78ReLZUjFF0elX0DxMyIl6Qp36Fg9SdPQogHWeJEnd/UujWBStPQW+LkWsU55
-	JZYgQtyfwW6rBzQil1A8RJBhBgiRP3c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773318912; a=rsa-sha256;
-	cv=none;
-	b=XYMBm8pQ98PHNupDoOiixNqm2CH7vV9W/ktcB3HT080YEyvv6bauFb4bsxV3tD794NislP
-	LsCpzkBss6sTXM5+GB+rcS8A2qpY3rKBapBSZofHOT1dW2P1X1gwGiMqwBQiEHTUqWG/3R
-	UY+Uw6Eqe9D3pAqCX7YHWZhgMOxR7Uc=
+	bh=fWBhCLBHGmJ8wtt0t/KRwm/Hep5/ScU15Z6q3+Nta4I=;
+	b=cZKBtGGK6yaem6My+BevT/5Z8xzNCCDL8rWEorwaRqiOrVnyVr0mVO1GA3HjDWewxK0Nyq
+	LYfI2JS0AkIwRfYvvxBzwcUsKNTf/jn/3lFI4TXR/u2OwcOr+UJvGYQIYphNWN4in78ESy
+	nCpCMD1jnXMy4k6h2g5AnCV1ewKSnvU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=TFlOXVGC;
-	spf=pass (imf19.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4171ff4cb2cso632629fac.1
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:35:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773318911; x=1773923711; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6bVLYsZeqdLLR0Cw+BVzWgzWP+lyAr3AqcCFZTxFfl4=;
-        b=TFlOXVGCIHEmf6h/xZhaOULy9M4c7aEch5wLE1nv5EKcyv9/Pgat2qFrGOhxOwIZnQ
-         o63H0WGm0PYsyUg3MIKHNzjHmAkomxZXsoN+ZL3BkRLhx8AKreF1jE6Sjo3Zk4r+7Kms
-         4/HCKSAtNqKPa6t1BLz+wlQ0x9vM0Iy9dRcsOx2C0xqjGZg8GY5l1ot+FJ2f6otzzgaj
-         bzS/onBN+gopidWXYk41SpSLNg1MoXnFmkJfs04GmuAa4mlIwLJ9CyO8SRdmv4YOR5EQ
-         S0CjecVH2zdzVIo0RrsmR00m/ZM7Opb48Wr3rfAGjF/LZQaFxGphiTmfmfQE/KJrbBon
-         9RrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773318911; x=1773923711;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6bVLYsZeqdLLR0Cw+BVzWgzWP+lyAr3AqcCFZTxFfl4=;
-        b=uXaGfCQ7iMdlUGXHE7UwPukfC3O5ELukA0VulWaqgsed4XlwMVj0r/CtCFWrqSD28j
-         pOus3yUQuPFLD/bGVqZEr+FggV0Su22W45WRI+QPjp5vHrNCsQPBf9X8CnQOkTE7omu1
-         l5pu8f8+LT/2ItxF8+TnfWjXFOpRbW5u4qD3XXt+Z98PxEfQlpeMwtTor+9HrgKLPyE8
-         OhyIJ8yvxlsiAKpAD+BmvpY/vLgaHzjJiw9XkqBWsjpaarn88RknULiaa5/A3ovwMpaS
-         UKJFsSBqY/gtuFiz8/xuVF8qaOwt3fhiqrpLIgBO5pbyur2lJgRdQF/BdGHsWp9kLkVO
-         1Ruw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrEgUbRhx56fDkUywch/cQWBz0Cn2kkvqkiV6JWflJIMQW0uNBfZHZ+fUAT2ies4MYom1RGqOpww==@kvack.org
-X-Gm-Message-State: AOJu0Yw06r3Y0wvUuNuUJG0ZezpR4DPSu1JYVot3Shf35ayJ6kiisrk0
-	wKR5o2jpIsMUeXTXH07eN/+dZe0MRygiZjJHJ3KX5lg1DcjgAhJw0cXHoljaU57OkJ3P4bwAvb3
-	zf1CE
-X-Gm-Gg: ATEYQzzwKcaytZH/M8rYs+BNrx/a5LGGXYjTvoXU+RYy2spZe5SaTpRcMZme2xsd9fT
-	YX3Sno+X7pMlxtcgL777UIIYjNVU/7SGh4I67HZXgdEFd4di0j7RQmmwfryyesT2dglQYa/WhMn
-	BK/5V4Bmq0sRw176a6aR1oAKrFuFBk2rI/x1VnHMQJRt4HeSAPVLtPGVQ5fL0SufjFGT69xLi/t
-	yKyJnKtgnYhTA5uNfnspjXk5gaOG1v937c4AJDuohsE57LP0d205gjMm5451XuTLEBsWxWcYaF5
-	845Nvu+ME3kJkMefeN0HusHSSlhcR0S7acndYlYHmbzAuGtyRKZOkMDFciTz3DPW8u6gtCewQD9
-	0UqPFSf1DMlcsLRVWCk4J9+AE4JUidshsaYPaWN3417UasGWFNfwHhPKeR+i/cgxUlP49dx9Our
-	R4qduVglrd9XMLFzRLfMHi2G2e2L/N8XZsRcS7MMwK5zA+CjybCpy6eiLWMUt5aupZJicAGrmQo
-	lomi1v54yoMIq6B00Y=
-X-Received: by 2002:a05:620a:4692:b0:8cd:9322:7c55 with SMTP id af79cd13be357-8cda193043amr787228385a.17.1773318418176;
-        Thu, 12 Mar 2026 05:26:58 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fddfe8sm328304485a.12.2026.03.12.05.26.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 05:26:46 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w0f7l-00000006ewH-1owB;
-	Thu, 12 Mar 2026 09:26:45 -0300
-Date: Thu, 12 Mar 2026 09:26:45 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Petr Tesarik <ptesarik@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-rdma@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 8/8] mm/hmm: Indicate that HMM requires DMA coherency
-Message-ID: <20260312122645.GG1469476@ziepe.ca>
-References: <20260311-dma-debug-overlap-v2-0-e00bc2ca346d@nvidia.com>
- <20260311-dma-debug-overlap-v2-8-e00bc2ca346d@nvidia.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eRUBf3dX;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773319424; a=rsa-sha256;
+	cv=none;
+	b=ORb7dEwRvu1xkezMtMv9+UnDvodOSUIBkar4nH6Vzq06xuZFOH+c9giPbW9mxo/K0ZhNhl
+	uCrXCGoHbmSwHwdlKIShPmzNGtT0KTX1Fjtv9XBvEEBe2u/Kw2MaclzrWbd1zvS8OyAxpi
+	h+VTW4kbQ/vEIsz6FQ7AiAp6DUfav5o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 69EF160054;
+	Thu, 12 Mar 2026 12:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DD1C4CEF7;
+	Thu, 12 Mar 2026 12:43:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773319423;
+	bh=8S9bNJmF6iH82u3xXOAn4AoJikaKrAnFf4WVKPEmGxk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eRUBf3dX6tDFd/wdJL0RAiR1hAauissEfjHzMqVRjfgm6+A8cJRjSAe1kA+dx/TfN
+	 ufTmt8h43/s25vH+jIPrmSlRHhwv30uARgMBqTfJJ9yaXkPQkHPVqfyY8ppn7whChp
+	 frS5QsFEy3F1KNz3/ylj/Cwi+KL7+0iGNFM2Yfr+kCfhPuT6FsDjoSfkZ1qQMntmhj
+	 yN1Hb+b3I99HYlAnXrMkjez3roLSMj9i9rD9AB2BP4zwu027cv0ySlc33z8GT+3rNV
+	 XARl5ZCnCHUgKcB5kbQa7s429uEUlEap6X6vSpvcQ2GM8OFLLW9JVLEQb9fOpVjodd
+	 7ofK99QQPtwxw==
+Message-ID: <536527d3-6ffb-409d-a119-93c13a87823d@kernel.org>
+Date: Thu, 12 Mar 2026 13:43:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311-dma-debug-overlap-v2-8-e00bc2ca346d@nvidia.com>
-X-Stat-Signature: ffzig8ix1a948cm67gm6iq8pq3o9gzkf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] selftests/mm: restore default nr_hugepages value
+ during cleanup in charge_reserved_hugetlb.sh
+To: Sayali Patil <sayalip@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
+ Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org
+References: <cover.1773305677.git.sayalip@linux.ibm.com>
+ <9d150c91d4fe18732f9a90234e6878b7bd7f61f7.1773305677.git.sayalip@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <9d150c91d4fe18732f9a90234e6878b7bd7f61f7.1773305677.git.sayalip@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2FD2BC0007
+X-Stat-Signature: p5m68c9pyckwsn9nsabwjhhbqsq7sodu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 490431A0014
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773318912-384036
-X-HE-Meta: U2FsdGVkX1+8e/ssVrULhuqaiSfgomuA6344ITfoHV1f48gCb8rL/lXNBAZHSRVe5lgY6ta335wNgJm/xgDnUVpj9kA9GcjJCb3osPQopAoRwyuSP6TGVvLXZkx+hVnqMylJaRntCBqPV9ONb7d772134MHcR6p/2Q3iRk0VnDt3coBKvgM8XA3PL5yuQN00E0bUPT529cNUKpNHzRE2ZpiwjyVamPfqi7XKNtMDJSjAxxPGjyaKXytkAO+ftZomS3o11IWLjh3zhvJ5wrU3rRvu3XcQq6uv1CUgBUyouDR3i4QtLC+dGt/As2856qxipqgeFDuMCtnLFa+mHZQriEBR3JzOBj943cUAaXpHXsqG0mzLLfNnwtn/lC/sGGklkFxd3KxbxUg8jiC511NgEPmjfv/XhGZMHfnl/JdajsTbV/ue0JBu7ye4dLpZ77rzkGNwbh/WJWwkLMQO03ZHfaB3M9D7/kAiI9/dTLIDuPjPl8MiDl9Me+LZkZEmrC3+2AGHQEgJh4m+eFVbZsgmo79ZVzQG30V9HCbajemlepyEhpiqCWSA493aJTTEpxXJ9l4xRG0z7tM2SMei/nL+DcVvwe82+buZlwk5eA5fYt0P15bPOVGjEy86RQsh75EvKb9Lr6J1m89Ptu+EFp8VSETFb0njL3ibghrwEzRkSaqKFbEYxlGpv8iOoATumQ2baTrh0cFfkUta9Cx8v0hmOySOtr75egKtHRGQOJ3lmCjYI2cJSrUIc610Lv4M0oQLWAqVpj+HMUKKCUFy9yN1m5JEqQ2kB3Hcw1/BJn1LJ5qQzFU3z9L3Djgg5pBWoAOtLT5tS294bH9sPoFt5/7FAd5HJqsP5ptR3Pd8yHD1gUw9kUj72jZU7q99qxKp6bVTqULQmY5OFXfk8uRVL6RTvGhimBdhCghw4G8CBATgGuvy94/l+vpu6d6r4Q7JYta1xWs2wWCHwozJIObLk42
- 7qn2T6a0
- sYeibblXW0aLIM+HGlX88WUL2nF/TLs1Irm7WQmuSq+rYA9rG8PLQks+iOZ4sKfcJdQUyTLHNGQ09A10gqk+I/c3NDhUAbfWIDe8nZAhQhZFxp9UQTYzDYjCgzlGrDjxNFr4/PakMpBUgItpWTiXhQxSlS/dpKTOu0IyQ1hrk78Z/t681lNd5IwXK2mL53qTrV0DX2eDQWEMXVQhCQQWuPHpOhITLxxK01vlnwehwxc8BTvltc6QboGmdq5thd3UdMylk8HG4b9k5RIZ+uyN5Ta7AcsmgLpja/tg4dXS1G+uHcWftalrvTJp88g==
+X-HE-Tag: 1773319423-59004
+X-HE-Meta: U2FsdGVkX18p9rPFAJe+gT0OvKQne5LPH8+QntOVyhyXDKLXAOZO6ZX/foFsY/ePXeSrNcT305mJ1fTBv/9GxVtNNjUnPII+muO2G9YAIFTAo64rBZPyJJuCO8wb5hwJo+E0qqwOc6aA9THO77TGMHqQ4+Hke5Mf3JJz9kHs9qV79lIOItDwO/kM21SE1agvQARm/ILhpBNS9h6GWpv9Ps9xAjse7F2aMUA/o13SSSHlawICNOXEq0i67xXvHV/O6DapPPJTL0j1QtNhS74NMICX8Tzd5pm83/S8Do0cRNGgeKXjpgxvJbOdS1f2ICEy1GE0T+OhFyP/CsH3f5zk1vQ2aLcB6+EMWFkT7UchL+3a0I5n6gm5QuMGBS1oSDW88VweajH5nzDk7FPyHQ5n/joLQ6AJ3goSJsuaJcgBQy7YFtS9SBiMvOKC3MY+APECfNq4r7ziTPNmG7TcdqoCkdsyKI+jmddjKam7kCKmhvpQr+l3QS0JsHhpySVUDsC9Lu5SIrwcTwOJyNxcOkLa55cChDHP6FqoCQfUTSU1t04y6RASCVjfDK/D9ENHp4pRMuAEweQctxBExto+34FxzQRX4gwukDVlo2E9tvL8BodeFIJSH72mLR10fu9VD08xGcjB/lkFair/be7fdpVJjMVH3Ate44ARDOQjzjP8kvPEkdm2KcdUCKbnxd9HrxBDQWW6iLgYpluCRWQYSTn0ajq3bAlln4kI80Qw0CVUo3r8uH51k8QnzTO43siONMmxKuDfbJ4awDXtYo8SAhivFvpDlAZTShNRR5eM9TQ40ESlSGzWQD3BOxQ+31dw13eMT5HK2IdmpLqkHTWeNEqLlJyRP7/WEbVmaIGEApp5IyzwW0Sa1v3X1piup8b97ZjEbLqeB+UH2zTA5sAKJcHDlyu0yjtqrLJm8a/9In06YiCg17IKu2/qKuYQU97//GVgh9janPwtrwMNKx2hylP
+ +1TsmtJe
+ u9Hv4JqiBXkNl+j4m3x6JRqk6dnBfKgArYz2K0cpG+q8+MGVm+mioqI+BnyyICyirm/wGX1Z+hTNVR/M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,48 +144,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 09:08:51PM +0200, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On 3/12/26 13:25, Sayali Patil wrote:
+> During cleanup, the value of /proc/sys/vm/nr_hugepages is currently being
+> set to 0.  At the end of the test, if all tests pass, the original
+> nr_hugepages value is restored.  However, if any test fails, it remains
+> set to 0.
+> With this patch, we ensure that the original nr_hugepages value is
+> restored during cleanup, regardless of whether the test passes or fails.
 > 
-> HMM mirroring can work on coherent systems without SWIOTLB path only.
-> Until introduction of DMA_ATTR_REQUIRE_COHERENT, there was no reliable
-> way to indicate that and various approximation was done:
+> Fixes: 7d695b1c3695b ("selftests/mm: save and restore nr_hugepages value")
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
+>  tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> index 447769657634..c9fe68b6fcf9 100755
+> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> @@ -65,7 +65,7 @@ function cleanup() {
+>    if [[ -e $cgroup_path/hugetlb_cgroup_test2 ]]; then
+>      rmdir $cgroup_path/hugetlb_cgroup_test2
+>    fi
+> -  echo 0 >/proc/sys/vm/nr_hugepages
+> +  echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages
+>    echo CLEANUP DONE
+>  }
+>  
 
-HMM is fundamentally about allowing a sophisticated device to
-independently DMA to a process's memory concurrently with the CPU
-accessing the same memory. It is similar to SVA but does not rely on
-IOMMU support. Since the entire use model is concurrent access to the
-same memory it becomes fatally broken as a uAPI if SWIOTLB is
-replacing the memory, or the CPU caches are incoherent with DMA.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Till now there was no reliable way to indicate that and various
-approximation was done:
+-- 
+Cheers,
 
-> int hmm_dma_map_alloc(struct device *dev, struct hmm_dma_map *map,
->                       size_t nr_entries, size_t dma_entry_size)
-> {
-> <...>
->         /*
->          * The HMM API violates our normal DMA buffer ownership rules and can't
->          * transfer buffer ownership.  The dma_addressing_limited() check is a
->          * best approximation to ensure no swiotlb buffering happens.
->          */
->         dma_need_sync = !dev->dma_skip_sync;
->         if (dma_need_sync || dma_addressing_limited(dev))
->                 return -EOPNOTSUPP;
-
-Can it get dropped now then?
-
-> So let's mark mapped buffers with DMA_ATTR_REQUIRE_COHERENT attribute
-> to prevent DMA debugging warnings for cache overlapped entries.
-
-Well, that isn't the main motivation, this prevents silent data
-corruption if someone tries to use hmm in a system with swiotlb or
-incoherent DMA,
-
-Looks OK otherwise
-
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-
-Jason
+David
 
