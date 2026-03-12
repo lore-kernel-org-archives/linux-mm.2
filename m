@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BF6D106ACEC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:55:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12EC9106ACEF
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 085116B00D3; Thu, 12 Mar 2026 17:55:10 -0400 (EDT)
+	id 61A2F6B00D5; Thu, 12 Mar 2026 17:55:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 045B76B00D6; Thu, 12 Mar 2026 17:55:09 -0400 (EDT)
+	id 604FF6B00D6; Thu, 12 Mar 2026 17:55:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65816B00D3; Thu, 12 Mar 2026 17:55:09 -0400 (EDT)
+	id 4D41E6B00D7; Thu, 12 Mar 2026 17:55:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D48056B00D3
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:55:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A53EEB7EC5
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:55:09 +0000 (UTC)
-X-FDA: 84538767138.15.B056553
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C20A6B00D5
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:55:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC08558D5C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:55:26 +0000 (UTC)
+X-FDA: 84538767852.27.FEE7EAB
 Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 99F9B2000B
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:55:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=LvUkteWZ;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=FJNskYCq;
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf03.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+	by imf22.hostedemail.com (Postfix) with ESMTP id E28BCC0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:55:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=H9EUTHF4;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="mgyMS/w/";
+	spf=pass (imf22.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773352507;
+	s=arc-20220608; t=1773352525;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QdLbzmw/KSDnf0Z+kMRVM204bGIQfGT5DsH4LYpn9rk=;
-	b=ELOAfLvm9uLG7kM2RdUf/qkG0M7oBhHR4nnlrMYh7cuOisqEE9XAGgseNGkicqzj2rD+hx
-	mO0+fgNUJGcMS+53C39Mnpnz3NgsTaIObFj2TaWkWqG6kF9SM0TOhRXSJKX1Hhcgzn+pUV
-	IJXiFvntXLA6pKCWojXHqE42zjIWXtw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352507; a=rsa-sha256;
+	bh=3if7F0C5AAC1JbkpbjSMCxjLy6rTA44JQ48V382ux68=;
+	b=OTCeJtyjBGPKose6kWF02bZwyXTbNCdw29EGioOGV85N4qWzxk0m/tSA03xf5w/L4LUuOT
+	hzDTwL8jEhL9wYsKT8gZYr8nM7uaL4ftJzbAlumOFLZQVj8kIRadTEIH65fMcnKW6vDyr1
+	Vjgxr6oTvJJV9fHpZCaZ7l9N2LRPCn0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773352525; a=rsa-sha256;
 	cv=none;
-	b=tvIqwIPUJfbmQ6WMYS8SMy591GdkrJE66brKUecvcPb2gQKEPzjyYmREOWNpA8ayz/AyWM
-	QWBC3NCjDs6QX4gmyMEwxV0mxcBEz/lWojJWt6Q8E9TNCMZRhGrmePENjl4wmXrGYWuFsZ
-	tY7ZlujTiEWt9c0dI3lkLJujEVW01pM=
+	b=IYLuKC0UGqf68m8DJeZyj12nbohDCxcb4RKKXW6lcRn7XD85/BmgG9nqrOPTx3S7jsHVxT
+	suxuuMAiEEjnY2x0iY7MU+92EUbn4qKum5yQcOKVlSVKqGgA5XpsyyA8oCOoYX1ILJM/AB
+	YsdUuG7cs+dMMllF1iBwq/l29dL/KEg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=LvUkteWZ;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=FJNskYCq;
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf03.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id A5B1B1301B6A;
-	Thu, 12 Mar 2026 17:55:05 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 12 Mar 2026 17:55:06 -0400
+	imf22.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=H9EUTHF4;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="mgyMS/w/";
+	spf=pass (imf22.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailflow.stl.internal (Postfix) with ESMTP id B10021301BB1;
+	Thu, 12 Mar 2026 17:55:22 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Thu, 12 Mar 2026 17:55:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352505;
-	 x=1773359705; bh=QdLbzmw/KSDnf0Z+kMRVM204bGIQfGT5DsH4LYpn9rk=; b=
-	LvUkteWZCDaoWYqvI6Uisnfitx8+ggZ7C+jDVARmw4MfgDHjnDypqJJX1nPL95Es
-	Nag0d95y4bOlXv5m+pKizu4jWh5ahcynJTeDGkIUolBj+IgzzhsyXjFo2bfH0Qyv
-	tKaQT582rw+TPUHzjlFD/YzofmzYyhPIuVAyhZa+ANuqDH7cXjyaGIOgEiIAmPMj
-	/yBD02o3rX20ddAj2X9Lja60A73KqNH7Vbumy6bJPWqkV/J7oJhkcQE+7e0oY9oj
-	8yrxJYAMSoJ2oQnH4ii8XAtCwFXq0JdtQ+OZyBx9LBztC94estrJlQ7Fb2RpHNci
-	j9HTBYX57sNFqJtdD257YA==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773352522;
+	 x=1773359722; bh=3if7F0C5AAC1JbkpbjSMCxjLy6rTA44JQ48V382ux68=; b=
+	H9EUTHF4r4ntt850sUfeaQwtq1wg4xsapXTK+Bmbed5aBY6rGmecjBhkdb50KJJw
+	yozmTs8rF52SI0/+6uErAmNlGCje+eaAeWizSuONzzKl6bXgUCbXrhvC50Ypb7Af
+	BuGa9IVDBtnD0iI8cWgMLPEUvMmEROZjn+AsiwMbv31vHNMtLCOR4d07pF0F4Lhg
+	SNbbwsak0t8uJDaZE9lEde5l/a/YGjv6Xm4eNNckpbnB0IlGBxn/KhnzKdHNNzFZ
+	knquaTl2pgOiMYO5E3YdT59XdMgZ0B1OMFY55kq1VrLl65vHBs54fKiIaiYZmgZO
+	fqr3ecAc7MP8Ib5llOeGMA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773352505; x=1773359705; bh=Q
-	dLbzmw/KSDnf0Z+kMRVM204bGIQfGT5DsH4LYpn9rk=; b=FJNskYCqOEZkh+b+X
-	kjQKFHwDK4nlkiMOH79i49kx6oyszytp/7cRmbQdR4TG6i+WX1zSfAfDFSj2Y1NX
-	urfJRQbAe2/ZivP8ZlFzYw5Xx4Tjt0gBM+SYtqpX6Kgsv306S8wBnJ3NPxRIo8Gr
-	U5NJ5syIF6Ijl8lBWd3BsfXtGZ4Xp0xg+1uBM5qufDdgQAu95mr5nsWl6MMtoXlQ
-	/0yyYgynJbthg1j1IiLBfYq1sU6SKAay8XiDekf9/sJ9Swz/so6Zcq4L7c2DgnYV
-	ED/qOoO5zm9sFslZ6prlPbvaBfLftMXMK7/uaBYc2tOu/H1h5F+TOPuSFUXn/JDI
-	t0ykw==
-X-ME-Sender: <xms:ODazaQF7k1KATwaGFlcBZZKpfc2WG5qJMk5fnlfxm1Vi7B8CBF9F0A>
-    <xme:ODazadD_2IL7856JUXB5PVFIBNMwA3rDwgll_qpc4ZhOz7e-JQ0NuRoov0eB42WUc
-    EF3bvsNaNg3qYNH_6PwXS9evSOT0CwL1GdwzFrQraqer4PE>
-X-ME-Received: <xmr:ODazaVPZS9YqF9ZefzQt107DROar1zD2G1yJvDbPvT3o3mATZ6mSjon75F5jB5LVrojnzHvcAo4afzSenxq3zbhqdyMRDGucrx4hX3BDj38C>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773352522; x=1773359722; bh=3
+	if7F0C5AAC1JbkpbjSMCxjLy6rTA44JQ48V382ux68=; b=mgyMS/w//zLJozQuG
+	iBMTVjEfl0NOrr7Zw66UNwTwbYxizmZhVHmA+lAQV7/jBPswUdXTZ/qZkmNM0DbI
+	hKs8be9mTKQLa70XyuohH5vgJkcJ1Lf8CHfRHjX7K138+x0nvdCHx2JEpJOh8Q9K
+	b7tWB+BgUW+qbsdIbWL49y0BSSPZZBWkUT/0NROD3UXKrVMw/3e1jvhZvGmRDQPf
+	rIucBRKYZcMMA5TWkb9RLF9azs/HYd20sSGyOiiSqcmLp07MuJSg0uO1QiHA+HDc
+	kRdsREoMdkfSJ28UBPTNkNY1lteIgQBwopJWj/nyyb32cXnM/7f4uBkmUlEFoI/+
+	ZjyBQ==
+X-ME-Sender: <xms:SjazachlAWJOSN8lEQ87olBQ4THW8YdF9RlFWlc9v1XRyDGCmGTfvg>
+    <xme:SjazaesTvDYRW7k5iGIwjm9wIQkza8VuF4_UiMEvTBY5e4FYpn8LFq750dz1l4Dbi
+    5jkSM07bgIUuiPmW8hzI3cpP5dADZ3FHZwwfkLfWGcWx44OaA>
+X-ME-Received: <xmr:SjazabB8Fiq6DqmKllIMxsq_KLyOsejW5MZSugEFwbVXYgw_6r5d_7imDhHWM-mTZXu0THro99dT64wYsu4Hzq_iSBjowV-xxI_6AyXiDiTE>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejleduucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -101,14 +101,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejleduucetufdote
     hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
     vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
     drohhrgh
-X-ME-Proxy: <xmx:ODazafj5iHEVaQbQL9xUSPUswOF968qjB-7fYOVT8Wqivk1HLaeLDA>
-    <xmx:OTazab1bv4yDY87VbPr_S6wN9LMoF8mSMxvCKipOcZJol4AgbiLq4A>
-    <xmx:OTazaRplVN--MsA_JdAYXWXr-dyaNK_CIRfy2b-VOFGs-cHK8Mzl1A>
-    <xmx:OTazaY3AxBB1DDvGyksBA06N9SqB_ZPRuIzdc1Nf4sBn6Jnxpg8YxA>
-    <xmx:OTazaQQzPhe-KJWsJjAclLfJeMdfP4VJ_ZU2q5xz2RTb5aOEmQxLEFQB>
+X-ME-Proxy: <xmx:SjazaRVUEVbr5DICwZBK751qOvfjCumW4QjiWYsKS2grgUvd77XOSg>
+    <xmx:SjazaZIyen0EDW-Ii1W8JpDgpqmir2JNlPjLTK8IUePBHyms0uCV8Q>
+    <xmx:SjazaaUMF9hRGxMFgBbvbfSm7iXGN_MPHRezxnabrg7dw7H8WZk0EQ>
+    <xmx:SjazaSR3lRAk_iK5JZ_cuPeri7l3gQKqEqg_Vuzki0vn4_fQDAwXYw>
+    <xmx:SjazaXyIFx6sW7VqeUJx3htwVItRXiIok1LvXEF8SiWSLKfBtXaSuRZS>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 17:54:50 -0400 (EDT)
+ 12 Mar 2026 17:55:09 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -151,23 +151,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 40/53] gfs2: stop using d_add().
-Date: Fri, 13 Mar 2026 08:12:27 +1100
-Message-ID: <20260312214330.3885211-41-neilb@ownmail.net>
+Subject: [PATCH 41/53] libfs: stop using d_add().
+Date: Fri, 13 Mar 2026 08:12:28 +1100
+Message-ID: <20260312214330.3885211-42-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
 References: <20260312214330.3885211-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 99F9B2000B
-X-Stat-Signature: 6kegku36zk751gis6d38smedy48oqzj7
 X-Rspam-User: 
-X-HE-Tag: 1773352507-426254
-X-HE-Meta: U2FsdGVkX18+j0EmPnjvhu9Ao60J4MdVtDJz9p2zxn7qKPJi4j4ge8wWndL4FWK2hgVQvSEatjKiTaFfZJ02WDD3dHOnLVJcbjO4s4Xk/dvI8l37pxbW2EJPAqKMuVmIfCTfaHUJO5E1yhaTz5FdHkggvxbQ5vuQTRfs22DYgE7CAWxkSzFKBp+BlBdKGs6RsIU30OfcAQCciSt6KovzYBbNPJDn2zbq7k3sccJtDZFqWifB8XglLJZrI4A3Ve/cmd2eo3NyFsJWsIf+7i0Pec2G4NQkGwhDTrFkSoo62CPgAjltA51XkCPDPtwZlEWNHE7iWl/4kuFJLIpoe4cCC6QoQwY4sqQkCKGWR0ZDjin3T4UH5qHK/v5w+qDvYQh0w7nbilzY109AKLtR+7gn/zjbndU77sgLtaIflgXESTCpkOa3IlgoFS8O0/tw9rh88GP1TFwI6XdBqj23x7QQTuwBJXmX4wUnEp/074sx7Ov/h79Gwo2DlWO1kOnVB2MyJ3RtuvaWnR/89+MqctxTpBnF78L5+RWF5BZIORlClXxLH6dw5VtOmET2nAOlYhdbsG+RpXDmG+jnkdxg3ywdPJMoxMj21e/bvPjaBqphX14hJwA34WAedwQQBgyY78+5C2jqcPZ+KW653DsofVlM75z6Cm1gD4X0qcGNjd9jBVR4IyT0sG0OAuYmHuNZitEOCa+n2Fzdo1KNgmHQDrk5Lav4WHsKc94n+ft+idRVN7NjyoSME4AHI6L5RbMsNC2jw6Sktq/YvYFfSvTJMeUWbPp5boi5xBklX/Om4ha26GtEOvbh3XuXyHdKG0NDz3U52/kZj15BlPyg/8qDZiPDf/C+NoJfb5V8xFNCSa6pXoB06pgipuz3COBitOqIrpXknRmbqpq8FhJPg3fsEwnR7yyyczuQaO0Teoq2lvf5okW4TkE2SlnOG4zTpqZ8/9jPXFgKhsNXsOE7ghSXJcw
- w3XjLI7V
- gwpx+191LACI8mSCmW/7Wbm/f+HGc0BNYl/3EI/hoYwgaC2vlDcB+2JKVG/wGdB2y1Da/aaubB+0V4QCGsKJsvKKG+Gw/bV9tXq28tTYI45ZTJwoV42yn5g/LOI5ZQPQXaHXCEO2A3sC+DM+LyDCwBxsK7qvrQkqb7CbcnxXD5Mw6kM3aTvVRDtJN0GgUbbWs4QHMH3urzQhhTiTkpDs6GJD3ruTszHq72NMpdFlvLMKJLbQMVUUfnXE/uXdq1whA8wWhcB0jsVdfuUAfgWXAirMauRdfWacnoxFpgFkW59e6VWHHWqU2U/a9TqPJYa2FMbp4Sj4giiBauvHjrE1WwNins33xDc+5pPvzijbfijStiNUCr9rPQXquh8ny2/zoCZaUm3P1tkIzQYhOSKQQL5kX+qgIUYOnCtQ5jeCFpH+WXseMUpI2lXCHVnLTh6WxB4VO6xnajseY18o6K91Zht3tqGW7/mzxlPIVeYt9VnttPShyOs6Hx/qV5tcjHYmpO7VvkIxtoxFNtoQ7pTipCqsBDeBJEwKKVvg7arBmi61QSQat+8WBLk+GfqQ1R4b8I9BwlbzY5QLdcB5JCki8b4arNyM9EfzCxqGsQ5snJRC2mgzGPYoXV5FYq8WPKrnJTnNvExjbz80CZod9NtNF08dtE/DUckywi0iUC9sygDHRfWg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E28BCC0005
+X-Stat-Signature: q4ht3q79hh1qynh693kokyyhw1mrgyu5
+X-HE-Tag: 1773352524-607477
+X-HE-Meta: U2FsdGVkX19A9nvfT8KEllc+MKGGaWF5m2ZYdFSFdmGwcj4GrAnlDKnQvGE5QzfdJiy5snFGQkCfjh+61QRMXz0USdp3Pzo/B+ETKIgc05Z37mSvb5DAzD/nZhjAM9NFKxjNNckgy6Ca0k1d38WRsz241odpSkuiEveCe3W/XyusfUjLx72NPcDuZk0qF0nAa0p61/TFOYPOGKlykId8qZyrobwpThqfpjmPRlwNA319U3Rnd8cInL3II6rmo8/7UR9M/HG63UX0KGJVVONo7P3UZw9f0ftPCyB6QeoRmcZzN9DYXGlxuSRG6kNGZ5vzv0CdlIKgIdWQ1dfRrNgFGojr3JXIembrkAsNoQIhvYKQZyMG82kopg8qxinh7g2kAYGb/skt+eao2DDnWCHpYfJ4pxjygvcknsRJfVB3WwcouRejW4Eieu80Sxqdv004h/j2I95b/78D287phMU3x6kzV1bd6osBoUaPZyspl2UOegCeeWIJ9ER4BkPVB/V9IS5c9rwq6pkN0LflU+56f4FcUzeGk9fVQ96+jS2+kzkWTaspjsvtcBmcNQy8+nXGl/uvA7Z5UGj0QdKvz/aEe1m7lcVOKaglDiuvHj2TW6/Fom5O06t3F18DcSjFP1VDwjaIN2VqnH2659hNEKmsbUO+IW92pCy2HIbDH+vgPF5nmOeztBaAIoDCRaVG6pMyCmVrDLNomH6FA9fFEsDumL3VwtQIEAI/CxCPv0keBQPE1l+J4h6kFpRNKyS8GrgHJjaQoW8ayBi6CSNAek/Af0ReRVZ6EwQ2up7A+7p1xkiad4LgPA9Xs2cEDTRS15sBmSvjVeeK4mTAvv7h3aQwW1sAjQjKcHhCTWuRvV8vsJCc7AHCG85yovEYkaQpRmncw8/oK0MVKrUYdE4ihUJYyd7T8evFQmcqLuT5faAw11CYaENPjS0YpuF+VjA8vMblgTGoY+i9OvTcZ4lTCBb
+ Hk9szzUt
+ YnRIdF0RefKsWKoKdLbSq8La0fRFuRQKdvB9tBYNigiefgJ14YuqGqICVGyKa5yW7DLiolk5H84ZdPlYPb2Opw3gkPDRCEXjE8W6OGRRGzQfTCAHsUq5NxknEI+lSPw6A1XkdjXtFzvqbS7Nt9m6V7cEW0+vePB+Ps5G8iZFN75UbGCojyNi2G4CEtFq5R8D4AuiOtwRemLsOVbKm5sS9wLz0EqS4CqfviiI8crb51LD88w41A6zAczC46w5h17xWU7viRDbQuOqt11XnJlc0B0Sdiddv2HZzkCfWvEdr62I30nX781KaTFQlSvVzTM6NNqK23TwibqmcgwFHTXFx/NZ5Z1+40FMZyDzJdzI6Fb8eCM9BqK4MT3SvEhsgCQXKC2Qop3yQr2V5j2tes0Qur+J6i3KW6C7D0+gCaC2NFqQL+l9pKxPKxB/cuU8yg2sKeX+N+2iJ+aWw+99TyrU+wVC44UNafMh3EIR/sTd2Ef+RyJubTMjhll9veGHqwwn3ZbxgmyLbzQYkkzJEMzZKig0aEmPjkLW5C/vDamebDT0gbLq5Hh6eXTU1AnFi1i2nI6AgL72LgmNxmYujtF0Xa99x8p/pzTZmr9NhQQ2zuvHhBfjQHUWwQEExOu5P3f5Gwqx2Q+jmwGAR1ML/wSG4M4GmPMrz+6f6eG9kzOi8z2LQkcM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,32 +178,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 From: NeilBrown <neil@brown.name>
 
 "Best practice" is to use d_splice_alias() at the end of a ->lookup
-function.  d_add() often works and is not incorrect in gfs2, as the
+function.  d_add() often works and is not incorrect in libfs, as the
 inode is always NULL, but as it is planned to remove d_add(), change to
 use d_splice_alias().
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- fs/gfs2/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/libfs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 8344040ecaf7..9997fbc1084c 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -988,10 +988,9 @@ static struct dentry *__gfs2_lookup(struct inode *dir, struct dentry *dentry,
- 	int error;
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 63b4fb082435..75f44341f98b 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -79,8 +79,7 @@ struct dentry *simple_lookup(struct inode *dir, struct dentry *dentry, unsigned
+ 	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
+ 		return NULL;
  
- 	inode = gfs2_lookupi(dir, &dentry->d_name, 0);
--	if (inode == NULL) {
--		d_add(dentry, NULL);
--		return NULL;
--	}
-+	if (inode == NULL)
-+		return d_splice_alias(NULL, dentry);
-+
- 	if (IS_ERR(inode))
- 		return ERR_CAST(inode);
+-	d_add(dentry, NULL);
+-	return NULL;
++	return d_splice_alias(NULL, dentry);
+ }
+ EXPORT_SYMBOL(simple_lookup);
  
 -- 
 2.50.0.107.gf914562f5916.dirty
