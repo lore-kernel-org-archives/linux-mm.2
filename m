@@ -4,139 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACE6105A595
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:50:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F5E9105A594
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 12:50:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96DD16B0096; Thu, 12 Mar 2026 08:50:26 -0400 (EDT)
+	id 7D11F6B0099; Thu, 12 Mar 2026 08:50:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 924D46B0099; Thu, 12 Mar 2026 08:50:26 -0400 (EDT)
+	id 7A88D6B00A0; Thu, 12 Mar 2026 08:50:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8270B6B009F; Thu, 12 Mar 2026 08:50:26 -0400 (EDT)
+	id 6B5376B00A2; Thu, 12 Mar 2026 08:50:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 725306B0096
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:50:26 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02E83140226
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:50:25 +0000 (UTC)
-X-FDA: 84537394452.08.16C9D01
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1E2241C0011
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:50:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R3VxknOD;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 593226B0099
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:50:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0224A1A01DA
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:50:47 +0000 (UTC)
+X-FDA: 84537395376.29.B0899AD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 551DB40012
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:50:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZY3KJESr;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773319824;
+	s=arc-20220608; t=1773319846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BYhjd6jcLP1hr1/xaeJSYUqysSjFfTJ2y3WjTHu8X+w=;
-	b=H2GtjWJlAmg37Eq5XtTqnqI52LqQPur8LJVI+dLng6Y5F0fG8NMyk3U0jXAEtKCtII8EkS
-	ZQnY4C9R3cEIOMJYpbkYtkITna0eVqG8dORCqdSqk9ToktXDxMihdvmmmyKHHqYTd08jh0
-	+e4frWcmnF882atMxIxYl+ooeJvQHK8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773319824; a=rsa-sha256;
+	bh=GIsfMs4j+lPCS4kIfeqCQLjUfqJKP3anmoLjCcByYnQ=;
+	b=Vdnb8+0MrDrr2DFcDjzQg/8lw+V3UVIZ1KRmpkOfQlzOoEoSARdn/5QEC58xL/q77MGMG7
+	77CQVxzCP3C0eanMaSRgLzizWMlO3bqiXwnqRK4ri+TGD5Og8XyYV2xzNVJh9PAtrSwIG/
+	byeks0ExS8lIkx3IN4i3dV4ZOSAnGpI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773319846; a=rsa-sha256;
 	cv=none;
-	b=ftolap6JOEaPkSCdb53XtURSxgxqLZr27ZZ3NyUND0nF5oDmDp72wx6Kz4Oek4SgAmJ2iN
-	LxELMNNhG0D91qdUWOujoLQGnDUwaOjQ6XxHWOwHH+NmGsR04td+2z6gHBbAs2p5M1vaL5
-	mYoVIUvbyfgZauD8HJug16GTQFx9eo4=
+	b=yom5vnGxilacGp7qN5/kwLfCCtIG734XrcYitPjuLzZzxTbtC0uNVUUchDvfixmmIb4yGY
+	vT3zjyAhDw6AaVFFliB5H+TedSB3TQHSWZhyK7aksTNYw0jlPYfUtBAgZjx52RUM299KWu
+	mfyQ1w46waFBTsiwKEwdR/IcDbEoFg8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R3VxknOD;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZY3KJESr;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E46AE42D68;
-	Thu, 12 Mar 2026 12:50:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3CCC4CEF7;
-	Thu, 12 Mar 2026 12:50:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B853260137;
+	Thu, 12 Mar 2026 12:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFCAC4CEF7;
+	Thu, 12 Mar 2026 12:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773319822;
-	bh=adjljW+VNbO+pN1pMra4pZwRC1mZke1wNpJ+7Qa+hJ4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R3VxknODXNCIPm7LSy8wUZk8DApPOKFgkwpKvijaRHBrYIEUoEwRgOLK7boYLNW1O
-	 b1Picp4lm4PXJWe1N9ubhs0Qg4gsdrTZgFn5Rtsgx2uMZkdce17nMRfmoOPtGDda51
-	 L85Kv79rMkwquASxcKxRCTRcJ3EMqOVJKIqOFZUGK+VLE4MRwBgqNf0VFW0PbehFd8
-	 FyBVTJp6tW61g89/dUb97UcWJTyj+pzroFsrt55cPMGj6CowugbTL/bR+dnO0Uz30B
-	 eUcpGwOpiB3HeKsgDMK3Lk7EQ5iMpDDKnxk7YbqHjy1BM/D1sJxOGx46a/qXnAjbYE
-	 UNd/jtMKxTJ2w==
-Message-ID: <457dddf1-04ec-4d1e-8640-b04997fac4f1@kernel.org>
-Date: Thu, 12 Mar 2026 13:50:17 +0100
+	s=k20201202; t=1773319845;
+	bh=MzjiPuohtEDKGClma5RuGX7Y58HlTMD2rexIjeLhUVk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZY3KJESrb6TNmp8o0a6KrYC64NHrIYA4JAeYmam/HwkseNmkd8XFZAHVgDqTUIYz+
+	 aFmhAqDKX/q9jikQ/fDwk2LeooeXi3bu7QKmIBVFfhWGT2KyXT/kWgXjxcEv41Lptw
+	 MDOLCdOf+YEiBrxKWl1Y64zL3K2wWPQ8nBLnNPrg9sMwLSDMQK5k/9wMVY0m18uBND
+	 QRopgqmgWpMNXujD03tBd5P6syvdFOemy8RJQ56eAIExnGSDPp73MAeKGao6eczUVq
+	 8I/Rx6Uv+91F8V2DAYKMTdDqVpaGj+tiqYdmH56N2V1EJmqeAqCDE1gJnm1K++7OwD
+	 CWtArJTQ7JWCA==
+Date: Thu, 12 Mar 2026 14:50:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: Evangelos Petrongonas <epetron@amazon.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v6 1/2] kho: fix deferred init of kho scratch
+Message-ID: <abK2ntdGDpDS35J1@kernel.org>
+References: <20260311125539.4123672-1-mclapinski@google.com>
+ <20260311125539.4123672-2-mclapinski@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/13] selftests/mm: skip uffd-wp-mremap if UFFD
- write-protect is unsupported
-To: Sayali Patil <sayalip@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
- Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org
-References: <cover.1773305677.git.sayalip@linux.ibm.com>
- <ed23ff57a80881c9d087d22709862af40addf49b.1773305678.git.sayalip@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ed23ff57a80881c9d087d22709862af40addf49b.1773305678.git.sayalip@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260311125539.4123672-2-mclapinski@google.com>
+X-Stat-Signature: erq1yuyismrs7sxejarswqcusf78t3pe
 X-Rspam-User: 
-X-Stat-Signature: he1znpaa5pb8984ncyqio3dsufzp7ri3
-X-Rspamd-Queue-Id: 1E2241C0011
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773319823-206943
-X-HE-Meta: U2FsdGVkX1/hK3ad4uWHNan3VFTVvb5mwdYUMYh7rk+rMY72jcNbZoPDyUdUVJdnXrL37GGBynl/UzYvXAeu5gtXjv8as2S3vhGuEqeBB8NWVwq6iN/EK4LLcn3GxvJDZwnhz+7hMv3OKRPFJDyBdbMDFf2kCOp/zK8KMDjyLtqkqSP83mkm3t0xSGkHFTRddWGWKaWPgWe5LctBh+L83JgBZNwDl9P3tgo1+xj+4XudacwcafHncwjdmZhFdlmCY1W8zEa81qy5BvydBwQzvgSmVucn7fkILRWRNIAX0aHGs5gEM5Ibk8jY0pq0NU/M2ZpBOQPi8Qyu+4fpvMYNR7ExmPBh318WkMZYOjqEXl+EOYbbJFJVWaQnPJHLYy7+H/kHyDbDVm56Qv7eYpxTp0f+mH6H1zAwLpFv9HK14yRtwI0YtUhW4hIzay/+Xj7IrCm0ofB6hvO5ciEIljEKIghy6tzyAJb7sBA2MILWVlW8ToxRuiNu/iNMiqiqc5RMZYUYtJF9jXGdrQdTJN5jlLHb/0uT/3+oB63YecaVtyWZsxJ+2JC+vJ1TsoQEaXIaB7DbU21P/NcrmX5HL6Dv7hP7C848Q3NZFA3fiRnc+FA01j+UAGCdITzBXzcZgZblfWiTxUzPYQXAd9wC5y45pWMNLQZHVYIbVv0pwXrrDUvxXHpcsmiC0uY8O95kw2LIPiY30q0ctUEu/JgxrOL0MFtLPeMSY+V2QCmIsz16letaaN4ItGmb9qyD8V297xUiuKqMFVivMs81T5jQAsNgcjkagz0MkekiXw1cr+ekO2RIH0Gu0lFwyvQO4/ZNt4/6jso2mhzT6IHp02ETVg4YLE1exl46X8ZCFMuHMrwOo7XR8EoBnYfWhlYkIfS+LVUGe/35Qj0fIcXrRJEbb6/Omy3F2e0YuwsKK5Lo34b4iHBJtcBX8SfFBj1xfgL7WOMozmjgY58dQlFA042FmpO
- hQwW8Rtx
- +oYrAjLRtdbgE+cXvu+8/E3JkcSz+w81ybsblV/n9hF2KEMce3mzN0XmzWsymqllQWnbWemAB8KKOXsiVseFNdfpkI1K9+48ePOLxISXx6kMABSXggxWCDMkQG64PQEMVDh113MHxS+oEdGGBj2Sf7eObS8+j3Ou7OXi7uBnd0/CR5fBzAcYOTNQsJ7fLtMUgZAigB5y5cPwXa958zl55tNY2hFYWodBmL92LRlDd25/gG0mOM3noxyWKfKmWOYX97zZRaGXpHq8t8A8FzbnUHcC5IkWqQYTo+HwxHFI5jpU5jvm7CuzBG3xJhN2dGHTKWVzLojmzhabpxobesACF2mnFsHFzsEBz0SzI1OnjD49NgPE6aclsFwH+fOZd92LUSPE47axkU1LrhP1bqt1HMmkVoA==
+X-Rspamd-Queue-Id: 551DB40012
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773319846-582674
+X-HE-Meta: U2FsdGVkX1+CLj2YVB/KXXcnfIkYPvyJGnZyYWmWHQmNxFVmJhEtbL4ZAA10JSzp8dOZLGQt1arLEiSdPrboJVhRvGyh4rwVtNJu8Xed0oIhYht3OEP2agMpgRoGdG/y2qyksUxPWKXOyASB3wUnzJKwOUQ7V9jVe5wvdwHuSwxOLjYRklDCwBr/1K264mIS4H52dtPIxqBIF/N+xO7vmNDJEy78/KNhFbB1MNlxs/DVwhXfd5Mmqg6SMHOdNlPrzrOJZj9ytX6JpHDnynUG47S6alhyn5/XX2/O/4nVe6V8TBDjxa84mnQ5E/tWewIS2fIURFXi7kSHjppZ704X7lvzIMfQMpDLabj/2D792UERE2pGSem7LGCv9ErQvCKSIHctxxEdJIhGDmwJsP07+/7Ae4+MEKi3vYsZkakrSAwgwnqYAlSF6ZTfcC+2XWc1HrV5yZ//Ip9/ITa47qYdNdRceUZkVBVZS+6syvJ7a/1XYzbZWSuKMFEsHKGqbe2IlnM1+HJbC78Fw+uFSgKLVGIT3j+50vUiDJ42HGDkOPY/hfEaMR1Xz/yTjkx/2+RKF19td/3bX2X+wQ5KZxPcYfvantBORmO2xhIOLG9vjU1r3dYEnS1/tlLZIMbWruHalcZ+UKwFN+Sy26xbjcncNuz1DB0EM1LMQr0dJxJ46T2h4VGMpR7oAsT4LBy+6YUj2hk/J1pfvoQ3TwtVr4RfHOsvFRKNFYl4mcJvoP7+U2v4j9dBxYqSRZVWYt+ZSf1V9h71rK82b63GUx/PKJYYFhB1GyLA4M+xq4979XWFHVPFxHOSYGj9sMtkTfngpWcFUOGkS7Qp23rLQOO3OFYbZjolDJGr29AHci7bA9VtQkNDcvKE3byZtgVNjXFhf6gOsAw6Se9dQJSdCV1Ihv4D6cKzePZ8CTSp7RbWv426kqeDQHSQ3WQi6d0wr0n1eOK9aoQEMGSn7AWP2hA76r9
+ BuPWct+k
+ JVv+xa2RRGD+V3zCbRL3mHxk+7g2DDkgTeo5U46+dkxj06sMerneWWHAqJPX3EyAwLEmk/PGGtccl+w1L+UmomFYVsta7kKCy3jUG9F4lZcmXvhIgxlhDaWRS6SEqjQgbE5ao4LFMrPLOAuUY83AMVl2nERcf2G3omlqzA9U/qVpID5VKgUhZl/EXxUiRDjxv5gB2qlPbQ0SZcBamj8EaD2lQRcWAksaaTi+pju6SLK/TxGaEG45Mz33LWrgRSf3Tt3/vZXXzoKU+Q2gDubtyf0rdzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,84 +96,279 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 13:25, Sayali Patil wrote:
-> The uffd-wp-mremap test requires the UFFD_FEATURE_PAGEFAULT_FLAG_WP
-> capability. On systems where userfaultfd write-protect is
-> not supported, uffd_register() fails and the test reports failures.
+On Wed, Mar 11, 2026 at 01:55:38PM +0100, Michal Clapinski wrote:
+> Currently, if DEFERRED is enabled, kho_release_scratch will initialize
+> the struct pages and set migratetype of kho scratch. Unless the whole
+> scratch fit below first_deferred_pfn, some of that will be overwritten
+> either by deferred_init_pages or memmap_init_reserved_pages.
 > 
-> Check for the required feature at startup and skip the test when the
-> UFFD_FEATURE_PAGEFAULT_FLAG_WP capability is not present,
-> preventing false failures on unsupported configurations.
+> To fix it, I initialize kho scratch early and modify every other
+> path to leave the scratch alone.
 > 
-> Before patch:
->  running ./uffd-wp-mremap
->  ------------------------
->   [INFO] detected THP size: 256 KiB
->   [INFO] detected THP size: 512 KiB
->   [INFO] detected THP size: 1024 KiB
->   [INFO] detected THP size: 2048 KiB
->   [INFO] detected hugetlb page size: 2048 KiB
->   [INFO] detected hugetlb page size: 1048576 KiB
->  1..24
->   [RUN] test_one_folio(size=65536, private=false, swapout=false,
->   hugetlb=false)
->  not ok 1 uffd_register() failed
->   [RUN] test_one_folio(size=65536, private=true, swapout=false,
->   hugetlb=false)
->  not ok 2 uffd_register() failed
->   [RUN] test_one_folio(size=65536, private=false, swapout=true,
->   hugetlb=false)
->  not ok 3 uffd_register() failed
->   [RUN] test_one_folio(size=65536, private=true, swapout=true,
->   hugetlb=false)
->  not ok 4 uffd_register() failed
->   [RUN] test_one_folio(size=262144, private=false, swapout=false,
->   hugetlb=false)
->  not ok 5 uffd_register() failed
->   [RUN] test_one_folio(size=524288, private=false, swapout=false,
->   hugetlb=false)
->  not ok 6 uffd_register() failed
->  .
->  .
->  .
->  Bail out! 24 out of 24 tests failed
->   Totals: pass:0 fail:24 xfail:0 xpass:0 skip:0 error:0
->  [FAIL]
-> not ok 1 uffd-wp-mremap # exit=1
+> In detail:
+> 1. Modify deferred_init_memmap_chunk to not initialize kho
+> scratch, since we already did that. Then, modify deferred_free_pages
+> to not set the migratetype. Also modify reserve_bootmem_region to skip
+> initializing kho scratch.
 > 
-> After patch:
->  running ./uffd-wp-mremap
->  ------------------------
->  1..0 # SKIP uffd-wp feature not supported
->  [SKIP]
-> ok 1 uffd-wp-mremap # SKIP
+> 2. Since kho scratch is now not initialized by any other code, we have
+> to initialize it ourselves also on cold boot. On cold boot memblock
+> doesn't mark scratch as scratch, so we also have to modify the
+> initialization function to not use memblock regions.
 > 
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> Signed-off-by: Michal Clapinski <mclapinski@google.com>
 > ---
->  tools/testing/selftests/mm/uffd-wp-mremap.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+> My previous idea of marking scratch as CMA late, after deferred struct
+> page init was done, was bad since allocations can be made before that
+> and if they land in kho scratch, they become unpreservable.
+> Such was the case with iommu page tables.
+> ---
+>  include/linux/kexec_handover.h     |  6 +++++
+>  include/linux/memblock.h           |  2 --
+>  kernel/liveupdate/kexec_handover.c | 35 +++++++++++++++++++++++++++++-
+>  mm/memblock.c                      | 22 -------------------
+>  mm/mm_init.c                       | 17 ++++++++++-----
+>  5 files changed, 52 insertions(+), 30 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> index 17186d4a4147..73d53a4da389 100644
-> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> @@ -19,6 +19,17 @@ static size_t thpsizes[20];
->  static int nr_hugetlbsizes;
->  static size_t hugetlbsizes[10];
+> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+> index ac4129d1d741..612a6da6127a 100644
+> --- a/include/linux/kexec_handover.h
+> +++ b/include/linux/kexec_handover.h
+> @@ -35,6 +35,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+>  int kho_add_subtree(const char *name, void *fdt);
+>  void kho_remove_subtree(void *fdt);
+>  int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
+> +bool pfn_is_kho_scratch(unsigned long pfn);
+
+I think we can rely on MEMBLOCK_KHO_SCRATCH and query ranges rather than
+individual pfns.
+
+This will also eliminate the need to special case scratch memory map
+initialization on cold boot. 
+
+>  void kho_memory_init(void);
 >  
-> +static void uffd_wp_feature_supported(void)
+> @@ -109,6 +110,11 @@ static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> +static inline bool pfn_is_kho_scratch(unsigned long pfn)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline void kho_memory_init(void) { }
+>  
+>  static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 6ec5e9ac0699..3e217414e12d 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
+>  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+>  void memblock_set_kho_scratch_only(void);
+>  void memblock_clear_kho_scratch_only(void);
+> -void memmap_init_kho_scratch_pages(void);
+>  #else
+>  static inline void memblock_set_kho_scratch_only(void) { }
+>  static inline void memblock_clear_kho_scratch_only(void) { }
+> -static inline void memmap_init_kho_scratch_pages(void) {}
+>  #endif
+>  
+>  #endif /* _LINUX_MEMBLOCK_H */
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 532f455c5d4f..09cb6660ade7 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1327,6 +1327,23 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
+>  }
+>  EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
+>  
+> +bool pfn_is_kho_scratch(unsigned long pfn)
+> +{
+> +	unsigned int i;
+> +	phys_addr_t scratch_start, scratch_end, phys = __pfn_to_phys(pfn);
+> +
+> +	for (i = 0; i < kho_scratch_cnt; i++) {
+> +		scratch_start = kho_scratch[i].addr;
+> +		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
+> +
+> +		if (scratch_start <= phys && phys < scratch_end)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +EXPORT_SYMBOL_GPL(pfn_is_kho_scratch);
+> +
+>  static int __init kho_mem_retrieve(const void *fdt)
+>  {
+>  	struct kho_radix_tree tree;
+> @@ -1453,12 +1470,27 @@ static __init int kho_init(void)
+>  }
+>  fs_initcall(kho_init);
+>  
+> +static void __init kho_init_scratch_pages(void)
+> +{
+> +	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
+> +		return;
+> +
+> +	for (int i = 0; i < kho_scratch_cnt; i++) {
+> +		unsigned long pfn = PFN_DOWN(kho_scratch[i].addr);
+> +		unsigned long end_pfn = PFN_UP(kho_scratch[i].addr + kho_scratch[i].size);
+> +		int nid = early_pfn_to_nid(pfn);
+> +
+> +		for (; pfn < end_pfn; pfn++)
+> +			init_deferred_page(pfn, nid);
+> +	}
+> +}
+> +
+>  static void __init kho_release_scratch(void)
+>  {
+>  	phys_addr_t start, end;
+>  	u64 i;
+>  
+> -	memmap_init_kho_scratch_pages();
+> +	kho_init_scratch_pages();
 
-Likely that function should be called
+This should not be required if deferred init would check if a region is
+MEMBLOCK_KHO_SCRATCH rather than pfn_is_kho_scratch().
 
-"check_uffd_wp_feature_supported()"
+>  	/*
+>  	 * Mark scratch mem as CMA before we return it. That way we
+> @@ -1487,6 +1519,7 @@ void __init kho_memory_init(void)
+>  			kho_in.fdt_phys = 0;
+>  	} else {
+>  		kho_reserve_scratch();
+> +		kho_init_scratch_pages();
+>  	}
+>  }
+>  
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index b3ddfdec7a80..ae6a5af46bd7 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
+>  {
+>  	kho_scratch_only = false;
+>  }
+> -
+> -__init void memmap_init_kho_scratch_pages(void)
+> -{
+> -	phys_addr_t start, end;
+> -	unsigned long pfn;
+> -	int nid;
+> -	u64 i;
+> -
+> -	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
+> -		return;
+> -
+> -	/*
+> -	 * Initialize struct pages for free scratch memory.
+> -	 * The struct pages for reserved scratch memory will be set up in
+> -	 * reserve_bootmem_region()
+> -	 */
+> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+> -		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
+> -			init_deferred_page(pfn, nid);
+> -	}
+> -}
+>  #endif
+>  
+>  /**
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index cec7bb758bdd..969048f9b320 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -798,7 +798,8 @@ void __meminit reserve_bootmem_region(phys_addr_t start,
+>  	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
+>  		struct page *page = pfn_to_page(pfn);
+>  
+> -		__init_deferred_page(pfn, nid);
+> +		if (!pfn_is_kho_scratch(pfn))
+> +			__init_deferred_page(pfn, nid);
 
-Because right now it reads as if it would be returning a bool.
+A bit unrelated, we can move reserve_bootmem_region() to memblock and make
+it static.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+As for skipping the initialization of, I think that
+memmap_init_reserved_pages() should check if the region to reserve is in
+scratch and if yes, make reserve_bootmem_region() to skip struct page
+initialization.
+I believe everything that is MEMBLOCK_RSRV_KERNEL would be in scratch and
+all reserved memory in scratch would be MEMBLOCK_RSRV_KERNEL, but it's
+better to double check it.
+
+Another somewhat related thing, is that __init_page_from_nid() shouldn't
+mess with pageblock migrate types, but only call __init_single_page().
+It's up to __init_page_from_nid() caller to decide what migrate type to
+use and the caller should set it explicitly.
+
+>  
+>  		/*
+>  		 * no need for atomic set_bit because the struct
+> @@ -2008,9 +2009,12 @@ static void __init deferred_free_pages(unsigned long pfn,
+>  
+>  	/* Free a large naturally-aligned chunk if possible */
+>  	if (nr_pages == MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pfn)) {
+> -		for (i = 0; i < nr_pages; i += pageblock_nr_pages)
+> +		for (i = 0; i < nr_pages; i += pageblock_nr_pages) {
+> +			if (pfn_is_kho_scratch(page_to_pfn(page + i)))
+> +				continue;
+>  			init_pageblock_migratetype(page + i, MIGRATE_MOVABLE,
+>  					false);
+
+We can move init_pageblock_migratetype() here and below to
+deferred_init_pages() and ...
+
+> +		}
+>  		__free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
+>  		return;
+>  	}
+> @@ -2019,7 +2023,7 @@ static void __init deferred_free_pages(unsigned long pfn,
+>  	accept_memory(PFN_PHYS(pfn), nr_pages * PAGE_SIZE);
+>  
+>  	for (i = 0; i < nr_pages; i++, page++, pfn++) {
+> -		if (pageblock_aligned(pfn))
+> +		if (pageblock_aligned(pfn) && !pfn_is_kho_scratch(pfn))
+>  			init_pageblock_migratetype(page, MIGRATE_MOVABLE,
+>  					false);
+>  		__free_pages_core(page, 0, MEMINIT_EARLY);
+> @@ -2090,9 +2094,11 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>  			unsigned long mo_pfn = ALIGN(spfn + 1, MAX_ORDER_NR_PAGES);
+>  			unsigned long chunk_end = min(mo_pfn, epfn);
+>  
+> -			nr_pages += deferred_init_pages(zone, spfn, chunk_end);
+> -			deferred_free_pages(spfn, chunk_end - spfn);
+> +			// KHO scratch is MAX_ORDER_NR_PAGES aligned.
+> +			if (!pfn_is_kho_scratch(spfn))
+> +				deferred_init_pages(zone, spfn, chunk_end);
+
+skip the entire MEMBLOCK_KHO_SCRATCH regions here and only call
+deferred_free_pages() for them.
+
+Since the outer loop already walks regions in memblock.memory it shouldn't
+be hard to query memblock_region flags from the iterator, or just replace
+the simplified iterator with __for_each_mem_range().
+  
+> +			deferred_free_pages(spfn, chunk_end - spfn);
+>  			spfn = chunk_end;
+>  
+>  			if (can_resched)
+> @@ -2100,6 +2106,7 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>  			else
+>  				touch_nmi_watchdog();
+>  		}
+> +		nr_pages += epfn - spfn;
+>  	}
+>  
+>  	return nr_pages;
+> -- 
+> 2.53.0.473.g4a7958ca14-goog
+> 
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
