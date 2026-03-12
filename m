@@ -4,87 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0A15FED2F9
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 09:44:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 105E2FED2F8
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 09:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 172256B008C; Thu, 12 Mar 2026 05:44:30 -0400 (EDT)
+	id 3F7656B0088; Thu, 12 Mar 2026 05:50:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 120076B0092; Thu, 12 Mar 2026 05:44:30 -0400 (EDT)
+	id 37BCB6B0089; Thu, 12 Mar 2026 05:50:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02B6F6B0093; Thu, 12 Mar 2026 05:44:29 -0400 (EDT)
+	id 25CA56B008A; Thu, 12 Mar 2026 05:50:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E83146B008C
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:44:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 997481CF48
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:44:29 +0000 (UTC)
-X-FDA: 84536925858.21.6B2A688
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CF35520003
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:44:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KQ+donDY;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 120686B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:50:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8733C140A04
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:50:43 +0000 (UTC)
+X-FDA: 84536941566.12.824BFAC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 998EE180002
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:50:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rRekdSnS;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773308667;
+	s=arc-20220608; t=1773309041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ojmLxha1deQYdIIhuQcNDyLryvN12h2lBEoniZm93ag=;
-	b=1D3ABMlQB6zBtoMPBnrpjhQTEiCV1HoAi3RFHpeyj3EuZhb5hccq6dDJvFm7mKpAe6NGMO
-	B0yWoP2/BKrsDbO00cdHkJqp/XhWj9mEWQdm8fdJlkUmcIhGG3MkRb5IQWnBM4H4JR1JE6
-	PpxwURSCFG4m4QRz2AN+Eg9EcXJKpHY=
+	bh=Skk4EFHMOSs0K0KxgGinsiUUNun/syCCHbEfmiaLG2I=;
+	b=wUKMGxGmzIU5TshhXmBedftBlLNxBDvOwpPe1EduPAAfWVXGQn9z6Aw7hjVImZmCNEB0Wf
+	X208/8Prq6h9j8QOGsiuqrAgwp1GJtZjiPifUUPT0nKUwYle0y7QdemwqvCsUzH8z9H82P
+	ZHHIU+eo/A+qAXAyxEPIIoFZI0Lz/Ak=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KQ+donDY;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rRekdSnS;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773308667; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773309041; a=rsa-sha256;
 	cv=none;
-	b=z1qPh+86pADpdTQNcOcteedWRK3uLc/0Sw1QlJI+vud7oU4JH/X0j5MI2x8RT0TP8Bd8HW
-	o+QgJQURP9ahhRTio1KtW5SRUzharSRfbyXx+9KyfPlAKH6ySn2j42KIM9mqcGLY8Dt3LN
-	Jv6hoUszi+IkSlQdJwh46++THxXrouw=
+	b=mngWg/6pFo6zSBUR+gGJ4FkoSYm04ty6rv80e7OXxWh39LnRh0hPveHA7uL3CBKsvxKeCh
+	0gYL8y42MkO+qLc9VO1qve/eFTszFKu/vUIvPWv5Uz5Gax5fM9TALbUnMGSLoG1dv5HWCO
+	XH/1mnItcwaKhegIp8C1CrO7hQBLw94=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 31A8C60131;
-	Thu, 12 Mar 2026 09:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A98C4CEF7;
-	Thu, 12 Mar 2026 09:44:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ABB84383B;
+	Thu, 12 Mar 2026 09:50:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4260C4CEF7;
+	Thu, 12 Mar 2026 09:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773308666;
-	bh=HLyU31S9hJ021HpauT6E9MQ/KG289clmC7qT/amVOJ8=;
+	s=k20201202; t=1773309040;
+	bh=nTB9+tdpIn38fFxp+E1+Kq8q+k49zWwh7dHCmIwZ6qE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KQ+donDYQjFaHp/brCTIbu5qdbGMTuVQVgQn6HRb161dCXNKXrZxG7F6TENzoHDgJ
-	 +8WRpKalgfXf6mUngv7VtJYq8L7BtBsem87Zryd1Y6L0MdQQb8m72c5q9Rltqis3jZ
-	 OGJclJUd9bV98pA7dcXZmlErgT2iAOZmY4Oex+gCPIyLoLvN4gK7aYoIlw7N5/2xkb
-	 iQc24Wd06mPXtaRk06wFpZYTpktook79dfF1rMNlyechAt5tewM5SWCurvm/9KKyMZ
-	 3K6noyAlqqDM8irucQwQdxUGoYApxwFvXi4wP2kyolJEyRvxKhM7UPOM4zidRdZojc
-	 XykzldYoWkCgw==
-Message-ID: <4bfec2c1-9747-49d2-a490-87ab204cec1c@kernel.org>
-Date: Thu, 12 Mar 2026 10:44:15 +0100
+	b=rRekdSnS5BsxfizH/i+yr3fub8k03xEibZh3qgF5SVf5+VLb1cyTNuuQ0mYIJPhKq
+	 xbQp1x9Gso8dpJgLLZNHCpipKjhB0m8Q2snS1Q9FeWy9QmExbO+sTrHvNYbOf30LD5
+	 VKRQtHbgYFzxzZNazSy+9oHw1aEbWSb6kfdSUZvxh1RtuSp1id3MebioK1qPx00yFc
+	 G2ERGiGqpeBc1RtsKVgbNjKpaG5AQbakKp2nKfoVhDmtq/Ss39hfmopYJAk1KUck3Y
+	 /sz16ZoaJAd5cwm9qvKtyE4tftvkXHdpDWpMpQj9rVzAhOCmWrQFis99nainEtzrvb
+	 OwDFAjGFOYBEA==
+Message-ID: <ff66b090-600a-4c05-9afe-b807c31f24b9@kernel.org>
+Date: Thu, 12 Mar 2026 10:50:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 2/6] mm/migrate: skip data copy for already-copied
- folios
-To: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
- willy@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, dave@stgolabs.net,
- Jonathan.Cameron@huawei.com, rkodsara@amd.com, vkoul@kernel.org,
- bharata@amd.com, sj@kernel.org, weixugc@google.com,
- dan.j.williams@intel.com, rientjes@google.com, xuezhengchu@huawei.com,
- yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
- jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
- shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
- nifan.cxl@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260309120725.308854-3-shivankg@amd.com>
- <20260309120725.308854-8-shivankg@amd.com>
+Subject: Re: [RFC PATCH v3] mm/vmpressure: scale window size based on machine
+ memory
+To: Benjamin Lee McQueen <mcq@disroot.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
+ <20260305043038.2176-1-mcq@disroot.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260309120725.308854-8-shivankg@amd.com>
+In-Reply-To: <20260305043038.2176-1-mcq@disroot.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 998EE180002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4z87hu4xe1guxqd3dwm8ou1gsf3wmapw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CF35520003
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 5njsoccdcx5ay6o46y9j9rys8nmbk1b7
-X-HE-Tag: 1773308667-382990
-X-HE-Meta: U2FsdGVkX1+VNbMHGgn3Kcc00hcbkhirCI80IOfjAfsVzjVsGI14hVQ5oE2zOgJjLEWT5pKbwIoFFrse1r7DdbPLglkWnqFsFL0Kcl85aT9rupu7F80JDQA4+OHGxMUhDf16aixTXqajQzWTxy/DNhWKqDz9PBuCyBtbfyojRP/+Zv6k5+0iMzD0v9t/z6kxJMeytZ8OjeVL3WfTfR2qh0v+Lg+Q1RY1ULUMxyWRyvfmvTD+fwy914+eo6JvrjrM2X43RG1B9byu43uAvhGaf+3lRQGdq/YAQaO9kkia/7Uh/dRU+pmPchJyYcMeiD3DMSR55u2gAGO59fnAhjui4yZU/pkckfHhFay5QU3lqoOkHnpBNNLZEzK89cm+X/C5SSvCSmRgRpPmm4LWKYklYsCwzr8MwOM2MxvJi/O2n5h++lqBFhMOU/JphsLZBiy2ohvqKfuUA5+rfW6cDR81vcsGuJAi0ur6k4VLbTXTZYWhL5DUBXFjRNERmZq1ZJs0ij1ZnVT2Cc7vkW4DLXHsK94c6/BGgzJMKXXX9HDlsumVOFzhOa0kFLEzKDxXXBt/TQEwl6gMG3zgZu9gNJAT6aIaN1gQ6BLUVrBAQ6sJzzBtpwKum+rpW9o+osksPrWtj90IrToz8Fvbu5JYS/iNDns+BrS6DzkRCh2n0Jty0Fo72Nm7cUlGv419AFdxEn5MFwwPDbnDQzn7c28URz6BLLDPFro9u1jU7oeQIAKVX5yoAHlhX7AFPz6kQ6dl8R7jg5bPYWczkkumjDOSVCpDxYiUbTz/ATlh3oLayo6rVk5Wt0finANMAteZCeCIavm4CkKKRnhvRsRy6dVqSVHhRz6RZTAjU6OgOM+bOy/NNMJtt6SWJUZRvqqNV9rIfpQdgP6AAfzy3rkQEgdcwfxMnPFn4RBZtc//26tpD6P9i0NTRXeQrjqPFFfev4oiDg44gpSnp+WKjXfqjoFxKUe
- 4eHFfBAT
- WaIrLAYzIFedQ1jJCw8EBDTZtAZW2cS9KQi7i4e68J6AGf7DGEujxPuGZ9Hz1JYp+EmOuH4bwy/sJ1WboWcbg+nih1ACw4NVmmEf9gW9KDEDvzADInmRDls2NBzJDlN6O2mmBjSw1/2j7vGLDgKns6ciyGg9B35V2FIW//W/ebuRff04zkYJquQH9tVEGcPrvFqvy2cSxjYwwQoX3SFVStpAulREt1Rdal+fcIi4oJUtX9GgD988HoYW4S7YLu20Da/vqAVYmkixMHza0Sa6Hcg7iF9WV0xgwttlwOEZcyZYZSkjiqKHrQkbroM60TNKzdQgBBXpxktuDvEDHiu7Js9sCwuXcux78oZT5
+X-HE-Tag: 1773309041-658684
+X-HE-Meta: U2FsdGVkX18+l2h3/oH8J6fU1e4BRTz7obB9RXysVS/Io6goyzs1bxdl0lWyb2QxwZQpvAo9cD0b/e/rHW435dDL8Oq6bb+rRVKVPbDu2/Gynj7MSwnYb8OQfRjkkr6AAfCoqgDOJrq+1YyohDJTetEu1VvEfKuKZXee6Et53qER8+5U2xlxYYifSt195V0eOEYzSTA+batxr786mqzOdh4D7AqJ9Pd6UgeXgU/oCmVfIP7RyE+otVE5Ub+lL39xun0EcJKXzLzfQU9C4cRSLKiEBDOdwBTW/Lq3V7KkTVNEAO0KZto6lBuwtGbJM3K1lV2PXQ5G4cvwFFmXnu5bYWJDadEjsiHJT2oafrmXPdMcxzkJCwXDWaK5P0Jp8HzlRgRw923pXB+XgKgd5GxTJIKGHR1JHOrInKb3CY7ttDi99srQRcMgylHBRMvvJhS1nKwHN+rTi1bp2WuPHiFw5taksGm8MCMpu7Wm3blBbMhrDQCGloW6WpEZF75+zRALXM1LZI2wSBJ3K8YlNfscTEdUi+Am6XqnJ4/yGPkPARoYB2hgoqZbfL7Gw0J0Y0AouAR3IkO4QHfHiBjBRK/JEaVQ6pOID544rT/KvHFuCiOX7cgWYvXfSsWvdj+8JPn4ucOYHibC2QwiPUatK22hdrAat210/vzH9d4l4AdBnhQJ+5ftxQ+jnpUcivWw42/4YGzVOkNG8ZK0rrgp3mgLEOGZNSms79J+B1A+RWJyuEiI1WYUMYnFsFapQrwM37z0wkt/3LCITv5L/ykZGklytPQbuiWb0NzYaa4rxe0H64TggWj4sU3I5JZT13CKRFuCtTqU6aGlz5VyTjkBJoHqfxplSOdAt3JezIGiBTE6jZPm2jNdeHJySNbtRpupLvw3COM9Z85gUtQtFet/1pMaqk5Vpa8utFAMaLhecVxVl1MsFy16AK4Y6l0wJIULL7so298zGw5eH2QgtTzwi1d
+ 8CNMKS/p
+ b0IJz3lAMvdXPOkTzcc4wJ6NhSOZz4Eq/KA+VFYaA5NzlRXiroR/pP+gVtIUXYcf9NpbGCfcTabkUuPoHrS69Nhmks5lo5KxiTwKe3gcP2pjc8mc1e3OU4U6I/Q89QQ/GJ+lqNXVfuLkdRD4niGU+NJBiYzkiffn0aoXhDGFrkVWQOVrwOy+Kkb7/jdzjfgw8SV936N4hrHDzzrXA/J6CSPPE2d6iuxZZqOX+a0gpYdJrJP6jcNzQpFmyCTKmKIVMgQo7L5mlcGdWlyVBvCAu+k7pAKDFJXdoGq7/RdFlYBmbPJO26OeF0MlXj7MBHHDm/R/J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +143,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/9/26 13:07, Shivank Garg wrote:
-> Add a PAGE_ALREADY_COPIED flag to the dst->private migration state.
-> When set, __migrate_folio() skips folio_mc_copy() and performs
-> metadata-only migration. All callers currently pass
-> already_copied=false. The batch-copy path enables it in a later patch.
+On 3/5/26 05:30, Benjamin Lee McQueen wrote:
+> the vmpressure window size has been fixed at 512 pages
+> (SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
+> the file notes that the vmpressure window size should be scaled
+> similarly to vmstat's scaling, via machine size.
 > 
-> Move the dst->private state enum earlier in the file so
-> __migrate_folio() and move_to_new_folio() can see PAGE_ALREADY_COPIED.
+> the problem with fixed window size on large memory systems:
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> the window fills after 512 pages (SWAP_CLUSTER_MAX * 16) of scanned
+> pages. on a 256GB system that is 0.00076% of total memory. the
+> reclaimer works in chunks of 32 pages (SWAP_CLUSTER_MAX), so the
+> window fills up after 16 reclaim cycles. here, a single (or more)
+> bad reclaim cycle which reports false info has a considerable effect
+> on the scanned/reclaim ratio, producing an incorrect reading.
+> 
+> a larger window however, is *potentially* prone to some additional
+> notification latency, as more pages must be scanned before the ratio
+> is calculated.
+> 
+> this is what we consider a false positive; a notification that
+> doesn't correctly represent the current sustained memory pressure.
+> 
+> as for issues with why false positives are bad: applications or even
+> maybe the system listening for these notifications are woken up
+> unnecessarily and may perform actions that aren't supposed to happen,
+> instead of being in coherence with the actual sustained memory
+> pressure.
+> 
+> i did some testing, as well.
+> 
+> the testing was performed on ONLY a 9GB VM and nothing else.
+> window sizes corresponding to larger machine memory were set manually
+> via a debugfs knob, so my testing may have been corrupted as i only
+> had 9GB on the VM, and this doesn't correctly test on larger systems,
+> but it is the best i am able to do.
+> 
+> vmpressure_calc_level() was instrumented with a tracepoint emitting
+> the raw pressure value. a controlled workload (2200MB allocation into
+> a 2000MB cgroup with 500MB swap cap) was run at each window size.
+> 1000 pressure samples were collected per run with 50 sample warmup
+> discarded, repeated 5 times per window size.
+> 
+> the key metrics are stddev and cv% (coefficient of variation; stddev
+> divided by mean pressure, expressed as a percentage). cv% is
+> load-independent so it is a better measurement than stddev alone. a
+> high cv% means the pressure signal is noisy relative to its own
+> average; essentially the readings are unpredictable and unreliable.
+> a low cv% means the signal is stable and trustworthy.
+> 
+> do take the data with a grain of salt, as i probably didn't test
+> efficiently. this patch still needs to be tested on larger memory
+> systems on real workloads. but if you think there is a better way
+> for me or others to test this PLEASE REACH OUT!
+> 
+>   Window  RAM Equiv  avg stddev  avg cv%
+>   512     stock      45.86       91.24%
+>   1024    4GB        34.62       69.28%
+>   1792    8GB         4.03        7.97%
+>   2304    32GB        9.90       18.53%
+>   2560    64GB        9.95       18.59%
+>   3072    256GB      11.49       20.99%
+> 
+> the results show an improvement in quality as window size increases.
+> stock at 512 pages shows a cv% of 91.24%, meaning the noise in the
+> pressure signal is nearly as large as the signal itself; the readings
+> are essentially unpredictable. at the 8GB equivalent window (1792
+> pages) cv% drops to 7.97%, an 11x improvement in signal stability.
+> 
+> the data is consistent across 25 independent runs per window size
+> (5 sweeps of 5 runs each). stddev and cv% barely move between
+> sweeps, which gives me confidence the measurement is real and not
+> an artifact of system state.
+> 
+> stddev increases slightly beyond the 8GB equivalent window, from
+> 3.82 at win=1792 up to 11.49 at win=3072. this is expected and
+> may also be an artifact of testing on a 9GB machine rather than
+> real large-memory hardware. even at the 256GB equivalent window
+> cv% is 20.99%; still a 4x improvement over stock's 91.24%.
+> 
+> since i only have a 9GB VM, i'm setting the window size manually
+> to simulate larger machines, but the actual reclaim behavior of a
+> 9GB system doesn't match what a real 256GB machine would do. on a
+> real large-memory machine the reclaimer has proportionally more
+> work to do and the window would fill with more representative data.
+> this is another reason why testing on real large-memory hardware
+> is needed.
+> 
+> the formula itself isn't like vmstat's threshold calculation, and
+> uses total machine memory size (RAM), because reclaim costs grow
+> with RAM, not CPU size or any other variables about the system.
+> the formula's floor clause also ensures the existing 512 page
+> window on smaller systems (512MB), and only affects larger systems.
+> 
+> if there are any other questions, i can try to answer them.
+> 
+> IF YOU CAN TEST OR COME UP WITH BETTER METHODS PLEASE REACH OUT!
+> 
+> Signed-off-by: Benjamin Lee McQueen <mcq@disroot.org>
 > ---
->  mm/migrate.c | 52 +++++++++++++++++++++++++++++++---------------------
->  1 file changed, 31 insertions(+), 21 deletions(-)
+>  mm/vmpressure.c | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
 > 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 1bf2cf8c44dd..1d8c1fb627c9 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -848,6 +848,18 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
->  }
->  EXPORT_SYMBOL(folio_migrate_flags);
+> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+> index 3fbb86996c4d..0154df4d754e 100644
+> --- a/mm/vmpressure.c
+> +++ b/mm/vmpressure.c
+> @@ -10,6 +10,7 @@
+>   */
 >  
-> +/*
-> + * To record some information during migration, we use unused private
-> + * field of struct folio of the newly allocated destination folio.
-> + * This is safe because nobody is using it except us.
-> + */
-> +enum {
-> +	PAGE_WAS_MAPPED = BIT(0),
-> +	PAGE_WAS_MLOCKED = BIT(1),
-> +	PAGE_ALREADY_COPIED = BIT(2),
-> +	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED | PAGE_ALREADY_COPIED,
+>  #include <linux/cgroup.h>
+> +#include <linux/debugfs.h>
+>  #include <linux/fs.h>
+>  #include <linux/log2.h>
+>  #include <linux/sched.h>
+> @@ -29,14 +30,19 @@
+>   * sizes can cause lot of false positives, but too big window size will
+>   * delay the notifications.
+>   *
+> - * As the vmscan reclaimer logic works with chunks which are multiple of
+> - * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
+> - *
+> - * TODO: Make the window size depend on machine size, as we do for vmstat
+> - * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
+> + * As of now, we use a logarithmic scale to scale the window based on
+> + * machine RAM size.
+>   */
+> -static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
+> +static unsigned long vmpressure_win;
+> +
+> +static int __init vmpressure_win_init(void)
+> +{
+> +	unsigned long mem = totalram_pages() >> (27 - PAGE_SHIFT);
+>  
+> +	vmpressure_win = SWAP_CLUSTER_MAX * max(16UL, (unsigned long)fls64(mem) * 8UL);
+> +	return 0;
+> +}
+> +core_initcall(vmpressure_win_init);
+>  /*
+>   * These thresholds are used when we account memory pressure through
+>   * scanned/reclaimed ratio. The current values were chosen empirically. In
 
-All these states really only apply to proper folios (not movable_ops).
-So once we complete decoupling movable_ops migration from folio
-migration, these flags would only appear in the folio migration part.
+How does this interact with memory hotplug adding a lot of memory. Just
+imagine you have a 4G VM and hotplug 128GB or more.
 
-Can we convert them first to state it clearly already that these are
-folio migration flags?
-
-FOLIO_MF_WAS_MAPPED
-
-...
+Would we want to get notified and adjust the vmpressure_win dynamically?
 
 -- 
 Cheers,
