@@ -4,136 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA5751067058
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:42:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E698106705A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 15:53:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023756B0005; Thu, 12 Mar 2026 11:42:24 -0400 (EDT)
+	id 45E096B0005; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F13576B0089; Thu, 12 Mar 2026 11:42:23 -0400 (EDT)
+	id 40BB46B0089; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF47B6B008A; Thu, 12 Mar 2026 11:42:23 -0400 (EDT)
+	id 2EDA96B008A; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC6216B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:42:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F6CF1602F8
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:42:23 +0000 (UTC)
-X-FDA: 84537827766.10.C9A92B4
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 325E440008
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:42:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DfX1CMIs;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of hmazur@google.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=hmazur@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773330141;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1516B0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:53:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AABC8B7A90
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:53:26 +0000 (UTC)
+X-FDA: 84537855612.27.56E64A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CCA10140007
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:53:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d8lFNpuT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773330805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WUquX7EHFNWPtYB9eI41OZzrhA9/tVr0orl5i+PcmgU=;
-	b=IzmdyU5IW36/+mBBGE5JtVau0u7pUUDoyDCzeQeC63lRu7ToRIM8xUMqG3vrEb4E9iMZp8
-	g7rN+TNceww11MAnwXkM8QBBXnJktiaRyGGOeuNozlH3sPZNqGTXPwifpvfdN6Ws7T/NX3
-	Hy40I6NCBg7TNhGgAbTMZkJ9SDKOAKA=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DfX1CMIs;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of hmazur@google.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=hmazur@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773330141; a=rsa-sha256;
-	cv=pass;
-	b=lu/FF4zSn64fWV3fnm0SCqGls0CeWr6u/XeW7zg5Oi9vFAfVwV0Em4MsAS25IMan71wKR7
-	sycKYHhrXxlByZUTz1zTKcWTlBpfNnAwqXAGx5E/eNAVE/JfgCK8jvV7nS8Xl1ZUrmKBS6
-	C7wKMSs6LHX4jTT7K0Nl0h1c+fbA3uI=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a10a116145so8853e87.1
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 08:42:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773330139; cv=none;
-        d=google.com; s=arc-20240605;
-        b=L5vFUSZH5wSWkWD2DFrLpIZc5LIYI4J5rLY3cIHEDn6IfSFS0D5D7Bay/UmzUc1IWL
-         uToanxYVNrJTXdEPI4sl/7qZlqP4VsDw9bzXvRlU5lyxB7l+QXMFvPfdcRkwgCjsi1FC
-         YGzHvZ1vReIagaHe9pnh6dGpY0l9CYYbaOs/KIXiO53Rlzaqxmi3SruvcRcX/nHxZrsu
-         EI4+kEEAoCSsGIzuXSkoSZnMBuIY/+De1Gk3yIm7xi0TdDoMaXn1ojhDOhKHsgAKrqYQ
-         kMM+KvZr96eZtcfxkjGJb4EseGLUCrrvJ8l3voNcvnjEXhErs9SLC1pglZqY9cb8aam3
-         +wsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WUquX7EHFNWPtYB9eI41OZzrhA9/tVr0orl5i+PcmgU=;
-        fh=H2Hvw7bZrK69zxAR5cjmuCGQZlxGFslnlAuSCfpefHU=;
-        b=B674NPZm3bQB5Tcxxi8mnJEWSU6xsT6JwubMTU+gbrYR6srqVNjrt1PS+PwTdvCakj
-         Hi97iAtL6sA3dI6Lte4S5rx3iGazRzOHymtzqzvQum4oYoNpqLxQNVZ3ZNaGoTfUb+u9
-         mNlcMIFDc955MbaXCVRoqmZVsm12AoV17Pom/jVge1A+DPhZLDelzsCPRDANUUtGWhps
-         RRXM2cACGZCWXTCZWyDO87OgldecottpFAuOKdKJE951EOlX/DsO3XzSRY983q4fvLry
-         J3LoCqq8xG/kFPAM0bhl/sJG1QankMmmF8S8mFYKbdTIAuwxQXYB0tckv8d+2+JwnkHu
-         h+Aw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773330139; x=1773934939; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WUquX7EHFNWPtYB9eI41OZzrhA9/tVr0orl5i+PcmgU=;
-        b=DfX1CMIsGeHnRWI9Nh8pq33FnN1uhU71DsaqPX+WR3z03tShnZrVxHNbP81WtwtsCb
-         FhqxOGkD1CzS9ijqvnZqabb27gWhMAjI6LEUxY6Gu1qr0d6hUflYilR9I9AtW6wB9DX3
-         QCZi14G3CQg4tYDTfIkiyjnBYN49FXm9JV3nuw1tt7mp2Yw17JO3NnrbQQhMfXBN6UVN
-         GoDFj8afef5MwhpLb02ulgU/iyUhrR5dphc3fxnPhgiE4p9o5f2ic51mX9PaBqGxI7qo
-         sRjPFQKmQcSpncSS8OFODkEDY21vhlapajhvlu4Ca0CqffIe6Y5bjdk+7fK3ZrHjaILc
-         ZciQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773330139; x=1773934939;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WUquX7EHFNWPtYB9eI41OZzrhA9/tVr0orl5i+PcmgU=;
-        b=P8kj6dss1lC8cq6MZ8Sywg5orzGZV3ID/gn+Bl/VqmV2gZGCISZJT8T34YPg8QZ3dw
-         jDjtP+63exYRsaLvP8hVMjgzadGP2N6DQ6YL9J2kYKubBYjvD/IX0yrCwHNbHfA1VP03
-         h47SpewAalnJ/xPLWxkWjeRvPnfqTa0tDkdIip68KmWh5SILDxEf0XYyWdlzvyckcyiF
-         IFUymFrkhMutM9U3+87tAKZCRdxVXYVbbBsLemFf3RI/aDuvcsjbS34Eh+fPEj/4wvhU
-         sc5Evu1KajQcBcJHUe1JLtV126KH5jOkituIMzEQbHJCmdW9kiqfOXueCs5o3sxch3OX
-         hdcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkuvf5rv3maXXMvMQ7Ds8FBc3EkqPiNv7tDH+Lv8gK9Y7CIVg+/6Vtdn8+HVVd8SI7Q75Ps2MvwA==@kvack.org
-X-Gm-Message-State: AOJu0YxrH9DchQJp8JIwfTpGBZ/oB00Y+dCqcurbRaHtF0U6aOc5SZB9
-	pS9G65wU3zbB8uYLfkpRMcrRL8EFZSBcjpJwralnMb1d9qldagF5jQ7vqROIJmNAwQr56y7f5Hz
-	ezCuobxDrlcADPQZm3XtSbT1hXA0s7krfmAWggBpS
-X-Gm-Gg: ATEYQzx/1g1HAJ5+uO2H4Lpm3UlD7CbEnUWu2PmEbH84NhzZGdC/nzPQpGwlzkS8OIx
-	AaLB5C40346ox2kakHo40Hy2chEaxcZ0Uu4gAvH3zQXNxjB4BWpCoSaC+Ianw/YbdD4x7SQ57FG
-	0VTrVATiE1JloOj7PNIcl2rPfzhMZo6S4kqt8n8OnPxnBBbuJNYsjkpRK9YVFFFtgi46UQ6I8ob
-	hhlUOXsdMyd8QyS/gd1SvkxHolD1Aqfnot/eAMChsbHuN1ZRtICNos8JfC7hmviP9g774IOwtT/
-	F9mVqy8=
-X-Received: by 2002:ac2:5d4a:0:b0:5a1:2665:c077 with SMTP id
- 2adb3069b0e04-5a15cd4c62emr115553e87.7.1773330138725; Thu, 12 Mar 2026
- 08:42:18 -0700 (PDT)
+	bh=QQ3LjaRmVTzt1sd/4FgixfTncgJyPQYJIahrPuld1Og=;
+	b=5VSEMi99JXF2btB4b9fIoar8946QUffRfowDcmsYqPG4LKN8jtT9SjAU96Adxu/OnsPCO2
+	mgx9pKsrWYIE3VaoNPFvXLg9DJp0+e/tZcHaZEd7D8h8rZHvmlnWh4iOTev+Rf7t9eMOKt
+	MaEDFLYfv+OzBJgCKr4czXmhdROVj5s=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d8lFNpuT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773330805; a=rsa-sha256;
+	cv=none;
+	b=I3hlpEzDdkODxdQNYuTgVT2NReS/+0RnCe4ShFLMygtRXpxtiu6Nl8B7t3QC8Q4eCXvYm6
+	Kl/z73Ryni6SIsg0fR2YRE3/T8qkqMjbsqkbkcMzluBImMwZMmuhFhjCL/O1D5STyYBUC0
+	lu3WWMEJuRleyp7WPxbqCRHtXho4gug=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A22CC44085;
+	Thu, 12 Mar 2026 15:53:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690D5C4CEF7;
+	Thu, 12 Mar 2026 15:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773330803;
+	bh=narsuI8QHu8jwbyWEKrAT/NVxEMQP93/0vn0hBb11cw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d8lFNpuTJVK5h3GzJ7vhWy0sRKr2WIQJn0BngvBlY3yHXQs76cf8hC7kojjfBRmod
+	 hrh86WXbahlTH18zBuE3NTU53rUK4PkgHi2ZJLeBSd6V+7M+x9XLRNlfqI7RUiS2Ef
+	 GK5hesIXPnF52dCQphPuyBL5s89rhL5RBYPObwpffTiPqnC7D37FDTKz437WVz/19q
+	 /9yRGIr7wuhaU9ZzI6jwSWpZTsf4cpoCagAwt9GlyUWfLtKYDrgV0Zh3jX2nV8o4cQ
+	 qGeRo2gseZDA0W3TYiTgdRmNnNPtam5w94uxUjIAfp4ATEOP3/dHZuU9Ao2ou5CQXk
+	 tvmpv+X7uIpAA==
+Message-ID: <bca4ea00-3052-425b-8f39-729d504fd4db@kernel.org>
+Date: Thu, 12 Mar 2026 16:53:14 +0100
 MIME-Version: 1.0
-References: <20260312131438.361746-1-hmazur@google.com> <20260312131438.361746-2-hmazur@google.com>
- <abLCuVgqKhWI6hcl@kernel.org>
-In-Reply-To: <abLCuVgqKhWI6hcl@kernel.org>
-From: Hubert Mazur <hmazur@google.com>
-Date: Thu, 12 Mar 2026 16:42:06 +0100
-X-Gm-Features: AaiRm52H880JLiAiNlotwkATfjl7SNJSARUEeOoq_5x3YSsZEJf-5tAcD1sBMNw
-Message-ID: <CAJ7Hp_ptSEp9SkZtSFSSQw0uiDScd1yvG0R7iKyZqxbRBEF2gw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] mm: fix race condition in the memory management
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stanislaw Kardach <skardach@google.com>, 
-	Michal Krawczyk <mikrawczyk@google.com>, Slawomir Rosek <srosek@google.com>, 
-	Ryan Neph <ryanneph@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] huge_mm: add stubs for THP-disabled configs
+To: WANG Rui <r@hev.cc>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260310031138.509730-1-r@hev.cc>
+ <20260310031138.509730-2-r@hev.cc>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260310031138.509730-2-r@hev.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 325E440008
-X-Stat-Signature: 1tyo186aj4s87gth91cmiqsbkh3xfaas
+X-Rspamd-Queue-Id: CCA10140007
+X-Stat-Signature: y4fbkedp1urtsxi8ajrh3ymeswam8tse
 X-Rspam-User: 
-X-HE-Tag: 1773330140-714217
-X-HE-Meta: U2FsdGVkX1/wEhH+chlH9uGuqCs1co/cKJJK2qPKCTb/pUW5Dnm7mQQ95nZNzk8g5b1HW96seDQU6QAHtG8dP29MKVl5x67NcBrWE9C594eINc7fGgIkMXOk5npf4iIhHlUFjA4K9eR2c1SHfOZGPmAMj5otKxWmVek/IVCiaxWljhBzkMtgX/rpXwnfHJRxsgr/ZsI+/0sVFLzHMzRrAVHvH97EZfdnqptABEzAx1b0WBWCgBVwM34ko1INMhg136RTKbSgUbpw+5NzATA23g60gmo3kfhtXrf2iQdAXj9+UCKcP+ed1LcgQJviBWP0XJC7paMVU7jc5LT9nVyXTO5zQyJAlaWFv96OCxUghij+jXSPSGvTtMdCbYs2f3sH9K7YS9A7nLfzdfd/Jo4kFXGWLBvQITFpScmmLx6hins1pUZfnuum2pWvwMYB8YfRBdCSTwJuqUlB5cMt1JQQAVWJ0E7YWwXRVg/e+Sg+aONdd2/qGkPTwsi5H3mAqg/VfKg7n5i2yOyKiIVO0jAtoEe4yZ9wsyQTddezKgxJ4dI0Eer5cdc79Ju2l20HeYmBo6xsmUxVNkb3/fGIPfKBE7pH/anOSNeRo0fZfQysE6pwrWcAx6faG1nX0HkPJkPI3ZOQr0yI31A2CY1XjY9zfML76QSR6K1ddh2LZcZMUqyMFphBrdDMPr4gDiYMqu7w+uqn0KUsWnxsv+j5d/ohovxUOs4YMnIHweDhOAI1LKMl3EZTtO0twX+gi8eOzZeq4XJOkB5oxfQMUQj+vEo7wuCnw8nyoOKCUAzzK8hZSk/3txDTwTtormOaRdIoVO8d4dRlEJRqku1Ea/Ffvr8kaJ2XyxBB57WKIT1nyNfs9bwlCBTZh2SLBCw5xOD5CG8wOhgMcO24YqFiPhpX9ZRT52G5AnjvtRVLNOxn0uysN9zR3sRkiqguX3BBD00sa939CdF1POOf4HjXJDwzSB+
- RQpdEAEm
- RRcFCkMz4ityKQiR8VNF0SpbXlaxfmvuauYx1QfBqTc5K5kVsk0rD1Dds52upsctpUqVb2qvETbpjug4jxOho+ggJka4cwUSOLB1LA4avGs3d6X6jujHhmvIf7e74SyVVpR7UMxnwn9EcIRtrDSmd3hoLIbW3EdsM2Y8jDPAUqZWhCrBWte7TN4jbgX9iGLSbysTMPokbFYoH1oZfr0oDm9SddqfHS3My/2CL/ejf+xVfKOw=
+X-HE-Tag: 1773330804-452888
+X-HE-Meta: U2FsdGVkX1/Q8NRZVfZQTbzwEVV0A6T0/JFWX3MXF9LI4SeLfHdWSSwCNPDnXsIeLDyxoF66tzgaVG0JOlospClHBXtqnmkPiJbXPBJOLBFNSvte9CtushGkMltiRFmf4TdKFbbuojJpqSjRLvF66aguk4cIAeDWIRLjbneUMaBiI2zVIAXHkq2SIlZZsodgpSiZG3PGY5ubfWX1THI3wjZk/zx8aOMsIhLnRVSspF7BHf/zgccOz+69Es/wb5TzaeZNOVTW816mdhVk6SKeuoSvM+cZAuEJxdcac5XqJp9uiPdRzFRotB7UghzVWne8besQCthBmd5IaDJpUujSG8hzHm31f+mozEnSaSArco6m3ef9TxgXor9GAl/ig1uCeIJtu+jWO6H38+T1u3W5aX5r4I6tdYaSSDRSio+Kt5RNGDEBDbym6bWJlb7LrCD771lbX+/YflqmaGN6d08ii4QB/a7S9elSYAHMUtiR4NFvJX6yU0+7zANBG1AUBYKCBhkTT3oZxVWbO//Unt69XQ+PD7E2EjowEJaCcLYEsKVqgix0xS2Uxnpfn543SsczOBVl1KYUFu4zwZU29r1BsjrJRuMqyFKs0AhgZxZda0w7lg9ZfMR6I9hdfiky7ecqh1PsFjj715SWX6e0nRDi0b6oUuNyG3As5KSNwKfJgv8nCPEAps68yZiB5qwuoCGqJshqfNmSUr2ykjTN5tTis+/3Y1uJRV53nYMLr3nbXtXswgfRNAFpS0Gj8d8ctrxSKrnanFPKw8LDTcQK6PwmexKBl2qb6FFnR3OWzB4oFtDg5+9P6Y+7mal/EZTxMI/6X7W3yUKuhHb9j+kbrlMydrJdXp2wqTKplYxNXEvVs6R4eIvSD0Ivz0iQIRUklv4n/Mdo++j34tZTzOK++E11PP9RGleEaTjWEclUQdp/KeKSnPy80t6SHW4eCAVmU3HI06CsPb/bQ75dnAhjZMb
+ FAFeDNvc
+ 9yof/y70FouwVOkvx36C9CSVyTxmyhAKLlrefQ5GWJ9ryK7ZsVX3jz1GjS0Bg3GS/JstwMYVqmMpUGW2Tokwk8hOHAGL1/QEG5jBHyWTaKTfU1vcDbbVoWnhu9nYpm+sPnJXtE1FLrTn0Qf9jInJ/dym63nHMI7pyvHt8FZOvKN9yFu49G/fbLbchFXQ8Im3soQgvdGqwHdYOsvGYqmKkUJJtuBuJPKsxMDQ29ljiSJ28/sZXCqGLuY6ss4AH1jVJEVzVKjkntSUlM2FVFuKobAQcGnLgIWPHSYDO7Nqy07yC+BwMaIQgX9ELXlFolks9tyDHdaU3eBem0mhPhRQWkn1Q+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,27 +146,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The prefix should be mm/execmem:
-ACK, I'll change it in the next patch set.
+On 3/10/26 04:11, WANG Rui wrote:
+> hugepage_global_enabled() and hugepage_global_always() only exist
+> when CONFIG_TRANSPARENT_HUGEPAGE is set.  Add inline stubs that
+> return false to let code compile when THP is disabled.
+> 
+> Signed-off-by: WANG Rui <r@hev.cc>
+> ---
+>  include/linux/huge_mm.h | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index a4d9f964dfde..badeebd4ea98 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -570,6 +570,16 @@ void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
+>  
+>  #else /* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+> +static inline bool hugepage_global_enabled(void)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline bool hugepage_global_always(void)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline bool folio_test_pmd_mappable(struct folio *folio)
+>  {
+>  	return false;
 
-> Does it actually happen in some environment or it's a theoretical issue?
-Yes - this is reproducible on Android devices running the 6.18 kernel
-during the early boot phase, when modules are loaded. The "Out of
-memory" error usually hits
-modules that request a lot of contiguous memory.
-It may be hard to reproduce (like 5 times out of 20 probes) but it occurs.
+There are other ways to enable PMD THP. So I don't quite think this is
+the right tool for the job.
 
-> It's hard to parse a single huge paragraph.
-ACK - I'll reformat the commit msg a bit and add an info about the
-reproduction env.
+-- 
+Cheers,
 
-> This is wrong. The caller asked for 'size' and got ALIGN(size, PMD_SIZE)
-> instead.
-Yeah, you're right=E2=80=94this is inefficient since the remaining memory f=
-rom
-the allocated block won't be used,
-i.e. align_size - size. I'll implement the logic to return this chunk
-to the free_area.
-
-Regards
+David
 
