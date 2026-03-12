@@ -4,115 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 328B4106ACF2
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:15:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC16C106ACFB
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:22:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 583FB6B00B2; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
+	id 0CF376B00A6; Thu, 12 Mar 2026 19:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531946B00B4; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
+	id 073736B00A8; Thu, 12 Mar 2026 19:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413146B00B5; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
+	id EA1576B00AE; Thu, 12 Mar 2026 19:22:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 301736B00B2
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4AC11B7F50
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:15:49 +0000 (UTC)
-X-FDA: 84538970418.08.05B753C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7257C40008
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:15:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="W/09uimW";
-	spf=none (imf11.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DA2756B00A6
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:22:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 707421C5C6
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:22:51 +0000 (UTC)
+X-FDA: 84538988142.12.1D567EC
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E75E4000A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:22:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="2ZmOV/Ft";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=j4+wcZMa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="2ZmOV/Ft";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=j4+wcZMa;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773357348;
+	s=arc-20220608; t=1773357769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LjcR94bmvH2oOH8ZUWLFU9TNRvfPfrpZ+1MwNkcZH5I=;
-	b=nlAeDrJnCLTtmxkkKRPInITB8sq3LW2v20CANcBNoct2sKq2CUuoNTN19V0ohYRHH9E3/S
-	v9KmkksOrdqa+Jk4fH+Tn6mU4choLJHBb0npFWLWYPA5/zZntSpg9gvydFuDh3hB/5LkSq
-	3grAxQw0m7koHty6ru5nKk40DajYGC8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773357348; a=rsa-sha256;
-	cv=none;
-	b=yvi3d5biO53nw0g5G6dy7Q+4LOisdr4sdMToqLFQxnyfkuCjzo1+JVkpgzu665fQZiP68l
-	WK0aC0FWrwjM5vAk5UrEo8X8JSmmQoT0BE4iZWIFe2mzWMWKt1wunaARTi5ESszMYlMlT9
-	Y7xaiv8KKuHTla860i5GSK9AHn+/ldw=
+	bh=fCsKOx8ILzNbGLkgMdAcnfyRXidUZJNgid2O7vonu+Q=;
+	b=VFNDzTPASZbrmC9DKg2nAaoV/BvboTr57/Ngo3sD6MFEK2V1a2tyNgM7k93Qt10TcEB54u
+	Usx3G5XgLsjX+kBwX66LsFgiZxQZdRpeXlxiD+PGlePX+qC5MDwnW8b2CXY9ZSTwnAQBRH
+	2Vd8UW25/ssJdHrr4Dq3Ho/ayQVLE+E=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="W/09uimW";
-	spf=none (imf11.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=LjcR94bmvH2oOH8ZUWLFU9TNRvfPfrpZ+1MwNkcZH5I=; b=W/09uimWlmT/Ysq3jgNMt1gI7H
-	GOweGLT/9vNXsJOPg9hm2zWvmdX3q1Mku+Gp0H9Iy01Esb6LQV5ATBVsFtN7xIiUoagCrBlANpDjy
-	LFKllY8nRMXqP5YIQU35yhpjR6xLflNsnx64mvIpAEWYWRWDPhCqNZYr0PnzOZoWDQK+FM4dlVpqj
-	nTXMWJe8aCw5gHcb65NFh+tuJVdjDY9IaRhmpRA+PnQPWNf8cS/Xo1D5AhzPt2W5l4FH91HqP8G0U
-	kPRc+Y45RDEk4AoFzuVcdgRIIbo7k6atO+7RsPG8yCEeiefwSsO6mHknQo7wHDNJwM391bMo/EMJe
-	bffBLL6A==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0pFY-0000000FkNf-3iHP;
-	Thu, 12 Mar 2026 23:15:28 +0000
-Message-ID: <4fd15134-ae1e-4233-8d5a-9d1e0b9f94dc@infradead.org>
-Date: Thu, 12 Mar 2026 16:15:26 -0700
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="2ZmOV/Ft";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=j4+wcZMa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="2ZmOV/Ft";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=j4+wcZMa;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773357769; a=rsa-sha256;
+	cv=none;
+	b=zky85/RtWalTTBgd7QGlJ9gHXXQAwWCGSd+9uvYC7VQ1RJFhfFRExWy7aEM2qOyX9E5Vpl
+	+AxEK/t5Whqj9eTTZQ6kIe9vqx2Pnnb2fqLcn6i+OFi4hbLHSekj5qZ0+IPnMHSFVswKGA
+	HQnfn4T7yyjUGRRl1t+QNT6FZ+qFJTU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BD2B55C950;
+	Thu, 12 Mar 2026 23:22:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773357767; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fCsKOx8ILzNbGLkgMdAcnfyRXidUZJNgid2O7vonu+Q=;
+	b=2ZmOV/FtjgDxd4cAbv9oZdGXqgggkqIxPllRVrG3xn8RbFGcoBqLxNzpbySiUbRtqlTUt+
+	0uMJN+41XORcm2udUywvhp/DzLE9ZXtWSaf+GmOdVBmYZJTGTJp9obtOugOR3w2TOptCDp
+	Toj6Ird1QF7R/brqUvE1/UPtRFmaLhw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773357767;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fCsKOx8ILzNbGLkgMdAcnfyRXidUZJNgid2O7vonu+Q=;
+	b=j4+wcZMa/q/eN96zYBwEzhrISET+YRMZ3Q3JZ/XYvMXWCDo8zM17gplpTTqNX7xWtsvQ1n
+	WMgPzTYl6JBR7nAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773357767; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fCsKOx8ILzNbGLkgMdAcnfyRXidUZJNgid2O7vonu+Q=;
+	b=2ZmOV/FtjgDxd4cAbv9oZdGXqgggkqIxPllRVrG3xn8RbFGcoBqLxNzpbySiUbRtqlTUt+
+	0uMJN+41XORcm2udUywvhp/DzLE9ZXtWSaf+GmOdVBmYZJTGTJp9obtOugOR3w2TOptCDp
+	Toj6Ird1QF7R/brqUvE1/UPtRFmaLhw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773357767;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fCsKOx8ILzNbGLkgMdAcnfyRXidUZJNgid2O7vonu+Q=;
+	b=j4+wcZMa/q/eN96zYBwEzhrISET+YRMZ3Q3JZ/XYvMXWCDo8zM17gplpTTqNX7xWtsvQ1n
+	WMgPzTYl6JBR7nAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C71B4020D;
+	Thu, 12 Mar 2026 23:22:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IcsrO8ZKs2k6HQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Mar 2026 23:22:46 +0000
+Date: Thu, 12 Mar 2026 23:22:45 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Josh Law <hlcj1234567@gmail.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Josh Law <objecting@objecting.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] lib/maple_tree: fix potential NULL dereference in
+ mas_pop_node()
+Message-ID: <i6tmfotangjjtzek5txtvoiav3xrfvwtw6cppooyja5mvywmz6@2c5rnyxqpgu6>
+References: <20260312184054.23481-1-objecting@objecting.org>
+ <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/15] mm: add mmap_action_map_kernel_pages[_full]()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1773346620.git.ljs@kernel.org>
- <21d8899bb1f4db61203072fb3a56a6c98a61e23d.1773346620.git.ljs@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <21d8899bb1f4db61203072fb3a56a6c98a61e23d.1773346620.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5E75E4000A
+X-Stat-Signature: kzfcmxianootxi7r13uwgnb8cz9p4gj6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7257C40008
-X-Stat-Signature: 1a31pi3qfnrpqdikg93o4pq3hx7ndgsi
-X-HE-Tag: 1773357347-918563
-X-HE-Meta: U2FsdGVkX19UfMKtu0M1fkWPprQ4TE2ODmuy8NKw0PRqd+KVmgMTscgyUf9SuLTzcy5OVp++jMIt8gS1H4KY6QMa5JQIU0jfT5KZYF6jlomouMtO/JGUrDUpclJMEUrZG8bDguOI+BS4FnlF3agWBQFHB+lqOKjbPa8Sdjz2AWIHlc9e5fQQsrjJYAy5Hm11i+M7R8dLT0wHAu2kBz/tqWURqf14EpnmrlrEQVd7J9OXu0skKzr1ier0xZyEQFxvr/l5otsGHqoWdZD/R1RIHcBHhs4N6BWA6Lw2pulttsKixqWNnFOa0uCAy9U0cuwH/bVW4RphIGfINkR+kpdV/ECW/iirceFXMsr92W31ASQATL78m3dpV2f+rtry1xKPFTyRklIxziA8jQmMJ2XRxV66YJ+4zSyvbj5tHfdSwNjPL8KjgLO+3CRXP/N/Mntvq2esoRUWZv1eZwVAWFMYGGO7WdOzymyeple0TeIgXTUU0O9TfB0131PgKXBdIj4s8+Dk1Z3gmZU+NQsmnq2Wq1th8JTOA01GRXc1zD4913dGOd2CGxledcHrz8IfM9g4H/LhzKGGa782V0oiW7AHs20j4VGpiU10jvjAqBjLzrzmdIrL6nUPTovUQtEhWOpFbaBWV8fS5zxRkfUyNOsO27kW1Y2JOz5GKyLuvBMP6O0x0kjlVqxfCvBF88D5KhqYzxikilN3Nqm7n6w29hUHY9d0zvy7yfjAlkUnc9j0UQ3Y4sSiNRkIeRJxcCzvxH537cpVQ+NNduJHfFNnMyDilQgTULwW5tsTogUW1lLCBnboEHeCp8t1+kMOTorcyMX7DJef8LV1+eHFYI1rHLQmEq1ov/rk9WleP3j5hVoIif6esPmNzsyxKmOJAnsONzunjyp+TBU+F62eSxbybgknqIW/G4kfcQBHmuPK72uk93FKZnuAi447vnjBhL54rmrOQ2HcK5avgDwxynw1QfA
- 3gX6fTSb
- euKZvrO1CFQsE+1ahvynJm1zrnrwdnzHNdecLkniQFZ/loBbWPCOw01OgPkLTNiRVS6lmF80Th9o7pUABUn7MiENUqkVk7EAnaRrKi2/YgxIsR6Etc+KB6G0A753jWkfpwgRYHNge9X7uNUrLge8io6mWIFTmjLGlzHCGPxhaO3tEgxKSY1RNJznTihbPl7aXdCieE79wUW0Mg1M+gB3dmC3rrC+dtCHb/Rj4acw2AaoYEDBblYiQZ9KYhqRGHVN0dU2ABJnIL2GZKAWgjDspVicjhVn8SoYVlJB1quy5C29795v6Ay5w+i0vLUE1o8YKJHEHpuv2Md7dReTHLU6qq9XlpfBwuO2xVE+RwjLT/q88xhCUBxTUVpJh875b/Hk+qd14ZcWIWW4nOqgk2ogUi9fJ6YINQqMV94I+5uxiEXb6YjtmKqPW6Z6uPx6cNQAIoyaF
+X-HE-Tag: 1773357769-373735
+X-HE-Meta: U2FsdGVkX1/pQoAkWl4+w83PvLpqciFov4s1rSS9f/k/xtx7FIPibZbQMDn55InkDrQKj/kXThhakNfFvHaeSeci/IqqjxQi0brKdeJGql4CpSR88gYxVHqgoPrJSTNm4tsbr/CltTBEqtECDUfxoybBoH1SQhWxZ3J7hZFQyPU4k45X2EZ1ueZkZLNULyN/DeseEum2XrosoM3t4Xu+UpXIoddffjSleewAcZ8HKaGuJxI2gWkfV86IUsi/GKRnaJwQmVrfgSLRk1mh7yrj5yOYXjhbyKyBYdMDI5tRv96fJaqQeLPDcSan59rp+viDS8/WraLoZAKn8TVoolHd9/D1OvcLNfbE0HoBQMGOoaUhak7LvKXM99IXZav8KPVDKo9B8bH1cFP17iDb77qJC6Jh/nDIjzV5WHpLZDv20hA/OLPL+yNcHskoNTcWAyDzNdS0aTSc9qwwkBjknMNYryNI6zqeuEb1WnzYNwyYSfobO82nRJxGDKhKupTy7F5xRkKBNucpOn3R2Mf/tAIi7KmcldwGP8QCVojO78c/kU71XEl/X1SCRcZ1MOl3fn9Zo0pLtQuyWMbLt2DkcEywyglz7Eu75uQv7mFY8Lwsvey+wi/MlVJJTbvJ5zplLKKvi0tXdfDmkt48T2j75plNh3bvED11DG4jnw6cQX5eOoKljZmAAzbodNbkhuEDKNxQo5T87V7LD3gtDX9ePOCQmlTD2/gw6Nrt2GI7zGmIC9c8LJ9GZwXPa+WqHxXjTDBPgk8N51N4bwuljag6EU7ydCmh8XpR7XihpYJ08ZrUvR7cFiTXek9Ud8bGlqOc3LRY5L+n4OKSjl5Wt4YLeCCvBXE58OqoUExoUEu5jKBKY40JWKkR872u90hIvwzS0iNTItm7b5XqwB8Cf7OelN8789o7pD8WXcaiMlSY9+jhITiccteeYKxjNvI5wvwapcRYbT/XVrlhFKAwZktN48U
+ fWnCacBW
+ 4l4uXc+kt6kO8EM2t/o45fDm/5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,86 +133,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Mar 12, 2026 at 01:45:31PM -0700, Andrew Morton wrote:
+> On Thu, 12 Mar 2026 18:40:53 +0000 Josh Law <hlcj1234567@gmail.com> wrote:
+> 
+> > If kmem_cache_alloc_from_sheaf() returns NULL (possible under
+> > GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
+> > and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
+> 
+> This is such a glaring bug that I wonder if we're missing something.
 
-On 3/12/26 1:27 PM, Lorenzo Stoakes (Oracle) wrote:
+According to my local copy of lib/maple_tree.c:
 
-> Finally, we update the VMA tests accordingly to reflect the changes.
+mas_pop_node() - Get a previously allocated maple node from the maple state.
 
-IMO we could omit the word "we" 5 times above.
-(but no change is required)
+Note the "previously" :) kmem_cache_alloc_from_sheaf() can only fail if you
+run out of objects in the sheaf.
 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 88f42faeb377..88ad5649c02d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-
-> +/**
-> + * range_is_subset - Is the specified inner range a subset of the outer range?
-> + * @outer_start: The start of the outer range.
-> + * @outer_end: The exclusive end of the outer range.
-> + * @inner_start: The start of the inner range.
-> + * @inner_end: The exclusive end of the inner range.
-> + *
-> + * Returns %true if [inner_start, inner_end) is a subset of [outer_start,
-
-    * Returns:
-(for kernel-doc)
-
-> + * outer_end), otherwise %false.
-> + */
-> +static inline bool range_is_subset(unsigned long outer_start,
-> +				   unsigned long outer_end,
-> +				   unsigned long inner_start,
-> +				   unsigned long inner_end)
-> +{
-> +	return outer_start <= inner_start && inner_end <= outer_end;
-> +}
-> +
-> +/**
-> + * range_in_vma - is the specified [@start, @end) range a subset of the VMA?
-> + * @vma: The VMA against which we want to check [@start, @end).
-> + * @start: The start of the range we wish to check.
-> + * @end: The exclusive end of the range we wish to check.
-> + *
-> + * Returns %true if [@start, @end) is a subset of [@vma->vm_start,
-
-    * Returns:
-
-> + * @vma->vm_end), %false otherwise.
-> + */
->  static inline bool range_in_vma(const struct vm_area_struct *vma,
->  				unsigned long start, unsigned long end)
->  {
-> -	return (vma && vma->vm_start <= start && end <= vma->vm_end);
-> +	if (!vma)
-> +		return false;
-> +
-> +	return range_is_subset(vma->vm_start, vma->vm_end, start, end);
-> +}
-> +
-> +/**
-> + * range_in_vma_desc - is the specified [@start, @end) range a subset of the VMA
-> + * described by @desc, a VMA descriptor?
-> + * @desc: The VMA descriptor against which we want to check [@start, @end).
-> + * @start: The start of the range we wish to check.
-> + * @end: The exclusive end of the range we wish to check.
-> + *
-> + * Returns %true if [@start, @end) is a subset of [@desc->start, @desc->end),
-
-    * Returns:
-
-> + * %false otherwise.
-> + */
-> +static inline bool range_in_vma_desc(const struct vm_area_desc *desc,
-> +				     unsigned long start, unsigned long end)
-> +{
-> +	if (!desc)
-> +		return false;
-> +
-> +	return range_is_subset(desc->start, desc->end, start, end);
->  }
+So yeah, this "bug" looks bogus.
 
 -- 
-~Randy
-
+Pedro
 
