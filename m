@@ -4,123 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35849106ACEE
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A46106ACEC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:44:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4896E6B00B4; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
+	id 282666B00B5; Thu, 12 Mar 2026 17:44:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 437876B00B5; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
+	id 2304D6B00B6; Thu, 12 Mar 2026 17:44:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 343356B00B6; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
+	id 0DA7F6B00B7; Thu, 12 Mar 2026 17:44:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 256FA6B00B4
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:42:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C775A1A0448
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:42:09 +0000 (UTC)
-X-FDA: 84538734378.17.0FC2F73
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B4DD580009
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:42:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cw+Tl5i7;
-	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EFACC6B00B5
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:44:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 994D8140477
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:44:30 +0000 (UTC)
+X-FDA: 84538740300.25.F9EC492
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8B27F1C0009
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:44:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=HynKVXD7;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=sD1IpxmF;
+	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773351728;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773351868;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LyceMyfiqLdgt3XmH3cZvfSKhUu32FwkvwXjXF/XZck=;
-	b=Q3oFOC8VrC6rdBwhZB7ztmDsnL4y2vIjJUC2pljQR5/KujimgjW4PKx3Pr/5wmWKAzGi/E
-	/H6zIgOl72ZfmI4EfO78RB1GhGAAXaMY0npVW8o32Aq7pU7fidJDHQzgkmKgQ0M2wXor4I
-	iGYVy7SAEp+WTbGJspSKalMSC3f90VY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773351728; a=rsa-sha256;
-	cv=none;
-	b=cqhjDz3ICCIgRhyjSFjsf7p3aZSL2ykhVceDRfhpJdjPbcRnGkU6EJ6Yx61hNiasNYsmYD
-	BME0e7Fi8Emz7HNxv/V1vFCdmGZIwSd/VseSuR56lcUWZd0PZRKDgeBLC9pMsGrM1KpbJU
-	KkDmDZJw0E8YD4gO6g1qzaEF8VrHaIo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=FHJsH8Kre5d09x8tLYt2s8UM1ZjvIsbiC0DN+DyY4Wk=;
+	b=LIHE8GvKutBuyv2dVBBQVZ7T+I3bod56haQIfLb5Ykvbl0FMY1yyyPlEyg/xURQWt29WAR
+	t12V68C6/v04wQciyVJnUgfGSODzaJrgo/D6M+ph0WDpsv71QwD+IVbGAQrCZsw9P/VkCq
+	APJxpTWPgcuFp1GLjqcKrjsM3ylOwqU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cw+Tl5i7;
-	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cd73c4a827so140991085a.3
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773351726; x=1773956526; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LyceMyfiqLdgt3XmH3cZvfSKhUu32FwkvwXjXF/XZck=;
-        b=cw+Tl5i7pTjs0Twu6d4KFWgmYjRkSEEoWjKHWf9GEC8x6R7vEdmgqGOYoZbj/6wmDD
-         2862B5eGHVjC+9xkOLTrwTuEmk8NB/vYqKRZzvHiGEngOvWGPVYWLHGjpR5BgIFtwQDq
-         FKs8rjFkj5vUSz5Ju1nJfYlBTwtu68sO2Vh77FBjRG7/DaNlSYelcQgc7REsLew3YFAr
-         ve4Tm122KVFaLeGsf2kjA3dMTAf9zJboTwKWYAJinW3VY+FVfS99CW6yMvskO4y9aknz
-         8/BSTBYwKAFxKxiyPqvKWMoFm5r68RU54MmfGxzQR6fAJAsAT81f1GCDQMFAul70Wruc
-         CVSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773351726; x=1773956526;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LyceMyfiqLdgt3XmH3cZvfSKhUu32FwkvwXjXF/XZck=;
-        b=OoieHYKCRY3tqntin0SVD0nkejFsv95vA2/KWlLMdENmRCgPueBSIaXpkHDDL1lbZ8
-         eEUJ+ElGNHXioRcDQ+xHe2IcUp/4ZjGvryr6HYQFuUsiGhxxKRtWpjroljvVpHJ9kM2q
-         256V9tjEp+aVFwYBfy8553Ay1VWUqcwUlBUdAUpVxjfmgv4t3KQ+8S1ko28W54OZXUm9
-         ebqf1XMuDZkMVXMWbYMsQvGbpR0P8yD25JFbqyJwOPPyzsUf2sbNSUlDvdxPuclCN5Tz
-         cOvM65QAQ/oPitGCN9g+IGaQBYYfrFAinD7Z+Y1BeOkmnJdPdSmA9fUmfq1MWzygeJZs
-         3Q9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW+NRnECov1mayhVBSVteE7yAyOCyTZYqOBn/D07Zt3OMeN6gX5o2p05zNdq3al+ifityczUHttqw==@kvack.org
-X-Gm-Message-State: AOJu0YzhG3UFA+nWiQA52sCtqnCvrV1iitswNY78MeUTPSOUnjXctnKW
-	yw1Fnn4cRaTzdOTRDpsWoEYThnmlrUd8lqI2Rd3CIJFm5CO4GhQhcsjcYOPXz7HEjM0=
-X-Gm-Gg: ATEYQzxwjV8gFOonFhWa/fAbC1418CF0je75zWM2ZAFRFW8Baj36rKfJRyqE2rfdb0i
-	pEtzbCTrJQJDqFEtS7ynkKg4AuIo7qWfBl/Vtnxk4A6L7JdvyfDz44GjVQk4QIeBZEhCEv1wXe2
-	LRg2lK4MYybcMgV4lcmdp+qgx/FDLUDQPBCPFLhlAIfdAJx+BFC38Ve9aJCs3E1o/a8sjxP1yMJ
-	65kYfg3cCNfVCS9XX5nQgMwIpTaK43SvEZ85edZpVoVIteyrn6SMknWzV4m0U+9AOfYaRKGJFf9
-	NtOjK/9Jlgx4xhBE2u6Uiw+NWJDMNCar0dQBzGDuORCQtYU1inmvKmk7tc/NXfVJYo+TfjJD0Zl
-	WfmYLxHXko7QBFJPfZpLxWZLAQXGQXT4zS+RCBsDjqR0XhLrFXXDlS5RmIrP5PYg/t0pQ4lda1H
-	Vw2lDtiW1nVK00WabbJY6NEQ==
-X-Received: by 2002:a05:620a:269a:b0:8cd:9b31:23b1 with SMTP id af79cd13be357-8cdb5b1b1ebmr170750085a.53.1773351726619;
-        Thu, 12 Mar 2026 14:42:06 -0700 (PDT)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda2151db2sm404907185a.44.2026.03.12.14.42.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 14:42:05 -0700 (PDT)
-Date: Thu, 12 Mar 2026 17:42:01 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 07/11] mm/zsmalloc, zswap: Handle objcg charging and
- lifetime in zsmalloc
-Message-ID: <abMzKa27khxDLO_D@cmpxchg.org>
-References: <20260311195153.4013476-1-joshua.hahnjy@gmail.com>
- <20260311195153.4013476-8-joshua.hahnjy@gmail.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=HynKVXD7;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=sD1IpxmF;
+	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773351868; a=rsa-sha256;
+	cv=none;
+	b=qypACAHV8YabP8yyVdDkIFu5/1VS+97aoXgNQMlUPmSQ6pi6Mepdn8sAUKQm/hY9GmkwxY
+	GilHAHpQXMQ3zOSTXnUdp9xBiY83KUEGP36LFT2Juk2hZ+5m3YVn8zut7eY7+Xa4ekqJhP
+	5FeNqE1SidGKaDLFPavywR1zE4e78ro=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 649AD1300FE6;
+	Thu, 12 Mar 2026 17:44:25 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 12 Mar 2026 17:44:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:reply-to:subject
+	:subject:to:to; s=fm1; t=1773351865; x=1773359065; bh=FHJsH8Kre5
+	d09x8tLYt2s8UM1ZjvIsbiC0DN+DyY4Wk=; b=HynKVXD7sGiagH9pyAhm4nEmbG
+	vnoLEKsMRIiSoa4G7euyElVNaPJlW0anEmEFcWVt480xGfw7ZBeWqyJHh/ktIp9H
+	PvZZACKxP9UOdtcmm83xJahGzP6ashogKl0QDSMPEPl70AAQ3icBB8PfEnzEFMRq
+	sX3yWNvxvY/eWlaObNEhjpO2PDvl14q8XwgFR80C8mJOcy9vmuKQRaNg5N7I0NBu
+	YzYQ2wP8zbtuE/A1y/UOTxlh7tZ0N66BfUwAQyR2N36DYGboFbAHY0UTwAvDGw1M
+	d6RYVJexiZ6tvhPF9XL+NJ38N7femUBleqpharU4wR7cs3N8FjN0xclTa88Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1773351865; x=1773359065; bh=FHJsH8Kre5d09x8tLYt2s8UM1Zjv
+	IsbiC0DN+DyY4Wk=; b=sD1IpxmFFBbUWLaj2WkVbBMNwpLBYky36Wu3DMHfzT0X
+	nYRW/ck1rxXdAMzJNXUejfFN/jOa+nMSve9JT7wFkvNE8kcvSIA6yoXL/zieN3xM
+	iZ+dMzyq43JMAdlzXgdWh8E1/CDLAWkabqAdcZh+T2TEs39XC5Dyt8plLkNXPMtI
+	Y+r2Dz3efkKqhCljIQwPhIv8XYGf4dd7RG0/DSMZfTI3O1ghah+7C1QcisTS9EWV
+	p5Ay6DlW7fs9l7Lbcemw1oXfwXFw+gQWGOzjp8GKsZTmGNsABOtouzH+861W6TOI
+	iR7R/iP6i1+Z6AxnjMg7KFFlVxvvm0hDCXBMXVB/MQ==
+X-ME-Sender: <xms:tjOzaYKtAlzNy0f_EhbkSUlhoa8KZMOzdeNH9009TcjkYG6tbvC7Aw>
+    <xme:tjOzab1mfdu_QmTDPbYrOK1x4qA-DPLvzT8zO8FZQfoiZZpM2Q7PewNcOWSFkbzBx
+    CSJqJJgR4xO9u5VcliHKe4FVdaI6_GR5jWwjPvhZ8TLoSIpYA>
+X-ME-Received: <xmr:tjOzaTyaQLH6LrWbZtAo1MENQavCeD4QUFklDYoSz_Wa54OtONiqLZpomwLKI-d-C--YgCofWm54r8ueiEOhXittozc2IECd2HHHlL6ixNjG>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejkeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheurhho
+    fihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepge
+    etfeegtddtvdeigfegueevfeelleelgfejueefueektdelieeikeevtdelveelnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsgesoh
+    ifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohephedupdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtg
+    hpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhunhhiohhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqthhrrggtvgdqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdroh
+    hrgh
+X-ME-Proxy: <xmx:tjOzaS1z3HXh4-ifJRBEJTkKAyUPCr8OJLgJiRXU1S3hJu4gX6A32Q>
+    <xmx:tjOzaU6VCxafI3qHQH8oosSQuqDVIy-CStyT6UaG1DYXnTDBEu-EpA>
+    <xmx:tjOzadctLaB3wfFUZXTX37T5TIQ88OOFc6eu00-UyziGYU-aaSZemw>
+    <xmx:tjOzaQYHqOUYatlEsE5TwG61VUO_YB38t6wNqngJFK5w5KsHFjx8_w>
+    <xmx:uTOzacGeKHU7F90aeYZNDwvYEnwYDWXkCfp88n2OwGQGooB6gIONyBVa>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Mar 2026 17:44:08 -0400 (EDT)
+From: NeilBrown <neilb@ownmail.net>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,	Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>,	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,	Carlos Maiolino <cem@kernel.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,	Amir Goldstein <amir73il@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>,	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,	Steve French <sfrench@samba.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Breno Leitao <leitao@debian.org>,	"Theodore Ts'o" <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,	Tyler Hicks <code@tyhicks.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,	Jeremy Kerr <jk@ozlabs.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	coda@cs.cmu.edu,
+	linux-mm@kvack.org,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	ecryptfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-um@lists.infradead.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH RFC 00/53] lift lookup out of exclive lock for dir ops
+Date: Fri, 13 Mar 2026 08:11:47 +1100
+Message-ID: <20260312214330.3885211-1-neilb@ownmail.net>
+X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
+Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311195153.4013476-8-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B4DD580009
-X-Stat-Signature: 8fm91zntgdrxwop7w94kkk5ntuq4owyn
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8B27F1C0009
+X-Stat-Signature: uoipmir9yi57xynaf64c1ad8izeiib9i
 X-Rspam-User: 
-X-HE-Tag: 1773351727-962153
-X-HE-Meta: U2FsdGVkX1+NjtAW5WdBUzk1XHXIFTUstB5OQJeIYA2pG9gJbTOWayaludyLy1V/jSo2/87NmsYDnsTnsnjJ5WDrPxmmfHaYOrmT5Uk/P+decmz6NhAPZ5hP3JLLT4lZ8jENjQIKWGvztER5G+ucs+km+D83+l4HS4EVX6g98muWtfJkEhkpoUCNRr5jvYkYmANu+NeMGRT2RvTAhJ1kw8hDzuudhQ2WY7J11Bb9AwGtFI30+AKVfBiuKVI4VUskrEaT/yxXGub/DR2JsoVLoYI5B6/qROg4r1Oq+LRLxTziiMDxkOJKnOgyIlSlg4ioh6iv/BcUGUE22X4jrHtX4v9kmgq0yrOYFoM6FNSFKi76yedkq9MK3Fk6uqAUX44U5ppWXvdXnkSP/Q8er3RTedXYWlJszWa4IbS2vzxIwAXyN10ouVQ3anoZmgsF9GDk/m5wt10YIeyTP3FpA96B+cbCbR+SCbvIMKfGpsJ0DTOdYrwfY9e4CptHe6+PhOxoxmu1GzZRTCVHXuV0xKF2/u3JqLwHvrD2HtduugMIkqlvigBKSeBiluzpWtqhfD0rrhfZVPWKct4lCd/mEUBdUQMN/9mAohSciiBVBI6yBckIS8tsK2zE7lQ76HDTEdzQTBwu5m2IcG7rymUTLS1r2zlFztEbo9wH6OZnxGx/W0uzAs0F2hdYTzno7CZP7cFS4LKhL1bDniwliwBUCpsm4kE+FIh5ZJEMwZJRS5OGtNA7OoUaXdSgyACmOQD2aEa3b0j2eIb7nxxyMuewpRE5SeR3ta1uTZKcJOdPZMfZQVIsZsEIh7g2NCq8SmvzjqnFLPFbMu3E39CJ3mUYnh7L8SyShbZmHXuOV/i0JLw1wCm/h5w5+Y/5xJv1/ImTYNJk5UrNGbkNriTlnz9ltEI349fBoYAM3iR5TeHmR1nmjxSqfCkzxPJGiG0J/sNVZidHFtUX4S7eAHP1NerWa19
- J9w4DTz/
- +6h1lByx0faJdOlRDB8L2VC01byG+ZyikeGwgYBmInwmK2rBE+kUXVOYsdWBewn8hk2b329TgFayDNGQErtGavRe4/ruAqPvrSFapRhCOPGi3PUkwqWY8+QmrpYwROfYkIXFJJ6zfGNX9jPDa66VoaAIDEwEIqwOfJufoA6hBmJ6zNzhd08LM6pidIR27hYk5wqmEwro2touvb8c74VuziOBHeyMnSUSkG/6LHV1aa9Zx9YpMRxzKEEo28T8uw8Ed4Uj3zJJP8+rQ3oOycoVadj3eRJZxlwOLZdVuK9oIlKuK/IiqdUws0/e01yOx3hS95xzSjDoy998cepR3tQMGbju4iA3UuLp6NNpGR6D+8NUulwqx71YbfDeKMCojqpQUpGuKnPCl6bWg6P3mSGvh3NXCcvByM0M4XC89gSiXbklt82QqpMSt1oZMGvZpaGmk6oBtdrkNn2tQcNAWuWPwoiFIIwxEELlT83sj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773351868-124893
+X-HE-Meta: U2FsdGVkX1+8HnS/+VMEIoTeXWpYonfgOVWyIC2+vKcAkXjesL9rqSj0O/ZUqO1JSCWhd8OUltrxZVFm+HccDz/7hJ9LvkcD019tGapqZD/fGb81mjeLZWNa2ODRVMVkBiKlBWgmTeFV3/orLoQJpueX8Qr6m7yRmDUchkVdbKKSgOmZH0Ee+OKP8MUME3hqmV2jGXjV1EtU968j+mmH9CUvtF5iVco0q1GmPpd40dLM59HmkXzKoPW7gg+VVuQYUHgbCRam4m8ELJ3Ec2Ri0CKMpJsZA3UQLMfO2aMYO5n3EDIMamet294zt9jfqc1HR/DCXABKE3nJRzoBGSZyaCH+9wYVEV54W7XkDyLyGAZACQPIr6mZ6RBPUJOR6t0IeCF6iqspqsJApsTaZ0EIei1xTE2lyYjz5MyUQZooeZx3a8QSLIesEj4ZcKFX4KrgV9mkDTO8Vcbem7kHGphxaW0onorUfw77lbSEcX44KmgO5zYWDOQMVwKTMPg1c5rAGYjmpx1JjN2oDDhrFQPhx4NbhqVYTMY6Q0Tyww34mMEOGrhWmOSGKpKP9R3QwynB7SjWHmx5C6l7vXPch005+qVgsk5tOz/gYhUg7mHVlmwdATPc1/vrbAKW5kv/V3O/79so+Ct/Wv8rcl+6JPk3EP6t51z4ol9AsLK8cUvM5kuylpdxTLZW7evG6CdEYUtadSkNwwihjY2mlFXu+qca8ijgDfPe4LUwI+oclgcBBGhqo7/+bFrge+L0quXaa+kfKYKthouJUvJLUfPcC/Dp+jB+pahlnkPmb9m5dXqlXOKa2k25t0QYhe9dgIpjV0dseKlAACAocqrK+0GvtnwZZrl4KXsaUhavmEnGKTRk4FICkb6ECDAJ1Hzl8ro947OXWhcr0XcNK48GlqZ+1mrVgsC41fuqqOvbo0MkCKA1XqSw2heAyCCwlBfGmHb7FkHNnjdmNbmZfBNTnDfXqny
+ VO10KEy3
+ 0oMmcr+sePEf8SNkjDuJLFPi3my2JUuh3WXTwF6K723ETw3qTXV+Hzs2OFJrG2WAlJnjAF+7nvsp70rwEYjt6wzHCJeiQdxiVZoxQyjtDBbLlgzrzROvI0CJ3C9SSdR0//GUC9Sk4FcNT9SENVygZvHdq4XO5YK7QYIoyDKvR+6El91Y7GQt7v8KbGu77FUptoPAp1vAtVbxp1bqdSnQlAHucYhX8TbVZGMiLgKkwMN6haT+9qqg81wNEgmmTpzH9jIW9PAPvVE1Sxw3/B5we0gTbOQqNgi2Y2/5DWq7kdZrivwe9etGZ290pY0hfCJsuaen/B6K91ia+N27S5uWMyVZ/NC993s5UJ3aAhqPXnPkQpduFqv3sedkXp1TvJAEjGYkD1sGfznv2vwkB7RYk7/IpPxgLxzHV1oJUU3P9XcC0hEyGrR8Bzird88gm5LsU+xWO/5Ub3YN29o6XxuOG8AzKHdIuzorcNAMR/KVQev06oPuezIjJ22hnMp+PRPPykXlTkYubg4CeDQ2FlKNtU4r3UrGp0+c4jmp/yHPDtJZrjjhDo6631q+svNjEpCCoZioMRnCtDxvD5ufpqRUi67T4P6GId58tsOXLgqnP6LKM6ECRDVnqC4IHsZytgiJBOW49
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,40 +171,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 12:51:44PM -0700, Joshua Hahn wrote:
-> @@ -1244,6 +1297,8 @@ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
->  	if (objcg) {
->  		WARN_ON_ONCE(!pool->memcg_aware);
->  		zspage->objcgs[obj_idx] = objcg;
-> +		obj_cgroup_get(objcg);
-> +		zs_charge_objcg(pool, objcg, class->size);
->  	}
->  
->  	if (!ZsHugePage(zspage))
+This patch set progresses my effort to improve concurrency of
+directory operations and specifically to allow concurrent updates
+in a given directory.
 
-Note that the obj_cgroup_get() reference is for the pointer, not the
-charge. I think it all comes out right in the end, but it's a bit
-confusing to follow and verify through the series.
+There are a bunch of VFS patches which introduce some new APIs and
+improve existing ones.  Then a bunch of per-filesystem changes which
+adjust to meet new needs, often using the new APIs, then a final bunch
+of VFS patches which discard some APIs that are no longer wanted, and
+one (the second last) which makes the big change.  Some of the fs
+patches don't depend on any preceeding patch and if maintainers wanted
+to take those early I certainly wouldn't object!  I've put a '*' next
+to patches which I think can be taken at any time.
 
-IOW, it's better move that obj_cgroup_get() when you add and store
-zspage->objcgs[]. If zswap stil has a reference at that point in the
-series, then it's fine for there to be two separate obj_cgroup_get()
-as well, with later patches deleting the zswap one when its
-entry->objcg pointer disappears.
+My longer term goal involves pushing the parent-directory locking down
+into filesystems (which can then discard it if it isn't needed) and using
+exclusive dentry locking in the VFS for all directory operations other
+than readdir - which by its nature needs shared locking and will
+continue to use the directory lock.
 
-> @@ -711,10 +711,6 @@ static void zswap_entry_free(struct zswap_entry *entry)
->  	zswap_lru_del(&zswap_list_lru, entry, objcg);
->  	zs_free(entry->pool->zs_pool, entry->handle);
->  	zswap_pool_put(entry->pool);
-> -	if (objcg) {
-> -		obj_cgroup_uncharge_zswap(objcg, entry->length);
-> -		obj_cgroup_put(objcg);
-> -	}
->  	if (entry->length == PAGE_SIZE)
->  		atomic_long_dec(&zswap_stored_incompressible_pages);
->  	zswap_entry_cache_free(entry);
+The VFS already has exclusive dentry locking for the limited case of
+lookup.  Newly created dentries (when created by d_alloc_parallel()) are
+exclusively locked using the DCACHE_PAR_LOOKUP bit.  They remain
+exclusive locked until they are hashed as negative or positive dentries,
+or they are discarded.
 
-[ I can see that this was misleading. It was really getting a
-  reference for the entry->objcg = objcg a few lines down, hitching a
-  ride on that existing `if (objcg)`. ]
+DCACHE_PAR_LOOKUP currently depends on a shared parent lock to exclude
+directory modifying operations.  This patch set removes this dependency
+so that d_alloc_parallel() can be called without locking and all
+directory modifying operations receive either a hashed dentry or an
+in-lookup dentry (they currently recieve either a hashed or unhashed,
+or sometimes in-lookup (atomic_open only)).
+
+The cases where a filesystem can receive an in-lookup dentry are:
+ - lookup. Currently can receive in-lookup or unhashed.  After this patch set
+    it always receives in-lookup
+ - atomic_open.  Currently can receive in-lookup or hashed-negative.
+    This doesn't change with this patchset.
+ - rename. currently can receive hashed or unhashed.  After this patchset
+    can also receive in-lookup where previously it would receive unhashed.
+    This is only for the target of a rename over NFS.
+ - link, mknod, mkdir, symlink.  currently received hashed-negative except for
+    NFS which notices the implied exclusive create and skips the lookup so
+    the filesystem can received unhashed-negative for the operation.
+
+There are two particular needs to be addressed before we can use d_alloc_parallel()
+outside of the directory lock.
+
+1/ d_alloc_parallel() effects a blocking lock so lock ordering is important.
+  If we are to take the directory lock *after* calling d_alloc_parallel() (and 
+  still holding an in-lookup dentry, as happens at least when ->atomic_open
+  is called) then we must never call d_alloc_parallel() while holding the
+  directory lock, even a shared lock.
+  This particularly affects readdir as several filesystems prime the dcache
+  with readdir results and so use d_alloc_parallel() in the ->iterate_shared
+  handler, which will now have deadlock potential.  To address this we
+  introduce d_alloc_noblock() which fails rather than blocking.
+
+  A few other cases of potential lock inversion exist.  These are
+  addressed by dropping the directory lock when it is safe to do so
+  before calling d_alloc_parallel().  This requires the addtion of
+  LOOKUP_SHARED so that ->lookup knows how the parent is locked.  This
+  is ugly but is gone by the end of the series. After the locking is
+  rearranged in the second last patch, ->lookup is only ever called
+  with a shared lock.
+
+
+2/ As d_alloc_parallel() will be able to run without the directory lock,
+  holding that lock exclusively is not enough to protect some dcache
+  manipulations.  In particular, several filesystems d_drop() a dentry
+  and (possibly) re-hash it.  This will no longer be safe as
+  d_alloc_parallel() could run while the dentry was dropped, would find
+  that name doesn't exist in the dcache, and would create a new dentry
+  leading to two uncoordinated dentries with the same name.
+
+  It will still be safe to d_drop() a dentry after the operation has
+  completed, whether in success or failure.  But d_drop()ing before that
+  is best avoided.  An early d_drop() that isn't followed by a rehash is
+  not clearly problematic for a filesystem which still uses parent locking
+  (as all do at present) but is good to discourage that pattern now.
+
+  This is addressed, in part, by changing d_splice_alias() to be able to
+  instantiate any negative dentry, whether hashed, unhashed, or
+  in-lookup.  This removes the need for d_drop() in most cases.
+
+New APIs added are:
+
+ - d_alloc_noblock - see patch 05 for details
+ - d_duplicate - patch 06
+
+Removed APIs:
+
+ - d_alloc
+ - d_rehash
+ - d_add
+ - lookup_one
+ - lookup_noperm
+
+Changed APIs:
+
+ - d_alloc_paralle - no longer requires a waitqueue_head_t
+ - d_splice_alias - now works with in-lookup dentry
+ - d_alloc_name - now works with ->d_hash
+
+d_alloc_name() should be used with d_make_persistent().  These don't require
+VFS locking as the filesystem doesn't permit create/remove via VFS calls,
+and provides its own locking to avoid duplicate names.
+
+d_splice_alias() should *always* be used:
+  in ->lookup 
+  in ->iterate_shared for cache priming.
+  in ->atomic_open, possibly via a call to ->lookup
+  in ->mkdir unless d_instantiate_new() can be used.
+  in ->link ->symlink ->mknod if ->lookup skips LOOKUP_CREATE|LOOKUP_EXCL
+
+Thanks for reading this far!  I've been testing NFS but haven't tried
+anything else yet.  As well as the normal review of details I'd love to
+know if I've missed any important conseqeunces of the locking change.
+It is a big conceptual change and there could easily be surprising
+implications.
+
+Thanks,
+NeilBrown
+
+
+ [PATCH 01/53] VFS: fix various typos in documentation for
+ [PATCH 02/53] VFS: enhance d_splice_alias() to handle in-lookup
+ [PATCH 03/53] VFS: allow d_alloc_name() to be used with ->d_hash
+ [PATCH 04/53] VFS: use global wait-queue table for d_alloc_parallel()
+ [PATCH 05/53] VFS: introduce d_alloc_noblock()
+ [PATCH 06/53] VFS: add d_duplicate()
+ [PATCH 07/53] VFS: Add LOOKUP_SHARED flag.
+ [PATCH 08/53] VFS/xfs: drop parent lock across d_alloc_parallel() in
+*[PATCH 09/53] nfs: remove d_drop()/d_alloc_parallel() from
+ [PATCH 10/53] nfs: use d_splice_alias() in nfs_link()
+ [PATCH 11/53] nfs: don't d_drop() before d_splice_alias()
+ [PATCH 12/53] nfs: don't d_drop() before d_splice_alias() in
+ [PATCH 13/53] nfs: Use d_alloc_noblock() in nfs_prime_dcache()
+ [PATCH 14/53] nfs: use d_alloc_noblock() in silly-rename
+ [PATCH 15/53] nfs: use d_duplicate()
+*[PATCH 16/53] ovl: drop dir lock for lookups in impure readdir
+*[PATCH 17/53] coda: don't d_drop() early.
+ [PATCH 18/53] shmem: use d_duplicate()
+*[PATCH 19/53] afs: use d_time instead of d_fsdata
+*[PATCH 20/53] afs: don't unhash/rehash dentries during unlink/rename
+ [PATCH 21/53] afs: use d_splice_alias() in afs_vnode_new_inode()
+ [PATCH 22/53] afs: use d_alloc_nonblock in afs_sillyrename()
+ [PATCH 23/53] afs: lookup_atsys to drop and reclaim lock.
+ [PATCH 24/53] afs: use d_duplicate()
+*[PATCH 25/53] smb/client: use d_time to store a timestamp in dentry,
+*[PATCH 26/53] smb/client: don't unhashed and rehash to prevent new
+*[PATCH 27/53] smb/client: use d_splice_alias() in atomic_open
+ [PATCH 28/53] smb/client: Use d_alloc_noblock() in
+*[PATCH 29/53] exfat: simplify exfat_lookup()
+*[PATCH 30/53] configfs: remove d_add() calls before
+ [PATCH 31/53] configfs: stop using d_add().
+*[PATCH 32/53] ext4: move dcache modifying code out of __ext4_link()
+*[PATCH 33/53] ext4: use on-stack dentries in
+ [PATCH 34/53] tracefs: stop using d_add().
+ [PATCH 35/53] cephfs: stop using d_add().
+*[PATCH 36/53] cephfs: remove d_alloc from CEPH_MDS_OP_LOOKUPNAME
+ [PATCH 37/53] cephfs: Use d_alloc_noblock() in
+ [PATCH 38/53] cephfs: Don't d_drop() before d_splice_alias()
+ [PATCH 39/53] ecryptfs: stop using d_add().
+ [PATCH 40/53] gfs2: stop using d_add().
+ [PATCH 41/53] libfs: stop using d_add().
+ [PATCH 42/53] fuse: don't d_drop() before d_splice_alias()
+ [PATCH 43/53] fuse: Use d_alloc_noblock() in fuse_direntplus_link()
+ [PATCH 44/53] hostfs: don't d_drop() before d_splice_alias() in
+ [PATCH 45/53] efivarfs: use d_alloc_name()
+ [PATCH 46/53] Remove references to d_add() in documentation and
+ [PATCH 47/53] VFS: make d_alloc() local to VFS.
+ [PATCH 48/53] VFS: remove d_add()
+ [PATCH 49/53] VFS: remove d_rehash()
+ [PATCH 50/53] VFS: remove lookup_one() and lookup_noperm()
+ [PATCH 51/53] VFS: use d_alloc_parallel() in lookup_one_qstr_excl().
+ [PATCH 52/53] VFS: lift d_alloc_parallel above inode_lock
+ [PATCH 53/53] VFS: remove LOOKUP_SHARED
 
