@@ -4,116 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63E9B106ACC9
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 16:12:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDE68106ACC9
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 16:12:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D1DB6B0005; Thu, 12 Mar 2026 12:12:41 -0400 (EDT)
+	id 2D9EB6B0089; Thu, 12 Mar 2026 12:12:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 954936B0089; Thu, 12 Mar 2026 12:12:41 -0400 (EDT)
+	id 283BE6B008A; Thu, 12 Mar 2026 12:12:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860B16B008A; Thu, 12 Mar 2026 12:12:41 -0400 (EDT)
+	id 1A7A56B008C; Thu, 12 Mar 2026 12:12:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 75CAA6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:12:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2711A1B7175
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:12:41 +0000 (UTC)
-X-FDA: 84537904122.01.8DE246A
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4C1BB1C000D
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:12:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B1D86B0089
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 12:12:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C03CE1A02D0
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:12:47 +0000 (UTC)
+X-FDA: 84537904374.28.05F7D0D
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C449E1C0015
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:12:45 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rrfspwmU;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773331959;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=ZuBCaR5g;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of r@hev.cc designates 74.125.224.42 as permitted sender) smtp.mailfrom=r@hev.cc;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773331965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N9REPqpkPd4ZOpUT732fDGd7EIcOVaG5zQj2KdASHAk=;
-	b=4w50oBLIqL2+hnngtqRSfRHr8RoEmOqCCQ0TtcRiRUqQYvx4ioCCglGxM2B/IpK/pb9PJK
-	CDvXVQnSQVpsb6toIeP4D4QFg+JhJKYTuTnSWMA5hKfpLAtBGyIxWEYcEMv4OQV67+7tJi
-	ex6nIwC6gO7n7r7KxGyTgueBgvKIrqw=
-ARC-Authentication-Results: i=1;
+	bh=dtV4pVssyyOMA/08yV/BNeq7V/A7TdhzmOy4bj+LB2w=;
+	b=fRVoNO9CCgaFERXc2MJYV0Knft58prxelcAb1vjMpRntthFnrCW7QOZ2hQtDUD8jC8fKb0
+	HE1DGzb5rpMxp+PwPQZTEpyUUjlIX215YWPh6IuxFkOs5+q/kkvANaxBN+E8FhAWOINMEo
+	ypq4RS4HEr5me9j71uP++/cyrVYMcPk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773331965; a=rsa-sha256;
+	cv=pass;
+	b=VzfpvtVz8vYDmkOOHIk413dRKsYgKWefEJVscYg60NCNRmpi6wIIKmbUkadpJYcMsUP70d
+	MPdebttPSTfvQITHPuGaGwZXmLeXSYz+3spED1nuTOVdOo7fMWVRXxjMDhE8ifEG9rlFZh
+	E7I+Bm6H7WUF66+go7V/jG3V/LgUw3k=
+ARC-Authentication-Results: i=2;
 	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rrfspwmU;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773331959; a=rsa-sha256;
-	cv=none;
-	b=wxk1SLdEXafF/EtCA5bDzLf9mHjdYdOh0pFe5RJVbDz5gWPQ2jPtenXIb+OFAm4aX8yXon
-	2Zadatg/VNzfNqNEHQ+ROylIDpRqEtj4jhnAEMnt2Us4t7VH7gncTKtIVBt1h/7c5M9Epm
-	gvpzMaRGHdADbBSNoS63MbTOLyYHJKc=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50919fc3a14so13629121cf.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:12:39 -0700 (PDT)
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=ZuBCaR5g;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of r@hev.cc designates 74.125.224.42 as permitted sender) smtp.mailfrom=r@hev.cc;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-64ad8435f46so1471290d50.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:12:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773331965; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cfn6KIe8QiMyHRJBFsa8h8ZZCT9rnzA6K5nFt19wKxUBLtdXizx2zXnF7nT3t7VNBJ
+         Y9dhDpS4jLzBZTBmiiycXf43hP+jDlq1fkOGpySvwkEnz5qhI87r2DbsGZGv+kIBCVm3
+         ZwHDLRIImbGFISkSfZFelSFcWhsoOKspb4wCWeBneX5PRazcoyQvfxvVGwFDWqeYZ894
+         UBSfSLrU4FOx+q0i+0wZSiZMaNn8cy8p11JxV4cEJ7UhMmkCfUPzdAcOvoQNoqm3lgbd
+         KE09v0o2/NfdbSSWGv7pRsa5/hNIjQ7DDVrNr2fpQjr726Lfs0tlwELLC0dBLKvoC+sw
+         KBDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dtV4pVssyyOMA/08yV/BNeq7V/A7TdhzmOy4bj+LB2w=;
+        fh=EkrDFultonUtYm/jCMpWTVfdMsbqY5g7vir3nyaURJw=;
+        b=lN+i6rB5NsbUz5CYoNVQCyMNATxAzitxOT3FPhRO2+5OPS3QBul6bHekaNPwfN/Bl3
+         vlTV+udnlx1+cyVNSWMbbpHBvBcMLR74io6/Ttw/Pk0NMGoPVZ+LtYf7NyEixDjeat5m
+         lDLWOpMydr6V7/+HWuTwOs1dkf7TgT7EWJspNPCltkCDSiIWwe4pcehOFRu/sRMTe0bk
+         bRXOkGhJFybXty9iCbUyEq5rrN2E3Jj0iR9Aw8+qYkGmKptDaN4epkHkY79EeU+e1ed8
+         bDrdQG6tpz+ujeou0RiD9R2HSq4f+W8dn8xYELjYdIfWZEUuYadaEfGvz9+tORxrjo2c
+         /Fkg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1773331958; x=1773936758; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=N9REPqpkPd4ZOpUT732fDGd7EIcOVaG5zQj2KdASHAk=;
-        b=rrfspwmUf4h1I99R6DkV/I+stPMIxj/ALrW+2+/faEfZfEA9k/HoIAs8kka2R7+XBr
-         V/Y4owXnDlZd3jDJDbWwc2g1uNvnNLZaqYQp+o7jiVFtrZ8J0jxB90z4ESRxfif5YIbF
-         miU51x+Di3LvOc9GqZv9eOy92pgAKwuGTb7BSalrZRmnFHjBbFM0AAk1hzBM3lxi0BCk
-         xLIeBKbSCRNSnYw6kBidtjBk0QoHHrzn3IxBmC1uA+LN0v/kUu5qFkwnsOObPCo1Xyyg
-         mEwexDvVbsCAFzr8ZUCqtcTx4txtoibRfCQgoO3CwexCbUpBIl+j/PxuQ5lQpU6SxJY2
-         RpOg==
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773331965; x=1773936765; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dtV4pVssyyOMA/08yV/BNeq7V/A7TdhzmOy4bj+LB2w=;
+        b=ZuBCaR5gAZBcIqfSeE6gkyayzBtF8ZtroTD+mMIVYWidIPrnT8i+80fWgEX3PzmVhB
+         zDR9STcLVM+sTq5Qr6pV68NC4bZbyZzl5J6xccdBa4BCTvxqwN5XkdTYe7crRw99s6ES
+         uIkMLEn4pNn4fo3to7IxDyl3sLspypoAmQ5HCZveZsM6uyZAHyZwd/fsX2N9BB93kazo
+         eg8k4iKzquVTc3SRUZ4gIZ68DO0WT+Z4ss4lz/ZhiV3PPapMEqSvEZ6eKaPWjUPFMaR2
+         FgdYefTQk7DV5nZ9gVwTDD9O+WPlp2wMb/dXYja9VmYV9RTyvUK68FeiRIzBKenhCmGo
+         OL8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773331958; x=1773936758;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N9REPqpkPd4ZOpUT732fDGd7EIcOVaG5zQj2KdASHAk=;
-        b=GNvo+2lf9PQpqj+rQ/omcZExwlR45rnabBr/j6RDPvOOICHYJWmktIxG6NuPWLr3yB
-         ciSmwZPNFiZLCMPvjnerAFlmNETVxzrPbFK/TpHicBIdNdXq9ZhBrHR8orAZ4QUBiZeu
-         Gpk5qnM0r4bpH/usgtY6/1WA6SR3promtVXXFoBPeUJqZW68YX44vhbv7mCMOY3FlJqX
-         AXbRLcuqpsinZiUJ/n0l3agPjmCVGTL6utLXHl8izHokZfoLe8VvQysfv8Gc9dWExsjP
-         YoDo2go8xVRZqeGZh8WPufktJ6KFXJQJHgkuxNWpVis5fV0NBgz6V5MAR8Be+oguurBs
-         icBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxp5jf2I88T7SwHBEacWI2Qh9nd43FMuJgWH0J/WxzXCPDGVMOoJWIi0hvL2O1gzby3qkfQO1+7g==@kvack.org
-X-Gm-Message-State: AOJu0Yzs6rFNLFa94T5Jva5eE2rIApy9bbkHoq9xApMsswuWSCP3bWQk
-	8yKXklXfpF+ZjnG7zXiFd+LyIdfgAQ452apbqKdjwlUPecC8H2IJel9sK0YSzbn5NGw=
-X-Gm-Gg: ATEYQzwwynoewVybo+GXJn8EyKxuCnUk3luzTDUevztfgAel5fZBrZ9DPClu/2elQzv
-	4VRyfuzgpl3TzxbZ9/VyIvyZk6nbbU6q4P1W5pPZ6ZHrWMgR7+22yI3yqS/RJ0XchGZJwB+no6P
-	hU5GSOsSR42C+GwJB8DlfIc8hlT8m9MUajXHx0iTIl7sJtIX3eiW5MiLZaQM2it9+wI68WqWTZj
-	L8NTLuo4qjn/aklDhSUuIa615pvRoJQxzVOGaLVW8eeGzjSRfsqXixWExs5+E0lUOQsFtKXgkXu
-	7oX0RMDDGwTBwVB9mO4cRjxmkwSuR93Tk1puUGjV91nmmCjsY5Bf503KvudR2HG5igEplSJYf0r
-	hV9ZcMTRyGY9nIArr1dLFTuHV/ZyAZVWSQ2OjmLfVdQ5DSRyvtwpbMnmYATFWoF2cPAyXkYNf+p
-	eC2zh9b00ymCS8dqrkbJKK2s5Gf74rw0p+tAcmLffCZ5A3PgFq4P9V+C97x7xBlj28LjI9NlwtL
-	+Ej+7VHMA==
-X-Received: by 2002:ac8:5851:0:b0:509:5f4:4ea4 with SMTP id d75a77b69052e-50939f52461mr92570071cf.13.1773331958188;
-        Thu, 12 Mar 2026 09:12:38 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50939e8e0ecsm35572931cf.5.2026.03.12.09.12.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 09:12:37 -0700 (PDT)
-Date: Thu, 12 Mar 2026 12:12:35 -0400
-From: Gregory Price <gourry@gourry.net>
-To: YeeLi <seven.yi.lee@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, dan.j.williams@intel.com,
-	ying.huang@linux.alibaba.com, linux-mm@kvack.org,
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
-	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org,
-	dave.jiang@intel.com
-Subject: Re: [PATCH] mm/mempolicy: add sysfs interface to override NUMA node
- bandwidth
-Message-ID: <abLl84pc7tavuieW@gourry-fedora-PF4VCD3F>
-References: <20260312091207.2016518-1-seven.yi.lee@gmail.com>
+        d=1e100.net; s=20230601; t=1773331965; x=1773936765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dtV4pVssyyOMA/08yV/BNeq7V/A7TdhzmOy4bj+LB2w=;
+        b=vROIxCsLu7OFKhSLMUON+AYLRI6lX6Tjatc/k9SC3AiHYlmvMjNvQrpVWFHpTDXkgg
+         u9yTOllFlR7HctRTmAJSi1wHZXjLqAiwzjkRsBc2cWtBwv8KJ7gWK+Jst3urLtsvjnne
+         zSnbuRUtzWQKEWAxNUHtqwobR5WLHhSEdbViKl7T5JdTU2qyhlYu6mU3r8D5fAvPQTqW
+         +bGiT/AagN5/nHZGIe9Xp+gSSanAyee87lWvEJuUW62EKbb1Uj0L+Rse6dEIENEvX/lV
+         g6NdVE/wv8xjD8BhgWD6YUUPw91lg9TZDgj6YJCAFEpN9sPbwhz65kNWohLO+DpJny6I
+         q8Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCUhoOeRE/6sjIkOsTDOpdk6W9Lt3PkUHssriVn/Jhs/Wmz3YI8OaGwDzHrgAvf+wHM4ydc0GXZx/Q==@kvack.org
+X-Gm-Message-State: AOJu0YzCmEnWzbo3VPvmpCCefvcDTcIYuZTcRdKzHFgPlvUm8CXGpHIj
+	lFYcuoTKJj4Le+eqoeEfZS26ATjHBTeb3egblrFrWpzRV9+wuRNP2X5H876OmpE8eX3GRlaYrk2
+	aKaeUH9b8ql3FGQU7Zp9cOpe5pcuumcQJeAYTUIxZ8w==
+X-Gm-Gg: ATEYQzw4O9FX41HKp7mjOOcOwl+WCvnZXjRfvbRQFjXQSnaL5OSuNXk3EWOHIxR7SNB
+	p9diKYZR9lN/0rVLAphf+pW8KDb3IR598P1Um61GoDdEzfJ7FNL/D5Dq7Que9n3IdZPfKRq4yeW
+	GicfT+hLI348i60EznNu9CyZYjJDutEQNQMLGkOMe+/YmifcNcls/jr1XJdNpUNr+vKEO9mYdlG
+	aXaIBSzD4watyIaMIu3KkgykMn3TkxhObUdEuypMrwWMraqdFdoihfCy8DvO6u/wgxy9GWo3w2Z
+	yaWMbZ5k8GvDWRskD/7vFNyw2KXqV8ubaYqwRQYiNQ==
+X-Received: by 2002:a05:690e:23c4:b0:64a:fe95:2ba7 with SMTP id
+ 956f58d0204a3-64e62fa66bfmr100462d50.31.1773331964675; Thu, 12 Mar 2026
+ 09:12:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312091207.2016518-1-seven.yi.lee@gmail.com>
+References: <20260310031138.509730-1-r@hev.cc> <20260310031138.509730-2-r@hev.cc>
+ <bca4ea00-3052-425b-8f39-729d504fd4db@kernel.org> <7937d789-539f-47db-838f-c153ca6cfc50@kernel.org>
+In-Reply-To: <7937d789-539f-47db-838f-c153ca6cfc50@kernel.org>
+From: hev <r@hev.cc>
+Date: Fri, 13 Mar 2026 00:12:32 +0800
+X-Gm-Features: AaiRm51siSCEAkZ-ba-2YedtaHq7E4-85jHPxVQW2_x0EqyQuvL291b70026mMs
+Message-ID: <CAHirt9gpZ98HQCXStEQMMfe6TEnSzmD04BM313h2LJGJ1K-hJw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] huge_mm: add stubs for THP-disabled configs
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Dev Jain <dev.jain@arm.com>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C449E1C0015
+X-Stat-Signature: mbm4gjhud6ne8aetm1ambwzfqki1wa85
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4C1BB1C000D
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 1fnzgimrfpj6jtq787o3y7xjfnsrqdey
-X-HE-Tag: 1773331959-723183
-X-HE-Meta: U2FsdGVkX18a9FNtOPls1+k403YYWcHSnDrgo6E/74GsWCt1sgGyVx7rw8uGUY2GXbr2CAf/TLyFuN3uuIw+qeSKhfQyEF1ANl647er4uuMLgj5TigsPhT3kmXo8jR7+9DChPbn7cV4q/twJhCdPFCK+lkmPNNGFYM95cY7jQv1ZhboqMq2sBJocFFroosLxqBxu0KCKWeX2D/plVYfUyWBsECx9V3KC21GzubLWAS5AU3hCwW8hN9FE1G1OcG1YIn11g4yp1SBsqOgO21IK1Wpy8RXk8GKx3QzDaigFty0bVxdt3fLNWNfNYY3JtBqS6O4srxhYILIrm8WA2xBjiwoyaIImRvpSjdpyl1t/eF/VcHg5DwtZH/DyY6BaE/c7a16Z+fe4e+wdmAT+eQRKD/1hOixlnTwpj3ORCaa64v2u/t8IaC/e3VTb6c7IsQgwSbV7G19drZp2ynCAxGCjzSf5ej86IGk8We2IgocW1tFNxPzNWT+cKzPw5WjU0msshvX8ICOQYDK2mb6/9e6GGEkjPgKHVF23DyxPbhf1VB7k1RGoSRAtVU0XpKHdhsSUg+IUr3+V5Qso60IsprOoOx6UAARUvmtgp9E7w82E3a3cw3RLMlVsADDR0KY2EKd9kdMxSRSNi89Xvdu1WNovyAFRTGj1blH5vM2tWkMpoAPOym7eONLo52HKpaaTC5vQs8152cEXY3qXirvc4/TUgiaYneW2ETirxY8A+v+zmUU+Q8jprKTrP8cQxEg1LU6Q64MjEfwMqHeFSdbYl7n+/dP40GfQOfY50GXov9qRJMzU6Aqxijeh2XUr/UKUBrnGQZsmFAnfJeVmAotwh29GC3zT5dQJBZ1gr0Ura56yaHI4xFBXjvKhb1voSPBaFtWO4Gk14XvrZDXScYL7vWK8xhUhUJNS9WubZSS5YGpAEyf/tyR+ODLN1Rh/p4IPbd41LKnAQZhitfyhG679GgB
- XiQO3bQb
- 7p2hvCFfDLTyshKl+Po9+hAA7TVPixLpEvoBeW3/LRnO/6KOgQ79EmsjA53NjTK0RgqoDvtQEk5aS5V7PsxAxfHoODLbCKCqrjF577XsiGJXvqnBROR3d5ZHcTWYO3BNLSsYrgmvKVHCQB1pQ9wCfkn/WiEQ3Zl+UjXvZUDOESVgeUiFGVLU+d9mwpH+1KMie4ldI5IBSKmXOm5u+Sufl411WGXBYu5nNpal2EKPfwLCgUBMSaf2Y2DKJQU5um9w2hxERYlS1pXqY7fwPiTuKLd7/64xCSTPWo/3/Pbo9fHNG4piM1eWmaq6qpqpmAeZq4um/gLV2TDERvCUux//v+kdYYc/vLDacof+8ywQxOSMjb+XLTMbM9QnMdaA6YCxF3I2pIFDoNmltzx+/FxaJcEQVMeeSk1v5SaWdS2PTC2FieDw=
+X-HE-Tag: 1773331965-860667
+X-HE-Meta: U2FsdGVkX18uJ6YZG9k02Ekh9Pgw7GS6O85+Mn/yaZbaRU0OEi0jEuedr+w8QQPIvb2VD6NoFq6eXG2xlQIDgA4xxSiL3S4fN66WXGSfibj5aQtwvdRyLVAO2RDM+DS2tHtzsaBxZS/bfUdT4zP9IEBdsmNgmRVE1pdwGo3mPg1xWj/zqFb3N6VW5vRaOFL5O9RTAH4HdKKDTAFDK4sRToanQN5h4XksXeZH6TXYsiXmbgIEW6TXGdHNDm4y4TOjtn9upMKykfoLZ7Iaeyei23MWRacl5nyocJLqNFcyRYTDXa6SPzBE0mXwajW0ycLPlGlrL1LULa9Ah/HuIvysG2peTSlqXSUyxez2if2yCoprbZ4w4Y94s5XWOoqx6Oevemo6mB9jNwtPTd6a6gCEZCIiIKpuQLDqDazbVIa2wOREYLZomwJ3O+erNqiLFIUtShcRD7f5pkAaP3IhiOdIb+9v9mVhcAonPeVbmpXfYWvb/3MVaSxN+99rVEdV/DDkN2D69Ksa2wKQnUtnQ7kRdA8Nelueu5HB2WEsfRsqWJMQ0qXISpaN5eA4dncHaxBA2KuXXnxcuqnyOBVdDKodUoNCWQZ4SV9F7PzwRT7hvPfmbVDs4o6Fc1X8T/BC8tOZNPdARNntg50Ba+cStTBJCX2sMBagZTbEDQIByjKPHC5jAjqkqxFhugU+VnkCPguqOWnV01v7rJHnGKwNC5zJLA9POxdQRzKpdezRIUXagerWJ7nQRxkCbFXUwpAZNxQFminB7+FweDEMdMr9zJKl6BY+t0QIkNbUjyyNJsjfk4LHmeJxLYCqcGgXi+1Hsivgyr49m1B1r87cDuEsC9Pb7Dlu0BwB5oU+FJSoj5kUqmTFa9jd91Hi/LjR5utkImYgeN2cush1CzqfGtdsF4UT5aGde77GTeIPq4hwOimjBDIPGeKuLlsRHGHxUyLVZMBxJcH+5g0sC/bBJPDXaJD
+ 9Mg2kUCC
+ VYO6jmLQpu4ZZBR7Ov7Z34/KaeQbRdzXcFZch6lKZH2H5EXox4jMZiX2Q5o/ijcHQQV1wItFMu8LbLRcobsgfPzszoyJLQxibLTZbu0rH1Awg9LUAgNcoDDMyQZaVihBGtL6iz7WkUHq3Z/GiBKcKx0La8zQRBfo8VMwe3Qse8ji8+Op6qfAp3q45yUonpl1FlAbRDx3036GOe1n/LVNN9qO1ZUWsnraYD0EuI5qdhJsuRF0ol/v4UaPL3d8EFXBZGkYaN+KRxDn6A2YI6UOrSCCXa8QFXGiF581rbVL+GeyvWYqdvxhkCIZZhKnGcALWKs3K9mMAbzxFP6hbXsDF5GObMmf47KB6SORHsS6JAJuvcxh6E+Nf9bEMguSRcZO5yGkA4sqKTCL4JwLt2TYGGcdAn26yJKsYYpey+FzMI5a0EYQDfMabOaFQCwGvWR9C2N2lnrR43OjV8V0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,28 +145,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 05:12:07PM +0800, YeeLi wrote:
-> From: yeeli <seven.yi.lee@gmail.com>
-> 
-> If the bandwidth reported by firmware or the device deviates from the
-> actual measured bandwidth, administrators also lack a clear way to adjust
-> the per-node weight values.
-> 
+Hi David,
 
-If userland is setting the raw bandwidth stat, why can't they do a tiny
-bit of math to figure out the preferred weighting and just write the
-weights?
+On Thu, Mar 12, 2026 at 11:57=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 3/12/26 16:53, David Hildenbrand (Arm) wrote:
+> > On 3/10/26 04:11, WANG Rui wrote:
+> >> hugepage_global_enabled() and hugepage_global_always() only exist
+> >> when CONFIG_TRANSPARENT_HUGEPAGE is set.  Add inline stubs that
+> >> return false to let code compile when THP is disabled.
+> >>
+> >> Signed-off-by: WANG Rui <r@hev.cc>
+> >> ---
+> >>  include/linux/huge_mm.h | 10 ++++++++++
+> >>  1 file changed, 10 insertions(+)
+> >>
+> >> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> >> index a4d9f964dfde..badeebd4ea98 100644
+> >> --- a/include/linux/huge_mm.h
+> >> +++ b/include/linux/huge_mm.h
+> >> @@ -570,6 +570,16 @@ void map_anon_folio_pmd_nopf(struct folio *folio,=
+ pmd_t *pmd,
+> >>
+> >>  #else /* CONFIG_TRANSPARENT_HUGEPAGE */
+> >>
+> >> +static inline bool hugepage_global_enabled(void)
+> >> +{
+> >> +    return false;
+> >> +}
+> >> +
+> >> +static inline bool hugepage_global_always(void)
+> >> +{
+> >> +    return false;
+> >> +}
+> >> +
+> >>  static inline bool folio_test_pmd_mappable(struct folio *folio)
+> >>  {
+> >>      return false;
+> >
+> > There are other ways to enable PMD THP. So I don't quite think this is
+> > the right tool for the job.
+>
+> Ah, you care about file THPs ... gah.
+>
+> Why can't we simply do the alignment without considering the current
+> setting?
 
-> 
-> Userspace can write a single bandwidth value (in MB/s) to override both
-> read_bandwidth and write_bandwidth for the corresponding NUMA node. The
-> value is then propagated to the internal node_bw_table via
-> mempolicy_set_node_perf().
-> 
-> This interface is intended for debugging and experimentation only.
-> 
+The main motivation of raising the alignment here is to increase the
+chance of getting PMD-sized THPs for executable mappings.
 
-Should be posted as [RFC] then, I don't think we want this upstream.
+If THP is not in "always" mode, the kernel will not automatically
+collapse file-backed mappings into THPs, so the increased alignment
+would not actually improve THP usage.
 
-~Gregory
+In that case we would only be introducing additional padding in the
+virtual address layout, which slightly reduces ASLR entropy without
+providing a practical benefit.
+
+That's why the current code limits this to the "always" mode.
+
+Thanks,
+Rui
 
