@@ -4,136 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F18103E2FC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 02:05:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D759F103E2FF
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 02:13:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1963B6B0088; Wed, 11 Mar 2026 22:05:00 -0400 (EDT)
+	id F22F06B0088; Wed, 11 Mar 2026 22:13:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 144AE6B0089; Wed, 11 Mar 2026 22:05:00 -0400 (EDT)
+	id ED2446B0089; Wed, 11 Mar 2026 22:13:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 050336B008A; Wed, 11 Mar 2026 22:04:59 -0400 (EDT)
+	id DFEB26B008A; Wed, 11 Mar 2026 22:13:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E6D4F6B0088
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:04:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6CBA41C9FC
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:04:59 +0000 (UTC)
-X-FDA: 84535767918.05.ED7590E
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 72DE2C000A
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:04:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FfRHNx3V;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D02BF6B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:13:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69E7AC2079
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:13:35 +0000 (UTC)
+X-FDA: 84535789590.14.A59B6BD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C8E4D180002
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 02:13:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=djFkYE6e;
+	spf=pass (imf24.hostedemail.com: domain of geliang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=geliang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773281097;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773281613;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ynAFUJJtII0mylZNYRwUKR0xXIdbuRFV4B/tKmZAGC8=;
-	b=Y3OGNpFDH1J7IWErFnqSv3LjChV6HYmbINJh0HGSYtP2V2Iycah3QZLMQ4Sy67PVu+bbay
-	s1eFg4uE42cnXnz7eZ5Y34u6MN5lW4yuLs1s7RpwtZjMo5HC1iYPejd/OYdABX+Bl8ZMse
-	uhp7ydKToWJIhixI4sc64RYDb/ce/OY=
+	bh=oBsOpKFkHS7ubnnJQdQOExZEASFZmud3Qds4Zf2FV/4=;
+	b=Ug+eARa4zrwMC7fArK2yJ+PFPoryf/64kzlxtpcrqfubFSA3FCyNw9ZNXoAnJJQpr9rto0
+	mBPvQ9XOl+4CXKxAnptYPho3S4vOOddX+q+x1ZJFogL34H4e748XmCC6Nx4RJ84BlzuG2m
+	DNN0zQli0MD8isxunkq1pt5Mmsv4GEM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FfRHNx3V;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773281097; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=djFkYE6e;
+	spf=pass (imf24.hostedemail.com: domain of geliang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=geliang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773281613; a=rsa-sha256;
 	cv=none;
-	b=jISqa9PGse/3Jk2MLzrUVSZmMGCgcaZf4hywLdKZWusYY5a00xSXl9CFvNaVoiu8o9WHVa
-	d5r29DL+X6arsf4u6Zu3GFudbuKu+dcgQsMZE8BjtMUoKDQVcfNZt+ff1JPJFEezwDFBz/
-	y3HdF3KuGMX+aQDVEbIXG6f0iKkFhns=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48534b59cf3so3930535e9.2
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773281096; x=1773885896; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ynAFUJJtII0mylZNYRwUKR0xXIdbuRFV4B/tKmZAGC8=;
-        b=FfRHNx3Vq4RYJMs+5aQviey0DHvORJa/WFLhcjscboPZHThJ+E61owYnfxaPBLz0Bc
-         +KobsxgWN4rGAvap/6dHvAKYp3m93NVXwIWWMuI0nDTW5/6R8GYpUfeiAeg4vJkTWGOd
-         7gkAQYWM6KpqgtAUBT8mqAnOt+MbIblH/FWfQSci7SQbmTTktlP/ZsiLZ64eYkjD4ltk
-         n2BjzURXrnYY0fR9y6cDJLLTr5QFkwrEvRJ8zH0oVspy0i68oK5B5PzavuMdf2WB3Psp
-         4bWJ+ynmt13bMZkE2H307vdh4iwHbBOCLnB39CqgyuXG1sg7it4hPf0DL7YtwMn53FgD
-         GTZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773281096; x=1773885896;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ynAFUJJtII0mylZNYRwUKR0xXIdbuRFV4B/tKmZAGC8=;
-        b=kyIxtRxu/YJCNBUPlKojTrocyo5OG7KwhoMYwiQz+/3TSsK/NyPxbnMzn4Sw+sRDAG
-         AAQ2JfZh09LgUQage3qflcEtV6BeNsxT3y59LXg8+jLivWC8DpSP3ZGXviS910lrfM0z
-         6PvJjmJe2Hvj/0cQz9pSn9NyzapXOb1V4r4TdfeuyPkJ7WSylKn6gGeSACr3vjjrNZ36
-         cl5zCyvNXQJz46rUnkpVFeLiKl2XTziKdSrY/uKJFOQnkktV8FDsKF8yNzZE1zUHwsKq
-         re4dBIOCn0cVeK9QxjzJ7GqFOT50yknQZJyMa89/cT4en0Mof2RXeGmjYKr5HYGqT2yX
-         bU6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUkv3H5WeHCS+t1Gw+j6BHegSfTPIjt3KoVR1IIPlMAsadMYjE/CYnvk47Y3Wsb/Lpbm+xBMmBdVw==@kvack.org
-X-Gm-Message-State: AOJu0YxToGiPQEzQROlMsSHqVQbmZAT7Fn9DfzRJBRA+QMEzRiGHlsWR
-	P/fAofS8wOOcdV4jH29Xc00A5jMTqKaMfhYQ/yZtapNKFp5SDD2OxqUD
-X-Gm-Gg: ATEYQzzSvdgZ1xMcXu6N0dtRZ4eoZgQQGHKJVRUermGTmpLp7CFC0suQsKpwJG6AXgb
-	7fKKbX+5Kuy/M+oXdZWTXrnNH24WU+YfJ+UoT6E1aw9woWLYH5a2OyIuUHWGHXq9vNvOScAZGey
-	tLPqw8VY9p6HI3CO5pjB621tHk3/lr9XTagQbllW6Ghw3M8xQQjCsV5d6Q2oElkjgFw6HpL7HGy
-	SdQMm6cnNe+d9ETnSVH356/m8aN7ehtmq9Hy0Bn3qf9BwEdHukIWBk2MUFEaLpJ6fSXdCNIZVof
-	7DPQ0gSEB3aIBfQkBZBSfwNcsp874Fp9U3vOvV2AveeNYHyLd+iUGqXPnQBA0D7dJLY7XnG2+cm
-	pQXWjT8oACEoqNzec2NDqVdb/FAlhXim089v/nQu2yUiuCiVmkLKBr71FoL2G1M8IeHJY2RWDA6
-	gxJiGCiSbxz5TmTO1AEY1xUhrbSW/Y7fv/
-X-Received: by 2002:a05:600c:6297:b0:485:3ca4:4ef4 with SMTP id 5b1f17b1804b1-4854b0bb5d2mr78741805e9.9.1773281095548;
-        Wed, 11 Mar 2026 19:04:55 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b0c2961sm29489225e9.15.2026.03.11.19.04.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 11 Mar 2026 19:04:55 -0700 (PDT)
-Date: Thu, 12 Mar 2026 02:04:54 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
-	akpm@linux-foundation.org, anshuman.khandual@arm.com,
-	apopple@nvidia.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, byungchul@sk.com,
-	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
-	dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
-	jackmanb@google.com, jack@suse.cz, jannh@google.com,
-	jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org,
-	lance.yang@linux.dev, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com,
-	raquini@redhat.com, rdunlap@infradead.org,
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
-	rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
-	sunnanyong@huawei.com, surenb@google.com,
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de,
-	usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com,
-	ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v3 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-Message-ID: <20260312020454.qpwjldisaqcstjer@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260311211315.450947-1-npache@redhat.com>
- <20260311211315.450947-6-npache@redhat.com>
+	b=ODsFDRKMr5Wrcbdp2s5b+Hz64Kt3MzAe4z4q8MKDfURvzhB7ILwJq35qhHJCMdxfY0z++d
+	QNQvqa8ISyaT/E8GGuMRkJ5rxt/pwxvCVuE+ExERtBCfdBkCo9uVy/yOE4/9WTpszSFD+m
+	4rT9S/tiFwNF5sdlktJhLrt0crxcsqU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 36EDE60054;
+	Thu, 12 Mar 2026 02:13:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F6BC4CEF7;
+	Thu, 12 Mar 2026 02:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773281612;
+	bh=bj6bK1jUpBJKQkuhmgklQGNZhsC4H7mdJjIH7ByGS5Y=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=djFkYE6ewFuGV1fZ80Uc6aIP5vETw+2A1gQk5UekKIJut58vOf1Rd98l5a5mmRcSQ
+	 aE7jWu4BuaUaVl0WueUq/Rxb+CVPTQqyY0WkCMaMTNFlOGd/eGijZygBVCQEHcOvEo
+	 zA7PvAJuZMGxfHu1yOso7j+AaOu++FVJjmqeh2jNRi0P56DJmUQHqXKAGMqZnqCLgt
+	 Fg2/i9i5MSZQHoXITHSSP9QRRqVERq2u9lEAZwKCDImTH/f3fC7fAZHOdtipU0yfXg
+	 Iuslu4n6lJP7Dm6r57AmFgG9cqTYgUDMFxj4kvOYL2gYgu+eygVPFixe2HpxQ/0zo3
+	 L8Dk8C4EqOrsQ==
+Message-ID: <5310108ca290e5387a2da16f87386962fefbc13d.camel@kernel.org>
+Subject: Re: [PATCH v4] mm/swap: strengthen locking assertions and
+ invariants in cluster allocation
+From: Geliang Tang <geliang@kernel.org>
+To: Chris Li <chrisl@kernel.org>, Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song
+ <kasong@tencent.com>,  Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,  Barry Song
+ <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>,
+ linux-mm@kvack.org, 	linux-kernel@vger.kernel.org, Hui Zhu
+ <zhuhui@kylinos.cn>
+Date: Thu, 12 Mar 2026 10:13:26 +0800
+In-Reply-To: <CACePvbVKmAPKRRzfZ-id=5ESf3SL1QPYU4p5xBJBg4F9ocPb8A@mail.gmail.com>
+References: <20260311022241.177801-1-hui.zhu@linux.dev>
+	 <CACePvbVKmAPKRRzfZ-id=5ESf3SL1QPYU4p5xBJBg4F9ocPb8A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311211315.450947-6-npache@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 72DE2C000A
-X-Stat-Signature: tfm6zyrdqotdtbj1d4xuzitp5d11mgtb
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C8E4D180002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: tx9wxu7ijqnw7bqgq3zmmk96pf559tuj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773281097-758732
-X-HE-Meta: U2FsdGVkX18JBEINDVwnH+eH0yGOXazlEdu6RMBvN7d0zlITvUcuERnR/y2Cq+TMwxbKKS1K5ci9nhy20BSbiP7wLZmLPm1O5wrnuv0Kxq6EKDdvO7bJaZsnNArpy30hRXnOjdRQGSZP5XG5kCJnFyVCjSSEs5nzhhGb541Ne0rXccJoGGOGznsy1+o9bElg7d22tzpPvPeIUs3IYHE96DKBsQMUgOXXMTSP5BBTSKiHqVpzNwmj0g70tGsHghxNxPUDZi85HTwooE3J1ZaKucLAMnJmgYFoIy2o/vK3nltTiA8njqVsQ4y5DGqNXJ8uIsBp4FTgHQdHmtMlgn+4EfWCSsHdmdw4I2r67/R2tZxnIjvYufDnPEMlaKlqCzpGvHFgX7t5UBl78DqRkAAS2jqvyUi9jkO3uoJ4INsJGvpZ4D7jZPevMDus4+hs+6EFZv5s+H/yVpb6sYDOYsAsPee0/fjmzaaCrM/mUHB2YBkq9B7LqwK/OeuGI/swAHrVAehyZbGw/GJZoKpI65XqvULoQXE6deP+9mlmNGNr6jghn4fQVTfXItTNqvfvLrkGTFs4DYNJ+Sqstms+vr9AdjvGcym57nZJviyd7swYeiCts3zzs0OPyaTAo2EceUzekqSEiCNz/bOemQwbilaYyccKk3OLVnvChlDjDcJkKKHJmzpDZlv9uQy5zR8EqrucKwaddBkwpieUUaXL/cZl/j1DEyRII9VujVjYQaQ+I/VuzH83KzcHNlK0ja14Vg9cNJpSHXgNJ0iFqFLP1k/rh89ZaSjAnpUkhrlmNXiMGZMD3nR5Js+kiNJNz3NheAvC46ZtC4L2qXgrBunOaf1g5S5vbOgR/HlybRP9yu3nX/3FKa3FeY2eFkgC3v5v2xmmDNcmZZ1yuNPBDDEu4cHsr8SPeRHO13TUgAuJfkvYq212q/zx2R2EXTZL+s8tA0RRXnMnPP52C8Ct36yiAEB
- JUExMhhm
- mcwZX+VplkBe91UW4yxLQDMD+H0NFQSw2nWq3xbeLAzPyegRFfUzyxmJLBjIhXVsD/HVvbxB31+aDQkYjUkFKAC9/hRuMO96sl8wWUQk4B52AO9nqcINf3BL5AOEl6zlmDorXC0HP2izpcSouUujRTq3jWfs0/jw8ctUfA5ufxZH/ypZEFba0BpSPavGYkBZ2Nkftw0vv8FO0h6mrDKZRLKJv5HVmU69tfTuZIIGWvHbk81YSTywwlQS75H0elBKuxi/umEuRi+0y6pqQxrgcYoVYQIEAX8B1hJXZ2tdDXT9kdjkbEq50C/7Lj1X2LzEWXHzJV/JMMX/MHbZrK1hbBmScapRtDiNlQI979l7L2NueNgxllFoaymexURSnFrZpiVbEHwFPRjhweEFrn9xNgCVWOpAmPZgrkIXC3N/iYagbL9P0RjC6E61OmgvUW3SCJP668lhsIIelFxe3fxY9hmXqRBDYM26bgWbyUdkS4P3OGNUfjNgypvQSZsFOzy29Xbofq2AsugawtpMketCVDT3P/1/DNJuiTxIS+Z8++nDoqR7gbE9dmsEP8UEdt1v2ag68QCObasqN/9PnOAydGK2rRHphUO33h2xLYasANM7OWp1Z9ph90WPOApVx84oAFE5ieE1zx3ghzs1Nf1vr/vIrQAKLXR/yvbMAQWZ3a0h3g+/1E5DM1XySFuTvhjc77oJSMHjsrIHn4puVR6WYSrJSUxc/7AHHJhV1ZfsjNLkf7U7AEBbIqzMoqyeDnb7QTCU9XESA9Hh/v6LZVpf7eyZvQ3tfaIkoi3sf3yI2Mww3RHN/D3m6I1dvCcweM8jMRSRVqf5ITq4SmqknPKJtvTZb+Q==
+X-HE-Tag: 1773281613-462725
+X-HE-Meta: U2FsdGVkX1/dvjMJPBTNr/Q1bNRUPrTbtNUD7h2QNr7mDdsU76kvd1GgX9UTjP1AgFvZlYQ0X7zUs1YeWXhDkW91sqSiiWPdKilsqpI7zwsBI8y01TNaGJfxhmXWVUDM4RQQQTg5qD7vMKvvnNHOlMCPkn5idN8KcOPGVz2xh4NJFkpNcrEIw8lu+zNO6xu3KEOecR5KHiHp/hvm96Hlove1sPxgIkTW5yf4kSoS5okRbz2Q6TtEAENwPczuhqpF26y44P8pwSMzv8QQ+VcGtU+ncz0u8xDQXCCxMMdcGBD9xaqclNQQI3PcmNozUvK79w8//Mgg+v8usfHLVCeonBSPBjrYKc0oDo4c/GGuIiK6zVu1pWED4wHDdCfKgJ57juhm22cmcqDndSsO/obWAa7BwwW0HKXAJJ6RyZGT1b6VFdTgBOEqCCdKujNgv9GHn5JG4wXccvizR0rvo0lmmbCPO9EwUJdesj67YHwCQcbyss5KAB8t9CxfBViEVThNPtI8Fk++Qsr4Dr/6Ij8p8TUrqwcDDTW1XAey74xj/gQZYj3ZuwMUl/7quTVhcY9lzTmZXtvL1rE8/rbCnJ7NB/fNrPBEBzpIFnd0as4uQMdWLJ2x4/SszOfYH0EOaIHFAS00RCW8pGo4waYKybzf/LHWVqh3ntTB8qRHxWmrKA8fJEbjAHOqU2AGgGpos0wxBayHF0CtK82MXIgNOQsgN1vvg5b1MuQd/SLJyaLoSOZzTlvPHCQfyPqdPDecpmaLGEV/sJBL5oeLaSuk/IklxHnMyMEL6tKIYIuyMZxG8WxOH/SVxxl3Kw0Jf0gbJPqos4B+HCG+OiWDGyjT+L+1opwyExFxQCSJ/6xugU5GlJYt96Z3n+wBNXOaBXxwEkEczya29U+x5XjrCwkM41V4SswA5oFN3Tyz8e1AvQViDe+h/2IgmuM9XhGrtW4J3AAlO9qvLhgQ1iYnyvcklQk
+ KM6SaXL0
+ lch79SzSRc5A6vJ1TlfoHyEBu7pblxRP+xWk753iSPmY5Opg9DTbAUP+akz3hs/9ETT8ZjtFNgrqPrjNSiUmHksCG7favnY5aGSvThGCnlD2cYTg3KegcrfzDvbiMPvVfBdsh9RBC78OkG8YmENmHN4bocElJ/wgcSsWzBnHGatF5MCoWEmvcWW7KEEAhPVEc+80t7HGcYZaqfTLjZoeiRHk1oUG7ye40V0eXRuBLzRBEe+N3nJixp9UjXfa1QZC+tMMs8WXLK55xQo9YCAbLkoKFJl1YL927fjNuPbouDKJ3dic=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,84 +98,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 03:13:15PM -0600, Nico Pache wrote:
-[..]
->@@ -2823,46 +2855,20 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
-> 			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
-> 		}
-> 		mmap_assert_locked(mm);
->-		if (!vma_is_anonymous(vma)) {
->-			struct file *file = get_file(vma->vm_file);
->-			pgoff_t pgoff = linear_page_index(vma, addr);
+Hi Hui,
+
+On Wed, 2026-03-11 at 10:34 -0700, Chris Li wrote:
+> On Tue, Mar 10, 2026 at 7:23 PM Hui Zhu <hui.zhu@linux.dev> wrote:
+> > 
+> > From: Hui Zhu <zhuhui@kylinos.cn>
+> > 
+> > The swap_cluster_alloc_table() function requires several locks to
+> > be held
+> > by its callers: ci->lock, the per-CPU swap_cluster lock, and, for
+> > non-solid-state devices (non-SWP_SOLIDSTATE), the si-
+> > >global_cluster_lock.
+> > 
+> > While most call paths (e.g., via cluster_alloc_swap_entry() or
+> > alloc_swap_scan_list()) correctly acquire these locks before
+> > invocation,
+> > the path through swap_reclaim_work() ->
+> > swap_reclaim_full_clusters() ->
+> > isolate_lock_cluster() is distinct. This path operates exclusively
+> > on
+> > si->full_clusters, where the swap allocation tables are guaranteed
+> > to be
+> > already allocated. Consequently, isolate_lock_cluster() should
+> > never
+> > trigger a call to swap_cluster_alloc_table() for these clusters.
+> > 
+> > Strengthen the locking and state assertions to formalize these
+> > invariants:
+> > 
+> > 1. Add a lockdep_assert_held() for si->global_cluster_lock in
+> >    swap_cluster_alloc_table() for non-SWP_SOLIDSTATE devices.
+> > 2. Reorder existing lockdep assertions in
+> > swap_cluster_alloc_table() to
+> >    match the actual lock acquisition order (per-CPU lock, then
+> > global lock,
+> >    then cluster lock).
+> > 3. Add a VM_WARN_ON_ONCE() in isolate_lock_cluster() to ensure that
+> > table
+> >    allocations are only attempted for clusters being isolated from
+> > the
+> >    free list. Attempting to allocate a table for a cluster from
+> > other
+> >    lists (like the full list during reclaim) indicates a violation
+> > of
+> >    subsystem invariants.
+> > 
+> > These changes ensure locking consistency and help catch potential
+> > synchronization or logic issues during development.
+> > 
+> > Changelog:
+> > v4:
+> > According to the comments of Barry Song, remove redundant comment.
+> > v3:
+> > According to the comments of Kairui Song, squash patches and fix
+> > logic
+> > bug in isolate_lock_cluster() where flags were cleared before
+> > check.
+> > v2:
+> > According to the comments of YoungJun Park, Kairui Song and Chris
+> > Li,
+> > change acquire locks in swap_reclaim_work() to adds a VM_WARN_ON in
+> > isolate_lock_cluster().
+> > According to the comments of YoungJun Park, add code in patch 2 to
+> > Change
+> > the order of lockdep_assert_held() to match the actual lock
+> > acquisition
+> > order.
+> > 
+> > Reviewed-by: Youngjun Park <youngjun.park@lge.com>
+> > Reviewed-by: Barry Song <baohua@kernel.org>
+> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 > 
->-			mmap_read_unlock(mm);
->-			mmap_locked = false;
->-			*lock_dropped = true;
->-			result = collapse_scan_file(mm, addr, file, pgoff, cc);
->-
->-			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
->-			    mapping_can_writeback(file->f_mapping)) {
->-				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
->-				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
->+		result = collapse_single_pmd(addr, vma, &mmap_locked, cc);
+> Acked-by: Chris Li <chrisl@kernel.org>
+
+Acked-by: Geliang Tang <geliang@kernel.org>
+
+Thanks,
+-Geliang
+
 > 
->-				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
->-				triggered_wb = true;
->-				fput(file);
->-				goto retry;
->-			}
->-			fput(file);
->-		} else {
->-			result = collapse_scan_pmd(mm, vma, addr, &mmap_locked, cc);
->-		}
-> 		if (!mmap_locked)
-> 			*lock_dropped = true;
+> > ---
+> >  mm/swapfile.c | 7 ++++++-
+> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 94af29d1de88..e25cdb0046d8 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -476,8 +476,10 @@ swap_cluster_alloc_table(struct
+> > swap_info_struct *si,
+> >          * Only cluster isolation from the allocator does table
+> > allocation.
+> >          * Swap allocator uses percpu clusters and holds the local
+> > lock.
+> >          */
+> > -       lockdep_assert_held(&ci->lock);
+> >         lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)-
+> > >lock);
+> > +       if (!(si->flags & SWP_SOLIDSTATE))
+> > +               lockdep_assert_held(&si->global_cluster_lock);
+> > +       lockdep_assert_held(&ci->lock);
+> > 
+> >         /* The cluster must be free and was just isolated from the
+> > free list. */
+> >         VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
+> > @@ -577,6 +579,7 @@ static struct swap_cluster_info
+> > *isolate_lock_cluster(
+> >                 struct swap_info_struct *si, struct list_head
+> > *list)
+> >  {
+> >         struct swap_cluster_info *ci, *found = NULL;
+> > +       u8 flags;
 > 
->-handle_result:
-> 		switch (result) {
-> 		case SCAN_SUCCEED:
-> 		case SCAN_PMD_MAPPED:
-> 			++thps;
-> 			break;
->-		case SCAN_PTE_MAPPED_HUGEPAGE:
->-			BUG_ON(mmap_locked);
->-			mmap_read_lock(mm);
->-			result = try_collapse_pte_mapped_thp(mm, addr, true);
->-			mmap_read_unlock(mm);
->-			goto handle_result;
-> 		/* Whitelisted set of results where continuing OK */
-> 		case SCAN_NO_PTE_TABLE:
->+		case SCAN_PTE_MAPPED_HUGEPAGE:
-
-It looks we won't have this case after refactor?
-
-Current code flow is like this:
-
-  result = collapse_single_pmd()
-      result = collapse_scan_file()
-          result = collapse_file()
-
-      if (result == SCAN_PTE_MAPPED_HUGEPAGE) {            --- (1)
-          result = SCAN_ANY_PROCESS;
-	  or 
-	  result = try_collapse_pte_mapped_thp();
-      }
-
-Only collapse_scan_file() and collapse_file() may return
-SCAN_PTE_MAPPED_HUGEPAGE, and then handled in (1). After this, result is set
-to another value to indicate whether we collapse it or not.
-
-So I am afraid we don't expect to see SCAN_PTE_MAPPED_HUGEPAGE here. Do I miss
-something?
-
-> 		case SCAN_PTE_NON_PRESENT:
-> 		case SCAN_PTE_UFFD_WP:
-> 		case SCAN_LACK_REFERENCED_PAGE:
->-- 
->2.53.0
->
-
--- 
-Wei Yang
-Help you, Help me
+> Nit pick: consider initializing the value. The flags assignment
+> occurs
+> in a conditional block. The compiler might or might not realize the
+> "flags" assigned only if "found" is also assigned, and might complain
+> that flags can be used without initialization.
+> 
+> > 
+> >         spin_lock(&si->lock);
+> >         list_for_each_entry(ci, list, list) {
+> > @@ -589,6 +592,7 @@ static struct swap_cluster_info
+> > *isolate_lock_cluster(
+> >                           ci->flags != CLUSTER_FLAG_FULL);
+> > 
+> >                 list_del(&ci->list);
+> > +               flags = ci->flags;
+> 
+> If VM debug is disabled, this variable is not used after its value is
+> assigned. Please test it with gcc and llvm (VM debug disabled) to
+> ensure it doesn't generate any warnings. I don't expect it to be, I
+> just want to make sure.
+> 
+> Chris
+> 
+> >                 ci->flags = CLUSTER_FLAG_NONE;
+> >                 found = ci;
+> >                 break;
+> > @@ -597,6 +601,7 @@ static struct swap_cluster_info
+> > *isolate_lock_cluster(
+> > 
+> >         if (found && !cluster_table_is_alloced(found)) {
+> >                 /* Only an empty free cluster's swap table can be
+> > freed. */
+> > +               VM_WARN_ON_ONCE(flags != CLUSTER_FLAG_FREE);
+> >                 VM_WARN_ON_ONCE(list != &si->free_clusters);
+> >                 VM_WARN_ON_ONCE(!cluster_is_empty(found));
+> >                 return swap_cluster_alloc_table(si, found);
+> > --
+> > 2.43.0
+> > 
+> > 
 
