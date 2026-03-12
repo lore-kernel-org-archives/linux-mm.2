@@ -4,108 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AABB106ACF3
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 328B4106ACF2
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 23:15:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B33596B0088; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
+	id 583FB6B00B2; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B14566B008A; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
+	id 531946B00B4; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A16916B008C; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
+	id 413146B00B5; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91A356B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:00:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FCCC16047E
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:00:58 +0000 (UTC)
-X-FDA: 84538932996.07.16C124F
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 33195160003
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:00:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Bqw5yFmT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 301736B00B2
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:15:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4AC11B7F50
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:15:49 +0000 (UTC)
+X-FDA: 84538970418.08.05B753C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7257C40008
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:15:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="W/09uimW";
+	spf=none (imf11.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773356456;
+	s=arc-20220608; t=1773357348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RahmB0SI0/OXu1AwTitQIvAtW4esW43+GBpFJHtqabU=;
-	b=loHrqqu6Szg2xfIKFwVCYOFNpn88drRsjDfxCKTL9W5vPklUl9N5yEBdV4R378jNolFNfV
-	GwdYLa1B52STrvt4ka1RBh3JqJ4SkjKrvcATGdhcADeO90K4gHKJlwtui1dnH3Rl/wkqIc
-	cFuyiBXk2YrOG+9wy4m3p17DWRnb4Pc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773356456; a=rsa-sha256;
+	bh=LjcR94bmvH2oOH8ZUWLFU9TNRvfPfrpZ+1MwNkcZH5I=;
+	b=nlAeDrJnCLTtmxkkKRPInITB8sq3LW2v20CANcBNoct2sKq2CUuoNTN19V0ohYRHH9E3/S
+	v9KmkksOrdqa+Jk4fH+Tn6mU4choLJHBb0npFWLWYPA5/zZntSpg9gvydFuDh3hB/5LkSq
+	3grAxQw0m7koHty6ru5nKk40DajYGC8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773357348; a=rsa-sha256;
 	cv=none;
-	b=K7hUWvy6hGpRxESBx9YFh+5pX14qMKLt6HPx4jS7A+TGeGpIaiGkLv2DnVU4k3ct2e8iY4
-	8f9N87BTlRNix9qL8e0xA2IW4FRfoWmXkLDb4IT3C77kTlQ3Q4XChg3d5u77cUYmymlBOy
-	BmE3zEFgdCQiTk6jnMhmUJEX8isUTDg=
+	b=yvi3d5biO53nw0g5G6dy7Q+4LOisdr4sdMToqLFQxnyfkuCjzo1+JVkpgzu665fQZiP68l
+	WK0aC0FWrwjM5vAk5UrEo8X8JSmmQoT0BE4iZWIFe2mzWMWKt1wunaARTi5ESszMYlMlT9
+	Y7xaiv8KKuHTla860i5GSK9AHn+/ldw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Bqw5yFmT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pkWzaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853ab1cae0so15834375e9.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:00:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773356454; x=1773961254; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RahmB0SI0/OXu1AwTitQIvAtW4esW43+GBpFJHtqabU=;
-        b=Bqw5yFmTYS7q2lWvSuiR3nRb+javHh7B7xCZS9Nnv7GdyCsWlpgbZ56lMu7maCYLM5
-         FPT/wZ4TSp11b9r6Z6pUhPo0oLrZiFkfcEygcvYRjR97MxpWulloDGf6zq+xJqSuqCQE
-         6694gS0l0/Pqq13ymMT1PTn56Y1r6TJg+G07ltAiIrXKjQGlI3kS4TroU/+RVQsnu7E5
-         eMjQ9jxIhvSeOvFN1VTfBtIuvY5y/peRoTzHUfuQMI9580EyZDi0oQmDHWbkEmOy1aYO
-         RogSTdXTuq97byfVV3oSOtE7s35ExcGaB/2KE4UU+NXlBvIHwI0ElH4dY8RzayF9qLa2
-         9x+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773356454; x=1773961254;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RahmB0SI0/OXu1AwTitQIvAtW4esW43+GBpFJHtqabU=;
-        b=Vz0cmdbED+bDRywgkyOoJiayTitGah1TsPX5NjjP50EdgxmSBFFVynFP+UGGDGv/qx
-         99tqe4zpkdZP8gaxSswEN+0G00zERVOn6BRn0IIxURYjl9aBn1NQqXIjfTaOK6+6CtgC
-         Eyp/m+sjZ+aOlb5c0GMB12JEFGb+qRgt50FzRtAe6GjbGgyw0ZpRs9pjk+EWhwg0gkzD
-         Wal+cRbacgrrNaPqa5xyIHrkpJhDu4C5QtXim7WSjUqZ4mg4WURtk7ZsQkv00zWyADx6
-         PicqiakmBiuObmlTyG+8CJFw/PSU/8eAaJLBDOquerpEV3/NaHT261menP3CYFcjma/J
-         ncQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVbKdVCy9NeS8YW7hupN3QnWhjuI0QXXxvz09/FvprNEWQES4bMGqaISjZFRqTY60f9rwOJBYLhWQ==@kvack.org
-X-Gm-Message-State: AOJu0YxCh5lwrmYXyhMDhkP11SRQnGw6aCyTC82N2GP6KWPtE7WCVtyc
-	3YkigAgHz31Vxlk7BDgH5wx9P0+srCYx78hHqAJyyQ5/ilKiFDj+gm/gPjjp8mcgUvz+kGFZZ8c
-	ITmRJzW7GDidVjgmBeg==
-X-Received: from wmoo20.prod.google.com ([2002:a05:600d:114:b0:483:a1ee:5eb8])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:698e:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-485566ca5cdmr17223985e9.6.1773356454305;
- Thu, 12 Mar 2026 16:00:54 -0700 (PDT)
-Date: Thu, 12 Mar 2026 23:00:53 +0000
-In-Reply-To: <b6327414-237a-4262-bf07-c506908fa263@gmail.com>
-Mime-Version: 1.0
-References: <20260312184054.23481-1-objecting@objecting.org>
- <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org> <b6327414-237a-4262-bf07-c506908fa263@gmail.com>
-Message-ID: <abNFpSjrhJYr2e_n@google.com>
-Subject: Re: [PATCH 1/3] lib/maple_tree: fix potential NULL dereference in mas_pop_node()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Josh Law <hlcj1234567@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Josh Law <objecting@objecting.org>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 33195160003
-X-Stat-Signature: an1n5aupht7efrudycis8jugic3pjr4a
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="W/09uimW";
+	spf=none (imf11.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=LjcR94bmvH2oOH8ZUWLFU9TNRvfPfrpZ+1MwNkcZH5I=; b=W/09uimWlmT/Ysq3jgNMt1gI7H
+	GOweGLT/9vNXsJOPg9hm2zWvmdX3q1Mku+Gp0H9Iy01Esb6LQV5ATBVsFtN7xIiUoagCrBlANpDjy
+	LFKllY8nRMXqP5YIQU35yhpjR6xLflNsnx64mvIpAEWYWRWDPhCqNZYr0PnzOZoWDQK+FM4dlVpqj
+	nTXMWJe8aCw5gHcb65NFh+tuJVdjDY9IaRhmpRA+PnQPWNf8cS/Xo1D5AhzPt2W5l4FH91HqP8G0U
+	kPRc+Y45RDEk4AoFzuVcdgRIIbo7k6atO+7RsPG8yCEeiefwSsO6mHknQo7wHDNJwM391bMo/EMJe
+	bffBLL6A==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w0pFY-0000000FkNf-3iHP;
+	Thu, 12 Mar 2026 23:15:28 +0000
+Message-ID: <4fd15134-ae1e-4233-8d5a-9d1e0b9f94dc@infradead.org>
+Date: Thu, 12 Mar 2026 16:15:26 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 15/15] mm: add mmap_action_map_kernel_pages[_full]()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
+ linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <cover.1773346620.git.ljs@kernel.org>
+ <21d8899bb1f4db61203072fb3a56a6c98a61e23d.1773346620.git.ljs@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <21d8899bb1f4db61203072fb3a56a6c98a61e23d.1773346620.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1773356455-391463
-X-HE-Meta: U2FsdGVkX1/m0uZjkzFZnkZsRR+1+N+hoaP6XooaFmHV3ftClFy8c05Q47zCWhzhypte8FkhNZ4slypgT5EKuSN1Vb+0Zr+jS//tQiNKntG6cvCHmTILHXaBoSvuFH0oqJpdBbU6aA26yfBzd9biofZLqNlq1ET9ElVsikLn5kNXUxMbGv/0odUEzWzvW9kAQnMDAdTx8/pg/NyN+kSCRodrczw58dVX310NY2bgo6FYfuPRQzRKvz4LuSgMBWDFxuRAcpSscU5ANhFpnieGQu0cYfDhNL7zkIxZxYn22jqaOfxKAhvleMU+syjV6ZGpi00n7gQVLzbWQv8etuuzbkoyxsBObqj5XEJzG4bsC2iFCkhKqvGZNtV1t+MOvxgeLi4WKFh3/jATLAZrIM/X5KZ9YWXYVFRpsj92Q5D26KfhCgjWVmZHlIovPbhnjoB3CZ2EvNTtG7mHQZcZF7fKjRPfXOcoovadFrUQYMMfrRprmXX3t5X9Y9fhgbYLER/rA6LMwDyXEay3nvJhWd4e98CS6ltw95xjuNHY1e38DQaSziv2Cwk2tei7wx+JF3NM9XNYjFSnY2/hMum2IR/6Tx2RVGldWn4Tn1/f8LjOKZG02Wrogp+fQeTeQrQZZJsF/DkPs0NLhy6YdmExvGuZ4Vj06jgZ4Cpo8mAYBSPb98/jKGQQo1nmgv6D2A54vvk3LO9Z4o57h0dRrioo8/X4/R/Aga2nLOkYUJOFx4JzogX4DCSQOJBKcoRqCyPYur7u185luLkur9Gaqh1LdIRnuUNPNUMuL4GJhH/ALoWQdVHndBY3aDkxukYfuzxubv2Hi9uEkmC3Vll5QeQF8DVAQPi6hZVD5VTAcmu07aJBTdVKPiAfbJP4EZSr/xblTPrxUtoWg9dyvlksIP69Vis9vNQUjVOHXQPfMSLYl4ywxFeJk+lDQQBmzvFpduxFOnxBWGu+pO3P/krbe+Chv02
- I8c9uVty
- O08rIsa0ahtyNmgKU+8rW8vG+Uyh2amcQdYDO+sBy+MrOMEfgAz085ixhwd4e0Nc+GDVsD8DaZI6S6uwRns65O9s5JAeampAz5qbNQhX/XSLgQvAF5jHdioRXWOvl9VjhSjtpwjyRhTYxvt2n5rsMVuIfngHpJr5aLPAUx+/k+whwH367mvl8WFjbR9xiFgQz7raEweCmfUPc+sNTx/fE/gFl9ZOMJKJ4qLDN6teTp8+2etOJCUvzxmPwLxecdgzG4DK95RUMB06b+r+OPpLscxaTwNythfK16tJGHroQ8DOM6jS90ZsoZEbWle+DHduM3q5Mn5Elb2mSB6fge/uB9CPXbTbrWEfyYYUsrZRWuJDEB4KHr+p7s36aIe7qqywJa5OAkiJMCe43LbeSZi+cd3wwU4UoKeG5vNTPs9iJmezOQxEiFPkyLG5LF5oXubsKYE33wioxHJYlKoINBIc7qjX0BTuWKH6HdmQHAbzkS26Na/dT9xDoPbHKOb4Z4RsmSoC0rnBl0dH5jplz95MB4qPlWszaFixdGGzZvxiM7/Za+Th5SWxOE+49a+gFZtfOdNGutfKOMnOBuiG0Od6jzMuD2t/q1gz0T4rs11oIU5vGR4RZu04FbbTmJpAODnWsmo/uZeRkb1zps+LcLb7XlGo7/R81TZZTtVMpHCk6Of9lsd9IdGFVOW/jT+3RXYaEpGXYQQ7tn7sonXj+6Z3qV8bZyfM4lRibSmMZ475wym2xmaa/O5ebXSE/Xu1xCKOlzMSir4lZ6GtwN+PMD/H0jGClXusjjWyoroKVm97VGfnOGuU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7257C40008
+X-Stat-Signature: 1a31pi3qfnrpqdikg93o4pq3hx7ndgsi
+X-HE-Tag: 1773357347-918563
+X-HE-Meta: U2FsdGVkX19UfMKtu0M1fkWPprQ4TE2ODmuy8NKw0PRqd+KVmgMTscgyUf9SuLTzcy5OVp++jMIt8gS1H4KY6QMa5JQIU0jfT5KZYF6jlomouMtO/JGUrDUpclJMEUrZG8bDguOI+BS4FnlF3agWBQFHB+lqOKjbPa8Sdjz2AWIHlc9e5fQQsrjJYAy5Hm11i+M7R8dLT0wHAu2kBz/tqWURqf14EpnmrlrEQVd7J9OXu0skKzr1ier0xZyEQFxvr/l5otsGHqoWdZD/R1RIHcBHhs4N6BWA6Lw2pulttsKixqWNnFOa0uCAy9U0cuwH/bVW4RphIGfINkR+kpdV/ECW/iirceFXMsr92W31ASQATL78m3dpV2f+rtry1xKPFTyRklIxziA8jQmMJ2XRxV66YJ+4zSyvbj5tHfdSwNjPL8KjgLO+3CRXP/N/Mntvq2esoRUWZv1eZwVAWFMYGGO7WdOzymyeple0TeIgXTUU0O9TfB0131PgKXBdIj4s8+Dk1Z3gmZU+NQsmnq2Wq1th8JTOA01GRXc1zD4913dGOd2CGxledcHrz8IfM9g4H/LhzKGGa782V0oiW7AHs20j4VGpiU10jvjAqBjLzrzmdIrL6nUPTovUQtEhWOpFbaBWV8fS5zxRkfUyNOsO27kW1Y2JOz5GKyLuvBMP6O0x0kjlVqxfCvBF88D5KhqYzxikilN3Nqm7n6w29hUHY9d0zvy7yfjAlkUnc9j0UQ3Y4sSiNRkIeRJxcCzvxH537cpVQ+NNduJHfFNnMyDilQgTULwW5tsTogUW1lLCBnboEHeCp8t1+kMOTorcyMX7DJef8LV1+eHFYI1rHLQmEq1ov/rk9WleP3j5hVoIif6esPmNzsyxKmOJAnsONzunjyp+TBU+F62eSxbybgknqIW/G4kfcQBHmuPK72uk93FKZnuAi447vnjBhL54rmrOQ2HcK5avgDwxynw1QfA
+ 3gX6fTSb
+ euKZvrO1CFQsE+1ahvynJm1zrnrwdnzHNdecLkniQFZ/loBbWPCOw01OgPkLTNiRVS6lmF80Th9o7pUABUn7MiENUqkVk7EAnaRrKi2/YgxIsR6Etc+KB6G0A753jWkfpwgRYHNge9X7uNUrLge8io6mWIFTmjLGlzHCGPxhaO3tEgxKSY1RNJznTihbPl7aXdCieE79wUW0Mg1M+gB3dmC3rrC+dtCHb/Rj4acw2AaoYEDBblYiQZ9KYhqRGHVN0dU2ABJnIL2GZKAWgjDspVicjhVn8SoYVlJB1quy5C29795v6Ay5w+i0vLUE1o8YKJHEHpuv2Md7dReTHLU6qq9XlpfBwuO2xVE+RwjLT/q88xhCUBxTUVpJh875b/Hk+qd14ZcWIWW4nOqgk2ogUi9fJ6YINQqMV94I+5uxiEXb6YjtmKqPW6Z6uPx6cNQAIoyaF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,58 +120,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 08:49:20PM +0000, Josh Law wrote:
-> 12 Mar 2026 20:45:32 Andrew Morton <akpm@linux-foundation.org>:
->=20
-> > On Thu, 12 Mar 2026 18:40:53 +0000 Josh Law <hlcj1234567@gmail.com> wro=
-te:
-> >
-> >> If kmem_cache_alloc_from_sheaf() returns NULL (possible under
-> >> GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
-> >> and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
-> >
-> > This is such a glaring bug that I wonder if we're missing something.
-> >
-> >> Add a WARN_ON_ONCE NULL check after the sheaf allocation to bail out
-> >> early, matching the existing pattern for the !mas->sheaf case above.
-> >>
-> >> Signed-off-by: Josh Law <objecting@objecting.org>
-> >> ---
-> >> lib/maple_tree.c | 2 ++
-> >> 1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> >> index 739918e859e5..87a2ba6468ca 100644
-> >> --- a/lib/maple_tree.c
-> >> +++ b/lib/maple_tree.c
-> >> @@ -1063,6 +1063,8 @@ static __always_inline struct maple_node *mas_po=
-p_node(struct ma_state *mas)
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
-> >>
-> >> =C2=A0=C2=A0=C2=A0 ret =3D kmem_cache_alloc_from_sheaf(maple_node_cach=
-e, GFP_NOWAIT, mas->sheaf);
-> >> +=C2=A0=C2=A0 if (WARN_ON_ONCE(!ret))
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
-> >
-> > If we're going to do this then we may as well restore !__GFP_NOWARN,
-> > get more relevant information.
-> >
-> > But a GFP_NOWAIT allocation attempt can fail relatively easily so
-> > callers must be equipped to handle it - perhaps no need for any
-> > warning.
->=20
-> Well, fair enough, but WARN_ON is equivalent to a "oops! Something
-> went wrong! We will continue anyway", NOWARN is quite bad for logging
-> that that went wrong, usually it's BUG_ON that causes said kernel
-> panics and that, which is a bit overkill, that's why I didn't add it,
-> and it warns once, then bails, that's why I'm a bit on the iffy side
-> about adding NOWARN, what's your opinion on this, do you think a
-> NOWARN is better then warn on once?
 
-The WARN_ON option must only be used for conditions that indicate a
-kernel bug. Memory pressure is not a kernel bug, so WARN_ON is wrong
-here. In fact, depending on kernel configuration, WARN_ON_ONCE may crash
-the kernel.
+On 3/12/26 1:27 PM, Lorenzo Stoakes (Oracle) wrote:
 
-Alice
+> Finally, we update the VMA tests accordingly to reflect the changes.
+
+IMO we could omit the word "we" 5 times above.
+(but no change is required)
+
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 88f42faeb377..88ad5649c02d 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+
+> +/**
+> + * range_is_subset - Is the specified inner range a subset of the outer range?
+> + * @outer_start: The start of the outer range.
+> + * @outer_end: The exclusive end of the outer range.
+> + * @inner_start: The start of the inner range.
+> + * @inner_end: The exclusive end of the inner range.
+> + *
+> + * Returns %true if [inner_start, inner_end) is a subset of [outer_start,
+
+    * Returns:
+(for kernel-doc)
+
+> + * outer_end), otherwise %false.
+> + */
+> +static inline bool range_is_subset(unsigned long outer_start,
+> +				   unsigned long outer_end,
+> +				   unsigned long inner_start,
+> +				   unsigned long inner_end)
+> +{
+> +	return outer_start <= inner_start && inner_end <= outer_end;
+> +}
+> +
+> +/**
+> + * range_in_vma - is the specified [@start, @end) range a subset of the VMA?
+> + * @vma: The VMA against which we want to check [@start, @end).
+> + * @start: The start of the range we wish to check.
+> + * @end: The exclusive end of the range we wish to check.
+> + *
+> + * Returns %true if [@start, @end) is a subset of [@vma->vm_start,
+
+    * Returns:
+
+> + * @vma->vm_end), %false otherwise.
+> + */
+>  static inline bool range_in_vma(const struct vm_area_struct *vma,
+>  				unsigned long start, unsigned long end)
+>  {
+> -	return (vma && vma->vm_start <= start && end <= vma->vm_end);
+> +	if (!vma)
+> +		return false;
+> +
+> +	return range_is_subset(vma->vm_start, vma->vm_end, start, end);
+> +}
+> +
+> +/**
+> + * range_in_vma_desc - is the specified [@start, @end) range a subset of the VMA
+> + * described by @desc, a VMA descriptor?
+> + * @desc: The VMA descriptor against which we want to check [@start, @end).
+> + * @start: The start of the range we wish to check.
+> + * @end: The exclusive end of the range we wish to check.
+> + *
+> + * Returns %true if [@start, @end) is a subset of [@desc->start, @desc->end),
+
+    * Returns:
+
+> + * %false otherwise.
+> + */
+> +static inline bool range_in_vma_desc(const struct vm_area_desc *desc,
+> +				     unsigned long start, unsigned long end)
+> +{
+> +	if (!desc)
+> +		return false;
+> +
+> +	return range_is_subset(desc->start, desc->end, start, end);
+>  }
+
+-- 
+~Randy
+
 
