@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69840106FD60
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B6C106FD60
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C85E16B0099; Thu, 12 Mar 2026 20:47:51 -0400 (EDT)
+	id 456386B00A9; Thu, 12 Mar 2026 20:48:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3D4A6B00A9; Thu, 12 Mar 2026 20:47:51 -0400 (EDT)
+	id 416F66B00AB; Thu, 12 Mar 2026 20:48:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B07DA6B00AA; Thu, 12 Mar 2026 20:47:51 -0400 (EDT)
+	id 2EEC66B00AC; Thu, 12 Mar 2026 20:48:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CF3A6B0099
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:47:51 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 546291B8133
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:47:51 +0000 (UTC)
-X-FDA: 84539202342.22.5FE9319
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 18FE46B00A9
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:48:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B46D3C1E87
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:48:08 +0000 (UTC)
+X-FDA: 84539203056.10.B8801B9
 Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 44FE480003
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:47:49 +0000 (UTC)
+	by imf02.hostedemail.com (Postfix) with ESMTP id A6B5A8000F
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:48:06 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=kDoltOk9;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=fLlbZhFz;
-	spf=pass (imf02.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=mdKzMrUC;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=yDEdPqox;
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf02.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773362869;
+	s=arc-20220608; t=1773362886;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IKC2mXuXBSvpu/yXLNU8JNN/9B9bcozYCtRp08XnGKg=;
-	b=lPi3VzIvx8RmKmbw7XuXKvPjB7TxLW9QrOTCYFV9eJpGpnCef+PmOwp7FRuacKzEfzI9sB
-	buNV0SKbCq8qhID+sCK0GRUUtCipGcjSVD7/3Kk34/xoApOCQYg3lK2I5z2mBv793atXoM
-	bZbgKyiIEEvzBpYYdQCi3F5yQfUpJbM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773362869; a=rsa-sha256;
+	bh=vcLY9NjcITx2BXCNwc1K2QRLwUNNN9sEl0XxFiatrQo=;
+	b=b9Jr+1etuAbc05LMp4SNuEeJ1PY172HS5jcCtGYLnMm0giVkfTjImPcOyLESlfacKlbG6H
+	6rIk/dNFqXKy9Q2HDbWLwWT/UBBojQdNoo1K0s/49WmlcL71j3mRtgAllumJ1cgs2JUiQl
+	jmOCv0YlNl8kYjTr4gc3uy9T5LbraPM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773362886; a=rsa-sha256;
 	cv=none;
-	b=bX3oiT8vG5V+daJpaDYoG/OmM9H/bKUrJpE9Vse/koPCYpc86ZXxdZgIn9OD2xRQFuX91Z
-	joESSWmI4QIzmzG+TmqPNcmqSn3wO6dPevIhj/Z8GiYvPEwaVmIzquP7Qx03nlbsDldKDc
-	nO3LnJDt3AUE31VEPXvX7QvoIl+3Hmw=
+	b=8KqBSi/aN4SVaNIs+PmDiJGvQcv3ERjug9pBUXr6D/t2IRemcovBFkROrF8rFAei5W7y70
+	H3g/gNHE33ihwFg5LP+VUWlK0BrnYR9+fvR3XSQbDIgXas5Vdx4c7kC2FFqZncUu1YP71u
+	W3l8FJYcpwCFEe1J9Mif4UiYxmUk4Qs=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=kDoltOk9;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=fLlbZhFz;
-	spf=pass (imf02.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailflow.stl.internal (Postfix) with ESMTP id 525851301B74;
-	Thu, 12 Mar 2026 20:47:47 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Thu, 12 Mar 2026 20:47:48 -0400
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=mdKzMrUC;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=yDEdPqox;
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf02.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id ABF701301B7A;
+	Thu, 12 Mar 2026 20:48:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 12 Mar 2026 20:48:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773362867;
-	 x=1773370067; bh=IKC2mXuXBSvpu/yXLNU8JNN/9B9bcozYCtRp08XnGKg=; b=
-	kDoltOk9PS7j42/x8/QD6W2oySfH8jqtPn+udHVYH0MDyECLvp3g7QS7jalbAMpU
-	eMimso/ozabOCqmYob+F+bx6ZH+xyy12nIx8jz5w/HQRO+brXlRSgeDbBeQc1vp5
-	rwnbuAPA61dGJZ2OJvVLgtM8YGVE8OPfDhwWbbJ7c+PWZUldd3UtgxzXmvSyURKf
-	r4+Zi6dNkDdhbxO9uVPdUGOmwGwapSfHGqwmz28c3AQCMDtMC25ElplGN7Uejeoo
-	ZvxKZA1SW/rrh4Of2rBjHHTaF+gXQntOs5vHb9vtZsHebUgxTPaX6w6Zy3UlYLP7
-	N1fZbJtIPeDqYNdbo5oyDA==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773362884;
+	 x=1773370084; bh=vcLY9NjcITx2BXCNwc1K2QRLwUNNN9sEl0XxFiatrQo=; b=
+	mdKzMrUCmCgev5rjqMYLbCk9/NmPt8l5SN1cuh/XYEGVQSm40ukfPkz/tmPxK/Fw
+	C8CU42AUDwoB+BWyvZtfv3qDJQwJMZqdkw0S72eJstmGGGMBhaX3ZHeVREPYyC2V
+	fvUXlbJyg6aO5H4oucGa1RsaVgY2d21FE00GybtMYM8I1ew/f4keraC6xDUPB7c+
+	5Pn0hGoCJlIddOhvP8sj6pXnoHeVeH2/moOy4KjHgIUwC35SmgVP2TRJhtJl4ARo
+	qOU1z9u/0AZz+m+raqJO2irqtfbC4sPHEnz+cJH8kzFrV31gL9Yt6CTvQ0AfNIcZ
+	ThO11BMQNTi0fw4x0ZoXng==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773362867; x=1773370067; bh=I
-	KC2mXuXBSvpu/yXLNU8JNN/9B9bcozYCtRp08XnGKg=; b=fLlbZhFzwd90VIqqe
-	qYrOogss2BKl4uOQU0iVdtU8kNX0XHhSxmS2esGSjI2DreIGsCE2h//QAC2BK1h7
-	31X9Ii5WxuWCUcsxGyQP0XOlhY1AY9QsaoYlzbNKHSvrphU+k1lFDc6C4fHPgkRr
-	BRdgSdFyL0PXFJHboOrYRwzF/2iX2lvJ75lvYBZY4xuk3s1bY+f3PDj1Y/uy7X8S
-	uQCyJPqAWKZDnIuLAgHCIsRtC0O8+C+4BpjD4HdtqKBwoCslIfl3kOSwazcKw0s3
-	6j/mrP3zPbwdOXsv0PfPh9ZeIhPxNXjEseN3qe2xmr/mTvWCgWzHD75V4WIkXXtp
-	6qagQ==
-X-ME-Sender: <xms:sl6zaQqLN6SXWgQ0X9OhGon4ALmMO99qFHYbl606GVVGetqlKwiSDw>
-    <xme:sl6zaaXpZ0KGR90QuZ6TEsibhtB2bw33Msxs5APnQVniflr0Z89epk8Zc-I4WKEZL
-    948MdzTciFFbywDmPvot3ztTX0gQowucId8Izz_6sY7_6T_>
-X-ME-Received: <xmr:sl6zaQTHlhIdLiGwrTQGHIBpvTbIjOX7PKd3oP8oy2UW5i5-t89z5KBgS0u3bG-bzYWMGVd0sYM74nDpz1vkpLVVdaV1N010NddhWdMeCHWe>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773362884; x=1773370084; bh=v
+	cLY9NjcITx2BXCNwc1K2QRLwUNNN9sEl0XxFiatrQo=; b=yDEdPqoxm0mvV/5PV
+	Tn/eyzEfPnGUZEUvP0huJ0EgtFB+R+oNg15Lem1KP+cIB5aYs2Z0gfeS39ngIbKd
+	sOWHNPGK+ZBSJt6wqiz2s389Zx158JBtkDde4mi+o9LWu2L220htc5Z57Rzo3VCu
+	Z90aAHSpgBiPjX8Yb5AmV6q6FQWHuRjLfpHlr9jZjWb14gW0ydd4OI2iRf2hiTOH
+	MlOKV6hphPTxCpVXdLyVJMEyK2ZBPk/i/vECEPqsu4qQtVl5VtfC5ZMnfsQ25QJV
+	yMMfqpO4OcTvkWzFGghdY4we94eIkCp4DUNmAIn0DHytKFG5IxjjFvYe1zdHOPjm
+	yg30A==
+X-ME-Sender: <xms:xF6zaULW-NwfZ6qu3iJ9TlEpAEC4uvO82gKtANaBAXYbdtWdN5XVkQ>
+    <xme:xF6zaX1A6f3iSCrTwSwJZCB6Tw6LuoRySNxlr4ygzru7LHkCgercK7wD_YNFghaPH
+    blQzzGMx3reVFOfFHrMVsy8tYCFIb3P9olIpEKtDle8iuAB>
+X-ME-Received: <xmr:xF6zafzQznsFTdMpan5mFbq7xcgpUC_0AeCWzRdATCvsU8ZvZPDZNod_8tQfK5u15bLRkg3QSLtcNDY4l8SUvRBc_s98YD0PPSRUwc6_MXez>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeekvdeiucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -101,14 +101,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeekvdeiucetufdote
     hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
     vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
     drohhrgh
-X-ME-Proxy: <xmx:sl6zaVU0KQz7EyDRV46BoQOTAp2TlpsypoUoQ4-pI9TMtZnLakGK1Q>
-    <xmx:sl6zaVbDI8vxUKMxdjaHMW86AJlvq2cJHrIXOY86RoGjgF_TRGaxCg>
-    <xmx:sl6zaT_3M9Sf4gMoixS5K6KRVpOAhOH-XRsD3F0fDaHCa9lDDRy4oQ>
-    <xmx:sl6zaU44XwH810Q2QaRAMkeQbS9hG6kK5ZwkxoFUKG96qzR0cF1esg>
-    <xmx:s16zaY0V9cCDm8fR9vm55e7g2iqc5cbTbROJIkGo4VRHARXdbBq218XZ>
+X-ME-Proxy: <xmx:xF6zae1CmnJpT51rTdmfgm3qsIuMeUX2qKE-vHu6G96-t9rU5tfCfg>
+    <xmx:xF6zaQ6Kg0DhF3JyA7Grw7T5XFPqYZr7dC9NGUkrW1os-H7djLtabg>
+    <xmx:xF6zaZfjJJxvAh-lv1fnj6C-QCEXixW2zPJzDqHfmxNxsWpWg-scjA>
+    <xmx:xF6zacbpasj86nZdirEODaqhQnsR5vPmsB0fhCgedqBfuHkUzp7tIQ>
+    <xmx:xF6zaUUkZ-bPNnauXw_6I8hrTSreHohEU96-xm7UFeGDs5FbnFLK1l-1>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 20:47:33 -0400 (EDT)
+ 12 Mar 2026 20:47:50 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -151,23 +151,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 21/53] afs: use d_splice_alias() in afs_vnode_new_inode()
-Date: Fri, 13 Mar 2026 08:12:08 +1100
-Message-ID: <20260312214330.3885211-22-neilb@ownmail.net>
+Subject: [PATCH 20/53] afs: don't unhash/rehash dentries during unlink/rename
+Date: Fri, 13 Mar 2026 08:12:07 +1100
+Message-ID: <20260312214330.3885211-21-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
 References: <20260312214330.3885211-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A6B5A8000F
+X-Stat-Signature: 4oxajb3iz9uwpusg81u5q44ryqp3g9oc
 X-Rspam-User: 
-X-Stat-Signature: u7ai9jzx444q45q4iq1poas6ze3ct67e
-X-Rspamd-Queue-Id: 44FE480003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773362869-448627
-X-HE-Meta: U2FsdGVkX1+tHdWGzYOQdvTZBdsff8HEKHs7XVwR7Dje9UtZ4DPDRObMJmQ+4D3ai6jd271ABLdxHLMtdQwEp/zoTvkctMRZbuFXxkTutIrSKOmPfc+gqUIf+syRZufZXeQtZ2HKZ/FRnYYVtJXASblr+BNn4A4asIaSRtEZZIW3P6MTKz1q9YIbXXKsVTbn3wvBPuiW4ySJURzRt3muEcbXeu9YKgJdcemMAU166o4T+Y9PyrOyNhPNIR1I0XgGL0/tVK6w2bm3lcOxJ5LK3Gfh3IWBiHdzk+++o4zE4rgNnMAT+/r+6WY7q7xnaKuZm41BjJV0pQ5Q286AmHabXqUtOPMI6HmEPKYwGyMYj1RTi8zg9cdP6uc7gZuiw5YEGaWmAAhnDvoLDzsfuAhaV00CTqiADlhwl3rbL1xT1Mb+GzCOg3RI+A7Yw6Eu+bJFAKECrd8Xv6ZVDa8h8MupQe3IHICBMEdF42iWMfZZhYYu45CQYHajbijscSy7PvIKqalFCbXYmnnx98jwKhFbhmgid5/EHT2m6BVZOy/SHMTpC29MQLxbLQhNDCMfng6U/PNGeXgVhis0Ak0GfArQJn0Il3KxAzC66Qq9rrPs5NQw17RzQeH8G6LQXlo4zi6+9DmbGKyKXbR/hoyJJP+j5mG41AtjW+2cLMSUh9T05hUn+qQSF8XQ94aSQ92pbwqTre/DmPGTlMxw7y26VGqCv4cgDKqWIn32PkYFkl3t0MpLbxg44/6fswbN/cP1JdSIfWs3DByxfYoV2RNsboP905BbcdBUlav6BAJwYaB9Nyusol0edDcOanX/ER0FWVpOfstB3xMDDAtDl1Yz8o6UzTmjuBZuFrro5fAsJNHkUXJBDq/5O+99aItG8MRSyIRUya/aelIgndq6PzvMe0DmTkCeTNLyBXdoCcw0STRbcu62CoRrzM2orbzRLfteGzEoINqaiSalMqAKg40BwRn
- 5+iTvz8Q
- 06YZRwQu5nqYxG3HLleQoZJxUEkOjdbgtTZ625/ZjDONhx5zuY4Odu2LzeX1kaYCFw2QaTQvmm/8Emu2MKNYRqT0cpvebdR2SJTAm89FS4rfS63znJqEcgOk6b5SD4BdE0MTjh6mm0y/vbjQlhpA+DWszICXfx7h9SkePk1CoaCoaJYL1OYZKNTtSu48zBFkQ01xctYuQQnDKlJzEXycuH0tOeUtQuLo8DOWWWz3oG3+mQIojbHamfpm03fYeRi7J5xwwllMrVAe8KpaJqsVF98pfS/kD9lnLPOQ60vWro9EfBqHRv74/uZ5NOeGamdc/yewsZN3vjN8C6D+MQ8zvQM1acDOdGgYrGyWjZhYdWdglK94SwOLSnuzWuAWrkB/NuGZYsA5YQgiB50pv8A9soxt18wVlMhbgRG7pJRKby6xtK0/pYM/xy5u0IkwtrIIUlJMdaMG0Js9fXi8s6Hx16VTXTZsHChTPp1rKeYPIgO0d8PmmMFO4BJ2etALqWpmyeZlvOT60jmhvWisMqTh8zBjPZK6K+4KOVtkcuERNGdgcG7Ewa+GGeRZAA/04n9WN6WzQEMWZaDVYxuRjQNuKg+OOa1c62OKmRo5CBgF6lVEcLChldxM9eLUUBRdidYlOvzFPaMwqYYP+re2xpoDjQfKUPZIY1XJiy3OreNmAfwwCHCs=
+X-HE-Tag: 1773362886-28755
+X-HE-Meta: U2FsdGVkX1/CaScowVgvEJu7yvKSwXu3TT+3eIvCR7o5ALnHN7z2D4/UeAL+C4e/JVv1XJXkSp3VY8Z1BPT+Ar2s3XHlY2xi1p2j8OljvHI998bCwShVGrPTDk4kl/Qs/1Hdha+rJs5BBgDHl1+KX6fRrw8hx0qlitj5RcQk/EJbCS7O65yxeAIfJTOSrBMrQLJODihx282rS0eeR9/hzr3yXiPeQ9QtGda3xcqRCQUz0ZL4YYAduv5PWoj5HsVQTKCb4pbgUZ4MhBj2nXppt9ZquzpQ2+3NDQ3NQvSgpEszvubRFN1fjvxxXhuSMztLf1RsH56WmS0j5HwT8ykaBDn6XRjBxI4Nx9A5qCDAtDrEadFLxut+laNCidgiRy1GXpHrtcqyc7RDnMFY4MQwfbeyqNfQdzUZC4k6NXgN0OnbPxUAIyEgb1sWHIx62EkvjtdtyvGKXc7m95Wclh+jCQm7gq/oLDuXWGXVg5G3aYfvH2IGyOHDYjSeghkMfSPq6g/MV733RF0TpVlIuYschlJ7t7gG4M249e6g+yCZXJdsZBnCZu7Q8MwAgB7A04X9uZ+AVGJ2CCx7/m/1yDGYm89kAMfTs1Kw/qG1XHw8aCb4BF8OfG84d+Un+uQP1BVjdGy8SXoom2J8WfsJGunHwI1v70PsI6YTvCCRyuIfWU38cM5+R2ScVEVUT5b2bKMZUbP47UgRqM4/83mjIwCn6N6EXXWsVBGuP5vVZjz30CHSvLSgpVNwCcW/0VwS+ErTjjOmFGyyRCu4DFgYVRj3xSNZ429KnmnxVmtvZFnhYOKq43IYzYxf+hg8K2Avqf6QkmWjQWNR0mSCTyWMbkSBL+1SvX3TF55aS3wAsSY8vXQsGbeZxram9ANz+zHkFHditgY6XpWWLsvD10Ojbp8JWzFthJ51fw8grqRD/DxOV0wkhVDKZVQR6COxw3oAHaUf1cRwe7JRXPaNPgWpzin
+ QCFazaMi
+ 90hCGTwQeLn5YR6R5igt3E2gDa2LAeJCbHviggcBqUZTLXfrw5AjaZHIelAH1Ej+A8nfGDkNdycKzdTedu23sQuVkqVGGqlcCQbmj/vdEYFVkKv5JCOw7NIKxsRuJAAb/eub9XI2c3MMV4+4tAQUFmAIksSiCp9VO0wtBMS/N8WEosst/4Vs2Qk4w5r2kFG8Ln5KmuCCAPwJfCJHEqVY5B8kcse84uZ1n67y9I+FRRLHvzRoLTwC9B8x6yiwNYAvRO6sQgwTkUoMQDkyBFox3ioQoDViTKta4HlhwqVN3pt0NEgTMr3UJFIPT7MoeWBX1axDaxb1NeztoNhBompAogrtAZIDdz6BGJnsVNMcNRCTU2W+UbJJHU6joiXb/aWQIbEByrIIAMQsqMOql/Ev8TnDGWUz3IXXryH+inUZVJchV4mSkENAjFsh2mnQcIOb6UCOqE08AiRpEX2b9U3+lZ870IpE7OQP8jsdx7QogfKgQSCOcTLCvBmuYUlQlY5CjNn8lG8TfyFHRODa3YRH3xxGw+mXGukRkFRfdeoBIzJHx08Y5NjFPpqZM5EILfjtT2wMzxBBcy0a+6Xfot78GZQqnvbBI7SolrYsLc2SWnSUibSAfeQJ/tj/A97SPJoWhJK0d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,85 +177,226 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-As afs supports the fhandle interfaces there is a theoretical possibility
-that the inode created for mkdir could be found by open_by_handle_at()
-and given a dentry before d_instantiate() is called.  This would result
-in two dentries for the one directory inode, which is not permitted.
+afs needs to block lookup of dentries during unlink and rename.
+There are two reasons:
+1/ If the target is to be removed, not silly-renamed, the subsequent
+   opens cannot be allowed as the file won't exist on the server.
+2/ If the rename source is being moved between directories a lookup,
+   particularly d_revalidate, might change ->d_time asynchronously
+   with rename changing ->d_time with possible incorrect results.
 
-So this patch changes afs_mkdir() to use d_splice_alias() and to
-return the alternate dentry from ->mkdir() if appropriate.
+afs current unhashes the dentry to force a lookup which will wait on the
+directory lock, and rehashes afterwards.  This is incompatible with
+proposed changed to directory locking which will require a dentry to
+remain hashed throughout rename/unlink/etc operations.
+
+This patch copies a mechanism developed for NFS.  ->d_fsdata which is
+currently unused is now set to a non-NULL value when lookups must be
+blocked.  d_revalidate checks for this value, and waits for it to become
+NULL.
+
+->d_lock is used to ensure d_revalidate never updates ->d_time while
+->d_fsdata is set.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- fs/afs/dir.c      | 14 ++++++++++----
- fs/afs/internal.h |  1 +
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ fs/afs/afs.h      |  7 ++++++
+ fs/afs/dir.c      | 64 +++++++++++++++++++++++++++++------------------
+ fs/afs/internal.h |  5 +---
+ 3 files changed, 47 insertions(+), 29 deletions(-)
 
+diff --git a/fs/afs/afs.h b/fs/afs/afs.h
+index ec3db00bd081..019e77b08458 100644
+--- a/fs/afs/afs.h
++++ b/fs/afs/afs.h
+@@ -26,6 +26,13 @@ typedef u64			afs_volid_t;
+ typedef u64			afs_vnodeid_t;
+ typedef u64			afs_dataversion_t;
+ 
++/* This is stored in ->d_fsdata to stop d_revalidate looking at,
++ * and possibly changing, ->d_time on a dentry which is being moved
++ * between directories, and to block lookup for dentry that is
++ * being removed without silly-rename.
++ */
++#define AFS_FSDATA_BLOCKED ((void*)1)
++
+ typedef enum {
+ 	AFSVL_RWVOL,			/* read/write volume */
+ 	AFSVL_ROVOL,			/* read-only volume */
 diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 9c57614feccf..1e472768e1f1 100644
+index a0417292314c..9c57614feccf 100644
 --- a/fs/afs/dir.c
 +++ b/fs/afs/dir.c
-@@ -1248,7 +1248,7 @@ void afs_check_for_remote_deletion(struct afs_operation *op)
- /*
-  * Create a new inode for create/mkdir/symlink
-  */
--static void afs_vnode_new_inode(struct afs_operation *op)
-+static struct dentry *afs_vnode_new_inode(struct afs_operation *op)
- {
- 	struct afs_vnode_param *dvp = &op->file[0];
- 	struct afs_vnode_param *vp = &op->file[1];
-@@ -1265,7 +1265,7 @@ static void afs_vnode_new_inode(struct afs_operation *op)
- 		 * the new directory on the server.
- 		 */
- 		afs_op_accumulate_error(op, PTR_ERR(inode), 0);
--		return;
-+		return NULL;
+@@ -1034,6 +1034,10 @@ static int afs_d_revalidate_rcu(struct afs_vnode *dvnode, struct dentry *dentry)
+ 	if (!afs_check_validity(dvnode))
+ 		return -ECHILD;
+ 
++	/* A rename/unlink is pending */
++	if (dentry->d_fsdata)
++		return -ECHILD;
++
+ 	/* We only need to invalidate a dentry if the server's copy changed
+ 	 * behind our back.  If we made the change, it's no problem.  Note that
+ 	 * on a 32-bit system, we only have 32 bits in the dentry to store the
+@@ -1069,6 +1073,10 @@ static int afs_d_revalidate(struct inode *parent_dir, const struct qstr *name,
+ 	if (flags & LOOKUP_RCU)
+ 		return afs_d_revalidate_rcu(dir, dentry);
+ 
++	/* Wait for rename/unlink to complete */
++wait_for_rename:
++	wait_var_event(&dentry->d_fsdata, dentry->d_fsdata == NULL);
++
+ 	if (d_really_is_positive(dentry)) {
+ 		vnode = AFS_FS_I(d_inode(dentry));
+ 		_enter("{v={%llx:%llu} n=%pd fl=%lx},",
+@@ -1161,7 +1169,13 @@ static int afs_d_revalidate(struct inode *parent_dir, const struct qstr *name,
  	}
  
- 	vnode = AFS_FS_I(inode);
-@@ -1276,7 +1276,7 @@ static void afs_vnode_new_inode(struct afs_operation *op)
- 		afs_init_new_symlink(vnode, op);
- 	if (!afs_op_error(op))
- 		afs_cache_permit(vnode, op->key, vnode->cb_break, &vp->scb);
--	d_instantiate(op->dentry, inode);
-+	return d_splice_alias(inode, op->dentry);
- }
- 
- static void afs_create_success(struct afs_operation *op)
-@@ -1285,7 +1285,7 @@ static void afs_create_success(struct afs_operation *op)
- 	op->ctime = op->file[0].scb.status.mtime_client;
- 	afs_vnode_commit_status(op, &op->file[0]);
- 	afs_update_dentry_version(op, &op->file[0], op->dentry);
--	afs_vnode_new_inode(op);
-+	op->create.ret = afs_vnode_new_inode(op);
- }
- 
- static void afs_create_edit_dir(struct afs_operation *op)
-@@ -1356,6 +1356,12 @@ static struct dentry *afs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	op->ops		= &afs_mkdir_operation;
- 	ret = afs_do_sync_operation(op);
- 	afs_dir_unuse_cookie(dvnode, ret);
-+	if (op->create.ret) {
-+		/* Alternate dentry */
-+		if (ret == 0)
-+			return op->create.ret;
-+		dput(op->create.ret);
+ out_valid:
++	spin_lock(&dentry->d_lock);
++	if (dentry->d_fsdata) {
++		spin_unlock(&dentry->d_lock);
++		goto wait_for_rename;
 +	}
- 	return ERR_PTR(ret);
+ 	dentry->d_time = (unsigned long)dir_version;
++	spin_unlock(&dentry->d_lock);
+ out_valid_noupdate:
+ 	key_put(key);
+ 	_leave(" = 1 [valid]");
+@@ -1536,8 +1550,7 @@ static void afs_unlink_edit_dir(struct afs_operation *op)
+ static void afs_unlink_put(struct afs_operation *op)
+ {
+ 	_enter("op=%08x", op->debug_id);
+-	if (op->unlink.need_rehash && afs_op_error(op) < 0 && afs_op_error(op) != -ENOENT)
+-		d_rehash(op->dentry);
++	store_release_wake_up(&op->dentry->d_fsdata, NULL);
  }
  
+ static const struct afs_operation_ops afs_unlink_operation = {
+@@ -1591,11 +1604,7 @@ static int afs_unlink(struct inode *dir, struct dentry *dentry)
+ 		afs_op_set_error(op, afs_sillyrename(dvnode, vnode, dentry, op->key));
+ 		goto error;
+ 	}
+-	if (!d_unhashed(dentry)) {
+-		/* Prevent a race with RCU lookup. */
+-		__d_drop(dentry);
+-		op->unlink.need_rehash = true;
+-	}
++	dentry->d_fsdata = AFS_FSDATA_BLOCKED;
+ 	spin_unlock(&dentry->d_lock);
+ 
+ 	op->file[1].vnode = vnode;
+@@ -1885,9 +1894,10 @@ static void afs_rename_edit_dir(struct afs_operation *op)
+ 
+ 	_enter("op=%08x", op->debug_id);
+ 
+-	if (op->rename.rehash) {
+-		d_rehash(op->rename.rehash);
+-		op->rename.rehash = NULL;
++	if (op->rename.unblock) {
++		/* Rename has finished, so unlocks lookups to target */
++		store_release_wake_up(&op->rename.unblock->d_fsdata, NULL);
++		op->rename.unblock = NULL;
+ 	}
+ 
+ 	fscache_begin_write_operation(&orig_cres, afs_vnode_cache(orig_dvnode));
+@@ -1970,6 +1980,9 @@ static void afs_rename_exchange_edit_dir(struct afs_operation *op)
+ 
+ 		d_exchange(old_dentry, new_dentry);
+ 		up_write(&orig_dvnode->validate_lock);
++	/* dentry has been moved, so d_validate can safely proceed */
++	store_release_wake_up(&old_dentry->d_fsdata, NULL);
++
+ 	} else {
+ 		down_write(&orig_dvnode->validate_lock);
+ 		if (test_bit(AFS_VNODE_DIR_VALID, &orig_dvnode->flags) &&
+@@ -2009,11 +2022,10 @@ static void afs_rename_exchange_edit_dir(struct afs_operation *op)
+ static void afs_rename_put(struct afs_operation *op)
+ {
+ 	_enter("op=%08x", op->debug_id);
+-	if (op->rename.rehash)
+-		d_rehash(op->rename.rehash);
++	if (op->rename.unblock)
++		store_release_wake_up(&op->rename.unblock->d_fsdata, NULL);
++	store_release_wake_up(&op->dentry->d_fsdata, NULL);
+ 	dput(op->rename.tmp);
+-	if (afs_op_error(op))
+-		d_rehash(op->dentry);
+ }
+ 
+ static const struct afs_operation_ops afs_rename_operation = {
+@@ -2121,7 +2133,6 @@ static int afs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 		op->ops		= &afs_rename_noreplace_operation;
+ 	} else if (flags & RENAME_EXCHANGE) {
+ 		op->ops		= &afs_rename_exchange_operation;
+-		d_drop(new_dentry);
+ 	} else {
+ 		/* If we might displace the target, we might need to do silly
+ 		 * rename.
+@@ -2135,14 +2146,12 @@ static int afs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 		 */
+ 		if (d_is_positive(new_dentry) && !d_is_dir(new_dentry)) {
+ 			/* To prevent any new references to the target during
+-			 * the rename, we unhash the dentry in advance.
++			 * the rename, we set d_fsdata which afs_d_revalidate will wait for.
++			 * d_lock ensures d_count() and ->d_fsdata are consistent.
+ 			 */
+-			if (!d_unhashed(new_dentry)) {
+-				d_drop(new_dentry);
+-				op->rename.rehash = new_dentry;
+-			}
+-
++			spin_lock(&new_dentry->d_lock);
+ 			if (d_count(new_dentry) > 2) {
++				spin_unlock(&new_dentry->d_lock);
+ 				/* copy the target dentry's name */
+ 				op->rename.tmp = d_alloc(new_dentry->d_parent,
+ 							 &new_dentry->d_name);
+@@ -2160,8 +2169,12 @@ static int afs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 				}
+ 
+ 				op->dentry_2 = op->rename.tmp;
+-				op->rename.rehash = NULL;
+ 				op->rename.new_negative = true;
++			} else {
++				/* Block any lookups to target until the rename completes */
++				new_dentry->d_fsdata = AFS_FSDATA_BLOCKED;
++				op->rename.unblock = new_dentry;
++				spin_unlock(&new_dentry->d_lock);
+ 			}
+ 		}
+ 	}
+@@ -2172,10 +2185,11 @@ static int afs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	 * d_revalidate may see old_dentry between the op having taken place
+ 	 * and the version being updated.
+ 	 *
+-	 * So drop the old_dentry for now to make other threads go through
+-	 * lookup instead - which we hold a lock against.
++	 * So block revalidate on the old_dentry until the rename completes.
+ 	 */
+-	d_drop(old_dentry);
++	spin_lock(&old_dentry->d_lock);
++	old_dentry->d_fsdata = AFS_FSDATA_BLOCKED;
++	spin_unlock(&old_dentry->d_lock);
+ 
+ 	ret = afs_do_sync_operation(op);
+ 	if (ret == -ENOTSUPP)
 diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index f2898ce9c0e6..ce94f10a14c0 100644
+index 106a7fe06b56..f2898ce9c0e6 100644
 --- a/fs/afs/internal.h
 +++ b/fs/afs/internal.h
-@@ -889,6 +889,7 @@ struct afs_operation {
- 			int	reason;		/* enum afs_edit_dir_reason */
- 			mode_t	mode;
+@@ -891,10 +891,7 @@ struct afs_operation {
  			const char *symlink;
-+			struct dentry *ret;
  		} create;
  		struct {
- 			struct dentry	*unblock;
+-			bool	need_rehash;
+-		} unlink;
+-		struct {
+-			struct dentry	*rehash;
++			struct dentry	*unblock;
+ 			struct dentry	*tmp;
+ 			unsigned int	rename_flags;
+ 			bool		new_negative;
 -- 
 2.50.0.107.gf914562f5916.dirty
 
