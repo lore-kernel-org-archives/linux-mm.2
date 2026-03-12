@@ -4,86 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A73F1106ACE5
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F728106ACE5
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15AC86B00A5; Thu, 12 Mar 2026 15:54:47 -0400 (EDT)
+	id 686576B00A1; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FE796B00A7; Thu, 12 Mar 2026 15:54:47 -0400 (EDT)
+	id 634636B00A2; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 004C86B00A8; Thu, 12 Mar 2026 15:54:46 -0400 (EDT)
+	id 533266B00A4; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E35C16B00A5
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:54:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 40AB56B00A1
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B1ED585BA
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:54:46 +0000 (UTC)
-X-FDA: 84538463772.14.8011158
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE8978AFE7
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:58:36 +0000 (UTC)
+X-FDA: 84538473432.14.FD6D6F5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9B69D180008
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:54:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iSzk4avl;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id EA67A20011
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:58:34 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fJn00l88;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773345284;
+	s=arc-20220608; t=1773345515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PfkOcqhXFxA9PiSl14DA3G1JNqOSdTvV2t/DRJQEYDU=;
-	b=FfGKvQ+5Eg6f+/HQcbS5lQ/wioUxglhTGJSBreAaPQ8qPLmw+DdSbpBJgA+J8jkHTaYzDj
-	wTKActo+qudhOhpyF/8QLOXARCSIFVWWKm09eWuNpdh+NDD8kjV7GnfMZoPxBggLFJTF9F
-	xS0UAcsCvLoviwRhQ/jGVaBhmIRoseo=
+	bh=K5tDeaPNlH4FbdOApt/fipBfHit079U3MSkOKJpajvA=;
+	b=4Xt3kbW1kG3fXoZG48o7Jy277RlpE3fsPIYRntW1gU9ak96dd5oK0nlKEYszN6hlEFZc7o
+	9j68iYmqbZnsOUPU4IsQDgGDn9H513uQp35BKUkpPYjCS+PJP/QQa84aLa0g9osRdlU5up
+	bK1omFeFeqD0J/h0dnxB/ZmzA7qx12k=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iSzk4avl;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fJn00l88;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773345284; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773345515; a=rsa-sha256;
 	cv=none;
-	b=wV29by6ojCPD/i43+5BDFLe0BFgS5l4TrmUMhy2Oh+tfIla5iioVsTLi6nIy2ryL8bDIfz
-	ALdHYOUdYzzCYE+zi2YUl1dvPLsc+J+HymZl9SWuJcsIdMTOhqEHCZmLtxY8rKU9voziBT
-	x9pnKHMNy0MA/4V6jECZWhb6EfAakkg=
+	b=lpuS+vq1joE1k3Ky5Wky7QOeZUUy+WGmt8jTxOa23JG+gWhawagMKk+PG1LpYODkM4LOCP
+	dNesfARTnOIh3j7IYP+XW3Mx56rYFAPgHbJQ7cbJvaqxRqrvkMrPt1T7HX01sOuoku3dw9
+	MmYMR3hh90jzGXo6UlA9K48WnMqyKhE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A77984441A;
-	Thu, 12 Mar 2026 19:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1A3C4CEF7;
-	Thu, 12 Mar 2026 19:54:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EFF1343F1E;
+	Thu, 12 Mar 2026 19:58:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF02C19425;
+	Thu, 12 Mar 2026 19:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773345283;
-	bh=OBCfG9u3DvXwt1MtllXM5gETtRktObPfLgkWnIlyb+M=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=iSzk4avlrOlfEVM4USEyeYBoWRm+qcJUIdyTVAkiCGccUnxBLT2ozYh694LRjNcSl
-	 yE5/I/pQwTbe/scPpoqiiq/w8grtIXOHd6DueNrsu3q1fxq2gTr8f84403lWWgek0/
-	 4ZJqFJXu/B97G2XklnJ+Bo9FUzdDR+fgg8YQiXHdGVsJo6DKKkrsLeuyYZ6euFRkIc
-	 7L1CihLA7xiZAJpgra0LNFhrP5KKR8qVCF4STk3TN3/sK+jyZ4D4UubbLO3bScMzz0
-	 YlNxJxCdafMWaznDB0r9lh17u2idN7EduC+ODZM+SQcpORT5IGhs6xTVj4GTzombgf
-	 BPWLC1FlPwTqQ==
-Message-ID: <39436a71-adc3-4ca1-8c4a-87dd4cc955d2@kernel.org>
-Date: Thu, 12 Mar 2026 20:54:36 +0100
+	s=k20201202; t=1773345513;
+	bh=2oAIBAbeD5lh0AmLKC7kBXJJ4zqW2tjxgJK2/n54DlM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fJn00l883ztTj0W6a4qKGBTVC4OuFVFH0jACQVcA/Ph1OECYYIL40jPNoxXYaSx+6
+	 BoLGgJkVwTuw3r6m6XwSUBu4wXDID2H4TyJ8EBPplSRMPvdtR+rEzcLkuuerqdFqbV
+	 ZpV1+P4TKMLt6Ro8eYpYBV2abAfYDuI5wMjU2H9dlCT9yR7fmj7XJ83nDGO2S4yjB/
+	 87Zj81Psth2YSETQbC9odXcHDk9VMD+o77BMl/dlGFmB0V31dDl7Vz1kwhd9XleeCI
+	 DTfhEZAZvqaXK+IUAXo5KdFASU5skkR1+Tz5S9BIuii+YfkygptYY2GEp5G2/RpJsx
+	 QKbug7dh6Ii/A==
+Message-ID: <76c5576a-65d2-4dde-a969-ef6577855864@kernel.org>
+Date: Thu, 12 Mar 2026 20:58:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] mm: Relocate the page table ceiling and floor
- definitions
+Subject: Re: [PATCH v5 0/6] Migrate on fault for device pages
+To: mpenttil@redhat.com, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>
+References: <20260211081301.2940672-1-mpenttil@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org,
- Matthew Wilcox <willy@infradead.org>, SeongJae Park <sj@kernel.org>
-References: <20260121164946.2093480-1-Liam.Howlett@oracle.com>
- <20260121164946.2093480-2-Liam.Howlett@oracle.com>
- <231fd45e-3c0a-4c9f-917d-255d03fed6f2@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -129,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <231fd45e-3c0a-4c9f-917d-255d03fed6f2@kernel.org>
+In-Reply-To: <20260211081301.2940672-1-mpenttil@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9B69D180008
-X-Stat-Signature: xbexqxja97yxeybdied7aedyrxieq969
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EA67A20011
+X-Stat-Signature: kf14p5m7mogrifd3ss9sgyi1ww8mbub5
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773345284-244175
-X-HE-Meta: U2FsdGVkX1+3i+ne0oKkbR19OzBRUPozVBzFHe7CUAnphSY9wqGXqFjFMUjgkIrA8Is5CUSxCJJJ7MUT1kkR9HxGArKsgHu2lUDC4T6zRxUpHK2tHs6XnJT2PbeAQYMtGvZDDb4tiF6ft3u7/US1WM5fZKh8IUbCfTx+vvCU6tWWuqFUa3ZP/j88Psfz0sXa+ynBcvHAWeNGO4cmeoAXzwIOXA6evgacNuJSR6bhwzr5Voj1cNjaRMm0wLGYdfINhxNTWdVGJmP3OH5joYMC38NUjQhQ4Q4HzyO/me8sktyl5HY3Ud0AoyNIrAElYXSgTtIU0wTCLjgiIgGSTPjLhmvvugRNWJsUsw4JNw2jvLHwXMjOp6qScUmdE6KNEMrgdl77vm8EVT9FmI6+6s4sLJ7No1XjApeIN0HkR9aEdynw1J6TI98yi5jj26qmpArLndSc+zHL3ujAQmV4NeNENXu5s7Bz1kJ7wSg3gnJ2FEitcJpl82KRFOqYTPhsCGCp3CLD3AuQ/NuZXbVa1tqKy8Uwur8E2gjb2rdox8j6pGrIAR3XwK7wFuprib2NDQOBflNfYpZHNcskD2s0YdKB/g2fodAl93TEL89E/+4awv3VaIvAYhYZA4I8ZkM7z5rZ+6o00ZjPNVSny8dCcXWX2zKQh210I3hZw/n19m+Yde8PIAy6Fg7lFfih9QWvvNzrCC7G9wWk1SgyciVKh/ZOqnTeYDRj0uozyeDTACzF4FfCbjQFFwBcwrz5GPGfNTYsOnYgUWeCi5WO5pVv6VX2VUW8XCGYlPwB3/eKMeQYy97y8ol+f9k4Ol4aKqaCiHlMVd1jh4NwbM7HPzfmInestMMRfNIy4DPProfch6ydcVl/shfU4Paq0QhExKye6JvwGR6txbDONkJZ7DLFYdu/9QzBXorZd/iRzsYuEUr9V16LubA2AVhvCqFuHHlj66LBkeEyW8Cy5kUabq1+oRV
- yBNSIoUk
- rUVe/uh9KUEd1Ej7JSVf5sF2d0u96/Pqx5V6Ip3kO/lsmkySWo6S4CU97+ntFcJdxbDtYj/55rmpqL4JqebeNaotSodsbcvsUELqjIbyLjzRA2cmEWd5YmfGNTPlT/Eszl6eSqs7nh1VxE50V42knhhxIRzortwcTDxyL47dJSTs35+GsZ22et5aIrJU1IwXqxrbOU1osXot4r8AQYFUBzQwgAbBC/6fCFiCQ442EbfcOChgWOsA1IpdMruWQu5brRiHODsT4jYsCxA0yOr/XtTE5SNkaw4zdoae17qnOd8glBcvSDH0m1gmXUA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773345514-259180
+X-HE-Meta: U2FsdGVkX18fxyEzO5kghCsfn6Me/7TWv3Gu1FzNO0EuCvNxmf/Qa7IQ+psctN1CeFDde2A+yNhtd1oEwySSmOQOmBwrNVX5MRMB+mBcj5NPKuZGRcTbQiaHm93lvhDWNiHI3npjFvOo2sdpYLMFrdnVSgAmN7WJPVF4RPPDlVG0jSCs92EmfwuT0STALjvUICUYuPvC1aZy4DHyHdyrmREHRAfApekZ7CehU7GG4fxt89zWM8QdNP9Vb4hQNPRS6Li+HaBnlXharhXs3JlnzUqi1eIMyHGvSQ1yN/LswTygs7ohHrgZgzbdCYL/HXk+YdWlcomFx871NJ6y90bTP5AtQur7gyBsWbqmnL76wslMxSWoqOibxjYjRHxWbk06/k20nUR9kZuxcTeEL8kvH+qUFxkKH3qGUPr+7kaU+jrzTVEryLM1LGk6WAyoX/Vy9niwe7WYyf7Dwwidth/3X6nssjRURCUMTQBPGByOukw6+soEv2RVyEYmbLHYeI+y4RM7Acivob1JRsnGuvxBBA3eRHF8yFQ/almhaXYV0ivnJfhp38EgcNN+w3RUyK9q9dR9FvlgliZWH2bPUpBZHAj71ScDMhzqaIjAYDNybQPnFNzPLXvQOUVg//cXGdo55gOTHCJ01+FEuiOXZj9+qvqYuxjbCjfaK6/GmBOBt5Iz3/S+SGbD42snjIFrxdVgfr2JMuFzvJe8AGqjHh8zfAmHVIR3aPjRymxJBSkxp077jrOe2iHDnV6pfnbK3AXPQ6/KuJvkJxfqeoBrPc9vzbEPETCaB0tfWB3SfUrVM0jveZ89/2i1zjddxSKj+/wZFFVGNLNyrpIYTW9WG/sLv8haPP4lsjzBP7vBQfw+IS7OIBsyzxMtrpZfqNVLZjjzGkx4pbtjME+RYF3RaNAsw9W/XMIynqC8i/Pph6Vbe1fGMKMFLkHGiHJvSBitQ+jgIjgA7QXdZjx9ATuttbG
+ JJezR9oU
+ DoCJF32dIg4GWKrpAWgtqq8yTq0ia55di+Q7EMrOnUHh50E18CZIzrMitRlII3C/iUgGojlzaTbqP+nzfE8gGtLptCSLkjSu/3H/THd7Z+3PVoUIRQPvaR6aQUujdQyGHDXGJs3wAcUvHLZZw4b6jULxp8hB8OFHriubqH6jpbiCvxlOAjs2sJu9OzAHKrgGtnIjvM7nnxumLZa+3ePEH8A+Ez6AHylyrvXPrYp2mbXFnlKLrSgRi1fdp3xegDjGTNQlzdkBNRibYfjanr8NcgVo1q0PmA6FSKSq0jisv+3Obp6bqxqwKZebc1Cd2Nj01QzT3HH18a6tCRw6LSKryNGg0p13E1HKrL+8A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,43 +139,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 20:53, David Hildenbrand (Arm) wrote:
-> On 1/21/26 17:49, Liam R. Howlett wrote:
->> pgtables.h defines a fallback for ceiling and floor of the page tables
->> within the CONFIG_MMU section.  Moving the definitions to outside the
->> CONFIG_MMU Allows for using them in generic code.
->>
->> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Suggested-by: SeongJae Park <sj@kernel.org>
->> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->> ---
+On 2/11/26 09:12, mpenttil@redhat.com wrote:
+> From: Mika Penttilä <mpenttil@redhat.com>
 > 
+> Currently, the way device page faulting and migration works
+> is not optimal, if you want to do both fault handling and
+> migration at once.
 > 
-> [...]
+> Being able to migrate not present pages (or pages mapped with incorrect
+> permissions, eg. COW) to the GPU requires doing either of the
+> following sequences:
 > 
->> +
->>  /*
->>   * No-op macros that just return the current protection value. Defined here
->>   * because these macros can be used even if CONFIG_MMU is not defined.
->> diff --git a/mm/vma_internal.h b/mm/vma_internal.h
->> index 2f05735ff190c..2da6d224c1a85 100644
->> --- a/mm/vma_internal.h
->> +++ b/mm/vma_internal.h
->> @@ -46,6 +46,7 @@
->>  #include <linux/swap.h>
->>  #include <linux/uprobes.h>
->>  #include <linux/userfaultfd_k.h>
->> +#include <linux/pgtable.h>
->>  
->>  #include <asm/current.h>
->>  #include <asm/tlb.h>
+> 1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
+> 2. migrate_vma_*() - migrate the pages
 > 
-> I was also confused by that change. But it's not worth a respin :)
+> Or:
 > 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> 1. migrate_vma_*() - migrate present pages
+> 2. If non-present pages detected by migrate_vma_*():
+>    a) call hmm_range_fault() to fault pages in
+>    b) call migrate_vma_*() again to migrate now present pages
 > 
+> The problem with the first sequence is that you always have to do two
+> page walks even when most of the time the pages are present or zero page
+> mappings so the common case takes a performance hit.
+> 
+> The second sequence is better for the common case, but far worse if
+> pages aren't present because now you have to walk the page tables three
+> times (once to find the page is not present, once so hmm_range_fault()
+> can find a non-present page to fault in and once again to setup the
+> migration). It is also tricky to code correctly. One page table walk
+> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
+> 
+> We should be able to walk the page table once, faulting
+> pages in as required and replacing them with migration entries if
+> requested.
+> 
+> Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
+> which tells to prepare for migration also during fault handling.
+> Also, for the migrate_vma_setup() call paths, a flag, MIGRATE_VMA_FAULT,
+> is added to tell to add fault handling to migrate.
+> 
+> One extra benefit of migrating with hmm_range_fault() path
+> is the migrate_vma.vma gets populated, so no need to
+> retrieve that separataly.
+> 
+> Tested in X86-64 VM with HMM test device, passing the selftests.
+> For performance, the migrate throughput tests from the selftests
+> show similar numbers (within error margin) as unmodified kernel.
+> Tested also rebased on the
+> "Remove device private pages from physical address space" series:
+> https://lore.kernel.org/linux-mm/20260130111050.53670-1-jniethe@nvidia.com/
+> plus a small patch to adjust with no problems.
 
-Ah, and now realizing that this already hit upstream.
+Stumbling over this in my backlog, so far we have to RB tags.
+
+I'm going to take a look at the core MM bits (soon I hope), but it would
+be great if other people could review the HMM bits and provide proper tags.
 
 -- 
 Cheers,
