@@ -4,83 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82819105A587
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 11:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 963C6105A589
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 11:36:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20426B00A5; Thu, 12 Mar 2026 07:27:41 -0400 (EDT)
+	id CD3236B009E; Thu, 12 Mar 2026 07:36:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC3896B00A7; Thu, 12 Mar 2026 07:27:41 -0400 (EDT)
+	id C80E16B00A0; Thu, 12 Mar 2026 07:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0D976B00A8; Thu, 12 Mar 2026 07:27:41 -0400 (EDT)
+	id B555D6B00A2; Thu, 12 Mar 2026 07:36:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF0766B00A5
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:27:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83A691C0DD
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:27:41 +0000 (UTC)
-X-FDA: 84537185922.27.EE3EA95
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 25A0AC0009
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:27:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BvxIIgj2;
-	spf=pass (imf10.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A422B6B009E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:36:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F28387B06
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:36:09 +0000 (UTC)
+X-FDA: 84537207258.14.9DC4D31
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EB43340007
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 11:36:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZOyKrkDp;
+	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773314859;
+	s=arc-20220608; t=1773315367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DPXJyGBg0VCD2dD6/oTF6b0wi6zPzX8RP3M5CwtcH6o=;
-	b=NOVPV15LSrdEduCPSSISVUBxP/pd2YZqh3vdgEXAyXNb3dsrAxNQ26Rs4oY0cfzRbS/D6m
-	LsQBPDe6V6hJ/bnpWpxDhMi1yVoGPYzU88DTQgwiHNnLoPcxJrFQSlBBa9WUrwQoYthh7k
-	n7dHpKOOX4s4rVqfdynpDZj66hIsONM=
+	bh=3fHlkrCbO2PHI4iRbAAS4ONOWqi88RL/qFN7un/ieAQ=;
+	b=4EXxWr70HzJTeKw8iZ0XhHGjR/z8NjZN5JZBT2G6r/Nq3zHD14R3dZ2EN8dZ6l1tuq+oqe
+	aOw4xBr3qJvJcb01oxKrEinyLuOtPy7mf92ncKAosaV11Rn/qphClnrO/oLRoSWDOO040X
+	88A6kq3NOszhdeZTmwNRc2H63px2Atw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BvxIIgj2;
-	spf=pass (imf10.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773314860; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZOyKrkDp;
+	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773315367; a=rsa-sha256;
 	cv=none;
-	b=psIFMBvyF2oWfns5dfQjOvfZJ5oV4ev5cFqelDHHB4RyCK9YFcV9+286n5kOIU0dE8VV3f
-	SVTzSeVQrjC/xrEw+uIX/dnAdV8nALXCGxctzc9hgku5Z1bw111P/pRxBla4DMFPY6sdYq
-	p1AzISxW1BocAR0kuxEjoHYlD0ebgRg=
-Date: Thu, 12 Mar 2026 19:26:28 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773314855;
+	b=mIaJfyKy2ycLhFgdAKieeRz0M0MbRauUsoATvEEpesTJiE81aLCUGLGbRQL+1Nf2+Gbj7C
+	iM3FWH//YuNWuZcntejbFpmIcT3vD/sd7QyQM/9KiaXf0JFAU3GdDd31Oarz7jf5/th97b
+	1Wh7VOuvNP9WdRwCH3VEXy1uIbCS3ss=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773315366;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DPXJyGBg0VCD2dD6/oTF6b0wi6zPzX8RP3M5CwtcH6o=;
-	b=BvxIIgj2ecH+uS8Yt21D0T/FTb2aMEZTeNpq4psgOjBtMVRy4TtcGDCvGlQPr2slKw6bgd
-	YTiowX1jStlVqYaConFXu+ZQLUytz7rO+5dRNeva1uRhRoZyyDuZmmwFj0Bl+YN9R5upfK
-	I6ugQpDNy4U3gWWyjE4o4ufLodZwLzM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <fbssy5y6kpyjlefacmabuojiustr3nocj7timpgejpchkj3lw7@qfss5ffmwdxa>
-References: <aZ0SbIqaIkwoW2mB@fedora>
+	bh=3fHlkrCbO2PHI4iRbAAS4ONOWqi88RL/qFN7un/ieAQ=;
+	b=ZOyKrkDpJpfZ/fs2J6PXUwr7QzMJ6sWqJM4mlPWcSVSXGWr4sWEB1kST98svBtC434awNV
+	Bxgrs+0lyeR0M/5lcPt9vMAIZ7MU61eEI2pFduZLvr6SGLhVX00wndwU2FsJJOT+VuUkKw
+	mvsSzbK9hB2zAm1P3HiS8J0UJyXj20Q=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-a-mxGn8QPkmogGLeUjguoQ-1; Thu, 12 Mar 2026 07:36:03 -0400
+X-MC-Unique: a-mxGn8QPkmogGLeUjguoQ-1
+X-Mimecast-MFC-AGG-ID: a-mxGn8QPkmogGLeUjguoQ_1773315362
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-829b9320a2cso421081b3a.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 04:36:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773315362; x=1773920162;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3fHlkrCbO2PHI4iRbAAS4ONOWqi88RL/qFN7un/ieAQ=;
+        b=HCT5KmJYuNIHdL4idKP/Kza7DsXGQUOdKUUvmuydaLAGeUOVvwOpLMfSFd/6KJhTAb
+         s9a2vCEKAg/vFtua/AdfCKicOPi7mbP/EZGw9gWl3m+ERD1Taz/CmssEZLSpFrq2hve4
+         rpwM5gzKShboZfKQ5QQpGxiWYvC/VJVsKkXO83lfJzSR/ij5jGuifHwvAlzpJgE58kUV
+         mHtl9CTz6qI+pPWCodrBlmIGptBygtoaYDyhfjdbd+YARC11IA+/KUeKXWTDuynhuVGI
+         4utPe6fHmhxcCYFYsDCNlwKNXSBZ2pQ+hQQ0xYhL1CXyzH+c0hM9K3dnVPAXDRSnqJK5
+         5VJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVU/K0lyJxyXIOgqXj1kuoLf5+PdpNEaLknlGpI7bA5/G/Fb9j2vEdf6KJEq8eiyOAFxVOT7XF1/w==@kvack.org
+X-Gm-Message-State: AOJu0YwvONLKGH/APKV5psUpfxhIskXegq47NxytilI1xO8VT81Dc5ca
+	58Aqdmm8l8g2A6gh2/1Qml3F9WwzJdU8hDU7mN0WbiBfLl4f/11qfcJ+lVI4pFKJAzvLPYMauH3
+	2ClARcHIvTaeaRho/Ks4t1NksAvWJoEht3cNvJknsJvEht3zZWwzmB26fDzlNnFPlf7Q+3AjZ0R
+	oGh5cuwWp5Izp9Hpa8XDMiKI8As+Q=
+X-Gm-Gg: ATEYQzw6qTetRWkiWtKJMsrAPg7B2iC+glkh47xa1Q/4sreBK5cbXOEzOkj1GBp7w1a
+	9w/9OVjUpR1F5TPqWVVZkAoRpRI0eaVLc05FYubL/ypc6jCTrOc+qJkmhzYd5HEUQpmvWtHPnVt
+	Gm22oNuj0l+MD/o2ZviQHeIMufIpXhmkFTM0OMfLSrgsV06GwRjRQcQ93mnD3aHTGHu91oYAHlQ
+	n78Ja0=
+X-Received: by 2002:a05:6a00:98d:b0:829:88e7:c88b with SMTP id d2e1a72fcca58-829f6ea743fmr5126206b3a.19.1773315361903;
+        Thu, 12 Mar 2026 04:36:01 -0700 (PDT)
+X-Received: by 2002:a05:6a00:98d:b0:829:88e7:c88b with SMTP id
+ d2e1a72fcca58-829f6ea743fmr5126173b3a.19.1773315361494; Thu, 12 Mar 2026
+ 04:36:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ0SbIqaIkwoW2mB@fedora>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 25A0AC0009
-X-Stat-Signature: m8jns1wr1df4bebd4139twthxb1ftnkc
+References: <20260312112612.633138-1-chuhu@redhat.com>
+In-Reply-To: <20260312112612.633138-1-chuhu@redhat.com>
+From: Chunyu Hu <chuhu@redhat.com>
+Date: Thu, 12 Mar 2026 19:35:50 +0800
+X-Gm-Features: AaiRm520E5Cumg1b9GqcrQ6F2UD01l8-iGvUSDUFLPXE3ZB0WaFFk3KmiIqlLAg
+Message-ID: <CAKJHmxyw1gRega+Zroc=_bO7CRUY_d+TmJHoRY5fexukFRRdGA@mail.gmail.com>
+Subject: Re: [PATCH 0/4] selftests/mm: skip several tests when thp is not available
+To: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JwQZV1K5CtH6h4w8UIqikmja1pO9HHphPQf10qVK1LE_1773315362
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative; boundary="000000000000327676064cd228cf"
 X-Rspam-User: 
-X-HE-Tag: 1773314857-340448
-X-HE-Meta: U2FsdGVkX18GI6YA1ibEQDUt2HhaPly2TxbLoroAJp3jk4J+Z7UKmYmy4ntvQPI/HY8fMg9cCKKnGOniCDp9+SY3IEDyyRmA4mdqd4yOTjxTLk2TJ+lhL7JA03ORl1FaOy6Xfq/utHZ0qFb3bR/ND5nv7RXLV05c5UBl3kNbCtWDC1nN1sEoPMVQMCRKF28skdZRFqxd7bvxFnJLCf6MkwgJj5bPp2h1ONRlwoCak2+ib2xbXjUyahFMcxjJRhK5tLmK02gh1/E06QtYRwu2DNrSQ877k/8zkdvtXHa07RRyZkL8We9Qtd5uagL8KNoF0xsdWLzuo8MRgRXvXCOESA8FvvCSNA5oY9VmG8iVKqzLtlFjbGADOVeOYgwC2GaL1KUMzpsuIpTdsluo4Ui/uHHB3IFqXvYxPJILBBxwLbZJL9lBWbeFLgLt5mT7qQMre9FvD9dZ9eitKvkY7EuV/XagNQGEkIukIIVDzD5o65cussNUcIQY/PkYmtaKfCN+wXojSQbZVey7ltAX6I/12n1cmzu/OSdTdA899hsUdXt+oKi9QgGmQtSa1Y2o8paCijwk4IjfA+X43EkMTUPfcfYKKGgn0sicNfjUiZLUwFz0yy2mosh1R/lhRAjbxHvjv9L+e6Yk/8VBlmR3POCvMUBQkzQhL+4nI+40m0m72KEpdwDPlmye1ktXdgPhiscbRJu/q2ZtYss6Easom0y7jSgCEhjXfVRNKuUud13ReSMeAWXG1wIAYcfh2tamLC4HUwj3uwraFv4P0QotdFG4Zpt4pGhaIRDZ7WwJ5A3t7Q2TZI33nN+RiJy+Y0C5rNFiTgZ+oaZKSB0I3AZdP/bXyD/CUjCdPh1aSE6AMNe46XRpv+MOSXVRt5kcIVcMwid8+WiyOewG2KCmlFxniZAfNkigSelAJXurNs7UqfOYMwWp2fYKu5nVw1e9WAt4EOwBIOpr1a8NWBLslNaMgae
- 804XENlw
- AF485/BK/1s+y/kfcwg9vdQ3ZmhAYtekKtf62wSDv5Jqw4G563B6SUP2/61kiJgmpvsW4lqg79JzjSh104cnieJA0SJQHiVQcrYZMAV9nI71+Qeteu1Ba8uOi7pRrKdZvtk4MXh4J+e8jiveEouAO2ncZUvGmsPVkpQLrstWT9ggomKHFtQIbIb0YwR4Px38U/yxlCAzuakeSW68=
+X-Rspamd-Queue-Id: EB43340007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: uingoinf6rmqgeidmkez18k31foh9uu4
+X-HE-Tag: 1773315366-557234
+X-HE-Meta: U2FsdGVkX1+zjraqJqqPV+RQ61H7VINAw2VDNN3OF44kccU4jO1wMjtswHFYR9z6zE6ihhIL2tj/V2Yrm2ORzt3YsnlvoeuKokdMbzrg+wioxA3NpQPc8MxLKrFnoyUWxKMU/VfYKb/7Gl8f6LjY3YB5E2f3aII8YYiZU1ebbi+dguAARGn+Jf/pvLSezxwIf33hQ8Y8oYFWe/YA6+ZfwMrcpOqHVGPAM+SLDTID7lvzOiJqudLOPiVTb3SjsYDFYVOWsaGV2JyXM/Yo6vv5/0N0RP3k4wAZe789wTl8/ve7OHoLMw3psTALN0m6pMO17pkxR8r3RRUOZ6dvjG64+e64ZmCE1DWCWADfR+MyWgQFO+CUEY9Qwg2iqTnOrbHWMA5Y4iHZYtlkin5d3GeqWqwW29UFHtGiQMszDxiKQIy/qsxzV913WZ8Vx7vmkXT0RS3DNo3EifurXQZPf0TG2DU8WwDmEMzVGOa/sQPDfPtE3g6Wqosi+/3NSlYWWB3gSNA/Gwy+f3VzoK/nn4P5P0gggx8tisqrshX7rjMTonoGXLth+oHT3dlhvj89V85gb9V0NGKfVqBfpc1jHuIpQwolUzK85jUoSqlEPHjdKrn88V72Gb36PYR2Kc1G3xIHmGZJoz7NrPdjLxXOSAfCDJ537MENBQz2XpmpHCDR3qhHC0UJpmnzDbj4rGRBhX4gKvXbRA76bEvKXXfklLqwiJmCDrY0apQb9RiivXA4D5YPgvJdusSRy7Zfl7vzLcLvVe8rCJeFpKjiguebG6IOBVSKTXZCDO2XHUszzUeE31IeeLuphMmw/OeSJQQ3O8+5ZiAlEI1BJ4dSnEFjKFmHLdXmIs1Dlqvwkd2ROoHYaOsenezTPjKjbx+38lALP/W8NcyrswpZF/ylOtG4kUx8gAQtD2xcgQIonpg2f/UMajt/6fLdhV7K7FAGfiKE9bdqGRvNlk1/qyS3NdwUxc9
+ XRbu7nVO
+ 7hzzLjAUwtT4l2clCey6e+zpc4IxvTtCWvTfEozlxrqcvS2ZManEO9xrOVKfKT+Rj9jUXbqJT/Y+iej7LLIxPri3d3kmJXYdzZOC0eljhNicRUHua3x00rbsWU/hYX69MtiEIyfG45j2l5zd1wvMxs2w1sRbaK04YW/Kq4cbmBU7a6t+qw13GczQpQUa8Tk+P+CBcmFSksAzGv6rfBoy/6YJOd9i6R0xUDik3jMLHJgSvli6rJ2iSkfyLvmvBHHTgcGDwRTimKO3pnsuJqfwe7mNX2vTzG6hXyfDFVkZqIK+3028vT75fuKeTrXf3lUC63NEAvQPFntcKRt//jN5WKkXLFso3MKa3YxDzb6F2vPl1JwtoLp1F8pPUdpvhA4uoHXxx14MPhWb8cENuRNANypaQ2cgDlOF3IUR3Amyf94QvDeg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,95 +125,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
-> Hello Vlastimil and MM guys,
-> 
-> The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
-> 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
-> performance regression for workloads with persistent cross-CPU
-> alloc/free patterns. ublk null target benchmark IOPS drops
-> significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
-> drop).
-> 
-> Bisecting within the sheaves series is blocked by a kernel panic at
-> 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
-> paths"), so the exact first bad commit could not be identified.
-> 
-> Reproducer
-> ==========
-> 
-> Hardware: NUMA machine with >= 32 CPUs
-> Kernel:   v7.0-rc (with slab/for-7.0/sheaves merged)
-> 
->     # build kublk selftest
->     make -C tools/testing/selftests/ublk/
-> 
->     # create ublk null target device with 16 queues
->     tools/testing/selftests/ublk/kublk add -t null -q 16
-> 
->     # run fio/t/io_uring benchmark: 16 jobs, 20 seconds, non-polled
->     taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-> 
->     # cleanup
->     tools/testing/selftests/ublk/kublk del -n 0
-> 
-> Good: v6.19 (and 41f1a08645ab, the mainline parent of the slab merge)
-> Bad:  815c8e35511d (Merge branch 'slab/for-7.0/sheaves' into slab/for-next)
-> 
+--000000000000327676064cd228cf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ming,
+On Thu, Mar 12, 2026 at 7:26=E2=80=AFPM Chunyu Hu <chuhu@redhat.com> wrote:
 
-I also have a similar machine, but my test results show that the IOPS is below
-1M, only around 900K. That seems quite strange to me.
+> There are several tests requires transprarent hugepages, when run on thp
+> disabled kernel such as realtime kernel, there will be false positve.
+> Mark those tests as skip when thp is not available.
+>
+> Chunye Hu (4):
+>   selftests/mm/guard-regions: skip collapse test when thp not enabled
+>   selftests/mm: soft-dirty: skip two tests when thp not available
+>   selftests/mm: split_huge_page_test: skip the test when thp not
+>     available
+>   selftests/mm: transhuge_stress: skip the test when thp not available
+>
+>  tools/testing/selftests/mm/guard-regions.c        | 4 ++++
+>  tools/testing/selftests/mm/soft-dirty.c           | 4 +++-
+>  tools/testing/selftests/mm/split_huge_page_test.c | 9 +++++++--
+>  tools/testing/selftests/mm/transhuge-stress.c     | 4 ++++
+>  4 files changed, 18 insertions(+), 3 deletions(-)
+>
 
-My test commands are:
-
-```bash
-tools/testing/selftests/ublk/kublk add -t null -q 16
-taskset -c 24-47 /home/haolee/fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-```
-
-Below are my machine numa info. Could there be something configured incorrectly
-on my side?
-
-available: 8 nodes (0-7)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-node 0 size: 193175 MB
-node 0 free: 164227 MB
-node 1 cpus: 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
-node 1 size: 0 MB
-node 1 free: 0 MB
-node 2 cpus: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
-node 2 size: 0 MB
-node 2 free: 0 MB
-node 3 cpus: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
-node 3 size: 0 MB
-node 3 free: 0 MB
-node 4 cpus: 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119
-node 4 size: 193434 MB
-node 4 free: 189559 MB
-node 5 cpus: 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
-node 5 size: 0 MB
-node 5 free: 0 MB
-node 6 cpus: 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167
-node 6 size: 0 MB
-node 6 free: 0 MB
-node 7 cpus: 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191
-node 7 size: 0 MB
-node 7 free: 0 MB
-node distances:
-node   0   1   2   3   4   5   6   7
-  0:  10  12  12  12  32  32  32  32
-  1:  12  10  12  12  32  32  32  32
-  2:  12  12  10  12  32  32  32  32
-  3:  12  12  12  10  32  32  32  32
-  4:  32  32  32  32  10  12  12  12
-  5:  32  32  32  32  12  10  12  12
-  6:  32  32  32  32  12  12  10  12
-  7:  32  32  32  32  12  12  12  10
+Apologies, a duplicate patch 2/4  was sent with minor different titles,
+I'll resend the patches.
 
 
--- 
+
+>
+>
+> base-commit: 80234b5ab240f52fa45d201e899e207b9265ef91
+> --
+> 2.53.0
+>
+>
+
+--=20
+----
 Thanks,
-Hao
+Chunyu Hu
+
+--000000000000327676064cd228cf
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-size:small"><br></div></div><br><div class=3D"gmail_quote gmail_quote_con=
+tainer"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Mar 12, 2026 at 7:26=
+=E2=80=AFPM Chunyu Hu &lt;<a href=3D"mailto:chuhu@redhat.com">chuhu@redhat.=
+com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">There are several tests requires transprarent hugepages, when run on thp=
+<br>
+disabled kernel such as realtime kernel, there will be false positve.<br>
+Mark those tests as skip when thp is not available.<br>
+<br>
+Chunye Hu (4):<br>
+=C2=A0 selftests/mm/guard-regions: skip collapse test when thp not enabled<=
+br>
+=C2=A0 selftests/mm: soft-dirty: skip two tests when thp not available<br>
+=C2=A0 selftests/mm: split_huge_page_test: skip the test when thp not<br>
+=C2=A0 =C2=A0 available<br>
+=C2=A0 selftests/mm: transhuge_stress: skip the test when thp not available=
+<br>
+<br>
+=C2=A0tools/testing/selftests/mm/guard-regions.c=C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ | 4 ++++<br>
+=C2=A0tools/testing/selftests/mm/soft-dirty.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0| 4 +++-<br>
+=C2=A0tools/testing/selftests/mm/split_huge_page_test.c | 9 +++++++--<br>
+=C2=A0tools/testing/selftests/mm/transhuge-stress.c=C2=A0 =C2=A0 =C2=A0| 4 =
+++++<br>
+=C2=A04 files changed, 18 insertions(+), 3 deletions(-)<br></blockquote><di=
+v><br></div><div><div class=3D"gmail_default" style=3D"font-size:small">Apo=
+logies, a duplicate patch 2/4=C2=A0 was sent with minor different titles,</=
+div><div class=3D"gmail_default" style=3D"font-size:small">I&#39;ll resend =
+the patches.=C2=A0</div><br></div><div>=C2=A0</div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">
+<br>
+<br>
+base-commit: 80234b5ab240f52fa45d201e899e207b9265ef91<br>
+-- <br>
+2.53.0<br>
+<br>
+</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
+=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
+ignature"><div dir=3D"ltr"><div>----<br></div><div>Thanks,</div><div>Chunyu=
+ Hu<br></div></div></div></div>
+
+--000000000000327676064cd228cf--
+
 
