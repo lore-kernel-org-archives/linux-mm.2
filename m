@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF433106ACE4
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 461D4106ACE5
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:28:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 244816B00B0; Thu, 12 Mar 2026 16:28:22 -0400 (EDT)
+	id 9CE4F6B00B2; Thu, 12 Mar 2026 16:28:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ED556B00B2; Thu, 12 Mar 2026 16:28:22 -0400 (EDT)
+	id 9799E6B00B5; Thu, 12 Mar 2026 16:28:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3E186B00B4; Thu, 12 Mar 2026 16:28:21 -0400 (EDT)
+	id 826676B00B6; Thu, 12 Mar 2026 16:28:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD4D16B00B0
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:28:21 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 700316B00B2
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:28:24 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FF471C498
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:21 +0000 (UTC)
-X-FDA: 84538548402.27.4546A70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 13FCE1C0011
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SE1eoNLL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E9F313A984
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:24 +0000 (UTC)
+X-FDA: 84538548528.27.75E167C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8921A4000B
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:28:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=seHyQRKf;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773347300;
+	s=arc-20220608; t=1773347302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m2h2/7B5SW1IOrm3FHhkF3Mr//C+9sr2Q38u6/IaUNY=;
-	b=Z2lrmXLzJLmLrBp4JDhLqkOBZkhJg20ES2yG+fCM6wVb/CsBjSExojw7lewnanL81VJsdR
-	FE1+DCge2+c2sgYO2hEGP8m4X1w4TtlxPZdgOXvxLBRiyXoYD1zUoySJzw5nDxqo+EvgEd
-	80VbNqasJte5gntbasmKNfBXb0wJn78=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773347300; a=rsa-sha256;
+	bh=0XmssX9LZRaQSgn7ev93k/k59Xt+ibqH+EXRh1QbF0Y=;
+	b=hqLQdNZbBtPzWjvF78/GANONgW16FWzXqPkpvR1IHSGFYHUJ2MW3a6AXInR8WM3YIOy4xh
+	c+2kgbKdfy77MUCU52JwT2rlrDMY9d0Ee6O+iBVCqPK7ZmcjGga5acDd3unDZa3/zTUp4g
+	qz939ygDKFgj1/lRr5rjVyNIC8DaMUI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773347302; a=rsa-sha256;
 	cv=none;
-	b=pQR0C2zyyKGH8IwqGq3hZ756TxGMEzWwIIAcXRvr9c1g71a5+4Z+t5QERz7Qd1kxtWmPJk
-	eAlKAh85YX9joTchydqwxNCDG7zorZFL4jFG3pQO+pHiua7yhxICYtfuK0cEojoJAT1xlS
-	EunUB5HHjUifo7u05+aRYv2VwmIhF7Q=
+	b=MWEbFNUJoX/eWp1t667Fhau6a3j5oFuWch/ayQI51chPiDQnWak+dvhxaAhKakPFQ3vK2R
+	MXuHjeQPA/UGcCQQN23mflWWimTy/8GdvmFvcHsxnJP1cyIA2zCmKM+QjiBfOy4o1uGv6D
+	bYgqwk60tt9mE6oX/7DDJzTEi04otJU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SE1eoNLL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=seHyQRKf;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92BDA61840;
-	Thu, 12 Mar 2026 20:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE0CC2BC86;
-	Thu, 12 Mar 2026 20:28:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ABB0C43204;
+	Thu, 12 Mar 2026 20:28:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8DDC4CEF7;
+	Thu, 12 Mar 2026 20:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773347299;
-	bh=3gkyUtsSx7jHel7cmRKZSxJv14d/Oyif1xbXqVSUag8=;
+	s=k20201202; t=1773347301;
+	bh=c9ukDFMfjwhzlsDJMNmh/uTfuZTbg9jKdguqmYo0LoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SE1eoNLLnCchG8HnK6XRvfFeHKhyfrzwwjiWm9QdAt5SsrbT5Uw9DpSpKd50HTu4X
-	 xdndXitgm96uIJn7PRDHQ7k9Hgf4LZp/zIwyQxTDnU08FmxgNaGLbcUr/QaZemp3i6
-	 DkSmTS08I/Wqy4/GCxky+IbGqrb4HTAtMgXkKY6chyfRut5Zuvanm3/fJh/KyDnajD
-	 zgAsNGcfUqJVqPQsSSgeeaMqILTnr1t9nv9XdS8jqAAcPSUMs8GYDUPyMJIN6ryyR7
-	 WipiB8AnSPEZcCIwFfuXFjLJFpnnAcxDM1jDa9nEcFSnQ+CAffoYMGMMWgKSaFy739
-	 ZBR1/mSnh9p4Q==
+	b=seHyQRKfprsXz966V294X+6IfJ1CWwP+Y0wpW00vbCO8EQJItDqXB7+2hMzKpRTiQ
+	 hYxn7e7+9UCh7o3hYaUyDJd3fWBLwSLb/VzbQhxY5E1+xRRlNEria4jIf3+0tM1TKj
+	 ckVDA5igQCIE50LBljWdQUwotHE2U3Ez8Fc1WnFiB1Q5tfbcqGAHLT9MRgJT+cetd1
+	 qLLkVpiJCENrZF2ULSXblNRls2CogOVLNbRgrw3r5a8qG6Yc5kSqUbGJBzNccVlFWe
+	 trOGLbrWQHTLqWRwgfKFh12xjS5E2ZkFSoSWmZaKoF/+X7y7oSJo/BOQEakebgTaH7
+	 Y/MtwSGbAIzGw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -108,22 +108,22 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 13/15] drivers: hv: vmbus: replace deprecated mmap hook with mmap_prepare
-Date: Thu, 12 Mar 2026 20:27:28 +0000
-Message-ID: <1f0408ba81f455d35bcf510ccd3dc3cb939b55ca.1773346620.git.ljs@kernel.org>
+Subject: [PATCH 14/15] uio: replace deprecated mmap hook with mmap_prepare in uio_info
+Date: Thu, 12 Mar 2026 20:27:29 +0000
+Message-ID: <8673929c7fee995e78c1a703949d4ad53363d678.1773346620.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773346620.git.ljs@kernel.org>
 References: <cover.1773346620.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 13FCE1C0011
-X-Stat-Signature: mc8d3wswoqbhzbhcrdkwhj4h1s7b5onx
+X-Stat-Signature: 76sq6mdd3qhqrq8fht86mnkknycgy9m1
 X-Rspam-User: 
-X-HE-Tag: 1773347299-571021
-X-HE-Meta: U2FsdGVkX18OhGrIXbVk9A4l4/xMqmbuflPfQGtMHNmUHf9wYiBvKfZ81ECM80FO7P8JtjVpyNuO8hoZHbjiP1gIxy4Q7V7609P7A4cpjAWAZHsYfNlsMtdd8E+YokmYGfNxlCh6N+1nbfRp78POUvw4hKwrgRD6Te0ccg96UzKE5HrR58qASwG8ugbmMd2UCgO2MyvTBbzMgot/bhrm+SNMqPbKbPXlMWsa+JqtnCDnJULrXKbFuwLuBIHnOwf+82axtXS4uDFsoKbgtbim2EucvS5CKt6Nf12nKTscQPaCvzuXbKhZfgSrmrM1tnm9bc7DyRdjhMvPqUIZu42TMXIQ5Cv0i5Rf10CEgTf9pwGGcDNGCDblEoCljz8zMNGrVzD4pqlfRAmXsaBGAn0DkwAvPHJmkQl516XpBTlyXG9vYIJPs1ZagBAz8pWy5JJQeIRzPYgA++eAxCWHuTwERZTwZ+4kuA8hvN+t/ONu16hSrRJtr7VGmcka267o12JNi+3q/gI7vBaA47JrI73F/mg1Mpqg6+Lbtpik3Z+TVjQaKKCwVdP4nNTHzY7KE7tIH5Egn5ImIzheEZj2sWaqPEgEYfDcoE5VTswukrb5HH+HHA/OMe0woQ7aPuq313/HJAlP/+/KFr0yBeOsWIiP7sR1uXKbfvxLe4fUXOwU3NPYFF15T0EmhJ7znP/W40HhjoEir4lOb+ahTQe60p3b2R9vsEOi8yLp+FZrluu8/hDvkZR8Ogd2Sp6P6f3beHLqj/Od37C5rHtAtYg2bDaKn0esiDsj8bVlMWKuZR72jLbSXU6sI0tuLy1aBS+9HJlxz2pTMSf+pkyv3xgR4x3g0ZhbHZR0l0J+VMWHLz0FSLbb13gR+SMzdrj4/KmF1yoxFSgMBPwNkBqlZA7iFi3RH0OkDaNB6qNZ7mFKokll25y1Ial0HJQ2mw8NIfTnDn4X8N4YH8bxAykrd0hGiOL
- x9xgy1vc
- GdBnrTtnB9rhqmludfm+3XV+dqwBQurQ7I43zLEjrEQxJTbhoiDblWH5sLO9391WjceJSmi+zXsIjNIOzCQLwpUugx9nYgyIsb7bkDmnN3FezJwB/N2HYv0R30PDYpC+H/EykKbTGEbkVRRir3JFkAlrkRVLEd+gIJKW+tFPc/mno3ru3dbMIXUxHuszvP3zavZy+DSxwRJuBg3qvIb+c0In8p3cRIdhV46iDIIrARxhS+KK+V8cy3nMTEgiU9FfRrzymreKxrQEjH30IIxnexQWmrMi0mRfLWDXS5ACJ77gWHFLWfdeU2TQcTBbL1x1c5/cyYGM64uDqfIGBgu3c7isRZIHcbGpepc1I
+X-Rspamd-Queue-Id: 8921A4000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773347302-606750
+X-HE-Meta: U2FsdGVkX19cAB0T+xq5TAjlxL6asbw8nD+a76MXKPN5sTBNRzDHJ+wl+kCryAaZhJSP/XOAqhGKW7GMlOUUE6sgbsAMZ0yjgSxYyTEF8bvFjBx5AM7lJsghKWlmPBgaIjvmkajPSjW8cI2+692DRvYGSJ6g6DWL7F40UYJDtjJKQh2nW4MovQ+9YWdBrp6Z09773LRy2oAdIfuBBlEdLS5LgX/4L9piomnG1PPOz/YC3mfZU8u7EtQHv8BSxd/eTsKjWh4LilCoN91B+GcJosz4vJU39PM/WJsizaAVfNorhtuDbudFAvH/sUH75RzS2CGzsoEke3n1mPz8UQvoWJesIKTX/qz6sNIQNYOd7AzFmub4/0jhwMk6YRw2CBnUzAykkNIx2OA+hpqtGikytPsevmlI6qJbK6j4Zgcf/sN2sW8d6Es5hZknMpyqvZpmz9aZHHn/xd6rb6OzzAIjocE0M+7t2U1Uv3L+RZZ2+abbolYnhRI34tQWT0bGa7abIbgUOpNqQwA0OV+5oiQwVY+pSDxBi0ZRuTvVUP1nfN0GS4QJNkuTb0sTWwVi/SNsZ+jXIcCE9DDkSn38ZoOzG2pZ7MV+4m0CN4kgjNWNcs+JfZKqIjkwYQkxtAEkDvWipMeiY9x4jgjwNe7eLU0mGKmXYB1kYiWEe+AyQDJ1tpPQfig1uRZya12KNhivY43AkV0bFcOYjp6sf5Z/RXHYzSrnYWzt9tQDT6l2SvBkOr1F7YHTubGR3+kN7iaPzM65oS1xjpUbPnTBB31mtwvKUaHxugNEq7kgZzjlySaitygMH5LDM84otmhQ2T/sdR3Ud/VsZWJYOPL4V97LlYqWcY1UK5bMUQOX3Rw09izhAAHFnU2VMMy+F3WEB9Q1KOSNUquswdTpgnOvPiZiEq5k/6kMAKa7TyIdnQN1x79EykqPjGXcaKuw0rpmgY4HMXjOM3t8tZUfSkand9XTfwk
+ Az2c5lQa
+ Z3uT4N/3wSONpRrEiXaTIpzffeQ2JNI7KvKs6HpqVjhAymnPj5qjwzpoQJJDv3wu7eTumLpZ896ONOjNgpfbO9BrIqpnw52gDpI1++DzGYlM1GPotjmAh+oLWFZuGW3ibLOUH8XpSyiTesb7BBHIT1w4lHao4RUMX7o1AHrYpSKLRcxcfwUtjmKNU830ZOglYzViohqunqJW9bLsugcFHwtSfrI3jsxvgKzplx2buuZRkDQvZMpXPFPJ+FH+rk5PvXQUzokEfWIXgcBUwU0/fcIEgB+jnFDPwj3txIRp6cFW5Ii/0GIjfbfcnZf8IdpQQW3++B4HzHkBNyRwiDZIr1sjhMn5KNtOpS8pb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,172 +131,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The f_op->mmap interface is deprecated, so update the vmbus driver to use
-its successor, mmap_prepare.
+The f_op->mmap interface is deprecated, so update uio_info to use its
+successor, mmap_prepare.
 
-This updates all callbacks which referenced the function pointer
-hv_mmap_ring_buffer to instead reference hv_mmap_prepare_ring_buffer,
-utilising the newly introduced compat_set_desc_from_vma() and
-__compat_vma_mmap() to be able to implement this change.
+Therefore, replace the uio_info->mmap hook with a new
+uio_info->mmap_perepare hook, and update its one user, target_core_user, to
+both specify this new mmap_prepare hook and also to use the new
+vm_ops->mapped() hook to continue to maintain a correct udev->kref
+refcount.
 
-The UIO HV generic driver is the only user of hv_create_ring_sysfs(), which
-is the only function which references
-vmbus_channel->mmap_prepare_ring_buffer which, in turn, is the only
-external interface to hv_mmap_prepare_ring_buffer.
-
-This patch therefore updates this caller to use mmap_prepare instead, which
-also previously used vm_iomap_memory(), so this change replaces it
-with its mmap_prepare equivalent, mmap_action_simple_ioremap().
+Then update uio_mmap() to utilise the mmap_prepare compatibility layer to
+invoke this callback from the uio mmap invocation.
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- drivers/hv/hyperv_vmbus.h    |  4 ++--
- drivers/hv/vmbus_drv.c       | 27 +++++++++++++++++----------
- drivers/uio/uio_hv_generic.c | 11 ++++++-----
- include/linux/hyperv.h       |  4 ++--
- 4 files changed, 27 insertions(+), 19 deletions(-)
+ drivers/target/target_core_user.c | 26 ++++++++++++++++++--------
+ drivers/uio/uio.c                 | 10 ++++++++--
+ include/linux/uio_driver.h        |  4 ++--
+ 3 files changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index 7bd8f8486e85..31f576464f18 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -545,8 +545,8 @@ static inline int hv_debug_add_dev_dir(struct hv_device *dev)
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index af95531ddd35..9d211dad5e53 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1860,6 +1860,17 @@ static struct page *tcmu_try_get_data_page(struct tcmu_dev *udev, uint32_t dpi)
+ 	return NULL;
+ }
  
- /* Create and remove sysfs entry for memory mapped ring buffers for a channel */
- int hv_create_ring_sysfs(struct vmbus_channel *channel,
--			 int (*hv_mmap_ring_buffer)(struct vmbus_channel *channel,
--						    struct vm_area_struct *vma));
-+			 int (*hv_mmap_prepare_ring_buffer)(struct vmbus_channel *channel,
-+							    struct vm_area_desc *desc));
- int hv_remove_ring_sysfs(struct vmbus_channel *channel);
- 
- #endif /* _HYPERV_VMBUS_H */
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index bc4fc1951ae1..a76fa3f0588c 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1951,12 +1951,19 @@ static int hv_mmap_ring_buffer_wrapper(struct file *filp, struct kobject *kobj,
- 				       struct vm_area_struct *vma)
- {
- 	struct vmbus_channel *channel = container_of(kobj, struct vmbus_channel, kobj);
-+	struct vm_area_desc desc;
-+	int err;
- 
- 	/*
- 	 * hv_(create|remove)_ring_sysfs implementation ensures that mmap_ring_buffer
- 	 * is not NULL.
- 	 */
--	return channel->mmap_ring_buffer(channel, vma);
-+	compat_set_desc_from_vma(&desc, filp, vma);
-+	err = channel->mmap_prepare_ring_buffer(channel, &desc);
-+	if (err)
-+		return err;
++static int tcmu_vma_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
++			   const struct file *file, void **vm_private_data)
++{
++	struct tcmu_dev *udev = *vm_private_data;
 +
-+	return __compat_vma_mmap(&desc, vma);
- }
- 
- static struct bin_attribute chan_attr_ring_buffer = {
-@@ -2048,13 +2055,13 @@ static const struct kobj_type vmbus_chan_ktype = {
- /**
-  * hv_create_ring_sysfs() - create "ring" sysfs entry corresponding to ring buffers for a channel.
-  * @channel: Pointer to vmbus_channel structure
-- * @hv_mmap_ring_buffer: function pointer for initializing the function to be called on mmap of
-+ * @hv_mmap_ring_buffer: function pointer for initializing the function to be called on mmap
-  *                       channel's "ring" sysfs node, which is for the ring buffer of that channel.
-  *                       Function pointer is of below type:
-- *                       int (*hv_mmap_ring_buffer)(struct vmbus_channel *channel,
-- *                                                  struct vm_area_struct *vma))
-- *                       This has a pointer to the channel and a pointer to vm_area_struct,
-- *                       used for mmap, as arguments.
-+ *                       int (*hv_mmap_prepare_ring_buffer)(struct vmbus_channel *channel,
-+ *                                                          struct vm_area_desc *desc))
-+ *                       This has a pointer to the channel and a pointer to vm_area_desc,
-+ *                       used for mmap_prepare, as arguments.
-  *
-  * Sysfs node for ring buffer of a channel is created along with other fields, however its
-  * visibility is disabled by default. Sysfs creation needs to be controlled when the use-case
-@@ -2071,12 +2078,12 @@ static const struct kobj_type vmbus_chan_ktype = {
-  * Returns 0 on success or error code on failure.
-  */
- int hv_create_ring_sysfs(struct vmbus_channel *channel,
--			 int (*hv_mmap_ring_buffer)(struct vmbus_channel *channel,
--						    struct vm_area_struct *vma))
-+			 int (*hv_mmap_prepare_ring_buffer)(struct vmbus_channel *channel,
-+							    struct vm_area_desc *desc))
- {
- 	struct kobject *kobj = &channel->kobj;
- 
--	channel->mmap_ring_buffer = hv_mmap_ring_buffer;
-+	channel->mmap_prepare_ring_buffer = hv_mmap_prepare_ring_buffer;
- 	channel->ring_sysfs_visible = true;
- 
- 	return sysfs_update_group(kobj, &vmbus_chan_group);
-@@ -2098,7 +2105,7 @@ int hv_remove_ring_sysfs(struct vmbus_channel *channel)
- 
- 	channel->ring_sysfs_visible = false;
- 	ret = sysfs_update_group(kobj, &vmbus_chan_group);
--	channel->mmap_ring_buffer = NULL;
-+	channel->mmap_prepare_ring_buffer = NULL;
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(hv_remove_ring_sysfs);
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index 3f8e2e27697f..29ec2d15ada8 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -154,15 +154,16 @@ static void hv_uio_rescind(struct vmbus_channel *channel)
-  * The ring buffer is allocated as contiguous memory by vmbus_open
-  */
- static int
--hv_uio_ring_mmap(struct vmbus_channel *channel, struct vm_area_struct *vma)
-+hv_uio_ring_mmap_prepare(struct vmbus_channel *channel, struct vm_area_desc *desc)
- {
- 	void *ring_buffer = page_address(channel->ringbuffer_page);
- 
- 	if (channel->state != CHANNEL_OPENED_STATE)
- 		return -ENODEV;
- 
--	return vm_iomap_memory(vma, virt_to_phys(ring_buffer),
--			       channel->ringbuffer_pagecount << PAGE_SHIFT);
-+	mmap_action_simple_ioremap(desc, virt_to_phys(ring_buffer),
-+			channel->ringbuffer_pagecount << PAGE_SHIFT);
++	pr_debug("vma_open\n");
++
++	kref_get(&udev->kref);
 +	return 0;
++}
++
+ static void tcmu_vma_open(struct vm_area_struct *vma)
+ {
+ 	struct tcmu_dev *udev = vma->vm_private_data;
+@@ -1919,26 +1930,25 @@ static vm_fault_t tcmu_vma_fault(struct vm_fault *vmf)
  }
  
- /* Callback from VMBUS subsystem when new channel created. */
-@@ -183,7 +184,7 @@ hv_uio_new_channel(struct vmbus_channel *new_sc)
+ static const struct vm_operations_struct tcmu_vm_ops = {
++	.mapped = tcmu_vma_mapped,
+ 	.open = tcmu_vma_open,
+ 	.close = tcmu_vma_close,
+ 	.fault = tcmu_vma_fault,
+ };
+ 
+-static int tcmu_mmap(struct uio_info *info, struct vm_area_struct *vma)
++static int tcmu_mmap_prepare(struct uio_info *info, struct vm_area_desc *desc)
+ {
+ 	struct tcmu_dev *udev = container_of(info, struct tcmu_dev, uio_info);
+ 
+-	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+-	vma->vm_ops = &tcmu_vm_ops;
++	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
++	desc->vm_ops = &tcmu_vm_ops;
+ 
+-	vma->vm_private_data = udev;
++	desc->private_data = udev;
+ 
+ 	/* Ensure the mmap is exactly the right size */
+-	if (vma_pages(vma) != udev->mmap_pages)
++	if (vma_desc_pages(desc) != udev->mmap_pages)
+ 		return -EINVAL;
+ 
+-	tcmu_vma_open(vma);
+-
+ 	return 0;
+ }
+ 
+@@ -2253,7 +2263,7 @@ static int tcmu_configure_device(struct se_device *dev)
+ 	info->irqcontrol = tcmu_irqcontrol;
+ 	info->irq = UIO_IRQ_CUSTOM;
+ 
+-	info->mmap = tcmu_mmap;
++	info->mmap_prepare = tcmu_mmap_prepare;
+ 	info->open = tcmu_open;
+ 	info->release = tcmu_release;
+ 
+diff --git a/drivers/uio/uio.c b/drivers/uio/uio.c
+index 5a4998e2caf8..1e4ade78ed84 100644
+--- a/drivers/uio/uio.c
++++ b/drivers/uio/uio.c
+@@ -850,8 +850,14 @@ static int uio_mmap(struct file *filep, struct vm_area_struct *vma)
+ 		goto out;
  	}
  
- 	set_channel_read_mode(new_sc, HV_CALL_ISR);
--	ret = hv_create_ring_sysfs(new_sc, hv_uio_ring_mmap);
-+	ret = hv_create_ring_sysfs(new_sc, hv_uio_ring_mmap_prepare);
- 	if (ret) {
- 		dev_err(device, "sysfs create ring bin file failed; %d\n", ret);
- 		vmbus_close(new_sc);
-@@ -366,7 +367,7 @@ hv_uio_probe(struct hv_device *dev,
- 	 * or decoupled from uio_hv_generic probe. Userspace programs can make use of inotify
- 	 * APIs to make sure that ring is created.
- 	 */
--	hv_create_ring_sysfs(channel, hv_uio_ring_mmap);
-+	hv_create_ring_sysfs(channel, hv_uio_ring_mmap_prepare);
+-	if (idev->info->mmap) {
+-		ret = idev->info->mmap(idev->info, vma);
++	if (idev->info->mmap_prepare) {
++		struct vm_area_desc desc;
++
++		compat_set_desc_from_vma(&desc, filep, vma);
++		ret = idev->info->mmap_prepare(idev->info, &desc);
++		if (ret)
++			goto out;
++		ret = __compat_vma_mmap(&desc, vma);
+ 		goto out;
+ 	}
  
- 	hv_set_drvdata(dev, pdata);
- 
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index dfc516c1c719..3a721b1853a4 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1015,8 +1015,8 @@ struct vmbus_channel {
- 	/* The max size of a packet on this channel */
- 	u32 max_pkt_size;
- 
--	/* function to mmap ring buffer memory to the channel's sysfs ring attribute */
--	int (*mmap_ring_buffer)(struct vmbus_channel *channel, struct vm_area_struct *vma);
-+	/* function to mmap_prepare ring buffer memory to the channel's sysfs ring attribute */
-+	int (*mmap_prepare_ring_buffer)(struct vmbus_channel *channel, struct vm_area_desc *desc);
- 
- 	/* boolean to control visibility of sysfs for ring buffer */
- 	bool ring_sysfs_visible;
+diff --git a/include/linux/uio_driver.h b/include/linux/uio_driver.h
+index 334641e20fb1..53bdc557c423 100644
+--- a/include/linux/uio_driver.h
++++ b/include/linux/uio_driver.h
+@@ -97,7 +97,7 @@ struct uio_device {
+  * @irq_flags:		flags for request_irq()
+  * @priv:		optional private data
+  * @handler:		the device's irq handler
+- * @mmap:		mmap operation for this uio device
++ * @mmap_prepare:	mmap_pepare operation for this uio device
+  * @open:		open operation for this uio device
+  * @release:		release operation for this uio device
+  * @irqcontrol:		disable/enable irqs when 0/1 is written to /dev/uioX
+@@ -112,7 +112,7 @@ struct uio_info {
+ 	unsigned long		irq_flags;
+ 	void			*priv;
+ 	irqreturn_t (*handler)(int irq, struct uio_info *dev_info);
+-	int (*mmap)(struct uio_info *info, struct vm_area_struct *vma);
++	int (*mmap_prepare)(struct uio_info *info, struct vm_area_desc *desc);
+ 	int (*open)(struct uio_info *info, struct inode *inode);
+ 	int (*release)(struct uio_info *info, struct inode *inode);
+ 	int (*irqcontrol)(struct uio_info *info, s32 irq_on);
 -- 
 2.53.0
 
