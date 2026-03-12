@@ -4,77 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F728106ACE5
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 19:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E0BF106ACE4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 20:00:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 686576B00A1; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
+	id 53F336B009E; Thu, 12 Mar 2026 16:00:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 634636B00A2; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
+	id 513DD6B009F; Thu, 12 Mar 2026 16:00:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 533266B00A4; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
+	id 416E56B00A0; Thu, 12 Mar 2026 16:00:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 40AB56B00A1
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 15:58:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE8978AFE7
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:58:36 +0000 (UTC)
-X-FDA: 84538473432.14.FD6D6F5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F1376B009E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 16:00:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7ADFC1B5E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:00:39 +0000 (UTC)
+X-FDA: 84538478598.26.7155809
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EA67A20011
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:58:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fJn00l88;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id D492D20014
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:00:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="A/jQTOKg";
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773345515;
+	s=arc-20220608; t=1773345638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5tDeaPNlH4FbdOApt/fipBfHit079U3MSkOKJpajvA=;
-	b=4Xt3kbW1kG3fXoZG48o7Jy277RlpE3fsPIYRntW1gU9ak96dd5oK0nlKEYszN6hlEFZc7o
-	9j68iYmqbZnsOUPU4IsQDgGDn9H513uQp35BKUkpPYjCS+PJP/QQa84aLa0g9osRdlU5up
-	bK1omFeFeqD0J/h0dnxB/ZmzA7qx12k=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fJn00l88;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773345515; a=rsa-sha256;
+	bh=9EBmqzWzWpZdu54pSpVesyY6LoVwcXPZZbYtuyuq/Ho=;
+	b=h3C68/SaokBT0KkCwwQhQC/RJdmVJM5ye9Ed8/i2Z2cuVqDiQFx6uECSHebd0aH0gQ1Ttc
+	9n0porevK78bNfkgHX3XkqIWpyBAqWLWJJr7cjAuUibvn7ioH+4fmx0+rhg/l3TPNMZGxt
+	lpfKjDBQqP33LXbd7e9QLbG8HqpQEIk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773345638; a=rsa-sha256;
 	cv=none;
-	b=lpuS+vq1joE1k3Ky5Wky7QOeZUUy+WGmt8jTxOa23JG+gWhawagMKk+PG1LpYODkM4LOCP
-	dNesfARTnOIh3j7IYP+XW3Mx56rYFAPgHbJQ7cbJvaqxRqrvkMrPt1T7HX01sOuoku3dw9
-	MmYMR3hh90jzGXo6UlA9K48WnMqyKhE=
+	b=E//QI613ytYaDbgB3zma+qHRUUnCLdZ5poD8dEMBIml0D7fWly9CQ0EaIwYJienacZBnUI
+	osb9CJ7zuSlTUlgOPDqkT4X9hy1LJpF6WRBZ31rxcSKvyPrmIHqHr+voXOLfrs0/dX9cs2
+	A0AIif5n7aa0+AqEkuFDTFALlumZQPk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="A/jQTOKg";
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFF1343F1E;
-	Thu, 12 Mar 2026 19:58:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF02C19425;
-	Thu, 12 Mar 2026 19:58:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2AB441AA1;
+	Thu, 12 Mar 2026 20:00:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DC5C4CEF7;
+	Thu, 12 Mar 2026 20:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773345513;
-	bh=2oAIBAbeD5lh0AmLKC7kBXJJ4zqW2tjxgJK2/n54DlM=;
+	s=k20201202; t=1773345636;
+	bh=X2l3L12LE/Ap7HQkaYJkOvMdZnPgyASN/c+AER2mf9E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fJn00l883ztTj0W6a4qKGBTVC4OuFVFH0jACQVcA/Ph1OECYYIL40jPNoxXYaSx+6
-	 BoLGgJkVwTuw3r6m6XwSUBu4wXDID2H4TyJ8EBPplSRMPvdtR+rEzcLkuuerqdFqbV
-	 ZpV1+P4TKMLt6Ro8eYpYBV2abAfYDuI5wMjU2H9dlCT9yR7fmj7XJ83nDGO2S4yjB/
-	 87Zj81Psth2YSETQbC9odXcHDk9VMD+o77BMl/dlGFmB0V31dDl7Vz1kwhd9XleeCI
-	 DTfhEZAZvqaXK+IUAXo5KdFASU5skkR1+Tz5S9BIuii+YfkygptYY2GEp5G2/RpJsx
-	 QKbug7dh6Ii/A==
-Message-ID: <76c5576a-65d2-4dde-a969-ef6577855864@kernel.org>
-Date: Thu, 12 Mar 2026 20:58:28 +0100
+	b=A/jQTOKgGFuThlP6+bZiGnH9sHDS1JnpOiQ6X0m7ngr4C2WF4YRSdRx/V86yEsVZq
+	 wxqr/bWVL8FMrj7J/DK3x9QSz7wR7kMbql9f1kBSCiKQPSqzkeVafoJ+up3YN92hra
+	 lzImPhac4DRueo6ihfiJ8oCxajHO2joXO/HpbLCHWlYQdmQrtdoMJOOJQnRPvdpd+X
+	 UmI3LAkJR+tyNRtUy8YnnSeE0PSdHA+GiRjimIkRk4l89zXQynD8PbNWRalVQN8Cs6
+	 5BJOtk/DnPWCVSKPUMWkVuNJIiIFnajvIrmEOFi9fx4LyE9d6wIrXoWcJOgCBjKV9h
+	 veyJx/83NIIsw==
+Message-ID: <8487a99b-efc7-4e7a-9e24-1cfa705a586d@kernel.org>
+Date: Thu, 12 Mar 2026 21:00:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/6] Migrate on fault for device pages
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>
-References: <20260211081301.2940672-1-mpenttil@redhat.com>
+Subject: Re: [PATCH mm-unstable v15 01/13] mm/khugepaged: generalize
+ hugepage_vma_revalidate for mTHP support
+To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: aarcange@redhat.com, akpm@linux-foundation.org,
+ anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
+ cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
+ dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+ jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260226031741.230674-1-npache@redhat.com>
+ <20260226032217.232353-1-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260211081301.2940672-1-mpenttil@redhat.com>
+In-Reply-To: <20260226032217.232353-1-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA67A20011
-X-Stat-Signature: kf14p5m7mogrifd3ss9sgyi1ww8mbub5
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773345514-259180
-X-HE-Meta: U2FsdGVkX18fxyEzO5kghCsfn6Me/7TWv3Gu1FzNO0EuCvNxmf/Qa7IQ+psctN1CeFDde2A+yNhtd1oEwySSmOQOmBwrNVX5MRMB+mBcj5NPKuZGRcTbQiaHm93lvhDWNiHI3npjFvOo2sdpYLMFrdnVSgAmN7WJPVF4RPPDlVG0jSCs92EmfwuT0STALjvUICUYuPvC1aZy4DHyHdyrmREHRAfApekZ7CehU7GG4fxt89zWM8QdNP9Vb4hQNPRS6Li+HaBnlXharhXs3JlnzUqi1eIMyHGvSQ1yN/LswTygs7ohHrgZgzbdCYL/HXk+YdWlcomFx871NJ6y90bTP5AtQur7gyBsWbqmnL76wslMxSWoqOibxjYjRHxWbk06/k20nUR9kZuxcTeEL8kvH+qUFxkKH3qGUPr+7kaU+jrzTVEryLM1LGk6WAyoX/Vy9niwe7WYyf7Dwwidth/3X6nssjRURCUMTQBPGByOukw6+soEv2RVyEYmbLHYeI+y4RM7Acivob1JRsnGuvxBBA3eRHF8yFQ/almhaXYV0ivnJfhp38EgcNN+w3RUyK9q9dR9FvlgliZWH2bPUpBZHAj71ScDMhzqaIjAYDNybQPnFNzPLXvQOUVg//cXGdo55gOTHCJ01+FEuiOXZj9+qvqYuxjbCjfaK6/GmBOBt5Iz3/S+SGbD42snjIFrxdVgfr2JMuFzvJe8AGqjHh8zfAmHVIR3aPjRymxJBSkxp077jrOe2iHDnV6pfnbK3AXPQ6/KuJvkJxfqeoBrPc9vzbEPETCaB0tfWB3SfUrVM0jveZ89/2i1zjddxSKj+/wZFFVGNLNyrpIYTW9WG/sLv8haPP4lsjzBP7vBQfw+IS7OIBsyzxMtrpZfqNVLZjjzGkx4pbtjME+RYF3RaNAsw9W/XMIynqC8i/Pph6Vbe1fGMKMFLkHGiHJvSBitQ+jgIjgA7QXdZjx9ATuttbG
- JJezR9oU
- DoCJF32dIg4GWKrpAWgtqq8yTq0ia55di+Q7EMrOnUHh50E18CZIzrMitRlII3C/iUgGojlzaTbqP+nzfE8gGtLptCSLkjSu/3H/THd7Z+3PVoUIRQPvaR6aQUujdQyGHDXGJs3wAcUvHLZZw4b6jULxp8hB8OFHriubqH6jpbiCvxlOAjs2sJu9OzAHKrgGtnIjvM7nnxumLZa+3ePEH8A+Ez6AHylyrvXPrYp2mbXFnlKLrSgRi1fdp3xegDjGTNQlzdkBNRibYfjanr8NcgVo1q0PmA6FSKSq0jisv+3Obp6bqxqwKZebc1Cd2Nj01QzT3HH18a6tCRw6LSKryNGg0p13E1HKrL+8A
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D492D20014
+X-Stat-Signature: 5xzg5q6z43oq1oon8ni7jsbb56d9ojee
+X-HE-Tag: 1773345637-286624
+X-HE-Meta: U2FsdGVkX1+p4c7iZ/SDHv7d3cxMZl5EcurKB+xXbMImN29opEBriixRmBflgl3mdS/KBlJtjC6R/wuztPcfosSnL3B1wyo+SyTLRCnEq+Sz796aAWcyEjdkXZz0FT8WlPYUS2D3s+37gA40zzgvosEa7UBSJTYtYt2qCUZZE53RWqi8B0MlUnKN7KqUkCAzZkxTDJHocku9Z/9NGil4BMZnZx4+AGs8lYh9s2bJFBqwfSqnwvrcrgbPHJl1kEjzm38CKKqmK2oVh12QPt97oQKWFtmmENDjyYO0IIpDlCJob44NoOSu6955F1QAM421+083bWia1g80hjOXbUq8v88LOIhN1l9DSprhBbU+RCEGSvNx2WYSPAsj9Zxju7AG9WJMl/2xP/syCss075n4CGCVhRXrvG2BC47Lwfgk5kxsmqIW25MV3d2l/oSTx5rmpvsoelsrVyT+4jyOnIhbrRdhLWz4qaLCOxLwWoVVRR/nsWLd2UhCkj4fPF8qYk6kAbOd+fQPiZvD5vtEUz+Y6+nn2lveBc3GeHSZc8lR3DJCy/TlRVFD4J9U4sNpqZEYiJNOrSlnhjyjRanQ6oMSTkgAC9UKtor4pSt8XKqKJ0tUL2mwGtbPIVQ6Vs2Y+1UX8bLz92martzmG2m2rUHRCbR2kXEF6CzBcaZZu+IzLPPUpuAw1ePa8myhyVz45c/Ahg0GHTgk3v4OIb/pcdZzvKgdRlGTA8mDdUE7qRcX7nLExhCqqHuEsraHdTQYsQ433Jy+4D4vQfrDLoh2a8g4lbRflTQp3yjLEMS6QV+VFo5xVoV8rPtQ9GxJ01jJlb9USwEBt3XS123ASRDuyrhyJ1Mt8A/jmMIz9EzHRyC+YRUYeDRueCX3SNiCO3aJ8PobrzK+YGyXt+JvUezEX+Fnw/eNs4otxoiEtYEGjAh9qasn5j627HYSLlr1KCrfmv6vU03AGuqQgjwBbQCrw5i
+ tHldAJZN
+ EJOjpLPdAeWdko9/VX3BrXhGrinavJ1IvbyGIiZJjnKL0KSAPQs3fP5AsguocQwFi95ItuOMHM1rhTknNEliyFE16CoZLiwyQzZsgszlngUIArpL4da5Iz4GDjZsNmS4IIYR7Xrxulsv8A9x84ESdDXRISX9ltuyix6nuD1GV9+jAH8YRcb0ucrfpUFoNsSK/U6ZkDzm5Ff/ZIToRrxYk5PujsDQJlsXYBGHlHdOpvshCQHnjUa0UFzB6IHP/MNzRxeebAH7WsJ7oEecn5NcyCvyR21W1qtvLvgrT3mvOTZiue45Y2Pio6vfx9FX7XurPFozK2Li+EShBzS3yUeV+6I20k98Bl+iQt4eeqamHzAciV+zTXO4d0rlRWamBT/HbWBMHlhut0VnCpHm1zA/odogxULn0F6Ne1ZXOzpFDDZ6EqGMIlTMxESZoId8P4UN0xSL/JvNY3Kfw2KCoai6DKN1zAQLPsJnv6qDVWtQervIIgitouvn28E2SADuZyMp2jwtks+nvlZsDZF+l6kFdmqtu0j81rvW+vMVh6iA/Y66VCDAbTiBOkiJtN/74ZPvJuvSj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,63 +157,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 09:12, mpenttil@redhat.com wrote:
-> From: Mika Penttilä <mpenttil@redhat.com>
+On 2/26/26 04:22, Nico Pache wrote:
+> For khugepaged to support different mTHP orders, we must generalize this
+> to check if the PMD is not shared by another VMA and that the order is
+> enabled.
 > 
-> Currently, the way device page faulting and migration works
-> is not optimal, if you want to do both fault handling and
-> migration at once.
+> No functional change in this patch. Also correct a comment about the
+> functionality of the revalidation.
 > 
-> Being able to migrate not present pages (or pages mapped with incorrect
-> permissions, eg. COW) to the GPU requires doing either of the
-> following sequences:
-> 
-> 1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
-> 2. migrate_vma_*() - migrate the pages
-> 
-> Or:
-> 
-> 1. migrate_vma_*() - migrate present pages
-> 2. If non-present pages detected by migrate_vma_*():
->    a) call hmm_range_fault() to fault pages in
->    b) call migrate_vma_*() again to migrate now present pages
-> 
-> The problem with the first sequence is that you always have to do two
-> page walks even when most of the time the pages are present or zero page
-> mappings so the common case takes a performance hit.
-> 
-> The second sequence is better for the common case, but far worse if
-> pages aren't present because now you have to walk the page tables three
-> times (once to find the page is not present, once so hmm_range_fault()
-> can find a non-present page to fault in and once again to setup the
-> migration). It is also tricky to code correctly. One page table walk
-> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
-> 
-> We should be able to walk the page table once, faulting
-> pages in as required and replacing them with migration entries if
-> requested.
-> 
-> Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
-> which tells to prepare for migration also during fault handling.
-> Also, for the migrate_vma_setup() call paths, a flag, MIGRATE_VMA_FAULT,
-> is added to tell to add fault handling to migrate.
-> 
-> One extra benefit of migrating with hmm_range_fault() path
-> is the migrate_vma.vma gets populated, so no need to
-> retrieve that separataly.
-> 
-> Tested in X86-64 VM with HMM test device, passing the selftests.
-> For performance, the migrate throughput tests from the selftests
-> show similar numbers (within error margin) as unmodified kernel.
-> Tested also rebased on the
-> "Remove device private pages from physical address space" series:
-> https://lore.kernel.org/linux-mm/20260130111050.53670-1-jniethe@nvidia.com/
-> plus a small patch to adjust with no problems.
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
 
-Stumbling over this in my backlog, so far we have to RB tags.
-
-I'm going to take a look at the core MM bits (soon I hope), but it would
-be great if other people could review the HMM bits and provide proper tags.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
