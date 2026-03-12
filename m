@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27081067022
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 13:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4C61067023
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 14:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3A7A6B0088; Thu, 12 Mar 2026 09:59:01 -0400 (EDT)
+	id 079296B0089; Thu, 12 Mar 2026 10:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE50F6B0089; Thu, 12 Mar 2026 09:59:01 -0400 (EDT)
+	id 044146B008A; Thu, 12 Mar 2026 10:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E7716B008A; Thu, 12 Mar 2026 09:59:01 -0400 (EDT)
+	id E91C36B008C; Thu, 12 Mar 2026 10:00:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BA856B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 09:59:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21BEB1B6EE9
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:59:01 +0000 (UTC)
-X-FDA: 84537567282.06.E478D29
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011030.outbound.protection.outlook.com [40.93.194.30])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 15D6E40007
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 13:58:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O1YLsZ4e;
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D97636B0089
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 10:00:29 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 572B88AAE4
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:00:29 +0000 (UTC)
+X-FDA: 84537570978.03.7458DAD
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012042.outbound.protection.outlook.com [40.93.195.42])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2AF2BC0011
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 14:00:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Jx+JuUKV;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773323938;
+	s=arc-20220608; t=1773324026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/p1WDLhW6nkyHlFuiYNPxpYJwcZ7iADwb2A1l8LnhhU=;
-	b=dopE5pFSd7LsuYutkZ2esU7ptiOnsmnZg/PM5fqLTN2Fvy94pxeunCMdyfNw5hUSTbYnZG
-	jlPCHRXrVCl5OKtihuzZxIQJs8DLRzeiPNytBEN4nxESucL4f1vToIxednWyLkRg000IP0
-	frXi0+2kRrVnHUAzUKywc5l23HINGtM=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O1YLsZ4e;
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773323938; a=rsa-sha256;
+	bh=ctevzFtcplbZ74O/HDKpopiNfjNHeItQjGdCCe+K52Y=;
+	b=MilCo57cKc4FNqxyIaL3wp+KJvwRMHsrkv6h4UUqhmtGzMEl5pgZkYTSxwaiSot+Hahq28
+	5cZCV7W45+1roEXry0Vq3UCQmItIylAMf9tKBTdGFDgCetWcS0NCjUPVo7SuYgs1hIU7Bq
+	XdNyuUfwQcqMzLkPP9G8OTZ3mA7hxRQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773324026; a=rsa-sha256;
 	cv=pass;
-	b=jXDMT4lAxo3efqC2CnKPXQTowAXUU8CKo2KdM6z0/xdwTLjNo7JQZ6igSpE81wnVC887gK
-	eTBpMsMgKgj5zab5aUxThWCXu3lhw5+CnREIEAMiAaIkbpyjsVICH4X3XccK4hVz724awm
-	LdQZoyi3Vf4KhbQdqc4iQ/TTE32JXv0=
+	b=6lZ+8uMVNSEVVtOhQeQZO1iTGJHJhYmIMsoC5R7jlyisAVrNl7y02gPuHHkBELJkGyUl3g
+	hMl3WB6oHkwGbVoyyFOLFFYHy6D3u23NLUzruPnHXv8DY/eD7pOT8stpNbte5YG9gQBVux
+	gVpJz6I50YF6CbBX9aSfbwo6OMcwEkc=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Jx+JuUKV;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AwUKZ2XgfdlmNlCeVgcjPkreGFRjTrN7a8hXUdWNKeY45nKcbWr+ZtQltRvsSIIep85fP7sG/XN4wZHVnmLLwo56PgE0kmEYVY07WRmXpG1Nnrw0yW+4QQG4FjhR8fcfMTJmE2emNIbT1pv96gPecuLPgTIB//NCOfcdoATgr/RJAqVNLboDu9m8PAOsZ8NS3Ir8TCmgmHS/nN0Cz0Q2gg0g1pNIIh7OfAOOjcgDnLe2qRLVQPXIa03TNBwjdjQSrxrwtV3QA1hGdZh8YXIdWSCKQ0wG/6JzoH87yfMl83g7I4DUNZaD/cMiBRTDYj1sMInnRTrsvBCMUGXtILUrQQ==
+ b=HwP1EJF7IIxgiHKlI2D2DD9YFBoZKfVxJYlgEhOjXMhUP21QmmxsE1CxN1jwjjs30e4vjk6EpzYB2Br3PnNITP4VSNU/G6qOjnXgWuPJkicpKPglE95xc07Px6gq9tXBPxgNJwJwUA6X+iUyfZxMy4OWv3yP8f7Ua0ORFedimCWd7BC9i5x4SVRLY83c8PVX6N0vS+vb1VRR0zxjlkf0IJuqSacGPDbzxk+kByyOqXcmoozPYM+uT6t5f2jhYzeQXO+t2oSq22HWynoXLWli98DWkmT2W0EuiH9VfdhKWEqLlsFkdjtCrvPgsGDKMvisvHfSmjtmJHKruRhTC3drLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/p1WDLhW6nkyHlFuiYNPxpYJwcZ7iADwb2A1l8LnhhU=;
- b=lDU4QTbWFWxXT3nIj7XrweWbVpJxX3TnI3n1hI+tAD/agDJjmvJjzDeic5XKpn8GqHOC14NAlR4CW1daDV/bE8VXWLccwIo33tR5DdThkujVsPHZTpeuX99LusU78AJydviUIms5UE6UvJbecaM9Rnty8zVjrNzW0vn0Xz/Gt+nJNT6s3SK/+U59C1lJrbTkOWTN36UQn4axDH1AkmYC9AL9NElFoSrQOSy+iBP8bgD5PTaumUM+Nrl3dKCKfze6DcXeYesZ1cXj9PF+xBQLEEmsfnoXz3wMtJc6cFfQRpbXL7EN4Z4DuLSwHbQyXhUFLGx2kPU5Zbo5Ebx+xjJqlw==
+ bh=ctevzFtcplbZ74O/HDKpopiNfjNHeItQjGdCCe+K52Y=;
+ b=B6UWDQsSGNQMHHeuTrO4J5w4x+/CqwgyHUPrsmS6xbxpLD3yvA6Wx6FxtA0QgI4ZdiLVvfgmXFcioC9up8cpziwGZb0bCJmIDY2fbIdJGavOqUSTdACNHZpbgEqpR4epIYk7Ml5HEaO+NnZATQQlCffhcw0ZlBKv7/CT4qhmtDPlR+eV+VNsxmqUONnE7qrV1eOo9GW6ksMCfAv0Ky7d3aNl4Redu8vwQEce/fxFbKYc8lwsfXKQ1JtE0Z0DrIObB5F9is+5Q+hKU+GEBB5mXCLvfRGQwxTv+Twn3I3NHv+gluKjHAtBSXOy6otuldWLlYkKrAcTqIa8n+beHy7V0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/p1WDLhW6nkyHlFuiYNPxpYJwcZ7iADwb2A1l8LnhhU=;
- b=O1YLsZ4e31kTmfyi0EPaxcL0xZsWj0cCKB3dCivGfn63SdvN7SvR8vUokbPTKw57+T0ibGBE+lUSaDWBD03+mPaDkkJLhf7fG8Fmc60S3sI/PMVww3/a2fKCjXqlq3EyU/+w0w28HLo4uvX4VYj9DXuJL6yJa7Cz04IaNOx1T5wAhJF30aieagrGn9kHUKBnHFDfLsSOKkYhZNRQpS6+VoJnOgIUO1ii5iWlyGH2kZoLZCfS/PMtWlQB2ER8SClZKpNV4VuT5xWliM/sFEeIWi0oWvmupSsdR1VkTs2uZJiY9Q+wQXpP85AhvUAA6tFndH/LJIBNVU2bzVUq8ZVoPQ==
+ bh=ctevzFtcplbZ74O/HDKpopiNfjNHeItQjGdCCe+K52Y=;
+ b=Jx+JuUKV3zPBvy/4dBieXMU75BKOqaiM7ZepngpwjFMNFqZ0rMhuNiaeW2MDStEw5JjVgxVyPpbYSGpwJpNgR7dNcFCWCiSe2x2S/O2Dsobo2W7/yE1TJ10SEhmKY+faWtS9OVro+LCG8ZkIaQSVJT3nz6OeWn/je5atGOBvRw2mj6p+edf6JT79/TAZqMp/ymNsvTllv7EpXgD2GtAFrylJ0mlb+nXOZApxbWYK8fjWnRkP8AxcNbwbBBlv+JIGYy6f3RxtVscwxf0QmoLMuAdbVpDuZBz+shW7+5nhHEsdv02RMIdjRoJXCNdsET9r4AP4townxc5iRsdBPn8Qgg==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
  MN6PR12MB8490.namprd12.prod.outlook.com (2603:10b6:208:470::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Thu, 12 Mar
- 2026 13:58:50 +0000
+ 2026 14:00:16 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9723.000; Thu, 12 Mar 2026
- 13:58:50 +0000
+ 14:00:16 +0000
 From: Zi Yan <ziy@nvidia.com>
 To: Chunyu Hu <chuhu@redhat.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
@@ -84,82 +84,82 @@ Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
  mhocko@suse.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
  ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
  lance.yang@linux.dev, Li Wang <liwang@redhat.com>
-Subject: Re: [RESEND PATCH 1/4] selftests/mm/guard-regions: skip collapse test
- when thp not enabled
-Date: Thu, 12 Mar 2026 09:58:45 -0400
+Subject: Re: [RESEND PATCH 2/4] selftests/mm: soft-dirty: skip two tests when
+ thp is not available
+Date: Thu, 12 Mar 2026 10:00:10 -0400
 X-Mailer: MailMate (2.0r6290)
-Message-ID: <E105C649-3F37-4AD4-8B3C-2AA06DE8DE5B@nvidia.com>
-In-Reply-To: <20260312114027.634559-2-chuhu@redhat.com>
+Message-ID: <15C0D70D-CDD4-44FF-94F8-ACC0C5EE3C69@nvidia.com>
+In-Reply-To: <20260312114027.634559-3-chuhu@redhat.com>
 References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-2-chuhu@redhat.com>
+ <20260312114027.634559-3-chuhu@redhat.com>
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: SJ0PR03CA0150.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::35) To DS7PR12MB9473.namprd12.prod.outlook.com
+X-ClientProxiedBy: SJ0PR13CA0102.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::17) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MN6PR12MB8490:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19e0279f-25dd-4d3a-dca2-08de803f7d10
+X-MS-Office365-Filtering-Correlation-Id: 79ff23db-0685-459f-9123-08de803faff7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|56012099003|18002099003|22082099003|7053199007;
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	884+MTmTOcYRp6vBfoc250SpWsStF632YuI9vnFRFZyvSPR5MMU+pEpSrx6/y+3loZwdp4aVsEIx82fsrwltStSSBBi0ioG1nxq84V8thF2paQfFsDRUclWgCiBqC7PgWEdtkkhqsuc4klrMBWINh/PxBCZTS9SjXBWZDJGPKyXX2ML0P3L/aXb55/vUc/oXJlrJJWHGMkU2zLxMUA6QEbr8L7TtFdGUgvNztIOB8BeB85GgO+fGnrKa71Utd4eELI66aUEpH56AUavCcfrXjsBvq5ZZ9Vnfa4g4WGra3B+M+DclO3GGSN+vjWewRLPyKnLAgWMRQC5lkV/2Yv6K2AslAnuuxbaQ155rd821rQ6TYZLtKj8M1ajXKO55Qlg6pzdy9+1BpTqqWnagIEppB5UXGg01U9yETrhv5nik8J55rA6MJujW/Xquy+rbFv+LZJ8XcW95Gh3KwYMaMgzUOL0ZhmXnc0N6+EK2jfAZ2h8zeG6X/osoE3yMkbSqbt8IZ8S0YpIkATdnxzZ++eXvbWlTd8Vp5EMMdUArZ5RnYbFuTuDKL8YmfdT55aSE2qekoy13SRtm/9ImK0KCAl7GgijlV73mGaH/c7SrJdErzGWnyY1oSpuzmN8GViT4zxS+JDVmJA2t9r9jYhNc7bQjxHpYAfn4EoMI4XmtI1eZRahzr6YgEagmjBWIjPEbjhzdpPPVsA8YKU8hopG0k2kc2J5dCCcKBwhNE4OnfeBFwBw=
+	D1OBWTnpS7YikGZsUq7J40qO5yrd4XBrpt3pIh4OveWA1XON98Z27XVcLpko4FliwOlRZV49SUPruH7f25C8d22CQxEZmBTCY2ZAGUbzdbtAPFig2V4Du15IwSpEAnK54ysr7O5XpvFaxkgycitiMvg1GhlZHsySOSqCAA93csxgqlazdgTxjpgKnxkFmaHOTuRxzrUQprcdv+74alo5/AyNp8Y1extWwTdxDULA7aiHI9DbfKJmjWeQbrw2yUvvbCTnq1KmaQbML19gcuWUY1glAlIIzU7C5PILmRTYhvxTt0Z4qdi2ZkgtE2oOto0KMv/9AkXh8jOKzmK/hpYswDr5tIJmlrcrcuY1Co0xNwsAD9/VH9Sx+o1WIttKZHTfR24PUiGUkWRlDcyezq/kwaCXREAJ7GOaXmY2MpAy5UK8yH2mAgaJCdseCWqRRfSecVFmfh9xAEzu7dJvfUKHrUmWiRBkOsE8xR2eam7z+UE0d5YAOTLqqXDbCvnoJQTrF/fQaS8fNH7WKIl+1ONN7F1qD+1x7J50tfButOh9jGtDcXSsAagYzTlf3jMsfO+IJ0UhxNQtB7tNreQG862EbTaghEkA9m4DxwRxuhr7OIADEqlQar3lGYDlOePkWx16hr5WnDlp7CjBdsNfxpKVQSQoT7nW7EWJ3Y9JNMihs0lPjtWcsfIDWHWFDjKdgUlwwrqogxsOrIZMpebX7s/uQWz2ACtHOZOWDEpWSwVTK8A=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(56012099003)(18002099003)(22082099003)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uAQ6CXTMTEMdAQvTP48u5PV9nIG62lOS92PEDSNeAGyIxLmoh50y9QljHcS+?=
- =?us-ascii?Q?kYvAaGEOLtQYlPSwoUdHj+BhUbzGMZSEG+vUxr3Iq4+fhc2J6LAR5w8ZNRoY?=
- =?us-ascii?Q?gsi5yQ8DBMtl5TXZpSQ49EAYuJCyVVNWF+2XcR9T6chIOhbtTXciSuv08ltb?=
- =?us-ascii?Q?828MkhxODNEXwQvdYr70sDh9jOnODsn8WteBYMTAyPZ52+EzO68YkLCFoDfs?=
- =?us-ascii?Q?guTcM9Tq5LICqKEBGTKO2fcB8QxXxVEySxkDPzJiR7yFaYu+6qDYRQiYlfox?=
- =?us-ascii?Q?d1Av8MYzLn1kS5T4YiraQMqPbyv+mXyhKEHRynfudbPQuD49Ii/PL2BqCr5X?=
- =?us-ascii?Q?x6O892/7yNSmRR3tHQpljnGGvVCke8Q5slImoMX6X8LH6XWOA/LT02TFhPd0?=
- =?us-ascii?Q?U+7DObz+49tK+Z+uMt2ufrycrrl0m45/pBy6nNnvqloCmE4q8cJWLTr1+zMl?=
- =?us-ascii?Q?xK694fVb8BJfB+iWi2DHMx5VAe9EhtXHPQsPncEuHWS/Wa4sXivzJpgSHRan?=
- =?us-ascii?Q?bVdH2MES89IVzduf6ZGjzqQhG5RjBiG1HGFjFS9qhLcNwXs2GxLVmOtR8hgN?=
- =?us-ascii?Q?in7N1+xTnFeN2d+fJtJsOuBdeNicH8oHIw6ztEk0ydbRVWon8Ejles6LuXPv?=
- =?us-ascii?Q?TU5kXIDyr7EmQ6QX9QT+t+wDe8fWCZUAQu/P4h6e0M+Ut4gaI0EJ/nkADyHM?=
- =?us-ascii?Q?agHTnT4wULC1EA8vc8ZVOO9VI1HdL+bMwTDX6WbS7VCX97LM1RKsq7a4A6j2?=
- =?us-ascii?Q?cIE397ImWT2YBwGQiSZ+GJ3HwMaroR7vn872XKW1iGt+MhLdmjg6rxf+6Y/5?=
- =?us-ascii?Q?JXU9TGlbFTCw+q9sR9EBuSh1RENxCKweYSCDwAGqk2xEuatgpwhchXCK3H+R?=
- =?us-ascii?Q?VfWq6stBil7hgdhiie+TiVYg7aFpNjqFS+VknP/e5YxOJ6ZZMgiG8563JH2j?=
- =?us-ascii?Q?XDYIRAr/giH5zs4rynh4b52HpQLha2rAg70JjW2BWhKSs/vlnD+0sldSLUI7?=
- =?us-ascii?Q?+j8pTdHW7r7e/mLjN5wcmP6TAB0Gsi9aFE9BzVY+FyoMCYicJThrAZaZoCov?=
- =?us-ascii?Q?tXGFvj7LiMdWF1yTPaSTUEdm3fx6D7MG+tdIg14aB18ekii6a+bkVWv9gnHx?=
- =?us-ascii?Q?6KBXyTNQCLnWa/wXNLZDJv1ZW/GD0btZFw3joxir5+3ASJtrDS8B6TxUz4o4?=
- =?us-ascii?Q?TiHI9CC3BbN8JB2BBYpGBhfzYFF89shpwMPDoBv1XDS7QSJ1rgqHtMIAjwUW?=
- =?us-ascii?Q?xrTnuMX8/3I4+hgmdfEZ7Nx74LxTZ9nmq7QsNGgtB7KXgGQqrOIFgLIyDm2t?=
- =?us-ascii?Q?5qiMLTGRgo39QTm2yrHvd3tkSqJCwPHpfs6ADljDyN1YEaq0coAs0clYOFr+?=
- =?us-ascii?Q?liaoIXqEhWr2EgaUcs2oc1fgYcG2wHzdRCNskod4DVOwcCGn5c3PODLlyCwM?=
- =?us-ascii?Q?BdgBncwZImU5jYCXNuDIwOLjHskAp7tB0EE3u6C5CdMvC+dMfC/EOXECsvUL?=
- =?us-ascii?Q?eP3HuDHmMEnnlvp9EOpRbtjzPLrsCW1dZS3yWkTlUk/090EeeD/nkQPfoU1I?=
- =?us-ascii?Q?kTF1364ohSBSWCRzHmgJDl3Qj2ZrlIlNSMEo3PgHczDjQo5LXDuCHHe4VHvS?=
- =?us-ascii?Q?Z1UICn6q6pDT2CQ9T3kGHvaVXp0t6O+wtDQiyV6UJKOT9fTywE6PNDPQg3NG?=
- =?us-ascii?Q?LYU5ef+U8vl67vAC6uY93vmOYV6kw/iZmvZ4uUnIB7UW6okwJrYK/ufqgvm4?=
- =?us-ascii?Q?2JhiMCghZw=3D=3D?=
+	=?us-ascii?Q?orT1ox/dBW5DQWN4aaD8I7fGieDzB6w2WW5x3fjQuKeDFGhzRH1CLa1pAZt7?=
+ =?us-ascii?Q?eHFTEFxbiABXeYX8LW0Smbll2gXij6CXNu6owVVCDnGd2c9hsXn3rIF138R4?=
+ =?us-ascii?Q?/C/BrOi9RTTceDR+0qNuR10BzSvodyZ4cuF/ixUOZCzujKtGv9O9B/L8VIg6?=
+ =?us-ascii?Q?6wngQ7B198ac9b/Hn5lrSe6NyK3oLRbrU8uJJL7TrBglDh1nf/wSHzPSWGKP?=
+ =?us-ascii?Q?ks5DRhswtT7K6qvPDLPrZlS0ILXKBfAhls5qByBErm6e98yGjUzVyg8naOG8?=
+ =?us-ascii?Q?lUPqAQfM761jSP1K0lGmO4ZyPYDOBnTbd+MdfY2LXMNw2x2xrf8eQKMBGBgj?=
+ =?us-ascii?Q?TTvSgmpPny6ENJ711uG6TK+PrDSONaOyYW02k+Ube1+TB/dKnk5vmCvVI6b5?=
+ =?us-ascii?Q?AZCoyA5iRWrAzD9jKsSU0xPbODxyCGKS4zo3esFT4g1oJW2c030IJYvPG919?=
+ =?us-ascii?Q?nFE3vS//LeJ4T6knge4mI/ODj51rCV/ehCDVSoYneP0cj/mlPQMPjfw/gqS4?=
+ =?us-ascii?Q?tSfAswPNDjYnz1PalVhnyUyJ6hdWgdiw7ZtHBs7GbZ7TMbOI5kttE0TeMOMS?=
+ =?us-ascii?Q?jLCIZaB0M6Ladg5lFD/LDEMjYhYIIFwewI6bTTnPcMfF5EbTIb4cT3c1jvnI?=
+ =?us-ascii?Q?prKhdP9Nz0Q53IawDFdsjvk1VbCol5H4zv+kOOxDYapCWFSON0v69iuJF/mC?=
+ =?us-ascii?Q?FSnf35Ed1UvVXz8uAjKYIcD7xKVX8WzkuEn2xv5Dyl/gKh+ToMcppLANL4FY?=
+ =?us-ascii?Q?OL87Q6EzK90j7qTtdXe1AH+8BPObaneoRfI0MYyE82QnYFMgXhY/y4wi4NC7?=
+ =?us-ascii?Q?wGbs88f7oECu2TiOs+uEoavaa1r7iH1Zn+a3tCtPfXyQe3SAiAD1odszHB+n?=
+ =?us-ascii?Q?L/UgzOG86IJBVsOCMUW2vseyOzGy6HwxhFaKmI/aRnJIlkCux+4eLBDOseKm?=
+ =?us-ascii?Q?+Aoqs28a3jf2JEWixTRu5XzSIV1AOj9jJzyMpjyHcic7g6vxYmRlBHkncFQd?=
+ =?us-ascii?Q?mrqsovyLNCrgyrIIN2RojZFtgPc90N91rD0YWjb4IqD518BLou7uDKD4MWVw?=
+ =?us-ascii?Q?H9SQVk5LJI9JPnNVAuzTNzM3wVgfn18D1u0GBZPfyyhCMPLIFY1BJ596p6t4?=
+ =?us-ascii?Q?1Rk3hW1H1nhHmKNAtX6oqkZhv7SE29sNedxn3GxqXRiNdT4QBh1/6HgSkSDg?=
+ =?us-ascii?Q?9PZPGcwYel0OQEUiAgzqigkahBUCGJv+OshehPefMTFffkzqL/TXLjbgLZn+?=
+ =?us-ascii?Q?casqrJ0cmrjxwdTEpAo3pPJ1Tp5zLQC7gga1ztzZG1CUYHeCN9u4h3Iehvfp?=
+ =?us-ascii?Q?l35g8ZXZAYmNEKip9bw2WFPoC+E47VuRlYUfjqACfV4SG+TOUyRAFq17ru54?=
+ =?us-ascii?Q?CTlSYSLvcKKo2qvR9+dnZjyJ7pwdHfQFyIhY1q98G/qT/P5wdnckCP9x9Czw?=
+ =?us-ascii?Q?/ydDHk+YX42FUhzqaEqMZi/LusHpQNYQu/5QNHWuCSPE5e1fmOXo9pKvsX2l?=
+ =?us-ascii?Q?zcCWOVuXhz+iCiejL5kEdESA7aabsK7CiMalEvQczgbd461T3O4hAyAwBPyq?=
+ =?us-ascii?Q?0O7h653pd5eM+JeRhM7QO+yFimYhx9H08mFkQx/HTdW2zvQV/18gGJ86gIlI?=
+ =?us-ascii?Q?mN5UC13Z+TYwcvqGjdn/jbzK4c4BP2jM0SPqij1zgZ3NqI3zqdVTZG+2YNtR?=
+ =?us-ascii?Q?CONSvAFV57t5oh0Z5lk5IIllrNXOoXkKP51QVsn12B9qNNwOHWpa3EM0FzpX?=
+ =?us-ascii?Q?J5UeJECfmQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19e0279f-25dd-4d3a-dca2-08de803f7d10
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79ff23db-0685-459f-9123-08de803faff7
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 13:58:50.4162
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 14:00:15.9080
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X5I4DkWU7CDCMD48+2SUlNJybXGQ5X+Wkad7n+aOJHeDgecTekH7gBpxH1thBRks
+X-MS-Exchange-CrossTenant-UserPrincipalName: hYXYqWiVT3ooEOQe6Gsh8Fk22uJBfq/2UFFIJLgchxML8q970FsveIq60UX7NZ8b
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8490
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 15D6E40007
-X-Stat-Signature: 3syky418wa7wi9ocz1scacbg5qnpo1n3
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2AF2BC0011
+X-Stat-Signature: odwjpwrwnznd66e5b6iomty3f8g9tihu
 X-Rspam-User: 
-X-HE-Tag: 1773323937-981370
-X-HE-Meta: U2FsdGVkX18aLwbu9CIyotV5ifX0KGkWxwQ3MmZkmmqrPdO1fb3woLpH2l5/mq/+Gv/EpvVem5/FgBAtqLOVrWrX56tW7faZwCpJanNMqdJfbzSstx/LvshZqVeogwPF9J8VpS5qdvswIixWDcQVYKN+rPEKtfLlCFdWUHaPTas6EaPWVvS84pcesVC4NmQQB7eA5zfkWNpHkAGG+886kMIJy9bI9kBxP6Pq1YhcNo/l4sXwZWhnpdZ8Rev61xy5Kexr+mmRPA3kriuX+jZ4GuYmviJ9p5JUX0oovoCOHp64xAAlc1gf3BcSoWN4a1GxUr0WSaRWff61c0woCsot+ehv3ypY5+ql7TQ2vdvs3ADMgz9C7NejV30yCAoWC4H/HpxOspaSU18zWG9Xw2xTwj0FPkb2LyPl+3Ea21RLXLjmmtLgxB2nZbCHqcMdBb9RDEYswwm/AGRQVKIxpSXozu6z6lTNyNB+UgCoxtSYLZesD0Au4Pzcf+LOig3AdTK7828XJAM73exJrklKhhQgm1HLy8xl14kn0rimy1zilK7uovEBzhT7F5z0zrSJyqZyC9lAb7LV52YJZQdGpuFrpBvyy0RiQmG7mGdDtai2OaDL/SKp7Z5kpEwg3ZVDFxYhk5wn+R8mQGw2rQK1VCoZJ8SLR+Y9zTb8uGRDuurkTIi/PIMoojbo6ZpNJluvEiz44OcrdZiS1hW0ndt841i6aF4gyH7RYanG8lm7j55U1wQ2jw/5JHbX4Niza9kJE3t435SW5ttaeMkTThJ14mqy9128GvsadAlJos/TekIhurzYGWf6j351PZcxdQv77Cfay0TSh2ELopo3S74jx76kjKlKrQXvQCeqosLJo1nPYsIVrwFCOUtwYHXYyHQ8y63rMTY9M8HEkSeostH/t/wVSN4xtqyf/4h4MM68mCq9oF/gVhC4r8N9cPdJkErxYmZRraRyzVeMob4zRbKyqe3
- 6esK5n3I
- IsRvB2FxgFjbw31o2qcgA36gJFK/hqc1SP1bC59bIBgCwau09Nq3AmdXHKvLUiA+/CwjQAAgdgSw0rJ4A/RB0pAkXgg3gSqLy6cFkblapCWzSc0MSCvXzGiAVqXvbUCzGEfaxOif18LAE0AL9IVNprO7v/NUNQo141JG5RGA8LN53K0JzuUZU2/BEoAtF967bauUris2w9W3Q3awSeZbutAK/Sy5YmjJ03+TPMkRAwJvF/3g+z4HIhl3RZUdZ1OskIQabBef7atP8QvFeJ6/GOyTpwqRcVedYTrsxHeSZle4jgG0NgVc4DItrckMHuf9cEbd0v9O/XGK1TrgSrlgC2ZlRcdjxEZ0OdBR2QC8nroj5o4v9Rv50NJTz0kx9JQyV21Z/5oGYScYFQNyegLFqcaYB9oXF2D5NP8m3
+X-HE-Tag: 1773324025-645944
+X-HE-Meta: U2FsdGVkX184olfo4Jt2JsKOX3nI5JQ8RppBYYUWq4AUs6mFEx2SyrpQD/uDakSrFf0agwnXgHx5vgoxYahJ19kvOMAg+t7ouFxD/M9Sx92hs6JwomOvgrOimQJVYKp/PsZgvrJ//hm2wOV9k1bdN0/76i3iZuywrdnADfKT/XMuCPMAxHxtjwvNy1l81EMhQjaddICk4PL0hWdvwsdad3701J2QU+6ElW06dYbHbZoTlZk6IKO9C/vhK2SMmXx8fSK/czmO2cWIIk3si1JI+DTXkd01Z2vr8cF3WK80fupbQKACKPZ/debl3xDi51K2Kbd+XojS6k8qqWN6V5bSP5IkPzTJ+GlqA4tWAk+szQYp9xJ9GwDGDPJrBN+bjSi0cb8fwCJO2Z99qnKjwCP1Ued2n0f1cJH/odjtTPpf/8cqrO0ZD2Jq4I0e8+OvBjDmzAZpc0FN/NsWRWKLuaqfbQ0mDaYOjGtfLa7nDqz/mYzyEB5BR887L1vEekRW1YDwl0LyBVoECmOfu/uVrKmkYx1OVS6Lc2z/m7kmWbDJk8zHbj509t5BhoQEEpSCdq579eisfkm5LMsWPdrpDgk1OIgomnJoMqIJ+oCdVzmrdmsII6U//PcQviDcziIt6neSW5JME59XTzzj1R8abhmA4eTEE6f4fUvngT8h4f5BoRTAaz40u8c8R8LkWL3hGqfXdEIbDOQCkcNzPiU7HMDHIf/giptuqVYNs6AxhXc1tDv1QaGg0GKs3BEjJIskPyzQPP+Yjk/GqtME7zW0UFhpUtDW6arFxMpjEazq21Pr3cqebnbS+4PgNvyjcmInCjiwUXOwDv1PZhojo1sj48LXzLnp1zY9uCjg6I1d1LhfoVUP1p8CO6dqImEwuAp/XF/4jqPeeogkNDlSkSu2nycdJxpNJHHBJX8een+yajqCNgE/Lio9WRG86FcKWmz3cfiuHqxUx5dKcqbdccliIWl
+ 5mdrPR4w
+ r2irsYjkjsO2v5SctN9+BdbxYxax43JTFxbxDOqZdsRWhbSsJRJsh1UhQnnmFNamu2psynTnBYrkDfZZNPaBBGGI+a6qyvT3uRnNqWgKw4OQksvPJUJG69iArZsT8MTav+J1+xvOxNJXDYXoqArXOowJ1+m5GbwquSB5kN5r7NtTHh44lwdS9UhuWykS4TBjTUm5cVBrZP7FmE1L2uAHt4GttaSk5VmFkfZT6+iADSKx9akXDkMlKU5UlRgMblz8os4EFi+EfrZYua9CEvR/0/6WnuAfbmh5Nz70Pwep+7hWOYLVXY/Gx/zda5NPYemErNQjenXOTMB148JQQ7YqFk5KuLkQ8fHOTUSA2ZOIyHZ32L4kG3TYeOEQOhxwBMP4hSniwL7dgx0z3D8Sn5eqxJXr7Gw7aXb+jTjZl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,46 +169,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12 Mar 2026, at 7:40, Chunyu Hu wrote:
 
-> When thp is not available, just skip the collape tests to avoid the fal=
-se
-> positive.
+> The test_hugepage test contain two sub tests. If just reporting one ski=
+p
+> when thp not available, there will be error in the log because the test=
+
+> count don't match the test plan. Change to skip two tests by running th=
+e
+> ksft_test_result_skip twice in this case.
 >
-> Without the change, run with a thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard
->   <snip/>
->   # #  RUN           guard_regions.file.multi_vma ...
->   # #            OK  guard_regions.file.multi_vma
->   # ok 89 guard_regions.file.multi_vma
->   # #  RUN           guard_regions.file.basic ...
->   # #            OK  guard_regions.file.basic
->   # ok 90 guard_regions.file.basic
->   # # FAILED: 87 / 90 tests passed.
->   # # 17 skipped test(s) detected. Consider enabling relevant config op=
-tions to improve coverage.
->   # # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
+> Without the fix (run test on thp disabled kernel):
+>   ./run_vmtests.sh -t soft_dirty
+>   # --------------------
+>   # running ./soft-dirty
+>   # --------------------
+>   # TAP version 13
+>   # 1..19
+>   # ok 1 Test test_simple
+>   # ok 2 Test test_vma_reuse dirty bit of allocated page
+>   # ok 3 Test test_vma_reuse dirty bit of reused address page
+>   # ok 4 # SKIP Transparent Hugepages not available
+>   # ok 5 Test test_mprotect-anon dirty bit of new written page
+>   # ok 6 Test test_mprotect-anon soft-dirty clear after clear_refs
+>   # ok 7 Test test_mprotect-anon soft-dirty clear after marking RO
+>   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RW
+>   # ok 9 Test test_mprotect-anon soft-dirty after rewritten
+>   # ok 10 Test test_mprotect-file dirty bit of new written page
+>   # ok 11 Test test_mprotect-file soft-dirty clear after clear_refs
+>   # ok 12 Test test_mprotect-file soft-dirty clear after marking RO
+>   # ok 13 Test test_mprotect-file soft-dirty clear after marking RW
+>   # ok 14 Test test_mprotect-file soft-dirty after rewritten
+>   # ok 15 Test test_merge-anon soft-dirty after remap merge 1st pg
+>   # ok 16 Test test_merge-anon soft-dirty after remap merge 2nd pg
+>   # ok 17 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+>   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+>   # # 1 skipped test(s) detected. Consider enabling relevant config opt=
+ions to improve coverage.
+>   # # Planned tests !=3D run tests (19 !=3D 18)
+>   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
 >   # [FAIL]
->   not ok 1 guard-regions # exit=3D1
->   hwpoison_inject
->   # SUMMARY: PASS=3D0 SKIP=3D0 FAIL=3D1
+>   not ok 52 soft-dirty # exit=3D1
 >
-> With this change, run with thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard
->   <snip/>
->   # ok 90 guard_regions.file.basic
->   # # PASSED: 90 / 90 tests passed.
->   # # 20 skipped test(s) detected. Consider enabling relevant config op=
-tions to improve coverage.
->   # # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+> With the fix (run test on thp disabled kernel):
+>   ./run_vmtests.sh -t soft_dirty
+>   # --------------------
+>   # running ./soft-dirty
+>   # TAP version 13
+>   # --------------------
+>   # running ./soft-dirty
+>   # --------------------
+>   # TAP version 13
+>   # 1..19
+>   # ok 1 Test test_simple
+>   # ok 2 Test test_vma_reuse dirty bit of allocated page
+>   # ok 3 Test test_vma_reuse dirty bit of reused address page
+>   # # Transparent Hugepages not available
+>   # ok 4 # SKIP Test test_hugepage huge page allocation
+>   # ok 5 # SKIP Test test_hugepage huge page dirty bit
+>   # ok 6 Test test_mprotect-anon dirty bit of new written page
+>   # ok 7 Test test_mprotect-anon soft-dirty clear after clear_refs
+>   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RO
+>   # ok 9 Test test_mprotect-anon soft-dirty clear after marking RW
+>   # ok 10 Test test_mprotect-anon soft-dirty after rewritten
+>   # ok 11 Test test_mprotect-file dirty bit of new written page
+>   # ok 12 Test test_mprotect-file soft-dirty clear after clear_refs
+>   # ok 13 Test test_mprotect-file soft-dirty clear after marking RO
+>   # ok 14 Test test_mprotect-file soft-dirty clear after marking RW
+>   # ok 15 Test test_mprotect-file soft-dirty after rewritten
+>   # ok 16 Test test_merge-anon soft-dirty after remap merge 1st pg
+>   # ok 17 Test test_merge-anon soft-dirty after remap merge 2nd pg
+>   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+>   # ok 19 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+>   # # 2 skipped test(s) detected. Consider enabling relevant config opt=
+ions to improve coverage.
+>   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:2 error:0
 >   # [PASS]
->   ok 1 guard-regions
+>   ok 1 soft-dirty
 >   hwpoison_inject
 >   # SUMMARY: PASS=3D1 SKIP=3D0 FAIL=3D0
 >   1..1
 > CC: Li Wang <liwang@redhat.com>
 > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 > ---
->  tools/testing/selftests/mm/guard-regions.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  tools/testing/selftests/mm/soft-dirty.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
 LGTM.
 
