@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AF59106FD62
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:43:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 325CE106FD62
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:43:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B42356B0005; Thu, 12 Mar 2026 20:43:16 -0400 (EDT)
+	id 9676E6B0088; Thu, 12 Mar 2026 20:43:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1A246B0088; Thu, 12 Mar 2026 20:43:16 -0400 (EDT)
+	id 9121D6B0089; Thu, 12 Mar 2026 20:43:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A268A6B0089; Thu, 12 Mar 2026 20:43:16 -0400 (EDT)
+	id 80E2F6B008A; Thu, 12 Mar 2026 20:43:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E8636B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:43:16 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39C96C1DCD
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:43:16 +0000 (UTC)
-X-FDA: 84539190792.13.0439AB5
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E2F06B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:43:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09ECA1A04C3
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:43:33 +0000 (UTC)
+X-FDA: 84539191506.21.DFF15FE
 Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 14685A000B
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:43:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b="evZBO/FT";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=tlm7pJXg;
-	spf=pass (imf25.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 00596C0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:43:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=WX7c3DKP;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=TKoMfHHk;
+	spf=pass (imf28.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773362594;
+	s=arc-20220608; t=1773362611;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mtJ/saZCLiCxFDNQljniHYoFSU4uzdwtWsgXO8zNDIk=;
-	b=DTrRO7lxnmo1HhmjTBYH88J3N7CvJ8XxOL336QF643onK3JfJO4k4XyR/C+ssFAv1TxBhI
-	SoJhEOxbjIt5LY0XXtVoBNpmBsFci4SNWlzF9MEUkj8JRqa33vtyrT52PMTrPmJYOoz4uF
-	8WrXRHZBnIWzJzaYfHhV2ZW3o5mQqTk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773362594; a=rsa-sha256;
+	bh=8aHffWYVzxlbvh037JlVhR8ERE/IxGWBZRv5qHj7bJk=;
+	b=bxDrDdDCCw57WrAneOSvwD4qEtHX+FPSsAyRWqs2fwtHPc1YlcyWITDS+r++fb7xBEDVRH
+	V7oDyDNVRprtac7vjAuHDmrQLdhOqiNxpKb0d8v0Ew8j+Hn7IA7PYGlYEu9IKoARUgdOb1
+	bj1Ow/DbcSBa8tlUYtm9Oejg1ldBoC0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773362611; a=rsa-sha256;
 	cv=none;
-	b=5XkH5M9DZ1gC7+facuXiT3uOPX2QDrKssA4OpGGJryS/tPcjh31gw6GCzYeWH0C/lnCSF8
-	RYu4uA9PrLKB3vnKNo34VGeKTXuvmU6kjqeB1tMP+3m2dI9H3RYEDySU/zGucsRdvCQazX
-	lI6VXkxTD6LKfxsbc79ElK9wJ8jLtAY=
+	b=ynSXQ0SjjZW7xX5Fnl6iAN2uQFaNkWTxDHju1bUO4TtwB3UZOKp0B1+pnTDiqNVsIS1mjx
+	lxTc64UZipy93LB9+6z6RpthyammEz9xQ4elgbBQynA4jkIUuztxe3109R6hALAkm5D+8w
+	5mvYfacFYKVAgQByhSf7tygIlElOvUs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b="evZBO/FT";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=tlm7pJXg;
-	spf=pass (imf25.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=WX7c3DKP;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=TKoMfHHk;
+	spf=pass (imf28.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
 	dmarc=pass (policy=none) header.from=ownmail.net
 Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 1863C1301B1D;
-	Thu, 12 Mar 2026 20:43:10 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 12 Mar 2026 20:43:13 -0400
+	by mailflow.stl.internal (Postfix) with ESMTP id DDA261301B24;
+	Thu, 12 Mar 2026 20:43:28 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 12 Mar 2026 20:43:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773362590;
-	 x=1773369790; bh=mtJ/saZCLiCxFDNQljniHYoFSU4uzdwtWsgXO8zNDIk=; b=
-	evZBO/FT5uLkrmbp/p/bKHGn86ivpuWIB8uwzomHLGU6kH6lhmmlCRwiDJoWV39q
-	TXhehd3v184kz2tKDZFnYt3nMYpGYs0FHIDP5P1WpT7DuL/s4rQw/xsDTsgE9QLg
-	/164043xlTxtGbkRkgPLxopa5nRZXLGdKExiyrVeEWQB7Z6SjppifuMa+H+nAnt/
-	Y9UIllgVcpdMC3ryQir69hasMs4sAzed4op96lB/0i6WUn6Uhf0fVcGFEXiSJozk
-	InAA9BqTgm3htPeeddGMpXgGFTZior38m4S57df0DQ4nN26Wz6Bnup7omFSZuA/V
-	bXDsxk1oRwy+oBWG8yzDjw==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1773362608;
+	 x=1773369808; bh=8aHffWYVzxlbvh037JlVhR8ERE/IxGWBZRv5qHj7bJk=; b=
+	WX7c3DKPx+tVVhFVjUW8//0VWvS4las6XMedU6aTYpr242woaOIcqjdZZVJ4yVnC
+	P88WJrijdCqh71ZQjfLl+xhjGoQMg/F8wZ7GNOHUOS+3PK7l64Z9RcJfHzu3EJx+
+	9kiGTP3jc4KeZly7RqBISMFoHeUWIhyiLSOgatDGNqU+ils1tsCxI9p7zB3O39nq
+	cROINYPyREvgD1SKVCYqH32NWAcedBFxE+Wuyiva088VcFlPPudW1EKncv3fsuaA
+	BShtlQMTfihkHb/wYJyVBjIX251wX3ueq3TmnmoWiRxo/NGW66kYiWp2sylnh++s
+	bFkFlicATpGbeU9QOA95Jw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773362590; x=1773369790; bh=m
-	tJ/saZCLiCxFDNQljniHYoFSU4uzdwtWsgXO8zNDIk=; b=tlm7pJXgvMRnwrzqw
-	361ob53tdiymOgQgABOTedImHhfzfyXrgBfCei5K7ic4kOntEU7/s+f5sGh5Urct
-	yi6RhxZa9AKNdjteFK4EVVHFzPhf0rBHY7+D36NQKzOYqyDZTXwjWo75g7RIoUOt
-	+1Y24Dtef108V7gC/hPAOKuoKHxLQb6ez/GO9OthDEETcJ7ke8mp144qJcMLu188
-	7QoX5KdxhtTAeNLGhB9EFu+7bHr1B8GbxO8xT5UwDkDbvUE6Kv/LXlywzoVIfx8H
-	5/sPhbm9H87cFjM4xoYFeNlJ51RwpxBUAAY7/b3qCojyfoXALXgP5SiZxeMBLz3U
-	TvcfA==
-X-ME-Sender: <xms:nV2zaf-NnCpb3HI-jpnIeaMEX78RNQjZehsLTDQASvyJLmVZkQdgfg>
-    <xme:nV2zafZJ7mvrmpO-gcToxfMKwcMc5Q_rFX10NZl8_LR-rje39CCVNCfpHij589i8x
-    F8Ot_R8pRFhAt1hFRsQ_wy6CVw51XS3cVTIlX1zcPm_ZZvJPw>
-X-ME-Received: <xmr:nV2zaYGPAoTTcGmEks6mZrihRO7DEzSJQTLVP_2o9xNxWYeVqZvQjDfXGA3yqw1n6XZ5fGvyGTUhxFiRqIqqc-pGG5s2HTIOOgdySI1Z0kbM>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1773362608; x=1773369808; bh=8
+	aHffWYVzxlbvh037JlVhR8ERE/IxGWBZRv5qHj7bJk=; b=TKoMfHHkIQcef4oL9
+	WCvsrpW+mTxjtA3eu9J9hQdlSACakLolIy62RydRB3PnAitR2M2UBSxOg6u41jAQ
+	orR8E5pfwsu4X5hri4xNT6JK2donC1MWsL/u0WbE7rRdrQQpndWHCmOLcrn85w5q
+	SI+HqYSuDNwoKNY/0GBR6Pi4KU3xLzz6Q+JVFC40HVtSP3UyiF03OUmeTa8dDPt6
+	DcuHCt92Cd2YJ7SYU+vMYMh3KnIdv8pfwE/90UpO7I3xohC3Jy56VaPbigBQF9ob
+	6qBILVQxLXuHVd9mMl4KuNfCKXc+3cO+4irgJurxJUSavrvBRuwB40RYu4N6E0i6
+	RGNjg==
+X-ME-Sender: <xms:sF2zafwU5O7EET5F6K-aQw7jkWz_ixnHMn4V0xMGQaiLTVepCp0tRw>
+    <xme:sF2zae02wD0x5bh-9IIDWH0SxbeC0VpY18ApLPS8IXDYBqpRjLeeJzPqp01_9lfY7
+    8Jv0uyAVrBjp1-Aj-tSe7O8R_xxkSMDF1paMjxYStXEtm2zyrM>
+X-ME-Received: <xmr:sF2zaQ5u5MiWf_c7DuHg5fbpvIKQer-qUWUomzqvDd3cFUmdR7Z_2wQrinuTZ7IkyU0CpPNKTH5Q0vb0CvuRdpmuwc7ZgXvaIhhtyMu5Yb9C>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeekvdehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheu
     rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
     epveevkeffudeuvefhieeghffgudektdelkeejiedtjedugfeukedvkeffvdefvddunecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    vehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
     esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohephedupdhmohguvgepshhmthhp
     ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
     hrtghpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
@@ -101,14 +101,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeekvdehucetufdote
     hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhn
     vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlh
     drohhrgh
-X-ME-Proxy: <xmx:nV2zaY7faWbXQHLIpd0SYafA-iMAWHAFfnW2ShinVhLAUGrEfx07iA>
-    <xmx:nV2zaZvgDZlHyejqPasp60C6LyxeD80AFwab7f1aj4miUyVx-K4aCA>
-    <xmx:nV2zaaBryqgkdrCkCXjeDM2uqFf7SAUNres7R_12QlIkQ3RduF7YvQ>
-    <xmx:nV2zaZvraRlGVqoe9uMDqj0rk0wlwP-X2N2IrOVEi5yN04lSuh4s-Q>
-    <xmx:nl2zadJN25sW9Jik8_kJDmuvga-QlrXGx2xisz4qYzgk4C1wnxRkBwfU>
+X-ME-Proxy: <xmx:sF2zaZf3Per3LZEdp2WRei0ix5aAERTBM0In42j2nkjtAIqVFKBUPA>
+    <xmx:sF2zacZtEAEXc0iiBzy42igNRtM_Pt7PbdtzWmXxrPKB5Q8Y4_JQgw>
+    <xmx:sF2zaTF4c7hbyoPU2SzpbJB5q6gWv9QUr2hNyV-ZxscAn7v4SDrPRA>
+    <xmx:sF2zad0qxF5Ms1PY3l5bG_FSgiwxJyCVizNYRzREyDx2EYRsA7FshQ>
+    <xmx:sF2zacNj0BpnAMzEYFy9m-DUQPdAneviKyB1uWslBDL8eNGoPKzEt0nM>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 20:42:56 -0400 (EDT)
+ 12 Mar 2026 20:43:15 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -151,9 +151,9 @@ Cc: linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-um@lists.infradead.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 37/53] cephfs: Use d_alloc_noblock() in ceph_readdir_prepopulate()
-Date: Fri, 13 Mar 2026 08:12:24 +1100
-Message-ID: <20260312214330.3885211-38-neilb@ownmail.net>
+Subject: [PATCH 36/53] cephfs: remove d_alloc from CEPH_MDS_OP_LOOKUPNAME handling in ceph_fill_trace()
+Date: Fri, 13 Mar 2026 08:12:23 +1100
+Message-ID: <20260312214330.3885211-37-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260312214330.3885211-1-neilb@ownmail.net>
 References: <20260312214330.3885211-1-neilb@ownmail.net>
@@ -161,13 +161,13 @@ Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 9mnpwaymtpmu7pg4y79pm8mcpzqjc7dt
-X-Rspamd-Queue-Id: 14685A000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773362593-569968
-X-HE-Meta: U2FsdGVkX1/lJcCbYFGyjeat7h12fEnMif5bEHmfDxqfS3o8diTrJvWhqP9L2cYfrIug3tHwJry3XPWrXN+agwnY2PtNSztnffuLKu8Q2VZebX+BlXmiRKGoCCw4EP/CLFN1kEZuvcjSEPADFSyoNjkKxadJU7dF/DyRph3RpYuoOBHkDbrkD0qHTrVqzjih7elHV8Cr/UMJPoRnq+IZtB2ApZqG/rvNvpVPTjRjTZ7W2GTzAAnZjV4Ino/Lmcn0WECaT0uNpXZ5JktMbLQ/4p+zGvBLMOSlqu1gtSLARWtoEn0Rz55LbRz1avuK4J3o23LnDLghkWDOvQgE3llWwENnhrHPTwafzLoVvmo1P/A6hr9IG1ZTbTCTcubYmMaNGXkHH24rKJuOydcZQrMFUvNNLjCZhZ6nbaGYdc7F3At50cA+bS0xiyIiEwhbaV9wF3zczaVVUIGtVBCfJycZcJA4dZuuc6Qgnh1htZCppXFfKoQyq+g6kcItb51+6ppAQhq99HvR56IJ1o56y/nLdHADanLXnfY2jH/CfxNckC3QrIv+br5WvTkSTkwORtbibclndNUeihDJnRqTlGScX0+WsIwQUtwpH2ErTpMWLkbDUbEYgeHix6d3CetIPZ7xlGf5mpZSmIifQsQKCDWXzKiSl2bUoBoYRgYV+cFryNw+mX4TGtN+wu0PbexP4OPtIKxsIBC6NQ/Ar0Xj2iw3G8gEXAWvDkcd3Sdy5Uu1RfvGXoGnooD/AboFXmQf7MgFWXWSWvWN8ggvrDLUUTGhG1HlpqQFvDCyRz2spqmz5ZN6P7tpT4sjHGHY3EAee9YrMDsKcwZcAhefnHL0ebT9W4wqKEaAsACXcAfUednv5C5ztWIL4rV0nBNYjuTEpVuorCPOmtFEN+nrrBd6d+HsJ/v9c66eP/MtFo/TVYbV65+JDaLp39lLVV8Vx0VKD0h+WUX8io3NfQ7Ky/fBprs
- p+iRJ5dd
- eYnBmy9pusRUL2E/+pVjYO2mFHjojGSyEm8OE4X0sgWEQ7qpIswbqr6TmzG7A2MhjzRGYtMPAQ6YV9Mip5wG/gxk87tYMTjmxNlkA/j5kfBmaeakBR5d/wo4nA3itITN0RbrvNbklm+lkn9vM5bMXFAF/kN6p+AZPcuT4H0A00fSkKWdZIW1d7GQmovrzZSF0jZKj2AXX7sBZWEupBnXZlZNP91WPZtqn49TRW+V8KEbb/NBKvUuG65RPd2/6L8m6VWDltYzjVcSiWMGsm2dV0c0hcUANoVrOoY7i47cg2+UGxt6dF4aI2nCexmIf+Qjqz/TERQc4Sf7Yy1YrvPr2W8GDC8QjFiaTzAZBDfj7dx3LoC+DWivf7R7+iWHospV3U+XLm/Sq/DNdGd8HNZZa72QV8efr8djKfid6mZtynJbeapZ3qx77paPFkH4VIo5MVYgE6OnteBNhZ9vwsAsHfzwQv2r339z3h2NUufhg08EuCT+7HC8RC2JvSn4fUHizFcbJ9y8omFlsgLsQ3GjMRGr8BV0j/lsixKEDhyV3gfUZ8X+K5yNzFf1qGLk1LvVxQjElRfNPT/KI+nJNJbTNkyuNMcQe9kZsne+IzDMekfwzdkrbKJ3m+D1GXQKvRKQ1nBQ6AYfQ3FGXquEQa82Y/oUm4/CvA6a96o5PfCcQfx6fRl4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 00596C0005
+X-Stat-Signature: ou15wfexap4teha4uj9k4987mdtna469
+X-HE-Tag: 1773362610-581865
+X-HE-Meta: U2FsdGVkX1/CoyoaprBj/B/mrFirqGsIy/3ESMeUin7OgnbhLdzMTUlEGLa6fSG47D1tySoMohdIBM88axXkucPaHBoP2DLuelwvnJ7vX3unP2R2TzmJWTjBRdIvueUs7c33JSlPOZI2GFih3Vj+gUGybVlf8tQ+DGx89nczeTDkv7Rz82mJKHZjTTxCD0s1ynDipt6kUFYilzOELcDGlScMj7NgVelqHF5vzpSasLpRwNZ+yYpToNKG9Zz+gLUroDsxhULqDX2Mt+vkxiOFD8546NZy5Mx1w84H2VAZQZSbo9LmaMeMrest4KGW6PvmU4Ov/w9JQpU2vWixeA4RpYQ//AsZAhSXYLvZB0NLFudP3C+9TJ9jPQEbBbWFh3pEA2gJk7YJwqS2juQPmbdLCY+szU+NJmKHBpgrqgfLXqC9ghC7ixZYHE2kTm7OFmVu3MZcT6lBhF7GCyFyuHqssGZTDpkT5wmSUdSbL1z3dKBZBXSmeBu0dWjPGlqsJa7Guept78IeYbOn8H/jdZ89yidNknkZjQFXSfQaWrDYEwOmbk0imntYh9omfRMBbFPpuOm9EpsRL+xVoFcmNmzQ1dm/D0O2gZownYl56kD1mcleh6sRRFnuPHd/i0m3GIFMlwVN/xx3UKa3B2kkQWIByWaV/g0oDmxkM2do6JFpIh1NLnk0uYBjyVqzuRYFV4lk4JSLyd6IDLV1dWs3dCEECEMf35Kl4+KyCu0Hv09u8/CxYR6cfTGcMyrRAhADqlTMTRKnFaL/aPxYBGYOuPeKuV9SpEEeOR9lbvQGhvfKIlcKZrSiZ/+johGWHoGcqMM764XnMyM8K+cy+grL3sT4FANxUQxExXO9F2ezAPaRnF1c9hALq2gx9xTjabVSqphmjmRcWwMJQ/fsRUXZWyWVlmOIusOouzpPqzY1HWPkVEdNu6g/T5+dhZvGeqFOmDGKYSUf2kFWdzwY9yRSqfq
+ aQCXg6cZ
+ 5M+VWLpgflEIUY0gTb/rR0bundxzZjCDk3tKeoqM6DIlRPNPUY6lVjo8Z+Q+/G1Sp55wZRiKoKno0YQpdvOZV8btADR4oqM2z5cDBzrF8pbIJpNHDD4ygSTJ2IHZ9fcFCqXg13WCb/VHPZQbOoquIourwv5Rq4STDGrD/q42sg5qS0xe5/GsxuTCu6kkuBd/JZT1PSAQn9FNcdftdtERGq1wJaaukagzQ3E+JOniIoA6m9pHFSCFyTojVUQD6mmdQOAtHapAYAl3p/yA6AHSK5qu67IMEkKrnxy6teTZQOy9VVOaUMjbQWD2bOAYsXKIjyO2tzWFtkDNdPVotu3184zonX+yTkLEtxklrgxYM8tMoCn6tSPgCi7A6o7t8PeGv+HGbRvsrsCT/I30ShqHe2b4xlIOeJ3ab1iZmtHkx03D5IKkBdBshEKqyqJg+AEPPKoylBQjxfC5SWRiVKtt/e9rq/BdrZD3dG4f3qo4BbKfTLfEUmx//KabjA0BlsJhBWFTss5DeKO79YOwXeMyzt0z+5/bKw5fRyV5W0MRo1ykNASUJW7WekYTLXLXrcuuE2V37IGX0KvT3m3kS0oCh0LffnuR5STykFeYtrnr0LBoVguIq7X7KqIsA0yvV6+ITaNVzCx1P+fA99UC7FiwChENtORuCeKwSpsneXEooVlt74kc6fUvn4+pCcszj0svRmiwhbh24shdPIFs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,110 +177,78 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-cephfs uses the results of readdir to prime the dcache.  Using d_alloc()
-is no longer safe, even with an exclusive lock on the parent, as
-d_alloc_parallel() will be allowed to run unlocked.  The safe interface
-is d_alloc_noblock().  In the rare case that this blocks because there
-is a concurrent lookup for the same name there is little cost in not
-completing the allocating in the directory code.
+When performing a get_name export_operation, ceph sends a LOOKUPNAME op
+to the server.  When it gets a reply it tries to look up the name
+locally and if the name exists in the dcache with the wrong inode, it
+discards the result and tries again.
 
-It it still possible to create an inode at this point so we do that even
-when there is no dentry.
+If it doesn't find the name in the dcache it will allocate a new dentry
+and never make any use of it.  The dentry is never instantiated and is
+assigned to ->r_dentry which is then freed by post-op cleanup.
 
-So change to use d_alloc_noblock() and handle -EWOULDBLOCK.  Also use
-QSTR_LEN() to initialise dname, and try_lookup_noperm instead of
-full_name_hash() and d_lookup().
+As this is a waste, and as there is a plan to remove d_alloc(), this
+code is discarded.
+
+Also try_lookup_noperm() is used in place of full_name_hash() and
+d_lookup(), and QSTR_LEN() is used to initialise dname.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- fs/ceph/inode.c | 37 ++++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
+ fs/ceph/inode.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
 diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-index 0982fbda2a82..8557b207d337 100644
+index 59f9f6948bb2..0982fbda2a82 100644
 --- a/fs/ceph/inode.c
 +++ b/fs/ceph/inode.c
-@@ -2011,9 +2011,7 @@ int ceph_readdir_prepopulate(struct ceph_mds_request *req,
- 		struct ceph_mds_reply_dir_entry *rde = rinfo->dir_entries + i;
- 		struct ceph_vino tvino;
+@@ -15,6 +15,7 @@
+ #include <linux/sort.h>
+ #include <linux/iversion.h>
+ #include <linux/fscrypt.h>
++#include <linux/namei.h>
  
--		dname.name = rde->name;
--		dname.len = rde->name_len;
--		dname.hash = full_name_hash(parent, dname.name, dname.len);
-+		dname = QSTR_LEN(rde->name, rde->name_len);
- 
- 		tvino.ino = le64_to_cpu(rde->inode.in->ino);
- 		tvino.snap = le64_to_cpu(rde->inode.in->snapid);
-@@ -2029,20 +2027,24 @@ int ceph_readdir_prepopulate(struct ceph_mds_request *req,
- 		}
- 
- retry_lookup:
--		dn = d_lookup(parent, &dname);
-+		dn = try_lookup_noperm(&dname, parent);
- 		doutc(cl, "d_lookup on parent=%p name=%.*s got %p\n",
- 		      parent, dname.len, dname.name, dn);
--
--		if (!dn) {
--			dn = d_alloc(parent, &dname);
--			doutc(cl, "d_alloc %p '%.*s' = %p\n", parent,
-+		if (IS_ERR(dn)) {
-+			err = PTR_ERR(dn);
-+			goto out;
-+		} else if (!dn) {
-+			dn = d_alloc_noblock(parent, &dname);
-+			doutc(cl, "d_alloc_noblock %p '%.*s' = %p\n", parent,
- 			      dname.len, dname.name, dn);
--			if (!dn) {
--				doutc(cl, "d_alloc badness\n");
--				err = -ENOMEM;
-+			if (dn == ERR_PTR(-EWOULDBLOCK)) {
-+				/* Just handle the inode info */
-+				dn = NULL;
-+			} else if (IS_ERR(dn)) {
-+				doutc(cl, "d_alloc_noblock badness\n");
-+				err = PTR_ERR(dn);
- 				goto out;
--			}
--			if (rde->is_nokey) {
-+			} else if (rde->is_nokey) {
- 				spin_lock(&dn->d_lock);
- 				dn->d_flags |= DCACHE_NOKEY_NAME;
- 				spin_unlock(&dn->d_lock);
-@@ -2069,7 +2071,7 @@ int ceph_readdir_prepopulate(struct ceph_mds_request *req,
- 		}
- 
- 		/* inode */
--		if (d_really_is_positive(dn)) {
-+		if (dn && d_really_is_positive(dn)) {
- 			in = d_inode(dn);
- 		} else {
- 			in = ceph_get_inode(parent->d_sb, tvino, NULL);
-@@ -2087,21 +2089,22 @@ int ceph_readdir_prepopulate(struct ceph_mds_request *req,
- 		if (ret < 0) {
- 			pr_err_client(cl, "badness on %p %llx.%llx\n", in,
- 				      ceph_vinop(in));
--			if (d_really_is_negative(dn)) {
-+			if (!dn || d_really_is_negative(dn)) {
- 				if (inode_state_read_once(in) & I_NEW) {
- 					ihold(in);
- 					discard_new_inode(in);
- 				}
- 				iput(in);
+ #include "super.h"
+ #include "mds_client.h"
+@@ -1623,33 +1624,17 @@ int ceph_fill_trace(struct super_block *sb, struct ceph_mds_request *req)
+ 				ceph_fname_free_buffer(parent_dir, &oname);
+ 				goto done;
  			}
--			d_drop(dn);
-+			if (dn)
-+				d_drop(dn);
- 			err = ret;
- 			goto next_item;
- 		}
- 		if (inode_state_read_once(in) & I_NEW)
- 			unlock_new_inode(in);
- 
--		if (d_really_is_negative(dn)) {
-+		if (d_in_lookup(dn) || d_really_is_negative(dn)) {
- 			if (ceph_security_xattr_deadlock(in)) {
- 				doutc(cl, " skip splicing dn %p to inode %p"
- 				      " (security xattr deadlock)\n", dn, in);
+-			dname.name = oname.name;
+-			dname.len = oname.len;
+-			dname.hash = full_name_hash(parent, dname.name, dname.len);
++			dname = QSTR_LEN(oname.name, oname.len);
+ 			tvino.ino = le64_to_cpu(rinfo->targeti.in->ino);
+ 			tvino.snap = le64_to_cpu(rinfo->targeti.in->snapid);
+ retry_lookup:
+-			dn = d_lookup(parent, &dname);
++			dn = try_lookup_noperm(&dname, parent);
+ 			doutc(cl, "d_lookup on parent=%p name=%.*s got %p\n",
+ 			      parent, dname.len, dname.name, dn);
+-
+-			if (!dn) {
+-				dn = d_alloc(parent, &dname);
+-				doutc(cl, "d_alloc %p '%.*s' = %p\n", parent,
+-				      dname.len, dname.name, dn);
+-				if (!dn) {
+-					dput(parent);
+-					ceph_fname_free_buffer(parent_dir, &oname);
+-					err = -ENOMEM;
+-					goto done;
+-				}
+-				if (is_nokey) {
+-					spin_lock(&dn->d_lock);
+-					dn->d_flags |= DCACHE_NOKEY_NAME;
+-					spin_unlock(&dn->d_lock);
+-				}
+-				err = 0;
+-			} else if (d_really_is_positive(dn) &&
++			if (IS_ERR(dn))
++				/* should be impossible */
++				dn = NULL;
++			if (dn && d_really_is_positive(dn) &&
+ 				   (ceph_ino(d_inode(dn)) != tvino.ino ||
+ 				    ceph_snap(d_inode(dn)) != tvino.snap)) {
+ 				doutc(cl, " dn %p points to wrong inode %p\n",
 -- 
 2.50.0.107.gf914562f5916.dirty
 
