@@ -4,121 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26547FED2DD
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 07:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D981FED2E4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 07:59:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E05D86B0088; Thu, 12 Mar 2026 03:19:03 -0400 (EDT)
+	id 347376B0088; Thu, 12 Mar 2026 03:59:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE6966B0089; Thu, 12 Mar 2026 03:19:03 -0400 (EDT)
+	id 2CA8A6B0089; Thu, 12 Mar 2026 03:59:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE98D6B008A; Thu, 12 Mar 2026 03:19:03 -0400 (EDT)
+	id 1D61D6B008A; Thu, 12 Mar 2026 03:59:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BEC686B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:19:03 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21CF58C839
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:19:03 +0000 (UTC)
-X-FDA: 84536559366.26.CB310F7
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 19D2B100005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:19:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ElVaOABY;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E2566B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 03:59:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B0CA8C9E2
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:59:54 +0000 (UTC)
+X-FDA: 84536662308.11.9C8AEF0
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BD88D180013
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 07:59:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4J49J26E;
+	spf=pass (imf06.hostedemail.com: domain of 3dnKyaQkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3dnKyaQkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773299941;
+	s=arc-20220608; t=1773302392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0vcH1mt67hFsXfPkIkUKs7oLbvthsnnwfQHS4UvLaUo=;
-	b=Qe3dLJuAUXOt6ftyrpNfXonarE2VlHRfz1koN0Yb21nZZ+pkCg0rE8WCf3GgMgBkw30qXf
-	weWwPFHlpkBHlgoRlb6YPzsKV1cJVUA61kLGI24v8X68gLXEU+NnzrSwrs3IrK8K6vnJ18
-	eun2N875WkDoPBMIKZphG3rs1dMNBSk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773299941; a=rsa-sha256;
-	cv=none;
-	b=FVzL1fRq0wRsVpPqEj/b2rovSrjiygrhYQOaOXKRnuBGsVfw7nRvmyQegrIaMXNS2te77r
-	Oua1v0V7FoGcRePR5bAZQxkfI1ZTxVlyTQv+tbbdKQk8nQAD043j05HpuwvxgG8r3nY06B
-	B7qhFWlcK4avrio//CYqdRm1P5IFx8M=
+	bh=veAXwLuzVC+ZNIrlPS+GBtiqKF5VYtsA7fb3KMFtUEM=;
+	b=mJ1sjoCNDPwOkbI9/2ZvT/q03YVZxQ7/doTr9QTSrpkuiLwISmipYo0N9Z/jZ2t6v4N8NV
+	pGMPDQY3BVsoekSamMYbLlrsbS8gWxFL9MeeSTxV1IfHWfuhS9n80Utc0UaMbTAZlcSEHo
+	WUVlOVvF2nGjNq+Vd7mc7QgbeR6i9eo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ElVaOABY;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4853aec185aso5225955e9.1
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 00:19:00 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4J49J26E;
+	spf=pass (imf06.hostedemail.com: domain of 3dnKyaQkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3dnKyaQkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773302392; a=rsa-sha256;
+	cv=none;
+	b=fXmpLm+j1KLNO7If6ElJgYMJs39ptR+99AtSXOYhplmvtWKXuhtT7Gk9bCyk55imAeVpJa
+	vubzLL5TP1s6YIH9BLQv3SVhwoH1BIUK9+hs0mC1KpRrsbE87CMd5vAQqRUq6bEmjrAYMF
+	YO278d/LhNxME2Zym5LvxicvEsku0JA=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-663678f9e6bso472831a12.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 00:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773299939; x=1773904739; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0vcH1mt67hFsXfPkIkUKs7oLbvthsnnwfQHS4UvLaUo=;
-        b=ElVaOABYXOvrgX80l8azg4XPYH3LV4x22CW74JX8fp3SvrGeydKBFEYhpelq4hgh9C
-         OmoNsS2p3/FaA6g3WXpNgzI7x0mcueMtEU3vMZCEeqR87aRQgFw8Ss0PSoOdfEVMINjh
-         WSlMl33TVyz46KMNbkl61bYaHV7TsNjHqMcsTJ/uwMz6SCKo2quKI3BqzbRqLo/pLnLY
-         /O8sumhafc8pC4v69QMMKtaWv4cx5fZh9rE73sImpbzusUGV0M+TNE7bzl1PDppjwC8p
-         xhANYSpKMwQJprhJ+ikRp6IWbu+OeglgOBqdzWoxE3gIBCKjuMHQplaokFh/PirmO96R
-         FcIg==
+        d=google.com; s=20230601; t=1773302391; x=1773907191; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=veAXwLuzVC+ZNIrlPS+GBtiqKF5VYtsA7fb3KMFtUEM=;
+        b=4J49J26EQJW8mSjFCpyuwPP0Xi+wgL2TTxYWI8s2sjXlI2c6m+Vw4bWL1N30KTP1RT
+         93fXicZucHabCNeif/1y6+MplYovdDOBIDmHedbYkXdhXAVF/seqz71appFcmB0IKB8e
+         vVuyI8YAXFkji9c2q9ljzZ6i5ANo5ngukpIeo9hf0RcpldRpj/SFvRn4AaQVT0fEUano
+         Hd2oPHQ0ioFOtqsc27It6A5RPZakE5S0hM66ytt6EQPddaC+XzKAd+pOSBqiDHcFpQBa
+         zHUpSrGfoh3pB7kQ8UCI8MtihcKEVXDSA11bzp18YgP8mnNv/URAqc1OD1pzEGdy+a2P
+         KG9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773299939; x=1773904739;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0vcH1mt67hFsXfPkIkUKs7oLbvthsnnwfQHS4UvLaUo=;
-        b=sd3yI/DSB2YxZsX4y7UB3fmowbaAnqGrHEfQyX+6WBvjhShC4vY51BZcwacyqoQdWp
-         ir1vzUfLFNRUNicqzulI0T65BT0ntPKj5lnAc+kl9IIiW/BAaLTxHPBByRX2NRLtDpbl
-         xuVTKoH/NseDyHIL8U9kc79GdCQWGecqRpCJ4mWzqj4eQKv8Pva2xQ0HVkX+k8c3qZwT
-         4sRxQg48WkraN0Xjm2WxLJUiLWI+9WA7x6pWO4evXGEflRozmWXrTKG7EqM1GQvr5sgY
-         /JJF1o4V+ut6HOV1i/gGEwArpUp0OQGlJzf+VMJKZJZCWV+sU1hNf9M0WQhJkSdUxRn2
-         BMIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxVH9pmQFF34hqDeARo+1XS8D1KFBDndZ9JoOBi2Qo7GtqQpWf9/CrndvekFYHT8amxJtfwKb4Cw==@kvack.org
-X-Gm-Message-State: AOJu0YwLrx9jb6cp3Vj6IOJnK7jEv01oTxfqblTr+w3XJ/Yo1+YZxCi+
-	qAeipfDGzWilYOAIJ8j6oZFQOhaPTmPSXQeelR3WQEzBWaIUAb/JRa9StP85dEyJL58=
-X-Gm-Gg: ATEYQzz2bxNFXaKUJ+kvdIquE/sKCBhMz3JTuoT8znYLW7bokxuxiDWQdeHxr1MSJyG
-	trf/MQecAQxTGTcSfxa6RTk7HGzV8CLHTwckZdzFB30bDwuVZ4IoBMlJxdTsm5nf1GqbLKGHauI
-	pTMlpAeZX3cZwbf2lg3Rc+7d0cebNvotJXSgKJtEINKXgc7ovHJMR0kpu9cqkoQ18rzr37Vem4I
-	iPg6O2NG+t1A0H0V0FAdjHrumISbzCXTzcho8/tabj+z5oZuF01YCUXbiQLdlwZ1Odg7ZjJU8rM
-	5y8gJYklCZkvTcO5LzF5umoowvW+nifQXl7BsiSjuhm4ojlgbUaI9DNlE+hVsXL47mFtTGwva6G
-	upifQYrbySovhCtaKvFEcNDbn0I6IA4bMeDIQ/6G0uWB5gPS6WXKpI435qClLwtwlJAB4PaH9On
-	CR3H9YEJ/xoBu4rwO81EM1APTNwnzrd/zgHoKx
-X-Received: by 2002:a05:600c:828a:b0:485:4135:5c92 with SMTP id 5b1f17b1804b1-4854ad770efmr84403845e9.0.1773299939346;
-        Thu, 12 Mar 2026 00:18:59 -0700 (PDT)
-Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe20b4dasm5786136f8f.18.2026.03.12.00.18.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 00:18:58 -0700 (PDT)
-Date: Thu, 12 Mar 2026 08:18:57 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Benjamin Lee McQueen <mcq@disroot.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3] mm/vmpressure: scale window size based on machine
- memory
-Message-ID: <abJo4YQLucQ8zOdM@tiehlicka>
-References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
- <20260305043038.2176-1-mcq@disroot.org>
- <aar4T90zjolmTGFa@tiehlicka>
- <31c4680848b833d53b1979b45d5a368d@disroot.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <31c4680848b833d53b1979b45d5a368d@disroot.org>
+        d=1e100.net; s=20230601; t=1773302391; x=1773907191;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=veAXwLuzVC+ZNIrlPS+GBtiqKF5VYtsA7fb3KMFtUEM=;
+        b=W3+3HvUJTSLlQo+pCwNsVcXZNKzFtMIS+wINdbOoVFDNG1OMhStQdJvxiJz3qVcuVy
+         PA9+3vwY9vHwt5Rb0hwheigFMPFpVQdhsy3rjjNf1FowMvMXSfF69cA9VeKEIQI+ac/d
+         4+0QSvJGyswMNE/eQB8E0EMBx/vaaABCKJ4p/dAclHUj9XaeH7JdrVxqNHVB1hbNh0C3
+         fILmWliQv/hU0Gv79PLFmoUPwckPFto5+o2pRBODwyyx22IWNtn8zwlTAF6qjc8a5rD+
+         QSNkLnfc86tx0htX17lsamXf3hL97TrRF/4sij9VeQBliEAva+xlPore7Ufe0zzcYmKA
+         yAwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWCZAYuGCtd7Ec9Bu9w0VtLknJwfjKk2yCDC4VXpG23VSLZ+jdR76qt6SYvATE4hpxIeKlBTPQ6dw==@kvack.org
+X-Gm-Message-State: AOJu0YxP77lDMLEax8GTCqZ3x6NinWVQeW0yvj6iWyTv+iEwXm48ct4u
+	Arim1ENTHBKCuACAsyeMwyTpDKmQwqlLx2nkcZ/311GDgjvLXq8hfxADcnSbG44ddQ0T69no0Hc
+	K0gldaH364Brbup979A==
+X-Received: from edf9.prod.google.com ([2002:a05:6402:21c9:b0:660:effd:a3f7])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:13d2:b0:662:ac7e:aab9 with SMTP id 4fb4d7f45d1cf-66319cc15a1mr3102004a12.8.1773302390771;
+ Thu, 12 Mar 2026 00:59:50 -0700 (PDT)
+Date: Thu, 12 Mar 2026 07:59:49 +0000
+In-Reply-To: <20260309-vmalloc-shrink-v3-2-5590fd8de2eb@zohomail.in>
+Mime-Version: 1.0
+References: <20260309-vmalloc-shrink-v3-0-5590fd8de2eb@zohomail.in> <20260309-vmalloc-shrink-v3-2-5590fd8de2eb@zohomail.in>
+Message-ID: <abJydalLnoddywQq@google.com>
+Subject: Re: [PATCH v3 2/2] mm/vmalloc: free unused pages on vrealloc() shrink
+From: Alice Ryhl <aliceryhl@google.com>
+To: shivamkalra98@zohomail.in
+Cc: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 19D2B100005
-X-Stat-Signature: 6d3hkb6wobus5z3x73a91cbqsxj6k46g
-X-HE-Tag: 1773299940-990898
-X-HE-Meta: U2FsdGVkX1+mNTx2be29R1yyVPssuPrR5IB1QsYeJHGyIW0R3wGzBRmPdTS07FYUnDQh5/ghkO7erqGqdCnij2V+E6OgmR3wO77p3OXr1dutdtxMlXiFe9Rkjo4dCCG4yzyM/OSftYtnSb2taCbr8mGHttGlDh7t/m2vobuO0MO9+R+MM00XTPpmEjVq1gbqEEw/cMxoSFeUht7C7YTG8A0pnIGBIDe/D1xGwJrg9VQ+y0qjfRMKKm7Trj2LF+lUzxzLrAz+4cfJ23mzvMbPXAIusfMzkeWDx0M3Zut7QXf5OEFik3rSA8Cp2CQNAIYjV/FM5VVfGSyaAp4W4vqG5fAJ+zm5RLnp+N0Uo5ZkoYsmGwy2zA+SPZzVPOccOkjfTG6Kr+f10x3ZLNAe8/KrHMKCr6BJOo8gWA3N99aq57Wg+H+EU1TGefs4793ePwEfu6rM0AAFeKwW6rz8Q9tn5CffxTp01eM8iPezbJv5CZ+vOzVx1JmlsylIS17fqmtp9xOPZYu6KP1Ow1dqMRwyp1tIFwcb+/yZNwISWRwfi96l27dLgCsWQAK74O+jEWsPWBRe3qmwT9T1/SP39cwRpYHc3JU6ua4F1fEc/0VUsIgZcy9kBPRIUCmoy/NR6h3r5MLivl9eVUc5EehySr1ZaStailCwzT0ZuabtouW5e6JfjoQUQISiJ4VciHgiuLKvqG7laExPM8D+yoGhnq7U+rMcjblKz6ST3N/aA+E6XqmBZeCLNKRkuakEdfadDiH32GWYMw085wOrpGyZjDM3LhrQkZ0PeP4bpuDr+cU4vLf2cIoS6iOiOG4QRf5CXvwh+/xrsyh2FZIbjdNAFPQokrRmTMiDscRzQjjzNVGE3cCs5wZRgMic7fObbOHeuG1ThDXYxQQFzoWyxv6lE0ryv/oQcORLuVMX8Hl5OicE8uMWEA14OYbJeNngvKp9fz/tfNPbJvebmC+78dRpDAa
- anV9VmUz
- ptt5FaZLp38voSU7O3RrpYG9NHNmXe+ZyIj6QigJPeI686LVEs1GQGgWGb2/7l6qKn6RVp1Av0s3vuaZLxjdmGrpA3ihOFXN2VcC940uVbz8SPnxoL2SMUa5CI48eAC+x4I3lmP0DnXOr0Wx65Z028kdZ8n/ZbjzYI6q38euGbgdIMN6m8Fm5NR48ZYwGt27JbQhI4eM4wO/sIxJmB1JU5rYF53gaS7uFjK0G0xK+p6av0fSSvWc5WpHHOpCj8df79/omKUy1DIZaN16TQkVviqAPAWP4RllfQO6bq7k5B7g13rBIUhuikrCQ29EWI1hpV0UG1Bsy13SXMP6liEOSnU+JCWG+XqArAUDN8e5cc6Mrvns=
+X-Rspamd-Queue-Id: BD88D180013
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 9dcsygheuqmoatag86jpj4nqp55g869m
+X-HE-Tag: 1773302392-583853
+X-HE-Meta: U2FsdGVkX18QmXUFXOFDYR8cjKj5C1cuboQutFuIs/hVFcK45FzU32LqP/XhYM/c3ulVOn4hboDIVyNSOghIQB+8msxaUXuwJvBphIa+hRTy3F9ysMACl+DJCb39xl3+TUEpWZoA6ST5lnm+qJy2cwwI5gFujKJcm/0NTJbCbQSxMkjk7dtgW1PbQzETWQeXZp/HSVp0nBRtD1PnbAkUJJI5Oe2mxixDXmuek9Uv9ZTnQI8pC2AF4e1MRekgWCA/7GLpGeUYxIgq8BbfrK6KlomIwcT2LIFnA3dFr1uhJkknKnlOAF9RrT3K0AptKo/rMPqIfG1zWAYcKx/JGie2bjominXBq5LlvAAjXhSUy7gDLFFTZlymnOc7E5OlrRzvUkPeR2bVdjFJKMZfnlQxbU+++e2zQH8OZ+H7T0HRbmF8ZTCrGLhnWUhdjlzXgknYY+x8Tn+CsT+JXFdLrO/V8EbXkBc7KMSxbdlc6uosig59gxWSKOLdGEqiH+m0q+0H9CBwqQh/o4+ERR7LSq7VNBkCYyJNAkzCdqBHlgFXO2diQTdtn+hiQLzyWD4svrsYyT+u6i/216HpmK2vDy+nCTcPjfBZNCNH8cekfzWiXqz4Pb4nK15d7qcycq60QL5kOH7LhTI7JqvIAEJB9HjGuWyihUG+DraONzTJJTzKwHnEYkI2a8bACn0tYets0stwqDszBPJ8LEp/APH/otg+eUlc68E0yN4p2sS+PkFEfL7l2UK1iwUoW/atpGq+nLNd2F9yMqigN9wmlgF7HjNtEQKGsfefiOMAx9dn62N414M0B6c8alWiAP2rpSi2kMwRCmcJ2338dLIujF7bxLMK5/YQFc9Nx/W6pNUneX4p0eVkHk025W/+1wlCeVhSxwdDMdd0/o7/IJGINzZF193ySPbCVkxLAp+r6BTokoBn+RulFF2jgX0fQDkQD+eI7T3N8kSgEAKs6e12UGGOnt/
+ qFOg3yjO
+ X9gkopUlXYPsbqzlyDuivRNsUCYErkqexB5eSdgZMfNLNaeM2T/F9F0mfURqgFuEJ91nGvwVzQ6BlrvBzhV6PrRmihxZ4BustRd8TDO3Y97ZDzXH9Zwr1tajf+0d+O0AOkjdB5CVB0eu2Tn/ZIKBFWI+bb68pyvyDqHxPnGfvhxUY1/wPCw/N4eYZo1Ini6EhEJ2LQfQoDKIbmmIk0JWD0LqtOB6VNtQ1NhK9/XCMQbUN3BON8NFsIu2QdDNDLh9GYjCqUDWj8hsa+M2F5YHnXPD46JZC7cSjpncIGDLuNtLedxs8TU5A9rYjrj50KyHmAcKFa/QDLLfcoOFkoIfW7kFBzbNTvXAsDUH9LuVr2MUybksOZ/zJUviinRVnZQxGl8L6yl6cuecZCRlljoO7noWAXtI5mcPZS+Z741/LO/8KF9uu2BITpo0NsMoZ/6oh/AB5bbPC2ToqOAHUrXC11E1A3usFa6/uMWUbCrBSPKinS8u3F9D0PHVUTcNPbSXkTzQTYEx5jHZvG3UYlzKisrd8FPGTypOTa/8AStzH3adiOMqkEMxbm2OMol/9zyLrTuHFokclky+rFQVHG49XNutI0EvarSz4O7Q7yKgIx4fydcQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,35 +106,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 06-03-26 17:44:08, Benjamin Lee McQueen wrote:
-> On 2026-03-06 16:52, Michal Hocko wrote:
-> > On Wed 04-03-26 22:30:38, Benjamin Lee McQueen wrote:
-> >> the vmpressure window size has been fixed at 512 pages
-> >> (SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
-> >> the file notes that the vmpressure window size should be scaled
-> >> similarly to vmstat's scaling, via machine size.
-> >> 
-> >> the problem with fixed window size on large memory systems:
-> > 
-> > Thank you for this much more detail insight into your thinking. This is
-> > a good start. I am still missing an overall motivation though. Are you
-> > trying to address a theoretical concern (the said TODO) or do you have
-> > any practical workload that generates bogus vmpressure events. 
+On Mon, Mar 09, 2026 at 05:25:46PM +0530, Shivam Kalra via B4 Relay wrote:
+> From: Shivam Kalra <shivamkalra98@zohomail.in>
 > 
-> yes, as i don't personally have a workload that explicitly requires
-> vmpresssure to not generate bogus events, it is still technically a "bug"
-> that can still be improved.  i believe many legacy systems would benefit
-> from this as they still use vmpressure notifications.
-
-I believe we need some real workloads that have very strong reason to
-not move to PSI and need this to justify any change in this area.
- 
-> i agree PSI is the preferred interface, but vmpressure is still used in
-> other production environments, like Android's LMKD, right?
+> When vrealloc() shrinks an allocation and the new size crosses a page
+> boundary, unmap and free the tail pages that are no longer needed. This
+> reclaims physical memory that was previously wasted for the lifetime
+> of the allocation.
 > 
-> -ben
+> The heuristic is simple: always free when at least one full page becomes
+> unused. Huge page allocations (page_order > 0) are skipped, as partial
+> freeing would require splitting.
+> 
+> The virtual address reservation (vm->size / vmap_area) is intentionally
+> kept unchanged, preserving the address for potential future grow-in-place
+> support.
+> 
+> Fix the grow-in-place check to compare against vm->nr_pages rather than
+> get_vm_area_size(), since the latter reflects the virtual reservation
+> which does not shrink. Without this fix, a grow after shrink would
+> access freed pages.
+> 
+> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> ---
+>  mm/vmalloc.c | 19 ++++++++++++++-----
+>  1 file changed, 14 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 42ae68450a90..114e0bd1030e 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4344,14 +4344,23 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  			goto need_realloc;
+>  	}
+>  
+> -	/*
+> -	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
+> -	 * would be a good heuristic for when to shrink the vm_area?
+> -	 */
+>  	if (size <= old_size) {
+> +		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> +
+>  		/* Zero out "freed" memory, potentially for future realloc. */
+>  		if (want_init_on_free() || want_init_on_alloc(flags))
+>  			memset((void *)p + size, 0, old_size - size);
+> +
+> +		/* Free tail pages when shrink crosses a page boundary. */
+> +		if (new_nr_pages < vm->nr_pages && !vm_area_page_order(vm)) {
+> +			unsigned long addr = (unsigned long)p;
+> +
+> +			vunmap_range(addr + (new_nr_pages << PAGE_SHIFT),
+> +				     addr + (vm->nr_pages << PAGE_SHIFT));
+> +
+> +			vmalloc_free_pages(vm, new_nr_pages, vm->nr_pages);
 
--- 
-Michal Hocko
-SUSE Labs
+This leaves the range vm->pages[new_nr_pages .. old_nr_pages] with
+non-NULL but freed page pointers. It seems less error prone to set those
+entries of vm->pages to NULL here.
+
+Note that it's not a problem for existing usage of vmalloc_free_pages(),
+because it is immediately followed by kvfree(vm->pages).
+
+Alice
+
+> +			vm->nr_pages = new_nr_pages;
+> +		}
+>  		vm->requested_size = size;
+>  		kasan_vrealloc(p, old_size, size);
+>  		return (void *)p;
+> @@ -4360,7 +4369,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  	/*
+>  	 * We already have the bytes available in the allocation; use them.
+>  	 */
+> -	if (size <= alloced_size) {
+> +	if (size <= (size_t)vm->nr_pages << PAGE_SHIFT) {
+>  		/*
+>  		 * No need to zero memory here, as unused memory will have
+>  		 * already been zeroed at initial allocation time or during
+> 
+> -- 
+> 2.43.0
+> 
+> 
 
