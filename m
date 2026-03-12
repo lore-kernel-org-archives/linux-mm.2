@@ -4,110 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D704FED2D1
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 05:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C1B3FED2CC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 05:53:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B66A56B0088; Thu, 12 Mar 2026 01:28:46 -0400 (EDT)
+	id 832BD6B0088; Thu, 12 Mar 2026 01:53:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B14076B0089; Thu, 12 Mar 2026 01:28:46 -0400 (EDT)
+	id 7E2116B0089; Thu, 12 Mar 2026 01:53:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A20336B008A; Thu, 12 Mar 2026 01:28:46 -0400 (EDT)
+	id 6C1746B008A; Thu, 12 Mar 2026 01:53:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D35E6B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 01:28:46 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31DDF1A07B0
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:28:46 +0000 (UTC)
-X-FDA: 84536281452.05.F61ED13
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 860D810000F
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:28:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BE686B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 01:53:01 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE0E21B8A2A
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:53:00 +0000 (UTC)
+X-FDA: 84536342520.21.5585B19
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 346044000E
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 05:52:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=scyQITDV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773293324;
+	s=arc-20220608; t=1773294779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wW4Dlo+uDvxWdKeJyGde7usgOtJ3nRWppDtf6GLQMmQ=;
-	b=I4u6iHkSBPZIi1qiBbXTmLwQiIoCdvkmwkMb3g57SQIR14enblR/cclJJ6ZpX6BWANCc5r
-	FbmLSGp4shNJoLz2EdcqczowGBLsFIyjChcmP7xd0GQQcd/i5FXwbQF0fy17yLYYc8s3Xy
-	zUAXd1WO1YXoKu5uXPjnQQ8RClcmj7E=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773293324; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LK54H+NxMZpqFTH8w40O2xJzyNnNNOsdO4h/pRU+Ufs=;
+	b=q/HZCvePmwZqZhdig0MDhckVYnGv2+VZugYS/9Dwko3kGBi4SbddUeCevZchVOsZ4tBdt/
+	Q2ifLZO9Dt60JVCrShYF4SCSeGWtNzav2ey+6OFZg80v8hPkzg50oXnPXO7sSCjPkEeUBF
+	ovzWRpUXORHypihymR2S6zzFN77JI0Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773294779; a=rsa-sha256;
 	cv=none;
-	b=6nySa5ztTkr/DQU1/PSySOCpF/0Tb8bmt3Zm4EQ3z5a1Q/rWOxw4Oz5JYSjZrY+6VCnnfN
-	u+fEAwnrEi18fmP7gQQiv7YOFTNS4zdkHKW9yCOmG9fUDpKAm80kqqaFQSJmsuG6x/b+cV
-	jbIJr1E38203W38tqpPOanKeeZcdSXM=
-X-AuditID: a67dfc5b-c2dff70000001609-31-69b24f04dd43
-Date: Thu, 12 Mar 2026 14:28:31 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: akpm@linux-foundation.org, alexghiti@kernel.org, kernel-team@meta.com,
-	akinobu.mita@gmail.com, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, hannes@cmpxchg.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, gourry@gourry.net,
-	apopple@nvidia.com, joshua.hahnjy@gmail.com,
-	matthew.brost@intel.com, rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com
-Subject: Re: [PATCH 2/4] mm: Rename node_get_allowed_targets() to make it
- more explicit
-Message-ID: <20260312052831.GA60352@system.software.com>
-References: <20260311110314.237315-1-alex@ghiti.fr>
- <20260311110314.237315-3-alex@ghiti.fr>
+	b=uQQubUl4JG6CVaXDB/qAhmTr+EXcDpCtvjNhNPzR6f7YzOQeSqGHwVnL+rHziRRC4iUq3B
+	t1+EECIdLIErRYD6Z3QH1iVo0bbyZp0yBF8wZP/OheV9nRyQffpc549LPKaQYpc3eGFxbQ
+	TtAdD4LHpf2kYR+siyFx5NUbKFWFzac=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=scyQITDV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7849A60054;
+	Thu, 12 Mar 2026 05:52:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64063C4CEF7;
+	Thu, 12 Mar 2026 05:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773294777;
+	bh=yHvrihuiEK1Irf0RsLNHHJrheMooZAmzdbPFW+Cj6Vo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=scyQITDVXWIpNOqtAgI2myxAqTXxQf3vtM9HtPdlzWGamh2SAIE+aKvlxTj6DoLoN
+	 m966f0f2lrgH9pXCeUYXiw5CcFODic4vkh5vIi++GIWSCvDJg/gZYskxO3FllweaE+
+	 Rc1rfgagezv4XeuYpMjpfKvhXtFg5hjnvJIkJ6srETyTgJRxxhZDr76hp3okocUZtJ
+	 D44wk4sXAlh8VUEWTfL7gWbWxXthk6M8fhrKXY81YxIkAJ7uyKGzVtDHGHXLqM0Rr3
+	 2LwMUixUk8BiSHGKJU/i2sYUHzJxpHgWxNKHHHdqjIyC6pGeYI9PuY2aNQXxY/J+kY
+	 bXLqnU8gyyjxg==
+Date: Thu, 12 Mar 2026 16:52:47 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: Haifeng Xu <haifeng.xu@shopee.com>
+Cc: akpm@linux-foundation.org, david@fromorbit.com,
+	roman.gushchin@linux.dev, zhengqi.arch@bytedance.com,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 3/4] mm: shrinker: optimize the allocation of
+ shrinker_info when setting cgroup_memory_nokmem
+Message-ID: <abJUr1bIs62nQC9Z@dread>
+References: <20260310031250.289851-1-haifeng.xu@shopee.com>
+ <20260310031250.289851-4-haifeng.xu@shopee.com>
+ <abHpPC8tWwU93C1D@dread>
+ <bc08d009-fa43-44d0-880f-a37cc200a3b9@shopee.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260311110314.237315-3-alex@ghiti.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02ReUiTcRjH++09HVu9TqXXGUGTKKy8MvhVpvbfD0oq85+sqNFe9MWTeeSi
-	QijMvBJLq2WpKHk0HM1b8lozNbHyqOZ9K4YHSirL1DYt8r8Pz/F5vvDQmGQcl9J8WBSnDJOH
-	yEghLpwV5R4hzul4V9NHEfzRkABgllZDwsn+JQLmlQTCGqM/rOteJeBU+S8ATQPNFHyj84XN
-	5a8oWNdhnqyMG6ZgV00WCQc1GwRsVRfhcDnVAQ6l+kCDtlIAp9QvBfBxZw4JE6aHcDj/bcGs
-	0ATBelMhgIvdDRR80TRI+UjReouGRO9n5jE02JJJoGr1AIVydNEoKb6LQnnvpgVIV/yQRLrF
-	dAq1PFvFUfXIcZQbl4GhTx2xKOXeHIkWJnpxpC37ip+3DhB6KrgQPoZTunhdFwalV8zjEWvS
-	2ISlZTIOFNklAiuaZTzY3LZM8I+zNvoIC+PMfnYjKYO0MMkcYI1GE5YIaNqWcWSrDY6JQEhj
-	zCLOzo1WbO7aMJfYz6Nb82IGsvlPaikLS5ir7OTTVMFW3ZptfT6OWxhjnFjj+rTA4sQYB7Zg
-	nbaUrcwRUpp7NyPYmU81VDQLLLdYxkSx2dmGvznt2cZCI54GGPU2rXqbVv1fmwOwYiDhw2JC
-	5XyIh3OQKoyPdb4RHqoD5t+/vvP7chVY/HJRDxgayERi1zNveQkhj4lUheoBS2MyW7Gkr4SX
-	iBVy1S1OGX5NGR3CReqBA43Ldovdl28qJEygPIoL5rgITvmvK6CtpHHgBNUv+J6va+M0LgGl
-	I2eTh/cp3A0iYNOTt1Md7BffqMFXio666YlHhgdKrNbvwk+HtdvcDJjYVeB1zHVv7ciYyfew
-	Z6c0g1R80Ow53e6vqtKecmxKPTg2ouZ73LJR8aSofrbM+4r3oVLVQHJ7mkv/faP9yUFNjWpH
-	i1fvyl0ZHhkkd3PClJHyP7GMTT33AgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFIsWRmVeSWpSXmKPExsXC5WfdrMvivynT4PgnU4tXBzoYLeasX8Nm
-	8ezOV1aLxevSLXbdCLHYd+U3q8Xzrb8YLX7ePc5usXqTr8XxrfPYLfZdBKo8PPckq8X2hgfs
-	Fpd3zWGzuLfmP6vFyVkrWSy+9Ulb3O9zsDh07TmrxZH125ksns+ay2Qx+dICNouOl/dZLN5f
-	+wg0bE2Gxf6fKxgtPl05wG4x++g9dgcZj38n1rB5HH7zntnj3olprB47Z91l91iwqdSju+0y
-	u8fiPS+ZPDat6mTz2PRpErvHiRm/WTx2PrT0WNgwldnj3MUKj97md2weH5/eYvH4dtsjQDiK
-	yyYlNSezLLVI3y6BK2PStvcsBX+lKjq+fmNrYFwp2sXIySEhYCIx5/9tVhCbRUBV4n/3VDYQ
-	m01AXeLGjZ/MXYwcHCICyhI7jyh3MXJxMAt8YpF492gbI0iNsECkxPlHEPW8AhYSS6bsZQex
-	hQRiJZ5N72OCiAtKnJz5hAXEZhbQkrjx7yUTyExmAWmJ5f84QMKcQCf0Hr8FdoIo0KoD244z
-	TWDknYWkexaS7lkI3QsYmVcximTmleUmZuaY6hVnZ1TmZVboJefnbmIExvCy2j8TdzB+uex+
-	iFGAg1GJh9fAe2OmEGtiWXFl7iFGCQ5mJRFeodvrMoV4UxIrq1KL8uOLSnNSiw8xSnOwKInz
-	eoWnJggJpCeWpGanphakFsFkmTg4pRoYBXq/c84o1XovrBQyTVuvdzOfe3VR6GZ15WN6kRHF
-	RY7nwkOkYkstowwtyv4qK24VeMQn4XkpUrSv3tBKM+RGyY49ldlLv5ptaDITUNb1C7Caaxey
-	KHCLcgTfLJMbaxUm6QY9VHfZJHtGR0hiQV9HpkHw/fmn3EqvrzR8fFM2/MKXKS0b7JVYijMS
-	DbWYi4oTARCuD0fdAgAA
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 860D810000F
-X-Stat-Signature: zymsp16gkumpcnwmhekhge9ouyfwbik3
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bc08d009-fa43-44d0-880f-a37cc200a3b9@shopee.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 346044000E
+X-Stat-Signature: w18bb31q5mw3k5wqrqqe7zpowufbbtoo
 X-Rspam-User: 
-X-HE-Tag: 1773293321-77808
-X-HE-Meta: U2FsdGVkX19xNDZ/5VlvTBWkal6x9r1Uct7WRf7vPpnHqZ5douJasecBFiL91XcAKLfTUacZJKGHbkQG49tg5EqBOWXGrUwKehvhCyiLIKXFAamExObHB4IcsLLg35GzyMx4F3gFEOsgGhv/ec39GQ24yOA2RAl3mnTeghmMO5O0LVjv1ZCcOFHbljFRngVwwB+VqxT6LGBGz84E4nqYH9xV9VnSVdypzJP8bZvsHevUlCftj3wmS5oD2Gsv5t43Yu+yGdoevEBlWjDrS7BKZYahgz2MfJCQF9yuJeoDWyrZjxeh6cPWYgBWiYqwlWnvzGDh9IUt/iDYQXwdkffXotYN44izddX6KaiBkWE4V4cwrMzRiWxGls81lMpHuNvXRRNqiPc2oqKH3pClV9RExjneQ04+3C4V4ymUi3DkZZ0UqeoXM8sFc7W/RjjYInZ9jo565m4BPqTwr0xMGALByqBmt850LzAC1EqM9hw6SeR4eihWgml/GvyR1LAWaEzhbyKIANw7QgLT6ydT7bO+j7qWCFokZNYgJt7sVMi88v6ZBN9q+srSVwXO/pfRMqO/ZV0QnmVGd3ygQvph/ImICj0WUWq+T7dWIr722m/fJR4wMjJWrDLm1nrB6ckvW2dbasZbebmJeS4dcmfYNyngoT2V2/cQrDeRFBYvK3AIH/V4Ce/3IPoQdRehZbLm/9OkmBrJBM/nzcl7OOfPuUzdXKnoLFdBarmvAv7TaGH/irgOnGSVFyPB0ySGgbmteOHsbgErfCHcNXkpc4cEAaZE+lnp4NEKZY4Fl5b8XvVMzDcZnaiObmk0NbzaIGLrX2P443gPZx/YcNQGmNIo5w9wbl20163ReV4IEZVvtGRrJp3oL9wgalNpoBPTbVJT9FdwI9lZtNroSBdPCK4Y8M+k2Svb2S0acYY/63sEVGZFF24yc1FKj7D85gktastlw1ZN1IxNvC2Q6uV8GV4vP1I
- ErSIN4UJ
- zUfQrpyfsTv/VBPj8vbNGFWj2kNQw9Vl8JzbH8g7AW5IX8l+RybySSKqg5kCeSKeViw/V
+X-HE-Tag: 1773294779-756256
+X-HE-Meta: U2FsdGVkX19ex28ft/22N7rgNzb1SGU2GDjMArSYDG9OqzIxkpYYthz1u8YPVL/Kf14rIDxwruvsL9YO2usQE4uY9nsalmNRsLipHxgYe1fy4/JGX+tI4kkeMzduKXhba5oe/NY/gAabiUnY8KHPiJwlK9/8VqCMWryyDviZ1wZTqh+b8By85zU3VbxxSFDMc4jT782vxfvyaqO5PNPftsrNmm+spMSCgSfKUv+m1n0hL4uTlY7NJdG+kG2vrskkS1TRHggNKwvs/zhSOBTsiY/U/7+4TEqLhaQXLuZ4c3I8LFHgINxRKHWo19ut17zbZ6DG/tEURV+ytbQFUqZ2EY3xBBSvs5n+tV7W9XVJsnnJ28O9bkPBvq+NzcivBAPW/GxL+FjGgM/1qjesI5q1bUrCcR51kFwSpOCwixI1ZoNliduErdRYmOJtLq0atzmvl6i1n/PHcxLczRTSv/xSY/EbRnU03osQhcC/P6TbVk5nvlX6v9r6cRrslTwn2Pdr7Y7iYXmHONPvRFnN0jXMVPBjbLHX+OfVrAd0izpvqTvjIMtXvNqfCjcbf+m1t9jx4Yigg+biexvPSHydUP6XHhHCRd2Swy4sXSCkS/brrbIrh1O9MgG1fLStP4z8BuLpW8Eseobw0HJ2pe161IpJE1FC9PZtUoezzMq+OD6jWlm0+z8bCxvZOJehsF+sBOXoKmb4mgVM+bN/vFuzUEXem+IYpwNg018y+6I+Zyg/kHRYvmaunkICpuPwNUAeDLBKwtZLuJTlQPPT3mB8oUd1k/J6P6eNLz0Ik4qROyPiJDIgfNi8X6H0uTlUycQ1xip6tirwrU9ofrVRaeZkbRtPY0N9YGvAq4bmxU+HiTN7ljns6Su80tiSdA7gf528B6OJiQEndkvLs8Af7XadkjAb9pkom9s0vyCtwtkf9e2O4AmF3ogQnCVZPI/beVVEgv7QTh/51+YJWj3Kvo7UnFM
+ O8fHPnzU
+ wEfbhsLQuhaqbe1kXwacpXmad0/ck9IuCPsFrqjWUiNeeZKvecvqSKTly8sbYr6WCrWX77j19r2jv1Pz8rzi1AEQx+lxIesZqEAEHHHp3xDSdI/PxHaBjvBNzgAn3DtCJ3Qgn7V7/cuJAvQ3YQgaMB5FEZ7ZqwpH/08Ah/0KZ4oocG/Wru9Oj8CekgBo2XJpXkGKy7TCSOYQDk15ELzBc4NS/66fZjJrZH7Q20kEYm4ZCiTS5XUNSBz68aZHBfrTXRamYR/VTcZwgfm42bYTgbLoo4EDR769lYtTG7aHSGnUEPvi9OxEKJAu5bJzLDVMGHU7vDlaXFS7RRG3WedTEb5Gveg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,92 +98,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 12:02:41PM +0100, Alexandre Ghiti wrote:
-> This function actually returns the tier nodes that are targeted during a
-> demotion, so rename it to be more explicit.
+On Thu, Mar 12, 2026 at 12:08:42PM +0800, Haifeng Xu wrote:
+> On 2026/3/12 06:14, Dave Chinner wrote:
+> > On Tue, Mar 10, 2026 at 11:12:49AM +0800, Haifeng Xu wrote:
+> >> @@ -78,15 +79,25 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+> >>  {
+> >>  	int nid, ret = 0;
+> >>  	int array_size = 0;
+> >> +	int alloc_nr_max;
+> >> +
+> >> +	if (memcg_kmem_online()) {
+> >> +		alloc_nr_max = shrinker_nr_max;
+> >> +	} else {
+> >> +		if (memcg == root_mem_cgroup)
+> >> +			alloc_nr_max = shrinker_nr_max;
+> >> +		else
+> >> +			alloc_nr_max = shrinker_nonslab_nr_max;
+> >> +	}
+> > 
+> > What does this do and why does it exist? Why do we need two
+> > different indexes and tracking structures when memcg is disabled?
+> > 
+> > If I look at this code outside of this commit context, I have -zero-
+> > idea of what all this ... complexity does or is needed for.
+> > 
+> > AFAICT, the code is trying to reduce memcg-aware shrinker
+> > registration overhead, yes?
+> > 
+> > If so, please explain where all the overhead is in the first place -
+> > if there's a time saving of hundreds of seconds in your workload,
+> > then whatever is causing the overhead is going to show up in CPU
+> > profiles. What, exactly, is causing all the registration overhead?
+> > 
+> > i.e. there are lots of workloads that create large numbers of
+> > containers when memcg is actually enabled, so if registration is
+> > costly then the right thing to do here is fix the registration
+> > overhead problem.
+> > 
+> > Hacking custom logic into the code to avoid the overhead in your
+> > specific special case so you can ignore the problem is not the way
+> > we solve problems. We need to solve problems like this in a way that
+> > benefits -everyone- regardless of whether they are using memcgs or
+> > not.
+> > 
+> > So, please identify where all the overhead in memcg shrinker
+> > registration is, and then we can take steps to improve the
+> > registration code -for everyone-.
+> > 
+> > -Dave.
 > 
-> No functional change intended.
-> 
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
->  include/linux/memory-tiers.h | 6 +++---
->  mm/memory-tiers.c            | 4 ++--
->  mm/vmscan.c                  | 2 +-
->  3 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-> index 0bf0d002939e..ec39dc3c39e6 100644
-> --- a/include/linux/memory-tiers.h
-> +++ b/include/linux/memory-tiers.h
-> @@ -54,7 +54,7 @@ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
->  void mt_put_memory_types(struct list_head *memory_types);
->  #ifdef CONFIG_MIGRATION
->  int next_demotion_node(int node, const nodemask_t *allowed_mask);
-> -void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
-> +void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets);
+> When creating containers, we found many threads got stuck and wait shrinker
+> lock in our machine with kmem disabled. And we found that the shrinker lock
+> was held for a long time when expanding shrinker info. As the number of
+> containers increases，the lock holding time can increase from a few milliseconds
+> to over one hundred milliseconds.
 
-Look better than before to me.
+Ok, but...
 
-What about just node_get_demotion_targets()?
+> Call stack can be seen as below(based on stable kernel 6.6.102).
+> 
+> 
+> PID: 4462     TASK: ffff8eff5ca0b500  CPU: 79   COMMAND: "runc:[2:INIT]"
+>  #0 [ffffc9005b213b10] __schedule at ffffffffa3ad84c0
+>  #1 [ffffc9005b213bb8] schedule at ffffffffa3ad8988
+>  #2 [ffffc9005b213bd8] schedule_preempt_disabled at ffffffffa3ad8bae
+>  #3 [ffffc9005b213be8] rwsem_down_write_slowpath at ffffffffa3adcc5e
+>  #4 [ffffc9005b213ca8] down_write at ffffffffa3adcf3c
+>  #5 [ffffc9005b213cc0] __prealloc_shrinker at ffffffffa2db3bf0
+>  #6 [ffffc9005b213d08] prealloc_shrinker at ffffffffa2db9e0e
+>  #7 [ffffc9005b213d18] alloc_super at ffffffffa2ebec49
+>  #8 [ffffc9005b213d48] sget_fc at ffffffffa2ebff48
 
-	Byungchul
+.... this is exactly why you need to show your working, not just
+present your solution.
 
->  bool node_is_toptier(int node);
->  unsigned int mt_demote_folios(struct list_head *demote_folios,
->                               struct pglist_data *pgdat,
-> @@ -65,7 +65,7 @@ static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
->         return NUMA_NO_NODE;
->  }
-> 
-> -static inline void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-> +static inline void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets)
->  {
->         *targets = NODE_MASK_NONE;
->  }
-> @@ -117,7 +117,7 @@ static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
->         return NUMA_NO_NODE;
->  }
-> 
-> -static inline void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-> +static inline void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets)
->  {
->         *targets = NODE_MASK_NONE;
->  }
-> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-> index afdf21738a54..19ecc9b6bbda 100644
-> --- a/mm/memory-tiers.c
-> +++ b/mm/memory-tiers.c
-> @@ -300,7 +300,7 @@ bool node_is_toptier(int node)
->         return toptier;
->  }
-> 
-> -void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-> +void node_get_allowed_demotion_targets(pg_data_t *pgdat, nodemask_t *targets)
->  {
->         struct memory_tier *memtier;
-> 
-> @@ -428,7 +428,7 @@ unsigned int mt_demote_folios(struct list_head *demote_folios,
->         if (list_empty(demote_folios))
->                 return 0;
-> 
-> -       node_get_allowed_targets(pgdat, &allowed_mask);
-> +       node_get_allowed_demotion_targets(pgdat, &allowed_mask);
->         mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
->         if (nodes_empty(allowed_mask))
->                 return 0;
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 5e0138b94480..11a97ee8f583 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -351,7 +351,7 @@ static bool can_demote(int nid, struct scan_control *sc,
->         if (sc && sc->no_demotion)
->                 return false;
-> 
-> -       node_get_allowed_targets(pgdat, &allowed_mask);
-> +       node_get_allowed_demotion_targets(pgdat, &allowed_mask);
->         if (nodes_empty(allowed_mask))
->                 return false;
-> 
-> --
-> 2.53.0
+That is, prealloc_shrinker() API no longer exists in TOT. The way
+shrinkers are registered and run was significantly changed in ...
+2023 by commit c42d50aefd17 ("mm: shrinker: add infrastructure for
+dynamically allocating shrinker").
+
+IOWs, the problem problem you are reporting may not even exist on
+TOT kernels. Have you tested your problematic workload on a TOT
+kernel, and if so, what were the results?
+
+> We use perf tool to record the cpu consuming. I have posted it in the attachment.
+> From the Flame Graph, we can see that the clear_page_erms() and memcpy() in 
+> expand_one_shrinker_info() are the main sources of overhead.
+
+expand_one_shrinker_info() was somewhat simplified by the above
+series, so even if it is still an issue on TOT kernels, it still
+likely costs less than on old LTS kernels.
+
+> Therefore, the more shrinkers and memcgs exsit，the process of expanding shrinker
+> info takes longer. This is because when expanding shrinker info, we will traverse
+> all memcgs an record all shrinkers for them.
+
+Only if the shrinker_info arrays need expanding. This is happening
+frequently because the expansion code only expands the shrinker info
+arrays by one ID at a time. hence if you create a container that has
+half a dozen new filesystems mount in it, the array is being
+expanded at least half a dozen times. Maybe multiples of this more,
+if the filesystem has multiple memcg-aware shrinkers that it
+registers per mount...
+
+IOWs, we need to make the expansion case the rare slow path, not the
+common fast path here.
+
+It should be trivial to batch the array expansion (e.g. expand in
+multiples of 8/16/32 slots) and then shrinker instantiation overhead
+should scale down linearly with increasing expansion batch sizes.
+
+Such an improvement will reduce the memcg aware shrinker
+registration overhead on -all- configurations, not just the specific
+one you run....
+
+> However, with kmem disabled, memcg slab shrink only call non-slab shrinkers, that's
+> to say, we only need to record non-slab shrinker for non-root memcgs. For root
+> memcg, we still need to record all shrinkers because global shrink call all shrinkers.
+
+Yes, I know what your patch does - it should be clear that it does
+not address the root cause of the problem you are reporting, merely
+works around it for your specific use case.
+
+-Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
 
