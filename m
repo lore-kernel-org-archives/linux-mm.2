@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BBC8106ACEA
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66F20106ACEA
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Mar 2026 21:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676946B00C3; Thu, 12 Mar 2026 17:17:15 -0400 (EDT)
+	id 9B1776B00BB; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64E5E6B00C4; Thu, 12 Mar 2026 17:17:15 -0400 (EDT)
+	id 9682E6B00BE; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 530186B00C5; Thu, 12 Mar 2026 17:17:15 -0400 (EDT)
+	id 86A7E6B00C0; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B13C6B00C3
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:17:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EF0D1B7EEE
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:17:15 +0000 (UTC)
-X-FDA: 84538671630.11.AADAFB7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7404A6B00BB
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:19:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A71BB955C
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:19:49 +0000 (UTC)
+X-FDA: 84538678098.03.6A79BF5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3FBCDA0002
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:17:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CYZmjqS3;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 81A884000F
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:19:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAmgV2ar;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773350233;
+	s=arc-20220608; t=1773350387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9jkac9UhPWn2jj6zopFbckpYOo9eF8211ZONhJMEgss=;
-	b=fNs9uCgx9x0+EZ9JIczg/1bJEPx0A/b6JYRmpPtQxuTAAZStQisL6Z7tH0OeR6qA+5UtK+
-	J/Ll7xgm5K7a30hHNGcwawNzF8S1UEkMuOhL48Ndc4rrtafwU2agfvyi7/o0t2Z0RJwmGi
-	NtrtKCZSSHNA3NuixM4LVDt42GWw7Nk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773350233; a=rsa-sha256;
-	cv=none;
-	b=1NSSTksmQi7bcNO0lcGGTNQQkAVDNFxVG7+u8qNMFn2QfSQqnB90NMsMyVDO1pmGifTm/0
-	sIQtyhOYzfaKjobzODpKd2r5278Or3Jq2lrLwOAIk3e5eHPk0l1hVzn8rE7/jfHHc8ymU2
-	qWZtto9yNihFYHbWecm4Cb5QCvxWXEM=
+	bh=UJW95MAAwk02Yo5Bqs/qbwpbpbptX/VVoXNWJEuoRrQ=;
+	b=IMrTmx1dTyJNHbJ2VcIQVEkLyhvGWKEK6zPVXm5Oy2X3uHxGkVWvw9AvrvcA57YV3K81r9
+	BWgL6TYaon8tS86l8sRCCChvrwBhwihL6/pDXlDZ/a8GPpcXPEJhxxs24MDAlDKzWH2V4Q
+	S+T0Ro1a+wl4+m0bopSW1NXF1BAxBxE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CYZmjqS3;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAmgV2ar;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773350387; a=rsa-sha256;
+	cv=none;
+	b=aty9ZMxHJDYDPdCjgtzcUIiLIxsVPRyKHhW4CzYgow9MpHBlbbls3l8oLBDaUh/6tKokBH
+	HfOVNaRyvSHpD2f0xNtuvKcFwiS64JULOwq9D72eEpKsmJJ97rm12Pw8wrenh0v8OkYqyJ
+	xw/OMdYzqqTTtdMgcOWLahZAvpscCos=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59F1A60142;
-	Thu, 12 Mar 2026 21:17:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077BDC4CEF7;
-	Thu, 12 Mar 2026 21:16:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A8CA860142;
+	Thu, 12 Mar 2026 21:19:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE64C4CEF7;
+	Thu, 12 Mar 2026 21:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773350232;
-	bh=SwAKyaACG6/Nu8KsQQ7/gnIrUN4D+lqR8H7BYj/Gywk=;
+	s=k20201202; t=1773350386;
+	bh=b/n1AB5/3Poo0rQsSnXTnJrEIrDJtXE5V+mRQh+spI4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CYZmjqS39gmuILDMykVsCM318kwN8XIivLqBOf+V1XhsS0MOFvv+EUplvntUOcXgS
-	 JDKtG36WimmoNaBo6GnrFLOH2k3Xl5cd2Mg2IkjX/Dqee8T7De2bZobs17XzppMuck
-	 k5wY+CnT/PBlmYy7XQVEhqneMaKS35TrGUOjGivxDYj0so/m/+QEcCPgAAEO83Lgpb
-	 553QHiMuKIxBI4ZfbIZb0S+QaVRnDlE7vu5vIL33OjZyPS2VawAWJMYXDXasGJapKM
-	 eVxQY7wXeBitH4qdoBsDlkwoDIGAVPicB+mDH4Sd68z2JT5DoQ1b6CoLBx41J7RpkN
-	 +pbaLFux/zhbQ==
-Message-ID: <fa626160-3996-4689-bc56-f53efe95f614@kernel.org>
-Date: Thu, 12 Mar 2026 22:16:52 +0100
+	b=oAmgV2arw8JwtUgPzmUkQXEI7qwOzfCbG1n6XzBr808nXkT+OTjcRoZGUbQVs225r
+	 9oL/+sG4BcrmV3hycYoRG47G00JbqB8hTMHM0ptNJU7mjsuefL4tvMRzuId6W14LfC
+	 IhC3XdsJFW4ICAXdSYDHW57MGspUq0ZIKv9UDCO2lWLUNOBuhtz5raqUE/EXj07yKw
+	 lSTutMzLLYbUh0c0Tgi5w3ADbIccOK0ATm2IM7ZQRhFJKmmxtB8JJh2aueu/1QEbET
+	 doHY7gQJmOOlG2DNwXemCr96moZ7CqMMX0kfhuAXOVJR/pnLfkaz6t22RHEZ5xmisP
+	 wmCkSME14rwIQ==
+Message-ID: <ef97dc96-2525-4694-aaea-34ef67a05caa@kernel.org>
+Date: Thu, 12 Mar 2026 22:19:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v15 10/13] mm/khugepaged: Introduce mTHP
- collapse support
+Subject: Re: [PATCH mm-unstable v15 11/13] mm/khugepaged: avoid unnecessary
+ mTHP collapse attempts
 To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org
@@ -92,7 +92,7 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  willy@infradead.org, yang@os.amperecomputing.com,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
 References: <20260226031741.230674-1-npache@redhat.com>
- <20260226032605.234046-1-npache@redhat.com>
+ <20260226032631.234234-1-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260226032605.234046-1-npache@redhat.com>
+In-Reply-To: <20260226032631.234234-1-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 81A884000F
+X-Stat-Signature: 4ubcbtwgo8e5p7q881ekkka4yi9cao3n
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3FBCDA0002
-X-Stat-Signature: ktn41feq694ozrsm77w5pi1iok4pwxes
-X-HE-Tag: 1773350233-941277
-X-HE-Meta: U2FsdGVkX18ClsMueHKT/Ay4W4jj4gtp3GrHV/fe66dHNddfQgiNSorFdNNiDKMVCvkxBeGWMkB3FPeVx6zkOI/gcdx1bLZiW6k9LPuQABGw842SBqHNtTHOlamnCBscz9R6hbTYAvhm4sFvW+rJnjectLFYFPPY4AAl0nPHJuYQTsRopEp8OdVjPkFpYkk0YvS7Uly7IOxIs8bEgmfsHkLVdxfaIXRgTZ8R7aZssLP+kEgKMD8Z2adz/ibYrnJvRFluLGh4dV/rOs8Clw7h/8/2sLceoqap0zt4vLw3yuTzSpivcrYYykVtVjdNUuThu+dkEkYlkwsWLVW4Y0oBJ0cqe3HWWJotM4/vsJbbMExC/hXbcQus3POU+VGGDsozXmWNy8w+Sw7KINs5o/IzGDPLHXOPDokTaIZAdXhAghplO3gTIWzlSb4Dfbcaard/TcGW57mzK3D/B58qvSH0LIvPgmTashyHKOSniMl84b1KJdkObP1Sbf1Qcdl/GfzX+8H5Q0EQlqc3+usn6IDDa8yqxlrS0PU64EoVZJr1bUUcI4bFxgMOeFTclEXui+hMHA+LQKXg+dqhE67Ur8GwtQ8MexFcdq7BalqZkf26Jk8vzfA78qRiXZnKHk6PW+duURaSfX6yh9JGAPGAhNqgqijox9xqP8EvpLFuZ/0eLUNW22lPakEWBwmqTjqbcHx7tAOQp2WgqznJuohxaVatlNvyG1Y8EeSN3vLLHQtHm/wY5uczFS8wQlKWhP2tGpmxY47zmlFIHnOPF5ztyzmvjPza9gsAm5MFGT6hKGya5AtyNnoBM7/8zYGux6S23zyV1qMQ6CsR/y2LNufM3m+2LkD6LOuSp2eEUidc1eOPIgK5fSKceTYAuXiLir0C+PRhLsPBgPX3H5Lom+flB3Gib3LIf0jWW1rA/3wm0DlfDjoWwcZkpaZEACaBSMIIcPS35JtXlwQjYHcuAshSXY3
- ko/KZTNz
- e7G3rtPtyC5Fb9NtEzlepwkYo+0WNguB0Yw8WH6pIFfy1rDfIWoQjULDh2rMcK2taMgAjJfvjX74Flx0QFcrVsZH2SkykKYqxMIPFd4Yb8lHvVStiHATVUhC8aoKhYP5Df5Sdi8wW9j8eYlVHp6eXrqhWqn+MqYHbEoT6u9J3AFPHc/jxJHSQCqFH5/TuvoT0N9U+8Nhjv1l6+7P7UVguwWi4eGfffjwSUx1Jh40vhiW2MCyBDJywceakhykE1K7BVcRR4MbQGUJHVdgyN/CoHTiyw74aAMBg0M+404x8JBVzgNGi2F27jzou5QhHObl6QcZ91LIo4L6IQhz0/lyjKIplx3mjOzwnaebqWdU+14TluQ+H94FI4ZFSvQ==
+X-HE-Tag: 1773350387-905631
+X-HE-Meta: U2FsdGVkX1/zqxg0Fp3k2DFcpClSEo3qWlzq7uxh/7GqY2PuUH7tGkaPGA1GNeO5AKj+y2/9JkbyrBiYd338uQ8gmEn38C5y15TvoEO0WgfbsWSAoSl7TWdYpuI3q3XjY+r+QNvCtWRlKU/+lxxTAPTPiM+wcAj1OOt+b9gBV/8giGPf6pmtcRtFVvV7euebREglSfQ0xfqm/7c4Gq6gCTHuC3+MK1k5PC78/XQIvNnWKhJFP3ruPUgW40LPcl1F8yIoPLFyiwe3izA2cGMAjX/sgUed3gzbeVe+y7T2ObIFeefD7nxqTJfO/GocMf+eW+Lb8C+zk55xz1FoQ4HEAtdYXWOCCYAWLlm8llzQz/G2bzEO4d2gXCaPDMwyHGOkbVL35Ermx0Ss47cfYBuiMzVOFBPfaxMX34y+oqqAzc2WObLnWmYwp6/g/37dynOkyRKNKaQN50W7Ub3JU4EcuPsWKfYwJxoN+s59kET/vo3wtQ3H7Ul555fHNEL4eoy6+GQkvCIJJwVbFG3KJY2qKjPhfstedCUbTMokBHmcPK036dhFuxRXja3YsHMBn92NSyAYTQ/nNtEME7BeIfPrjjNTNvKcYjne2CNuTcOQHDkpM61b3V+r+kU2WFOBGH42V66Fraw8pZTji37VCDQ8QV1wO0yo4rKdHMQAlp5LHq64Q2FWNQZ906d7CayBGLcwZCcmPgkGdNIbHiw99wWmr43Wl19qN9BkRHV1dAhmfbtJFJW+WkTINTV1qoIr1NBP1MWloP++ueG7Z+j5z+HOtZBtEbvcRg1FNa5KcUCOu4tahcpf/GbL1rcxoP4fUrt2nSgPbweA9PAqyTLVq7zpsn4vAgDeBfRXktu+hnY//hgbnl5XYtHZQz5M6dpLcg6PVnSGm+ijG8nOqAdiufcSIYanSnBKCIsx/iLKwXgt/6j5Q8NBjJB7uPUGecdHFoSW005Rivl77cwSgDdGP2d
+ ruJcqxUo
+ WtF/T5pqTKGjO3rAes2LUYN9Kg5HOI5B+ve7y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,279 +158,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/26/26 04:26, Nico Pache wrote:
-> Enable khugepaged to collapse to mTHP orders. This patch implements the
-> main scanning logic using a bitmap to track occupied pages and a stack
-> structure that allows us to find optimal collapse sizes.
+> There are cases where, if an attempted collapse fails, all subsequent
+> orders are guaranteed to also fail. Avoid these collapse attempts by
+> bailing out early.
 > 
-> Previous to this patch, PMD collapse had 3 main phases, a light weight
-> scanning phase (mmap_read_lock) that determines a potential PMD
-> collapse, a alloc phase (mmap unlocked), then finally heavier collapse
-> phase (mmap_write_lock).
-> 
-> To enabled mTHP collapse we make the following changes:
-> 
-> During PMD scan phase, track occupied pages in a bitmap. When mTHP
-> orders are enabled, we remove the restriction of max_ptes_none during the
-> scan phase to avoid missing potential mTHP collapse candidates. Once we
-> have scanned the full PMD range and updated the bitmap to track occupied
-> pages, we use the bitmap to find the optimal mTHP size.
-> 
-> Implement collapse_scan_bitmap() to perform binary recursion on the bitmap
-> and determine the best eligible order for the collapse. A stack structure
-> is used instead of traditional recursion to manage the search. The
-> algorithm recursively splits the bitmap into smaller chunks to find the
-> highest order mTHPs that satisfy the collapse criteria. We start by
-> attempting the PMD order, then moved on the consecutively lower orders
-> (mTHP collapse). The stack maintains a pair of variables (offset, order),
-> indicating the number of PTEs from the start of the PMD, and the order of
-> the potential collapse candidate.
-> 
-> The algorithm for consuming the bitmap works as such:
->     1) push (0, HPAGE_PMD_ORDER) onto the stack
->     2) pop the stack
->     3) check if the number of set bits in that (offset,order) pair
->        statisfy the max_ptes_none threshold for that order
->     4) if yes, attempt collapse
->     5) if no (or collapse fails), push two new stack items representing
->        the left and right halves of the current bitmap range, at the
->        next lower order
->     6) repeat at step (2) until stack is empty.
-> 
-> Below is a diagram representing the algorithm and stack items:
-> 
->                            offset       mid_offset
->                             |         |
->                             |         |
->                             v         v
->           ____________________________________
->          |          PTE Page Table            |
->          --------------------------------------
-> 			    <-------><------->
->                              order-1  order-1
-> 
-> We currently only support mTHP collapse for max_ptes_none values of 0
-> and HPAGE_PMD_NR - 1. resulting in the following behavior:
-> 
->     - max_ptes_none=0: Never introduce new empty pages during collapse
->     - max_ptes_none=HPAGE_PMD_NR-1: Always try collapse to the highest
->       available mTHP order
-> 
-> Any other max_ptes_none value will emit a warning and skip mTHP collapse
-> attempts. There should be no behavior change for PMD collapse.
-> 
-> Once we determine what mTHP sizes fits best in that PMD range a collapse
-> is attempted. A minimum collapse order of 2 is used as this is the lowest
-> order supported by anon memory as defined by THP_ORDERS_ALL_ANON.
-> 
-> mTHP collapses reject regions containing swapped out or shared pages.
-> This is because adding new entries can lead to new none pages, and these
-> may lead to constant promotion into a higher order (m)THP. A similar
-> issue can occur with "max_ptes_none > HPAGE_PMD_NR/2" due to a collapse
-> introducing at least 2x the number of pages, and on a future scan will
-> satisfy the promotion condition once again. This issue is prevented via
-> the collapse_max_ptes_none() function which imposes the max_ptes_none
-> restrictions above.
-> 
-> Currently madv_collapse is not supported and will only attempt PMD
-> collapse.
-> 
-> We can also remove the check for is_khugepaged inside the PMD scan as
-> the collapse_max_ptes_none() function handles this logic now.
-> 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Signed-off-by: Nico Pache <npache@redhat.com>
 > ---
-
-
-[...]
-
-
->  /**
-> @@ -1361,17 +1392,138 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
->  	return result;
->  }
+>  mm/khugepaged.c | 35 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 34 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 1c3711ed4513..388d3f2537e2 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1492,9 +1492,42 @@ static int mthp_collapse(struct mm_struct *mm, unsigned long address,
+>  			ret = collapse_huge_page(mm, collapse_address, referenced,
+>  						 unmapped, cc, mmap_locked,
+>  						 order);
+> -			if (ret == SCAN_SUCCEED) {
+> +
+> +			switch (ret) {
+> +			/* Cases were we continue to next collapse candidate */
+> +			case SCAN_SUCCEED:
+>  				collapsed += nr_pte_entries;
+> +				fallthrough;
+> +			case SCAN_PTE_MAPPED_HUGEPAGE:
+>  				continue;
+> +			/* Cases were lower orders might still succeed */
+> +			case SCAN_LACK_REFERENCED_PAGE:
+> +			case SCAN_EXCEED_NONE_PTE:
+> +			case SCAN_EXCEED_SWAP_PTE:
+> +			case SCAN_EXCEED_SHARED_PTE:
+> +			case SCAN_PAGE_LOCK:
+> +			case SCAN_PAGE_COUNT:
+> +			case SCAN_PAGE_LRU:
+> +			case SCAN_PAGE_NULL:
+> +			case SCAN_DEL_PAGE_LRU:
+> +			case SCAN_PTE_NON_PRESENT:
+> +			case SCAN_PTE_UFFD_WP:
+> +			case SCAN_ALLOC_HUGE_PAGE_FAIL:
+> +				goto next_order;
+> +			/* Cases were no further collapse is possible */
+> +			case SCAN_CGROUP_CHARGE_FAIL:
+> +			case SCAN_COPY_MC:
+> +			case SCAN_ADDRESS_RANGE:
+> +			case SCAN_NO_PTE_TABLE:
+> +			case SCAN_ANY_PROCESS:
+> +			case SCAN_VMA_NULL:
+> +			case SCAN_VMA_CHECK:
+> +			case SCAN_SCAN_ABORT:
+> +			case SCAN_PAGE_ANON:
+> +			case SCAN_PMD_MAPPED:
+> +			case SCAN_FAIL:
+> +			default:
+> +				return collapsed;
+>  			}
+>  		}
 >  
-> +static void mthp_stack_push(struct collapse_control *cc, int *stack_size,
-> +				   u16 offset, u8 order)
 
-Nit: indentation. Same for other functions.
+LGTM, but I do wonder, given that you have the "default" case, why spell
+out the ones that fall into the "default" category? I'd strip those
 
-Wondering if you'd want to call these functions
+/* For all other cases no futher collapse is possible */
+default:
+	return collapsed;
 
-collapse_mthp_*
 
-> +{
-> +	const int size = *stack_size;
-> +	struct mthp_range *stack = &cc->mthp_bitmap_stack[size];
-> +
-> +	VM_WARN_ON_ONCE(size >= MTHP_STACK_SIZE);
-> +	stack->order = order;
-> +	stack->offset = offset;
-> +	(*stack_size)++;
-> +}
-> +
-> +static struct mthp_range mthp_stack_pop(struct collapse_control *cc, int *stack_size)
-> +{
-> +	const int size = *stack_size;
-> +
-> +	VM_WARN_ON_ONCE(size <= 0);
-> +	(*stack_size)--;
-> +	return cc->mthp_bitmap_stack[size - 1];
-> +}
-> +
-> +static unsigned int mthp_nr_occupied_pte_entries(struct collapse_control *cc,
-> +						 u16 offset, unsigned long nr_pte_entries)
-
-s/pte_entries/ptes/ ?
-
-> +{
-> +	bitmap_zero(cc->mthp_bitmap_mask, HPAGE_PMD_NR);
-> +	bitmap_set(cc->mthp_bitmap_mask, offset, nr_pte_entries);
-> +	return bitmap_weight_and(cc->mthp_bitmap, cc->mthp_bitmap_mask, HPAGE_PMD_NR);
-> +}
-> +
-> +/*
-> + * mthp_collapse() consumes the bitmap that is generated during
-> + * collapse_scan_pmd() to determine what regions and mTHP orders fit best.
-> + *
-> + * Each bit in cc->mthp_bitmap represents a single occupied (!none/zero) page.
-> + * A stack structure cc->mthp_bitmap_stack is used to check different regions
-> + * of the bitmap for collapse eligibility. The stack maintains a pair of
-> + * variables (offset, order), indicating the number of PTEs from the start of
-> + * the PMD, and the order of the potential collapse candidate respectively. We
-> + * start at the PMD order and check if it is eligible for collapse; if not, we
-> + * add two entries to the stack at a lower order to represent the left and right
-> + * halves of the PTE page table we are examining.
-> + *
-> + *                         offset       mid_offset
-> + *                         |         |
-> + *                         |         |
-> + *                         v         v
-> + *      --------------------------------------
-> + *      |          cc->mthp_bitmap            |
-> + *      --------------------------------------
-> + *                         <-------><------->
-> + *                          order-1  order-1
-> + *
-> + * For each of these, we determine how many PTE entries are occupied in the
-> + * range of PTE entries we propose to collapse, then we compare this to a
-> + * threshold number of PTE entries which would need to be occupied for a
-> + * collapse to be permitted at that order (accounting for max_ptes_none).
-> +
-> + * If a collapse is permitted, we attempt to collapse the PTE range into a
-> + * mTHP.
-> + */
-> +static int mthp_collapse(struct mm_struct *mm, unsigned long address,
-> +		int referenced, int unmapped, struct collapse_control *cc,
-> +		bool *mmap_locked, unsigned long enabled_orders)
-> +{
-> +	unsigned int max_ptes_none, nr_occupied_ptes;
-> +	struct mthp_range range;
-> +	unsigned long collapse_address;
-> +	int collapsed = 0, stack_size = 0;
-> +	unsigned long nr_pte_entries;
-
-"nr_ptes" ? Any reason for that to be an unsigned long?
-
-> +	u16 offset;
-> +	u8 order;
-> +
-> +	mthp_stack_push(cc, &stack_size, 0, HPAGE_PMD_ORDER);
-> +
-> +	while (stack_size > 0) {
-> +		range = mthp_stack_pop(cc, &stack_size);
-> +		order = range.order;
-> +		offset = range.offset;
-> +		nr_pte_entries = 1UL << order;
-> +
-> +		if (!test_bit(order, &enabled_orders))
-> +			goto next_order;
-> +
-> +		if (cc->is_khugepaged)
-> +			max_ptes_none = collapse_max_ptes_none(order);
-> +		else
-> +			max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
-> +
-> +		if (max_ptes_none == -EINVAL)
-> +			return collapsed;
-
-With the previous suggested rework, you could likely make this
-
-	max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
-	if (max_ptes_none < 0)
-		return collapsed;
-
-> +
-> +		nr_occupied_ptes = mthp_nr_occupied_pte_entries(cc, offset, nr_pte_entries);
-> +
-> +		if (nr_occupied_ptes >= nr_pte_entries - max_ptes_none) {
-> +			int ret;
-> +
-> +			collapse_address = address + offset * PAGE_SIZE;
-> +			ret = collapse_huge_page(mm, collapse_address, referenced,
-> +						 unmapped, cc, mmap_locked,
-> +						 order);
-> +			if (ret == SCAN_SUCCEED) {
-> +				collapsed += nr_pte_entries;
-> +				continue;
-> +			}
-> +		}
-> +
-> +next_order:
-> +		if (order > KHUGEPAGED_MIN_MTHP_ORDER) {
-> +			const u8 next_order = order - 1;
-> +			const u16 mid_offset = offset + (nr_pte_entries / 2);
-> +
-> +			mthp_stack_push(cc, &stack_size, mid_offset, next_order);
-> +			mthp_stack_push(cc, &stack_size, offset, next_order);
-> +		}
-> +	}
-> +	return collapsed;
-> +}
-> +
->  static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
->  		unsigned int *cur_progress, struct collapse_control *cc)
->  {
->  	pmd_t *pmd;
->  	pte_t *pte, *_pte;
-> -	int none_or_zero = 0, shared = 0, referenced = 0;
-> +	int i;
-> +	int none_or_zero = 0, shared = 0, nr_collapsed = 0, referenced = 0;
->  	enum scan_result result = SCAN_FAIL;
->  	struct page *page = NULL;
-> +	unsigned int max_ptes_none;
->  	struct folio *folio = NULL;
->  	unsigned long addr;
-> +	unsigned long enabled_orders;
->  	spinlock_t *ptl;
->  	int node = NUMA_NO_NODE, unmapped = 0;
->  
-> @@ -1384,8 +1536,21 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  		goto out;
->  	}
->  
-> +	bitmap_zero(cc->mthp_bitmap, HPAGE_PMD_NR);
->  	memset(cc->node_load, 0, sizeof(cc->node_load));
->  	nodes_clear(cc->alloc_nmask);
-> +
-> +	enabled_orders = collapse_allowable_orders(vma, vma->vm_flags, cc->is_khugepaged);
-> +
-> +	/*
-> +	 * If PMD is the only enabled order, enforce max_ptes_none, otherwise
-> +	 * scan all pages to populate the bitmap for mTHP collapse.
-> +	 */
-> +	if (cc->is_khugepaged && enabled_orders == BIT(HPAGE_PMD_ORDER))
-> +		max_ptes_none = collapse_max_ptes_none(HPAGE_PMD_ORDER);
-> +	else
-> +		max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
-> +
-
-I assume that code to change as well. If you need help figuring out how
-to make it work, please shout.
-
-[...]
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
