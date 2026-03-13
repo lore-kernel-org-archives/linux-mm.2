@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D91D105F7AF
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2816E105F7A6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CFE06B008A; Fri, 13 Mar 2026 10:48:15 -0400 (EDT)
+	id 66BC16B0088; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97D926B008C; Fri, 13 Mar 2026 10:48:15 -0400 (EDT)
+	id 5EF2B6B0092; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87CA16B0092; Fri, 13 Mar 2026 10:48:15 -0400 (EDT)
+	id 4FB036B0093; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7588C6B008A
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:48:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25F6F1601EA
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:48:15 +0000 (UTC)
-X-FDA: 84541320150.20.DE3510D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4033D6B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E645887632
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:52:56 +0000 (UTC)
+X-FDA: 84541331952.25.A923176
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6E92A180003
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:48:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mcEG7Lcp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 43F2E4000F
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:52:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=le0W763n;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773413293;
+	s=arc-20220608; t=1773413575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5M2HEq/sFy0WjbfiSEKc+uzwRzJKs8HdUTuQF8gfJls=;
-	b=JyMkZQV5GdlYZGln1C3T7tqoZ0RzZ5PZ9y12VhAf4F7q2qDjY3xfqurg01Q7KHVfHK9bTO
-	9bSvP+joQFxb252K8w4Ys4HjYPwtSR9BjT0h87cf5Ugk76gDcv76aYxS5kK1rzFq8SyM6W
-	NWhZ+hgnhQmTnQurrZQ+Wlayr1+OWas=
+	bh=cCBZ9IgiIaPlQAC9YvT3JsIWr5CPHgICxQ9tcOoFEcw=;
+	b=xdYRwllEHmTP0fJD3UqpQKe/cZMytxByPdI2y6hl3N3rxUmRHoyXEM0dr36yHg/IvRSmKV
+	M+XQg/JJI+Mw26U/8w2kWmGBmzV4gTIlgUXlO5NLxQOBcfAF9G7iP6ifLX94L7lGIu5/RH
+	8M0UkIBhYTxXtkY+pCiC3xMAT3thCQ8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mcEG7Lcp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773413293; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=le0W763n;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773413575; a=rsa-sha256;
 	cv=none;
-	b=mfeJDWTDNsTWzet6Zf+FpAKFktNcQ7xHN49uuKaA403IbnZOwAfcdzHkzdl0NRUBcQfZK5
-	F890D9zMVexNp7HKSVfXTSdxs674nH/WgRz0ZU4q0nkMuaiw+IAiGgqD0doiQ85yigmvYP
-	HCFsvBdkCPxCFTW+tr5PnUNASyEvkBM=
+	b=kHT2AVASlwbK12YlWG6kGoY8D/CeCFUB7zXEUu25sv/iP8SwK5kQ09fFkALTVwHaAJ8Erg
+	6DFmGcSqdpHunioMDH8DBPfn5au19HPmSz5QKuZT1jUZ+SbPpWrQZfVjvyKPp4GsCXoPew
+	Oop6+SsU/L+XtJ/x0o6Ao+Zf44Zr/AU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52D4C43D12;
-	Fri, 13 Mar 2026 14:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3F6C19421;
-	Fri, 13 Mar 2026 14:48:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3FF4141766;
+	Fri, 13 Mar 2026 14:52:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CD6C19421;
+	Fri, 13 Mar 2026 14:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773413292;
-	bh=CUmFsU2G+NBF4oI24RS3s7BTKOpnDvSejeSWKgDW6y4=;
+	s=k20201202; t=1773413574;
+	bh=9+tBGf+6qW8cNORLO7JXvI2gClOkixsr6NngHAxnwk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mcEG7Lcp5gbPg7QvViC5EM6NsfYIuaxOUVfI6Ps3cHxNmGUwjmVW0vmwXVrcxSX1c
-	 k9eJFrOtZpnUwXvNEdk5OR3TcnuXF/XQRGhZsWpYFsF6dw6XSOgeYh6gGnPLsXuFbF
-	 ldFhrgJeG7g3+0+ph4r5UH8uBIv1YqrhdRa8DSPtZwV6aUoIU5DHtv6wbty6etPhNJ
-	 LdZ09iDzyZQPp5LldQUhcWrUvofNB8MygeeWEVq3LYI4K5wRZ9NRW0j59uD0Xid350
-	 60dnn0ImFOKBVWBm28RoH8aHJhz/fove5WgZ/Cenm8NUeQAyYFRVVLSe+pDoGc4pEq
-	 tKVIpb4ey6gAA==
+	b=le0W763nuZ3pgJhbKOvzX0P0kwTYcR2NhqSh6SPGWMp8Wl0f4PTOagjwDs+W3lUrq
+	 qAe88u12T/megxzTjVQdzcF1kwg7fRZq/rVZdneVsmNKlRdIxLhAjlzMGDyBd646Cx
+	 LHhEzfbANCIl3KXDttBDCDx508LcKSVJ7erwFQT9guUY/B0Kkto69BEmvBo3NB3FSH
+	 TwMNH7l5bke7YUuYv5x7MC1NVyYXoYEngCv5DVTJVXUKZTtrvtsSGWtzvwzSNy2DIj
+	 f+cFJh4GJ4LcRLK2kgSuidajFvPF1sf3Jb1501butKP6XDOWedVnv5J0GLiY1CY9l1
+	 uLBHTpys4umNQ==
 From: SeongJae Park <sj@kernel.org>
 To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
 Subject: Re: [Question] mm/damon: conflict between DAMON_STAT and DAMON_LRU_SORT?
-Date: Fri, 13 Mar 2026 07:48:08 -0700
-Message-ID: <20260313144809.46527-1-sj@kernel.org>
+Date: Fri, 13 Mar 2026 07:52:46 -0700
+Message-ID: <20260313145247.46643-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260313111702.38667-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6E92A180003
-X-Stat-Signature: kfi8o3t3hn9i8q3xsmnmniqm9pmdj94s
+X-Rspamd-Queue-Id: 43F2E4000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n8hj4gmkr9dsethsue1hapzbrbfzh9m1
 X-Rspam-User: 
-X-HE-Tag: 1773413293-285299
-X-HE-Meta: U2FsdGVkX180XMdKMGJtRnabQVsAyilDQQGxL0Qku5UrWSXbY8LO7tHzuQAhaXW57pkdv/oT1HtuP//f49b+s1gK6IubPJPmYQkdkzaiAhkfOZ7lUU/EhXKlMoeBF8SM3GqVKOJveePfGlNMWsJs/GZlQYC6RLr7Pj11ocZeb0YCGGmFmqz5WlZswR6UrBdmRw43hdiGDIR7O2qPOijHFH8YbcUvB+IXAwBummpf87chNFlObpIgQzKRxOCOgrejnsZmO7jeYioGnbUj9egEYiHldHvu3h/U/2K6A4jIgEcSW/j26xrrpOjNg71vXyA7bY29gc444klwa7DOBxhQISEjC3L9Br9Suasi4Sm3Ie9tPJqfm4GuT6yhP3IzvjrEMJCrdwTumwHPcyM/reZS+L2KjnftZc8YtDYJVv16Nx+gCuuUA4o56phsynbOvHJ2CTnNKog5rXmS2LTVKQBjT46onjWCuNx76iuC/CS8Ybz9vwLh3gMfU1v3muSE5ZbZJz6a6JP1oFbOX1U2C/w9MF05wjaoU7CBebjkGgVCLcYE+Xkk6G+is6gMWPdRHFEVcxiu+eX6E/Dg5S6oiB5ols72chEYPmvowYvdZXtNev6vmCsSR4rc8Fcy3q8YTcaTW5jz7vxvWERu/IIsWGXWXkHrhnvW/zXcuzmcnFU5Io8temyk6VaoxN6QcGlJz+hKU81qUDm4V45NBxQnHifJC9zopqEZmL0UITeVG0ojhRjPqmL6mpH44Zh30lcIY8KZ8VtO74J2DKcSF8NVf6IuTIbN/0klCCBZnAMSXFL2WGe9BrP3ApOkZgHRXGucbo/0GqideeoyCugr9sK1SPliljhG+o8zz8YoJP6hWOBBT9/mmrTIoigDwZM/e9YguV4phJHBCP7T4doMlaBeuqgw1lAJ7QJCecRZWuzo44gdB/0ZWAHR8WH+POUlgmwttKKdPaHahXxsVWGU2okTiRu
- 50XuO+Py
- e2LEKtKZlS9MdnlDNHB3tCPWaC4FjebcUm1+PxO+C4hTyBbcsgX/R4v+M6Nx9TiuQhz6Px8u0qelhGpY8uVYmmhVYRc8kGzEVuAnVWGJ11BBJrcHj98KBvdj8yq3zdik2sHrsggIydAyua5Jdy/Cz4WcboqKzT3VRMM8/9fv539pUddN2aUtp4Y5V3cKBBN5qlOuP9eQzy2zx1n9jj02DnV+M7ZJWW+PsoScsDrGFGoLuCGN1/QhLvyJlRvHAKYMZsF9jEm+uC3+KcL9H4WPLjz23uGvEiQsTK7lSLOYeoQXBe14oZIhiUOOTvC/iMpr6yrZ7Lq9tMqcqSi3GewuWEyyp0EGRYg5OeFfE
+X-HE-Tag: 1773413575-940919
+X-HE-Meta: U2FsdGVkX195cASB+9C6QGTryqf4m8JQKDGCgXanqUbpTzB59M4QAsqPhPOPylW13VcbwXTsI/NDbeD2Ho4mIfqjknH+KpMFH21oY+Lmmr1U0ciCbTt3Zumr1VoXrTyWZgg+pINC3s2PhbXHteXTJ6mngxzF7/r2YrPCR1dFDb4+sEyCuXSL2H37D4h8WSZEzHo4VmZ2JP5FLZx7yNqZRvkJ2oaIuHKOvMe7Tuy9hlwyBladqc6qAuz74khBokg6jM01mgc1Rf3Z5VhlXpzZVHVNd0NPsP59kEjN7+tDZaKHLS5Epbx5sv2rKevpUu0Ih7J34J24BRxQn7AKeHjXShiC1Iqi/+K94wZC0n2jlgsb8/njmxO7V10oysaREyVt+TxPRUKrJlUslfNaUYBfZ87HK1CzqZFeUWXTw+Hm4z7htwy1I1cVoAbSchq2C2aXHLXbIRjnO9NM86K7WPz+4q/g2pi5xjUA8RmSMixN6DL0BnNPlQ+biJ/AWwPUg6arVn5/XVCOJl8aDSXtsKc3L2iQlFIgCYdd/QAg5JJMlKMve9fBAKuy7Vt6XIUTF1ftfhtvts4O5lMhn3Perh3iJ7wMdY3TlEQvWe1zHeLzgtAGaW6XFSJkcFjL5MVZy05JyBYwsKOoP/0f6T0AvnXayP5jaVM7GfbXzQuGymuSVGGoSCaw1ecXIpPwcdqtN72bTF95MGTHw1nhdCdvXhFVvJ080L/XzJ4IzU9RrJhgijvC/LARux8uuxB3Z1MLsViVth35YgEnSVPelQ15H9QmLHCsfl8+NjBWkBTlB42Qp/bitZGz+vE72i/tf4HpRUAWGEF8vfk1JwzexGDnUK0cDEn2xOadbX2xhfmWICoUYPwuQCXwZnLpCaISoiGTuF/MXcE1LmbK7/1xZ66GPervkAXYJhZzm065p4Cw5IlPvJBxIOhconWZQSGOeqEh5/auvWtHBPMx5I44igIQGVy
+ I7MBerrB
+ b0zaZSz3FUgfz9HUfFejeJiPezbki69H14Jri7TH2PAM+VtX6VJGYCp1UHoVUm+KjzuLOayfsucQ+SZ7daVoUmC+NXuZYDYuc0Rl03FKW/6quVbLkCevceA4IaD4VCbgFdKA1LcUhJqBN5Ay1cDD14CB3lPV3pmeN+EbZK3RsA/l0c9Mq9jOvTpBoVFgIQ4b7FDN3lpkOfd22AyRC0pyE+mcxaOB/gTM6zjwb/OIC2bX3ZSYo3FV2QPqZIJOQ6aUYm/EyCF/yE0l+iFCTOrJGvQMde1SjGh5AMNTzG3UKOa7kuFAOUEcuka53SZFy2UXOwtJZlwmvNCaO0MUMuKA8hMOE0mE+FyedaVHB/SF39hSpe2WKrTE8E+rprd70qXFqNVNA2Za2Wc4fTHxheUGEGX0dSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,7 +108,7 @@ work.  For now, this is the expected behavior.
 > this limitation be documented?
 
 Good point!  Yes, it would be better to be documented.
-
+ 
 > 
 > Reproduction
 > ============
@@ -124,10 +124,15 @@ Good point!  Yes, it would be better to be documented.
 > 
 > Result:
 >   bash: echo: write error: Device or resource busy
+
+Thank you for sharing this detailed steps.
+
 > 
 > Workaround:
 >   Disable CONFIG_DAMON_STAT_ENABLED_DEFAULT, or disable damon_stat at runtime
 >   before enabling damon_lru_sort.
+
+Makes sense.  Indeed, DAMON tests use [2] this kind of workaround.
 > 
 > Questions
 > =========
@@ -155,6 +160,7 @@ Would you mind sending a patch for that?
 I agree.
 
 [1] DAMON-X in https://lore.kernel.org/20260307210250.204245-1-sj@kernel.org
+[2] https://github.com/damonitor/damon-tests/blob/master/corr/run.sh#L62
 
 
 Thanks,
