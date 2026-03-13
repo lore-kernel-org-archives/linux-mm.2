@@ -4,136 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4C48105F781
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 09:05:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07BE4105F781
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 09:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3BAA6B0005; Fri, 13 Mar 2026 05:05:41 -0400 (EDT)
+	id 2CFA86B0005; Fri, 13 Mar 2026 05:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE9536B0088; Fri, 13 Mar 2026 05:05:41 -0400 (EDT)
+	id 27D8C6B0088; Fri, 13 Mar 2026 05:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC0F96B0089; Fri, 13 Mar 2026 05:05:41 -0400 (EDT)
+	id 1B3C56B0089; Fri, 13 Mar 2026 05:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A9A886B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:05:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5FACF5B7B7
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:05:41 +0000 (UTC)
-X-FDA: 84540456882.05.6E3A1F6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 07A4FA0004
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:05:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wcbg+L8W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qK8O2iOc;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wcbg+L8W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qK8O2iOc;
-	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B4C26B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:20:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E27E13BC07
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:20:30 +0000 (UTC)
+X-FDA: 84540494220.02.875AE07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BE9EB20005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:20:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GOgCDnG7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773392739;
+	s=arc-20220608; t=1773393628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0m0s5pdVjKHvCJpAEdEeT069Mh8Lg7OybTm79ipwthw=;
-	b=vFe7a9owR36rObaFi4yj4zZR0GEgEg+1gOhN31rq2jfc5dkMEcP/VbnpvXbUL0KniNHNFA
-	ZwwH91J38DDKRMGWeuIvViW0SMxdvXarGZOUZ2UVpHj0/wYkeqWfsQiZ0zGvLwOxDd0kVH
-	PK+lMl8VeA4yALiD4e7Ycpe21EFoxX4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wcbg+L8W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qK8O2iOc;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wcbg+L8W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qK8O2iOc;
-	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773392739; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=N+9SPXQmuvXlDb3raI6mdQkp5IDWn/LgLI2wxktYHQo=;
+	b=uYm4o+1Tyq1cq8qFfU+88SVsmNGNaE7yCQXz0HqfXrHc6gmB7d12waXWHP/u13E7bgkn8P
+	21kt8yo87Y1BzptJU10PETjcbIx+vkpeOHnQASRZk1Wuii8HneDnDTRTUsmwYPkvQhJmQA
+	tARa2jNYS8NTGl9w1y7LIWJHFBoGvHs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773393628; a=rsa-sha256;
 	cv=none;
-	b=A8vaLBEQ9fNkZA7F3idhkFQZPN4Jf2aM7fGy0zCGw/+fPLujrdEPl32DoiNbt3FU0K6VST
-	3P4ho9mEgcXYbPMLCy6Bwpj1bQxYdyUezYidRUFfP6HzdIbVCrnhsoTyG6YjCeTooX8DBm
-	nAR+xvvIL7HP7bImAoSicgkU3Tfx9Q4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 71F1C5C01C;
-	Fri, 13 Mar 2026 09:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773392737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0m0s5pdVjKHvCJpAEdEeT069Mh8Lg7OybTm79ipwthw=;
-	b=Wcbg+L8WeXcaUyHTeI88w9O1WNcG+nA6+ulDzpIu6h8lYfE/N9PwRl2VL0+djPLukk7sdd
-	dcHT/eVdZUaSMvHIss4Iz49Yu681lc+AtxBzxoYz4A2NudTYTKEyInkyBZYDbr8Mpn3IT6
-	9AO3qlQvGqZzPYq4kuXGx9js0uWvBaI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773392737;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0m0s5pdVjKHvCJpAEdEeT069Mh8Lg7OybTm79ipwthw=;
-	b=qK8O2iOcrj7+WlDp6VUw6H3NozeWa6hqn68jzYO4e9mjop+ibmSHsnhyydeCY0MJyh6M6R
-	TW6fzqOF2aH6XtAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773392737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0m0s5pdVjKHvCJpAEdEeT069Mh8Lg7OybTm79ipwthw=;
-	b=Wcbg+L8WeXcaUyHTeI88w9O1WNcG+nA6+ulDzpIu6h8lYfE/N9PwRl2VL0+djPLukk7sdd
-	dcHT/eVdZUaSMvHIss4Iz49Yu681lc+AtxBzxoYz4A2NudTYTKEyInkyBZYDbr8Mpn3IT6
-	9AO3qlQvGqZzPYq4kuXGx9js0uWvBaI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773392737;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0m0s5pdVjKHvCJpAEdEeT069Mh8Lg7OybTm79ipwthw=;
-	b=qK8O2iOcrj7+WlDp6VUw6H3NozeWa6hqn68jzYO4e9mjop+ibmSHsnhyydeCY0MJyh6M6R
-	TW6fzqOF2aH6XtAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C96FD40443;
-	Fri, 13 Mar 2026 09:05:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id V6DcLWDTs2llaQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 13 Mar 2026 09:05:36 +0000
-Date: Fri, 13 Mar 2026 09:05:35 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Josh Law <hlcj1234567@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Josh Law <objecting@objecting.org>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] lib/maple_tree: fix potential NULL dereference in
- mas_pop_node()
-Message-ID: <gtukkafnyhdhxo4eu3a6vxnkfv7w3jponvd5mzljlaosweoslu@lujaedlxhxhg>
-References: <20260312184054.23481-1-objecting@objecting.org>
- <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org>
- <i6tmfotangjjtzek5txtvoiav3xrfvwtw6cppooyja5mvywmz6@2c5rnyxqpgu6>
- <d73c8388-bcb5-4a8a-ad3e-da719b09fc40@gmail.com>
+	b=QVv7IONx/GhwKQ5iLLuu3aaba/ySklH8evIwkGSmD7cZkpTlhz1UaUM14Mew2WShSAKQom
+	rZmExjgrQRDO9gazW/OnnE9/jhrmy1dMVSY1Kt9Jr9CB2k9xKHPWw6ABGi14F+jF9BQV6y
+	elaNU7EpcvvuUMDUlhVH5OJ6IffRN4E=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GOgCDnG7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 73A5743650;
+	Fri, 13 Mar 2026 09:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF4DC19421;
+	Fri, 13 Mar 2026 09:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773393627;
+	bh=HsNnN1Pn91LzaF3IAb3xI53vglIsVSL5eymXeouw0sQ=;
+	h=Date:From:Subject:To:Cc:From;
+	b=GOgCDnG7X1VCoYONbw4nrOC+zzPrCKPo3NlD2qA3R+OvlTGVZZrShrrPhuusfc5ug
+	 Cg5Pw3MySATuRaLTe7OmKfwMe3gC9sKXOo4yeS3YCC96qBsrbJwlRYhWDfTS161KXt
+	 5hs94BcG2IkGjm8FgP4Ky6iqUx06X9U9h+ZAYnH/qndPwGAkzO7QyaY33XupcAgFW6
+	 fQTc1gUENgx11iv4nrr7v5E4E67FmrSYe9JwTC5HxBaERju1WXbWoVjzihaNMa6u2z
+	 IaZtLKvgRiZoa94Kp88p85d3i6R+hJaiAQPHsWfDPJ8Iu1rM1m+18Ntf3qwajlquvl
+	 UVZBrI1E2lViw==
+Message-ID: <77adefa6-8aa8-44ad-bb01-9f1fe33c8f7d@kernel.org>
+Date: Fri, 13 Mar 2026 10:20:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d73c8388-bcb5-4a8a-ad3e-da719b09fc40@gmail.com>
-X-Rspamd-Queue-Id: 07A4FA0004
-X-Stat-Signature: 4itmudmaunxobs93t5e1gpq6ft849q71
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [GIT PULL] slab fixes for 7.0-rc3
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
+ Christoph Lameter <cl@gentwo.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, Hao Li <hao.li@linux.dev>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BE9EB20005
+X-Stat-Signature: nc4is1ioeukwmbrcd674ezhm5khp7b9w
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773392738-318122
-X-HE-Meta: U2FsdGVkX1+xRo/g24hcEEz4Q6W2PoHpK5RSlhdlwjFoAXft9c/0pM7l/c8sZlJ6X0u76BFue2vSijvH7kBmNUcD3JAi0ZDbnBcZOEnOWdFE+Ym5eZxV+9HoTCWvsYIKo+TClKgnV41hhd6dXyw0GSqK9DUhwGUkX2Nql3IOYhhPhH+DryjM4tn3KQ9AX+pf292Ieh1Sg6rU6244MWoBW48zLoqX9h2YUnLogDbgY+rivo68qFVO67+DUfnC+F9tGRlQeuCmrm7L7iM8cztWtxtnVMV23NG2LnmpIlrjWIzSDLH5YmyoZrcJEfrqjg033Xnw1J4I49uKtGgK4bOU9okjcZshW1rqkhlXYNxuOnvbqCBAXWAbXPSKXpWu2FpV0g1XgJMCCf1mnC0Y2e4IYyVKN+grK7uv8z2rHRDy4h1hA0i3Djnvjz6pPjTVGFVn0Uk1hYq7q0SZWsAVWf1IsoR+2xYOtz48i9gXWvPxnuIHCj6kRlfPtTg2HKW/QZIA8wh3ilOQZ1yko3XrAzAkGFHfJ7B7ggAdavzTDIENO8ETN7u8FvtninJ/fyZoQVTERsgqkf+SMvbZPya9W0QWvEsiRAiKFAPveZS5N80so4sd8O6n6znM5aDAU619FgMRMyijQqA/OuDxjAvh5qY8jUneq8IVZqZaFnYwpY0kLDahUnLiCqScXoKzkhXEJcdcR63ISC0W77EYo2PDLxBeWAzyAm2QhY+YeMzKJ0pd7/HuDPhGNmixK5DAbqSXI+0Zh5Kxp0fYfXsl28rgonB9GyyCK+QD+9e+TfJhCeX+gwDnegRaxhAdTvBpuGR7hSZ+oHW5J9huZUm0p9hNxtJfa0Cnth6vweb9HwMk9mSLbeUXqX0ccVrzotOOugawHufeQYCz2sdEZ8SrWXhGSrXbisUYlVszx/s+KH4764j7uhkp3qrtqtYjo7hlhjBFYDXKzkrwBbvUGkaqT6VRdCP
- BVe/ctNJ
- KS+YihTuUOnYGGzdRX2DLU5f83qPc3Had4cwHa8SyLtLOF9hrZu5VkXgbSNWeqPOtVeuSVGaGWmNr2sR+ir5jQQ6sC1wqACIjVJ4EeMQN4pSo+TnGCGyS0cnL8/zqVKpDol8ah7Zdh7HbjO7MNC1q2YPR1OQicfTYkrQe38MsM5R34V1gdMX2Qb8lDQsm+ad4GRufSXkM0aOJHwovQhpb67JOe54/4ENuHrgZkEkxpIrRaOkH0V2JbzEAnqojdHv9ChY8e0EIgisO/8CdqWYjGWbw04DxO/oSbJ7p2E46nh/8oWMa6PNuXH/UmI+86izw4Q4mUj4X7iCfVgy8EsteWGL8l+xKyP3gq4zatH98Jfzvybi5EZJPJL4sgQyHGXG2fziNu8DPkgik8y4=
+X-HE-Tag: 1773393628-387377
+X-HE-Meta: U2FsdGVkX1+XaGcKB6mYp1al7yV2w71vFdgwKn2l/655v911ZlyAQIxsQk4UO21R23AefJR15qHe9qtFyUUCQszh4E/LvG2zZDK7w4E3C5/hSGqTgc5QTusOTMj/LFTuEiI88DvgoUKNDoxv/8FOpOqeO2gFOKnJwksuzuJpY9WYiMUmPMOgRg0vpCewOPUBHMJ3B4CneAd9PIocAdVZPSak6rBTBY5ZFwvX/C6LpZ+V229EVKIsebaPh0h+Mc4+uhKmZLHsPRrk9c9otHX3fltbs6IeYuqSyR3fZUrA4KAeQGRPHIf8ucWLZ53EYwNYGpdLE2lxeeK8ee+gt62M2jcpxLLG1cgSX4fgKLh0SPcpPeNXhmz2qtt91TQEGg6JlSj+btkyMk768ziSZkCOHF4MNMp98fpTOW68glzxT9iGeBvc9lRYX9edoU9Bkvq2EMhTgL8S4UuSz0Owb68z3JSUvzoZyazdsEzK1HcRoASYOaNfz8R/GrZFZLLsIAWX+9XcTjCt/t1ctUPsPkCfxgMxJqVd6ZRgEE0JahCbxlRufCnmiPR5+Bi7bQJrbsPX9E7nJGynBVFZsEoQtlnrs/oQyhJTgdT7YQlCJbo1SBCfnG6auWmJ9mCsGyZqDY2wWEVJNcAdXjauHokKJ2XZPEMNZW9L7aSy3fjoo3NR/x5uhG9wpnp8Vlq5+3jjUGigRLbRDDsDf7XMqKQ+AHlm7SIPqc8O2/tqd4G0doMcPlmy7URiVPKt/6jP6uACAcj9+pMNez3nn0kT2cgM9/IWra8GLTahQRwJjue0lN0hmAmvjkNgrnP6baIMZyGysi3d5RkGIXZ9Pkv2mHvKWvXq7Hd7c+TosxV1sKnfTC66f5EehPbXedQVSQI2vK4/Vi2aU3bdoz2zwvsRnYKzLPGQxtizs+NQk4QSGPJxRql7jtqdTFg3RN2JtPYus7NNAzJ+cweqRrm8KVaJS8EFwHW
+ p8ZDGcTz
+ 8JJxGAcLu23DDM6lhCKt8WO73BnJ/J2JvozLqUfsxdHDVXTrFn/d8qNob0VlWX6J/blkmilvGY6g5pfQ4l3VpUIL1bEFz3NgEiTza6SaE2tuze2928LSKTmRHU0Peb4sPngZZmHghKNrQ9MuQI7EOMpR7/tpwLsN47jEMo4YQvuZSVKv7gKlgA8zYZBBqdIbWSSbYbPlYhkPWUYUooNTnXImXsqGBfDFlCsUYvgAlKzGvPXillivdFgnfJamQi3EncC1TRZNsGAAyOS0224aDtBDP56Uy2ghp1TvJCjhW37/LmHNhT2ZfDxVbZsp45kaMToNT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,51 +93,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 07:17:17AM +0000, Josh Law wrote:
-> 12 Mar 2026 23:22:48 Pedro Falcato <pfalcato@suse.de>:
-> 
-> > On Thu, Mar 12, 2026 at 01:45:31PM -0700, Andrew Morton wrote:
-> >> On Thu, 12 Mar 2026 18:40:53 +0000 Josh Law <hlcj1234567@gmail.com> wrote:
-> >>
-> >>> If kmem_cache_alloc_from_sheaf() returns NULL (possible under
-> >>> GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
-> >>> and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
-> >>
-> >> This is such a glaring bug that I wonder if we're missing something.
-> >
-> > According to my local copy of lib/maple_tree.c:
-> >
-> > mas_pop_node() - Get a previously allocated maple node from the maple state.
-> >
-> > Note the "previously" :) kmem_cache_alloc_from_sheaf() can only fail if you
-> > run out of objects in the sheaf.
-> >
-> > So yeah, this "bug" looks bogus.
-> >
-> > --
-> > Pedro
-> 
-> Hi Pedro,
-> 
-> I see the comment regarding 'previously allocated' nodes. However,
-> mas_pop_node() explicitly calls kmem_cache_alloc_from_sheaf() with
-> GFP_NOWAIT. If there is any path—even an unexpected one—where the
-> sheaf is exhausted or the allocator fails, the code immediately
-> performs a memset on the NULL pointer.
+Hi Linus,
 
-And? This does not happen, simply. If it does, your maple tree is hosed
-and, really, you're not recovering from it.
+please pull the latest slab fixes from:
 
-> 
-> Even if this is a 'should never happen' scenario, returning NULL is
-> safer than a kernel panic. As Andrew noted, the current structure
-> allows a fall-through directly into a dereference. My patch ensures
-> we handle that edge case safely.
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc3
 
-... and now because none of the mas_pop_node() callers ever checks for NULL
-(why would they, they preallocated those same nodes before), you safely
-dereference NULL away from mas_pop_node!.
+Thanks,
+Vlastimil
 
--- 
-Pedro
+======================================
+
+- Fix for a memory leak that can occur when already so low on memory that we
+  can't allocate a new slab anymore. (Qing Wang)
+
+- Fix for a case where slabobj_ext array for a slab might be allocated from
+  the same slab, making it permanently non-freeable. (Harry Yoo)
+
+----------------------------------------------------------------
+The following changes since commit 6432f15c818cb30eec7c4ca378ecdebd9796f741:
+
+  mm/slab: change stride type from unsigned short to unsigned int (2026-03-04 11:05:57 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc3
+
+for you to fetch changes up to 464b1c115852fe025635ae2065e00caced184d92:
+
+  slab: fix memory leak when refill_sheaf() fails (2026-03-11 17:55:26 +0100)
+
+----------------------------------------------------------------
+slab fixes for 7.0-rc3
+
+----------------------------------------------------------------
+Harry Yoo (1):
+      mm/slab: fix an incorrect check in obj_exts_alloc_size()
+
+Qing Wang (1):
+      slab: fix memory leak when refill_sheaf() fails
+
+ mm/slub.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
