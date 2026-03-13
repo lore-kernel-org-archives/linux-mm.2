@@ -4,91 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8198B105F7B5
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:36:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15478105F7B5
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:39:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E28EA6B008A; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
+	id 714BC6B0088; Fri, 13 Mar 2026 11:39:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE0306B008C; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
+	id 6C23E6B0089; Fri, 13 Mar 2026 11:39:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D16CA6B0092; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
+	id 5CEC76B008C; Fri, 13 Mar 2026 11:39:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C09DF6B008A
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68FAC1601F9
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:36:05 +0000 (UTC)
-X-FDA: 84541440690.03.DF3879C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B6F63C0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:36:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k/xzZO5t";
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CE1C6B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:39:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06ABB1BCC2
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:39:24 +0000 (UTC)
+X-FDA: 84541449048.10.1DD42D7
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1B7B9180002
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:39:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=bxGjZFhV;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf16.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773416163;
+	s=arc-20220608; t=1773416362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MerlekVfk9K5c0NPVB7gC3JHabt0YVuv55ZAQ7AyrtM=;
-	b=HKTJ54hb6JmYYgbsyVpkY+wpzoLuc2zwRrRIHGIdzfwKYnYM2Ko/aYiVgAJLPZ63ZhXxu+
-	tghctoAMIKmhY53ZTdDOy7GaVHFvAf68ZcBp+Z5Fx0/cZcWhQQuuzuj84JkzvFy3IYTT52
-	1BEtnD3Go+JV5K0+3Ekg6Lo98PH2+YE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773416163; a=rsa-sha256;
-	cv=none;
-	b=44wdoXBgJvr0+MVvq15gUze/gMuE9Bm4C53TilIlNDtN+4yGYGo2yYn4qLnVa1vijcNXG1
-	NFC2s2D0SZQnNnSd9wYtxdKE9KejmuTH2lcpRJwPuxTnsNxK2OUdY34Ck4u22uTtGl3Zey
-	qZvumKqxuE0/tIhQXn6r45EHrUfNl+s=
+	bh=VVQdnkFvzB/gHBAeEfjDOu3ipWHlOC3d2TtGMa0Nogc=;
+	b=Ga0ADQPBsaykETh0KFfjTQqqSN/4eui+6ZlEOpOBI1AKsAn/2vYOclzFcOPh0f4lVP5J5R
+	IIoQFY87m2SplkHn8BDQ2t8qROsB7jUsWSb/I0/xPQYnsPaTwHHro42zrdvYgcaC2wWeKG
+	ND2lROwWorxx/LqXZlA2FU9FKBm1/nE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k/xzZO5t";
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17D7860142;
-	Fri, 13 Mar 2026 15:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C858C19421;
-	Fri, 13 Mar 2026 15:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773416162;
-	bh=8CTc2A4Y/FaXlXTchN73Tai25CXorxmWgxGIdw1ZJVM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k/xzZO5t/wLPFo20XtpLKo/vxjUUykRZxGexCi2DjU1XUbSUwW0+HBOs8mY46TByB
-	 yD53oGpu+25ooVbSBwgTUnNoOOP4XZ1oNGaaIt0o0QE99L6ugp4TbeTA1EWylq/UCV
-	 /EDNPnAyUrbEnXPRvtqUA096JeyHkx0+A1Wg6JmCbLN+91C8OY46MFWMwU077HwKD+
-	 Si9jhPtwNam3sBihNNnZahvKGjqmhGcNRyXLVlPr9JhqU9wYLUWYpLX47tSGNVgtkP
-	 qVElMluhW6ohJMSQUbtROl1FtOr+zpPhrXMdZbAG156w7rezNeO8RDxAEWiCxKx0DK
-	 fAnQfQMcHmfiQ==
-Date: Fri, 13 Mar 2026 15:35:55 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, Li Wang <liwang@redhat.com>
-Subject: Re: [RESEND PATCH 1/4] selftests/mm/guard-regions: skip collapse
- test when thp not enabled
-Message-ID: <097793cf-10f9-4b0d-9d13-f728fc0c4d58@lucifer.local>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-2-chuhu@redhat.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=bxGjZFhV;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf16.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773416362; a=rsa-sha256;
+	cv=none;
+	b=WhlR1TOYMG4x61u0Vtf4hlqT/HGDFHtM5kvQLkj2z4LWRDhBuZPC+ohJtoG47ppsYBAFxq
+	I0hqI2ENWyCmJ1tZmSIUosheYr9t3+TsqVDkHPGQG3aBjh5KsPrddID+luhYzL3HlPDtA8
+	tqC2eIxFfTbjjnginBUJbWL9AwFyNwI=
+Received: from localhost (unknown [40.65.108.177])
+	by linux.microsoft.com (Postfix) with ESMTPSA id D661420B710C;
+	Fri, 13 Mar 2026 08:39:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D661420B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1773416360;
+	bh=VVQdnkFvzB/gHBAeEfjDOu3ipWHlOC3d2TtGMa0Nogc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bxGjZFhVAxog3QqvD0UQFk4sXHeeQ5NE2qTFN5kayLXjvmuIDnMGr+7++bUo9CucU
+	 ozt1v8CCrq0QALAxMV7zkbSKkHJCrii46ijMqsaPNHRiGsN8elmzY4FJG5Ye5XbnF8
+	 qQbz/XGG8TzAcfJfbSL0GA/sFnxPqdXJNavH1QSw=
+Date: Fri, 13 Mar 2026 08:39:18 -0700
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran
+ <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro
+ <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, David Rientjes
+ <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke
+ <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
+ kexec@lists.infradead.org, kvm@vger.kernel.org, Leon Romanovsky
+ <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, =?utf-8?Q?Mich?=
+ =?utf-8?Q?a=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport
+ <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
+ <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
+ Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu
+ <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <20260313083918.00005731@linux.microsoft.com>
+In-Reply-To: <abNOwcOTXqxCxNzt@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+	<20260129212510.967611-11-dmatlack@google.com>
+	<20260226170030.5a938c74@shazbot.org>
+	<aaDqhjdLyf1qSTSh@google.com>
+	<20260227084658.3767d801@shazbot.org>
+	<CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+	<20260227105720.522ca97f@shazbot.org>
+	<CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+	<abNOwcOTXqxCxNzt@google.com>
+Organization: LSG
+X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312114027.634559-2-chuhu@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1B7B9180002
+X-Stat-Signature: onmkr3eeazs95e9ars5yko8j9jtzwtbq
 X-Rspam-User: 
-X-Stat-Signature: 5xt94e6nmg3wsi13n74xfygyunsa5ksz
-X-Rspamd-Queue-Id: B6F63C0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773416163-872845
-X-HE-Meta: U2FsdGVkX1+NFRpESy+bunLVwychKGnVFPzRTV0nypaQQJ0wQ3pAynnh4vONUQoyGesyyrqKvnUicoR39HwYWiSyTiKlTumCxDy5vUTCpQNFzfRIJfaUrl3jXQDp5PSCTuFBJzMdOeUAQEENG9NI3zRoW9rSpOTPSDi9CCpgCEAKxvgUXeoe+bux8PSoIuR8Tz55IdJCPhk/bIinO4QEQChvt63H9bElnXMdC/kjoKuYhCaBUAUQUWurrHgEauBXo5UOhpQITzUQb7c1ndczR6x4IoiWWVvb7tNyu8XHGtzjYqeYuPpFIGQYwmkbZF+U5dWTv+Y125+400pAXK2wbD8pLqWq7Nq1B2OinPBF3pzqtzjzW8lpga5M31Y12Y2WZ8CvhSYDfMPgwlaXS62x94I3YNN+HuASMGSzVvrbNs4OapUgAZmcX9fsy3neaKcLtxMUiE7npLqnOfuIPpMAagH/XpLdyBpERh/6iLgNqv4nsFIt6sDcQ7FMtQTe3+HoQwGd1sFLIFLgx7djJrFBkl9y3QxwdHdHUzt1xYTxaWJUBTKbAhtJVFl5SAXYL6OmVnpExJL6lttq2QYm+P4JDykG97FzJvcCOKJn+9nXdeBLtkRnt8mRKTVKVgZms5dHRXNm+hal9lP6t3aZ4IcOB9QSes8zOIHclwPwekgf1pdIUfP/uqf3oegT6pxQ1D+wvTzP28fbUlRbHcL053xvnn6tkpjFPW1NVGR8pcKTZdNx74fu3uB8jNKQvwE8A1QmCPDboyigZcmPazc0vCSipOjyHmbKXEBbjLtQ+7sIS8K99WpKmBT8DlS6e/YknupydHAHcQq+e6FMe6+pO4KOAm0e2nnuXfN8YXnjS93O6oppNvGH11PgWWDWtTeHH3GTZYO9gQg/+V0Ym6BTr/p4IiqRtWbIWOBGOIdf4YGb1352qYlKesntPscUto6wsyzYtIFPGNc83LJUx7JxS/b
- AijJMUbE
- knkJmlcjyMY8pQcjnWaavFYzTWs/sgChElng1seqt++hU8I+Qf4KnAaUXSS36KV8OHZUAkE1DryfL+43mKVKxvwiiPCv/FGGpeSUm8jt4hdPzLuu7BVOjMvHDlpwCdhBA3ZVRxl6YHThEwB5xRLOBmF0TV1piqREWosVnQ4g82yhNXWCci6TDkgAprt+Hl5fipSz4SR6Ho18Tt1d8TSEVShOCf9n7GS2yQ+zm+V802na/ojR2P0JFBm9kNLD3E4MECSyj
+X-HE-Tag: 1773416361-845995
+X-HE-Meta: U2FsdGVkX1+iCHW08Jlq3kDdsUaSjw6SaSajIP1wd2qFu8bD8FYqKm2R5h22Vhrt1BHruIAM3rUP/t933q6nEJ8njJB1SPbjLguhWgK2tcHuKBl0J8LwF8Gan2ZF1iXUlaYmQ2Ph7w5YcFKGWh2L3AUi10mh+6XImb0ysZElo+mqXGYF72dUJ+0fswjIm7QX85PQqKX6875qJgwrDufwSf+AZLvaGfDaLvA+AzlVpa8P3KySKWethZMJKe/aX8GX9hTXZHaL+DUsuQUxoLKaIbkVR2+ioBwyWa1mThIvkbYFiXTHvkCnbAIO29N33ujqoIjG0n0QdrXl1QTb3mJYZf9WL1vjMnltxOwosBw6f6ZEWSDz0fgiPtj0OoPyKGkvSv+jTBXxPtAzAAiyQTeWSzwiRZMCbfxGvFLdxqo5/Zu5HqiOnse7ZNg1x40hrjpPZX+FsvCHNAIfgzvu6JHnujWaV6pTIkk207ssCJ1VMxRkG8DW9WJinZE7ADVoqzd18loxiMLmg3rwNLqGoEt5vo+z0BRL890fG3G7TVS6DLwVqy+b/fM2cjDmTX7KmHqwTzn+kvtMs9sZJYs1LbL8kY7G9gxQZNk5yHG0gyF3pJ8F7r59t1aXv8magSEO071TOcmmIrRCAOP91BCj+Uyg3l6jk74sSvOW3jZqk664b6o7dJnbmD2Oup1rJK92J+VD3Z4WnKoZLFE7w7VloSSmTyjDLTRM/WQO72OiE7YZn5Yp5yP2rxUmirXhdhoRUfAebfrxECTA0dhADOQ+R5odxRKWkIK4dYUUxTzjcm1qr7a0vVeNHgcGgSeJgGg/wSS7HKCu8t3ZYAn7eA+vnRzg6I+q8QBcEeOlSQEmqiA8ETNNiwHenJXQwJERwvSDz5JykzpAVyH83IKt7Roy8KiUknl7CXsxpEzGGcTXpCQ/ZrvS9XNxQDPeNB8M1uHcdzPxAEC/mPSV17Ft2XrDDmU
+ dJtygh6X
+ +mra5NMWPhhtBF2D9wKSChvRo6yLiA2dPvcX028Bzu+6vqmzrh+CltoFlV7kNrLOI1uwUmpx3ML+8lP1gzMjyg1+jv2WYPGkBVAauF91d9S3YhXNohv7r1ZfohR1TN0gqUZUWnx/Lw6C4YgymXxje1czqMu4MGDS9Ks6owAMgOmq3+Lf7cUfekOVx9jsuaHojiv6TqkW7mJD64Oaq8HhGOAwgbhnyREoaYTTdE3J5qzjF/99BsyZv7qxy0haP59SqJrwQlcrwi8byofsihTR9h/50ODx/yCH5iv8qr73bHS+1ftU5aYoX1eDCxkVcHnQMGT9wOUV0IA9BbgL/5/Zdy8Acb5NY0hnfzqyE07y0dGPyB8UEqNdP3Rq6zpPfoIn6S5Q+DdR3QvjGJluuby8xSqknlmlC1vxVljGAuS7PrC1xir5t3HvfDQJxEO837oWiQJpd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,75 +120,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 07:40:24PM +0800, Chunyu Hu wrote:
-> When thp is not available, just skip the collape tests to avoid the false
-> positive.
->
-> Without the change, run with a thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard
->   <snip/>
->   # #  RUN           guard_regions.file.multi_vma ...
->   # #            OK  guard_regions.file.multi_vma
->   # ok 89 guard_regions.file.multi_vma
->   # #  RUN           guard_regions.file.basic ...
->   # #            OK  guard_regions.file.basic
->   # ok 90 guard_regions.file.basic
->   # # FAILED: 87 / 90 tests passed.
->   # # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
->   # [FAIL]
->   not ok 1 guard-regions # exit=1
->   hwpoison_inject
->   # SUMMARY: PASS=0 SKIP=0 FAIL=1
->
-> With this change, run with thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard
->   <snip/>
->   # ok 90 guard_regions.file.basic
->   # # PASSED: 90 / 90 tests passed.
->   # # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
->   # [PASS]
->   ok 1 guard-regions
->   hwpoison_inject
->   # SUMMARY: PASS=1 SKIP=0 FAIL=0
->   1..1
-> CC: Li Wang <liwang@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+Hi David,
 
-LGTM thanks, so:
+On Thu, 12 Mar 2026 23:39:45 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  tools/testing/selftests/mm/guard-regions.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> index dbd21d66d383..897af9c512f9 100644
-> --- a/tools/testing/selftests/mm/guard-regions.c
-> +++ b/tools/testing/selftests/mm/guard-regions.c
-> @@ -21,6 +21,7 @@
->  #include <sys/uio.h>
->  #include <unistd.h>
->  #include "vm_util.h"
-> +#include "thp_settings.h"
->
->  #include "../pidfd/pidfd.h"
->
-> @@ -2195,6 +2196,9 @@ TEST_F(guard_regions, collapse)
->  	char *ptr;
->  	int i;
->
-> +	if (!thp_is_enabled())
-> +		SKIP(return, "Transparent Hugepages not available\n");
+> On 2026-03-09 10:32 AM, David Matlack wrote:
+> > On Fri, Feb 27, 2026 at 9:57=E2=80=AFAM Alex Williamson <alex@shazbot.o=
+rg>
+> > wrote: =20
+>=20
+> > > Sorry if I don't have the whole model in my head yet, but is
+> > > exposing the restriction to the vfio user of the device
+> > > sufficient to manage the liveupdate orchestration?  For example,
+> > > a VFIO_DEVICE_INFO_CAP pushes the knowledge to QEMU... what does
+> > > QEMU do with that knowledge?  Who imposes the policy decision to
+> > > decide what support is sufficient? =20
+> >=20
+> > Hm.. good questions. I don't think we want userspace inspecting bits
+> > exposed by the kernel and trying to infer exactly what's being
+> > preserved and whether it's "good enough" to use. And such a UAPI
+> > would become tech debt once we finish development, I suspect.
+> >=20
+> > A better approach would be to hide this support from userspace until
+> > we decide it is ready for production use-cases.
+> >=20
+> > To enable development and testing, we can add an opt-in mechanism =20
+>=20
+> Here is what I am trending towards sending in v3 as the opt-in
+> mechanism:
+>=20
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 1e82b44bda1a..770231554221 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -58,6 +58,27 @@ config VFIO_PCI_ZDEV_KVM
+>  config VFIO_PCI_DMABUF
+>         def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+>=20
+> +config VFIO_PCI_LIVEUPDATE
+> +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> +       depends on LIVEUPDATE && VFIO_PCI
+> +       help
+> +         Support for preserving devices bound to vfio-pci across a
+> Live
+> +         Update. The eventual goal is that preserved devices can run
+> +         uninterrupted during a Live Update, including DMA to
+> preserved
+> +         memory buffers and P2P. However there are many steps still
+> needed to
+> +         achieve this, including:
 > +
->  	/* Need file to be correct size for tests for non-anon. */
->  	if (variant->backing != ANON_BACKED)
->  		ASSERT_EQ(ftruncate(self->fd, size), 0);
-> --
-> 2.53.0
->
+> +          - Preservation of iommufd files
+> +          - Preservation of IOMMU driver state
+In the interim, what do you think about moving forward with noiommu
+mode without preserving IOMMU driver state? I=E2=80=99ve tested your
+vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works as
+expected.
 
-Cheers, Lorenzo
+> +          - Preservation of PCI state (BAR resources, device state,
+> ...)
+> +          - Preservation of vfio-pci driver state
+> +
+> +         This option should only be enabled by developers working on
+> +         implementing this support. Once enough support has landed
+> in the
+> +         kernel, this option will no longer be marked EXPERIMENTAL.
+> +
+> +         If you don't know what to do here, say N.
+> +
+>  source "drivers/vfio/pci/mlx5/Kconfig"
+>=20
+>  source "drivers/vfio/pci/hisilicon/Kconfig"
+
 
