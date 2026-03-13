@@ -4,125 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6B3106FD9B
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 08:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D96C6106FD9B
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 08:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4682D6B0005; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
+	id 0F57E6B0005; Fri, 13 Mar 2026 04:06:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45A076B0088; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
+	id 082876B0088; Fri, 13 Mar 2026 04:06:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 369BF6B0089; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
+	id EC3056B0089; Fri, 13 Mar 2026 04:06:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 25DCC6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E9EE5B462
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:01:23 +0000 (UTC)
-X-FDA: 84540294846.11.8FDB70F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5676B180011
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:01:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BDoNG1Oj;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DCABF6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:06:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6314AC2A1D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:06:37 +0000 (UTC)
+X-FDA: 84540308034.25.D482608
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 96EE440005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:06:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nBt6Es6G;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773388881;
+	s=arc-20220608; t=1773389193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ttx0Tr3kyb8QR9nabs/hfUO/rWJ/GX8YHk+IyxkRz8o=;
-	b=ndySng7amH9wp+7+D4qJVtXRzGIplFKhUGyCXQrJuuz7W6IXseJjZ8FXKZNaX4tZ2MAls5
-	3aR7T4Vs9Sh+vG5rHjSzix71meYFZjcHtgDFmitIJOYFSjeU+sKg2XmyHNeO4x0IBcD+xm
-	8nUFzY3kUY+oTif7pqGFndkm0RzDeu8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BDoNG1Oj;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773388881; a=rsa-sha256;
+	bh=GkWLFC6FTEtqBFhKzchQ4NNPCrWSosGBlTPOxD6BmDQ=;
+	b=2/rgDfRDkQa0qbzS8m50vF+/X1TNkomJoT3ARQrV+sNdRcFs+xR2K+N1nxLmb4XHt//WAI
+	rdr1thaLF6i867l/E7nUVJQv7/IixXE1IUQmBUlYEpdX5k1NErOWO88GXQNq9m75tUksSB
+	k7IvQEB53wyK7uNVloWetuRPf3x9lFs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773389193; a=rsa-sha256;
 	cv=none;
-	b=Un/yC7u5jiTFFiwrCySjVIhk86GsP01c6V35LgophdRbaVGzglQDL5AE9kPR4Dsg//nJPY
-	zx5JpQAc5zwzYIhsR3o3PXAoySthmtHLmAAwlhKHjn/h53WYB1mQaPgQqRBZHDtCF1eFwb
-	Bgfs9w4aEs8bDCHhgqtb1Ba3WlDIOec=
+	b=5FBubUwV4PikUkye3MECn24i8ZvJqIN94lkLU42c9kTZpXsm41Yfu1lQGHv+cCX5Zqg72A
+	bG0jcbWB4QhY11LjKGVSfRAnca7oMRMvyKgodLi+aGepRdYj0ccKvCkGauxCtCs9f6ydbH
+	tjPLgZfxgvUwK/E6ClLOD8F3eYbg2Y8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nBt6Es6G;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773388879; x=1804924879;
+  t=1773389194; x=1804925194;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=JvNTqagp4mqbAwOTcW6MXZvJNobQB+7EqHcWBKchTHw=;
-  b=BDoNG1Ojc9LcCJCByExs6mQ1OcPkzoqY4zqkQsGWP8JGpEMbFEsDgS+D
-   f99M7wnp0xR2LbeeKLRRbAv/z0lqXo/CQUvow92bhU4ILQt+5+3l8tYim
-   MZjqTu/GjxNNmsUUCUf61pBhc321cPTorP6DHjzEe+qVvW9JFmNVnI8+m
-   c8GRuPFoymvggXnOxAtm+6Fq5jG+40MrBzWfvEkrwxJPjjfgiQXavvVbb
-   TVOpq8jLvU9gESiNqWvwfulnBOv0lVieMYi1zQ7iz6FtZFH8yx/7/ZHTl
-   ym8pZsr227u9L3z9nVuMpmSyXCleip/vWi0+73yIVEaTCASYqb02QA9XR
-   Q==;
-X-CSE-ConnectionGUID: 5tx3ZPPmT7iiu6eHCsZ7jA==
-X-CSE-MsgGUID: 5DsfRMtfQreAbzz7Hnc8bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85974403"
+  bh=BtMPu3iOSzFTX17F3r8GdSzBKmDkbGnfJl/P9Ya3Qbs=;
+  b=nBt6Es6GRgAGv2EQD4ipE/U7+HCjV5LRvqtl1Ht+925y3BROCDW821Of
+   hgWUMyus73v6qMakW2anJobifuPmtfVwP7zrHQFVGBXLtjHxuHBMtMrVk
+   DU8LK1tAlbs2d1mbNaHsfPPRktQPRJ6i5QOPmSpvMbe9LKIpFZwZHfpFe
+   RwpX5O/DR+TZyXkaHYMUZAr4U4UuOBghvUIH9mBbr8drkCJvK2W5ZniNl
+   VuICITowy4cd0Rc7bWjM75tKSP8kUMyi5Hy6OqBhTGKdBjuYTXobhU8dB
+   2n9awL6fqXZEwKYKjuwiBsjbk7Gohqpj8lu+lBOi3tyAiMAZKkwjeosta
+   g==;
+X-CSE-ConnectionGUID: fzsYJIP4T2ei9DFooIBwNw==
+X-CSE-MsgGUID: /CEEcnU5RWGsCdogzMH1Zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74374929"
 X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
-   d="scan'208";a="85974403"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 01:01:18 -0700
-X-CSE-ConnectionGUID: EYl+/SLnSKCFaotlGPV5cA==
-X-CSE-MsgGUID: YqZtShI/RQij3bsNb/BACg==
+   d="scan'208";a="74374929"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 01:06:31 -0700
+X-CSE-ConnectionGUID: gPjGOQENRu+9LBVWJC2E3Q==
+X-CSE-MsgGUID: KKxPATFuTuOj68ORIwqO2g==
 X-ExtLoop1: 1
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa003.fm.intel.com with ESMTP; 13 Mar 2026 01:01:11 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
+   d="scan'208";a="217122672"
+Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 13 Mar 2026 01:06:24 -0700
+Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w0xSH-000000003dp-1Eej;
-	Fri, 13 Mar 2026 08:01:09 +0000
-Date: Fri, 13 Mar 2026 09:00:33 +0100
+	id 1w0xXI-000000003ax-3skA;
+	Fri, 13 Mar 2026 08:06:20 +0000
+Date: Fri, 13 Mar 2026 16:06:05 +0800
 From: kernel test robot <lkp@intel.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
 	Jonathan Corbet <corbet@lwn.net>,
-	Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Bodo Stroesser <bostroesser@gmail.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
 	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 01/15] mm: various small mmap_prepare cleanups
-Message-ID: <202603130825.eFqVjdWW-lkp@intel.com>
-References: <56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs@kernel.org>
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 03/25] mm/percpu: Annotate static information into
+ meminspect
+Message-ID: <202603131622.xpsC6cMy-lkp@intel.com>
+References: <20260311-minidump-v2-v2-3-f91cedc6f99e@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs@kernel.org>
+In-Reply-To: <20260311-minidump-v2-v2-3-f91cedc6f99e@oss.qualcomm.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 96EE440005
+X-Stat-Signature: b9whqfaw81zt8o8ixq7hmigzwmaomgph
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5676B180011
-X-Rspamd-Server: rspam08
-X-Stat-Signature: gkuh4wtm816xijwui8imnq6urj4da76n
-X-HE-Tag: 1773388879-26092
-X-HE-Meta: U2FsdGVkX1/z6RR0XPjV/S05BTi1bkFf1IaeWLSzj5otGyTRu6vHvUd/cWLJAAV5v8w6D3ro4gWt+eHoqFfQzofwCiKAjlS2JxXyKRE+s4oqIihzMP7le78meJIfkhOZ+bki4nx2pMDFx/bfzUdeoaF3F/qOTvMbIvpQN1Y8VoDanXR0wYXbuKLUSnXj+b5h0actBXVdJdGCTsVi8ykZq9/ItcNTVJ0dSCbAmEvW41ygGq+mIFK2Eh7lbraUZDjFDx06RXzIEypHKgnN06pVb/Ukd+a3zrF9hAb6oIuXPnp8tht+JwI2FaZZJoFor45bAxqrUqgR95pqBjikZFQbDWPlf3MkTYNTr+3fz4jqvIaSGCuLIBkWqAa6WwXTif5fY0LVCn0mnWTQOX+hJNobJeKiGQt2kGAmKT/cdYPy0cpzkPq7yTfgQyPbUtZ+0t3YIR3UbRjFYWk2bGuK27dZALIRMxF6ra/GfjFADRFNX23G5gntRbIfVU5r7pQ8MfHald7bLwzsfHVNaQaZQI+gF9V1sUtPAtZhAoxWf5VPy7kmc04rLzISf0hWnUWcgJJHsaOcSxrirHMWcspmVGYB4b8P+CubfGjIXutu+jFbCLQmjR7DgGMIrJZbooxRtKWmLXswcEu4fC00Avwmu1U81nV5OihiU7IekQFNPpQy6i3ULsvqyuMbrlwb2Ovu5rNLVLcU6ODfvFi+fF4baIWJC7cb1NL4BwNi8eLNKC3pF+Sxoj8fhVkxKHLTvnXyY75LmkLNIRVWw8zlEjR9r75u7+cn3abdNc1LM0OJpT722DQmzUv7FTwn/qXrE4GIgLIko7VklHUJqktaKu8xSPoOF7onabKiwc28G5f3sRtQK9X3Q/U9QVWKf8iS8fPWcL9pMrQ7DUilLjILQZDeZprn/cihDOPKHjWJz4Ksgt/LGtevRHIjNp+lzWuG+4tbVx7aULunQJx6hgeYY51r0N0
- IQu8LU9k
- LjULBMcaDTEJBfPKZssgx/XTCbA==
+X-HE-Tag: 1773389193-923698
+X-HE-Meta: U2FsdGVkX1/+4ejgdkxfgmDzEdTjjYgXTvbISxDPMnbtLvI57gvsBq5px6e6IrhFNMmkZF4OUcc6r2CvVz4xQoun30rhLH4lgA7BEDiZ4A7RYv/ALLu01Q1skK9zIi7LCF/+ugmL0QXlTE7xN3p8zSNc3XSaNFQ8WajIT03HblWKVpGlacOPK0IF6wmZ5oPdxyQei38fvvmrzchTWVkzBXCUeQUNxe2Ur4JM7OsXCPGVOMsMV71XhTxX1NE+EeZDYWbdobWamQ1+OO8kM+SqPTnP8jOTrGHdEdd72Xo0Ym/3faiDphPk3tEVcCU2kk8CoS9hRlpF4tkbw+SyPlgfBx2RTC2+GPh2H8kSOM9YHzLXyul80Led1qb1uTvIv0ES0IyMC2LHvh7ePbeJoiXPxXGuKtCgnFkmf0hRTFcnl8P9sABV7Hen6K3sfh9W9n9ml2SSgQaHLf4S5Hb2KjFt/A8k1p6A5yWdLj4yXRiieWL6tDBUXqvdRGVhE9rlKGqiUygCctpreN/lrXq3sJOZCQRSvWYM9OP9qu0Om+moH03zckgvuqWLgZtKE7EcMhpDyVG7vRvvZTsIsx9KGVzWuQo3nbG06OglgQSmPM2N7uMxNqPfajr2+tPeSX3serZ7ELuK7FVddl0NSq8WvHDJyDyK+o8YYm4EOjdlCHOux2BGCyw74LPfSavVYsjqZGqU2s9eoSS3hzlv5nER3fjoQyv2BILX8zXtnzXUJN6uOSAi0AxRy9BtyxI+sL5ly4jyDUDM8LoNdMslkUo2khcDspL2Pb0WwCnev7QrTPedYPLmIhq3AfYEZ07RJbSqOqTyn4ACVYLuGFaTZhCDdulA0JEnqvAsxfqyPoZLW29hw5SSozo5DMm/dQfeMCzujOGyU6k4cBetP0/3kFSAyvY+/WcLvh3vk7RQkrUdsJ6dDC9AKBAaSHCHrJ3upabXVGYGm6YYwcneKTRg3H0XCeF
+ bh4PtaJ3
+ Rzs6pnPPO9RFTXku0xYwHy5c/pfFo3Atk6sSbq01GgRoG0c5o8vdC6eaUBX5jWTrSuDE6NRH0qqsi0AJpAhATez1nFrJO3fLNFdYa4O8GJXfjIonmGaMfASjdKgnq/cZGeDj1r0wxKHeeOU6y3rjSViBmRNc90y5DEb5nKk8EFJeJIKliCtTZIIE1KZTt9Uxz4BcA06up6cSX9+QJRzqduFa+k3q3aoF4JDi1dZcu85KwHhZViOuQn+6A6qR8cnilOO7gXJM2vAxltV5tloMo/bWuci5CHp/0gAYSxuCZCyIMQ3WOAWxaepzE9cZYcWIuQnTag8czIsHYvJjj7b4D6vM26l+CaxMiNykm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,64 +132,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+Hi Mukesh,
 
-kernel test robot noticed the following build warnings:
+kernel test robot noticed the following build errors:
 
-[auto build test WARNING on next-20260311]
-[cannot apply to akpm-mm/mm-everything char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus brauner-vfs/vfs.all linus/master v7.0-rc3 v7.0-rc2 v7.0-rc1 v6.16-rc1]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+[auto build test ERROR on 343f51842f4ed7143872f3aa116a214a5619a4b9]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes-Oracle/mm-various-small-mmap_prepare-cleanups/20260313-113314
-base:   next-20260311
-patch link:    https://lore.kernel.org/r/56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs%40kernel.org
-patch subject: [PATCH 01/15] mm: various small mmap_prepare cleanups
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260313/202603130825.eFqVjdWW-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260313/202603130825.eFqVjdWW-lkp@intel.com/reproduce)
+url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Ojha/kernel-Introduce-meminspect/20260311-042334
+base:   343f51842f4ed7143872f3aa116a214a5619a4b9
+patch link:    https://lore.kernel.org/r/20260311-minidump-v2-v2-3-f91cedc6f99e%40oss.qualcomm.com
+patch subject: [PATCH v2 03/25] mm/percpu: Annotate static information into meminspect
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20260313/202603131622.xpsC6cMy-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260313/202603131622.xpsC6cMy-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603130825.eFqVjdWW-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603131622.xpsC6cMy-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   mm/util.c: In function 'mmap_action_prepare':
->> mm/util.c:1360:1: warning: control reaches end of non-void function [-Wreturn-type]
-    1360 | }
-         | ^
+   In file included from mm/percpu.c:90:
+>> mm/percpu.c:3363:25: error: '__per_cpu_offset' undeclared here (not in a function); did you mean '__per_cpu_start'?
+    3363 | MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
+         |                         ^~~~~~~~~~~~~~~~
+   include/linux/meminspect.h:94:33: note: in definition of macro 'MEMINSPECT_ENTRY'
+      94 |                 .va = (void *)&(sym),                                           \
+         |                                 ^~~
+   mm/percpu.c:3363:1: note: in expansion of macro 'MEMINSPECT_SIMPLE_ENTRY'
+    3363 | MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
+         | ^~~~~~~~~~~~~~~~~~~~~~~
 
 
-vim +1360 mm/util.c
+vim +3363 mm/percpu.c
 
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1338  
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1339  #ifdef CONFIG_MMU
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1340  /**
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1341   * mmap_action_prepare - Perform preparatory setup for an VMA descriptor
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1342   * action which need to be performed.
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1343   * @desc: The VMA descriptor to prepare for @action.
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1344   * @action: The action to perform.
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1345)  *
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1346)  * Returns: 0 on success, otherwise error.
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1347   */
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1348) int mmap_action_prepare(struct vm_area_desc *desc,
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1349) 			struct mmap_action *action)
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1350) 
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1351  {
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1352  	switch (action->type) {
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1353  	case MMAP_NOTHING:
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1354) 		return 0;
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1355  	case MMAP_REMAP_PFN:
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1356) 		return remap_pfn_range_prepare(desc, action);
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1357  	case MMAP_IO_REMAP_PFN:
-732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1358) 		return io_remap_pfn_range_prepare(desc, action);
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1359  	}
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20 @1360  }
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1361  EXPORT_SYMBOL(mmap_action_prepare);
-ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1362  
+  3362	
+> 3363	MEMINSPECT_SIMPLE_ENTRY(__per_cpu_offset);
+  3364	/*
+  3365	 * pcpu_nr_pages - calculate total number of populated backing pages
+  3366	 *
+  3367	 * This reflects the number of pages populated to back chunks.  Metadata is
+  3368	 * excluded in the number exposed in meminfo as the number of backing pages
+  3369	 * scales with the number of cpus and can quickly outweigh the memory used for
+  3370	 * metadata.  It also keeps this calculation nice and simple.
+  3371	 *
+  3372	 * RETURNS:
+  3373	 * Total number of populated backing pages in use by the allocator.
+  3374	 */
+  3375	unsigned long pcpu_nr_pages(void)
+  3376	{
+  3377		return data_race(READ_ONCE(pcpu_nr_populated)) * pcpu_nr_units;
+  3378	}
+  3379	
 
 -- 
 0-DAY CI Kernel Test Service
