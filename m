@@ -4,140 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4260106FD61
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 01:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A57106FD60
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 01:18:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2E456B0088; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
+	id 0FBB26B0005; Thu, 12 Mar 2026 21:18:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDBC56B0089; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
+	id 07ECA6B0088; Thu, 12 Mar 2026 21:18:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB3D06B008A; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
+	id E98D76B0089; Thu, 12 Mar 2026 21:18:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A0036B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A4C71C835
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:01:00 +0000 (UTC)
-X-FDA: 84539235480.05.A43B3FE
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F157A1A0016
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:00:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ElCI8wDT;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773363658;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D77C76B0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:18:18 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 849481A0560
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:18:18 +0000 (UTC)
+X-FDA: 84539279076.22.4EEC7F2
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 83270160006
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:18:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K2AvzXAm;
+	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773364696;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
-	b=R90z/Eq4AYJI0mzNAglHwlEgQ9Z+7PhTFkJXk8fOYYv6ve2ulopwO/6irmglctbus0RGul
-	byl5QyFR26IFQxFNdepVZEZHq5/Q9tUbqiXEAr7X2UkF+if5DqQFA5rlI/Jim11sLr/nU3
-	ZgzyIZAWEvAZ4DHJnQfSktEC7s7WI28=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773363658; a=rsa-sha256;
-	cv=pass;
-	b=X1d04BFfsqH8zZ8+UdVbfGILWESzHnaOXTNJEGh0agAcWv5FzMqGq1v/7DeVX8tQMBV4nX
-	Wed+NXUcytbCDsAT9o4EDwPx6G4b4dRSXk3qqJJAlnKzFGAcVKrcKh4QNNr7kCcBgD5GJ8
-	0+nrTf0V1MWJ7I/oEW+uVhxbmYoZ7I4=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ElCI8wDT;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6634d819492so3149813a12.3
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:00:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773363656; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NsbZM/OFSOYCBOMl2xVSBfgN7sjkJQgyBH8avzFQEMkhQDOcB6KDyocUs0obLBJZEG
-         UMMcwkzVqMwk6UJFuT/kKC2hhWS3R/7JtFFykX5OPKoWpJpP2DXRPh20X/9+GmaJWi+Q
-         EfyInATEUBTwlEiP1Hah6BzNRqq0OiaMj5UUWck8KC81eYk2Dn92fGNRQyUPXRX1TcxB
-         0lRh6dsIXzC6AoTj+DwGsqaUdbv5xEnegJc5Gk2lcQYuKxfjmCdJ6G0Zvfhd6tg8uwsX
-         mQB+Gqkz3093Eoboz43q2ER/BwDJ6/qJSnYn56TKgeszOpycIYlolv0pvoHshaiMKGTS
-         CQVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
-        fh=YhXT0VJyWqJ1YQ5Yy5K64o8T3By5lwls+Ng6wqdwcpQ=;
-        b=fIHdt3e+EnGN8S3BfynKVEsxZdr6SGg39jGJgMs1kmbzksrZS4zN73WaSk75EwXXbl
-         JMDDS0aEQ56KAJH5pBrHdhWVjYr/kM4gAkhVPcmUK3+v8xOqDws5kFd1OUwJXDSXwWWr
-         b9b2yLwGtP8NU9oiTEvxpk0UjM4DVamD8pK8DcMktkxYBZOdzoiVMo0RMmTbfureFqbg
-         KJdw9wWEzQPlwPg77oZTYSrelQZCKZuQ5gyA3pqyxwmNpeoERa6i4PEvFMGetAjKnHqz
-         QxjnV/hlcwRB/krk9jtV57o/ju2bXZu7z239ZSPnk2Si7aaDz4itjUXWIugCQg2YcRwk
-         9g0A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=G+7XsAoNKOaWOBAj10JuSqSpQXLhiG0oqQbVuG2+b/o=;
+	b=BfOEHvKz3Xp1lv7ujI6fvYEURGJ0UM9kNf6XDKUMOVP6fIMSqpifQzGKkWcqt3pCgWrFXj
+	vXndMoZgR7Jemw+NgufcdXtSPeSX/HZPOueSh6O0pCFEOLwsJHkL5b6FAFpSeUP5j7W/fH
+	9liDJvdIkj8i5d9mTqRI4O5LL8qWuoY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773364696; a=rsa-sha256;
+	cv=none;
+	b=qrfA5GTksFx8mWGHyH6xxSCaBORthshGtaMJxgOLo5xy11lXz7qV/IuQhbzc14lJLKdVJa
+	qZ9/hPI14xSGanvO6/LbrkrTXhR0vCu4P85XfUjCIiQAwi8KKig8D3Qw/dnKOJ0P/zY6Em
+	BoKobnxlUjGkvG0VTv7wC1sI44jOAY0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K2AvzXAm;
+	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-661d20c9787so2427633a12.0
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:18:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1773363656; x=1773968456; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773364695; x=1773969495; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
-        b=ElCI8wDTZ9L0v2QVmYs8etB5/7OoWDnkKwLHNj08PhQr/4pGZaKjBcSlUqW0mjYfFF
-         ujjrnk97CXIlv3r+hQdioj6IkFb1V0nfrkC7kErccyG0vpncA/+4+SxyyBYQlAqZEHBA
-         ajuq6dMTGBoddanEN66cQ7Dnh7C4tTbcfUiPx/bRiEWLf3dSMY8mJHOSd/ibu66OoK5L
-         So+UIs/fGWrI0/m0/WWVhnJWjk9m++sZja/N2hFQXgLD604as0RuJPRjwDSU1VRx58sR
-         InNezJ388LUaJw5ThZJQl7a4rqnGyPZgNhF7+4jKW/CodbBFIzGxpGYodn3yh3HRH1Fg
-         27NQ==
+        bh=G+7XsAoNKOaWOBAj10JuSqSpQXLhiG0oqQbVuG2+b/o=;
+        b=K2AvzXAm7+elbk63lqoFnTQzRmXv99mPCGmKlfpyAzjg+ilgopYWYTVZCHWPIzD1d/
+         hxzoj8xiuapmwRMqdEvDUjM1O7BJz0QM7O5qqO1Ceh5A9hbmrn7syijEp1NAt1p46AQt
+         MDgr8r9Y7m+VX/7RS4aQdMNBaC4AAiIZRNyp1YnBa7mSBOltZtVMcw+Ov7GJ6JhYTLm4
+         3scnQ9z9Z8IRsVK366EwFf03VJWUpwgos0hmjhV7hbvtlPOAqIWuiGMduNGvTzUchHsm
+         k/v2ZA268foFChqXQUxOoiChDwN2HXAT8FOlXE/2oQU+NkUTuzxvw59tM181irilq02B
+         beSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773363656; x=1773968456;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
-        b=L4pnFim20eUeHi5Ro4xbX1msOjDQRB8Y5D1yUp4JuWiIIxK6pBHfFkUYQ+8UoqHDGE
-         QvD87E57TY57x1HEpJZOeFfa/jnCZmUUJBbjyizgblxh69oW77EkRn70VotAmwq1u+wH
-         TzrcyJJ0UPgacG52aj2MeJrc2K/zaAcAYx40z8T2daKGvqnTggeANZkV2ga2OpTinLov
-         +GBeCU3S3UP4kjMXZN7JX64a3BjnlkCtjT978VG2jjH9s3c87gOS0zR9zWoBnoKjiIu/
-         /BVWHsMLJ2jtSO/LceYITsV/JwISI0TvLdHgwjgBdCLwFc5UwdH06mjXzqpsrVDw++Dk
-         u11A==
-X-Forwarded-Encrypted: i=1; AJvYcCUVsMvHIVkF2pSGBwdR/0CnMgOp8VxAmUuwl68h/ngJgKe2Frfq7p94Y4Vl6tt18lMESBHJWPcMtw==@kvack.org
-X-Gm-Message-State: AOJu0Yzvy0+868DZZQEcKhVhmDSOZT4mKcV3fBd7ya1cC6qgC0AlqjJW
-	sJOJMB328Yr7NtuAN6SHZ2GZ/QB7VNEa+D6S8hF9irby6Vdb+6nQLI0l9iFeEGlVlbvgL6IVys4
-	ebLhSiAMNfbCAiUFFfVJztWK4tvJl4LBBNOe3WsObrQ==
-X-Gm-Gg: ATEYQzxlklp8QZ9JjFJr5ld9WuOnRf9jSyNW/sWa54DqbvV41qDALJzYDYSHW71OIgF
-	2vJGasmAuECz1tTrPmhoVL7+SjLPuKPtDdJzS3BB7njeQcTpJCBv/tySs8cKTsa3B18GhJE7pb7
-	rdHMOQo4fvPnKy1BjIqQnHC7WJMKQLBV9LeX53sdjecM3ic3mV5z8KPRqYjj2I24O4ioSMODtTO
-	0V5qh4ko9qyXqGKIwcPv5VBg+fTCdGmyCsM40Own4rEIBGHiWAx8v48RI5Fx+wI+Q6Q3URQh5DO
-	o+fZ4oBlv5JMoXyt9JaCf4LjKlcGGipwLwSUeRwhz8M8kgVf
-X-Received: by 2002:a05:6402:1d49:b0:663:4560:aa8d with SMTP id
- 4fb4d7f45d1cf-663bac0b2a9mr787697a12.26.1773363656161; Thu, 12 Mar 2026
- 18:00:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773364695; x=1773969495;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G+7XsAoNKOaWOBAj10JuSqSpQXLhiG0oqQbVuG2+b/o=;
+        b=Fk+fgmKK+LlWbnab+EGyYL/yMaFdXa71re2ijHG1STau1AH4sYwRo0ErFPVnJXyVj4
+         uABzwcI1dbGayndAQSVrYL7KHdeBOkmFsC4NilauI7KdEpbF0j3k3X5+m6UekdEMd9Q0
+         4CT6hqWOOwoihMGJcHwDg+CBBZo38XGa15dEk1YQhlsnETdd4N0DoA0gAm9OyctwYFGP
+         WglQ4MJj3kEixr7j8DMU8RrY0DluefXG+b8+edsfMVC5e+TITr4egkPi/rk/oeLCmIXA
+         FoJLivMTml9j9R0mIk0tKCjbGfSknLw38HsHCJTjqmCcsGtZDZwWOmWqmaG93RTw4BUW
+         mkZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKZD+JviRW9JOhwmZxCXmJ7ltUhqBCY1TZRNVVrvK6gToko8+dElR0agGROkVvxnIwuGtagFTWTQ==@kvack.org
+X-Gm-Message-State: AOJu0YyQp3RM6d/wUFhZSCvVCtyqglZXSyM4OiFD64q3ma7kKr0/ygC5
+	YYPY9XUz8WgHhxdfE7mnpTglpti95HjxehGDDblRzJVCRvcHDT7MLdKL
+X-Gm-Gg: ATEYQzw6FZXaXvlgjVj2rwf+qhdmGcoycNwGbRUCxdkDFIMoFPvdaL7VxwVruRoZ8wu
+	LbhrNZUY/7PWkinkMuD17xekY83v/A0ZL0pecE4PmlcXIoaC3Debp8gmst5Jy5op0dDj0uBqR/G
+	dtFhW3HmIzXznjh0bSBa85RPa1M4uXtLE/RMFR8oRlh6tR1jViodnebYlfnhr8k8PVLl78V5hW+
+	VFXeulsTeaX4HN0G2hmVr1M2tY0CJFkbPIcyRci963e0PclBfX6adlBx5MtJxR060PgvskxrF+8
+	ddVKejmwFiv9Ded1m9ngdmroyTX87s623HGjhE51YhIPnuggVlN3dfj6KkHUpXtgNA49Mm7S2j/
+	kkz67aG2Vs3ubdD18cNbaYISg5hqn8BLVnUANsioHX3ZZKNiALYhQ1Wz8DIqQLEn/ygH9lv0jsm
+	roSdryesD5aojuZuf4003xjPcgGT2rz2/2
+X-Received: by 2002:a17:907:9481:b0:b8e:d1f3:4744 with SMTP id a640c23a62f3a-b976540242amr69402366b.55.1773364694584;
+        Thu, 12 Mar 2026 18:18:14 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976cdb6936sm7941866b.37.2026.03.12.18.18.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 12 Mar 2026 18:18:14 -0700 (PDT)
+Date: Fri, 13 Mar 2026 01:18:12 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+	david@kernel.org, ziy@nvidia.com, willy@infradead.org,
+	linux-mm@kvack.org, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, richard.weiyang@gmail.com
+Subject: Re: [PATCH v3] mm: migrate: requeue destination folio on deferred
+ split queue
+Message-ID: <20260313011812.cdxu4ypbwyb3hiol@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260312104723.1351321-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20251218155752.3045808-1-pasha.tatashin@soleen.com>
- <20251218155752.3045808-5-pasha.tatashin@soleen.com> <CALzav=cJmgG04+Ba82Rnr3iKpU0gKD5WD3oF-_43rdD7T+REEQ@mail.gmail.com>
-In-Reply-To: <CALzav=cJmgG04+Ba82Rnr3iKpU0gKD5WD3oF-_43rdD7T+REEQ@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 12 Mar 2026 21:00:19 -0400
-X-Gm-Features: AaiRm51GTpcl9Y1xewqBoObbD5fxW5xRQjRFOFdPyL_QXAS4XNVVlbgb9vcN1yw
-Message-ID: <CA+CK2bDwNjiCbLXzBuh7Q89NFi59NHsQjwwBy8iRdyJ-5cMyrw@mail.gmail.com>
-Subject: Re: [PATCH v9 4/5] liveupdate: luo_flb: Introduce File-Lifecycle-Bound
- global state
-To: David Matlack <dmatlack@google.com>
-Cc: pratyush@kernel.org, rppt@kernel.org, skhawaja@google.com, 
-	rientjes@google.com, corbet@lwn.net, akpm@linux-foundation.org, 
-	kees@kernel.org, davidgow@google.com, pmladek@suse.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	nicolas.frattaroli@collabora.com, linux-doc@vger.kernel.org, tamird@gmail.com, 
-	raemoar63@gmail.com, graf@amazon.com, Bjorn Helgaas <bhelgaas@google.com>, 
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312104723.1351321-1-usama.arif@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Stat-Signature: aq7bdxznqxspiajg7mtc5c4acn9fse5j
-X-Rspamd-Queue-Id: F157A1A0016
+X-Stat-Signature: yc5emcd764sbyc9ojnpgz9c91zwx8dtd
+X-Rspamd-Queue-Id: 83270160006
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1773363657-453805
-X-HE-Meta: U2FsdGVkX19mmxgaFZ9J9NZHNY13QCuFSP12aWyH1pgUvq21/+obLfq6on1BYXe2DNWjQqUFX6txpTv1XYsJy/WkeOMKjewXWQZrdpLqP/zOfqhy3KUbaFZsd4WaWKWZWLWLWbO9BukgDlN9ggpZaAiN+nGerFv4JVZi/W805kVyuX2YQx7Cb8EdgTKV286VCZVByk/X52csDdsLw+s2bkS04+09iC7zExpd+hIFVCObmmCskHq+aQ+OY7M2+oYPfaW1E1sB+QGeF7pwaPT/S+nsRF/1qygYDYFqa8b3LJj/NtpGdKgWZh2lpfxF00pbPSFrR4jgwCy4WkNCvzqBPzwZMPWWTfk1G9BWnB6JABlR9siRFCESLu4UCokjM/xQ/5Z8NviPN6cCUq9fxLHHap3DcNWKcxNQltpcJK7PndaKQRj/oCXPBzLsCDlS+bKwGdZSN+ZyIGuM8mul5cVWZTFwHFe1ad9JY9RoT1prrVOeRM85n1x+eg3tH1VscSp+s5DMxRBknfTGfB09WPc2KvkiDvLj3Uf+6pEkUdt29W9/VSJPJo9SnXLpEn7HFwSqtsjouubzTzijOE5j5d5P2PMAH7pahXzXRT0aB9Hzhsj8wIoYW3FM1TT6+RyaYWpJtUVStoINIKEIxF81neBz+iGoOdLG7fh2xs0w115oKlobVFX6kq1s19Qo4Gk+pOuqolUpVby8cPeOhnP7qDRUSJv0WfYg8Xe3tBZ9c6YvyeiuMkkSseISfQEwk9h5stLX4xaYCf5co3DjHJxCwMMHsYNqQxq3HUwAhubrfsYwR1/ByMCc5xW3gBVsAoRzfUrv40Tsa7o6EaP9jWtodOpe+Lqlze3Ewin/O3cFWkL1I0HBWGMgVr5WAM+E9sbBcXd+1JzApE0v8qhbU4CqU93Xge8qyorO4aN8jd9V9xIdLCW4Q3BuII89SPnjRJd3wZgtoMvk5OYgkx/g3FAvYgh
- lZCWVx4x
- v75VxkeTDcKTP/VXjfAuAkhM13Z/U/45S8kpbSsKZgzrIPlSZANC2bIUgNzzG7ZSQg4hs97SpdW9wKNopLAcFzWPbe7wpOioqumbUjtCmvAc6c+qDRNmyiBK2jJpRv+HFk4a9vzOWCLABIvfWLiU7i6eaasjIMAPm8AHcPg60HIXoWX6UuHhLzRfPdfSP5kHB17aI/46GqnRwFYEW9fFUM29nzm0uhV7dj4IlbAA1boBqfyuGKICyVEReh6PAY7sjvRywzFXZHBBSDD68+SZyErwcfX9gf4vJuQTKwhizP3kluXKTmHkz3fKHTHW73NoRefxUw7V2f2kB7NhWOwTj299JFkGXIma7g77SXppyrlrPeeJe52OaB6cpalj5K8diI/sw2VU7A9xAIkgVrgn37jWAI8Gm4rSvFMY1
+X-HE-Tag: 1773364696-862521
+X-HE-Meta: U2FsdGVkX192QjJHz0fhpw2OiEFDCvJTXOSFcH7+vFWggcueJTpHZgrfJZ514JGHKOO+hLri5hogjrtbVokbgcCT00OKXE0Zwv+HnWOFWez/9cEsbIiRE+CL+MCp3gWcVE2jyWlik64tlUFoF82pvvKJx/XrKPV2bo8yDNVV+FcDQsgwiiWiJwG/QdRqoWzkm6/RcKR0MkuOL5r2vyHm4uswqKzJaFgNeP6AwHEAhERbC4wHlPipfKS/mqfzpJ/mIxLl0Zq79fTfkYWIL2dtOeZI7vgL76HMFKbbL6EvTTGI67fEIF06rVmgxm5047h0U4WX4L6RZ1burY9WYjuw16oSyHO/q6zXo9BmHPQPPW1bQrk9slXaARgxbv3viA/z77AM2Il1qEgC44sBnqzFKKcBXwDWUF2+bVdgrFJzpNQ25vtyIl2ubcLIwreu4f/Ac56RPVVBLA/iZrvIPIt1qMBZxdNfQDEPPiYZ9OAetZFbroDngnOzEpJy+fhD17ziXFMOh5R+83oLXjeU7hCf/bDKHBDZ0qBuNV+tmN0ipUkzFUl1bGGhPelrqQEEbbccme2HaHVkmzNYBK53imjcghiv2PfiXm09Y8lrnGaRuRVHb/E4pdzlcqvsNNuLi9OZ8EGWjrMdrDHbI5gnxJWW2maIkv9myD8Kn3mfoU5LbAsckIFyaq2kQYGU40C387hQJsUWPcHW+i3Df9svNToDClr7GBaujPw4DEPgr8Qm4Txv5RDyRTGT/ITPJXQnnqBdIYZIOe90fw5I3pHdEuq91uOPfAhbT61d+bm7uLjWRGwFnfcRZQqjMRQeYzRAGyjib8nNRaBrsGH/z357NCDEqNW0e3JxQVQuyI4RevINC+pjF80bfv4PEEdcybv2zczeOpxcUbwXXBACuSFu2sjPfWz8fqyu6TXN/Dj/0QWOgXCJ/CwH4L2m4X9VgCBLi9kG/1X0Km5j5m2Pkp9Q13X
+ EG0lGRBs
+ cS8+Rqk0hErtvgcS+zu6w2qsSx0geKCgc5I5VcB5FlXgQhGR0HNseZU6u9DY0PP/fZYDjR+MYp8ZyaON2edGvGfvk5xvNfdpl5AvYDhQvJ5T0mmrCdXU7zo7lImSHauXKnvPUo8oiwAyHIckwAgSL6KvpX2kbn7vh/AZ++AXla2hAuoboIdlyvbHrrkGL2gs/q4DMClL+wLvteW5PTf2ZVlzd5QI/yqYdQqA6qUaaHEj+/WTap6rl74ukNTPc6bQYBXHh8kzpM3T+MS0potAh4irMfPidmKIQgbQSV5EUgPOQjK0q4yb1+WxdKFwaDipQa6nfNPahCtfdaR9hdFrsYP+UFqf3bUO3yevQiA4Xr6Qp84mMNr6bVKqhOYD8MrrA2PNabwsa6XqIYvuIDUPssFZQ0kpGODTUS0JwyOx2D6IyDkQCRT0U/mTVLCqyf0gTMv7z7xJnbgswFFyLIRXvoNiucPaEb44tRZ2b1MLyMbpqnbWDxgS1hsE0hi3lj4WxCQl6xzN32SBe742uEQ53+059EXpQZtzeoWHQYGe2vbA96rPAGtzgADfl9u4U3HZTmWmSul1IMsgKW7iGxKv4qZ97xumEXktXn1NgD2Z0LIxA0jAnX9JUAfkmTBW5QGyD79ZGK+eN04v7+/GS8vL1gAmdIkVNIkHpRLUf7o11eWwuNBBnn+x6e8sQZ2LFPm3fMiNCtyTKUW8XUYDOgzK8+MQGMJty2wNNE9Y6I2pxlWhfK82pySGO3vpBELiNbGWqxNPCH54Uln66g57zykPScQYuiP2QTs5t3RfEz0DzYR0zid1WLY8M6gXPmtc58yn6/l9IFhm2HHj9nKOG6bw/FDMB3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,129 +125,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 7:59=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
+On Thu, Mar 12, 2026 at 03:47:23AM -0700, Usama Arif wrote:
+>During folio migration, __folio_migrate_mapping() removes the source
+>folio from the deferred split queue, but the destination folio is never
+>re-queued.  This causes underutilized THPs to escape the shrinker after
+>NUMA migration, since they silently drop off the deferred split list.
 >
-> On Thu, Dec 18, 2025 at 7:58=E2=80=AFAM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
+>Fix this by recording whether the source folio was on the deferred split
+>queue and its partially mapped state before move_to_new_folio() unqueues
+>it, and re-queuing the destination folio after a successful migration if
+>it was.
 >
-> > +static inline int liveupdate_register_flb(struct liveupdate_file_handl=
-er *fh,
-> > +                                         struct liveupdate_flb *flb)
-> > +{
-> > +       return -EOPNOTSUPP;
-> > +}
+>By the time migrate_folio_move() runs, partially mapped folios without a
+>pin have already been split by migrate_pages_batch().  So only two cases
+>remain on the deferred list at this point:
+>  1. Partially mapped folios with a pin (split failed).
+>  2. Fully mapped but potentially underused folios.
+>The recorded partially_mapped state is forwarded to deferred_split_folio()
+>so that the destination folio is correctly re-queued in both cases.
 >
-> I think LUO could use a cleanup to return 0 in all the register
-> functions when Live Update is not enabled via CONFIG or parameter.
->
-> I think all of the users of these functions are going to want to
-> ignore -EOPNOTSUPP. memfd already does.
+>Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+>Fixes: dafff3f4c850 ("mm: split underused THPs")
+>Acked-by: Zi Yan <ziy@nvidia.com>
+>Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-I would think EOPNOTSUPP is a standard return error when a feature is
-not enabled. What if a component would need to do something different
-by knowing that FLB is disabled and therefore perhaps it would also
-skip some of LU related changes? I think it is a very minor think to
-ignore EOPNOTSUPP when checking of other error types.
+LGTM, thanks.
 
-> > +static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
-> > +{
-> > +       struct luo_flb_private *private =3D luo_flb_get_private(flb);
-> > +       struct luo_flb_header *fh =3D &luo_flb_global.incoming;
-> > +       struct liveupdate_flb_op_args args =3D {0};
-> > +       bool found =3D false;
-> > +       int err;
-> > +
-> > +       guard(mutex)(&private->incoming.lock);
-> > +
-> > +       if (private->incoming.finished)
-> > +               return -ENODATA;
-> > +
-> > +       if (private->incoming.retrieved)
-> > +               return 0;
-> > +
-> > +       if (!fh->active)
-> > +               return -ENODATA;
-> > +
-> > +       for (int i =3D 0; i < fh->header_ser->count; i++) {
-> > +               if (!strcmp(fh->ser[i].name, flb->compatible)) {
-> > +                       private->incoming.data =3D fh->ser[i].data;
-> > +                       private->incoming.count =3D fh->ser[i].count;
-> > +                       found =3D true;
-> > +                       break;
-> > +               }
-> > +       }
-> > +
-> > +       if (!found)
-> > +               return -ENOENT;
->
-> FLB users have no way to distinguish between "there was no data
-> preserved" and "there was data preserved, but it was not a supported
-> version".
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-Strictly speaking, FLB doesn't have a concept of "versions", it only
-operates on compatible or incompatible data strings. If we find FLB
-data but the compatible string doesn't match, we have no way of
-knowing if that data was even intended for this specific handler.
-
-> This is especially going to be important for PCI [1] since there's a
-> big difference between "there were no devices preserved" and "there
-> were devices preserved but the incoming kernel isn't compatible". The
-
-If the incoming kernel does not find preserved device state, shouldn't
-it just be treated as if no device state was preserved at all? In that
-scenario, the subsystem would fall back to standard initialization and
-simply reset the device state.
-
-> former means there's nothing for the PCI subsystem to do wrt Live
-> Update. The latter means we should probably panic the system.
->
-> [1] https://lore.kernel.org/kvm/20260129212510.967611-3-dmatlack@google.c=
-om/
->
-> > +/**
-> > + * liveupdate_unregister_flb - Remove an FLB dependency from a file ha=
-ndler.
-> > + * @fh:   The file handler that is currently depending on the FLB.
-> > + * @flb:  The File-Lifecycle-Bound object to remove.
-> > + *
-> > + * Removes the association between the specified file handler and the =
-FLB
-> > + * previously established by liveupdate_register_flb().
-> > + *
-> > + * This function manages the global lifecycle of the FLB. It decrement=
-s the
-> > + * FLB's usage count. If this was the last file handler referencing th=
-is FLB,
-> > + * the FLB is removed from the global registry and the reference to it=
-s
-> > + * owner module (acquired during registration) is released.
-> > + *
-> > + * Context: This function ensures the session is quiesced (no active F=
-Ds
-> > + *          being created) during the update. It is typically called f=
-rom a
-> > + *          subsystem's module exit function.
-> > + * Return: 0 on success.
-> > + *         -EOPNOTSUPP if live update is disabled.
-> > + *         -EBUSY if the live update session is active and cannot be q=
-uiesced.
-> > + *         -ENOENT if the FLB was not found in the file handler's list=
-.
-> > + */
-> > +int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-> > +                             struct liveupdate_flb *flb)
->
-> Alex Williamson and Jason Gunthrope both suggested this should return voi=
-d.
->
->   https://lore.kernel.org/kvm/20260303210733.GG972761@nvidia.com/
->
-> I suspect liveupdate_unregister_file_handler() should as well. I don't
-> think there's anything callers can do if unregister fails.
-
-Thank you for the heads-up; I replied in that thread. We can clean-up
-some of the return erros, but I am not sure what to do about -EBUSY.
-
-Pasha
+-- 
+Wei Yang
+Help you, Help me
 
