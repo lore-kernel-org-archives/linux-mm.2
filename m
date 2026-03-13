@@ -4,91 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D2C0106FD60
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4260106FD61
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 01:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46DA76B0092; Thu, 12 Mar 2026 20:52:46 -0400 (EDT)
+	id C2E456B0088; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 400B36B0095; Thu, 12 Mar 2026 20:52:46 -0400 (EDT)
+	id BDBC56B0089; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3442D6B0096; Thu, 12 Mar 2026 20:52:46 -0400 (EDT)
+	id AB3D06B008A; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D066B0092
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:52:46 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA91A1C7A6
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:52:45 +0000 (UTC)
-X-FDA: 84539214690.10.96908CE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1CDCCA0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:52:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DuWzI4UB;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773363164;
+	by kanga.kvack.org (Postfix) with ESMTP id 9A0036B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 21:01:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A4C71C835
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:01:00 +0000 (UTC)
+X-FDA: 84539235480.05.A43B3FE
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F157A1A0016
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:00:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ElCI8wDT;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773363658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gpo544VSz8AH3A0GlQUSZeN0Uk7CdKl/tuX25v0N7VQ=;
-	b=LGQNURvTM+stSlF6KZ5B/LSwOMZcHejgAKMEusDmslm8s1DfpuMM8TIyi1NTdbIN4MNXOy
-	ZnsI7xSSNm4SG2IEj18qVSDrg/foboR4sWBkYOrpfeN3SprZYBxQ8i9S7t9t+XRPkA81Rw
-	H63ZZ6nLLfVDzq1V6Bi705lViQ7RXBE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DuWzI4UB;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773363164; a=rsa-sha256;
-	cv=none;
-	b=Fs4kQYKQtmNMHivctc797exssLi449vCkPGNS82N2Mv4hNext2gHtMTnPn8IY2IWPXFZTq
-	0uGW3oZpB+c8COMQqQp+OOayOBuLZMiwlqGqEPB42Lu+KgEMA/ZcsO01ylHlDQ9xVEFyIn
-	P2BN7OxpFyogK8qOBWqe452yf60rgnE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B596A40581;
-	Fri, 13 Mar 2026 00:52:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1141BC4CEF7;
-	Fri, 13 Mar 2026 00:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773363162;
-	bh=u09tJ6oA8uKQCXuVDskUj3OnLNBy14TubsLkRd25lYM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DuWzI4UBSebrvs52L3URsESaYwY6E249CplCTg89RqcP6gHXSWzexwipGvO1ZK7jM
-	 j6xn07MpLCY+SpLhFy/kWbOtD7gA3myI9x8NbYqkCJS7LZ0LFf4o10uBCm3fjUKDON
-	 cPGcAx3lkMHOAFiEkX2455t7Y26J5F51hDQUBlSM=
-Date: Thu, 12 Mar 2026 17:52:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>, npache@redhat.com, david@kernel.org,
- ziy@nvidia.com, willy@infradead.org, linux-mm@kvack.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, hannes@cmpxchg.org,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- richard.weiyang@gmail.com
-Subject: Re: [PATCH v3] mm: migrate: requeue destination folio on deferred
- split queue
-Message-Id: <20260312175241.01b876f3b325264f43312d79@linux-foundation.org>
-In-Reply-To: <20260313001630.80081-1-sj@kernel.org>
-References: <20260312104723.1351321-1-usama.arif@linux.dev>
-	<20260313001630.80081-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1CDCCA0005
-X-Stat-Signature: gj63ka8i913atc3ykoyyikn13nzces41
+	bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
+	b=R90z/Eq4AYJI0mzNAglHwlEgQ9Z+7PhTFkJXk8fOYYv6ve2ulopwO/6irmglctbus0RGul
+	byl5QyFR26IFQxFNdepVZEZHq5/Q9tUbqiXEAr7X2UkF+if5DqQFA5rlI/Jim11sLr/nU3
+	ZgzyIZAWEvAZ4DHJnQfSktEC7s7WI28=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773363658; a=rsa-sha256;
+	cv=pass;
+	b=X1d04BFfsqH8zZ8+UdVbfGILWESzHnaOXTNJEGh0agAcWv5FzMqGq1v/7DeVX8tQMBV4nX
+	Wed+NXUcytbCDsAT9o4EDwPx6G4b4dRSXk3qqJJAlnKzFGAcVKrcKh4QNNr7kCcBgD5GJ8
+	0+nrTf0V1MWJ7I/oEW+uVhxbmYoZ7I4=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ElCI8wDT;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6634d819492so3149813a12.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 18:00:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773363656; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NsbZM/OFSOYCBOMl2xVSBfgN7sjkJQgyBH8avzFQEMkhQDOcB6KDyocUs0obLBJZEG
+         UMMcwkzVqMwk6UJFuT/kKC2hhWS3R/7JtFFykX5OPKoWpJpP2DXRPh20X/9+GmaJWi+Q
+         EfyInATEUBTwlEiP1Hah6BzNRqq0OiaMj5UUWck8KC81eYk2Dn92fGNRQyUPXRX1TcxB
+         0lRh6dsIXzC6AoTj+DwGsqaUdbv5xEnegJc5Gk2lcQYuKxfjmCdJ6G0Zvfhd6tg8uwsX
+         mQB+Gqkz3093Eoboz43q2ER/BwDJ6/qJSnYn56TKgeszOpycIYlolv0pvoHshaiMKGTS
+         CQVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
+        fh=YhXT0VJyWqJ1YQ5Yy5K64o8T3By5lwls+Ng6wqdwcpQ=;
+        b=fIHdt3e+EnGN8S3BfynKVEsxZdr6SGg39jGJgMs1kmbzksrZS4zN73WaSk75EwXXbl
+         JMDDS0aEQ56KAJH5pBrHdhWVjYr/kM4gAkhVPcmUK3+v8xOqDws5kFd1OUwJXDSXwWWr
+         b9b2yLwGtP8NU9oiTEvxpk0UjM4DVamD8pK8DcMktkxYBZOdzoiVMo0RMmTbfureFqbg
+         KJdw9wWEzQPlwPg77oZTYSrelQZCKZuQ5gyA3pqyxwmNpeoERa6i4PEvFMGetAjKnHqz
+         QxjnV/hlcwRB/krk9jtV57o/ju2bXZu7z239ZSPnk2Si7aaDz4itjUXWIugCQg2YcRwk
+         9g0A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1773363656; x=1773968456; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
+        b=ElCI8wDTZ9L0v2QVmYs8etB5/7OoWDnkKwLHNj08PhQr/4pGZaKjBcSlUqW0mjYfFF
+         ujjrnk97CXIlv3r+hQdioj6IkFb1V0nfrkC7kErccyG0vpncA/+4+SxyyBYQlAqZEHBA
+         ajuq6dMTGBoddanEN66cQ7Dnh7C4tTbcfUiPx/bRiEWLf3dSMY8mJHOSd/ibu66OoK5L
+         So+UIs/fGWrI0/m0/WWVhnJWjk9m++sZja/N2hFQXgLD604as0RuJPRjwDSU1VRx58sR
+         InNezJ388LUaJw5ThZJQl7a4rqnGyPZgNhF7+4jKW/CodbBFIzGxpGYodn3yh3HRH1Fg
+         27NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773363656; x=1773968456;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rmWX6afwcKK+qAwiN0L3nTeMMcjlmmTvmcIb6kXEjoU=;
+        b=L4pnFim20eUeHi5Ro4xbX1msOjDQRB8Y5D1yUp4JuWiIIxK6pBHfFkUYQ+8UoqHDGE
+         QvD87E57TY57x1HEpJZOeFfa/jnCZmUUJBbjyizgblxh69oW77EkRn70VotAmwq1u+wH
+         TzrcyJJ0UPgacG52aj2MeJrc2K/zaAcAYx40z8T2daKGvqnTggeANZkV2ga2OpTinLov
+         +GBeCU3S3UP4kjMXZN7JX64a3BjnlkCtjT978VG2jjH9s3c87gOS0zR9zWoBnoKjiIu/
+         /BVWHsMLJ2jtSO/LceYITsV/JwISI0TvLdHgwjgBdCLwFc5UwdH06mjXzqpsrVDw++Dk
+         u11A==
+X-Forwarded-Encrypted: i=1; AJvYcCUVsMvHIVkF2pSGBwdR/0CnMgOp8VxAmUuwl68h/ngJgKe2Frfq7p94Y4Vl6tt18lMESBHJWPcMtw==@kvack.org
+X-Gm-Message-State: AOJu0Yzvy0+868DZZQEcKhVhmDSOZT4mKcV3fBd7ya1cC6qgC0AlqjJW
+	sJOJMB328Yr7NtuAN6SHZ2GZ/QB7VNEa+D6S8hF9irby6Vdb+6nQLI0l9iFeEGlVlbvgL6IVys4
+	ebLhSiAMNfbCAiUFFfVJztWK4tvJl4LBBNOe3WsObrQ==
+X-Gm-Gg: ATEYQzxlklp8QZ9JjFJr5ld9WuOnRf9jSyNW/sWa54DqbvV41qDALJzYDYSHW71OIgF
+	2vJGasmAuECz1tTrPmhoVL7+SjLPuKPtDdJzS3BB7njeQcTpJCBv/tySs8cKTsa3B18GhJE7pb7
+	rdHMOQo4fvPnKy1BjIqQnHC7WJMKQLBV9LeX53sdjecM3ic3mV5z8KPRqYjj2I24O4ioSMODtTO
+	0V5qh4ko9qyXqGKIwcPv5VBg+fTCdGmyCsM40Own4rEIBGHiWAx8v48RI5Fx+wI+Q6Q3URQh5DO
+	o+fZ4oBlv5JMoXyt9JaCf4LjKlcGGipwLwSUeRwhz8M8kgVf
+X-Received: by 2002:a05:6402:1d49:b0:663:4560:aa8d with SMTP id
+ 4fb4d7f45d1cf-663bac0b2a9mr787697a12.26.1773363656161; Thu, 12 Mar 2026
+ 18:00:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <20251218155752.3045808-1-pasha.tatashin@soleen.com>
+ <20251218155752.3045808-5-pasha.tatashin@soleen.com> <CALzav=cJmgG04+Ba82Rnr3iKpU0gKD5WD3oF-_43rdD7T+REEQ@mail.gmail.com>
+In-Reply-To: <CALzav=cJmgG04+Ba82Rnr3iKpU0gKD5WD3oF-_43rdD7T+REEQ@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 12 Mar 2026 21:00:19 -0400
+X-Gm-Features: AaiRm51GTpcl9Y1xewqBoObbD5fxW5xRQjRFOFdPyL_QXAS4XNVVlbgb9vcN1yw
+Message-ID: <CA+CK2bDwNjiCbLXzBuh7Q89NFi59NHsQjwwBy8iRdyJ-5cMyrw@mail.gmail.com>
+Subject: Re: [PATCH v9 4/5] liveupdate: luo_flb: Introduce File-Lifecycle-Bound
+ global state
+To: David Matlack <dmatlack@google.com>
+Cc: pratyush@kernel.org, rppt@kernel.org, skhawaja@google.com, 
+	rientjes@google.com, corbet@lwn.net, akpm@linux-foundation.org, 
+	kees@kernel.org, davidgow@google.com, pmladek@suse.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	nicolas.frattaroli@collabora.com, linux-doc@vger.kernel.org, tamird@gmail.com, 
+	raemoar63@gmail.com, graf@amazon.com, Bjorn Helgaas <bhelgaas@google.com>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773363163-8669
-X-HE-Meta: U2FsdGVkX1/6hSiH2dHRbqnAqax8iIJ34Nw772BA2/s3e49aa3xvCssjoYm+Wn3xhDqvzB2XXjZgHQ+YKZQQNIkwkpJ1TLOWtKH4MrtQ8QpHGJmeCD9Js+Z+ITBI8dhtHw6E72CoccQtXh2Lc6jJ3fb+wASWP+ho3wJ6lOc0G5056/gK4WAe5U3cWapcz5S08qn6wJ8Jpq6Dw+AWehLnhKvVlIvT0faUe6FgW92kbXKxuWQBzyMQbn5vE/EmYtJsY94ZWC9uIpoftVDQlEuzRJyfxpbFuC5cXwXXj49fD/Z4K/uJS1nMMUzu9eUsPtgBEqFqegoabXXugO1ap8a7WDy4OPbM3NCvKS3Ov/XscYKbuyHFw5aI6TwhburTnwzdiTlycVuKC3121uvLlsfnCkqZwIwkjJJWf4ffTgwag91IGlP88Ry/RzTqEn2WnUQcNxSjZJl+b40FDOkaVIQkswSvs8s/zG/Kdw8YZ51Z4YDI2f2YZwBkMnjuSfBrl02huJKe2nPRpngC8ZbR9aiQok/D1Ejm5yiVkbDQ5QAyGKiS6nhpm51mHoY0rYtAAvVsgt12lN952THPxygxRdRwpiAcecjarT3PyclMFGXVC8JyTfNNzXfDl6bjEi8qiwgEeXOPQHjGe4yGlvao/tQSeBYKImGz2G2I/e+t0BYoS67dOIU1D5jArnAG4wn3+f78TjOa4xPHHwLhGubTYi7O6ZPtpr3R3hLFK4/WU1Jbp+KOp/Ze5Poju9XENFMLqscVy+NxejSQsRGSoN4wc/1LHD8ionoN74ONB4VejVIJ7IjGOOvHypGE1CajQkqPZc+B0VL5QvCEm3mpPJQNzmxhsV3bOiLpYGBQit8p7V8AZesL53ZLid5RrqxvlGdSpe+K/nH5CMNYcfNQs7g2MjWVBQtNck2znN23EFwan0BSdH1Szu5KyOkT8hrUqVoOAWpP+4zEVuLwbhGzwHxbigR
- GYP67AS2
- hFJdnAHpy1urK0ZRSE+XDZTssyJg+FLPTrnx++Sc/C0/UpA4QQ3qlzjhBibWujMp9ql/1e8ewm1F7ldkVkBtkuUP/WQ4vWGAMo41mkca+mF+SU+S12EE12LWYb/leOuN7ajuiJEp06daw8ENaaRKesQ/fKexntxvdxuVR+DgeGnEUdcvC+SQ5flqa8xxFhClP8HMIRnlbFULtzyp2tjeSlQuw2HsA795HM8oBFEfwjosuzfXftNHepyoFsVjbcKLzI4Oc5IL4BLPgj2Ke9XX6OIreeN0qwcruu+vTYgt8f3Rxd+9zgClBdrqtYJHEvqzOmlmuIOUoN3mzCR8u7tO39Yad0+O+pAX56Ik7atXuri3DZ1bdoT/t//BuCiO1211mjMQi9IS80GKdQROB7qbW0XHCag==
+X-Stat-Signature: aq7bdxznqxspiajg7mtc5c4acn9fse5j
+X-Rspamd-Queue-Id: F157A1A0016
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773363657-453805
+X-HE-Meta: U2FsdGVkX19mmxgaFZ9J9NZHNY13QCuFSP12aWyH1pgUvq21/+obLfq6on1BYXe2DNWjQqUFX6txpTv1XYsJy/WkeOMKjewXWQZrdpLqP/zOfqhy3KUbaFZsd4WaWKWZWLWLWbO9BukgDlN9ggpZaAiN+nGerFv4JVZi/W805kVyuX2YQx7Cb8EdgTKV286VCZVByk/X52csDdsLw+s2bkS04+09iC7zExpd+hIFVCObmmCskHq+aQ+OY7M2+oYPfaW1E1sB+QGeF7pwaPT/S+nsRF/1qygYDYFqa8b3LJj/NtpGdKgWZh2lpfxF00pbPSFrR4jgwCy4WkNCvzqBPzwZMPWWTfk1G9BWnB6JABlR9siRFCESLu4UCokjM/xQ/5Z8NviPN6cCUq9fxLHHap3DcNWKcxNQltpcJK7PndaKQRj/oCXPBzLsCDlS+bKwGdZSN+ZyIGuM8mul5cVWZTFwHFe1ad9JY9RoT1prrVOeRM85n1x+eg3tH1VscSp+s5DMxRBknfTGfB09WPc2KvkiDvLj3Uf+6pEkUdt29W9/VSJPJo9SnXLpEn7HFwSqtsjouubzTzijOE5j5d5P2PMAH7pahXzXRT0aB9Hzhsj8wIoYW3FM1TT6+RyaYWpJtUVStoINIKEIxF81neBz+iGoOdLG7fh2xs0w115oKlobVFX6kq1s19Qo4Gk+pOuqolUpVby8cPeOhnP7qDRUSJv0WfYg8Xe3tBZ9c6YvyeiuMkkSseISfQEwk9h5stLX4xaYCf5co3DjHJxCwMMHsYNqQxq3HUwAhubrfsYwR1/ByMCc5xW3gBVsAoRzfUrv40Tsa7o6EaP9jWtodOpe+Lqlze3Ewin/O3cFWkL1I0HBWGMgVr5WAM+E9sbBcXd+1JzApE0v8qhbU4CqU93Xge8qyorO4aN8jd9V9xIdLCW4Q3BuII89SPnjRJd3wZgtoMvk5OYgkx/g3FAvYgh
+ lZCWVx4x
+ v75VxkeTDcKTP/VXjfAuAkhM13Z/U/45S8kpbSsKZgzrIPlSZANC2bIUgNzzG7ZSQg4hs97SpdW9wKNopLAcFzWPbe7wpOioqumbUjtCmvAc6c+qDRNmyiBK2jJpRv+HFk4a9vzOWCLABIvfWLiU7i6eaasjIMAPm8AHcPg60HIXoWX6UuHhLzRfPdfSP5kHB17aI/46GqnRwFYEW9fFUM29nzm0uhV7dj4IlbAA1boBqfyuGKICyVEReh6PAY7sjvRywzFXZHBBSDD68+SZyErwcfX9gf4vJuQTKwhizP3kluXKTmHkz3fKHTHW73NoRefxUw7V2f2kB7NhWOwTj299JFkGXIma7g77SXppyrlrPeeJe52OaB6cpalj5K8diI/sw2VU7A9xAIkgVrgn37jWAI8Gm4rSvFMY1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,23 +145,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 12 Mar 2026 17:16:30 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Thu, Mar 12, 2026 at 7:59=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
+>
+> On Thu, Dec 18, 2025 at 7:58=E2=80=AFAM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
+>
+> > +static inline int liveupdate_register_flb(struct liveupdate_file_handl=
+er *fh,
+> > +                                         struct liveupdate_flb *flb)
+> > +{
+> > +       return -EOPNOTSUPP;
+> > +}
+>
+> I think LUO could use a cleanup to return 0 in all the register
+> functions when Live Update is not enabled via CONFIG or parameter.
+>
+> I think all of the users of these functions are going to want to
+> ignore -EOPNOTSUPP. memfd already does.
 
-> > By the time migrate_folio_move() runs, partially mapped folios without a
-> > pin have already been split by migrate_pages_batch().  So only two cases
-> > remain on the deferred list at this point:
-> >   1. Partially mapped folios with a pin (split failed).
-> >   2. Fully mapped but potentially underused folios.
-> > The recorded partially_mapped state is forwarded to deferred_split_folio()
-> > so that the destination folio is correctly re-queued in both cases.
-> > 
-> > Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Fixes: dafff3f4c850 ("mm: split underused THPs")
-> 
-> Seems the commit is merged in 6.12.  And I assume the user impact on
-> THP-shrinker enabled systems is visible.  If so, should we Cc stable@ ?
+I would think EOPNOTSUPP is a standard return error when a feature is
+not enabled. What if a component would need to do something different
+by knowing that FLB is disabled and therefore perhaps it would also
+skip some of LU related changes? I think it is a very minor think to
+ignore EOPNOTSUPP when checking of other error types.
 
-I think the user impact should be visible to backport, but the
-changelog is elusive on details?
+> > +static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
+> > +{
+> > +       struct luo_flb_private *private =3D luo_flb_get_private(flb);
+> > +       struct luo_flb_header *fh =3D &luo_flb_global.incoming;
+> > +       struct liveupdate_flb_op_args args =3D {0};
+> > +       bool found =3D false;
+> > +       int err;
+> > +
+> > +       guard(mutex)(&private->incoming.lock);
+> > +
+> > +       if (private->incoming.finished)
+> > +               return -ENODATA;
+> > +
+> > +       if (private->incoming.retrieved)
+> > +               return 0;
+> > +
+> > +       if (!fh->active)
+> > +               return -ENODATA;
+> > +
+> > +       for (int i =3D 0; i < fh->header_ser->count; i++) {
+> > +               if (!strcmp(fh->ser[i].name, flb->compatible)) {
+> > +                       private->incoming.data =3D fh->ser[i].data;
+> > +                       private->incoming.count =3D fh->ser[i].count;
+> > +                       found =3D true;
+> > +                       break;
+> > +               }
+> > +       }
+> > +
+> > +       if (!found)
+> > +               return -ENOENT;
+>
+> FLB users have no way to distinguish between "there was no data
+> preserved" and "there was data preserved, but it was not a supported
+> version".
 
+Strictly speaking, FLB doesn't have a concept of "versions", it only
+operates on compatible or incompatible data strings. If we find FLB
+data but the compatible string doesn't match, we have no way of
+knowing if that data was even intended for this specific handler.
+
+> This is especially going to be important for PCI [1] since there's a
+> big difference between "there were no devices preserved" and "there
+> were devices preserved but the incoming kernel isn't compatible". The
+
+If the incoming kernel does not find preserved device state, shouldn't
+it just be treated as if no device state was preserved at all? In that
+scenario, the subsystem would fall back to standard initialization and
+simply reset the device state.
+
+> former means there's nothing for the PCI subsystem to do wrt Live
+> Update. The latter means we should probably panic the system.
+>
+> [1] https://lore.kernel.org/kvm/20260129212510.967611-3-dmatlack@google.c=
+om/
+>
+> > +/**
+> > + * liveupdate_unregister_flb - Remove an FLB dependency from a file ha=
+ndler.
+> > + * @fh:   The file handler that is currently depending on the FLB.
+> > + * @flb:  The File-Lifecycle-Bound object to remove.
+> > + *
+> > + * Removes the association between the specified file handler and the =
+FLB
+> > + * previously established by liveupdate_register_flb().
+> > + *
+> > + * This function manages the global lifecycle of the FLB. It decrement=
+s the
+> > + * FLB's usage count. If this was the last file handler referencing th=
+is FLB,
+> > + * the FLB is removed from the global registry and the reference to it=
+s
+> > + * owner module (acquired during registration) is released.
+> > + *
+> > + * Context: This function ensures the session is quiesced (no active F=
+Ds
+> > + *          being created) during the update. It is typically called f=
+rom a
+> > + *          subsystem's module exit function.
+> > + * Return: 0 on success.
+> > + *         -EOPNOTSUPP if live update is disabled.
+> > + *         -EBUSY if the live update session is active and cannot be q=
+uiesced.
+> > + *         -ENOENT if the FLB was not found in the file handler's list=
+.
+> > + */
+> > +int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+> > +                             struct liveupdate_flb *flb)
+>
+> Alex Williamson and Jason Gunthrope both suggested this should return voi=
+d.
+>
+>   https://lore.kernel.org/kvm/20260303210733.GG972761@nvidia.com/
+>
+> I suspect liveupdate_unregister_file_handler() should as well. I don't
+> think there's anything callers can do if unregister fails.
+
+Thank you for the heads-up; I replied in that thread. We can clean-up
+some of the return erros, but I am not sure what to do about -EBUSY.
+
+Pasha
 
