@@ -4,117 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF15106FD9B
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 07:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4593F106FD9B
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 07:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB08C6B0005; Fri, 13 Mar 2026 03:31:40 -0400 (EDT)
+	id 74F956B0088; Fri, 13 Mar 2026 03:35:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5E726B0088; Fri, 13 Mar 2026 03:31:40 -0400 (EDT)
+	id 6FD456B0089; Fri, 13 Mar 2026 03:35:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95FAC6B0089; Fri, 13 Mar 2026 03:31:40 -0400 (EDT)
+	id 6096B6B008A; Fri, 13 Mar 2026 03:35:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 879636B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:31:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E0081408B9
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:31:40 +0000 (UTC)
-X-FDA: 84540219960.17.C186E43
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6F67E180005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:31:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LlmGVkWk;
-	spf=pass (imf24.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3986B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:35:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B49B4C2AD4
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:35:09 +0000 (UTC)
+X-FDA: 84540228738.06.196F7DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F1E12C0002
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:35:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N83u8HMX;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773387098;
+	s=arc-20220608; t=1773387308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I1uzZX7sv7myV9mNqzucwtZS5S1busM0uO/n4issQkE=;
-	b=hbMbtOF9bIVWUaNha21S3/8FWZ6NB8Gg8cPq5cEVu2wYhjEqmGYvwICW11sMk2FyYrRocQ
-	wItsJd3qy0AJ8l2wYm1ZTXZBdWe5Clc1ac6QAh40HNPvhFk+o/sjvZIEpnYEVBS6RNcDZj
-	f+whikawADvJmhE9u1gsxu3J4dHJM8I=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6yBHNyLw/y2vapwOdMtHRlVAC5mZz4SBSyd6QYDwdK4=;
+	b=aFJI1h7uqziM12qot2rn4HqaS1njNFGJ/gyKM5v36AVlMTx5qsP0qfdaqJA8Px58EjJsCy
+	2jk/KC7llkuOMcOQQHcEdcqRDM4uTVSGDhfmFYj+uAxzjOEClpbEVMQ7BLp42hY1yUt+oe
+	0nGmwiOHPkVYHpzxfekNKGMFEw6Wbm0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LlmGVkWk;
-	spf=pass (imf24.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773387098; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N83u8HMX;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773387308; a=rsa-sha256;
 	cv=none;
-	b=mpdKk8cbOZ2Dy3L0oQ8CwjJjPZK5g2kFwP8V/fIngVNXQ97OzJHDeTs9Xzp1oAm5o4B0qD
-	uwIWLgiWtFBOsdPHAipyQpmVE6uVfOtWA1+JgjVEutMni/p+M1nOWfihaozwRWqermgt+Z
-	k9NQweJNKUBUoFi/cAwQaWlA22R2sWk=
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a1322af04fso2251711e87.2
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:31:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773387096; x=1773991896; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I1uzZX7sv7myV9mNqzucwtZS5S1busM0uO/n4issQkE=;
-        b=LlmGVkWk3ceYP09dsykV87Vwrcrv6v121y2jxHoezuluiu82Nbtx0dcPoqxiEFff7J
-         tfHxF6ThWriKZdBUzmDAHfBA7nwFSEwowF3urvacJBIvgCz+nrUojjBhyrqaxU6CjOsk
-         oXtJUBTM0ioB298unS8iqXXq8EPHIosEGqEmv1kkjdzRD6r0mLW4L+0d7y4WRiQeAp7m
-         pOYSxn1b3GRn3seokM2NAkNAo7WR5JFJ+JRJoee3ryPGInialbC+KjK5ZUUi9VtUcWI+
-         KuEusmgYXA7C+ZJcykY2esu0wlkGPJWqqHIYZ4WOzI0vyg5mPfYg/rITBOGmgrL+Yqx8
-         4r8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773387096; x=1773991896;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I1uzZX7sv7myV9mNqzucwtZS5S1busM0uO/n4issQkE=;
-        b=TlbR9Kgl35AQ/w+cptn/oAN4OEE5vKFHby8kDfXjSPyp6WaQ4zWCpasO9VvXAbZSE5
-         y7+nFOPM8M2/oNrpsX++6w+x6ldwDZpMfLgjFM7tdIDtRnvrHruPzroax3PfYF6tTI5g
-         sHqCjGr9/T6Y3O5eJ5Hs9qz+BU524vwiN0I3NgxeIpjOsY5hoILRXkWvEy151VblH+ig
-         rHoICETmUAmXxkGOGjyoQsvtCZRoedf4z7+pRgWo3hsSuzKWNWxyaUVOFujFjrMnu0yW
-         Y63Lpp+KDB1hcaRx1ZPtwtsZiYt3v6ReqSKNQnZfiacQbO/pliGCBg+Ig2m2zdqP1oAa
-         KlZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtkcMQWB73gjLLl0fVaSOJ3RUV+qIWkm/ircWAGTnyXmSIf7+4BD20Zdafn93yjMcJEHbPzYRtMw==@kvack.org
-X-Gm-Message-State: AOJu0Yy6tvqPEoemRQH1Gbn4msxUtbRyrkx8I4Smv3gIwfnFgCX4BggT
-	GBpgyouTnNUHAGrXEPo0p3fkO65ccN07fKJyasg6csBwkksXURbnuLY3
-X-Gm-Gg: ATEYQzzxyNcBi0oV7G0ewU3aSynpSqWQBeLWzW1l5DzGw4v9W+3rGTHJaWajLYgcnQ2
-	IMyWeRChKMzRTFVdVZVHmsyEqNgZXKpbtDpXuhnldQ04M2+GEHrPKb9evdrHwhzuGKFYHKupaF/
-	BZ+VL9dUgx7YYyHSHYiuj18M6+857R62RHEYco68VNkzd4EupwMLeWlywuToZIR1lujG/F8gXtl
-	Km8MDWfLYhsbajDtdPIQ4eWgheSl4YPF4xAejX3H5AAGAXPDBUoCheApgbGE4ddjgghfqsm7Q7V
-	lwSM5CzhaK1KEiML/eYE6Nrp+MHneLVCpbY9qqkAnAxWP/bygqcLusMjdK8z64dvMB657lWUANL
-	/YhQW6aTpYM4gpaSdKOv2anuZIoZFcbTww7dxvtv82QKr4Jnj4bx5vs9oV2ekL3U2WfMUDM53r4
-	vpxY3a+hMfdZG3yT/hEFjs8AXu2TRSOBSHtMot3+pHPFjXI+xA9yiiCCFpgoJ1A/vdaBZqqk0mH
-	AJGVoza2A==
-X-Received: by 2002:a05:6512:24d5:b0:5a1:24b3:d6e5 with SMTP id 2adb3069b0e04-5a162707017mr612711e87.15.1773387096234;
-        Fri, 13 Mar 2026 00:31:36 -0700 (PDT)
-Received: from ubuntu.. (static.159.107.27.37.clients.your-server.de. [37.27.107.159])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a156162b08sm1329379e87.53.2026.03.13.00.31.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 00:31:34 -0700 (PDT)
-From: Josh Law <hlcj1234567@gmail.com>
-X-Google-Original-From: Josh Law <objecting@objecting.org>
-To: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	Josh Law <objecting@objecting.org>
-Subject: [PATCH v2] lib/maple_tree: fix potential NULL dereference in mas_pop_node()
-Date: Fri, 13 Mar 2026 07:31:32 +0000
-Message-Id: <20260313073132.159184-1-objecting@objecting.org>
-X-Mailer: git-send-email 2.34.1
+	b=R+eU7wGcYuKTMeyUE7BoXNDHbrmArDELse7rofpLj4o7TAPdB7BX9k5mJPp08/095DSKix
+	uzjZrqgTg55zJbvU+rmjnuIDqhGn5cflJMfPJ5RQa3GRLVZ1qamHu+opTAmU1H+PuddpaN
+	3gpY/PUE0q0Jrx/68XqKlFsb/3ECxhA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C30EE435B6;
+	Fri, 13 Mar 2026 07:35:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EFCC19421;
+	Fri, 13 Mar 2026 07:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773387306;
+	bh=Hy/mm2FsSo89H25fWq5uQIiSYeWoevbFUmwsH1lsJuw=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=N83u8HMXtvCVLJvM0Qtnh7rp8ZYDXDV3zSGJJlxrw7EO3LdCgXskApIiDntE5QLWE
+	 bgvfmNy0YBMtskCCSui9ml1GBpso1MZIueVAoF+Crq4Uo97+18N5Da0FjBEyTZU7UH
+	 +z0QgiUzwBrp1E3eViLT81M1Lx4SAjJpt7A9PktX3lcrRynB9HARv3ed2ExqZYkTDs
+	 chrUBFgVqgbd76j9tINjsN6Q1aWl4Qs/5ymqHl8BSA6KIAf0qywEbAiyV+3pU9vv8l
+	 SK59nFuiWD3WE/Xs8NmRQFmBNJPc3CmZXelLF+2VnEL56i7aQwpcl+JZgWaj8+yDWZ
+	 6lSMNBz2xwgZQ==
+Message-ID: <60f71f4c-71d9-4751-8c6b-10179b98bef0@kernel.org>
+Date: Fri, 13 Mar 2026 08:34:58 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>,
+ "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@suse.com,
+ apopple@nvidia.com, axelrasmussen@google.com, byungchul@sk.com,
+ cgroups@vger.kernel.org, david@kernel.org, eperezma@redhat.com,
+ gourry@gourry.net, jasowang@redhat.com, hannes@cmpxchg.org,
+ joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org,
+ muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
+ virtualization@lists.linux.dev, weixugc@google.com,
+ xuanzhuo@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
+ kernel-team@meta.com
+References: <20260307045520.247998-1-jp.kobryn@linux.dev>
+ <3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
+ <343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
+ <874imkpba1.fsf@DESKTOP-5N7EMDA>
+ <cd3d7e2c-79fa-4c00-89ad-83beddf98bae@linux.dev>
+Content-Language: en-US
+In-Reply-To: <cd3d7e2c-79fa-4c00-89ad-83beddf98bae@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F67E180005
-X-Stat-Signature: 9dxwjw9utuxf396noin3jjj63tgb5utb
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F1E12C0002
+X-Stat-Signature: mzkapck5u17k9nzi4hynbjuyc6ihftns
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773387098-598762
-X-HE-Meta: U2FsdGVkX19mU6DTGQF5p48hGSgXoLta/u2JOfN/cEg/ZFd2Z6D+oObb5poDQwNO1rcS+DHxdnIwybY0zYsmXbSGNeMsvv2bB5LEoXcccWN7NOl7OzaJHa63bafsai9LDOJTpsN/V1FxczED8NqRtwnU9e6A7u2SvU3/NBAYfOrh/GGn6WXW3VDCmx1uFQliDx/awYOnE7q462bCyMpgOeRSNNI0gJoWOkeufNhgcsyhDO8q+ftbTMPKUQ+6v7njZWC6V1wO6UJuoNxajyPshSXpbiKY5m9KdLZq/4Dg4KPvEmsN/q0HbQKHtEmReSJKj+za1XXVykrxcTJtMmfleNyXq1eMyX3rXmou1QNy7eYAN4ii6u6lEG4jKfvm2tbhna9WfhU+9AMYEdCw01Pk0YedtN/KlDPyqfTOGvsWq1G1a97OM9ZyrTphNrRvK7+2RHUNpD+/LPXjqCQSBkz2VFBTalHcwwveul5pXxcFeO2lkJrvvssDx0LjGVHNe8+Nzdgx38ZbWSZ8MGE5TWDp11wkzuG1XEhzX3jw5Zrgk3uAxLqwXH8Oa3s9vz9PzokEnV0wyTEDXHTARpL9LXSbnH+2lNoa1lWxtNgT5rzltEgnPJ1HBmzWQwfaDB3SBfNkDidaG1RhqLYUqtOPB0zTLEhMcV9VWZSZdH0nQbKvQNo+1tZLmiHgX++BZWkaBbA12uFGVIpf/T0PTkd/ccW5biFU0eEmes4O1bXsw7baek0GvjD9bA6XJUspjpB2O1J1rnkhrZORztW+eOBjG9lXqXXrJjlNt+tAPJaeio5o2rFILEtZzVg3yxcA9eQ/EwFE1K9pn0ksvRgjvZVQlycnhEShb2u4jlFYQd5tH5x1wY9bWYMJi+dFJ7qcTMz07k6moKRv1K6FIgUaJtwK3o17auvTOtg8rJ+gDs0LwidHmEsgOnm1Wy/Lghcx8iUCjXeTBUR3g9L53BsF1GP7YFz
- Qi8Xjnzi
- 2JdVvc+ZNNtyKXnnLsJIuFIT2fA==
+X-HE-Tag: 1773387307-206543
+X-HE-Meta: U2FsdGVkX1+xVqbOkOqwpMpy6QNtTq+u30HYNFM1hMG0n1gn8gZ5W+BrbtkpdS0Ub2qgALNMuRavknJdT+zCjP7sp9gAmB5dMCtsGXu1PYlOW0+8Q88aMWwXTmHIqG5DM9zwNxWniZpIVr4a5P7zMS6kp48pnINzFwEUR6IRxjkbv2z1dg8/Skn70/D6q7LrbyOU8FgZ+URnuSrHcdhih8/O0wNdkGsfByoC2GkS93CzduU4ZMHL1trNzZrWnAZkmng3ZyeWZCiwQeqDrUZFvWnbIS6IbIyBymhDFH7Uw6UcKoL28z6Zl/eYlHYnlMLmN1DwGPIX9nMj9vRGlxevxiOyx010C2UFIkyeTjQbQ2MVexAWNd3katH0emDk0MF1d2/UavpRIosCmfpFf/PTTza2VFpDF/OGcFmTAtTmHwsSn9ptUNNNMoBrkH/Ev+AdBcXH/l13eEQc9ABM1js1Bghsvp3RKXTNqESWFgnW5p5BQCfiMJ8o2DxJE5lubx+eCU0bY9mmRNAeOZI34hSAGeJUW3M6rDCLzph+x/Jb1Fn4Iz+RJP0/NVHMNQx21HBRz1zUQwmHh3L/r+V253+eE56vYaz/oqdHE66d+gWZI8ERgfI0FkPwUolX1CI9omgyml8ESDP4vCocEAeMSqtLPLlakSxOD2W+wl5uK3IkfM3MevRumD55KvwIx7+FlO/VVdLgeX9iJF1y1kK2b7u4pz2pfkjZgzKlFyfr6bjYCZfm73cpPeRY8SZwNjvn2QIkmg1lAi07Kyg88SRUw/hOB9eoNWEvo5wE7vaNTwh4KiDRVnxAqdzyZoguyv7438uNEvIYpMhuI+M3qYr8eF703+Gn2q5j7snWBPQyfUEHZvNhuH6m3onqln7UwgxXLluOAb7Rq9yABQbK0XtQpq7MuN9RRcTSFWullz7/tV/H49q1s8kmHS1OwUKFK07cL7BKpLRjihI6afU0SjtBoLW
+ cKsrAjpE
+ 2rGJ/axp/RhBSgeBP3ctvhR4SjBWKsGWSouhhfx/xSQVHiayXZHegbPqVEWvBxAnKWjpcR8uIYHfXpxF+J+le6quk+TpFHCU1VSr6haQbmxS6LARgPK3PTcqDEGXazW32em0frbSRkq0CWYop0uZGeVNmfF3nFmBcC/fsnOMcQGKjuM/4CjXTglHfYl/t6pPrzpBARXkp4e4ZG0LSPyJNb1/x2DfXXp+x8x+QrynjUL7JNkMF9CVJB2rXnVrQwNGRM6u4PL/VAUMdlDxt3LJ8KdEtwwEcsqj/EawMTDNGs+BzKwO7+f9Z/nhusMrAGuVYHPDqZtWJq8RcD7U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,33 +108,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If kmem_cache_alloc_from_sheaf() returns NULL (possible under
-GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
-and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
+On 3/13/26 07:14, JP Kobryn (Meta) wrote:
+> On 3/12/26 10:07 PM, Huang, Ying wrote:
+>> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
+>> 
+>>> On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
+>>>
+>>> How about I change from per-policy hit/miss/foreign triplets to a single
+>>> aggregated policy triplet (i.e. just 3 new counters which account for
+>>> all policies)? They would follow the same hit/miss/foreign semantics
+>>> already proposed (visible in quoted text above). This would still
+>>> provide the otherwise missing signal of whether policy-driven
+>>> allocations to a node are intentional or fallback.
+>>>
+>>> Note that I am also planning on moving the stats off of the memcg so the
+>>> 3 new counters will be global per-node in response to similar feedback.
+>> 
+>> Emm, what's the difference between these newly added counters and the
+>> existing numa_hit/miss/foreign counters?
+> 
+> The existing counters don't account for node masks in the policies that
+> make use of them. An allocation can land on a node in the mask and still
+> be considered a miss because it wasn't the preferred node.
 
-Add a NULL check after the sheaf allocation to bail out early.
-
-Signed-off-by: Josh Law <objecting@objecting.org>
----
-v2: drop WARN_ON_ONCE — this is a recoverable allocation failure,
-    not a state that warrants a warning splat.
-
- lib/maple_tree.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 739918e859e5..1eaaa5f964e9 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1063,6 +1063,8 @@ static __always_inline struct maple_node *mas_pop_node(struct ma_state *mas)
- 		return NULL;
-
- 	ret = kmem_cache_alloc_from_sheaf(maple_node_cache, GFP_NOWAIT, mas->sheaf);
-+	if (!ret)
-+		return NULL;
-
- out:
- 	memset(ret, 0, sizeof(*ret));
---
-2.34.1
+That sounds like we could just a new counter e.g. numa_hit_preferred and
+adjust definitions accordingly? Or some other variant that fills the gap?
 
