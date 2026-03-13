@@ -4,132 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD53107BCE1
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 19:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7404107BCDF
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 19:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C34B6B0088; Fri, 13 Mar 2026 15:42:50 -0400 (EDT)
+	id E84EC6B0088; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27A6A6B0089; Fri, 13 Mar 2026 15:42:50 -0400 (EDT)
+	id E32696B0089; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14F106B008A; Fri, 13 Mar 2026 15:42:50 -0400 (EDT)
+	id D3E456B008A; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F40A26B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:42:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95BB456CF2
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:42:49 +0000 (UTC)
-X-FDA: 84542062458.20.C070212
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A427C180002
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:42:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Q7tFjvt4;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773430967;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C35036B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C8EF13A511
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:48:00 +0000 (UTC)
+X-FDA: 84542075520.06.BB98330
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4FE59A000D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:47:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gQGLqbED;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773431278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L6tap4Xvv6Aj398CJevRoAsoPEctM1t3K/HC/O/0HwY=;
-	b=4ncx64q4ACPmGC8+Io+ADFBdBs8lQSivijNjEFv/u2vhAx3AvN9RZk82Z6F1xo8rEQuZSF
-	dSwFlUS2xXmbyfCUCsvM0Hp0KBQsT2fV+lRGaAXSeOlpP9IKc4ARvUnXB1+O54i7424a6z
-	/TreVm+2DerNDCO7vjHeN0bpEHMEuJU=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Q7tFjvt4;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773430967; a=rsa-sha256;
-	cv=pass;
-	b=gmtGS2xv7+iWe31Lf5JtKYaGF0BcwB56ieEqZa2yxt9YilKLSUWLPGkhZVKA2rSG75D2gi
-	Ow2eBPZdrCRFQaBDap/7ABA83jusgcm/JOdHx+wIP/HWkikg7xfVTwLDQpvxXfRjQset6s
-	dSUACTgeG5M3fXyzt5WGMZ4LSMwnmBw=
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-64ca9ec3ee7so3177608d50.3
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 12:42:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773430967; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Hl6bL7DX+JUO+HzYCXcDzk7UOCj49Pske7HLZj5zXXGZah7DdVQ0/78VxX+kYxbynP
-         GCYdylmncDXXKrjQXRDljgp+K1NFpvKFl6MS1iClsda57vK7YTIUWT+J+oiBP53YwQt4
-         fSdZfbalzKBCg7drX4OD1MbNugJkFI17lqmTFBSz8CDZX2QevztVCpORlBWhEE35NsQw
-         NE7VUIkCWIEso6/fUCpPo7b6KeSlEo+qF0QOlAmslr258p4wh3Mykvk91vOCLxeoejWu
-         UXWPGUI0ycicLPu4TfCBGoztMRtXFXuKEipWw3j7k3f7gp2ujgv+4G8W0a7a5otyDa+0
-         3Phg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=L6tap4Xvv6Aj398CJevRoAsoPEctM1t3K/HC/O/0HwY=;
-        fh=gU6NgCmhyMuS+VbdQprvZMXfizrxf/D+GdTFyTl3QDA=;
-        b=Of4UOf/hUtVFQ6UQ4KYPAFUJx/Orf+bEhK/2ExEmUImjHLG4bzCX9e2cau0e+ix7l1
-         QepYfn7XoA2MJWsC5Zp2DS4wS8KsD1gKpBYsWLNCFGD9E6DoiwopuKdvWZPlG0OE353H
-         c5aiWAxXJYHpQsC1RkwvrA+Hnmk4PK/ZoFxEzrdFa9zVX1EFBobikVuYOepd6ItIecSS
-         WOxwubdWzqSwDXKqdaiuB8U6IzDaAV/yuD/JEBMGzjkb2zVuLYmZ3OnOw1SXkXQh7EOi
-         Nm4rcAaDnB2VMZZjkvRidy74yR2brW7dOgSCOY4J1HYoLSGbtPoXYEPEePkqJpiAvZ2A
-         mSzw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773430967; x=1774035767; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L6tap4Xvv6Aj398CJevRoAsoPEctM1t3K/HC/O/0HwY=;
-        b=Q7tFjvt4f6yc5Y8bwbg9kB2wR9MaHdPAuDYKTUTZqKec8gBY4cpwf02eZYBp4VDJ+7
-         +becbC1s3XGtEgTv9Ad1Qc2nIVOhHDdkVWtWbGdjF8HiRrf5pF8RV8auuI8rl0CD28F+
-         FfQdj+VayhQpZOTbWpWGHr3wP+feAt+/f8Tq00WTZAtrgTDUG9G6+e4pUuAnoDB5krn9
-         +eDX+ABQfE5YGa139Sb9cF8ymDrQHh1JeVhwjzbD8p3cjwazpm9XdgHMV8slKEL45DEh
-         UoqiNt6LmT7aCrjjBvFikWeTvYK/5eLrMSO4DixbcwgLRGkV+i15nwfICJPbHLWpR3s3
-         sgIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773430967; x=1774035767;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=L6tap4Xvv6Aj398CJevRoAsoPEctM1t3K/HC/O/0HwY=;
-        b=dvCByA4k/E1smy1kD15WpqqIfyK+i8gwwhMDy0cbaYAxjP2JBuQRAfGhzc4rv0P6G8
-         fICkdtPXNvsX2BbQUNf3MHshaiEQZ5Y/WYnCu7q9PjAH78YikOycPYfinVfwlpEMFbQi
-         vluXzLSyXSMVlUoClru2NFZ6I3u/BXS+PO5TQMQAeEjQiwOKKomy4+OL7CEuDOdEKPIs
-         crqmN1S7nljUOkcKYZDh17gpwBwqgj6t5OT6rA5Q+fSw3cYw1ECwbPyeLF3gT69xRLoX
-         +EIzqEJGt0LDFmCfUidmlIvh5mKLXjZg1PMu9i3IQx55R1Eg9Hc/CWpEPIgzV1rdlrDn
-         BjdA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5X0MP0PC3xAwNjSIvSo4Jxvz6nFzPfg5PV0K7+q6fkf0WPNmyJDGWwu5kjfSBcnBV4wIA8h11aw==@kvack.org
-X-Gm-Message-State: AOJu0YxkuVZ0zrsRuXkLor1dZWkKi1lhXIC5U8CV9z0o3Rs2kZHz/flQ
-	Oe+ubXrzgdBE1iskgHDJSiT5zwluiG1YDv8BgR6wONM35z6IEE2lUzixQIKML954o5yaYmHRnLe
-	6T+0KDSssVYgq/eDP3qThTjPAmO0a1So=
-X-Gm-Gg: ATEYQzySZd1NY9tbhy//+LSRBdQaVXP0fNiqHzpA048FJ5hqOv1btA8wQ53eMZzO4n6
-	/D2OVDXX5zTmmMYJeqVJQInqqmHVoREMVRMDBREym3ZSkrn0rzvmdwLAwH7GSRtsa2TRyxVHOfF
-	2KG33HOVHziYIlC2ZBesMBTPjMENx3+N/1wokMxW+8eexP2ZztvzpquVnWGX6dsa9yk0kEgLnb4
-	zXGLwXRa+mHygzQZJ0seSAvHGmQLBE61dqSGiArTLq1DPw0Ayw6nEiI5Zs4LyJ4Xt27nKPLxtQF
-	vEwJ/aTyjRonGzz0H2psfjgqmkGfsYXiAiGPtn1OZw==
-X-Received: by 2002:a53:4c08:0:b0:64a:d74f:2583 with SMTP id
- 956f58d0204a3-64e62f32b83mr3773314d50.8.1773430966683; Fri, 13 Mar 2026
- 12:42:46 -0700 (PDT)
+	bh=SPdzeDgO7p2Ex3q8WAh+g8zvKcfA3PAYlObdmzAMKhU=;
+	b=SzDcLNX343Qvv+brGXk5681SsHfrtC2R7A8IzkbkcFwQDzxkjNP3NrZLeo/5F3fVVfb/EE
+	oi0/ZNuNeD50n1BeFepyG3TXCwy54D57BNgkswQnuAnxGZFp8e37zdXMAZJXd3neeRaueN
+	mcBZ/oYI0V9pD3FN2ulyVQKuANVHOAU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gQGLqbED;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773431278; a=rsa-sha256;
+	cv=none;
+	b=F760DL4ZZaXcnwyb6rAj/sCNKCRwHSZUA4OPfVgOxMXTWJ95avxcPFHSkMWb39u2nBJLeF
+	Y+clAaVClKEmgUF7Jl3qU5BGNtRXj3vJInHWP+VRYzQqHjpe4wLKYpfgt0rQVPDpZr2fTA
+	UtKX7SxuWn4oOt9EIEmZy1CKPyggCnM=
+Message-ID: <d3f60289-3ea1-43ce-9271-58c8b79bf7a0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773431275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SPdzeDgO7p2Ex3q8WAh+g8zvKcfA3PAYlObdmzAMKhU=;
+	b=gQGLqbEDWJ7Lau535C9J/+AdIU5R9AQT9hlrQ/P5sl5PpuB6Ny6SsRf5h17NM8uO1B+GGK
+	tKWI8OZvAwF9tGrhepb9MZFTYi216KhN5QFZDJ4eWxrTq8RaNRAJeDBFEVTwTqZooR3cQn
+	5DU8VkkJGblgc2j5LiBsX1aoo2H2YdA=
+Date: Fri, 13 Mar 2026 22:47:36 +0300
 MIME-Version: 1.0
-References: <20260313111702.38667-1-aethernet65535@gmail.com> <20260313145247.46643-1-sj@kernel.org>
-In-Reply-To: <20260313145247.46643-1-sj@kernel.org>
-From: Liew Rui Yan <aethernet65535@gmail.com>
-Date: Sat, 14 Mar 2026 03:42:35 +0800
-X-Gm-Features: AaiRm50ChEh4InPvjYO_yVBmE9ldBcHvaYymROpXYmMM2sWnTfV5xLuyxfxPYQg
-Message-ID: <CAPLv50pLx+Jk+7so9uWrpy8qzOnvSr5QkbJkQL-kctEwkx=qOQ@mail.gmail.com>
-Subject: Re: [Question] mm/damon: conflict between DAMON_STAT and DAMON_LRU_SORT?
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A427C180002
-X-Stat-Signature: 7xs648rkrrzzmdgzwh47dtckas1rpabh
+Subject: Re: [PATCH 3/4] elf: align ET_DYN base to exec folio order for
+ contpte mapping
+Content-Language: en-GB
+To: WANG Rui <r@hev.cc>
+Cc: Liam.Howlett@oracle.com, ajd@linux.ibm.com, akpm@linux-foundation.org,
+ anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
+ david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org, jack@suse.cz,
+ kas@kernel.org, kees@kernel.org, kernel-team@meta.com,
+ kevin.brodsky@arm.com, lance.yang@linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
+ ryan.roberts@arm.com, shakeel.butt@linux.dev, viro@zeniv.linux.org.uk,
+ will@kernel.org, willy@infradead.org, ziy@nvidia.com
+References: <20260310145406.3073394-4-usama.arif@linux.dev>
+ <20260313144213.95686-1-r@hev.cc>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260313144213.95686-1-r@hev.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4FE59A000D
+X-Stat-Signature: pdm9eph1gddw7fmbnxdm4m5eqk3s14ii
 X-Rspam-User: 
-X-HE-Tag: 1773430967-215685
-X-HE-Meta: U2FsdGVkX18pDWmZnfePbbFUiuOG+gW5Y3BWMia/W3q6nlwtLOJIJb0iweSLFy+711aCvk17ZV+YOZAFTpIh3ABXKBePFjfHFz8GwB0sEYf3kFkqEYk5amXNqNqVmCXRiQh4zZOjMv0UCW4uXSpDiW0nTQQByeuAcpqCkiNqvw7S4zLUsg0Zt54ZBVnmsbjmz8yIMCnJgB08BFheGfmEuDQsWvov+0X3yiIZRiawQcnLq7YYt2Ih9OYD5JyyK9esst+XTDxjX10H+zsUZRrBVNXZ3wkybctlndIgc0StLS/vVbA1AXmV0Ajvf1T0Tv1GKdrOP58KJe4LFxwqiwAQWm94CguMUPnHs5IVZiSfi8FYu/v34NyGTgbdSkHNUfeiEeZDjnoJlNk2ZJtoL3Mgxxib0OE8rMwt/6WCvNLvRNhN6D8vyKTyibS/KYS1rdYgbKftP4jCSkzDNXLaTh3VStOVEFYm5BXhOsv1DKKwfAOtk1ocLcerT7ppt8zqjc9I38JQnfZXr98v5JCfSP/xqGvqyrAeosbmeEMyloDOhkrmBbsGEXdYkAFh4ffHkwtJgE5Ef7zuMNc6nR4jRQXAXKr4ajIKhtIrEpwo7TMhkhWirVZuUJoOSejF5vJgR+GUPmEjvaSJud+TRoUlReVRqM5of7bDoPUgXzp+V4yiqql4Xo3EzHJg91CSCUd3bOL4NZZMX9tdRu4588y8s1Lh8mgSaBTzg9RZ3KW7GJkLiXjEFHyD9yA5RAhnqiPtx5KphOb+YMfaNBn3eqIZWcZ/QO2SfUZwnfUMEmU5VfeqSjitUN65OCnioPXAHTdw0c4FqQPrK9pKEdBUGVTzxsKOyLe+mG8IEteHpOxcDDxSl1mY1/zNpPiO3fuyYOMFnxpwW7HhPZ70zzTtrI7VJbjK1LNFj3zz8j4PDIt5aeFG4cefsowPWIJU+rTQHk9F4W3AwP6n5LW9dxzhorjBq13
- grug2IGj
- Sqm9pQbJbBp3fiJiuR71FXkdAAoGwUoTrDAAgOFSceRJHb9zhEZkGNvibmMW8qIIi491aS7Yf+yciNSw39TMzsK3ps5ISeFx7WugwI3UXIgjB1tS6gzfKkMnFAdXMWzD5CGYU8OGemtSXySeZ70BiQl8vKGQEZLzbtCKReczX7jEv74Pe1wvXFd7vUeSuwFPFlH+8HCevXXhAUOAkkwBR6yxTutwI/O9up7RjyZf6Gzmb6Rt6Lb2/NV+xQ92I7zpQK9gsRsFsL/AF2vhjhRO9vxiDvMG5r4Mt7S0oRwBGJLuxmfg7bUxd2FjY48Cf+AQHhHlYwLCoJ2TXzApYYm0RvjN30H1tA35pCPbakchTxYpsspXWLsMwuhBsT/LKOQea678c88cJZoVS9XBNpGfai3dZdmRgZsVgqOlgzIlvRyuk9+VyWK7HHhPMzYApVp5TbQIsgI5NRkX7te6p5PqnUIBTcQttib2ZwqEwXRsOZA3u7yCbZKcDK7gerJFhdewXvMR5
+X-HE-Tag: 1773431278-52404
+X-HE-Meta: U2FsdGVkX1/bJpuAxTVr1tEwX0M6aX8rfQ+FPNa407lOLlJCbAtpwodPNs+hQGaw2KaI0lj8g0MyWrM/miYQe2OxSUuUixR5uaC4ebcNn1BEOQaBOObpVYYsAb8yBUKn2qK3zpmkK1FLAfYdVJNwHFD2YpSxrtD05zkNsmWeH7+bGA1gCAgCfvB+sF79kgxTKl+l2qgUWbBoQuvMOsuID8rjjtlG39YILWi1wDWjlrwTNIDGQwDY+GIJOTaiNeq9E5+pnUEhg+Fvb4kVsCn/v6133ymy5Gvnzp/7O13c6Cn4DYKewTE4radYi20+RrmoxPcWjLS7rrLLBPTpuiEsJF3nZflysu6DEmx56IaVQW25AxmPzypap0fv5TAQL8MO/kiYYhw1Jy5CbhQyRyBgWHqO3+oHcaXqEevrAg4xtPKq41wvFrRWPkxgG4T8cbYbcBDe6p9dibTrs0G2HS9ZUdapWZx2pVmmox/66yoHZWZ9KumHCGFW0PB2qU3c4S4afkh9g03f9DTGdPZ0Bz+ym+KE1j92cjLE84ZQj7LFNL5T72DcQb3UH3WNMVFy8C3twsaM/UGF0UEhJHjv4FdNhrtI0LS4HNjpesLqYdV3jDXWde21jRalEwRnfPU0q9+nsaYJfods2B1xKURkLayteRoYasNNs4d+Zevwoih0Pju962fZrXtJ2IRElk0wmYymqfIqJqk9o2lX8wAXOzonNsW5VMDD0mNxiitIam4S8YE7i82iMj+eheeHtMeu+A5AnN49yuyrR8UE40otYhr9IJAh4qXnblejL+dSBTIvw9Bs1g3j0GSMLKVEWk9z0SPm0cuYl1X3IxPJkWAO0B8J+3Y2joB/5crFkqxjbC6gzRM9lFfcVD+vQiP3WnlXS/WOBT+reN60Kil7YGKonUoIWRhJ8uZuXud428RAxcsjuaI0hvgCFH1IQWYEuvueybz6qAI0WbamBiaABEfUpR9
+ RnrlL3Q6
+ 2k0kaEaDhasW7yHQRYeDDK2AH3LLnUTg5DXgyDr3JyHCL4zHgr7GnNomkGW8SCtYu7oj8poUG57S947vKRmjwlj/XX6rJYB035S7UEbzoYt9YYmJKtKKQhNzDI0WEgTsR+VAmrJoa1sxLpL52rGrt2FO3GTpczNuINp34Lp+iHEd8JJjnKwMyZJIFqGqXE5izE2OgGXVQTfN6vdvKy9FxdeY1n8GonDUOxBad1+hhgtSxsdioczqSWxh0iP3xrmSaxPDvuXLFzOcOJIYHElUzpbvU0aF7M621OdPyOy8HCDPT8DRaQtpk8Fhyx7c783mdwjlVptpmiZZ7SAyCNBxTRe0EZQKGSU6C3HdB779cSQjK7nl1kbs3qg32Wup5xtyU+1Dp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,36 +100,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 10:52=E2=80=AFPM SeongJae Park <sj@kernel.org> wrot=
-e:
->
-> Yes.  But, I think 'Special-Purpose Access-aware Kernel Modules' section =
-of
-> Documentation/mm/damon/design.rst is a better place to document it.
->
-> Would you mind sending a patch for that?
->
 
-Hi SeongJae,
 
-Thank you so much for your quick and detailed reply!
+On 13/03/2026 17:42, WANG Rui wrote:
+> Hi Usama,
+> 
 
-I'm happy to send a documentation patch for this. As you suggested, I'll
-add the explanation to the "Special-Purpose Access-aware Kernel Modules"
-section of Documentation/mm/damon/design.rst.
+Hello!
 
-Additionally, would it be helpful to add a short note with a :ref:
-cross-reference in Documentation/admin-guide/mm/damon/lru_sort.rst
-pointing to that section? I think this could help sysadmins quickly
-understand the reason behind the -EBUSY error without having to dig deep
-into the full design document.
+> Glad to see you're pushing on this, I'm also following it. I first noticed this when rustc's perf regressed after a binutils upgrade. I'm trying to make ld.so to aware THP and adjust PT_LOAD alignment to increase the chances of shared libraries being mapped by THP [1]. As you're probably seen, I'm doing something similar in the kernel to improve it for executables [2].
 
-I may need a few days to prepare the patch properly, I want to
-familiarise myself with the reStructuredText syntax and the current
-design.rst. I'll do my best to send it soon. Is that okay?
+For us it came about because we use 64K page size on ARM, and none of the
+text sections were getting hugified (because PMD size is 512M). I went with
+exec_folio_order() = cont-pte size (2M) for 16K and 64K as we can get both page
+fault benefit (which might not be that important) and iTLB coverage (due to
+cont-pte).
+x86 already faults in at 2M (HPAGE_PMD_ORDER) due to force_thp_readahead path in
+do_sync_mmap_readahead() so the memory pressure introduced in ARM won't be worse
+than what already exists in x86.
 
-Thanks again for your guidance and for maintaining DAMON!
+> 
+>> +			if (exec_folio_order())
+>> +				alignment = max(alignment,
+>> +					(unsigned long)PAGE_SIZE << exec_folio_order());
+> 
+> I’m curious, does it make sense to add some constraints here, like only increasing p_align when the segment length, virtual address, and file offset are all huge-aligned, as I did in my patch? This has come up several times in the glibc review, where increasing alignment was noted to reduce ASLR entropy.
+> 
 
-Best regards,
-Liew Rui Yan
+Yes I think this makes sense!
+
+Although maybe we should check all segments with PT_LOAD. So maybe something
+like below over this series?
+
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 2d2b3e9fd474f..a0e83b541a7d8 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1116,10 +1116,30 @@ static int load_elf_binary(struct linux_binprm *bprm)
+                         * the hardware cannot coalesce PTEs (e.g. arm64
+                         * contpte) even though the physical memory and
+                         * file offset are correctly aligned.
++                        *
++                        * Only increase alignment when at least one
++                        * PT_LOAD segment is large enough to contain a
++                        * full folio and has its file offset and virtual
++                        * address folio-aligned. This avoids reducing
++                        * ASLR entropy for small binaries that cannot
++                        * benefit from contpte mapping.
+                         */
+-                       if (exec_folio_order())
+-                               alignment = max(alignment,
+-                                       (unsigned long)PAGE_SIZE << exec_folio_order());
++                       if (exec_folio_order()) {
++                               unsigned long folio_sz = PAGE_SIZE << exec_folio_order();
++
++                               for (i = 0; i < elf_ex->e_phnum; i++) {
++                                       if (elf_phdata[i].p_type != PT_LOAD)
++                                               continue;
++                                       if (elf_phdata[i].p_filesz < folio_sz)
++                                               continue;
++                                       if (!IS_ALIGNED(elf_phdata[i].p_vaddr, folio_sz))
++                                               continue;
++                                       if (!IS_ALIGNED(elf_phdata[i].p_offset, folio_sz))
++                                               continue;
++                                       alignment = max(alignment, folio_sz);
++                                       break;
++                               }
++                       }
+ 
+                        /**
+                         * DOC: PIE handling
+
+> [1] https://sourceware.org/pipermail/libc-alpha/2026-March/175776.html
+> [2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.cc
+> 
+> Thanks,
+> Rui
+
 
