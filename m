@@ -4,131 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 014AE106FD6D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 03:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4CEE106FD6D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 03:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CB8A6B0005; Thu, 12 Mar 2026 23:35:39 -0400 (EDT)
+	id 09AA96B0088; Thu, 12 Mar 2026 23:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A3676B0088; Thu, 12 Mar 2026 23:35:39 -0400 (EDT)
+	id 048516B0089; Thu, 12 Mar 2026 23:39:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AF956B0089; Thu, 12 Mar 2026 23:35:39 -0400 (EDT)
+	id E96C46B008A; Thu, 12 Mar 2026 23:39:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19D1F6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:35:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC473C1F6C
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:35:38 +0000 (UTC)
-X-FDA: 84539625156.12.2BC822E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4DED0100002
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:35:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QOyegFzS;
-	spf=pass (imf14.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D5ECD6B0088
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:39:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7135316071B
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:39:50 +0000 (UTC)
+X-FDA: 84539635740.18.91E0F38
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 84372C0002
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:39:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EgIIL+Az;
+	spf=pass (imf28.hostedemail.com: domain of seven.yi.lee@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=seven.yi.lee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773372936;
+	s=arc-20220608; t=1773373188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/8O0y76Sw4nNgrZ1YSQxVhOgzkbUj1DKbmac8/V7rFE=;
-	b=W0VJnF/q3zLByPFh0JzCh/MigToYXC8T8xnJ/qOZ1/YSAJyBa/k0ptxkH5msMQE58RPmTt
-	LqbDhSf2fhTyBq8/kKoBj1Y1pqaBVWGBLQF6adEmHC5hUC7Cjp1BxLEDNu2VhzLC736sP1
-	BgIFLS/7GpM0btz0xqMoNbSPq9MAkYo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QOyegFzS;
-	spf=pass (imf14.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773372936; a=rsa-sha256;
+	bh=+INjjQWlNJIxV6k0ZvQsdBiZDFnv72NM4m8hFvOy0+Y=;
+	b=i5kVmce03gDRCHl0IAwMMzYMET9eUMPoI6eFQdyLfBcGBuPtsPKpf43ZWdD3YC733InE+W
+	cJnV8aG4FLtQPnU+bsyYsaCgaykcAEyBSEJHqPEz8NeL3ha86lhAMBDvVv9q6FnIUORRVu
+	UIGrcE/Q3crO1qByvFPAAfrknq46HF4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773373188; a=rsa-sha256;
 	cv=none;
-	b=Qrh0TYYijGxK8LyLHiB9+TVX3OB29qGgUBeOu7L+GNe0cH1fcjt42xNBXy0+yfOBqjbejM
-	vChBrnt2jBCwWPJmRwMsq++wWSPqoMMh+qkBAgPf0b3iU9eGXNQa4r6ru+KNj5OTaOsvrt
-	pJ/fH3pGz941nT7ueHlhKIzjnpPsxew=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773372935;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/8O0y76Sw4nNgrZ1YSQxVhOgzkbUj1DKbmac8/V7rFE=;
-	b=QOyegFzSbGdIdohuOj9c9QGmdG8Znk9YMdegPYkbKYFjmaqHXe/kNxCoBqxZMo1XiA1S0h
-	h/nyziLEUd/L9hGjn/G/iAS9/iIxs/TmrpIA1RUpTUTne2rDYwJLD2Y9VC4r/JtigvKyTJ
-	c8xPcUYXDwIJucWcCCeL1o13huw47Cg=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-SAuV-RnZMo2DjD0Qqnrt3Q-1; Thu, 12 Mar 2026 23:35:34 -0400
-X-MC-Unique: SAuV-RnZMo2DjD0Qqnrt3Q-1
-X-Mimecast-MFC-AGG-ID: SAuV-RnZMo2DjD0Qqnrt3Q_1773372933
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ae53ec06b0so111393385ad.0
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:35:33 -0700 (PDT)
+	b=SCWE2VDHV7QZmJFItV8uQRRxuW2sad6GmbvBrDQUBMfFwRVxJD/tV73KejUuaDv0L8jIz/
+	mQ9nAvQfdoT2mGSMssNUg7f3eNwpF5N1vBTXic6USTsLgva4qiPzI5TUaHBTmnfEZhliC5
+	TpDZ0zaim8pmeglQtWNOSRDYT1HsCXc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EgIIL+Az;
+	spf=pass (imf28.hostedemail.com: domain of seven.yi.lee@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=seven.yi.lee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-358d80f60ccso1110736a91.3
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:39:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773373187; x=1773977987; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+INjjQWlNJIxV6k0ZvQsdBiZDFnv72NM4m8hFvOy0+Y=;
+        b=EgIIL+AzMJ4Y4e+1vlTUZkF2XhmeV23PdpsDImw/vQbdyC6qdcgFXKHxZsK3Rz7CXW
+         gRTK4iB3QY+CFUXDxXypruEhkmZ7ZtuC9qeNi6B2XSUDyXKR70MIMy7sf8y8tNffirRZ
+         phMhGBidFd2zldqgUkeIZpWA9JS9BPkP48Sj+39Fb/eTGI8YVG5selpu3WQERVAf2yWl
+         wyBBNEdwoxl4ObG8woA2JiOsaooNG21ow8WgB1IpzmNCF6dPrqw2SPTDl5BQtxE0M00B
+         MC1DGRVX6XWBPldg6bARMX75kTp2omhm9FEhsNMu73K21Om8Df5hUZNKqQ6a3Qiz6F95
+         mqhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773372933; x=1773977733;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/8O0y76Sw4nNgrZ1YSQxVhOgzkbUj1DKbmac8/V7rFE=;
-        b=Gdq3ZPjuVJCdZpQkP/Cnp4YiEhXhojiaBs5UmWIIDDGw0sZIVRjrtY4ITKrSTC2lCt
-         1Lr2xr5Kk5tI/fEHcRLGdnwCNaIAOv7ySnYrqY/RCqJpqO2ZCaDwj5abAUIQrsB2p+qU
-         jq64ZWnkztSYNIpOg5PdTrL4vtr0VGBSmur03snwVb/bfAwdQubsc+Ygovt7nsr9IqBr
-         xA3fxmxASbS5wxZhiMPmcbcfywXK9JFaSdheJrEVb8ysQhb4TEoseAo8kpOfq8kp0J7e
-         3GnFSbquziNhxP+oY303qWAXB8ywqzeGN7Ez/Mva1S3breWxYII4sgBLAETFpN8FYlhR
-         IV4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWC3stOTeKpEScDHi+qnIQB0Gt894D1Oe60eXOSVnpbVmbeY+s/SUAZyLwYmmDgpzUV95BOnYNcJA==@kvack.org
-X-Gm-Message-State: AOJu0YwrOvGz2/WDNPf70QrPfnFoZXteRbEfyWFryeEnFZPpzNFvaONY
-	Q+qCtYoX4z0t/JmSTt+dFgKr6/iJOtpgmNb5mdoBnjIYDdIAfAhN8U6ViJ0oigxiEHE7BuyScRo
-	ITXuakmoKuHXioXOVDdeSBwutLkwlsTbyPhy7Gc6oTIletdgC1sJt
-X-Gm-Gg: ATEYQzxax/pAg5eRhlrXaIbwDFNSvJRgNFlnIosGpy2WZGRrXwZgcqkiWAL9PDHfhY+
-	Nka091Lex92PbDEYYdS09cvHBtXUsnzBjmaswaq7jaZ6lK8npo/JT/E0TQs0XyIGAfkyYR4EIDj
-	GRz5iZ2EPEhdDBXoocn+UqsJsPekt4L1b67DLgyf35khZUireFU5GVCZBWLXTJeF0Vi8+yZ9AJi
-	/766yDs6ooqmBxoozA/vV8mfgqEVuWG+d0yCi7oVJ1ZO+nE4+uT4R3x4oJtlSTUigxe1E/liSiP
-	LGwik57ZJFsbvQFpngrWCzSFVXsEN6wyufFswgaXt1FK/y0pX6uU/f1aKdCj4m4xMLFMEXu+i0Z
-	TvMZw32i1hbVQyibCjQ==
-X-Received: by 2002:a17:902:e748:b0:2ae:c916:511 with SMTP id d9443c01a7336-2aeca9e0988mr18292925ad.24.1773372932789;
-        Thu, 12 Mar 2026 20:35:32 -0700 (PDT)
-X-Received: by 2002:a17:902:e748:b0:2ae:c916:511 with SMTP id d9443c01a7336-2aeca9e0988mr18292665ad.24.1773372932438;
-        Thu, 12 Mar 2026 20:35:32 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece7ee5b1sm5475595ad.46.2026.03.12.20.35.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 20:35:30 -0700 (PDT)
-Date: Fri, 13 Mar 2026 11:35:28 +0800
-From: Li Wang <liwang@redhat.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, mkoutny@suse.com, yosryahmed@google.com,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v2 1/7] selftests/cgroup: skip test_zswap if zswap is
- globally disabled
-Message-ID: <abOGAHNnv9OZltdq@redhat.com>
-References: <20260312040627.55257-1-liwang@redhat.com>
- <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
- <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com>
- <abNtUReAUHT6j9Rn@redhat.com>
- <CAO9r8zMh=tAV6UJcH3hhZWrZJO_emVe4raiq4wiBEgC-GAD2=Q@mail.gmail.com>
- <abODRsaeEul9Aj2X@redhat.com>
+        d=1e100.net; s=20251104; t=1773373187; x=1773977987;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+INjjQWlNJIxV6k0ZvQsdBiZDFnv72NM4m8hFvOy0+Y=;
+        b=NEsNLuiilID0ftP+0eIWVUCYxg/bgDMXsRqYdPNHy/UoUKs9MIHLWxkOcpjm0fUNJz
+         TiNI6GGCIw7penMs4Ws+IRfvMWrnoKEmAYnZzdolEvMEoXO/Tq6pKERHThutOE1Mrx7V
+         GySPU8QW1+5locSzNJDFKm+vw9wXIJUhk7MgBtS2vii/pc30vLK2zp+FgcjcrVRXA/R5
+         rS/zXPQjoMEnf/YB6IMA6y8BiWesksOStWO2zpvBvDkD3OwIErgBUtcDYdZLsb5EsWk0
+         4B2+365TgoekMC4+xp4oyiulVzrfGBAICmxV6rISiJR0k7TWbgFLjhDbZ9PmSthFIAEL
+         h4/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ/lVtu8vmRe0ByTU33BAnWkcREtvqWAeGy/03xHajwlOEMpJxlGaJ2aXWE//wPU7eIK/ooGpbIQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz5bn5RyIoWydSIW3mL/WvaBSIHRiaBcWX7GUxdQh8uSQA0vVsU
+	3VSYF7jgEJTnFMBX3qmj8iFVUNip+xEGlrZEBmNbKYmowq87COFd1w+3H/Sm2QBrJK4=
+X-Gm-Gg: ATEYQzxDdDrjXE0hC2XGigFa4iGlQPCvmyH9Jhqw1BNa7KrKW9FMVUHzXfhFkLT131u
+	IV64P6PO7UBLUh1mHW64FzrdSc7F93X655HKZ0u9rOxTBdZKutGSGrdsbe4eJkMDrbTtakjpZFG
+	+s1vTs1qqvXuogf7EZ1yUIy+JrZDo3fx6kkbdy79lhjytCIiYK5dYkXprNlPZWU111KTtMNtnOE
+	ZCl40lDHoVl9dORO3Kxckgq7X/doiYrX57Plw49m8SUn2AXeLwbv8Xd5EA7qkuxeAl7V4gyRp0W
+	yHCCPx25K6UOuGq00ugRtBr7X77SN2MiWo83Ws88TjtVjSq5OOIUFGKma03N3lfnABQBCCBnZN4
+	QtsoUFj/T3RI7sJzazxACTcn8vXHYtJ/VPLqPC1JRBzNI6JeMiNNfj8vnxOkhIzYGydsxR98reK
+	f6+6QbvYBo+BL/KKAO/as32ef4FnRkpA2b9xBmYOBpWctxVE1GGuuijV7bMicc9OujUl3/FA5nU
+	cc=
+X-Received: by 2002:a17:90b:2d83:b0:34c:fe7e:84fe with SMTP id 98e67ed59e1d1-35a22053498mr1562896a91.28.1773373187283;
+        Thu, 12 Mar 2026 20:39:47 -0700 (PDT)
+Received: from [192.168.123.240] (n058152075021.netvigator.com. [58.152.75.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a02fc9454sm7295623a91.12.2026.03.12.20.39.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Mar 2026 20:39:46 -0700 (PDT)
+Message-ID: <06535c30-ce87-43b2-9670-53e56ca04c3c@gmail.com>
+Date: Fri, 13 Mar 2026 11:39:41 +0800
 MIME-Version: 1.0
-In-Reply-To: <abODRsaeEul9Aj2X@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lmqZ-HSyL35iU_ueMVMqN-vyRjFjnLW_Q_Z5Aua4EqI_1773372933
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mempolicy: add sysfs interface to override NUMA node
+ bandwidth
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, dan.j.williams@intel.com,
+ ying.huang@linux.alibaba.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jonathan.Cameron@huawei.com,
+ linux-cxl@vger.kernel.org, dave.jiang@intel.com, gourry@gourry.next
+References: <20260312150022.1373486-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Yee Li <seven.yi.lee@gmail.com>
+In-Reply-To: <20260312150022.1373486-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4DED0100002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: a6n8njgemruou4katwtt6mdxnwtet615
-X-HE-Tag: 1773372936-450137
-X-HE-Meta: U2FsdGVkX1+jfpYiZRaVTIyjFEBEibk/tHj9KTIX6Zg5CTRq2Kkl9olltNAeUWYJXo7Av6+fLFIOQNqPNwKQEcnsObrN5sZheKsoUzgS0L5e/N/3C9r9S9nfAdMo8NLQaT6OVNpI2hUQB/3Pg5QA3UUZGmqAxkcmOZ77UGUQo2jZj8hG6egac1ePrt15rEcnh1OXmMoCMenAi5V766aHR9DbdTe4mGwEANg5jsyaQ9gpNysd53qhXHwxa8QHECe6TudgxUPhn2Bq/6a6EVUr+IPbAyvpMDjGY61ZIqrAVMywQ4uE4En1oMIpvcOltDGSHSrc5yCYPW7X1HjSMmvlnOoLY0AvuY0W4B0nBQ88vflQW95zGYPuMrb368DJz/uQ9bVLs3O4oudjLJFZG3v8H1VEmaz1EENX32wbVoY7Vw/6kiyQ6l3+x3Qgoiji9a/SxbS5pQxlraSm4zPe+QPJWvdMfUhZzyfM6STVgGrDYY2O9uCZZyWKji0mI3neVO6o2QSJ48rIdCzjw0Ncv71ILOgqVXeosdcsHwggK9y8WufCU4elYs7WyITvPcnmx1w+Ovfl/AeC3cGws2HyPmcfvQqzPg1Vnje7utSpJn0ZUe5r2ga4ROnOGur7NwDbzpM2X60Cqny+qEQa8o2C9UU3abDoP6/CL2sSVE221wj8o+Mhu8/j9rjH9J3NrztjWvPmFZ40ze0icP9fWkcuwD7Rul/qKDiDEA0uPUBoEMtuTFFVj5GRgTV3DpjfnAoeYzMk9ZETdbIW6MnVjuk1YJJvUbhlyiM2BywBwbKBEEeyPh80mwIOQE/oXGOOuKRqZILTMxBQf8J4fK39K9af7BG207qgZ3lCRe97MUSRmh5CsUgMBYy8etRfmZtnL/BBIMDLp/oJoMTlRbT1SLywZsW3weQow+VIpse1DpBmU9DjOHgdf5Yae6ufC8/8ut+TwszE26xz6K4CxBvRf6tX9yE
- gqvduTTh
- 9q7cQa73rtE73k+LcovncSzTmeU9mkDfVLGHnjQv35u/qvdxMOl1hNf1Y1QLPJ9K9jGK74MbQZ5tUjtKTkbZdD5JZh7kHMN/Ym4QLLseiL6KZ/52LfV43C6yd380s6Gp3NchRajCyfuWCnw3wqaS4Kh5gMdeko+2xcN+DquBbxTf0ICi43KUCyCMVGGtuSrkjipz79bB2Py+glwfeuGEiT0Hud8vUKKtPqm4ErioKym8dqwOvInDY0s8ZPiNa0SMR+RLUHFPYwhMA5eDXRbkiS8mjfDlnf7VB0uoOetkU8nIpVXhL2H98u2px+MfpcUdcC9yrW24hd4XhbIvqferIg/DR63HJckQ5nLsPrU2p0MOl7A/1afYSapAObOqcI+4JhOAcLVNBAUVmVCGKno5ZgW1UCdCbSmHgtusuUcEpy+kP6Bl+UOeesHgo9z2yPLnY1D2tYkxPhmESJbg+1uM9T4f0zwDCAgOhwvJu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 84372C0002
+X-Stat-Signature: f68gik77goiwm8rcmy57qn6bxb1wzreq
+X-HE-Tag: 1773373188-99540
+X-HE-Meta: U2FsdGVkX1+CwKtYxcKa1me+1rV6k5kn1Ruml5RwgAft3X5NKqc2IayIZFr1qpGuX2ybPNeiL0tibEO/VEKQrUJ/RrQfWdLuuJpPONHdnIHmArvD+tnWDt5GVZb71/J0BMHyYTEE64pXFKHh81aON3wgAx6gsRMNTR5uZQmjMSSxyS0q+6dx/zW+v/4GRLO2CCbh3h9vvmUyeO5Oxo0GEJ8AFjNUl//A6hUhj6cYBveY7gVMVV5vk7GDVaSeRupC9HRJupk14rTEnHJAd06w/6M7cP9ww11XJoTjAidsjrfd3Z2j8isf+ZVuzgaksxwGmWdKH6u/LfRFv8ljRz7t8+VyYmyG51Aq2kVIHdjSnO9XedW4MLUtiKDhenubZciC/MA1vK4nprnyUxkVNZvOWQI1rvnabs8cEqsRBAKxaNeVk4En9LRRsZ9IJQrY9cSBEA7Ey65XZ9pMxL3QCZlO/Nb+xzCvzF/dNm31AWvDg6KlcmuGH064SbPj/ZoxKOGog7QPlkSeK9vlhTAK+UibI8YlZ6IYUeiXvKvuvHPrpmxVoxEfOwXYccvPiUzcrB19YcVqoSINLijJufyCO5DfYxbAcIo+a5+WYJotbZ+8Bk7p8kbyKuCVn0zL87JWCceHk789krYYJkgA3TcZeI0lA4QsFa4N9PXC5hL7gESu7G9zniSXSRAv7GZw5varfXEfrpEqWny/nwGGfil86utUTFF2nb6v2qGUw+mRf32nkIP5nWnW9qaY6LZa7ipaoR1Onu0QwTgGdDiHXDCiP2pdpyrgVqCDVeNubsbZkJcfoPt98vhIuLbx2yTe7D8cg6U2gXnH73YVW1yTU7O3IsCHkwW3MEcvTxgUUSRX9Ar/KASdWSDfkq7uZbuBx8TfmY7A/FFQhOEKnKbPAmxc01qmJ/9SDMFo1Gs87s13LJDSft4YGOKfD0rexA/vvyKuw3MUE2flxMENISlZu4MuUpQ
+ il2lF2DY
+ JHTmKjKRDlSyQ3P4RTcND8f2uqMGRvp8CBOJh27ly8qSKjNPvJ4JflFEXExQOUv0ay4m5EJunNFrVq0d/Yx6+ePBJYTSzY7wv/OsdzIdNfTUruf6krOUe38FSHU5GvD/OP+U1oq49nFKx85AyU4X7hyzAS0ggOHeH/JO9mQlQAf4G70nvzpT2i8891etbIxHpvECJqznNHiFIfn93Hf7AaHKDXZn6vIfO/Mot2oN/ZacD8Lw4G3jrre/PLR6tEXk0RmEJMhUi0cAzxCvhBf1DK/9GLo2Q/I2bEzD6ebPR6vGclVGccYmWUYCHHW+lwaaaa2WRbeZCwBEtHDeRI8P3zyIyQQ2XfI2N8b6iTvDuf8RLZyLr7AInlUkOFiYjLumeAyFZECpg1VN6XXh5pVOvcnMIMDoQFOYoP9uNEpY7Ymli/MZDvs/m/F98UEHsiaL8KHLKZjEs3LjjWAvuedv/YCXNz25zIF5mFbRBqHQkSgPvPoWBQLVvcDZYVgLglAdkD+fUkNg9Lrvj3A6I2EgWZJbMo9sjxFG+TOUvlGurKi0qEJlBOLPLrm5k/psxHjuhyyj4liszyUk6I2Um17Gl93lCQU4y61R24tjoAWAFAyDyhGezzw30euHN11q/wNfveKlB1C2SZrI5dJJcyOz+A7Ggi7AuNCOpcD4VhCEI3j2Y7QLWWICL4aygEr3alA0QLUT/kOeJ6o0J2djzYDX1V+QgMXhYxFNdB4J6HsJlrVofbDg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,26 +125,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 11:23:50AM +0800, Li Wang wrote:
-> On Thu, Mar 12, 2026 at 07:58:28PM -0700, Yosry Ahmed wrote:
-> > > Yes, this looks more tidy than open it. I'll go this helper in v3.
-> > >
-> > > >
-> > > > static void check_zswap_enabled(void)
-> > > > {
-> > > >        char value;
-> > >
-> > > read_text() requires string but not char.
-> > 
-> > I was just illustrating. This should be passed in as &value. That should work?
-> 
-> Yes, pass it as &value works well.
+Hi Joshua,
 
-And use sizeof(&value) just get the pointer's size but not
-the buffer size, so I would recommend: char value[2].
+Thanks for your feedback and kind wishes.
 
--- 
-Regards,
-Li Wang
+> I just wanted to touch on this. Is this true? Weighted interleave already
+> exposes sysfs that lets the user set the weights they want. On one hand
+> I think it would be helpful for there to be a tool to see what the
+> effects of setting bandwidth information on a system could be, if it
+> had other side effects. I'm not sure if there is a strong case to do this
+> purely for weighted interleave auto-tuning, which already has a manual
+> weight override and pretty simple calculations : -)
+
+I agree — writing a small userspace tool to compute the weights based on
+actual measured bandwidths (from mlc or stream) is a really good approach.
+
+> Thank you for the helpful clarification. Just to be sure, are there
+> other intended things that the user can test other than what weights
+> weighted interleave would resolve to?
+
+We can continue DRAM + CXL weighted interleave performance testing 
+later, following Gregory Price's experiments [1].
+[1] Link:
+https://lore.kernel.org/linux-mm/20240103224209.2541-1-gregory.price@memverge.com/
+
+
+
 
 
