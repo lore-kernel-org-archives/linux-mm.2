@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BEE7106FD7D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 04:45:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123E3106FD7D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 05:08:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CF486B0005; Fri, 13 Mar 2026 00:45:01 -0400 (EDT)
+	id 267D36B0005; Fri, 13 Mar 2026 01:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552246B0096; Fri, 13 Mar 2026 00:45:01 -0400 (EDT)
+	id 215776B0088; Fri, 13 Mar 2026 01:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 454496B0098; Fri, 13 Mar 2026 00:45:01 -0400 (EDT)
+	id 0F6F16B0089; Fri, 13 Mar 2026 01:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33E546B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:45:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA4BB1407B3
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:45:00 +0000 (UTC)
-X-FDA: 84539799960.02.3572225
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1700E1C0009
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:44:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0aA3IvN;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F2EDE6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:08:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F0EBC27D6
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:08:04 +0000 (UTC)
+X-FDA: 84539858088.24.9D1E665
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 12906C000F
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:07:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K9+yRy1m;
+	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773377099;
+	s=arc-20220608; t=1773378481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UbYjMnnropCNS67Uq2qJz2es0royPzDhs+Rlw0ZTqFA=;
-	b=TYRiFLnbLHHzG9MeTiaiwV8odw7P0Pa1jcQDU9Q/49FSanMQ/Iht4J6Ew0luglzUxup0oS
-	UhK1+lK3Apu2ov4YwlhCarXrCkCC6jEDfKfOz0f8CVu7GhhQQCwqhl3Rkt4PkDx2o4nSOE
-	kQlJj9mAu7z3W4fh/rpRxWQnlOAY900=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0aA3IvN;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773377099; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T2fdojMM54qSgNsuFhPwacfFSNjW/hMMNErtovdaSec=;
+	b=biVkG9U355ylp1KD0MXpNFnXTvnnfTDxfulyreFZqcxFGxtWQTbMXuxJyt6hXC3+rw0cn3
+	hCBT6KA2C6/zokHr/o1DJLJU/RU1oWMFdYF8M/ZZnbVfNwILg1qaoDQ76DOuFELrrAmSAR
+	oMY/haJxsq6+zD61FgadmC6QDM2D4qw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773378481; a=rsa-sha256;
 	cv=none;
-	b=y7luIZdeuh+fgPktLV1z5xPEAT1KsihR6tb3siaCKkFeBUAtx5SLJLk3jsK5zsSeA9EoaE
-	HgQkc/AfGuIVCK0PWwA+Ysojg40jlG873MeMV4Ibd0ci0E9dZNvcXu/wcgQQv5iMaf2TaZ
-	cxl05jUGa538mgWapeaUlcvh/a5sgIg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C77A4440DE;
-	Fri, 13 Mar 2026 04:44:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B247C19421;
-	Fri, 13 Mar 2026 04:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773377097;
-	bh=XrYj7XvkjVOrSZUvKRwcxWJvhLvpmnJnSlNXlwKIaTg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=H0aA3IvNRoRHgjcHUUzksuzmMWNJLmK4v9Lp48NTbH9e0AkbLkElRqbWZayjAPLbg
-	 x+GoXKm90rStryfp+ullE7dqATkwSMnrcpKaYaeFX28NCEdDzvVn0Zw5jDlW0czAJs
-	 eX1rDZXX+XK1ViKtJ+/lAWC+24LB3/EoKAoROgDjSRZ+bQMnxT6nyw6YwaZfvpA619
-	 toeR62XHeVE55FV2ujkN7fP4gCs26O3txwrcpEttmrZ7jnoX2lJQmeXM8B14v3e6HA
-	 yxeDVZFPCQzeYhHuRM9y2E3JShr3xKYpyMr7hRWVZxTCBbxueKef6aHjYAOpSEyr+h
-	 cFgG9SxQo41Aw==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/stat: monitor all System RAM resources
-Date: Thu, 12 Mar 2026 21:44:47 -0700
-Message-ID: <20260313044449.4038-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	b=GCFRtNf1KzNmoh+acKQdfySHRFTn9i3sbFKiEXERr0m6mtnrBkHMfueHGbWNFN89dPLgkl
+	zMawoplTaxkLzltuboSEnAzIls4eFrf8lOpDiyGjQxrrAJeJscyyCwiazSlU3BP7dX9Yp+
+	TFq7xTiaVGbYR2V6XqQf90aSzfijWvs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K9+yRy1m;
+	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773378475; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=T2fdojMM54qSgNsuFhPwacfFSNjW/hMMNErtovdaSec=;
+	b=K9+yRy1maHL6dE99fG6FnmFTzHdPeR/Y2U5+rMAnH4ssIC2H0Y9pCjP5Q0tjqYR8eRmHzQIRbNXmbGWmA9z7fnpP/UDXYUg2a6pfR25aO1iHP5ymkh9cqxtxLxjSJqrNmF/+KnQXj3VaW9Ub+UtPRX2xYfXY08jHFkBsAKQA9Mo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=33;SR=0;TI=SMTPD_---0X-r.uEE_1773378471;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X-r.uEE_1773378471 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 13 Mar 2026 13:07:53 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,  linux-mm@kvack.org,
+  akpm@linux-foundation.org,  mhocko@suse.com,  apopple@nvidia.com,
+  axelrasmussen@google.com,  byungchul@sk.com,  cgroups@vger.kernel.org,
+  david@kernel.org,  eperezma@redhat.com,  gourry@gourry.net,
+  jasowang@redhat.com,  hannes@cmpxchg.org,  joshua.hahnjy@gmail.com,
+  Liam.Howlett@oracle.com,  linux-kernel@vger.kernel.org,
+  lorenzo.stoakes@oracle.com,  matthew.brost@intel.com,  mst@redhat.com,
+  rppt@kernel.org,  muchun.song@linux.dev,  zhengqi.arch@bytedance.com,
+  rakie.kim@sk.com,  roman.gushchin@linux.dev,  shakeel.butt@linux.dev,
+  surenb@google.com,  virtualization@lists.linux.dev,  weixugc@google.com,
+  xuanzhuo@linux.alibaba.com,  yuanchu@google.com,  ziy@nvidia.com,
+  kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+In-Reply-To: <343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev> (JP Kobryn's
+	message of "Thu, 12 Mar 2026 09:13:49 -0700")
+References: <20260307045520.247998-1-jp.kobryn@linux.dev>
+	<3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
+	<343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
+Date: Fri, 13 Mar 2026 13:07:50 +0800
+Message-ID: <874imkpba1.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1700E1C0009
-X-Stat-Signature: myqb3rx4xbfebwwtrhd1xcnpikse6uqf
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773377098-323896
-X-HE-Meta: U2FsdGVkX1+bNjrdvO1GLjsmhcw+n/VMWxb91BsSXf48p7nQ3qUXBTYYrnZlS93uhj5wSeap7fYDq5XYC6R61YyxSO+9iUnQTngXD7mI98Vged7F3Gh8M+SUhYAplWzUUXCsIVjTnqHTps06Fy6OJs80HJhUHmuxKNaeTusSiRHO8Rxn0eyX+qlwjwWqU0wD7gGnU1K6S47/QC0MWpkC3lHKQLjzDvvC8wPN4pafREueFVwyPgEulqFZND1/NBYIKZIOKDsAxZ01luS86t8ch7dbO4fE7C+/7Oci5pUm6xBPHiGbM9I6wDiSMY+2WpRwP2Eh8uFu48I/w0oRjJj/gD9xoNA95Nqskgd8uB7s00yxFiCMxc2L8eW8NFDS/W0HTL41CHfd0QcAEmmlhoO4QSCytTBQ6KZJDCAzMCEckuCaULrwRefbPMVxEJ/wOfYu5/Sv2tHXE4D9/ig+Gg5hmGrKwEIyNk4AjkUSZsRdWC/IyV9fGUfUPAHGsKXZuO8Me0fhUAaF7+a5kAXfHqPj4aw5jeO+WJCgyywZjKoQoeb9HNPNVqAHIfhPtdGrju3jxyAfKpMzY0hrDqLQjKCoQIJlNIqSODo1ovRTqDtFu/aGowAlDzF8sG+LkUb0zpyh/Yo1KmK1l68HNW8Gzbnc77+fdRCqMNNi94G9pI7bdO1U3LyjCjuHoDVDJRDn6EUTX9tKpuz8RZuoYigaKaboyZoYGTh0rFfJ8KeocrRHroogpAYSc3iyY1GeQBqBPUniMxOG7IUJ5h1mbr0X3vNvVuR1NDXn90+xfxuaP/7p/8n9jiFE/GfmTG1zVlqrrL3grdBHaoYU2IllifPRtoz0Mb94B+AxLll3RWoPR/d0JxnljwPiO/SeJwFg9i0QgOLLBxqDXJ4TDb8k+FeENhHG1Ud9DLbokkRnGaHNSj3PJW3vSqijQw0mEZyDU/EUMBFAsQlMqWSE1kkQpniC9wJ
- vY6TYZe/
- /gwGbMyFETh0dF6fCNlNgJRZVyeG0T9HNuF8+v59Y/qnjY+ntvwVepoUlZULwvpz73SPDv9Vv/npdrF8JafQ5fN0nTjfyy6LpfICcILWuU3zgvIlr9maAJtWEsHwKDKiVR9Wrekz86w1XPHcOK9ZHa1FK+Mhra+lfZH0tNKP/UwgTI07K+/FPkTu2OapJsIT61WNr
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 12906C000F
+X-Stat-Signature: fe3shmurcakqien1w5efski1k3mie4xk
+X-HE-Tag: 1773378479-754143
+X-HE-Meta: U2FsdGVkX1/cW0dzo5p0R4vzI5d4hXKnHmaiOJKQl5X0RPU5QhFUJM6NQIhr3ENrorris/XR6Mx3A7LAxqyAnrwDd5L84awZZs7T+sOmUpU1fY/SytEUC7LYteJzz+DPEKluWS+sIhGj7jUaHA1tBNB12MZ8opqo5suktJ4ErUZKCcExK2phi6IO6j7ih6ZlccYZuP9r/BlpdDZZtw92iMkcz6WLDU+tgm8aZzYDk5Swqq/qxSZvRGaUv58JMdZbE5vcmvvVTWa5JSfW/BhW96NEYDJidKTSICwTKwN36q57Dk0HFHghPzomgnMv8CDloOVxyEdTnvaYqI9xlFK6lRC7mcDVZ+B/wFeK4al17Dh69qwVglI3r1ZgnULMy8gBCdCNJlKy7HmCo+Zfy2VYS2ziXJ66pfGp/T5S3+34dhb+UmWPkcHqTcOCSl7IgtLlKKt3wdANGQ2SgfSLnpWLrjHJ/LWsVyTicvqQc1fHeqj/d58EyqmN/Jhld6nXYTygPP73C07yrpGGLD/d/Qq8zh8i8r63yGIbXc9Y0d17kPIl74U2vIrmluX1hSvVIUL2unnK3LWLLmZKxSiFCZY9CJz6/Qlfqo0zw0R0+xhcNFYkPrsbSLdYtPtErIvbYt84ciiY9TtSmVxP/5FdjTg6vn6r01wxqVUPUMtjBtFs7axP9rGMxyJ2KO8HxAgNKAfK6CoYC0Ak3M2dNj6l1z5aUBojqcThA4mBAFpZ20f5DOf8CWacK2CFsSCZz8fWYh2dPtcNVIW8nxkh6UuGkRqVNFzBAdjUnA3AOLIH6wJ+tEveQH8uinCafxzzlVaCZtB/FPWSPvU1Q5Qbnnc5UItxmi1cuqZ9icolrGuuzztLxTbNzm+xUQUuDqc/4fgaNrxI7mbLrlgX+oJsU4J+SfNzSTuR/TLibSMvk5s/Zrcf68n3p6sLbNKW0cxJ8iNX6zNTh9NBN03LDIVG9rOfSJ1
+ fRW6ywV6
+ GSzRILQWh7Ibjw9dejDa0FzrohynlWxDvh3K3EUGOox1sMhqRWduBl+9izXS8GMW/gPszF6IvdhNpY7msNZRY6GvkOYLRV8WodQ8bZQM3EUPzi5rFTataUzbOssGqukjKoJ9JuugVN4HphXJAt9SZKXB7gGSRe/oWL4TIFIAq7+vAyEIhiW22+/Jl5S7IBwEnKJcCmL6rxPigOndcD+XHsrj9irDMkiPnE3PyjDDb9sOr0OTBvKteor/1zaxXPr6j6peYG/Pwfp3+R4z/Vdjl1r4qdh76LMewoMYW/fiteXS9j/BNFEdBhq0fP1WhrF311zaJqEthOmMFCSZIMWGf2u9zTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,102 +97,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
-says it monitors the system's entire physical memory.  But, it is
-monitoring only the biggest System RAM resource of the system.  When
-there are multiple System RAM resources, this results in monitoring only
-an unexpectedly small fraction of the physical memory.  For example,
-suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
-500 GiB System RAM resources in order on the physical address space.
-DAMON_STAT will monitor only the first 500 GiB System RAM.  This
-situation is particularly common on NUMA systems.
+"JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
 
-Select a physical address range that covers all System RAM areas of the
-system, to fix this issue and make it work as documented.
+> On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
+>> On 3/7/26 05:55, JP Kobryn (Meta) wrote:
+>>> When investigating pressure on a NUMA node, there is no straightforward way
+>>> to determine which policies are driving allocations to it.
+>>>
+>>> Add per-policy page allocation counters as new node stat items. These
+>>> counters track allocations to nodes and also whether the allocations were
+>>> intentional or fallbacks.
+>>>
+>>> The new stats follow the existing numa hit/miss/foreign style and have the
+>>> following meanings:
+>>>
+>>>    hit
+>>>      - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
+>>>      - for other policies, allocation succeeded on intended node
+>>>      - counted on the node of the allocation
+>>>    miss
+>>>      - allocation intended for other node, but happened on this one
+>>>      - counted on other node
+>>>    foreign
+>>>      - allocation intended on this node, but happened on other node
+>>>      - counted on this node
+>>>
+>>> Counters are exposed per-memcg, per-node in memory.numa_stat and globally
+>>> in /proc/vmstat.
+>>>
+>>> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+>> I think I've been on of the folks on previous versions arguing
+>> against the
+>> many counters, and one of the arguments was it they can't tell the full
+>> story anyway (compared to e.g. tracing), but I don't think adding even more
+>> counters is the right solution. Seems like a number of other people
+>> responding to the thread are providing similar feedback.
+>> For example I'm still not sure how it would help me if I knew the
+>> hits/misses were due to a preferred vs preferred_many policy, or interleave
+>> vs weithed interleave?
+>> 
+>
+> How about I change from per-policy hit/miss/foreign triplets to a single
+> aggregated policy triplet (i.e. just 3 new counters which account for
+> all policies)? They would follow the same hit/miss/foreign semantics
+> already proposed (visible in quoted text above). This would still
+> provide the otherwise missing signal of whether policy-driven
+> allocations to a node are intentional or fallback.
+>
+> Note that I am also planning on moving the stats off of the memcg so the
+> 3 new counters will be global per-node in response to similar feedback.
 
-Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Emm, what's the difference between these newly added counters and the
+existing numa_hit/miss/foreign counters?
+
 ---
- mm/damon/stat.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 48 insertions(+), 3 deletions(-)
-
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index f9a2028483b05..3ed71db33e899 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -145,12 +145,57 @@ static int damon_stat_damon_call_fn(void *data)
- 	return 0;
- }
- 
-+struct damon_stat_system_ram_range_walk_arg {
-+	bool walked;
-+	struct resource res;
-+};
-+
-+static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
-+{
-+	struct damon_stat_system_ram_range_walk_arg *a = arg;
-+
-+	if (!a->walked) {
-+		a->walked = true;
-+		a->res.start = res->start;
-+	}
-+	a->res.end = res->end;
-+	return 0;
-+}
-+
-+static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
-+		unsigned long addr_unit)
-+{
-+	/*
-+	 * Use div_u64() for avoiding linking errors related with __udivdi3,
-+	 * __aeabi_uldivmod, or similar problems.  This should also improve the
-+	 * performance optimization (read div_u64() comment for the detail).
-+	 */
-+	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
-+		return div_u64(ra, addr_unit);
-+	return ra / addr_unit;
-+}
-+
-+static int damon_stat_set_monitoring_region(struct damon_target *t,
-+		unsigned long addr_unit, unsigned long min_region_sz)
-+{
-+	struct damon_addr_range addr_range;
-+	struct damon_stat_system_ram_range_walk_arg arg = {};
-+
-+	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
-+	if (!arg.walked)
-+		return -EINVAL;
-+	addr_range.start = damon_stat_res_to_core_addr(
-+			arg.res.start, addr_unit);
-+	addr_range.end = damon_stat_res_to_core_addr(
-+			arg.res.end + 1, addr_unit);
-+	return damon_set_regions(t, &addr_range, addr_unit, min_region_sz);
-+}
-+
- static struct damon_ctx *damon_stat_build_ctx(void)
- {
- 	struct damon_ctx *ctx;
- 	struct damon_attrs attrs;
- 	struct damon_target *target;
--	unsigned long start = 0, end = 0;
- 
- 	ctx = damon_new_ctx();
- 	if (!ctx)
-@@ -180,8 +225,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
- 	if (!target)
- 		goto free_out;
- 	damon_add_target(ctx, target);
--	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
--				ctx->addr_unit, ctx->min_region_sz))
-+	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
-+				ctx->min_region_sz))
- 		goto free_out;
- 	return ctx;
- free_out:
-
-base-commit: ef772f765091af645985f2bd70390143a9820970
--- 
-2.47.3
+Best Regards,
+Huang, Ying
 
