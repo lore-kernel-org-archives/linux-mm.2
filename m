@@ -4,91 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DCAA106FD79
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 04:32:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6B9106FD79
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 04:35:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 427E16B0005; Fri, 13 Mar 2026 00:32:28 -0400 (EDT)
+	id 3C78B6B0005; Fri, 13 Mar 2026 00:35:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5CC6B0088; Fri, 13 Mar 2026 00:32:28 -0400 (EDT)
+	id 3756E6B0088; Fri, 13 Mar 2026 00:35:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B73A6B0089; Fri, 13 Mar 2026 00:32:28 -0400 (EDT)
+	id 281916B0089; Fri, 13 Mar 2026 00:35:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 17BF66B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:32:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F9935A844
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:32:27 +0000 (UTC)
-X-FDA: 84539768334.12.CF854F0
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AF3B44000D
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:32:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NfDDrueV;
-	spf=none (imf27.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 160306B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:35:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 835E61B8977
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:35:50 +0000 (UTC)
+X-FDA: 84539776860.03.31A03E7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 356D840003
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:35:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HU2CeA3z;
+	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773376346;
+	s=arc-20220608; t=1773376548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4PWorIuVBtzdK1hCG3yXXkHLa5cHfJHYltPsR/+plI4=;
-	b=KSIGcf6vU1oVjGU9TWrHmZW8sgnpmK1oWtHA38cZM9+sVALI3TiMM9h0TtmeZ49kCjGogw
-	32y6fzaf5VUFHczPYBZ8CkR5pX7O0jipsy8zF7VatomKYE0sw9Uvf1KHLKVPs+X6CdBHI4
-	a6uXZnYDz/xRImc8PnK4vvXSG89z95k=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NfDDrueV;
-	spf=none (imf27.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773376346; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KO24SViWbBFyUmZPm0oquBx38uo8Cx9eC3hA3EZRPlo=;
+	b=Nb/3AdEXOx/GYImOIOluGzWvLikokUNJHlusqBAgIM0gydndYA9d1axNdoNL5BMVgsv4+S
+	30p8O9cJyb2L9sSd1hWb1MIgBeN/fvMmKdord2W42cLitH6Wd3s/a3EEHrIyg3VD2cikMC
+	cjG2AN/CcRmxsf4wigI3quW8lNk0Ds4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773376548; a=rsa-sha256;
 	cv=none;
-	b=O44zjKyh/G0QtblyZnIM60HUTjjbXEJGH3ksgQXYr99+7d+TmI8JihNQoF2BuNj36IugvZ
-	vEQKMZXvR9/fUgyoqIGXiqUw+opSprO5sr1IIUjxJt2jcxrBNMhUKUca0XitEsrXE1LGhu
-	aBii+nAXZpjqomq1Zp5NcqN4otIi3Qc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=4PWorIuVBtzdK1hCG3yXXkHLa5cHfJHYltPsR/+plI4=; b=NfDDrueVefetZKJanjVgnCq4zk
-	UZIkbuQS2jeq093BU7Y0zaXJTOqerb5HzpMh3a8fmR0Ytu/IV/x9zPXXEThTo8H6On6BNYsngyt4k
-	1IXAeQIKZFiWNiq4kbqFoAt/UOiSbi0HUhTkiNiHk1vOCd841OXtycuBMPUxnZDpgt9JXLqosw1WR
-	Wba7Q7+Oal2nKOSpjaf2EZ6PWNwUXvwac+Ks+ST0joPrmnRBF1+4sAYnLpXg+oF4NEZAjoYI35i6d
-	+gltQVHRKto2K4xWJAukJLzeEp8tX6wj40FSBwcU8DN2pg6oOr4KRjy938veusI9cpO6dT6IMk15T
-	8lfr9rKA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0uCE-0000000GVR2-1QIZ;
-	Fri, 13 Mar 2026 04:32:22 +0000
-Message-ID: <4843aecd-fe54-401e-9e30-237e1d9fa1ec@infradead.org>
-Date: Thu, 12 Mar 2026 21:32:21 -0700
+	b=dP/Evx2jMZoitlzOpaKKzo9hHTsCVhkhTFejVL6t2ZLlqw3LSvudmEDpTkzqHrk7LSJeZk
+	g9Kr5XkyrlttP7CNy14ZKvX+VQe9as+3sSEmAkqyX/Ov8VzaFC0hdmaMWsEPCb0PAna7wh
+	NefUF+LAuVJxuAnw+J8g3enLKRbjUno=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HU2CeA3z;
+	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773376547;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KO24SViWbBFyUmZPm0oquBx38uo8Cx9eC3hA3EZRPlo=;
+	b=HU2CeA3znOLr2VyUAwbKg/QIxaZGTvmy/i2OqVR92b4xmoigIXjodjplJs73gl5Ms/xY0/
+	Q3FqsKj5ElKlMRxrRgTb4fJa2jPy603t9Z2LhwsW5VOAMlvQhKOqbiZuIdZVQE/1Qv9vCH
+	EaPtT3ldr4xC4k8PgWNHu2BPp7tGvt0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-bIao7Us7PF6lRlBFhAW2aQ-1; Fri,
+ 13 Mar 2026 00:35:45 -0400
+X-MC-Unique: bIao7Us7PF6lRlBFhAW2aQ-1
+X-Mimecast-MFC-AGG-ID: bIao7Us7PF6lRlBFhAW2aQ_1773376543
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 13ED61800365;
+	Fri, 13 Mar 2026 04:35:43 +0000 (UTC)
+Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1ED3119540C2;
+	Fri, 13 Mar 2026 04:35:36 +0000 (UTC)
+From: Li Wang <liwang@redhat.com>
+To: yosryahmed@google.com,
+	nphamcs@gmail.com
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: [PATCH v3 1/7] selftests/cgroup: skip test_zswap if zswap is globally disabled
+Date: Fri, 13 Mar 2026 12:35:26 +0800
+Message-ID: <20260313043532.103987-1-liwang@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [akpm-mm:mm-new 367/381] htmldocs:
- Documentation/filesystems/mmap_prepare.rst: WARNING: document isn't included
- in any toctree [toc.not_included]
-To: kernel test robot <lkp@intel.com>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>, linux-doc@vger.kernel.org
-References: <202603130548.Eq61ZQ3W-lkp@intel.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <202603130548.Eq61ZQ3W-lkp@intel.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: qUxC9I_cYtA6cKTlnUbIbZdsfoA6RyustvxbjPfUpE0_1773376543
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AF3B44000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4kjq5zbgqibk3du8f1ttytygy56w6c18
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: r4e4xwcfj6t34wzhunpduixgodu3y6nh
 X-Rspam-User: 
-X-HE-Tag: 1773376344-187445
-X-HE-Meta: U2FsdGVkX19+K1icLcnZGxgqhjkCMdTWoRVb/zoh0cClfykp5npmd/wV8S4oxEdyfGsEwVwuLwgAqOo3nVuyQY/4qLlTJY6OlLN+xAkjstVRoQzG2KeL4dYMA9D+5KuR9czFbWvXXPe08dixjCTbQBdZQYBwD+jp9FzOVxl53nkiHw1dBNIx4qBIaJ1TF+cnbnW6Cjt3b2VlhTM7AiAmAWDDr2TJpsFrsuYG2f7Lit8+KXaZVa+qT7YSBNbeu22JHp3GHwIWB7nFbd6sOTslOaiMAAStRxuxqtxsohYRZsogYW0qwZUOdBpCWIXRNBIiKIVFXpNeJ8D0gRcBTZDZxu1+SETO84n5V0pJ1aiF8WMCJU9YOvSWrkvFKFZuuJBEey1/VkL2o5W2AegANd7VOmKSocE+vY/Q9eQAEqpVYjpvYkgRhYn3hilgyYXc0p/Iy2ipiHSCYRWZmpEcvAYOgbvLgctR8XhzvfaZgO/DXZtgCRBmTri/DwTkNlqjsriM/ZZdLqlCFEIO92hBjQf8xewY+l/6NI5zWJbakTvWfWVGbyS655cPdoj34cHVisjGxFVM5j4sFg7cxvLMaxf1J/spKewEYcm4FqHkh/DskscFJ0/+Joq+/xZpZGCdABGrkbe+UMiatnggSFqGPiTS2bKjixQf9CbWfv9O5jlRhA7Ebm4Zrym9FA6BHARJl8F0gWcN8e2gkBYQ7UhK2kFaQ9wSmLViJ6CIneTxikKEZoAjY291qwj3sQ3QqFxll+EeylVeAw9KUYCUJZb8DZ7VqihMy1WHou/euF5a0c7DQYA2nQAZbZ+hqtC8s9ec0JHE5ftW2Ckqnu8x1hntJVrEY2+6Wg6F26rdtLFf/ikcLxHyKK7ysc8458whI9buZ9M+mlhO4ghPWjFFB1bS71tl20BQG7SpPJSksgJmw/mw89tayT4EOzgYQxH3FHQWBbZsVnMOcdR0F4BKOlRXWL2
- jUdO4Ggn
- pOnuhd8W44QPmc24E7cgPCz8EsaNhJ8luRKF4KiqHOjjFBl54u4cnY8Tdzhw7waOc6UcPISQloODub557hffJYfwUXryuNQJTDsLerpIsnsAjyj9wJj1ch53fLHrEUegqAqw48XT/otqoRlbjIpEDhwwWgIG/DrLmTlUqDpgzlwS0al1/7wyPohITlmTI1Bs27mE5LmX1EaLppOR5J4HTjxSlc7u42WpDm9OdTmFpJ+DDuIm8wYWZaRXlj3vg8Agi/UNJ9MFVDUYugiN1+6uRNS8jKaqlnwxRfu8Nj96HQOsv2PZ7vJQ18WULJNPumMLre9XRN3vC37XF/J0dJWeoFBh4DL2Vi18qH6biAYQv+aKFLN12y+eSc6AMXfLAhi1YJg1jXPkv3du580cUhBbU5a/HWDQKGMFSQajStCDKwfIYpgLIcXyFB4WltG5aVUQkSBxiRky5Nj7z3oQvUBwHetpJP3WgwKNm6unFKSxanc39v/GoTrJmi8VPdGCm8STNkFwThuItvMOaDVVVa9HHXU+d4A==
+X-Rspamd-Queue-Id: 356D840003
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773376548-930318
+X-HE-Meta: U2FsdGVkX19REBYs9SHlx+9zOABWHMsyfCVKn3UmpLo9RmNtDF9dgyY83d9FZvjd8QBuPQkvWNmQnDfexbQstN6s3LHNtwwZE3kpdcT2AVltdfveJd9juo/XxwnX3MAcpDWomWLu5PZGvHbTptRFNTtoNfyWR3o1kGzUaL6pS6E9pWOkJt8YUyVqp8vSz2tfY2Rjrm9kjtbzzXktBYxemm6vca35ycPwjxRFo9KtZsrHE9akDr5taXY/BAWRE7krCCySuqzuV8+gzUut1pbuJhZOR2j9+3OPJ58DZQl/11I5u5P7JDxvV2q5Fb5x209vMLbZgYUOZ3iUu+CvoxDMf/QqQ66mqAxt3V6jcmbYHAfh+KqSDP8n011TtcAqcnR2j7Mdg+53L8ZTm+xXbPjyDBnpS8gOUvsaesEEdMhvNjd9+ft/j/AFw/p5W7tBrtLWLkFncE1zE+CK4vGnRrb+7XHD6oDV5u+LCvG8L7SBQ9eR4a8IzwEaxr87g7RAsiI4TGR73TFhSyo7Ra9txQjMP5lh2vasazchbrX/ssihALL8exVBUp22eHTeLFdE2EvLwnnWx4RxqgN6BbC1l0NRbkkS8SRi40o6UmpUsp/E2RDoJjeWFUeCmmtZ7ZjxU3CQGjyK+t1LhMKXyw5uizqMGDqJAnZej2q9l+FaiOaxDxPdC9BLdUIAUIwGDXINddgxzK8X/2ADonQ8709NgjbyscugTHgJ1/5yPdpl5lBJxItpk0Z4aMhtk1y/626S4UeiLHdti+NWxvKx2Qb9q8g2mv2iifMX/OjzWdNnoGgiGh6oezp3g08k5067WFLEJbgmKmQDxDdLGPiCZd6XnylxeK9tssKkniL/yNsXlX6Hhj/I1rkCb3Q2hVoCb9zlKSPC2BeqdVjUy61ljOQb1I7X6cFAKvOwKYxh1N6I0070ml1izQ4A87Bp8cIieWPSN9dypB5yobOWoiOpGZ906F7
+ +5SAPvdo
+ LsqszCz2DLrOHs9GZzhl8+mY8eBa5+KyZ/KztWIxvDBVhwCk/tgDDfQYnjnbCeiZkTHe3YLbf1ymMtQvIY7LE1fcM7j95OTSabJJkHkwWdajFzMsNgA3QywSjphiajH9i7xRBkXoQmZxBXa9g+epFIja23duJxlZRy1kGa6ioEiHnJr+qd8dyOXvoXJZwY8t+nHhNXF6ATgNcBg2veorEqw8DwMMPF3OcubuaIH99sAwTrBcsTR6BVfmD68CVolze4SKa1Ykgufck6hByV1YUWHv8AZ9pnYAV904ZI7WHCvcLLvtA89aL4r2Q7YS1cHJ5+QwWQ2DTOW9VaSxzT6mIXaYzNrlKMO7rMRZPSEj1Qe5bMrhKzPmaPwjwgkc7Sz/itPHQ31vypRb5a2RXAiTDrPzjyj+Q3liijvTMMT/5CR7Y8HHPoZY53QgxLFjjpydJVyQucUlG55qUn1HM3DfWyIPqsvIpPQAf5BB3yh93cqJDtU3FD2YCK5biGSrZ69Sm/dKUECZJlLKmiYRTeMbeVXuD5N6qTCVylUG4519o7x/v7L8KxV54DbyLWMpTO80I8svfNAZqwOiAEcaqoKRzQi2VLfNz9+t17LSl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +110,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+test_zswap currently only checks whether zswap is present by testing
+/sys/module/zswap. This misses the runtime global state exposed in
+/sys/module/zswap/parameters/enabled.
 
+When zswap is built/loaded but globally disabled, the zswap cgroup
+selftests run in an invalid environment and may fail spuriously.
 
-On 3/12/26 9:17 PM, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   593fab843afbd6800243552aebcc61d02d3cdcb2
-> commit: a6cdd3274e8a03e218fe6bf3ef711902adb76727 [367/381] mm: add documentation for the mmap_prepare file operation callback
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
-> reproduce: (https://download.01.org/0day-ci/archive/20260313/202603130548.Eq61ZQ3W-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603130548.Eq61ZQ3W-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
+Check the runtime enabled state before running the tests:
+  - skip if zswap is not configured,
+  - fail if the enabled knob cannot be read,
+  - skip if zswap is globally disabled.
 
+Also print a hint in the skip message on how to enable zswap.
 
->>> Documentation/filesystems/mmap_prepare.rst:60: WARNING: Pygments lexer name 'Cw' is not known [misc.highlighting_failure]
->    Documentation/networking/skbuff:36: ./include/linux/skbuff.h:181: WARNING: Failed to create a cross reference. A title or caption not found: 'crc' [ref.ref]
-> 
+Signed-off-by: Li Wang <liwang@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+---
 
-Patch for these 2 is here:
-https://lore.kernel.org/linux-mtd/f0e33b51-d465-462d-b0f6-98a1db66bb15@infradead.org/T/#mf78dd33fe8fec8bb02379ab15eefd4d3eba23f78
+Notes:
+    v3:
+    	- Replace tri-state zswap_enabled() with check_zswap_enabled() for clearer flow.
+    	- Move skip/fail decisions into the helper instead of branching in main().
+    	- Make read failure reporting more explicit by naming
+    	  `/sys/module/zswap/parameters/enabled`.
+    	- Keep skip hint for enabling zswap:
+    	  `echo 1 > /sys/module/zswap/parameters/enabled`.
+    
+    v2:
+    	- remove enable/disable_zswap functions
+    	- skip the test if zswap is not enabled
+    	- reporting fail when zswap_enabled return -1
 
-(written before k.t.r. reported the warnings, so no Reported-by:)
+ tools/testing/selftests/cgroup/test_zswap.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+index 64ebc3f3f203..e69d845d3592 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -589,9 +589,21 @@ struct zswap_test {
+ };
+ #undef T
+ 
+-static bool zswap_configured(void)
++static void check_zswap_enabled(void)
+ {
+-	return access("/sys/module/zswap", F_OK) == 0;
++	char value[2];
++
++	if (access("/sys/module/zswap", F_OK))
++		ksft_exit_skip("zswap isn't configured\n");
++
++	if (read_text("/sys/module/zswap/parameters/enabled", value,
++						sizeof(value)) <= 0)
++		ksft_exit_fail_msg("Failed to read "
++				"/sys/module/zswap/parameters/enabled\n");
++
++	if (value[0] == 'N')
++		ksft_exit_skip("zswap is disabled (hint: echo 1 > "
++				"/sys/module/zswap/parameters/enabled)\n");
+ }
+ 
+ int main(int argc, char **argv)
+@@ -604,8 +616,7 @@ int main(int argc, char **argv)
+ 	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+-	if (!zswap_configured())
+-		ksft_exit_skip("zswap isn't configured\n");
++	check_zswap_enabled();
+ 
+ 	/*
+ 	 * Check that memory controller is available:
 -- 
-~Randy
+2.53.0
 
 
