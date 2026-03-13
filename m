@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A764A106FD9A
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 08:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E624E106FD9F
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 08:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DB416B0088; Fri, 13 Mar 2026 04:51:07 -0400 (EDT)
+	id 405A86B008A; Fri, 13 Mar 2026 04:52:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05E466B0089; Fri, 13 Mar 2026 04:51:06 -0400 (EDT)
+	id 3B3046B008C; Fri, 13 Mar 2026 04:52:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAC6F6B008A; Fri, 13 Mar 2026 04:51:06 -0400 (EDT)
+	id 2E0E96B0092; Fri, 13 Mar 2026 04:52:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DB6786B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:51:06 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5FF5D1B8C73
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:51:06 +0000 (UTC)
-X-FDA: 84540420132.17.A7489A1
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ACF16B008A
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:52:28 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B255A1A0882
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:52:27 +0000 (UTC)
+X-FDA: 84540423534.27.2F464AD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B816E20004
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:51:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fMXnoAOQ;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2322C180008
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:52:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qadvyg24;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773391864;
+	s=arc-20220608; t=1773391946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5JrLlrz1R0ux6eyWaXBOi4F+LeobsZhvq0nXftAHdHg=;
-	b=27F95NiLmSY8/lxkRSTvdiB4L4cU7KXJ/lafGCtnxSr40TG6kLno6z9NysYEG2/Xf/sthT
-	AWOHAt9UF5wmCzfsNf7tFJakZXAmVyWotJ9EN6XRV0FJBTBfuPa4pdpWfavlRep/8BWXs4
-	oZadw4DrAeaV4Ig7BZdUVmcYUsKDrQQ=
+	bh=TmwiR5JbS+usss8ODrAL9jskrM3z8cFZvm5LV3mBIS4=;
+	b=nOOCS7KbRk2o/Jc56LnedFBV2bZ8cGskuQ5xgAadw55oKcTYyjGSyZW3GfRF9GpRqHRFzl
+	O/WaT/P51o6i4k3JYbdrdyoOaMirCiIoFgHO5ikcRV1UwZQzFV/jvBWsHTdCcOxfpR8zAH
+	9lddGLo8eLZhqrENFwPxqOBF4i5Y9qk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fMXnoAOQ;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qadvyg24;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773391864; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773391946; a=rsa-sha256;
 	cv=none;
-	b=KoY7miF9PYXHU4C7ie1btthK6YvvwEuyv+LggQxfdWOrNSw5nFwhQbuEEEB+rhU8S7+M50
-	jraTduvu297Y6XsODF04PNsxB2+7Uc72VV0Aom/1E1ATuuItY1V73HyXj81T2aroAoy+Fa
-	yVvM9wCuE+VpizbaE/edHMHWviIkNd4=
+	b=iLAAlHyREzlywDz3KhkNB5RtRmRwCT9R2b422W6FqgTaOuHu45kVD66jUCWJi0GkSJvrd8
+	fd2F/Elad2qW9P36ftznstZX59Ou2SDqyo+949fAclgnDHdMvjpfzn5Uj9bW2vypCgWFsj
+	nH359N5idPvbORG+hsIUs/6hCjVtmVE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED8FB6012B;
-	Fri, 13 Mar 2026 08:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E97C19421;
-	Fri, 13 Mar 2026 08:51:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 923FD60132;
+	Fri, 13 Mar 2026 08:52:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF24C19421;
+	Fri, 13 Mar 2026 08:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773391863;
-	bh=1KUT9Tf25ZS6VrZia7+QDLQFs4SKqyhZvqzfc04vw8k=;
+	s=k20201202; t=1773391945;
+	bh=48k43o44R/1vbm7ZEvmXByIBhou36tIdTyYZQ1Vswss=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fMXnoAOQU0/G+r8DPkq+oydoGE9H6DUf2wvwyh8xC86fVKVeEY1g+IxpVxEv8j4oL
-	 Pyaz4iO+lYWCVz7h2biCk/IsklGMvlM6pN/y4sChyv5iDLimiyDysTb61GeN6DEeFS
-	 j+J/NpSNz4VfxUAVWqep5mkYXV20jsikdgIjsCuLjCnEqG0GEVqz74Z4ZhFRL0bSX5
-	 luExGUclhVGwdQrap00cRrbE+JD9QH9QQcylpQDIsiG7/7SJfdRTk8J9q8cs9DaP8l
-	 eKeyMbspFRUlBy+3KMqU5qFIq4AdAzXd0dprSkae8RoYDJyix3r2Z9CB26YOHnGzY3
-	 DTpw12xM5T4WA==
+	b=Qadvyg2437vfW5DXSZvv+CTqQWYfifQQKqWfgWHaJ/5gs38GhaRMECVorotU98mC+
+	 xy+q4cnZa34bPUgke9m0gPtLjLxLa3lwRB+wOovw7g5hF87Qt99FnCk0+XSHBIzDyp
+	 UB4PvEnNrHzvEbv1BgArxECDF0c2D/aKqFExA1t/mYr9NrCb5yVV4eLL88Coz/q33f
+	 xreztvIlCLTYme80VQxmFOvchlxqDGgXUYtEGoUGwQknBmWmmlRD8yuZQ4WtkyCrXg
+	 9llfCseyBYDHAtXJyxn9YR9ky583XFOVCBFXYy0bwWFTKubLLxrA7nuEQceelko1Co
+	 g0CriWexDKXaA==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Breno Leitao <leitao@debian.org>
 Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
@@ -70,24 +70,25 @@ Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
  <pratyush@kernel.org>,  linux-kernel@vger.kernel.org,
   kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
   SeongJae Park <sj@kernel.org>,  kernel-team@meta.com
-Subject: Re: [PATCH v8 1/6] kho: add size parameter to kho_add_subtree()
-In-Reply-To: <20260309-kho-v8-1-c3abcf4ac750@debian.org> (Breno Leitao's
-	message of "Mon, 09 Mar 2026 06:41:44 -0700")
+Subject: Re: [PATCH v8 2/6] kho: rename fdt parameter to blob in
+ kho_add/remove_subtree()
+In-Reply-To: <20260309-kho-v8-2-c3abcf4ac750@debian.org> (Breno Leitao's
+	message of "Mon, 09 Mar 2026 06:41:45 -0700")
 References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
-	<20260309-kho-v8-1-c3abcf4ac750@debian.org>
-Date: Fri, 13 Mar 2026 08:50:59 +0000
-Message-ID: <2vxzms0cgljg.fsf@kernel.org>
+	<20260309-kho-v8-2-c3abcf4ac750@debian.org>
+Date: Fri, 13 Mar 2026 08:52:21 +0000
+Message-ID: <2vxzikb0glh6.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: B816E20004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zmixmytcmqqr13nyhwu9mqwwn6krra6u
 X-Rspam-User: 
-X-HE-Tag: 1773391864-329928
-X-HE-Meta: U2FsdGVkX1/ZFVIW1M48G1hDs1KX9A46YEC/GJuMBbHtvMz/HZU4016mibLwa+xuCdwSXE7zXfp4aMaUiW4d2Sk8JRs/8dZa3uNmv7mFfGmd6rQwCeLuKGO4DRWueQGW9Ro05mIXsIgY0DVjw6XqSCSUxtqq7nzjt1TMJYz2a0vW1hEAI83rBczo4teZoWUQzbD3b3Xjjh4uAO71sbPKNj9QhW1GbXyA3xzo69wQn/EAgnmSVCwteeGIsdFsJZsZJjYKyFtq5xdPQ6ongpGFG5JiOBKzelEjP/R3UPKBDHgWqZPC+1l71tOVz9nk29BTXAF80CTLr7WsWmvmtCg0juPdAjC9Op8F/bc01Ysa2+MlIifJb7bVq4VNh8wJU/frdsbL8DZ/8fDLB+iEcT7WYclXS1zgJFdNklJdIshQw4wydT8gRiAFuX/VgaLXW1kZl6HX6cp5SUbaiYdqWKH1k++wd7CtISnX5lwj36owfOkhKV/6srjbzigz/IIjP3vHg/Gy4PRlC1yVzhUjMKGuFrIUZeRkqXet8LkHX1hsazT/RQ9kHazeFgFGLgleaGv47H8N2oBVdA2EdzmITfAJ8ekfgzgTfDWEracz3AAlcSaiwD/0mfJG8HBTpaK0AoqrpjsTm5PmuXmzZTb9Qg0xX3cEeX3IhjG6OlAd9coJAEXCODgAPjO1oeRzoj5klkhMJySEuCeR2qSUo0DZK2CevfVGT7YbnDffQ+wl35h+xR5GmTYMQwjnTo1ELruHWuuudBfHf3y6HOvqAAJRYRLriTjSf+7/jrFlYQTCrXUDURe2wxiN95Zox6InxUBylqG85QBLe3y9x/MCbQM5HClcpkLz1ANaY7LkfVoUcZSmXh1ugdyClpkfKfakEt6QhN2Z8CVV0GLDTd0XbN/KIYgAkdz2QGMRFqpX1eOfCThTU0ejTY0aYYC/kJw4WLwSmZArDM1t8me2HOqO8sh3k6b
- 8gbZkw0b
- 11wMivn1MCMMV0UybUhKuuJNfA2LbYQRuX39rks/l2B5kvZb0ZPSPle3NeMCkPiqh2cQsMse3KKsR7YgByUSZRZ6M/vvZlp6RzY9IQfR4HbAjvO0jNYa5PMt5MyEgK4SsxQ6brlnA7OM2ykO0NV0Wb7/LL81Ml8/0nJ+oZmE7NPpoe/+m/WzfqBJmffP7j8vNiJGQB5xz8w9BS0xhuK0tGf1NVJRXvI64xAJGpt/MGE793YRKFtBbNClH6cHILQ4z1wvX0mRYVDyoCtQ=
+X-Rspamd-Queue-Id: 2322C180008
+X-Rspamd-Server: rspam08
+X-Stat-Signature: nw18i18xbiu78cbua5fk1camtskcs89w
+X-HE-Tag: 1773391946-609758
+X-HE-Meta: U2FsdGVkX1+hDW0qnwhdqF5A+fduBQEg+7ADCnoqzc1md5vOye6Jo0/6xf2y8kDZ8qdK8o3z0OcDEFtBdRzwXWzDxzl7V1fAGr2rPhMuelrtKAItiNlVcd8zfLKEl7IPi+8JUrQhgYNmL86DA+EMhwMXCMChvt6BmAiwPn9LJtgSQw7TmgODyavoPLrETGxKcFLMcgfhJG7/L4rlq7zBjY+a5Msa0gAnJ5HWhZVdFq9aL8gozx5neY/pd/WbknLpGUx20Su+d5uykRJmm5lnkehtvbVYtIm7X7xEndVA3h9JwY+c5js9/1gtz7llug3p7p8E0W+8xgCOwGhRamlvgR52YCuGg7MVNfgyxGMGFEWBs4htO1W9xSTiyH64qE4oMX/ReGFv8AXJdXZoRuJeVYMYRnfBpsXJOnoe1pv/mXSiFRMOB8g82439gnRERdkC5VGoILyX3p1p59Oyg8sQVO9+dPc0RCwsM8QKKb99zIWmEND10WyXNzC7PuxRVPNvTIfCw8kg+wG2yLFcgwL1UW+GdmCXgoQuM0Gds+6eYTnww2R+WrvlezqKie5rAvjXLeQWmTJb8rkk7Vtobgt8uZQ9m27T2lSdWkEw3PcWok+RcekFcP8+k0j7td/b/1Tn+uqahejSp3sCGiSfkdNXYE0eD5IkEx9FpiQXrVTM1QmLPaqTmMr4p5YCRgRbkFrltM+X9UIq/GBqBGPX3ge12UJXdFv12xxaKOe99fb4CPMOpQknwFriJ2Pspx767xxBVsobWGnl7/9/i7n9rsrhDMnokzF1RbD2ExhMwGQ2yvtf1fOHNGPQN2eJ+2yr9TYBUF6lJEML4QVXmYaVEnfE69olavSXJ5FT0rrSH5diBM9Byhnu3SzjexByavJ2PJzqos3vEsZ99HgezcTJKF+lFsW8Wfr8igA2p0hzI/Sfo7+wyBTwj6T5tD4WxOdNW3Ew/0M6BAj11R+DighCC9p
+ g9YaHpus
+ nb9taXaMV4oo0VnPSdOHjZxL8roR3uXxyodk+k3rfO97a8Pk+UMi+mgPuj0c+4VY64ugP0kmFZtrKVnUANe78bLcsf4T7TmSH2LWTAYIqNIpbJc5t9G5/NKeWIEzIIbx1izu4PI2FiAPb3t3ai1wgVUwIUcCQz7usMpFtFSJWacF6jnSCYGUf7AzQk1q9alXo3JV8y+1vtYFDrZJu4RKMvKGGZ0kVl+mSJ1JSqAr44YIZOJBbGCiaHdE260DicuQa0NWI1i0mDjtyMBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,34 +98,17 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Mon, Mar 09 2026, Breno Leitao wrote:
 
-> kho_add_subtree() assumes the fdt argument is always an FDT and calls
-> fdt_totalsize() on it in the debugfs code path. This assumption will
-> break if a caller passes arbitrary data instead of an FDT.
+> Since kho_add_subtree() now accepts arbitrary data blobs (not just
+> FDTs), rename the parameter from 'fdt' to 'blob' to better reflect
+> its purpose. Apply the same rename to kho_remove_subtree() for
+> consistency.
 >
-> When CONFIG_KEXEC_HANDOVER_DEBUGFS is enabled, kho_debugfs_fdt_add()
-> calls __kho_debugfs_fdt_add(), which executes:
+> Also rename kho_debugfs_fdt_add() and kho_debugfs_fdt_remove() to
+> kho_debugfs_blob_add() and kho_debugfs_blob_remove() respectively,
+> with the same parameter rename from 'fdt' to 'blob'.
 >
->     f->wrapper.size = fdt_totalsize(fdt);
->
-> Fix this by adding an explicit size parameter to kho_add_subtree() so
-> callers specify the blob size. This allows subtrees to contain
-> arbitrary data formats, not just FDTs. Update all callers:
->
->   - memblock.c: use fdt_totalsize(fdt)
->   - luo_core.c: use fdt_totalsize(fdt_out)
->   - test_kho.c: use fdt_totalsize()
->   - kexec_handover.c (root fdt): use fdt_totalsize(kho_out.fdt)
->
-> Also update __kho_debugfs_fdt_add() to receive the size explicitly
-> instead of computing it internally via fdt_totalsize(). In
-> kho_in_debugfs_init(), pass fdt_totalsize() for the root FDT and
-> sub-blobs since all current users are FDTs. A subsequent patch will
-> persist the size in the KHO FDT so the incoming side can handle
-> non-FDT blobs correctly.
->
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
