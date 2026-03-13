@@ -4,169 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94636106FD9B
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 08:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6B3106FD9B
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 08:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0420F6B0088; Fri, 13 Mar 2026 04:00:42 -0400 (EDT)
+	id 4682D6B0005; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F20D66B0089; Fri, 13 Mar 2026 04:00:41 -0400 (EDT)
+	id 45A076B0088; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF9726B008A; Fri, 13 Mar 2026 04:00:41 -0400 (EDT)
+	id 369BF6B0089; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CCBA56B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:00:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59847BB7B4
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:00:41 +0000 (UTC)
-X-FDA: 84540293082.16.4558AE0
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EEEE0180002
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:00:38 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 25DCC6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:01:24 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E9EE5B462
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:01:23 +0000 (UTC)
+X-FDA: 84540294846.11.8FDB70F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5676B180011
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:01:19 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CCxYtvVa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+NQiFsmK;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CCxYtvVa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+NQiFsmK;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf16.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+	dkim=pass header.d=intel.com header.s=Intel header.b=BDoNG1Oj;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773388839;
+	s=arc-20220608; t=1773388881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VKtKkJNq3HnXxI8Cjc3OiSLdOJaFBmBtFTAxUnoa+nY=;
-	b=jBG8AKygGPM5dgsu2lhR2lyksqlfxbU2WVbr1ShrV3uI5EJOVQuOZVivIVFzxSo3XDG6NZ
-	UAx5W1fb9AjCehExO/mATMQolQs8Vm6HMcUYmUDhFc0MS7S6Ooxwj1VZNJVOMAtI/IViOG
-	MDb0WhJoWGNeJ831Rq61AvRpMx1w13Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773388839; a=rsa-sha256;
-	cv=none;
-	b=dNSfOlqp+fOvSrbQjnk9JMGCqJUgPNt87YIBWupjkou/pXTSRrqNlV0zYJuLoMGc7ha9w2
-	HsD1O5pyTdzZyUyuz4bmspwB9DGsNWUGawoqpof4k3bNEuh6zEI3FW3Ar+1jFzv8E2T29f
-	wMya9145nb9bMxEtgwxWejOaFJ7/Ziw=
+	bh=ttx0Tr3kyb8QR9nabs/hfUO/rWJ/GX8YHk+IyxkRz8o=;
+	b=ndySng7amH9wp+7+D4qJVtXRzGIplFKhUGyCXQrJuuz7W6IXseJjZ8FXKZNaX4tZ2MAls5
+	3aR7T4Vs9Sh+vG5rHjSzix71meYFZjcHtgDFmitIJOYFSjeU+sKg2XmyHNeO4x0IBcD+xm
+	8nUFzY3kUY+oTif7pqGFndkm0RzDeu8=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CCxYtvVa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+NQiFsmK;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CCxYtvVa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+NQiFsmK;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf16.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 135B75C177;
-	Fri, 13 Mar 2026 08:00:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773388837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VKtKkJNq3HnXxI8Cjc3OiSLdOJaFBmBtFTAxUnoa+nY=;
-	b=CCxYtvVa+3JQkLOh7ByUmT7qTm3aMbeXiwJX2CORSQdVASPFycgxFV6/jJRnfDixtsTLeT
-	NU4yqim6dMvbX5UijgnSIF04ti7FMeLK9x14vhxpaHi9cJv69knuG3VVo3vgF8wzPijNnc
-	8n9c4ed3gT9g9feHfDAKWMZ7HuIYSA0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773388837;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VKtKkJNq3HnXxI8Cjc3OiSLdOJaFBmBtFTAxUnoa+nY=;
-	b=+NQiFsmKPLBel1iVXvd1GfseEkzpArZcGsHxD1e3hvMj5CCfF4SyOzXqebagB9ce/eAUDC
-	SG4Z0L5ohxAmtXDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773388837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VKtKkJNq3HnXxI8Cjc3OiSLdOJaFBmBtFTAxUnoa+nY=;
-	b=CCxYtvVa+3JQkLOh7ByUmT7qTm3aMbeXiwJX2CORSQdVASPFycgxFV6/jJRnfDixtsTLeT
-	NU4yqim6dMvbX5UijgnSIF04ti7FMeLK9x14vhxpaHi9cJv69knuG3VVo3vgF8wzPijNnc
-	8n9c4ed3gT9g9feHfDAKWMZ7HuIYSA0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773388837;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VKtKkJNq3HnXxI8Cjc3OiSLdOJaFBmBtFTAxUnoa+nY=;
-	b=+NQiFsmKPLBel1iVXvd1GfseEkzpArZcGsHxD1e3hvMj5CCfF4SyOzXqebagB9ce/eAUDC
-	SG4Z0L5ohxAmtXDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7ECD40402;
-	Fri, 13 Mar 2026 08:00:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Uwx8KyTEs2lLJQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 13 Mar 2026 08:00:36 +0000
-Message-ID: <20a82a3c-80ed-4f9a-912b-088284c27b68@suse.de>
-Date: Fri, 13 Mar 2026 09:00:36 +0100
+	dkim=pass header.d=intel.com header.s=Intel header.b=BDoNG1Oj;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773388881; a=rsa-sha256;
+	cv=none;
+	b=Un/yC7u5jiTFFiwrCySjVIhk86GsP01c6V35LgophdRbaVGzglQDL5AE9kPR4Dsg//nJPY
+	zx5JpQAc5zwzYIhsR3o3PXAoySthmtHLmAAwlhKHjn/h53WYB1mQaPgQqRBZHDtCF1eFwb
+	Bgfs9w4aEs8bDCHhgqtb1Ba3WlDIOec=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773388879; x=1804924879;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JvNTqagp4mqbAwOTcW6MXZvJNobQB+7EqHcWBKchTHw=;
+  b=BDoNG1Ojc9LcCJCByExs6mQ1OcPkzoqY4zqkQsGWP8JGpEMbFEsDgS+D
+   f99M7wnp0xR2LbeeKLRRbAv/z0lqXo/CQUvow92bhU4ILQt+5+3l8tYim
+   MZjqTu/GjxNNmsUUCUf61pBhc321cPTorP6DHjzEe+qVvW9JFmNVnI8+m
+   c8GRuPFoymvggXnOxAtm+6Fq5jG+40MrBzWfvEkrwxJPjjfgiQXavvVbb
+   TVOpq8jLvU9gESiNqWvwfulnBOv0lVieMYi1zQ7iz6FtZFH8yx/7/ZHTl
+   ym8pZsr227u9L3z9nVuMpmSyXCleip/vWi0+73yIVEaTCASYqb02QA9XR
+   Q==;
+X-CSE-ConnectionGUID: 5tx3ZPPmT7iiu6eHCsZ7jA==
+X-CSE-MsgGUID: 5DsfRMtfQreAbzz7Hnc8bg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85974403"
+X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
+   d="scan'208";a="85974403"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 01:01:18 -0700
+X-CSE-ConnectionGUID: EYl+/SLnSKCFaotlGPV5cA==
+X-CSE-MsgGUID: YqZtShI/RQij3bsNb/BACg==
+X-ExtLoop1: 1
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa003.fm.intel.com with ESMTP; 13 Mar 2026 01:01:11 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w0xSH-000000003dp-1Eej;
+	Fri, 13 Mar 2026 08:01:09 +0000
+Date: Fri, 13 Mar 2026 09:00:33 +0100
+From: kernel test robot <lkp@intel.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Bodo Stroesser <bostroesser@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 01/15] mm: various small mmap_prepare cleanups
+Message-ID: <202603130825.eFqVjdWW-lkp@intel.com>
+References: <56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-To: Biju Das <biju.das.jz@bp.renesas.com>,
- Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Cc: "boris.brezillon@collabora.com" <boris.brezillon@collabora.com>,
- "loic.molinari@collabora.com" <loic.molinari@collabora.com>,
- "willy@infradead.org" <willy@infradead.org>,
- "frank.binns@imgtec.com" <frank.binns@imgtec.com>,
- "matt.coster@imgtec.com" <matt.coster@imgtec.com>,
- "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
- "mripard@kernel.org" <mripard@kernel.org>,
- "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch"
- <simona@ffwll.ch>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-References: <20260227114509.165572-1-tzimmermann@suse.de>
- <20260227114509.165572-6-tzimmermann@suse.de> <abL5rcYIaFFO3GW2@tom-desktop>
- <TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EEEE0180002
-X-Stat-Signature: xy7pqdu7tqbhca5dr8zspa11utyhjdkd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1773388838-345829
-X-HE-Meta: U2FsdGVkX18p4pNqC6vcVKJYo9R/Vnvzmje9Imvkatk+58UQBpezysC/Oe22B0g9rYJoeP8O8rYB+KGIAVpNkgL7h4KyedGH6gN2CLdLknKlEDltvOupviqMEMlB9z4gs4+xjl7vlbGkxuU8x87AobewO9Mrxn4DqBWFThuoa9iUiFgN1orMsDvkENewFKCmJMEypZSYItyApZLXICWUCGNwmXRs5mMX029Hb9WasH5YGzJL7ZDH5aI7nOKVGmJBWrn9Ncnv1iEgPQhGfu44pOItl/oPV87nDMOhCmls+mTJ2nbQwHhSUKtQEMxvcNlu2NI0FR04bLJECPgJZHqixY9i10BpLzFshHu0YrOcnAXMWVWVTv6NsGXT3y0gglmpYQwtOeJH16uf/2skA6Uwx88v2SahT/WKRMRanr5ibdOg3P/59mK+bE4kfaABy4ccK2rRtFSbolCdLgEiKqRrIYgVvIxULFf8FLImMLkqxCTDS+blPyJzUoU5SzVBIY6/YQ7WNLx/Wz9j1dD9/hrKlFHh4tHNZ5E2Q/8aVw28t2gbvDBBfGhm0XGVy8XkDVWKSKiKo93NSLMq3NYxYZPBDuEDyUPljN6CPakpsKvgEwmcKvanY1JJCS4q+K2MfIlu+/Ko6ME1Rn2w+KUG+X2DPnJSUZl46m2m6pWbFoRJl1BT28nrpyKZthaiAFXx2pUax6XYNVPOzPJfkR3TANtwOxQGvGgeNuptmwJMKOm9IXc3/Asva0U7wgjHTxRHfbWWWjgJKnCkfry5+CDGNeCqj+BczO2c3y0q2HfNF9FhHDuuizy8zZnosfat4RKqQGEhYXNjD8hvlkfI74eTEEDfXPbrrxiSRedZIfqesWjwMyqifgrOtjpkO0iq5SJouvNmZlKIozyKEMcYnogih6rNmJhSH1iLuwkl7IzflKOhO+8VdK4B2DB9Z6C5oJcCLqOXqksIVVGW0N9zj86giWa
- OOsjuIzF
- F0ZBJo6RP3NgWwTqlU6IeRjvWBQ==
+X-Rspamd-Queue-Id: 5676B180011
+X-Rspamd-Server: rspam08
+X-Stat-Signature: gkuh4wtm816xijwui8imnq6urj4da76n
+X-HE-Tag: 1773388879-26092
+X-HE-Meta: U2FsdGVkX1/z6RR0XPjV/S05BTi1bkFf1IaeWLSzj5otGyTRu6vHvUd/cWLJAAV5v8w6D3ro4gWt+eHoqFfQzofwCiKAjlS2JxXyKRE+s4oqIihzMP7le78meJIfkhOZ+bki4nx2pMDFx/bfzUdeoaF3F/qOTvMbIvpQN1Y8VoDanXR0wYXbuKLUSnXj+b5h0actBXVdJdGCTsVi8ykZq9/ItcNTVJ0dSCbAmEvW41ygGq+mIFK2Eh7lbraUZDjFDx06RXzIEypHKgnN06pVb/Ukd+a3zrF9hAb6oIuXPnp8tht+JwI2FaZZJoFor45bAxqrUqgR95pqBjikZFQbDWPlf3MkTYNTr+3fz4jqvIaSGCuLIBkWqAa6WwXTif5fY0LVCn0mnWTQOX+hJNobJeKiGQt2kGAmKT/cdYPy0cpzkPq7yTfgQyPbUtZ+0t3YIR3UbRjFYWk2bGuK27dZALIRMxF6ra/GfjFADRFNX23G5gntRbIfVU5r7pQ8MfHald7bLwzsfHVNaQaZQI+gF9V1sUtPAtZhAoxWf5VPy7kmc04rLzISf0hWnUWcgJJHsaOcSxrirHMWcspmVGYB4b8P+CubfGjIXutu+jFbCLQmjR7DgGMIrJZbooxRtKWmLXswcEu4fC00Avwmu1U81nV5OihiU7IekQFNPpQy6i3ULsvqyuMbrlwb2Ovu5rNLVLcU6ODfvFi+fF4baIWJC7cb1NL4BwNi8eLNKC3pF+Sxoj8fhVkxKHLTvnXyY75LmkLNIRVWw8zlEjR9r75u7+cn3abdNc1LM0OJpT722DQmzUv7FTwn/qXrE4GIgLIko7VklHUJqktaKu8xSPoOF7onabKiwc28G5f3sRtQK9X3Q/U9QVWKf8iS8fPWcL9pMrQ7DUilLjILQZDeZprn/cihDOPKHjWJz4Ksgt/LGtevRHIjNp+lzWuG+4tbVx7aULunQJx6hgeYY51r0N0
+ IQu8LU9k
+ LjULBMcaDTEJBfPKZssgx/XTCbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,102 +130,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+Hi Lorenzo,
 
-Am 13.03.26 um 07:44 schrieb Biju Das:
->
->> -----Original Message-----
->> From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of Biju Das
->> Sent: 12 March 2026 17:47
->> To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>; Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: boris.brezillon@collabora.com; loic.molinari@collabora.com; willy@infradead.org;
->> frank.binns@imgtec.com; matt.coster@imgtec.com; maarten.lankhorst@linux.intel.com; mripard@kernel.org;
->> airlied@gmail.com; simona@ffwll.ch; linux-mm@kvack.org; dri-devel@lists.freedesktop.org
->> Subject: RE: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status in mmap
->>
->> Hi Tommaso,
->>
->>> -----Original Message-----
->>> From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
->>> Sent: 12 March 2026 17:37
->>> Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty
->>> status in mmap
->>>
->>> Hi Thomas,
->>> Thanks for your patch.
->>>
->>> I'm working on DSI support for RZ/G3E from this morning rebasing on
->>> top of next-20260311 I'm seeing that weston hang on my side:
->>>
->>> Reverting this patch fix the issue.
->>> (git revert 28e3918179aa)
->>>
->>> I'm wondering if anyone encountered this issue?
->>> Thanks in advance.
->>
->> I am also seeing same issue on RZ/G3L with weston.
-> Just add I am using mesa with panfrost(Mali-G31) on RZ/G3L.
+kernel test robot noticed the following build warnings:
 
-I ran the tests with bochs.  I don't have panfrost hardware to test 
-with, but nothing in the driver sticks out as problematic. Only the gem 
-open/close logic looks a bit awkward. The mmap code appears to be identical.
+[auto build test WARNING on next-20260311]
+[cannot apply to akpm-mm/mm-everything char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus brauner-vfs/vfs.all linus/master v7.0-rc3 v7.0-rc2 v7.0-rc1 v6.16-rc1]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
-> Disabling Mali-G31 renders weston desktop during boot.
->
-> Looks like this patch is creating some hang in panfrost driver
-> during weston launch.
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes-Oracle/mm-various-small-mmap_prepare-cleanups/20260313-113314
+base:   next-20260311
+patch link:    https://lore.kernel.org/r/56372fe273f775b26675a04652c1229e14680741.1773346620.git.ljs%40kernel.org
+patch subject: [PATCH 01/15] mm: various small mmap_prepare cleanups
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260313/202603130825.eFqVjdWW-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260313/202603130825.eFqVjdWW-lkp@intel.com/reproduce)
 
-Does either of you see any warnings in the kernel messages?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603130825.eFqVjdWW-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   mm/util.c: In function 'mmap_action_prepare':
+>> mm/util.c:1360:1: warning: control reaches end of non-void function [-Wreturn-type]
+    1360 | }
+         | ^
 
 
->
-> Cheers,
-[...]
-> +	if (ret == VM_FAULT_NOPAGE)
-> +		folio_mark_accessed(folio);
-> +
-[...]
+vim +1360 mm/util.c
 
-[...]
-> +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
-> +		return VM_FAULT_SIGBUS;
-[...]
-> +	file_update_time(vma->vm_file);
-[...]
-> +
-> +	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
-
-Out-commenting either of these should work.  Could you please go through 
-them one by one and test if out-commenting either makes a difference?
-
-Best regards
-Thomas
-
-> +
-> +	return 0;
-> +}
-> +
->   const struct vm_operations_struct drm_gem_shmem_vm_ops = {
->   	.fault = drm_gem_shmem_fault,
->   	.open = drm_gem_shmem_vm_open,
->   	.close = drm_gem_shmem_vm_close,
-> +	.pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
->   };
->   EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
->
-> --
-> 2.52.0
->
->
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1338  
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1339  #ifdef CONFIG_MMU
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1340  /**
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1341   * mmap_action_prepare - Perform preparatory setup for an VMA descriptor
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1342   * action which need to be performed.
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1343   * @desc: The VMA descriptor to prepare for @action.
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1344   * @action: The action to perform.
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1345)  *
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1346)  * Returns: 0 on success, otherwise error.
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1347   */
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1348) int mmap_action_prepare(struct vm_area_desc *desc,
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1349) 			struct mmap_action *action)
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1350) 
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1351  {
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1352  	switch (action->type) {
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1353  	case MMAP_NOTHING:
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1354) 		return 0;
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1355  	case MMAP_REMAP_PFN:
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1356) 		return remap_pfn_range_prepare(desc, action);
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1357  	case MMAP_IO_REMAP_PFN:
+732e4e2690c96d Lorenzo Stoakes (Oracle  2026-03-12  1358) 		return io_remap_pfn_range_prepare(desc, action);
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1359  	}
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20 @1360  }
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1361  EXPORT_SYMBOL(mmap_action_prepare);
+ac0a3fc9c07df7 Lorenzo Stoakes          2025-10-20  1362  
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
