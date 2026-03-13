@@ -4,121 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4E57107BCCB
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 16:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A2FF107BCCB
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 16:33:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9B9D6B0088; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
+	id 742056B0088; Fri, 13 Mar 2026 12:33:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D491A6B0089; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
+	id 6C5786B0089; Fri, 13 Mar 2026 12:33:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF6B56B008A; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
+	id 5C7CC6B008A; Fri, 13 Mar 2026 12:33:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA8D56B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 55E2C56738
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:22:50 +0000 (UTC)
-X-FDA: 84541558500.19.917ECFA
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3E4B01A0018
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:22:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ZtOkUckD;
-	spf=pass (imf19.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B0BA6B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 12:33:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E237E1A0205
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:33:52 +0000 (UTC)
+X-FDA: 84541586304.10.6A1D2BD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D909A14000E
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:33:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773418968;
+	s=arc-20220608; t=1773419631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=waNi9HqZMalp9X1QHhx8NLvH4Y9lunKrP9GbZn1Q6ho=;
-	b=rl/AQgouq2lo1bQvklPMDlQRP9L2G0w2l/DAKyrGXPJaFCWZgQpCwUuEnVMZXFGLqDpKIW
-	PpTPtauXtwyFveNOxD8v27y6AvsFWDKQn3yc37BYKNLmGnrD/YNJew2xTlzGWPOu1qfmlu
-	QwqfBt61eOhN6FeR8n2tztbnoZ9AfMA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ZtOkUckD;
-	spf=pass (imf19.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773418968; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U70pcD6CBvSBjufcD0tBLvF1Itbr6aV/iwsDafCK3zw=;
+	b=U3OTOzUvhkzxgHyaImhfr8y0xMeSup8Ku5N/bFMn30zCHqzWPjk3BVBS+FPJop9DWHA+vj
+	gVpiMfA3RHJSaGdPPszjI7pmsSwx8HURsXbK2MbJyeP4OlNf5o/kqPROzb4cKPZVsPp6dw
+	WItuuQnPjymeAE06janBtJc6tklhfD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773419631; a=rsa-sha256;
 	cv=none;
-	b=YBB+eRpQ9QBJXNGmfL0/Wrro1mdH7VetJZPIvTm27dybCntNFxmUcpcZARJTnALvlYZwTd
-	EhZqUlvNDnMxr/zVxzVKTLuWmX6aOE7Ey4EMZ9rE3587sXk8+jIV7qxe5KOOlPZwOjD7SU
-	gbM1BMMNUt4RsGHv+As1H8fQP225osw=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-439a89b6fd0so2368359f8f.2
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:22:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773418966; x=1774023766; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=waNi9HqZMalp9X1QHhx8NLvH4Y9lunKrP9GbZn1Q6ho=;
-        b=ZtOkUckD36I9E+vCA1fWR9VYAIWJ5GFg1KOIfSaYa8QQpjNYc70gKzpF4a5HQtNpTt
-         WX/FahH/L/c51woy8axdOHs5Kh45pJ2MpgfBG1wBRma3lKooTtHqtEm+5j9Kfx3e1S2U
-         Jfx+yyK4TxWxBtn/WlsnZhzg5Bx94zkmO7Ns7yjJc9t8tI9UPFQHCz0lZtorehKtiKim
-         +BkY2jW2urgPbAy5On9yrQ/opvmZYjxQBDxWET7YaMsyHJM3xdOl8xNxUA4lolYQWr6c
-         8jfpOHIROJW+l2chDJaGOoo38ShVTyRTHnMW9uQI9RdU3P97Z8D49+abq81UELmZrVj5
-         y7vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773418966; x=1774023766;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=waNi9HqZMalp9X1QHhx8NLvH4Y9lunKrP9GbZn1Q6ho=;
-        b=k+SIOfxUbdRMDy8S1dPXiNbqIs6s/Z5h0BwdzIGRPdBmxYJTX5tj5IbcOybfKljceb
-         LN+f8oBV0ZzOXuQx58hcyeRMVceKn2p4DOpIWJaWx6nWrNJHWldHFFd07N9/EKau+YR+
-         8VFdk2wocXPbAJm93Lq/HNv/6bNqrRRF7zI7t3e7xPj9xqOUqjqNwsWwBwGYfG7jKQda
-         XIVFVlEKPMGjrd92MxvK97qDcAM8Q+cUoi6FuyxT/75YFYSLJE2PXbLSkdQq0ida4j87
-         ZYnC2waB2zwA60akw4CGopL1YUw6Zec0ZqG0sDm/+rpmLsGefr/OEYJ5zu/HbJttm80d
-         dvCg==
-X-Forwarded-Encrypted: i=1; AJvYcCW9wtZAodzUWChIlLlB3fEBzNFzeH26k/yjPbqIntKu0/vTJn8FYnfcBm7E3ogG9J+U9J/b7ebVHQ==@kvack.org
-X-Gm-Message-State: AOJu0YyXHl8Mhad5BnwpQU2i8onQX1ZIL0YbJKsNgsYJFkvprI0wWct2
-	OsrG6nC7b5wW92lvlx+f4KwVHU2xLe6VWMM+y7xrD0R7HIzqPCTYvueYOAoYCZ911fo=
-X-Gm-Gg: ATEYQzwSZlYucxN/Jm6tQisCp8fQwE31/B/FvWTUR1tROtwpCz0CV6taKY4h2K8sBdG
-	i8wrPs/DNebr6WS08g7UEVjT1oR6Q8gm7rJZyPxZ50VvQfuOtbuODUfTkh/m440FLiqHDEHIEm0
-	Jor31mNOh/7req+cUZlYz/m7Ckbd5YKA+QT6Bnf709zp7SKWv2TY835cuzYlrWZetIMB5NcHbpe
-	ANDtsiy9GndXoie7KT6herMHP2UumjUO2NP6DxZ2jsivdMmXCHW9PEgEtbUEOKWg/U+I9qo3Pzj
-	Ji/n70rbt6etnMSt6LKPMnG5UH3oMlrKgMwdrhF7dfjK7WxhlRB4QnLWALC2thprvkAVbbM95KT
-	kaTAQ09wARqYAI3XKlIt/lirjZB5DQbg+HZR/elaGXWUMb67FXV3yYcw3o2Z9xhewRfrxuhtDxm
-	EO4S9ynraE8lpkkdmkxwmMsNKkdFu4a2JuBJ7/B602R/Y=
-X-Received: by 2002:a05:600c:a6a8:b0:485:3a22:69b9 with SMTP id 5b1f17b1804b1-4855670c0cfmr39549385e9.29.1773418966114;
-        Fri, 13 Mar 2026 09:22:46 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48557c6700fsm22255485e9.22.2026.03.13.09.22.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 09:22:45 -0700 (PDT)
-Date: Fri, 13 Mar 2026 17:22:43 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-Message-ID: <hwcqvplnn2knclpivgagctmcaiutyv2qprgoqmwp7suzj6fqb2@diq6grkwo33b>
-References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
- <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
+	b=j3bM9FzVEqWX4zlEfmMyWQgrQVzYDZeeALMleVBkQolJWj57SIzmGHdAF9PfPRXI/5sfAQ
+	ptYZoySKzD0Lldp2fhEg0WYckYnPS0ihND6qW1C6GqPQLktCyiog4quq0TNot9CZQ8tyUS
+	7MBJmZEcRUU+jVk5YYfK3d7D0h1Ekik=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 964C8176A;
+	Fri, 13 Mar 2026 09:33:43 -0700 (PDT)
+Received: from [10.57.83.238] (unknown [10.57.83.238])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 223D43F7BD;
+	Fri, 13 Mar 2026 09:33:43 -0700 (PDT)
+Message-ID: <cfdfca9c-4752-4037-a289-03e6e7a00d47@arm.com>
+Date: Fri, 13 Mar 2026 16:33:42 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kq7o72d73feieu7p"
-Content-Disposition: inline
-In-Reply-To: <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
-X-Rspamd-Queue-Id: 3E4B01A0018
-X-Stat-Signature: tpijhgajatf5rxbj5yqef6d6czqz6m1k
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K
+ pages
+Content-Language: en-GB
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org
+Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ catalin.marinas@arm.com, dev.jain@arm.com, jack@suse.cz, kees@kernel.org,
+ kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
+ Al Viro <viro@zeniv.linux.org.uk>, will@kernel.org, willy@infradead.org,
+ ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ kernel-team@meta.com
+References: <20260310145406.3073394-1-usama.arif@linux.dev>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260310145406.3073394-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D909A14000E
+X-Stat-Signature: qknaepb6mdiri7rgskom9ktsjzjspnhj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773418968-743552
-X-HE-Meta: U2FsdGVkX19Kka8bPMqZeZD/PYS/mLMVPodxg1YIqMdYnun1oiM0HKVPGWXn4uwxs1VSHhsOlaWur+EHWOOKOLtyHj0BsonMs3gDQ9zumWsO/OXJ8zWOuAbHbrdT4xBuNUloUXoIl6mBTzr2s1pxT6XmSf9fbLEEJFBA33YswcQM0zfOxcs+MBtFbfNPAvlEMYVt6iPGfKT/X9FJHMfXmHgLe08U3tolRXENj8z9JCoorzRQuCkXaOFxRpqGELho5ncr0KjN6OvInXnWrodCCO+qW+R86ZJjh1xqACEVYnzbAvLqYfRaN67eHUOCq7Gqk7cm0kOLVHhgvNx1WHWOgj5U4Z9f/umDj/Dp+9xeGCTunGfC08kMU6HYd2EmoYVRBcCYql+NNd5chwlJzgsRWofndqeCvA4YJsBqlHMas5Y7ODguwMwZlGCew71w4oKRd42yMeE1Xe+NkmSBcu4GAigYtEdLzKvBmhzuzfYncRUlDcfMOnJnalaifAqngix1ay1rCyXlaxbFaoXcE6H3MW+v156BK+DN4jAkq+ARIJJDvNhmuByW5ID3h7IPgxcmsPnJKDXzcuvOh2K8+WpOnzGQ8os8ZR6yv/iEEtlofrKKpN+Jbo6jK7ZdAv5rxqW2QmhHCIDA84s+qlGGuSANjS8JTQ9UZNBtaZeazbgKarHhZUKeUTKKXWkNM7Ptfj6EbJgZCwxsZO3pnUaxvHFSRkIMY1CgZ/MuHFhWZlcB233XJ5klMkYTMaJQiDxoUXi0ZW2pR2LsK+t23MLUOLxRUXUCXqnnEK29BRYZ3ZSt1COyVUu9hMmHKlx6CdHe3MYNs8OyF8LTsYUXDmTrqa17zLaB9w/FiOIaQ6zntulhJpnF4XRog2+jzMn/CVYBQlcZMMU/UaSMNxc5O8VQVDaTM2ha8deCexDQwjsa23LJAEkjFIB0E0w9gxve2LvXwjDKLRKFeAtfPcW4aL4twWY
- 2pUP4P5P
- DjLfqQD5642bTP+lbDGuAAmFF1Rbzbm7TV8DBOSvqjNPOSoxu+zEEKpINjE0S3//QEoxS28TQpcUc0oRTzKKBSlmAydlmZcBqo+5gzvca3nhQrsRHe3ZF0P4dJIVDuczNzj7PJZP/DUZK5c1Zs3Pkrx9m8YIanHgz7ix/L3W4HDmGTm+oXS+8XdV1On7B4nVA3g3l6flwt3oaIjTo4T5by8uGFNXpFW/QKczF7qPBm6aOxY5CDjM6BYwAgRZ7EiEoxftUyIogLGSF2pfSOQZBtMNlI9ajqj8LCNWIQqWJJygVujzRFqwUZjUbEXA8pLyw1YCDuBsESbvQuJo1PjOAosSuN505WQif8JqGC5dEJXOZXrDnzREItseMVwEiWUApgNgS0psKgax0rGEDfuivqD7axXOTzfUjNe3VnYwaPrZ2/9lSZGrseORxJg==
+X-HE-Tag: 1773419630-85306
+X-HE-Meta: U2FsdGVkX18ZsD0q4OPC04Xa/TkrCZEJvGSy2ayjmPQ7xMJxs6rTiGj8ZSeXiVJMhHae8EK9Lg/cb1LUx93PBrr5Bf7M9I1kIV92xdkXtXwZGwT2yVr10FXd+Uj8nr5Vr4wN5GikAx3eEjRbd/28CJ5CCfK/vOBa9mWbZE5LFkeaujH94UKG7NUBeZyyApuH63j5/o3gSP/UTvG4cl82DoEebfU9lHVcymTUqcmNQ8JznOC7ydx4tJgGSkZN/nt64QhhdkyJDTy+baTwahVTTY74tPHFcnqvgAX0g9UVWJS3/yUwjCbGndfmVm+3Ih+TE6Gf7d229u1OkdhOdsUPmqnZ5ByVtfE5VtI4RETa8HrByDsBa5TaviY7rzzVL05qK519h+srieqO5ZAFazDmgEAiUR2zFY/AyJM1SsZeKOBgyCWXqZSxW9WlWjbYnouFrpA38KgsoM+OlpoDHtYEnsQHMwx4oBSpi+nT9j5nauswRMlrj4x2XktYoH5zHd3pvgYkZH/Ml6EW9Pws6MIqbLzYOmLlwew98KBfBDIFG6RnBdd2GzqJslAxugfBhAoTvABQ4bmuUHepZge4Iq7Ln70C8p+5a6Iw9j3X2XBeJMN/eXFtM5Aix3QcAmi8IHfK27sRO3hEsdjhqotJnaS2AXDhy4KjtLfolPpMZNCde4DisSalFS/UCs4BC6FStWybjEAYFCvLHqVtSR0WPJNg2xauRoHwqcXTiilNNzZmMlfQ4EyscXcOayTzn2v5pXBMlAURp32H3V4kOqzUgho2P/hnFWjWePhRgzWD/b0F9zicY8cK7LarutI8P6Z43mFwj3qnUyhJVSBbT7Lq7R4IBqYe6EtXWTfbK7mjOH+4IoJ0iWrAcDmwneJUG4ZsW7kuGFTm3Hth3MH/6AwWd1Rtc5/VpTrwVhJcsyWuU8RZXITCpvog/Q9rXPnip+kUPfA8bFwYlSeluzpciDw+ZOG
+ o2CnulSb
+ szkKG+b1lpx/u0ymQ2nJkC4DfEqhcI69pZi5imMwjbUl90dnZ+YgIyXU1dfdZedcZI61x+0ZwbEGAtuzJkFZ2suih/3xQD14H+mT9YiLi5KDEZLejc0CF1HZiUFxqPQcpObT9T1HGRL+AaZbMen0OSLY+6XQRWIQ+GIcy0lw178Lugtq0RAPZdKWvobRaswuIJfpkslkgA53/rc4rPnKCQm/g3k76DwGAcaS/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,115 +94,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 10/03/2026 14:51, Usama Arif wrote:
+> On arm64, the contpte hardware feature coalesces multiple contiguous PTEs
+> into a single iTLB entry, reducing iTLB pressure for large executable
+> mappings.
+> 
+> exec_folio_order() was introduced [1] to request readahead at an
+> arch-preferred folio order for executable memory, enabling contpte
+> mapping on the fault path.
+> 
+> However, several things prevent this from working optimally on 16K and
+> 64K page configurations:
+> 
+> 1. exec_folio_order() returns ilog2(SZ_64K >> PAGE_SHIFT), which only
+>    produces the optimal contpte order for 4K pages. For 16K pages it
+>    returns order 2 (64K) instead of order 7 (2M), and for 64K pages it
+>    returns order 0 (64K) instead of order 5 (2M). 
 
---kq7o72d73feieu7p
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-MIME-Version: 1.0
+This was deliberate, although perhaps a bit conservative. I was concerned about
+the possibility of read amplification; pointlessly reading in a load of memory
+that never actually gets used. And that is independent of page size.
 
-Hello Qi.
+2M seems quite big as a default IMHO, I could imagine Android might complain
+about memory pressure in their 16K config, for example.
 
-On Thu, Mar 05, 2026 at 07:52:48PM +0800, Qi Zheng <qi.zheng@linux.dev> wro=
-te:
-> To ensure that these non-hierarchical stats work properly, we need to
-> reparent these non-hierarchical stats after reparenting LRU folios. To
-> this end, this commit makes the following preparations:
->=20
-> 1. implement reparent_state_local() to reparent non-hierarchical stats
-> 2. make css_killed_work_fn() to be called in rcu work, and implement
->    get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
->    between mod_memcg_state()/mod_memcg_lruvec_state()
->    and reparent_state_local()
+Additionally, ELF files are normally only aligned to 64K and you can only get
+the TLB benefits if the memory is aligned in physical and virtual memory.
+
+> Patch 1 fixes this by
+>    using ilog2(CONT_PTES) which evaluates to the optimal order for all
+>    page sizes.
+> 
+> 2. Even with the optimal order, the mmap_miss heuristic in
+>    do_sync_mmap_readahead() silently disables exec readahead after 100
+>    page faults. The mmap_miss counter tracks whether readahead is useful
+>    for mmap'd file access:
+> 
+>    - Incremented by 1 in do_sync_mmap_readahead() on every page cache
+>      miss (page needed IO).
+> 
+>    - Decremented by N in filemap_map_pages() for N pages successfully
+>      mapped via fault-around (pages found in cache without faulting,
+>      evidence that readahead was useful). Only non-workingset pages
+>      count and recently evicted and re-read pages don't count as hits.
+> 
+>    - Decremented by 1 in do_async_mmap_readahead() when a PG_readahead
+>      marker page is found (indicates sequential consumption of readahead
+>      pages).
+> 
+>    When mmap_miss exceeds MMAP_LOTSAMISS (100), all readahead is
+>    disabled. On 64K pages, both decrement paths are inactive:
+> 
+>    - filemap_map_pages() is never called because fault_around_pages
+>      (65536 >> PAGE_SHIFT = 1) disables should_fault_around(), which
+>      requires fault_around_pages > 1. With only 1 page in the
+>      fault-around window, there is nothing "around" to map.
+> 
+>    - do_async_mmap_readahead() never fires for exec mappings because
+>      exec readahead sets async_size = 0, so no PG_readahead markers
+>      are placed.
+> 
+>    With no decrements, mmap_miss monotonically increases past
+>    MMAP_LOTSAMISS after 100 faults, disabling exec readahead
+>    for the remainder of the mapping.
+>    Patch 2 fixes this by moving the VM_EXEC readahead block
+>    above the mmap_miss check, since exec readahead is targeted (one
+>    folio at the fault location, async_size=0) not speculative prefetch.
+
+Interesting!
+
+> 
+> 3. Even with correct folio order and readahead, contpte mapping requires
+>    the virtual address to be aligned to CONT_PTE_SIZE (2M on 64K pages).
+>    The readahead path aligns file offsets and the buddy allocator aligns
+>    physical memory, but the virtual address depends on the VMA start.
+>    For PIE binaries, ASLR randomizes the load address at PAGE_SIZE (64K)
+>    granularity, giving only a 1/32 chance of 2M alignment. When
+>    misaligned, contpte_set_ptes() never sets the contiguous PTE bit for
+>    any folio in the VMA, resulting in zero iTLB coalescing benefit.
+> 
+>    Patch 3 fixes this for the main binary by bumping the ELF loader's
+>    alignment to PAGE_SIZE << exec_folio_order() for ET_DYN binaries.
+> 
+>    Patch 4 fixes this for shared libraries by adding a contpte-size
+>    alignment fallback in thp_get_unmapped_area_vmflags(). The existing
+>    PMD_SIZE alignment (512M on 64K pages) is too large for typical shared
+>    libraries, so this smaller fallback (2M) succeeds where PMD fails.
+
+I don't see how you can reliably influence this from the kernel? The ELF file
+alignment is, by default, 64K (16K on Android) and there is no guarrantee that
+the text section is the first section in the file. You need to align the start
+of the text section to the 2M boundary and to do that, you'll need to align the
+start of the file to some 64K boundary at a specific offset to the 2M boundary,
+based on the size of any sections before the text section. That's a job for the
+dynamic loader I think? Perhaps I've misunderstood what you're doing...
+
+> 
+> I created a benchmark that mmaps a large executable file and calls
+> RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
+> fault + readahead cost. "Random" first faults in all pages with a
+> sequential sweep (not measured), then measures time for calling random
+> offsets, isolating iTLB miss cost for scattered execution.
+> 
+> The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
+> 512MB executable file on ext4, averaged over 3 runs:
+> 
+>   Phase      | Baseline     | Patched      | Improvement
+>   -----------|--------------|--------------|------------------
+>   Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
+>   Random     | 76.0 ms      | 58.3 ms      | 23% faster
+
+I think the proper way to do this is to link the text section with 2M alignment
+and have the dynamic linker mark the region with MADV_HUGEPAGE?
+
+Thanks,
+Ryan
 
 
-css_free_rwork_fn has() already RCU deferal but we discussed some
-reasons why stats reparenting cannot be done from there. IIUC something
-like:
+> 
+> [1] https://lore.kernel.org/all/20250430145920.3748738-6-ryan.roberts@arm.com/
+> 
+> Usama Arif (4):
+>   arm64: request contpte-sized folios for exec memory
+>   mm: bypass mmap_miss heuristic for VM_EXEC readahead
+>   elf: align ET_DYN base to exec folio order for contpte mapping
+>   mm: align file-backed mmap to exec folio order in
+>     thp_get_unmapped_area
+> 
+>  arch/arm64/include/asm/pgtable.h |  9 ++--
+>  fs/binfmt_elf.c                  | 15 +++++++
+>  mm/filemap.c                     | 72 +++++++++++++++++---------------
+>  mm/huge_memory.c                 | 17 ++++++++
+>  4 files changed, 75 insertions(+), 38 deletions(-)
+> 
 
-| reparent_state_local() must be already at css_killed_work_fn() because
-| waiting until css_free_rwork_fn() would mean the non-hierarchical
-| stats of the surrogate ancestor are outdated, e.g. underflown.
-| And the waiting until css_free_rwork_fn() may still be indefinite due
-| to non-folio references to the offlined memcg.
-
-Could this be captured in the commit (if it's correct)?
-
-
-> --- a/kernel/cgroup/cgroup.c
-> +++ b/kernel/cgroup/cgroup.c
-> @@ -6044,8 +6044,9 @@ int cgroup_mkdir(struct kernfs_node *parent_kn, con=
-st char *name, umode_t mode)
->   */
->  static void css_killed_work_fn(struct work_struct *work)
->  {
-> -	struct cgroup_subsys_state *css =3D
-> -		container_of(work, struct cgroup_subsys_state, destroy_work);
-> +	struct cgroup_subsys_state *css;
-> +
-> +	css =3D container_of(to_rcu_work(work), struct cgroup_subsys_state, des=
-troy_rwork);
-> =20
->  	cgroup_lock();
-> =20
-> @@ -6066,8 +6067,8 @@ static void css_killed_ref_fn(struct percpu_ref *re=
-f)
->  		container_of(ref, struct cgroup_subsys_state, refcnt);
-> =20
->  	if (atomic_dec_and_test(&css->online_cnt)) {
-> -		INIT_WORK(&css->destroy_work, css_killed_work_fn);
-> -		queue_work(cgroup_offline_wq, &css->destroy_work);
-> +		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
-> +		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
->  	}
->  }
->
-
-Could this be
-
-#ifdef CONFIG_MEMCG_V1
-		/* See get_non_dying_memcg_start, get_non_dying_memcg_end
-		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
-		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
-#else
-		INIT_WORK(&css->destroy_work, css_killed_work_fn);
-		queue_work(cgroup_offline_wq, &css->destroy_work);
-#endif
-
-?
-
-IOW there's no need to make the cgroup release path even more
-asynchronous without CONFIG_MEMCG_V1 (all this seems CONFIG_MEMCG_V1
-specific).
-
-(+not so beautiful css_killed_work_fn ifdefing but given there are the
-variants of _start, _end)
-
-> +#ifdef CONFIG_MEMCG_V1
-> +/*
-> + * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race =
-with
-> + * reparenting of non-hierarchical state_locals.
-> + */
-> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cg=
-roup *memcg)
-
-Nit: I think the idiomatic names are begin + end (in the meaning of
-paired parenthesis, don't look at css_task_iter_start ;-).
-
---kq7o72d73feieu7p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCabQ5zxsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AirbAEAllLIHOekP42qBXcY9SXM
-HI9aZuWe5shsjcP4rBnHz2IBAMq5mCPASHGfKEP+tb8nLIzv/PeBVFYEJSxL39zr
-N9oG
-=/sfd
------END PGP SIGNATURE-----
-
---kq7o72d73feieu7p--
 
