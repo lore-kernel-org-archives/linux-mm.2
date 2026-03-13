@@ -4,120 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB796106FD69
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 03:05:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79BFD106FD6C
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 03:24:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48B8A6B0088; Thu, 12 Mar 2026 23:05:25 -0400 (EDT)
+	id 5DB076B0005; Thu, 12 Mar 2026 23:24:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4636F6B0089; Thu, 12 Mar 2026 23:05:25 -0400 (EDT)
+	id 55EFD6B0088; Thu, 12 Mar 2026 23:24:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36FE16B008A; Thu, 12 Mar 2026 23:05:25 -0400 (EDT)
+	id 436A66B0089; Thu, 12 Mar 2026 23:24:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 272E06B0088
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:05:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACE88C2562
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:05:24 +0000 (UTC)
-X-FDA: 84539548968.26.91893A4
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AF00D8000C
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:05:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HXiw9+8W;
-	spf=pass (imf02.hostedemail.com: domain of seven.yi.lee@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=seven.yi.lee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 305C86B0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:24:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D18CABA815
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:23:59 +0000 (UTC)
+X-FDA: 84539595798.20.4859B29
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8961240010
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:23:57 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i0P1yAnf;
+	spf=pass (imf27.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773371122;
+	s=arc-20220608; t=1773372237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YMiD7iuuQ6RwrA9DHEwvWHHs17Gv5D7sbQEPQSKpbdQ=;
-	b=wXvbLwZ3Ka7ASBBsIrOUOR1TW9V6mxYCWzSJJWrMdeEv7A8utD1tI/TofI82Cv1O8o1wX4
-	boPKQ5ykpTgCZOAduzBZ/lRR3rLcMAQ45vx8nMkqmUVHxxtYzN6Wvpy2JRsGBfxa7+zu8+
-	f4/Rpttgi0peLMPruO3ROvH+HQURriU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773371122; a=rsa-sha256;
-	cv=none;
-	b=EgDNqkkeSD3hAquY1/Re+gX6mMsy52Jrpc8OXmn30g41KgEyCLwvRTLK0Pnxt6lUa7VXFK
-	UrfeSK96IeEA4gZV3Uk2/Z3fjOmtFrbGOTG0kAJ6gJ4hIFRsiS/s3Ah0spXe9VZcm14ZWZ
-	d9zrC2jQpnjgHVc9aLnLRkQM7pSD/mQ=
+	bh=XyUSirNPJAnFjUFfi5pJvHSlQzaYa0PVQM56kebxuis=;
+	b=aLdgQtHI908SeQ3Gxpa8yEf53I5dqc86G7bUFa50SStrzUAkk/rsz9Ut3B00bua7r9lnoJ
+	FsmR4FyyqcVgZAk/yXw3AV8/tOkAC4TVgUKv2ufMu8rRauP7FSah1rrpzAsW6jSik67WYk
+	wNWwwAQY6xoFSC5JFfjvjakFl0couLM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HXiw9+8W;
-	spf=pass (imf02.hostedemail.com: domain of seven.yi.lee@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=seven.yi.lee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ae4d48dc2fso8524835ad.3
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:05:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773371121; x=1773975921; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YMiD7iuuQ6RwrA9DHEwvWHHs17Gv5D7sbQEPQSKpbdQ=;
-        b=HXiw9+8Wzb6TdIMr23qeZTCegsBDqC9Bxj81Vzuo/7aSG76rIeVijQN3I+eEGSMnhD
-         ScqYA1z7DHdT4H7bR6DUAgA4MTUDcwv8nIYvDJKndgxBDpl2l39BfXg7yckAFILD8r6l
-         M7lMBwsJoNY0Hig6n+eWy5yHa9VsCaEQq3Hf4c8FDQ11nZMLEiyz8YH5LfeN1fipj+so
-         qjxCnJePTHhJ1hrpCJZXlqHIcLDtrnJyfW2luEWPcu+JSAyzncaFEp1bZlzjAgPflK5a
-         WE8tAtZuPLGCNJtOotxyE6l37hMXNpW0gIVuEeIAW8yuVNE1MNlfsOALBEjm0+7yd/kB
-         cixw==
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i0P1yAnf;
+	spf=pass (imf27.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773372237; a=rsa-sha256;
+	cv=none;
+	b=GeHC1MeDNnfzxb/8C5IuSW1uVXI/HfySHepkd1TuX3l84XdjHPqp7Lwaxr/Ywufz9Syh1b
+	80zZ8etRnBDnq3HNqfkeZnmVGZnMZXDp4EyjvY85MNyEc+yL9MSo92Xn+6z5F4gt+DhY3j
+	67KcyHe9sroOjYYXDeIdNV1+chp2uR8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773372235;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XyUSirNPJAnFjUFfi5pJvHSlQzaYa0PVQM56kebxuis=;
+	b=i0P1yAnfvvt7qQ+0N1l8cyWPt1st0z1F7uizEpjSoK1UMXuOnoALvzqYBbcuMJ0n7z4cmZ
+	eI+Xdlw0hU05Kghv4rjW84ewkmjVCM4rmx20xI/OwqkOvleat/87peydBpo+mj1yh9UU5A
+	9qrBTOIjjsk8ae/6IuVdHBVdd/As564=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-618-U6VQs62wO9WzFsy-ONsiXg-1; Thu, 12 Mar 2026 23:23:54 -0400
+X-MC-Unique: U6VQs62wO9WzFsy-ONsiXg-1
+X-Mimecast-MFC-AGG-ID: U6VQs62wO9WzFsy-ONsiXg_1773372233
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35a032cdd78so7524176a91.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:23:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773371121; x=1773975921;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YMiD7iuuQ6RwrA9DHEwvWHHs17Gv5D7sbQEPQSKpbdQ=;
-        b=i1OYYmixIwUTu+UZIUfi00n9kksSsyr7eWpbFk//B+BNqzG8MZ4uJHcVqklKei8705
-         sD9GnKrg5gHqip6+VMU7/+9tdYXv/RQ0tqLAjoap7EFowQERHRPbMU1ptcCU9VGK3LyF
-         22IBa4/f9sfJ5/q7DnbyGrDxwZV7ZU5OWhTaBlqMBiAxaX8von7+y0LXN/Mar4m+sMUz
-         03giTcFu9HdwlrM39Gemlb6rLlEqHkB87DbSdVW0sTZ6FPxxXlHJZ0wmBKkNFbYDOOG9
-         Bg/LIhJCGla9Pr6LXnJm0I04zElvIEeGU65Yq0VW7UIoTjE14BrVzwhdOr15OlFX5kHL
-         0HHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCk9l09qaMyxURGOOIhCNaMdl5zB8Pv7vH51oNv+Hu/R6ELd5XLOvdtdIQY0LAwVUVZXgiLm/4bw==@kvack.org
-X-Gm-Message-State: AOJu0Yz5Qfs8ufGFfRqL67pie4dQeprbm0Chtp8QkGreZOBjCBV61JsB
-	bodxStU+Q+20GR/6C93tsliXc/aGV137DGqUldiS3F0ouYd7My94EKPM
-X-Gm-Gg: ATEYQzwDGRmTowwFjClyzlh6PfVqJldXqUFWV6suSecI0r/QsmZ+/2uPAzfQUHIyjuQ
-	tiHzpE4HEtUcd9+fbdZH7tbz61u4JxKcpi35DJFUUCauVKsA7JVAli3AYY3FmCriKje85B0G77S
-	s51FRXOcP4/fW6prteHWLJ1gaamWguZ67NcMfiU9QwcSmH7wto/x1HaqcluiWhpWJfqgfRhbe20
-	0J3B5fuUUMYyT+l/5zM+C+mXN5ID7PEosFXX5T3+ahy7CN495SIn3ltP7JOw7WPbXrhu7krZvIZ
-	q1C19yidJ2GFb+1wNTmVsRKxYZRAQicnfsvFUxeeJeFKQN6bgnnApVFgDnSdLKXPQsCpBiZKLQW
-	kfm5WVmK0pUcyjKwKGX0ae9Su7IQ+o929pPGfsG4z3I0kxeNpEWWoBin18NT3a1C89kXCEsatq3
-	4U9rVT0ACGnftANO7ZSFePUzG1MjZJ1v8yNHiJS0oKhxvA20OHlEGBmPYn22HtXcE69iJkze8wS
-	g==
-X-Received: by 2002:a17:903:1a2e:b0:2a0:de4f:c99 with SMTP id d9443c01a7336-2aeca96723cmr15904725ad.9.1773371121407;
-        Thu, 12 Mar 2026 20:05:21 -0700 (PDT)
-Received: from [192.168.123.240] (n11212047001.netvigator.com. [112.120.47.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece56c388sm5610335ad.11.2026.03.12.20.05.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 20:05:21 -0700 (PDT)
-Message-ID: <8315168c-0557-445b-aa86-174d9902e2e1@gmail.com>
-Date: Fri, 13 Mar 2026 11:05:15 +0800
+        d=1e100.net; s=20251104; t=1773372233; x=1773977033;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XyUSirNPJAnFjUFfi5pJvHSlQzaYa0PVQM56kebxuis=;
+        b=TbthgyrKyYkIywljC9tkZ93Xe4nkJdUxS5p0A0pvHSpDvaAEYfzAOJ0UN5EGJSJ3md
+         A+2ARtQLzXpNn+hQ+XQSesuHQ/s9WYXy7/DRNTj334Vti6dsCNgAdZI/flBJPauPioYX
+         jgvofcaj2SHd38X7iOe5a9hXPN+VirH4w9aoD58Yaxy/HgR814/HK2KSoXwe8UHmq93x
+         sHJpbfU5jdb44M8dG8fdGa9G8AU9jT88WDowKoqu1b2ngJvYA76rzeeESXY5XkA0OT85
+         ORP/qA5sw66andxnk/Bwfo8x4v+XRYWkGklrge+hD+HIJONZ5UdKss6bUKxCik53OFtp
+         ugmg==
+X-Forwarded-Encrypted: i=1; AJvYcCXKTrH1KADi3dRUXUo6JD9d4KG1CIoy50X99XHyI61kRRSEIiyWjWmzduLOzi2IIq9SVItz2KYZeA==@kvack.org
+X-Gm-Message-State: AOJu0Yy3ljoj93S3szsQoa6uvOC7n8QZsOu5RQQ9zvK9xFzy7do1wc7x
+	M4ehutJIx6WkrRQt1614P3017zqRFW0wwIJuizpAurfQYonLMnDrsG3jRKaJesZIz0PL/ezj2Oo
+	o6rQCrkaX3RLSctClmt+nx6Cai8q3v2tU0R/cHzwI+9cGkPwHQEl0
+X-Gm-Gg: ATEYQzysBBAHTufGFRNIEb+/8hg6JNH+3dNt3YufTJYaorbVJ99xn+oZdvhlGRVmgfm
+	e6h+rH/l3kQdf7rIHUsUN8hCQnfyYo3rjZSyRlJRMBa7mH2jbIHlTSj2U0/kiLPF4cChKXjw98S
+	D9pSXlZcHDdQu+CgpIC+T6y23EidoMdzfw/BoO03siMgOn0whtLYbHx9MrIo20jnvW2sM7CVvqn
+	NtYhu8oJIXXYBdQowM9HaGcDW+0LPUovDHIkbEU35xLrUdV/vzXWyecKrja+5XoPdCV21ujxjJ2
+	DwE2lBcvu518K+4KD16xaUeew6aMGNAMPNOSyTT6y73x7RBNj0poobuPssn4scACn7oLHvEsqT4
+	rhe4iD+zwJOrlTAFstA==
+X-Received: by 2002:a05:6300:193:b0:398:9820:f6ff with SMTP id adf61e73a8af0-398ecdc67eemr1371860637.62.1773372232822;
+        Thu, 12 Mar 2026 20:23:52 -0700 (PDT)
+X-Received: by 2002:a05:6300:193:b0:398:9820:f6ff with SMTP id adf61e73a8af0-398ecdc67eemr1371846637.62.1773372232455;
+        Thu, 12 Mar 2026 20:23:52 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73ebb75624sm421173a12.24.2026.03.12.20.23.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 20:23:51 -0700 (PDT)
+Date: Fri, 13 Mar 2026 11:23:50 +0800
+From: Li Wang <liwang@redhat.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, mkoutny@suse.com, yosryahmed@google.com,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v2 1/7] selftests/cgroup: skip test_zswap if zswap is
+ globally disabled
+Message-ID: <abODRsaeEul9Aj2X@redhat.com>
+References: <20260312040627.55257-1-liwang@redhat.com>
+ <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
+ <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com>
+ <abNtUReAUHT6j9Rn@redhat.com>
+ <CAO9r8zMh=tAV6UJcH3hhZWrZJO_emVe4raiq4wiBEgC-GAD2=Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempolicy: add sysfs interface to override NUMA node
- bandwidth
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, dan.j.williams@intel.com,
- ying.huang@linux.alibaba.com, linux-mm@kvack.org, joshua.hahnjy@gmail.com,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, dave.jiang@intel.com
-References: <20260312091207.2016518-1-seven.yi.lee@gmail.com>
- <20260312115825.000045af@huawei.com>
-Content-Language: en-US
-From: Yee Li <seven.yi.lee@gmail.com>
-In-Reply-To: <20260312115825.000045af@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z3ihcmnakdoggppubsisbkdf44wgwkrb
+In-Reply-To: <CAO9r8zMh=tAV6UJcH3hhZWrZJO_emVe4raiq4wiBEgC-GAD2=Q@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: FHNHfoOj3Ax8nfGQ3JubmVqQIcq1f3uECFG94CMJ1EE_1773372233
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF00D8000C
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773371122-879039
-X-HE-Meta: U2FsdGVkX19LevBcIU+1Q48ntXU5p43lCB6cHSQc5NFcH7wXNImoBJ+xSm+Tjnyul1+2qujCKnDaoExalXIbTle5C1t+5K9icxTwN3a7KlAkP4a3UbchSuQPOh4Bfguy+f/qj9XnIRWLuIlKaEU/okTNtS68XpLHvVnOtiq8Enckpluc/0rhNR4HfUdJVB51O2pUPA0e6yjwO43z+1nw9sUSD9dau65N3mWlEXwLTfVztyabJoDgZGDvaaJOwDRVNEbmqhsFEJ0522/tp4UTkJJthFZz20/xyfyTz+UHDbjrjsjG1zb6+gJrApjNDatSaxoA0nEuDFXEpJcdPR7ptoSvg6EDUVGJnVCD+aW//jbsKwdesrjVlCUyYshtU8ECkO/B2mXPd9Ch/i6PJe4gbG+xg0zjMs9LjX5YBAEz7jnf5RVkWdOPJQd+W46ZnWhMuASb00QDka6FH1CTzndGCnE8lhZLmKJx0R2zAfp8dWIm5LDIR9o2MjaO2J49l1lzl9SwDlKD9YEnHFx7kPxzcLO/5PVJxI2ZPCiCcswoITBzckO4zzg6XJg6NSXElfdGBgQlVGeeZnL/y6b8f0yESifW2L2WJUk0fIWyZJLpGvU0xPIP2/nwV5OvOlSeUV8u/iPPx+bgMhvOXBwjd3/G5XckyHbi/3p3o8ckguKKShIjEhqfmLgmUeWnbHFFAL84EDjuAKojkKgH4NDu++ftGGODKo73OuWB4UwWzaENECh9LfypkSTct/m+EOCiAp22kzjmE+2Qvxhts9rUim/zTr+2w9LwPkvs9qByFAI+dU/el3F0CI5J8YB38IUM3wN2CZf647cyo8xpu7YD4ODWO0t61sALWwu4pfmt9YPp8HQPZV2fJkl9HrMn6j39jqVd7ymiw7fGC3zeIoOjIX1BzNb0coWfYP6zVAKXwsa1KnE73hjspnfr1s99XL7taP+wAmCbQvAJtbR5EQ5gtJa
- d+abftf8
- ETw6JbVAK8agWgFyNIaEcNQoDDP4UIxlQZL0z6gU09okI0mQPD2A7tEpsl1F+viiMnVErL9VGYGYCimUYzI6bXqt48UPunSarv2b2gTOpxQ3rKVl+0gJiSxx3gQZ1KaFhPrjdv0M0Zioc9XWMhTKwBAclCelJE3ktNT9gKY9lki5dU5ek2tkzi+eJ7sPs5Kktompk8BIYCAGI2Gfw2QHBxgETRgqve4mUIQwLd23Da53hRrOuXX5mb/NGuYPAJOZ4MzJ3rT2x5y+ArUF23IyQnrOLEq2iIZiNDARB6NIEfJ6AJgfQvr6zz2usAOGJLDPwpZYZqx4UCazRVhJvbPaVrgddLHteWhxEeUWbNALvLq4xGyKsqsayEY00ny59WWE6rLDknUMm1/K9jkyOjZiSe22uw3r++lzPW93SXMa/vJuXB7mXF7/wUGKeNmDSbvdYsNUDkJZXsZpEh8gJx9keyM2pc14ynjibhKjx3o1SzeiymWdLSouq9wKbL5YW5rmnIPxkd4anC44Co7WDg1ww22+TuIceCQ3lwLVaWfAoXIA96MzlBJ5VUEd9/DE5ak6S0O/yLuhd0jOyZe3GERpLOXJUBwqNEvustukpDkvrFGGAnGajAanh+312AyNavknTqtJ4
+X-Rspamd-Queue-Id: 8961240010
+X-Rspamd-Server: rspam08
+X-Stat-Signature: uw9mztkub5pa4fbmquh1ii66kzpu47oe
+X-HE-Tag: 1773372237-997966
+X-HE-Meta: U2FsdGVkX1+eO089tQRRt+eoFMIftO+Y3xNyxve6GV9eNO8E9p2wMSmbkZ1uk7YQNTR/VxpX157LMtUmHcxCZ647ahtswi1oBZG1uZRb/NQt03mdfArcOlqeM+TiWW1Qv4ObyWlcX1mJ+RJ/9iAZFMZFZ8eTqNJvnWBQST4sd6dzDTaHXwW9RBDzFHMYid02x/7m11qFhT3qFpFN2d77d+6DF3BFoSL7f+OPQ5sAsxL7NLXLKEvzDIVZDiMxI1s1GETye+gGvXLSYx7s/el3ODEm86/sKgiHPeIAEsbHeKeB87/S4D7M73MYsVBOf5+q+9Qg1U3pnHL8lHa8RDhxLREOk0iTrCHmXyVl1UI4mSyTmKgg4HsTTFuR2zhJLJQmVmmEHCJQh/s4Zv0yfjb77Z24jNaVkfTSTNwXGgLYJcJfyROBG1IER4ArXApoFt02HjQ42xFNpufckzNSGVlSYypomasHGb4WW8NkvzSI6nubhe7mjXhgOoj8sXZDB7RQhSUbw69Ogqfvr3BNIuVTGyeqyCY+cyuErKf+5XFmWcgbFZFL43o/PkdNJizNCrlLvZ3tez00zhDSkC4YbvpEN6UM+RN8WR4yY+kRzm8K4swC0uUrV28FbKEEbQfMSoGjJ867zzfcQFgWcs2H2NgciJxPGpLGOuDbHKsMBdeMrXeVznzKuXKyhUXyFsvej12nt/Q2Olvblru/4jveGeFLHenugN/iZQ8sbyJCh5S+ic6rlW45XasukONR8MYrLkQYo85/GTtD9jDEdQRd8zBYULI3YXfuFkiN6Icz0GE/9VaQdd9+8n+MlYGIocdxylYVHAfVwxP5ePsJlB6Kguq/BxWzM60bf4XZ5r8rm0PPViEEjxHM9OM4j6nmaOln+BjD0sVB6WmTShopHmJsImX17p8VBq8wKm+78ofZnskjkkbDFdp+iEmIGeTKx5vN4E0KMFYeWdz0QvOmKybtHFd
+ m6qUq2iP
+ +HQN3b/y9+aZikOyTd9Zb2o5vUbuKgCinWlz42+YHbiHxvL/zEULTxeYLaTLlHfJJuw04yqBg5USnY1SiwcupvNjvD2AlZtGQa8UIpnjsM9V20jsSsNWVhM9C4ogTmfs81FBjOVE8DG1U5r1vrzHtXWxyPWeHCqFwD8fMalX0E8jvfecqd0j07/t7talaYwSyz4u6CpWowtaxMgfh8kd1AXatZ4OcUix7pint9evdp2x0kt8D26tdgUyaK3JZ/S4/pPDu1o4Hu8otJFc5whdYIE2iYPpltts2jpMRlgLcRvUvzh0T4WkxfOQIhVVeYDVb9BBUo+fC3ihsOLuahQ8n+ic4YiAMqkh4kQZnTdb5MqqughKmt12b4Til3M2PzlRG+pKmZN6aR19Y3QMHAiCXwd9O+MekQAz7KmpV1gDGlCrsMeCMPstSCxD+9AoYU3rOuv4I2vHcY9Yqu1olFpDMwxXp+s1Ow8cmzuiJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,38 +135,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jonathan,
-
-Thanks for the review.
-
-> As I note below, I'm not convinced this is the best layer to be injecting
-> data at if we want a debug interface that allows us to reflect real
-> hardware.  Might be the sort of patch that is useful outside the tree though
-> so thanks for sharing it!
-
-Perhaps a small tool to compute weights from the desired bandwidth
-would be a better approach.
-
-> If it was an SRAT (for GPs) / HMAT issue I'd suggest table injection is
-> an adequate way to do testing and debug.
+On Thu, Mar 12, 2026 at 07:58:28PM -0700, Yosry Ahmed wrote:
+> > Yes, this looks more tidy than open it. I'll go this helper in v3.
+> >
+> > >
+> > > static void check_zswap_enabled(void)
+> > > {
+> > >        char value;
+> >
+> > read_text() requires string but not char.
 > 
-> CDAT is trickier, but maybe we should be thinking about a debug path to inject
-> that as well - similar to what we do for ACPI tables.
-> 
->  From my point of view I'd rather see debug / testing interfaces that test the
-> whole flow rather than just this top layer control.
-> 
-> However, I can see this is a useful patch for developers. But if you
-> are developing debugging bandwidth-aware memory policies, I'm going to assume
-> you don't mind building a kernel and adding this patch to make your life
-> easier!
-> 
-> So to me, useful tool but I'm not 'yet' convinced it should be upstream.
+> I was just illustrating. This should be passed in as &value. That should work?
 
-You are right, table injection is likely the better approach.
-During early hardware development the platform is often unstable, and
-firmware may not be able to report it accurately. Letting the OS handle
-debugging and evaluate the results can make experimentation easier.
+Yes, pass it as &value works well.
 
-And, thank you for checking the code.
+Patchset v3 is on the way :).
+
+-- 
+Regards,
+Li Wang
+
 
