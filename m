@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F78105F7A8
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 13:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF47105F7A6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 13:58:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51E986B008C; Fri, 13 Mar 2026 09:49:49 -0400 (EDT)
+	id C7EE46B0088; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CC6F6B0092; Fri, 13 Mar 2026 09:49:49 -0400 (EDT)
+	id C02596B0089; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CE8A6B0093; Fri, 13 Mar 2026 09:49:49 -0400 (EDT)
+	id B0E726B008A; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29D286B008C
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:49:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E179DB3FB5
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:49:48 +0000 (UTC)
-X-FDA: 84541172856.13.5B0703D
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0D9384000E
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:49:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.194 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F6B36B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39AFE139503
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:58:35 +0000 (UTC)
+X-FDA: 84541194990.18.5C71249
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A1B40C000D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:58:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XX4cQHC3;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773409787;
+	s=arc-20220608; t=1773410313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=thXjloBmguuNA1pMHHFc2Xj65b+Mqqy05OB2wAB6eh0=;
-	b=GuUY8CnFasoYvjtF3KmXbjPna1R6sdrTJ8XMJVAk6IX+LEV8uBqxtWr2yykjYwhAIlCYU7
-	I7n49jS56MCNBFPXwsVsnK3xG/z9vwSmHrIx8mLosMbjiA4s7jM1oTAX7ToMkD3wsCYN7n
-	0djdkxJkZDN9iOZ3H//c+tUvbDjjT70=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773409787; a=rsa-sha256;
-	cv=none;
-	b=3WQ5M83MLTD4L2Sap28hC097yOFQjvKvikrpMvdXEja+ADHcM9Tyl+kFuojrZN4KPkkDL9
-	vjyf+uoUHKoWHepsZ/3MGDXtdEz6e/2cWLEj4Dca9htqJxUHQjuA9nxVRoC7fTJek/Difx
-	M7fcQB1/kfxx4jaDYCJJTKX//+86E80=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aDtcuq+jZAq8nSruY2x07zz92Rm4Lz2QSe0PkkRpDPo=;
+	b=z6r+MmuyIEt9EezPFmMnNFf0LO0wBayLyt4leUfl61TQUjGtQ0udU1fyUjeA+KDTwGRQ6S
+	O2rASdOi1IGh7A38t/Y9OJeXu3HGY0mhGU2IA9lDdkJJ0bngDJQ4ri6mAcsPLPrSmYJVb4
+	ihbKQN84vf51JA2Rcl14t8lDHEv1SPg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.194 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 906A93E97C;
-	Fri, 13 Mar 2026 13:49:40 +0000 (UTC)
-Message-ID: <3020ec8a-5ff9-4816-ad3c-f81dd4513e1a@ghiti.fr>
-Date: Fri, 13 Mar 2026 14:49:39 +0100
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XX4cQHC3;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773410313; a=rsa-sha256;
+	cv=none;
+	b=CTHqW+l2aWd3aPYUiVjV0R906ml2MyKJkoXm25pzZq6XON7AQgzvs1/gD60KXDG6eiq6QZ
+	bbo/iDznOVvOKbJFci3Okf/JcxgeBE1VRflMzdFZ7+/QdzhA+6Mtt1sGf88V/jvZ06uxXn
+	0okX6yvAaBcvqfWPvYmx4ryy3hhz2+U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ED2C361843;
+	Fri, 13 Mar 2026 13:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B37AC2BC86;
+	Fri, 13 Mar 2026 13:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773410312;
+	bh=kshVJg/rQTERmOD6YiWVGRVHPpNBvBSWyHEFYDvoDCM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XX4cQHC3W+i3JG5+SggGUb4YhfFkxWFUaZMFpdj6PwCYa/AYmIZ7GxWKHVCjC6gke
+	 kuo1XcRg4bXFWt0s13h6QCHyHjxocZ/hbBR1qz12U95YZ7bHoaQXHucQ4tRAKnEvNe
+	 oTVLM6qH3rzagaV2SYXufW1SWuhUb0pWrakRUanvW/tN9Ef/G4VSd7h8TtIH4Z3QUE
+	 uR4UO6yU89zstZ+6O80qPMIakUZzD3XL87KJcZd03qnO3bEeaibxKh9iWblSBiA5Mp
+	 I3hgd4NKR3w//f7qsBtszC8GsY8Vsv5dc8tWhCdkJMIQ3K9DwRxQw7zMQvONCl8FMv
+	 KmneJRjsK5wmw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: Evangelos Petrongonas <epetron@amazon.de>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Samiullah
+ Khawaja <skhawaja@google.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Andrew Morton
+ <akpm@linux-foundation.org>
+Subject: Re: [PATCH v6 1/2] kho: fix deferred init of kho scratch
+In-Reply-To: <20260311125539.4123672-2-mclapinski@google.com> (Michal
+	Clapinski's message of "Wed, 11 Mar 2026 13:55:38 +0100")
+References: <20260311125539.4123672-1-mclapinski@google.com>
+	<20260311125539.4123672-2-mclapinski@google.com>
+Date: Fri, 13 Mar 2026 13:58:28 +0000
+Message-ID: <2vxz1phnesqj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after
- setting GFP_TRANSHUGE
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, alexghiti@kernel.org, kernel-team@meta.com,
- akinobu.mita@gmail.com, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, zhengqi.arch@bytedance.com,
- shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, gourry@gourry.net, apopple@nvidia.com, byungchul@sk.com,
- joshua.hahnjy@gmail.com, matthew.brost@intel.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Bing Jiao <bingjiao@google.com>,
- stable@vger.kernel.org
-References: <20260311110314.237315-1-alex@ghiti.fr>
- <20260311110314.237315-4-alex@ghiti.fr> <abGsagHIieEobFbB@cmpxchg.org>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <abGsagHIieEobFbB@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeelkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpefhhfdutdevgeelgeegfeeltdduhfduledvteduhfegffffiefggfektefhjedujeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedufeekrdduleelrdeirddvfeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudefkedrudelledriedrvdefkedphhgvlhhopegluddtrddugedurdeitddrkedtngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhqihgupeeltdeiteelfefgleejvedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopedvledprhgtphhtthhopehhrghnnhgvshestghmphigtghhghdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigghhhihhtiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesmhgvthgrrdgtohhmp
- dhrtghpt
- hhtoheprghkihhnohgsuhhmihhtrgesghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrgh
-X-GND-State: clean
-X-GND-Score: -100
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0D9384000E
-X-Stat-Signature: 8pk1opyoazib3ds9p675ypmiotptea69
+Content-Type: text/plain
+X-Rspamd-Queue-Id: A1B40C000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: p83x9ry4w478bdfzng1zgkmshkq4wqwe
 X-Rspam-User: 
-X-HE-Tag: 1773409786-158604
-X-HE-Meta: U2FsdGVkX18APmrSQJImlTRVBqDUTIrHvFxsC4edU7EwFxLXr8ukxxoAiRY92q8wygawt54YBwoRpMi7MpuG3M9+0Mi0zzc17OHOOgks0kOxJk+dq8B8cpzOhggXquSNm3Lbck6Rl3iGe41G1+ZdtSopD37QtIWHw8KboHeWG2U1jtVmJWyBb5kPKc9HlkB6m7vqEfkwJ4SgqeXDvyJrq/Az7ojULMVfG1w+Q/Q3mzBG0UGxLSlcn1zs6CrTLLN8N9BBszK3Nuj7C17clyHDcYD/IDaTeJ66iuNcOsrEdSJKG6FID2PUFK6PHHC3LemhG6M1/dPqA42tQBye0vUa9PwmJmBe/77Cyqdz60VLgYLtfkSGTF02K2RSVUValJR2CErNT75uewjHLumrquBWUmeUsUpQQodmiuT8E13cdEYx24eUE5JR9kKo/vqJyYKwo682RnRzfeG5Kqw7Yu5WJqAFP305ih9gghPLvkyZ7pqa/muTCO5l69svwNd+UzTfaFTOTr+DN7sf6xlb6DBuXLyVhh7VFuLy6eqn2v11SRTJgql2ENAWP+yEF+ffP6tPIm1HDUfK2QX6VZStS0hwalzv/0HfKZxm2vmZI17jL/nJKQQrS9x2fBYCYa88Uk/eW/Quvy8Fba3bd7AXcfbZblBMBg6N1VRbblPbXwkO3/r/23LLR6E5dYtEmowOVqpdBa9xyyl41sFnZv9En0/iJkeZK7xbAsbSbxFiqXe1Qx+ZGX5WtGwWDxvdvFm4sBWalhoBr8Neo+67fWVlBmVin+II7MfbUr6RWdgNWCnoEFtpHYBXH/98NDS+mM1heZZ7bWm7v5kFh04UExW93NZPAFCSeexEnUInjAEaWJrTFxOwvMDAihBT8ev/4m84831r6LZtp73JRK1qItUio69MFWm5r0OVOE8O
+X-HE-Tag: 1773410313-977396
+X-HE-Meta: U2FsdGVkX1+ycKtbwgET+JjrdQt1rssatlInUtF6sFgAAlCTVnxBIu5MjzFyTu9Hhpl0k2qG0+PibBeZ7AQQQlcvt5/WyBgH5aLW76l/nfYa1H17DXbkTDGi2/dutmd42k8X/pe9rsqn89qjLStXVi/cXropOskrHKMUydiS9+ECDN1xNYoxdGU+vkYCN9PbPd6vZ6TTkNaDWVCVutXIn8sN2+hG3i/fCzEMSMBFNx7zwvx/QS/DHND0fqBL/8vJL+cQ1afWUcsjbYKBWVbIqRUAO8crUxx7w8ITrFLs9dqSTRKTqFoVWO1nvYvsZM5bj1S0czm8ZzGCz+eFlbB14V/FLGw3Vz6nbVOG2jMl/sp4O0oXhjAGmvNOgjvZ65JiQUcugeqtZqyANoJsDnuMMC9+wGMW7CmaHd2EI2Z75VLF328ht2vVuy0Mk8Rfy085OYB1VCQZNelujiAQW8EdJom5hvuWZbX3aapVDu2IaJKipPYzKGnxna4h4e5G6v6kzObvAYZxxn/2i1J6CMjS0cdnlGHYlIByHODEyjmd+XD/e5EFux3tDwweqXInwbx/eLgJ9VAaSnXLSstZITKuQSXLC7vlSVWaydu99sHftAuXeqeEor29gfYPprbIjzbwmonDtXKCJvjhS3774WRgPy4S20nux/GaXg1Xe79mWbcD6k91dBUnXGB8uThwDdCoR2V85tGJJt8nMPmLTVUCP32Zu65kJF5TPgSnVDYcKheQJPAwc9Wv25sdWv8arM+vnOZfjixT7RMB71W3+WVBawKiNMuNqmfms5YPtC64tb7Q44t+U/uS5RBkNZOD8+sgYRSagYTfW6tueKhjRA9ligDar6g2zS5dEmaEtHt20s150nBebDE76zdkGx2Yc83r6J7PWmxbg2EhRWVGmnDxxlh4GYb4QKgvwGLXGVVdHL2LSt9lqM9XAWc9nRfVLhU43z81VBUBBCCMWuun+r7
+ ff+OuhyN
+ 3rO5Y0/rFgGld79xML/cgIrOKtQLfuw/tWOKgAt7z1byur3Q9VUasJhTU8VXBVXkIQgmfCPOLQE1WefIFn6U577cirAIxSgxfnGcyRcNQ+E6yhRnt8J6VV5frFDIiaTxXK1JfsN+N1W3WWTllG9oKHl9HpplykBLhnB/5J5THCCiagRQ+PGMDSXLVGCxzjjM0tXVw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,59 +96,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Johannes,
+Hi Michal,
 
-On 3/11/26 18:54, Johannes Weiner wrote:
-> On Wed, Mar 11, 2026 at 12:02:42PM +0100, Alexandre Ghiti wrote:
->> GFP_TRANSHUGE sets __GFP_DIRECT_RECLAIM so we must clear GFP_RECLAIM
->> after, not before.
->>
->> Reported-by: Bing Jiao <bingjiao@google.com>
->> Closes: https://lore.kernel.org/linux-mm/aXlKOxGGI9zne8sl@google.com/
->> Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
->>   mm/migrate.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index 2c3d489ecf51..ee533a4d38db 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -2190,12 +2190,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
->>   	}
->>   
->>   	if (folio_test_large(src)) {
->> +		gfp_mask |= GFP_TRANSHUGE;
->>   		/*
->>   		 * clear __GFP_RECLAIM to make the migration callback
->>   		 * consistent with regular THP allocations.
->>   		 */
->>   		gfp_mask &= ~__GFP_RECLAIM;
->> -		gfp_mask |= GFP_TRANSHUGE;
-> I don't think this is right.
+On Wed, Mar 11 2026, Michal Clapinski wrote:
+
+> Currently, if DEFERRED is enabled, kho_release_scratch will initialize
+> the struct pages and set migratetype of kho scratch. Unless the whole
+> scratch fit below first_deferred_pfn, some of that will be overwritten
+> either by deferred_init_pages or memmap_init_reserved_pages.
 >
-> The Fixes: did it this way to disable kswapd for THP allocations,
-> while still allowing the customary direct reclaim. Maybe a better
-> comment would have been: /* GFP_TRANSHUGE has its own reclaim policy */
+> To fix it, I initialize kho scratch early and modify every other
+> path to leave the scratch alone.
 >
-> After your fix, direct reclaim isn't allowed either, which makes the
-> request unnecessarily wimpy.
+> In detail:
+> 1. Modify deferred_init_memmap_chunk to not initialize kho
+> scratch, since we already did that. Then, modify deferred_free_pages
+> to not set the migratetype. Also modify reserve_bootmem_region to skip
+> initializing kho scratch.
 >
-> The Closes: refers to reclaim that should be avoided during demotion.
-> But if this path is taken during demotion it will already not recurse
-> into direct reclaim due to PF_MEMALLOC.
+> 2. Since kho scratch is now not initialized by any other code, we have
+> to initialize it ourselves also on cold boot. On cold boot memblock
+> doesn't mark scratch as scratch, so we also have to modify the
+> initialization function to not use memblock regions.
 >
-> So I don't see a bug in the existing code. But maybe the comment could
-> be clearer.
+> Signed-off-by: Michal Clapinski <mclapinski@google.com>
 
+I haven't had the time to carefully review this yet, but sharing some
+high level thoughts.
 
-Makes sense, I had not understood the comment indeed. I'll drop this fix 
-in the next version then.
+IIUC the real problem isn't struct page initialization, but the fact
+that if the page is at a pageblock boundary its migrate type is not
+correctly set to MIGRATE_CMA. So you fix the problem by making sure no
+one else but KHO can initialize the scratch pages.
 
-Thanks,
+I think the end result makes the already complicated page initialization
+sequence even more complicated. I tried to grok that patch and it makes
+my brain hurt.
 
-Alex
+Can we get away with something simpler? Here's an idea: keep the struct
+page init the same as it is now, just modify
+init_pageblock_migratetype() to override the migrate type if page lands
+in scratch. It already does something similar with MIGRATE_PCPTYPES:
 
+	if (unlikely(page_group_by_mobility_disabled &&
+		     migratetype < MIGRATE_PCPTYPES))
+		migratetype = MIGRATE_UNMOVABLE;
+
+So we can also add:
+
+	/*
+	 * Scratch pages are always MIGRATE_CMA since they can't contain
+	 * unmovable allocations.
+	 */
+	if (unlikely(pfn_is_kho_scratch(page_to_pfn(page))))
+		migratetype = MIGRATE_CMA;
+
+Do you think this will work? If yes, then I think it is a lot nicer than
+what this patch is doing.
+
+Also, pfn_is_kho_scratch() is pretty much a duplicate of
+kho_scratch_overlap(). Please pull kho_scratch_overlap() out of
+kexec_handover_debug.c and use that instead.
+
+> ---
+> My previous idea of marking scratch as CMA late, after deferred struct
+> page init was done, was bad since allocations can be made before that
+> and if they land in kho scratch, they become unpreservable.
+> Such was the case with iommu page tables.
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
