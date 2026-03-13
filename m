@@ -4,100 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A43B0105F7B4
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A33EB105F7A6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9C346B0096; Fri, 13 Mar 2026 11:08:18 -0400 (EDT)
+	id C25756B008C; Fri, 13 Mar 2026 11:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6C226B009D; Fri, 13 Mar 2026 11:08:18 -0400 (EDT)
+	id BD3646B0096; Fri, 13 Mar 2026 11:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83C766B0096; Fri, 13 Mar 2026 11:08:18 -0400 (EDT)
+	id AB5766B009B; Fri, 13 Mar 2026 11:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E0AA6B0098
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:08:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F3315628B
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:08:18 +0000 (UTC)
-X-FDA: 84541370676.23.B31F688
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 33A9F100002
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:08:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=M+Ahlbkt;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf14.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 98E286B008C
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:16:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38DDC1A0239
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:16:10 +0000 (UTC)
+X-FDA: 84541390500.03.CF9EF24
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4B5611C0018
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:16:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uzHclv9s;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773414496;
+	s=arc-20220608; t=1773414968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cNRB2bVdaO0e0Tm9fiFGo+z5sEqF/mw7wNSwebObrUM=;
-	b=ZX3fI2bbCwEM3XivF5Ac5evFO9FixlS/hvGFwzT0pqCu5fYJm1gnHKN0unR9YPz53V6dh3
-	RSM52/pBw3oa0BbdFhMtmz2ygwdSREVBo/dASabACwycayxtvVr3WS5ahq4JY/Q5FAGG+F
-	UkK59zIwnrS95uHGrE041hKmYYqCmKw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773414496; a=rsa-sha256;
-	cv=none;
-	b=0oqgD04zYHuXwx5gkwJvpReJgqd9TQxtpEgg6qkjy8aYkfipOxKrDGwtbxCnq0CNiGwlFA
-	mAos8dSHctFBhP9R3IzYQDhj/N87q3BeTHAECWCH1XSCJN5cdoAjiBtUG/6IOTQEGnPdpO
-	h3Oyrl76AlX/NrPId/9C8SOQVzVxlfM=
+	bh=NnD0IwvDUcymKSPClJgrfv6oj4ZtBpBpOQ9XoBw27FE=;
+	b=AHhnn6Ztk/ZqRi6ToXKg4s4I/6uHzsDO1gfPatWEkpqXmG49faGdrdlGVQ9Q/1ANYsB6En
+	MpdLzDSEL6Pbw+fqG4L1KZRfjvqQy3XdEMrnnldzf54mh68g4+tyNuJ/q/rqpjXfGRbSFB
+	CUmAOuqY6mvxhzFMhrJXesIzWb2trso=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=M+Ahlbkt;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf14.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260313150814euoutp02938b707e453e03452d51c13a5875e558~cbxZHYj3k0455304553euoutp02G
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:08:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260313150814euoutp02938b707e453e03452d51c13a5875e558~cbxZHYj3k0455304553euoutp02G
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1773414494;
-	bh=cNRB2bVdaO0e0Tm9fiFGo+z5sEqF/mw7wNSwebObrUM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+AhlbktAAP6vXnQqOHdc6IrEP9wUOjgwkSn5Pxeg6L74TN7ffySVmi01+RS41u8q
-	 uf9mYtDtvr71K1GQyR0jojt9AWBWV0irDY/YbTRIpSWwECB7m+qCGa0g0DvFpSQBJG
-	 YMxq9zd/ny6Q9VOKji09HbvsaFE8SntHxgSUhUIc=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260313150814eucas1p14203b667c73825e16a3d5d6430e5e7b6~cbxY39fhn2140221402eucas1p1Z;
-	Fri, 13 Mar 2026 15:08:14 +0000 (GMT)
-Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260313150813eusmtip117becfbcee6e6475d5e56b0134cdcd73~cbxYTOPyE0187001870eusmtip1H;
-	Fri, 13 Mar 2026 15:08:13 +0000 (GMT)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: Saravana Kannan <saravanak@kernel.org>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Oreoluwa Babatunde
-	<oreoluwa.babatunde@oss.qualcomm.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH 7/7] of: reserved_mem: rework fdt_init_reserved_mem_node()
-Date: Fri, 13 Mar 2026 16:08:02 +0100
-Message-Id: <20260313150802.1121442-8-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260313150802.1121442-1-m.szyprowski@samsung.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uzHclv9s;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773414968; a=rsa-sha256;
+	cv=none;
+	b=s/NBKw6200iTt83rfR6T4EqpK3A6/QYplKqxlXGL4FA7qSjCT1lZRM6zOCpT1ieadMFvMk
+	9B9Nf0hyhL4wVK+byDQygSrCI4M3QNImYoJQgW4ClQdbyLHPLqtErAgWWxOQWR+dftAo0A
+	wWX9oCfyNW3LImMqEFJaFyGCisTgXYg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 37E24432DC;
+	Fri, 13 Mar 2026 15:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464BBC2BC86;
+	Fri, 13 Mar 2026 15:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773414967;
+	bh=hmPBFRDIjNYL93/8I6WyJ/XGzf5bSzknZVavkSNFMEM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uzHclv9sW8UPcX+VMX30E3oYY9Gu/EZ2xaTA2akoeMCDEs/x52+Dj10azyrM9xmx3
+	 bABrtB2xmzIjbWn9fCRhW8v2MvdDsj5kKNI65FxUVEwWL4Y3B4QLAMtWLgN9/zNFDW
+	 2J8AcIJtItn2pW8oAIq3NJBuryFR3AfxnP9ys3oLwdQWfE22f6Khs6nn0Fl1/vaLpn
+	 /M/RRJrlY884vpWZF+khgkMXnPXAIDTf7vzm+PEN6zhfC4WPKyfWG30pUAAXdeX3B0
+	 uXnS/7I2H1os8AUDChoL+T+2llXF8qnIPB1hI9C8IkUDDk5Ku0kfTpBBZ/CA1LpM9s
+	 mYdaibWdJpdpA==
+Date: Fri, 13 Mar 2026 17:15:57 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
+	david@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
+	ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, Li Wang <liwang@redhat.com>
+Subject: Re: [RESEND PATCH 3/4] selftests/mm: split_huge_page_test: skip the
+ test when thp is not available
+Message-ID: <abQqLQ_6QqVgzunL@kernel.org>
+References: <20260312114027.634559-1-chuhu@redhat.com>
+ <20260312114027.634559-4-chuhu@redhat.com>
+ <CD772D2C-F489-498D-A61C-9EA0D377B174@nvidia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260313150814eucas1p14203b667c73825e16a3d5d6430e5e7b6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260313150814eucas1p14203b667c73825e16a3d5d6430e5e7b6
-X-EPHeader: CA
-X-CMS-RootMailID: 20260313150814eucas1p14203b667c73825e16a3d5d6430e5e7b6
-References: <20260313150802.1121442-1-m.szyprowski@samsung.com>
-	<CGME20260313150814eucas1p14203b667c73825e16a3d5d6430e5e7b6@eucas1p1.samsung.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 33A9F100002
-X-Stat-Signature: ikqe614c7qkjefrwjkupk9rwnuuo4ubk
+In-Reply-To: <CD772D2C-F489-498D-A61C-9EA0D377B174@nvidia.com>
+X-Rspamd-Queue-Id: 4B5611C0018
+X-Stat-Signature: 8g4j6jwapqtuc99tt11cwp714z5baqw3
 X-Rspam-User: 
-X-HE-Tag: 1773414495-772779
-X-HE-Meta: U2FsdGVkX1/Pim1E+LT9sKlb2M7JQtpLwTD2LxpIaGCqVlOXX93OcY6ZqrcRXyq6JB3RySgqp/hbMwSl191p+fOCxZ/BxZC5eugF0oJTchTUB7Gj7UDIhKuuQYC2+VlcMIwb/g04e+fOBObCH6J0sUI3d5FTjhNWdHwCHes2ydpedBIsG+3IgWu+qyZLsomaD07JKqRrwIGE9Zwb5K0JgwrECorDzB0T5CszBUEprtVr4S9ilp/lBh0VAmuYrdEVSD5osteSSMIAJa+fsetKzGvWr4jKrtxQR8pR0H42WGDGooLd4bYOIJKWwNQxfsKEZ66g+4z1OKRTD8c155LXaXfDvluhb4gcC4/ftdIH6NZ9+W87BGerCxxXzOOurN0Zwd2+XPcnVPz+myv8JvnrmscXp+XbGHMiy8gQCB4Nz7VS24xC9RqAxn3ib+gGqgCLTYN5dYfokUxDZtlGBKQTHivDftOkFPDPZiwLo4m6u4NTpXVBk1PcmN9QA2NdydMMSiStSUGiOrzIQZFKuXhshGq42xV/8IWnW3+ZN+K7WH9ovjBaJeizYeOVSdDQWupFfr0rO36Cr1GfNX+65q7ExMZ8lxKZ6QWcAiRHiC1f+1ANleEPZBo/u6nx/nf5W13yKMIJTu9awVO3Kh4aC3jKC8+SmpbDzrg1cfDKXontzrnENmgFmniU1JoY3WLeLhL9gRL6AZmzUJcdnRi0F+x0eRmeZD8YPr3MMQ2SjXScHLa/meab+tsDFMf5LltXjMc0+aVnGp5+qQosfAzg3WhC6XAqeSCOoiXOwKc7Sv6i5dRP0p/rJVIcFgXi5CELf7kaZ6bj6LEG6z1SBsQzEr5dtM51hgApVwrtoT5ggRfj2SNXDJaJCbsp5HPAVrzsJo+P6PYCnZvRC1qi3+SHzE1lZhF1tP0rliHqDoHxRSZmn+3pvhcSdFi7ZCKJJWOZCEdH1IwYU6WVZtFsGAfcZC3
- pHD758BQ
- hwda1mznMxBM3wYoD+90Ix1Tn2jrxoI9uCUhmWut6tgYXrS0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773414968-749365
+X-HE-Meta: U2FsdGVkX19eoFSNuU8WrAtMI44jdlA1fqqbt9Lcr7JdMCt2pXzMA7/v2x25K71+49Iwc13Q63vDvtpY6FGVWVyR61ZNE+XpaLsM3ASxQi0QL52yEJKlYfpm56l8pO/tYtGRKbt8o0PJj3xxu7aSnLfSLnEirNQBAI4Eg3W+hk9/vLaRp1R3vPm+94PdfqIAhvQ4L/7qJaPTEEY26fJ/TyfCPHJjqDTKWj+QjFvxkVD9rBnXGRoF6Qs3Fp8kY+6qroV0VkhxxTWCoNLSkqDejfZnGoAaIntoXz0yDgYlaKyXaugjrM5SUJ+FySQEgf+6X6AJLkdRrkKK5whzn/u3QScEfVnicIf0yv2O7FFXM/4PqIFD9vHBtJDNpFr3QYtPcDdEmJAgds+cj+vrhJ9SYr6RrVZVw5d4ZzEyyXnV5pg4SqZAq6Orsh8T3BnIZb+sQsJJGH5uZe4THR0SRuWtXCafYuGWx3NKmzBTynldXvm+aX3TQu+flRkPHq3s4zrEcoC1RSUNK8NN038sD3jgRvMZ5r6n/r4cQ56U4+l6o8rbyU7LLtc10VMwTEjhTlL7owBzBlbKVUo6TDqkj8zurJvTiC7sJ/VHqpkJ6HIF9qs/eXSc4tIHsCE1SJ0Kq7KRT6y9hXooTU7yy0V3Q1N2czNlO5XFOx70XEg0gPeqqQCdnLwrVowry29l2RGIIRD13PRxeebNgJ4pFHPaBlNu55WjiT8QOYWkAovAyOTV/OZaVq5ZaPQ4+kkJtnH5HLTrDr8diA7+20lNytBJpKSBUBqHSXXgKJqNBAImjGkIB5lbcBM199Cr0DXfO/XlnX21gtgrWjZrBSCQdcIRgfr/dIfsuV+/QsPi7uGzedYAD9YwdYj5/USmgTKeVKBDuXuT4YQs5+HamToAkiji8u67l5HaP5cN2Y/OkY/4UZAmqa8id9e7yReVkfIYQeJkKXdBbyx2YOoqs4qYit289k3
+ +SI1itX0
+ 2ADyUKj7StftM1BzKSe0IvyVwxFYGGY1UHUfNT1qa2cK5xKcVFsu9gen9u/9QsF37gzj+Xraq9luI9wE+J9uoslXI7QaMa3uawIOI4fL6AILzx7gcURCAHBXczSt5IR+BbcNhupl3I2oHL7oxnvM07phf1BpflxsAhsZtEIb8LJZ+7/u6q2qelIhFKuSnmQSNv9LkH8NfTScJOiBs04Oi8p7jB4LOGeh2ihFDqj0mOiI6xQK6150tu78OaBjVQZDW3hC+9l9NB6yOBYURa+/F9YC/odeF3jVsfHe6cTslIgOX/kS6l6T6PJWOr7VDs4+S0cCkRs5OpiHUkR9Xm6FXJCRAwlSTf6HfN+Z+ZejGmTilsIaHXJAKy+QHVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,144 +101,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the content of fdt_reserved_mem_save_node() to
-fdt_init_reserved_mem_node() function. Initialization is no longer
-performed in two steps as it was initially, so
-fdt_reserved_mem_save_node() name is a bit misleading and that function
-actually perform full initialization of the reserved memory region.
+On Thu, Mar 12, 2026 at 10:11:12AM -0400, Zi Yan wrote:
+> On 12 Mar 2026, at 7:40, Chunyu Hu wrote:
+> 
+> > When thp is not enabled on some kernel config such as realtime kernel, the
+> > test will report failure. Fix the false positive by skipping the test
+> > directly when thp is not enabled.
+> >
+> > There's a naming conflict on write_file() function, both thp_settings.h and
+> > split_huge_page_test.c define it. To make use of thp_is_enabled() helper in
+> > the thp_settings.h, rename this local write_file to safe_write_file to
+> > avoid the conflict. The reason to use 'safe_' is it does some error check.
+> 
+> Both write_file() do safe checks. Actually the code of both functions looks
+> almost identical except that the thp_settings one does exit() instead of
+> ksft_exit_fail_msg().
+> 
+> Can you rename the split_huge_page_test’s write_file() to write_file_local()
+> and add a comment above the function like
+> /* add _local to avoid a function conflict with thp_settings.h */?
 
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
----
- drivers/of/of_reserved_mem.c | 58 ++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 33 deletions(-)
+Looks like we can move the version that uses ksft_exit_fail_msg() to
+vm_util and drop the other one.
+ 
+> With that, feel free to add:
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+> Thanks.
+> 
+> >
+> > Tested with thp disabled kernel:
+> > Before The fix:
+> >   # --------------------------------------------------
+> >   # running ./split_huge_page_test /tmp/xfs_dir_Ywup9p
+> >   # --------------------------------------------------
+> >   # TAP version 13
+> >   # Bail out! Reading PMD pagesize failed
+> >   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+> >   # [FAIL]
+> >   not ok 61 split_huge_page_test /tmp/xfs_dir_Ywup9p # exit=1
+> >
+> > After the fix:
+> >   # --------------------------------------------------
+> >   # running ./split_huge_page_test /tmp/xfs_dir_YHPUPl
+> >   # --------------------------------------------------
+> >   # TAP version 13
+> >   # 1..0 # SKIP Transparent Hugepages not available
+> >   # [SKIP]
+> >   ok 6 split_huge_page_test /tmp/xfs_dir_YHPUPl # SKIP
+> >
+> > CC: Li Wang <liwang@redhat.com>
+> > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> > ---
+> >  tools/testing/selftests/mm/split_huge_page_test.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> > index e0167111bdd1..615b75ca62cc 100644
+> > --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> > @@ -21,6 +21,7 @@
+> >  #include <time.h>
+> >  #include "vm_util.h"
+> >  #include "kselftest.h"
+> > +#include "thp_settings.h"
+> >
+> >  uint64_t pagesize;
+> >  unsigned int pageshift;
+> > @@ -255,7 +256,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+> >  	return status;
+> >  }
+> >
+> > -static void write_file(const char *path, const char *buf, size_t buflen)
+> > +static void safe_write_file(const char *path, const char *buf, size_t buflen)
+> >  {
+> >  	int fd;
+> >  	ssize_t numwritten;
+> > @@ -283,7 +284,7 @@ static void write_debugfs(const char *fmt, ...)
+> >  	if (ret >= INPUT_MAX)
+> >  		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
+> >
+> > -	write_file(SPLIT_DEBUGFS, input, ret + 1);
+> > +	safe_write_file(SPLIT_DEBUGFS, input, ret + 1);
+> >  }
+> >
+> >  static char *allocate_zero_filled_hugepage(size_t len)
+> > @@ -772,6 +773,10 @@ int main(int argc, char **argv)
+> >  		ksft_finished();
+> >  	}
+> >
+> > +	if (!thp_is_enabled()) {
+> > +		ksft_exit_skip("Transparent Hugepages not available\n");
+> > +	}
+> > +
+> >  	if (argc > 1)
+> >  		optional_xfs_path = argv[1];
+> >
+> > -- 
+> > 2.53.0
+> 
+> 
+> Best Regards,
+> Yan, Zi
 
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 229573d6dacb..7146c1ba6ae1 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -102,36 +102,13 @@ static void __init alloc_reserved_mem_array(void)
- 	reserved_mem = new_array;
- }
- 
--static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
--					      unsigned long node);
-+static void fdt_init_reserved_mem_node(unsigned long node, const char *uname,
-+				       phys_addr_t base, phys_addr_t size);
- static int fdt_validate_reserved_mem_node(unsigned long node,
- 					  phys_addr_t *align);
- static int fdt_fixup_reserved_mem_node(unsigned long node,
- 				       phys_addr_t base, phys_addr_t size);
- 
--/*
-- * fdt_reserved_mem_save_node() - save fdt node for second pass initialization
-- */
--static void __init fdt_reserved_mem_save_node(unsigned long node, const char *uname,
--					      phys_addr_t base, phys_addr_t size)
--{
--	struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
--
--	if (reserved_mem_count == total_reserved_mem_cnt) {
--		pr_err("not enough space for all defined regions.\n");
--		return;
--	}
--
--	rmem->name = uname;
--	rmem->base = base;
--	rmem->size = size;
--
--	/* Call the region specific initialization function */
--	fdt_init_reserved_mem_node(rmem, node);
--
--	reserved_mem_count++;
--}
--
- static int __init early_init_dt_reserve_memory(phys_addr_t base,
- 					       phys_addr_t size, bool nomap)
- {
-@@ -316,12 +293,14 @@ void __init fdt_scan_reserved_mem_late(void)
- 
- 		if (size) {
- 			uname = fdt_get_name(fdt, child, NULL);
--			fdt_reserved_mem_save_node(child, uname, base, size);
-+			fdt_init_reserved_mem_node(child, uname, base, size);
- 		}
- 	}
- 
- 	/* check for overlapping reserved regions */
- 	__rmem_check_for_overlap();
-+
-+
- }
- 
- static int __init __reserved_mem_alloc_size(unsigned long node, const char *uname);
-@@ -515,9 +494,8 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
- 	}
- 
- 	fdt_fixup_reserved_mem_node(node, base, size);
-+	fdt_init_reserved_mem_node(node, uname, base, size);
- 
--	/* Save region in the reserved_mem array */
--	fdt_reserved_mem_save_node(node, uname, base, size);
- 	return 0;
- }
- 
-@@ -590,21 +568,31 @@ static int __init __reserved_mem_init_node(struct reserved_mem *rmem,
- 	return ret;
- }
- 
--
- /**
-  * fdt_init_reserved_mem_node() - Initialize a reserved memory region
-- * @rmem: reserved_mem struct of the memory region to be initialized.
-  * @node: fdt node of the initialized region
-  *
-  * This function is used to call the region specific initialization
-- * function for a reserved memory region.
-+ * function for a reserved memory region save all region specific data to
-+ * reserved_mem array to let of_reserved_mem_lookup() function find it.
-  */
--static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
--					      unsigned long node)
-+static void __init fdt_init_reserved_mem_node(unsigned long node, const char *uname,
-+					      phys_addr_t base, phys_addr_t size)
- {
- 	int err = 0;
- 	bool nomap;
- 
-+	struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
-+
-+	if (reserved_mem_count == total_reserved_mem_cnt) {
-+		pr_err("not enough space for all defined regions.\n");
-+		return;
-+	}
-+
-+	rmem->name = uname;
-+	rmem->base = base;
-+	rmem->size = size;
-+
- 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
- 
- 	err = __reserved_mem_init_node(rmem, node);
-@@ -614,6 +602,7 @@ static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
- 			memblock_clear_nomap(rmem->base, rmem->size);
- 		else
- 			memblock_phys_free(rmem->base, rmem->size);
-+		return;
- 	} else {
- 		phys_addr_t end = rmem->base + rmem->size - 1;
- 		bool reusable =
-@@ -624,7 +613,10 @@ static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
- 			nomap ? "nomap" : "map",
- 			reusable ? "reusable" : "non-reusable",
- 			rmem->name ? rmem->name : "unknown");
-+
- 	}
-+
-+	reserved_mem_count++;
- }
- 
- struct rmem_assigned_device {
 -- 
-2.34.1
-
+Sincerely yours,
+Mike.
 
