@@ -4,86 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2816E105F7A6
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E144D105F7B1
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:08:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66BC16B0088; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
+	id 071216B0088; Fri, 13 Mar 2026 11:08:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EF2B6B0092; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
+	id 052A46B0089; Fri, 13 Mar 2026 11:08:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FB036B0093; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
+	id E694D6B008A; Fri, 13 Mar 2026 11:08:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4033D6B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:52:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E645887632
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:52:56 +0000 (UTC)
-X-FDA: 84541331952.25.A923176
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 43F2E4000F
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:52:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=le0W763n;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D6FCC6B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:08:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72820B6E29
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:08:15 +0000 (UTC)
+X-FDA: 84541370550.27.A8585DE
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EE3454000D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:08:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=kSqUTRdF;
+	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773413575;
+	s=arc-20220608; t=1773414493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCBZ9IgiIaPlQAC9YvT3JsIWr5CPHgICxQ9tcOoFEcw=;
-	b=xdYRwllEHmTP0fJD3UqpQKe/cZMytxByPdI2y6hl3N3rxUmRHoyXEM0dr36yHg/IvRSmKV
-	M+XQg/JJI+Mw26U/8w2kWmGBmzV4gTIlgUXlO5NLxQOBcfAF9G7iP6ifLX94L7lGIu5/RH
-	8M0UkIBhYTxXtkY+pCiC3xMAT3thCQ8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=ieZsFx6ApTvtzCX6XrisGuhU15p9rYRXxzDN/ZilEbc=;
+	b=YSCbRMW1wU9nXE9OuGJU6QfO8dN0HBo3Tftp1dKglXSor5V2O59ko6Zl83tsSnpKdEtX9+
+	bZBvpI4EOJ8Nq1d9Ir7vg0UhJu/XqXbvsnH/s9LqIhJgKDa4Y2n9TjwgAWS//W74XgcUIU
+	qp2jGaXWH7FnJe1iX6faPfdRwCdh25U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=le0W763n;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773413575; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=kSqUTRdF;
+	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773414493; a=rsa-sha256;
 	cv=none;
-	b=kHT2AVASlwbK12YlWG6kGoY8D/CeCFUB7zXEUu25sv/iP8SwK5kQ09fFkALTVwHaAJ8Erg
-	6DFmGcSqdpHunioMDH8DBPfn5au19HPmSz5QKuZT1jUZ+SbPpWrQZfVjvyKPp4GsCXoPew
-	Oop6+SsU/L+XtJ/x0o6Ao+Zf44Zr/AU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3FF4141766;
-	Fri, 13 Mar 2026 14:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CD6C19421;
-	Fri, 13 Mar 2026 14:52:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773413574;
-	bh=9+tBGf+6qW8cNORLO7JXvI2gClOkixsr6NngHAxnwk8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=le0W763nuZ3pgJhbKOvzX0P0kwTYcR2NhqSh6SPGWMp8Wl0f4PTOagjwDs+W3lUrq
-	 qAe88u12T/megxzTjVQdzcF1kwg7fRZq/rVZdneVsmNKlRdIxLhAjlzMGDyBd646Cx
-	 LHhEzfbANCIl3KXDttBDCDx508LcKSVJ7erwFQT9guUY/B0Kkto69BEmvBo3NB3FSH
-	 TwMNH7l5bke7YUuYv5x7MC1NVyYXoYEngCv5DVTJVXUKZTtrvtsSGWtzvwzSNy2DIj
-	 f+cFJh4GJ4LcRLK2kgSuidajFvPF1sf3Jb1501butKP6XDOWedVnv5J0GLiY1CY9l1
-	 uLBHTpys4umNQ==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [Question] mm/damon: conflict between DAMON_STAT and DAMON_LRU_SORT?
-Date: Fri, 13 Mar 2026 07:52:46 -0700
-Message-ID: <20260313145247.46643-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260313111702.38667-1-aethernet65535@gmail.com>
-References: 
+	b=mR3TAf1i1Lt3OPbrHj1X0xcVmKHV9fEc6iilydfAJIj6BPYnJDOmUxF6VGhhFTpEa4vKJ6
+	P+EbUDflgDKWbS1J/NNee0ri/ZFQORHjcmj5FPtD7XOTofC+09SM4gfVvDm9W0NZMgZEkm
+	Xk/KrMcsAAbHWFrckgBOxqKlbha0Ggc=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260313150810euoutp013eba8561378f3f7b7474e80c60d139e2~cbxU0Bd6w2418424184euoutp01C
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:08:10 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260313150810euoutp013eba8561378f3f7b7474e80c60d139e2~cbxU0Bd6w2418424184euoutp01C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1773414490;
+	bh=ieZsFx6ApTvtzCX6XrisGuhU15p9rYRXxzDN/ZilEbc=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=kSqUTRdFlhls6LGeB/gW1ePORD385noPahaD89ukVIdsLtkfmMLxMi1hRSBM4a4+s
+	 fLmeERysE9XYIVodCKyzifD1u2T5SvBRSOzM43fsVtseGFxrnWB07C+7kojwAFbKOt
+	 /zBYM+9w+x09ZcKH02ijpFMVQTAyrDmU+2PMlACI=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260313150809eucas1p169ab0904a217a04e0601e2ef01854c73~cbxUNE6ka1866218662eucas1p1i;
+	Fri, 13 Mar 2026 15:08:09 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260313150808eusmtip1d9210d2958f7bd448b7051b9db3217fc~cbxTpGxpl0299002990eusmtip1w;
+	Fri, 13 Mar 2026 15:08:08 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: Saravana Kannan <saravanak@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Oreoluwa Babatunde
+	<oreoluwa.babatunde@oss.qualcomm.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Robin Murphy <robin.murphy@arm.com>
+Subject: [PATCH 0/7] Refactor reserved memory regions handling code
+Date: Fri, 13 Mar 2026 16:07:55 +0100
+Message-Id: <20260313150802.1121442-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43F2E4000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: n8hj4gmkr9dsethsue1hapzbrbfzh9m1
+X-CMS-MailID: 20260313150809eucas1p169ab0904a217a04e0601e2ef01854c73
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260313150809eucas1p169ab0904a217a04e0601e2ef01854c73
+X-EPHeader: CA
+X-CMS-RootMailID: 20260313150809eucas1p169ab0904a217a04e0601e2ef01854c73
+References: <CGME20260313150809eucas1p169ab0904a217a04e0601e2ef01854c73@eucas1p1.samsung.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EE3454000D
+X-Stat-Signature: hktrpbfzenwu8yitsrn6p9hbkh799u6j
 X-Rspam-User: 
-X-HE-Tag: 1773413575-940919
-X-HE-Meta: U2FsdGVkX195cASB+9C6QGTryqf4m8JQKDGCgXanqUbpTzB59M4QAsqPhPOPylW13VcbwXTsI/NDbeD2Ho4mIfqjknH+KpMFH21oY+Lmmr1U0ciCbTt3Zumr1VoXrTyWZgg+pINC3s2PhbXHteXTJ6mngxzF7/r2YrPCR1dFDb4+sEyCuXSL2H37D4h8WSZEzHo4VmZ2JP5FLZx7yNqZRvkJ2oaIuHKOvMe7Tuy9hlwyBladqc6qAuz74khBokg6jM01mgc1Rf3Z5VhlXpzZVHVNd0NPsP59kEjN7+tDZaKHLS5Epbx5sv2rKevpUu0Ih7J34J24BRxQn7AKeHjXShiC1Iqi/+K94wZC0n2jlgsb8/njmxO7V10oysaREyVt+TxPRUKrJlUslfNaUYBfZ87HK1CzqZFeUWXTw+Hm4z7htwy1I1cVoAbSchq2C2aXHLXbIRjnO9NM86K7WPz+4q/g2pi5xjUA8RmSMixN6DL0BnNPlQ+biJ/AWwPUg6arVn5/XVCOJl8aDSXtsKc3L2iQlFIgCYdd/QAg5JJMlKMve9fBAKuy7Vt6XIUTF1ftfhtvts4O5lMhn3Perh3iJ7wMdY3TlEQvWe1zHeLzgtAGaW6XFSJkcFjL5MVZy05JyBYwsKOoP/0f6T0AvnXayP5jaVM7GfbXzQuGymuSVGGoSCaw1ecXIpPwcdqtN72bTF95MGTHw1nhdCdvXhFVvJ080L/XzJ4IzU9RrJhgijvC/LARux8uuxB3Z1MLsViVth35YgEnSVPelQ15H9QmLHCsfl8+NjBWkBTlB42Qp/bitZGz+vE72i/tf4HpRUAWGEF8vfk1JwzexGDnUK0cDEn2xOadbX2xhfmWICoUYPwuQCXwZnLpCaISoiGTuF/MXcE1LmbK7/1xZ66GPervkAXYJhZzm065p4Cw5IlPvJBxIOhconWZQSGOeqEh5/auvWtHBPMx5I44igIQGVy
- I7MBerrB
- b0zaZSz3FUgfz9HUfFejeJiPezbki69H14Jri7TH2PAM+VtX6VJGYCp1UHoVUm+KjzuLOayfsucQ+SZ7daVoUmC+NXuZYDYuc0Rl03FKW/6quVbLkCevceA4IaD4VCbgFdKA1LcUhJqBN5Ay1cDD14CB3lPV3pmeN+EbZK3RsA/l0c9Mq9jOvTpBoVFgIQ4b7FDN3lpkOfd22AyRC0pyE+mcxaOB/gTM6zjwb/OIC2bX3ZSYo3FV2QPqZIJOQ6aUYm/EyCF/yE0l+iFCTOrJGvQMde1SjGh5AMNTzG3UKOa7kuFAOUEcuka53SZFy2UXOwtJZlwmvNCaO0MUMuKA8hMOE0mE+FyedaVHB/SF39hSpe2WKrTE8E+rprd70qXFqNVNA2Za2Wc4fTHxheUGEGX0dSA==
+X-HE-Tag: 1773414492-433715
+X-HE-Meta: U2FsdGVkX1+i2glBOEreUxdB7TFG0e9Ydlf7uIMMojMUoe8TifV55zheWBtEezgOIf4tCVhygOWrGVE2rH91HYi28z6R4oQrw0cDcM+I0PWQIGfy4w47RbBSKUFcsc8mI1pR45McD4PVhwrX6t3THR30QxiX0dCuHnq8aI6BQFmk1lLWKTeINsiYbkgk8/5opplYR0frrs/RW2Afp70rF6oh1/mtl8ggZx45wKVyRhJ+UCUBd4U1fh+qHk9Ab+i2aSwLWf+lRQcVn73HkZ53vDIBrhUoFXF8xk4bSaZJXLIxJ76YfNO0X6wzijei4TVpvaeACVvwMFeXAfQUKncHBEioxez2xCanwBge65rWuJTblnzIGnK0xNnlSThXLTznDQppU6MhW5Pjj/H9J+pqA/7oxkXBoKRcnPQtwcWClI6ti6u1fSA8CWKCCcibEXohpzdllNqb0LL/JqVlSnj52buxSIHCNe6G77H24aveB1t2/pAgyM3Uv2F0I84dkwCv8ERt6j0Ym6yWc+418C8CYzn+uIYjYCpPPYSwNGXzqhvVsEDMY6PsQUUvH1pDAMiaJZ7oPrPTXZs94bey0M6/TLZOcxUuN5qeqxPNm2oQWgrfrlt64yehaxj42BtQxBxwM45bfKpJHGqa7l0VRXxsTunjPeu9kiWA4ykesBJS99ZGXLEm8QZnXPUj+ONhulSmCoyUx8g3BPgC/wCFsZ/NKQFBCXPcC5LoHjW7nd56nCTf9sZzSV6GWeWAVb2Pvk+Rqw6qi8aSj4uEWOSi1j08/8cXE2dnWZy/ORlvA8thLnws58asxLgLjwjFdcBRpxd7qy5/KB8IMQxiKBk0cJCphUeJll92X6MeYVAepN4uC8+DjtPQsCMRDyGKA5DYgCIaR30IpIFWINdG3I4+fBeZRDdhPWxriBZE6VAkvPbuo2vn0dbyd4X86T2PWEMpkmPMGbdbCtGXL4QkSnRXkCS
+ QsGD/U4n
+ XvdMtZ2HZ6OZOSbAlMY34aniltz7q3ltCiex/vfbuYc5OlQ+/+Pbw/FYEAl6MErXwOBQHCsDGW8raEbkWGZ8Dh+5gAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,80 +103,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Mar 2026 19:17:02 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Hello,
 
-> TL;DR
-> =====
-> When CONFIG_DAMON_STAT_ENABLED_DEFAULT=y, enabling damon_lru_sort via sysfs
-> "enabled" parameter returns -EBUSY. Is this expected behavior?
+The reserved memory regions handling code was reworked to handle
+unlimited so called "static" memory nodes in commit 00c9a452a235 ("of:
+reserved_mem: Add code to dynamically allocate reserved_mem array").
 
-Yes, it is an expected behavior.  DAMON modules run in an exclusive manner like
-this, to avoid interfering others' monitoring results.
+The side effect of this rework was a set of bugs fixed later by commits
+0fd17e598333 ("of: reserved_mem: Allow reserved_mem framework detect
+"cma=" kernel param") and 2c223f7239f3 ("of: reserved_mem: Restructure
+call site for dma_contiguous_early_fixup()"). As a result, the code in
+drivers/of/of_reserved_mem.c became a mix of generic code and CMA
+specific fixups.
 
-I'm planning to make them be able to run together [1], but that's a future
-work.  For now, this is the expected behavior.
+In this patchset I try to untangle this spaghetti and perform some code
+cleanup. I hope nothing breaks this time.
 
-> If yes, should
-> this limitation be documented?
+Best regards
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-Good point!  Yes, it would be better to be documented.
- 
-> 
-> Reproduction
-> ============
-> Environment:
-> - Kernel: 7.0.0-rc3+ (x86_64)
-> - VM: Virtme-ng (4G RAM, 2 CPUs)
-> - Config: CONFIG_DAMON_STAT_ENABLED_DEFAULT=y, CONFIG_DAMON_LRU_SORT=y
-> 
-> Steps:
-> 1. cd /sys/module/damon_lru_sort/parameters
-> 2. (optional) tune parameters: hot_thres_access_freq, cold_min_age, etc.
-> 3. echo Y > enabled
-> 
-> Result:
->   bash: echo: write error: Device or resource busy
+Patch summary:
 
-Thank you for sharing this detailed steps.
+Marek Szyprowski (7):
+  of: reserved_mem: remove fdt node from the structure
+  of: reserved_mem: use -ENODEV instead of -ENOENT
+  of: reserved_mem: switch to ops based OF_DECLARE()
+  of: reserved_mem: replace CMA quirks by generic methods
+  of: reserved_mem: rearrange code a bit
+  of: reserved_mem: clarify fdt_scan_reserved_mem*() functions
+  of: reserved_mem: rework fdt_init_reserved_mem_node()
 
-> 
-> Workaround:
->   Disable CONFIG_DAMON_STAT_ENABLED_DEFAULT, or disable damon_stat at runtime
->   before enabling damon_lru_sort.
+ drivers/memory/tegra/tegra210-emc-table.c |  17 +-
+ drivers/of/fdt.c                          |   2 +-
+ drivers/of/of_private.h                   |   2 +-
+ drivers/of/of_reserved_mem.c              | 289 ++++++++++++----------
+ include/linux/cma.h                       |  10 -
+ include/linux/dma-map-ops.h               |   3 -
+ include/linux/of_reserved_mem.h           |  18 +-
+ kernel/dma/coherent.c                     |  19 +-
+ kernel/dma/contiguous.c                   |  86 +++++--
+ kernel/dma/swiotlb.c                      |  18 +-
+ 10 files changed, 256 insertions(+), 208 deletions(-)
 
-Makes sense.  Indeed, DAMON tests use [2] this kind of workaround.
-> 
-> Questions
-> =========
-> 1. Is this resource conflict between damon_stat and damon_lru_sort expected?
+-- 
+2.34.1
 
-Yes, as I mentioned above.
-
-> 2. If yes, should this limitation be documented in:
->    - Documentation/admin-guide/mm/damon/lru_sort.rst
->    - Documentation/admin-guide/mm/damon/stat.rst
-
-Yes.  But, I think 'Special-Purpose Access-aware Kernel Modules' section of
-Documentation/mm/damon/design.rst is a better place to document it.
-
-Would you mind sending a patch for that?
-
-> 
-> Additional Context
-> ==================
-> - On major distros (Arch/Fedora), CONFIG_DAMON_STAT_ENABLED_DEFAULT is typically
->   unset (disabled), so this issue may not affect most users.
-> - However, for kernel developers or custom builds enabling both modules, clearer
->   documentation or error handling would improve debuggability.
-
-I agree.
-
-[1] DAMON-X in https://lore.kernel.org/20260307210250.204245-1-sj@kernel.org
-[2] https://github.com/damonitor/damon-tests/blob/master/corr/run.sh#L62
-
-
-Thanks,
-SJ
-
-[...]
 
