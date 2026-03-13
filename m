@@ -4,91 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF47105F7A6
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 13:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36CD2105F7A6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:17:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7EE46B0088; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
+	id 549146B0088; Fri, 13 Mar 2026 10:17:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C02596B0089; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
+	id 4F6C26B0089; Fri, 13 Mar 2026 10:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0E726B008A; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
+	id 402F16B008A; Fri, 13 Mar 2026 10:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F6B36B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:58:35 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39AFE139503
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:58:35 +0000 (UTC)
-X-FDA: 84541194990.18.5C71249
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A1B40C000D
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:58:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XX4cQHC3;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 315E56B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:17:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCF97B5FCC
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:17:14 +0000 (UTC)
+X-FDA: 84541241988.19.F65AEBD
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0D3D74001B
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:17:11 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=lFsswbNg;
+	spf=pass (imf07.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773410313;
+	s=arc-20220608; t=1773411432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aDtcuq+jZAq8nSruY2x07zz92Rm4Lz2QSe0PkkRpDPo=;
-	b=z6r+MmuyIEt9EezPFmMnNFf0LO0wBayLyt4leUfl61TQUjGtQ0udU1fyUjeA+KDTwGRQ6S
-	O2rASdOi1IGh7A38t/Y9OJeXu3HGY0mhGU2IA9lDdkJJ0bngDJQ4ri6mAcsPLPrSmYJVb4
-	ihbKQN84vf51JA2Rcl14t8lDHEv1SPg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XX4cQHC3;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773410313; a=rsa-sha256;
+	bh=bfNCGWtAaD9IfVKOzq6e/E4scor5n7oi/yhJ7PfVTvo=;
+	b=OhBTcJksTXJiRU9Zo2kgHgsEghHw/9zFzrfHDbRag5gu4ZxkTmhcWgeODqo4nCDEraj9um
+	XR/Bt6BvHEFo1rd5OnetCFzveRQog4UZftGVSOtXdzPkShMh0L0T1eTWrRKaXL6H6RZFuD
+	JAHL96TZ4H9NuZ38MmsiOrgP59qSpVs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773411432; a=rsa-sha256;
 	cv=none;
-	b=CTHqW+l2aWd3aPYUiVjV0R906ml2MyKJkoXm25pzZq6XON7AQgzvs1/gD60KXDG6eiq6QZ
-	bbo/iDznOVvOKbJFci3Okf/JcxgeBE1VRflMzdFZ7+/QdzhA+6Mtt1sGf88V/jvZ06uxXn
-	0okX6yvAaBcvqfWPvYmx4ryy3hhz2+U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED2C361843;
-	Fri, 13 Mar 2026 13:58:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B37AC2BC86;
-	Fri, 13 Mar 2026 13:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773410312;
-	bh=kshVJg/rQTERmOD6YiWVGRVHPpNBvBSWyHEFYDvoDCM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XX4cQHC3W+i3JG5+SggGUb4YhfFkxWFUaZMFpdj6PwCYa/AYmIZ7GxWKHVCjC6gke
-	 kuo1XcRg4bXFWt0s13h6QCHyHjxocZ/hbBR1qz12U95YZ7bHoaQXHucQ4tRAKnEvNe
-	 oTVLM6qH3rzagaV2SYXufW1SWuhUb0pWrakRUanvW/tN9Ef/G4VSd7h8TtIH4Z3QUE
-	 uR4UO6yU89zstZ+6O80qPMIakUZzD3XL87KJcZd03qnO3bEeaibxKh9iWblSBiA5Mp
-	 I3hgd4NKR3w//f7qsBtszC8GsY8Vsv5dc8tWhCdkJMIQ3K9DwRxQw7zMQvONCl8FMv
-	 KmneJRjsK5wmw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Pratyush
- Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Samiullah
- Khawaja <skhawaja@google.com>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Andrew Morton
- <akpm@linux-foundation.org>
-Subject: Re: [PATCH v6 1/2] kho: fix deferred init of kho scratch
-In-Reply-To: <20260311125539.4123672-2-mclapinski@google.com> (Michal
-	Clapinski's message of "Wed, 11 Mar 2026 13:55:38 +0100")
-References: <20260311125539.4123672-1-mclapinski@google.com>
-	<20260311125539.4123672-2-mclapinski@google.com>
-Date: Fri, 13 Mar 2026 13:58:28 +0000
-Message-ID: <2vxz1phnesqj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=We2ptfpQV+wz5kVKFWrJJFxZ/+88KlFusoFVSnH4x8e3WbHEn/V4iclIlQX7uMN4YNZ0te
+	vSsSNUjozvxsu4/htnmbjNCdmzPJ5hR0+RUanQeBbnKFcW5yUcvpv8xWlCracx3QzwIOCJ
+	zCBrpJ9qJPXtEWKk/xVLYX9TLDAwwys=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=lFsswbNg;
+	spf=pass (imf07.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D4nj3G2583633;
+	Fri, 13 Mar 2026 14:17:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=bfNCGW
+	tAaD9IfVKOzq6e/E4scor5n7oi/yhJ7PfVTvo=; b=lFsswbNgS6TE1ExdUK9O0j
+	gIg0IeZvmDhhalvaLc8yGHQgQ1J/BodB9JJX+shGVxxFEfgf+A9KTFh9x6uLJ/NW
+	apJTv+ar/xugp8xKiXduGOZh/SfsLvjn5iyv7iRuZhF+JJIYba7Flenu+oRPjYwK
+	obHAiuYb1/8ihCSuN5TiEbGfvCNPMwVe6t+CX54DqBxgjhZdBmNGuvVxsLTOYXF3
+	6CTk3mPtsXpz0NPDQZtznLTOlKDR83Lp18vIi2zJAATA7wSAxwch3AQOHJWaZsCZ
+	k+IwcOTepl7OZoT55V4oDeUQUPSE8gt0Q0Zw24cNzCmEExFRsqgSOL5iZySIYxOA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh9507pa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Mar 2026 14:17:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62DAFO2g014698;
+	Fri, 13 Mar 2026 14:17:04 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cuha8ey1v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Mar 2026 14:17:04 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62DEH4UY28967668
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Mar 2026 14:17:04 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2F2B5805E;
+	Fri, 13 Mar 2026 14:17:03 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7727358051;
+	Fri, 13 Mar 2026 14:16:59 +0000 (GMT)
+Received: from [9.39.23.217] (unknown [9.39.23.217])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Mar 2026 14:16:59 +0000 (GMT)
+Message-ID: <1f944b56-acb6-44ee-8cc2-6031fcedaeaa@linux.ibm.com>
+Date: Fri, 13 Mar 2026 19:46:58 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: A1B40C000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: p83x9ry4w478bdfzng1zgkmshkq4wqwe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/13] selftests/mm: fix failures and robustness
+ improvements
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        David Hildenbrand
+ <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko
+ <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org
+References: <cover.1773305677.git.sayalip@linux.ibm.com>
+ <20260312150526.3662b2717b9a91776a2e43f5@linux-foundation.org>
+Content-Language: en-IN
+From: Sayali Patil <sayalip@linux.ibm.com>
+In-Reply-To: <20260312150526.3662b2717b9a91776a2e43f5@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=QKtlhwLL c=1 sm=1 tr=0 ts=69b41c62 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=YdAoJE3rqbStyI-1upkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDExMiBTYWx0ZWRfX2vRLn5fFjDGH
+ e7ZBS7DlBp3DH3an/kn0qFOSrvVmI/70hmKoAoNhMP71PeN4a1Lsgm+uGlyNFFaJ+Ll0zHp2g2P
+ TPT9mHE5ApJ/tJ/9IikbHY48V27tlt9VmvlC+IcAPgN5OgZSguNwro9U+VAT6xlKAHi3r5zCKQV
+ mYzUirBbhGuryEnVNNW6EHXUiQqNPYoKbnGYHqnO1ZkEn0PGOjrrqlV39D3/Ttx2giT5S/b5Ob4
+ pRO/CNIJmrYqxPUrrEkBImJUXoGsSQlEQDWkl80jiSu4Oo8hz2eR5bc7lpXpxBmwUahXBZ6mrOg
+ UxFQvZSeEghFNQvk0eVKKDaFpGR+cPWJzWaVVVE+WUu5hg1k7yVRjoJ3iOi2T6ObMc2bOYSEjw9
+ v6OYxj0lIwH7zsZNWwIgzKve7Z5e8+CGjsYGYe+I4fKB3/kHrnr3TZiNuOORsGdWQNN9jhqJX9b
+ 3UiTK5fxrBtnxBgX0eA==
+X-Proofpoint-ORIG-GUID: EKxMMvXJO_-Q6FuTg3Mm2n_bv_9p0Ewp
+X-Proofpoint-GUID: _FoW35RApTu9sZVdSSuEqYmN99KNbMEq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 impostorscore=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603130112
 X-Rspam-User: 
-X-HE-Tag: 1773410313-977396
-X-HE-Meta: U2FsdGVkX1+ycKtbwgET+JjrdQt1rssatlInUtF6sFgAAlCTVnxBIu5MjzFyTu9Hhpl0k2qG0+PibBeZ7AQQQlcvt5/WyBgH5aLW76l/nfYa1H17DXbkTDGi2/dutmd42k8X/pe9rsqn89qjLStXVi/cXropOskrHKMUydiS9+ECDN1xNYoxdGU+vkYCN9PbPd6vZ6TTkNaDWVCVutXIn8sN2+hG3i/fCzEMSMBFNx7zwvx/QS/DHND0fqBL/8vJL+cQ1afWUcsjbYKBWVbIqRUAO8crUxx7w8ITrFLs9dqSTRKTqFoVWO1nvYvsZM5bj1S0czm8ZzGCz+eFlbB14V/FLGw3Vz6nbVOG2jMl/sp4O0oXhjAGmvNOgjvZ65JiQUcugeqtZqyANoJsDnuMMC9+wGMW7CmaHd2EI2Z75VLF328ht2vVuy0Mk8Rfy085OYB1VCQZNelujiAQW8EdJom5hvuWZbX3aapVDu2IaJKipPYzKGnxna4h4e5G6v6kzObvAYZxxn/2i1J6CMjS0cdnlGHYlIByHODEyjmd+XD/e5EFux3tDwweqXInwbx/eLgJ9VAaSnXLSstZITKuQSXLC7vlSVWaydu99sHftAuXeqeEor29gfYPprbIjzbwmonDtXKCJvjhS3774WRgPy4S20nux/GaXg1Xe79mWbcD6k91dBUnXGB8uThwDdCoR2V85tGJJt8nMPmLTVUCP32Zu65kJF5TPgSnVDYcKheQJPAwc9Wv25sdWv8arM+vnOZfjixT7RMB71W3+WVBawKiNMuNqmfms5YPtC64tb7Q44t+U/uS5RBkNZOD8+sgYRSagYTfW6tueKhjRA9ligDar6g2zS5dEmaEtHt20s150nBebDE76zdkGx2Yc83r6J7PWmxbg2EhRWVGmnDxxlh4GYb4QKgvwGLXGVVdHL2LSt9lqM9XAWc9nRfVLhU43z81VBUBBCCMWuun+r7
- ff+OuhyN
- 3rO5Y0/rFgGld79xML/cgIrOKtQLfuw/tWOKgAt7z1byur3Q9VUasJhTU8VXBVXkIQgmfCPOLQE1WefIFn6U577cirAIxSgxfnGcyRcNQ+E6yhRnt8J6VV5frFDIiaTxXK1JfsN+N1W3WWTllG9oKHl9HpplykBLhnB/5J5THCCiagRQ+PGMDSXLVGCxzjjM0tXVw
+X-Stat-Signature: r3bc9w5cwixjtyfmb45z3zj1nsaqzidq
+X-Rspamd-Queue-Id: 0D3D74001B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773411431-155277
+X-HE-Meta: U2FsdGVkX1+yzogghUuRpojGQ6njiSenZvoxcgSFhtwsvCSzFRCWJG5UHam6MYyLXmWrkzdxUU6sEx8LHnUvY5ra9l73GfpdHDUUc9PIsj1q7Tx42YlzqRhHO2TWYeB6EdwDATK1Bqxy/slm/H+eee+NoL49pHsrFR3ur3KmpSb3/jiXiAVRkurlhEoYlHU7HSbKnRE+qOeDsMWhcAICiwUEH8cbQVHE4+kgSFN5qJxdIW4XYLaLEX+E5Y8xLJw2Jn7qJwSw3AnI9mNCBvCsIm6RUSOzGktOrwI0C7T4DIcai+1LlUDEm325eIM1/wBP9Pbb1ZxfdFg3eGEc32tmn5L3MclH5IHFmufo2oWv5yyhcCoNyF8Ii5j8W0xnFVIeKCXnw3L2E5zdY6KIM1qiQQBlA5GqHvYCuk64EZn1FosCko1P54W/CWUtR2QJ5RVCBnK9CaAbqN7Y8KLHk3Bwf7d7ZD/zdH+F+KZfEwxgv92ZZPmn3sJAM8g6o9t0fhXIabDRyPaTXtXAgU9ijKdFV+Fjusn3obQWl0YvHkT4gO+FG7gfqXzJFbo/EPajQ3y1a1qO5W3wEvIO0tMvicbAHyWEF92pXBdnKjlWMPcHCUh6q9dIlWEiZRQMB3usdWB+/pDL6bNBDeieWcpr6cRPerEIImf54yn3/5z7fLWOLCvfvyQT9AVrCERKnTqf6lqjWLWElDJpmOOGL/i/UHAGSH/soVbWgtZ635PKCB1DOzVvIxiddb1MEuzyak6+bNjFNfYc6BYTFsu7dY6AGff/S6pupy9uyzYNRpRPL/gx1M/MpmHH0hlqbOhdf6LCKIj8XOU0gslSQ6LRa+ib7rkGDySd5G3A2khr0571PeDucxS3RQrgJ/mpEMlpY8NXR/g8ir83SYF16/elWTIKT/NjTZldSlDzq7TRsGSUDNJRAyY1HhO/XhH5Q1nOdXL1I9ah0RhiS9YvS8NhqArcoRb
+ Sf7yR2lw
+ CShGCjEEoA8d7e4MqsJ9Eot6Hc3lOKeHqjGnNy/ti18VcDwkgQvfbGBgkIAvzZftyCCVQ/doc66ByobBruwtFWEkl4XlS0FCzPlbFIin5mNwXWP16WsWhTsqVRf7LHg2rCYdLBflioLyTQQMT1Q8zZ6BvjJFBdzaOO++NKuK0JSyQELvhrQaKUMVdhFZlP/bCly8aPmrGJVa3JR5ydWD+k4hfQnOpbj3iqBi1ZlZ8sq2Rpdik5qxFfY8EtLRHCrv1UroYt7i/OjltpTf2YA/W5+X8FzwCK/CiMzaCgwTe3KDmpNwIaXjGNQ79GgUmB30YAJ7Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,76 +151,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
 
-On Wed, Mar 11 2026, Michal Clapinski wrote:
-
-> Currently, if DEFERRED is enabled, kho_release_scratch will initialize
-> the struct pages and set migratetype of kho scratch. Unless the whole
-> scratch fit below first_deferred_pfn, some of that will be overwritten
-> either by deferred_init_pages or memmap_init_reserved_pages.
+On 13/03/26 03:35, Andrew Morton wrote:
+> On Thu, 12 Mar 2026 17:55:27 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
 >
-> To fix it, I initialize kho scratch early and modify every other
-> path to leave the scratch alone.
+>> Hi all,
+>>
+>> Powerpc systems with a 64K base page size exposed several issues while
+>> running mm selftests. Some tests assume specific hugetlb configurations,
+>> use incorrect interfaces, or fail instead of skipping when the required
+>> kernel features are not available.
+>>
+>> This series fixes these issues and improves test robustness.
+> Thanks, I updated mm.git's mm-new branch to this version.
 >
-> In detail:
-> 1. Modify deferred_init_memmap_chunk to not initialize kho
-> scratch, since we already did that. Then, modify deferred_free_pages
-> to not set the migratetype. Also modify reserve_bootmem_region to skip
-> initializing kho scratch.
+>> ---
+>> v1->v2
+>>    - For "selftests/mm: ensure destination is hugetlb-backed in hugepage-mremap":
+>>      update FLAGS definition to MAP_HUGETLB | MAP_SHARED | MAP_POPULATE and
+>>      used it for mmap() calls as suggested during review.
+> That was a really small change (below).  It's better to wait a while
+> (half to one week) before resending an entire series.  So as to
+> hopefully accumulate more changes.
 >
-> 2. Since kho scratch is now not initialized by any other code, we have
-> to initialize it ourselves also on cold boot. On cold boot memblock
-> doesn't mark scratch as scratch, so we also have to modify the
-> initialization function to not use memblock regions.
 >
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
-
-I haven't had the time to carefully review this yet, but sharing some
-high level thoughts.
-
-IIUC the real problem isn't struct page initialization, but the fact
-that if the page is at a pageblock boundary its migrate type is not
-correctly set to MIGRATE_CMA. So you fix the problem by making sure no
-one else but KHO can initialize the scratch pages.
-
-I think the end result makes the already complicated page initialization
-sequence even more complicated. I tried to grok that patch and it makes
-my brain hurt.
-
-Can we get away with something simpler? Here's an idea: keep the struct
-page init the same as it is now, just modify
-init_pageblock_migratetype() to override the migrate type if page lands
-in scratch. It already does something similar with MIGRATE_PCPTYPES:
-
-	if (unlikely(page_group_by_mobility_disabled &&
-		     migratetype < MIGRATE_PCPTYPES))
-		migratetype = MIGRATE_UNMOVABLE;
-
-So we can also add:
-
-	/*
-	 * Scratch pages are always MIGRATE_CMA since they can't contain
-	 * unmovable allocations.
-	 */
-	if (unlikely(pfn_is_kho_scratch(page_to_pfn(page))))
-		migratetype = MIGRATE_CMA;
-
-Do you think this will work? If yes, then I think it is a lot nicer than
-what this patch is doing.
-
-Also, pfn_is_kho_scratch() is pretty much a duplicate of
-kho_scratch_overlap(). Please pull kho_scratch_overlap() out of
-kexec_handover_debug.c and use that instead.
-
-> ---
-> My previous idea of marking scratch as CMA late, after deferred struct
-> page init was done, was bad since allocations can be made before that
-> and if they land in kho scratch, they become unpreservable.
-> Such was the case with iommu page tables.
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+>
+> --- a/tools/testing/selftests/mm/hugepage-mremap.c~b
+> +++ a/tools/testing/selftests/mm/hugepage-mremap.c
+> @@ -31,7 +31,7 @@
+>   #define MB_TO_BYTES(x) (x * 1024 * 1024)
+>   
+>   #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
+> -#define FLAGS (MAP_SHARED | MAP_ANONYMOUS)
+> +#define FLAGS (MAP_HUGETLB | MAP_SHARED | MAP_POPULATE)
+>   
+>   static void check_bytes(char *addr)
+>   {
+> @@ -121,23 +121,20 @@ int main(int argc, char *argv[])
+>   
+>   	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
+>   	unsigned long suggested_addr = 0x7eaa40000000;
+> -	void *haddr = mmap((void *)suggested_addr, length, PROTECTION,
+> -			   MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
+> +	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
+>   	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
+>   	if (haddr == MAP_FAILED)
+>   		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
+>   
+>   	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
+>   	suggested_addr = 0x7daa40000000;
+> -	void *daddr = mmap((void *)suggested_addr, length, PROTECTION,
+> -			   MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
+> +	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
+>   	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
+>   	if (daddr == MAP_FAILED)
+>   		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
+>   
+>   	suggested_addr = 0x7faa40000000;
+> -	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION,
+> -			MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
+> +	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
+>   	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
+>   	if (vaddr == MAP_FAILED)
+>   		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
+> _
+>
+>
+Thanks for the guidance. I'll make sure to follow this approach from 
+next time.
 
