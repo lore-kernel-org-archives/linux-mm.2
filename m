@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123E3106FD7D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 05:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7857F106FD7F
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 05:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 267D36B0005; Fri, 13 Mar 2026 01:08:05 -0400 (EDT)
+	id D563D6B0088; Fri, 13 Mar 2026 01:11:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215776B0088; Fri, 13 Mar 2026 01:08:05 -0400 (EDT)
+	id D049B6B0089; Fri, 13 Mar 2026 01:11:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F6F16B0089; Fri, 13 Mar 2026 01:08:05 -0400 (EDT)
+	id C0F926B008A; Fri, 13 Mar 2026 01:11:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F2EDE6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:08:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F0EBC27D6
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:08:04 +0000 (UTC)
-X-FDA: 84539858088.24.9D1E665
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 12906C000F
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:07:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K9+yRy1m;
-	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ACD236B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 01:11:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 587B81607EA
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:11:56 +0000 (UTC)
+X-FDA: 84539867832.13.7F57FCA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2D9061C0004
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:11:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773378481;
+	s=arc-20220608; t=1773378714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T2fdojMM54qSgNsuFhPwacfFSNjW/hMMNErtovdaSec=;
-	b=biVkG9U355ylp1KD0MXpNFnXTvnnfTDxfulyreFZqcxFGxtWQTbMXuxJyt6hXC3+rw0cn3
-	hCBT6KA2C6/zokHr/o1DJLJU/RU1oWMFdYF8M/ZZnbVfNwILg1qaoDQ76DOuFELrrAmSAR
-	oMY/haJxsq6+zD61FgadmC6QDM2D4qw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773378481; a=rsa-sha256;
-	cv=none;
-	b=GCFRtNf1KzNmoh+acKQdfySHRFTn9i3sbFKiEXERr0m6mtnrBkHMfueHGbWNFN89dPLgkl
-	zMawoplTaxkLzltuboSEnAzIls4eFrf8lOpDiyGjQxrrAJeJscyyCwiazSlU3BP7dX9Yp+
-	TFq7xTiaVGbYR2V6XqQf90aSzfijWvs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lHyRHpc+ZSfbkpL9G6wSzMHvFbKkJFMbdQHZtKhA6ss=;
+	b=qv8eFC4rtDNYY8W0IW1/Plhyoq8ICuo4aX7Ph5eI/DgovjgZvJAE9iiTYtIZhheNK9AZi+
+	bIMfyVzkGuKJGyrrgdDN4GPXH5WW+z03/4Oo6k7FYcijViH8D7jLuJ1fghF4FRqNb9DMU/
+	SZn7t+gTpsX56f+Ak9S0ocu0ZFOG1W0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K9+yRy1m;
-	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773378475; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=T2fdojMM54qSgNsuFhPwacfFSNjW/hMMNErtovdaSec=;
-	b=K9+yRy1maHL6dE99fG6FnmFTzHdPeR/Y2U5+rMAnH4ssIC2H0Y9pCjP5Q0tjqYR8eRmHzQIRbNXmbGWmA9z7fnpP/UDXYUg2a6pfR25aO1iHP5ymkh9cqxtxLxjSJqrNmF/+KnQXj3VaW9Ub+UtPRX2xYfXY08jHFkBsAKQA9Mo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=33;SR=0;TI=SMTPD_---0X-r.uEE_1773378471;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X-r.uEE_1773378471 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 13 Mar 2026 13:07:53 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,  linux-mm@kvack.org,
-  akpm@linux-foundation.org,  mhocko@suse.com,  apopple@nvidia.com,
-  axelrasmussen@google.com,  byungchul@sk.com,  cgroups@vger.kernel.org,
-  david@kernel.org,  eperezma@redhat.com,  gourry@gourry.net,
-  jasowang@redhat.com,  hannes@cmpxchg.org,  joshua.hahnjy@gmail.com,
-  Liam.Howlett@oracle.com,  linux-kernel@vger.kernel.org,
-  lorenzo.stoakes@oracle.com,  matthew.brost@intel.com,  mst@redhat.com,
-  rppt@kernel.org,  muchun.song@linux.dev,  zhengqi.arch@bytedance.com,
-  rakie.kim@sk.com,  roman.gushchin@linux.dev,  shakeel.butt@linux.dev,
-  surenb@google.com,  virtualization@lists.linux.dev,  weixugc@google.com,
-  xuanzhuo@linux.alibaba.com,  yuanchu@google.com,  ziy@nvidia.com,
-  kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-In-Reply-To: <343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev> (JP Kobryn's
-	message of "Thu, 12 Mar 2026 09:13:49 -0700")
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
-	<3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
-	<343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
-Date: Fri, 13 Mar 2026 13:07:50 +0800
-Message-ID: <874imkpba1.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773378714; a=rsa-sha256;
+	cv=none;
+	b=NEbKVMlBJncwQdwlMN7TovDNTqt8YGivh6P4qXIX75tAKHIIehvLcOrCmLxIXUBeIzkWNE
+	iTIBAs9BOJDuu6lWYIl3kTBjIl+jEW82Xdh8ug+eChjmmoU/9xMMslnylvafFFWDPx141E
+	hYm1FTAxO2EIa5Dig4Got61D+5NnbII=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EAE36165C;
+	Thu, 12 Mar 2026 22:11:46 -0700 (PDT)
+Received: from [10.164.19.59] (unknown [10.164.19.59])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B3853F694;
+	Thu, 12 Mar 2026 22:11:48 -0700 (PDT)
+Message-ID: <0890a207-354e-4da1-80c2-67754354a6a6@arm.com>
+Date: Fri, 13 Mar 2026 10:41:45 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: filemap: fix nr_pages calculation overflow in
+ filemap_map_pages()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ willy@infradead.org
+Cc: david@kernel.org, lorenzo.stoakes@oracle.com, kas@kernel.org,
+ p.raghav@samsung.com, mcgrof@kernel.org, dhowells@redhat.com,
+ djwong@kernel.org, hare@suse.de, da.gomez@samsung.com, dchinner@redhat.com,
+ brauner@kernel.org, xiangzao@linux.alibaba.com,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <066dd2e947ccc1c304b54e847fbe628dccea1d7c.1773370126.git.baolin.wang@linux.alibaba.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <066dd2e947ccc1c304b54e847fbe628dccea1d7c.1773370126.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2D9061C0004
+X-Stat-Signature: 3yo1i1mqthcpujz9degbn4ioobiejuc5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 12906C000F
-X-Stat-Signature: fe3shmurcakqien1w5efski1k3mie4xk
-X-HE-Tag: 1773378479-754143
-X-HE-Meta: U2FsdGVkX1/cW0dzo5p0R4vzI5d4hXKnHmaiOJKQl5X0RPU5QhFUJM6NQIhr3ENrorris/XR6Mx3A7LAxqyAnrwDd5L84awZZs7T+sOmUpU1fY/SytEUC7LYteJzz+DPEKluWS+sIhGj7jUaHA1tBNB12MZ8opqo5suktJ4ErUZKCcExK2phi6IO6j7ih6ZlccYZuP9r/BlpdDZZtw92iMkcz6WLDU+tgm8aZzYDk5Swqq/qxSZvRGaUv58JMdZbE5vcmvvVTWa5JSfW/BhW96NEYDJidKTSICwTKwN36q57Dk0HFHghPzomgnMv8CDloOVxyEdTnvaYqI9xlFK6lRC7mcDVZ+B/wFeK4al17Dh69qwVglI3r1ZgnULMy8gBCdCNJlKy7HmCo+Zfy2VYS2ziXJ66pfGp/T5S3+34dhb+UmWPkcHqTcOCSl7IgtLlKKt3wdANGQ2SgfSLnpWLrjHJ/LWsVyTicvqQc1fHeqj/d58EyqmN/Jhld6nXYTygPP73C07yrpGGLD/d/Qq8zh8i8r63yGIbXc9Y0d17kPIl74U2vIrmluX1hSvVIUL2unnK3LWLLmZKxSiFCZY9CJz6/Qlfqo0zw0R0+xhcNFYkPrsbSLdYtPtErIvbYt84ciiY9TtSmVxP/5FdjTg6vn6r01wxqVUPUMtjBtFs7axP9rGMxyJ2KO8HxAgNKAfK6CoYC0Ak3M2dNj6l1z5aUBojqcThA4mBAFpZ20f5DOf8CWacK2CFsSCZz8fWYh2dPtcNVIW8nxkh6UuGkRqVNFzBAdjUnA3AOLIH6wJ+tEveQH8uinCafxzzlVaCZtB/FPWSPvU1Q5Qbnnc5UItxmi1cuqZ9icolrGuuzztLxTbNzm+xUQUuDqc/4fgaNrxI7mbLrlgX+oJsU4J+SfNzSTuR/TLibSMvk5s/Zrcf68n3p6sLbNKW0cxJ8iNX6zNTh9NBN03LDIVG9rOfSJ1
- fRW6ywV6
- GSzRILQWh7Ibjw9dejDa0FzrohynlWxDvh3K3EUGOox1sMhqRWduBl+9izXS8GMW/gPszF6IvdhNpY7msNZRY6GvkOYLRV8WodQ8bZQM3EUPzi5rFTataUzbOssGqukjKoJ9JuugVN4HphXJAt9SZKXB7gGSRe/oWL4TIFIAq7+vAyEIhiW22+/Jl5S7IBwEnKJcCmL6rxPigOndcD+XHsrj9irDMkiPnE3PyjDDb9sOr0OTBvKteor/1zaxXPr6j6peYG/Pwfp3+R4z/Vdjl1r4qdh76LMewoMYW/fiteXS9j/BNFEdBhq0fP1WhrF311zaJqEthOmMFCSZIMWGf2u9zTA==
+X-HE-Tag: 1773378714-659126
+X-HE-Meta: U2FsdGVkX1/AMxPl7k5rLy7bQc7T/7ee+6I/tMnfymqxYCRteFgl9fsG+fjMmXUXg2EpfLUd5IRGQS7OE5zZ4HWx50nIXRQ3S2EzZpw87wZVyM3jXCUcgtRCXK/zdn4uDDTpezfpUHwyJiqb+Cxxq/h7JKgTD/Dmbp5HKmswv+YbmtxfM9HzJ1Jm7s5SUZLuFWS5I3TJiHBfoUGetn6bS2vcKPBglRVQVs+myGNQa7ug2SklOXtpAAVZ0jFZ7DSOOYV7j5wjUeg/lB0VHdSo8hOlPsrOtcw898En4NTvQ/ZTQDqg3GsTsDYVqu7SOjVs0JsszGsv95rdHeYG9jA/BG/2a9+KCrI14EeKmOs9X/kUi1CZYdBEEY7bmzZYD7InHdCQv2L+8ewrf4Hv5eZfJKCVPuc8zU8B9itchEvUJTu9W1ra8FU5j9hXU9mO3XIhI/mHIhG5fPkUcg8XR3KaJkyiSTiiOC1MH0ZIpHj21B3JVaycvL691pBFFbgVAgf12cEItDYYKzmLNlLsDRhrIwlEidS0aD0/5PTQ7+MKlBpWZiAEtSP5f6GVVenINrxonuol6258+Lp2R5vwyLBwRHzrZdLqna7RBz5YfJvheYqrjX1j2fRMI9TDVvWoHrOpru47A0lrOuGvZBeZFOxyCt6PDVJnv/EkCe27DZPwkhmVpx3V2TqVKXS3UM+wRuzcwQDBHsDEL6izcSbzZOw3dHXZytjaom2KY0V2h40IjgwCrkKF0ZADa+LdYmmrD4Zxzxap9bOKI5oUIp9z/hc0xkyrVem/xlIxwvpUfZhpUREo/WtchtYruYJw4Y2mzaq6JI0hNe4CeMjGQROWK2O1QwnbXiZR9vQNrm+08dKgD/C0zkjY7gM+/vPxs28osM1li60rrqAWBt8QtYLI4wJDxyruZdbRNnroVeC7UU8RNOyXDmyBmdZyy96dGTZ3/+oa1XEi1n18DXCzPr1DOc+
+ xip4629y
+ 75pfIPYJAn4Mh2tSraaMkK0bOkW5oIML/oo0tDY3uI4ylLsZJ6p690ilH/KnBdtWcU5FTqFRqZ0UJlT7TL0u5cXewhQtlbwU4yZFfcpuoEF3a49WW0FLG2g1CJE57cUO5X+0l01H7r456N3p/ldoqAvYx7hK0eb8xkz/T6a63IuG40i9+/kBrqcE8R3eqsvuaCBBMlrL10VN9XBJuOk5uXtwVgxYKcmF/eMckGuILJUU0GsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,60 +90,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
 
-> On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
->> On 3/7/26 05:55, JP Kobryn (Meta) wrote:
->>> When investigating pressure on a NUMA node, there is no straightforward way
->>> to determine which policies are driving allocations to it.
->>>
->>> Add per-policy page allocation counters as new node stat items. These
->>> counters track allocations to nodes and also whether the allocations were
->>> intentional or fallbacks.
->>>
->>> The new stats follow the existing numa hit/miss/foreign style and have the
->>> following meanings:
->>>
->>>    hit
->>>      - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
->>>      - for other policies, allocation succeeded on intended node
->>>      - counted on the node of the allocation
->>>    miss
->>>      - allocation intended for other node, but happened on this one
->>>      - counted on other node
->>>    foreign
->>>      - allocation intended on this node, but happened on other node
->>>      - counted on this node
->>>
->>> Counters are exposed per-memcg, per-node in memory.numa_stat and globally
->>> in /proc/vmstat.
->>>
->>> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
->> I think I've been on of the folks on previous versions arguing
->> against the
->> many counters, and one of the arguments was it they can't tell the full
->> story anyway (compared to e.g. tracing), but I don't think adding even more
->> counters is the right solution. Seems like a number of other people
->> responding to the thread are providing similar feedback.
->> For example I'm still not sure how it would help me if I knew the
->> hits/misses were due to a preferred vs preferred_many policy, or interleave
->> vs weithed interleave?
->> 
->
-> How about I change from per-policy hit/miss/foreign triplets to a single
-> aggregated policy triplet (i.e. just 3 new counters which account for
-> all policies)? They would follow the same hit/miss/foreign semantics
-> already proposed (visible in quoted text above). This would still
-> provide the otherwise missing signal of whether policy-driven
-> allocations to a node are intentional or fallback.
->
-> Note that I am also planning on moving the stats off of the memcg so the
-> 3 new counters will be global per-node in response to similar feedback.
 
-Emm, what's the difference between these newly added counters and the
-existing numa_hit/miss/foreign counters?
+On 13/03/26 9:15 am, Baolin Wang wrote:
+> When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I encountered
+> some very strange crash issues showing up as "Bad page state":
+> 
+> "
+> [  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+> [  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+> [  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+> [  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+> [  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+> [  734.496442] page dumped because: nonzero mapcount
+> "
+> 
+> After analyzing this page’s state, it is hard to understand why the mapcount
+> is not 0 while the refcount is 0, since this page is not where the issue first
+> occurred. By enabling the CONFIG_DEBUG_VM config, I can reproduce the crash as
+> well and captured the first warning where the issue appears:
+> 
+> "
+> [  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+> [  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> [  734.469315] memcg:ffff000807a8ec00
+> [  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+> [  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+> ......
+> [  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+> const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+> (struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+> [  734.469390] ------------[ cut here ]------------
+> [  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+> CPU#90: stress-ng-mlock/9430
+> [  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+> [  734.469555]  set_pte_range+0xd8/0x2f8
+> [  734.469566]  filemap_map_folio_range+0x190/0x400
+> [  734.469579]  filemap_map_pages+0x348/0x638
+> [  734.469583]  do_fault_around+0x140/0x198
+> ......
+> [  734.469640]  el0t_64_sync+0x184/0x188
+> "
+> 
+> The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio)",
+> which indicates that set_pte_range() tried to map beyond the large folio’s
+> size.
+> 
+> By adding more debug information, I found that 'nr_pages' had overflowed in
+> filemap_map_pages(), causing set_pte_range() to establish mappings for a range
+> exceeding the folio size, potentially corrupting fields of pages that do not
+> belong to this folio (e.g., page->_mapcount).
+> 
+> After above analysis, I think the possible race is as follows:
+> 
+> CPU 0                                                  CPU 1
+> filemap_map_pages()                                   ext4_setattr()
+>    //get and lock folio with old inode->i_size
+>    next_uptodate_folio()
+> 
+>                                                           .......
+>                                                           //shrink the inode->i_size
+>                                                           i_size_write(inode, attr->ia_size);
+> 
+>    //calculate the end_pgoff with the new inode->i_size
+>    file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+>    end_pgoff = min(end_pgoff, file_end);
+> 
+>    ......
+>    //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+>    end = folio_next_index(folio) - 1;
+>    nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+> 
+>    ......
+>    //map large folio
+>    filemap_map_folio_range()
+>                                                           ......
+>                                                           //truncate folios
+>                                                           truncate_pagecache(inode, inode->i_size);
+> 
+> To fix this issue, move the 'end_pgoff' calculation before next_uptodate_folio(),
+> so the retrieved folio stays consistent with the file end to avoid 'nr_pages'
+> calculation overflow. After this patch, the crash issue is gone.
+> 
+> Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+> Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+> Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  mm/filemap.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index bc6775084744..923d28e59642 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3879,14 +3879,14 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+>  	unsigned int nr_pages = 0, folio_type;
+>  	unsigned short mmap_miss = 0, mmap_miss_saved;
+>  
+> +	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+> +	end_pgoff = min(end_pgoff, file_end);
+> +
+>  	rcu_read_lock();
+>  	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+>  	if (!folio)
+>  		goto out;
+>  
+> -	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+> -	end_pgoff = min(end_pgoff, file_end);
+> -
+>  	/*
+>  	 * Do not allow to map with PMD across i_size to preserve
+>  	 * SIGBUS semantics.
 
----
-Best Regards,
-Huang, Ying
+I am wondering whether something similar can happen in the do-while loop
+below this code. We can retrieve a folio from next_uptodate_folio, and
+then a massive truncate happens and we end up mapping a large folio
+into the pagetables beyong i_size, violating SIGBUS semantics. (truncation
+may back-off seeing the locked folio/increased refcount in filemap_map_pages)
+
+
+
 
