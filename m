@@ -4,107 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0CE106FD69
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 02:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37158106FD6B
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 02:58:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE60F6B0005; Thu, 12 Mar 2026 22:43:59 -0400 (EDT)
+	id 4FDA76B0005; Thu, 12 Mar 2026 22:58:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C931F6B0088; Thu, 12 Mar 2026 22:43:59 -0400 (EDT)
+	id 4ABAD6B0088; Thu, 12 Mar 2026 22:58:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBF626B0089; Thu, 12 Mar 2026 22:43:59 -0400 (EDT)
+	id 3B78B6B0089; Thu, 12 Mar 2026 22:58:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ADAAB6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:43:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43DE713B5A9
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:43:59 +0000 (UTC)
-X-FDA: 84539494998.06.39F3BB5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1E4304000A
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:43:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UjHDCZWG;
-	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 266276B0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:58:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A016559E61
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:58:44 +0000 (UTC)
+X-FDA: 84539532168.30.7AB7DC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C86F04000D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:58:41 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lPu7I3L+;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773369837;
+	s=arc-20220608; t=1773370721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PeHgzSLyZ7aK5854PlJ8F3nfqrFFnUsJALq71bji/28=;
-	b=VOMa6Lv/qN/W7zOnr9JPnU/V/337uOXt34XTKC9jGkVogYByZHJd8EVE8ZgKlQoAvoCBT9
-	vEdbDl5Spps+YyDn6kQUwXXOg0Rmkey63Gq/V/2HUeoJ6blHFcl8GSBQ675P8WuFsz3bTq
-	rmIfxlZpgb0Zg1F0ebsgVuuj5zKwgX4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773369837; a=rsa-sha256;
-	cv=none;
-	b=p5h8zTfUIQzGRvJ4q2yn5+m21WyBi78cx6eII5mAxyJeW8O+WCAitVK8c8RPAtADckHmCl
-	St7Iic5Gmd6lO83TsbEB+OWGuFpeSpWtbklUIzHEUnJhl5ZNM9WsQFKhxRdnhWio7DSmYL
-	2GJQuQ8d351aSqgWGUL/kVTyFGTDb7Q=
+	bh=URXo6n7IN0qOlb7s8gZxbbOeAKyp6RsBYZjzWDBDbcg=;
+	b=mEM1NohA6BlMYqlo0vJs6f15doc3jF4SAl2D8djbNpBaJIY4W6ZwGx9Z+LaEk2uKj35aA5
+	9+9ToO62qBgnaKZvQfY1W2xZ4mqVXh96XQYfTxdzqBU29ySip9Zr7tkMh/d5nj0G9DBqXA
+	YPS9PqA5ZFepT4abmS2BjKQ3iVVXkU0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UjHDCZWG;
-	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773369836;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PeHgzSLyZ7aK5854PlJ8F3nfqrFFnUsJALq71bji/28=;
-	b=UjHDCZWGMmsPpaTZNxnBlsxe2wb9tw+GVZDYclM5PWiBxSB7m0zhuCW+bgInlI870kqzXH
-	xw0klWUyLqJhUmFF7PgGV4QYpT+13FWu/2Px7kIIP0eE1mbE1M+W5okFxUrUFcgzODFV2H
-	9LziipWsXxywNKjAb/mHsXmGPfgAsD4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-345-iONvXC-aN0a6dNsF4I1NCQ-1; Thu,
- 12 Mar 2026 22:43:50 -0400
-X-MC-Unique: iONvXC-aN0a6dNsF4I1NCQ-1
-X-Mimecast-MFC-AGG-ID: iONvXC-aN0a6dNsF4I1NCQ_1773369826
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C98C51956088;
-	Fri, 13 Mar 2026 02:43:45 +0000 (UTC)
-Received: from gmail.com (unknown [10.72.112.171])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 92CBE19540C2;
-	Fri, 13 Mar 2026 02:43:32 +0000 (UTC)
-Date: Fri, 13 Mar 2026 10:43:27 +0800
-From: Chunyu Hu <chuhu@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, shuah@kernel.org, linux-mm@kvack.org,
-	ljs@kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, Li Wang <liwang@redhat.com>
-Subject: Re: [RESEND PATCH 4/4] selftests/mm: transhuge_stress: skip the test
- when thp not available
-Message-ID: <abN5z5jpKL2GOWc3@gmail.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-5-chuhu@redhat.com>
- <708647e9-fc49-430c-a12c-f2b44caa273d@kernel.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lPu7I3L+;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773370721; a=rsa-sha256;
+	cv=none;
+	b=MoDqaVXKahDtvY6NPr2tsRpi7Y1uF2V9ZKPi8rHY8cVuCTWfm8agk4epIi9/TbNAnKnBxF
+	N4zOCfa70elaXX8vts742Hqye8y9QYPbBNOqUdcnZhuSF8gtyFmdo3AMBzS+/HLDSqnfYv
+	DuRNwai4qhh3u0FeCbjtaOvB8MpAyws=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0165661335
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF5BC2BC87
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773370720;
+	bh=K0jrg19P8Iu/nlZftvIqA5/cPhbQEq9I6Sfq37Rwmr4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lPu7I3L+J0vBdgyRNoBXeM9JsG0i1lt+tN4h7FbQpwGyhIoUMXPJHwylekpLyBGjf
+	 iiSUou0xehz3peAanV0tAyWRMC2pUbu36IrGnHbzXHAdgLTYiPLg+Qw6bwrpkTIEZ0
+	 mx+E1HoByMnxOpBc1nYrFR0cDMV5TFq3kKu3BKdSq5IMGv8bi9R+9vV3DfOllTSKmr
+	 iCWZxEXq3ZrwpIq6j7Arz6lofEwlnDhOi+C7dtD5BjlW9y5qylE36+kq9Mj9+t1i5t
+	 iXYwT+IPUedhgEiGswa020j9uY9XzJpM9q5oQw0JQ08XUZP9riyNeNs8k6V0/ni2Aj
+	 s9tvENMLAchLw==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b9382e59c0eso273643866b.0
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:58:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXTdWF/6AjV5TyA/MD3+tk5Hr4i7dI5ooMpcnY0f/l8EbmWDHcz6Nz/Zq/Xe4kgTZTQa3Hd7rNjOA==@kvack.org
+X-Gm-Message-State: AOJu0Yy96bn/4dO/P8Y+wGEfKEoai/HqXabrMT4ilQe+XGBPyr0EbB7u
+	1IXwFSlZzMrHFKGLEhB8uu3G9jJktaQiUmA1HgAo+bEXjHEN7hRasNs7ukHc73l4ZrZTdmLiPJV
+	E5iakKDJHpkTvrUtVEDOVyMrAs0omFag=
+X-Received: by 2002:a17:906:f8cd:b0:b8f:87a9:27b5 with SMTP id
+ a640c23a62f3a-b976515b976mr77959466b.41.1773370719442; Thu, 12 Mar 2026
+ 19:58:39 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <708647e9-fc49-430c-a12c-f2b44caa273d@kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: 5WDz9wPFWvHbXcASl1yXJY_LXJr83IOPJhfsD4Pw9Cc_1773369826
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260312040627.55257-1-liwang@redhat.com> <CAKEwX=MqyGQSMuVCSWmhKfHju5uHBe3ySQEgK9XuKwCvpL4x8w@mail.gmail.com>
+ <CAO9r8zPmV8v0tiQvn2xFqX8F2oU23mfbVK67nxMO3QKt49kJeg@mail.gmail.com> <abNtUReAUHT6j9Rn@redhat.com>
+In-Reply-To: <abNtUReAUHT6j9Rn@redhat.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 12 Mar 2026 19:58:28 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMh=tAV6UJcH3hhZWrZJO_emVe4raiq4wiBEgC-GAD2=Q@mail.gmail.com>
+X-Gm-Features: AaiRm52el4UNPSjT5Jsb7Qove8ZY9-j0c5T-w67OOyJVuzPzLKcC_Enx9cGG_FY
+Message-ID: <CAO9r8zMh=tAV6UJcH3hhZWrZJO_emVe4raiq4wiBEgC-GAD2=Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] selftests/cgroup: skip test_zswap if zswap is
+ globally disabled
+To: Li Wang <liwang@redhat.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, mkoutny@suse.com, yosryahmed@google.com, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 855eibs9we8hj7cztj1auti4fr73wkiu
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1E4304000A
-X-Stat-Signature: 1f68d8uzptkitza4ktzd6ch3kn87zi69
-X-HE-Tag: 1773369836-873342
-X-HE-Meta: U2FsdGVkX18H29dK82X7KLOln1oiajK/R/0r3ceQlMCk151UxkpH6ldJTECVp2ybFxVSF3Fe5tVkDrNJDXdMNIDBznd4tS+eX07R6QXlkSde5BiVQmxa77J+7ohrCjjAh+vqgOJ4uVY2QZ9q1ceUSjC9JLAVYjCH1rWpkyhzR7xJunhbfFeeEXX8Rs3MKwnJJ1OEGkyWwum+cv6XU+Qy0axS2ad1Gkq3PoRzcjn+dUqkttz+C+r3J+BO6YOGGtEbnsAunUSiwCkDHbRNdou/69W8k1wyqoVmxsqZyAj+1i5MMHOsLp/vyXOExsh6OekDXzVYUj9PlnMuKZMsOPjhgqssFwvzfxL5ZvFlL6iUmHO5Tl86uRea8HpHpBhHaNFaHl+rlJLFXqGB9aTWfcsH7fKtt64IZTPAbU78tmW9PV7iyFnQHx1bPpSQ/9lUWpkzSplQhbgTMxZOesQ5b9Axygr8bqnacYTa1o9rDWqhCVXgX3iNhqBixvoLCe6c6L3ruxJNaleBOdZvN5fmDcNyjIDnOnJRJenjUvQsMN2YVPsWn8KebfgCu55F1cmlGRffoXptedw3V9TQfAujMDIE0yp0j0wV6dUhVQqq20PzJsdZEM2W9lmagidR+bi5+fUiHZBD6gTzi/AU6ewpiQ9SsaVJv+JNEDNKYfBipVb5EM+6CoLufNbbd7ZYmZaA4QiQFXiZjzgF2C70c3vw8Ly3D5wN0WpHCYcfGiRhENASIrWEzjlFJYF8FPfr9GVRdS8UzYas5Sxq1x1qwt5OqrGbYVr1bmeE7tXbRIF5N8IBA2AuWWi+fMspxX1aXAZszRdeYMxqhYj2z3agIIHyoR13tQ5D0JbItIzKywegm3P7vv5dowXcDyMuQ9T5P4e46Yb9L1NF/5wKZlcGeoUqp9RiiwtkbWwFOqbygPawgzFLcEfhVeMFgLXhCtM9zAbbX8Naj6TBNvoq2rV6UZiFd2y
- y7RCLfV1
- 0rpe/7zxllV5pjiHXw9lagCBzWnjtR+iilDyBNDqqHzmF1eQpQ4Xjzxme5vM+eUAZya5Q4Z754gOG1Y9bMpCZJYlEPVzlzIF7o/l+t60pM6OIp8AJ/tsbjdNPN3pm7Y+1d0VGA8f3UITjrXCQTwpqiw5vOO3NJGGVNbnXI/opokYj6hmWJKto2DOW8ejO+9MSmTd9EjEh0nn1QjRVYT2Rucae2xMWCnMgx5uOoSYWBsuB8Y6F1JFw2ysCdAp/Iyuv3I1K4/nHHTDbRYGQnUHD31eXIJ9zhAX1wlBOf9ayst0qDkkdgrUqhXqgN7LtcYLUPRF78DC2pgKAlKYoZnEjDMqEsWABSGaM+aIz
+X-Rspamd-Queue-Id: C86F04000D
+X-HE-Tag: 1773370721-910834
+X-HE-Meta: U2FsdGVkX1/N+M5somjN+FqAbk9JDigIU6ctVc+3//mw9w4avX82JPZ5Pnu81PEE29yWEq0UWl07my6hAxrUzkDD3pD8ucvWJcjbi41/uKrT5QNuv37FsosOoq7E3ePXYctr9hzsirgZc78FaG4dug+c34XC2slpV3Woy7cGZqBXvStwvBn3GBZ0mLSzq+kuLo+nDm5rUAtFK0rdXiB06BOHENDtvnS+touWRSMC0nbssQ0cMIJRz60TcNhh3ScjPbjikMhGq6kEmv4cESB3KtG8DFmPdNJ3KqaiPaHYeVOzeGnuBesY6rDlWDXQgjxjV/DBbHMoek2diQpWf+rOuJBX9MzoiUITXdMHXqs2toI9M2YlVEz7XkV8BoxwNZXq7W3KhZPa/78X042y/hsIxP0qCbSKUbDRvOsPxJrBC2DgxuLJqeHGYXN6uAJhbyPvyloshh/umJ2Ngu2qrW3eQNjdrrL1Z0HfZMKQQdIeiOQ5/amxnRH5ThSwVdPWKGOd+neuYksawkkLCxW9neD3zK+SlwdFefXXKt5MoOip9vbSdue5R5cgcWqmCVJaZZHDeVxF049lBA5oigs8k2s9mV8YDK3ejFtemQ1cELR5a7EQ1bth/8mGp53JhTAoFVbHoZ/1ThEq9C4/0Eo+7FX53Fcu3Rtg71tObFjGPFTjwTMsDoXvID85ZzVixy34kFaKd/Nt05X1RLWOQBs4nFYUhKIruggbpfgQlfILir3f3SaCMFnr6+8yDRKipcpcbOoPTbev5gPCzmiqJRJ55ertFRtnUM2P6fOE9ZU8yQRq9mZUp5kawPcc0yy0ow9XaIXP9mR87rdOxEZWNA6XQI8gMnlBUnV956gVtABbZHv3TXJ4e4kOn1b3Ucy1ysziDJVc3+tihx3ffkZK9sJYeU/NXJF0sNbohYAO19umiOevY1tNWKhRZCR/4N+1v6DR5fDN8wlb2gGuFc7TiWqwb/7
+ Jz2mk64D
+ ubseWMu3/NhYY03wH9t4E0T3/X+j/Sa0+N4F13usMlxF6r0A8NYvAMAYwc1rTa1awyYgF3k1SjpSJ6QZTq/Zo6RO9HqF7f3Z+jy/NUZ74PAo5ReX1Fq66bt5RltluLS8exlCnrD+VmzpssOi5ocSuyKEqQNjAGuWXceHdLthxL+E8jYhND8aY+N/unObhBR0S1r0a2WVnMshlJS6lAML2cgBnIR9c0ihyyTwfHawecE9wBTZohKE9SZjNjoMb9S/WS6Ac5RWYecBZ8ImEbBklSmEo25eUjQOvlkNaw8jfK+Il54tBZbpyHk9UnY3uH5jP5u5yGtJX84eszMUFZg6haXu7Nd9Os7oufqFA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,68 +105,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 08:46:23PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/12/26 12:40, Chunyu Hu wrote:
-> > The test requires thp, skip the test when thp is not available to avoid
-> > false positive.
-> > 
-> > Tested with thp disabled kernel.
-> > Before the fix:
-> >   # --------------------------------
-> >   # running ./transhuge-stress -d 20
-> >   # --------------------------------
-> >   # TAP version 13
-> >   # 1..1
-> >   # transhuge-stress: allocate 1453 transhuge pages, using 2907 MiB virtual memory and 11 MiB of ram
-> >   # Bail out! MADV_HUGEPAGE# Planned tests != run tests (1 != 0)
-> >   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >   # [FAIL]
-> >   not ok 60 transhuge-stress -d 20 # exit=1
-> > 
-> > After the fix:
-> >   # --------------------------------
-> >   # running ./transhuge-stress -d 20
-> >   # --------------------------------
-> >   # 1..0 # SKIP Transparent Hugepages not available
-> >   # [SKIP]
-> >   ok 5 transhuge-stress -d 20 # SKIP
-> > 
-> > CC: Li Wang <liwang@redhat.com>
-> > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> > ---
-> >  tools/testing/selftests/mm/transhuge-stress.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
-> > index bcad47c09518..76316696426d 100644
-> > --- a/tools/testing/selftests/mm/transhuge-stress.c
-> > +++ b/tools/testing/selftests/mm/transhuge-stress.c
-> > @@ -17,6 +17,7 @@
-> >  #include <sys/mman.h>
-> >  #include "vm_util.h"
-> >  #include "kselftest.h"
-> > +#include "thp_settings.h"
-> >  
-> >  int backing_fd = -1;
-> >  int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
-> > @@ -35,6 +36,9 @@ int main(int argc, char **argv)
-> >  	int pagemap_fd;
-> >  	int duration = 0;
-> >  
-> > +	if (!thp_is_enabled())
-> > +		ksft_exit_skip("Transparent Hugepages not available\n");
-> > +
-> >  	ksft_print_header();
-> 
-> Shouldn't that go under the ksft_print_header(), like you did in patch #3?
+> Yes, this looks more tidy than open it. I'll go this helper in v3.
+>
+> >
+> > static void check_zswap_enabled(void)
+> > {
+> >        char value;
+>
+> read_text() requires string but not char.
 
-It will print the TAP version. I'll change in v2 as you suggested. Thanks!
+I was just illustrating. This should be passed in as &value. That should work?
 
-> 
-> -- 
-> Cheers,
-> 
-> David
-> 
-
+>
+> >
+> >        if (access("/sys/module/zswap", F_OK))
+> >                ksft_exit_skip("zswap isn't configured\n");
+> >
+> >        if (read_text("/sys/module/zswap/parameters/enabled", value,
+> > sizeof(value)) <= 0)
+> >                ksft_exit_fail_msg("Failed to read
+> > /sys/module/zswap/parameters/enabled\n");
+> >
+> >        if (value == 'N')
+> >                ksft_exit_skip("zswap is disabled (hint: echo 1 >
+> > /sys/module/zswap/parameters/enabled)\n");
+> > }
+> >
+>
+> --
+> Regards,
+> Li Wang
+>
 
