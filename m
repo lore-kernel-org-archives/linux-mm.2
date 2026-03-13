@@ -4,87 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FD2105F78A
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 10:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4401E105F791
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 10:19:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0C8B6B0089; Fri, 13 Mar 2026 06:05:59 -0400 (EDT)
+	id 686866B0005; Fri, 13 Mar 2026 06:19:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC36F6B008A; Fri, 13 Mar 2026 06:05:59 -0400 (EDT)
+	id 633A66B0088; Fri, 13 Mar 2026 06:19:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F01E6B008C; Fri, 13 Mar 2026 06:05:59 -0400 (EDT)
+	id 53FA16B0089; Fri, 13 Mar 2026 06:19:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EF4E6B0089
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 06:05:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F5961A0874
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:05:59 +0000 (UTC)
-X-FDA: 84540608838.16.7A11062
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A4119C0004
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:05:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GY9H471s;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 400F76B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 06:19:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1BC2C2C49
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:18:59 +0000 (UTC)
+X-FDA: 84540641598.20.9EA2813
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C46F3C0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:18:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=E8PFd7gc;
+	spf=pass (imf28.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773396357;
+	s=arc-20220608; t=1773397138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t0MrLjF+7m8BoQJbuVZ9MTBk5c8yLEpd2qDNH9w9nXI=;
-	b=rqRbHdKdYeJkohT4PQq/0pkcZIkS8h1vP/ARMu1JuYIMEdxSbeMMecdNYz/9ce6cdYOEMq
-	NnUk4pX0MDTWGNUTp1yZMUmWyrbxcLfAtFa2hh1qLwKxSINqjq4GxN2iY8fw2EsKBjA3v+
-	c7FSsCLo70aeLftoNHP9R/ksrBvM9AM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773396357; a=rsa-sha256;
+	bh=e7VmSIl4unW6O204RkOQM4M3cIx7ucOnD1dcxwQUtH4=;
+	b=mFu34Yx1Yx5c8BzzYhxwI7G5jkXN0OTAB5amPi6foGopD2rZ4iULfdZSilTGY/IEWBmPXV
+	9In62UyUlu8KCydyOyoroxmzOHlL3oSJYOI8rXNNLfksFY17TEOrs6xvjqyap1VnnP96gR
+	Yrjy4HkKcwHQOyn7Iwnrb83RVXpx33I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773397138; a=rsa-sha256;
 	cv=none;
-	b=JbET4xFo5Gxj4X9kQb8t/84jwvTfkq4HbLKx2kg7/Ch7VBd5Zos3+WajkSyggYyDKtz7BU
-	0QCfQEFwF8V4T0f3MOml7SPdhua9w1RemKwzjO07hTKj+A5l2FDH1LlAH6aPy8J/WF5/r9
-	9T2fdfjHAiCNGfAk8sa/neMhiHYCUNo=
+	b=OB7nJZR5Fhjl1/5KpLuc6iEFsE43rfaQzYSvw4lghsze4lNNnxQ3bvz4CxPOuQEl8fOFIn
+	t5sHcmYzeeAP90PSNIIZ45WLldLaWpMmGDSRg4VNg1Fjpk6cDxHGUOblTWISzKQXN+VhmD
+	i88GK+YBUPxXxe7a1pYRsG96yvEYM34=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GY9H471s;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1D7A96012B;
-	Fri, 13 Mar 2026 10:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45E1C19421;
-	Fri, 13 Mar 2026 10:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773396356;
-	bh=aVjfpNlCAnDLl1tYf6aaIB1a5oJJV9l2khNsC6sGWFA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GY9H471sDgZY1DAiyWi+rI1xxC2fP6YbtuTjzgp/AZUxg5153tVgre8WPJHW9IwAJ
-	 VASw7NexVjHYb6iw+Cqbfw7J6QRGKkjdspazh1Uk2nd2+RchynXcpvI8COKe09nODm
-	 hucV1CZCzT/rmLAVNke21rylcZt/SRaSfwVMw4cGHiaWYCcjKi8bCaHF6U+WgQeC0p
-	 48Db2xsy0FNZ4i32SSeYWXia9Gp7H8xLCH1FPx0I+3FMsPziQ4vdjVk1fXxDZCIzNv
-	 SMFjRvYJ1r/x1/aRBaIq21T5V0oZuFzi2KSq6y5PSD80JqCAP5xxPQh2hqO5Spf2BZ
-	 24BnAC2yLGv9w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH 1/6] selftests/liveupdate: add framework for memfd tests
-In-Reply-To: <20260310110847.3519998-1-usama.arif@linux.dev> (Usama Arif's
-	message of "Tue, 10 Mar 2026 04:08:45 -0700")
-References: <20260310110847.3519998-1-usama.arif@linux.dev>
-Date: Fri, 13 Mar 2026 10:05:53 +0000
-Message-ID: <2vxzldfwf3i6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf28.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=E8PFd7gc;
+	spf=pass (imf28.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1773397134;
+	bh=M7TdXX9zTPqW7Kt9Iztm/Jip/BQuxT6Rf8Ea4mHYUpw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=E8PFd7gcTn3pjinCydHkNJg1x+9DSN7Uu7EUkgHwkfV+HxhP8ufe+4Yk22FS9ol6S
+	 dQTDzE/ltrQmTkdPOF617T1gvNd3grMTjwimcjIrhzBxGzz8gqiH/ZmtmFoj5q3zy3
+	 6uVHECECgLnCvUwY6uXK12VFeYjJeyvJ08HdSvkAgBYyhwTitEVdWc7i7TRAVW052a
+	 W8nWMhOHccxGe1kVbzy6NxCX3U0g8MgJmdOrm1U16mXAw68HJpJ4oplsRJNs31Ea9o
+	 t/V/bDHV5QW92CVb10jIHNygLntuHDZVvtU7vet9H2HJ1RWuf+5yk0sUoMCBWk2h1m
+	 yM3s7ZaDTRxnw==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3B04517E0222;
+	Fri, 13 Mar 2026 11:18:54 +0100 (CET)
+Date: Fri, 13 Mar 2026 11:18:51 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, "loic.molinari@collabora.com"
+ <loic.molinari@collabora.com>, "willy@infradead.org" <willy@infradead.org>,
+ "frank.binns@imgtec.com" <frank.binns@imgtec.com>, "matt.coster@imgtec.com"
+ <matt.coster@imgtec.com>, "maarten.lankhorst@linux.intel.com"
+ <maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
+ <mripard@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>,
+ "simona@ffwll.ch" <simona@ffwll.ch>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+Message-ID: <20260313111851.4c1f89f3@fedora>
+In-Reply-To: <TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+References: <20260227114509.165572-1-tzimmermann@suse.de>
+	<20260227114509.165572-6-tzimmermann@suse.de>
+	<abL5rcYIaFFO3GW2@tom-desktop>
+	<TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+	<TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: mr1q7eonj65974pptr7xsbi41teuwkqa
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4xt97iuwozwwybexiz59hx1zm1krxb55
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A4119C0004
+X-Rspamd-Queue-Id: C46F3C0005
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773396357-309471
-X-HE-Meta: U2FsdGVkX19EQdiODU5BMuvB61RdTUSrcHPcufBEkMeDOBk/0YF8+m7rKz+Cs/tXSTntaF/w3FsVTmN/OOrdMFo6k5UiQgWZ5Iv0939VMiIamJkTd9rm9i/lr4Rnxckg+MJvspV0GeBTRVbLjlSM1GocS3JYHwUgnN5MMi5cBYR7wSxmbJ/GSxYPyI01NKlxsZ4MR+Rk9X3XrrMpO7BaISqKhZ1PzFwXaLLQXjn8iRzU3npTvM0iT7wkyVxo0Lul/amAGvXiVm/IF16MTxmvzvImBgVBlwyiPiPjISh9p557GsKPIhGQ5XLzyHCrrXQ4WECUjJeaaRse9N9XqTniPpI2edYPuOGqpYRQoFXMksPfFb5Ukyqz9787XcAD5iZwdTpwOxuRxeeUE5t02rL3NlbliayJAW/X3BUl+by41cV2TLrx/atvZAzZK+7KihaFWFc9o5ThnDIH9mJTOQpf+6yS29Ucf9/IrEkiiCDA1QFuFBqkVNkdmnLKJJmG7Tm3JAze6RfwAj/jHFIk7YyNQed17DTu22j41gYd9d0K1Wgv3SMpq/G8HAbQ3iTDdxOsQUsV0tNWpGAhJpsRNdOYh24AwW0D0oSVXCKcJscoC8uBkFHCwRCDHG25i5voIDDvy/cFcLoHRYWVIW+tgmChBd7rNk+RGBzMVkoD5AYgcDxmNtHcgzwkZSjt6mKYimS4ZFeuylwnqjdPRzBDatXnlC+iirEdszIMFvTF7IstMBRXNen9WF25v+YJ72eVygfG8/80RJRMRJQvHgwhkaqcYyj0w+5wdpvNyPRnV6U41lWUwvhfX3PemBPfsPcg98HxW5RU7nOrCbEdndy9WmuHtyUPeCvrbFAu0xegOFTRA0zvxTJ8MtzXqg3P8YDhbATFW5fW6d5yJew=
+X-HE-Tag: 1773397137-16792
+X-HE-Meta: U2FsdGVkX18eHDcRfOyb2TOyURkD4rsSXJHTh9q5R9CfT5NXfeKU7fbRJNYASqbhEH324kRXiGwM3W6TBHleoC9c6X7gYlcpOyqvuM3AAgcSTwKWS6eJDbpJrGFcLAj8xV9njqCWI0tveSzKedw7CyA3FzK2nkHU4Rz4mvjOfjxAbwNNdMelPepD+caSRyz86gNfCqsv0RBFbFOobx/8ZaWACNbTieRkf3tqJm6t3Zt9EsGzsXFcx/Y5PNfGPssGxzsSFTST6f5yFSiUEIvyEeB27oqkqxuzY0/KK3ZrzJTazNNmGwj/pcW2bkH+fR58c5LwZ518gMZGHwhsJ+ElwX+aRoWRLEHe2bwFXf8IHP7+b88fWLVMzJobfMu4mMDU+Z0KPVo5QdmmjRYGwPvJ/j3ayAcqGR9WNJZLfI6KtGwAe3670JX798xhTVmCnnnauG5ahlCIn487OQpdwPWng+121HmFBEHAPJ8wTjsYXGSZuvn5iVdDw01RpVjn7Q29JDDHRhnh877tm/Sausctu4kYoaPFvmS5uz+mdzXSyXUIgBy8DJqLHyH/vohsRkzEoeXT6sgKlydNeeMZlw402V2nGyYdBGXXIssCzI/hdW3xu1PeTPolRy3MAxrAr93L5TWZfhkbhUF59KWe3ZvnJW094jum6PxX01mczxExe6MIxXiSOixjppTlyGvRwLjMBcdHTGmJQ7zIreIQ+1iKdo9VaW4rmQtpBDf3RpPv3NAtvFYFGn0g3V0Sqsh2rFh2aQ/mOKK2yKAIkZa2Ib3DEXwKwI66Fgyh+F6zPsEn62YAFYaUrD5zyXyP/D0S55jMnJPFoyNlGBQLh6Uoe8/3iU+jUO6fz56Ip2qGCAsNHXYXBpQpUbeDH6f1NXDi/685OU/eLL2RbwBv771eLJTSp07TlTPelqkxuOHQdaGpCq1AvJ+ks6JBOhcmpCmLKfHEI7406F2LLNWVItX8gs9
+ sll2HOkP
+ Wk81+9fVWG4f6M2FiReVqvuTkWA5lUfHZGj5XqCl18oVo9K247mM5vWvSsrHBlYPi5Fvag3bVFGkWfjy/ZvQJVqsNb/hPfdAAF0a26mJThjPTAs9ktAjz58JaBHlxgMhwlsG5rrGNJcBkk3R40VvIBDEPBD8DftML4bksEzqQ1LBPqOOj015eKVW0Zjs7yIXFCig0N7BFpoT0LbFE8FkLVmiv7dstfZOM4aACJWGIXo2iEDpX8NF+39BxFTTP3F1gkh9Goo+g0+snuIrtV4nh7oAvwNgJ88AEt+PrJgxswPfy8UNVoZ35Qo8exlBFqwBX1wSqoDzb0VtHwcpaxyY1A2u14q+XhdP1PSaASsDd2gTa0fOP+5sGIQDh9MkmbqAzDMVtNmy+24Gbw4Cw7P1Bj73lI1WkcfbHjmCDXNHO9QtKmnfYXsAP3gIzPL2FBgRdfqrjEFvu/9Ra5BaSQ+fhValln5XkStbs2e1QWmNwnHZFn5Kqj3u0TFAZ03Dnw4PccgYCgtEDjCC/dl0dmUkuj5LmpkoUT8br6W9F315ebGb0bRCPRjkZU7jYpRCXuY1CwP3OzlBhaWexiwUVrMwtfUyA8h5zugF7oYU0OeDMFDerhULUougsmh4hxAYtplGBJToCZVLsTYvoJ4Q8BKqW2RaDHpDwI+XRJ3euVAJlX4jcvrjHQBatH6VNpzZVhlFgdUxXgrmnm5Rs0XVJK/I1GihtzMHtPZdTrhfJLP8SapXnCB8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,113 +108,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10 2026, Usama Arif wrote:
+On Fri, 13 Mar 2026 06:44:25 +0000
+Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-> On Mon,  9 Mar 2026 11:54:34 +0000 Pratyush Yadav <pratyush@kernel.org> wrote:
-[...]
->> diff --git a/tools/testing/selftests/liveupdate/luo_memfd.c b/tools/testing/selftests/liveupdate/luo_memfd.c
->> new file mode 100644
->> index 000000000000..b779eee18387
->> --- /dev/null
->> +++ b/tools/testing/selftests/liveupdate/luo_memfd.c
->> @@ -0,0 +1,77 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +/*
->> + * Copyright (c) 2026, Google LLC.
->> + * Pratyush Yadav (Google) <pratyush@kernel.org>
->> + */
->> +
->> +/*
->> + * Selftests for memfd preservation via LUO.
->> + */
->> +
->> +#include <errno.h>
->> +#include <fcntl.h>
->> +#include <string.h>
->> +#include <sys/ioctl.h>
->> +#include <unistd.h>
->> +
->> +#include <linux/liveupdate.h>
->> +
->> +#include "../kselftest.h"
->> +#include "../kselftest_harness.h"
->> +
->> +#include "luo_test_utils.h"
->> +
->> +#define STATE_SESSION_NAME "luo-state"
->> +#define STATE_MEMFD_TOKEN 1
->> +
->> +#define LIVEUPDATE_DEV "/dev/liveupdate"
->
-> Hello!
->
-> LIVEUPDATE_DEV doesn't seem to be used anywhere?
+> > -----Original Message-----
+> > From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of Biju Das
+> > Sent: 12 March 2026 17:47
+> > To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>; Thomas Zimmermann <tzimmermann@suse.de>
+> > Cc: boris.brezillon@collabora.com; loic.molinari@collabora.com; willy@infradead.org;
+> > frank.binns@imgtec.com; matt.coster@imgtec.com; maarten.lankhorst@linux.intel.com; mripard@kernel.org;
+> > airlied@gmail.com; simona@ffwll.ch; linux-mm@kvack.org; dri-devel@lists.freedesktop.org
+> > Subject: RE: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status in mmap
+> > 
+> > Hi Tommaso,
+> >   
+> > > -----Original Message-----
+> > > From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+> > > Sent: 12 March 2026 17:37
+> > > Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty
+> > > status in mmap
+> > >
+> > > Hi Thomas,
+> > > Thanks for your patch.
+> > >
+> > > I'm working on DSI support for RZ/G3E from this morning rebasing on
+> > > top of next-20260311 I'm seeing that weston hang on my side:
+> > >
+> > > Reverting this patch fix the issue.
+> > > (git revert 28e3918179aa)
+> > >
+> > > I'm wondering if anyone encountered this issue?
+> > > Thanks in advance.  
+> > 
+> > 
+> > I am also seeing same issue on RZ/G3L with weston.  
+> 
+> Just add I am using mesa with panfrost(Mali-G31) on RZ/G3L.
+> 
+> Disabling Mali-G31 renders weston desktop during boot.
+> 
+> Looks like this patch is creating some hang in panfrost driver
+> during weston launch.
+> 
+> Cheers,
+> Biju
+> 
+> 
+> 
+> > 
+> > Cheers,
+> > Biju
+> > 
+> > 
+> >   
+> > >
+> > > Kind Regards,
+> > > Tommaso
+> > >
+> > > On Fri, Feb 27, 2026 at 12:42:10PM +0100, Thomas Zimmermann wrote:  
+> > > > Invoke folio_mark_accessed() in mmap page faults to add the folio to
+> > > > the memory manager's LRU list. Userspace invokes mmap to get the
+> > > > memory for software rendering. Compositors do the same when creating
+> > > > the final on-screen image, so keeping the pages in LRU makes sense.
+> > > > Avoids paging out graphics buffers when under memory pressure.
+> > > >
+> > > > In pfn_mkwrite, further invoke the folio_mark_dirty() to add the
+> > > > folio for writeback should the underlying file be paged out from system memory.
+> > > > This rarely happens in practice, yet it would corrupt the buffer content.
+> > > >
+> > > > This has little effect on a system's hardware-accelerated rendering,
+> > > > which only mmaps for an initial setup of textures, meshes, shaders, etc.
+> > > >
+> > > > v4:
+> > > > - test for VM_FAULT_NOPAGE before marking folio as accessed (Boris)
+> > > > - test page-array bounds in mkwrite handler (Boris)
+> > > > v3:
+> > > > - rewrite for VM_PFNMAP
+> > > > v2:
+> > > > - adapt to changes in drm_gem_shmem_try_mmap_pmd()
+> > > >
+> > > > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> > > > Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> > > > ---
+> > > >  drivers/gpu/drm/drm_gem_shmem_helper.c | 22 ++++++++++++++++++++++
+> > > >  1 file changed, 22 insertions(+)
+> > > >
+> > > > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> > > > b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> > > > index cefa50eaf7a4..1ab2bbd3860c 100644
+> > > > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> > > > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> > > > @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+> > > >  	if (ret != VM_FAULT_NOPAGE)
+> > > >  		ret = vmf_insert_pfn(vma, vmf->address, pfn);
+> > > >
+> > > > +	if (ret == VM_FAULT_NOPAGE)
+> > > > +		folio_mark_accessed(folio);
+> > > > +
+> > > >  out:
+> > > >  	dma_resv_unlock(obj->resv);
+> > > >
+> > > > @@ -638,10 +641,29 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
+> > > >  	drm_gem_vm_close(vma);
+> > > >  }
+> > > >
+> > > > +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf) {
+> > > > +	struct vm_area_struct *vma = vmf->vma;
+> > > > +	struct drm_gem_object *obj = vma->vm_private_data;
+> > > > +	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+> > > > +	loff_t num_pages = obj->size >> PAGE_SHIFT;
+> > > > +	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset
+> > > > +within VMA */
+> > > > +
+> > > > +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
+> > > > +		return VM_FAULT_SIGBUS;
+> > > > +
+> > > > +	file_update_time(vma->vm_file);
+> > > > +
+> > > > +	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
 
-Right. This is a leftover from development. Will drop.
+Do we need a folio_mark_dirty_lock() here? 
 
->
->> +static int luo_fd = -1, stage;
->> +
->> +int main(int argc, char *argv[])
->> +{
->> +	int session, expected_stage = 0;
->> +
->> +	/*
->> +	 * The test takes an optional --stage argument. This lets callers
->> +	 * provide the expected stage, and if that doesn't match the test errors
->> +	 * out.
->> +	 *
->> +	 * Look for the stage. Since test_harness_run() doesn't recognize it,
->> +	 * once found, remove it from argv.
->> +	 */
->> +	for (int i = 1; i < argc; i++) {
->> +		if (strcmp(argv[i], "--stage") == 0) {
->> +			if (i + 1 < argc) {
->> +				expected_stage = atoi(argv[i + 1]);
->> +				memmove(&argv[i], &argv[i + 2], (argc - i - 1) * sizeof(char *));
->> +				argc -= 2;
->> +				i--;
->> +			} else {
->> +				ksft_exit_fail_msg("Option --stage requires an argument\n");
->> +			}
->> +		}
->> +	}
->> +
->> +	luo_fd = luo_open_device();
->> +	if (luo_fd < 0)
->> +		ksft_exit_skip("Failed to open %s (%s). Is the luo module loaded?\n",
->> +			       strerror(errno), LUO_DEVICE);
->
-> Need to reverse strerror(errno) and LUO_DEVICE?
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > >  const struct vm_operations_struct drm_gem_shmem_vm_ops = {
+> > > >  	.fault = drm_gem_shmem_fault,
+> > > >  	.open = drm_gem_shmem_vm_open,
+> > > >  	.close = drm_gem_shmem_vm_close,
+> > > > +	.pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
+> > > >  };
+> > > >  EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
+> > > >
+> > > > --
+> > > > 2.52.0
+> > > >  
 
-Will fix. Thanks.
-
->
->> +
->> +	session = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
->> +	if (session == -ENOENT)
->> +		stage = 1;
->> +	else if (session >= 0)
->> +		stage = 2;
->> +	else
->> +		fail_exit("Failed to check for state session");
->> +
->> +	if (expected_stage && expected_stage != stage)
->> +		ksft_exit_fail_msg("Stage mismatch: expected %d, got %d\n",
->> +				   expected_stage, stage);
->> +
->> +	if (stage == 1)
->> +		create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
->> +
->> +	test_harness_run(argc, argv);
->> +}
->> -- 
->> 2.53.0.473.g4a7958ca14-goog
->> 
->> 
-
--- 
-Regards,
-Pratyush Yadav
 
