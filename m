@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B936105F784
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 09:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BFD2105F784
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 09:33:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EED426B0005; Fri, 13 Mar 2026 05:31:22 -0400 (EDT)
+	id 75A606B0088; Fri, 13 Mar 2026 05:33:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC5236B0088; Fri, 13 Mar 2026 05:31:22 -0400 (EDT)
+	id 708286B0089; Fri, 13 Mar 2026 05:33:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC84E6B0089; Fri, 13 Mar 2026 05:31:22 -0400 (EDT)
+	id 60A226B008A; Fri, 13 Mar 2026 05:33:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9E366B0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:31:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63C8F1D17B
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:31:22 +0000 (UTC)
-X-FDA: 84540521604.08.7C9CBD4
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6CB851A0005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:31:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DB5A6B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 05:33:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE8F75B7C9
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:33:21 +0000 (UTC)
+X-FDA: 84540526602.02.553AD34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2B95E1A0015
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:33:20 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HUuvNVg8;
-	spf=pass (imf19.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YpMae/MK";
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773394280;
+	s=arc-20220608; t=1773394400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yRDofVhihDUqLLlkY2UqqccMvr5aO/FD17akQhcyFyg=;
-	b=ojFdV/cf7LIFnX4wMC2p+Trjw+hQb62WG8Rv+fJSmgHFWZwdb1U6CdBtz07ht7zO1EhxiC
-	Xt474XhkZDTKuKxqo4qNOZLVrw+txm6R41hIPUQkK2SRboz/BmRONBK78sNLQaIEA6Mldh
-	0Fcaf6RdC3vsHJWGxkCOcPCgCdBvH8I=
+	bh=t6/pkRkl23fjQY+qMNoaMSLlSZdDHQPz1zBNUh/l5QA=;
+	b=bbw+ocD3HRfggKLzUCzhOlgSLGwJyY1CuKeQizG4jfiS6HYNOuu5vM0usZs2sbveGEJZDd
+	nBFnR0nfTrzScN9ml+USeW9a00//ffdRhXeZ3Svmqov45oWGyNY7lpaJzpKVBFwd5EtRbe
+	ugNfkNWWFE/nEyeWcQvGThj0lM8XHkQ=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HUuvNVg8;
-	spf=pass (imf19.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773394280; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YpMae/MK";
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773394400; a=rsa-sha256;
 	cv=none;
-	b=KxuadYnCG68tRt5LMb8uJGcIkGuiaz5UJQzi6DOg1AD8ZPlC0Nd62u3TtN9gRVbbU2YKLX
-	MdM4EZE4ZrXawIY9/bAZ49YCude76fmqYcmAc46vcqNI7+TP39F1yK9ijBf99jxZ0rUI3B
-	n+lm2DLG/ORTV64jr41hSPSDSHQY+NQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773394274; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=yRDofVhihDUqLLlkY2UqqccMvr5aO/FD17akQhcyFyg=;
-	b=HUuvNVg85nTI5gjewat0rwGlmKVM13/ZyLKLP6n8ntGK2ndKzGdhQ0uKwmQ4Rk5H69kvvirU/CsCasUemQF7WuMm5XAdy0nWS8yAJA/oyfiDUmiFXikcfNfK+d7gVtltt2IzUDBBPYHR6HRUxkLYZ0iel4FHUU9rPkdJepkfS5A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=33;SR=0;TI=SMTPD_---0X-rqO9W_1773394271;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X-rqO9W_1773394271 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 13 Mar 2026 17:31:13 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>,  "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>
-Cc: linux-mm@kvack.org,  akpm@linux-foundation.org,  mhocko@suse.com,
-  apopple@nvidia.com,  axelrasmussen@google.com,  byungchul@sk.com,
-  cgroups@vger.kernel.org,  david@kernel.org,  eperezma@redhat.com,
-  gourry@gourry.net,  jasowang@redhat.com,  hannes@cmpxchg.org,
-  joshua.hahnjy@gmail.com,  Liam.Howlett@oracle.com,
-  linux-kernel@vger.kernel.org,  lorenzo.stoakes@oracle.com,
-  matthew.brost@intel.com,  mst@redhat.com,  rppt@kernel.org,
-  muchun.song@linux.dev,  zhengqi.arch@bytedance.com,  rakie.kim@sk.com,
-  roman.gushchin@linux.dev,  shakeel.butt@linux.dev,  surenb@google.com,
-  virtualization@lists.linux.dev,  weixugc@google.com,
-  xuanzhuo@linux.alibaba.com,  yuanchu@google.com,  ziy@nvidia.com,
-  kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-In-Reply-To: <60f71f4c-71d9-4751-8c6b-10179b98bef0@kernel.org> (Vlastimil
-	Babka's message of "Fri, 13 Mar 2026 08:34:58 +0100")
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
-	<3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
-	<343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
-	<874imkpba1.fsf@DESKTOP-5N7EMDA>
-	<cd3d7e2c-79fa-4c00-89ad-83beddf98bae@linux.dev>
-	<60f71f4c-71d9-4751-8c6b-10179b98bef0@kernel.org>
-Date: Fri, 13 Mar 2026 17:31:10 +0800
-Message-ID: <87zf4cnkip.fsf@DESKTOP-5N7EMDA>
+	b=JVicY1pu7CO6eIdAxZLEJbqYMxPRfPKtgMFAysWTQ6wI4jueSiT22KidfkOKckBt29gUy8
+	JhOaPiBN98R/4iy+wnx6gu9ydpoRb/ZtnV2oIzhRL5FEUaUsv6IVH+EG2mGsbGAtwUKQ+u
+	bNzxg1rKLniTrTuTt3+Ius/8HINTWXo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3BADA42A30;
+	Fri, 13 Mar 2026 09:33:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD42FC19421;
+	Fri, 13 Mar 2026 09:33:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773394399;
+	bh=02CGLe3Iuw7tQ2MF0lGQAkby+oCpClPybOzJjiCjfSg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=YpMae/MK0rYwx0zZwabFC4echKf0Z9M5PMBQ4avwLOVVmNKhTDUVh9FX1mnhz33oK
+	 OlY7yEfsMqG7odRfEGphFjwQOHWe+fLOaZyY8SZeHafvImrJA+l8ZZF7kGGqUK8pM+
+	 wBL6GPYaonjvYqKIeqT0+24T3UyOLyuMKCqEzoINyvn7uDK67sDdvDyRhaA2ebz+uK
+	 gtKa3o2ngKx41pL2F6qLdTcSX0kO2p0LWNOhtfYGveZKaSn1fWmzi6bZAUn72/J2Re
+	 v1rRqdS5v3eC263HVobnt5GcIRtEXaEBuNjrWhnEdIcklwVatAOH0Fn+z8vHfkOojm
+	 kWfREm20kXxeg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
+  SeongJae Park <sj@kernel.org>,  kernel-team@meta.com
+Subject: Re: [PATCH v8 5/6] kho: kexec-metadata: track previous kernel chain
+In-Reply-To: <20260309-kho-v8-5-c3abcf4ac750@debian.org> (Breno Leitao's
+	message of "Mon, 09 Mar 2026 06:41:48 -0700")
+References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
+	<20260309-kho-v8-5-c3abcf4ac750@debian.org>
+Date: Fri, 13 Mar 2026 09:33:14 +0000
+Message-ID: <2vxz3424gjl1.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 6CB851A0005
-X-Stat-Signature: t84zwy3qg6s1fezsbc85h3jcsm3hh9mk
+Content-Type: text/plain
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2B95E1A0015
+X-Stat-Signature: ekr5489enbgbooecacb91y7hfkeng6wq
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773394278-750331
-X-HE-Meta: U2FsdGVkX1/bWyAQ/aXWnmLNMpyu2GJTW+FPzbzMSdgu/moe67ebii2RLXbRfyvbyjyXwSN1UGqiP9q2Zj91+tQwFlBAKHh/0GnMLdAxhGtkbSsI3rP0kgky+zWR3kJyL1dKq/5bvI21vnY+C//SJzJRz6l8vPN9kxLJPs3LUjDeD2PDf5TwBbSnkOWE9ra8gwiJ3NGxOIWtmGOK/p9Jnpur4J1Gy4zU7wtv+iznI/+KZd+SdbY3qdykkpEInWPk48yeQxJeyktjAhvAMn2hhCNoo8kpJw3o/BIP9SYasi/9rK5miHFlSn8xH2l6EjlywuxybCkdzpqjF1jzY+jYFP6iYhv6FPTFjkyjJN3jUW/x7m1nM99x+BJQ6gCdd1rGc0u+CHrtG2LkWQm4I2yiNk+sYQY97GSOJJBSXXBOchsLblMkC92BX4g2jzx01mx4c+8GKlnVMIwlNpQmIL9ih0kRP+YtAzt5PDVFl+njlFYIhovQmq70yuk4k4eWbvYcpJ2hrUJ6Ts0NLoJnmX4cqBGW4C5oUzAypeTjB7hKr3uumtZcyA72jYA5w4WaTeJ3HwBeZEMPtPGF3k12usOZ70ru60CPaH4cY0SEneMGpqj5vA1Ih3ih5HzI24xV1HTlF8krYRvUFD8SzY0L8zCaifA6D1jSbZdlTSSMJfP4TheEKEgSXokXaUcUZ+faC7M54j3haah2AoC3oM6D3Gc3eDRItW9a5nIil6FjXtK5XPU5JherWmorgYLh4xfzxz5xI09u6QhM6OWhJJjcysWHcm4t4GnH7RmNWe3zR6JtKsfg62We+VZ1ptO1kc/1w2mdJkYwUH5ACyWzi7JlYVzseU+vQZ3Rn0JGuwDh0Y6PxDx01PMgJb19cKkbRSz/mfzJ68RKMe5Nnk8VgNLus0IJnzR8HSI+HWSSDYsrz8KR9lQ2338BhoaSXoZBM5yteZBNX2P7stZIlM+4LnhByj1
- M9B3A489
- 4iLEz9PnucshNRfginRXeoltOb4j1QVErce+cDFNVTQo6ymC+KiDulsDgJqc/33byuNWBmg4ktt3n1XRG2ztxVbj/PQUWv72C0Mti0hkPlFpakzjd/TkjelL4XliwffFlhsQO0B9jO6GHBAmjEUHBc7XnCjtyfibTZOnFYtOZPT/0vS0IJtLh0P/aY1XXE2mpVbw9gtvu/AZne2geddRFJwKObWMOkncN74NEPyJi11zBqwlgZBv7ESrc1uYfpYsHwyFMsc+lI1tO7uaMqoFnbBYOLnK1MDyxzxYArL2sU9MIeg1IM/TVOsd8CndzlkNZZQ6MHcyZ77R1Afw=
+X-HE-Tag: 1773394399-845931
+X-HE-Meta: U2FsdGVkX1/yMfOexmu3TFPEQxrUH0RD6s+2BNfoEV8fK+P55HtTe/Z3vnNxG2JyUSW2bhAJO3jNMfOaxrkbSajH6wlxtJ3cnWRb8mKjTU8Lh0vMBET6ZgzUMWlWIqd7MnVDkx52tzvASmZk/IyC5Ujk6g/9b2KX8HiWcuTgjvn2JbFhZa/DdEItiOyH4dHG8JR2+fY/aMqOaydJUpjxGMbhJrx80O0MxkIhIGoqpJb6fLVvG0f1CfngGau8FGbjHKEaOcxCHDDo4GwrncQj6gnblJascK36Wl/D4Ap97XFF0CeCC6PIll+fMU5TrH0zTSSh3GBJLLzc1HS/J4TiPle7PRyY/o21wX3x8DDLjnrxV1B0ZybJtWKazSPok9zz0dvbCE4cW3Ht18kyDXviQXqB0CyN571/calPMAEGCDLzKjZC5JeVV+m534+uNkKaDb+XvehjVPe77jvQHIRJBLjV23oM/Yg4g+1RjA9w2TeHQdg5SC8RK9w8MKT97QfejtBtPrML34JUP8gzpSP66/9u2WgpS3mfNN2OcUvgqe2K1GlCirNoI+PCFCVpyfifPuro4xlblnyv1xCtsbrBEB+RSWeBcm5p5jgEJSmuLR+TGoKpnTNsQz4bFrDSUE8tk8JUdhz8FQo7m0fUHtuNCV0aEsJrny7/y5AzvjIRModQOX7px7XTQT+P1NyvrH9Y4EXbsDsZQ/d2xPhF7Zh995uu7En9bNYToq84o9mTgBsgnez+IT8IJY3StLTd4/HfWUzzkegV1w8o7rGjRtii78y/WvcNhghAr0/CP4gPvj2Me1rILAYfN5Ol/b6bod8ERIKxqooItkA0Se9mO0MEGY4GSyZLQQFErPHzcn+a1xDcgZrZuhq4T/rf754cnXp657OW9l/fqlcdtPwUXXMy3jnyPotuuqpFALcFO0g7BaIvPcknRdFE1d23OfAPaDL0R3fTGslZ2z76lbBdQ/4
+ qQ1VyHzr
+ cp23UVKzRTfYb5Pv8G7p3IRliURMFRqY7yl8ETzGCIaCTeQ1YQiNKT2dGTt21t+aEcU8qQWfs+vbOSmAwq/NS0SN/L6yPPcEKX7ZVKxRmAUc9nzKXuss2P9RlkkEIKJ7S1qWxSqLmXX6eroi/QdSe2zkGcTKAH5kx4Kdc/acRQ0W4VVtorCef9/VXbQ3fGCugtJgNkjj4uPhc/4IAWVn+bFJujQpt8wW27W7pm5YQsFjbB1nXezKEz+ncgrQHTbyTB4/O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,39 +95,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Vlastimil Babka (SUSE)" <vbabka@kernel.org> writes:
+On Mon, Mar 09 2026, Breno Leitao wrote:
 
-> On 3/13/26 07:14, JP Kobryn (Meta) wrote:
->> On 3/12/26 10:07 PM, Huang, Ying wrote:
->>> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
->>> 
->>>> On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
->>>>
->>>> How about I change from per-policy hit/miss/foreign triplets to a single
->>>> aggregated policy triplet (i.e. just 3 new counters which account for
->>>> all policies)? They would follow the same hit/miss/foreign semantics
->>>> already proposed (visible in quoted text above). This would still
->>>> provide the otherwise missing signal of whether policy-driven
->>>> allocations to a node are intentional or fallback.
->>>>
->>>> Note that I am also planning on moving the stats off of the memcg so the
->>>> 3 new counters will be global per-node in response to similar feedback.
->>> 
->>> Emm, what's the difference between these newly added counters and the
->>> existing numa_hit/miss/foreign counters?
->> 
->> The existing counters don't account for node masks in the policies that
->> make use of them. An allocation can land on a node in the mask and still
->> be considered a miss because it wasn't the preferred node.
+> Use Kexec Handover (KHO) to pass the previous kernel's version string
+> and the number of kexec reboots since the last cold boot to the next
+> kernel, and print it at boot time.
 >
-> That sounds like we could just a new counter e.g. numa_hit_preferred and
-> adjust definitions accordingly? Or some other variant that fills the gap?
+> Example output:
+>     [    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107 (count 1)
+>
+> Motivation
+> ==========
+>
+> Bugs that only reproduce when kexecing from specific kernel versions
+> are difficult to diagnose. These issues occur when a buggy kernel
+> kexecs into a new kernel, with the bug manifesting only in the second
+> kernel.
+>
+> Recent examples include the following commits:
+>
+>  * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
+>  * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
+>  * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
+>
+> As kexec-based reboots become more common, these version-dependent bugs
+> are appearing more frequently. At scale, correlating crashes to the
+> previous kernel version is challenging, especially when issues only
+> occur in specific transition scenarios.
+>
+> Implementation
+> ==============
+>
+> The kexec metadata is stored as a plain C struct (struct kho_kexec_metadata)
+> rather than FDT format, for simplicity and direct field access. It is
+> registered via kho_add_subtree() as a separate subtree, keeping it
+> independent from the core KHO ABI. This design choice:
+>
+>  - Keeps the core KHO ABI minimal and stable
+>  - Allows the metadata format to evolve independently
+>  - Avoids requiring version bumps for all KHO consumers (LUO, etc.)
+>    when the metadata format changes
+>
+> The struct kho_kexec_metadata contains two fields:
+>  - previous_release: The kernel version that initiated the kexec
+>  - kexec_count: Number of kexec boots since last cold boot
+>
+> On cold boot, kexec_count starts at 0 and increments with each kexec.
+> The count helps identify issues that only manifest after multiple
+> consecutive kexec reboots.
+>
+> Acked-by: SeongJae Park <sj@kernel.org>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  include/linux/kho/abi/kexec_handover.h | 31 ++++++++++++++
+>  kernel/liveupdate/kexec_handover.c     | 75 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 106 insertions(+)
+>
+> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+> index 7e847a2339b09..832390f96f49c 100644
+> --- a/include/linux/kho/abi/kexec_handover.h
+> +++ b/include/linux/kho/abi/kexec_handover.h
+> @@ -14,6 +14,7 @@
+>  #include <linux/log2.h>
+>  #include <linux/math.h>
+>  #include <linux/types.h>
+> +#include <linux/utsname.h>
+>  
+>  #include <asm/page.h>
+>  
+> @@ -101,6 +102,36 @@
+>  /* The FDT property for the size of preserved data blobs. */
+>  #define KHO_SUB_TREE_SIZE_PROP_NAME "blob-size"
+>  
+> +/**
+> + * DOC: Kexec Metadata ABI
+> + *
+> + * The "kexec-metadata" subtree stores optional metadata about the kexec chain.
+> + * It is registered via kho_add_subtree(), keeping it independent from the core
+> + * KHO ABI. This allows the metadata format to evolve without affecting other
+> + * KHO consumers.
+> + *
+> + * The metadata is stored as a plain C struct rather than FDT format for
+> + * simplicity and direct field access.
+> + */
+> +
+> +/**
+> + * struct kho_kexec_metadata - Kexec metadata passed between kernels
+> + * @previous_release: Kernel version string that initiated the kexec
+> + * @kexec_count: Number of kexec boots since last cold boot
+> + *
+> + * This structure is preserved across kexec and allows the new kernel to
+> + * identify which kernel it was booted from and how many kexec reboots
+> + * have occurred.
+> + *
+> + * __NEW_UTS_LEN is part of uABI, so it safe to use it in here.
+> + */
+> +struct kho_kexec_metadata {
 
-Or can we adjust the semantics of numa_hit/miss/foreign to consider the
-preferred nodemask instead of the preferred node?  Is there some
-programs to depends on the current behavior?
+You need to have a version field here, as the first 4 or 8 bytes. And
+you need to check it before parsing anything else in the struct.
+Otherwise there will be no way to extend this struct since there won't
+be a way to find out if the kernel can read the new format. You probably
+should also check the size of the blob on retrieve to make sure it is
+large enough to at least contain the version.
 
----
-Best Regards,
-Huang, Ying
+Also, since this follows ABI version independent of KHO, please move it
+to a separate header, perhaps kexec_metadata.h. Right now we assume that
+everything in this file is tied to the base KHO version.
+
+Other than this, LGTM.
+
+> +	char previous_release[__NEW_UTS_LEN + 1];
+> +	u32 kexec_count;
+> +} __packed;
+> +
+> +#define KHO_METADATA_NODE_NAME "kexec-metadata"
+> +
+>  /**
+>   * DOC: Kexec Handover ABI for vmalloc Preservation
+>   *
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 1f22705d5d246..7bac80e9a29a4 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/kexec.h>
+>  #include <linux/kexec_handover.h>
+>  #include <linux/kho_radix_tree.h>
+> +#include <linux/utsname.h>
+>  #include <linux/kho/abi/kexec_handover.h>
+>  #include <linux/libfdt.h>
+>  #include <linux/list.h>
+> @@ -1285,6 +1286,8 @@ EXPORT_SYMBOL_GPL(kho_restore_free);
+>  struct kho_in {
+>  	phys_addr_t fdt_phys;
+>  	phys_addr_t scratch_phys;
+> +	char previous_release[__NEW_UTS_LEN + 1];
+> +	u32 kexec_count;
+>  	struct kho_debugfs dbg;
+>  };
+>  
+> @@ -1408,6 +1411,74 @@ static __init int kho_out_fdt_setup(void)
+>  	return err;
+>  }
+>  
+> +static void __init kho_in_kexec_metadata(void)
+> +{
+> +	struct kho_kexec_metadata *metadata;
+> +	phys_addr_t metadata_phys;
+> +	int err;
+> +
+> +	err = kho_retrieve_subtree(KHO_METADATA_NODE_NAME, &metadata_phys,
+> +				   NULL);
+> +	if (err)
+> +		/* This is fine, previous kernel didn't export metadata */
+> +		return;
+> +	metadata = phys_to_virt(metadata_phys);
+> +
+> +	/*
+> +	 * Copy data to the kernel structure that will persist during
+> +	 * kernel lifetime.
+> +	 */
+> +	kho_in.kexec_count = metadata->kexec_count;
+> +	strscpy(kho_in.previous_release, metadata->previous_release,
+> +		sizeof(kho_in.previous_release));
+> +
+> +	pr_info("exec from: %s (count %u)\n", kho_in.previous_release,
+> +					      kho_in.kexec_count);
+> +}
+> +
+> +/*
+> + * Create kexec metadata to pass kernel version and boot count to the
+> + * next kernel. This keeps the core KHO ABI minimal and allows the
+> + * metadata format to evolve independently.
+> + */
+> +static __init int kho_out_kexec_metadata(void)
+> +{
+> +	struct kho_kexec_metadata *metadata;
+> +	int err;
+> +
+> +	metadata = kho_alloc_preserve(sizeof(*metadata));
+> +	if (IS_ERR(metadata))
+> +		return PTR_ERR(metadata);
+> +
+> +	strscpy(metadata->previous_release, init_uts_ns.name.release,
+> +		sizeof(metadata->previous_release));
+> +	/* kho_in.kexec_count is set to 0 on cold boot */
+> +	metadata->kexec_count = kho_in.kexec_count + 1;
+> +
+> +	err = kho_add_subtree(KHO_METADATA_NODE_NAME, metadata,
+> +			      sizeof(*metadata));
+> +	if (err)
+> +		kho_unpreserve_free(metadata);
+> +
+> +	return err;
+> +}
+> +
+> +static int __init kho_kexec_metadata_init(const void *fdt)
+> +{
+> +	int err;
+> +
+> +	if (fdt)
+> +		kho_in_kexec_metadata();
+> +
+> +	/* Populate kexec metadata for the possible next kexec */
+> +	err = kho_out_kexec_metadata();
+> +	if (err)
+> +		pr_warn("failed to initialize kexec-metadata subtree: %d\n",
+> +			err);
+> +
+> +	return err;
+> +}
+> +
+>  static __init int kho_init(void)
+>  {
+>  	struct kho_radix_tree *tree = &kho_out.radix_tree;
+> @@ -1441,6 +1512,10 @@ static __init int kho_init(void)
+>  	if (err)
+>  		goto err_free_fdt;
+>  
+> +	err = kho_kexec_metadata_init(fdt);
+> +	if (err)
+> +		goto err_free_fdt;
+> +
+>  	for (int i = 0; i < kho_scratch_cnt; i++) {
+>  		unsigned long base_pfn = PHYS_PFN(kho_scratch[i].addr);
+>  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
+
+-- 
+Regards,
+Pratyush Yadav
 
