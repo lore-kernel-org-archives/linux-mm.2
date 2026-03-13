@@ -4,132 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2075106FD60
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 02:02:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19996106FD69
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 02:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAEBB6B0005; Thu, 12 Mar 2026 22:02:10 -0400 (EDT)
+	id 039D06B0005; Thu, 12 Mar 2026 22:22:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32196B0088; Thu, 12 Mar 2026 22:02:10 -0400 (EDT)
+	id EFF156B0088; Thu, 12 Mar 2026 22:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C14266B0089; Thu, 12 Mar 2026 22:02:10 -0400 (EDT)
+	id E0B836B0089; Thu, 12 Mar 2026 22:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AF8F96B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:02:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDC981B8545
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:02:09 +0000 (UTC)
-X-FDA: 84539389578.19.9F8CCE8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 73463C0004
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:02:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="CIaiS/sM";
-	spf=pass (imf10.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CFFD76B0005
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 22:22:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7992CBA376
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:22:00 +0000 (UTC)
+X-FDA: 84539439600.29.FEE7D33
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8501418000B
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 02:21:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SU3wXYAJ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773367327;
+	s=arc-20220608; t=1773368518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UAyhRnlNpUnX5VzPdhg0Qd00rbCwrg1BNtte72JRAqE=;
-	b=AfK/lJN9GH1NDugZrMwX4li8gcK0ICd2au+QEjq3ceP+oz/7sTfpx9cjYqBiMO4Zg1qSdZ
-	b1YSDWrq8rU9/RJON01SrQi0/w/yOKRxUB4O5fous56cZAghXJRX9nTijqeB9NDj1thsnt
-	JlxgbSr8yqx8+MtbUZFhwZfCf7OF7sg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="CIaiS/sM";
-	spf=pass (imf10.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773367327; a=rsa-sha256;
+	bh=Yoj2TNP7JEQqQk/ei2IsLY3yTJ1xZV3q2Z8oxdSgkbQ=;
+	b=z7BSnyo2uwrJ+L6udmZVMI67Vb8rMZtd/I0V4Vpl18nVOQUsvCNqu+wpc8TlhkqAZH+w7X
+	jPuctJtSOL2aaEe9Ed9wlIno0p8Gaw9CRIT29RFWdSZF3koVZk1CFO0edQANkTcFpPKAEp
+	3M0kDDHTcZOqd+LV/tdFPu0rDChIdHg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773368518; a=rsa-sha256;
 	cv=none;
-	b=0msqIUXqY2qfGxDsJ1yWEYqi/m5DZFKhXvRU6Ny5A+O7i4is3O8pSfQN0Se+wdEoccli5y
-	YmbzUwORjQTxG/+lkDO7UEGxgcuRVgx5twckasLddIkg0gz9i5GPupQasL9QZEzSaWOISg
-	equrx7S3HU4LpeuebmcXA9pElhlGrSw=
+	b=WEc9Ufo14cwUTw2AgLoVaLNfQFfLMbsu8x8Gh25TzT8xKKnE1B1kbeM3z2WSCGVV6LGPP+
+	LTUnThgXNZ9c4tREhxwEGHbDoefFjI5S2/o2IKfM1T9q8a61kYiAJTeWXnEvGFHDdzjLaF
+	PbpNo74WxkIWnzUAweYzgrqiIFWUdDo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SU3wXYAJ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773367326;
+	s=mimecast20190719; t=1773368517;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UAyhRnlNpUnX5VzPdhg0Qd00rbCwrg1BNtte72JRAqE=;
-	b=CIaiS/sMurK3xS6/KBeNpXlHw69wQnJnVm1h2IWnyreuWN/Nt2lyT1VRqWerAgByVsSjZ0
-	IFxLYUFZ9PMlKf5WceOML0bF6S9bN/gShoD6Aqh+b0hpIAm7NZ6rFHMyhoUfwROai3hw7l
-	F5pqdVhjdX+MZwFUEIRUYNKNsXh4G54=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-Hs3dG3gFPzmMaH_mfqe-rw-1; Thu, 12 Mar 2026 22:02:04 -0400
-X-MC-Unique: Hs3dG3gFPzmMaH_mfqe-rw-1
-X-Mimecast-MFC-AGG-ID: Hs3dG3gFPzmMaH_mfqe-rw_1773367324
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8298150caddso1299713b3a.3
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 19:02:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773367324; x=1773972124;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UAyhRnlNpUnX5VzPdhg0Qd00rbCwrg1BNtte72JRAqE=;
-        b=nCLu9tQM1Gi0N5cuLjg2pCV0fA5NvyTMpCTB757u1DyOCDDuK1PabVitTB1rdOiIm3
-         rt0ewpGDpsPzhLbXzgi9uTEO0mly6/Eg1j+/esDduOQ9fQpFvrA/f7De1f2UMSZoJ/L6
-         7ihRkUePJP4H1uBHI0LZfJ8XR+0K7F5dmELozIUcu652GH1+pf5uGyqGbDPe7PL1raQD
-         dOfSLl4hSg5RMm5Zb6jKaUtCTwFb8fMtrH0byLpyd0JaovjAjVAExLMa6sAQB1vZeWWl
-         Tk6Or9uTvvcZslP0fVc1OjWA9mJG+7dFZaM0Zec78myCf2dnjXH/b3Iwx2H3qxw9A0qZ
-         Y+kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUddPNfRug1YgewjoUcfHpqvWkDPVDZbGq/n0/5c+D2l+XbRITh+N1r+TEQFfeqcyH/YQSgyCm5kQ==@kvack.org
-X-Gm-Message-State: AOJu0YxixBzCxmVNeODrZfLW7K6ZoUXvS29XoDXDpwoBgk4Hp81T1txB
-	wB0IarRcB44JRn6Mgr/XS7KAOS7X7tlmqbsAp6sUV4DqoXbEoRg1Eq3UjB3vQeVgaXOqr41ViKy
-	KswAEZTW+zh83MWBhCoumA8YO5um4t41RveE8EkL9BYmaxTKzYy+0
-X-Gm-Gg: ATEYQzzrmjWHkZjpJV0F0fy+OghR5Ll11yFyxAGB5HqxBBEA+SbT+7OpD9cA2Aic3NU
-	fJB9+twq1CK4EhSv1ABWHslOWxUnsHyurAfW5oAi0HCjcDHB+Ja+2Gwb8oEQ7j+drxnwZBwS1+0
-	eKfiNku269b2xws/Rx7dskd7wGbxptGQFexU20gRlnjJmSfgzRB+hw7zSR1sTA9TQ9/jNaN4OZI
-	9mp8uWyPnT6TwVblcgt6nY9SOytem4ZsubAbVtjknKQm7F0ge0v7CLiNVX6wWX8ave31q4vSuQK
-	wrMBk1P5cYAg3LMEsTWGkkvWM9xrPf3rjhxqnTekUBfAaPRVqVIebbd2ME8JJJ+m+vUpJmCqELn
-	VIbSIhqmwCxntBxxK4g==
-X-Received: by 2002:a05:6a00:a04:b0:829:809e:897d with SMTP id d2e1a72fcca58-82a1972f06bmr1306952b3a.26.1773367323681;
-        Thu, 12 Mar 2026 19:02:03 -0700 (PDT)
-X-Received: by 2002:a05:6a00:a04:b0:829:809e:897d with SMTP id d2e1a72fcca58-82a1972f06bmr1306911b3a.26.1773367322868;
-        Thu, 12 Mar 2026 19:02:02 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0725e0cdsm4299766b3a.16.2026.03.12.19.02.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 19:02:02 -0700 (PDT)
-Date: Fri, 13 Mar 2026 10:01:59 +0800
-From: Li Wang <liwang@redhat.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: mkoutny@suse.com, yosryahmed@google.com,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v2 6/7] selftests/cgroup: replace hardcoded page size
- values in test_zswap
-Message-ID: <abNwF8sZaGEda-XJ@redhat.com>
-References: <20260312040627.55257-1-liwang@redhat.com>
- <20260312040627.55257-6-liwang@redhat.com>
- <CAO9r8zNfR5Z3g=SkU9-eEeA-DDY=rp0Tcw8sXKYDpkZtJtQ0sQ@mail.gmail.com>
+	bh=Yoj2TNP7JEQqQk/ei2IsLY3yTJ1xZV3q2Z8oxdSgkbQ=;
+	b=SU3wXYAJtnkRMiRetgQ3d3ssDbMP8ORRvdTuy4M4lYjpgLw/14fOVHNeLGx7KHdX8y57OF
+	cktyZrZeDX6EISCR4i25fZk0NWGTDi5PVs07w2XRj9KwsmqUPh4DuRHosE4v+pVaDyYNkD
+	Z/UzKaRwvgg6Jjmgxh6IGqXT9T+rAxk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-Akn9SZghOTCS8SStdyP28A-1; Thu,
+ 12 Mar 2026 22:21:53 -0400
+X-MC-Unique: Akn9SZghOTCS8SStdyP28A-1
+X-Mimecast-MFC-AGG-ID: Akn9SZghOTCS8SStdyP28A_1773368511
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 739A2197750B;
+	Fri, 13 Mar 2026 02:21:50 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.171])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B0133180075B;
+	Fri, 13 Mar 2026 02:21:38 +0000 (UTC)
+Date: Fri, 13 Mar 2026 10:21:32 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, linux-mm@kvack.org,
+	ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev
+Subject: Re: [PATCH 0/4] selftests/mm: skip several tests when thp is not
+ available
+Message-ID: <abN0rOql8VXOCb_Y@gmail.com>
+References: <20260312114027.634559-1-chuhu@redhat.com>
+ <dca1580e-96fc-4ca7-bd21-abeddb3c8c44@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAO9r8zNfR5Z3g=SkU9-eEeA-DDY=rp0Tcw8sXKYDpkZtJtQ0sQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: h5JLRb3g-rpdJijzLRNfLhZjUxl4BT3MZ2hhq7aDrzM_1773367324
+In-Reply-To: <dca1580e-96fc-4ca7-bd21-abeddb3c8c44@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: Tv4nggt-sRNr9LN4cGgixtQMmjvzTlwM21W1NHZnwZM_1773368511
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mhts6pxjgkehn64816fd1p7fuzoprxcs
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8501418000B
+X-Stat-Signature: krdqumutp6km1a3j4s5hb4y35qm568ik
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73463C0004
-X-HE-Tag: 1773367327-883937
-X-HE-Meta: U2FsdGVkX1+Gm5izs6e7mDj6dHt9XPyNzIzR/8sEUlV9Juya561TeudL2ANHhrGEMUmp/33aFof8x05uDuZGBJgzzC72+gfQjAmKfPZRRm0FpXaLB4IPVkDg9MhkVGw8qa513YjHlohTiMOW2IzD5TSJq1rdeuYC5K9Sm1zsRc2RFSx1UyBoLl5HZQbnssbg5QWFEV9C/u0AcdUqB10ieCJfD1s9FdO6Q6iW3qiWKiDKPAE7aYUMFlCHQZeYpPp0za1R9UxdoL66PeY441FeKLHY+BzagTY1Wl2QNyVwg11NLAKS/A3iSbMY3CM4+UeTM7LAWhuhw7Tx9wGb7Els+lCnCPCZv3gsUdViCVCw+lpuQIjBa2597fEP+hV/F0r3GcztcvCX5a+6nqebwf9milvjUiVeD9qJZmb+MLXb0qR+mSnsh3yTw/25vsRM+wJrIU9eBPH6tuEEEiexe+oxFvX7a3xpfUafXNDJaTD5OtD7lps9/gE/EJGWWr5Mdn2rb5iljwWzdjlPBxGNAi6Im6eksVk+agLrPFVp1sm5Cr73psoBYN3rk3vG7drHvYrWiAloM6fluc9mbhyFn9FnV95Sw8turyqungwLrafCv/HRj/0PwJhKGSYnhJH0aA6svZt/sKVdl4LRQqD5yRin+p0ZeYim3N5lI5R5YDoILdQ72CMnl9lOcYnuIh1qSSxH+xratBR0PsXAW3DtqhVJPZn1SzH+hO1r2OXtYLzQskqDUAsmWOTTxvmfTEhk7ymDPve7SYTlnW1DsckwHoY26Yqj5/+c3NopKwUwE2AMaIS9RG8JtPD5A2Nk6ChcZIG3/O3I/qLPXxJvLFeey/igMQqSpCkfW9GtALF4opsc++T3mqfdxS8Ai6Yec9lqyvLtGd+20ar29lgRhwFshyPy6Y2Keu1VvBL26BHvLKIlyLTS7OH3pWVJU1RUb4l+EzI4uO71g6DSNYBI94VQOvg
- f1tO+oFx
- AKSC3NgxkHtVdq2bQUgXZRE1LCHos2m09+SmCWKXay6I9drNDYG7hfsIWKS3DFmtULlYvZOF7UFDT5ZF6qPabPD1Cmng+yZr8eytAaE5hc9I9BoNGzGzVBKbICZfYAL47x3LipTcPihHNiq0o4AT/1WCwU/a3NYqRlZWd/BbbakonC1ELUN/r4ZwfWGOdfX6GWU6HPsmKLpmhZOTNqBrbHHD8I5lj8AxJnxS7Pu74EROMBBu6o2RcVP2DDOtyg54zUvo++OhnpRwwcTEfM7kaAh/APxUYEu6Ud+3d4CTb8PwrBMM3Vb65jR5PGRUlC10liY7LxNlAgak5590fXh/PvYnLbiYD8DBQMKjB7jk8gj/m8I6NIy16XYLGmN9kZokQI5gqebJmzemCej8wCnUCbBm5XcjlT2zt85WzDyHgF/wi9au8/d2325OxNR8X6MBuxgTAH1bQgR4Dl9FPh4u5EFmkKqgHnPzN9Ce8rRDHOLEhKWFrvcRIwX0jmG99faHnnT/U7c6qub803TXEhb9Rz9gPy+UUfhZ0qC574n+UT0W+5OChHKi60JOmJ9L/acgFM0pi/sUHS5Mkk84SY2mIINbOVsZxtCviNIFjqpSkaHyhi60dK/+8z/EAkn4AlyLCt43ug4W6wQmIEheJHmresTktLfb4lzpGRckue1pw03BJKCCIJXNEfEinTUkshc8LsDpM1CTEMLu1ce4=
+X-HE-Tag: 1773368518-235216
+X-HE-Meta: U2FsdGVkX1/CCYguFmNWWsDsfYO7u5gj2X5sQRtx+cK1/4SpdO1GaIKwK4EaPfwN8ADL5bvXAd/P1mlsAx8sEaplzNWO9SGHtv1obQv9bhZW0Lu2eMsrxcG3Qg3NN/fi8sXNYeo9WQXIXtWJXRyS9ZUMg3FD8ZdP0vP29keJw/mv7xPhjGeIjf25GyykXZPOeVa9P3/e9n8mmIqRTa9okAadm1/fZHUcvBJHgKHr0zrABA2JaeDmBBTauTnDfqK7NgV0ab7PZ+8cOrRzxeKXAtxd5zKAuBRZVopGEPDi+MoBFrkAE4JfUU7rKVetsrPzQZSJMgrxU2icy6F5jghRBtDfuwPF3ppCgrPyiZFGBZZ8fMaoMbDvaOad1MHQTRerfnisdSQkvIayJQzTC+AsYR3mXnlV3HNvn3FoHKnqOPP3Oh1ce8iRhgMYPViEprb8cTlT9900qs36P4+86u13z0yGePHanXb420JvdfOAw3McgLwmTYSPfYHb1uEdcb5HkRtW8bUYxmvm3DHd4C/Qg/jWa7nZcclCxUkjG/oK0ry1QpGfqaW08a6bgt6UEgF9p/LNlMvwX7j0s9AfaL5LBtATdrWsmIe4E5XjuoxIZFl/aaKvkPCSo6RH5I+8qXdWyhuaRUbCTBlFbTghndtp+9J12wq5d1oQx+63b5xY4GMv7JSkpZtJlm1kjsaaTkwEZW2peWIIXq6mr1WhUw7D4lcPJ6B/qUYCjwNw9UZcjT3TqjMFaF+lZqNKJdT4TgBIpY3SxNDtJAYmyu/AjWBR0D7yBtl8VClMRJ4P5RP202EstfsS0CAhjAEUwx3COXqzNtrWkAY2w83Egra/HymCgIfyYn5coW6DVXOenXqYkrJrbFdtRtTB/GKcRReQ/mMfUwo8J0dwn9teaRujuk0K5D4dbYtOXJmE0brnHtQbtStdG1hHlq8WSUTJeJWGosMdtTMasmhP0b4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,39 +109,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 03:44:09PM -0700, Yosry Ahmed wrote:
-> On Wed, Mar 11, 2026 at 9:07 PM Li Wang <liwang@redhat.com> wrote:
-> >
-> > test_zswap uses hardcoded values of 4095 and 4096 throughout as page
-> > stride and page size, which are only correct on systems with a 4K page
-> > size. On architectures with larger pages (e.g., 64K on arm64 or ppc64),
-> > these constants cause memory to be touched at sub-page granularity,
-> > leading to inefficient access patterns and incorrect page count
-> > calculations, which can cause test failures.
-> >
-> > Replace all hardcoded 4095 and 4096 values with a global pagesize
-> > variable initialized from sysconf(_SC_PAGESIZE) at startup, and remove
-> > the redundant local sysconf() calls scattered across individual
-> > functions. No functional change on 4K page size systems.
-> >
-> > Signed-off-by: Li Wang <liwang@redhat.com>
-> > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: Michal Hocko <mhocko@kernel.org>
-> > Cc: Michal Koutný <mkoutny@suse.com>
-> > Cc: Muchun Song <muchun.song@linux.dev>
-> > Cc: Nhat Pham <nphamcs@gmail.com>
-> > Cc: Tejun Heo <tj@kernel.org>
-> > Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: Yosry Ahmed <yosryahmed@google.com>
+On Thu, Mar 12, 2026 at 08:39:31PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/12/26 12:40, Chunyu Hu wrote:
+> > There are several tests requires transprarent hugepages, when run on thp
+> > disabled kernel such as realtime kernel, there will be false positve.
+> > Mark those tests as skip when thp is not available.
 > 
-> It makes more sense to have this patch first, replacing all hardcoded
-> values, then patch 5 doing the necessary changes on top.
+> We expend that people that run the tests have the configs as contained in
+> 
+> 	tools/testing/selftests/mm/config
 
-Make sense.
+I didn't notice we have such as file. It's a good template for people to
+refer to. We can see in the test log when some tests are skipped:
 
--- 
-Regards,
-Li Wang
+  'skipped test(s) detected. Consider enabling relevant config options to
+   improve coverage.'
+ 
+Then this template is helpful for user to 'enable relevant config' when
+they building kernle themself. But some users just run the default product
+kernel which is a pre-compiled kernel with product config.
+
+> 
+> enabled.
+> 
+> I'm fine with teaching the tests that that is no longer required.
+> 
+> Should we then remove
+> 
+> 	CONFIG_TRANSPARENT_HUGEPAGE=y
+> 
+> from the file, or leave it in there for people building their configs to
+> know what to enable for best test coverage? (I doubt people do use it
+> for that purpose)
+
+The config template is good for people to getting better coverage. Maybe we
+leave it there, and point people to this config template in the log when some
+tests are skipped due to kernel config. And yes, user may not do this
+and they want to detect issue in there product config.
+
+  'skipped test(s) detected. Consider enabling relevant config options to
+   improve coverage. See selftests/mm/config.'
+
+I find the commit that introduced this config template. And there's a guide
+in the commit message that about how to merge the config.
+
+  '8c749ce93ee6 selftests: create test-specific kconfig fragments'
+
+> 
+> -- 
+> Cheers,
+> 
+> David
+> 
 
 
