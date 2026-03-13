@@ -4,93 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D58F106ACFE
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA0C6103E302
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:09:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A23A26B0005; Thu, 12 Mar 2026 20:08:29 -0400 (EDT)
+	id 00DCE6B0095; Thu, 12 Mar 2026 20:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D1306B0088; Thu, 12 Mar 2026 20:08:29 -0400 (EDT)
+	id F23B66B0096; Thu, 12 Mar 2026 20:09:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D3666B0089; Thu, 12 Mar 2026 20:08:29 -0400 (EDT)
+	id DFC706B0098; Thu, 12 Mar 2026 20:09:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 799816B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:08:29 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0349FB994E
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:08:28 +0000 (UTC)
-X-FDA: 84539103138.02.1FB09B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5FC9240008
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:08:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WIQQpLJJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CD9FB6B0095
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:09:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EC221A04B4
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:09:30 +0000 (UTC)
+X-FDA: 84539105700.26.FCFECC6
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 68A3C4000D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:09:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=nmFe2jtL;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="G 5Cai4k";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773360507;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773360568;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QlWPa0RzgWVG92m9Hbu+Ig8KeL5p7SSN2O0kDFTLxbk=;
-	b=08bbcV0E9RNZmt0CEsoSEHb+032dkCBzrRVqH4aMUy7iaCdgxMmBXv2HtZtu8WaDO6oHb1
-	NveYKkBFjDNH49qb87efJSvhlah7JGB9kbeGqE8GdnUOBW2pIpg2kXEbJMMqbz/txtIWxb
-	g+D2oeRZ+3RNyApJxchAV8I8B/l4gQg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773360507; a=rsa-sha256;
+	bh=KgAiLbof0iO8cGF8i0bS3fRoWLrp1RkGsUr3z87f+QY=;
+	b=nMJNidu8FYRbC1JLBJ6QeySnqPOQIYtP49tsj47bprvRul0AEa74UxSlYvH+LyoV1nzSak
+	vdwGGXW6U5l164PijEXMs4QrDX/uJAmBpmYP8bDJxe3o0EjiCnxx+POJAoPk4LA7yjHh/T
+	4BR1BV1kNT9KniLWE19Je71qXV3E9sk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773360568; a=rsa-sha256;
 	cv=none;
-	b=4tS5VviBOUN8evtDTvGPXVf5gJ5V6SGD7C15OAW2x6PgSJH6pJKEvPIYvVd8x+4lYwiVMQ
-	6fAk8GA3QETMZAzKckwq/qZU61kZlEBFkRKwq4gkTn6HCuxmJmWPd7xkM2310YQW4Fh9qY
-	xfq8unP1zh8pnKgNA+jkyIBvWutWY3o=
+	b=iTrbJW2dapQZ3F1BMbDAGLVPUNBjUVw5EU+hMz/8HmmsFmvIgIUAUMCOlmTJfoqTwlv2eU
+	YgWxOt8RNf0cjun44jCJE/hYd3sMpSny6gZz+HL3+H84eu4ujn1+qeCP3SR0W6EmXgfLM2
+	VkPdDpDrKrhEEHjkXVCvsaxdnCrJDn8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WIQQpLJJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD16561334;
-	Fri, 13 Mar 2026 00:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283E4C4CEF7;
-	Fri, 13 Mar 2026 00:08:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773360506;
-	bh=gMjwXqVB/Ml9Bor9TZ7ZxiScejZjlcWNGhUfeVmJzDc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIQQpLJJMbnXEf95oreZlQzkeII68QkGLl99vbHrevNK1hzF8jtqxajW1I3LIX4nE
-	 0ZOb3dAmfbVnweQ9NCf3ON7UdMtG47UWd/6ouqSeMNVlQ3su3UOUB0DlCfOl7AgJxM
-	 UppmzDssFYuzwXklRXbhJNmAPfppODtOtHJIiAKHNrJr53u5ite/0veE0D7ivwQyM2
-	 skUTbOPxtHiJePix9BMH3pcgJGlfQpNdl2AUpFRDAt+qZuY94ysOsiXACKMesVfq2R
-	 VUtZHhNbf00GESpeEBoF1m0EPFSA/SCzJBLRecYuxyJXAJ5vuvuh/IemICFGFmtJVx
-	 RCYzD/4EcpOxQ==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] mm/damon: Support hot application detections
-Date: Thu, 12 Mar 2026 17:08:16 -0700
-Message-ID: <20260313000816.79933-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2a6c346e-6604-407b-9d52-1cbe15486b66@huawei-partners.com>
-References: 
+	imf27.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=nmFe2jtL;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="G 5Cai4k";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 453521300F4D;
+	Thu, 12 Mar 2026 20:09:25 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 12 Mar 2026 20:09:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1773360565; x=1773367765; bh=KgAiLbof0iO8cGF8i0bS3fRoWLrp1RkGsUr
+	3z87f+QY=; b=nmFe2jtLyLr+7u8+TDKRncwnQQgfmtMxU9rW2fcZXcAX5N/O+oK
+	mkTcvLt2tGqnfh0yQZ9VxfeJXHOmQK3xmRCh0WkZO8z+9EbGkHt1EK+1v9oEDQFk
+	yjK2H4B7GbHLcXZXF6XJNsP5Q5oExxA0/3HptDHC4Yo7bGMxV66pr3UW7B9oRSB4
+	vuiTbATRXYBbLXhvd6Op9YEKWgq8ir7OPi6JV+oRhKZvn8t8u83ENmYYrl/BoZV0
+	FrCRFffyXHlTGaGOZ5VUzpnpHtLR7Cp1SV1LfUlzqP/nSXhBI3LJq0G6aafkvcXQ
+	H921q+OqQ7yY81EaudsM9yPaG6U2Be50mTg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773360565; x=
+	1773367765; bh=KgAiLbof0iO8cGF8i0bS3fRoWLrp1RkGsUr3z87f+QY=; b=G
+	5Cai4ktm8ZYp5XyzSdEJarMpSfeXDzWAL8MTxUvYBQ2hpUgY3TIWYBA9NiTzGeNa
+	5E83ul9G/GPuOexqHFwoNmE5Bf87gj016HXSgb9HA2ajcfY5cLlR/6Scnq1+bMSy
+	L/Puu8DC52gTGANh4qz45QluS+yFcFx8cBkqURrLJFH5bOAyWf/oR6Uo1r93DRwO
+	ChU+IBist6Pp1G8vs9yINCx1pw7Dl8SVJBTw/u/RobXjWABJlCOcI6SzK3FmMqVv
+	JWB6ykQWBhykIIJXXf4XNnPkhW+lXc0X5IwRHItIgUJymc4RMF52UynxsiryvgQn
+	Ohgl8jSg52zXQ1Ht0jvEQ==
+X-ME-Sender: <xms:slWzaeXV7qa1u6neLd6Q1-cVt0VMASr8cnqysAFQocSTAtEfKc0JvQ>
+    <xme:slWzaeSKlwNXuQd-ytFXXY0mVc_-Zjwa4_mmoEgCEIxrE6aOdvb3p8liU_ELdbDzk
+    UaaJ6Rv9sIirpntfCZ3ed2iOF6DIF4YVBR0WyA36tWvjzE7914>
+X-ME-Received: <xmr:slWzadcI0WZE_K5ZNf3p0KQMTKhUmZqGQsTQWME1TwSj7PSSkE9RCFBWyBYhQ55dSIow75rJ91K6-dY7EINULxs6lGnfRrWsj3AxXRa0e5UN>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeekudekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epgfeikeetueehudeigfefkeekleegheehueeifffhieefvdegueetgfekuddukeevnecu
+    ffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeehuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhirhhose
+    iivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehlihhnuhigqdigfhhs
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidquhhnihhonh
+    hfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhtrhgr
+    tggvqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdgvgihtgeesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdgvfhhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:slWzaSzNnugwYNYtiVWYHc4qaDBmXyQ51PSSBJ1uiNVJapnS6gluPA>
+    <xmx:slWzaeEAu6gvMjez-LKBYzOhXf5W2TUuXYdFq9RYM3BZ9DviPSnwQA>
+    <xmx:slWzaW4NCFWB-i4WBv0KYxfPr8CoLpfQ8pVU8lId_PRL8FTgtUuCaQ>
+    <xmx:slWzaVHk7pykGSmnnTVs6z84wbljsuc816F1d1tD0LoUWms4qvgBoQ>
+    <xmx:tVWzaRho-xmNtiFafDRGXsj1bH7ybmYtyFLigxgHrazcCccpxnyLB6O->
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Mar 2026 20:09:09 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: NeilBrown <neilb@ownmail.net>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Jeff Layton" <jlayton@kernel.org>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Carlos Maiolino" <cem@kernel.org>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Amir Goldstein" <amir73il@gmail.com>,
+ "Jan Harkes" <jaharkes@cs.cmu.edu>, "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>,
+ "Steve French" <sfrench@samba.org>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Sungjong Seo" <sj1557.seo@samsung.com>,
+ "Yuezhang Mo" <yuezhang.mo@sony.com>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Breno Leitao" <leitao@debian.org>, "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Ilya Dryomov" <idryomov@gmail.com>,
+ "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>,
+ "Tyler Hicks" <code@tyhicks.com>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Jeremy Kerr" <jk@ozlabs.org>, "Ard Biesheuvel" <ardb@kernel.org>,
+ linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-xfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ coda@cs.cmu.edu, linux-mm@kvack.org, linux-afs@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ ceph-devel@vger.kernel.org, ecryptfs@vger.kernel.org,
+ gfs2@lists.linux.dev, linux-um@lists.infradead.org,
+ linux-efi@vger.kernel.org
+Subject: Re: [PATCH RFC 00/53] lift lookup out of exclive lock for dir ops
+In-reply-to:
+ <CAHk-=wh92deXvH5iXCo9mThXCBYt-jRcVu=z4kiH-f3+wZQOHA@mail.gmail.com>
+References: <20260312214330.3885211-1-neilb@ownmail.net>,
+ <CAHk-=wh92deXvH5iXCo9mThXCBYt-jRcVu=z4kiH-f3+wZQOHA@mail.gmail.com>
+Date: Fri, 13 Mar 2026 11:09:04 +1100
+Message-id: <177336054496.5556.4842794610845842132@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5FC9240008
-X-Stat-Signature: i5qn6odr34jumtmkow6xd39ah7cosw4r
+X-Rspamd-Queue-Id: 68A3C4000D
+X-Stat-Signature: icxo4rnotqkgi6j1mm8pcg8jmpk43epn
 X-Rspam-User: 
-X-HE-Tag: 1773360507-216748
-X-HE-Meta: U2FsdGVkX18HQ2gTaAxYwRVJBAsKP2IOTRHng9sjcVEl9Crg6B+92soqDQERwF263o5ugQgw20qvSgNI7so9X0aoKmBw7EXYZ3HmC93zTM0sUKiYPshi+J33fFIH5Jgc7ONoke1ZXUpKbkNlzW40OzAedqOQtCJxTbrKiRMMtRN4LoNbzbxsWJscHzx9VltrCA06ONTYdosY3j83928fH/i/vJ9lS4bY1OnQ/GVw/A/bzrlhM6mltOjdfKWpJXu9zWy3JJA9Z1HrphgFrUYuVgsOZhEiR1KXIn3+exDme2VMyZ5ubY/9bZJVEOsbayBuFokJHTBiQxDbTicsMI8PCggo0wM+fm4wYBr+MWcI/xw9sLJTIWXn7F30gMUb8tPK5WwsG5VfmPfuqgY9X5VFXTHBpZIbnvyOEx4gX/TvbC9HFoza/v2WLdomStc6A8rbWnAUXcEIQ8IUy90yV1MxcoM7Ai7wpN5wkMyzCZlO6hUbNUIoankWcCdLEczWX5wGis3o6tKZbxanptnvKfeif8CsxVAZlYAnGihSmLdOKLNjCLjhEMW46zqOL7JhMcn5fRYSimOkbQ04sUPeEMa3l8MWsImCj4lWBGLly3tt1fKeS2ZpvG4D9+lvQfOSCXfEygRa26cEfULoiD0atXAuiB6Ch9D1718zpKY8Or42x4bSgL/X5zyccbt+7RJN2CqYXaNmgm4+4/kd6nB7Do/WEkBVZzHMsUL/9XB91zmPU5Bdu2M4KN2TvE4DU6hLx5T6TGzisGq3lvMjDarnUqAYvawAXyL7aBpvMxZW0GI4wKN3XN1/Seg5TFCjkLC00PDHlj5teNIXkRJVWkURLaDJHRIL8ubv+5vkKtcY3Y2MVLKg6EhQ+jhgUgRAdfYfBaqrQ9Qk2mE2KG4O8YoROuGjLeg3jqbbfYhnPxo/6GWyhklCDgcdZLEhx2o/J808bWTcHMlIGOi1+2gGEMlU2Iv
- BltvoInU
- 2lkkONyegLws9GhNgrNaYz3Fy3iJYfjlXfB6FCHOACQ12omtZD5nCCF/OQ4743qPEKok9eYBvz8ObwjGEf72kix52hr64GesRY1rexlY+ele/KcL5rNdJGgNOtMJB0GJDa4uvF/vZ1N1eb9W6e72Nd2O8qHDrs1MVx/+YuMRphiajgqLJg0e2oht5pfjs3O1v/MCHRWq2sFb2+k8C9QgK7Xy/M5H8TZnGSNGW2/aIdIMn+0n8dRqlqAt8riB290gRUH2POyOGKNqqNgI=
+X-HE-Tag: 1773360568-31097
+X-HE-Meta: U2FsdGVkX1+uQtoAv2tJTuK2KRgLvcu2K11dAtv0PChg237Df7F0JQTfs9+TF2G6kVnmgZqNKPJ5d9o+rSlq3MyfAb0i45R+TvJ+6k9OwqJviddmgh7nXUh0wLJGq8M7KPEjQ0X/NH9N5bnQSWmjFt9iC/sYeBwU7s4afyi6p/5AWy4mTvvymO/TIOUv3/8tZX98zc5sinK9N8H/XiN7KN2qLTKVTMJ6MtthGB/sm5bIMC20RGt21Yltb0NEW6Yrcd6jpPvor7ZLsZ/MPY7iEEFncaRwOkv7MnjzKcmZcxtiITf+N3UcplPX9LN49384dB0FRqU9HWHgVuf7m2hydwpkqWPW/iNcxwGFj/6d9yNFVqMLXCNND07LB7BRvxomBG1yIXSLPkJxmBn2FE0kK/n/QnP8ZBRV2+eaZYg0q8CCvYLhd1MvvKKnHMJGL7DvsieyY29QgdCPEET6eu5vgzkqeV3oPoY6ZETGi9dpGcTQ3QSqHy1yJuIIf3yCvRkrW0QrupFT+Adj3hJgPprdwchTPJsVLcFXuGTom9wdtkaXy6n+UbaNX7E5NNHRYNohQfO4l/J0jr8ONNNdLmwNKJUsuLbn7KdB8veGdRj1Lxw3TnpKOylr90kLJNl4TMw5Dj3SeXYc2t4glADqy9g2G2GLuIhvO0yjBojqszHY6gqG5dE+sP0+4KvPcECfUNa/9X7MH2R9HLQuYJBMxPsevDBKFjvacvqAp/+pm6rsxl7D4OM1uOBX6hHun2exO2YeqV9OK+lOfYDiNrQfncOQ6OQx3OwxWbC7c0VsFvlvytWZWf+xg2TXk6hxNtF+feIjMbmBWdy4kmOE8uHnoVrx1+jrEN01Yh4JqpmvDPTsATSydGGG1GrhhLYLPl8yh+FD/6dIn7jQ5XaESUlKjW15hQCqvWP0gGDfqjL//1dk+xIotDJvdFanBDIb9f+HfP5R+T6F/LdlN426PUyxqr2
+ wKnsz8u6
+ yx9pyEE0k5rx6k71KK23WKksVeNY7IpgqIU9haDghcAfmGVIkzT7vfUOmMeTaTENnl/XAOSkyaVfn3xwBswVRBobbPhCKvjksfMoI0jaZYdci6P+1x2I/D7dgczE3gSGt9aD/+kuf5MCGeESA02NXArD+1Ae6RGZ4BqxVzkvoz374a1ujf5dxB5QK2XuWLEX8emZOo5qmNrZZZDvAlMs8ky0fi+QRRnF2Vvqqyf9fLV68CuK86jf0ZHX5k3WRqc8GMeBEH/e532plOOTKQ1JXXMgKc+0/Bw+DiDanWkUmUZBLzufvUdxQlYRhWFsP7VJBu4nxrRT+cMYRnqZR717MTtgwX8qRnMwhf9Nm4QhK0nFzpr/x7DvY+SokL0Z4Bqpg6G3BKgKoTGlqT9zQnunSLSAj6UvI+aea2riNzBhrpWwvfCdGx/BH0atfzjKFpGwf6t8TR1ewuNaiOm8s+ifQ06XkwpwEH6cckkluu6bDmJFcho4hMZPPH7uPwsTjsQMXx1lLOVB9BFeOD4oHeYE8A5J518S1xyPUrgOibKcaWvAjVwfRxs8Ol2jfyDICXwBO5BQq6GQpMevcpLdYRnfi9yOZC18ZrqZcpijCsCpqzNfpiEFDTGoyDx5+TSmh1LjsOXZkQuq3GPnA1bB/E5HHCmbk9uCgjclZBL+72BCqEyaw0eoZI80VRxlcns5EfGrSny7GCFbv0Iwa148Kv+xJk1QBqWG+h+3Rs0zLuqEyYD0NXU4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,214 +175,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 12 Mar 2026 17:42:35 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Fri, 13 Mar 2026, Linus Torvalds wrote:
+> On Thu, 12 Mar 2026 at 14:44, NeilBrown <neilb@ownmail.net> wrote:
+> >
+> > This patch set progresses my effort to improve concurrency of
+> > directory operations and specifically to allow concurrent updates
+> > in a given directory.
+> 
+> I only got about half the patches, but the ones I did get didn't raise
+> my hackles.
+> 
+> HOWEVER.
+> 
+> This is very much a "absolutely requires ACKs from Al" series. Al?
+
+Yes, I'm looking forward to Al's thoughts
 
 > 
-> 
-> On 3/11/2026 5:39 PM, SeongJae Park wrote:
-> > On Wed, 11 Mar 2026 16:08:56 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >> Hi SeongJae,
-> >>
-> >> On 3/11/2026 8:07 AM, SeongJae Park wrote:
-> >>> Hello Asier,
-> >>>
-> >>>
-> >>> Thank you for continuing this work!
-> >>>
-> >>> On Tue, 10 Mar 2026 16:24:16 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> >>>
-> >>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>>>
-> >>>> Overview
-> >>>> ----------
-> >>>
-> >>> Let's make the legnth of the subject and the length of the underline same.
-> >>>
-> >>>>
-> >>>> This patch set introduces a new dynamic mechanism for detecting hot applications
-> >>>> and hot regions in those applications.
-> >>>
-> >>> Seems now you offload the hot applications detection to the user space.  If I'm
-> >>> not wrong, you should remove "hot applications and" on the above sentence.
-> >>
-> >> You're right. I was not sure whether changing the RFC subject was right or not.
-> >> I will change it for the next RFC version.
-> > 
-> > It's fine to change the subject.  Please feel free to do so in the next version
-> > :)
-> > 
-> >>
-> >>>>
-> >>>> Motivation
-> >>>> -----------
-> >>>>
-> >>>> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
-> >>>> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
-> >>>> fragmentation and memory waste. For this reason, most application guides and
-> >>>> system administrators suggest to disable THP.
-> >>>>
-> >>>>
-> >>>> Solution
-> >>>> -----------
-> >>>>
-> >>>> A new Linux kernel module that uses DAMON to detect hot regions and collapse
-> >>>> those regions into huge pages. The user supplies a set of PIDs using a module
-> >>>> parameter,
-> >>>
-> >>> This sounds reasonable to me.
-> >>>
-> >>>> and then, the module launches a new kdamond thread to monitor each
-> >>>> of the tasks.
-> >>>>
-> >>>> In each kdamond, we start with a high min_access value. Our goal is to find the
-> >>>> "maximum" min_access value at which point the DAMON action is applied. In each
-> >>>> cycle, if no action is applied, we lower the min_access.
-> >>>
-> >>> So, this patch series introduces a sort of auto-tuning of the hugepages
-> >>> collapse hotness threshold, that implemented in the new module.
-> >>>
-> >>> We already have a sort of DAMOS auto-tuning feature, namely goal-based DAMOS
-> >>> quota auto-tuning [1].  Have you considered using that?  Of course, it might
-> >>> not be able to be used as is.  Some extensions, e.g., introduction of new goal
-> >>> metric, may be needed.
-> >>>
-> >>> Yet another approach would be implementing the auto-tuning in the user-space.
-> >>> Because DAMON parameters can be updated online, updating the min_access from
-> >>> the user space should be doable?  Given the fact the module anyway require
-> >>> user-space control for feeding the list of applications to apply access-aware
-> >>> huge pages collapsing, I find no problem at user space driven auto-tuning.
-> >>>
-> >>> If the goal-based DAMOS quota auto-tuning or the user-space based auto-tuning
-> >>> are feasible, all the controls can be done using DAMON sysfs interface.
-> >>> Introduction of the new kernel module might not really be needed in the case.
-> >>>
-> >>> We have DAMON modules in addition to DAMON sysfs interface for users who want
-> >>> to use DAMON for a given specific use case with only minimum or near-zero
-> >>> user-space control.  In this case, because it is already aimed to ask the
-> >>> user-space to feed the list of applications to apply DAMOS-based hugepages
-> >>> collapsing, it seems a new module is not really needed, to me.
-> >>>
-> >>> But I guess your use case might have some special restrictions that really
-> >>> require use of the module instead of offloading the auto-tuning to the
-> >>> user-space or DAMON core.  Is that the case?  If so, can you share more details
-> >>> about it?
-> >>
-> >> I haven't figured out how I can use goal autotune to change the min_access.
-> > 
-> > Indeed, it is not a very straightforward feature.
-> > 
-> >> Your suggestion about moving this to the user space sound good.
-> > 
-> > If it works for you, maybe that is best for you :)
-> > 
-> >>
-> >> The idea was to stop lowering the min_access as soon as collapses occur,
-> >> since we don't want to lower so much that we start collapsing regions that
-> >> are not very hot.
-> >>
-> >> Maybe you can suggest a better way to do it. Maybe with autotuning.
-> > 
-> > I will add more detailed suggestion soon, by tomorrow or a day after.
-> > 
-> >>
-> >>>
-> >>>>
-> >>>> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
-> >>>> collapse synchronously and avoid polluting khugepaged and other parts of the MM
-> >>>> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
-> >>>> which needs the correct vm_flags_t set.
-> >>>
-> >>> This makes sense to me.  I expect DAMOS_COLLAPSE to have some advantages over
-> >>> DAMOS_HUGEPAGE for some use cases, similar to MADV_COLLAPSE vs MADV_HUGEPAGE.
-> >>>
-> >>> From my perspective, this patch series is introducing three things.
-> >>> 1) hugepage collapsing hotness threshold auto-tuning, 2) the module for running
-> >>> the auto-tuning, and 3) DAMOS_COLLAPSE.  To me, it is unclear if the first two
-> >>> changes are really needed.  I will wait your answer.
-> Yes, I tried to introduce those 3 things. The problem is that I initially found
-> goal autotuning quite confusing, so I kind of implemented something that behaves
-> like autotuning, but doesn't use DAMON's core algorithm. 
+> Also, because I only got about half the patches, and there's 53 of
+> them total, I'd really like to see a git branch for something like
+> this. It makes it easier to review for me, and I suspect it makes it
+> easier for some of the test robots too.
 
-Sorry for the confusing autotuning.  I will try to make it better documented
-and simplified.
+github.com/neilbrown/linux.git branch pdirops
 
-> > 
-> >>>
-> >>> Meanwhile, the third change seems reasonable and not necessarily need to be
-> >>> blocked for the other two changes.  I think separating the third change from
-> >>> this patch series and upstreaming it first could also be a path forward.
-> >>> Because the change is simple and sound, convincing me would be easy.  I'd be
-> >>> convinced if at least some reasonable test results can be shown.  I'm not
-> >>> saying we should drop the other two changes.  We can keep discussing those in
-> >>> parallel.  Rather, upstreaming the third change first could help finding real
-> >>> benefits of the other two changes, since the testing will be easier.  The
-> >>> decision is up to Asier, of course.  I'm just sharing my two cents.
-> > 
-> > I'm also curious what you think about this.
-> 
-> Sure, we can upstream the third change. I will prepare a new patch for with just
-> that diff.
-
-Thank you!
-
-> 
-> > 
-> > Thanks,
-> > SJ
-> > 
-> > [...]
-> > 
-> 
-> The use case that I had in mind is pretty simple. Few admins use huge pages in
-> production, since it leads to memory fragmentation and waste. On the other hand,
-> amount of memory increases faster than entries in the TLB, which means more
-> TLB misses and more cycles waste. My goal is to balance this. Improve performance
-> in applications while keeping the amount of memory waste due to fragmentation to
-> a minimum.
-> 
-> Imagine a database server. The sysadmin would like to collapse only hot regions
-> of the database task, improving CPU utilization but without wasting too much
-> memory.
-
-This makes perfect sense to me, thank you for clarifying.
-
-Nonetheless, I think there could be devils in the details.  For example,
-
-1) How we find the application to collapse hot memory for?
-2) What should be the hotness threshold for the collapsing?
-3) Should the collapse be done asynchronously like MADV_HUGEPAGE, or
-   synchronously, like MADV_COLLAPSE?
-
-And I understand now we are aligned with below answers.
-
-1) User-space may know and existing DAMON sysfs interface supports that.
-2) Users-space may know and existing DAMON sysfs interface supports that.
-3) Should be synchronous, but DAMON doesn't support that; DAMOS_COLLAPSE need
-   to be upstreamed.
-
-As I mentioned above, I think this makes sense.  Looking forward to your
-DAMOS_COLLAPSE patch!
-
-> 
-> 
-> Today I sat down and review the damon code. Given all your feedback, I think
-> this I didn't use the right approach or I didn't understand you initially.
-> My suggestions:
-> 
-> 1. Implement a new goal type for autotuning that uses huge pages.
-> 2. Implement a module that uses this new goal type.
-> 
-> Would this make sense to you?
-
-Yes that sounds like a nice step-by-step approach.  We might need to discuss
-more about the details for each step, but I think this is the good direction to
-go: merge obviously beneficial part first and discuss more/revisit next thing
-one by one.
-
+But if you have only time for one patch, 52/53 is the one to look at.
 
 Thanks,
-SJ
+NeilBrown
 
-[...]
+> 
+> But again - this needs Al to look at it. Iirc he had some fundamental
+> concern with the last version - hopefully now fixed, but ...
+> 
+>                  Linus
+> 
+> 
+
 
