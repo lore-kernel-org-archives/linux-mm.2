@@ -4,141 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17F8D105F7AF
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:39:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37EF0105F7AF
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:42:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C8F26B0088; Fri, 13 Mar 2026 10:39:35 -0400 (EDT)
+	id 7077A6B0089; Fri, 13 Mar 2026 10:42:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 376236B0089; Fri, 13 Mar 2026 10:39:35 -0400 (EDT)
+	id 68A936B008A; Fri, 13 Mar 2026 10:42:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 257E86B008A; Fri, 13 Mar 2026 10:39:35 -0400 (EDT)
+	id 561D06B008C; Fri, 13 Mar 2026 10:42:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1272A6B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:39:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A507E1A01E4
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:39:34 +0000 (UTC)
-X-FDA: 84541298268.17.CFAF455
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9BBD214000F
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:39:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=WJPVNx3K;
-	spf=pass (imf09.hostedemail.com: domain of r@hev.cc designates 209.85.128.178 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773412772;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4228D6B0089
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:42:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC7F9C08D5
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:42:28 +0000 (UTC)
+X-FDA: 84541305576.13.0BDEDCF
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E551E14000E
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:42:26 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=WeIfD1of;
+	spf=pass (imf26.hostedemail.com: domain of r@hev.cc designates 209.85.214.169 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773412947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJJ6qRXJASQg0fWEF1LqLZ2QXuC8vC3iSXfNlIz0VPs=;
-	b=oE/G2TOciVqrYDkPvbm/2SL5KztRGNthF8BIOMNX/PijfVG8IFR1iGeA0A5FwW94Hsnu4c
-	NlA9691kQgcnR1/Tg+3AnoTr6lK2HYwKsUsOKLNUhtrbtMsqzMR5CQaX9ydlAYcc+Dll9K
-	x6aIQhzs4ewwQCALUIpYPZH8wyRRxX4=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=WJPVNx3K;
-	spf=pass (imf09.hostedemail.com: domain of r@hev.cc designates 209.85.128.178 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773412772; a=rsa-sha256;
-	cv=pass;
-	b=UqCRJLY1pFp9rRhd8zGnXGbCa2VBUMuKjvdKhX6/H3eyjj2IODkZibGbo3B8/6kgUw8JFI
-	bMgNMrW2NMQ+Sl23MpGu3bdrJ59SQ/7PWSmrxAfD7XXfY1cTDpZs4DPwCkQDizG9Vuu43y
-	AG7mGCbJyxcQK2jJhig1ECFAAWXGWoc=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7986e538decso19564997b3.1
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:39:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773412771; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JJwI7pM0uDpBOzGfEVisk1PcxElZakFKMsYXtd7nk+LcIonZWZiqTXSE3yMK3EVFfY
-         ZPlXzgkyRmVZ8A7sMa4aoS8rc3aVoyDSABwaJ9TyISParPJIHO4mmkb8yeIAN4iYYeo4
-         HNh//+1I/uQhS/ll+mUrO9X4Ko2Ur0xXWcm/IOxJEH3kUah1OSr9F0uLskgHVcEeI9Aq
-         5PuOEV4YxrEi0vkvdMQbE7ggDU2y8l+KRIPHDZDbjAS/xwp9luWpKowr8gFsY2BvS0BN
-         qjblx6UbDxZj10Bvem8DxAkrXR0ZjZAvPd5iBKmWBNGtkV+Onm2FlDrV6N/T0UMvjIGh
-         UJiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sJJ6qRXJASQg0fWEF1LqLZ2QXuC8vC3iSXfNlIz0VPs=;
-        fh=3VsZzTYFknK4t3chFVCGUEgJ1NqlebFobIhcIVHTyrA=;
-        b=UgTKWhWyjOhehRy/2Lz1P5/yT6Eg32x0SvLvW/ybodDwFP4zMq0ApADSVJuj9qbp8U
-         8I9IkTHqPANNrbsjfcJUDRp9iCCWrD3snPji+ES+cxt3rldMFujSwcWqPXQt0EyzkbIc
-         X2QkUpta3+2eDtNG2zcErPebbMgY4Ia6mpaRS4px18fVyQeD0oaDl/yFkE0f0D33oz4q
-         LRt++5U6BNikk5zHtRLtfLwzVubv+YjW1HwrpHrVlPHTlayD+Y0ZJZkbu1PoIvHVbQuT
-         adxrfFRK+vOskpu/UW11+YjxQdW2IhJ5xmKlqL9uEZajI8luxmQzfsKz5QiefvooYLX/
-         7OPA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=D6Y/n2o5yEo+tuZB5cloL22Tzkf84YmlhIt4ugqI5/U=;
+	b=jgowRmvtaKU3Tq3jooC0Pm4bhx919Luvwbp5UvXln1YP3aqVEdmY6GqmfHqpMKTUZ+3Lq0
+	f1UCsIis2fY1e7JU8Mv9RX8WvCp5S0F/goMHqyZfvYn0qycChKCR2/Lzum0RwHgNlUwzej
+	javFz7mFQidPhNSqBnD+YlnqVlT1FiQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773412947; a=rsa-sha256;
+	cv=none;
+	b=f9HHQi0rVZIcsDmwBqQ+/HbUpjrpbZ0/sLEoE9zl7gPxUT3+JJsScbbiozlTdjkiETccpT
+	A85uIns3W6ds9jnMwYQA5RH1P5DDyqLQUKF25820TZT8Httkkg/zxHGyFk9IzbU9uqvcV3
+	wWV6kKOccbqaJB/yuWq9gfSZK8kuK5U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=WeIfD1of;
+	spf=pass (imf26.hostedemail.com: domain of r@hev.cc designates 209.85.214.169 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae4d919f9bso14655665ad.0
+        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:42:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773412771; x=1774017571; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773412945; x=1774017745; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sJJ6qRXJASQg0fWEF1LqLZ2QXuC8vC3iSXfNlIz0VPs=;
-        b=WJPVNx3KZ2SUVtRyHdQB+lcJHLk078UQEdgJuYvd87g48nCDXlNcsM1ri5tEUXf1f8
-         mI3VOgihBrn1XEmITFv3wrF52aT+c3jRNgcnJ315GU6tbdBjRU+2QET2Y+Cf/zScT/lQ
-         UK3C8xuSG8l5IlOFk++dw1bZIAp8OX2fiN2fwfCmBX1024j8jVs7zxQ97u+ehQB+oXJo
-         ZYXkS67yP8hwkhRICk32vCkP0QN2zcF+YqzRxhIhErwWp6XaTWRrDVsfDzLYREpRp6wn
-         yMUViH+GfPK++xr2LV1vR9/r6/c7LeyO+9hnVv46lbLSS9VsE1oL7QrzL2s/1LHvZzjs
-         njwg==
+        bh=D6Y/n2o5yEo+tuZB5cloL22Tzkf84YmlhIt4ugqI5/U=;
+        b=WeIfD1ofaraoEGuaGdroxi7noZ1pPAvwx0jwTtrDgW+/La78khf1a2KmJlc+zpgNwl
+         OfmfBBb4xJPMzcPhllWtFFHwJVQ1RSNOx3CU/lF69XDarwUz25w18pnGS5u8syPpdBiB
+         c2sX+mnzJQUXVx2CxixX6n6e8Pb/5FLfsn/2AUg6xqxSkOztXpK2J6psc46hHq7+91WD
+         65nMc33PqzGNqqywc76Z1bCSM1dlQtzORjkF95Owd8DRUpwY7dvFTEEh+6IckrD8v3XL
+         eMkkb2ps3TjKjSYYxlbSje9Ztvk95zYTCRcYySQk6bdcXe1SzrkPrnBXhfbDLQXN9fIe
+         1e6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773412771; x=1774017571;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1773412945; x=1774017745;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sJJ6qRXJASQg0fWEF1LqLZ2QXuC8vC3iSXfNlIz0VPs=;
-        b=WfkHYy08QQQKjAPNVjWrqg7xucu8H8RmXR2ocq3ocKSgO483h1KPIDEdrJIOPC4L85
-         pduuZZ8Wozu/gSyE1oTbj+pATy15Ex1R+/JlYDmfda+JkFNfTOnEgW5pVuZAYPGtAt/X
-         MLCeCcFjLNrIyFlfcoCMXtrvj3mTu5DC7sHebxvu6JcN4T5w0lcpgSGotWLGR3IYNXdM
-         SW6+kNK7sDTBBCgFqu2Ojvc6L/Iyykn4uceEG3M4qXtxYuwnIRDlyF1GdqFg1DFtelpF
-         FC29KllcyU/sYKIj8hqxyLj9QVHUJLVC1AvE4/QGVEpCu4snYN8kCOzoKzxZ/xjfA1lQ
-         dmMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4/F4DL/RHCZ2eYO44w3UA8mlHXA5m82SVj/ssJvz0AxBZX3vM/5c7SVKPJjk2w1Wkz302TFkoXg==@kvack.org
-X-Gm-Message-State: AOJu0YxPlf3KUzjbuKkC7XRAakFME3VV7smEF12EuwPL4clDOEheynnY
-	b8tKwc+ubkYdA+YTRpNkgYgWEJ0CqnxN3al64iUfTOjl9NIpOhEqPL4qUetuxedgEV7tj+aY4m1
-	rj7+KhSwwTX4mn/R1YaLtRzoBvhJ7VyWWcxAjVb9Mtg==
-X-Gm-Gg: ATEYQzxu3sysuW+rHzhsKkTBeWF2D+A1TqHbRXyKfL36OQI3cODfxWFCZ+E+i6z+pYC
-	x8qjBpaPcCtKh3i4YJtXLxWZDHZ8oNf0G9JLm40yFTcoqRcUekGwdsPp1T0iZ8fvoGg00K38HZ5
-	iFT4ckT7ExphZmR39Y9AUnHEXwX5bZ8/3dktWdYE/SxwxMQgjDWMarZGvnpH3wbHiZz8jhJpPl5
-	y/pKFYXI3LqEMnK461UkxSXf57Wu2EvpeAuJjuEoa/XY4mYwf7rI910Srcy49/JMnZgPmdJzdKr
-	EUrQezRa5QFgWtZ+eASCm2bxSujwKql30sHupH9I0Q==
-X-Received: by 2002:a05:690c:306:b0:78f:9801:7606 with SMTP id
- 00721157ae682-79a1c186f23mr38827757b3.34.1773412771512; Fri, 13 Mar 2026
- 07:39:31 -0700 (PDT)
+        bh=D6Y/n2o5yEo+tuZB5cloL22Tzkf84YmlhIt4ugqI5/U=;
+        b=R6FnBzXSwypeOckoNifOmevjbWx7/u0FXPZ9S6NjFgUFt3auVRtAEXvBrj0LIPTuBp
+         /Tjdrqz+S98ovq8oOC+X0V6HKfyAaoedeyhJyg5fanUUTV7xq2IgiEFl7eb9cLJZ216b
+         NlfyfjXjdhdzNgvjFb01XcsBEwYPb6SaZWrRfpfofxDqvsGI1vIZHFrsBsL8Ctmavv4c
+         RC3SPGmEYbX5a8QOzp0rocLDrSptXYKbX32H2lThAxd79yiiEmeAFvUmNlmKf4Y1WsSX
+         BTpfIj3ERuvCten2hc/UxjMhL6PuTzYc6hR3k4Enisqce3C7G42H8pMoAZDvdpglspwU
+         cGhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPj7j0OXa4tE9f9B6Azew9qW1X0/1k8XjQpUsQGur5kZp6pJff/Arm1Yl+SJl7mAQqRjrswBz4HA==@kvack.org
+X-Gm-Message-State: AOJu0Yw5leVQuVaG734ToOnvvr3s+f7TPs99hcd5skAaX7rua1MmntSo
+	Weahyym8OVxjLAGWIZfHIYBzU0TtnVcmuX2l9Zk86GHi1N56YVGe5kxAn+RaJrcrR7g=
+X-Gm-Gg: ATEYQzwynHj+sxYyE2BPwSqMYDYtOsa7wyrWl+r7SB2TuCqJSL5TCkDxHFJEJ3kzuiw
+	P3nzoGce6DKYatdyCUvIvTHXn2mzswgm1muRr++4U0I//qFEOYGjWKLjPSQLpusJcswJAxv8ULS
+	YioN9/Eei95o/P4pxlX7Oq/e1oCRITDN2kS18HS/THE4m+aD5ObMERuhppJcL4n7WBhpfTg4xQv
+	og5NQ8JWo2+Zvt3Ggw0eOn3w4QOA3nHyiqXsnq7+WaewDS19yZnZE7vbjHaGN26OQ3WGVIGok8c
+	HtFnLB4u6tfxGqgtEvT5PIIGIjxZgOifMZsvUoV86z6d1mKOtSbGBHz+DKYiIyKUKY3w9MG0fZs
+	DgKDUn9QtAL1akBCqyi8Q4ZEyT1GimSS5t9QsymDZ3M0ITA5yrDygrX0RlAeYUZJ7nfznJQsfXE
+	5z45/hflH+V6E=
+X-Received: by 2002:a17:902:cf12:b0:2a0:c1ed:d0d9 with SMTP id d9443c01a7336-2aecab32ec3mr35478735ad.46.1773412945451;
+        Fri, 13 Mar 2026 07:42:25 -0700 (PDT)
+Received: from gpc ([2400:8902:e002:de08:5754:7dac:85df:935a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece7ed9cdsm25651935ad.60.2026.03.13.07.42.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 07:42:24 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: usama.arif@linux.dev
+Cc: Liam.Howlett@oracle.com,
+	ajd@linux.ibm.com,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	brauner@kernel.org,
+	catalin.marinas@arm.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	hannes@cmpxchg.org,
+	jack@suse.cz,
+	kas@kernel.org,
+	kees@kernel.org,
+	kernel-team@meta.com,
+	kevin.brodsky@arm.com,
+	lance.yang@linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	rmclure@linux.ibm.com,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	viro@zeniv.linux.org.uk,
+	will@kernel.org,
+	willy@infradead.org,
+	ziy@nvidia.com,
+	WANG Rui <r@hev.cc>
+Subject: [PATCH 3/4] elf: align ET_DYN base to exec folio order for contpte mapping
+Date: Fri, 13 Mar 2026 22:42:13 +0800
+Message-ID: <20260313144213.95686-1-r@hev.cc>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260310145406.3073394-4-usama.arif@linux.dev>
+References: <20260310145406.3073394-4-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20260310031138.509730-1-r@hev.cc> <349671d5-f5aa-48a2-9bba-00aef167b836@linux.alibaba.com>
-In-Reply-To: <349671d5-f5aa-48a2-9bba-00aef167b836@linux.alibaba.com>
-From: hev <r@hev.cc>
-Date: Fri, 13 Mar 2026 22:39:19 +0800
-X-Gm-Features: AaiRm52VWGkrpgV6kr1pOmEvbPempDQO61pMP0KiWiSuLBaXj1WE2q1TEU_x85I
-Message-ID: <CAHirt9g_PfEM+PzVrpsZwch44_6oeGQ4_abvYMAtjM3eNg5CHQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] binfmt_elf: Align eligible read-only PT_LOAD
- segments to PMD_SIZE for THP
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Barry Song <baohua@kernel.org>, Christian Brauner <brauner@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, usama.arif@linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E551E14000E
+X-Stat-Signature: z3d67984ti4sfak5wnw9wxgmjkg97qjp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9BBD214000F
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ytb5chf6kdqhwtyiuz998jx8t81hbfbw
-X-HE-Tag: 1773412772-259726
-X-HE-Meta: U2FsdGVkX1/D7T42EYE194UUt+uuGxEVU/hE+XWtz5yEu+q8YpwpDHzgVZ6NWmUrs68EmkYJq8X/xjSt9mJ3+6WVt4M4bn1H49N/Xt9FFmsM0VXZKuRmcqoSPboGGmUqJveO5GWb/FC903bHLNi+cheUAgaS70n9EHpzNoPQ9OsL+qdMu4pcUVleI4X4z4kyJ1M7OqiDHuJYNwynls/HMpKBQ63w05QN/Y/km2JSFP+r4PRmP8VgHaN6BfFSDmu6xTxLx65P+Sv7fnmmHaXMWgItuqI17YnfYN0qPdqshXWr2XxdBMDfWcTJijXKKvRUgsngL4Uke/Oc8C/zlY8wCOPxEHyWcraGMPYcWIHegWSUVJex+zaxo/nzhf6rCYS2Y2fEDNem0W9oj5t0Zws6OWgoZpkb+MSFH5PkHHpW2zmFCdfFC8Tu15YoC8I4zjFRvStMQ6W8EyNmbQax0UMeqAKYP16mHqnqRCggT20W0uMnNHftCKkUwppzjDDb+NGfNpK/4UyBkDQhWsN594s7fqnpDB2FAnB66UAx03wHY+ztgcxBp3phJQ0ggZ+XvAnUiVwlT1Za/kAdY62GXJq0pQy7pac327rAEUUxNShCpbFrwcmZknX952iZlsXEJBTUzCcjQLrY0YTDe+OnMEtVoEtd19kpcMyiAQv3NXUvx/zN/83oCDJBSFK456DHL1ph7DKZcWUwQaYoBZHVpNee8x67pzCW0fJElm+cTH0nIpfB6NnIYyGOCwY4EejMnCcTG9J8Z8C3+Q2w99vrzIfdqatmkj0H9oIagLkkkr02I3COG0qbkQcG1hPk2K2+zafuH3pi/mr1NeYn/zQa7PyCCljF/Lc99+3Gn5ij7ETixcHkXFqV3lZ0UqPJqkaRR/r9aV3vPanLL4bEOVyOeEmmsccFIcgR/qzwtdfvedccKZzb7QdD7NZ9D8C37340FMn/2KyuH0DAcs8eARxcgK2
- ayqfqKoK
- eBoO2bvr5A/JWTbpSgwaExXnnbcRbxBRrIzdDRK0HmSswf5cyOxI1uLU3dBI6mz+iLS4QWno0GcvC0f4nnkgjPTwq+2f8s6Y4DN4l8FBKa6Lt7IEVAJSqYHunDK2XAliKmjzJSQlewTxL8DiSOvYLMZ9MNf0IckyzkkNgE2D3Fgr9LkHysw/qBPoXRpIbXzDdE+OHZaxYVdl3/VTkaOumKlftDB8QP8SDtuLajD32LEkfi6yz/J3GXDI0pU5Hi+ZiSpm0NiBEq8VjnKp/32H538OQa5RpVc02MIni65N+x/TNrFFm02PiXTyR9DpH8zQMibLEG84L8at19YSbI+vbV9t2OQtDmRvCKMUyViX/81Lw6vdIO9+xfG0BeQasWSuwj0oOHBKWIVylQzo/9i6IK3a1Mfj/dDY46klyIREcXsWqrFVHG6sLc2d4OA9WsZND5eO+L4GwiG+LAkhg/iT00AvFyunIzCF038ieYZ2Y1XktYlI=
+X-HE-Tag: 1773412946-616105
+X-HE-Meta: U2FsdGVkX19l1kTIF9AUp+ZMsJbQUaG1l6/JyqHZracC2RTbpK/r3qqmrbchNwjSm2uKu1phFGxVO4HCkZs7mo13MYd7++BVz5hKaj0H94bIA00Px/F1JozOcdOjCjGooX24iGotvPoGXiZ06Yb/UlJu2gayaESlsYtSx5tc8WUeElsMU2e+C7ei+JzNWvi9nyOffRhl+TqWeg5WDxvxq59NlDEntlWEaYFsVHSyAjHZJ8w3YjvDYVxIy32W1J0pX/nMrNowVU+TwA8dvxXTqcOdAu33gwaCAbQ2UpBhX8Ah5sgfHRn3u/OHu85i6hVJPtYGOS9+guWvtzc1o1amKrBmlN7EAlC9KTixY+UyA6voFHqWo+3iLv35fpD83vf4IV4qpas7jM+vQTPdIjqOYlJlqXm+biiaUzel+nEcyZvZ0x9J0VmKvdS6t6KXAMm8LJ7LMuDSfhWQBdSYMK6go+8Zw2XIXMIeoBh/a2c/7xM4iEk0CMhoJ5U5WLuFNI3BxiboP0qQf3Fg3X+woakEmHeuiWc5z58qhugj9vvXRW/HKhqan82hyS5Cs5RTBrdHqrgGG6zhofC8ZACEuS44ndetve31jqLmeDT3jZOyNVfnplL7dX4k8pTk3xPIJHAvxe03I0BXbJTp1x0Sd7vjBleGC+Wo/gCl7agJhSbsBGrixpC6jxjOuPQVjn4h+B4wm9jbIAy5EiKGEJ3jpafbdiT7hZkYWLVd5rqgpyZEwikJyaRX66th4411xOnFqy8i7jjKURlLB6djpWGft9VRY0kCFDK9EtyGiThaVivOo/72zP6htRoPOsEhYo+xmX7fY1NHaue6wKdLCWxN/tHYW8XUjAnJ3GX48t5kUPYwYTUNu5aSt/xOaSS9CsAcVpdT+yKZ/3iXxbrTQHuKrwhNydiJvsujOXkYQ8aRUQFxZQlvzpIfS9nkD2RAf7htKBDgGRP6r6mvPwCGLClxs7Z
+ yMtpoF4O
+ FQtF1RwJ61jyZDCUGP+efWJi9R0qI2ufvv6T/geTuSbZ8kucZxL1WwOS03mbl9jgNOe9UKfCiZpFwCssqcBlqCtwrqb2cO4xtPFTcH6GsxEY/TLULQNWDM6bnGc3l7KC6eH+aMzYC2KG5GEzl/nnQ7AWEv9WmhK2Il24H8ouFNV2VTN3ZhAnsLHGAdKuWsKIZ8zLKAqJzm3wq3dqMDWpVgCfkGqDaTPf/ArqcstLlZTNGgELIwfiRg/GFFnHvk5hLjnwxIh5cJPlYoK5f3WY2KRSF7eqCEKbT9ymaQ9l2RX7SmjoFAy48qHy5WaX5p32zhnZaxhbIWLTPUpnfnyHYi0c2H6xWJCkZa5feisS9ua/Dfa4B9PfS/I6Ex7O6E3X7LRsIS1Dz1ada9fLpcFmq73YN5m753J96zaDEBkfX1pz5VP3MbgDmz3BDg67gMq43ZYsYhu+xBabm7Hz8bRZPRFFlAaGzLmgIngC1ZvNUY3EIEMSvKdMf/dSK3e9W855pz06csejAxsCq01O2rnDwOKqqClN2VU32nWWXawYhXC9MYbsBc0Rhg1VSrByYV+x3WAUUnKQy1vwBhlN22SQJ9eF5hMnogEw3zDzforWoY3J1bunbaE/VPWqFsraS2pRYdMEZ06Pg3/HmWhgjHdMi7g2YTgcYoJbbTvdmaHMG7X2GgJw1sGVPVCCEOY+TNrI/3TMHbfUPMDKXvL75c9J6X0j7zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +149,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 4:41=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
-> CC Usama
->
-> Usama posted a similar patchset[1], and I think using exec_folio_order()
-> for exec-segment alignment is reasonable. In your case, you can override
-> exec_folio_order() to return a PMD=E2=80=91sized order.
->
-> [1]
-> https://lore.kernel.org/all/20260310145406.3073394-1-usama.arif@linux.dev=
-/
+Hi Usama,
 
-Thanks for the pointer!
+Glad to see you're pushing on this, I'm also following it. I first noticed this when rustc's perf regressed after a binutils upgrade. I'm trying to make ld.so to aware THP and adjust PT_LOAD alignment to increase the chances of shared libraries being mapped by THP [1]. As you're probably seen, I'm doing something similar in the kernel to improve it for executables [2].
 
-Cheers,
+> +			if (exec_folio_order())
+> +				alignment = max(alignment,
+> +					(unsigned long)PAGE_SIZE << exec_folio_order());
+
+I’m curious, does it make sense to add some constraints here, like only increasing p_align when the segment length, virtual address, and file offset are all huge-aligned, as I did in my patch? This has come up several times in the glibc review, where increasing alignment was noted to reduce ASLR entropy.
+
+[1] https://sourceware.org/pipermail/libc-alpha/2026-March/175776.html
+[2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.cc
+
+Thanks,
 Rui
 
