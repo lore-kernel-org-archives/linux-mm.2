@@ -4,101 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64334107BCD0
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 18:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41EE8107BCDF
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 19:22:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FD606B0088; Fri, 13 Mar 2026 14:29:15 -0400 (EDT)
+	id F216D6B0088; Fri, 13 Mar 2026 15:22:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AAB66B0089; Fri, 13 Mar 2026 14:29:15 -0400 (EDT)
+	id ECF326B0089; Fri, 13 Mar 2026 15:22:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ACB46B008A; Fri, 13 Mar 2026 14:29:15 -0400 (EDT)
+	id D86F16B008A; Fri, 13 Mar 2026 15:22:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7774E6B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:29:15 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DDB51B738D
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 18:29:15 +0000 (UTC)
-X-FDA: 84541877070.06.FDA80F4
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9D109140009
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 18:29:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="gOjsee/7";
-	spf=pass (imf26.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C64446B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:22:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61C691C10F
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:22:29 +0000 (UTC)
+X-FDA: 84542011218.13.9519B6A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E39EC1C0004
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:22:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cwr9QvSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K+U59XI2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cwr9QvSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K+U59XI2;
+	spf=pass (imf21.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=dsterba@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773426553;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773429747;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pv/nqWXHkfj7NbNE0aFGYmPjuMP96PKFI4ITkk92xic=;
-	b=q3s5hgUcKZgO9UHMYzlktPyCGLunCTctlIMkzRSqmpy11DNysl1tdrxnu4dU9Hr2IBbXUg
-	/8387qWZje4o7Zxho8LQVJ9i6pfx7oLJJOCyMhKeWAwCC6GrvJvz9utHrYYi5HMSlNhhYd
-	eWe/5plBfWEKJG3pr0AYT2prgj62wlI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773426553; a=rsa-sha256;
+	bh=lEZDbFbdaiqtR0DORmYiMySif6us6CTI89GNtF8koIU=;
+	b=8KLMhBwfSbbX57tVqWZHI9I7/mKEs1xjp4UDLO6Gm3nk2Fi5kc5xabD/zSOxPUnrWe6wj2
+	h4DfDhOBPWXD6dKaaJWfw/uL0ZKSPGLbAliVw8oWa3SA7h6Ixb7lyhwtZDJpfUZe9QzGcG
+	6GmKzDdFWs/+xEBFlcS/x2bAkh44Of4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773429747; a=rsa-sha256;
 	cv=none;
-	b=nV4a1aTJUWO/bsz+IxMw348aKc1mO0nLOs1LRGgzgDR33kvjySr3T5Gpk539WHCgbOmgTR
-	VZIpndsbHoVccthyOzyFd/lYqeqpEKX51bLtChss0J6hr0fRvlr72MEmBFTDFcGRCrNbEm
-	az2a2SFISKR3lCuXUlR9ErPhrOuOpsQ=
+	b=oy78UOJjAJCCdntNVUcunoxfrUxpgqxtA83RY1v7qlJW5W+81r/1Ke84yWB8aLk4Y7Zdo9
+	kSBhvS+7g38O3R6s8Vh+y1fFqksOGHvHiLnQWIW37WigtgRFPR+04+wXl4jUdPbAKNfpiM
+	WJ0gaAQtZro2QaR8Yw94REHYUJzN6Ek=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="gOjsee/7";
-	spf=pass (imf26.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <cdc56556-2f69-46b7-8a7c-0f144a36004c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773426547;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cwr9QvSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K+U59XI2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cwr9QvSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K+U59XI2;
+	spf=pass (imf21.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=dsterba@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B208C4D943;
+	Fri, 13 Mar 2026 19:22:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773429744;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Pv/nqWXHkfj7NbNE0aFGYmPjuMP96PKFI4ITkk92xic=;
-	b=gOjsee/7ePXLg2aXVQRCN98jWrWOJGc7S6Od5X5MCK2XmZiOGkbnjW7aiGdNYAKZEniFby
-	yIlBZdhFvB+0R6tKrR+2QHRw41SgEFGPECC6cQR00lVPRhhcghOc3/uCGAMO4OCyycW0lq
-	ZTmH8SsM0A6v+7eY3IHoq5fzhd3ix7E=
-Date: Fri, 13 Mar 2026 11:28:52 -0700
+	bh=lEZDbFbdaiqtR0DORmYiMySif6us6CTI89GNtF8koIU=;
+	b=cwr9QvSbf3addifFtJFaEE3S5jwqDpZlb749Rs1kTiqHHQe0wIw+TMnTma/8mfA3QiWv+t
+	IZuKpLsIb+k3xwyZAXuL8F5GTiyGUJh1olDjZfpDExV1+UvdVwgZIIojOm6APRysjO8/lt
+	9WDXlxlJVmMpUXoO3id4LXjiv7t5UI0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773429744;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lEZDbFbdaiqtR0DORmYiMySif6us6CTI89GNtF8koIU=;
+	b=K+U59XI2u6gqS+yANGWtG/Pii/V0SpIQQ7wMg6BtOp5KKFcWyvgFtoDkwX90d0NOWdybeR
+	Ua+tdtixGZm/opAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773429744;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lEZDbFbdaiqtR0DORmYiMySif6us6CTI89GNtF8koIU=;
+	b=cwr9QvSbf3addifFtJFaEE3S5jwqDpZlb749Rs1kTiqHHQe0wIw+TMnTma/8mfA3QiWv+t
+	IZuKpLsIb+k3xwyZAXuL8F5GTiyGUJh1olDjZfpDExV1+UvdVwgZIIojOm6APRysjO8/lt
+	9WDXlxlJVmMpUXoO3id4LXjiv7t5UI0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773429744;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lEZDbFbdaiqtR0DORmYiMySif6us6CTI89GNtF8koIU=;
+	b=K+U59XI2u6gqS+yANGWtG/Pii/V0SpIQQ7wMg6BtOp5KKFcWyvgFtoDkwX90d0NOWdybeR
+	Ua+tdtixGZm/opAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6F14A406AC;
+	Fri, 13 Mar 2026 19:22:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6cTyGvBjtGnfZAAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Fri, 13 Mar 2026 19:22:24 +0000
+Date: Fri, 13 Mar 2026 20:22:15 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH 02/61] btrfs: Prefer IS_ERR_OR_NULL over manual NULL check
+Message-ID: <20260313192215.GH5735@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-2-bd63b656022d@avm.de>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@suse.com,
- apopple@nvidia.com, axelrasmussen@google.com, byungchul@sk.com,
- cgroups@vger.kernel.org, david@kernel.org, eperezma@redhat.com,
- gourry@gourry.net, jasowang@redhat.com, hannes@cmpxchg.org,
- joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org,
- muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
- virtualization@lists.linux.dev, weixugc@google.com,
- xuanzhuo@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
- kernel-team@meta.com
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
- <3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
- <343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
- <874imkpba1.fsf@DESKTOP-5N7EMDA>
- <cd3d7e2c-79fa-4c00-89ad-83beddf98bae@linux.dev>
- <60f71f4c-71d9-4751-8c6b-10179b98bef0@kernel.org>
- <87zf4cnkip.fsf@DESKTOP-5N7EMDA>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <87zf4cnkip.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: m98bybypi9mxnxt1zfqsi9wm6d71r67q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310-b4-is_err_or_null-v1-2-bd63b656022d@avm.de>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9D109140009
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773426552-343710
-X-HE-Meta: U2FsdGVkX18Sl6o+ZUfyifORkJm/gnmq248Kz+1IBBkulPNV1WszKcz7yEUAktVS2t+hFoZtsS9W/mKIO5liM64y0xHkQH/4Ynu4EXBFdgTtEhk8ZOZAUhSTQOF1CJq+ZE2rXuEpBUastTow84v9wMNvRMRcE18Ku64mdGRSQt3LYBPZjx83dOmM6WlYY9vASKyMaylGGgp6xY2Q7xexXpnawTkpYVfuuh6puQG7+LnYrdriBKyLyKNZNxhbjdFGUS/3P9amYxYIEwEezNNWg5U4h1tRkgyqGEMmOcH9BSpJcafQjP59bmN4hjUolvouSUYRf9hKhlsFx8VG2n77uusR0CedrF6xwXzc+YHOyIoHEnkme6KaId5Hj6OMuNohSCqbQxEbM5mtBaqCmstqCUvs6uFIzTOy82ejb/gWQrfx7ZFSOL3/sWpavR0VuZ2kl2Rt1EWNO8WPfDOOxX0VsjuaygIHdjPwnOmDt0C8LTliURdL4Nw/NQv0vHSPmlHDx3TSiXat0m5s5JEim/i+4b8oR2pmJuFtqfrdo3DB6kbFMQOsWiYlpvhrEbceKQuoxH+bKbEgBxSByl73uhDdTWiZ7WKfqqtwNcxeZt3D7+TY8uc8WgufQLQViry4xl9ZcL0e1tStN9BpLZeGM3jtiN72lVTXANC6d0oAZMR20sMhQZ1HN5J1Wun2Kdhb8x1AWqJe2ya4GEnC+CoVjdPJ3PgBL9rmvj2Ho2u5Y5KidOO8Xms7ygP9+IGZEZrHvfJShMXGA+i+s0e7AC75Z4fK1BJBuWDK34iyJokmH04GCGV3+xZTgh4XydObeb+/3Qxv42X4rzfYMmp63H1lpK/NRPSr4r4FCqajoiTiC35M7/UZi8t0tGh5ELq3a4YdCMjY2VHOcC2vhcYlcMH4aXFufYbBqh1dijerE8mAmzgWrxJmxf86KtoIkWdHhFrtCfrjV77YNan6/FzhxZaUKK6
- HiBQUylq
- VgJvhOuTIfKq9LMqrYjcyvpbJeroH8Xjpbbu0RGck7Eta+jP3CM+ZhogZzyrmvKOekxn5p5q/vh03i9ldZ3D37hnpcswnjOc6fBMLiPGZd/+SU/naCQtRymCnwnqnpGZHbIJsuHbYclgdw/dQXbdvN4rWmj58zltgOZQtx7iRBypxCscNU39tV4tKQPphYNuvqyB3I4p1ChedA1CzXcQvuunq1kSSmQipQSY5nowupB9akb0bFGUFTsOJLcDTYZYGoziZM9G+iJGcSGU=
+X-Stat-Signature: tihku9qdbygagog161rii4pt79utp7tx
+X-Rspamd-Queue-Id: E39EC1C0004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773429746-761248
+X-HE-Meta: U2FsdGVkX18e6FFSfoL0iFlxJF0W8XSgZz0QynGMZw1YDztzrtaSEx+wilSIfqWblvluSKVUnF305uunVfpQ3jh3doYHLBMboQ2/DbV5wvoZ9mlxtNQDIXgDTYHrW9qQ48lpFEW28lK1l5T6pgSdLU1aeerSr6monItNh06Ih/Pxn2Yvjv3HgYBlvdiEdK3W6tTtHjpO5kMe1xFpYRwlFAocsfoz2eWq+WtdldJUD9ZLsKTtN6tP6sa2JXrj13jpTQZJmIt3D8mx0L3978RueZWlf0txBpF7x6hRMefq+h/RWm5WkFk5Zv+ep23XrYK8P6z2rpVhXALd3uyKI2EuzxKuf4RSJGwJf6/D9dOMtO3B6waIpzmX+Pm2TM7t+hAp/ebxT3qilQEEpz8IwwqvqEgn6LAPnAjG7Q3nTYNWWWw/NeNF0glXXByj8hCccPYQooKgkjT+Wd/iB+npSAf9fI+n65iN6e8/G4G6PWvePLEzSNTfShSAXR1lvzWBMZjJ5/FLVvQZu2x5LgWRp8bW4gD1A1qkps/skPZKjRzDhw+PnSD0UCZmNUnQSDCYs+g06yMjQVG2PKv2Jr9zLPd8WNKw76u3oZi9009gTFpcEgarkchaR6m9fEp9wwntKblwpbX5Fi5pRzMaR9p83473liGpEJ/8wBiq2wtFZh8xM3Xp/Jt/rDPYHmVNPMWLcWGaXmTfK59FomUP74B11GOL6IFTJs44hqpzicZ/Suunj24FCqoy4aG+irQ/vo4YOnbTS0JpQnc+AfySPnofiDCLMBwqbzxypOX4f8Ag1EXrmHhkG19mXXwjhiMGTsl2KstYNy5dYdlhfu5QiT6I3MS/HYuBQlxMj9MdNtv0E83zeecO3JAKLFGHaLTxnMFjYIeZ5BMru8Rq7dieMk4LPhoau2LP6BI8wq25Cnw4iOaKb57KkuyyoAKKaQ6fOcR13BKaBX4wAuf6j8luZP/dlO5
+ s9daMeBQ
+ +hi9OJs9bTzGiRE8+Y9iQmU/pno+w2ygqiuy0F4GErBaDiMFyxqSUFT7a3B18A7e3GmHw/L1QralfGf+triL9lcSChbKVVjlG76Og8RieKd4t7j3u2O2sqMaKXPJLJJD75wIixxP0vak1WklTRn5sdXqwEDqKDZae486f/9o/l3PqUJ6sHKRL6ODeqOaforjb1imXMlLZhsDzBk6AtEUOFEUMyRB05dEJUN6vwmbmbPhGWdzTzrqCb7Bi8XbSZiOapHG8t1MnXVrYyjFSa4kpCwu+auv4ryWsmohB8BKSGFQw07mLZICgNVHJkS/ZaFNCJqySq7eOSVnPS6XhPZk8YZoxia34UMRuxgjJhAiA2jnZUJW4t3qGIz4OBdK/CNcwZjMw3r4Bpyt/lcVCGByR9XpLOeSb012hx0lmXQM69sagQmoYhtGiFMmWxpKFH/mEZoB4c0T3R2nEw3iD+9hqpPDahf76dPnsu+SofYC5aGDmJLhZwio3n0tp/NdJtRSdvJ3y8PQpnNCI8f+HDXw3adZr1RL0mOjTNsZk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,47 +160,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/13/26 2:31 AM, Huang, Ying wrote:
-> "Vlastimil Babka (SUSE)" <vbabka@kernel.org> writes:
+On Tue, Mar 10, 2026 at 12:48:28PM +0100, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 > 
->> On 3/13/26 07:14, JP Kobryn (Meta) wrote:
->>> On 3/12/26 10:07 PM, Huang, Ying wrote:
->>>> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
->>>>
->>>>> On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
->>>>>
->>>>> How about I change from per-policy hit/miss/foreign triplets to a single
->>>>> aggregated policy triplet (i.e. just 3 new counters which account for
->>>>> all policies)? They would follow the same hit/miss/foreign semantics
->>>>> already proposed (visible in quoted text above). This would still
->>>>> provide the otherwise missing signal of whether policy-driven
->>>>> allocations to a node are intentional or fallback.
->>>>>
->>>>> Note that I am also planning on moving the stats off of the memcg so the
->>>>> 3 new counters will be global per-node in response to similar feedback.
->>>>
->>>> Emm, what's the difference between these newly added counters and the
->>>> existing numa_hit/miss/foreign counters?
->>>
->>> The existing counters don't account for node masks in the policies that
->>> make use of them. An allocation can land on a node in the mask and still
->>> be considered a miss because it wasn't the preferred node.
->>
->> That sounds like we could just a new counter e.g. numa_hit_preferred and
->> adjust definitions accordingly? Or some other variant that fills the gap?
+> IS_ERR_OR_NULL() already uses likely(!ptr) internally. checkpatch does
+> not like nesting it:
+> > WARNING: nested (un)?likely() calls, IS_ERR_OR_NULL already uses
+> > unlikely() internally
+> Remove the explicit use of likely().
 > 
-> Or can we adjust the semantics of numa_hit/miss/foreign to consider the
-> preferred nodemask instead of the preferred node?  Is there some
-> programs to depends on the current behavior?
+> Change generated with coccinelle.
+> 
+> To: Chris Mason <clm@fb.com>
+> To: David Sterba <dsterba@suse.com>
+> Cc: linux-btrfs@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 
-Good question. I think it comes down to whether the existing semantics
-are correct with respect to policies that make use of node masks. I gave
-some thoughts on this in the previous reply to Vlastimil. That
-correctness may be outside of the scope of this patch, but I can give
-that a try afterward. I'd like to send a revision that reduces the new
-counters to just 3 and moves them off of the memcg (as previously
-mentioned in thread).
-
-I know numastat is one consumer of the existing stats. It seems up to
-the user on the interpretation of the data. Not sure about others.
+Added to for-next, we seem to be using IS_ERR_OR_NULL() already in a
+few other places so this is makes sense for consistency. Thanks.
 
