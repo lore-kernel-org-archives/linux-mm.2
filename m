@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7404107BCDF
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 19:48:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC140107BCE1
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 20:00:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E84EC6B0088; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
+	id 047B76B0088; Fri, 13 Mar 2026 16:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E32696B0089; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
+	id 01F136B0089; Fri, 13 Mar 2026 16:00:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3E456B008A; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
+	id E8DBD6B008A; Fri, 13 Mar 2026 16:00:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C35036B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:48:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C8EF13A511
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:48:00 +0000 (UTC)
-X-FDA: 84542075520.06.BB98330
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4FE59A000D
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:47:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gQGLqbED;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D70E86B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:00:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87C20B8075
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 20:00:35 +0000 (UTC)
+X-FDA: 84542107230.05.F8014FB
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 668301C000F
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 20:00:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="e3/c7J6h";
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773431278;
+	s=arc-20220608; t=1773432033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SPdzeDgO7p2Ex3q8WAh+g8zvKcfA3PAYlObdmzAMKhU=;
-	b=SzDcLNX343Qvv+brGXk5681SsHfrtC2R7A8IzkbkcFwQDzxkjNP3NrZLeo/5F3fVVfb/EE
-	oi0/ZNuNeD50n1BeFepyG3TXCwy54D57BNgkswQnuAnxGZFp8e37zdXMAZJXd3neeRaueN
-	mcBZ/oYI0V9pD3FN2ulyVQKuANVHOAU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gQGLqbED;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773431278; a=rsa-sha256;
+	bh=vRy1bTsWxgYuT9IzvXF5NQuq2q1/padaUo2S0VPuqPg=;
+	b=aqszmN41zkhwK5NfpM/Y2kh6hIHqgrxr8Jsf65vvfD1WrPn3edtIJ5dfy/ZByagnlL6EMv
+	vDrmN4UB2cFc9AIiJAAu682h/iD8+ZWdfKhHm8Y/BVd27Bb5I5rQosbOD4SF1FMmIVRMVa
+	8p5nRUzXjh9aUsMrKoiwXlX3zA0g4Wo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773432033; a=rsa-sha256;
 	cv=none;
-	b=F760DL4ZZaXcnwyb6rAj/sCNKCRwHSZUA4OPfVgOxMXTWJ95avxcPFHSkMWb39u2nBJLeF
-	Y+clAaVClKEmgUF7Jl3qU5BGNtRXj3vJInHWP+VRYzQqHjpe4wLKYpfgt0rQVPDpZr2fTA
-	UtKX7SxuWn4oOt9EIEmZy1CKPyggCnM=
-Message-ID: <d3f60289-3ea1-43ce-9271-58c8b79bf7a0@linux.dev>
+	b=fx0KZo7MgDwTmfkfaqXqwdDBqZMzuLFNqo8Ik7hWokvnctOwMcn3a21bkBpIjaS99+r19q
+	0igERLsz7j4Kw9l86CuR240jNe5Kmjb9lXlHfJ3+e2G9zYokAt7SgPiiFhspS1CKV8+q3/
+	yYQKZ/9asZeaPh13qMTb1ytWNvnVMmw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="e3/c7J6h";
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <9e9edebb-3953-4bcd-80e2-614dcec5b402@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773431275;
+	t=1773432031;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SPdzeDgO7p2Ex3q8WAh+g8zvKcfA3PAYlObdmzAMKhU=;
-	b=gQGLqbEDWJ7Lau535C9J/+AdIU5R9AQT9hlrQ/P5sl5PpuB6Ny6SsRf5h17NM8uO1B+GGK
-	tKWI8OZvAwF9tGrhepb9MZFTYi216KhN5QFZDJ4eWxrTq8RaNRAJeDBFEVTwTqZooR3cQn
-	5DU8VkkJGblgc2j5LiBsX1aoo2H2YdA=
-Date: Fri, 13 Mar 2026 22:47:36 +0300
+	bh=vRy1bTsWxgYuT9IzvXF5NQuq2q1/padaUo2S0VPuqPg=;
+	b=e3/c7J6h12fpMjAwPXRqh7OjYjGE2vPUmgkjGoKxNS4UKfOJUl3hrgcYFDRyFsUzvMEEXV
+	kLqNjOu+GqAf/rnV3BxmlikATJhMS343hb3OBXxV64yrYwLF0OgkbhQtxP3x0e1ibeufYk
+	1sWgTTBXoZ1yxivKjNwvgq3BZ3FRu6Y=
+Date: Fri, 13 Mar 2026 22:59:59 +0300
 MIME-Version: 1.0
-Subject: Re: [PATCH 3/4] elf: align ET_DYN base to exec folio order for
- contpte mapping
+Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K
+ pages
 Content-Language: en-GB
-To: WANG Rui <r@hev.cc>
-Cc: Liam.Howlett@oracle.com, ajd@linux.ibm.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
- david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org, jack@suse.cz,
- kas@kernel.org, kees@kernel.org, kernel-team@meta.com,
- kevin.brodsky@arm.com, lance.yang@linux.dev,
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, ryan.roberts@arm.com
+Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ catalin.marinas@arm.com, dev.jain@arm.com, jack@suse.cz, kees@kernel.org,
+ kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
  linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
- ryan.roberts@arm.com, shakeel.butt@linux.dev, viro@zeniv.linux.org.uk,
- will@kernel.org, willy@infradead.org, ziy@nvidia.com
-References: <20260310145406.3073394-4-usama.arif@linux.dev>
- <20260313144213.95686-1-r@hev.cc>
+ Al Viro <viro@zeniv.linux.org.uk>, will@kernel.org, willy@infradead.org,
+ ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ kernel-team@meta.com
+References: <20260310145406.3073394-1-usama.arif@linux.dev>
+ <608c87ce-10d9-4012-b6e9-298d5a356801@kernel.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260313144213.95686-1-r@hev.cc>
+In-Reply-To: <608c87ce-10d9-4012-b6e9-298d5a356801@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4FE59A000D
-X-Stat-Signature: pdm9eph1gddw7fmbnxdm4m5eqk3s14ii
 X-Rspam-User: 
-X-HE-Tag: 1773431278-52404
-X-HE-Meta: U2FsdGVkX1/bJpuAxTVr1tEwX0M6aX8rfQ+FPNa407lOLlJCbAtpwodPNs+hQGaw2KaI0lj8g0MyWrM/miYQe2OxSUuUixR5uaC4ebcNn1BEOQaBOObpVYYsAb8yBUKn2qK3zpmkK1FLAfYdVJNwHFD2YpSxrtD05zkNsmWeH7+bGA1gCAgCfvB+sF79kgxTKl+l2qgUWbBoQuvMOsuID8rjjtlG39YILWi1wDWjlrwTNIDGQwDY+GIJOTaiNeq9E5+pnUEhg+Fvb4kVsCn/v6133ymy5Gvnzp/7O13c6Cn4DYKewTE4radYi20+RrmoxPcWjLS7rrLLBPTpuiEsJF3nZflysu6DEmx56IaVQW25AxmPzypap0fv5TAQL8MO/kiYYhw1Jy5CbhQyRyBgWHqO3+oHcaXqEevrAg4xtPKq41wvFrRWPkxgG4T8cbYbcBDe6p9dibTrs0G2HS9ZUdapWZx2pVmmox/66yoHZWZ9KumHCGFW0PB2qU3c4S4afkh9g03f9DTGdPZ0Bz+ym+KE1j92cjLE84ZQj7LFNL5T72DcQb3UH3WNMVFy8C3twsaM/UGF0UEhJHjv4FdNhrtI0LS4HNjpesLqYdV3jDXWde21jRalEwRnfPU0q9+nsaYJfods2B1xKURkLayteRoYasNNs4d+Zevwoih0Pju962fZrXtJ2IRElk0wmYymqfIqJqk9o2lX8wAXOzonNsW5VMDD0mNxiitIam4S8YE7i82iMj+eheeHtMeu+A5AnN49yuyrR8UE40otYhr9IJAh4qXnblejL+dSBTIvw9Bs1g3j0GSMLKVEWk9z0SPm0cuYl1X3IxPJkWAO0B8J+3Y2joB/5crFkqxjbC6gzRM9lFfcVD+vQiP3WnlXS/WOBT+reN60Kil7YGKonUoIWRhJ8uZuXud428RAxcsjuaI0hvgCFH1IQWYEuvueybz6qAI0WbamBiaABEfUpR9
- RnrlL3Q6
- 2k0kaEaDhasW7yHQRYeDDK2AH3LLnUTg5DXgyDr3JyHCL4zHgr7GnNomkGW8SCtYu7oj8poUG57S947vKRmjwlj/XX6rJYB035S7UEbzoYt9YYmJKtKKQhNzDI0WEgTsR+VAmrJoa1sxLpL52rGrt2FO3GTpczNuINp34Lp+iHEd8JJjnKwMyZJIFqGqXE5izE2OgGXVQTfN6vdvKy9FxdeY1n8GonDUOxBad1+hhgtSxsdioczqSWxh0iP3xrmSaxPDvuXLFzOcOJIYHElUzpbvU0aF7M621OdPyOy8HCDPT8DRaQtpk8Fhyx7c783mdwjlVptpmiZZ7SAyCNBxTRe0EZQKGSU6C3HdB779cSQjK7nl1kbs3qg32Wup5xtyU+1Dp
+X-Stat-Signature: h1yrbjtjr8n1ksnejg9rq95chx6pr41x
+X-Rspamd-Queue-Id: 668301C000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773432033-981460
+X-HE-Meta: U2FsdGVkX19ZEZJ5tVWmrv5aT3pnjYb070ZOglm86Q+oYt2spAQtz/Ej9SSM/Oj0m/QJtaAlItKN18RymRvxg8WpEaQaPqv7QaJOx8BJOBLMx1YJigC0PjV+cRQoDrRv7ugQju0MajB0IgHV73hWoH/fXcI8WsSrrCgOiOCP6tdAx3CbSB4YUqSnMzvdXBQTvEdzZbFWs9FPRRNYs3U48K8mBdK4eZ9v4jtfghUBcEfQuGEPQwci31H/HFU4sjY53SdFRGipdhpfKVGa1tlp4LklaVef0NP1gzSVEwCWz76tWr1UlGxS8e+QbrGqr5QD+vP/Qf+MTjHQZvqSLUBt2L5/Zqf3fAf2qg/B11VH+xhw622RQQbkQZD4Xj97hOMnvequJvfoiJ/VTauBzqqG/eWNXmUzo6T78r8eWkoJ/+4+lCNt1pdBTpVAD1zjEGZuZRYWndlz8RG7/V5moxhkBXvFabBYVCGs5VkeqP1IG66EcIZzXMarz47eygcxhDV/S6YxjEm7dtCh9xGV9U6++RaA/oWTOI+mk2wEKfr48yYDfI6k+idhb2zwCx6UKBUGiqZikwYUhATOxswqrh7WDo0QFArMsj8Z5Wsuuz0B4abusZExRM1l+gTzXd9A0/VBc26LqQ6h0jnvXBIiSQfU/Pbee3pDBFys91LXplnhb9VTsU26hFW5eyIdcHDmfKBzSPEpFqMZ5wQTfO8MeO0itRhRFGnGd9C2axvXxPmHElX5W0Cg2upSt/NQUDo2YmXQh3I/YOCp+TvtshdwoGbuHABdOVTnjx/ftFYasjRXqqG7tCmTk8OWvxRHhh9hYODLnI+V6ws9cvYvZXaK/gK57DJpNIhwMjEedpnxpn1jqU0H7/3/whW4t5ZghxeEESJcbyJYIRRRgbDTqRuSeYm1dyNk4HcwdLjAU6bqowO1ZJ+jnLUrPcTDDjBdXSLjJVL12pjtxDAEvaAkf1pcI4a
+ eHR3sotB
+ qOY5XAVzOFRTWfRgeuiNALCASiTKZqOl0tjMJHXw6jQdgxSjKsVG3sN70zbEsh0C31mRr9PasI2zFS6zlmB/u4DfdfuqYAK9TalNic+ks+WYGGIhiZG2OUMv+M0GYVa5swQ1m5NhUyIZbtshSFwVsMDNzLn2LYrqz+6zy10j28zmfp7foNDwrHIMbnHjQ/FffRPUnSD9AA3GcKdAObyABBSORGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,79 +102,113 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 13/03/2026 17:42, WANG Rui wrote:
-> Hi Usama,
+On 13/03/2026 16:20, David Hildenbrand (Arm) wrote:
+> On 3/10/26 15:51, Usama Arif wrote:
+>> On arm64, the contpte hardware feature coalesces multiple contiguous PTEs
+>> into a single iTLB entry, reducing iTLB pressure for large executable
+>> mappings.
+>>
+>> exec_folio_order() was introduced [1] to request readahead at an
+>> arch-preferred folio order for executable memory, enabling contpte
+>> mapping on the fault path.
+>>
+>> However, several things prevent this from working optimally on 16K and
+>> 64K page configurations:
+>>
+>> 1. exec_folio_order() returns ilog2(SZ_64K >> PAGE_SHIFT), which only
+>>    produces the optimal contpte order for 4K pages. For 16K pages it
+>>    returns order 2 (64K) instead of order 7 (2M), and for 64K pages it
+>>    returns order 0 (64K) instead of order 5 (2M). Patch 1 fixes this by
+>>    using ilog2(CONT_PTES) which evaluates to the optimal order for all
+>>    page sizes.
+>>
+>> 2. Even with the optimal order, the mmap_miss heuristic in
+>>    do_sync_mmap_readahead() silently disables exec readahead after 100
+>>    page faults. The mmap_miss counter tracks whether readahead is useful
+>>    for mmap'd file access:
+>>
+>>    - Incremented by 1 in do_sync_mmap_readahead() on every page cache
+>>      miss (page needed IO).
+>>
+>>    - Decremented by N in filemap_map_pages() for N pages successfully
+>>      mapped via fault-around (pages found in cache without faulting,
+>>      evidence that readahead was useful). Only non-workingset pages
+>>      count and recently evicted and re-read pages don't count as hits.
+>>
+>>    - Decremented by 1 in do_async_mmap_readahead() when a PG_readahead
+>>      marker page is found (indicates sequential consumption of readahead
+>>      pages).
+>>
+>>    When mmap_miss exceeds MMAP_LOTSAMISS (100), all readahead is
+>>    disabled. On 64K pages, both decrement paths are inactive:
+>>
+>>    - filemap_map_pages() is never called because fault_around_pages
+>>      (65536 >> PAGE_SHIFT = 1) disables should_fault_around(), which
+>>      requires fault_around_pages > 1. With only 1 page in the
+>>      fault-around window, there is nothing "around" to map.
+>>
+>>    - do_async_mmap_readahead() never fires for exec mappings because
+>>      exec readahead sets async_size = 0, so no PG_readahead markers
+>>      are placed.
+>>
+>>    With no decrements, mmap_miss monotonically increases past
+>>    MMAP_LOTSAMISS after 100 faults, disabling exec readahead
+>>    for the remainder of the mapping.
+>>    Patch 2 fixes this by moving the VM_EXEC readahead block
+>>    above the mmap_miss check, since exec readahead is targeted (one
+>>    folio at the fault location, async_size=0) not speculative prefetch.
+>>
+>> 3. Even with correct folio order and readahead, contpte mapping requires
+>>    the virtual address to be aligned to CONT_PTE_SIZE (2M on 64K pages).
+>>    The readahead path aligns file offsets and the buddy allocator aligns
+>>    physical memory, but the virtual address depends on the VMA start.
+>>    For PIE binaries, ASLR randomizes the load address at PAGE_SIZE (64K)
+>>    granularity, giving only a 1/32 chance of 2M alignment. When
+>>    misaligned, contpte_set_ptes() never sets the contiguous PTE bit for
+>>    any folio in the VMA, resulting in zero iTLB coalescing benefit.
+>>
+>>    Patch 3 fixes this for the main binary by bumping the ELF loader's
+>>    alignment to PAGE_SIZE << exec_folio_order() for ET_DYN binaries.
+>>
+>>    Patch 4 fixes this for shared libraries by adding a contpte-size
+>>    alignment fallback in thp_get_unmapped_area_vmflags(). The existing
+>>    PMD_SIZE alignment (512M on 64K pages) is too large for typical shared
+>>    libraries, so this smaller fallback (2M) succeeds where PMD fails.
+>>
+>> I created a benchmark that mmaps a large executable file and calls
+>> RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
+>> fault + readahead cost. "Random" first faults in all pages with a
+>> sequential sweep (not measured), then measures time for calling random
+>> offsets, isolating iTLB miss cost for scattered execution.
+>>
+>> The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
+>> 512MB executable file on ext4, averaged over 3 runs:
+>>
+>>   Phase      | Baseline     | Patched      | Improvement
+>>   -----------|--------------|--------------|------------------
+>>   Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
+>>   Random     | 76.0 ms      | 58.3 ms      | 23% faster
+> 
+> I'm curious: is a single order really what we want?
+> 
+> I'd instead assume that we might want to make decisions based on the
+> mapping size.
+> 
+> Assume you have a 128M mapping, wouldn't we want to use a different
+> alignment than, say, for a 1M mapping, a 128K mapping or a 8k mapping?
 > 
 
-Hello!
+So I see 2 benefits from this. Page fault and iTLB coverage. IMHO page
+faults are not that big of a deal? If the text section is hot, it wont
+get flushed after faulting in. So the real benefit comes from improved
+iTLB coverage.
 
-> Glad to see you're pushing on this, I'm also following it. I first noticed this when rustc's perf regressed after a binutils upgrade. I'm trying to make ld.so to aware THP and adjust PT_LOAD alignment to increase the chances of shared libraries being mapped by THP [1]. As you're probably seen, I'm doing something similar in the kernel to improve it for executables [2].
+For a 128M mapping, 2M alignment gives 64 contpte entries. Aligning
+to something larger (say 128M) wouldn't give any additional TLB
+coalescing, each 2M-aligned region independently qualifies for contpte.
 
-For us it came about because we use 64K page size on ARM, and none of the
-text sections were getting hugified (because PMD size is 512M). I went with
-exec_folio_order() = cont-pte size (2M) for 16K and 64K as we can get both page
-fault benefit (which might not be that important) and iTLB coverage (due to
-cont-pte).
-x86 already faults in at 2M (HPAGE_PMD_ORDER) due to force_thp_readahead path in
-do_sync_mmap_readahead() so the memory pressure introduced in ARM won't be worse
-than what already exists in x86.
-
-> 
->> +			if (exec_folio_order())
->> +				alignment = max(alignment,
->> +					(unsigned long)PAGE_SIZE << exec_folio_order());
-> 
-> I’m curious, does it make sense to add some constraints here, like only increasing p_align when the segment length, virtual address, and file offset are all huge-aligned, as I did in my patch? This has come up several times in the glibc review, where increasing alignment was noted to reduce ASLR entropy.
-> 
-
-Yes I think this makes sense!
-
-Although maybe we should check all segments with PT_LOAD. So maybe something
-like below over this series?
-
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 2d2b3e9fd474f..a0e83b541a7d8 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1116,10 +1116,30 @@ static int load_elf_binary(struct linux_binprm *bprm)
-                         * the hardware cannot coalesce PTEs (e.g. arm64
-                         * contpte) even though the physical memory and
-                         * file offset are correctly aligned.
-+                        *
-+                        * Only increase alignment when at least one
-+                        * PT_LOAD segment is large enough to contain a
-+                        * full folio and has its file offset and virtual
-+                        * address folio-aligned. This avoids reducing
-+                        * ASLR entropy for small binaries that cannot
-+                        * benefit from contpte mapping.
-                         */
--                       if (exec_folio_order())
--                               alignment = max(alignment,
--                                       (unsigned long)PAGE_SIZE << exec_folio_order());
-+                       if (exec_folio_order()) {
-+                               unsigned long folio_sz = PAGE_SIZE << exec_folio_order();
-+
-+                               for (i = 0; i < elf_ex->e_phnum; i++) {
-+                                       if (elf_phdata[i].p_type != PT_LOAD)
-+                                               continue;
-+                                       if (elf_phdata[i].p_filesz < folio_sz)
-+                                               continue;
-+                                       if (!IS_ALIGNED(elf_phdata[i].p_vaddr, folio_sz))
-+                                               continue;
-+                                       if (!IS_ALIGNED(elf_phdata[i].p_offset, folio_sz))
-+                                               continue;
-+                                       alignment = max(alignment, folio_sz);
-+                                       break;
-+                               }
-+                       }
- 
-                        /**
-                         * DOC: PIE handling
-
-> [1] https://sourceware.org/pipermail/libc-alpha/2026-March/175776.html
-> [2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.cc
-> 
-> Thanks,
-> Rui
-
+Mappings smaller than 2M can't benefit from contpte regardless of
+alignment, so falling back to PAGE_SIZE would be the optimal behaviour.
+Adding intermediate sizes (e.g. 512K, 128K) wouldn't map to any
+hardware boundary and adds complexity without TLB benefit?
 
