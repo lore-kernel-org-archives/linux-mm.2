@@ -4,125 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0841F103E305
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8198B105F7B5
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 15:36:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44E826B008A; Fri, 13 Mar 2026 11:34:39 -0400 (EDT)
+	id E28EA6B008A; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42F766B008C; Fri, 13 Mar 2026 11:34:39 -0400 (EDT)
+	id DE0306B008C; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 332106B0092; Fri, 13 Mar 2026 11:34:39 -0400 (EDT)
+	id D16CA6B0092; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 210156B008A
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:34:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8E7C1601E8
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:34:38 +0000 (UTC)
-X-FDA: 84541437036.08.22E2DEB
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F112410001B
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:34:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="e9wDM/7Y";
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C09DF6B008A
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 11:36:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68FAC1601F9
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:36:05 +0000 (UTC)
+X-FDA: 84541440690.03.DF3879C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B6F63C0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 15:36:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k/xzZO5t";
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773416077;
+	s=arc-20220608; t=1773416163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qxJi/zSl5l+Hb0RVk/iR14eLBTshpKrTciXowhZG1gg=;
-	b=5cMdf1IUrsEjgmf3CE12Ja+aRXlJ8HdjtQ6Xp9mUC4Jpow0Ix0kjsFbWgDhzvQlvFnAOjK
-	omYCoK56tHjgUj/8l61uucRWxuhWpx91nceT+0VCVNi6qi+YeFq3qt9D15gx/svNYf0nOV
-	EcpufdwSymJ60VwOXWoJUlOg1YqeYLs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="e9wDM/7Y";
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773416077; a=rsa-sha256;
+	bh=MerlekVfk9K5c0NPVB7gC3JHabt0YVuv55ZAQ7AyrtM=;
+	b=HKTJ54hb6JmYYgbsyVpkY+wpzoLuc2zwRrRIHGIdzfwKYnYM2Ko/aYiVgAJLPZ63ZhXxu+
+	tghctoAMIKmhY53ZTdDOy7GaVHFvAf68ZcBp+Z5Fx0/cZcWhQQuuzuj84JkzvFy3IYTT52
+	1BEtnD3Go+JV5K0+3Ekg6Lo98PH2+YE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773416163; a=rsa-sha256;
 	cv=none;
-	b=nNbswwjmH25ml+BGnClLJxzgccuAqW+vJyuRbvKm5R2+4gtgVwf7y0jSuna3kqnQL/9TkW
-	j5thfTqN9tJIYiY5rCXIE0ygcCpYUlK9zUqK2PwJ7fcXjHc24gEyYhQeEY1/EuqSJTP6hx
-	dG/3k83/FQeA9KBAesbT7rIS1uQKPmI=
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d75e74f5adso2335618a34.3
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 08:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773416076; x=1774020876; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qxJi/zSl5l+Hb0RVk/iR14eLBTshpKrTciXowhZG1gg=;
-        b=e9wDM/7YAobmE2DOtw1CDXlShQifzgPhBm2mQ4KnXos3x3rn0WQellsEdaBuJhhGaf
-         cVnRCNBrjFABYDa6CVFeQy49pnoCLV9OjE0/IqqGT5kJ2AFek8LVBGCPNZQyJifGUyOA
-         T1dSATcsPFrJYy1RmEDgQfMEgg5arMXLiIpJvoY4Ihlsmzbfh0YR3E3xrQtAgRxryrgz
-         NnrhyviPoAIhjeGibgOGLQsKifeLnXVXTi8ni2TkWUqkW/GNUsryVFp03+YFWUIA6sfT
-         nAs5CwLwCT3306I4gm0030axp3JnWc1Vtvay3Cv5fYz7xmnWImfwBaBY1cQzZyo5MIiP
-         bvtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773416076; x=1774020876;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qxJi/zSl5l+Hb0RVk/iR14eLBTshpKrTciXowhZG1gg=;
-        b=BqSofZ65O0f8rost1wWvlN6g7QlOrST3BZ+0s7trP72XVmpOHpABwf3wte6SbrTS4H
-         osZLwvyooxExlKtMAfQ+tpr2wqJ9iGi12Nl7x0F7mDNll8u9IFdslgi4FtmcM+UHTckn
-         XJKi5n9Kv/Q0xO8LLJCgTZx3eRiNDwdj051M5g2eCdamDLv8nisbL3hS2hicCxBK2qeQ
-         iu6lkEMizO42DQi1sYftQT/Hfld+G8rsAfDxWAjvtBONNvvTYW9DQGXw78u48j4zMAAE
-         uhsvPITqq6MsW1KETx+PYjCuBITD9qzDP+cEOq6MS8to+XvHaqkZorHLwrDZpMjA2P3k
-         Y0lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVI80fVDUKs0vnK70Mq5HLjxuJ8aQIg/FF0SGLtznS7GDJUCTfzM/vf2tOLBJde9GSuVXC2TnLaaQ==@kvack.org
-X-Gm-Message-State: AOJu0YxWE+C90OSx/xsNxQI3Wjm0nNkGzqv5JoANiy+/DaA8RYgbOEj2
-	A2OI8gpQB3HEj5a2aGoSrTZnW607XjX4Dipqa1ufxG9n7QEW7XoY7kTV
-X-Gm-Gg: ATEYQzzHMr31UHcu8jCdoZCv9Pf1DAFIgPYAQ+K5BmdhxxtZFuQPxrU4HX33E41/r3Y
-	oIDp2lHSI+eexgkkvyEQBY435uj6ZZhsRLkP0VnJf6xeE12Udhl4F5tpWCmS1+1iyFS5DPelJKT
-	PhsvyNXd7Mb8gnq6EWlN2ufPZzDRV+cKelgVeJJJQwx88rn8PdKXOBIYhIIJtZJq5Hlq8l/cEMj
-	EuVC9thMaaH4Z/ItRF+51VdADugt8i5RCjG0Q1wyknOZl0kURBO2r41YkuHGynFx1aYpM3hUxtc
-	V4H9MobOvDDGTSyhlariPt5PaoyZZ8OAvOV3OaNtepWHGbdhEMPn/UtWRRd0NRN2rOurVlmxFRb
-	O7H/2kt/dWoeuXHt8v7SKNysPJOsl2OXh/AO2Z2n3SP3bPRY39g+sM6BPJ0q3bBzcxPLoWdYwge
-	tNVKqEXvc8vbTBjuYddmg6jA==
-X-Received: by 2002:a05:6830:6a11:b0:7d7:5d69:819d with SMTP id 46e09a7af769-7d782619ed7mr2747874a34.34.1773416075930;
-        Fri, 13 Mar 2026 08:34:35 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:5a::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d76ae90586sm7005201a34.22.2026.03.13.08.34.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 08:34:35 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 07/11] mm/zsmalloc, zswap: Handle objcg charging and lifetime in zsmalloc
-Date: Fri, 13 Mar 2026 08:34:33 -0700
-Message-ID: <20260313153434.4074128-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <abMzKa27khxDLO_D@cmpxchg.org>
-References: 
+	b=44wdoXBgJvr0+MVvq15gUze/gMuE9Bm4C53TilIlNDtN+4yGYGo2yYn4qLnVa1vijcNXG1
+	NFC2s2D0SZQnNnSd9wYtxdKE9KejmuTH2lcpRJwPuxTnsNxK2OUdY34Ck4u22uTtGl3Zey
+	qZvumKqxuE0/tIhQXn6r45EHrUfNl+s=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k/xzZO5t";
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 17D7860142;
+	Fri, 13 Mar 2026 15:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C858C19421;
+	Fri, 13 Mar 2026 15:35:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773416162;
+	bh=8CTc2A4Y/FaXlXTchN73Tai25CXorxmWgxGIdw1ZJVM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k/xzZO5t/wLPFo20XtpLKo/vxjUUykRZxGexCi2DjU1XUbSUwW0+HBOs8mY46TByB
+	 yD53oGpu+25ooVbSBwgTUnNoOOP4XZ1oNGaaIt0o0QE99L6ugp4TbeTA1EWylq/UCV
+	 /EDNPnAyUrbEnXPRvtqUA096JeyHkx0+A1Wg6JmCbLN+91C8OY46MFWMwU077HwKD+
+	 Si9jhPtwNam3sBihNNnZahvKGjqmhGcNRyXLVlPr9JhqU9wYLUWYpLX47tSGNVgtkP
+	 qVElMluhW6ohJMSQUbtROl1FtOr+zpPhrXMdZbAG156w7rezNeO8RDxAEWiCxKx0DK
+	 fAnQfQMcHmfiQ==
+Date: Fri, 13 Mar 2026 15:35:55 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, Li Wang <liwang@redhat.com>
+Subject: Re: [RESEND PATCH 1/4] selftests/mm/guard-regions: skip collapse
+ test when thp not enabled
+Message-ID: <097793cf-10f9-4b0d-9d13-f728fc0c4d58@lucifer.local>
+References: <20260312114027.634559-1-chuhu@redhat.com>
+ <20260312114027.634559-2-chuhu@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F112410001B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: chf8e73jdoukmjnwo8faq1u8zdn1ozaa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312114027.634559-2-chuhu@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1773416076-874416
-X-HE-Meta: U2FsdGVkX19LnJ8iqJcJRHk1Ro6QCiLsglJqtZxHu3qy8/Uh1mLppgsAQ1CK8W2gWba5WIdDjBMoY7yuY0Rrm/4YqD/8m8LFkeVwzuozYMkj9jTPxXePIhru8Xu+Rrj+t8lrfnQzidfRpZyEJ9iet94ARSXjkKXg0DNQeclFwfojRlN+wzUIDp0x8dymflBlQeXYU5T2JXg9Sm0ZToLaHvO+U2bmptjfx7WvU+hE0MAvc/bdggG0uwOetf8vnPshJHOzWbzdDJcK2yKVSE9b7M72BAzQXg1FLjJMdoDm8Nv4bVoGgrraYn8+Rqn2SiPGMC9/fHnSHm27Gku4YmvpAiaObF0idwaFqMyBbAcLsdHP65trwOxiVcGcVWjhghFcMKppC4MQmpxmjJLGTydSY2ynQ4+yW2HmIj1usyCfUZHSAgNp3DWfEW++CynZsPYfdIw8uNGd54oJpx2Q87/2gj4IKKqrYQCfIjd/d22PduOTTOvnDK89UUbsMgwn1hbN6fImzpbJrw3Yx2zrv8ALFKES2+DctfG3Nbf6fWnUnVEIRXFV+hAR8LbzdO71su0GK46L+scS4KWz0JlK+KVqdV/rymdzbPz8SD22Lq++0C7CKS8PiGB+Bf7NLh+p/OYl11V+bosfwuFhixQe9NseE8OZZQ16ukE36VdlPtPAYFPuiBmIlJndRlWeUYrs2f2GdUnT3zYw0YQ/sClt3lk8VIqgyMXrHaUUVpvreWu2UulfGYS6YOX7HHZIjKVi6Nky8PBpP+zYyNPR4Pef/EMdXJXFjg4cOeM0RbQfpUc4oGJA8kfT8d1BZyhPyfuzrEiToF7Kg1YKlAo6gOKHnFi7oQW36Hq8rOHiMRB2AXqPwGPPq+vtvUVpFFM23vD5q/ftPDLNYmxIZKEqeyGo2OALrHp6i0YfihcfcdghrTSCENoSFdU+BeFffbZuFCcQbqK09M8ljFpgIKlHbwDMkvZ
- 3PQZcmCY
- MWJFtyTs05jsQx+UR4cSXx43FrQzS2jBR6QhOa1ClJhapoQf2OOVxMcJwq+quCYLXCM3V6K+NklFzxuTo2dV5TLCQVZnlH2JtX9vzz50BlwdACtc7j0LX6QexC9HWVBW6QzDvk1SbTyVnuMS54PklyofrEfB+tTX3J5mfczSCKnP/khN2+AIGekZEYNVU449VE78tEHXyWzcOc4h+DRxQAYIw5P7YybIycYrd1HdT3xUm+4KD9zJBmihZQF8VswGkdwsrf9Omoyuvo65OiP2grFKjMg9bM2DxIadptxTNjrB3i4fTsxvvyERDVEYuenruEdZ3Ds7N/cmkNBNxCxw9l/75jR8CnmXZ/1qqttHWgRn7z0ozpoHRZkimlU3BvbeRXtLoX7sz1cfH+a1XvAXkMyv+HM9h2mzU6x9AOvGApb0rLaiURzWnEzHLSSq19+QKaj85CQQJI+RBrElEsQL3wGGCYL+czDQZnsx2KsCUTATOvU7rdF6wn6T7WSVvDG1ZiKVqixMmceyKMMbhqNTwaMdklPKdrCkdzqDCwST9/rAxZxdVucghZAq+hKMMAz49ahtO
+X-Stat-Signature: 5xt94e6nmg3wsi13n74xfygyunsa5ksz
+X-Rspamd-Queue-Id: B6F63C0005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773416163-872845
+X-HE-Meta: U2FsdGVkX1+NFRpESy+bunLVwychKGnVFPzRTV0nypaQQJ0wQ3pAynnh4vONUQoyGesyyrqKvnUicoR39HwYWiSyTiKlTumCxDy5vUTCpQNFzfRIJfaUrl3jXQDp5PSCTuFBJzMdOeUAQEENG9NI3zRoW9rSpOTPSDi9CCpgCEAKxvgUXeoe+bux8PSoIuR8Tz55IdJCPhk/bIinO4QEQChvt63H9bElnXMdC/kjoKuYhCaBUAUQUWurrHgEauBXo5UOhpQITzUQb7c1ndczR6x4IoiWWVvb7tNyu8XHGtzjYqeYuPpFIGQYwmkbZF+U5dWTv+Y125+400pAXK2wbD8pLqWq7Nq1B2OinPBF3pzqtzjzW8lpga5M31Y12Y2WZ8CvhSYDfMPgwlaXS62x94I3YNN+HuASMGSzVvrbNs4OapUgAZmcX9fsy3neaKcLtxMUiE7npLqnOfuIPpMAagH/XpLdyBpERh/6iLgNqv4nsFIt6sDcQ7FMtQTe3+HoQwGd1sFLIFLgx7djJrFBkl9y3QxwdHdHUzt1xYTxaWJUBTKbAhtJVFl5SAXYL6OmVnpExJL6lttq2QYm+P4JDykG97FzJvcCOKJn+9nXdeBLtkRnt8mRKTVKVgZms5dHRXNm+hal9lP6t3aZ4IcOB9QSes8zOIHclwPwekgf1pdIUfP/uqf3oegT6pxQ1D+wvTzP28fbUlRbHcL053xvnn6tkpjFPW1NVGR8pcKTZdNx74fu3uB8jNKQvwE8A1QmCPDboyigZcmPazc0vCSipOjyHmbKXEBbjLtQ+7sIS8K99WpKmBT8DlS6e/YknupydHAHcQq+e6FMe6+pO4KOAm0e2nnuXfN8YXnjS93O6oppNvGH11PgWWDWtTeHH3GTZYO9gQg/+V0Ym6BTr/p4IiqRtWbIWOBGOIdf4YGb1352qYlKesntPscUto6wsyzYtIFPGNc83LJUx7JxS/b
+ AijJMUbE
+ knkJmlcjyMY8pQcjnWaavFYzTWs/sgChElng1seqt++hU8I+Qf4KnAaUXSS36KV8OHZUAkE1DryfL+43mKVKxvwiiPCv/FGGpeSUm8jt4hdPzLuu7BVOjMvHDlpwCdhBA3ZVRxl6YHThEwB5xRLOBmF0TV1piqREWosVnQ4g82yhNXWCci6TDkgAprt+Hl5fipSz4SR6Ho18Tt1d8TSEVShOCf9n7GS2yQ+zm+V802na/ojR2P0JFBm9kNLD3E4MECSyj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,58 +96,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 12 Mar 2026 17:42:01 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+On Thu, Mar 12, 2026 at 07:40:24PM +0800, Chunyu Hu wrote:
+> When thp is not available, just skip the collape tests to avoid the false
+> positive.
+>
+> Without the change, run with a thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard
+>   <snip/>
+>   # #  RUN           guard_regions.file.multi_vma ...
+>   # #            OK  guard_regions.file.multi_vma
+>   # ok 89 guard_regions.file.multi_vma
+>   # #  RUN           guard_regions.file.basic ...
+>   # #            OK  guard_regions.file.basic
+>   # ok 90 guard_regions.file.basic
+>   # # FAILED: 87 / 90 tests passed.
+>   # # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
+>   # [FAIL]
+>   not ok 1 guard-regions # exit=1
+>   hwpoison_inject
+>   # SUMMARY: PASS=0 SKIP=0 FAIL=1
+>
+> With this change, run with thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard
+>   <snip/>
+>   # ok 90 guard_regions.file.basic
+>   # # PASSED: 90 / 90 tests passed.
+>   # # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+>   # [PASS]
+>   ok 1 guard-regions
+>   hwpoison_inject
+>   # SUMMARY: PASS=1 SKIP=0 FAIL=0
+>   1..1
+> CC: Li Wang <liwang@redhat.com>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 
-> On Wed, Mar 11, 2026 at 12:51:44PM -0700, Joshua Hahn wrote:
-> > @@ -1244,6 +1297,8 @@ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
-> >  	if (objcg) {
-> >  		WARN_ON_ONCE(!pool->memcg_aware);
-> >  		zspage->objcgs[obj_idx] = objcg;
-> > +		obj_cgroup_get(objcg);
-> > +		zs_charge_objcg(pool, objcg, class->size);
-> >  	}
-> >  
-> >  	if (!ZsHugePage(zspage))
+LGTM thanks, so:
 
-Hello Johannes, thank you for your review!
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-> Note that the obj_cgroup_get() reference is for the pointer, not the
-> charge. I think it all comes out right in the end, but it's a bit
-> confusing to follow and verify through the series.
+> ---
+>  tools/testing/selftests/mm/guard-regions.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> index dbd21d66d383..897af9c512f9 100644
+> --- a/tools/testing/selftests/mm/guard-regions.c
+> +++ b/tools/testing/selftests/mm/guard-regions.c
+> @@ -21,6 +21,7 @@
+>  #include <sys/uio.h>
+>  #include <unistd.h>
+>  #include "vm_util.h"
+> +#include "thp_settings.h"
+>
+>  #include "../pidfd/pidfd.h"
+>
+> @@ -2195,6 +2196,9 @@ TEST_F(guard_regions, collapse)
+>  	char *ptr;
+>  	int i;
+>
+> +	if (!thp_is_enabled())
+> +		SKIP(return, "Transparent Hugepages not available\n");
+> +
+>  	/* Need file to be correct size for tests for non-anon. */
+>  	if (variant->backing != ANON_BACKED)
+>  		ASSERT_EQ(ftruncate(self->fd, size), 0);
+> --
+> 2.53.0
+>
 
-Thank you for pointing that out. I'll try to make it more explicit via
-the placement.
-
-> IOW, it's better move that obj_cgroup_get() when you add and store
-> zspage->objcgs[]. If zswap stil has a reference at that point in the
-> series, then it's fine for there to be two separate obj_cgroup_get()
-> as well, with later patches deleting the zswap one when its
-> entry->objcg pointer disappears.
-
-Sounds good with me. Maybe for the code block above I just move it one
-line up so that it happens before the zspage->objcgs set and
-make it more obvious that it's associated with setting the objcg
-pointer and not with the charge?
-
-And for the freeing section, putting after we set the pointer to
-NULL could be more obvious?
-
-> > @@ -711,10 +711,6 @@ static void zswap_entry_free(struct zswap_entry *entry)
-> >  	zswap_lru_del(&zswap_list_lru, entry, objcg);
-> >  	zs_free(entry->pool->zs_pool, entry->handle);
-> >  	zswap_pool_put(entry->pool);
-> > -	if (objcg) {
-> > -		obj_cgroup_uncharge_zswap(objcg, entry->length);
-> > -		obj_cgroup_put(objcg);
-> > -	}
-> >  	if (entry->length == PAGE_SIZE)
-> >  		atomic_long_dec(&zswap_stored_incompressible_pages);
-> >  	zswap_entry_cache_free(entry);
-> 
-> [ I can see that this was misleading. It was really getting a
->   reference for the entry->objcg = objcg a few lines down, hitching a
->   ride on that existing `if (objcg)`. ]
-
-Thank you for the clarification! I hope you have a great day : -)
-Joshua
+Cheers, Lorenzo
 
