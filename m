@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2023F107BCD3
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 17:35:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BD2107BCD0
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 17:38:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71EBC6B0088; Fri, 13 Mar 2026 13:35:25 -0400 (EDT)
+	id CD5F96B0088; Fri, 13 Mar 2026 13:38:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D62A6B0089; Fri, 13 Mar 2026 13:35:25 -0400 (EDT)
+	id CA3996B0089; Fri, 13 Mar 2026 13:38:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D87C6B008A; Fri, 13 Mar 2026 13:35:25 -0400 (EDT)
+	id B8E796B008A; Fri, 13 Mar 2026 13:38:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 496E86B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:35:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA5C51A026C
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 17:35:24 +0000 (UTC)
-X-FDA: 84541741368.25.3D2F49A
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 279896B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 13:38:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94FA989DB4
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 17:38:06 +0000 (UTC)
+X-FDA: 84541748172.12.06E902C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EEB4D4000C
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 17:35:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mjw1zWLw;
-	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id D5299A0011
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 17:38:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i0RNL435;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773423323;
+	s=arc-20220608; t=1773423485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9M9IHqwd68/9iKqxw7/Loa7/m3MUyVQus4HkfOD7kBM=;
-	b=j3+ei/+p54LBI6qNMczrL8blhdTfy/UQhdx+/GOcI+s4yhOlAG/4PHZcFt86JLDvd7pJGT
-	wsWswEPG0nUBVLFUAUpHnzzZgIPtLLe5USRTzUjTbUrwmiM2PCzibP06j1tOEGN3R86dFv
-	txCb0gLv8uzUCD//DVR25SLhg0dB4rY=
+	bh=DLfL/vfcscx+x09aaCuggTdPe5+hQiXfYqr9fuiKpG4=;
+	b=o1deU+7w7xDVEOq9nGt07pPgSkR3XH3hfNXqn4D3jBBxJdwEaMyyVFbN2pyDf7UzZu2IA9
+	qTkucdjAN2/DBmwBaVu+kXeQZ8J3o/4sPKyh2UyD0K5nC+VWLpGH9sQHTdZEFP4f6pz0gs
+	C1EOEtKc8ipWyPJIRTia6+XGBTxXDjM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mjw1zWLw;
-	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773423323; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i0RNL435;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773423485; a=rsa-sha256;
 	cv=none;
-	b=OjYbd4hUUAd6Eoi9iTeSmt4ceNNANua4Vloker6GFd546ouUjes4bxALobCK0tGMatY/2B
-	oFqIaSMT9vXYNVrsh/yGI5ODyKB3s1peRjPNYOObie/jnoPGX4RLu0Q9Muv+mQLMtbGQIz
-	A8FX68QXUVu55bOKT7w0tHoYMa9MBb4=
+	b=WFkpUfd8kDhO2zl1j71ivI8k10cppBBBQ2vnDePuAUENkpkV68abd2E+FEHhs2XmR1Mw45
+	4ZY1Tvp8X6GUvkPkSn+U9NGZe+oo6JEVh4hd33gZIQPIf+H46DtCrenHJDeOfdfcfsM+ut
+	er2oVY+U69ITbfeIn4fjdziZu0+kEtU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1AA84342E
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 17:35:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03F6C2BCB3
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 17:35:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D72E743D06;
+	Fri, 13 Mar 2026 17:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25453C19421;
+	Fri, 13 Mar 2026 17:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773423321;
-	bh=ApvbsXVbaqMbdaCDuqA/3rLOXLy0yrXR+9ASU7EGH/8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Mjw1zWLw9cf283V0S0iWehmdz1ZoVsu3IdmTYSBhyZN7QTHParcGEZZFYIvC+SLhY
-	 8UnumqpE21F1PTRBFZJIxJ1LmLUCMzthA6aARqjOwOksFXAAZdtfnEW41x1A3vMVPa
-	 m3o0IFb9XFW8uvp/iJJCj3qpXXKXMjxMiRbLJeG8zYtTMbPqcebeFmdtO0/Ybzfqif
-	 mgfYU4RaDr8Ocf1cwdJ9N1VndF2Rr1oQBr7ssPIWn4sW9gQXWrF0VcGjS0vjBMWgpF
-	 1WqUEoal/aMGMzn4Uv5lKrQsUVXABb8onSFcKaFaZwlPLomYx9gT4MxPQWmZytddgy
-	 y9Upt0tDAWqNg==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b941bb3e23cso422282366b.0
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:35:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+kPjOGgScVc7A3qKbyCVdMPK0vEilsI4o2qX8QnqTlDPXZG0crCybiIuhLqrXNK7hI7JIV8XETQ==@kvack.org
-X-Gm-Message-State: AOJu0Yye7hmVjaR4YoGgU2z4k88KTor8d6R8M4eSZ68f3BgnOBYRYh0T
-	nN/rjI2BMAIFWrUb+afBbHHjnpu9LocG6HUA4LEKFVR4vfHMjXKvoY/6ZckzD56cTlgZJUbfQnP
-	fJofnNIcXoOOMlNkd085JS0zE/iTMMSY=
-X-Received: by 2002:a17:907:9452:b0:b94:244b:2ba8 with SMTP id
- a640c23a62f3a-b9765103493mr283406166b.29.1773423320405; Fri, 13 Mar 2026
- 10:35:20 -0700 (PDT)
+	s=k20201202; t=1773423483;
+	bh=TGwRSaWVri5njOX8uLPGY9rlgFfLB03mBYf8HXyvPQw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i0RNL435ZRqYDOmXtr536PK/UZbU92/ld1tWWsS2/lwmsUnDps1UQtN1kuOehW6/q
+	 /BqQhgqTq98H/e9YXy/t/BJ6Cg2u3apj6wqz8RKTQF+v8zV7PcdDluVMIZfiafbknC
+	 ck9wMU7FbATLTFI7wu8mF2dHl7b3YB9vGaEb5LF4+zJZyW5TQ+9gmMVM0gKBIw4kij
+	 VAnuiYjI7KolgLHDh16SG6rJ7V37qZMkbIXDTXxAR8st9clOnLpgiByqhmCsNOU4NG
+	 MYcUnC4SgmHiDcfs3BjNGFrp8oFX6GymoQGTtVUKSEV/BsazGOHEIIzTRcwJwIvLVf
+	 aKDsoZGbio9PA==
+Date: Fri, 13 Mar 2026 17:37:57 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, Li Wang <liwang@redhat.com>
+Subject: Re: [RESEND PATCH 2/4] selftests/mm: soft-dirty: skip two tests when
+ thp is not available
+Message-ID: <60f5a518-1254-4bd7-8272-128fdd56d6ec@lucifer.local>
+References: <20260312114027.634559-1-chuhu@redhat.com>
+ <20260312114027.634559-3-chuhu@redhat.com>
 MIME-Version: 1.0
-References: <20260313043532.103987-1-liwang@redhat.com> <CAO9r8zMsbVHKnCzfQcdtomRMWTNFgTGY4XALxwm+i9m1SUPPvg@mail.gmail.com>
- <abPEALhYmtBnEULi@redhat.com>
-In-Reply-To: <abPEALhYmtBnEULi@redhat.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 13 Mar 2026 10:35:08 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMciNGa1ei-pSvx+ndrCJtZguGj12R3sa8PkDHYwsvGzw@mail.gmail.com>
-X-Gm-Features: AaiRm52tG5grTbDaQuCRVOsImQRc5zDDMbvT8ehPQwz0Bf2Lf2h1t26HM-nxIv0
-Message-ID: <CAO9r8zMciNGa1ei-pSvx+ndrCJtZguGj12R3sa8PkDHYwsvGzw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/7] selftests/cgroup: skip test_zswap if zswap is
- globally disabled
-To: Li Wang <liwang@redhat.com>
-Cc: yosryahmed@google.com, nphamcs@gmail.com, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EEB4D4000C
-X-Stat-Signature: acc7s9concsaj51gxz3ddpx33buenc6c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312114027.634559-3-chuhu@redhat.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D5299A0011
+X-Stat-Signature: ouqbf8xbynngxfw4kdj5bfo9axkq6tnr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773423322-18424
-X-HE-Meta: U2FsdGVkX18DUOU/Kt+emdS9U+hJO7FLfwGkI0Vh774Y8T1nXZqAsnBIeOjmzsmV30MZZh5Ue8w2EwZOBnJgm0SWx48ZXJ+gZ54qV01RqShoLAF0C9rBrH/zrjLQBQVMB5ZVW7vb3tx9sHPiU49LyNvSURzhe+/4FUoUHjoRdNAQOoFrSMxIEuNIa9Ktb0khe3t5Kp7fm1aeh42rVhmikP7jVm33OVRuxoQmN1h1aDOrJv3ovL4qzKMcCFnT765u+3zyhycVToLe2SZh1cStWELmeNQdx0z6W1CJUxEO2itqYUVJnGcU36vn5x5HWo5ZbKFMoB8FyvDAekMrGW+izkLEitgO+8cf20ym1uXQoSAXHk0UU69rCjIhZKjZgEfuHbW3uZh37eZ3kGH6FHt5Rkw2Wmt6erq/1XLIJeMbBBSmuVs/5iSc/r/iM7uLswWSuRH2vAYZds9Iz4/99KAxWqepX8TB7u7NwW3BEBRR5MmMCAI4fg/GHBBv9LUzrqf3od8vJy3HvPVgsX2yyEIwGt2K+b9+u1bDaa46cTSVh81v10660HcewH+Ur9jKQJujIfPdXtfIhG+gFgSzOrfJJojxly46JzT9Y1W4/GSdX0JUaSM/HKsfKKMfJ0VEKvz7HNgui5CMnFpxe887j0LKfVf92l1t2gqPIB/SHaPp3XTFbPxQyrtzHLYQgLee/IQJC44VvMt6HUtRDc3HtlBIOTIO4sIyVFrFwfoT/EkWInjqz3/nle4zYvjdYsrDJVe4Bng0Vfp25vsxrDxCjWYbBCiJ0nWwf53cHjk9+xnJWCW+38uvUm/Nug/VgR2i0CiSo3VarsTlMErTavcTZmQOhcyPG2wOiEW5EeS+jr1RmBlA+D+YVvZpyws0/VdgrLoT7ksb/m2xKaBr5SEd15V7twrjNsU9mjfODuTTn27X3q3BoWLb9yL66QH//S4VcOManTBtuGn1PuHcf3i7MbK
- 96VKqZkp
- OtDnhR98SWh+6E2DKmMPvnC2QB2gZ0HArTPJsTFL7Pjar/AuCIxZeBT27sRB/RzmmL/95S5uMqziaKhaUK5S05oFD+nn7ah8GRxDFC9vlvYvk1eZY6LE9YaG9lvGCoGaQBURRgWOFSoImQNKMIc2efMInrnlE6WlXbehNXqCRBm0OAaCtw6xpmq3E9psuSSvf0QDbwOfy8waR5dtIOxmH6Gt0ssKEHFvIjfBKQZ3P9RhUpYZlBkCHUbZBMw6VtocbkGvwBhxtVEFLFdGSzR1laD8MRvZJpCuDtRg7mCIiv+viFBfDV9z9TGAj9qXPMAPgUyMBuEdDgIu3/h8wHYr0L8SkSYsBH2g0w5HwqzVmJpqQzRoFZEIwzikktBEzMs/N51Zw
+X-HE-Tag: 1773423484-6215
+X-HE-Meta: U2FsdGVkX18EETg/2MpyqgjVuIBQUlSFNdQVy44y6swY1Dq1f4NgKJfArEfC7Ddak5yLPRUNHlbQfBoaxWNCZrQWpqEe34HkHMkexN4rmdOFvQJNYTQREFA5olJ6ZC/xGy2nhLsQPfkr+dJVV8Vqoq2xIDAnpUu3vcZuMGYPWemDDoPmlXiswKIJX6pr8RBjotdysdJYVO/3npaX+1RVTDNVy2sB5TJRoYFvOJ9UfX8uUfNMW5RALB3dobAdOn6ADzjZDRBmfAq5QJvf+VGeCutAkzjAFHO9gUhk6QQZq1ji8Y/OvgOWOrb47/woxI+kWiXfnIxstH3dWG6WCp8QDkxWfuUUPRYhtSe65NMGA2AY9WbEA2Z1Lm3RkK+oJrCxaiI/WIIN49yQt8Pudo860YHO5tgB6OuuEUaS/9yEKdmDals6X+FwgA2Mq46d6nRtKyjJcWqIpEzqGI1qS+wIDJ8r6OUTfyUz/J7fYzd4tZoMiwfflHw6Y3Igvo26CEZkz4esh6ZyUsDkaopy2DkI5rWERAi2e8U0F6mX9TbkY+rR5bNFMCW7hMMwgB5W+wIudD35lpsKvKlMayeUnab9QBQJA23AXdy45ocraj3rhSS/zsIw30fEt/y54krvoiPdKWs/A3DHDQy1sY4T5gLKQhwBlP8QTj/vEeE0WH384eUZGFfttU8C3brOQ0rYrW32jcKxp4ZTXmalfmK6jDDx2kYzyjVKvzliH1NYIvYz/8EkhcYJZ5Y5hrPfjPBWdpStMmFvLvzLLQLpQ/GnnTpQhxoQv5ltKRfdcgyr2qPsbDSq+pjhK4mEeL586MmPMdpqSexJTrHhamsYPy3bowVFl6K4ztc95eAaqamS+y4w743slXXwzWyhNxqEaYObnZb81I4OTN/X2mpZEaBvO1hAQkiw79EeImEnPVOaTDS7E4aeIkaa9JeXvPg7nJYXYAt7/E8/ViVIpXheU3AWPfT
+ b1PniUVc
+ d1mGretYCd8pEd38shB9M2WkQe86sA/0T0p9ryqlj9kHHI1WD9ODqJUprBvbHu0UYVLOphu3d8YLeB6IXvi5egmkHMfAXO3VLAk0jL2gJ7D8vrlTMiP2DbmmaWPQGCnS09GCbuLnxsSPMV/4dOP71PfvNICZJ+SXyn+zyRRyqaVjxHiquCswqN0AqpEGxjizLCp7D9LQDSJBYb0cYQrd1ISKr1jx0Ot5WmN3UrjweLCqOpAc9KXeRirxe9pnFOYICJQ4g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,49 +96,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 1:00=E2=80=AFAM Li Wang <liwang@redhat.com> wrote:
+On Thu, Mar 12, 2026 at 07:40:25PM +0800, Chunyu Hu wrote:
+> The test_hugepage test contain two sub tests. If just reporting one skip
+> when thp not available, there will be error in the log because the test
+> count don't match the test plan. Change to skip two tests by running the
+> ksft_test_result_skip twice in this case.
 >
-> On Thu, Mar 12, 2026 at 11:34:41PM -0700, Yosry Ahmed wrote:
-> > > diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/test=
-ing/selftests/cgroup/test_zswap.c
-> > > index 64ebc3f3f203..e69d845d3592 100644
-> > > --- a/tools/testing/selftests/cgroup/test_zswap.c
-> > > +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> > > @@ -589,9 +589,21 @@ struct zswap_test {
-> > >  };
-> > >  #undef T
-> > >
-> > > -static bool zswap_configured(void)
-> > > +static void check_zswap_enabled(void)
-> > >  {
-> > > -       return access("/sys/module/zswap", F_OK) =3D=3D 0;
-> > > +       char value[2];
-> >
-> > Please wait for discussions on the previous version to conclude and
-> > give people a little bit of time to respond before sending the next
-> > version.
+> Without the fix (run test on thp disabled kernel):
+>   ./run_vmtests.sh -t soft_dirty
+>   # --------------------
+>   # running ./soft-dirty
+>   # --------------------
+>   # TAP version 13
+>   # 1..19
+>   # ok 1 Test test_simple
+>   # ok 2 Test test_vma_reuse dirty bit of allocated page
+>   # ok 3 Test test_vma_reuse dirty bit of reused address page
+>   # ok 4 # SKIP Transparent Hugepages not available
+>   # ok 5 Test test_mprotect-anon dirty bit of new written page
+>   # ok 6 Test test_mprotect-anon soft-dirty clear after clear_refs
+>   # ok 7 Test test_mprotect-anon soft-dirty clear after marking RO
+>   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RW
+>   # ok 9 Test test_mprotect-anon soft-dirty after rewritten
+>   # ok 10 Test test_mprotect-file dirty bit of new written page
+>   # ok 11 Test test_mprotect-file soft-dirty clear after clear_refs
+>   # ok 12 Test test_mprotect-file soft-dirty clear after marking RO
+>   # ok 13 Test test_mprotect-file soft-dirty clear after marking RW
+>   # ok 14 Test test_mprotect-file soft-dirty after rewritten
+>   # ok 15 Test test_merge-anon soft-dirty after remap merge 1st pg
+>   # ok 16 Test test_merge-anon soft-dirty after remap merge 2nd pg
+>   # ok 17 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+>   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+>   # # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Planned tests != run tests (19 != 18)
+>   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
+>   # [FAIL]
+>   not ok 52 soft-dirty # exit=1
 >
-> Sorry for the rush. I thought that I had clarified the issue there.
->
-> > I think this can just be be:
-> >
-> >     char value;
-> >     ...
-> >
-> >     if (read_text(.., &value, sizeof(value)) < 0)
->
-> This actuall introduce a problem to the code, as in read_text()
-> that achivement is:
->
->   len =3D read(fd, buf, max_len - 1);
->
-> When 'sizeof(value) =3D=3D 1' pass in that makes read(fd, &value, 0);
-> read zero, after that, the value is set to '\0'.
+> With the fix (run test on thp disabled kernel):
+>   ./run_vmtests.sh -t soft_dirty
+>   # --------------------
+>   # running ./soft-dirty
+>   # TAP version 13
+>   # --------------------
+>   # running ./soft-dirty
+>   # --------------------
+>   # TAP version 13
+>   # 1..19
+>   # ok 1 Test test_simple
+>   # ok 2 Test test_vma_reuse dirty bit of allocated page
+>   # ok 3 Test test_vma_reuse dirty bit of reused address page
+>   # # Transparent Hugepages not available
+>   # ok 4 # SKIP Test test_hugepage huge page allocation
+>   # ok 5 # SKIP Test test_hugepage huge page dirty bit
+>   # ok 6 Test test_mprotect-anon dirty bit of new written page
+>   # ok 7 Test test_mprotect-anon soft-dirty clear after clear_refs
+>   # ok 8 Test test_mprotect-anon soft-dirty clear after marking RO
+>   # ok 9 Test test_mprotect-anon soft-dirty clear after marking RW
+>   # ok 10 Test test_mprotect-anon soft-dirty after rewritten
+>   # ok 11 Test test_mprotect-file dirty bit of new written page
+>   # ok 12 Test test_mprotect-file soft-dirty clear after clear_refs
+>   # ok 13 Test test_mprotect-file soft-dirty clear after marking RO
+>   # ok 14 Test test_mprotect-file soft-dirty clear after marking RW
+>   # ok 15 Test test_mprotect-file soft-dirty after rewritten
+>   # ok 16 Test test_merge-anon soft-dirty after remap merge 1st pg
+>   # ok 17 Test test_merge-anon soft-dirty after remap merge 2nd pg
+>   # ok 18 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+>   # ok 19 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+>   # # 2 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:2 error:0
+>   # [PASS]
+>   ok 1 soft-dirty
+>   hwpoison_inject
+>   # SUMMARY: PASS=1 SKIP=0 FAIL=0
+>   1..1
+> CC: Li Wang <liwang@redhat.com>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 
-I see, I missed that, thanks for clarifying. If you do send a new
-version, put the path of the module parameter in a macro or variable
-to make the lines in check_zswap_enabled() shorter and hopefully have
-everything fit in one line. Anyway:
+LGTM, so:
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/soft-dirty.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+> index 59c0dbe99a9b..bcfcac99b436 100644
+> --- a/tools/testing/selftests/mm/soft-dirty.c
+> +++ b/tools/testing/selftests/mm/soft-dirty.c
+> @@ -82,7 +82,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+>  	int i, ret;
+>
+>  	if (!thp_is_enabled()) {
+> -		ksft_test_result_skip("Transparent Hugepages not available\n");
+> +		ksft_print_msg("Transparent Hugepages not available\n");
+> +		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
+> +		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
+>  		return;
+>  	}
+>
+> --
+> 2.53.0
+>
 
