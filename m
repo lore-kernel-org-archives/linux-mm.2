@@ -4,119 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A01AC107BCC6
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 16:11:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4E57107BCCB
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 16:22:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20F66B0088; Fri, 13 Mar 2026 12:11:25 -0400 (EDT)
+	id D9B9D6B0088; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCE8A6B0089; Fri, 13 Mar 2026 12:11:25 -0400 (EDT)
+	id D491A6B0089; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDA686B008A; Fri, 13 Mar 2026 12:11:25 -0400 (EDT)
+	id BF6B56B008A; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE5C46B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 12:11:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5962C57775
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:11:25 +0000 (UTC)
-X-FDA: 84541529730.28.E90FDE8
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6C05FC0009
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:11:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hR6hmVk2;
-	spf=pass (imf10.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8D56B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 12:22:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 55E2C56738
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:22:50 +0000 (UTC)
+X-FDA: 84541558500.19.917ECFA
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3E4B01A0018
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 16:22:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZtOkUckD;
+	spf=pass (imf19.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773418283;
+	s=arc-20220608; t=1773418968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rq0laD/NPKt2Ap7DhnuKjx19WrRLlI7nxlxtq6oaCtg=;
-	b=V4J1g+AXG07NRBpU9BirZBSPbs50YB3j4u5+BDm43g8lk8oP+rvK0kesQEadrXMt2QwK4D
-	1uePjswtdVCBobp3puDe/eBWiN4I3gq6DRHA3Xd46ylTM92AiGd6RUV72qniXlSqNgep+w
-	rxweZqCVYmvsPmJ3GA9TfG57qQJcASI=
+	bh=waNi9HqZMalp9X1QHhx8NLvH4Y9lunKrP9GbZn1Q6ho=;
+	b=rl/AQgouq2lo1bQvklPMDlQRP9L2G0w2l/DAKyrGXPJaFCWZgQpCwUuEnVMZXFGLqDpKIW
+	PpTPtauXtwyFveNOxD8v27y6AvsFWDKQn3yc37BYKNLmGnrD/YNJew2xTlzGWPOu1qfmlu
+	QwqfBt61eOhN6FeR8n2tztbnoZ9AfMA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hR6hmVk2;
-	spf=pass (imf10.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773418283; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZtOkUckD;
+	spf=pass (imf19.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773418968; a=rsa-sha256;
 	cv=none;
-	b=ljYcnTfXqEwRwJyh3hzcTyhr2s4vnP5ftLqfP822CjoHeKNhff2v0Q1dG+Pry0Hay0u3af
-	Z+gleh98s2yfLCaHn5GQGbrX+KCA1Z0d4TYU6TAvpRpviL8Ysg1nWtaehz4QFgiL3I7EjX
-	icQKfv82RMMp/lGHbisyGM8aU8w4o+c=
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-56b65ffbda3so653711e0c.1
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:11:23 -0700 (PDT)
+	b=YBB+eRpQ9QBJXNGmfL0/Wrro1mdH7VetJZPIvTm27dybCntNFxmUcpcZARJTnALvlYZwTd
+	EhZqUlvNDnMxr/zVxzVKTLuWmX6aOE7Ey4EMZ9rE3587sXk8+jIV7qxe5KOOlPZwOjD7SU
+	gbM1BMMNUt4RsGHv+As1H8fQP225osw=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-439a89b6fd0so2368359f8f.2
+        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 09:22:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773418282; x=1774023082; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rq0laD/NPKt2Ap7DhnuKjx19WrRLlI7nxlxtq6oaCtg=;
-        b=hR6hmVk2lj0rknaKgAqPFFBCJJYDTH77cI8NE3Q9sSF+QIck67Ed6lnBm4sLN0tzGs
-         hlRT1Ak/XFBLsjcEyv8iEcrGd6oTpLBkMjIiZ/E0/m+/m1KXI0KRjp6qwXjwzIJURwtO
-         9u0AMWXQzvpz6V3zsXETwoVSs8HYXkx5wPBHtdSqeErv/I0rp3TOE3Tif/vhlpm08pCf
-         m3KGitru4ak5Y5lIIfV0o0ugkoNPDThvuU37lTZEOwVxZO/ICJcNiKOGxKJnXItkaVtD
-         NjNGqQQKGW3XnJr1jt4JtfDP0LbaGWlIPn0KmXwlIttOIWKT/MkPtZToII3ENQu6gkR/
-         Yokg==
+        d=suse.com; s=google; t=1773418966; x=1774023766; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=waNi9HqZMalp9X1QHhx8NLvH4Y9lunKrP9GbZn1Q6ho=;
+        b=ZtOkUckD36I9E+vCA1fWR9VYAIWJ5GFg1KOIfSaYa8QQpjNYc70gKzpF4a5HQtNpTt
+         WX/FahH/L/c51woy8axdOHs5Kh45pJ2MpgfBG1wBRma3lKooTtHqtEm+5j9Kfx3e1S2U
+         Jfx+yyK4TxWxBtn/WlsnZhzg5Bx94zkmO7Ns7yjJc9t8tI9UPFQHCz0lZtorehKtiKim
+         +BkY2jW2urgPbAy5On9yrQ/opvmZYjxQBDxWET7YaMsyHJM3xdOl8xNxUA4lolYQWr6c
+         8jfpOHIROJW+l2chDJaGOoo38ShVTyRTHnMW9uQI9RdU3P97Z8D49+abq81UELmZrVj5
+         y7vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773418282; x=1774023082;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rq0laD/NPKt2Ap7DhnuKjx19WrRLlI7nxlxtq6oaCtg=;
-        b=pTZOvr/Vjz7qqaOn24vV/lG2BU8Y+J5w9xVXlmRxXA89kTQRFbLEz8BB1YEe70vzht
-         Nt5cNowtPRRU4lRxiWIq7G2mjCXzY/cciI4g8GIWafsjdLIgh5q4uOZYzqv3koqokfTB
-         IpaPxV6zTLHODETNh7FfjIpy1wWuW5lKeqgKZfsLHv4/kVdc6yU2lfYKImo1ilj4x9hO
-         ubjvFg3BqxgmXYWxAgqKDOCmXKAi0AY1ovqpLpKHYHJg15lRBJvpIJw+5XBcj3MfuVyC
-         F91KmS0gIZJShTzOuz3sx3c7Dcl1AJ5du9BbwewudeEzrbDd4AHSl5yMiyhm2ewNzfDy
-         fRiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCeb+Wc7uUUPbovCr0HHbz/xshgPWHHbcq6EyDwXfuH5AFNI0iGVbzi9jocQ2TqkwSd0yWyIGP/A==@kvack.org
-X-Gm-Message-State: AOJu0YwXk2S2iEkV9J93bKoRWzcPyAyFdzW0c6tchP8SMD35176zt+jy
-	3RdKo2BKplgqYjvw7md1+ZSNnk52tezgGaQx6JsMXdlJETgGI4W3xp1M
-X-Gm-Gg: ATEYQzxvBb0jW78i9EHhEXo+HdgSxPqikJ3kX6pX9uARS/80TqA3DzWPm2cgppdJMiX
-	QxKoEf/vBgE2niPb1RUabMFWbHWfrUtTCzIDd7IfAQD+6894b1zmQRo+wf4KI0B9NInR3zAvYsR
-	H5qPyzElbQsCODPiIDORpekM3JH/Yea7Poatazkj59jaEabvtrmrbHVgK8tNqqjsKnVYXfx4mKU
-	q2/G1l4mio8poDNtcfU+BZ6qYwqpsPXGLjigsEqPtIcdRSFgdbkpVDOQJgKmWqugreHUEpTRkMr
-	MRSJtGUrdUlr7WIWHqlYg5CiBOTWAwhAhBnGGDBZ66g8JEFZ2VjOPal7V+pJ8aSuEc4Mi5gkSs9
-	/i0TQDx96wPLio2GCXt2F++y4f5rb76MY8Wq2pkQ0MNAfmkLCoUtjony/sVuJ1zqroVhj1mVxla
-	g/BC3IBYD5uHcVs1Hc
-X-Received: by 2002:a05:6102:c0a:b0:5ff:ae5c:c669 with SMTP id ada2fe7eead31-6020e653695mr1859129137.37.1773418282237;
-        Fri, 13 Mar 2026 09:11:22 -0700 (PDT)
-Received: from [127.0.0.1] ([86.1.69.5])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94ecfedb472sm2756412241.11.2026.03.13.09.11.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Mar 2026 09:11:21 -0700 (PDT)
-Date: Fri, 13 Mar 2026 16:11:14 +0000
-From: Josh Law <hlcj1234567@gmail.com>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Josh Law <objecting@objecting.org>, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <a2e5e242-2303-4baa-856d-d83474aade35@gmail.com>
-In-Reply-To: <gtukkafnyhdhxo4eu3a6vxnkfv7w3jponvd5mzljlaosweoslu@lujaedlxhxhg>
-References: <20260312184054.23481-1-objecting@objecting.org> <20260312134531.49c1f9171b4b0bc8352e678d@linux-foundation.org> <i6tmfotangjjtzek5txtvoiav3xrfvwtw6cppooyja5mvywmz6@2c5rnyxqpgu6> <d73c8388-bcb5-4a8a-ad3e-da719b09fc40@gmail.com> <gtukkafnyhdhxo4eu3a6vxnkfv7w3jponvd5mzljlaosweoslu@lujaedlxhxhg>
-Subject: Re: [PATCH 1/3] lib/maple_tree: fix potential NULL dereference in
- mas_pop_node()
+        d=1e100.net; s=20251104; t=1773418966; x=1774023766;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=waNi9HqZMalp9X1QHhx8NLvH4Y9lunKrP9GbZn1Q6ho=;
+        b=k+SIOfxUbdRMDy8S1dPXiNbqIs6s/Z5h0BwdzIGRPdBmxYJTX5tj5IbcOybfKljceb
+         LN+f8oBV0ZzOXuQx58hcyeRMVceKn2p4DOpIWJaWx6nWrNJHWldHFFd07N9/EKau+YR+
+         8VFdk2wocXPbAJm93Lq/HNv/6bNqrRRF7zI7t3e7xPj9xqOUqjqNwsWwBwGYfG7jKQda
+         XIVFVlEKPMGjrd92MxvK97qDcAM8Q+cUoi6FuyxT/75YFYSLJE2PXbLSkdQq0ida4j87
+         ZYnC2waB2zwA60akw4CGopL1YUw6Zec0ZqG0sDm/+rpmLsGefr/OEYJ5zu/HbJttm80d
+         dvCg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9wtZAodzUWChIlLlB3fEBzNFzeH26k/yjPbqIntKu0/vTJn8FYnfcBm7E3ogG9J+U9J/b7ebVHQ==@kvack.org
+X-Gm-Message-State: AOJu0YyXHl8Mhad5BnwpQU2i8onQX1ZIL0YbJKsNgsYJFkvprI0wWct2
+	OsrG6nC7b5wW92lvlx+f4KwVHU2xLe6VWMM+y7xrD0R7HIzqPCTYvueYOAoYCZ911fo=
+X-Gm-Gg: ATEYQzwSZlYucxN/Jm6tQisCp8fQwE31/B/FvWTUR1tROtwpCz0CV6taKY4h2K8sBdG
+	i8wrPs/DNebr6WS08g7UEVjT1oR6Q8gm7rJZyPxZ50VvQfuOtbuODUfTkh/m440FLiqHDEHIEm0
+	Jor31mNOh/7req+cUZlYz/m7Ckbd5YKA+QT6Bnf709zp7SKWv2TY835cuzYlrWZetIMB5NcHbpe
+	ANDtsiy9GndXoie7KT6herMHP2UumjUO2NP6DxZ2jsivdMmXCHW9PEgEtbUEOKWg/U+I9qo3Pzj
+	Ji/n70rbt6etnMSt6LKPMnG5UH3oMlrKgMwdrhF7dfjK7WxhlRB4QnLWALC2thprvkAVbbM95KT
+	kaTAQ09wARqYAI3XKlIt/lirjZB5DQbg+HZR/elaGXWUMb67FXV3yYcw3o2Z9xhewRfrxuhtDxm
+	EO4S9ynraE8lpkkdmkxwmMsNKkdFu4a2JuBJ7/B602R/Y=
+X-Received: by 2002:a05:600c:a6a8:b0:485:3a22:69b9 with SMTP id 5b1f17b1804b1-4855670c0cfmr39549385e9.29.1773418966114;
+        Fri, 13 Mar 2026 09:22:46 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48557c6700fsm22255485e9.22.2026.03.13.09.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 09:22:45 -0700 (PDT)
+Date: Fri, 13 Mar 2026 17:22:43 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+Message-ID: <hwcqvplnn2knclpivgagctmcaiutyv2qprgoqmwp7suzj6fqb2@diq6grkwo33b>
+References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
+ <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <a2e5e242-2303-4baa-856d-d83474aade35@gmail.com>
-X-Rspamd-Queue-Id: 6C05FC0009
-X-Stat-Signature: i4o18hm7nbroyiamku6tcyfnacgp1rqd
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kq7o72d73feieu7p"
+Content-Disposition: inline
+In-Reply-To: <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Queue-Id: 3E4B01A0018
+X-Stat-Signature: tpijhgajatf5rxbj5yqef6d6czqz6m1k
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1773418283-250450
-X-HE-Meta: U2FsdGVkX18nSqUcLRnR4ctg0Y0H3gxLM5y6bqVuU2jOnRUB/+CURXea803/Vdu7IuCV+Kwowf6Ec8Psm/VetMZQYh941YNmk4EhnOscdYMOhszB00g0gCSVA2W98baAJY99vDeLfio3tro75wcmCf2pWgQUMCjzcH2ddy6Si2iMFtI5Dm/ulAKpM/r48fz4hCd61+y0YNVSqXV79D6RzEA6PxM+/kfs4b86gW2Jf6MZQ99Lw0bhzHCQ8egW6k491odWvCXKSPiwmjZDBYxmziNn2kZ42wRdGiNOcbCQKulb8V4azCK2FvwyP9CPd8cOZT4eG+EZwD2HkPLzmGq6MQtlg/9vr4BFzHjfe/oDcaej5DJQTXOwYaQOp94wb03w0T48hHcq745KyRo5gi1E+R07BbiE3xArvK+oRj7u8aQL3jsQ5SxaUJJhdeg9o/yyOfFKmMAHOF3PLMAQZxBosWyBuczSmCkTC+5vlLj+Q03mBvwKHXjQ/q4WfwwGJdja6UrPVXQ1iPZZ8CovaE9T+u8QCahDmltcAggWPVAKhgw3TdttLYyUerrgZpxbeUZSvjKZRBsTmjksCB0iKxZm0gFvsdHooHCgzjXJGZb/KMkAZ0l3GACapm0P2CNUav9MbBa3vlwRENnbaa9D6dV7TK5RhVPhnJ1b4fmGaG8TBES357e0Ncyv0WrfGl86R6+61u3yIXr2RtqlxAocPFh9HTVzU52u9kvDNuucSNminVYzETBpoM40eOhd5a9xPyjv05QE5T8rZL4pY93YHAVC/sm/GMgx7I458KKyw47hs/ZSWbR46AoOB/KXrHZELAeYKoQqDR2mv7RMwIx/Cm/bKTRQyHKBxVD3WlIqkS6u5RUu7I8gHMqYI3wDeCC/bxWmJkoDQ31gQKD7+tt9iqyc+MiDuihoIyhGv0tV6aeEeRy+IpoPVzd+k5Pm6uDmca10C0gVIeuZ2elSK5p9rhR
- 3aw0L1vd
- AulSlr4PhftfJ7+wezQLCSMGIfHDL8LzLgD9pYcoRLyscJKFk+8dUz0KyaBmc/qrso5EP14pVFTNcXw++R+T8vaiAjB4YMjuvbSyZpNCIdOf94Gu1eQCAqnqdtp9jdpFVL+uerxxTgigOEHNBInWOFs4CItLU57MQpoc82diw/m1MEbkD1a7wTpdksZejruRnsxM4RMEUnAkve9clbczHmwiNQsUuMwSXf1IEu/RGg74pfMUnCm7yL/9IxxVg2x1EgYQ9LiiKpXyp4ppx0zdKsY3pyqt83sgskaEPWYe+tmL3Q8oQRaHPKb2kB5BwZCIOonEUNiZwy2ryQGOq8o6qmu7rCgpySzN/KYyRsP9L0lHvtEif9kYV4YVLTIPXWJbuCr9iiVNsu0d5+I0vfLF5i5Ud4cbbex7sKVhntx1m+fhm5yi4LOqbsJ9xzabtWYM39xat8hPoVdURcopMwHo7W1gnlDL7xz80Uja5R1KIvokEdEp3RBpUr4n9k3d1aM14k/Eggz6RIazzUXaT0vRGT/4IW/iT0BzyN+YC4pQYgV8lu68=
+X-HE-Tag: 1773418968-743552
+X-HE-Meta: U2FsdGVkX19Kka8bPMqZeZD/PYS/mLMVPodxg1YIqMdYnun1oiM0HKVPGWXn4uwxs1VSHhsOlaWur+EHWOOKOLtyHj0BsonMs3gDQ9zumWsO/OXJ8zWOuAbHbrdT4xBuNUloUXoIl6mBTzr2s1pxT6XmSf9fbLEEJFBA33YswcQM0zfOxcs+MBtFbfNPAvlEMYVt6iPGfKT/X9FJHMfXmHgLe08U3tolRXENj8z9JCoorzRQuCkXaOFxRpqGELho5ncr0KjN6OvInXnWrodCCO+qW+R86ZJjh1xqACEVYnzbAvLqYfRaN67eHUOCq7Gqk7cm0kOLVHhgvNx1WHWOgj5U4Z9f/umDj/Dp+9xeGCTunGfC08kMU6HYd2EmoYVRBcCYql+NNd5chwlJzgsRWofndqeCvA4YJsBqlHMas5Y7ODguwMwZlGCew71w4oKRd42yMeE1Xe+NkmSBcu4GAigYtEdLzKvBmhzuzfYncRUlDcfMOnJnalaifAqngix1ay1rCyXlaxbFaoXcE6H3MW+v156BK+DN4jAkq+ARIJJDvNhmuByW5ID3h7IPgxcmsPnJKDXzcuvOh2K8+WpOnzGQ8os8ZR6yv/iEEtlofrKKpN+Jbo6jK7ZdAv5rxqW2QmhHCIDA84s+qlGGuSANjS8JTQ9UZNBtaZeazbgKarHhZUKeUTKKXWkNM7Ptfj6EbJgZCwxsZO3pnUaxvHFSRkIMY1CgZ/MuHFhWZlcB233XJ5klMkYTMaJQiDxoUXi0ZW2pR2LsK+t23MLUOLxRUXUCXqnnEK29BRYZ3ZSt1COyVUu9hMmHKlx6CdHe3MYNs8OyF8LTsYUXDmTrqa17zLaB9w/FiOIaQ6zntulhJpnF4XRog2+jzMn/CVYBQlcZMMU/UaSMNxc5O8VQVDaTM2ha8deCexDQwjsa23LJAEkjFIB0E0w9gxve2LvXwjDKLRKFeAtfPcW4aL4twWY
+ 2pUP4P5P
+ DjLfqQD5642bTP+lbDGuAAmFF1Rbzbm7TV8DBOSvqjNPOSoxu+zEEKpINjE0S3//QEoxS28TQpcUc0oRTzKKBSlmAydlmZcBqo+5gzvca3nhQrsRHe3ZF0P4dJIVDuczNzj7PJZP/DUZK5c1Zs3Pkrx9m8YIanHgz7ix/L3W4HDmGTm+oXS+8XdV1On7B4nVA3g3l6flwt3oaIjTo4T5by8uGFNXpFW/QKczF7qPBm6aOxY5CDjM6BYwAgRZ7EiEoxftUyIogLGSF2pfSOQZBtMNlI9ajqj8LCNWIQqWJJygVujzRFqwUZjUbEXA8pLyw1YCDuBsESbvQuJo1PjOAosSuN505WQif8JqGC5dEJXOZXrDnzREItseMVwEiWUApgNgS0psKgax0rGEDfuivqD7axXOTzfUjNe3VnYwaPrZ2/9lSZGrseORxJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,78 +126,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-13 Mar 2026 09:05:37 Pedro Falcato <pfalcato@suse.de>:
 
-> On Fri, Mar 13, 2026 at 07:17:17AM +0000, Josh Law wrote:
->> 12 Mar 2026 23:22:48 Pedro Falcato <pfalcato@suse.de>:
->>
->>> On Thu, Mar 12, 2026 at 01:45:31PM -0700, Andrew Morton wrote:
->>>> On Thu, 12 Mar 2026 18:40:53 +0000 Josh Law <hlcj1234567@gmail.com> wr=
-ote:
->>>>
->>>>> If kmem_cache_alloc_from_sheaf() returns NULL (possible under
->>>>> GFP_NOWAIT pressure), mas_pop_node() falls through to the out label
->>>>> and dereferences the NULL pointer in memset(ret, 0, sizeof(*ret)).
->>>>
->>>> This is such a glaring bug that I wonder if we're missing something.
->>>
->>> According to my local copy of lib/maple_tree.c:
->>>
->>> mas_pop_node() - Get a previously allocated maple node from the maple s=
-tate.
->>>
->>> Note the "previously" :) kmem_cache_alloc_from_sheaf() can only fail if=
- you
->>> run out of objects in the sheaf.
->>>
->>> So yeah, this "bug" looks bogus.
->>>
->>> --
->>> Pedro
->>
->> Hi Pedro,
->>
->> I see the comment regarding 'previously allocated' nodes. However,
->> mas_pop_node() explicitly calls kmem_cache_alloc_from_sheaf() with
->> GFP_NOWAIT. If there is any path=E2=80=94even an unexpected one=E2=80=94=
-where the
->> sheaf is exhausted or the allocator fails, the code immediately
->> performs a memset on the NULL pointer.
+--kq7o72d73feieu7p
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+MIME-Version: 1.0
+
+Hello Qi.
+
+On Thu, Mar 05, 2026 at 07:52:48PM +0800, Qi Zheng <qi.zheng@linux.dev> wro=
+te:
+> To ensure that these non-hierarchical stats work properly, we need to
+> reparent these non-hierarchical stats after reparenting LRU folios. To
+> this end, this commit makes the following preparations:
+>=20
+> 1. implement reparent_state_local() to reparent non-hierarchical stats
+> 2. make css_killed_work_fn() to be called in rcu work, and implement
+>    get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
+>    between mod_memcg_state()/mod_memcg_lruvec_state()
+>    and reparent_state_local()
+
+
+css_free_rwork_fn has() already RCU deferal but we discussed some
+reasons why stats reparenting cannot be done from there. IIUC something
+like:
+
+| reparent_state_local() must be already at css_killed_work_fn() because
+| waiting until css_free_rwork_fn() would mean the non-hierarchical
+| stats of the surrogate ancestor are outdated, e.g. underflown.
+| And the waiting until css_free_rwork_fn() may still be indefinite due
+| to non-folio references to the offlined memcg.
+
+Could this be captured in the commit (if it's correct)?
+
+
+> --- a/kernel/cgroup/cgroup.c
+> +++ b/kernel/cgroup/cgroup.c
+> @@ -6044,8 +6044,9 @@ int cgroup_mkdir(struct kernfs_node *parent_kn, con=
+st char *name, umode_t mode)
+>   */
+>  static void css_killed_work_fn(struct work_struct *work)
+>  {
+> -	struct cgroup_subsys_state *css =3D
+> -		container_of(work, struct cgroup_subsys_state, destroy_work);
+> +	struct cgroup_subsys_state *css;
+> +
+> +	css =3D container_of(to_rcu_work(work), struct cgroup_subsys_state, des=
+troy_rwork);
+> =20
+>  	cgroup_lock();
+> =20
+> @@ -6066,8 +6067,8 @@ static void css_killed_ref_fn(struct percpu_ref *re=
+f)
+>  		container_of(ref, struct cgroup_subsys_state, refcnt);
+> =20
+>  	if (atomic_dec_and_test(&css->online_cnt)) {
+> -		INIT_WORK(&css->destroy_work, css_killed_work_fn);
+> -		queue_work(cgroup_offline_wq, &css->destroy_work);
+> +		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
+> +		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
+>  	}
+>  }
 >
-> And? This does not happen, simply. If it does, your maple tree is hosed
-> and, really, you're not recovering from it.
->
->>
->> Even if this is a 'should never happen' scenario, returning NULL is
->> safer than a kernel panic. As Andrew noted, the current structure
->> allows a fall-through directly into a dereference. My patch ensures
->> we handle that edge case safely.
->
-> ... and now because none of the mas_pop_node() callers ever checks for NU=
-LL
-> (why would they, they preallocated those same nodes before), you safely
-> dereference NULL away from mas_pop_node!.
->
-> --
-> Pedro
 
-Hi Pedro,
+Could this be
 
-I see your point regarding the invariants of the sheaf. If the
-pre-allocation logic is guaranteed, then a NULL return here implies
-a fundamental corruption of the maple state.
+#ifdef CONFIG_MEMCG_V1
+		/* See get_non_dying_memcg_start, get_non_dying_memcg_end
+		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
+		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
+#else
+		INIT_WORK(&css->destroy_work, css_killed_work_fn);
+		queue_work(cgroup_offline_wq, &css->destroy_work);
+#endif
 
-My concern was primarily the 'fall-through' structure which makes the
-dereference look accidental rather than intentional. However, if
-the callers aren't prepared to handle a NULL return anyway, simply
-returning NULL doesn't solve the underlying panic.
+?
 
-I'll take this as a lesson in understanding function invariants
-before jumping to defensive checks. Thanks for the technical
-explanation.
+IOW there's no need to make the cgroup release path even more
+asynchronous without CONFIG_MEMCG_V1 (all this seems CONFIG_MEMCG_V1
+specific).
 
+(+not so beautiful css_killed_work_fn ifdefing but given there are the
+variants of _start, _end)
 
-V/R
+> +#ifdef CONFIG_MEMCG_V1
+> +/*
+> + * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race =
+with
+> + * reparenting of non-hierarchical state_locals.
+> + */
+> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cg=
+roup *memcg)
 
-Josh law
+Nit: I think the idiomatic names are begin + end (in the meaning of
+paired parenthesis, don't look at css_task_iter_start ;-).
+
+--kq7o72d73feieu7p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCabQ5zxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AirbAEAllLIHOekP42qBXcY9SXM
+HI9aZuWe5shsjcP4rBnHz2IBAMq5mCPASHGfKEP+tb8nLIzv/PeBVFYEJSxL39zr
+N9oG
+=/sfd
+-----END PGP SIGNATURE-----
+
+--kq7o72d73feieu7p--
 
