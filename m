@@ -4,145 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14FD0105F7AE
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F07BC105F7AE
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 14:28:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FFC46B0088; Fri, 13 Mar 2026 10:26:19 -0400 (EDT)
+	id E83BF6B0088; Fri, 13 Mar 2026 10:28:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AD3E6B0089; Fri, 13 Mar 2026 10:26:19 -0400 (EDT)
+	id E31896B0089; Fri, 13 Mar 2026 10:28:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 085DD6B008A; Fri, 13 Mar 2026 10:26:19 -0400 (EDT)
+	id CE95D6B008A; Fri, 13 Mar 2026 10:28:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E91C46B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:26:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BA491B6F76
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:26:18 +0000 (UTC)
-X-FDA: 84541264836.09.DA71E7E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 259DC140008
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:26:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PeAS+waH;
-	spf=pass (imf23.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773411976;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BA9386B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 10:28:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60DA41401D3
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:28:14 +0000 (UTC)
+X-FDA: 84541269708.17.176514F
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 440B51C0010
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 14:28:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="OXGhQUx/";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773412092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cHgUOdstFRXEITYlGgY3DjCI5zusFpP4mQmBTm8g4tE=;
-	b=q8sPbEKslFVw5Q0o5P7O1a3V61nK9DqtCE5gPwcV7m0UJp+XoSaloon5e2EnVi9f0ZTTpj
-	YA89dj4sUdMCngCIzcHxAHOgoBKktNNoat4WJ2AZdH6LRZtRlH3UYOpO66IjkQr3g+Wy9y
-	Lx9Ho9Jr9Un5TlYFS4/W92dU/2ncQ5A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773411976; a=rsa-sha256;
-	cv=none;
-	b=FVP7+QjnhjbpmnZCm+n7YYJrzblMUbJUm5YztxkzPFopTaq1HeKYU3GIBqlm0y9HxrC+zs
-	4tbhYYE3GceuUriJWCz84EpJwTDTfvWfl8wWBMMKsIB2dcOo2JoR3+3/JwV7XhOKzagWCR
-	figNU/o6xZ+rQ0GuvNCqMYKPLbJjh9U=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PeAS+waH;
-	spf=pass (imf23.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D70tIW2533623;
-	Fri, 13 Mar 2026 14:26:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cHgUOd
-	stFRXEITYlGgY3DjCI5zusFpP4mQmBTm8g4tE=; b=PeAS+waHZCe+gRpC7rst33
-	/ypJ0yEBn6Sqly7InNjbZjZF4CMRZiasBvQ5gJVggi2tzT8N/BjCJABjQOU36om3
-	s4p8KeSvUDs695WcC0C8jLCes95jxkT1Sz9r5PRRsMRjc0X5y5YYPWd/9PeENmBr
-	RwiN06qLd2tXQWBJKjuW6ZonBdYNrKkjPj/Qc0lWuBDjig42lvJVIeNQiBZdJfii
-	njPLOBmU6dh8OM3aGMZnG1bI7x1VURfDKrlm6/voMFSPm27vLULsR2isuJlQwHiJ
-	IZje9zSqHc6iAFkyC+aWHGJnxAELndNy23qclzF3yKfEbNDoq6KUqE72mMUui9JQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh96fxv2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 14:26:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62DASuWI014748;
-	Fri, 13 Mar 2026 14:26:07 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cuha8f042-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 14:26:07 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62DEQ7OY24183498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Mar 2026 14:26:07 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EF4D5805C;
-	Fri, 13 Mar 2026 14:26:07 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9AB4458051;
-	Fri, 13 Mar 2026 14:26:02 +0000 (GMT)
-Received: from [9.39.23.217] (unknown [9.39.23.217])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Mar 2026 14:26:02 +0000 (GMT)
-Message-ID: <0e9cea41-7c49-446a-b67b-256584960516@linux.ibm.com>
-Date: Fri, 13 Mar 2026 19:56:01 +0530
+	bh=3DhJJ93cKQQk3SpyT61kIFsBKzCFpwnhRvsErphsARo=;
+	b=eUN4TjmWuXx3aAwXVhw43mE+9XV38kT3I9QFNMXmG+eHrce/v4U2Xh4DiWvIsarcMXyhR3
+	+d1HtY2tgUmCztFIJf72zxc5iJTb33paoWwoPXsHxfobSkoP0OQz5A1MojGuR/v7hmwjV/
+	Zinaq0d+P26AVY5Tp7CI4ebNJMYB2ok=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773412092; a=rsa-sha256;
+	cv=pass;
+	b=rigEiKTVZG1jjQVAzmtLtF21D+jYHNhYJwLmobBjskJB9wdgdkHwwLITYGAah9rekotkMT
+	aWo8LNI3b6UAcQdNtWDA4crB+SUSt/vI9dLJrUAwO1v73NNwIz+9su+r5r1btpkQ6MnLZM
+	LKrDh8qW+C3lzLIbPzAjOaeEXlhBR4k=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="OXGhQUx/";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-660dcafc85aso4222418a12.0
+        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 07:28:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773412090; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lv4yszPkHTMJ1TzOY5CxvYVQwPMDGrwA21zewfS4r9ww+n7QW9+5sdHN8LGnRk0bkx
+         2OoCLUzUnFPa9d8Kza0OLiOAhA9mSqJmLvqq90+Jm/7bNuqQWephb/6j7zuLJTSREUUk
+         /dJXgVy+MHNwYTP2tYXJsAh/JoiUNAnq4mWc9c7jW6OET1F357RIiTGBdroE/LUj87+B
+         Vi2wHRkKINpq+0jJiBJdGKjXbY0jK38ob8IWravLJ5arU2LJm7RQGYQ+FXhfNhp/vXdy
+         QHxPnKCV0hbURz1xhzJaaqHaib6jdC8LZNwGIdRbiqXXPZCoZpvkaF7NEqYXa1nqjIMF
+         2CiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3DhJJ93cKQQk3SpyT61kIFsBKzCFpwnhRvsErphsARo=;
+        fh=qOCGiIsH5IxisvmCxCkWf9A9Kc/6swiHxcD/hOxBJhc=;
+        b=I3QBi2k/v8YLB37D/3CmmOVHMaNT/RyvaIGWnVbS47B/FvxTAeP3mxHa5o8Ts+IR4R
+         usuuaWRbcUJydoIF/Q38F/zALDIdRBpHF0gzog4Jqy11fyty7Jmm5mYumXLonrSt/xqc
+         NZvDM/4GhHzKnQEi7UvGTHOmU0jcQfcT5j3DuypCncj6yPyFkHLMuuk/SCxxXR+hrOME
+         2jBYyJ4Jbz7Gn3/fnAJufzxB+EDOUMlNSwTKYzSQnlUnJmw8LbN0ZNJPYZV0LPgM9THh
+         TOiUCaxotC0RDRyn1Rd/S8/RknotlSKnFatG6R4GVLMf6Q6sRb0oeoDv8QNATQwI0fU9
+         ZIEQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1773412090; x=1774016890; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3DhJJ93cKQQk3SpyT61kIFsBKzCFpwnhRvsErphsARo=;
+        b=OXGhQUx/6UItoiPBaMInika8SBKKEJfjmViqz0SA9nLH254tJQuE6zSdnzHdb+D3Ko
+         t8F3VclTV7wKnddGuoBkQgM5lA6HSDZfFc3LcF0UInNt0wlVv9Dn2P/bm7OANAZgm0LC
+         nhGGEg4/qH8i5nYfupgYmKVb+q/zRmfO+tWe1LoMJgtaH2ajcMlJc8ep7s4Kx8zzbB1C
+         DU7w3N74EOSFKIDGF90xc8SoRHi4S7P+0XrIFvqy2FEDIntP9IfuGFCaKWgMGzanNrt6
+         /UzMo4JD+b7rXTYgRZi0BqkVNKdTNqi5UDI5E8sVSc316LSb7TdCa75hNfjus8L1rzdt
+         a8Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773412090; x=1774016890;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3DhJJ93cKQQk3SpyT61kIFsBKzCFpwnhRvsErphsARo=;
+        b=liijkuK/V9mPgUjmBXv3Y89kaTFAiDn+CZGk09KUnQGQoqRWB5TLnDZ7c3x/RL+QWl
+         yFTSJSwfDMS39C0IV1/2xWS2MsWi9dkQD1twzfrRKzTXhBnsn5SFhyuhJIMogc0mbjVT
+         GXBF2P9BkfMvtEf/YKx2ADbSCzXFRGlxDOsr/rQnfYoboNJefFw5bTFmTKELnRv5tDuk
+         OIYD7ajNdnUceIn6nxFwliY6EDfJH/ezsWWjy0tIGh2SRv0LsSrN8chxct51f/z7Rq2c
+         qgi9EyPwANR281nHAempldSM3ciC8SYozgPCrdL/khAfKmCtd+3rh3dUpN5IzwCE+MGx
+         iFCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDXCO/P9AjargmzZtCO1+dc3WvTXB80rvV0QTGU1Qcm4rwCTA9OGaiZ3A4KZsV92/gRROji5t6Hw==@kvack.org
+X-Gm-Message-State: AOJu0Yz1rwD/tbl1uvKpj4qlpHMcP8KdQ2CSnKlYTsmxogbRgVK8WOFe
+	ErSiKuxvDJoF12c46bjxpoT5zZB0Qa/U4mf29JX338CE18KzBgDUA7P8MYFLAuuoPDcOOQaiDJx
+	5Pv+myy6Z9eTMtb6KiFGpXxClLU7xWbq5GZf6mO2udQ==
+X-Gm-Gg: ATEYQzxtLe/6Px4LnmWfuEvyp1ThqC7/B+BhjcRBvoRp9NzK2oQs+vVt7Er6HJEGfcx
+	tVbPoQn6bmpGtmSRQIcWfoWx6HJwJb116+lplJeRijhWEpH6U8kEDdt5vB2/J27A60MfWcoA7Dm
+	tx0OnLXIw7jyy6+5LlzI4itgWglI7ZDWgopx3Hv/hFP84t1qezUUbtB6Gke1BZ3SKmnhy3WS0IF
+	owQqT7UJ3JJMxXHo53V7jUQEYw8tFSvi6JWHNIfl33ZM3uJNaIxM/Ldj9Z86XNRtJ4q4q+CdRfp
+	nB8WZQfbfmPAGy3Ti6824EW2zsg0clK6rGtMNg==
+X-Received: by 2002:a05:6402:35cd:b0:663:8be1:3649 with SMTP id
+ 4fb4d7f45d1cf-663ba9b776dmr1936388a12.3.1773412090104; Fri, 13 Mar 2026
+ 07:28:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/13] selftests/mm: skip uffd-wp-mremap if UFFD
- write-protect is unsupported
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org
-References: <cover.1773305677.git.sayalip@linux.ibm.com>
- <ed23ff57a80881c9d087d22709862af40addf49b.1773305678.git.sayalip@linux.ibm.com>
- <457dddf1-04ec-4d1e-8640-b04997fac4f1@kernel.org>
-Content-Language: en-IN
-From: Sayali Patil <sayalip@linux.ibm.com>
-In-Reply-To: <457dddf1-04ec-4d1e-8640-b04997fac4f1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDExMiBTYWx0ZWRfXyFrqHXKrDTlG
- bzQvlTv3Cb2GKRRUrNjAU6EuIDJ461ZhAr/WMhxlpJSDafWfDGonUbvbiQNF9xdVvPuIzEeS8HA
- apyqevWK40VZEbtnabkDiEE92kH3VR/xbJMWtbS0s0Uou9SPKcIqJwP5JzGFsB9Xk4nkxapF3k8
- vKAqtr8/43BK3DQXMOOEo0SwiRdyyShmPOv41cWERTzUxLAoBhMB+JZvrbSQNqlC6840avUtqw8
- 2rXOBboz9w/JSBsFJ0umqNOZ01FHDJDEroX3uCbLe0wnTM4caXPSlcOOhXbA2iQ28oEvuZwwXtS
- updEWv4IpJLxckm3U6xkvKnkkzznaj+1Cl3GtawakHiMSSHNhvX87VnNVdQwlSCUmjpAiSFFfSt
- VjMChdvegxscTvl0BIS2uwxir/rJsV/cxoer8fCoU6Oxc0+a+/nGTwfWhanQlnX2MVfs+rwTA/D
- mS+yql/XKIykP0JGJpw==
-X-Proofpoint-ORIG-GUID: BzLx54M8v8O-Pi911du9xGBNDUIkuQC0
-X-Authority-Analysis: v=2.4 cv=RLO+3oi+ c=1 sm=1 tr=0 ts=69b41e80 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=Ikd4Dj_1AAAA:8
- a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=PItrhlCilDZ6J6cGNoIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: wqVStvOSDOc9kufZk6OpbR-pzgZSWe-l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603130112
+References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-8-dmatlack@google.com>
+ <20260226160353.6f3371bc@shazbot.org> <20260303210733.GG972761@nvidia.com>
+ <CA+CK2bDADhFcMVGoJew9RoJ-DsVhYhiZJGJVwfzTBZdGX++8Ng@mail.gmail.com> <20260313122525.GB1586734@nvidia.com>
+In-Reply-To: <20260313122525.GB1586734@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 13 Mar 2026 10:27:33 -0400
+X-Gm-Features: AaiRm524CkK4OBTNvXFWcAvWcl42dW_YCeYpiFYkXzW17TUn9itgLI7yXbb39d4
+Message-ID: <CA+CK2bD2ryZsvgono-5Yg0jwwCa-p55wefT=hn3DRsDJVc0ADg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/22] vfio/pci: Notify PCI subsystem about devices
+ preserved across Live Update
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Raghavendra Rao Ananta <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 259DC140008
-X-Stat-Signature: hz4r9ceamc7p31f7awfqbaw4hnnr173q
-X-HE-Tag: 1773411975-584079
-X-HE-Meta: U2FsdGVkX1/lwZBgsQnSovY6j4VTAk5Oih6cZyQPIYgAHjAUj4U/ybaza1iIXeQENUbue+YHMqhx+rhv/4fI4NWraEPx3WQtr9HiNTctJ7qLUJK+DLXEZVe5ZoF7yLQett2GacqW9hrl25rUGOKE0WOszv7qO1q49KbnjiLOPn54t7oltNDkF4Pi4T0zyIs7NyyjAkHK6CmgMcYI+ULvfJM2qercpF/lAx5eNJTgLVUcI9G7gjYtrcOPKXovuwR13Ldz0QWmswqIf+mFxmF46Zxj8oREjD9bz2kiBX+P8JUyPhIv0IZksQip73BIncZp/rB3neEsFPE3VJyheWlN3gY0dH2gy2iITQf3HkbBR/f2IOQmHZAkvgTXMhPOTcYkMQfxQTY90AHShyD2XZcFUthwKY1gytPV3eebD0T9AZps7aGY0y/OaHhqKC0mwaKm2uh9qmreoBQFlGDIb58X4ZfxZfQ8/OfbwdfD6ay0MLIeJDNwvTuqDHCENbMX36NlmWWFtrATDVpVBhI2k8sLeXdNZ8hzNrRinnVs5gvxHue3LbThAs5j9+ofTgXRD1hUs9tYQyEakJd2qP7ruwfcvmRO/DKKiHivDR56Mcl9GbPtZmKS5q18jx8mF1oRLMPoaZcz7tn9kymWSCeNVOsdLxH/AWfygv3Dr1Usat6cffxc5nCK8btZKfgzQllzNpPmzvnvO9/Q4JMMrdZ+MSGry7k9hoKAMNJPVSJbhodba2r3irYJqQQeiBl+8bFKOLDkQO0g5p1yEfwIEmgtK6o+VecBWYAU551apRi4O1a1lxjetP2US3on79hvZjP0IK1Z9aHO+ioWS4IWHTX0O3F44FyR00cz2B9O1t7worJqOR+XY4VhgHEpW1VhFhf6lVSMw0XK/mf0xFF8vY00sSEzsaBYacmH9dI0/2R47SaFYHKrCogQItr3q+4pMz5D4gEmCXR4IYPcLbbLR39jZ2G
- LW8VeQ2X
- OAR+XMepLmWQYpnRT5loCizdl8gGHKdIAzU41H1md/qZP6GJV8RorRjxfQNvgL0RM4py2SFkE/PcUy1xt5+B79Ustcrr75Y8NJ0r72mxhmxplI/Ux1gbqZZyzMs9T0YNa6NBJBNZJBjAiLir9DowLMUN/DW5ImvPHZTPd4XPdajxOcDTEQrlFiSRXY9tOPIxscGsau/gWmOmUneBfuzzrCdsyhym7OdxPSqKnXY2gkmurox/OC6xjEYyhc5r8C65zm7b7X2D98TdP7/Ws4dGIMhXNH5s2OtxrY6E/3+sRxi0EXvd88xaNNdWyIvC7nNZWE+0PYwg2kagQV8ynH8/UXqKQ/RyeVRh+GtD3Z39LnQ9K4WC0RbvnKpiWmg==
+X-Stat-Signature: 7mm7m5fwgws3zii8zeio3wxmtcrpjonn
+X-Rspamd-Queue-Id: 440B51C0010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773412092-641963
+X-HE-Meta: U2FsdGVkX1/g+Od2OywZGIv7CFS/g9Ou6K29iTrdoXlQq8s9yvJBBikvtVelixXLYB0ObIFxX3tw9zOgwcrJN3TsKvpZqE21T3NmxSENbpAZlzLD5DM2pfcrNdhnKkEqX2Qh6tmWqCWYJSlnoimDLGNwIKxeCGTLBQ5/NxhJ2T+RuwusrQFoqsjQ6sZUh4nY061Z4qxGNbNi5sBvbFflLNKl1wiimj72kQHLIF+8AR+whqaYetFXvRLIgSKyrGPCRimeJE6j+JhYhLDIvVYFgsttfB+hAKyLaz006hBLXHkyXihNmrfn3SOiGgtQfz1HmE7lSWkALEbFl/J0l1VwwMWpuMbMHrEOlUo5JLhdyjdDLO2lvc0lqQKa2sMwns+GQ539DLCqT53uNQwoTUMiUtygt8eVrmhb4WNkDAr0kY+cxY2W17H+eVoSzx2TARpAZzeeDbACrXsM0xL7JiUt4Wxr4mpoE3gA8joGzlX17tPi50cthxf65YgJbVfJ9898flt9bE7t9yQzoaWnC5Cys6I3lMHuSTYf8RrLo8Cku4flzbjl6SW+p02TbpISRojzB9sSWjDj75Oal+6RiZzHgd/KQZTKJukeSvio/LnRqDwPgi7OhmhjNyuoZqtb0DojYYEDqkSI70AsaWf8FCxpejy0DdYSEaeDqAZQJ83LGyIFDW214HXGZKCJb+L0qX4nVyAsHooi/yWUt4MlNaJWZSWpqJc4CZczPa+/O9bsHhgPyo7aUL8zSMaO/96veZIBb6hPG2lmKXrxfPoAegX7ZWGVetx97/YnBLy6jw/cXLEOG7/5rFVHGc1vlU/uDYYyUlWKFU5+0q3iSPFwfdZV0eidyJtnybsHOzZFMlVa9UMHyyogkacGsOSy1hibnhkchyM2rYvkEsbLB0IjOiEUi7YjV4kqJCAwnexCq8ZFRZrNFWR9M33UXDKmZCaIvVC9r2nm2VLWy/iEABcZN1n
+ GRuDa+5O
+ phgCsQQrf16piiLCxPbIFi15U7shY56iU30Ug8pC+Zo0kwHLUq06m+Le3Ui15/B8YXRyVYOQZtosU5DK5QTNFIhUHs72Gk8Jb4bvEbbA53s4iuwopmd4zBnFCWwzXjQOX2K65n9D5/T0uLNhUHPNucbU2ckq19XLmMLcikUFC4MXLli8agvxOUIvGBWR86h8wOHppkjPqfCB6mPqjHYuZXzECjVVXbsM299v3eccEw1LD+2WkkrLHeqgGdP6bFz+JKFUj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,83 +159,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Mar 13, 2026 at 8:25=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
+>
+> On Thu, Mar 12, 2026 at 08:33:27PM -0400, Pasha Tatashin wrote:
+>
+> > If there are active sessions (incoming or outgoing) with preserved
+> > data, how can we safely unregister while they are in-flight? It is a
+> > rare condition, but since the user can cause it, they need to be
+> > notified that unloading the module right now is not a good idea.
+>
+> IMHO blow up the kernel or something in the core code, you can't stop
+> module unloading once it starts so it is pointless to propogate this
 
-On 12/03/26 18:20, David Hildenbrand (Arm) wrote:
-> On 3/12/26 13:25, Sayali Patil wrote:
->> The uffd-wp-mremap test requires the UFFD_FEATURE_PAGEFAULT_FLAG_WP
->> capability. On systems where userfaultfd write-protect is
->> not supported, uffd_register() fails and the test reports failures.
->>
->> Check for the required feature at startup and skip the test when the
->> UFFD_FEATURE_PAGEFAULT_FLAG_WP capability is not present,
->> preventing false failures on unsupported configurations.
->>
->> Before patch:
->>   running ./uffd-wp-mremap
->>   ------------------------
->>    [INFO] detected THP size: 256 KiB
->>    [INFO] detected THP size: 512 KiB
->>    [INFO] detected THP size: 1024 KiB
->>    [INFO] detected THP size: 2048 KiB
->>    [INFO] detected hugetlb page size: 2048 KiB
->>    [INFO] detected hugetlb page size: 1048576 KiB
->>   1..24
->>    [RUN] test_one_folio(size=65536, private=false, swapout=false,
->>    hugetlb=false)
->>   not ok 1 uffd_register() failed
->>    [RUN] test_one_folio(size=65536, private=true, swapout=false,
->>    hugetlb=false)
->>   not ok 2 uffd_register() failed
->>    [RUN] test_one_folio(size=65536, private=false, swapout=true,
->>    hugetlb=false)
->>   not ok 3 uffd_register() failed
->>    [RUN] test_one_folio(size=65536, private=true, swapout=true,
->>    hugetlb=false)
->>   not ok 4 uffd_register() failed
->>    [RUN] test_one_folio(size=262144, private=false, swapout=false,
->>    hugetlb=false)
->>   not ok 5 uffd_register() failed
->>    [RUN] test_one_folio(size=524288, private=false, swapout=false,
->>    hugetlb=false)
->>   not ok 6 uffd_register() failed
->>   .
->>   .
->>   .
->>   Bail out! 24 out of 24 tests failed
->>    Totals: pass:0 fail:24 xfail:0 xpass:0 skip:0 error:0
->>   [FAIL]
->> not ok 1 uffd-wp-mremap # exit=1
->>
->> After patch:
->>   running ./uffd-wp-mremap
->>   ------------------------
->>   1..0 # SKIP uffd-wp feature not supported
->>   [SKIP]
->> ok 1 uffd-wp-mremap # SKIP
->>
->> Acked-by: Zi Yan <ziy@nvidia.com>
->> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
->> ---
->>   tools/testing/selftests/mm/uffd-wp-mremap.c | 13 +++++++++++++
->>   1 file changed, 13 insertions(+)
->>
->> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
->> index 17186d4a4147..73d53a4da389 100644
->> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
->> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
->> @@ -19,6 +19,17 @@ static size_t thpsizes[20];
->>   static int nr_hugetlbsizes;
->>   static size_t hugetlbsizes[10];
->>   
->> +static void uffd_wp_feature_supported(void)
-> Likely that function should be called
+I see, I will send a separate LUO patches to make unregister functions
+return void.
+
+Pasha
+
 >
-> "check_uffd_wp_feature_supported()"
->
-> Because right now it reads as if it would be returning a bool.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->
-Thanks for the review. I'll rename it to
-"check_uffd_wp_feature_supported()" in the next version.
+> Jason
 
