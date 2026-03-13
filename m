@@ -4,170 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA0C6103E302
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9374103E302
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 00:10:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00DCE6B0095; Thu, 12 Mar 2026 20:09:31 -0400 (EDT)
+	id 27A5E6B0096; Thu, 12 Mar 2026 20:10:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23B66B0096; Thu, 12 Mar 2026 20:09:30 -0400 (EDT)
+	id 223CA6B0099; Thu, 12 Mar 2026 20:10:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFC706B0098; Thu, 12 Mar 2026 20:09:30 -0400 (EDT)
+	id 150D26B009B; Thu, 12 Mar 2026 20:10:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD9FB6B0095
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:09:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EC221A04B4
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:09:30 +0000 (UTC)
-X-FDA: 84539105700.26.FCFECC6
-Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 68A3C4000D
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:09:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=nmFe2jtL;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="G 5Cai4k";
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773360568;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id 02FF46B0096
+	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:10:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF0431404F9
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:10:20 +0000 (UTC)
+X-FDA: 84539107800.08.343660D
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id ADE5F4000D
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:10:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="RuWCRJ/c";
+	spf=pass (imf12.hostedemail.com: domain of r@hev.cc designates 209.85.128.175 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773360618;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KgAiLbof0iO8cGF8i0bS3fRoWLrp1RkGsUr3z87f+QY=;
-	b=nMJNidu8FYRbC1JLBJ6QeySnqPOQIYtP49tsj47bprvRul0AEa74UxSlYvH+LyoV1nzSak
-	vdwGGXW6U5l164PijEXMs4QrDX/uJAmBpmYP8bDJxe3o0EjiCnxx+POJAoPk4LA7yjHh/T
-	4BR1BV1kNT9KniLWE19Je71qXV3E9sk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773360568; a=rsa-sha256;
-	cv=none;
-	b=iTrbJW2dapQZ3F1BMbDAGLVPUNBjUVw5EU+hMz/8HmmsFmvIgIUAUMCOlmTJfoqTwlv2eU
-	YgWxOt8RNf0cjun44jCJE/hYd3sMpSny6gZz+HL3+H84eu4ujn1+qeCP3SR0W6EmXgfLM2
-	VkPdDpDrKrhEEHjkXVCvsaxdnCrJDn8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=nmFe2jtL;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="G 5Cai4k";
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id 453521300F4D;
-	Thu, 12 Mar 2026 20:09:25 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 12 Mar 2026 20:09:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
-	1773360565; x=1773367765; bh=KgAiLbof0iO8cGF8i0bS3fRoWLrp1RkGsUr
-	3z87f+QY=; b=nmFe2jtLyLr+7u8+TDKRncwnQQgfmtMxU9rW2fcZXcAX5N/O+oK
-	mkTcvLt2tGqnfh0yQZ9VxfeJXHOmQK3xmRCh0WkZO8z+9EbGkHt1EK+1v9oEDQFk
-	yjK2H4B7GbHLcXZXF6XJNsP5Q5oExxA0/3HptDHC4Yo7bGMxV66pr3UW7B9oRSB4
-	vuiTbATRXYBbLXhvd6Op9YEKWgq8ir7OPi6JV+oRhKZvn8t8u83ENmYYrl/BoZV0
-	FrCRFffyXHlTGaGOZ5VUzpnpHtLR7Cp1SV1LfUlzqP/nSXhBI3LJq0G6aafkvcXQ
-	H921q+OqQ7yY81EaudsM9yPaG6U2Be50mTg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773360565; x=
-	1773367765; bh=KgAiLbof0iO8cGF8i0bS3fRoWLrp1RkGsUr3z87f+QY=; b=G
-	5Cai4ktm8ZYp5XyzSdEJarMpSfeXDzWAL8MTxUvYBQ2hpUgY3TIWYBA9NiTzGeNa
-	5E83ul9G/GPuOexqHFwoNmE5Bf87gj016HXSgb9HA2ajcfY5cLlR/6Scnq1+bMSy
-	L/Puu8DC52gTGANh4qz45QluS+yFcFx8cBkqURrLJFH5bOAyWf/oR6Uo1r93DRwO
-	ChU+IBist6Pp1G8vs9yINCx1pw7Dl8SVJBTw/u/RobXjWABJlCOcI6SzK3FmMqVv
-	JWB6ykQWBhykIIJXXf4XNnPkhW+lXc0X5IwRHItIgUJymc4RMF52UynxsiryvgQn
-	Ohgl8jSg52zXQ1Ht0jvEQ==
-X-ME-Sender: <xms:slWzaeXV7qa1u6neLd6Q1-cVt0VMASr8cnqysAFQocSTAtEfKc0JvQ>
-    <xme:slWzaeSKlwNXuQd-ytFXXY0mVc_-Zjwa4_mmoEgCEIxrE6aOdvb3p8liU_ELdbDzk
-    UaaJ6Rv9sIirpntfCZ3ed2iOF6DIF4YVBR0WyA36tWvjzE7914>
-X-ME-Received: <xmr:slWzadcI0WZE_K5ZNf3p0KQMTKhUmZqGQsTQWME1TwSj7PSSkE9RCFBWyBYhQ55dSIow75rJ91K6-dY7EINULxs6lGnfRrWsj3AxXRa0e5UN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeekudekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epgfeikeetueehudeigfefkeekleegheehueeifffhieefvdegueetgfekuddukeevnecu
-    ffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
-    rhgtphhtthhopeehuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhirhhose
-    iivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehlihhnuhigqdigfhhs
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidquhhnihhonh
-    hfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhtrhgr
-    tggvqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
-    hnuhigqdhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
-    ihhnuhigqdgvgihtgeesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
-    hnuhigqdgvfhhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:slWzaSzNnugwYNYtiVWYHc4qaDBmXyQ51PSSBJ1uiNVJapnS6gluPA>
-    <xmx:slWzaeEAu6gvMjez-LKBYzOhXf5W2TUuXYdFq9RYM3BZ9DviPSnwQA>
-    <xmx:slWzaW4NCFWB-i4WBv0KYxfPr8CoLpfQ8pVU8lId_PRL8FTgtUuCaQ>
-    <xmx:slWzaVHk7pykGSmnnTVs6z84wbljsuc816F1d1tD0LoUWms4qvgBoQ>
-    <xmx:tVWzaRho-xmNtiFafDRGXsj1bH7ybmYtyFLigxgHrazcCccpxnyLB6O->
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 20:09:09 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	bh=62xPx8+aZwJ3Pgb8Nz0+Ol4Bn/gHH5Wgi7mQXMN5Jg0=;
+	b=C1LlvyItRbtXx8WMs/dTl4S+TMw581LmhUUHRlqY76ptfZ3sjbafbgSHz5a+H/YdjtMgx7
+	/400fIdXt4Im3ljyzo2yA1ettpQUL7cbTEHFWQkZ4mvLYKh6rkf/IwCJ/UqNfC1iUumxv3
+	P8yxnKdfLe81oW/zAjTMXLcbLye+v6M=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="RuWCRJ/c";
+	spf=pass (imf12.hostedemail.com: domain of r@hev.cc designates 209.85.128.175 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773360618; a=rsa-sha256;
+	cv=pass;
+	b=1jElG2VYylDBX39WlP4f21Kg91pG34kcrJ4NgYRY4K4+sivaXy3IaMiPpgAr17K1e4/ELt
+	LpgpBOjC3gKMDkH3r6ethW2u5pLAoug7OuhfVMtNndFLaQ18PHf7tJwfl9KFMnbbBYkpIi
+	Xl2HnsqHNwT0uLjRXsbpUjfHNg3a6No=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7986d231b3cso41979367b3.1
+        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 17:10:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773360618; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gI9Ac9ZtAtzZDa8LGDicrbxS4L3vp1QKfOMur+h+0Fyfcgpf/lsu2BO+FaUStksN9M
+         mNQ5Xrof0xNNi3LkkwL5xgSH2EdXIRnTjRqiZzxcGjqWgn3Dh1SU9jUJPgQMvGOoeflx
+         ppCkfXyNd7nPJEuy1JH3FCfw3WFgS/umxLyt0qwQ7TiV+A/bN599icMT+jDMKDnkgG0+
+         +GiFlHKD5f2sIOKwEs9JuR/wp0t61RzdY5GiGlaRNrFvr+Ix+dd+VwMlmdqSaCDHXZjS
+         sscuz2YIocGXizAvJdhSyWcaBHM4Jy0tjNsO51CYhwvmuK+e985TN6oKTxhfg6OOz9ju
+         qi/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=62xPx8+aZwJ3Pgb8Nz0+Ol4Bn/gHH5Wgi7mQXMN5Jg0=;
+        fh=Bxsup95/1VlqPygBx9hwhDEOQI6p5iPIxkTUS0dG8WU=;
+        b=fD7hcMHXAfSrA3sGPhGnL9f68k18tz1E0bFw64YqYSMnamKXvh40EQkqik/8Ar/7vx
+         sTx4dICbMsNqfuYx3dxeof8De+wvAvaKqXJ8KOrNjK7X+DD0v35/zkoCZFpjaVd6vgZ/
+         aItMm1vBPm709BW49oRKsqg2HzMiUGaHQ2n7u/XASyOMuCKoZHvKruT1vDg9Ha0mnDT0
+         xh4yB15EIDf6aRwnU2ipMhc4bO5fa50ddM3MUyE2rYNl19Q+XEILqWqyUqf/nDVIElJx
+         YvvbdWFNq+a10XNuB5w3quT5lMEChNsIo7/QmvR5rfGbXoX8rXR1G3BAqAbU6nNmkSIL
+         Ie/w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773360618; x=1773965418; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=62xPx8+aZwJ3Pgb8Nz0+Ol4Bn/gHH5Wgi7mQXMN5Jg0=;
+        b=RuWCRJ/cxf84DlwHl+f68R87jy7wR/DiUmEX4CUh8UxXctyBsoa307TZLh+PpknU8b
+         tW/XHgM12nPCUc+3dPZfYE5ySvgY+U+M2bNDiMWMzv/uEXXGBrxavM4HCXGsWRm80Pey
+         2Odn8fOj8VIC423uSq0nEbf2yu/x8/SgkWJ8m6L3IF0azefHFK/67yISykhbYnxnuX2w
+         tDeX+6/NJa6FNGiOp2G1kptzWePGJ3nO4EEqvX5V9uADuujyUoyXOt9GfQLP/kIOQChR
+         RbXHVA8+rZu2FOE2030qoX48Ogje+GLq8u/5MLzgYfLQi452Het1Q99VAYbipt0JePRp
+         AbRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773360618; x=1773965418;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=62xPx8+aZwJ3Pgb8Nz0+Ol4Bn/gHH5Wgi7mQXMN5Jg0=;
+        b=IEqM5Xu/VhylhfKvPpntrgfarB4cQ1jDxFmCZvWJXmZIuFBJbGSZ4j47n76xGJL2UU
+         z+gSV+Z4nNVMTCkt/6HrmMrGHbP+sfgrA4CUOuM4zhPhvQkOPMx0o5vz+xgICSVtTojh
+         /kbBwVWTrVZYr/9UYyKK5JJFDM2kAOTPEZfzfeKuCB8pV3UrhRf0SGu/hBKGPQjSUEDG
+         vpPXp8nAnnj1Bzd7tFaP3c61/gOLeNPm1YYMqiWEuLyC1sHndyHZWbaAo8mZ+IgFSqML
+         T45WLX9Ugw3GYFFpkoVi2SIpLJ3InB3ybG/6EhkSLWqnuCbEbF4KCELdN3SwL7Zzbm00
+         Pohw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYi2RA6qj+nj6Pf0mwyaGrDysjHrmtWWFM6NnqjdoMiH+dI5eK3COaVd7XkuWLfCHj/pv5QwXX8g==@kvack.org
+X-Gm-Message-State: AOJu0YxOeVDuomcLMmn43fRf7gM4/Sns7lQJigtoFOAgngUn8lKicoRr
+	HB5KiMLbc9LUji/TQgRmqlba0b4XvbPZ6/5flcVLF/SvvLBuiwIDtjqKPeCTPKniT+FL6vjIc2d
+	jQp7UHmfuQHfvwTXhq14G4Qb65BkZGhxsnlbs6G/bdg==
+X-Gm-Gg: ATEYQzwm5BIHk6aQyXZfFxHmrlVhDVJqEzf2Zp6c5Fim0z6sTfX+YtOA4n6U4UA02NX
+	CCIHc+wOCMjbkwL/PWnq0Ts3Obs2UivA8yKi3MiSzSYGukMofvSIrmr03OqT0CVwDtDaEeMZ/WB
+	Ycrda+c/PQNtamzRj6cQKDYAjU0UUspUab4GLouZG3qSb5U7czyywr2OaCFrkTzHOo0PyVP/z2l
+	7oxwZdhh967fRg/VmlCkz3eWKCOl4ZGpiMrtsF7X+zMprLDtyDubiQwS+Y3ZJ4og5VXLzHOr+vU
+	B2tQURZ9GYkXvpRBrHPdsBcXTeH6qSjsyzxGBewxnQ==
+X-Received: by 2002:a05:690c:46c1:b0:792:7745:72fc with SMTP id
+ 00721157ae682-799475e6f5emr49906397b3.21.1773360617696; Thu, 12 Mar 2026
+ 17:10:17 -0700 (PDT)
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- "Jeff Layton" <jlayton@kernel.org>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Carlos Maiolino" <cem@kernel.org>,
- "Miklos Szeredi" <miklos@szeredi.hu>,
- "Amir Goldstein" <amir73il@gmail.com>,
- "Jan Harkes" <jaharkes@cs.cmu.edu>, "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "David Howells" <dhowells@redhat.com>,
- "Marc Dionne" <marc.dionne@auristor.com>,
- "Steve French" <sfrench@samba.org>,
- "Namjae Jeon" <linkinjeon@kernel.org>,
- "Sungjong Seo" <sj1557.seo@samsung.com>,
- "Yuezhang Mo" <yuezhang.mo@sony.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Breno Leitao" <leitao@debian.org>, "Theodore Ts'o" <tytso@mit.edu>,
- "Andreas Dilger" <adilger.kernel@dilger.ca>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Ilya Dryomov" <idryomov@gmail.com>,
- "Alex Markuze" <amarkuze@redhat.com>,
- "Viacheslav Dubeyko" <slava@dubeyko.com>,
- "Tyler Hicks" <code@tyhicks.com>,
- "Andreas Gruenbacher" <agruenba@redhat.com>,
- "Richard Weinberger" <richard@nod.at>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Jeremy Kerr" <jk@ozlabs.org>, "Ard Biesheuvel" <ardb@kernel.org>,
- linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
- coda@cs.cmu.edu, linux-mm@kvack.org, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- ceph-devel@vger.kernel.org, ecryptfs@vger.kernel.org,
- gfs2@lists.linux.dev, linux-um@lists.infradead.org,
- linux-efi@vger.kernel.org
-Subject: Re: [PATCH RFC 00/53] lift lookup out of exclive lock for dir ops
-In-reply-to:
- <CAHk-=wh92deXvH5iXCo9mThXCBYt-jRcVu=z4kiH-f3+wZQOHA@mail.gmail.com>
-References: <20260312214330.3885211-1-neilb@ownmail.net>,
- <CAHk-=wh92deXvH5iXCo9mThXCBYt-jRcVu=z4kiH-f3+wZQOHA@mail.gmail.com>
-Date: Fri, 13 Mar 2026 11:09:04 +1100
-Message-id: <177336054496.5556.4842794610845842132@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 68A3C4000D
-X-Stat-Signature: icxo4rnotqkgi6j1mm8pcg8jmpk43epn
+References: <20260310031138.509730-1-r@hev.cc> <20260310031138.509730-2-r@hev.cc>
+ <bca4ea00-3052-425b-8f39-729d504fd4db@kernel.org> <7937d789-539f-47db-838f-c153ca6cfc50@kernel.org>
+ <CAHirt9gpZ98HQCXStEQMMfe6TEnSzmD04BM313h2LJGJ1K-hJw@mail.gmail.com> <60ba4311-01f8-4ff3-a2df-e1b3fb6db699@kernel.org>
+In-Reply-To: <60ba4311-01f8-4ff3-a2df-e1b3fb6db699@kernel.org>
+From: hev <r@hev.cc>
+Date: Fri, 13 Mar 2026 08:10:06 +0800
+X-Gm-Features: AaiRm52jdG3nfACWernvRkLmy2s6N34pUBtBRSkEgJDstHEPy6GnGv9garrc1XA
+Message-ID: <CAHirt9gZbKY8ouvPYZh8=i-9Y3honXKApE1Xs+M2RGdNz66nSw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] huge_mm: add stubs for THP-disabled configs
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Dev Jain <dev.jain@arm.com>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: ADE5F4000D
+X-Stat-Signature: ftepfygemsrdozsa1f48wqmsug8qdd94
 X-Rspam-User: 
-X-HE-Tag: 1773360568-31097
-X-HE-Meta: U2FsdGVkX1+uQtoAv2tJTuK2KRgLvcu2K11dAtv0PChg237Df7F0JQTfs9+TF2G6kVnmgZqNKPJ5d9o+rSlq3MyfAb0i45R+TvJ+6k9OwqJviddmgh7nXUh0wLJGq8M7KPEjQ0X/NH9N5bnQSWmjFt9iC/sYeBwU7s4afyi6p/5AWy4mTvvymO/TIOUv3/8tZX98zc5sinK9N8H/XiN7KN2qLTKVTMJ6MtthGB/sm5bIMC20RGt21Yltb0NEW6Yrcd6jpPvor7ZLsZ/MPY7iEEFncaRwOkv7MnjzKcmZcxtiITf+N3UcplPX9LN49384dB0FRqU9HWHgVuf7m2hydwpkqWPW/iNcxwGFj/6d9yNFVqMLXCNND07LB7BRvxomBG1yIXSLPkJxmBn2FE0kK/n/QnP8ZBRV2+eaZYg0q8CCvYLhd1MvvKKnHMJGL7DvsieyY29QgdCPEET6eu5vgzkqeV3oPoY6ZETGi9dpGcTQ3QSqHy1yJuIIf3yCvRkrW0QrupFT+Adj3hJgPprdwchTPJsVLcFXuGTom9wdtkaXy6n+UbaNX7E5NNHRYNohQfO4l/J0jr8ONNNdLmwNKJUsuLbn7KdB8veGdRj1Lxw3TnpKOylr90kLJNl4TMw5Dj3SeXYc2t4glADqy9g2G2GLuIhvO0yjBojqszHY6gqG5dE+sP0+4KvPcECfUNa/9X7MH2R9HLQuYJBMxPsevDBKFjvacvqAp/+pm6rsxl7D4OM1uOBX6hHun2exO2YeqV9OK+lOfYDiNrQfncOQ6OQx3OwxWbC7c0VsFvlvytWZWf+xg2TXk6hxNtF+feIjMbmBWdy4kmOE8uHnoVrx1+jrEN01Yh4JqpmvDPTsATSydGGG1GrhhLYLPl8yh+FD/6dIn7jQ5XaESUlKjW15hQCqvWP0gGDfqjL//1dk+xIotDJvdFanBDIb9f+HfP5R+T6F/LdlN426PUyxqr2
- wKnsz8u6
- yx9pyEE0k5rx6k71KK23WKksVeNY7IpgqIU9haDghcAfmGVIkzT7vfUOmMeTaTENnl/XAOSkyaVfn3xwBswVRBobbPhCKvjksfMoI0jaZYdci6P+1x2I/D7dgczE3gSGt9aD/+kuf5MCGeESA02NXArD+1Ae6RGZ4BqxVzkvoz374a1ujf5dxB5QK2XuWLEX8emZOo5qmNrZZZDvAlMs8ky0fi+QRRnF2Vvqqyf9fLV68CuK86jf0ZHX5k3WRqc8GMeBEH/e532plOOTKQ1JXXMgKc+0/Bw+DiDanWkUmUZBLzufvUdxQlYRhWFsP7VJBu4nxrRT+cMYRnqZR717MTtgwX8qRnMwhf9Nm4QhK0nFzpr/x7DvY+SokL0Z4Bqpg6G3BKgKoTGlqT9zQnunSLSAj6UvI+aea2riNzBhrpWwvfCdGx/BH0atfzjKFpGwf6t8TR1ewuNaiOm8s+ifQ06XkwpwEH6cckkluu6bDmJFcho4hMZPPH7uPwsTjsQMXx1lLOVB9BFeOD4oHeYE8A5J518S1xyPUrgOibKcaWvAjVwfRxs8Ol2jfyDICXwBO5BQq6GQpMevcpLdYRnfi9yOZC18ZrqZcpijCsCpqzNfpiEFDTGoyDx5+TSmh1LjsOXZkQuq3GPnA1bB/E5HHCmbk9uCgjclZBL+72BCqEyaw0eoZI80VRxlcns5EfGrSny7GCFbv0Iwa148Kv+xJk1QBqWG+h+3Rs0zLuqEyYD0NXU4=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773360618-811863
+X-HE-Meta: U2FsdGVkX1+db2Te9WoQRGYxkR3M2SIqmtkCuWnL/5GmAtPOQMf878cj9d/3JOH+vQfeH5wWk486TVQBZUXO70dXY9HQtxA3pk3CpRuvQN9d2K6iasinbHw2rEH7Ud940TyuyE6+MkjxfWohm+w/al9bq9NqJLt4QSLTN9SDgl/a9ns3j6xg67aCX+mgdB1QNVf6XbtVjbU4DdjXiE1OBUcs6rti+I3oefJGXm2nT4/VfPt2rjCM/O5twLtIEsRZmbrtJcASRJuNWPfauGSbPykBF+FgW0v98gTISEUHhjyWsEUM4a44i7BBVRWtV5VTQGW9BPoPc/ujR6w4ij9yUkikSGN0If2mmpy+yA31xJOs8EdHb0fFqrqPDXV/VEOJmLRaOY41RrjF1ze0woUvhYA35o/mZxLSBsW9q6rQkP4wYDjaR01wNuN2+c712XD6xtcoEqont5WnVUgx11a8gyO6kp16VtobuON5y3iaC+cs/haoDgBoKhRhxhT8W1WyCWbPvwG8MsJQ9ljwb4SkDnawJRoPhjOgKFz8Lg6WxI7F45bJEICR9YzLjCw4odxCP/aTNn0P2chBzQj3n7ZZIb57TUHJk6HgOoY5HBwrKGmuO1fwZ64UjYhuQsISlfDZacVIBMhszLgnIHMuUtpg+rbrCy+zGScy1XB8cdYL4mFRBarF/t9yBrjWg5+EPTftU7GxHsGAi4w+H+hcJ/U49shjfHscIGgxDxx1L+a7dwJNzppWXitkB8H/Nsy6czcVWNgEDIr+y86p6iua/Mu5W3yclSlK4vUt+xkqBqvJ+FaKayaQKAO/3RlKnCQUNmsn/mHD3V/6SF8lyQI12nkWyoNfyXa+kFAZyBdG5DGAOpjr/MrsPdF9aKjgnViqO8ivbJ3qWu06dfAoQIhSE8fdm9Ci7ZP0hfzKG/rokF2eRIV3Q4vSF40zOCMzc86rjxIHFPCza/qrZgKAOFf536z
+ CkB6UePK
+ WRjlfPIAxmagWRkEsNw12QrvhaKxH3nG6FJ7RQIr3+kHEamwvZ/emkQ18gJMzCalmk/RgeR9Elap/1OkVvb4wLRA8f1RmCmMTNgr5eS6nXMNDJTXgNKJ7ZFv34GRC0B8zRkFjXGxcpgBlsUrQFxfOdQduLrQFtO/l72Anr2Z84frphPhu9+U5zegyV8MCt/5vZbROb5WSJr+vAxkKGLg2FD0VH9y1lReGAGbytAuNt8bebiiNtU47f0Ks4DUVPnuWGVFtw5ncjK7C63p1hw+1sf/NWbYEWp0SvnT9t17Z6rq1PYXLRsps7d0sJ8d2a1HxgwuSlIP8z5cwU9MeidjRA8qY6zEt2RCoHm/EblfoynY4s54ozJmT2Y5747Nx6DBGou//0NTY+4OQcl8M5eeVjvmIxLX1l7y0ytIbgmV/7Pgt/Ivzx1Fv45xMfqBiAYAiP2aY2BElMBwI+tNBTxlWSoDAPlcGJC/I7twXiDtQoH77xuw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,41 +146,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Mar 2026, Linus Torvalds wrote:
-> On Thu, 12 Mar 2026 at 14:44, NeilBrown <neilb@ownmail.net> wrote:
+On Fri, Mar 13, 2026 at 12:29=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 3/12/26 17:12, hev wrote:
+> > Hi David,
 > >
-> > This patch set progresses my effort to improve concurrency of
-> > directory operations and specifically to allow concurrent updates
-> > in a given directory.
-> 
-> I only got about half the patches, but the ones I did get didn't raise
-> my hackles.
-> 
-> HOWEVER.
-> 
-> This is very much a "absolutely requires ACKs from Al" series. Al?
+> > On Thu, Mar 12, 2026 at 11:57=E2=80=AFPM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 3/12/26 16:53, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> There are other ways to enable PMD THP. So I don't quite think this i=
+s
+> >>> the right tool for the job.
+> >>
+> >> Ah, you care about file THPs ... gah.
+> >>
+> >> Why can't we simply do the alignment without considering the current
+> >> setting?
+> >
+> > The main motivation of raising the alignment here is to increase the
+> > chance of getting PMD-sized THPs for executable mappings.
+> >
+> > If THP is not in "always" mode, the kernel will not automatically
+> > collapse file-backed mappings into THPs, so the increased alignment
+> > would not actually improve THP usage.
+> >
+> > In that case we would only be introducing additional padding in the
+> > virtual address layout, which slightly reduces ASLR entropy without
+> > providing a practical benefit.
+>
+> Well, that parameter can get toggled at runtime later? Also, I think
+> that readahead code could end up allocating a PMD THP (I might be
+> wrong about that, the code is confusing).
+>
+> Let's take a look at __get_unmapped_area(), where we don't care about
+> ASLR entropy for anonymous memory:
+>
+> } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && !file
+>            && !addr /* no hint */
+>            && IS_ALIGNED(len, PMD_SIZE)) {
+>
+> Interestingly we had:
+>
+> commit 34d7cf637c437d5c2a8a6ef23ea45193bad8a91c
+> Author: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Date:   Fri Dec 6 15:03:45 2024 +0800
+>
+>     mm: don't try THP alignment for FS without get_unmapped_area
+>
+>     Commit ed48e87c7df3 ("thp: add thp_get_unmapped_area_vmflags()") chan=
+ges
+>     thp_get_unmapped_area() to thp_get_unmapped_area_vmflags() in
+>     __get_unmapped_area(), which doesn't initialize local get_area for
+>     anonymous mappings.  This leads to us always trying THP alignment eve=
+n for
+>     file_operations which have a NULL ->get_unmapped_area() callback.
+>
+>     Since commit efa7df3e3bb5 ("mm: align larger anonymous mappings on TH=
+P
+>     boundaries") we only want to enable THP alignment for anonymous mappi=
+ngs,
+>     so add a !file check to avoid attempting THP alignment for file mappi=
+ngs.
+>
+>     Found issue by code inspection.  THP alignment is used for easy or mo=
+re
+>     pmd mappings, from vma side.  This may cause unnecessary VMA fragment=
+ation
+>     and potentially worse performance on filesystems that do not actually
+>     support THPs and thus cannot benefit from the alignment.
+>
+>
+> I'm not sure about the "VMA fragmentation" argument, really. We only cons=
+ider
+> stuff that is already multiples of PMD_SIZE.
+>
+> Filesystem support for THPs is also not really something you would handle=
+, and it's
+> a problem that solves itself over time as more filesystems keep adding su=
+pport for
+> large folios.
+>
+> So I think we should try limiting it to IS_ENABLED(CONFIG_TRANSPARENT_HUG=
+EPAGE),
+> but not checking the runtime toggle.
 
-Yes, I'm looking forward to Al's thoughts
-
-> 
-> Also, because I only got about half the patches, and there's 53 of
-> them total, I'd really like to see a git branch for something like
-> this. It makes it easier to review for me, and I suspect it makes it
-> easier for some of the test robots too.
-
-github.com/neilbrown/linux.git branch pdirops
-
-But if you have only time for one patch, 52/53 is the one to look at.
+That's a fair point about the runtime toggle. Limiting it to
+IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) sounds reasonable.
 
 Thanks,
-NeilBrown
-
-> 
-> But again - this needs Al to look at it. Iirc he had some fundamental
-> concern with the last version - hopefully now fixed, but ...
-> 
->                  Linus
-> 
-> 
-
+Rui
 
