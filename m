@@ -4,121 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2E3106FD6F
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 03:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FE6106FD66
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Mar 2026 04:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D6046B0005; Thu, 12 Mar 2026 23:51:38 -0400 (EDT)
+	id 7CDB26B0005; Fri, 13 Mar 2026 00:18:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 081906B0088; Thu, 12 Mar 2026 23:51:38 -0400 (EDT)
+	id 77B466B0088; Fri, 13 Mar 2026 00:18:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4026B0089; Thu, 12 Mar 2026 23:51:37 -0400 (EDT)
+	id 67A736B0089; Fri, 13 Mar 2026 00:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D738C6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Mar 2026 23:51:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 87E318C342
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:51:37 +0000 (UTC)
-X-FDA: 84539665434.04.86DD17B
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8E75B100005
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 03:51:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Wpzu1cUY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of seven.yi.lee@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=seven.yi.lee@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 546336B0005
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 00:18:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3FEA1B88BA
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:18:16 +0000 (UTC)
+X-FDA: 84539732592.06.A1DC155
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 41E3840006
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 04:18:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ScKHz4G4;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773373895;
+	s=arc-20220608; t=1773375495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cnnptNUhMltrKlyMjaLxe5WMhNgNFEdG8YnarRRsgts=;
-	b=8C+45MFC9E1xjC2kqF2lG/gGtXTp1vaxGO/QGGYn2oVhNofFHEwHRZtr3myhvsebd68z7+
-	fICAQrkRaPbNLXXlM1xMSPS9LMyfGAwy46uxRMFmWQjHZH3/OwJSyXU2940yptUcKVfsLu
-	hgCVoU7Rbn7tk0Hf/UVbVo0zLQWhBLE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773373895; a=rsa-sha256;
-	cv=none;
-	b=iewhALwOIMRuVUYMUcV5o9R279h8EeUiLTHDxZOsMEB4f2QaV8QYmYktmWk+uQlo4KkrZp
-	uzLal5ReTVt44Y8Uncl81JglnR+t1YrIYeg2f1NWmCazClcvruQg9FmJVuZZCFsCr6c7mi
-	gzL8BQKoCXAIgo4rtGLcsukqdbBFkIc=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=RYrIUHvQYnWuytSOz3FCQ/P8tN9xTzSr/h20z2LdMrI=;
+	b=GnfWW8NK+mYbjElUnmEYWBvj1mRuX35z9jkKgCmqLjWsSdN1tTJpntnrBkrKZbapYSYtaL
+	Fj6JqvlMs1Dx4N2jVL/uBljX61AxWvW+QwwYj+bN/hUN0bE5Rlc8tKylc4q6XBckLXfcji
+	LNRTKAUN4T4Z1AHQcWvo8+AtNs+6h1M=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Wpzu1cUY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of seven.yi.lee@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=seven.yi.lee@gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829928e512aso950445b3a.2
-        for <linux-mm@kvack.org>; Thu, 12 Mar 2026 20:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773373894; x=1773978694; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cnnptNUhMltrKlyMjaLxe5WMhNgNFEdG8YnarRRsgts=;
-        b=Wpzu1cUY3vVhj05WQiUNceI0vRYgAcaOimHqZmrdzQBTDIRgTzA9BN933/8oVuwOn7
-         WkD/Lnnd/Y01/AVZ9osTbDC1pq+SVH917QXx+R+4YhP3YvP6GXiRiIHLsO3L2InnDcBU
-         P0u9Iidmt0xWfDfpklghchvfdF6wYvgebpC+Ylx6WYQ6S81eZCmb6xnbV/KRVRzbq2uF
-         cUq50K2oFQY8jAt8QenDqui3ClDrFuBS/AEqikJuRolUp8+t3SV2yK9NsMKGggYYSPRK
-         1hvSsmeVz7aXeX/+tkfeibo7IDxse49qGipg6IobgTdEcoUkuXyOYxZcP9CTxUio4R50
-         UWTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773373894; x=1773978694;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cnnptNUhMltrKlyMjaLxe5WMhNgNFEdG8YnarRRsgts=;
-        b=SExRmpi8RrvtppfWFsXJweCZLNTiBPNXiiluafisybfB+cKP3N2JJ6bQ0kePuxKlEp
-         tbNKpIRswBBP2HEWjLoYYY2lMj2FboDfW3pXok9YXHbf4GW37VRnNupvZp+6pT3Tw79e
-         jHxR90VHi4uziFL+hthbCbt3ky+EjvNUc0hKqMb5JKftE7qQe93l+pmOAJJaMtw+2cpV
-         e1ceTto350o2SQK4w0TyrKeaEJjcbaaBp7S0qgidG9HdZc2bWF1fRMdPTRxcxVUsX1t0
-         C/1Atb33I5Lau0cuzEYgs9Y5B9HA0azLpDUSRTHJzW0/gQkiq9vce1xUozZPaxENDYZd
-         fljg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvj6IZCiSuVv8259AjbXDSgZqUrzWrwnvEchCW7QejN48uyT7JfGYKPtiQCrS6ZNSpMUREGX18hA==@kvack.org
-X-Gm-Message-State: AOJu0YzU1vQh+5EDseXojks4dxezsqLwo7DALLg6xrr3yA1tETMOxs8p
-	w8Bm0Fd2MI6VCC5K8shJ4flzG9TjbxWhkrFpEyueJtC6kteDDh6zJUSK
-X-Gm-Gg: ATEYQzw5dTCNPp+Nd7FCifDdrm0oDOOMzbf9imLEbcfciKqbORldf3U8wQiVjLQhwIH
-	YQYeHpQEjpGi95Ke26k48sprYYW29Hs3KS99cVSw68LV7mNnnluKjF/hobaPyLRiqn0MvA52lig
-	phN6rhcnUCBbXmzKzPlhM+F4dk2/ZXAW+DuCaClKlSsypbFJx71aYE3DYkiujwAeud0dJxJtPzk
-	9FwEAXd+ldE+w6ysWTK4pQM7GJqg8bvpjoMyEB4V9h5CGkg/kWiRPg+LMtHYVp7N+OG67IZ4WYH
-	VhNJGEAi0ZB09/7K26IBlIq2IAnZx7sL9Ml6cwfdO97oQadjT8wgz/MV6uGMk0gv1Umi6OCIiJ8
-	B/tlnTy5c/GnuwYlLkUG7Gw9dNxJ2mbLpGiQt81SBbYSki6OsdRUx0vSdTha9JOHTcTSg8cn/l4
-	PqoT5nz6nVgVWh5Sjsafr4TVeI2ywxW9friBBB7Xd0ijq4SPPHJkvuDwz99OrUjB6d5YaIBL4uo
-	jI=
-X-Received: by 2002:a05:6a00:7617:b0:81f:4ce8:d64b with SMTP id d2e1a72fcca58-82a198ad696mr1148602b3a.44.1773373894195;
-        Thu, 12 Mar 2026 20:51:34 -0700 (PDT)
-Received: from [192.168.123.240] (n058152022092.netvigator.com. [58.152.22.92])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07343719sm4525615b3a.38.2026.03.12.20.51.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 20:51:33 -0700 (PDT)
-Message-ID: <aed07229-9432-474b-8498-5e23893e72fc@gmail.com>
-Date: Fri, 13 Mar 2026 11:51:27 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempolicy: add sysfs interface to override NUMA node
- bandwidth
-To: Gregory Price <gourry@gourry.net>
-Cc: akpm@linux-foundation.org, david@kernel.org, dan.j.williams@intel.com,
- ying.huang@linux.alibaba.com, linux-mm@kvack.org, joshua.hahnjy@gmail.com,
- linux-kernel@vger.kernel.org, Jonathan.Cameron@huawei.com,
- linux-cxl@vger.kernel.org, dave.jiang@intel.com
-References: <20260312091207.2016518-1-seven.yi.lee@gmail.com>
- <abLl84pc7tavuieW@gourry-fedora-PF4VCD3F>
-Content-Language: en-US
-From: Yee Li <seven.yi.lee@gmail.com>
-In-Reply-To: <abLl84pc7tavuieW@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8E75B100005
-X-Stat-Signature: xnhiap95qipwka1hhnret3fotf57gtr9
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ScKHz4G4;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773375495; a=rsa-sha256;
+	cv=none;
+	b=KyJo0c+j3I+0G3FjpO3ZDQVTLjV8Sic6RrvgfOv2Y+LaB+93um8nwejTsnMmRy7b9C2hYI
+	JcA9qlBd2XoHoiRVmDdcKQDN5aDnWryiPQXktjHhjK+PU3mrh+/SRc8+xxVOqPpv0zugFa
+	hIvsUHX+9tfWuV5D4TAXlP3pF/5Ts7w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773375494; x=1804911494;
+  h=date:from:to:cc:subject:message-id;
+  bh=2k/F0SZT7Xv6ggBApqTgD5cbWgwsRk0FUwBiPmm0rP8=;
+  b=ScKHz4G43O8ad/zVbBkqvrFMy7EHrm4So9JUBuE8VAdewBSCLAfsJPf6
+   P62UmFL1jfnhXpNgvNW1oPreBaM9XQhCkSvT9+ByPaRo7VttMMe3iYO7V
+   YA++BoTqq1QyHOBTnZ4iLavaxtDksQ/vCj1XFwu9utpZuFtP9djshWvRs
+   hSh/mSf8DIZTS6CLN0cmEbKPP37dYqa/fV8Gelnt6btxmJvQcUT1d4XB3
+   DSeLVkE3Bewt1aJnRF76B8y6uEacbS3pzBWzJQLtdrGLB6oRTjyGnEdur
+   HCpPq6LJnANcChtHwfGHu3lYgAoHKAJNNCHfLw1uUhBMPbD+HR1Pptftq
+   A==;
+X-CSE-ConnectionGUID: g7n0yUb3QpucFjzzF7SMDA==
+X-CSE-MsgGUID: LDdPGwFkSIC3lurEntR8TQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="78374317"
+X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
+   d="scan'208";a="78374317"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 21:18:13 -0700
+X-CSE-ConnectionGUID: rppWKp1nQWWSguyclS7gVQ==
+X-CSE-MsgGUID: zlOdF+XhSOmoxNzuqNLAPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
+   d="scan'208";a="221237166"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa007.jf.intel.com with ESMTP; 12 Mar 2026 21:18:11 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w0tyS-000000003d7-2LJs;
+	Fri, 13 Mar 2026 04:18:08 +0000
+Date: Fri, 13 Mar 2026 05:17:44 +0100
+From: kernel test robot <lkp@intel.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ linux-doc@vger.kernel.org
+Subject: [akpm-mm:mm-new 367/381] htmldocs:
+ Documentation/filesystems/mmap_prepare.rst: WARNING: document isn't included
+ in any toctree [toc.not_included]
+Message-ID: <202603130548.Eq61ZQ3W-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 41E3840006
+X-Stat-Signature: pnjye8h7zohfg38bdfktsfjswtr9gn8x
 X-Rspam-User: 
-X-HE-Tag: 1773373895-339998
-X-HE-Meta: U2FsdGVkX19GHUBI85xr2z2rNDKwA4zO0TCuBxy19ftXT6tAaIYzFNtznCII59VFzoMOnEg2OzYsWOb4gwdmsBf2Tl+BfvYVcLCQSFHj/45CUvV2dTr80l69uzTQo7L1UwZa8vnBLWpMjhT/4ccqqeHLKHThgYp+TdvE4PXJ5n9xz3VG1wezpYgUQ7UUc81FhGb1yFq0Op7LAp+C5I/t/l6CdY+rua+4bL/S9Jd5xJoCV9a0fx2tdt0ovaOtHar8RLOpFaYslwoMHE0YVFLEbe7Z33U8Qq/fXmyAYfU9IPP5QtufwytDGzpa9RqZ/lwCGItxu+P74CNoh/AjCgTk0HdFZprKtPQ9FIo8v57oN4eGO6qpwIIa/A+y/xv1QYvet1U0+2lYF44TY/URTIvyrUV8HZO8eux7NevnXRcQfbPT3pfrJDgT12291FhM8MHJUC9BgBvmwCePfUdVA6JV3e8hJ6kpv643w+WyRf7winYgbZ2xAtmaJ8n7a245oBUsUvQCok7FY1wPCwTSYtHlAaQSTaiV7karkupqSOS3rVLmhbKTJkcNXDXVis4+/ej7Zb3XYtrQMW0H4nb7L5zyAFjigq24QDb1mulux1PVstW0/wXtK/sj2xBI0PiE5GDpx7GA/m1v1Dmwca84PzE+09LW8nhxbUdlPajYM8gA06NJnaKCpYYsqmngBoQ9LD2wSVuOeykWlFGGXtvGg7l1AYElMCHbsXoydy6KxthLZsO0gg8RJ36m0cr1auHE8zA4n/MsAA3EhXrZV8kUSrS/6CfVKKXcGE9ftiTZVw9BHdKwgPT6EjJCQY3YzZlWylRN7bkQLCi1mrC21OoeZAnrSK5JEvQTdfSRIb89VkPY3ghvS3wYPREvSPH2UT0jAabliTpKUExltMqzASGQ+Bzhkj8SK7Ih/s5gpa1aAoCPA4vQv8oWvK7mefGqM5qCETW2eAOCvijBfRnh7Y9is/D
- YlMIhOny
- 8WuGCC20sVRlMsagRgvYMK9n2Ec/RRe0Yeo5KWxPqlVXJnU59nhSiuv/ztZtl2Q/xXtFyx9TkCS8AUU+Qt8U7KSjzoglE2xhjKeoZ2Hj6Ae/7+FO5UArHuoebthnPjl4daNaRjHxh5gUUTiHoGSz4acpVadlJPO/mn9R1yMLurHGavA9vSXWDqO6yg84CqDvxeiv1jAcfIIad7rVqjiVw6ABf1Eq+ECgmRYZMr04SUh3VTMjnmYluhhcEetkbDLtbkXdRmLUOUzSzskXMtBFYYBHuO/VbYH+HQz+WUVE9CBhihHYpRbWOhMx5MzD0RbOlUeWBsKWSU0DiT2qmafKXNKtnGYlRkbDo0DR8fmmAu/k76gOnEHvzACjqsz78aOEk8UYYibgufDXSe5gQhohbCKJ5eZPmMt0snOoyFFaTgv6DZpneqDl1vyWvWDirUDDg9wYGdL6OEUDK9bL3mqswz++cCLyTZOlMT4qr9dX7L85Rj9lKNLLui5Xkb8rf3tMx8YLjIlc8HLUJwFPkHdUMciA5ydU/6oWas7xhEX3uWLmErTs9LHYZz53zCDUX9cIMlJ6LFNejmVv4cZ+c53E39tV8VbMLIoeFuMRKnoXSxhVi2I0oYFShXiLGb720lvPLbnsD
+X-HE-Tag: 1773375494-693438
+X-HE-Meta: U2FsdGVkX186DajEa0yHkFpRgGNadlzEVwVHgJIA7CeZYE43vAiPNoTUbN27lLy8zrEDXVsDnTtPxUN8SnRu5VW4iZ85Cd+W4aSqSAw7kqQFYDxE/FdI6+LYhy1ZSuMdn6Iq0Q1g9gN0yBfPnsHhj7UyUgk0zfyX8uvervKyXD+4g0pMdqe4710wq8kiDmpP/nPYSqLBwiXqms3P/FaPs2+YZEq7okePr06DAoelAjkaRtt/Hlja78+z3P0S2CdqvFaPpn1WANkta5qOjEBNkWOrvcofiCJt3lEu0P4C1wHzoYt1LexsE+dNmMcZC64Wr7DN5Jr92MwwjSefLyLsSvSbetXHvwgxmAmhj4uDOv4mGWqxAWAHEK4p4zXV77+sOGHqZCvCv24w9Tex8OgXNBBnUpMqm1QnU5D0bLMuAylS+Yn9KZuT/kxg1Ql9rwOzltSADw10mh6+qIxM5IMl6tDNZ8ozBx+EQPSwgotPtnGOL5vQZugfITZp5e57Wf00s4aMYgLwwSJdBMSGEgiX77pU4PCvON0X7rvaeO02cqPM3MHg+onTVewpJ9n4ovdYz+rJO1PcJRNYhokPrkSwoeKr/yAuc9rEoi0Uz+vQ6mcWCJ2C3wvjZNxdpDy1Cue5erC3+HIx7SpnOAFWYd50SJk293pQnoLTSd3h+0r2uAsTrC22IZvoeyolaQ7AfkfhXP5Epn3yG169MkB6NVwr48msgHgcfzN/anN4l5802H0FxsbLEvp0zh2eWjJ9PltopyRCKogL8nBhRWucCV51ER2djPgbVaZiDKFPZPVYibwHogHvfG6Qfu/jjx47Aiv7HdujBgqXswIWCLoSvKt9DdiN2hYMf9HKnWorGBe4BXUhItYyZw1NUBQ0AX+3J3elAmNcdKWVL+PUeNH2SqMt0q8fnbhTgqkqFMrELMSR8lanqJ+n+ezEXLKVBv6nbCwXQ3YlGelVJm6txB1mEND
+ idSYoWud
+ hKp9b7ibayL99ujhb/OI4sjlMGLF+6xVfATLRObKx8oR9l8uawgZ8BRxwZoY8JylXljFu4hlQIKl6ZFgrYK2MCXcSGi+DavqIwVTq3hBEhNoFi0u2mwN9HgikSifDVSoZMFxPeUxjb0F7Dd5Qg0NQey/WZ5tX87G7OOC09ON2O2T2JR3dJKyYrIbPybdBxJdoxNZS+YdAW+8uQkmEwvZhUFu76fstmLJ8WTm/KU8c/iBKhksacgbcEYlGK8FRmnTyH79v67C0r6neUfFn1eUqKF1fZauZUna0FMq9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,16 +104,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Gregory,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   593fab843afbd6800243552aebcc61d02d3cdcb2
+commit: a6cdd3274e8a03e218fe6bf3ef711902adb76727 [367/381] mm: add documentation for the mmap_prepare file operation callback
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+reproduce: (https://download.01.org/0day-ci/archive/20260313/202603130548.Eq61ZQ3W-lkp@intel.com/reproduce)
 
-> If userland is setting the raw bandwidth stat, why can't they do a tiny
-> bit of math to figure out the preferred weighting and just write the
-> weights?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603130548.Eq61ZQ3W-lkp@intel.com/
 
-We're not setting the raw bandwidth stat directly, but overriding
-the top-level bandwidth to observe the final effect.
+All warnings (new ones prefixed by >>):
 
-> Should be posted as [RFC] then, I don't think we want this upstream.
+   Documentation/userspace-api/landlock:526: ./include/uapi/linux/landlock.h:50: ERROR: Unknown target name: "scope flags". [docutils]
+   Documentation/userspace-api/landlock:526: ./include/uapi/linux/landlock.h:24: ERROR: Unknown target name: "filesystem flags". [docutils]
+   Documentation/userspace-api/landlock:535: ./include/uapi/linux/landlock.h:166: ERROR: Unknown target name: "filesystem flags". [docutils]
+   Documentation/userspace-api/landlock:535: ./include/uapi/linux/landlock.h:189: ERROR: Unknown target name: "network flags". [docutils]
+   Documentation/core-api/percpu-counter-tree.rst: WARNING: document isn't included in any toctree [toc.not_included]
+>> Documentation/filesystems/mmap_prepare.rst: WARNING: document isn't included in any toctree [toc.not_included]
+>> Documentation/filesystems/mmap_prepare.rst:60: WARNING: Pygments lexer name 'Cw' is not known [misc.highlighting_failure]
+   Documentation/networking/skbuff:36: ./include/linux/skbuff.h:181: WARNING: Failed to create a cross reference. A title or caption not found: 'crc' [ref.ref]
 
-Thanks for the suggestion.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
