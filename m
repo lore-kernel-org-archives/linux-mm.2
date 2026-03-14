@@ -4,109 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97DB107BCEA
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 00:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CDD107BCEA
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 00:26:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3722E6B0088; Fri, 13 Mar 2026 20:22:31 -0400 (EDT)
+	id 92CDA6B0088; Fri, 13 Mar 2026 20:26:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3536D6B0089; Fri, 13 Mar 2026 20:22:31 -0400 (EDT)
+	id 8DA756B0089; Fri, 13 Mar 2026 20:26:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255DE6B008A; Fri, 13 Mar 2026 20:22:31 -0400 (EDT)
+	id 7BC216B008A; Fri, 13 Mar 2026 20:26:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15B2C6B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 20:22:31 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9DD761B7849
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 00:22:30 +0000 (UTC)
-X-FDA: 84542767260.03.C1C3FC2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 81F08100004
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 00:22:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X34+SOTg;
-	spf=pass (imf05.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66C666B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 20:26:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE45F13AA05
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 00:26:16 +0000 (UTC)
+X-FDA: 84542776752.25.51ACB3F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5B195C0003
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 00:26:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YfELWr6x;
+	spf=pass (imf22.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773447748;
+	s=arc-20220608; t=1773447975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uT2tigehu5ZKWMcc7PVmJLvJTOYRhmuCPZcyVnDXUW0=;
-	b=sBPbHieE49/IIpxq6xdXbYeuF1+yipGB6SRWA72LUaIEDiRCxeXN/c58DXB4kAQSKhrTKD
-	ZDyZ12ROqKn/Jhj9wJGLrkC6iL/EGTZSpCZSqAVkufXjDVhk3xySRWXFvV818L3aIvDV3t
-	4oRJHcqr9hsdugbjqbGYaqR54As50mI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773447748; a=rsa-sha256;
-	cv=none;
-	b=wUTb+8j8PJTNuA23YzoMM7cCA+m3JV7Q9KHQz9CZ10YL4bjsISO4j3SSLG+aeIbw0XQzVY
-	yrye6tl/CAh1sHCoV10kizBnA6hQ3+lDswl1rrmT1M9RDgwZpuoRRLiojg79bUckYmXC0R
-	TuPz8/VfsvtTqML5zc+4OALEC/6MhY4=
+	bh=6Tu+BvloNR7tPSfHXVaUwhCscAdCNFI//yZQeEfUbIc=;
+	b=axM2k/ON2R06Ri4ksGqvvBG+df+G15VH6AM1tDPtakHAOTAorhKqMf52b76ABoVPNR/KUs
+	rEJwlkZotmCm5HQI4rnQcfIzwiLP25w8QRx9RHFjUwkPk2zy82ugRdVTGKpyZLf5VtKi01
+	NCyg7XCsH0D2XG0VX08W8ecGUD49WNM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X34+SOTg;
-	spf=pass (imf05.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773447747;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uT2tigehu5ZKWMcc7PVmJLvJTOYRhmuCPZcyVnDXUW0=;
-	b=X34+SOTgbN+4FVCnHRcAVNhIFlodKAvX/UxNgxabe0DXcu57PEGmvqtL4OXEDM4PGNYsR/
-	SB/rVeaZD9cRmq9mwn3+yXuHFDpf2JiNjZlr8TvzpL28B/83dA+OAmVdp/5Chr2/ypTUxr
-	uWjjZ8JitduwllBbSMKUQnhYz4iEPYk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-5ieO_G_cPgSDUQ_rrj16QQ-1; Fri,
- 13 Mar 2026 20:22:25 -0400
-X-MC-Unique: 5ieO_G_cPgSDUQ_rrj16QQ-1
-X-Mimecast-MFC-AGG-ID: 5ieO_G_cPgSDUQ_rrj16QQ_1773447742
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5E8CD195399E;
-	Sat, 14 Mar 2026 00:22:21 +0000 (UTC)
-Received: from gmail.com (unknown [10.72.112.67])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CC01180058B;
-	Sat, 14 Mar 2026 00:22:10 +0000 (UTC)
-Date: Sat, 14 Mar 2026 08:22:05 +0800
-From: Chunyu Hu <chuhu@redhat.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org,
-	david@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev
-Subject: Re: [PATCH 0/4] selftests/mm: skip several tests when thp is not
- available
-Message-ID: <abSqLYQ_1I590KLB@gmail.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <abLHz2qjdeNqdFaZ@kernel.org>
- <abNZmiL2C7KMQM1t@gmail.com>
- <abQq-Mt0p3vz5rQm@kernel.org>
- <68b17560-3033-472c-9638-a2e2058529f8@lucifer.local>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YfELWr6x;
+	spf=pass (imf22.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773447975; a=rsa-sha256;
+	cv=none;
+	b=qzxr2vtsp5hY0B0O7o2J0vZP1KsNqManl9pvWxawrafND3D32V55+T15DnuCnsuvrel9HP
+	BinmkMWhY1tibJH+kNgU+SrU76LF1IRK0ubTSGZchLSnXHx3trGmtesEYEPFzKOdQPdKHZ
+	ASEQhlNBPFziek3ZsCUuHbIUMVkhUnk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C92EB60008;
+	Sat, 14 Mar 2026 00:26:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C00C19421;
+	Sat, 14 Mar 2026 00:26:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773447974;
+	bh=WNfONBSSwZlJ93h+nb5fE553EGLxDy6HctjwVBRE1ng=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YfELWr6xe8ogQ1Dzt1ph1Or4CkDZzba6Dj0w7TfjGFx7fqwjvcmAVVVT0R/DPqd9m
+	 0zfwGJ9/PfYd8hnArBJWqLzO8abNX4kfpLdlAoysNoHk9ciuYiB0zrH5APEC+yfDKY
+	 i/tbaAiM3xx9fNSd9SYdf8zHtsa5KM10xK+IK0E0s2czV/4ieNNF14jcmVew8CvxhE
+	 FxoqUTcKnqL0ahxZjyf6Px/jGf0wbNIEvXaSRnIT/BGKMNNlpkLZtReXfoF8LKAjAF
+	 4xr+PT3o09wfsIrp4m5CXbX0OWHNRIwgixKLFri8JEjhqYCYEkVXL1LSOLh0/pw5ZJ
+	 UQJipt2AFo4Gg==
+Date: Fri, 13 Mar 2026 17:26:06 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH v2 1/3] kbuild: rust: add
+ `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
+Message-ID: <20260314002606.GA534169@ax162>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
 MIME-Version: 1.0
-In-Reply-To: <68b17560-3033-472c-9638-a2e2058529f8@lucifer.local>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: R_JsXr4X9koT_Rm1r3SpG6nBwoqvI2o0MTLwVYlVxfA_1773447742
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
 X-Rspam-User: 
-X-Stat-Signature: ysc1xhsok1j5ybubrof6qeza6cxdfyb9
-X-Rspamd-Queue-Id: 81F08100004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773447748-231021
-X-HE-Meta: U2FsdGVkX1/zBZxFgGnySHOHwHxSlHb/2J1deWCghheDGPF8GxQJge7OF3lctg8Sq9U2A7LLbp65RH8SsNj0vKgHQMuSjNUVm4Y08e8XVriGT54L73bFb2bbSvKiDIM/QxXA9MTc9hitI8njSc+jWDJvG/unhHNlkDfODFWuUNjeZ3RmBCiZwVeF2+fIPcUhxF38COh6r11uAQbew8aD/W1HoxgdO3FIpjUvC61PochANJxRTHV4OoloQj8KH70fkE+nfOadATt8e1kP1BbKdZzglNW9w/5zpxNxE78YrFOI3iwnWENmO54UmEEUIhL9FWoEM+ZZXcZwJqECXISpCiSTmZwf2LHsHNKmLaHqz/7WNKK2ai+CORiYyM7Of2/DDaFjpd9RYrgA/wFK0LAoU0JEftPUVyABTib/xyI1x0OygtLj1Jl3/d7BBMuXQ27R60P+yzUNJMoKPcKfLfcXYzzNaSGfTA3S05aepRTYoh4cHiNnxhW++uaHRyKYAIJil5+eVz9ilzC4FP9M/5JvdXECJZOPJJ0+rNBuWbRpYZCHdLnFIirpHRTaT/io8oOKVZ8BML0czpZpWyx2mGWqEfwEu79U/ncFhVwvMxwziM8OhWsCBprRFmZGeRNNX8Y9Ibx9r+0OSW145+TLGGB+ALSzJDlmmK/TRJbBVMP8UnQ/5fNSIbrfufNz/slB7BDYLh3qM0vimBi51aRlGz1WSqUlLgrS42tLIxu8gR5PuXs6CiKZzR+i7k4CLY4F5XMLcwNK6eofrcx4qjOpMmFqF2l6sXPWM8NDccor4mv0S8Nt02TYyTfMSh4rsFofWLcUTxMNBy6ObagJB94/qQrPjq9XYeWw8brGg2eOZeZvEGyOsPyx/lJin1UW41rQNhl0jkVq7523FSGU0/LXj5ShnBh2XlWsDI61O8wwbnq/2WV3HAQNuwZHgE+1h4VoorpMeLc1G1M9nh1fCRGOV6Z
- c8eIJqh8
- ZYSGkKOTZVdVbDCUrquoFoN3Xsq0F/zTuVz/IxavoM6o4VZsqVXfhpK1nsCN1diRgH4VPo2IUnGuN7v6GiTXl8vC0HkqhZeyDXdRQNCXxGUhT6E+/doY01ou9FcXVRjxWWPbPWNYLmoRdzIkM1BMU50myCTrZyPVl0FVohTmOH0wQz5pKIxZS9MPc3skrFCsyp66/ORThSoUjgLYIQHCISJq0u5BVYiM506N58ChheBsdQ0ViP/Jom5fpu9KUJXPPdf27ZcDJuuADaDtb+sTc1LjLVw==
+X-Rspamd-Queue-Id: 5B195C0003
+X-Rspamd-Server: rspam08
+X-Stat-Signature: jrggm5rz395zhjak88spcec8jsksiprr
+X-HE-Tag: 1773447975-149535
+X-HE-Meta: U2FsdGVkX19lddslpJcNsZ/aUrLlOGyc5VHXu5iOZdZDcP4wDWfn6GpS+woOoRVS1H5VY5oxRulc0A6cvK7DYJpsL46QZAQ/veqw5DtLnctaoDt8Bqr1Ve4ZcRsWH9cZmr+Arx6eQWJjP7QxTWtyBi3JreUK8IZGRVB08lBpz3lwePe7+w/jTktS7Rpu1tt5hDWEDdIB8q1NPZ+nidrUKDUyZ2EFbHxu9d/CVXbvqJ67kTWe4mmgye3fwjnyTvfizhP5hiLT2W1nUTMsUz2LPUKB/ZOWFpvLe/bxhis6cbHrFaqYKtddMyLRCq60noGcra3kMpF3ru/agopzSXCPwwiD5dVIhdMD7t1lM8GcuwCAIuO64FKqC/zu8hLqUxwgjrHLj58qDTCJbJ4wqE3MPnSJDD6bxbblXdtAP5GlMQu4oIypPNvSdoqjQypWlwxE3Y8zC4hZ4bP/613HUHf2a8exjjX6e+9bqhO3GOp+Gz2LU5aE1PrdM7eh3bs9/uoEGV47NmARltzlk+lagP3XEG+7cm4kxcIdiIW/RicnYExYW+GxYKhFLXGlGk8Z0vCasJEjADqrTu+rs8QT3ljzckuz0XjhhP0jzlC1mFM6vQGcT4FSfcd5zIZZgiz8mJTw8fPaefNjusITPdXDG6KZMM8xLKkmSMtQeIloMMSx9ivqlDYZtigOOdl2HpBEq6hLdbApAqnVV7OKR8Fsh4iI6H1fdftz2/PQhgF14Hv4aEr4ILVb2fZuGe9G88U+9hfO6RBRuYFOFVBbRJoo+kq4S2VucLzz5zCEnWeMRhcbunSiFJl7bW7LQDRBzjMWc/FsByglrfQLKSHNQbdtzoRZA2ByyHtkBmN/7aFvfdM0nPJ46rlRa+X1IZrDyA2DKWOj6GOsthNwh9v/eV0TdleeTVy6neYmh+vFMwrWVLvdibee3wX6ylhJsGQZU4pAoy+EmPInctUiNEOuebgXQ14
+ +8oG9EEO
+ YJIOZ0NaMfCctPRhCqG8LWEX/w477R/GKl2//fcGyJ+3+uugncW3+aIjdLu5dnAEaPPsGOkYQkv6fKRDKSLIjRwOXi01yX+VbBu4BMLiSJPu27hOi92rYVYfwhu3BlgjHSy6OgJ3uhaMyFUJK9JimrBJ/guvwPuw/3Aq/lrO8Zj7CvVpzpYnAK8ujb7PhMFO7Di4t9OIUaB0dOcEVxEN6AlqvhYc8ZwpbPjvQmF6mI5V1Uma6lOEFiPpoLLHX2aexZzfiHjNm9D45ykdWo/7Z0QKNju5qQ8L8NATULQtZeSKEMW8EP51+UlauoWvGSfvYvJkvd7gF4pzOvSAVQCg8HUBZ4+kcBsE/B7YbQDqhCMQ/2udIzBZGXB+AvJV9nH/RmRhO5Uss5quaDwSRlOzCa3ik6wIOAf4y3wxUARBc3mgAociH8XGOPCgx9SuNLnpYOjgAn6OpVi1pARkX47jT1eJ30cWtuBzhGlxmU6fFtdQoaYClJIh+rsHM2+85vzycKm2lvFelU+z2Ltc+25ii5X0nXkzC6MWr2278JNsdfbgImnCJxJca58FC/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,36 +110,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 03:40:14PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 13, 2026 at 05:19:20PM +0200, Mike Rapoport wrote:
-> > On Fri, Mar 13, 2026 at 08:26:02AM +0800, Chunyu Hu wrote:
-> > > On Thu, Mar 12, 2026 at 04:03:59PM +0200, Mike Rapoport wrote:
-> > > > On Thu, Mar 12, 2026 at 07:40:23PM +0800, Chunyu Hu wrote:
-> > > > > There are several tests requires transprarent hugepages, when run on thp
-> > > > > disabled kernel such as realtime kernel, there will be false positve.
-> > > >
-> > > > I presume that when THP tests run on kernels with THP disabled they fail
-> > > > and it would be a false negative rather than false positive.
-> > >
-> > > This is an interesting point. I'm not naitive speaker. I just learned
-> > > from AI. It really matters what we define as 'postive'. I presume 'postive'
-> > > is we run selftest and got a failure report, that's postive, not thinking
-> > > as it's thp disabled kernel and a 'pass' is postive.
-> >
-> > I think that a passing test is "positive" and a failing test is "negative".
-> > So a test that fails because of misconfiguration is a false negative to me.
+On Tue, Feb 03, 2026 at 11:34:08AM +0000, Alice Ryhl wrote:
+> From: Gary Guo <gary@garyguo.net>
 > 
-> (Ostensibly native speaker here :P)
+> This config detects if Rust and Clang have matching LLVM major version.
+> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
+> matching, otherwise it may generate errors, or worse, miscompile
+> silently due to change of IR semantics.
 > 
-> Yes.
+> It's usually suggested to use the exact same LLVM version, but this can
+> be difficult to guarantee. Rust's suggestion [1] is also major-version
+> only, so I think this check is sufficient for the kernel.
 > 
-> False positive = the test passed when it should have failed.
-> False negative = The test failed when it should have passed.
+> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> Signed-off-by: Aliee Ryhl <aliceryhl@google.com>
 
-Ok. Thank you for clarify. I'll use 'false netative' instead .
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
 
+> ---
+>  init/Kconfig | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
-> Cheers, Lorenzo
+> diff --git a/init/Kconfig b/init/Kconfig
+> index e95d43457851862afc8313389777e4dd9348c178..0e900d3d8be7874a33e0f44754a8d038e68d7e65 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
+>  	int
+>  	default $(rustc-llvm-version)
+>  
+> +config RUSTC_LLVM_MAJOR_VERSION
+> +	int
+> +	default $(shell,expr $(rustc-llvm-version) / 10000)
+> +
+> +config RUSTC_CLANG_LLVM_COMPATIBLE
+> +	bool
+> +	default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION = $(shell,expr $(cc-version) / 10000)
+> +	help
+> +	  This indicates whether Rust and Clang use LLVM of the same major
+> +	  version.
+> +
+> +	  Operations involving handling LLVM IR or bitcode (e.g. cross-language
+> +	  LTO) requires the same LLVM major version to work properly. For best
+> +	  compatibility it is recommended that the exact same LLVM is used.
+> +
+>  config ARCH_HAS_CC_CAN_LINK
+>  	bool
+>  
 > 
-
+> -- 
+> 2.53.0.rc1.225.gd81095ad13-goog
+> 
 
