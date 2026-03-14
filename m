@@ -4,103 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B53105F7B0
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 09:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9690D105F79E
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 09:21:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132046B0089; Sat, 14 Mar 2026 05:06:11 -0400 (EDT)
+	id C08996B0088; Sat, 14 Mar 2026 05:21:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 089326B0092; Sat, 14 Mar 2026 05:06:11 -0400 (EDT)
+	id BB5BE6B0089; Sat, 14 Mar 2026 05:21:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E05536B0089; Sat, 14 Mar 2026 05:06:10 -0400 (EDT)
+	id A8DCB6B008A; Sat, 14 Mar 2026 05:21:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 809C66B008C
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 05:06:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 421F81B89E0
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 09:06:10 +0000 (UTC)
-X-FDA: 84544086900.08.11332AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 047AE80012
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 09:06:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTHy3DZJ;
-	spf=pass (imf02.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 990926B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 05:21:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17316C2BDD
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 09:21:56 +0000 (UTC)
+X-FDA: 84544126632.30.E870BD4
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BAB0D4000B
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 09:21:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QEJw14CQ;
+	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773479168;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773480113;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wODKUDqIoCsRwr0nIJoq3+LWhTnB+tZAbvxW1S/p5Gg=;
-	b=E7ENeF3g108H5FuRgeKwNcQYXfNSdGbpyonhhmv6JMmzHAMFfQRvD4PCPmuWlVrtN+iUBF
-	AN5mxnrWod6oCk2/fehRyzp2xd6oP9pxo6TQmjFGIYoDnEva1VSjx9k/zFPVGdJ6h8NT2w
-	sLRg34VAWAEJpwynzuk8SdyS//ZeVwQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773479168; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=r8UyqgPfbZdaAqDYqS1YD/8TcYT8kvUB1s3GvokTCwQ=;
+	b=bTJ8ilH1a20tO2P4hQz418MPqkCdHanSHiq+V+9wilm/HbTLZGRCRHsSgD6SyBrlOZDNDt
+	SFF1K6KQcgRrh+jJF/4mAxjR8ftfMqUDJeMdjOXPPSS/fWOMtaWpr5zCnQMufsNJXukBeI
+	MyvNL1HQhUbcESH+WjDLxyBUPefg9GE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773480113; a=rsa-sha256;
 	cv=none;
-	b=BcAU9+zMRm+OyHkT3stxzgygLj3RdCkEenFJlQI7DoQRTRxfP7Ba1lmjsPgZzA6B8slD6G
-	MfRMtQgkZqKtHyW0FQEB53Kv4egz5kvRmhHjbv2fsKen+Cdic3M0SxOeUsRi6yVAr/N866
-	RPAXzICBfrJcqO92Y53UwK3XMTSigS4=
+	b=IbMDl/LySLhRyTqeKpVrXoEgRqo2/sDQ4/U9FR+ILsS5rfs3yuwWFPHUXZo/NVKkOmVYHe
+	g7Y1dwlPI5uTetiIUgJTF/qAKIYzeTHyeKbo2O39O1xc7Hnm0YuI1jTnH5mH4OenEZ5z8I
+	zGw6njMB4uv7iPj70ad/+/LBHlwvqV8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTHy3DZJ;
-	spf=pass (imf02.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D52F3409E1;
-	Sat, 14 Mar 2026 09:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B32B8C19425;
-	Sat, 14 Mar 2026 09:06:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773479166;
-	bh=4qZxeLqHO5fNZfDMKipa9T/OALGStFY6kMWH7o39vXA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WTHy3DZJ9mYjgPX5Oc1a+hIaBkpS3tYhLgnpt6A56nAagHEB5bK6W2lXigMcjFlFr
-	 r/Id6iEUGjW+SlAET/U6y+XgIFhxH2SAwKUxn02q86/wuI1DBbER1OrvxHzBxmMikm
-	 4X9RgCcXssY5u+glZPb6ifyhWN+WGru10A82Nv43hsIht0+ZkOVs4eUm6kuvnMwGkJ
-	 ZXXVvSqDMnfZttMsjtTqOAmbJ3UWIrksQj4KPbUYZ9nvcEm6JgpvduUHDBCRyR9UYs
-	 XBh5Mw6OopPq65qcLAfiLfSlJsMGNeLY0QnAPMbH59sN7OWllmsgKPK78uQhxkHwdR
-	 4SUPnk8rWtWXQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7DA0105F7B0;
-	Sat, 14 Mar 2026 09:06:06 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Sat, 14 Mar 2026 14:34:14 +0530
-Subject: [PATCH v4 2/3] mm/vmalloc: free unused pages on vrealloc() shrink
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QEJw14CQ;
+	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b04075d1e5so3591145ad.0
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:21:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773480112; x=1774084912; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=r8UyqgPfbZdaAqDYqS1YD/8TcYT8kvUB1s3GvokTCwQ=;
+        b=QEJw14CQEEpnEkxRXj1UPZ+vlmGPaAhc/TjZiik6OwgVY25hZbqAvROR5yLbTgR6gU
+         G+7mbI/7m0ISj/SuUSmmgMfMDQd8R6rrZ87rwlh3NsckADNMLkpOtVHkJscTgQ2GkRUB
+         EVrmNuYHdR0T6JXvxA55qgNGhUJ7Ayd2GjdDGnEQLyc2cHskv/NgNN4eKmad7FJys7Gp
+         DYjH79c4XnLzA0G9SkOj0KO+Q3fI0xq0lemYXX/k0M83RQNSneuwtBip/oSghDHMvmp2
+         Aeide4bDyO81thujTosWp1QbxPO/VM2e6zXfZ28G9st/U3aqNAqKX5YAFqnynG7dk70g
+         SMpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773480112; x=1774084912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r8UyqgPfbZdaAqDYqS1YD/8TcYT8kvUB1s3GvokTCwQ=;
+        b=LbD0/YLkQ2TvhYnSlEmQ/r13OZCgnU4s56UFBuNYrGbUYGHr7SFW2u0oJginHJgV33
+         1GIpJkFsQSS+FtHHuyxXusxnAwDAk23D2i8/w4XBpqYhOvISnUfaExwaLUaGJBMpdB7w
+         fdsKJTgRSXhLOaUJKgAXuNF4LQKV1xJd88J4RPs2y8iHKoS1TjWfNz2hxJjwBnTwn8OH
+         FNUkq+MNSeQpaVTSgw3H1rr0faWYUwhctdY/12xKcZ5t+F/UnLawE+nayWzY+iYG4MTt
+         fCKddU5Q80oXqTiBkatM+yOV5VjYuLtgHf/hiFSCafp4kgWX/FV5KFUx4haFxsAI9k6Z
+         /wkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXoYXfP1rFSkW2DrhZvv0uUdzFhBokjS46iF3YSQl8jHFfETj/RrEVjfk//MW76I4kwoFDHQEa7DQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx9v+0eoccOQhK62dwa77Wo07B5QZQHUtr2MNls8z+uwHKX48Sp
+	5B+W8XdJHdKOvXNBygdREoDI+y565fMT85zMSKZScr0lnl/8ZlzwDD2G
+X-Gm-Gg: ATEYQzzrWa9q6mS23J5HJAnxeTwKTeUDy3mGX63wmT4gLzNFHs3U9WZ4FDWbZUVogq3
+	kEVIUBNCy5PJKXoqoK89VG31uuUtZNnnnU3li6nUt/iUDv009voCAb8cuYoCHa1WoTBFjvHYTzA
+	yDIo14XItXiVcl8t4EFJukkDj5or6gVyt6iVooa96U8An1aG64nTR9+QO3Y6zSNxV3NNpXMLHa/
+	jSJHoii8UGiJVL4Sp17iGsabKAWui2vBMw+6ToWnlCOk2/LEN8pB7Z3Tk0IAxszWBpdIVzHUscU
+	axsE6pW234QmlsPrjEAVUA3HgEyh5d3ouFlOK91u41T9QK5Cbuf5JGgGsU7OFVzamnU3u7MQHL9
+	z1G2qgAHM/vYyBnqDqc//G8WWRZS4b5SufX54RQ9UKdwPGdKJ9Kgz+V/OXg5HWtz7hmqB87MYV2
+	TYeaeYA70wjLoG221AX0SbgCgVMZvcKsM8npRkoL1QbLA7dkF9zoV4rQEhDSpsZg==
+X-Received: by 2002:a17:902:db05:b0:2ae:5eee:7a5 with SMTP id d9443c01a7336-2aeca9a9d72mr69364795ad.12.1773480112336;
+        Sat, 14 Mar 2026 02:21:52 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:89d:b6e6:2613:d00e:127b:1c64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece62c4f9sm47907385ad.38.2026.03.14.02.21.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 02:21:52 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [PATCH] Docs/mm/damon: document exclusivity of special-purpose modules
+Date: Sat, 14 Mar 2026 17:20:22 +0800
+Message-ID: <20260314092145.7496-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260314-vmalloc-shrink-v4-2-c1e2e0bb5455@zohomail.in>
-References: <20260314-vmalloc-shrink-v4-0-c1e2e0bb5455@zohomail.in>
-In-Reply-To: <20260314-vmalloc-shrink-v4-0-c1e2e0bb5455@zohomail.in>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773479164; l=2543;
- i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=qiLrg/KiMgMQgQ06tgY/qjWWfVqF7Moa3eb5azEQPMU=;
- b=JSgIl8t091y/VKSsQI5DHU6yX/zoZKbxLX6f33+kCAYEstK2d+ExBt3JJ42ubUxhPL/afLIXy
- 9RqAAyIaL4iDI2wyTUIBa/shktn0Zf1G93hgQP/weRS+R2Zs2taVyZQ
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
- with auth_id=633
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 047AE80012
-X-Stat-Signature: q3snst3ioum1c8b58j9kwnp365cjyyrd
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773479167-804579
-X-HE-Meta: U2FsdGVkX18BSpg+rfewVSz+9TAhUHfHmCvBK50NFna8qKLuIY7tD1+dph66YgcumwwBjsiQwjJE0pyUBttCS2Mo4OC6Ih6idbjbhXjbXywQ2JqUUPCVH2ZrUAaWhCrhOp5Yqk7yBh97V26o6r77kWt7mWFbamItvPl3RwLg/d/VLofGU6z2G9IJ3/meuo9OYzfDUSxS9ALYn0kbqyNYumjBxDWyvgxgJ95OhIoF5aDaP6QdgMjy4vf4DpMPZ2jPd+hKq65hL1nHC/P4OAGf2/5UX1ukUspyTtwv7q6afdt1+DsosEtBuIOzBbg9lF63MwIEMRevFJEzWTB/lB2i9gT9w8llC5hSWRFqOmjP4dE3xcHKt7BJ1qsvgcBOolXkGTLBs2DeUYzYGEsqXD3aIz2isAuQBI8EfjK8ZjIFB22YnygkbJL7i+M4YgOqGog4NviclQBIWGBFdiJdUIUSHP8lU5vjkYxKdZtEei3k9s/SbCxyQbakoxQkLtDmCkLSouqA3z61lH6WkLhxKoUNafs80UGSi6nsqXz7J6F51Z+h72WpOUvFponLSKsc/FV1B3N62CbJFmsvhCTUlM606tRg362gTisZHJgGfvb9m0xnK6S+7vIO7dbGtYqPZFhHyb5YM3U2ou6xE7vXDNzDK0ZG4OHe5AP/xbHLtem2FRQytiS8Vpw06J5sBZDGkXd/sAoJI/fL61hF9HrQ6mlqD9AGt+U/hGXum3BxarSbLTPZGHEPwq1wqOO/tMJ58cluO0EbhXeHT9ZLKT8FxdnHD/YNYxHpq27FCTKZjmUrhO90pAZeMn6PqgmoleQVbKN/zbNlWVECrPE9A3ZDnrSYoInJMaGKRngtNdb/jD2Sk1wHwfo6iasKNIMhjewChx6RQXWejb2gsik7CT+ndAolhjm/lw3FISD1aYoN+nvA+zWNJZ1VG6kMsVfNu1x25JKWh9ZmtAXOdqescGtE/4t
- 1MR7FXo1
- gsNiLiZ/RQZyP2T0r7G2vk5UyliSCRWts27Az4+G1alXt278MyHV+jb5Hg1nDwQ6aBPLNXd615Fv0pOCz/aAT1y5o++qMdAbI/GWdrpXk7Ms+6Jt58Ksa/F+njFdRRuEUSaqty9zZpqH8YEnKUBTD79oQILBpuqW2k0WN1HfWL2CwiSLsP8pL3i9McAmuPW934xJ1bQOWMeKXVZi4x6mgo3brnfBQ5PWNVjvwZFLXTpJUDFME+bnirixqzDtQFf2/1ULN8/OLob+nPVKKlm5RuIHKnuMce7q+ZAFo4NWnNvKhbfGLlrgGsf9SGPBE+8+EXfhD41RGccnY7NYLYP/2RdouA3fDcUNCLOEfvMizQkPKJx4=
+X-Stat-Signature: yoi1qfae5frpwd5dj4hktqqkk7iaxrxa
+X-Rspamd-Queue-Id: BAB0D4000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773480113-564569
+X-HE-Meta: U2FsdGVkX19rEXibhOAnPyQMt+DYq1CxPsqtxlKr7PhqfpQbS5c6mBRXuBBUMwDhmHITqMT5wsXDMYN04nz0DtO0VRKG9ajYNt6YrV8MOjDNyF10nPgp+AsCGsnOaNjZIE7GJsm1oVZAzUSVCglb7UmlpfzEW0gHA+i40gWJP2VlqBNDOHIRcgbnBJJDzKSSCPGsQ586VYAib9pamvb5e3seWg2tmEdQKiXLosHWxI2DakW/0v8i6znwuN5Cv4NGGuiu5V/G2lcThzjepwHPWhZ29nmLbM++RK/O0LlCqFkqs+mukyg2Kbz9vraGyNtbuBoCZT7gDCLMluUO4QcC7E/tH38Y9NXAoWE/ihNBl710UDj9243sfasKeNoPDtipy2BNXWSeh9C4WnWs7o1zXopQ1Z77FrGozqA4SfV6zg3vGoASH/QZzwrvy4++y9I7Mn4Q0GepEZuYazgKs5jl12PY7tdNCCpoupzR9X5jiI7KF3y5mhz4yXyuWiz2d/Ba6MWzQO5M8UjYHLcO+uKbVq6gVXcL07XZ+Cs4EdUsW6qX+t93TX9LG31Lq0BLTujr2qbJ84thR4bYAWd+eYeLz7ZgUx8r1P+EKbxP6OzvrsDaNd73IbkVbydfb63NxeVSOlO2vNVrYongBg0bBaTQUR1vbzYmWT8O63uDw0KX1pX0J34jPZ+YCD3WObMYUThf2coDF9LTPlvox/vKKFJuJqN45cs2P6uPJ1KOf75YUHqfGTLnVPGYkXPO3qvZIaB5PubMdB8RCAGJfZZsXHY52srJ74YLBFF5nRwNtLehhQnkyhZ21dMyB6G3CPMTtzu2/pjdLERFqg4W56GsQhX+9BHQKo8PLVgFW+UyTXGz0d7c/3jlq22w5nqZBj1sFWm/9zEE76MBzfLENk8Dwcbo7c/UgRwConY+j27TzGUAkWZym4TCnJqjbVFCeDcRUhGURez/nKuAXrViuOivCBj
+ iTunHIdz
+ N4wB41mqvJs4hyE4z+7kHpmB9bhg9VISZgFxqr8YuqztVV4U4y+4R6sM5eZndUfA0Een+xmZfcY62atmlcND9xEubYu/c/em8w3wMaLOzoEzboPnnZB+aH6kgNA1sD9B/zN315zAs4ylyJvLISWg8yUo0Xt1uYMrsdz8zF8Y35yY1QO1mWXRM/q6ry45mlJDdF0L+QflXXrrqWT2/b1FYlOp6qDqb7xn2MKva6zdYfcnhnE0g9U4RMHncmFlfgfVTlBq0IHMhXbQsP15HHeDL7awYX2fBCmQqK/h3025c5J75RtY00dgbdW0OMLgchQ4Ss7fa12vG+xeNwFttNd9QPRxKzJyFo4FQ3So1ZhOmL2yK46ASTxQnqqdhHr7ariuWd3lS98Ba1UeWxhRXsMU80yranFMWXp+rajzeG23ab4HgOwBKs7pz116MrNALaKFSYoSZ9cIZz8N3lkjesHqDvNQ8AXgjq7+rX3jMI35TTm7SObDzBuv9jL0LN42U33icZAg3a4R8i05RRfN/lk5+fdDjt+hyteKH7GJtTR4l1TgJ7UmbiIZcy0wx9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,75 +116,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Add a section in design.rst to explain that DAMON special-purpose kernel
+modules (LRU_SORT, RECLAIM, STAT) run in an exclusive manner and return
+-EBUSY if another is already running.
 
-When vrealloc() shrinks an allocation and the new size crosses a page
-boundary, unmap and free the tail pages that are no longer needed. This
-reclaims physical memory that was previously wasted for the lifetime
-of the allocation.
+Update lru_sort.rst, reclaim.rst and stat.rst by adding cross-references
+to this exclusivity rule at the end of their respective Example
+sections.
 
-The heuristic is simple: always free when at least one full page becomes
-unused. Huge page allocations (page_order > 0) are skipped, as partial
-freeing would require splitting.
+While at it, fix a Sphinx syntax error in the "contents" directive in
+design.rst (missing space after :depth:) that prevents the table of
+contents from being rendered on docs.kernel.org.
 
-The virtual address reservation (vm->size / vmap_area) is intentionally
-kept unchanged, preserving the address for potential future grow-in-place
-support.
-
-Fix the grow-in-place check to compare against vm->nr_pages rather than
-get_vm_area_size(), since the latter reflects the virtual reservation
-which does not shrink. Without this fix, a grow after shrink would
-access freed pages.
-
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Link: https://lore.kernel.org/damon/20260314002119.79742-1-sj@kernel.org/T/#t
 ---
- mm/vmalloc.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ Documentation/admin-guide/mm/damon/lru_sort.rst | 5 +++++
+ Documentation/admin-guide/mm/damon/reclaim.rst  | 5 +++++
+ Documentation/admin-guide/mm/damon/stat.rst     | 5 +++++
+ Documentation/mm/damon/design.rst               | 6 +++++-
+ 4 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index b29bf58c0e3f..2c455f2038f6 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4345,14 +4345,23 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 			goto need_realloc;
- 	}
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 06a46812a728..0198dfe87f4d 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -353,3 +353,8 @@ the LRU-list based page granularity reclamation. ::
+     # echo 400 > wmarks_mid
+     # echo 200 > wmarks_low
+     # echo Y > enabled
++
++Note that this module (damon_lru_sort) cannot run simultaneously with other
++DAMON-based special-purpose modules.  Refer to :ref:`DAMON design special
++purpose modules exclusivity <damon_design_special_purpose_modules_exclusivity>`
++for more details.
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index c5b4d8a1b001..a37ce6fdff05 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -331,6 +331,11 @@ granularity reclamation. ::
+     # echo 200 > wmarks_low
+     # echo Y > enabled
  
--	/*
--	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
--	 * would be a good heuristic for when to shrink the vm_area?
--	 */
- 	if (size <= old_size) {
-+		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
++Note that this module (damon_reclaim) cannot run simultaneously with other
++DAMON-based special-purpose modules.  Refer to :ref:`DAMON design special
++purpose modules exclusivity <damon_design_special_purpose_modules_exclusivity>`
++for more details.
 +
- 		/* Zero out "freed" memory, potentially for future realloc. */
- 		if (want_init_on_free() || want_init_on_alloc(flags))
- 			memset((void *)p + size, 0, old_size - size);
+ .. [1] https://research.google/pubs/pub48551/
+ .. [2] https://lwn.net/Articles/787611/
+ .. [3] Documentation/mm/free_page_reporting.rst
+diff --git a/Documentation/admin-guide/mm/damon/stat.rst b/Documentation/admin-guide/mm/damon/stat.rst
+index 468c122c4259..46c5dd96aa2e 100644
+--- a/Documentation/admin-guide/mm/damon/stat.rst
++++ b/Documentation/admin-guide/mm/damon/stat.rst
+@@ -45,6 +45,11 @@ You can enable DAMON_STAT by setting the value of this parameter as ``Y``.
+ Setting it as ``N`` disables DAMON_STAT.  The default value is set by
+ ``CONFIG_DAMON_STAT_ENABLED_DEFAULT`` build config option.
+ 
++Note that this module (damon_stat) cannot run simultaneously with other
++DAMON-based special-purpose modules.  Refer to :ref:`DAMON design special
++purpose modules exclusivity <damon_design_special_purpose_modules_exclusivity>`
++for more details.
 +
-+		/* Free tail pages when shrink crosses a page boundary. */
-+		if (new_nr_pages < vm->nr_pages && !vm_area_page_order(vm)) {
-+			unsigned long addr = (unsigned long)p;
+ .. _damon_stat_aggr_interval_us:
+ 
+ aggr_interval_us
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 0a3b77ec458f..3694c541e65a 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -5,7 +5,7 @@ Design
+ ======
+ 
+ .. contents:: :local:
+-   :depth:2
++   :depth: 2
+ 
+ .. _damon_design_execution_model_and_data_structures:
+ 
+@@ -960,6 +960,10 @@ more detail, please read the usage documents for those
+ (:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim` and
+ :doc:`/admin-guide/mm/damon/lru_sort`).
+ 
++.. _damon_design_special_purpose_modules_exclusivity:
 +
-+			vunmap_range(addr + (new_nr_pages << PAGE_SHIFT),
-+				     addr + (vm->nr_pages << PAGE_SHIFT));
-+
-+			vm_area_free_pages(vm, new_nr_pages, vm->nr_pages);
-+			vm->nr_pages = new_nr_pages;
-+		}
- 		vm->requested_size = size;
- 		kasan_vrealloc(p, old_size, size);
- 		return (void *)p;
-@@ -4361,7 +4370,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 	/*
- 	 * We already have the bytes available in the allocation; use them.
- 	 */
--	if (size <= alloced_size) {
-+	if (size <= (size_t)vm->nr_pages << PAGE_SHIFT) {
- 		/*
- 		 * No need to zero memory here, as unused memory will have
- 		 * already been zeroed at initial allocation time or during
-
++Note that these modules currently run in an exclusive manner.  If one of those
++is already running, others will return ``-EBUSY`` upon start requests.
+ 
+ Sample DAMON Modules
+ --------------------
 -- 
-2.43.0
-
+2.53.0
 
 
