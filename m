@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81AE410706E7
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D5B10706E4
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB5026B008C; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
+	id 320236B0092; Sat, 14 Mar 2026 11:25:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B62E26B0092; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
+	id 2C3436B0093; Sat, 14 Mar 2026 11:25:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B8026B0093; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
+	id 1192E6B0095; Sat, 14 Mar 2026 11:25:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C9FB6B008C
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 462095B67E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED68B6B0092
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91C92C25D9
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:38 +0000 (UTC)
+X-FDA: 84545043156.30.8E63EA4
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EB1DCC000C
 	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:36 +0000 (UTC)
-X-FDA: 84545043072.05.F97671A
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 72892C0009
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:34 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gpCMJ1oA;
-	spf=pass (imf22.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E0m+um6g;
+	spf=pass (imf10.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773501934;
+	s=arc-20220608; t=1773501937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dNO6G/5iszc0dA2Qr9qRG/4piwdA9zP6EkYX9lmlJQ4=;
-	b=eO78q1L5QB5kkgG1Y+xnSg1oCHKqLSITcry11S0SyqH6CoWsP4pj1LcRQhgN4PqQe9PNrS
-	Ws7IwW/kc8vY9LgKzh+ofZq1WJwqgcUx/FsbH3dg4soTg/rMB/omoxArf7Xhohf3poZv+Q
-	Opy8Q2HUcXZJt0mkf9Edsi1sD5kSmNQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gpCMJ1oA;
-	spf=pass (imf22.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501934; a=rsa-sha256;
+	 references:dkim-signature; bh=d2eBAZtzNWnpWbtJR/5rxUrUpXwLDR+PqKZhvhnDrwI=;
+	b=M/n217pRX01LpnJGwb5VBknbnzg1Qbyro0UiS5gidn56pPAm4C5rE5OZwRBw4KSTntzxMF
+	xJQ3j8UfcmP2lNW5o0QF+tbB9Qo8WhSphrzU1viHUOv4Od82pzYp4aCJAo7Ka03HlgoraV
+	5B8VuDTMsTln5BU9IptmGpwxV6/AP7E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501937; a=rsa-sha256;
 	cv=none;
-	b=YSuTuMHg2ZdZv/zTfJpRm/YUMggA9tFEbv509PC1F1LQBDu2rnCOjmelqEL+B61sgZKPqE
-	wh3QFX0jUhmq2LYqjlesNnCgLVeypUE9GiWtaDky6czGoe8PM66at0uyWA0/pwfNTBd2C8
-	tGcPs3fHd1S0zD0n2qXaROu8YBJV5Us=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48529c325f0so22960055e9.0
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:34 -0700 (PDT)
+	b=nF+A7B4KMrST9PONJXTR0jLnSiprZkUmNCrvYkuufLwEHxdwy7yVFPTUc23v07AuhNRgtN
+	TO0nujQI+K0+ij8izjrP4pkQW1W1g6QWQPyAHDim8KxkFkTuWx9hmftBuPvIqT+htOyIpI
+	PBY9QSJfjj1Or1vgPEeZboo75omKpUs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E0m+um6g;
+	spf=pass (imf10.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4853c3c2fe7so18988045e9.0
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773501933; x=1774106733; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773501935; x=1774106735; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dNO6G/5iszc0dA2Qr9qRG/4piwdA9zP6EkYX9lmlJQ4=;
-        b=gpCMJ1oA/A1c/JhG+ZUVDjD+LIj2ims+Ydh8OoGkm0arQi9gJzBIdAG5nbnl9hptf7
-         JYA/oCLrSynvTLfx5h2pbpAiMP941gMOX7lm9cZN74DB3pK7uFhzm58m1xt3ZrJ8ipC3
-         EETp8KqVOsfvyLNiPNJRFRk5PFzo+OXZITkPAMRh9pLqGjOrO6GmFzsxVN69/JRJ17Dy
-         tOK7yHcexp13/ywGRztGVlmXDsKiQK1PwIvN0U174mt1rqdqufChroyGSzjeOofE1NKi
-         hEaAVGrmTTK5Odc8ygGhi417t3hEkbIkyPaqOgjrSxeJS920tcQm837sDQm1f2CYiSHG
-         N5Pg==
+        bh=d2eBAZtzNWnpWbtJR/5rxUrUpXwLDR+PqKZhvhnDrwI=;
+        b=E0m+um6giH2q2bDJUHyqQZePtMsKdP8vbqPb49zFGaE7QYa2RuWThza2IQHjBlSmX2
+         ekZe3FSzr7wrtFoMPSXKMTCDFrJaAOwlk9LcJ9325qRNV7tR6HeUygOs6S3qM8vLiOLb
+         o+eDIpnnjmrDTqDNPT/uKRfebdafNNz2gQHLga+eIwm42eRXxpf/FudefyIwwaEaKqkk
+         /+NPf0x9JVhJZ9FYvDXoRY8dW2etxly79pmqa7nSWL/5YAt+konIt4a9/iwdaA1ieugW
+         B7tZXJwOURTPvjct24Ylm6lXSlVuNuQc6I/OfKKhMOP/WwCwyYUNs1H6O3YXzEsrlrwS
+         drbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773501933; x=1774106733;
+        d=1e100.net; s=20251104; t=1773501935; x=1774106735;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dNO6G/5iszc0dA2Qr9qRG/4piwdA9zP6EkYX9lmlJQ4=;
-        b=ZsdIu4hFV0/r4Z3LB+LlCwyBirWD/gdfIpd18MXo1dmgH3LYb0EG3vMsR2aD08PUn+
-         H+FadLXFvuapKvgil59+3X0VBp7dufNgsVhn/zq6BCsj6Y/Zh8nVRHjgrifmmYrZgmCH
-         u0YZazyQRdggvUy8pIJJTGoAOQudJd5OO/KJ2LuO3/j0hekWf79crzlEnC14ndN8u/7B
-         INN3LSgWaLsYGFbiR3cfvnhbNAM0DmSq2Fg7NlVcUfX2wz6OAaaE7JUgGu0KBtykK/ku
-         mucs4ksbXatJppyf9dWCf5YH3W2kPZjCeFsHWaax8rusZq+5fbCWkyS6gvBSRT8gR1Yt
-         bBaQ==
-X-Gm-Message-State: AOJu0YzoQDfrM/mbWBeeNqmRTFv37fvODzyrv+lbl4byUcszUPWVR5jy
-	Tx5+LuraHZfAnx9w4WF90XsDI1KhXxq/Rxw2swj29DKYYk8kffoi9m+S
-X-Gm-Gg: ATEYQzyCVxBw0X3lwHguzV+j++CsmSawf5SWnBzO42FwWjfhnEOzuQ68xeOBL2nnUEs
-	NoSv1vG2/T+XGsS9RPZMZemj/k15Nfd2Jmih1d9WdTyc+IMLc0VhP5K4skw1sJpDueaM0+AyI/H
-	IedTYjKWxKeqnUz1b2iOomqDryf4QVr6CdDGghhdgfBbVYdz+JIV5IONdTNESAXUDXKWj8mAI0T
-	xzwbSqKQ6b8W+SJx+bz9Klr+TLh5eqs4ULj4gRJaOkBDHirT8oTKv5wBTvk97xbG7EqLPb3kfsn
-	hTDWLIq1ylp1fvxr79v/7PTonS8fwAl1P6DoiQSCYJfjSi6eioy4Z7cxQ0KHIcbb23b4oQA8dko
-	vTb4jmZRPae36dYOJgWG1vOlzCMqMidbPd6ogJCuWqg2Mll3eWF6zd/Tqdb96jA6+tcm+eSVIrL
-	QvyACKK3lx6O9ZbZbIgP1ByWx5wuidPBeXbYqGp5ywjLmJOQB78+RvYs1C2hG86pr5zMxXi73t1
-	F91Q6R/HLUpzZJHKXjEktxtoemmAA==
-X-Received: by 2002:a05:600c:8b72:b0:485:3c2d:d02b with SMTP id 5b1f17b1804b1-485566f7a1bmr110614145e9.22.1773501932414;
-        Sat, 14 Mar 2026 08:25:32 -0700 (PDT)
+        bh=d2eBAZtzNWnpWbtJR/5rxUrUpXwLDR+PqKZhvhnDrwI=;
+        b=Tdoyz8hvXHJT6h5rfc3opQL2WewwFYUMBrt6j4bVDOqXqpLAbv0bDiZu0YX66Yk76U
+         JUPv8e0Nw6Ekm7SMSxyuXujQve+COY26zpBUDMJod0o8TYFLIOe99eZcJkesenQpzawK
+         ovyyb6uv+ywtVzPGDZV/kniAayH+wEfjn53DkGgSuVTV+iiStPVPox9AdBU6i0Z4mM/b
+         UiMANDmTORK5TVztDOpnRtLJAsJt9+nu0d7FipFhL9P1PgiP9L+Sy659KGIhcBa8ed+k
+         X79rivHwqsTig5hFgeDX4tEvCvJJv/xdxyfZfBc3+772cvWpUp3JMY+UyG3tcyDU+WxI
+         w1PQ==
+X-Gm-Message-State: AOJu0Yz3+VcCoh9VeXgVhmZte2tKv8gx9S4EXYA37scfBzSaNhMWOoSY
+	kkI53yUWSgfQsBocUxwuUSSOtOiXMPLs3Z7gR5OmjVMLDoPIjTSDVFT0
+X-Gm-Gg: ATEYQzzD6TmAuTmR7tpN+TwDHKLsF5x8y9FrgJfKzsTmwdtvfVdqe5hCYRH6IBwX/zQ
+	2qFFVjadYUpeW+Wh+HODBCWdkQvCSenxWHWGCTH5uQvI8jJLW+DKw6cJDVYgsdJ1IT8aTie25iq
+	SGbc5h7mBQz/l6ZeFM6Q45SOTq2AnE0tv23yslUKijdceWueq7kyuRrYCNMEygIV6Tt4r+M4/Ye
+	Ut136+PK8BTwLogOTL+bRyC3tfnOMlWFSw2JZSPsy+k1noeJ+KnKDyZh9OSZqmb4B6+YovrqreZ
+	+B8jLJYQuCyZTObT6VvbKI9+pbkTcw2xiLOaP0QZVpvlBa208VLQPx+/WvF7dK0573SdM74nMoW
+	55eL43APa1Lpx4r7nGP3dJwCZ9fNWdYI+UeyKjuN6pTyqcBHDwnSPMmp7i+8U3vFN4OS5mxodWs
+	DcJBkNNSKS8npCXq0gFNwSH1hvbCiemClzrq0HijRfHMZ6UebJWcWcRnZR1XIwDMaqC/2px9jX2
+	myzn+ngb1Qfa2stZ3bWjVUi85SL4A==
+X-Received: by 2002:a05:600c:3552:b0:485:3a59:99ca with SMTP id 5b1f17b1804b1-485566fab0bmr113391445e9.16.1773501934612;
+        Sat, 14 Mar 2026 08:25:34 -0700 (PDT)
 Received: from DESKTOP-TILNSD1.localdomain ([139.47.104.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe20bd9csm26590350f8f.21.2026.03.14.08.25.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe2273d9sm30479525f8f.34.2026.03.14.08.25.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 08:25:31 -0700 (PDT)
+        Sat, 14 Mar 2026 08:25:34 -0700 (PDT)
 From: Kit Dallege <xaum.io@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -96,21 +96,21 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	Kit Dallege <xaum.io@gmail.com>
-Subject: [PATCH] Docs/mm: document Page Allocation
-Date: Sat, 14 Mar 2026 16:25:30 +0100
-Message-ID: <20260314152530.100357-1-xaum.io@gmail.com>
+Subject: [PATCH] Docs/mm: document Virtually Contiguous Memory Allocation
+Date: Sat, 14 Mar 2026 16:25:32 +0100
+Message-ID: <20260314152532.100411-1-xaum.io@gmail.com>
 X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 72892C0009
-X-Stat-Signature: 3aoqoctkpziq5km1pasnpbg8ujnukkgn
+X-Stat-Signature: wfrs1p9t6xdcfyrxa51779pt3f88wzz9
 X-Rspam-User: 
-X-HE-Tag: 1773501934-829168
-X-HE-Meta: U2FsdGVkX18MVsUslcVjC9k1HvhmYQlvWZ7x3Er0TeXukDjf5rCa0fHtDUQYaViKV/ofMplFG+e0g5LeRJ081zqb6CCpzYBKP45ZjSjEmMNoKSVbAbRIwgiOvxAKD9QRGYcZwxk6z7STCDEZXRTZ5rB56YQytN81ddrmKitL/4A3vrIXkXuhlfy1iMj7qqeqLMOLrKy+VZM4GOMsiTNkLx/GNFXXbe72adSpFhGBv57qS7HXCjCeBBLueHPNSSg9barD5DeayNP0lilLQbz/NEk+YORQlIO2C9uO4QI1NsRhoKFjVyILgg5XZX/CLc0Kk5N+woyhifDksFx9WoW9tQg7Wxorslj2zRiSQXuR+6RLpGrmtDtuxV81f8WmpOhvOzx0uHg9xK3CrY6De+2vK8wffJdlqxcJlCbDgFaoy/nhUbKfEf4q/T2BbFsOgcHvOKYX+0Ya32UEXhsGNFA8+PeLc0EX1fN2dFb3V+U6zG1fF7PoBtvLRczylOM2taLwJD5EqzEnopA00ctcPZoNer8yBS4FSt/aOEMPNbj6mZR4KNK6zSbok3FO8UVwyJKR5eaKM7AB47PPrljBOmKq6RnapxUamZ/qEx1ELSusArL9VSjCcw2U4mT8KzNO/BFdUM17djo2dqGGxvMX/xLC/027wp6UsTrtUnv7VxnR26UJCrxVqz/huMJQsnfDJ9wp+x2uX70tjx1Gamsq3LA0W6DkqwtCdwWtAIczawoLcsPgxEFZhRoUeQunIzM/lb61MPoyrZ3xM6y4sFp3DYq0Oay9EAM4b1LkLwxbm/BRYGPEQ1dVGsObCcFhsQqlscVUzh1eYZyOdjvZs4ZS9L4dSznLyg8SO9BnRCAPbgZIyFjXu99Hd+YJ92tRUBzg4eIR/UgcidTprOO3doyekijn5i638wikc47XZezTg/f18Y6pD/qXFCanTnIwMnPev2vigiQPhI7Qi428Efspw4w
- jIVMAP3v
- 8gEYHLA5uDZmJtJ/PXIV+VlPeT0GUVvcVd/fqbadL0OW1eRths6esIVgBwYjJkZGf0lxIIb+zFqH84JO/254cwOjInDOd4bL6u4B9qZzKI9uOq/MN5xDGdAOgYk9ayrLPYrZYLQzf2E0khaNZ3oaWgktSZy623CfB6y5QHZu7qFGb+Znpv+cf0HVSFj6q/ClKB9OXts9GWQr/cTGcc7xFkwC89czw481amakYBt1HJ9vejSwpXyzr+p7WgokXgQphL0VgI7Dba3AF3OAO0fCvBlsDQWgJmCMBSW090wowK9hzP4phZxxjeYT0+PH0vmlt6ivvj8ErIgp3xFMrG93OpA7QoVi6htrmgeP3S5VBhk62jMlDY5hQQ1qLKPDzwNQgLVBlVOS7jqa9BgtDYpijzk9AkT2KSlpPDROgL94OCEbaRiLTtQ/lXhsgJuiR188XBbn3Rn7K5tXKRpHFbpdf9ixL1/iBNf7SNrb6lK3lMTqXHegBCO2G3DWp6S/2jRvSc+CVSjM3HVdEZj2i/6mJiuvJE4nJLJWrPlVnAsOAVdw5oE4=
+X-Rspamd-Queue-Id: EB1DCC000C
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773501936-848737
+X-HE-Meta: U2FsdGVkX18JO3oNq2GkUa6JWddQf0crlAK/z8tJD4tea3tRJhDaEoU2+J42QThbJoCBRrlMTZu5zIK0XdSA6EB3wtwN4mxnlyKjDxqUONoweLjhacCyxiDqiU3AOEE9nmJs6SZUryjSaaC7V/dsQwHJA5wnjiMg1l5cbNsGblfxdrAdQBTNhTr6FcbjJ08ULX8sbk/CXKTHvgoj2+a7Lrua4hB+J0tdHqS2USgcqHmppKt3nD6BEx3T1Kc7gFXtB1kO0o9ByP0/SNCIhpoftkZFv4Br1AdBOR2j/gD5NS/48xUXSS27WOGD407c4irq7SlO+aH/Q6G+fbFQDJ4t06PFqrdnQhNsXYLb+fp+B3i4qmoXHmd2xSVXcM+/ob7zw5XgfWEaM/iKIjzrq8fDj0RNERSBQN3PgHdpyBFdTyyPozXl+3hqhOAvHpzgEL0nIOOw2cTS9tY0QrrUE7cCKQDQAxllH+X/t4WdNTRyJMhxaQYT4o7m2KS/MeOWJ/46rzIDmGABI3dv3FxTkNeIAmaio6KfBt7UenCxItlJgN6GQmjhXnKW2GzQHloq3PK0v0+IoGHQLoQZ3VjVyt3SquUgbnVnRXJWObm1uxIGpz/cgVHuxh0CfxK84hZQCKw11JZqVi8aCBtJdC+5K5wYHGLoqCqTV2cAz0L5HC6moZ1Q2eKykuD+kboKvTQ/5bTKKW/namVl9Xaau6/wrainjKXnzDv9WfhIqBzTUjM7py9a32+C0i+puEVr1wXW/TijCCLQxbM1dECZcDM1y2PnK3OALQD85V0e/cOxWQ0fvw3AJZp/GSRXcquaBYHGOtlnEq1OIrlLAuFyNRK6Rj0sLqXgcgYUxqwn6YUKK9WCBii5arD8d5Nwh49qpbXXy99H4BP0xdeRlg1l0lyErE1xEfuhp9DmQr6+6CVcmdGlYACmipPgkXec6VTCk9Anmv8I18D4E6tBDw4UVoUlF5J
+ UNyrFpBI
+ DrMih7Re3ahD4IC1knWxB6SEzHzZkbMPW4NNHDmbVHK5WdN+7KbbuWkjpHZ0owijJh2A29/Ls704e7sqFWEQAXj5bOOR6m26/lnNUeyGH9VvEJiQQD+RGNW9e5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,243 +118,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fill in the page_allocation.rst stub created in commit 481cc97349d6
+Fill in the vmalloc.rst stub created in commit 481cc97349d6
 ("mm,doc: Add new documentation structure") as part of
 the structured memory management documentation following
 Mel Gorman's book outline.
 
 Signed-off-by: Kit Dallege <xaum.io@gmail.com>
 ---
- Documentation/mm/page_allocation.rst | 219 +++++++++++++++++++++++++++
- 1 file changed, 219 insertions(+)
+ Documentation/mm/vmalloc.rst | 128 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 128 insertions(+)
 
-diff --git a/Documentation/mm/page_allocation.rst b/Documentation/mm/page_allocation.rst
-index d9b4495561f1..4d0c1f2db9af 100644
---- a/Documentation/mm/page_allocation.rst
-+++ b/Documentation/mm/page_allocation.rst
-@@ -3,3 +3,222 @@
- ===============
- Page Allocation
- ===============
+diff --git a/Documentation/mm/vmalloc.rst b/Documentation/mm/vmalloc.rst
+index 363fe20d6b9f..2c478b341e73 100644
+--- a/Documentation/mm/vmalloc.rst
++++ b/Documentation/mm/vmalloc.rst
+@@ -3,3 +3,131 @@
+ ======================================
+ Virtually Contiguous Memory Allocation
+ ======================================
 +
-+The page allocator is the kernel's primary interface for obtaining and
-+releasing physical page frames.  It is built on the buddy algorithm and
-+implemented in ``mm/page_alloc.c``.
++``vmalloc()`` allocates memory that is contiguous in kernel virtual address
++space but may be backed by physically discontiguous pages.  This is useful
++for large allocations where finding a contiguous physical range would be
++difficult or impossible.  The implementation is in ``mm/vmalloc.c``.
 +
 +.. contents:: :local:
 +
-+Buddy Allocator
-+===============
-+
-+Free pages are grouped by order (power-of-two size) in per-zone
-+``free_area`` arrays, where order 0 is a single page and the maximum is
-+``MAX_PAGE_ORDER``.  To satisfy an allocation of order N, the allocator
-+looks for a free block of that order.  If none is available, it splits a
-+higher-order block in half repeatedly until one of the right size is
-+produced.  When a page is freed, the allocator checks whether its "buddy"
-+(the adjacent block of the same order) is also free; if so, the two are
-+merged into a block of the next higher order.  This coalescing continues
-+as high as possible, rebuilding large contiguous blocks over time.
-+
-+Migratetypes
++How It Works
 +============
 +
-+Each pageblock (typically 2MB on x86) carries a migratetype tag that
-+describes the kind of allocations it serves:
++A vmalloc allocation has three steps: reserve a range of kernel virtual
++addresses, allocate physical pages (individually, via the page allocator),
++and create page table mappings that connect the two.
 +
-+- **MIGRATE_UNMOVABLE**: kernel allocations that cannot be relocated
-+  (slab objects, page tables).
-+- **MIGRATE_MOVABLE**: user pages and other content that can be migrated
-+  or reclaimed (used by compaction and memory hot-remove).
-+- **MIGRATE_RECLAIMABLE**: caches that can be dropped under pressure
-+  (page cache, dentries).
-+- **MIGRATE_CMA**: reserved for the contiguous memory allocator;
-+  behaves as movable when not in use by CMA.
-+- **MIGRATE_ISOLATE**: temporarily prevents allocation from a range,
-+  used during compaction and memory hot-remove.
++Virtual Address Management
++--------------------------
 +
-+When a free list for the requested migratetype is empty, the allocator
-+falls back to other types in a defined order.  It may also "steal" an
-+entire pageblock from another migratetype if it needs to take pages from
-+it, changing the pageblock's tag to reduce future fragmentation.  This
-+fallback and stealing logic is a key mechanism for balancing fragmentation
-+against allocation success.
++The kernel reserves a large region of virtual address space for vmalloc
++(on x86-64 this is hundreds of terabytes).  Within this region, allocated
++and free ranges are tracked by ``struct vmap_area`` nodes organized in two
++red-black trees — one sorted by address for the busy areas, and one
++augmented with subtree maximum gap size for the free areas.  The augmented
++tree allows free-space searches in O(log n) time.
 +
-+Per-CPU Pagesets
-+================
++Each allocated area also has a ``struct vm_struct`` that records the
++virtual address, size, array of backing ``struct page`` pointers, and flags
++indicating how the area was created (``VM_ALLOC`` for vmalloc,
++``VM_IOREMAP`` for I/O mappings, ``VM_MAP`` for vmap, etc.).
 +
-+Most order-0 allocations are served from per-CPU page lists (PCP) rather
-+than the global ``free_area``.  This avoids taking the zone lock on the
-+common path, which is critical for scalability on large systems.
++Guard Pages
++-----------
 +
-+Each CPU maintains lists of free pages grouped by migratetype.  Pages are
-+moved between the per-CPU lists and the buddy in batches.  The batch size
-+and high watermark for each per-CPU list are tuned based on zone size and
-+the number of CPUs.
++By default, each vmalloc area is surrounded by a guard page — an unmapped
++page that causes an immediate fault if code overruns the allocation.  This
++costs one page of virtual address space (not physical memory) per
++allocation.  The ``VM_NO_GUARD`` flag disables this for internal users that
++manage their own safety margins.
 +
-+When a per-CPU list is empty, a batch of pages is taken from the buddy.
-+When it exceeds its high watermark, excess pages are returned.
-+``lru_add_drain()`` and ``drain_all_pages()`` flush per-CPU lists when
-+the system needs an accurate count of free pages, such as during memory
-+hot-remove.
++Huge Page Support
++-----------------
 +
-+GFP Flags
-+=========
++On architectures that support it, vmalloc can use PMD- or PUD-level
++mappings instead of individual PTEs, reducing TLB pressure for large
++allocations.  ``vmalloc_huge()`` requests this explicitly.  The decision
++is per-architecture: each architecture provides callbacks
++(``arch_vmap_pmd_supported()``, ``arch_vmap_pud_supported()``) to indicate
++which levels are available.
 +
-+Every allocation request carries a set of GFP (Get Free Pages) flags,
-+defined in ``include/linux/gfp.h``, that describe what the allocator is
-+allowed to do:
++Even when huge pages are requested, the allocator falls back to base pages
++transparently if the physical pages cannot be allocated at the required
++alignment.
 +
-+Zone selection
-+  ``__GFP_DMA``, ``__GFP_DMA32``, ``__GFP_HIGHMEM``, ``__GFP_MOVABLE``
-+  select the highest zone the allocation may use.  ``gfp_zone()`` maps
-+  flags to a zone type; the allocator then scans the zonelist from that
-+  zone downward.
++Lazy TLB Flushing
++-----------------
 +
-+Reclaim and compaction
-+  ``__GFP_DIRECT_RECLAIM`` allows the allocator to invoke direct reclaim.
-+  ``__GFP_KSWAPD_RECLAIM`` allows it to wake kswapd.  Together these form
-+  ``GFP_KERNEL``, the most common flag combination.
++Unmapping a vmalloc area requires a global TLB flush (IPI to all CPUs) to
++ensure no stale translations remain.  To amortize this cost, vmalloc defers
++the flush: page table entries are cleared immediately but the TLB
++invalidation is batched across multiple frees.  The flush is forced when
++the free area needs to be reused or when ``vm_unmap_aliases()`` is called
++explicitly.
 +
-+Retry behavior
-+  ``__GFP_NORETRY`` gives up after one attempt at reclaim.
-+  ``__GFP_RETRY_MAYFAIL`` retries as long as progress is being made.
-+  ``__GFP_NOFAIL`` never fails — the allocator retries indefinitely,
-+  which is appropriate only for small allocations in contexts that
-+  cannot handle failure.
++Per-CPU Allocations
++-------------------
 +
-+Migratetype
-+  ``__GFP_MOVABLE`` and ``__GFP_RECLAIMABLE`` select the migratetype.
-+  ``gfp_migratetype()`` maps flags to the appropriate type.
++The per-CPU allocator uses vmalloc internally to obtain virtually
++contiguous backing for per-CPU variables across all CPUs.  It allocates
++multiple vmalloc areas with specific size and alignment requirements in a
++single call, ensuring that each CPU's copy is at a consistent offset from
++the per-CPU base.
 +
-+Allocation Path
-+===============
++vmap and Temporary Mappings
++===========================
 +
-+Fast path
-+---------
++Besides vmalloc (which allocates both virtual space and physical pages),
++the subsystem provides two related mechanisms:
 +
-+``get_page_from_freelist()`` is the fast path.  It walks the zonelist
-+(an ordered list of zones across all nodes, starting with the preferred
-+node) looking for a zone with enough free pages above its watermarks.
-+When it finds one, it pulls a page from the per-CPU list or buddy.
++- **vmap/vunmap**: maps an existing array of ``struct page`` pointers into
++  contiguous kernel virtual space.  This is used when pages have already
++  been allocated (e.g., by a device driver) and just need a contiguous
++  kernel mapping.
 +
-+The fast path also checks NUMA locality, cpuset constraints, and memory
-+cgroup limits.  If no zone can satisfy the request, control passes to
-+the slow path.
++- **vm_map_ram/vm_unmap_ram**: lightweight temporary mappings for
++  short-lived use, with lower overhead than full vmap.
 +
-+Slow path
-+---------
++Freeing
++=======
 +
-+``__alloc_pages_slowpath()`` engages increasingly aggressive measures:
++``vfree()`` can be called from any context, including interrupt handlers.
++When called from interrupt context the actual work (page table teardown,
++TLB flush, page freeing) is deferred to a workqueue.  This is safe because
++the virtual address range is immediately removed from the busy tree, so no
++new mappings can be created in the freed region.
 +
-+1. Wake kswapd to begin background reclaim.
-+2. Attempt direct reclaim — the allocating task itself reclaims pages.
-+3. Attempt direct compaction — migrate pages to create contiguous blocks
-+   (for high-order allocations).
-+4. Retry with lowered watermarks if progress was made.
-+5. As a last resort, invoke the OOM killer (see Documentation/mm/oom.rst).
++Page Table Management
++=====================
 +
-+Each step may succeed, in which case the allocation is retried.  The
-+``__GFP_NORETRY``, ``__GFP_RETRY_MAYFAIL``, and ``__GFP_NOFAIL`` flags
-+control how far down this chain the allocator goes.
++vmalloc maintains its own kernel page tables to map virtual addresses to
++the backing physical pages.  On allocation, page table entries are created
++at the appropriate level (PTE, PMD, or PUD depending on huge page support).
++On free, the entries are cleared.
 +
-+Watermarks
-+==========
++The page table setup must handle architectures where the kernel page tables
++are not shared across all CPUs.  On such systems, a vmalloc fault mechanism
++lazily propagates new mappings: when a CPU accesses a vmalloc address for
++the first time and takes a fault, the fault handler copies the page table
++entry from the reference page table (init_mm) into the CPU's page table.
 +
-+Each zone maintains min, low, high, and promo watermarks that govern
-+reclaim behavior:
-+
-+- **min**: below this level, only emergency allocations (those with
-+  ``__GFP_MEMALLOC`` or from the OOM victim) can proceed.  Direct reclaim
-+  may be triggered.
-+- **low**: when free pages drop below this level, kswapd is woken to
-+  begin background reclaim.
-+- **high**: kswapd stops reclaiming when free pages reach this level.
-+  The zone is considered "balanced."
-+- **promo**: used for NUMA memory tiering; controls when kswapd stops
-+  reclaiming when tier promotion is enabled.
-+
-+The min watermark is derived from ``vm.min_free_kbytes``.  The distance
-+between watermarks is scaled by ``vm.watermark_scale_factor``.
-+
-+Watermark boosting temporarily raises watermarks after a pageblock is
-+stolen from a different migratetype, increasing reclaim pressure to
-+recover from the fragmentation event.
-+
-+High-Atomic Reserves
-+--------------------
-+
-+The allocator reserves a small number of high-order pageblocks for atomic
-+(non-sleeping) allocations.  When a high-order atomic allocation succeeds
-+from unreserved memory, the containing pageblock is moved to the reserve.
-+When memory pressure is high, unreserved pageblocks are released back to
-+the general pool.
-+
-+Compaction
-+==========
-+
-+Memory compaction (``mm/compaction.c``) creates contiguous free blocks for
-+high-order allocations by relocating movable pages.  It runs two scanners
-+across a zone: one walks from the bottom to find movable in-use pages, the
-+other walks from the top to find free pages.  Movable pages are migrated
-+to the free locations, consolidating free space in the middle.
-+
-+Sync modes
-+----------
-+
-+Compaction operates in three modes:
-+
-+- **ASYNC**: skips pages that require blocking to isolate or migrate.
-+  Used in the allocation fast path and by kcompactd.
-+- **SYNC_LIGHT**: allows some blocking but skips pages under writeback.
-+- **SYNC**: allows full blocking.  Used when direct compaction is the
-+  last option before OOM.
-+
-+Deferral
-+--------
-+
-+When compaction fails for a given order in a zone, it is deferred for an
-+exponentially increasing number of attempts to avoid wasting CPU on zones
-+that are too fragmented.  A successful high-order allocation resets the
-+deferral.
-+
-+kcompactd
-+---------
-+
-+Each node has a kcompactd kernel thread that performs background
-+compaction.  It is woken when kswapd finishes reclaiming but high-order
-+allocations are still failing due to fragmentation.  kcompactd runs at
-+low priority to avoid interfering with foreground work.
-+
-+Capture Control
-+---------------
-+
-+During direct compaction, the allocator uses a capture mechanism: when
-+compaction frees a block of the right order, the allocation can claim it
-+immediately rather than racing with other allocators on the free list.
-+
-+Page Isolation
++NUMA Awareness
 +==============
 +
-+``mm/page_isolation.c`` supports marking pageblocks as ``MIGRATE_ISOLATE``
-+to prevent new allocations from those ranges.  Existing free pages are
-+moved out; the caller then migrates all in-use pages away.  Once the range
-+is fully evacuated, it can be used for a contiguous allocation or taken
-+offline.
++By default, vmalloc allocates physical pages from any NUMA node.  The
++``vmalloc_node()`` and ``vzalloc_node()`` variants prefer a specific node,
++which is useful for data structures that are predominantly accessed from
++one node.  The pages are still mapped into the global kernel virtual
++address space, so they remain accessible from all CPUs regardless of
++which node they were allocated from.
 +
-+This mechanism is used by:
++KASAN Integration
++=================
 +
-+- **CMA** (contiguous memory allocator): reserves regions at boot for
-+  device drivers that need physically contiguous buffers.  The reserved
-+  pages serve normal movable allocations until a CMA allocation claims
-+  the range.
-+- **Memory hot-remove**: isolates a memory block before offlining it.
-+- **alloc_contig_range()**: general-purpose contiguous allocation used
-+  by gigantic huge pages and other subsystems.
-+
-+The isolation process must handle pageblocks that straddle the requested
-+range boundaries, compound pages (huge pages, THP) that overlap the
-+boundary, and unmovable pages that prevent evacuation.
++When KASAN (Kernel Address Sanitizer) is enabled with
++``CONFIG_KASAN_VMALLOC``, vmalloc allocates shadow memory to track the
++validity of each vmalloc region.  The shadow memory is itself vmalloc'd
++and mapped lazily.  This allows KASAN to detect out-of-bounds accesses
++and use-after-free bugs in vmalloc'd memory, which is particularly useful
++for catching bugs in kernel modules (whose code and data are vmalloc'd).
 -- 
 2.53.0
 
