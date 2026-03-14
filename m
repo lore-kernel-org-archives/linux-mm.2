@@ -4,110 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954F610706E4
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 688A210706E4
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A84F76B0088; Sat, 14 Mar 2026 11:20:53 -0400 (EDT)
+	id AF19E6B0089; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A32B06B0089; Sat, 14 Mar 2026 11:20:53 -0400 (EDT)
+	id A9EEF6B008A; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93E8D6B008A; Sat, 14 Mar 2026 11:20:53 -0400 (EDT)
+	id 99DD66B008C; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E5946B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:20:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14FECC2770
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:20:53 +0000 (UTC)
-X-FDA: 84545031186.14.0B9C3BD
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5EBCA1A0002
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:20:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lblmDcB+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 892266B0089
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FDB08C2A1
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:25 +0000 (UTC)
+X-FDA: 84545042610.15.E8B1345
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4EC622000D
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ipioA9bG;
+	spf=pass (imf03.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773501651;
+	s=arc-20220608; t=1773501923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UhFWh13at5VNx0PZXoI3U71AUi3i/b82a0dMiFfr0yk=;
-	b=lDbPaCUpHNHkpnU1f7Khg0Shci0hezZgy6MOLDKoUX7MhlylZnS7pE/wder5fmH5KgXsf0
-	5ywPdn63mtMWjPTLe8sWVHc6mLu3mJSuaUFET7D0NNNl1g1qbvqYzRHMOKHanN+EfMYDd8
-	wYlOQGzZz5YVLYTEfGw+v+rJLXpR3q8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501651; a=rsa-sha256;
-	cv=none;
-	b=QYKoG85SP8a6TgRifz0euf5MbHPep+NI3SraWP5cV5lBO62sJGv5lkUjT8zyLds/X4HyBd
-	YiYW6Av7TKb8LwfRsWxzEIKMOkmuKQLFj6HTVHfNEc1PbYHuyMNdANgkjhqhca5ql8bbCY
-	hpP8iTKi7jdREXTpmFc/uX4xvXZmzJ0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9NVTfVmb6N0l2OFZbjNDjAuiMDfwEZpK5jgMzMH9pzI=;
+	b=dlwegTaLDFjqTfcAQl71JA0Y5DtokEuzJo4KEyjs1IrB2CPlkAoMwkuaSEkISGn9Mnnqof
+	+S6Fqa7pTfRZgV3K4zANZbQ1krY/NWRFgAdOillqMXWnAWPZ4hhKcTcZ0szek+fuTh+yUc
+	FTMvgC3rHswLqIoYXQ/s7/lPCh1DAj0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lblmDcB+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773501650; x=1805037650;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1FtGcHaPzohD23/qb3jPURbq6HHqLOzLRiH5ow2x+iE=;
-  b=lblmDcB+30u2laq9jQJaA2FlfZvHTrpWIjG14pVTcEdxscqk+kTQ4uKU
-   8E5QDjHWmz8GHYsLocPMsPcJwll7oS0XX23QO8ieg0NLRzaB+7apFirad
-   JktIxTz4j9zsRrH1RUmPUcWkQy0Q7O9Pxv4t36uUfoOvsiEZAcVClSOJN
-   G8NxORi57RH9+zjU+NWOv/xC9kEizTlrHzesgyyM4m1dw3f+0q2O1wVqs
-   x6cRpJ+Qaw1uHUulgOlROo9hiJnM3E3tueqx1RLt0Pksy86qUzqZ2Wwt1
-   24o4LvDXrPColbuh6IQDkPX9HBosHs6awQVC9c9BjTQXg8Y75FlKz/0zU
-   w==;
-X-CSE-ConnectionGUID: OCoPOb8VQ0aVoL8uz/M9sA==
-X-CSE-MsgGUID: 8rS/ASOFTjmAaoK9A5isUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11729"; a="78476193"
-X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; 
-   d="scan'208";a="78476193"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2026 08:20:48 -0700
-X-CSE-ConnectionGUID: qNbf0hHhQhu2DsmAtre4nA==
-X-CSE-MsgGUID: RSSzsBKMTTmMexgmUNZJ8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; 
-   d="scan'208";a="221663544"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 14 Mar 2026 08:20:45 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w1QnC-000000005I7-1ruy;
-	Sat, 14 Mar 2026 15:20:42 +0000
-Date: Sat, 14 Mar 2026 23:20:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH 3/7] of: reserved_mem: switch to ops based OF_DECLARE()
-Message-ID: <202603142347.aops46Bf-lkp@intel.com>
-References: <20260313150802.1121442-4-m.szyprowski@samsung.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ipioA9bG;
+	spf=pass (imf03.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501923; a=rsa-sha256;
+	cv=none;
+	b=OtjMLsUNxMELZeu/TMw9i+57MSS2TlaBnhFn9eR9pCN+5tWT3C8hJ9+lLEtkC6tgFbBF6D
+	/R0l+aU800FHloq0oGrXFlno5tgHjsgK+qv9YAb6xcGBsM5VPE9tcm/cq+I5eDhPFvJ8ls
+	fRQZRLNw91sJ75/tPfsS0ov3TFafXZ0=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-439d8dc4ae4so3265503f8f.2
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773501922; x=1774106722; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9NVTfVmb6N0l2OFZbjNDjAuiMDfwEZpK5jgMzMH9pzI=;
+        b=ipioA9bGlA81YP1D7dedAe+nX/MurXdTDihk7JnL9S5TSNzZIISQ8c9w3f6OHw0I16
+         B6rjIdMFO1rTsA1niwNKGAk+1ORcn/Pv4pwUUZgBTp/cnpIxUTI9qkX9tgaE+Lg+hKgy
+         SgKl4ci+a8JixZcJqQOLr0Ls4Pw+XyuYw/KOqIFEcziJjUO+OhxIG9ngox7ISUIG7Gm3
+         BJc+WKoUhHNVQx3YSZd45rcPbIGN4ySE6O6tNCwp3wuheBEUMUrHTyAbWnYZFOBJZL8q
+         TBjka7bmnKB1DVHbse4Vm0HZgUuzhWMRNBhFgZVpiRfdSjpKs/sxwo7ZQ0IIyciFZSKn
+         Rc/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773501922; x=1774106722;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9NVTfVmb6N0l2OFZbjNDjAuiMDfwEZpK5jgMzMH9pzI=;
+        b=c6IfZrCd5/d8m9fnQ7URjoJeyWTaeEEh8bsadAZ43QpAtC8vwfzlo3glgXWmLP4tb6
+         o0oQAwwghydwqtblFkJDH/2YIQSXmGtSkzm+pkpG3EBdPhQQTNbfAzK605WNKkraU964
+         q7dqgHq1qmoi7sKq0woGTTNLmBpIjpsXirKnBE9+XPeLVGCCWUpx0Zf+ETdtmo6csAtB
+         /U0Bf7el+SVRuaqNm2u5kEAKvBW/RCrdD9y9aWnHW27NF15WRSMshYmuPrwP4Bh1qRXG
+         PhlR8sm/M/nQTYy0BJZQMYnhUerYy5A0CGUk4VQTKnsrdlDkQNE8xcIeKTW2PPdaCgnV
+         HEEA==
+X-Gm-Message-State: AOJu0YzeRDsAMMky7So8b4gBqCcD1I4NF6q5FCE9myqoXw2t4g/sQaxV
+	n8tvVn0gGLzGuH0SjMILnL640cCxk7yaZw1ecW2bU/FozmIo6Dy/qIxo
+X-Gm-Gg: ATEYQzzdPMdAowMI4MAWi50+0nF0AfpGJRhqeupdG36hBZsxDRqpiqiGBTNAJKzyvKL
+	uNjlqFpcujTYgR8DJqm5QO/RFi7Cypl30q9+VPDLWASF80iN3SFrUQFBN5CnujiObWE9gKSOuN6
+	nsDCax872X5TBTNB06usEJMyk99LWi2e6+rZYW2nYVplGdEhCfhWZl9EyYGZCY3JHQHSRRJrRfH
+	xaiewcUlyVbNd2NXQdEMt0oi0e9ZQ2z5O2ni+N1VyNuAJoQDj1k3so9uEZbvSX4fUPOFceNKlSo
+	q1+AN2HgrGB85b5A6CDe30mPmvTuP1TEQnf4QQajVesYkbulkNwLW5Yn/BQlQuXyF3Ave0XAnlt
+	XCil1GDKpDuWdJhkb/C19BjfhXQ3mP+XRDGR72G9YvUEfRbGux+uM7Ax9JlcJNwobSOfyeXTZkR
+	W9syFOgjl9+oBWpp5Qa9Ge0GPUuvGfjgL8E990Q4DkzwNn/9Um8sj3KK1HkAvGh0vYTf3Q8NxHH
+	XWOOiOCyEtbs8YHD2LRItopf9Aah3irwYk/IC8Z
+X-Received: by 2002:a05:6000:2406:b0:439:b522:37ee with SMTP id ffacd0b85a97d-43a04db4c63mr12781586f8f.27.1773501921112;
+        Sat, 14 Mar 2026 08:25:21 -0700 (PDT)
+Received: from DESKTOP-TILNSD1.localdomain ([139.47.104.103])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43a0b2e2c71sm11187254f8f.22.2026.03.14.08.25.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 08:25:20 -0700 (PDT)
+From: Kit Dallege <xaum.io@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	corbet@lwn.net
+Cc: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	Kit Dallege <xaum.io@gmail.com>
+Subject: [PATCH] Docs/mm: document the OOM killer
+Date: Sat, 14 Mar 2026 16:25:18 +0100
+Message-ID: <20260314152518.100194-1-xaum.io@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313150802.1121442-4-m.szyprowski@samsung.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5EBCA1A0002
-X-Stat-Signature: spse6cjh7p1ro4kpzufyn6waeir8uas6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4EC622000D
+X-Stat-Signature: ozgji3z9u5u19ubsp4cputgx7m3kir3e
 X-Rspam-User: 
-X-HE-Tag: 1773501650-354610
-X-HE-Meta: U2FsdGVkX18eIE87fH8povKvJMHcPc053VD7ZhzGsksLuNrLZZhhObEHl4QcOO5xzNutswci38NDR2qsYOTVV2xFhgsEDIW9Gz3fzduEHJtmLiRfhK9q5gP+pQgly5GD5laxbSqlG0zG2XJ1UbPA9kqvELnv8ghYS/AzqWn02apCBxBHyYgn/P3ZPV4TNm9YpMg1+LmrHJNnI76LRc6eIivGDTkkI9oRvH2Q8dF5/nbANqC6VgRB8wc3AhxT1zFfGnLXXC/U+cPoRBT9Rpf4oefv06ssDK7PD9uoLVwSwp6jM8QQo2oyhZEytBZ3fYshaKpBRCNP7lXXt+QrHMX4pWeqKFmC15KZrPUcZ+NiMBr3GxQG1cMwdMlU1ez/CKL5Ceuwf4bd05BJfdE5oRzm0qvIeMI83NB1zxoCejPAp6YlV8B3E/2AzRbyGm1ilGf6Qr+Z2l9M3CcrpkWsut5yLWPiNSdTXYYvLaB3LTdfY58hKE0FiBqKmr/DyViL8kIoOV8aMMV3mQ4d4h/X/87NL6tdUC8AXqNtRZLJcwBar6hdrr8HBc1AndmKNqh6ykQvn7uGBl9G11XGCQHGRN85Q08yZmNcn0MiTdXrPGw8LRk5rWDuGb7EqryWKpc7rhUV2iAueOgRSvP7SH9mCPfyZBks7puV1KUNznCbFc9Md2yGnIimWHNtr4mNz7narjGOFTSON+mBDWw/wcU+QO76S7pMKIOxmvh4IwoXPh4Ut6rlMRBbrOJ+0D5tQNbx9UrNA0CvxqcbYg272z3huXR198+fXXI4uKYtaqYXA0Dr/ZcApswLwUwP/I9z6SoMWGFtVTV4E6U6Kn2vynXXydL2oyd9vYsP7bseaYXe++Ov4CxDpfd0h6+s3DHs/DhJAT/iSU2QKY70bOxM9pJzED+VatWZ56McrD3KiA/2niYlSMfuWqAGvq5YvWQ40sukYDLOa/MUr6s6BJ6ZhTZbEf8
- Kht7LaVO
- MQzvClJthMurs/1ToHFhUH4GPhqFV+XLOmqLUp9NISN7LnG4E/P487/+ZEcAjlyvmvNYeyHXAdupb/9QgP8KasGDDM4uIpyYlVoMKWu8kH7yUSlxzNdRSmmdIZAvoOkjb9KlsZovf7ZWnTQLsZaDIEP0m7A7L9l3tLzczD0XdQKd6I+OBHq7itsMNSPUpkup961sGBRAg8agcRYJf8MeKMVpClBoYW53NJfCDvUmL16ZR7PgBa24YlzYn+dOWNxsHUqNJaZJ0PTLw/LeYeaPTSCnZcHDyV3pwDy93UQP1aS7XITqygY57wOHa/vN4C5pCEVQvuGPYDltiNABeJrKaxV7smvdO6xnc0S2aLiIcJkM7qLDvaFzM74oJhPsCwLbmR5O6GKD58ezTDVbQfOHjZ3sgW7eDU4xX5ovfl/gfbN6NO40pExRux185ptqqc8eRuXnlS+a7bGr8xLzkqG5UcSno6g==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773501923-460863
+X-HE-Meta: U2FsdGVkX1+4XCL0sFrlpc7B026mb14LWmO45mShi2fTHeoHyFZhVEyfpHKxDBwjlICDqvQJRQpt2v8T0cPQ9spIjL/+fZ7zYqNtSCCtgorrQLd+jsEIPHSw1swZpoce2USvfRBle9Om1I5MwOHlvPvYU0cYUtleTVzGDR6ZKcT1ruTDACd/QK2AGYUijSPwBnWHGIKW5/FMjzAhA4NdXBZu+DoSconel5thLD2JEirbHRLqB7vM642ocWbimif7IZU8KpEJy7Ie2vUa9Y/FA54WU725DRdPdVcxwJ/hb8ghIKxRtLEknOa6EokuC8JCYBngdOxFO9B9AS43mfMpJwK90cy6lWUXIRpXdnW7V4T0CFKX9zLHMo0BjEfCydz40bis9xmV5Q5Dr6qRJASXHoRvP9YLJKVVTyKJ0kTPxhkqyG1si9kvFEZ8U0h21am3zmUR/2I7y3Ydi50zeza1sIsyR3U6TmkRChF1xkC/1igAIE7VYF8w9F0Ps0MnPASZIzhi1hzMb5aVBhk96Jmzxu40Mi6tqZvmXNlwb6/1LJiLigqq4MXY/gzGV3BgGJFxJBRsQV6JpCNRgFic+6P9vTltmULKEwLUKE9E1d2J9ggtFGRN+TaooszEp39JmnIEn1+PQ7JBCnFpeX4Qja8hpTVmxwCZi60y1AQHTOMJkuRtlvjfKlxdF9JAY2plaIIuPbvK9f5kvhIa2ME2k6wmNmoiyn/T3/2/Yxz6YW1v8TK7fFOreh2vVzLtufOBgQqPOjX+BRlhisXN0/mq0lSmF9RcQp8BmY/qoUNDeb3SPAqja8n8rYA53YWaJJ+oicYwsM58qcfgpco3SzAXiSohhQPv2bpxuFlZZBZKHQGRtXRKVDGjhC/N5i+4RbnuN5GBB1waC8kLtc4abAHxNwz3sQinkQKpckD5Q7yzKb+yxS2Ol/f8jgJA4HU8CwZ3FD2V55IFXc8CnH/+Y3W1O8q
+ l8EBxghc
+ GL+oZqn6nRwuckFOdJatoXogYtZZ+uHfHTw6mNohgpUbSF0nRmQb4GLFE7Ww0f8cWEo6VV9ZksF2tkZjvtFeHLmGhCXYQZI0nLCV9hT3dmprifbH1NWPjh+xi1kcYWskNMBVkK0M2GgBjN3EV2LgtHzWbLGf6UuOfGX2sB8ZptgJuQpE3U7bmyD+E/DA4oPFXy7W0Zp7Jz5WjnYyaVkGT4Sp1jt7ZIg3rBh4O47izL2AYbn3hcsobiwbZpqnuAvDgTuHObb65TpV/3ECqNUCIipBkKWCccxC7M5q+RbT0q4Kdm+rJbiGNDrb7Ada+Qag8hHs8NrR6q4/JD8moEHxcCPCaztSRw+KdqRwu2QBv4eC7J7d0Tp69oTNFmdJJcftIG1UOPcRlBx/G0wuMDJX/kEEJWY9Z2cEloX6b/T7NlSESA2lwrgeEE3enHHbv+GB419cldbR/jkqjzj1XOnUgHj5UzFBLCpjozrBSOUBYroLW+ePjv3ov5+NM+86fjTXUJlkXChKKBKuuaLmnAFbQElkvI9kImubJ2GIRWiPcrh1bWLM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,55 +118,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Marek,
+Fill in the oom.rst stub that was created in commit 481cc97349d6
+("mm,doc: Add new documentation structure") as part of the structured
+memory management documentation following Mel Gorman's book outline.
 
-kernel test robot noticed the following build errors:
+Cover the scoring heuristic, allocation constraints, OOM reaper,
+process_mrelease syscall, and sysctl knobs.
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on tegra/for-next akpm-mm/mm-everything linus/master v7.0-rc3 next-20260311]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: Kit Dallege <xaum.io@gmail.com>
+---
+ Documentation/mm/oom.rst | 67 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marek-Szyprowski/of-reserved_mem-remove-fdt-node-from-the-structure/20260314-023123
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20260313150802.1121442-4-m.szyprowski%40samsung.com
-patch subject: [PATCH 3/7] of: reserved_mem: switch to ops based OF_DECLARE()
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260314/202603142347.aops46Bf-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260314/202603142347.aops46Bf-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603142347.aops46Bf-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/memory/tegra/tegra210-emc-table.c: In function 'tegra210_emc_table_init':
->> drivers/memory/tegra/tegra210-emc-table.c:79:22: error: 'tegra210_emc_table_ops' undeclared (first use in this function); did you mean 'tegra210_emc_table_init'?
-      79 |         rmem->ops = &tegra210_emc_table_ops;
-         |                      ^~~~~~~~~~~~~~~~~~~~~~
-         |                      tegra210_emc_table_init
-   drivers/memory/tegra/tegra210-emc-table.c:79:22: note: each undeclared identifier is reported only once for each function it appears in
-
-
-vim +79 drivers/memory/tegra/tegra210-emc-table.c
-
-10de21148f7d28 Joseph Lo        2019-05-29  72  
-6888259214366b Marek Szyprowski 2026-03-13  73  static int tegra210_emc_table_init(unsigned long node,
-6888259214366b Marek Szyprowski 2026-03-13  74  				   struct reserved_mem *rmem)
-10de21148f7d28 Joseph Lo        2019-05-29  75  {
-10de21148f7d28 Joseph Lo        2019-05-29  76  	pr_debug("Tegra210 EMC table at %pa, size %lu bytes\n", &rmem->base,
-10de21148f7d28 Joseph Lo        2019-05-29  77  		 (unsigned long)rmem->size);
-10de21148f7d28 Joseph Lo        2019-05-29  78  
-10de21148f7d28 Joseph Lo        2019-05-29 @79  	rmem->ops = &tegra210_emc_table_ops;
-10de21148f7d28 Joseph Lo        2019-05-29  80  
-10de21148f7d28 Joseph Lo        2019-05-29  81  	return 0;
-10de21148f7d28 Joseph Lo        2019-05-29  82  }
-f954eaa20bd915 Marek Szyprowski 2026-03-13  83  
-
+diff --git a/Documentation/mm/oom.rst b/Documentation/mm/oom.rst
+index 18e9e40c1ec1..2259f871a4a7 100644
+--- a/Documentation/mm/oom.rst
++++ b/Documentation/mm/oom.rst
+@@ -3,3 +3,70 @@
+ ======================
+ Out Of Memory Handling
+ ======================
++
++When the kernel cannot satisfy a memory allocation after exhausting reclaim,
++compaction, and memory reserves, it invokes the OOM killer to terminate a
++process and free memory.  The implementation is in ``mm/oom_kill.c``.
++
++Victim Selection
++================
++
++The OOM killer scores every eligible process and kills the one with the
++highest score.  The score is the sum of the process's resident pages, swap
++entries, and page table pages.  This sum is then adjusted by the per-process
++``oom_score_adj`` tunable (range -1000 to 1000, default 0), which biases
++the score by ``oom_score_adj * totalpages / 1000``.  Setting
++``oom_score_adj`` to -1000 disables OOM killing for that process entirely.
++
++The ``totalpages`` baseline depends on the allocation constraint:
++
++- **Unconstrained**: all RAM plus swap.
++- **Cpuset**: memory on nodes in the current cpuset.
++- **Memory policy**: memory on nodes in the current mempolicy.
++- **Memory cgroup**: the cgroup's memory limit.
++
++Only processes that can use memory within the constraint are considered.
++Kernel threads and init are never eligible.
++
++OOM Reaper
++==========
++
++Sending SIGKILL does not immediately free memory — the victim must be
++scheduled, unwind its stack, and tear down its address space.  To speed
++this up, the OOM reaper kernel thread (available on MMU systems) proactively
++unmaps the victim's anonymous and private pages without waiting for the
++victim to exit.
++
++The reaper gives the victim a short window to exit naturally before
++intervening.  It walks the victim's VMAs in reverse and calls
++``unmap_page_range()`` to release physical pages.  Once reaping completes
++(or is no longer possible), the mm is marked ``MMF_OOM_SKIP`` so the OOM
++killer skips it in future invocations.
++
++Before reaping, the mm is marked ``MMF_UNSTABLE`` to signal page fault
++handlers that private mappings may have been zeroed and are no longer
++reliable.
++
++process_mrelease
++================
++
++The ``process_mrelease(pidfd, flags)`` system call lets userspace OOM
++managers (such as systemd-oomd or Android's lmkd) trigger the same reaping
++mechanism on a dying process without waiting for the kernel OOM killer.
++It operates on a process that is already exiting and performs the same
++address space teardown that the OOM reaper would.
++
++Sysctl Knobs
++============
++
++``vm.panic_on_oom``
++  0 (default): kill a process.  1: panic on unconstrained OOM only.
++  2: always panic.
++
++``vm.oom_kill_allocating_task``
++  When non-zero, kill the task that triggered the OOM rather than scanning
++  for the largest process.
++
++``vm.oom_dump_tasks``
++  When non-zero (default), dump a table of all eligible tasks and their
++  memory usage to the kernel log before killing.
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
 
