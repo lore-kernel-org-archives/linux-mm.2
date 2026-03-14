@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F128910706E6
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81AE410706E7
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 532FD6B008A; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
+	id BB5026B008C; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F3586B008C; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
+	id B62E26B0092; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FFAB6B0092; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
+	id 9B8026B0093; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E7AD6B008A
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C59C51C395
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:33 +0000 (UTC)
-X-FDA: 84545042946.01.DF52760
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ED7731C000F
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9nwqPt;
-	spf=pass (imf20.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C9FB6B008C
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 462095B67E
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:36 +0000 (UTC)
+X-FDA: 84545043072.05.F97671A
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 72892C0009
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gpCMJ1oA;
+	spf=pass (imf22.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773501932;
+	s=arc-20220608; t=1773501934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dKGBFuBHRuN31ZFNKDqDxImcJys3tewsom9xKohaWaM=;
-	b=1cwgEkdvInzI0EuLiaoyxeHpuwJ2rw4vIzdI100QUxQcA1kRFjhyiBv5QUyd6d4G8mF/ZL
-	na3zJMhMAJO1UWuhGGpZM4rtYCLVaMGY5+sBOfaJ/VXgsotXJW558/YgrPuO3r5X1IhJro
-	stKhKI/j4R2mqdqAefOxzXSVCH3aO1M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501932; a=rsa-sha256;
-	cv=none;
-	b=YYVrJZ+5z9iOSlh7knxb0SPPmzjRLsssl74G6RlSp1mn1HdDY8OexWJsj1xVBMf7MSbhF3
-	CKkgFSENMxk0BfGVgRJYUVw6sBLAPvr3G7QkaHh8wkjsLKun3vLK17seUF+Qed2OE+NdhN
-	EtA4TucmKo2FvG3jzOabgmZIdoPCaI8=
+	 references:dkim-signature; bh=dNO6G/5iszc0dA2Qr9qRG/4piwdA9zP6EkYX9lmlJQ4=;
+	b=eO78q1L5QB5kkgG1Y+xnSg1oCHKqLSITcry11S0SyqH6CoWsP4pj1LcRQhgN4PqQe9PNrS
+	Ws7IwW/kc8vY9LgKzh+ofZq1WJwqgcUx/FsbH3dg4soTg/rMB/omoxArf7Xhohf3poZv+Q
+	Opy8Q2HUcXZJt0mkf9Edsi1sD5kSmNQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9nwqPt;
-	spf=pass (imf20.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gpCMJ1oA;
+	spf=pass (imf22.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439aa2f8ebaso1951792f8f.2
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:31 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501934; a=rsa-sha256;
+	cv=none;
+	b=YSuTuMHg2ZdZv/zTfJpRm/YUMggA9tFEbv509PC1F1LQBDu2rnCOjmelqEL+B61sgZKPqE
+	wh3QFX0jUhmq2LYqjlesNnCgLVeypUE9GiWtaDky6czGoe8PM66at0uyWA0/pwfNTBd2C8
+	tGcPs3fHd1S0zD0n2qXaROu8YBJV5Us=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48529c325f0so22960055e9.0
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773501930; x=1774106730; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773501933; x=1774106733; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dKGBFuBHRuN31ZFNKDqDxImcJys3tewsom9xKohaWaM=;
-        b=ji9nwqPtcFZPqtNs/ZsYYV6rBd8qv+WvfOyh8GWAqF3MAwRlz1TgRljuq+BV0Ri3z8
-         3aB+Y9cH5wPhpceeHFxBCRQvfC+rZSiZe97vjRbNXbA+qgqF3iwkMW34tzBXMTkDakX+
-         bAAggnC0zotYgAWJfLWja/t73dc/vDIO2aijbPklOPHzfYTpg99IgJmy7af8wsJ5EkIR
-         JSDIa1m9FR0sZR4qwIaX3KZD5u3AHt4HSBdxljnRmsHrl6VZ3iml4UCZ/KD0tRiaEpmU
-         U7mWmsCzOETwq2kxlrlIELvKrpZLnP7+bLZjbude7cIthyZzXC8cWg4VYCD5Z+JsIqoJ
-         5Adg==
+        bh=dNO6G/5iszc0dA2Qr9qRG/4piwdA9zP6EkYX9lmlJQ4=;
+        b=gpCMJ1oA/A1c/JhG+ZUVDjD+LIj2ims+Ydh8OoGkm0arQi9gJzBIdAG5nbnl9hptf7
+         JYA/oCLrSynvTLfx5h2pbpAiMP941gMOX7lm9cZN74DB3pK7uFhzm58m1xt3ZrJ8ipC3
+         EETp8KqVOsfvyLNiPNJRFRk5PFzo+OXZITkPAMRh9pLqGjOrO6GmFzsxVN69/JRJ17Dy
+         tOK7yHcexp13/ywGRztGVlmXDsKiQK1PwIvN0U174mt1rqdqufChroyGSzjeOofE1NKi
+         hEaAVGrmTTK5Odc8ygGhi417t3hEkbIkyPaqOgjrSxeJS920tcQm837sDQm1f2CYiSHG
+         N5Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773501930; x=1774106730;
+        d=1e100.net; s=20251104; t=1773501933; x=1774106733;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dKGBFuBHRuN31ZFNKDqDxImcJys3tewsom9xKohaWaM=;
-        b=YKhk8frD6VID2hS/8H5qlMqzjkjgyV9aR1oBABbQcP/awW/OCzsOQ5z3RWnwuFU34P
-         AeNmhhQ7k4mUoC2Zq6LC8ZNf6ysu6ggkFjtjEU5UdIXRtvOMdMd4gZHhpOGi4wG2Gmoe
-         y2+puv8ZdfpNLPZqoVI2+NxjnqQPw4yiUIFxwMi8nCdJpZGMsNGSFGrsGhnAOY67tjmq
-         AJ5TXzRwkH5z5JUK9uHZHHmLFqrEn3GVk8jBLujZN7Yy4gar7+YUFF+E3gZLX9FK0l7V
-         zX4Y+m5eGuqWOVIZy1XDJsyInM2riBSUPjD0O3+IIxY9BMMjCyQv/lRexqf3jckvth22
-         IBRw==
-X-Gm-Message-State: AOJu0YxSkGBkUfOOkRwVaZBhnYez/Dw3R776mcS9SqEfoCmxlLo+LtnC
-	5tqkpgqRboStxwpGvL4OTECFeYqqwUc+bFem4Kisp9PoeXfq+EhZ3RON
-X-Gm-Gg: ATEYQzzqGYBlmbZp6TC4Eq6R1/UFDv1W47qH4Mf8RWoGmlg0RhNiRHJ/f+9h18DDTT4
-	PzyJSGb/jiZKn6zER4R+sWzHER0MUj44RZLBGXJThlTv4K4lxAIw/L/fJ5TBuFn5AdP/fXc12YE
-	JfbW2hpmbJy/vb/HpkwVAxa8EHl3keM6UTzOEaPlTMLXakRqMn/Nut/7WdXZP+s51n360rEFdHU
-	sF6TmPiNc5noIcOyeC6uRzIiLHiLCz58A9C26SGDVNN4Le4OQ//704tqzEGkGhNkO45z3vTYMCU
-	JQBGs7u+rIU9jYaSW6TgJTnm6J0IgRr1/d+6AF0lmg44qQ+UooNfFHP01oyaY1zN9rVPWWpW812
-	JR9svhFRs4Bx72KIVMMOgMq4TFRD+CgmQzxvqXyhVFrHr1nPCU6xgdCH6814HWpBFY+0NldKTOM
-	STFPHpxV/jJmYYNRDsHQ9oFrFzLo1wLZU0fWNWeC3SCTah0oRLdYXTcc9Of2mlKYwVsS9yc8d3g
-	M3/K/QcDic/9vu2Z7eBjbgaX9Fy5w==
-X-Received: by 2002:a05:6000:2501:b0:439:ac8f:5da5 with SMTP id ffacd0b85a97d-43a04d7817emr13583033f8f.8.1773501930372;
-        Sat, 14 Mar 2026 08:25:30 -0700 (PDT)
+        bh=dNO6G/5iszc0dA2Qr9qRG/4piwdA9zP6EkYX9lmlJQ4=;
+        b=ZsdIu4hFV0/r4Z3LB+LlCwyBirWD/gdfIpd18MXo1dmgH3LYb0EG3vMsR2aD08PUn+
+         H+FadLXFvuapKvgil59+3X0VBp7dufNgsVhn/zq6BCsj6Y/Zh8nVRHjgrifmmYrZgmCH
+         u0YZazyQRdggvUy8pIJJTGoAOQudJd5OO/KJ2LuO3/j0hekWf79crzlEnC14ndN8u/7B
+         INN3LSgWaLsYGFbiR3cfvnhbNAM0DmSq2Fg7NlVcUfX2wz6OAaaE7JUgGu0KBtykK/ku
+         mucs4ksbXatJppyf9dWCf5YH3W2kPZjCeFsHWaax8rusZq+5fbCWkyS6gvBSRT8gR1Yt
+         bBaQ==
+X-Gm-Message-State: AOJu0YzoQDfrM/mbWBeeNqmRTFv37fvODzyrv+lbl4byUcszUPWVR5jy
+	Tx5+LuraHZfAnx9w4WF90XsDI1KhXxq/Rxw2swj29DKYYk8kffoi9m+S
+X-Gm-Gg: ATEYQzyCVxBw0X3lwHguzV+j++CsmSawf5SWnBzO42FwWjfhnEOzuQ68xeOBL2nnUEs
+	NoSv1vG2/T+XGsS9RPZMZemj/k15Nfd2Jmih1d9WdTyc+IMLc0VhP5K4skw1sJpDueaM0+AyI/H
+	IedTYjKWxKeqnUz1b2iOomqDryf4QVr6CdDGghhdgfBbVYdz+JIV5IONdTNESAXUDXKWj8mAI0T
+	xzwbSqKQ6b8W+SJx+bz9Klr+TLh5eqs4ULj4gRJaOkBDHirT8oTKv5wBTvk97xbG7EqLPb3kfsn
+	hTDWLIq1ylp1fvxr79v/7PTonS8fwAl1P6DoiQSCYJfjSi6eioy4Z7cxQ0KHIcbb23b4oQA8dko
+	vTb4jmZRPae36dYOJgWG1vOlzCMqMidbPd6ogJCuWqg2Mll3eWF6zd/Tqdb96jA6+tcm+eSVIrL
+	QvyACKK3lx6O9ZbZbIgP1ByWx5wuidPBeXbYqGp5ywjLmJOQB78+RvYs1C2hG86pr5zMxXi73t1
+	F91Q6R/HLUpzZJHKXjEktxtoemmAA==
+X-Received: by 2002:a05:600c:8b72:b0:485:3c2d:d02b with SMTP id 5b1f17b1804b1-485566f7a1bmr110614145e9.22.1773501932414;
+        Sat, 14 Mar 2026 08:25:32 -0700 (PDT)
 Received: from DESKTOP-TILNSD1.localdomain ([139.47.104.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe228986sm23705107f8f.35.2026.03.14.08.25.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe20bd9csm26590350f8f.21.2026.03.14.08.25.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 08:25:29 -0700 (PDT)
+        Sat, 14 Mar 2026 08:25:31 -0700 (PDT)
 From: Kit Dallege <xaum.io@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -96,21 +96,21 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	Kit Dallege <xaum.io@gmail.com>
-Subject: [PATCH] Docs/mm: document Boot Memory
-Date: Sat, 14 Mar 2026 16:25:27 +0100
-Message-ID: <20260314152527.100295-1-xaum.io@gmail.com>
+Subject: [PATCH] Docs/mm: document Page Allocation
+Date: Sat, 14 Mar 2026 16:25:30 +0100
+Message-ID: <20260314152530.100357-1-xaum.io@gmail.com>
 X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ED7731C000F
-X-Stat-Signature: amhx8tzdgqupr3kpiuwckiqf6sa6znq9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 72892C0009
+X-Stat-Signature: 3aoqoctkpziq5km1pasnpbg8ujnukkgn
 X-Rspam-User: 
-X-HE-Tag: 1773501931-437815
-X-HE-Meta: U2FsdGVkX1970T/reRHwTgfnp4wLe8JEKFAaTyawGFZKSV74e/hRiCVW05KJbq7npv18Jvlj3IJb9HLRRR8wcztdQRb56i/0OtL8LM5nj9ozbhb/AVLk2pvrrM8UotdBafcT1DIE44FAB/0ZaA1Ot62ynSgfrqkuH2REDpvX5HsmeOLxmX2/Fv0Wjf+gGWLh5gwYZpyYqIRP3Jy2HNdR4bUd54x92SwPWVL+GGYqkDSG5oZrSm07N/28qIOH+Qm2xG5cbNXH9XPOykHZeVNm+yplULOb9d2nlTXRiZ1jUfKm8QH+2MDYwrftvnsEDu/AbSfTTslMxycwaz/Hb5THke9u4uPlvcgTsEf4qfKfjHpdlPA5SUKBaCfzGY/vkIiBMHGMTTZWlTKU3C7D0WHsmfXTDnxj7SzJnyNVjXzYN/SGyxfh+cjdQcU56f9qYRsVoxXFV/EPbPxCnJMDPaq6xxWLmQMlkqfyz73nwW+69G8oHuO9gMOdh5e4JM2DSoMFdYWdR9eCmExHlHI2gtauU2AlDJbB2RUZM+wZ9EUf26k17PdUyTwHFt7PUzHfPwO+VRO71jWKWQLslhyPd4coy6t96bxcmD+qMEhSSfDbwsPSUNUWzuN4EK2KXHSA5PQSYNIm0S2OBnWBLGZgkXjjsE74E2skJ2jYF6+UKbMhfM9a7gSKQC1bkmOp/lpzGyzUuUeB2rarkeZ+QTjUUlHJOY529mP7hQhOmcWC/rlIgYsdl68KmxAUqLmdwdTwN44JFPdMYW7cjJfSWIi7DNRy4vschwrehn72ABSEwMI1F6CO+oeOQKd32E0it+LgL9vLfxgJZO04jP8uLrBauaRoGk/wGBEf8zd4dJCzAgAdypVjhrf57FEok+VRbOnJlakTH9uLRfD66eOHft+GPO4wVdm7sE9b07B2dNywSfWOXaR7HSMuTarhwhx1jb5TI5Xyxiodcwnf7xyvI3JgzDB
- uzYHspjO
- AU2VLBvCWdP2Twm5p//Qhud423BhLej3K9qtfOpgNQUbHnV8FTrO2aTaKVQX42QPJ0LCHcF7Y49qgbcuactu0QlamVOHuU11cJlkjmVOufXy9lxDSTe3uAYBiEyjAVqmDRIWt94+4BU+fRFhSgk/lUjHnhqDIX5Me/xKtd2/PKduIh1c3qwNjm3pj2a7vinRsZXo93oxOnE0YE3fJEaFL4DRsTDwEG2AO6abazRFDLuy7WqaLUpuRQEiA6xYJ7WKzp0vY1SxubJSq9AcX8DpohasSjg/qK6GQ04gP9zzXxazMX9R9mqrKqMMXp9oKjxViUusrW8jZ+xUd/GXPQ3m1Tq1q2aXWL3WPtq57XWUYXuYGftmDxgEXW+GmchdbsVn1VvQfIOw9ewpUKgc5dyjUHw0yxgDYB3j5Z5ljYijM9kCdsBu98M1BYA3JBmmaPySbpCkYN7sh/hVaLO/Jdqjd0nCjX7SyNPTbpnfh5dDhNXJ11+VqrTZM1wCLXC05Pg7W3Fk0BmY3oaUyO5w6oPvjsqm/RGwVDRVsHzDLFD55LMs7BvE=
+X-HE-Tag: 1773501934-829168
+X-HE-Meta: U2FsdGVkX18MVsUslcVjC9k1HvhmYQlvWZ7x3Er0TeXukDjf5rCa0fHtDUQYaViKV/ofMplFG+e0g5LeRJ081zqb6CCpzYBKP45ZjSjEmMNoKSVbAbRIwgiOvxAKD9QRGYcZwxk6z7STCDEZXRTZ5rB56YQytN81ddrmKitL/4A3vrIXkXuhlfy1iMj7qqeqLMOLrKy+VZM4GOMsiTNkLx/GNFXXbe72adSpFhGBv57qS7HXCjCeBBLueHPNSSg9barD5DeayNP0lilLQbz/NEk+YORQlIO2C9uO4QI1NsRhoKFjVyILgg5XZX/CLc0Kk5N+woyhifDksFx9WoW9tQg7Wxorslj2zRiSQXuR+6RLpGrmtDtuxV81f8WmpOhvOzx0uHg9xK3CrY6De+2vK8wffJdlqxcJlCbDgFaoy/nhUbKfEf4q/T2BbFsOgcHvOKYX+0Ya32UEXhsGNFA8+PeLc0EX1fN2dFb3V+U6zG1fF7PoBtvLRczylOM2taLwJD5EqzEnopA00ctcPZoNer8yBS4FSt/aOEMPNbj6mZR4KNK6zSbok3FO8UVwyJKR5eaKM7AB47PPrljBOmKq6RnapxUamZ/qEx1ELSusArL9VSjCcw2U4mT8KzNO/BFdUM17djo2dqGGxvMX/xLC/027wp6UsTrtUnv7VxnR26UJCrxVqz/huMJQsnfDJ9wp+x2uX70tjx1Gamsq3LA0W6DkqwtCdwWtAIczawoLcsPgxEFZhRoUeQunIzM/lb61MPoyrZ3xM6y4sFp3DYq0Oay9EAM4b1LkLwxbm/BRYGPEQ1dVGsObCcFhsQqlscVUzh1eYZyOdjvZs4ZS9L4dSznLyg8SO9BnRCAPbgZIyFjXu99Hd+YJ92tRUBzg4eIR/UgcidTprOO3doyekijn5i638wikc47XZezTg/f18Y6pD/qXFCanTnIwMnPev2vigiQPhI7Qi428Efspw4w
+ jIVMAP3v
+ 8gEYHLA5uDZmJtJ/PXIV+VlPeT0GUVvcVd/fqbadL0OW1eRths6esIVgBwYjJkZGf0lxIIb+zFqH84JO/254cwOjInDOd4bL6u4B9qZzKI9uOq/MN5xDGdAOgYk9ayrLPYrZYLQzf2E0khaNZ3oaWgktSZy623CfB6y5QHZu7qFGb+Znpv+cf0HVSFj6q/ClKB9OXts9GWQr/cTGcc7xFkwC89czw481amakYBt1HJ9vejSwpXyzr+p7WgokXgQphL0VgI7Dba3AF3OAO0fCvBlsDQWgJmCMBSW090wowK9hzP4phZxxjeYT0+PH0vmlt6ivvj8ErIgp3xFMrG93OpA7QoVi6htrmgeP3S5VBhk62jMlDY5hQQ1qLKPDzwNQgLVBlVOS7jqa9BgtDYpijzk9AkT2KSlpPDROgL94OCEbaRiLTtQ/lXhsgJuiR188XBbn3Rn7K5tXKRpHFbpdf9ixL1/iBNf7SNrb6lK3lMTqXHegBCO2G3DWp6S/2jRvSc+CVSjM3HVdEZj2i/6mJiuvJE4nJLJWrPlVnAsOAVdw5oE4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,163 +118,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fill in the bootmem.rst stub created in commit 481cc97349d6
+Fill in the page_allocation.rst stub created in commit 481cc97349d6
 ("mm,doc: Add new documentation structure") as part of
 the structured memory management documentation following
 Mel Gorman's book outline.
 
 Signed-off-by: Kit Dallege <xaum.io@gmail.com>
 ---
- Documentation/mm/bootmem.rst | 139 +++++++++++++++++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+ Documentation/mm/page_allocation.rst | 219 +++++++++++++++++++++++++++
+ 1 file changed, 219 insertions(+)
 
-diff --git a/Documentation/mm/bootmem.rst b/Documentation/mm/bootmem.rst
-index eb2b31eedfa1..b20520f53603 100644
---- a/Documentation/mm/bootmem.rst
-+++ b/Documentation/mm/bootmem.rst
-@@ -3,3 +3,142 @@
- ===========
- Boot Memory
- ===========
+diff --git a/Documentation/mm/page_allocation.rst b/Documentation/mm/page_allocation.rst
+index d9b4495561f1..4d0c1f2db9af 100644
+--- a/Documentation/mm/page_allocation.rst
++++ b/Documentation/mm/page_allocation.rst
+@@ -3,3 +3,222 @@
+ ===============
+ Page Allocation
+ ===============
 +
-+The kernel needs a memory allocator long before the page allocator is ready.
-+The memblock allocator fills this role, managing physical memory from the
-+earliest stages of boot until the buddy allocator takes over.  The
-+implementation is in ``mm/memblock.c`` and ``mm/mm_init.c``.
++The page allocator is the kernel's primary interface for obtaining and
++releasing physical page frames.  It is built on the buddy algorithm and
++implemented in ``mm/page_alloc.c``.
 +
 +.. contents:: :local:
 +
-+Memblock
-+========
++Buddy Allocator
++===============
 +
-+Memblock tracks physical memory as two arrays of regions: ``memory`` (all
-+usable RAM reported by firmware) and ``reserved`` (memory already allocated
-+or otherwise unavailable).  A free page is one that appears in ``memory``
-+but not in ``reserved``.  These two arrays, along with global state such as
-+the allocation direction and address limit, are held in a single
-+``struct memblock`` instance.
++Free pages are grouped by order (power-of-two size) in per-zone
++``free_area`` arrays, where order 0 is a single page and the maximum is
++``MAX_PAGE_ORDER``.  To satisfy an allocation of order N, the allocator
++looks for a free block of that order.  If none is available, it splits a
++higher-order block in half repeatedly until one of the right size is
++produced.  When a page is freed, the allocator checks whether its "buddy"
++(the adjacent block of the same order) is also free; if so, the two are
++merged into a block of the next higher order.  This coalescing continues
++as high as possible, rebuilding large contiguous blocks over time.
 +
-+Each region is a ``struct memblock_region`` recording a base address, size,
-+NUMA node ID, and a set of flags:
++Migratetypes
++============
 +
-+- **HOTPLUG**: memory that may be physically removed at runtime.
-+- **MIRROR**: memory with hardware mirroring for reliability.
-+- **NOMAP**: memory that should not be directly mapped by the kernel
-+  (e.g., firmware-reserved ranges that are usable but not mappable).
-+- **DRIVER_MANAGED**: memory whose lifecycle is managed by a device driver.
++Each pageblock (typically 2MB on x86) carries a migratetype tag that
++describes the kind of allocations it serves:
 +
-+Region Management
-+-----------------
++- **MIGRATE_UNMOVABLE**: kernel allocations that cannot be relocated
++  (slab objects, page tables).
++- **MIGRATE_MOVABLE**: user pages and other content that can be migrated
++  or reclaimed (used by compaction and memory hot-remove).
++- **MIGRATE_RECLAIMABLE**: caches that can be dropped under pressure
++  (page cache, dentries).
++- **MIGRATE_CMA**: reserved for the contiguous memory allocator;
++  behaves as movable when not in use by CMA.
++- **MIGRATE_ISOLATE**: temporarily prevents allocation from a range,
++  used during compaction and memory hot-remove.
 +
-+Firmware and architecture code populate the arrays early in boot.
-+``memblock_add()`` registers a range of usable RAM.  ``memblock_reserve()``
-+marks a range as taken — this is used for the kernel image itself, device
-+tree blobs, initrd, and other early allocations.
++When a free list for the requested migratetype is empty, the allocator
++falls back to other types in a defined order.  It may also "steal" an
++entire pageblock from another migratetype if it needs to take pages from
++it, changing the pageblock's tag to reduce future fragmentation.  This
++fallback and stealing logic is a key mechanism for balancing fragmentation
++against allocation success.
 +
-+When regions are added, overlapping ranges are merged automatically.
-+Internally, ``memblock_add_range()`` handles insertion, overlap detection,
-+and merging in a single pass.  If the region array is full, it is doubled
-+in size — using memblock itself to allocate the new array.
++Per-CPU Pagesets
++================
 +
-+``memblock_remove()`` deletes a range from the ``memory`` array (used when
-+firmware reports memory that turns out to be unusable).
-+``memblock_phys_free()`` removes a range from ``reserved``, making it
-+available for allocation again.
++Most order-0 allocations are served from per-CPU page lists (PCP) rather
++than the global ``free_area``.  This avoids taking the zone lock on the
++common path, which is critical for scalability on large systems.
 +
-+Allocation
-+----------
++Each CPU maintains lists of free pages grouped by migratetype.  Pages are
++moved between the per-CPU lists and the buddy in batches.  The batch size
++and high watermark for each per-CPU list are tuned based on zone size and
++the number of CPUs.
 +
-+Memblock allocation scans the ``memory`` array for a range that does not
-+overlap ``reserved``, respecting NUMA node affinity and a configurable
-+address limit (``memblock.current_limit``).
++When a per-CPU list is empty, a batch of pages is taken from the buddy.
++When it exceeds its high watermark, excess pages are returned.
++``lru_add_drain()`` and ``drain_all_pages()`` flush per-CPU lists when
++the system needs an accurate count of free pages, such as during memory
++hot-remove.
 +
-+The search can run in two directions:
++GFP Flags
++=========
 +
-+- **Top-down** (default): allocates from the highest available address.
-+  This keeps low memory free for devices with addressing limitations.
-+- **Bottom-up**: allocates from the lowest available address.  Used on
-+  some architectures during early boot to keep allocations predictable.
++Every allocation request carries a set of GFP (Get Free Pages) flags,
++defined in ``include/linux/gfp.h``, that describe what the allocator is
++allowed to do:
 +
-+Once a suitable range is found it is added to ``reserved``.  The main
-+allocation functions are ``memblock_alloc()`` for virtual addresses and
-+``memblock_phys_alloc()`` for physical addresses.  Both support NUMA-aware
-+variants that prefer a specific node.
++Zone selection
++  ``__GFP_DMA``, ``__GFP_DMA32``, ``__GFP_HIGHMEM``, ``__GFP_MOVABLE``
++  select the highest zone the allocation may use.  ``gfp_zone()`` maps
++  flags to a zone type; the allocator then scans the zonelist from that
++  zone downward.
 +
-+Iteration
++Reclaim and compaction
++  ``__GFP_DIRECT_RECLAIM`` allows the allocator to invoke direct reclaim.
++  ``__GFP_KSWAPD_RECLAIM`` allows it to wake kswapd.  Together these form
++  ``GFP_KERNEL``, the most common flag combination.
++
++Retry behavior
++  ``__GFP_NORETRY`` gives up after one attempt at reclaim.
++  ``__GFP_RETRY_MAYFAIL`` retries as long as progress is being made.
++  ``__GFP_NOFAIL`` never fails — the allocator retries indefinitely,
++  which is appropriate only for small allocations in contexts that
++  cannot handle failure.
++
++Migratetype
++  ``__GFP_MOVABLE`` and ``__GFP_RECLAIMABLE`` select the migratetype.
++  ``gfp_migratetype()`` maps flags to the appropriate type.
++
++Allocation Path
++===============
++
++Fast path
 +---------
 +
-+Memblock provides iterator macros for walking memory ranges:
++``get_page_from_freelist()`` is the fast path.  It walks the zonelist
++(an ordered list of zones across all nodes, starting with the preferred
++node) looking for a zone with enough free pages above its watermarks.
++When it finds one, it pulls a page from the per-CPU list or buddy.
 +
-+- ``for_each_mem_range()`` iterates over free ranges (memory minus
-+  reserved).
-+- ``for_each_reserved_mem_region()`` iterates over reserved ranges.
-+- ``for_each_mem_pfn_range()`` iterates by page frame number, which is
-+  used heavily during page and zone initialization.
++The fast path also checks NUMA locality, cpuset constraints, and memory
++cgroup limits.  If no zone can satisfy the request, control passes to
++the slow path.
 +
-+These iterators handle the subtraction of reserved regions from memory
-+regions internally, presenting the caller with a simple sequence of
-+available ranges.
++Slow path
++---------
 +
-+Transition to the Page Allocator
-+================================
++``__alloc_pages_slowpath()`` engages increasingly aggressive measures:
 +
-+Once the buddy allocator is initialized, memblock releases its free pages
-+via ``memblock_free_all()``.  This walks all free ranges and hands each
-+page to the buddy allocator.  After this point memblock is no longer used
-+for allocation and its data structures can be freed (on systems that
-+support it, the memblock arrays themselves are returned to the page
-+allocator via ``memblock_discard()``).
++1. Wake kswapd to begin background reclaim.
++2. Attempt direct reclaim — the allocating task itself reclaims pages.
++3. Attempt direct compaction — migrate pages to create contiguous blocks
++   (for high-order allocations).
++4. Retry with lowered watermarks if progress was made.
++5. As a last resort, invoke the OOM killer (see Documentation/mm/oom.rst).
 +
-+Named Reservations
-+------------------
++Each step may succeed, in which case the allocation is retried.  The
++``__GFP_NORETRY``, ``__GFP_RETRY_MAYFAIL``, and ``__GFP_NOFAIL`` flags
++control how far down this chain the allocator goes.
 +
-+The ``reserve_mem`` kernel command line parameter allows firmware or boot
-+loaders to reserve named memory regions that persist across kexec.  These
-+are tracked separately and can be looked up by name at runtime with
-+``reserve_mem_find_by_name()``.
++Watermarks
++==========
 +
-+Page and Zone Initialization
-+============================
++Each zone maintains min, low, high, and promo watermarks that govern
++reclaim behavior:
 +
-+``mm/mm_init.c`` bridges memblock and the page allocator.  Its primary
-+responsibilities are determining zone boundaries and initializing
-+``struct page`` for every physical page frame.
++- **min**: below this level, only emergency allocations (those with
++  ``__GFP_MEMALLOC`` or from the OOM victim) can proceed.  Direct reclaim
++  may be triggered.
++- **low**: when free pages drop below this level, kswapd is woken to
++  begin background reclaim.
++- **high**: kswapd stops reclaiming when free pages reach this level.
++  The zone is considered "balanced."
++- **promo**: used for NUMA memory tiering; controls when kswapd stops
++  reclaiming when tier promotion is enabled.
 +
-+Zone Topology
-+-------------
++The min watermark is derived from ``vm.min_free_kbytes``.  The distance
++between watermarks is scaled by ``vm.watermark_scale_factor``.
 +
-+The function ``free_area_init()`` is called by architecture code to set up
-+nodes and zones.  It calculates zone boundaries based on architectural
-+constraints (which address ranges can be used for DMA, which are always
-+mapped, etc.) and kernel command line parameters:
++Watermark boosting temporarily raises watermarks after a pageblock is
++stolen from a different migratetype, increasing reclaim pressure to
++recover from the fragmentation event.
 +
-+- ``kernelcore=`` sets the amount of memory that must be in non-movable
-+  zones.
-+- ``movablecore=`` sets the amount of memory to place in ``ZONE_MOVABLE``.
-+- ``movable_node`` allows entire NUMA nodes to be treated as movable.
-+- ``kernelcore=mirror`` restricts non-movable memory to mirrored regions.
++High-Atomic Reserves
++--------------------
 +
-+These parameters control the boundary between ``ZONE_MOVABLE`` and the
-+other zones, which in turn affects how much memory is available for
-+transparent huge pages, memory hot-remove, and CMA.
++The allocator reserves a small number of high-order pageblocks for atomic
++(non-sleeping) allocations.  When a high-order atomic allocation succeeds
++from unreserved memory, the containing pageblock is moved to the reserve.
++When memory pressure is high, unreserved pageblocks are released back to
++the general pool.
 +
-+Struct Page Initialization
-+--------------------------
++Compaction
++==========
 +
-+Every physical page frame needs an initialized ``struct page`` before the
-+page allocator can manage it.  On small systems this is done synchronously
-+during boot.  On large systems with hundreds of gigabytes of RAM, this
-+initialization can take a significant amount of time.
++Memory compaction (``mm/compaction.c``) creates contiguous free blocks for
++high-order allocations by relocating movable pages.  It runs two scanners
++across a zone: one walks from the bottom to find movable in-use pages, the
++other walks from the top to find free pages.  Movable pages are migrated
++to the free locations, consolidating free space in the middle.
 +
-+With ``CONFIG_DEFERRED_STRUCT_PAGE_INIT``, only pages in the boot node's
-+lower zones are initialized during early boot — enough to get the system
-+running.  The remaining pages are initialized in parallel by worker threads
-+(via the padata framework) before they are first needed.  This can save
-+several seconds of boot time on large NUMA systems.
++Sync modes
++----------
 +
-+Each page is initialized by setting its flags, reference count, and links
-+to the owning node and zone.  Pages in memory holes or ``NOMAP`` regions
-+are marked as reserved and are never handed to the page allocator.
++Compaction operates in three modes:
++
++- **ASYNC**: skips pages that require blocking to isolate or migrate.
++  Used in the allocation fast path and by kcompactd.
++- **SYNC_LIGHT**: allows some blocking but skips pages under writeback.
++- **SYNC**: allows full blocking.  Used when direct compaction is the
++  last option before OOM.
++
++Deferral
++--------
++
++When compaction fails for a given order in a zone, it is deferred for an
++exponentially increasing number of attempts to avoid wasting CPU on zones
++that are too fragmented.  A successful high-order allocation resets the
++deferral.
++
++kcompactd
++---------
++
++Each node has a kcompactd kernel thread that performs background
++compaction.  It is woken when kswapd finishes reclaiming but high-order
++allocations are still failing due to fragmentation.  kcompactd runs at
++low priority to avoid interfering with foreground work.
++
++Capture Control
++---------------
++
++During direct compaction, the allocator uses a capture mechanism: when
++compaction frees a block of the right order, the allocation can claim it
++immediately rather than racing with other allocators on the free list.
++
++Page Isolation
++==============
++
++``mm/page_isolation.c`` supports marking pageblocks as ``MIGRATE_ISOLATE``
++to prevent new allocations from those ranges.  Existing free pages are
++moved out; the caller then migrates all in-use pages away.  Once the range
++is fully evacuated, it can be used for a contiguous allocation or taken
++offline.
++
++This mechanism is used by:
++
++- **CMA** (contiguous memory allocator): reserves regions at boot for
++  device drivers that need physically contiguous buffers.  The reserved
++  pages serve normal movable allocations until a CMA allocation claims
++  the range.
++- **Memory hot-remove**: isolates a memory block before offlining it.
++- **alloc_contig_range()**: general-purpose contiguous allocation used
++  by gigantic huge pages and other subsystems.
++
++The isolation process must handle pageblocks that straddle the requested
++range boundaries, compound pages (huge pages, THP) that overlap the
++boundary, and unmovable pages that prevent evacuation.
 -- 
 2.53.0
 
