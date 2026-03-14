@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC0410706E7
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A5110706E6
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC5FA6B0093; Sat, 14 Mar 2026 11:25:40 -0400 (EDT)
+	id 758886B0095; Sat, 14 Mar 2026 11:25:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA4506B0095; Sat, 14 Mar 2026 11:25:40 -0400 (EDT)
+	id 6EFC86B0096; Sat, 14 Mar 2026 11:25:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA7096B0096; Sat, 14 Mar 2026 11:25:40 -0400 (EDT)
+	id 61C2F6B0098; Sat, 14 Mar 2026 11:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE35F6B0093
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81C4E8C7D6
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4BF6B0095
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F0F398C68D
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:42 +0000 (UTC)
+X-FDA: 84545043324.19.C020367
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2507D180002
 	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:40 +0000 (UTC)
-X-FDA: 84545043240.22.C69949F
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AAC6680009
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AuEjWcxw;
-	spf=pass (imf02.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UNI1Hfra;
+	spf=pass (imf16.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773501938;
+	s=arc-20220608; t=1773501941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dIz1kkSGyHzWi6Er8nXwrnDFrMDopmJhQ9G+kvCuRCE=;
-	b=i8B8oVJSWedA4gnYEsAOfdrHEx+WgHLM5HDtMUtPxo7jjWw+gCF/yVUluCLNOrG9xCTorP
-	jdGe7kgEvdIL2HYPeXXPdQGx8Vb3OjZ5a0Q1L2Hsmbf3/3BFAHGqV9e/jIzV6+TSxTF62V
-	HqtWVRsoFTprgY3+d3Lmc42GMmfGxtc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501938; a=rsa-sha256;
+	 references:dkim-signature; bh=0Kz3y41fQXpan3/BGcLXZfi5NToemQqFGHgZng3qvUQ=;
+	b=HspDBRUjSAWMJRgkUGooUX5nJKQLnw2vffakHnlqrn4bYx7SI5+3MFvbbkEtbIO2Vnh3RX
+	PBQhg8Xk+piJZmARni7WTRkoG9ud8ZSBo8/VOZ7CC0SzLYoUHugnfbTZ5ElMB/6bvAFomK
+	4gOkshXPCsEkDLXiW+NaJPQjwhy0WSA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501941; a=rsa-sha256;
 	cv=none;
-	b=PTQW1+F4jIoGb2MFtWbN5RnI7cCpsy0vjhlNwGcYlMmj4+yhnGC142jIdcJv11kB7uhXSU
-	azUgAWPXA0x56efdbsHl+tmxgOcQQYbuNSIOqQ/0mYQ6vPeRn8dBEtf9GanKI+kcyeNLkl
-	CSiKisOFZv67Hg7TFPZGme4u5PMGV90=
+	b=bt/ruRLFBiFRlC7DP2E9ex0SkDuEWD6ZFjJgIkU+pxePgFSpfnmiqh1hzqi/MSlLj+zYYO
+	bNPO/4OxbrqpcLoYI9miiVn5MazInJGAkYy5S6F2jrtX1AAXK2K+K104piqtvAV63BgqCl
+	rbPUhubPxkoJuBykMzyWxEGxJezcGLI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AuEjWcxw;
-	spf=pass (imf02.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UNI1Hfra;
+	spf=pass (imf16.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43b3cfc38edso124054f8f.3
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:38 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852f73d0a3so24183755e9.3
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773501937; x=1774106737; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773501940; x=1774106740; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dIz1kkSGyHzWi6Er8nXwrnDFrMDopmJhQ9G+kvCuRCE=;
-        b=AuEjWcxwiULdv5CRdbEpz4cKUJT4OEzKsuNEITCatgniFnPjQo+wEbAXKtEivIPlZq
-         jNWcf7uVuv7fg4jAEvLde3mXLmM7RpPu+7h2UArRkByIe+tdanvKkR+r4f6vh2qRmk6E
-         VYE9qkqr0YsbwAfch9EHsHFhYVGf9v2WiZxrhVjlwsJYlANg7lz30B5hGNBYPA6C+Jmt
-         /Tym7iXyj2YDGzlzBAxke7OhmNEPM+HTagkRNKhPwasG7bnKqCaKnSSiLKeBKdptn4eV
-         6Dz5xF00H7hG3adb9YehoAXZ2LohGljQ+FTY0W9uzAouh5MVa9UqISJaEPPGyxkM0ptP
-         lDjQ==
+        bh=0Kz3y41fQXpan3/BGcLXZfi5NToemQqFGHgZng3qvUQ=;
+        b=UNI1HfraysS3pv67JxGOyBuC5yKaB2LEjcTASMgvw40gyh4n2a1750Pnq5df8GDpNF
+         j4JB9ftXRi2g/TmwuQP6MKnX1Gy2XGyKlATsewrFSg8X7O+lJ0tyzlWxjfQOc8klZxaq
+         fOkTAg/dpcM1MklqaAmT3Mu3H3cG1ykvv1sl5R5DrSgnrkjYM84Svt/TlkZKQ/nOd36o
+         yq8LNCFvofU6a99m7Kl/1La7IYYxvZ2i2wzgbuLBlWT8+prJd1UatfMAuuBTMk30eFmo
+         mPrpIyrj1Kidz3skVEyLzASZd98iXKKoCNyG+1yWxpMJBiaiGD3dtpf+5MRdv2tDd2cJ
+         8g+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773501937; x=1774106737;
+        d=1e100.net; s=20251104; t=1773501940; x=1774106740;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dIz1kkSGyHzWi6Er8nXwrnDFrMDopmJhQ9G+kvCuRCE=;
-        b=CMnP+g4PXr+9lZvJEeUi4UJAuF24WykWYe4Ck9PcNsAPtHpzKPPad0f+/yglll7pG3
-         ziZdebCXTDIcsll594NnK3RM6E7QOJ8HzmrKolDn2FAagGt0adskI7WOsdfo4CGV6L8j
-         nOSOQOQxHsRwmHxON0iopMXXJTSGE48NKDb+dVlzrQKR9PzdATxOPR7h44Pl+fnVNq6A
-         6TtZwFf8UdgA1W/XXPHeOTgV9LMkw5js4yCnT+4rhHtzxC3cNAPxx1LyzvJyXLaF/gP4
-         qfOro9oaLtRjXj768FN9L1UpLnfZ5QYWX09zj7z8bL2iGZUaI7/PTbEhQVUsesBoeJ3D
-         47Zw==
-X-Gm-Message-State: AOJu0Yz/XpiLRhyuSRhzAd3lnHQAT34NUUpj0i5iVgq7MNs3mOi0Zvad
-	zXtzC1KywadCQ3DEzB6i9B+egBk7oFiKbsIBqiz6GHqjL66a8h+W8UEx4ePbYY9aJVU=
-X-Gm-Gg: ATEYQzx7Smr7WQHP/yr/f9ZjwdySb3g5iWwm+cx2RWPaLBvRH1Sxk0xz3MATjiyEEx+
-	WcYyrbmiZ9F2nJJpoJTC3NjjFAd/2CqlZp0PqSRlE/xzXJW3USDwesKG9GJqUE0lJOkCZ2EQKMB
-	yUUxpEtIYQtCupzR+qReQwW5cWHrRBXVkv2WWnkPck4nAU3PbjzrrEbwXDgktxBqdf1owYg6l8n
-	+5hQWRomUHtqhhbJFPA1MPkz9XQ4VyVMa00w311wa+cgIvVqeWWo7v6dUKuVMJfEKQ0PdS547Yk
-	H47qW4Oc9adGOBRlZQk8bJ5R3jOTwJxvrWljicRNLjjV9P77zE9Fw1fsfTGKgCwlbfdRv8DWNtf
-	5FKQReTVOD9t4PVv4H26ijTxSCA7CIMwEjy3+i3j4bmfBtZcQVEXYJOjycv9gHlMIXA7reujtqc
-	JzhZsH3inQw7tn+OZHvakdlR1KbYWjY7ffOE87mtVH26qtE4xVo47xWfPIQJ2egQC6lQgRBsSH1
-	GpFsKgSkoi4dAlp3r0gwwYyu8jGtA==
-X-Received: by 2002:a05:600c:468e:b0:485:3f58:d9d with SMTP id 5b1f17b1804b1-48556714b67mr114810065e9.32.1773501936605;
-        Sat, 14 Mar 2026 08:25:36 -0700 (PDT)
+        bh=0Kz3y41fQXpan3/BGcLXZfi5NToemQqFGHgZng3qvUQ=;
+        b=ZSLiCMbGxt5DFXrjITsnalhzH0IddBM4iqOcxNnpFjcznzGvTqcrCK8G5IabIVZvMu
+         DrH3AMT2nURroED3gFWrQGTnauZuthYT6cOtn3hzpfSOHjWYQFexKf6ePBm8CkKo3t9y
+         zovvTeB7UjMCrHvzG2BGVupIfqRnIW382YCo40AWBWNUW0/zo/PlWnotSnftOQfKWb1J
+         nvCeYlCE1LwNLbru2Im5ZN3adtPkD+4aoNqxNvTIH5xNB8izDmtdzUZIfQCxe27oLA1j
+         O/HXlgNseBGye+WkhriadUZhL3SiHP8bPLR7bMmePhY6Q5IhvAezRO3VqGdK15eyc8YN
+         IZpQ==
+X-Gm-Message-State: AOJu0YzMnQQ4FieO8vAFjvCjihzBhLX9p7tuuA0Lk30kMNUzuwd+HASq
+	f2DcyNmMEeg6zCKFg4KJ5yskaQ6reZcbVqSxc9CrvBc6QZ1y5hRTJeQg
+X-Gm-Gg: ATEYQzxBWoVzXm73bg+OgUo7+TqcGrAl76rzQtCIpr6iQR8MB6oEa5cglR8bnyeMGsw
+	ey3WZ4s5tmNDolqFtCYYxTZHDdUC78Z+aXxe7JPaWK2I0hN4yc/KIVFIRydcw8berGcMlh/Z2JY
+	OHwtI4tKE3AN7tAit0PepOlLB0B4d9AppuB+l8ODHVda8r7IPCX8eYZW/y2sIGo2Xds5MYtlETG
+	AEwNF48X5wK6HI1m92fAebTL4y5GMjwtAVEj6ao3+rLchfsB89GQ/EsFnsTam7mhHwWzzqmT1qe
+	FxYqC5bYhDH2OrYlbvoaTfWYZbb8OhTaqRDH4los8XY0c/Tsm8vog5p+/yjoB6IKuVQWndyNtPh
+	nVGKJA0lK6pEIvJuqJ7bFOaXIkCuzeiLaKzkxM5i3Cj2A76cWP787udciETtfw0KDOnCWTLq9Kj
+	HeaUpe4TnCHfmtuV+p1ZEfqdBsDogw9CIYBL2oqbkdJpJLeHS8+VRf2ni2rGvI/Y/ifqi0+S9S5
+	/P4zUUxzKqFUx27if07gz2QB8Q0yxXW6wUfhY1O
+X-Received: by 2002:a05:600c:3ba4:b0:485:3f72:3230 with SMTP id 5b1f17b1804b1-485566d936dmr123975255e9.15.1773501938817;
+        Sat, 14 Mar 2026 08:25:38 -0700 (PDT)
 Received: from DESKTOP-TILNSD1.localdomain ([139.47.104.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1a72cdsm27061433f8f.9.2026.03.14.08.25.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1a78cesm25752310f8f.11.2026.03.14.08.25.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 08:25:36 -0700 (PDT)
+        Sat, 14 Mar 2026 08:25:38 -0700 (PDT)
 From: Kit Dallege <xaum.io@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -96,21 +96,21 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	Kit Dallege <xaum.io@gmail.com>
-Subject: [PATCH] Docs/mm: document Page Reclaim
-Date: Sat, 14 Mar 2026 16:25:34 +0100
-Message-ID: <20260314152534.100473-1-xaum.io@gmail.com>
+Subject: [PATCH] Docs/mm: document Swap
+Date: Sat, 14 Mar 2026 16:25:36 +0100
+Message-ID: <20260314152536.100531-1-xaum.io@gmail.com>
 X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ohoikkce7ueb55aoqm4cgff86yejiwaw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AAC6680009
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773501938-423862
-X-HE-Meta: U2FsdGVkX19yXTD/EMo0euU5ck+eBFG8su3F3f+QdGdMdCjbybjhxz7Vye2DVk9pXwBRITVCxOsAcjCz4OouhpCyOVfkNLRnF1K5g5ILYh6oveyxa0ex2ZkpDOQ4fM9UfiFP1r+eS91D+XAqJahrtnbi9KMacjtafL31zf78Y95b1D+U5CffbcVd9Oig3gOIvrix52+1AyVsH8VUpAw7vxWhyOdQakHNBr3ijhNpCpNw8ZEQw2zfCaaejd5F6OfCfPoOvpMDyLD156A+tDSR33SfnOtFAQz1D6bjnLYF1iq0WMoRvP99tFpa3OKn4wzSfwc3cN4dRWV8RBC8UKFJLFqYxnsdrtX0vTFjuME74aIDQVEIijh9nJlaiqszemPmeJobVUCFPWFQYB1pfYXbOKVYymg/SiJIoUoG018Eabklc0twrPBGaA2nozAz9FlHVQYMMJuVwhsvzkkRieVg2hztxDZX2mg4/5ESoNiEcBecxrt7tL/gfs/hco7/CpbGa2ztt85HSveuG9YhWJDpCfbKY/h9mznWkDrwH0FRqs4I1PYX2UkA7StkmR9yaL7GWSpxXC0YKGIaWwbCkMoeMSa7GKQuqMVAT7I5cLaN+WtZlGXGQ4qRr+ABMqV05jWzxJOQG3LitBHE7IF43KMUV0QoleYD7zuwni2IY1eA99e36JNdtL2R5EEtI0/Y6eSNSeLwYIbauikXQ//L1V4bmL4+SCI3KscXL9ZONV8zpx/cn+ZQqdUT5Zjz2c59UZsTRCmy01A+JLBHSf0EUJOXrM2BmXmFMi4zUMqd5WDvsqQ2D7qD+IeAOcrdB2ASwmykfsqnne+g5cKKL6Uz0nV4zfub/kTJ/XUC2yoocY95s2WUjU7jPj9VqJMbq90gbfpGmQNHM19OKb0rm4UftYJVGFcqZOY5/RwIh01gyZzVknjD/Jn2t4T8Hx/+JyX0qXFZUBEJzcUCjeG2QlBTl+v
- Py7r1gtI
- kXiBmRlN3bIAxy/xjn/R5w2ejPskBAltISZy89pd5GyNe1jMOMPiG0zcE2MDEoERMQpGw5Upc7thS+zAd5RWOQTpAVs/ZdB4P7gFr/y6nWvQu2Il9B9g55Lrzuz1myyRqFGAqMIKaMfVQqFYbbER8oEogoMXLI7UlWi4iRCd7GCcfHWNLq0fEuDLkP3E6cidWTqJMbVbqHsTIlytdbiB/9s5Zq2dPQyFHij6eZIg64filvq901lziVzNjls83quFUETs9XGbJzNddjPaKCoW7p5Ynu4gTW7mgD4VGMXlFIdMIuohgRlruGS68m+r/ebcD5+GQ4f3JO4UsztpyYOagtyWe1Lp78fEvFz387aq8bSgLxRam7kCbPIt/sefZmsjMAgc524tc/XOL2rWtKEL9GBcoi6JsRCYvE9xZmiPeslYrod8cqghK/Rg9CvJQNl5qpg+grhjDA0Wrxiqvsxf3mrp2iv2F5FqphI7jFYZsFQ1iA4s7GGHDCbinCiFxP0f6i32LHaPOWgiGiX4EGV6bzD7yVpd1OEn+FiYMwG5E7Kk/Zd8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2507D180002
+X-Stat-Signature: b7qajd7ycdsmt6nwa3dfydw31wo9jrpt
+X-HE-Tag: 1773501940-102276
+X-HE-Meta: U2FsdGVkX18I3BLjWWVnpue37PM20cjcTX7DdlmJnXrx/xC1Zuoaoz6RKRwPLWyhVTCQwoazx4CZGvdMdTE1qPdzzLEZKl6oX9ll+LC/A+jM65yYFZKMkBe34n+Z5sz3uexa+yZXd1W4RfTkWKVSRsFrD9/DZVDMiGuZB5mUUerwmMXoK7n75CpC7tSUpAiIdlqc1i5xfrnuSEuCed8lQjTs2P5sFM6+rBWoJ2+2tRBKe6bzxLtp1JuBjilenynaeeEsAqbcz3UzGcwsKSwwjf7uD+xHpbQzT4tbxC+OYAgeNgfmVHDcp9dFy4xggc8OlomPJChM3Ipz9LJdsnMplW1jRDOSPIas0Z7X3Omt2v7B/dqBW1bkFqShuO6iuTR/Tpp5l++rHLS38VekKKeNQ7aS3fnqiYsmVhBsvs29E5kKZIiGtfgwtGjCoR13yzrZ+lEAX9tag4bzi/kzF1pfhSYR6Otge0jUw41ZIm1QYskhAH7vXnzUuWVPqYOEV1kRJ7393l1QzC7AJ+qWlNmj1VMM5NVoPLZd3U4NFvnENLKs2eYUn3Y7aA+i8K8Drd6MkyPxT5YJffgLYTgJGyU4ebOkeCCmuZhzVt+k0EDPwLn4sfJspgFqtjKiXFGk1o6sFGQGROM+pXd6qDjP0GhwBDlMptgiEFjagWdyz+y6gtzLN+NHFhQQL5ORckLT5YzLyUGdpQDlvtYOpDUAIvjzxNGNUEuFqtJm4JLLDsymKKLMut7Y0acOO8636Q2KNCuk3WTEfVjjzyDQryu9oZF7YdsFu0iNKwDEL7yO7SH8+W3dfN9K4aQHkGEPaiUjUecsdCqLJUU3xo8MegMJvBxwUyR/3lMlHDqId+C8w7bpjT00HPsLmdQ2QigMDoQgSm9kbIBwNqs2QgupkRtR1vTrEgL9aF9IsBc9utRr8UAidi/ieLZ3SGv6qXDFim93PAlQiu7f3739WfKdg18Ibyb
+ nV7JNUfK
+ pbslsvs11YFE65LMhmgqscSJo/i0m57Iwqmk2xxlNUY/SvBplw3thopjgIwt5vkjuIgj5Ush/LC3dkj8DxwplEUpUJbZTmoWhIAobmCXmYngboU+lYJzJjlaEqKimt/MjAfnvNdcDdBmk3FFNw6BEtK0nDuL40y3BDNB7zB9pXR+E8rPDbDEI1hJqTrLk4Q7MIxDzHDeDom7sI0k6lVljIanq0Z06uXHmIgL1DPtgCf9aLXeH0QrlkGfPLNxsq2SVOYUys9vP3OpzI39A8Eh13XcZLD+HZprs9lFpIxTaOgvwWFdLywg4FkMVkQs6p/TWjVve7ucZK02Y0KSLSdGPDwCErfHM35tSlnVR6Xa63vVijJ0h0EzgZNQwoT0ckRL67gZsooTANWpMYNT8vdmMZYBDDL0TFl5Nb5gbSUdRupctItrKOIMVBWx5MG6Ty9uyMm7iMmwxAotyVnwOQSTDnGuVQmgz9125+tXjJutVvd1mL+1nIF4EATq757jDClzaRq6wjstjN366DLXCSd7TZuuXUIDcqTbwmcHBmV4WN13EGus=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,188 +118,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fill in the page_reclaim.rst stub created in commit 481cc97349d6
+Fill in the swap.rst stub created in commit 481cc97349d6
 ("mm,doc: Add new documentation structure") as part of
 the structured memory management documentation following
 Mel Gorman's book outline.
 
 Signed-off-by: Kit Dallege <xaum.io@gmail.com>
 ---
- Documentation/mm/page_reclaim.rst | 164 ++++++++++++++++++++++++++++++
- 1 file changed, 164 insertions(+)
+ Documentation/mm/swap.rst | 154 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 154 insertions(+)
 
-diff --git a/Documentation/mm/page_reclaim.rst b/Documentation/mm/page_reclaim.rst
-index 50a30b7f8ac3..bfa53bee98c2 100644
---- a/Documentation/mm/page_reclaim.rst
-+++ b/Documentation/mm/page_reclaim.rst
-@@ -3,3 +3,167 @@
- ============
- Page Reclaim
- ============
+diff --git a/Documentation/mm/swap.rst b/Documentation/mm/swap.rst
+index 78819bd4d745..89a93cc081d4 100644
+--- a/Documentation/mm/swap.rst
++++ b/Documentation/mm/swap.rst
+@@ -3,3 +3,157 @@
+ ====
+ Swap
+ ====
 +
-+Page reclaim frees memory by evicting pages that can be reloaded from disk
-+or regenerated.  File-backed pages are dropped (clean) or written back
-+(dirty); anonymous pages are swapped out.  The bulk of the implementation
-+is in ``mm/vmscan.c``.
++Swap allows the kernel to evict anonymous pages (those not backed by a
++file) to a swap device so that physical memory can be reused.  When the
++pages are needed again, they are read back in.  The swap subsystem spans
++several files: ``mm/swapfile.c`` manages swap devices, ``mm/swap_state.c``
++implements the swap cache, ``mm/page_io.c`` handles disk I/O, and
++``mm/zswap.c`` provides an optional compressed cache layer.
 +
 +.. contents:: :local:
 +
-+When Reclaim Runs
-+=================
-+
-+Reclaim is triggered in two ways:
-+
-+- **kswapd**: a per-node kernel thread that runs in the background when
-+  free pages in any zone drop below the low watermark.  It reclaims until
-+  free pages reach the high watermark, then sleeps.
-+
-+- **Direct reclaim**: when an allocation cannot be satisfied even after
-+  kswapd has been woken, the allocating task reclaims pages synchronously
-+  in its own context.  This adds latency to the allocation but is necessary
-+  when background reclaim cannot keep up.
-+
-+Reclaim Priority
-+================
-+
-+The reclaim path operates at decreasing priority levels (from
-+``DEF_PRIORITY`` down to 0).  At each level, a larger fraction of the LRU
-+lists is scanned.  At the default priority, only 1/4096th of pages are
-+considered; at priority 0, the entire list is scanned.
-+
-+If a full scan at priority 0 still does not free enough memory, the OOM
-+killer is invoked (see Documentation/mm/oom.rst).  This escalation
-+prevents the system from spinning indefinitely in reclaim.
-+
-+Scan Control
++Swap Entries
 +============
 +
-+Each reclaim invocation is parameterized by a ``struct scan_control`` that
-+captures the allocation context: which GFP flags were used, how many pages
-+are needed, which node or memory cgroup to reclaim from, and whether
-+writeback or swap are allowed.  This struct threads through the entire
-+reclaim stack, ensuring consistent policy at every level.
++A swap entry is a compact identifier that encodes which swap device to use
++and the offset within that device.  When a page is swapped out, its page
++table entry is replaced with a swap entry so that the kernel knows where to
++find the data on a subsequent fault.  Swap entries are also used internally
++as keys into the swap cache.
 +
-+LRU Lists
-+=========
++Swap Devices
++============
 +
-+Each ``lruvec`` (one per node, or per node and memory cgroup combination)
-+maintains lists of pages ordered by access recency.
++A swap device is a disk partition or file registered with the ``swapon()``
++system call.  Each device is described by a ``swap_info_struct`` that holds
++the device's extent map, cluster state, and per-CPU allocation hints.
 +
-+Classic LRU
++The kernel maps virtual swap offsets to disk locations through a tree of
++``swap_extent`` structures.  For raw partitions the mapping is trivial
++(one extent covering the whole device); for swap files the mapping follows
++the file's block layout on disk.
++
++Cluster Allocation
++------------------
++
++Swap space is allocated in clusters (groups of contiguous slots, typically
++32 pages).  Each cluster tracks which slots are free and whether it has
++pending discards.  Per-CPU hints point to the most recently used cluster
++so that allocations from the same CPU tend to land in the same cluster,
++improving spatial locality for both SSDs and spinning disks.
++
++When a cluster is full, the allocator scans for a new one.  Under heavy
++swap pressure, it may also reclaim slots from full clusters if the pages
++they reference have since been freed or swapped back in.
++
++TRIM / Discard
++--------------
++
++For SSD-backed swap, the kernel can issue discard (TRIM) commands when
++swap slots are freed.  This is batched per-cluster: once all slots in a
++cluster are free, a single discard is issued for the entire range.  This
++avoids the overhead of per-page discards while still informing the device
++that the blocks are unused.
++
++Swap counts
 +-----------
 +
-+The classic scheme uses four LRU lists per lruvec: active and inactive for
-+both anonymous and file-backed pages.  This approximates a second-chance
-+(clock) algorithm:
++Each swap slot has a reference count tracking how many page table entries
++point to it (due to ``fork()`` and copy-on-write).  For slots referenced
++by very many processes, a continuation mechanism extends the counter
++beyond its inline capacity.
 +
-+- Pages start on the inactive list when first allocated.
-+- If accessed again while on the inactive list, they are promoted to the
-+  active list.
-+- Reclaim scans the inactive list and evicts pages that have not been
-+  recently accessed.
-+- To prevent the active list from growing without bound, pages are
-+  periodically demoted from active to inactive.
++Swap Cache
++==========
 +
-+The split between anonymous and file-backed lists allows the reclaim path
-+to balance eviction pressure between the two types based on their relative
-+cost.  Swapping anonymous pages is generally more expensive than dropping
-+clean file pages, so the scanner adjusts the ratio using IO cost
-+accounting and the ``vm.swappiness`` tunable.
++The swap cache keeps recently swapped-in (or about to be swapped-out)
++pages in memory, indexed by their swap entry.  This serves several
++purposes:
 +
-+Multi-Gen LRU
-+-------------
++- **Deduplication**: when multiple processes share a swapped page (via
++  ``fork()``), only one copy is read from disk; subsequent faults find
++  the page in the swap cache.
++- **Write coalescing**: if a page is modified and swapped out again before
++  the previous write completes, the swap cache absorbs the update without
++  issuing a new write.
++- **Readahead**: when one page is swapped in, adjacent swap entries are
++  speculatively read to exploit spatial and temporal locality.
 +
-+The multi-gen LRU is an alternative reclaim algorithm that groups pages
-+into generations by access time rather than a simple active/inactive
-+split.  It is documented separately in Documentation/mm/multigen_lru.rst.
++The swap cache is implemented as a per-cluster array of pointers
++(the "swap table"), providing O(1) lookup by swap entry.
++See also Documentation/mm/swap-table.rst.
 +
-+LRU Batching
-+------------
++Readahead
++---------
 +
-+To avoid taking the lruvec lock on every page access, LRU operations are
-+batched per-CPU (``mm/swap.c``).  Functions like ``folio_add_lru()`` and
-+``folio_mark_accessed()`` queue pages into per-CPU folio batches that are
-+drained to the actual LRU lists periodically or when the batch is full.
-+This batching is critical for scalability on systems with many CPUs.
++Swap readahead pre-fetches pages from swap before they are faulted in.
++Two strategies are used:
 +
-+Reclaiming Pages
-+================
++- **Cluster readahead**: reads a window of swap entries around the faulting
++  entry, betting on spatial locality in the swap device.
++- **VMA readahead**: uses the virtual address layout to predict which swap
++  entries will be needed next, which is more effective when the access
++  pattern follows the process's address space layout rather than the swap
++  device layout.
 +
-+The core reclaim loop (``shrink_node()``) divides its work between page
-+cache / anonymous pages and slab caches.  For each lruvec, it scans the
-+inactive LRU lists, evaluating each page:
++``vm.page-cluster`` controls the readahead window size (as a power of two).
 +
-+- **Clean file pages** can be dropped immediately — they can be re-read
-+  from disk.
-+- **Dirty file pages** are queued for writeback.  Reclaim typically skips
-+  them and returns later, but under severe pressure it may wait for
-+  writeback to complete.
-+- **Anonymous pages** are swapped out if swap space is available and
-+  ``vm.swappiness`` allows it.
-+- **Mapped pages** require TLB invalidation (unmapping) before they can
-+  be freed.  The rmap (reverse mapping) system is used to find and
-+  remove all page table entries pointing to the page.
-+- **Unevictable pages** (locked with ``mlock()``) are skipped entirely.
-+  See Documentation/mm/unevictable-lru.rst.
++Compressed Swap (zswap)
++=======================
 +
-+Memory Cgroup Reclaim
-+---------------------
++zswap (``mm/zswap.c``) is an optional write-behind compressed cache that
++sits between the reclaim path and the swap device.  When reclaim evicts a
++page, zswap attempts to compress it and store the compressed data in a
++RAM-based pool (using the zsmalloc allocator).
 +
-+When memory cgroup limits are exceeded, reclaim targets only the pages
-+belonging to that cgroup.  Each memory cgroup has its own lruvec per node,
-+so the scanner can isolate its pages without disturbing the rest of the
-+system.  ``try_to_free_mem_cgroup_pages()`` is the entry point for
-+cgroup-scoped reclaim.
++If the page is faulted back in before the pool fills, no disk I/O occurs —
++the page is decompressed directly from memory.  This is significantly
++faster than reading from even an SSD.
 +
-+NUMA Demotion
-+-------------
++Pool Management
++---------------
 +
-+On systems with tiered memory (e.g., fast DRAM and slower persistent
-+memory), reclaim can demote pages to a slower tier instead of evicting
-+them.  This keeps the data in memory but frees the faster tier for
-+actively accessed pages.
++Each zswap pool pairs a compression algorithm (lzo, lz4, zstd, etc.) with
++a zsmalloc memory pool.  Per-CPU compression contexts avoid lock
++contention during compression and decompression.
 +
-+Shrinkers
-+=========
++When the pool reaches its size limit (controlled by
++``/sys/module/zswap/parameters/max_pool_percent``), the oldest entries are
++evicted: zswap writes them out to the backing swap device, falling back to
++the normal swap I/O path.  An LRU list tracks entries for this purpose.
 +
-+Besides page cache and anonymous pages, kernel caches (dentries, inodes,
-+and driver-specific caches) are reclaimed through the shrinker interface
-+(``mm/shrinker.c``).  A shrinker registers two callbacks:
++Writeback
++---------
 +
-+- ``count_objects()``: report how many objects are reclaimable.
-+- ``scan_objects()``: free up to a requested number of objects.
++zswap writeback decompresses the page, allocates a swap slot, and writes
++the uncompressed page to the swap device.  This is the slow path —
++ideally most pages are either faulted back in from the compressed cache
++or freed without ever reaching disk.
 +
-+The reclaim path calls all registered shrinkers proportionally to the
-+amount of reclaimable memory they report.  Shrinkers are NUMA-aware: on
-+NUMA systems, each shrinker is called with the node being reclaimed so it
-+can prioritize freeing objects local to that node.
++Zero-Filled Pages
++=================
 +
-+Per-memcg shrinker tracking uses bitmap arrays (``shrinker_info``) so that
-+the reclaim path only invokes shrinkers that actually have objects in the
-+target cgroup, avoiding unnecessary work when there are many cgroups.
++``mm/page_io.c`` maintains a bitmap (``swap_zeromap``) tracking swap slots
++that contained zero-filled pages.  When such a page is swapped in, the
++kernel returns a zeroed page without performing any I/O.  When a zero
++page is swapped out, the bitmap bit is set instead of issuing a write.
++This optimization is significant for workloads that allocate large amounts
++of memory that is never written to.
 +
-+Working Set Detection
-+=====================
++Swap I/O
++========
 +
-+When a page is evicted, a compact shadow entry is stored in its place in
-+the page cache or swap cache.  The shadow records the eviction timestamp
-+(in terms of the lruvec's nonresident age counter) and the cgroup and
-+node that owned the page.
++``mm/page_io.c`` handles the mechanics of reading and writing pages to
++swap.  The I/O path checks three layers in order before falling through to
++disk:
 +
-+If the page is faulted back in (a "refault"), the shadow entry allows the
-+kernel to compute the *refault distance* — how many other pages were
-+activated or evicted between this page's eviction and its refault.  If the
-+refault distance is shorter than the size of the inactive list, the page
-+was part of the active working set and is immediately activated rather
-+than placed on the inactive list.  This reduces thrashing by protecting
-+frequently accessed pages that would otherwise be repeatedly evicted and
-+refaulted.
++1. The zero page bitmap — if the slot is known to be zero-filled, return
++   a zeroed page (read) or set the bit (write) with no I/O.
++2. zswap — if enabled, attempt to store/load the page in the compressed
++   cache.
++3. Block I/O — submit a bio to the swap device, using the swap extent
++   tree to map the slot to a disk sector.
 +
-+Shadow entries consume a small amount of memory.  To prevent them from
-+accumulating indefinitely, a shrinker reclaims shadow entries from page
-+cache radix tree nodes that contain only shadows and no actual pages.
-+
-+This logic is implemented in ``mm/workingset.c``.
++For swap files (as opposed to raw partitions), the I/O follows the
++filesystem's block mapping rather than issuing direct device I/O.
 -- 
 2.53.0
 
