@@ -4,142 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B8410706DD
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 13:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F7E810706DB
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 13:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 450576B0088; Sat, 14 Mar 2026 09:21:14 -0400 (EDT)
+	id 39F806B0088; Sat, 14 Mar 2026 09:37:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FE966B0089; Sat, 14 Mar 2026 09:21:14 -0400 (EDT)
+	id 34D236B0089; Sat, 14 Mar 2026 09:37:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ABC56B008A; Sat, 14 Mar 2026 09:21:14 -0400 (EDT)
+	id 204496B008A; Sat, 14 Mar 2026 09:37:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 158E76B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 09:21:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8D1713BC0C
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 13:21:13 +0000 (UTC)
-X-FDA: 84544729626.12.3A42A22
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CCD4580009
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 13:21:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=zxlE524Y;
-	spf=pass (imf30.hostedemail.com: domain of r@hev.cc designates 209.85.216.41 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773494471;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EA476B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 09:37:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A07E7140790
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 13:37:38 +0000 (UTC)
+X-FDA: 84544770996.10.7124346
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020092.outbound.protection.outlook.com [52.101.195.92])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C73DD4000E
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 13:37:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=j9ufzrOW;
+	spf=pass (imf27.hostedemail.com: domain of gary@garyguo.net designates 52.101.195.92 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773495455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hKSCkW0BeK5up66BRXXiiTYFSs9Fl6al4vvswcco47o=;
-	b=a7RIDquHTDspDHbA4PrtRZeEBf5IWm5Xak9ua1A24YpKTOCSjAlzntVOoGLrVpFZ11kGf/
-	LJzdyVubGdyp9juFkK8bj9lskDHuZCxRZkJbkI7bpUWGtGBWYvAZC68MpvVFay5MfTPWLH
-	iJ5ROugY5FX1DGl++KKl/6gHX9ZV8ag=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=zxlE524Y;
-	spf=pass (imf30.hostedemail.com: domain of r@hev.cc designates 209.85.216.41 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773494471; a=rsa-sha256;
-	cv=none;
-	b=22ZnnegFRkz3aocpu8r50V389yPZ1y023PooKsNTY99EJvo9qAjQFwTENiqoQmwPbiEuJK
-	GaIidOpBh/wdFcCKky8xg2Tk5YzqOevuI8KiU/fkZ5SEDlYcAmZ2X8Kb0hARB7oRgPIVfU
-	adc8LdaH6pznm01xRzMPWHSvZxV20/g=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3591cc98871so1469425a91.3
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 06:21:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773494471; x=1774099271; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hKSCkW0BeK5up66BRXXiiTYFSs9Fl6al4vvswcco47o=;
-        b=zxlE524YIDMnWA6oPM4433gWwC8VnsNAoCLQ0U0pa2JaSb+p4B+kJKi7wdytIubQyT
-         jthee8blEadfumJ9On2KIrJYLrEesFooMztNc2NxLg674dSetMEBph3nTzBPihLVN84X
-         yVSway/44oUiCjrZm73kO6VwF47QbVq0Y+q3biUUSPBi5ucvZ/W+Jy4gr+Mua3cggqB1
-         Eu+oq3pHfZi9UBfUw1EVhWZjskoDDVtWkRfA3jZ3OV2k1KjahaE0/brRsen6bW2X1TQJ
-         xL4loHn/MBuxoOkQqjcTbCjsc0VYKISha0fLcAEfJihUtP2jnvYfxgeXvgoZFIr30X2+
-         Mdfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773494471; x=1774099271;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hKSCkW0BeK5up66BRXXiiTYFSs9Fl6al4vvswcco47o=;
-        b=bXWSGOETZ05fITGeLbcwSxBMCJnZcfM/OM4LlzLAierbBpRSqB1+q+Zxdsjl7SZiqw
-         RdS7dKuxYqo44uXphnhd5as+6uSKPwS+uljCE7PV1Gqgz0PVKs2wZPhUl3DkpmQ6bUYc
-         btCERuryxjxfKw/leDaVAEHPSzB3KMnTzSXr+EbA8sl3eJkaFIQeksb1hLzGp3U20yKw
-         QFqCqaJH68wy0zL57tF8U28xZ3PsN5IZqMLY7LUZJD3S8BCK4Sj0SNXa2QPTFEgFjI5r
-         i/6HuJvksKZbVIVUveCp6GEOVIcUg3nDCL5b/TeBbJ2y4OVuajv2gFOyMVBzQuajvUSu
-         XRaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPIGuStBvleCoQfcIJ/tDodrw5kw0QXUL/ghva8BpIB6msCC4BZfchOcfVDsEa1lL+82IwtIXyXg==@kvack.org
-X-Gm-Message-State: AOJu0YxZ0MzQHg5V05UenPznGcp3rXfkmK/crbUW2TbpyfrXrc9nNxxt
-	6Yd20lZgjVOOly2mceLk4JUH0AV/8lMYmu36mSLvh5gII2NeEeQBg/cUCB5G3hYCK5c=
-X-Gm-Gg: ATEYQzxsLdxwdqCKcNuO5MR1A6fvU4hqEAThXi+NYRA54e679PJeE584lpCBB5c5jp+
-	b5s1Rx46tL360TGG4Okqu4+aOI+MtszZu3FFzE8WO1jL+9/Dy77BnkwifeXWNGKgul26ameOnCs
-	fRS29r51FGseFxuLVsPEt3oSzKkF2B1o6xvtLI/DzZmWEj9q/5ojMRS6a7BBdtLJODXAKHDxrM4
-	xi7hCbsg6HlpdNDxoEIjJ1wnnAXpkt3nXcwhZ02G6VGiArAg/K/t+binU+79EW/Scz8XTMD/yAo
-	8S7ocu0zGuDt1QFirV0KyWryzF3PiYw98qUJinCQYQGv04UhrdOsVSaVWHuRkyVNAAhYS8roKn9
-	r5vA7zdFtR6XeljVRR2+ehyHxWQFty+yRWMc0if295dQOcOZJJsmDOQ2FcqiLB+PGpTIJCPHqEj
-	X/
-X-Received: by 2002:a17:90b:5306:b0:359:91a0:98fc with SMTP id 98e67ed59e1d1-35a2208bc41mr6562451a91.21.1773494470557;
-        Sat, 14 Mar 2026 06:21:10 -0700 (PDT)
-Received: from gpc ([2400:8902:e002:de08:5754:7dac:85df:935a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a03005f7fsm11288866a91.15.2026.03.14.06.21.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 06:21:10 -0700 (PDT)
-From: WANG Rui <r@hev.cc>
-To: ryan.roberts@arm.com
-Cc: Liam.Howlett@oracle.com,
-	ajd@linux.ibm.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	brauner@kernel.org,
-	catalin.marinas@arm.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	hannes@cmpxchg.org,
-	jack@suse.cz,
-	kas@kernel.org,
-	kees@kernel.org,
-	kernel-team@meta.com,
-	kevin.brodsky@arm.com,
-	lance.yang@linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	npache@redhat.com,
-	rmclure@linux.ibm.com,
-	shakeel.butt@linux.dev,
-	usama.arif@linux.dev,
-	viro@zeniv.linux.org.uk,
-	will@kernel.org,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	WANG Rui <r@hev.cc>
-Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K pages
-Date: Sat, 14 Mar 2026 21:20:38 +0800
-Message-ID: <20260314132038.223901-1-r@hev.cc>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cfdfca9c-4752-4037-a289-03e6e7a00d47@arm.com>
-References: <cfdfca9c-4752-4037-a289-03e6e7a00d47@arm.com>
+	bh=rYT6iD4H1Up+5RGxf9rRembNt+jSESpEW16oHNyyGhU=;
+	b=aTmIoDhhCvDpfzjaPwHP07+JXax6skFSszV/ZQqKnQeYMajPgFeUpj1Bmj0KFotLbjXC/i
+	wTsz+NHXaA9klMnD8JOrCoCtavB9L68YSTV9C1P2EbP5XfSYAQbxCKSDeP4S41ZmV4n6ys
+	KhnqYSUdGB3hN4hfMhUw4AdMVNkrXG8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773495456; a=rsa-sha256;
+	cv=pass;
+	b=4JQxLIlHEVIrD65nL2bmy0jl1xdi9NUb9k47jTcNJj3qnOQ63Eo7XbYALeXojoAxth/tD9
+	egYiwGw/q3wRBijeUgknxn2EGB4MIwUJ6KG9/HcAqFKtQ+q/+KOrZQvR18vxnfpYAQdbiS
+	ZDNGhrrQ4TzYb0JVzigZ1kqN+dFGT+I=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=j9ufzrOW;
+	spf=pass (imf27.hostedemail.com: domain of gary@garyguo.net designates 52.101.195.92 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LVJV6VCQ/1vkrPAuQV+Vy3bPUMn5ZsmAJXzmZGt5qu0tIItwoIk+2rFGgYxlQXCAZTC0fFog/EMsvc747VIIWPry3F7QYiCZxov1oGACP85M0tGHy3In27MYQ2APXT1Kinx0tLWAL7+Eir/fOXVoLIS/a/YhLBnWqrji/pbaKoZFlpimXfLAf+SaKqVlE9Fzp+CCdokPmY4/8HOqmLd8KItXG8H2NH+FW8JbZJ1NDUmWDJUKSTKh2FXHW803a7QHx5WLSJTHp0ojRSjuGjyJ/+pCry3/4zaT9b6Hp5ylffW8dzNB574K8W36496kUDnZYL/5KKyhjlQks7YWJQT+sA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rYT6iD4H1Up+5RGxf9rRembNt+jSESpEW16oHNyyGhU=;
+ b=raX9AgL9wZj40rn7clqFqQItcF9OaD6O9+AWfEWwbo4BwuaOy/zYvKVzbDSh9zAtST+yC8lfTdAjvnn9Se3/HzOP2tIid/WEF3pNZaAcoEZvoLm9+3YYnJ+58ZViGd4fxPAnO8Zq4feTiQBZAv8wpVMYAF2jzICBj8+0uFZr6PwudJ8/tckxqN+QtHfjxJwlHKHyUhx+Fm2thipEmeKwHwCA50QLSkV1eEd3tPK9ZzdVuMjkrxqvQY63QmfRM98tWEzoB+tF2/T5x97R4zmguis1iMS8I4Ht9/m+Pgb10NJyubdQuNjbc7R+2j+NzPxjeNphjEdEjNBtCl76wde3cQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rYT6iD4H1Up+5RGxf9rRembNt+jSESpEW16oHNyyGhU=;
+ b=j9ufzrOWuNYX26nXFZZkPM9bREump/gWmiz9EARXeYjsw9ppTbSVjg7O5iL107Ld/2vE6A8zH77rPt+A1O+D30TY2Ci9bLozot4E3dZLb62luQs/9q4kfy/0uhlfWiFwB0uNofU13lZO+OzgkPCA/44m0K8G4lIPopyFHnwZl10=
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO6P265MB7034.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:322::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.20; Sat, 14 Mar
+ 2026 13:37:31 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.018; Sat, 14 Mar 2026
+ 13:37:31 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 14 Mar 2026 13:37:31 +0000
+Message-Id: <DH2JO2PZ0XR4.1GM9108DVQGOL@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, <gregkh@linuxfoundation.org>
+Cc: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>,
+ <broonie@kernel.org>, <dakr@kernel.org>, <jannh@google.com>,
+ <linux-mm@kvack.org>, <lkp@intel.com>, <llvm@lists.linux.dev>,
+ <miguel.ojeda.sandonis@gmail.com>, <nathan@kernel.org>,
+ <oe-kbuild-all@lists.linux.dev>, <ojeda@kernel.org>, <rppt@kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust_binder: use AssertSync for BINDER_VM_OPS
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <CAH5fLgixE9MGXxNEnU5b0EXdgLQoTs5CMv_0OdnfCX3v=coUpw@mail.gmail.com> <20260314111951.4139029-1-aliceryhl@google.com>
+In-Reply-To: <20260314111951.4139029-1-aliceryhl@google.com>
+X-ClientProxiedBy: LO4P123CA0244.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a7::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CCD4580009
-X-Stat-Signature: qsg7jkhfs5i1kcki1ywg4s98rnqfmmz6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB7034:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45e02ffc-7b10-4a70-5ddf-08de81ced7c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|18002099003|56012099003|22082099003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	Pe5a5s8smOl60TsT5YatwbR5BI0fXxiANhL/WPumCiOKS18DaSSir3Ri6qrqnWIV+bJDhzKX5id3mHsfmmkQQHEDvOhSQP+GyiF4CooVpYLSRRigmJfwbjTm04aIDq4hmCDU9VXY+YDl+xj1jx2LCGVXvlDiPVL2Vb/vOE0Oi0w4Nj6XMFpM8RILG/EodmwTV5DDa8dsSTegkIHnbQV/st/VScCXs6dZPz96N57E57WFRqX47Ki0hzBC9ilcqpSS73yo1Nr7HaC0Yozj64jWQuKXSVmN23EsBmpHOJn54sDhCoVDzRkd5GTr9W/yktPpxvZm0Xl7HDN2Kw4giDelB7JHPYBTIROqfTTAxqOEtAkjKX4bwNwDucYLQ/PO09lSQ8eDjmglnAF+o/LflmLftjQctH8TA8I77K9sPZvYxLlKpaBN4j4AjMNNAFBDkMrcStFol+heIF3ATSj/F6XxgjYCA6gZCrN2pEf2qblk1/eSr3zk1qrEvruAFZGWMKuoc3PHSHN7Gjrf5DIM0rFgtzjPzO2wqpzZzPHNHSDtlBflgK0f7R1ThKUJIbozWiUMUvCsOLbPG4Qa6qS8rAP2WfNQ8J+qbSzB+oLsKBMx5MW9Jq+dPx3cdDHtljcwJcrRJWWRF5BYPSYwRFCPsgEUutnL+G7UsWQJUTr7r3jNnVmcJU6XesVEMrw3IM24lPyzc3ZTLmfc433GywdIKK5kRf7VJKSCklIdGRdW/bk5UQM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Vys1NThReDdQcDBIc1FVY0RaY054U2VGdW9DZjNVL21vNVNiUWdwVCtTLytZ?=
+ =?utf-8?B?Rng4d0ZkSThCdUdGejlMdEdOb3NDa0g4VUcrVittOTdYTlZEZHJ4QTVPZUFR?=
+ =?utf-8?B?dzcwWllCOUVqVHpMSUlTRWlZcXdrK0x0Y0IySnNETWVQSEIweGtjV1RtYUMx?=
+ =?utf-8?B?OGhqTjRzOG1YZFRla2VqalFDOWxhaTBVNjAxMGZwQ3dLRndtSnJRNmhzS284?=
+ =?utf-8?B?WUVDY1hZVXZIYkRrakJZUUdEdzJpVHhvT2NrYVZTcldEandkdy8wSmdqbkhI?=
+ =?utf-8?B?K1NOWUJ0bWlMU2IwK2hCMVdKS0JlQTErU1RJdUo4ZzRpWnp2ZGZnVEtZQmtZ?=
+ =?utf-8?B?d1JxRXF0VU9HNnU1by95ektGZmkrc0dsck01alRiY0N3SngrdkE4Zkw5SmFQ?=
+ =?utf-8?B?amJjU2x2bGtxQzJGVmhqdy9VOGRGRGxpWVpvYmw4ekt0MTY5N2d0bG9YN1VO?=
+ =?utf-8?B?L1JNRldCRlB1dlJmQVFZWHJ5R05vaUJYb3NJbEp1eEY1YnpyRnBiRGRPTnd2?=
+ =?utf-8?B?bGNSR1RBN01oeVZvaTl5ZlF4ZTViN2RvS0xDZ1p5VnRRWnh1enZzS2NRRjVG?=
+ =?utf-8?B?RFlSSXVGeHdZUkdrZEVrWldUc1NtUE1XSHRUWERlMzk1YS9sckhSOFlkb25y?=
+ =?utf-8?B?MkIrM2VaNTFnRGNmZnM2YVVpT2xQN3poSGlNa0xKR0ZjTVU4L3NvY1hXZnlz?=
+ =?utf-8?B?dG80ZTM0bWJ1Y01DQlhDQkNwTTA0Q3drYkN0ZEl0eGhOTi9Uelg3czRRaGs1?=
+ =?utf-8?B?VnUyZjdBWUtwQnRrbGt3SVhlS3Z3L2VnK3hwYVVOSUQwRk5FeldYSmFkRzE4?=
+ =?utf-8?B?TGFDbXNJa0JRYW9HOVBsaW80bFd1Zk5nM25zU2p6WDFkVlJQMWlMWEZlWVhK?=
+ =?utf-8?B?bUdjK251NlZGS05neHQvQnlsRGZvMG0wWXFST2JLTTE0SWJQMjNQL01UWkVI?=
+ =?utf-8?B?RW5XWmxrcld3cU5CcDhHYWIxMXdkN2lDd0hwYVpPcXM3YnUrTUZaTlRETEov?=
+ =?utf-8?B?bnE4WmVLTlpsaWo3SVB6V0pnU0o3TXBkUUV1Y2ErU3NKSVcwUzBFYWtseDFs?=
+ =?utf-8?B?UGk2VGZBaklUbTJEVUVFb094Y3NkU0ZMVTVnS05lT0kwOERxcWZjcEwxb0w3?=
+ =?utf-8?B?Wm5Ua0ZtQUNBL0p5L25yMVh2S3RUTXpXNTlFczVpK1FWWUJ3dGxaN3VSMVpI?=
+ =?utf-8?B?Y2k3T2hQL0FnQ1NkRXhOTEIrRFd1QXJhbUlSZ0V2N0pEcmNLNlhnTFBQOWtS?=
+ =?utf-8?B?WjFLb2pIOUZnT0t0RDBPZXU1cjVScnh6VkY5RlRsUUdtQ2dxNm9DREcxa0t3?=
+ =?utf-8?B?enBCaGltQWJrQ21WNEVTN1NqN3N6OU1WWnI2ZzBRdVRHUFVxS01oWUV3emJt?=
+ =?utf-8?B?dkdQeFhBY1N3VWRkQjFGSFRwMTlTTmRqU3BhcUNRRExSYUhBQWR6WmNEWVlZ?=
+ =?utf-8?B?bmlVY3UySnZWd2ErL3htbEdRSlUxRndMcmJ0aFh0eS8wZjQ2WGlURDZ6QXpq?=
+ =?utf-8?B?RURVWWxtVGdlTnprTWljK1VmemxVMFRlY2RyZkZpbFlyT3g3UFpCRW94V3Vq?=
+ =?utf-8?B?ZDdxMzRKaFBBbUF0TWJQZ1d0cjBGOWVKMHQ1VU4vTFNUNXA2Vld4WDJSc3dv?=
+ =?utf-8?B?ZUtLM0pRZ3B3SmhIN014Mi9XNndFa0p6M3BCMzVhSDNhd21WT09TcjMxSnVE?=
+ =?utf-8?B?OFZtQW5tQlpiYkQ1eVlIcXBjd0NJN3ZFT3dDR01MYmpUMlJPd2ppTUFyS0hT?=
+ =?utf-8?B?RGVDekpGNVFqcURCUmNLejFlc2Q2RUJvOUk3Z01mNWcvN3dFRkN0bEk4blJq?=
+ =?utf-8?B?czRwaWtNWTlZdnZDcGNoeVFhL3VEUHpSK1I0c1JScEtuYVJCay9zTytaNlZp?=
+ =?utf-8?B?QUFsYWwyN090Ujc3L3ZRcmQrNkFqLzFhTXppb1B2S01zaSszeU9YaUNSY3Qr?=
+ =?utf-8?B?cExVSmdvMFdwMTh1K05iYWtCaTRONUozeTNiMENCejBWb1JhV2haM2FpRnBw?=
+ =?utf-8?B?NHJXTDRaWGZKaVNYMnROZ2dRYktxRjZjVmxraFo0ZkpQcWc3b3hQeUZrSzVi?=
+ =?utf-8?B?QlE1SUlXaFc2SGswbUQwWUo0aFRWTXBqVllIOWs0WWM2QTVmajVKNTZCRUx4?=
+ =?utf-8?B?azlsVVIvRzRZZGU3MnBkN1ZnaWVjU3BMQnpUSk1mTmxEZ3pkOFJlQk9tSDJG?=
+ =?utf-8?B?YkZSTkV4NExaN05TRUpHSE1zMERPOG1XTTV6c2xnOWlEcVk2R01LWkFGODJs?=
+ =?utf-8?B?V0dHNUEvSWxzeENQUGdTU21kRXhhdmRrWGZRaU0xM2JmNzlpcC9uaWxuUGhu?=
+ =?utf-8?B?bEVqanBGQTdwYnBRWTgyZVZIdm4rdGJpRlQ1VzY3dUpLdXZFUmFlUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45e02ffc-7b10-4a70-5ddf-08de81ced7c4
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2026 13:37:31.7338
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uQAuJqLWm1CG1XhWZmJ0/UFGlOnd0qR6V6A3h903J+9AotMULDzejJsDZbBRyDU6pbRBbUubWtI22e9YZ6IKMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7034
+X-Stat-Signature: gdyxy48rfkixeb4zh5n3fszbrm5ud1sk
 X-Rspam-User: 
-X-HE-Tag: 1773494471-844269
-X-HE-Meta: U2FsdGVkX19Vc70k5hkAwIBGMQQlViGTkfiMQ8ThUVoHpi7L/+qxbWR9XSBupC3s/xboNFYzOE/BEpflG+d8E+HXwwO6zXX6kJwZmbQMb61MlIlRuLfebVq9INTyAjojJa1FsWNatkCyiK4A8VTrPIktkCTKU2Wi8jtiLu4SOevDEbOdwq6VSTFjeWQ6X3xw4GS5enzL/4Cplxyke1yq9oUn+HGG3mumMxKX22f3oh5zgZx7N9teCiCIogkA83JmFaYtMfJfp6PWruRyCi+FN4yupoEo4FxOK0fsbCIdF80yr55ZFWatk3v+RpVdJxs0oMQcMFzWjdPe0WQU/8HuuvkswN9Jz15yA5987rtvo579Icu06TM1hK7bV29slse1bzxf5m0eO0/laH2sN7rPjXbDS6WSm8uGfZq8js8FfbxN9xyblzzkjKsCXCMOCJdXRtBHb03fF1JlTvc5W1zXt46BbOZMGxB4zNrNTtSO0E6YWMlKYLv8mwyBydhUNeZFWxpjfjj8/FUPd7fp4xFeDwI3xR944aXJlUt6aECfcExLvibM5kkXpXvILb/1kC3Xah3QSSd+5Zuj0xR//wrLUfNk6fYDolwTrN+z715/jZoe6QQeEN9rdMSbyzkyleR9DnedMjtLmOeTdFJn4vWCODgXu5xPrcqGKMH1e+94VYk1bjbPpxGnCA8g9m3GSY6U0S1GDatXuHUck6s9Wmtuaf4zQW+8tHsXRBcD/GjB7Z2nj/3njyZh31k48c/MrGGEhrrHJn/8mW6saBTONh3il0OlWtlfgZ4MlddHDUob6dgXv3OP/wgRsSK4TiZvEjszq4nLhsj5CCAqyCLcLFRcbLXrWc6mVQwiIOkvzP+V/qx9Udmon21xFn9MyKPL7WqrTWAkzomftVLkFPgdq/m7p7N8KYOM5OOpydCjMg4iJoYaJO81b5RdLn72sOymvGJfH2N8GdA8p59wEkGRGnD
- /LkLv/CQ
- kNleL7iHVti9xsXw/bSLyX3PLNHCNKA6nrDEpro3CTy5EIXG8RKjxukS0AdB7OHJ/gBKCH0Exs+Oj3InkCSVFwxjzsId6/oVWFKWFS/Fu1qEBPQjGHQnLo45naN3nnAISYgCHLXJv8a1A0h5Rc2AsFvV5htshwTLDlwpo04Ym4ZfToxod7eViRhScO9llVw5VvnIcArfNfrEi7Uk+SKEujgbPpamLZzZZc3JCt0lHbG2g9RIreyIhASo/0x2JK5otK9BBqWYzxDLf4dLv6qUr6MbmOaoGeIadlraRP79tdATsjahIlqI1lEQE74RpxZDXZqn0qZn9KZsoQXNvv9glOlzUO8zB8Ab8Tz0Tn+EFxCTiC8lc251SXbOmFuWl8/1NZdQxA/LVURIkqDFj/uF5fx1IBIphuV6qeL+PfbF7KJ+Ppc4D1MbwmDBYDPfdPi/OMN52W+U7iotcRIGUgR0Pn+aS7CTCkCt/3l5Urjs29ShtmBtMYD0Qx1NtNmGEcQjSQQuzEtXMGW7CFynJk/9IgA7NrQ==
+X-Rspamd-Queue-Id: C73DD4000E
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773495455-998552
+X-HE-Meta: U2FsdGVkX19vRYUvC7RbbA4FaSlimq80xgMt1tpUnz0PF2ywgq771WMCS33tgZJnWpUk+diZpS9Tq+k/BkUxvyNGg0A2dVDxaUX7njmrpV3JdP0LALCEIxEnHxAjc6bi9ezQLqV4Y2TTVR3lyMGrzny+uU2+HVMf/L/spFxcfy8eu+i97uCt9f1/XqS/mgJKCp3imQ7FQmTdJlQM9WLnW3B9gf+nV/EFegv3K90SN54TD0dzcXUAnzxj7lThAKTfRzol+lHV/axGhdjRO+jfJxbmOGE21Qv5mfY34c9LiitdC1VLoBbxwZC0PhCZtGgs1wTVbUkwYuUWlt+rdNeiV76nzvfaloL+p024ExUtdrpTev8XpVSsLC3b0xOBvBwrn6Gxq9J6N9R2uFrKgxuTeR6vEUgE6h7D2cisovGGB1xrRaUGb5OsLmqwmsfpjXC9PUjkt/ge0vfOFM/47h4J2zn3+UpATRFApXyPxkpjNBqMIOvOJYIu0iGlvmz7f/fryGe4J1FHGuMuLtFYOLjnd5Lydb1rFA4nQWKmsDOfA5/bItx3uXNsVIzK2dgtcuJgiDFOWYYdkggURqIdjsVxbZ0EOQ6wP1svG/RNfbQG1oo978Hv/9JGegeAB90rFdMVUFzU2di9K7F7TISvfzJqCU7JP4AKWk95Y4eIETt6XwMTYN/UNAkkgK4xBHmtolC9vAmU9dEd5+rKyB4zg9qiFJ9pqgAI26p9FS74pgNwOVcU53gZpjDkmQS/Pv7Yn4Ff4i9ak35DaliPr/YErrzVZhb0bWGxxls6UopUoZ3P58t+9/mMcEZ3B7LMudEz++3TEevv2g2swgBUrkRlgXZjWW8TKcWi/Sh5H2B+2iSmuRCOOudMr+SH/5atmFZW7Quy6z3V4nGVyQbDgeVXZSgzfvUCCl/yzZ+e6bupQZNea4zvHbgfoKE+kD/S5mWUBlYaWG4VUxlxWaL2ecSG+gp
+ ModbNb+B
+ P7DYkNabFIUzg/OU+bV9AiU4rE3h0jQInsMcdr9bx7EupTpSjcybpu6bmHxQEkglhOqxAdf/VTOfvMpJ5kUOtgYA5Puiu7Q6TQng7vpAOPCAKjsToj4erAZjRSOp0CtfqvyYtp/a7EvFgjPP2FsiKvB+XL3oIT6wqtxHrxGwqlkuLxCrX1Yu2qOtfEUzQIS5JRm7WrAtPBigtYTI+8ksmACkzgLmWlvlqb78tccD/rSKXL3tvlgyqMWWbLCz2+kj663P1GrejRITRK4FlG42LYYYG2fmjlNj/JnkCruau+j9VASGcyIgzwzHsy9LfjF+xaDIO7cZTHyAGSlEFqEB7GWDS6d/rdchoGjJcRYSoGsL8+zcfw00C2eWEnwLssgcIybxWkJE0ujm4TDci1lzjWAfSALrIr2K7DWyEFQYLSxMV5+oEv6Ysb7r0xQBVz725mhoHpBzoxumIiXTkith8yz/6bzMy+H1EBmnI8F6qOOYmxoJrTWgX3rB3MPKPAh08QXsAPDjO53GrxEkngiwsxLQjhTPi//QcYnaDa42GbasX8IKTc7MyhByMamT/OjXaCTmXs/udifxU4P3jifHrHGOYkswajccm+lOCPpQxw32WmgMjVR589KG9hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,41 +173,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ryan,
+On Sat Mar 14, 2026 at 11:19 AM GMT, Alice Ryhl wrote:
+> When declaring an immutable global variable in Rust, the compiler checks
+> that it looks thread safe, because it is generally safe to access said
+> global variable. When using C bindings types for these globals, we don't
+> really want this check, because it is conservative and assumes pointers
+> are not thread safe.
+>=20
+> In the case of BINDER_VM_OPS, this is a challenge when combined with the
+> patch 'userfaultfd: introduce vm_uffd_ops' [1], which introduces a
+> pointer field to vm_operations_struct. It previously only held function
+> pointers, which are considered thread safe.
+>=20
+> Rust Binder should not be assuming that vm_operations_struct contains no
+> pointer fields, so to fix this, use AssertSync (which Rust Binder has
+> already declared for another similar global of type struct
+> file_operations with the same problem). This ensures that even if
+> another commit adds a pointer field to vm_operations_struct, this does
+> not cause problems.
+>=20
+> Fixes: 8ef2c15aeae0 ("rust_binder: check ownership before using vma")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202603121235.tpnRxFKO-lkp@i=
+ntel.com/
+> Link: https://lore.kernel.org/r/20260306171815.3160826-8-rppt@kernel.org =
+[1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-> I don't see how you can reliably influence this from the kernel? The ELF file
-> alignment is, by default, 64K (16K on Android) and there is no guarrantee that
-> the text section is the first section in the file. You need to align the start
-> of the text section to the 2M boundary and to do that, you'll need to align the
-> start of the file to some 64K boundary at a specific offset to the 2M boundary,
-> based on the size of any sections before the text section. That's a job for the
-> dynamic loader I think? Perhaps I've misunderstood what you're doing...
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-On Arch Linux for AArch64 and LoongArch64 I've observed that most
-binaries place the executable segment in the first PT_LOAD. In that
-case both the virtual address and file offset are 0, which happens to
-satisfy the alignment requirements for PMD-sized or large folio
-mappings.
+> ---
+>  drivers/android/binder/page_range.rs       | 8 +++++---
+>  drivers/android/binder/rust_binder_main.rs | 2 +-
+>  2 files changed, 6 insertions(+), 4 deletions(-)
 
-x86 looks quite different. The executable segment is usually not the
-first one.
-
-After digging into this I realized this mostly comes from the linker
-defaults. With GNU ld, -z noseparate-code merges the read-only and
-read-only-executable segments into one, while -z separate-code
-splits them, placing a non-executable read-only segment first. The
-latter is the default on x86, partly to avoid making the ELF headers
-executable when mappings start from the beginning of the file.
-
-Other architectures tend to default to -z noseparate-code, which
-makes it more likely that the text segment is the first PT_LOAD.
-
-LLVM lld behaves differently again: --rosegment (equivalent to
--z separate-code) is enabled by default on all architectures, which
-similarly tends to place the executable segment after an initial
-read-only one. That default is clearly less friendly to large-page
-text mappings.
-
-Thanks,
-Rui
 
