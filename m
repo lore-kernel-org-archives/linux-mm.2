@@ -4,134 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19FA710706F5
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 18:39:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14CB910854A6
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 20:37:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 076C16B0088; Sat, 14 Mar 2026 14:39:10 -0400 (EDT)
+	id 1C7906B0088; Sat, 14 Mar 2026 16:37:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0247E6B0089; Sat, 14 Mar 2026 14:39:09 -0400 (EDT)
+	id 19EED6B0089; Sat, 14 Mar 2026 16:37:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E72C86B008A; Sat, 14 Mar 2026 14:39:09 -0400 (EDT)
+	id 056816B008A; Sat, 14 Mar 2026 16:37:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D56CE6B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 14:39:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68D3DBABFD
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 18:39:09 +0000 (UTC)
-X-FDA: 84545530818.18.B15CC04
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6CFF4A000A
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 18:39:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SgzHHYxh;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9C8A6B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 16:37:48 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 73B535B75E
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 20:37:48 +0000 (UTC)
+X-FDA: 84545829816.30.B6792F8
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 68CD7160004
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 20:37:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="aP4Ng/Ll";
+	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.167.169 as permitted sender) smtp.mailfrom=xaum.io@gmail.com
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773513547;
+	s=arc-20220608; t=1773520666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZrOqUX77UA3vcyaoFXxYGiBi+f46D4ZwPXW+m53vIg=;
-	b=cVPTSp/psa0L79f720z93HXtylNs/XJ1LjDwwXRXCMUYbCYtL6NWgNdD4My+aBhF7Q9CZK
-	bcTDST1cpyo90n9b/ALXgBDcG08DI43eyZE59kt9Rof3Fx0kvU1odOEacVkB/vbZtAFHCl
-	Yzu5PV6Ys9hm0LpwoARnX2XMhOv8QQY=
+	bh=bw/8E5PGkwuGEntQ14lqvKmLyctBPAI8FASKsqUgF90=;
+	b=OAWxPAh8co8a9gEqzeXl6EupteA/LmSIzHUhDXuk/3sKvys8UN/wia3B+MfjRbFkcNX8TI
+	FSCenDEC6Oau0UVmFBJPu3ru2XETJBi9uvpVT+/zgew+qw43IGiDJ+eGFDy9oI6PeaOvY3
+	Rxgaijaqr3eqa/AObfmv2Frcfb+gd+Q=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SgzHHYxh;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="aP4Ng/Ll";
+	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.167.169 as permitted sender) smtp.mailfrom=xaum.io@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773513547; a=rsa-sha256;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773520666; a=rsa-sha256;
 	cv=pass;
-	b=tfMjPNu08MYGxx/wx2bVOYC851Rf8D65t6rW8iNZhRHd7eJdh39GwCxka+4gTftyjpnPNv
-	MLq7fIqSoanr+IGXAuChPcpMeRrKMBhkLKHxxOby5qsayLyIylcvXMoHZFtGKjdYOh6uuX
-	ELCLRqOq9kh2rRH7u6LC6myqiHw8Rzg=
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-466ec4c6852so2124868b6e.3
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:39:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773513546; cv=none;
+	b=Itcu4T0h5y5nu4mY+uT9Jtdo66JIrq9ChcNyT7jJt6RCCQvx0PKzW/a/dtrHozbjDW6YeS
+	R508JuLfF6zIbse8A/q1GlmmpvzwO+vc9TMS2GA0MjkBrseVTIu7LJlwKm4skNHHZCtS9V
+	/hhkiwDKKtMxhwDQupr+jihyvHzMSO0=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64ad8435f46so3673547d50.1
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 13:37:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773520665; cv=none;
         d=google.com; s=arc-20240605;
-        b=VDztyYSSvd01/17menh2/TTySwqsTO53+2hF7B6kRyCxrTjOngy3a19SDAe2jUu9lQ
-         OGJj6/JB3RsZ2RkDRFiEszeUA5nA6x5eB2hM49QtB09aaYCdNS3+RCZ2pODf09QM1Rz4
-         zUspVpbpLRiDlNmOsVrM3aqIWa27L5uZ6MiDj9Gews9C/3cCpIaRNGsgEoWoZf+VrCti
-         hUCij46DUPOIeJYmDiPaf8oiw7hRnx/Gw1VDHuV4nr8ON8ehsSW//MawOhtZQrm7oM5s
-         ma0QtvOXiMQnWlUj4N5Xp+gOt2XKEUE6m1Ky6+8dw+GJFcqx/8jGszyIeEq+bRXwK9wn
-         uf7g==
+        b=fHlnTOv6+gCwV0SPxpPRhHnAAGfWPNt92ZqjMUxhMZM9ZCi0vuYnZdKrTMRKyELOMJ
+         lxUDV0Hp8mZqQ9YzfLyDPtZsjFKk5is16WHcce/Vu478ifc7Mgax+G17C5vBBYvERFXZ
+         iwSnrTOlzw9AgWeZB0k/y8bGL6UcnGOWQxNuS+8d69FrLTRRp7ukAAjFmfVFl1wdh+H0
+         S+pJEHi9ZJuDE6MwNf/atkqfh6P+KmrBl2XQTc5zyf2zLsS1gbqMK+vPWUo01Nf6/FO2
+         aV3tRLpRnugdAJNEE911WjdZ9VMSFOiUxfQlhoO3BUK1a/jHVin3J3h2sITBY1ApX84N
+         lb1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=AZrOqUX77UA3vcyaoFXxYGiBi+f46D4ZwPXW+m53vIg=;
-        fh=YhCQ+31ej3ZHj7kTbSij2Skl669JuiKEFtpvAvA9YmI=;
-        b=M0y3d9Z9SCLTPc+AQj5nQb7B//WuONHj5ZkA73wUWn1K+gda66VTosJQIB0sZN9tgn
-         wEIQkzEA7gkmg1FifY6i5gJA81QHjoy5nd+fnkvsAtwC9bvLxHKom9XDjwJsQQQMCAEh
-         FFVGeJrtSthtNID3c4ma1PmrVheHis+HHWkdw3lP+BLzu9pIz+cqa3AB8xdNTTUk5hGt
-         fh4uSI6BH2or0JHG8g6Q/9Z+u70QtxPPQmpvXsrighgLwNmftkyjXWVBmADlDr4GHqmH
-         nsqJ9udNm/QX37hz1Jiz3Wxp46seeTISpTqG/ZjvFTPIlxVZ6CwlWG/yukBdKX+YH/TF
-         HKtw==;
+        bh=bw/8E5PGkwuGEntQ14lqvKmLyctBPAI8FASKsqUgF90=;
+        fh=wc3cOnLGDVazRI9GQ40cAzTIaYMqoZQ4jKqPmxRY4vA=;
+        b=Ws575osGthYAYDVv3eq6jk6fGIjyL1GApI5OncahrYIexozxKUjdIO89dSn3C5Sjh6
+         ryawXjlPf5ZeCl+pBjqnyq9DR7T9zGGbz7ZfsW7vlHtG084dORHYgqtkAn3FaoSQBr23
+         tbajB66w/GIry6rrQzfqRY+s/gPy2A7bFe0t7nUfs1jhdL1cVQ2IWERZflBqU0ifjmY8
+         LmsLjs2D3QBGt6aF8AlAjkHrXVbC33fHbZviDiDzShjYG2a1Ne8wNtG7m9hJa9+cP1zW
+         1Huf9uT9HwJBxLG/cmzoZnvJ7pfhbeKNYa9/5DP5vkl4uxyZbdh0Xit2QzEBDZgzqms7
+         mKKA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773513546; x=1774118346; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773520665; x=1774125465; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AZrOqUX77UA3vcyaoFXxYGiBi+f46D4ZwPXW+m53vIg=;
-        b=SgzHHYxhw551YwnZWlZ+3luq5fJGDFuDkhBmKZm0BTscBn3BRz0Q/5OE59c0PUjcv5
-         7lndEApkfbbptgy3s7V9Z3BGrPSoo2PSeMeeP9vSaGgzqe4JGfeiJ9DJXPyQqtK9alQq
-         I/xIsa9ZCE3bBSUn76HLZJzsITLu0ihLGS/2F+tVkYJxSnr1n981gpw6zBWzuJHpRhLz
-         2Ub5rOVDcn2LEoMwQs0riz4175yQ2yLZwUULeIqD7gYydkoNsHWqQFyySInO8HkBXzj0
-         CMFKzbLXc8TBCHM2aOYB/MfsSFf6nnYUul3n2s9F8sqj2/qYJ+CLRd69kmG4kMvzO3Fl
-         spJw==
+        bh=bw/8E5PGkwuGEntQ14lqvKmLyctBPAI8FASKsqUgF90=;
+        b=aP4Ng/LlajABo97+ZH3ykOl6ytsTlxcTPYptGoCL+mnJFh9RjwK/reNCZEtpOmUmf1
+         ll6tDU81EieZTCT0Z/0KUVwY7LPrUczz++Kv1SCxNbq6KPOIXDsCziU1Fh1aS+d8NlIt
+         DCPDnbq+qDJkJyNA8HTKQ8XDpmbid998RNy6KfwnujkNdMHqk2RWByLKJk5cvsMOTVDk
+         9Yd+HZCSBsKC3CWFhcyFzJ4CeXDJw11NZoEvc783Kep9h2+YBObeZ3vzwdGlIECPL4mb
+         tyzfFdJd5WaunC1Wxi3lBq0IFyPA+Ka3/NaIjEgEcZp7IV5CVU8DvEkvnXY6nls1ZYqW
+         lseQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773513546; x=1774118346;
+        d=1e100.net; s=20251104; t=1773520665; x=1774125465;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AZrOqUX77UA3vcyaoFXxYGiBi+f46D4ZwPXW+m53vIg=;
-        b=aNCjb7oKa8yO1N1yxZbL+kGxvUuko38tcSURO+/L6NwCI9jn7VbpENTcBuoYtl7AEi
-         HHprsb2t0c+HM5BN43Tlurk2owDdUM8LD98eF/4Wc3kO7N/W/OVtxxauc9lQ8pdhayYy
-         5z1YHjxqArcYg6sIPUbGi3mZ7rD/xMpLvh4xw8mm+La4Jkrd5eR+gsdN7BRvo+wL0q3x
-         2cJNZusOinvJDVTUh/zTIth9SgsjbDMonceLQgiXeDGgtSB5UEZe7qmfESF6eyGBjarL
-         DhI+LVL3uWArNdqCdsnHp2gYtrKK278TgX8b6132yGPB8JQ73wqeD2HjamGr897aRQxu
-         E/bA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3d3x6aPjsaTU6u6/x1BFF/Wo9JCg+KchfdQ/DL5sS+EcwBvEddkse+QJnuxcms+kxzePe42Rakw==@kvack.org
-X-Gm-Message-State: AOJu0YzlkZoYEi2vYi/DJ1PlMFgZAZBaec1OpN7JfpXZn5jB6sqeJjxi
-	JKo1UjuRV3uxJIgYhan6Q3h3JfCiVeKDSwXdeifQ3aTh/g3q6Ko2Ebh8C5i3zYuKeZpinVpomnP
-	VvV2l+KVLD94j8UanTl8RMIhWPyc9UGs=
-X-Gm-Gg: ATEYQzz/7p2JnnPQ7BmWybeOVvgAxaFh6z0Yq7NXtxMt3kX786alrOLCLfDNz5VxlxE
-	S5oC6vlV+NnC7g3tpK9gC9y900jO9ycs6GOW6XoYUHBYb9zAJ3vXDuVgbty8oHtYsNa8pFA2uZ2
-	/AUR0oDxQAh5Wl5cbjvl2QAs9qlTVjUsO4nSMWEKXxHGZky3OjGe6jbeMDGle2RwW27huGv8CGo
-	iIcTvx41xl2Eymi/dWtcbuOuAE6vfBakGgkOjgvnKqT19eHA2bss4C1HON/tKFXfDBq1aUT0NLK
-	qdWblhRvOoyNVcDU28ZjviodYeSnBV3DLFcUpop4brEwWoDbS9HVNn3wsG4sFhB/nIAP3g==
-X-Received: by 2002:a05:6808:1b2b:b0:467:318:a74b with SMTP id
- 5614622812f47-4675716c5f1mr4054747b6e.28.1773513546160; Sat, 14 Mar 2026
- 11:39:06 -0700 (PDT)
+        bh=bw/8E5PGkwuGEntQ14lqvKmLyctBPAI8FASKsqUgF90=;
+        b=FOslPNMok5xJfZ2aeKbwSzsbP0Ayv6jvyB4IqP93fKD5hHUX6tnFtwNbvCHdyaICGV
+         G+b15Q0seKHtleuY63XgCupfB/Ys0ey1AaIqJO/iM3IAOS1Ei0aph2XkG1hnaWw4UDzg
+         yfsiCQGJbPMtYitahgQbUwtUW65VDWsiKNKzYORt2xzWf3YZF8YXGdb3c0NhxQCEr+lE
+         ZoZ9C6SKxW3pjjd2PS+yuWWuhiz1VCVnwU7Q+jwZxH5PJ7iSwu5P2irwevKB8pKbHgwI
+         AX4OlslZ3f7qfB1j7u5SCFy+mETNcO4oaYl61l70FkSDB1jMc7ziclIcnJDj/mwupySs
+         w43A==
+X-Forwarded-Encrypted: i=1; AJvYcCUp/guu8ten1NTzuixXOuxi7lmcfQp+RkEOKnR5gjASTzHtW4Da0HTRJ/6MOXuWfg9KeM9kQjnp5A==@kvack.org
+X-Gm-Message-State: AOJu0Yxg5kmoTSbSbnoiv41mdop/Ygz61N4RkBu24egVyJIZrQnI77dG
+	fF2hLw/ZGMj3glLp6q1nYxy2YI14lyqqChMNeJUElSiuhCdF88tWvg/ISs+bqEbITeBbS5SplNH
+	lvfSiidGQIBmnlcXHi0+aPndJ1C16ERs=
+X-Gm-Gg: ATEYQzyTzlJvRVrInXA7FJ9fgozueGkYhvmy+L26mPviNUgWj2IpgGYaxdN7WGq/puH
+	BraVfrVqq7zpfkx9u0ti6z+OISdd0O57tN/kSg9PrsR5wEygFWXEoBoLkiCLTOR/gj4oFPlR7Oe
+	0ahn/7IpOwPv9ZXEWg4pNvQtYlXCmbCPP884Q2gAk59Mygp2SQVdEoHq0JZlLbFnbFbQsn/2lJm
+	Ywm/TPDTqzZJ8e/ebzghTMdjHY2qh6Vgl/aX0DBH60rUjMLSQz4z0wGiPstpveRJH6a/33OCSND
+	MdKlmas3b8N/tecaOLtYQgcW9Y6l+qmvwnTvO8JAbIEwyb5W8zE=
+X-Received: by 2002:a05:690e:4402:b0:64d:6813:6869 with SMTP id
+ 956f58d0204a3-64e630db1e0mr5468159d50.73.1773520665304; Sat, 14 Mar 2026
+ 13:37:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260314152538.100593-1-xaum.io@gmail.com> <87ms0ajtvy.fsf@trenco.lwn.net>
- <CAAZVx98Sz1MknCcMpQXxeGpUjXBDyz+0KyRuUiCXsM+3qzqpeA@mail.gmail.com> <20260314111757.2a17c3acce8c3a1eb68ed209@linux-foundation.org>
-In-Reply-To: <20260314111757.2a17c3acce8c3a1eb68ed209@linux-foundation.org>
-From: Kit Dallege <xaum.io@gmail.com>
-Date: Sat, 14 Mar 2026 19:38:54 +0100
-X-Gm-Features: AaiRm537Q06X8UVE9YoUBvoT0K074F941B6dRgRuPTK0qHXNEw40OFUaMlZ389U
-Message-ID: <CAAZVx9_6ecePCB1MMRa0q8V4afa=zRSmcaiozaFPDrrK-+bv5w@mail.gmail.com>
-Subject: Re: [PATCH] Docs/mm: document Shared Memory Filesystem
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, david@kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, Mel Gorman <mgorman@techsingularity.net>
+References: <20260314092145.7496-1-aethernet65535@gmail.com> <20260314162546.86404-1-sj@kernel.org>
+In-Reply-To: <20260314162546.86404-1-sj@kernel.org>
+From: Liew Rui Yan <aethernet65535@gmail.com>
+Date: Sun, 15 Mar 2026 04:37:34 +0800
+X-Gm-Features: AaiRm51xL3AUkg6kP6lI9CYOzld0LBeKXax_xM2GzdwD2vIebs67Jc_XwBf8SDw
+Message-ID: <CAPLv50rMiS+PBFh6BQ1f1XZAJu=1hMOaSx6ySQgeHxAY=i1mQA@mail.gmail.com>
+Subject: Re: [PATCH] Docs/mm/damon: document exclusivity of special-purpose modules
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6CFF4A000A
-X-Stat-Signature: 85gnp565w5ax7unyug46wjwso85cx4cw
 X-Rspam-User: 
-X-HE-Tag: 1773513547-640010
-X-HE-Meta: U2FsdGVkX19Ubf8dwSeSlZGHHUSRRKE6RH6dq4Q5sYJ9+nA6ECXWNyYem3tP7xzFn07hchBhAypvydlHGCOrMIMuADA+4YNBeqCL9WubVlfAXYMbUXrRM+T4qw9eIk8hiG/ojGltSFOxXVKzcPTyVQtk7dYPMfvr8GQOhmKbkycaPCUda/g0vO+I1Wj2fBaR28y1XYIF0i5OtcIaqlNvZT+tvl/7e/3HqOWJ/7bnSW4e0NH0NOczfbwfjvqaRsSJYCOwWCt6St1pQLpXF5Fwb1Awz4BuX3XS780YQgHY+iBqmXxFosKp4x5RElmJZHswIbez8MxdOn9EXWdIF6ZkN11Ryn4khmWykjd6BnSzLcJegw3Z5lMFnQZrXRLZAqIiJ2kUenLpUxGWB5swSJ5+B61Gt5K9JaEGLgFEjozW+Ur460iJK2D+yl/xJy+BXVWYyLabLV+cXYnNQJQsH935O0oJoCDOsolHzEgMvE2U3OmTdgWdK+O3Sjk8xCy/Hob3L13TS4krmGjqmI2qTZmn3Xt1HVzovXqQLVHE/Wkfhdm+WARBdPBCiQ59BNPnQ5SCWx/ZP7zuglmiqIcwE//fmJ5/zneKeUiuyCsGcyJejISTm3qdUw4FVvichEaBXXPn1urEI9YLwVdUjqlbLk8L0VSnQ6nfaOybclYHpqqC4xPsU1Ipj/W4wDuUURVsNzyxUReXAgZJHkHc1TgsHT7Ng8GQZ3fGW+nWmxalq/2Z8ussXNWW5MQyjb3yI4LLm+Af4rHNdS/Igol0jLeEMx+NoQOeCakspKegg5iCLK1YMkBDCseCRaEmcflMZzzYcsW+jGn90Vvqo9ylOq+mtlcxK6JMuimHmK4aTUcTB3y0ZqXHLuOH8893/KdNUaSwHkuICVnap3qQgT5Ucj6iDnEueAI4Szvm6dzQ4P4+XyfVHN+TYKnGO8wq19emCvL01jx58QGnX8u2oRv0F6ir6XG
- nP4/84yj
- JN0JEEPVvI8NdspnexG4rDehPzZgwfQdFEPTVrLm6Uh2FxiNEBg1c/FYkiMtTuQH7FFnAYprbfx6iZFIqOj69X0alP/SwQ88jVX90T6aJ7KS51dcgBomF0prRFPZKprgQHLgJI5XlWEr3bfsTPW55kp+dlO74dfmsMwtY+S1dhtYxEGyHhjNKuIZtnEF6RAb8MD9JWEv1Mnz81VAa9Af0j3+KjU6ByVUanBeW/xQnZsnVRxJm8zztbth2M3wsEbYtHiv/6KulCVPCDUVTWYewwScjdSM/+86u05iIVZxshJ/3FOHYTV5eaDCZOoesw0h7Jp9RTmPv4bWinQyqq2o35V4AUaZ/uKCO6r8zLgIY5+IMQ8AC0Ekp0rhu7GpAn0DxzjbfQ4CgJJhypPZ1DtNjfB5u8W57qDstJcQN7Crbvx/+thA=
+X-Rspamd-Queue-Id: 68CD7160004
+X-Rspamd-Server: rspam08
+X-Stat-Signature: sqzqf5jy93iqtb3sjn7qzk33keaf3rj4
+X-HE-Tag: 1773520666-454286
+X-HE-Meta: U2FsdGVkX19G301ngMfzC/olZYaTgKdOP4kfrZ6jI7nJiU7mfKrue0yleIixa5PeUYk7f2lfuEvH3lD/uhzvIpRk5IHeBpa8SaVwGMl+tZ3EP5e4f+tH+yYrRADzSvBHkYzTp55viXF3VPjVmcGkYyd1O9VBoDhHjK+kRwKauumJvv7TFWK7EXReiPKJblMSyyvvtCqIbYg0FAORUMV/Kbi61PzVhSXKlgxDoIso7KQEiGrllMonjVRTZ5Us3KQ6q71kAXRzeNzuvQlZhq1MbCt/vBI1HcrQU6BGwUubV9J4NSA1U9E4hOI2wiRiJhXJXARPXqc+2hhxrR49Q9nzCG2B0pHa940Zs7wa5b+nbKIQbtNyiQsGaToB4B4pQ7c/4UrLYYzmfp332/RrphKlYSyrVpPSmsW1HE5+EqerUJxotIybDdYtLYq2wADxmYWSeTtMgMn3SlMSRwcu/J8Ap5qq3wGlF2KiJXmgqBWrVi7R/J3sU8/oEOySMRxepXMXKgp/A8Gp0vLWorxiRcNXOQtIFpKPFr35d1L+PCcT+ob8e1gKBvobqCsdFXWnWSOSfQ8x7jsjYN+2ghGJAiorR2VGakORF0lM+ZVuM8vpKA6nr9apVrVjn2tDeTqbDl1hBZsqzTy7VtFSFfYlPKVrMhKCH3Hr65U0pszO6mEVwXj/3BxVu9hP4J+WV/TXEWPXapDVcYsGN2F8fNnsyujnevLX326LQhKCw+63wZ+IuzrHlPz0Bu3V4dK/6AL2wv4M1hL5ahrn5CWQLJ4CvHGlcDO9I9D0bt8GkRozJZQdWXUj/MxcX9lGblzAImE3kXXFOAUvPqM1yLzxDVeuybmdPgbJIanQCcP3x0shYxFfQPsDn9/SYBFAzNCf9wYxk2FZro8o1Ousa4sB6WcsHK7JfsdBWfbyDezsMH1kcjsQoIXHy02Crm+uptPoNUm6z6DVtX8t4l/1zKUEkHj66qm
+ xVuyFMvj
+ iVsRp2sZpUt7/SD1VQTQSrYcHeeHRbDc/pHo3gwdYmR9o0YsOLaVhfdI7XYHqJ4RPObWdeLpm9ErbUWfgMNoT3fnjdTCqR5yHMaRiR1d+2dVde9i/6J7N5AgRG2c/ad9mWZ0FXps8KvLVdH4ww5bGzhn8THcAVwXK5BF2fo3rmUKuaIQ8/OxARosOAza1EglVS1qmaTPUpbqJtC7LkK6p2HRDn0ojLE5bQwOC0NgUeK3UHuGTY6NrwJ/RLBVUPtpzIPYbm2A5hlhK049RZ9HeqH1INfvd9se0b4gB+HONEp7XDWkDktdJBvMvrfFxE6MktcaT8WqaKV9KWAUTSWKUBR1bujuGitz6uxuREMwW6bnHZvzxHotI9CfdOSbRkkHDAK/0VldGGpjOjtZNYBW9x8BfEp4YyT5X8xbOYdNlTdtT2JF7mjCtB46UcE0IKdUeZidFyjev9vBrj1cgP0Krf+Jwok5P7q4DXf4rCOPF1S8rk0rrrOIhE4/Pdu59XX63GShWrT5ZjEy1B5Nc5hK9o7x8eA9CPCIGH9NvqvK/RqFEoXfoqx+P78widWHeNeQM36viSMSonImWO+0msEiKqqD6tb4JXEuFAuJQN7cVkgdtlfc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,21 +137,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Sun, Mar 15, 2026 at 12:25=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
+e:
+>
+> Hello Liew,
+>
+Hello SeongJae,
 
-Thanks for the positive feedback. I'll add the Assisted-by tag in v2.
+>
+> And thank you for fixing this!  But, the broken "contents" directive is a=
+dded
+> by a commit on damon/next tree [1] that not yet planned to be upstreamed.=
+  That
+> is, seems this patch is based on damon/next tree.  As a result, this patc=
+h
+> cannot be cleanly applied on mm-new.  We prefer making patches based on m=
+m-new
+> unless there is a reason.
+>
+Okay, I will make sure to follow this in my future submissions.
 
-To clarify =E2=80=94 I used Gorman's book as a reference for understanding =
-the
-subsystem structure, not as a source to copy from. The documentation was
-written by reading the current source code and verified against it. I
-didn't contact Mel beforehand but the book outline was only used to
-identify which topics each stub file should cover.
+> >
+> > Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> > Link: https://lore.kernel.org/damon/20260314002119.79742-1-sj@kernel.or=
+g/T/#t
+>
+> I think it would be nice to give a context about the link.
+>
+That makes perfect sense.
 
-Happy to have the relevant MM developers review each patch. Should I
-resend the series with the Assisted-by tags, or wait for further
-feedback first?
+>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+>
+Thank you again, this marks my first contribution to Linux, and I truly
+appreciate your guidance!
 
-Thanks,
-Kit
+>
+> Assuming you agree to my above suggestions, I added this patch to the top=
+ area
+> of damon/next after dropping the "contents" directive fix and adding a si=
+mple
+> sentence describing the context of the link.  The change made to this pat=
+ch for
+> that is as below.  If you don't mind, I will post it as v2 of this patch =
+by
+> tomorrow morning in Pacific Time.  Please let me know if you have any com=
+ments
+> about the plan.
+>
+The plan sounds great to me. Thank you for taking care of the v2
+submission!
+
+Best regards,
+Rui Yan
+
+On Sun, Mar 15, 2026 at 12:25=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
+e:
+>
+> Hello Liew,
+>
+> On Sat, 14 Mar 2026 17:20:22 +0800 Liew Rui Yan <aethernet65535@gmail.com=
+> wrote:
+>
+> > Add a section in design.rst to explain that DAMON special-purpose kerne=
+l
+> > modules (LRU_SORT, RECLAIM, STAT) run in an exclusive manner and return
+> > -EBUSY if another is already running.
+> >
+> > Update lru_sort.rst, reclaim.rst and stat.rst by adding cross-reference=
+s
+> > to this exclusivity rule at the end of their respective Example
+> > sections.
+>
+> Thank you for doing this!
+>
+> >
+> > While at it, fix a Sphinx syntax error in the "contents" directive in
+> > design.rst (missing space after :depth:) that prevents the table of
+> > contents from being rendered on docs.kernel.org.
+>
+> And thank you for fixing this!  But, the broken "contents" directive is a=
+dded
+> by a commit on damon/next tree [1] that not yet planned to be upstreamed.=
+  That
+> is, seems this patch is based on damon/next tree.  As a result, this patc=
+h
+> cannot be cleanly applied on mm-new.  We prefer making patches based on m=
+m-new
+> unless there is a reason.
+>
+> >
+> > Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> > Link: https://lore.kernel.org/damon/20260314002119.79742-1-sj@kernel.or=
+g/T/#t
+>
+> I think it would be nice to give a context about the link.
+>
+> Other than that,
+>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+>
+> Assuming you agree to my above suggestions, I added this patch to the top=
+ area
+> of damon/next after dropping the "contents" directive fix and adding a si=
+mple
+> sentence describing the context of the link.  The change made to this pat=
+ch for
+> that is as below.  If you don't mind, I will post it as v2 of this patch =
+by
+> tomorrow morning in Pacific Time.  Please let me know if you have any com=
+ments
+> about the plan.
+>
+> '''
+> diff --git a/Docs-mm-damon-document-exclusivity-of-special-purpos.patch b=
+/Docs-mm-damon-document-exclusivity-of-special-purpos.patch
+> index 9e74de3b..db466405 100644
+> --- a/Docs-mm-damon-document-exclusivity-of-special-purpos.patch
+> +++ b/Docs-mm-damon-document-exclusivity-of-special-purpos.patch
+> @@ -11,26 +11,31 @@ Update lru_sort.rst, reclaim.rst and stat.rst by addi=
+ng cross-references
+>  to this exclusivity rule at the end of their respective Example
+>  sections.
+>
+> -While at it, fix a Sphinx syntax error in the "contents" directive in
+> -design.rst (missing space after :depth:) that prevents the table of
+> -contents from being rendered on docs.kernel.org.
+> +This change is motivated from another discussion [1].
+> +
+> +[1] https://lore.kernel.org/damon/20260314002119.79742-1-sj@kernel.org/T=
+/#t
+> +
+> +TODO: move below changelog to the comment section when posting
+> +Change from v1
+> +(https://lore.kernel.org/20260314092145.7496-1-aethernet65535@gmail.com)
+> +- Drop contents directive fix
+> +- Reword description
+>
+> -Link: https://patch.msgid.link/20260314092145.7496-1-aethernet65535@gmai=
+l.com
+>  Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> -Link: https://lore.kernel.org/damon/20260314002119.79742-1-sj@kernel.org=
+/T/#t
+> +Reviewed-by: SeongJae Park <sj@kernel.org>
+>  Signed-off-by: SeongJae Park <sj@kernel.org>
+>  ---
+>   Documentation/admin-guide/mm/damon/lru_sort.rst | 5 +++++
+>   Documentation/admin-guide/mm/damon/reclaim.rst  | 5 +++++
+>   Documentation/admin-guide/mm/damon/stat.rst     | 5 +++++
+> - Documentation/mm/damon/design.rst               | 6 +++++-
+> - 4 files changed, 20 insertions(+), 1 deletion(-)
+> + Documentation/mm/damon/design.rst               | 4 ++++
+> + 4 files changed, 19 insertions(+)
+>
+>  diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documenta=
+tion/admin-guide/mm/damon/lru_sort.rst
+> -index 06a46812a728c..0198dfe87f4d5 100644
+> +index 73980bacc3a02..56690646cf398 100644
+>  --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
+>  +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> -@@ -353,3 +353,8 @@ the LRU-list based page granularity reclamation. ::
+> +@@ -351,3 +351,8 @@ the LRU-list based page granularity reclamation. ::
+>       # echo 400 > wmarks_mid
+>       # echo 200 > wmarks_low
+>       # echo Y > enabled
+> @@ -40,10 +45,10 @@ index 06a46812a728c..0198dfe87f4d5 100644
+>  +purpose modules exclusivity <damon_design_special_purpose_modules_exclu=
+sivity>`
+>  +for more details.
+>  diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentat=
+ion/admin-guide/mm/damon/reclaim.rst
+> -index c5b4d8a1b0014..a37ce6fdff050 100644
+> +index 552a7786b0829..6f580f637134a 100644
+>  --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+>  +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+> -@@ -331,6 +331,11 @@ granularity reclamation. ::
+> +@@ -318,6 +318,11 @@ granularity reclamation. ::
+>       # echo 200 > wmarks_low
+>       # echo Y > enabled
+>
+> @@ -56,7 +61,7 @@ index c5b4d8a1b0014..a37ce6fdff050 100644
+>   .. [2] https://lwn.net/Articles/787611/
+>   .. [3] Documentation/mm/free_page_reporting.rst
+>  diff --git a/Documentation/admin-guide/mm/damon/stat.rst b/Documentation=
+/admin-guide/mm/damon/stat.rst
+> -index 468c122c42594..46c5dd96aa2ed 100644
+> +index e5a5a2c4f803a..c4b14daeb2dd6 100644
+>  --- a/Documentation/admin-guide/mm/damon/stat.rst
+>  +++ b/Documentation/admin-guide/mm/damon/stat.rst
+>  @@ -45,6 +45,11 @@ You can enable DAMON_STAT by setting the value of thi=
+s parameter as ``Y``.
+> @@ -72,19 +77,10 @@ index 468c122c42594..46c5dd96aa2ed 100644
+>
+>   aggr_interval_us
+>  diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/=
+design.rst
+> -index 0a3b77ec458fe..3694c541e65aa 100644
+> +index 29fff20b3c2a9..dc37402c0fee9 100644
+>  --- a/Documentation/mm/damon/design.rst
+>  +++ b/Documentation/mm/damon/design.rst
+> -@@ -5,7 +5,7 @@ Design
+> - =3D=3D=3D=3D=3D=3D
+> -
+> - .. contents:: :local:
+> --   :depth:2
+> -+   :depth: 2
+> -
+> - .. _damon_design_execution_model_and_data_structures:
+> -
+> -@@ -960,6 +960,10 @@ more detail, please read the usage documents for th=
+ose
+> +@@ -853,6 +853,10 @@ more detail, please read the usage documents for th=
+ose
+>   (:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim=
+` and
+>   :doc:`/admin-guide/mm/damon/lru_sort`).
+> '''
+>
+> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile=
+.html#scm-trees
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
