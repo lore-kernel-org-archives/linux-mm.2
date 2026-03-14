@@ -4,113 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B1D410706CD
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 11:30:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E96D10706CF
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 11:48:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C0686B0088; Sat, 14 Mar 2026 07:30:29 -0400 (EDT)
+	id 74EC56B0088; Sat, 14 Mar 2026 07:48:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26E366B0089; Sat, 14 Mar 2026 07:30:29 -0400 (EDT)
+	id 6D1686B0089; Sat, 14 Mar 2026 07:48:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17A106B008A; Sat, 14 Mar 2026 07:30:29 -0400 (EDT)
+	id 5D4426B008A; Sat, 14 Mar 2026 07:48:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05F166B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 07:30:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9FBEB8C831
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:30:28 +0000 (UTC)
-X-FDA: 84544450536.14.6E91A82
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C94FEC000C
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:30:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IwHOfaaT;
-	spf=pass (imf28.hostedemail.com: domain of 30Ua1aQkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=30Ua1aQkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CB3E6B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 07:48:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DCA5D1CEE6
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:48:35 +0000 (UTC)
+X-FDA: 84544496190.08.DF7669E
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E0CA540002
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:48:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773487826;
+	s=arc-20220608; t=1773488914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i5/Mv7r0O1xhJ0MOUYqm/aCKF2kenGBq/6wEKwTk7fY=;
-	b=H3cvZoP+NmesGXsV71WGb1QRSGrbtrZvRk83YOdsNtUNJYJfhAceKgH5J3DlIprWPuo8oc
-	1utNLeUGqU6KXow66ZiDwE1GKsKL5NDQIxeE9kOeGJcP0x6IPdJEQUv5hR6Ed0//6iR6NB
-	XJBh/RMYmhCBs2qr0JzPGKXRzi0EcO0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773487826; a=rsa-sha256;
-	cv=none;
-	b=4J8I41bnF7/m83GbItUF1JAzXP+CAv2BAP8LyQsiBeSNJSWSGhD5kl9deOScok/agMIs+i
-	hUz/WPcWp25K1b/dKLhLdtBnXrDwQKOaDAjmnaRM1WoidxR4RyrOrB59fY8VfHrTlL75E3
-	+u/6L9igL3n9KGkFyxcKrFT0ge1hvwE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oTCbrCXZqZKDQ/zm1HNI7H3J33u+gY5m7CAg7N5j7xc=;
+	b=2LvW45YN+lRQ8vQevhuQz9hfcUyDLz8fok9dwlyEPsDXlPMHN4uRyYoE3a/Z22DTq730nT
+	D+Sow+mszwrFg77454GDmFlRGS9i8+gRwRNKmDe8dHgcLv3LWLcGzCi3uZyRUtmYCpqJ+m
+	/zeVzrO6AkKLDlGFD6V7OWlBuAk+S/g=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IwHOfaaT;
-	spf=pass (imf28.hostedemail.com: domain of 30Ua1aQkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=30Ua1aQkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-485355493aeso21609605e9.1
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 04:30:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773487825; x=1774092625; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i5/Mv7r0O1xhJ0MOUYqm/aCKF2kenGBq/6wEKwTk7fY=;
-        b=IwHOfaaT02uPfeTZ+y9Jg9xVjoxEXIUQgsKhNAWJo9wNDk4ofCv5xYyXOq/Djy/n5t
-         OqpV+SfTgOken3XBJtYVLx9+TjZzZIQgy4Vo/3go3fULbSSi1vaUdfCLKthzG8r3/UwS
-         ySbX9NbFhmaIbFRfBxumNmR5QzzoF8DktsYCsskjI+DZgk3xzJr5p4L0WucsjTylRsEU
-         3ogil1f1lvaCpLCh3tovCKH8bsM20j5oeKOBv4o08rmjKfEVQpI6oftYNu/qAvIOF6nV
-         qw8p1w9E/3vHtsKKrlv+h/Yk1VvRA7G9OK1EygNUZCR5fruaYxMHDn26r2vmtNNSuSbK
-         X4rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773487825; x=1774092625;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i5/Mv7r0O1xhJ0MOUYqm/aCKF2kenGBq/6wEKwTk7fY=;
-        b=Zh58mKef9lCfWesLgE8ANqpKuZ1utQfsSdZx5OwAWp7HJAOdMjlr6YD2kbrfn9ffYh
-         dY0qAzJovSchKV5VuVlZKW8q/Auis2SEDEWAj+jTyTmuGDRTFrtoyOSdKaR74gmlnRYj
-         z0tOueerAksWH+KxdkejrUoXUEI5+gPSy034KT8L04pbxjZvovx5sCEKeNnEuT+77lAw
-         55cXpB9n3pTNXFwnH8ZATTOuVKg9K8alSzwx8lho/dZrusMS76vLBfvtPBfPxjLXANAB
-         eDQgkAuqpkGE47ia3A2mCpKg1mQy2PDY5UAKBfD4fBI50HA6mTBv00wSx87+rZ+XKWh/
-         uAyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVXCOty1JZcopsoYQoASnS4sA/4/dfjDg/cYbnaoRPWZUd/aS0Cz9LwQgGDRGMxDomIbfr01OVag==@kvack.org
-X-Gm-Message-State: AOJu0YwshJuFGaYkigUb/eyHs5ybHAvKQeAo2UeBNhOlUkNDVrvgi5be
-	NM6Hrvyf4abyqO26DVsyR0CrrpCk8CBOECGikS61yt9MOQzCWJsBLyB4pmdTeZ5+1OBLSN3jatf
-	B2zEl27IgBdPOtiFgjQ==
-X-Received: from wmpj3.prod.google.com ([2002:a05:600c:4883:b0:483:509d:729b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b25:b0:485:3a03:ceca with SMTP id 5b1f17b1804b1-485567029b6mr109864745e9.23.1773487825162;
- Sat, 14 Mar 2026 04:30:25 -0700 (PDT)
-Date: Sat, 14 Mar 2026 11:30:24 +0000
-In-Reply-To: <CAH5fLgixE9MGXxNEnU5b0EXdgLQoTs5CMv_0OdnfCX3v=coUpw@mail.gmail.com>
-Mime-Version: 1.0
-References: <202603121235.tpnRxFKO-lkp@intel.com> <20260313213638.GA147391@ax162>
- <CANiq72mzEzjNg7O_2dWT_6QOJvJ3TwV+HyxNd_F4j6v9C+pc7A@mail.gmail.com>
- <2026031422-catsup-rectal-f886@gregkh> <CAH5fLgixE9MGXxNEnU5b0EXdgLQoTs5CMv_0OdnfCX3v=coUpw@mail.gmail.com>
-Message-ID: <abVG0JypVhDxx1Tt@google.com>
-Subject: Re: [linux-next:master 5585/5731] error[E0277]: `*const
- kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, kernel test robot <lkp@intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev, 
-	oe-kbuild-all@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, Mark Brown <broonie@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: a38z6f444ebz7455praapkycyjxeazr5
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773488914; a=rsa-sha256;
+	cv=none;
+	b=HM+mf3kYcLpckhduCqLl2DMoKjTNJRyFPzpgofrNtQvyF9GuRplXSa15NCHLyqFP5ACFya
+	lWN9+jq1XrpPP+szZ3FifV4GrILSj0QExHaM7Pw2vJ+KP2hX+t4G7032JHamz54rHGpThv
+	p+TOU1LsrfLDRMjEK0/rFhM2A6GIQ98=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 14 Mar 2026 20:48:28 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sat, 14 Mar 2026 20:48:28 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: rafael@kernel.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, pavel@kernel.org, shikemeng@huaweicloud.com,
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org,
+	usama.arif@linux.dev, linux-pm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RESEND RFC PATCH v3 1/2] mm/swap, PM: hibernate: fix swapoff
+ race in uswsusp by getting swap reference
+Message-ID: <abVLDJq/mn5tFkfe@yjaykim-PowerEdge-T330>
+References: <20260312112511.3596781-1-youngjun.park@lge.com>
+ <20260312112511.3596781-2-youngjun.park@lge.com>
+ <abQMiv6Y4WEKTLng@KASONG-MC4>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abQMiv6Y4WEKTLng@KASONG-MC4>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E0CA540002
+X-Stat-Signature: 86a6rsstbsicfksxa4os16erzd4134eh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C94FEC000C
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773487826-144760
-X-HE-Meta: U2FsdGVkX1+XY7uwqGD+VGkIr6yirXqqICQzos6BsKwClT2OOlqPZM/sQanBEQoBkZkUAwyW4niw3a3M2BV5Sdy2f4NzBAzn97rjwioTMU2ckBfGvmNmEagOfGt/DtE+CZZz82SbCe7FetrHyaMsPd3gqJCW3TN9rljSl3oTQqBHWfepDTesQEKNUZEuvC6KFVRMQ5jtE6SIaZC6nt+jio5N/67g2U9o0sAGQuJf/SeGHhhlhqw1a+4PvPYvQ79mIG0f0OVpRBQYJ9aXXLssvswrokQrwz0UlQB0XlOjqnnw7VNdUsDP2Fwm23vNp25O4V5pcwvqWwz0rLhAbXSEUaVGMPZFJYP802gRhn4LUGbe36cIA8D0LP1BCc64m28dthhG9YyEQUteRTwrdzzfzsGLn2L8JIFcID5Kq035XcUiFoVZUTSeIvFlilHCcL9VM7CjwD2mF7HBDbg98S7J2UFCt8krw3gWR0GFYr1kgoXblGfRoSxraCp1oZ7aEuT+yFfDkGRzFdHK7ULz64fRwM7afl24y2DMCdIzw8By8g4MwnsEzG37AZuw/Wj6iIYLSUVJjU5mbFSae7rrMWiem1ZCD9mQzqfRZhkIpIr+70WCkthRrSLg3O5s/0nA7tEZJLRfWcIteNzW3scap48ft3NZLqyxsamlEDR1AWtmy2GzYrA2hrpk4Q1ZGIMzOnrGJKAhoH2mBK9dc+j6HTXheiQbHx7jA4NZvABJqBkTh9RyWxC0wDSnRy9XgD6StFkNO9GnSTk6t/7LOyVQ8mYtYKG4c+gSrMVN+wx3vKm0JablrUL456g1Et+RvQrN7RNksy/qusu05NmiICzsCOnKNfCCQvvEW88OEAF41K7pc7rRBCJd4rySQCakCBdyOOmRmClBAWKCAoW+gmCl3Hed/9OfxnWfR+tloo+nFs9uikqDQevr/vgXCFzGQRByGZNHVZpHoaWFmcQafR8a9AM
- kkNp1eHH
- ajFzgK3d/jfSA+Z8X0CQ/kNr7QtkM4/ZBl6AcbMKa2aaF7xZfa5mzOaR3XyHqX+JRNy1+YHa9HzwHaSKykdhxDVkCy/HHcyFzXGsxFodMWENEAU+qU+QDesjUKHVxpg59CS63aXHU4GMMSn8HM/q3jf6IXAQBfNzIfpW2d/IJ1Q73WkLADrrtLKyGL9gHaTPp+Wgb28TSouzBR5/qD/G2Ya0p8vvuz2RdncYnLr2SUJ1uohcsiQSqD4PqXx+g3r/tbITs0YXQeqVATyj9j5YCXj6xrn4Jj4ORgbObZChvimNLl0Uz3oueWAgV2hdbC4HTOxG/N4NlmWnZmWym5jCnSnX0B83Dm5rrW/vapsTelLHl7zgETZoqouazL5iWMTtSCnLiOyDDwzY1Emh7pj7QSVCzDz1CI5MLP251rl29P147T45T9/ad2M+NbgeKpOX6G8XlQ6iUuax9TXVnQ1tcbiWhM4epeHHPslotl/MyQpxzsCJRLwyzGKYwhBqHFddeBhcNcOs9SoDfyZiNvkitsxgW93LPNihBTQfLXjlhDEgt7+U9SvsNIogDKU8PQGrIgkRf0kdXy74Cqb1iS1epa5nNcGrw5wBgk/Q+TuCK1RxJtgS8ekmyVyAoWgSJbiyUFCXjxPQrwq87C3lw/dXh+qXSL3662OosMPT4vm482ItVq5cjaJDJtxvEnHtqP7bwOCBZ/tH7B36ow9AvhfqeCE1AhHJ74zzUIyS89ya+j4WFwzM7UheGEhJRdQ5JNllhVGQajV1ESVGEEfzaMA3FU176VNqv6N1qJYMBe7bc7xguNNyDNU1Kb1F1sQ==
+X-HE-Tag: 1773488912-644711
+X-HE-Meta: U2FsdGVkX19ULAIStzMcpA0efbuJ2+ncHdWxSabWUZglOE7kQJefYPoV3t1aIvlOMTmmKFmoGsRO4i1rfBbEzXeTKcTXvox0M09wUTW+6SbpA24YpExT++yqSVyw/507u/qq4P7En7y9PmRENtEFmdaKlPdxSOkbrNc9XzqEQPEL2+KhObLYA+uWaSEeKJCcriZ9hgmWNo+xNd+RK/0WyOEq5CgqXzkeJm4QAnrRvlaFwuNiMzMj6VuMfN8+bRs4bjPxQSmmqPtmtCTjEG/Z65kVTNZD5K8HK8RYgxNRP8AgUwnn5KNSSsmaI+O8ZRmJeGviLVqec4mfTP5rgheKOQThF0xlAjst6YtHmWvx8pGykOUDm0IJZPzQGmAmNVsffrYKyHi+Xd7cStmTqp+p3wBFvDoD1j4is/cqzcn/lhCq3t3+yDwmnlxiZe+p3X5S/LKXAeeeCbnbMDR9+SdYH0jU9wpJjF165aGGzNvcLgk5rJMkiAxOZgrMexi5JHTNp3iI/81N09NMMVLzVvyotXSH6XotQohOp8CUB3SAJ1VPeHaLf2DIK0aCEcXUOPP3kTr8NIWdtCFI2i+6jsjFA6tYSG7J8s+EsvCZvLlcVkgBlkM/WB4uLRoIWU7ESxnLSz6KclCPolSuEc6frGn4+RuSF7VcLRWkGbZVMduHM3kdF0mte5emyEA2JBn83WoM9O2FhOiXAEvOFRUHwABbnbuloabfmVgSbCwQba+G+++kKgGw9hZ+QyxU399hqUasBIPh049msSYjJ+BFVVgTTm3BvYZewQZJ6NWFhbvFsquQxYKgopPpoUItB6yHdj86EA2ASUaxdljyzjeG6XdAhQs8TtY5iaxJGIZZ7OneLkaOce/It4zd7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,42 +82,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 14, 2026 at 12:15:30PM +0100, Alice Ryhl wrote:
-> On Sat, Mar 14, 2026 at 12:13=E2=80=AFPM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Fri, Mar 13, 2026 at 11:39:14PM +0100, Miguel Ojeda wrote:
-> > > On Fri, Mar 13, 2026 at 10:36=E2=80=AFPM Nathan Chancellor <nathan@ke=
-rnel.org> wrote:
-> > > >
-> > > > It looks like this is a conflict between Alice's "rust_binder: chec=
-k ownership
-> > > > before using vma" [1] (currently in char-misc-linus [2]) and Mike's
-> > > > "userfaultfd: introduce vm_uffd_ops" [3] (currently in mm-unstable =
-[4]),
-> > > > hence why it was bisected to the -next merge commit.
-> > >
-> > > Thanks Nathan, yeah, adding a raw pointer (not function pointer) to
-> > > the struct makes the type `!Sync` in Rust.
-> > >
-> > > I assume this is best handled with a patch on top of char-misc-linus.
-> > > Perhaps creating a wrapper to assert it is `Sync`, since the
-> > > `BINDER_VM_OPS` contents are unused (so far).
-> > >
-> > > Cc'ing more folks related to the commit.
-> >
-> > char-misc-linus should get merged into Linus's tree "soon" and then we
-> > can fix up the mm-unstable change for this.
->=20
-> I'm working on the fix as we speak. It would be ideal if it went into
-> char-misc-linus, because the commit that is wrong is mine, not the one
-> in mm.
+> Hi, YoungJun
+>
+> Nice work! Thanks for improving the swap part of hibernation.
 
-To clarify, to avoid breaking bisection, the commit needs to land
-somewhere that is on top of commit 8ef2c15aeae0 ("rust_binder: check
-ownership before using vma"), and before the mm commit. But I guess
-there are several options for how to do that other than landing it
-through char-misc-linus right now.
+Hello Kairui :D
 
-Alice
+> Some comments below:
+>
+> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > index 7a09df6977a5..ecf19a581fc7 100644
+> > --- a/include/linux/swap.h
+> > +++ b/include/linux/swap.h
+> > @@ -433,8 +433,9 @@ static inline long get_nr_swap_pages(void)
+> >  }
+> >
+> >  extern void si_swapinfo(struct sysinfo *);
+> > -int swap_type_of(dev_t device, sector_t offset);
+> > +int swap_type_of(dev_t device, sector_t offset, bool ref);
+> >  int find_first_swap(dev_t *device);
+> > +void put_swap_device_by_type(int type);
+> >  extern unsigned int count_swap_pages(int, int);
+> >  extern sector_t swapdev_block(int, pgoff_t);
+> >  extern int __swap_count(swp_entry_t entry);
+>
+> I think the `ref` parameter here is really confusing. Maybe at
+> lease add some comment that some caller will block swapoff so
+> no ref needed.
+>
+> Or could we use a new helper to grab the device? Or better, is
+> it possible to grab the swap device then keep allocating it,
+> instead of check the device every time from hibernation side?
+>
+> The combination of swap_type_of & put_swap_device_by_type call
+> pair really doesn't look good.
+
+Initially, I considered making the function grab the reference
+by default and renaming it accordingly to better reflect its
+role in acquiring a swap device for hibernation.
+
+However, based on Chris Li's earlier review, this approach
+would require adding a significant amount of error-handling
+code to release the reference in the regular (non-uswsusp)
+hibernation path. After further consideration, I concluded
+that the regular hibernation path genuinely does not need the
+reference, since user-space processes are already frozen.
+
+So I will either introduce a separate helper function for
+grabbing the reference or add comments to clarify the
+distinction. I will also improve the naming of the put
+function to make the pairing more intuitive.
+
+> > diff --git a/kernel/power/user.c b/kernel/power/user.c
+> > index 4401cfe26e5c..7ade4d0aa846 100644
+> > --- a/kernel/power/user.c
+> > +++ b/kernel/power/user.c
+> > @@ -235,11 +238,13 @@ static int snapshot_set_swap_area(
+> >             offset = swap_area.offset;
+> >     }
+> >
+> > +   put_swap_device_by_type(data->swap);
+> > +
+> >     /*
+> >      * User space encodes device types as two-byte values,
+> >      * so we need to recode them
+> >      */
+> > -   data->swap = swap_type_of(swdev, offset);
+> > +   data->swap = swap_type_of(swdev, offset, true);
+>
+> For example this put_swap_device_by_type followed by
+> swap_type_of looks very strange. I guess here you only want to
+> get the swap type without increasing the ref.
+
+The put here is needed because the SNAPSHOT_SET_SWAP_AREA ioctl
+can be called more than once. If the swap type changes between
+calls, we need to release the reference from the previous one.
+That said, if the type remains the same, there is no need to
+call swap_type_of again. I think this part needs some
+refinement.
+
+> > +           if (ref && get_swap_device_info(sis)) {
+> > +                   spin_unlock(&swap_lock);
+> > +                   return type;
+>
+> This part seems wrong, if ref == false, it never returns a
+> usable type value.
+
+Oops, you are right. It should be something like:
+
+	if (ref && !get_swap_device_info(sis))
+		continue;
+
+	spin_unlock(&swap_lock);
+	return type;
+
+> > +   if (type < 0 || type >= MAX_SWAPFILES)
+> > +           return;
+>
+> Maybe we better have a WARN if type is invalid? Caller should
+> never do that IMO.
+
+Agreed, will add that.
+
+> > +   sis = swap_info[type];
+>
+> We have __swap_type_to_info and swap_type_to_info since reading
+> swap_info have some RCU context implications (see comment in
+> __swap_type_to_info) and these helpers have better debug checks
+> too.
+>
+> Maybe you can just use swap_type_to_info and add a check for
+> type < 0 in swap_type_to_info, and WARN on NULL in
+> put_swap_device_by_type. How do you think?
+
+Thank you for the review. I will switch to swap_type_to_info
+and add the WARN as you suggested in the next revision.
+
+Best regards,
+Youngjun Park
 
