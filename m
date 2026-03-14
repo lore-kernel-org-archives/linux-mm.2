@@ -4,143 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C919C107BCEF
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 02:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCE06107BCF2
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 02:36:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A056B6B0088; Fri, 13 Mar 2026 22:10:22 -0400 (EDT)
+	id BE8286B0088; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B27B6B0089; Fri, 13 Mar 2026 22:10:22 -0400 (EDT)
+	id B95106B0089; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 894666B008A; Fri, 13 Mar 2026 22:10:22 -0400 (EDT)
+	id A97D36B008A; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A5636B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 22:10:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B30B1C283
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:10:22 +0000 (UTC)
-X-FDA: 84543039084.05.E3B6398
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0CB1D10000E
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:10:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="D/o8os7Y";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 99C156B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 506778B672
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:36:09 +0000 (UTC)
+X-FDA: 84543104058.20.635F81A
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6A1AC40010
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:36:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YUeaDf8E;
+	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf05.hostedemail.com: domain of r@hev.cc designates 209.85.128.169 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773454220;
+	s=arc-20220608; t=1773455767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ejtXFezvM4/MIrV0ExVdbB3cmL15fMSqz8fjmYgx6o=;
-	b=F6PufaRe5ZY7kL75ZikFP6JEv+AQgOtgx3IZIizc+HQwrcnHkcpLFa8ij7UORm6lri4b/x
-	zmKsatahnEBzBL94rL266coi0D7/KghDCZmM/kStqMbJTkUPckTRmVz/I6tZXPY7V74Gy3
-	IqNmiOP9aqQ69bcuSKnLvaDhItmao+s=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773454220; a=rsa-sha256;
+	bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
+	b=N3iVcSebQnHA0oiOcaNnxym/0SPIeyis9uE4pjFjbEylC2Quh0ddrWabbFqkw4xA9IvhGD
+	gZi+oam51gdJ7csH4X0veMPQHrzLA+lh2aiZjqwC9CXIsomAzr7UI3eVxTO7lyu74On2PD
+	THAVhvnPKfC2+xtumnLe/cCpejGGXEg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773455767; a=rsa-sha256;
 	cv=pass;
-	b=F84DfZ6RKJsX3I83AoR5wH5wSJpUnzUqZqDR5UjMzKIFeI76rFfn3XIm/oUGExluWaFjyg
-	wQmTs5GTO4Wi3/RdQaEPQOz2BVcEnb4pw8dH8rzRRfbx56qadamPexWoPfEBJZqTIdxLUl
-	iu6/FW/rAvapumsU2p6WSmBULKMEmEY=
+	b=U2QwRIdTdt76Z5F8bN4WymQPbhcpHtefsnqPOrC77LOtHQS5z5j72U/E2KSvcbdI1D69OZ
+	b+QpiMTO1XeFlLKttxoeb/EPtxcqKeMvLLyQhAnGK/0p5o4VaWOOZAboBqtkIL6jxM//PC
+	74dUnb+5BPHd+ZfCiqoJqGMYYCkJgPU=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="D/o8os7Y";
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YUeaDf8E;
+	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf05.hostedemail.com: domain of r@hev.cc designates 209.85.128.169 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-799001d73bdso21852967b3.0
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:10:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773454219; cv=none;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64ca9ec3ee7so3488389d50.3
+        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:36:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773455766; cv=none;
         d=google.com; s=arc-20240605;
-        b=Hb2AFh/IfyVX5hOhb0Wx4svTA+gNEc3TUhCUje13R6IPfURKuDXD9UavojqhN4ClST
-         tR+JAk+0ZnB5riXH3ijtKYJyKeqZrsVeGbqN4UWAnMKN1Uut5LryIDqzWG5ZVAOWWXb5
-         7gxfJxPUfdgbINkd59DvetMvFjh5CC2qONr4klnOnFbQ0mrdDi1g2uGLYgWkXqWWnpdN
-         tF4tKtkNFImbvAEjrOgBZ3LVjdEfLEHP/yFCjYptHuL+FvSh8EDaCnyINBpKgqmVFf6u
-         5GXP2vX28T3KMoXZz0Ny39sQGBOzdXEXRuhkli2Dk5iqi2ne2t5lQQDb1tpNifkBlDgs
-         PCjA==
+        b=aJDUICAdZ+xYdNmrvsIYiqhtM6iLhRsm+CQe1W5zyC5THcLvN4WAsOmKai3U2P8ukA
+         tvjLFP5lHtXLHpQ9HKp5HZnMy+kv4nRXwNgraVgkeU29VDmz5TV3KOdCitCwbw9M5P2F
+         G2nb/CRWNLuznrbST2BEmQKWabEkoMti9ehMNSlHgnms1BlPoA1pxZo6/Mpmc/FuXNk/
+         Fr2ajuPpKTnDSnZHimIQUcV4LK1DkK48ekDhVuBlwI2dp7hwKS8YAYjfmZXQi8hyvd1g
+         ydFX/hsDR6Ehv6SQDQAbRO6mTu99rWvOEe8bvR/XsXGhQXC4w2CJqAXui2Ub8LDuLILL
+         c5vA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7ejtXFezvM4/MIrV0ExVdbB3cmL15fMSqz8fjmYgx6o=;
-        fh=sslgnfzPzyx4H9vr/QSr3mvJMVQ4Px0FzfyPYuTQXuQ=;
-        b=XriFysaPaIHrwhB2NV4WED6RILp7dBF8mRuhZkU2U/QnJltA/3tie3VR1pAGrj+spC
-         E9GUys8F1FeEhwQm74hgcY8o3nuiUvGHej28TYaQmVDY/FroGaKFovldU7k4zBB2Mdij
-         dhEy9QJL4msdLbdV1EDko/ai25jRx/fPRXGcHUyDcBqob9dj7qzpKwkW0UJks9Atnyw2
-         2gh/4W+YzVEZ9gsgvXpj4qjnvzLZdNeBBCe31lLHwYVP5O9BgKZeJIwwCseaSMIGIwmN
-         pchk6gaBuf5lVmCfvkr24elM1/hldogB92zjXrZj4ih8/WNMxYPO40ZxcN1fE8+XGkvE
-         6YPA==;
+        bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
+        fh=3n7fk7Nj04Yy2riL/dZO/LsBXcIKxllmt+7jbaiYBgc=;
+        b=CvS9VjH1VUqf1yppAIWeZffnyXA61IeDKpgcpQjXm/yZ3qrdkJHYu+3UO2mutig7YR
+         9m0Dg9NEUTNtHQf1BqLqfRzgEY3dfHg3JTYziYAjOlZRF1rD72cBnHvwz8OYwnE6krbu
+         TzPuyuTbYbQ4Tc+T3WijU6I1LCiaOEncAsTHFqXcyuaLPOANo65IQReHmEhgvFCPXmvG
+         c8yNez3TlGCXXC4PMJoNHtMJJEIC8TFriF/QiCT2k5sYiOMXfLPT+/zV89gCNzelnn0p
+         ptYcWjWqDmLlrkX2If/YyDthfvWMXsUrszerUEJpXGGJcQ+/Hz+O1WO7t169o3p7Xo5R
+         VHEA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773454219; x=1774059019; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773455766; x=1774060566; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7ejtXFezvM4/MIrV0ExVdbB3cmL15fMSqz8fjmYgx6o=;
-        b=D/o8os7YymJeMq/KrHASj/0hMZpdZlK89O2XQ0fdjRqySIhWX++Vzk/6y+RGGujHFF
-         TQTgb0RKi/fggYJL8myAqbJPAkqfIPIv66kDWVYd3XLLTAOSuzkV+NVhYJvEMr/CSl33
-         krCUivnAv7noqNvEqZWCDxEL74/c1o9sBF7wgfNlXyWiuHcrj/nr6GxTz9aEH8rR+plG
-         79MVLLxvOGkHWBQu4VazoVZqQejCL1222/wOEb2poJ9N3mEfTwGkQM9/kjul+XTskHPk
-         DYfUNMG2plS3hxVcYrF0pZ6VjjNynBt6k8ttl1ELxNHy3NCS+D2/I6OOqC/XyPA6+qKd
-         ondA==
+        bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
+        b=YUeaDf8EEnnZD17l1XQb3Vs4DjyKeSmMtDhlZV8G7wKjeOlwCEcL1FRw0TIF+xyDNp
+         0Cver/KnBrenBdojPddgnIkg1hwQHsUdDH7hdoxDxEp0zg/NZ/yZnY09XjJyvKxwj7cj
+         NSqlncK7VLaG28Ttl+HnC1dr5x5cipZf1I3HnMWlKKrS1CbZZSkL6QRYJ/wbjvnbDfIA
+         IaHaC6xRQMw9Or9YEztRD6K268H1zuk9GG5vAhzaFo2fNu+foBf2ZFj7/HWkkAbff8WP
+         8so9FFkXixq6WrmjdUbSyTlYobOKM+EL2rjDlgF3yxKTrQU+4Vt10uhIlO8r7oSdxj/7
+         Mu1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773454219; x=1774059019;
+        d=1e100.net; s=20251104; t=1773455766; x=1774060566;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7ejtXFezvM4/MIrV0ExVdbB3cmL15fMSqz8fjmYgx6o=;
-        b=hTEh13wvBRNF0yI5q/ksB6iUuYpBTn2AVp9aHDySnwfhqEyBgtU/ru+ofPRdwPdKeq
-         b1KukE+eSKeNXgxXxwj/moT7gfNOMCGRQSrCeoU1ocxID8dyEIF74HYwEGi/sOSb6hQv
-         ls/KLxJ9WQXzUOJd4A0lxtcdLBQkcenxU6hP+MY8siIsxtNxOUHWROe87eMuuQccc/xq
-         SKXf2LTWbMN9F86DgoaXY4QyWZ/6N06gMbJmtZpi8Gl5m3wzWfU/tQwOY1iY03Lf6gIr
-         ZErOzdTl4Qsk8wCM70G+g09NQ2nNeaVXF6N3E2m/cpbNIHhnM/KJy4rZiQwEzUhSDGmp
-         wPlA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNfjXILZd/iTmrLghICoePFyIQxYfRcncDjADR9vnQQu/ZD3oQQ200r4ifzDS+9ym/oPcop5J2dg==@kvack.org
-X-Gm-Message-State: AOJu0YyRi1jTmKbKJNtlv4maRbz37Kwpe0MMktD7MeiPEb1Q5cSOjrVY
-	aSQLJPF9FiHQfvwCM9dpxpvk05Zv0sEdpbQN/BB+VzxEBd+df0yb7jgVgrqn0TkYzJE64NpSPfD
-	5MoP1P4G7xpmlj4MzNVczKhvUOPGNcE8N7ibIqZf04g==
-X-Gm-Gg: ATEYQzziXO1AxUi9Es3Gei8WZB1opiJdkeSwtxdvNyChT8RCXMIi+XNAW/InqmKH3Rg
-	6BxIlZKwTDasW5UcDWYDGSAhGT0WleOG2aQroKpk0EHD3rdyp/5kFw6kgCrX3g9zF/QA5FwU9ym
-	zfGX6o1ZtqbP53OPk43L4UvbjSXCEMx3CC0YIFGJplPuk0Q+clZdNeZwlLBM8Ci1cIfQBPYfuzP
-	3dT9xBl12n3et3ZoADyks8/gBrxNioV/dDfnCk6JQiNe47N3mRn99LIdyhvX7LosG/j12RTGR3N
-	mB1kdDISBJ6Ar21dc5XmjsURczRBYSIzfS/9PEomX+NUrymkRZPU
-X-Received: by 2002:a05:690c:6e08:b0:798:7498:4ae4 with SMTP id
- 00721157ae682-79a1c1c3f38mr54139577b3.53.1773454218867; Fri, 13 Mar 2026
- 19:10:18 -0700 (PDT)
+        bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
+        b=kBynAAUPE6sTqf9xzVEkAcNM4b8s9M0Cro4TD1eYjtVaCOcBpxi+XfDBTfLXBkQwzO
+         KvtlxIqlY7q/H009bnHonZC6wvMoRDKfzd9FpdIS2WiDPIeqfto13RvlSvQuScj5izVN
+         PL8CylJqsa8cRMBbvN4+Y72EnKaVzIwaMA9JlDCb/Rz81rGGnHqC1h+c4FEtWVGDP+kN
+         HGLft11nOQBRRnA9vNkrNozzRUpLoRGvkt1NyhKkdDHXAf8+hg0oDsMmyFjU3CBYH/CO
+         BksPoNY6z30F4BNi2bo2Qajx8NWLF8D2qLumAy/89PxPngjDewwDWNQfP7tJgymde2is
+         QZ4w==
+X-Gm-Message-State: AOJu0YxDLHniXtmIrMnAb8B0Ed6fB5RQpgfs8OggYsb3oYlVuot0ofwh
+	hnzQ3PHxRvk9mDAd0TItusdweBR5CkLePnlb3GcPP5ncYdTqPIrQ4ZnIavHFbt6o09pz+5V/ChV
+	wuGkSWuXSTKec0IjtdEAsYeq0cGizH9k=
+X-Gm-Gg: ATEYQzxzJJBECfPF2D2myAVq2Wdah+i33liwXZ0s8zc+LbybgmeIe904Rwpa+EV0P4/
+	+oykdHwdij7pgA/lO2sRMAFJq6nv0jhixTCn7dKD617PzOq2/YHpyqeCrDzMsrrOKbDMbe6cj8X
+	GNeRg+ioDmPDlsgX/42scZiA5zDFdLYSyFICShLxTAR6O9t2z015qdwAplXteqMx7/EEga7HxoQ
+	fyu4z5qQ5G2tpmYMJR1Nwetr8KH9sTEwFkzJXZ/i/gQRWcjAf7qsZfJX3VUbVy6RMcaQagdLy5g
+	DOwhnR4zP2bXaW/ZpmphqQoMbbOdUI7U2NGMe94W
+X-Received: by 2002:a53:eccf:0:b0:64a:d2bb:9072 with SMTP id
+ 956f58d0204a3-64e63073fe2mr4556761d50.53.1773455766429; Fri, 13 Mar 2026
+ 19:36:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260310145406.3073394-4-usama.arif@linux.dev>
- <20260313144213.95686-1-r@hev.cc> <d3f60289-3ea1-43ce-9271-58c8b79bf7a0@linux.dev>
-In-Reply-To: <d3f60289-3ea1-43ce-9271-58c8b79bf7a0@linux.dev>
-From: hev <r@hev.cc>
-Date: Sat, 14 Mar 2026 10:10:08 +0800
-X-Gm-Features: AaiRm51ZT-5Id2ShpKb8C4cESB_JJ6PpokKQgHEX0HKVk-NcE-akKpRzUvPAXoE
-Message-ID: <CAHirt9g=drGaeNN7C1hbND4=zXQifhQyP4cUaCz27=tYpHYgfQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] elf: align ET_DYN base to exec folio order for
- contpte mapping
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Liam.Howlett@oracle.com, ajd@linux.ibm.com, akpm@linux-foundation.org, 
-	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com, 
-	david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org, jack@suse.cz, 
-	kas@kernel.org, kees@kernel.org, kernel-team@meta.com, kevin.brodsky@arm.com, 
-	lance.yang@linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, 
-	rmclure@linux.ibm.com, ryan.roberts@arm.com, shakeel.butt@linux.dev, 
-	viro@zeniv.linux.org.uk, will@kernel.org, willy@infradead.org, ziy@nvidia.com
+References: <20260313110953.37465-1-aethernet65535@gmail.com> <20260314005131.80825-1-sj@kernel.org>
+In-Reply-To: <20260314005131.80825-1-sj@kernel.org>
+From: Liew Rui Yan <aethernet65535@gmail.com>
+Date: Sat, 14 Mar 2026 10:35:55 +0800
+X-Gm-Features: AaiRm50L5vc_CKwcot5sByL67vJTvKzPCCNWbVkzvFACfjuR90YpGehqhao9hbo
+Message-ID: <CAPLv50pktuzn7s9zW8E+36Oinjj7HfGhD5YdOaC6hNE2+OBL=g@mail.gmail.com>
+Subject: Re: [DAMON][Question] DAMON_STAT and DAMON_LRU_SORT module parameter conflict?
+To: SeongJae Park <sj@kernel.org>
+Cc: linux-mm@kvack.org, damon@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ba71jo1fat7hxcgd53rzynsixfig7ug4
-X-Rspamd-Queue-Id: 0CB1D10000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773454219-467125
-X-HE-Meta: U2FsdGVkX1/pRs3V41RuL4C9R3G4FTrIg2TEMv7LP8wCn1Hf3wE79rodx5DFIhSlWm6uSE1qo89MKaY+TZmy+DuH85HtSMT2coqwMwdDs8DUiPytXGLOWvg45IWQc633nTRYt9RI+yg/qXu9I21tdQnCybl3+iN7eI70jWkak1h2MACznagszigopt70Atzw6VW9w/JaObfWPZHHFGzyDqu2cO0WVkZwUmJYTYM/X4xYSEyy6E1ucnRzpTNLj6SQhAUZyN8tuI8+45+mhwDiOpJV5KCaaPEEIvyxT280yCirwiwTyZH8XyW9ylAFQrAlFde7ounhZGL2F+twff6EhJq5W9tbaRvkajV0hsLJ3sO60LH5yb7b48VIAgLjQGBi6TthpYiOUwTV4ckdSh+4198DBvD1DM2S/7as27UbVHWHz2sjb94AbTR4kGLih734XuL5/Ap0HgnYf4toj1wZjDUVgFT1QXW4tLziJk788vejByoGbV/GCfYTWSkvfIzLbOkmlxBie4ibXLBXUiPMZrnD3pUOWtzfJWVlw+2T1QRA+csRznk5f8hoBYBlcTO5HXabGU9GptqD0TKdMQ+WrpXXryzMZOpNA6rtcunP4qXdUu6v1ihrodnG0lD7If6Y0gEIaQi4AtM4PuvQu07ddQ+HOYQt9C73Q/oBRjkY2JTSJYu4iG1VdFBEnjChIrnZbpmwJC+G4A59RoM100rcVPn2ovFs04jSEr5ablnaaYyn8xaxY5Xjlq147tFroPCAoYp/AyRWsJzmJMSfZbrT9maXgdYxwm3+HRguyOaLAhqzw6UzVI8jSgSl2kf9Y7+o1J9kZu2crUn5040jhOMJLSB9gm7zb27kRlIH2xHkQgSfMSXoyTfAqrdH2PjSw1M0fqOO7zB5/YAu1nDfLAUkSKHaoJ+baXqVtl8lrhsGPGwLOrxyWfnJwAwpd9Dvwz2EEq8BO9rWo2jyVKvGJTE
- FiB1Fzli
- 8ZOTTuxL3TNY2maKqFnthDEwVUIr+1xG2S6cdUlkAnmu6EKF94V+YbPBm1pMiZ5SuuWE7Cdd5Dr8rHvdt3tQAh2FmPeMINS1vV1YZ0TxgmDg//YDrGtIzVji+tSfdcSOErojA61n2QWeAQU/tR9BCkREb0TorJ23tEAYuGYaXivD8LIKL9eNRDyViDhCM6x4PXRlg8ehyVGDA0CdYXiZEo/OsVBh1dbXTvNHCyVARwbtL4LmAE1v/drtiiyGE/tDunI8xMTFHovKdF6ThOjIuLYToaWu6TKYN9nGfEC5BiKWlZjDmYqOUw6kZwcXcw3TqtvwSekkUPsd9v6DTrmO672m4ZoD3wcDod1QaxY+wIx8TTSe7kh9ZgmDlOQkUe6YveZs8GMHgVTmTYq2Xr9ceaTsKERgL/q8uXTaBq9DMsFnA5rLlAPkLKub3laOKVl0eCLulRArB/CBVi27Wi8aFO2OF855zdVsSQIwhxvv5El3wNmNpceBjLzgqqA/AC3aRQr8wFMGlSmprouBQmSbzrGxRJLiaz8rydVBa
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6A1AC40010
+X-Stat-Signature: c5u14kssehdhzzborx1s99rifa9tyd8r
+X-HE-Tag: 1773455767-201441
+X-HE-Meta: U2FsdGVkX1+qe2MXrFrz8hAAuM+4s4KwAAG7gU6rLHWaVsl1tksi5MyXHIEJVYwQFPSlufdmDTGZrEK3GyBHBNCbn/O+fqIkx+n2CgDIkpE3oAS0XBnIdEbGObfnx2UZpuuLfGQjYSZoqcCUBbAJi+NVyi4auXiyID+WFQxwTSW6M4+WAfoVltt6G00lS/DfDWLssVhvRgWiUKnGKoxRYgTiG888f4/dGQwRLXjVyK3SCV4KUxvwdrwsyYN+0ir9TRCzPvR72n6B0cjyas51JSxEm7hMu/g4Ux7x2/Yz164MtDstHyCMVT1ln0vovX1giDyK0p07oQ4H7r8ZFiSif/PiiEPZfIz3XANbaJChQJMqaHc9YObnmGk7JJWJMJ39GIw/bBz8F2+d2jSoMYlIoP5vBfHYkYGMKTjTksyqBCQ4kcedpTyaXJUQBDTg9F9bCxRFEFFpHeEjEei5JxsUM6SrJRsmtO1HXhwIegXwJOXkzkRCK0u5Q60muYJqGt0AkGnE76ROh03e+0s95blfKuU62ZBEiFYchXsmy3vJQE8ZRxYN+b8jd/ropLkPLmKC96XusD7yEhdQnOMxpTGH9sH2LDj0uJHK/YmcGyCeoOyiJ12Hn4qgfjlG4BRZReGZocd+v/TX+1TrrMGTs4WLZ4TQJKFQ4KycmapbQbuQt4aqDzwFESb87y/CgVsRGPsQ6wNxOouMhCmkK2d1Q63rBxSygUDNPQqRNOqJwFwKoIbk0z6X9ECA1O0/HgMPzAL6yulxYsGDLf7QvkEQ5YxAm3eW1dEbv3JsakGxCsp5KdpMUVp9B21G6f1DVprcYGa+wD4u0eEOPT0URjuyNFOj2yNxCavsjNBO0hzpATNDpxvHylBF8F90iQ5KYsTvE80nHMJuFseJHVPfnRJAknG4EWBygawTZoUCI2QCQWNLzZFY94xIPrOIufMV+C9iL1v6lWUVYosxbfDwS76YHCU
+ DwFvrlHG
+ GQcdOXNkEhHj3PhRaaLrqL7XzxhXGvLtb6jfnH+A+LdRIbGWpyt2LJJTx673qfDDJGGT+2Fx/MYlNd1Ky29TWbMQS83Dv2gBzhfMdbfJ1qg07GC02DVoPz5NquhtGVanUZq3pXJhzSPdNT7VJ0/1xU6JK6NO9RAnFGfnvc91YVCO20Q28HwG5+2uMHoZ89MoANUA312qOI+02od3XMJ6lYusTuOjpPEWqbVV22oXNPSzpZIN8Fi5gSzq4S2OOO48bPAIqa/PSdpyl2fFhl2jmHwTuH//9aA+3lpqWR4kcI0t370UP748vubKjmwyls52KbcF6D3bB0eeHT9UMo/r0ljlrWnTGdaB+D6gMRtoJ31kg/MRU3EHYgTyxTtr3Uq8ymawQ4SLjSxa14TO23GWb7oBO9aFPmZgsd0J93XHi3K0onJJmTNKP/as/qv+lZ7gxwNBCPL8qv0O6AimWfztF+FHkPcCxkSDf7r2PBIsT8H8XKYKIUh6tcWWUeQjptYstbuAoPHDcShYn4qoG8oIa7aZpS1tqXfzSpUGWSwxp3KAnnrCkmdFoLHZtRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,113 +136,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 14, 2026 at 3:47=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
+On Sat, Mar 14, 2026 at 8:51=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
+:
 >
+> Seems this is a duplicate of another similar question [1].  I believe our
+> discussion on the thread answers this.
 >
->
-> On 13/03/2026 17:42, WANG Rui wrote:
-> > Hi Usama,
-> >
->
-> Hello!
->
-> > Glad to see you're pushing on this, I'm also following it. I first noti=
-ced this when rustc's perf regressed after a binutils upgrade. I'm trying t=
-o make ld.so to aware THP and adjust PT_LOAD alignment to increase the chan=
-ces of shared libraries being mapped by THP [1]. As you're probably seen, I=
-'m doing something similar in the kernel to improve it for executables [2].
->
-> For us it came about because we use 64K page size on ARM, and none of the
-> text sections were getting hugified (because PMD size is 512M). I went wi=
-th
-> exec_folio_order() =3D cont-pte size (2M) for 16K and 64K as we can get b=
-oth page
-> fault benefit (which might not be that important) and iTLB coverage (due =
-to
-> cont-pte).
-> x86 already faults in at 2M (HPAGE_PMD_ORDER) due to force_thp_readahead =
-path in
-> do_sync_mmap_readahead() so the memory pressure introduced in ARM won't b=
-e worse
-> than what already exists in x86.
->
-> >
-> >> +                    if (exec_folio_order())
-> >> +                            alignment =3D max(alignment,
-> >> +                                    (unsigned long)PAGE_SIZE << exec_=
-folio_order());
-> >
-> > I=E2=80=99m curious, does it make sense to add some constraints here, l=
-ike only increasing p_align when the segment length, virtual address, and f=
-ile offset are all huge-aligned, as I did in my patch? This has come up sev=
-eral times in the glibc review, where increasing alignment was noted to red=
-uce ASLR entropy.
-> >
->
-> Yes I think this makes sense!
->
-> Although maybe we should check all segments with PT_LOAD. So maybe someth=
-ing
-> like below over this series?
->
-> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> index 2d2b3e9fd474f..a0e83b541a7d8 100644
-> --- a/fs/binfmt_elf.c
-> +++ b/fs/binfmt_elf.c
-> @@ -1116,10 +1116,30 @@ static int load_elf_binary(struct linux_binprm *b=
-prm)
->                          * the hardware cannot coalesce PTEs (e.g. arm64
->                          * contpte) even though the physical memory and
->                          * file offset are correctly aligned.
-> +                        *
-> +                        * Only increase alignment when at least one
-> +                        * PT_LOAD segment is large enough to contain a
-> +                        * full folio and has its file offset and virtual
-> +                        * address folio-aligned. This avoids reducing
-> +                        * ASLR entropy for small binaries that cannot
-> +                        * benefit from contpte mapping.
->                          */
-> -                       if (exec_folio_order())
-> -                               alignment =3D max(alignment,
-> -                                       (unsigned long)PAGE_SIZE << exec_=
-folio_order());
-> +                       if (exec_folio_order()) {
-> +                               unsigned long folio_sz =3D PAGE_SIZE << e=
-xec_folio_order();
-> +
-> +                               for (i =3D 0; i < elf_ex->e_phnum; i++) {
-> +                                       if (elf_phdata[i].p_type !=3D PT_=
-LOAD)
-> +                                               continue;
-> +                                       if (elf_phdata[i].p_filesz < foli=
-o_sz)
-> +                                               continue;
-> +                                       if (!IS_ALIGNED(elf_phdata[i].p_v=
-addr, folio_sz))
-> +                                               continue;
-> +                                       if (!IS_ALIGNED(elf_phdata[i].p_o=
-ffset, folio_sz))
-> +                                               continue;
-> +                                       alignment =3D max(alignment, foli=
-o_sz);
-> +                                       break;
-> +                               }
-> +                       }
 
-I think this logic should live in maximum_alignment(), so we don't
-have to walk the segments twice. It might be better to move it into a
-separate helper, something like should_align_to_exec_folio()?
+Hi SeongJae,
 
->
->                         /**
->                          * DOC: PIE handling
->
-> > [1] https://sourceware.org/pipermail/libc-alpha/2026-March/175776.html
-> > [2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev=
-.cc
-> >
-> > Thanks,
-> > Rui
->
+Thanks for pointing it out. You're right, this is a duplicate.
+
+This was my first version, but I resent it because I realized I had the
+wrong CC list (I typed damon@list.linux.dev, missing a 's') and it
+didn't show up on lore.kernel.org immediately, which led me to believe
+the first attempt had failed.
+
+Sorry for the noise.
+
+Best regards,
+Liew Rui Yan
 
