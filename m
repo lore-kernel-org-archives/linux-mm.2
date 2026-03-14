@@ -4,131 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCE06107BCF2
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 02:36:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC0D107BCF1
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 03:43:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE8286B0088; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
+	id 1DE6C6B0088; Fri, 13 Mar 2026 23:43:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B95106B0089; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
+	id 1962D6B0089; Fri, 13 Mar 2026 23:43:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A97D36B008A; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
+	id 0BF306B008A; Fri, 13 Mar 2026 23:43:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 99C156B0088
-	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 22:36:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 506778B672
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:36:09 +0000 (UTC)
-X-FDA: 84543104058.20.635F81A
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6A1AC40010
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 02:36:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YUeaDf8E;
-	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773455767;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EDA976B0088
+	for <linux-mm@kvack.org>; Fri, 13 Mar 2026 23:43:51 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 445598B8C3
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 03:43:51 +0000 (UTC)
+X-FDA: 84543274662.29.917858C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4F4E61A0014
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 03:43:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=m7D+SqgS;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773459829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
-	b=N3iVcSebQnHA0oiOcaNnxym/0SPIeyis9uE4pjFjbEylC2Quh0ddrWabbFqkw4xA9IvhGD
-	gZi+oam51gdJ7csH4X0veMPQHrzLA+lh2aiZjqwC9CXIsomAzr7UI3eVxTO7lyu74On2PD
-	THAVhvnPKfC2+xtumnLe/cCpejGGXEg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773455767; a=rsa-sha256;
-	cv=pass;
-	b=U2QwRIdTdt76Z5F8bN4WymQPbhcpHtefsnqPOrC77LOtHQS5z5j72U/E2KSvcbdI1D69OZ
-	b+QpiMTO1XeFlLKttxoeb/EPtxcqKeMvLLyQhAnGK/0p5o4VaWOOZAboBqtkIL6jxM//PC
-	74dUnb+5BPHd+ZfCiqoJqGMYYCkJgPU=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YUeaDf8E;
-	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64ca9ec3ee7so3488389d50.3
-        for <linux-mm@kvack.org>; Fri, 13 Mar 2026 19:36:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773455766; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aJDUICAdZ+xYdNmrvsIYiqhtM6iLhRsm+CQe1W5zyC5THcLvN4WAsOmKai3U2P8ukA
-         tvjLFP5lHtXLHpQ9HKp5HZnMy+kv4nRXwNgraVgkeU29VDmz5TV3KOdCitCwbw9M5P2F
-         G2nb/CRWNLuznrbST2BEmQKWabEkoMti9ehMNSlHgnms1BlPoA1pxZo6/Mpmc/FuXNk/
-         Fr2ajuPpKTnDSnZHimIQUcV4LK1DkK48ekDhVuBlwI2dp7hwKS8YAYjfmZXQi8hyvd1g
-         ydFX/hsDR6Ehv6SQDQAbRO6mTu99rWvOEe8bvR/XsXGhQXC4w2CJqAXui2Ub8LDuLILL
-         c5vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
-        fh=3n7fk7Nj04Yy2riL/dZO/LsBXcIKxllmt+7jbaiYBgc=;
-        b=CvS9VjH1VUqf1yppAIWeZffnyXA61IeDKpgcpQjXm/yZ3qrdkJHYu+3UO2mutig7YR
-         9m0Dg9NEUTNtHQf1BqLqfRzgEY3dfHg3JTYziYAjOlZRF1rD72cBnHvwz8OYwnE6krbu
-         TzPuyuTbYbQ4Tc+T3WijU6I1LCiaOEncAsTHFqXcyuaLPOANo65IQReHmEhgvFCPXmvG
-         c8yNez3TlGCXXC4PMJoNHtMJJEIC8TFriF/QiCT2k5sYiOMXfLPT+/zV89gCNzelnn0p
-         ptYcWjWqDmLlrkX2If/YyDthfvWMXsUrszerUEJpXGGJcQ+/Hz+O1WO7t169o3p7Xo5R
-         VHEA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773455766; x=1774060566; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
-        b=YUeaDf8EEnnZD17l1XQb3Vs4DjyKeSmMtDhlZV8G7wKjeOlwCEcL1FRw0TIF+xyDNp
-         0Cver/KnBrenBdojPddgnIkg1hwQHsUdDH7hdoxDxEp0zg/NZ/yZnY09XjJyvKxwj7cj
-         NSqlncK7VLaG28Ttl+HnC1dr5x5cipZf1I3HnMWlKKrS1CbZZSkL6QRYJ/wbjvnbDfIA
-         IaHaC6xRQMw9Or9YEztRD6K268H1zuk9GG5vAhzaFo2fNu+foBf2ZFj7/HWkkAbff8WP
-         8so9FFkXixq6WrmjdUbSyTlYobOKM+EL2rjDlgF3yxKTrQU+4Vt10uhIlO8r7oSdxj/7
-         Mu1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773455766; x=1774060566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cO20WwNIzRxyw30z6OHFbWFRxuc4T5ngZ3OGaMZkebE=;
-        b=kBynAAUPE6sTqf9xzVEkAcNM4b8s9M0Cro4TD1eYjtVaCOcBpxi+XfDBTfLXBkQwzO
-         KvtlxIqlY7q/H009bnHonZC6wvMoRDKfzd9FpdIS2WiDPIeqfto13RvlSvQuScj5izVN
-         PL8CylJqsa8cRMBbvN4+Y72EnKaVzIwaMA9JlDCb/Rz81rGGnHqC1h+c4FEtWVGDP+kN
-         HGLft11nOQBRRnA9vNkrNozzRUpLoRGvkt1NyhKkdDHXAf8+hg0oDsMmyFjU3CBYH/CO
-         BksPoNY6z30F4BNi2bo2Qajx8NWLF8D2qLumAy/89PxPngjDewwDWNQfP7tJgymde2is
-         QZ4w==
-X-Gm-Message-State: AOJu0YxDLHniXtmIrMnAb8B0Ed6fB5RQpgfs8OggYsb3oYlVuot0ofwh
-	hnzQ3PHxRvk9mDAd0TItusdweBR5CkLePnlb3GcPP5ncYdTqPIrQ4ZnIavHFbt6o09pz+5V/ChV
-	wuGkSWuXSTKec0IjtdEAsYeq0cGizH9k=
-X-Gm-Gg: ATEYQzxzJJBECfPF2D2myAVq2Wdah+i33liwXZ0s8zc+LbybgmeIe904Rwpa+EV0P4/
-	+oykdHwdij7pgA/lO2sRMAFJq6nv0jhixTCn7dKD617PzOq2/YHpyqeCrDzMsrrOKbDMbe6cj8X
-	GNeRg+ioDmPDlsgX/42scZiA5zDFdLYSyFICShLxTAR6O9t2z015qdwAplXteqMx7/EEga7HxoQ
-	fyu4z5qQ5G2tpmYMJR1Nwetr8KH9sTEwFkzJXZ/i/gQRWcjAf7qsZfJX3VUbVy6RMcaQagdLy5g
-	DOwhnR4zP2bXaW/ZpmphqQoMbbOdUI7U2NGMe94W
-X-Received: by 2002:a53:eccf:0:b0:64a:d2bb:9072 with SMTP id
- 956f58d0204a3-64e63073fe2mr4556761d50.53.1773455766429; Fri, 13 Mar 2026
- 19:36:06 -0700 (PDT)
+	bh=Lop73fpryGmzlcpYAtBalLiy4Ozu+gjZcQd8EQmhOPE=;
+	b=rHuFCeCvGFjdW1pIZKERFKF+DYZvLMlMTwrUM0i/ea9ftP1i9w2LWlHmCwoI/4TUlLfNil
+	YNzXbGA83dyT8Xp1TXQlXupHSM0Ocn6ooXuPdXdfvG+QYqyHTkAzHgd4DVkOOTH+iv06wv
+	4bQfAqTFSFRdPrYiVjTS6SrX1Lk2LpU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=m7D+SqgS;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773459829; a=rsa-sha256;
+	cv=none;
+	b=8BuzCf7wHPfUzgMiJM9FEHAPFIVFaMWKgsHFY7BcgiOgwNra7ECexBx5ofEp2aN1qAi5sM
+	IrH+UYe6sMQgb8qJLp21WUjenwjGO5n3ijK4+SnxecVPeEXp6nVTyEANUGyE07iJDgghqY
+	mnRMwJz1zq32fbttBGc6G9Z6P3GtKh0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773459828; x=1804995828;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kS+cBmQC7gM1gNSUurbOOTzzOTiUZdBmnUD9OtT30Lo=;
+  b=m7D+SqgSwae9iV6UMkOrpHm4TYvUeZxsidhm1WlfXehTrGT0uKQr+nmQ
+   t4wN/FrDy/dnKuyzd2XapTy+hsb+LiEUjUZLpwLG+bXMHtVq7dmChMT3T
+   ieKu3Vcv6h5MDr/Tt+J2iWFLa46alqYY7Ok4MFUGzQc+Z12tJxGdojFrL
+   RicWL2hUud9kj3gLVovMSnI8CLeeFOoBVFqwcpKOk4PVQWQzwzaC8PmeX
+   6yRV2e4RtKRmDwkPfaRf5k40CkhmtK5l1N7+FuCyAEhfNTcJlJLLVKg/a
+   YfBWBtjFsqMBtAnAdv3sy3GWihOnjlriu0FelcsdMI5flXm2qrzs9tK4K
+   Q==;
+X-CSE-ConnectionGUID: BAH4IbgkS6qQPuyeCY9mqA==
+X-CSE-MsgGUID: Xt6RvNA9Q1irSCKO0o88og==
+X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74481699"
+X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; 
+   d="scan'208";a="74481699"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 20:43:46 -0700
+X-CSE-ConnectionGUID: UKSJurcGQnWhOrTi8Ezv7Q==
+X-CSE-MsgGUID: talYbqnkSdie1UjmS14HqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,119,1770624000"; 
+   d="scan'208";a="226026513"
+Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 13 Mar 2026 20:43:44 -0700
+Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w1Fuf-000000004c7-0vqk;
+	Sat, 14 Mar 2026 03:43:41 +0000
+Date: Sat, 14 Mar 2026 11:43:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-mm@kvack.org, iommu@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH 7/7] of: reserved_mem: rework fdt_init_reserved_mem_node()
+Message-ID: <202603141108.XvqRlNaY-lkp@intel.com>
+References: <20260313150802.1121442-8-m.szyprowski@samsung.com>
 MIME-Version: 1.0
-References: <20260313110953.37465-1-aethernet65535@gmail.com> <20260314005131.80825-1-sj@kernel.org>
-In-Reply-To: <20260314005131.80825-1-sj@kernel.org>
-From: Liew Rui Yan <aethernet65535@gmail.com>
-Date: Sat, 14 Mar 2026 10:35:55 +0800
-X-Gm-Features: AaiRm50L5vc_CKwcot5sByL67vJTvKzPCCNWbVkzvFACfjuR90YpGehqhao9hbo
-Message-ID: <CAPLv50pktuzn7s9zW8E+36Oinjj7HfGhD5YdOaC6hNE2+OBL=g@mail.gmail.com>
-Subject: Re: [DAMON][Question] DAMON_STAT and DAMON_LRU_SORT module parameter conflict?
-To: SeongJae Park <sj@kernel.org>
-Cc: linux-mm@kvack.org, damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260313150802.1121442-8-m.szyprowski@samsung.com>
+X-Rspamd-Queue-Id: 4F4E61A0014
+X-Rspamd-Server: rspam07
+X-Stat-Signature: afzttx3upfg8gb41hs1dcfd7pjbdfac6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6A1AC40010
-X-Stat-Signature: c5u14kssehdhzzborx1s99rifa9tyd8r
-X-HE-Tag: 1773455767-201441
-X-HE-Meta: U2FsdGVkX1+qe2MXrFrz8hAAuM+4s4KwAAG7gU6rLHWaVsl1tksi5MyXHIEJVYwQFPSlufdmDTGZrEK3GyBHBNCbn/O+fqIkx+n2CgDIkpE3oAS0XBnIdEbGObfnx2UZpuuLfGQjYSZoqcCUBbAJi+NVyi4auXiyID+WFQxwTSW6M4+WAfoVltt6G00lS/DfDWLssVhvRgWiUKnGKoxRYgTiG888f4/dGQwRLXjVyK3SCV4KUxvwdrwsyYN+0ir9TRCzPvR72n6B0cjyas51JSxEm7hMu/g4Ux7x2/Yz164MtDstHyCMVT1ln0vovX1giDyK0p07oQ4H7r8ZFiSif/PiiEPZfIz3XANbaJChQJMqaHc9YObnmGk7JJWJMJ39GIw/bBz8F2+d2jSoMYlIoP5vBfHYkYGMKTjTksyqBCQ4kcedpTyaXJUQBDTg9F9bCxRFEFFpHeEjEei5JxsUM6SrJRsmtO1HXhwIegXwJOXkzkRCK0u5Q60muYJqGt0AkGnE76ROh03e+0s95blfKuU62ZBEiFYchXsmy3vJQE8ZRxYN+b8jd/ropLkPLmKC96XusD7yEhdQnOMxpTGH9sH2LDj0uJHK/YmcGyCeoOyiJ12Hn4qgfjlG4BRZReGZocd+v/TX+1TrrMGTs4WLZ4TQJKFQ4KycmapbQbuQt4aqDzwFESb87y/CgVsRGPsQ6wNxOouMhCmkK2d1Q63rBxSygUDNPQqRNOqJwFwKoIbk0z6X9ECA1O0/HgMPzAL6yulxYsGDLf7QvkEQ5YxAm3eW1dEbv3JsakGxCsp5KdpMUVp9B21G6f1DVprcYGa+wD4u0eEOPT0URjuyNFOj2yNxCavsjNBO0hzpATNDpxvHylBF8F90iQ5KYsTvE80nHMJuFseJHVPfnRJAknG4EWBygawTZoUCI2QCQWNLzZFY94xIPrOIufMV+C9iL1v6lWUVYosxbfDwS76YHCU
- DwFvrlHG
- GQcdOXNkEhHj3PhRaaLrqL7XzxhXGvLtb6jfnH+A+LdRIbGWpyt2LJJTx673qfDDJGGT+2Fx/MYlNd1Ky29TWbMQS83Dv2gBzhfMdbfJ1qg07GC02DVoPz5NquhtGVanUZq3pXJhzSPdNT7VJ0/1xU6JK6NO9RAnFGfnvc91YVCO20Q28HwG5+2uMHoZ89MoANUA312qOI+02od3XMJ6lYusTuOjpPEWqbVV22oXNPSzpZIN8Fi5gSzq4S2OOO48bPAIqa/PSdpyl2fFhl2jmHwTuH//9aA+3lpqWR4kcI0t370UP748vubKjmwyls52KbcF6D3bB0eeHT9UMo/r0ljlrWnTGdaB+D6gMRtoJ31kg/MRU3EHYgTyxTtr3Uq8ymawQ4SLjSxa14TO23GWb7oBO9aFPmZgsd0J93XHi3K0onJJmTNKP/as/qv+lZ7gxwNBCPL8qv0O6AimWfztF+FHkPcCxkSDf7r2PBIsT8H8XKYKIUh6tcWWUeQjptYstbuAoPHDcShYn4qoG8oIa7aZpS1tqXfzSpUGWSwxp3KAnnrCkmdFoLHZtRw==
+X-HE-Tag: 1773459828-398165
+X-HE-Meta: U2FsdGVkX19p8rObMpECe1uFSn2TtLkBPyv1JW7Rf2ncwjvlxguZ5dPAoqqOyRhnlD9ky97Tgi9D+rbOIO5rpAoiaXLgCe6TaLAXvkw/lp5prZdJWz1zoatNgnrEdjphNnmZwSaKivc17BontTOUmRZr59zaNwbJdga/YTZ+Eusdvb1QZG5v3X3A6tI/xfdKENJuaneuX6FveYOG2525x/QFFZgT3HgBtXlsIX9y0PxZ9Zi475CIeXTcZSLrNib1ks9B3Tb9FHfQF+4rsgvLaVoINBILA5ZFvEafDQi4ecR/vFUbNWeJfk86BFY4NVe5DRg4MNxcygZrA1zvcZvU+pfbQxsCbePGDIHF45lOyR9hmHArnN8uZDglqa7811OjY+8CyeejfJ1nRHAo05ELyzrrYspLVAF11/nfLwPTdb1RXhpMKA6gQy9iElEFD0LqiDMHatlAlDiEr2jtICnwPf3tuhfh//pIOi8xYKocyYui6OLVxG0CEhN5w4Db+ywDSQhDzxcJTFRj0LGv8emCETnlbfp9NXZacEARUn+LkzFGNy2DyL5iz2YTSkEqZ9meuwBHBx5FCBWkJZP94pEPsfaFvDMsZhUgOnxSLN6zL6X/flQbwS8rfNlugK9Uih4X+b/A5ieB6Xy+AnHl9gpIWYqDoMLTyK+cajnUHUpF/kJzemGZLcfj2mYE4JT2yYxSsmXduRQZo5ieEaD1o87rfxDgphSV6mScSdMLJKKfa9osIGXM/PvZwPEA3wMZjEjQ0GaLwRZRRF11EfZjjPvhOKNX4MZ0q+YSTr3M8VirRzITDf6intvpBLpwL3BxA0JhJxE/DmvoXWfcoZiLKWn8grOdqQIVWT3J8Ha9e8s1+YUz+f245MM9k85jdkTHPzqDt66/PbZujMwfFr6hyp5uXL72Qij0H2Rfciu4niIaZLwDaXeh6/To0bMteKytFTJkyS1P+WaQoROzDMaZ6Nf
+ O8BEIJSQ
+ UrhCkO+CrbT/xMTE0qsJThVNAK0Z+I5ujXvKAxRuiEK6obtgD//hrJvOoC9I49EkgJs5ghuuI8Cr1PkN7DiEbyq0Km9KlSj+Vsht+frTzL3BiLagtOLeSl2EX8s+j7j0Y7GYo/xfkidMO0Cshs4kMMj+DCscbdEBvdYMuw63lJcpORswWchmnFGQAFsK/2amBKlUxvMHMKtnoiE2aw2SRenXL8QIl1xqMtLjVp3/OZ0zlydDvJNDNlXYtOms3C5ZuX7KHrJGbdDnnX2wk7PXnhq5/pEVHFpvtzYU66SA45ker4jiqcQUYKBCYuDhuMd7UPAjHKE9C2KVG/KJZRyWdFzSLuX6jdzwaB77C6GNGa71DRgfQnq7bAA3xigNcSwk3Rh55m9lg1g09eEhmb0AMucPYX4S4fy1G7OfeJ2SOc4nXZj9oMHCFSter2mzQ0vgaeuJPardgCpRVSLYqkGycN5LlAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,24 +115,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 14, 2026 at 8:51=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
-:
->
-> Seems this is a duplicate of another similar question [1].  I believe our
-> discussion on the thread answers this.
->
+Hi Marek,
 
-Hi SeongJae,
+kernel test robot noticed the following build warnings:
 
-Thanks for pointing it out. You're right, this is a duplicate.
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on akpm-mm/mm-everything linus/master v7.0-rc3 next-20260311]
+[cannot apply to tegra/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-This was my first version, but I resent it because I realized I had the
-wrong CC list (I typed damon@list.linux.dev, missing a 's') and it
-didn't show up on lore.kernel.org immediately, which led me to believe
-the first attempt had failed.
+url:    https://github.com/intel-lab-lkp/linux/commits/Marek-Szyprowski/of-reserved_mem-remove-fdt-node-from-the-structure/20260314-023123
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20260313150802.1121442-8-m.szyprowski%40samsung.com
+patch subject: [PATCH 7/7] of: reserved_mem: rework fdt_init_reserved_mem_node()
+config: arc-allnoconfig (https://download.01.org/0day-ci/archive/20260314/202603141108.XvqRlNaY-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260314/202603141108.XvqRlNaY-lkp@intel.com/reproduce)
 
-Sorry for the noise.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603141108.XvqRlNaY-lkp@intel.com/
 
-Best regards,
-Liew Rui Yan
+All warnings (new ones prefixed by >>):
+
+>> Warning: drivers/of/of_reserved_mem.c:580 function parameter 'uname' not described in 'fdt_init_reserved_mem_node'
+>> Warning: drivers/of/of_reserved_mem.c:580 function parameter 'base' not described in 'fdt_init_reserved_mem_node'
+>> Warning: drivers/of/of_reserved_mem.c:580 function parameter 'size' not described in 'fdt_init_reserved_mem_node'
+>> Warning: drivers/of/of_reserved_mem.c:580 function parameter 'uname' not described in 'fdt_init_reserved_mem_node'
+>> Warning: drivers/of/of_reserved_mem.c:580 function parameter 'base' not described in 'fdt_init_reserved_mem_node'
+>> Warning: drivers/of/of_reserved_mem.c:580 function parameter 'size' not described in 'fdt_init_reserved_mem_node'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
