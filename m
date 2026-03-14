@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 688A210706E4
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F128910706E6
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Mar 2026 15:25:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF19E6B0089; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
+	id 532FD6B008A; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9EEF6B008A; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
+	id 4F3586B008C; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99DD66B008C; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
+	id 3FFAB6B0092; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 892266B0089
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FDB08C2A1
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:25 +0000 (UTC)
-X-FDA: 84545042610.15.E8B1345
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4EC622000D
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ipioA9bG;
-	spf=pass (imf03.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E7AD6B008A
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 11:25:34 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C59C51C395
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:33 +0000 (UTC)
+X-FDA: 84545042946.01.DF52760
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ED7731C000F
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 15:25:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9nwqPt;
+	spf=pass (imf20.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773501923;
+	s=arc-20220608; t=1773501932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9NVTfVmb6N0l2OFZbjNDjAuiMDfwEZpK5jgMzMH9pzI=;
-	b=dlwegTaLDFjqTfcAQl71JA0Y5DtokEuzJo4KEyjs1IrB2CPlkAoMwkuaSEkISGn9Mnnqof
-	+S6Fqa7pTfRZgV3K4zANZbQ1krY/NWRFgAdOillqMXWnAWPZ4hhKcTcZ0szek+fuTh+yUc
-	FTMvgC3rHswLqIoYXQ/s7/lPCh1DAj0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ipioA9bG;
-	spf=pass (imf03.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501923; a=rsa-sha256;
+	 references:dkim-signature; bh=dKGBFuBHRuN31ZFNKDqDxImcJys3tewsom9xKohaWaM=;
+	b=1cwgEkdvInzI0EuLiaoyxeHpuwJ2rw4vIzdI100QUxQcA1kRFjhyiBv5QUyd6d4G8mF/ZL
+	na3zJMhMAJO1UWuhGGpZM4rtYCLVaMGY5+sBOfaJ/VXgsotXJW558/YgrPuO3r5X1IhJro
+	stKhKI/j4R2mqdqAefOxzXSVCH3aO1M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773501932; a=rsa-sha256;
 	cv=none;
-	b=OtjMLsUNxMELZeu/TMw9i+57MSS2TlaBnhFn9eR9pCN+5tWT3C8hJ9+lLEtkC6tgFbBF6D
-	/R0l+aU800FHloq0oGrXFlno5tgHjsgK+qv9YAb6xcGBsM5VPE9tcm/cq+I5eDhPFvJ8ls
-	fRQZRLNw91sJ75/tPfsS0ov3TFafXZ0=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-439d8dc4ae4so3265503f8f.2
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:22 -0700 (PDT)
+	b=YYVrJZ+5z9iOSlh7knxb0SPPmzjRLsssl74G6RlSp1mn1HdDY8OexWJsj1xVBMf7MSbhF3
+	CKkgFSENMxk0BfGVgRJYUVw6sBLAPvr3G7QkaHh8wkjsLKun3vLK17seUF+Qed2OE+NdhN
+	EtA4TucmKo2FvG3jzOabgmZIdoPCaI8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9nwqPt;
+	spf=pass (imf20.hostedemail.com: domain of xaum.io@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=xaum.io@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439aa2f8ebaso1951792f8f.2
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 08:25:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773501922; x=1774106722; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773501930; x=1774106730; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9NVTfVmb6N0l2OFZbjNDjAuiMDfwEZpK5jgMzMH9pzI=;
-        b=ipioA9bGlA81YP1D7dedAe+nX/MurXdTDihk7JnL9S5TSNzZIISQ8c9w3f6OHw0I16
-         B6rjIdMFO1rTsA1niwNKGAk+1ORcn/Pv4pwUUZgBTp/cnpIxUTI9qkX9tgaE+Lg+hKgy
-         SgKl4ci+a8JixZcJqQOLr0Ls4Pw+XyuYw/KOqIFEcziJjUO+OhxIG9ngox7ISUIG7Gm3
-         BJc+WKoUhHNVQx3YSZd45rcPbIGN4ySE6O6tNCwp3wuheBEUMUrHTyAbWnYZFOBJZL8q
-         TBjka7bmnKB1DVHbse4Vm0HZgUuzhWMRNBhFgZVpiRfdSjpKs/sxwo7ZQ0IIyciFZSKn
-         Rc/w==
+        bh=dKGBFuBHRuN31ZFNKDqDxImcJys3tewsom9xKohaWaM=;
+        b=ji9nwqPtcFZPqtNs/ZsYYV6rBd8qv+WvfOyh8GWAqF3MAwRlz1TgRljuq+BV0Ri3z8
+         3aB+Y9cH5wPhpceeHFxBCRQvfC+rZSiZe97vjRbNXbA+qgqF3iwkMW34tzBXMTkDakX+
+         bAAggnC0zotYgAWJfLWja/t73dc/vDIO2aijbPklOPHzfYTpg99IgJmy7af8wsJ5EkIR
+         JSDIa1m9FR0sZR4qwIaX3KZD5u3AHt4HSBdxljnRmsHrl6VZ3iml4UCZ/KD0tRiaEpmU
+         U7mWmsCzOETwq2kxlrlIELvKrpZLnP7+bLZjbude7cIthyZzXC8cWg4VYCD5Z+JsIqoJ
+         5Adg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773501922; x=1774106722;
+        d=1e100.net; s=20251104; t=1773501930; x=1774106730;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9NVTfVmb6N0l2OFZbjNDjAuiMDfwEZpK5jgMzMH9pzI=;
-        b=c6IfZrCd5/d8m9fnQ7URjoJeyWTaeEEh8bsadAZ43QpAtC8vwfzlo3glgXWmLP4tb6
-         o0oQAwwghydwqtblFkJDH/2YIQSXmGtSkzm+pkpG3EBdPhQQTNbfAzK605WNKkraU964
-         q7dqgHq1qmoi7sKq0woGTTNLmBpIjpsXirKnBE9+XPeLVGCCWUpx0Zf+ETdtmo6csAtB
-         /U0Bf7el+SVRuaqNm2u5kEAKvBW/RCrdD9y9aWnHW27NF15WRSMshYmuPrwP4Bh1qRXG
-         PhlR8sm/M/nQTYy0BJZQMYnhUerYy5A0CGUk4VQTKnsrdlDkQNE8xcIeKTW2PPdaCgnV
-         HEEA==
-X-Gm-Message-State: AOJu0YzeRDsAMMky7So8b4gBqCcD1I4NF6q5FCE9myqoXw2t4g/sQaxV
-	n8tvVn0gGLzGuH0SjMILnL640cCxk7yaZw1ecW2bU/FozmIo6Dy/qIxo
-X-Gm-Gg: ATEYQzzdPMdAowMI4MAWi50+0nF0AfpGJRhqeupdG36hBZsxDRqpiqiGBTNAJKzyvKL
-	uNjlqFpcujTYgR8DJqm5QO/RFi7Cypl30q9+VPDLWASF80iN3SFrUQFBN5CnujiObWE9gKSOuN6
-	nsDCax872X5TBTNB06usEJMyk99LWi2e6+rZYW2nYVplGdEhCfhWZl9EyYGZCY3JHQHSRRJrRfH
-	xaiewcUlyVbNd2NXQdEMt0oi0e9ZQ2z5O2ni+N1VyNuAJoQDj1k3so9uEZbvSX4fUPOFceNKlSo
-	q1+AN2HgrGB85b5A6CDe30mPmvTuP1TEQnf4QQajVesYkbulkNwLW5Yn/BQlQuXyF3Ave0XAnlt
-	XCil1GDKpDuWdJhkb/C19BjfhXQ3mP+XRDGR72G9YvUEfRbGux+uM7Ax9JlcJNwobSOfyeXTZkR
-	W9syFOgjl9+oBWpp5Qa9Ge0GPUuvGfjgL8E990Q4DkzwNn/9Um8sj3KK1HkAvGh0vYTf3Q8NxHH
-	XWOOiOCyEtbs8YHD2LRItopf9Aah3irwYk/IC8Z
-X-Received: by 2002:a05:6000:2406:b0:439:b522:37ee with SMTP id ffacd0b85a97d-43a04db4c63mr12781586f8f.27.1773501921112;
-        Sat, 14 Mar 2026 08:25:21 -0700 (PDT)
+        bh=dKGBFuBHRuN31ZFNKDqDxImcJys3tewsom9xKohaWaM=;
+        b=YKhk8frD6VID2hS/8H5qlMqzjkjgyV9aR1oBABbQcP/awW/OCzsOQ5z3RWnwuFU34P
+         AeNmhhQ7k4mUoC2Zq6LC8ZNf6ysu6ggkFjtjEU5UdIXRtvOMdMd4gZHhpOGi4wG2Gmoe
+         y2+puv8ZdfpNLPZqoVI2+NxjnqQPw4yiUIFxwMi8nCdJpZGMsNGSFGrsGhnAOY67tjmq
+         AJ5TXzRwkH5z5JUK9uHZHHmLFqrEn3GVk8jBLujZN7Yy4gar7+YUFF+E3gZLX9FK0l7V
+         zX4Y+m5eGuqWOVIZy1XDJsyInM2riBSUPjD0O3+IIxY9BMMjCyQv/lRexqf3jckvth22
+         IBRw==
+X-Gm-Message-State: AOJu0YxSkGBkUfOOkRwVaZBhnYez/Dw3R776mcS9SqEfoCmxlLo+LtnC
+	5tqkpgqRboStxwpGvL4OTECFeYqqwUc+bFem4Kisp9PoeXfq+EhZ3RON
+X-Gm-Gg: ATEYQzzqGYBlmbZp6TC4Eq6R1/UFDv1W47qH4Mf8RWoGmlg0RhNiRHJ/f+9h18DDTT4
+	PzyJSGb/jiZKn6zER4R+sWzHER0MUj44RZLBGXJThlTv4K4lxAIw/L/fJ5TBuFn5AdP/fXc12YE
+	JfbW2hpmbJy/vb/HpkwVAxa8EHl3keM6UTzOEaPlTMLXakRqMn/Nut/7WdXZP+s51n360rEFdHU
+	sF6TmPiNc5noIcOyeC6uRzIiLHiLCz58A9C26SGDVNN4Le4OQ//704tqzEGkGhNkO45z3vTYMCU
+	JQBGs7u+rIU9jYaSW6TgJTnm6J0IgRr1/d+6AF0lmg44qQ+UooNfFHP01oyaY1zN9rVPWWpW812
+	JR9svhFRs4Bx72KIVMMOgMq4TFRD+CgmQzxvqXyhVFrHr1nPCU6xgdCH6814HWpBFY+0NldKTOM
+	STFPHpxV/jJmYYNRDsHQ9oFrFzLo1wLZU0fWNWeC3SCTah0oRLdYXTcc9Of2mlKYwVsS9yc8d3g
+	M3/K/QcDic/9vu2Z7eBjbgaX9Fy5w==
+X-Received: by 2002:a05:6000:2501:b0:439:ac8f:5da5 with SMTP id ffacd0b85a97d-43a04d7817emr13583033f8f.8.1773501930372;
+        Sat, 14 Mar 2026 08:25:30 -0700 (PDT)
 Received: from DESKTOP-TILNSD1.localdomain ([139.47.104.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43a0b2e2c71sm11187254f8f.22.2026.03.14.08.25.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe228986sm23705107f8f.35.2026.03.14.08.25.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 08:25:20 -0700 (PDT)
+        Sat, 14 Mar 2026 08:25:29 -0700 (PDT)
 From: Kit Dallege <xaum.io@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -96,21 +96,21 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	Kit Dallege <xaum.io@gmail.com>
-Subject: [PATCH] Docs/mm: document the OOM killer
-Date: Sat, 14 Mar 2026 16:25:18 +0100
-Message-ID: <20260314152518.100194-1-xaum.io@gmail.com>
+Subject: [PATCH] Docs/mm: document Boot Memory
+Date: Sat, 14 Mar 2026 16:25:27 +0100
+Message-ID: <20260314152527.100295-1-xaum.io@gmail.com>
 X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4EC622000D
-X-Stat-Signature: ozgji3z9u5u19ubsp4cputgx7m3kir3e
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ED7731C000F
+X-Stat-Signature: amhx8tzdgqupr3kpiuwckiqf6sa6znq9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773501923-460863
-X-HE-Meta: U2FsdGVkX1+4XCL0sFrlpc7B026mb14LWmO45mShi2fTHeoHyFZhVEyfpHKxDBwjlICDqvQJRQpt2v8T0cPQ9spIjL/+fZ7zYqNtSCCtgorrQLd+jsEIPHSw1swZpoce2USvfRBle9Om1I5MwOHlvPvYU0cYUtleTVzGDR6ZKcT1ruTDACd/QK2AGYUijSPwBnWHGIKW5/FMjzAhA4NdXBZu+DoSconel5thLD2JEirbHRLqB7vM642ocWbimif7IZU8KpEJy7Ie2vUa9Y/FA54WU725DRdPdVcxwJ/hb8ghIKxRtLEknOa6EokuC8JCYBngdOxFO9B9AS43mfMpJwK90cy6lWUXIRpXdnW7V4T0CFKX9zLHMo0BjEfCydz40bis9xmV5Q5Dr6qRJASXHoRvP9YLJKVVTyKJ0kTPxhkqyG1si9kvFEZ8U0h21am3zmUR/2I7y3Ydi50zeza1sIsyR3U6TmkRChF1xkC/1igAIE7VYF8w9F0Ps0MnPASZIzhi1hzMb5aVBhk96Jmzxu40Mi6tqZvmXNlwb6/1LJiLigqq4MXY/gzGV3BgGJFxJBRsQV6JpCNRgFic+6P9vTltmULKEwLUKE9E1d2J9ggtFGRN+TaooszEp39JmnIEn1+PQ7JBCnFpeX4Qja8hpTVmxwCZi60y1AQHTOMJkuRtlvjfKlxdF9JAY2plaIIuPbvK9f5kvhIa2ME2k6wmNmoiyn/T3/2/Yxz6YW1v8TK7fFOreh2vVzLtufOBgQqPOjX+BRlhisXN0/mq0lSmF9RcQp8BmY/qoUNDeb3SPAqja8n8rYA53YWaJJ+oicYwsM58qcfgpco3SzAXiSohhQPv2bpxuFlZZBZKHQGRtXRKVDGjhC/N5i+4RbnuN5GBB1waC8kLtc4abAHxNwz3sQinkQKpckD5Q7yzKb+yxS2Ol/f8jgJA4HU8CwZ3FD2V55IFXc8CnH/+Y3W1O8q
- l8EBxghc
- GL+oZqn6nRwuckFOdJatoXogYtZZ+uHfHTw6mNohgpUbSF0nRmQb4GLFE7Ww0f8cWEo6VV9ZksF2tkZjvtFeHLmGhCXYQZI0nLCV9hT3dmprifbH1NWPjh+xi1kcYWskNMBVkK0M2GgBjN3EV2LgtHzWbLGf6UuOfGX2sB8ZptgJuQpE3U7bmyD+E/DA4oPFXy7W0Zp7Jz5WjnYyaVkGT4Sp1jt7ZIg3rBh4O47izL2AYbn3hcsobiwbZpqnuAvDgTuHObb65TpV/3ECqNUCIipBkKWCccxC7M5q+RbT0q4Kdm+rJbiGNDrb7Ada+Qag8hHs8NrR6q4/JD8moEHxcCPCaztSRw+KdqRwu2QBv4eC7J7d0Tp69oTNFmdJJcftIG1UOPcRlBx/G0wuMDJX/kEEJWY9Z2cEloX6b/T7NlSESA2lwrgeEE3enHHbv+GB419cldbR/jkqjzj1XOnUgHj5UzFBLCpjozrBSOUBYroLW+ePjv3ov5+NM+86fjTXUJlkXChKKBKuuaLmnAFbQElkvI9kImubJ2GIRWiPcrh1bWLM=
+X-HE-Tag: 1773501931-437815
+X-HE-Meta: U2FsdGVkX1970T/reRHwTgfnp4wLe8JEKFAaTyawGFZKSV74e/hRiCVW05KJbq7npv18Jvlj3IJb9HLRRR8wcztdQRb56i/0OtL8LM5nj9ozbhb/AVLk2pvrrM8UotdBafcT1DIE44FAB/0ZaA1Ot62ynSgfrqkuH2REDpvX5HsmeOLxmX2/Fv0Wjf+gGWLh5gwYZpyYqIRP3Jy2HNdR4bUd54x92SwPWVL+GGYqkDSG5oZrSm07N/28qIOH+Qm2xG5cbNXH9XPOykHZeVNm+yplULOb9d2nlTXRiZ1jUfKm8QH+2MDYwrftvnsEDu/AbSfTTslMxycwaz/Hb5THke9u4uPlvcgTsEf4qfKfjHpdlPA5SUKBaCfzGY/vkIiBMHGMTTZWlTKU3C7D0WHsmfXTDnxj7SzJnyNVjXzYN/SGyxfh+cjdQcU56f9qYRsVoxXFV/EPbPxCnJMDPaq6xxWLmQMlkqfyz73nwW+69G8oHuO9gMOdh5e4JM2DSoMFdYWdR9eCmExHlHI2gtauU2AlDJbB2RUZM+wZ9EUf26k17PdUyTwHFt7PUzHfPwO+VRO71jWKWQLslhyPd4coy6t96bxcmD+qMEhSSfDbwsPSUNUWzuN4EK2KXHSA5PQSYNIm0S2OBnWBLGZgkXjjsE74E2skJ2jYF6+UKbMhfM9a7gSKQC1bkmOp/lpzGyzUuUeB2rarkeZ+QTjUUlHJOY529mP7hQhOmcWC/rlIgYsdl68KmxAUqLmdwdTwN44JFPdMYW7cjJfSWIi7DNRy4vschwrehn72ABSEwMI1F6CO+oeOQKd32E0it+LgL9vLfxgJZO04jP8uLrBauaRoGk/wGBEf8zd4dJCzAgAdypVjhrf57FEok+VRbOnJlakTH9uLRfD66eOHft+GPO4wVdm7sE9b07B2dNywSfWOXaR7HSMuTarhwhx1jb5TI5Xyxiodcwnf7xyvI3JgzDB
+ uzYHspjO
+ AU2VLBvCWdP2Twm5p//Qhud423BhLej3K9qtfOpgNQUbHnV8FTrO2aTaKVQX42QPJ0LCHcF7Y49qgbcuactu0QlamVOHuU11cJlkjmVOufXy9lxDSTe3uAYBiEyjAVqmDRIWt94+4BU+fRFhSgk/lUjHnhqDIX5Me/xKtd2/PKduIh1c3qwNjm3pj2a7vinRsZXo93oxOnE0YE3fJEaFL4DRsTDwEG2AO6abazRFDLuy7WqaLUpuRQEiA6xYJ7WKzp0vY1SxubJSq9AcX8DpohasSjg/qK6GQ04gP9zzXxazMX9R9mqrKqMMXp9oKjxViUusrW8jZ+xUd/GXPQ3m1Tq1q2aXWL3WPtq57XWUYXuYGftmDxgEXW+GmchdbsVn1VvQfIOw9ewpUKgc5dyjUHw0yxgDYB3j5Z5ljYijM9kCdsBu98M1BYA3JBmmaPySbpCkYN7sh/hVaLO/Jdqjd0nCjX7SyNPTbpnfh5dDhNXJ11+VqrTZM1wCLXC05Pg7W3Fk0BmY3oaUyO5w6oPvjsqm/RGwVDRVsHzDLFD55LMs7BvE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,93 +118,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fill in the oom.rst stub that was created in commit 481cc97349d6
-("mm,doc: Add new documentation structure") as part of the structured
-memory management documentation following Mel Gorman's book outline.
-
-Cover the scoring heuristic, allocation constraints, OOM reaper,
-process_mrelease syscall, and sysctl knobs.
+Fill in the bootmem.rst stub created in commit 481cc97349d6
+("mm,doc: Add new documentation structure") as part of
+the structured memory management documentation following
+Mel Gorman's book outline.
 
 Signed-off-by: Kit Dallege <xaum.io@gmail.com>
 ---
- Documentation/mm/oom.rst | 67 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ Documentation/mm/bootmem.rst | 139 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 139 insertions(+)
 
-diff --git a/Documentation/mm/oom.rst b/Documentation/mm/oom.rst
-index 18e9e40c1ec1..2259f871a4a7 100644
---- a/Documentation/mm/oom.rst
-+++ b/Documentation/mm/oom.rst
-@@ -3,3 +3,70 @@
- ======================
- Out Of Memory Handling
- ======================
+diff --git a/Documentation/mm/bootmem.rst b/Documentation/mm/bootmem.rst
+index eb2b31eedfa1..b20520f53603 100644
+--- a/Documentation/mm/bootmem.rst
++++ b/Documentation/mm/bootmem.rst
+@@ -3,3 +3,142 @@
+ ===========
+ Boot Memory
+ ===========
 +
-+When the kernel cannot satisfy a memory allocation after exhausting reclaim,
-+compaction, and memory reserves, it invokes the OOM killer to terminate a
-+process and free memory.  The implementation is in ``mm/oom_kill.c``.
++The kernel needs a memory allocator long before the page allocator is ready.
++The memblock allocator fills this role, managing physical memory from the
++earliest stages of boot until the buddy allocator takes over.  The
++implementation is in ``mm/memblock.c`` and ``mm/mm_init.c``.
 +
-+Victim Selection
-+================
++.. contents:: :local:
 +
-+The OOM killer scores every eligible process and kills the one with the
-+highest score.  The score is the sum of the process's resident pages, swap
-+entries, and page table pages.  This sum is then adjusted by the per-process
-+``oom_score_adj`` tunable (range -1000 to 1000, default 0), which biases
-+the score by ``oom_score_adj * totalpages / 1000``.  Setting
-+``oom_score_adj`` to -1000 disables OOM killing for that process entirely.
++Memblock
++========
 +
-+The ``totalpages`` baseline depends on the allocation constraint:
++Memblock tracks physical memory as two arrays of regions: ``memory`` (all
++usable RAM reported by firmware) and ``reserved`` (memory already allocated
++or otherwise unavailable).  A free page is one that appears in ``memory``
++but not in ``reserved``.  These two arrays, along with global state such as
++the allocation direction and address limit, are held in a single
++``struct memblock`` instance.
 +
-+- **Unconstrained**: all RAM plus swap.
-+- **Cpuset**: memory on nodes in the current cpuset.
-+- **Memory policy**: memory on nodes in the current mempolicy.
-+- **Memory cgroup**: the cgroup's memory limit.
++Each region is a ``struct memblock_region`` recording a base address, size,
++NUMA node ID, and a set of flags:
 +
-+Only processes that can use memory within the constraint are considered.
-+Kernel threads and init are never eligible.
++- **HOTPLUG**: memory that may be physically removed at runtime.
++- **MIRROR**: memory with hardware mirroring for reliability.
++- **NOMAP**: memory that should not be directly mapped by the kernel
++  (e.g., firmware-reserved ranges that are usable but not mappable).
++- **DRIVER_MANAGED**: memory whose lifecycle is managed by a device driver.
 +
-+OOM Reaper
-+==========
++Region Management
++-----------------
 +
-+Sending SIGKILL does not immediately free memory — the victim must be
-+scheduled, unwind its stack, and tear down its address space.  To speed
-+this up, the OOM reaper kernel thread (available on MMU systems) proactively
-+unmaps the victim's anonymous and private pages without waiting for the
-+victim to exit.
++Firmware and architecture code populate the arrays early in boot.
++``memblock_add()`` registers a range of usable RAM.  ``memblock_reserve()``
++marks a range as taken — this is used for the kernel image itself, device
++tree blobs, initrd, and other early allocations.
 +
-+The reaper gives the victim a short window to exit naturally before
-+intervening.  It walks the victim's VMAs in reverse and calls
-+``unmap_page_range()`` to release physical pages.  Once reaping completes
-+(or is no longer possible), the mm is marked ``MMF_OOM_SKIP`` so the OOM
-+killer skips it in future invocations.
++When regions are added, overlapping ranges are merged automatically.
++Internally, ``memblock_add_range()`` handles insertion, overlap detection,
++and merging in a single pass.  If the region array is full, it is doubled
++in size — using memblock itself to allocate the new array.
 +
-+Before reaping, the mm is marked ``MMF_UNSTABLE`` to signal page fault
-+handlers that private mappings may have been zeroed and are no longer
-+reliable.
++``memblock_remove()`` deletes a range from the ``memory`` array (used when
++firmware reports memory that turns out to be unusable).
++``memblock_phys_free()`` removes a range from ``reserved``, making it
++available for allocation again.
 +
-+process_mrelease
-+================
++Allocation
++----------
 +
-+The ``process_mrelease(pidfd, flags)`` system call lets userspace OOM
-+managers (such as systemd-oomd or Android's lmkd) trigger the same reaping
-+mechanism on a dying process without waiting for the kernel OOM killer.
-+It operates on a process that is already exiting and performs the same
-+address space teardown that the OOM reaper would.
++Memblock allocation scans the ``memory`` array for a range that does not
++overlap ``reserved``, respecting NUMA node affinity and a configurable
++address limit (``memblock.current_limit``).
 +
-+Sysctl Knobs
-+============
++The search can run in two directions:
 +
-+``vm.panic_on_oom``
-+  0 (default): kill a process.  1: panic on unconstrained OOM only.
-+  2: always panic.
++- **Top-down** (default): allocates from the highest available address.
++  This keeps low memory free for devices with addressing limitations.
++- **Bottom-up**: allocates from the lowest available address.  Used on
++  some architectures during early boot to keep allocations predictable.
 +
-+``vm.oom_kill_allocating_task``
-+  When non-zero, kill the task that triggered the OOM rather than scanning
-+  for the largest process.
++Once a suitable range is found it is added to ``reserved``.  The main
++allocation functions are ``memblock_alloc()`` for virtual addresses and
++``memblock_phys_alloc()`` for physical addresses.  Both support NUMA-aware
++variants that prefer a specific node.
 +
-+``vm.oom_dump_tasks``
-+  When non-zero (default), dump a table of all eligible tasks and their
-+  memory usage to the kernel log before killing.
++Iteration
++---------
++
++Memblock provides iterator macros for walking memory ranges:
++
++- ``for_each_mem_range()`` iterates over free ranges (memory minus
++  reserved).
++- ``for_each_reserved_mem_region()`` iterates over reserved ranges.
++- ``for_each_mem_pfn_range()`` iterates by page frame number, which is
++  used heavily during page and zone initialization.
++
++These iterators handle the subtraction of reserved regions from memory
++regions internally, presenting the caller with a simple sequence of
++available ranges.
++
++Transition to the Page Allocator
++================================
++
++Once the buddy allocator is initialized, memblock releases its free pages
++via ``memblock_free_all()``.  This walks all free ranges and hands each
++page to the buddy allocator.  After this point memblock is no longer used
++for allocation and its data structures can be freed (on systems that
++support it, the memblock arrays themselves are returned to the page
++allocator via ``memblock_discard()``).
++
++Named Reservations
++------------------
++
++The ``reserve_mem`` kernel command line parameter allows firmware or boot
++loaders to reserve named memory regions that persist across kexec.  These
++are tracked separately and can be looked up by name at runtime with
++``reserve_mem_find_by_name()``.
++
++Page and Zone Initialization
++============================
++
++``mm/mm_init.c`` bridges memblock and the page allocator.  Its primary
++responsibilities are determining zone boundaries and initializing
++``struct page`` for every physical page frame.
++
++Zone Topology
++-------------
++
++The function ``free_area_init()`` is called by architecture code to set up
++nodes and zones.  It calculates zone boundaries based on architectural
++constraints (which address ranges can be used for DMA, which are always
++mapped, etc.) and kernel command line parameters:
++
++- ``kernelcore=`` sets the amount of memory that must be in non-movable
++  zones.
++- ``movablecore=`` sets the amount of memory to place in ``ZONE_MOVABLE``.
++- ``movable_node`` allows entire NUMA nodes to be treated as movable.
++- ``kernelcore=mirror`` restricts non-movable memory to mirrored regions.
++
++These parameters control the boundary between ``ZONE_MOVABLE`` and the
++other zones, which in turn affects how much memory is available for
++transparent huge pages, memory hot-remove, and CMA.
++
++Struct Page Initialization
++--------------------------
++
++Every physical page frame needs an initialized ``struct page`` before the
++page allocator can manage it.  On small systems this is done synchronously
++during boot.  On large systems with hundreds of gigabytes of RAM, this
++initialization can take a significant amount of time.
++
++With ``CONFIG_DEFERRED_STRUCT_PAGE_INIT``, only pages in the boot node's
++lower zones are initialized during early boot — enough to get the system
++running.  The remaining pages are initialized in parallel by worker threads
++(via the padata framework) before they are first needed.  This can save
++several seconds of boot time on large NUMA systems.
++
++Each page is initialized by setting its flags, reference count, and links
++to the owning node and zone.  Pages in memory holes or ``NOMAP`` regions
++are marked as reserved and are never handed to the page allocator.
 -- 
 2.53.0
 
