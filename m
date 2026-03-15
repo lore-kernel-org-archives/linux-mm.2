@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBC1610854B4
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 00:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DBFB10854AA
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 00:18:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0464D6B0088; Sat, 14 Mar 2026 20:11:55 -0400 (EDT)
+	id B8ACB6B0088; Sat, 14 Mar 2026 20:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F157E6B0089; Sat, 14 Mar 2026 20:11:54 -0400 (EDT)
+	id B38016B0089; Sat, 14 Mar 2026 20:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E21746B008A; Sat, 14 Mar 2026 20:11:54 -0400 (EDT)
+	id A43F26B008A; Sat, 14 Mar 2026 20:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE2A46B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 20:11:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F53F5A246
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:11:54 +0000 (UTC)
-X-FDA: 84546369348.04.BB3DCAC
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 937746B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 20:18:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EB3F140974
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:18:20 +0000 (UTC)
+X-FDA: 84546385560.08.9BB0EA0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BDD8040008
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:11:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dCOqyIoY;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf04.hostedemail.com (Postfix) with ESMTP id 63D1C4000B
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:18:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1mfvhIr;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773533512;
+	s=arc-20220608; t=1773533898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Juoobn9SenIBsZDJw8uxAIZt8pyxLrXCQFAdOrJaUDk=;
-	b=kw0knzeULCa4UL3fxqCYfQ2zJOYaySRaXD9BrEYsFqDBuNPJcK6ztT9EqPfqaLWoASJR2o
-	1l8/WVldqDiPlyh+G16f4xRxiq5uNcJjcZ8jOeZRGPfeBTeJqbvI4Go4/IzbJccZrWjgRL
-	l+3ypI9udAr8k0a5QJOVcRJAM+KKrK0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773533512; a=rsa-sha256;
-	cv=none;
-	b=DGZt/jztS/8HfZ3NFLo8Ed5Z/bIizoBMUg2JbHtBJ3JDKOdNfZWb0EFXsHc9Vh1wqwui2S
-	t0+51XupoH3zqetxysea6bajQICIAkW5v/+36Z/DQZz98MX7PsybbTq8083t6AN59xNpKJ
-	xRqbwDHGkzok1awxhBgY8ebuNBUeeL8=
+	bh=olhnuRvcjv4k7NIA8mxtQfLu9spH4Yb28/CLzdW9jQY=;
+	b=j5Uu/qo3m3hxz76+PhEsjKImPbfWk2U646dnDKCp08KhCks8LtITdqRItNvmvWRw96WxZK
+	U0pFCBLiVD6sw0u3bdDr+u3Pw5VvBnkCVSlrpWft5L63SGLhJOGqDS/oaGeEsL8YtuqIWM
+	UziO4/AdXXQLWhwq2r9IomzViLmwEgo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dCOqyIoY;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1mfvhIr;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773533898; a=rsa-sha256;
+	cv=none;
+	b=e9WQ9rYpciCQA8uJUgEuYIjeEJclD6ob0zw59Nv6lpdqpJPLTVwuxiA5Pp2Z/LxRZN17CC
+	sAVH3yjT8IuJDbSdKKu2u3h/gs5uNr1p8o2yqyjDW/chB5AlfNp9dop8MbsJUWFZaMzsdG
+	OMQoX1YspGhxC0nz3OrK/zG8CCOSCUs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE1FD42B61;
-	Sun, 15 Mar 2026 00:11:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C328C116C6;
-	Sun, 15 Mar 2026 00:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773533511;
-	bh=L/1c8OBPkRGOP7RJPGO4H36hjk4kgyL6lAHh9ls8NYc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dCOqyIoYfThGDfYzUlIfU7lplof7zJXlU2c/1xJH29lmvTzocBoJakIccAly3gOBc
-	 1MnvHynyYj4yV/aNLELFgyfQUnAZnO/cIdTGjeE6GR/DRh/m0UAkBkcBZCfiyiKHL0
-	 ehzot4uwNzzK65jYC8LZCnelO/dU8NloJre5X+Bs=
-Date: Sat, 14 Mar 2026 17:11:50 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Subject: Re: [PATCH 0/2] zswap pool per-CPU acomp_ctx simplifications
-Message-Id: <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
-In-Reply-To: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com>
-References: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 72E48407E0;
+	Sun, 15 Mar 2026 00:18:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27428C116C6;
+	Sun, 15 Mar 2026 00:18:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773533897;
+	bh=3KrYYqBFao9HexZl8dVIaZI1Ujoz1XwPkmSGsgT1YxA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B1mfvhIr63lebUuyx+nRSgcVy5qyzJYvVEWDc7rnoUHJrE4d7wp2F2HMTKW8ct2Gw
+	 LmfuCbxL7JewypYtCy9HPjlvDT7hUzsbsZfkAr9tQk+2dVAj0Ztkl760OWSGAEaVDi
+	 zqTIUQ/j/vbQPrVmmqiqVGEFwSH69MQlmKzOrDysJVK4T7a/HGBREMYEG17zD7Xipp
+	 eQZEhFC2efcF5ktTFvH7wgOYWaZYv6nlpbkw8OKxxCQEkqGJPLYjdtKvZeRWjnWLr4
+	 QoJKE0ttdNLOQH/VnBNNJHXhdhPIKBMqCJXAX4uIxTy9xZEjKI+M2x3hca2u60Ldo4
+	 rh7f4+9g8ct+A==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH] mm/damon/stat: monitor all System RAM resources
+Date: Sat, 14 Mar 2026 17:18:08 -0700
+Message-ID: <20260315001809.77161-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260314155109.5e37efaea8ef72f169434d35@linux-foundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 63D1C4000B
+X-Stat-Signature: ri4f65u9mnzo31orqu69dkowhecwwkkc
 X-Rspam-User: 
-X-Stat-Signature: k8jwi37zhupmhemgxhdyxbkmsx8p311y
-X-Rspamd-Queue-Id: BDD8040008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773533512-345241
-X-HE-Meta: U2FsdGVkX1/RKToPDBIr0x67yj9Gra0bMUQQjn8Qu2gSe3mzO9fPgrCrgk/Zin4u1Ox22AZuVU46npbv2K1JyTZzxMLU9qrGf/80HFUZaAYhWmtaQnvTSC2D0PmeDWiF2ySy6mi81wcxmSxcxyEmMRaDYpuxq8yBYP8Ton+EtzwAsgU/Gx9lp6BOJnMPOgI5Phx+FMPewuHkGn0L/mejgH3T87cej+eh+XCE2sGkLjLRIl12x2a/LPL1r4Akk5NSeFkfdMjmAYuIumFVg3qOSZxSIBIn8nxWA4RqiiQoDqsz5mebAyhBR2Mz5qNwvDqhUKBpuJPqEQM566wWXjCYkWsVVQLRoYZewyZSj6eg3Dqk+ND1kB2JeVCJcbfCdB+2pKRx19DW33r33bBFX5cK8m4kxx1+vVqnmj0rE/BApG3CvTpSbXW4Bv+MuxonsOs/8qnT806Ww8kYUKmCJgL/r+DVveBYwClptarxPD1X6vfoz8hhPdMvADukEtcNnojmObgxFBuxE6PDGyyE+wjja6tysYeRnBSKAaYDgvirDbC2ipPQR4UVgAuL1AFSLqnG/DZYUM5aOM8qoeaRQgny3dKKdV6e4AoSijJhnGKgo8nYKPAUeL3Rt8zLym+RQvDJHRYT4Mlg/ZQVzqfvGPOZaAdVuL7Do+8f8o+ZOoCKzrHBuDbd4c6PSqiSeMTyFxGJg5CVAGO8bvulQfFaS3bBxjY9kDaJ5jZC7lxmR5E0hT7k6lH6Dt97L3HXsXhgewm0dkA5a2gHzYMyCQQX+OvCbAmBCclqhypRw6NwK5yNIgBJxpGWC56xchHHsZVqtuEkADgPcnhUXwIlwvlbLoLfQfDarL0vjgSxQnRLd3mNHkH70Q3LayjirK4vIBGyJGFHBg48bqyb0zlkkSX+pzhSlhPoxYSwin6K59iogHaLE91/azLn6GyRuR4BRPtHkHHkZ1pC8mEL+GJNr0r8kYt
- /VP1PsaH
- 8t3mq34LiEkDAskjY/eG5Ajb4EW5eVEZHRMIyiKsrnoP/lbqvMTlh6gztk569w6PJUUXvdsjYN9+IvBFpl2isTaKLF6WGmPsFKQ2tN5BkB1im0YjtB7WdNQqYTf1nV8o1fCcwIVqZaOWdaoQZ5sVn0vuTaKh4nljzpXdIRiidRSM5aELwjqwqkCsH3us9qxhRooiiwz6kUaZdxUTceliAGwVvcMk8z0/ztZ51pC/znZRyQCB4s+tamI9ZKTJKZH/gYVSy9o/YZQzxGyXELav6M1GBh2nZcJbsMDpzIKEPp3mG50saKGyWj+3lW+RCIZdmIO9YlmkFWqvYn8jzFCB6tmVTbA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773533898-50442
+X-HE-Meta: U2FsdGVkX1/UUoNFL1ipz3PFuCaIRwPsVvgIvP7MNaZDfYabVJTRkZEnUYghgzle7s8VCY/wpYHn3AJYsv0QSYnX1Ke+ltAe8B5c/syBxHdw4rkhBnVX0RO0MHYZgAThAQfRk6I6kJmtnjebDaRyhhPJJ8gMtE9xqSZxH4LSAwzcW7da1QwBCHgb0/Iums7yaWVD2DFUl1JHJUnyoLU5DSqgjJ+0WCmuRXj9Qe1tNM0gPc7VEY/Dx5/VyN1XDE+xEDHctKHNF7X1dQMiy8lE7jduYS/3OfsVIm9LsV7by4yPWgpLPiKsHW6qhfXkn/cWMfmW9P3QwePUJZu0CaGeQnY6TGo5H3tjAuDYXjV5o/NIFrk1M328kCIhUfBgl85XAnVahGlX8gAA3rnAqWe3HHtzfYRlXqZafi9VcKE0lcvhpCiuqFugBsZGYhcQI/tESiuXupBogbm/PKssWIzwWOnMY6iXKX5aGVkskCRuovThXERLU0A254n3WUbPtevn1IVJaUbK3baNxQGOmaYyg7U6ly+sWjMxAWYTn1mzSMk7l/ZqumJiMCkg3ULw+tgFOsxbiPVJbUmrf1BmhpC3IswgdafN9hoN7RKPftd6IpfV3Lqyd0RKE2Qeo7EfjszFjEP+24lL094ZJOgeKaiLFfZ+v28jSqFJKx+IptFcoGwStBgXXjlN81u5Bg0z1R0NAjurpqx8G7hpY+YhOMCFxYadYBxSG/6q+CvoKbS6jMKq9nsLmXuEsVvinFQiL2dM0IHBVh8rx2LuDBGTIE2T3D8Z0Cc0MgGAHec98q1Nyerfi312J6Z2IyqJK1jdl/G0uYp1Paatx4EOSEwetwclN/ag6PturM2KLgVztlUyrzfQ9iLRiBSLnLFFFaFbqFXQGTlblHhYZ9OPChgT4U6e3nDpzQKkFT55/2qO/rK3hQ6ivrP32T82S7GMq53tG9C14Uan4PDdEl87KgvIHce
+ GMNONHGC
+ Fcywteo0ZK6VrnHNZXS5Y7Mfat+HXxibHWqoesx6W8GKLVlc4icpcuo/FgnDiyoJgehYzQ5FZVS/xI0Zca3OXDuXU3xKp4X3r+w3Gdnznyr3F1kt7NbeOKAjj93lIUFW1D+Ds8fN39mXnP8U8fSTmTBhHhm5CbCRbEJyXy3yoQRfV9bnxm+CIoVGG0l7kmhE8PJYn9FwMiK7q4nZbw9UdA8IvCK0bE51L6r6+KJ4V98shFavCIFaUR+qKcmrMKZZkakX1u5hI4PBXsO2/y3N9m+1hAVPKYoHbkyoTIN6RyPR2BihJyF7eeJykOwD78T+b9XEIkd9acSLt5UVz5uqOjwKuzhb9gjfMBsbFRfxRBz1sBG3xcS5l6pMu1uNlT3LJHJO1tyYqId6dnmkEQZtDRkaLmU5TMNxlKkPL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,18 +94,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Mar 2026 22:16:30 -0700 "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com> wrote:
+On Sat, 14 Mar 2026 15:51:09 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+
+> On Fri, 13 Mar 2026 16:40:22 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > FYI, I found this issue from an AI code review result [1] that published on the
+> > internet.  The review also added two more comments, but those seem irrelevant
+> > to me, so ignoring.  I don't know who made the web site.  I only got the url
+> > from a social.kernel.org post [2].  Whoever made the web site,
+> 
+> Sashiko is being led by Roman at Google.
+
+Thank you for letting me know this, Anderw!
 
 > 
-> This patchset persists the zswap pool's per-CPU acomp_ctx resources to
-> last until the pool is destroyed. It then simplifies the per-CPU
-> acomp_ctx mutex locking in zswap_compress()/zswap_decompress().
+> > thanks for the review.
 > 
-> Further, it consistently uses the same checks for valid
-> acomp_ctx->acomp/req in zswap procedures that allocate/deallocate
-> acomp_ctx members.
+> yop, it's good.
 
-Sashiko has questions:
-https://sashiko.dev/#/patchset/20260314051632.17931-1-kanchanapsridhar2026%40gmail.com
+I'm now a big fan of it.  It is really good, except the lack of the dark mode
+;)  I therefore added features [1] for showing the AI reviews on the terminal to my
+mailing tool (hkml).
 
+Anyway, this is really awesome and helpful.  Thank you for developing this,
+Roman and the team!
+
+> 
+> > 
+> > [1] https://sashiko.dev/#/patchset/20260313044449.4038-1-sj%40kernel.org
+> > [2] https://social.kernel.org/notice/B4E8DdeZY07PseemfI
+
+[1] https://github.com/sjp38/hackermail/blob/master/USAGE.md#reading-sashikodev-ai-review
+
+
+Thanks,
+SJ
 
