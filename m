@@ -4,94 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C9C10854B4
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 00:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C3610854B8
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 01:06:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 137666B0088; Sat, 14 Mar 2026 20:37:55 -0400 (EDT)
+	id 772516B0088; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E5716B0089; Sat, 14 Mar 2026 20:37:55 -0400 (EDT)
+	id 71FAB6B0089; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F26156B008A; Sat, 14 Mar 2026 20:37:54 -0400 (EDT)
+	id 61D9E6B008A; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DDBD36B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 20:37:54 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BE9F1B8B53
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:37:54 +0000 (UTC)
-X-FDA: 84546434868.16.5AE85A5
-Received: from master.debian.org (master.debian.org [82.195.75.110])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B40094000C
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:37:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.master header.b=w0XURBVL
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B6D76B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B58751B8D75
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 01:06:33 +0000 (UTC)
+X-FDA: 84546507066.05.0B448B6
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 15CC8C0006
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 01:06:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cBSq3R1c;
+	spf=pass (imf22.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773535072;
+	s=arc-20220608; t=1773536792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qQjj9J4spuAdNma8qjIGtf7fmYqmZXfhy3etCegZ9lc=;
-	b=t9fJZg+1oWjosgyq4NK+oGFSF//TL73UJVInJ47WCx4ipMXT1ZTo+/+wlKgph042gZR0SH
-	ZalzSmmYl6t++4QmRl6SU8y77xMfPqRDAlPJBxDTQk9xf4YrUPVq38DtnWHdb4cEnr6RCf
-	5rdaYGL0njalavKyy/zbrKKSYxVfvZ8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773535072; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=breDgvR98s/9To7zMmpKVC/JH/4VMjY7A6WXWrwfXbg=;
+	b=hgkftag+WLBZSRR4opak0iy6VhKi1rTVkeKMCUZ/6gtVq/RVEFnBiqUR57yvN8oxPkYKW+
+	yTNcgUZZQSkTgSiQHwCUuNVMBcmS3Rcw0aTJ8ihMuTPIv/oAXjmvEJvUsRfSx/w/iXTuE+
+	H3OwOYbaC2hn32JKwSFMfxFeQ6AS84A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773536792; a=rsa-sha256;
 	cv=none;
-	b=hQ9iKCqp/hnFzHjVto0ZshzKdk2NUJ0JZP3CbjfVJSSOjWBHgIgZ1tiGznJ1YkQvHPOXfl
-	9ynktYFrDAp2v9ywFMcm6cU5ILBBnwdOz+9lx/LpME+tTFBS3J2G/JsBgfjYCjegOf7qI+
-	RrCGkXJA1Df6hRLJwJgdPN8gRX3SQnM=
+	b=Pq51bpirR8NODuIEE97PbbQXbvqu9eEN2seYp7MlN6AJE0pyO1IpJbAj7IC0Ryw2PWwrZF
+	61LBXDKY+hfs4WPTN5rrzZKCAiwTNA3CsuVXRxHs1ix0Bj3eWR2w0RWXtdP9O0UuWqYBQ0
+	LjbMG6ZRzWtmvUj0KHknQSyU3czLKnY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.master header.b=w0XURBVL;
-	spf=none (imf01.hostedemail.com: domain of ukleinek@master.debian.org has no SPF policy when checking 82.195.75.110) smtp.mailfrom=ukleinek@master.debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.master; h=In-Reply-To:Content-Type:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description;
-	bh=qQjj9J4spuAdNma8qjIGtf7fmYqmZXfhy3etCegZ9lc=; b=w0XURBVLisQDTW3k7nYhdk+cUW
-	KJrCgjuI/P4Co6MmgK1YJO89VF7QQ76pE2StF+Px9uj7ShK9p65PLpBaytg72jzRXW8IEPHiZAo62
-	QjOpwlOIfRCxSKrVQPpjTLL3Ro+p5wbpcDiTPwaoEMy8MGSiIN3c8hNm6cGw9CzMrGG9QpFF6eQ5+
-	EGNfFu1O75imTtKqHMe+r3hR8zSqPx2usbsZrRfEQ+mX1jFhQSNlsL3f4w/68syfXZfVz6ebLwFbQ
-	dAcgC1tJ7pQWnnKfzElJNOgnOI6s0Bs/veh5Mm+68ny3RxQHbwKyWSkF/0yG5BaXSAzT4zupjQGmg
-	nlAydE4w==;
-Received: from ukleinek by master.debian.org with local (Exim 4.96)
-	(envelope-from <ukleinek@master.debian.org>)
-	id 1w1ZU3-002ktt-13;
-	Sun, 15 Mar 2026 00:37:31 +0000
-Date: Sun, 15 Mar 2026 01:37:29 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@debian.org>
-To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, 
-	Salvatore Bonaccorso <carnil@debian.org>, Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	regressions@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Hans de Goede <hansg@kernel.org>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, benh@debian.org
-Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
-Message-ID: <abX53NWDsG8oW7H6@monoceros>
-References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
- <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de>
- <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
- <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de>
- <aVgjpWaIRkerdgCa@eldamar.lan>
- <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de>
- <aVj-mz8vaw53TWtX@debian>
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cBSq3R1c;
+	spf=pass (imf22.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2aeab6ff148so56975ad.1
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 18:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773536791; x=1774141591; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=breDgvR98s/9To7zMmpKVC/JH/4VMjY7A6WXWrwfXbg=;
+        b=cBSq3R1cdQliEGewJODpj5bP1EfF0vOXxlERsVinl3RB3ukXJ1JyYIFLZSsQSQvL+g
+         ZfpU/2qSDX3i5ByJkCXAvi0/5ZdD3cbB49l69Rbqre91d3Mebcf1hx4r3Bmwx4uEsWDQ
+         jUEDUy9uuroCkZVVH/hawUw09C0IO4RDk4YEuT97rueeIuPIny+2i+FF6W4xheHFIOKq
+         HTa7+rwbNUVylzAqicwRdaN4f2quQBlyt7pMkyEpNaHI1cEY2VRD85MaLSYN8np6Z0ZD
+         DQv+0bHeCxj0LOFjgWKQBeBDYyL0oUEy59Vz5EjPiAakgQAsi2Zp6FRNINNsvt6Nr/dO
+         W1lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773536791; x=1774141591;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=breDgvR98s/9To7zMmpKVC/JH/4VMjY7A6WXWrwfXbg=;
+        b=D0pcuaGUpO5bR6ZkI3eSKWoJOBZK0VeEpXZY4Lwpf1DlhE+eM0ZYhPuU/BPkWLH08j
+         AWOIs0jnJanc277zcIEO/8ZAB5viOgeQnzH3lTByE0+cmypga/OGWrJBk7ld2q3w5xCW
+         vR9ISiVkaAict2d4DO04eHBFuUX8YUFB+fAtBS2BtxerSBXuQGwwT4SYO8FRQHYob5oE
+         1N4QT7A6JAmXZTSW9bUEWCI/4s7R9uinWAhsv6l4NiXFZGn2DaMKOU280kNnJlV/AfQS
+         8F2iBisOz4dTebYmQiT4uKcyP5r8vWw+JTxZYtZ5M30m06igWV2ix1RNmRBOj8IFy75Z
+         nqkg==
+X-Gm-Message-State: AOJu0YxwA8DQK5vfQ3yMrKt/JRlegQ2ETQ2MQ6EgoHiUcN0EbpncBUwg
+	Km+JM+4D8VhzyGouScH8xNiRiAZDj5GBYn+pt2iYHci19uYyaSbuLzdxWvCctfvcqg==
+X-Gm-Gg: ATEYQzwTOmSudZo93JNHrt7NMoN6UrLfaMalTey0EFs9uWpmocRWZ+dDVdRRJM6sQ4G
+	ipkqsQNpLJHyAWuCaJ1D86OpTOAY3ZgtqlXyojfdhtrJQox/o7YfNyRWXVyT7UJq+J0PxLWaHHn
+	+kjE1QkTE3FTaju70A+geh8neXvKQRWwCt8rBIPI4GjfBhuBxszx5+EmkR1uLpcy+EHmwd+pIhK
+	K1ilCpQaAyM79SNwA3vd4UX1LGR8IrKzkK1abNc3MjEUl/Jx3y6mwQ3hh9CC7VoOoAFJPYEUouE
+	pNanH93MWvFvfBjYCOSO8PfcSaxeODX4apRr9ErnBIyc3BaGsYLouViPqcPLnaG9pnYFihdmGIj
+	e1f/baI3f8vqFjBvBk6UBDZ+I+kdvOnDr/nleUGIez8Qfat5ozJ/papOrI1SEe6loA8QmRjYVy9
+	a3/Uok16hfhLRoLSZ8Km5VHYpw1lFgVCwaQlbLldkXAh1B3p+x8Ofc6TubY6M0PP+R9VyETDBgK
+	r4TMXxdVA5T7kYXWS7ajGij9SZsDjitVuuPTGQ1SVbHYCQWL8t/rQ==
+X-Received: by 2002:a17:902:e849:b0:2a7:6c4e:5914 with SMTP id d9443c01a7336-2b042087e19mr2365515ad.6.1773536790052;
+        Sat, 14 Mar 2026 18:06:30 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:f531:45b8:548c:e004] ([2a00:79e0:2eb0:8:f531:45b8:548c:e004])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07287ef8sm10728741b3a.29.2026.03.14.18.06.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 18:06:28 -0700 (PDT)
+Date: Sat, 14 Mar 2026 18:06:28 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
+    David Matlack <dmatlack@google.com>, James Gowans <jgowans@amazon.com>, 
+    Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from March 9, 2026
+Message-ID: <2c094579-77d8-7de1-0a49-9138aeb69e84@google.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uose2pk73ch6jhan"
-Content-Disposition: inline
-In-Reply-To: <aVj-mz8vaw53TWtX@debian>
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B40094000C
-X-Stat-Signature: oubw5ozax7sbh8578oaqqp89pq3k8aa4
+X-Rspamd-Queue-Id: 15CC8C0006
+X-Stat-Signature: 6itfes9fi9pka587wqb1t734z5pnc4s5
 X-Rspam-User: 
-X-HE-Tag: 1773535072-93430
-X-HE-Meta: U2FsdGVkX191pZBanAatjEefTbE/XjkN/Zw0Kgrfx31h9hadU8bsIzmL+W9DULApwGDR23xpTHnA1bi3CrE3LH6UgmGMMFIFV2OyIWDRWxWxQSJsymv7/5VMq5ntyhMGzVV3l7kVEMZeKGoKltUT1siZgbQd7ohWIQf0ivcNIYU0Tiruuq0EM1FMzoHRrbkjBs2gL4Tu4WFoyGkDpiAjoVDU2tTUQOz2+aYZ/IAv6ZAqG96Ag+yiJ7PczZVeAGKvrazhoCBG2ESXj0yA00NP0wQL/l//NE/9bDDkIeR66G1lZMTopY1s72WBxy3ACh6JySVcihwHOiziVqtYCOXpHCjVGJg96+1d7l7DbPE5eLbhkOfg+gX70jm1YzFQnoeLupjEXK26y5CT98RJmkLn7SZa5s8L1tOSeli5a0QGdWU4JcjACDG2se5ubC07SmpqCGxw4PduTIzNw3bg/8cKAKFzfnRe0UHzbxYsi2Id5jdw9R/wNYBAo46Su4tvx+BouvzUaGxrpCQaN4gdD45xgN1NK+DMZ7kQ6FjNokFjH/n4T2vUWNsb2ZEHwEtgCJbMiRGq6wfaDDaQowAadfcN0oqDe/gccOuV3tAkOOqf89uMd+xYj0DmR9ehcXl/EzE/dd4hz2NLz1xZSxH0mk7eaqtP8Qf9GY57Qx6+rrrJa2WvrOZlGEQh65ZxaJCbHg/wWQtw/cE/u8bY5jZmi1YSvw+gnOJlSWBwyehPzSVLQxu5Q4xaGEt7M61kNDFwEJW8YVOT0UM2Ra05BZpog5i6yw58gySi9OlZdufDbnKF1gEXKwaAvFjTtIS3pFGzCkj0c2UC/3V8f6XPvMsBRaCnpY0GqitHjoiOMkoILt4eun3Y5WjTOG7+/75pJX67V5ox+cWNj0p4ABxCd+xQZ5HomhWyffJPNxnHfgQ6HsniipXrsEQ5xzTiEb3AiZ8aA4hOFR6AYuQdd7Cmv0pT3hR
- +4JV3yal
- eRikySdZ6J9GbG0wVk2eA7+Y43MgMV36Uee7fh9eGN9HQUh0ocJMiiK4Lk4Jf1/pQKzCWYedcPGE+Q7widfwpfLVrzSqNMDar4wTbx74m5+0m99xqFNyE7FIVOAChC6t47nE2qJdnwLBCARFMOytzTqko/GuOvt6ZgJiwcry31e8smGJjnJl7QWpKzP9xPwZSEqi4u9mHoqlr/TnHI+1WJ/dnVt00/YbeZRbUarVj4COahJYSZRKzdBhxR4w3+VEi8fKUB9FmuZd6S4aHZ29ADG8/lwIYTpOx7JES/9hZph1vHUTFf2orMe5wzfGZ1DDI0ZxcZFRTt3gjOCyJizYJLHX1OrFipYWHexn2hFtSOn1kEX+Qe+jQuOFY4tQav0HEHOAV29lIF6bHKEGoUK1ITmgjC/9PraZa3Z7VDHH6f1HseFiNl1RviPPgHDM1AL3kUTSrU9l169/HOGXVLKNy90vHIj+o9TgYRkSOfiar8E0TWXvDDU+fHSr9nZGbZKQNcNWX0LfTtoo9kHTzmgDVv4R6R1RRlz6V8Z5KFD1Yhh81ievnu+jm3dTaEg==
+X-HE-Tag: 1773536791-390447
+X-HE-Meta: U2FsdGVkX18qXgWIHpSouY8HfN/sNWh6qZhwXrnA66TgAjyDGTw3nVOJtXm/a+2qe4cxVGiX5EgEAdiONDVLtghOL24Ys/d/j2OV0CC1ow11V8hwEp72gKL/5+IeqfRpD0aLS+NKrjI4iNBWGzRtJ1EqX4JLZ5HgPsSfmaEprosuSbb+vM5TPW0qCbuW4hEo44R2DbXVgvQoCG5AxSJD7Wu3i4RzMHoVwLOMiQhwp8S57vKVuqsr/k9UcHmeycjqRhaB1pugjaGr6anspx2S4GS0iGSZAsRIDu0joh4YaoSOVwD3gFnjoXON3jtzlQRmpDLEW5zZYqDzjWLeQKtq54LpEHwHNaJJ5Wv8+S6E90L/sMy8CxXgT86KT7PXYX6v6q+Nrpt4YMybhNel46BwBcwbD5gb0Ub4v5BEQjUPBhmIwbWnwYFGDrzPfeZgyKYZtHITO5IjkrBZBM83L2C7sc7EF7rh9eTzKy1gk0S3A6X/B9w2ZEqdKpK6A0C9IwnNPx4fh6epCxhDtWadgHKp9PVCuKD09ZrZYjxnQkGWdQNxZotWsYJ74MawG//eA8VIFYMEZSS+nolBtzohCgwGU/I8OYh16XD7OisPxuXiWCFvWWyqR6XjSExrJ+EVolBdWrw6CtGbqhoOelCGe4gxEkpHCn4GAEuWUsdcZnSDJLRcb1Sk2F5qkXJhJw+qR3z9UYblH9uBpyN8a37gl1PO24UE8dz2EOGpg+81KhDh/IK7F8McBNSO+F1bcloVNEa0iGWFtsRS/YLgC6H2IyyuuRz+mclaUcmKtjHODgZVYJVw/pMXl5MF3QPONsHMcaW/J/I8VqLmU6DGa03llzRFBoIWL5yhpB726ak8quX9+BcQc98bK15U4k+EMDEqGKWsn/6IZOYqbenVY7h3qg4t6f8ClHkz71R0h2i3wpOuI5TkNq3rUlZ1iPDwttjgNmnvFRp4OYYfRU2jOzii3NF
+ mmLDZBLK
+ u0oepwzTusilMvSj7PRax7ZirGcUDa2ZStEWRW6xFDW62njt+EyZxN+FoTNtciHpIVfAO8vOenDFNJEnn+qIedGfCEnoYo9jRVLWHIr0GncITA+ycSqv/9Lz6m32q2sReq+gkpfY+aRIN6O0Bn6vAfHF8Kqz1boocLsLcp2vTS4sJOlHS6JEoUJoMFxpzSQAw9gDlNep5Vk45i3F3pGN3FI3v/oDpuEA13yB56h+S0Ipk90up5wcRWn5AgcUsMOB+tGuw0WyltAN0E6cxnkqBI7E9HsScsfLAKGZI3Er00Pl4ctCuVAHS6JUo1l7ZRW+PeEG7c8inZeo1fkH8LIY+S20EGRRH+UdFLLdv2b5b4Ws14flxQudqrD2m4hFMPwQ86c9518/31zUe8VU0En1P4W4LpdsZAElO3gnIvyIcrjid1QY7NCFLBrlSPsZmM6FjLgvZ50VN+GQEwpFFueTgU3CDFcf6pj+/tEA6Ag0hiKq9SjQNjqDPGBCFVaoMu2IZVWPOn/cZYI2n0SafcwomhWwobUj9/X6et1n+EYzxuyqvpGugUkwQg6L+uaVgZ81UA3AuIhdYVWJnOjy9qOTjyYetUlBRHeqrIKrCG4FhFqWDHQaEAwNtsxueMs4TPSGsQkwbwFeOrgXWaryxeDwgely9PXWzEzHTKOBO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,153 +120,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi everybody,
 
---uose2pk73ch6jhan
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
-MIME-Version: 1.0
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, March 9.  Thanks to everybody who was involved!
 
-On Sat, Jan 03, 2026 at 11:33:47AM +0000, Sudip Mukherjee wrote:
-> On Sat, Jan 03, 2026 at 12:01:19PM +0600, Paul Menzel wrote:
-> > Dear Salvatore,
-> >=20
-> >=20
-> > Thank you for the follow-up.
-> >=20
-> > Am 03.01.26 um 01:59 schrieb Salvatore Bonaccorso:
-> >=20
-> > > On Mon, Dec 01, 2025 at 05:05:59PM +0100, Paul Menzel wrote:
-> >=20
-> > > > Am 01.12.25 um 14:25 schrieb Sudip Mukherjee:
-> > > > > On Thu, 27 Nov 2025 at 22:55, Paul Menzel wrote:
-> > > >=20
-> > > > > > Am 27.11.25 um 19:51 schrieb Paul Menzel:
-> > > > > >=20
-> > > > > > > Unfortunately, not reproducible, but starting with Linux 6.18=
--rc7, I got
-> > > > > > > the oops below *once*:
->=20
-> <snip>
->=20
-> > >=20
-> > > https://bugs.debian.org/1124075
-> >=20
-> > This is
-> >=20
-> > AMD AM5 ASUS ROG STRIX B650-A GAMING WIFI, BIOS 3067 12/10/2024
-> >=20
-> > > https://bugs.debian.org/1124463
-> >=20
-> > This is
-> >=20
-> > Dell Latitude E5470/0VHKV0, BIOS 1.34.3 11/20/2022
-> >=20
-> > > Does it make a difference to cold-boot or reboot into the system?
-> >=20
-> > I only did cold boots, and I am not able to reproduce it anymore, and w=
-rote
-> > it off to some hardware issue =E2=80=93 despite the system working fine=
- otherwise.
-> >=20
-> > I am adding the x86 folks, and regression lists.
->=20
-> Thanks Salvatore for the Debian bug links.
->=20
-> I had been trying to reproduce this but have not seen it on my machine so=
- far.
->=20
-> But looking at the traces from the Debian bugs and the trace from Paul, m=
-y best
-> guess is that its happening because the low level driver, parport_pc in t=
-hese
-> cases, has not completed setting up the hardware.
->=20
-> When 'lp' starts registering, parport driver will check if there is any p=
-ort,
-> if no ports are found then it will try to load the low level module.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
-rivers/parport/share.c?h=3Dv6.19-rc3#n198
->=20
-> As mentioned in the comment request_module() is not trying to load a real=
- module
-> and it depends on the alias. Also, mentioned in the Documentation.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/admin-guide/parport.rst?h=3Dv6.19-rc3#n45
->=20
-> I am not sure why the problem is seen now, but is it possible to test the
-> below diff please and see if that fixes the issue.
->=20
-> diff --git a/drivers/parport/share.c b/drivers/parport/share.c
-> index 427abdf3c4c4a..8f45daf7b3825 100644
-> --- a/drivers/parport/share.c
-> +++ b/drivers/parport/share.c
-> @@ -287,8 +287,16 @@ int __parport_register_driver(struct parport_driver =
-*drv, struct module *owner,
->          */
->         ret =3D bus_for_each_dev(&parport_bus_type, NULL, NULL,
->                                port_detect);
-> -       if (!ret)
-> +
-> +       /* Return if no port has been found. The driver has been
-> +        * registered, so whenever a new port registers
-> +        * attach_driver_chain() will be called which will then check
-> +        * all registered drivers.
-> +        */
-> +       if (!ret) {
->                 get_lowlevel_driver();
-> +               return 0;
-> +       }
-> =20
->         mutex_lock(&registration_lock);
->         if (drv->match_port)
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-There are several backtraces, I looked at two of them and both trap at
-an address that corresponds to:
+----->o-----
+Pasha updated on stateless KHO: it's now in Andrew's tree and ready to go 
+for the next merge window.  He noted that deferred struct page 
+initialization was being worked on as a next step and then attention will 
+shift to optimizing start up performance.  We want to make sure KHO is not 
+the long pole.
 
-        /*
-         * This has to be run as last thing since init_state may need other
-         * pardevice fields. -arca
-         */
-->      port->ops->init_state(par_dev, par_dev->state);
-        if (!test_and_set_bit(PARPORT_DEVPROC_REGISTERED, &port->devflags))=
- {
-                port->proc_device =3D par_dev;
-                parport_device_proc_register(par_dev);
-        }
+Pratyush noted that there is a weird interaction between HVO, sparse init, 
+and KHO.  HugeTLB pages must be allocated before sparse init but when in 
+KHO boot we are in scratch only which wouldn't allow for allocating such 
+large amounts of memory.  Pasha noted that there is an exception available 
+where we can ensure that memory is coming from the preserved tree.  
+Pratyush said we should parse the bitmaps and make the memblock 
+reservations but we don't set the order in struct page, then turn off 
+scratch and do the hugepage allocation and then parse the bitmap again to 
+set the orders.
 
+----->o-----
+We briefly talked about KHO enlightenment for ASI which wasn't deemed to 
+be super urgent.  ASI can be merged without KHO enlightenment so this 
+could be a later extension.
 
-in parport_register_dev_model(). However the trapping machine code
-doesn't match the kernel modules of the respective kernels, so that's a
-bit strange and I'm unable to tell which of the pointer dereferences
-there results in the NULL pointer exception.
+----->o-----
+Pasha noted that he received some comments from Pratyush on the luod 
+design[1] that he would be iterating through.  We welcomed anybody else to 
+continue to provide feedback as well directly on the doc.  Pasha discussed 
+with Jork and there will be a three-way meeting that will determine what 
+the intercept will be with systemd.
 
-Maybe this is also an instance of the hardware disappearing? At least
-port->ops and pardev are non-NULL earlier in that function and all
-static initialisations of a struct parport_operations have an
-init_state() callback.
+We discussed versioning support and when the timelines for landing the 
+support would be.  Pasha suggested that we would need this when we start 
+making strong guarantees about supporting live update from version to 
+version.  Pratyush was working on HugeTLB preservation support ahead of 
+this.
 
-I didn't try to reproduce, but maybe adding a sleep before that call
-makes it more reliable to trigger the problem.
+----->o-----
+Pratyush updated on HugeTLB preservation support and how it would be split 
+into multiple parts.  Part one is selftests that he sent out to the 
+mailing list for review.  He is currently blocked on the ordering issue 
+mentioned above.  Pratyush suggested upstream code review from upstream 
+HugeTLB experts would be very useful on the list.  We discussed handling 
+this at the next Linux MM Alignment Session on Wednesday, March 18.
 
-Best regards
-Uwe
+----->o-----
+David Matlack is prepping v3 of the VFIO support.  He was working on 
+preserving VFIO file descriptors but not preserving a lot of the device 
+state itself.  A question arose upstream about userspace being aware that 
+we're in this development phase where files are preserved but not 
+everything on the device is preserved.  He didn't see a long-term need for 
+a UAPI that expresses that it's saving bits and pieces of a device or 
+letting userspace control what the kernel preserves and what it does not 
+preseve.  He was thinking of doing this under CONFIG_EXPERIMENTAL.
 
---uose2pk73ch6jhan
-Content-Type: application/pgp-signature; name="signature.asc"
+----->o-----
+Sami received some feedback for IOMMU persistence but otherwise no major 
+updates.  There were some patches sent from Intel that would be a small 
+dependency for hitless replacement that Sami is looking at.
 
------BEGIN PGP SIGNATURE-----
+----->o-----
+Pasha brought up plans for the next steps for live update while keeping 
+CPUs running through the reboot, which will be a long-term discussion.  
+This will need to involve KVM folks in the upstream discussion.  Jason 
+said it would be very useful to demonstrate kexec live update with a very 
+simple VM with no VFIO.  David suggested a KVM selftest would be useful 
+for this type of demo.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmm1/0cACgkQj4D7WH0S
-/k7w7Qf/YDFqDdl1ikNbsRrCYn09s/ORe636Y1y6Zrxj3C3wh/iC1SzviEqGTHGR
-np7DjJXGWkqgAu68RRUt4Cd2c6j+CrhS0QHQHvIals7OFvQk/m80+7iEd91cOUGo
-BfSxvK+xYDXU85HQFpGy8Kd/Ag+gauala01DI7WbtyhzutJI4ecFfn4MKtnig+p4
-1QGNDFljO7kcHjODlUrDX9lrL88WNzFOgyB1/jZhnPC2btGcrFhUwu+/smzwmfXg
-p1fWF/Zzr+Fd837UntPMFpeypzrJMYTArxQ4l7SJ/Deai3GKA61pdn7boNwiMPeG
-bKuuHuT5N9nH83fVvN/Sdw5hvXXdCg==
-=wbgD
------END PGP SIGNATURE-----
+----->o-----
+Next meeting will be on Monday, March 23 at 8am PDT (UTC-7), everybody is
+welcome: https://meet.google.com/rjn-dmzu-hgq
 
---uose2pk73ch6jhan--
+Topics for the next meeting:
+
+ - luod design feedback and intersection with systemd; implementation and
+   next steps
+ - improving KHO and boot time performance, including deferred struct page
+   initialization
+ - HugeTLB preservation support including selftests
+   + debrief discussion from Linux MM Alignment Session
+ - VFIO patch series review from the list 
+ - phase 1 of IOMMU persistence patch series, then phase 2 status and
+   updates
+ - hitless replacement for iommu domains and patches from Intel
+ - guest_memfd HugeTLB enlightenment: conversion support, HugeTLB support
+   without restructuring, and HugeTLB support with restructuring
+ - later: versioning support for luod to negotiate
+ - later: ordering issues when disabling interrupts based on feedback from
+   Nvidia
+ - later: update on PCI preservation series and next steps
+ - later: KHO enlightenment for ASI
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1] https://tinyurl.com/luoddesign
 
