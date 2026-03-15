@@ -4,132 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C0EF3026D
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 18:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7653F3026E
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 18:25:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71D606B0089; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
+	id ECF7D6B00A3; Sun, 15 Mar 2026 14:25:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4EE6B008C; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
+	id EA81F6B00A4; Sun, 15 Mar 2026 14:25:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5A66B0093; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
+	id D895F6B00A5; Sun, 15 Mar 2026 14:25:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B7BF6B0089
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D72F71A0BE1
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:10:53 +0000 (UTC)
-X-FDA: 84549088386.07.3F3DC17
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D182518000F
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:10:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1h8VGye;
-	spf=pass (imf16.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773598251;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C66C86B00A3
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:25:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 594A81B9355
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:25:42 +0000 (UTC)
+X-FDA: 84549125724.19.D60E107
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010035.outbound.protection.outlook.com [52.101.85.35])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3FAD4140004
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:25:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=2EfeFRkE;
+	spf=pass (imf26.hostedemail.com: domain of shivankg@amd.com designates 52.101.85.35 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773599139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wFfWUXvwHoJE4xSBTFJR2gnf8f2b6YS0PT0BDPveSGA=;
-	b=MAm3GmCLSOs7zKLxw9U8ONfhQBvkjW/V5KUdjwZQ8dCkLst1Z5FeNt2/1Fb1j0C+n11PZI
-	OQQjr950HtVkzU1XKyxWED0Ng9NOC5CFQdjWgKnTD5BRmsgEAl2YsjSGSYmdAM3nebF1xN
-	OKelv2HP2QurLC8G7ABGtr/dNmBfsyo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1h8VGye;
-	spf=pass (imf16.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773598251; a=rsa-sha256;
-	cv=none;
-	b=eB5tbluE2DqlSbEUA5P9RDFJD2jbLJcdMrUf9KBuFu0oFHR7yvqcDGN5rTnRxnj/7mZvjF
-	d+RS4U3EL2Be7wzXie37fb/U0suN67I7yDFqjKaNXLcRDciA0Mx/FUR6tCwkJFzde4kL8U
-	9CoIdvXHXpbHTTHlrE1LHv2KTCKL3n0=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-439b6d9c981so2693304f8f.1
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 11:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773598250; x=1774203050; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wFfWUXvwHoJE4xSBTFJR2gnf8f2b6YS0PT0BDPveSGA=;
-        b=V1h8VGyeX5bENgxdOgE5fh2v7kg19rb9edqfyOB9ZZ4WBOG9uJWtII31a7IjrStnI+
-         KcNuIvHvOBfM8+nsXpi5HO6P+jD2ExSUHa3kSRwZjzyTD0BdP5D79S0mmwqs4iT9IBGo
-         C6Rz4z4akgmCjiLekukLMy/5PUFNEHlJ5IPWnGvZf816eCXIgU5ma7ofNZ6kqePl9Wnp
-         isAoPUuCCIfTWwao+aywWZwTIKFFFei6adXtOCkAMK3JQwzjKvtVcNDj7iixb7a+KzUL
-         12yjftZBWWAV0aAoRm3H1AXSshgLqSiI8VfzKGYOIRslBmW4ZQGFRhRFE9Sy946OPZCj
-         VjKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773598250; x=1774203050;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wFfWUXvwHoJE4xSBTFJR2gnf8f2b6YS0PT0BDPveSGA=;
-        b=EC40Nw6fH91oAUQGZyOW/O3OVy//cwUXC6+Jh2Nzmn8saIzzAV0ABFJ5leacsWchTQ
-         w8ZMa/SSfkD11uOgs0yDc4UsBtDKyIE21dWQruiAFvePAGD854dupLVYPSU6XOXnyH9c
-         5G4oeXfp0PmLIgNDR7svbUnqPPl7GjRlXZSCGlIutBfaS7IetbTiQ3uxRV+t6174/Wy3
-         rlPtqp0hl7YHI4yj+q6+od8rbIM5VIA6OgmpAwFFjDY/ScZogKvzQZkl2LLly45mMqgy
-         AApoScv+Y4wPcB8GZDHjkWyndFtlRxXmge7XIYogl+XLy7BJLtgbAoZ934qQfRbu08xe
-         7kiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUazpVhKvjK3yoqJnrVBZT062q62c+AtSC3z4OIwiSIWg3s9mNFzx006+QdVly0toGL/N/RdPR/sw==@kvack.org
-X-Gm-Message-State: AOJu0YywRvCTFlSPQsFDVBjZA1QFGIy9GT/DeahWecF1GjVqF8AsjFmP
-	T2QIXSPlwm3V6F2wsXUfgspakmK3mh9D3IwFOyHR4jwpOpfRDpTrOz8ZrzCtEQ==
-X-Gm-Gg: ATEYQzzP/SoQU1Qa7711FS9urPeBXnIGVFQpfayj+vBZRHdCCUHn8h3eUerHvA/8NOi
-	IlIRjwPUQp1IXsINWaozFqmk6RbtyuOHrh88hscThiw1WJGqvD7VWLvaAISS5BboC0KuOBCbCm7
-	/FqhlLdG7my5hN5vd8ud/l36eoZ/1w70vgN9IU+cFfgtDsAHeoXSmPyUqGjFEB+2TsbC82mhRkZ
-	CGSCRx50R9GZS6p73ie6cvA01ExeHiwOqf5FenyduT16wjtFeDcjbZfOPBFAbeR/FbZFdnJof0c
-	n8AhzslS8FmUqknnr1mFlS4JLe03SwZ3DWvR6oSyDjv312RlE7cAnV/0BfTcV7sQSoTtUj9qNsC
-	LafnEQwgmk/Lfshc7PbDGA0GuIh02uH5eMRBxWUggFkxsjhfkVnWc9uchL2NA4ESs2fyCUXBj02
-	zg65G5RHwqsC+1ynR9dE/ybie1gLx7zmYRCAs=
-X-Received: by 2002:a05:6000:40db:b0:439:b3bc:4608 with SMTP id ffacd0b85a97d-43a04d80c26mr19640290f8f.7.1773598250045;
-        Sun, 15 Mar 2026 11:10:50 -0700 (PDT)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1a76e5sm34632151f8f.12.2026.03.15.11.10.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 11:10:49 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feun <boqun.feng@gmail.com>
-Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush work
-Date: Sun, 15 Mar 2026 15:10:27 -0300
-Message-ID: <abb2E3QW7t5Rhxrt@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <abSH40oW9qiVDXZS@pavilion.home>
-References: <20260302154945.143996316@redhat.com> <20260302155105.214878062@redhat.com> <abSH40oW9qiVDXZS@pavilion.home>
+	bh=yPkN11fb2kYuCZR+ZM6VOHOZsBiAT1kcWZfTMF4ClJY=;
+	b=yGm9iJQHaWnp79k8x3xWwr/9ruvDu9qabnP9Srvecl6JDDCvcHS4aR5KQgAkHxDddYlfkd
+	KRAesTpHAtlVCN1+ft+3YG7XPrG0yzZ6nu76d+qreBov0uLhV7MUXrDZ5NlZH1TyhrVa2U
+	CPFZgS9TMLGy/U+jArmq3BIQqzU/e3A=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773599139; a=rsa-sha256;
+	cv=pass;
+	b=Qx1/bauX1bSErgS6WaYdPTG5gJNLp66PDILCYwF7b0iz45HvAV4qCJVu64xEFpzVW4vSgI
+	5+t4MMld8kfDUZNK7wCg4mCpKA5tD78shvndg5+xDICPqHe5QIekZKRWXOpHY00amERUOe
+	xYP0LSWCCWhr7gBKiw2ORuvACowWj8w=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=2EfeFRkE;
+	spf=pass (imf26.hostedemail.com: domain of shivankg@amd.com designates 52.101.85.35 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v52K4IvoP8cRQID2609qsNB5tNhKC5Bo9mKjY5DY1c1TIwX0kp5B3HkuGNASPe7K+C5GsrkUOAHBTaYqiPv3B0dKNuTsF+6T0rUXlpOok7DGHjkytRELmpno8pVfi+Tw7I+FXiNfn3c/KdtxV7g4ArInh9Yhpu77GRxBz61BnD0mBlx8C1sTRU4Pmsf3FPdbw+HP1nYyCahq7JDazPQgmqPQUdHKEBY5NFtecs2QqkP8ZyayEtgyhnblmqxINOSxoStEqcY+kj5n6/a0CzWWjA2L92A2HEqnxibHeWGr1HasiY+PI7dzX1JbSU9G3yRNMaCfZYXFqckELwHuMK4EJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yPkN11fb2kYuCZR+ZM6VOHOZsBiAT1kcWZfTMF4ClJY=;
+ b=PI2UkGG46IdiC0K4YJGas0YNhsh7/0Bh6D1Nr9OTgLxbiOPOOHsRVt2iBYWoG0VzyVLt7u70FVDn/xjS/wsNAdf14mlQigUA65jWAmSpc0S6E2syaJLMiVc69+ImEKoRfqgzcPTLmQqzUG8Qt7VNSNqAShqH6SB5ffZPaqTtJ5/jMReAUgrd0Keq92lKsxen7e4/+r5VgieR1lKTpW7Mrhm4JlblbzQ2RKQRwvBd5oeE3aVMdHSzxfjxNo00nC/+J7lNEVUBZX+5gMlLWVp0PwMx2/DgHBOKDCCwc9nDbS9N8yKwpR9lmO/U2ptdW3+CA4mV/dGoyZRWNJR04/RaXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yPkN11fb2kYuCZR+ZM6VOHOZsBiAT1kcWZfTMF4ClJY=;
+ b=2EfeFRkES21w+FEABHDIXfE628FK2sCmXgt2GZg9Ght50CwAApfe/8W1KfLzEOSDDmQD9XG1AwDWBjjoYQnWTZljZjiB8kj2D3d6Rq+bsvgR1/RxFm4l/cP0vb0DRjXTukVvE5IUqjGI2cfqfckzH3nZmxPHKyb+H4ZziF2tn3I=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by PH0PR12MB8176.namprd12.prod.outlook.com (2603:10b6:510:290::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.14; Sun, 15 Mar
+ 2026 18:25:33 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%3]) with mapi id 15.20.9723.014; Sun, 15 Mar 2026
+ 18:25:33 +0000
+Message-ID: <99d3a0be-d33e-47c8-88b4-3f0e21f4a1cf@amd.com>
+Date: Sun, 15 Mar 2026 23:55:20 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 2/6] mm/migrate: skip data copy for already-copied
+ folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ willy@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, dave@stgolabs.net,
+ Jonathan.Cameron@huawei.com, rkodsara@amd.com, vkoul@kernel.org,
+ bharata@amd.com, sj@kernel.org, weixugc@google.com,
+ dan.j.williams@intel.com, rientjes@google.com, xuezhengchu@huawei.com,
+ yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
+ jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
+ shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
+ nifan.cxl@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260309120725.308854-3-shivankg@amd.com>
+ <20260309120725.308854-8-shivankg@amd.com>
+ <4bfec2c1-9747-49d2-a490-87ab204cec1c@kernel.org>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <4bfec2c1-9747-49d2-a490-87ab204cec1c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0213.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:ea::7) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8t5x84cq8rm43q91wo4yz6tg6r9f57mi
-X-Rspamd-Server: rspam09
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|PH0PR12MB8176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45c9c429-0b33-4679-6577-08de82c03eb9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	AI7GgwOZSJmaAzJXblbqr9peeURVmvpjkdSvvVD+P5A0t8E5tLFhl4CQbVzFqhZJwnTaPL75kl/cmg/bcoq4JKREzgMjbb8PEynQ/JqzvKDiIcNDLdM91xJECZ908BW2AEhyCvHgX33UdOPdHJvF///8Ti9cC/cvfjoAojz8bJr+mDEPnNNWLlccmn8054PfPmPrN45dtoXxG0tKItzsdwKWusfypJNq1tyJkd4mTp8aKbUXR9dKPiGMhXWbdeq1h/ho+Cd+McwyGojA5KSHYhXoKE6Eeo2euwyUjmWJOWrfdJa9KKlNUHJT+KxVIP4MSJ2CqsnjTPLclDk0u0JumHrDaO42L/tvRZqmwD+YYkn3Z2cFYfBksWz4KZwhn4vUCy0+JMLmJyXly8scKbpM4tr4oeApYTtp6t0n9Vv3cb9U5d870JAZC8q+breg/0oChEGXQZTInlXRCBVTyTP5HSnlNY73M1vT8cZe1ofQWsDcOVMI8EtQdP0DjHLgzcSUvlcskYzYwTFQPfSsuh78dQO/rIxa00SiLeOmSPJAY1fD77/lAq9ez6ygbc+BodD/Jyoyu0t7e5c9XI/FUaipoUGihz5eZG//4eSBYdVRTSuBGGy1E55gCS43k9P6dzojijRd7Pg/xwiRvwP75up128fk+/lLvjiMMd1gpMi1pSiCnQP4u6cCGt90bdnhXqBshNsZRlMvE0rQFhiS6lvUX1IEYG57E5x0UAcn0eZwjYU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N0N6Y0JJODRHK0ZVeXI1Um9ZelNRbTQ4Y3lnNzROSTVJcFAyU1AzMXBGS0Vi?=
+ =?utf-8?B?UWQwTFErOXBKREJ3U2s0N0VXUlhOM3JmR3g2cHhVWDhQMzlkUHZEZktNS3Jp?=
+ =?utf-8?B?c01UTUhGdUF2Tmk2VnN6ampGeGg2NjlHd2hvc25RYXZQam4rRFZFak5mdkhx?=
+ =?utf-8?B?TG4zd0VFUC9vVHgrYkhRUDhNOWhSSkFkMEpCT052cjQxSFZkU0tvNkRsdXc5?=
+ =?utf-8?B?bEZhbERyQTJzZ0VxZjR1N01nV0dvS3BNYTNacGpZZW5ucjkwejEyb296Yng2?=
+ =?utf-8?B?UEhWbzVJckZONlhhTUFVSS9ramJWM3lxaHM3Ky9JTUU2emJSSjJwVmFDUEVv?=
+ =?utf-8?B?SXR2T0tKTm1DaGtsU3IwZktZQ1FtQjB4YWJDU1phZ1QwdmN0S3VOa01YN2Zm?=
+ =?utf-8?B?M05vOWV2b3BoejNaR3ZFUTFUVTNlb2F6MmNTTGEwUWhsdE9aYzBkUVJzS1JF?=
+ =?utf-8?B?WWJKejFhZ2JCZGY5TUYyL0g3N0JjbnU0QmpuWk13SnpmeUVBMHBtNWMzdmE0?=
+ =?utf-8?B?eURVeEUvOHRNQWFrSkhNNEo2bmlpS3lyWUdlMjJrL1RHcGRueTN6am1IWkky?=
+ =?utf-8?B?aHdhUTEraHBzKzNVQ29oRm1Ba0tSSzRVbGpMK3ZEVXhCbXkvOTF0VGxtZVlO?=
+ =?utf-8?B?SElwandpNUFYWnJhUFh2VVFlSXBzd2gzOWFvOHQ4dGVadW1pRVdBd2xaajJC?=
+ =?utf-8?B?S1FqUGt1MWllRWZPei9KdHgxNk85Mm95WjM4THd0WTR5RnNWMVlWbmpSU1JT?=
+ =?utf-8?B?UWxxa0pGdEZDdS9zS1p1S2p3SmR0cTFUazdKVk41ZUd6R0hTeEZZZVdNZnlI?=
+ =?utf-8?B?MDdqdS9ROS9TOUZtSHQ5dnFyZDd5VHNGZkoyUzhoRDcxYWFzNEc5dlFOcVgx?=
+ =?utf-8?B?bXd4OEF0UVlKUjRGSEp5Z1BSdmxSTnlRcXRHZmtKZG9HRUVkeGlBRnBSY2tL?=
+ =?utf-8?B?LzlqRVZkVktqU3liU0JZcldFSXdHMmNoTEg2VDNzQlZZbnRPcW40S2ZmcEFt?=
+ =?utf-8?B?NGl4OUtRd0lvb0lLQWVJNU1qb3NnelJSbUVwU0laSTNuNWgyajBaZGd6RmVT?=
+ =?utf-8?B?d3pseHJieFpEaS9Pdmwxam13NDRPRE1odHV1V3RCek8xMzU1K0V0V0NGdHMz?=
+ =?utf-8?B?Mk56NzV4TlNGWUc2SnNkOEplanlNS29wQzhwVUgxaDgwZURzS0dYUFAxbU1H?=
+ =?utf-8?B?TEVLTHBPTWltaGREUm05TzNWTXJaenNtcGtxZXB1cHNHZ0V4bHpUWkZBKzNV?=
+ =?utf-8?B?dUFFOC9Ec0NSLzFBZkl6cXdQOFRycFZpVjRHL1Y2c2VrZ3ZSMy9HU0taWEtm?=
+ =?utf-8?B?bUY1VUZXRXNmd3h0Y29VVXVIc3AyMDRwaXFOZVF1dlkyM0NIUERCTHppZFZ1?=
+ =?utf-8?B?NVM0b1ZYeCsyU3NDRFUrUUREOHhPZTZwcURabVhvNzNHK2VKQ1d2UUZPb0hM?=
+ =?utf-8?B?OWFRdVZtU2FEbUN3akhTb3lObGZ5QUxlU3RCcWRrTUtyZFFIckNqZWR4S3RI?=
+ =?utf-8?B?eHp4M0Rpak4za29mV1FzV2ZSd2QwanNXVE9wMUxYSDdqdjhlaDJiVUdadm9u?=
+ =?utf-8?B?ajJEaVJzSFpFOUN2bGwvNk5rU3NPNVQ3MWZaVG5rY0JyUkdRSkRoVGVjV2Nq?=
+ =?utf-8?B?b21mc0Z2bjRTL1YyWFRIbk1UTjdSN09NcGE1RWdSV2J0L1ZlUERHRERxb2Rp?=
+ =?utf-8?B?UDJQOFZ1eEZ0K2FES3JPUXZ2UEQrc21aMHVLUnFWejFndXdhOUsyMTdQOWhI?=
+ =?utf-8?B?ZFJaUkRLM2RjVWgyenlMako5VEY2YVRqU3FyditDRTliVkMxT3JCTXhnbFZE?=
+ =?utf-8?B?S2dXMW1mZFRRNm5SaG4wQ2JadGxORFFDcHc2N085ZldyeGhQeno2VWN2Q2RB?=
+ =?utf-8?B?MUg5T0tIcjYwaXVJc1RDemI1MDlGOFcycmp5Z204U1NrVmRVSS9BTExjRkth?=
+ =?utf-8?B?WFB2TzNlZXdCWW53Yk42eThnbnpVdWxaRHFra3pwMTM5Z1IxMTdtUGJZbXlG?=
+ =?utf-8?B?bDdScUlROEdMWDlvbnh1dm5xS0VldFlsZlFqdk1mZDg1dGw5QS9zS3lRWHY4?=
+ =?utf-8?B?bDJldlZLN2tYYVhvaDFmb0NMbkhCQW15ZHo3WUpVVGM0ZjQyZVBLQm1aaS9F?=
+ =?utf-8?B?OUo4ZERNTUtIZnhpZ3RGMnRSS0R6djhyS3FlYmZ6eXQyV3MzcXV5U3dSWDlt?=
+ =?utf-8?B?NnJJd3hHWXBSNFhoQmIydm82aGxsNkJMM0dKL3RyeUdhSUNSQlRQU2FkekI1?=
+ =?utf-8?B?RlFEc0RKbGx2MkVvNENJMmtVYXBCczcvbklmOGRuRmRCRDJCZWxhMnJnY0Zq?=
+ =?utf-8?B?SHluQjlCQllBZEJycmhjSEM1b3ZURUk3TzFzcXcvN3RvaHRhaTVoUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45c9c429-0b33-4679-6577-08de82c03eb9
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2026 18:25:33.4096
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3wlPOFk9fvDj7/K8Ww5zt6EiWLcM0HIy8PTQxJjkqe1EueWXFjcKUifrgc+VCN6ESOQ96orb1gdbSQZWkabrNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8176
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D182518000F
-X-HE-Tag: 1773598251-248699
-X-HE-Meta: U2FsdGVkX18EbdLvB9VO/kxnz/mn9I9HRAhDDvHj8uUfWl3ZdadDw+o+20UoentBsFShAGXF0vz7g9Or9TQ05LnKy0ZWEejJ68qsHg/zuSyUiTfTlIVX6EMlgi2KMHIPE0z776MAltRDANcjrjoh7Q51gbDdwS+sF/GdH8+HZFUu+U441DEYfJ9pwirbZeYEDo9HYRU6JVXj6Pg8tiEQfIF7Ae7XM+xfxo6MPe9jYRwo+iS+domrJtYaJtl57s7F5H+/du2jpVZV8PHV0+l8vp+Dy/1qzzJ4/5TuAPLsIJFh/If3r7TtTPIowdahq3ya14ijEkFq+bgeFpnagFSY7vuFtIGsDNRn8pG8bXF75hrd7sbS5c6299MOBsyvKXAFjJgXySRP0R+toGtqNuRqsujbrWXYxpCE4xZNFvWlnBO4frCVy2v0ppUITLqxVzQzb/Yfljw/9APTC2+2mX0880d/+TPiXOyl9lNcMK5lKS99F/XpJElygiKThOVGIXS59Ihl5usEyKE7B8BLC/f75ov3c+8EqeHxAcFDJKA8I0vcEeeeGa0dXlLzfjxhvtH9WkV4Dw++mGIijL+6fGZSIecy1k345iDoipRTpqU9lecOdQVBBCpDBKPQL45nQuCyS2lqoOwQetp1X41n8BuPLLWTRphwUtE9uLLrz5jr5Z8NJuY9B3G6piD+an+gmP2dQoxqQI5Wi5ANw5xUIl+SQne6AZgg2lgI6Uw7YwLv0md1vVRp1rEl1eGPe1bL26mCFP6Q46dPwuCBnAvcEosANmqI23aUlp6okgt9KJxyto5kGUDDRfiiYr3JnADqHHjR3Y9AyRML/bZWYC5/L9go0pqFe3rsBG5TspK0N8hD46moM0Cszj5auzpTgJgXQMMQrIjV1mPg/LRh1cNU0y7gckyRVOnYx4cwtVtNE0PhAeasTXPfIWGM/slWz00nqJUfeBf8K5WA1KLjsEsW4fX
- ZeVWHWMa
- RmFM7ZUoQEMyGAzGDe2Il1RwwcjhNIi+vBx0nWfT4VX1s8QTKHsMuHUYiMThngZQRVeQNq+rQRpc5VXI//lFn7mIKNiDLPGQouGdbX99XIhecKc3GLMro2MjhoLCKdpKb4yqmz9RXyDUpNFiC+eEw7mkU8fPTzEB0006c9klsaPjRi08Xt45RS/wsECqRrzdnjv/Itrjz/GKcpo0j4M+e3OEF0jlZ87cjjGnlyi5X/zwkyPTIgdL2CiQPVtqM2DKqhdgxb0gJUtwyNah3B8DNXLhLHwmqBCNuIDr/2j448KVOHMD9IYvPuy7eVmu7qapMxUvqxZt7IScM/sOHJ8Y/+ox7k35OE9RuQ44/yetheZofF7Y3+NVdVd2qiYAq9i06I+Ovec6V7J9GasGFRZBB6i6XWhpeh/efw5W2dAwsqs0qCe3isqmL6pU/QKTkSv8VbliejGPc/8MYlo9b94LT5055y2mQa28bpXt3tlemxVQsxcouG5IxugguSM/hFUGW8VylKUjSeBmSEXaRxeEEaz41FxWpfu+2I7623nv0im5bhOyCf3U0YxbSjhrY9MNNf62YXq+/fxaRhLMWHzMof1UL5jzKoiiRLvzFTpm9YwuGWorUfDw9oiz7uBVh0TUpvxijhsSFSC02kM/Bghpdq6z+KYzmfkaBAxFcODtgf7cdceixwi1KA5+G9g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3FAD4140004
+X-Stat-Signature: yso71mc9sni3x9b5j9dwanceuih6xkkn
+X-HE-Tag: 1773599139-542307
+X-HE-Meta: U2FsdGVkX1+SZQKOEEYy4MrSX6bf09FElM2LFE984u9duVy7fZocbPcv1iSQSWFLFpDWenJz/KX0W7bjIXqmVrK8grSNAIvMjmzw/dUEIrplM1NmiiBmv2z2bNpAXm5tOvYYe+Za3Io2olsBSSFBaMtoogLP8Qn1J2vrpp+X/Jig2pzbrEyER72DMvVmbc6v15ofXsuNu3FUIb4xhhl7LCncH7bnqpbEBZdNk0uWoupAdn1gp2wPnTYstHBVl2+bfoRNLmVH1wSLAQLdgS1cdUOo6y/bchtgpbHJtvEPIuTo1FlNRKB4wea4IkHGWqU7Adi0eDc3RAxJyB+N9QumT4VjtjZVaUeifksGdGlwo8yhvU/2r71h8NEn1Oens0obUOq2fmBT9X4ygZ5dDn1/OKYiOg1S0gdVTegfsncs9VK8pbtM4fOpajPNLEmPO2Nk43mFXO6OAgJM3IwGDErM0lt1g+l6ez1NHwsL8N9nFAr3l7ssu6MhEhl54n3ZwsmYvC0LtH1KZoC5uFpIRBwgFI2lTuAhLw/QrVO0kYPvjMn+k21yFX56O/7cMEBqDSTg4JGZgNm8EEP+nXRlysTerGIaCkwODKcjOSENs/p1PAO6dFKEIDYp2+KWu0LNeDR4Y8drZVV6TgG3yM3UNVoJd+2GRsqFii41nTEBvTQIeGrbYtA9AONLSQ2cKAeKxzRtC4+bxgfFK28yzmZmpou2WBi9GnmTyvTVpcaVweoBKZH/BrVIRuQ75qleubve0dtwSBD6AlvULEvHQ6VvjFma2yU3GEdxbFa76UOgIoXAY3SJ5JTVly6ls1jO7VSj+eYa+CTks1Ku4bsYKQrJTxvpmqaO9FHdk8+PBljAbUePTnKk+9ZQUcoawA1DG6thKOk38I/YTKzGRSEBS7NRXzC+rJsJ+4d67M7NA0ZdCDJE/auVL47wpX3xoJwEQtElxBpW8IeH+hF4Kx+7Rr16DZI
+ EYFFATcQ
+ XEdzItTDQsDq5xkOEm5PKDkSPNBxyTroDwzrgvcS9BTQWztqPSA3AGxClH7OSG/wnTM6UaK/pLT/jRVSZ4UrXTDmGMHCa77oLtMGh5E97Cs15hpxckXktn2t80m5M/zGDL6roFurmSkPj5aM0ZPk+FFSnJqBGXXtO+VIAl0zbo8rvvRWvHPHpHdfKQvhihZLcl7sdW80D/l+znzvufM6ZFe62RknssO2p5yDkUXRkMyZIJgklHUZRrU8vB5fvmzaJmhOXA0O690G5LdgA2Dw0FcyZNMhTTlpKP5puF9rAhs3o3dTTq3ftY6CxCNkSVz/0+/ZHEnMA2bLbVHl8X3fgkOMHaRJz156RLIL0WexSLQ32p2F/NcX4RGaJsfKYgKvitfiEKmJQ6tj5bsRrkIJoQ1Yf2MIVXJFtdiweWUJ4FJT2PNOzJGTP34NtklHJZKscr/SykxoScjnf63M5YGUxZ2fF0IXPCRLQxXwPBWTFNwXlgUObmU39G24k9JmDS1HIPTvmLPl9mC7ufOVzJ96eSvT9hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,220 +182,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 10:55:47PM +0100, Frederic Weisbecker wrote:
-> Le Mon, Mar 02, 2026 at 12:49:47PM -0300, Marcelo Tosatti a écrit :
-> > Some places in the kernel implement a parallel programming strategy
-> > consisting on local_locks() for most of the work, and some rare remote
-> > operations are scheduled on target cpu. This keeps cache bouncing low since
-> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> > kernels, even though the very few remote operations will be expensive due
-> > to scheduling overhead.
-> > 
-> > On the other hand, for RT workloads this can represent a problem:
-> > scheduling work on remote cpu that are executing low latency tasks
-> > is undesired and can introduce unexpected deadline misses.
-> > 
-> > It's interesting, though, that local_lock()s in RT kernels become
-> > spinlock(). We can make use of those to avoid scheduling work on a remote
-> > cpu by directly updating another cpu's per_cpu structure, while holding
-> > it's spinlock().
-> > 
-> > In order to do that, it's necessary to introduce a new set of functions to
-> > make it possible to get another cpu's per-cpu "local" lock (qpw_{un,}lock*)
-> > and also the corresponding queue_percpu_work_on() and flush_percpu_work()
-> > helpers to run the remote work.
-> > 
-> > Users of non-RT kernels but with low latency requirements can select
-> > similar functionality by using the CONFIG_QPW compile time option.
-> > 
-> > On CONFIG_QPW disabled kernels, no changes are expected, as every
-> > one of the introduced helpers work the exactly same as the current
-> > implementation:
-> > qpw_{un,}lock*()        ->  local_{un,}lock*() (ignores cpu parameter)
+
+
+On 3/12/2026 3:14 PM, David Hildenbrand (Arm) wrote:
+> On 3/9/26 13:07, Shivank Garg wrote:
+>> Add a PAGE_ALREADY_COPIED flag to the dst->private migration state.
+>> When set, __migrate_folio() skips folio_mc_copy() and performs
+>> metadata-only migration. All callers currently pass
+>> already_copied=false. The batch-copy path enables it in a later patch.
+>>
+>> Move the dst->private state enum earlier in the file so
+>> __migrate_folio() and move_to_new_folio() can see PAGE_ALREADY_COPIED.
+>>
+>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>> ---
+>>  mm/migrate.c | 52 +++++++++++++++++++++++++++++++---------------------
+>>  1 file changed, 31 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index 1bf2cf8c44dd..1d8c1fb627c9 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -848,6 +848,18 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+>>  }
+>>  EXPORT_SYMBOL(folio_migrate_flags);
+>>  
+>> +/*
+>> + * To record some information during migration, we use unused private
+>> + * field of struct folio of the newly allocated destination folio.
+>> + * This is safe because nobody is using it except us.
+>> + */
+>> +enum {
+>> +	PAGE_WAS_MAPPED = BIT(0),
+>> +	PAGE_WAS_MLOCKED = BIT(1),
+>> +	PAGE_ALREADY_COPIED = BIT(2),
+>> +	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED | PAGE_ALREADY_COPIED,
 > 
-> I find this part of the semantic a bit weird. If we eventually queue
-> the work, why do we care about doing a local_lock() locally ?
-
-(Sorry, not sure if I was able to understand the question.)
-
-Local locks make sure a per-cpu procedure happens on the same CPU from 
-start to end. Using migrate_disable & using per-cpu spinlocks on RT and 
-doing preempt_disable in non_RT.
-
-Most of the cases happen to have the work done in the local cpu, and just 
-a few procedures happen to be queued remotely, such as remote cache 
-draining. 
-
-Even with the new 'local_qpw_lock()' which is faster for cases we are sure 
-to have local usages, on qpw=0 we have to make qpw_lock() a local_lock as 
-well, as the cpu receiving the scheduled work needs to make sure to run it 
-all without moving to a different cpu.
-
+> All these states really only apply to proper folios (not movable_ops).
+> So once we complete decoupling movable_ops migration from folio
+> migration, these flags would only appear in the folio migration part.
 > 
-> > queue_percpu_work_on()  ->  queue_work_on()
-> > flush_percpu_work()     ->  flush_work()
-
-btw Marcelo, I think we need to do add the local_qpw_lock here as well, or 
-change the first line to '{local_,}qpw_{un,}lock*()'
-
-> > 
-> > @@ -2840,6 +2840,16 @@ Kernel parameters
-> >  
-> >  			The format of <cpu-list> is described above.
-> >  
-> > +	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
-> > +			and remote interference mechanism on a kernel built with
-> > +			CONFIG_QPW.
-> > +			Format: { "0" | "1" }
-> > +			0 - local_lock() + queue_work_on(remote_cpu)
-> > +			1 - spin_lock() for both local and remote operations
-> > +
-> > +			Selecting 1 may be interesting for systems that want
-> > +			to avoid interruption & context switches from IPIs.
+> Can we convert them first to state it clearly already that these are
+> folio migration flags?
 > 
-> Like Vlastimil suggested, it would be better to just have it off by default
-> and turn it on only if nohz_full= is passed. Then we can consider introducing
-> the parameter later if the need arise.
-
-I agree with having it enabled with isolcpus/nohz_full, but I would 
-recommend having this option anyway, as the user could disable qpw if 
-wanted, or enable outside isolcpu scenarios for any reason.
-
-> 
-> > +#define qpw_lock_init(lock)				\
-> > +	local_lock_init(lock)
-> > +
-> > +#define qpw_trylock_init(lock)				\
-> > +	local_trylock_init(lock)
-> > +
-> > +#define qpw_lock(lock, cpu)				\
-> > +	local_lock(lock)
-> > +
-> > +#define local_qpw_lock(lock)				\
-> > +	local_lock(lock)
-> 
-> It would be easier to grep if all the APIs start with qpw_* prefix.
-> 
-> qpw_local_lock() ?
-
-Sure, not against the change.
-And sure, would need to change all versions starting with local_ .
-
-> 
-> > +
-> > +#define qpw_lock_irqsave(lock, flags, cpu)		\
-> > +	local_lock_irqsave(lock, flags)
-> > +
-> > +#define local_qpw_lock_irqsave(lock, flags)		\
-> > +	local_lock_irqsave(lock, flags)
-> 
-> ditto?
-> 
-> > +
-> > +#define qpw_trylock(lock, cpu)				\
-> > +	local_trylock(lock)
-> > +
-> > +#define local_qpw_trylock(lock)				\
-> > +	local_trylock(lock)
+> FOLIO_MF_WAS_MAPPED
 > 
 > ...
 > 
-> > +
-> > +#define qpw_trylock_irqsave(lock, flags, cpu)		\
-> > +	local_trylock_irqsave(lock, flags)
-> > +
-> > +#define qpw_unlock(lock, cpu)				\
-> > +	local_unlock(lock)
-> > +
-> > +#define local_qpw_unlock(lock)				\
-> > +	local_unlock(lock)
-> 
-> ...
-> 
-> > +
-> > +#define qpw_unlock_irqrestore(lock, flags, cpu)		\
-> > +	local_unlock_irqrestore(lock, flags)
-> > +
-> > +#define local_qpw_unlock_irqrestore(lock, flags)	\
-> > +	local_unlock_irqrestore(lock, flags)
-> 
-> ...
-> 
-> > +
-> > +#define qpw_lockdep_assert_held(lock)			\
-> > +	lockdep_assert_held(lock)
-> > +
-> > +#define queue_percpu_work_on(c, wq, qpw)		\
-> > +	queue_work_on(c, wq, &(qpw)->work)
-> 
-> qpw_queue_work_on() ?
-> 
-> Perhaps even better would be qpw_queue_work_for(), leaving some room for
-> mystery about where/how the work will be executed :-)
-> 
+Sure, done.
 
-QPW comes from Queue PerCPU Work
-Having it called qpw_queue_work_{on,for}() would be repetitve
-But having qpw_on() or qpw_for() would be misleading :) 
+Should I fold it into the series? Or send it as independent patch as this series would
+likely take few more rounds of reviews and discussion.
 
-That's why I went with queue_percpu_work_on() based on how we have the 
-original function (queue_work_on) being called.
 
-> > +
-> > +#define flush_percpu_work(qpw)				\
-> > +	flush_work(&(qpw)->work)
-> 
-> qpw_flush_work() ?
 
-Same as above,
-qpw_flush() ?
+Subject: [PATCH] mm/migrate: rename PAGE_ migration flags to FOLIO_MF_
 
-> 
-> > +
-> > +#define qpw_get_cpu(qpw)	smp_processor_id()
-> > +
-> > +#define qpw_is_cpu_remote(cpu)		(false)
-> > +
-> > +#define INIT_QPW(qpw, func, c)				\
-> > +	INIT_WORK(&(qpw)->work, (func))
-> > +
-> > @@ -762,6 +762,41 @@ config CPU_ISOLATION
-> >  
-> >  	  Say Y if unsure.
-> >  
-> > +config QPW
-> > +	bool "Queue per-CPU Work"
-> > +	depends on SMP || COMPILE_TEST
-> > +	default n
-> > +	help
-> > +	  Allow changing the behavior on per-CPU resource sharing with cache,
-> > +	  from the regular local_locks() + queue_work_on(remote_cpu) to using
-> > +	  per-CPU spinlocks on both local and remote operations.
-> > +
-> > +	  This is useful to give user the option on reducing IPIs to CPUs, and
-> > +	  thus reduce interruptions and context switches. On the other hand, it
-> > +	  increases generated code and will use atomic operations if spinlocks
-> > +	  are selected.
-> > +
-> > +	  If set, will use the default behavior set in QPW_DEFAULT unless boot
-> > +	  parameter qpw is passed with a different behavior.
-> > +
-> > +	  If unset, will use the local_lock() + queue_work_on() strategy,
-> > +	  regardless of the boot parameter or QPW_DEFAULT.
-> > +
-> > +	  Say N if unsure.
-> 
-> Perhaps that too should just be selected automatically by CONFIG_NO_HZ_FULL and if
-> the need arise in the future, make it visible to the user?
-> 
+These flags only track folio-specific state during migration and are
+not used for movable_ops pages. Rename the enum values and the
+old_page_state variable to match.
 
-I think it would be good to have this, and let whoever is building have the 
-chance to disable QPW if it doesn't work well for their machines or 
-workload, without having to add a new boot parameter to continue have 
-their stuff working as always after a kernel update.
+No functional change.
 
-But that is open to discussion :)
+Suggested-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Shivank Garg shivankg@amd.com
+---
+ mm/migrate.c | 46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-Thanks!
-Leo
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 1bf2cf8c44dd..8c9115cc4586 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1133,26 +1133,26 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+  * This is safe because nobody is using it except us.
+  */
+ enum {
+-	PAGE_WAS_MAPPED = BIT(0),
+-	PAGE_WAS_MLOCKED = BIT(1),
+-	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
++	FOLIO_MF_WAS_MAPPED = BIT(0),
++	FOLIO_MF_WAS_MLOCKED = BIT(1),
++	FOLIO_MF_OLD_STATES = FOLIO_MF_WAS_MAPPED | FOLIO_MF_WAS_MLOCKED,
+ };
+ 
+ static void __migrate_folio_record(struct folio *dst,
+-				   int old_page_state,
++				   int old_folio_state,
+ 				   struct anon_vma *anon_vma)
+ {
+-	dst->private = (void *)anon_vma + old_page_state;
++	dst->private = (void *)anon_vma + old_folio_state;
+ }
+ 
+ static void __migrate_folio_extract(struct folio *dst,
+-				   int *old_page_state,
++				   int *old_folio_state,
+ 				   struct anon_vma **anon_vmap)
+ {
+ 	unsigned long private = (unsigned long)dst->private;
+ 
+-	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
+-	*old_page_state = private & PAGE_OLD_STATES;
++	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_MF_OLD_STATES);
++	*old_folio_state = private & FOLIO_MF_OLD_STATES;
+ 	dst->private = NULL;
+ }
+ 
+@@ -1207,7 +1207,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ {
+ 	struct folio *dst;
+ 	int rc = -EAGAIN;
+-	int old_page_state = 0;
++	int old_folio_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	bool locked = false;
+ 	bool dst_locked = false;
+@@ -1251,7 +1251,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	}
+ 	locked = true;
+ 	if (folio_test_mlocked(src))
+-		old_page_state |= PAGE_WAS_MLOCKED;
++		old_folio_state |= FOLIO_MF_WAS_MLOCKED;
+ 
+ 	if (folio_test_writeback(src)) {
+ 		/*
+@@ -1300,7 +1300,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	dst_locked = true;
+ 
+ 	if (unlikely(page_has_movable_ops(&src->page))) {
+-		__migrate_folio_record(dst, old_page_state, anon_vma);
++		__migrate_folio_record(dst, old_folio_state, anon_vma);
+ 		return 0;
+ 	}
+ 
+@@ -1326,11 +1326,11 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
+ 			       !folio_test_ksm(src) && !anon_vma, src);
+ 		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
+-		old_page_state |= PAGE_WAS_MAPPED;
++		old_folio_state |= FOLIO_MF_WAS_MAPPED;
+ 	}
+ 
+ 	if (!folio_mapped(src)) {
+-		__migrate_folio_record(dst, old_page_state, anon_vma);
++		__migrate_folio_record(dst, old_folio_state, anon_vma);
+ 		return 0;
+ 	}
+ 
+@@ -1342,7 +1342,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	if (rc == -EAGAIN)
+ 		ret = NULL;
+ 
+-	migrate_folio_undo_src(src, old_page_state & PAGE_WAS_MAPPED,
++	migrate_folio_undo_src(src, old_folio_state & FOLIO_MF_WAS_MAPPED,
+ 			       anon_vma, locked, ret);
+ 	migrate_folio_undo_dst(dst, dst_locked, put_new_folio, private);
+ 
+@@ -1356,11 +1356,11 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 			      struct list_head *ret)
+ {
+ 	int rc;
+-	int old_page_state = 0;
++	int old_folio_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct list_head *prev;
+ 
+-	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
++	__migrate_folio_extract(dst, &old_folio_state, &anon_vma);
+ 	prev = dst->lru.prev;
+ 	list_del(&dst->lru);
+ 
+@@ -1385,10 +1385,10 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 	 * isolated from the unevictable LRU: but this case is the easiest.
+ 	 */
+ 	folio_add_lru(dst);
+-	if (old_page_state & PAGE_WAS_MLOCKED)
++	if (old_folio_state & FOLIO_MF_WAS_MLOCKED)
+ 		lru_add_drain();
+ 
+-	if (old_page_state & PAGE_WAS_MAPPED)
++	if (old_folio_state & FOLIO_MF_WAS_MAPPED)
+ 		remove_migration_ptes(src, dst, 0);
+ 
+ out_unlock_both:
+@@ -1420,11 +1420,11 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 	 */
+ 	if (rc == -EAGAIN) {
+ 		list_add(&dst->lru, prev);
+-		__migrate_folio_record(dst, old_page_state, anon_vma);
++		__migrate_folio_record(dst, old_folio_state, anon_vma);
+ 		return rc;
+ 	}
+ 
+-	migrate_folio_undo_src(src, old_page_state & PAGE_WAS_MAPPED,
++	migrate_folio_undo_src(src, old_folio_state & FOLIO_MF_WAS_MAPPED,
+ 			       anon_vma, true, ret);
+ 	migrate_folio_undo_dst(dst, true, put_new_folio, private);
+ 
+@@ -1758,11 +1758,11 @@ static void migrate_folios_undo(struct list_head *src_folios,
+ 	dst = list_first_entry(dst_folios, struct folio, lru);
+ 	dst2 = list_next_entry(dst, lru);
+ 	list_for_each_entry_safe(folio, folio2, src_folios, lru) {
+-		int old_page_state = 0;
++		int old_folio_state = 0;
+ 		struct anon_vma *anon_vma = NULL;
+ 
+-		__migrate_folio_extract(dst, &old_page_state, &anon_vma);
+-		migrate_folio_undo_src(folio, old_page_state & PAGE_WAS_MAPPED,
++		__migrate_folio_extract(dst, &old_folio_state, &anon_vma);
++		migrate_folio_undo_src(folio, old_folio_state & FOLIO_MF_WAS_MAPPED,
+ 				anon_vma, true, ret_folios);
+ 		list_del(&dst->lru);
+ 		migrate_folio_undo_dst(dst, true, put_new_folio, private);
+-- 
+
+Thanks,
+Shivank
+
+
+
 
