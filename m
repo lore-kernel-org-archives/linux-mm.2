@@ -4,137 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90E24F3026E
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 15:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB1EF3026D
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 16:27:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA4D86B0095; Sun, 15 Mar 2026 11:16:36 -0400 (EDT)
+	id E532B6B0098; Sun, 15 Mar 2026 12:27:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7CB76B0096; Sun, 15 Mar 2026 11:16:36 -0400 (EDT)
+	id E018B6B0099; Sun, 15 Mar 2026 12:27:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A88AA6B0098; Sun, 15 Mar 2026 11:16:36 -0400 (EDT)
+	id D0D036B009B; Sun, 15 Mar 2026 12:27:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 968CF6B0095
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 11:16:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B40E35CDB2
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 15:16:34 +0000 (UTC)
-X-FDA: 84548649108.28.330AEC2
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AD2C3160005
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 15:16:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EwAlJNi3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C1C286B0098
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 12:27:29 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F7A7160BF2
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:27:29 +0000 (UTC)
+X-FDA: 84548827818.06.F01DD51
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8A278C000D
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:27:27 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TO2iYOBY;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773587793;
+	s=arc-20220608; t=1773592047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UFUEeOE40dUbmpNmOseZzqA/dkA/x7XhqP12l7OJCEw=;
-	b=0viTgH4UvgLyCNRA90R5+7hj1MdlQBS+dUoUFRjqkE+Q99bka29gGXkwylvbgSojmk5yPr
-	iUjfexU53xUhmQkipH+Lvu9zrWYE9jlvPAcPAI08PfA+Me09NvW47o85q5vxP4YTo8onEa
-	NKCZBzSkivGzBdwK+kwBSdSiAutQcD8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773587793; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=o6htyqhM49xNz27/JmrMMLrryPChkWfdnkxT/MbOGUM=;
+	b=3KRYnBLsfpM79GBBAEr0qSuLD13858bSLK7n4uOI9IBOWejvJNCC/n9Vt5wSSjYgZ9ZqiD
+	t/1FKvihuiw7CPkgtgw1LrWlZ1OvBHBJI69pbgztE1+kAacLzXp0WOg/3EN7LlwHep1WwH
+	5qQk3VX2oGIE2FSeuyFDGAEnjIB2OiY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773592047; a=rsa-sha256;
 	cv=none;
-	b=r/Rh/b193r+ah8GqHIiLn+M7+7vXN049hXQOm3EOQWJoQl642HLsiOKif+fwOT9WS5UJ7u
-	jUXMa76BH8yORNiv2u9AUaI7tf3+mbvSkwWfxcoryo36+OPz1EYpVk+OPt3YEGsXlkWXFG
-	R3vMCvljy44fVy+VDP55T5B7SQ5+LbU=
+	b=NA6ne/oq5W4aIYx8cU8pwGh6RifZFOBP7Lg1UTc/hzMsK4rgsMrU2OxwVc+v9OkHP4bZA5
+	LlmT07Qg5eybiMSxbKejmhm6aVWqzFNacpWiYNhUQZMnz/CtR9iYisriPy7m6fXC51hcIB
+	H6PgC3f4vhU9UViKFClhC+Nqw5iI7R0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EwAlJNi3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773587789;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UFUEeOE40dUbmpNmOseZzqA/dkA/x7XhqP12l7OJCEw=;
-	b=EwAlJNi3CDgDSDQ/bmR+8tHhWfFADikcQ8X3kT+FZHI6WU8bhvOTcpenGxM4vlz4hg5rCN
-	5vgAqxC9F6Xn/PoCQFPwkGplqXe0XtSagqtGRifhfTsbPAkZZ+mwD4kLhBKUo0ZO9xS8gA
-	QyUS0VoPam+6VxVSrW5aNhxmZuuiVJo=
-From: Lance Yang <lance.yang@linux.dev>
-To: npache@redhat.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jackmanb@google.com,
-	jack@suse.cz,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v3 5/5] mm/khugepaged: unify khugepaged and madv_collapse with collapse_single_pmd()
-Date: Sun, 15 Mar 2026 23:16:20 +0800
-Message-Id: <20260315151620.30552-1-lance.yang@linux.dev>
-In-Reply-To: <20260311211315.450947-6-npache@redhat.com>
-References: <20260311211315.450947-6-npache@redhat.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TO2iYOBY;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 48BD243F70;
+	Sun, 15 Mar 2026 16:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D85EC4CEF7;
+	Sun, 15 Mar 2026 16:27:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773592046;
+	bh=tcDHnHCQtRIlyRPX5ixjq3/dMmHGb3WsrPaGYv6W6Qg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TO2iYOBYXd9YTDOZ+wRNqysoS7zh+UAqoGhPHNJ8rX46Jyk0TOVb7ww+QnfV+7i5u
+	 k2QJ7+YkUP2rqREu2BVlNRwq0pwD/bAQAroYAxLH6q/UxCOufoPaf99xtfE5TafSW/
+	 zBYHMhniMVx8ZxYkx3oXQufylMwBEgACCOQIaDqoO+MIP2Mc4ENMdBF7z47P+1YUh5
+	 Lr0KLO0JyOV+wmANZaX7XK/Iu3zaSumy62RxOTFe4iOVnn2dPagoG8FLTekr94Tj5d
+	 umRgydpqkAoo6g25CIUpTCskVHR0hEV8ny+E6JqOa9+VgnvYHX/3EGiXtwAKa5Fgsg
+	 Brusw26ggm6qA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2] mm/damon/stat: monitor all System RAM resources
+Date: Sun, 15 Mar 2026 09:27:15 -0700
+Message-ID: <20260315162717.80870-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AD2C3160005
-X-Stat-Signature: f4mu35oubta7k6r6bkyguxcg6bcghd1c
 X-Rspam-User: 
-X-HE-Tag: 1773587792-581037
-X-HE-Meta: U2FsdGVkX1+Tksja4MnuYJHJMdXbwDTZpYtNL+g/wBcoYCD1hFBwFvI8x5tLaKoHFdMctNfwZozVNDiiCCQSBZxvgBIieC5Uv2wgARrR0TOjusEZVV1TBz0KTPt7T3e0IYS50QXwOd99A+2uOMruQw7nGMkXvTvbxckx0HtvyWJy4MzUCyywXmx2PPrH6xBx8cRN6iUvhsOiuYa2F5qmKXLbS8yCAeaMbBUCaVfCVk31/3Nqq804DZLmXZGk1b13Ws6Ju/DW2tCF8in45GuunDIeQ9BbUV82P2v1qzPbXQNsB861F0nNaa6uenmvUYpYTFGhA8kMM5Ft/IxDUELxaokQW39ALTPJWvbtoELoZmrobZzpCI+/hMfO+oXt9a3z3dal0T4JHMD9BrnolwhikA/m6dxr0gQ6scloq51IdhoUKxgZYrx6PFYmfBKkJRofCdDKVTsazwrpMldJJ2hEj+aczDBnaitNRodWussVZzFNibZuLJr5Zdb0xzFSpXaLcM0phlJtOylmN/Fu2fqcLWQfwRh1oGpNeiqu8DVQ5OJGa8JF7U4p8wH9iRSjLaumLwFUXVfCnxBno96O4G2K+zVontAJIr8U0d19l6qolnOt42N6KGWizH33phk/Vfpk/ZiOwO0c5eeACY6YKECmCsRo31LRoC0v2w0S/TWCkjaBEXCXrR+rCdesbtYZK+lYUsw4DuyJxb8dhiq2o2RXEmGTXb9+043X/ifD8sIkaBSHff7yR91ZkmZCOB4V2XrDhz4FDcPPQnt6cMGUe4MjZrmH/axSGqzdVfosjmnAgpzD1kMbF/AXAhz9SeIyiuNzJWAWOrzt0RRHv641upPa9+82J4ootF6EgZXXDUFR7SqTYt66RWJERQC62eiG03uxj2muc7b/JsiS2lTDESs/VduI2jAOB7YBnzb+I8dVDX4H4SA8htewB1aKlvVzBlfXjrf87p+30XkHNQZQ3+T
- B0IGjyYb
- J0rcFWu1wO+9Hh13rh6XRWaSmlsEU6+uVxgLQqGsWCzry/lJy2G66Ob37DW8p0NDmvqL4MO3jiACNf9r4494J2kQMHpsfmD1//3xaECDgSoEYBe5GPn/8BRaoB9J24WzsNYMIF2Z1VrU/gh3ya+AITwAavNtY8WbSOsQ545z3o2VrA+ZCxaYGRZpZ8KgE4qRJ0cewGmVKnpt3qt5KDCgcIFm8fl6Sunf6PzDQQOHXDI4RbfNwKSh3K9MuRlDMjf6MQ1kJnECzH4/OWCVCvMoEM8Qesw+hWwlOAXAfx5Q4mgms+urqyQrn1PFBf0g6VVWyff3Isc/8R/RKfgdAZ2DQgaVYf9H4c6Hy96iqfDb9RvVEv5ljHl8a1yo7wZA4fDV0uHD+
+X-Stat-Signature: 8f69gz3gbxmeb19mpg6rq9mejbrxj81t
+X-Rspamd-Queue-Id: 8A278C000D
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773592047-135753
+X-HE-Meta: U2FsdGVkX1+rYsFF86k59cb7UDYTPZMcKtM0oCYxITaUNDwHSa2NjVrSRjwFBicInqv8rv4NvT++2EW0PMKrWE12+S/SwA8VzR0icFipcjI54FYqAd8w+TEXTe8HsbeNoFgNEmWwoR6U3/MT/kX1cfnStdW2dIsJL7oc8HFzQBDAJnXY1c6Di8Qop0EPIvZhHuroticHQjjNrrXpsVC6sh/jbp6y5ELZRZ62A4rv64Jgb5dNLZX86pUPxMnpgn3GR6b5W3KyR1iweMjbHkEV2fCCgKilVNQGdtChfmQXVEh132UsjO/1fB9fkEdk2mrhh3BqJQWgTLlgIYq0unnmIbW4OXF5rH3Oi8qEkA1cSWjRqZIR9Coa84+4BJMve8g50eHVaQwZmwLLZCIfnf8QlS+S/Hp2tWZ0YpyM7dFe21CCx4OeLPZubWkPH3m65kltgMfRaRKOi/sDHnzCXM/ploeIdexlXeZyEvFJFyea7/cR0wDVnJqMRUWBVdgwgxBEsTUHE23KnuejTJX9W8D4NIFy+HH4AgZUOSVOtjRvkHcCu5VLrW/YL7DG7ajybhvH7EwmmX3fimr+eRfbWx49wXWrhBkvCiXDdiwIvljssPg0y7R+pNpnzQ/t/S408DFnyGjo3/nASTgy9O7BRi1guw0NY9+HCqCL9WYtLDnUJPZ6WW79G72r2X9TkzwUQ5ZIMNAZcde+Ok7S5s4GIK/BanZIsPD+Sc9W0b8bECl/f488QSKKCZH9FzvbsnqnQ0IfmSZ+lPU4SyA0kcZUZrMPaESZ/MnpjANEGmg6lpUmTgIVkTzQ4KVfXUG8Wsoz/sSdG7Vm1DrnKUW6nksxq2koWMAtX6c3yWt5em6oYbCLw0XgRVqueaY5alw5KZI8MtxGs2HegYFbvqYCZWXYiX4RFk2KuMJhctK2SkgjL5JS//vcM9bpTQejegqC15qNWLINWRR9iYT2sH0al0P5vdP
+ Fw7T/l3E
+ MUQ34BkVhPVLfFKoBqcGdwuWzNFx/pETA1/9rYMJo/MF57KA+SD1XcJa9kdhQOrrwOG0kwcYaTYAyKLZ8VcMRvij9M1Zb7hiW9xuyL0bck3w3oMobFGhcPShIVst5Vh8Q3M+hjnYPM7Q+mNjJHGjhOcrD8QEBJhmyJ+s08aSV3XEt4jBht4TozHsxuiLqJVn73n6R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,90 +91,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+says it monitors the system's entire physical memory.  But, it is
+monitoring only the biggest System RAM resource of the system.  When
+there are multiple System RAM resources, this results in monitoring only
+an unexpectedly small fraction of the physical memory.  For example,
+suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
+500 GiB System RAM resources in order on the physical address space.
+DAMON_STAT will monitor only the first 500 GiB System RAM.  This
+situation is particularly common on NUMA systems.
 
-On Wed, Mar 11, 2026 at 03:13:15PM -0600, Nico Pache wrote:
->The khugepaged daemon and madvise_collapse have two different
->implementations that do almost the same thing. Create collapse_single_pmd
->to increase code reuse and create an entry point to these two users.
->
->Refactor madvise_collapse and collapse_scan_mm_slot to use the new
->collapse_single_pmd function. This introduces a minor behavioral change
->that is most likely an undiscovered bug. The current implementation of
->khugepaged tests collapse_test_exit_or_disable before calling
->collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
->case. By unifying these two callers madvise_collapse now also performs
->this check. We also modify the return value to be SCAN_ANY_PROCESS which
->properly indicates that this process is no longer valid to operate on.
->
->By moving the madvise_collapse writeback-retry logic into the helper
->function we can also avoid having to revalidate the VMA.
->
->We also guard the khugepaged_pages_collapsed variable to ensure its only
->incremented for khugepaged.
->
->Signed-off-by: Nico Pache <npache@redhat.com>
->---
-> mm/khugepaged.c | 120 +++++++++++++++++++++++++-----------------------
-> 1 file changed, 63 insertions(+), 57 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 33ae56e313ed..733c4a42c2ce 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -2409,6 +2409,65 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
-> 	return result;
-> }
-> 
->+/*
->+ * Try to collapse a single PMD starting at a PMD aligned addr, and return
->+ * the results.
->+ */
->+static enum scan_result collapse_single_pmd(unsigned long addr,
->+		struct vm_area_struct *vma, bool *mmap_locked,
->+		struct collapse_control *cc)
->+{
->+	struct mm_struct *mm = vma->vm_mm;
->+	bool triggered_wb = false;
->+	enum scan_result result;
->+	struct file *file;
->+	pgoff_t pgoff;
->+
->+	if (vma_is_anonymous(vma)) {
->+		result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
->+		goto end;
->+	}
->+
->+	file = get_file(vma->vm_file);
->+	pgoff = linear_page_index(vma, addr);
->+
->+	mmap_read_unlock(mm);
->+	*mmap_locked = false;
->+retry:
->+	result = collapse_scan_file(mm, addr, file, pgoff, cc);
->+
->+	/*
->+	 * For MADV_COLLAPSE, when encountering dirty pages, try to writeback,
->+	 * then retry the collapse one time.
->+	 */
->+	if (!cc->is_khugepaged && result == SCAN_PAGE_DIRTY_OR_WRITEBACK &&
->+	    !triggered_wb && mapping_can_writeback(file->f_mapping)) {
->+		const loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
->+		const loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
->+
->+		filemap_write_and_wait_range(file->f_mapping, lstart, lend);
->+		triggered_wb = true;
->+		goto retry;
+Select a physical address range that covers all System RAM areas of the
+system, to fix this issue and make it work as documented.
 
-While the old retry path did go back through hugepage_vma_revalidate(),
-the retry itself is not relying on the original VMA remaining unchanged
-IIUC.
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from v1
+(https://lore.kernel.org/20260313044449.4038-1-sj@kernel.org)
+- Fix wrong argument for damon_set_regions().
 
-After dropping mmap_lock, the code still holds a reference to the file,
-so no lifetime issue should arise here :)
+ mm/damon/stat.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
-So, LGTM!
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index f9a2028483b05..c5af8ad4bcb65 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -145,12 +145,57 @@ static int damon_stat_damon_call_fn(void *data)
+ 	return 0;
+ }
+ 
++struct damon_stat_system_ram_range_walk_arg {
++	bool walked;
++	struct resource res;
++};
++
++static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
++{
++	struct damon_stat_system_ram_range_walk_arg *a = arg;
++
++	if (!a->walked) {
++		a->walked = true;
++		a->res.start = res->start;
++	}
++	a->res.end = res->end;
++	return 0;
++}
++
++static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
++		unsigned long addr_unit)
++{
++	/*
++	 * Use div_u64() for avoiding linking errors related with __udivdi3,
++	 * __aeabi_uldivmod, or similar problems.  This should also improve the
++	 * performance optimization (read div_u64() comment for the detail).
++	 */
++	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
++		return div_u64(ra, addr_unit);
++	return ra / addr_unit;
++}
++
++static int damon_stat_set_monitoring_region(struct damon_target *t,
++		unsigned long addr_unit, unsigned long min_region_sz)
++{
++	struct damon_addr_range addr_range;
++	struct damon_stat_system_ram_range_walk_arg arg = {};
++
++	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
++	if (!arg.walked)
++		return -EINVAL;
++	addr_range.start = damon_stat_res_to_core_addr(
++			arg.res.start, addr_unit);
++	addr_range.end = damon_stat_res_to_core_addr(
++			arg.res.end + 1, addr_unit);
++	return damon_set_regions(t, &addr_range, 1, min_region_sz);
++}
++
+ static struct damon_ctx *damon_stat_build_ctx(void)
+ {
+ 	struct damon_ctx *ctx;
+ 	struct damon_attrs attrs;
+ 	struct damon_target *target;
+-	unsigned long start = 0, end = 0;
+ 
+ 	ctx = damon_new_ctx();
+ 	if (!ctx)
+@@ -180,8 +225,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
+ 	if (!target)
+ 		goto free_out;
+ 	damon_add_target(ctx, target);
+-	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
+-				ctx->addr_unit, ctx->min_region_sz))
++	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
++				ctx->min_region_sz))
+ 		goto free_out;
+ 	return ctx;
+ free_out:
 
-Cheers,
-Lance
+base-commit: 209f54c1171365f1d942b89554808acce71aadb4
+-- 
+2.47.3
 
