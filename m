@@ -4,178 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34B1DF3026E
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 18:10:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C0EF3026D
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 18:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 374FF6B00A0; Sun, 15 Mar 2026 14:09:59 -0400 (EDT)
+	id 71D606B0089; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 322456B00A1; Sun, 15 Mar 2026 14:09:59 -0400 (EDT)
+	id 6D4EE6B008C; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA1C6B00A2; Sun, 15 Mar 2026 14:09:59 -0400 (EDT)
+	id 5E5A66B0093; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BD0A6B00A0
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:09:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 635A21A0BE1
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:09:58 +0000 (UTC)
-X-FDA: 84549086076.25.0B00FE5
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010069.outbound.protection.outlook.com [52.101.61.69])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9F575A0007
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:09:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=RFutWs+5;
-	spf=pass (imf25.hostedemail.com: domain of shivankg@amd.com designates 52.101.61.69 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773598195;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7BF6B0089
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:10:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D72F71A0BE1
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:10:53 +0000 (UTC)
+X-FDA: 84549088386.07.3F3DC17
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D182518000F
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:10:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1h8VGye;
+	spf=pass (imf16.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773598251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IqI+9lZUomm+PUe/S8eYLzl0foRBtncpKZj67oZJfcw=;
-	b=wIHYjA+v8N/9wPW9PEtVznG7NH+cZLiPZrNKaVj89XKf6aBlyd8JqCN9zZIQQxbvt8H+57
-	701NVoinU+Wnq/d0hCCtL6LUQKXCdq1OOMAdgbKVtvkNUtoFhwTPvOMvg/hYOt7siiSYyN
-	j05FpuQMeLBApigvvLixjQ++a3LwgdQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773598195; a=rsa-sha256;
-	cv=pass;
-	b=rmreD2uobqwup8cTtW8dknYkdCNspHdwzp7UOFqTHIjSHCCUDUI2KYCbOrjOEK5T9C5sbS
-	WkS1jm67JKRrDfcSBnoR7A+VFG1d5rMxwIlVyft2UG97EuSP0h8D6F/Rd9EmN2fcNCIjvC
-	hoG3mmIhYCP34LmAXbW9EsRMlDr6gtw=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=RFutWs+5;
-	spf=pass (imf25.hostedemail.com: domain of shivankg@amd.com designates 52.101.61.69 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QM0XUJ8ByCoxhcyeNiTJC8wfbSePpP84dUo0unWdH6F/SnkAlCzBlGFQnjf3XCRnqmHlnDrd1dIHSvSAd2aha+a4BJVc6NHbwgicp1wNR+dodnMcXLKu6ZVrcGw6GIetWggQfY+K91K5Dtxwl2DME4lvPDqWXetM01MONZ4IjXFUj6btDz6P3agdFUKaJwntydOjBZWZHiQxfAPU17UIjq/BVxcpJ530W1+YlqBWOAIhzgPulMbS2hDoWV8I786HtTEpG5QtMA5gUoYHpO6ldUI13zLxu3LGDsx6G4HsimLo5JFD5y42kgsyM3YLCNvbAwQvQjkmHxrZahNptadlsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IqI+9lZUomm+PUe/S8eYLzl0foRBtncpKZj67oZJfcw=;
- b=he3r7kCr1nAJreqPzHjVi5C1PgMA6px0/ZyCNcV8wXPrDclte2Ynxyj4UbM5zZaB7gD95edJ4JDFDSVhK9FmtZtoCQbF1uLsGa3R/dgLSF5FhtpthHc1Wcz3sp1KqNDQ1+PI2ZyP5R+RSGO1fJ7CybgO/ncHUG3AkzKKKntxHNtbj8hnENkO2AX3FRjO16z13AtN8c4JACqONtPlvYRfBDd/QfRi9MBjRYkkvkObM5xkYcF9+Xbf+lu6N78jsuspXebM5YUwgBRlMFHQtFTtLht+OPNK0rHTvk7oXxdEgEFPTjfdwzy/eyPlbLjxqivGbazOLDpb0AQ7vyCxaWUlHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IqI+9lZUomm+PUe/S8eYLzl0foRBtncpKZj67oZJfcw=;
- b=RFutWs+5OpOyWfBJvFY92O51sDAX/O/4CNwq3S4/U448e+xHBwwdOdvLVRWmqk2rAFcmnc0rPHbGQ0ls6oGSk7t95YAakXa83yBNpQbFB3Dfn3Vpu2HoNPWSCV7zOQPbkcl/Y//yvyKT22ceee88xWht0hFlUL3KtV9i4ngvK3A=
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
- by SA1PR12MB7317.namprd12.prod.outlook.com (2603:10b6:806:2ba::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.13; Sun, 15 Mar
- 2026 18:09:51 +0000
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed%3]) with mapi id 15.20.9723.014; Sun, 15 Mar 2026
- 18:09:50 +0000
-Message-ID: <f0481d72-db3a-4b47-80d6-0652a8a218a4@amd.com>
-Date: Sun, 15 Mar 2026 23:39:38 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 1/6] mm: introduce folios_mc_copy() for batch folio
- copying
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
- willy@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, dave@stgolabs.net,
- Jonathan.Cameron@huawei.com, rkodsara@amd.com, vkoul@kernel.org,
- bharata@amd.com, sj@kernel.org, weixugc@google.com,
- dan.j.williams@intel.com, rientjes@google.com, xuezhengchu@huawei.com,
- yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
- jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
- shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
- nifan.cxl@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20260309120725.308854-3-shivankg@amd.com>
- <20260309120725.308854-5-shivankg@amd.com>
- <d55153d9-4ff2-4975-b00d-5877ae80a820@kernel.org>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <d55153d9-4ff2-4975-b00d-5877ae80a820@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BM1P287CA0021.INDP287.PROD.OUTLOOK.COM
- (2603:1096:b00:40::24) To BN9PR12MB5259.namprd12.prod.outlook.com
- (2603:10b6:408:100::17)
+	bh=wFfWUXvwHoJE4xSBTFJR2gnf8f2b6YS0PT0BDPveSGA=;
+	b=MAm3GmCLSOs7zKLxw9U8ONfhQBvkjW/V5KUdjwZQ8dCkLst1Z5FeNt2/1Fb1j0C+n11PZI
+	OQQjr950HtVkzU1XKyxWED0Ng9NOC5CFQdjWgKnTD5BRmsgEAl2YsjSGSYmdAM3nebF1xN
+	OKelv2HP2QurLC8G7ABGtr/dNmBfsyo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1h8VGye;
+	spf=pass (imf16.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773598251; a=rsa-sha256;
+	cv=none;
+	b=eB5tbluE2DqlSbEUA5P9RDFJD2jbLJcdMrUf9KBuFu0oFHR7yvqcDGN5rTnRxnj/7mZvjF
+	d+RS4U3EL2Be7wzXie37fb/U0suN67I7yDFqjKaNXLcRDciA0Mx/FUR6tCwkJFzde4kL8U
+	9CoIdvXHXpbHTTHlrE1LHv2KTCKL3n0=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-439b6d9c981so2693304f8f.1
+        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 11:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773598250; x=1774203050; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wFfWUXvwHoJE4xSBTFJR2gnf8f2b6YS0PT0BDPveSGA=;
+        b=V1h8VGyeX5bENgxdOgE5fh2v7kg19rb9edqfyOB9ZZ4WBOG9uJWtII31a7IjrStnI+
+         KcNuIvHvOBfM8+nsXpi5HO6P+jD2ExSUHa3kSRwZjzyTD0BdP5D79S0mmwqs4iT9IBGo
+         C6Rz4z4akgmCjiLekukLMy/5PUFNEHlJ5IPWnGvZf816eCXIgU5ma7ofNZ6kqePl9Wnp
+         isAoPUuCCIfTWwao+aywWZwTIKFFFei6adXtOCkAMK3JQwzjKvtVcNDj7iixb7a+KzUL
+         12yjftZBWWAV0aAoRm3H1AXSshgLqSiI8VfzKGYOIRslBmW4ZQGFRhRFE9Sy946OPZCj
+         VjKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773598250; x=1774203050;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wFfWUXvwHoJE4xSBTFJR2gnf8f2b6YS0PT0BDPveSGA=;
+        b=EC40Nw6fH91oAUQGZyOW/O3OVy//cwUXC6+Jh2Nzmn8saIzzAV0ABFJ5leacsWchTQ
+         w8ZMa/SSfkD11uOgs0yDc4UsBtDKyIE21dWQruiAFvePAGD854dupLVYPSU6XOXnyH9c
+         5G4oeXfp0PmLIgNDR7svbUnqPPl7GjRlXZSCGlIutBfaS7IetbTiQ3uxRV+t6174/Wy3
+         rlPtqp0hl7YHI4yj+q6+od8rbIM5VIA6OgmpAwFFjDY/ScZogKvzQZkl2LLly45mMqgy
+         AApoScv+Y4wPcB8GZDHjkWyndFtlRxXmge7XIYogl+XLy7BJLtgbAoZ934qQfRbu08xe
+         7kiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUazpVhKvjK3yoqJnrVBZT062q62c+AtSC3z4OIwiSIWg3s9mNFzx006+QdVly0toGL/N/RdPR/sw==@kvack.org
+X-Gm-Message-State: AOJu0YywRvCTFlSPQsFDVBjZA1QFGIy9GT/DeahWecF1GjVqF8AsjFmP
+	T2QIXSPlwm3V6F2wsXUfgspakmK3mh9D3IwFOyHR4jwpOpfRDpTrOz8ZrzCtEQ==
+X-Gm-Gg: ATEYQzzP/SoQU1Qa7711FS9urPeBXnIGVFQpfayj+vBZRHdCCUHn8h3eUerHvA/8NOi
+	IlIRjwPUQp1IXsINWaozFqmk6RbtyuOHrh88hscThiw1WJGqvD7VWLvaAISS5BboC0KuOBCbCm7
+	/FqhlLdG7my5hN5vd8ud/l36eoZ/1w70vgN9IU+cFfgtDsAHeoXSmPyUqGjFEB+2TsbC82mhRkZ
+	CGSCRx50R9GZS6p73ie6cvA01ExeHiwOqf5FenyduT16wjtFeDcjbZfOPBFAbeR/FbZFdnJof0c
+	n8AhzslS8FmUqknnr1mFlS4JLe03SwZ3DWvR6oSyDjv312RlE7cAnV/0BfTcV7sQSoTtUj9qNsC
+	LafnEQwgmk/Lfshc7PbDGA0GuIh02uH5eMRBxWUggFkxsjhfkVnWc9uchL2NA4ESs2fyCUXBj02
+	zg65G5RHwqsC+1ynR9dE/ybie1gLx7zmYRCAs=
+X-Received: by 2002:a05:6000:40db:b0:439:b3bc:4608 with SMTP id ffacd0b85a97d-43a04d80c26mr19640290f8f.7.1773598250045;
+        Sun, 15 Mar 2026 11:10:50 -0700 (PDT)
+Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1a76e5sm34632151f8f.12.2026.03.15.11.10.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Mar 2026 11:10:49 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: Leonardo Bras <leobras.c@gmail.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush work
+Date: Sun, 15 Mar 2026 15:10:27 -0300
+Message-ID: <abb2E3QW7t5Rhxrt@WindFlash>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <abSH40oW9qiVDXZS@pavilion.home>
+References: <20260302154945.143996316@redhat.com> <20260302155105.214878062@redhat.com> <abSH40oW9qiVDXZS@pavilion.home>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|SA1PR12MB7317:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8fa146c-2d58-4719-6bdf-08de82be0cef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	4IuNYBxx+l1oO0zkK7t3DFEeLiHiS+QPzMinD/w04A4Ecugu0Lb3/IV0oARgNpctvWwXLy/aIyvD4CfB6moC0FGrwqtmYQi8LUTkrMSAuIbR6uQUFIHpuVIK8Ue2kORWn/l+fDmdMPY9SUzz73HVczbiNUVW1G13Z30ZXX4uMQTSiGmSJiROIGoGzjwmxt0QtRSxw3V3EtTGN0telCGRVGrYD+te5CdVy9THBdIfUxdSqj+LXEi3Nmq9IAns5vPrMm2LGVAs3UYd116WiQS7UhZ6uuidKqsFGtQCk2H3J/rpGLm1z0QVW/zbb/NRO9YoRuni+srKPFXphjauQoUY7rJzRrqWrS7PkU4FGro16c7yJvjy1t59FI957+XYvldlNi84prGOYZ0lV4bipvEvI+y7L3qPzeW+KbrXfqbBYvUalfKV3I5zB2nZCWWFwafu7xoyyTJE1IKmNeMrNNpRZLJ6a2xEshp7oHCI8Dtlj6Z6jrXdtRdKgiEDPFOWXqYIxKeC9sz/5+CBbwkkp9jW2dnT87c4Add1feSsJVqWxI+jFxLUKDIwq8EEmIZbixL91Qt4DrojyacYtGWAXyo8akLYwNw379Ml3i/HUg/1bAmOEpyE5OSlHtGMzLxysNoVpMNmDuOXnkK835GLjEU9MHwWK6HEJtqSkY2NWqJoZBAlgq/SUlbMm6m+lfUTuXJ2pjApvLhaVOHA3xlKDCk9K8SjpCpUFVbfI7AHnVoodOQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M1lHeXZJcWh3bEgyNGtWMStnWC9PUlFMK1ZPRmRzYmgwNThncUJFbDFXU21r?=
- =?utf-8?B?MEhsUGFaaXdENE5SSkoyUW1BeDROVWw2M0tIOVBRd3JqeVQ0ZFRVTFdnME80?=
- =?utf-8?B?Y3FHc2FCSjU5Sm5UaEVjWmM0bWUvSjJ5bTBka1RlK25LRVVUV09wRFVMMThq?=
- =?utf-8?B?dVpqUkxCU0RIUXJlUVVuSFN3bnF3bjU1REF0eitwOVdKZHdGcEpKVCtoM29O?=
- =?utf-8?B?M1VPcXR1RHgzMVV1U3k1Z0tTZDJ6N21GQS9MZWxhdWVMdzVpZUYrSHRmV0dL?=
- =?utf-8?B?SmlUZHI0Y0FiMXBRaTR6clZrUnc4aWJ5aHo1cmtScXE1WTIvWE92UEtJREZV?=
- =?utf-8?B?ZDhUN3RnRG1ZN2UrejhPVm9Ha1c0UkRHSzRFQVl2SFhVQnFqWndLYXk0UGp2?=
- =?utf-8?B?UEQ5NW5SVU9JMDJEbmd6c2g4eTFKYndpbFM1NEcyN0NsaEgyRGxKTUJaUm9m?=
- =?utf-8?B?allMcWEwTFFwUmtNUkV6WGw5ZnBJMEc5djl4eFdUVWNDbHoxWW8wV0dXV2Zw?=
- =?utf-8?B?RzBmLzA2WS9UcHFHdWhrTXVVS2RWMWZaTDNFYlZtNVdyTnJxbm03WXZ0YkQr?=
- =?utf-8?B?aVRwUkVBVUFTbHcyS2tSZFdsNk5tczArcG1QYTgvVy9Vd0Y1Q2taeHFsU2J1?=
- =?utf-8?B?Y1N5TGtQSkxPajdvMGphUWZKR1ZoeVQ2VlZ1WkZQbGNSZFdBbUVLOEtsMWsw?=
- =?utf-8?B?WXd2Q3h1R1p1VTRPTitmbjlvVitpcFFGZ2FFaTVPZ01PVWJnN1pWcXdORGhO?=
- =?utf-8?B?VEdldUdXeU1nUnZpZ241azg2VU8vQ1JRS1I2SlRibGF3VllFNERQMXUwMFR0?=
- =?utf-8?B?dEZVc0laSE5tME5nVmcrMWZRM1VDTUxIemZoTVhJSlo2cXczYjBlcjdXNytQ?=
- =?utf-8?B?TTBuOXNZWjZZcVUrZFQ1bmpoRThXOHpjRDhNQzJrVktxMXYvRXFGUUVMTWFZ?=
- =?utf-8?B?WkdOMTdRYkhQQldXRDNNNUxnZXBNdnpXUGNCQkxKNUxLVk5nT3dMeGt2R2RF?=
- =?utf-8?B?aDFDZzNQVmE1Z3I1WW1OeHNlYTBHY0R4N2F1ZzVHZFd5M1Bxd1VpUFM4enFU?=
- =?utf-8?B?QnBvc1lwU3Y0SmVOM1poQ3k1dkhacWk3U2x3ck5zYkhXa1MwNVh2bXVMSit0?=
- =?utf-8?B?NFN6RHBzRE0zeW85TEZ2cDFtbGdaKzNGLy9BSzNnYkJQUkJxaW5SSTlmbmov?=
- =?utf-8?B?eER2N09TZUsyUVNPYVBjVWFUMXYzSmwwamc1S2xuTXc4SVVMdkYrOVAyWUxn?=
- =?utf-8?B?NnZlSGpEaGs5WG5JN3BmK3ZMYjdBY1JGbkZWQnhpdE9XOGZ0OTNSdHdoS09K?=
- =?utf-8?B?aWl1UFhHa3dHZjBRQVIyOVRpT0p3WW9oNFVySnlQczlGSTVjU28xaCsvOUlU?=
- =?utf-8?B?T2w2VGdwcXhjUEtVRkRNWVBSVUozWUxOWEEvTTZ5S1BnaHNnanQwWVBaeW9m?=
- =?utf-8?B?N3JiazFyaGd5eHg5WHZOK3hYd0c0R1NDQUwvZkZCWGhqTXNpdFc3cUVUN1Vj?=
- =?utf-8?B?bHA1dzFLS3BvRFpRTnZFRDZubWw1RHZGU1ZRUU54S2p0TlBweHlVczI3aXRI?=
- =?utf-8?B?cDkxU2U0OVpIdGZSS0hMY1ppdXFaZWt4NHYrL0JhMmdnWlhJUWJIMWt6MThM?=
- =?utf-8?B?dEdMcWpLSUdhWkZzME5VRTZFSHlwbGM1VjQ1eTFPQ2xtcGRYSExUcysyOCtL?=
- =?utf-8?B?OWtaSHlvOU9KY0Z6YXlBYXlCQ0gwbHlVcUVYblJCeHVJTmNzSDRQMnBwbHBV?=
- =?utf-8?B?SHNzMEh2cTIvT3lEOWt0V3BMMkJ4Vm1YdCthTHhQMTlRV25lMUQrRXVGbTQr?=
- =?utf-8?B?YmVGNXRNbHkveFJYcmMxbUt5VzFmWTVVU3pUSXdGdndMc2tTbW1lT0ZaVStk?=
- =?utf-8?B?UTFFdTVROCttWm80SlBySFlqdk52MDNwQ3VKYm02UmxzT3hCRVlSZFZVZ2xH?=
- =?utf-8?B?VTdaOHRkVVVGRjA2Mm9SekpnRHMzdWxOM3B2RDQrSExhUnh0TS9oNUh6OEtR?=
- =?utf-8?B?QmlSb1VqNmFmMXNrdDBiUVBmOWhsSzVIZHFYcmpJL3FQSTRENnJ3aXV5LzBn?=
- =?utf-8?B?Mkh5VEtwTUN6K3U0UFdNbEl5ZXUrZVYxQWxBcnNqR3liYWlnVkJhaFNjVHcx?=
- =?utf-8?B?RWdGbGxsbVlLTTREMk5SakprTnd0THZjdzVKbjdRNUF4b3NKQktMZ0RzMXVB?=
- =?utf-8?B?SkpmZ0lZdFVlTjFrY3hnelF0K3F5NktjdDdoUFpWSFlqNWl1c203UmtSemdO?=
- =?utf-8?B?cFJNVStZODBEKzBvVGRmL1kzUUlpUXduRlU3bm84VFJoc1JSTTM1Q3pXKy9k?=
- =?utf-8?B?YlRaUERYem53NlA1U3pJYmdoRHRaSW1ES1QzVUFwZ3pkZnV1UnBydz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8fa146c-2d58-4719-6bdf-08de82be0cef
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2026 18:09:50.7260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BO5c1LLYrGdqY3SGliOJ3UnyUFJQHK7M32IHoCD3xwoPN/n7w0GoGVLdYoPIZKRtZ6luohwsx78yYRTCdWVpiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7317
-X-Stat-Signature: q4u7t6k4fdhx883u44edmt4uknye9ath
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8t5x84cq8rm43q91wo4yz6tg6r9f57mi
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F575A0007
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773598195-892510
-X-HE-Meta: U2FsdGVkX1/Rs0VhD5NFxImtyv4VrvcN6hjrfGnXWbX50fwV3dE1JpFcgBb6G8wr1M2myputY3c4GYkMjw9KrrDLXk7lDElXGwLmhuvJMVXHjdBMp45QLHlGvnO7pldPjSG2XXV5UgaWRP1gE5BI+nvLPzxHtacuRn389lI+y0QybAvdBBWFcU389yuBdsdg18zgwq51/tPOl6dvgFmDmwjFQeqnQR/OrTL6JCEDFSwCh6TC2Iur1rbDeL13ZrgKwNarMcNXQovvb8VXlxhN+7hJ+jzCHPraG1aucIdBdfmhIeNceP4Rtu0e/+UqsvFRQ54/FIy17XqzK273qOiC3QMkm7AS+zuTraylhY7ocFetFAE8yj+t9eelXjKUcGA2Qu+ZtQPqBU96/3xvLdGmSZpm5hv8vl/l+NsMyxhIqY29QQ6UJCciHfLYazrO/VA8R41iKKIRqgA1mqBz2CEdn4c3KBT/cdq7fvgqhRpf9mpc1FBYOfGbFMDIKYJ/Z5qQiOlAe4WQCFcZgTGNtQ7wZ8i3Bqu4j2XiwH/eFXJyqIRQrS64hjJfO14LV+Hk9OUVCblhj0RSA67G7NSN26B7duyNkkebC/UgBeGRi86Suv4vLTatLGQUnH2eNYW1wVeHcUyiHwoPvX+J0VrXx7aunwA99Ps5/Fqb+aABRGk9gYDlj7kcKZsNhzgcMZAkKWt9y3DO+5rtq/RdD37eORC2c6OmlI7Zk1/UgwFZIFaxmV5lMlZc2DAcXH6Nsqm7mJBuHxE6T1/+cDA0fOaCeMpMWLKFEp929xyFEu6Itq2u1OCrqOJgcgGcQnLfpHQzsScpsWDhyrpaijPxRtlXioOlzFBcLEV+5dYPiNju31rLy41wAXXoPmVlaQXnMwTCrg/7WX+4cl6p8upcovOkNfR73/ayQXlf2N/qo9sto8Bj0TcFqvM4Q/yTt0kfTdNDNck3Q0CHLnJSf3H09wNhffM
- mhTsN9/f
- OGPX3eH8ZRDCM4IfVZX/LxKUsYB7U9+1xwc8GrvZcoi0BvnRrLm7Q8GpSQP8kfiPclqlh5EXxnCr+YQU=
+X-Rspamd-Queue-Id: D182518000F
+X-HE-Tag: 1773598251-248699
+X-HE-Meta: U2FsdGVkX18EbdLvB9VO/kxnz/mn9I9HRAhDDvHj8uUfWl3ZdadDw+o+20UoentBsFShAGXF0vz7g9Or9TQ05LnKy0ZWEejJ68qsHg/zuSyUiTfTlIVX6EMlgi2KMHIPE0z776MAltRDANcjrjoh7Q51gbDdwS+sF/GdH8+HZFUu+U441DEYfJ9pwirbZeYEDo9HYRU6JVXj6Pg8tiEQfIF7Ae7XM+xfxo6MPe9jYRwo+iS+domrJtYaJtl57s7F5H+/du2jpVZV8PHV0+l8vp+Dy/1qzzJ4/5TuAPLsIJFh/If3r7TtTPIowdahq3ya14ijEkFq+bgeFpnagFSY7vuFtIGsDNRn8pG8bXF75hrd7sbS5c6299MOBsyvKXAFjJgXySRP0R+toGtqNuRqsujbrWXYxpCE4xZNFvWlnBO4frCVy2v0ppUITLqxVzQzb/Yfljw/9APTC2+2mX0880d/+TPiXOyl9lNcMK5lKS99F/XpJElygiKThOVGIXS59Ihl5usEyKE7B8BLC/f75ov3c+8EqeHxAcFDJKA8I0vcEeeeGa0dXlLzfjxhvtH9WkV4Dw++mGIijL+6fGZSIecy1k345iDoipRTpqU9lecOdQVBBCpDBKPQL45nQuCyS2lqoOwQetp1X41n8BuPLLWTRphwUtE9uLLrz5jr5Z8NJuY9B3G6piD+an+gmP2dQoxqQI5Wi5ANw5xUIl+SQne6AZgg2lgI6Uw7YwLv0md1vVRp1rEl1eGPe1bL26mCFP6Q46dPwuCBnAvcEosANmqI23aUlp6okgt9KJxyto5kGUDDRfiiYr3JnADqHHjR3Y9AyRML/bZWYC5/L9go0pqFe3rsBG5TspK0N8hD46moM0Cszj5auzpTgJgXQMMQrIjV1mPg/LRh1cNU0y7gckyRVOnYx4cwtVtNE0PhAeasTXPfIWGM/slWz00nqJUfeBf8K5WA1KLjsEsW4fX
+ ZeVWHWMa
+ RmFM7ZUoQEMyGAzGDe2Il1RwwcjhNIi+vBx0nWfT4VX1s8QTKHsMuHUYiMThngZQRVeQNq+rQRpc5VXI//lFn7mIKNiDLPGQouGdbX99XIhecKc3GLMro2MjhoLCKdpKb4yqmz9RXyDUpNFiC+eEw7mkU8fPTzEB0006c9klsaPjRi08Xt45RS/wsECqRrzdnjv/Itrjz/GKcpo0j4M+e3OEF0jlZ87cjjGnlyi5X/zwkyPTIgdL2CiQPVtqM2DKqhdgxb0gJUtwyNah3B8DNXLhLHwmqBCNuIDr/2j448KVOHMD9IYvPuy7eVmu7qapMxUvqxZt7IScM/sOHJ8Y/+ox7k35OE9RuQ44/yetheZofF7Y3+NVdVd2qiYAq9i06I+Ovec6V7J9GasGFRZBB6i6XWhpeh/efw5W2dAwsqs0qCe3isqmL6pU/QKTkSv8VbliejGPc/8MYlo9b94LT5055y2mQa28bpXt3tlemxVQsxcouG5IxugguSM/hFUGW8VylKUjSeBmSEXaRxeEEaz41FxWpfu+2I7623nv0im5bhOyCf3U0YxbSjhrY9MNNf62YXq+/fxaRhLMWHzMof1UL5jzKoiiRLvzFTpm9YwuGWorUfDw9oiz7uBVh0TUpvxijhsSFSC02kM/Bghpdq6z+KYzmfkaBAxFcODtgf7cdceixwi1KA5+G9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,20 +137,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/12/2026 3:11 PM, David Hildenbrand (Arm) wrote:
-> On 3/9/26 13:07, Shivank Garg wrote:
->> Add folios_mc_copy() which walks list of src and dst folios in lockstep,
->> and copies folio content via folio_mc_copy(). folios_cnt parameter is
->> unused here, but is part of the offload_copy callback signature used by
->> later patches in the series.
->>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
+On Fri, Mar 13, 2026 at 10:55:47PM +0100, Frederic Weisbecker wrote:
+> Le Mon, Mar 02, 2026 at 12:49:47PM -0300, Marcelo Tosatti a écrit :
+> > Some places in the kernel implement a parallel programming strategy
+> > consisting on local_locks() for most of the work, and some rare remote
+> > operations are scheduled on target cpu. This keeps cache bouncing low since
+> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> > kernels, even though the very few remote operations will be expensive due
+> > to scheduling overhead.
+> > 
+> > On the other hand, for RT workloads this can represent a problem:
+> > scheduling work on remote cpu that are executing low latency tasks
+> > is undesired and can introduce unexpected deadline misses.
+> > 
+> > It's interesting, though, that local_lock()s in RT kernels become
+> > spinlock(). We can make use of those to avoid scheduling work on a remote
+> > cpu by directly updating another cpu's per_cpu structure, while holding
+> > it's spinlock().
+> > 
+> > In order to do that, it's necessary to introduce a new set of functions to
+> > make it possible to get another cpu's per-cpu "local" lock (qpw_{un,}lock*)
+> > and also the corresponding queue_percpu_work_on() and flush_percpu_work()
+> > helpers to run the remote work.
+> > 
+> > Users of non-RT kernels but with low latency requirements can select
+> > similar functionality by using the CONFIG_QPW compile time option.
+> > 
+> > On CONFIG_QPW disabled kernels, no changes are expected, as every
+> > one of the introduced helpers work the exactly same as the current
+> > implementation:
+> > qpw_{un,}lock*()        ->  local_{un,}lock*() (ignores cpu parameter)
 > 
-> I'd just squash that into patch #3.
+> I find this part of the semantic a bit weird. If we eventually queue
+> the work, why do we care about doing a local_lock() locally ?
+
+(Sorry, not sure if I was able to understand the question.)
+
+Local locks make sure a per-cpu procedure happens on the same CPU from 
+start to end. Using migrate_disable & using per-cpu spinlocks on RT and 
+doing preempt_disable in non_RT.
+
+Most of the cases happen to have the work done in the local cpu, and just 
+a few procedures happen to be queued remotely, such as remote cache 
+draining. 
+
+Even with the new 'local_qpw_lock()' which is faster for cases we are sure 
+to have local usages, on qpw=0 we have to make qpw_lock() a local_lock as 
+well, as the cpu receiving the scheduled work needs to make sure to run it 
+all without moving to a different cpu.
+
+> 
+> > queue_percpu_work_on()  ->  queue_work_on()
+> > flush_percpu_work()     ->  flush_work()
+
+btw Marcelo, I think we need to do add the local_qpw_lock here as well, or 
+change the first line to '{local_,}qpw_{un,}lock*()'
+
+> > 
+> > @@ -2840,6 +2840,16 @@ Kernel parameters
+> >  
+> >  			The format of <cpu-list> is described above.
+> >  
+> > +	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
+> > +			and remote interference mechanism on a kernel built with
+> > +			CONFIG_QPW.
+> > +			Format: { "0" | "1" }
+> > +			0 - local_lock() + queue_work_on(remote_cpu)
+> > +			1 - spin_lock() for both local and remote operations
+> > +
+> > +			Selecting 1 may be interesting for systems that want
+> > +			to avoid interruption & context switches from IPIs.
+> 
+> Like Vlastimil suggested, it would be better to just have it off by default
+> and turn it on only if nohz_full= is passed. Then we can consider introducing
+> the parameter later if the need arise.
+
+I agree with having it enabled with isolcpus/nohz_full, but I would 
+recommend having this option anyway, as the user could disable qpw if 
+wanted, or enable outside isolcpu scenarios for any reason.
+
+> 
+> > +#define qpw_lock_init(lock)				\
+> > +	local_lock_init(lock)
+> > +
+> > +#define qpw_trylock_init(lock)				\
+> > +	local_trylock_init(lock)
+> > +
+> > +#define qpw_lock(lock, cpu)				\
+> > +	local_lock(lock)
+> > +
+> > +#define local_qpw_lock(lock)				\
+> > +	local_lock(lock)
+> 
+> It would be easier to grep if all the APIs start with qpw_* prefix.
+> 
+> qpw_local_lock() ?
+
+Sure, not against the change.
+And sure, would need to change all versions starting with local_ .
+
+> 
+> > +
+> > +#define qpw_lock_irqsave(lock, flags, cpu)		\
+> > +	local_lock_irqsave(lock, flags)
+> > +
+> > +#define local_qpw_lock_irqsave(lock, flags)		\
+> > +	local_lock_irqsave(lock, flags)
+> 
+> ditto?
+> 
+> > +
+> > +#define qpw_trylock(lock, cpu)				\
+> > +	local_trylock(lock)
+> > +
+> > +#define local_qpw_trylock(lock)				\
+> > +	local_trylock(lock)
+> 
+> ...
+> 
+> > +
+> > +#define qpw_trylock_irqsave(lock, flags, cpu)		\
+> > +	local_trylock_irqsave(lock, flags)
+> > +
+> > +#define qpw_unlock(lock, cpu)				\
+> > +	local_unlock(lock)
+> > +
+> > +#define local_qpw_unlock(lock)				\
+> > +	local_unlock(lock)
+> 
+> ...
+> 
+> > +
+> > +#define qpw_unlock_irqrestore(lock, flags, cpu)		\
+> > +	local_unlock_irqrestore(lock, flags)
+> > +
+> > +#define local_qpw_unlock_irqrestore(lock, flags)	\
+> > +	local_unlock_irqrestore(lock, flags)
+> 
+> ...
+> 
+> > +
+> > +#define qpw_lockdep_assert_held(lock)			\
+> > +	lockdep_assert_held(lock)
+> > +
+> > +#define queue_percpu_work_on(c, wq, qpw)		\
+> > +	queue_work_on(c, wq, &(qpw)->work)
+> 
+> qpw_queue_work_on() ?
+> 
+> Perhaps even better would be qpw_queue_work_for(), leaving some room for
+> mystery about where/how the work will be executed :-)
 > 
 
-Done.
+QPW comes from Queue PerCPU Work
+Having it called qpw_queue_work_{on,for}() would be repetitve
+But having qpw_on() or qpw_for() would be misleading :) 
+
+That's why I went with queue_percpu_work_on() based on how we have the 
+original function (queue_work_on) being called.
+
+> > +
+> > +#define flush_percpu_work(qpw)				\
+> > +	flush_work(&(qpw)->work)
+> 
+> qpw_flush_work() ?
+
+Same as above,
+qpw_flush() ?
+
+> 
+> > +
+> > +#define qpw_get_cpu(qpw)	smp_processor_id()
+> > +
+> > +#define qpw_is_cpu_remote(cpu)		(false)
+> > +
+> > +#define INIT_QPW(qpw, func, c)				\
+> > +	INIT_WORK(&(qpw)->work, (func))
+> > +
+> > @@ -762,6 +762,41 @@ config CPU_ISOLATION
+> >  
+> >  	  Say Y if unsure.
+> >  
+> > +config QPW
+> > +	bool "Queue per-CPU Work"
+> > +	depends on SMP || COMPILE_TEST
+> > +	default n
+> > +	help
+> > +	  Allow changing the behavior on per-CPU resource sharing with cache,
+> > +	  from the regular local_locks() + queue_work_on(remote_cpu) to using
+> > +	  per-CPU spinlocks on both local and remote operations.
+> > +
+> > +	  This is useful to give user the option on reducing IPIs to CPUs, and
+> > +	  thus reduce interruptions and context switches. On the other hand, it
+> > +	  increases generated code and will use atomic operations if spinlocks
+> > +	  are selected.
+> > +
+> > +	  If set, will use the default behavior set in QPW_DEFAULT unless boot
+> > +	  parameter qpw is passed with a different behavior.
+> > +
+> > +	  If unset, will use the local_lock() + queue_work_on() strategy,
+> > +	  regardless of the boot parameter or QPW_DEFAULT.
+> > +
+> > +	  Say N if unsure.
+> 
+> Perhaps that too should just be selected automatically by CONFIG_NO_HZ_FULL and if
+> the need arise in the future, make it visible to the user?
+> 
+
+I think it would be good to have this, and let whoever is building have the 
+chance to disable QPW if it doesn't work well for their machines or 
+workload, without having to add a new boot parameter to continue have 
+their stuff working as always after a kernel update.
+
+But that is open to discussion :)
+
+Thanks!
+Leo
 
