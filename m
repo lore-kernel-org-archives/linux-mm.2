@@ -4,123 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42DE1F3026E
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7C7F30283
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:26:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91BE16B00BB; Sun, 15 Mar 2026 16:20:31 -0400 (EDT)
+	id 813D66B009D; Sun, 15 Mar 2026 16:26:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C6266B00BD; Sun, 15 Mar 2026 16:20:31 -0400 (EDT)
+	id 7C1B26B009F; Sun, 15 Mar 2026 16:26:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F3006B00BE; Sun, 15 Mar 2026 16:20:31 -0400 (EDT)
+	id 6F8366B00A1; Sun, 15 Mar 2026 16:26:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 68A7A6B00BB
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:20:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0356B009D
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:26:01 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C7181D46D
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:20:31 +0000 (UTC)
-X-FDA: 84549415062.07.1448B8F
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8A917100012
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:20:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g17xB9O3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18E5C1A0C95
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:26:01 +0000 (UTC)
+X-FDA: 84549428922.07.AAF50DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 71FB91C0010
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:25:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jqGHc/zU";
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773606029;
+	s=arc-20220608; t=1773606359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Y8j6iHVra+pKfyywa0HrOaBeipJSEcSsIygb6AM7nHg=;
-	b=GK357NZwsss0XbDCfmPqaqnibuUQP5VnOd4M97Omj9LLDKqfvTftVnMnD4/7iiwqkgf1eR
-	TZX9VhsCZJ3Q3wHY4ennBjdFIeodTUxA88YYU7bugxNWIX6gHtOF7mhNDhL5T4DGfv9/Ip
-	iBEX31PQZ48l9UAIuethoF+/weeMooU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773606029; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XDBfLPa+K3JieQNj5NGa8BuODSRZQIDV1/qbTTVq3p8=;
+	b=D9mRCASFL79FHjn7BGU55vqcDKoCkwkl9GMVfz7aOjWxMvVwo4X7Sy7LeUtcv63lJj0nPV
+	4BVyL+YB9Gk/ZfDr3HPBX8yqkRV6sbepQv3TuEE1Ct+auEyg8sZ/ag0j9Kef/S5Fm/4Rrv
+	MLzevml6RiHB7c0xZmAMWd1RNgDPHL8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773606359; a=rsa-sha256;
 	cv=none;
-	b=6RnawbQHYBR1O1od6EEbH2PT3TDZqPFiZesD5MOnKe+JMT9IbwGTkumWKc9QsIg/SSXVgJ
-	btRwO2cEWE+xr4pIQH3qhBqairkx6WfNhbowWmUaFVZ6Nnanie6w0tE+WYdUwGpKVAVfik
-	UKNlKnHig7FLCwKX/bZmCFhvihjgdG4=
+	b=kEXIic/sS+RH3CfuwFqOc7TrgrzzZMM7Mra+ib9KZtgcF9r+YScMV4C/+uo5hWbxyhdT43
+	NGxlSi7TXyQWKfTS6zsQDpzPpuomBe8CJJ3QoOFdE8x4ehDHt7hOPZtO9WrkwGUNkYV563
+	fBmINeht/VwB6qIf/sxHp6dLjy48ac4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g17xB9O3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b052ec7176so26825ad.1
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773606028; x=1774210828; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Y8j6iHVra+pKfyywa0HrOaBeipJSEcSsIygb6AM7nHg=;
-        b=g17xB9O3DLoVusBSWbEFYVHuYbu5VlV4muYPjcKnGLFdPMmu92GheJKpScy2NFrR/u
-         M9jja45feOJsgkt8RU7UHU23Fsuwpq4Rt++iiIuaZsM6H/98RfPWrYK1eAwxeCF0pcb9
-         HTQQ8mK2jw94vFkeMY9eKP/43tb7gPXGhuDtd0lBCMYHWV3RYu+JqiY729as7M83JubH
-         1UekyM4Sx4z+NJdHRFfnYkKZMNDaHfCoNzWtPVVApp0GmBdNdZXuYbx0UQ6MYWIHrmsU
-         uMItshp8PVrZH96nYnVzl45hL21R7L8+i5kr/ZLLGWGYwWrv3agPyGGN37KZ/1KaO1aO
-         i4eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773606028; x=1774210828;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y8j6iHVra+pKfyywa0HrOaBeipJSEcSsIygb6AM7nHg=;
-        b=N17CmpXstK/dVJyZErJQ35IwJQcbp4hGLQFgqDMH+Iyszv7R8UeAcUVXGDH1ll+V7A
-         lXV1hdFbO5zso9s4NhWlcW65vodjfBd5wXgzYriGK3GTDw+/eaLJz3V0Jy1VzMxs7tMt
-         TGOXvQi/R6IPXHaESHLvBRUUaBE3ZTQ2oCIHjMWuaATu+gUBZZR2SGpwHtUUXt1eryCh
-         6xKX8p/ilnjJgWGQ9KQvRNXYytfSBCCP6AgwMWNIe/voAWbk9eVVxe8gaC8tM3cQ9ply
-         wATwzcCJZxwot9rPpX7LJLJ/eWMlt6VvKZBSWQegTY2ZeAYLsZjYr8PMW8qOdr+x4QIN
-         i5fQ==
-X-Gm-Message-State: AOJu0YxR+QVV4E9H5D77yyycVIk6gs0iEKoPX+iCqUD9NdSjL1qJjxeh
-	9663FzrZSFEEC3uZk0nb8REo8zcQRYm70iDBRz6SAeVTHa1NeflflQXgWxAg7IpPMg==
-X-Gm-Gg: ATEYQzxvPVoFK+qHQMx91twkjyTFJn/8K2qzgBtnm7129eior6n0GMzl3XFY46eotqh
-	ecGJu8tMoGqU2r9tklJp+gQCOC5cKaYorCZNnuWt7+YgKXoXmp5Xka7uY3djPtZl9klNwbaJs2O
-	wu8RanpvJ1QkA7I0tvBAfNYDPsxGwd7tJF8iPkyeYRSJN7Rd4FRWTMU28Z1jKhqnOSHyQ4fBDJv
-	6Jw+aN5ZtAczapfb1Uf+0Re7BlPvKi6dupxxoHMzg1OBnUsH8gmOeVcvZWR7Quezjbz3mVAR3Qz
-	iAvoIjkxvb1dtDyUqX0DjU4w0UqOt0ZUd/JjTtwBJkoTrA/55zz+XFm7dWbbB1IBDHrphynJP8L
-	VYWZAnhioiLlZuXb1rO5GdcvPe+HyLAW22Oubjmf3so68TV9+fe+GIA45fs4cdFfF/sojw45jYT
-	IqaOlCR50q6SJfl+0Nu1dWsp42VAzk2X4jx1fcQbVJYTfdHdRHR1RfirtvtGrqOH7p4TGGm2AM/
-	gRcG36nwKoQpKnLDLkcywA+b7/YE87saHIsONdgRGAkwsXdFDI=
-X-Received: by 2002:a17:903:388c:b0:2ae:ca87:b1c2 with SMTP id d9443c01a7336-2b0420ab5e4mr3321275ad.8.1773606027680;
-        Sun, 15 Mar 2026 13:20:27 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:3db4:c014:312:f50c] ([2a00:79e0:2eb0:8:3db4:c014:312:f50c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b050656d13sm24795875ad.87.2026.03.15.13.20.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 13:20:26 -0700 (PDT)
-Date: Sun, 15 Mar 2026 13:20:25 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Amit Shah <amit@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-    Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>, 
-    Christoph Lameter <cl@linux.com>, Dave Hansen <dave.hansen@intel.com>, 
-    David Hildenbrand <david@redhat.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-    Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-    John Hubbard <jhubbard@nvidia.com>, Kirill Shutemov <k.shutemov@gmail.com>, 
-    Matthew Wilcox <willy@infradead.org>, Mel Gorman <mel.gorman@gmail.com>, 
-    Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>, 
-    Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>, 
-    Sterling Alexander <stalexan@redhat.com>, 
-    Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
-    Vlastimil Babka <vbabka@suse.cz>, Yang Shi <shy828301@gmail.com>, 
-    Zi Yan <ziy@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Pasha Tatashin <tatashin@google.com>, 
-    Frank van der Linden <fvdl@google.com>
-cc: linux-mm@kvack.org
-Subject: [Invitation] Linux MM Alignment Session on HugeTLB Preservation
- Support on Wednesday
-Message-ID: <cd02c9c2-748a-a199-3df3-22044493ea43@google.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jqGHc/zU";
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C29EF6183B;
+	Sun, 15 Mar 2026 20:25:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96B3C4CEF7;
+	Sun, 15 Mar 2026 20:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773606358;
+	bh=sgRC+UgRjYWfAtg2Gh8ZUTPf4K9hJS3ZcITRUG2mzJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jqGHc/zUlNQ3N25R09KuPAjq1k6oyFacL7HUkShhQvBPzYHY3EHOqjnuc9x2eiB+B
+	 cUrh0Ls+REzQzGwVPtJFk9sHdUAqx63bBj1v+WOzgm8iYRDNc/PDpA7oJsmOu6HQw9
+	 3MqfBZGdmu2qb7CRZ6ZNrzAar95L1iWGIqlXQMKE7xQ2uIEX0uCwIhHki7nyj5ukH9
+	 Dj9E50CxLS4V0gCdr0ok/bqpCEElcY6cgusnFiqK877xja1kA5nHvYhp1aa9t4p524
+	 V8C+1pHUC7Gcv2b75+P36hqNYE48My1i4z79GLXMdvn9bcYYloc3RjY0aKRqdi2FSb
+	 wvTXCsFOB7Vkw==
+Date: Sun, 15 Mar 2026 20:25:55 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Kit Dallege <xaum.io@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, corbet@lwn.net, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH] Docs/mm: document Page Reclaim
+Message-ID: <8b43807b-b542-4861-8757-3e008d0e39d2@lucifer.local>
+References: <20260314152534.100473-1-xaum.io@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8A917100012
-X-Stat-Signature: jh7y6ps9b9qpk83kfftmpzah3qdeszwu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260314152534.100473-1-xaum.io@gmail.com>
+X-Stat-Signature: 1mya6pzmhe99woaxmarzqwfrff9zrpsp
 X-Rspam-User: 
-X-HE-Tag: 1773606029-802346
-X-HE-Meta: U2FsdGVkX18VGdMRwcy+1mHYhmy2eTxx5rl4sMOuCevopJ1B8XX/NhkBDaFvP5PNs4f2KKV5xKVKJRUnEUl9iI1/l0yUFY25344Gkw0Xafke0ylGuGIfM30kqnVP5edrVUgF3efGeweQq2/U3dKEtdXEWFqEVD6arDKe2Yn/EY386CI2mEKFQfNHu+uTyteBACdaPTG4qPHEFrVd8HrQnXDl+kWQVKrHACIY3YwT8uFHyBZG/EZpcR4S0V/nQVI2SVvcU/hBaiZgjNZWhQV787EABxGQM/Ja0t/x6ZbygtuApQyrTl7Zxnn0lRVvyf2vP86BcSwqNcVj4ctvaFhnR+njD5wJqNSJykB0N5DzFBB4TlBus6PNc+t9pqMyHDpEkDwRCGShEn5kLUDjZXoWxxyZa9ZlMTLRWsbXT/lDOL6B2xGC3KAk7g57/IfnXHzI3lKYYXBrzAppOk74MfvwG0J6polakZS5lx+FZkcIs7Jc5T1hl+72b9hLudJ8pkt39jl91/pFtrJbu+3y+SCOQFKmNLIeiDsA1xdHqekLTNINnuP2Qf2OQmpAxGRCxhpECzNXckXoZkF/O8KK0b6ywarWHrLGwHa+J/xz5IGXGGhqW46SyVo1FSo6H2dMKyFYwSQ8CuEY6MrFdm2QLuN72kdbRbilozix7NQ72+AYlhJeWuC+rlk/nIkINuqtB8d8vULu+7Kes0hMvKpboEzsp47Jw106rmFb1pvlRVNr2gn/Wt9xPCHVTVwOB9E5FUXRLy0lPogvmLPua5cFUSx5crMK/F9jmViG1FzzAJiIvcFhKyFXSyaNtqcxGhGjbAAKr/xdIVnENfuSildlCWdlElRxQADSd7UQzQ0wllh0pzFw+VfbKHnKsXW5p8HZSiB1mk1IcLtWzj0ie08Y89s0fu4cq8CHvu0HUcbFMKsfUQNntyRsKrXj99YQINlTGHZ61yks3UV7HrzPWdwlDEj
- jieBf9y8
- g3eU52dq6F02bKjro4I4vNdRJ35hPx56ju/0rmA4OrPBScaezNyxjb3DCyYdeL6D5ngAFPR9xRutgRefQjaUwmUhkAw==
+X-Rspamd-Queue-Id: 71FB91C0010
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773606359-358670
+X-HE-Meta: U2FsdGVkX1/OZJIwBJTFdGOOnNtcJkB/i9ccEA3UxR4YyPMsMdssgTg0mgKr6Yfst+bHfrNDwGiaDgJqQ3ag6MNf+KMToN5RKnEEp8xnmNJrl6NHZ+bLIsUPudbJEvtqNsRO3FZkM2QgHiPNcB9iGgbEwIBdEiJtkjTTeWPEUQniv/Dugpo2rxbuORVewVwsw/O6IvOkHbXXeDJGyn6TUdqzr0LabP5J/WjdBG75oeGjc4JmYwlU6W90IPzvORYdq0HGygBXToR/rHHoJxA3ZbB2/6kyPRgmAgppj0fBXDT9ab5mW8FxPB9sOrqo9acib0HqkL11MzDA7cmadUKGjCHZQhRmeg1acxKMJFRbeGIBO/JXO619ob7WvDZrGZ8/+rSVGOxPWtsab33c/pqTMXhAo8ClRAQp52/4K67E0bqQGQ8Od7AZ8SOs+YWEL4dpBMRh9wxaYb/Hz5mK/uCXVC3iuTjzJWAhEshJrB3RoRX+4OZj6kN9lm6dkUHV/RjJrv91jUUxrKjxYDKFXJGm74TA+cJ113dAljI28Xf0BcUALjGGB3FHRBfyBPDwEuHJdMeE4rBQkrGvuhXZFb9TG5MJ4PNOZnqmcT9xwxGZHSvtfDgFvf112cotCIP0Tbqi5w+1Fm1yRCpkUna5qYBU0e1V3Th4S6354arWJuIdiSqMB1bLHHkS9fIbYBcUM5/PGw+u41DQOGa4jXE2vOKRPYGEFYl3Zym+t+c9jqXj2dhHsBgKthnStTf958hDViYjj8zzsQcVy+SWlGd/OzgpW98hqqZw24Ys/4NNvRyOCj6lQsII6zlCuTOlkiDrB2p4GNv6nsGXB6RfNfONXNsMGhrV6s9hX7bCy8a9hLWowoABuiUCo30dKoGwBa689O/Vc66r+zvc9FYRqIBCkHVMX/+8OMeVnZ/vGJHRVZVBSJIJ7ijpDNsKz4J/xF/nW8vDgGEPAmsIOM4sO/1xMdh
+ nK2hE8vF
+ Z5Ir/FsKQQCMzKtNoqEl/ZN3Xos8XUHSV81aIUwg/uMlHsmTdI4Ydnb/+yyGRLJG3YSz7/W1iuLzqgq5gHF7a+AHA3Lz2TIUGZPmTPpMIK2eP13/17Ye9Hf47tpePG8TVunootiBv7yyuFdILPlXn0+G+QppA40IHzEnZ8PFBYFny7PrBISLUdnKZ8JRkKtdq7lM/6f2rbSHY9DwzTUeBLtP+vcd0ELlGBiUVD/KGd83PB8OzVCcXc+bNEiY3i70hetwgk142kj6H74Younuhk0MI+4DLVjVKrUcZPYrv8n02MMrrPWUrkp+AJQRTBz1IGWA4+OAFgPeDVTtDF5aAOLXa9BMhmJAw6vVxG6MXTjCNx+LVyYjOIzhlDI8CWXWN/tKRpa4ROq/+DT7xI99waVxNsE/U1k8Wnf9wTEwe4oKuE1JVCfGKBJEVnloWuTDi7iQNYJvM5W5CNZDhML+BUBkfm75VJBJXMXEiApScA+njbCQTpaIi05bnDy9W2b+3UDLPrGYpNVG3v7jP46oP/Vwce9h00hIJTncJW+zaZNQgdUg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,49 +92,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+NAK because clearly AI slop, again.
 
-NOTE!!!  Daylight Savings Time has started in the United States, so please
-check your local time carefully.
+(side note - 'page' reclaim is a misnomer now, we should just call this doc
+reclaim - we reclaim folios not pages :)
 
-We host a biweekly series, the Linux MM Alignment Session, on Wednesdays.
-We'd like to invite MM developers to attend and will announce the topic
-for the next instance on the Monday prior to the next meeting.
+Anway, again, you've not bothered finding out who maintains reclaim, I just
+looked and it took me 10 seconds:
 
-Our next Linux MM Alignment Session is scheduled for Wednesday.  The
-details:
+MEMORY MANAGEMENT - RECLAIM
+M:	Andrew Morton <akpm@linux-foundation.org>
+M:	Johannes Weiner <hannes@cmpxchg.org>
+R:	David Hildenbrand <david@kernel.org> <- by chance you have David :)
+R:	Michal Hocko <mhocko@kernel.org>
+R:	Qi Zheng <zhengqi.arch@bytedance.com>
+R:	Shakeel Butt <shakeel.butt@linux.dev>
+R:	Lorenzo Stoakes <ljs@kernel.org>
+L:	linux-mm@kvack.org
+S:	Maintained
+F:	mm/vmscan.c
+F:	mm/workingset.c
 
-Wednesday, March 18 * 9:00 - 10:00am PDT (UTC-7)
-https://meet.google.com/csb-wcds-xya
-backup: https://tel.meet/csb-wcds-xya?pin=1301132214803
-doc:
-https://docs.google.com/document/d/1QQfZFPHa-pGEGf4A06cSqS0jdJwuZ8ro9JU5H0YSUQ0/view
+You've not even done that, let alone thought to cc- anybody on that list, 5
+minutes glancing over the mailing list would tell you this is is common
+courtesy.
 
-This week's topic will be HugeTLB Preservation Support led by Pratyush 
-Yadav from Google.  Pratyush will be talking about how this will work for 
-hypervisor live updates and preserving fd's across kexec.
+The documentation is useless hand-waving that maintainers would have to
+essentially rewrite for you on 'review'.
 
-If anybody has ideas for future topics, please let me know and I'll try to 
-organize them.  We'd love to have volunteers to lead future topics as well 
-as requests for MM topics to be presented.
+This is not a good use of maintainer time, and we don't want stuff we could
+generate ourselves.
 
-Looking forward to seeing all of you on Wednesday!
+On Sat, Mar 14, 2026 at 04:25:34PM +0100, Kit Dallege wrote:
+> Fill in the page_reclaim.rst stub created in commit 481cc97349d6
+> ("mm,doc: Add new documentation structure") as part of
+> the structured memory management documentation following
+> Mel Gorman's book outline.
 
-Time zones
+You've also, again, used a copy/paste meaningless, worthless commit message - 5
+minutes glacing through the linux-mm list would tell you what we expect.
 
-PDT (UTC-7)		9:00am
-MDT (UTC-6)		10:00am
-CDT (UTC-5)		11:00am
-EDT (UTC-4)		12:00pm
-Rio de Janeiro (UTC-3)	1:00pm
-London (UTC)		4:00pm
-Berlin (UTC+1)		5:00pm
-Moscow (UTC+3)		7:00pm
-Dubai (UTC+4)		8:00pm
-Mumbai (UTC+5:30)	9:30pm
-Singapore (UTC+8)	12:00am Thursday
-Beijing (UTC+8)		12:00am Thursday
-Tokyo (UTC+9)		1:00am Thursday
-Sydney (UTC+11)		3:00am Thursday
-Auckland (UTC+13)	5:00am Thursday
+I mean I say 'you', this was Claude surely?
+
+>
+> Signed-off-by: Kit Dallege <xaum.io@gmail.com>
+> ---
+>  Documentation/mm/page_reclaim.rst | 164 ++++++++++++++++++++++++++++++
+>  1 file changed, 164 insertions(+)
+>
+> diff --git a/Documentation/mm/page_reclaim.rst b/Documentation/mm/page_reclaim.rst
+> index 50a30b7f8ac3..bfa53bee98c2 100644
+> --- a/Documentation/mm/page_reclaim.rst
+> +++ b/Documentation/mm/page_reclaim.rst
+> @@ -3,3 +3,167 @@
+>  ============
+>  Page Reclaim
+>  ============
+> +
+> +Page reclaim frees memory by evicting pages that can be reloaded from disk
+> +or regenerated.  File-backed pages are dropped (clean) or written back
+
+Or regenerated?... This isn't doctor who?
+
+> +(dirty); anonymous pages are swapped out.  The bulk of the implementation
+> +is in ``mm/vmscan.c``.
+
+Yeah let's not bother discuss what clean or dirty means, or why that matters, or
+anything useful...
+
+etc.
+
+> +
+> +.. contents:: :local:
+> +
+> +When Reclaim Runs
+> +=================
+> +
+> +Reclaim is triggered in two ways:
+> +
+> +- **kswapd**: a per-node kernel thread that runs in the background when
+> +  free pages in any zone drop below the low watermark.  It reclaims until
+> +  free pages reach the high watermark, then sleeps.
+> +
+> +- **Direct reclaim**: when an allocation cannot be satisfied even after
+> +  kswapd has been woken, the allocating task reclaims pages synchronously
+> +  in its own context.  This adds latency to the allocation but is necessary
+> +  when background reclaim cannot keep up.
+> +
+> +Reclaim Priority
+> +================
+> +
+> +The reclaim path operates at decreasing priority levels (from
+> +``DEF_PRIORITY`` down to 0).  At each level, a larger fraction of the LRU
+> +lists is scanned.  At the default priority, only 1/4096th of pages are
+> +considered; at priority 0, the entire list is scanned.
+> +
+> +If a full scan at priority 0 still does not free enough memory, the OOM
+> +killer is invoked (see Documentation/mm/oom.rst).  This escalation
+> +prevents the system from spinning indefinitely in reclaim.
+> +
+> +Scan Control
+> +============
+> +
+> +Each reclaim invocation is parameterized by a ``struct scan_control`` that
+> +captures the allocation context: which GFP flags were used, how many pages
+> +are needed, which node or memory cgroup to reclaim from, and whether
+> +writeback or swap are allowed.  This struct threads through the entire
+> +reclaim stack, ensuring consistent policy at every level.
+> +
+> +LRU Lists
+> +=========
+> +
+> +Each ``lruvec`` (one per node, or per node and memory cgroup combination)
+> +maintains lists of pages ordered by access recency.
+> +
+> +Classic LRU
+> +-----------
+> +
+> +The classic scheme uses four LRU lists per lruvec: active and inactive for
+> +both anonymous and file-backed pages.  This approximates a second-chance
+> +(clock) algorithm:
+> +
+> +- Pages start on the inactive list when first allocated.
+> +- If accessed again while on the inactive list, they are promoted to the
+> +  active list.
+> +- Reclaim scans the inactive list and evicts pages that have not been
+> +  recently accessed.
+> +- To prevent the active list from growing without bound, pages are
+> +  periodically demoted from active to inactive.
+> +
+> +The split between anonymous and file-backed lists allows the reclaim path
+> +to balance eviction pressure between the two types based on their relative
+> +cost.  Swapping anonymous pages is generally more expensive than dropping
+> +clean file pages, so the scanner adjusts the ratio using IO cost
+> +accounting and the ``vm.swappiness`` tunable.
+> +
+> +Multi-Gen LRU
+> +-------------
+> +
+> +The multi-gen LRU is an alternative reclaim algorithm that groups pages
+> +into generations by access time rather than a simple active/inactive
+> +split.  It is documented separately in Documentation/mm/multigen_lru.rst.
+> +
+> +LRU Batching
+> +------------
+> +
+> +To avoid taking the lruvec lock on every page access, LRU operations are
+> +batched per-CPU (``mm/swap.c``).  Functions like ``folio_add_lru()`` and
+> +``folio_mark_accessed()`` queue pages into per-CPU folio batches that are
+> +drained to the actual LRU lists periodically or when the batch is full.
+> +This batching is critical for scalability on systems with many CPUs.
+> +
+> +Reclaiming Pages
+> +================
+> +
+> +The core reclaim loop (``shrink_node()``) divides its work between page
+> +cache / anonymous pages and slab caches.  For each lruvec, it scans the
+> +inactive LRU lists, evaluating each page:
+> +
+> +- **Clean file pages** can be dropped immediately — they can be re-read
+> +  from disk.
+> +- **Dirty file pages** are queued for writeback.  Reclaim typically skips
+> +  them and returns later, but under severe pressure it may wait for
+> +  writeback to complete.
+> +- **Anonymous pages** are swapped out if swap space is available and
+> +  ``vm.swappiness`` allows it.
+> +- **Mapped pages** require TLB invalidation (unmapping) before they can
+> +  be freed.  The rmap (reverse mapping) system is used to find and
+> +  remove all page table entries pointing to the page.
+> +- **Unevictable pages** (locked with ``mlock()``) are skipped entirely.
+> +  See Documentation/mm/unevictable-lru.rst.
+> +
+> +Memory Cgroup Reclaim
+> +---------------------
+> +
+> +When memory cgroup limits are exceeded, reclaim targets only the pages
+> +belonging to that cgroup.  Each memory cgroup has its own lruvec per node,
+> +so the scanner can isolate its pages without disturbing the rest of the
+> +system.  ``try_to_free_mem_cgroup_pages()`` is the entry point for
+> +cgroup-scoped reclaim.
+> +
+> +NUMA Demotion
+> +-------------
+> +
+> +On systems with tiered memory (e.g., fast DRAM and slower persistent
+> +memory), reclaim can demote pages to a slower tier instead of evicting
+> +them.  This keeps the data in memory but frees the faster tier for
+> +actively accessed pages.
+> +
+> +Shrinkers
+> +=========
+> +
+> +Besides page cache and anonymous pages, kernel caches (dentries, inodes,
+> +and driver-specific caches) are reclaimed through the shrinker interface
+> +(``mm/shrinker.c``).  A shrinker registers two callbacks:
+> +
+> +- ``count_objects()``: report how many objects are reclaimable.
+> +- ``scan_objects()``: free up to a requested number of objects.
+> +
+> +The reclaim path calls all registered shrinkers proportionally to the
+> +amount of reclaimable memory they report.  Shrinkers are NUMA-aware: on
+> +NUMA systems, each shrinker is called with the node being reclaimed so it
+> +can prioritize freeing objects local to that node.
+> +
+> +Per-memcg shrinker tracking uses bitmap arrays (``shrinker_info``) so that
+> +the reclaim path only invokes shrinkers that actually have objects in the
+> +target cgroup, avoiding unnecessary work when there are many cgroups.
+> +
+> +Working Set Detection
+> +=====================
+> +
+> +When a page is evicted, a compact shadow entry is stored in its place in
+> +the page cache or swap cache.  The shadow records the eviction timestamp
+> +(in terms of the lruvec's nonresident age counter) and the cgroup and
+> +node that owned the page.
+> +
+> +If the page is faulted back in (a "refault"), the shadow entry allows the
+> +kernel to compute the *refault distance* — how many other pages were
+> +activated or evicted between this page's eviction and its refault.  If the
+> +refault distance is shorter than the size of the inactive list, the page
+> +was part of the active working set and is immediately activated rather
+> +than placed on the inactive list.  This reduces thrashing by protecting
+> +frequently accessed pages that would otherwise be repeatedly evicted and
+> +refaulted.
+> +
+> +Shadow entries consume a small amount of memory.  To prevent them from
+> +accumulating indefinitely, a shrinker reclaims shadow entries from page
+> +cache radix tree nodes that contain only shadows and no actual pages.
+> +
+> +This logic is implemented in ``mm/workingset.c``.
+> --
+> 2.53.0
+>
+>
+>
 
