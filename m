@@ -4,91 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0DCF30280
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 19:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F385FF3026E
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 19:11:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E94B36B00A8; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
+	id 67CB46B008C; Sun, 15 Mar 2026 15:11:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55536B00A9; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
+	id 5FF056B00A9; Sun, 15 Mar 2026 15:11:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D54656B00AA; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
+	id 4D77F6B00AB; Sun, 15 Mar 2026 15:11:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BF5976B00A8
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6887E1B8F02
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 19:09:29 +0000 (UTC)
-X-FDA: 84549236058.28.47BE465
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C94A5100011
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 19:09:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of 35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773601767;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 39FF36B008C
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 15:11:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90D9E160C73
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 19:11:30 +0000 (UTC)
+X-FDA: 84549241140.20.28BE424
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022107.outbound.protection.outlook.com [52.101.66.107])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A725E1C0009
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 19:11:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b="X/puvnYy";
+	spf=pass (imf18.hostedemail.com: domain of aleksey.oladko@virtuozzo.com designates 52.101.66.107 as permitted sender) smtp.mailfrom=aleksey.oladko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773601888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=l1kDM73VAJj2BEBh16gE80dBPKbI2Ip+vgvGfrp96OE=;
-	b=EjPFtMlY3wxmqWVgRII1GDzse913/jZsX7wly6y3LndnErG3PZkrxkOWl951CUIthNIrxM
-	xA/m6GFav5DWRfubtCxM2QjhgxJoM/8skQUYDkBIfIfQV8UCU4HXxQV7hvaaqvpVrXiiNR
-	J0rnDyza0Qq0kCFiW5TLvoY3HXileo0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of 35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773601767; a=rsa-sha256;
-	cv=none;
-	b=8aKrdnjrjwPqLDMLPtqa6E5/wxbSicKgScvAlHc8Md3wq7jyTakIH/oG8qCLJxZMgqAHPk
-	J0fLZeCAe62O6lES07Z9+7EGAxX/cPXepurtyDWp0lBghUVFMRNmGn0lOyio/Lmf36yZJp
-	6h1JdU4v4ND6Xfw0sbqSvkdIvOMriBc=
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-679c51b2d6cso53159890eaf.2
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 12:09:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773601767; x=1774206567;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l1kDM73VAJj2BEBh16gE80dBPKbI2Ip+vgvGfrp96OE=;
-        b=kLnzQjGIYdZQ/ixqTfvLAxXVfW13tBkdhbrUU8+6KlX1j2Twtas5YxtQdnAd+CPeMw
-         ufiuVVP2IzEAZW/00Qwqavf81GEeyQTHF4gqD9v1iptoK4v0BXAQpu7v+UtFKyFaOclS
-         KGfcRaFp4mcSaobHCV3F5KOI1PIjRhvYwGtEBhTxa4CATtu7KNbjdaWC6AOhsRnQSSdH
-         OjqpMzujXFny0j+UpQHU1uI51sDnFG7wjrkDhpitYMsDp8L8MhKm3A79LotpbNxImGwr
-         fEPG10amhg20gc17SPJfQyrNCqV07R2EPrs4/hxMj+PsAiPFFzTHF7jcn/OwxdR5TC46
-         2GdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhHsewc4Oego6cBZ5vYhQEWDyO+TiGMDlhWnjMfWIvAZkBE+tjAnIR/7vc767UOEoCZzeDMXwYCw==@kvack.org
-X-Gm-Message-State: AOJu0YyziR4S07zg5Gmotrbvk/pcu9+5Cvfj73pwXtY1fZ5KQcwZz797
-	9iJUwBL18dejcsbYMdGfBYTambrFrKXDacBJzDmTOpLMDz1H4lKPTmRJmmALq7S+EIvJ4aqVFaT
-	k3vU3XbRD6k+3EdYsE01u5tdG/UVpemiJpwFfKk3/YQCd73Ai2X/gbUsK/rk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b97B/eehhfkDzcU1RAj6VnYtAd/LZ7Q5x0tin2iEU1U=;
+	b=aQKdSiBaEb6nVIiKkbQpMKZGztr7qyOGNcVyAjNo/vp+HCLD2tL52sY8erhYEtx3T3jPll
+	JjbHUnUmPoUebw9GYM/hhfHvmFEy3+0b7lnHViceMyNeAEodRlv6Pfvmz+AD5MCiFli5+x
+	zHa4Xtv3fossC05avnPcyUqzUMmfkjU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773601888; a=rsa-sha256;
+	cv=pass;
+	b=Y/xJuJmIXroMfT9ItmaKkxnggY243XzSjLO+BynkBl65p6LpHACFxjEkrZD0wtW7upT97+
+	ZWhWhfh2Qs/mRwth63sDH5HJsuuSlf1TpWxbU1q5mCXLwRCO0JNoAu/gmQOI3AA/mg2nDU
+	Uevm54G0xON2QH9TXrpTZ4U81ij6Tc8=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b="X/puvnYy";
+	spf=pass (imf18.hostedemail.com: domain of aleksey.oladko@virtuozzo.com designates 52.101.66.107 as permitted sender) smtp.mailfrom=aleksey.oladko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b2IAOmuqeMaahq2GrN0ae27sCHSSyNOTg/0MwxnkwTORj+1rUuGqZ6xMoPpn055caXr3HddV6gOxmTfsMDH46/EocW6Oi7v8UQu8gXrGuinGLxVj+rxp9NJrCeIkM8OOPJl/E9enGFd1F/dmLRT5jzS/ofL0Z10ytBxeSDmsYP2662IOwhsDnld+Tngmy2vnXjwZpN0xcaSdVYpR/n4BgKr86ID/eaFa5Hkkr667zEWjD8IWkmeYgGVexVUFYfzLBBSYPiy3GErxcXmAqtxxENpVehDqRAqAjdNW3QTH9Rh1F2TBeycCfdOGNLrF8ajGWH1uqN+SSNr6hiU3CsUjlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b97B/eehhfkDzcU1RAj6VnYtAd/LZ7Q5x0tin2iEU1U=;
+ b=ejeM2OHiRD7R5BEHg7CzFYixz9mZbeuEUBu2Yp0oLzVYjQwCVkvHZbtKP2GjJP8v14/K8dNQWEgB74MQB9mpFuxYXEUWCemR7WTLwmwqbCvsHGwUh+cU82cqTrRHVKY5GrYrazzTu8vjz6F5RP+8N1KF564o6hTI1oWC9O/CBb8NgT6/viBmV+hNFvy2mHDYdMMTgcH3FDapcR+7JNWNykyx2odvKUsPeIE/CFAgLVhNSsvCMzsJ4Hq/dAHzMgFj84e1ovbAdfvOoviA7Um4qjMUd/PhrOsrgVxHNlE5IFg1Q0I8Umn70J3/yXtYKMBobX2IvDgeY5otXkI7VOGy3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b97B/eehhfkDzcU1RAj6VnYtAd/LZ7Q5x0tin2iEU1U=;
+ b=X/puvnYyi1EtY/PdHcsjSxEy0Qq5UgIOAzBDwLZYR9pKU0n4dwCrswl99sTab6P1bwcCNi88kxPQ2RmfmGAhayab6popCxrlnWLHTdIgJuWCyj9gVED6T9kT0EKRIp3sKTrPvqcsb0RDvYfX726dfBosh8SGTdDIId4njO7mv++EtQzL9F93iuIArtYUlUIYCAR+rh8zsrKxoPr6tw/kQ0yeNTjmnxHWfZdr14U/or4WY5GlEz7d6JSDh+GZ+hg2hMWo6Vi2sBHo9y3x2W8sYFlcZjmPcF8zLl5A5DaqnNuPh/2YeEXo1F/8jKe3zBzQGPxecLugObpK0rdET+C5WA==
+Received: from AM8PR08MB6355.eurprd08.prod.outlook.com (2603:10a6:20b:363::24)
+ by AS2PR08MB9920.eurprd08.prod.outlook.com (2603:10a6:20b:55a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.18; Sun, 15 Mar
+ 2026 19:11:24 +0000
+Received: from AM8PR08MB6355.eurprd08.prod.outlook.com
+ ([fe80::79bf:15ff:6428:dea9]) by AM8PR08MB6355.eurprd08.prod.outlook.com
+ ([fe80::79bf:15ff:6428:dea9%4]) with mapi id 15.20.9700.021; Sun, 15 Mar 2026
+ 19:11:24 +0000
+Message-ID: <39daf4da-911d-440e-b175-ec5c2a8425d6@virtuozzo.com>
+Date: Sun, 15 Mar 2026 20:11:23 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests: do not override CFLAGS set by the build
+ environment
+To: Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Seth Forshee <sforshee@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Reinette Chatre
+ <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>,
+ James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Paul Walmsley
+ <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Abhinav Saxena <xandfury@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
+Content-Language: en-US
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+In-Reply-To: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0267.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e8::15) To AM8PR08MB6355.eurprd08.prod.outlook.com
+ (2603:10a6:20b:363::24)
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e8c6:0:b0:67b:db2e:a91e with SMTP id
- 006d021491bc7-67bdb2eaa89mr6221556eaf.17.1773601766913; Sun, 15 Mar 2026
- 12:09:26 -0700 (PDT)
-Date: Sun, 15 Mar 2026 12:09:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69b703e6.050a0220.248e02.0101.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in folio_add_new_anon_rmap
-From: syzbot <syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, riel@surriel.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 77o4xcgwsuywwoz3f7f4eq56dj99c44j
-X-Rspamd-Server: rspam09
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR08MB6355:EE_|AS2PR08MB9920:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e12ad75-2136-4a81-cb53-08de82c6a6ac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	3E9eaTnSnEfRQ6cjIVmvwA/oaCk44XHIEQxzXto0B559lgqQ90JdmoL/ky5Xphf0lybg+vzTTBAYXOsAAxc0UHU4IiUvvO1TK69NJHkctWXr6GtnCNxb0aamP/omBItvit52HOTvwAqZL6p3VZPgSVEnQwqm5GHbGSngJpSLN8sYRvgWcFWZkk4Kf/zpYjHlwzQJe3ADm9EkUcCx1GsUB1GB72Vb7bRmSIUF7mDdJOH8v5iNEFsoA9Dyn0jpkNgzT3Rc9WatS2rD971B45P8dFdZTie0xYHDlbDwkj04O5/MYyvacc1n+nXr5xc6fnCovU7Cf29tkgDI9yYiZuM5ELHnBJXZQud3mBn8Z/5wymPNqpErxD7XRoW0DIXSaWQv3nNnHiVPRBIVfYq7jY5oMM8BG46/a3LH6xkhuTOoGf9svjYQGEwlg8TBihVF0OVTDTp5iHEM7VLlRPqNHj7OZ6Oqg1cQfYkyg4AlPkUBqSWZEdL4GuQjejeNQwvYzpaUoxv1+IeZQHJ2GZyn288EHVcGzDAwUlvd6q1lpiYMJ0ih4mxHKPonEouLAPOKFhHi+vJnod021NAJ6W/aHdXuKLloFjEKykS6vqPl6kjmDC2HkJip3kQltZgPpis2+5FLsuAn7cMA6vtxZZPC9gTu9RL2jLVr2u1h2un7LuvpSs2i3JFqq5PGt5EuA/XLOaYV8QqQpnODLIMVgZYmSTASIye3DLqUiAFEmRQ7OOO2CFqPHWT1zVCfv0Qvo5JEpkclQFd1k6Bo5dC5rNOAlA2yDQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR08MB6355.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MTkxQ0cwYWxCdndCaGdKUytHNWhYSm1VNVNsekVXZ3ZnbHdSWit1STVRRTlZ?=
+ =?utf-8?B?RlVSRTdxb05lckRMcy8vclZFenc1RTcvRW8wV1pvNWovNDJEeTBDWXF5OVl3?=
+ =?utf-8?B?eTBBeml1RDdvZEpESE1jUWpFdUxTK3BpcWZjUHB6NHcrUDd5UEVvTjFKbjZ6?=
+ =?utf-8?B?eGhFbUtkSWxoR2pGVzBnMHFhNzNmNDUrbW0vaG9nYXY0YXFjekVxZlBodkhp?=
+ =?utf-8?B?V3h5bmpyWFRId2xZSG05dGo5cnQxc2ZEUDRBWFVLRFJXaHVyYWowRnI1bGRl?=
+ =?utf-8?B?aFJobno5eVB4cEFyblA1S0hHRWpNQ0QwUHR0cWMzR0VNemoyYWFodSttQjNK?=
+ =?utf-8?B?TnpjSk5WVGRDc1MvNWlDMkV4QTBLTjJ1and3ekNTQ3QxbUhLRmJvSkE2eHBs?=
+ =?utf-8?B?SjQycUFvVkwyMDNaUStWRmdEenBvek54dVVpU3FJQTlkSjdEcUVKK2FQbDd3?=
+ =?utf-8?B?a1BLdGcra3RMbXNoR2Q1bUY5eHpFa0FyNm9jOW5OOTh2Q0RBYnE4a2YvWHll?=
+ =?utf-8?B?MVlzTGxmdjQzR2tpa3QyLzBuS3MrU1dwZWRpZlpCdGFYdEVPbmlqeWxJUUZa?=
+ =?utf-8?B?RlZCVXBncXVCbWZ0VTZGL0JYY3l2OGtGK0FGdmlkOHdrSVYwWTVJY05Fc3Jn?=
+ =?utf-8?B?a2k5L3FBc2VNeTJ0QTNOcExydUVlcVZWNERybXdKcUF1KzJGL1oweWpSemhs?=
+ =?utf-8?B?aG1WOGVGWHdCcDVLbWltM25kbnJZa0NPSDlnOUI5ZTBDQlhEcjRzT2JCV3d6?=
+ =?utf-8?B?WHVQWmdiSXcyVVFmOFp2ZitXcE5QVmFuUjRxWmtwL3BNSXRCSTZMYmlsMmtG?=
+ =?utf-8?B?S3lrVjBrYkpWZGZmenR0RzdVZk9UcGlIUjFuVHowVTA4N2NjbmRtUVY3R0xB?=
+ =?utf-8?B?TEMxM2VXYXVxNE9UQjNyeEhXS0d6VFZCLzhGWW1NMzh2VlNJVGpJOVo4YXN3?=
+ =?utf-8?B?Ylp3QkhSUWE4c09FQVpvaTlzcGRrdzFDV242Qk5icXZNand2a1dHZlhsVkhY?=
+ =?utf-8?B?Njc1a0dieGJIeW5GeWhhTlRpd3dIM1Z5SEV6ZTNMazFESWJkcDEvVm1ZNGxz?=
+ =?utf-8?B?OE8zVGoySkU1RGNhdmhDZ2dCY0Z1NGNRSlRhVkR4RURjUDNDcGNVUTU2R2lj?=
+ =?utf-8?B?c1VPSis2clptUmxDaE45MjdpcXRuRnBXdFltOXdJcVRBeEkzYWFsUklPc0Nk?=
+ =?utf-8?B?amV3UGtDNUJZUzZJNWxlb2M0V3dsUklxYVE0MTdkZmxTYjJpaEdKOXdNZVB1?=
+ =?utf-8?B?Tml0aHBvVVN5a3Q0NEZ5ZVNzSVcwMGM5c1hsMllvMng5dXdudVVGWUlaYU42?=
+ =?utf-8?B?bit1REk5Zlc1STdYZGtiTmpVVUtjR09pNEJvR0FhQ2tOK0F2Q3dXU0hiUnN4?=
+ =?utf-8?B?Vm1pRWFiTmJyZEYzdzdqV3ozNElmMmxNTlBSVG9waWU1YUtpa09TUVVJSmJH?=
+ =?utf-8?B?TDdGZGh0OVBpbXVnbGtpemNZYTY4MSs0Z09OSGpCdVZMU1EyNER2YzdlZnVq?=
+ =?utf-8?B?NkpSc0ttU21YUytlTnpsdDRiMkVkcFBUazNoRGhVVzc3emExMytKZkdzblhi?=
+ =?utf-8?B?NGNWaW8ybGpKZnltMU1XOFlpdXRsZmt3UE9EdDBVS3JSUGVjK3RNaXA3Umtu?=
+ =?utf-8?B?ZDZvTjZSOXJBNjErcGZqUGdkUmdmckJGa1oxQVJWYXNhMW9seEFjcWR3dUF3?=
+ =?utf-8?B?OUN0MG41NWVuTHlkWDFxRko0cmptdTM0KzFXcTZBKzk3WEVzMncvTThDSE1h?=
+ =?utf-8?B?Tzk3NThVMjhuVmFkVnZzb2EwZmd5cFdQdzhNVXZjN0h5VDBDTi80cHh6cURF?=
+ =?utf-8?B?c0RkMzJic0pFZ2lvZENaTmgyU2g0ZWlLNlR6SDlYWVh6THU4ZGVxK1ZFTEFT?=
+ =?utf-8?B?QzJUWkh0Wit6d09haHhlTFhrcno5K2VLWXd4dSszUXpDTm1DQ2FlUzk0SFBn?=
+ =?utf-8?B?enZyTU1CWTNLdFVLMk5KWHNwNnIvcjhVTitCRWFJTXRBd2g4OWdRcTZKOUF5?=
+ =?utf-8?B?eE1sMGIxb3Vwdnc2ZWI3c2k0ZnMyZWRKa2JBZENiakQycy83Lzk3TlZmdVA1?=
+ =?utf-8?B?OXUramU2cHNRZjZJZmJ2UzVvb2dEN3k5K2w1RWZaNEE1WUhsWFBURllLblhx?=
+ =?utf-8?B?TGd0U0Z3MW0vNWdLeDkxclRzMldPN3IwbE5VbnZNdDdkL3JVS1labWc4bVo4?=
+ =?utf-8?B?bVdMb1d1UXlFV2gvWlFPS0RpbnFKbkhkbmdYSUxoNlZHK0lxMldVS3NNbUNS?=
+ =?utf-8?B?TzI3TkkzMzBKMTBQaUFhV3NKd3BkYjlFZk56eXZNUXpHVG5SRnM0RXkxdnJ4?=
+ =?utf-8?B?cXVtVS90ZWpIdy9PY2JLNWhiaTQyMXoxOU00QzJLV1pwYk8rYjdaajNxcEN2?=
+ =?utf-8?Q?OCIKZDH4IJjusAts=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e12ad75-2136-4a81-cb53-08de82c6a6ac
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR08MB6355.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2026 19:11:24.5657
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cM1hmeJCnM+AnvYmnE3cnAHYbKlD2Ij2NsAE7lOivkoRsBDB09d7YtiVg6/koJHVK/T56WGuJ5936go/KGsQcXm/IKEpkOtmwO8+k3U+4og=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9920
+X-Stat-Signature: srweyyxkroz47i1pmn4zzm9czzkyi4g1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C94A5100011
-X-HE-Tag: 1773601767-28541
-X-HE-Meta: U2FsdGVkX19a3TQA7g0DGsh2Nzjm9Ea+ttZGJY47GwJEE3jJqSwCgoXELkHcyw1Mn7ZR3Laz9HvGwpBaH4WaWxLt+FBmKPb4YZ39zUa4jNIOS9ss7pciDhLauhmJUTEfL/i1WUCDxlEHMg1jLVZkYgDy5MDsDg3drz845eLqhDYRTy2yx5+n4TNh8L2VY4yKJ6s/t6XaqGJDgGE1GpvNsXC8HUgVEWEiy6UQgNDkiIiDyz6I5+IQvV2Jyy6wYM1Iy1ctM9/MKE7gQtPhEx/HZ0YxhmLQd5flpdOnbRofC7a7KBCK0hg8zkQqz+LblXi0lxKr+YOr4Qu4xXhDQTdYVCxddy+kZ7902SAvBccUI3tv1mkjxIQwPd7RQeFS6HCVADi1ga4Pvn2E2NqYbvclUX+KOljofBMGABBAdEBB7YfwY6WdBlnvYHV9LQuC73CVXz7f5Q1xF74QYeozr0ULEW1ihHSjnW4b2hUCix14ZWvMzGYpfespd4IMq2gGQFT4jbi1/U3UJuDZtp237Nhue22nOslJk/XLnGAY2TAUR95ae6Sn1ddyOxRVg5LQbxvcAH5VIOVr0Eb8RpyUiI2oPqAS8+hvN9shNg+yBjbZAd+r3MTNjsrn5eRpbofQYi6A+VCGZOBf0JAVQ4IdB4KFHaxZKn00kfBaHgl73RHrDaUhDO98yOYpb0qtu8n5ChZxwE7YHRvw2XwjxNSZybqSfowrqTkoyKD9QQnH9VY/uCyW+gm7YFoAZ9DJaJ1MQDfJn4BsUIUBaVPmK0nYzuCRxQZgmEpAfOydyfqKlKYs/86ayPmjUtz129mNNqMOEzNhYaSmrrG6Uanm8oUc6IeHFmDTTb8OOgQ/cUiMOGeuQT8w83MdBiOjngzM7L1oHYrvPT7v3mQOGcrP3c24q8iXt9+qM5sbsYbIDj6PG//4jiZ3Qz8D7PjmN4cw7K8jW+wGDJaySc6lv5/F+oHJvzz
- ibd+oaol
- P8XtHsOgW8jK2HlpGLHejOdBZi4kFla03a3iHHQr3JQULTm3E3Gg4A2+vHpPsYQSQCbn04KLTyhvBhv03fEvsEdwkxSAYupC73/SJ+oxkCT8LpQwWgtI2PdkrvEDOfcSRTQY0GE/a8jMWcMMOsGL4wUVOBJIM17mYG+p/xJIffs/WliucZDivGz9fCXr5JNXE6ADEPeUIwXP1jFuIHIDE2Vzu8uejG0H/my2RqK+fsCifhsKWrJmZ1Qk+M+vJckwUzT3gjYlFnq0e3VUZNjAscjH98S+CWMKjC0Sn5N3k9RwOZS/MB0XsWKjT/F+o8WgQWvcz+RNdP9P+YV7tGsPalkylyNqcIqKnPXuvpnbOMzkVpxS11rED7j754PsW0/x2FWYhVmlqOaxDPMujI5p9O0YUUJWDGNUSkwqqSlh++IvKDfGkFSoQLoXUnVHk32O3zcN9bHhZoh/yXKSlM/AI7aAtUIs19RmvVwd8yN2qao1TFmWm6qn6fb4muuOw7tRbLBj0sueW3Y9gT0sK/Mq+6Yc6Sq596x+ZOAU9aEpjTyg7UX3MmhU2eld0cMe+f2MLWBL782TWMVaEjkJx08bYQ6OgIhQukS8GQwX+G0Hu+KzCBBnPSqXTgZlzbYEPJUYJDsR9LKgEeezrqYfL0bbM1bLJy5NkXeY/pxLXKnqyuVSmxXNTdMZhsTDoF6EZLdcUBqK8gqxrOw4FRbSEoIuFFa9+I8NGDT/IS7qRqzdTK9WlQzp7ZFvFslvEzO3Bw7lMdsWEviRY3jQQWdPv49RhxW72dTWLQSINGxrWiSWQQnMVClFN9x2c2yrg4YnT8Rdpsc7T2dKVGTdYbAbq1wFMnYZaueMCkeBRikpTGlMW4TWN01q00q+qDwbEnfS2TFZBTPx/0XD3Lf8r02ffdiJd+ODf8bs3Xa/SKcwTUq2WRe7GjqiUlZhlC489rDMJeG8z5y4l5XX33t7VA4X98CUKX9J+Bdk9
- 4w7l5iC0
- gYOpw6V1PEjPrpEBSm894EGZmicmOUU90X8kB+yMnxCdhP4kGaOVTpJEzRRuwgZYPv4u6GWXtOf52CYhziP87cFTKDgaUuLzzMaFC+ajzfh0nUg9FhLwm8O/QQCh2BXRjnXb3zksFFXXxhuAi3GStVRZnnDKR/oiOWPjPfSOmqbMoyxipO1HstQQV63lJN3WrfjY8/VW/xs4Hhu83dYb5XZv4ZWFrcVczwl3D2puh6DWSf7jVt5h11hAIe8fXxPmr9UaMz/KyE6AtyPtihGF/npXhqqaYHRvsOPX0ddQlUavXcacUrowvSME2ldePoarpnJvmi+QGEJuKxMtZ1YfFlKsh102Yw0dxaGA0bjHlK+yqxf6Oq8fM92J/aAfvEsc5oo2GBEWOijijgROHBlSGWiwhSUJqxUmxDzOwLx2SxhsNWzWf/UiOET2SIFIfQZ5nwd0Gcwy00m1A3fP2mq95fmK5CyMQJwC
+X-Rspamd-Queue-Id: A725E1C0009
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773601887-162076
+X-HE-Meta: U2FsdGVkX18nPQl4F3ilGYdpJ459phuwMR6PvYb2f9mk3pRYOP0s+KdhiGzaJH0m76WvNDCJcJoyOTbLkOSsQTPEu4hXyWB9lAuJpJ/aqokggC1e33FGMcyh3WS15WWCYnPZnCLB0tIJkX/oKUvJhfzwCdNFWDG7hdfMqHYAz33RvbNUi3DhMqV8IUYUuAoFRLL1N5fvQLZZtjvK3dMifmr4EliSGTP9Ds/313/iI43q1ecL0s1sw/PDQFvojkqXBDSZu5Vxfy0V2e6S8yn0O6aRfzSLRCpTHJUrGXdF4PxxBPllgdah8p8aSCDopi8eHl2iDC0z4IXqdwVBmnaKr8+lAm6f2IzYkMZ3nMp/uj7MROsIMchpcTljSh93L0KM0A05vdywndUTpR0jBsT7+YIXX3YcQh22B7dYs/ZV6W0D6M+cUFa+E3gV6Hin0a44WVBC8Ke4jlktBPOtypj8QyMUewJfiHps1bjAa8axT/qHd3GeyWTmEGLspg7VsDeYDN3ZpLA904swLdQIv/U5GJiHaRB8IrmxsS9W1uajSXlx22dTpwW8jS2SO184Yo18hFWqXOAk9nTviAC8kH1ZNKoaRsWg/GCJ1+dGaj2L8PXaJfxpG+7y2NMMsmWC125tDX1JHMJNK7e/XsbJhV60gWYSeYAtKsBtQNngC07cho8z/ASslH8ZpXGm18EUtaATfRqTE3d6kbX6Bu/N8mVLRbrWo7a4NkZoQr2jUmJVobavi0/fdHz/231Z1H+KTXQP4jZLdFtZBaJPY9nPVFz0SqkD+NgdNYr0lEwu0ZuMaX6uY90Vv7NNwELP3ot3ruVJQbt7TKZEcm15k7cxh7+QL5dIZLGccJn5i+BP1OzlnpumSOzEQuY/CTdemnB3xqRjCwHIcrYKYqEEJwifQHY+VhluL8vMpH/6mUm2Z28kYbPw96AHWCLOHZXHwjtHuUsRqMGsglAxTq8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,93 +180,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi,
 
-syzbot found the following issue on:
+I just wanted to gently follow up to see if you had a chance to review 
+this patch. Please let me know if there is anything I can clarify or 
+improve.
 
-HEAD commit:    f90aadf1c67c Add linux-next specific files for 20260311
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=12309806580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2b10825359140979
-dashboard link: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10cb575a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14db4d52580000
+Thanks!
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/aca9c54a7de2/disk-f90aadf1.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/736fd5e68863/vmlinux-f90aadf1.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/eb13b7d81d1b/bzImage-f90aadf1.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-address < vma->vm_start || address + (nr << 12) > vma->vm_end
-WARNING: mm/rmap.c:1682 at folio_add_new_anon_rmap+0x5fe/0x14b0 mm/rmap.c:1681, CPU#1: syz.2.19/6118
-Modules linked in:
-CPU: 1 UID: 0 PID: 6118 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/27/2026
-RIP: 0010:folio_add_new_anon_rmap+0x5fe/0x14b0 mm/rmap.c:1681
-Code: 89 f5 4d 8b 36 4c 89 e7 4c 89 f6 e8 ec aa a9 ff 4d 39 f4 73 1a e8 82 a8 a9 ff 4c 8b 74 24 10 49 bc 00 00 00 00 00 fc ff df 90 <0f> 0b 90 eb 5a 44 89 f8 c1 e0 0c 48 98 49 01 c4 49 83 c5 08 4c 89
-RSP: 0018:ffffc900036675a0 EFLAGS: 00010293
-RAX: ffffffff821d041e RBX: ffffea0001c0c1c0 RCX: ffff888060bf5b80
-RDX: 0000000000000000 RSI: 00002000004ca000 RDI: 00002000004cb000
-RBP: 0000000000000000 R08: ffffea0001c0c1c7 R09: 1ffffd4000381838
-R10: dffffc0000000000 R11: fffff94000381839 R12: dffffc0000000000
-R13: ffff8880784ad788 R14: ffffea0001c0c1c8 R15: 0000000000000001
-FS:  00007f9a968ce6c0(0000) GS:ffff88812553e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00002000002b8000 CR3: 000000007c646000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- mfill_atomic_install_pte+0x578/0x870 mm/userfaultfd.c:390
- __mfill_atomic_pte+0x3c4/0x5f0 mm/userfaultfd.c:523
- mfill_atomic_pte_copy mm/userfaultfd.c:557 [inline]
- mfill_atomic_pte mm/userfaultfd.c:865 [inline]
- mfill_atomic mm/userfaultfd.c:923 [inline]
- mfill_atomic_copy+0x4d9/0x1330 mm/userfaultfd.c:950
- userfaultfd_copy fs/userfaultfd.c:1642 [inline]
- userfaultfd_ioctl+0x2b8a/0x4b00 fs/userfaultfd.c:2059
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9a9599c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f9a968ce028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f9a95c15fa0 RCX: 00007f9a9599c799
-RDX: 0000200000000040 RSI: 00000000c028aa03 RDI: 0000000000000003
-RBP: 00007f9a95a32c99 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f9a95c16038 R14: 00007f9a95c15fa0 R15: 00007ffd373c5448
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+On 3/6/26 1:21 AM, Aleksei Oladko wrote:
+> Some kselftests Makefiles assign CFLAGS using 'CFLAGS=...'
+> which overrides any CFLAGS provided by the build environment.
+>
+> If the environment set flags, overriding CFLAGS may result in
+> inconsistent compiler and linker options and cause build failures,
+> for example when building PIE binaries:
+>
+>    # export CFLAGS="-fPIE"
+>    # export LDFLAGS="-pie"
+>    # make -C tools/testing/selftests/ TARGETS=mount_setattr
+>    make: Entering directory '/build/kernel/tools/testing/selftests'
+>    make[1]: Entering directory '/build/kernel/tools/testing/selftests/mount_setattr'
+>      CC       mount_setattr_test
+>    /usr/bin/ld: warning: -z pack-relative-relocs ignored
+>    /usr/bin/ld: /tmp/ccikConN.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
+>    collect2: error: ld returned 1 exit status
+>    make[1]: *** [../lib.mk:222: /build/kernel/tools/testing/selftests/mount_setattr/mount_setattr_test] Error 1
+>
+> Fix this by appending to CFLAGS using 'CFLAGS+=' instead of
+> overriding them.
+>
+> The fix is not applied to the Makefiles in x86, riscv, mm, arm64
+> and powerpc as they fully define their flags.
+>
+> Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+> ---
+>   tools/testing/selftests/efivarfs/Makefile             | 2 +-
+>   tools/testing/selftests/exec/Makefile                 | 2 +-
+>   tools/testing/selftests/firmware/Makefile             | 4 ++--
+>   tools/testing/selftests/ipc/Makefile                  | 4 ++--
+>   tools/testing/selftests/mount/Makefile                | 4 ++--
+>   tools/testing/selftests/mount_setattr/Makefile        | 2 +-
+>   tools/testing/selftests/move_mount_set_group/Makefile | 2 +-
+>   tools/testing/selftests/resctrl/Makefile              | 2 +-
+>   tools/testing/selftests/safesetid/Makefile            | 2 +-
+>   tools/testing/selftests/signal/Makefile               | 2 +-
+>   tools/testing/selftests/timens/Makefile               | 2 +-
+>   tools/testing/selftests/tty/Makefile                  | 2 +-
+>   tools/testing/selftests/vDSO/Makefile                 | 2 +-
+>   13 files changed, 16 insertions(+), 16 deletions(-)
+>
+> diff --git a/tools/testing/selftests/efivarfs/Makefile b/tools/testing/selftests/efivarfs/Makefile
+> index e3181338ba5e..f6c412059af3 100644
+> --- a/tools/testing/selftests/efivarfs/Makefile
+> +++ b/tools/testing/selftests/efivarfs/Makefile
+> @@ -1,5 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+> -CFLAGS = -Wall
+> +CFLAGS += -Wall
+>   
+>   TEST_GEN_FILES := open-unlink create-read
+>   TEST_PROGS := efivarfs.sh
+> diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
+> index 45a3cfc435cf..54cdefb9ccb0 100644
+> --- a/tools/testing/selftests/exec/Makefile
+> +++ b/tools/testing/selftests/exec/Makefile
+> @@ -1,5 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0
+> -CFLAGS = -Wall
+> +CFLAGS += -Wall
+>   CFLAGS += -Wno-nonnull
+>   CFLAGS += $(KHDR_INCLUDES)
+>   
+> diff --git a/tools/testing/selftests/firmware/Makefile b/tools/testing/selftests/firmware/Makefile
+> index 7992969deaa2..dd9acf972cf5 100644
+> --- a/tools/testing/selftests/firmware/Makefile
+> +++ b/tools/testing/selftests/firmware/Makefile
+> @@ -1,7 +1,7 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+>   # Makefile for firmware loading selftests
+> -CFLAGS = -Wall \
+> -         -O2
+> +CFLAGS += -Wall \
+> +          -O2
+>   
+>   TEST_PROGS := fw_run_tests.sh
+>   TEST_FILES := fw_fallback.sh fw_filesystem.sh fw_upload.sh fw_lib.sh
+> diff --git a/tools/testing/selftests/ipc/Makefile b/tools/testing/selftests/ipc/Makefile
+> index 50e9c299fc4a..5a5577767a35 100644
+> --- a/tools/testing/selftests/ipc/Makefile
+> +++ b/tools/testing/selftests/ipc/Makefile
+> @@ -3,11 +3,11 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
+>   ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/i386/)
+>   ifeq ($(ARCH),i386)
+>           ARCH := x86
+> -	CFLAGS := -DCONFIG_X86_32 -D__i386__
+> +	CFLAGS += -DCONFIG_X86_32 -D__i386__
+>   endif
+>   ifeq ($(ARCH),x86_64)
+>   	ARCH := x86
+> -	CFLAGS := -DCONFIG_X86_64 -D__x86_64__
+> +	CFLAGS += -DCONFIG_X86_64 -D__x86_64__
+>   endif
+>   
+>   CFLAGS += $(KHDR_INCLUDES)
+> diff --git a/tools/testing/selftests/mount/Makefile b/tools/testing/selftests/mount/Makefile
+> index 2d9454841644..38361a896363 100644
+> --- a/tools/testing/selftests/mount/Makefile
+> +++ b/tools/testing/selftests/mount/Makefile
+> @@ -1,7 +1,7 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   # Makefile for mount selftests.
+> -CFLAGS = -Wall \
+> -         -O2
+> +CFLAGS += -Wall \
+> +          -O2
+>   
+>   TEST_PROGS := run_unprivileged_remount.sh run_nosymfollow.sh
+>   TEST_GEN_FILES := unprivileged-remount-test nosymfollow-test
+> diff --git a/tools/testing/selftests/mount_setattr/Makefile b/tools/testing/selftests/mount_setattr/Makefile
+> index 4d4f810cdf2c..fbdb8f69b548 100644
+> --- a/tools/testing/selftests/mount_setattr/Makefile
+> +++ b/tools/testing/selftests/mount_setattr/Makefile
+> @@ -1,6 +1,6 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   # Makefile for mount selftests.
+> -CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2 -pthread
+> +CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2 -pthread
+>   
+>   LOCAL_HDRS += ../filesystems/wrappers.h
+>   
+> diff --git a/tools/testing/selftests/move_mount_set_group/Makefile b/tools/testing/selftests/move_mount_set_group/Makefile
+> index 94235846b6f9..8771a5491ea3 100644
+> --- a/tools/testing/selftests/move_mount_set_group/Makefile
+> +++ b/tools/testing/selftests/move_mount_set_group/Makefile
+> @@ -1,6 +1,6 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   # Makefile for mount selftests.
+> -CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2
+> +CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2
+>   
+>   TEST_GEN_FILES += move_mount_set_group_test
+>   
+> diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+> index 984534cfbf1b..1d566a91faa7 100644
+> --- a/tools/testing/selftests/resctrl/Makefile
+> +++ b/tools/testing/selftests/resctrl/Makefile
+> @@ -1,6 +1,6 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   
+> -CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
+> +CFLAGS += -g -Wall -O2 -D_FORTIFY_SOURCE=2
+>   CFLAGS += $(KHDR_INCLUDES)
+>   
+>   TEST_GEN_PROGS := resctrl_tests
+> diff --git a/tools/testing/selftests/safesetid/Makefile b/tools/testing/selftests/safesetid/Makefile
+> index e815bbf2d0f4..d3811515d8e3 100644
+> --- a/tools/testing/selftests/safesetid/Makefile
+> +++ b/tools/testing/selftests/safesetid/Makefile
+> @@ -1,6 +1,6 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   # Makefile for SafeSetID selftest.
+> -CFLAGS = -Wall -O2
+> +CFLAGS += -Wall -O2
+>   LDLIBS = -lcap
+>   
+>   TEST_PROGS := safesetid-test.sh
+> diff --git a/tools/testing/selftests/signal/Makefile b/tools/testing/selftests/signal/Makefile
+> index e0bf7058d19c..6c437f95132d 100644
+> --- a/tools/testing/selftests/signal/Makefile
+> +++ b/tools/testing/selftests/signal/Makefile
+> @@ -1,5 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+> -CFLAGS = -Wall
+> +CFLAGS += -Wall
+>   TEST_GEN_PROGS = mangle_uc_sigmask
+>   TEST_GEN_PROGS += sas
+>   
+> diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
+> index f0d51d4d2c87..357077792395 100644
+> --- a/tools/testing/selftests/timens/Makefile
+> +++ b/tools/testing/selftests/timens/Makefile
+> @@ -1,7 +1,7 @@
+>   TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec futex vfork_exec
+>   TEST_GEN_PROGS_EXTENDED := gettime_perf
+>   
+> -CFLAGS := -Wall -Werror -pthread
+> +CFLAGS += -Wall -Werror -pthread
+>   LDLIBS := -lrt -ldl
+>   
+>   include ../lib.mk
+> diff --git a/tools/testing/selftests/tty/Makefile b/tools/testing/selftests/tty/Makefile
+> index 7f6fbe5a0cd5..e9c22dafe5e1 100644
+> --- a/tools/testing/selftests/tty/Makefile
+> +++ b/tools/testing/selftests/tty/Makefile
+> @@ -1,5 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0
+> -CFLAGS = -O2 -Wall
+> +CFLAGS += -O2 -Wall
+>   TEST_GEN_PROGS := tty_tstamp_update tty_tiocsti_test
+>   LDLIBS += -lcap
+>   
+> diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
+> index e361aca22a74..1f4628ceb975 100644
+> --- a/tools/testing/selftests/vDSO/Makefile
+> +++ b/tools/testing/selftests/vDSO/Makefile
+> @@ -11,7 +11,7 @@ TEST_GEN_PROGS += vdso_test_correctness
+>   TEST_GEN_PROGS += vdso_test_getrandom
+>   TEST_GEN_PROGS += vdso_test_chacha
+>   
+> -CFLAGS := -std=gnu99 -O2 -Wall -Wstrict-prototypes
+> +CFLAGS += -std=gnu99 -O2 -Wall -Wstrict-prototypes
+>   
+>   ifeq ($(CONFIG_X86_32),y)
+>   LDLIBS += -lgcc_s
 
