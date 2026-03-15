@@ -4,153 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00066F30266
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 13:51:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403EBF3026E
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 14:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A8376B008A; Sun, 15 Mar 2026 09:51:45 -0400 (EDT)
+	id 1AC256B0092; Sun, 15 Mar 2026 10:53:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15FFB6B008C; Sun, 15 Mar 2026 09:51:45 -0400 (EDT)
+	id 159D26B0093; Sun, 15 Mar 2026 10:53:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 089966B0092; Sun, 15 Mar 2026 09:51:45 -0400 (EDT)
+	id 059166B0095; Sun, 15 Mar 2026 10:53:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA7B06B008A
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 09:51:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60E1DC30E2
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:51:44 +0000 (UTC)
-X-FDA: 84548435328.03.5CA5645
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6017F40003
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:51:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rp327a0i;
-	spf=pass (imf27.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E629B6B0092
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 10:53:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBDA31A0A30
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:53:32 +0000 (UTC)
+X-FDA: 84548591064.25.058D13D
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C5C37180003
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:53:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dImkLE75;
+	spf=pass (imf24.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773582702;
+	s=arc-20220608; t=1773586410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LD1Y/Z+QIVaxjTqqF6DEde0TPCIZAs/xYcpmNl5+JUA=;
-	b=DzLexW+ZkhNaYjaa4wX/TVO5R3kMdCZRywQeV/HD1OyJTJIxeN6lHVStjgijnIRt+WzcAZ
-	f4cbsgj3uC0yXz/xv/hCuCZJxy+0IOt4hpwJ1R+9XNY0w06CRnYadnO8tSHsz3ekLYVkD0
-	ogoFXKUxFGE8uc3XMnFHeLWJWuHNF8M=
+	bh=T4CJCRlVmNcmaaBkWvC+xv0ht0aAw3516GPBlPoEz/U=;
+	b=HJFinOFRUB0onKl/8IFCuXZ6vSF+6Yv/bncdCslVRWuLHE0Q+FYITbdjzl/Q7qH97SjC4U
+	G4K1TkDyqQ++I8P+6mK5+bs0l4+2IC7i2+eKsfL4xQIET/IS738QSrZZOfEbrQhdMbcr8l
+	wXrypG2TL2B41rQk2JT8R5Rgg0cpXb4=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rp327a0i;
-	spf=pass (imf27.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dImkLE75;
+	spf=pass (imf24.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773582702; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773586410; a=rsa-sha256;
 	cv=pass;
-	b=5Qp0syb5cxPfSwl/ziBuz+8J2c5DxhWMN7AkOSlXJMYG7xB/OfKpXKoUu6E1hu50IVXbDL
-	2O9orPndHLdM2IOEaYnEluNTZc66Q/SMLOAYH8+BtXEprWetvYPOfIV3539PMnuB3YQrL8
-	bUrs5sk3nK02Lx18PvivYNFKX1u5eec=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b94358796a1so519486066b.2
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 06:51:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773582701; cv=none;
+	b=PCenRnV11WKF2KxgHDH23lMW/8STRXj9jX8H9WH770t2DVpNoz/oeVuBnGhr/QHO/+2rcX
+	zUU7WbuqQ/i+XH6oHTKoK936CukkKnCR26q9FuIp0nE1/bAz5e2H8nrpFl75nxjM1upIbP
+	6ie5gRIlTVewj45TiucpKTElpq8M+ik=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65a1faf828bso433582a12.2
+        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 07:53:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773586409; cv=none;
         d=google.com; s=arc-20240605;
-        b=PWjT79hbYr2901uixTy6ZPMuOscEtJvsWaF/1ZdJX2K0mJoWdi9T4fYE5oYvnLViZ0
-         hDkqmg68yQOI0+ArKYQHuOAp5Q96cJgLKCCNj2BCyY+r29ce2Zw2jCtOrHvKtK5vjh1d
-         k08Fyy6gXAuXhiG1Qa13wI8fP26T+BJvOfjciAcLjBbLqhb6s49ac9gvnmT1G8Yz3X2H
-         8tZ7C8Y3W19sum3DLGu1n55AS6YtuuTEzt+CGwrzXmGsfWJmYkrIiK8kQMmh1lXUQFWF
-         riWATNNRDtPrSOLE3JBCDrub+/glz/Z7hy9A8QVzmRuzsx1f+mIwH1rGOtSXC640VIBx
-         9ehA==
+        b=gHI+iKme0GYmrq18L0zdKqQlKwSCp7cZ7xdasqVIuGz3NUn+L+Ue/v4LX1Viv3gMAF
+         ziOZqWq5YehwGmpwl40m6505UdENyQa5XQZkUBrP9mK2u+fqoz8cizhQkCBPs61OHzz5
+         C00/xmPVMUViNgMe5WenGdDY0BK3BNbyO0bAsxnFTRzRcQygq4dvOorDknX/gctHMixQ
+         Za6u7SyUI7AQGk/NuUP1d2IlaaMF3dlzFEtSwsaAhf4zrIgDk9Z8sJBBwzTVgxZMHxMN
+         t55sxeY+Mza7PPXie6Y2U5SfRedJrh7MI4Ve9o/cTM729O6ZHQ1vS7bREywW2M9w4a5x
+         vzZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=LD1Y/Z+QIVaxjTqqF6DEde0TPCIZAs/xYcpmNl5+JUA=;
-        fh=tJBscfk/fxEfCfXxYFT9mGJChOdH7bg7kq181CsBGHM=;
-        b=B0O9eLwVRPu4ixfCez1snOKwqjboJn3+xMIXcvdqE5WC+q4jWmIeQfP1hcLQahlCLv
-         pU+5dwqCztOy0wRj5lgf86IODy5Oi6vnOQz89jHfQ5FDOSD1JWh8+FH1+/CmU7CDvEgG
-         Y9/bypPJB8J7wZshfbFW5yNa+pLdWHSlFzfAdrfh0TGL2rcHbvgBLUfFO2XYckn1QZ4S
-         LB/eHlckXBseK3vMOCeBHaT+si2U0JFOlfhiQgtEeuvnMnyde11cLEacMm88YbyVR0h/
-         wngaETrJthe7N4blxzHQXUDeyTntnoVbmLuXmKHL2PrtJN8+eH7hajUn5TYb907/0BMu
-         ImPg==;
+        bh=T4CJCRlVmNcmaaBkWvC+xv0ht0aAw3516GPBlPoEz/U=;
+        fh=7y0BB6PyJWajtiWP9I8Q50gHjxJ2z8YoXg2UetclmC8=;
+        b=FhZ0nc+4IYnER1yPNyBGRqI7rjEhzy527TQkLh0gYn7gkBNrZXxjSWA0QtIy8V6L/d
+         8XbYjrh+9B89oYnziLgG7//kDk3WZIy6iPt1u0J3jjp3Rqcl1TC3EnwY3Tc8JTrj/n+V
+         BmLsFGhGjQs1Kj0ZBnB1XAEb9vzzqPYZy/4jzVT/yDKDHcN2UbiSzEE/bCR9UfSIygBQ
+         ZUdg7AjqhnZqhmRKPFoVOPPHhVgE9cEZRMRDsUg52PAtw22ao9KRMgBhjsLlhiAe3Ur+
+         /ZoIJhfBpEEfvPuTskACBOpFYodWQDvItQwgdOP0GfxYcoe8wutlUtdeA+g8/BeZz5yJ
+         EvKw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773582701; x=1774187501; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773586409; x=1774191209; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LD1Y/Z+QIVaxjTqqF6DEde0TPCIZAs/xYcpmNl5+JUA=;
-        b=Rp327a0iTl52efDrrxPFO0wVBOwM66pR/KbCdfGaaFBqTN6svtDdqkRWWKCwRbaE6G
-         9rf7CR8VX56LoVXhauRWmbE0gB83zCVZvKAQXDRHax4vmHnaJCBHcEXAT1oV+vRvYRwI
-         jUPYAA45RrWUJbhYasoqK7n0x7tWk5nQ/HIG0Eb6uaSZybrAM1M5kCvnONfrDz/ro7Qa
-         7GhpdJ9zzqXjpFxIvAca3ULW9AvX9Ul+sVvHE/O+oih1XJRpXVAMkNfEN/qAca8ELxRr
-         MECk++wQxw4pAtDBNwG5hP1sDATXqO5my+A63MYcQGbXnBkOe3ZrcAc3UfRPLDyRfXMZ
-         HowQ==
+        bh=T4CJCRlVmNcmaaBkWvC+xv0ht0aAw3516GPBlPoEz/U=;
+        b=dImkLE75KRwsDwMwsjO70LEfPUgMCqwVHpqi/9lmFc6DXUbMV9gVsDh5xgbbRHYQAJ
+         E6Pchqko04hIhwD2z2mL6s9B2eVJsxguzNJbCQaYNcNLWSgScAMwh/3DjRyaoWj6AZJ8
+         C8XO2sd6bPJ3XekT6jKzKH3GR5uCSnsWtIoNClHQQXpiQj63IOP8L8Iq46IJKIEc65pt
+         0Dx2XZvRPfhZihlSTj++MTYUcrhPeejZSqYRgAUKq9hie+Sl7gdSnxof5apNnarjD6Jj
+         jDD4YEPmfh8Sb/YQbf80OoYdCruxLw3UmQIjZ/Heou5Y9BKSCOx35Q2Ie8M4rtOHWUcR
+         oYwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773582701; x=1774187501;
+        d=1e100.net; s=20251104; t=1773586409; x=1774191209;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LD1Y/Z+QIVaxjTqqF6DEde0TPCIZAs/xYcpmNl5+JUA=;
-        b=I2XdB/kHSF0+j3WPHYmtNv6hbnoAzP6sQdBIRYlWvGoDB6MTMefokE1LYHGvsZYAZM
-         2jsn7hl/zmrd//p6uly/PZmXDerF/+osMFVVAZ911GPGTPleQ4M/NVUggQbNsgfITjwX
-         PfMNfYSkiWFTJePURcslPctEJ63iqG0cmFpOayZrEInFuod2Z2EVTN0fw8wnGKJp++Cw
-         Ce2enaAVx1zPgUW/adVsJIbcW9EmR0LUT590GpW6SZUopRaRE9WVGfOHqs5ICez0XY+o
-         /wgiNQVm1NYWZzJO+wQ7BGf02eE+FVp/HhmSFtg1QZ2jmqWeFYenGLlfMGxYKP2u31Ba
-         mQig==
-X-Forwarded-Encrypted: i=1; AJvYcCXDAJyvipeSr+Exx49QxkOm/BdsvZNxFUZdE7Ir1FEmr1AUwQcByqM3IfbfHdrh+UT/hPs1J/mMDQ==@kvack.org
-X-Gm-Message-State: AOJu0YxxHX7ojvKemFgw2ZcbMdJ3hZMaDd6wDg+EjfJ+Smv/56TBbC/7
-	nfuapLpFdyiQKFuz2dbVBDvaR1ntzyPbwwybwOD4tu4kQKIwk8miZothlBz2Q31XXDM4oC9W3CI
-	+4skc/ZVFVbLmMGv7axZW/QoPaVZaaaQ=
-X-Gm-Gg: ATEYQzy0Ys+UarDkhudVtTvnpeL4+DHv5BcDEhYdn9Co3rf4yHo2Z6bjqcUKG4iH+9O
-	gUMqIDLopUaQLEH3P8l0+bhm6tK8tGCO7xIj0tiWaqSdYl7jEk1VsRInQqH5fmIjBO9EcNYgDrM
-	zBX1N808dFn5RQdSv8MU6O2zqmTY0KXgTNJYfvHyICsBvlRVRvHrataVmae5jL07w7MRGR5Wm+f
-	2NKr0RX4la8bkhN2fjeBo8XGhZZqZXTnR6Im4Beu+j6/57SUVNzXdcYJrGfsJzgTn/9Pjhxa3i+
-	Z7HtURJ8GeP2ds/CYQq1YFvLgZv5/OAEmANf7vsXQw==
-X-Received: by 2002:a17:907:8dcd:b0:b93:c5a9:a5e6 with SMTP id
- a640c23a62f3a-b976507af92mr500109966b.2.1773582699724; Sun, 15 Mar 2026
- 06:51:39 -0700 (PDT)
+        bh=T4CJCRlVmNcmaaBkWvC+xv0ht0aAw3516GPBlPoEz/U=;
+        b=ghZ3EpxDAeDFJV+3WW/vl6Pl7pCZfuU3o2c394NKuzcyWcFHfMcGH0/0ef0kgxuxm3
+         +a5sSbymvwgPbg8veuYj9QR/Y31o6BNxjb1anFPm7wl+rFu2qGYAjnbys9opp7D88Vep
+         eafGExysepMwUziM5SMw2UFJO51uOhcqun3nq+gLt7ftxB5LkEs6M9aB3bPXqezTi6hG
+         /z3OPAElybX/S8FTekNEuAQBlo/cj/lVRq3XRzmzXkqMmhrobeFKMd3miXs5i5ilyeL+
+         s61nWS8DvK9dyhPxZWavSrlY5NxPJqp7eUVn74ZzIKs/Z0NWoVZohrFrJa8Z7nYzHR8g
+         MlIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWDv6sgG/G1sBADduELv8rSe/uagNykvRmWPyC/7cf8bJG++a0cl6KFzfAcHD+mqhPiaIPKHCCJA==@kvack.org
+X-Gm-Message-State: AOJu0YyXREaA7U47+IMZ/LlSxQqBRfeK6t/P1eEP7KaZSJei/s+z6m/D
+	CAFUpUkUD7TNEeOhLaHPOgVKGhMRW6lqWgUtE8ZEGp5WjbeqQyTy5vynlHq8we4UEN0sb5aMStz
+	Hv5zlf01Kb3dZ8Nhs8jz0deVqQY2EwIg=
+X-Gm-Gg: ATEYQzyVlK6a8LqpOU8ti9L6SBuFCa8PKts/EEWAsC3KfwSjMapEVjCQEwsi0a904v+
+	9f3yfEqiiUDRET4yqp47wjVZWZOalIkAvuamYN1mLxbHuRiZVkgZS0drK3KZ2rW9fdEfVdBcxzp
+	Bgcd87XL7OdGyy7gnSDoDycCuspqMbcu38ZvKV63iY0DO+WA1DvUlk/9r5Zxw3gv5045mlPXZG+
+	VHjy7idSbqNTohM8+Rr97URJE7SnRJcb6bgh9s2zzhQKE2sJIPIU9w+H6kLcvL3ykHGlt+qxnIA
+	Chm4Fak=
+X-Received: by 2002:a05:6402:13c7:b0:665:ea0:3aeb with SMTP id
+ 4fb4d7f45d1cf-6650ea03c0fmr549081a12.1.1773586409038; Sun, 15 Mar 2026
+ 07:53:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260312214330.3885211-1-neilb@ownmail.net> <20260312214330.3885211-17-neilb@ownmail.net>
-In-Reply-To: <20260312214330.3885211-17-neilb@ownmail.net>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Sun, 15 Mar 2026 14:51:27 +0100
-X-Gm-Features: AaiRm50yYPhN2uA9nBAPVNuAVUOhGIEBVS5rPtx5ZlpdDP1j4SB9NhEOC_7KNWo
-Message-ID: <CAOQ4uxjmcNxsCmDSVgkTns=3BAuQcT3pVvsQzza+u3iqXqrz5g@mail.gmail.com>
-Subject: Re: [PATCH 16/53] ovl: drop dir lock for lookups in impure readdir
-To: NeilBrown <neil@brown.name>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Jan Harkes <jaharkes@cs.cmu.edu>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Howells <dhowells@redhat.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Steve French <sfrench@samba.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
-	Yuezhang Mo <yuezhang.mo@sony.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Breno Leitao <leitao@debian.org>, "Theodore Ts'o" <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, Tyler Hicks <code@tyhicks.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, coda@cs.cmu.edu, linux-mm@kvack.org, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	ecryptfs@vger.kernel.org, gfs2@lists.linux.dev, linux-um@lists.infradead.org, 
-	linux-efi@vger.kernel.org
+References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
+ <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de> <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
+ <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de> <aVgjpWaIRkerdgCa@eldamar.lan>
+ <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de> <aVj-mz8vaw53TWtX@debian>
+ <abX53NWDsG8oW7H6@monoceros>
+In-Reply-To: <abX53NWDsG8oW7H6@monoceros>
+From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Date: Sun, 15 Mar 2026 14:52:52 +0000
+X-Gm-Features: AaiRm50qoW5875jVMg8blrX-fMQiTqfJs8s9vRfUb-tlNoJDYMwZIeq1FVYugT8
+Message-ID: <CADVatmPm5Xs1W-f-u34bXs1ok=8zyySGSSZk0KKy5dWXZLXQZg@mail.gmail.com>
+Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@debian.org>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Salvatore Bonaccorso <carnil@debian.org>, 
+	Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, regressions@lists.linux.dev, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	benh@debian.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4zb4nh9swrdt551qtb9rbanmyzjwakj1
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C5C37180003
+X-Stat-Signature: 4xb7nodnk18i6odpfzkmpwdbak4zgftd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6017F40003
-X-HE-Tag: 1773582702-693532
-X-HE-Meta: U2FsdGVkX18fcQbDIucnJlSoBjekvQIl4QLcv0+e1eE3S9Vm9eW/r9mB/tq6XV89vrf379upF0IR/OyhtWjxR7DsC0osDGpKV7YQkwuCWsI+jDeH3prlcqhrxceNj22xwfrk5jLN1qSRon9UP+hKdQY6e2NZU0Jo5RCbFRcUBOOpqDiNwEJo+F8LJg/qWMj4RKMlPVeTxvfvw8V2d4QnDFL8+CXc5KShZ2T1RG65FptTryktr5WL+Ft3UDZO4eEReYLF0+RWo07wrARxQuuHfJLsFUB/oBTfcM32IjEbFwLsnAqbpHwaaiF/KfXsEO2UWiOWI99MsPf3IbkCHkAJDITF7CCTZEoeozcc5KIjWTNbn8W/t/Z8brDBQiZXh8Bm4oHmmujxoGcF4gEVzPj1aqShBdBebc3Y7yprlX8B5NR57AMV38nfte0i7RWw2fAWDB+o60lcpNz/C2AduTDjuCG9njHvtICAnPvc7kIGNfFKKMWf7w3UINZr7eINZQreGrcccBPH39GK8e5hgk/wyel5uUxS1USFERPy5u6awDEBGfNe45fq6YOtrQmGtLhhzb21YqGjzLAaCCWhnGMm2iZm2C+guc+iZX0xhxb6MQ1U/y9/Fibfb04KoYWP/LQMLdzA9ZobIXhM5f0MoRe77X8v7PBV+40sMuDdbTpnEN8AUgYjtrQVa0RV3vPiN3QJ0AnYA6FkR2XTffbW0HfgKBAT821Dye6/Iwsm0Y+iaHJKcpt0pR9joj9Q3xiAqNiF6I+1LPilYVO4SBH0EOtOP8apKEgHzqcI6XOI/UieO76tsapkuMdYcnDiaK+E/fS5jhxlRJ7rfwrEqdhiYPNYnXTxa4teoWuVjXwXN+vq8kFPMfwNpW2HJnKhlT369FdsiII3pGi/FwUx4Nivdt0EM9ZUTe4kHQHMzUKUcqyBTN2lqNEbWWXXAR2eShctANN3L0Mo9wOFbNCVOLxM4y1
- Jf1bIwmk
- dXMbmyxoBtCsoMUT8kLjqnxOeuW7mSFr4U8CerZ5DgHpM19P8RcCvXVm3e1ZOcEbM3sEhNyo8PhB2fg9Xxh9r5eIP6HoVCwMcCixi03GMkXAe1ls3GObkzz7KuQUpxz0gpQXI+wiZIGGmKX9wvPWyElV+fqkeIh9+gJlidciSr4g1WojRNnyJk3sX+k+9mMuu+Ozr3CjHS0+qkxJaoudqGLEwFU+vIpttpa5B9p/+hP5zLGgY98LEDrQodTB0lo+441JFSroNYdoXlsLNCJa+vH5e9727WthPz6/yUhU2DE/nL3EshtahHRAvEJ1q2ya1ZmNsIBMrqK1oceMPH4cpQ4tXOd4SvGlid7QRQcXsHRkERSnk/RSwjAne9fudX9XsjY1yMrx7KDf2fe4kjkdoiV25ffo1YHi44haC6vxVOxKPq4x4hIGnC/6BbH46nfGWyurPX1MdBKG96aslogIGQqNIzx8/uQmquTrz4AczVaXVIlYs+y8rN5aq9Q==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773586410-886778
+X-HE-Meta: U2FsdGVkX18ayJ4QDH7N2GK3Lbmk74jgexxWkti6TBh7dCa1LY83mpYrq8nRnMkK9nCRx/TmwUBlFXn4lwq0zf/JF2gPlbf1BU8jCgHLMBxfPpEEQZo1rza8Lpgqil6ocwwYSf4rAIh6jlBn3jGdnDuhmZOWInLd0MyYUKRb1vZho23Pyrme5Bk29UfNoxauh9/B9K4cLKuLhe2O4N9L40BHbBa4UfgREnZVUy2iqz0/Nc7i6qJVEIoL2pR4VGWJWq2RH49d7/KFb7CLsg89x/iQ2W9zeabXM2SL+MOG/enFbj0rPYTd93AXlrmffPokudR5i4RM+D+TUkrlgYYD0jYPtHoN5NM24z8yNPFsZbUwHUoY2sQNvQfO5CzguI0EnOR4g1QelubdDgcfqp1wZY+7g/8k4PBeQKZ4nvj63XoMnhsFrL/YnfYha49o/3s73P+9POcFtcuXXEliKLtFtbiMY/2RCxFo0akaM7crMB+GZmXUUJWjm9Zc+WwqM9xP6yGQ1plh5WNRLQCoXrH62wP6Lood++GU/oYpmFYx1NOBXtTfNDZ60hG8ZDPcgVfbiPvWqImMePbJcNTnjuyA4im6DLZ+XiBW9uNSgqquzu46Mg41taRDpgIIkjFfiSxPwhV60C40fK0D8mlTW+tphGgkZQwVDGPIrj0UxqB8xt8J5qysgdrwVLpA//OMoYv/YfK1DXy/4K9KcxOgCzszwJvWFhwY8GHbFbK2nfjeBNbIXeaJ0y56EmpJjOH6cP87Lyww4oG4ar/2FcZb1yHLj4OYxLAFhV7wqmrViKUR05BY1N36sYO+zA25n63dCl4wDlHepELOB3tLZRrik5nYSdftMk+iu1GlTu5xR6Bvqehotr1oRufYNZasyydWc0NaSHjD2mUZ85AtM7eYqicbMhz6Inmys61mtHg284rWpXY6q32e7CP1v206pIgCpvucnoIT8XuETU3VzLOq61/
+ JlaBGYVQ
+ CuwMZz2zWRyLm1MuMg4zAmQ4VwpKmlWqFydvBer6yNG8u3Wr/uVb0dfoEDcOXY7rRzMIH7PnhpFZiv9A3iojzjqr27f2ub0DQTlB/GpEYgA0PpRFhJtZiltN9pZd/Bx+9fuWbZLmdfxO3NN+fNNxAxgH/4l1GCFsYU6FUIu4D94FRS4RginquDeoVM32WdWfzBRzTOem3fjTVWXtu7hCVGMfg610RZ2gwr+u7cK39nXBM3tRyP34jB5rNZVtTLrJVOUN0mMQo4abD/DbcgwLRRAchD4FD7KtApABPvqWM1FxUXjosi/YPzbhVitUMOnNYZIg2MrwZ1GK2tzHyIIrrw9OLDlim3KC6gNp7EtxFE6Pvvh38eBxmfR12smUR3V34oLKEkE1gzaYNOfwkmJZ633286qv0Dz3uG9/eiZK5bsbm2XHhjQVneWKnffxGrWakj+yvyCgpX0Tb3c/5VrWz+9E6EjxQ7lggvSUay1SsH+MnAe73AzIQgZNdpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,179 +147,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 10:49=E2=80=AFPM NeilBrown <neilb@ownmail.net> wrot=
-e:
+On Sun, 15 Mar 2026 at 00:37, Uwe Kleine-K=C3=B6nig <ukleinek@debian.org> w=
+rote:
 >
-> From: NeilBrown <neil@brown.name>
->
-> When performing an "impure" readdir, ovl needs to perform a lookup on som=
-e
-> of the names that it found.
-> With proposed locking changes it will not be possible to perform this
-> lookup (in particular, not safe to wait for d_alloc_parallel()) while
-> holding a lock on the directory.
->
-> ovl doesn't really need the lock at this point.
+> On Sat, Jan 03, 2026 at 11:33:47AM +0000, Sudip Mukherjee wrote:
+> > On Sat, Jan 03, 2026 at 12:01:19PM +0600, Paul Menzel wrote:
+> > > Dear Salvatore,
+> > >
+> > >
+> > > Thank you for the follow-up.
 
-Not exactly. see below.
+<snip>
 
-> It has already iterated
-> the directory and has cached a list of the contents.  It now needs to
-> gather extra information about some contents.  It can do this without
-> the lock.
 >
-> After gathering that info it needs to retake the lock for API
-> correctness.  After doing this it must check IS_DEADDIR() again to
-> ensure readdir always returns -ENOENT on a removed directory.
+> There are several backtraces, I looked at two of them and both trap at
+> an address that corresponds to:
 >
-> Note that while ->iterate_shared is called with a shared lock, ovl uses
-> WRAP_DIR_ITER() so an exclusive lock is held and so we drop and retake
-> that exclusive lock.
->
-> As the directory is no longer locked in ovl_cache_update() we need
-> dget_parent() to get a reference to the parent.
->
-> Signed-off-by: NeilBrown <neil@brown.name>
-> ---
->  fs/overlayfs/readdir.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
->
-> diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
-> index 1dcc75b3a90f..d5123b37921c 100644
-> --- a/fs/overlayfs/readdir.c
-> +++ b/fs/overlayfs/readdir.c
-> @@ -568,13 +568,12 @@ static int ovl_cache_update(const struct path *path=
-, struct ovl_cache_entry *p,
->                         goto get;
->                 }
->                 if (p->len =3D=3D 2) {
-> -                       /* we shall not be moved */
-> -                       this =3D dget(dir->d_parent);
-> +                       this =3D dget_parent(dir);
->                         goto get;
->                 }
+>         /*
+>          * This has to be run as last thing since init_state may need oth=
+er
+>          * pardevice fields. -arca
+>          */
+> ->      port->ops->init_state(par_dev, par_dev->state);
+>         if (!test_and_set_bit(PARPORT_DEVPROC_REGISTERED, &port->devflags=
+)) {
+>                 port->proc_device =3D par_dev;
+>                 parport_device_proc_register(par_dev);
 >         }
->         /* This checks also for xwhiteouts */
-> -       this =3D lookup_one(mnt_idmap(path->mnt), &QSTR_LEN(p->name, p->l=
-en), dir);
-> +       this =3D lookup_one_unlocked(mnt_idmap(path->mnt), &QSTR_LEN(p->n=
-ame, p->len), dir);
-
-ovl_cache_update() is also called from ovl_iterate_merged() where inode
-is locked.
-
->         if (IS_ERR_OR_NULL(this) || !this->d_inode) {
->                 /* Mark a stale entry */
->                 p->is_whiteout =3D true;
-> @@ -666,11 +665,12 @@ static int ovl_dir_read_impure(const struct path *p=
-ath,  struct list_head *list,
->         if (err)
->                 return err;
 >
-> +       inode_unlock(path->dentry->d_inode);
->         list_for_each_entry_safe(p, n, list, l_node) {
->                 if (!name_is_dot_dotdot(p->name, p->len)) {
->                         err =3D ovl_cache_update(path, p, true);
->                         if (err)
-> -                               return err;
-> +                               break;
->                 }
->                 if (p->ino =3D=3D p->real_ino) {
->                         list_del(&p->l_node);
-> @@ -680,14 +680,19 @@ static int ovl_dir_read_impure(const struct path *p=
-ath,  struct list_head *list,
->                         struct rb_node *parent =3D NULL;
 >
->                         if (WARN_ON(ovl_cache_entry_find_link(p->name, p-=
->len,
-> -                                                             &newp, &par=
-ent)))
-> -                               return -EIO;
-> +                                                             &newp, &par=
-ent))) {
-> +                               err =3D -EIO;
-> +                               break;
-> +                       }
+> in parport_register_dev_model(). However the trapping machine code
+> doesn't match the kernel modules of the respective kernels, so that's a
+> bit strange and I'm unable to tell which of the pointer dereferences
+> there results in the NULL pointer exception.
 >
->                         rb_link_node(&p->node, parent, newp);
->                         rb_insert_color(&p->node, root);
->                 }
->         }
-> -       return 0;
-> +       inode_lock(path->dentry->d_inode);
-> +       if (IS_DEADDIR(path->dentry->d_inode))
-> +               err =3D -ENOENT;
-> +       return err;
->  }
->
->  static struct ovl_dir_cache *ovl_cache_get_impure(const struct path *pat=
-h)
-> --
+> Maybe this is also an instance of the hardware disappearing? At least
+> port->ops and pardev are non-NULL earlier in that function and all
+> static initialisations of a struct parport_operations have an
+> init_state() callback.
 
-You missed the fact that overlayfs uses the dir inode lock
-to protect the readdir inode cache, so your patch introduces
-a risk for storing a stale readdir cache when dir modify operations
-invalidate the readdir cache version while lock is dropped
-and also introduces memory leak when cache is stomped
-without freeing cache created by a competing thread.
-I think something like the untested patch below should fix this.
+Thanks for confirming. That is also my understanding that the
+underlying hardware disappeared and mentioned that in my first reply
+at https://lore.kernel.org/lkml/CADVatmM_mRnkDX=3DhpUjbyKkZnGynxJfRSujGxm2L=
+aWWMEL_2ew@mail.gmail.com/#t
 
-I did not look into ovl_iterate_merged() to see if it has a simple
-fix and I am not 100% sure that this fix for impure dir is enough.
 
-Thanks,
-Amir.
-
-diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
-index d5123b37921c8..9e90064b252ce 100644
---- a/fs/overlayfs/readdir.c
-+++ b/fs/overlayfs/readdir.c
-@@ -702,15 +702,13 @@ static struct ovl_dir_cache
-*ovl_cache_get_impure(const struct path *path)
-        struct inode *inode =3D d_inode(dentry);
-        struct ovl_fs *ofs =3D OVL_FS(dentry->d_sb);
-        struct ovl_dir_cache *cache;
-+       /* Snapshot version before ovl_dir_read_impure() drops i_rwsem */
-+       u64 version =3D ovl_inode_version_get(inode);
-
-        cache =3D ovl_dir_cache(inode);
--       if (cache && ovl_inode_version_get(inode) =3D=3D cache->version)
-+       if (cache && version =3D=3D cache->version)
-                return cache;
-
--       /* Impure cache is not refcounted, free it here */
--       ovl_dir_cache_free(inode);
--       ovl_set_dir_cache(inode, NULL);
--
-        cache =3D kzalloc_obj(struct ovl_dir_cache);
-        if (!cache)
-                return ERR_PTR(-ENOMEM);
-@@ -721,6 +719,14 @@ static struct ovl_dir_cache
-*ovl_cache_get_impure(const struct path *path)
-                kfree(cache);
-                return ERR_PTR(res);
-        }
-+
-+       /*
-+        * Impure cache is not refcounted, free it here.
-+        * Also frees cache stored by concurrent readdir during i_rwsem dro=
-p.
-+        */
-+       ovl_dir_cache_free(inode);
-+       ovl_set_dir_cache(inode, NULL);
-+
-        if (list_empty(&cache->entries)) {
-                /*
-                 * A good opportunity to get rid of an unneeded "impure" fl=
-ag.
-@@ -736,7 +742,7 @@ static struct ovl_dir_cache
-*ovl_cache_get_impure(const struct path *path)
-                return NULL;
-        }
-
--       cache->version =3D ovl_inode_version_get(inode);
-+       cache->version =3D version;
-        ovl_set_dir_cache(inode, cache);
-
-        return cache;
+--=20
+Regards
+Sudip
 
