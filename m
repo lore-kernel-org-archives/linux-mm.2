@@ -4,139 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A082D58B0B
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 04:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC634D58B0A
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 04:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B66026B0088; Sun, 15 Mar 2026 00:01:56 -0400 (EDT)
+	id 0048C6B0088; Sun, 15 Mar 2026 00:10:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9316B0089; Sun, 15 Mar 2026 00:01:56 -0400 (EDT)
+	id EF4986B0089; Sun, 15 Mar 2026 00:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CB6B6B008A; Sun, 15 Mar 2026 00:01:56 -0400 (EDT)
+	id E004D6B008A; Sun, 15 Mar 2026 00:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 878B66B0088
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:01:56 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CC60F6B0088
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:10:36 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEEE98CC50
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 04:01:55 +0000 (UTC)
-X-FDA: 84546948990.30.B0A2B3D
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7B57FC000E
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 04:01:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bbh8IHqn;
-	spf=pass (imf10.hostedemail.com: domain of maddy@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=maddy@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E6EF5C69F
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 04:10:36 +0000 (UTC)
+X-FDA: 84546970872.30.44D8FC7
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7099840004
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 04:10:34 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="rr4i/ocS";
+	spf=pass (imf17.hostedemail.com: domain of r@hev.cc designates 209.85.210.179 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773547313;
+	s=arc-20220608; t=1773547834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCPGD2zae4hTeInDIhqub/VNO35JJ2u+zu4SZpM1c+Y=;
-	b=7tLELbCmise2ls8rgbROO0FzgM3ccMaip6qG+Rqe1C3VTMo6UhSCOU0XwGxjI6r+X4iy2f
-	bhtnjoJbv/p4GNw1kwooFriHwE26HtbpezeZlTPORSO8ILtcWwCKk8n2lJSwuncBLZXwPz
-	KKzc5Fxi8HjkDfTNqk9J7H6qZO5KLlw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bbh8IHqn;
-	spf=pass (imf10.hostedemail.com: domain of maddy@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=maddy@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773547313; a=rsa-sha256;
+	bh=eKI+YqwJwuQjw262CBFVWp4TrJeGSGv4OI3cEOIx48M=;
+	b=wmtBM89ygT2PC2QJoPfRpJu32wXIs5hBqNqqn017kCOTILravXloJqa+hQdPCzWMUCb9m4
+	yYTn6A+yR88xXMn2Od2MWb2J6sPgZzGMXLs55gxzUHWX5h5NmQEU/lM8Y+MViJDigROQrJ
+	LG9lELmwK/E1eO1sBcHA7+LmbqZOBhs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773547834; a=rsa-sha256;
 	cv=none;
-	b=4kuEbn1T8qRCbEqrKnfXMgs1y1ghBO+7ADhZGyiWsG6o7CuLQ2zRD2khi0NiKfywvAzkIy
-	EogAW2Adp2OdZ9QP0P+Rhrqpa9hWZ6EXQBZOeWfSoUZW59yC72xKWwgY5lUYt3grsHHUhR
-	QHT/oIGP2twyRxh2cwlt4xoR96udP3k=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62F2SSHe2890189;
-	Sun, 15 Mar 2026 04:01:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PCPGD2
-	zae4hTeInDIhqub/VNO35JJ2u+zu4SZpM1c+Y=; b=bbh8IHqncn/4VVkqHIKrmL
-	C6UUIDlogCf2+1ARx+LQIHTGb0/qK+o+vRcmAlnxrprP0qFt9Rleh/+iFHrOmNSn
-	Hhs/lvACta3/cAbK2IO3wj9qbPGvS8YN82/ByiHAmWa+WSoAphDpi+hmMv7KSbMo
-	flrNVhrgGttwypPb8bb/9rMv+esJWNt+C2okJtpDFqn8lkeYEfyUP2yRFmr1fZXi
-	KkxzPbLPyVw7aj7lWRpufQGOwXzdiM2e69OhuLqagrkkOiAoVcV06UHJFcITLZ91
-	R52IYnoPu17isExtbY7euGReiDxVqLL+Ka54+UXPXokTkPJJ4JHF2IXVYzyJi1YA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvw3hk58g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Mar 2026 04:01:43 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62F2gMX4032320;
-	Sun, 15 Mar 2026 04:01:42 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7jg56c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Mar 2026 04:01:42 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62F41deb29950270
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 15 Mar 2026 04:01:39 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 323AC2004B;
-	Sun, 15 Mar 2026 04:01:39 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C972B20040;
-	Sun, 15 Mar 2026 04:01:36 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.43.97.251])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 15 Mar 2026 04:01:36 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Donet Tom <donettom@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/mem: Move CMA reservations to arch_mm_preinit
-Date: Sun, 15 Mar 2026 09:31:35 +0530
-Message-ID: <177354720777.2367911.7154288884175799421.b4-ty@linux.ibm.com>
+	b=T29s4Zg6Ie1He0x0fdjd9ORpvMnYZ8g0w345GWqKHIT/itDw5mRaflzHqnpv9i8+1L+5Zj
+	VYc8jppmxJsVzrF7H6E8w0rpGmbTi7ij7f5jlZzPDmImAJdVl8vAe6sWCavCWvhatD9sAw
+	NxQcSKLXAgdtBG9vlYfvfmnv0cWXHhc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="rr4i/ocS";
+	spf=pass (imf17.hostedemail.com: domain of r@hev.cc designates 209.85.210.179 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82990763921so3300577b3a.1
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 21:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773547833; x=1774152633; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eKI+YqwJwuQjw262CBFVWp4TrJeGSGv4OI3cEOIx48M=;
+        b=rr4i/ocSdr3cyZnATtnKV/ZSFc47oRH6pGY++1618L5PzNLE+GRxkeLwYQP5W/jkAS
+         1XW00G1H0jjZXE1P+LYqjSq/BJHUtI08+eatpP/g+WuktphjJO5ENdyy0Z04XIKfeH56
+         e0BrpsElV4ZH6lsksOv+HRpxP95tyiDon90gZL1OiudltNoDjkBC3RVLzWEetETdBANi
+         C5dAuPrdBUeggAB4+Ib8Mq33PUtwgXOiFJjlUhBN1SI0wiqlIZ+WupKJ9aXJguO9o4Ux
+         ubxkTgxzplvJByJ6u6ASRs7CvYSFjB5W3MrYNeTdYPLjeK3d/deC0n55rQmPwsJI4vD/
+         mAyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773547833; x=1774152633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eKI+YqwJwuQjw262CBFVWp4TrJeGSGv4OI3cEOIx48M=;
+        b=rnPE/t5h4yDyR7TXfc7d7ZhvZ3NLkDZgJYpJb/v99VNpdGGFiKA47aSnEn9dRezTVK
+         AAyozj5E91N6SdPKCXbA2UMkDSaXauO6M5eX+9hkSUANnmka2z4yIb6L1E4Dk4tWzHg6
+         WeiSiPWlL7UMSHa+oUS1J1BvvfEVV4TM0bGFfJll9QqbaCvYk2Ovbmo0d+5MTG0ZyO2M
+         aJXDalUyIS5TN3TX9TDQhSRwERypJ4DoBHXhPaOb3OLoLBSoMFTJcHEZ4dxo9i1AYfR9
+         nEW1gaeCmv4ByM9yt3TcNg5VsBWQnuoxNSa+p53cg0AzOn2G4UKmt8o9PJ8nHS1FMvrs
+         zJ3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUsT4yx/fKxYmngSjNA+wnOd66SGDJ3YhZ68OrbL2tLy1bhztbTmRCb66vNjRkXd7wnyGGFcyxNvw==@kvack.org
+X-Gm-Message-State: AOJu0YzplZSfGfS1TtIIbErFrkmm4evX2XcBf1/1/v1Agq8MSx2vGLeR
+	ZKhR8bWIdb5GPxT5QQWBvYhPTf4ytr8SGSIVEmg5LbRVAXMZoPzlqRoofSaLGehxDxg=
+X-Gm-Gg: ATEYQzxgtHfyIvFWbuQenZb7joMKpkgllviI3kg51Yshk0jGbmIiQe9+39DGNpITqVS
+	07b6sSTV2v3fOWp6vGCEtuVepTPuPt9HNX6rgN/iLH0zJ28FcIkPIS1TXm5suXDp2V5GlZnuCnU
+	wdxL5zTuZcxm/E25LM0ym6FJd2IjzRvRzGcNF502FK7eh3HqCzaWFKPBcG9kyBGLWHMQj/QoVdb
+	FiWQvFHe5nkdz5LQ9BdgojfWsOtK8a2TyoSMYvKLR588ZfqGcp1GtVApy+Pw/NvBzgPqklnb1gp
+	NXBY3yFap+Yjw3vY8AQ5iQMkBN1pMN1eTdd+ByVxZJVY7WuET/edFXPEbCgPR5wNyULhYANd1+i
+	RGZdMF+ggVy1F5z3VKgvlK8v36tzJbR7a9b/qtavoWodcjU8Dc7VItqO8FOgEv8sj6MS8s+F2Q7
+	qi
+X-Received: by 2002:a05:6a00:6c81:b0:827:2dbc:27d9 with SMTP id d2e1a72fcca58-82a19907f86mr7927525b3a.48.1773547824721;
+        Sat, 14 Mar 2026 21:10:24 -0700 (PDT)
+Received: from gpc ([2400:8902:e002:de08:5754:7dac:85df:935a])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0727c1d2sm10079491b3a.25.2026.03.14.21.10.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 21:10:24 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: lance.yang@linux.dev
+Cc: baolin.wang@linux.alibaba.com,
+	brauner@kernel.org,
+	david@kernel.org,
+	jack@suse.cz,
+	kees@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	r@hev.cc,
+	usama.arif@linux.dev,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [PATCH v5] binfmt_elf: Align eligible read-only PT_LOAD segments to PMD_SIZE for THP
+Date: Sun, 15 Mar 2026 12:10:05 +0800
+Message-ID: <20260315041005.11682-1-r@hev.cc>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <6e532cf0db5be99afbe20eed699163d5e86cd71f.1772303986.git.ritesh.list@gmail.com>
-References: <6e532cf0db5be99afbe20eed699163d5e86cd71f.1772303986.git.ritesh.list@gmail.com>
+In-Reply-To: <20260315034647.8462-1-lance.yang@linux.dev>
+References: <20260315034647.8462-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: N2FVgG2p4Lu-WTReS9VTNJDNO-h09wpK
-X-Proofpoint-ORIG-GUID: cBDUdsstWvV5-jpkXRtB8AEdX2CXlz7m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE1MDAyNiBTYWx0ZWRfX7TVYeuLykjmI
- gcnoWNrMSsHCTjGcUGp607ywbJUCL6YseTByyZa7yYyVAbXDRZ0F/gZrJZt2QOZ3bxwpvow+w68
- 5Y6vc/eDUDw0gIoe99b80+LBiTRXMTa6wXo3FKdSNdLIsVmli1FZz35+MbO+qjQRZ48oldKR+cg
- EuyBEMPDfeOBTG+lwd12UByxERh5SiDVkrI/L0Z5HJPFHPt27AkdgxGJWSRiJl8NGEkahw0EaoO
- pqQGWMEpNbq7yoVYjDhybQCI1jJeFaXwUJrQL8WeuNDqLiernqDguG7SlDH18/xM9qqkBLnQaXY
- hdep81FY3XjzAqSTrT6Sv3xpfgdKNxISXthzVypQUCBoC42KkSIugE4e7pI2ayyD3RT2DXWQKPe
- 3lLY1NQ3AVVXoGzaK0gE3LAVTGXV9Ll2g/U4DQt+IVswil44Kl7mLBXVKOOxMA/F+XjU6xmlLqr
- p3se1q2VC006HC+lf/w==
-X-Authority-Analysis: v=2.4 cv=Hf8ZjyE8 c=1 sm=1 tr=0 ts=69b62f28 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=vRg_hqKlNKNa9p9_vvAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-15_02,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603150026
-X-Rspamd-Queue-Id: 7B57FC000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: xqof7i7u8quoup63dio6btegoihx76wg
 X-Rspam-User: 
-X-HE-Tag: 1773547313-40744
-X-HE-Meta: U2FsdGVkX1+uUZXGBYwR9jaV8IIOEw1Rtn/2JOmG0dwUjiM60cqcn/9owtD2ZWPyWrpctHDuIK24jjOCmT2/gnUxfsdRT4+hlLxit4YPCvkhDlVlNgG7j1cyKt/8X+LvjdqAbabZyKPUJJDPEryarW8zldnuvokefPg5zllFWDatlyIRXLDi1A8VbZwCd+KJu5LbYfoqjPp33mjhUIl3bbAXPGyNs06NofKOuyUhJmrgSe+Z6pRV2ZnGHQwhv59/xqOlQynY8FygOyitBdkWrNiUxOpnmg/BNKnpoE2T5bKj3uKrx231Gb+PyWobS10nHx+Cm2RkoM8jAcp0OctXJaSa1uGFunrDe7w77MtoyvtHyWrlWiTDC+cnpKMJDAyIl9jUB1nhi9yqcLx4l4eq5NkQla6g48hxx7fpbS7KPiB9RKx6bThMQKKNWfQjZA71A7Hc7intJWA/WCfS8px05KoDJGbzR0vKE5s56cuQVRiu61+bIicNZGBq+xhzcog9pomSn987SBxdagYMKU/ytY2bl9zI0jVjA3Uf9Gcg52B7RrDqJUpivGlI0zGrtQ0n9BCvsLM40eqCnr/46ztYZK31FsLiSUkuxm+UYV3qmiqziRPIQauYTGKFLeBJBWw2jpxYedPfRr7uzEoe0AIEHm0sBYOn7VbIO4WjsADFKj7UYJzzX5aFKwaK/IhjvT4I/eTp5RndxHrZ5lHldtu0uh79ckAIX0rraLjRsNstqn7dnJ1mHeKVX+8RtJ1I/4ab0xuc0bI6kEU+l6jONvMWknVKIz0GZJKglIwI1w97yMhpce5yEaf3w7KW6Vu6JQ0xAT/Q1mj6BmTmQhY8lvlvt0c2gZgcyJVQqsnF/4i88Oi/Lh5Of7/J1VEmmyZSNuq08WnNGWr8ZJt6spQWVjrChk38tMN7/s56kqUI/KK6mAvwv0OQHqltLmBYk9+dZvBCsEZ9TFc4N1Nx+J8/Dsw
- l/EdYOR8
- a7af7PwWwir2XIX/LaDEqj46elh9zXlvRbfNivlo/9hVQZGBsZ8U0m0QknyEyiwMfEbV1bF/KfbPZ4TqfppKsv43zV0i//9M5uFhUAt1s2Zjk9S7IZtUE7OgmCkZ77OQLTLuCXqbkPPjdhcDN1d+rFCqw12aufHOlMk2+37D1/+KGu1IwmciSIx8paDZkJDYpRULJXpqT959ieJTLeGTrmHHOJQTbJCx+79z7l32VzMkHTaszo9E5MdQ+s7SwDbOCvBcZBDnn3lxTqmWo4BEzuK9fVWFmvJezCq9QfCa0z/we6ehIiX5VDBtM1aeZtV4QThgM4KcwFoH60WO/NDFumhavRBKmd1NYSckzeQ57rRfi6KCvr0hJ/ZfL6mAbkur19fd5KLTkYFpIzYYUQYVqrStFMRYMQpQPLGZo
+X-Stat-Signature: 5c4ftt3b3za6bu9yrrj8qichze4nay4e
+X-Rspamd-Queue-Id: 7099840004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773547834-74342
+X-HE-Meta: U2FsdGVkX1+dAqgAfhwl73HR+BsrfHl7LnVI/LlJp+xmPHIvhQfLuPmjHG3CzCT+D8zPW+U+y06KOhjad9TCuMxav3EA//ln0nUvXXAekDjRoKAnuUG5VBstOFCySk9hEA4c6yVFCrzWzxviuUhlkuuEsrK1H6nmStqJLZT7LfwP5E0s/oKotjKcBacuOEcOD7kXKc79CdFhTxDSpZKJOnes55iFkBlHSOba2t6TUcXH6MAOWBT65/h1rENEtIbsFAe3JVIsg52nB27KYms7Jcc4dmQRpAVE48ENlnsm1p+WmyGNvEuTfmELxkYPM91aRmP3uj/edXYHfgTdcDKQnBfDhX2MlHB43S5UrwVHg9LZfVeyb3iMihjU/eYVfJydZPQ5xjb4wmtxxnN9LfV7g1I63GKg0mP6VGx+mqbZ/b3i6Pf02h5G80/CuksLU92eLliclzo8wObAIzvcm97GZxS49wZUp6cK7ZZ+uwTXtHWcG2pxL5cEQDs08AHxvkr1qekBMsj3I6qZhXFq3TlzeZfdlUSp/AszJAj4lvxnfjO/aH00567xFNzMzeHn6map/sDunyKSuIxfj0J+kQhvCObo9IIG4NCykMcM1vR4kQRi+UBWgLD6ryHjsGvIv2ZbxEYt3CLWSwYyxbARyQSidHv9RIDb2Mvij2d57wsFV4PDpFeYzYtnyve+jvujd+DpzNqb80GdIzhWjIkXjZpEoO6OLNl8bfe3SJYmsXURakfY4sLV/ZRt8iRV/4WXHbXNFFs8raTSfOUuKrC2MOC8nDFEGB/ETrh3DcxzfCuhF3z7UB8OYJQIpkv8yXDnGUrvfgdBeRPB01Yym4BViDQOasTLlpav3s9KQ3Jgko8o25nzEOWmghdAmWaSNHcBphA9RYl1UyKJR6OhmRENzz7nPttpwDQTiIH+2NLzITUPHYZ6WNYrbdPTgqst5F6kcqQQv288wZEPyvYrDeCQ/i+
+ SA+i2oW8
+ GtOz4gw/kLLQtTGntnfbvSuE1X9MsRd+epaYx7EEIrcG9RVeLn9AXpikc1c73Q0N76KkJOErehANbk4NbmkhadWjaLHls6kLpseYiE3Qck5zeYW69ONqPKWS8SPUqs9sQ1CLI/kD7+85MaDrhSqkBz6myzFar0JstkkCS5FY8s6JG6zDVJuliDBQsyQynEbHHA40/YdIK1TXbOx80IF0IrUwPUwfCGvAMoUiVydBLxOzRkIU1OYBZwJDLxhSfjVqwFk4wjND30fWT6VWADovSggwnoWcvEzVU35ZxKeucmEbJBrRDlvSVXeyAkIujNVLXYMgr4RHnTndYGlzJw7W2Vo3KZNv0f9yunZwYrRBWP/advkKylu2WwDPV+MS0Sf2bImXRFBoc+9d4VKeHnw1FQ+RzUuFNR4ds8JDLZ6x92Hfxg/j2tcsxy/JPOsW21M3S9mzWhAvKKSFa6jYDfOFh/fTEnOc4VUFSVBn+wjrPqkBwzOUY1oFeM8t/xl1+/Zbc7I2dFvg1lJ+cH0r1g41HBB3nWhlZ4Rn8P/dr+J1D74uaG0qq/ZIdXgcgn39G3h5Si3T1pkEEjepwfKjl9SE8PFCIpueUdgh7bW57
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,22 +127,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 01 Mar 2026 00:17:59 +0530, Ritesh Harjani (IBM) wrote:
-> commit 4267739cabb8 ("arch, mm: consolidate initialization of SPARSE memory model"),
-> changed the initialization order of "pageblock_order" from...
-> start_kernel()
->     - setup_arch()
->        - initmem_init()
->          - sparse_init()
->            - set_pageblock_order();  // this sets the pageblock_order
->        - xxx_cma_reserve();
-> 
-> [...]
+Hi Lance,
 
-Applied to powerpc/fixes.
+> It would be better to keep earlier CC list across revisions, especially
+> for people who have already reviewed or were explicitly include before.
+> Otherwise, they may simply never see subsequent revisions, and from
+> their side the discussion just stops there ...
 
-[1/1] powerpc/mem: Move CMA reservations to arch_mm_preinit
-      https://git.kernel.org/powerpc/c/0a8321dde01ffdbd9455a028194d57484def59eb
+Thanks for pointing this out.
 
-cheers
+After addressing David's feedback on v4 [1], v5 no longer looked
+mm-related to me, so I only sent it to linux-fsdevel.
+
+But you're right, I should have kept the earlier CC list, especially
+for people who had already reviewed it or were CC'ed explicitly in the
+previous rounds.
+
+[1] https://lore.kernel.org/linux-fsdevel/60ba4311-01f8-4ff3-a2df-e1b3fb6db699@kernel.org
+
+Thanks,
+Rui
 
