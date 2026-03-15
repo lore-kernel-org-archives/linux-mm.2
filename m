@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82FC6F3026D
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 18:37:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0DCF30280
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 19:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A44106B0093; Sun, 15 Mar 2026 14:37:31 -0400 (EDT)
+	id E94B36B00A8; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1BC46B0096; Sun, 15 Mar 2026 14:37:31 -0400 (EDT)
+	id E55536B00A9; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9729B6B009B; Sun, 15 Mar 2026 14:37:31 -0400 (EDT)
+	id D54656B00AA; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 857826B0093
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 14:37:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2423B1D380
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:37:31 +0000 (UTC)
-X-FDA: 84549155502.12.7591A13
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 75D6740006
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 18:37:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id BF5976B00A8
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 15:09:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6887E1B8F02
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 19:09:29 +0000 (UTC)
+X-FDA: 84549236058.28.47BE465
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C94A5100011
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 19:09:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of 3aPy2aQkbAJEDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3aPy2aQkbAJEDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	spf=pass (imf05.hostedemail.com: domain of 35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773599849;
+	s=arc-20220608; t=1773601767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=1Q3XCO42nOkqTUqTNl+vHMDdRVXOogorZ6E04CyeEUY=;
-	b=oHYZCVrv2IrWXUnlAizuZwwDhPKCGeq91DJZUp6a0FqzmuZOVKBj5eWGjvb9Vgxwc3oksf
-	xsxkoJQggyWiFe97WEelRip2dxGKJw3GXpb2ek3SoRX1d2ecIZ6FlnZtgwrjFI2s1IyzDG
-	bxNljf2JAbh2fVgqM9A0geQ2yXW4DMQ=
+	 references; bh=l1kDM73VAJj2BEBh16gE80dBPKbI2Ip+vgvGfrp96OE=;
+	b=EjPFtMlY3wxmqWVgRII1GDzse913/jZsX7wly6y3LndnErG3PZkrxkOWl951CUIthNIrxM
+	xA/m6GFav5DWRfubtCxM2QjhgxJoM/8skQUYDkBIfIfQV8UCU4HXxQV7hvaaqvpVrXiiNR
+	J0rnDyza0Qq0kCFiW5TLvoY3HXileo0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
+	imf05.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of 3aPy2aQkbAJEDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3aPy2aQkbAJEDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	spf=pass (imf05.hostedemail.com: domain of 35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=35gO3aQkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773599849; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773601767; a=rsa-sha256;
 	cv=none;
-	b=kclndMMXJB9L5ROfxN3XOij/MLxafG4jgasreetgbJkS7NAAP6h396ecbVKZk5ah7ZxNzm
-	8I8+64OVbTX/8yfV1Dj5w6B3tMFDEYJ07MOZ6awKDny7NRTWHgSmE5MVlZUygT7vmHY5Z7
-	6o6E4k7f+8yt2QmNoEj5h5bAOrp4MaQ=
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-67bd1b317dfso72809446eaf.1
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 11:37:29 -0700 (PDT)
+	b=8aKrdnjrjwPqLDMLPtqa6E5/wxbSicKgScvAlHc8Md3wq7jyTakIH/oG8qCLJxZMgqAHPk
+	J0fLZeCAe62O6lES07Z9+7EGAxX/cPXepurtyDWp0lBghUVFMRNmGn0lOyio/Lmf36yZJp
+	6h1JdU4v4ND6Xfw0sbqSvkdIvOMriBc=
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-679c51b2d6cso53159890eaf.2
+        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 12:09:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773599848; x=1774204648;
+        d=1e100.net; s=20251104; t=1773601767; x=1774206567;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1Q3XCO42nOkqTUqTNl+vHMDdRVXOogorZ6E04CyeEUY=;
-        b=WeU2aJ9cKvA0p6OQBiSpRKB56/M2vdQKhVDpyvRRL3djjudY8gvyPgIJ36CkgOzd5O
-         F2xj0f2Ni1VbrgLbwV9tEKgjNDLD7RKOIoadukdilz51fe/v17ub4PZEbNCcoY49eYfC
-         v1uZdLtxpIiBvBl1k5sEimzxBn6CZw1YzVExVHEFNJGOsbnGLf9evEw+YEtcrE2lEOrI
-         N1xrpVfggcJHnSQIc9d717uA2owJtjKrpAvBEFY+LR9Uyvt/iNIL0o4uToOQIrUpKv51
-         Bm6uO7kz0oLe9QgPD7a4pY7eeGEuZC28pgYGS78HzOP1mb247D0WogjHovqyNsNLB+9o
-         L7KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNeIy3cJYlSEQjkzYzREYLdW33CaOgGinNDEsF+RJDIq4O/eh5okF3vRTQ/qjfN+rWkau8jaBilA==@kvack.org
-X-Gm-Message-State: AOJu0YwOM5mY0iGMFKs0FxUIvavq4Sd/zI7F9FMQRDxE7NFwieUzU4e7
-	K2OrgzmgEXKyKqi6mc8JplWga6CAMiuS0XZGp6njdKUYX0bL3SZ/cMSx1KVX8eV1jmlw/k47IfG
-	I2FzAMN48oVpfUuXEniOvHaVwlYbWxPie4nWx47ORw3gej6Ufp9WBXRKMN5Q=
+        bh=l1kDM73VAJj2BEBh16gE80dBPKbI2Ip+vgvGfrp96OE=;
+        b=kLnzQjGIYdZQ/ixqTfvLAxXVfW13tBkdhbrUU8+6KlX1j2Twtas5YxtQdnAd+CPeMw
+         ufiuVVP2IzEAZW/00Qwqavf81GEeyQTHF4gqD9v1iptoK4v0BXAQpu7v+UtFKyFaOclS
+         KGfcRaFp4mcSaobHCV3F5KOI1PIjRhvYwGtEBhTxa4CATtu7KNbjdaWC6AOhsRnQSSdH
+         OjqpMzujXFny0j+UpQHU1uI51sDnFG7wjrkDhpitYMsDp8L8MhKm3A79LotpbNxImGwr
+         fEPG10amhg20gc17SPJfQyrNCqV07R2EPrs4/hxMj+PsAiPFFzTHF7jcn/OwxdR5TC46
+         2GdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhHsewc4Oego6cBZ5vYhQEWDyO+TiGMDlhWnjMfWIvAZkBE+tjAnIR/7vc767UOEoCZzeDMXwYCw==@kvack.org
+X-Gm-Message-State: AOJu0YyziR4S07zg5Gmotrbvk/pcu9+5Cvfj73pwXtY1fZ5KQcwZz797
+	9iJUwBL18dejcsbYMdGfBYTambrFrKXDacBJzDmTOpLMDz1H4lKPTmRJmmALq7S+EIvJ4aqVFaT
+	k3vU3XbRD6k+3EdYsE01u5tdG/UVpemiJpwFfKk3/YQCd73Ai2X/gbUsK/rk=
 MIME-Version: 1.0
-X-Received: by 2002:a4a:dd92:0:b0:67b:dad6:dbdc with SMTP id
- 006d021491bc7-67bdad6dc6dmr5013569eaf.55.1773599848438; Sun, 15 Mar 2026
- 11:37:28 -0700 (PDT)
-Date: Sun, 15 Mar 2026 11:37:28 -0700
+X-Received: by 2002:a4a:e8c6:0:b0:67b:db2e:a91e with SMTP id
+ 006d021491bc7-67bdb2eaa89mr6221556eaf.17.1773601766913; Sun, 15 Mar 2026
+ 12:09:26 -0700 (PDT)
+Date: Sun, 15 Mar 2026 12:09:26 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69b6fc68.a00a0220.3b25d1.001e.GAE@google.com>
-Subject: [syzbot] [mm?] possible deadlock in mfill_get_vma
-From: syzbot <syzbot+c473aa669b5e8a6f48d2@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, peterx@redhat.com, rppt@kernel.org, 
-	syzkaller-bugs@googlegroups.com
+Message-ID: <69b703e6.050a0220.248e02.0101.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in folio_add_new_anon_rmap
+From: syzbot <syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, riel@surriel.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: kpa1adf9us3cg9zhusisbxpy4mj9x3w4
+X-Stat-Signature: 77o4xcgwsuywwoz3f7f4eq56dj99c44j
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 75D6740006
-X-HE-Tag: 1773599849-593653
-X-HE-Meta: U2FsdGVkX1/a5JCE/ApH3o2r4LBYmfFqCy8ojqDZVwNHiAjd+ncB+B3ArG0qwwLjw2chbC1sEyofjyAGU4LgAliSWDVqpmLcyXtOz4790ogB2mw2bz0se6fLetDfW6Lnmoy47VBvuw98yfBJy+P40EfNZJOhyVRInL4ydNOe2t7qB9gzBCngPRRZ+VzXnoaoo2K3sZUE2jzlwi7BzrTkBkxexAq3jggRo8OBBYqQOISQnrX178K+zFYnUJbYT2jK7c9gEJ0Yvsplsz0ArKxGSns9B2FM35Iwd8JWF1nPYwrVAaIDxaV72owxc0BFgHKQp6w6+9QYYWH2d2tcz/S+Lu3rzA4QhQSkWB0vIo7TxBYk0szZC4pOnZWhWs6BKj4k4Kpkd4f3Mfa6C2jYIDJia5tkwPaa5ftrOT6ZTvqSBXiHwkrSaiozakYGvAXSpwb8F1e7Kuk9KrV4wmcUSkHsMx+jeQrisAryX8BHO9kPQnYjTEk+WlLrpBaLr+0AbkSKWYbcWDoZXDwNYZjTooStOrbDY41PLezYSEsrmEa3Ddfx5GxcsN+0UTk8V0z5d5QGUBXyaPjEDSViEzt2rkAR6aGrrKTj7jFhNc7GxqJs+fE5ZFVSAOUwghTZYVnXgCj8y4FVhV2y84wrvkH17tPMunX7ao0Mq9axGrGD5NZZ0001Ytmi8CaLAm7x6fLsIWyTr5c564+6SO4Y3tdT/HbmlUEbQ2GDeNVLjsZBbtqIZVxLCMyqFi2ljp2ToC3SBn4izyob6CnIq9LY7wa2Pe0iMxgRA679CQmAfrbT6SiSuxEV3JHb5OFbiS9Cwl86Pr3nQgpyrXNE9M5lsmJlQA0rD5/LIzDTAaHl4XkAy/EwLtx0YtaZb63Ij+0CaNEq1t6PGII/mN6Tvva+vObSEbHFEJSY+gmxPkFwIAcPC3FBJcEQ8eIMBRVm8ED6+lJJj5yg/R31z6NzCLD/OGzpskO
- EyFRlkyW
- seRnapAnWYCUIGDPnMFDog8GvsDXTlWQ4bR6JiC34B6cJGzeaAU9HFEw7m5BZ/EBPbZ7S0QjJeZHoW/ZEDmsQACFYQ0DmNGpEXNI5nB6I22QQjm9nZmgaVSShE//eon9k4aE4cZxkW1EJCoXMfyR1q/V1PZLqZUaGYyD++O+ld9MrtoGkd2uwCL8Hyo2OHEfIqpVBGtw8lqesF3oIq2SfFh+tGlWPqNH+M0o8iJnYZ73tnfe39D9j4V4eaGwlNMOkGqwrYoCpdtWoBRvKiz8PkVIhVnSrbMesQW6UgKyChKxBc/Er4yZSkSoUPNy1RNTobwekynLIB562Ujkx5AoY/v2qG4zI4GD8RUWGVh01LAzoVP5SDFTCyibFLQr+GFCVTN/rzwQjP30NtjXvNe3besfQvQVfAeFB2EKidaqYaVRTgx4Q86/YokQc6V/uGBymxT1RIxkAyYZ6IRPvoeeIWaPeW5IwaZ5hsQC2h/wPZ/kEk9XomHqe/GKGNI2jxLlQdd2O5KFn7OAxNDp2iYQnx5IJfMW0dK+bNvTyg+g6nbpKoDQW2Uo5UqMeMuz8etvr5r01ZonnQNQ1Hkv79fPc67XjF/YDI9XbrUGeNYLQAvmdP4psBx8QO302cxkcNG+sndjt3PNkq9JGjxS0aNY6Mvy3vvDWY3cRsYPtnNnbapL2NUDIwMTJ7x+7nNXuAIgLKszN4vq0ch+ogO0UIiA4eeVg+/T3Nky/q/6hLCIsQX5bWNcxvqkgGBoUtnmD7Jr2hFoFe+ZRaqXPABITWXzf/amftUa2zt2HlJkAWgxQTpYXU9uem8szbJ3n3S6fHz5RyJEwQQQDwwOTAzbGsCE43rKhGOKZKg0Kw4rIfC0/VrplP6eoXHjulTVk2Uh2PqxBaW4bk9c8ksDa75kd22UEOl/IgaQ0fVvlzVmzIHEPSOZ6LSiQ6Y2ypAGfpOCrdShEUI5ofIORYZ3p5d2IAPVb0wCGeDwe
- 0G1nYy0Y
- lhqDMNcV8kIn6QHdcD43bEBVLp0qZ97f87qnn3qZBZfNyvtapUEMY3Wc78tUP2nyUqwbdEiKfPp2dw8nPPk5UxVDNGBcCyFTI/y9/q5VNvjHZv4bO+TXchsy8cc3coHClwST1B/7i74WRnnWgID+r2eiOYTDzzbGEcfGCjVo31VOWIxHQCZjeuh/c3ae99b4SXoF/5BMtor/rCkU7I8wIjK4iMsNa6Wz2sxD069QT8lhjj/KvICbsjRz05isbC4eGXSfP2p1yhN75gqhN8iQmF3vj82IsHoB1+q7Y092C3fx3G8iaNVBDpeOBfvfry/MOXj2DIUfEaAZNnX+2fHFY2jhWI+1l9/FlzEv0YnuZg/mtE4IgMMuN0h4T1WgH1zoJFGw42bRU9wTLtcXvVF+rO/+awj3AAOs7LGis4a3gss=
+X-Rspamd-Queue-Id: C94A5100011
+X-HE-Tag: 1773601767-28541
+X-HE-Meta: U2FsdGVkX19a3TQA7g0DGsh2Nzjm9Ea+ttZGJY47GwJEE3jJqSwCgoXELkHcyw1Mn7ZR3Laz9HvGwpBaH4WaWxLt+FBmKPb4YZ39zUa4jNIOS9ss7pciDhLauhmJUTEfL/i1WUCDxlEHMg1jLVZkYgDy5MDsDg3drz845eLqhDYRTy2yx5+n4TNh8L2VY4yKJ6s/t6XaqGJDgGE1GpvNsXC8HUgVEWEiy6UQgNDkiIiDyz6I5+IQvV2Jyy6wYM1Iy1ctM9/MKE7gQtPhEx/HZ0YxhmLQd5flpdOnbRofC7a7KBCK0hg8zkQqz+LblXi0lxKr+YOr4Qu4xXhDQTdYVCxddy+kZ7902SAvBccUI3tv1mkjxIQwPd7RQeFS6HCVADi1ga4Pvn2E2NqYbvclUX+KOljofBMGABBAdEBB7YfwY6WdBlnvYHV9LQuC73CVXz7f5Q1xF74QYeozr0ULEW1ihHSjnW4b2hUCix14ZWvMzGYpfespd4IMq2gGQFT4jbi1/U3UJuDZtp237Nhue22nOslJk/XLnGAY2TAUR95ae6Sn1ddyOxRVg5LQbxvcAH5VIOVr0Eb8RpyUiI2oPqAS8+hvN9shNg+yBjbZAd+r3MTNjsrn5eRpbofQYi6A+VCGZOBf0JAVQ4IdB4KFHaxZKn00kfBaHgl73RHrDaUhDO98yOYpb0qtu8n5ChZxwE7YHRvw2XwjxNSZybqSfowrqTkoyKD9QQnH9VY/uCyW+gm7YFoAZ9DJaJ1MQDfJn4BsUIUBaVPmK0nYzuCRxQZgmEpAfOydyfqKlKYs/86ayPmjUtz129mNNqMOEzNhYaSmrrG6Uanm8oUc6IeHFmDTTb8OOgQ/cUiMOGeuQT8w83MdBiOjngzM7L1oHYrvPT7v3mQOGcrP3c24q8iXt9+qM5sbsYbIDj6PG//4jiZ3Qz8D7PjmN4cw7K8jW+wGDJaySc6lv5/F+oHJvzz
+ ibd+oaol
+ P8XtHsOgW8jK2HlpGLHejOdBZi4kFla03a3iHHQr3JQULTm3E3Gg4A2+vHpPsYQSQCbn04KLTyhvBhv03fEvsEdwkxSAYupC73/SJ+oxkCT8LpQwWgtI2PdkrvEDOfcSRTQY0GE/a8jMWcMMOsGL4wUVOBJIM17mYG+p/xJIffs/WliucZDivGz9fCXr5JNXE6ADEPeUIwXP1jFuIHIDE2Vzu8uejG0H/my2RqK+fsCifhsKWrJmZ1Qk+M+vJckwUzT3gjYlFnq0e3VUZNjAscjH98S+CWMKjC0Sn5N3k9RwOZS/MB0XsWKjT/F+o8WgQWvcz+RNdP9P+YV7tGsPalkylyNqcIqKnPXuvpnbOMzkVpxS11rED7j754PsW0/x2FWYhVmlqOaxDPMujI5p9O0YUUJWDGNUSkwqqSlh++IvKDfGkFSoQLoXUnVHk32O3zcN9bHhZoh/yXKSlM/AI7aAtUIs19RmvVwd8yN2qao1TFmWm6qn6fb4muuOw7tRbLBj0sueW3Y9gT0sK/Mq+6Yc6Sq596x+ZOAU9aEpjTyg7UX3MmhU2eld0cMe+f2MLWBL782TWMVaEjkJx08bYQ6OgIhQukS8GQwX+G0Hu+KzCBBnPSqXTgZlzbYEPJUYJDsR9LKgEeezrqYfL0bbM1bLJy5NkXeY/pxLXKnqyuVSmxXNTdMZhsTDoF6EZLdcUBqK8gqxrOw4FRbSEoIuFFa9+I8NGDT/IS7qRqzdTK9WlQzp7ZFvFslvEzO3Bw7lMdsWEviRY3jQQWdPv49RhxW72dTWLQSINGxrWiSWQQnMVClFN9x2c2yrg4YnT8Rdpsc7T2dKVGTdYbAbq1wFMnYZaueMCkeBRikpTGlMW4TWN01q00q+qDwbEnfS2TFZBTPx/0XD3Lf8r02ffdiJd+ODf8bs3Xa/SKcwTUq2WRe7GjqiUlZhlC489rDMJeG8z5y4l5XX33t7VA4X98CUKX9J+Bdk9
+ 4w7l5iC0
+ gYOpw6V1PEjPrpEBSm894EGZmicmOUU90X8kB+yMnxCdhP4kGaOVTpJEzRRuwgZYPv4u6GWXtOf52CYhziP87cFTKDgaUuLzzMaFC+ajzfh0nUg9FhLwm8O/QQCh2BXRjnXb3zksFFXXxhuAi3GStVRZnnDKR/oiOWPjPfSOmqbMoyxipO1HstQQV63lJN3WrfjY8/VW/xs4Hhu83dYb5XZv4ZWFrcVczwl3D2puh6DWSf7jVt5h11hAIe8fXxPmr9UaMz/KyE6AtyPtihGF/npXhqqaYHRvsOPX0ddQlUavXcacUrowvSME2ldePoarpnJvmi+QGEJuKxMtZ1YfFlKsh102Yw0dxaGA0bjHlK+yqxf6Oq8fM92J/aAfvEsc5oo2GBEWOijijgROHBlSGWiwhSUJqxUmxDzOwLx2SxhsNWzWf/UiOET2SIFIfQZ5nwd0Gcwy00m1A3fP2mq95fmK5CyMQJwC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,134 +100,64 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
+HEAD commit:    f90aadf1c67c Add linux-next specific files for 20260311
 git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=131ab8da580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
-dashboard link: https://syzkaller.appspot.com/bug?extid=c473aa669b5e8a6f48d2
+console output: https://syzkaller.appspot.com/x/log.txt?x=12309806580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=2b10825359140979
+dashboard link: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047
 compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=126c98ba580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1644a2d6580000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10cb575a580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14db4d52580000
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/09145161a8a9/disk-b84a0ebe.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b64c254e474c/vmlinux-b84a0ebe.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a7c33f5f7f45/bzImage-b84a0ebe.xz
+disk image: https://storage.googleapis.com/syzbot-assets/aca9c54a7de2/disk-f90aadf1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/736fd5e68863/vmlinux-f90aadf1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/eb13b7d81d1b/bzImage-f90aadf1.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c473aa669b5e8a6f48d2@syzkaller.appspotmail.com
+Reported-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
 
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.0.17/5990 is trying to acquire lock:
-ffff88802caef3b8 (&mm->mmap_lock){++++}-{4:4}, at: __might_fault+0xaf/0x130 mm/memory.c:7249
-
-but task is already holding lock:
-ffff88807cdbccf0 (&ctx->map_changing_lock){.+.+}-{4:4}, at: mfill_get_vma+0x162/0x660 mm/userfaultfd.c:226
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #2 (&ctx->map_changing_lock){.+.+}-{4:4}:
-       down_read+0x47/0x2e0 kernel/locking/rwsem.c:1568
-       mfill_get_vma+0x162/0x660 mm/userfaultfd.c:226
-       mfill_atomic mm/userfaultfd.c:900 [inline]
-       mfill_atomic_continue+0x189/0x12c0 mm/userfaultfd.c:974
-       userfaultfd_continue fs/userfaultfd.c:1806 [inline]
-       userfaultfd_ioctl+0x232d/0x4c70 fs/userfaultfd.c:2071
-       vfs_ioctl fs/ioctl.c:51 [inline]
-       __do_sys_ioctl fs/ioctl.c:597 [inline]
-       __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #1 (vm_lock){++++}-{0:0}:
-       __vma_start_exclude_readers+0x28a/0x940 mm/mmap_lock.c:125
-       __vma_start_write+0xdc/0x290 mm/mmap_lock.c:148
-       vma_start_write include/linux/mmap_lock.h:303 [inline]
-       mprotect_fixup+0x5eb/0xa80 mm/mprotect.c:768
-       setup_arg_pages+0x565/0xac0 fs/exec.c:670
-       load_elf_binary+0xc5e/0x2980 fs/binfmt_elf.c:1029
-       search_binary_handler fs/exec.c:1664 [inline]
-       exec_binprm fs/exec.c:1696 [inline]
-       bprm_execve+0x949/0x1470 fs/exec.c:1748
-       kernel_execve+0x844/0x930 fs/exec.c:1892
-       try_to_run_init_process+0x13/0x60 init/main.c:1514
-       kernel_init+0xad/0x1d0 init/main.c:1642
-       ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #0 (&mm->mmap_lock){++++}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain kernel/locking/lockdep.c:3908 [inline]
-       __lock_acquire+0x15a5/0x2cf0 kernel/locking/lockdep.c:5237
-       lock_acquire+0xf0/0x2e0 kernel/locking/lockdep.c:5868
-       __might_fault+0xcb/0x130 mm/memory.c:7249
-       userfaultfd_continue fs/userfaultfd.c:1813 [inline]
-       userfaultfd_ioctl+0x2372/0x4c70 fs/userfaultfd.c:2071
-       vfs_ioctl fs/ioctl.c:51 [inline]
-       __do_sys_ioctl fs/ioctl.c:597 [inline]
-       __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
-Chain exists of:
-  &mm->mmap_lock --> vm_lock --> &ctx->map_changing_lock
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  rlock(&ctx->map_changing_lock);
-                               lock(vm_lock);
-                               lock(&ctx->map_changing_lock);
-  rlock(&mm->mmap_lock);
-
- *** DEADLOCK ***
-
-2 locks held by syz.0.17/5990:
- #0: ffff88807c119d08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0x1d1/0x500 mm/mmap_lock.c:310
- #1: ffff88807cdbccf0 (&ctx->map_changing_lock){.+.+}-{4:4}, at: mfill_get_vma+0x162/0x660 mm/userfaultfd.c:226
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5990 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+------------[ cut here ]------------
+address < vma->vm_start || address + (nr << 12) > vma->vm_end
+WARNING: mm/rmap.c:1682 at folio_add_new_anon_rmap+0x5fe/0x14b0 mm/rmap.c:1681, CPU#1: syz.2.19/6118
+Modules linked in:
+CPU: 1 UID: 0 PID: 6118 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/27/2026
+RIP: 0010:folio_add_new_anon_rmap+0x5fe/0x14b0 mm/rmap.c:1681
+Code: 89 f5 4d 8b 36 4c 89 e7 4c 89 f6 e8 ec aa a9 ff 4d 39 f4 73 1a e8 82 a8 a9 ff 4c 8b 74 24 10 49 bc 00 00 00 00 00 fc ff df 90 <0f> 0b 90 eb 5a 44 89 f8 c1 e0 0c 48 98 49 01 c4 49 83 c5 08 4c 89
+RSP: 0018:ffffc900036675a0 EFLAGS: 00010293
+RAX: ffffffff821d041e RBX: ffffea0001c0c1c0 RCX: ffff888060bf5b80
+RDX: 0000000000000000 RSI: 00002000004ca000 RDI: 00002000004cb000
+RBP: 0000000000000000 R08: ffffea0001c0c1c7 R09: 1ffffd4000381838
+R10: dffffc0000000000 R11: fffff94000381839 R12: dffffc0000000000
+R13: ffff8880784ad788 R14: ffffea0001c0c1c8 R15: 0000000000000001
+FS:  00007f9a968ce6c0(0000) GS:ffff88812553e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000002b8000 CR3: 000000007c646000 CR4: 00000000003526f0
 Call Trace:
  <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2043
- check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain kernel/locking/lockdep.c:3908 [inline]
- __lock_acquire+0x15a5/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0xf0/0x2e0 kernel/locking/lockdep.c:5868
- __might_fault+0xcb/0x130 mm/memory.c:7249
- userfaultfd_continue fs/userfaultfd.c:1813 [inline]
- userfaultfd_ioctl+0x2372/0x4c70 fs/userfaultfd.c:2071
+ mfill_atomic_install_pte+0x578/0x870 mm/userfaultfd.c:390
+ __mfill_atomic_pte+0x3c4/0x5f0 mm/userfaultfd.c:523
+ mfill_atomic_pte_copy mm/userfaultfd.c:557 [inline]
+ mfill_atomic_pte mm/userfaultfd.c:865 [inline]
+ mfill_atomic mm/userfaultfd.c:923 [inline]
+ mfill_atomic_copy+0x4d9/0x1330 mm/userfaultfd.c:950
+ userfaultfd_copy fs/userfaultfd.c:1642 [inline]
+ userfaultfd_ioctl+0x2b8a/0x4b00 fs/userfaultfd.c:2059
  vfs_ioctl fs/ioctl.c:51 [inline]
  __do_sys_ioctl fs/ioctl.c:597 [inline]
  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
  do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f478759c799
+RIP: 0033:0x7f9a9599c799
 Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcc2bbac28 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f4787815fa0 RCX: 00007f478759c799
-RDX: 0000200000000080 RSI: 00000000c020aa07 RDI: 0000000000000003
-RBP: 00007f4787632c99 R08: 0000000000000000 R09: 0000000000000000
+RSP: 002b:00007f9a968ce028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f9a95c15fa0 RCX: 00007f9a9599c799
+RDX: 0000200000000040 RSI: 00000000c028aa03 RDI: 0000000000000003
+RBP: 00007f9a95a32c99 R08: 0000000000000000 R09: 0000000000000000
 R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f4787815fac R14: 00007f4787815fa0 R15: 00007f4787815fa0
+R13: 00007f9a95c16038 R14: 00007f9a95c15fa0 R15: 00007ffd373c5448
  </TASK>
 
 
