@@ -4,122 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC634D58B0A
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 04:10:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C61ED58B29
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 13:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0048C6B0088; Sun, 15 Mar 2026 00:10:37 -0400 (EDT)
+	id C6D1A6B0005; Sun, 15 Mar 2026 09:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF4986B0089; Sun, 15 Mar 2026 00:10:36 -0400 (EDT)
+	id C13F66B0089; Sun, 15 Mar 2026 09:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E004D6B008A; Sun, 15 Mar 2026 00:10:36 -0400 (EDT)
+	id B20426B008A; Sun, 15 Mar 2026 09:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CC60F6B0088
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 00:10:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E6EF5C69F
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 04:10:36 +0000 (UTC)
-X-FDA: 84546970872.30.44D8FC7
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7099840004
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 04:10:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="rr4i/ocS";
-	spf=pass (imf17.hostedemail.com: domain of r@hev.cc designates 209.85.210.179 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A34326B0005
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 09:12:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F00F1CCDD
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:12:16 +0000 (UTC)
+X-FDA: 84548335872.13.ADD9C29
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4D6A68000E
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:12:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o2amTglJ;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773547834;
+	s=arc-20220608; t=1773580334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eKI+YqwJwuQjw262CBFVWp4TrJeGSGv4OI3cEOIx48M=;
-	b=wmtBM89ygT2PC2QJoPfRpJu32wXIs5hBqNqqn017kCOTILravXloJqa+hQdPCzWMUCb9m4
-	yYTn6A+yR88xXMn2Od2MWb2J6sPgZzGMXLs55gxzUHWX5h5NmQEU/lM8Y+MViJDigROQrJ
-	LG9lELmwK/E1eO1sBcHA7+LmbqZOBhs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773547834; a=rsa-sha256;
-	cv=none;
-	b=T29s4Zg6Ie1He0x0fdjd9ORpvMnYZ8g0w345GWqKHIT/itDw5mRaflzHqnpv9i8+1L+5Zj
-	VYc8jppmxJsVzrF7H6E8w0rpGmbTi7ij7f5jlZzPDmImAJdVl8vAe6sWCavCWvhatD9sAw
-	NxQcSKLXAgdtBG9vlYfvfmnv0cWXHhc=
+	bh=26yBis00uiMPtDS8aUzlNEkKNIcpZ/qQQw/Qafqh+68=;
+	b=JcRgndQ2yFZpmkYpZ1NoM8ApjmUtRISu2SdNcj6nwDLhQnpZ3aQ2TdGMnzcXIVIeI6Ewu4
+	vCdhiGLwyQVTc25jZ9GrsteOFkIeB7ToniKQSe6MYVfPG3ZCWWVE7WiYaL9MDCyKp/lusJ
+	i8sqgKa1U6SmFBSKhTJEpXlmCRipSeY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b="rr4i/ocS";
-	spf=pass (imf17.hostedemail.com: domain of r@hev.cc designates 209.85.210.179 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82990763921so3300577b3a.1
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 21:10:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773547833; x=1774152633; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eKI+YqwJwuQjw262CBFVWp4TrJeGSGv4OI3cEOIx48M=;
-        b=rr4i/ocSdr3cyZnATtnKV/ZSFc47oRH6pGY++1618L5PzNLE+GRxkeLwYQP5W/jkAS
-         1XW00G1H0jjZXE1P+LYqjSq/BJHUtI08+eatpP/g+WuktphjJO5ENdyy0Z04XIKfeH56
-         e0BrpsElV4ZH6lsksOv+HRpxP95tyiDon90gZL1OiudltNoDjkBC3RVLzWEetETdBANi
-         C5dAuPrdBUeggAB4+Ib8Mq33PUtwgXOiFJjlUhBN1SI0wiqlIZ+WupKJ9aXJguO9o4Ux
-         ubxkTgxzplvJByJ6u6ASRs7CvYSFjB5W3MrYNeTdYPLjeK3d/deC0n55rQmPwsJI4vD/
-         mAyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773547833; x=1774152633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eKI+YqwJwuQjw262CBFVWp4TrJeGSGv4OI3cEOIx48M=;
-        b=rnPE/t5h4yDyR7TXfc7d7ZhvZ3NLkDZgJYpJb/v99VNpdGGFiKA47aSnEn9dRezTVK
-         AAyozj5E91N6SdPKCXbA2UMkDSaXauO6M5eX+9hkSUANnmka2z4yIb6L1E4Dk4tWzHg6
-         WeiSiPWlL7UMSHa+oUS1J1BvvfEVV4TM0bGFfJll9QqbaCvYk2Ovbmo0d+5MTG0ZyO2M
-         aJXDalUyIS5TN3TX9TDQhSRwERypJ4DoBHXhPaOb3OLoLBSoMFTJcHEZ4dxo9i1AYfR9
-         nEW1gaeCmv4ByM9yt3TcNg5VsBWQnuoxNSa+p53cg0AzOn2G4UKmt8o9PJ8nHS1FMvrs
-         zJ3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUsT4yx/fKxYmngSjNA+wnOd66SGDJ3YhZ68OrbL2tLy1bhztbTmRCb66vNjRkXd7wnyGGFcyxNvw==@kvack.org
-X-Gm-Message-State: AOJu0YzplZSfGfS1TtIIbErFrkmm4evX2XcBf1/1/v1Agq8MSx2vGLeR
-	ZKhR8bWIdb5GPxT5QQWBvYhPTf4ytr8SGSIVEmg5LbRVAXMZoPzlqRoofSaLGehxDxg=
-X-Gm-Gg: ATEYQzxgtHfyIvFWbuQenZb7joMKpkgllviI3kg51Yshk0jGbmIiQe9+39DGNpITqVS
-	07b6sSTV2v3fOWp6vGCEtuVepTPuPt9HNX6rgN/iLH0zJ28FcIkPIS1TXm5suXDp2V5GlZnuCnU
-	wdxL5zTuZcxm/E25LM0ym6FJd2IjzRvRzGcNF502FK7eh3HqCzaWFKPBcG9kyBGLWHMQj/QoVdb
-	FiWQvFHe5nkdz5LQ9BdgojfWsOtK8a2TyoSMYvKLR588ZfqGcp1GtVApy+Pw/NvBzgPqklnb1gp
-	NXBY3yFap+Yjw3vY8AQ5iQMkBN1pMN1eTdd+ByVxZJVY7WuET/edFXPEbCgPR5wNyULhYANd1+i
-	RGZdMF+ggVy1F5z3VKgvlK8v36tzJbR7a9b/qtavoWodcjU8Dc7VItqO8FOgEv8sj6MS8s+F2Q7
-	qi
-X-Received: by 2002:a05:6a00:6c81:b0:827:2dbc:27d9 with SMTP id d2e1a72fcca58-82a19907f86mr7927525b3a.48.1773547824721;
-        Sat, 14 Mar 2026 21:10:24 -0700 (PDT)
-Received: from gpc ([2400:8902:e002:de08:5754:7dac:85df:935a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0727c1d2sm10079491b3a.25.2026.03.14.21.10.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 21:10:24 -0700 (PDT)
-From: WANG Rui <r@hev.cc>
-To: lance.yang@linux.dev
-Cc: baolin.wang@linux.alibaba.com,
-	brauner@kernel.org,
-	david@kernel.org,
-	jack@suse.cz,
-	kees@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	r@hev.cc,
-	usama.arif@linux.dev,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH v5] binfmt_elf: Align eligible read-only PT_LOAD segments to PMD_SIZE for THP
-Date: Sun, 15 Mar 2026 12:10:05 +0800
-Message-ID: <20260315041005.11682-1-r@hev.cc>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260315034647.8462-1-lance.yang@linux.dev>
-References: <20260315034647.8462-1-lance.yang@linux.dev>
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o2amTglJ;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773580334; a=rsa-sha256;
+	cv=none;
+	b=3JcPCKI3FPduEmAc32ZuOVfUYOpU8kubGYMDJZUBWUC9g3+cSwXzWkZMJlHicSgl1i7DjF
+	Fj+plYJh3xLkJ3qt4rxd7hOOFl07qVQPHBtBuzpjlqW3mxBLEGljYAE5pw8wxG4sMmR5zi
+	ZA1GPd7t/CqK8sLDdnI4qJPi5481jvo=
+Message-ID: <0c2bd25d-1577-4935-8ebe-0762b480abfc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773580331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=26yBis00uiMPtDS8aUzlNEkKNIcpZ/qQQw/Qafqh+68=;
+	b=o2amTglJM3JAnBL6XV4rgGAEVqgVrlFKflEOc3Ws/663wYLicZXtcSTQH/CQ0q1REGRYv7
+	mGvwb23SMOEbTqnr41lCerM107hhoFBtbAjKPHTtYT3pQe/gOvLCwEtJ/RqlAFkasmWRHd
+	scrDdVGDWCGhUBisO8rX4k/SyQwUvEo=
+Date: Sun, 15 Mar 2026 16:12:02 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5] binfmt_elf: Align eligible read-only PT_LOAD segments
+ to PMD_SIZE for THP
+Content-Language: en-GB
+To: Lance Yang <lance.yang@linux.dev>, r@hev.cc,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, david@kernel.org,
+ jack@suse.cz, kees@kernel.org, willy@infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, baolin.wang@linux.alibaba.com
+References: <20260313005211.882831-1-r@hev.cc>
+ <20260315034647.8462-1-lance.yang@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260315034647.8462-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4D6A68000E
+X-Stat-Signature: 3iwggzwnmiitjzd4tm8wnkdfmqxj1b4f
 X-Rspam-User: 
-X-Stat-Signature: 5c4ftt3b3za6bu9yrrj8qichze4nay4e
-X-Rspamd-Queue-Id: 7099840004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773547834-74342
-X-HE-Meta: U2FsdGVkX1+dAqgAfhwl73HR+BsrfHl7LnVI/LlJp+xmPHIvhQfLuPmjHG3CzCT+D8zPW+U+y06KOhjad9TCuMxav3EA//ln0nUvXXAekDjRoKAnuUG5VBstOFCySk9hEA4c6yVFCrzWzxviuUhlkuuEsrK1H6nmStqJLZT7LfwP5E0s/oKotjKcBacuOEcOD7kXKc79CdFhTxDSpZKJOnes55iFkBlHSOba2t6TUcXH6MAOWBT65/h1rENEtIbsFAe3JVIsg52nB27KYms7Jcc4dmQRpAVE48ENlnsm1p+WmyGNvEuTfmELxkYPM91aRmP3uj/edXYHfgTdcDKQnBfDhX2MlHB43S5UrwVHg9LZfVeyb3iMihjU/eYVfJydZPQ5xjb4wmtxxnN9LfV7g1I63GKg0mP6VGx+mqbZ/b3i6Pf02h5G80/CuksLU92eLliclzo8wObAIzvcm97GZxS49wZUp6cK7ZZ+uwTXtHWcG2pxL5cEQDs08AHxvkr1qekBMsj3I6qZhXFq3TlzeZfdlUSp/AszJAj4lvxnfjO/aH00567xFNzMzeHn6map/sDunyKSuIxfj0J+kQhvCObo9IIG4NCykMcM1vR4kQRi+UBWgLD6ryHjsGvIv2ZbxEYt3CLWSwYyxbARyQSidHv9RIDb2Mvij2d57wsFV4PDpFeYzYtnyve+jvujd+DpzNqb80GdIzhWjIkXjZpEoO6OLNl8bfe3SJYmsXURakfY4sLV/ZRt8iRV/4WXHbXNFFs8raTSfOUuKrC2MOC8nDFEGB/ETrh3DcxzfCuhF3z7UB8OYJQIpkv8yXDnGUrvfgdBeRPB01Yym4BViDQOasTLlpav3s9KQ3Jgko8o25nzEOWmghdAmWaSNHcBphA9RYl1UyKJR6OhmRENzz7nPttpwDQTiIH+2NLzITUPHYZ6WNYrbdPTgqst5F6kcqQQv288wZEPyvYrDeCQ/i+
- SA+i2oW8
- GtOz4gw/kLLQtTGntnfbvSuE1X9MsRd+epaYx7EEIrcG9RVeLn9AXpikc1c73Q0N76KkJOErehANbk4NbmkhadWjaLHls6kLpseYiE3Qck5zeYW69ONqPKWS8SPUqs9sQ1CLI/kD7+85MaDrhSqkBz6myzFar0JstkkCS5FY8s6JG6zDVJuliDBQsyQynEbHHA40/YdIK1TXbOx80IF0IrUwPUwfCGvAMoUiVydBLxOzRkIU1OYBZwJDLxhSfjVqwFk4wjND30fWT6VWADovSggwnoWcvEzVU35ZxKeucmEbJBrRDlvSVXeyAkIujNVLXYMgr4RHnTndYGlzJw7W2Vo3KZNv0f9yunZwYrRBWP/advkKylu2WwDPV+MS0Sf2bImXRFBoc+9d4VKeHnw1FQ+RzUuFNR4ds8JDLZ6x92Hfxg/j2tcsxy/JPOsW21M3S9mzWhAvKKSFa6jYDfOFh/fTEnOc4VUFSVBn+wjrPqkBwzOUY1oFeM8t/xl1+/Zbc7I2dFvg1lJ+cH0r1g41HBB3nWhlZ4Rn8P/dr+J1D74uaG0qq/ZIdXgcgn39G3h5Si3T1pkEEjepwfKjl9SE8PFCIpueUdgh7bW57
+X-HE-Tag: 1773580334-461480
+X-HE-Meta: U2FsdGVkX1+OV8TPSwYLSCaz35lVCEHA7bxFy2LA4bHzmz3WFqH1m/ZQI955WHcL+tklkyxm3io/UBGpcaEhhaa5RozLC1JoVzGSA3k6WV6R7+Gu2NHafgmQ11/P27ryXe5keTv84lfgoAvCqnPfdUE+zsmqkaVdo8MfB/sB71sYvkUQXneMxLdbfkk/o3wqndSczbetj8VTkQ9lCG6rw1uWX/N4+dTK3TtbXwCASeSAmVeMU4TRhOh8+Zggx31PWrhqABc8qUCFD7BpuDfVUHrRFlbcs/bBE/b08HLDl/mRbs2UOIp1gnTa7N42WiiGV/ieJ42+LTCAs20wZmUaRSOdl17EAJqfzkyR3ZIYzJLmcmQ9caAQ8ZAx+JbtUeRH8Y7Z6s+8NyLNGiopMQVC0KkKvVA9kdtZLYMaUjHh+BR8ShPeQh3OKA89PpB7pqnVuUhmUMpGwNG+3W9GOaRcGXvPA4+AqTEvvjt9iODompTNJjGcwPjS3GfhOauNitJ6nZt/AY5wgd9gl9t83GupvzqAT+/Ltl2qKlUrHr4iH1jxhF5UECcbaM6bPWJdamzQ8b5jJE1GeiPF1qE6bwXR4M5vypQhPubyh9VULmou6W+7c/wKkmASCnj3qkBQgX3lr41ioT1o9HTMOHLCDK6dXZkUxKIIxEXkuirxPtFOluC1H0sYw557qZT/ENTnD70FdleWdD4tBQ+e3bxB2tWhHnHaeZUKzUG/+FugpguyV83ztCJvqKzlkKCRzByLb4aoBEhq05enrzqmYRqeMrzLCcLLPg24P70XoHuCGD7puvMLz7AWT1/UJvo1jVPMtckqVKLo7UfNBJHFvCmKvucPJGMTrmZqQR07o6enD74pZ/wrOFi84G7Oww1pvOdjEUTXxay2dJ7cGWU+jd0Tjd0mKA3+wrtm7KQle8i0dgOl0BA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,24 +92,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lance,
 
+
+On 15/03/2026 06:46, Lance Yang wrote:
+> Hi Rui,
+> 
+> CC Baolin and Usama
+> 
 > It would be better to keep earlier CC list across revisions, especially
 > for people who have already reviewed or were explicitly include before.
 > Otherwise, they may simply never see subsequent revisions, and from
 > their side the discussion just stops there ...
+> 
+> Thanks,
+> Lance
+> 
+Thanks! Also adding Ryan who did the exec_folio_order() work for ARM,
+and also raised good concerns in [1]
 
-Thanks for pointing this out.
+The problem is not just alignment for elf, we need to fix more things like
+mmap heuristics [2] and how unmapped areas are gotten [3].
 
-After addressing David's feedback on v4 [1], v5 no longer looked
-mm-related to me, so I only sent it to linux-fsdevel.
+[1] https://lore.kernel.org/all/cfdfca9c-4752-4037-a289-03e6e7a00d47@arm.com/
+[2] https://lore.kernel.org/all/20260310145406.3073394-3-usama.arif@linux.dev/
+[3] https://lore.kernel.org/all/20260310145406.3073394-5-usama.arif@linux.dev/
 
-But you're right, I should have kept the earlier CC list, especially
-for people who had already reviewed it or were CC'ed explicitly in the
-previous rounds.
-
-[1] https://lore.kernel.org/linux-fsdevel/60ba4311-01f8-4ff3-a2df-e1b3fb6db699@kernel.org
-
-Thanks,
-Rui
 
