@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F9C9F30280
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:14:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A27FF30282
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:20:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 380CD6B009B; Sun, 15 Mar 2026 16:14:55 -0400 (EDT)
+	id 6045D6B00BA; Sun, 15 Mar 2026 16:20:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32E5B6B009D; Sun, 15 Mar 2026 16:14:55 -0400 (EDT)
+	id 5B2266B00BB; Sun, 15 Mar 2026 16:20:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26A376B009F; Sun, 15 Mar 2026 16:14:55 -0400 (EDT)
+	id 48A346B00BC; Sun, 15 Mar 2026 16:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 13B636B009B
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:14:55 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 763241D6BD
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:14:54 +0000 (UTC)
-X-FDA: 84549400908.01.114161A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 372FB6B00BA
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:20:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DAD3A1B8F21
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:20:16 +0000 (UTC)
+X-FDA: 84549414432.22.CC4C79C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F0B0BA0006
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:14:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3013EKT;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4249040002
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:20:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cLgeMeqd;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773605692;
+	s=arc-20220608; t=1773606015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E2ki/vwGo7cU3SaqywsBrSqrM7JHkWcidKnwofcRC7M=;
-	b=xAiK0KfCPtsAd/3zja3HT6P00FUmAISaTIPw2UUK63UPCyuWm8F3xTg/6w0QAs8Mv6LUKq
-	QG9TmKpTvQKWI+8Z1UUhTrm0rVm9Pe1Jqft5PPBWSKFxkDJTObqYIFrsMVrxL7OGW2DOmH
-	2IEZR8d4tO9YEG4a13a0rI0DJZHdH74=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773605692; a=rsa-sha256;
+	bh=HnvxxYgDVdVewwsNocDBDv5enJp9cC85rSvUweeJZ/g=;
+	b=Wke/MEBi7xhAZXjvZFsuIyoMNiAr/vAWLJEIR7obTYBtTLcyX77YREltPy+/LlGxDAko1O
+	3dTf6t4yC3mEOmMtTvu0oWF03Ca3YeAuxJeN14Wu+Wiv76iyKsnI6zDD5/6vOGERVtilOt
+	YjDgMC/L/SRn9q+bZNHegB6sCyTmLkc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773606015; a=rsa-sha256;
 	cv=none;
-	b=NozCdk7QrTj2HLEW3kU2s/NIetXZvYHj6N9wa18Dab+1TB3vjcq4Ggt+NfLjXWwHjqkwew
-	advPdrz/zZZuUr9sEdLQNPAnZoRTeMG4rJMoSACVSjuvsGxFPS+gFf+zEufHSr9WYPXmxV
-	WgX0bODu/N8HvSfsAoWzxvR8MfwdMBQ=
+	b=UXBEOvSGity+EToMDKHtwTERv+jpUcP0VB14XVU+yniMRIvpdy0gVTcOHtLkLR6e/3RcIt
+	+/dEEfGxXBlTe2hVWgqnmg0Pti1apLAZg6JJb44luVo+71tpU6SHDx+0uOFKLtJA9sUvol
+	UuQw75Rd8MB4je17OPnIItxW7v/Fi00=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3013EKT;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cLgeMeqd;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4AFA660008;
-	Sun, 15 Mar 2026 20:14:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6421CC4CEF7;
-	Sun, 15 Mar 2026 20:14:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C36DE61841;
+	Sun, 15 Mar 2026 20:20:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB184C4CEF7;
+	Sun, 15 Mar 2026 20:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773605691;
-	bh=En2f87SpGqjeJA4L0F4oQmvXFvfIr6vn4EdyN9IaDsE=;
+	s=k20201202; t=1773606014;
+	bh=ADS+D532xAxun/YgHvZWAlDeIQk/4CVDyRfYy5VQM1M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L3013EKTOM7JcoeF7FMTckvn3M85WdJsQnjVGSf129kiqON3uXwiHqCBMfefBllRW
-	 Tm28Gx7J+Y3HVV1QVxqcTkU63UfxPOIFW+3IfuF+80vffHYzmloHVxKVFKlq2AH5pm
-	 6o7PTERr8eig384l5701Pc4YEDHrm10zmC5sG9o9t6/xlC2rwIlzuI9tBvX3ieLrw/
-	 ipVRU9yxyxW0GhPxYwnbhLYs7JVXS1tWtmrFuYwmba6EH1ARQjX8Abob9SjpyTyef0
-	 tsqXLWs1FEpuVq+Tt9GeQn1xLf/uqT6Cr6FMTzDWlPl5tt0KPnwhtyKEUFEdO+Of8+
-	 xB9bC5k3GjEww==
-Date: Sun, 15 Mar 2026 20:14:47 +0000
+	b=cLgeMeqd0WyKkAZ6Q4pm5lvHiMmhL2Iy0sjF8d9kMcb0LroCLd8IhOEJC7A0WxtUN
+	 UaB1K0Gp+1io06h/NX0H98DFY4I6bgTm27aopzxey71DUb5KBjHd5GI4wuRiD1SZkl
+	 Pnr1crgkO+lJtZk27ZPSHAsg6CHT+tCqBjy4e2NnS6InpfEFGYPO4DfKcVukSUz401
+	 2hwYQtCP1EzoI/zZ/xcuciMiwu8plo/Rfb9/qBV0Vz5QUCs0BA8SiRnGlgMIWu+2Rl
+	 9cPyyPZe2Wu7SHoov0CVfU/jxNZcPKNFJYDQVQ5gM3K78DQC4MKRrEu6PKdn7eDtME
+	 Ftu7U0V38dGbw==
+Date: Sun, 15 Mar 2026 20:20:11 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Kit Dallege <xaum.io@gmail.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, corbet@lwn.net, 
 	linux-mm@kvack.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Docs/mm: document Shared Memory Filesystem
-Message-ID: <5a1581a3-c6da-4604-9c17-e9fdfaace94c@lucifer.local>
-References: <20260314152538.100593-1-xaum.io@gmail.com>
+Subject: Re: [PATCH] Docs/mm: document Swap
+Message-ID: <9c842f9f-b039-45ad-a80d-3e48c8fd3ba5@lucifer.local>
+References: <20260314152536.100531-1-xaum.io@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260314152538.100593-1-xaum.io@gmail.com>
+In-Reply-To: <20260314152536.100531-1-xaum.io@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4249040002
+X-Stat-Signature: fx41q3gx93888q6u97damz9qagfu17k3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F0B0BA0006
-X-Stat-Signature: n8kxfrstiw6raa1nf376sno8ikr1ydnh
-X-HE-Tag: 1773605691-804001
-X-HE-Meta: U2FsdGVkX1++MnYrlX7kGwp1OexzF22bpLuLTsgA9xhkY1tBxD4Ve4IgiOfHZZfaMjb09JOB+GVUHYKdFuHktsuOQ9d33inf0bHZdhkmQvBukuD7a60zh5Md/oa8z80Qfz/vUgocMWObFywipubKYxX0sGUUe2CGEXsccRGBOb8QugYDh2H17cNyx500sI4ZD+EQRpi9NFuLOzDYBjVKt+EhNAu3E60velKBoDBh1mRiF1IJ8TML8vmPqPSZq+xFMC5LVazMyxgoqkl5sBZLH3jKnVhyXN0OjdnM+wKQBRJ+g3082kudxn6c9UZJVGIO8eTkwbdEcAey/KHcntjMnb8qwf4Adou6OzCp2xRZC5UewchGDJE3VO3DdY0q0i7CftX3+IQRe4H1l19MKelGfwW50ZqKU8BV3gbt8uHVJG41IkEMMnnXyrzJ/6oMvzKrCxLGQuRNVX2cytwnh026eH8H/5AMF9M0OLQsXqNPCEiZbesl5HmCAzKa3D2gFtuH+mb9kCOk5XW0ATe4guWc21sxCBxsU4J6dhmhkDStkk4dDW00ehRX/XVUe1vc12H+qrV8Vvul32ufeY3K7R78RSMboPglBOQ2+MoP8akUWRPRZOd5TrwnAY8eLwbAWdzarZNn7FejDZk+qVD9izx2JLV+sgAsrHN0IA3XdRucmEu3nUNl4vyZjzPeVhbojPyEzKPajkjDtsPkS3KKgUkyTMNkslc+tFSb1FrD3c0XtXahIe7mXa7AxIDcPWFxyILuwqqbnF+l9vAZwwNLXOVvAV/RkDPcyjNsDeoKLS3US/yEH/F6MgI4nEriVzWu6aL0GiQtGhEz6S9vAxidszgXiUfCTa5l4KanJHeFAE1PgPw6IdB11/2UoJXa1yyE5f328oD4Zs9AA+S+i8X1h1uJ1fg6SyVAoQYBBhB5n3+79ISyd7k6yt+whCHFpZN81jn5+sNmVO/RE9C7sUVXLx7
- WdLztIiZ
- YjF1YZ7NzLPIrMZsngW0Xie+xu3j+88GGOHqVPVGH8h0MSC8elw3v3TTWUH0sNYi9pcVe75COglO4tYsVsq6Zcn6KaulCZii+e2DDovqBR54iPch1YAzB+o0M81s72Shra0lDTNIxkvmHmk/i1CRvKA7lbmgpmjcGU7a6nQ46cBSGZhoUKXzi2e7xV9mIA6FIUZ49Mie4A2UYT0uu43Wq5hx+7yxM0EyFe8IQG7socixAYdPaMzywRx7hYuCu2oK+PDvxWB3UtHZUstV/SL3ueQ/KFpeVnJPFdGGnqGCXmhTvx2rARGXHyxt6PQ381/uKigPJl1G9HhSDOtU=
+X-HE-Tag: 1773606015-518555
+X-HE-Meta: U2FsdGVkX19YffKvrfw+r2UsXaPU/Tp3JYpAChxwfMIWeHx3wlnflUlOR0t78PwmqsssZd7NsMGa1oFFHZyCsxzjmfC4qpekHNX7DkDwSZKPpkydf2X9BMe3nWbWslh3mUUmdzX1TmmgWiX/JpJVwoh3vGopnPc236xfffsi+xD47NatJYI/UiihR+JUUWL16rul2ABhLIbBB8+jVAXxJUlvUZOo/WMZw+PFAqi8p+y4KMrsshwRj54xeYrV+FrbyT2doiIYsW8ZZcMhd89R2wzzkU2Q+3vjSYMSh1S2zK+badihE6lNcugDSCEb5/X9DmkBnXnlkRIp8iz0Prinn0bppZpIKdK90R2+FS5oREXFpzTL1W/BNMXwfq33LvTeTcSAuLTlKWijWL+WZU44eGNpO+/EtK5xGBxqu8rDlz2p2lrbV9pvem2bmjh5AgooRGEK4xADN12So1hr2HWM4179HI2A13QaXV5wkALCDqphVf6Od2DKWLciBSEDw/Ba7L30G/+8xErowL8zlBcxC2orLzAR05LxrGDB5VwXPtJdAIjVzV5t3i4mib80uS0749DfMujffnHwXKm3mzXrk1XIrtG/twli3IyHgYy6lA3SHuPpWW24wFydoDgOQh4OQLqykSblp/VHOybC2hrgbtKLOObrwtLP0BXtFl1xeB0SGOvC6GkisK6Vhs9f69ZGWl84zCXZ974u5wH3/ooA2c0Tv293Owe8Df5HEV+KFXS1qivh5BJrTDz2Ccxpb1wC7cbOOf/BZYLVv2itH8V6s1+2KR0Wtv7EsgFV7uX2rfZO0x6AqjJpBym8rYfWEOLW4DnJwwBWwBZ3SOMtzPUL/xZVFx1dOjQ7XKKucB/jY+blDdhE02X2YUEsxGg6CyqODxcAcuhL90o0E5xn+C7biOD719KRCtEI0ZYvgTKpsxRJrSioyM4HoY66WpKVtRKEZ/49p+wKtg1MXtARzar
+ 6V1hv/fc
+ vALSWoEaVNfCBqbvIgqwp6zOwkCyQQKKrbI4ICLlN8cBpphhdl7B3sILoRFCUV/EgrqU+dHfmhNr8B8GA94J00cLECoItCV2cNif7kRNm1BsGhpXv8MQSWV7A+LjDjx4Nw5Z0avwH84/E3zEPFgQ4I3S9LQh8coOmgWWyzbLt1KsFjXQCODKSeiqu4y5+mk7UQ7fdH15UCQhMOsQQKHILiTiqb3EYrf6pp9BjM25Lx4Dz9l6sH2F8wB/kXxDcIz2cDOpEkPtGFORR5EhJVVybOACJ1y2cohRhm3Yq5AZ7qKkLvrCCJt7HUxEWP7sCH3ogv5Pwjk5GFMUwwWY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,164 +94,207 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 NAK.
 
-The degree of laziness here is really telling, so yet again I'm sorry I don't
-believe you've put much effort into this.
+Again, you've not even bothered checking MAINTAINERS to see who
+maintains/reviews swap to cc them, your commit message is cookie-cutter,
+and you've demonstrated zero understanding of what you're writing about.
 
-You've not bothered cc'ing the right people, you didn't bother with anythign
-other than a cookie-cutter commit message, there's a bunch of issues with the
-docs even at a cursary glance.
+A quick glance suggests the 'documentation' is pointless handwaving
+too. This is not worth maintainer time.
 
-On Sat, Mar 14, 2026 at 04:25:38PM +0100, Kit Dallege wrote:
-> Fill in the shmfs.rst stub created in commit 481cc97349d6
+Also you've not even bothered to see how patches are sent and so have sent
+all these documentation patches separately which SCREAMS 'I just got Claude
+to do everything, and maybe I had a cursary glance at it'.
+
+We do NOT want this thanks.
+
+On Sat, Mar 14, 2026 at 04:25:36PM +0100, Kit Dallege wrote:
+> Fill in the swap.rst stub created in commit 481cc97349d6
 > ("mm,doc: Add new documentation structure") as part of
 > the structured memory management documentation following
 > Mel Gorman's book outline.
-
 >
 > Signed-off-by: Kit Dallege <xaum.io@gmail.com>
-
-NAK.
-
 > ---
->  Documentation/mm/shmfs.rst | 114 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 114 insertions(+)
+>  Documentation/mm/swap.rst | 154 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 154 insertions(+)
 >
-> diff --git a/Documentation/mm/shmfs.rst b/Documentation/mm/shmfs.rst
-> index 8b01ebb4c30e..1dadf9b481ce 100644
-> --- a/Documentation/mm/shmfs.rst
-> +++ b/Documentation/mm/shmfs.rst
-> @@ -3,3 +3,117 @@
->  ========================
->  Shared Memory Filesystem
->  ========================
+> diff --git a/Documentation/mm/swap.rst b/Documentation/mm/swap.rst
+> index 78819bd4d745..89a93cc081d4 100644
+> --- a/Documentation/mm/swap.rst
+> +++ b/Documentation/mm/swap.rst
+> @@ -3,3 +3,157 @@
+>  ====
+>  Swap
+>  ====
 > +
-> +The shared memory filesystem (tmpfs, also known as shmem) provides an
-> +in-memory filesystem used for ``/tmp`` mounts, POSIX shared memory
-> +(``shm_open()``), System V shared memory, and anonymous shared mappings
-> +created with ``mmap(MAP_SHARED | MAP_ANONYMOUS)``.  The implementation is
-> +in ``mm/shmem.c``.
+> +Swap allows the kernel to evict anonymous pages (those not backed by a
+> +file) to a swap device so that physical memory can be reused.  When the
 
-This is already wrong.
+This is useless tautology.
+
+> +pages are needed again, they are read back in.  The swap subsystem spans
+
+This is useless handwaving.
+
+> +several files: ``mm/swapfile.c`` manages swap devices, ``mm/swap_state.c``
+> +implements the swap cache, ``mm/page_io.c`` handles disk I/O, and
+> +``mm/zswap.c`` provides an optional compressed cache layer.
+
+Yeah who cares about page faults around swap, or softleaves (zero mentions)
+or data structures or etc. etc.
+
+I mean I won't go on.
 
 > +
 > +.. contents:: :local:
 > +
-> +How It Works
+> +Swap Entries
 > +============
 > +
-> +tmpfs stores file contents in the page cache using swap as its backing
-> +store rather than a disk filesystem.  Pages are allocated on demand when
-> +written to or faulted in.  When the system is under memory pressure, tmpfs
-> +pages can be swapped out just like anonymous pages.
+> +A swap entry is a compact identifier that encodes which swap device to use
+> +and the offset within that device.  When a page is swapped out, its page
+> +table entry is replaced with a swap entry so that the kernel knows where to
 
-What is a 'backing store' what is a 'disk filesystem', 'written to or faulted
-in' is wrong, etc.
+'Page table entry'... At which level?
 
-I won't go on.
-
-This would become 'development by review' and you'd take up HOURS of our time
-while we do the actual work.
-
-This isn't how contributions are supposed to work.
-
+> +find the data on a subsequent fault.  Swap entries are also used internally
+> +as keys into the swap cache.
 > +
-> +This design means tmpfs files consume no disk space — their size is bounded
-> +only by available memory and swap.  It also means tmpfs data does not
-> +survive a reboot, making it suitable for scratch data that benefits from
-> +memory-speed access without needing durability.
+> +Swap Devices
+> +============
 > +
-> +Each tmpfs inode tracks two key counters: allocated pages (resident in
-> +memory) and swapped pages (evicted to swap).  These are maintained by
-> +the ``shmem_charge()`` and ``shmem_uncharge()`` accounting functions,
-> +which keep the inode's block usage consistent with the filesystem's mount
-> +limits.
+> +A swap device is a disk partition or file registered with the ``swapon()``
+> +system call.  Each device is described by a ``swap_info_struct`` that holds
+> +the device's extent map, cluster state, and per-CPU allocation hints.
 > +
-> +Page Cache Integration
-> +======================
+> +The kernel maps virtual swap offsets to disk locations through a tree of
+> +``swap_extent`` structures.  For raw partitions the mapping is trivial
+> +(one extent covering the whole device); for swap files the mapping follows
+> +the file's block layout on disk.
 > +
-> +tmpfs uses the kernel's page cache (xarray) to index its pages by file
-> +offset.  When a page is read or faulted in, the page cache is checked
-> +first.  If the page has been swapped out, a swap entry is found in its
-> +place, and the page is swapped back in transparently.
+> +Cluster Allocation
+> +------------------
 > +
-> +When a page is added to the cache for a tmpfs file, it replaces any
-> +existing swap entry at that offset.  When a page is evicted by reclaim,
-> +a swap entry takes its place.  Shadow entries (see
-> +Documentation/mm/page_reclaim.rst) may also be stored to support working
-> +set detection.
+> +Swap space is allocated in clusters (groups of contiguous slots, typically
+> +32 pages).  Each cluster tracks which slots are free and whether it has
+> +pending discards.  Per-CPU hints point to the most recently used cluster
+> +so that allocations from the same CPU tend to land in the same cluster,
+> +improving spatial locality for both SSDs and spinning disks.
 > +
-> +Swap Integration
-> +================
+> +When a cluster is full, the allocator scans for a new one.  Under heavy
+> +swap pressure, it may also reclaim slots from full clusters if the pages
+> +they reference have since been freed or swapped back in.
 > +
-> +Under memory pressure, the reclaim path can evict tmpfs pages to swap just
-> +like anonymous pages.  This is transparent to the filesystem — the page
-> +cache slot simply transitions from holding a folio to holding a swap entry.
-> +
-> +When a process accesses a swapped-out tmpfs page, the page fault handler
-> +reads the swap entry from the page cache, allocates a new page, reads the
-> +data from swap, and inserts the page back into the cache.  This swap-in
-> +path is specific to shmem and handles locking between concurrent faults
-> +on the same page.
-> +
-> +Huge Page Support
-> +=================
-> +
-> +tmpfs can allocate transparent huge pages for its files.  The ``huge=``
-> +mount option controls the policy:
-> +
-> +- ``never``: only base pages (default).
-> +- ``always``: attempt huge page allocation for every new page.
-> +- ``within_size``: use huge pages only within the file's current size.
-> +- ``advise``: use huge pages only for mappings with ``MADV_HUGEPAGE``.
-> +
-> +When a huge page is allocated but only partially used (e.g., a file is
-> +smaller than a huge page), memory is wasted.  To mitigate this, tmpfs
-> +registers a shrinker that identifies huge pages where the file has been
-> +truncated or punched below the huge page boundary, and splits them back
-> +into base pages so the unused portion can be reclaimed.
-> +
-> +Accounting and Limits
-> +=====================
-> +
-> +Mount Options
-> +-------------
-> +
-> +tmpfs mounts accept ``size=`` and ``nr_inodes=`` options that cap the
-> +total blocks and inodes in the filesystem.  Every page allocation is
-> +checked against the block limit; if the limit would be exceeded, the
-> +allocation fails with ``ENOSPC``.
-> +
-> +These limits are enforced in-kernel and apply to all users of the
-> +filesystem.  They can be changed at remount time.
-> +
-> +Quota Support
-> +-------------
-> +
-> +With ``CONFIG_TMPFS_QUOTA``, tmpfs supports user and group quotas.  Each
-> +allocated block is charged to the owning user/group, and allocations fail
-> +if the quota is exceeded.  Quota state is stored in memory and does not
-> +persist across mounts.
-> +
-> +Memory Cgroups
+> +TRIM / Discard
 > +--------------
 > +
-> +tmpfs pages are charged to the memory cgroup of the process that
-> +instantiates them.  This means tmpfs memory counts toward cgroup limits
-> +and can trigger cgroup-level reclaim.  Swapping a tmpfs page out and back
-> +in preserves its cgroup association.
+> +For SSD-backed swap, the kernel can issue discard (TRIM) commands when
+> +swap slots are freed.  This is batched per-cluster: once all slots in a
+> +cluster are free, a single discard is issued for the entire range.  This
+> +avoids the overhead of per-page discards while still informing the device
+> +that the blocks are unused.
 > +
-> +fallocate
-> +=========
+> +Swap counts
+> +-----------
 > +
-> +tmpfs supports ``fallocate()`` to preallocate space for a file.
-> +Preallocated pages are allocated and inserted into the page cache
-> +immediately, guaranteeing that subsequent writes will not fail with
-> +``ENOSPC``.
+> +Each swap slot has a reference count tracking how many page table entries
+> +point to it (due to ``fork()`` and copy-on-write).  For slots referenced
+> +by very many processes, a continuation mechanism extends the counter
+> +beyond its inline capacity.
 > +
-> +``FALLOC_FL_PUNCH_HOLE`` is also supported: it removes pages from a range
-> +of the file and returns them to the filesystem's free pool.  This is used
-> +by applications that want to release portions of a tmpfs file without
-> +truncating it.
+> +Swap Cache
+> +==========
+> +
+> +The swap cache keeps recently swapped-in (or about to be swapped-out)
+> +pages in memory, indexed by their swap entry.  This serves several
+> +purposes:
+> +
+> +- **Deduplication**: when multiple processes share a swapped page (via
+> +  ``fork()``), only one copy is read from disk; subsequent faults find
+> +  the page in the swap cache.
+> +- **Write coalescing**: if a page is modified and swapped out again before
+> +  the previous write completes, the swap cache absorbs the update without
+> +  issuing a new write.
+> +- **Readahead**: when one page is swapped in, adjacent swap entries are
+> +  speculatively read to exploit spatial and temporal locality.
+> +
+> +The swap cache is implemented as a per-cluster array of pointers
+> +(the "swap table"), providing O(1) lookup by swap entry.
+> +See also Documentation/mm/swap-table.rst.
+> +
+> +Readahead
+> +---------
+> +
+> +Swap readahead pre-fetches pages from swap before they are faulted in.
+> +Two strategies are used:
+> +
+> +- **Cluster readahead**: reads a window of swap entries around the faulting
+> +  entry, betting on spatial locality in the swap device.
+> +- **VMA readahead**: uses the virtual address layout to predict which swap
+> +  entries will be needed next, which is more effective when the access
+> +  pattern follows the process's address space layout rather than the swap
+> +  device layout.
+> +
+> +``vm.page-cluster`` controls the readahead window size (as a power of two).
+> +
+> +Compressed Swap (zswap)
+> +=======================
+> +
+> +zswap (``mm/zswap.c``) is an optional write-behind compressed cache that
+> +sits between the reclaim path and the swap device.  When reclaim evicts a
+> +page, zswap attempts to compress it and store the compressed data in a
+> +RAM-based pool (using the zsmalloc allocator).
+> +
+> +If the page is faulted back in before the pool fills, no disk I/O occurs —
+> +the page is decompressed directly from memory.  This is significantly
+> +faster than reading from even an SSD.
+> +
+> +Pool Management
+> +---------------
+> +
+> +Each zswap pool pairs a compression algorithm (lzo, lz4, zstd, etc.) with
+> +a zsmalloc memory pool.  Per-CPU compression contexts avoid lock
+> +contention during compression and decompression.
+> +
+> +When the pool reaches its size limit (controlled by
+> +``/sys/module/zswap/parameters/max_pool_percent``), the oldest entries are
+> +evicted: zswap writes them out to the backing swap device, falling back to
+> +the normal swap I/O path.  An LRU list tracks entries for this purpose.
+> +
+> +Writeback
+> +---------
+> +
+> +zswap writeback decompresses the page, allocates a swap slot, and writes
+> +the uncompressed page to the swap device.  This is the slow path —
+> +ideally most pages are either faulted back in from the compressed cache
+> +or freed without ever reaching disk.
+> +
+> +Zero-Filled Pages
+> +=================
+> +
+> +``mm/page_io.c`` maintains a bitmap (``swap_zeromap``) tracking swap slots
+> +that contained zero-filled pages.  When such a page is swapped in, the
+> +kernel returns a zeroed page without performing any I/O.  When a zero
+> +page is swapped out, the bitmap bit is set instead of issuing a write.
+> +This optimization is significant for workloads that allocate large amounts
+> +of memory that is never written to.
+> +
+> +Swap I/O
+> +========
+> +
+> +``mm/page_io.c`` handles the mechanics of reading and writing pages to
+> +swap.  The I/O path checks three layers in order before falling through to
+> +disk:
+> +
+> +1. The zero page bitmap — if the slot is known to be zero-filled, return
+> +   a zeroed page (read) or set the bit (write) with no I/O.
+> +2. zswap — if enabled, attempt to store/load the page in the compressed
+> +   cache.
+> +3. Block I/O — submit a bio to the swap device, using the swap extent
+> +   tree to map the slot to a disk sector.
+> +
+> +For swap files (as opposed to raw partitions), the I/O follows the
+> +filesystem's block mapping rather than issuing direct device I/O.
 > --
 > 2.53.0
 >
