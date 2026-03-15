@@ -4,111 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 784BEF30283
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82ADDF30283
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 21:00:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4BE16B00C8; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
+	id B2A476B00A6; Sun, 15 Mar 2026 17:00:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF9C16B00C9; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
+	id 6550B6B00AA; Sun, 15 Mar 2026 17:00:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A06146B00CA; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
+	id 55B556B00A9; Sun, 15 Mar 2026 17:00:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BBFB6B00C8
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 175401407A7
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:54:47 +0000 (UTC)
-X-FDA: 84549501414.01.1D3BC26
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6384EA000A
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:54:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vvTn7cUo;
-	spf=pass (imf25.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 415D86B00A4
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 17:00:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0E41BDCE9
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 21:00:25 +0000 (UTC)
+X-FDA: 84549515610.07.71B3770
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 415DAC0003
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 21:00:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pylHVRuK;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773608085;
+	s=arc-20220608; t=1773608424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FcBMnjCfDjB6dMDoVyopzydyhSDBV/gPRQ0icRCnbPQ=;
-	b=yf+lGyi02fqaixDmNqrdbpMlNAK8seBkbrAd5aOcBb1WlONMbtLksHKIYjANU2OjYkQe7a
-	bj1gYzoTwVmU1Qi0CoOPDZcX6F4wgkM4qJfNavqoCCC3iP8tbWkGAH03Pho0xdkMWN7BV+
-	k8+UYkz4gmbve8Gb4/N7JMCjVBZbqxQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773608085; a=rsa-sha256;
-	cv=none;
-	b=0VlL5ZVkvCrhkIixZl3vTTvE8l5DX1vQRYlgaiOmO3xLlz7xnZ2RK4DFDFNZTwaSqc4UHo
-	w6+zaUZBmKVAfCUzBYAB6mYs+bOZ5IlKSMpyeKR0oTKKcuh5GEuGlQ1Ad2EopUg26QeqfK
-	0amAXqt+D4LSsU3dYFofArtOJ63aIEE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2ldPDRz+ia1mGeNTEEoTUBKBxm1Cha2qK1YiSOJRtmo=;
+	b=zp2iX9z36cG9WNHe8USaUMF+u082YWWvMqyxtPxDajki9Ic0E89jAXu9pgQAPcEuArsYB2
+	cWx75GpKg865eslFGXjgP6n95NFRLaq8Ljs9cymltvUVOiau9bLA2A9FGEg3S+SuBByaTQ
+	EvoSpV3QFhmvLyq5cEURz4QmCC9on34=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vvTn7cUo;
-	spf=pass (imf25.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2aeab6ff148so85525ad.1
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:54:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773608084; x=1774212884; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FcBMnjCfDjB6dMDoVyopzydyhSDBV/gPRQ0icRCnbPQ=;
-        b=vvTn7cUol3teIpP9HvxugQX6mmtf8x44R22Krf+6+FFAjDjTKW11SVJfT0zIQT5Hx/
-         +o4iM+IuXvbwId77tpMeYzP9TdmZYBvsW5M3d7LT0g2nDaoDuc7CiVaDNM22incouBzG
-         SSCDxYJccRz0RLs7D8NhYML9QdjB9+ZoHXrbpBqIq5cr/lhEgqvBvVr6yFsXPTjqcXSg
-         NIctWM+5C0oMPlOG128waBVfD2gDBgHOqL5A7ZB0Fg1d+5EfAiTlqR905gT/XK1+6Kql
-         5B5k04dRV8NKEXutvnimgVpZnQnx2kLRW3UsaiZU5yVDQimDtI1CfLPhPTDwkdXfql66
-         IMsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773608084; x=1774212884;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FcBMnjCfDjB6dMDoVyopzydyhSDBV/gPRQ0icRCnbPQ=;
-        b=MXV86uRKCgWsvnfFsrkJYq70ettAZ5/LU/E4yGiu+tFxJTENYGjOM4CMpNG/qKre5X
-         PaxbG8taYkCA3+1RYG15+kNdqRip/vtilJ4ZpChAM0jBohO3f6D2WW7DIdh6krvSlCzv
-         HQNlTOBqJCaV/pAQQqXu2fcFNlEYWRlypM7QtCQxCGl/Bonc5sCuh0MK9PbiT4cWVOmJ
-         cCktnngEQBuKIavLWzalawRhSWiZ4ZHovbkxloPIpRXTVAVsA6e8y5vcml/fD/EmU0J2
-         VjRCHjM/tUXOrizVKQ32cL5QlNmWEJGm3J7J9i4/CJVBZrlLwIiqMxruk2VXZbM+eJ++
-         J/Jw==
-X-Gm-Message-State: AOJu0YzMsu1iTnJ8LID+Q75SjkhxWQIVAvyOtuctDw+R1OTgGni4X+QG
-	oVsLTEsJwe8DhzifNDYr7AZq0qQ8U3hBDM3t21bBrrl2EVRCIB36woySl+gifKGslg==
-X-Gm-Gg: ATEYQzwiGNbAGIzRQ+A7rc1aPK4F2WBhklQo7EtWWUF/P/BOZU2/9rWE7CJTqB7i11e
-	oGr4GpenvtuKqmyC0nvegEX2CaJ7fSx/RSjWoK19DGZn+r3yrm9Z8wxK6eaF1YprceXa03ihjJ5
-	f7L9xJibhFYuHVD/+qfYRqnmT+U1/wo+dY8mjCMezn7rc20lQhlmxFSu+6DpSEgU8Qx4gymnQPR
-	YcMTRMtVs8HnN+r8BWZl2R5AbsFhHb1KIJfu1DuCMnsII7/rSuwkLjw+sVIdVbo/zjIfWEUGm0y
-	gMdLrCRuHNG9LGFL2KqC0ImjHb2A9D1OHj5Z5erHFeHjFsAd4ZbE1mrxadEqMTU3JxkOBASG7Hw
-	2SvPh+C80ey4a0RrOl16o2HizfbTahCIEFX8EyUTKuwcPmltiQFKKtLsGtKZEg2og7dTAOnxp8a
-	DQTspbytp+4rJ4BDcVKIq73PE+aAwCTzUK5hmKjsh7FTAQmjBFOWkvRhqwpknCdlKQ0NPdvp737
-	3Udxko5GZQtbehzPBhb3gB13SmDXpKEherYWAv8Ewugs/qpjjM=
-X-Received: by 2002:a17:903:3887:b0:2ae:4453:3674 with SMTP id d9443c01a7336-2b04208842cmr3648345ad.4.1773608083507;
-        Sun, 15 Mar 2026 13:54:43 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:3db4:c014:312:f50c] ([2a00:79e0:2eb0:8:3db4:c014:312:f50c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35b93912448sm1136833a91.12.2026.03.15.13.54.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 13:54:42 -0700 (PDT)
-Date: Sun, 15 Mar 2026 13:54:41 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from March 12, 2026
-Message-ID: <5c757116-3e41-be19-8ae4-28f4398490db@google.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pylHVRuK;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773608424; a=rsa-sha256;
+	cv=none;
+	b=DMWBzgHjkXjKYcTx69o+cIZ4UbqA5xKWWCBfXeD9fTsdt6/lSZZh83Rp6lmTHMks7rj9/m
+	j/XXoSgd/9cGFr/RFzArc6YAPuJgfdif2ER28ia2x0tQujiTs7w2YD0NggM2RHvTa0sqxd
+	Vkogc64+z31JJ+KVENpn3qamTP6+bSc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C1E441AFA;
+	Sun, 15 Mar 2026 21:00:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E0DC4CEF7;
+	Sun, 15 Mar 2026 21:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773608423;
+	bh=XnIOlQqQj664a9OSr2rVhvLZUQiwYMWAxdX1C8eCcLc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pylHVRuKIp2RySkn/vjGtU/jKV1EUrVmO8HhjUb40IJr6XYVS6+PqAWYKKzNda/8O
+	 y184DIjBgJEjfd5/R9qy+uV826AOyPG/T2NO+e3YcEU4PuVF7A5L0v1S8m/7bEKOFb
+	 42qorg8HwSp+7e/4tT1DVBuZCUEAdVHeodEZZFd+CwGxxRbGGsLOqQztzRe1qz09GZ
+	 /ChjDeMNDtuJowFl1rtPt3dGO9wUJ8gvg3tJOFoj8VPEjGhyE3rxNT77b4O/b9smkF
+	 1rgPFaP0/9+0jTeOg+fasWgnxj7lDeB/7UoMmF8bjcXwAUINz7mmgy382fgs1VOxUa
+	 s+7qj+322iGbg==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 00/10] mm/damon: let DAMON be paused and resumed
+Date: Sun, 15 Mar 2026 13:59:59 -0700
+Message-ID: <20260315210012.94846-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 98gbmjkw6q3xd7ogrwq5yeje68mghe3y
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6384EA000A
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773608085-869323
-X-HE-Meta: U2FsdGVkX18+XQwIUUIei3mKMJERSFgND0xdPHePMor7H7HzIDfPRiLBsaiYljHJoLi3UifwD6SOX6/WI/3hVOTq7kcvPYuxZgtH2HTRWUB4YAYquyZ+9VU2N7MeTmv0uDWiKs3cB3TQnlcHBRNu7anj+11UzKH8gDgHC62kZjGcnjRXE3uysFTl9cjE/8waotkq+wE67s/ekfzvJTVT8KyB4HiRFqka1gvDsRKdSgmGCYaYJWQgQz553U5bZwJti1Ue2OcE6B4RZcA4t4Hf/xwRzZOo6SHf1nUTObkdQ5Ha+OOi4dgRoM0Ros1UlYZVrrfDWswK9aw9jDIMV1/OxY4PFdh26wMiLwLh0NkzW4x8O5rDvtFB+O0w7yPmVIIqcE2wAKkZvyVuz65g9n7pk/SCG8Y2LG/v3quYsldD5nteEExv4ALOp5FyPAijT/CR+USLznLvmZfv92qVCut3LcPexQrjvuFSKqfL4+hVu89tKpI20tE/1nOdtTZlFibRl7k6XQo7sHPaByR0y86qR8h4MvJ4avRZKRC7rwh3VD33puPfht1Vzj63fq7v/AkkAvt0M64BFPXGx2NqgRHlGmEe6qESj0CkoOOpsefT+3Cu6788k14K2oHjot53BJAivbLdfjvg5C8wJsxPxBOPbrjAacvALChEpw20DLJeDf3uWtabMi8TlcEBhuTM7tZykDQ4nNI0tQAPSye2nnsv/efmV/nk32OwvYFeoNVapaIGknT40XEnklcWL96ffQrrs1BsXKp/tcfhacYjQpeRDf5imd4ilmRHVd8Ar7Qhge5POZr7fbaO15A1KZfOyGtYF2frZvKC2u0Bkoj9fY4glGN7RyksRurIIz+S36trE78IBz3DO5QZNHs6VMe+9y0Fb4MxORwGVe8JIJAytwXTMKKKAvaXfytCe1AoCVrygQqvFLNWrLKznlz5Tj2IsdNIY3O8ly07J9nQgnZvuWS
- bp99YdGE
- /UviVnA3+lAq4eS9WuL4MQc+aFRv9vEv4u8oDiN6wuvN5qq8TfmF8Ldo+arsEVrfoicDKKUm5gq0GRSqJghQY5QrknqWZdCOvVqwHcFlazUotfdmrx3Izi2zKiqR0ERMLiLzXKS4XnK62Qs1XqqdZJdExszf/bHHReUKVjyofaE3k+GlqDRymFbOUa52U/1xIplm8w062zbqTiPUiNbojx0PBCD7bk9WLI3SUjCjZiralZAInKkvjT4xN+C55/KVExv7cUnrid8sjv1nOEPTbhmGJjBK0l/eiLT5vlsOTG3OvtM3MgXIpmqQOIUsnmNCLX0Uz8oAea7exH1vyggCmRxBgaMcm4wWEFp9qg74vavn4cybtPBU8K/ijz0sblsS9uPvzuNl8wYKMlSaUErac/bgruxI5Pia+tIRUK1eB3vGEuCg=
+X-Rspamd-Queue-Id: 415DAC0003
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 6hpbm8m95tsi8yqhpnr6ztoq8y4ay7yk
+X-HE-Tag: 1773608424-805783
+X-HE-Meta: U2FsdGVkX18GTDHlCea2neRvn31ijUko76ec3yUCqgkru/bqkWeShX/9jml3jfeAber/a/8O0PFuW9PTITDIMjTOmeA1YbNkZbfk/S+FIefibpGNmj25z8wh4zsZynrgshq8f8OLFrduddMcTLxj8mycy5rnWjdj2GJlcj9C7Yz2RsEbnZFiAasrL/GojXRNcMMDzjczRLpf2kN09mq4tUFZugHvwdm6gCeF3+m3iOB5GSbfY7kepLYFP/u7q3K/yU1M/nX+mD4qMav0aBzmf5MEO0nu+JQrEXJUMWEM4gQNUOfwGDDduXUosNRAVd+xi/rLXi0So46ETiz8jxTt40Wm+ro5q3TtmSe+wpx7yjRsRk3piKEY4BoWs7RH85jI9wCWXs9B4q0rnPrTS9yCk9/vPU1ue6sMe7Llj+Gg20DSk41uaBfjOc8ufuLwJSTiQm8Eqomor//KC907MY8JCO/kSxxXX4MYi3ITm+esZxXRBNO0YtYEI4a+y+jQBZMewM9Hqj+h8rU0QUvG1G1k0MdzM1iBMHWPb0nHZ3eRVAqZx4WKM73LLeTJE6Bt7yzoFcDvZWbOqD/L2pJUKSd4HzXUchVRmopTL7FSp/qJkfFXSaSbt+s9ar+melEpRRq5oly4G1YxgwT/GEfn/Jj4LJEGuIEaI70Y6pGQJZJLAR+pwU7VxiVbt70Xuh5Vq1eOhG+94bKU3FiqD8zq7cdPax4VtSq78vEvO8zUgI60cI/WK+UXtzP47+yJX1pR0k8pyrHY3JVDLFkMLQJionGZQqYtIEAdYYJLYrtb7+kY3ClLfzF7zHPPEqT4xmcR/JMGD8Dgc1aoTDvjuF7KtXiyfXLDTKntPn0DdoRmEhvQ2n6wY0Tvl3gXw4eTHJYWvCbWjzPkfMWWRJuxIkWimqmfLhyUL6Rznq5nhaMLDngAsrwICdvkyHDAhobup9C7zgfw/ZdmqbCK6nZVGW227nK
+ abg+QqqL
+ c4B5ctVrY2TYfkKy/cot7IByGUBZPQxfh2GPqBBDhJwb3GCqO8n0OPtt6GM5qv0288HOIbn1aeSfJF7hRY7jjdkQ+0gGPSRzJ/Ivfux2a4eW4NZpB14RlacPmzw0f1c63eaaIUHM+32eEUWeu0ugu/2JIC/kK81NlAXJg5AMDEPSEofCtisAXUL1QiSZYdLyfsVve0Fl+4pv4LpyyRPSAybK2zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,102 +106,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+DAMON utilizes a few mechanisms that enhance itself over time. Adaptive
+regions adjustment, goal-based DAMOS quota auto-tuning and monitoring
+intervals auto-tuning like self-training mechanisms are such examples.
+It also adds access frequency stability information (age) to the
+monitoring results, which makes it enhanced over time.
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, March 12.  Thanks to everybody who was 
-involved!
+Sometimes users have to stop DAMON.  In this case, DAMON internal state
+that enhanced over the time of the last execution simply goes away.
+Restarted DAMON have to train itself and enhance its output from the
+scratch.  This makes DAMON less useful in such cases.  Introducing three
+such use cases below.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+Investigation of DAMON.  It is best to do the investigation online,
+especially when it is a production environment.  DAMON therefore
+provides features for such online investigations, including DAMOS stats,
+monitoring result snapshot exposure, and multiple tracepoints.  When
+those are insufficient, and there are additional clues that could be
+interfered by DAMON, users have to temporarily stop DAMON to collect the
+additional clues.  It is not very useful since many of DAMON internal
+clues are gone when DAMON is stopped.  The loss of the monitoring
+results that improved over time is also problematic, especially in
+production environments.
 
------>o-----
-Bharata updated that he is working on v6 of his patch series.  He noted 
-significant work being done on NUMAB since in the initial work he had 
-bypassed the regular balancing mode; he made the NUMA hint faults work 
-only with hot page promotion.  In his next series of changes, he added 
-back proper NUMAB=1 support.
+Monitoring of workloads that have different user-known phases.  For
+example, in Android, applications are known to have very different
+access patterns and behaviors when they are running on the foreground
+and the background.  It can therefore be useful to separate monitoring
+of apps based on whether they are running on the foreground and on the
+background.  Having two DAMON threads per application that paused and
+resumed for the apps foreground/background switches can be useful for
+the purpose.  But such pause/resume of the execution is not supported.
 
-This turned out to require that NUMA Balancing would start to depend on 
-pghot.  All of the functions are required by pghot and this will make it 
-easier when future sources of page hotness come later.
+Tests of DAMON.  A few DAMON selftests are using drgn to dump the
+internal DAMON status.  The tests show if the dumped status is the same
+as what the test code expected.  Because DAMON keeps running and
+modifying its internal status, there are chances of data races that can
+cause false test results.  Stopping DAMON can avoid the race.  But,
+since the internal state of DAMON is dropped, the test coverage will be
+limited.
 
-A concern was earlier raised about memcg stats reporting which should now 
-be fixed.  There were other small fixes merged as well.  It will take a 
-week or so before patches will be ready to post.  v6 should be posted by 
-the next meeting.  Nobody expressed direct concerns about this approach.
+Let DAMON execution be paused and resumed without loss of the internal
+state, to overhaul the limitations.  For this, introduce a new DAMON
+context parameter, namely 'pause'.  API callers can update it while the
+context is running, using the online parameters update functions
+(damon_commit_ctx() and damon_call()).  Once it is set, kdamond_fn()
+main loop will do only limited works excluding the monitoring and DAMOS
+works, while sleeping sampling intervals per the work.  The limited
+works include handling of the online parameters update.  Hence users can
+unset the 'pause' parameter again.  Once it is unset, kdamond_fn() main
+loop will do all the work again (resumed).  Under the paused state, it
+also does stop condition checks and handling of it, so that paused DAMON
+can also be stopped if needed.  Expose the feature to the user space via
+DAMON sysfs interface.  Also, update existing drgn-based tests to test
+and use the feature.
 
------>o-----
-We chatted about the upcoming LSF/MM/BPF conference.  Bharata's suggestion 
-for his series was to continue the discussion on the mailing list since it 
-was covered in last LSF/MM/BPF and then more recently at LPC.
+Tests
+=====
 
------>o-----
-Joshua had been doing some testing with tier-aware memcg limits.  He found 
-in the general case when everything is behaving as appropriate that there 
-weren't major benefits.  When there is a memcg performing poorly, however, 
-this can punish those workloads as needed.  He showed a graph that showed 
-a very wide range of performance with NUMAB=2 and then a much smaller 
-variance with tier-aware memcg limits.  The important part is that since 
-the variance is low that you then have direct control over where the 
-average throughput could be.  He is going to be including this data in the 
-v2 posting of his patch series.
+I confirmed the feature functionality using real time tracing ('perf
+trace' or 'trace-cmd stream') of damon:damon_aggregated DAMON
+tracepoint.  By pausing and resuming the DAMON execution, I was able to
+see the trace stops and continued as expected.  Note that the pause
+feature support is added to DAMON user-space tool (damo) after v3.1.9.
+Users can use '--pause_ctx' command line option of damo for that, and I
+actually used it for my test.  The extended drgn-based selftests are
+also testing a part of the functionality.
 
-He wanted to get feedback from memcg stakeholders upstream and discussed 
-providing some guidance to end users on how to put these pieces of the 
-puzzle together.  This includes translating tier-unaware memcg limits into 
-tier-aware memcg limits.
+Patches Sequence
+================
 
-Gregory noted that one of the next steps will be to test both tier-aware 
-memcg limits with Bharata's series.  Bharata would also take a look at 
-Joshua's series.
+Patch 1 introduces the new core API for the pause feature.  Patch 2
+extend DAMON sysfs interface for the new parameter.  Patches 3-5 update
+design, usage and ABI documents for the new sysfs file, respectively.
+The following five patches are for tests.  Patch 6 implements a new
+kunit test for the pause parameter online commitment.  Patches 7 and 8
+extend DAMON selftest helpers to support the new feature.  Patch 9
+extends selftest to test the commitment of the feature.  Finally, patch
+10 updates existing selftest to be safe from the race condition using
+the pause/resume feature.
 
-Joshua sought feedback on the best way to compare with and without 
-tier-aware memcg limits.  Gregory said that we'll eventually move to 
-workload testing but in the meantime it would be useful to understand if 
-the floor of the throughput raises when you start to use pghot -- this 
-would be an outright win.  Joshua was planning on having pghot + 
-tier-aware memcg limits data to share for LSF/MM/BPF.
+SeongJae Park (10):
+  mm/damon/core: introduce damon_ctx->paused
+  mm/damon/sysfs: add pause file under context dir
+  Docs/mm/damon/design: update for context pause/resume feature
+  Docs/admin-guide/mm/damon/usage: update for pause file
+  Docs/ABI/damon: update for pause sysfs file
+  mm/damon/tests/core-kunit: test pause commitment
+  selftests/damon/_damon_sysfs: support pause file staging
+  selftests/damon/drgn_dump_damon_status: dump pause
+  selftests/damon/sysfs.py: check pause on assert_ctx_committed()
+  selftets/damon/sysfs.py: pause DAMON before dumping status
 
------>o-----
-Shivank updated on the progress for hardware assists for migrate_pages().  
-He said that he posted a v4 of the patch series a couple days ago that 
-includes several changes.  He pivoted to doing pre-copy of data from the 
-source to the destination and, if successful, then the metadata is 
-updated.
+ .../ABI/testing/sysfs-kernel-mm-damon         |  7 +++++
+ Documentation/admin-guide/mm/damon/usage.rst  | 12 +++++---
+ Documentation/mm/damon/design.rst             |  7 +++++
+ include/linux/damon.h                         |  2 ++
+ mm/damon/core.c                               |  8 +++++
+ mm/damon/sysfs.c                              | 30 +++++++++++++++++++
+ mm/damon/tests/core-kunit.h                   |  4 +++
+ tools/testing/selftests/damon/_damon_sysfs.py | 10 ++++++-
+ .../selftests/damon/drgn_dump_damon_status.py |  1 +
+ tools/testing/selftests/damon/sysfs.py        | 28 +++++++++++++++++
+ 10 files changed, 104 insertions(+), 5 deletions(-)
 
-There were no major blockers for this work.  David Hildenbrand suggested a 
-few minor changes.
 
-We also touched on non-temporal stores and enlightenment for 
-migrate_pages().  Yiannis started work on this, there was some feedback 
-upstream for a new migrate mode to be supported.  Yiannis has been 
-discussing this with his colleagues and will be able to update; he is 
-targeting having patches on the list in the next two weeks.
-
-Wei Xu had a similar approach to the new migrate mode and ended up 
-splitting out a helper function that would check for both MIGRATE_ASYNC as 
-well as the new mode.
-
------>o-----
-Next meeting will be on Thursday, March 26 at 8:30am PDT (UTC-7),
-everybody is welcome: https://meet.google.com/jak-ytdx-hnm
-
-Topics for the next meeting:
-
- - v6 of Bharata's patch series, including NUMA Balancing dependency on
-   pghot
- - v2 of tier-aware memcg limits (reclaim fairness)
- - v4 of enlightening migrate_pages() for hardware assists and how this
-   work will be charged to userspace, including for memory compaction
- - non-temporal stores enlightenment for memory tiering
- - Gregory's testing of tier aware memcg limits with Bharata's changes
- - discuss generalized subsystem for providing bandwidth information
-   independent of the underlying platform, ideally through resctrl,
-   otherwise utilizing bandwidth information will be challenging
-   + preferably this bandwidth monitoring is not per NUMA node but rather
-     slow and fast
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
+base-commit: 027cb70b08db6e3df632c49a8c7590ea830f7a96
+-- 
+2.47.3
 
