@@ -4,87 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE53BF30283
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:48:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 784BEF30283
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 20:54:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD2F6B00A1; Sun, 15 Mar 2026 16:48:29 -0400 (EDT)
+	id B4BE16B00C8; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B47A6B00C6; Sun, 15 Mar 2026 16:48:29 -0400 (EDT)
+	id AF9C16B00C9; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DDD26B00C7; Sun, 15 Mar 2026 16:48:29 -0400 (EDT)
+	id A06146B00CA; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B82A6B00A1
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:48:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3870140813
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:48:28 +0000 (UTC)
-X-FDA: 84549485496.27.B4B90E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1D4BC160008
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:48:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lHIdGpox;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BBFB6B00C8
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 16:54:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 175401407A7
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:54:47 +0000 (UTC)
+X-FDA: 84549501414.01.1D3BC26
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6384EA000A
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 20:54:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vvTn7cUo;
+	spf=pass (imf25.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773607707;
+	s=arc-20220608; t=1773608085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYuLf+FLkpXqdsfg76tP4KMTyb7rRxrYHTc/u6iorn0=;
-	b=7wuFScoHlbc6XynLnqrqKQWKowNPe5UPGdcr/Pd6UdukOvr5eK3FJcQLiV0IDqcYJ8NVzW
-	HDz6XWMN27dezgwfrMdBwzZSa7mpD9V7GyCCAuA6qEE32F6hqZd5kUERLaWFGBlDdkhXdY
-	z7g3FnEW73dLW10nXG4m0TWWMXVFhkQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773607707; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FcBMnjCfDjB6dMDoVyopzydyhSDBV/gPRQ0icRCnbPQ=;
+	b=yf+lGyi02fqaixDmNqrdbpMlNAK8seBkbrAd5aOcBb1WlONMbtLksHKIYjANU2OjYkQe7a
+	bj1gYzoTwVmU1Qi0CoOPDZcX6F4wgkM4qJfNavqoCCC3iP8tbWkGAH03Pho0xdkMWN7BV+
+	k8+UYkz4gmbve8Gb4/N7JMCjVBZbqxQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773608085; a=rsa-sha256;
 	cv=none;
-	b=kNUcHsHdobLaK8G9B8acT/N2knIrBtUtQ7OXcUTeblj9Mf6gbmLIxci2jiiHQIirrnmKTR
-	hAVZrolc9ZjfPOUejMiBimLOv9RgPmJFt/pT9ljFiOkdwACDPnGa4ox2i0M0ZdqlKWLaHE
-	SEqoH99OroaverxIjENfxsI/AF7/l7M=
+	b=0VlL5ZVkvCrhkIixZl3vTTvE8l5DX1vQRYlgaiOmO3xLlz7xnZ2RK4DFDFNZTwaSqc4UHo
+	w6+zaUZBmKVAfCUzBYAB6mYs+bOZ5IlKSMpyeKR0oTKKcuh5GEuGlQ1Ad2EopUg26QeqfK
+	0amAXqt+D4LSsU3dYFofArtOJ63aIEE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lHIdGpox;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 741046183C;
-	Sun, 15 Mar 2026 20:48:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93439C4CEF7;
-	Sun, 15 Mar 2026 20:48:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773607706;
-	bh=AKmldbxaY791aD9Xfil/Ru0vWSAymPxRXmxXjFu7b4o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lHIdGpox9WtCzyIYJU69aXY52aRr6S/+Jtpm4Uj3GMYvPIe/DbAbkhO2KTdk9isdk
-	 AKigtKpt+XI0v1CkX1wEF1tZQ4VMhtnuZYM4O1DtCogSwx5ndxAQ/h+ZjeStqx7CyA
-	 g+SYgZFMm79yVu4f0CKWufIdrZrSeIRqAM8r0st4Bt8SH2Xtym/Ta2V0Ap0RWM3mtc
-	 qM/lUbt+vKwjfC0MPnzrCVBDSnQ4VjG1omxkeSBWD3bJQ2CW9svPUNXKjddNRwGS5r
-	 M9kFLqt2NSyezpiP9CVe+UnnktWuJML5TAQysTAeIAZPyygY13u1jXZ8KgLqKIgV8I
-	 5jH+57S6cRiSg==
-Date: Sun, 15 Mar 2026 20:48:22 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Kit Dallege <xaum.io@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, corbet@lwn.net, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH] Docs/mm: document the OOM killer
-Message-ID: <fbee0ca1-4de6-4182-865b-a33d9ed32ee4@lucifer.local>
-References: <20260314152518.100194-1-xaum.io@gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vvTn7cUo;
+	spf=pass (imf25.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2aeab6ff148so85525ad.1
+        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 13:54:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773608084; x=1774212884; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FcBMnjCfDjB6dMDoVyopzydyhSDBV/gPRQ0icRCnbPQ=;
+        b=vvTn7cUol3teIpP9HvxugQX6mmtf8x44R22Krf+6+FFAjDjTKW11SVJfT0zIQT5Hx/
+         +o4iM+IuXvbwId77tpMeYzP9TdmZYBvsW5M3d7LT0g2nDaoDuc7CiVaDNM22incouBzG
+         SSCDxYJccRz0RLs7D8NhYML9QdjB9+ZoHXrbpBqIq5cr/lhEgqvBvVr6yFsXPTjqcXSg
+         NIctWM+5C0oMPlOG128waBVfD2gDBgHOqL5A7ZB0Fg1d+5EfAiTlqR905gT/XK1+6Kql
+         5B5k04dRV8NKEXutvnimgVpZnQnx2kLRW3UsaiZU5yVDQimDtI1CfLPhPTDwkdXfql66
+         IMsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773608084; x=1774212884;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FcBMnjCfDjB6dMDoVyopzydyhSDBV/gPRQ0icRCnbPQ=;
+        b=MXV86uRKCgWsvnfFsrkJYq70ettAZ5/LU/E4yGiu+tFxJTENYGjOM4CMpNG/qKre5X
+         PaxbG8taYkCA3+1RYG15+kNdqRip/vtilJ4ZpChAM0jBohO3f6D2WW7DIdh6krvSlCzv
+         HQNlTOBqJCaV/pAQQqXu2fcFNlEYWRlypM7QtCQxCGl/Bonc5sCuh0MK9PbiT4cWVOmJ
+         cCktnngEQBuKIavLWzalawRhSWiZ4ZHovbkxloPIpRXTVAVsA6e8y5vcml/fD/EmU0J2
+         VjRCHjM/tUXOrizVKQ32cL5QlNmWEJGm3J7J9i4/CJVBZrlLwIiqMxruk2VXZbM+eJ++
+         J/Jw==
+X-Gm-Message-State: AOJu0YzMsu1iTnJ8LID+Q75SjkhxWQIVAvyOtuctDw+R1OTgGni4X+QG
+	oVsLTEsJwe8DhzifNDYr7AZq0qQ8U3hBDM3t21bBrrl2EVRCIB36woySl+gifKGslg==
+X-Gm-Gg: ATEYQzwiGNbAGIzRQ+A7rc1aPK4F2WBhklQo7EtWWUF/P/BOZU2/9rWE7CJTqB7i11e
+	oGr4GpenvtuKqmyC0nvegEX2CaJ7fSx/RSjWoK19DGZn+r3yrm9Z8wxK6eaF1YprceXa03ihjJ5
+	f7L9xJibhFYuHVD/+qfYRqnmT+U1/wo+dY8mjCMezn7rc20lQhlmxFSu+6DpSEgU8Qx4gymnQPR
+	YcMTRMtVs8HnN+r8BWZl2R5AbsFhHb1KIJfu1DuCMnsII7/rSuwkLjw+sVIdVbo/zjIfWEUGm0y
+	gMdLrCRuHNG9LGFL2KqC0ImjHb2A9D1OHj5Z5erHFeHjFsAd4ZbE1mrxadEqMTU3JxkOBASG7Hw
+	2SvPh+C80ey4a0RrOl16o2HizfbTahCIEFX8EyUTKuwcPmltiQFKKtLsGtKZEg2og7dTAOnxp8a
+	DQTspbytp+4rJ4BDcVKIq73PE+aAwCTzUK5hmKjsh7FTAQmjBFOWkvRhqwpknCdlKQ0NPdvp737
+	3Udxko5GZQtbehzPBhb3gB13SmDXpKEherYWAv8Ewugs/qpjjM=
+X-Received: by 2002:a17:903:3887:b0:2ae:4453:3674 with SMTP id d9443c01a7336-2b04208842cmr3648345ad.4.1773608083507;
+        Sun, 15 Mar 2026 13:54:43 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:3db4:c014:312:f50c] ([2a00:79e0:2eb0:8:3db4:c014:312:f50c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35b93912448sm1136833a91.12.2026.03.15.13.54.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Mar 2026 13:54:42 -0700 (PDT)
+Date: Sun, 15 Mar 2026 13:54:41 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+    Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from March 12, 2026
+Message-ID: <5c757116-3e41-be19-8ae4-28f4398490db@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260314152518.100194-1-xaum.io@gmail.com>
-X-Stat-Signature: hg5cbp4udzt3ybmm6pswcm7s9mc6dx5c
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 98gbmjkw6q3xd7ogrwq5yeje68mghe3y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D4BC160008
+X-Rspamd-Queue-Id: 6384EA000A
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773607706-135399
-X-HE-Meta: U2FsdGVkX18opZlW8YIClvzoqny1KTJkCg9Y/FzbKtOOKfvJounQP5muTA6FBGpuPwTIOFIx4B+QzJB+8eA4L3Hv6cGwbInrMEwi3U//daXqSDhTZu7+RyFaGxUvXnRExlpAwk4HPaiyYi1ndntr4NaVXn6cLxLftFSOPDZYjx8YrjoLKDG505yL3Tqf/V+oLrqxa7/oVn6CGKA9JpaEaXcX+4JE/iEf6wJm3CPYfegh3N+MoMhB5iqx9aB+ELCUtjG7MADQ8jyn2cAZtyqWIGFB5DJRe2Qc0APZtw3oGK1nr7Qzzycv0jgv8gl4lVXRID1HMg4V8O2dy6qnBz9EukHFU1kS/1ClB8JoXPLhn4snRqXq8GgsQNtj21BditeD0RPq5N9sZd7WwQHPMfxx8tR41LITqlkfOEW1N1CkUqXZgnZVOGuarhNiO5R+TUXHTEyUBzI6D5dvSyFJ1aZb1gH+gRionbvKs+pINwH6whyftPVix045Hn6oQHXfJWMG77PKkDZWU6THV91/R/3cR1JV0EFxPP/6wn0WOVvOX82VzyIDhs6EDzgT7cGAhd5vBfD2cJ2XBtKTGdlroFXmX0utr4V+rMbkH/N8VAFmeMffk3SHxZ1pQTErZx2WdRnsrPvFDBUtxUwUBVJgSpbLObitv36UNqeuBhO5/mWHq6LunficukTEQCJfP+ozrD5071y9RnRXSThJXxyuv2PJWZI9btAAv0dZFPVS4xVZg0tblyPEf7hEIX1vvHB8uzl4tMVSarSvOxhbVwEDbiDbyJ/JSYmFs9wByaSp25HQ+LN197aHCKDfBisi1JEhSFBIz/UQ7KuBftWz9aAet4/Ptv4+5ez4zQ6IW08KNq11QogroyWsse30QRrVja8YxfbaXli7+Xf2Q7dm8tm2+6LJcpJ4dsfv/7TewTrpKoUQwKNpggfAsJCI5VWGyuF1ANPnXG/ugy/Rgy0mAVl5Jvf
- ct2Bq4Qu
- YzE2ENViTb6ZXDILm2L1slzXXTMfxh08zTWEqY6e7TnnElH7KEq0S/agnaMhDoAcvQh3kXkm7bqbaJGgSvmS9XibUIgFDGqA2r5ofNwp5EVLm1D9HoLQH2UM+8E0VeskAw4kfYS3XbGyccOuNLGba7rKhfsY/fXDxRGWS4guQj2+Lret3/RwIe3OmwqPxJt8yseC7jkR7ZXCFLBvhqQbgJFGcLVgHJyJ28DwJttLlgTacANlQHdmxaNGjlaPaHLLqmoI0kS+Eu+TwTmQi9+ihL7kAuMjTGMpFUTf5INyaJ3LmHitt76QelvViNV0mD7CdSlGSkqszqJYGW7c=
+X-HE-Tag: 1773608085-869323
+X-HE-Meta: U2FsdGVkX18+XQwIUUIei3mKMJERSFgND0xdPHePMor7H7HzIDfPRiLBsaiYljHJoLi3UifwD6SOX6/WI/3hVOTq7kcvPYuxZgtH2HTRWUB4YAYquyZ+9VU2N7MeTmv0uDWiKs3cB3TQnlcHBRNu7anj+11UzKH8gDgHC62kZjGcnjRXE3uysFTl9cjE/8waotkq+wE67s/ekfzvJTVT8KyB4HiRFqka1gvDsRKdSgmGCYaYJWQgQz553U5bZwJti1Ue2OcE6B4RZcA4t4Hf/xwRzZOo6SHf1nUTObkdQ5Ha+OOi4dgRoM0Ros1UlYZVrrfDWswK9aw9jDIMV1/OxY4PFdh26wMiLwLh0NkzW4x8O5rDvtFB+O0w7yPmVIIqcE2wAKkZvyVuz65g9n7pk/SCG8Y2LG/v3quYsldD5nteEExv4ALOp5FyPAijT/CR+USLznLvmZfv92qVCut3LcPexQrjvuFSKqfL4+hVu89tKpI20tE/1nOdtTZlFibRl7k6XQo7sHPaByR0y86qR8h4MvJ4avRZKRC7rwh3VD33puPfht1Vzj63fq7v/AkkAvt0M64BFPXGx2NqgRHlGmEe6qESj0CkoOOpsefT+3Cu6788k14K2oHjot53BJAivbLdfjvg5C8wJsxPxBOPbrjAacvALChEpw20DLJeDf3uWtabMi8TlcEBhuTM7tZykDQ4nNI0tQAPSye2nnsv/efmV/nk32OwvYFeoNVapaIGknT40XEnklcWL96ffQrrs1BsXKp/tcfhacYjQpeRDf5imd4ilmRHVd8Ar7Qhge5POZr7fbaO15A1KZfOyGtYF2frZvKC2u0Bkoj9fY4glGN7RyksRurIIz+S36trE78IBz3DO5QZNHs6VMe+9y0Fb4MxORwGVe8JIJAytwXTMKKKAvaXfytCe1AoCVrygQqvFLNWrLKznlz5Tj2IsdNIY3O8ly07J9nQgnZvuWS
+ bp99YdGE
+ /UviVnA3+lAq4eS9WuL4MQc+aFRv9vEv4u8oDiN6wuvN5qq8TfmF8Ldo+arsEVrfoicDKKUm5gq0GRSqJghQY5QrknqWZdCOvVqwHcFlazUotfdmrx3Izi2zKiqR0ERMLiLzXKS4XnK62Qs1XqqdZJdExszf/bHHReUKVjyofaE3k+GlqDRymFbOUa52U/1xIplm8w062zbqTiPUiNbojx0PBCD7bk9WLI3SUjCjZiralZAInKkvjT4xN+C55/KVExv7cUnrid8sjv1nOEPTbhmGJjBK0l/eiLT5vlsOTG3OvtM3MgXIpmqQOIUsnmNCLX0Uz8oAea7exH1vyggCmRxBgaMcm4wWEFp9qg74vavn4cybtPBU8K/ijz0sblsS9uPvzuNl8wYKMlSaUErac/bgruxI5Pia+tIRUK1eB3vGEuCg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,133 +116,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NAK for being AI slop again, obviously.
+Hi everybody,
 
-Again, +cc the OOM maintainer you failed to bother to look up.
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, March 12.  Thanks to everybody who was 
+involved!
 
-Reasons, as the rest:
-- Worthless documentation
-- Everything about patch screams 'zero effort, Claude did it all'
-- Bad etiquette
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-As with all the rest it'd need to be totally rewritten and it's not worth the
-maintainer time.
+----->o-----
+Bharata updated that he is working on v6 of his patch series.  He noted 
+significant work being done on NUMAB since in the initial work he had 
+bypassed the regular balancing mode; he made the NUMA hint faults work 
+only with hot page promotion.  In his next series of changes, he added 
+back proper NUMAB=1 support.
 
-On Sat, Mar 14, 2026 at 04:25:18PM +0100, Kit Dallege wrote:
-> Fill in the oom.rst stub that was created in commit 481cc97349d6
-> ("mm,doc: Add new documentation structure") as part of the structured
-> memory management documentation following Mel Gorman's book outline.
+This turned out to require that NUMA Balancing would start to depend on 
+pghot.  All of the functions are required by pghot and this will make it 
+easier when future sources of page hotness come later.
 
-I mean the more I see it the more annoying it is.
+A concern was earlier raised about memcg stats reporting which should now 
+be fixed.  There were other small fixes merged as well.  It will take a 
+week or so before patches will be ready to post.  v6 should be posted by 
+the next meeting.  Nobody expressed direct concerns about this approach.
 
->
-> Cover the scoring heuristic, allocation constraints, OOM reaper,
-> process_mrelease syscall, and sysctl knobs.
+----->o-----
+We chatted about the upcoming LSF/MM/BPF conference.  Bharata's suggestion 
+for his series was to continue the discussion on the mailing list since it 
+was covered in last LSF/MM/BPF and then more recently at LPC.
 
-This sentence contains almost as much content as the patch.
+----->o-----
+Joshua had been doing some testing with tier-aware memcg limits.  He found 
+in the general case when everything is behaving as appropriate that there 
+weren't major benefits.  When there is a memcg performing poorly, however, 
+this can punish those workloads as needed.  He showed a graph that showed 
+a very wide range of performance with NUMAB=2 and then a much smaller 
+variance with tier-aware memcg limits.  The important part is that since 
+the variance is low that you then have direct control over where the 
+average throughput could be.  He is going to be including this data in the 
+v2 posting of his patch series.
 
->
-> Signed-off-by: Kit Dallege <xaum.io@gmail.com>
-> ---
->  Documentation/mm/oom.rst | 67 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 67 insertions(+)
->
-> diff --git a/Documentation/mm/oom.rst b/Documentation/mm/oom.rst
-> index 18e9e40c1ec1..2259f871a4a7 100644
-> --- a/Documentation/mm/oom.rst
-> +++ b/Documentation/mm/oom.rst
-> @@ -3,3 +3,70 @@
->  ======================
->  Out Of Memory Handling
->  ======================
-> +
-> +When the kernel cannot satisfy a memory allocation after exhausting reclaim,
-> +compaction, and memory reserves, it invokes the OOM killer to terminate a
+He wanted to get feedback from memcg stakeholders upstream and discussed 
+providing some guidance to end users on how to put these pieces of the 
+puzzle together.  This includes translating tier-unaware memcg limits into 
+tier-aware memcg limits.
 
-I mean this is just actively wrong to start with.
+Gregory noted that one of the next steps will be to test both tier-aware 
+memcg limits with Bharata's series.  Bharata would also take a look at 
+Joshua's series.
 
-> +process and free memory.  The implementation is in ``mm/oom_kill.c``.
+Joshua sought feedback on the best way to compare with and without 
+tier-aware memcg limits.  Gregory said that we'll eventually move to 
+workload testing but in the meantime it would be useful to understand if 
+the floor of the throughput raises when you start to use pghot -- this 
+would be an outright win.  Joshua was planning on having pghot + 
+tier-aware memcg limits data to share for LSF/MM/BPF.
 
-Terminate a 'process', even what that is tricky in kernel vs userland...
+----->o-----
+Shivank updated on the progress for hardware assists for migrate_pages().  
+He said that he posted a v4 of the patch series a couple days ago that 
+includes several changes.  He pivoted to doing pre-copy of data from the 
+source to the destination and, if successful, then the metadata is 
+updated.
 
-> +
-> +Victim Selection
-> +================
-> +
-> +The OOM killer scores every eligible process and kills the one with the
-> +highest score.  The score is the sum of the process's resident pages, swap
-> +entries, and page table pages.  This sum is then adjusted by the per-process
-> +``oom_score_adj`` tunable (range -1000 to 1000, default 0), which biases
-> +the score by ``oom_score_adj * totalpages / 1000``.  Setting
-> +``oom_score_adj`` to -1000 disables OOM killing for that process entirely.
-> +
-> +The ``totalpages`` baseline depends on the allocation constraint:
-> +
-> +- **Unconstrained**: all RAM plus swap.
-> +- **Cpuset**: memory on nodes in the current cpuset.
-> +- **Memory policy**: memory on nodes in the current mempolicy.
-> +- **Memory cgroup**: the cgroup's memory limit.
-> +
-> +Only processes that can use memory within the constraint are considered.
-> +Kernel threads and init are never eligible.
-> +
-> +OOM Reaper
-> +==========
-> +
-> +Sending SIGKILL does not immediately free memory — the victim must be
-> +scheduled, unwind its stack, and tear down its address space.  To speed
-> +this up, the OOM reaper kernel thread (available on MMU systems) proactively
-> +unmaps the victim's anonymous and private pages without waiting for the
+There were no major blockers for this work.  David Hildenbrand suggested a 
+few minor changes.
 
-Anonymous AND private eh?
+We also touched on non-temporal stores and enlightenment for 
+migrate_pages().  Yiannis started work on this, there was some feedback 
+upstream for a new migrate mode to be supported.  Yiannis has been 
+discussing this with his colleagues and will be able to update; he is 
+targeting having patches on the list in the next two weeks.
 
-> +victim to exit.
+Wei Xu had a similar approach to the new migrate mode and ended up 
+splitting out a helper function that would check for both MIGRATE_ASYNC as 
+well as the new mode.
 
-Actually there IS some waiting for a specific futex case :)) though maybe
-removed now.
+----->o-----
+Next meeting will be on Thursday, March 26 at 8:30am PDT (UTC-7),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
 
-> +
-> +The reaper gives the victim a short window to exit naturally before
-> +intervening.  It walks the victim's VMAs in reverse and calls
+Topics for the next meeting:
 
-Why in reverse? Moon walk?
+ - v6 of Bharata's patch series, including NUMA Balancing dependency on
+   pghot
+ - v2 of tier-aware memcg limits (reclaim fairness)
+ - v4 of enlightening migrate_pages() for hardware assists and how this
+   work will be charged to userspace, including for memory compaction
+ - non-temporal stores enlightenment for memory tiering
+ - Gregory's testing of tier aware memcg limits with Bharata's changes
+ - discuss generalized subsystem for providing bandwidth information
+   independent of the underlying platform, ideally through resctrl,
+   otherwise utilizing bandwidth information will be challenging
+   + preferably this bandwidth monitoring is not per NUMA node but rather
+     slow and fast
 
-I mean etc. etc. this is really not helpful.
-
-> +``unmap_page_range()`` to release physical pages.  Once reaping completes
-> +(or is no longer possible), the mm is marked ``MMF_OOM_SKIP`` so the OOM
-> +killer skips it in future invocations.
-> +
-> +Before reaping, the mm is marked ``MMF_UNSTABLE`` to signal page fault
-> +handlers that private mappings may have been zeroed and are no longer
-> +reliable.
-> +
-> +process_mrelease
-> +================
-> +
-> +The ``process_mrelease(pidfd, flags)`` system call lets userspace OOM
-> +managers (such as systemd-oomd or Android's lmkd) trigger the same reaping
-> +mechanism on a dying process without waiting for the kernel OOM killer.
-> +It operates on a process that is already exiting and performs the same
-> +address space teardown that the OOM reaper would.
-> +
-> +Sysctl Knobs
-> +============
-> +
-> +``vm.panic_on_oom``
-> +  0 (default): kill a process.  1: panic on unconstrained OOM only.
-> +  2: always panic.
-> +
-> +``vm.oom_kill_allocating_task``
-> +  When non-zero, kill the task that triggered the OOM rather than scanning
-> +  for the largest process.
-> +
-> +``vm.oom_dump_tasks``
-> +  When non-zero (default), dump a table of all eligible tasks and their
-> +  memory usage to the kernel log before killing.
-> --
-> 2.53.0
->
->
->
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
