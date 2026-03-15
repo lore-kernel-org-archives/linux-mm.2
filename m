@@ -4,115 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C3610854B8
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 01:06:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9F0BD58B08
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Mar 2026 03:30:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 772516B0088; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
+	id 6044C6B0088; Sat, 14 Mar 2026 23:30:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71FAB6B0089; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
+	id 5B17C6B0089; Sat, 14 Mar 2026 23:30:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D9E6B008A; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
+	id 45F6B6B008A; Sat, 14 Mar 2026 23:30:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B6D76B0088
-	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 21:06:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 325136B0088
+	for <linux-mm@kvack.org>; Sat, 14 Mar 2026 23:30:47 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B58751B8D75
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 01:06:33 +0000 (UTC)
-X-FDA: 84546507066.05.0B448B6
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 15CC8C0006
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 01:06:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cBSq3R1c;
-	spf=pass (imf22.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773536792;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 83A9D5C2ED
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 03:30:46 +0000 (UTC)
+X-FDA: 84546870492.05.70E83C8
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7D85840011
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 03:30:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=c9HL4q9I;
+	spf=pass (imf07.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773545444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=breDgvR98s/9To7zMmpKVC/JH/4VMjY7A6WXWrwfXbg=;
-	b=hgkftag+WLBZSRR4opak0iy6VhKi1rTVkeKMCUZ/6gtVq/RVEFnBiqUR57yvN8oxPkYKW+
-	yTNcgUZZQSkTgSiQHwCUuNVMBcmS3Rcw0aTJ8ihMuTPIv/oAXjmvEJvUsRfSx/w/iXTuE+
-	H3OwOYbaC2hn32JKwSFMfxFeQ6AS84A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773536792; a=rsa-sha256;
-	cv=none;
-	b=Pq51bpirR8NODuIEE97PbbQXbvqu9eEN2seYp7MlN6AJE0pyO1IpJbAj7IC0Ryw2PWwrZF
-	61LBXDKY+hfs4WPTN5rrzZKCAiwTNA3CsuVXRxHs1ix0Bj3eWR2w0RWXtdP9O0UuWqYBQ0
-	LjbMG6ZRzWtmvUj0KHknQSyU3czLKnY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cBSq3R1c;
-	spf=pass (imf22.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2aeab6ff148so56975ad.1
-        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 18:06:31 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Bv72G/11tEX9vAPzpUs7xnniWeBvTIRb1OfN9FbtC4o=;
+	b=uqVYfXoT27CWY7QMj6IukOQ+dBXBltrkMci8CWFjLtVsdzDy0DE0WEVnPIwHup7xN02Vl7
+	s2Icq0U0W3uj4eS1tLQ+TTKl96dzQ7vGh0jLH2rmPaXzCnrpovjJ9JVF5fSGIw/DPfKAPU
+	L4ZYoBew27WNfBMFf7DBlUq0A/P0B0Y=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773545444; a=rsa-sha256;
+	cv=pass;
+	b=Nz0dU2DyESmHImedONLxEmgAPhctFqKOckQBhIsHO//Y1r0IodUAkLN7I3TpPjUpIK3wHh
+	mHF3yXbmdgRgEU9nPweDysNJUnKPbn3XAw3Sb6dORZvCYGweow+AeUrcWKnIbuVEg7Yu+c
+	I+wM+o9UqHSa5VgzBcrNivyqxhBWTrs=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=c9HL4q9I;
+	spf=pass (imf07.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso4903090a12.1
+        for <linux-mm@kvack.org>; Sat, 14 Mar 2026 20:30:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773545443; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I6Vaw+KQRdRalD1WG+2lrvxFRr1XXXLRJtEJbm2EoXjGQ/aaE/LVpEU96+ikmlKQ+G
+         QL85kYO3ykAEZivrt0K9rCXKPo3UINQZ3xMCsNRhnCIM8s4+AMqXYlG1WavrruJcA0J1
+         pvZ0yvUS2qpQwPCZ7tV9yfojVyauwMPxrFXQ9tNvJrCWiWZhxCnzfI0CDTst+XM4HaWU
+         xQyZDtZiOktZDojErPrgVifUKjxRBaSdkY4NNBOZXk5fsm26RuSmT4YtM/OotHm197Zt
+         T6tp9uhRfREy2kqvIsk4mKJylQ8aISLJLebcKTWFrU9B2b8mztmfhUJ2jRPDN0+6IG6u
+         Hbgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Bv72G/11tEX9vAPzpUs7xnniWeBvTIRb1OfN9FbtC4o=;
+        fh=3LYTg7Ly0VrO4OhbRk2MqOdzeH+SYd+c6Zr+3GPEuq0=;
+        b=OntgCOWhNz5xm5Yuz5gY0LqrjbvvMW5ndxsZ5deEh3Sx789Rqz4iMZO2ug/K8kA/9j
+         wVKLltZqs8TDQLDdFpqoEjMlP5xkw+CVZpo2SQyjTHYXo+G5R+/WrR6cnD0pOtcPj+Gn
+         a90xuVptB/73lBhDPUfZ2CX6sFxlb74DlXoOxVRnzqZBZ5q98rIADOTfzaoHo/dX8e7m
+         NS55OnxkluI/I8VI5g4ItiFbjWuGOjXgL9YkVEv1cRM22TRH1xo1loSxLDvw2AGo2r0n
+         nWCdnMZLOg9+RXu5hW+IMpiI3kOHizHNMnE+eYKaxNyguBPOSjGVzINeOvXwUp1QbOkd
+         Adsw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773536791; x=1774141591; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=breDgvR98s/9To7zMmpKVC/JH/4VMjY7A6WXWrwfXbg=;
-        b=cBSq3R1cdQliEGewJODpj5bP1EfF0vOXxlERsVinl3RB3ukXJ1JyYIFLZSsQSQvL+g
-         ZfpU/2qSDX3i5ByJkCXAvi0/5ZdD3cbB49l69Rbqre91d3Mebcf1hx4r3Bmwx4uEsWDQ
-         jUEDUy9uuroCkZVVH/hawUw09C0IO4RDk4YEuT97rueeIuPIny+2i+FF6W4xheHFIOKq
-         HTa7+rwbNUVylzAqicwRdaN4f2quQBlyt7pMkyEpNaHI1cEY2VRD85MaLSYN8np6Z0ZD
-         DQv+0bHeCxj0LOFjgWKQBeBDYyL0oUEy59Vz5EjPiAakgQAsi2Zp6FRNINNsvt6Nr/dO
-         W1lQ==
+        d=gmail.com; s=20230601; t=1773545443; x=1774150243; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bv72G/11tEX9vAPzpUs7xnniWeBvTIRb1OfN9FbtC4o=;
+        b=c9HL4q9IpSOLQiz3bed2KAUpPV31U0fXXQZ6iylJYM2KaBt6Myr0WDMAosP1VXNMo/
+         sx6qIGqMfGbuMup5MCFbTePvHnzvKazJxQhikD9X5lhDCYDKMS0cZBoHNBZPtc3Ha08k
+         O+CdmOeEFoU6WqJPPdfe1IlIcVQQR6zETzpsuCxjBfZLHT55bN0VYytHcFupkJubKoqy
+         OVpEc+8TYuL4QSSZl84kh99zFftFAM3j0+UR23izDOignJJISPdf2e//KgL0kb/+JdkE
+         7KBbQszEKXHyhZvjeein+Ig2qz1WELQhxys34piy2J7rA1ahN9j98TnwOlyQY6UXffc+
+         u2OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773536791; x=1774141591;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=breDgvR98s/9To7zMmpKVC/JH/4VMjY7A6WXWrwfXbg=;
-        b=D0pcuaGUpO5bR6ZkI3eSKWoJOBZK0VeEpXZY4Lwpf1DlhE+eM0ZYhPuU/BPkWLH08j
-         AWOIs0jnJanc277zcIEO/8ZAB5viOgeQnzH3lTByE0+cmypga/OGWrJBk7ld2q3w5xCW
-         vR9ISiVkaAict2d4DO04eHBFuUX8YUFB+fAtBS2BtxerSBXuQGwwT4SYO8FRQHYob5oE
-         1N4QT7A6JAmXZTSW9bUEWCI/4s7R9uinWAhsv6l4NiXFZGn2DaMKOU280kNnJlV/AfQS
-         8F2iBisOz4dTebYmQiT4uKcyP5r8vWw+JTxZYtZ5M30m06igWV2ix1RNmRBOj8IFy75Z
-         nqkg==
-X-Gm-Message-State: AOJu0YxwA8DQK5vfQ3yMrKt/JRlegQ2ETQ2MQ6EgoHiUcN0EbpncBUwg
-	Km+JM+4D8VhzyGouScH8xNiRiAZDj5GBYn+pt2iYHci19uYyaSbuLzdxWvCctfvcqg==
-X-Gm-Gg: ATEYQzwTOmSudZo93JNHrt7NMoN6UrLfaMalTey0EFs9uWpmocRWZ+dDVdRRJM6sQ4G
-	ipkqsQNpLJHyAWuCaJ1D86OpTOAY3ZgtqlXyojfdhtrJQox/o7YfNyRWXVyT7UJq+J0PxLWaHHn
-	+kjE1QkTE3FTaju70A+geh8neXvKQRWwCt8rBIPI4GjfBhuBxszx5+EmkR1uLpcy+EHmwd+pIhK
-	K1ilCpQaAyM79SNwA3vd4UX1LGR8IrKzkK1abNc3MjEUl/Jx3y6mwQ3hh9CC7VoOoAFJPYEUouE
-	pNanH93MWvFvfBjYCOSO8PfcSaxeODX4apRr9ErnBIyc3BaGsYLouViPqcPLnaG9pnYFihdmGIj
-	e1f/baI3f8vqFjBvBk6UBDZ+I+kdvOnDr/nleUGIez8Qfat5ozJ/papOrI1SEe6loA8QmRjYVy9
-	a3/Uok16hfhLRoLSZ8Km5VHYpw1lFgVCwaQlbLldkXAh1B3p+x8Ofc6TubY6M0PP+R9VyETDBgK
-	r4TMXxdVA5T7kYXWS7ajGij9SZsDjitVuuPTGQ1SVbHYCQWL8t/rQ==
-X-Received: by 2002:a17:902:e849:b0:2a7:6c4e:5914 with SMTP id d9443c01a7336-2b042087e19mr2365515ad.6.1773536790052;
-        Sat, 14 Mar 2026 18:06:30 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:f531:45b8:548c:e004] ([2a00:79e0:2eb0:8:f531:45b8:548c:e004])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07287ef8sm10728741b3a.29.2026.03.14.18.06.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 18:06:28 -0700 (PDT)
-Date: Sat, 14 Mar 2026 18:06:28 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Alexander Graf <graf@amazon.com>, 
-    "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
-    Anthony Yznaga <anthony.yznaga@oracle.com>, 
-    Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
-    David Matlack <dmatlack@google.com>, James Gowans <jgowans@amazon.com>, 
-    Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-    Vishal Annapurve <vannapurve@google.com>, 
-    "Woodhouse, David" <dwmw@amazon.co.uk>
-cc: linux-mm@kvack.org, kexec@lists.infradead.org
-Subject: [Hypervisor Live Update] Notes from March 9, 2026
-Message-ID: <2c094579-77d8-7de1-0a49-9138aeb69e84@google.com>
+        d=1e100.net; s=20251104; t=1773545443; x=1774150243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Bv72G/11tEX9vAPzpUs7xnniWeBvTIRb1OfN9FbtC4o=;
+        b=Ca7qdLYCbuJaMN69Q2gy43zbNW3FWXHgNxnaO3rAU285npxZchcNqgQGBodFP3fuEY
+         YpICwMJgCjVMKQNeg5YLDGNB34ZvFjRMaRzYp0VzPUyTtjUUQAVU/8NN72GJgdprARvv
+         dkwM+iIhJsp2fGR8kT6xZz0rkVmREo7HdMo0Ww5cgKuCL7HHd3o3j1c9GJ5jFu9voKgq
+         6OCjQWrLczZCVdQQ24thVOKR8bYjPNMdeTtxHSjgcLmTEceFFkl0EfuQL3csmeIYA+TN
+         1AKTPMcgCEvhXqdWoWIYwN2kybcQBncbxKs4ttTp9NFxocWzm/eVwerEOBfr0lZQE2Hk
+         3VHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXi+oUS7kj2ycReoU+UX3g9PwBn+ZCS82IV+DRinDw3PeipTLW9bqGmD6iuFAI9MqfX2y7mM24P4g==@kvack.org
+X-Gm-Message-State: AOJu0YyX0z7iadlOvwyf93peJETFhpWxOdfrb9v+fCDR1loyaOTjcvfd
+	ntBF5S/jsbVZ7o9WMjXRb8SFJl/1mTz2frVgX+daDBNvVoWbShXQeEkJo99hfduCGo4rEmBaBhf
+	koAiLXpJSfDHL++c/Taofs0VdaBaRywA=
+X-Gm-Gg: ATEYQzwRSHVY8PsL5H+x4N22o0TPz3eBVXmYNmPO+VZ3WsDHPOl+kdExziwLt+HeHNj
+	gYNqGRIlwODcG82pOw/9dRJZDvbJbm6Jrk0/L6R1hdaWk39Crobl0NTyUZQeeG3IwcsA14uhMQu
+	b7PSwLYEqutrLBXWnESE4l2E7D5MIA4bwKatpgJl/m3jr6FTwzc31S5pUaRjQukQp5LpL+m3lyM
+	XC6hxhZAT5eyTpSb7FpHK+6gzdmZYyLQKQkpVYODmGwgDxit/HWE9d8w8YFhpY/MbZJkBmvjs9C
+	ae7Ql3RXhw2hU1KD9Eos/D2Kbg==
+X-Received: by 2002:a17:907:1b1a:b0:b8f:a85c:95c5 with SMTP id
+ a640c23a62f3a-b9765345681mr450808766b.37.1773545442392; Sat, 14 Mar 2026
+ 20:30:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 15CC8C0006
-X-Stat-Signature: 6itfes9fi9pka587wqb1t734z5pnc4s5
+References: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com> <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
+In-Reply-To: <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Sat, 14 Mar 2026 20:30:30 -0700
+X-Gm-Features: AaiRm53et6BNybxT7kXiCWRSAaquX2zmTHsUTtxux4cSYbjHAW7Hw1CpMFCH7Ok
+Message-ID: <CACpmpodjsMELCrJ-QX066CYiGgraysr_ZhFMvU5N-6nr2HsRsw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] zswap pool per-CPU acomp_ctx simplifications
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1773536791-390447
-X-HE-Meta: U2FsdGVkX18qXgWIHpSouY8HfN/sNWh6qZhwXrnA66TgAjyDGTw3nVOJtXm/a+2qe4cxVGiX5EgEAdiONDVLtghOL24Ys/d/j2OV0CC1ow11V8hwEp72gKL/5+IeqfRpD0aLS+NKrjI4iNBWGzRtJ1EqX4JLZ5HgPsSfmaEprosuSbb+vM5TPW0qCbuW4hEo44R2DbXVgvQoCG5AxSJD7Wu3i4RzMHoVwLOMiQhwp8S57vKVuqsr/k9UcHmeycjqRhaB1pugjaGr6anspx2S4GS0iGSZAsRIDu0joh4YaoSOVwD3gFnjoXON3jtzlQRmpDLEW5zZYqDzjWLeQKtq54LpEHwHNaJJ5Wv8+S6E90L/sMy8CxXgT86KT7PXYX6v6q+Nrpt4YMybhNel46BwBcwbD5gb0Ub4v5BEQjUPBhmIwbWnwYFGDrzPfeZgyKYZtHITO5IjkrBZBM83L2C7sc7EF7rh9eTzKy1gk0S3A6X/B9w2ZEqdKpK6A0C9IwnNPx4fh6epCxhDtWadgHKp9PVCuKD09ZrZYjxnQkGWdQNxZotWsYJ74MawG//eA8VIFYMEZSS+nolBtzohCgwGU/I8OYh16XD7OisPxuXiWCFvWWyqR6XjSExrJ+EVolBdWrw6CtGbqhoOelCGe4gxEkpHCn4GAEuWUsdcZnSDJLRcb1Sk2F5qkXJhJw+qR3z9UYblH9uBpyN8a37gl1PO24UE8dz2EOGpg+81KhDh/IK7F8McBNSO+F1bcloVNEa0iGWFtsRS/YLgC6H2IyyuuRz+mclaUcmKtjHODgZVYJVw/pMXl5MF3QPONsHMcaW/J/I8VqLmU6DGa03llzRFBoIWL5yhpB726ak8quX9+BcQc98bK15U4k+EMDEqGKWsn/6IZOYqbenVY7h3qg4t6f8ClHkz71R0h2i3wpOuI5TkNq3rUlZ1iPDwttjgNmnvFRp4OYYfRU2jOzii3NF
- mmLDZBLK
- u0oepwzTusilMvSj7PRax7ZirGcUDa2ZStEWRW6xFDW62njt+EyZxN+FoTNtciHpIVfAO8vOenDFNJEnn+qIedGfCEnoYo9jRVLWHIr0GncITA+ycSqv/9Lz6m32q2sReq+gkpfY+aRIN6O0Bn6vAfHF8Kqz1boocLsLcp2vTS4sJOlHS6JEoUJoMFxpzSQAw9gDlNep5Vk45i3F3pGN3FI3v/oDpuEA13yB56h+S0Ipk90up5wcRWn5AgcUsMOB+tGuw0WyltAN0E6cxnkqBI7E9HsScsfLAKGZI3Er00Pl4ctCuVAHS6JUo1l7ZRW+PeEG7c8inZeo1fkH8LIY+S20EGRRH+UdFLLdv2b5b4Ws14flxQudqrD2m4hFMPwQ86c9518/31zUe8VU0En1P4W4LpdsZAElO3gnIvyIcrjid1QY7NCFLBrlSPsZmM6FjLgvZ50VN+GQEwpFFueTgU3CDFcf6pj+/tEA6Ag0hiKq9SjQNjqDPGBCFVaoMu2IZVWPOn/cZYI2n0SafcwomhWwobUj9/X6et1n+EYzxuyqvpGugUkwQg6L+uaVgZ81UA3AuIhdYVWJnOjy9qOTjyYetUlBRHeqrIKrCG4FhFqWDHQaEAwNtsxueMs4TPSGsQkwbwFeOrgXWaryxeDwgely9PXWzEzHTKOBO
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7D85840011
+X-Stat-Signature: 7neqocxrk6fk7sfaqzyu9sj1wht3ox3e
+X-HE-Tag: 1773545444-854322
+X-HE-Meta: U2FsdGVkX1+xT2xXPHAh27UD7aNBu9ziRMqeBZ4LHgvLf1+Qgc3+x2S/zmAceHfpUAabQDw/Jk0DU0U+em8A2ljBhIWaKa1LbMXzoP1Op+Sw6g2scCZOe1v89IW2EWEncrNKD8gcIONf+paiayH6QrWIj0Q0WPwQrihY51ZtFXwuK+Wlkk74A+fyikW6BuCfiIHLZ/uocVhk8HW2eV+lSwEBwo/3k/6dx3TvZTOYI4jmwjYWEBDVSamgQn1P3j381irn9YJu9uCis+x1qGZn/bO5d5EAp8UQvmmik2PbbtMo+WLtMBp8TdnPKwh1DWKSDnHauB/JfWzvVUJpg7FYqgBAgFyA1odVLec6C3ipLmKRofokMhIcor5BQ7LFt18JLgoIV/XvJAvl7gwgP3faRLEaOsiQkGaRWjyy9TRgJVnJfQRM+oxghTHX1HAG3MrQZTRuotWMTkA7/055rtpjhUAFwYmAd3DwmowFRvXsGnCpcmsSgLDJqAuCQN4CqgOepc4LkpANZB0aKBy12GxeV74IOgJNMA6PlEvsSONuVWWH9JoZJw/6a8utH9U6vuC4Sz+WAM7zrmHi55jtCLnV36AWH0csBAouh89n8dJYeITrumLK7QFJ7lF3/VOhOMy0z39qnYek9o6NLrgaUP28D72uQR1QUul40WcNazwn9dNKs2cgCNJ4L3BxKNZwFGAninVSV36tx4vdV5uin6Ps2/hfeFJck3uprNMjLU5Ac0RF9fJVxc55xBJixjm5Mp9u+jI5fJCC9rNrKTk2aPr5OmUJ7YGuzvCJGy7G+pDZLdvwNynk6v2G8vG6UicqpjSs5Zj23J+8fbAWfwle3uzrWBp9pLoOeS07MxWARTYRtgvaewoNxx/2FKJhEElPf3BN//OC72Zo89s1DcFQixOsvFIE9ZGJ+0zl8YYMQlUP2Db3057nlqFAyfvXJLJMTfiYytRA+x/59Wa58qC/LuB
+ I+Fle5ng
+ RsfVGqkTVa+UinZcHrfSo6bld+FczSEzMrlBTW+Q+6lcNRss/8qfv9rjvqmMvBlGqJrn5dsQohVqAtZiLv2Bm/IUB9AqalXSl+0QX/vjinxjVVJfyHSNUEIIJs/SSVVxnljHON/MbxVfg6dl2FwqbRae9yaTAdSJZrOtM0GoYhvHYyVO2ohyqdxuJCOGTHA84m10mUNFpU8mJw/VTjy93Plw8U7dedFY8plVTZtYzJIa/4NVTk4MXYX5fWavzWASUdK0IR1URY2c/lDcTWE/sjpACDW7pqJZrUkODJk0yT9UvTPBni3cwUZ8+AprvWOu/dNZg+qAZ9WtHZqmwUszqok3Uf/Ky7Nvi7Y4ZNrQCH9Vuma4nXO25suiHHgd3WsP/9TKe9hMrsYvYnWOXJ2kJDi9zCvN4ec80Ylx+DjBeMx08x17vPs/Fp/pW1CjQ4eiU+V+oEvNtMrhN8C/Oew3bQBA4iWEV5/GPWSjmv5FmS7bDp1P7tPEZqcav3Pu+VQWYfyodhffEcnCygg49dj8xcT661Azrjh+VWcEe7kFaKE/5n6HvzeRGOk0ZyCssxhycC3Hm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,106 +140,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Sat, Mar 14, 2026 at 5:11=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Fri, 13 Mar 2026 22:16:30 -0700 "Kanchana P. Sridhar" <kanchanapsridha=
+r2026@gmail.com> wrote:
+>
+> >
+> > This patchset persists the zswap pool's per-CPU acomp_ctx resources to
+> > last until the pool is destroyed. It then simplifies the per-CPU
+> > acomp_ctx mutex locking in zswap_compress()/zswap_decompress().
+> >
+> > Further, it consistently uses the same checks for valid
+> > acomp_ctx->acomp/req in zswap procedures that allocate/deallocate
+> > acomp_ctx members.
+>
+> Sashiko has questions:
+> https://sashiko.dev/#/patchset/20260314051632.17931-1-kanchanapsridhar202=
+6%40gmail.com
+>
 
-Here are the notes from the last Hypervisor Live Update call that happened 
-on Monday, March 9.  Thanks to everybody who was involved!
+Thanks Andrew, for sharing the questions raised by Sashiko. I have
+provided some responses below:
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+> > @@ -786,7 +786,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu,=
+ struct hlist_node *node)
+> > return ret;
+> >
+> > acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_=
+to_node(cpu));
+> > - if (IS_ERR(acomp_ctx->acomp)) {
+> > + if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
+> Does crypto_alloc_acomp_node() ever return NULL?
+> Looking at the error handling just below this check, if this were to
+> actually return NULL, PTR_ERR(NULL) evaluates to 0. This would cause
+> the function to incorrectly return 0 (success) instead of an error code,
+> hiding the allocation failure.
 
------>o-----
-Pasha updated on stateless KHO: it's now in Andrew's tree and ready to go 
-for the next merge window.  He noted that deferred struct page 
-initialization was being worked on as a next step and then attention will 
-shift to optimizing start up performance.  We want to make sure KHO is not 
-the long pole.
+This is a good catch. Just to provide context, this patch was
+introduced based on Yosry's earlier comments in [1].
 
-Pratyush noted that there is a weird interaction between HVO, sparse init, 
-and KHO.  HugeTLB pages must be allocated before sparse init but when in 
-KHO boot we are in scratch only which wouldn't allow for allocating such 
-large amounts of memory.  Pasha noted that there is an exception available 
-where we can ensure that memory is coming from the preserved tree.  
-Pratyush said we should parse the bitmaps and make the memblock 
-reservations but we don't set the order in struct page, then turn off 
-scratch and do the hugepage allocation and then parse the bitmap again to 
-set the orders.
+[1]: https://patchwork.kernel.org/comment/26282128/
 
------>o-----
-We briefly talked about KHO enlightenment for ASI which wasn't deemed to 
-be super urgent.  ASI can be merged without KHO enlightenment so this 
-could be a later extension.
+crypto_alloc_acomp_node() currently does not return NULL. However, it
+could, in future.
+Since the rest of zswap_cpu_comp_prepare() dereferences
+acomp_ctx->acomp, it depends on whether we want to future-proof the
+code to handle a possible eventuality of crypto_alloc_acomp_node()
+returning NULL.
 
------>o-----
-Pasha noted that he received some comments from Pratyush on the luod 
-design[1] that he would be iterating through.  We welcomed anybody else to 
-continue to provide feedback as well directly on the doc.  Pasha discussed 
-with Jork and there will be a three-way meeting that will determine what 
-the intercept will be with systemd.
+If the maintainers think future-proofing is beneficial, I would need
+to handle the PTR_ERR(NULL) which would send a false success status.
+If we don't think we need to handle a future NULL return from
+crypto_alloc_acomp_node(), then I don't think this change is needed.
+We could leave it as IS_ERR(acomp_ctx->acomp). I would like to get the
+maintainers' inputs on how to proceed.
 
-We discussed versioning support and when the timelines for landing the 
-support would be.  Pasha suggested that we would need this when we start 
-making strong guarantees about supporting live update from version to 
-version.  Pratyush was working on HugeTLB preservation support ahead of 
-this.
+> > acomp_ctx->req =3D acomp_request_alloc(acomp_ctx->acomp);
+> > - if (!acomp_ctx->req) {
+> > + if (IS_ERR_OR_NULL(acomp_ctx->req)) {
+> Is this change necessary for acomp_request_alloc()?
+> This function strictly returns NULL on allocation failure, not an error
+> pointer. Changing this to IS_ERR_OR_NULL() obscures the actual API contra=
+ct
+> without providing a functional benefit.
 
------>o-----
-Pratyush updated on HugeTLB preservation support and how it would be split 
-into multiple parts.  Part one is selftests that he sent out to the 
-mailing list for review.  He is currently blocked on the ordering issue 
-mentioned above.  Pratyush suggested upstream code review from upstream 
-HugeTLB experts would be very useful on the list.  We discussed handling 
-this at the next Linux MM Alignment Session on Wednesday, March 18.
+As of now, acomp_request_alloc() returns a valid "req" or NULL in case
+of an error. Same question as above. The only benefit would be making
+the code more robust to handle changes in the acomp API in future.
 
------>o-----
-David Matlack is prepping v3 of the VFIO support.  He was working on 
-preserving VFIO file descriptors but not preserving a lot of the device 
-state itself.  A question arose upstream about userspace being aware that 
-we're in this development phase where files are preserved but not 
-everything on the device is preserved.  He didn't see a long-term need for 
-a UAPI that expresses that it's saving bits and pieces of a device or 
-letting userspace control what the kernel preserves and what it does not 
-preseve.  He was thinking of doing this under CONFIG_EXPERIMENTAL.
+> > pr_err("could not alloc crypto acomp_request %s\n",
+> > pool->tfm_name);
+> > goto fail;
+> Can this error path lead to a double-free or use-after-free?
+> This isn't a bug introduced by this patch, but while reviewing the modifi=
+ed
+> error path, it appears that when zswap_cpu_comp_prepare() fails and jumps
+> to fail, acomp_ctx_dealloc() frees acomp_ctx->acomp and acomp_ctx->buffer
+> but does not set those pointers to NULL.
+> Because acomp_ctx is persistent per-CPU memory, if the CPU later comes ba=
+ck
+> online, the early initialization check:
+> if (acomp_ctx->acomp) {
+> WARN_ON_ONCE(IS_ERR(acomp_ctx->acomp));
+> return 0;
+> }
+> would see the dangling pointer, incorrectly return success, and leave the
+> CPU with an uninitialized mutex and freed buffer.
 
------>o-----
-Sami received some feedback for IOMMU persistence but otherwise no major 
-updates.  There were some patches sent from Intel that would be a small 
-dependency for hitless replacement that Sami is looking at.
+Thanks again, good catch. I was thinking some more about this today,
+and realized this could happen if let's say a batch of CPUs were
+online at pool creation time, and the startup callback succeeds for
+all of them. Now, if a CPU "x" is brought online after pool creation
+succeeds, encounters an error in zswap_cpu_comp_prepare(), calls
+acomp_ctx_dealloc(), then CPU "x"'s state rewinding to CPU_OFFLINE. If
+the CPU "x" is again brought back online, the above use-after-free
+would occur. I had missed this during my response to Yosry's v14
+comment [2] yesterday, sorry about that.
 
------>o-----
-Pasha brought up plans for the next steps for live update while keeping 
-CPUs running through the reboot, which will be a long-term discussion.  
-This will need to involve KVM folks in the upstream discussion.  Jason 
-said it would be very useful to demonstrate kexec live update with a very 
-simple VM with no VFIO.  David suggested a KVM selftest would be useful 
-for this type of demo.
+I will set the acomp_ctx pointers to NULL, as Yosry suggested in [2].
 
------>o-----
-Next meeting will be on Monday, March 23 at 8am PDT (UTC-7), everybody is
-welcome: https://meet.google.com/rjn-dmzu-hgq
+[2]: https://patchwork.kernel.org/comment/26773983/
 
-Topics for the next meeting:
+> Additionally, if the pool creation fails entirely, the fallback cleanup l=
+oop
+> in zswap_pool_create() calls acomp_ctx_dealloc() again for all CPUs, whic=
+h
+> would cause a double-free on the CPU that initially failed.
+> Should acomp_ctx_dealloc() clear these pointers after freeing them?
 
- - luod design feedback and intersection with systemd; implementation and
-   next steps
- - improving KHO and boot time performance, including deferred struct page
-   initialization
- - HugeTLB preservation support including selftests
-   + debrief discussion from Linux MM Alignment Session
- - VFIO patch series review from the list 
- - phase 1 of IOMMU persistence patch series, then phase 2 status and
-   updates
- - hitless replacement for iommu domains and patches from Intel
- - guest_memfd HugeTLB enlightenment: conversion support, HugeTLB support
-   without restructuring, and HugeTLB support with restructuring
- - later: versioning support for luod to negotiate
- - later: ordering issues when disabling interrupts based on feedback from
-   Nvidia
- - later: update on PCI preservation series and next steps
- - later: KHO enlightenment for ASI
+Yes, I agree, and will include a fix in v2 once I get the maintainers'
+feedback on how to proceed on patch 2.
 
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-[1] https://tinyurl.com/luoddesign
+Thanks,
+Kanchana
 
