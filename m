@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5427AF506E1
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E720F53D67
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98DD66B02CE; Mon, 16 Mar 2026 10:57:04 -0400 (EDT)
+	id 68FB06B02D1; Mon, 16 Mar 2026 11:06:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 911856B02D0; Mon, 16 Mar 2026 10:57:04 -0400 (EDT)
+	id 6675A6B02D2; Mon, 16 Mar 2026 11:06:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81DA56B02D1; Mon, 16 Mar 2026 10:57:04 -0400 (EDT)
+	id 59E096B02D3; Mon, 16 Mar 2026 11:06:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F3B76B02CE
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:57:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1EE7DC176F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:57:04 +0000 (UTC)
-X-FDA: 84552228768.07.7C957BF
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 12A11C000A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:56:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 455B36B02D1
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:06:12 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0EA981C2C8
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:06:12 +0000 (UTC)
+X-FDA: 84552251784.05.1FC1830
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 41E998001B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:06:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=E8l7JUDI;
+	spf=pass (imf30.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773673022;
+	s=arc-20220608; t=1773673570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gHU1LhORBaSIFIwYZJ4G0bVW1M8OYaYhBowsa1Kjtvg=;
-	b=fMyxSJx9/ujb0WL5c5K1kXjyiD5dCm/QBpEBdDMJRwy52hq3w3e+l9R6aH0E8Xl8dpSMm9
-	XHAenX2d2bzW8U3xMiCPA8ivt7EyE+9ueh5mGgpqHS3P0DG2Jikz/uDic9ywyNscs4w8ca
-	da8s5DIJOMYeCOL026aIr4QuPLRv/Ps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773673022; a=rsa-sha256;
-	cv=none;
-	b=miQAQUwons9kLaFsJr+kk5TIXCNkWFaQ5kZOFUSx+RxpRFi7Dib5cbEp0r/i49IEiETKsH
-	gPIsqTuWRo7BfH3Z/YRwkw1oI6oy4uHsyOWSOrW1TzYDGfHS9fj5I7ks4gecdh3ScqBvKW
-	8tVDaSSdhvNkwoD5OXrFw/RP3bvldck=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HcoFzXqKGZ4VRsUqh4N3hkFYaxdhCFRCFiU1h19xJPQ=;
+	b=jtxS+rUgSfafxFrtYkzu2PzZ565IffMjKEHwdX6MVR9x/CmKotlGmES3+fSqpJicXlGDtV
+	uON2WwIVqlk/+EblP17K1QEUJfCy478LlXkxBNGxqSUZ6oHDrj5Px1cqsAAiGtUWAXzQ2W
+	Xaqz959HBxLBV3nnGkrGri6QgTGP1Dw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fZJ7P42sszJ4692;
-	Mon, 16 Mar 2026 22:56:01 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2643040569;
-	Mon, 16 Mar 2026 22:56:56 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 16 Mar 2026 17:56:55 +0300
-Message-ID: <224a29a1-13cb-41aa-8736-aebe1023fb7d@huawei-partners.com>
-Date: Mon, 16 Mar 2026 17:56:55 +0300
+	imf30.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=E8l7JUDI;
+	spf=pass (imf30.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773673570; a=rsa-sha256;
+	cv=none;
+	b=xvSX3V8Zj1BW6uAaAn2ae/ifhip6W1ruUhd2yyCq6mQMasKd7C+GFNXhKgKELoC1XFo7jH
+	9vAzxWQBUNOH6WI30McT/cVN7XtjygQNNTP3tNzt6jqrs6L9sN7Xf7wFUGXwa+M9RWBsaD
+	/H3PJ5+F98fRW5rPREVfK0Gb8a/qJdI=
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 35DF6411F8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1773673568; bh=HcoFzXqKGZ4VRsUqh4N3hkFYaxdhCFRCFiU1h19xJPQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=E8l7JUDI1f6yvu+pkh2/I8K3sWJ/9xBp565u1RQ73Z/RxP9mvn/L+GBVi0oomUVtG
+	 G46+dbflomkdYax2uWBLoxPJxtEjEy3IsALd7H8Znt6UCdiya2WpCIlcKcF/HrqIx7
+	 T63QjXI3HvjOg+UvMh1PVGMN82XSt6ZlBJPqZR24KmJ4A1+7SZa9CAa+EBSAt0y4yh
+	 72ydQLOcQMtmvWtA/ZD5gtYdXsek3ClGmvd+qK2m9ITU/rCRBSoaJhhiuWfdm9rbNZ
+	 akuRJLIivjMTWYpafuyQsvYqarif2AZ+QmCsk5AjtFVAFf1DvyMygGBfmdIfHDmj1Y
+	 YuJsAhKCkeKow==
+Received: from localhost (c-71-229-227-126.hsd1.co.comcast.net [71.229.227.126])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 35DF6411F8;
+	Mon, 16 Mar 2026 15:06:08 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>
+Cc: Kit Dallege <xaum.io@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH] Docs/mm: document the OOM killer
+In-Reply-To: <31744315-bf9e-4d9a-9c25-63eef0bd2f01@lucifer.local>
+References: <20260314152518.100194-1-xaum.io@gmail.com>
+ <fbee0ca1-4de6-4182-865b-a33d9ed32ee4@lucifer.local>
+ <abeyD1ZngYhkAx6g@tiehlicka>
+ <31744315-bf9e-4d9a-9c25-63eef0bd2f01@lucifer.local>
+Date: Mon, 16 Mar 2026 09:06:07 -0600
+Message-ID: <87bjgnizkw.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] Docs/mm/damon: Document DAMON actions when
- TRANSPARENT_HUGEPAGE is off
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <ljs@kernel.org>,
-	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <linux-doc@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-References: <20260316144848.99972-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260316144848.99972-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 12A11C000A
-X-Stat-Signature: z4qn4hysfbrpx5emzrxsfkrk9jrcn1z9
-X-HE-Tag: 1773673019-66951
-X-HE-Meta: U2FsdGVkX189M1WkpkTrhXpYl6qFCajb8mbci/VviWh2uaQ+t9cc2urJz6rgOj/p1yblR0AQpBSG+x4DVTFKmrZBL8lW5/PDTVXGwsc6hk+jhBq4mod/welsAgzgWfLG6Vtcpto9Ny7G18E0w43fLS6imKtT5Cju+UDRi9/HfjF1MV51agG2zsE1XIqtDHRolvLAI3dRTHMEtdbvwS1e6ShVVXK1vOciMUjbz5wHNFPSo2ESanP/21sldqJ26PjVqdKfo+WIvgPufhHnT1kpHMhFCPA88z//erLn3hmR1hmYLi71O4rc8BUZ6cMSaRuT7xvCMMDdDJ+4Xub5zvLGFGDsCbxSPHJInaW2LIJZMqQy62WdGCmkAJhDcWpXrWcD3H3RCnebA89ClK4IddnXCRYiDE9QVXssK0bjvYHIFXE8SATZZaWVq6v4rJPdZ/Iho5GMJ3Ms/OpUYGsR2B0Zqg5vyx9kNRXZvcs9ExAxhWR1UZBb9vP3ueN02F98GiE/gljKaVa9pbg62/S1IF4FuJwZeY0edJ2Gv+wLl1QZJoDqmbjGYoZO92PeXnbwtp6z0uQEgpbcGmnBOEsQziFnaKSSwVuTziwholMlepMFXbdisJdUhveFK2CP304Z9yBSyBNFDsY+p/FgUUMdIObJPuIRYjb8HaYELyFV0cK2UaPqENaoKJRX6zgD5J9BT/I2C2RasaQ8atHGCsCayGvnP45PydiHULfC3kQec70FcUe9tGlrlOli95nbpk8eSGjgq02qAK0d4EZAqH/ZeYs8xTiSkBq2knstNlxhsHSrHryWr7ER9JbHJgFDUn5VROo9QYicojcUtGZNMjgCruBRP0NlgQ/+ZR8rdYo68AwAT2clw6kiJQkNUssGJ4OW0x3a6u8XqGeT4S+icw05HOlvO2xddoAJ/AaehlA5JTdjqIah4xQhQ/zbGAOUr2yef7+Nn0TT6PLwQmzmhtBtVB1
- Vtw125kC
- Sa5SKfQ1gEHiEa9yvvuO30SVBDdIsiaSZ6KeqIE5k87S+2de9/IYn/L6p7uyOSZ5ESUgSy3+PGOGhS0p9P/0zQnmk5K+BI+zJhLONJ3JdG/Rd4cIFWmdixoBgnI73BY4Q5iGOaa4wyrgWUezqo1vIl+Rx0AX3bocUONFRu7Kwax7raBqjygfDIP5wzc/Qwi3rF6pivEstzBf7O9hJFBJhgKvM608N08dJ/vn//fjk8TOu8+60RAmLGBDj7rgXKAEl4J7+v8hkdH8Fvn322QB6+/o0PMFMi27+Vl0QFMB4RALocdPEYhocDL+5UQL9t0IkMnXKpwlJdK4EjkzqJmo2a/1IYh/aL7P5r4N4
+X-Rspamd-Queue-Id: 41E998001B
+X-Rspamd-Server: rspam08
+X-Stat-Signature: fbdm6tk1jyxhknwh38osidpeo1rajcd5
+X-HE-Tag: 1773673570-985671
+X-HE-Meta: U2FsdGVkX19NfZzmJP6ko1e3OzA11LZ6YnZ0l3ie2/QgFAAqcsAelDFk4+ntz74v0iy5CO5Tkt74In8huheqaQ7W3WcCkJ64P/VzjwuhSiaaj4iQk6eFY5zePVuRd/SJtN2X2KW2UWkUDIscUfoAjMKBwrJcwmAhCWml8EOMjTt96+Wit5RfBEjZiON7UJKQcpGtH9Hu+sPCYQ75cgHBrKfixjonGQQX8hD3gQFHja++mFkC2C/AmWtQWSF7DKZLryAEgyB6qr1nT+MyrqwTJN3xyBVxuQhcKsx0iSE6l6KKG2ASXlm66ubyTA2ayAfTVkF7rlfLp0FrfaQID6nS+kA4iGzEGZhkj56pXbRzqIOtXUaGovX9NdjzSTGBzFxU7LLdHgf6wX2bBWuuW0dVZMsbAoM3B7zsTuhjQNUl70TF/T+W2KYrK81/ZZvoHksILV6P15fkyCfD3GPR96HLXuvHK9FXTAZ5UAc4iZvBQlcbRNIgvBTOEtOZyhJ1xCdsvaPD7tj1+2Lc6h0tQ7wTYDISPG2jDTqV8gJPH7Ou8iMFmLNXvBBA5vCJ4Kc5Fa9Q/aPdoGv/bPS7EHZ+sAcmIpq4ch1H08M3X/i8TNl2MTG7AGc2wGEodrFD0WJLoRCSTDe+V4SraJQPP5bD2BnwWfj5UISBTTx5BOsZEYV4Nj8W5+Q52OvlhsrRCBMQC28uhhYDJeAmVOGXTXAaGqEewPh7gww4VW+2lfPbODGDYwmXeTRUpi1aA5EHRtAYN4q1jVXjV16+EEIzqnkxjcfkjLZINbZYO5SJDm0k8hI5CBCQNctgDAuwIphVsbX/fWtbjcO2fQT9/OR/sFur2RALS7FBvDb58zQs/ZY3yTPqg4sat2ToFI97cpqj3HEV2+yAlDVFrqRqd+6UsiBEfyMjuPmpiBeZjMDjVmzqsA9DXBb8zKdrZOGw4+DiiivD3Mfd6cNiEY2KqQ3OpU+TbAm
+ avv1nnWL
+ Z7hVoPrnDTG9o0+NndBafvWPkxcPsKloC45MRZMmbW7NnzCc3KFjn829ie70thAL2/QXIaUVeMhuyvsekISrbA6Q77GhM1yQuub4t1XyEQzWNaNZwh/ofrvqMTbFQ1CUJ9TMkxnHR83tENaBPDYoGZXUcm2oaVa8URONqeh0PP2uXmI5skel9JFv/+DEjtfK1RXVuMXH/wMrN1dIWCkfnv1zgdENT8zCyIRxm9KMRJy6+V7JhWuLTDfNCSttqt4yCaUdxoi7Z3iIkk3ju/se+vJ/DP9sYNkEk6tNv9r6b/jb2zmld2eEc5Ck0dwzTQtZYp0TWqMHNtp+FN7V3b92vw5LULAq+9YdE2JMH8Uqe7HlKWHg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +93,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+"Lorenzo Stoakes (Oracle)" <ljs@kernel.org> writes:
 
-On 3/16/2026 5:48 PM, SeongJae Park wrote:
-> Hello Asier,
-> 
-> 
-> Thank you for sending this patch. :)
-> 
-> On Mon, 16 Mar 2026 14:08:21 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> MADV_HUGEPAGE and MADV_NOHUGEPAGE are guarded and they
->> are not available when compiling the kernel without TRANSPARENT_HUGEPAGE
->> option. The DAMON behaviour is to silently fail[1] in when DAMOS_HUGEPAGE or
-> 
-> checkpatch.pl shows a warning for the above line:
-> 
->     WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
->     #12:
->     option. The DAMON behaviour is to silently fail[1] in when DAMOS_HUGEPAGE or
+> I wonder if some of us (I realise this sounds like self volunteering)
+> should just write up some bare bones and patch it in, then we can get the
+> iterating part of things moving?
 
-Yes, this is due to the link. I tried to keep this patch compact, without a
-cover letter. I will submit a new version without the link.
+That, of course, was the theory behind the addition of the skeleton
+documentation that's there now :)
 
->> DAMOS_NOHUGEPAGE are used, but TRANSPARENT_HUGEPAGE is disabled. Update the
->> DAMON documentation to reflect this behaviour.
->>
->> [1]: https://lore.kernel.org/damon/66131775-180b-4b9f-b7ce-61a3e077b6e6@huawei-partners.com/T/#m278d3c9bbedcceaf2efa51e3dc7b40a40654e51c
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> 
-> Andrew might add this to mm.git while fixing the checkpatch warning on his own.
-> Let's give time for Andrew today.
-> 
-> I also added this to damon/next tree after fixing the warning.  If Andrew
-> doesn't pick this with the fix today, I will post mine as v2 of this patch
-> tomorrow.  If you prefer to do the v2 posting on your own, just let me know :)
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
+I have also thought about trying to fill it in once a bit of spare time
+opens up.  Funny how that tends not to happen, but I still would like to
+do that at some point.
 
--- 
-Asier Gutierrez
-Huawei
+Michal's question, though, is something that needs a good answer: who is
+the audience for Documentation/mm/ ?  Some of the stuff in the patch
+under discussion, if it were to reach an acceptable point, is probably
+better placed in the admin guide.  OTOH, a manual firmly aimed at people
+trying to understand the MM code itself makes sense to me.
 
+Thanks,
+
+jon
 
