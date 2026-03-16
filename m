@@ -4,94 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CFDDF506D3
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE3EF506D3
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 812516B028F; Mon, 16 Mar 2026 09:19:23 -0400 (EDT)
+	id 9DCAF6B0291; Mon, 16 Mar 2026 09:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EA796B0290; Mon, 16 Mar 2026 09:19:23 -0400 (EDT)
+	id 99D2B6B0292; Mon, 16 Mar 2026 09:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 720AC6B0291; Mon, 16 Mar 2026 09:19:23 -0400 (EDT)
+	id 89F6F6B0293; Mon, 16 Mar 2026 09:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D93B6B028F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:19:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 064271A0248
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:19:23 +0000 (UTC)
-X-FDA: 84551982606.08.529D3C8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 77AF9C0003
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:19:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76A186B0291
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:30:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0B3D58A848
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:30:35 +0000 (UTC)
+X-FDA: 84552010830.24.5E6AF7B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B606EC000A
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:30:32 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pIf2SEbz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773667161;
+	s=arc-20220608; t=1773667833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kD4PgddPN+lFAJQH7LwodF1eqO7jJ1utWJZ1OAtHhJU=;
-	b=k180eIRuPbzCiYqg29ix7ZbmV2nZ70VklQmVut6Dcik9Eetxw8do91qwnNj45wtE+bNddu
-	CvAWNHETOU+J2GevAC57MGqSyNN3vMC6tgTV49lawWphxmorYWcyzBBxP+f728fm2eDkfd
-	ubVG5T8Xdjv8LO0USi2cZ2egwfjRO7E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773667161; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=5ZuqlSrxX8r0RJlIlalGnSaHgtTRi6oi0YhWSDJolTI=;
+	b=UpYv53W1Pps+VF+aBmhZ+FoLB5zHq7RZnbkU2P9cMAZU8acFCSjJoROtbuG/flOIpRhnLT
+	nukokFXC2/xvcdsJxR4y80IKeIeF2o/jvXVDP1JL6kbdvJW6u/tx+1T6QQAerHgfaRiK8l
+	hYOD+wKxdR7EzLhgFu4E5Lj7UJDWq2Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773667833; a=rsa-sha256;
 	cv=none;
-	b=rX6bB8/v2IKMSdf7Lqv+h7rNhVfdifx7wWLhK0wEiqkx+cljp/fAuuuacKi31fCpYzLxJg
-	Z4ZameZYWf1/ksybdnCFLjeiULZcQgPYufEvSpvga6LXEO7RChsrgKqfmXX67JakdBH+V/
-	plgSBhYULimWDHwx7EkRT0Dl5TIBLeU=
+	b=GFOXTfP2o+1OwOy/gHsFhK14yCxFoEHLFo3aoG5lFkqI0nFwjSSXvKAnU9cAqgW7Y7Hc3x
+	t9itvdytWaMINCmgi2dY+UTD07Gx/k3i9y6jEKY+/KQ4kOW/ihaBqAbdcrd4FE8DoBZiDZ
+	/Iu9EQ8IjW68AO/fYakCiz5k3iFsoFo=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pIf2SEbz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB22360097;
-	Mon, 16 Mar 2026 13:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CF7C19421;
-	Mon, 16 Mar 2026 13:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773667160;
-	bh=+akrXJ7NcRkZB3anvBaBKNDtpqIUvhYi+CUJ5U5SeJo=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=pIf2SEbz/mNFJt6nVnG6K3cTn1Sgk++2rlTnZfyRU4RFEZoUNcfa1Z9qLoD8up1d0
-	 xn5f3GZUCBv15DrJNsUCU2qJ3Q+kMpsOSM+pv5r0v3IWlraaWTjNKkFb6R1NYwCC+j
-	 pH/8t2kt6owcvjD8/ObU5a2+UMOkY4rVcvJRt+XZf3pJ6qVe9xKW1uRbcP3Pz4tNiW
-	 8KecPG3X53ainVtCQUwvF4e1BVWgtSfPb6uRonqDshhsg4jX6prkM37IxP8Wd0WrfJ
-	 5B/tajIcdGQyWsXv8qBqKV79NCLFx86hnS8WiX4SrUgDsfW16ZefwcvjVkpYh3q9sp
-	 ahHxHqn8jSu9A==
-Message-ID: <39cecc4a-608f-4129-a68f-fc23987c8591@kernel.org>
-Date: Mon, 16 Mar 2026 14:19:16 +0100
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 357291477;
+	Mon, 16 Mar 2026 06:30:25 -0700 (PDT)
+Received: from [10.57.61.116] (unknown [10.57.61.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D4953F778;
+	Mon, 16 Mar 2026 06:30:22 -0700 (PDT)
+Message-ID: <2c7466f5-d952-4356-9b55-9d2ebb3471f2@arm.com>
+Date: Mon, 16 Mar 2026 13:30:19 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: Re: [PATCH 1/3] slab: decouple pointer to barn from kmem_cache_node
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Ming Lei <ming.lei@redhat.com>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <20260311-b4-slab-memoryless-barns-v1-1-70ab850be4ce@kernel.org>
- <abPYaocgFylosUCf@hyeyoo> <94d89d84-c009-470e-a401-1ac75228cd92@kernel.org>
- <abP5dYLqkJrOYDQZ@hyeyoo>
-In-Reply-To: <abP5dYLqkJrOYDQZ@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 50/61] iommu: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-50-bd63b656022d@avm.de>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260310-b4-is_err_or_null-v1-50-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 77AF9C0003
-X-Stat-Signature: 36nbrw6enwdiofyd3x5t8pjokom7opba
+X-Rspamd-Queue-Id: B606EC000A
+X-Stat-Signature: mts7be8jq8y4by7x3w69hztc6zk4snqx
 X-Rspam-User: 
-X-HE-Tag: 1773667161-675042
-X-HE-Meta: U2FsdGVkX18zSCYT+4HKPI8Wo68euKBsRvIzx4TAEkTSH+ro9blSXrFU8sSB/pAhhln6pPUMj0UgZOHMZTEi0+U+qouRaED01XjQyONxNsOVroR+pjpK4X1rt6xwMseC/IWwuBL4/2G1JO+We+p87wO9ljCJWfm/905BvcoHJWhtVqtQOO5tcyUXWULQXmuSuYoIcfjprW56YhSJCiz78suvsq4EQ3iEiCBzVkE1rPNh8h27giaHQt/Po0VYI4oDZFVpjMTBeHhOZt4uxD2eA8fLsu387u0AdWygvy2HqsZSFjy3Yt+1yOUWKWtTD+6B/5UpgrV386JcnEwMexfyUudcv9QIQyVds4EZwMptAm04ZW+NgTDUj3XKCjaUTwzVOGj5hyKojADEq9QrcnfjyqUzOr8o7thXel4EgKNfVqyxYtDp5WrRlONyIhvxaqajGyiRLjniD1p4Okb7lpuRdN222Lzun/qk6gs5Hk1+Va/f8J5+CJeDUHPxHMUNoDaiSdVwmw3ZJA1nOuI7z1tRumITttaxxQ2KiTwdAo8K2cw/T1QTWhr8+4RKwMW/z1uiz+xb/1/asXF2TuEX8gMfAbOo2xUJUZjJxmxGdFNB/w0wVTuRMs1KJ0L2I5cY1WX41R1hjL95RPTkQBLdAhh5Lv/L+VQgPgl8+48u9weMhgazAfTlzmXsy+JrF8XWWSB+SxGKrRADuhnjnysT1M7hC1T20NJ5c57ffBSbsBC28i9l4jT7sadC2L/VHFDN0vMtv/mYICaNp7EzHRvrAQhdhYkfznXcA027uA5cPkS0RQ8AjVaEsaKx4zMydnp8mpxYiKP2eGaLFULXWaEhVQh00cwnBzCO2MdZy6D1dfNBBxMiOz0PiElJH1audI/cOFrNYgcagHrdL5Lp+/Y7K0GrsrT87YDuwEoxG49y/rxTZqi0fCnpn9J4TlyT/UaRj6LkORLAf8vg5u1wJ1BP8Xu
- Dc/4EsOd
- tY27Q
+X-HE-Tag: 1773667832-858558
+X-HE-Meta: U2FsdGVkX197hWwpgr5H4uIkWLjQZEZqrIfidFMyS7GmxcawuGM+PPn1s2Z3AgB6BMdELzAiKM9bTCELygZZPZiOb5k6RQRlUG4pWC4rqwJiKuCgzqGtfpwTXKpLeDdfl4gwB4HIKUixt3qtFcV58KHBZsC07dNbsolIW3h3dt7RyBhquxfoYXPzBMsg4mjyXoVus7xqew2bjuO7G/IZv7IFBDyqJFDs5oBehOndodxYGco7Y+yABgLQ6mdLTK2XA2OmvSIg8VQboBJrEqqSyLz2U7qodkxkM+XNmxB+lmcfYqQKK5tGf56VkyxMSze/s4ePq6ETYSnM2tmcLKj9oFIWA7+UgZAnmTJ4KpREEfNN52eYqdROkNBimHyi7jI6LawpTuerWIWnycEktwcazv3wIwKAvO9oZpuGf7657xXzaz+MRnP3EGh75/1g3TooRvU0r2eVfTOhsmyhFv2+cATv98dv5C6StYj68Ywm1mYfK0wOHcV83NlmQTYiLguBZlLLmC06v0TlS8n67XOiFn+JCvMStYAi8CEfK4rpbelyrVMAtbmeuQ6b2dRsun9GuribxGAPvXWQlqoDzvAtCGcRGxTLsprU8nu6G1IRgs/XvBAtjmQbyxdtgJ2XuUr1VZk1sh7GokLgbadXRp2cXXVz/slkio041K89tCtke1+rDYhJQLFVTpceX2ZCx2EZCbmlokoJpoB+YSt8QpkkOmVxDLHnLuvnI7gNRj20kdU0IPmIub1hbd3hTQh/qcigOXfRljIeytU4LVXqLGIfReK6lB3XE00AtGaB+CG8YcsaTsdEYrNB3Amvodp91jZl2TxeWR9q1EjOgoPXeFz+dvreYWjHMGNzidh5pfbaSYan93igdCqEoHHAM8ZkP7GhjqXzjLNIIThQLiBeTepXPtsvfLiQ++dfI6w7Ud2AqJ8BbpVG0HPRJUDlqJ8xkk6dUCzlnhBBdmJxfyrwdZx
+ 6bWHO3Yl
+ jFL+SzfMI5Z/Bjpm7/OqgMF/cJvQDH8GbicfsVWUOVdzonYweuzmo6hXni6UOt/ewbxKwj0gUSvxthTQMVwsV6Fym7DfrDjwQEwmgQkZeR/J9GwZ6AIZ7jYdcCqhqwnXzGrOXoNDOjRp6/7O5aP3OCzMmp0flWPi1grUz2pS92QeNMeT4aDP2hSoNnlt5p99+viZgaQ2ucCDORZvKEnpwsExU441jyPbKDVXaG9yBzJDYyW7evGuBlTKGYshMQLduFQTTw1jYOSmPu4wulIMuVivvRwdji+mzSIOM3cjacT6fCCZzDNR30ff4zDp3m+r7SSUWi1SmV/HS83PKjoVOoEX4ksjKQvMiHHwtL9uEZeQhXfIo7FgTUBQC6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,50 +109,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/13/26 12:48, Harry Yoo wrote:
-> On Fri, Mar 13, 2026 at 10:46:15AM +0100, Vlastimil Babka (SUSE) wrote:
->> On 3/13/26 10:27, Harry Yoo wrote:
->> > On Wed, Mar 11, 2026 at 09:25:55AM +0100, Vlastimil Babka (SUSE) wrote:
->> >> diff --git a/mm/slub.c b/mm/slub.c
->> >> index 20cb4f3b636d..609a183f8533 100644
->> >> --- a/mm/slub.c
->> >> +++ b/mm/slub.c
->> >> @@ -436,26 +436,24 @@ struct kmem_cache_node {
->> >>  /*
->> >> - * Get the barn of the current cpu's closest memory node. It may not exist on
->> >> - * systems with memoryless nodes but without CONFIG_HAVE_MEMORYLESS_NODES
->> >> + * Get the barn of the current cpu's memory node. It may be a memoryless node.
->> >>   */
->> >>  static inline struct node_barn *get_barn(struct kmem_cache *s)
->> >>  {
->> >> -	struct kmem_cache_node *n = get_node(s, numa_mem_id());
->> >> -
->> >> -	if (!n)
->> >> -		return NULL;
->> >> -
->> >> -	return n->barn;
->> >> +	return get_barn_node(s, numa_node_id());
->> >>  }
->> > 
->> > Previously, memoryless nodes on architectures w/ CONFIG_HAVE_MEMORYLESS_NODES
->> > shared the barn of the nearest NUMA node with memory.
->> > 
->> > But now memoryless nodes will have their own barns (after patch 2)
->> > regardless of CONFIG_HAVE_MEMORYLESS_NODES, and that's intentional, right?
->> 
->> Yeah it improves their caching capacity, but good point, will mention it in
->> the changelog.
+On 2026-03-10 11:49 am, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+
+AFAICS it doesn't look possible for the argument to be anything other 
+than valid at both callsites, so *both* conditions here seem in fact to 
+be entirely redundant.
+
+> Change generated with coccinelle.
+
+Please use coccinelle responsibly. Mechanical changes are great for 
+scripted API updates, but for cleanup, whilst it's ideal for *finding* 
+areas of code that are worth looking at, the code then wants actually 
+looking at, in its whole context, because meaningful cleanup often goes 
+deeper than trivial replacement.
+
+In particular, anywhere IS_ERR_OR_NULL() is genuinely relevant is 
+usually a sign of bad interface design, so if you're looking at this 
+then you really should be looking first and foremost to remove any 
+checks that are already unnecessary, and for the remainder, to see if 
+the thing being checked can be improved to not mix the two different 
+styles. That would be constructive and (usually) welcome cleanup. Simply 
+churning a bunch of code with this ugly macro that's arguably less 
+readable than what it replaces, not so much.
+
+Thanks,
+Robin.
+
+> To: Joerg Roedel <joro@8bytes.org>
+> To: Will Deacon <will@kernel.org>
+> To: Robin Murphy <robin.murphy@arm.com>
+> Cc: iommu@lists.linux.dev
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>   drivers/iommu/omap-iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Thanks! just wanted to check that it was intentional.
-
-I wanted to update the changelog as promised. But realized that the change
-from numa_node_id() to numa_node_id() in get_barn() should actually be done
-only in patch 2, so I will move it there. In patch 1 that would mean no
-barns with CONFIG_HAVE_MEMORYLESS_NODES and thus a performance bisection hazard.
-
-> with that, please feel free to add:
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-
-Thanks!
+> diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
+> index 8231d7d6bb6a9202025643639a6b28e6faa84659..500a42b57a997696ff37c76f028a717ab71d01f9 100644
+> --- a/drivers/iommu/omap-iommu.c
+> +++ b/drivers/iommu/omap-iommu.c
+> @@ -881,7 +881,7 @@ static int omap_iommu_attach(struct omap_iommu *obj, u32 *iopgd)
+>    **/
+>   static void omap_iommu_detach(struct omap_iommu *obj)
+>   {
+> -	if (!obj || IS_ERR(obj))
+> +	if (IS_ERR_OR_NULL(obj))
+>   		return;
+>   
+>   	spin_lock(&obj->iommu_lock);
+> 
 
 
