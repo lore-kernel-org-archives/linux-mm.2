@@ -4,84 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAEE2F53D81
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 17:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B833F53D80
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 17:38:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05F346B032C; Mon, 16 Mar 2026 13:25:44 -0400 (EDT)
+	id 485596B032F; Mon, 16 Mar 2026 13:38:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00CA76B032E; Mon, 16 Mar 2026 13:25:43 -0400 (EDT)
+	id 4333A6B0330; Mon, 16 Mar 2026 13:38:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51BE6B032F; Mon, 16 Mar 2026 13:25:43 -0400 (EDT)
+	id 3356D6B0331; Mon, 16 Mar 2026 13:38:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D7C516B032C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:25:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7954EB8046
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:25:43 +0000 (UTC)
-X-FDA: 84552603366.23.D5F97A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AA69420004
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:25:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Umj/WqyW";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FF526B032F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:38:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B46F5C1834
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:38:45 +0000 (UTC)
+X-FDA: 84552636210.18.29E92C5
+Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0E6C5140004
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:38:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GYQqJ+Va;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 3IkC4aQYKCNc3O39BG9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--avagin.bounces.google.com designates 209.85.160.74 as permitted sender) smtp.mailfrom=3IkC4aQYKCNc3O39BG9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--avagin.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773681941;
+	s=arc-20220608; t=1773682724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vzbqWY/q0s3ssbI5xmhJ5ZpKFx714CitYxSh3/54ho=;
-	b=m7fsyiN7nnBHz5UXqBzxbiHqm/qKTC0IF8D6skNdkVFnXwDf4havUWuYq23jLrtj56yGUt
-	USDMpLiM5ZYySOt8frxEiRHRcIZJEbJRXXBLN2l5+ZJOEUSqtXhfZzkqFp7rstDPGdqObd
-	dE+1iAsTwmMZy+vV9JNBQmM5TwhbZW4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mVyENlZI52oMTiLm5o12STurvmC1TDldb84Az1JZAKY=;
+	b=zZutJraPuIme181x4Ys/IvBQDrKCQS3p5SgwW5Ihs3rIBojWoi8K2uMnTY9jVl5vy9L1PN
+	H1CQqX40T9iV5TjqgAipkPIAoWGdx31wDnVz6SvTqg+S43fPGnknTGZ3K7r9md/+yyWLgi
+	wmBaTw90TzcxN37gsRCqIHOHQJV4jKM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Umj/WqyW";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773681941; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GYQqJ+Va;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 3IkC4aQYKCNc3O39BG9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--avagin.bounces.google.com designates 209.85.160.74 as permitted sender) smtp.mailfrom=3IkC4aQYKCNc3O39BG9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--avagin.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773682724; a=rsa-sha256;
 	cv=none;
-	b=VUTBOuFLXcZKL6rn1yCgU7JFWH18yOKrufZsfJcWJF2QqxC0H+Z47k+DIMERKVD4z1gieW
-	qudduVT9N13/Znp7KS3g2y5QKDn9Hb8pskOOyyLUkfwAZ6NMMT44N8ppmN/FEYcT70ajFf
-	mWYMxSrfAlz1rictElwxxnU3B4RId18=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B07BD43F71
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:25:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F6CC19421;
-	Mon, 16 Mar 2026 17:25:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773681940;
-	bh=/OYUQzvbizA/HnFcDSxx3chz1+uWDAT16QLEnDDvjhY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Umj/WqyW7820d/fMeiEsgdsRbY/VadfKZl6+bgrA1xdbsU8fNY4yW0TxP7k99k2mG
-	 7G5ZIrfMbx2ThX2VzYgqG7sKNqqK/9Pzq8ygwaRpP3jxJ4Mdv9UnXSupmEQfE5y6W6
-	 G8TWLdqhDFLeH2pd0tys3pcCxsxQh9cB+dgdhrAo=
-Date: Mon, 16 Mar 2026 10:25:39 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "# 6 . 17 . x" <stable@vger.kernel.org>, damon@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/damon/stat: monitor all System RAM resources
-Message-Id: <20260316102539.2af039f5ca7ce1164da34b47@linux-foundation.org>
-In-Reply-To: <20260315162717.80870-1-sj@kernel.org>
-References: <20260315162717.80870-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=XC/2kNKLtO6vzobrjdhtZN5g7LN4udMaaxyx6dIN7rOd4EJBzpNi63+OnVZsGBw/RVj41n
+	KUkz3I3Jqffc+x3jlFZ+XZ0EHgmuZSKIOvrBFFNdORabOmJ7hohRPQcWsH/624xDKbmVRM
+	RI6WYEXYhhMaVWDX+rUNTHHHnZZbL6E=
+Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-415e1ea16b4so60128323fac.1
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773682723; x=1774287523; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mVyENlZI52oMTiLm5o12STurvmC1TDldb84Az1JZAKY=;
+        b=GYQqJ+VaxhuCAGHis8G3SFeeZe3FVyiB0aQpySody1VbQt3E30Jf1hL2eNXE+tlLI3
+         Wt7G1E6z12qnOpyVweA1kW2UObl/Hha1y4HNBs5gOHqPR87M4MT90UP8Vp/zioazD63x
+         7cqicXNnnn+Gb1++yadRooQVKw4oYUFDeW8Hl8BEh1XNlPiAEAwmXt+FnpoyFKh1RHIY
+         dhktaywkTEYn/10874QvY+swNj3OB4hzDI93UWUWpADj3jCpUwfwuQt79N/oFE80PAbx
+         W1WU4PysrVXzC994Rdk8Y6p9LHFHaxNTydULCnKZ+DsM1KP+yrBtv4F/GfdL7/B6gABC
+         hLsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773682723; x=1774287523;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mVyENlZI52oMTiLm5o12STurvmC1TDldb84Az1JZAKY=;
+        b=ZmG1HIShkcY41ZPJetR+B6Mgj3BkuTOk8Q/xaJW0gHa2dXM2i5LUH2YOGE7l/ucZfo
+         G/BZ2pxwnjsxvKXEBAdAnV2o006ogg9cGttpUtBloDFsTinYLLmqVC8IbV6+ajzbxpKc
+         NZ0pkMvLXMPOVVs5WhH/k5+MVn2pcNeKtrPr/V5nGO8dXnhI3+GmbVxHgwav+CNnaQXX
+         GUCul0eEAJSlTrpYDDqSjd8YcqsDGWc472AUPjvKMrm20uBYn4z13bV2r+3QS3zjLxCL
+         goqa+7MQMpQXSKWlw1opvv8OCJNVkObK5VUJbYY0TQy8v5+o+FjHAW+DznKWb/VJAv7o
+         TQdA==
+X-Gm-Message-State: AOJu0YwFsdxQZ3zuGiXlxmuRIYGYroRDTx8Xvyc7lRAYR88eEmmYn61T
+	968gv+QIxmJWUcyhsbNRSEMmK2+AYR/A013ePbGuBrwomMCN8kovSrZRCav9oT8+uyuIlQ5lKn6
+	OBqXbfQ==
+X-Received: from ilbed12.prod.google.com ([2002:a05:6e02:480c:b0:4f7:2844:7b8a])
+ (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6820:2909:b0:662:fbd6:1849
+ with SMTP id 006d021491bc7-67bda98cb6dmr8942754eaf.4.1773682722483; Mon, 16
+ Mar 2026 10:38:42 -0700 (PDT)
+Date: Mon, 16 Mar 2026 17:38:28 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+Message-ID: <20260316173829.1126728-1-avagin@google.com>
+Subject: [PATCH] userfaultfd: fix lock leak in mfill_get_vma()
+From: Andrei Vagin <avagin@google.com>
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrei Vagin <avagin@google.com>, syzbot+cf5ad2009a9bae03cb23@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0E6C5140004
+X-Stat-Signature: 5wboiid5zm7d8dj34xxba8s9yw86wnff
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA69420004
-X-Rspamd-Server: rspam08
-X-Stat-Signature: da4iexngd1bnrat7q89uqfd6ayh15gzf
-X-HE-Tag: 1773681941-424913
-X-HE-Meta: U2FsdGVkX18TThYum1iQrxYT0mHUIZxca3rKQS6u6ZVbSKbLm1rVtHV8izKAO5PEpk+P8njkMoAkidnBsakq9KCJ+/KdY8D7c66InvjkAVM1kE0dzQcEq6AfGnvM4rnjrGqpml51mYgmIeboXBSmrzIljGVFsqXrus+DkPxM17P8pUs38Mv9rFDgBU/shjp1G0fgFZK+xvSDKIflyyI9M1qF2gEbzsuZPPrFIHWSmHGDNRw3318pk/g5BDlzfXQW2gwqQc5XCpHbCGyIvd7f2hWdc7fDfTryHf9d3+wO8Eq0DAdFVdwOt+WNwQTlwYeHz9vIw9tVzyaiZ/hmwhDg83UI7BMmdHb01AKUTPD4/qWVv/PoKkvS+bs1IMg0GJu+8b1/3yV58qMW1uhHaiFK296gmhEblNeQJpA29SGyxEVgFYE0Gv+FKYlrD2CAB9G9tw+vWaeGVkBgd5ILx+1OO3XvQNZqZaNK26JnNSAh7hvcvTD+qK7G3prK+YGYIcFVEr3PH1/GrEPdroVP5RfrT/U5A2D37CrWw+AsZ8rM2f6fDrb7D38Foh8bZRxCrvXUbu8kq3/3r/dy0VubPHqwXQ6ZN5QIEcvD5+AskbcyYvT46luCqILtw9r000vz142b++vHWKl4Q3DexOgO2I9EShONnNGdMpUv1YqYWYTWikI08tnxO2zCyHP6RpNuAOgVqnqu6aX9O5NSS8+2sBbLYCdcBo/1r7Ppo9Gh5PlyQJRrfO+XPnxhXYxgbqdrGvi8GZNKrEaykFc/3bhG/G4F4Hpq1YF/TNhexwap8y17UFIUm2xNrdMcrI16XpjK3Vm+cA2+Ac+nuS6/8kNt5HRUzfMP6dLkiXix1jF2bjB/6shqgUdUHsgREK6rmlKAn9PK6/AJHgpOueBkyNhZcbBxKDOn7AfA9FM976yLa0E4nrr1OwReojvv4DCKYnqbzrOH7FMGzlY+p+LRvfWAvG+
- etgaZ+SW
- VuuEPO4I6CIzo0OHEO6T9nF8Bx1xth4Vt/hVVFGcEcfw8cFM80qOgN1X2b/2l02ejYeZ8JG0UM4Ao4vdOHI7bB+KLG/6ggWnpQHvxUFKyEK6tc+VjxeyI93+RfCcGRsK3NbFRagErJrQlAjHwi2L6dwsuG7NHjgLmnT4Day1bRuvXlnOKZVy+1IhOjVTidkOfEFN31rKSvyAgxJr0EJQAYfYv5W+mNRZmRFdN2SNbYCelIXtfJrExXLcGX9EqocpxDTXl7I2ngJU45mTAl0LJTIE8WBA8i3cjc0V6fCBesDs5h83Ug4Fu9Xv5TwndR0lHCFTF76tw6VKICOLwCsR909z5Vg==
+X-HE-Tag: 1773682723-559643
+X-HE-Meta: U2FsdGVkX18E5p687FGkDcbdLHQ9PPgG18hP2ONeuQdxlW7iU2uxeV0P1uJPQUc0VnsDi3r7tB9uklzUZW5amcX5CEKYZ/9FrChhQP5KJr/bjNpxtHaQ6vGXr0D2ArzyrrklEuA3kTCMJPJaSPkctFaKOxKPB/Tsi7SydD8uu8WwVe2ykYughxQ8xhW5fJMfUaFF52RZhD9PloscFRaL3C6GHgq964gzZdLkN5znYT4Z17n9rYVn0GBJ/DdqEFdlhB6WOqjbkIL7e0nDNJhNkKeqg5/elVwO/gDyD1H1EyH0vi/KD8VHdEBZI/barggdzkragHnzC8ZWcNz9onkMZx/ZkPtaovM4wm1bI7UD0PpGzUKJjdedxkx2GbuHb4Ju4cF+JLvnnXH6GF+EdCFhCUkdwEhK2DUZqcSumJun06yn8qS2BW2n7FkpCJoEdTAP69q0ka/bm98USNZ9LGDzmsnqtdQBwKRQ+qUcL+HjKS2JbAwmYZtSd3OyhKRAKmV9t1nJ+uJGSrm6XMtV+hJxS2tvfvvDYjQUJgXixKutIFAz3GyurunT9RRrzJ7KOza1VUyKb+mFEctfjUeVG3wpxNhrGL7RyVcxx91MIQEvzpcq28sYylODRNxpPlEkO7FChWed1XqFPaFnSNrlJYvnIhYdpNGXQ7+VSTlSatCD3TUl/t31shMne3fHrz92Ir5JKLSQ8TUAF75cYUSvjZzldwyAt4uI3CD2HjKncoBZdyJdCVz65ClnWNFU0pLUSPikTrtcwnPZvJh70u06KK/4QvTSXb144DBCr2P2cqpqdDid+1Wy7AdgAAzexaBdjWVuKV/9PrFW9YVGmkPDUeGbqSSceDwYAutowEn2nsjsN9U2JR+rv8Coqx3i2kn0IWrspPHkRlpD7RgHZxbbOAts3WTupFeQ8JAcqMhbhXAHsD5t7UpPCpgg5CzXf4oDYUj78Z0IIBcA6j4Xs7owGl6
+ nQa7f+4o
+ DapeiYhx80HwlXVGAJsSPGafLC5796eW3xzC2sY9oOWCP/rYxSdieaBKGAtdEgEzl7iVlI8eVgguVAtJZ73Q9h32brAjPpN1y1CfII2nTxDgD6g1hB3d8zrRkhRDKIgnGiiYuHq46Ow/HnmNDl0QqF6t/cw+pSXE/qGcjogj8ll92w5pbzh9jfgIW8xr6kHJVKp58cgMpvFjV50mtH54kXaff5ruq9Q/7W/1HMDOWoqjbINvmeppqEWuaBrg5RE7Mt60vL84433yK30MxpqUGF2FATi0gIGrcNq6ix3gM3Fjg31gtvdy76yyjlsyDZQ7EG3hNBghbRgDR8zqMHu724WLpw0dXbZvxg9Y/dCvaoBAK/VqX2n3MK22CMVwWGM9MusoTu7BJaXggP6vGmrjjrvB+f5v9Ul0fbUD8qYbQqNZSCoTh2nqK9UwwUrCvjrkCZgmnkS7axCa41RrTJcqOINyvvjRg5zaSRL9VKmay3jsTokz6r6gKUrS4lqOtlyIpIy3f8ne7QVHZTHmWGVuaUu8eYUapkYWA78mii1T6dMpDSD3TLhVR3lBmNucDy9LM8/A6dIn+0H1pC5Br51/pGbg8G8kGDkauyV8ORtPchol6JV+LjPuDFsvirFPmNa1rPdWDLYg1bQSgBbfrPmZPlDl5HRPNY1RL3I+Zqtk6/NrPa1f8tOP3qlU/dxMrPDrajmwwKNjXHZ+isugsk5CWJ2QQg7WfUP8X6iMVOu0b78Hux7XzbFWb43akgKxHIkqlES2ufOWsKVq/F5+0VbikIPZiNkMfILg+jXJBU3dbD6NDtUoJkSAVyAca9DL7h/HdS+z0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,24 +103,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 15 Mar 2026 09:27:15 -0700 SeongJae Park <sj@kernel.org> wrote:
+In mfill_get_vma(), both the per-VMA lock (via uffd_mfill_lock()) and
+the map_changing_lock are acquired. However, state->vma was only
+assigned at the very end of the function. If any validation checks
+failed after lock acquisition but before this assignment, the function
+would jump to the out_unlock label and call mfill_put_vma(state).
 
-> DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
-> says it monitors the system's entire physical memory.  But, it is
-> monitoring only the biggest System RAM resource of the system.  When
-> there are multiple System RAM resources, this results in monitoring only
-> an unexpectedly small fraction of the physical memory.  For example,
-> suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
-> 500 GiB System RAM resources in order on the physical address space.
-> DAMON_STAT will monitor only the first 500 GiB System RAM.  This
-> situation is particularly common on NUMA systems.
-> 
-> Select a physical address range that covers all System RAM areas of the
-> system, to fix this issue and make it work as documented.
-> 
-> Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-> Cc: <stable@vger.kernel.org> # 6.17.x
+Since mfill_put_vma() only performs cleanup if state->vma is non-NULL,
+these error paths would leak both the per-VMA lock and the
+map_changing_lock.
 
-This doesn't apply to current mainline?
+Fixes: akpm:userfaultfd-retry-copying-with-locks-dropped-in-mfill_atomic_pte_copy.patch
+Reported-by: syzbot+cf5ad2009a9bae03cb23@syzkaller.appspotmail.com
+Signed-off-by: Andrei Vagin <avagin@google.com>
+---
+ mm/userfaultfd.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 9ffc80d0a51b..04f9e21fecf1 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -224,6 +224,7 @@ static int mfill_get_vma(struct mfill_state *state)
+ 	 * request the user to retry later
+ 	 */
+ 	down_read(&ctx->map_changing_lock);
++	state->vma = dst_vma;
+ 	err = -EAGAIN;
+ 	if (atomic_read(&ctx->mmap_changing))
+ 		goto out_unlock;
+@@ -246,7 +247,7 @@ static int mfill_get_vma(struct mfill_state *state)
+ 		goto out_unlock;
+ 
+ 	if (is_vm_hugetlb_page(dst_vma))
+-		goto out;
++		return 0;
+ 
+ 	ops = vma_uffd_ops(dst_vma);
+ 	if (!ops)
+@@ -256,8 +257,6 @@ static int mfill_get_vma(struct mfill_state *state)
+ 	    !ops->get_folio_noalloc)
+ 		goto out_unlock;
+ 
+-out:
+-	state->vma = dst_vma;
+ 	return 0;
+ 
+ out_unlock:
+-- 
+2.53.0.851.ga537e3e6e9-goog
 
 
