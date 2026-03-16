@@ -4,115 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82A53F506D9
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 309E9F506E1
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:54:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E94FE6B02CB; Mon, 16 Mar 2026 10:53:08 -0400 (EDT)
+	id 9529D6B02CC; Mon, 16 Mar 2026 10:54:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5F616B02CC; Mon, 16 Mar 2026 10:53:08 -0400 (EDT)
+	id 9102D6B02CE; Mon, 16 Mar 2026 10:54:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58896B02CD; Mon, 16 Mar 2026 10:53:08 -0400 (EDT)
+	id 853816B02CF; Mon, 16 Mar 2026 10:54:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BF1086B02CB
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:53:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D896B02CC
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:47 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6751F1402CA
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:53:08 +0000 (UTC)
-X-FDA: 84552218856.12.EF8D9E1
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6823440006
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:53:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YEb2Q2zb;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1CF36B7125
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:54:47 +0000 (UTC)
+X-FDA: 84552223014.12.C35BFF1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 89F9620002
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:54:45 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IiVlA9K5;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773672786;
+	s=arc-20220608; t=1773672885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lOX/jhdoMMqrcOy5q3SKEFg2QJEUGhIi2FMLl0bou3c=;
-	b=yJhPCawGt724ukK5eapS0+zY7AcLPsqco8cx9rgYsA564H9ApcQ0zIIEGveb7dapU4WJK2
-	ZarE9hJcN0cjEwvpfJDtrsrzeN5A8munXCbtSKF6X4OF3fTjoJvk5ewCprk/ejF1g6zr5V
-	JiPVjxhy1/qMuqXUj1j1KhdFKrjCBYQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773672786; a=rsa-sha256;
-	cv=none;
-	b=qSSomnD/W4vToaU4kKb+sgi751L5uJE+jUM1XVZBp2Fom3AMUE2JU49cNMa8V7VhfEMXVh
-	wRIZLZeLSU0NkJQyDvwGY/dyOF8hozsLANhYhj34IeTTAM4w4ww8sEv3qywpO3m6fh4WTP
-	7lfuxkxsxJy9Z0eF+HxV6r1n8i/R/Ow=
+	bh=Te0xii3h9Y5JOkI81G/oY5beQB8VLtmDVf2X0AXqiGY=;
+	b=OZNB0TUH9Zxf0OdoMgVEgyMSf/fgY8mbwKHHfv90i5ZRlMH9jO9wE0pXbSD1sr/DsMvmn9
+	A85cNM1Y9QJ2jjvr2IRjiOOhO//RVglKAgrsvGuoTQtNCxwYhMwp3HqG1qeWMt5QHZGcqV
+	5RtwRG7TV5C15KM3sthzOnR8/TmvS1U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YEb2Q2zb;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-439d8df7620so3406185f8f.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:53:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773672785; x=1774277585; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lOX/jhdoMMqrcOy5q3SKEFg2QJEUGhIi2FMLl0bou3c=;
-        b=YEb2Q2zbLMjclE+2kuh9XrjUjasoLKt53x9MfZzE344RcJz4VFzI8QdGKdi/K+qIz8
-         od2sKSisRJKfmNoaUImER8+42CTKKHlydYKkJ2wWkRRPtDd1IFN8GhGEDsdZxY2zph9w
-         Nqx9Fm2ujqo3aHJg1CcKiUq0OPf3x5/5/9SDBvKAV6bS0/Li5VP8hibaX7VIsba7zibb
-         bKdDWjslWhY3Oof2uipoofktWSCnikfkhNpw8hnk0Am13mjrGduJhWokD6TLAOzFDeT+
-         /lDSxPishRVhn2vA+MLSDdPyX3QWvHXXG2R5A/6BprztTArCfEWg7TL2nNuQJ888OqkI
-         SYZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773672785; x=1774277585;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lOX/jhdoMMqrcOy5q3SKEFg2QJEUGhIi2FMLl0bou3c=;
-        b=DdXvjchCp6ijVD6aeHAQpcWrVGZblspjZMjOwNNj/u7kxbTFa/ipkIhztvM9QrImZb
-         01Yl8yYq9d49W3hwGSkr9l2baa2ZfhyJMFIQPBW6PwBMh1zpFNjbss+HfveKoAACdC/X
-         Re4EIvk2y5Hj7gg06/hd/5sATK9JMQYIss14v6bGfzHCXvhij7yxSF9OqDKzoWi41G9n
-         ElIrIQ4WaPanzTaXlHB+Psv5/OHRsOEaTq1ADwgJZeeUFE4eJvkzpkQ21eJi6Bf6CYP5
-         aWsQC0aKfvij0+CYTuyuneaeuPh0cnDXpqpG4nsednpjA5S+YOBTHSFYvQZxukQLH4HW
-         +I2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVEKfMLhEd/+tNcAlUeONrk0xfLRYWxKx1rQ4vh9k1Fiagt8n2+e/+42rR/TnoPya/xr/PRgQw7vw==@kvack.org
-X-Gm-Message-State: AOJu0Yw8FwwNgcPMwF8kxrsgQ6scZLVk41eTBgL/yFKtAV9n3Z9ob9cL
-	br8dPicD97ELFB4kgDraIcss0D0ZrXLS6Gn4eIgNDGZV8cWkQ8L3S5Gkzdfkfn5+Hmo=
-X-Gm-Gg: ATEYQzyA+rLp1la/S3rVR/oA91HKYXoqMoDR5cxeRRC985qlebtpVjhlddfYfNKaypP
-	i+yPO+c6mkHJVGNeQO1zKmsPQKNCSVGZ/SabQPCcVjxeADFr0GjQfGT4/5fK7Rfq9Ba9v6dzgE6
-	BnlToc9xZJ9WBchujAKBKpgpZTmpgvK7m2s4ZDXh6uesUcN1suVIscOYQra1KDOTav9ta/I77Za
-	ANpDqcp/5H7LG7JStM/khTAdAWRAtI6EwYYtegcdzY4v2Jk+OABQpznRCjq5Bl/7K/A2MUKKvPb
-	nwll634vZgZAfeHp8SsRo5NahUazbuUaQZ4AOa0cByg0uI/XXpW62Vnd+efzU0UqX+Yo+Wh5I6N
-	4JH/Vw9V8HCVGfz64/MeVjFigq5JsPAeHWQzT8hfRHKHzicPELSrPh35bhGuaPySwtMs/L4NFhO
-	QWnV+qDQb+9ti3STCIKVdlKFfALmGr8Zk3I/Ue
-X-Received: by 2002:a05:6000:4025:b0:439:bcdb:95a8 with SMTP id ffacd0b85a97d-43a04d1dc13mr22986896f8f.0.1773672784615;
-        Mon, 16 Mar 2026 07:53:04 -0700 (PDT)
-Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b457cfa07sm6632244f8f.6.2026.03.16.07.53.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 07:53:04 -0700 (PDT)
-Date: Mon, 16 Mar 2026 15:53:03 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Kit Dallege <xaum.io@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, corbet@lwn.net, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Docs/mm: document the OOM killer
-Message-ID: <abgZTxYM9UcQ9Na3@tiehlicka>
-References: <20260314152518.100194-1-xaum.io@gmail.com>
- <fbee0ca1-4de6-4182-865b-a33d9ed32ee4@lucifer.local>
- <abeyD1ZngYhkAx6g@tiehlicka>
- <31744315-bf9e-4d9a-9c25-63eef0bd2f01@lucifer.local>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IiVlA9K5;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773672885; a=rsa-sha256;
+	cv=none;
+	b=DtaC0+soXSXtlkTcIht55Ho6wOblUYaYvGNC3dvvTqyNzIgn6KFMYPAoaWdtu8WX1FQALH
+	sthJveaiZcz47QhjmdVOPDAF/+eBnk9WFP+c4bkXK70m7tI9T5E3R9tHEUuTTIKZuQGPVj
+	xOmaMZ3Te0Q+FVJ2yOOkRD/EcYtiqt8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id DD8B860018;
+	Mon, 16 Mar 2026 14:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6787C19421;
+	Mon, 16 Mar 2026 14:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773672884;
+	bh=151f3cWiR6axiSpyETGy2809glU/p+Thfrb+WhG7his=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IiVlA9K5MR2pm/vVWcjl3jHa1ZLppG/xkVDg4LYhSHBo7tILA3oKU7/VyDtSsg2Kg
+	 kQqyeUnfpOlDxu6AfhX2DKeTc56qG3sgVr8cRvArcJDPpB7MtB8+8m/W1CGm4DXnWU
+	 /IAV35ajExH6TG7ujNjLHJy8C1NUnuOmNHMTs/CZoSJyL1gIEFWKuYKmUapF57E+52
+	 QtJhwAwyYFC0d6NKgO01Zvw7BDFPVjqf+FrFODQ4Cqwr/bAXtOkwM5wsRJqmso1ekz
+	 dUhxuwzJMFbfz9arxSyuA8RSwOjRWaOSv5ZVSyJ0pPvwE3EtZ56ZowEAdLjTcvuW1x
+	 yQ/B9jgOXn+mA==
+Date: Mon, 16 Mar 2026 14:54:33 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
+	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, linux-staging@lists.linux.dev, 
+	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-afs@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH 15/15] mm: add mmap_action_map_kernel_pages[_full]()
+Message-ID: <b9474609-4c7e-4cbe-8e6c-d55baa689430@lucifer.local>
+References: <cover.1773346620.git.ljs@kernel.org>
+ <21d8899bb1f4db61203072fb3a56a6c98a61e23d.1773346620.git.ljs@kernel.org>
+ <4fd15134-ae1e-4233-8d5a-9d1e0b9f94dc@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <31744315-bf9e-4d9a-9c25-63eef0bd2f01@lucifer.local>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6823440006
-X-Stat-Signature: 7tf1yjuez5rb34h3rxy4negtzu8nmodo
+In-Reply-To: <4fd15134-ae1e-4233-8d5a-9d1e0b9f94dc@infradead.org>
+X-Rspamd-Queue-Id: 89F9620002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4xyi3p7r81kts5og64x4sabiax4zd3my
 X-Rspam-User: 
-X-HE-Tag: 1773672786-910456
-X-HE-Meta: U2FsdGVkX19usy5dkQ8Nqx5AXkeaj5GMVWIk6ZozvL4N88zfSoPzF0tXoGwpEUOW7DXDfkOJqtEt14S+Fchyg8o+maGhHblSP4BPqZEhcIevOHK+GpqhF1NailFXqdI6/rbS4INWduXMLqJfqQC+nCsUEvJ5g6JifwMhyFNLPoF+g4l4fWHnw0GpY/5Ji0sUnYplBlyYF6FiDMTNkRZrdahbqZHnJP2OIIlt+gFbAuUTvCXh8FajU/Bv8v/u7sN57+AWiZwWTpgP04UEgfp8KWmyQAmlyknv7gT3IjCbyu/qRYqz+OjBt02Rzok39EAf+Uzp2tl4nAqQfmb0e40UyZHhHFQJt9qNSP0Pku0jJT3yciULFbPfC6HeO/6sGdljRKvborOxb4nfn7bm7CMITE8s3teE0fMhc/8ulRjnJ1DI5IuT72JGoOZ3dRlRrLv4UPq4OYHPdQoFLdJMPf0jbB893rTpWw6Upsux6KUJjfazBu0u+Vd1/UzdVSutZmV25PnrD4q13b/xRxfStyjhDdipNpYLTBw8QZcv6w6AV6tXNFAc37Omk4IPdDzlynpKJ/5WzPBU0t5cyt5BMZ5Jqi7XhcIKgEKcTUD8d/q/HTtAIjbYv2e9Kfe8U/GBBeHVD7urwydj188U+erLth4wCe3oDolfi+wm8ktaZEwL3t0SusUREbjI2KhUX0gd/AhhtwKJsUoyjviwk8a8jUYDtLL+5cREqtQzdA7DH+eTWRldFFk2x3wrP2VIenb4lJxn+wNOzE1TKP5NVqN7H01oxmugToZKEWRzhkRxTpLlww6C2AxokG4yXnqwQPWg0dyEYFYtg5fH0QBTf3Gufipi1xKEPBZ10rATtd7lvqfqZMUZ1CTJjY5bXrw8umOnTwxtyMEM3CXPVFEmue7gffViInHrxYTFQMRvas93sYgyWjqPJuAwqGBkUZif/zJZxVcWLljHj2UQNegGAIRQmS2
- WcV2OMlP
- 4PKUk9ZFmS44o7PqXgt6Fg+8IKPxe8t+ZbHVSFXLSqPUFnUPnO+7JfAYlgZiK425KIsc5PeV3/tGEjPKlSXRtFB23WCoiBYHbSiwGhydE1OwxYDMjiOwN7AdwGI3W/D/z3w4KKmBjW76YbMJ8BJwWa+i3QqY1fda0FVklSJscVtEEPk6WAZp0/z64ho5C5k9bOIaSuLPUFqElOtOuMa8BsdbfW+ms/FQc3vWGBQA30vlTNHi0GpGAPY7jxz0KZ+DZdc+0tbmm2X5obJu85bkLrFIPL0cECXm/iBuTqNtVL/S4PpDdyig52EDejrzvyh98sIcu1LncEU87yZ1MUBQOo6Gq75+9BCjFpSqFYMWxWrRzB0hGkOfxaR8bHCp2ye7nq5VlddwO1wwGAbzkMRoROUVUIsKLvUAWgP3QE2u25UnvFNc=
+X-HE-Tag: 1773672885-707101
+X-HE-Meta: U2FsdGVkX19M+fOPUbMcuHL5pAT51SPW8pWtxAGl3O/6qrG8JWLiXeqxXJz0MFkvIxpYC5A7ghb4hNIWOXGTRT8w92mwIlWZajXHfhQJXqW8HgBl6fYzDnvCjKZ3R1QKwb3LDcqER+L41DEELdP+PdbHMsSDOuajr8rtcVXVDeaD4DHHDtY2xasu3Fkc8+TGvbZyEvV8SzkX3esQ+J/jTygQB8TccjpGIAOzDx/tDEo9CfPdxI7kf0Jgg4CJtUwY/X6fTAnksj0oNRQk3LSEkH5sN587KPp4YlfUfScBrBcjLzUqwxyYrlpdfHcqN/EnmyrJFP5Q5EroZ8bSD7TXl2lZLUQt65QoOoR6Ei+sHqQgHhobZuBkrPBGcjxgKMbXQ6Nt2CntuZ0GTiaTtaESsqhmyQisH4n/ktkDHWviOZ36U799LKmXb9Dxl1Xhkf8YKufYP6+u5vBjuWqOLWDXURNhyOeQFoE1ktvzxRkX2Ww/hsGQ5N4TeeXKgZPR05RGhY+Xafrqld89A36xKPYJDgZxP/6gVDGbDh8AcWC2UmkgbYRBtFvhpPE1WRsn3FhK0ofJUiCIYY22qHq81M6IcTgYTGeIAZz+0W3XTyKLdAt9F+HsfYGifdGu7VtCs72cunNlp+Wm8gHD8TmYVibfc1mItoL7a0qy3sAU+Q6VHNDTOOruFYqThVkrM0A4mxmIy8+El1N2+YjbqkBr830tJ57yK8pMMzfoWDzQXsQB6k2qZ2hw6a2Kk/JDTdTHdDyCBx8LcGEVmgyMNOp50mPBNxil57d0ZmtMbQd/VgQ+Uv2/KVGeKZB6AA7QPuVREuxshVq06JfEGg0cuQDSeOWLMTKsaxVT3Hq7dgq+OqtYc3SE9lphLDJp3vz0uuNJchmLZOKSoV1q2yewC6f35luhqPv1xnCGaS2Dizl6pmJXfYLGJUrbHoq5pT8yXV8FBTEishQZET7n+YP9DixgJIo
+ hJ7I5xBu
+ teJUnOJdyxgCiO/taImAqWbv4Ur71Mcmytodw2PjyS8csqrGzVRaAbmz37x1cSDLGcOAMkw7wO8YZO7ZSFv/GZIm6VcriglmgLlO91iZgzOR0JwCV5XuvX2Gp4wNRBYvl9x99MMqVjUOLbbu08PPjYrgofyGrUlIzJfu0KdsTIwBqFwJWpe/cMWz4QgDD/2mFIVSfhhFWj0PF47e7osO2gNobZQufBFzJglCXwGy6ICSrDCxmQ7mjAdLcXXDonhP/zoljvaFe3mm3CH4CErui7O67bMQVY/YD5hzY6xaaoKM719Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,81 +109,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 16-03-26 14:16:19, Lorenzo Stoakes (Oracle) wrote:
-> On Mon, Mar 16, 2026 at 08:32:31AM +0100, Michal Hocko wrote:
-> > On Sun 15-03-26 20:48:22, Lorenzo Stoakes (Oracle) wrote:
-> > > NAK for being AI slop again, obviously.
-> > >
-> > > Again, +cc the OOM maintainer you failed to bother to look up.
-> >
-> > Thanks!
-> 
-> No problem!
-> 
-> >
-> > > Reasons, as the rest:
-> > > - Worthless documentation
-> > > - Everything about patch screams 'zero effort, Claude did it all'
-> > > - Bad etiquette
-> > >
-> > > As with all the rest it'd need to be totally rewritten and it's not worth the
-> > > maintainer time.
-> > >
-> > > On Sat, Mar 14, 2026 at 04:25:18PM +0100, Kit Dallege wrote:
-> > > > Fill in the oom.rst stub that was created in commit 481cc97349d6
-> > > > ("mm,doc: Add new documentation structure") as part of the structured
-> > > > memory management documentation following Mel Gorman's book outline.
-> > >
-> > > I mean the more I see it the more annoying it is.
-> > >
-> > > >
-> > > > Cover the scoring heuristic, allocation constraints, OOM reaper,
-> > > > process_mrelease syscall, and sysctl knobs.
-> > >
-> > > This sentence contains almost as much content as the patch.
-> >
-> > The real question is who is the expected audience of this documentation?
-> > Administrators, kernel developers?
-> > Reading through this proposal this doesn't really seem to fit neither
-> > well. For kernel developers who try to wrap their heads around the code
-> > it is barely scratches the surface. For admins it doesn't really explain
-> > more than an existing documentation for tunables.
-> >
-> > So if there is a serious interest to make this useful kernel developers
-> > oriented documentation I am more than willing to help. The code is not
-> > really easy to follow as it is scattered. There are many subtle
-> > expectations spread out and it is quite easy to break a delicate balance
-> > tuned for through years. So there is a big documentatin gap I never got
-> > around to fill up.
-> 
-> I mean, we definitely could do with better documentation :) Obviously I
-> somewhat document it from a 'learning the code in depth' perspective in my
-> book, but that's tied to v6.0, effectively paywalled (sorry!) and not the
-> same as the kind of documentation we'd ideally like the kernel to expose,
-> which would be less specific I thik but also up-to-date with newer kernels.
-> 
-> The point WRT this patch however is that really, it needs to come from
-> somebody who has some experience/understanding, and generating it via an
-> LLM is just not useful - any kernel developer with understanding could do
-> so.
+On Thu, Mar 12, 2026 at 04:15:26PM -0700, Randy Dunlap wrote:
+>
+> On 3/12/26 1:27 PM, Lorenzo Stoakes (Oracle) wrote:
+>
+> > Finally, we update the VMA tests accordingly to reflect the changes.
+>
+> IMO we could omit the word "we" 5 times above.
+> (but no change is required)
+>
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 88f42faeb377..88ad5649c02d 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+>
+> > +/**
+> > + * range_is_subset - Is the specified inner range a subset of the outer range?
+> > + * @outer_start: The start of the outer range.
+> > + * @outer_end: The exclusive end of the outer range.
+> > + * @inner_start: The start of the inner range.
+> > + * @inner_end: The exclusive end of the inner range.
+> > + *
+> > + * Returns %true if [inner_start, inner_end) is a subset of [outer_start,
+>
+>     * Returns:
+> (for kernel-doc)
 
-I think we are struggling with capacity here. I am willing to help shape
-an existing text but will be struggling to find time to cook up that
-text myself. I do mind involving LLMs are long as the content is
-properly reviewed and factually correct. 
+Ack
 
-Wrt OOM, most people/developers struggle to understand these areas from
-my experience
-- what is the purpose of the oom killer and its limitations
-- different contexts oom handles
-- when is the oom killer triggered
-- oom killer in progress handling and locking
-- forward progress guarantee (oom_reaper)
-- coordination with task exit path
-- memory reserves for oom victims
+>
+> > + * outer_end), otherwise %false.
+> > + */
+> > +static inline bool range_is_subset(unsigned long outer_start,
+> > +				   unsigned long outer_end,
+> > +				   unsigned long inner_start,
+> > +				   unsigned long inner_end)
+> > +{
+> > +	return outer_start <= inner_start && inner_end <= outer_end;
+> > +}
+> > +
+> > +/**
+> > + * range_in_vma - is the specified [@start, @end) range a subset of the VMA?
+> > + * @vma: The VMA against which we want to check [@start, @end).
+> > + * @start: The start of the range we wish to check.
+> > + * @end: The exclusive end of the range we wish to check.
+> > + *
+> > + * Returns %true if [@start, @end) is a subset of [@vma->vm_start,
+>
+>     * Returns:
 
-I bet there is some more but these are the most prominent ones.
--- 
-Michal Hocko
-SUSE Labs
+Ack
+
+>
+> > + * @vma->vm_end), %false otherwise.
+> > + */
+> >  static inline bool range_in_vma(const struct vm_area_struct *vma,
+> >  				unsigned long start, unsigned long end)
+> >  {
+> > -	return (vma && vma->vm_start <= start && end <= vma->vm_end);
+> > +	if (!vma)
+> > +		return false;
+> > +
+> > +	return range_is_subset(vma->vm_start, vma->vm_end, start, end);
+> > +}
+> > +
+> > +/**
+> > + * range_in_vma_desc - is the specified [@start, @end) range a subset of the VMA
+> > + * described by @desc, a VMA descriptor?
+> > + * @desc: The VMA descriptor against which we want to check [@start, @end).
+> > + * @start: The start of the range we wish to check.
+> > + * @end: The exclusive end of the range we wish to check.
+> > + *
+> > + * Returns %true if [@start, @end) is a subset of [@desc->start, @desc->end),
+>
+>     * Returns:
+
+Ack, I think in general I've seen (or believe I've seen :) other cases without
+the colon, so was kinda imitating, but I may also be imagining that ;)
+
+>
+> > + * %false otherwise.
+> > + */
+> > +static inline bool range_in_vma_desc(const struct vm_area_desc *desc,
+> > +				     unsigned long start, unsigned long end)
+> > +{
+> > +	if (!desc)
+> > +		return false;
+> > +
+> > +	return range_is_subset(desc->start, desc->end, start, end);
+> >  }
+>
+> --
+> ~Randy
+>
+
+Will also fold these changes into the respin!
+
+Cheers, Lorenzo
 
