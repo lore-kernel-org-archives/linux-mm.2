@@ -4,89 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BCF9F53D67
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:09:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD6F7F53D65
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:14:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 965AE6B02D6; Mon, 16 Mar 2026 11:09:14 -0400 (EDT)
+	id 1A21C6B02D9; Mon, 16 Mar 2026 11:14:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F2F56B02D8; Mon, 16 Mar 2026 11:09:14 -0400 (EDT)
+	id 17A9E6B02DA; Mon, 16 Mar 2026 11:14:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829856B02D9; Mon, 16 Mar 2026 11:09:14 -0400 (EDT)
+	id 0A75C6B02DB; Mon, 16 Mar 2026 11:14:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E69B6B02D6
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:09:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 372C1C150B
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:09:14 +0000 (UTC)
-X-FDA: 84552259428.17.6F99FDB
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E976B6B02D9
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:14:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C58357B53
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:14:03 +0000 (UTC)
+X-FDA: 84552271566.01.6CC1932
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7F7BC160004
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:09:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfDufog2;
-	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 027D4A0006
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:14:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ko3GXsts;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773673752;
+	s=arc-20220608; t=1773674042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uogRjvtEgOO2f7N2/dIOk/39p5GeHI9MKxecpWHqq1E=;
-	b=kyCehcEZexSJpm1gsfm3+Pcci6VP+gR+kZYXIgRfG5/noocRSFjKaCNtb2BG9j8wj6XO3i
-	33XtekSamui2IxT7flRuAeQW3Bs/55TGXmDitlvcO81peTvr6nfBXXXlIMHDZxNmaNO1bC
-	B6HhcUH1+GSL/9RjQFGk7wRNkB4QzxE=
+	bh=t6AGk77xJSNsVs/V0kQXWe4rl/ceV7DcqmaDWn7Zizs=;
+	b=KdHVFfWSc/bRt9RjoBGwbr1oXCrYSN9LmBobqUhKrER2bas72xrq0yxS3/6VHdVTOp4EmR
+	WdLeyAHlm3C7M1wYTb0Wib+UGlLMeTjgdn3U4Z6StskLWmIrwXHArPzlUwUirDIJXM4S2d
+	naSYOVhoSsSTZqHy9LGbty5FsMtJv6g=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfDufog2;
-	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ko3GXsts;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773673752; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773674042; a=rsa-sha256;
 	cv=none;
-	b=AIK8WRfz77rpZ9Uru6uSIa26uTVhlTPMpOAP1b3i0pI7cJwNeuzbir0j9dkIq+pc0NW/ue
-	o97nyeR+dxWzIPT+DQ02zF+aZsXfE9ztwJe3yvEN1adCiw+dpxTBD2pNfEiE8sjl1Vr6uN
-	lK5RVDTJSJ/V9aF0Ux+nAq86i4KUCsA=
+	b=NW54ClNOSJplJ9dSNHU8gez/Yau4f+060iNvzQ7z7khsiz2NbaRTYtdOJ5PUUs7ru9PlB3
+	ODIyl9OEiTx+FWBPlQHlOzd54fTnQiFEg6cjIHxN1aQoetsQa85AG3/JEsmWUDI5uvwC+8
+	C7/0AqoTI/E8OIsUqrVhsIbtgKvBBMw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D766960018;
-	Mon, 16 Mar 2026 15:09:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DEEC19425;
-	Mon, 16 Mar 2026 15:09:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CB8660018;
+	Mon, 16 Mar 2026 15:14:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D488C19421;
+	Mon, 16 Mar 2026 15:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773673751;
-	bh=HPF/v3WoPFEV24nIvaRDll4p1q2/19OPsfrmQMWB690=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KfDufog2r8xXqjzM5tsu3ZcXwn9SVxnsslaBKPpbuBvGc8Re/xOPVzbund88z5qJy
-	 z9YxlOpKgdu7FTofKrrMAcrvPe5emwpcKD4iJjy0SvmZqMuRKNMGUnDRlHbrZ1gcJs
-	 Gxaq+Mqby7cMoF6i6uIKct5/SzpVhC8p/h5KaM1V6LaKbQpSvAccSmtSqOYaW41V9i
-	 Q89Ya7EdrTLkGvPmDHbCKpWybBGFzJnkbChMSMEwVQhifxhYWKgBlEYL/PrPz6aZj2
-	 rroC4xacQGUPW5DvvUpM+bh2N6p2FNLiFnZhpMDLyqpHgbJW4RkNx+leuqx1BwFHtY
-	 n82jE/3J6GUvA==
-Date: Mon, 16 Mar 2026 15:09:09 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Subject: Re: [PATCH 0/2] zswap pool per-CPU acomp_ctx simplifications
-Message-ID: <abgc5cn8Co9ft0Wr@google.com>
-References: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com>
- <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
- <CACpmpodjsMELCrJ-QX066CYiGgraysr_ZhFMvU5N-6nr2HsRsw@mail.gmail.com>
- <abgbx0YXbxu2mAHU@google.com>
+	s=k20201202; t=1773674041;
+	bh=bB17RaP+sGJYjZOD4hRJTM0tiGwcoxMhkY2sJcw5ves=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ko3GXstsM7IxbccEWEVNpJtIUBpqwxPArXm3YDYSnQC5oQ+CoOMRS6TLtPunJCGOL
+	 kMjaKrnvz3LzF/qU1/7j9hXCoOrjU8WMFo5D4dpZPeDKz29YkicMxJ+23W9QBb222Z
+	 opWK88iI0M1fc5YhIksujtt6TKMzk2viiuT2MgoBq6XUS72X4DTFnjrAOp5c66KhT5
+	 +rJvaUrp5WZPB/Rd6rSqc+xKQDorBFUyreXDJc/86GviYeLj5jQdNlr+ixJ0UYjJB9
+	 f8RXg3oH8xuCxFSagTkGm8j+to/KHa/zJfihhtUxLTELwpT8lGpoyGIUsr8pJ1PwN8
+	 Y2cJxkNGqJlIg==
+From: SeongJae Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] Docs/mm/damon: Document DAMON actions when TRANSPARENT_HUGEPAGE is off
+Date: Mon, 16 Mar 2026 08:13:52 -0700
+Message-ID: <20260316151353.100406-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <224a29a1-13cb-41aa-8736-aebe1023fb7d@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abgbx0YXbxu2mAHU@google.com>
-X-Rspamd-Queue-Id: 7F7BC160004
-X-Stat-Signature: 5h1nfz8reo1hg6yajtrbheg6yte7uzqf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 027D4A0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3tk59ym4qrb6rr64t9f4p3syqoh95wed
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773673752-754831
-X-HE-Meta: U2FsdGVkX1//hS1/XwcFUuoo0nZY1Cz5BMj/gSaPsIZP+UFm0l43Qo9Cw+4/9omr18VvIO/H1ebqzOpO0q1x2XM/Za0c82mH93E4agL5WH0C5W8mopXJrwSTpvMdcb902C4a9sjvHU5MMDRTFnRC1hVChjWj+Mz5m5A2bSc0w7IDemTBrBMRbEMSxruk0982L+Ui7vIxWHfBsYVbw3ZkrBqH9GBnqHLRKWcCdic2W2yTG6JC4o5Ynn/Iz//Db6ITzJUVA8jpzoN+zAxUe4hByALICBNhcC8QMny3hKyrXwVH/h/PIW/7LBrVP5CFeFoB/OMMaXMqzIT3fnElRy6Hb/DUxs/qDoqH0zWgO7drPr6tlSDfypLI5BH/1S7HnmFgd7PQIht6xzgQrxidCdMJY9x5me75JB+ox7gPThkuD0xnmPAmeU3FUWHIJHVerNJYqy4VDOL7hPEes3ni81+/etey57uKKayoLpvyUQHm5erzqeDQoC83PWWbR+Xhm4vpJe9MLz9rcATPeSLM7Jza6Cxej44RjPv0nMGlmpeKOxaA+lsjvA1WnOeWfV0ub5lDJ3+ZwqzerEo1FOuUdrGFSiJ4KleDfrIWboHhOyA8KEO3t5DMFzp5aJi46+QzntB5FQRUEgn3uOQI4QdTsYWta4NLDNt5UPEGnpCOo4I8ew3W2uy44kPBpo00UzJPiVIIiKBl5fqVdaJ9v8Qo0EUKCqVX1Ak6GwmCcolnPog38Z1FwsYvx+M7Do/rfWdKeU3v2wdD4U7+RvzBIg59h61agtwcCK90nflg3xD7SmvKJdJBBIM4uxcLXhB9qWz91GOLQBrjUJnxj7aCR59xftCqmNTN9pxJkzeLyKM6fwjGnkAytlj5HYgCv729caEW+jVtOYfIEr+hpt32vpfCmA03SkT3xK1HMUXoZ0Kw+rJL40ii7i9IRVm/vAo8uVsarbZDn6N7S3C01x7e56s7Hjj
- 3UmemmbC
- QxwEEEbMdhHnp3B8Rze2970Jlq1lww72daxceAGfSfT6dY55RIrVfb8C7mfjDmx1KzIqWMNEz4yuoQJ9wNiAXwunA1252/yWyOnZyd1F180VCvvF4W6TEKi9/8I6tKHDCc9QXY/iaqZHESXWlHT0rfsp9gmHvxGmK7V8zRB8F21K50BHKIhVoxXPFhI621pUDHxRuDgLjuwR04pXG0yFZPNZWA0be88kWXptWByvQLLLIcRNlwh1DXzU8q3TiIwNgAmFNIf3DmJTGF3gH5+1+27o+koePbBf1TKeoSZ09rB2yP9Skj3nZtFCdciiLWpgvxYNY
+X-HE-Tag: 1773674041-497254
+X-HE-Meta: U2FsdGVkX191QgLXD0DII26yr9w40wU2UXWdarbMubDPCaLocuEaiP3V/mr6YfG86QfYpatsZfnQ1JNjrnv1Xr95OlCjT9yDG5Dq7a+mnamXg8EivAKFcK3oIiVLS1surydmzLiprthMZtodpVxyIXq4zKPMPzFAS2MQztRF1jlWBrLq3f8+cRW8vlulcrofHjUWCUuOOMwZ/b0faPeo5TbgmU3cBHYltt8NKKnCNw2VxvHARP1od+IQ3CjQjKw75puVMvoFBPJpNyuF0foaC1tV35eyuKa5BiJVZXQuNxBh4M4HAjsWpR3hPd0yogly+eFoCJJjXmNoK9rrUgEmE8zB2duocjGaIFEAuA24qEUo12EBlCQXf1RClhQQJ2hE/8XK+nf9myumvJ/uUrOldpETGQLQofx9+nNpfnXPPGSg13IAhBeQGq9257u4q988LUDRAOF9aHTmGaj2wKn0TqdiqGygX2quM57KeHvbLjKOXzSAR5s+0F5WW058YYbTTGssDZdG3UjfljPUw8dhDVoTbXAOxUoh/ntcuPxhrUlWWXJ4iFVoLSZZ3PTDY/P0yJAiD1kN4rJzsJL9Og6FNYJW5Ec7SlhP8vuzNMfL3ugbtIrxZJ6R5pSTtXEPVAquS7wmmiup1qTijGuGT/nHlDVqR0bRZ+3BZBTE1EHbYGhjLF/AfI8oJDOP0e0c8MSb7ztK+G/msjM421wcOz/oJdmdg+RafXjkb4FdpdbyDoW5aNU3PDJE5PXgXXCiPYHd2MxwQ/NdUfzjXJUSt+SiWY12qNvAzT+NHUmPNeX5WinPzwN96xTbdH4QCJSJ7hR8FkbKgG0nHkFm8qtPsf3zskQXlX8tD0Cz3PDHpcEyOGAxKowFr8MurWfSTWSKNyqb4naZR/P9y4TmcKIocOphUwTFjnWvJeBjCgZqDUSH/7gnpFk8ejQG6ayKzroA4VO6rjGOwiSk0eb1uLMwbV5
+ 3GkNeugv
+ xgb7sz2q00vrRey8M9RCPDnGHzrxTyMJoJ7LTwUv94rVI18Je35EKcXPyE7ddYZc6kM+xAyH1FrVnx/wP9sP/qxQ93zSLxOX/0OX1wap2BBWU45eNp/x278O5hHvjcPYMjAShCLeez4h2LyvOh3tOAzayVEvvzTIxIuEM7RIZvzYedgVwF8sQ83Hbe1burNmhLWgbF8Io6KW8sI8hWo57NRGp3s6b3aKNc/9pN04CZJtx/+l+Fv+dGUoi7ibgJOkt0jq+/k6vqbbDZDFCbdRrMlmlXf/EWUnBHDKTI/HagqqtOv9jsEF691DhUUAO88YaCUaH5hie1yM3OxHEOPHLCfWaZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,38 +107,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 03:06:32PM +0000, Yosry Ahmed wrote:
-> > > > @@ -786,7 +786,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
-> > > > return ret;
-> > > >
-> > > > acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-> > > > - if (IS_ERR(acomp_ctx->acomp)) {
-> > > > + if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
-> > > Does crypto_alloc_acomp_node() ever return NULL?
-> > > Looking at the error handling just below this check, if this were to
-> > > actually return NULL, PTR_ERR(NULL) evaluates to 0. This would cause
-> > > the function to incorrectly return 0 (success) instead of an error code,
-> > > hiding the allocation failure.
-> > 
-> > This is a good catch. Just to provide context, this patch was
-> > introduced based on Yosry's earlier comments in [1].
-> > 
-> > [1]: https://patchwork.kernel.org/comment/26282128/
-> > 
-> > crypto_alloc_acomp_node() currently does not return NULL. However, it
-> > could, in future.
-> > Since the rest of zswap_cpu_comp_prepare() dereferences
-> > acomp_ctx->acomp, it depends on whether we want to future-proof the
-> > code to handle a possible eventuality of crypto_alloc_acomp_node()
-> > returning NULL.
-> 
-> Hmm upon revisiting this, I think keeping this as IS_ERR() here is a
-> better documentation for the API, and the incossitency between this code
-> and acomp_ctx_dealloc() is arguably documenting that the function can
-> only return an ERR, but it can also be NULL-initialized by zswap.
+On Mon, 16 Mar 2026 17:56:55 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-Also, sorry for leading you astray in the first place. Looking at this
-initially I thought the inconsistency was confusing, but looking at it
-with fresh eyes I think it better documents the API and the different
-callsites.
+> Hi SJ,
+> 
+> On 3/16/2026 5:48 PM, SeongJae Park wrote:
+> > Hello Asier,
+> > 
+> > 
+> > Thank you for sending this patch. :)
+> > 
+> > On Mon, 16 Mar 2026 14:08:21 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> >>
+> >> MADV_HUGEPAGE and MADV_NOHUGEPAGE are guarded and they
+> >> are not available when compiling the kernel without TRANSPARENT_HUGEPAGE
+> >> option. The DAMON behaviour is to silently fail[1] in when DAMOS_HUGEPAGE or
+> > 
+> > checkpatch.pl shows a warning for the above line:
+> > 
+> >     WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
+> >     #12:
+> >     option. The DAMON behaviour is to silently fail[1] in when DAMOS_HUGEPAGE or
+> 
+> Yes, this is due to the link. I tried to keep this patch compact, without a
+> cover letter. I will submit a new version without the link.
+
+The above warning is not for the link.  After wrapping the line, however,
+checkpatch does warn the link line like below.
+
+    WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
+    #13:
+    [1]: https://lore.kernel.org/damon/66131775-180b-4b9f-b7ce-61a3e077b6e6@huawei-partners.com/T/#m278d3c9bbedcceaf2efa51e3dc7b40a40654e51c
+
+But, it should be ok to just ignore the warning for the link line.  So, please
+wrap the line, but keep the link.
+
+
+Thanks,
+SJ
+
+[...]
 
