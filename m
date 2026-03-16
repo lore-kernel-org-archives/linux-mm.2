@@ -4,81 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7BB3F53D8C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C60F53D87
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:17:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D5366B0362; Mon, 16 Mar 2026 15:17:31 -0400 (EDT)
+	id A60126B0364; Mon, 16 Mar 2026 15:17:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 369346B0364; Mon, 16 Mar 2026 15:17:31 -0400 (EDT)
+	id A16A76B0366; Mon, 16 Mar 2026 15:17:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C0866B0365; Mon, 16 Mar 2026 15:17:31 -0400 (EDT)
+	id 943E26B0367; Mon, 16 Mar 2026 15:17:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 199616B0362
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:17:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BB25B1A0450
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:17:30 +0000 (UTC)
-X-FDA: 84552885060.28.CACDF8B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2693A1C000B
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:17:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gGNOiEke;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F7BD6B0364
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:17:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1ECC3C1D70
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:17:52 +0000 (UTC)
+X-FDA: 84552885984.12.8184F8E
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 11911180010
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:17:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tWL0Mtpb;
+	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773688649;
+	s=arc-20220608; t=1773688670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TraS5GAiMSM/RCtun2dW6fsNdsO7KsSfqkHVJVYwjgg=;
-	b=bUtdebrmyNpP1769sS3/EcV/1F8qRbrtG9MQ6vCj9GEFdUhS4bVZwZ9myKb6vdGnI+YC2Z
-	KXdjpBDxK/f9eIVWzGb9u0vd8Q70O/DFw7hyU65yMCWuNp8x5ZCxCoZsg5KV68jnm4eiIy
-	WJAQYBSzy0waVlkykg93VcKtnFl5EoI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773688649; a=rsa-sha256;
-	cv=none;
-	b=0FfzchlBiya/JQaL0eiKUq7bBUr98CXmBXyqMTdTmrP/TaiTIV/vJlHVE3M4HKsuOK+4Lc
-	Rvmvzx9vYhmPJ+n+cWzXIAsRLnIuMlkgeu0YAstre8cO/7b7jV7X6fyhMuODf44V0vmm4d
-	Rz1gZe8nTKNHxCxERlpxvVTblhSnod8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NdWqcb4hqU1+ie/mbBcn2+9eh+rHjQw3OrJ1LmLY49M=;
+	b=olkDmsLr/9IH9TZY0IlXega+QKfE/PJFJSj4JHQ/H220OLzqNNj15Gk2iwrZ0ioGWiaQ9n
+	GYZ7/M/6q2Y5xr+C/t4/rR93y2vnq16PP/U1IVu7EZ3nxVFdwLuxtN5IizcQH7HrJDWjVj
+	uQ1VyCoZwSvmdCdEFb7t+TV27m8Ec84=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gGNOiEke;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A47FC60097;
-	Mon, 16 Mar 2026 19:17:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3950AC19421;
-	Mon, 16 Mar 2026 19:17:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773688648;
-	bh=Mcl7mrfaevdnL+TnJ+uRqetMxeqPaZ97LeaI3YnhJsA=;
-	h=Date:From:To:Cc:Subject:From;
-	b=gGNOiEkeJkDyjYOrxgQw3qo+ZNF2CX4D4ZuiSivjHU065nWXNtEIO9J1aqia5Qpea
-	 V5fGXfk3lc0jdgtH2HTAce+HHHZyOQPKjdAcNspncbwbBOlRbF+B9MRbDVw8VGWb8Q
-	 aSeoDv91blV37x+jiEFWL6zsnVPcViJosmTQ+cMc=
-Date: Mon, 16 Mar 2026 12:17:27 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 7.0-rc5
-Message-Id: <20260316121727.54468f0e01ca280c17f2b735@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tWL0Mtpb;
+	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773688670; a=rsa-sha256;
+	cv=none;
+	b=1w1BvnUAvCfKtDdeNOiUI6Rh2eDzf5TbudSrJs5MJUNzLAgOgNgLYu+4vDD6jqn7LIAb9t
+	ElNN9b8IHmlcdOvgm+hUgov3msUfJNZ3q63OR6b9ddMQ26e5l9ccWx7gfBeUWETbsFcskw
+	AN8R5Q6VgiM7ms8w22RLj7AhxO8ejO0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=NdWqcb4hqU1+ie/mbBcn2+9eh+rHjQw3OrJ1LmLY49M=; b=tWL0MtpbizoR7d5lDKODkpzvOf
+	lDvsaM1JuZ2XHLjneWMAMQxGTGV6OvvyRl37MritY0dwie/z3gEG+d0/VOHhp3P2eZiX9G22KPQgO
+	f1DGScXj7+G8ZpQUfcSzD4mVGFcTfQ54QmrIEqwhPaylWk238p8X/TOzShQZgboM0f2NT8W4uT5zt
+	CZx0D3R7pvShJzzyrQPy1Hhevhto92gPDT8VbEcg+l4rkNdgX0KN52NxPO0g3nquiF2ZkuvWDe+XO
+	fa6r3t7fxaHRuUl1jGYhvn4OPZ9NXRZM5WcRXNmEnqvlnxTbX3TRe68i+grkRz24SZj1zUtPLje9h
+	qiPq3Urg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w2DRc-00000004kbI-0Mf5;
+	Mon, 16 Mar 2026 19:17:40 +0000
+Message-ID: <659bd750-c67a-4290-8c2d-58bc13c9e2a6@infradead.org>
+Date: Mon, 16 Mar 2026 12:17:39 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/8] dma-mapping: Introduce DMA require coherency
+ attribute
+To: Leon Romanovsky <leon@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Petr Tesarik <ptesarik@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-rdma@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
+ <20260316-dma-debug-overlap-v3-4-1dde90a7f08b@nvidia.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260316-dma-debug-overlap-v3-4-1dde90a7f08b@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2693A1C000B
-X-Stat-Signature: gj3wgnemfa4fyy7i164qi3ojc9jpqjqk
+X-Stat-Signature: k33xsxzyx3upek15a7xarrgmg7dkdm43
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773688649-167790
-X-HE-Meta: U2FsdGVkX1+HjN48atKLYTuIIOM2XrqdMu7zoQYNJ7HV+xwcxpsCsntUoUqccVr+NyJ7TDxhkgK6S5GvuFylojvqP5TdpD0KwTHEf4M0kZQLdtTYwAUpU07XshrCdbtfwkSh+g6fsKAgGvRyERubI4tU+MLqJVSkiY1JaB7bp4znfIeI/zoepWozDdWGBkrALPvQTLLzdafirT0b+pZlp1dJmlDcwatNUtpk28RrYr4bq0RzmNL454PoNcqJRvM0K1aheMCyeQiKvXIjT8O4vPWyL5GXUtdYTLUT+rzWzVZ+EDza7HRstFwjlqwFi/fn8MO97PEv8x0ooDmAN2BjS+2f0WQb8XTktctcmokN8WSXF28Cn+IChdznU58IYuK/0r3fBbjkOX995BiEhk3SCFOrgbUJgjg4JoBqo9ddHLMP1bIO9hK0jWR5JC6QeJ5OGSkKjcdMeWvBhyMfZk5JQ0cyxzIhnPmk9NwKj1gKJ8cVqq0Vy33gI3ldU1VtpX1O8sQ9xL5jVLb3EMRXLdMMMI05aq+h54igCAV15bD+dIsL0SDsjoy/avC2t4twC1KYNY/on/XcDkI1gY0Z4pMorFxpRVWJFtN8/dikIwVrjwcrsLbh2JDRfZ4UlKjfXMHzXrW/pz/VqxI/NFIgrSMuz1D24gwov3BEbEJTa7sVk1PT35ZriknpIWuPXVm0LXg0SCMXCT6ne8Nhtl6+Hv16VDpRsjJZO+9cVytib0fYMsBEHTxMm8AfRVm4BVKU80G632ePvsz1Ni+ElW/2UGdyiz1mJWLOzAScEIcKMJ2OPiBQ0/91fkWrsXvZOsArfRnUWDOOQVN/MJn1hx961aelMdZ4PDusMqNK+RcdtWMCk05MB2ZHxoV98FJp292NogZF+OgwlLE5FBH2i7lgkIN9RkPQS84BpcxgYcsiawaWSclz/kv2gtfKsvwHE3ArIKQpe6i0fIYBEMBfeQkA6sb
- Dd39zwz1
- Hf/VJor88zSRJcDc0Cpm2SJUafNxZzBYrAnAjiCmEoDQVzQLI+DvYPkz3BbIAF6flUDy+mav5AXKSAwc4GBoEKvOmTiv7THzpDHNpWBF4J3QBan2aqC1c4ACxi5/e1KeE2XCN8IdL52Vzq3BES+mATIa5clfHK0KHUvJ0B0wRWzCExFwnAZhyZj5MklUBL3s6FwvMVYiDZbI4q0fnzCOY0+SMFHurl/O3ZMbgqj5u9UuBkQ/MKK62Cl4JCz14hzvVAL5byHXAC+A1Cqc=
+X-Rspamd-Queue-Id: 11911180010
+X-HE-Tag: 1773688669-452559
+X-HE-Meta: U2FsdGVkX199ggxnemUKhrceKgQmSLs4dtC2fSWxPl4GeeoM3sS7mAUrSX2AFBK9qr/RYW05YwEBcFwjm2BvpCpfU1snxWCkuThGFCkfHbqKowYdFuFExQrLExxaBoYQSN1Z9wJA+4QEOHzGBA0BoPTUXP2LzYO0JYz6o/9sD7Zz9qe1hM5Y5VjL0pjmLaw6VZZZ9ZpwcD914A0JB7VFrQJnEW3eyb5RHMDq1BOdzVf8n+QV45dzK5opZ01tGDUEWbThK2Akq84go9BNIjSOY18IJlcnY65kYC6oFcJvUruwHykNKpWeOF3W0mN8rsPR6Npc10Tj4C+dbWeP8U/GkCvX54eBE+//EJk8McFHdaNvkl+yyuWSxjIv+5jGWDgV2sGuf0e9e8dQlgcV2h1p1OLnsIKvHU9N6cSv8O43+RQoavdKO6SY3Rtdog4E1XOh/CeDtvbuu6uOEggH/3bDeZrrYZHiVEMB9D5VwuYZkkmvEiJmAtSWcyhMRSXntYV+eKDYVW4fz1cBZQQXI6I2RajBFolQJPfrCFwLjE1P/8LMJoCPWCklBilzeZN1o+bky1KYcVvx4ZTnyAE05Zp0AdeGYXoc9W/SDRjwfwoRUbZKqelwioTh6eIkKD148kgqTIHcisSXPiHFCEGua/e/Hl6P2QfjbcOJybVi6CraRdsxLcB+0kkcH1f/uXb7oR9JDgVIZzpG9DR0deks7NG4qc1r6tvx7Wj3gpqdPk0guWLlnAM9JIttOrP1+iK06huFGcKf4zoZtCigmXsUttJxwYHKcMFb/Pa80YUXi6wVyK2mcY1VEKY5XFYgq8fttlG2KWNINq2FrDNKg2n8UA4XSIVgeLzsGh6HWYgcOFDMcPZTWYCJ+a3vLPCg7TAcSREH86kGRT7V/mo3x+XVZSgAr9h4PeRwytwRzUyGowmmLHaUptE2dkqyZSHAFLjI+R9Q+wQ8HovMxAlRq/O4WG3
+ bRshnikj
+ xDPyx3zTNZEgP50kGFaT3z0cZmZaYwVpTxwSoyhbyTlzCwMQUmNsh/IY2/XP2tqKYrn9CBzQgd45qCKUoXzCw8q8Dj6XSjgRKl6/c6EZ6jaj67ANVZ38guyNNXYuimCqUCFctJefPuTFk5auP2mclU+ViV7O2aBvKjsZhVKWCvBOO0ql+QqX/VvqO2oTaYyEfqzoJSlzEsQXKBx8pZDwytQECDeggT/W4wjp9Z8jfSnHmt92HDyUlOWMg+VgqIaHO6wba
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,51 +107,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-Linus, please merge this batch of hotfixes, thanks.
 
+On 3/16/26 12:06 PM, Leon Romanovsky wrote:
+> diff --git a/Documentation/core-api/dma-attributes.rst b/Documentation/core-api/dma-attributes.rst
+> index 48cfe86cc06d7..441bdc9d08318 100644
+> --- a/Documentation/core-api/dma-attributes.rst
+> +++ b/Documentation/core-api/dma-attributes.rst
+> @@ -163,3 +163,19 @@ data corruption.
+>  
+>  All mappings that share a cache line must set this attribute to suppress DMA
+>  debug warnings about overlapping mappings.
+> +
+> +DMA_ATTR_REQUIRE_COHERENT
+> +-------------------------
+> +
+> +DMA mapping requests with the DMA_ATTR_REQUIRE_COHERENT fail on any
+> +system where SWIOTLB or cache management is required. This should only
+> +be used to support uAPI designs that require continuous HW DMA
+> +coherence with userspace processes, for example RDMA and DRM. At a
+> +minimum the memory being mapped must be userspace memory from
+> +pin_user_pages() or similar.
+> +
+> +Drivers should consider using dma_mmap_pages() instead of this
+> +interface when building their uAPIs, when possible.
+> +
+> +It must never be used in an in-kernel driver that only works with
+> +kernal memory.
 
-The following changes since commit b4f0dd314b39ea154f62f3bd3115ed0470f9f71e:
+   kernel
 
-  Merge tag 'mm-hotfixes-stable-2026-03-09-16-36' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm (2026-03-10 12:47:56 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-03-16-12-15
-
-for you to fetch changes up to 182b9b3d8d1d36500f58e4f3dc82b144d6487bdf:
-
-  MAINTAINERS: update email address for Ignat Korchagin (2026-03-10 16:01:49 -0700)
-
-----------------------------------------------------------------
-6 hotfixes.  4 are cc:stable.  3 are for MM.
-
-All are singletons - please see the changelogs for details.
-
-----------------------------------------------------------------
-Chris Down (1):
-      mm/huge_memory: fix use of NULL folio in move_pages_huge_pmd()
-
-Dev Jain (1):
-      mm/rmap: fix incorrect pte restoration for lazyfree folios
-
-Ignat Korchagin (1):
-      MAINTAINERS: update email address for Ignat Korchagin
-
-Randy Dunlap (1):
-      build_bug.h: correct function parameters names in kernel-doc
-
-Thorsten Blum (1):
-      crash_dump: don't log dm-crypt key bytes in read_key_from_user_keying
-
-Wei Yang (1):
-      mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared THP
-
- .mailmap                     |  1 +
- MAINTAINERS                  |  8 ++++----
- include/linux/build_bug.h    |  4 +++-
- kernel/crash_dump_dm_crypt.c |  4 ++--
- mm/huge_memory.c             |  3 ++-
- mm/rmap.c                    | 21 +++++++++++++++++----
- 6 files changed, 29 insertions(+), 12 deletions(-)
+-- 
+~Randy
 
 
