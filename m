@@ -4,136 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2FEF53D9B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 21:10:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945C9F53D9B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 21:13:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C2026B037B; Mon, 16 Mar 2026 17:10:11 -0400 (EDT)
+	id E95586B037D; Mon, 16 Mar 2026 17:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36FA86B037C; Mon, 16 Mar 2026 17:10:11 -0400 (EDT)
+	id E431A6B037E; Mon, 16 Mar 2026 17:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 227346B037D; Mon, 16 Mar 2026 17:10:11 -0400 (EDT)
+	id D450B6B037F; Mon, 16 Mar 2026 17:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 123536B037B
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:10:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7CA19C2086
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:10:10 +0000 (UTC)
-X-FDA: 84553168980.10.8FF3195
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6A3E020014
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:10:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="vEZD/ogX";
-	spf=pass (imf13.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773695408;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C1BC36B037D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:13:38 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F4571C97F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:13:38 +0000 (UTC)
+X-FDA: 84553177716.14.0853A79
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C913480012
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:13:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ntq/l3UG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773695616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eoxj3io/quzMxGdB5JqTh5Z0Db28WSvYHgOTXomSdzQ=;
-	b=io62hFAHqmz4yVNN1jc8u8Smttvg07xTDVb3k4MMbUAu4OOiA3whu2lNZG1+0A86iS2XUj
-	T3FuuH1+Y/5GozfHvmEojEkPNzLmUwvN3xJbdoz6pdQG8f223p+kzi5qy6SAqpVuVKxhEv
-	BaRciU4fC/4fR9j28EpHJsWL+nbha/8=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="vEZD/ogX";
-	spf=pass (imf13.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773695408; a=rsa-sha256;
-	cv=pass;
-	b=VfsE17WpqmiLQxTH7LJrlsOae0WGPPY7aN3gIrMseBEm63sfecm7vmGm4ArAIWGGoLLR5h
-	yxRTO4Mrdg0rp9KlDU+fcBV23RYEBEk2mn62NwRziXhfvX9FXFUwgP+BqRF0TyvjFeshjb
-	SW3VuiN6Y7VQtYSpatm4iG2E0UhclE8=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48569636800so24715e9.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:10:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773695405; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kkzXNTXs2ZU50DWLlx1CwmU/88EwicumbaYSWMcdkqu4IZZ0DDhNI94j6kGXRlTsT2
-         Dyeezorqbqarh9u0hDijtvF1ZSTh+AELaF0X8Urpjao8vdirtB529uBTOGa0HYnXAlLJ
-         3wdASfPwY7Xizo2SPZbMC4UPXPAZUHCf+RzkYCIrQFhkAESBbuihmw34muQPv8gRnQ9l
-         bSyvjm/fJWh6pnM9SiKCI6R+480n24T2dOrjbAt47UOe330Sfx1RQUFXFbOhLY/pfXSr
-         kg0B2n6pe7XRGnMiF25Yz7HjQFhVXgXKsTneCyOQdNp0PvVkScaDtVFMQdMPBmOMfCMZ
-         8RHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Eoxj3io/quzMxGdB5JqTh5Z0Db28WSvYHgOTXomSdzQ=;
-        fh=Oo0qWPUSNcMn43ZDox0WvILvsTfCNdUzwwyiku1g5FQ=;
-        b=lA6HNJxtuYj2si2Z+B0cNOw9veKbSVXLgVFqs+tqES7K3xOoBpZGfKXaoPGBPApuS+
-         z3re1DsLn5QbDFt8xpyUs/QMZV827JiZKuy31tXaikxnnc2I5blsrcxmssOx5xEGpYZm
-         q6zIbbU1sHGouLjyTcryFXgfTzgsrpdykc3Mx6CMrl7KsQByMN2T6hC3SJBTlpllYtx2
-         uCDNepfFr5lVWCDW6yNNN6V66sgYxByk/b1hI4np5PR5QPzpz80LPcykoiGtERerFBNw
-         d1rgiap328BSU4F1VV/+OCNqzu8OprUoqcgp/2VYpznAEnL1AUD5XzvDcM0lx7xUzT1Z
-         8dVA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773695405; x=1774300205; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Eoxj3io/quzMxGdB5JqTh5Z0Db28WSvYHgOTXomSdzQ=;
-        b=vEZD/ogXYDwFTvm87jKEgJ9bGr7hX6HXoe4AJGxyj2cdw/Qv3qYAjAMuerJ2vUR+RR
-         P+I+jJgzx1MVjMA/bN02NwBjHG4q46IJvcBkF+iTpqnL5eqKHxXzbV9+VTdSdaMRj6G0
-         eB5E3s35CEugv8w2i7GvAeu1ktSPklBYkzt14KbY8Sr8NRllEJqbsB6ow21wIaA07KmX
-         GeygYl5K/JnRrbprFVvpKUmvVF2+OPna/B/ZGIb4l7NO0KXxwT3r5d0iJaC5IInykX6g
-         jkc3MCrGxxzrvRtC2Pai7ufcs9/Ts9o0EymV/D3EifmU5SdC5AjiI1k90utWhEeJlKNr
-         u6Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773695405; x=1774300205;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Eoxj3io/quzMxGdB5JqTh5Z0Db28WSvYHgOTXomSdzQ=;
-        b=fIxLnh1Md7ZAXT71vnMekFYB+WYBVeUq4PpZeZh7VMaxhJZDKdizFiWa+i1go0mzv6
-         FUreklZX9emNL3e5k4UYML6D9BHYmLxBTXSlxLpbdK+wjcY+jJpmAy3AcKecneBwcQwG
-         EzntF1SlCQHtfnpCRuEvgBK2VpGnSfGpgPt5dz4BhIMs7pL+p5rIiFoXC+F/jVTE8yhU
-         h/EKQMfSHSggt7sAzAYcfyZBk3zLa8ppW4gEA5m1jV33H9CXp0hUc6In02ldmMw+i4i0
-         GIpJtXW5b7MHO17XG5lQmrT8MOXgLBVSx6Q+k5w6zEecOEBGWARqo7KlPMPLqMkVvJY5
-         mSdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUT2RPFVkuI09Iaor5MtqxCiWCXa7RVGC6q+kXAJ9kMpuJ65444fC7aqyubYJXMh/XKsIActdNXrg==@kvack.org
-X-Gm-Message-State: AOJu0YwCoMhD2e2jSxx/eIqppdg0ch89Oxwh2uk6zGwmYbBInsPGCYtJ
-	4RADPOkSGn1bJd75BkjF6GIE4ZnAKEWsrAbCX9ASOxUYR3Yjlg2OzxCc1rnZWjpPvV0jK9Vx/fC
-	Sduv6WJhJJiWREJBF625yNClLMCxqf+nJqi7E8Svo
-X-Gm-Gg: ATEYQzwAUqfxqhqXU/EBGf8bXh6Im65prSRdB7hfHMIU5Hvw6iiaHcuZx1MmMm2K7RP
-	POiMQJ4uB9n0aNgf8eC7V+w3+PwYZgFC7q3oDeVaBhzyb5uNylm1Nkme8EXGZMslHW4IXP6Mzdq
-	yilI2ukGslu9QRiGv5Hj4H8eY8u7/6ljHrwSNTAbVzl/H3ndE0Zw/NMo4jYQMtnbZ7K3sfbTtNp
-	hQ9hdNTCXLXEjz9wwezBuZHT3n+mj71QP+YWJWN9HzYjZPLICd/jPsLroi49zeXE0uIniTAJVlQ
-	/BekQWl/kbGyPjsLCPrb67mWHMqGZBdCWDtG1Q==
-X-Received: by 2002:a05:600c:378a:b0:485:2af4:9699 with SMTP id
- 5b1f17b1804b1-485709990c4mr51435e9.3.1773695404853; Mon, 16 Mar 2026 14:10:04
- -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jgJYpd6wuCrv8kLX1dzrgESVtdv12vnZQEJ/jLK7KuU=;
+	b=pAbEyKwUid6FMyv6Ym1gBKM+/XLLU1DyAX5jV4xTGxVkLM+Bolc9h6NzHqiQygW3XXlTl6
+	vbCRpPJaKCuH0S8AGT/DdooX6rC1IirDyR5ELCd4NLxF9OTiV50rK+N4fxyX13DaX9X03q
+	p4aNq5TtbZMBEtW1V1iaYUB0SIiwPu8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773695616; a=rsa-sha256;
+	cv=none;
+	b=iP1HxbB34EKcLyDr5SopKGl01HfjMIdOo7tbIv/qh2G5qp5lKsQE6cIWiNOiqjliK5e801
+	B1m7tsLD661ueKFEvupa2+cBEEot8OV0AgnwlVviR/J9xCzUp2ZZQn64CxSbXjGDhKDoAO
+	1tCJLC58qEW8zIRQUyAI627HGvugIV8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ntq/l3UG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D8E860018;
+	Mon, 16 Mar 2026 21:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248B4C19421;
+	Mon, 16 Mar 2026 21:13:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773695615;
+	bh=ilMdtysPCdNXPtzF2zNSpIrJ8Gr1Wv5rYS8ynVlNkEU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ntq/l3UGM9JqyJJD9JGa7/yDJgNVnVPNfki9aJRX4uarYRuo6x4Dvl1Nvv2uizzFY
+	 PKNBhPwaDwYOT2ryPSG03lQzK/iVm6SI95tlkq8E9XT6eanSVjR8YC7k3x5yHct10Z
+	 0KpqmHVJ//eqjlE2lbzqizxCuq2HekJx0MVEF0CFZiORAS4KC/NJ00mX8hqxEHngbN
+	 dN//9WHytXP2+KVpaS88wjMwl7EtwsiLj0M1lgSWEd4oxUmAaUwkJzaE8ngvjhvq+y
+	 1g+fHhAmOGC1WKRn1K9zFe7N/Cc7a3sZPGoqKRVY/lmxStNOEuDKUMfI7PC9kSX4Hr
+	 YuQ4yI1r6vyzA==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Bodo Stroesser <bostroesser@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org,
+	linux-staging@lists.linux.dev,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH v2 00/16] mm: expand mmap_prepare functionality and usage
+Date: Mon, 16 Mar 2026 21:11:56 +0000
+Message-ID: <cover.1773695307.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260212032111.408865-1-zhaoyang.huang@unisoc.com> <abhh3lKb6med1LSp@tiehlicka>
-In-Reply-To: <abhh3lKb6med1LSp@tiehlicka>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Mon, 16 Mar 2026 14:09:52 -0700
-X-Gm-Features: AaiRm51ZUa1oZA-6MK2v5WDq6MdxAhr0EIe-KoPiQ-uvQf3dTAjwft-gVKmzYDQ
-Message-ID: <CABdmKX3NUZCq7kq5PGWOUs1Wmu+aT+EfeMpcRxD8PxiRe2si0w@mail.gmail.com>
-Subject: Re: [PATCH] mm: remove '!root_reclaim' checking in should_abort_scan()
-To: Michal Hocko <mhocko@suse.com>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yu Zhao <yuzhao@google.com>, Rik van Riel <riel@surriel.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C913480012
+X-Stat-Signature: zegmfqdacj4ix3jhyptftbg19pkrohp3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6A3E020014
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ft8afpfpm13ummfhqftewhcfmpm5j735
-X-HE-Tag: 1773695408-486473
-X-HE-Meta: U2FsdGVkX19WfXxE7NrzrnESO7Hi1Z7K1NqHu6MGemMb8jJfjWLTWW6Q9oX4CnTDOz0R5XLsgmYkOi+bfHafufg59D4QJxpOCwm95QoNfBkQTFz6anphy30q1OlAlrmRtDbbd1J46Qpw/kJB4C2VdRTK6PnxPyyped4yXOwa7txz3ajaaIBEufd7Q+yhSJO3zq2XLABXEUrNnu0EKy80Uz+QsbBYwFh2C7Wz0OBDK8dxWUkn3xdjXBVzXVEhTWRdTvVBNb/p436YTQX3491JSN4b74nIQvoD6Da4ibrIyhSiDZmwBfGNNqz33VSJEHA5nB84c28fzVsTLHFPqXYRSpjzPNw7IksVDal6Uy5+lq5AT2Y+AN4u9V3Lml0Gg5nYUX0RvnOUyiFHbwf3pPaorVIFwc1J3gg+Nl6yLH9CeAtQuI/w27lYShKOJ6Ymyl7/05YmFig3Uaucw0/zseFxPkGSEaM5Xv6kD/eNUJBD1WmgD1GSV4e+mcnFpAaR6UQrM0zEJjdbnZmK23YvkOL56CraEkCxK8fUH1C0IV2H7bhnEDmnu/NhW32rAR2gEWzF5Kk6dnT8Bs06GvZBvBaREpU34v9qTy3jfTZ3r7KaBANE89reuB1Nd1vMfBgjCC/N0E3FHHswB0vpkIfApzmL7ewjXthCNbgH99XwdLy9+fF3ufwqY2UvNlSV1LdS/bDvyvaZNvz7PwTPmN1Cl82ICTk/7eG6iNQmjl6ifaz8HctQ8ev7tjL7v83Rjqajpjueisa6Jm5wYJN81/urKuTWZB4rFLSr0NsRbf6swwe4jknYr3s15WxEZNnu9HdAEesN1/ODCQdnqhkEDNWju0YOAtRFiw/uc8jWPyO6p08vt0GRiu9HoH7Ree5VQqOu7T/sv0iENV49pLrQXgFh9741ekTJHS/DvnmHQPpFOXuD0zbg3CRAWtuCnFwmlmEJIdr9QEN6gTEt1M1c0eBJc2v
- ba4rR25J
- ClA0AypPrSJkisPorFsamN9qNwa61SyhJTUw1ubXYlBXA2LECgh65ht1YA8bYjEd0lMhw1J3ObL3225yMoks2mglORdE4CqBe3ZcTnksBHOrIxssX/J/rV11RWbJTdig1AX+e47auPoyIBAyHRXgbdLu94PPTstVRWTXeJ3hIodz/NVyn14om57//hP5L/s6YUPGu7sYW4wzXe5zXliJGs+gF0jApM5A477dkBLfpXJ8Y0pC5gwMhh8uwS5gihxUVyblzJ4/XNW7andrswSmHZacN428yr2m20K7lHein455FcO7xT+IS4VdhSgujnkpRnGrm/CEe+O8o5LMExDhmCgqrAs8d6XBEY5rIc1y6bdlXDyf1Ef5fTGYan6q8l35KD/2B927AZypOyHX2jdvwFG2OoWU3nPXoK4P8xFXgWSgKgnhSVaPB4YDTWoLuVFfudgI+GU+UaEfwcvMfLaoDjAcMBg==
+X-HE-Tag: 1773695616-713320
+X-HE-Meta: U2FsdGVkX18WEuDx7vCnbmDX2zDBSi5VETzVzSfd1J8aZSqUJRT6Qm5a/RacqdQS0XKAGdO4Dn1B8bsWdsTGyWGLzC0/molTUlmTLhNv6o0Vjl+HYwP+MwdnKsUDMVsS2F9JkuVdW3ZCygIDwt3uM5JrtbdfUMes2sKB263zVgbl8Lmx/XUcmxf5+jG+MDm7ihKwINCVsTk0o6zfddO2WHIFaOpCVVtNhiyqJkf07xJXvhN3cBABl4o2FQ0wSCug2b2XuPBnE6BiPhb80LLqF+EXhNIMX3KF6IvDhgvQiN/vJD0qwqaxQoD5T8eKjC8kxK4ubePG4LHPlCDQGAoiLFS5HLJlhilRmaa3QhKqiNSPOHM+fMY84w6JTaDB3aiXjc+Wq0C8rUu6Shn3y/k9/rHZ5PW17IswkQW8mMwLv5ZSaxbHG7pFw27szFOyz17nPgFiWQqf6IvyPV8SoxuZJXBl32NMYCwdq9c8Sgux5QBlT6lJrTVI+mtjqJFMQhWvcBYcCdryfAnLQYobmzkdNVVSjhGpKWImJiguBFUm13AI0Vs02TSgz+EfnTE0bEmdQrjgUQbwILdhhbNHBltiDN3yLGCNneLMJ5fkeVGwguusB8FF8BawjE/Xy2RNnJ5SPwG3uBado0of3tfW70sU3o6SWtQWI9jjueCxAafFnsUz7ErOo3NaMonkfug5ils86fykLzSLAwsmDNiFPV9IseKDD+AFV6H74ULCoVRAsi1+6BC2QhJ6LwOmGLc5iwBfRZcbEygj8yffck0EtVPCxfhC9KQN5ihP/V/FQPv9yVYNUMZC6uTFsf5nUbrhWDuSaX+2wBMRg1KHMQBg1YfsKBb+pz2PUiIVC3FKno4YIiBCRSPhi7935K4OX1Zv7Rn1dHvKVnctmI9F21vLsWS9Vt/6XzQg9iAJT5vc6PnjWXC3JvNnWwDnn0MBzc4PUk6XsPc5fpqLjFS1wyzdHgt
+ VURcwrFM
+ fccZoIF3CMUvz+UHTDIOrSTFnxF++bUYSMfrydRSMKgX7W24mrRwHJefdeqlzn31/rUnE5F4AhVwyo3/a19Z6BUP9uokK43dlqhCxgK++ZvcRHnS3th/c5s9uZSMwuuuogjB3U6+K+qA5S43zmPKVGbNlkdKPJYjqCc5zDmi/fn0By7stWciCa1Wa3YCeAxV7Z5W2cJ/Rai8fMDWdsS5kzzf2zyxlGt2Ln3/EI/0/ZMzC6hvSrOgEv2gbB+y3hI/Iu/gpJd2cvqfEiVM7CuI3NzhFFL9BaXoOk599yJzekW8qvafC3CzVPSd5WosGvK+Pezbnj+Jy/cUL+MXJZYirrkcXJsQAaZDgCMNr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,65 +129,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 1:02=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrot=
-e:
->
-> On Thu 12-02-26 11:21:11, zhaoyang.huang wrote:
-> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> >
-> > Nowadays, ANDROID system replaces madivse with memory.reclaim to implem=
-ent
-> > user space memory management which desires to reclaim a certain amount =
-of
-> > memcg's memory. However, oversized reclaiming and high latency are obse=
-rved
-> > as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
-> > when MGLRU enabled. Besides, this could also affect all none root_recla=
-im
-> > such as reclaim_high etc.
-> > Since the commit 'b82b530740b9' ("mm: vmscan: restore incremental cgrou=
-p
-> > iteration") introduces sc->memcg_full_walk to limit the walk range of
-> > mem_cgroup_iter and keep the fairness among the descendants of one memc=
-g.
-> > This commit would like to make single memcg's scanning more precised by
-> > removing the criteria of 'if (!root_reclaim)' inside
-> > should_abort_scan().
->
-> This changelog, similar to its previous version is lacking details on
-> what exactly is going on. How much over-reclaim are we talking about
-> here? Is this MGLRU specific?
+This series expands the mmap_prepare functionality, which is intended to
+replace the deprecated f_op->mmap hook which has been the source of bugs
+and security issues for some time.
 
-Hi Michal,
+This series starts with some cleanup of existing mmap_prepare logic, then
+adds documentation for the mmap_prepare call to make it easier for
+filesystem and driver writers to understand how it works.
 
-This came from https://lore.kernel.org/all/20260210054312.303129-1-zhaoyang=
-.huang@unisoc.com/
+It then importantly adds a vm_ops->mapped hook, a key feature that was
+missing from mmap_prepare previously - this is invoked when a driver which
+specifies mmap_prepare has successfully been mapped but not merged with
+another VMA.
 
-Zhaoyang would have to provide numbers, but yes this is MGLRU specific.
+mmap_prepare is invoked prior to a merge being attempted, so you cannot
+manipulate state such as reference counts as if it were a new mapping.
 
-> Why doesn't our standard over-reclaim
-> protection work?
+The vm_ops->mapped hook allows a driver to perform tasks required at this
+stage, and provides symmetry against subsequent vm_ops->open,close calls.
 
-"there is no limitation over nr_reclaimed inside try_to_shrink_lruvec"
-This means that for proactive reclaim the check for sc->nr_reclaimed
->=3D sc->nr_to_reclaim is skipped, because the !root_reclaim(sc)
-condition is hit first. So we never abort based on the value of
-sc->nr_reclaimed, which can lead to overreclaim.
+The series uses this to correct the afs implementation which wrongly
+manipulated reference count at mmap_prepare time.
 
-For try_to_free_mem_cgroup_pages -> shrink_node_memcgs ->
-shrink_lruvec -> lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the
-!root_reclaim(sc) check was there for reclaim fairness, which was
-necessary before commit 'b82b530740b9' ("mm: vmscan: restore
-incremental cgroup iteration") because the fairness depended on
-attempted proportional reclaim from every memcg under the target
-memcg. However after commit 'b82b530740b9' there is no longer a need
-to visit every memcg to ensure fairness, horray. The problem is for
-large lruvecs, the lack of a check against sc->nr_to_reclaim inside
-try_to_shrink_lruvec (caused by the continued presence of the
-!root_reclaim(sc) check) can cause overreclaim. The non-MGLRU
-implementation in shrink_lruvec already checks nr_reclaimed against
-nr_to_reclaim.
+It then adds an mmap_prepare equivalent of vm_iomap_memory() -
+mmap_action_simple_ioremap(), then uses this to update a number of drivers.
 
-Thanks,
-T.J.
+It then splits out the mmap_prepare compatibility layer (which allows for
+invocation of mmap_prepare hooks in an mmap() hook) in such a way as to
+allow for more incremental implementation of mmap_prepare hooks.
+
+It then uses this to extend mmap_prepare usage in drivers.
+
+Finally it adds an mmap_prepare equivalent of vm_map_pages(), which lays
+the foundation for future work which will extend mmap_prepare to DMA
+coherent mappings.
+
+v2:
+* Rebased on
+  https://lore.kernel.org/all/cover.1773665966.git.ljs@kernel.org/ to make
+  Andrew's life easier :)
+* Folded all interim fixes into series (thanks Randy for many doc fixes!))
+* As per Suren, removed a comment about allocations too small to fail.
+* As per Randy, fixed up typo in documentation for vm_area_desc.
+* Fixed mmap_action_prepare() not returning if invalid action->type
+  specified, as updated from Andrew's interim fix (thanks!) and also
+  reported by kernel test bot.
+* Updated mmap_action_prepare() and specific prepare functions to only
+  pass vm_area_desc parameter as per Suren.
+* Fixed up whitespace as per Suren.
+* Updated vm_op->open comment in vm_operations_struct to reference forking
+  as per Suren.
+* Added a commit to check that input range is within VMA on remap as per
+  Suren (this also covers I/O remap and all other cases already asserted).
+* Updated AFS to not incorrectly reference count on mmap prepare as per
+  Usama.
+* Also updated various static AFS functions to be consistent with each
+  other.
+* Updated AFS commit message to reflect mmap_prepare being before any VMA
+  merging as per Suren.
+* Updated __compat_vma_mapped() to check for NULL vm_ops as per Usama.
+* Updated __compat_vma_mapped() to not reference an unmapped VMA's fields
+  as per Usama.
+* Updated __vma_check_mmap_hook() to check for NULL vm_ops as per Usama.
+* Dropped comment about preferring mmap_prepare as seems overly confusing,
+  as per Suren.
+* Updated the mmap lock assert in unmap_vma_locked() to a write lock assert
+  as per Suren.
+* Copied vm_ops->open comment over to VMA tests in appropriate patch as per
+  Suren.
+* Updated mmap_prepare documentation to reflect the fact that no resources
+  should be allocated upon mmap_prepare.
+* Updated mmap_prepare documentation to reference the vm_ops->mapped
+  callback.
+* Fixed stray markdown '## How to use' in documentation.
+* Fixed bug reported by kernel test bot re: overlooked
+  vma_desc_test_flags() -> vma_desc_test() in MTD driver for nommu.
+
+v1:
+https://lore.kernel.org/linux-mm/cover.1773346620.git.ljs@kernel.org/
+
+Lorenzo Stoakes (Oracle) (16):
+  mm: various small mmap_prepare cleanups
+  mm: add documentation for the mmap_prepare file operation callback
+  mm: document vm_operations_struct->open the same as close()
+  mm: add vm_ops->mapped hook
+  fs: afs: correctly drop reference count on mapping failure
+  mm: add mmap_action_simple_ioremap()
+  misc: open-dice: replace deprecated mmap hook with mmap_prepare
+  hpet: replace deprecated mmap hook with mmap_prepare
+  mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+  stm: replace deprecated mmap hook with mmap_prepare
+  staging: vme_user: replace deprecated mmap hook with mmap_prepare
+  mm: allow handling of stacked mmap_prepare hooks in more drivers
+  drivers: hv: vmbus: replace deprecated mmap hook with mmap_prepare
+  uio: replace deprecated mmap hook with mmap_prepare in uio_info
+  mm: add mmap_action_map_kernel_pages[_full]()
+  mm: on remap assert that input range within the proposed VMA
+
+ Documentation/driver-api/vme.rst           |   2 +-
+ Documentation/filesystems/index.rst        |   1 +
+ Documentation/filesystems/mmap_prepare.rst | 168 ++++++++++++++++
+ drivers/char/hpet.c                        |  12 +-
+ drivers/hv/hyperv_vmbus.h                  |   4 +-
+ drivers/hv/vmbus_drv.c                     |  27 ++-
+ drivers/hwtracing/stm/core.c               |  31 ++-
+ drivers/misc/open-dice.c                   |  19 +-
+ drivers/mtd/mtdchar.c                      |  21 +-
+ drivers/staging/vme_user/vme.c             |  20 +-
+ drivers/staging/vme_user/vme.h             |   2 +-
+ drivers/staging/vme_user/vme_user.c        |  51 +++--
+ drivers/target/target_core_user.c          |  26 ++-
+ drivers/uio/uio.c                          |  10 +-
+ drivers/uio/uio_hv_generic.c               |  11 +-
+ fs/afs/file.c                              |  36 +++-
+ include/linux/fs.h                         |  14 +-
+ include/linux/hyperv.h                     |   4 +-
+ include/linux/mm.h                         | 158 +++++++++++++--
+ include/linux/mm_types.h                   |  17 +-
+ include/linux/uio_driver.h                 |   4 +-
+ mm/internal.h                              |  37 ++--
+ mm/memory.c                                | 177 ++++++++++++-----
+ mm/util.c                                  | 219 +++++++++++++++------
+ mm/vma.c                                   |  59 ++++--
+ mm/vma.h                                   |   2 +-
+ tools/testing/vma/include/dup.h            | 141 +++++++++----
+ tools/testing/vma/include/stubs.h          |   8 +-
+ 28 files changed, 970 insertions(+), 311 deletions(-)
+ create mode 100644 Documentation/filesystems/mmap_prepare.rst
+
+--
+2.53.0
 
