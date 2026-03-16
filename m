@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD4EFF506CC
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:08:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 816AFF506D0
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEEFC6B0259; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
+	id D6EFB6B025A; Mon, 16 Mar 2026 09:08:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B71E56B025A; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
+	id D263E6B025C; Mon, 16 Mar 2026 09:08:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7DF06B025B; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
+	id C471C6B025D; Mon, 16 Mar 2026 09:08:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 979C66B0259
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46011B6250
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:08:56 +0000 (UTC)
-X-FDA: 84551956272.17.EE6BD75
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8DEAEC0003
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:08:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9pvKSi4;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC8B96B025A
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:08:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41E35140279
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:08:59 +0000 (UTC)
+X-FDA: 84551956398.10.DE45B71
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 782E6140015
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:08:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EXrqpZM+;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773666534;
+	s=arc-20220608; t=1773666537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=s1eQtq6dWyvx1NxUFkPPUGIduGG6xk+09TKijId19iU=;
-	b=JfVqZhr8VUiyhUS4wbzTlgJjsFuAEDKiv9Us1eEnszpV1ukgS1TDpSKPJt7nrgfcsWarun
-	KN56ZpU0A191fWeHTWRnZeyM8C9IY4M+4rwPMsrmh/p6ihwsXQEAUJQV7KiKUJH7sW6Kdu
-	Olhk4TyErv+s3Uwxdgrp7WLHM4K/Wno=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666534; a=rsa-sha256;
-	cv=none;
-	b=z8fYeg1RCniLR34oBMKS5p01paoE+bDzgon3h5HP7MnLuRO3WPj40FQV0ARkl2xAIAphlM
-	kQ23n7L6Jm0tbCOnvlshbhRv/l/WtPBmaux84WdG/w4oEUD6zpf/L+8KM9mYOO9GqzCECZ
-	rri1CYHthI1FmbVMTBbZhN7DQGVFJp4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=g9QvXvbQXTFua9r/EcOpIsdNUq/kROMUQCN4Aaq/xOg=;
+	b=J1ug0ouxOk31ygIm78o99J9qYvFvB2y0onuonJ1PnFsS60Wr58CPZg+/FyFR/0++Z7f3Tn
+	B2IwiegOBcl2DoxEQX8CotyD5b/WST9rdYxeTS0jGp90VQNV2/n/BgBFro3PLoevuQvvL8
+	hv8N0tLY4OFVfvGQIRmPouX4KL42op0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9pvKSi4;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EXrqpZM+;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666537; a=rsa-sha256;
+	cv=none;
+	b=QJxc1fgehBnEwOATXyTquAVqRsgaXMwnpPAAxXtbPL3NZd6rK9bV2jH4oFvyikwcAcDec7
+	3ySf3CLgq+glW52+FScZzVOZTogepDwZqbJMSNAty51mmjTnUlBn6ko3Fp9a3GiYRp5fcD
+	Va+hUPwLnPY8eswkEK3aiajqC2ltXOQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A043D60018;
-	Mon, 16 Mar 2026 13:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BFFC19421;
-	Mon, 16 Mar 2026 13:08:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 59F4941A1C;
+	Mon, 16 Mar 2026 13:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F7EC19425;
+	Mon, 16 Mar 2026 13:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773666533;
-	bh=M8qB2Yi8G2KCxfalR2Xs/y9ReUIwgZw5xpyPQq7wYBo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=T9pvKSi4Tc2nnuQeD5Yvlyhi0UufdXQgMYoOn7BC5uSu03NjdqzIGTm1Tdv3TLSYa
-	 ZRhnhmQn0LEOOHogL294cpBY4Hx5wgcJH61d4VVf2CMkbG7Wp+svFxCaUrMrjKOILL
-	 +xyfGn6+4PetNtIu9y56emsCH1Vnr9u4Qi/SLG8O+zqXlH4mU2LEP+6fFZopPPQTBc
-	 iZl4h9qxTnhFE2aS1oMHmnUrqCtcGbnwO+i/lb2cVUuSq9zoi2n0QoFqUzeabs7zyP
-	 tbVtZbTy1UNWsliQt5qBdzNaCAJVWNqdZf7BNdfGttMzyLm6no5mzEMaXrnEoGyX8L
-	 yFaroSc0+vdhA==
+	s=k20201202; t=1773666536;
+	bh=+rncZdS3jjEKtWi8jdnOMFhYY7y/QqdUgMyj9l/Hlaw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EXrqpZM+9CbywSbapkgjT3VDzretBbIcNDn3fSPRXkVkEgXkNF3PTa9ENV2UVOBq3
+	 8wBLEQRgtFudPr2zl3Dv2JmCG75DiS9a+lRv+Y6FNGuZ2tsjzhwIm5yZCT4mPUW87O
+	 YbNUE2mdhmW3cWvxzCQAxZAsHUEvanIYdAbbFNtsYGPETPKQnz0QZZjkzEVNVZXHhM
+	 eJSP3fVYNnV6J4vRrDdp3SpACcGsUI4zmoYqsbHLXDSHIbbO0KV7L28ruOCANjePsu
+	 xB1yvfAKdfEoI2nGlsIcWZR+b+0aVAoaHdqjt1afOC82WMJqOuhhILHmCWhHo1HAGK
+	 hqs9Be3QCvaDw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,20 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH v2 00/23] mm/vma: convert vm_flags_t to vma_flags_t in vma code
-Date: Mon, 16 Mar 2026 13:07:49 +0000
-Message-ID: <cover.1773665966.git.ljs@kernel.org>
+Subject: [PATCH v2 01/23] mm/vma: add vma_flags_empty(), vma_flags_and(), vma_flags_diff_pair()
+Date: Mon, 16 Mar 2026 13:07:50 +0000
+Message-ID: <ede9b0f8a2e2dc72e7fbc1a0ddbeb513364c28a2.1773665966.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1773665966.git.ljs@kernel.org>
+References: <cover.1773665966.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 782E6140015
+X-Stat-Signature: dpd4bax3uybwauc8ix3u8mebx3moby9g
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8DEAEC0003
-X-Stat-Signature: qm6rose1hqzn8nu3sjfnwbzheknw1hw8
-X-HE-Tag: 1773666534-534976
-X-HE-Meta: U2FsdGVkX19cmycQVe6682kltZTrbUQyDajPVHTFFbL++MMhRC8FloaIr2wUcImzzC/ZWC+TwzNIi2MUIcUrTtPmSmqqH0JspjXNKvVb1Dp5DMkwkINYXmbmWpz0avxX6UjyirqnN7gfkp7NYaEuAUmR5trnOkf1JrUT7QoKWWmNnyQGVcHbXd/QMPCPvxM4GquIL40HNZHgyR9cO3/Ax2SDopaTCiIwe8N0pdyJHR0+GhsZEUsMU5QgEctT70GhE/eFuX8c020QzKg9dAPdvmpwzNkCQ0KHPl787nFbNIguFDyMRWorqNYtN2mKLJTptMIiO7yHAVUEsEgsqzEsj+55NmgXSFzA9zX7k7X2iB/DylVguXqyAgApIIyGcHGp23b2tKdjclLU2rp5jMNDYQiFGYSTmtcIWXaHWU+6ZRW7CmHZbjRBNVtA4CXXXY6wUBH66G2gxlJmvomeZLDlSbClrD+qaDZ2IxqPGEMeW1NGlWrXZejeO6//iKcuLHyAnHIMyHoI8ZbiDSg0pR65OLWHkKHWyivla1v6XB4wjaN/Dpg8xr0DqKTdTeV9Z7vs7oh/cbM+dHIYtL0H0JL9o03tvgK/nvLD7AavyVGvdj2D5qYBfnyC6u76mPMLt2EC+UOrhYqzLB5R17h1C74ZHEryYH2Bds8JyAZfqUjCaQQXnjav9eYYVVYvZ840YUVGYpl428zdlAoZqRcsZ/isHJnrIvsW3Fpv+M3bCCPV139TEJc65dcRIUb8mdbxX+9acm06S76++8FjGpypgnKmcNjZFk0/Z8EISrJl79Ds3LLAoVFHxofNIy4bh3rQcosz6el9qJCWVCk5D8Rj5Yt3BETvwkdpmqUZpDoWOK8fAyQaVok4tzkrRCph7XyxfVZNm9t5v0G84TcPJBiXPhtzDQNcAKl6lsMAPbG8kRaDDW6oLCjD3102FyvzObTrf4Dwpam+1r7GRIvSHq4VT9Y
- wh1Hj379
- TnKyP6KREzGizL/MqX03/vX0XlGdnJqd4sqsv192HRro5DNekPNNHTWj07oPZucJ7CUJ3ncmggrQrrl8el31XxpfUpotLd9tjwpyLVfY9mWNMseZ8LFl1bpgKk6wUAF46V6F4xLpqE3fJJHdvMV2GmBvtlGXK4hgF+Rea3l+3Wir98wMmUzWVriW0qU6POORufAZif/1AXf+tluefDwFmY1ou+CfaMMMNapKlrqN31zK6J9Rpcl4WDeD5iOV48gAw0yR0rICP27DnM1Pjhft8UJq5blw73I8U4b+vmwR3TsIvNOCMxuchmSrh7/G3JoBmLHoukV3bUcGcZeBonagPFVBId8XDcYKzBKIV
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773666537-371527
+X-HE-Meta: U2FsdGVkX1/0BMNxLQWQ4/hLvbi+i5Uwt++eLc4dmRZ1ykztpuI5KBwPp9UTgjbFH7nkWLFPtsQjZfGs5L1/l2dPhgsccOL6rD5yo9aOmF+GaLXqhnc9K0S+kBDHUyNmTMNwV2OZzCvumhr80Kmgyvk6U2jtpGWW45Lv1mgJ5yuGFJtmUDpsKndZyuuR5eIl7hp5r1WlK5Qms4gXLaN72s1kmI1G5oJZX+c9ONmSCaYgZCe9FuxlT14CVbu1kLIWPAZxjkFMs5OVlo+w2k81KGLZ6k1XKSILe/ZrhAC1KJxHFmopCmGC+T9oDtatcYUlR1Z6yy6nu2+3BgE+3MQEPqgjD0p6CWokEMB1A3P1YmaLO22uuE+aCwVn8iRgAZOZ8tvND0lHInaXHiNrNo+Wi+ciH2LyBCRJSluEuT8zQYDQlKd79LIBoYVghPKCTEpZefmw5FHswMJdYu1PWA28xOcU1BAuycEXWllAMzheG4pt9ZperXk4DQxzcqr7N8xZ3SMmIVL5Tiyys6Ypvy1yD7NpllGJqYBAQ1EZcQPKsq9UlcYUfcHrdSqlGxqrxqPsjEUBSQdirWPBOef9PdB2joRuFM5iVNZbjMyG+/iLU8IxOpUBngB25KCmqv5LR05PRi/z/t9rmxtKCnPt5PTmgJbXZdVlXa1bUGJVWWMP4UXkMoL28gqy2A6sLqo2l/EGyhIJyK7h1m7KSwQj7lomnhbYYPkJbyRd+o4HCFeZNyGHXITtTLh10aKhjJr9eh4EMLVyd295qSYMx9/J4wHL2p2Q8q/aMrjoI437pSAgNEtrMQrWJ95ahQnAMo+1tjk6aAHwO1ezA+oH1C7AsQ62EjVqW3Jm3zuMrFawouTZomprRlE4lpUQDgEGDkUV7ijnPqESew7sekvvEr1CWotj+Zc5GnC3qDwZW5C9mjq8cNIOmiaIQY9KyI7d1eUsxlvSrvllUkKI35QsvQQqw3m
+ rEEiItzz
+ DKJcr9uJuggLUO1QAuwFDNn5R6ytT7P0cxICZ2xJKkB/cnazlBoTzl2o4SmJQJgQFvj9PbhJlTMd4Sn6jYn0uuJuf/RNsHAWUOaBjfL3+FUy6hRKZMJ80q4mF3uolBQ/oLmYjhTttFauobmNs2dXfNrQ01681c8uJjrp9xweOg0WCrxSur6EF+R61yKQ2XNH06Evr3xfgROXZv1C0dYOtpJKHagc9liqvKL1C8kpe1WFiBwDaQ1psuuzcjZnkQIVHOCbf7YnSn30z8/2F8bU8zkbbCludS7ipqk8D3ZMtF60YAGf4eEBKLJnAldwB+n3S/UnCJ2B48iYKP2CVNQy45Z59lmXM8V5KfU/w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,164 +149,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series converts a lot of the existing use of the legacy vm_flags_t
-data type to the new vma_flags_t type which replaces it.
+Firstly, add the ability to determine if VMA flags are empty, that is no
+flags are set in a vma_flags_t value.
 
-In order to do so it adds a number of additional helpers:
+Next, add the ability to obtain the equivalent of the bitwise and of two
+vma_flags_t values, via vma_flags_and().
 
-* vma_flags_empty() - Determines whether a vma_flags_t value has no bits
-  set.
+Next, add the ability to obtain the difference between two sets of VMA
+flags, that is the equivalent to the exclusive bitwise OR of the two sets
+of flags, via vma_flags_diff_pair().
 
-* vma_flags_and() - Performs a bitwise AND between two vma_flags_t values.
+vma_flags_xxx_mask() typically operates on a pointer to a vma_flags_t
+value, which is assumed to be an lvalue of some kind (such as a field in a
+struct or a stack variable) and an rvalue of some kind (typically a
+constant set of VMA flags obtained e.g. via mk_vma_flags() or equivalent).
 
-* vma_flags_diff_pair() - Determines which flags are not shared between a
-  pair of VMA flags (typically non-constant values)
+However vma_flags_diff_pair() is intended to operate on two lvalues, so use
+the _pair() suffix to make this clear.
 
-* append_vma_flags() - Similar to mk_vma_flags(), but allows a vma_flags_t
-  value to be specified (typically a constant value) which will be copied
-  and appended to to create a new vma_flags_t value, with additional flags
-  specified to append to it.
+Finally, update VMA userland tests to add these helpers.
 
-* vma_flags_same() - Determines if a vma_flags_t value is exactly equal to
-  a set of VMA flags.
+We also port bitmap_xor() and __bitmap_xor() to the tools/ headers and
+source to allow the tests to work with vma_flags_diff_pair().
 
-* vma_flags_same_mask() - Determines if a vma_flags_t value is eactly equal
-  to another vma_flags_t value (typically constant).
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+---
+ include/linux/mm.h              | 60 ++++++++++++++++++++++++++++-----
+ include/linux/mm_types.h        |  8 +++++
+ tools/include/linux/bitmap.h    | 13 +++++++
+ tools/lib/bitmap.c              | 10 ++++++
+ tools/testing/vma/include/dup.h | 36 +++++++++++++++++++-
+ 5 files changed, 117 insertions(+), 10 deletions(-)
 
-* vma_flags_same_pair() - Determines if a pair of vma_flags_t values are
-  exactly equal to one another (typically both non-constant).
-
-* vma_flags_to_legacy() - Converts a vma_flags_t value to a vm_flags_t
-  value, used to enable more iterative introduction of the use of
-  vma_flags_t.
-
-* legacy_to_vma_flags() - Converts a vm_flags_t value to a vma_flags-t
-  value, for the same purpose.
-
-* vma_flags_test_single_mask() - Tests whether a vma_flags_t value contain
-  the single flag specified in an input vma_flags_t flag mask, or if that
-  flag mask is empty, is defined to return false. Useful for
-  config-predicated VMA flag mask defines.
-
-* vma_test() - Tests whether a VMA's flags contain a specific singular VMA
-  flag.
-
-* vma_test_any() - Tests whether a VMA's flags contain any of a set of VMA
-  flags.
-
-* vma_test_any_mask() - Tests whether a VMA's flags contain any of the
-  flags specified in another, typically constant, vma_flags_t value.
-
-* vma_test_single_mask() - Tests whether a VMA's flags contain the single
-  flag specified in an input vma_flags_t flag mask, or if that flag mask is
-  empty, is defined to return false. Useful for config-predicated VMA flag
-  mask defines.
-
-* vma_clear_flags() - Clears a specific set of VMA flags from a vma_flags_t
-  value.
-
-* vma_clear_flags_mask() - Clears those flag set in a vma_flags_t value
-  (typically constant) from a (typically not constant) vma_flags_t value.
-
-The series mostly focuses on the the VMA specific code, especially that
-contained in mm/vma.c and mm/vma.h.
-
-It updates both brk() and mmap() logic to utils vma_flags_t values as much
-as is practiaclly possible at this point, changing surrounding logic to be
-able to do so.
-
-It also updates the vma_modify_xxx() functions where they interact with VMA
-flags directly to use vm_flags_t values where possible.
-
-There is extensive testing added in the VMA userland tests to assert that
-all of these new VMA flag functions work correctly.
-
-
-v2:
-* Rebased on mm-unstable.
-* Added vma_flags_count() and vma[_flags]_test_single_mask() for testing whether
-  flags have a single flag set depending on an input flag mask, returning false
-  if the flag mask is empty.
-* Added tests for vma_flags_count() and vma[_flags]_test_single_mask().
-* Updated the KSM VMA_DROPPABLE test to use vma_flags_test_single_mask().
-* Updated the newly-introduced-since-rebase vma_supports_mlock() to use
-  vma_flags_t.
-
-v1:
-https://lore.kernel.org/linux-mm/cover.1773342102.git.ljs@kernel.org/
-
-Lorenzo Stoakes (Oracle) (23):
-  mm/vma: add vma_flags_empty(), vma_flags_and(), vma_flags_diff_pair()
-  tools/testing/vma: add unit tests flag empty, diff_pair, and[_mask]
-  mm/vma: add further vma_flags_t unions
-  tools/testing/vma: convert bulk of test code to vma_flags_t
-  mm/vma: use new VMA flags for sticky flags logic
-  tools/testing/vma: fix VMA flag tests
-  mm/vma: add append_vma_flags() helper
-  tools/testing/vma: add simple test for append_vma_flags()
-  mm: unexport vm_brk_flags() and eliminate vm_flags parameter
-  mm/vma: introduce vma_flags_same[_mask/_pair]()
-  mm/vma: introduce [vma_flags,legacy]_to_[legacy,vma_flags]() helpers
-  tools/testing/vma: test that legacy flag helpers work correctly
-  mm/vma: introduce vma_test[_any[_mask]](), and make inlining
-    consistent
-  tools/testing/vma: update VMA flag tests to test vma_test[_any_mask]()
-  mm: introduce vma_flags_count() and vma[_flags]_test_single_mask()
-  tools/testing/vma: test vma_flags_count,vma[_flags]_test_single_mask
-  mm: convert do_brk_flags() to use vma_flags_t
-  mm: update vma_supports_mlock() to use new VMA flags
-  mm/vma: introduce vma_clear_flags[_mask]()
-  tools/testing/vma: update VMA tests to test vma_clear_flags[_mask]()
-  mm/vma: convert as much as we can in mm/vma.c to vma_flags_t
-  mm/vma: convert vma_modify_flags[_uffd]() to use vma_flags_t
-  mm/vma: convert __mmap_region() to use vma_flags_t
-
- arch/arc/include/asm/page.h        |   2 +-
- arch/arm/include/asm/page.h        |   2 +-
- arch/arm64/include/asm/page.h      |   3 +-
- arch/hexagon/include/asm/page.h    |   2 +-
- arch/loongarch/include/asm/page.h  |   2 +-
- arch/mips/include/asm/page.h       |   2 +-
- arch/nios2/include/asm/page.h      |   2 +-
- arch/powerpc/include/asm/page.h    |   4 +-
- arch/powerpc/include/asm/page_32.h |   2 +-
- arch/powerpc/include/asm/page_64.h |  12 +-
- arch/riscv/include/asm/page.h      |   2 +-
- arch/s390/include/asm/page.h       |   2 +-
- arch/x86/include/asm/page_types.h  |   2 +-
- arch/x86/um/asm/vm-flags.h         |   4 +-
- fs/binfmt_elf.c                    |   3 +-
- include/linux/ksm.h                |  10 +-
- include/linux/mm.h                 | 328 ++++++++++++++++++++------
- include/linux/mm_types.h           |  52 ++++-
- include/linux/mman.h               |  49 ----
- include/linux/userfaultfd_k.h      |   3 +
- mm/internal.h                      |   7 +-
- mm/ksm.c                           |  43 ++--
- mm/madvise.c                       |  10 +-
- mm/mlock.c                         |  38 +--
- mm/mmap.c                          |  19 +-
- mm/mprotect.c                      |  53 +++--
- mm/mremap.c                        |   6 +-
- mm/mseal.c                         |  10 +-
- mm/userfaultfd.c                   |  21 +-
- mm/vma.c                           | 210 ++++++++++-------
- mm/vma.h                           |  86 ++++++-
- mm/vma_exec.c                      |   5 +-
- security/selinux/hooks.c           |   4 +-
- tools/include/linux/bitmap.h       |  13 ++
- tools/lib/bitmap.c                 |  10 +
- tools/testing/vma/include/custom.h |  25 --
- tools/testing/vma/include/dup.h    | 277 ++++++++++++++++------
- tools/testing/vma/include/stubs.h  |  11 +-
- tools/testing/vma/shared.c         |   8 +-
- tools/testing/vma/shared.h         |  22 +-
- tools/testing/vma/tests/merge.c    | 311 +++++++++++++------------
- tools/testing/vma/tests/mmap.c     |  18 +-
- tools/testing/vma/tests/vma.c      | 358 ++++++++++++++++++++++++++---
- tools/testing/vma/vma_internal.h   |   6 +
- 44 files changed, 1423 insertions(+), 636 deletions(-)
-
---
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 70747b53c7da..6d2c4bd2c61d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1053,6 +1053,19 @@ static __always_inline vma_flags_t __mk_vma_flags(size_t count,
+ 	return flags;
+ }
+ 
++/*
++ * Helper macro which bitwise-or combines the specified input flags into a
++ * vma_flags_t bitmap value. E.g.:
++ *
++ * vma_flags_t flags = mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,
++ *              VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
++ *
++ * The compiler cleverly optimises away all of the work and this ends up being
++ * equivalent to aggregating the values manually.
++ */
++#define mk_vma_flags(...) __mk_vma_flags(COUNT_ARGS(__VA_ARGS__), \
++					 (const vma_flag_t []){__VA_ARGS__})
++
+ /*
+  * Test whether a specific VMA flag is set, e.g.:
+  *
+@@ -1067,17 +1080,30 @@ static __always_inline bool vma_flags_test(const vma_flags_t *flags,
+ }
+ 
+ /*
+- * Helper macro which bitwise-or combines the specified input flags into a
+- * vma_flags_t bitmap value. E.g.:
+- *
+- * vma_flags_t flags = mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,
+- * 		VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
++ * Obtain a set of VMA flags which contain the overlapping flags contained
++ * within flags and to_and.
++ */
++static __always_inline vma_flags_t vma_flags_and_mask(const vma_flags_t *flags,
++						      vma_flags_t to_and)
++{
++	vma_flags_t dst;
++	unsigned long *bitmap_dst = dst.__vma_flags;
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_to_and = to_and.__vma_flags;
++
++	bitmap_and(bitmap_dst, bitmap, bitmap_to_and, NUM_VMA_FLAG_BITS);
++	return dst;
++}
++
++/*
++ * Obtain a set of VMA flags which contains the specified overlapping flags,
++ * e.g.:
+  *
+- * The compiler cleverly optimises away all of the work and this ends up being
+- * equivalent to aggregating the values manually.
++ * vma_flags_t read_flags = vma_flags_and(&flags, VMA_READ_BIT,
++ *                                        VMA_MAY_READ_BIT);
+  */
+-#define mk_vma_flags(...) __mk_vma_flags(COUNT_ARGS(__VA_ARGS__), \
+-					 (const vma_flag_t []){__VA_ARGS__})
++#define vma_flags_and(flags, ...)				\
++	vma_flags_and_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
+ /*  Test each of to_test flags in flags, non-atomically. */
+ static __always_inline bool vma_flags_test_any_mask(const vma_flags_t *flags,
+@@ -1151,6 +1177,22 @@ static __always_inline void vma_flags_clear_mask(vma_flags_t *flags,
+ #define vma_flags_clear(flags, ...) \
+ 	vma_flags_clear_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
++/*
++ * Obtain a VMA flags value containing those flags that are present in flags or
++ * flags_other but not in both.
++ */
++static __always_inline vma_flags_t vma_flags_diff_pair(const vma_flags_t *flags,
++		const vma_flags_t *flags_other)
++{
++	vma_flags_t dst;
++	const unsigned long *bitmap_other = flags_other->__vma_flags;
++	const unsigned long *bitmap = flags->__vma_flags;
++	unsigned long *bitmap_dst = dst.__vma_flags;
++
++	bitmap_xor(bitmap_dst, bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
++	return dst;
++}
++
+ /*
+  * Helper to test that ALL specified flags are set in a VMA.
+  *
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 3944b51ebac6..ad414ff2d815 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -870,6 +870,14 @@ typedef struct {
+ 
+ #define EMPTY_VMA_FLAGS ((vma_flags_t){ })
+ 
++/* Are no flags set in the specified VMA flags? */
++static __always_inline bool vma_flags_empty(vma_flags_t *flags)
++{
++	unsigned long *bitmap = flags->__vma_flags;
++
++	return bitmap_empty(bitmap, NUM_VMA_FLAG_BITS);
++}
++
+ /*
+  * Describes a VMA that is about to be mmap()'ed. Drivers may choose to
+  * manipulate mutable fields which will cause those fields to be updated in the
+diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
+index 250883090a5d..845eda759f67 100644
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -28,6 +28,8 @@ bool __bitmap_subset(const unsigned long *bitmap1,
+ 		     const unsigned long *bitmap2, unsigned int nbits);
+ bool __bitmap_andnot(unsigned long *dst, const unsigned long *bitmap1,
+ 		    const unsigned long *bitmap2, unsigned int nbits);
++void __bitmap_xor(unsigned long *dst, const unsigned long *bitmap1,
++		  const unsigned long *bitmap2, unsigned int nbits);
+ 
+ #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
+ #define BITMAP_LAST_WORD_MASK(nbits) (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
+@@ -209,4 +211,15 @@ static inline void bitmap_clear(unsigned long *map, unsigned int start,
+ 	else
+ 		__bitmap_clear(map, start, nbits);
+ }
++
++static __always_inline
++void bitmap_xor(unsigned long *dst, const unsigned long *src1,
++		const unsigned long *src2, unsigned int nbits)
++{
++	if (small_const_nbits(nbits))
++		*dst = *src1 ^ *src2;
++	else
++		__bitmap_xor(dst, src1, src2, nbits);
++}
++
+ #endif /* _TOOLS_LINUX_BITMAP_H */
+diff --git a/tools/lib/bitmap.c b/tools/lib/bitmap.c
+index aa83d22c45e3..fedc9070f0e4 100644
+--- a/tools/lib/bitmap.c
++++ b/tools/lib/bitmap.c
+@@ -169,3 +169,13 @@ bool __bitmap_subset(const unsigned long *bitmap1,
+ 			return false;
+ 	return true;
+ }
++
++void __bitmap_xor(unsigned long *dst, const unsigned long *bitmap1,
++				const unsigned long *bitmap2, unsigned int bits)
++{
++	unsigned int k;
++	unsigned int nr = BITS_TO_LONGS(bits);
++
++	for (k = 0; k < nr; k++)
++		dst[k] = bitmap1[k] ^ bitmap2[k];
++}
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 8865ffe046d8..13c03bf247bc 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -422,6 +422,13 @@ struct vma_iterator {
+ #define MAPCOUNT_ELF_CORE_MARGIN	(5)
+ #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
+ 
++static __always_inline bool vma_flags_empty(vma_flags_t *flags)
++{
++	unsigned long *bitmap = flags->__vma_flags;
++
++	return bitmap_empty(bitmap, NUM_VMA_FLAG_BITS);
++}
++
+ /* What action should be taken after an .mmap_prepare call is complete? */
+ enum mmap_action_type {
+ 	MMAP_NOTHING,		/* Mapping is complete, no further action. */
+@@ -855,6 +862,21 @@ static __always_inline bool vma_flags_test(const vma_flags_t *flags,
+ 	return test_bit((__force int)bit, bitmap);
+ }
+ 
++static __always_inline vma_flags_t vma_flags_and_mask(const vma_flags_t *flags,
++						      vma_flags_t to_and)
++{
++	vma_flags_t dst;
++	unsigned long *bitmap_dst = dst.__vma_flags;
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_to_and = to_and.__vma_flags;
++
++	bitmap_and(bitmap_dst, bitmap, bitmap_to_and, NUM_VMA_FLAG_BITS);
++	return dst;
++}
++
++#define vma_flags_and(flags, ...)		\
++	vma_flags_and_mask(flags, mk_vma_flags(__VA_ARGS__))
++
+ static __always_inline bool vma_flags_test_any_mask(const vma_flags_t *flags,
+ 		vma_flags_t to_test)
+ {
+@@ -901,8 +923,20 @@ static __always_inline void vma_flags_clear_mask(vma_flags_t *flags, vma_flags_t
+ #define vma_flags_clear(flags, ...) \
+ 	vma_flags_clear_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
++static __always_inline vma_flags_t vma_flags_diff_pair(const vma_flags_t *flags,
++		const vma_flags_t *flags_other)
++{
++	vma_flags_t dst;
++	const unsigned long *bitmap_other = flags_other->__vma_flags;
++	const unsigned long *bitmap = flags->__vma_flags;
++	unsigned long *bitmap_dst = dst.__vma_flags;
++
++	bitmap_xor(bitmap_dst, bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
++	return dst;
++}
++
+ static inline bool vma_test_all_mask(const struct vm_area_struct *vma,
+-					   vma_flags_t flags)
++				     vma_flags_t flags)
+ {
+ 	return vma_flags_test_all_mask(&vma->flags, flags);
+ }
+-- 
 2.53.0
+
 
