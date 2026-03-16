@@ -4,86 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5215EEFCBD4
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 07:12:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B41F013C0
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 07:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8D976B0150; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
+	id 0CC816B0152; Mon, 16 Mar 2026 03:32:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3B226B0151; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
+	id 050956B0153; Mon, 16 Mar 2026 03:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 947B66B0152; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
+	id E74986B0154; Mon, 16 Mar 2026 03:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3886B0150
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 31CA01B9476
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:12:57 +0000 (UTC)
-X-FDA: 84551059194.13.A0EAB52
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B38ED180003
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:12:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SMDd1Sl2;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D3E566B0152
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:32:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78EE6140DCA
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:32:36 +0000 (UTC)
+X-FDA: 84551108712.01.1A8EBAF
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 849F8C0002
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:32:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fprEphja;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773645175;
+	s=arc-20220608; t=1773646354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H36Rh4jAsS0QoXhWjGsqigNoERHzKKkiQ3eU2//MTDI=;
-	b=texYs3AxBDkr8tcRD/uDt9GmRBcc43qA1Up8jryS117+QqRjlELrtnRxRi8PqQC+VPY5Pu
-	V6LZwqOgqlcbKj32SsbML7X+f34jiBz7OI0nFjPkqPcZ7yOj5eA3oVT629cMjGaYtDSR73
-	hk55m6EYS1cA/D2h00CgE3c8bNpJNZA=
+	bh=1v/dlypJeTwP5cfRx6n8+4g3859w68KLT19UYG1+6r4=;
+	b=vxpULc8IBGLAFgy/s+VQKXzmRcHF1ZtLDdmGpcSl+/XeXFPo9QUazvN7SiTlP+5DOEOEI+
+	0jE3BACF2d7hL0KGnOL/O0UsbxpILh06LNC16Xkk3pwJ+907CuqYu6TrjrcknE8wcEOAFC
+	AXErWfjGW1YWegv8UERefm+qs6BTb/o=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SMDd1Sl2;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773645175; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fprEphja;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773646354; a=rsa-sha256;
 	cv=none;
-	b=qoVQsGZwgNtEDFdUTzZUMwAvyX9MFfGvygWdbmuw9d+fTVGxtBVQ3bHqext6wl3basNv6I
-	tyQCxFIVJnKaYWLrrIhmQ4vdIRuQhC5CD+cm89pjd3b11Mjp/z/59nRRsoLdNwgfXMAmX1
-	1mwPKR2QK49Tx6eMfE1yAxwTrDvEOzk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29A57600AC;
-	Mon, 16 Mar 2026 07:12:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF8C2BC9E;
-	Mon, 16 Mar 2026 07:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773645174;
-	bh=csmW8+0vk8ePHltXghMcxvD+0rWN3gKYZg5DsV2YUHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SMDd1Sl2gDiqkcGkpasG9q5rUYW/ZH+KeDmVfiWwasTyYVe1CHG0UHj95ptABoGzC
-	 NZkfRwI/MddUlG9iq4aNqWixkshRqz6nupTt86/2KmkyH0kSIMEAcsM0mJv99fwg4Q
-	 kn3pEY4O+MigkoHHqItE+T3mvNLqBvh2Jx6xBocRgbmUu6L2ISMaiO2yjmqxACsWs1
-	 aNKzaw/bFnP1Jy+OOwRWa03bLiaj0sz5gIF3m8M1DXhP6NBlQISitsMlAWhcFAAK1T
-	 ZB+gH+xw6j8qxiykH4n2i13rosSAlhW7nsjm7xAb1B3FcunnQkjxaNkVyQajjZgimT
-	 WRJPhNNad6RTg==
-Date: Mon, 16 Mar 2026 07:12:51 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-new 378/389] drivers/mtd/mtdchar.c:1384:9: error:
- call to undeclared function 'vma_desc_test_flags'; ISO C99 and later do not
- support implicit function declarations
-Message-ID: <57eb2d3a-b9e5-49fd-ac71-4d48e444b7b5@lucifer.local>
-References: <202603161221.qNrB6fVE-lkp@intel.com>
+	b=ljSNp0BVnlEBiixEMUhmLs5zK/KVJ9ZGVYvDPNO9w4ct7YdRpC7UYHHu4Iib+GGXcLtocA
+	df3Oai93IEYvd6qjDX/0p1em6DfjzQ8QbmUzPLDIAcSzE9CACUa6hAgy2TkgzZMkP6QMbL
+	i5mntf0Q128+kLCGoCb5T8exmCq4dP4=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso36956575e9.3
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 00:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773646353; x=1774251153; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1v/dlypJeTwP5cfRx6n8+4g3859w68KLT19UYG1+6r4=;
+        b=fprEphjaHFn+VCsSUHBqz5c+ylFhMXj//aG/TujjU6srI/k+USfNHGOM6uKyaLGC4q
+         rHc48TDAgCR/PeD1a46+Gf2Jb8Ys4BE2q8+mdxwebMSDadgIaDRWcCKsfibKnsqOQAia
+         ykq/ybI105or6brmtH/ySx5smMrHEPnHMoJ/l+qE8Q2EAT2qH9nIvYBy4x3XiraxyRk7
+         cCopjCRtjUAoo8qpFkU5/6NxFgN36lQiS3Cv1f8wr5oblZnNs1TyT/uYexrB4MmCvXF8
+         mJl8Wcgx/ZGiimwIaK2kREtCznlJEaAdHzHSA7/A1nSheAKZllV/WFGaGVFrgJlLCVIg
+         M7rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773646353; x=1774251153;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1v/dlypJeTwP5cfRx6n8+4g3859w68KLT19UYG1+6r4=;
+        b=e/kgIrJryKL88FMs2wuZ42W3whAVNstFBVVou2oJDeZo7OcpaI/0lMBJztVvvysvSP
+         AgHvtXqtMZAdbf6GbgNzEQUrJwoJiq2sPOjgIozJHt+CnbZ58qldC4oHL2eQ4l2QKF5H
+         c/hqg43+qS56ZMe1xKxy7lHMpvgoiVqX7isYoIqvWnuXbyVV3Ux1TH/a8a4wVATJ1WdJ
+         eh9qhc3ZGRXjdPjN4wR2TjkkgKkNWEO3XcL4Oy/zCi8AsZVsr0MyH2vB4pO5HAxVgs/0
+         A4r1imD12MSN0SytbKsSwgUUz1aoRdpgsgZsB4oE/304AMm1XGlWP25OQikO8A3HPINV
+         g5ew==
+X-Forwarded-Encrypted: i=1; AJvYcCWCsy3mQoDdHxVWOzrdMqAcB6ZncVYHmOU8OuijK6Y+0M/fmwWit2WasTqtClWNqUg1AmPJhp8zZw==@kvack.org
+X-Gm-Message-State: AOJu0YwImQ9nCA9dKCUJvvjC/YhhoPNQjzpA2XJQl+V/pLqpkIaOSwLL
+	qRpjS2FdNbyEDwnxif8Q0oUZ9cdmASG4VygjAsMcZbqrpcNNvzhK/TzEfYn8F8NpSwY=
+X-Gm-Gg: ATEYQzxq83dJnqhEtqdhUpkLEP06S5L3BGvRqF2xkNwxXTc62i66ioL6/s+ocrpbQLd
+	MzI0UBwLJVb2Lw7ZKYcHTMz+Og0NJJg2xxtkV9tTzK3X0W5C2nBlPRsCIrtZOKNG/EyElEslP4I
+	XN9q9SeMxewC9YyJeM8UJk7gKo5tGL1G80W0jGJ8J46bYUEdAEIQ55UrpO4Xna+xcX6JnFhvtkZ
+	j2JaTz3Ln9vaVmjPjKtMbdz9J2MQdsNXdIGmhZLBD7Bo2emRMXHQTgv0wL+d9sxlv/5tP/OTmEz
+	ms4Emz08SzF5hUAttYc+EfSJyoxO1taVkXtnKAln6mfAQBFMufFODuDnpFIwMi961bIwWGHwIpD
+	NCRnTrTxjt1ZF3NchFs6JICYXOo4pGj4PxBOmzd72Lid43oHglQUpY/Fl74E+OCtBZdJMn+UGF7
+	s3mKhH54y/h/QQCtd7mGIevAFF/1e28H6Z1JRP
+X-Received: by 2002:a05:600c:5251:b0:485:3ff1:d5c5 with SMTP id 5b1f17b1804b1-485566cdc17mr194418895e9.7.1773646352820;
+        Mon, 16 Mar 2026 00:32:32 -0700 (PDT)
+Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b6070acsm353694535e9.8.2026.03.16.00.32.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 00:32:32 -0700 (PDT)
+Date: Mon, 16 Mar 2026 08:32:31 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Kit Dallege <xaum.io@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, corbet@lwn.net, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH] Docs/mm: document the OOM killer
+Message-ID: <abeyD1ZngYhkAx6g@tiehlicka>
+References: <20260314152518.100194-1-xaum.io@gmail.com>
+ <fbee0ca1-4de6-4182-865b-a33d9ed32ee4@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202603161221.qNrB6fVE-lkp@intel.com>
-X-Rspamd-Queue-Id: B38ED180003
-X-Stat-Signature: jjzeerr7nm8gw15kqwkqzt8f8w1hjwed
+In-Reply-To: <fbee0ca1-4de6-4182-865b-a33d9ed32ee4@lucifer.local>
+X-Rspamd-Queue-Id: 849F8C0002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: niy7a7majynscua7h6siexxkdkiykf7a
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773645175-548939
-X-HE-Meta: U2FsdGVkX19jev+jCDvnHIKHUlF/EpltYEjOlgff/m6i6ZI8KekayqeN/d9Rq4RepA81wRDSSZUU7clFAe+f7YZUIY319vt8aXM93XqRzKgPBOx6+6eDQTda1FJ6/siIZ+vfLY5WxShB8UPab9omIUozugw171VEQ/mzeh1QWStPMPZd+Hjg/BKyql8kTzv7jku/xbgmKsHq+dhj6siCNFQW8JZZu7Q1B9cgdnkss1NxDex4ISYMsjVMMAmH2nM6lueYZTMbQlgSa7GeCdIsxWGAYRkqFGR2ySxqUnNxNYJCi+Uqzl77Juy/XIGhQQzcmG1bIoYjTNaMtsdXMfojvVAvsOUn1m1LAyaerXrwUzd5van/pchFFsukX9w1j4qIj6IPhVnxqYeS5CiyVExT16BoIc4lRkyIxwvatgsqtTPfuD8x7wf4g+oXu4lF4QUnchPxEPd1CLOdz3GtkuGLf6VMfRXiWz0zqsQSg8KZQqMIgrMOop48Ga75De6xTvZbbHUIa2jWi6XLV9x+EbO7F812srT52Ou9mPd7UCn2Q+solSxzUownhUt4wdbQvcaEogmuc4VkelVNYmawXRE+4xZjxI+vmIjrnbnH8Kv52RLDSFkPRcRp3F6798s66YbIx9pOmjzj5G8b//U42X5G1RZwUAGVp6MMQAuBMeRBS1KaAtqYGiT6sKbCz+NNSrIp3px/wMkkjkm4vCKLTJtkUWaqEJAC9C+s9O8clajtANaLN6jVkmz15XtpAdSwgWkye8lU5U1iE6Z/azaC3YTKmvy4B+qbgwY8X57TWMNNdbeHwhF7gacfryTzviOH17ZaK2AMC0CRTzbfnIOQenqLgTI7lV4KbXWkg9+VCc2w0ZHKWV0237I//iPE6pUFMkXwqwT/v98+7GtpALi54UVzsEXs1VZfPlOdNNu4fPllNVT5a9vzKoDUVg==
+X-HE-Tag: 1773646354-784723
+X-HE-Meta: U2FsdGVkX18o9hB9whL7N4DLQk8lNWcZKz/1GSdayQSsJlPplYWKwVLW33EqPiyura3KDKM4AsCh8dRXEgnrKVS0oaj6BydOwj6V/Q/ykiEQINi/iN8c3lsZH09+81hIrAveu0GXQjSND9rZ2O5W8t2DqBOFmaIjTk7ic0E/lQdDmWCoWS6pVXngK+TPvI5pD61dyPq1YiRgMFRtiDEsyGaMj37HTGbEjlLgYJWik7i+cNx/TeBhYcH8g/p3PayUnoM/4WJHTFb+qbbpmpkQCcMZCSPOzfzg58o0KqXAhsNm1HebVUnr9eUo6yXyYtKyDkpBwNS44sgup9ur6jL+P8hbPJ834Zi7+rDYt8QIxP2As1yywXZJQ2URu14JjHZKzUZY4ApvEHRJu/Q7eVBG9FGqNGuZ4YuM4TygGm3Neoyek6Y4Dwa+bUKfC7NmEN/Bl6y88xDFC2JSTItvxycqyAVu37A696NUluG59g+QZQX0iN+ztUR1gV6diJwLx1ny/MBkTQuDmPDOtSFbKY62JG/+mRhyy7YZWrQVmMp/t98nd4wB5u1wYYDHPI/tV5hKdglbfrtwqwCzgjhiyOMlmDg9UIzWj5Cw/xzubSMRyIfM6simcnTRyUeQAOUv9YVkiczFNvcDM0GOssiQmBLK8DEAXID8gEJdVqG8vnZz9ITGiLhFwD41loR5p4PAJrYMvLFIYfUZaryWpD2Cz9ZaKY/JDE369lMFWCfq3cWaPUU7FFaDf0G2KFO8njGU0aSIJ9vlxkZr/7i1MjZNIAyVwANWS8JQAo0+EMRdxkdcAXGbYude+n+PdMqScdglL/seJsTj9m3f0dLMvkkUH8ZjmsQDQ8kSnzef2CvK55cGEpF6X9t/1kc4aquZhBTCDynJhO5LIx73NitvSAYToqI/D+ifqcrITKyA9uqZk4J3rAZDdkUJNmIGobmy5KALn5LZO4x6RqguN8g95Qosr9v
+ i0k0+czL
+ HsE12Nhb3M1sMm8ATtn7Fsg0c3yKpCIhn2ZjJsanwT53AVTIg3aClR2h/VfMzrlAydAg5DaY38RsOFho3wabQ0RJt3zkaBQMRvsYo5IKZ5glP6N84lwS6rfDJdRRbQVakEVJmftA2zsRsAbuQTqJQllE28o5ZWEaXQo3nSZ4g8Sc3m4MQ3tQUBQD+MAFpWUbOHPEyo1CiwRd7th0AHlMdQCj+kUJQbIF7m3llmA9bFfZdJAAlBNUJBQ5PKUsah+1N+2/QfpgJISbwLeYN7LlbziUdhju5AVFPHmPoSM1w+B66mrOcN7W3d38Y7eTPJtb6KkIQJWmbsEerJe/0AZik0i3eHGbcfjxYRC1xCy1RXWgzCjW6M3aTpUiYAxy7mZKaTS1V5hBuHTqyooN6qYvkpkPiynyumBP4OZTBdXqxE6akG4A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,49 +118,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 12:20:38PM +0800, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   c5a81ff6071bcf42531426e6336b5cc424df6e3d
-> commit: cf0dfae0323aa8b75cee0b94d5c7553b511d7bc3 [378/389] mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
-> config: arm-randconfig-002-20260316 (https://download.01.org/0day-ci/archive/20260316/202603161221.qNrB6fVE-lkp@intel.com/config)
-> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 36041192cf6c9042615c8d2364cacc698ef89865)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260316/202603161221.qNrB6fVE-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603161221.qNrB6fVE-lkp@intel.com/
->
-> All errors (new ones prefixed by >>):
->
-> >> drivers/mtd/mtdchar.c:1384:9: error: call to undeclared function 'vma_desc_test_flags'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->     1384 |         return vma_desc_test_flags(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
->          |                ^
+On Sun 15-03-26 20:48:22, Lorenzo Stoakes (Oracle) wrote:
+> NAK for being AI slop again, obviously.
+> 
+> Again, +cc the OOM maintainer you failed to bother to look up.
 
-Ack, this should be vma_desc_test_any(). Will fix!
+Thanks!
 
->    1 error generated.
->
->
-> vim +/vma_desc_test_flags +1384 drivers/mtd/mtdchar.c
->
->   1375
->   1376	/*
->   1377	 * set up a mapping for shared memory segments
->   1378	 */
->   1379	static int mtdchar_mmap_prepare(struct vm_area_desc *desc)
->   1380	{
->   1381	#ifdef CONFIG_MMU
->   1382		return -ENODEV;
->   1383	#else
-> > 1384		return vma_desc_test_flags(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
->   1385	#endif
->   1386	}
->   1387
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+> Reasons, as the rest:
+> - Worthless documentation
+> - Everything about patch screams 'zero effort, Claude did it all'
+> - Bad etiquette
+> 
+> As with all the rest it'd need to be totally rewritten and it's not worth the
+> maintainer time.
+> 
+> On Sat, Mar 14, 2026 at 04:25:18PM +0100, Kit Dallege wrote:
+> > Fill in the oom.rst stub that was created in commit 481cc97349d6
+> > ("mm,doc: Add new documentation structure") as part of the structured
+> > memory management documentation following Mel Gorman's book outline.
+> 
+> I mean the more I see it the more annoying it is.
+> 
+> >
+> > Cover the scoring heuristic, allocation constraints, OOM reaper,
+> > process_mrelease syscall, and sysctl knobs.
+> 
+> This sentence contains almost as much content as the patch.
 
-Cheers, Lorenzo
+The real question is who is the expected audience of this documentation?
+Administrators, kernel developers? 
+Reading through this proposal this doesn't really seem to fit neither
+well. For kernel developers who try to wrap their heads around the code
+it is barely scratches the surface. For admins it doesn't really explain
+more than an existing documentation for tunables.
+
+So if there is a serious interest to make this useful kernel developers
+oriented documentation I am more than willing to help. The code is not
+really easy to follow as it is scattered. There are many subtle
+expectations spread out and it is quite easy to break a delicate balance
+tuned for through years. So there is a big documentatin gap I never got
+around to fill up.
+
+-- 
+Michal Hocko
+SUSE Labs
 
