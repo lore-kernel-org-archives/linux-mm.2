@@ -4,91 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3CFCF46446
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6DFF46448
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:22:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 198636B017A; Mon, 16 Mar 2026 06:22:50 -0400 (EDT)
+	id 7761E6B017C; Mon, 16 Mar 2026 06:22:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11CDA6B017C; Mon, 16 Mar 2026 06:22:50 -0400 (EDT)
+	id 736966B017D; Mon, 16 Mar 2026 06:22:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01B206B017D; Mon, 16 Mar 2026 06:22:49 -0400 (EDT)
+	id 60EFC6B017E; Mon, 16 Mar 2026 06:22:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E15926B017A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:22:49 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 703E314012C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:22:49 +0000 (UTC)
-X-FDA: 84551537658.08.B57D015
-Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C59D440008
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:22:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 39tm3aQkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.77 as permitted sender) smtp.mailfrom=39tm3aQkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 50E0F6B017C
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:22:55 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3D8EB63B3
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:22:54 +0000 (UTC)
+X-FDA: 84551537868.07.09D652D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D15721C0005
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:22:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="K/CLOCYp";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4sMo17Hd;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ooysrVrp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="aKNu/FTa";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773656567;
+	s=arc-20220608; t=1773656573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=hH3c+Gp4ivLrCpLOJPCjZZpSkkhRXUH4jhppXYc5kC4=;
-	b=DCSA8C/96lkXUgs4Wf190Nc2IlJvX2mYAH27n8cXYZPt9SJFPTaXUBay1n3t6cEJkrqBRu
-	wCERzkgNhN/FuisCETPdfBt63a6DSzPySl46II+EufM5iRV/MLR13R3cI4bJgerK+lnKnT
-	sp4fBzrixJMyoAF3JYLdq+ImbfrpkVc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 39tm3aQkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.77 as permitted sender) smtp.mailfrom=39tm3aQkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773656567; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rwzBT/l493QcDN4Dzxv5Qhn7CZojZ4bhJCatnXm+Up8=;
+	b=FODidZ+mDbk3jWW7oHgQfKChEB1WtwR8XxqJZqI1i13pg730DoirTeslz22eVropkwWGCX
+	DX6iF1qcZnevfBhitVypwXRS5gK8a0b0QU2wDfl/DJDVAlG+OOqJuppysBbHp7oYsJ/PR2
+	lKG5urfHj4kyHIEWBIqNBsjYcFiorvQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773656573; a=rsa-sha256;
 	cv=none;
-	b=LWrueoB21bsBm9yWhbcKqCa7T3cEHCsd7BnygSsqHattrYPuwWwZ0H0vw5G864jiFJpadb
-	m3qRPcbUva2kHbAOZ7EJp1IGUQRQ/jxZxop1RZ6dD0tvKVCC/htQwRrlXmT8GHCGnI8RzB
-	mZ6bYwyyDCiGkghZ5ixdXrJLwwVzcgU=
-Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-67bf2b72878so18077535eaf.2
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:22:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773656567; x=1774261367;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hH3c+Gp4ivLrCpLOJPCjZZpSkkhRXUH4jhppXYc5kC4=;
-        b=Xt9Er6CMNNsogi4YQvJkR1yOCl8Rgo/8RvDL3gwZfL8nHPAMkgkZWQT1PqpdHzbElv
-         oz/fUG78Alehyd6DDPUVi2+pyU2/OXi7qaeD+VcARY5vqYniOMcN4mTO/QTpRihO3kFX
-         dTKXjwpHW5pxQ1WwVDfp5uHnFa6K++jmkdJO+G/sBRCbkznONMBn/WTmKsUbo7ioOqYL
-         VGXH6KEpN34i1OtFuFtKaCP4xFpfqkjpoly0L8P88Hsk95H8T3dwWYwFZUb9ohDKlvRA
-         483DFqf1gRb6nJc2gdGm2VerUmcsPTmaFecCWaYae6fzWYeBjBztwTkIqynG2nNoYLej
-         gcUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXgVHjtm7WiCI+t1Z1JzNCcVtunkQfzEdX9SbaPYeBSlhMxCHDPX6xp9QLj/m2mA9I/0GY52QQwRg==@kvack.org
-X-Gm-Message-State: AOJu0Yw62xpli6DJ3wr77zAQ0f+bnu8A73Sa4x4Z3dtvfYL3l6dTedPS
-	pWA+tTb9eiQT6bDipzICwD4G50Yx4KsKAvxBwViAIJ5XN/+DvxrDoBa5FYf0qgtOf7LGfN9BWml
-	U2D415NlS43UPdkUn0tzL9XMu/qPkslcalU/qTis5LUWFG9JsPR8wBPGOpcw=
+	b=Y9NAHpDSDrfSmJnizcUmRNnZhmgEcVa7GBd8uKlulZu8yQoVOTqzxddeM4XBF2mcjC1I8I
+	fx2iQgs/jrJNofBqDSst4RqfIJw/jUpEUkOT39XJSJCJOFRP8vNjsg2W91ROEMXKiAzMtV
+	+po9BhFfGQRujEuubI0VZAFRlTyIfaI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="K/CLOCYp";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4sMo17Hd;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ooysrVrp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="aKNu/FTa";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 230E85BCD8;
+	Mon, 16 Mar 2026 10:22:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773656571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rwzBT/l493QcDN4Dzxv5Qhn7CZojZ4bhJCatnXm+Up8=;
+	b=K/CLOCYpmSDK9beoF5nneeWm/0B+DmFKN1qrgDX38PsrK4rSjz6GtyrbxG8L8bondgF3vK
+	8XcjqwneVZfxSN1kLSK9hcWI5J4Te73FbtTIe4FMZeeTP9ndNbXzTmF99wOz0Zo709G/Ho
+	uYHXlomAXWtfHlZcTKp+IDfioNL2IXQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773656571;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rwzBT/l493QcDN4Dzxv5Qhn7CZojZ4bhJCatnXm+Up8=;
+	b=4sMo17Hd1qSjMLBrgD7qqA0B2AzEz8XKgFLT16rQIOu/GuB12s3o0xWfPtevFbmh0pkI+H
+	aJQbTV+HlZ1VN3Bw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773656570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rwzBT/l493QcDN4Dzxv5Qhn7CZojZ4bhJCatnXm+Up8=;
+	b=ooysrVrpBPA7VMz3a4pKXg3qUxQ0ithnJys3wy3E9ai2+mBj0EQzp7if4pqjr6cqa8XKor
+	nddGf9xC/49gwpi5opP8yJn7yDnFGfDvuVUkJFFIS/cI7w1CQs8PUWUWpDG2nOTsXppMum
+	7JFdfq3FNm9TqU/ltrmwPGYor1jCN0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773656570;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rwzBT/l493QcDN4Dzxv5Qhn7CZojZ4bhJCatnXm+Up8=;
+	b=aKNu/FTa2f5pjlvodB7ZO2e6Z+Zg4raSOE6e3RNyZMFJ0l0vXt9UBjEBSgSQ9XYzh/gJsn
+	ZHLVNUMPFueen9CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C62254273B;
+	Mon, 16 Mar 2026 10:22:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Kq7pLvnZt2meVwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 16 Mar 2026 10:22:49 +0000
+Message-ID: <21f56de3-ec1a-4d7b-8abf-c538584e18b2@suse.de>
+Date: Mon, 16 Mar 2026 11:22:49 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:98f:b0:67a:405:7ffc with SMTP id
- 006d021491bc7-67bda983ab1mr8550309eaf.5.1773656566684; Mon, 16 Mar 2026
- 03:22:46 -0700 (PDT)
-Date: Mon, 16 Mar 2026 03:22:46 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69b7d9f6.050a0220.248e02.0112.GAE@google.com>
-Subject: [syzbot] [mm?] KMSAN: uninit-value in copy_from_kernel_nofault
-From: syzbot <syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C59D440008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zxsdy1cbfx3atqhwpc498tqzds97emck
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+ Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+ "loic.molinari@collabora.com" <loic.molinari@collabora.com>,
+ "willy@infradead.org" <willy@infradead.org>,
+ "frank.binns@imgtec.com" <frank.binns@imgtec.com>,
+ "matt.coster@imgtec.com" <matt.coster@imgtec.com>,
+ "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+ "mripard@kernel.org" <mripard@kernel.org>,
+ "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch"
+ <simona@ffwll.ch>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+References: <20260227114509.165572-1-tzimmermann@suse.de>
+ <20260227114509.165572-6-tzimmermann@suse.de> <abL5rcYIaFFO3GW2@tom-desktop>
+ <TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <20260313111851.4c1f89f3@fedora>
+ <f3384342-cdc5-4260-b670-4ffde76a2802@suse.de>
+ <20260313125644.65131b27@fedora>
+ <TY3PR01MB1134662A395AA0A048CEE152E8645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <20260313131835.52c5c935@fedora> <20260313134328.3166c4d0@fedora>
+ <20260313135521.07823792@fedora> <20260313184549.08656eed@fedora>
+ <53f11658-5466-49a3-816a-ff6fd2e1da6f@suse.de>
+ <20260316103621.6ed48b68@fedora>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260316103621.6ed48b68@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D15721C0005
+X-Stat-Signature: ambhk5djqowykb9zqsu1c3byybnewhqs
 X-Rspam-User: 
-X-HE-Tag: 1773656567-518091
-X-HE-Meta: U2FsdGVkX1/Y85X72WF2fQJzQuMFyuGE/qwdr0IoBEb8A0UQObpeQOY/N8lOv4sCOAD34Xp9REPFLVZcwr/kMOt3BbxGXfDvI+OwjBrZLra0dmpIgetU/6EXooco2qlv90SI+OKB93PiKeekKcV1E3edI4aa0TKcLYfRXXfLfZkFe6l7q7eDcKjfrOfBUbyNh+OzpVDVrQtZxMgD1UgqSjMHsInwNfq13V+0uT+Z+Oe4c5P6GSdsPE0uGT/6NjKC5SsUof/wa+7RxBF/KXaPCpcNJUvtedhww8zFAJu9+vJBUfkYXmEMsY0Xp1IPbtmzNqCKYOjnB6jX8fj/EHMkfaG2I3PBhkzrsaA96V4bvWkuwVH1JzaMqXsHAZMfuW2WrcYwfryLqtTbQ6ECw+/0TH/7FP8MaT5Qe5CuHGFXIWBxuO+GxJ3lISPO9prijvOfu5XWqy1yFYJ1BEcdDrVf11psOWQlWpC1oESwiBtcPbwhAh32xNDxNy1QyIqYPcB+SZrE3tmYOYY6a5j4yR2N4C3zTO2iXu5vocRUVdW9+dtMtVOltlkR8howX0RcObEllwMh48uRFBMH8XPsGHLICRSzYstoFvxQswwiLrKi7i/TNC/txNWnIE1j8u23Sstb4vlcsk1ZVe8Iozw2u9wEOOphLofNCxdpGFQobfR+ghRKTcsnh1Hbalsor0O0542cRclHZ5kvGT7Vm86VyNaTeIUVpoCOoALxcrUqGVeuqQYkfPOZI+4AS6vfCzBRLCE0Bw/MPeohxFmIWZvaSAUh+3hsbjLq0MQuBH8bCknsRA8eRgrio0A9fK2XBmQlQ39aKggrIMqm18sYMm33t9ISZxrnx3aEXVWl9Dv8NgfRiv5aR214Y6WbnMC+TJNtPT4jxjnp8wiC2Y5X/SpyD1eX7jqXFdy0MRxjExMJ43hJPwluPq5tjjEQYSn9mOjtw+AxwwgFKijuH4sHfrDQ9y8
- XGJsTCv+
- 9nRps43s3q5VwKGb/3N+EXTU6dWgYNZGOWEl5gJom2CjpHmh0RIPhSQnB0pf0CzNdA9WyWL59P4ZDonJxJNo8NQuWi1RMbaPkDupTr+jQZB4sW4WWWHhqkZgJG6hLCnCkxZ1rJXzszP2qm3s+DxAtq/3mIhwm1QEIuiZK4dljsP+lDdbhEcIimfMwfeDkL/ZQn26MDB0myTkQH9lyl9Vtu3RNOv2FI1h/wFFdcGUgS2yKbKRAs74n39olQjbKemNm8zwNcQbwJJkwIUaWZKeHpWYG6Lkxb7e0+qUUy1AjlXwm9SmKw34Np2dVLN1UWHaydn3pyaij6hItF4ZSjMIDTjEBZ8RN/dagZRas8Zy82xFFSQ8KXyV+VtkISpqQAz1l33D3GYuaXTTw48mQuq8q8MO4x/kSxZ1ybBTeVteVK7kT2KOdMbZiaCWm9K6V0HvubDqcYFaVIXeAj8vGzyf3EuNrrsaKMlxHXFwhcKs8MfYtrXWLOUwjou+RqWj2rfXhJ7UARCdk57XDfXe8xvXDoBAdPcvd5jNJ7b/qobGFGBZ2EmvsWFFPGEagJG4GWkTWmQrXRvVvVFKFl4Ah4XU2mLWvCLCUpzQKZ7RLNSTXHE0+rbjabE+mfCMFGmlNu0rZHaMqRL85mStvgWJstg3US+R6FsC4KkYDeLSiS/CXeh514wQd7uOdXnKPx2nB5jhm5+uq2oCJ8L7+xs4SL7BXSwes83gJmPbb916mL37UB1vl0sQFVEcpBQnp8G971q9rF1+XJuMzZzt+VJ6IYvrL8fLNaX+JtQ/sjmFRX9l2f646dx+yb5Bhk4O1/j5Ivm4hs0LvEPL6272pIv4OS8MNbunMKUTJZXuPQ7wQ+hE+iHJKgF01cJA6VRtatuF9YZnqzhAppHHosj5cvbreRNVAbmzNL0xRyW5Q1DY1o0SKflmjNn8yp+okXk5YWfFTiuQzqYPTExFbsSKXmObQRHq7mZDKaBJq
- oWYIpdoO
- ZrPyhAfFEGJ+Uah+cmb7uCGzxWk3x5cbESkIsGqQKM3ogf08tc/b4b4MJulzI1ZeyDRQoReXh5X8SmhOg32aoCwc8+bgX2Uk7x+2nXHEacfS4F8iBUpB/ulAt+KriMWc8k/r9FFdpcJ8U01TZ2PLZaS4uL+Eht0bsSwHWqas7e3yKO0PKGRLg9jSFolH82kIZ6yZmz1EXJUIJJY/9HOg7LORYdL9eL7BsfuspoxTOgboMnFjleyuhww2wx6z9lha0m/TjG8nPDjhnk2pady5j2gcbfmgk5UEO+fGm0Cjfs6Yw6qXWWtN10cELcsatctk8Ynky05MJC+ImFKig0CVw4cJwrt5Iv33Dcbe2mlPMULgqa8Rl1ysZQw2Lmbisrc9kU/8ARyCdv+HAHU0IuJyvRbPASemTf9EUUMsADTjVClng3CevtnjtdUqB0E9Gm5Mh1TiOvY8mbec7/NUo8Xhj1wcqbvHIHq1
+X-HE-Tag: 1773656572-814875
+X-HE-Meta: U2FsdGVkX1//BSwp5QjKNk6/1sc6sxuk7DbPpRQCVrgNjdkeJTzE7gTaSORPv2geptvG5HP4znhe+aCN5Egl5fWpm0ibfSEa8YQE+4EC2aDF4gWVH+m0akCna/w31taWVRc8a90N6GiFzCBIQ619jO/jEuW+A3z3swaBjRlz+qbGoyWQpmDduwVs/cnilRLAOnBAQwnHBq+UonhXK5xaKkuVFGGM8Kg+xYCfghw7fu8ZlreO6BwyT8lUgJG+HPctgVf/LowEWWxrswhGWHU2UPTX+p1KLtOFEQbA5EnS9U/EdvAXOEUZvNtlLsizpt0XWrtSXBfm3RZfLMXp53V+p7ATMmU4jYQvy78ktr7mCKZJ2Tl5e/sf2fcIhDpcMFMxHRON5t5/cf0KMZgSe99QJjI6f1rjPB1dEQNKAJSCR35cxuMcN1og6A0+butqX7ycJ2cK4tL9covA14Gn+DQukLoEUZLfQKk3DsvHVdIozKiT0CQTuOa9yeR65nKicJN3UI8B8CJDQbzRjBaKs2TlWh2yM8/SXgN/wFQ1KV8W11JHyeozWDmOLRIuauDd+85pZY8jWgKOTBU1bF8vy6a5lvaZLV3hlLlOLg6MCurXkxjbSK8FId2vFgyy+Tv9jRwpv+z4NEsux3A0l5t6dkxFrTNpeM4sTtdJKH+M8VNjc2tJOFc3PZA5NlERVVDyy/v0h7mbJopQCOPrXjjQCM7OxD8vpEywJD5U5aRmv8bOUX2tQdKB/GgTcfz5HPlSdZx/CK9nSV4uJOz1SNlaMGoZFs5EJFd/s/wLcOUzymiKD5jJCJqDfWP1u4839o6b1QNQtr8muZTaTeS1HVCQru6LHp+3AAwpsfFndH9V6UqzF0dzl+wjpaFOqj+4uMWyF0CI89kRnyrRvoTBY5f4a8tw8rNSilk63m80i9EcaX5bb29+IOiXgPUiIHCuZajfxAdXyDxD+4QQzxGpFNybvq0
+ 1m0Fp0HV
+ Vt6IyPPd8QdnJniz7KyHaax1rkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,196 +182,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi
 
-syzbot found the following issue on:
+Am 16.03.26 um 10:36 schrieb Boris Brezillon:
+[...]
+>> This would keep the huge-page code within the first branch. And if it
+>> fails, it still does the regular page fault.
+> Well, in practice that's not what we want anyway (see the other fix for
+> the huge_fault vs regular fault race), so I'd still be inclined to have
+> the folio_mark_accessed() handled in the common path and have the pmd
+> vs regular pfn insertion in some if/else branches. Something like that:
+>
+> 	if (pmd_insert)
+> 		ret = drm_gem_shmem_try_insert_pfn_pmd(vmf, pfn);
+> 	else
+> 		ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>
+> 	if (ret == VM_FAULT_NOPAGE) {
+> 		folio_mark_accesed(folio);
+>
+> 		/* Normal pages are mapped RO, and remapped RW afterwards. */
+> 		if (pmd_insert && vmf->flags & FAULT_FLAG_WRITE)
 
-HEAD commit:    80234b5ab240 Merge tag 'rproc-v7.0-fixes' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1474cd52580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=242f02fcd3fbc8f3
-dashboard link: https://syzkaller.appspot.com/bug?extid=c18de0ad13d62f18469d
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-userspace arch: i386
+This style mixes conditions from different branching depths. The first 
+outermost branch uses pmd_insert to compute ret.  Any then both have 
+changed places, so that ret is in the outer branch and pmd_insert is in 
+the inner branch.  This is hard to maintain. It is already confusing now 
+and will be even more so to anyone locking at that code later on.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Best regards
+Thomas
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a0d037332dff/disk-80234b5a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0a1f7f8b54f8/vmlinux-80234b5a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/83eb68ee6421/bzImage-80234b5a.xz
+> 			folio_mark_dirty(folio);
+> 	}
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com
-
-=====================================================
-BUG: KMSAN: uninit-value in copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
- copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
- prepend_copy fs/d_path.c:50 [inline]
- prepend fs/d_path.c:76 [inline]
- prepend_name fs/d_path.c:101 [inline]
- __prepend_path fs/d_path.c:133 [inline]
- prepend_path+0x64e/0x1090 fs/d_path.c:172
- d_absolute_path+0x11b/0x240 fs/d_path.c:234
- tomoyo_get_absolute_path security/tomoyo/realpath.c:101 [inline]
- tomoyo_realpath_from_path+0x4bd/0x9f0 security/tomoyo/realpath.c:271
- tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
- tomoyo_path_perm+0x249/0x9a0 security/tomoyo/file.c:827
- tomoyo_inode_getattr+0x35/0x40 security/tomoyo/tomoyo.c:123
- security_inode_getattr+0x16e/0x590 security/security.c:1869
- vfs_getattr fs/stat.c:259 [inline]
- vfs_fstat fs/stat.c:281 [inline]
- __do_sys_newfstat fs/stat.c:551 [inline]
- __se_sys_newfstat+0xd5/0xa60 fs/stat.c:546
- __x64_sys_newfstat+0x78/0xb0 fs/stat.c:546
- x64_sys_call+0x2f28/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:6
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-<Zero or more stacks not recorded to save memory>
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- copy_name fs/dcache.c:2861 [inline]
- __d_move+0xf72/0x2aa0 fs/dcache.c:2930
- d_move+0x71/0xf0 fs/dcache.c:2977
- vfs_rename+0x2510/0x2650 fs/namei.c:6041
- filename_renameat2+0xb7f/0x1260 fs/namei.c:6144
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4549 [inline]
- slab_alloc_node mm/slub.c:4869 [inline]
- kmem_cache_alloc_lru_noprof+0x382/0x1280 mm/slub.c:4888
- __d_alloc+0x55/0xa00 fs/dcache.c:1740
- d_alloc+0x57/0x300 fs/dcache.c:1819
- lookup_one_qstr_excl+0x1a1/0x7b0 fs/namei.c:1801
- __start_renaming+0x38e/0x870 fs/namei.c:3862
- filename_renameat2+0x735/0x1260 fs/namei.c:6119
- __do_sys_rename fs/namei.c:6188 [inline]
- __se_sys_rename+0xc5/0x5d0 fs/namei.c:6184
- __x64_sys_rename+0x78/0xb0 fs/namei.c:6184
- x64_sys_call+0x329/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:83
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Bytes 5-7 of 8 are uninitialized
-Memory access of size 8 starts at ffff888014109578
-
-CPU: 0 UID: 0 PID: 5966 Comm: udevd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/27/2026
-=====================================================
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
