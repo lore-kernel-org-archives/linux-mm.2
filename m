@@ -4,87 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D3CF506C6
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 12:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD4EFF506CC
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:08:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC3D36B024D; Mon, 16 Mar 2026 08:55:21 -0400 (EDT)
+	id BEEFC6B0259; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70B96B0256; Mon, 16 Mar 2026 08:55:21 -0400 (EDT)
+	id B71E56B025A; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B73346B0258; Mon, 16 Mar 2026 08:55:21 -0400 (EDT)
+	id A7DF06B025B; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A12BF6B024D
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 08:55:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 37D0B160119
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:55:21 +0000 (UTC)
-X-FDA: 84551922042.12.6895692
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9710816000A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:55:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z39RpONo;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 979C66B0259
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:08:56 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46011B6250
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:08:56 +0000 (UTC)
+X-FDA: 84551956272.17.EE6BD75
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8DEAEC0003
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:08:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9pvKSi4;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773665719;
+	s=arc-20220608; t=1773666534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z6xlAPVceefTSVYtnnCEUOoqotfcgckQMsCVyWwZg9o=;
-	b=k7OF+0QJHHEX6Atqv0uUdeEpHthPAZ9oJVyMiInNUkkD6f4mR/GxhuYmd5fJTw4mS++ndY
-	3b0wFPq/h8eKsmYoESbTWhfdVohNWKaIUheaFNNSN/dJK1WeqMK2ZJaoJet5OQyP9KRbTP
-	xZlqjZFqbo3qn1amgyoW96IrMkNnraU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773665719; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=s1eQtq6dWyvx1NxUFkPPUGIduGG6xk+09TKijId19iU=;
+	b=JfVqZhr8VUiyhUS4wbzTlgJjsFuAEDKiv9Us1eEnszpV1ukgS1TDpSKPJt7nrgfcsWarun
+	KN56ZpU0A191fWeHTWRnZeyM8C9IY4M+4rwPMsrmh/p6ihwsXQEAUJQV7KiKUJH7sW6Kdu
+	Olhk4TyErv+s3Uwxdgrp7WLHM4K/Wno=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666534; a=rsa-sha256;
 	cv=none;
-	b=f8wLGCF3/k6gP47uPQ3gnJyicbptpBFi5+wsEyLjLbxnRZrCyVHt1JGcigYDNGfnY5C379
-	EwZC53ju51thIKegBjQg+JNv+LVzYa3zFOO1COcp3WULqITKCAChMk5i91ZcYB5mIR9ICa
-	NRF6teIPmHprNAZ0SYor/jxMvawdD4E=
+	b=z8fYeg1RCniLR34oBMKS5p01paoE+bDzgon3h5HP7MnLuRO3WPj40FQV0ARkl2xAIAphlM
+	kQ23n7L6Jm0tbCOnvlshbhRv/l/WtPBmaux84WdG/w4oEUD6zpf/L+8KM9mYOO9GqzCECZ
+	rri1CYHthI1FmbVMTBbZhN7DQGVFJp4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z39RpONo;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9pvKSi4;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB6A3437DA;
-	Mon, 16 Mar 2026 12:55:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B54DC19421;
-	Mon, 16 Mar 2026 12:55:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A043D60018;
+	Mon, 16 Mar 2026 13:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BFFC19421;
+	Mon, 16 Mar 2026 13:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773665718;
-	bh=wHy8V+LzWLdTTdVeoapl4IuD4+RQ0hST4UcCMU5AgZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z39RpONoiVYxUZa7MI6oWQituJ5LRTSk8y0i9dQw/bnCgMabaWD1Hy3sUAuq5s+ga
-	 KBwfqXD/EDRwYnFaXt7GxuDTjnYfcmoFBwPDbvbir2gHa2jAK7UdiYBgqF2+u1Bev1
-	 sg0a1iGSSA4Srob48C/4Jluz3q30LfXexA/Xb29pRYVVKQyGuW/inoMWpz4e5WdoCk
-	 7gw/HuL8dl3NKmE63phBxq3wdwxkH3/WagYMMoWL2K4erIT30ykL8pAtNv9NWLYs3i
-	 yyBC1mKVAJv45SqOQdC32jUdXREki2xcjZezgWSqEY+ns14jGNdwLj2uz94iQoPnJv
-	 lsKTUsukiSf8A==
-Date: Mon, 16 Mar 2026 12:55:13 +0000
+	s=k20201202; t=1773666533;
+	bh=M8qB2Yi8G2KCxfalR2Xs/y9ReUIwgZw5xpyPQq7wYBo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T9pvKSi4Tc2nnuQeD5Yvlyhi0UufdXQgMYoOn7BC5uSu03NjdqzIGTm1Tdv3TLSYa
+	 ZRhnhmQn0LEOOHogL294cpBY4Hx5wgcJH61d4VVf2CMkbG7Wp+svFxCaUrMrjKOILL
+	 +xyfGn6+4PetNtIu9y56emsCH1Vnr9u4Qi/SLG8O+zqXlH4mU2LEP+6fFZopPPQTBc
+	 iZl4h9qxTnhFE2aS1oMHmnUrqCtcGbnwO+i/lb2cVUuSq9zoi2n0QoFqUzeabs7zyP
+	 tbVtZbTy1UNWsliQt5qBdzNaCAJVWNqdZf7BNdfGttMzyLm6no5mzEMaXrnEoGyX8L
+	 yFaroSc0+vdhA==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] selftests/mm: add THP sysfs interface test
-Message-ID: <9cb63c24-eaff-4954-97d5-2a422a0401fc@lucifer.local>
-References: <20260309-thp_selftest_v2-v1-1-a00cef41da44@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Brian Cain <bcain@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [PATCH v2 00/23] mm/vma: convert vm_flags_t to vma_flags_t in vma code
+Date: Mon, 16 Mar 2026 13:07:49 +0000
+Message-ID: <cover.1773665966.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309-thp_selftest_v2-v1-1-a00cef41da44@debian.org>
-X-Stat-Signature: 4q6s7z58qkqy1m8ur1s3xoi8fio6n6mh
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9710816000A
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773665719-749583
-X-HE-Meta: U2FsdGVkX191EwtPvhsSPucJ7s4zYZtw0F4SQXR62POESwUgKAP4JGRfYRva0tHHuW5HT+fQ1rwB/NjdX5igO905qN8eiE05JK6c4jgt/+XcUqKrNXO82QwsfyAiOB/M9CS0+L8nuGQkVcxEZ3dC7pNcwdEpMeYDoGU+Ry7yK9pEkkrru2CqTp1k3Thjgl/sK5RRPHoZbMQaoVL/tOfPAWtc8piMmgxn0Tgy9cRzklornQKFVrquefEr13GbQtI+oJtZMusVCO3aFXVv9JZdJeYRQL2RU2qmBFH2tbXLZKrxhIokgTb7GCO8gRkODb5nqyfq+HHohphtmkZwyE9e1cZXpM2q+ya5BrIUaEJQAsH1cY+n7k6mt5c2emN/J7t201jTLkYKg6KEULfBHOsgQZFq/IWKYG82Tms3dZVCLQIXxqa1uX0q5fuq4czhFYmJ8v+/GO7Ij8FDj7QS6mHFYFhTZZdZFrw/JE3lZPbLa8XIOpRwQmwdNY3TyJNzFPHTaIbyOZOgtMDcZDdj5hLHVtVdlJjw20F5xx2uKup6kO+fHcBRdTbgcZ+dIPXyzTPWxQNwkOHq7vCMjjJAf87SGbaTlqyzlyQ9ODIuyd5pTotI0QdYMgeVO/F47k3xrcmsByL0MzVehpq+3zsMVctUpJ/QQQVEyPRU4UqUbpc/4PYlzaGvV1habyqHyx/JkeSETBizEuBLckSfr3DdtYWiGyxBcdHbLCvNIiEyGNU2a0nM+qewx2X9AAHnGvnTIJIdYDzYyZzULRYw4nZD4+ZcwS+91NF5n07oSf3hW7X5Fgvc95IfofN3nTwbDmNNn/X91zc12I81/CPQc7264BbxSNPS6olZqUhP2qCzbRZANKNR/2zjGPGaQ5vNf9T29VGa4lFkZHiik74=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8DEAEC0003
+X-Stat-Signature: qm6rose1hqzn8nu3sjfnwbzheknw1hw8
+X-HE-Tag: 1773666534-534976
+X-HE-Meta: U2FsdGVkX19cmycQVe6682kltZTrbUQyDajPVHTFFbL++MMhRC8FloaIr2wUcImzzC/ZWC+TwzNIi2MUIcUrTtPmSmqqH0JspjXNKvVb1Dp5DMkwkINYXmbmWpz0avxX6UjyirqnN7gfkp7NYaEuAUmR5trnOkf1JrUT7QoKWWmNnyQGVcHbXd/QMPCPvxM4GquIL40HNZHgyR9cO3/Ax2SDopaTCiIwe8N0pdyJHR0+GhsZEUsMU5QgEctT70GhE/eFuX8c020QzKg9dAPdvmpwzNkCQ0KHPl787nFbNIguFDyMRWorqNYtN2mKLJTptMIiO7yHAVUEsEgsqzEsj+55NmgXSFzA9zX7k7X2iB/DylVguXqyAgApIIyGcHGp23b2tKdjclLU2rp5jMNDYQiFGYSTmtcIWXaHWU+6ZRW7CmHZbjRBNVtA4CXXXY6wUBH66G2gxlJmvomeZLDlSbClrD+qaDZ2IxqPGEMeW1NGlWrXZejeO6//iKcuLHyAnHIMyHoI8ZbiDSg0pR65OLWHkKHWyivla1v6XB4wjaN/Dpg8xr0DqKTdTeV9Z7vs7oh/cbM+dHIYtL0H0JL9o03tvgK/nvLD7AavyVGvdj2D5qYBfnyC6u76mPMLt2EC+UOrhYqzLB5R17h1C74ZHEryYH2Bds8JyAZfqUjCaQQXnjav9eYYVVYvZ840YUVGYpl428zdlAoZqRcsZ/isHJnrIvsW3Fpv+M3bCCPV139TEJc65dcRIUb8mdbxX+9acm06S76++8FjGpypgnKmcNjZFk0/Z8EISrJl79Ds3LLAoVFHxofNIy4bh3rQcosz6el9qJCWVCk5D8Rj5Yt3BETvwkdpmqUZpDoWOK8fAyQaVok4tzkrRCph7XyxfVZNm9t5v0G84TcPJBiXPhtzDQNcAKl6lsMAPbG8kRaDDW6oLCjD3102FyvzObTrf4Dwpam+1r7GRIvSHq4VT9Y
+ wh1Hj379
+ TnKyP6KREzGizL/MqX03/vX0XlGdnJqd4sqsv192HRro5DNekPNNHTWj07oPZucJ7CUJ3ncmggrQrrl8el31XxpfUpotLd9tjwpyLVfY9mWNMseZ8LFl1bpgKk6wUAF46V6F4xLpqE3fJJHdvMV2GmBvtlGXK4hgF+Rea3l+3Wir98wMmUzWVriW0qU6POORufAZif/1AXf+tluefDwFmY1ou+CfaMMMNapKlrqN31zK6J9Rpcl4WDeD5iOV48gAw0yR0rICP27DnM1Pjhft8UJq5blw73I8U4b+vmwR3TsIvNOCMxuchmSrh7/G3JoBmLHoukV3bUcGcZeBonagPFVBId8XDcYKzBKIV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,755 +147,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 05:00:34AM -0700, Breno Leitao wrote:
-> Add a shell-based selftest that exercises the full set of THP sysfs
-> knobs: enabled (global and per-size anon), defrag, use_zero_page,
-> hpage_pmd_size, shmem_enabled (global and per-size), shrink_underused,
-> khugepaged/ tunables, and per-size stats files.
->
-> Each writable knob is tested for valid writes, invalid-input rejection,
-> idempotent writes, and mode transitions where applicable. All original
-> values are saved before testing and restored afterwards.
->
-> The test uses the kselftest KTAP framework (ktap_helpers.sh) for
-> structured TAP 13 output, making results parseable by the kselftest
-> harness. The test plan is printed at the end since the number of test
-> points is dynamic (depends on available hugepage sizes and sysfs files).
->
-> This is particularly useful for validating the refactoring of
-> enabled_store() and anon_enabled_store() to use sysfs_match_string()
-> and the new change_enabled()/change_anon_orders() helpers.
->
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+This series converts a lot of the existing use of the legacy vm_flags_t
+data type to the new vma_flags_t type which replaces it.
 
-The test is broken locally for me, returning error code 127.
+In order to do so it adds a number of additional helpers:
 
-I do appreciate the effort here, so I'm sorry to push back negatively, but I
-feel a bash script here is pretty janky, and frankly if any of these interfaces
-were as broken as this it'd be a major failure that would surely get picked up
-far sooner elsewhere.
+* vma_flags_empty() - Determines whether a vma_flags_t value has no bits
+  set.
 
-So while I think this might be useful as a local test for your sysfs interface
-changes, I don't think this is really suited to the mm selftests.
+* vma_flags_and() - Performs a bitwise AND between two vma_flags_t values.
 
-Andrew - can we drop this change please? Thanks!
+* vma_flags_diff_pair() - Determines which flags are not shared between a
+  pair of VMA flags (typically non-constant values)
 
-Thanks, Lorenzo
+* append_vma_flags() - Similar to mk_vma_flags(), but allows a vma_flags_t
+  value to be specified (typically a constant value) which will be copied
+  and appended to to create a new vma_flags_t value, with additional flags
+  specified to append to it.
 
-> ---
-> While working on the THP sysfs interface, I noticed there were no
-> existing tests covering this functionality. This patch adds test
-> coverage that may be useful for upstream !?
-> ---
->  tools/testing/selftests/mm/Makefile          |   1 +
->  tools/testing/selftests/mm/run_vmtests.sh    |   2 +
->  tools/testing/selftests/mm/thp_sysfs_test.sh | 666 +++++++++++++++++++++++++++
->  3 files changed, 669 insertions(+)
->
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index 7a5de4e9bf520..90fcca53a561b 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -180,6 +180,7 @@ TEST_FILES += charge_reserved_hugetlb.sh
->  TEST_FILES += hugetlb_reparenting_test.sh
->  TEST_FILES += test_page_frag.sh
->  TEST_FILES += run_vmtests.sh
-> +TEST_FILES += thp_sysfs_test.sh
->
->  # required by charge_reserved_hugetlb.sh
->  TEST_FILES += write_hugetlb_memory.sh
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index afdcfd0d7cef7..9e0e2089214a3 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -491,6 +491,8 @@ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
->
->  CATEGORY="thp" run_test ./transhuge-stress -d 20
->
-> +CATEGORY="thp" run_test ./thp_sysfs_test.sh
-> +
->  # Try to create XFS if not provided
->  if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
->      if [ "${HAVE_HUGEPAGES}" = "1" ]; then
-> diff --git a/tools/testing/selftests/mm/thp_sysfs_test.sh b/tools/testing/selftests/mm/thp_sysfs_test.sh
-> new file mode 100755
-> index 0000000000000..407f306a0989f
-> --- /dev/null
-> +++ b/tools/testing/selftests/mm/thp_sysfs_test.sh
-> @@ -0,0 +1,666 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Test THP sysfs interface.
-> +#
-> +# Exercises the full set of THP sysfs knobs: enabled (global and
-> +# per-size anon), defrag, use_zero_page, hpage_pmd_size, shmem_enabled
-> +# (global and per-size), shrink_underused, khugepaged/ tunables, and
-> +# per-size stats files.  Each writable knob is tested for valid writes,
-> +# invalid-input rejection, idempotent writes, and mode transitions
-> +# where applicable.  All original values are saved before testing and
-> +# restored afterwards.
-> +#
-> +# Author: Breno Leitao <leitao@debian.org>
-> +
-> +DIR="$(dirname "$(readlink -f "$0")")"
-> +. "${DIR}"/../kselftest/ktap_helpers.sh
-> +
-> +THP_SYSFS=/sys/kernel/mm/transparent_hugepage
-> +
-> +# Read the currently active mode from a sysfs enabled file.
-> +# The active mode is enclosed in brackets, e.g. "always [madvise] never"
-> +get_active_mode() {
-> +	local path="$1"
-> +	local content
-> +
-> +	content=$(cat "$path")
-> +	echo "$content" | grep -o '\[.*\]' | tr -d '[]'
-> +}
-> +
-> +# Test that writing a mode and reading it back gives the expected result.
-> +test_mode() {
-> +	local path="$1"
-> +	local mode="$2"
-> +	local label="$3"
-> +	local active
-> +
-> +	if ! echo "$mode" > "$path" 2>/dev/null; then
-> +		ktap_test_fail "$label: write '$mode'"
-> +		return
-> +	fi
-> +
-> +	active=$(get_active_mode "$path")
-> +	if [ "$active" = "$mode" ]; then
-> +		ktap_test_pass "$label: write '$mode'"
-> +	else
-> +		ktap_test_fail "$label: write '$mode', read back '$active'"
-> +	fi
-> +}
-> +
-> +# Test that writing an invalid mode is rejected.
-> +test_invalid() {
-> +	local path="$1"
-> +	local mode="$2"
-> +	local label="$3"
-> +	local saved
-> +
-> +	saved=$(get_active_mode "$path")
-> +
-> +	if echo "$mode" > "$path" 2>/dev/null; then
-> +		# Write succeeded -- check if mode actually changed (it shouldn't)
-> +		local active
-> +		active=$(get_active_mode "$path")
-> +		if [ "$active" = "$saved" ]; then
-> +			# Some shells don't propagate the error, but mode unchanged
-> +			ktap_test_pass "$label: reject '$mode'"
-> +		else
-> +			ktap_test_fail "$label: '$mode' should have been rejected but mode changed to '$active'"
-> +		fi
-> +	else
-> +		ktap_test_pass "$label: reject '$mode'"
-> +	fi
-> +}
-> +
-> +# Test that writing the same mode twice doesn't crash or change state.
-> +test_idempotent() {
-> +	local path="$1"
-> +	local mode="$2"
-> +	local label="$3"
-> +
-> +	echo "$mode" > "$path" 2>/dev/null
-> +	echo "$mode" > "$path" 2>/dev/null
-> +	local active
-> +	active=$(get_active_mode "$path")
-> +	if [ "$active" = "$mode" ]; then
-> +		ktap_test_pass "$label: idempotent '$mode'"
-> +	else
-> +		ktap_test_fail "$label: idempotent '$mode', got '$active'"
-> +	fi
-> +}
-> +
-> +# Write a numeric value, read it back, verify match.
-> +test_numeric() {
-> +	local path="$1"
-> +	local value="$2"
-> +	local label="$3"
-> +	local readback
-> +
-> +	if ! echo "$value" > "$path" 2>/dev/null; then
-> +		ktap_test_fail "$label: write '$value'"
-> +		return
-> +	fi
-> +
-> +	readback=$(cat "$path" 2>/dev/null)
-> +	if [ "$readback" = "$value" ]; then
-> +		ktap_test_pass "$label: write '$value'"
-> +	else
-> +		ktap_test_fail "$label: write '$value', read back '$readback'"
-> +	fi
-> +}
-> +
-> +# Verify that an out-of-range or invalid numeric value is rejected.
-> +test_numeric_invalid() {
-> +	local path="$1"
-> +	local value="$2"
-> +	local label="$3"
-> +	local saved readback
-> +
-> +	saved=$(cat "$path" 2>/dev/null)
-> +
-> +	if echo "$value" > "$path" 2>/dev/null; then
-> +		readback=$(cat "$path" 2>/dev/null)
-> +		if [ "$readback" = "$saved" ]; then
-> +			ktap_test_pass "$label: reject '$value'"
-> +		else
-> +			ktap_test_fail "$label: '$value' should have been rejected but value changed to '$readback'"
-> +		fi
-> +	else
-> +		ktap_test_pass "$label: reject '$value'"
-> +	fi
-> +}
-> +
-> +# Verify a read-only file: readable, returns a numeric value, rejects writes.
-> +test_readonly() {
-> +	local path="$1"
-> +	local label="$2"
-> +	local val
-> +
-> +	val=$(cat "$path" 2>/dev/null)
-> +	if [ -z "$val" ]; then
-> +		ktap_test_fail "$label: read returned empty"
-> +		return
-> +	fi
-> +
-> +	if ! echo "$val" | grep -qE '^[0-9]+$'; then
-> +		ktap_test_fail "$label: expected numeric, got '$val'"
-> +		return
-> +	fi
-> +
-> +	if echo "0" > "$path" 2>/dev/null; then
-> +		local after
-> +		after=$(cat "$path" 2>/dev/null)
-> +		if [ "$after" = "$val" ]; then
-> +			ktap_test_pass "$label: read-only (value=$val)"
-> +		else
-> +			ktap_test_fail "$label: write should have been rejected but value changed"
-> +		fi
-> +	else
-> +		ktap_test_pass "$label: read-only (value=$val)"
-> +	fi
-> +}
-> +
-> +# --- Precondition checks ---
-> +
-> +ktap_print_header
-> +
-> +if [ ! -d "$THP_SYSFS" ]; then
-> +	ktap_skip_all "THP sysfs not found at $THP_SYSFS"
-> +	exit "$KSFT_SKIP"
-> +fi
-> +
-> +if [ "$(id -u)" -ne 0 ]; then
-> +	ktap_skip_all "must be run as root"
-> +	exit "$KSFT_SKIP"
-> +fi
-> +
-> +# --- Test global THP enabled ---
-> +
-> +GLOBAL_ENABLED="$THP_SYSFS/enabled"
-> +
-> +if [ ! -f "$GLOBAL_ENABLED" ]; then
-> +	ktap_test_skip "global enabled file not found"
-> +else
-> +	ktap_print_msg "Testing global THP enabled ($GLOBAL_ENABLED)"
-> +
-> +	# Save current setting
-> +	saved_global=$(get_active_mode "$GLOBAL_ENABLED")
-> +
-> +	# Valid modes for global
-> +	test_mode "$GLOBAL_ENABLED" "always" "global"
-> +	test_mode "$GLOBAL_ENABLED" "madvise" "global"
-> +	test_mode "$GLOBAL_ENABLED" "never" "global"
-> +
-> +	# "inherit" is not valid for global THP
-> +	test_invalid "$GLOBAL_ENABLED" "inherit" "global"
-> +
-> +	# Invalid strings
-> +	test_invalid "$GLOBAL_ENABLED" "bogus" "global"
-> +	test_invalid "$GLOBAL_ENABLED" "" "global (empty)"
-> +
-> +	# Idempotent writes
-> +	test_idempotent "$GLOBAL_ENABLED" "always" "global"
-> +	test_idempotent "$GLOBAL_ENABLED" "never" "global"
-> +
-> +	# Restore
-> +	echo "$saved_global" > "$GLOBAL_ENABLED" 2>/dev/null
-> +fi
-> +
-> +# --- Test global defrag ---
-> +
-> +GLOBAL_DEFRAG="$THP_SYSFS/defrag"
-> +
-> +if [ ! -f "$GLOBAL_DEFRAG" ]; then
-> +	ktap_test_skip "defrag file not found"
-> +else
-> +	ktap_print_msg "Testing global THP defrag ($GLOBAL_DEFRAG)"
-> +
-> +	saved_defrag=$(get_active_mode "$GLOBAL_DEFRAG")
-> +
-> +	# Valid modes
-> +	test_mode "$GLOBAL_DEFRAG" "always" "defrag"
-> +	test_mode "$GLOBAL_DEFRAG" "defer" "defrag"
-> +	test_mode "$GLOBAL_DEFRAG" "defer+madvise" "defrag"
-> +	test_mode "$GLOBAL_DEFRAG" "madvise" "defrag"
-> +	test_mode "$GLOBAL_DEFRAG" "never" "defrag"
-> +
-> +	# Invalid
-> +	test_invalid "$GLOBAL_DEFRAG" "bogus" "defrag"
-> +	test_invalid "$GLOBAL_DEFRAG" "" "defrag (empty)"
-> +	test_invalid "$GLOBAL_DEFRAG" "inherit" "defrag"
-> +
-> +	# Idempotent
-> +	test_idempotent "$GLOBAL_DEFRAG" "always" "defrag"
-> +	test_idempotent "$GLOBAL_DEFRAG" "never" "defrag"
-> +
-> +	# Mode transitions: cycle through all 5
-> +	echo "always" > "$GLOBAL_DEFRAG"
-> +	test_mode "$GLOBAL_DEFRAG" "defer" "defrag (always->defer)"
-> +	test_mode "$GLOBAL_DEFRAG" "defer+madvise" "defrag (defer->defer+madvise)"
-> +	test_mode "$GLOBAL_DEFRAG" "madvise" "defrag (defer+madvise->madvise)"
-> +	test_mode "$GLOBAL_DEFRAG" "never" "defrag (madvise->never)"
-> +	test_mode "$GLOBAL_DEFRAG" "always" "defrag (never->always)"
-> +
-> +	# Restore
-> +	echo "$saved_defrag" > "$GLOBAL_DEFRAG" 2>/dev/null
-> +fi
-> +
-> +# --- Test use_zero_page ---
-> +
-> +USE_ZERO_PAGE="$THP_SYSFS/use_zero_page"
-> +
-> +if [ ! -f "$USE_ZERO_PAGE" ]; then
-> +	ktap_test_skip "use_zero_page file not found"
-> +else
-> +	ktap_print_msg "Testing use_zero_page ($USE_ZERO_PAGE)"
-> +
-> +	saved_uzp=$(cat "$USE_ZERO_PAGE" 2>/dev/null)
-> +
-> +	# Valid values
-> +	test_numeric "$USE_ZERO_PAGE" "0" "use_zero_page"
-> +	test_numeric "$USE_ZERO_PAGE" "1" "use_zero_page"
-> +
-> +	# Invalid values
-> +	test_numeric_invalid "$USE_ZERO_PAGE" "2" "use_zero_page"
-> +	test_numeric_invalid "$USE_ZERO_PAGE" "-1" "use_zero_page"
-> +	test_numeric_invalid "$USE_ZERO_PAGE" "bogus" "use_zero_page"
-> +
-> +	# Idempotent
-> +	echo "1" > "$USE_ZERO_PAGE" 2>/dev/null
-> +	test_numeric "$USE_ZERO_PAGE" "1" "use_zero_page (idempotent)"
-> +	echo "0" > "$USE_ZERO_PAGE" 2>/dev/null
-> +	test_numeric "$USE_ZERO_PAGE" "0" "use_zero_page (idempotent)"
-> +
-> +	# Restore
-> +	echo "$saved_uzp" > "$USE_ZERO_PAGE" 2>/dev/null
-> +fi
-> +
-> +# --- Test hpage_pmd_size ---
-> +
-> +HPAGE_PMD_SIZE_FILE="$THP_SYSFS/hpage_pmd_size"
-> +
-> +if [ ! -f "$HPAGE_PMD_SIZE_FILE" ]; then
-> +	ktap_test_skip "hpage_pmd_size file not found"
-> +else
-> +	ktap_print_msg "Testing hpage_pmd_size ($HPAGE_PMD_SIZE_FILE)"
-> +
-> +	test_readonly "$HPAGE_PMD_SIZE_FILE" "hpage_pmd_size"
-> +fi
-> +
-> +# --- Test global shmem_enabled ---
-> +
-> +SHMEM_ENABLED="$THP_SYSFS/shmem_enabled"
-> +
-> +if [ ! -f "$SHMEM_ENABLED" ]; then
-> +	ktap_test_skip "shmem_enabled file not found (CONFIG_SHMEM not set?)"
-> +else
-> +	ktap_print_msg "Testing global shmem_enabled ($SHMEM_ENABLED)"
-> +
-> +	saved_shmem=$(get_active_mode "$SHMEM_ENABLED")
-> +
-> +	# Valid modes
-> +	test_mode "$SHMEM_ENABLED" "always" "shmem_enabled"
-> +	test_mode "$SHMEM_ENABLED" "within_size" "shmem_enabled"
-> +	test_mode "$SHMEM_ENABLED" "advise" "shmem_enabled"
-> +	test_mode "$SHMEM_ENABLED" "never" "shmem_enabled"
-> +	test_mode "$SHMEM_ENABLED" "deny" "shmem_enabled"
-> +	test_mode "$SHMEM_ENABLED" "force" "shmem_enabled"
-> +
-> +	# Invalid
-> +	test_invalid "$SHMEM_ENABLED" "bogus" "shmem_enabled"
-> +	test_invalid "$SHMEM_ENABLED" "inherit" "shmem_enabled"
-> +	test_invalid "$SHMEM_ENABLED" "" "shmem_enabled (empty)"
-> +
-> +	# Idempotent
-> +	test_idempotent "$SHMEM_ENABLED" "always" "shmem_enabled"
-> +	test_idempotent "$SHMEM_ENABLED" "never" "shmem_enabled"
-> +
-> +	# Mode transitions: cycle through all 6
-> +	echo "always" > "$SHMEM_ENABLED"
-> +	test_mode "$SHMEM_ENABLED" "within_size" "shmem_enabled (always->within_size)"
-> +	test_mode "$SHMEM_ENABLED" "advise" "shmem_enabled (within_size->advise)"
-> +	test_mode "$SHMEM_ENABLED" "never" "shmem_enabled (advise->never)"
-> +	test_mode "$SHMEM_ENABLED" "deny" "shmem_enabled (never->deny)"
-> +	test_mode "$SHMEM_ENABLED" "force" "shmem_enabled (deny->force)"
-> +	test_mode "$SHMEM_ENABLED" "always" "shmem_enabled (force->always)"
-> +
-> +	# Restore
-> +	echo "$saved_shmem" > "$SHMEM_ENABLED" 2>/dev/null
-> +fi
-> +
-> +# --- Test shrink_underused ---
-> +
-> +SHRINK_UNDERUSED="$THP_SYSFS/shrink_underused"
-> +
-> +if [ ! -f "$SHRINK_UNDERUSED" ]; then
-> +	ktap_test_skip "shrink_underused file not found"
-> +else
-> +	ktap_print_msg "Testing shrink_underused ($SHRINK_UNDERUSED)"
-> +
-> +	saved_shrink=$(cat "$SHRINK_UNDERUSED" 2>/dev/null)
-> +
-> +	# Valid values
-> +	test_numeric "$SHRINK_UNDERUSED" "0" "shrink_underused"
-> +	test_numeric "$SHRINK_UNDERUSED" "1" "shrink_underused"
-> +
-> +	# Invalid values
-> +	test_numeric_invalid "$SHRINK_UNDERUSED" "2" "shrink_underused"
-> +	test_numeric_invalid "$SHRINK_UNDERUSED" "bogus" "shrink_underused"
-> +
-> +	# Restore
-> +	echo "$saved_shrink" > "$SHRINK_UNDERUSED" 2>/dev/null
-> +fi
-> +
-> +# --- Test per-size anon THP enabled ---
-> +
-> +found_anon=0
-> +for dir in "$THP_SYSFS"/hugepages-*; do
-> +	[ -d "$dir" ] || continue
-> +
-> +	ANON_ENABLED="$dir/enabled"
-> +	[ -f "$ANON_ENABLED" ] || continue
-> +
-> +	found_anon=1
-> +	size=$(basename "$dir")
-> +	ktap_print_msg "Testing per-size anon THP enabled ($size)"
-> +
-> +	# Save current setting
-> +	saved_anon=$(get_active_mode "$ANON_ENABLED")
-> +
-> +	# Valid modes for per-size anon (includes inherit)
-> +	test_mode "$ANON_ENABLED" "always" "$size"
-> +	test_mode "$ANON_ENABLED" "inherit" "$size"
-> +	test_mode "$ANON_ENABLED" "madvise" "$size"
-> +	test_mode "$ANON_ENABLED" "never" "$size"
-> +
-> +	# Invalid strings
-> +	test_invalid "$ANON_ENABLED" "bogus" "$size"
-> +
-> +	# Idempotent writes
-> +	test_idempotent "$ANON_ENABLED" "always" "$size"
-> +	test_idempotent "$ANON_ENABLED" "inherit" "$size"
-> +	test_idempotent "$ANON_ENABLED" "never" "$size"
-> +
-> +	# Mode transitions: verify each mode clears the others
-> +	echo "always" > "$ANON_ENABLED"
-> +	test_mode "$ANON_ENABLED" "madvise" "$size (always->madvise)"
-> +	test_mode "$ANON_ENABLED" "inherit" "$size (madvise->inherit)"
-> +	test_mode "$ANON_ENABLED" "never" "$size (inherit->never)"
-> +	test_mode "$ANON_ENABLED" "always" "$size (never->always)"
-> +
-> +	# Restore
-> +	echo "$saved_anon" > "$ANON_ENABLED" 2>/dev/null
-> +
-> +	# Only test one size in detail to keep output manageable,
-> +	# but do a quick smoke test on the rest
-> +	break
-> +done
-> +
-> +if [ $found_anon -eq 0 ]; then
-> +	ktap_test_skip "no per-size anon THP directories found"
-> +fi
-> +
-> +# Quick smoke test: all other sizes accept valid modes
-> +first=1
-> +for dir in "$THP_SYSFS"/hugepages-*; do
-> +	[ -d "$dir" ] || continue
-> +	ANON_ENABLED="$dir/enabled"
-> +	[ -f "$ANON_ENABLED" ] || continue
-> +
-> +	# Skip the first one (already tested in detail)
-> +	if [ $first -eq 1 ]; then
-> +		first=0
-> +		continue
-> +	fi
-> +
-> +	size=$(basename "$dir")
-> +	saved=$(get_active_mode "$ANON_ENABLED")
-> +
-> +	smoke_failed=0
-> +	for mode in always inherit madvise never; do
-> +		echo "$mode" > "$ANON_ENABLED" 2>/dev/null
-> +		active=$(get_active_mode "$ANON_ENABLED")
-> +		if [ "$active" != "$mode" ]; then
-> +			ktap_test_fail "$size: smoke test '$mode' got '$active'"
-> +			smoke_failed=1
-> +			break
-> +		fi
-> +	done
-> +	[ $smoke_failed -eq 0 ] && ktap_test_pass "$size: smoke test all modes"
-> +
-> +	echo "$saved" > "$ANON_ENABLED" 2>/dev/null
-> +done
-> +
-> +# --- Test per-size shmem_enabled ---
-> +
-> +found_shmem=0
-> +for dir in "$THP_SYSFS"/hugepages-*; do
-> +	[ -d "$dir" ] || continue
-> +
-> +	SHMEM_SIZE_ENABLED="$dir/shmem_enabled"
-> +	[ -f "$SHMEM_SIZE_ENABLED" ] || continue
-> +
-> +	found_shmem=1
-> +	size=$(basename "$dir")
-> +	ktap_print_msg "Testing per-size shmem_enabled ($size)"
-> +
-> +	# Save current setting
-> +	saved_shmem_size=$(get_active_mode "$SHMEM_SIZE_ENABLED")
-> +
-> +	# Valid modes for per-size shmem
-> +	test_mode "$SHMEM_SIZE_ENABLED" "always" "$size shmem"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "inherit" "$size shmem"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "within_size" "$size shmem"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "advise" "$size shmem"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "never" "$size shmem"
-> +
-> +	# Invalid: deny and force are not valid for per-size
-> +	test_invalid "$SHMEM_SIZE_ENABLED" "bogus" "$size shmem"
-> +	test_invalid "$SHMEM_SIZE_ENABLED" "deny" "$size shmem"
-> +	test_invalid "$SHMEM_SIZE_ENABLED" "force" "$size shmem"
-> +
-> +	# Mode transitions
-> +	echo "always" > "$SHMEM_SIZE_ENABLED"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "inherit" "$size shmem (always->inherit)"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "within_size" "$size shmem (inherit->within_size)"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "advise" "$size shmem (within_size->advise)"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "never" "$size shmem (advise->never)"
-> +	test_mode "$SHMEM_SIZE_ENABLED" "always" "$size shmem (never->always)"
-> +
-> +	# Restore
-> +	echo "$saved_shmem_size" > "$SHMEM_SIZE_ENABLED" 2>/dev/null
-> +
-> +	# Only test one size in detail
-> +	break
-> +done
-> +
-> +if [ $found_shmem -eq 0 ]; then
-> +	ktap_test_skip "no per-size shmem_enabled files found"
-> +fi
-> +
-> +# Quick smoke test: remaining sizes with shmem_enabled
-> +first=1
-> +for dir in "$THP_SYSFS"/hugepages-*; do
-> +	[ -d "$dir" ] || continue
-> +	SHMEM_SIZE_ENABLED="$dir/shmem_enabled"
-> +	[ -f "$SHMEM_SIZE_ENABLED" ] || continue
-> +
-> +	if [ $first -eq 1 ]; then
-> +		first=0
-> +		continue
-> +	fi
-> +
-> +	size=$(basename "$dir")
-> +	saved=$(get_active_mode "$SHMEM_SIZE_ENABLED")
-> +
-> +	smoke_failed=0
-> +	for mode in always inherit within_size advise never; do
-> +		echo "$mode" > "$SHMEM_SIZE_ENABLED" 2>/dev/null
-> +		active=$(get_active_mode "$SHMEM_SIZE_ENABLED")
-> +		if [ "$active" != "$mode" ]; then
-> +			ktap_test_fail "$size shmem: smoke test '$mode' got '$active'"
-> +			smoke_failed=1
-> +			break
-> +		fi
-> +	done
-> +	[ $smoke_failed -eq 0 ] && ktap_test_pass "$size shmem: smoke test all modes"
-> +
-> +	echo "$saved" > "$SHMEM_SIZE_ENABLED" 2>/dev/null
-> +done
-> +
-> +# --- Test khugepaged tunables ---
-> +
-> +KHUGEPAGED="$THP_SYSFS/khugepaged"
-> +
-> +if [ ! -d "$KHUGEPAGED" ]; then
-> +	ktap_test_skip "khugepaged directory not found"
-> +else
-> +	ktap_print_msg "Testing khugepaged tunables ($KHUGEPAGED)"
-> +
-> +	# Compute HPAGE_PMD_NR for boundary tests
-> +	pmd_size=$(cat "$HPAGE_PMD_SIZE_FILE" 2>/dev/null)
-> +	page_size=$(getconf PAGE_SIZE)
-> +	if [ -n "$pmd_size" ] && [ -n "$page_size" ] && [ "$page_size" -gt 0 ]; then
-> +		hpage_pmd_nr=$((pmd_size / page_size))
-> +	else
-> +		hpage_pmd_nr=512
-> +	fi
-> +
-> +	# Save all tunable values
-> +	saved_khp_defrag=$(cat "$KHUGEPAGED/defrag" 2>/dev/null)
-> +	saved_khp_max_ptes_none=$(cat "$KHUGEPAGED/max_ptes_none" 2>/dev/null)
-> +	saved_khp_max_ptes_swap=$(cat "$KHUGEPAGED/max_ptes_swap" 2>/dev/null)
-> +	saved_khp_max_ptes_shared=$(cat "$KHUGEPAGED/max_ptes_shared" 2>/dev/null)
-> +	saved_khp_pages_to_scan=$(cat "$KHUGEPAGED/pages_to_scan" 2>/dev/null)
-> +	saved_khp_scan_sleep=$(cat "$KHUGEPAGED/scan_sleep_millisecs" 2>/dev/null)
-> +	saved_khp_alloc_sleep=$(cat "$KHUGEPAGED/alloc_sleep_millisecs" 2>/dev/null)
-> +
-> +	# khugepaged/defrag (0/1 flag)
-> +	if [ -f "$KHUGEPAGED/defrag" ]; then
-> +		test_numeric "$KHUGEPAGED/defrag" "0" "khugepaged/defrag"
-> +		test_numeric "$KHUGEPAGED/defrag" "1" "khugepaged/defrag"
-> +		test_numeric_invalid "$KHUGEPAGED/defrag" "2" "khugepaged/defrag"
-> +		test_numeric_invalid "$KHUGEPAGED/defrag" "bogus" "khugepaged/defrag"
-> +	fi
-> +
-> +	# khugepaged/max_ptes_none (0 .. HPAGE_PMD_NR-1)
-> +	if [ -f "$KHUGEPAGED/max_ptes_none" ]; then
-> +		test_numeric "$KHUGEPAGED/max_ptes_none" "0" "khugepaged/max_ptes_none"
-> +		test_numeric "$KHUGEPAGED/max_ptes_none" "$((hpage_pmd_nr - 1))" \
-> +			"khugepaged/max_ptes_none"
-> +		test_numeric_invalid "$KHUGEPAGED/max_ptes_none" "$hpage_pmd_nr" \
-> +			"khugepaged/max_ptes_none (boundary)"
-> +	fi
-> +
-> +	# khugepaged/max_ptes_swap (0 .. HPAGE_PMD_NR-1)
-> +	if [ -f "$KHUGEPAGED/max_ptes_swap" ]; then
-> +		test_numeric "$KHUGEPAGED/max_ptes_swap" "0" "khugepaged/max_ptes_swap"
-> +		test_numeric "$KHUGEPAGED/max_ptes_swap" "$((hpage_pmd_nr - 1))" \
-> +			"khugepaged/max_ptes_swap"
-> +		test_numeric_invalid "$KHUGEPAGED/max_ptes_swap" "$hpage_pmd_nr" \
-> +			"khugepaged/max_ptes_swap (boundary)"
-> +	fi
-> +
-> +	# khugepaged/max_ptes_shared (0 .. HPAGE_PMD_NR-1)
-> +	if [ -f "$KHUGEPAGED/max_ptes_shared" ]; then
-> +		test_numeric "$KHUGEPAGED/max_ptes_shared" "0" "khugepaged/max_ptes_shared"
-> +		test_numeric "$KHUGEPAGED/max_ptes_shared" "$((hpage_pmd_nr - 1))" \
-> +			"khugepaged/max_ptes_shared"
-> +		test_numeric_invalid "$KHUGEPAGED/max_ptes_shared" "$hpage_pmd_nr" \
-> +			"khugepaged/max_ptes_shared (boundary)"
-> +	fi
-> +
-> +	# khugepaged/pages_to_scan (1 .. UINT_MAX, 0 rejected)
-> +	if [ -f "$KHUGEPAGED/pages_to_scan" ]; then
-> +		test_numeric "$KHUGEPAGED/pages_to_scan" "1" "khugepaged/pages_to_scan"
-> +		test_numeric "$KHUGEPAGED/pages_to_scan" "8" "khugepaged/pages_to_scan"
-> +		test_numeric_invalid "$KHUGEPAGED/pages_to_scan" "0" \
-> +			"khugepaged/pages_to_scan (reject 0)"
-> +	fi
-> +
-> +	# khugepaged/scan_sleep_millisecs
-> +	if [ -f "$KHUGEPAGED/scan_sleep_millisecs" ]; then
-> +		test_numeric "$KHUGEPAGED/scan_sleep_millisecs" "0" \
-> +			"khugepaged/scan_sleep_millisecs"
-> +		test_numeric "$KHUGEPAGED/scan_sleep_millisecs" "1000" \
-> +			"khugepaged/scan_sleep_millisecs"
-> +	fi
-> +
-> +	# khugepaged/alloc_sleep_millisecs
-> +	if [ -f "$KHUGEPAGED/alloc_sleep_millisecs" ]; then
-> +		test_numeric "$KHUGEPAGED/alloc_sleep_millisecs" "0" \
-> +			"khugepaged/alloc_sleep_millisecs"
-> +		test_numeric "$KHUGEPAGED/alloc_sleep_millisecs" "1000" \
-> +			"khugepaged/alloc_sleep_millisecs"
-> +	fi
-> +
-> +	# khugepaged/pages_collapsed (read-only)
-> +	if [ -f "$KHUGEPAGED/pages_collapsed" ]; then
-> +		test_readonly "$KHUGEPAGED/pages_collapsed" "khugepaged/pages_collapsed"
-> +	fi
-> +
-> +	# khugepaged/full_scans (read-only)
-> +	if [ -f "$KHUGEPAGED/full_scans" ]; then
-> +		test_readonly "$KHUGEPAGED/full_scans" "khugepaged/full_scans"
-> +	fi
-> +
-> +	# Restore all values
-> +	[ -n "$saved_khp_defrag" ] && \
-> +		echo "$saved_khp_defrag" > "$KHUGEPAGED/defrag" 2>/dev/null
-> +	[ -n "$saved_khp_max_ptes_none" ] && \
-> +		echo "$saved_khp_max_ptes_none" > "$KHUGEPAGED/max_ptes_none" 2>/dev/null
-> +	[ -n "$saved_khp_max_ptes_swap" ] && \
-> +		echo "$saved_khp_max_ptes_swap" > "$KHUGEPAGED/max_ptes_swap" 2>/dev/null
-> +	[ -n "$saved_khp_max_ptes_shared" ] && \
-> +		echo "$saved_khp_max_ptes_shared" > "$KHUGEPAGED/max_ptes_shared" 2>/dev/null
-> +	[ -n "$saved_khp_pages_to_scan" ] && \
-> +		echo "$saved_khp_pages_to_scan" > "$KHUGEPAGED/pages_to_scan" 2>/dev/null
-> +	[ -n "$saved_khp_scan_sleep" ] && \
-> +		echo "$saved_khp_scan_sleep" > "$KHUGEPAGED/scan_sleep_millisecs" 2>/dev/null
-> +	[ -n "$saved_khp_alloc_sleep" ] && \
-> +		echo "$saved_khp_alloc_sleep" > "$KHUGEPAGED/alloc_sleep_millisecs" 2>/dev/null
-> +fi
-> +
-> +# --- Test per-size stats files ---
-> +
-> +found_stats=0
-> +for dir in "$THP_SYSFS"/hugepages-*; do
-> +	[ -d "$dir" ] || continue
-> +	[ -d "$dir/stats" ] || continue
-> +
-> +	found_stats=1
-> +	size=$(basename "$dir")
-> +	ktap_print_msg "Testing per-size stats ($size)"
-> +
-> +	for stat_file in "$dir"/stats/*; do
-> +		[ -f "$stat_file" ] || continue
-> +		stat_name=$(basename "$stat_file")
-> +		val=$(cat "$stat_file" 2>/dev/null)
-> +
-> +		if [ -z "$val" ]; then
-> +			ktap_test_fail "$size/stats/$stat_name: read returned empty"
-> +			continue
-> +		fi
-> +
-> +		if echo "$val" | grep -qE '^[0-9]+$'; then
-> +			ktap_test_pass "$size/stats/$stat_name: readable (value=$val)"
-> +		else
-> +			ktap_test_fail "$size/stats/$stat_name: expected numeric, got '$val'"
-> +		fi
-> +	done
-> +
-> +	# Only test one size
-> +	break
-> +done
-> +
-> +if [ $found_stats -eq 0 ]; then
-> +	ktap_test_skip "no per-size stats directories found"
-> +fi
-> +
-> +# --- Done ---
-> +
-> +# The test count is dynamic (depends on available sysfs files and hugepage
-> +# sizes), so print the plan at the end.  TAP 13 allows trailing plans.
-> +KSFT_NUM_TESTS=$((KTAP_CNT_PASS + KTAP_CNT_FAIL + KTAP_CNT_SKIP))
-> +echo "1..$KSFT_NUM_TESTS"
-> +ktap_finished
->
-> ---
-> base-commit: dc420ab7b435928a467b8d03fd3ed80e7d01d720
-> change-id: 20260309-thp_selftest_v2-4d32eba70441
->
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
->
+* vma_flags_same() - Determines if a vma_flags_t value is exactly equal to
+  a set of VMA flags.
+
+* vma_flags_same_mask() - Determines if a vma_flags_t value is eactly equal
+  to another vma_flags_t value (typically constant).
+
+* vma_flags_same_pair() - Determines if a pair of vma_flags_t values are
+  exactly equal to one another (typically both non-constant).
+
+* vma_flags_to_legacy() - Converts a vma_flags_t value to a vm_flags_t
+  value, used to enable more iterative introduction of the use of
+  vma_flags_t.
+
+* legacy_to_vma_flags() - Converts a vm_flags_t value to a vma_flags-t
+  value, for the same purpose.
+
+* vma_flags_test_single_mask() - Tests whether a vma_flags_t value contain
+  the single flag specified in an input vma_flags_t flag mask, or if that
+  flag mask is empty, is defined to return false. Useful for
+  config-predicated VMA flag mask defines.
+
+* vma_test() - Tests whether a VMA's flags contain a specific singular VMA
+  flag.
+
+* vma_test_any() - Tests whether a VMA's flags contain any of a set of VMA
+  flags.
+
+* vma_test_any_mask() - Tests whether a VMA's flags contain any of the
+  flags specified in another, typically constant, vma_flags_t value.
+
+* vma_test_single_mask() - Tests whether a VMA's flags contain the single
+  flag specified in an input vma_flags_t flag mask, or if that flag mask is
+  empty, is defined to return false. Useful for config-predicated VMA flag
+  mask defines.
+
+* vma_clear_flags() - Clears a specific set of VMA flags from a vma_flags_t
+  value.
+
+* vma_clear_flags_mask() - Clears those flag set in a vma_flags_t value
+  (typically constant) from a (typically not constant) vma_flags_t value.
+
+The series mostly focuses on the the VMA specific code, especially that
+contained in mm/vma.c and mm/vma.h.
+
+It updates both brk() and mmap() logic to utils vma_flags_t values as much
+as is practiaclly possible at this point, changing surrounding logic to be
+able to do so.
+
+It also updates the vma_modify_xxx() functions where they interact with VMA
+flags directly to use vm_flags_t values where possible.
+
+There is extensive testing added in the VMA userland tests to assert that
+all of these new VMA flag functions work correctly.
+
+
+v2:
+* Rebased on mm-unstable.
+* Added vma_flags_count() and vma[_flags]_test_single_mask() for testing whether
+  flags have a single flag set depending on an input flag mask, returning false
+  if the flag mask is empty.
+* Added tests for vma_flags_count() and vma[_flags]_test_single_mask().
+* Updated the KSM VMA_DROPPABLE test to use vma_flags_test_single_mask().
+* Updated the newly-introduced-since-rebase vma_supports_mlock() to use
+  vma_flags_t.
+
+v1:
+https://lore.kernel.org/linux-mm/cover.1773342102.git.ljs@kernel.org/
+
+Lorenzo Stoakes (Oracle) (23):
+  mm/vma: add vma_flags_empty(), vma_flags_and(), vma_flags_diff_pair()
+  tools/testing/vma: add unit tests flag empty, diff_pair, and[_mask]
+  mm/vma: add further vma_flags_t unions
+  tools/testing/vma: convert bulk of test code to vma_flags_t
+  mm/vma: use new VMA flags for sticky flags logic
+  tools/testing/vma: fix VMA flag tests
+  mm/vma: add append_vma_flags() helper
+  tools/testing/vma: add simple test for append_vma_flags()
+  mm: unexport vm_brk_flags() and eliminate vm_flags parameter
+  mm/vma: introduce vma_flags_same[_mask/_pair]()
+  mm/vma: introduce [vma_flags,legacy]_to_[legacy,vma_flags]() helpers
+  tools/testing/vma: test that legacy flag helpers work correctly
+  mm/vma: introduce vma_test[_any[_mask]](), and make inlining
+    consistent
+  tools/testing/vma: update VMA flag tests to test vma_test[_any_mask]()
+  mm: introduce vma_flags_count() and vma[_flags]_test_single_mask()
+  tools/testing/vma: test vma_flags_count,vma[_flags]_test_single_mask
+  mm: convert do_brk_flags() to use vma_flags_t
+  mm: update vma_supports_mlock() to use new VMA flags
+  mm/vma: introduce vma_clear_flags[_mask]()
+  tools/testing/vma: update VMA tests to test vma_clear_flags[_mask]()
+  mm/vma: convert as much as we can in mm/vma.c to vma_flags_t
+  mm/vma: convert vma_modify_flags[_uffd]() to use vma_flags_t
+  mm/vma: convert __mmap_region() to use vma_flags_t
+
+ arch/arc/include/asm/page.h        |   2 +-
+ arch/arm/include/asm/page.h        |   2 +-
+ arch/arm64/include/asm/page.h      |   3 +-
+ arch/hexagon/include/asm/page.h    |   2 +-
+ arch/loongarch/include/asm/page.h  |   2 +-
+ arch/mips/include/asm/page.h       |   2 +-
+ arch/nios2/include/asm/page.h      |   2 +-
+ arch/powerpc/include/asm/page.h    |   4 +-
+ arch/powerpc/include/asm/page_32.h |   2 +-
+ arch/powerpc/include/asm/page_64.h |  12 +-
+ arch/riscv/include/asm/page.h      |   2 +-
+ arch/s390/include/asm/page.h       |   2 +-
+ arch/x86/include/asm/page_types.h  |   2 +-
+ arch/x86/um/asm/vm-flags.h         |   4 +-
+ fs/binfmt_elf.c                    |   3 +-
+ include/linux/ksm.h                |  10 +-
+ include/linux/mm.h                 | 328 ++++++++++++++++++++------
+ include/linux/mm_types.h           |  52 ++++-
+ include/linux/mman.h               |  49 ----
+ include/linux/userfaultfd_k.h      |   3 +
+ mm/internal.h                      |   7 +-
+ mm/ksm.c                           |  43 ++--
+ mm/madvise.c                       |  10 +-
+ mm/mlock.c                         |  38 +--
+ mm/mmap.c                          |  19 +-
+ mm/mprotect.c                      |  53 +++--
+ mm/mremap.c                        |   6 +-
+ mm/mseal.c                         |  10 +-
+ mm/userfaultfd.c                   |  21 +-
+ mm/vma.c                           | 210 ++++++++++-------
+ mm/vma.h                           |  86 ++++++-
+ mm/vma_exec.c                      |   5 +-
+ security/selinux/hooks.c           |   4 +-
+ tools/include/linux/bitmap.h       |  13 ++
+ tools/lib/bitmap.c                 |  10 +
+ tools/testing/vma/include/custom.h |  25 --
+ tools/testing/vma/include/dup.h    | 277 ++++++++++++++++------
+ tools/testing/vma/include/stubs.h  |  11 +-
+ tools/testing/vma/shared.c         |   8 +-
+ tools/testing/vma/shared.h         |  22 +-
+ tools/testing/vma/tests/merge.c    | 311 +++++++++++++------------
+ tools/testing/vma/tests/mmap.c     |  18 +-
+ tools/testing/vma/tests/vma.c      | 358 ++++++++++++++++++++++++++---
+ tools/testing/vma/vma_internal.h   |   6 +
+ 44 files changed, 1423 insertions(+), 636 deletions(-)
+
+--
+2.53.0
 
