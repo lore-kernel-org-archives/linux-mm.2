@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C88BEEFCBB6
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 06:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BFBEFCBB6
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 06:25:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C0B46B013A; Mon, 16 Mar 2026 02:25:27 -0400 (EDT)
+	id 597436B013B; Mon, 16 Mar 2026 02:25:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 381D86B013B; Mon, 16 Mar 2026 02:25:27 -0400 (EDT)
+	id 557BA6B013D; Mon, 16 Mar 2026 02:25:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CC236B013C; Mon, 16 Mar 2026 02:25:27 -0400 (EDT)
+	id 48E636B013E; Mon, 16 Mar 2026 02:25:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DB036B013A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 02:25:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD981160D8E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:25:26 +0000 (UTC)
-X-FDA: 84550939452.06.4C97FDA
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 08739C0004
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:25:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vHi2ydNR;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 38C416B013B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 02:25:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D06E21A0412
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:25:55 +0000 (UTC)
+X-FDA: 84550940670.01.9A6E063
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 36F1C40006
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:25:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Z/MW+09j";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773642325;
+	s=arc-20220608; t=1773642354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GHrVuzmWPg0Uih3557YZ5qAt41GrwBcJIT++eX/grpM=;
-	b=jmhPMWlRyeUzTvgHMNA2utD1U6M0VKvLhHbRaSkRxrOiE+ypUvCBe92nz6xaaXAxqDj1rK
-	tBkB7gcOWyrwSYXU/8I0kFj9R28qwmqKogoSWaBQerAM5s+2Da3YPQWEH9LKF0/QD6rHHN
-	pSQ7PB8AkNrXe/HgO/VH2p7AdmpWX34=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773642325; a=rsa-sha256;
+	bh=YercUxTHh5C4vRNc+OkTxEWP9EoAmI0s00DqukYUuZw=;
+	b=TnBAMGqRQ2b7Jyk+4gEBEvRC55IxIeJbvoG6N3BU9qLZOKw1MYhtifourknoKj/NNKY0W+
+	hkFta6Oh3TrlpOyk5SiBMRq5jbev1LeBUkJyPWksm0H+wqwH+eUo1PDMAJMPZAKZPHrs+a
+	vDP7oHNpvnnCIArJcH3bAYikNoPgTlo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773642354; a=rsa-sha256;
 	cv=none;
-	b=D1I3EX1EROQMTt5LnXCN1Qx3WyX6uhkNdPCFnHcz+GUMLXNRrumqtfD/p8c1DwUDi36qHo
-	Vs6ZxjMXM/Loc86XKa8NLQ5C+TPsJ9cX+t3voxGkgG+4oJlm1/SZiC//eCmjXNAkhN6eK0
-	Kl+ZXxDwxyT0MqUg95MZB8mlnGXdf1k=
+	b=eH93ea02xczwuh4hrv5/u/B3OOqimlb/sqnSX/MccFgtkXAijBj0y8IDSkLJehgddn2SHJ
+	zkgTCvGaRe3mZCB/jQnYAWXyk8IbLoZtLGJN4a6SE2Xrfe4AtYfl6iG8ynV4hQOoYVQ2so
+	t7nEHfFNNX/G06+nWZWka2cXuAE3yZc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vHi2ydNR;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773642319; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=GHrVuzmWPg0Uih3557YZ5qAt41GrwBcJIT++eX/grpM=;
-	b=vHi2ydNREc+4jny7D0w8SVH4+nWVdXbFS+UoN1NlkZfPAIcPw5Cc9iIHf955OAWnd4D9BNsGoSiuio+V48QxKn1rmfyqZWjzXSI+X9TV8P0QgNce6ZqncV85BrYBGVxGSU5Vm6z84Uk3gx40SnXmiHVxhAT0jHPHgytFhvIvV1U=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X..tuWa_1773642316;
-Received: from 30.74.144.148(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X..tuWa_1773642316 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 16 Mar 2026 14:25:17 +0800
-Message-ID: <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
-Date: Mon, 16 Mar 2026 14:25:15 +0800
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Z/MW+09j";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B133416E5;
+	Mon, 16 Mar 2026 06:25:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3320C19421;
+	Mon, 16 Mar 2026 06:25:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773642353;
+	bh=lCqBqiMY5//on77MUeD/QhHuGUd+SE7F0UXKstc9vUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z/MW+09jFA/OhJA/HW2HZKbOEn2DEwsGgatWz5PzNIk6U9inP/ZIvlFxRggiUXuDL
+	 pzc9il0gfSF7NlYxy6HSUgBJE3zVW6ryQDAubEH3GtyrwwubmmHeqasMLY8hzaYH+P
+	 7/baj1FlJcZc+4YXkJ+HAiE83MKRguFXofKcrQ3pXDcRBEmGSDYJnYz3+NaioPd+mW
+	 WJxqBCc7yA6qXUAcdx/B54/0zDn5J0aoicTzPytPQFtjomsgH1cNbaKiadTbKo3xlA
+	 TT0DyUD9WiEUZX+pz7YIO8nyqEmTEOVzNe8/BfuIEyZMD1h+s9mcnykRujdVSUh5S6
+	 CT5SvRiXcaHsQ==
+Date: Mon, 16 Mar 2026 08:25:42 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev,
+	Li Wang <liwang@redhat.com>
+Subject: Re: [PATCH v2 2/5] selftests/mm: soft-dirty: skip two tests when thp
+ is not available
+Message-ID: <abeiZtDFW3YZMebg@kernel.org>
+References: <20260316044335.1390608-1-chuhu@redhat.com>
+ <20260316044335.1390608-3-chuhu@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
- for large folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, will@kernel.org,
- lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
- willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
- <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
- <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
- <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
- <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
- <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
- <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316044335.1390608-3-chuhu@redhat.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 36F1C40006
+X-Stat-Signature: 6xjyzepu4r59mgc4zkyis4ieonxkkx31
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 08739C0004
-X-Stat-Signature: 1yf6pj4m3a3ygx7hynn4pjn19if4p5qz
-X-HE-Tag: 1773642323-657077
-X-HE-Meta: U2FsdGVkX18nDmNSLiGnqr8F1vA2EG3LZgoubhMXIuAC0V1iBOVBb1kJt/nA11TY+SHCmQdunE04ibueYz4FdE9i6OiCPLjN9H7rIC8rUPQDvm16gkOWWdiV+Gsxk66NKTU2h9KwBiNfVZcLMOS/uuQj3UaeNZ6xuCSJXSnfbxktvL2OAlThCt3EOvXHKNaPsrdReh3mBYCygih7fYbZJ7EOc03MikTdkMCq/fQvM2bieJFhQB8bsbfsEFd1D3EuXubp7NmLbhm4LZDTHqfxlpTSOK2sowAGN4jA9NWMotAyT1QsRkOsUdl+i5Pp4tc7FGE01ecT9pq9A5Io5/3cjwDLFW5ihzF7bkgTg+0Rv60c4Rci+Sh51otI84ZmHfJS48EzQQNJGSajeLRtlGLIFhmGBGqHM3OY+cg2mQh8t8/RIlz1TZUGCJV2vbVbH9yOE6fvTLi1ziw3rNNA20cXnArqfG2UgvJcONfoFEkRiwAMEBijAqsgCZrlc+DuDoH4Uj4yvQ6yLYn0OOX5iYpEQR39zMnXz6TQfRaTXVH3FpWrP6t6MFPtrkgZMZLZEKBaHRizQ4qB0IvQh2iRV85+Siuqcfkf3hn4Y3+y+dq+/Ve3/tJz3KzCAXW9TF5rvcs9RRh9DlFZ3mxwm4tIClnCygL+6y18u22KBurQkJEBZILFIbKnsk1UoWKhuezOCUmd+SWdj/O3Qa5IOkcVuhe7T+kk16RZVSl5Cu2r0zV+uWTfr4z8owU6F9AdclVHBmaXRsTnq4jSWpPStw8ZJEmGagg5LvlukTJ8DIvZfnGjoWDWiEnmL75N6/mYibFOgOUz14Xn4iPMqO3htAMFGeACjYux+Sj1afyTmkEU5xWCnyhaBTtppRegeKsWbsQb8MRrUFNA95n1GTlZQV31VJi+OvvVh2S1WvoLljZFwc7M8XTXeddQcN6kLbiBaJhpmtNPlr9YEXxkbwP3HwYz0ce
- gSm8uagi
- bw6niASWzegAH09blSv52kNEXgLD6oKnom2XatO0Iix+pWf0PRmdO/fmTrqDy3KJCi0+AbpgYsTbAOspKTU+om0hB07htw5N32EGNWU4QwkB1GFs1I3KIayA6Zso+4VpfWb830ktWoLBM6pmc0h38RDWFYVvTup/OrZ4m3Z8zXIKiHGKjkJyx/qFon/0sbnfUyq6hnutLIvZe6tCSAN4j9dNp+92qBFpr58rrZjmkl1abUC3R+9T9OHeDYMY3Y/jHUY3ASgbwlIQKbwcT1wdOr+WaDmObLfBeZw9BPjWvgOeH1zj2b/qhjgR6tCeuq3g6T+HYtMrSTLtAdLw=
+X-HE-Tag: 1773642354-36952
+X-HE-Meta: U2FsdGVkX1+NgXYWg+OzyYjvUL/2ADt7WmmOx2+DBjjHETSe3DACNWYClW+WJShSOfR9yaM6r7/bkCt39vsQifj/1ZXnyUDtM6LF2ANZ6pabHCqLDWOnoIJ4XPaQNSE+u2+YoQiRs3M2WABJe3o4QCpzbRc8CyFK0k031rU/Y6Wsb4c3rqe3Cr1BSc+YZJyzpG+HYaw6dBtivC0pqg27iaOBOjj0kfbvm3x9VXC3Bahczh9DxRPFCcAvjIxQt1ujGPS/VTOd9d76qw7UZ1bHzebqOqNzW4XFhofkNlb1sVuqvsnhb6gxK2rSeNqnpA+2j0LuprM+XHF/Cx7GS2nOOPu8XBDzPwN9Qc3Kvsokd3TbetPjI/RjGqmv3FXRvUcrywI6Jtk/BLSHH6Hhelev2SLcLDwur3ruOJrqQ4yLSUO9aHkks0vYKkbglojrxFSEJcpKp/bNoaQ5MZzhBqS9/J1OYaVkRQCF7KfSHV0U4Q1tvz7eYWhO+ur1Fm/sTvKLedFLe9Ao+JjpFC/w+cLAFPp04FOvBZBWAXVjLnrDVOnYVEZKbEip4TnheNQOxpnLgPFhxEQxu4I8s6yJ2E6hBeKfGM1RZTGIwgr6TErzN1vYQ2k9kQhRNYD1MuwYzvGAhVcqc3mronwadvLwPuwr+dIdbFO4WnPVeqI1LeciwTpJJnJSUGLkYsB4Rd3ngM76gjIhNQ81V6797uHVSWhCnfLtif2oFkcJh8aEYdOHR/vC8YuYo3XjnVGhgmNkESnAPE/Y54CictLgpTvGfGfsl/Xv9FyIdz81kVV3yd8BlzrdL4HV49O9W08MdNYLzXsteh3bSVPuv/hvpAUJ7WZ1NSyjrct5o9dqR5Cu1J8AamAlQoQsgQE0VNTbIvcINxr/NLH6Kbj7kZbfmFxxv3Q19UkqIqR8Tq33PvU52RjC8OiqtYtroKax50Jlv1a2GRv+Q1vXD7CStLV8veGMIIn
+ 0TbOFqYw
+ 8GDYXva/Q2gBrgpmoORIItGtYxHDLlaJLfyL9AgjvQRqQcoHnUg8Ibqfdpy70XybObfWUTt7CVfezCSsCYUSNoeKT1RahKxmu526gtAcSZXBXnMa7wmCls4YNWK7MvBgE2/MGsr8MScgKxXnla9NTuOKJUlZ1CtAi4uLJXpFWNOzWdXldKq7hAYV1c97g5Of0Nk2qmv12DPimSbuHN2sUwFpKRTj4OdofznUGiULKkhMxAgGWtOMFSSUSanQuYAuiv+wBdi8wy9ovAqZYwbYL8lyNGbZxiwmfQwBmsqUTCyixMB05nzL6Yo8hLgGnh319V8dU8L6SuKDwagQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,78 +98,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Mar 16, 2026 at 12:43:32PM +0800, Chunyu Hu wrote:
+> The test_hugepage test contain two sub tests. If just reporting one skip
+> when thp not available, there will be error in the log because the test
+> count don't match the test plan. Change to skip two tests by running the
+> ksft_test_result_skip twice in this case.
 
-
-On 3/10/26 4:17 PM, David Hildenbrand (Arm) wrote:
-> On 3/10/26 02:37, Baolin Wang wrote:
->>
->>
->> On 3/7/26 4:02 PM, Barry Song wrote:
->>> On Sat, Mar 7, 2026 at 10:22 AM Baolin Wang
->>> <baolin.wang@linux.alibaba.com> wrote:
->>>>
->>>>
->>>>
->>>>
->>>> Thanks.
->>>>
->>>>
->>>> Yes. In addition, this will involve many architectures’ implementations
->>>> and their differing TLB flush mechanisms, so it’s difficult to make a
->>>> reasonable per-architecture measurement. If any architecture has a more
->>>> efficient flush method, I’d prefer to implement an architecture‑specific
->>>> clear_flush_young_ptes().
->>>
->>> Right! Since TLBI is usually quite expensive, I wonder if a generic
->>> implementation for architectures lacking clear_flush_young_ptes()
->>> might benefit from something like the below (just a very rough idea):
->>>
->>> int clear_flush_young_ptes(struct vm_area_struct *vma,
->>>                   unsigned long addr, pte_t *ptep, unsigned int nr)
->>> {
->>>           unsigned long curr_addr = addr;
->>>           int young = 0;
->>>
->>>           while (nr--) {
->>>                   young |= ptep_test_and_clear_young(vma, curr_addr,
->>> ptep);
->>>                   ptep++;
->>>                   curr_addr += PAGE_SIZE;
->>>           }
->>>
->>>           if (young)
->>>                   flush_tlb_range(vma, addr, curr_addr);
->>>           return young;
->>> }
->>
->> I understand your point. I’m concerned that I can’t test this patch on
->> every architecture to validate the benefits. Anyway, let me try this on
->> my X86 machine first.
+...
+ 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> CC: Li Wang <liwang@redhat.com>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> ---
+> Changes in v2:
+>   - add reviewed by from Lorenzo and Zi
+>   - add acked-by from David
+> ---
+>  tools/testing/selftests/mm/soft-dirty.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> In any case, please make that a follow-up patch :)
+> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+> index 59c0dbe99a9b..bcfcac99b436 100644
+> --- a/tools/testing/selftests/mm/soft-dirty.c
+> +++ b/tools/testing/selftests/mm/soft-dirty.c
+> @@ -82,7 +82,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+>  	int i, ret;
+>  
+>  	if (!thp_is_enabled()) {
+> -		ksft_test_result_skip("Transparent Hugepages not available\n");
+> +		ksft_print_msg("Transparent Hugepages not available\n");
+> +		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
+> +		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
 
-Sure. However, after investigating RISC‑V and x86, I found that 
-ptep_clear_flush_young() does not flush the TLB on these architectures:
+There's already similar block when the page is not collapsed, but reworking
+the test flow can be done on top as a separate commit.
 
-int ptep_clear_flush_young(struct vm_area_struct *vma,
-			   unsigned long address, pte_t *ptep)
-{
-	/*
-	 * On x86 CPUs, clearing the accessed bit without a TLB flush
-	 * doesn't cause data corruption. [ It could cause incorrect
-	 * page aging and the (mistaken) reclaim of hot pages, but the
-	 * chance of that should be relatively low. ]
-	 *
-	 * So as a performance optimization don't flush the TLB when
-	 * clearing the accessed bit, it will eventually be flushed by
-	 * a context switch or a VM operation anyway. [ In the rare
-	 * event of it not getting flushed for a long time the delay
-	 * shouldn't really matter because there's no real memory
-	 * pressure for swapout to react to. ]
-	 */
-	return ptep_test_and_clear_young(vma, address, ptep);
-}
+Feel free to add
 
-I don't have access to other architectures, so I think we can postpone 
-this optimization unless someone is interested in optimizing the TLB flush.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+-- 
+Sincerely yours,
+Mike.
 
