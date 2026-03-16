@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 898AED58B22
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 04:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A572D58B21
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 04:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFD5D6B00AF; Mon, 16 Mar 2026 00:43:57 -0400 (EDT)
+	id 7E71F6B010E; Mon, 16 Mar 2026 00:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A80C16B00B1; Mon, 16 Mar 2026 00:43:57 -0400 (EDT)
+	id 7B20E6B010F; Mon, 16 Mar 2026 00:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98C616B00B4; Mon, 16 Mar 2026 00:43:57 -0400 (EDT)
+	id 6DE5A6B0110; Mon, 16 Mar 2026 00:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8505E6B00AF
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 00:43:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 190AB1A0DDC
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:43:57 +0000 (UTC)
-X-FDA: 84550683714.12.412597D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 234F1C000A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:43:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bSOXQFWp;
-	spf=pass (imf10.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EC5B6B010E
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 00:44:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0DD7913C334
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:44:10 +0000 (UTC)
+X-FDA: 84550684260.03.48705B7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 24D0B40007
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:44:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HaHqR/Eo";
+	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773636235;
+	s=arc-20220608; t=1773636248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=5bromE0Lb/4AXZwonjlJ3gcGLoMNIPlz6OjkLdJzlFc=;
-	b=QYvvsdGnU5KtzxPiVxjcZm0lpO+6soA5w+dKbn9jIIS9GgxjpXFOwZBwOi8O0fNun2LLb6
-	hTpKsmU98qaursXhiNbqy8LT4UZmwM5K6f+2daJIDrbanVxKZlOzPnGiofht4BGYMt6GK1
-	jxsFZqzp5AoNGl0cFSELsHKJJrM2Erk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773636235; a=rsa-sha256;
-	cv=none;
-	b=fUmyoDdLUC0yW+0P88OLO/OQUpIFArPJuqV01cpMoF0OzQ3J3tTczvxNR9M7KedyHA8iqj
-	Xlrew+1DhJLS8q2MCSnS0w4+yout6h8KYYZGi2ObCTxuI/3PL62LeUpsk2QkF5N5QpD8uP
-	yG9/07R6//lmk40+uf0HJ2+yrB0HFXE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2x6ia0fOtjNFpMwFjrWEQ0OzFaYrAPdncllfx5wNUeo=;
+	b=pT432atPNZ/tk2xpg8aDL4tr+W0jNS3StJvMx5rt9HcJkwKtTA9Tl6oDh5p3s2dS9KTaKT
+	Rs3rB/l80dkPMIbVB7R0W2Z8/NMUmfmWS4JWiw/+hmqK05hbg4IXHSC9tORiy6B4wp437X
+	FkaI2jupogZf7kjxtSD6/eajWMUoFLM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bSOXQFWp;
-	spf=pass (imf10.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HaHqR/Eo";
+	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773636248; a=rsa-sha256;
+	cv=none;
+	b=WOx4QeIWwpPf1SOIlRYJfrw8Frv+l7uK2OhlJOXd7+VXmTu5fbp68V/6IvDM8tXYUApW0+
+	YIAPr2DA4IehkFPoQ9obirIiTv51OiVhbH7USpf3bDlhd5c7rJy8c5/GZ7KNXt/6d04q+B
+	edVV5ZgVSBWxfEoCc/NHK8o7IqvZXfc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773636234;
+	s=mimecast20190719; t=1773636247;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5bromE0Lb/4AXZwonjlJ3gcGLoMNIPlz6OjkLdJzlFc=;
-	b=bSOXQFWpnxBdCAN+3sfR85W7Ek2d39BnZkUBf+oW5N7AHk46y9iFO/4upqW+TxN5wpHDfw
-	g7MeeeUEYvM3klGJnk+LNHThy/SbVQnrt46KuQ/no8DwqzJ+2IPevGSvPijD8TFm85qnAm
-	lnrNjGujB5S+f88XAuRhRWyX54xA5xc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2x6ia0fOtjNFpMwFjrWEQ0OzFaYrAPdncllfx5wNUeo=;
+	b=HaHqR/Eot0h8R12X3ueWptHIpHET94nEuLrfDctB9IbPn/vQKfr9OHhk999mX17atvvz6D
+	xyZCcnvYfvN3qK70v4Lm9rivIcmJQEhgHnWRIAX+AdOHfSW//EqrcFhOz2zRK8q6HGUKw6
+	OkjyYK6H+FZCJy1PXP4yLjLt/RX2Iic=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-8F_wa5rhNq6fKYmb1esTYw-1; Mon,
- 16 Mar 2026 00:43:52 -0400
-X-MC-Unique: 8F_wa5rhNq6fKYmb1esTYw-1
-X-Mimecast-MFC-AGG-ID: 8F_wa5rhNq6fKYmb1esTYw_1773636230
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-V2YXIBYvOvuT3hqnEv4IEA-1; Mon,
+ 16 Mar 2026 00:44:02 -0400
+X-MC-Unique: V2YXIBYvOvuT3hqnEv4IEA-1
+X-Mimecast-MFC-AGG-ID: V2YXIBYvOvuT3hqnEv4IEA_1773636240
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A43D9195608D;
-	Mon, 16 Mar 2026 04:43:49 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 907C119560B5;
+	Mon, 16 Mar 2026 04:43:59 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F05019560B7;
-	Mon, 16 Mar 2026 04:43:40 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B3571955E75;
+	Mon, 16 Mar 2026 04:43:49 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -94,24 +96,27 @@ Cc: linux-kselftest@vger.kernel.org,
 	dev.jain@arm.com,
 	baohua@kernel.org,
 	lance.yang@linux.dev,
-	chuhu@redhat.com
-Subject: [PATCH v2 0/5] selftests/mm: skip several tests when thp is not available
-Date: Mon, 16 Mar 2026 12:43:30 +0800
-Message-ID: <20260316044335.1390608-1-chuhu@redhat.com>
+	chuhu@redhat.com,
+	Li Wang <liwang@redhat.com>
+Subject: [PATCH v2 1/5] selftests/mm/guard-regions: skip collapse test when thp not enabled
+Date: Mon, 16 Mar 2026 12:43:31 +0800
+Message-ID: <20260316044335.1390608-2-chuhu@redhat.com>
+In-Reply-To: <20260316044335.1390608-1-chuhu@redhat.com>
+References: <20260316044335.1390608-1-chuhu@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: vO_Bktu2IjL_g7L_MOwiIZetv6-rT0SkJUROnuJJJRs_1773636230
+X-Mimecast-MFC-PROC-ID: ru5-eFdZUxUuvfv42BYbetU-KHPsbl_1kCA7cuxuc0c_1773636240
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: yqf7nrkx7r3yeq6pnrnxpwsodc9ezucx
+X-Rspamd-Queue-Id: 24D0B40007
+X-Stat-Signature: w7dh6njojgjyu7pn468ktb5r4h66wgqa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 234F1C000A
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773636235-496927
-X-HE-Meta: U2FsdGVkX187KmOoTd2vJ0z8DA3Yhg2P9Qzt3wChK1+LhIEGY62XVrYOX+cFPamif04OyZosgGnOouPHStAloAErl7g073tmTNrj7/QbnHO6pdZkrdOExR5/LRpeVE1oRLk3iXPFZmj0PvoM+/Bm4sVQi/Hla78GQIitdDkI+eEtRGLq6V3FZBuT/pC31KTCtR9PJ1MwSZsKbUeq61q4vJ6nPtrnfE8ORG9+qJQ7mNwQsEI2qiYVUn0X8S15y0oDhqQDFb5l7MhkMAtBjsvuyGdw7iSfk6nbVqiiwf7cRYJ5wTVWPQ6+jo2rzWRnzxAIPG0Sc2WAYljPHHi+UnWhxebKzpmb+Xj0wUpuQqFD5dJ+STKmW1Hy73TrqElz+guUnzo2gSE/0+a6HzWuJMjQeEYEaatAYT60itmZSZhPSzxKdohCVf3r9Xr0nHDMvH+fl0m49YKWnsK5U5JnxyYOZbXsD678tM1K7P9ILemOK28SYyAbxsFAOqI7aDzx2khP293UEmELJNg4dK/nCFddbi0Rnih3LAMtKP1+BQJMzWA/uNR7Y9LPHTdbgu3RtoyI/o4EaZrNjbBJwItNyFtcK3AU/V3ehfamivq3K763S6uf/3Z8QOD/hw6JGLaXywES8qmcH/BD4u3Y+RNVrIvcIjb45FsYPXcKfi58kaGN3vmYsXPKpGbBhzFtPpRvwYFQD8SdLKJN7Av/YRgjkNiEAbYpmQdcrdjEFmAD2l/cAVcAxr1K1y0Ul+X5SOE/yJdtbIfDgAkAJboO5GXsEAv6IHnqpDYD++/KZULvO2y2pkiF+Pq6MPknlG+6YppWcnfvS0ituH3ZMW1TddhSaD/ygOt8be4XbMXQVxkmfXCTzIgH/Eq4rVHlADgs+ds5bTL8QmsO5iyczudZH632fqK3N1UaKNn/oUvIWn4og07VUQhowMNN6TtIKwCN9HFe8etKem9SjoEJHTKkkwZNkg4
- CUm0VP5t
- 4jl7rXsFgOS8BDUUx4ohaWgkKQCJGwLx3V8YEruSTaHtACiLZps9JYBeRGk2g351mha24yeEM/oSUcCCeyZ0i2IPf5FJgwR4VchjXGaxSWLI8qB4fYQBqi7ay8r6kKx/1Nkq35LBGsuAK9rHFY75zrfLnijFGIu601HYCYhilYU3Fk24RO/1dUWtv/8jX+2xIeZ5kJaTJfh7xSvuCfNlWkRlQN3HhpuboFyML4vEgt8gjTMa0nD/BOGJ4EK1R5H4S2OvL+6DI1S+3J3UHDRbk92D++a7zMGnbpSQmjRT9GDzinuVkMn7HIiE4WOKa6PwUWe5j
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773636247-739404
+X-HE-Meta: U2FsdGVkX1+BZGQlz/nAXoWKfRM/ewPa30X9yQCblKReQsXoAA7Z0pfFZKDWtAt1SrKSlYWOPoK3Huu6rY4M2o/Sszj+05nCBrntzoeKgjPPbvwAyX9weJPh1yR2w4Z6CFz772RQGoK4/v4ezpf3Z4x4o8eY2D7K58GWIgMgLGOuRC6l1TrhbgW3uGodKS4JZ6ON/MUObmuspRxXry9ExaL4Wse0N8iG9Ja8oAbAb1bLSEKxssU9Esfe5dVjFPdDV0GxF3EgxfJgsFG7xfcjPkny1jJP5oQFSda3Dfm1c2g94T6qzMhYe6/aREtLm2E3ICZaqKIDjHi7l4sK5cw8OmnbdWPV6DnFWcsIEx2kYtU3BMVAUVNv6ocz5SmPz2EDZUMnkRoR9rhYTk06DRyO3ExiGrCaPJ/RVKUqwvbJEeWemda6gNLdQP9gzRZ2rbbMjUqRnJNoLqxdmODTyHw3kVZN1M8edPojiu8qy9HfJdpLW09T+omHeEngXW7E3bNGoteRYg33bx6+oNUHPdZlGC2Ht02RNLfXyOwBl9UZdvqkFcAxcXelGWvN+wxyZ3vMOcLpbSYU1mxlIXtP/eSfrH/MAu+mgvt93jsuY7AuulYzBSl77KfuwZujXN05bMbtXvCXhXs09gJcMQTRVFVQ3X0vfLuW4CnwPnzwVytwJE4w8r7ycfULkwOJiPgfExV3BE9MD5gpDFMhzgfCA9/PTIcHm7E3WsezF0YUfs+cvleOSP3d7R6ZlOmROryYE0G46rV3I+I694YpTHwrr6kTmJWp1ToyEFmFh5bBUlWCe9NBjbeJyC+Nk/8daY5QHSuHX1BOG+57nHJiFCpDrvKxud6C6CVPlLIEHt1INAIV0GOZNS+eAfNVW32NWR+YtK4oSl6mkUZRIp1aUTEYkvmFajfen6+XP/Mbm+r45Po/8BV+JKscDdVy50d3vVbdpl7pR4WxIFx6w0qmyPSgUMo
+ dGOV9mRh
+ lsJVpjkwtUL4hA6svS9tdAIqYpPOSrtqVQ7y63XP1ssOcSMbG3H/RX7E5n4JHO7EcdZWHkJkVLfHXfYfuHHHVvCWwtHRsOO7Inml36fS1a4csnNPsRaaHX+xIT/p4sRf+WVrxinrX/+4+r7wm2dDDVXftFat23lPO8LNmRkTvY219cBY7HF2YcmcCQOJUNbSKfTVDDBtPZmLHvog7vinzSJuYS4VyZaN6WW0qxI5eqjxSyNpHiEtkydVVBYvRbyAw7YTU11ENZEq/HPXi0iUowkBhYYTq72bmD7OdLR7WRaFLMQz9So1ViI74Qm4JCNcsj5H86PZtrNArum5mx9WAtGw8/s5ZeuaDaGW0ULwUXtgu1m0PIC5DeGm0WOdOhthpSTInjrUNr8tGRFw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,37 +124,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are several tests requires transprarent hugepages, when run on thp
-disabled kernel such as realtime kernel, there will be false negative.
-Mark those tests as skip when thp is not available.
+When thp is not available, just skip the collape tests to avoid the false
+positive.
 
+Without the change, run with a thp disabled kernel:
+  ./run_vmtests.sh -t madv_guard
+  <snip/>
+  # #  RUN           guard_regions.file.multi_vma ...
+  # #            OK  guard_regions.file.multi_vma
+  # ok 89 guard_regions.file.multi_vma
+  # #  RUN           guard_regions.file.basic ...
+  # #            OK  guard_regions.file.basic
+  # ok 90 guard_regions.file.basic
+  # # FAILED: 87 / 90 tests passed.
+  # # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+  # # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
+  # [FAIL]
+  not ok 1 guard-regions # exit=1
+  hwpoison_inject
+  # SUMMARY: PASS=0 SKIP=0 FAIL=1
+
+With this change, run with thp disabled kernel:
+  ./run_vmtests.sh -t madv_guard
+  <snip/>
+  # ok 90 guard_regions.file.basic
+  # # PASSED: 90 / 90 tests passed.
+  # # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+  # # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+  # [PASS]
+  ok 1 guard-regions
+  hwpoison_inject
+  # SUMMARY: PASS=1 SKIP=0 FAIL=0
+  1..1
+
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+CC: Li Wang <liwang@redhat.com>
+Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+---
 Changes in v2:
-  - replace 'false postive' with 'false negative' in cover letter
-  - patch 1 and patch 2 add reviewed-by/acked-by
-  - new patch 3 to add write_file() in vm_util as a common helper
-  - patch 4 removed the {} in if block, removed the write_file helper
-    rename chunk in v1. Add reviewed-by
-  - patch 5 move the exit chunk to the front of ksft_print_headers() as
-    suggested by David.  Add review by.
+  - add reviewed by from Zi and Lorenzo
+  - add acked-by from David
+---
+ tools/testing/selftests/mm/guard-regions.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Chunyu Hu (5):
-  selftests/mm/guard-regions: skip collapse test when thp not enabled
-  selftests/mm: soft-dirty: skip two tests when thp is not available
-  selftests/mm: move write_file helper to vm_util
-  selftests/mm: split_huge_page_test: skip the test when thp is not
-    available
-  selftests/mm: transhuge_stress: skip the test when thp not available
-
- tools/testing/selftests/mm/guard-regions.c    |  4 ++++
- tools/testing/selftests/mm/soft-dirty.c       |  4 +++-
- .../selftests/mm/split_huge_page_test.c       | 19 ++++-----------
- tools/testing/selftests/mm/thp_settings.c     | 24 +------------------
- tools/testing/selftests/mm/thp_settings.h     |  1 -
- tools/testing/selftests/mm/transhuge-stress.c |  4 ++++
- tools/testing/selftests/mm/vm_util.c          | 16 +++++++++++++
- tools/testing/selftests/mm/vm_util.h          |  2 ++
- 8 files changed, 34 insertions(+), 40 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+index dbd21d66d383..897af9c512f9 100644
+--- a/tools/testing/selftests/mm/guard-regions.c
++++ b/tools/testing/selftests/mm/guard-regions.c
+@@ -21,6 +21,7 @@
+ #include <sys/uio.h>
+ #include <unistd.h>
+ #include "vm_util.h"
++#include "thp_settings.h"
+ 
+ #include "../pidfd/pidfd.h"
+ 
+@@ -2195,6 +2196,9 @@ TEST_F(guard_regions, collapse)
+ 	char *ptr;
+ 	int i;
+ 
++	if (!thp_is_enabled())
++		SKIP(return, "Transparent Hugepages not available\n");
++
+ 	/* Need file to be correct size for tests for non-anon. */
+ 	if (variant->backing != ANON_BACKED)
+ 		ASSERT_EQ(ftruncate(self->fd, size), 0);
 
 base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
 -- 
