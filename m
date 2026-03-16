@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9109EF4644A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E108F4644A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03FF46B00C5; Mon, 16 Mar 2026 06:56:25 -0400 (EDT)
+	id D5FBC6B01A3; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 017316B00C6; Mon, 16 Mar 2026 06:56:24 -0400 (EDT)
+	id D37506B01A4; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6F0B6B00C7; Mon, 16 Mar 2026 06:56:24 -0400 (EDT)
+	id C6DC86B01A5; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D5A456B00C5
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:56:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 82AE71B6E74
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:56:24 +0000 (UTC)
-X-FDA: 84551622288.08.8B95AF2
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BA4FF4000F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:56:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EI0JRDeO;
-	spf=pass (imf01.hostedemail.com: domain of 31eG3aQkKCMws30uw9Gz3y66y3w.u64305CF-442Dsu2.69y@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=31eG3aQkKCMws30uw9Gz3y66y3w.u64305CF-442Dsu2.69y@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B34FC6B01A3
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F0B7B69FE
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:59:36 +0000 (UTC)
+X-FDA: 84551630352.23.859AC84
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CD2EE40006
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:59:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V4VSDzwP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773658582;
+	s=arc-20220608; t=1773658775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/z1SiqPCUjiS0l1gYfp55UVRcWnc3c5gpJsp5+gG+GQ=;
-	b=2nX8gsfYyrjKlaA6CZa+TeNELYoCO+9yzm0PirbpSeyY4383kemySs5nEHV7M54Ut5lscJ
-	uAiLW8ch3+23Ky4uxcsoz6u7JsFpXc4yIXiZhElLCtbmz11+wZyeouDCZcHVES0Nsi14WI
-	4BJS5J1HAlmT4WdeD5QWxYC2X0cY4Ew=
+	bh=EbhO6dTmE8yQ+bj5s1qi0JOFi2eyMWftGCJvNxfMHO0=;
+	b=SH/FWevP9senq89gRPxU8XuJyS6xldMPdhteTGheBdoY1GF7MOs767qfZExa6rwKehLgdA
+	os5ajl6xDYJIWfNqLCT9anczHpmu0uIog4RB+aV7IFqy6J9rqmNQUIVcfx3HOfNq/zbfsF
+	FgDRvaP3YJ6sNE/Z1ow1j4DsUnObXHo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EI0JRDeO;
-	spf=pass (imf01.hostedemail.com: domain of 31eG3aQkKCMws30uw9Gz3y66y3w.u64305CF-442Dsu2.69y@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=31eG3aQkKCMws30uw9Gz3y66y3w.u64305CF-442Dsu2.69y@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658582; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V4VSDzwP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658775; a=rsa-sha256;
 	cv=none;
-	b=LeFlBuKisTav4COSHNcTeWdimzzE/Jv9Ccobw8D97liu/CsLTh9ERvb3tgtwvCWNm1UUK2
-	rjiA8/C8/ih2RpTPuJanFw0KYpbJ6+qsY5kt9UDWaXjHJVset97vP89ApYpmYFQTdcyBVi
-	PHKIBCsJBN78GB6bRiRfD/05l9L/o6Q=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48532df52c5so64396735e9.1
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:56:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773658581; x=1774263381; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/z1SiqPCUjiS0l1gYfp55UVRcWnc3c5gpJsp5+gG+GQ=;
-        b=EI0JRDeOFNFLxcdCd7UyR2o5W7SEb2ES3wzkeSRyg8n6Svry16vlixHHMJZ9jxlvws
-         C4fkz4//dNtSPlKUqcFp0Ep3l7IqQAMOJg///MNarfUjqCbj6sSjzU+NvQ3vG4uj+br5
-         7zOLRiJ0FPn1ozNTMEXTOcuRDBMSKFzhacKEhqiSNAgrYI66JiUoTcgO3JTdD+Pm44J7
-         4MTQf6mKIaD+ByuS9gC3g8lgjcM7CsaysAW/zi+41q3+1i8QjzCuCX1owIFgsyQ/HdBG
-         jDEjS+wYY4u1WSfjOAPF0U5pVYQOsXKh0JIsP7fVLIIQpfLYcGlTLTi+GDRP4KdasDc6
-         vCgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773658581; x=1774263381;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/z1SiqPCUjiS0l1gYfp55UVRcWnc3c5gpJsp5+gG+GQ=;
-        b=s0sXqMMX0LcFy8NKv+Cn1ncHMfqxu+qzJJWbgbQujdt7X9UZipmaibf0LYOZe9X7xm
-         OVaaBE8Wezm06Do1AW+I69B/OZdnETtWaiXilBwoYt7ZLMF0oU++znoJuUf5JTIVj+xi
-         kFgOlwEZBD/UJDMMZoksSJqAOX2JvpzMRUEbO9XlnLzyKpqAwJH6H5kQ+6hqo7CKVzIq
-         kb7JSpYbu1gb4ISIJsNExGVRyVV1IIO8eqauDvDGoYeNlvT1wglx5D74iaC7lZ0TwTng
-         WPIffo7ek5UPoKbdsp1X6ti27nPce11BKOvXx6nVq1VLUx4FVtSk1A6uRhjVm73WAbl8
-         q3ow==
-X-Forwarded-Encrypted: i=1; AJvYcCVu9EHjFCAKIH92bunONPk5BNVnhaUdwZu8dVUJKG9QCHj0oGmVsmsL0YDoH6aGnaOI92v97az+ww==@kvack.org
-X-Gm-Message-State: AOJu0Ywj/M7hehC3N4VOuBBhlKEkCsuTU2RoZJRZKyfWrzmTiKO8b8Ty
-	/jiWMWvaXPQaQUPBbGyqKhz1yj2kTXdLrYgH6JRhX2yA550xkiV8Emw9b72HRtTrHfxCkmCBBlf
-	aTBMnDVLPEjpoGL/D9g==
-X-Received: from wmbgx10.prod.google.com ([2002:a05:600c:858a:b0:483:a1ee:5eca])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3515:b0:47e:e57d:404 with SMTP id 5b1f17b1804b1-485567066a8mr208531255e9.16.1773658581102;
- Mon, 16 Mar 2026 03:56:21 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:56:20 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-23-de9a7af4b469@kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-23-de9a7af4b469@kernel.org>
-Message-ID: <abfh1J8_4tOFkFaH@google.com>
-Subject: Re: [PATCH 23/79] block: rust: change sector type from usize to u64
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+	b=ALj+ICXLZ5GVZ4QP29LYQO2bVpDTTlcFVGWX25oDTyxjrgHqzYSWuox3hNJ4WhpWvq7uuG
+	2YC97lJHP3G2YznzQX11Oe2BOkAXg5Nx8ckJ5gSrmQEeeqEfXh3XbJkOiGFJ9Xuz4lCZXK
+	GwblfdrlV+qj6H7937L3cIUcE8z4vtc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CE78F43EB5;
+	Mon, 16 Mar 2026 10:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644E5C19424;
+	Mon, 16 Mar 2026 10:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773658773;
+	bh=KSbvaOM7T4lvkehB8ybCCIyypc9grzepYJ4R937Jz7g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V4VSDzwPwBaRFCtyXl8RGn8/zotr9AcFFnrlNOHuHN7cKX3gqOFHZDyYMa5iqeMuk
+	 s9d7f4UJF92XGiWtWA7dW5e6Qj6mZ4uTUW0T0DnQxD36dCZ4hWyMXdkYtsx+3TMSDR
+	 omULYYva/OpHfwXvMipXKigs0/jIYUUFJo22ePKs+uxBlns0em7XsoAJA4lBeDmE5Z
+	 KJV2HcPDErprePHPPGOXy7dl4rYN3S0yRnTlKr8Z3AfpHyn/cf83llU57kyDzejKMT
+	 Xiv5VMckPS/al9ql3Pxwr/356st56s4RrtEzpD479Xf1dE8/cq4MyS5Lk/8D5mAPw2
+	 7QmCyMIKOCHFA==
+Date: Mon, 16 Mar 2026 12:59:27 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/userfaultfd: re-validate vma in mfill_atomic() loop
+ under CONFIG_PER_VMA_LOCK
+Message-ID: <abfij0twNRm7uYgt@kernel.org>
+References: <20260316070039.549506-1-kartikey406@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316070039.549506-1-kartikey406@gmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CD2EE40006
+X-Stat-Signature: 6zriibpnp5oiyaqd3g1k6en19ryk8u5j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BA4FF4000F
-X-Rspamd-Server: rspam08
-X-Stat-Signature: gdxm7nzhwxytfoux3chfhiuu43qdhozw
-X-HE-Tag: 1773658582-627004
-X-HE-Meta: U2FsdGVkX19Ss1W2Eu8jkTHGcYJ16ui29tdkz0vamMMuSnEjHc+c8zGLlrTA3X8q3JRfRxNFvuFecs6lVJmxFxxZGgrIJTlzklsfFz3A1pdQO89Czg5rypmwV1mFYrZi+xqJjXSiMfNf2QGRzH7jTE7S9Yk2RXdx1YuT98j2y2ge7WJbkOG+783OlQm/aEsr5VpT2LWD5dqqRdCVu+nPE6DCCThTWsXoFBuaMbU/UGuBBxF1F191b1hbgdUaRotfkQvnQmaNMlZPeQIn5PG3r/CsKYtgJBjF6SPiRvmlI7bqIopdneLHUEEn81lvsEPU/uRVuNuUMJeFytNIs/F2RQHp6khcsy/0MUDx/tjike1cdlRVjc/mRgkQUD21o1o2A4TjIZWl4ZE1ZztXxv6QmW3XRMPQ3qYXwz7CEIaFzi/JsbVeswM311yVdCCpj095omOiDhnZOF10kGkqhEi5QsDsORUa9Wa8VRuKaR6t1r9byz2GyIylzB7Kqvh9B9a6+ug3RCxXjn9TzeF6in7Sh3/QYvrMKUOD37rwB+tcWomvoXrMj+DfDzL0H5wjI7YW25gavWEMKD2Vli9naYvsQL0SYuKS1BcRiDHHMxHATL2BI+5iVUi5/7HXJqeaOInGvhfOQ6JPugDhV3YfnAOi+2ggvifQwvGDaWSO80Qyn+9VAEU1wDeTgTJmdDSokpy7wI0y7fOFNaCsjlvpQpXtVVkrdL/B7h0QEfI3J/yAK/aIcCI5MZLGNmVYEtCTLnYR3mWLC0u1WBsIFiB0JkXLxyCJ8SZA9aYOglUVzrvhZ/3sUj+dpnWNDm9BTfSB5oKmu2e6ft6MsF1XqcBoATgVykf0k0ZPPuaR8HJEeW5b+++0h6SeutwMOCDnvrQLdeXor4dCVpYyC1YffsbEQmYCfsnnBfHdONutM69crjyZKJ+K2RZZga5LwyDO1sXadyZcxf3KoZnVHt7cPM3OzCa
- szT7tM9d
- MPRmdLEff1qC64ZpoAKsVAQcAm1tM++VZJ2HQCQ36FWm/8hr74xcPkBSM+d4eCdrJ7ibhF9EMQVJHRvL94GS9rZP3NtKkWHwq2mp6Py43XmGLrCrmC02ITU4WztP3SZQoQs7olAz/yeN5Y5kHh/DLPnBlOWl+rrZpUcsTFBMvc7075ZACtadIQx6by+TBQF/6q1IrzHXvl+JQfe941KHmkeoSWTvaWcBGP19O9P7lGmm0YN5CDnAbFihVs13mL4sl+HkBFdBuEZBdg0zZWm79ihQtI1+hs+c8860+Dqer0jjZDNlTozreWnGT8hQdVCsiHxYaW0r2wvqKZuIC8Is0atqymC6YgVtXC4cVap7eyZDMVcoYeUgTU4Qe3MVszek2LiZxnTOD2N8EwTWdN5V/D23sGela5r4SMf0d1GQiJb1YNyyUEeVA11w553ar9KS6J46CzZUdgyBoAcO5T/A8gUa/Zg3qQvQ9z7MXorDkR66t4Dqh5ihdGYxbLvtaG5dvP58z/fG4pchsDHUcwmXQKFjBUH8QquFn/Mth7KChqLpo2XC/MSw3HlNkoHilQrH7eo6pUA7BGVjXzcmzeua6W5/1rPOZCbAphLvxWJYFlF3Wig+/5+f6sUKG0yK/Qt44xho9K6ooPYjpzXxjkDf0wkuQbcg443SLbumApDBiszqoLKuwNfycv69sDJvYjwexHiq3bETCVsuILhXvCjpc0BliutuXNKi60US9fnzSTIRLmjrwsHu9sXH5sR7vy5xQvg2u3cRt2C+F2y9H+JjLyIGWaFnXl1Uv6Ek+
+X-HE-Tag: 1773658774-462019
+X-HE-Meta: U2FsdGVkX1/+Jf/Kc1Z+Y2gifQVtKU/9Rj2QYsi3YcALK+tCGzE+YwHXeX9K/EVaksA+O+bOp/niWp/YFCS1WwadxOjEUgDomVESfNDQcuGgb+ZLw9kOD+5InbVY6u39lCcHJZ2hDF+ZZ8pdyYCCf5BxqkosUeMD9O6/+Ds4RqPQtow0X+Dr2fySn04m+zg1iuFtUXZedwU0t5T3s7jo0wnWfORi04K69l2JqivDfVBz8dnvLWYwSIH7qoW6uSnHxzwyy+m/NbdEdm91VMKhCdR3w7YGrPRvHwIM6gC+RGN2nwjy+GAe0xgvOkProEpTVFCW5uHW94uSIglVckhmUvbsvH4STyPl9tVuLrE+9HrY725sMaiQui3F7hj30RJiGnjaxm2xsXa5hOZP1yrJyKW9ET3zLR+FXqDJ24koo9Gj1jzKqKB+gS7kY3wH0bBKmITOzA9Vn/M+xPSY+WsVwmBystSxqg9Ui2IlbPMQM4l710oIkQFampn9moV38O4GPp5i1E6Qv8dvSXk8NfIxBb4Tbbj49WxC5oxgGOFbD34MRifaHqDa66J3SBFZBzmY3iM6THemg5Hd/dqKke3wMmlS2SuhLYQ03he/YqXBIRSXe6lB/qr/NatxRGhYBhBqo6NRYREFLHY6euJ2o0UmPbTM4eTCvtQhziCEk6OStuYYprf7MNV6lbhK6P5vsEC6fzut73WCZKgGM3wIkvRsVatCh/Bl01vDq96uvlWhzIBpHVcfpooekWRScfaYIPdS28TP3Vgd1/hevS7KHrKpnOxKXbLHFw3n2aY8gsQRR76rxbdIFBOgSi8L1vQrArJpXcXHrFLZ0N5WOvmvEqnxLD8McVYvpjqt4vPp93wIyJn40b6MSq6e+QLFMYIEg/UOUtJ/9UM9HatDuN9LHSI+wqmlVofba0ply9Zr/+f8mfEjDZRF7ZlUU/wu/DgMrw1t8qkj4cuiqjqJcsm7ec7
+ DOIKyzBX
+ K2prACq6lCc2l64TTdrDgJ833rl6/76scZGrO82Q9yMP6fG48YYZz3wJmZ8yY41fFEp9nnqK145tF7MYGGPnuW6+mt7ITZJCmIRuRcaHlSCA2oJNTQbV70lusL6w3+nQqHUVdFRzOL1o3yJByBth4MZCnjDmf1qcsW77fLYEQZ1zPWzshkpedV0s183Bg3iUoJOGHOXq/PixeXu7cPcledVIDpKrAbe1PniC8HZFMzwuBTFtx9KgmcMTqsM+kF2w4XiVgzWQsmn6dthkFmPJ4/IdDEtpblwI+odY3JCPpF1lakmd5F4L9RHU6t6zPFijUtQnxnlgJVPJ+GeCOtsK3BHYS0fnVIXlHsleLC86a3QQ27SVpRxnAFhYrlpoEUPFsCIoRucF200hM/ZPEDzPnUDg+pyROH9kKFkn6To5Lh1Zlt8Ab5z+cP2d2C9Rp0qRzldQoyvIf2NTRdaWrf3EkKW+ULKVCYrJEI25BhUNEHiDKvs25txJ1GXcQo4oaVpS3Tc7MBeLraMZ+Dnh/2g++Joyr5ZPSx6JJxR9j8qfQb0xwdnheZs7fRzGfqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,18 +92,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:10AM +0100, Andreas Hindborg wrote:
-> Change the `sector()` and `sectors()` methods in `Request` to return
-> `u64` and `u32` respectively instead of `usize`. This matches the
-> underlying kernel types.
-> 
-> Update rnull driver to handle the new sector types with appropriate
-> casting throughout the read, write, and discard operations.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Hi,
 
-This has lots of unchecked casts from u64 to usize, which could overflow
-on 32-bit systems. Could use some CAST: comments or similar.
+On Mon, Mar 16, 2026 at 12:30:39PM +0530, Deepanshu Kartikey wrote:
+> Under CONFIG_PER_VMA_LOCK, mfill_atomic() holds only a per-VMA read
+> lock across its page-by-page copy loop. A concurrent UFFDIO_UNREGISTER
+> can acquire mmap_write_lock() and split the VMA mid-loop via
+> __split_vma(), which calls vma_start_write() via __vma_enter_locked().
+> 
+> The split happens in the race window between CHECK 1 and vm_refcnt++
+> in vma_start_read(). During this window vm_refcnt equals the base
+> attached value, so vma_start_write() sees no readers and proceeds
+> immediately without waiting, shrinking vma->vm_end in place.
+> 
+> Both seqnum checks in vma_start_read() miss this because after
+> mmap_write_unlock(), mm_lock_seq is incremented past vm_lock_seq
+> making them unequal, so a split VMA is returned to mfill_atomic().
+> 
+> On the next iteration, mfill_atomic_install_pte() calls
+> folio_add_new_anon_rmap() with state.dst_addr >= vma->vm_end,
+> triggering its sanity check:
+> 
+>   address < vma->vm_start || address + (nr << 12) > vma->vm_end
+>   WARNING: mm/rmap.c:1682 folio_add_new_anon_rmap+0x5fe/0x14b0
+> 
+> Fix this by checking on each loop iteration whether state.dst_addr
+> has fallen outside state.vma. If so, release the stale vma, update
+> dst_start and len to reflect the current position, and re-lookup the
+> vma via mfill_get_vma().
+> 
+> Reported-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047"
+> Tested-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
+> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+> ---
+>  mm/userfaultfd.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 
-Alice
+There's a simpler fix Harry posted:
+https://lore.kernel.org/all/abehBY7QakYF9bK4@hyeyoo
+
+and it keeps the original behaviour when copy bails out if the VMA was
+changed underneath it.
+
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 9ffc80d0a51b..ab73c2106c38 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -910,6 +910,22 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+>  
+>  	while (state.src_addr < src_start + len) {
+>  		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+> +	       /*
+> +		* Under CONFIG_PER_VMA_LOCK, a concurrent UFFDIO_UNREGISTER can
+> +		* split state.vma while we hold only the per-VMA read lock. The
+> +		* split shrinks vma->vm_end in place, causing dst_addr to fall
+> +		* outside the VMA bounds. Re-validate dst_addr on each iteration
+> +		* and re-lookup the vma if it has been split.
+> +		*/
+> +		if (state.dst_addr < state.vma->vm_start ||
+> +		    state.dst_addr >= state.vma->vm_end) {
+> +			mfill_put_vma(&state);
+> +			state.dst_start = state.dst_addr;
+> +			state.len = dst_start + len - state.dst_addr;
+> +			err = mfill_get_vma(&state);
+> +			if (err)
+> +				break;
+> +		}
+>  
+>  		err = mfill_get_pmd(&state);
+>  		if (err)
+> -- 
+> 2.43.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
