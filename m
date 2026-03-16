@@ -4,111 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA28F4644A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C96F4644B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:55:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7EB16B019C; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
+	id DD66C6B019B; Mon, 16 Mar 2026 06:55:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5FFC6B019E; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
+	id DB8066B019E; Mon, 16 Mar 2026 06:55:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6C4B6B019F; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
+	id CC48A6B01A0; Mon, 16 Mar 2026 06:55:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B11D46B019C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7838456081
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:37 +0000 (UTC)
-X-FDA: 84551617794.19.5EC3D81
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B8EC84000C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="NJC1eS/t";
-	spf=pass (imf04.hostedemail.com: domain of 3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCC346B019B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:55:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64C79B6684
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:55:55 +0000 (UTC)
+X-FDA: 84551621070.16.B7DE7E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8B95420007
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:55:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CWmLAlUN;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773658475;
+	s=arc-20220608; t=1773658553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/+9kuHNGmF6mJHiC+r6rqWEh7NXnQhAjyYAhKBwFD4=;
-	b=XwqzM9TMtQhhUYWsmeeXjajcGYNL6FYaWulv3XEeXYcZcQftCHeJv0Ga39CYvQkoZ54NRX
-	2nd15HLr7ROxa/TRWPsSWnmAcwsCqJoP6pd63ad3ZndA7dVW5n5+ZMNVK68k7nUgbCd3EY
-	mGZKnACN/5Jn6AeuStIxUVTyt5549og=
+	bh=EOcjVyUODMS/mjcrbQaLeCBcIUGkq4oM3gLbEmarMwE=;
+	b=6rnx2bC0IwfyfU5UzsMAheWHegRVNeL26WcLqmIBfZhrkQUlR9gjgyi5XFAbrc+xUfmScT
+	MbBHq8oiJPJWV2ntgXRn7aGoQkWIRLIU5QsQ5Wkj/waMQ7Fkvjs7bVwrAJ0/+jzJEyn0RS
+	1/djknUvagSvIk80U2H48qseE1JItWs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="NJC1eS/t";
-	spf=pass (imf04.hostedemail.com: domain of 3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658475; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CWmLAlUN;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658553; a=rsa-sha256;
 	cv=none;
-	b=IzEDwV7Om8YHpA1esMNgfnkV4i0uNgpK87RJfJGJr5H/hrmHsYG5PtAydNaPaSYIg33h+1
-	Pk44Olt6eT08aLVsRTZtxD07gH2KexE2n9qVMWoBHJG63I/jy9edapaTgHEUdwtAoloUXQ
-	DBGnwCz92Yi3lBBtX++BcD7rANZ+zWw=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439cbc5fd75so2837391f8f.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:54:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773658474; x=1774263274; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/+9kuHNGmF6mJHiC+r6rqWEh7NXnQhAjyYAhKBwFD4=;
-        b=NJC1eS/tiJ1dyf5LEqSL6cmCMHGPdQsv085wlyBfTZl80u9GKCKdotI2RMIP+JogXB
-         84gAgUhFMsVuYD/to7lSysZojwOguggOe4EUenLjz/MVT9ty2AZo4yDKp8vsZubAwzL1
-         j5mgVlHJrcn7OQGvGDcA2zv4aasYyL8rVLt+PWUmJSE/Z2Ss25RXNp56JWysb/O7kyYn
-         HDwssasLc+WzD95mTKvfkLoTYr4vRzh86p7+m3a0jTt2VGWFcCpycUFs57Ig8tlq5/vG
-         hK9WCGuz9KK32EN0TE1dGxCHrOTEu+/EfZl6ZoDh2SFl8grDIjhEwBxyFrxN/Hw+cNqB
-         XtEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773658474; x=1774263274;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/+9kuHNGmF6mJHiC+r6rqWEh7NXnQhAjyYAhKBwFD4=;
-        b=nH6KQi0b7Q6XYb8uha19JWYL05qiKLyXnPdenfC6LB6/8nOTo7pTWZg7fqHVb7NfYJ
-         25MN5UT3A5t7k6CCJ8GVRbbQk9V8atXFy9Uhm8kXVsPxh30qlnYDZW8Jdcyil54fWIlE
-         ObPPC3EVXoBXZ7d9AjJlXXbxWzzWgubEktO7uVV2VTdPnpRiZTHTUil3Z5Pb7ybSQxxk
-         7r6no+YlSkgZd/P4T0KGk1TxD+Eu+kg0PqJHloOF0BfYQmeGz8IzShzf/m9hn5HYJo+C
-         Tj/IcYQYiK+KZzsKNhK5TbAm63mAQ3gyGWt3EA4Dka/mARh4rKy6xnjsYkz8rSSrUFx4
-         hu1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXmgVmvmGwYwuz0i8mJsVMafNAt0cExHJvPzsAtC4xLy2hLofYg/YVjdijh2Re+wUrVmm4e/xenaA==@kvack.org
-X-Gm-Message-State: AOJu0YxrPDvmlFnP6txxgyKUwc4jniHr8Y36C8F2JePeBx4eaWdr7ivr
-	to0zGgnNh2HSOcb903BuMTE9kopZRtd5UQ0VORmnaXnv3/httrb51k+jNMn1kqldPA+9y3e1KHL
-	bXpHemqz8I711r23Hmg==
-X-Received: from wrbee14.prod.google.com ([2002:a05:6000:210e:b0:43a:397:db8a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:adf:fd4f:0:b0:43b:3bed:154b with SMTP id ffacd0b85a97d-43b3bed1827mr7373388f8f.40.1773658473980;
- Mon, 16 Mar 2026 03:54:33 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:54:32 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-22-de9a7af4b469@kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-22-de9a7af4b469@kernel.org>
-Message-ID: <abfhaH_aOBHijWGe@google.com>
-Subject: Re: [PATCH 22/79] block: rnull: add no_sched module parameter and
- configfs attribute
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: B8EC84000C
-X-Stat-Signature: 6xgchutn64g3m5pq5koq7x46tyizrwfz
+	b=r91UvCjnZJAhE2Eh1+tKLC67pJOfhBz8zRV6xPMhrxiR+aHipCKXaXjObK6x2q+MqOF6L6
+	kMOem+0L0NN8qIvBlhUAY9fEOCeylB7CBmW4wJnNx1+JOTgvp0U1LiQiTunWSTlqToz/3A
+	i8bBZa6IFtE3CYgqQdbICmcbkhFhSvY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4ED02418D8;
+	Mon, 16 Mar 2026 10:55:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C0BC19421;
+	Mon, 16 Mar 2026 10:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773658552;
+	bh=yb1kqkOBmYZyBUxzt0kHkbIxIm7TwUuWujblsdUz+14=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=CWmLAlUNHBBVT9TCd3mSiD0hoD0s7euT8qchRJn3c4Z+98xVYOSucvQwauYWM4dbS
+	 x9m9Tm9ytJ1jT3Bh8DB4hzttJTQgxlw3pD3EL7pJ1Oxy5iJc6zvT7AOCDnOzXBPQic
+	 frIrzA0fkIrF44JyraGP5MPHOYVJaMab8/kRCTjLd4rq4IqOiBI93iF89rtkk7q3FQ
+	 wShsJxxaG7pj/43y1i/bKqnT29XaOwJEqRNg6MoKUF3RG9oAxbfO+XwcUfkqk0/yjY
+	 fncwEN7FF9BllzBe4gr06IzqmB1joyaKOf+Hu/qlqqex+4skYaA57RoKXtND6eG5sf
+	 Rudie+7d5SIUg==
+Message-ID: <2d3ff0fc-17a2-4425-b949-b5100251f98e@kernel.org>
+Date: Mon, 16 Mar 2026 11:55:46 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush
+ work
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@linux.com>,
+ Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Waiman Long <longman@redhat.com>,
+ Boqun Feun <boqun.feng@gmail.com>, Frederic Weisbecker <frederic@kernel.org>
+References: <20260302154945.143996316@redhat.com>
+ <20260302155105.214878062@redhat.com>
+ <26662caf-de09-4f13-b374-dc7f879b7829@kernel.org>
+ <abbuWGMv4D_1ToKl@WindFlash>
+Content-Language: en-US
+In-Reply-To: <abbuWGMv4D_1ToKl@WindFlash>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773658475-582215
-X-HE-Meta: U2FsdGVkX18q6Q7WlXzR2aX7Oqz1O9iUtgdvbBb5KRiC/BEIV2yczW11X8POa6HKsQaNvteRDmVQi+CH9X+oo7EHCscMQAWgkKuZKBv6ANGhIjkjS5AjXOsN6u/moH56CVUet/QzkNLSRq9yB6h+7upLkgl95yoteM3O9MsyV76v1r0QNq2+J1M80GJOp2tT2/H4+ktkaogxvPfRTn13bixzdE+QrTmd37qojaY9h5JZ4oWMEDzkte0+ky/Z54KQuCdAmNfxXNegZamr5RVp6qruvNW7xj7lD0JcElx6xoCSBPL1swxj5vvFUpyR7OLWEaXysO6o7ih5rW8mjPv+M4AqyupqZOSIfBWAi/s//5tc+p0snfOAw5Nw+0gm3gH6nFLHlXbpY2k/ZzIMY9s0ivEb6XdBGrOZBD0MUTIrc5d3wQriaXn9E2/ItHxgVyjnjxmsd6E599iM8irPf+wz1WASwrCtdkoBX7iAqtceo60bnj67TkHs8KQJWGpLzb2xf7utjPBmXcy3/nUpHVzXFTWvqOuVvddr6iwLWvUwTsLtilBaUawjju+kEtiaxpmsmdCq7L7tl/IMmaIs19wir4tFohfSdiNEOk/6e+RcmwH1+YFQmXbGWk2AkItPPml2rGbbT/oGB3+fvqjgu9UkgajSV8geYm9IbFqNsp7yiK3/mO7YVMANqnYyuINNkoY8AL/xKfZm1SA5RKOIgIGAp9qiOIbmW9uhpf88e+Tj916SvyOfM0lSy/mIQt2NgIRGzyv9QM1ZATEEvWpn29/QWnD5+0BzAn+YiBCML0nugycbvF2OUXVhJSEcR+M8WkCU0TYsFSe385QehcA59tXnsMBi7P6zKDRwAhJnoHi/nVz+xWCweIUoDJnunv73doevLZVjmaZoCN1JYo4XdJnKkQOFyrs+wkKk6iYZGdf/X/6s587R/RdKb8AKw6CAdTR4Q8VH6d4G8ktFOvDb7r3
- C0WKAavz
- JKvOCpAwsh+6Eek9Zg+erQtPoac0KNnwEwDmLyvyuFkfMFGOjoImjfsfnT5jgOytlLz2+DRYNhG4Q87s13XV533xLQfWx83DdR6zu4ORa+399EAuhtXlPxNvqOPT7wjj4oVsEoUawHvicaWGIjj34iq5WflsDM3XGeWOOxr0AcsEqBDFGskkeZUGXdYc55WW7CtHcFiYB2C0+yKr68lmwM3tfcmkeBvOZEKd97W8WxRbAebwgzuIIBD6nPjGsnk/aF96Gkx3tTeYRNyGPDPCVXM/1w1VZtguw7dk2fkmg+Qc4A6sMkX6aRrGzN4f3mZglq5JovkNxzt0aRsLMFFOezBEPJzzMZbU0iKCJlafmGZ2EBAh3/Dm+NPGf/3OWXK1FCg/ETjnotXObxKCqJpRWjz8mTFCRtcFeGfaCjZgDf22+ocwTy7WUuHRiZ8j1FDc/k8q9Bp7nDbqktCVMEk7tRLL1qDl2DcUbTJMhmct68JmSZgJ2plVMJfmnfxAkb9GYtsUMP0kKpB4rgwqE0t5UYsmdlAdN6ztp6rOg/yTL3HLcaj6/I5GVuP9+C/JV0voMjxodsWvaK9GNTafLWCcuIf276iGXOEMGJWMylndYlqfOln8kbwlDfMVtIy9FYWgvnDjnFwaBbSAj1ng1jfkKKcbza+hAg9IBIYaHg+bK66gI43awlE9t9pj3deE6dSNJhGIsDJxqvV0B/NFoEL7Z5w0mcGeOYQIvi3MHOiAevRbq7xycwPzOlzjuK65cu07Zhe5h
+X-Rspamd-Queue-Id: 8B95420007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 9nerrkbwws83rdjhxjfdijnwcxx8168z
+X-HE-Tag: 1773658553-650116
+X-HE-Meta: U2FsdGVkX19l3Mb3Jg/pNcv3Qo4XJCL6yHk8wOu7J/45IogNspV0Cd112RTejPw6l2UlP4Zrz7fL5qhXddw+umBPpSnK+WfH00f1GGxOjxip1NuNgmqqgYlZLRZQA0s8EkwRPIgIaWamQrDPDruG7a8N/tL8AzAvKtCeN4usrsQJECFkzQ1LyW7jhnSDy+QbTaNKb+oRA3ToT+fAFAuTasRTNr4xCrWNA5lDR06PFkY9TjA+vG6MDEI5XDg/3+oQbjr+p7ldk/yBvlTA7HjOfLqmPI9oUASElan4x+2tCLlI/V8rj2o59cRMV2asVlK8A9995PAQcod25FKiSDEt/bbe8Ep3veGdFeEZJgzeobERmwnNNpeRALw2DxESPAGtMMQxAJgjpAATNCL2fbCsLGoYPIQaQw9DkNLdfT0RA5IwBrhLWdiYt5POWF4Fscrwx24DKPu/vtKpUTEyoJOytZw21hfIIw3r2EUqUgWHWMuFy+RRUlQQPuvOEzLIvvfwjsH0J1aXlMTETDzedq4icnv66Nlda8LaefQtRF1iIv+bhzWZH/kMJzVnkAn9zCWYyPEuQWN7cL3rA7gkqcRSuvSDmSc1woDV6alad8rSeNREIRPWbtVy7eFJIIcGscFQUa1/eQrTlMi2v0onnUU1QTNr8okZ6ovwBXL6yTJp6qFIj7GmNLwRLoHYmpBPaR6guzH+2tOq8oM5msICM1xD0PSghLigz7x9GHKxs494TW6wdA4Eja7asWeC31CVTCKQHNi6di3/v2fzNcOTAB0lrrXqIqxEYtbCP8m1KG4znf3ztqeex/ccfkqu+Gmhf3WvXSeElFBSwo7CzRp+ae/qDHKR0jhY4BhAGj+nb6kn6uoxZybYBROp/+YfWooxdJ2Rrg8+znNHfy6pFUl1jOMleH5t1a8FYSC8LUptHrCTQy/0/rdrkhVv9PfbtVIOWmGj2hIi0Jw+37M/2Opobg4
+ 7qaDY6LZ
+ EqaUQKYZ8am6VjA9OGe1GEPbRBKKvAYK0EKnDq5DPsrQiB4Yx7+tZ8XaB84LXT3ruz9bV9AQeKXL+VLCPKCctTzeZgDV8ClyDo7zyk7gH3LuL4UwnPZZC7N73ZSALe9yAli6oPpBOh50u2ncKTyv1H+QVxXXOd1ebBWLpJ8i+EfBO3pXhtiKfjz95j3zknuIJpW+SR/F3Q2nX88XxiDfVR+1G1HyD8oY1ERqMa7FG4ecBIKu3BlzqFPDgEVgpuSLy9xAlnK1lQ3aYKySfWY5syDm8LFduNhsM3LcO9W6m/1o16GOeLHcdyjyDZ7zSgEMBo9bahlaGwT6esQ6leVzIf6FuRJ3orCniq0E1T/j9KJJ9siEd2e8wz0CpnhNG1booc/Iq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,47 +104,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:09AM +0100, Andreas Hindborg wrote:
-> Add support for disabling the default IO scheduler by adding:
-> - no_sched module parameter to control scheduler selection at device
->   creation.
-> - no_sched configfs attribute (ID 11) for runtime configuration.
-> - Use of NO_DEFAULT_SCHEDULER flag when no_sched is enabled.
+On 3/15/26 18:37, Leonardo Bras wrote:
+> On Wed, Mar 11, 2026 at 08:58:05AM +0100, Vlastimil Babka (SUSE) wrote:
+>> On 3/2/26 16:49, Marcelo Tosatti wrote:
+>> > Index: linux/Documentation/admin-guide/kernel-parameters.txt
+>> > ===================================================================
+>> > --- linux.orig/Documentation/admin-guide/kernel-parameters.txt
+>> > +++ linux/Documentation/admin-guide/kernel-parameters.txt
+>> > @@ -2840,6 +2840,16 @@ Kernel parameters
+>> >  
+>> >  			The format of <cpu-list> is described above.
+>> >  
+>> > +	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
+>> > +			and remote interference mechanism on a kernel built with
+>> > +			CONFIG_QPW.
+>> > +			Format: { "0" | "1" }
+>> > +			0 - local_lock() + queue_work_on(remote_cpu)
+>> > +			1 - spin_lock() for both local and remote operations
+>> > +
+>> > +			Selecting 1 may be interesting for systems that want
+>> > +			to avoid interruption & context switches from IPIs.
+>> Requiring a new boot option is always a nuissance. The cpu isolation is
+>> AFAIK difficult enough to setup already. Could the default be that qpw will
+>> auto-enable if there are isolated cpus configured? The option could still be
+>> useful for overriding that automatic decision to both 0 and 1 for testing
+>> etc, but not requried for the expected usecase?
 > 
-> This allows bypassing the default 'mq-deadline' scheduler and using 'none'
-> instead, which can improve performance for certain workloads. The flag
-> selection logic is updated to use compound assignment operators for better
-> readability.
 > 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> I think it's okay, as something like this?
+> (should work for nohz_full and isolcpus)
+> 
+> ######
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index 81bc8b329ef17..6c9052c28e3e4 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -170,20 +170,23 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+>                 for_each_set_bit(type, &iter_flags, HK_TYPE_MAX)
+>                         housekeeping_setup_type(type, housekeeping_staging);
+>         }
+>  
+>         if ((flags & HK_FLAG_KERNEL_NOISE) && !(housekeeping.flags & HK_FLAG_KERNEL_NOISE))
+>                 tick_nohz_full_setup(non_housekeeping_mask);
+>  
+>         housekeeping.flags |= flags;
+>         err = 1;
+>  
+> +       if (IS_ENABLED(CONFIG_QPW_DEFAULT))
+> +               qpw_setup("1");
+> +
+>  free_housekeeping_staging:
+>         free_bootmem_cpumask_var(housekeeping_staging);
+>  free_non_housekeeping_mask:
+>         free_bootmem_cpumask_var(non_housekeeping_mask);
+>  
+>         return err;
+>  }
+> ######
+> 
+> We would only have to be sure that this runs before cmdline parses qpw=?, 
 
-> +#[vtable]
-> +impl configfs::AttributeOperations<11> for DeviceConfig {
-> +    type Data = DeviceConfig;
-> +
-> +    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-> +        let mut writer = kernel::str::Formatter::new(page);
-> +
-> +        if this.data.lock().no_sched {
-> +            writer.write_str("1\n")?;
-> +        } else {
-> +            writer.write_str("0\n")?;
-> +        }
-> +
-> +        Ok(writer.bytes_written())
-> +    }
-> +
-> +    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-> +        if this.data.lock().powered {
-> +            return Err(EBUSY);
-> +        }
-> +
-> +        this.data.lock().no_sched = kstrtobool_bytes(page)?;
-> +
-> +        Ok(())
-> +    }
+I'm not sure it's possible to achieve this ordering with __setup calls,
+unless one of them is early, and then it might be too early to do the
+necessary action.
 
-Not using your fancy macro. Also, TOCTOU.
+> so user could disable qpw if wanted.
+> 
+> Would that work?
 
-Alice
+The pattern I'm familiar with is collecting all related params via
+early_param() setting some variables, and then an init call (not tied to any
+of the param) looks at those variables and does whatever is necessary.
+
+> Thanks!
+> Leo
+> 
+> 
+> 
+
 
