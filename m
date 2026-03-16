@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 350FDF506D2
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:11:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E085F506D2
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98AF16B02AC; Mon, 16 Mar 2026 10:11:00 -0400 (EDT)
+	id E11A36B02AE; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94AF06B02AE; Mon, 16 Mar 2026 10:11:00 -0400 (EDT)
+	id DD35A6B02B0; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84DAC6B02AF; Mon, 16 Mar 2026 10:11:00 -0400 (EDT)
+	id CD5706B02B1; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 741406B02AC
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:11:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 45331139276
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:11:00 +0000 (UTC)
-X-FDA: 84552112680.10.708224C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6256810001F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:10:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=petKGAic;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BDEB16B02AE
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 71FB1579C3
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:11:15 +0000 (UTC)
+X-FDA: 84552113310.30.F2FF9D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B2C58C0012
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:11:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UW/pLckC";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773670258;
+	s=arc-20220608; t=1773670273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jUkhGD1MCM+nCnzw4Kcfpl+7V84NlLk8gIQtiFzeSAU=;
-	b=mAMuMQNHdqHr5ssGCzEwnJRXJZq0khR56Cwi6+TInCKKyidM97yaxOg5W109hAEmBlxBQY
-	OgzoVBZnC+phbuVWsdeVltt0Hq3iLM2kBsBsvURPKFpBBQJCPBQeFnh7r3GvlmfWix2mKJ
-	57rel4Br+k9fSgl0rXCpYwrWMkP9mFc=
+	bh=ouCypcL1+siIYaers+ALMVHTuOx48YXnAxdQiXYVowg=;
+	b=DudqSTxDN+XkwB32qIEDNfTbReY4s2+qEI1+eOPHpMPitZb+k1p3x3ngM0j2WVCBpVWdKg
+	SPYZ5a/KguzHdYgkab4p3OMJ77LPMfjEB8XHmWLt/oyGum9+i1oyAt/MBPWSjHEpVEFxUc
+	Vwne7Z74uEM+r2kOUJH5C4PtA/GmIJs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=petKGAic;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UW/pLckC";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670258; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670273; a=rsa-sha256;
 	cv=none;
-	b=oNPDZV0h9zHbvJlYWUffCjfcWMovqzXmCRTbj13zvxs75scMveelDs2owBwJxvxN9K08oA
-	rUm0inKQ+SJ64xqtJn+iLcjd33YNYCg9MSZFVjuPjnJ5Mo9U4V+NsaXhVlWpPSZE1H4Hz5
-	rtt+mi8BsYL/xgjWgXfNrCh0IxIKEME=
+	b=G34O6DjoWacbNrux4a8fubgphbHoL/SdINrLA16cTfW90ZeGa2zRjPjsnMNGpCn3y1smfr
+	hufnTveY3q0kEQ8WcVQY9bU5g5Ij5BE0U3v2qZwcGohgOQVzqOnPPvFbO7jBctmVRFNLiA
+	e/+RZ3tul3nKvoMFOkZ/WRt+6xs/6Vo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AD0444475;
-	Mon, 16 Mar 2026 14:10:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF20C19421;
-	Mon, 16 Mar 2026 14:10:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1438B60018;
+	Mon, 16 Mar 2026 14:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1999DC2BC87;
+	Mon, 16 Mar 2026 14:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773670257;
-	bh=zt28grrniYz4OCeinQNJJYviLQgaKriHP3aR2K5oqi0=;
+	s=k20201202; t=1773670272;
+	bh=mObWySh6ftg/C/Y5QydTHOsnluUnNsUQ7L5CnYVEA60=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=petKGAic1bz1VLuLQdg4AMqzF7adDp8lthU9JFwPyO2/45RIVwMYkJldH1G1jVha3
-	 Zg+75ciGcKHAVukEy2QTnmInanyaiKVOTmt1LWr0HN6m7ieOLfDH8MOC2KauN9TLfq
-	 3TN8xw1j6WB9A9LHc3O5jOGhIdIQfIFUGWp4XDvnCilZ7cnvy20kq0LTdejt/7W39l
-	 LqCv8fyDHyoFcirBhGwFMGbz9P+eK+hFkB+0rrkf07IPXOUAmwmSqcvLSiAaLzGvPr
-	 vpEedcYHpDyJ4thXMWrQQkdnHT93v+vsr5smVaY29OrPKh9JTY2g+VolTVWcEKP+Gl
-	 SuiPNIcZgMSQw==
-Message-ID: <3696bd1a-5eb3-4bc1-b64b-3f955fe7ac57@kernel.org>
-Date: Mon, 16 Mar 2026 15:10:49 +0100
+	b=UW/pLckCxaNKin2wiipk5x1+dQXwPfHhssQ3QmeQq4QXVJQ3y5OXuHSa1pZlhFR1M
+	 qEnCL5rs4a6xAWe+FdiyNnqHfAeN90322g4aAl4VOzQKIdM4VfbTDb3ZqQWxdaqg4A
+	 oJoExQipZkyEKvzOi6uoLmLS/3GoH0scWeQjvj4vt2SCicfw60c5iB+snAR5g5dqyL
+	 15WD6qT/QL8wFr1KIz3SuFnvVuZETuxZlx+ZqwRifMnssSuMamHfBs0P+F8URMkht/
+	 XsF+v5W82wbBbBI/mVpEtgxVlUUFiGYbUzmKLm1zVGEgaeWqcp7sfv4Jo2oEIaTRyz
+	 WM6aXYuiqBIXA==
+Message-ID: <5724ac10-70bc-4259-a69c-1c0efaf28d02@kernel.org>
+Date: Mon, 16 Mar 2026 15:11:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] selftests/mm: split_huge_page_test: skip the test
- when thp is not available
+Subject: Re: [PATCH v2 5/5] selftests/mm: transhuge_stress: skip the test when
+ thp not available
 To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
  shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
 Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -79,7 +79,7 @@ Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
  dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
  Li Wang <liwang@redhat.com>
 References: <20260316044335.1390608-1-chuhu@redhat.com>
- <20260316044335.1390608-5-chuhu@redhat.com>
+ <20260316044335.1390608-6-chuhu@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260316044335.1390608-5-chuhu@redhat.com>
+In-Reply-To: <20260316044335.1390608-6-chuhu@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6256810001F
-X-Stat-Signature: p3ya3t4fjnifpypkn8z3gcwoants63xj
+X-Rspamd-Queue-Id: B2C58C0012
+X-Stat-Signature: aquhy9yb1fkujryjk9711hepm1pm1haa
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1773670258-442676
-X-HE-Meta: U2FsdGVkX18tP2Vby5myLbT3VTRwdbVzLhP7GZtJZLWg0DxrpCS3jZeLmsStGnsdMAoW+UXfSGFDO/QdUAj1bE7yP3m6QKbyY6ZPL8E03+IzFc1NEhwEcclm1xr9F+0A3EPUWfZlL/wOraDl7+iZKUK6qZGguRTekBgn6g+Ek29yEeASpFOd3T1hXE1O+J7SACFVIBpk/IoKaxnfHQvI0AC2VrMkLD0L9ZOd6r6bP7fAiMnAIAnfGIo7S+fy4INJVlGM+Scc0reQB/BlWeKvQ2/pwoIja7HMQkAfXBn/xwJuyVLMSQ9lAMwrKWG6JaMKIDasM6unmH6+4F1zNPU1g7+lbHF/qcCMBjM7BqhKnz10zeIZ6RpRHTM9R6TXYSBYoyvAD8FItevJ8jGlIfXHHLjSzEse6McYMOQzGSL3vFAHJzGFIytWaXPm5eMEPIBqkOuMRaGnv2DJ2tPlH0bhKADKdUCE7W7HoAd6VvYl2oUj8xJqqBsAGlrHPm98Uu2dsSB2VHHqExikFO3IluelE8nU3o26bK1AjsUfB0VpXNR9xQyWH0xi7+EWUKFxStxeZWcES0XayK5E/uiXRUgiE53zn4xQrIHrBe39gkeTPhQ1tRaYB7wU92Z/iA4J8/asv4A78J7X9YM612gv76rUfe+IcBZ8/GM+yCKC96rUybD1Tixiiq7SahSXRWCKdwc3Xuonf8qnbIo3h+L9nCPj6lgtZpuZZRFXAmUjkSetdGouAMUB+sxlQoVQWyUAwlW30kAU9Wmco536Sw+Z1Tauz38EnycOXM+03eAqoO0dmNZIc897fC2/gVpXQni3sicUNLU/Sg3bQlkR1DgUhvyvKJKQBL4ZGDQcLVXIErMnPFkCBfGxjsbu+x29t5zk3vQ8BkLSCZtQ0Whc4vwZdAhuJP91P/x5BNwuEKqh3afUZuFScf8iNBPa/JlNoyY850KiySq1T55FH4noW3vgpvE
- x2A1vzp5
- v5EvoJMTlCnssvfEKC1+p+ejHhqpt/yKVQ3IY2XJNz0P1/2Lb7ZUyGT8Neol0YKWQCG4p+XYtA/DNF4AkJrk/2Js4UaNEB4nynyTeC/QFDBr0UUA9PJWjW5h4d5A4qCRNQl5t21yhnprS/m5+c213Yt1cm2n3hhtp1RG1o+4kMuLXW2obkvvtXpxT10iOB25glnlPu+XoxCBBYm8cu0u6vNxMhe4xQyHZWhAV4SSz85QmleHR2H4F6RhQGZdnEYqx6GSGerQ4UOnHpadLdnO8+zg41hJ01zlSjWK8Rxo0fuPG+M8RxmbxgYF4DcnMc0GV7MX4C3XKHHNEo/JDdCHieYpt8d34kDt5Xd8ob8Lu+mnarWGXnUsGJlT6foL48/1Eumw7
+X-HE-Tag: 1773670273-894743
+X-HE-Meta: U2FsdGVkX19PPJ9glXKwRC8zFtvaWKpB/EGIa30cfAbcttb5VTILPTdEiLOfItQeSSlRc9/7FOvt3AcXii/bqoIZPUjAvp5J5chKlB2pL4j/3q55NdBnC5FbLPVNfKwklzoSqb6C1AyrRtN/4reXm5HAZIfoCCiGWShJAbRoN8ELawGOAnWVM4A5ivIOR3YZRbbhC7j7GwdAkQjt5lhRYeQ+LKuLpVT9FpkGZqZAyNy8QiusxEJA6CNOCODs8W+AkF0EEWNXpCYbAW0O3W3PFIJ4jMG8/RETCasYd7my1S6mroYmkvLOe5NldyWfISvT+FHBAyOtl3rvkxW5wqBpogSo8JGLtl3oCmYhrvFerNtBtEnCEq+m5mfaBR/5VWEartb1URGIiJ6+QGkQZ78B78XZfaQ9B3cMUxDFRUgvbAEQdPG1oM93d9isFu0h9g8ciuC7tMqz9dnGX8Vay+cJK5yvKJhwW3d9rzhc16PIqRUXPdfOKViD0s+6tYx2xH1mReyIqxoZSjrnPjqbUmhs2yKKU3iZv5SENuS/ZNXjoRfkaPUbaEpc6kZCtsTFmNJeQ7mZbS5APIk+z4hZJHWS9MWvSPlWi/d8RRgQJu8zlSP+qfLfyGH+0gRdcVn1Tee/p2FrYyAHgKL6Wy9TERSGMGzpRkLEtS1ZbrPnHapONp2qrWPBr00/REWgcqa0dXOv0Mwi0KzedffB/szkevc0v3qd47Uhv289tuqMrsczuiK5UlG54+RHMjqQY/Zh+7ll9ZYdzyXTVt/4Gi+oM+9MYRUOyDB5x4O00uFnvzMCeHgLX3a7LsbTrXGbO+r0zwjd3JbWTwCTIYGQ4lnBGocr3jGkDW83Tjj9ZWPi6+pdaWw+2QV7p75qybitBgLGuE8CvhvB8lV2tKKvmuLz6YAmZf5lzd2qoaHmwncfCFVY61uPr9ALYZZt4CIKn2OBNY7DrBLQs8YZh8OqfLNhtkU
+ qQPR59rZ
+ tzjon6dfbZaJQZOKtHuvHmChPDwg8eWVmo2aWCW2R3Bfc9GD5+Yd3cXOtrHVrISjlOHOQ38L9h6NZ+MYDr8fHOjyzwneqKiAUwAbcr5nlURBG27Cijrqu7p5Z5zBvSmkMtRe3LjeqWZdQQFUyEa2idGus6N8oCnBik06bY3mKjrv5PgrIM0nGiEcehv8AAcdbj9dAgDzfRS6IiYGuLWdVhWOiLoU+HN3LBpZwFGbBMASZBOEPQmSjqh8fdUBZWRGowvrA3l4iVSkEYnePYa2pGMyInGJdNBWQaCphmdaR8PS1p+cz9pzVQ7czpUhpz+v45ik7WOwd5JWdoDiBOJusNrL4wi2KIXOu8HNn/OQgn+hjduUHUzEtJMANEHQlSeIE3cLE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,29 +145,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/16/26 05:43, Chunyu Hu wrote:
-> When thp is not enabled on some kernel config such as realtime kernel, the
-> test will report failure. Fix the false positive by skipping the test
-> directly when thp is not enabled.
+> The test requires thp, skip the test when thp is not available to avoid
+> false positive.
 > 
-> Tested with thp disabled kernel:
-> Before The fix:
->   # --------------------------------------------------
->   # running ./split_huge_page_test /tmp/xfs_dir_Ywup9p
->   # --------------------------------------------------
+> Tested with thp disabled kernel.
+> Before the fix:
+>   # --------------------------------
+>   # running ./transhuge-stress -d 20
+>   # --------------------------------
 >   # TAP version 13
->   # Bail out! Reading PMD pagesize failed
+>   # 1..1
+>   # transhuge-stress: allocate 1453 transhuge pages, using 2907 MiB virtual memory and 11 MiB of ram
+>   # Bail out! MADV_HUGEPAGE# Planned tests != run tests (1 != 0)
 >   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
 >   # [FAIL]
->   not ok 61 split_huge_page_test /tmp/xfs_dir_Ywup9p # exit=1
+>   not ok 60 transhuge-stress -d 20 # exit=1
 > 
 > After the fix:
->   # --------------------------------------------------
->   # running ./split_huge_page_test /tmp/xfs_dir_YHPUPl
->   # --------------------------------------------------
+>   # --------------------------------
+>   # running ./transhuge-stress -d 20
+>   # --------------------------------
 >   # TAP version 13
 >   # 1..0 # SKIP Transparent Hugepages not available
 >   # [SKIP]
->   ok 6 split_huge_page_test /tmp/xfs_dir_YHPUPl # SKIP
+>   ok 5 transhuge-stress -d 20 # SKIP
 > 
 > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
