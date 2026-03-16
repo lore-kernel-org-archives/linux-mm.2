@@ -4,93 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228C7EFCBC4
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 06:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDDDEFCBBB
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 07:00:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DE656B0148; Mon, 16 Mar 2026 02:58:09 -0400 (EDT)
+	id 5D44B6B0149; Mon, 16 Mar 2026 03:00:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08C776B0149; Mon, 16 Mar 2026 02:58:09 -0400 (EDT)
+	id 557A96B014B; Mon, 16 Mar 2026 03:00:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0606B014A; Mon, 16 Mar 2026 02:58:08 -0400 (EDT)
+	id 4390B6B014C; Mon, 16 Mar 2026 03:00:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D8FCE6B0148
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 02:58:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80759B85A9
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:58:08 +0000 (UTC)
-X-FDA: 84551021856.12.917C39E
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CF54F140006
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:58:06 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 31A346B0149
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:00:52 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1CABC36F4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:00:51 +0000 (UTC)
+X-FDA: 84551028702.19.CB5664D
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 428FD140017
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:00:50 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T8OO8gRL;
+	spf=pass (imf09.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773644286;
+	s=arc-20220608; t=1773644450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=b0kUySBuU6Ume7jaBtPwcWKvQPPEY6e6MvBbaQw0SnE=;
-	b=zNfJg35AEpsyXaIyjM2BJ1iCxmGAsp1ymmDQpDSaCmiyW9ql9TpKZiUa2yN+lt8scL6Kks
-	VOm6laM+7cJA7jreXA5HwGdfVSoejEStqCn6HNd5/jIYbtyPZTWG18NWgFk2mOFV6zp0YH
-	TMYWOSwrYDamqdfiJuEx33365Xv/T9g=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=lj6uVSzjPpo1QsVQpIX9Z8xIGy6J1Sb3UZgbPXec1Go=;
+	b=sfVGtkbN6HTjAjiI6L2XJLIKfWl87S8xVAVze1nHb+4N1Z/VDupUuayzDBaHE9eZOETOJz
+	JqXH2WeuGMyqix6TQLPNGKdgbl96aXbKcmOyXP5uYnnDJwVyE24XZPU2Khetc4qoYlqTEv
+	HUxWmcIkJJOmDPDhdDUmhC4qXOBwFbs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773644450; a=rsa-sha256;
+	cv=none;
+	b=ufXB89FSr48SFcLW2NqFs6BJVDrKRvB4hare07KEIlDP25T+DqIAiI5dFz3bqa87HnrCoa
+	58K0tFK8/7nUTqoGTXk3EDCd4gY8ZsSVieOaPY2ATtMlzM47WAWY4wwLl0nMOl5BmGrn14
+	RP0OfhE9gPql8lz8OCTxS4RjVIC//ec=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773644286; a=rsa-sha256;
-	cv=none;
-	b=WP+zfqg+SqKacQ9qtv32Uz+6HmMgL59TGh7f5fgLxRqea5OZUWkzj4qAe6Y6+fGzToruc9
-	kiv89cgh09AgjW0cmYD/2zI+p8VynXrmgLhzX+JAdZNqYKMz8GGHQp4LD0SqhWGYh5IVch
-	eaJB1IIRgDSCv4c1b+f1et+rK4ftKbA=
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-67bb57af478so5380929eaf.1
-        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:58:06 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T8OO8gRL;
+	spf=pass (imf09.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aecefc7503so17157695ad.1
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 00:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773644449; x=1774249249; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lj6uVSzjPpo1QsVQpIX9Z8xIGy6J1Sb3UZgbPXec1Go=;
+        b=T8OO8gRLB/4MWRBlxFZs4+2Xoq8dsVtt1CDUf+HXAvwySAWZxaL11nJyEk0198cbYc
+         0xWNRUcg0T7coWk5ny2aZWT3UQ+qBxvescnBut6uBa3Nv/B7Rt/ILpyUFvklJDq6JIk8
+         FC6mTcChTsNxF9AqPvV9Knum4KriwbcXflIKOtgDQYY20mvIdMTP50mDZ8wXSXaqX/Ok
+         QNvo4andOQlBdd35AEtr9cK3ax87LBbJVoBxUpDflumZMueu9NrhoZWGykya3h2LQXOU
+         gkpNoc52QB29CqXM3VI+P6cCS2kyHNX2Y6xFIx9pbFgi6xFzwRMVB83072ev/IEgZjqY
+         QnuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773644286; x=1774249086;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b0kUySBuU6Ume7jaBtPwcWKvQPPEY6e6MvBbaQw0SnE=;
-        b=CGPKN5KlCH+NEpU9fOheCYnI8T25LuFHaNayyZXIBiG5giv+m5JiKp4wU8JrqNDtbC
-         sNySs3bRa9ucySW3MWSwS3LQM2FvKPtvc1atUAxvTTV/NsxWWVQYA622/Isr2oNnCsDW
-         U4E14RmMYGoKMb9BAez0nihleiKV4tHhkPcPIcY/0pQamlXwCGju5BcpuKqZI66fPANP
-         McEoiPTEvGJny6ik0l2IPnNs4baJ87R3fpMPOUuJGYMrMKJYsnOuITzzEyYVB8+tFGdF
-         RPjbaYJ3tSO/3poGmGHqzy+gSl8NyaJ1fmC5ZX/ZA+jzkaNfZbvv8AI2+dj4lLla/zKb
-         YNFA==
-X-Forwarded-Encrypted: i=1; AJvYcCX94cWkHRiiQo7xUwX2d3+CFilr49qXRXYsXOcs9BeHvh6+bnetNTWnycMpYF4qrM+jTZEzzZfmSQ==@kvack.org
-X-Gm-Message-State: AOJu0YxUN3PoLQEkagoluTgWA6/A7ukh9kGIC1l+XNiQN9gmEVbIKwyu
-	o/s1UKeEH2Vc36h8DNBww8smr0tHOEBAofxKh4o/i6vr1RFc2IHXJViHgR9a3vN9LwRUnKJ4Esr
-	Db0aS/uYa3SgYk4L9zyXro3vQbRwMIsRcrbGJDMtA7dmm/Mbh3cN1JSriS1o=
+        d=1e100.net; s=20251104; t=1773644449; x=1774249249;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lj6uVSzjPpo1QsVQpIX9Z8xIGy6J1Sb3UZgbPXec1Go=;
+        b=q0BiYcUzaQ8oBPUvFfAKg0ehVgJlK9G8X4JIqS0fBfjkjfafWoBe/E6CSXNjS/5d/r
+         l9Gx4+LszVsakDoOgzWqlaPvBzpxx1rb4eKak+MyON77x0x+Jj3rXDPUtDbxzr31NJPC
+         laGjOH5PjQU6Ii2EbJHaxb9oMq+bbyTf6q455PSXb5oCdewaOJQQudobwZuvPMXfY+iS
+         BzW62A6kYbGZJrSLuhLJgbXZPA/1Qzkli7mQ6oXLNYNXteR4j39J8BB0mYyigfMFQuWW
+         AEy0E9UtDiDe5ZnTbLwOYqkr57jKcm381TcHkqtEsTdOVW22WFPDhblh+f5wwzT6TNpo
+         H/NA==
+X-Gm-Message-State: AOJu0YzYsmYFNnG8A99RNsXdDwAs8nGVacvlfzvcGlRJXGpUMQLlB8TR
+	GdlGjfPEiwnfLwuSkxXp8YnNfWo9yWeZfhxXBmrl+U1vWvmhmf1O7KvPo3sdnA==
+X-Gm-Gg: ATEYQzwrgB7MDrT+iOSfgGSzVv42Ywxoi5Cnwihj5KfLrWiGZbZWQEfrV3cckPOSmC/
+	9xWSb0LDA+M8u1cLZFFoqXmdjgTG/kRus0hGleq+2m5D2+M+OUdDgS5ps9ZmS6yXRQEy5dLvDZ/
+	Nn4OuutNZrMwrhUFLs8VCnWTkOqQuw8UBNtGoHum96UTMrQv89Udmy/0F3Dpz7CMqWLpdxTRqdA
+	ZYby7Ndi6e4mdcz1gK62krg4MoZqCXQQQ2Iq1/bWkEVCCtOlXkXTvW8PIQTl82cKh1H4qi33W0m
+	ZCFfvs8HMnFML81dKav3gFsEahHGFbnTcKfMrIeXJRwpmyGQSs9okH4xlIYfkZPWqenwbILidAD
+	CYkwtRgHGi+o2vj4nRapUmw5ByOZcJeEd0OIOJOAk3RHIvsHWNJKyU4Wi1BFVnhS0F9pZox0mDN
+	/KgTSX7kcacI11d3vkXB24PNKoCok66Uivks+ZfM4srUSBMu6e7GIRx5mUj0oPvaSnbdYF89BRM
+	U3ihg==
+X-Received: by 2002:a17:903:1ce:b0:2b0:5cb4:d894 with SMTP id d9443c01a7336-2b05cb4d961mr11761005ad.13.1773644448830;
+        Mon, 16 Mar 2026 00:00:48 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:5861:3d76:a555:a45])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece83ded9sm96884865ad.81.2026.03.16.00.00.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 00:00:47 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: [PATCH] mm/userfaultfd: re-validate vma in mfill_atomic() loop under CONFIG_PER_VMA_LOCK
+Date: Mon, 16 Mar 2026 12:30:39 +0530
+Message-ID: <20260316070039.549506-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2918:b0:67b:c368:135b with SMTP id
- 006d021491bc7-67bda9dd424mr8968791eaf.33.1773644285983; Sun, 15 Mar 2026
- 23:58:05 -0700 (PDT)
-Date: Sun, 15 Mar 2026 23:58:05 -0700
-In-Reply-To: <abehBY7QakYF9bK4@hyeyoo>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69b7a9fd.a00a0220.3b25d1.0023.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in folio_add_new_anon_rmap
-From: syzbot <syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@kernel.org, harry.yoo@oracle.com, 
-	jannh@google.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, peterx@redhat.com, riel@surriel.com, 
-	rppt@kernel.org, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CF54F140006
-X-Stat-Signature: s5p1faxf1sob9bozcxuhupbyid3fjywk
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773644286-110610
-X-HE-Meta: U2FsdGVkX1+2RddK1xmXf+/9OgBa/1NplNLWjuDiBc6JzwzqICdV4urHwg2VRaxGKVR1kyURHfjBANuAIhMvFQh3lM9TDd1NNvN2De8VFwCgfGC+SB5dyfyiGf0R2Q71suTF5BLJ3iDXniyhBpOYFpBdcSgjurfG4ly+GMCutYCG9qpFBNApJNISNpfJoGKhBVw/2lrqFJ+BqKu1Bflw+FAV5DUYy8NwSDOoQV/fxeNa9cPF7sxABJFeMod5rDF9a4IKvFGsR7Hr6KlvggKW8Ppq15WY9I0WkFpuCyhMe6kCyS5A0UmKtNpSsHI2a+F8ohXrR4ymOpbyif14bLj3vPooI1hFTZCAB/vCQasa7PmfcuiNh2hnmF+i/0YncmmTwlVj0SvhZsSWR9bjTo9KGzT9r7XlxcG9syDbxkyawitKyqvwv+Bri6JNB4e2LZssZ2TvKajqW5xCWboWyAJZkiDMKAXa3l5/PDycVP3B98fsK7uhVSFE/Nrm3y4NrspP4DmISyB/vffolX4FsJfMs7Kjwevkg97sTCPgtE+UjaIIJFF0vNKnLIrHL8MKtnjfN/sYGRjiEsrmpD5ye76o/1hjz0w2sv0ZEwUXJXwBcUnQtgnllmBHpt1MsXF1R6R3Am//mPvfdyjUtQs8XXLJnvZPxabqLJtCAOhVxuwZqJUJXzOgIHpCmpktCNUpi0pOg/oUaTa5p0dnFbYdqHMgfq+7ZziDWYiJ1hU9VgOjox91DArdmpw+YijjdCgn1ezgu1ucv3GogL7qKuyMA5eKvGpnYTpzc/+ImGgP7kCjnvH7ZH1JOAb3N+7daY3JedvRV7cieeJEgM/Ugo1HizxhLZ93rQNH16zEJjObevmOfLEgvcwLo94dd8LpHcRAmg99FcLL//gj+ZX6IeWqqAC0AAuPcMOuqyECgAhpWUkmixhkfbSMx0ex4g5rKiXJAqkzS145+hHHmWzozvkiHbC
- PVeckxF3
- LMbPCwhziD/QLr3umrZrDwTLszqsz4iu9qNfOI7yrYG2RcL4ZVQ/MrwmMdGy7xUEBjJ/Sn/0qSmU5X7u92R27YYbFR7uuKyqMrUciPtgYRffLoka2NbwsqDAslOJv+5EmBAiDkpJ+NyjaspgHvxupV1Z4A1ZY5sf+n9mVPawH3a06bxrmQreAN5y7xPOGHYgXqEoB4VWrbWYHD7YKR6x31b4YxJ2vTNfTso8jhi3xOLfMmwUMU9Q5vhjmQqPjNWISvxWpfclpRi9FgMovjV8OfVUYftg3BqcQVp4OvNWTDzXPNc22CokH5ri9qIVTq8JWt0aT3MJQwB73tn5xKBSJd1GW1GYP1nP3LJ6zuqAkXYzDhk3apQ8cE1F3Ol9zsHgvu33/5TSjmiEoClAh6NU/zO4uqlqYnHoTHtP5YYlVLh2w44qT0QGBBw3+z0x3Bmr2v1j+qzu/TuV+o42bbZmoXJ/zKvaP3CzmTtw9wkJgqxd4aDfExB5C9EN4Ru0r0hKjzUliIMxWuALrzdnWwMIEak9lT2EMrF57P0QAAI83JRcQVehcH/WMUvL6p0WfZ5DJUMDlsvCiSs3uat/E5Zm+H5VukC975yiJiNsesqA6LxvcuADVaBMlNEDU/kb5KpefZmhGODsIIKUC9BaFO/+ennv+A1kohVZFaroio4aFIW+uVlQyv351mDCBYpNwQdiM8+AaQJvJQtOuCqEIuiGMY5Td6vjPV+t1RhES7OT5q7+otmXoy+sECQ+ht1hIjkaB6AAoM6k4A2wjO3ilVRn2pJxQBjXhrThYZ5zGFozFD+chI1NvVm48VaJ0bpfZ0Y4948P5eyDUPgOYrp9jqbfx3EDQewg/Ub2FzbIUz+oZNPINLaqXn6NczvXEh0jM4crx+7SdvesRNDc/4aqOx4jkC+EeSemJnG++t1pzB9spBT84iFRMnwjuLXKMhv2O/lOAfz+W1VFOIci9F7e75OWYv1j/0//x
- bL3p/eHe
- YEuVoy+I4URpn/n/CTi6W0lhq7NWIqD/DNANeUJkK7Ju0Lp/rzT0USuyNqXwCS6Fkjw/wu6gHGA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 428FD140017
+X-Stat-Signature: a8551qm8py857gkxx7x7dtx964jux1tx
+X-HE-Tag: 1773644450-432902
+X-HE-Meta: U2FsdGVkX1/TTgWrg+04SEhkBjzZCyWav1M2YSlKLQisJsw+b61AYfmc6in9sqEvTeRKTm6YB9m+iHn99K5SLlsnAVGfd6GPuAaDDUyulJQiUQNahdS5rLXU5moRzSYtOG+gP9WqkSWvk+Hvj34kMrHAslUIrbXaJQ1jtG8QE665Pmw6RKQsQ1yg4snibxxPTf1Nj21hKCYMGyjHZ2XmItDB2ajXX6f3liJAzIWq2vtUx5t/QUEbB+9hlRUuM+JGxWsQsJr/EJ4QtxGPZ8T/NQcJClJYtYfyufIfDyYarsakwzk1+BGVHY/EJYmYfZd+PBUUz8FDjg4qWo5jFxiM0QMNqVfOkBn7zRU2LdLWksxuHP8MwoLSUpt5QBM4nMhe4AGnLcNMVlmfHanX8yHR6fCMCGU5cUKJMJ5+E7HVPAIDwSkyrPw6G8nDOIrL2rarAMSl3VLyMbpoYKG28HdX+f7Ki3UiyVElfxETmRBag3rERbCOPyVc7Hx0cTkm6Ggl1E77DCcucQ2k6yl8cuEjIEh5In3H0LN5EHG8wnTxzMrQPy4OHtS2/YSDKnJ3rkFObTA5szQ0SJGAaCkaoPvFVXfhiDHkHFVhOExHmF3ZUgVAMxBE+/2kql4zlll+lUhda1CKoBOa2wGwgfocLwdhw7bRGBqDN2y8IG+46Qm8HkV+R5Wh2H+mXarvVlONOi0r0BrPXGP7ZbabO/PNZ620UcPiBwMO//z1D9go/GMHn5wgMIONfys1nOkwIny54wpeXkZSelhBNjmbqw/Q7LkxKDlBEgElxmnl4NjmjciNDM8vfQgxR66oyyzDAmJxMFkoK8e51NlQ0smovKMCYCiSRuL+tRh03MjHrnrwmK369vGqzWiNkQxqubdCy6OUWluOV5kagu7A+DZt2zb3WDqL2ZEUs7RtN+pVqMVc3Mn9HePNC+S7XRi9/3iFcoCDtD/Cyj8g95oKPN8wGpELRXg
+ /3/c1HLH
+ xP2Oc5bPn8elxe2aEdX5ApIUVgpuTrWYiWLUV5aY6C8F6dos5pb6NNZUk8ktzW2EgUuHCcl09D4PcjF5cl6aK49gWIX03Dp8r/rlytAMjWkottgXawr+7twfLvdZBjAcRmmLBgbGbyHHrnHEpsZpinfGaUbw8XiybGHBlpj/nX367OAII2F6xkoRT9EMSJHXJVVBe6l48sPkcD/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,22 +119,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Under CONFIG_PER_VMA_LOCK, mfill_atomic() holds only a per-VMA read
+lock across its page-by-page copy loop. A concurrent UFFDIO_UNREGISTER
+can acquire mmap_write_lock() and split the VMA mid-loop via
+__split_vma(), which calls vma_start_write() via __vma_enter_locked().
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+The split happens in the race window between CHECK 1 and vm_refcnt++
+in vma_start_read(). During this window vm_refcnt equals the base
+attached value, so vma_start_write() sees no readers and proceeds
+immediately without waiting, shrinking vma->vm_end in place.
+
+Both seqnum checks in vma_start_read() miss this because after
+mmap_write_unlock(), mm_lock_seq is incremented past vm_lock_seq
+making them unequal, so a split VMA is returned to mfill_atomic().
+
+On the next iteration, mfill_atomic_install_pte() calls
+folio_add_new_anon_rmap() with state.dst_addr >= vma->vm_end,
+triggering its sanity check:
+
+  address < vma->vm_start || address + (nr << 12) > vma->vm_end
+  WARNING: mm/rmap.c:1682 folio_add_new_anon_rmap+0x5fe/0x14b0
+
+Fix this by checking on each loop iteration whether state.dst_addr
+has fallen outside state.vma. If so, release the stale vma, update
+dst_start and len to reflect the current position, and re-lookup the
+vma via mfill_get_vma().
 
 Reported-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047"
 Tested-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+---
+ mm/userfaultfd.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Tested on:
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 9ffc80d0a51b..ab73c2106c38 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -910,6 +910,22 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 
+ 	while (state.src_addr < src_start + len) {
+ 		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
++	       /*
++		* Under CONFIG_PER_VMA_LOCK, a concurrent UFFDIO_UNREGISTER can
++		* split state.vma while we hold only the per-VMA read lock. The
++		* split shrinks vma->vm_end in place, causing dst_addr to fall
++		* outside the VMA bounds. Re-validate dst_addr on each iteration
++		* and re-lookup the vma if it has been split.
++		*/
++		if (state.dst_addr < state.vma->vm_start ||
++		    state.dst_addr >= state.vma->vm_end) {
++			mfill_put_vma(&state);
++			state.dst_start = state.dst_addr;
++			state.len = dst_start + len - state.dst_addr;
++			err = mfill_get_vma(&state);
++			if (err)
++				break;
++		}
+ 
+ 		err = mfill_get_pmd(&state);
+ 		if (err)
+-- 
+2.43.0
 
-commit:         b84a0ebe Add linux-next specific files for 20260313
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=11f43406580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d079c776411aaf59
-dashboard link: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=16cfdd52580000
-
-Note: testing is done by a robot and is best-effort only.
 
