@@ -4,110 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7A3BF46455
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B8F6F46453
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:56:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B1606B00BF; Mon, 16 Mar 2026 07:55:32 -0400 (EDT)
+	id 71E7F6B0201; Mon, 16 Mar 2026 07:56:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35E396B01FA; Mon, 16 Mar 2026 07:55:32 -0400 (EDT)
+	id 6F63A6B0202; Mon, 16 Mar 2026 07:56:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26B096B01FF; Mon, 16 Mar 2026 07:55:32 -0400 (EDT)
+	id 5F8FB6B0203; Mon, 16 Mar 2026 07:56:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 13B5E6B00BF
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:55:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0FE41B6D1E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:55:31 +0000 (UTC)
-X-FDA: 84551771262.19.DAB11B0
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DAA7940005
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:55:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DUOU0lmL;
-	spf=pass (imf12.hostedemail.com: domain of 3r--3aQkKCMIitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3r--3aQkKCMIitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3AA6B0201
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:56:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DF53C139077
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:56:11 +0000 (UTC)
+X-FDA: 84551772942.14.A92AB2D
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 24D4A180008
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:56:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=sZGSqH43
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773662130;
+	s=arc-20220608; t=1773662170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ob9tzx0aj2zeHdgbk4mDLaOraCCBLId3s0T7A6CDOE4=;
-	b=PJ/hYvmQsjTrHLxBoiRLfXeHoOleidrZech3+alF4AgaND8KKS1vwoVdpEhK4becvXzTi4
-	I3zArCHOj5p3Xw0T13ZZpAWbbpQQIOxa9zns33QS2RBxPYU8zE3XiNj9U2jig+87Fo4Ahq
-	H6mKAmcupdGAqqHurJ1dDiRXaTRN5hA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773662130; a=rsa-sha256;
-	cv=none;
-	b=e65EcDFlruCPPQxSdPRaznGQoqz62sxkoHsNC9TUgpI5e13ljCDMX+z+R9IQnA/d03Y64b
-	Y79o2a8HLgca94tuDbgwd0TbMiuYHbe5g6POZyUaH+7YapXV/mRnomiN7LgC1TX9TND0HX
-	WnQEdkVS/mLMensHgp2V2ZuXoKCdHyU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+3sWqaG5nn51dxLOt71Zd6vUvgXyqNk/HJIYLN7VT+A=;
+	b=KRY0xHyXdOycfAj2Af3BTKRFI21kIE5uDx/1si/2tpDV2ifOMQq3HvE0xMa6ISsiDK5P5Z
+	XbP0W+upXo7f5vqtI1x/CqQP9PZ0qmgbqPLc3aeSBTpi3qkGog3kSPfCBvSBlK4ePLUvfi
+	Eb3SL3gZu6edpbKBICa9WemPnt9mjj0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DUOU0lmL;
-	spf=pass (imf12.hostedemail.com: domain of 3r--3aQkKCMIitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3r--3aQkKCMIitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853b0af42aso68318045e9.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:55:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773662128; x=1774266928; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ob9tzx0aj2zeHdgbk4mDLaOraCCBLId3s0T7A6CDOE4=;
-        b=DUOU0lmLm9VBhLbX4VgpHoU/rM6d8Q/zHaEic4+DXyhg6lTPuzEgeqUcX3jab7YUgA
-         MXBSDAUJoM7CTw1u3KjNTucAY8IqNrZsX+zANwu8Rw+Cdz7Aepq4XBVZugQDlsxYSm00
-         2dP3lxabA9nO2v6CVndHBnM6pcxvLoScddSPL7cH9fkXYqg8k2iUGDVJ69edjybp5yB0
-         f2RPe/WfRXEJ58EO8flm1qFeTDyjFdUACvlmZCqhwZDyCmfPBgI1p+88a9PA+cvV1bAL
-         7IIbgDahA/n/CxrSbk+StyECcTBI5HvI6XMtTKfO2RmbKvc79Ot69QvXjEapki3rAucH
-         1sdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773662128; x=1774266928;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ob9tzx0aj2zeHdgbk4mDLaOraCCBLId3s0T7A6CDOE4=;
-        b=Kpw2NYQ+BlkxfCKI629s0cumSb0KgfPt8dZ88KdhYSTYMLPRsNGz2ZSnvnoAolQ1RO
-         x+rIsOuJON6QRY2lILBqM72fvCvDRUbKe+Z1sYqAjK0IF0IXS4STptNzn7q0K18Zleci
-         Zi99zrZjfFDIxpk3FFVSDkBb2Hq4vJWLBmdTNOPRZHWItthv2ZR/kY8m8TDm7rFJvtGo
-         q7hYtoD+rj5/oC9rVz5FL49owmaoK03DCQ/wy4bHz6naf2KCl4Fbp2EbAytYPwMnvqzP
-         p7ncPqBoII4T5BWE4whfy3wZHoeol0/VrTIqONhJxr+2Vzr7jfi8s7fWYdcaaHZ06Ws0
-         zZ6g==
-X-Forwarded-Encrypted: i=1; AJvYcCW+J+BzqCz4GS0RSmXqhPwqgDZ5dPIlH3hrwPNYO9TzEVQAmi62+odHX/7lHt+1Ww/PkZgU6+WBmg==@kvack.org
-X-Gm-Message-State: AOJu0YxEItgrfefNN53yFYeOU5LXsDZ1587NDpspant8kbGx7Y8hn4lK
-	l5oBok4EqJ7R3G+KhfRcO7t6E7RyK9IlHbwNP5zjWxpn1MSe6KJgkwAw0QlSbSo88Hxt5sb030d
-	Vw5AcqyMmWj5PwZXxLg==
-X-Received: from wmbfc7.prod.google.com ([2002:a05:600c:5247:b0:485:3ddc:f27c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3515:b0:47e:e57d:404 with SMTP id 5b1f17b1804b1-485567066a8mr212492925e9.16.1773662127851;
- Mon, 16 Mar 2026 04:55:27 -0700 (PDT)
-Date: Mon, 16 Mar 2026 11:55:26 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
-Message-ID: <abfvrh0ObKhtsR8I@google.com>
-Subject: Re: [PATCH 24/79] block: rust: add `BadBlocks` for bad block tracking
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=sZGSqH43;
+	spf=none (imf24.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773662170; a=rsa-sha256;
+	cv=none;
+	b=c+IAZlLaQ+P2Ifxf8jXZefcjt6J9AoZVQiNd4Ci0c9wMQkDCq+da+fG6XZYgLo1XPacMIn
+	uOhSp4QOXrsCSKwenimlv6KypPO3FTlVr3NYMbBE8XkuAZiNSam6c82HcA2xl87+C694Qq
+	NhNZ15/wHo8/US4zXubqLphWhGputiQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=+3sWqaG5nn51dxLOt71Zd6vUvgXyqNk/HJIYLN7VT+A=; b=sZGSqH43BTch+mWz1rtg96XWBO
+	x41dM0DqeFJK7wvzLiU9SgysU6I7zI6Vm3UGw/clQ80vpHXd6576ftEWiU6mlVI0b/+dfbAS2bO2z
+	fSFzfZBRL19LaDBDbx3KyNjOxvIAY/8KPOoTkbOKSgCIHu6nTqk2q4ddklCVB5fxbtszuGQVO13tU
+	C2qilsG6zQDBuv2T7ybpoJBy0Gj0RcWfkR3d2mee82bZuE2EMhRTMf103bdoLP2is3Uixuz/W0RGh
+	vEQNtS6b77Cf85b36jnznIJY679jk/qx2EcJVP2KF7sRZyymatJHMPHVmSBsXlyN1RJmnZ6z/batZ
+	N8ioLnPg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1w26YI-0025yt-Hj; Mon, 16 Mar 2026 11:56:06 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v9 0/6] kho: history: track previous kernel version and
+ kexec boot count
+Date: Mon, 16 Mar 2026 04:54:30 -0700
+Message-Id: <20260316-kho-v9-0-ed6dcd951988@debian.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DAA7940005
-X-Stat-Signature: 186g6miit4o4455g7zjucxwgjmsqs5ms
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHjvt2kC/23Oy2rDMBAF0F8xWmfKjF4jZdX/KF3o5UQtxMFOT
+ UvIvxdHLXVwlwP33DtXMZWxlknsu6sYy1ynOpzEvvO7TqRjOB0K1Cz2nZAoDUmF8H4cgBm5uCB
+ LT0XsOnEeS18/7y0vr+2ePuJbSZeFLoljnS7D+HWfmWnJPTbOBAQ6szdB6hx8ec4l1nB6GsaDW
+ Cpn+YssEsqGJCAQa44UVKBsN0itkWtIAUKkbCMH55WWG6RXSFJDGghMcn1hjtah3iCzRrYhAwi
+ cMvbWhyj/QXaNuCELCMb2XnlrHaXte/yHFP4sMSBo1Jl0Iudi3CC3Rr4hBwhJhZh6HRIbfEC32
+ +0brNMrQBwCAAA=
+X-Change-ID: 20251230-kho-7707e8a2ef1e
+To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, usama.arif@linux.dev, Breno Leitao <leitao@debian.org>, 
+ SeongJae Park <sj@kernel.org>, kernel-team@meta.com
+X-Mailer: b4 0.15-dev-363b9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5054; i=leitao@debian.org;
+ h=from:subject:message-id; bh=ARvgIQy24NhYr5bkE3olZX6vfsQX4plYP9jziUj1kxM=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpt+/QFnQikZZWlBAE+AfJ+O6pSuzsgCLMRSSkx
+ 4FIof3B+/eJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCabfv0AAKCRA1o5Of/Hh3
+ bXZJD/4pxZqo3ENUuwQa+oHyXClC7dYCX63gXiJkELp44LtVBrdjFuw+w03fMOeJ9jzx9AdABas
+ aZ/dGvCNa2EBjEH3Lqo6EeANYPmCq29pQJF1AFCbfUFH7ZIWl02IwvTO7MCNf4V2UjOlTDv3POH
+ ikHMvKAcemBGTGySTrYQz8+vilIrooCHOg4EUA7yXbhTLakzlRPActpa+wQBszCvSeKRPmmIzgJ
+ nBBvbOq7HwN70/EHssoXrFWSzTS4RAzNKvOC8De9zIs/8JfEHhdAbiym5Tw3TV3UtG8Onhzm9Ap
+ SDXnbn3f1FB24N7UXrYCBn+NvKArkhuhV0hTPRP6GpU3gG+1G+BiWsc7dKEAU4dIz4/QDfsQCNZ
+ hA8FicKvzmew+L6ebw2r6AUWXGGOOO0wqDWl41bjFkhHVeqBMlcYyz4tysz1zw9leY9mUyZnY9R
+ GqoKBXQLjoyhJFMWyd1TNcodB8ecVvOtJkSIrEXNjvsU0Woh0ied3UhFdLdakdzkL4ViaomH/lx
+ mEM6Ud+UV6V5crm3SISgu6kUGLEVwZlQhWVnjMu52nX/REKhpqEyQ3woDmFsj44o4zIil2dMIF7
+ oKBi1eeUoaNtOg9ddfAY/KSPPGzNjbvbCjQpERRnwFKxIFQljMNTTYf+WI602X9GcqCCtN3KAU4
+ Vu0A3ZgmQAeUsCA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 24D4A180008
+X-Stat-Signature: udnwsth75a44z67xaynpij8agzykaz5w
 X-Rspam-User: 
-X-HE-Tag: 1773662129-291747
-X-HE-Meta: U2FsdGVkX18zgBcRW5xFOpT+monvNlDAoShAai5N/Xzwa/6vWSbZDN0Ly5UG0Rk9v/ksvtYtVcdx0n3YxehOwUppKmkWchTOkpu7I5EwLw4PKlP9jFkHtl4nWxLyo91EozVnj0Kneo9MxdNbuWIRZfTR3p1kVhvI3vr2vlu89ERxcV6W9UxF9jijVvsMUylFMrKWk1Ya7u20mUhGzhxwJ0ggyxpqPbErl5US27C4/FDQ/KLajU67dk5gpwE0LDulf38ykLhslm7+Po01LbyKMOdtX4d32UG2crNhoRxjACKHdptb71urjJ5wusl5RCcrL6uIuoMYYPP5CHktH5fygjS2MeEDI560x1uB9f6R/9O04ZV1cxYoK2jWTQQlzA7nijvQ4wTFYgYdlXthZTH6bmZAxM5At+9MS6AmIldWIJq3d5FZsOe+zPTpf8bQ60fkViTtX4StYEV3Zq94iAvfbCycTYylDN1wjR8U/ODih0qecL4YVAEr7cBzG56C9Fe+ZTeLk4I+/p3HfkOCkzQGk2/wqR/iZIhVV4hzzZekXkwH5qWT+N7onOF1MRbe7wZjCxXntEidlyz9JHZlSrAbLmqPuOctvBAjKyQJkya9KwFMnrH3F68DGwVxrhILrg5vH4q34s0pS8bqbN1s7vVtC0YPzkVRr6YEYAU4sETcwqUsolDR3sue6pFDvqXKeJFdF5qOS1tqRLyeWzF2GhxQr6YBIW2whOg65uSox8IgNIBPaD3oRoUk2UmwL2NvPdW/onGjgi6/V4LOPPnDblS3vIaKIK+XMHTsP8QEOUsCuRXnPBfLqokGbJQvCWYDjp7fT9bMyzTtioATnYvc6nsC9v1QqrYcU2Vt3EAniMf4jFe+z/hU9Kajr92suOgl/xbZ27Lg80BoRqbkqIXlNh9gGQEYR4JHdMxQtv7s2HANItm5AqXxoapsgr3o/hFUdMa8vQsPWhbfbrKw85+2B+q
- T22fZDMh
- siKedhG4CBXT42dQbxFgz+Y0cD81WDsNCO6KV0uWjq/sTqnukCmM0NO5WU9o0EIDcsCWm9Cs//BM2l5TXr9IUS+jco/v41+QOf/2s8MDMPCFBgbnnMzW+qfOkVLpSzi7HkA4MVtkgyR89/N2qdHvRl8cBFD6HfQBbIHIdYKkGHi8qAwwgJ+5EFJ7uhDw+dbVq3Myq5c1dsEBCzCegzlhCwVPW/wFGlS8ei0gFBLaurJQYa6oR3lbdqXQo00eX+xAxexVyrv/L3jXzHde3gYLhx9L8Dnld6N0VPV/MFL8izZoigxgLS1lxoHj/ucOFw66YJwNEru/o2eVTrddtJq5DvGVfoeGYWb2f0bHQ8dz1h8I1u8xghFoM1CL8lOVUhFKlV+D2nnH9piyjt8WQhmV2ZyMajbfKgIdZb0/9hGtM2XVMBnvEiY/Ip4t6wG/y+7xh8LBJXhLBOR15/FsHNpP8hJfUUho0EYLLkV0BuY+50qabpwtUdoXCGnyRSwq4C6kJ5B1pu0sPRED+JK4bg0nQCs62te8Vk6iJdEmwW9jsZhghSWg4QeXrRZLgkUkn4DFobriNnhhB5dbo0Mh6YvGKMNBTy8J68uo06S+uhlmxK1c7DFZT5ikms1oaFQWSbiVkZN7tPqM01z4jmRlLf9Pmr8VJSwu/ED/pOVpOExdv3rZre43A1FtRqqe3Xue914kFcUSrigESGreCDHvRzShIlX0v+QcVE03MFirB/3Td74Ghp6ipC4hrxP+Ilg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773662169-106646
+X-HE-Meta: U2FsdGVkX1+VBbXwiwEZtuGftawhbjiIQc4K+7eC+VmRpzz2lE0x7sFGKwMYXod2VwrdDFPB3gaObDxYaV7/+OoZExE8ea4zAlbtR7+38Py75NiYsvMDpNb2wLhKDKkrm7trQOqEHaYkc0b8eAYOf/s7NbmEfnW0zcxcOloa4WtWQVk51HMApJqvJXAun/2Q/W8tFsY3vxIjd2PuXbjAdRdi/cUNEve/FGlxa/g9jeanyKQxLlvIcRjVWeavjj4hUGa2Hha8ovSdMZJ1AqOhKlrX2wjXo9qZLEmoRTuSTd19zjvg0PaK3CFKdPkGOKfyCqv53Tfa2ORzMzeJ/75ll1EQot59Deke699WVZDQk5tAch3ukLGa+ISXyTv7OA11qsrFxDrCIi6qslAewEvHC5uGFA3RoXECSRS00rSjywQ2rTnoxWn0qSm7IjZvhzRH7TWjij4hw+XDkVrkDfujNgfKSDQhNt/NrTPNF1iO+ucjhg2flutc/jR7X8kCXuOori6j/1sdrVdpxX/DVVXJiafwWu2beboRo+n4ygcTd0qWLgkqGW7GZeasqn9grR3aaHxObkpeCnsaa+Q56c3h8bKlHEBDB3fY91yKKcLqjNRehytJSq8FAAeC9lU4x6TAv2B/6jpk1SMjlCjAmTo50tcLrlGm4U6ZApk8/fhpue8ynZZKb8Hldi0nbUs57pDB4d5oNwAf8fSXvUVenOVcUQYG7riBjUbXYnSv/MCWPt5HF6W1pTFytC9OnaTxD/mraW6qkyyur+MCr/MdDtWlVfZhCxRPEg41Cazmk/qE+VLq8D1LQiX4nQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,193 +113,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:11AM +0100, Andreas Hindborg wrote:
-> Add a safe Rust wrapper around the Linux kernel's badblocks infrastructure
-> to track and manage defective sectors on block devices. The BadBlocks type
-> provides methods to:
-> 
-> - Mark sectors as bad or good (set_bad/set_good)
-> - Check if sector ranges contain bad blocks (check)
-> - Automatically handle memory management with PinnedDrop
-> 
-> The implementation includes comprehensive documentation with examples for
-> block device drivers that need to avoid known bad sectors to maintain
-> data integrity. Bad blocks information is used by device drivers,
-> filesystem layers, and device management tools.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Use Kexec Handover (KHO) to pass the previous kernel's version string
+and the number of kexec reboots since the last cold boot to the next
+kernel, and print it at boot time.
 
-> diff --git a/rust/kernel/block/badblocks.rs b/rust/kernel/block/badblocks.rs
-> new file mode 100644
-> index 0000000000000..a5fe0fde2e755
-> --- /dev/null
-> +++ b/rust/kernel/block/badblocks.rs
-> @@ -0,0 +1,721 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Bad blocks tracking for block devices.
-> +//!
-> +//! This module provides a safe Rust wrapper around the badblocks
-> +//! infrastructure, which is used to track and manage bad sectors on block
-> +//! devices. Bad blocks are sectors that cannot reliably store data and should
-> +//! be avoided during I/O operations.
+Example
+=======
+	[    0.000000] Linux version 6.19.0-rc3-upstream-00047-ge5d992347849
+	...
+	[    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107upstream-00004-g3071b0dc4498 (count 1)
 
-Could use a srctree link to badblocks.h here.
+Motivation
+==========
 
-> +/// # Examples
-> +///
-> +/// Basic usage:
-> +///
-> +/// ```rust
-> +/// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
-> +/// # use kernel::prelude::*;
-> +///
+Bugs that only reproduce when kexecing from specific kernel versions
+are difficult to diagnose. These issues occur when a buggy kernel
+kexecs into a new kernel, with the bug manifesting only in the second
+kernel.
 
-Unhide the imports or remove this empty line.
+Recent examples include:
 
-> +/// // Create a new bad blocks tracker
-> +/// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
-> +///
-> +/// // Mark sectors 100-109 as bad (unacknowledged)
-> +/// bad_blocks.set_bad(100..110, false)?;
-> +///
-> +/// // Check if sector range 95-104 contains bad blocks
-> +/// match bad_blocks.check(95..105) {
-> +///     BlockStatus::None => pr_info!("No bad blocks found"),
-> +///     BlockStatus::Acknowledged(range) => pr_warn!("Acknowledged bad blocks: {:?}", range),
-> +///     BlockStatus::Unacknowledged(range) => pr_err!("Unacknowledged bad blocks: {:?}", range),
-> +/// }
-> +/// # Ok::<(), kernel::error::Error>(())
-> +/// ```
-> +/// # Invariants
-> +///
-> +/// - `self.blocks` is a valid `bindings::badblocks` struct.
-> +#[pin_data(PinnedDrop)]
-> +pub struct BadBlocks {
-> +    #[pin]
-> +    blocks: Opaque<bindings::badblocks>,
-> +}
-> +
-> +impl BadBlocks {
-> +    /// Creates a new bad blocks tracker.
-> +    ///
-> +    /// Initializes an empty bad blocks tracker that can manage defective sectors
-> +    /// on a block device. The tracker starts with no bad blocks recorded and
-> +    /// allocates a single page for storing bad block entries.
-> +    ///
-> +    /// # Returns
-> +    ///
-> +    /// Returns a [`PinInit`] that can be used to initialize a [`BadBlocks`] instance.
-> +    /// Initialization may fail with `ENOMEM` if memory allocation fails.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```rust
-> +    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
-> +    /// # use kernel::prelude::*;
-> +    ///
+ * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
+ * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
+ * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
 
-Ditto. (Many times throughout file.)
+As kexec-based reboots become more common, these version-dependent bugs
+are appearing more frequently. At scale, correlating crashes to the
+previous kernel version is challenging, especially when issues only
+occur in specific transition scenarios.
 
-> +    /// // Create and initialize a bad blocks tracker
-> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
-> +    ///
-> +    /// // The tracker is ready to use with no bad blocks initially
-> +    /// match bad_blocks.check(0..100) {
-> +    ///     BlockStatus::None => pr_info!("No bad blocks found initially"),
-> +    ///     _ => unreachable!(),
-> +    /// }
-> +    /// # Ok::<(), kernel::error::Error>(())
-> +    /// ```
-> +    pub fn new(enable: bool) -> impl PinInit<Self, Error> {
-> +        // INVARIANT: We initialize `self.blocks` below. If initialization fails, an error is
-> +        // returned.
-> +        try_pin_init!(Self {
-> +            blocks <- Opaque::try_ffi_init(|slot| {
-> +                // SAFETY: `slot` is a valid pointer to uninitialized memory
-> +                // allocated by the Opaque type. `badblocks_init` is safe to
-> +                // call with uninitialized memory.
-> +                to_result(unsafe {bindings::badblocks_init(slot, if enable {1} else {0})})
+Some bugs manifest only after multiple consecutive kexec reboots.
+Tracking the kexec count helps identify these cases (this metric is
+already used by live update sub-system).
 
-I think you can just cast the boolean to an integer.
+KHO provides a reliable mechanism to pass information between kernels.
+By carrying the previous kernel's release string and kexec count
+forward, we can print this context at boot time to aid debugging.
 
-Also, formatting here is off (but ignored by rustfmt due to macro.)
+The goal of this feature is to have this information being printed in
+early boot, so, users can trace back kernel releases in kexec. Systemd
+is not helpful because we cannot assume that the previous kernel has
+systemd or even write access to the disk (common when using Linux as
+bootloaders)
 
-> +    /// Enables the bad blocks tracker if it was previously disabled.
-> +    ///
-> +    /// Attempts to enable bad block tracking by transitioning the tracker from
-> +    /// a disabled state to an enabled state.
-> +    ///
-> +    /// # Behavior
-> +    ///
-> +    /// - If the tracker is disabled, it will be enabled.
-> +    /// - If the tracker is already enabled, this operation has no effect.
-> +    /// - The operation is atomic and thread-safe.
-> +    ///
-> +    /// # Usage
-> +    ///
-> +    /// Bad blocks trackers can be created in a disabled state and enabled later
-> +    /// when needed. This is useful for conditional bad block tracking or for
-> +    /// deferring activation until the device is fully initialized.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```rust
-> +    /// # use kernel::block::badblocks::BadBlocks;
-> +    /// # use kernel::prelude::*;
-> +    ///
-> +    /// // Create a disabled bad blocks tracker
-> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(false), GFP_KERNEL)?;
-> +    /// assert!(!bad_blocks.enabled());
-> +    ///
-> +    /// // Enable it when needed
-> +    /// bad_blocks.enable();
-> +    /// assert!(bad_blocks.enabled());
-> +    ///
-> +    /// // Subsequent enable calls have no effect
-> +    /// bad_blocks.enable();
-> +    /// assert!(bad_blocks.enabled());
-> +    /// # Ok::<(), kernel::error::Error>(())
-> +    /// ```
-> +    pub fn enable(&self) {
-> +        let _ = self.shift_ref().cmpxchg(-1, 0, ordering::Relaxed);
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+---
+Changes in v9:
+- Rebase on top of new KHO changes
+- Fail and ignore subtree in case size is invalid (Pratyush)
+- Separate kexec_metadata into a new file (Pratyush)
+- Link to v8: https://patch.msgid.link/20260309-kho-v8-0-c3abcf4ac750@debian.org
 
-Is there not a C function you can call here? It would be simpler that
-way. Surely drivers don't do this directly.
+Changes in v8:
+- Removed an unnecessary size variable (Mike)
+- Moved some renaming to the proper rename patch (Mike)
+- Link to v7: https://patch.msgid.link/20260306-kho-v7-0-404d14c188bb@debian.org
 
-> +    }
-> +
-> +    /// Checks whether the bad blocks tracker is currently enabled.
-> +    ///
-> +    /// Returns `true` if bad block tracking is active, `false` if it is disabled.
-> +    /// When disabled, the tracker will not perform bad block checks or operations.
-> +    ///
-> +    /// # Returns
-> +    ///
-> +    /// - `true` - Bad block tracking is enabled and operational
-> +    /// - `false` - Bad block tracking is disabled
+Changes in v7:
+- Persist blob size in KHO FDT as a "blob-size" property so the
+  incoming kernel can determine blob sizes without assuming FDT
+  format (Pratyush)
+- Link to v6: https://patch.msgid.link/20260127-kho-v6-0-56f9396681c2@debian.org
 
-You explain the meaning of return values twice here. Just drop the
-'Returns' section.
+Changes in v6:
+- s/UAPI/uABI (Mike)
+- Expanded the rename of s/fdt/blob to kho_debugfs_* calls also (Mike)
+- Link to v5: https://patch.msgid.link/20260126-kho-v5-0-7cd0f69ab204@debian.org
 
-> +    /// # Thread Safety
-> +    ///
-> +    /// This method is thread-safe and uses atomic operations to check the
-> +    /// tracker's state without requiring external synchronization.
+Changes in v5:
+- Add a patch to document the new feature.
+- Change kho_add_subtree() to receive the size instad of guessing it.
+- reworked some code path to make it more standard.
+- Link to v4: https://patch.msgid.link/20260121-kho-v4-1-5c8fe77b6804@debian.org
 
-This is implicit from the signature of the function.
+Changes in v4:
+- Squashed everything in a single commit
+- Moved from FDT to C structs (Pratyush)
+- Usage of subtress intead of FDT directly (Pratyush)
+- Renamed a bunch of variables and functions.
+- Link to v3: https://patch.msgid.link/20260108-kho-v3-0-b1d6b7a89342@debian.org
 
-> +    pub fn set_good(&self, range: impl RangeBounds<u64>) -> Result {
-> +        let range = Self::range(range);
-> +        // SAFETY: By type invariant `self.blocks` is valid. The C function
-> +        // `badblocks_clear` handles synchronization internally.
-> +        unsafe {
-> +            bindings::badblocks_clear(self.blocks.get(), range.start, range.end - range.start)
-> +        }
-> +        .then_some(())
-> +        .ok_or(EINVAL)
+Changes in v3:
+- Remove the extra CONFIG for this feature.
+- Reworded some identifiers, properties and printks.
+- Better documented the questions raised during v2.
+- Link to v2: https://patch.msgid.link/20260102-kho-v2-0-1747b1a3a1d6@debian.org
 
-then_some() is quite obscure. I would recommend if/else here.
+Changes from v2 to v1 (RFC)
+- Track the number of kexecs since cold boot (Pasha)
+- Change the printk() order compared to KHO
+- Rewording of the commit summary
+- Link to RFC: https://patch.msgid.link/20251230-kho-v1-1-4d795a24da9e@debian.org
 
-Alice
+---
+Breno Leitao (6):
+      kho: add size parameter to kho_add_subtree()
+      kho: rename fdt parameter to blob in kho_add/remove_subtree()
+      kho: persist blob size in KHO FDT
+      kho: fix kho_in_debugfs_init() to handle non-FDT blobs
+      kho: kexec-metadata: track previous kernel chain
+      kho: document kexec-metadata tracking feature
+
+ Documentation/admin-guide/mm/kho.rst        |  41 +++++++-
+ include/linux/kexec_handover.h              |  13 +--
+ include/linux/kho/abi/kexec_handover.h      |  20 +++-
+ include/linux/kho/abi/kexec_metadata.h      |  46 ++++++++
+ kernel/liveupdate/kexec_handover.c          | 158 ++++++++++++++++++++++++----
+ kernel/liveupdate/kexec_handover_debugfs.c  |  55 ++++++----
+ kernel/liveupdate/kexec_handover_internal.h |  15 +--
+ kernel/liveupdate/luo_core.c                |   5 +-
+ lib/test_kho.c                              |   5 +-
+ mm/memblock.c                               |   4 +-
+ 10 files changed, 298 insertions(+), 64 deletions(-)
+---
+base-commit: 5c9e55fecf9365890c64f14761a80f9413a3b1d1
+change-id: 20251230-kho-7707e8a2ef1e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
