@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A424F46445
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:40:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696DFF4644A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2EE96B018B; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
+	id 9886B6B018D; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDCCF6B018C; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
+	id 972F86B018E; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADEDF6B018D; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
+	id 874F16B018F; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B1356B018B
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ECC8314019A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:40:38 +0000 (UTC)
-X-FDA: 84551582556.09.DF8799E
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3476F140009
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:40:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GKLSTRH1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7344C6B018D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0EF011401A8
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:43:41 +0000 (UTC)
+X-FDA: 84551590242.01.F9F8311
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 49E994000B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:43:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eYFgQzJF;
+	spf=pass (imf12.hostedemail.com: domain of 32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773657637;
+	s=arc-20220608; t=1773657819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KKz2KTzlcBf86rOKf9vSTqBmxmc8gj/65J7dXuwwtTQ=;
-	b=bTjPruToxZ/oH0BFU35w/ggJjBSYRXpsPx0qISc0/nITDkt6TovsXo2bKTpdsnOnuoC8Q7
-	BSirZ2AU/0wKoHf5fogOk3qM4j/+BJaR/X7REpvRElwNXaB/rYM5ot8Qp9cUi0uDoGQ6UE
-	CKlah3anTv+ppbaIpM7F6iPiVFqmQ0w=
+	bh=aIsjm9vE54z8tUJ1wyvdDm1uLSUX2YtWlUueHA6I6BA=;
+	b=ad2ngCblACyrYfkyjfUaflClFVaBCj2CzVh4hjDZcwXKVyf/3HmL5Yw9AFUSCHgTacVIFi
+	LgirhyrJFVyFK11Dh06sYkufBRuONWo3KFeU/xHaCrwQD+8u5DwLxok1FRujwhE31zAojM
+	oyvE4HXf9Qvlp4834EP/ZpZm7U1w258=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GKLSTRH1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773657637; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eYFgQzJF;
+	spf=pass (imf12.hostedemail.com: domain of 32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773657819; a=rsa-sha256;
 	cv=none;
-	b=JjZ4GFfpnSq5d02kvgtOv2GJqsvI5eMWaJR7KHcFiKx+FyXUNUg6ql8h7YrD5LiCUSIkyV
-	0SaGxYYN6Oja6CxdmLrZGY4KwIGAMKfVZs6PAMvEqNVkyRppOA2ZHAmT8qJ6PiPvZqm8kY
-	Zh0N5BKrctQHh6XoimJYKN1yM/KFWhE=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43b3d3d2d22so1294550f8f.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:40:36 -0700 (PDT)
+	b=uqnyeR7CH1o5OzedBCT6/yvrGXKR3PF6Pf8U/iNZQpsP7VOEpvaD1H2bhc4WVQ6upS7ct/
+	WlUbPXNIDkVA+5ewj1YemCLUSW9SijrBeoJ0TOD51qqioGLjM45rfTdZpvbD6tpQt3z80i
+	xYzq0d2mJrdWbJxxlFkBMLGvyN50hRE=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48544725bdeso57296365e9.2
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:43:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773657636; x=1774262436; darn=kvack.org;
+        d=google.com; s=20251104; t=1773657818; x=1774262618; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KKz2KTzlcBf86rOKf9vSTqBmxmc8gj/65J7dXuwwtTQ=;
-        b=GKLSTRH11oUQbWLO83APFwMxxJktM/2DpRkAzQzfBVLXcv9Pn9g89KG9GUNhRBuVD0
-         os3qKnMsvWArwueDU66deEmDCFitQQOsbKvAl2YR/RrA4Jcf7M6it9j06eovj4h+DzJM
-         ItNwUWwqnoeE0z2UlIUDGEz1D88ABh2gxkzyCo1qX/6fEQTHm2cB+PvbD8LsuG4OcAJG
-         ptt0/YVUBvq52E1/+qGRYlpAH6De3nf8iF7ryZGa+ALyROWZ0pkeX3xgbzmowxOr5Ezk
-         G2UdmxBkE1ubLs31N/Tyf8s9HAbh+soWE3nS/8ldZAMXvqWhXnlEfT/5cGTM7LzrWHIP
-         DvBQ==
+        bh=aIsjm9vE54z8tUJ1wyvdDm1uLSUX2YtWlUueHA6I6BA=;
+        b=eYFgQzJF3TGrVDiN/m9vc5EMnBXQV+RvglT3Vnkmu5aOMKuD6di89inY7732UXRohI
+         t6f/eo/LEcCMK8CH+vAXhg/u7yI6+kGcjPolZxHkEyL3jNyDA6sq0PCLBmB017Phki+A
+         00UuT4nu99Y/shvQZFhSzpJaojed6WRH8y/NQzEBpvBMW9YcnoIZJbrSrQHry4IPmJw8
+         XCb6BHRknn4nI4XQ5lWx+BjF/QmdL1mHF1BMg/X+RDb/sSrbCSfNN9nVE8igGTleiA4M
+         ybxmalBM5vAnL478pWtEpBywXCTre/UXm/b3m4fxa1SrcO1pALUUkiq/g6Ur+Vu0/0BH
+         JDUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773657636; x=1774262436;
+        d=1e100.net; s=20251104; t=1773657818; x=1774262618;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KKz2KTzlcBf86rOKf9vSTqBmxmc8gj/65J7dXuwwtTQ=;
-        b=TVs0FnzdXIagMoLkh7swwbfWF8Tz8sfIZUg2M2hpWsIBKLUb4w51qrSsps/hn0fTuI
-         nl8WX3YGN+rzSdlChhh+2L1cnvrgKVejhziMC3OwxhhFcVZp5yr3409l8vu1msuJRj7w
-         6y3kwlOjktezYQZHEqjVvd3xTCj0foSASeapjgfek1F7qWFiVCwwVHFz8RdLmULzRn3g
-         +m+W0c0kjGlDcpOsTMMy3Ot24WQxu5Q0cf+bRicmNTW9i3DbdfZy8xrb0j+2hIfZWPyA
-         DPqEP7Intw7h2rZPnlprw+Rda8gdWPkPwqUwxW/LYBdzpLNmkfsdJEmMGVli2u249so+
-         dBAA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvP11SY3Q+OFtuQJHtc4bjYLRO/NM+0ZL6IjUMXZo3Yd1gFXWSdLNIvVtboB2bCPo8QSuKHrDIXw==@kvack.org
-X-Gm-Message-State: AOJu0YxY1NKjBhtKfjgUCl57BxihTOy6icY/hN+W6My8dztJjE3TuOid
-	dA2UIJZPYodxWEvl0st5a/L8/EpuOlvnZs0XR6VQMBQXbK2AGkoDVive14mffBUdG2zekIU/YRG
-	mFdMDUr73bc2e/7Uy+w==
-X-Received: from wrbbs28.prod.google.com ([2002:a05:6000:71c:b0:439:cc48:d5])
+        bh=aIsjm9vE54z8tUJ1wyvdDm1uLSUX2YtWlUueHA6I6BA=;
+        b=AyzEO4MGBnYFkVKlg2tBc5c5J/jXY4GJWkymDYV1NERoXdjO5uWoQZeU5PzKr15eCV
+         Q7/vY5Sfyjj/G0XYJxyJILClsvOQhzZbuhEA7wC/6e3Js/P4GMzLJJGhOmkTzBPMtfmF
+         KmUaDwebdMjZtV1qVFEYw90TrIWWrx3fuVeFkYKLgImEQ+d8vdPEIcl/WQhnWjAiSy5f
+         r6D1jBc5izluopzlLNuRDXtzlfD/gU3ExLUkpqF0i9X8vIph5uUHO5PzRy2wv6M3x0OU
+         ghFMXG43/Ir50ZeWWWPqR5PZlkK2XcGffV7sHgJ++jns2mfWNAzTWFGIzs0NBRk4hHhE
+         zobw==
+X-Forwarded-Encrypted: i=1; AJvYcCXkiCRrHEG8VySW2mouXuVrYGhn+C75EB+G3I56grh/rtpByDJaDIm7wh6aae7R4OXGWHIYesuaNg==@kvack.org
+X-Gm-Message-State: AOJu0YzcH+JiUMK9vjDJj9M+bLlnp+whJJ46sD4owPIQizS+yB6wtzfj
+	QTqVFkVMw8Nsg5wGHzfG5JxpicfTBs9oi2WraD/z/ncAFrCBkhyNfRxhl7kxOwxpKn/EFs+Y02y
+	WyE4t+MXCBLC5ZXX5sA==
+X-Received: from wmno9.prod.google.com ([2002:a05:600c:1649:b0:485:38ca:51c9])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:26c2:b0:43b:433f:489c with SMTP id ffacd0b85a97d-43b433f4a72mr6008387f8f.13.1773657635312;
- Mon, 16 Mar 2026 03:40:35 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:40:34 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-14-de9a7af4b469@kernel.org>
+ 2002:a05:600c:1e8c:b0:485:3e00:9440 with SMTP id 5b1f17b1804b1-4855670c296mr200273645e9.24.1773657817662;
+ Mon, 16 Mar 2026 03:43:37 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:43:36 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
 Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-14-de9a7af4b469@kernel.org>
-Message-ID: <abfeIpz8HP_Pr5Yv@google.com>
-Subject: Re: [PATCH 14/79] block: rnull: add submit queue count config option
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
+Message-ID: <abfe2LbhLzXiGCkA@google.com>
+Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config option
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -100,14 +100,14 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3476F140009
-X-Stat-Signature: sr6c53naqhpayep3x6udt7qw9x1813pz
+X-Rspamd-Queue-Id: 49E994000B
+X-Stat-Signature: j5iu1cz55bjci6qtjyf4c64u8jhoncdq
 X-Rspam-User: 
-X-HE-Tag: 1773657636-259764
-X-HE-Meta: U2FsdGVkX19OuETbHYUtHwpOcEYX/JoSeDzWcTxCcpfndaooMo3XDkbts9IWrEMO7bxri1YH3RBf1PZMqpu+WL7oQfXejjHmbH8RZX2uI7KS9BVnGdoxcdZhy3wXTEWcyQAfbHH04WSncba/q9z+d9LNws7of81XLs2+QEucgBpe4feI6Vhwzt2/OcaE5saf50gwUm9r2vZRmlhK1KuKc1CoWVlsNR1wU/YugXNTVkPb6yxlr6xbzALei+TvkZ6i8Q7U7jk7Om8oIgqeJqw0cnu8uTBoH5AHMLA9VnKnUNnLabH5Ni23LrhCyduzM+TKErQQnFzh5h9hsVNeIyns33VOn+nM+E6x76Tgo+ZyH9pmzTFoEJQemEQUmVvDsS/aiDGyg/DNFJJ+ZormMb0xxIr3/K9vvvgBirAcKwbQ3cDdxppAa2f9lsTzPRKb95IQk8PYHG4SfjIBS79umFFvTkbkYocRH5E6Ji1Qh/Q1afLrESevLwhkXJhrJ0r3e4087sLL4ugVw/0OENmCNF+ZSvHGng5a0I8BxbbXFp7KWsa+zf4bT3Uj9YZy37cn+xp5FspKzNpOHjqdBwwHBV5kHkyOEnEUhjIJjmSFR5l3sesPDXzMaam0Dxs7BE2B3kAdePltL/MpLSZWgVHRT3Cg1eit2SR9bdzbVgErzGiy8yNzS9hWSrQSg4K8InPJ2hfiMMEbxE5Z87xzOlpblRd+n4TxMTlfACcD75qXXH3mqG3wAYItzxWXdetwGL4d2zpOdoTj7fI6cLDc+qpqznCwQ6qNv2VCfdT3D2RnFxwCJAMrcvAlePQOwYby3W2LOKc/UlE5bcuHDhY2z/YUnRVZlM6nxpmR9BAGbkBT+WjtSD7za5VIi/z9/8ZYPrBALEgNK6a58hu9rxmL4rb4CEM/Lh+S33Xp2Trhh2e2SZWEDLaa5TA7Pf3dE3SJc0Oa1ETavGXh+iY+F18RV4EOU7y
- KmPctUE1
- 5/70/biwvSxavOVTSiAnsOgrGhXN7WXC2AuyszM4buIjoBu381aI5EQdSW6PN8ICmlQmymQUh8nslwhHeRGjfQDh2L39pWeO7tcKqa1v5ndt0r7rMVZT0/fTkW9dqlDSSx3INMzUaRaLP82jPVK7Xpkn1dINddv3DrF8yoHJw0VxLF9lrNArhlwM2/l/Ngz8+WEO18ZueVpEdBE+AK7dfF9vSVbTS1fhnt+9I0mliJYhXYhB1Bzyyo1PzSCj4a97Qhb9GJAbm3rbqj0kwec1+iYkAQAnMAXlwiwtPURrOvkn9wWFbO0PLK3KF55PVVTHmd5jIda/LTifhBPS11MpYA+xr/VnqSjINiA/+wv/ePpqdWoU/FlSp7ZpIAJTly+4Kx/CyCivZpcMByzdqYQje01EVMasSv293XJKHV6bn8FNCf3iHQNiILx6n4OutaRSmYXVuzkYRkQfqxYNTxDDuQ62SIGTjzisJ2Ho/OFFbcAfy2HPeQdQURXWXmPaxGXGOH0QizIA0oj6w3mCeqIL8AkDT70q7PiqY6jn9AQ4HByzgBfDIhekzp+kOH5kDSykFR7f6YCU4iAEGFgovg3m2OJ2X3QSviaMXvFmdsvgg7BfGLLT7tltrS+HfEfyl4UDj0oRVmNV/k1qdoi2ekZwZ3p3UKWwTbSrrts+EBpCrkJP8CJawfi5UijEgUTvbdVXz+BAk9k865MdzTWY=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773657819-753098
+X-HE-Meta: U2FsdGVkX1/sbnuzAhL4tDLK0rZ+bz+02oxwlUngPa+jJY3RT2B+KHst9ER0JOrgqJs4JPzPkbjQhGfQR+3HMfMGGLuJCyX4+EOQe8tAGXb5m6XabdP9nrfPfH2XV0wyJHV3T5s+hJltksqTQPTi8ad2mIO2VizVSf937J18wx/XrQ9aP73VBl+JNPu6ya4QghYldS1x6/N+O5jA5LlrQoQiUmtz8Y49zcRJOjJxivM6shxPqGOjfOHSOEssCZ+KbfDUOOc4T1IK3ufr9zW4l0ty8b5y9vHu0zocNMwLpUKqMI1uNYvsM9IINGhx9QNZSxQx4WkbvHEi6yYTJBIXJ6tfTqB9rho5a2pPT/ko9maEHd3XlR3oHUB5Vfky0XjoNwxRWxs3L4DBoFyV2VzT7b7i0Vqj2h1gw9zOltqSTrhfbw6I6xt+nhsekv0SuyBX00w0Ng4SBijwrGoafNyVqVCMOvyLxvkObDfCjfJZznkMT5Nbesp2VE2DJ3mvVmbmoYWxCQjZ9cmzbrHY7vXDBE/ZKGtb7ntbRjI0NKRONAFIpUhqNz/8ON/LJoSSXqsUgZAR158ttG+qJ1ZcBQ1wkYevT8eexszIvcjS5GXi16lm5kk7fykKtaeobjjYMNUS9TWMGifMygDn576Dzs+iGlsydoV5FsSwxDmldj5k14zfuXphQijFAv/0GTxtHhZSyp12xUWCRiiMFzl6EDH+JtGY4xaDDdkB1b2LH6TeaG3pC01xxh+ZfTgNFU/056QOOdsbYAJ+DvHFcFuSWPSb3RLgVlTExJnlltC+uXsboqLu8rnaUhgwhTTOD6DHVZkJS/l1c2kYOphjkZHSUP8S6qYKnz2du8df5HPW+fM93MXZ3vH3eQvnEXWNvENJPKt483Q8KRqJ0+frtwymwt9lc3N48/pkzYIebOzvQzZ/u8iiiFY/A7MGm7QzxOxy2sAxfrMfOXmUtyxjYxeySgy
+ C6vFFipR
+ EIdFymRoItQmgVI2BOPykbUA8LcVaNIJaVXoc/+osgfBTC0PZKnj1YwRToaujN1dNFZj+xE8TS15cOQu5Mci55wYXeB6Y/7bJ+bJryJ2u7JMOxGBBG3LZYwHJC/KkGt9iz3o1pnNlz0TrmNRHHXaCNyhbj7P/6SJz2irTqwOUbwBG8V8GwFmx2Eteb0r6HrGL0eLLpdGsNIxC+eL+gO42vX5cZwT8BMNrvNo05snNEm9IgV6Ry100yq/D8yPpSFAsjFdn3xqVSY7HB8z/84dmmuCto9OrqGn3lV0U4Atm/zSSgSyifve05tyUGW7sszVPl1cTO3H3sAaEh5HQWef/JlB+82ZvUi2xKs74BeA7UhacXMmO6v2plU07cwbtkfSqSEWMKFv+jFlCB3qiCg9NCYrO8KzoYapdHtjV1NsDRsmY/T9VxDhOs6fBwRzbCIZQISTnWZMhodFuksBGbV56SV8dlREiRukoXDP62Y3m+rvNlY2xgVE6LeD8Wo680KI0Fp3YTtkv1NVfF+m+nj9d7qgtLdbYLaG61IdKEDa28B9rmwGk4hB5CZi0VMUgw9bYW9d6K+XMVto/+r7rRyRZeueuF3AL0FenB+7mcCia/0tlWyg/CGMVXuJ/BOSTmIhGEhJJBou/lmbIYTHHyXkBeWk759+bjaACdWr2GfL4x4WTWsr8c02wAwp7c0c0UZ7Pdq+boLGfxLoOPSWyuSeYMb4YCoJER6gwawL9MeeqFIcvxZlwoOFQjBCg+DMtCUqVgMRL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,67 +115,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:01AM +0100, Andreas Hindborg wrote:
-> Allow user space to control the number of submission queues when creating
-> null block devices.
+On Mon, Feb 16, 2026 at 12:35:02AM +0100, Andreas Hindborg wrote:
+> Add a configfs attribute to enable per-NUMA-node hardware contexts.
+> When enabled, the driver creates one hardware queue per NUMA node
+> instead of the default configuration.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  drivers/block/rnull/configfs.rs | 56 +++++++++++++++++++++++++++++++++--------
->  drivers/block/rnull/rnull.rs    | 56 +++++++++++++++++++++++++++--------------
->  2 files changed, 83 insertions(+), 29 deletions(-)
-> 
-> diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-> index b5dc30c5d3e20..fd3cbf7aa012e 100644
-> --- a/drivers/block/rnull/configfs.rs
-> +++ b/drivers/block/rnull/configfs.rs
-> @@ -59,7 +59,10 @@ impl AttributeOperations<0> for Config {
->  
->      fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
->          let mut writer = kernel::str::Formatter::new(page);
-> -        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec,memory_backed\n")?;
-> +        writer.write_str(
-> +            "blocksize,size,rotational,irqmode,completion_nsec,memory_backed\
-> +             submit_queues\n",
-> +        )?;
 
-Missing comma? If so, this may indicate missing test coverage :)
+This and other patches make me think that module parameters should have
+value() return a copy of the value (and require Copy). For non-copy
+types, there can be a separate value_ref() method. You would avoid *so*
+many asterisks by doing that.
 
-> +struct NullBlkOptions<'a> {
-> +    name: &'a CStr,
-> +    block_size: u32,
-> +    rotational: bool,
-> +    capacity_mib: u64,
-> +    irq_mode: IRQMode,
-> +    completion_time: Delta,
-> +    memory_backed: bool,
-> +    submit_queues: u32,
-> +}
->  struct NullBlkDevice;
->  
->  impl NullBlkDevice {
-> -    fn new(
-> -        name: &CStr,
-> -        block_size: u32,
-> -        rotational: bool,
-> -        capacity_mib: u64,
-> -        irq_mode: IRQMode,
-> -        completion_time: Delta,
-> -        memory_backed: bool,
-> -    ) -> Result<GenDisk<Self>> {
-> +    fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-> +        let NullBlkOptions {
-> +            name,
-> +            block_size,
-> +            rotational,
-> +            capacity_mib,
-> +            irq_mode,
-> +            completion_time,
-> +            memory_backed,
-> +            submit_queues,
-> +        } = options;
+> +configfs_attribute!(DeviceConfig, 8,
+> +    show: |this, page| show_field(
+> +        this.data.lock().submit_queues == kernel::num_online_nodes(), page
+> +    ),
+> +    store: |this, page| store_with_power_check(this, page, |this, page| {
+> +        let value = core::str::from_utf8(page)?
+> +            .trim()
+> +            .parse::<u8>()
+> +            .map_err(|_| kernel::error::code::EINVAL)?
+> +            != 0;
+> +
+> +        if value {
+> +            this.data.lock().submit_queues *= kernel::num_online_nodes();
+> +        }
 
-Nice!
+kstrtobool again. Also, this is *multiplying* the existing submit_queues
+value by the number of NUMA nodes?
+
+> +        use_per_node_hctx: u8 {
+> +            default: 0,
+> +            description:
+> +        "Use per-node allocation for hardware context queues, 0-false, 1-true. Default: 0-false",
+> +        },
+
+formatting (rustfmt ignores macros)
 
 Alice
 
