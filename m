@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2083CF53D6D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EC15F53D75
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:49:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E9476B031A; Mon, 16 Mar 2026 12:48:36 -0400 (EDT)
+	id 81CCB6B031C; Mon, 16 Mar 2026 12:49:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4136B031C; Mon, 16 Mar 2026 12:48:36 -0400 (EDT)
+	id 7DD6A6B031E; Mon, 16 Mar 2026 12:49:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6BE6B031D; Mon, 16 Mar 2026 12:48:36 -0400 (EDT)
+	id 6E77C6B031F; Mon, 16 Mar 2026 12:49:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E7F86B031A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:48:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C6028B2D4
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:48:36 +0000 (UTC)
-X-FDA: 84552509832.05.E7267AD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C6F06B031C
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:49:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE4901B75B4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:49:23 +0000 (UTC)
+X-FDA: 84552511806.06.F64D9E4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0B27820008
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:48:33 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfDNQUax;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id E8F1D14000D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:49:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S18YUcU7;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773679714;
+	s=arc-20220608; t=1773679762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6HMue/BtNqbapqvyup6rq06duhvxsCfM2He2oPvEiuo=;
-	b=zWH9kHO+bhzC3lyswnZHEEMvdGTJjP7i6lrINoug6X1B6oxI+rWtmNvvAkoLYHSH/s68Fw
-	68OFQ7j3Iu5qveS8cX88j5QcAneuusbThxaFDPgeDIjhaQNVKqez/BZOnz3SzbSjhzVvdc
-	xAOmWzUS6ZGhadg7JtJf9PrZEo88o4Y=
+	bh=WakfSAFgJsfsw3SLQ4DCbStO+7KVn/ukqGWzev0uLAI=;
+	b=fA5WuitRP8DNy8b/Ru8ublySOGL+zPN8/jYT3Gmq+e+T6J5YDqgaZ45eWzThM/clCgsGft
+	2ZJiSCcQTDYFOkP9mu5a5IRNVc7/OEj5ouoTl9O68TNchUO7sBk6R8VpIcZLjA+C10oJRQ
+	9+OOHqCTjWDStj0mCTmfKfi02PDi06I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfDNQUax;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773679714; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S18YUcU7;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773679762; a=rsa-sha256;
 	cv=none;
-	b=6bDtVp39deSrvqDIhzZmDNp3aDuqvCH9lZGYjpCQ0nt0BzTYrFB1+vMRZ5KdmzlHPtKWGs
-	8wf5vMWcTB5LAkZ193BeCrmyx1UZosu/0cEmynuK33Jv9whgT3cE6qSKk16jHaBfh097WD
-	uHr7zKk2SJ7y48Ync7vdk71UnVY4i1c=
+	b=fkoeY1sikTwprID13sryq4udA1DAfffVYVnjbSqYVuxek43BDqffmo8X1Uv04V8HRlwd+q
+	NaF56mk3VoT9yHzmBV+vHE2lMSrKpaSZh1HJwmK30RnuVNk8W9pbuufZCjHBKQ0FtBRbLa
+	jTO4+WuBQ5LKUpF73Ved1g887bfsLDU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D120C4190C;
-	Mon, 16 Mar 2026 16:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3519CC19421;
-	Mon, 16 Mar 2026 16:48:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 11E624376E;
+	Mon, 16 Mar 2026 16:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB465C19421;
+	Mon, 16 Mar 2026 16:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773679712;
-	bh=WuhfP0oahkZFMDr9DJw5bOig+EPYbiQxrAUeY6rjrp8=;
+	s=k20201202; t=1773679760;
+	bh=uk1xHHKJArXOa0D/n6OA2egxALwqJwTNCh5fudHqvn8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tfDNQUaxol6LRd60RlzKMPBwZeRswtt0gijLKRle/y1Gh2I8LCYZPLlSGuyVRuaXo
-	 51KnhnRizLNklEFx071MubuAC2yWZkUVVvh54WEZaNBLoexRQsc2eG26lodtQXLGlM
-	 oI/QKSm+xuFjQlMaAei1lExj53BlnuTkSXYqRZCwHwg9R/WwTh2j9VA8fpTX4uLXV6
-	 jPdw41sY/fP161N7mgDB0lonw74jjjnDVcu//OG7HFE50IXE3C68Lf2V+z7mwJ78Uy
-	 npy24JfcTGg6xdNBU+M2rp91Q0ZhlJLwe+IiGGd2raRV+o+sh90pV6lVkRhLAe5a0K
-	 A9yNbLsJuqUOA==
-Message-ID: <4e52f70d-e0c3-471f-8073-68c0e9bc94ca@kernel.org>
-Date: Mon, 16 Mar 2026 17:48:24 +0100
+	b=S18YUcU7zj5dwedocu26adSAA6wCoD342MiDux8Lqox9E5YEW7px8XzMPZp3l/GG2
+	 X33FV25AdFzEz9i8jaHd1X8c5XpHUxaZjGA9Zv/wuFs2gDGu/nV/KA+76Ac3D3AyrH
+	 A9iiph3Q3pTq2hmxvlXuP7RB0tm2DDiDaO+iLDXr9H/arruE4C+HDHB2PNVGllDs2S
+	 /IoWz8Kdo8wG0x7VrpPDsKDlQiSspFfZm6qMVD6jbHD2bgbR8g1sHxgtniRnTWPsJv
+	 8jwOMtYleOb+cWDLHvCGbsP9ly6WhoA1uWte8qt1uQQqdytuSnqZ3l4Slx/aUFe5rt
+	 za9JXBprOuoZw==
+Message-ID: <3ac4a544-53bd-42e7-8191-ae9f79aad5e9@kernel.org>
+Date: Mon, 16 Mar 2026 17:49:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 09/18] mm/hugetlb: Defer vmemmap population for bootmem
- hugepages
+Subject: Re: [PATCHv7 11/18] x86/vdso: Undefine
+ CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP for vdso32
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
@@ -86,7 +86,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260227194302.274384-1-kas@kernel.org>
- <20260227194302.274384-10-kas@kernel.org>
+ <20260227194302.274384-12-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227194302.274384-10-kas@kernel.org>
+In-Reply-To: <20260227194302.274384-12-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0B27820008
-X-Stat-Signature: w4fwpss6icb9wsfsjfo51ys6kgrs4fpf
+X-Rspamd-Queue-Id: E8F1D14000D
+X-Stat-Signature: r3n63e6d7q35obtr433y8fndoxfqosmc
 X-Rspam-User: 
-X-HE-Tag: 1773679713-343118
-X-HE-Meta: U2FsdGVkX1/P8x9C+6/VI3+tVtaUsfPhJ/iYgfkftjTR3+GsUp9XUH4UY/bxlxysFql68GC/8AYCcLeTTmg2YOQyl+DsGQjAYSeN+8qAOzJudVxHNTrtMzqBX0gzckpMXCPymM0FzRcDZ+GPqR3YMzj4ZdrGAHS+kv5uZ/FuB75fdcky0tkaFEaiffq/t9Z648KTybQp4AhjhhQNtDjEfKGEzlcWTgQtWmavtauM1a3GR13/XFskmx1yMQ5yOonRbKb+NO+oXBqoizXzFfhgzO3MGWZ74s8fmFwIzOv2AOmwqdymEppvd0Vyy3WEThYgkeRCpoW2n3o6X+yF3xpuO/VmA86IhFk3EuaO4XsHQgehM3pfKT25XeKBUx/cggJaPJ+TMUBY7b70fGRCrws2MZMyxKPhw+bmJEWuPJfkmrQuXaEinl1vkvABa2IXg6IfRU+Xael4aCt7Qu2g9lu38wSjsgB4W50IlLCUavvjtul3ZLEuQ+AAMGi6zGTXE6xq8iyiao8apF5woLUQMCarWLHlUBzk9oBChSpcisElelPNoghmX4c8UkxLjpNIQ3GimPpkC96Z1P/EAfsFra1yWoQeD2bFjbX/Yr8Y0uBiuGlgbEq7FXXor8n8aHFRpmpIl88FM7kcIKnGldr7WagRwNrJJfCPQX0gINhbwYSQTUmezHh/e3MbJ+8AflwWzUeZqtHQj742vrWTrbYz/8tWWUPIH9zZTwu99NwctOqeBQDBGs0aT1WqYf5o45x9D4Gvj3Ace8Faa0Qv/6TzvtU5gZxPXzXRh+SrYn6w3KysrNf7bKYaLcR/CldUCcIJQeeihM8gYO3HXc9U8zMjBmfBDTmZJFZfPa/a5vMfcp8cOK3T9CRW+haqOf3MSxgSP2gOZbrf8r3Wu1B18xE1cIp9dbM9HQpy2hSUCOdcNj7x5ttQnxV6BxA8xvoHox9PFXU/1fdmGkPPxESMxfNMbkR
- 41I1uxbo
- PQFo582nuWGoOLGCsTRSOUwk+/u4oNxpkzGFB0sw49PAAsi9R0qpbaSRgKFruIy27rCsnpuqcJIG3WMTpYBasfUaAIlhkBFFojfZ0MbDCoDqg0ty1Hyi3+CmZQkwCyJIffYWlBGfjzw0Eyaq1do3PFhOEGmyXgOFCDYZys07heqMaRmLsY38bEGdVW7Y4ZeK7gd/uQDDtUR6cXCHFMrobdNPWgOrC39fprVprL4Wv0OFa2C3b7rabRGaVCyWxEDpfetxJUff8ir24z6fqRyrRhbqvg71inTQA1D6K
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773679761-129083
+X-HE-Meta: U2FsdGVkX19ao/VpYBJPVlVg+L1b+uvQb5U/Paoo/EEs46XhCuDJbK1DqN4/6vD6xR8x2IBfi52X2te3XLVf1AUbymE3LEdRYIT3Iy65spryxfIDEMKbdctXuY6yqn+ZjFTZbXWdUTxfHpMMSccH+oayuawyl5/eLirrU5KK0VnDZLuWPz0f1ylgMmTaALlZ7JFPi2Du4LI+emCgf7PjlnId5IUlTtoTlluYIKA4YEZNlQ0L3Yn5o4QpJZQQ57/bT2u1xzC3c7F4SWU3V9+U3MRvvtOioCZi2vpU3LAg1ZVhYjdaDluCAwgSgR04AT8YMDGLDPrWiBwAF2vdT47fFwjxxluGPj2qZFanQB3v7q2k2wbwsQPXgmFPQDFyTvm4d3EQbQyzy8LjcASd6Xg5+V6tVff9ax+8gJ9idCa2Wcttor7h0rk58jUwxItoY1PQ378GDmaJzsZxKWsvznCWsPYBTG3YS9FD6mruH/yNAhPnciRuGIODsws18l92PFX3J9kdyuk3qGxbGGWr7cAVow6NY+u5prH+mLq0QTVSN2S2t+4OnaAFcF54FaajCxLX7yn0elfYWtELm46F8KLTdiaDnT9NZJoI2X+wTZyD/debH7JhUEIcOJslZxIuBK4QfiBCLtu73F1jLQN1cXYr2qHK/W1BeZkuQTKnr+WYSXndp1UhVOtmR7NjLJ2dsQr8U/9ZTrU+CSbRLCgPpFnnxqHIriZt0lq5eEbDlP40kExtJLjV/e5oOEwpfHR0CGt2F+mxOQPx4XjpmUIpJqnXFglfMLBfZTaOXob77hhlVUC2Uic8WCW8hlpDGhY7TEcVWGl5mZ9dyjzcRpHQJW76M4Y2jTIfJoWGhoEHb8Li6Il5HgtAHIsBiNBAjmk5mDA1IX733QmbGeQSHcuU41b26Xq2ds4jNGoJHzrJ0dGnKJ5MLbToSpRGlr6lz5UV8d/gHnP4q6UKHgZd7u35Zre
+ p2vU+2E6
+ 6m1EbUkpdKmTLSD8wVxPn2fVlI/uyfvATiTNe+RxpiePWbyFcpAgmb0xQJDgSNhxONGMAIV//gheEo7cGL7RCKJsw5v4t/vVC4CK2JsA8eiBsettWk2SRuWjGWolMkTDcCa3OIMaTfLumHkkRopqqnOH9q6BkuJY2u6LYw3PMzcft9PwFN4o6fqWLmg+5wREdR4YYUGHCym0S94b5owwIoO1NwhhuTd2c+k+IwBijM1wQT2kJK6Byn2bJtThrmLmM1OglaJjCgP+AzpnxBzf21ceKA+h22VKn/yymt+Y09B/VAgWSTR4yY55X1UKJDY+4stPR4E9JKKGnkXI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,37 +152,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
-> Currently, the vmemmap for bootmem-allocated gigantic pages is populated
-> early in hugetlb_vmemmap_init_early(). However, the zone information is
-> only available after zones are initialized. If it is later discovered
-> that a page spans multiple zones, the HVO mapping must be undone and
-> replaced with a normal mapping using vmemmap_undo_hvo().
+> The 32-bit VDSO build on x86_64 uses fake_32bit_build.h to undefine
+> various kernel configuration options that are not suitable for the
+> VDSO context or may cause build issues when including kernel headers.
 > 
-> Defer the actual vmemmap population to hugetlb_vmemmap_init_late(). At
-> this stage, zones are already initialized, so it can be checked if the
-> page is valid for HVO before deciding how to populate the vmemmap.
+> Undefine CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP in fake_32bit_build.h to
+> prepare for change in  HugeTLB Vmemmap Optimization.
 > 
-> This allows us to remove vmemmap_undo_hvo() and the complex logic
-> required to rollback HVO mappings.
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  arch/x86/entry/vdso/vdso32/fake_32bit_build.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> In hugetlb_vmemmap_init_late(), if HVO population fails or if the zones
-> are invalid, fall back to a normal vmemmap population.
-> 
-> Postponing population until hugetlb_vmemmap_init_late() also makes zone
-> information available from within vmemmap_populate_hvo().
+> diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+> index db1b15f686e3..bc3e549795c3 100644
+> --- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+> +++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+> @@ -11,6 +11,7 @@
+>  #undef CONFIG_PGTABLE_LEVELS
+>  #undef CONFIG_ILLEGAL_POINTER_VALUE
+>  #undef CONFIG_SPARSEMEM_VMEMMAP
+> +#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>  #undef CONFIG_NR_CPUS
+>  #undef CONFIG_PARAVIRT_XXL
+>  
 
-So we'll keep marking the sections as SECTION_IS_VMEMMAP_PREINIT such
-that sparse_init_nid() will still properly skip it and leave population
-to hugetlb_vmemmap_init_late().
-
-Should we clear SECTION_IS_VMEMMAP_PREINIT in case we run into the
-hugetlb_bootmem_page_zones_valid() scenario?
-
-I suspect we don't care about SECTION_IS_VMEMMAP_PREINIT after boot and
-can just leave the flag set. (maybe we wan to add a comment in the code?
-above the vmemmap_populate() ?)
-
-Nothing else jumped at me
+Pain as always :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
