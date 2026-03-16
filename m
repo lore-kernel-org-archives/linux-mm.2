@@ -4,143 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CEB0F46453
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954A4F46455
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:58:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5A9D6B0200; Mon, 16 Mar 2026 07:58:43 -0400 (EDT)
+	id DD17B6B0249; Mon, 16 Mar 2026 07:58:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E386F6B0213; Mon, 16 Mar 2026 07:58:43 -0400 (EDT)
+	id DC3A66B024A; Mon, 16 Mar 2026 07:58:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D444A6B0248; Mon, 16 Mar 2026 07:58:43 -0400 (EDT)
+	id CFA836B024B; Mon, 16 Mar 2026 07:58:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C22446B0200
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:58:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8A05716013D
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:58:43 +0000 (UTC)
-X-FDA: 84551779326.30.F7856BD
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8B5D140009
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:58:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HeD5sh1X;
-	spf=pass (imf04.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773662321;
+	by kanga.kvack.org (Postfix) with ESMTP id BEA676B0249
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:58:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9906413947F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:58:47 +0000 (UTC)
+X-FDA: 84551779494.01.451AFDD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DA63320003
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:58:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KxKI0hh+;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773662326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WqzStTDme1iRCeMFGoEp8Qdz7FeziR1yr/cuI448uRs=;
-	b=517a1oGa8UBwsnCEvI1zofwbVNOfAfWlut0c7nPutiAzsYid+2ybIDW6c28nSAiKZz8gg5
-	AWQ+QcEmKgIUz2oBb3tgbDanMlKBg7SMnkFq/ijX+KYhDaQPCMbpWkbHOEAJsTTS/GbzFs
-	ArH/4MfGXQe3DM+QwuKCfEzGJYP4ORA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773662321; a=rsa-sha256;
-	cv=pass;
-	b=btWZjDDXRYq/v+QGzyU/aCxKU+9mdD/Y2geRq/5z1mvCOzKx5vdAOazAl34z/cWg3sDzmw
-	C5NKXE3WtMohFeO++RvcDaBo4YVIyCSWP0Eb4XaQPlpIXV32MHe+E4NubYhzP14pRx+OTF
-	KI/ycFb2gemcCxz4L/zC40iLAY+2p1w=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HeD5sh1X;
-	spf=pass (imf04.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43b48ac2727so182190f8f.3
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:58:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773662320; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hZUVrfHOghfFLlSBl0l62AKO6KPrRDEazRQZbrpt75I2UHXXJiZ+TggMc/Flkm8ule
-         wHodW0i9L6mYmAl+KMILxZ7bmWagRAo5map3c0GXCuvfRU8R9N0YBF3220rkKSpvKxWY
-         H4UMj7dMmUn7ZpxNvKzwGBSHBbppY7tk3hyCBoP9stvXgzJt6CnYTUUj+ctsPBLSo9QG
-         1h6KnSAyDxKAqM0I3x/v3vE0Y1e4zL9qFwjDnDYyEIdzZcoqxzUaUPK2hXYdymtpHubM
-         1jdHJJKJjN2iAM/PJ+8OCwR94tJ9/c+f4FIbLhp/YQ52E1MlsA8LE4txgNT8TqM5HKbx
-         WfQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WqzStTDme1iRCeMFGoEp8Qdz7FeziR1yr/cuI448uRs=;
-        fh=DV16QHgyG8OzIWfEhmp6b1iVZ/hXeRIVTSANqxTZPsc=;
-        b=NC2aU360gPGVNjcnj9IxwgzwFk/55bolsM44aong6k3Fa6QPf3n6J9B29G2ZT2kkGK
-         4n7vGG5Iw50O5Qs9o4yKnmzgnVMb+5Al1B4m1nsuqj7UbAoiYD9TstltrcTvv9WVgx4w
-         C0cqnTHGDHS1XWPimK3Hfp0qnMiVeEAKbTxrGmsiuzKrWg19YXgoge9PLi3fMCV83JXI
-         idnDeFmh+ukrAu9LP1jqsbySKDD0s8TGXqMYpTipJsiNoC05iLk6oL7HIw+I2UqUhEai
-         LkcdYbHFuHIUxIV0jIsX2ynRouSz5hoj44td7L3LfsUYUx3zstIHPvukj/QwQZ0Odp3p
-         P6Mw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773662320; x=1774267120; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WqzStTDme1iRCeMFGoEp8Qdz7FeziR1yr/cuI448uRs=;
-        b=HeD5sh1XQdCfqzjnDsdozOnCBjVfPP4hxJKSJ9ZxAU6CCdKB4QqM/MRpX99o4hHciT
-         oXNrqT7fXVXac1hIxgC1QHZ/sZSsijRs2YcKakxbAslw6Kc62nzDKW8TwpDuYTIY38sV
-         I08lm4H3/e/J7OTKPRK+FhTvl7aG41FLmQpS27u+goB+gyeA47s+g1IgmdeyXJ/qyD5j
-         2zt3EwUZSJTyOhkzCfRuszXvFGrtMZPhBPXBkDVNbL2dVWWp7yuyq92tlt4CZMwrNFrj
-         6Y9gUrRyKlQ1iPF5bpPNdfS6AJPvqdh363+PPr4EWZq4ux4DYD9bq32EcvZM+NqyJfui
-         4S7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773662320; x=1774267120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WqzStTDme1iRCeMFGoEp8Qdz7FeziR1yr/cuI448uRs=;
-        b=a4p35dBvw/7SoVV7jfh2eDbagYfD7Q6j6F2cgJ1wr9JDKdI/7Ryt9npDwVlxy9pAoO
-         wSwSjRyhOCMCAfNvQ0k8xjtmb542llj50ud7WRJVSIJzaEiicb05vqCJMZVnQBqDp64q
-         AVnhVg59hymwE0nYMm5FDCBF0rwhPDmygp/SGmBbBLwmOW6osAZFQj4/UCrUJ8gpgAgX
-         ZAs6yYkqAcxAvq4JDyz4jDgyEkvogERPKv/1Z5t3Fza98wINeFLo21hVII+AIIoq9vzG
-         3ZGjS6REpNjzLvfjSCFu5QYm2gaSGrHHa84WjRkOo1bAcGtsr7z2JCVIsrhH7/rMqFIf
-         t4zg==
-X-Forwarded-Encrypted: i=1; AJvYcCX+4GcWZskVzTFqQwv8056dgkZdqRoaXLBZAaj1Ozq6aZG1L6xHNPBN0jD7+BiIysmVH/IrueEYgw==@kvack.org
-X-Gm-Message-State: AOJu0YwuGvSgJ8sCbnAdDb8V/VFGc69oH21nY8SIh7aOYcixVAo+IId6
-	XBlwM5MZ3rNYfCERn0aQ1YZErwAkCpVHNtA8L5pM3+lXiGNAwF/VHP3Wa2HqGqj7IllBgWX70uc
-	vzrMr1gXMdXxRFfRMVUL54evt12bnx/xviHXr5mAd
-X-Gm-Gg: ATEYQzyGUxW8rul5Yq/UMqQQRLFIMD3JMJ6wHd+GJWN5YcMzUYklKYSjiQF1uiRWT4p
-	pckRK3YCEgsu/EJVKN9xKbPDAqDVLIbdKkqcYpCzD91QzHNtXL4aY8Y3dG2NQGqRfqRTmXqfyCJ
-	qc8+UevwO6ImP+68Zi/8jkujmFajYA2S2FEYqXFW2QhhHzXJSegq4G14Bqrz4NvRO+a52Kz6MAY
-	I1gsY3WszaLsWBYVLKfImiICM/QS2FLlmKY+IC9qDR9Hnin15CfYSGyK+FM4JY8WIYZ9p+tFg9X
-	B8DU+4mM47zM7Iukk9TK29jP6QG0qSexCD9+OQgFDwv9YTlgFk0uIGEXuZmTGyyDmQwSAQ==
-X-Received: by 2002:a05:6000:288c:b0:439:ac8f:5db1 with SMTP id
- ffacd0b85a97d-43a04d79bdbmr23658023f8f.15.1773662319287; Mon, 16 Mar 2026
- 04:58:39 -0700 (PDT)
+	bh=P/5naQfJD/dgTGkYANr5USE1OHbs1wbVp2alJevzuG8=;
+	b=oFAgqzF4drm0tSRkUV1yjnAefMi6n9T6VzR71L/cNya5tKc3u0eifWVXJns3xdpoYnKx+b
+	DG8NEFxXI2lzP316pYD49q7n1jyv1+dZQFURtun0ta6zszdNexdEFbnhIlPWImAgn5Ytaf
+	9D9dUV/AYgTJDYv1ly0HUEXqmD9VW0A=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KxKI0hh+;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773662326; a=rsa-sha256;
+	cv=none;
+	b=3JYTChTO4/DPGdZIUPlS13MpSkupfkkVkRSZVVjjuRkJnSXeBnemmQ6ZbuTGSTYh8O1t0h
+	lBDzkaylpHI+kBaRpq8TJJdDfgcb8Kyr189WTd9RVrYH/vJhmkx8eYi2gjNLRJ+/+DOBf/
+	UUTshVXfbmjjoV3Ayfs9v3iQ6kqIGEU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AECE74185E;
+	Mon, 16 Mar 2026 11:58:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8449DC19421;
+	Mon, 16 Mar 2026 11:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773662324;
+	bh=rrE5Vj5KyQR10HsPKqLkyfq8QlELFpCqN8N/EG1BaUw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KxKI0hh+RhGlKGzvM8uZBH5xd/1sd/cB0NMneDnMiqp942oziGbcXOZpRVHZ2mCS9
+	 ubUNuMMKzCbca7S84UCPgMheEWE4mAH8pqqorePctu614AU3buhsFFWGzO+2eFlm/0
+	 OfIBQ5QOM3fGfkXVc2JnOuljahN0LPuUmy4mqOPXSK/iXg4kv/iXTzDdiqvuCmj9iI
+	 NwrytAo3k6eWpqlX9uIGO/KG06lZdrCHANw4emXjBIt84+oIh8L7WYzajQI+JBJLWj
+	 hTCLk3JeJ4hJrGVvR6/7p8sUk2F7fJEm94s7n5DW8C5tFYMUu7WY36mMv6gMOIu6vQ
+	 CxCR0QZz/Ehzg==
+Date: Mon, 16 Mar 2026 12:58:39 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: syzbot <syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, 
+	rppt@kernel.org, surenb@google.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org
+Subject: Re: [syzbot] [mm?] KMSAN: uninit-value in copy_from_kernel_nofault
+Message-ID: <20260316-fachtagung-gelitten-17389c00b6c2@brauner>
+References: <69b7d9f6.050a0220.248e02.0112.GAE@google.com>
 MIME-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-4-de9a7af4b469@kernel.org> <abfNByL15D4s69Al@google.com>
-In-Reply-To: <abfNByL15D4s69Al@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 16 Mar 2026 12:58:26 +0100
-X-Gm-Features: AaiRm52S0Hs2FH4817i5Rr-RXaUi8EC4_IqQnN2448mAAelNGeUh-DsUEfywyig
-Message-ID: <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
-Subject: Re: [PATCH 04/79] block: rust: fix generation of bindings to `BLK_STS_.*`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8B5D140009
-X-Stat-Signature: 5juxdwiogmi9krs79bumqzfsib1u9hka
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <69b7d9f6.050a0220.248e02.0112.GAE@google.com>
+X-Rspamd-Queue-Id: DA63320003
+X-Stat-Signature: d7pymqosjxc7h14ybzks6e1taxc4ecx1
 X-Rspam-User: 
-X-HE-Tag: 1773662321-616954
-X-HE-Meta: U2FsdGVkX18e7flioV1PcrQcHPmEwwEyN66VewLeUNcMju9SZceluzEMUa6JDOrq/y3ZAx60dvua3RkpqnVbSDkq9nDignYRyzz4HPO93zWZlJs7Jw4Og2ubwr8i3RSSOW8ZxLmKLku+oJeAn8SekYEyptrJhUS+eaX4RprKTST3ytOv8bffxvaM/jLWWCrr+9wIvNYCuKf8kTp/KLd3xyRfF+nipsOAMfER5q6gH2SEhSKLHD6mCypgeS4ujZpb5sNFFjtSuuf6CFvjRNT5hG7BjfpBafSaXXcymvrJW6c8OqJCaA5/i4aQMlwxioiVV+GNtSd6k/6VxOZZRO44qmEYlN3b5LOPc0snvsrau4l3agPdlIwX+bsNTh58o/FMrElwSIDfj4wwB4R05vU/xY6dkZqd331/UU3H80nuDAlt5ThTpNcaorrp+6kfqrVrVpi/AA6VZCyDmRZpdtLdAnglc09ZDbA57xwpmBH5+mu0qNyw1JRQL33k+KVFIkju6fXOrorRdUI3/ZH9WD5deUAm/Bw2YpxggDnUIznHRmmo6sya2lMXhT8nuxotAgnRYqhx+7zN7x/OVv5u8nrc/mRk0TAmeCWoBmjAcL9/L7s3qhziyvUQOFoGKw3xT2QGVia2+3Jl8EeFCcYrSCEXjUb9XqEYaSdaQZYlbDqs1Ta0u+lYTaP9mFdhAwEc9S1ZPgkwqNKoTJIVOwyweFDUVLt+6sFYxnvIvPGLgy+pqK85K4K5lVKc8e/W1QNgazebgAxaz8JUq6gwacFfGMiV2n3EvSRXq9auT+Q2NsP+lkRR7YAEWb6Ye06A7pShBnkUWpTvgHK+MBrNjp0oOpLsdvWSBaVtCIkc6T9570ELljGvtjDXHQM+6A2KAB4a+QmF9fDnxBRXGiUF0AFpDagBl65SraROXSNLUDGMgMQ9K6Y00A4OPP0uW5R/RYylio1jc4T80i22qcFBGBgHBbF
- c3NXnrsx
- aidEEUfhC2VTGtYHMCI77RujTg4aONS4Wu5FWyEev1CVyKVawa2Z4gzhbP3A3EUPZO44mHXSSVjPCeXabATK3QqJetvApM66JWnPw7xPIjqABG7xhZeOH/wjfNNpNputVfc8UZgu4qgkfC0t5BsD8RTwQd4y3W1XoYrSozcSzcfplpHWi8wIBYiDadXHmJnjsaRFO8NKqocNEPWSlPYgyKUNvTWKJeegEQM5cYBGO1NxdUrL3quVTKP8o8hJfQfDb3dzppoMYKeJOmU5R+qUL5vST8DLRqwzOO+O+vBCoK8/72BrxbjO5TBXJlRA6pXW80zliJbA+62I0Jif3pvXvVhubYUHdIg86pylljUq+w06sSosXMm1nLaoHLiYRq7bN/iz5jeJ2tso+nHlOBv/0VVQRng==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773662325-558571
+X-HE-Meta: U2FsdGVkX19UrLQVY+jdmYo2dlPtMZE5CG83kR50GDTDxEzUYGRqkMJxWtVdk3jGxuyte/nPAV13uGvqVMKcWAug9J5lAl9JCdKtl4DD5vQH8OlRcpb/VBiBDRC+SlUQny1FK9qDwgq908XUMmbmEgh31I5mJeX+9oS1qqlWbTv0zVId+lQZXnSpGqNdsrMTi4x1+c7jCD+dukSpsm95wc6MRs5iMk78EpqpF817KGN7WNLIy4jFtVIgpuf4PSlHXpQTwU9DAqnH96AbfYZZzgwoOpIzlh7IW9gK7cv1+9N5r1w+qxz0QKD9MT02Uw7nO8Kw/CsnoswAE5ipxrx5pSTrhpR9MdVY7Nl4iQ3NmmV1+louxWABbep7dz9ltfO/aPZh54AddRJdoAk/X0USyFHt2ee/OJ75mzedO7ymeBgyaok0k5h9Lym2+4K/EqONUXteiOmqdsl3CcAG/FyDgyeKmsinknBF8stAbH9jdGhhsFtbcNKtvSawp9DXJxxE1zvQadGxjhUvKK0yHfcM2ZjyZHU36/M2mnns0r2veUqWdLJQnJatSOutepfnTlzp1VRTlKDqICvNZhZo+CRwDv/6FX+/DGPFGado5AwTFoTxwmGzZCGAJJ549a09aKL9IRB5D4Tm3TaDgPliDqdfMdJzj1+wAxzl4kErkja9xbrLfqdb+btwgfTOjbv6IbpDutTbjqSnKY4z635uurdbJsKbbH204SDPLkxur6k/PeBELMOpE42+TB5hEgWs7Ah9qPPBUGtqYD15A8GhDETuuE+HX6i/jrGXVhcctipA8Y81dpn9UX/KSvtIcVBCcwAe2j8CbEDEWEg8NiuKXf6OIokgfWPeLAGJZBvNO+iHzxxW7AeHUbN0nNpZMJh506LL4tVm5LHBXSMk0u7f432kb/vKry3o5qiuisKZh8kRiTkq0XV6n/T1pPNoufwIttnsU5lrgCxxrvWc+XwI0ST
+ zIUDxa+d
+ KzBPLeNxQ2ANib3gq3ewD3xEolqqPSYXd5Xtx0RMa4mlQe1eQJkZbnuqF2EwfUI1zlft5J9eRQbzk8/6Sq7wIQGZ328qvkuQuv77nl8TX7AGd8pZtHaEBuqaRe8MUu1Mxygx0jDHwO8PfjyBZx4xcbTu26ikDI00l3D44K3p4mA4FrB4Mts5g1f/86u5dEFgG8pKj8bSnh3D1g7y3zDBIfeZU90otdGszvNClLim3jaIdBlMj8d+pW9tFPMxAAO07Pf4gkO/2EKknfOU22htyHqTBL7L5l3KG6QQ336ffPQ7t3CcSBm4J5Glod2qhqVZ1WJJETaNZ4mkQ1K+FPHCgWrTHRxLtVdumzcAMBcrQdcdOvo7kfUPiVwy5RkVRG4zaYbdvwNwrbqzTVvXS8e+88DssjsibMF0eJvZUJLMy1wdDoI2nXqhiAY06OM2ckVh7X8FBzyCADULPpCKxmnBiJ11LgAhKE/S+10X1A/B8kVBuKMkVnE57rodp3Rmfyx1uIlYB5E/n/IUIdWxJL+//mAzTtBAl3lcoKD8UAfJF6z8qyyM5pM2rQz9vc6kkUVhL4LcLt6sJ3kxEQiFtu+/j2tA0mtjCnc7pZKqi8imA7B5/L0Tn5xG4RWcQ1P+RPwfg1mwQCkoqtbb5bikP1IRATb+FBahZ0hcSjRo59ekd6uShuQjYpGA3LTWQQQvsZ8mVxlUKLPmZ3xrQTcm9SbxRc+43RmiAmvCaIq/DKslextRqeyB7CczSappsC/AwdahDzidIRyd2bPOQuhuyb1W93DxYA0UK4G+sTZjTR5VzJnZlbMkp+AmcIpclN4/cnrXQ3nJAwPG0AdXrEvDoHhKDLjUqX1A05batk/tu9YhhmFY3LYYhwO/inHLGAkknWdS2kITyjjgMXoPmyA5GrGS3ttr0UYRrDgQZOeTwX/cMTuVstKCwXGUTr91liVwNGrwRzM2OpNg8B5g/bIGHmeAEtAfxNuB+
+ 64YtEqDz
+ CxdnNJRjQTWbuKY8D6AHXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,33 +94,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 10:27=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> On Mon, Feb 16, 2026 at 12:34:51AM +0100, Andreas Hindborg wrote:
-> > Bindgen generates constants for CPP integer literals as u32. The
-> > `blk_status_t` type is defined as `u8` but the variants of the type are
-> > defined as integer literals via CPP macros. Thus the defined variants o=
-f
-> > the type are not of the same type as the type itself.
-> >
-> > Prevent bindgen from emitting generated bindings for the `BLK_STS_.*`
-> > defines and instead define constants manually in `bindings_helper.h`
-> >
-> > Also remove casts that are no longer necessary.
-> >
-> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> It'd be ideal to change the C header to use an enum, but that may not
-> work as I'm not sure you can specify the integer width you want for an
-> enum.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On Mon, Mar 16, 2026 at 03:22:46AM -0700, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    80234b5ab240 Merge tag 'rproc-v7.0-fixes' of git://git.ker..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1474cd52580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=242f02fcd3fbc8f3
+> dashboard link: https://syzkaller.appspot.com/bug?extid=c18de0ad13d62f18469d
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> userspace arch: i386
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/a0d037332dff/disk-80234b5a.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/0a1f7f8b54f8/vmlinux-80234b5a.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/83eb68ee6421/bzImage-80234b5a.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com
+> 
+> =====================================================
+> BUG: KMSAN: uninit-value in copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
+>  copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
+>  prepend_copy fs/d_path.c:50 [inline]
+>  prepend fs/d_path.c:76 [inline]
+>  prepend_name fs/d_path.c:101 [inline]
+>  __prepend_path fs/d_path.c:133 [inline]
+>  prepend_path+0x64e/0x1090 fs/d_path.c:172
 
-Honestly, it might be better just to declare a Rust module somewhere
-with each constant redeclared:
+I think this might just be KMSAN not being able to deal with seqlocks
+appropriately? 
 
-const BLK_STS_FOO: blk_status_t =3D bindings::BLK_STS_FOO as blk_status_t;
+dentry->d_shortname.string[DNAME_INLINE_LEN-1] = 0;
 
-Alice
+is initialized with a zero byte at the end instead of:
+
+memset(&dentry->d_shortname, 0, sizeof(dentry->d_shortname));
+
+which would prevent that warning. But that's zeroing 40 bytes vs one and
+the dache is fast-fast-fast.
+
+prepend_path() detects the initialization race via rename_lock seqlock
+and retries d_absolute_path(). So this is entirely harmless and works
+correct.
 
