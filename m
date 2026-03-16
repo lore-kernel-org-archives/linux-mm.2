@@ -4,138 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF76DF53D69
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:19:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80923F53D65
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1034E6B02DA; Mon, 16 Mar 2026 11:19:39 -0400 (EDT)
+	id D63DD6B02DF; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0A36B02DC; Mon, 16 Mar 2026 11:19:39 -0400 (EDT)
+	id D3B946B02E0; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED4296B02DE; Mon, 16 Mar 2026 11:19:38 -0400 (EDT)
+	id C308A6B02E1; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DABD06B02DA
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:19:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8011E160215
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:19:38 +0000 (UTC)
-X-FDA: 84552285636.13.B027BA1
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CDE7C40011
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:19:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFC976B02DF
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5193013A5EF
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:20:12 +0000 (UTC)
+X-FDA: 84552287064.23.50D6FD8
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7FBB940011
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:20:10 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WJ4SKPFS;
-	spf=pass (imf17.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="YMC/RDqk";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773674376;
+	s=arc-20220608; t=1773674410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m2chYU1ux6ZQIx4otnZe8opROVQFDtOWN8KCrqkEk7A=;
-	b=r+8RLjsUIC4zt/1sk1iQa3ouR4TzWK8eTEksjOml39IKmYTTtkAyvy3q5Ri6x1PX2U4jVC
-	feF3TxAc3jdnzcLCoF+OJetJmMl8Ry0C5qXvN6td0f+T/mLJFwyZkpqN6fSTquH5wAJSfc
-	C1XG1ocgWtDnQCLzueIDmcwS6o11XOA=
+	 in-reply-to:references:dkim-signature;
+	bh=W09BwawQXBw7qZlw0AhGoZ1ZZiQnOnbL7dJOy6IZMDo=;
+	b=OFD4XCB+tanjSaKZAU6G7iepMksMNC+CMNNPBuDontWxI3Wyr5Sgln6aI47o61z2e91vC4
+	gX8k8oKaoKWhgM947SGF8DnvWQQG/nrH1PZQPJuX/9mMYsq9bCsciOHwGraw575dei0L2w
+	4/Q0+pzCOMhaY/Jbb0+Xq8xgB4oLcN4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773674410; a=rsa-sha256;
+	cv=none;
+	b=I5+Hkqvw8orWCkvntiEBkokFXAWJR7C6W+GzJfFZGV6OFcNB0j2EDHKTPbAJoI8oxey+NN
+	BgalZTuURETqAnkqMkEbRTTZN4+WEhhIKOI/OkjD/IAQAgHkbG4x5quPuG9qThQj1PqdvA
+	xK9ZWCoXkzb5Wi41/DcA8lAHWeaNZF0=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WJ4SKPFS;
-	spf=pass (imf17.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773674376; a=rsa-sha256;
-	cv=none;
-	b=MNbXgNSORe2WXcfCoEClgVNZrEaOFqK2gHj3ApvJ3Yb7zHwaHZjrIwYlPAmlN6XwdonOfJ
-	kWp5Cid6P7v17hPTEpYEy6vlOhZDVZ3PLcOAROAsoCjnqfXXoBe9Cn/wLPJZuD009fZj0l
-	ycwjWC21PARmxwqrIri1ScPyl4VJG0c=
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d7447778b9so2331907a34.2
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 08:19:36 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="YMC/RDqk";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35a1230c60eso2429598a91.3
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 08:20:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773674376; x=1774279176; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m2chYU1ux6ZQIx4otnZe8opROVQFDtOWN8KCrqkEk7A=;
-        b=WJ4SKPFS7ulUIfpCSGl+/h0zGwlm0/4qUcM6lpAPnXNYyisynoG9jeCPczxtZZQrUL
-         rWXhanAGs28n9WjOHbIn/VHz+1pDIoxRloUPZpcNFmM3JeIHSU6ZGWaWYxAj/Of8shri
-         YqphX1CRhatc3vbZnDBV5ze4y6V58MQdVh31tuCMPmZJ5S86PpUHacpvos+BodkcIHQw
-         bYACPAR+t/nkYhEha8WLumH00uHYrAZ6GPvn2FztZV339Dm1JSi2to990O9Um/ulHseI
-         5JCDAz+PWgSrVW6Z6y4+KubCKkFbWa0h8rtUfqEuJwOlI4Lx1pz4ZVolaYi1puPv4TxZ
-         j2WA==
+        d=gmail.com; s=20230601; t=1773674409; x=1774279209; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W09BwawQXBw7qZlw0AhGoZ1ZZiQnOnbL7dJOy6IZMDo=;
+        b=YMC/RDqkMAvH7l52vitZID2V5uqjFJAiHSnSb1M6/4syLeDs/kQ/GT3U0AFp0KK8zy
+         McE2EtpMfL39TQapsPM/XrxhQPXIdGhhjSL50DTye8SIdlFKZR05jQfve7hlcuTabjgB
+         0vAT5B5Et81fU6yloqKO5cfBPMGosNWfg8nEwtpPKVZu5KVSimaZSRJOUL8jEaLch+lK
+         Bs2xsxbYB440jxzIMhPcyieNZUcvzH3eOyTCXWIqPXh4eSqIx2qAEBOlc8ftGqA7IBZA
+         QuqqpvmQzz5yKS4S1Yf3vjEuGpyg1ETjrT8bvQnueBV96uZUhpykeJ/ABJsypS9YitQJ
+         TS0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773674376; x=1774279176;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=m2chYU1ux6ZQIx4otnZe8opROVQFDtOWN8KCrqkEk7A=;
-        b=npIKnc6eQjMEkIm3yOuaAb0VUejP07VK8B5rYOJh6VBHs7xIj0yuH44cd32KIe5HhO
-         bOPNbY0akpKHoY0l6z8CBHNh52MMDhhswlJ4rZK9H0NwzIWve+QyBkjIbRQgpqpuGVgZ
-         bJRT9fnG0Z1XNslbefGwYew4zC3HiEupyqRpAOOpa/JOXpbHNdX2+WCvLX9ADAebyEHP
-         j2rIcyx7qOQtQyBSPHj7b1+jv8vQZ6r0CvKNdKPz56FtdfVLTSrIITfIKbM0lA3uuPwF
-         duupi0Oj+ywkJTSC+Fgr3jT/ETYu6B5C4ptw4qS+GAJUUXlQ+n1X5hKrB+aH30ZT0yqS
-         JnhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtFmMUEWu+OGE5R+zV8OHg/ON6dN/auwCQm5YsGE/Hi/JvteDCcySRPJ41wyIeb7jFPuV7K0AfPg==@kvack.org
-X-Gm-Message-State: AOJu0YzntyGuYTVvD9/weYGql8u1oMbAniW8Fe/g5QfQ1Kz5ivJG+rSA
-	38Xs1qTQPPiov9R4H5F5QpOqOAy1svf3J6zp9gtJv8X8d8HEgdzPp4kM
-X-Gm-Gg: ATEYQzzqs/mfcbXUa/oM3mUmlU4VZLgvtTJugot0k056vVuBwfSRwf62C1Ax1dJ7r0w
-	ci+eeT3rFqNO5lrUbDtlqkibgyq/AGT+6tRKciJcB5/10p2nSv3x6xt1cmgKL1IYIaH3WB6zE7a
-	LEkaDO2To+swK4LxpkgppNcn7/4eJazRuE84eqDGyXsreBCwYt0/euoh68NYSVHmywpA9z4hgWD
-	FNAltky6vYyH9LFcdD11AadwYJ4xy+S00yk57ZW8Xi4gJiZB59gvnbW+Q7r8qXUFKyOTqTOkuYL
-	9BuLiyiD3+4z4F3gh+cWJ/ppLSxBug4K4/2logWa0x4vm+9LHuvkfW2BCrjjSQp7EWKqMTAB4ly
-	9/wEA7RCXIBXHBieuEQfnSdTePmQgzk73bKPJKgFZtNaByw4KUyvZ3wVv4sO1hYR3xHkfFBwy7O
-	SeZ+MXtQlPt7gXhEvCBdl+QQ==
-X-Received: by 2002:a05:6830:648b:b0:7d7:4074:3382 with SMTP id 46e09a7af769-7d78248b731mr8382454a34.10.1773674375662;
-        Mon, 16 Mar 2026 08:19:35 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:41::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d76ac8ce73sm13670944a34.11.2026.03.16.08.19.35
+        d=1e100.net; s=20251104; t=1773674409; x=1774279209;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W09BwawQXBw7qZlw0AhGoZ1ZZiQnOnbL7dJOy6IZMDo=;
+        b=W63g2vp7CB56KtYgfa8ZRs+lwhtDnjtPbe3Yy0BTpYssw/YR1IigY6P6crpLTw3AYw
+         SX0qx7A1DOjqo34S05Xoozj8PgMOV5iPOIr3q6/n5z7ICKvV9Tz//9h02REXiC6SzU42
+         9F7X02hdKVlaVQ6Pm7jxlD1ElGnwo86ATEQrf1qv9gXvgf7Qhb5bdXOHnf+ijXlBc38F
+         POLj6RDSMrpv2ywUzv6e22dPHMp6gVcbI7mNS7gN2xoQvEwTCo96nhf+cgZJ6CsjNZfs
+         d/0yDMElCsy37Ldhk9RO+OOO/VuleMaAYhScSzMv9y6vskpagGT+rSQLS+nW8VsodQTb
+         Q+kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0RHFy+xdql4lESTYEMvDOB+x1vtgUGIoZ0A30PVfYoshYqFddZfQ/kkabBakbj7u+Wz7Uyfb0mA==@kvack.org
+X-Gm-Message-State: AOJu0Yz5OzR5TBqYAAgDQj9CjkHWD+7lVzhVXNykFBB5DqK9Ci+qUKKZ
+	15UB0mrJgGS1DeeVFE0ohNnsCDioN4dsnBOIJqvV0IgQKOLIZZK73TxJ
+X-Gm-Gg: ATEYQzxCwwVbMmklwVfb5VDkPT0ia877ZbCVD3bjyqWp+pWwNofpwQQ7QsNMJG5UNHk
+	LSxybEDN+LmkwfOlwvjuK1lbo0he17+K48CDJtvoY5md1wVUb5IiIUqSbn9ohEA+zWBn13Gt7dw
+	ZtTRcpOCN1Znr1BD7Lw0R9ET8jGqn2TkQPqyx/X/dZalfznT72Z/Z41y3GztgOcG2g+hFDZx9Qg
+	4opgh/Tg355EPF/YgR9v7kb1E7rxoXkBq1Nptzj08VJ9DWHujBr1d1SKKQZgCKGQfneKO64Yeiy
+	mtRrt/kTQqXfrtvpzkyzUOWEGM4myu03aMqz0GbTSgi6Ms0/Wvvg+BFZCn5t51t4gu1NxAw1qwk
+	JmqTys9k1GwQL87Mq/mVqtbbex1S5pViyXYk1OXZFVsTUhe1a/7oxEZVwMEdwe2BI+Rag0/r0vD
+	+B+n/5TT9ESDobtffRcEnkT6Wi+6GO07RBBC2ab+DXbSgJF/C4mBTxBQvCIbZ2dgYzrw3fBaPpy
+	nshp3I=
+X-Received: by 2002:a17:90a:d408:b0:35b:a9f3:62ee with SMTP id 98e67ed59e1d1-35ba9f36aa5mr978278a91.27.1773674409030;
+        Mon, 16 Mar 2026 08:20:09 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:52ce:671a:31ef:56a1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7400000532sm4626033a12.27.2026.03.16.08.20.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 08:19:35 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Rakie Kim <rakie.kim@sk.com>
-Cc: akpm@linux-foundation.org,
-	gourry@gourry.net,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
+        Mon, 16 Mar 2026 08:20:08 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kees@kernel.org,
+	akpm@linux-foundation.org,
 	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
+	ljs@kernel.org,
 	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
+	vbabka@kernel.org,
 	rppt@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce socket-aware weighted interleave
-Date: Mon, 16 Mar 2026 08:19:32 -0700
-Message-ID: <20260316151933.3093626-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260316051258.246-1-rakie.kim@sk.com>
-References: 
+	brauner@kernel.org,
+	oleg@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: [PATCH v3] kernel/fork: validate exit_signal in kernel_clone()
+Date: Mon, 16 Mar 2026 20:49:56 +0530
+Message-ID: <20260316151956.563558-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CDE7C40011
-X-Stat-Signature: zxnscuyx1xmbanpnsimxwzpoqq9sjhxg
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7FBB940011
+X-Stat-Signature: i9a4oempr55o4kcnyg9i9iuabdnx5uon
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773674376-610660
-X-HE-Meta: U2FsdGVkX197FCUavyRvnOYttbhsomJnLkhd+aQb/XLIj36D+kk2Rxnl7LzWZeILPHkE4tnZyg/hRKtgrEJxJ9njnujTlEn5/gNqJS5XKETBg0qEFwfniZpBlri7aGj1LGHI1I4gvy6wpNzxoZLeBEwDgdwjaxo0/76TxBBoGo2yvIO5/7SI1fj9BNQK/47arCIFIM+MG+qS8HGxjs/YtjRzB1uTF66UCP0gOZgxGUh/jPGjw5MCx7463bes5HAVnjFM61HHv0MQW7yAUJGOIrMZiickPpDQJgwqk4ukwqByu8eYsHH8FX2o/7mvN+yLs1fx4J6LRgCRsexAPgx1txSRHiOclX6IPNrJ2pNPpi+3hgaDnCcfwTwbk7WRlPA+JPFehQzpDh2YCIC9l49DGaqHJa7WI349AZNtOQbjpMEBLy+/gmZRPrKNlAw8bGKOX9YFeIySxqzKl8C/30VruDWQ2LugBM6PztSrJEnp4ojVmzzHOecTUtCypeSfybDZxGQIUXNQxevSfshlzHbSaObZr1k/2jZskTQGzZzUoRRaT0+ERG2IhNYN2GhfytY8wTnLwhYCFgdyNmAvgZiU02YXtoqk/9NKYa/vzOD8+1ARodzCMTdcItZoiQ+a9U1xr0Isqov5/Z56tzArSRpyLOM4vbi6RhX/cCoXwcci1K3dd5Uo83jNhJLmFcFHufs9RW8BugLQb8zG6rFhKfslUaD2KstaZrhzLBc1M6rlkBCH7sSV/1u2R+djQTxjbi+PEeSpvMOjpyan5F+C0bwZFPmmMsa22O6NZkZlYf2z1xu2GAXpALPBwSfB5ilDW3tm7X1XckgGDOvL2fMefZ7HbZbmSVDB7sEfV44Jvf1mdJ05kpaWXYR9wcrHTZgcrRlgeSAVTL7cSUbSEftatRxCF6D9udR8Q0NJhU7VYWdeyoxpOnYOuv/MG6FEBb9yk0cmBcpeZsK+QOtF/O4LvLN
- oz1SrVw5
- KXB71yWozD9erOFVzQXNQvY65ewPbFi50XR8jwS+4IzO5ebokPgVv1lQye3zXLKMcSfKlM+eE1V3WeHw93pZY6b3Sp6rgEnLqX2yHFuTgeNJpjFeDCVtIl2J25euSQd12w9mjnNmETIihn+r0vRRPO67ro8giCCcolgXiGTRbru6TnBiWYedCB/+Tp+/XEsX9lDnosorf3dbdbMWzZbZytd999w==
+X-HE-Tag: 1773674410-76236
+X-HE-Meta: U2FsdGVkX1/rNrVRBnx+/uV3aCy4Qb7WscDA3T7x3ioGxmw47aaf/d0+xhBX84u3PyKB1bVhBAHcK3LTwEvYZjKly+I6PutWMN1yVP1q2GS6qdfVeDEzD1Fd+DX/M2FvRw+d0oPWU6OoInn5mOhuBxpAZ53hZfN02vUIevr6zw2RVXgQuDEb0IKXXDd5Em/dIjdzVE1KBIzZAqDxlZIcGDpNBBbwC5h9ywpe8lBwsh+vhLZBJGCRp7J+Rb9o01OILIUcIyznpSkVS9Yn/Sz6ibCwLnOdko3tbl008Afeg2Z8houmjDZtmQSEp/Uu4hdiM4qTFNexG2lhtqVv7ym/SDXPX0IN9NT01/Lp3pIYcVaVw4Vs1pMfu0ldBZ6HaOvKgsxedWEw+hF5ViGO5lC3qvb0vxK1ygYZCeE7ubN2bffhL+f1pXJkKHebE6saL8M1ZLOKYnGmz3Tq/WtIUu4nNtN8BuQL3isX0xbx2/Tp56tbm1UgGBV/Dn+/om2YfzQY2ePiDdYJpJDMg0MEYIoFM9dkuhT9cd6X7FjZCPOvEWhHIkS6Zpg2vt+wLvxN2lAmMLTMqkTlhFYCfmUgI93ThKtjRMQZYhYe3s8SFr4ZPdwJhD0F8JQv+BdhMQ7fwero/ZsqcuNDhzRfVSyLbinfNxcmDdmxyYBKZXrc3jJx/RMkKl5ai0At+/bSDAtkjEYYJgRqXPFiQiCZqPXi7dK/tyHxtSP/m8MLodrkutmUYRm/ZP6tO4wtpDmtWVh5IPKWKKqeiviyaPTZJgEqIszHlvLHst5meS48XblXlk16/LxvvszsugeDB4KYaWWML1ftJD3uPmaKyn9OJZShxdl2bD+rSwu60fdQ4KZc3qzT/AvyZc5KkCQgHRDYjN86l2ZTDP3Qsf1VWBueZbEVA7KGt/nTbY8eHQgcu2kGDc2RWLz3B0zOiKzpz3vx4A0lNdz+vLj/Mc01UqrxIxrTd8P
+ 8tGB6lyp
+ Rmj07zALFETNU/f/LyGPK6RRPiEesL+12d2GdcRtAkktsGqLIW72bXTdyZ2zhU8KWIZmiavQkK+0/jVXVIt4osvv95kOwYhd8hjeIi0qt+rja3zzSIgkScJ+aQiQw68O1k59BNs+7ITrlTFp5dMsmXgO+nbR3Uwoydi+9QvEwFhUO/Puwu1veC8nljmMdq1f5cPuq9GUmOd7AB6l8B/ov2La0cPkxpK8bibBcRZfhKLYMe7/tGCZ9tNZsusZltRfRHd4M+sOh1DxyuVLXMdXM2ZoMHNfHsuWpUb/TUiTQnIdDxtRPjY74Gb6ZB0hd2GTytmJF/koQ8y9cq8BXyIWW1C5O0SvCgZMjNeoGjXiKm0xUxPagqhUWufCPXXqDwzOcrU6f8X3pINWIObuV0iBGflyytmlHstzO6s+1+geLLzqcEv6T0Nh5wrywkGLVqJuRgG/je+lVF0w74imyD4DzPVufLpNvtVuaapUEQaVadSE5125rpW+bta4OnEgV8LKhkyrN0DTLqFPOwGJo+4cyQiNITx79ZQBHDt1UIkWfdqQ8aXl/eGLUt4wXv0lqEaT+Im1p7SZ1j7GF7Acpg5tqwcaUnRRkssx/+Kax9NpYI1JjnCzLjnw/avTHe4fQPMoXI4nIKJTe7M36pvKRQmZL13wisRMiQxxqgMkIlqRXcreZ3Jh67DZ4Fshd4KZ4Jd/VhkCb1x4uJQYFWwHt8h5HqvZB3WKhOS3loGUU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,116 +137,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Rakie! I hope you have been doing well. Thank you for this
-RFC, I think it is a very interesting idea. 
+When a child process exits, it sends exit_signal to its parent via
+do_notify_parent(). The clone() syscall constructs exit_signal as:
 
-[...snip...]
+(lower_32_bits(clone_flags) & CSIGNAL)
 
-> Consider a dual-socket system:
-> 
->           node0             node1
->         +-------+         +-------+
->         | CPU 0 |---------| CPU 1 |
->         +-------+         +-------+
->         | DRAM0 |         | DRAM1 |
->         +---+---+         +---+---+
->             |                 |
->         +---+---+         +---+---+
->         | CXL 0 |         | CXL 1 |
->         +-------+         +-------+
->           node2             node3
-> 
-> Assuming local DRAM provides 300 GB/s and local CXL provides 100 GB/s,
-> the effective bandwidth varies significantly from the perspective of
-> each CPU due to inter-socket interconnect penalties.
-> 
-> Local device capabilities (GB/s) vs. cross-socket effective bandwidth:
-> 
->          0     1     2     3
-> CPU 0  300   150   100    50
-> CPU 1  150   300    50   100
-> 
-> A reasonable global weight vector reflecting the base capabilities is:
-> 
->      node0=3 node1=3 node2=1 node3=1
-> 
-> However, because these configured node weights do not account for
-> interconnect degradation between sockets, applying them flatly to all
-> sources yields the following effective map from each CPU's perspective:
-> 
->          0     1     2     3
-> CPU 0    3     3     1     1
-> CPU 1    3     3     1     1
-> 
-> This does not account for the interconnect penalty (e.g., node0->node1
-> drops 300->150, node0->node3 drops 100->50) and thus forces allocations
-> that cause a mismatch with actual performance.
-> 
-> This patch makes weighted interleave socket-aware. Before weighting is
-> applied, the candidate nodes are restricted to the current socket; only
-> if no eligible local nodes remain does the policy fall back to the
-> wider set.
+CSIGNAL is 0xff, so values in the range 65-255 are possible. However,
+valid_signal() only accepts signals up to _NSIG (64 on x86_64). A
+non-zero non-valid exit_signal acts the same as exit_signal == 0:
+the parent process is not signaled when the child terminates.
 
-So when I saw this, I thought the idea was that we would attempt an
-allocation with these socket-aware weights, and upon failure, fall back
-to the global weights that are set so that we can try to fulfill the
-allocation from cross-socket nodes.
+The syzkaller reproducer triggers this by calling clone() with
+flags=0x80, resulting in exit_signal = (0x80 & CSIGNAL) = 128, which
+exceeds _NSIG and is not a valid signal.
 
-However, reading the implementation in 4/4, it seems like what is meant
-by "fallback" here is not in the sense of a fallback allocation, but
-in the sense of "if there is a misconfiguration and the intersection
-between policy nodes and the CPU's package is empty, use the global
-nodes instead". 
+The v1 of this patch added the check only in the clone() syscall
+handler, which is incomplete. kernel_clone() has other callers such
+as sys_ia32_clone() which would remain unprotected. Move the check
+to kernel_clone() to cover all callers.
 
-Am I understanding this correctly? 
+Since the valid_signal() check is now in kernel_clone() and covers
+all callers including clone3(), the same check in
+copy_clone_args_from_user() becomes redundant and is removed. The
+higher 32bits check for clone3() is kept as it is clone3() specific.
 
-And, it seems like what this also means is that under sane configurations,
-there is no more cross socket memory allocation, since it will always
-try to fulfill it from the local node. 
+Note that this is a user-visible change: previously, passing an invalid
+exit_signal to clone() was silently accepted. The man page for clone()
+does not document any defined behavior for invalid exit_signal values,
+so rejecting them with -EINVAL is the correct behavior. It is unlikely
+that any sane application relies on passing an invalid exit_signal.
 
-> Even if the configured global weights remain identically set:
-> 
->      node0=3 node1=3 node2=1 node3=1
-> 
-> The resulting effective map from the perspective of each CPU becomes:
-> 
->          0     1     2     3
-> CPU 0    3     0     1     0
-> CPU 1    0     3     0     1
+Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
+Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20260307064202.353405-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20260316104536.558108-1-kartikey406@gmail.com/T/ [v2]
+Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+---
+v3:
+  - Remove now redundant valid_signal() check from
+    copy_clone_args_from_user() since kernel_clone() now covers
+    all callers including clone3()
+  - Update changelog to remove WARN_ON mention and describe
+    actual bug behavior instead
 
-> Now tasks running on node0 prefer DRAM0(3) and CXL0(1), while tasks on
-> node1 prefer DRAM1(3) and CXL1(1). This aligns allocation with actual
-> effective bandwidth, preserves NUMA locality, and reduces cross-socket
-> traffic.
+v2:
+  - Move valid_signal() check from clone() syscall handler to
+    kernel_clone() to cover all callers including sys_ia32_clone()
+  - Update changelog to document user-visible behavior change
+---
+ kernel/fork.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-In that sense I thought the word "prefer" was a bit confusing, since I
-thought it would mean that it would try to fulfill the alloactions
-from within a packet first, then fall back to remote packets if that
-failed. (Or maybe I am just misunderstanding your explanation. Please
-do let me know if that is the case : -) )
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 947a8dbce06a..73f7fe958a30 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2687,6 +2687,9 @@ pid_t kernel_clone(struct kernel_clone_args *args)
+ 	    (args->pidfd == args->parent_tid))
+ 		return -EINVAL;
+ 
++	if (!valid_signal(args->exit_signal))
++		return -EINVAL;
++
+ 	/*
+ 	 * Determine whether and which event to report to ptracer.  When
+ 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
+@@ -2885,11 +2888,9 @@ static noinline int copy_clone_args_from_user(struct kernel_clone_args *kargs,
+ 		return -EINVAL;
+ 
+ 	/*
+-	 * Verify that higher 32bits of exit_signal are unset and that
+-	 * it is a valid signal
++	 * Verify that higher 32bits of exit_signal are unset
+ 	 */
+-	if (unlikely((args.exit_signal & ~((u64)CSIGNAL)) ||
+-		     !valid_signal(args.exit_signal)))
++	if (unlikely(args.exit_signal & ~((u64)CSIGNAL)))
+ 		return -EINVAL;
+ 
+ 	if ((args.flags & CLONE_INTO_CGROUP) &&
+-- 
+2.43.0
 
-If what I understand is the case , I think this is the same thing as
-just restricting allocations to be socket-local. I also wonder if
-this idea applies to other mempolicies as well (i.e. unweighted interleave)
-
-I think we should consider what the expected and desirable behavior is
-when one socket is fully saturated but the other socket is empty. In my
-mind this is no different from considering within-packet remote NUMA
-allocations; the tradeoff becomes between reclaiming locally and
-keeping allocations local, vs. skipping reclaiming and consuming
-free memory while eating the remote access latency, similar to
-zone_reclaim mode (packet_reclaim_mode? ; -) )
-
-In my mind (without doing any benchmarking myself or looking at the numbers)
-I imagine that there are some scenarios where we actually do want cross
-socket allocations, like in the example above when we have very asymmetric
-saturations across sockets. Is this something that could be worth
-benchmarking as well?
-
-I will end by saying that in the normal case (sockets have similar saturation)
-I think this series is a definite win and improvement to weighted interleave.
-I just was curious whether we can handle the worst-case scenarios.
-
-Thank you again for the series. Have a great day!
-Joshua
 
