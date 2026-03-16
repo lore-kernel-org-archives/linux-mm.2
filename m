@@ -4,138 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFB1F53D85
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 18:23:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39BEBF53D7E
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 18:30:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C71D6B033C; Mon, 16 Mar 2026 14:23:05 -0400 (EDT)
+	id 798216B0343; Mon, 16 Mar 2026 14:30:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49BB86B0340; Mon, 16 Mar 2026 14:23:05 -0400 (EDT)
+	id 73B526B0344; Mon, 16 Mar 2026 14:30:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C8896B0342; Mon, 16 Mar 2026 14:23:05 -0400 (EDT)
+	id 651A76B0345; Mon, 16 Mar 2026 14:30:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D9776B033C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:23:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2FE713AA77
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:23:04 +0000 (UTC)
-X-FDA: 84552747888.01.0E75570
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DCB148000E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:23:02 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BDqUsdzs;
-	spf=pass (imf30.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773685382;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F5AD6B0343
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:30:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04EC958B67
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:30:36 +0000 (UTC)
+X-FDA: 84552766914.05.7566581
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1427CC0002
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:30:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V+nsGW9W;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773685835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rq0tOO+dj1//VrvsBCgXZjoN1LwX8pTcrsD14x8QFQM=;
-	b=ZPkb5mb59qmF/qYItPG8uIEwT0aZkuC3FjGwfaWqJKHylXXX+G10aFfHUe9EIvqHhkNIRV
-	bLlwzFRz7LnSStQORJBmkWXhGjJHPOZ8i9O87yvgwoFGMTm9NT2ZJfaHOShxqwPaQ9fVpZ
-	gg4Z+KreBJWUMWbmmqCzfod55RDKcAw=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BDqUsdzs;
-	spf=pass (imf30.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773685382; a=rsa-sha256;
-	cv=pass;
-	b=QIR/FsO7+z1EHfj9CUWgZkxVdz3xFCdxUiWBLa83hRLVKEgiT215q07xcvvU4b+ct44vLb
-	yT9uYlrwJmMIGhyFV9/4pCWerF3csE4qgYaIS7On/oVQsE9PIDfD5xfsgnAn7cByntvITM
-	RkH0vGQh/R9WGU5wQh1nXKGbHodCSn4=
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2c0d36f3888so488378eec.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:23:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773685382; cv=none;
-        d=google.com; s=arc-20240605;
-        b=l1g4Vm0IsMpPJ5EiX7eM6S7bsMqlqg8hCQF2UITsb6QTp7pPIvbyKCjPCKuNQL//Np
-         2gdxTFeJtblukgCGdLRkqr32xd5Fukb/dCCZ/7ckGFjk2HCsssnDEM/8sWM1UlMmYNk3
-         NIb4i/LYvEAo0G7WAivgrzZH0rtolxdCiPgLucSECeHPT5BUmxPsOI+sWJ+noyQftmYn
-         NKGM/sNcyodei3Yr+2xTVDAZN0cRpDrJgPM++DvGDzX/4BrHuN8RaM5+i0rDhBtm0JLH
-         Co1/ghxTvuV+DjPXPs/NnDrvK57E52OMwEikqwqE2FCL7hflnW+TNWKITwC8P3Wp2nW9
-         ao3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rq0tOO+dj1//VrvsBCgXZjoN1LwX8pTcrsD14x8QFQM=;
-        fh=2QGGvUsE++yPQX581ZWu8W6o1MS+Dybgt4rXK6NTp6Y=;
-        b=E1LGrLdYrXa2vdhwe9HnoN8x0G34THi6IXc7NlJbQ8r2BsMyVyeC9rxX6OIR8R2KaW
-         C58LFSk7ibNvr9sCn1B+j9dYDZdS4r5BpzWhfN+Kt+79C3Mw6fmvZCAc9t2R+g92oAUN
-         FkTeIzw4CoOA66qgip42/l2E2czr6v0MEMpaaeGWdQOQUw8Ar7G80SlVVesLU42b7dAr
-         W6bt+Qy7y1sD6j7iJ+qEDFf2J1ILZM7BMmMUOgeM0DDvV0AKwjUp/QxG0RyqvRmbM+ol
-         NTzH/2Xt6NMgtJm+PPwPv4Jhk1joL4ICJ5L4KPRwXlue24ICELy4R69c61iL0OY/aZqM
-         OMmQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773685382; x=1774290182; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rq0tOO+dj1//VrvsBCgXZjoN1LwX8pTcrsD14x8QFQM=;
-        b=BDqUsdzsm3opSGnEXOgbeZXxwPjFKBdqV9P3jy/FJM+kRN5QjD5M2MBoPPKDUhmH6J
-         mJG11Fqhe0lYmOOSmfatvmwxorRJL6iML/tz8Jw3PV6Jn98nJ2dpmSKNgYJahbCYP3bx
-         muza8Cdiy4e2mEPBHD43/VLEcEwbUDfZYXgkRdkzbWjj1Qz+6mwJ7lSZLCMSDirliyKg
-         N4L8gxu1LfBytM8tHkIP6jdSnBoCYhcN6X5DDvEyoWyBNxTg3hddqfsI7LOVq8fDT06N
-         vaUlzF4quXZpdyKQ44mbsxfzIlEExoHoLIB5lUWII2Pn3FGqHjtvNa7MlaZDMaOIBBqI
-         hEFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773685382; x=1774290182;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rq0tOO+dj1//VrvsBCgXZjoN1LwX8pTcrsD14x8QFQM=;
-        b=dMcmBnVwkK7tjDLMIImN/YBUHVUevDPj4SW4zzsTtChTOi/zuzbTP2+AKlaQhMSnso
-         sWniDO6df28HarLV79ROUYOF5cc5A72X9xd0gaiUWmMCbIGfEOQVJZYP/9ngdLWjq+Rr
-         ildDtTpIS2CTfPKiW9afj0bMhMYLBcOchCgSUih/WES43GLlYDjCOaK/GzBmQPkM7/7I
-         8xFh23jJq5PT0DJPxbvlhIoLdfosgYaZKgNyXL+VS1aK2TvOMU2DmqlwSUnAGxtm1JsJ
-         QAzzDpdLWsQkoLJp9sTDaRCjkrncJ7mbnp6Sjh86xnIbmgKz9IFkuE/OzcTipgoEo5YL
-         w3QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3D1I36K8bth6xUYBjvQt8VI3NqK3QJK/TNQHzAoCn4LtrCW+52Yod8cot7TXQRP3Eaa/vA4wB5w==@kvack.org
-X-Gm-Message-State: AOJu0YzzV1HVd4tJPdXb3ihvJBjuAuhmvoTa3rD6cCwxRctd3P+n3IlQ
-	fPwCrx/qlrPXHvYMN034DK9zFdUmO/u5izM2pgO6IX1kftrbCmbge9y7LVXdoJqTIBf+Grv9cOa
-	fpl6Vq1FoH0zXrqOw8mBp4GMpX/XqDEI=
-X-Gm-Gg: ATEYQzwkUIAqTR//l4M2Gj6u2xPwYhFYZRoXJsl3PKxobMzmfqXnBxLVhqfuoF4Cr0f
-	cPHzxc9aojnf77DwvAFJis4vbih8Ba2A6AuuqTzhSCql1BCBMwhs2wkevCUyBA9ji1qt2mfsgp1
-	LuUMLmWGFKSv/voeSb4sCYGWiUpVEnK619r0162ioiiP/2Nvoq1zpMupJm4zTZ98mDWI8/gkzPM
-	EGpfMT4R/G+Ti9r3CO4fDNI8xhcIpDUXcgNPweC17eaz2uIwxoI9BY1d+uzCl4vxJvvO5gqKpRu
-	ZU8u8kttCDAeLPI2NGuWy5zo
-X-Received: by 2002:a05:7301:2c89:b0:2be:8da:3207 with SMTP id
- 5a478bee46e88-2bea53ab887mr5936824eec.6.1773685381593; Mon, 16 Mar 2026
- 11:23:01 -0700 (PDT)
+	bh=PihGP08Cg+fzraKEVoQR8MYNTTxFBaUh27QQUfppitE=;
+	b=IKW7entvrWR98Ti/ki2nYfr4HsF9zT3oq80vpD+lkocgMHLmx6KpVzxHrMsBQHM5NR+Abp
+	MF8UZYEFIB9I+YxSm+iJreJDkZ+cjyYrfoZ5huCYVVfNZBFZf92lYVwJtzky6eh6NieGHV
+	cM63YLhAl/fCUpHRq9fO7WMfge1BsGE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V+nsGW9W;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773685835; a=rsa-sha256;
+	cv=none;
+	b=yF7pZU9lK7TSiwCkF5N5pcjbtxGXZbqI5SBDGb3NdiYlXgvvK/lCsSEJ7/cxhXAc6UzuM6
+	8Aye7Es7T/paaWSaofUYCDxNLFDN/5L+SCXvEJFPH3xCKEkayWBkSglCMjW4QqGGkfaoN8
+	8l7L6vHQQfrheH8LMie59qJr1AHucug=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 200FE44301
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029C1C2BCB3
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:30:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773685834;
+	bh=PihGP08Cg+fzraKEVoQR8MYNTTxFBaUh27QQUfppitE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=V+nsGW9WLYGktQOjPnS9ds122Ypwwwu5WCwy4dbgcLA36DALzYvrfSrl9TneCRCJS
+	 67MeIb4I2anNr4PEeRC+hMK13arJUUnVFfPlMcVyPIogb8aHTZXu84zyAXYYimyt9U
+	 sO4jPctmPTlhLnhWOyhIK4e9o5xoWBUhmA+ZPVBYw9pFwgljrnZhGhpIm4Ss/HtSq3
+	 ph6qBAN1AOmSRhCQKxZfOCBC1y87QMUytn5qjcZLCfefKvb0N0QvWYM+80i1F11p4/
+	 GHK3PR52tSlsEgK9jUkBkaJORIgthxM2tHrmDVRSzXXUyFDs/n0nhAPaW7jTWh74wu
+	 XRY2dqUHyr33A==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-661d929219bso5795764a12.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:30:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVN+88pofLYDbVtA06tAeSiidGwXMMRV3ciR+EsN9VvRckAKUhoPRLx3OWGHZ0f4T4PYnZRj3Ijuw==@kvack.org
+X-Gm-Message-State: AOJu0YxPOtpifQ5du8OR77EfOAs+jZbUlvXJjsTSl+wgyZbBqIKEhxIO
+	DeH4fOzGnVV8/4GiWawz/W7bJKpQLdto6wZNMdoa/qgU2pLxt5D7sYwe3ZPetCxJPw4d/GOz8Z1
+	yemKvnVdotXNavvEseLnsueRAthKGUcU=
+X-Received: by 2002:a17:907:d1e:b0:b94:2d07:6c3f with SMTP id
+ a640c23a62f3a-b976504c3cfmr910155366b.24.1773685832723; Mon, 16 Mar 2026
+ 11:30:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com>
  <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
  <CACpmpodjsMELCrJ-QX066CYiGgraysr_ZhFMvU5N-6nr2HsRsw@mail.gmail.com>
- <abgbx0YXbxu2mAHU@google.com> <abgc5cn8Co9ft0Wr@google.com>
-In-Reply-To: <abgc5cn8Co9ft0Wr@google.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Mon, 16 Mar 2026 11:22:49 -0700
-X-Gm-Features: AaiRm52iiXFiPEyBvKWl5vf4gWzYwQb4JuEsIcoEKAQxWfHMktBPshpXiL8azRw
-Message-ID: <CACpmpocK524uc9ws1oDPwE7XkOntCzXJmOv+0mk8Q4WisGaE9Q@mail.gmail.com>
+ <abgbx0YXbxu2mAHU@google.com> <CACpmpoeo0LhxkoA5Wx6q+9=2scn_az0u=3bar-JgBvTA-ZBkZg@mail.gmail.com>
+In-Reply-To: <CACpmpoeo0LhxkoA5Wx6q+9=2scn_az0u=3bar-JgBvTA-ZBkZg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 16 Mar 2026 11:30:21 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPR+Sbo9erKEn_qFG4GXBbSd4EJCmtBYRfV8Qvuh5262Q@mail.gmail.com>
+X-Gm-Features: AaiRm52WGZPMHHMNcBIRf9nEoSSQE6Iw2dNQT3D3nFGiklVsCKziezsF0WkdiUM
+Message-ID: <CAO9r8zPR+Sbo9erKEn_qFG4GXBbSd4EJCmtBYRfV8Qvuh5262Q@mail.gmail.com>
 Subject: Re: [PATCH 0/2] zswap pool per-CPU acomp_ctx simplifications
-To: Yosry Ahmed <yosry@kernel.org>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
 	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ae3rprrmyrga91yh1oi3jw85a3bwy7jd
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1427CC0002
+X-Stat-Signature: b8q81u1g9cqf4ssr33s6b1dtf4dy47xd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DCB148000E
-X-HE-Tag: 1773685382-215532
-X-HE-Meta: U2FsdGVkX1++/rdEcUMKrZq17c4RLYQf816jWgRl46DzZL3oZ5s0o50bJcRLELWw3UQJHEr4f6VFCsivokR32oqutSbUNF276PKlKFQWS6dfFZqOcmDxzCHa5B5AHdRyQhd7kd5VaANN290ibRmzYVwaNu8Q2lbi7P/tbKHfV47MqDE7RgmRWriGEYnrZoThXJYxOGH3DLLMH5uTnN3r8NuqXMRRd1UwMVx38GYkyuQ/4U6s5swCKYOPuPS6bF3QcxNG30wiYstfIo/5YkW2A4zEMqzgeHAukAgQbKt+aYxT01IOZQ49SfYCbCLi6qNPrX4KD95x68xq11+eMRn7YIX777JSIa1dZi2lBK/afaW6jlydWbZgUf9JrSM/kJp5l97YACVDFyRdh8AWL0+mx1cw5nxYWMe1hlcDZVYbn6BncrEXlv+3jOCqmIU6WRpDPdlaoYwTUI+8fUWErffjs14D74kpyWKfp6MSOKG8oWBFknVUt+gMhDcmJgD2/A7MQJs8ezv4x66jWi+6cygHcHyO3fksdda2lNxWHsZx1kwm1ItbJK+s+l+c4eXl9CBUqiIQxj4+89pNiLS47OrWp+YgL5UKo5RAd9EoK1aj+zUcxlM5b7iFR1Ii1vPK5HGY6Bh1UZ5aeEb7wawRtPtEWNUGWR8mVdvNl9z9hVosZf6qoqjwl/s/Dd97YB9r4zH+pHXqE/eI5pJKXevjtVHNaVWJ3+v28OxdgsmLYxkS2WVGg+LUB8c7eAuPF6zB42wWpCg2vUxwvINSRveG2VK/JdXUDUcVO2+MraPrufmoRYHR0qJDhKJWxyeYzLh7FffembqAxBugD4Q/5RAyS6kKFtt+qRTW/X72sUG5qjjSFhSUplrCdXKp0fa+BWKw3mBzkGdO8OIArVLkxpjk3AgDgePZ3vzjR1dMWHbAwzZpPMAP7M7L2jgHqWN9oFwhHUa3AdGwi1YrtCIbGZX8KKi
- DbHbyq93
- CvkcoDdiYTAWNi+QAmo0INBDS2JixI9boDN52dbc76foYxZwTBc78YNey7VTISB+Zp0JVDywiwNhwKXWQjtUZWd4Xhync3ffIbeXWz3lJPUgjJJHWrZ/4tkvxGBY4gIDCV53YdJf1AxwiGx18Eyw7b2FbKUtlp47hL3JnAF0xajHh9TMOJRybYyVsB7/TsLjUwdDMH0XEZBGKLn9F4TyI9TzxqmgPx4eyO2hJ6V2B35V0gy2ACYLBTDFwBXz5bV3f81JttLRyrfr53AJKtoXjBErcdgB/p4xyqLJYYUq5qkzRLbAZoZ7N2rKdfY4r67rOpso7nSk2EdpGklAt9Gn0FaNZ1u+UNr7b5x4ru1z4ynIr0MzxW/xFkzFs2IQsA8NoPU4lzSIhqtAPXysXaHbUs93WMYEBSW1XkdVLsqN9SmdlqXl4BETk2pqZkek6Ud4xmcAu5Wz8eODuswG6Z+Zd53Srag4Go+/QMamKzMoNfkc1G0XwkdzE2h9F5XjwV7VR5Crge1tbhRZ0c4rk3DnH3/hkZT5kRcwv0kGmKtUhQnTPmH4=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773685834-79592
+X-HE-Meta: U2FsdGVkX19i5k6F7ba701nk0J2TyK5zzMamETHLlt0//s5uB3n4dCRMRElgA/pqnYFU4vNqSIpyR2JNlvN2q5enAatSLciZk2hBsl5VqCA4ZSIbc2HYQUliankxSTb25PDBZs+gtFzyVmmvLNhFd5JZyNxxoTJeGpHLzQFmEHWjhC/qlESmqZyfi5HkdWePwAOMju/t56J1ZAdOYKGZJt1sbbkqnE+AjEUZDlEszoKCREw4gob9GV923Lgb2ZEFQtOprLC+rFfoTdN3K6ymk50qIUF38AqWPF3rRYkJJ4ltTf1yesJoDL+2JEXa0+0jiZGRCtlQyy/hySrmGaF2ve4K+xhJ00BqwIj2tsG4YWyig+YozLLpcoyKC4G/0B9YZ24NZx9qWn6/ZEOd4N73oIdELpd3pWngIXQqdUhy4P8TetmlwzWXR1N+KoUuSa65zVFNP6JejRJKsRuBz4pYyXuVexa38PuVL2dVROHUomRmRTnLX/eu/OQ7daH5t+jkUeKzXXKrhJ+vL5nyOBo3QT++FORmpaC+a6d8WlToUzpUYprlVtQgVObywedxB7A00qR5K6JMT7b5+wPXTJpuINPVP7MXGyzagnYTmSiK1bVqeoI4A+A3lhcPnc04bzcYC+ieSxb2oZI7teXwzMywbb2boB1gfBvYPmuFp3tuqVD34e+4cG1rNS3m8bXOZr6vluoPaBZzjI8FWKDPTsQEeV3jzBzsQdle5yphvHRzsGHKdv4VbOP71Z3bpahE53oSi+J497FfVA5FhmYLx5I9Kp9khTDY3CHdJLW67jzvaEub3tQ5vHEKdGY/26kB6C15JyT2UON/PPs2EkJqrTEzbndsKCm3ivBZOW5/VNSma+OieXR0OzqvMRFJGJAfMSoIda2PAvUIyG7UIiyT9muvkvInrA8c3J9riYWf1VSTASeYtp6XemcXBoxVZqDFYPWebODVCTDZF/oOZK5SIBu
+ UP+rYQPC
+ YCiizP6p/FnliKcjetc3N0eLhkvLrkGViE/UIP1+Jac+juQY+w9uT1cZ35Q/DFKVIK+xYIZDYzgCt45PyOF4+gk2CgIwT905pnneX1wk1WycQtjM6zk7yypTqu2WtHBRoKP/utImsQel4mKKCvShhv+DYszuhTjgUyw0hu+b8olwBh7rvx5LpfTIUdcnZcq9gYy/cg5HpAZnHyKuyKFbTuTX3UtY81bXjBVvFRGpjkULJd3fcnb09uMYHi83XKatdzmoilbUzF+uqwKwSQ0mkKydR4bPR+J2Ca4IFs93RSculxXX0aU12HdhglKtIxRY/OsCrqxb9AxD4okU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,49 +104,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 8:09=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Mon, Mar 16, 2026 at 03:06:32PM +0000, Yosry Ahmed wrote:
-> > > > > @@ -786,7 +786,7 @@ static int zswap_cpu_comp_prepare(unsigned in=
-t cpu, struct hlist_node *node)
-> > > > > return ret;
-> > > > >
-> > > > > acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0=
-, cpu_to_node(cpu));
-> > > > > - if (IS_ERR(acomp_ctx->acomp)) {
-> > > > > + if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
-> > > > Does crypto_alloc_acomp_node() ever return NULL?
-> > > > Looking at the error handling just below this check, if this were t=
-o
-> > > > actually return NULL, PTR_ERR(NULL) evaluates to 0. This would caus=
-e
-> > > > the function to incorrectly return 0 (success) instead of an error =
-code,
-> > > > hiding the allocation failure.
+> > > If the maintainers think future-proofing is beneficial, I would need
+> > > to handle the PTR_ERR(NULL) which would send a false success status.
+> > > If we don't think we need to handle a future NULL return from
+> > > crypto_alloc_acomp_node(), then I don't think this change is needed.
+> > > We could leave it as IS_ERR(acomp_ctx->acomp). I would like to get the
+> > > maintainers' inputs on how to proceed.
 > > >
-> > > This is a good catch. Just to provide context, this patch was
-> > > introduced based on Yosry's earlier comments in [1].
+> > > > > acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
+> > > > > - if (!acomp_ctx->req) {
+> > > > > + if (IS_ERR_OR_NULL(acomp_ctx->req)) {
+> > > > Is this change necessary for acomp_request_alloc()?
+> > > > This function strictly returns NULL on allocation failure, not an error
+> > > > pointer. Changing this to IS_ERR_OR_NULL() obscures the actual API contract
+> > > > without providing a functional benefit.
 > > >
-> > > [1]: https://patchwork.kernel.org/comment/26282128/
-> > >
-> > > crypto_alloc_acomp_node() currently does not return NULL. However, it
-> > > could, in future.
-> > > Since the rest of zswap_cpu_comp_prepare() dereferences
-> > > acomp_ctx->acomp, it depends on whether we want to future-proof the
-> > > code to handle a possible eventuality of crypto_alloc_acomp_node()
-> > > returning NULL.
+> > > As of now, acomp_request_alloc() returns a valid "req" or NULL in case
+> > > of an error. Same question as above. The only benefit would be making
+> > > the code more robust to handle changes in the acomp API in future.
 > >
-> > Hmm upon revisiting this, I think keeping this as IS_ERR() here is a
-> > better documentation for the API, and the incossitency between this cod=
-e
-> > and acomp_ctx_dealloc() is arguably documenting that the function can
-> > only return an ERR, but it can also be NULL-initialized by zswap.
+> > For this one, do we need to do IS_ERR_OR_NULL() in acomp_ctx_dealloc()
+> > to begin with? If acomp_request_alloc() only returns NULL, maybe that
+> > should also be a NULL check?
 >
-> Also, sorry for leading you astray in the first place. Looking at this
-> initially I thought the inconsistency was confusing, but looking at it
-> with fresh eyes I think it better documents the API and the different
-> callsites.
+> This one is debatable, since acomp_ctx_dealloc() is intended to
+> replace zswap_cpu_comp_dead(), which has the IS_ERR_OR_NULL(). I think
+> replacing this with IS_NULL(req) makes sense, but would like to
+> confirm with you if changing existing behavior is Ok.
 
-No worries.
+I think it's fine as long as acomp_request_alloc() never returns an
+error. Maybe do it in a separate patch first, change IS_ERR_OR_NULL()
+to a NULL check in zswap_cpu_comp_dead(), with the reasoning explained
+in the changelog, to avoid hiding that change within the bigger patch.
+
+Actually looking at zswap_cpu_comp_dead(), is the IS_ERR_OR_NULL()
+check on acomp_ctx also misleading? Should that also just be a NULL
+check?
 
