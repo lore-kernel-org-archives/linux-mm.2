@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD420F46449
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C6FF46449
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:50:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CF76B0192; Mon, 16 Mar 2026 06:48:21 -0400 (EDT)
+	id 0274B6B0195; Mon, 16 Mar 2026 06:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FB046B0194; Mon, 16 Mar 2026 06:48:21 -0400 (EDT)
+	id F41A16B0196; Mon, 16 Mar 2026 06:50:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 224466B0195; Mon, 16 Mar 2026 06:48:21 -0400 (EDT)
+	id E537E6B0197; Mon, 16 Mar 2026 06:50:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 107316B0192
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:48:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC9111A0197
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:48:20 +0000 (UTC)
-X-FDA: 84551601960.30.E06ABCA
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E9D0F140006
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:48:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=b1iYJS3D;
-	spf=pass (imf09.hostedemail.com: domain of 38d-3aQkKCOQGROIKXeNRMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=38d-3aQkKCOQGROIKXeNRMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--aliceryhl.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5F406B0195
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:50:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A9031401A4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:50:24 +0000 (UTC)
+X-FDA: 84551607168.18.8B424B3
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BAB4818000B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:50:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Wj7bG+p/";
+	spf=pass (imf06.hostedemail.com: domain of 3beC3aQkKCGIALICERYHLGOOGLE.COMLINUX-MMKVACK.ORG@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3beC3aQkKCGIALICERYHLGOOGLE.COMLINUX-MMKVACK.ORG@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773658099;
+	s=arc-20220608; t=1773658222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cUOGpPWcKDo+U5VR1NrHCLemu1A0Jfaz2D2lBYpe4+s=;
-	b=YNMk5MF4SzHiqi5bSnqLj/5Kn7nwPMmg5NjuFSDxB3PVwIUaFEYLF/Pmf5rgyCOjyBn/3e
-	Qp3b1NFrYKmlDxx/ZJ5LROhjO0d9KLfodNHkzCRcLTfMCCdFyUUN5XiGlE4Rg/X9gIGFCv
-	LhCGntFO0oE9ikaWLXjHYOuqA/ZjMI4=
+	bh=CN70017b9XscXy7JbJrHaMQDBe/xTJqIeRZ6kPNoH6A=;
+	b=gnG0osbtzC3XFkNwKR3tQKWsNMd7ATgTUJArXjodPTsPnCKKunkZBWg261AIC8F85kDydv
+	cn/xE891tCiH0PO7WhxFw0Ldqtn0iwsOvS2AWR0/PIe9U7BMgIiZKMCzScAbB0tw+SeL1g
+	ZY6ytka9Ue7HBF068nZeFTYAejrMgaw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=b1iYJS3D;
-	spf=pass (imf09.hostedemail.com: domain of 38d-3aQkKCOQGROIKXeNRMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=38d-3aQkKCOQGROIKXeNRMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--aliceryhl.bounces.google.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Wj7bG+p/";
+	spf=pass (imf06.hostedemail.com: domain of 3beC3aQkKCGIALICERYHLGOOGLE.COMLINUX-MMKVACK.ORG@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3beC3aQkKCGIALICERYHLGOOGLE.COMLINUX-MMKVACK.ORG@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658099; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658222; a=rsa-sha256;
 	cv=none;
-	b=BYvK1XvcoSNOTrG/TWoK4YkoVEOFPTmfR1gZlWlw5hjreOMCleDRaiLHwGfvxa0W+QEUZX
-	k0ID4odhb8ILZElhJl4aq+dAPM5fvjFLV1qxiVcaWGg1T/NCc/1hnZDk6Km939TGWBzOrV
-	pUUAPJqGf4NMDfNYIXr7M65Y95jGHo8=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-485389bf0daso30198305e9.0
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:48:18 -0700 (PDT)
+	b=DI5FEdbZgmhYpLtsAWtJcmJyapqtOVjQOIxaExWGkJIJX7pGEaXdktGltvY4wP/h0B4cdU
+	pXKx4sg324K3lW/1LlMyXW/BTzgdOB7l+ljkQWuNFBFG7CpTJIpTMzpzvjbWmUdeFOOpBJ
+	OVuyuY3KF2x+yF6/7Nc9xeNHGMkhUGM=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439b8bc43aeso4014100f8f.1
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:50:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773658097; x=1774262897; darn=kvack.org;
+        d=google.com; s=20251104; t=1773658221; x=1774263021; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cUOGpPWcKDo+U5VR1NrHCLemu1A0Jfaz2D2lBYpe4+s=;
-        b=b1iYJS3DmiaCsl3YgqsPhmssUitZWBlQCl3tXDrlMzEAF1QAEd4JV3DlPIa2T4TSsO
-         6sHICdW5XososYEH/uzA6G4OBukU30Q/GysMYl2I3vtV8O+FdtuN/UIkya5T8mKFj0p+
-         MDiYmbXXaCm4DkyFbT/19bK6bVNuzltlKsuHWt9cZYwmMxwxTE6z9dl+nqhBQTBNDlLE
-         W4L5L1npyuY7lVKZZeTWLvUme/YDFvctBZZWrNHyU1GdNgYp1zM5ocjonR9+8ltgKqpM
-         Q2k299cWSz9h725QAtJt21CzUuialTv7iBpsowJeZ/zhsvm63HgQFAxx5skeDFdEXG64
-         cXcw==
+        bh=CN70017b9XscXy7JbJrHaMQDBe/xTJqIeRZ6kPNoH6A=;
+        b=Wj7bG+p/aXwa71AC8PWJX1sPnjqm7euxqPsgbzRzVD3dqSgVVHgwdIC/yHKxMddLNk
+         9JNEvGeBnJfp3fJYvwoRuLEFv9Js0FUwFNP6c7MQFNMAebx+x09gVIZsm7MhBJBX7Vl6
+         zfiFwLnDE5/pZPgE4n58sUJFhtV6SFUrqwleeJBT8O05VDfLTZxfCNSA9YUb8+esnAYq
+         yMThQUVX3upcDYHT5jaqeFqr+eLt3GSqiWQhBpG/aa+4jlhIlmAGI8tPpKL65vqanE7q
+         dLBQhbsuiYrFYDyAbn7/V1xl9KR0OYnCzihwZs7Ycqayvblqr/ZbEBPih+HyS7RDfiLb
+         fA8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773658097; x=1774262897;
+        d=1e100.net; s=20251104; t=1773658221; x=1774263021;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cUOGpPWcKDo+U5VR1NrHCLemu1A0Jfaz2D2lBYpe4+s=;
-        b=KMwQAjZWBFfYMbo012mv7JjMiNXFBdIusZnwxI3rgPpqLKcvazlMfXH9mFsNCJQrCv
-         +682QDOuDm8Po8nYDUV0ORIRA/gJHsXsgV081bde39Zr0MiSdVjauVoFLMXTOSvsDpYV
-         O05pqJZSDeS1hwSZyz/YD6nC1nh+RCyb/DQ8qxi6F0s7SC5owvWzw391HXtaxdOOkogK
-         PeYpO36sZQ6zizwhH7aeuxhGz+3WhGuir73st10KFAIU1AeLUE//CsuuZjkvUQhmiXtk
-         M8xJX2F5GXmzX5y/drgEyO2EWVLKYi+UHW19Cvk7H5Q4D4IckNZ0HUVTpN3inXSCxzx3
-         6kgw==
-X-Forwarded-Encrypted: i=1; AJvYcCVfkOc2ESIiUuCtszSEFoSQcHGvWvyPvAlpVP0fopqn0ngPqi6QSI7FiKYSmn2x6rE+heBN//9ZIQ==@kvack.org
-X-Gm-Message-State: AOJu0YzX7+W6dl/IQ3QHXBUNZ3vz04Ad44XYg959Ae8rTgyzofKbit2u
-	VXjUasjkRPmQJ2wTMsRfsjQ+cgARQI5qWu2ZPUnqIQZwedhJrIPxNu6bgohsUBhRV499A8fgybR
-	A+tsa+wIy0GI4s3Bkkw==
-X-Received: from wmco2.prod.google.com ([2002:a05:600c:a302:b0:485:3b4c:3e34])
+        bh=CN70017b9XscXy7JbJrHaMQDBe/xTJqIeRZ6kPNoH6A=;
+        b=SMR5RLKp/k+3BTFNVw0awbn+3QOi8D3cF+U1sNggMvOepzmFsdy2EwbHY+oNqvWnx7
+         idsVR9QNvo/ZG/UHTxydI00CqMw/Ef2pxfpWSHFUyZBPRMpJ5owc9dv06nzeLQPKW/t6
+         mdogmDfK62BdjDYcdRBNnR6HS5OQUc1Cnj+vql9A91Nza12mtm7LXixfbUWS7zcVfJgM
+         GZWXUQJ57hBvcQtYnZ3JgyCuTiheg9owpXUmeeLbHn87pUJdMMLf/45sCxPCri4OGVwb
+         7ewc58hRK6gkvL2UQu/39J6j1rExZhzSAAAVlsFgjA2AQQr4Dq3Jyxr9DVWS9rYKwgup
+         GecQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWq1bitXCCPAb+2Z47oen2W5CFjaaQdYMiASV4R7Bj/K0MG3KzckKS6diMlKgmCBgbudJTat9cjpA==@kvack.org
+X-Gm-Message-State: AOJu0Yyvv6mSm+dMWSQ/4whuiOuZxAOttY5o32xQ/FqfbTlo2QtCHfsl
+	IxXeD6HLUXv9PfvO0F41/r/jWXZr8MDbCuQyEhC/4wzTAPTpZAsRp2PAH9u8ReVa6ukBUKoaJ3f
+	s9TKnDVGkxtg7c3Wjgw==
+X-Received: from wmpo26.prod.google.com ([2002:a05:600c:339a:b0:480:6c91:3efb])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b14:b0:485:3f1c:d8a4 with SMTP id 5b1f17b1804b1-485566d6e54mr215274655e9.9.1773658097378;
- Mon, 16 Mar 2026 03:48:17 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:48:16 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-18-de9a7af4b469@kernel.org>
+ 2002:a05:600c:4514:b0:485:2f6a:6ed with SMTP id 5b1f17b1804b1-4855670b701mr196241325e9.28.1773658221003;
+ Mon, 16 Mar 2026 03:50:21 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:50:20 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-19-de9a7af4b469@kernel.org>
 Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-18-de9a7af4b469@kernel.org>
-Message-ID: <abff8Hb4FAN1e39U@google.com>
-Subject: Re: [PATCH 18/79] block: rust: add Request::sectors() method
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-19-de9a7af4b469@kernel.org>
+Message-ID: <abfgbBjloS39qrbM@google.com>
+Subject: Re: [PATCH 19/79] block: rust: mq: add max_hw_discard_sectors support
+ to GenDiskBuilder
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -100,14 +101,14 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E9D0F140006
-X-Stat-Signature: 3xsdsro5ikj93xg3ueb4ph36b9y8k884
+X-Rspamd-Queue-Id: BAB4818000B
+X-Stat-Signature: oxmijqow558udq8qsk6xu33jsj6fmjr7
 X-Rspam-User: 
-X-HE-Tag: 1773658098-324163
-X-HE-Meta: U2FsdGVkX1/K8s/c1z3YfSYxw9D3bfjgRK8sAOIbbw+B/1G9Hcu9b0oiH0e3Elpz1cGSJGChO8bHqsYrZ+kL7xogC59ppm4IrCzDaKdb+1KcB2liZ2sVbbw021xQhnT0RJ0NnABgUShpZLpD3+1lTIhTc/jSzq3xMPtbjF8S1zVU6CTuyIJGGlTYyxOK9qmwc40s9qTy7Bh4W0O1GUENGfC8GYqX4LClvGarf5zwJPsm2H5LDsxiy1JLdWPe0fwHQYedroPu4Ch4SCLvL1fXNSNybiugm94O8V+jNDGO252YFfOdF2vkycMVtKPGltHWEflSBJNFqAjpmVsd8RKAr/58IDA7LAIXvXOz0czt8RmJU79cUiPZzZHt2iU8OHj4j0Co/FJSOyl23p8HXxLAVe1qrmj5ayVklUe6tVydwUPqU/SCtyV/7l3NgtG9ogq24qhnbHoFOz+MbWcluygnedeNSfBYLEcxmtWEKWLIKzqEEcC9y3SX1TT0n/zprv1/0okR4I2qfjh/JBBNNUM0sF67V00Q+Qsx+ILTok4S+3I+e33bBh4+QTHwGYsT+lb7//jPKNd0N0CM6GU1ar8eNdjb2kGZJbElNPLJyfu4KOwsVfwpl+lBINQbi7kRD6+NjJV6UYdr5jAKjIuiifxusI84sDv4vBW1AnPhur9IxuyNX5bjLLyitMjuEXil3a57f/uCUxVmaBm6/x/fvWlHmRgpFJ+4Q5n4xvUQG6in3IFLojbxiHCShE5dwhDSeuijQKU0v/CiCfNrma6zjGL5LgEM1naCIFByZ/kzYSbu1VJNo2lEFQdcAXnawB1VHgfuGZPzm8R8+NO4PCbJ1XwNjjZMEfGFc5JdTxntAD70WQhsjCq1/gHaS4iMrfi6z9XK50HisLaR5Slz5xFDh1a4hKVCKcdLjDk5ObG4N6caJAXHVWpjEnwEnURBtcqzfdGHQB7wHe0fNqK1+edQ/Jz
- mpIcWZI/
- mQ6D8yRWYB+o20OdJWGwnc5BI8EY5QH05iCm0R8jfhZ5IKMg8DaECU0Gb2xUiAUNeDrgCWs3kgZJqvMICGlur/WP8pBgPY5Wg5m1umRPIra9jrCX7mXZCKtB3Wv973esxoAvUcBoaUZtw19ttTSlB7VEJv7KzoRJsmciZ8CR9ntIHVJbwYuYBUG26suw7yee8RXLUkFdrD/Zn9yFkuA60s31obpihwfwFyKvwKRVltF1CgGitD+hP35rkwFlYO9BD97G5lqLsB0r7evzB2MyDTe3U1OmVzLJs1SndteaYbQQI55olTjBlWw/DsR0X1y/VyzUFrBH7J+yWKVcuND8mRHMxDUm1pC6BM2kOmIXmAl+7wEZMDvTy7jWuOKxZdEcU1sPrhql1sUOOCG/wXwx7Zo6ZzY79ewzgun+ZwCBUyRn0Z/SRpt5mKIr9Jzl41vT2OFfB6t/o4CWJzDK9HR4rRdcXEKK6YqcgC7zXwJny2RiJAlcZlyuFiI5gWNyGWgRz6TkWYDqaKcVITsLmVe/32toqc64Wz+GFG10vUQhN9LImWOI0lOATnD6GRhXIObUb3X8xvqi97lcs4wqtwm/ZMLfJrY3AGlydydlbh005ySs/A60MoQ4dFdfAtydeMg+4xiPGOZDYET9H3xMo5rKeXYH8bCT/qlnSSi4akLsfZdLvNciSYS4b5OwJwG70PbYPgcJTtov2sXxHJcKBtcY1dVpKcg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773658222-791671
+X-HE-Meta: U2FsdGVkX196GiMS8ZxZS4CQeIaiY9f7H4uIfb2Ad+Lsz4X/B0+/eKzIR9mHHDuZonkNytHgam1Sk6+hAF9vsj6l6xR8EMlAaAxbrejbyrrEioKGEJSQRWZpTF+K8LY603SzoWOzCK+WNBmnHNzjiyKHEebnfMbUaufEFKgaULvdVBaz774UentQ0VaVHoJTJsNHmwU0GQonmUIWAVllcOd6llv+oe37SsX4BgFMg57s9PhuIAgoiK7vh/St/3guiT6GVBYm6p++80ShDJujJ/M2CL6S8ip4dvHzJ7CELqds4YcOq8uavpk/laoIpp/tz+pYSAc/UpLzFRq7m+14VR2ZGXmZf1Rz4QRLW580pFTeAXsS0rNQs+L0AUb01dezD6c46NIdJbRKWugGpq9qGlQdttefBDqJivYWRER3hVzDl2IzhvUyZ00ovJm9G4BDBApsLOt1g2YzBqBXAzhBH82DDbiinJpv/xHVe6c3KRc6DjK8KvmnQDu88/RmIZYNbdoNtAVnNdIyNJjFmQzz1kPIjxUDF6ta0OYyuHEz9/roCoZvVTG4DRTj5Htr4aMhLiv1HXF/B7GQJwLY7olpdQ3FTn1NviHAwlUEfSRkOK+JXWjyl89cFxz4wAlentyB7dqojvZWXVoY6Hbui/y8ZxGrmY4/c2irD5xAl5keRd9RkIqI7eqaaY/xsKNU5tSCH0wguHSIOkblf3xmtoF0UPG+8UjAyZKDGRl+TgrZLeu6c4ufWcyKP6yyCEZ8Lkwvj7kytBTKrI1qtvfbrFN1YWKfGp28UaPjMmIvK+K9MnMC4Ak6Jv+Lj6b/fHTA1quvE3SuEmMGHQM7cSPk2nPQy0pbht4+yJZCmEDUMiTzjBB6HOLU5SxCp1Q6lU1T1OrbN1o6MY1z8Ia2N+rUdq0F18zW3jPJDGL9XPdpZXFJlTFdQDMwym/vPwsF6c534YvIXTVqLP8KtrsaudE1IPn
+ UXvzl2sP
+ F7Rn9/waZ7gASL23WSy/HxRKXa8GhMHPDV2fYYlXkuVGdtsfruZb25CHtLv7vCKP6y1NcMLmgZqMZ/FHFGt/6o5nBR6j44Ic0oh0dtmBmUmxbSuTD8fI2z2dsuWVNDHxCXJ+iXe93BI5HmxMhC64PLsj8TQEHJsPp/RX60HsblvQAlspd8Spr1HtfHXiW32b6BOx0F+alxpY0h6nI/rcxStRnNckTLtFE9W8Tsk9t9rB8jn1PAk3uB2eaiaXVj7IZ8veKVsPYUICGta2FQQeDT8GL70U3NgRqJNNNJ1uxMbS1CPlRpgb3FfEKD+ld0btZkKHmDSN/oexMgwxo03ljbhlem15Jfss+KJMmS5tJc29/99I5l5vC4kqU6XvMUOUa/K5doGQv0lhFtrd2/yLiEUbsPqMdQwnvHjm01yU2oDIUU9SgoSsvfjYCnrpcEce4/9pIOzddRHkwbWDcgxVr9tCjccc8UIIJbU7L/lEinzJej2yddUKdEzaV+na0I0jprcXRkxlKRiiCUatFjvRhY0U6JJo8g1Irvm1b8DU2dCDgDqgXuUCZ07qbhf+Ojzi2zzC23u7AQjRD7q/iPVZhNSwcCtPS0bwRsXXC6KSk9yD4TYkLUY1f2GIjMcBWLG+lgLPdg3RLU2Du5joo29BrQ3Zcscco2ff8TCI5VEx22FpAWkuj/8hbk03mhvmdetCVS2D3KSEsM6lkPxLtF+vuuC1XgdllT2j+X/ak4vjvcdiLGo4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,10 +116,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:05AM +0100, Andreas Hindborg wrote:
-> Add a new method to get the size of a request in number of sectors.
+On Mon, Feb 16, 2026 at 12:35:06AM +0100, Andreas Hindborg wrote:
+> Add support for configuring the maximum hardware discard sectors
+> through GenDiskBuilder. This allows block devices to specify their
+> discard/trim capabilities.
+> 
+> Setting this value to 0 (the default) indicates that discard is not
+> supported by the device. Non-zero values specify the maximum number
+> of sectors that can be discarded in a single operation.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+If 0 is a special value, then it could be slightly cleaner to use
+Option<NonNullU32> or even a custom enum
+
+	enum MaxHwDiscardSectors {
+	    Unsupported,
+	    Supported { max: NonNullU32, }
+	}
+
+But I'm also ok with current design, so:
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
