@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359B6F53D69
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FBA9F53D69
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:49:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA916B02E9; Mon, 16 Mar 2026 11:49:29 -0400 (EDT)
+	id CBAD96B02EA; Mon, 16 Mar 2026 11:49:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1A16B02EA; Mon, 16 Mar 2026 11:49:29 -0400 (EDT)
+	id C72A56B02EC; Mon, 16 Mar 2026 11:49:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F8736B02EB; Mon, 16 Mar 2026 11:49:29 -0400 (EDT)
+	id B67C86B02ED; Mon, 16 Mar 2026 11:49:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ACAA6B02E9
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:49:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4BAEA1A0306
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:49:29 +0000 (UTC)
-X-FDA: 84552360858.26.63FF290
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AA8D8C000C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:49:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=onaCm5sY;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A321B6B02EA
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:49:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C8A9C1849
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:49:55 +0000 (UTC)
+X-FDA: 84552361950.02.56408FA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3A47780005
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:49:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dnNdS6JP;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773676167;
+	s=arc-20220608; t=1773676193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hw3++yX4phoJgoR6LBgrDxim4Sm36JlhNfF+/1M0oVo=;
-	b=fgkLdIXURdHKSOA4/PxD/FjT6UMcRGRXIJIz4x4XbGTsHw5ZboXtn6ZvUOjmYU/23AcjEk
-	ssn8jhx/2FMp6Eu3CphafEVyovb0EIA4IUuKwP5XO52VDmeNFtw3EmcPGNaf72MOi4uDHK
-	d8P5CcNH29GsNmr5q+ztfjSAk8fOQaI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=onaCm5sY;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773676167; a=rsa-sha256;
+	bh=/zGpxTk+noseP/pytHVfCySKiUhW10abi1iYZzQ/sPI=;
+	b=bh/TIqJfCmZ8UGSqACYB5QH//9WvSmcF99WiNYS8K4+xVCJAlXGV+J3oLfzvjoIj7n1qpv
+	rdGdXcKBjXqAx7X1uqxVwvNFvpA+OdEypiZQy3ki2r84H7lpRe5lDmUey2SG6zg368gicG
+	PPn9KanSGxLAocSIjz6xNizrKjq6Bvk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773676193; a=rsa-sha256;
 	cv=none;
-	b=foXCZs77yrxXJHLiTvEWwZ7GrPATWAoRv4k3dNiC5Y3VJphyWhc3PelXA2kGcNaatBLyY7
-	uOnTwhRs1O+dIGv0KmusKCyj6PLzSDqfugpVifABNQXYM5lqBTusbNE4BjhB/g2noh9uG8
-	84roh2b/bvRKK8yIV88DQOcGfW3a3q0=
+	b=nnuHYC5lFAGsKFoId9iJ4WLb5QJ2xc9ImrlnlCTeMfF0WT47Parf2qj6otedKbvjjCTz2Z
+	PJpDYhe99EaW1VjR2ZYdP152Wm/5cyZio7TTEt1LSYb+upOiYUBZ4lVcEvOIbpgtxN+qCU
+	Wg38R+szCAy0jvqtK67/nciYjpD+mds=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dnNdS6JP;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C72260018;
-	Mon, 16 Mar 2026 15:49:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EAEC19425;
-	Mon, 16 Mar 2026 15:49:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 06A3C40479;
+	Mon, 16 Mar 2026 15:49:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C85C19421;
+	Mon, 16 Mar 2026 15:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773676166;
-	bh=jbzCLmEeN0HUYbn8E5mzfMIWihyrE9Oq/AEzj5Fa0PQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=onaCm5sYCrFpmf1zu9J/x02WZtd4jpgTMIHMd3pdzw7+MDI8z2TbRN0UMATB5SX8t
-	 RejjVNolNajkTFy9C1LnW/D+StxC13R84Onk4/JaDXvhscWMYL3LOsfCQWjpkB02XT
-	 F54R4ADnwdLCkmXK7FmaDkJ1jKuYzxHmHRtS0AR+g6HZoqWcphmzfbnbTbIzlyzlK8
-	 GIDeCpcFGnoOEqxKyC0cJeS0zxU/txv2JXb4IMFKK9me9ScQVxO5Y3FfehUrGKiS4T
-	 qvUsqNim/fwniei6C+IO4Dlsi764Mhx0DYbvOHoAcRnbSRIom0tmtlYKKZ2YkEWEUr
-	 WjdAkGm34ih0Q==
-Date: Mon, 16 Mar 2026 15:49:23 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
-Message-ID: <59b849b9-87ff-48f7-94fb-363d5f54d8f4@lucifer.local>
-References: <20260316140122.339697-1-ljs@kernel.org>
- <abgY3RNYj7WrYYnq@google.com>
+	s=k20201202; t=1773676191;
+	bh=yjd8NtgZHV8vh5dTR2BKFX8AF+cyPjyTRX8mDhKOXNk=;
+	h=Date:From:Subject:To:References:In-Reply-To:From;
+	b=dnNdS6JPE6qD2jCA3kQJjIdRQTEImwtT4IQd5np/fj4QggzDeGkshtI8ChdkVfnNm
+	 qJoSB1cAsevGgmwZHC+UNpQ6/Zqv55lzoc+Vn9HSZ1o3n2pBIUMfgfhu5eTKasUwOv
+	 nnOVYNmuGNN4BVuJTYa+xoO20R5sGn2/SyZHXFVgXXoIbBlAv9yC/6G7IrRl1A9Jqq
+	 Lm3/6jmPUQQEel7kT+F3tS9PEYNIvb8KbN+EjeRT7BwnzwD3EvL2r+HFdpZ5pLSrKi
+	 JFLMV99cXmWqvB2RWYEFMPfEn4S3qZVL1zq6wyoF7YV1ETfMFVTNF5TzyhXSCY2Bu8
+	 ajuv4mXvA4vwA==
+Message-ID: <e59ab258-7331-412c-b490-657e32ec1fe0@kernel.org>
+Date: Mon, 16 Mar 2026 16:49:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abgY3RNYj7WrYYnq@google.com>
-X-Rspamd-Queue-Id: AA8D8C000C
-X-Stat-Signature: o66utgj8pnar737dmteewf8i45i7frok
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v2 2/3] vmalloc: Optimize vfree
+Content-Language: en-US
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>,
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, Ryan.Roberts@arm.com,
+ david.hildenbrand@arm.com
+References: <20260316113209.945853-1-usama.anjum@arm.com>
+ <20260316113209.945853-3-usama.anjum@arm.com>
+In-Reply-To: <20260316113209.945853-3-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773676167-279741
-X-HE-Meta: U2FsdGVkX1/HzM2jCsO9bgCBPpeMzd1V7wmeoxxRc0ITjpwsjrweaL16TOnebLMYmT6WnIEAY+5+rBYHvWwVCPiHl/X7o1kjaaS5M0NgzyxrYoGilR2h+vIDR0Ye1aIk57z20JkYldGYsfQEC/x0cU4JwDtciGirZBY0OMBerR68qAb/QE9FH5j8IXNb6e/UYSDVKsX3JyNDiXhbfK/mQKxsynAVL+Lz6KTuFTyJs7NBomNvNT3WXhexF8quCRHck39skW75GqIb1/c8vp7IycCCuoV/prsStoFlAGop68tsumxPs4g7GgrbRJRgs50zKKSunhiu3enByVoPp29BPDqtgirYQFZajAT+Z6kk0n/ieGHNCZOKcqTy6eXa3QqoxemBo4vRhTCt5wSmLkDAaF0zoz6RdzVIRoDwz5b/9AXAaNT9m4r4brgDq5YXi7WXvwDJGLP7mMUBmgXmaZlQ5jxk02/7TvqLHQvPnkSctfyy5XGS6mWFyp+P16FbOmMHWf0S0VN+Ewef+lw2iBZxvPePKh/cNKtBcvbbh324D3AjBQ/LOqlqo/7/o6mWZQIyCVMaHeeOInq0jF00pOKRerwgZl/WEWSYRkUoaZZA1RvcyODSpFvmqZs/XU0iaDrGk0Vj6R2jBY5Sm7hYQj19hXABD99h0W8xwukUxojfqj8PcqdHudysziKx4esipe5Am+tXszCCAkbF+FmIZaqsvGzKTBX+U1TaENKRFwxD8m+djcmcG1SAsx4MOUlicVP4hgwx3wL3g+VnEG3/875A/hS4AthjIo2GjfJ3C+L4PCmmMADl72YqWRYSjXpOI2pTvzLRARpeq5sC9KDDNgwo0FXRgYkBqeNUBy6OU9BSE5TC1Lh9olyKLqpJhbq1ZJVFXsoKb/CmtxHSjk7cal2vTL1UfDhs3Itqg0okEhBSKiNz4eOyxvK1Fvi9xZnRAFTp+UVP8rv+4t0ZGZegq8T
- yf4zQMlZ
- RNGejfnaEI+HNxj1+lBplcBbTMFeCTcl7AZwtjJndK1Van2Lge6hGuxI07pkbj4AYL0FUGvBzG5lxqHB80yrg5ZjnSbkhOweGKm2QoTaTtTkYB6020oepd+sRWdUNHlX2MGhjP3x/HjeQIJEiK1crNrssyQ8iJSa9IT0Wju8gsrPM2jjSreIHVZcspWETykP1rZ0BI/bNaYa0dc8K1rsjo47SiGyze/Yk3kOdK9Tcwp5HVm8H2yLJVEkvH4JMUH+bOnaKFwY9pwVTGUD2doq0AzraR81pPlxQFC/d1fzKeQ8bkMM8Bvhw8w/Cvnr+7dH8vwAZMuUTlHkhJKlv0aUOAo0H9ZnAhip2iaCN62vJOzj9jSA=
+X-Stat-Signature: qyo9i7bhoezyustwxe3z8cttapdfjiiy
+X-Rspamd-Queue-Id: 3A47780005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773676192-835256
+X-HE-Meta: U2FsdGVkX1+o7rTipsxW2WownVXmkW4clOjaiM2jVYc30ydsRtHAC6u1dzHvncqjeDA/ygrw1WJM0hYvJ2a2bbowpvnFQJXEM/+VCNPGzeF25bUwPbxNzlvgtGLmkLKqeqK7VUOPq9fV4fSOkAJfPfGXjs4K8K2lXQesfV9GWjPQt7w9JipwpDZBa3fCAfK4KpKWIrxJp62B/vm5ey0y1M3IyaL1n9NrnRh9iVnduJCjStNQrFPUKev3IYxatlSAC6cVi+k+eID7S5YKnq7lmGZycpQncajT5PvO5roRmxzVZNlpy7GPkXgr9A8GBOlpDc+62GNiLNtxuW/qTUze+KArK27BcD68wD/GA9LmiM1eBJdZR7BL9Kg4IYG9OCK3rmJ9xMzYclAvj7LOU+qEhFzWB1wPUKzgO4GiwoJLhi7lmYTIMZ5R4zjFWlSrJkTgZ8o0DWWZ6X9ZvO0YQLMFVeIbN+9L7jbz208GDIDRYgYqo7B1aedkr/BETGpkI9SjHFTVE/urnijFawQra1l5Y7MS62Wr853cIHhwTynm+vFPosddGzohpK6lmjhf//rJVcyUC0Xsl8NNdZV9p+cyxVQ0gQ9Cu3QUSi1HfAyS3Np9TJwg4ucsw6ryvlktbV6bbe8Q+YZtzmsfA5scB5wR18peiZfgwZTLAOcsASeJLTSttprD5hXh2bFpwFhwBPF7wNAMLt9JtfLR/vLVL5ynH9gv42nrpcEjxkmLx/i0W2etpv9YW/m9J1zdqdRXBhH4DllP3MkIR+HAuFAf6gUs251FDjIDa8obhIvceqKgeebOVsU4X/6xHolyNvU9q7W5w4r4ICtQvv/ehRIY+a066pn3Ty8pDHhhN5MjLOcdlE91E14isQO5If/wTAU4V/V5bzQ5FLA7Tft3M9RLkhDCM75dUk8Gnd7/66zvECYhoPt9FgB9EZDcAafd8MA5dbT9B6drRX17F7mZWrtvn3/
+ IdeAHFK9
+ rfcSIUl+KoOFDhBWPFbuAz4HxOB5XpYzH9WgWlpER0RINj+opjNtI2NDXqU7RvV1bZ9MZ5LGtjwJKYLD4NyWgJphEUyOan1OttJOCWfXT/kI0mfkaePcl6wkbEv6UYf5AoYqV50EcDvG81AXj70fbmXD5Y0ON0sCYAgS/FZFCIjzUGT2i/2zxP8PomWQfMmc75e8y46IypGbXnricRM14uISXAZVNVzvg2iRwLQH4E6ytQ1GdxQoE3esduQPn9LaYG1bIm3hPNv86wXQVK+GGumy/CQ3G+yaImyO0t04ZczMyQKQ+RrE9Au94PLlp+tJxrMYLAjuqihgnF47z1So+UPU3QtWhrso7iM2YkiSZ4JzY5ttCLDAdIQ3qzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,64 +103,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 02:52:24PM +0000, Yosry Ahmed wrote:
-> On Mon, Mar 16, 2026 at 02:01:22PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > Commit e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from
-> > zsmalloc") updated zswap_decompress() to use the scatterwalk API to copy
-> > data for uncompressed pages.
-> >
-> > In doing so, it mapped kernel memory locally for 32-bit kernels using
-> > kmap_local_folio(), however it never unmapped this memory.
-> >
-> > This resulted in the linked syzbot report where a BUG_ON() is triggered due
-> > to leaking the kmap slot.
-> >
-> > This patch fixes the issue by explicitly unmapping the established kmap.
-> >
-> > Reported-by: syzbot+fe426bef95363177631d@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/69b75e2c.050a0220.12d28.015a.GAE@google.com
-> > Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsmalloc")
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->
-> Oh thanks for catching that, not sure how I ended up doing that tbh..
+On 3/16/26 12:31, Muhammad Usama Anjum wrote:
+> From: Ryan Roberts <ryan.roberts@arm.com>
+> 
+> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
+> must immediately split_page() to order-0 so that it remains compatible
+> with users that want to access the underlying struct page.
+> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
+> allocator") recently made it much more likely for vmalloc to allocate
+> high order pages which are subsequently split to order-0.
+> 
+> Unfortunately this had the side effect of causing performance
+> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
+> benchmarks). See Closes: tag. This happens because the high order pages
+> must be gotten from the buddy but then because they are split to
+> order-0, when they are freed they are freed to the order-0 pcp.
+> Previously allocation was for order-0 pages so they were recycled from
+> the pcp.
+> 
+> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
+> that it also frees that order-3 page to the order-3 pcp, then the
+> regression could be removed.
+> 
+> So let's do exactly that; use the new __free_contig_range() API to
+> batch-free contiguous ranges of pfns. This not only removes the
+> regression, but significantly improves performance of vfree beyond the
+> baseline.
+> 
+> A selection of test_vmalloc benchmarks running on arm64 server class
+> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
+> large order pages from buddy allocator") was added in v6.19-rc1 where we
+> see regressions. Then with this change performance is much better. (>0
+> is faster, <0 is slower, (R)/(I) = statistically significant
+> Regression/Improvement):
+> 
+> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
+> +=================+==========================================================+===================+====================+
+> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
+> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
+> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
+> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
+> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
+> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
+> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
+> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
+> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
+> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
+> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
+> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
+> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
+> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
+> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
+> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
+> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
+> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
+> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
+> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> 
+> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
+> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since v1:
+> - Rebase on mm-new
+> - Rerun benchmarks
+> ---
+>  mm/vmalloc.c | 34 +++++++++++++++++++++++++---------
+>  1 file changed, 25 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index c607307c657a6..8b935395fb068 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3459,18 +3459,34 @@ void vfree(const void *addr)
+>  
+>  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+>  		vm_reset_perms(vm);
+> -	for (i = 0; i < vm->nr_pages; i++) {
+> -		struct page *page = vm->pages[i];
+> +
+> +	if (vm->nr_pages) {
+> +		bool account = !(vm->flags & VM_MAP_PUT_PAGES);
+> +		unsigned long start_pfn, pfn;
+> +		struct page *page = vm->pages[0];
+> +		int nr = 1;
+>  
+>  		BUG_ON(!page);
+> -		/*
+> -		 * High-order allocs for huge vmallocs are split, so
+> -		 * can be freed as an array of order-0 allocations
+> -		 */
+> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
+> +		start_pfn = page_to_pfn(page);
+> +		if (account)
+>  			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+> -		__free_page(page);
+> -		cond_resched();
+> +
+> +		for (i = 1; i < vm->nr_pages; i++) {
+> +			page = vm->pages[i];
+> +			BUG_ON(!page);
 
-Don't worry I've made FAR worse mistakes in some of my patches, believe me :)
-easily done.
+We shouldn't be adding BUG_ON()'s. Rather demote also the pre-existing one
+to VM_WARN_ON_ONCE() and skip gracefully.
 
->
-> Anyway, LGTM:
->
-> Acked-by: Yosry Ahmed <yosry@kernel.org>
+> +			if (account)
+> +				mod_lruvec_page_state(page, NR_VMALLOC, -1);
 
-Thanks!
+I think we should be able to batch this too to use "nr"?
 
-Cheers, Lorenzo
+> +			pfn = page_to_pfn(page);
+> +			if (start_pfn + nr == pfn) {
+> +				nr++;
+> +				continue;
+> +			}
+> +			__free_contig_range(start_pfn, nr);
+> +			start_pfn = pfn;
+> +			nr = 1;
+> +			cond_resched();> +		}
+> +		__free_contig_range(start_pfn, nr);
+>  	}
+>  	kvfree(vm->pages);
+>  	kfree(vm);
 
->
-> > ---
-> >  mm/zswap.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index e6ec3295bdb0..499520f65ff0 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -942,9 +942,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-> >
-> >  	/* zswap entries of length PAGE_SIZE are not compressed. */
-> >  	if (entry->length == PAGE_SIZE) {
-> > +		void *dst;
-> > +
-> >  		WARN_ON_ONCE(input->length != PAGE_SIZE);
-> > -		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
-> > +
-> > +		dst = kmap_local_folio(folio, 0);
-> > +		memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
-> >  		dlen = PAGE_SIZE;
-> > +		kunmap_local(dst);
-> >  	} else {
-> >  		sg_init_table(&output, 1);
-> >  		sg_set_folio(&output, folio, PAGE_SIZE, 0);
-> > --
-> > 2.53.0
 
