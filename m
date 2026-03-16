@@ -4,110 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428E0F53D8B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89E5EF53D8C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:17:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADB876B035C; Mon, 16 Mar 2026 15:07:47 -0400 (EDT)
+	id 5C6BB6B035F; Mon, 16 Mar 2026 15:17:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA31D6B035E; Mon, 16 Mar 2026 15:07:47 -0400 (EDT)
+	id 59E436B0360; Mon, 16 Mar 2026 15:17:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CFAC6B035F; Mon, 16 Mar 2026 15:07:47 -0400 (EDT)
+	id 49D216B0361; Mon, 16 Mar 2026 15:17:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 880F26B035C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:07:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50DDB160491
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:07:47 +0000 (UTC)
-X-FDA: 84552860574.13.38D6EFF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 94537A0003
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:07:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DRyYIodO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 341986B035F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:17:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D29BE1A0461
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:17:03 +0000 (UTC)
+X-FDA: 84552883926.25.82CEEBF
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D93FC140010
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:17:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CSvYakm9;
+	spf=pass (imf26.hostedemail.com: domain of groeck7@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=groeck7@gmail.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773688065;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773688622;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9F0/0YFKIQg/pZ5hM1h37PKyle3mw6hE7MlEYQVBudE=;
-	b=QiRrWxqIWlScztBk3QdUZlCP5+c/H0VJZd721/70nPyyOvFrVAO7OpxgfWF8MXtnS9ZgzH
-	zZDem+j7/wq2y8FDnETcgQNBnUpH5Tomv4qUPltvy+z9XBj1PDw1Hzii83G/i7vMZHIsol
-	FyPsjlPM3ym+IdL/81Jv9IB3RqZQO4w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773688065; a=rsa-sha256;
-	cv=none;
-	b=CahXtnUSoet3CFjvUnRpzu/AHJ1/Gg+smKNh6OPCFnogyjsFPyjmYEr2zutft0jzlv/kPe
-	yj8pOdlukTJKRZopLl6TbQQdD6Re7lJmL2Zlbc/V0DFbnNbyn55VfhPYPRQf0W5yytz6YX
-	CSedczbLS6iN9fLDScXLWquhzoQk6dk=
+	bh=7Hk2XaBHC8Qa6dgUkCoPcN4E9YBKjMdtHqI5bOd6Xjw=;
+	b=8rHf/tvq9X3R60qTrmv7N14fA2zEL3NEUZsZcIy6plVL8WhDTnkSU/eRBh6l+FFTdjFacG
+	aBUMLvKb/nfwgnVqD34N0SgCcHwCY0H1lx2tLCx6vVhKsL3xz65rKLOLmeim2AmDylBD6m
+	LaBaOobj8Xql0UXS9wmX1ihrhDqExf8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DRyYIodO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B718A444C6;
-	Mon, 16 Mar 2026 19:07:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0505C2BC9E;
-	Mon, 16 Mar 2026 19:07:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773688064;
-	bh=ZPv8i4FB+9gmQ6im9/gIYrUtjuhhh3DQksE2tI3ZIHY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRyYIodOfdcUjLcCDu/jidDUh2A0CrnVqmtrZoS38nnxbv1K9xKH4U2nERAxw5Dnr
-	 xpZMTzOwGgNefLLEJdu7kIACNybDBIMeL2gjYa/WsKkEztHVvNTf3FGyuY67ZRhp+B
-	 VVAoPRKw7x3JJlrrtCVE+XCdZ9KBdWNwdoyr/19oYyN0h4MOOzpQgv0brQidAnBnWt
-	 IAidaFL/EszVCVmuUZfxp1MrjtA+RoOGA+j/sIW0az0Wpz08Zo769/4qrzdnIx+1mD
-	 unjW1nqdLdGReK4dBwDjXVamQtoCFyEea/CaTevOe/aCsHEI+wMr6SICzVMhes72VG
-	 AYqyNZR5FO0ow==
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-rdma@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v3 8/8] mm/hmm: Indicate that HMM requires DMA coherency
-Date: Mon, 16 Mar 2026 21:06:52 +0200
-Message-ID: <20260316-dma-debug-overlap-v3-8-1dde90a7f08b@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
-References: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CSvYakm9;
+	spf=pass (imf26.hostedemail.com: domain of groeck7@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=groeck7@gmail.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773688622; a=rsa-sha256;
+	cv=none;
+	b=JlfrI+dvuMn+YSHJQPMbd9Sziq0oPW4nXi4PJQXPXHdNptWEUmgIFKy7lwVuaqDxvI0xVz
+	SZC0JAIHbCMEh8jVZnfjPaseW7CItPu+1HOCWrQyDKkx6h3o9f3D8zPDCSEDRX4o7K8x7Q
+	7M1CN27tUSQdJ6WAzfbR/F2/FMqWwIc=
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1279eced0b9so6626400c88.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:17:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773688620; x=1774293420; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7Hk2XaBHC8Qa6dgUkCoPcN4E9YBKjMdtHqI5bOd6Xjw=;
+        b=CSvYakm9boumyQrthjla9PabdNGv3sDDnMMp6DS/26cFhIFMHKf7uoOvCp0RMOaAYF
+         +4pdgPnUnlUVkZIx0tpbj+824PsyTtNN6TgDvdMC9D7Ny7m/TSRtThG0j6TDWPFteJjP
+         lP8bGxswidC0QpW9PwUh7JLHw090IDRIhnPfLqrrCjMd0GO0FwF0cqX4KY1M6gfc2B7Z
+         AL5LJa1zQn0hFT7ZbYlSkc8UKwr8dzk3MU/JIbDSOcZAn3izstkQSsgrc/nFk0lmRS7q
+         PlTo15s9tIrNKKYWlJLo9OnU73vPXfftbcKr9Mc0wgzx0aDOXS8Mv2fGfGcHVMcQ7k7B
+         62EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773688620; x=1774293420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7Hk2XaBHC8Qa6dgUkCoPcN4E9YBKjMdtHqI5bOd6Xjw=;
+        b=ZYWf+9tReEwUzWs0w+/Izht9B0rImBU0zHXSKcee7hJBGX3BU8UFLx/ypG0oP6DyO+
+         sUeX7pmHO96obmdJjNAGkqtytLSYTXn4RD3m/b0NZwMFwejYb1Cp/lkC8YiFknI+1T4O
+         R04U2d6K8PtytQSVmDtZgWUzSifIvWQCjyu/GgDnWWuSO1l31OyE3iYVN65GHeWITfKh
+         LWCNQ4wfdEZ5w+M4ZWK+XWr85zig19aprKCrxhybQxu9mnuhUoUKue5OxPYOQ+XNe94a
+         NnrBfbbzu7y/8FNhyFfq6GrK0/qZNMZGfulkWGyI2B93uncI86OP68b/6QO6R33MIBTJ
+         QgZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPCkyVadn6GJFV8OTYI2s0W/FdVZazzEOMst4IS30emo9ak1sjrOanlSecClWx9ik4WSxTO3LbFQ==@kvack.org
+X-Gm-Message-State: AOJu0YyfYKOYlhb6qq07FDEkOh1bQDHcUMoT4BFlxVpJqxNbZDIkYyO0
+	uQptPNoy9Eism1omQ4rfjDb+HGQFUcHfYy5LkJHqxzGuevoPuMq0Xq2p
+X-Gm-Gg: ATEYQzw5aPVtu1xRs9x2HN7cDDgbBbpQDCKia0l/Zs7Sk1MSAHJ7MQ4k3Qqu07+1+7J
+	qlfvht401Nnc4w0sKvuSnmqchSfUathjYXFKT1oDryhblaOYuiTNBV7QG8yPHC3uVBS5NF8lstQ
+	4tbc6YB0c9Om6ZlotLN2AxmiRRz2Zo9am+jtgKXcWI82is4kzQl29pudMzlSrAgG2I0PoJX7kgb
+	+vqoZtnU6ywGXYYmH19fdjjOmNghKZLdAA6NZBOn4p8PbU72IbpmMTRzAlFaythS61CcosEpMwl
+	vUz4cxnjamgn8vGvUyOm/bjuEH9ut/suUYk9sT1FEzGjyj5VQqP3TaPiXyqf6YxJ3X6YoLa/qh1
+	y9124fVVfwfrJwbwgmfnIf97aVQbsgH6/E4FLus/fF30QfeN/iuLBx6k6RjwDbZdZ6u7UOE/Py4
+	H9x75VuQFnmHDoccabLcNO0h6iSU55oA+oggOJ
+X-Received: by 2002:a05:7022:925:b0:128:bbad:9a52 with SMTP id a92af1059eb24-128f3e52ca3mr5874419c88.39.1773688620362;
+        Mon, 16 Mar 2026 12:17:00 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128f62837ccsm17035721c88.3.2026.03.16.12.16.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 12:16:59 -0700 (PDT)
+Date: Mon, 16 Mar 2026 12:16:58 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Kees Cook <keescook@chromium.org>
+Cc: Eric Biederman <ebiederm@xmission.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 1/2] exec: Add KUnit test for bprm_stack_limits()
+Message-ID: <a3e9b1c2-40c1-45df-9fa2-14ee6a7b3fe2@roeck-us.net>
+References: <20240520021337.work.198-kees@kernel.org>
+ <20240520021615.741800-1-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-18f8f
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 94537A0003
-X-Stat-Signature: 1sqwumo6e6dabnup3z3gchqpae756iu8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240520021615.741800-1-keescook@chromium.org>
 X-Rspam-User: 
-X-HE-Tag: 1773688065-834242
-X-HE-Meta: U2FsdGVkX1871/Heux0OrUrTgvBfTps3jt5U+2FLVZcMMyYBtSxtoOUnivC2pgmbByTkL6cMC2sBRqU8lK51ugj+IEzgF11RugZD0Wntb9kV1R43Ccdh5i9S2eX6cPeiXjw1hHjh7+EYr+80KMZp4sHxm4Dl60+kkCbmA0Wv6/H7DItske3e9jqR03pIROWf+V9F6xa7Hjqtt3Jrss9jvqIILvB5HdU83aSuv65SzKY+dvQAeJeC/GsmjFjZOyT81fYyFGgT1RarfYuge6WzFqAfE/GfEOGDsK7K/YSY94J00inuF+luTz0w8g/AwL6CPv/KPkexkZzQm6a2EJY7WhY17X/nSYcc4P+gWalg1lY+lRQO9Va3HVGioAxOihZ60mfNTIcQNaoucxabKSv03xqvCBBMD1vWB4uBeB3f8cnxGTmdz6C0gAahjfEfBI+QvPt+gj6Qc4re2DhtmemKkKG0zqoCh/vlM1xw8aaAUtMAJLbzD04vTsbPV7CbH2Vz44q4FiIQGIDdv8ib1faQU5q6jvyKkbwxzaTXRASY11cAQOEW4v3islp56q85hWCC0+yU376T3/AeM6cppx2gGW2Uqwr+slH3NBpeOoFQwQGvsibTA4F8GOp2eZ2cAR8VnT9Qor9VEvj26953kxuyadOb6ym5s6UqdTBlmYE509LAQppTECkJ8LMoguMdj0vjqNDpyU6Ni7Fq+xmiaKWU92lMjf7TCFds2u1XIryckCKNL7OK5A9LxChRV8RVffOVt/w5a8+OY3ofz9yFt+Du3J9g5OP2me1m89AxUcf/pcEKi2x2mobDqZyfljhAXJPqElqEgDGetq4c3RreDXWYLgFGDQ+0setgMV/Qk2XY2a1C6Q6To47XpuzlwkwWZGeVd+VzLfmQ6ZhWHBlcS4m7b8MjnauZNK17uRxO35WSQLVWvWI/xBlCs1AWOhek5B4nAyhst0DLWeUaE9U1jJw
- uKlkySb5
- pncxbDR0GoUyHV4DQZ7oyYj3tETMRy2eRkImFzHffdYYFjTKJ2xa885b+I8aaPnwockZHly3lqAenKovKa38slYScznt/pEg8s3Uufee3Xs+JTGtvmBEPHOnncelOIulp0mg1cc5nBKAlikcn28wJWYzKGf+pHNZeQXgo1QKW9H4iGCGUNVp+qO4laGlpEd9WftWKOZm5RKdU5BOKwZtZB51B7Gh/MJa8X6/P
+X-Rspamd-Queue-Id: D93FC140010
+X-Rspamd-Server: rspam08
+X-Stat-Signature: f4u1b1hqf9ttmqxtc77nzopctc7mwtpy
+X-HE-Tag: 1773688621-172894
+X-HE-Meta: U2FsdGVkX1/cR7AOe7LDT92HjxFdJA8Oe6X6WKWNEZ7RzaWFftOywpTAg9MzawW4jN7wHv9pUym3SsC2WysrytZ5I9+ZE1LIri3PKUjyUdURL32yAlrZrHwBoRLLRBOBt0WB21m5zyEQlilR1xaUXWsU3fmphF8QinvGGSZYMxN+EDCLGQu99R0IYU3My8ZxhLV5KGtEPd8lvzW8s4imEqOm4AOu3QProvYO0pHx9LNh9miahzb97QMgzPFUTwd5IcGTc5jLKCgVZi2IkHQbWd2spKyWt+vt5Bxs3LIpXS84pUYWQrrAmGpIflw8dzxjzO7wGckMdw6zO5JJV2MMlfjR0GBdPbYYW02aYp1VUG9Jra4aYxxP9/i775Dg8sSEVWc5D4u1qP+sQ/hZuWo1DfoNylHTuGQ21QTXa8E8jXtWpihHQ9nIFPBj6uxLXF1wd9+aOZlBBqL7tFGFlupoDEZNbNLark+5BcB+KDpMyy92RtSLcUeCqxzdu1XDZhxme81Nqi29EDXidOTlvWne04oje/0JO6v+Zv2ExRmFDrMBQMDbjiYczg6LMqCaAP3W3B+SDhJqkVes8ZPb6v2amR9UQfEJwIWeWclVZcfB2GaDrliyhRlGX/P1hziFKk8t9uvgIsKu5h2F31JOFWXkzcQRS7x0mBXNRsebRogvm2ccMQfFT3Gmn8hS+xwuPdb/uY1FxyiLcHT6hM62Y/7mJTZUtIF9AMU2ibmvw9Mw0PkSDhheXuOWMHDo5aEDxF/kOQOy+s+CZUGP/8yBlmahwUzidKEF5DWsaUjqCb0/P5EnohtG8Pyiw4kyc+eUzT39YS7KiZCqUSvsWs580dazWdHNvWrXnsTHWdx5FL278hRp8IZWw2oCPa13EtMRarMnRVuS5ogbPUZcjr1YwpXydHSKp92GpCFq4OZlFEHYrCdvqt/rEmyJ+3t5LPwq1hfY51b229XqRvDKO6JtOV9
+ CA38Ohuv
+ CRFlzNFxzleyjWl0ExVCJB6XeSUODFQ2/WwldvmMosydl2B8cpvlFS4Y3/zSnGwO05JobVVtle2ln/0Hdt61RSNCjY5WERqg4cUlv6CgP4Zg3e4oy5LPStk9GG3ylr3TbYFmSbmGvc147TVobZ6YBFguckav/Ik+x8utsENxzYUGj8wy/S8n5riaXMYjzEgK+eZ8EiIEuOaIuZD0vJNQ2QVRwbYZiy0jGJ655pK0RzDvmKmKEGqKhJ+MHqwTEakCiEuVaFoMvqG16PIEc3+nBqF3DyN7MG1QfZnXS+489TFaBDb9IZP4HftOSwGBBrjsTwTyVw4z4KzADPsd38tRX10R45Wr0pESbeIEhsINEo4GMflNSWLuFYI+YEaxaF+B49Z0paUGSS3bxUnKUGg6aT1qx/iuRBLl67hp0dX+3mhAN1MbK9hKE6Z8JgbIGKjJopJ0va8m1Fqb94CD68nUzKzcCg/UI075jdpO1pvMOru6CC8I2TuWXdVb957W+L/18lp0ToqZ0ASKWcra1OTWbA9812TkYFub0oRquV9pz5gKNcf8jnyNLg/RJBV6CvblDCNoSy+prLSRUkUL0W7THCr5m18fyfKkAGcG/RN+ANFpXeGzfHgJ7k+n34Ntfh4Lj+bsdpmddbB3ogiX2Q2nhuBALOsdepU+e97KxPVJyWHBdoiTF/Rq1kWGh7w8k3D1yOPT5Bim22z0AAxUJcbRXdbmtMwKvZ2gI5YDQ6kxYfmb8QhNrNa4fqXB50oIUvShRGUeTDbqEuT/j7YnCJsyfHq/nFLXilqdvhD/QfnJd68PFbvguCRpHVKAbtxiiYuCrZRjLzb7HDWhFiWE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,65 +122,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+Hi,
 
-HMM is fundamentally about allowing a sophisticated device to perform DMA
-directly to a process’s memory while the CPU accesses that same memory at
-the same time. It is similar to SVA but does not rely on IOMMU support.
-Because the entire model depends on concurrent access to shared memory, it
-fails as a uAPI if SWIOTLB substitutes the memory or if the CPU caches are
-not coherent with DMA.
+On Sun, May 19, 2024 at 07:16:11PM -0700, Kees Cook wrote:
+> Since bprm_stack_limits() operates with very limited side-effects, add
+> it as the first exec.c KUnit test. Add to Kconfig and adjust MAINTAINERS
+> file to include it.
+> 
+> Tested on 64-bit UML:
+> $ tools/testing/kunit/kunit.py run exec
+> 
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+> Cc: Eric Biederman <ebiederm@xmission.com>
+> Cc: Justin Stitt <justinstitt@google.com>
+> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> ---
+...
+> +++ b/fs/exec.c
+...
+> +	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
+> +	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 *  + sizeof(void *)),
+                                                                   ^^^^^^
 
-Until now, there has been no reliable way to report this, and various
-approximations have been used:
+Google's experimental AI review agent tagged the above change as syntactically wrong.
+How does this even compile ?
 
-int hmm_dma_map_alloc(struct device *dev, struct hmm_dma_map *map,
-                      size_t nr_entries, size_t dma_entry_size)
-{
-<...>
-        /*
-         * The HMM API violates our normal DMA buffer ownership rules and can't
-         * transfer buffer ownership.  The dma_addressing_limited() check is a
-         * best approximation to ensure no swiotlb buffering happens.
-         */
-        dma_need_sync = !dev->dma_skip_sync;
-        if (dma_need_sync || dma_addressing_limited(dev))
-                return -EOPNOTSUPP;
-
-So let's mark mapped buffers with DMA_ATTR_REQUIRE_COHERENT attribute
-to prevent silent data corruption if someone tries to use hmm in a system
-with swiotlb or incoherent DMA
-
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- mm/hmm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/hmm.c b/mm/hmm.c
-index f6c4ddff4bd61..5955f2f0c83db 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -778,7 +778,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 	struct page *page = hmm_pfn_to_page(pfns[idx]);
- 	phys_addr_t paddr = hmm_pfn_to_phys(pfns[idx]);
- 	size_t offset = idx * map->dma_entry_size;
--	unsigned long attrs = 0;
-+	unsigned long attrs = DMA_ATTR_REQUIRE_COHERENT;
- 	dma_addr_t dma_addr;
- 	int ret;
- 
-@@ -871,7 +871,7 @@ bool hmm_dma_unmap_pfn(struct device *dev, struct hmm_dma_map *map, size_t idx)
- 	struct dma_iova_state *state = &map->state;
- 	dma_addr_t *dma_addrs = map->dma_list;
- 	unsigned long *pfns = map->pfn_list;
--	unsigned long attrs = 0;
-+	unsigned long attrs = DMA_ATTR_REQUIRE_COHERENT;
- 
- 	if ((pfns[idx] & valid_dma) != valid_dma)
- 		return false;
-
--- 
-2.53.0
-
+Thanks,
+Guenter
 
