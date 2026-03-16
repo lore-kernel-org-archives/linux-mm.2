@@ -4,93 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6894F53D90
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CEA7F53D91
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 20:02:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 102066B0347; Mon, 16 Mar 2026 15:53:54 -0400 (EDT)
+	id BB0C76B0377; Mon, 16 Mar 2026 16:02:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A9156B0376; Mon, 16 Mar 2026 15:53:54 -0400 (EDT)
+	id B344B6B0378; Mon, 16 Mar 2026 16:02:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EED346B0377; Mon, 16 Mar 2026 15:53:53 -0400 (EDT)
+	id A08D66B0379; Mon, 16 Mar 2026 16:02:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CAFAB6B0347
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:53:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84CC41A04CF
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:53:53 +0000 (UTC)
-X-FDA: 84552976746.12.B0B3FB9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E7D3B16000C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:53:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t18WZDn9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773690832;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 89A676B0377
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:02:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 390278B989
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:02:46 +0000 (UTC)
+X-FDA: 84552999132.02.1580539
+Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1C10010000B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:02:43 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773691364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SjaVXi23hMAWVn6VVXHM3+UbQAm0iK1tDevXssTCbOU=;
-	b=wt5XE2/R6aTQgjcVoXUt7lNGFx5qpy0Z5kJnP0R9DwdRtcY8YrLwClZCPVO2stmZVZQg/r
-	aH1sDtqiAHC3HSl8Es8sAYDB/yJeTsqdsoOThHLnF7suigs4r3SOeF+qlg9OkysemmBDkw
-	Rf4+VdMStqQhZcDw4yrzP6E9b23YtEk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t18WZDn9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773690832; a=rsa-sha256;
+	bh=7V3wvHKfGkpMPIV76I5Rlltr0JUjBnbucUah80AaxFQ=;
+	b=vtUXNYOoP0fYOyBXWciaHZzv/TAJePBhIdGHWZXmg5ttf5ZM1vUFNOZX79zI21kGz79vKu
+	NZg8UxO2UXoexl9C5CNoC7ko/daZ2/+/KPha9K8EjQxOuS8Vksql0mh3QMJim0wSJU4miT
+	8HEHGsUcwQtD2p6VvGbS21Aghw82lek=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773691364; a=rsa-sha256;
+	cv=pass;
+	b=taHCt9OHVN1Jw46znHUIk0rxCWyL19rNV3HHqWy+RQ17nn36xm9Gqbv4EZCZujSZGVJnEV
+	1XxvXN0M4E9dkznkPNHVr7RAGV2tjA65NqZpUuiIJXjsIsq7GbDcGjvkrmLjhjL4ltfv0l
+	tabjbvxUi7V99HlFKdpkfvAvr0nV9Zk=
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C41013B151
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:02:43 +0000 (UTC)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C4261B81DA
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:02:43 +0000 (UTC)
+X-FDA: 84552999006.23.F3F9494
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 926A3180002
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:02:41 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773691361;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7V3wvHKfGkpMPIV76I5Rlltr0JUjBnbucUah80AaxFQ=;
+	b=GNOAaRFjPEgnVbYp5v84b2gGtBUb5VTfuNfFF8OmI6PSugPUE1/5E0TSdRmv6dPv1nz5xk
+	gAMggWE03Vc+gHXkZbLZD3yvtTz9RO5IzhuuRZ5zVabV4JK5aJI4MqvkJoGMQTDglz0QlY
+	jNaubg+5Lpoetri2frNhSRXCsiH6SKY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773691361; a=rsa-sha256;
 	cv=none;
-	b=25MB6VSHKEWTWJxRREfafxFK3OrYzQpq1xuh4NHIsU6/LcaT9HnKo5BPWnBQ4e8wtdD761
-	n7rnDfkyYPmn1BRK7RVOJI8xABoma+ZkpdDN+w9BTEXh/U9BuSbvC3tl1a3DT0i0AGOtan
-	0vKB65WbcOsGf2FXHzmjV7oowMUsP08=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA111441BD;
-	Mon, 16 Mar 2026 19:53:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2C4C19421;
-	Mon, 16 Mar 2026 19:53:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773690830;
-	bh=4gAWIaQHRU4NRXeDrvanjMXhFCTsNn7ar/qA+AJSFaY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t18WZDn9tATEb4JJzJCP9h4y8am1c2DaDUz3D/4c3LR1CanJ8UkdHvKzHoDrkzqwo
-	 cnZqDSmkqMxoaOazN6kyMRySPjKL5FflxSUqcK1EHqAmR2/5ZPN/yWm6x8ymrAIIFs
-	 76t6R/a7DYawFl64pYb1e0E58DrnNlZ6BIUZ2q0+NiAg2ois1UX6KCQjfJUgfoKW7r
-	 96YqIgjC03vZMIEz6U7rVSTMNEd13dqxfQ8IpR6bwDwrNQJ3W9SJLAFJCCnd37UYNl
-	 3/0fB29fX9RoRMAkTQMLtatWLzapsdev43Tee2b0HtWmPSjLY0SEr6XhrqWzmZYj0B
-	 OoMZNIGvNHjUg==
-Date: Mon, 16 Mar 2026 19:53:46 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] selftests/mm: add THP sysfs interface test
-Message-ID: <c4cb6dfe-59b2-44e6-adbc-9ee63bed79fd@lucifer.local>
-References: <20260309-thp_selftest_v2-v1-1-a00cef41da44@debian.org>
- <9cb63c24-eaff-4954-97d5-2a422a0401fc@lucifer.local>
- <abgJtJYQsGMPsTHr@gmail.com>
- <be860d86-75be-4c75-95ea-03bf79524be2@kernel.org>
- <abggyaVTdNe6n_ew@gmail.com>
+	b=JxIzLlO0eZFyk/4YUZQ5Est/yxuwJ7xZMu6Z0qaYJ7wm8F8MbrChtjSHLqjuQhZnEuROGl
+	l/jH66DJAbE/1x+82fr3Rbmn9SxvabLZh1efHlDqAw+faqBiH9oJbEj1GZpeixV3+wGpF7
+	3XBDmRrKV5YzxK9gDqYj9vYHN3dGXi0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RRuZUuAa;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4852f8ac7e9so59914215e9.1
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:02:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773691360; x=1774296160; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7V3wvHKfGkpMPIV76I5Rlltr0JUjBnbucUah80AaxFQ=;
+        b=RRuZUuAa1ZzUZ0vACMYFkTRWFZupDw+v+4p+iMtyhJO5kwU32nFKKiuqXYxV5NyRmv
+         iFu+b1TUR1CRLS+Q5fkkHqMJkug6ZXc8HynMYw9fYQB6N2ExYd1s4CsyK9ntr8T0iD5x
+         tRYlE2FAaS6E8tq8R7PHELbKOpwcrCuwWSB38CyVQFLyzEMmGDooFabg1/fJWlZTIdx6
+         /ZFzKpW2wHvzPOjUYZwVKOAaPE+gWV8joGw+GmI0rzic686kIn46TSTGCtV2r6Aj13Vo
+         dlEhREGqtECqpYKrDPJO/Dr+psQqkdQ6yuEYLiNqVGDyT1X72AEaKjszk2UXwcw7dNSo
+         JpfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773691360; x=1774296160;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7V3wvHKfGkpMPIV76I5Rlltr0JUjBnbucUah80AaxFQ=;
+        b=JHuxFgFVD315VfsLA7sKCno62pfhY+aTV278eFUjx+JADcay2rT5OFzhTwRlQyyLo8
+         drmbm/6uf+vKvs3HnJ33n+i0eeuJ+RoO7oPZDntGl2I4C2Zm49lL8F2pFCy58EbBPZG3
+         t3OHlEljn4o1Ns4n7+ieyAruxBSJvekbgUqbxMsvTpy/MfVjhjmew+GX95EFMoxTSXAh
+         a7E23OGibIbgLXLDFYY92kQuwVj3iIe8/nBCyxTO2BZSBX3ztrsq9YWgPd5jmIx+efJa
+         eOBYIGTjOlcdM2fY0B/wWgvRleM14Te+Bhx1E2Ha/nPPR+vlCYO91eDlYwkOxoanjS4m
+         EaUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsuQnfk2YgHY0BDrdglPKYshOmyTaxD9ydfWHNksgy2+lcsVgwRWEC6fG2d0lDC2KrzbzMsfHeNg==@kvack.org
+X-Gm-Message-State: AOJu0YxEmNXrO+ajDJbEcaUgap40kXzQ03s4gBE0kwwPwMQqEERhq/mD
+	rvOYywbAhgo3f0/5CdnwvxoEX2la5NHI0H4JwEqad/JyGWoMTZoQqyBTy7PIMnyKRRU=
+X-Gm-Gg: ATEYQzz60r2udftedkZKNC8OjaZMNv+01x+SiYQc7AnDC6K106mIT1Q9Ht6HP1dcPB/
+	zn8A0oQr3C8p1yxewTOvDOkAX+/6bxq7p7ra6Z3zmErcYIAKESQywM7EEd2KdmS4OyEvj/8AOFS
+	r9+qzcxLKwJOXomy5UmIog42UaKr4tVKZlHGmDMXtVBxluIgzw1Sp4LKev/GC/thcZVDHwc4pnk
+	6UNTNAfjbp7lB4XSivYuEDfiMWRCNQmjC7Rv6uQMELqG0oNhwp3HQYO1lwmZIXt6UQJOdBWZong
+	LYWHMMylxyJhyVcgcrYlVPQT07rj2AYjdo36HrfiNAgjDHrGGUjNpfmxrjJe0nQyHbsH5MS5p2b
+	Bn0m6E3bqc4OZt0eyRsLEM1jKprbYvVqyiEwDbcYApjtKxQhyqviD9/PptYraNil687GkTdFMUB
+	YmX9OX01T7Sc8udAtSg9/CHdQwG/ZYKQs3Jw8O
+X-Received: by 2002:a05:6000:188e:b0:43b:4aba:8f52 with SMTP id ffacd0b85a97d-43b4aba9116mr739610f8f.32.1773691359851;
+        Mon, 16 Mar 2026 13:02:39 -0700 (PDT)
+Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b4389321csm12045529f8f.29.2026.03.16.13.02.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 13:02:39 -0700 (PDT)
+Date: Mon, 16 Mar 2026 21:02:38 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
+Subject: Re: [PATCH] mm: remove '!root_reclaim' checking in
+ should_abort_scan()
+Message-ID: <abhh3lKb6med1LSp@tiehlicka>
+References: <20260212032111.408865-1-zhaoyang.huang@unisoc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <abggyaVTdNe6n_ew@gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E7D3B16000C
-X-Stat-Signature: 9m3kdcxhic93sb7p4hiha1airks1yguk
+In-Reply-To: <20260212032111.408865-1-zhaoyang.huang@unisoc.com>
+X-HE-Meta: U2FsdGVkX18oOhOByMyRAt4QymrATe9lDKJCq+ZPApXEa9K7dMlt+bbetBX3Ub1mfr0kxBUXmTOXL2pjozvfcJ7eZz3w9rSiWTmGu1Rpslg1TU01+G5rtxqebFGFXUVih/BVy/LZ9i+9PGjBgYuOHLIya8SGkk/i/xTGTcMnlv8GwfvFPMexcajZOuINxe9Cg8hJ0cMjv5vIGoY9ZHuT2ni8QgP1ai1axrZoBJag+Qs3iu+ES2B/SL1UNVC/cbRy3NsOlNSwtYWCK1AdU1JuvSRwDetozW/uQ26P2AhnViOvz0V3R0WVYc92Qik4FqqHi1mvdunb/IlX/QmAPiPdg3n6IlxcGcN3xpY7mN0bNjzjdK+qQNdTV8tHPllyFPN0fRqxpQ2FmfipE1UqUWsRNsohGT8cPuJlzXFDBba9LnSox62+n3dAactdkaZtFbjSeFTxBMmSdTjbDYQshcBJOprMj9dfdtpJzCOcxGt3LsdeUWpu6BHMZAi8f/xxjFC3OxxbSifBY3YUxYrVaa/+se1pOJ1RyLP1XRWup7pBlb55I85U499uvK5QAX/ZyQbCV81T4dH93T4B2EsFWTMQgZqlI9OdMyNOd8DnZ+i6qr8MkIYFaRN5QAZJ6u8RrpMCh0ZOLbBX8oL1YuPHobjrgQ85siQmDVwy5n9Vllq9Qomly/gmSgJDsOoMEYUrEVEYrRstXL2R4zPjn+icTIa3JNWRbPoCJELtAL+s7CKlRDfRTxgS0qqwBJoDKiqzLrl4tP0UTfcJgP7666ZDiNmM/qIvETVFPNEMnEAeqp6uWwbJMMMXdSwGqeikQXRxJYLDcBMJUewwuk1PZOTER6q8TfBq8wjondehQkMe87KBT0Zdaeuyie+fBavWYBe4OcjnGwrHNMKAKTRgA93DpfKY3T+sZUCSDMWGBpqi4cR4pCvnpyBXlIxFZxGu+9kRQ9gb1V/lmIwy5Raec4SUkGN
+ 4WYKefhy
+ tBkROsntiFjhkYhJds950BywgFFrbUV2OC8TtVruE1gySQx8hyWKPWdVM9kFehUdmKFfq7akXtHnEYKF0OPeVHsOvQ9mDpARV/4K+OaE1bJ4TE7LWZu/oEoqonksAPEO/fs1gmbX80aUST/AJcxEct7ofw3JzvNdono15SvobESR1EdIT+Hsbxvk2p6r20rhfpr4zKNzHMBprgSHygiuMh3OVDabTp7QEM+ViGPe9Eq2Jo+I=
+X-Rspamd-Queue-Id: 1C10010000B
+X-Stat-Signature: nzesx8sgkyftesp8fxf9e7g5x6ytso5y
+X-HE-Tag-Orig: 1773691361-361041
 X-Rspam-User: 
-X-HE-Tag: 1773690831-263143
-X-HE-Meta: U2FsdGVkX18lWqRmkiHjJdxmTRBw7A1NmZfYTqS9Ld1WD7jwcwo278Qtt4QW6vAE5fiGyeqVJ1QbBjEPTtcZeGRyeQ9jWRVR7cqCvex8MSiuV5D0B+uyke2E0rFkPZo5HCDaBHyjJkHgcoSh7IeUmbAr0oo/XRaRWpMCvqDRETowS3S4zoNiiFUZn2JS7mkKmIyS1MxaFryL0ftt97fSTIreQ+hOyq2MbbOZRZwKp9hb4w3V+ksSa+b6n6fDIHY6m+SgL/biF8hLQl5piqPHCV3gmk8LbCt2vJCUe+/v6gyPhe6ULiIB0qM09NYp0XPFn/mJd42iOa2N9/HaXjjO+boB5Ukh+ss5TxgQvM9uVxWjgW3BmWfvffp2BU+WTuIScYPOp7B08GbuD80KVbNy2+Bvmr1ZA4cn8keC5jwsaLJeubL8tvxHY0jCs4/AGiS+Dt+wZmI9zIVKxl9o430o7q+9RGFlCAaFTtoUSj0Urr4glvrb+qfhTRhD/Rp1yN9lLNdREbXDbQKtrM+EkCEoPU1krLabhI+70Oe0Y4k8J6oUmIdirOEB62rj8ecvTg4sAUUWA1OcS1LhFV6SO4L8v788llIymH18x2jB7iy1xu8bTBhviXY6rgX8xsQru/df/PM5F+vM4GoLOEnFmP6lJcBM3lQy4Y8/QKw8ESFQuXqvIoURZh2US4WIFTeRu8zQNoeF4zjcq57WdOE4L+L5sCyVFI84fwcQ1iC6Ti2ryvsSyBAPC1NWFyyN+sjFghtt3abJMFVpYMU+YwYis8UvkIIMRZLZ4b16u0qS1oRjSWy4x57LM80CEgtau0Mt2laqHWg7iE1VpHBEx4fLZc+b18wSXACJvOZbnvtbvd8OsMeIAWeyoL6mntTVHCnDY/b+rlgSpgN1+wc=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773691363-422143
+X-HE-Meta: U2FsdGVkX18gP1xkSscPFwuQQelwhUvLjIHfWu1Xi30U/mM6BaUOrGUKITMjLyDkvBytpudURC7WrfEVIQSG9aAdQv1ZUX3/oHxXmutgjMhEnBaOOEg4xQarbqr9UkSIqGIn+7Ji3jZ33o3xywIsE182kwH+9Mi1WWjyJc/2Jw9UgbCW93HMVQlCRdb5XFrZpMHT/q/7Td01n2G08ZZ5mUCGd/6hts4LLmPPmz3poqYv4Ap1zT18v4zegNCTfgjoSY3hYxx0YxD+oEsGuKX67SOfMM18KvlmWdCr1agZjKLeD4lE+sBT7+3Do87kFaWqkauxk/gy6t7Jh14VJ9ddd8rpjDMkVyGyzgylyc4bC5itcqOMj00WJsuC7PCTYMQotN/iIZppyBxKPSjLcr6L+s8gNGwbjXRN9ruhjbuiAhwJVaT+UlrGzImuxBuJMtQAkIxdcjL2zL2Fzappp7ulntxxLI7YOGMQsUFUdWMSegPw6kHlLsU8kzvmQ9GzN4SPVSx+s5felqmNwBhPiXz6hlZ5HPSj/7UzZEmQVXzgr6tJZavRvIr1TDph2s+e/tnwMcBCAJvdABPQTfQ44kldOgqYsf4E2c7XXHe0TnXUj5cJWb14p1CQy6c95pX90bY2bAjG8vlYcG2Zo7Rrey5YvhBZi9AlI7p/ZNRHcdmfn5DU5e342ho9Xa9H0IbdfT4aaNLJD2hO1+OuecFpOdsVWTCUQlJYhBPLTiPyDExY9oOq/9ukjvEacXfeYLzel3yM+RB+bFYqfhxtFF7MWWwziA+1pWBbrrM3t7vafMs0XaajcVU1OApnkIkq4uxgYw4OwJJ/v6tdOQBKypaP00MosZ6RvbD3eENp3nigq8BGEY7KCL1wlOPh3DdvMXDhhM4AFIaAjDqgXr0pUOlZXfcAf4g6lbTNG2eYcb5/Oe/iFAElN33SYCVSsVzj7oOGsZKkRnahGigs9duVBs56dH7
+ HA1AdSi2
+ LouZN09kEyV8th7kt1ljNRyk0A/RxKaav/0rT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,87 +153,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 09:02:33AM -0700, Breno Leitao wrote:
-> On Mon, Mar 16, 2026 at 03:44:14PM +0100, David Hildenbrand (Arm) wrote:
-> > On 3/16/26 14:47, Breno Leitao wrote:
-> > > On Mon, Mar 16, 2026 at 12:55:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > >> On Mon, Mar 09, 2026 at 05:00:34AM -0700, Breno Leitao wrote:
-> > >>> Add a shell-based selftest that exercises the full set of THP sysfs
-> > >>> knobs: enabled (global and per-size anon), defrag, use_zero_page,
-> > >>> hpage_pmd_size, shmem_enabled (global and per-size), shrink_underused,
-> > >>> khugepaged/ tunables, and per-size stats files.
-> > >>>
-> > >>> Each writable knob is tested for valid writes, invalid-input rejection,
-> > >>> idempotent writes, and mode transitions where applicable. All original
-> > >>> values are saved before testing and restored afterwards.
-> > >>>
-> > >>> The test uses the kselftest KTAP framework (ktap_helpers.sh) for
-> > >>> structured TAP 13 output, making results parseable by the kselftest
-> > >>> harness. The test plan is printed at the end since the number of test
-> > >>> points is dynamic (depends on available hugepage sizes and sysfs files).
-> > >>>
-> > >>> This is particularly useful for validating the refactoring of
-> > >>> enabled_store() and anon_enabled_store() to use sysfs_match_string()
-> > >>> and the new change_enabled()/change_anon_orders() helpers.
-> > >>>
-> > >>> Signed-off-by: Breno Leitao <leitao@debian.org>
-> > >>
-> > >> The test is broken locally for me, returning error code 127.
-> > >>
-> > >> I do appreciate the effort here, so I'm sorry to push back negatively, but I
-> > >> feel a bash script here is pretty janky, and frankly if any of these interfaces
-> > >> were as broken as this it'd be a major failure that would surely get picked up
-> > >> far sooner elsewhere.
-> > >>
-> > >> So while I think this might be useful as a local test for your sysfs interface
-> > >> changes, I don't think this is really suited to the mm selftests.
-> > >
-> > > That is totally fine. This test is what I have been using to test the
-> > > changes, and I decide to share it in case someone find it useful.
-> > >
-> > > Let's drop it.
-> >
-> > Out of interest, to we know why the test is failing for Lorenzo?
->
-> I really don't know, but, it sounds like ktap was not found?
+On Thu 12-02-26 11:21:11, zhaoyang.huang wrote:
+> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> 
+> Nowadays, ANDROID system replaces madivse with memory.reclaim to implement
+> user space memory management which desires to reclaim a certain amount of
+> memcg's memory. However, oversized reclaiming and high latency are observed
+> as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
+> when MGLRU enabled. Besides, this could also affect all none root_reclaim
+> such as reclaim_high etc.
+> Since the commit 'b82b530740b9' ("mm: vmscan: restore incremental cgroup
+> iteration") introduces sc->memcg_full_walk to limit the walk range of
+> mem_cgroup_iter and keep the fairness among the descendants of one memcg.
+> This commit would like to make single memcg's scanning more precised by
+> removing the criteria of 'if (!root_reclaim)' inside
+> should_abort_scan().
 
-Yeah CONFIG_KUNIT is not set so could be :)
+This changelog, similar to its previous version is lacking details on
+what exactly is going on. How much over-reclaim are we talking about
+here? Is this MGLRU specific? Why doesn't our standard over-reclaim
+protection work?
 
->
-> Then the first early-exit path hit:
-> ktap_skip_all "..."   # undefined → returns 127 exit "$KSFT_SKIP"
-> # expands to: exit "" → exits with last $? = 127
->
-> > I agree that the test is a bit excessive, in particular when it comes to
-> > invalid/idempotent values etc. I could see some value for testing
-> > whether setting the modes keeps working, but also then I wonder if that
-> > is really something we'll be changing frequently (and that breaks easily).
->
-> yea, I make it very excessive, because there were some intrinsics in
-> those sysfs that I was gettingit wrong when doing the intial conversion.
->
-> So, the test is something that I trust now, and I found it useful when
-> finding regressiosn.
->
-> Is is something that will chagne frequently? probably not!
->
-> That said, would you like to have a simplified/different version of this
-> test?
+> Suggested-by: T.J.Mercier <tjmercier@google.com>
+> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> ---
+>  mm/vmscan.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 670fe9fae5ba..9d900be478ea 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4832,10 +4832,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+>  	int i;
+>  	enum zone_watermarks mark;
+>  
+> -	/* don't abort memcg reclaim to ensure fairness */
+> -	if (!root_reclaim(sc))
+> -		return false;
+> -
+>  	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
+>  		return true;
+>  
+> -- 
+> 2.25.1
+> 
 
-In an ideal world we'd use kunit or something to assert it internal to the
-kernel I guess, but if we do have something scaled down it'd at least be nice to
-have in C? :)
+-- 
+Michal Hocko
+SUSE Labs
 
-I am not sure how useful it'd be though overall, I don't see us changing this
-too often and really we're more interested in asserting behaviour.
-
-Sadly THP is inherently tricky to test generally because of its very nature, I
-wish we could have better test isolation etc.
-
-See tools/testing/vma for a forlorn dream of kernel code being run in userland
-(but oh how the stubs/duplicate declarations/etc. are a pain).
-
-I suspect THP could never be given the same treatment though! :)
-
-Cheers, Lorenzo
 
