@@ -4,140 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0611F53D6F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D29F53D6D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:23:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 230146B030C; Mon, 16 Mar 2026 12:22:43 -0400 (EDT)
+	id A06C16B0302; Mon, 16 Mar 2026 12:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205086B030E; Mon, 16 Mar 2026 12:22:43 -0400 (EDT)
+	id 9C7F26B0310; Mon, 16 Mar 2026 12:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD126B030F; Mon, 16 Mar 2026 12:22:43 -0400 (EDT)
+	id 8E3756B030E; Mon, 16 Mar 2026 12:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE32B6B030C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:22:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 486A216033E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:22:41 +0000 (UTC)
-X-FDA: 84552444522.18.B986C1A
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5835014001C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:22:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=f2Rdbr8d;
-	spf=pass (imf23.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7E1896B030E
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:23:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FDF08B310
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:23:24 +0000 (UTC)
+X-FDA: 84552446328.01.A8A33F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8885FA0002
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:23:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gd49k6HM;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773678159;
+	s=arc-20220608; t=1773678202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qInQBteouiFFrqfiLhXSZXU3zqWyev9a+m0PyBXHRjI=;
-	b=uSy9hsOULWZbDmzs/SotT/QFDYwONSp46nRZUluE3TVQFtom71yVe0X4vOJdLTuZZOSv/f
-	yRy0EN+jc+8wXyD5+PFYAJ8CthI/iFF9ydk1EXMhVhDjvV1z2uyHkpVAFFOE7LJQUJom86
-	zFWWR57B5fhB1fItS2IbBoUdWS2h110=
+	bh=6ONIq2JqDxScjKx0oh4NouhcRwXFOR5vYwpzid0v2DE=;
+	b=kxyYWmld6+UuRLVOfDZBEncB7iFvicAOLU3gyd8KXS46UU/so/fdw0ZNwCHWPcbV3mhkQx
+	2XZftWNsDTdjjPeR5tj1NeJ2BERWj37mKfbTGRNj0K38Cmiawr8AyUQxyvU1t1SamaG+cv
+	QQHr+x/NgVrFIc07mgTGJxnt5PSeNOM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=f2Rdbr8d;
-	spf=pass (imf23.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773678159; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gd49k6HM;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773678202; a=rsa-sha256;
 	cv=none;
-	b=1/p7Czh//ibm7rNog+ZtKNVPmNpjIDYgkLAA9mE9r9f8aAyuPI0Tg60TH7sHOpq6ZiYvZT
-	ZeL7R6NJQHiUmeCLk2VuC/nGLhQa+eozjOt3tuv+wlFSZjIeBAmmsjVyxndhveCz6X1f8u
-	8FZpEpLETrDBCFjuCyTGNdQ8L+9BrA8=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aeab6ff148so163115ad.1
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:22:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773678158; x=1774282958; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qInQBteouiFFrqfiLhXSZXU3zqWyev9a+m0PyBXHRjI=;
-        b=f2Rdbr8dSyXIUTEXlS9zpm1fq9K0N1cheaZ6jIYmoLPrhi9gl/1SkT21a+GobRoH7q
-         0ZTjrlugr8eoY38ty/gN7A9FhC/isFrWW6jmTWkK9JiuwknWJ1bXxCCVmOCy+xAR8Epb
-         1Th61jnj5FBiarbTqA3SDZ02zR6pnv4ajXkow1iG/igdFo7O1dq50anS2pcsbvE0RFEd
-         HK+gorQ6mn0JHhTtYt2/VfFhol9IiTTyg4Y0YFytiDM5ihfrmgg4EcPZRHfvjysFbhsQ
-         PMjX68P6mQJOc81CypzM6TfpJ0iX1gHcym4xcm9qcBGp9yh009+0aBvjPoOjACsy/Kfd
-         /RCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773678158; x=1774282958;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qInQBteouiFFrqfiLhXSZXU3zqWyev9a+m0PyBXHRjI=;
-        b=GfRbm1uRCgGQfpy9kByDuxmRsR9+xCrivMSf9wsKrQoDaNoWOZiUyvT5zyTVs8VnpS
-         d0kIxGbZTqzei0N3AdXaPQpftVTTamR1Lyv51FICHFfBJMbzjfDTimyncDkFTrhrNgzX
-         nLrO6nUuvQjca3zJeQLHwV/CGmU/luAUU9oOaMWtYKW/gAeHaoxD9w1UT2YrnaRE6eV+
-         9vTcfGphjlXPJ09sTKL0YOUowvi/Af+FKXLEdtr3TMvGRO8oosJNca77XCJaNMzRgy3P
-         rcCtwubBObjHaQD4c3Cz8hgtPU0EIhPE45fIP9arjcjvZlY4NXfmLSHFOa6QJ2N2sF83
-         2nvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXOgw1eAoLA3LHXg6Z31LW12v+AZR4CciBy4zzrCOVGV/pocnIWxifR029szskg3LeTygkDLorZLQ==@kvack.org
-X-Gm-Message-State: AOJu0YzT5qFUa7jBvUASY7zezJ1nrlnAzvMFl4jD2pyS55KzypEkCX9C
-	WiJahW5PYu+9FtJwcT3/TAszmXtlqy+ugsyp9bOIzl3BEr05woyD0YdAS6qfTybrqQ==
-X-Gm-Gg: ATEYQzx73zrOl927gGb5B/Ms8sDbvndwYhU3EpcUATm06Eo3tiMGYEhFC3d4MkBqSL6
-	rTcmzuTJuesqfSzS4+M4WsidOXnhyTi/FwW3L41KK7XH5Q+hEHK//+otBYcT6rtMS181d/1KzNp
-	+jVwVLfvPlsEKj+m4ktMvSPBXRfhZGJ8Yo8MnvNYqf4lNhunHDzkX/CC/iE/Uq6tbbGaWrT0TyX
-	N9wd+93+21bb/bUbxXu/e+qVGwoHQnyskmV1eYuvC3spPkWQxJwUcPgzjs6sh53ZkU0WFCIavpu
-	JhXh8n31YFBgrbTVMd/q2opfQKCcCcq5zjZOwHccP7LgO88RU5+1sg6Mqnc94TcztIMk3+9/giM
-	ZvobAHQK8OzntLluRvb6pBXAnuLq6EWqaouf67jMniXXnB6D7t13Rt7gRqa89P+jVgmG4hfPHFM
-	uHoJwjiHmOs3P/+rhdaxA4yl7o9uxcC0sArlsJ14FMp9+Qy/MM4hL8gBuh2P4I
-X-Received: by 2002:a17:902:c94d:b0:2ae:4572:50e8 with SMTP id d9443c01a7336-2b04208841fmr5460915ad.8.1773678157593;
-        Mon, 16 Mar 2026 09:22:37 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bada43329sm111822a91.6.2026.03.16.09.22.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 09:22:37 -0700 (PDT)
-Date: Mon, 16 Mar 2026 09:22:32 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
-	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <20260316160759.GA1767448.vipinsh@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-11-dmatlack@google.com>
- <20260226170030.5a938c74@shazbot.org>
- <aaDqhjdLyf1qSTSh@google.com>
- <20260227084658.3767d801@shazbot.org>
- <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
- <20260227105720.522ca97f@shazbot.org>
- <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
- <abNOwcOTXqxCxNzt@google.com>
+	b=wciYtOIujLyUg6EyYtwU9fie105lokU0Wc8Nh+LXMlEjW7Lz3xT1slP4B8XBg9Ern0JBpe
+	8S8y/Ela1rfTqdIoIphCIxGmLRYaDhUfPiaI/l53zFOodIR2gg7N9rYL0mKxyrU6vZJxWL
+	CY/+53h/F269+WNv4R1QCNYUvAfbTM8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E531660123;
+	Mon, 16 Mar 2026 16:23:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BECEC19425;
+	Mon, 16 Mar 2026 16:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773678201;
+	bh=asNjBO76Amhl5nYiIDEn+MotDNaDx0SGtaf4hEltfT8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gd49k6HM86HJOavNiYPbzwo4gVsgs2BU12luvHrMFjjNLPoEdN4VrwtaGEvbYPNNS
+	 mY7JgPf8AleDXMyDWW7MZmU9dNtY1LrQ96+gACmj1foWn+Ilo/qHNT+UNO0w27AN1i
+	 d+pJ1x7r1tmFsVBYGDDU6nBC83htBoG5zpsK3vU349J2SYn56M6puR8VXu0hUY0wLu
+	 cVoF91ZyTJEaBuibZr48VTVBjX5HD+bd8ttJb+1B5lEcXXNQKISLPAi3hkmzXba9wK
+	 vNMbB5hKG+Rt5vtBXhQKYlYYdkVfebwPXWkLTrE8Y9v3s4a/k7E5EI51OcPxnOFfLG
+	 jAtePRbYx+ilw==
+Message-ID: <6ada27e1-8f85-4b85-8c25-bc9207b2624d@kernel.org>
+Date: Mon, 16 Mar 2026 17:23:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <abNOwcOTXqxCxNzt@google.com>
-X-Stat-Signature: 41t3f5nrjpophrrfdp6r46t9gpmossex
-X-Rspamd-Server: rspam09
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 0/2] Fix storing in XArray check_split tests
+To: Ackerley Tng <ackerleytng@google.com>, willy@infradead.org,
+ akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: michael.roth@amd.com, dev.jain@arm.com, vannapurve@google.com,
+ Zi Yan <ziy@nvidia.com>
+References: <cover.1771831836.git.ackerleytng@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cover.1771831836.git.ackerleytng@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8885FA0002
+X-Stat-Signature: 57qwgdz1iqwd8unc78o5ikp37xshroxk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5835014001C
-X-HE-Tag: 1773678159-722569
-X-HE-Meta: U2FsdGVkX1+61/WADS+MArRevRcBHReCcK6tivCgrNhj7xu5tLoaZ/ZCr3DYhvqHwdirVEWE0MZl5ZHgNZoaAackavcx9Wu1RWhdHpbHyJWwX6YT69TqB7kTAH9ExZ/qPBlUb4JR4DrjNFjy22ecqptgcdb7Oi8fX6Qw38r6SxRQXH/CTFJRXdi4ytuOuAeuIoHjWflEXG/5y0W49mtRCrAXj2ik9UdYxXfRw3evTdfz7eSfGfLH5WB9x1l8333ZoPn+2V07rFzo47zOjVk6qmb/6T0Lm9sfjyCVNli4AluscHFCU4ZtkHuptVdCtIFIoxjf7lEF9ykYJjWUDI9FTBXTkn8BFuMnO1fdMm9QgrWgj+ANxsGnutzhG5zYigJez67J5BxtI1/0tWsQhSKtU0RcUkUdEES8KmGeYq5aK78aC+8BEyOXttyzUuyHE9lWVopAV1mZd8Aah+Hsr9mgaXRnxzrB7T8dwhNZJFNhxqJHTxGuCIoQJF6niD/0oC9l+i7pmJOgwR6dFmXef2GloyPUG9gZo+qCFt9yTqRI++E7SvNUpVHXDtaXkELcKt+Nt8qMm5aI/9Ie/io4gRkcdC+hL31vVyYla9Xls1qUeiekE1WXrCwHERxn777kUJ/coC1Yb872Y1+pD63aRd1WeZHiQ9XAMIg6yEf1xUUnhVeAVO8cYUtrXBLfPT2TWsGGuGMhaET2ymdcl4fqwHpYQMwr0z82FV9uUUgBdJs6qc8vKeyPV3eSucPdS2yNlphvV+y5IdRZ6TuzLqGUicx4pX9zhCoUubCh8mmVvMg9hwzuuLZSQhYoZfyzjO8uuqktvWBkSu73SfjhW+wyR3XrklWlVq14bBP5jDKw6nOT1yzJyQ0e7dVhnqOPWnzKKyuxSu8rlVz/IqwnNTPWy6qhdp+9ijPNWs0YMp1rFJoWGvI9V2MmKUT6ZIK5VmAW1QlpC8zppNw17PQTRtKo7sq
- Yy+WzuxD
- +EdPHDv1pAq1Rg0/Oxrween/QcXNqpfMZFGkm2hROMsgGfnfHm6fbM0UtWngJs+Slb/PGJhmbm1rPIJfctozUIPX38XlvxclakNHJmP0FOR73NiLzIkHQtwOPMTV79eMnk7NAW7yHlav6x61sanGvIkqAsxkq+QRLivofg7vU1+wdNAbd7nSUeYQp++Q/B0zSPYNB63EvIv1KBxZIzSVTCXah8bgugQ+ZjyM/04MGA/GaUn+/MqFnr2Icq1AVzbkFwFxxlKFQFzxsY9MEg47Nr3dl/vfT2XHJ4LjvgkB5zZjIatcQwCBp07AAMmpjg0/5yZ5Y+PCK5STGC6DOOrnC1zt1TSelF7IxcZMb3L85TCiOCGqvfdcew6U83a1Tr1F6DO2dK4C+5X4CgD5VB73Tl/7nL8sn9uWTtrGJdNOVc3xhVO2kTxQhNAFDnTxXPff3To3c
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773678202-31590
+X-HE-Meta: U2FsdGVkX18A7Q1SdcfJpMS7u6WxHXfiDrmxCfFrS4t9W++5kzCYN2Cuj7bu9JniQR5xGeAC/HcNI226c9d0UcGzMgec0qvOMQ03inXkjpkxQD7U4L1W2yfHndjPIE345VeEXpOYWebG2pFC6liA5m6Be4IbJcDQBhGbHkE6qLXMo6r18uScquuKOG5E/w6NIDB9joZ/YtDUs7V0cYzDpweU9+/rZI7Pmaba/odDAG8r2wnuQCuScwygCEytl49GLW/p8Hi7Os70wxSS3xKyivZ431zkSvwvoIxuHfmEIVl4mcg2f0b1RPLdlaaDHyTkgdx888gUvKLdvD2i/qDoYhU/Vjvz2EVyNANScJGujAE17q5jJ7bijobuNEQu+Mv+gubYVsD3JRZqELzaRDaTlK5p32jTVohV+zWqgBb86W52d/GAElth2Yq+yPFn13TDvDwuqfLdzNAOXYr+txnVXLbuMi/CT/7j9p6i3fEec3eZ9GU6DEi9//tstsBTz0Xde/HMtxrD6BBNbcucyviwAuh1OHfX9MQ/ogCsLCbZc9fJqfhbcACOdAhkDyjXGYF1RiElXrmod9qAoJjyshhO2m9cMjH96gwqog0085OMgt3AAZ+VsydMV5a8k5VlJVmgeJ7pnLftFmkWdKqkPevGUR02KRi9V7PR8l+TBo3QYxo+vV8rGYiGzlZS+cOfdiUXy8lV/ETECqGsJPBfDEq3XLum5b8kdDJbePtfV+MvA7QeQDIZJU5/Zxa7XLSctTwx2eM0R5Jbv2U8KGIct4XHdJfgY5VQMCb+hiwb/GKwTS7/nXu+++Kjb+Yfxy8RCRbVXooj8QpFpEYlu12ygP2TyE7oXrVwoBL5lkcTBq30F8ul095p9yLIivRBC7la1I9ICU9Bdt82irzQketCUztkC85FlL6ERZ9A6qyth6e/N40MG7t3coXt15CUbRBQzcFZ/kd85ilp3qo8e4GQajf
+ 1NQN1pzQ
+ 50fde3/kaN9RiBVv1LWh25g5/Tstle93dZcTHxAq9rkknqKOgNbipPKmEdJSMPxxflXsCNoetoDoMyq8zdB1AuoKAZA/0pKH6D2FIIIzWo+Cw0QhTli3oxsBmwwlEnSVd9EJs9il+0FSXU3JpUlo2TRpsIpOfA59Y5XmoLOC9Va2uWwcuqkivd6/VKP2bCrSNSsIHVnCZNcC+hcRKSuCB5snz+MxXRHwVqFWBgs9R6oVlACRFDlt0ZBtdTwjzB8ZcUTMwVey+7mwmKQhsKDGzAj9+LJl3rcP5lasP9e4pPzjbS/6Sm8s6iBGhyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,68 +139,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 11:39:45PM +0000, David Matlack wrote:
-> On 2026-03-09 10:32 AM, David Matlack wrote:
-> > On Fri, Feb 27, 2026 at 9:57 AM Alex Williamson <alex@shazbot.org> wrote:
+On 2/23/26 08:34, Ackerley Tng wrote:
+> Hi,
 > 
-> > > Sorry if I don't have the whole model in my head yet, but is exposing
-> > > the restriction to the vfio user of the device sufficient to manage the
-> > > liveupdate orchestration?  For example, a VFIO_DEVICE_INFO_CAP pushes
-> > > the knowledge to QEMU... what does QEMU do with that knowledge?  Who
-> > > imposes the policy decision to decide what support is sufficient?
-> > 
-> > Hm.. good questions. I don't think we want userspace inspecting bits
-> > exposed by the kernel and trying to infer exactly what's being
-> > preserved and whether it's "good enough" to use. And such a UAPI would
-> > become tech debt once we finish development, I suspect.
-> > 
-> > A better approach would be to hide this support from userspace until
-> > we decide it is ready for production use-cases.
-> > 
-> > To enable development and testing, we can add an opt-in mechanism
+> I hit an assertion while making some modifications to
+> lib/test_xarray.c [1] and I believe this is the fix.
 > 
-> Here is what I am trending towards sending in v3 as the opt-in mechanism:
+> In check_split, the tests split the XArray node and then store values
+> after the split to verify that splitting worked. While storing and
+> retrieval works as expected, the node's metadata, specifically
+> node->nr_values, is not updated correctly.
 > 
-> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> index 1e82b44bda1a..770231554221 100644
-> --- a/drivers/vfio/pci/Kconfig
-> +++ b/drivers/vfio/pci/Kconfig
-> @@ -58,6 +58,27 @@ config VFIO_PCI_ZDEV_KVM
->  config VFIO_PCI_DMABUF
->         def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+> This led to the assertion being hit in [1], since the storing process
+> did not increment node->nr_values sufficiently, while the erasing
+> process assumed the fully-incremented node->nr_values state.
 > 
-> +config VFIO_PCI_LIVEUPDATE
-> +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> +       depends on LIVEUPDATE && VFIO_PCI
-> +       help
-> +         Support for preserving devices bound to vfio-pci across a Live
-> +         Update. The eventual goal is that preserved devices can run
-> +         uninterrupted during a Live Update, including DMA to preserved
-> +         memory buffers and P2P. However there are many steps still needed to
-> +         achieve this, including:
-> +
-> +          - Preservation of iommufd files
-> +          - Preservation of IOMMU driver state
-> +          - Preservation of PCI state (BAR resources, device state, ...)
-> +          - Preservation of vfio-pci driver state
-> +
-> +         This option should only be enabled by developers working on
-> +         implementing this support. Once enough support has landed in the
-> +         kernel, this option will no longer be marked EXPERIMENTAL.
-> +
-> +         If you don't know what to do here, say N.
-> +
+> Would like to check my understanding on these:
+> 
+> 1. In the multi-index xarray world, is node->nr_values definitely the
+>    total number of values *and siblings* in the node?
+> 
+> 2. IIUC xas_store() has significantly different behavior when entry is
+>    NULL vs non-NULL: when entry is NULL, xas_store() does not make
+>    assumptions on the number of siblings and erases all the way till
+>    the next non-sibling entry. This sounds fair to me, but it's also
+>    kind of surprising that it is differently handled when entry is
+>    non-NULL, where xas_store() respects xas->xa_sibs.
+> 
+> 3. If xas_store() is dependent on its caller to set up xas correctly
+>    (also sounds fair), then there are places where xas_store() is
+>    used, like replace_page_cache_folio() or
+>    migrate_huge_page_move_mapping(), where xas is set up assuming 0
+>    order pages. Are those buggy?
 
-To use VFIO liveupdate, user has to do at least two things:
-1. Enable CONFIG_LIVEUPDATE
-2. Pass VFIO FD to a live update session.
+Zi, do you have any familiarity with that code and could help?
 
-This means someone using it has to know what live update is and
-intentionally pass the VFIO FDs. Isn't act of doing this itself an
-opt-in mechanism?
+Thanks!
 
-I am not sure providing VFIO_PCI_LIVEUPDATE alleviate Alex's concern
-about how userspace will know that sufficient VFIO support exists. May
-be write in liveupdate documentation (PATCH 11 of this series) that
-support is experimental?
+-- 
+Cheers,
+
+David
 
