@@ -4,140 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A15F506DA
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59523F506E0
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:44:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8AB96B02BB; Mon, 16 Mar 2026 10:37:30 -0400 (EDT)
+	id 6FC906B02BC; Mon, 16 Mar 2026 10:44:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E62666B02BC; Mon, 16 Mar 2026 10:37:30 -0400 (EDT)
+	id 6AA136B02BE; Mon, 16 Mar 2026 10:44:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D61786B02BD; Mon, 16 Mar 2026 10:37:30 -0400 (EDT)
+	id 581E16B02BF; Mon, 16 Mar 2026 10:44:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C39DF6B02BB
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:37:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A0801402B4
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:37:30 +0000 (UTC)
-X-FDA: 84552179460.06.DA81B33
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4D40DC0003
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:37:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ER9A1bQl;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of glider@google.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773671848;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 449516B02BC
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:44:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B766957D13
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:44:22 +0000 (UTC)
+X-FDA: 84552196764.02.22825D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 062221C000A
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:44:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ptk4SxbE;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773672261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rRCsSSAyWmAE2MLvbvaidov3aNy3rtI5UNpHjlkE4R0=;
-	b=OGKV19ZGezP+vm2pyBR00YckGaG77EiNdzD0ZhvBUtc6WO7iJDXqgapxYrAN0u+mmGEMCb
-	Nrdjew5sEBBVqvRaSVygGCiGo+wyPlSODblwzo3wNfCPTaoT0juLaX/o68IEP2Pa9CNyaF
-	slEEQwsbu0l7T62fnHlVLpdrUyBtSGY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773671848; a=rsa-sha256;
-	cv=pass;
-	b=7Oo9DKX3HFp2EV98b1VsIm+C3g9u4Z4+KQ3cuv3HcSE+BA13TDtVIdVVgRFgiTHzZAj8Ch
-	oK770VBZN9oqoKjAjmXOzkuXSNqRc1FFLuiMYhtx5TurhcozQrSm870ajlWen3cPf3iIN3
-	J5G6ajysx5uV12Q96p31zN6E0iURW54=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ER9A1bQl;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of glider@google.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8299f1ca894so2345158b3a.2
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:37:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773671847; cv=none;
-        d=google.com; s=arc-20240605;
-        b=c8NSPQQNU1gG7/Tgkm9Zp6JjGdypR5azbHvmJwhTQu84duQLtP99RGry00y/A8Teii
-         Py6+FhLoIc6BPvyUQ9AvQ/6n6qmfeR45md0EOyZsuhaMfcsQtgSWgBUQOWSdCr0YhIIh
-         xxlG7x/FeaSZJl9HZo92mbbT758k/kE1vnEpMxct8Gprg09s8PAortXgkG2IcXP5RXkm
-         Chy/BQjSEetY7IL21d6+qE6PUrepe9CXcvakGyex+gzTSZLILBTGs1CYcfqiARilOMq4
-         0GGTyH4eLUizHRaZYbbi1n6U3Eem4yx3KeJUctsacXI5Y8bzh0NHg2BMvyiK07INFTFT
-         RJlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rRCsSSAyWmAE2MLvbvaidov3aNy3rtI5UNpHjlkE4R0=;
-        fh=qvi3EhJUEk6P4Q0VOqmIBIeSgXVd3BJCyBlcpJmplUk=;
-        b=hvI3iThDaINqi7lEfNNq5kbGlnNkjRI/+tRXqwa8YEcKAJcxST/2gRusTcDUFN+lBd
-         8ah6LtpjExuyb8e+f5hgFtgzHnNS9FHZVU9eWtUv9YlQGhl50gfCa/OgbKH0tX/lsTqc
-         ng7tiPifiOqeQChjjqJRCve5iRV22XfO2rNh9aab23PrsOfGPQNpdypuOhoxhE61La+d
-         xRRcq9hVH2oxAiT8JUKqKxxzikb6eSqoNazU4UW9Cb9QqSHoBfVSEqKC/XNR7Z7rj74i
-         Tdwx4nqmt31rKBZMV20s6547Qdhf30rUN7l+ZjHXVHEuPfX+o+ioxQ/0m6pDYEYfFgZP
-         Zu0w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773671847; x=1774276647; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rRCsSSAyWmAE2MLvbvaidov3aNy3rtI5UNpHjlkE4R0=;
-        b=ER9A1bQl71NlKTbK0n7AOd3tNZxmbe+aGLMbe/dJDWRPtHnj5O5XEKBh+Nltkdyu/I
-         evzwoYtGyVhxntG7f8G5dWhx8l0QGhg/oTZjPJ8vmzu4tqv1bapOKRXOgiWT3DEhj0kZ
-         SIkc8nV0hDIrSooGCMt7aALSZ4p4MgA+C8bXxqFv9ZfiDgNLKMpCQBgC9EauT6IdNdj7
-         7/KFncjzJgoaz8BM+YJK5tA35oV/9Du7qthBUQSfZpABqyvlBrPMtIChsXNX2AgUDfWQ
-         NNot5zlSxz+WFCOgN/HhE/VyIFZjSlmjiptS9Zmjtbi7LkJMtvJBS/dggk+zDh7ao2t7
-         cZfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773671847; x=1774276647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rRCsSSAyWmAE2MLvbvaidov3aNy3rtI5UNpHjlkE4R0=;
-        b=NdBG/tWLrPdlvPcKEynyuqhwuar4o3H4yz5V2KdsCgdL+bdRgC5bO/bsWyzrKhvo75
-         tTpneq5OKPINjL7oEJMwA49UZ1Vm2NuXMYdgOKw6gFKi4SR3mfJMahUU7QnzILZYr1Wf
-         ERbmE8X1aQ71/DiLj35NaBtE1wSEVat4ZrMvGlHPkGUQ9p55iNAkkwNmwWavOgLbmFPe
-         1n3kyJkQ3x5QBIToS8jeZN3Yx9lVCBGgXplHtALCo4fDFu+6EkvzehcqJ7FJVHD7wC44
-         lvf1jlh2OlA7K5fDD1+lai7PCTjLY6biXwLRC4cpS1Abad5E7riamXFnZonuCgUV0YoH
-         ZQkw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOM6O5XMuCWp4NpXoYnSJ2+x90JtgdzD7Lte4B4DJCu0vIqiKDVniw2ebm8pQzP6hf0sCmBRoskw==@kvack.org
-X-Gm-Message-State: AOJu0YwhPR/JoXs3QbeGO2u72VJr+8N1UvX6yQ19zK5zLMG8WaKn1L76
-	ZGgUoHNVAAHlprRtHyeAPAiwib1mIkX4zzpLHP/CAbe3eZvy7lu07noRH/532Eg9MFj11JvPOpe
-	nGpL41vbv0yui/OcTQhQA+zHykXEfT0Z51Ac84HsZ
-X-Gm-Gg: ATEYQzwP4rzRcqdiHE8VNOFREL3rMzfSsN6ybnXaP5Fq1FFEpveInKyv72uoIghxMEz
-	8PKYIy4mCIlCzRrDwnOFyTZFi93dferViXB+1qHE5BZYAkbhnBGHjPDvMkOGsuisW4SWWX6Si1y
-	Ufdz9q0xiJc9rWRMKyrwsOlZqtlRbrgIx+oY2xUotGtGdKrrPGXVYZb6JaXE4kUPR0yEz8jvrNC
-	aYI5eiAwG4Cah3jix6PSo2d8n3eKBiY1B+SEUKbvtxs2qQw2Zl92hGlVTaIbwZfG7SzmQrM6WoE
-	j7iahfbb/cRQwd9ZiUsXBK/x6yJPZSIcbDT/YOqS12oVVFwG
-X-Received: by 2002:a05:6a00:1d86:b0:823:3fd0:7a08 with SMTP id
- d2e1a72fcca58-82a1991164dmr12625721b3a.49.1773671846415; Mon, 16 Mar 2026
- 07:37:26 -0700 (PDT)
+	bh=65zTm6Esy8oJajm+TqC/L370RVf+WyjaPSPspMQzmYA=;
+	b=34bpXFDVwtqnvKq8tnvDzO88+bmb5dx5Ib04cPwjWbbSXpji+FHAkG1iTO2UsPOxMLNWKk
+	Ickck/Gu+GRyuj7UZL0exPl8RgmGxuLzLzwkUzzCrwo4MA6B/C89MaadkPUBV3QSE2yczs
+	JYkt3nkjeVqnBEHzaYDIVtmN6Y7TZHQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773672261; a=rsa-sha256;
+	cv=none;
+	b=MwvGTetgnVflPR+PxeU7iW2CczfiNzZfHry7YPeyIWIRiZNRzJoxiNf4TWPUWJ7Z8aoc8F
+	a9SFKGQ2aPAGKpFl5LQMm5lCdl/DQMecAp1w4YAyuB+j/9mFhDqLt+Y6TgC/I1CfqniucQ
+	4r/OtEHosJb+3W9dacbKdxzgJJkLB6o=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ptk4SxbE;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CB9D60097;
+	Mon, 16 Mar 2026 14:44:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AC9C19425;
+	Mon, 16 Mar 2026 14:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773672260;
+	bh=RWDptXH394kez7vsWxAJNKfiKtyiFebfEXRYauFWPxI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ptk4SxbEo4/hvLxqc1tWPJDZbTxCRLIRsmnGkN8VQMVTkGr6+aCK1Gmqqj5BozWSN
+	 kYQPpn7kArWkvxepUN4mFOPeJ0jwMeYDhjYa67KOU/HrXR60iYkFxSZS93j4CEs+fV
+	 uttyyH7XuLlDkBbFKRPLYSwjhZP07y6PRSD8O1TYo2kSw0DzMH9h4RxEi9VSVNPVjw
+	 QZiZvabmugwgBKxxxH8W6SfJ6W3jaVQmwP82QUiS1xA9h/7XOJk57yRLiu9cyhY9qN
+	 xJWkPWqwULrWsTC6Q8/5uUJE4gHj0lRbXsvDMGlDZijYwyWUIeek8nfugLJrPfQ/US
+	 1uwRM+y+EgKKA==
+Message-ID: <be860d86-75be-4c75-95ea-03bf79524be2@kernel.org>
+Date: Mon, 16 Mar 2026 15:44:14 +0100
 MIME-Version: 1.0
-References: <69b7d9f6.050a0220.248e02.0112.GAE@google.com> <20260316-fachtagung-gelitten-17389c00b6c2@brauner>
- <12d8c91d-d839-4f3d-aca8-0c63e66354d7@kernel.org>
-In-Reply-To: <12d8c91d-d839-4f3d-aca8-0c63e66354d7@kernel.org>
-From: Alexander Potapenko <glider@google.com>
-Date: Mon, 16 Mar 2026 15:36:48 +0100
-X-Gm-Features: AaiRm50THutRvB0tBMPu1w8GRllpIcAp20YwbCOXMvc9a_yJYiukL-uAWBpQjro
-Message-ID: <CAG_fn=Un6Yzz5NC1E83Tq--_WYdiH3F8DaaSXkc56uUzGMZSag@mail.gmail.com>
-Subject: Re: [syzbot] [mm?] KMSAN: uninit-value in copy_from_kernel_nofault
-To: vbabka@kernel.org
-Cc: Christian Brauner <brauner@kernel.org>, 
-	syzbot <syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Liam.Howlett@oracle.com, 
-	akpm@linux-foundation.org, david@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	kasan-dev <kasan-dev@googlegroups.com>, Sabyrzhan Tasbolatov <snovitoll@gmail.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: add THP sysfs interface test
+To: Breno Leitao <leitao@debian.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, kernel-team@meta.com
+References: <20260309-thp_selftest_v2-v1-1-a00cef41da44@debian.org>
+ <9cb63c24-eaff-4954-97d5-2a422a0401fc@lucifer.local>
+ <abgJtJYQsGMPsTHr@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <abgJtJYQsGMPsTHr@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: c5pq8fo5ic57rysb93dk8d6kgp4617f8
 X-Rspam-User: 
-X-Stat-Signature: bmcjeci9zfm3unqr94rxie95ucj77ypi
-X-Rspamd-Queue-Id: 4D40DC0003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773671848-939907
-X-HE-Meta: U2FsdGVkX19pFo/zB3lOpUzbl2t+f6/7sw3n7Xts3OqgFqvYPmvqE4b85luqy7xo9xv3TizYPdC7I+2AzoPQM7K6tu9hOjpCqeJLFlZJxWDfQV76+SY5sjt1uzXLm1SnS8TUy1H03hhAV2ZL5DlUfYKA/LDc8sCD3BNtlOczflfMcgATU9u5oeMKkHBsQEaG75kYeFKHZ9K21vfa8JYfXV3LRzCCjET0xOh5dK4P5isb6JR2/fUJTFJM4zR2VlOUggzUoV0zjAxGLxj4aDnFFf+b6SRzuDWj+xONCEvFGARrKT9Slw0Zn3W8+gKM5b5iljYAPUIHoy/RYxSlbeHBQXEhz+R9OcBvwVl5bXUq1a98OMxUfXX+jFwzrxLIPUStJ2/FBxQB9+aOrq9fEv59PF29DCYR9PqyKIpGw4NtyuiRmU/FqrOM0K6EmBQfGAu+yugyTPgyrbQ+ft//SWtzZ5ItexNbK8ir7cMH72fPhKd4VkKD0/8X1IJKrdUrTwfg4VOHEMQZjmKgbIm4uaP01oJes66op94CpWdIBWYjwkcP/QCfqzyhWGG+dSbeKymvAegpI45Qfi5BX8e/HZaX5dHIfnumQSdNqNjk7x3H9oyKI5IULAKkoWBmEFpW6ZIiScL3j3urZJTiSpS5ZhMRdb89elK5nIA+chur/JQsZQvNreTBMk3m2wJb0VsXnAjI38CQN46zs5v3NdFddNqr0iWWx3V2HpGEI+I1bqsUYKyBZFh6fLhpuL3pf6A2zBd1ehj+etJQVFQKQyNRnA1vhaBtsJVF9wDyo1dFtIfsuwXFO0pvNZGRiGGMiFxidXVCYiY2L8pbCVA/djhjz3mTQVVcYiHbTaAwfcg29JW60BDgd0mo4F1uWu8H+ju5q306tR5OvdkcQBrTkPbf5oxo65IBoHMEqOj0MjsRdArRp4u4aEdbpUauQRPZGG6wkTW3KvHaRtacSj6sTSiu0y4
- PO0zyxd7
- nolihbbaY5/OarGEyMOuEn8su+UGx9CW/1Q8BSkfdQHf/ksvIk3sa5vtrtoudmTdP04Q6CUOL3OnXY/8TpvLarC5StOtVoiy3+2MHKMX4kSVZSAHhh4reeI4Q7BWHQXO5s52asmWDcw9OhamomyBHd3liE3AujJ4BUuUkZf6q0hc6oMOjI6+Sx1/BmAdd6QAZ2KRE7MDwMNmCUM/6YJSH/Ez8nCbAMWz5nPRK8rLShEpQxLhNGNvovlXzi67s9yUZRhuS7CMmLhMGGwdwn57xkBBaG2wJu23KxAHHeaJGJLLgz8kz55dhoRhlK9V2LiwOpbktruJBmFVNMiJYnsTOKNCnUBQOyDVBKxkyFxUzrSWiUVb34wrXD6pTf4Ns4odYogLSn4wM6Be5WrMDPgfJxWR/CKWefJz0koE9UIxL0TzIfs+Y6D4HNwbeVoHSUi2ZjnjvGPBBZ71Ap1o5XYao48k3w//E11eW0Bg1sHzs+Bdmg21hskSJWC/z7f594wuKTkzfqx8KjiEqpjiVjwcHsf/HCDiWzDwNdHk9JDegvYVsdqG7MTONV5jJQj7acxI6PWj7KezueEEJPjrrp9KlYJ+k6K3mTSBhiHTp3U/zs4iEAm0c46+uUIvIcp89s0RefBaFs08HOKoEIGcEyvH/PHoFZFevBddypm61DChSqNnrYZuLwzGZwH9cGKgEP0eMbZAMq9EzGZlS1kPEtrB3LEEBzH1RCcDlyapDjSZpEuaBOKAg4vxuhD0Ot4rKh0JdzX5oL2reyOBP96oHBerxDID9LelFOqdSwQN4bE21polEKHDoxmaHqiy/jt0oG+CjHsWbWFzu4csQiXblxwPJavmFKIQVnLmhBgVQ7KamP4KDKbIgyhpgG1UnuQShuMrzQeV/NsOzZyS5FzM4kJ3Hq0qSHtlF6qmu/Srqx6tKfZcGDqL4lhZX78NAo8KF/97K54e1
+X-Rspamd-Queue-Id: 062221C000A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773672260-107376
+X-HE-Meta: U2FsdGVkX19Aas6A8Px+XIVz0a+Phy/MuqmAWWJNZkwP88cVaNp9UrW4SRTyknYAQYmVv2UnFqzVC5yG17//ADrpq1PBQKONFu0v6fhXtmPzUCXUo7Yye+6ZrOKN9uBYbbm8v5rpRT8PwRUZUflTj5lu8gWoUYh9JIFrW59u8Yx0fQwPKI5WJWr3TGF4o+eQ+RT7EnS+uOdGyMiue9iqrAPZInKtvCOutKnfNV14NaYDR5X12ZpdtMCdImfyack59qQ/VCJU39hJvBcAY+cTjKM3ZL+DozEeLNDsJjriB6TSbkNdPVcLTORu/qjdI0NloLFBciLYwlTNpsei8BrwnkRHMyewXLAZ5UX/J7XPmvdafQGumd39Em8LdrbZWcoKN8xS3tFOn4zWTWrCD1xW72h7xmWCC5RIDtmDXPF5qr6CpnfW9Lit9sgrXh+rTgdOyp8Jw09+NcXmndHPicYnA3BdSA0Z5IluxCqu8zBcI8ys83NNtU+o1IJ1hi7sDZVtQ3oFtAt85MjpeKuYfEEUiA+wUepwZxgnaYXWkjn6IW5QM6cp0szOw86JJ+IEqbaCSgKtSUeBKS0snygIqe+3NWi/DcKspI+WHeLNVRlWXj+o1LDu+tiyYnEQvKNRSyXYmSYD0OTQlrkAKhZB1MhcOI5UD7CGIt2K9zU/2zyP6qgdT84+RcBJs+7Eonm8qK9XefbNoTHfPMMpfreg6INZLgMse3uJ4R9mOEOlb/vkVoN40fnzSA/S707Neh3tNkxgN0HCfeG6jnzPe3AEt+gB1ONuzpogVTrOeYuGzdJNwfNkhUrWRqeUWb1dJgZIZ7KG+1bUKkAkRMuzBVRKQnyGQnaTJ9Te68UCEMxmUVxgrCS/U+A2LsV7AgufdVaxybr691Pqpk5YMSLm0Ejn2F2U0duG9fKPA1WjpHbZK9+jNcShKZdfpp71emwI3Cv9PIxjBn5RTBj1zf/q/aPCYcL
+ mzPm64gh
+ ud8VQd0jAl/QIGSQtvqDZJ/j52f9ggzbJtiSqYeQkCjaHu6c8mAxghNyJdIa15nW62I3HLdJgs+tfIxzPwwoRWa6BAnAeAmOVG09KSCLWUKXoIhz6qGgzzl0r2t7Ycmf3m0s0z2iHaBgDoARxML2dRW7Ds1uMoWnrc3iLZHfyqsXYTP9oKHYfUvxqeiQ0Cef/0vPCn91gT0Za7qQWOK3xiRguUClTlp4UGbVxkEIDtOzrmwzLkfkkgy2ffUKmiP6qTnE1B37vUZ3GgB5en82uEb57hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,87 +144,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 1:44=E2=80=AFPM <vbabka@kernel.org> wrote:
->
-> On 3/16/26 12:58, Christian Brauner wrote:
-> > On Mon, Mar 16, 2026 at 03:22:46AM -0700, syzbot wrote:
-> >> Hello,
-> >>
-> >> syzbot found the following issue on:
-> >>
-> >> HEAD commit:    80234b5ab240 Merge tag 'rproc-v7.0-fixes' of git://git=
-.ker..
-> >> git tree:       upstream
-> >> console output: https://syzkaller.appspot.com/x/log.txt?x=3D1474cd5258=
-0000
-> >> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D242f02fcd3=
-fbc8f3
-> >> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dc18de0ad13d6=
-2f18469d
-> >> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43=
-e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> >> userspace arch: i386
-> >>
-> >> Unfortunately, I don't have any reproducer for this issue yet.
-> >>
-> >> Downloadable assets:
-> >> disk image: https://storage.googleapis.com/syzbot-assets/a0d037332dff/=
-disk-80234b5a.raw.xz
-> >> vmlinux: https://storage.googleapis.com/syzbot-assets/0a1f7f8b54f8/vml=
-inux-80234b5a.xz
-> >> kernel image: https://storage.googleapis.com/syzbot-assets/83eb68ee642=
-1/bzImage-80234b5a.xz
-> >>
-> >> IMPORTANT: if you fix the issue, please add the following tag to the c=
-ommit:
-> >> Reported-by: syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com
-> >>
-> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> >> BUG: KMSAN: uninit-value in copy_from_kernel_nofault+0x15f/0x570 mm/ma=
-ccess.c:41
-> >>  copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
-> >>  prepend_copy fs/d_path.c:50 [inline]
-> >>  prepend fs/d_path.c:76 [inline]
-> >>  prepend_name fs/d_path.c:101 [inline]
-> >>  __prepend_path fs/d_path.c:133 [inline]
-> >>  prepend_path+0x64e/0x1090 fs/d_path.c:172
-> >
-> > I think this might just be KMSAN not being able to deal with seqlocks
-> > appropriately?
+On 3/16/26 14:47, Breno Leitao wrote:
+> On Mon, Mar 16, 2026 at 12:55:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
+>> On Mon, Mar 09, 2026 at 05:00:34AM -0700, Breno Leitao wrote:
+>>> Add a shell-based selftest that exercises the full set of THP sysfs
+>>> knobs: enabled (global and per-size anon), defrag, use_zero_page,
+>>> hpage_pmd_size, shmem_enabled (global and per-size), shrink_underused,
+>>> khugepaged/ tunables, and per-size stats files.
+>>>
+>>> Each writable knob is tested for valid writes, invalid-input rejection,
+>>> idempotent writes, and mode transitions where applicable. All original
+>>> values are saved before testing and restored afterwards.
+>>>
+>>> The test uses the kselftest KTAP framework (ktap_helpers.sh) for
+>>> structured TAP 13 output, making results parseable by the kselftest
+>>> harness. The test plan is printed at the end since the number of test
+>>> points is dynamic (depends on available hugepage sizes and sysfs files).
+>>>
+>>> This is particularly useful for validating the refactoring of
+>>> enabled_store() and anon_enabled_store() to use sysfs_match_string()
+>>> and the new change_enabled()/change_anon_orders() helpers.
+>>>
+>>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>>
+>> The test is broken locally for me, returning error code 127.
+>>
+>> I do appreciate the effort here, so I'm sorry to push back negatively, but I
+>> feel a bash script here is pretty janky, and frankly if any of these interfaces
+>> were as broken as this it'd be a major failure that would surely get picked up
+>> far sooner elsewhere.
+>>
+>> So while I think this might be useful as a local test for your sysfs interface
+>> changes, I don't think this is really suited to the mm selftests.
+> 
+> That is totally fine. This test is what I have been using to test the
+> changes, and I decide to share it in case someone find it useful.
+> 
+> Let's drop it.
 
-I think KMSAN correctly points out that the data is uninitialized at
-the point when copy_from_kernel_nofault executes.
-KMSAN actually knows nothing about seqlocks or any other
-synchronization primitives, it just tracks the state of every
-uninitialized bit in the kernel, and reports an error if the data is
-uninitialized when a check is requested.
-It's a good question whether we need the aggressive KMSAN check in
-copy_from_kernel() (are there cases in which this function copies data
-out of the kernel?)
-If we do, the following patch should fix the report in question:
+Out of interest, to we know why the test is failing for Lorenzo?
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 9ceab142896f..923e32e6a2d4 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -32,6 +32,7 @@
- #include <linux/bit_spinlock.h>
- #include <linux/rculist_bl.h>
- #include <linux/list_lru.h>
-+#include <linux/kmsan-checks.h>
- #include "internal.h"
- #include "mount.h"
+I agree that the test is a bit excessive, in particular when it comes to
+invalid/idempotent values etc. I could see some value for testing
+whether setting the modes keeps working, but also then I wonder if that
+is really something we'll be changing frequently (and that breaks easily).
 
-@@ -1749,6 +1750,7 @@ static struct dentry *__d_alloc(struct
-super_block *sb, const struct qstr *name)
-         * be overwriting an internal NUL character
-         */
-        dentry->d_shortname.string[DNAME_INLINE_LEN-1] =3D 0;
-+       kmsan_unpoison_memory(&dentry->d_shortname,
-sizeof(dentry->d_shortname));
-        if (unlikely(!name)) {
-                name =3D &slash_name;
-                dname =3D dentry->d_shortname.string;
+-- 
+Cheers,
+
+David
 
