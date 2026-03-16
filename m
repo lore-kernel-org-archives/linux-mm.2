@@ -4,114 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A66C1F4644D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA28F4644A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC5E06B019A; Mon, 16 Mar 2026 06:54:02 -0400 (EDT)
+	id D7EB16B019C; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E69906B019C; Mon, 16 Mar 2026 06:54:02 -0400 (EDT)
+	id D5FFC6B019E; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88EC6B019D; Mon, 16 Mar 2026 06:54:02 -0400 (EDT)
+	id C6C4B6B019F; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CAC3F6B019A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:54:02 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id B11D46B019C
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:54:37 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72382C080E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:02 +0000 (UTC)
-X-FDA: 84551616324.19.681E3F2
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 889A61C000C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=eFppJ663;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf21.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7838456081
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:37 +0000 (UTC)
+X-FDA: 84551617794.19.5EC3D81
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B8EC84000C
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:54:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="NJC1eS/t";
+	spf=pass (imf04.hostedemail.com: domain of 3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773658440;
+	s=arc-20220608; t=1773658475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QePMrUscrAyIHF9jGIWiLGXYna1M1Uo0MIGaLShcaF0=;
-	b=fgiEIeXQAZ2R9RTJG7EItNl44ozGen8Mm/GHQwhhdzJGFlxrplP2ULnJe0Q7KWiRNa5ivD
-	KUw3OwAcRUvPtYNCZtQySKvku+USg9Wa4tcvwIWnK02yim3TmzJlM8Z6Z1xTlXWPnHzmpY
-	1NSgSwKJZlfau4E/+z607Rsv0RZxePE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658440; a=rsa-sha256;
-	cv=none;
-	b=pejuCUisvyhiRaFHe/hjv3Kwfnxb6gXW/TV6qnD3CyyfWfRkNTSyw7lWAdZBNAvt6Lkc5S
-	6q1dGHIwWBzYCpZ8W20B+dd0Hd1nl54MX8qf080BY/c4/jDKo3AYjQvBcyXZWk2/mfHjVU
-	te7sNBjYpWPOqDGXRbp4Uok+Bg5+4Qw=
+	bh=q/+9kuHNGmF6mJHiC+r6rqWEh7NXnQhAjyYAhKBwFD4=;
+	b=XwqzM9TMtQhhUYWsmeeXjajcGYNL6FYaWulv3XEeXYcZcQftCHeJv0Ga39CYvQkoZ54NRX
+	2nd15HLr7ROxa/TRWPsSWnmAcwsCqJoP6pd63ad3ZndA7dVW5n5+ZMNVK68k7nUgbCd3EY
+	mGZKnACN/5Jn6AeuStIxUVTyt5549og=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=eFppJ663;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf21.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1773658437;
-	bh=3/krYZ6GCvKnFIo/XDaVM+GqnlDdX+4GULBc07rBNEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eFppJ663mV+RnAiVhVjBzClTNPryo4e15RGAJX7qWbXVQhQPibU7XIgYyqpbTOxsA
-	 pCbq6TAz6xn00DcoGfZeJP79fC+kUIaVHhMAYYwtkYY/zG1rHwNjAEaAn7Nt9GJq+u
-	 l7KqLlOvNUHDO1aCb2KKl9+z7WLT9bgZSuN4waZwCQh7RRRgJmyqi1D6nFBe14/x4A
-	 x4r8WkjRRd0/aM0hWphIj6b+rcDofoepfTEFcZUeoFyw4NcKtoVF5rCXOjOUGhJfxW
-	 w2azexyPaYH79DqqH7TAY1oZDQCgrs1BoBcFE9HIqYPKRDO8V8VrOWA34d/rpAFiPe
-	 orNi/w2JzV6Ug==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 104AB17E0D04;
-	Mon, 16 Mar 2026 11:53:57 +0100 (CET)
-Date: Mon, 16 Mar 2026 11:53:53 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>, Tommaso Merciai
- <tommaso.merciai.xr@bp.renesas.com>, "loic.molinari@collabora.com"
- <loic.molinari@collabora.com>, "willy@infradead.org" <willy@infradead.org>,
- "frank.binns@imgtec.com" <frank.binns@imgtec.com>, "matt.coster@imgtec.com"
- <matt.coster@imgtec.com>, "maarten.lankhorst@linux.intel.com"
- <maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
- <mripard@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>,
- "simona@ffwll.ch" <simona@ffwll.ch>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-Message-ID: <20260316115353.45fadc81@fedora>
-In-Reply-To: <21f56de3-ec1a-4d7b-8abf-c538584e18b2@suse.de>
-References: <20260227114509.165572-1-tzimmermann@suse.de>
-	<20260227114509.165572-6-tzimmermann@suse.de>
-	<abL5rcYIaFFO3GW2@tom-desktop>
-	<TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<20260313111851.4c1f89f3@fedora>
-	<f3384342-cdc5-4260-b670-4ffde76a2802@suse.de>
-	<20260313125644.65131b27@fedora>
-	<TY3PR01MB1134662A395AA0A048CEE152E8645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<20260313131835.52c5c935@fedora>
-	<20260313134328.3166c4d0@fedora>
-	<20260313135521.07823792@fedora>
-	<20260313184549.08656eed@fedora>
-	<53f11658-5466-49a3-816a-ff6fd2e1da6f@suse.de>
-	<20260316103621.6ed48b68@fedora>
-	<21f56de3-ec1a-4d7b-8abf-c538584e18b2@suse.de>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 889A61C000C
-X-Stat-Signature: qqkpuupohz4hxwhzmscr8uhso338o6hg
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="NJC1eS/t";
+	spf=pass (imf04.hostedemail.com: domain of 3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3aeG3aQkKCGA8JGACPWFJEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658475; a=rsa-sha256;
+	cv=none;
+	b=IzEDwV7Om8YHpA1esMNgfnkV4i0uNgpK87RJfJGJr5H/hrmHsYG5PtAydNaPaSYIg33h+1
+	Pk44Olt6eT08aLVsRTZtxD07gH2KexE2n9qVMWoBHJG63I/jy9edapaTgHEUdwtAoloUXQ
+	DBGnwCz92Yi3lBBtX++BcD7rANZ+zWw=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439cbc5fd75so2837391f8f.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:54:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773658474; x=1774263274; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q/+9kuHNGmF6mJHiC+r6rqWEh7NXnQhAjyYAhKBwFD4=;
+        b=NJC1eS/tiJ1dyf5LEqSL6cmCMHGPdQsv085wlyBfTZl80u9GKCKdotI2RMIP+JogXB
+         84gAgUhFMsVuYD/to7lSysZojwOguggOe4EUenLjz/MVT9ty2AZo4yDKp8vsZubAwzL1
+         j5mgVlHJrcn7OQGvGDcA2zv4aasYyL8rVLt+PWUmJSE/Z2Ss25RXNp56JWysb/O7kyYn
+         HDwssasLc+WzD95mTKvfkLoTYr4vRzh86p7+m3a0jTt2VGWFcCpycUFs57Ig8tlq5/vG
+         hK9WCGuz9KK32EN0TE1dGxCHrOTEu+/EfZl6ZoDh2SFl8grDIjhEwBxyFrxN/Hw+cNqB
+         XtEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773658474; x=1774263274;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q/+9kuHNGmF6mJHiC+r6rqWEh7NXnQhAjyYAhKBwFD4=;
+        b=nH6KQi0b7Q6XYb8uha19JWYL05qiKLyXnPdenfC6LB6/8nOTo7pTWZg7fqHVb7NfYJ
+         25MN5UT3A5t7k6CCJ8GVRbbQk9V8atXFy9Uhm8kXVsPxh30qlnYDZW8Jdcyil54fWIlE
+         ObPPC3EVXoBXZ7d9AjJlXXbxWzzWgubEktO7uVV2VTdPnpRiZTHTUil3Z5Pb7ybSQxxk
+         7r6no+YlSkgZd/P4T0KGk1TxD+Eu+kg0PqJHloOF0BfYQmeGz8IzShzf/m9hn5HYJo+C
+         Tj/IcYQYiK+KZzsKNhK5TbAm63mAQ3gyGWt3EA4Dka/mARh4rKy6xnjsYkz8rSSrUFx4
+         hu1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXmgVmvmGwYwuz0i8mJsVMafNAt0cExHJvPzsAtC4xLy2hLofYg/YVjdijh2Re+wUrVmm4e/xenaA==@kvack.org
+X-Gm-Message-State: AOJu0YxrPDvmlFnP6txxgyKUwc4jniHr8Y36C8F2JePeBx4eaWdr7ivr
+	to0zGgnNh2HSOcb903BuMTE9kopZRtd5UQ0VORmnaXnv3/httrb51k+jNMn1kqldPA+9y3e1KHL
+	bXpHemqz8I711r23Hmg==
+X-Received: from wrbee14.prod.google.com ([2002:a05:6000:210e:b0:43a:397:db8a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:adf:fd4f:0:b0:43b:3bed:154b with SMTP id ffacd0b85a97d-43b3bed1827mr7373388f8f.40.1773658473980;
+ Mon, 16 Mar 2026 03:54:33 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:54:32 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-22-de9a7af4b469@kernel.org>
+Mime-Version: 1.0
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-22-de9a7af4b469@kernel.org>
+Message-ID: <abfhaH_aOBHijWGe@google.com>
+Subject: Re: [PATCH 22/79] block: rnull: add no_sched module parameter and
+ configfs attribute
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: B8EC84000C
+X-Stat-Signature: 6xgchutn64g3m5pq5koq7x46tyizrwfz
 X-Rspam-User: 
-X-HE-Tag: 1773658440-542199
-X-HE-Meta: U2FsdGVkX19wickiM2r9O1oA8xJ27CGzXCO9q+bF8565fD7Cg96xWj9j9rqCFW0EjNdeYsRS9nED6aR4acJctzuAHdVT2ZycB8gO29yAso0ZkrE/FbRffXomIcTKxf0SX1Sxo9x8hObxGC/hHaGphm8xZP/lgjBEUCv9mSIa7z1v//womy5324Sn3fyU6+B0GdQx6YLbFv7hvhOlRwGWCsLf6XubvtEaPJMhZg2n8dUG8bPXa7w94F4fgxALJUnH25zVnUvBNeD6O8c2W4T/83FDnAtZJbx64WbiNKIujy9R8uFofHwAaPPTuzk6XUJ67NJGQIPa5F18kzGWUHlUZ9ynn02ZNWwj23zPf5jBEK1skYsnILUI1utQOlVDIpu2dcMoYK7NoX2SqmS7RPQC8HQT8l+u0cX6s5rN7y3UOP4eNRv0bi0aljmI5HpjbfRUNjYe2W314cePYCCP3X7RJx267URvXwIaPCa91oAo/JF0eSWK4Xab1uB28sWwnXXVCH1D3RL7ZjfD7g1nQWG6EKqQ7v3qp6PRTvGGsAbafof3PpHH/wY5sJ0raR+19DVxAXSTixQtWSKJtwu8hJgUWdyuJy5vs3/ag6gE/NpvSY8ZqjSY+9c7ME5NcJoGiw+UUHtVmJYshU14mhd+iWtDrFKf0U+LWfooQZiK2KbKDURuN+/8AHB+uLbww0BPiV/xeVxW5BiPpDVI3IQtwmCOuGkyAIzxkEG04XsRVDutRi5owxEjoLeRZh/eesQOnQV//r25WtswcDwA0/jeF8C3jPU+JwEXDCOjQgcy1VQUiqPPZhC9nF6o2gYqjJrx+AgrixBZBTlUxuvaXw7eEohftcr9E3B37GHQ2CaeR8c8RRVMCo8f/pzXDGFWfDtWAY2G2g2ukqBzpHVB3cx75P5gen5pD/qCRLbXu3wn2NFL9qstXofb72oHFvbbxOEB1lpn8AUIV0BbhQb6DW0bEB8
- SFoIOnXO
- 87pqZmQAOghraolyjvVd3/dgnpzFwaf4ozczLuWEN7TVeZMQh8kcVHGf3ZDuDs+M/KdYr+cIHVM7MLsCnXssQDllSfByqTGnxO+iV6BXe0bZJ66IIcgCKEAFFsk9dnV/NjBmdfgmvGTf/ytQtbeUc0fSzhWdoTWw70hh6co2qaYHUViWsHENjf7fvmyW3Ax+IH/uIevD7blB3nMh1RckHmji2JblfZboQ9YLw03EFOuSR+rCTKC7Z0F1JYRJjcZQmxO0s+H2rfUsYWFak5NJkfLGWHfhMSUTL8EYYglP7sfB6lxYcSnpwqhsDbuzk2eL/PwDxwoISawdYYSHApobRf3KBnMuM7wioSLH1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773658475-582215
+X-HE-Meta: U2FsdGVkX18q6Q7WlXzR2aX7Oqz1O9iUtgdvbBb5KRiC/BEIV2yczW11X8POa6HKsQaNvteRDmVQi+CH9X+oo7EHCscMQAWgkKuZKBv6ANGhIjkjS5AjXOsN6u/moH56CVUet/QzkNLSRq9yB6h+7upLkgl95yoteM3O9MsyV76v1r0QNq2+J1M80GJOp2tT2/H4+ktkaogxvPfRTn13bixzdE+QrTmd37qojaY9h5JZ4oWMEDzkte0+ky/Z54KQuCdAmNfxXNegZamr5RVp6qruvNW7xj7lD0JcElx6xoCSBPL1swxj5vvFUpyR7OLWEaXysO6o7ih5rW8mjPv+M4AqyupqZOSIfBWAi/s//5tc+p0snfOAw5Nw+0gm3gH6nFLHlXbpY2k/ZzIMY9s0ivEb6XdBGrOZBD0MUTIrc5d3wQriaXn9E2/ItHxgVyjnjxmsd6E599iM8irPf+wz1WASwrCtdkoBX7iAqtceo60bnj67TkHs8KQJWGpLzb2xf7utjPBmXcy3/nUpHVzXFTWvqOuVvddr6iwLWvUwTsLtilBaUawjju+kEtiaxpmsmdCq7L7tl/IMmaIs19wir4tFohfSdiNEOk/6e+RcmwH1+YFQmXbGWk2AkItPPml2rGbbT/oGB3+fvqjgu9UkgajSV8geYm9IbFqNsp7yiK3/mO7YVMANqnYyuINNkoY8AL/xKfZm1SA5RKOIgIGAp9qiOIbmW9uhpf88e+Tj916SvyOfM0lSy/mIQt2NgIRGzyv9QM1ZATEEvWpn29/QWnD5+0BzAn+YiBCML0nugycbvF2OUXVhJSEcR+M8WkCU0TYsFSe385QehcA59tXnsMBi7P6zKDRwAhJnoHi/nVz+xWCweIUoDJnunv73doevLZVjmaZoCN1JYo4XdJnKkQOFyrs+wkKk6iYZGdf/X/6s587R/RdKb8AKw6CAdTR4Q8VH6d4G8ktFOvDb7r3
+ C0WKAavz
+ JKvOCpAwsh+6Eek9Zg+erQtPoac0KNnwEwDmLyvyuFkfMFGOjoImjfsfnT5jgOytlLz2+DRYNhG4Q87s13XV533xLQfWx83DdR6zu4ORa+399EAuhtXlPxNvqOPT7wjj4oVsEoUawHvicaWGIjj34iq5WflsDM3XGeWOOxr0AcsEqBDFGskkeZUGXdYc55WW7CtHcFiYB2C0+yKr68lmwM3tfcmkeBvOZEKd97W8WxRbAebwgzuIIBD6nPjGsnk/aF96Gkx3tTeYRNyGPDPCVXM/1w1VZtguw7dk2fkmg+Qc4A6sMkX6aRrGzN4f3mZglq5JovkNxzt0aRsLMFFOezBEPJzzMZbU0iKCJlafmGZ2EBAh3/Dm+NPGf/3OWXK1FCg/ETjnotXObxKCqJpRWjz8mTFCRtcFeGfaCjZgDf22+ocwTy7WUuHRiZ8j1FDc/k8q9Bp7nDbqktCVMEk7tRLL1qDl2DcUbTJMhmct68JmSZgJ2plVMJfmnfxAkb9GYtsUMP0kKpB4rgwqE0t5UYsmdlAdN6ztp6rOg/yTL3HLcaj6/I5GVuP9+C/JV0voMjxodsWvaK9GNTafLWCcuIf276iGXOEMGJWMylndYlqfOln8kbwlDfMVtIy9FYWgvnDjnFwaBbSAj1ng1jfkKKcbza+hAg9IBIYaHg+bK66gI43awlE9t9pj3deE6dSNJhGIsDJxqvV0B/NFoEL7Z5w0mcGeOYQIvi3MHOiAevRbq7xycwPzOlzjuK65cu07Zhe5h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,44 +116,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 16 Mar 2026 11:22:49 +0100
-Thomas Zimmermann <tzimmermann@suse.de> wrote:
+On Mon, Feb 16, 2026 at 12:35:09AM +0100, Andreas Hindborg wrote:
+> Add support for disabling the default IO scheduler by adding:
+> - no_sched module parameter to control scheduler selection at device
+>   creation.
+> - no_sched configfs attribute (ID 11) for runtime configuration.
+> - Use of NO_DEFAULT_SCHEDULER flag when no_sched is enabled.
+> 
+> This allows bypassing the default 'mq-deadline' scheduler and using 'none'
+> instead, which can improve performance for certain workloads. The flag
+> selection logic is updated to use compound assignment operators for better
+> readability.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> Hi
->=20
-> Am 16.03.26 um 10:36 schrieb Boris Brezillon:
-> [...]
-> >> This would keep the huge-page code within the first branch. And if it
-> >> fails, it still does the regular page fault. =20
-> > Well, in practice that's not what we want anyway (see the other fix for
-> > the huge_fault vs regular fault race), so I'd still be inclined to have
-> > the folio_mark_accessed() handled in the common path and have the pmd
-> > vs regular pfn insertion in some if/else branches. Something like that:
-> >
-> > 	if (pmd_insert)
-> > 		ret =3D drm_gem_shmem_try_insert_pfn_pmd(vmf, pfn);
-> > 	else
-> > 		ret =3D vmf_insert_pfn(vma, vmf->address, pfn);
-> >
-> > 	if (ret =3D=3D VM_FAULT_NOPAGE) {
-> > 		folio_mark_accesed(folio);
-> >
-> > 		/* Normal pages are mapped RO, and remapped RW afterwards. */
-> > 		if (pmd_insert && vmf->flags & FAULT_FLAG_WRITE) =20
->=20
-> This style mixes conditions from different branching depths. The first=20
-> outermost branch uses pmd_insert to compute ret.=C2=A0 Any then both have=
-=20
-> changed places, so that ret is in the outer branch and pmd_insert is in=20
-> the inner branch.=C2=A0 This is hard to maintain. It is already confusing=
- now=20
-> and will be even more so to anyone locking at that code later on.
+> +#[vtable]
+> +impl configfs::AttributeOperations<11> for DeviceConfig {
+> +    type Data = DeviceConfig;
+> +
+> +    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+> +        let mut writer = kernel::str::Formatter::new(page);
+> +
+> +        if this.data.lock().no_sched {
+> +            writer.write_str("1\n")?;
+> +        } else {
+> +            writer.write_str("0\n")?;
+> +        }
+> +
+> +        Ok(writer.bytes_written())
+> +    }
+> +
+> +    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+> +        if this.data.lock().powered {
+> +            return Err(EBUSY);
+> +        }
+> +
+> +        this.data.lock().no_sched = kstrtobool_bytes(page)?;
+> +
+> +        Ok(())
+> +    }
 
-I guess that's another occurrence of us disagreeing on what's
-easy/uneasy to maintain :P. I find it way easier to group things by
-functionality (here that would be folio state tracking) at the cost of
-having conditionals repeated (I trust the compiler to do the proper
-optimization) than having multiple paths doing exactly the same thing.
-The latter easily leads to one path being updated while the other path
-is left behind when new features/fixes are proposed.
+Not using your fancy macro. Also, TOCTOU.
+
+Alice
 
