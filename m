@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 557CDF4644A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:52:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB01F4644A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:53:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB78B6B00BE; Mon, 16 Mar 2026 06:52:39 -0400 (EDT)
+	id 0EEFF6B0199; Mon, 16 Mar 2026 06:53:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3A796B00BF; Mon, 16 Mar 2026 06:52:39 -0400 (EDT)
+	id 0932B6B019A; Mon, 16 Mar 2026 06:53:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9468C6B00C5; Mon, 16 Mar 2026 06:52:39 -0400 (EDT)
+	id F0B1A6B019B; Mon, 16 Mar 2026 06:53:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F1B76B00BE
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:52:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 444B61A01C1
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:52:39 +0000 (UTC)
-X-FDA: 84551612838.14.20CE346
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8A6BA1C0008
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:52:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ej40e13S;
-	spf=pass (imf21.hostedemail.com: domain of 38-C3aQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=38-C3aQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id DEAD96B0199
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:53:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A2D9885A8
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:53:21 +0000 (UTC)
+X-FDA: 84551614602.20.5ABB880
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 05ADC20002
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:53:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rlGdYpqj;
+	spf=pass (imf03.hostedemail.com: domain of 3HuG3aQkKCBUv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3HuG3aQkKCBUv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773658357;
+	s=arc-20220608; t=1773658400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W2E+qOfGop+QubRQ5BjqIf2g5ptnhpPI53+IOJpnWpE=;
-	b=jZ2g3LUNniCJDi4bWNEgn/GcIpguTqmHJJoiwhalT4Md77co5/kRtdno1h9rdX2fDHVbpp
-	lN3RvGtXzlsDcsuhuoz40JNAKVitRLDF8Tcg5XxMCILeNDvHh8yQRZUF+KSbkvo7u8yQ9C
-	oN947gFf1IO12/9++awBVu6uBiezULQ=
+	bh=g33pdxtpEHFf1UDlvSO++aA1e6glAPf5ZJ+Ik3YLW6k=;
+	b=qwmnRJG2EhQYFvU1GvspBvfjchrE8x0D8bSQ27ybRAUVAtKQpvt1p7crqalBast5o6rznX
+	Gg5I+WyRi0EkPhzQ5TKfbYrfDQfkbDMBb9VZ2no6kQoFvxO4Y6ZkryrJCi7QUMFL2wHQ8w
+	wqr7gNIjJDJR8zmGXLlXoH38s/ymwhc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ej40e13S;
-	spf=pass (imf21.hostedemail.com: domain of 38-C3aQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=38-C3aQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rlGdYpqj;
+	spf=pass (imf03.hostedemail.com: domain of 3HuG3aQkKCBUv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3HuG3aQkKCBUv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658357; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658400; a=rsa-sha256;
 	cv=none;
-	b=wYEL3ulToAlBe/h2TH/jL2PGUigq7XAyXz7wdnBsKjoVDi/6VXYpYuE4sHYWmtrNPxYKrY
-	PsjZvd7IJH+AGCbvoquaWYQ3cYrq/0LlD4llSK/PSovgu9NudkalXeMoxtCoPT9HtgZ1Ym
-	zLLJ+oP36/otRMcBoC2+stf5OByiQ48=
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b9360e9f43bso143448966b.3
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:52:37 -0700 (PDT)
+	b=GTG7CUvHb+fcqnnwZ8EYbWgf32MWDF40JVydDLK1r/gqTjmp072N6VEq1ZOGSLCbor4Ko0
+	1wqcV/5NpNia6VakTsOjScp2aBBCQmawuRkXznEoP4RimZthlRS5Jy45UtF7TIFZ+oAEH5
+	7DeSnnDO24mlsMUVWnAzp3rdYp1iwV4=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43b41d45be4so800450f8f.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:53:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773658356; x=1774263156; darn=kvack.org;
+        d=google.com; s=20251104; t=1773658399; x=1774263199; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W2E+qOfGop+QubRQ5BjqIf2g5ptnhpPI53+IOJpnWpE=;
-        b=ej40e13SRN8fhyFMmWyT6qVtLrquJa6WbOJPieEZPV6EG0npQivxbERNRkVIz4q1Wf
-         S5j8DE9pmyTbcVEu6PJ9/JHjgSil9X+vAfGeqIAxd2V2wIwe3MdH2DcOnbHiOFKDVQxH
-         2GfFkS2HMdFBYX0pXFq7OA82jjWklEIdfcxSgfHlwUCtP35ZUrGg8ZJHq9RxBdtO3MiX
-         aFwA30IlkQp7Ngmypq1h3KT+k0nxDW1ZBfyXuo/dfMMzgbFaGk8mkdOGm9XV7aS4b8/L
-         9W8S4isDVdUNyl8xbi6NQ/IvXqUBX5F6AS6z1XpemLe6j7tyTXvukDavg5hIslIPjAmA
-         kUVg==
+        bh=g33pdxtpEHFf1UDlvSO++aA1e6glAPf5ZJ+Ik3YLW6k=;
+        b=rlGdYpqj5pqLlysTe0/AxV4B0GBFTIzPX7hPvtWCs1A8b17L61/wbVCPO/AFRGX7w5
+         eW18FLT5qHo5HjdDv+o96i+qK6pUTNp6rPFFiRqBfTXzwZADUQGZFzttXabWHIm4WQbP
+         c8PhgfQp/oATR7xcE9HjYRv+AcVPJfrpsM75bvO7CwKrUf6xGf4gFUWaGRedTOa9ZFG5
+         EgNb/yEdrjVkhfnLAKQR7+shjdzJBo9EWOOukkwxK5nS+BXAlaL8w+ya7la7xEses3Wi
+         WRyO+2PA/y9Mo/+BGjjk3kcEyh+s9Fngra88GXeSY/ydaAH58ydrdT+ghZQR14JWoXaS
+         ji8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773658356; x=1774263156;
+        d=1e100.net; s=20251104; t=1773658399; x=1774263199;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W2E+qOfGop+QubRQ5BjqIf2g5ptnhpPI53+IOJpnWpE=;
-        b=ePN3sSFEEtosJfdifCkfc5Yteg9WhA4tWtWpZ2omUsU72sFFfhlTbSNRalzXKL6/np
-         cAW2jL4LVpRFVEsStelTVP6uItapm2Dg5zeCqBrQtVlfj34iese2kn7Ifr2mYptdk/mm
-         /ihkfblQcIVS1/ojg65YwVqNET/T9hC1iEn0xjd82k4zVwcjmhq5HaFKCX1IdzqtiayV
-         a55J8WyWPo7bIjDJCZAzCUiAqVqJ2FyTdXPuQSTFlgXe3nNNuY8SxWxezOUHJzLrEnUa
-         sitqtrMHAGk4Gq+IpNfPW0VTNYAx6bmFA62G0A4FbOr2Q+wRmuLBlECpnE5hZSyvYSNo
-         55dA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCKeWfrbbC+Lcaq6dS18VPsokUeaqMa+nSF/4k4rDp5jaeUJXnC5LIJPegcAq/ldspYYLTtHyZwQ==@kvack.org
-X-Gm-Message-State: AOJu0YxLjWnRxOOyBK+sl0X4/vSoGG6SVkhU0hihwX6QLbg+Uy/XVJnr
-	54ysc5DmfSyetwpieEbaqTiw3MnMYBRyUFUw5/OlANlB+Vsy4FJTng1/PlmZHnH30zwoR/keiDI
-	g+sSiJS7WA//0HJjXeQ==
-X-Received: from ejcuc33.prod.google.com ([2002:a17:907:c8a1:b0:b93:4f5f:7d88])
+        bh=g33pdxtpEHFf1UDlvSO++aA1e6glAPf5ZJ+Ik3YLW6k=;
+        b=CVjGltg8a0/9vhPaImGgkFz6UzqGZxjuQeYjBg6fk7nZjw0AX+GIKyQgcJxfsFNB+z
+         nHfDtwPbSqRj48YL59Z2EMKeCZpNtYfgzJLmAvT60Gt10UZ+rH/lghMoJw6Bn4R8HNj5
+         66rNyqhB9y+bE8grBy6yhbt+iHti2nxr2GQKqDTOYrcC7gdqHWeCeiiKTWXo5q5wU0w4
+         2lyTO879GhGPJY9kRZmOdYg4JpdwqZys36xHpgviYtyf+H4DxglnpixdVhT7AiwG2V1Y
+         Xc0YsFJD3F/QOq/RbOrXPLRMYXWL0mynyOfYSg6nNjL7WmEpdOQHu1dPQlGUa/odKQBo
+         8atQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsMznwS1u8lniQP9jvNwAKoWvGOfl7CWAsm+X8tP4oitvaKr4vISffa0mBhlYn9GVa/gOFUtiZtw==@kvack.org
+X-Gm-Message-State: AOJu0YwDGSBUAmWKX++23Y5LTpdvZx3G4LNCEo6uK6rtW87XtQxDet3v
+	NwiYD4KFmHHE99CahuEQ9dHcbJx5pcEYdXrz0Gjb+C8M18UISqUinAl2lbl6IL6de4u9eEXbbYJ
+	/ihto1ckW8WPQdKSPlw==
+X-Received: from wmfu16.prod.google.com ([2002:a05:600c:1390:b0:485:2e9a:31b4])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1c0a:b0:b97:a39d:ae3d with SMTP id a640c23a62f3a-b97a39dc4c4mr350209766b.44.1773658355573;
- Mon, 16 Mar 2026 03:52:35 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:52:34 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-20-de9a7af4b469@kernel.org>
+ 2002:a05:600c:4752:b0:485:38f1:5cec with SMTP id 5b1f17b1804b1-48555ac714fmr203380975e9.7.1773658398201;
+ Mon, 16 Mar 2026 03:53:18 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:53:17 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-21-de9a7af4b469@kernel.org>
 Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-20-de9a7af4b469@kernel.org>
-Message-ID: <abfg8lN2L-kVVrOy@google.com>
-Subject: Re: [PATCH 20/79] block: rnull: add discard support
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-21-de9a7af4b469@kernel.org>
+Message-ID: <abfhHQmMmEErFYb6@google.com>
+Subject: Re: [PATCH 21/79] block: rust: add `NoDefaultScheduler` flag for `TagSet`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -100,14 +100,14 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8A6BA1C0008
-X-Stat-Signature: rupwwd4z1y6jubpeonrhoaqnjiod59ws
 X-Rspam-User: 
-X-HE-Tag: 1773658357-788873
-X-HE-Meta: U2FsdGVkX1+fVo4Z2RgV2h10qW1T+oXNe0Y0fOfNnIpTwU1BqkYztcz2udqeZ7nMTqJcesahAJ010m05hHh5emsF+AWZuzRfgXTJzboDjVngbrLlo9hv1EeRHY/smlsmxrT37Dv2TfoDNMYWkJDbaKfNuzWQ70NBbcXWtqYX+bmbI05mrzuHcok8WEFqLg9N0MLyMnnpm2+ngyTtfuaMOi8Z5klbSVyZhlMpVz6PUjPpSwxUpfw7HbZdYYGGu/vIJ1N439y+/fXJ9bOFZXy/JCpeER7ZivLiyqAlYaGcuVhmMrCHOjnGUq4sCXoVa6RAzUjcL3kqmprjoWrRl9/L59T5bw8FJ0vrJtL6PJgeA+A+ZnDTRE0IUqe4j3s26/0HumzCHO1oqFdykPYBiXvtcdId+FrVnf89N9yj+y5Gy7jGE94gea9rWj0QC5m5mtlHz9z9iIhuex5hiTgCaMqOsQDOz5xlmIJjhmPC4iveP742ujkqea5XtIEALK9Sx4QML99p7sSa1ccHP+gvhity6UfKP42lyKWAGDemd7XzxNLKPnc7ttktzEzNWEI+y++MAZjx5/nJoDfjJlipYBOQJusJKnOQHtyQammsIzXpcKhARObOqisjctBw4IZblp6CUvvaO4W3NoJwewqI6CgIvrlSjhhw0WQhOZV8uW3mE+PDNHGtaxbaMfrMpZxT0EkT02O+yEGeStP2nCv/4yJeSZ9IWy46At/suuYp0MEkFfGAISmslOy/7qGvQJLNBnNNeqwPJZRpLb+66OkKmosUNzX1yq8/WDjongaqndksX3HIohneuue8sY14HVIz4O4m1RJY3RoV244v2ix7pg1uW2q1XWw1qP5eOoOE/xNgeXRsKYCbAzAw/s71Y5lGFSVVZp7ALEcjIgzuRNQnnT8fQHhpQe5WcTQXpJR2E0fpqDhCnnbTvCAjd2bPWZ5s8ABAQhAMrwfLAESgIt2LecI
- flhqpDiM
- +atr6Wt8F/Mt2gX149Y4mg0GBQMjYX6ZuLaRVz1GKpce94fysEc1nQi/qZrBje2oMBPZk7Otp8iYik4fhrDQigctMgjtfHlNb7TXuxJJrnQ9PraAzUxzf5VvgXRMJcBL36o3MKMHysguar95lKEP3zl4Xusu0BB0YAPDLI7m5GAYcsJmO0Lbfz6giYGxvoTLf51FZB55HbdwvWd2cz8XzkupRy0SJMccVr4y8fSfpqKtzFyDgoDkSimphpCAKjlPInkn6BgVhYPt2qh3SPlaqnG9WYpyixfKIkKDL7wpVi7Yl3yYP1yshXEPf+dD/ljTyY2GnUPr1IdxLafwQaSSP5SfgfDjXKGmnfi/sGxraghPFmBf3+n5AeDSXst6sIMqCc40kqTM38QGX0NspJEPUj7ULs7KJ/vESTBv4OuJMWRaa03D8T/QaXWFRVH4lN0zwdLr36S8+R8vDLGuzhIOCPRGJJKccacqqS95HmwIb93JCFvyxnmZOwhrReHEAr4jI5JcSpqeYAZG5JIsBjJ0IIKLU6bt52pYAc/slOg840MULrNV0R1pZ7F4ST4kAL/q/t3rpX/xuaShC0sV+I/1gkqmIpbcmmZPkvhxhVxneYF/nbsDNqDHUv2JaTAwXdoPnMrpzvHGzcKa975qtF1nGd1a0HofSsGvx4G+T/mYcfhhazf7iWVF/8gB8pg==
+X-Rspamd-Queue-Id: 05ADC20002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: tdufk7mp9e6xkms9mygaozuiiunh1byq
+X-HE-Tag: 1773658399-345316
+X-HE-Meta: U2FsdGVkX197MF43CJLa7jqsFJ+FuNk+e4SvgLmvnqNH1LWYsWYg3KhDixIsUphBYmk69ZnG5Zg/z+EShUA8min0MwqJcL+DBYNPF5b7ZHRkRs81EDGLrrt9EcQ5Xvv+GdMW7wvowL24bGUDfCfJGH4BQ9QWGjakW8drPNeiaXr/SgAaSZGov3WmcKQka6vUmEzQlXMHkz0Jp1DgpfXf8ZHhye8JGjho/4sflbZuXgWTvKOCr9YsDM4HJlSgByDu+oc/R09bEhoPgSsxOGnt5QAYDC2KHY8EWqzQiiWadATOVGW/YhRDBBivhS4HAVI9VLVAA+phWMGsDCG4kGgHNkCPc1HiyLtS81ThlYgmI6uW5IiQoHBqQFDhDRUmjn4C/wgqModt9HxSqzVJYi/JIxcFrueGFOBrm2Rwhc6Bf+09FZtyNKKzqfzSax8erDDcwXgL4gKvqxpOpRpPo9aeTQjojpuxNmGFStDN2juFJr9siGRQCywjiZwFHFYl6zOSfZ/bpYcgbFCYe6N/OQDm4FTREem1WiguXu6MnCJk4LBRh26wf2NznDH1ZHFbW0Vqi7bdmIHFGCo93k+ShFCW/p/MKyFuNFMdGxJ9xqpEPpn/8s8NG12N3VdStm9Rk4mOGgrROR7q5jdsfqCghPixhcPljtPbfM5q2tq0OniX0HUXHWyPoqtMvuJWtAJCCFeKWMq5O+05lNy8sp6f8s7JrjYEoV/84jbHfxEhzseIDnmKcsjdGDas5VMG35LHq3mFEYXoKJa0ilhvOa6KLWC4gZ9LV6ys3HKYYySxOrroPplYKNeoONPx336WT4xW3vhLrGWxddmlpyEZkEQ3junaQn7l+atXcRkxxhSnv12FtXr+liDQvldQDobaTjqVDNMgLRo8VregB/F0EOul/u07VzDrroziK/ihTh9QBz0hCpGHZuBw1yktEy9vu83czFFkG2P3ficH5/4GV9vRtgv
+ ZGKQbWZe
+ h0wrQF1I+IGv43Ka/aLjY81XGu8bD+IDIv0uElR+U1VNxejwgU5HX4CUMRo/QE7JMXEMMuUmBJ/odM6muShuqtetBQFY7rUypVfp5lSO+jzU0AWdXDeK7YF8kC5L/u6OshKKFrruCGjSZsO4mVVvPtG65eAy4SVso/cbZwej5h2i1CsEd4QKrgYF9lluXDWQbmStV0GeN0LVKuTPleNJ3EyWrAguxU/030YFJ4NX4N7PZsQPRgxFYb27GiKUVT9qFhwOl7y1C2MU5buqvRPWcdndqBXIN66sKo3vAeV7yZJ1n4JA2VGU7d11X7MqTpS0zPMBtqDKLr+m9KWonvmvL2xku8jAoNtoDjRGwn88Np58XjKMNn0hFz/MzjFPl6vKwQe2V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,30 +115,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:07AM +0100, Andreas Hindborg wrote:
-> +configfs_attribute!(DeviceConfig, 10,
-> +    show: |this, page| show_field(this.data.lock().discard, page),
-> +    store: |this, page| store_with_power_check(this, page, |this, page| {
-> +        if !this.data.lock().memory_backed {
-> +            return Err(EINVAL);
-> +        }
-> +        this.data.lock().discard = kstrtobool_bytes(page)?;
+On Mon, Feb 16, 2026 at 12:35:08AM +0100, Andreas Hindborg wrote:
+> Add a flag that maps to the BLK_MQ_F_NO_SCHED_BY_DEFAULT. This flag selects
+> the 'none' scheduler during queue registration in case of a single hwq or
+> shared hwqs instead of 'mq-deadline'.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Similar to the race I mentioned earlier with store_with_power_check(),
-this is also a TOCTOU race.
-
-> +        discard: u8 {
-> +            default: 0,
-> +            description:
-> +            "Support discard operations (requires memory-backed null_blk device). Default: false",
-> +        },
-
-kstrtobool again here...
-
-> -type TreeNode = Owned<SafePage>;
-> +const _CHEKC_STATUS_WIDTH: () = build_assert!((PAGE_SIZE >> SECTOR_SHIFT) <= 64);
-
-Use static_assert! or assert! here.
-
-Alice
+Can be squashed into next patch.
 
