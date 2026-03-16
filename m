@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7BCF46445
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A424F46445
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:40:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AD7B6B00C3; Mon, 16 Mar 2026 06:38:30 -0400 (EDT)
+	id C2EE96B018B; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45ABC6B00C5; Mon, 16 Mar 2026 06:38:30 -0400 (EDT)
+	id BDCCF6B018C; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35CF86B00C6; Mon, 16 Mar 2026 06:38:30 -0400 (EDT)
+	id ADEDF6B018D; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21D466B00C3
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:38:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A51F91A019D
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:38:29 +0000 (UTC)
-X-FDA: 84551577138.28.7A13745
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E03A4100005
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:38:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CygSPxUe;
-	spf=pass (imf14.hostedemail.com: domain of 3ot23aQkKCJEv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ot23aQkKCJEv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1356B018B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:40:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ECC8314019A
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:40:38 +0000 (UTC)
+X-FDA: 84551582556.09.DF8799E
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3476F140009
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:40:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GKLSTRH1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773657508;
+	s=arc-20220608; t=1773657637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9SXYFbMaZyd4uq2jz5cd/WSU7rtMrzbFvz22tvMMpB8=;
-	b=CK2sZC64huOhVoEq/XtPc2PZ3y0EB6j+tPmFWFAgvpoxWlkah0QGXHmO+pUq3FLmfdG292
-	Eg6+9qd89vdp8I+Sv0ePt0yZW5uq2TGdtAqF3XlQRlwGCqbKP4YEGSKXe+W08IIuaKfzSs
-	sgiPrHys2G+A2cGq07tJYHwgmaskweI=
+	bh=KKz2KTzlcBf86rOKf9vSTqBmxmc8gj/65J7dXuwwtTQ=;
+	b=bTjPruToxZ/oH0BFU35w/ggJjBSYRXpsPx0qISc0/nITDkt6TovsXo2bKTpdsnOnuoC8Q7
+	BSirZ2AU/0wKoHf5fogOk3qM4j/+BJaR/X7REpvRElwNXaB/rYM5ot8Qp9cUi0uDoGQ6UE
+	CKlah3anTv+ppbaIpM7F6iPiVFqmQ0w=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CygSPxUe;
-	spf=pass (imf14.hostedemail.com: domain of 3ot23aQkKCJEv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ot23aQkKCJEv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773657508; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GKLSTRH1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3I963aQkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773657637; a=rsa-sha256;
 	cv=none;
-	b=SX4OIgaXLeLDaI238GNnPDlrRZ3XBahWnrbGoKehmrNt3JvkT7EbdcoEwj9pHQXfvfcCWm
-	UFDYJFAvOUEjZW404pvS+CR09Z8VE6q9i2s4tIRdwvbS2eqjyuEoZ0huTemUEiH7gpnV0e
-	IfSQ0g3Hy4dsMrDrTzdZvGHdNbbEv5U=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48534941525so61765075e9.2
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:38:27 -0700 (PDT)
+	b=JjZ4GFfpnSq5d02kvgtOv2GJqsvI5eMWaJR7KHcFiKx+FyXUNUg6ql8h7YrD5LiCUSIkyV
+	0SaGxYYN6Oja6CxdmLrZGY4KwIGAMKfVZs6PAMvEqNVkyRppOA2ZHAmT8qJ6PiPvZqm8kY
+	Zh0N5BKrctQHh6XoimJYKN1yM/KFWhE=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43b3d3d2d22so1294550f8f.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:40:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773657506; x=1774262306; darn=kvack.org;
+        d=google.com; s=20251104; t=1773657636; x=1774262436; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SXYFbMaZyd4uq2jz5cd/WSU7rtMrzbFvz22tvMMpB8=;
-        b=CygSPxUep7xvAqdZ+lEmio+JPjs+TkZpq89rBFQGd/OMQVXVcvRaCiI/KbZNXWARTq
-         zsYJ7ezGdB99Hso6LWpjAHw1CHuYX4ahCsjcBejbLCQOnrGKMvAvbHp2A+vlyuXd1Vzi
-         P3R35AA2SvEcoxCGjsCuD65s6HuFIJ0nemRvuW4xy6c/MzJy1ITtawyaoAPBxpjh5b2Q
-         AnzOe3kw0tpoUk9WzipmHWLhczKPpTplOcZ3+mYamXf/fmpiphk0xu7LkJjRAoq6ggsM
-         meWKwJrAef6/ZO9PnzaN2keh1irbNABVehI0ihTXp+bVtHMLA7EQfOifjatpMs2vcyuW
-         /XAA==
+        bh=KKz2KTzlcBf86rOKf9vSTqBmxmc8gj/65J7dXuwwtTQ=;
+        b=GKLSTRH11oUQbWLO83APFwMxxJktM/2DpRkAzQzfBVLXcv9Pn9g89KG9GUNhRBuVD0
+         os3qKnMsvWArwueDU66deEmDCFitQQOsbKvAl2YR/RrA4Jcf7M6it9j06eovj4h+DzJM
+         ItNwUWwqnoeE0z2UlIUDGEz1D88ABh2gxkzyCo1qX/6fEQTHm2cB+PvbD8LsuG4OcAJG
+         ptt0/YVUBvq52E1/+qGRYlpAH6De3nf8iF7ryZGa+ALyROWZ0pkeX3xgbzmowxOr5Ezk
+         G2UdmxBkE1ubLs31N/Tyf8s9HAbh+soWE3nS/8ldZAMXvqWhXnlEfT/5cGTM7LzrWHIP
+         DvBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773657506; x=1774262306;
+        d=1e100.net; s=20251104; t=1773657636; x=1774262436;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SXYFbMaZyd4uq2jz5cd/WSU7rtMrzbFvz22tvMMpB8=;
-        b=WMAAKEyJwNugcbyQluUFDqIvXPDu2SxFo9pFFfvJeqQZfgcqiZ/sEtOZrYDfZK9olT
-         xXKKvMDDyzweXfoQNN7IwPdCqos21UqsmogzTqvTkCg3XYuFa9g9LG2nHxDddSLxsdmI
-         mOMlPeQQQm3GClL92cURPzSkT/6ETVoKQzRsRYSPZy/uSHsRCyfOKUoQcEuSa/VfeA8F
-         MRC2S/hEoAxl3qU3veJSiT2qas8jWwxcMLntHoESOAWGV/HhyBXFWa3T5bufOLbBD1fV
-         wdWU7lkptrwThxFA4cQCEvSn/89HCM4sV20+ZCwZw3NQ/PP4B8gcEWzPBNRwOi+Gc6o/
-         6gYA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpG0sCUcFbdANwdLFgSWr18syFd4sFcjB07HBl+uvZCtCF4YlkM3j6ykxf4zzfNDDIuQIgfmFngA==@kvack.org
-X-Gm-Message-State: AOJu0YwusFoaDOI/1p3G8rWQD7MA+VllAl+a8chOzOdPvrKocfFbYQa/
-	RQSuiTV7+Xl6AQ9C4ZcwVlNJRSrENr0Yf2Pqc4esKeTq+kroZZVz9+VnnP1CWfFIqfv4Rnp/Qkc
-	ymUIGWQ2zy6h2YWZ05Q==
-X-Received: from wmco2.prod.google.com ([2002:a05:600c:a302:b0:485:3b4c:3e34])
+        bh=KKz2KTzlcBf86rOKf9vSTqBmxmc8gj/65J7dXuwwtTQ=;
+        b=TVs0FnzdXIagMoLkh7swwbfWF8Tz8sfIZUg2M2hpWsIBKLUb4w51qrSsps/hn0fTuI
+         nl8WX3YGN+rzSdlChhh+2L1cnvrgKVejhziMC3OwxhhFcVZp5yr3409l8vu1msuJRj7w
+         6y3kwlOjktezYQZHEqjVvd3xTCj0foSASeapjgfek1F7qWFiVCwwVHFz8RdLmULzRn3g
+         +m+W0c0kjGlDcpOsTMMy3Ot24WQxu5Q0cf+bRicmNTW9i3DbdfZy8xrb0j+2hIfZWPyA
+         DPqEP7Intw7h2rZPnlprw+Rda8gdWPkPwqUwxW/LYBdzpLNmkfsdJEmMGVli2u249so+
+         dBAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvP11SY3Q+OFtuQJHtc4bjYLRO/NM+0ZL6IjUMXZo3Yd1gFXWSdLNIvVtboB2bCPo8QSuKHrDIXw==@kvack.org
+X-Gm-Message-State: AOJu0YxY1NKjBhtKfjgUCl57BxihTOy6icY/hN+W6My8dztJjE3TuOid
+	dA2UIJZPYodxWEvl0st5a/L8/EpuOlvnZs0XR6VQMBQXbK2AGkoDVive14mffBUdG2zekIU/YRG
+	mFdMDUr73bc2e/7Uy+w==
+X-Received: from wrbbs28.prod.google.com ([2002:a05:6000:71c:b0:439:cc48:d5])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a39e:b0:485:3ca4:4ef4 with SMTP id 5b1f17b1804b1-485566d6ffdmr140263405e9.9.1773657506198;
- Mon, 16 Mar 2026 03:38:26 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:38:25 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-13-de9a7af4b469@kernel.org>
+ 2002:a05:6000:26c2:b0:43b:433f:489c with SMTP id ffacd0b85a97d-43b433f4a72mr6008387f8f.13.1773657635312;
+ Mon, 16 Mar 2026 03:40:35 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:40:34 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-14-de9a7af4b469@kernel.org>
 Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-13-de9a7af4b469@kernel.org>
-Message-ID: <abfdofUwfh---inT@google.com>
-Subject: Re: [PATCH 13/79] block: rnull: add memory backing
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-14-de9a7af4b469@kernel.org>
+Message-ID: <abfeIpz8HP_Pr5Yv@google.com>
+Subject: Re: [PATCH 14/79] block: rnull: add submit queue count config option
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -100,14 +100,14 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: ac9n6k6sqmtcj8n1ngrb8jeofh9ntns5
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3476F140009
+X-Stat-Signature: sr6c53naqhpayep3x6udt7qw9x1813pz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E03A4100005
-X-HE-Tag: 1773657507-169005
-X-HE-Meta: U2FsdGVkX1/viP0q1suQ0jtWSRGWC76ITuOsyV4OrLWtAgP8mFI6l+EtRYeHx/J9w2H3FZLq2ygFPZrDFJq1NuL9kIBuwTL9Vh85Y1uknfSF2o+yBaoopyhI0K2ACMqxcppPdyJLFwDhVkK86cyz4oYr64HpAZVEupAK2FHE09592mvmQaXatBJw67SmX6JlAPIjft52TqXcbgE2H4GtOI1ovILnWm2c0eiwHPXnuwn5BjzSOrsjN9CFWfpXTz4FmUjrTibYI5xdaMF54AqFU5yeDrcuzh8hkk7xrf7czNymYeqfuNC4eO+6Gizy7gv1LKUWf7IkMysveRQG/onyUBg3s8ZOVg75rqpI2G5U9PrOJ6mJMfDZZaOiful6SFcx1pKIGQOnM/pts5F+AECjpXfrIwtd8C7+FQQ/e6z+g6MGXWv3RWhTpzpJaZjWb5+0UTvp5zZ/JweYNO4z38SE4pghTUJfeoZnsc4EKA6wi9N1q63H+G30LXm8bSJgNk2nkMWb0RZacHcn2cThHvauNWmFAkZKQD6kOcpu3MqBzDsAK8YBvSbjhpEaav+DBjlPNTYmzdR414QIA2ebEIFQfLqP5e819L1kTtXsWjkbc+7zZgG7YSZd5w9fXtVC+nnJrFkUqbN5dS/XGaz5W8v/AO2WrcNuGzwXmw12M/AChg+j5Hz0u5rYbHhtFRupeEZuxw2JpIHck/OXoSEkW+eLgzx9UgZGrCdr29eOhmn8sYcnD6vrrul0A6ynvuXKphzsrkY0tOmMwlmkZxzjBWSj06k2i4hVdqWW3T+SiRu5z5YjMQEE+ITEau+lg3DwjR92hMdPcx3rYYdXjQvnILzouLEHLU+E3dZoSJECM9b/HWHKXgfnHM4d+4LG8FYJPyb0mBSbHpVE+VqhFEhZ4+u7dAcLlR5JYImUyAfMHRWPd3JpJ13ga/X3jEDQCTWmvWJENL3j093piG8Lvw7N2BE
- gEvX2RhJ
- 8Fm8SqyQpUH0jDyZOaw2lfIyWbgvnEtkjpBAQqtdhXqQiikQ4TcYZBXrbgocaCp0Obw786isa6zQg56F3jd/jLz5CtnrwrKqq73648xFnWzy5X8GtiI+2idTUEscwtBRRc/XCBJaTJ0e48KgJisFUGOVfVFLpd1TJG0o7leo/i2yC7G8XHXfC8ixXMAoDsbCkHzk4mA2DTec2dO3jfVN/FSFZty2cLglLLSDOfL2mPnUVGtGtYWPHEssLbUBE+7+4eLqHfGOxvmyJ4oMB4tisCMeuwGkj0Cf7HkSc/4VXrAs4INxP8ljhlJWM7MolNTUcdgWmkAKt6wD1OVJelDCC3UNE+1SaoBQ8/vYzQWLGA7nYR9EB3WDH3TVXUYspHdZOxqviutXqs7r7e/36vITZDTt+gZhqvQ+RwwgM/waNJunryLDuTKr3HXDbhmHGRGUVZrAyP459+MJQueyWeIHqUHZJKP7b9AIMCBMJdlhg8/SxEZU/cOoaKHN7dtfReaDicIsWocTTAMs+mdzA2JLxaLC6fMZD6/NjTIPmho8+lapjBl4gM4gLCymVcGGaoor2c+Grp7ncNva01VPu0YKWXv/XiMvPUTQ1/wnql6vl+JuWgspsGRwPUigG2Fw51lfHjUO3jxjvV886Oi3gpoyRWIKR/nXjFDqPLkysHnJExIS0tns7iZ9KGRJhUbqIXnutu4yoZm2T/b00xx0TKlq+VShZLQCiEHYztdw6wTDRRX1pfcO173kWb3AI3yE3brRU9f4g
+X-HE-Tag: 1773657636-259764
+X-HE-Meta: U2FsdGVkX19OuETbHYUtHwpOcEYX/JoSeDzWcTxCcpfndaooMo3XDkbts9IWrEMO7bxri1YH3RBf1PZMqpu+WL7oQfXejjHmbH8RZX2uI7KS9BVnGdoxcdZhy3wXTEWcyQAfbHH04WSncba/q9z+d9LNws7of81XLs2+QEucgBpe4feI6Vhwzt2/OcaE5saf50gwUm9r2vZRmlhK1KuKc1CoWVlsNR1wU/YugXNTVkPb6yxlr6xbzALei+TvkZ6i8Q7U7jk7Om8oIgqeJqw0cnu8uTBoH5AHMLA9VnKnUNnLabH5Ni23LrhCyduzM+TKErQQnFzh5h9hsVNeIyns33VOn+nM+E6x76Tgo+ZyH9pmzTFoEJQemEQUmVvDsS/aiDGyg/DNFJJ+ZormMb0xxIr3/K9vvvgBirAcKwbQ3cDdxppAa2f9lsTzPRKb95IQk8PYHG4SfjIBS79umFFvTkbkYocRH5E6Ji1Qh/Q1afLrESevLwhkXJhrJ0r3e4087sLL4ugVw/0OENmCNF+ZSvHGng5a0I8BxbbXFp7KWsa+zf4bT3Uj9YZy37cn+xp5FspKzNpOHjqdBwwHBV5kHkyOEnEUhjIJjmSFR5l3sesPDXzMaam0Dxs7BE2B3kAdePltL/MpLSZWgVHRT3Cg1eit2SR9bdzbVgErzGiy8yNzS9hWSrQSg4K8InPJ2hfiMMEbxE5Z87xzOlpblRd+n4TxMTlfACcD75qXXH3mqG3wAYItzxWXdetwGL4d2zpOdoTj7fI6cLDc+qpqznCwQ6qNv2VCfdT3D2RnFxwCJAMrcvAlePQOwYby3W2LOKc/UlE5bcuHDhY2z/YUnRVZlM6nxpmR9BAGbkBT+WjtSD7za5VIi/z9/8ZYPrBALEgNK6a58hu9rxmL4rb4CEM/Lh+S33Xp2Trhh2e2SZWEDLaa5TA7Pf3dE3SJc0Oa1ETavGXh+iY+F18RV4EOU7y
+ KmPctUE1
+ 5/70/biwvSxavOVTSiAnsOgrGhXN7WXC2AuyszM4buIjoBu381aI5EQdSW6PN8ICmlQmymQUh8nslwhHeRGjfQDh2L39pWeO7tcKqa1v5ndt0r7rMVZT0/fTkW9dqlDSSx3INMzUaRaLP82jPVK7Xpkn1dINddv3DrF8yoHJw0VxLF9lrNArhlwM2/l/Ngz8+WEO18ZueVpEdBE+AK7dfF9vSVbTS1fhnt+9I0mliJYhXYhB1Bzyyo1PzSCj4a97Qhb9GJAbm3rbqj0kwec1+iYkAQAnMAXlwiwtPURrOvkn9wWFbO0PLK3KF55PVVTHmd5jIda/LTifhBPS11MpYA+xr/VnqSjINiA/+wv/ePpqdWoU/FlSp7ZpIAJTly+4Kx/CyCivZpcMByzdqYQje01EVMasSv293XJKHV6bn8FNCf3iHQNiILx6n4OutaRSmYXVuzkYRkQfqxYNTxDDuQ62SIGTjzisJ2Ho/OFFbcAfy2HPeQdQURXWXmPaxGXGOH0QizIA0oj6w3mCeqIL8AkDT70q7PiqY6jn9AQ4HByzgBfDIhekzp+kOH5kDSykFR7f6YCU4iAEGFgovg3m2OJ2X3QSviaMXvFmdsvgg7BfGLLT7tltrS+HfEfyl4UDj0oRVmNV/k1qdoi2ekZwZ3p3UKWwTbSrrts+EBpCrkJP8CJawfi5UijEgUTvbdVXz+BAk9k865MdzTWY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,29 +115,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:00AM +0100, Andreas Hindborg wrote:
-> Add memory backing to the rust null block driver. This implementation will
-> always allocate a page on write, even though a page backing the written
-> sector is already allocated, in which case the page will be released again.
-> A later patch will fix this inefficiency.
+On Mon, Feb 16, 2026 at 12:35:01AM +0100, Andreas Hindborg wrote:
+> Allow user space to control the number of submission queues when creating
+> null block devices.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  drivers/block/rnull/configfs.rs | 56 +++++++++++++++++++++++++++++++++--------
+>  drivers/block/rnull/rnull.rs    | 56 +++++++++++++++++++++++++++--------------
+>  2 files changed, 83 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+> index b5dc30c5d3e20..fd3cbf7aa012e 100644
+> --- a/drivers/block/rnull/configfs.rs
+> +++ b/drivers/block/rnull/configfs.rs
+> @@ -59,7 +59,10 @@ impl AttributeOperations<0> for Config {
+>  
+>      fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+>          let mut writer = kernel::str::Formatter::new(page);
+> -        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec,memory_backed\n")?;
+> +        writer.write_str(
+> +            "blocksize,size,rotational,irqmode,completion_nsec,memory_backed\
+> +             submit_queues\n",
+> +        )?;
 
-Same comment as elsewhere about parsing booleans with kstrtobool.
+Missing comma? If so, this may indicate missing test coverage :)
 
-> +type TreeNode = Owned<SafePage>;
-> +type Tree = XArray<TreeNode>;
-> +
-> +#[pin_data]
->  struct QueueData {
-> +    #[pin]
-> +    tree: Tree,
+> +struct NullBlkOptions<'a> {
+> +    name: &'a CStr,
+> +    block_size: u32,
+> +    rotational: bool,
+> +    capacity_mib: u64,
+> +    irq_mode: IRQMode,
+> +    completion_time: Delta,
+> +    memory_backed: bool,
+> +    submit_queues: u32,
+> +}
+>  struct NullBlkDevice;
+>  
+>  impl NullBlkDevice {
+> -    fn new(
+> -        name: &CStr,
+> -        block_size: u32,
+> -        rotational: bool,
+> -        capacity_mib: u64,
+> -        irq_mode: IRQMode,
+> -        completion_time: Delta,
+> -        memory_backed: bool,
+> -    ) -> Result<GenDisk<Self>> {
+> +    fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
+> +        let NullBlkOptions {
+> +            name,
+> +            block_size,
+> +            rotational,
+> +            capacity_mib,
+> +            irq_mode,
+> +            completion_time,
+> +            memory_backed,
+> +            submit_queues,
+> +        } = options;
 
-Why this type alias? Seems cleaner to just say
-
-	struct QueueData {
-	    #[pin]
-	    tree: XArray<TreeNode>,
+Nice!
 
 Alice
 
