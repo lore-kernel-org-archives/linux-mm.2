@@ -4,213 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C892F3029D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 03:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE99BF3028B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 03:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 522C76B0100; Sun, 15 Mar 2026 23:26:04 -0400 (EDT)
+	id EE0196B00AD; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D0C46B0101; Sun, 15 Mar 2026 23:26:04 -0400 (EDT)
+	id E8E236B00AE; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B1EB6B0102; Sun, 15 Mar 2026 23:26:04 -0400 (EDT)
+	id D90876B00AF; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE606B0100
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:26:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA6055CD0A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:26:03 +0000 (UTC)
-X-FDA: 84550487406.26.94D2E9F
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 51B421C000C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:26:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HzQQ5ftY;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=j9Zr09Pn;
-	spf=pass (imf18.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773631560;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C5D2F6B00AD
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48F65BDF47
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:47:09 +0000 (UTC)
+X-FDA: 84550540578.20.5C3A182
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 44258100007
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:47:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6TeGEoX;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773632827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kRBvax96Ov3mEIv94QP3ZppUy27Pg88H30pArWhYm2c=;
-	b=I/73lIJ92san4j1S6kE7/IgGIAwdtdjZDMSSLoVskbdcpN04opzhOtwwNTkF100QUhUnfg
-	vN9ZXh+AZn6mSi3sYuAyDWTsgIpbGY/0iu2QhSJEIf6Yhe2qVUfm7/qdBuFsxwOop8Y60/
-	aKJKUInky0DCKjKVj/9ePQWKWpmWlv4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773631560; a=rsa-sha256;
-	cv=pass;
-	b=3biE1QnklOZ0rlqHHJHipAVpMqjXva0b/JBQrmMRX4sja8U2z1aATZ5uEB0c791bFoBMjc
-	uHyXkkKZfY8VWNOZNhxE35Cj/9SKoP0XDYCy92wzsI3OcEdNFo8zR5U6PMHc/px1I21WcN
-	iaSYzdWWAdTLU4g3SRlpFBn/Nt7oZOc=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HzQQ5ftY;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=j9Zr09Pn;
-	spf=pass (imf18.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62FMhQ1j073784;
-	Mon, 16 Mar 2026 03:25:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=kRBvax96Ov3mEIv94Q
-	P3ZppUy27Pg88H30pArWhYm2c=; b=HzQQ5ftY3W0dOOFR64NwUSb497lpH0a2HR
-	cBuC8YsNxf67zFEQTMx2wfSsD363dw7JqgteiFME51ID4JxXWPK+vutIIz5VP6xF
-	2IERlaFlInu1lldhoAhHV+AfpJUKVDXnoe4BERxZloGWEr3XVHcvqjFZWi0FbF8e
-	s/C+4PvzEycClALVbTALi30XLRp40PM2RFJF4eOiEprjTdpjMyp1WBijVgIlv8xe
-	HHh83atLjWXsF96sXSOfCuxZFvD0jOituFRsNz1My52I5V2QdZ4qQOGUAMVxtsmb
-	aQ8nPEQ9zPOi3SzDRhgGL/FN+rTJdfTVnCVN1DaDJ4Qz7kMw1+YQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cvx8x1edr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 03:25:51 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62G31PHt002761;
-	Mon, 16 Mar 2026 03:25:50 GMT
-Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012026.outbound.protection.outlook.com [40.107.200.26])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cvx4j9vv1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 03:25:50 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NtI+A/KKxUmF2vBuQJPHNHRODtjZuJswk3h9s3EKpC4zR/pMnq2WsexkODK4GYe7WEJQApo07c9AV9Ccx0RtVytjiKVB4MMQ7Tqy550NhfeozwMxXBTg1hhdcvjv/djRuvKWgD2huOBA9jkpgKyqHOmQN4Cn350o1GyK68gh6mZHyeAxQnynQbSYA/xFTOI2z//broLcQThiYEX54S0721oT64OmNtQBVPIPJ4iAoP13q4l6zJVbrGxy9AxIVHX/q5aBIf84Zr6ky/XNlaXiP5RxdKL6SkgZsMVqABsOirxOI8frlmOzxsKOPFx1WryUwYE4yAVY35bVWvKDJ+pxAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kRBvax96Ov3mEIv94QP3ZppUy27Pg88H30pArWhYm2c=;
- b=y0dk/u2567DBWlt3mWoeighD9ZeR6zUg78wZ0suUtL+Y+s++UbqlB4h2yT0HvgdGgrTaCh59+0KgGmXVsfJyzfTasrHX14XoW3sBnhVApzSXtvCGfZMnX8JM1eDrok9hntEqSgYLOr1Zy0jtgL0RC4Sc9P01qCICmFbIHrCAC4ZlYowvqWV/x26rYsAmSre1YoK+7PHnSKpGysi+JDv7VrxPEasO0QR+2ldFy+prCXrxZ4whIS+OLTb051wz8QhTTXRtdWBw5dXHJMJOX/G+FYOaW5LqDmY9ECaZ/WxJIT96UhAxmtZVXaKFQK2/P6hFeM56tj1GfpTIdjgbP7uW+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kRBvax96Ov3mEIv94QP3ZppUy27Pg88H30pArWhYm2c=;
- b=j9Zr09PnAjgVNzvmuPVpiSyaHSE5OqhxdZnI63RbJlrj0h7cnNNieyQkt0Ky48LCuvPZDlAozlMJfu05XqjGZ98MY4aHY3ASIZ5+GZszEAufnPPdxqNRWDSva+ALC6VYPWryETGCt4VSCT4Rp6Krtha+HQcNZsck0PW4zlecctw=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH7PR10MB6129.namprd10.prod.outlook.com (2603:10b6:510:1f7::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.21; Mon, 16 Mar
- 2026 03:25:47 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9700.021; Mon, 16 Mar 2026
- 03:25:47 +0000
-Date: Mon, 16 Mar 2026 12:25:39 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Ming Lei <ming.lei@redhat.com>, Hao Li <hao.li@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] slab: create barns for online memoryless nodes
-Message-ID: <abd4MxlLmj1OBnHF@hyeyoo>
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
-X-ClientProxiedBy: SEWP216CA0062.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2ba::16) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=+0D2y5TFtNEN6pRRzkIZxioYtJ8GpAfJqrdPquInSuc=;
+	b=pIwNnr+gQRMTyk1Wij6R4vZVTZlP4wOwbRQCONTkAQF/lVGfPeAnOl8yNGug9JvDrKSgQC
+	WURzotr5RHZcKKHe7aSB0FnZOvqTwpu9FbBbJF4ARO0D+AXw5dZfmCbCoYNVw+sgkgsww3
+	gg5u8xbxt2g965crj5c4coZh8kN3wI0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6TeGEoX;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773632827; a=rsa-sha256;
+	cv=none;
+	b=xJ5KwSYCGErMfpLVJ5jIkj91AhPsttKWzDx/dYbdVEV16L3IAJ0PFaKkUp6j9AsWXCMAuy
+	qo6n3oi8gR93tWvKvltnLjs1+TgWfT9aBwxIJHx81+YYa3E0dCP1UuijiKUWqdgpqQ/OGU
+	ePmxMv5SZPROTqYbAShKxMzcXhxHa9U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773632826;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+0D2y5TFtNEN6pRRzkIZxioYtJ8GpAfJqrdPquInSuc=;
+	b=Q6TeGEoXLb2I9QLDoucS7P6nnaRjGYJUOrDCGmR17bHJwjwH9gDNcZ841L5CU/LlLp5/wL
+	yi+G1kcUZbvjXb4PbpSNbfoZpe34Wj/HnV/8j9Ti9ukJamQu4bl8kMPi13UCsrDNeANTO1
+	LTr6ShNW1nBgSXoZpAabzuyaxwS55N8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-WJ8Ob1AsNZyCLRk2U-RtOw-1; Sun,
+ 15 Mar 2026 23:47:02 -0400
+X-MC-Unique: WJ8Ob1AsNZyCLRk2U-RtOw-1
+X-Mimecast-MFC-AGG-ID: WJ8Ob1AsNZyCLRk2U-RtOw_1773632819
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 056A11956048;
+	Mon, 16 Mar 2026 03:46:59 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.28])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5DC501955D87;
+	Mon, 16 Mar 2026 03:46:47 +0000 (UTC)
+Date: Mon, 16 Mar 2026 11:46:43 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, david@kernel.org,
+	shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, baolin.wang@linux.alibaba.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev,
+	Li Wang <liwang@redhat.com>
+Subject: Re: [RESEND PATCH 3/4] selftests/mm: split_huge_page_test: skip the
+ test when thp is not available
+Message-ID: <abd9Iyg99E7AUtYq@gmail.com>
+References: <20260312114027.634559-1-chuhu@redhat.com>
+ <20260312114027.634559-4-chuhu@redhat.com>
+ <CD772D2C-F489-498D-A61C-9EA0D377B174@nvidia.com>
+ <abQqLQ_6QqVgzunL@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH7PR10MB6129:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c8bd302-23f7-471d-f9c2-08de830bb6c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|22082099003|18002099003|56012099003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	lFT0BWcIMQn1J1yv3zi9lDKFOZpVgm/Zpj1LL6rUSpMj/040SVY1h5tXxxNauaMAin6HUQrIEr4u8PcDk7QElXjhEOuuFQJnWWpDTqP8e8rOwJcjEvDnxpESLHPyI9h4sik980v1jS9hIFJtHYp1lsn+PQ/U2xF0rqSTevZpuCYCNUKSVuvBULSvHcgSAy+tNxD/8M957wH9ETK1aMPyn/n13H12hwp8VjSjvS4v+1WMF9OhC31KyiFOUXUTb01WAuSW2qscvQ5/kvLmTCwudy7mjPYutujQJAiTEhSeM6h9wn4lawL0khqrrUQLvMOIJzie99W51uqWylX6DUn8MuocM4VY9kwk5D3aL7Hn6JL0pSMFb70y3Uhrc/ou4WzPqltkMLUg3Qc122L9pxVw4m2p9t5RyqJI7YwpfSkTACWTyD2/IiuQ0/UDiIkivNE5Wz0Aj1UfFOR+XCBEu7j6069PLF2Ms/sJxwCmzDULtpJdlOFMr3+6XByViIqFX322WNuWX6sFErsvWpESz4be1UJrJn18KjMtANAxlrj0qsMI0FZz+9lS98EyRc6aVvTXcf6qWHTdweyoSSzStpuG5sgPrsU/obL4DmzqqbT1zzXp4Dz/oqIgv5UDrJtahSXe+/rIT0ADKYUJVo1moLg+MDhvb1GZURdBQ57hqbn8uwozaXY9ejgwqqLthgIRZEjEwnCAb+9cRHLHYI5qhARNlDTrwTHhovESuAi/ht+WWBPTlINLiTm6Ah2wTcUcFr+Q
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xwnw5LVNHZVE+snro9fgr1u1C7M9O2Eih3uWKRHokBcnZWtgk/Mdi84Jhj8D?=
- =?us-ascii?Q?BknqP/EYVsPoH7mMzrmp5IJf/c/TBdI/XSkWf4XK3xohMnn6Yyo2C0oZPdM9?=
- =?us-ascii?Q?WICeieHQWiqtRxwMLqxy630ZnOkQ6xofhcEmTKqUcjq46qrmfigel001t4It?=
- =?us-ascii?Q?GjK8lglmvQRduo1aDbr6wlPxZxhHbq8JI/f/MMWaKpy15gcWOl4B3cUpJXMx?=
- =?us-ascii?Q?biST07b/UTi9REY1xnjuNliMukLm6rEC+yJuUg/TtEMietPKuwrTCcoL4Bsm?=
- =?us-ascii?Q?k4HhCg/qY15ygfd/s9dAT4tw9qOoELGqD7IKDOFJruvvEimdcVNJmxLh3Xjp?=
- =?us-ascii?Q?1xTrj8cXgfznczb51PU4e9MDsj9Wd0Td6miqDjTuCQKBGfZ/eZsPJh837VXB?=
- =?us-ascii?Q?2j4+M4E4hj7TWmcW6z7F7DKMOpktuATN0s42kcEivHs6qqC4q5/On8cdLjKj?=
- =?us-ascii?Q?ShKTg7BOWsHWOzugLH8M3Dx/UbmAPX4599i1JA+pJNtIMU5WHN7fp3IjSWWp?=
- =?us-ascii?Q?a2CNEi8CRuluRKmG9vjUcng7ak+htxY5VXJoqrlEsLyDo2NGEF/b+h53EooX?=
- =?us-ascii?Q?tpazE8MwHNmxjGbf2rSaXS+dYdUiZZc2AHupzXqq3H6auoX/aB7QMr52tR4g?=
- =?us-ascii?Q?/IaTyL9c6Q7tdKWnlW3UnKhqnl4idSUANF2twsYJ0cs2IE4grwovbjZRbtPq?=
- =?us-ascii?Q?B9v4jNCfQuG3+Atb0UHanwEo8O5eXGhEmbYQt5p4OMoiSNI3DdKOXlcVBntW?=
- =?us-ascii?Q?XPNsqvOQj+AdqKoXeGv1u1WzxXchKrZLFHGPvtkhixODEs7gwmSU7zd/oM6X?=
- =?us-ascii?Q?hYoSsycz9CKyJetDKrmf3xT9iUqaiHlnxDL/32BaG3nTJLP3kb29eBMcAXrS?=
- =?us-ascii?Q?q2SpKpNIsynaRPgDoc6CD6diJXqQPwNr/TagGGiz+M/RknIoOQs0bFOihip3?=
- =?us-ascii?Q?6exmP7aW9vRF2kjfhtJH8URW2u5oPQeib8FqTsmQrSGDazc+s0hvwH+I5brt?=
- =?us-ascii?Q?Esk2HdJpSrSdNAPeVajR44qKJe6X7CaaGahGziE2RI/4StRhR249CVRIXMbY?=
- =?us-ascii?Q?SPS+fdVrD6Nmv7+bQjT9201InbABP9fKxdWUj2fgHJ669LAVB7EomZrtcb9V?=
- =?us-ascii?Q?nt/l76g/QJ+u14UqWQHWJVq2amqHUomu3z+IxRbZ1TjfUi+kk+7cnzSTahW9?=
- =?us-ascii?Q?VT+n01zdmQ8VNuAUL1Sr207tVvbpGN4qvkHUTGoten1L+aiK97qSBdJgaDQ3?=
- =?us-ascii?Q?P2+8vayKVbM3rMeCNv39yEm8rU1wiwwI77Oh6C32q+DDZVcXpLSmD1fD2KuK?=
- =?us-ascii?Q?aSOs1B5g9U9tZkHGoQAYNViZJ0+kRUNg/PYUPMgYtAQkxOeO8iTVCuOhaKf1?=
- =?us-ascii?Q?OJBYw/FIG7WC9HpYqod16kTTMJQK803AUmazLbsirn6JTi3HVUnXXsuuQ2FT?=
- =?us-ascii?Q?El96MT7pCjcAVHLZyuMOX04YoKtfmaUW/2nLtT27NCpLwtUc4P3VzfcnZ0UR?=
- =?us-ascii?Q?vkKAVr4KrlBZ8VpFrk0zZCQ2tto1XXaLYA1k0eafubG97X3yMXAGqobxJebE?=
- =?us-ascii?Q?b4bq4nvR2ZAT8niWwgZ2RCw63DCd6BOajcn4LgBhaMjI1C5wWRUQnb6n85Yf?=
- =?us-ascii?Q?oQ2PRvgaCxjnj133hMCKBjYRZUY0emDnze/iAY63oVtX8bmcPZFPXM5ONHqg?=
- =?us-ascii?Q?Fu533dEDpqpFs/yffG5NKNR/ZpzItwwt51J5DCcDQ3cfjw0PLJHijhDuFRra?=
- =?us-ascii?Q?Cr8vTpVVgw=3D=3D?=
-X-Exchange-RoutingPolicyChecked:
-	ldfQLdHaovsSb9Rv0Y0O1echU1JbDGD1LZDqmO6d9xUOohQzX2eem8sg6Qu2TqvpBiEcoSVNxUOZ0L2VryVK6tpwKqDIQEKk4EukvheVCkX+vj6N39H2wbJyt7GTfz4EU73TrtRYOa/woZ/f5ZC+Lz11G8/yiUY178snHE8PMclzJqFyZQsGcmeSmhp+zr0rvUgXHiBNDu9A00tUPAMuXZ4g4m7r70K6eQbfQcdGtKnPItR5pLehZ6Bp8hovUkT7+ZeiNWVXo9DuCcfX+2s5FheCSM8Rwe9HK5CMoWeJ9j5jb9JnAXcaYT7TKJ4+XWDawrPA4Apyby99du1xoC4dIA==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	JQ0Ar6uGUH7NJqr83n43Dz7XgVqZlUwTUY28fgwFhJnNgevya2a3Qa+OfUVhjkLdJhQgnvuEs+nu1QDxUpLVAadqvC5bgORj4X+y1bVcGirFS45iDmuW1u266sUWz8SsPidGuW42ifS+eYEwASEXexYncin60Jmxm0k70F3J/SlQthA3f0nALRTb+M8vbeBjvQOd/8Ve5uoW7JpMyOkyVpzs7pnWXwG7HbKpdGAMGSS7XYaTAHOXcHRJ2NP9mxwyv19x5IKIicgN3p1VK/Gj/hSkK6P09zJ3vS7UlQfZMrnYexhMeueY2Tb+6sx2malQ08uPTstrQX5ZcwG0kVkgatyrlUzxTAZTvvPMZRxJ2vJGfG931AqfvRCxDOU3Tj6/1ZJFiWvqFX7u3OW+5mOR35LdshMgXamlx9GxcZhyde3h4M8zh/bJ6OcaPwV48deOp3JVRNqWd+Ux3taI24gQPweGUc4GPQl/worNRFPxTUaUXhcwwVGEFUW9hKBBN0wyCQgzPdeEjWTg08NIaxuOeM+L8fAL2c9x5YNTnNyGPXKd9M0YBOzwbgxu98znCvxlpsbrR10vEkeaIt3o/sRLusNopc9RPai1unjlN207VbY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c8bd302-23f7-471d-f9c2-08de830bb6c1
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 03:25:47.0701
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mKyPXtCZkumEsgtnYkzOWvFHZlLe19os1cimlGmwNsKUtqtVC2upu9o6TiYB8n7+ID/Hau269tmfUY/0oGzU7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6129
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_01,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 spamscore=0
- adultscore=0 malwarescore=0 mlxlogscore=877 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
- definitions=main-2603160024
-X-Proofpoint-GUID: f4WSi5L5Y9UtoI9FAO6J8i7W97XXvw4X
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDAyNCBTYWx0ZWRfXysm8BnIox/nr
- O1WJMTBz5vhaHqXRUbfEcrfV3mmdZrZzw483CZUTD1yfpZFvPyfK4ECAeZ7vacKXiOOqorlzGa2
- NVQB9Mx3O4hKbxqRsBFvZbQk9h89rm07L1P1mVVh7ih7s4Bfg/DP297OAIHlhDTtaN+Ul+BSbde
- 6KMpG8A5TGCSYGjonA7vGWxDvOAB6W1L/EVsR5J8ru1H3SZrmFVBEjSNr2Syim0HuV2tBCjsAgH
- nzXzxMCK8tkEnFCfPATQyGEJyflMlQehOuKefRfD+2CsUKvqzaRj4dT1VQji2ofp2u+OMt1CCdy
- DLheENMjKsacWvHL8Rtayf0daJnDk/aOn9EuX1cWgNIYaRN8xDGZjLmjoWnSCBLkuImP5fxQLMg
- wzZWrNCDUqpySGaQBmiiI4ulJ6GAjG4FS5MYc7CTFIZRAeIvUrr+ozC6gMZqiLVrCOREJzBagRN
- 3XtH1JIBj6fkD7/wyiAyGJgAE2347qeEG1/CYO20=
-X-Authority-Analysis: v=2.4 cv=dJmrWeZb c=1 sm=1 tr=0 ts=69b7783f b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=n8vI7UGPArJviPnbJcAA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12271
-X-Proofpoint-ORIG-GUID: f4WSi5L5Y9UtoI9FAO6J8i7W97XXvw4X
+In-Reply-To: <abQqLQ_6QqVgzunL@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: IRsfT4y87h6Tdne7fghVvivAPrc-InZdCrl-XWPBcPg_1773632819
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 44258100007
+X-Stat-Signature: d9nhwfos86ho46auu97m9drceeu7d6up
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 51B421C000C
-X-Stat-Signature: fsqtt9nmfryd4ttuf6bsuf9h9tfcsqwm
-X-HE-Tag: 1773631560-859869
-X-HE-Meta: U2FsdGVkX1/I/wiQTIfUyeF99s4MGkaGys6Ni6hvdPyp+kxj6OaCMgM9Nzo7xvMGVrvzPz72mUzqTMpFPTPjPUJk1dsJnWF6lfalzYY/XSV/grdQ5Fxv0EMUUhBCUmFfommq3lg+lTwwah2uWAYbk0GZuYhSaLVYkdS+INOnUjTq8b+3i9SIQM5XiEPtmMNGKeFcJLQ3AJcxtMtrgwLx+7ocLIIPjtQcNP8R6Qm9BwcKEpKcueOxerwoOcnwk5B4SqB6qXHuwEFsTvIJsndm72T0lHPwJdz6dblU+AsdRntm7ESwCFd2oclnMmn81rDVAsmBLUHrsBLQ2PVhBfdIhHeSRePi1G4/Svads08/EH4aBBdryleWrjk6Zhxo8xqbQsjK7Cavr8zwUfkQKWdB/Uc7QV3Nv50BIhS6SiK9mmyodtTuvA6eJFb6FHKGtyys5QYrrdAvVfPAiEM+y61h8XwQKfNbhuKuhIWpH8o2AGJFshGetOrtoJv1p7t9q3bX4WQXcaFzAUbX9rrGrTvZg1YUxjF01G+pBaiAlA0I6WUGGne9qZ5Sy0hkBiOOIANxLZCotEPPolQMn+JlFXBZP2LZ7U4ky71eGk6p5N80TB/xmZ6horqIlm5YC8Z29lEvmmeHAcxaKPCV8lqWJts5Wa1rKJ7hQ+DP0TjZhhTE6PCliUpPDPBAzhL3eezZ6OVv7Ryk6avwrPhJQw1BZ1A8fTXmxh0rj9YjpbtaiETHVzsh3kQnqx5zJ5IW4wFpxTFCJelolsIAQFlH4xRz0S9YNrW+JwCW4Pc6kOmhGOUTYwLnl4fpcr2wcwfC/y98iBy33N7T7glRzxoIrfg2BaWP4fNYpU+Chj8SUFHwQ3g/6ajgPqmjL+2Q/TIjPeNgBZ4oI9BtjwqdsH6wvmMPKfNdFvnmf5WesL09rdZ6N2dCJHgGj5Q+g8r5/BlP5ojsN0PFSFWMLYd/Ze+wv/m8CNC
- U4z00QxH
- cpTWBJ5NKYxUraQQrU2aGQcACDDGvPrdtqWuwHTO1NWhYAAX5rJ1dvrqNPAxqNEoU4+Usmt04f2gAbTlbXlp58efp4kQzk8M5Y34Y1tB1gRFssHN3sNZ9TAfyVpyl6QHFhuWyXmHA7bc3akIae6/L98a6F460y6g8v4Vt8kQZr4N49gEgg3Ev/9IJCfX64h2oky4aLUSKg2kNETwMvJybqmRax5iQyqwV8mM3waiNSW/sWqT1/1sJRqqusLcqip37pFVoBePdksx7+NzykG8LjZmEzsyhjHm4UrrJNzllw0CXZ4MD0Z1aWuLaChFNz6D6tRw79r1iXKWCKYesYA+jhqJ13LE0S5NNHWACvY2hBD2aClSPL2YTMuARy4B5iBDwJ1dlbG7DsiewpYhK220vr5pP1TlzaB23Kz0JIw7CTG7xhrVnanBZuvYTdhFauHpKY76N3Wpm+fv+tlxVEonjZx6cKBuhA7quL4AdshYXHRv7a+vn1YD/+za9YVcvYRqBDik6s2VGGm6gTHpN8RlDR7gCoxVZB03ZQxcOzJwg/Oj4vWev3PVHTaCv0buMju3lukt5gcFY/ABA4dJuqzg2tyU6ANvFFyArCK9o4cTpzQLDe2sXSfUkyWFa3vsDxdfwQvPBbOxbT+PVzqX8mPCK0+F58czUMLbUaT09WhhAiI22W2C/Tra1FEBu4xLOHd9d3kiSutIc8pwV7Art/OAmXN0OmjAJ0wmBe8DVAAQ5oSIU9+XfkK6mtOJHhvqoVs6l/JFTxyRJm0mdZxY=
+X-HE-Tag: 1773632827-480782
+X-HE-Meta: U2FsdGVkX1/8I52zAQlsAOByk5G2z60oIz1Bc5uetiJZD6ueJB/xChXyhkx2je+ZckJ8zOml2Vcn+IQDBPiR7IEeRm782dhAPm2MdCcy4cnYqwaZ1eCOe1PPWvESxqT2g3KaeMnZbJyIl/mw8SDgGcm/y9hC9XJI06zMTQHTVWRYGlrZRnyme91pEy6BJTDERypNB/0tTF7+NVUCjyg6EKivE0TwBzccL1GjqokslIaGCiyppjMrnxXUID8eUTgOwzvuo3w9eCtpxmxhDLNq4Qg3Ie+2EueGgOdl3VObShHzRRU47uOFAP+mqk5mvekk+NP2u/R436vaCMnQc79uwYbnjU4GiaYHnY+PubGovgqYsUzAPDWsw3Udkyi0bUTq3tWY7/IUKjdRHIApqEiGNCtAYV5EsFm7n/JRUBa1CzeDo2AqJsmBXUkn2NCC2MADDiGB8c+7TOa1PAApKAJKIx74DhzNbX68ghRBebo1hGSdRg4GvLtV0s1+dcCt4FatzcUqXDEi7CbwAEU6qdhybRXrTRgCLzk/r7VIhwSoAtqO8X7gSpracgVl3m9/dXPJ3C8ycq5HoMAkJNJNvZu73/hks5DBwUJvUT9bgZ50Od0YuguBUvLYtMNC8atrOZq3FagnnSEhN8A+HLzqPtIM1XwU8+YwBMfdYv6XSrOv9ptMxidJdGBYmY/HugzhJvLxvsspitPg5YtTdpaTt5G0KM4ODahWiEVbW5Ji6c886UKnaI2H3sbPV1nmbQWvi3p7qNg7U6gXWrkv8gWQwCWR+4iW8Q61VupwNvmahw/WBKv02HhxRIhBPfGsJQ/RuXBzwAXdEK6clAO21dt/2BUCYM0CgRyC4TX0Z1m5AJ7V7qUZpf3uyNiisdIXvdGMQKWTOMw2jdfNzE2V1prWJtPthurokX1qdzplNVXU65F3Akf194mnT5RbrBuAvu6YmZaWIKr1ZZehVhkBLDPK/lE
+ Oiq7YCYo
+ IxpafVcskebYF8hvbUluDbKSR9VVUvVGqE6RrCeIUsr9x7Wty1EIPdAcJtWoDKLPeTeHzpHWS/BTmfVb9srkQ2jpoN6CSCXGVdbCBkBRrWWsssxattqW2a9caFrC841ary1ivKQnOJvhKeEBH0vVGFiMhIpulXxg1HL4tPJm9L/eqGbNNFNzhnR2eNgaSDXEs7IAg1sla+rc/Cp5HhoH7ymONU6VT3yAdYBYl/1u+LPF1yrzzvZfDByg8dm4hpCXozDsHDSnJsZ/GlfnFORp7+aEuHUFDPpbFCpaHp8/MatCIVb4cnrhF8pFV4uvlsI3gdtBPow6BtFWkGQI5lJVM81Le3TwIKE09TbJJ+8ou8EyRVSxNTesU+DbA1umnAwZcxPh5ADjxXS5wHTeM/jZcKSzjiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -218,36 +116,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 09:25:56AM +0100, Vlastimil Babka (SUSE) wrote:
-> Ming Lei has reported [1] a performance regression due to replacing cpu
-> (partial) slabs with sheaves. With slub stats enabled, a large amount of
-> slowpath allocations were observed. The affected system has 8 online
-> NUMA nodes but only 2 have memory.
+On Fri, Mar 13, 2026 at 05:15:57PM +0200, Mike Rapoport wrote:
+> On Thu, Mar 12, 2026 at 10:11:12AM -0400, Zi Yan wrote:
+> > On 12 Mar 2026, at 7:40, Chunyu Hu wrote:
+> > 
+> > > When thp is not enabled on some kernel config such as realtime kernel, the
+> > > test will report failure. Fix the false positive by skipping the test
+> > > directly when thp is not enabled.
+> > >
+> > > There's a naming conflict on write_file() function, both thp_settings.h and
+> > > split_huge_page_test.c define it. To make use of thp_is_enabled() helper in
+> > > the thp_settings.h, rename this local write_file to safe_write_file to
+> > > avoid the conflict. The reason to use 'safe_' is it does some error check.
+> > 
+> > Both write_file() do safe checks. Actually the code of both functions looks
+> > almost identical except that the thp_settings one does exit() instead of
+> > ksft_exit_fail_msg().
+> > 
+> > Can you rename the split_huge_page_test’s write_file() to write_file_local()
+> > and add a comment above the function like
+> > /* add _local to avoid a function conflict with thp_settings.h */?
 > 
-> For sheaves to work effectively on given cpu, its NUMA node has to have
-> struct node_barn allocated. Those are currently only allocated on nodes
-> with memory (N_MEMORY) where kmem_cache_node also exist as the goal is
-> to cache only node-local objects. But in order to have good performance
-> on a memoryless node, we need its barn to exist and use sheaves to cache
-> non-local objects (as no local objects can exist anyway).
-> 
-> Therefore change the implementation to allocate barns on all online
-> nodes, tracked in a new nodemask slab_barn_nodes. Also add a cpu hotplug
-> callback as that's when a memoryless node can become online.
-> 
-> Change rcu_sheaf->node assignment to numa_node_id() so it's returned to
-> the barn of the local cpu's (potentially memoryless) node, and not to
-> the nearest node with memory anymore.
-> 
-> Reported-by: Ming Lei <ming.lei@redhat.com>
-> Link: https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
+> Looks like we can move the version that uses ksft_exit_fail_msg() to
+> vm_util and drop the other one.
 
-Looks good to me,
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Good point. I'll try this in the v2. And I think we can keep return
+value.
 
--- 
-Cheers,
-Harry / Hyeonggon
+>  
+> > With that, feel free to add:
+> > 
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > 
+> > Thanks.
+> > 
+> > >
+> > > Tested with thp disabled kernel:
+> > > Before The fix:
+> > >   # --------------------------------------------------
+> > >   # running ./split_huge_page_test /tmp/xfs_dir_Ywup9p
+> > >   # --------------------------------------------------
+> > >   # TAP version 13
+> > >   # Bail out! Reading PMD pagesize failed
+> > >   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+> > >   # [FAIL]
+> > >   not ok 61 split_huge_page_test /tmp/xfs_dir_Ywup9p # exit=1
+> > >
+> > > After the fix:
+> > >   # --------------------------------------------------
+> > >   # running ./split_huge_page_test /tmp/xfs_dir_YHPUPl
+> > >   # --------------------------------------------------
+> > >   # TAP version 13
+> > >   # 1..0 # SKIP Transparent Hugepages not available
+> > >   # [SKIP]
+> > >   ok 6 split_huge_page_test /tmp/xfs_dir_YHPUPl # SKIP
+> > >
+> > > CC: Li Wang <liwang@redhat.com>
+> > > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> > > ---
+> > >  tools/testing/selftests/mm/split_huge_page_test.c | 9 +++++++--
+> > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> > > index e0167111bdd1..615b75ca62cc 100644
+> > > --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> > > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> > > @@ -21,6 +21,7 @@
+> > >  #include <time.h>
+> > >  #include "vm_util.h"
+> > >  #include "kselftest.h"
+> > > +#include "thp_settings.h"
+> > >
+> > >  uint64_t pagesize;
+> > >  unsigned int pageshift;
+> > > @@ -255,7 +256,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+> > >  	return status;
+> > >  }
+> > >
+> > > -static void write_file(const char *path, const char *buf, size_t buflen)
+> > > +static void safe_write_file(const char *path, const char *buf, size_t buflen)
+> > >  {
+> > >  	int fd;
+> > >  	ssize_t numwritten;
+> > > @@ -283,7 +284,7 @@ static void write_debugfs(const char *fmt, ...)
+> > >  	if (ret >= INPUT_MAX)
+> > >  		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
+> > >
+> > > -	write_file(SPLIT_DEBUGFS, input, ret + 1);
+> > > +	safe_write_file(SPLIT_DEBUGFS, input, ret + 1);
+> > >  }
+> > >
+> > >  static char *allocate_zero_filled_hugepage(size_t len)
+> > > @@ -772,6 +773,10 @@ int main(int argc, char **argv)
+> > >  		ksft_finished();
+> > >  	}
+> > >
+> > > +	if (!thp_is_enabled()) {
+> > > +		ksft_exit_skip("Transparent Hugepages not available\n");
+> > > +	}
+> > > +
+> > >  	if (argc > 1)
+> > >  		optional_xfs_path = argv[1];
+> > >
+> > > -- 
+> > > 2.53.0
+> > 
+> > 
+> > Best Regards,
+> > Yan, Zi
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+> 
+
 
