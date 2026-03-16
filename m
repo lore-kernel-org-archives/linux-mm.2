@@ -4,123 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06557F53D90
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6894F53D90
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:53:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DE5B6B00CD; Mon, 16 Mar 2026 15:45:30 -0400 (EDT)
+	id 102066B0347; Mon, 16 Mar 2026 15:53:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 661B96B00CF; Mon, 16 Mar 2026 15:45:30 -0400 (EDT)
+	id 0A9156B0376; Mon, 16 Mar 2026 15:53:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56E506B00D0; Mon, 16 Mar 2026 15:45:30 -0400 (EDT)
+	id EED346B0377; Mon, 16 Mar 2026 15:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 442656B00CD
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:45:30 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CAFAB6B0347
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:53:53 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0AF9EB997F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:45:30 +0000 (UTC)
-X-FDA: 84552955620.12.08729A1
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 286A114000E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:45:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dciv05UM;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84CC41A04CF
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:53:53 +0000 (UTC)
+X-FDA: 84552976746.12.B0B3FB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E7D3B16000C
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:53:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t18WZDn9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773690328;
+	s=arc-20220608; t=1773690832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qruEfGCCxBMe/+AzGeTxCnKPyDw9xbJgeNI3pnvogwc=;
-	b=d5aXe8LGUpRkMsOSQ5JO/4azk5Y5TMecoHyGS7Qk1DWg4btH7z9KIpv8WAXWClbHorKmxb
-	u8vp2or8LmRg0SXXmbeXE2mO+SD+PF9dHSiNLzSC2/AaJ60oWHdIZKyzND13jg3y3NPazB
-	KvNdeBfknF14toweQiOjQYDZUBTuHvg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773690328; a=rsa-sha256;
-	cv=none;
-	b=MSMeCgolTvG24Dwkb2+LpmiNMumx8LnUOC0AhhqXNrVCGltOaATlkA6JliN8nV92u0dgMl
-	jiQ3Mq6Run6l4Mww2wqCAQDF17JDHNuJwTQ+QWI7A9eh7WlO+ptL7o2qhnBBNw2ujSb6QY
-	TjfMK5JXV6rmvZTp8UjgYS8wip1pawA=
+	bh=SjaVXi23hMAWVn6VVXHM3+UbQAm0iK1tDevXssTCbOU=;
+	b=wt5XE2/R6aTQgjcVoXUt7lNGFx5qpy0Z5kJnP0R9DwdRtcY8YrLwClZCPVO2stmZVZQg/r
+	aH1sDtqiAHC3HSl8Es8sAYDB/yJeTsqdsoOThHLnF7suigs4r3SOeF+qlg9OkysemmBDkw
+	Rf4+VdMStqQhZcDw4yrzP6E9b23YtEk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dciv05UM;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cb4136d865so666060885a.1
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1773690327; x=1774295127; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qruEfGCCxBMe/+AzGeTxCnKPyDw9xbJgeNI3pnvogwc=;
-        b=dciv05UMsUUUYO+cUGS2OtTv7o5k8w0Tqx870LsPmNH4vGyg4hFC3NiZbIEcQVM3OH
-         1kStckC3fcDDVgTRuZG0SoflBHJKI3vIq0Q/4EiTqYUPvBCksDGl8xfurB+WOR/11ER2
-         6cXdbPDpuBDkNfSEw6P3bUMc+oXt/4HNeedrcLy7eKFFPioWQ30L6N9zF00yIvLXWInS
-         SXPEFpE/Nz9Z195/ii0doxGQCYMx1urPFPQS84H0Yi7mI76JPDVCGhAcLSECI5nMiIbk
-         NcTjekqYV1kFXhZA4emgoM3xEy3p0GF6s4nbduEN27l8roZBWHHyewZAdxNnv6rE23Fi
-         ve+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773690327; x=1774295127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qruEfGCCxBMe/+AzGeTxCnKPyDw9xbJgeNI3pnvogwc=;
-        b=odGYxncvGL1DIWZTibILtk1OAyKPJTYgAuMZQAXDyIUgIM2CYrpPCEnQst2pfiGx3a
-         tvjrySx9dxcV9PmRgxGgZ4b8GbudAWCZcPUi0WvUqBT4zE7ECymEGE5z+sa/xK5f4mB/
-         OjXMdkWvnJbBAxGsDvfKDZoNMblOydr/ZdWFOJd9HgQ3HN9Dc0+z6fW/yaPjE2rSCsy8
-         ZlWhOmPfklF0CgFRTX1BpFKs6dAgiBQQ0SjHGjqEJ83b0jcZ2VPx5F5u512QAkrAGe8v
-         JQ1jK50MTm1JWSPQE0yvmR5B8Viz3z8P5DuD6+1Fw4xXYmDL9v4mb1+sRPxwho/qxP7o
-         f5fg==
-X-Forwarded-Encrypted: i=1; AJvYcCUn0Y/fLPyekAQwtfmHr8X3n5YgDpAJC/gqOpZkEhc4v8hEoYJTe3zEQwryBVVnBC0eZxnkKqPrSA==@kvack.org
-X-Gm-Message-State: AOJu0YzFkAV8Pr8AoL5iNAT3Jv0auXkw5l1dXR7LBIeUkZWkwM9waRbo
-	9Lz30+X3KKzbmzSx09zXM8i3nKM23NLmR99qksa2nIW8Kij/20jWEy8ntqIInRxgz3c=
-X-Gm-Gg: ATEYQzzVlPz/R5uAdlNORK0JI9hemiKZj1hfeiQSPMsEZCJK/bm/Nbwyx7OrsYIhGsJ
-	BKWUjWNest2oV98LuY+BhynpEssQu6YIbK+NFpB+sx6iHVixJYw0DPLWL3Tryerl6udZEznkPBE
-	ziwJ0fcvaOPc1f3yjJgASAZSC2/xkqBg8+xpci2SO8KW25Ny+MfN4T1sIwNzp3imdETNM22g0sU
-	LZTZSTIDIFlwFODi35CMrTXosFH7fBaYzToIIB/MIrbDLhRGCtr3ODwAJo9X8e7lQS012MEvxON
-	RfhAKy9d4uij/ts+oYLLYnhtlHoYDrq/D/MS1SKfQvFPanGJPo+TPTnvpyMawMPddSts1+H+dKI
-	f3MPTIdovF8kQme0zip8T+tpKERdHHGRmGyPXCRmYxKtdUqRkbS8qsHABsRAWu+5ck1qlPDHj0L
-	T4EqbNk3WUORM0eQ6dWEPBbxTpA7m4yqE5xAqbu/LAHkw7Pxmd/09qEQMq1q4dfptIW5xLteTFc
-	Rn5SIsQWg==
-X-Received: by 2002:a05:620a:4627:b0:8cd:94f9:1bb1 with SMTP id af79cd13be357-8cdb5a9729emr1904634185a.27.1773690326947;
-        Mon, 16 Mar 2026 12:45:26 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fe19d3sm1245799585a.19.2026.03.16.12.45.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 12:45:26 -0700 (PDT)
-Date: Mon, 16 Mar 2026 15:45:24 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Rakie Kim <rakie.kim@sk.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, dan.j.williams@intel.com,
-	kernel_team@skhynix.com, honggyu.kim@sk.com, yunjeong.mun@sk.com
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
- socket-aware weighted interleave
-Message-ID: <abhd1BXSST0BTDaN@gourry-fedora-PF4VCD3F>
-References: <20260316051258.246-1-rakie.kim@sk.com>
- <20260316151933.3093626-1-joshua.hahnjy@gmail.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t18WZDn9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773690832; a=rsa-sha256;
+	cv=none;
+	b=25MB6VSHKEWTWJxRREfafxFK3OrYzQpq1xuh4NHIsU6/LcaT9HnKo5BPWnBQ4e8wtdD761
+	n7rnDfkyYPmn1BRK7RVOJI8xABoma+ZkpdDN+w9BTEXh/U9BuSbvC3tl1a3DT0i0AGOtan
+	0vKB65WbcOsGf2FXHzmjV7oowMUsP08=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EA111441BD;
+	Mon, 16 Mar 2026 19:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2C4C19421;
+	Mon, 16 Mar 2026 19:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773690830;
+	bh=4gAWIaQHRU4NRXeDrvanjMXhFCTsNn7ar/qA+AJSFaY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t18WZDn9tATEb4JJzJCP9h4y8am1c2DaDUz3D/4c3LR1CanJ8UkdHvKzHoDrkzqwo
+	 cnZqDSmkqMxoaOazN6kyMRySPjKL5FflxSUqcK1EHqAmR2/5ZPN/yWm6x8ymrAIIFs
+	 76t6R/a7DYawFl64pYb1e0E58DrnNlZ6BIUZ2q0+NiAg2ois1UX6KCQjfJUgfoKW7r
+	 96YqIgjC03vZMIEz6U7rVSTMNEd13dqxfQ8IpR6bwDwrNQJ3W9SJLAFJCCnd37UYNl
+	 3/0fB29fX9RoRMAkTQMLtatWLzapsdev43Tee2b0HtWmPSjLY0SEr6XhrqWzmZYj0B
+	 OoMZNIGvNHjUg==
+Date: Mon, 16 Mar 2026 19:53:46 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH] selftests/mm: add THP sysfs interface test
+Message-ID: <c4cb6dfe-59b2-44e6-adbc-9ee63bed79fd@lucifer.local>
+References: <20260309-thp_selftest_v2-v1-1-a00cef41da44@debian.org>
+ <9cb63c24-eaff-4954-97d5-2a422a0401fc@lucifer.local>
+ <abgJtJYQsGMPsTHr@gmail.com>
+ <be860d86-75be-4c75-95ea-03bf79524be2@kernel.org>
+ <abggyaVTdNe6n_ew@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260316151933.3093626-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 286A114000E
-X-Stat-Signature: q3ga6pxghahzdzthtf5z4wzfxnmauq1f
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abggyaVTdNe6n_ew@gmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E7D3B16000C
+X-Stat-Signature: 9m3kdcxhic93sb7p4hiha1airks1yguk
 X-Rspam-User: 
-X-HE-Tag: 1773690328-899294
-X-HE-Meta: U2FsdGVkX18Z9rF6F3BmGDWIOzpKp4IiLicK9w6sNCBUcsF8cMLTlZIA8sjZJnifig/JeS/4LgWgvO9nnEEMeXjMMfk1/08iRCujqTTZBdUeRB8RWu6kqFwEKhHbPZYWKjrz7J5XekRSXXrinzoxa3wJoNVq3Ez4xsb7HgXxb+x8g/PD8lJ5V+uuDqaE8h8aN5kb75xLyyts1dsn6ScV6J28EZkuXdSRNEbyWWBBdwtZBNRTRh6W9dnoIdQ6VH0Gk2Cu7BlN+NpGrmr9qWd/U4Xcee7tkv7MSHKb4X/0Jn3oklvXeocbPmZtacDr7/NiFlkOhOnev8grLvlzf0U7mk4zKZ6eJ8ntyiYmfOor9/+Dt8s6H7MOE5/sQuqNd7kzHPHe1QFTc6TWho11U9jaQqWUNrUKmsg5o3WVxP9MJ0A/R382jYG28xZcTHCzxHAl2S/DMeu4Jm15mR9hfCvXBE/SK7PcpbU3kwsGoCXdoQn2sLHRGtdaIETGADvB1k15+R77/CFVYzo1IU1sPLqePCx6Q6aapKcu75Pk62qBLtyY0lsSY/WDc1oXRbDqb8QA70CuX6mfhisvcvwdwllZ07o52nKfu2NnNDciAd1gTh7K/jdKyPIXMRGSozsBK63+6eqjmxMfRqg7K1NVBgdq/Kost0vzIRtHeEc/XeoAjrnglPC1LjzyfdmSzbTn/jOAaLQ084VxyhMBmUs7ecFGWuEGv1yXpQx9rD0ZConox38opJff1AIinh9LsPKdSpyeaJ0/b5zJCypZ0runYA5co/Yf7n67Oijb6S2HiR8OXKRWnbHwkKXMmht6Hw1yX/J5KODJ0eD9Lsw6t3EPJgRKi3+EFulF+r5UqRSArWLK6iqYcKoO7K/iA8Ft3EA+KhUA60xvfSCaQim/n9T8H0FfeJE9v9qJXb5g3e1+yDccPVnFpAqAMUVOouJ+VVKkT4meG59YBohLfMNJ9cuqGBc
- kILXAyrN
- 65dRg84K/h2FlcfMhyVcgZqAT7jkV+LtkdkJYgvcvc9Mzl+PXPAY0XMIAbRf59cEa5wobmJruu+TOh9MTL6qVR3wYfsw6wSrARTQc
+X-HE-Tag: 1773690831-263143
+X-HE-Meta: U2FsdGVkX18lWqRmkiHjJdxmTRBw7A1NmZfYTqS9Ld1WD7jwcwo278Qtt4QW6vAE5fiGyeqVJ1QbBjEPTtcZeGRyeQ9jWRVR7cqCvex8MSiuV5D0B+uyke2E0rFkPZo5HCDaBHyjJkHgcoSh7IeUmbAr0oo/XRaRWpMCvqDRETowS3S4zoNiiFUZn2JS7mkKmIyS1MxaFryL0ftt97fSTIreQ+hOyq2MbbOZRZwKp9hb4w3V+ksSa+b6n6fDIHY6m+SgL/biF8hLQl5piqPHCV3gmk8LbCt2vJCUe+/v6gyPhe6ULiIB0qM09NYp0XPFn/mJd42iOa2N9/HaXjjO+boB5Ukh+ss5TxgQvM9uVxWjgW3BmWfvffp2BU+WTuIScYPOp7B08GbuD80KVbNy2+Bvmr1ZA4cn8keC5jwsaLJeubL8tvxHY0jCs4/AGiS+Dt+wZmI9zIVKxl9o430o7q+9RGFlCAaFTtoUSj0Urr4glvrb+qfhTRhD/Rp1yN9lLNdREbXDbQKtrM+EkCEoPU1krLabhI+70Oe0Y4k8J6oUmIdirOEB62rj8ecvTg4sAUUWA1OcS1LhFV6SO4L8v788llIymH18x2jB7iy1xu8bTBhviXY6rgX8xsQru/df/PM5F+vM4GoLOEnFmP6lJcBM3lQy4Y8/QKw8ESFQuXqvIoURZh2US4WIFTeRu8zQNoeF4zjcq57WdOE4L+L5sCyVFI84fwcQ1iC6Ti2ryvsSyBAPC1NWFyyN+sjFghtt3abJMFVpYMU+YwYis8UvkIIMRZLZ4b16u0qS1oRjSWy4x57LM80CEgtau0Mt2laqHWg7iE1VpHBEx4fLZc+b18wSXACJvOZbnvtbvd8OsMeIAWeyoL6mntTVHCnDY/b+rlgSpgN1+wc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,36 +98,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 08:19:32AM -0700, Joshua Hahn wrote:
-> 
-> In that sense I thought the word "prefer" was a bit confusing, since I
-> thought it would mean that it would try to fulfill the alloactions
-> from within a packet first, then fall back to remote packets if that
-> failed. (Or maybe I am just misunderstanding your explanation. Please
-> do let me know if that is the case : -) )
-> 
-> If what I understand is the case , I think this is the same thing as
-> just restricting allocations to be socket-local. I also wonder if
-> this idea applies to other mempolicies as well (i.e. unweighted interleave)
-> 
+On Mon, Mar 16, 2026 at 09:02:33AM -0700, Breno Leitao wrote:
+> On Mon, Mar 16, 2026 at 03:44:14PM +0100, David Hildenbrand (Arm) wrote:
+> > On 3/16/26 14:47, Breno Leitao wrote:
+> > > On Mon, Mar 16, 2026 at 12:55:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > >> On Mon, Mar 09, 2026 at 05:00:34AM -0700, Breno Leitao wrote:
+> > >>> Add a shell-based selftest that exercises the full set of THP sysfs
+> > >>> knobs: enabled (global and per-size anon), defrag, use_zero_page,
+> > >>> hpage_pmd_size, shmem_enabled (global and per-size), shrink_underused,
+> > >>> khugepaged/ tunables, and per-size stats files.
+> > >>>
+> > >>> Each writable knob is tested for valid writes, invalid-input rejection,
+> > >>> idempotent writes, and mode transitions where applicable. All original
+> > >>> values are saved before testing and restored afterwards.
+> > >>>
+> > >>> The test uses the kselftest KTAP framework (ktap_helpers.sh) for
+> > >>> structured TAP 13 output, making results parseable by the kselftest
+> > >>> harness. The test plan is printed at the end since the number of test
+> > >>> points is dynamic (depends on available hugepage sizes and sysfs files).
+> > >>>
+> > >>> This is particularly useful for validating the refactoring of
+> > >>> enabled_store() and anon_enabled_store() to use sysfs_match_string()
+> > >>> and the new change_enabled()/change_anon_orders() helpers.
+> > >>>
+> > >>> Signed-off-by: Breno Leitao <leitao@debian.org>
+> > >>
+> > >> The test is broken locally for me, returning error code 127.
+> > >>
+> > >> I do appreciate the effort here, so I'm sorry to push back negatively, but I
+> > >> feel a bash script here is pretty janky, and frankly if any of these interfaces
+> > >> were as broken as this it'd be a major failure that would surely get picked up
+> > >> far sooner elsewhere.
+> > >>
+> > >> So while I think this might be useful as a local test for your sysfs interface
+> > >> changes, I don't think this is really suited to the mm selftests.
+> > >
+> > > That is totally fine. This test is what I have been using to test the
+> > > changes, and I decide to share it in case someone find it useful.
+> > >
+> > > Let's drop it.
+> >
+> > Out of interest, to we know why the test is failing for Lorenzo?
+>
+> I really don't know, but, it sounds like ktap was not found?
 
-I was thinking about this as well, and in my head i think you have to
-consider a 2x2 situation
+Yeah CONFIG_KUNIT is not set so could be :)
 
-cpuset             |   multi-socket-cpu      single-socket-cpu
-==================================================================
-single-socket-mem  |     mem-package            mem-package
-------------------------------------------------------------------
-multi-socket-mem   |       global                 global
-------------------------------------------------------------------
+>
+> Then the first early-exit path hit:
+> ktap_skip_all "..."   # undefined → returns 127 exit "$KSFT_SKIP"
+> # expands to: exit "" → exits with last $? = 127
+>
+> > I agree that the test is a bit excessive, in particular when it comes to
+> > invalid/idempotent values etc. I could see some value for testing
+> > whether setting the modes keeps working, but also then I wonder if that
+> > is really something we'll be changing frequently (and that breaks easily).
+>
+> yea, I make it very excessive, because there were some intrinsics in
+> those sysfs that I was gettingit wrong when doing the intial conversion.
+>
+> So, the test is something that I trust now, and I found it useful when
+> finding regressiosn.
+>
+> Is is something that will chagne frequently? probably not!
+>
+> That said, would you like to have a simplified/different version of this
+> test?
 
-But I think this reduces to cpuset nodes dictates the weights used -
-which should already be the case with the existing code.
+In an ideal world we'd use kunit or something to assert it internal to the
+kernel I guess, but if we do have something scaled down it'd at least be nice to
+have in C? :)
 
-I think you are right that we need to be very explicit about the
-fallback semantics here - but that may just be a matter of dictating
-whether the allocation falls back or prefers direct reclaim to push
-pages out of their requested nodes.
+I am not sure how useful it'd be though overall, I don't see us changing this
+too often and really we're more interested in asserting behaviour.
 
-~Gregory
+Sadly THP is inherently tricky to test generally because of its very nature, I
+wish we could have better test isolation etc.
+
+See tools/testing/vma for a forlorn dream of kernel code being run in userland
+(but oh how the stubs/duplicate declarations/etc. are a pain).
+
+I suspect THP could never be given the same treatment though! :)
+
+Cheers, Lorenzo
 
