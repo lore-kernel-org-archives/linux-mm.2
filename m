@@ -4,86 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF7B4F46452
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:22:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C99F46450
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E38406B01A2; Mon, 16 Mar 2026 07:22:54 -0400 (EDT)
+	id 334766B01F0; Mon, 16 Mar 2026 07:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBB886B01B1; Mon, 16 Mar 2026 07:22:54 -0400 (EDT)
+	id 2B7C26B01F1; Mon, 16 Mar 2026 07:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C901D6B01B3; Mon, 16 Mar 2026 07:22:54 -0400 (EDT)
+	id 1B6CF6B01F2; Mon, 16 Mar 2026 07:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF9346B01A2
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:22:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 57BEA138C02
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:22:54 +0000 (UTC)
-X-FDA: 84551689068.17.06AC379
-Received: from va-2-112.ptr.blmpb.com (va-2-112.ptr.blmpb.com [209.127.231.112])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 19629C000B
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:22:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=n25MEtkI;
-	spf=pass (imf22.hostedemail.com: domain of changfengnan@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=changfengnan@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 077746B01F0
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:32:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95B67B61C0
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:32:32 +0000 (UTC)
+X-FDA: 84551713344.07.F8EFC7C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 83D4540011
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:32:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773660172;
+	s=arc-20220608; t=1773660751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=teee8vzlr5I52VALSpkXiCKR/hFCeiuAThsacU/pkrw=;
-	b=68JtNAJC6b9e+KJkSKrA/9Nd23x+TBBphYHCo8jYrpn/5uair4nak1UuvXSGKDNLXsyZLa
-	rEC4oLXQPn9VH0nIEPriVuNzAH+6eOrrAkqxdvR+49SD959/GUOFSY9ptSk7V/Symw83EM
-	Ox73Okb6bbV734XsY04tVvPLduqDbvI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=n25MEtkI;
-	spf=pass (imf22.hostedemail.com: domain of changfengnan@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=changfengnan@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773660172; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=pO3Qi+RYDEtoJWahYQblGZzXn5dyTXgIKwW0+XVJ/HI=;
+	b=XS5NahUSsUnKSpODOoY6xkNGVMFgF0Hak16Y2fwBQL+FeAbqpms3GYWayByJ3IGSkWkMKb
+	ixSTA1N3hCKDGrh4FJP/Gat+9bbHNLNKFnzMt9FmpppsXKxkOX3/M4K8rVkzeQc/A8kfmU
+	jhBhhQEJjEo7TWeVcBr2qmRvyMERx34=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773660751; a=rsa-sha256;
 	cv=none;
-	b=y88T4xSBqQbNd+EOt8F7q8Q9YuQGzWm3htkt9WwvHfijC/oZZtk6yR6ckU5/yJxSeJvy3Y
-	avlxATGcNYJbafrrq5c7b5m1TmoMyhreMXVlKqH29Uc5wjD/JeYE61KpLizO18gsx+/c21
-	uMcZ7WKjyZCQyV3+V382U4mbkgkEsIM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1773660163; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=teee8vzlr5I52VALSpkXiCKR/hFCeiuAThsacU/pkrw=;
- b=n25MEtkIyiUOdLK74INwAJRrVBbC3bLyS/1r1JZUuP7vPrN/6rAvKLLqF/3hwo/Pa3zl7x
- MmW6FoXSEczfphsLKTZwoOtdTAlXxM7DuvpbumGbuJJBVUV/0KROlTzwOsld+af1k+C6o4
- B9ZHoI2eKDsVF2yAmR6u8O41M+xBwSc7owK6PwsagTrp2DBOJZFXBA08gFxYlLUMDNpPfO
- Z7X+WFouELqmvkoCM+bdJapOlsqI2LGHEsx/kg1LE94ykTsTEVotIIm3QjNRFMjs7pUvgT
- x2nxqwn2arRV25UD12To55f0+MJ/nLvrSluS9KeXZPIFvRidV1bgTqDIb6MsEQ==
-Mime-Version: 1.0
-In-Reply-To: <aWh06YoiJrR3-J-X@dread.disaster.area>
-X-Lms-Return-Path: <lba+169b7e801+18f62e+kvack.org+changfengnan@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.e7ce3c98.9b89.4c0d.96b4.bddcc787e1ed@bytedance.com>
-To: "Dave Chinner" <david@fromorbit.com>
-Cc: "guzebing" <guzebing1612@gmail.com>, <brauner@kernel.org>, 
-	<djwong@kernel.org>, <hch@infradead.org>, <linux-xfs@vger.kernel.org>, 
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<guzebing@bytedance.com>, <syzbot@syzkaller.appspotmail.com>, 
-	<linux-mm@kvack.org>, "Vlastimil Babka" <vbabka@suse.cz>
-References: <20260115021108.1913695-1-guzebing1612@gmail.com>
-	<aWh06YoiJrR3-J-X@dread.disaster.area>
-Date: Mon, 16 Mar 2026 19:22:39 +0800
-Subject: Re: [PATCH v3] iomap: add allocation cache for iomap_dio
-From: "changfengnan" <changfengnan@bytedance.com>
-X-Rspamd-Queue-Id: 19629C000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 6hqyz1bwd1ykwwe38xta7gw8ak1to4hj
+	b=L6Y2/guIrgP3NUkWdvm4bPrp8+r5Le+sgC8a2o0etBHKNbG2naSBuySHmYj5TR6FbMXfsa
+	oxQFJjfPlPn+Xd7yFsvFkEmzbj4p0gA8p1+HYcBSqCxEAQtye4xHVryA9dasRBA/oAlbc2
+	5DEO+iI0ecd6XwUPMhyvNuQbXhXlvCQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B1891477;
+	Mon, 16 Mar 2026 04:32:23 -0700 (PDT)
+Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DA7DE3F778;
+	Mon, 16 Mar 2026 04:32:26 -0700 (PDT)
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Nick Terrell <terrelln@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Ryan.Roberts@arm.com,
+	david.hildenbrand@arm.com
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: [PATCH v2 0/3] mm: Free contiguous order-0 pages efficiently
+Date: Mon, 16 Mar 2026 11:31:41 +0000
+Message-ID: <20260316113209.945853-1-usama.anjum@arm.com>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 83D4540011
+X-Stat-Signature: 8oaesebgwaanx6bhfponetn414yfgat1
 X-Rspam-User: 
-X-HE-Tag: 1773660170-924812
-X-HE-Meta: U2FsdGVkX1/q5wCwmr0zjzPCdeNM2FT60wAgwIrPqQt1kK6osAM3o6M89oiWEsMUqK+71qu4JSTp7dt9iumlYxbBYXz8xFyX2F/aMdNvM8Vg6TmzXno75m2NmtBecBwGX+0heWCAmOT+iYxbX3Z8rsYl5dRBiMfzg2rQcnzwB7BdRqhF4HvZcngciIYedahpmQd2uQ5AaOGQudPDjT+a59rY798s6ISFNK0wSeZVnqGYfXe1ghrUxhpBsQRdAIVC9yDMpJgbGFJL34HdG222YGji6jjRQ2ZLx9QzMnSRmFsC1Nb8Tki+RgN70s6B83EwJSf05Y4G20VQrw1nVRS7A7iu+Bsw47N/h+T+J38q2rMR6qYngjVVb1zhMyP2CGpymu2XLbVkTn0SuScWcFMT4MfP3juLivP8xOgpTzWdPf/ybG0VJXwbBD2qX/rSaM2k4gOGUNR4kuhe7axqVEXKq4Un83AtJpSy9imyPsdb3AF/fpxyLXt/S0Fu8cy5rzclyJtVfI6kDnDj8cU2c9Agf713OfZ6ibCOcAxmgojreqeL/ek5koGeoTcYmXoqSmC9NcpcOwSoieOSiqmfPdmpQz9U5rRqWe4cNEPJkgQ1XmOCFpez/lJ2+p/iKj70KzEnbee+H95OVaha9S9lGUEdjhUxrtnxeExGfgqDNnWypqTcF4j8dkLKyPyarrN2muvk0FmXihj9nkgfQcEeR3D8Nbj9lYKX4BgxrX6B29QHLTwB84FrXKqCPCum9B2zkvHLphVRd+b6yObT5R6g6GJJqnLkouADc9OUEFL0tZ3nOhX3eV9j0ioIbc2JGyoxadc+pBWyoX+y0Fo/AOi+EILuO+x3fvF49cLDq1KkOnFgmFFSZ17I/pPxEY8VHKrsuGBuOcYvwyCh/0XdAtGCU0hbM7vx8YDftKpIVFgvOmHOcZK7t+ypgvXlJMcvigix28r3QwkyX6Ti3ejcjq7Cgqz
- H5Dqf8+u
- IrKep6tHuxeBm7p2t8ZePIYOAcEIJUD4791DBLT/GBrMhJI1N06cL4Bx/7I1RUVTK+Mvz5C6yaSZGBEaiXLwB2S29+hhrRZRFhbJtnMyDahsUyz90wCCMYSnILf4pb+3/mWgfavJZAyM8neneuE3uJ+8CSAeESQy61u3C8IZPJlT1barYqWWHVaQYW9npJ/Grqy14S5TLLL32VGfxLb1JQjP8JFdqNvFqnm6zWlmf8RMIIQj7iPN1l6MEKVkixBQa2ENekvcP+VeNOrDqiPkjAdHpvT1xbf+WzyZ+Ett1WqsrflI1TCqa124p2GmFZrOmp7o042ZB5PtHAbm7DL8MMz81zZ2SwGrueWY81YGmqLxmp3e9rRGqv3Q1mqEQgtPBwqU2ws8JSsXk5/kBjGI6uVCYLLJXtLMNRUzg8vhstKU0POq3koJmxP6jFqLwEmc0dM4Coa3XOejOd7gAbx+A7zcE0d4j88Jq7ToJw1UQhPl7+o2cQtj1imV2Ft1jJxk7CEZKza3f2fev+RwuXg3ztWgAl0Rkp6mUGtpeVIOJB7FpuX5DzTyT4YZT+His0sAq49CxcR/NAwqZHSdY4kBB4ZxcRFZremgxAd0P5ZbWDvwjAKqMhwXI5GmPeuwmcoV3zCeIiRXdbLyTda5FcyLERalzCMZwHz9Oq/8uF0RApLKscoIEA8GtMxaYeISDKMNaMaXc
+X-HE-Tag: 1773660750-285533
+X-HE-Meta: U2FsdGVkX19cRrC/Qf/OpYlQSTsGZo4jFNCXoOe85Ot/0UiYN0eDXmO4VHY07xWAUZQG9mDXIHqgPEgYd9Hkr48GRFW9ElJbrJGylgcUGVLHVrzVxNdAViWo/qYU8qIQREkbn7ZeIpfGASPsfiriiaju+BcBbkWmYHfkjDpsxKO4poElWXTR+xotpHKlHwZyVowurYanqGTdAcY/4Ls/uv5YzaQmlnHJ3yKBIdmPz5hrpasc1jAUzYEUmW9YC9obb3kAU8OakA8MsgXHDMD/yqMZZh/W0X3ZxhSfsdZg79hoFcMG8UWx950p/v4wXrMMhC9iKtDtp0jfwHnjPwwVELdzuiWsMPiJ3+6X7zA5m9ehs8hD7YJdfdbA8cmqMICvVVJ7ou70NCPHiYyj6PFEzuRMndPghqhdbWRnU5PDY6TxP7aI4q61V/r3BhQhGKrW9/5AYQz4hzbg5B2NGmMeDbiWK4fwUEc+TcvGd6fXqlU9TIRtmHSq5BmO1tcrnGkzutpFzmRUYR2GOPNraYPY2qNWidqBfhODNLZo3yQRfEzDOTdVjERhNBEq2B7fI7is/lfP0GJ06o6ldKT7sQTkB5AQPO/xwYgFIxA2iX0u6W3WDIEbkheeic+5mJKng8bAJWhfCMft+awZ4Tuxq/edZWoD9QSVwHGsvBRHvEwZZckdQb3DAXImPHuJ90rQJYZxpm3k41u6pywSOdx3X9hev/sgAHINS83c5aGWVmzg7cgT/mFlhELed7wp62Tc5LLZ/x7KbeHAxFjaFkI/jdMw8pSqZTrehg/blfSun4KwKgBvD77JZpOfKqudKqEh4UXNT9F6rfz/ZRw8rtYKyoq+SQOR/XTv2VHNioWip97CHiXJx+vCpsfFqnUukyvJKS13wwxyiY8z7ElSUZti+FedKWT77BLKKF8WdVmHxj86FAWQ/0v5e1JRFTUo0UfyMde4gmtFkAURXlievTRZqEj
+ 4zrUB7ly
+ Roj00ULWfiKisXbJgPIerFKNGW77h3vAFbHkxqRGEeLQVgiPrMltjIxaJQ7mBk6sEF7vKg1Q7uqatUPQ5yNbN52Xqq1ph8vJQMDDeqTOrUjIKh/K3r3Zc85w/Rk2cvNK2IzhapqGxZRKn16DtOpDqusu3vpllH+UD/vnWvmEa8gvhB+MsoBu6UYM8YHjz0h24eNwdwa++M3PwxYhdFbhKMLbrmxH1rh6aWbv9n+vlD6oH+Ty9Jc1IAmeI4gL/eXYuA/NyKfH4xmhmP5MHCbvdgtiGAs1JhZ0ctftD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,526 +96,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi All,
 
-> From: "Dave Chinner"<david@fromorbit.com>
-> Date:=C2=A0 Thu, Jan 15, 2026, 13:02
-> Subject:=C2=A0 Re: [PATCH v3] iomap: add allocation cache for iomap_dio
-> To: "guzebing"<guzebing1612@gmail.com>
-> Cc: <brauner@kernel.org>, <djwong@kernel.org>, <hch@infradead.org>, <linu=
-x-xfs@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger=
-.kernel.org>, <guzebing@bytedance.com>, <syzbot@syzkaller.appspotmail.com>,=
- "Fengnan Chang"<changfengnan@bytedance.com>, <linux-mm@kvack.org>, "Vlasti=
-mil Babka"<vbabka@suse.cz>
-> [cc linux-mm]
->=C2=A0
-> On Thu, Jan 15, 2026 at 10:11:08AM +0800, guzebing wrote:
-> > As implemented by the bio structure, we do the same thing on the
-> > iomap-dio structure. Add a per-cpu cache for iomap_dio allocations,
-> > enabling us to quickly recycle them instead of going through the slab
-> > allocator.
-> >=C2=A0
-> > By making such changes, we can reduce memory allocation on the direct
-> > IO path, so that direct IO will not block due to insufficient system
-> > memory. In addition, for direct IO, the read performance of io_uring
-> > is improved by about 2.6%.
->=C2=A0
-> Honestly, this just feels wrong.
->=C2=A0
-> If heap memory allocation has performance issues, then the right
-> solution is to fix the memory allocator.
->=C2=A0
-> Oh, wait, you're copy-pasting the hacky per-cpu bio allocator cache
-> lists into the iomap DIO code.
->=C2=A0
-> IMO, this really should be part of the generic memory allocation
-> APIs, not repeatedly tacked on the outside of specific individual
-> object allocations.
->=C2=A0
-> <thinks a bit>
->=C2=A0
-> Huh. per-cpu free lists is the traditional SLAB allocator
-> architecture. That was removed a while back because SLUB performs
-> better in most cases....
->=C2=A0
-> <thinks a bit more>
->=C2=A0
-> ISTR somebody was already working to optimise the SLUB allocator to
-> address these corner case shortcomings w.r.t. traditional SLABs.
->=C2=A0
-> Yup:
->=C2=A0
->=C2=A0
-> commit 2d517aa09bbc4203f10cdee7e1d42f3bbdc1b1cd
-> Author: Vlastimil Babka <vbabka@suse.cz>
-> Date: =C2=A0 Wed Sep 3 14:59:45 2025 +0200
->=C2=A0
-> =C2=A0 =C2=A0 slab: add opt-in caching layer of percpu sheaves
->=C2=A0
-> =C2=A0 =C2=A0 Specifying a non-zero value for a new struct kmem_cache_arg=
-s field
-> =C2=A0 =C2=A0 sheaf_capacity will setup a caching layer of percpu arrays =
-called
-> =C2=A0 =C2=A0 sheaves of given capacity for the created cache.
->=C2=A0
-> =C2=A0 =C2=A0 Allocations from the cache will allocate via the percpu she=
-aves (main or
-> =C2=A0 =C2=A0 spare) as long as they have no NUMA node preference. Frees =
-will also
-> =C2=A0 =C2=A0 put the object back into one of the sheaves.
->=C2=A0
-> =C2=A0 =C2=A0 When both percpu sheaves are found empty during an allocati=
-on, an empty
-> =C2=A0 =C2=A0 sheaf may be replaced with a full one from the per-node bar=
-n. If none
-> =C2=A0 =C2=A0 are available and the allocation is allowed to block, an em=
-pty sheaf is
-> =C2=A0 =C2=A0 refilled from slab(s) by an internal bulk alloc operation. =
-When both
-> =C2=A0 =C2=A0 percpu sheaves are full during freeing, the barn can replac=
-e a full one
-> =C2=A0 =C2=A0 with an empty one, unless over a full sheaves limit. In tha=
-t case a
-> =C2=A0 =C2=A0 sheaf is flushed to slab(s) by an internal bulk free operat=
-ion. Flushing
-> =C2=A0 =C2=A0 sheaves and barns is also wired to the existing cpu flushin=
-g and cache
-> =C2=A0 =C2=A0 shrinking operations.
->=C2=A0
-> =C2=A0 =C2=A0 The sheaves do not distinguish NUMA locality of the cached =
-objects. If
-> =C2=A0 =C2=A0 an allocation is requested with kmem_cache_alloc_node() (or=
- a mempolicy
-> =C2=A0 =C2=A0 with strict_numa mode enabled) with a specific node (not NU=
-MA_NO_NODE),
-> =C2=A0 =C2=A0 the sheaves are bypassed.
->=C2=A0
-> =C2=A0 =C2=A0 The bulk operations exposed to slab users also try to utili=
-ze the
-> =C2=A0 =C2=A0 sheaves as long as the necessary (full or empty) sheaves ar=
-e available
-> =C2=A0 =C2=A0 on the cpu or in the barn. Once depleted, they will fallbac=
-k to bulk
-> =C2=A0 =C2=A0 alloc/free to slabs directly to avoid double copying.
->=C2=A0
-> =C2=A0 =C2=A0 The sheaf_capacity value is exported in sysfs for observabi=
-lity.
->=C2=A0
-> =C2=A0 =C2=A0 Sysfs CONFIG_SLUB_STATS counters alloc_cpu_sheaf and free_c=
-pu_sheaf
-> =C2=A0 =C2=A0 count objects allocated or freed using the sheaves (and thu=
-s not
-> =C2=A0 =C2=A0 counting towards the other alloc/free path counters). Count=
-ers
-> =C2=A0 =C2=A0 sheaf_refill and sheaf_flush count objects filled or flushe=
-d from or to
-> =C2=A0 =C2=A0 slab pages, and can be used to assess how effective the cac=
-hing is. The
-> =C2=A0 =C2=A0 refill and flush operations will also count towards the usu=
-al
-> =C2=A0 =C2=A0 alloc_fastpath/slowpath, free_fastpath/slowpath and other c=
-ounters for
-> =C2=A0 =C2=A0 the backing slabs. =C2=A0For barn operations, barn_get and =
-barn_put count how
-> =C2=A0 =C2=A0 many full sheaves were get from or put to the barn, the _fa=
-il variants
-> =C2=A0 =C2=A0 count how many such requests could not be satisfied mainly =
-=C2=A0because the
-> =C2=A0 =C2=A0 barn was either empty or full. While the barn also holds em=
-pty sheaves
-> =C2=A0 =C2=A0 to make some operations easier, these are not as critical t=
-o mandate own
-> =C2=A0 =C2=A0 counters. =C2=A0Finally, there are sheaf_alloc/sheaf_free c=
-ounters.
->=C2=A0
-> =C2=A0 =C2=A0 Access to the percpu sheaves is protected by local_trylock(=
-) when
-> =C2=A0 =C2=A0 potential callers include irq context, and local_lock() oth=
-erwise (such
-> =C2=A0 =C2=A0 as when we already know the gfp flags allow blocking). The =
-trylock
-> =C2=A0 =C2=A0 failures should be rare and we can easily fallback. Each pe=
-r-NUMA-node
-> =C2=A0 =C2=A0 barn has a spin_lock.
->=C2=A0
-> =C2=A0 =C2=A0 When slub_debug is enabled for a cache with sheaf_capacity =
-also
-> =C2=A0 =C2=A0 specified, the latter is ignored so that allocations and fr=
-ees reach the
-> =C2=A0 =C2=A0 slow path where debugging hooks are processed. Similarly, w=
-e ignore it
-> =C2=A0 =C2=A0 with CONFIG_SLUB_TINY which prefers low memory usage to per=
-formance.
->=C2=A0
-> =C2=A0 =C2=A0 [boot failure: https://lore.kernel.org/all/583eacf5-c971-45=
-1a-9f76-fed0e341b815@linux.ibm.com/ ]
->=C2=A0
-> =C2=A0 =C2=A0 Reported-and-tested-by: Venkat Rao Bagalkote <venkat88@linu=
-x.ibm.com>
-> =C2=A0 =C2=A0 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> =C2=A0 =C2=A0 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> =C2=A0 =C2=A0 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->=C2=A0
-> Yeah, recent code, functionality is not enabled by default yet. So,
-> kmem_cache_alloc() with:
->=C2=A0
-> struct kmem_cache_args {
-> .....
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 /**
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* @sheaf_capacity: Enable sheaves of gi=
-ven capacity for the cache.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* With a non-zero value, allocations fr=
-om the cache go through caching
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* arrays called sheaves. Each cpu has a=
- main sheaf that's always
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* present, and a spare sheaf that may b=
-e not present. When both become
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* empty, there's an attempt to replace =
-an empty sheaf with a full sheaf
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* from the per-node barn.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* When no full sheaf is available, and =
-gfp flags allow blocking, a
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* sheaf is allocated and filled from sl=
-ab(s) using bulk allocation.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* Otherwise the allocation falls back t=
-o the normal operation
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* allocating a single object from a sla=
-b.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* Analogically when freeing and both pe=
-rcpu sheaves are full, the barn
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* may replace it with an empty sheaf, u=
-nless it's over capacity. In
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* that case a sheaf is bulk freed to sl=
-ab pages.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* The sheaves do not enforce NUMA place=
-ment of objects, so allocations
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* via kmem_cache_alloc_node() with a no=
-de specified other than
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* NUMA_NO_NODE will bypass them.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* Bulk allocation and free operations a=
-lso try to use the cpu sheaves
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* and barn, but fallback to using slab =
-pages directly.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* When slub_debug is enabled for the ca=
-che, the sheaf_capacity argument
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* is ignored.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* %0 means no sheaves will be created.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned int sheaf_capacity;
-> }
->=C2=A0
-> set to the value required is all we need. i.e. something like this
-> in iomap_dio_init():
->=C2=A0
->=C2=A0
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct kmem_cache_args kmem_args =3D {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .sheaf_capacity =
-=3D 256,
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 };
->=C2=A0
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 dio_kmem_cache =3D kmem_cache_create("iomap_d=
-io", sizeof(struct iomap_dio),
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 &kmem_args, SLAB_PANIC | SLAB_ACCOUNT
->=C2=A0
-> And changing the allocation to kmem_cache_alloc(dio_kmem_cache,
-> GFP_KERNEL) should provide the same sort of performance improvement
-> as this patch does.
->=C2=A0
-> Can you test this, please?
+A recent change to vmalloc caused some performance benchmark regressions (see
+[1]). I'm attempting to fix that (and at the same time significantly improve
+beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
 
-Hi Dave:
-Sorry it took so long to respond. Guzebing was busy with something else, I =
-did
-this test.
-I test sheaf_capacity on 7.0-rc3, it doesn't show any performance improvmen=
-t.
-Besides, I wrote a simple kernel modules to test the performance difference=
- by
-creating a normal memcache and one with sheaf_capacity and testing the time
-consuming to request 32 objects and then free 32 objects. which resulted in=
- a
-roughly 10% improvement in time spent.=C2=A0
-I'm thinking that maybe these improvements may not be significant enough to
-see the effect in the io flow.
-Using a simple list seems to be the most efficient approach.
+At the same time I observed that free_contig_range() was essentially doing the
+same thing as vfree() so I've fixed it there too. While at it, optimize the
+__free_contig_frozen_range() as well.
 
-Thanks.
-Fengnan.
+[1] https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com
 
->=C2=A0
-> If it doesn't provide any performance improvment, then I suspect
-> that Vlastimil will be interested to find out why....
->=C2=A0
-> Also, if it does work, it is likely the bioset mempools (which are
-> slab based) can be initialised similarly, removing the need for
-> custom per-cpu free lists in the block layer, too.
->=C2=A0
-> -Dave.
->=C2=A0
-> >=C2=A0
-> > v3:
-> > kmalloc now is called outside the get_cpu/put_cpu code section.
-> >=C2=A0
-> > v2:
-> > Factor percpu cache into common code and the iomap module uses it.
-> >=C2=A0
-> > v1:
-> > https://lore.kernel.org/all/20251121090052.384823-1-guzebing1612@gmail.=
-com/
-> >=C2=A0
-> > Tested-by: syzbot@syzkaller.appspotmail.com
-> >=C2=A0
-> > Suggested-by: Fengnan Chang <changfengnan@bytedance.com>
-> > Signed-off-by: guzebing <guzebing1612@gmail.com>
-> > ---
-> > =C2=A0fs/iomap/direct-io.c | 133 ++++++++++++++++++++++++++++++++++++++=
-++++-
-> > =C2=A01 file changed, 130 insertions(+), 3 deletions(-)
-> >=C2=A0
-> > diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-> > index 5d5d63efbd57..4421e4ad3a8f 100644
-> > --- a/fs/iomap/direct-io.c
-> > +++ b/fs/iomap/direct-io.c
-> > @@ -56,6 +56,130 @@ struct iomap_dio {
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0};
-> > =C2=A0};
-> > =C2=A0
-> > +#define PCPU_CACHE_IRQ_THRESHOLD =C2=A0 =C2=A0 =C2=A0 =C2=A016
-> > +#define PCPU_CACHE_ELEMENT_SIZE(pcpu_cache_list) \
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0(sizeof(struct pcpu_cache_element) + pcpu_=
-cache_list->element_size)
-> > +#define PCPU_CACHE_ELEMENT_GET_HEAD_FROM_PAYLOAD(payload) \
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0((struct pcpu_cache_element *)((unsigned l=
-ong)(payload) - \
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(stru=
-ct pcpu_cache_element)))
-> > +#define PCPU_CACHE_ELEMENT_GET_PAYLOAD_FROM_HEAD(head) \
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0((void *)((unsigned long)(head) + sizeof(s=
-truct pcpu_cache_element)))
-> > +
-> > +struct pcpu_cache_element {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache_element =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0*next;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0char =C2=A0 =C2=A0 =C2=A0 =C2=A0payload[];
-> > +};
-> > +struct pcpu_cache {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache_element =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0*free_list;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache_element =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0*free_list_irq;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0nr;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0nr_irq;
-> > +};
-> > +struct pcpu_cache_list {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache __percpu *cache;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0size_t element_size;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0int max_nr;
-> > +};
-> > +
-> > +static struct pcpu_cache_list *pcpu_cache_list_create(int max_nr, size=
-_t size)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache_list *pcpu_cache_list;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pcpu_cache_list =3D kmalloc(sizeof(struct =
-pcpu_cache_list), GFP_KERNEL);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!pcpu_cache_list)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NULL;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pcpu_cache_list->element_size =3D size;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pcpu_cache_list->max_nr =3D max_nr;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pcpu_cache_list->cache =3D alloc_percpu(st=
-ruct pcpu_cache);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!pcpu_cache_list->cache) {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(pcpu_cac=
-he_list);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NULL;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return pcpu_cache_list;
-> > +}
-> > +
-> > +static void pcpu_cache_list_destroy(struct pcpu_cache_list *pcpu_cache=
-_list)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0free_percpu(pcpu_cache_list->cache);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(pcpu_cache_list);
-> > +}
-> > +
-> > +static void irq_cache_splice(struct pcpu_cache *cache)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned long flags;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0/* cache->free_list must be empty */
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (WARN_ON_ONCE(cache->free_list))
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0local_irq_save(flags);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->free_list =3D cache->free_list_irq;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->free_list_irq =3D NULL;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->nr +=3D cache->nr_irq;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->nr_irq =3D 0;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0local_irq_restore(flags);
-> > +}
-> > +
-> > +static void *pcpu_cache_list_alloc(struct pcpu_cache_list *pcpu_cache_=
-list)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache *cache;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache_element *cache_element;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache =3D per_cpu_ptr(pcpu_cache_list->cac=
-he, get_cpu());
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!cache->free_list) {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (READ_ONCE(=
-cache->nr_irq) >=3D PCPU_CACHE_IRQ_THRESHOLD)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0irq_cache_splice(cache);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!cache->fr=
-ee_list) {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0put_cpu();
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0cache_element =3D kmalloc(PCPU_CACHE_ELEMENT_SIZE(pcpu_cache_=
-list),
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0GFP_KERNEL);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0if (!cache_element)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NULL;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0return PCPU_CACHE_ELEMENT_GET_PAYLOAD_FROM_HEAD(cache_element=
-);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache_element =3D cache->free_list;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->free_list =3D cache_element->next;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->nr--;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0put_cpu();
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return PCPU_CACHE_ELEMENT_GET_PAYLOAD_FROM=
-_HEAD(cache_element);
-> > +}
-> > +
-> > +static void pcpu_cache_list_free(void *payload, struct pcpu_cache_list=
- *pcpu_cache_list)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache *cache;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pcpu_cache_element *cache_element;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache_element =3D PCPU_CACHE_ELEMENT_GET_H=
-EAD_FROM_PAYLOAD(payload);
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0cache =3D per_cpu_ptr(pcpu_cache_list->cac=
-he, get_cpu());
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (READ_ONCE(cache->nr_irq) + cache->nr >=
-=3D pcpu_cache_list->max_nr)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto out_free;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (in_task()) {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cache_element-=
->next =3D cache->free_list;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->free_li=
-st =3D cache_element;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->nr++;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0} else if (in_hardirq()) {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0lockdep_assert=
-_irqs_disabled();
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cache_element-=
->next =3D cache->free_list_irq;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->free_li=
-st_irq =3D cache_element;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cache->nr_irq+=
-+;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0} else {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto out_free;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0put_cpu();
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return;
-> > +out_free:
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0put_cpu();
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(cache_element);
-> > +}
-> > +
-> > +#define DIO_ALLOC_CACHE_MAX =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0256
-> > +static struct pcpu_cache_list *dio_pcpu_cache_list;
-> > +
-> > =C2=A0static struct bio *iomap_dio_alloc_bio(const struct iomap_iter *i=
-ter,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct io=
-map_dio *dio, unsigned short nr_vecs, blk_opf_t opf)
-> > =C2=A0{
-> > @@ -135,7 +259,7 @@ ssize_t iomap_dio_complete(struct iomap_dio *dio)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0ret +=3D dio->done_before;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0trace_iomap_dio_complete(iocb, dio->e=
-rror, ret);
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(dio);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pcpu_cache_list_free(dio, dio_pcpu_cache_l=
-ist);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_GPL(iomap_dio_complete);
-> > @@ -620,7 +744,7 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter =
-*iter,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!iomi.len)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NU=
-LL;
-> > =C2=A0
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0dio =3D kmalloc(sizeof(*dio), GFP_KERNEL);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0dio =3D pcpu_cache_list_alloc(dio_pcpu_cac=
-he_list);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!dio)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ER=
-R_PTR(-ENOMEM);
-> > =C2=A0
-> > @@ -804,7 +928,7 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter =
-*iter,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return dio;
-> > =C2=A0
-> > =C2=A0out_free_dio:
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(dio);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pcpu_cache_list_free(dio, dio_pcpu_cache_l=
-ist);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ER=
-R_PTR(ret);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NULL;
-> > @@ -834,6 +958,9 @@ static int __init iomap_dio_init(void)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!zero_page)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -E=
-NOMEM;
-> > =C2=A0
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0dio_pcpu_cache_list =3D pcpu_cache_list_cr=
-eate(DIO_ALLOC_CACHE_MAX, sizeof(struct iomap_dio));
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!dio_pcpu_cache_list)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -ENOMEM=
-;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;
-> > =C2=A0}
-> > =C2=A0fs_initcall(iomap_dio_init);
-> > --=C2=A0
-> > 2.20.1
-> >=C2=A0
-> >=C2=A0
-> >=C2=A0
->=C2=A0
-> --=C2=A0
-> Dave Chinner
-> david@fromorbit.com
->=C2=A0
+v6.18      - Before the patch causing regression was added
+mm-new     - current latest code
+this series - v2 series of these patches
+
+(>0 is faster, <0 is slower, (R)/(I) = statistically significant
+Regression/Improvement)
+
+v6.18 vs mm-new
++-----------------+----------------------------------------------------------+-------------------+-------------+
+| Benchmark       | Result Class                                             |   v6.18    (base) |    mm-new   |
++=================+==========================================================+===================+=============+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 | (R) -50.92% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 | (R) -11.96% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 | (R) -35.21% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 | (R) -36.45% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 | (R) -31.83% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 | (R) -38.62% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 | (R) -24.84% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 | (R) -37.83% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 | (R) -26.32% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 | (R) -37.76% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 | (R) -31.15% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |      -8.97% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |      -5.88% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |      -6.95% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 | (R) -40.19% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |      -2.10% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 | (R) -48.03% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 | (R) -40.48% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |       3.52% |
++-----------------+----------------------------------------------------------+-------------------+-------------+
+
+v6.18 vs mm-new with patches
++-----------------+----------------------------------------------------------+-------------------+--------------+
+| Benchmark       | Result Class                                             |   v6.18 (base)    |  this series |
++=================+==========================================================+===================+==============+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 |      -14.02% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 |       -7.23% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 |       -1.57% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 |        1.57% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 |   (I) 15.75% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 |    (I) 9.05% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 |   (I) 38.45% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 |   (I) 12.56% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 |   (I) 38.61% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 |   (I) 13.43% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 |   (I) 49.21% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |       -8.47% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |       -8.17% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |       -5.54% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 |    (I) 4.63% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |        1.53% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 |       -0.00% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 |        1.22% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |    (I) 4.98% |
++-----------------+----------------------------------------------------------+-------------------+--------------+
+
+mm-new vs vmalloc_2 results are in 2/3 patch.
+
+So this series is mitigating the regression on average as results show -14% to 49% improvement.
+
+Thanks,
+Muhammad Usama Anjum
+
+---
+Changes since v1:
+- Update description
+- Rebase on mm-new and rerun benchmarks/tests
+- Patch 1: move FPI_PREPARED check and add todo
+- Patch 2: Rework catering newer changes in vfree()
+- New Patch 3: optimizes __free_contig_frozen_range()
+
+Muhammad Usama Anjum (1):
+  mm/page_alloc: Optimize __free_contig_frozen_range()
+
+Ryan Roberts (2):
+  mm/page_alloc: Optimize free_contig_range()
+  vmalloc: Optimize vfree
+
+ include/linux/gfp.h |   2 +
+ mm/page_alloc.c     | 128 +++++++++++++++++++++++++++++++++++++++++---
+ mm/vmalloc.c        |  34 ++++++++----
+ 3 files changed, 149 insertions(+), 15 deletions(-)
+
+-- 
+2.47.3
+
 
