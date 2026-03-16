@@ -4,82 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E085F506D2
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D928DF506D7
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:15:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E11A36B02AE; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
+	id 48C016B02B0; Mon, 16 Mar 2026 10:15:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD35A6B02B0; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
+	id 43A236B02B2; Mon, 16 Mar 2026 10:15:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5706B02B1; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
+	id 3460A6B02B3; Mon, 16 Mar 2026 10:15:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BDEB16B02AE
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:11:15 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 71FB1579C3
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:11:15 +0000 (UTC)
-X-FDA: 84552113310.30.F2FF9D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B2C58C0012
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:11:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UW/pLckC";
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23E3E6B02B0
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:15:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8299160274
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:15:27 +0000 (UTC)
+X-FDA: 84552123894.07.C3DDCA1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EC8BB18000E
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:15:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BowH4afH;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773670273;
+	s=arc-20220608; t=1773670526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ouCypcL1+siIYaers+ALMVHTuOx48YXnAxdQiXYVowg=;
-	b=DudqSTxDN+XkwB32qIEDNfTbReY4s2+qEI1+eOPHpMPitZb+k1p3x3ngM0j2WVCBpVWdKg
-	SPYZ5a/KguzHdYgkab4p3OMJ77LPMfjEB8XHmWLt/oyGum9+i1oyAt/MBPWSjHEpVEFxUc
-	Vwne7Z74uEM+r2kOUJH5C4PtA/GmIJs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UW/pLckC";
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670273; a=rsa-sha256;
+	bh=Fl8JvjgcLDK4j+UfwfT33Rdw6sd0dXM6mZ1n3xvVCkY=;
+	b=OGuxnsXqP4/w2xXzgpcDMezm0kvqRS/xhX8MXknzPI28DkQYjNA8Ma3TP9tdqE+9S6Zoi/
+	mIQnIu6cZbCh4a1B8fE4C2s2fZyJVw+8VUYY52OrV036X5Mm6wVyTXSTqIaFJx6fccWZ59
+	6h8yYPG5EX6Mt3KwAfdsq0rH1AwE+6Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670526; a=rsa-sha256;
 	cv=none;
-	b=G34O6DjoWacbNrux4a8fubgphbHoL/SdINrLA16cTfW90ZeGa2zRjPjsnMNGpCn3y1smfr
-	hufnTveY3q0kEQ8WcVQY9bU5g5Ij5BE0U3v2qZwcGohgOQVzqOnPPvFbO7jBctmVRFNLiA
-	e/+RZ3tul3nKvoMFOkZ/WRt+6xs/6Vo=
+	b=YFhthQ8RZHwWVmdeTzLp5MTFrMsXsfiA/fDHliBsF3Xjl94UeHmSWjU5R+dyEvgClH40mq
+	JilFxOgE80K/2NfgMn55XYVHvV9RXmLPQ/hGnB1tBgxCAyv1PM7ZK7Rb0bEOX6oTOvTwk6
+	npokDSnTECUNtU8OfF03pWrIrVuo1lU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BowH4afH;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1438B60018;
-	Mon, 16 Mar 2026 14:11:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1999DC2BC87;
-	Mon, 16 Mar 2026 14:11:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DFAAB43C59;
+	Mon, 16 Mar 2026 14:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672A1C19421;
+	Mon, 16 Mar 2026 14:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773670272;
-	bh=mObWySh6ftg/C/Y5QydTHOsnluUnNsUQ7L5CnYVEA60=;
+	s=k20201202; t=1773670524;
+	bh=AMYLIbC0XsyIeE592yVqLMzFEBrfw2qSx6eHBAsjStk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UW/pLckCxaNKin2wiipk5x1+dQXwPfHhssQ3QmeQq4QXVJQ3y5OXuHSa1pZlhFR1M
-	 qEnCL5rs4a6xAWe+FdiyNnqHfAeN90322g4aAl4VOzQKIdM4VfbTDb3ZqQWxdaqg4A
-	 oJoExQipZkyEKvzOi6uoLmLS/3GoH0scWeQjvj4vt2SCicfw60c5iB+snAR5g5dqyL
-	 15WD6qT/QL8wFr1KIz3SuFnvVuZETuxZlx+ZqwRifMnssSuMamHfBs0P+F8URMkht/
-	 XsF+v5W82wbBbBI/mVpEtgxVlUUFiGYbUzmKLm1zVGEgaeWqcp7sfv4Jo2oEIaTRyz
-	 WM6aXYuiqBIXA==
-Message-ID: <5724ac10-70bc-4259-a69c-1c0efaf28d02@kernel.org>
-Date: Mon, 16 Mar 2026 15:11:06 +0100
+	b=BowH4afH8xNOvUvPXoGnX3QiYu8G73nqHWtCjBoZU+TFzL04LqlcQ1DpKNBrWW3FZ
+	 +QX4rLlHxR8sluW7mz9nTROilho5xtAEMDGtkUjYE8UicGlscjLRmfWhUjdjoyvy0h
+	 t4w8HKjV0QGMecNN40YAKUHsKE9rLtQGt6JspdvvYpstALRuhCUTjCTljy4MNEDoQT
+	 oVDVC2Ymws8d8S97UvIvVqQ0YJCKNcfOG23HdZNoUk3z+yrYp367/8xA5lpl/H0Hos
+	 g5XFzt2ffsv8ex0HQ3AFCpSv+PwNvKGJ+fVx9kQUco0SG9bhb13I7h9CngzrwMTuv+
+	 QwRj/MDzncpYQ==
+Message-ID: <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
+Date: Mon, 16 Mar 2026 15:15:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] selftests/mm: transhuge_stress: skip the test when
- thp not available
-To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
- shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- Li Wang <liwang@redhat.com>
-References: <20260316044335.1390608-1-chuhu@redhat.com>
- <20260316044335.1390608-6-chuhu@redhat.com>
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
+ for large folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
+ <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
+ <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
+ <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
+ <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
+ <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
+ <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
+ <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260316044335.1390608-6-chuhu@redhat.com>
+In-Reply-To: <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B2C58C0012
-X-Stat-Signature: aquhy9yb1fkujryjk9711hepm1pm1haa
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773670273-894743
-X-HE-Meta: U2FsdGVkX19PPJ9glXKwRC8zFtvaWKpB/EGIa30cfAbcttb5VTILPTdEiLOfItQeSSlRc9/7FOvt3AcXii/bqoIZPUjAvp5J5chKlB2pL4j/3q55NdBnC5FbLPVNfKwklzoSqb6C1AyrRtN/4reXm5HAZIfoCCiGWShJAbRoN8ELawGOAnWVM4A5ivIOR3YZRbbhC7j7GwdAkQjt5lhRYeQ+LKuLpVT9FpkGZqZAyNy8QiusxEJA6CNOCODs8W+AkF0EEWNXpCYbAW0O3W3PFIJ4jMG8/RETCasYd7my1S6mroYmkvLOe5NldyWfISvT+FHBAyOtl3rvkxW5wqBpogSo8JGLtl3oCmYhrvFerNtBtEnCEq+m5mfaBR/5VWEartb1URGIiJ6+QGkQZ78B78XZfaQ9B3cMUxDFRUgvbAEQdPG1oM93d9isFu0h9g8ciuC7tMqz9dnGX8Vay+cJK5yvKJhwW3d9rzhc16PIqRUXPdfOKViD0s+6tYx2xH1mReyIqxoZSjrnPjqbUmhs2yKKU3iZv5SENuS/ZNXjoRfkaPUbaEpc6kZCtsTFmNJeQ7mZbS5APIk+z4hZJHWS9MWvSPlWi/d8RRgQJu8zlSP+qfLfyGH+0gRdcVn1Tee/p2FrYyAHgKL6Wy9TERSGMGzpRkLEtS1ZbrPnHapONp2qrWPBr00/REWgcqa0dXOv0Mwi0KzedffB/szkevc0v3qd47Uhv289tuqMrsczuiK5UlG54+RHMjqQY/Zh+7ll9ZYdzyXTVt/4Gi+oM+9MYRUOyDB5x4O00uFnvzMCeHgLX3a7LsbTrXGbO+r0zwjd3JbWTwCTIYGQ4lnBGocr3jGkDW83Tjj9ZWPi6+pdaWw+2QV7p75qybitBgLGuE8CvhvB8lV2tKKvmuLz6YAmZf5lzd2qoaHmwncfCFVY61uPr9ALYZZt4CIKn2OBNY7DrBLQs8YZh8OqfLNhtkU
- qQPR59rZ
- tzjon6dfbZaJQZOKtHuvHmChPDwg8eWVmo2aWCW2R3Bfc9GD5+Yd3cXOtrHVrISjlOHOQ38L9h6NZ+MYDr8fHOjyzwneqKiAUwAbcr5nlURBG27Cijrqu7p5Z5zBvSmkMtRe3LjeqWZdQQFUyEa2idGus6N8oCnBik06bY3mKjrv5PgrIM0nGiEcehv8AAcdbj9dAgDzfRS6IiYGuLWdVhWOiLoU+HN3LBpZwFGbBMASZBOEPQmSjqh8fdUBZWRGowvrA3l4iVSkEYnePYa2pGMyInGJdNBWQaCphmdaR8PS1p+cz9pzVQ7czpUhpz+v45ik7WOwd5JWdoDiBOJusNrL4wi2KIXOu8HNn/OQgn+hjduUHUzEtJMANEHQlSeIE3cLE
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EC8BB18000E
+X-Stat-Signature: yrtika9jwooaj87ryib7eqhypqq4qpdj
+X-HE-Tag: 1773670525-345283
+X-HE-Meta: U2FsdGVkX18QV3LJ+k3X7ufEkqwKStDJY/y3DYgyd/mORwRNF/SljkcbvG45u3d5pe0/vQzzMpus8nVSejEYES7uTnSKiFsFlvBgJaodRs5FZjGoBw8n0AOThw4RsQnK6kZVJssu2kgjEY7bh3otm4gfGuN79CsX6XZuYWtKvddGRYZikEK+0DObvTNlpFJaYSZR466GLqDUk0snk0ZEPsK02iVBNhx4ZFKzanQ448EbEv75SMe2h7K0/6sLjdy7D2XY3IvvbGNpbMrT4d9/g8/PnEMnGhNU8N3DbyPWsHSv8A2YljgCgLZ7/vSxDiT7zaAIAMrrxLMk721M50P7/sIaRMOyFppF+Njk217/eqt1bRNoOt14zj9zuzyU8TK0bBqKxrJTXtJ/Ae9ceuhu9YSoDC4zqikMlse1/6ZM+a48ebI6DpoKRIjc7WCoGp+bn5vmtfd2NSmJpJycdYTcHSo7E3CMOXXkGbesQTduuKg5fnwM5u32fPL6MzalQepX7g3A5Rqatpb2yt0xHJVE+v/Hjq6J1vYIJckmJYB86cm2BviJTqFNGGHDgBaSz7sFdqDkoxIupVLvquEs5w/VO+Ry0fo3gjWbGykkjcF1tGCHTy5DGyIuJOqCkBIg26KEcxgIippiWo9h2e0ZdvSmng6nzEnOaA1gATjdrMcVkeCVfjX41RdqIxYJuUJT75vZoEzFkdK2JS2B3kogXxlFcp0Xb677GYy5CVHZ9QHD0dOOeEios+Vq25okkwYJU4zWmmU0rSF0oEY8hDaa6rZ4S0vIBxHWxbeoW9ROE+f/QmXRaxEp0Il+zVRo2o0gdEpDLaHwvDZil42RO4FkH5Y53cOMEUmcmmbag+AcrDMrbd9PxnkkdtusMTYuB11crXucJqWruaa0lb+DE5OWMxGp1KKlr0DE8pAsdXk6kfShBpBBDn2GhHjQ9yGfljh+mVDkTGv6Q2aasQkw/CS407X
+ roRb6S7y
+ uMRJdf4yvMjD49eKM7G62MKiCmUs7qkqbWcCTK2S7Vr3xE8wiPDTgVfiAqaCb9M8u9aD5eEXs5YrBrv4nXV0KzyzBilcaq2QnB5dJ2bWB3rQDeMKgof5FQ3KyzFSgFaJ/AA2aT2/XfHzRqBJNJzqswY33q9QR1SIxYOr6N0/yhPuwbV6kbAY9LeLaXCr3CgDjwqZJkvH2V9nIvO9glT+GzVyQ5+UYHW5B3Pb473M31Sk4pgLlWbsCZ4OBZ68JPcHL5ybvv+FFkSzIhVVTAXVd9B19xyAQSiUXCVk6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,39 +150,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/16/26 05:43, Chunyu Hu wrote:
-> The test requires thp, skip the test when thp is not available to avoid
-> false positive.
+On 3/16/26 07:25, Baolin Wang wrote:
 > 
-> Tested with thp disabled kernel.
-> Before the fix:
->   # --------------------------------
->   # running ./transhuge-stress -d 20
->   # --------------------------------
->   # TAP version 13
->   # 1..1
->   # transhuge-stress: allocate 1453 transhuge pages, using 2907 MiB virtual memory and 11 MiB of ram
->   # Bail out! MADV_HUGEPAGE# Planned tests != run tests (1 != 0)
->   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
->   # [FAIL]
->   not ok 60 transhuge-stress -d 20 # exit=1
 > 
-> After the fix:
->   # --------------------------------
->   # running ./transhuge-stress -d 20
->   # --------------------------------
->   # TAP version 13
->   # 1..0 # SKIP Transparent Hugepages not available
->   # [SKIP]
->   ok 5 transhuge-stress -d 20 # SKIP
+> On 3/10/26 4:17 PM, David Hildenbrand (Arm) wrote:
+>> On 3/10/26 02:37, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> I understand your point. I’m concerned that I can’t test this patch on
+>>> every architecture to validate the benefits. Anyway, let me try this on
+>>> my X86 machine first.
+>>
+>> In any case, please make that a follow-up patch :)
 > 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> CC: Li Wang <liwang@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> ---
+> Sure. However, after investigating RISC‑V and x86, I found that
+> ptep_clear_flush_young() does not flush the TLB on these architectures:
+> 
+> int ptep_clear_flush_young(struct vm_area_struct *vma,
+>                unsigned long address, pte_t *ptep)
+> {
+>     /*
+>      * On x86 CPUs, clearing the accessed bit without a TLB flush
+>      * doesn't cause data corruption. [ It could cause incorrect
+>      * page aging and the (mistaken) reclaim of hot pages, but the
+>      * chance of that should be relatively low. ]
+>      *
+>      * So as a performance optimization don't flush the TLB when
+>      * clearing the accessed bit, it will eventually be flushed by
+>      * a context switch or a VM operation anyway. [ In the rare
+>      * event of it not getting flushed for a long time the delay
+>      * shouldn't really matter because there's no real memory
+>      * pressure for swapout to react to. ]
+>      */
+>     return ptep_test_and_clear_young(vma, address, ptep);
+> }
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+You'd probably want an arch helper then, that tells you whether
+a flush_tlb_range() after ptep_test_and_clear_young() is required.
+
+Or some special flush_tlb_range() helper.
+
+I agree that it requires more work.
 
 -- 
 Cheers,
