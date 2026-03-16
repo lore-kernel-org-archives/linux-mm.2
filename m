@@ -4,116 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57AA1F506D7
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF94F506D7
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:09:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF98E6B02A8; Mon, 16 Mar 2026 10:07:30 -0400 (EDT)
+	id 0ED736B02AA; Mon, 16 Mar 2026 10:09:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BADAA6B02AA; Mon, 16 Mar 2026 10:07:30 -0400 (EDT)
+	id 06F476B02AC; Mon, 16 Mar 2026 10:09:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADA016B02AB; Mon, 16 Mar 2026 10:07:30 -0400 (EDT)
+	id EB0186B02AD; Mon, 16 Mar 2026 10:09:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EBA66B02A8
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:07:30 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 43261B7310
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:07:30 +0000 (UTC)
-X-FDA: 84552103860.16.23BDBB5
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 84EDD40016
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:07:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fUJrUeun;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D6D996B02AA
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:09:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74AEC13A110
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:09:51 +0000 (UTC)
+X-FDA: 84552109782.18.03B2A19
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5B4521C000E
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:09:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf20.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773670048;
+	s=arc-20220608; t=1773670189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NVfS4F3yzp6RxSjfPUPmy97+3JM2QBYP3BC0jY0rHlc=;
-	b=P6tKrljICRf8UOYewQV9MsckpICf/NlD/QRdt2bIyyC+cR2QGZQEIRbEKmRRYYQf+5tEMX
-	GCpScOPFzj6LH5u2uzXv5EMaekLlE3CcUw3pM+2ZsPFtlgww/Z8vYFSQf1kdpv5HqvkVLG
-	TMnJo4FTwCsL7nFexq/Esd1TNnUzYUU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fUJrUeun;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670048; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=zw/3IeyCwhg/SIeplEBGUgR9ryUmhmKOd84WJXPD4wY=;
+	b=KQaTU9WO0AQ+7x7wJ2ENwpCtgFuL4Rp7ZHW1PJj6lb4LGnXJ109cqFpjZTsV5jll/sCxIg
+	H/Oh/rcSigo+5NtIvDYF3J5WGwCtP0HDSE8diDEVk6/oPbf+DMJ0DLnbjlNX6tupXEtTV8
+	/YJl9Z/nwXk5unqHhwm6z7x1aNk6x6I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670189; a=rsa-sha256;
 	cv=none;
-	b=D7ueBqKh6YGq9lHoFPsF1mI9l+/xppX2ViBKIWQSyD/Q0KEzQmEeip9pZaCX7aaRqchZQv
-	oysZqCZaXm/CDWudHWYT8A9wUsiDk3SiKbV2xeflvqhRmE+JTjmhiQ2SU8hDjkLsDmwA+6
-	mU8m4FVwpm65ux8etIrxOhKVqExmdVU=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50902b1006cso41374551cf.3
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1773670047; x=1774274847; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NVfS4F3yzp6RxSjfPUPmy97+3JM2QBYP3BC0jY0rHlc=;
-        b=fUJrUeun2yo+IY18wIPo7AwjvRvKCIhUqMfUp9TqzFZYw0bNZORJIn0ar1bw0pnZBU
-         sgdf/zLtl+gP9eeplaTjUAT2K+3ye7Y0b+CAJJUPFM6GjSgNZ/U5dTgPvTixF7Of3FTz
-         mRknhJQTYZdtvQP8kj5rU+JjryctZgTd89MtQrQcEWshryfri3riaTT1FV4SEa3f/Rtt
-         IQJcthmqHtts4MJGena3uVGGYEvGP2g3sAOdZQCk9j4RcpDYEilNfRk99j4HHXwtAA+G
-         bT1JCF6Y02R8GUaVmvfLTYHyuL1oI5q2ugBnoW40Usba+xGnM8TBq3a0TPVGqSizBnkL
-         ikPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773670047; x=1774274847;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NVfS4F3yzp6RxSjfPUPmy97+3JM2QBYP3BC0jY0rHlc=;
-        b=O3JnUv8wO7kaDBscx9O7oZAEZIOQYrW6uYMNvC8Y3QXwLxyvNkteOdsI9FrRAn0T17
-         GxjZsUKzNnxoeYJZhiLOlz6cjDuU0kXXR/5HcbDXFT3ChhjeOA6gCFV3pH9+DGqnknTZ
-         Sp2Np0LpP5M8L8anTy1im0eZV3WxGw0cMzs8tEh1/i5WI6C1AmYHKwIMGt8b+yaPhDhc
-         0uZVVlZdAqkGBTm5e9nZn0eBL1YRSipAFaKXbI2vMrFEnY/xgO+YI3pVeyZlmLeMhgqG
-         3DJaEfoBTXNEyUfT5M6Lo+lSu2mwAqnUDOM+VD5o0JobFNqyXvPdKUSA3MHZfwx324YP
-         8AFg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1DZ/WSbnxhgFWmFSmB6wB90RrDQgF4JJuXCEcImo/2vWyyHVEXDUKqo0eMbgucWxuvxgQyvvjvQ==@kvack.org
-X-Gm-Message-State: AOJu0YxxooCRDUL4LAimw04ewppl4yW4xQsSE2QSfIEzXUwUaUPm1Puf
-	Pjq1DKZ4V4I7QN4LhKtsWGe7rOtlNPf36aAqQNOLvp4bZqJzlEOP3YjgfeMFLUfxhDs=
-X-Gm-Gg: ATEYQzx1Zk5/HcjfMUWWiy+ep1mHx+x+ATgq4qBhYYth0/s/d1ElUwc3+7rtC1mlDrr
-	yV+BVV0BvEuF9AAV9PlaQbzxiRr83HqdzZvGMQvJKUeo8TVr7YhUsGAIIoEPgHDlJbxtOk8126A
-	wiePvKmlHPW9eyL58NkGKB3/+oEqCgLc+vlXsUgWn92fCdXmnYuXkCvZq9is/RlPyyjQTDho+e1
-	eiiJXzRLpssA77dwwtW0/4vVf940nKLaobsn6Z279UXLeguQQN0JYA9JJ1LcaVqsA5bxKocB8OW
-	P/bULdy+T13IOWgZQUg7O8rcDtevEqCKNvkeSQNaY7s+OeDneHsRapFk2c0/jqGFO7ykt+P7dtd
-	w9Lj7BnghufW/Q9PAE/Rjjed1EolzZW+IMVY8O6MmIgUii3hITRduTf15kTBQqK+DXYjVl/O/hF
-	fw4Zu/Bfkt7q8Uor71HpnIIFa6jdWAM6BoqBUQa7Q70ZAhPT55ksJ6naaxJUWcQh2X2ADY8v1Pq
-	T/Jwq+5Ig==
-X-Received: by 2002:ac8:7c4e:0:b0:4ee:280:2e49 with SMTP id d75a77b69052e-50957e9bb88mr168323681cf.66.1773670047327;
-        Mon, 16 Mar 2026 07:07:27 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50939ec6331sm117733111cf.10.2026.03.16.07.07.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 07:07:26 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:07:23 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lin Ruifeng <linruifeng4@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] mm/mempolicy: NUMA mempolicy mismatch during remote
- access
-Message-ID: <abgOmx0kwvOnN_R_@gourry-fedora-PF4VCD3F>
-References: <20260316120424.1535575-1-linruifeng4@huawei.com>
+	b=w4upjpKmdyFDq4rnl80crjCS4kN0kMD9URLHUE/o9UJd0zMCsjHzEQdZcg1WctuSSPEl4C
+	N6xdP4gjegAAE8ea+uE5XrLIUfsIpPQy+cbGdAf0C6ae/8qprnKkoD2F+mG55J5ESNxwMz
+	CKjF+b2I+rW3mJUygadffpZDDF9jPSs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf20.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fZH4t4vNVzJ46DS;
+	Mon, 16 Mar 2026 22:08:46 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3722540584;
+	Mon, 16 Mar 2026 22:09:41 +0800 (CST)
+Received: from mscphis01197.huawei.com (10.123.65.218) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 16 Mar 2026 17:09:40 +0300
+From: <gutierrez.asier@huawei-partners.com>
+To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
+	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
+	<sj@kernel.org>, <akpm@linux-foundation.org>, <ljs@kernel.org>,
+	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <linux-doc@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v1 1/1] Docs/mm/damon: Document DAMON actions when TRANSPARENT_HUGEPAGE is off
+Date: Mon, 16 Mar 2026 14:08:21 +0000
+Message-ID: <20260316140822.2033181-1-gutierrez.asier@huawei-partners.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260316120424.1535575-1-linruifeng4@huawei.com>
-X-Rspamd-Queue-Id: 84EDD40016
-X-Stat-Signature: 3znqfzgo3m6ac1jg8fw1npxecpg15p1f
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.65.218]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5B4521C000E
+X-Stat-Signature: kjk6e6fhze6q4pw1u5qbwngjkjjeptgr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773670048-630928
-X-HE-Meta: U2FsdGVkX18yE42bCBFfeWBCmXRGqXbTlO8p+r5A4k2g1pA22k0IaLLIvHcBOL2QcLjB4rHga9on0rsYoDJG4UcAIVR2zpTelCCpTHBCV77zw/AbnjDzXnCqf2mIYFmxIG5K5618qvS2uVDh7jnxwDGmTxnHIPYmpn8a8xtPYU44lYQA9Gtq8E3eogUSGRmG3swW0nqWHKpxzWwl8LfVL0AQBLS2jNrT1eBeC+e3TXOdbytEQuwwCqT4HWevRVl3M0XRJZMa6boMdSk7JW832vvblfz59nmrsTios8Ci4oFu10Nf47UoqwlOMez8sNyc1C5DT6bXrZ8BkiZpJSCXE2bDzvJK/vp4ADMIFmUnMdrtjRh4G0Qmg6Hsf+7P4Tx6ds5Zk9yIidvjWNpkWYg76lsY/xOKZVUwGUtKOT74+lHwfeOSacY23NmKuCfVdiiBZqtfBbtut3VYgKrdYOQoyLFGvk4kf1+iRgUSK8eiNbem7OcX6zxwjenv9xqP86mbp0I5mVvOc72IflYqFi3ki9wlsiFwDw6h3MnfswhbqFjz7Qox9gcb9kt21rXRWtlETRzt78laL8r0FpsZIrVMuC4VRmjnguRakJ73u3XKg72mLZizWS8ejGeCQ7CHWblN8Jw5jFzFTqbM1yu3X2VUMe4wDd3sNKkL3UNt+nwcwRo/S8ogKIkc1owuGmg6TKWUui+kfBglwZKP2xX1nic68JPGxg6jAaqMF09yzhNZppb/nHMuTiV2L2NM/1VvniDGJFOERAnhnQBLXFBKyG/FnkDhngJmS0V+mOyDaYSM7lZJ+SIobSht0ZoAr5zoGMqwdKW0ESDjdZUxjRTld71G3kpU6GzLxsl00J+QX5jG8D+TS28sgb4yocEXV6kpNkFclEwFc+ubzA5vMCm1WUkexTTkDb06tTNz7Mb5hw+SVVtGwLLQ3nNBauAb7s4GDV9YNTWed1HZUGanPe6ESmq
- 72abQfzr
- aIb6wUVrSbamxZxzgV2XouGKZa6N2DkDpAM0abDBmtuDboUihGUqMIGK5rz323aPiD4FjpABVL8vbswXScoaL8DNS6iy+T1ggaosl
+X-HE-Tag: 1773670188-327396
+X-HE-Meta: U2FsdGVkX1+IGEOjYfTkEbWImBUwx1aiNVasUOpzBJyJabJ0WZRwYQTBYBPigMBLh9LFxgfmbTg5ys/btnXFOs8RWj+DUhhjedUuuV5/8bAwRk5CerThDXEkjxdE67GKf3BirySJ9LT6S3lyZ/ySIYxhGt52tzOzO/6/MeBo+buKuqalF5jYHdwHgCu4Ngow8zysSerAdJZydR9riRa1Qtn6eOxY7AZBfI8/NLZ1liXS3t5Hy6A55e5GncEByJh0FSa9+hlYhbVgTum1qVSZ+2L3271xNWHF/+G/RrzRGdQ92AShYYQcD8kZwx3cN9FxYs17dWRRYzgZiFXko28hb1g1pcCX/js/On2MGx7ZzbwZ5hbEX1O2trSza7M4YP+4PkqGQ1XJJI/rqNme8Q30ay+C3BVUwj97JEDxGwzRcz1uJ9uQfHuF2PdxQB+yZBIIMcpSTz63PchO0cWtfOWnLhIsoNeiWmokQZbxmVYZFdAXeoB8+sXg5o5nYWq5SJzqAbWkU2ajkPomrAARWRQzoGIZV/FE2I75a+ZVT9B40v90sYAQbIcDE0KhM966O/8mYo/65SgwwD2gJr6P3iVHsHPz7G6/Y/6AcW8tLldhC/sS3VmmiItBKVd1g84VMNVbqFbo8ROtdmU4WgFk6tH/qoB6b2++VPQsGtnGIr6mLd1njZAp6JrMA9VkXdEUslfDrRm6OEzNxSMFOLNLUCX5vKL5ANtRpdY2FLXthaU4WHEXY74cvJk659HAezILtMAiMJubOaKbQRvXP2Su8T6Hc5alVhs+YY59SbUWEHnjRS/nQ4Blc1lnTpQEN7ilJsaTA2FfqtDXfx0cKg86W9ApAI395It4EAWDjpKSkA+RT2e4PLePcPzV8dLuSezpVUfAMAVxwOrDwF2HgpOhY2u3dk+QCz0yiI8fuxsecW+aDrZoaD2+0+kvj4pTao73Oxw2qeAvPbQZV9zpmugNKLo
+ jrlsbR8d
+ gWU3Gm6sh8UT+ru+lBpXjS/QIrXDhHZlPK3a77zRhWfUSTgBJqxZTS4VyCbUeRcv5XIXR/GcH/Oe/Wwhx+W454IAQ8/y5llkogVGOOlfTuUyxYBloPQQq53AFltXCgh/tBUHv97TJhj5MEtZ7PZ+cNWqSUtdWJI6P6+azjh8BlCfd9e7OYtPRhtSUZXe2Y8KvPZ2fy6+iSUf2DBuV6QswBu918zULzRc48mDWoba/CoiTgKsesCCDiLNWK0Veyv04o+Z9WOu+lY6cvwElZawTVG35H8ijPbAEAIIYuRo3v5n+PJM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,36 +92,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 08:04:24PM +0800, Lin Ruifeng wrote:
-> I'd like to report an issue in the SVA I/O Page Fault (IOPF) handling path:
-> a NUMA memory policy mismatch caused by deferred workqueue processing.
-> 
-> When hardware triggers a page fault via the IOMMU SVA mechanism, it's handled
-> asynchronously by a kworker thread. Although the fault handler correctly uses
-> the original process's mm_struct for address space mapping, the physical page
-> allocation (e.g., in do_anonymous_page()) still depends on current->mempolicy.
-> 
-> Since current here is the kworker, not the original user process, any
-> task-level NUMA policy (e.g., set_mempolicy() or numactl --membind) is
-> completely ignored. Instead, allocation follows the kworker's default policy,
-> which may run on a different NUMA node.
-> 
-> A similar issue was also discussed in [1]. I was wondering if you might have
-> any suggestions on how to address this issue.
-> 
-> Link: https://lore.kernel.org/linux-mm/e2d5f3a5-f6f1-4567-a162-a0e814292738@asahilina.net/
-> Signed-off-by: Lin Ruifeng <linruifeng4@huawei.com>
-> 2.43.0
->
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-I think the best we could do in this scenario is acquire the mm_struct
-process's mempolicy and plumb it through - but this is not exactly
-correct either as multiple threads within a process may have different
-mempolicies.
+MADV_HUGEPAGE and MADV_NOHUGEPAGE are guarded and they
+are not available when compiling the kernel without TRANSPARENT_HUGEPAGE
+option. The DAMON behaviour is to silently fail[1] in when DAMOS_HUGEPAGE or
+DAMOS_NOHUGEPAGE are used, but TRANSPARENT_HUGEPAGE is disabled. Update the
+DAMON documentation to reflect this behaviour.
 
-I imagine this also applies to vma policies as well - so you'd need to
-check both the vma and the task.  Not eactly great since we're talking
-multiple locks where there were none before.
+[1]: https://lore.kernel.org/damon/66131775-180b-4b9f-b7ce-61a3e077b6e6@huawei-partners.com/T/#m278d3c9bbedcceaf2efa51e3dc7b40a40654e51c
 
-~Gregory
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+---
+ Documentation/mm/damon/design.rst | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 29fff20b3c2a..478eab4a186a 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -460,9 +460,13 @@ that supports each action are as below.
+  - ``pageout``: Reclaim the region.
+    Supported by ``vaddr``, ``fvaddr`` and ``paddr`` operations set.
+  - ``hugepage``: Call ``madvise()`` for the region with ``MADV_HUGEPAGE``.
+-   Supported by ``vaddr`` and ``fvaddr`` operations set.
++   Supported by ``vaddr`` and ``fvaddr`` operations set. When
++   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
++   fail.
+  - ``nohugepage``: Call ``madvise()`` for the region with ``MADV_NOHUGEPAGE``.
+-   Supported by ``vaddr`` and ``fvaddr`` operations set.
++   Supported by ``vaddr`` and ``fvaddr`` operations set. When
++   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
++   fail.
+  - ``lru_prio``: Prioritize the region on its LRU lists.
+    Supported by ``paddr`` operations set.
+  - ``lru_deprio``: Deprioritize the region on its LRU lists.
+-- 
+2.43.0
+
 
