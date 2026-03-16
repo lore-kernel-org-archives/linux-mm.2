@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4899CF53D89
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4D2F53D89
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 19:07:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 957266B034E; Mon, 16 Mar 2026 15:07:15 -0400 (EDT)
+	id D51376B0350; Mon, 16 Mar 2026 15:07:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E0AF6B0350; Mon, 16 Mar 2026 15:07:15 -0400 (EDT)
+	id CDB286B0352; Mon, 16 Mar 2026 15:07:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80D3E6B0351; Mon, 16 Mar 2026 15:07:15 -0400 (EDT)
+	id BDDD06B0353; Mon, 16 Mar 2026 15:07:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 70BB46B034E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:07:15 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C268B97AF
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:07:15 +0000 (UTC)
-X-FDA: 84552859230.06.505B691
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A73926B0350
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:07:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 546C3B9670
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:07:18 +0000 (UTC)
+X-FDA: 84552859356.29.1BEC2EB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5C92D120011
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:07:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eORwWv8x;
-	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id D4BCE40008
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:07:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nQIpRZVj;
+	spf=pass (imf11.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773688033;
+	s=arc-20220608; t=1773688036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5r3pGcy8KzkirClFQ7/u0WDOdU8ZwM49JhnwWyqpFM4=;
-	b=LALRSxrYsgySbq2+9r7N3gODgZdOaQbPzHr8lff+xeDHsZjcoNJZ+2dBJXX1Pu2bAfSq3e
-	UYmvUw3EBarQAd4soEiG649mu8PJOHGhD6cFZpuv9fZ2Bdb3RD/y3zgIVwDhzsBW8U48o5
-	vL3/4QxDYAXvTrX17QKSBbROKszHQ+o=
+	bh=qeY2pweBzJW77nlydbnAhk3zZO0kbKITvaq77hXlPKI=;
+	b=C2TnpwrAaEDVVMkNdP2EXxF6LBprc5seJipJfUeP9wyCNPkkZUuol0hYWqGq84bPY7Zty+
+	6s0HVXAFWQAInMro+/FmSGy96VnLLhiHx5cqxjSYNtYthg25/0MKyf/ClMuTOLc44Cbs6K
+	9wO64bzxnlPzfSsYL3qjJook+W4Un9Y=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eORwWv8x;
-	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nQIpRZVj;
+	spf=pass (imf11.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773688033; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773688036; a=rsa-sha256;
 	cv=none;
-	b=sWjl3fqQJNUa/vLAD47X8zvXn1L6HBBaU3sOd9nup72TkABa4BrsWOtAJTdfQ0Beait3GQ
-	Jh2iZfWAayd3wV3dVobQuYGQDcDTgGNl4z+FxsIHqFF42U+/b3yhYjN1twGmBQNxfuULkw
-	KzZFqnqYgkXrkCSKyzXtN1C1t8A/BMg=
+	b=JHDmVy3tq/FBJdow5e8LBmWEshKYrCyxyoRiZEc0UJcw0v8gffHKX6Z+lI9AQHQ5aqEBbE
+	4QJsdofrwVVMLVRFtKl0afEPB/qkn3I/js1MkoUpUgdXuH/1BK+8cfPMbEly1si6jSG1pB
+	TznHv72Me3cP+ZG2X4jsxCcO/SBABX0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5A3B60123;
-	Mon, 16 Mar 2026 19:07:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69441C19421;
-	Mon, 16 Mar 2026 19:07:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C0776012B;
+	Mon, 16 Mar 2026 19:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486BAC19421;
+	Mon, 16 Mar 2026 19:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773688032;
-	bh=Rb7pGPHPDn2aZQQvadJE9PAK4yDKeRrpgUBQyVOU34k=;
+	s=k20201202; t=1773688035;
+	bh=Y7IxYgFPwpNVvKXeK9nR1uoDv1sEB/976av/0RuDIXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eORwWv8x1cSy0UTUY8pVtv6G5sqwmV0rxH/aGmPhbh0bWAxBsej4fo5VDd68Il4++
-	 hSYt5om9TSoqUauXYHFaGrdOW+kf/bzoE70Xzal7ZYyl5jQ/FURjLyc8PcCW2WxHTd
-	 FSAjy0UIc3Di5O2m1x7k0wQF+fX5vai5me6X+KrjSId8BW/F3dpqlNcwHQQavmEJpv
-	 BR9Ik00Blyvb1glcJA1JiuYR/P8y/qNj8YfYPhExnVTuQ4MS3BWu8c8rbZEyCpseoF
-	 Q8v7CqGGksF626+8TaK9Oi9x2zWNfVb3ZIKRehMXFgWnucvXYKOvQU6Z2I1KOaJTxY
-	 VsL14Ps2mhNzA==
+	b=nQIpRZVjrncGcv6d61BCi0UIP3qGV+iU9yUSpZ6PURLBwRW7JYFCHFMYWeHe4GRIf
+	 67NzuI4t53eJ9xpRRZFfeEOPe8Es5onXjA3FLT+wVEbm5aWunQunwM+Wo9mlmv6XCQ
+	 dBr7Hn4O/6PSBLZz3JYlNc+m6yvDDz4JU2hIZH2IXfM+TusARyzUz0q9S+VWzUShC3
+	 oVxc482tMyBwhbuiiu2S/D5giAKlSCRt6DEryHmlrEhBu0hsfKZSE/9RgYFaICUi2p
+	 p8wemyHg4PTBEkUgVHopxGVm2DagRESjBhEIyJPoPhx7ObOrygks54kKAjC4oMGbv1
+	 +Bc4Q+rFSZQ5g==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>,
 	Robin Murphy <robin.murphy@arm.com>,
@@ -89,9 +89,9 @@ Cc: iommu@lists.linux.dev,
 	linux-rdma@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 1/8] dma-debug: Allow multiple invocations of overlapping entries
-Date: Mon, 16 Mar 2026 21:06:45 +0200
-Message-ID: <20260316-dma-debug-overlap-v3-1-1dde90a7f08b@nvidia.com>
+Subject: [PATCH v3 2/8] dma-mapping: handle DMA_ATTR_CPU_CACHE_CLEAN in trace output
+Date: Mon, 16 Mar 2026 21:06:46 +0200
+Message-ID: <20260316-dma-debug-overlap-v3-2-1dde90a7f08b@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
 References: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
@@ -99,14 +99,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.15-dev-18f8f
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C92D120011
-X-Stat-Signature: jb57ou7z3ompjagpbs16ups3tsxa8zhs
+X-Rspamd-Queue-Id: D4BCE40008
+X-Stat-Signature: xje5ojhx5gnpf8i4g15banketitwkfuq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773688033-714611
-X-HE-Meta: U2FsdGVkX18EzmC8vFJeS+HajTJX75M2Lv6g/ihCSSNUKnAhk5R/w9Ry2Yd9VFrx4mwCFq8aN1vEh0qhFGYHlPleZlmzaBjcZqUAwC7P5+O+6XhXqLCNYOlwXkgDfTlqhtG4aSTjNwTuX7T33Y9mH/bMroN40+R/EVG0HKnLi2i0o0k9He+f00MFBNjLJ/hsiueBJ55tRUz7TSI9IWiabgHs0OnKGTeHmFSOkJpvcx2oAr9XpK9NcUPSYluKK9qzZBNEnri+9gj3TKNq0aFocivElw9y68WBGlFZVPc64D6iu6XqTiKq/n/2iz8Iaeta/XIzJurfrWD5FXziN8//lrTea3QH605Z2i17Zr+jgmvp4U9mbWV7pbbtS60wwcxbHGLUZO2sA5mLJFRtPGc4AC5g2zSs71nGs7m8hsR17/Asl67X9uXRh4bL7nKj0EixIZ/cy17/8+NCP8s6KX2W3rwsIXt4Va8lZsXZJhSK8Gfs0S+YVXeQo17JzhcsKIY5pUvx+6mZjDxG53KX3yYUp7nWVPVeRkeF4+uvx3tR99o2/zT/dZqD/jusJVzONFHpRis7LN6pm2k3bSM39dorrQsnIVzAvVKiJAIkC+WWEsb42YFtjCQPPkRxf/lTR8dW6jMt0piIpm2KOJXu+qtsrn+qfxJssEQyXxL6kinaG7JX5urQx1OubwYRJOVtq4OEjHZ+GYvp65RFvawYixOoutB28pl/zGHycJ9cD6taHmEhbzUA/ESfhYa58s9aUw0om0AzNG6MWv8Dhgmb8g+SRMPb9NfK/hFqyEk/16MRa/ReJypHzhpJ6tRBuwR7YXj1ad2tpMxc6x3JmQlAGcB8AP0kauR6YJaUvdZWyhsWGSeb60wJ2nLGVGd70QxiAjcyT26MOz98orS/ZHowmTA7i5bUdaGyVjV5btNqOcoSQdWwbWPb27vL5pasVT/Gra+NFIu4lyDdREMhJRIz56x
- Hfl7YES9
- as5iQDEVbE5Uj8f4OOxTS4HMeHCraxCE9CCtM+uWI23D91Fmr3Qj08rsfsBOax8KLLAYdW2bL+OAegZse6MEhO9fyGX3IerhWCsMZuPvZu+iTeT3Hat7q3IVRurzrgFyBi8N6ehJ2CEUSh8SQAICai2E8XG5y/BHBzK2u9emiYQ0gnVNQsn88ZTSZNZfCVolK0CD9DnK7w8m9+5Qbg7Thyvdg8QMqJ9CHOMI50dUAuvPKqKSaMh+2NQjBuAcfaWJG5Y4o0I+gECPlVYI=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773688036-124322
+X-HE-Meta: U2FsdGVkX1/cm0DvgkzxqzfR2H1lBKc0AS5OE94rBA1I1UzwxJsG54vV+OX+Umm/RtgqXiq5t5mrx/5rl1PabDV8bRiOJRPBG4q8htyMLHisHC8cYVkjYL+pwgcuAXsoXKHeeuNJGJV4m2hTKOklwqnPS1ZNT7iBFXoFdrRkszqhxF/kea03o3CgEfBECwmJBEzzTUmB0sLeqV2/MujWSXRfPQSaJDU5J8BMeN4NTAXzrzVmhW2+I4vs94MnJ3kZy9e5Vfa6Rs/jZCAkRJSyNP9uquZ1ullTinW8Hr8l5GOvMe2i/9E1pYP/x2RhbJFJ2j/E2/T02oQ5UJnfA/wdK9utFmKT5m6fK3DeQ9E1Arc68bVAr6lEjwghX7V74l9aJY+SK1q/50gdG4HCtnqIk2+HoQ6QwVm7hdSIZAQ4hHnzPdrX043nzpVonxb/H3dnU0AjHSAaGxnEQxxh0F8D+dyf89YI+R+YOS6ITxTuG27/V5EX+j5JgHGtq5WYC4wQN/STb8WiXy7DCyUmRscbPjTP4YNSrOp09tlCQhaYaoW/6hYK2aFjhwNrbK80HF6ysenozb3XjcTzgNDnbTng7k7UkvqXghXWnbC8QD/Qeb1sweOqZeRedmS+5qxZi71ziv3Y+WgaFtUW0zEpTouNJUqx4z9KgN9f46N4QQOSXHtdHfvLrxvf1J/22iKK+QXQF3San4eX85H6NcoE5ipCUGYj813wX+fraHxY06ueSXjTljkmPCzFmykrxTuCRzlukhG9kB6tgGoCVDEgDAtGt5PZwPPM8QcYcdhimkeH4CIPMYk+v+9gpHzUBYbopBCZZiXhgSG2/cBRUVWN8TmBrC9NwZK0avGXpB6RRredjdNjMsD423CRchJV1toPoPryReiAO9ZjdgUSYdqZqyzH3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,93 +114,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Repeated DMA mappings with DMA_ATTR_CPU_CACHE_CLEAN trigger the
-following splat. This prevents using the attribute in cases where a DMA
-region is shared and reused more than seven times.
-
- ------------[ cut here ]------------
- DMA-API: exceeded 7 overlapping mappings of cacheline 0x000000000438c440
- WARNING: kernel/dma/debug.c:467 at add_dma_entry+0x219/0x280, CPU#4: ibv_rc_pingpong/1644
- Modules linked in: xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay mlx5_fwctl zram zsmalloc mlx5_ib fuse rpcrdma rdma_ucm ib_uverbs ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_core ib_core
- CPU: 4 UID: 2733 PID: 1644 Comm: ibv_rc_pingpong Not tainted 6.19.0+ #129 PREEMPT
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:add_dma_entry+0x221/0x280
- Code: c0 0f 84 f2 fe ff ff 83 e8 01 89 05 6d 99 11 01 e9 e4 fe ff ff 0f 8e 1f ff ff ff 48 8d 3d 07 ef 2d 01 be 07 00 00 00 48 89 e2 <67> 48 0f b9 3a e9 06 ff ff ff 48 c7 c7 98 05 2b 82 c6 05 72 92 28
- RSP: 0018:ff1100010e657970 EFLAGS: 00010002
- RAX: 0000000000000007 RBX: ff1100010234eb00 RCX: 0000000000000000
- RDX: ff1100010e657970 RSI: 0000000000000007 RDI: ffffffff82678660
- RBP: 000000000438c440 R08: 0000000000000228 R09: 0000000000000000
- R10: 00000000000001be R11: 000000000000089d R12: 0000000000000800
- R13: 00000000ffffffef R14: 0000000000000202 R15: ff1100010234eb00
- FS:  00007fb15f3f6740(0000) GS:ff110008dcc19000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fb15f32d3a0 CR3: 0000000116f59001 CR4: 0000000000373eb0
- Call Trace:
-  <TASK>
-  debug_dma_map_sg+0x1b4/0x390
-  __dma_map_sg_attrs+0x6d/0x1a0
-  dma_map_sgtable+0x19/0x30
-  ib_umem_get+0x284/0x3b0 [ib_uverbs]
-  mlx5_ib_reg_user_mr+0x68/0x2a0 [mlx5_ib]
-  ib_uverbs_reg_mr+0x17f/0x2a0 [ib_uverbs]
-  ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0xc2/0x130 [ib_uverbs]
-  ib_uverbs_cmd_verbs+0xa0b/0xae0 [ib_uverbs]
-  ? ib_uverbs_handler_UVERBS_METHOD_QUERY_PORT_SPEED+0xe0/0xe0 [ib_uverbs]
-  ? mmap_region+0x7a/0xb0
-  ? do_mmap+0x3b8/0x5c0
-  ib_uverbs_ioctl+0xa7/0x110 [ib_uverbs]
-  __x64_sys_ioctl+0x14f/0x8b0
-  ? ksys_mmap_pgoff+0xc5/0x190
-  do_syscall_64+0x8c/0xbf0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7fb15f5e4eed
- Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1a 48 8b 45 c8 64 48 2b 04 25 28 00 00 00
- RSP: 002b:00007ffe09a5c540 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
- RAX: ffffffffffffffda RBX: 00007ffe09a5c5d0 RCX: 00007fb15f5e4eed
- RDX: 00007ffe09a5c5f0 RSI: 00000000c0181b01 RDI: 0000000000000003
- RBP: 00007ffe09a5c590 R08: 0000000000000028 R09: 00007ffe09a5c794
- R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffe09a5c794
- R13: 000000000000000c R14: 0000000025a49170 R15: 000000000000000c
-  </TASK>
- ---[ end trace 0000000000000000 ]---
+Tracing prints decoded DMA attribute flags, but it does not yet
+include the recently added DMA_ATTR_CPU_CACHE_CLEAN. Add support
+for decoding and displaying this attribute in the trace output.
 
 Fixes: 61868dc55a11 ("dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN")
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- kernel/dma/debug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/trace/events/dma.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 86f87e43438c3..be207be749968 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -453,7 +453,7 @@ static int active_cacheline_set_overlap(phys_addr_t cln, int overlap)
- 	return overlap;
- }
+diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
+index 33e99e792f1aa..69cb3805ee81c 100644
+--- a/include/trace/events/dma.h
++++ b/include/trace/events/dma.h
+@@ -32,7 +32,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
+ 		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
+ 		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
+ 		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
+-		{ DMA_ATTR_MMIO, "MMIO" })
++		{ DMA_ATTR_MMIO, "MMIO" }, \
++		{ DMA_ATTR_CPU_CACHE_CLEAN, "CACHE_CLEAN" })
  
--static void active_cacheline_inc_overlap(phys_addr_t cln)
-+static void active_cacheline_inc_overlap(phys_addr_t cln, bool is_cache_clean)
- {
- 	int overlap = active_cacheline_read_overlap(cln);
- 
-@@ -462,7 +462,7 @@ static void active_cacheline_inc_overlap(phys_addr_t cln)
- 	/* If we overflowed the overlap counter then we're potentially
- 	 * leaking dma-mappings.
- 	 */
--	WARN_ONCE(overlap > ACTIVE_CACHELINE_MAX_OVERLAP,
-+	WARN_ONCE(!is_cache_clean && overlap > ACTIVE_CACHELINE_MAX_OVERLAP,
- 		  pr_fmt("exceeded %d overlapping mappings of cacheline %pa\n"),
- 		  ACTIVE_CACHELINE_MAX_OVERLAP, &cln);
- }
-@@ -495,7 +495,7 @@ static int active_cacheline_insert(struct dma_debug_entry *entry,
- 	if (rc == -EEXIST) {
- 		struct dma_debug_entry *existing;
- 
--		active_cacheline_inc_overlap(cln);
-+		active_cacheline_inc_overlap(cln, entry->is_cache_clean);
- 		existing = radix_tree_lookup(&dma_active_cacheline, cln);
- 		/* A lookup failure here after we got -EEXIST is unexpected. */
- 		WARN_ON(!existing);
+ DECLARE_EVENT_CLASS(dma_map,
+ 	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
 
 -- 
 2.53.0
