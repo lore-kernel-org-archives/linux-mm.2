@@ -4,105 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3AD2F506D9
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68494F506E1
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:52:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 336966B02C7; Mon, 16 Mar 2026 10:52:02 -0400 (EDT)
+	id D24606B0290; Mon, 16 Mar 2026 10:52:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E4E06B02C8; Mon, 16 Mar 2026 10:52:02 -0400 (EDT)
+	id CCDEF6B0295; Mon, 16 Mar 2026 10:52:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BCCB6B02C9; Mon, 16 Mar 2026 10:52:02 -0400 (EDT)
+	id BFABF6B0297; Mon, 16 Mar 2026 10:52:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 059A96B02C7
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:52:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9AE9139FED
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:52:01 +0000 (UTC)
-X-FDA: 84552216042.29.E2ECD98
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B06246B0290
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:52:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 686C51602A1
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:52:28 +0000 (UTC)
+X-FDA: 84552217176.16.EDCF9BD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 08A86180006
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:51:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tSLnPF1F;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id C6DBB160006
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:52:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DfW4y7ce;
+	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773672720;
+	s=arc-20220608; t=1773672746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EpksEdxY9oQ6JN80m750ax4PtMoi0haCKsF/4lQ7uL4=;
-	b=H7/tqqC1+sYQ52kaTQ7nxpwnTelCyL5NWOh73Jy/3FPCWnFSLNwCKZ2wzYV4PPLclccm9O
-	ZgmvszJHfn8OByj9gn3goYNiQ28wxkH3VLDXahuyLlXoCSk+/1svqjLAeFMVZ+IfTrhXWK
-	Re0zXiUJJLZ0B0mGFEkOD3uvEtw2r1g=
+	bh=FjHe2iOqzL91ck24fpCm+amCgHyF9ndcvZKMTH4bccs=;
+	b=ewEIFEAyFnpUI74QzDok2noL23gOPM4fsjGmq6KrXjTovwnH/cCIjOdc0TmbGYwFk2xAgf
+	hf8jwDJyNx8oqP3PJjuthYr+VdHCwYJbfRSXz/3mXOG3z+Ald5QPCJSPSqo5yNv5+bBUhq
+	/M2nQ4doXpCQ4EVF7iMgiub2fGF7Nqg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tSLnPF1F;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DfW4y7ce;
+	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773672720; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773672746; a=rsa-sha256;
 	cv=none;
-	b=LcCskAmmw0jTCaHaUcThFd25LvF6i7Wfcg2n52QICS3S+F0NIULEKE9h0MOOQtMRloChdM
-	fDzl9A8nkE5QUE6aAtmqx2swoKLTfaUmsP5QCxAVwSEPsjx1jph20fC+qciklD5z/gLoeL
-	LEu9vgvwmdsb5k6Vovj4DZGxXHhcsoY=
+	b=da392CBu+ftBygmyjNmLXVQI348acWuape1IPIcHzPhbEeuBm1eeitFoAauscIy33f5L1r
+	Ka/tBC0FCBLBjBsvJosVALvP2xDrmKcRU958HC4DKyz8n/JF4yWfdVraGU78SZCg7FshG1
+	jPDceK8YQmPTU1oYrWY+ZB5rA3WahFc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2896260123;
-	Mon, 16 Mar 2026 14:51:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB72C19421;
-	Mon, 16 Mar 2026 14:51:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4976A600AD;
+	Mon, 16 Mar 2026 14:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74D3C19421;
+	Mon, 16 Mar 2026 14:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773672718;
-	bh=KIRMkEs2ki4Q4dp6M/GOhb93ujwUaNLq8lzChwMmjn0=;
+	s=k20201202; t=1773672746;
+	bh=nXa/crsZunzyPoYFm5OwusAkjLu41BbPXctb3NCGNNc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tSLnPF1FQGukX0jNpyUPpw39RNpf5reYLO7x3EfolXRfSyklFjmya7iBIUL9cYR6P
-	 03ZQOFOVkIRw02GeRSmaaZYbqDhPig/hYez6AG/QQcB6PIpP1NgYdwb2UyqLlLW8iw
-	 xUqt4NFyQEpDdvNYzd7D140Zjk7FrDTOTJkLe0vutUmzUAeVv2IEcNlfeMcAvkPVaM
-	 JQNf8HpqT3Lstxvxat/f9kXEENmcKZ8Ntab7TkVbAmfxGz8pl03oD9b+QUUc8+zciP
-	 F7uXVlaQGF7zb+pS6vO6CMdBKRn645sD50BB1GRswzWJvFb4E88gqDAtEdIxjhTHlA
-	 ZD/322/wk5nBA==
-Date: Mon, 16 Mar 2026 14:51:47 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
+	b=DfW4y7cetHIXd5DCFdCHyjUkLHw9LwgdUVV78AtJvz8zsz40mkyVR5D1LWvPNsrH0
+	 +qB0jmsQut4TQ3jvWrrQu7KYlmwbpEAtY+Prx4Q/y08727ihuYMhjyPgS2TztiWN6E
+	 N3W5LLxJyZuv7yYyqJkmU3NrvIw+GPjbCu7OEXHHU3RwNdwrfN9YKWP7nkgWICj4GM
+	 ZeBccBEWeQb6OJC8DraTxtFSQA8X+aKoeGZvfc9fIMOfJqumD+/KfRXMPmwdCJDA9E
+	 JFw5mlJ+stGcbGNWHWIsmPHu6mJ3ozJX8FBRi3F8AhoezyMCgI6zJiMskCSmCdFM7D
+	 rcEHikoXEIVQA==
+Date: Mon, 16 Mar 2026 14:52:24 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
-	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, linux-staging@lists.linux.dev, 
-	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-afs@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH 02/15] mm: add documentation for the mmap_prepare file
- operation callback
-Message-ID: <0eeb2bcb-3ee1-47cf-a5ee-45eb0038ec67@lucifer.local>
-References: <cover.1773346620.git.ljs@kernel.org>
- <c5bb61cf789df1ecb32facc29df9749987c7ddfc.1773346620.git.ljs@kernel.org>
- <f0e33b51-d465-462d-b0f6-98a1db66bb15@infradead.org>
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
+Message-ID: <abgY3RNYj7WrYYnq@google.com>
+References: <20260316140122.339697-1-ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f0e33b51-d465-462d-b0f6-98a1db66bb15@infradead.org>
-X-Rspamd-Queue-Id: 08A86180006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9qbnwadu9xmemskerwyrowusg1myx7aj
+In-Reply-To: <20260316140122.339697-1-ljs@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1773672719-499187
-X-HE-Meta: U2FsdGVkX1/eYb6Q2RhwO4layTd2CXxWX5K3t+691ZgiWe66iKviysnjOz4SfPV1mXvciKXIML9WY6cpyt3X3JeiKYIRMto1t/b+pIrT3GLTvG94RaLNB4+/rp0gQxuLE7JzsDuqQpBoMrojFk22KBKEsUSxhZt9D3CKIrt/sjDi6p5Y3a6nXLjxZngLr41U4Rt0RsCEldaDPQ1N8bRYHSnccV/N26NEPrxs/FiOL++ve1MeCK7oY6KE3H6q2bZjl9pzYKkpk/coyucq5ZhOJlCvdGWj6cghb+MhEa3Q6vqoPN8Te5XPspE1A8cfwmXfW545D14v1An6CaISli0Ww0EVr80YJTa/QD3VI7zdZD5sO/Cep/n0TIFrJXIZJd8Xe1Zga88cIUMdQ5UVtJpItcLzvvuQqCQSwYs3nYskUkiP4Rzk8CLJ0+zmSo00DNfnVOqn/zSP7A+AuGywuXGq7xVcE7et91FQugARc8NesTsnxTVWdSdz+/57gHZnWHbkbAnCZezn9PXKM6VxAoYt+YpgDfys88NUvmH9bGzvX5zzjiMfkqupmC554UR4sP34jw81IBsW892FB/YvryQa7i2fV9c8vfORNWnDzSJ5Ww2W42q3K7hL0BV0BJ1UqIP4gNDwhvPkvok07uastyTj0EcV/75XDiI7UHee1zhQgHDIsrV3F9wsjRpwX5th7rv7yoA3gSE0DCp5JeCBbYIviJ8BI907dar5DrZDxENGwiT8uC2/HIi5p6TOve/mvaBdMwNOdzr5dzIHUZoeyB7mkTKxur4QUMuR5d7h95BqMhn5xaj0XPjtIdZhqgSJsqpWGeRlQgPjbwljq62LoD1zLX5W1VfN9NkC71+Q3uiYd6h+1jYp56biplpMf8xI8RBo+JxJdNIcRRRYpKRv3Dta5EkhNKViXrPnw8WeOUVItEMGR5kgrI6eV46TiItq6PMTyeNWYvYRy/zynGMjfLW
- w5PjlyNj
- 55AqaC1g5RRaAqLHr8lVVxxVrwT3FkX7sV35yjb4VYmImHpfEklU9Ve7FK+1eUsqYBeELnr4dXTUlKwMsxdrUB0bhRwnZhSimNgDYrAqnZD+f8NR8GMz83Ddi1lu3HhgDVFp6PmlvE0BYQ2W+5CKa4RjaVo5vGgLZn18WBl5aWaI3O+seczjAWPKibkGJI4MD9Op6SsvQGzylLbqtYYn84aMEx1U2y+hgqElMmQGrqlblj9QupXEzMoway7oKUPt2KrhFt7Dc84bzL+U5VlfQrFdl07CkeCGC9R8Z/tmU9myytyUh9wG56jKnNm/apXMxeEZLFhdXVnqdNcY=
+X-Rspamd-Queue-Id: C6DBB160006
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 64fbkp717wri1paqgrwt86usd4ohw5ne
+X-HE-Tag: 1773672746-73607
+X-HE-Meta: U2FsdGVkX18wU7Az0TqzItxgOC0TluJCJwzOKB7djO5w04CN6WLiJfJt4fdbB2ikp8ZhDAhnnM6Tenb2cobc7eDddkTZKEQGeTWDeSdnjW4x5R/dU0DZ1fqKRH+gCJC70yMSw9viBTeiUMdnvG6rkl61tuT4bwgk3gZM6iWNLEaiyVO5HcCy3kW7DIaDSD07j9rrgMmfqbaPFxmdwtjmMMdY/YMi3SZ3DWSsHvSSBEZ4yjwDJe46SGC1+zkMiyce8db6gyl4bz7JB9z5InNuOnFPz34AHSSl117UruBJeKDuk3XtyUCXIEaRN/IDJw2Lfe1RVDSRjAnFsk0Xnqh6Q09JhReZksXlnzyB+Cr/3/ZfeqgERGekUHS9npcf/Vykx56FljIumAiLkPh/nhhxeYPsi0PpAlpoHFKcbaDXROxWJp2Im5X4OVhBmjzwGHf6VxnV46MlVlbDpgp8cNR/TjzLqCD1Uet4yRyqXvAr68lnEmu4xgAPQ3DCH/PF1n81HN5DOTTuGlPBJHKy2wmkpNFV/tI5l8V6nycpM/V71ppc1ysX2HuKRH1oe1mZ7fUY9EeSkkPH6QOVCCnnDZcukaBCB/FrqYa+C7fGx0q89iqg587DCivlZR9WY6N8dqGiSzXLx+Qj15FYi6OlyKQZ+Jvvn4CCWKGobsj289sIQmnU+GmTSYgW12tQ9D7i8GQ401+cQDg6BEyBSjHp8pYjChdhORoF6XNwWbwb4089J3rBljz3hkVl0MjmaQSSR3INOSfdTp6YQcGa5bvdtQGS38SpFg+xT2U/MLTay82K3GmRE1qJnjGeXS/2LJoNVH9sKY+FZL055FsFDzimdqlK7ejTMKhdSoVHVdy5ZX/WC1q+p01FVFGHua6TR8k+Gpaj8dPavBvUTacdZsPbfBpJ2onOB56TpIrmCQcdpFNVk5l3IJgd2fXrdfW/W2GD2uhRIeDYMYjP0BkcoTjFTv0
+ XfiujkYd
+ mftK+ypicjUcUONAWpl9Rn4qa3EDIFkS3KcaAjVtqF3qsy9SwojgIiLQhWzOtisiCmhkYoYpwFnNn0Na3yYQ1dfBunEBVeUCAxaIgEih0vi65Y9VDQWu0lnOg91fxWDByH7NWEuAG1zzwrsa0t/I2oLh7yqH4FMJHVf+LfMUpnOfTfX6JZTCjMeMzj4swYJSsfHSMDROPLges97iWNRACZeakvsA1mg6TyUAvu+eL5ZsVHWJYVYjlnnxavhlsuNBwS07Myoco/2U/k+t/5d0oFTbABd3F7/mh0yprNYW2ZFQV30XEwV985lKNw0znYpoKnzvQ7OoB5FMxK6hiS8pF4hkFUF0Mbc3fNDvr5JbVw2Z7kWvp4gcQk8YH1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,211 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 12, 2026 at 05:12:04PM -0700, Randy Dunlap wrote:
-> (Andrew: patch attached)
->
->
-> On 3/12/26 1:27 PM, Lorenzo Stoakes (Oracle) wrote:
->
-> Documentation/filesystems/mmap_prepare.rst: WARNING: document isn't included in any toctree [toc.not_included]
->
-> Should be in some index.rst file. In filesystems I suppose.
+On Mon, Mar 16, 2026 at 02:01:22PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> Commit e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from
+> zsmalloc") updated zswap_decompress() to use the scatterwalk API to copy
+> data for uncompressed pages.
+> 
+> In doing so, it mapped kernel memory locally for 32-bit kernels using
+> kmap_local_folio(), however it never unmapped this memory.
+> 
+> This resulted in the linked syzbot report where a BUG_ON() is triggered due
+> to leaking the kmap slot.
+> 
+> This patch fixes the issue by explicitly unmapping the established kmap.
+> 
+> Reported-by: syzbot+fe426bef95363177631d@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69b75e2c.050a0220.12d28.015a.GAE@google.com
+> Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsmalloc")
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Ack thanks.
+Oh thanks for catching that, not sure how I ended up doing that tbh..
 
->
-> > ---
-> >  Documentation/filesystems/mmap_prepare.rst | 131 +++++++++++++++++++++
-> >  1 file changed, 131 insertions(+)
-> >  create mode 100644 Documentation/filesystems/mmap_prepare.rst
-> >
-> > diff --git a/Documentation/filesystems/mmap_prepare.rst b/Documentation/filesystems/mmap_prepare.rst
-> > new file mode 100644
-> > index 000000000000..76908200f3a1
-> > --- /dev/null
-> > +++ b/Documentation/filesystems/mmap_prepare.rst
-> > @@ -0,0 +1,131 @@
-> > +.. SPDX-License-Identifier: GPL-2.0
-> > +
-> > +===========================
-> > +mmap_prepare callback HOWTO
-> > +===========================
-> > +
-> > +Introduction
-> > +############
->
-> Kernel style is "=============" above instead of "############".
+Anyway, LGTM:
 
-Ack
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
->
-> > +
-> > +The `struct file->f_op->mmap()` callback has been deprecated as it is both a
-> > +stability and security risk, and doesn't always permit the merging of adjacent
-> > +mappings resulting in unnecessary memory fragmentation.
-> > +
-> > +It has been replaced with the `file->f_op->mmap_prepare()` callback which solves
-> > +these problems.
-> > +
-> > +## How To Use
-> > +
-> > +In your driver's `struct file_operations` struct, specify an `mmap_prepare`
-> > +callback rather than an `mmap` one, e.g. for ext4:
-> > +
-> > +
-> > +.. code-block:: C
-> > +
-> > +    const struct file_operations ext4_file_operations = {
-> > +        ...
-> > +        .mmap_prepare    = ext4_file_mmap_prepare,
-> > +    };
-> > +
-> > +This has a signature of `int (*mmap_prepare)(struct vm_area_desc *)`.
-> > +
-> > +Examining the `struct vm_area_desc` type:
-> > +
-> > +.. code-block:: C
-> > +
-> > +    struct vm_area_desc {
-> > +        /* Immutable state. */
-> > +        const struct mm_struct *const mm;
-> > +        struct file *const file; /* May vary from vm_file in stacked callers. */
-> > +        unsigned long start;
-> > +        unsigned long end;
-> > +
-> > +        /* Mutable fields. Populated with initial state. */
-> > +        pgoff_t pgoff;
-> > +        struct file *vm_file;
-> > +        vma_flags_t vma_flags;
-> > +        pgprot_t page_prot;
-> > +
-> > +        /* Write-only fields. */
-> > +        const struct vm_operations_struct *vm_ops;
-> > +        void *private_data;
-> > +
-> > +        /* Take further action? */
-> > +        struct mmap_action action;
-> > +    };
-> > +
-> > +This is straightforward - you have all the fields you need to set up the
-> > +mapping, and you can update the mutable and writable fields, for instance:
-> > +
-> > +.. code-block:: Cw
->
->    .. code-block:: C
->
-> Documentation/filesystems/mmap_prepare.rst:60: WARNING: Pygments lexer name 'Cw' is not known [misc.highlighting_failure]
->
-> Maybe a typo?
-
-Yeah is a typo thanks!
-
->
-> > +
-> > +    static int ext4_file_mmap_prepare(struct vm_area_desc *desc)
-> > +    {
-> > +        int ret;
-> > +        struct file *file = desc->file;
-> > +        struct inode *inode = file->f_mapping->host;
-> > +
-> > +        ...
-> > +
-> > +        file_accessed(file);
-> > +        if (IS_DAX(file_inode(file))) {
-> > +            desc->vm_ops = &ext4_dax_vm_ops;
-> > +            vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT);
-> > +        } else {
-> > +            desc->vm_ops = &ext4_file_vm_ops;
-> > +        }
-> > +        return 0;
-> > +    }
-> > +
-> > +Importantly, you no longer have to dance around with reference counts or locks
-> > +when updating these fields - __you can simply go ahead and change them__.
-> > +
-> > +Everything is taken care of by the mapping code.
-> > +
-> > +VMA Flags
-> > +=========
->
-> and then use "---------------" here instead of "==============".
-
-Ack
-
->
-> (from Documentation/doc-guide/sphinx.rst)
->
-> > +
-> > +Along with `mmap_prepare`, VMA flags have undergone an overhaul. Where before
-> > +you would invoke one of `vm_flags_init()`, `vm_flags_reset()`, `vm_flags_set()`,
-> > +`vm_flags_clear()`, and `vm_flags_mod()` to modify flags (and to have the
-> > +locking done correctly for you, this is no longer necessary.
-> > +
-> > +Also, the legacy approach of specifying VMA flags via `VM_READ`, `VM_WRITE`,
-> > +etc. - i.e. using a `VM_xxx` macro has changed too.
-> > +
-> > +When implementing `mmap_prepare()`, reference flags by their bit number, defined
-> > +as a `VMA_xxx_BIT` macro, e.g. `VMA_READ_BIT`, `VMA_WRITE_BIT` etc., and use one
-> > +of (where `desc` is a pointer to `struct vma_area_desc`):
-> > +
-> > +* `vma_desc_test_flags(desc, ...)` - Specify a comma-separated list of flags you
-> > +  wish to test for (whether _any_ are set), e.g. - `vma_desc_test_flags(desc,
-> > +  VMA_WRITE_BIT, VMA_MAYWRITE_BIT)` - returns `true` if either are set,
-> > +  otherwise `false`.
-> > +* `vma_desc_set_flags(desc, ...)` - Update the VMA descriptor flags to set
-> > +  additional flags specified by a comma-separated list,
-> > +  e.g. - `vma_desc_set_flags(desc, VMA_PFNMAP_BIT, VMA_IO_BIT)`.
-> > +* `vma_desc_clear_flags(desc, ...)` - Update the VMA descriptor flags to clear
-> > +  flags specified by a comma-separated list, e.g. - `vma_desc_clear_flags(desc,
-> > +  VMA_WRITE_BIT, VMA_MAYWRITE_BIT)`.
-> > +
-> > +Actions
-> > +=======
-> > +
-> > +You can now very easily have actions be performed upon a mapping once set up by
-> > +utilising simple helper functions invoked upon the `struct vm_area_desc`
-> > +pointer. These are:
-> > +
-> > +* `mmap_action_remap()` - Remaps a range consisting only of PFNs for a specific
-> > +  range starting a virtual address and PFN number of a set size.
-> > +
-> > +* `mmap_action_remap_full()` - Same as `mmap_action_remap()`, only remaps the
-> > +  entire mapping from `start_pfn` onward.
-> > +
-> > +* `mmap_action_ioremap()` - Same as `mmap_action_remap()`, only performs an I/O
-> > +  remap.
-> > +
-> > +* `mmap_action_ioremap_full()` - Same as `mmap_action_ioremap()`, only remaps
-> > +  the entire mapping from `start_pfn` onward.
-> > +
-> > +**NOTE:** The 'action' field should never normally be manipulated directly,
-> > +rather you ought to use one of these helpers.
->
-> I also see this warning, but I don't know what it is referring to:
->
-> Documentation/filesystems/mmap_prepare.rst:132: ERROR: Anonymous hyperlink mismatch: 1 references but 0 targets.
-> See "backrefs" attribute for IDs. [docutils]
->
-> (OK, I found/fixed that also.)
->
-> There are also lots of single ` marks which mean italics. I thought those were
-> not what was intended, so I changed (most of) them to `` marks, which means
-> "code block / monospace". I can fix those if needed.
->
-> from the patch file:
-> @Lorenzo: ISTR that you prefer explicit quoting on structs and
-> functions. I didn't do that here since kernel automarkup does that,
-> but if you prefer, I can redo the patch with those changes.
-
-The issue was in another document it didn't seem to properly recognise the types
-AFAICT (but I might have been mistaken anyway!) But I'm fine without.
-
->
-> HTH.
+> ---
+>  mm/zswap.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index e6ec3295bdb0..499520f65ff0 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -942,9 +942,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+> 
+>  	/* zswap entries of length PAGE_SIZE are not compressed. */
+>  	if (entry->length == PAGE_SIZE) {
+> +		void *dst;
+> +
+>  		WARN_ON_ONCE(input->length != PAGE_SIZE);
+> -		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+> +
+> +		dst = kmap_local_folio(folio, 0);
+> +		memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
+>  		dlen = PAGE_SIZE;
+> +		kunmap_local(dst);
+>  	} else {
+>  		sg_init_table(&output, 1);
+>  		sg_set_folio(&output, folio, PAGE_SIZE, 0);
 > --
-> ~Randy
-
-Thanks for this, will fold the patch into the respin also!
-
-Cheers, Lorenzo
+> 2.53.0
 
