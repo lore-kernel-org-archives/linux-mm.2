@@ -4,110 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696DFF4644A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF03F46449
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9886B6B018D; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
+	id B3CEF6B018F; Mon, 16 Mar 2026 06:45:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 972F86B018E; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
+	id AEB076B0190; Mon, 16 Mar 2026 06:45:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874F16B018F; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
+	id 9CC996B0191; Mon, 16 Mar 2026 06:45:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7344C6B018D
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:43:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0EF011401A8
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:43:41 +0000 (UTC)
-X-FDA: 84551590242.01.F9F8311
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 49E994000B
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:43:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eYFgQzJF;
-	spf=pass (imf12.hostedemail.com: domain of 32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E9026B018F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:45:51 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32007C09F4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:45:51 +0000 (UTC)
+X-FDA: 84551595702.25.C5F25FD
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6F7DC140010
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:45:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DGjdmSK7;
+	spf=pass (imf23.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773657819;
+	s=arc-20220608; t=1773657949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aIsjm9vE54z8tUJ1wyvdDm1uLSUX2YtWlUueHA6I6BA=;
-	b=ad2ngCblACyrYfkyjfUaflClFVaBCj2CzVh4hjDZcwXKVyf/3HmL5Yw9AFUSCHgTacVIFi
-	LgirhyrJFVyFK11Dh06sYkufBRuONWo3KFeU/xHaCrwQD+8u5DwLxok1FRujwhE31zAojM
-	oyvE4HXf9Qvlp4834EP/ZpZm7U1w258=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ubW1SAZoUmH0bsB9ImpSqRcmDeexO/GRoosaLSx4hpI=;
+	b=xiFS2EiSXkVtrjL7khRRd6DPficG9mc3WZY6aPChSmeLF61T+XHKCExbWYUnKPzY3dtkoy
+	S3oJ8AFOvLjLJI/d6IUnX9+q3YjJy/wIcu2jtegl+iyHzEsEHGmpZcdvm0+9NXvyOrfH47
+	CAT04Ud3M7ozae3WpKDl3VvMVG3E2lI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eYFgQzJF;
-	spf=pass (imf12.hostedemail.com: domain of 32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=32d63aQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773657819; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DGjdmSK7;
+	spf=pass (imf23.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773657949; a=rsa-sha256;
 	cv=none;
-	b=uqnyeR7CH1o5OzedBCT6/yvrGXKR3PF6Pf8U/iNZQpsP7VOEpvaD1H2bhc4WVQ6upS7ct/
-	WlUbPXNIDkVA+5ewj1YemCLUSW9SijrBeoJ0TOD51qqioGLjM45rfTdZpvbD6tpQt3z80i
-	xYzq0d2mJrdWbJxxlFkBMLGvyN50hRE=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48544725bdeso57296365e9.2
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:43:38 -0700 (PDT)
+	b=J36tdLKZj7WPss583kfX9uTIlabu/9BQi5WpfRNaIFoB70hlfSH/ghkN+6x/5YJVkeEmn0
+	kz9meU1lNwqaKW6o/+JB6McoVvItFASBFx/NhCbXUgygsrLFj13TLiFq9tIAThop87b2tx
+	iR/KGHN6SMa63AtC/ir2lq42QY2YZSQ=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ad617d5b80so30941315ad.1
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:45:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773657818; x=1774262618; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aIsjm9vE54z8tUJ1wyvdDm1uLSUX2YtWlUueHA6I6BA=;
-        b=eYFgQzJF3TGrVDiN/m9vc5EMnBXQV+RvglT3Vnkmu5aOMKuD6di89inY7732UXRohI
-         t6f/eo/LEcCMK8CH+vAXhg/u7yI6+kGcjPolZxHkEyL3jNyDA6sq0PCLBmB017Phki+A
-         00UuT4nu99Y/shvQZFhSzpJaojed6WRH8y/NQzEBpvBMW9YcnoIZJbrSrQHry4IPmJw8
-         XCb6BHRknn4nI4XQ5lWx+BjF/QmdL1mHF1BMg/X+RDb/sSrbCSfNN9nVE8igGTleiA4M
-         ybxmalBM5vAnL478pWtEpBywXCTre/UXm/b3m4fxa1SrcO1pALUUkiq/g6Ur+Vu0/0BH
-         JDUw==
+        d=gmail.com; s=20230601; t=1773657948; x=1774262748; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ubW1SAZoUmH0bsB9ImpSqRcmDeexO/GRoosaLSx4hpI=;
+        b=DGjdmSK7mv/K2xjM0Yqw3pIOwBYmoybDQj1n4y47WuUwAttxIHPVScDtug5HAcvdxj
+         aT7ohpaWugxgRtyx4/q+HdJLo+vf4jRtI74acPvihfUJPuI/sO1evRK1cs3pHZTkYl+t
+         N5cgQrgrArd0KfHB/Y3mPcE+mtMKxSc4YK0IlsITGyQlgnUUCXMWwn+3EQEKXqpZI+gU
+         MbbyUz8as9aT3spLfvM8/x4G1UhHNsyfrho6ag0TOlymCFqdeypD4bW/OWTOeAPu2IYd
+         FhvxQjG9fk7i0YW1WvB3MNLKma+lPSauclvfek6+FJPdGI0CVqFbTzhHukRuCjdE+iHf
+         Rw4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773657818; x=1774262618;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aIsjm9vE54z8tUJ1wyvdDm1uLSUX2YtWlUueHA6I6BA=;
-        b=AyzEO4MGBnYFkVKlg2tBc5c5J/jXY4GJWkymDYV1NERoXdjO5uWoQZeU5PzKr15eCV
-         Q7/vY5Sfyjj/G0XYJxyJILClsvOQhzZbuhEA7wC/6e3Js/P4GMzLJJGhOmkTzBPMtfmF
-         KmUaDwebdMjZtV1qVFEYw90TrIWWrx3fuVeFkYKLgImEQ+d8vdPEIcl/WQhnWjAiSy5f
-         r6D1jBc5izluopzlLNuRDXtzlfD/gU3ExLUkpqF0i9X8vIph5uUHO5PzRy2wv6M3x0OU
-         ghFMXG43/Ir50ZeWWWPqR5PZlkK2XcGffV7sHgJ++jns2mfWNAzTWFGIzs0NBRk4hHhE
-         zobw==
-X-Forwarded-Encrypted: i=1; AJvYcCXkiCRrHEG8VySW2mouXuVrYGhn+C75EB+G3I56grh/rtpByDJaDIm7wh6aae7R4OXGWHIYesuaNg==@kvack.org
-X-Gm-Message-State: AOJu0YzcH+JiUMK9vjDJj9M+bLlnp+whJJ46sD4owPIQizS+yB6wtzfj
-	QTqVFkVMw8Nsg5wGHzfG5JxpicfTBs9oi2WraD/z/ncAFrCBkhyNfRxhl7kxOwxpKn/EFs+Y02y
-	WyE4t+MXCBLC5ZXX5sA==
-X-Received: from wmno9.prod.google.com ([2002:a05:600c:1649:b0:485:38ca:51c9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1e8c:b0:485:3e00:9440 with SMTP id 5b1f17b1804b1-4855670c296mr200273645e9.24.1773657817662;
- Mon, 16 Mar 2026 03:43:37 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:43:36 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
-Message-ID: <abfe2LbhLzXiGCkA@google.com>
-Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config option
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 49E994000B
-X-Stat-Signature: j5iu1cz55bjci6qtjyf4c64u8jhoncdq
+        d=1e100.net; s=20251104; t=1773657948; x=1774262748;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ubW1SAZoUmH0bsB9ImpSqRcmDeexO/GRoosaLSx4hpI=;
+        b=eVz4AZdJfWk+fe5sXazeVuzl84PDN838IXX9I41E+IYM1EEj8Ic6U8A8qL4906NcX9
+         GwWCxOZz3R1KGXzbT0wQGo6k/tyqoaEZFEvEtf4v6YaPD0BnlFR6aOqHZqaE4m9s22u0
+         xyA+XhmxwONyjuX1/8cfq6fEqpizwB6d2mf6rleYdoH0NRQL36yGQ4AxaoyzwLcOkqVO
+         P5Q9+YTjjFYIlU2pO66Yow0WgomL1DCoQqJw5HWxqBQFmOob0UTsnp5rRDZR0XMlS/lQ
+         iUzfo9Dt363A7xPhIQ5iNYVkcCPC08N1YkS9lLTh6gfww1q7NxiVzRZGHZVxYCXJ4Fxa
+         pELA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2AxZb2fylm6oDQQWYky4Sy1tm9+KKSM7qQKeL4FLwMz8bHY8pJbAHLq+uG2tVWPTEFQMMMq8vTQ==@kvack.org
+X-Gm-Message-State: AOJu0YydfbAK1HdhE9HGk9bMatK7lrvlH1b9NxHQZW8qPu5YaUEAfbNt
+	MjCkTutDRlblEh4PC3/ceoOaGSp0J18d2SyHLI7/W7VHVt7QhdQbCRxH
+X-Gm-Gg: ATEYQzze5GHCpBBJLL/oV2QzpN9J8O4XPxkpCufUWAwsfXPClS4B/yZXkvtnAQGPyV8
+	B9LyTksXT3U0mICDpj7mkrh422hVANuxAp0phpFbyDbFkFT4+S8n/22ju0yq89C+gx1CWcsJMQx
+	TnEtS0OxuZDQYM4vxOS5FPSkeat+mDIx8lUMVxrFoRkOT4lDwOghXpLzsha+QKgJwJAL+ahd54i
+	BUj5uyzJ3DDg+CA9E9jmiJGsxx9tqCjr9In007XcDUcH7tXapLkQh+UPmr8pDm94FmMbQqqYEgs
+	yqK1p+Pd6CFg4dfopE8CVwHeDY0yFT+O3TeNdmKANBkEb3Yn8Ncxx7mDFDFr9j483UYXv220zZj
+	iJZLj58YtYaSbnRdUbgesmnCqMHdVanlamliRRBpYdEA1uhd8oWxCu+mBfzF3OoNfuF9ymrBDQM
+	D5nAWVyKs8rxx9mobRLxDEwpF98gfHx4diyjCHqdMDQ0jhb6sz/hNcvPl3Mcx4WPf1GDfYukYD0
+	mUGXLE=
+X-Received: by 2002:a17:902:e543:b0:2ae:606b:bd98 with SMTP id d9443c01a7336-2aecaad0c39mr127425815ad.26.1773657948057;
+        Mon, 16 Mar 2026 03:45:48 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:e19b:34e3:1bbe:df72])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece56c23esm133669075ad.1.2026.03.16.03.45.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 03:45:47 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kees@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brauner@kernel.org,
+	oleg@redhat.com,
+	dietmar.eggemann@arm.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: [PATCH v2] kernel/fork: validate exit_signal in kernel_clone()
+Date: Mon, 16 Mar 2026 16:15:36 +0530
+Message-ID: <20260316104536.558108-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6F7DC140010
+X-Stat-Signature: ca3gwpq68d81th8mdutj4gxj5nfmqdmb
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773657819-753098
-X-HE-Meta: U2FsdGVkX1/sbnuzAhL4tDLK0rZ+bz+02oxwlUngPa+jJY3RT2B+KHst9ER0JOrgqJs4JPzPkbjQhGfQR+3HMfMGGLuJCyX4+EOQe8tAGXb5m6XabdP9nrfPfH2XV0wyJHV3T5s+hJltksqTQPTi8ad2mIO2VizVSf937J18wx/XrQ9aP73VBl+JNPu6ya4QghYldS1x6/N+O5jA5LlrQoQiUmtz8Y49zcRJOjJxivM6shxPqGOjfOHSOEssCZ+KbfDUOOc4T1IK3ufr9zW4l0ty8b5y9vHu0zocNMwLpUKqMI1uNYvsM9IINGhx9QNZSxQx4WkbvHEi6yYTJBIXJ6tfTqB9rho5a2pPT/ko9maEHd3XlR3oHUB5Vfky0XjoNwxRWxs3L4DBoFyV2VzT7b7i0Vqj2h1gw9zOltqSTrhfbw6I6xt+nhsekv0SuyBX00w0Ng4SBijwrGoafNyVqVCMOvyLxvkObDfCjfJZznkMT5Nbesp2VE2DJ3mvVmbmoYWxCQjZ9cmzbrHY7vXDBE/ZKGtb7ntbRjI0NKRONAFIpUhqNz/8ON/LJoSSXqsUgZAR158ttG+qJ1ZcBQ1wkYevT8eexszIvcjS5GXi16lm5kk7fykKtaeobjjYMNUS9TWMGifMygDn576Dzs+iGlsydoV5FsSwxDmldj5k14zfuXphQijFAv/0GTxtHhZSyp12xUWCRiiMFzl6EDH+JtGY4xaDDdkB1b2LH6TeaG3pC01xxh+ZfTgNFU/056QOOdsbYAJ+DvHFcFuSWPSb3RLgVlTExJnlltC+uXsboqLu8rnaUhgwhTTOD6DHVZkJS/l1c2kYOphjkZHSUP8S6qYKnz2du8df5HPW+fM93MXZ3vH3eQvnEXWNvENJPKt483Q8KRqJ0+frtwymwt9lc3N48/pkzYIebOzvQzZ/u8iiiFY/A7MGm7QzxOxy2sAxfrMfOXmUtyxjYxeySgy
- C6vFFipR
- EIdFymRoItQmgVI2BOPykbUA8LcVaNIJaVXoc/+osgfBTC0PZKnj1YwRToaujN1dNFZj+xE8TS15cOQu5Mci55wYXeB6Y/7bJ+bJryJ2u7JMOxGBBG3LZYwHJC/KkGt9iz3o1pnNlz0TrmNRHHXaCNyhbj7P/6SJz2irTqwOUbwBG8V8GwFmx2Eteb0r6HrGL0eLLpdGsNIxC+eL+gO42vX5cZwT8BMNrvNo05snNEm9IgV6Ry100yq/D8yPpSFAsjFdn3xqVSY7HB8z/84dmmuCto9OrqGn3lV0U4Atm/zSSgSyifve05tyUGW7sszVPl1cTO3H3sAaEh5HQWef/JlB+82ZvUi2xKs74BeA7UhacXMmO6v2plU07cwbtkfSqSEWMKFv+jFlCB3qiCg9NCYrO8KzoYapdHtjV1NsDRsmY/T9VxDhOs6fBwRzbCIZQISTnWZMhodFuksBGbV56SV8dlREiRukoXDP62Y3m+rvNlY2xgVE6LeD8Wo680KI0Fp3YTtkv1NVfF+m+nj9d7qgtLdbYLaG61IdKEDa28B9rmwGk4hB5CZi0VMUgw9bYW9d6K+XMVto/+r7rRyRZeueuF3AL0FenB+7mcCia/0tlWyg/CGMVXuJ/BOSTmIhGEhJJBou/lmbIYTHHyXkBeWk759+bjaACdWr2GfL4x4WTWsr8c02wAwp7c0c0UZ7Pdq+boLGfxLoOPSWyuSeYMb4YCoJER6gwawL9MeeqFIcvxZlwoOFQjBCg+DMtCUqVgMRL
+X-HE-Tag: 1773657949-886196
+X-HE-Meta: U2FsdGVkX18QsQODmB29KSyJyKXO30JrknqjSkEChppwuZMHJE2eFzCMMjxThxblB/FvNSmC+dojFhRnbNXmETcUfPAxHU/uB6PeoQ0un+bgUgyuq+ee7iXMetIv5vY50GCrhC+ohwI8Qau5+dO6MvQpTKImwz3m6BTnOpPA2T12FP9TRPVfRBIs2VS8LzyTtwhuB7jrB3C1E26zaha0hP91C/84nwG5JOcR2ZXbAeTY0CCWVUMueqSrpXsyV5GpAa1F49q7UJHNeYF0ga89pBCE+pujnurOT4qqhwXm9QrM2LMABwGAARlduNW5VCRhvt0njmCugH4epf9QhDoD1iHWShsreUD3vEi4u/uOSMpHLgROP7Ew561JxiX37XlNlTULO6MP6K62iz8dcqGE4wgo/X84Uv3nBaz1LjBVg5gG9saGBfN6hbUr8HTloMaJtf+FejMJyAWBHmM3/qpf8UXF37fcOXTEoJSuj9YiGRnBDgmGWzlQoE0vDfhINNFilwbJHKr5iWytidPmsZdGa7AzTXfMyHVfgw8WLcG4ADIq8wCB1tMlUWkG2kY1A6meevfuCOG+ljuQxC5fBW7IKrlDy5QXIJfuIXjmsFslohvUxFZWzy37YHy49Fz6+S3Z+jTxwDFkUa8VA5Ld+PY7yx0CPYtXyXd8kpCuVMdhv8huDAckSU7ilVDxJftKB0YbOLvgkt/qO4mcnXWtQgxgOvPbC6FiMW6LH2RYWvlwnLONtndyYcPBPR/tP/yAc3+WeeupnSNH2AAoiuqBtFfK6O3n7EoN00e7R3y7+GSwiR3ebuta6sHN3iZsp1T5khugMX7vIbQZmwFO+bgQJWUfWClaMBtaw1MKtd8xTaaj0wIBD5VWxPAVSxSScRB+QXs8i9r0r1WD0sP2nKmgGCX6UwoRVYNCGBB9PU3RcO4fX5brT1jaoHMXqpCAkBBSyjJHc4rlqTJvnfkPoHx+NqT
+ /hOh7b/b
+ Ohwu910NnQLmS+0J3HCYZo/AtjhqaO9mbyqd1zxV71aREWbFdz4Vv++KtB+nA1O8JfLs7QmcVA/1BMiWFdV/tpUkdY6jEM9sugWXDFS3I2NfL8Qwg1RNHUR/UqZUzzo90PfPf6gcCLmPrUBo5yrwdBoTS1jr6SuYDgfiKX0mN4f48pF51rgDKxXuLgncZIjDg8k0E4lViUBkKLzGstXSEZQSpjb4JgaDfXEVFKDd2eS/u9kKyVrVDZlX0p/hVU2R9/Dc2Kzq9in2H3+5oTQA+mV+HiFBF+Q2bXZdIzpHpKgRkAhBx9hZoOUkqWlsI+Ysl42blXML+P/u9vMgjVZcB/eZW00cMKPwRZa+D/cWu/kPMONg0s2HI5119asJjrnisEStTqVzc3jG12X/gJmCTKnSBzbQEeRFXZKI7QWw2f/wS8THfxwpM/271VMFflOauNTtm6fGWjGnzH20k+WkobD6Otzo2Cn9qibk2Qigls/1F7ImGRUhn5PpvT8FlqsTmC2sbee3F/ViFUTUD2Pew3kNNbcZUGp3a+gLzq9mFiOCuBPziSMpBFojTmBjx8BOFlf8Ec+3bHZfZvkW5BYhg/QJfx2m/wnHiOi4aIiGRK2kGtk5OXeeJxYM+/dxOVSnnWBuhtebUZPnVbYNk5z5LkMukAQtX1V8wPRHcQ1MgFau+RbJyVtbgHjZR/Sn9m0783E/MxJF7Loc1zSQ1Hh8IDvypcGcDGBJtWxtV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,43 +137,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:02AM +0100, Andreas Hindborg wrote:
-> Add a configfs attribute to enable per-NUMA-node hardware contexts.
-> When enabled, the driver creates one hardware queue per NUMA node
-> instead of the default configuration.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+When a child process exits, it sends exit_signal to its parent via
+do_notify_parent(). The clone() syscall constructs exit_signal as:
 
-This and other patches make me think that module parameters should have
-value() return a copy of the value (and require Copy). For non-copy
-types, there can be a separate value_ref() method. You would avoid *so*
-many asterisks by doing that.
+  (lower_32_bits(clone_flags) & CSIGNAL)
 
-> +configfs_attribute!(DeviceConfig, 8,
-> +    show: |this, page| show_field(
-> +        this.data.lock().submit_queues == kernel::num_online_nodes(), page
-> +    ),
-> +    store: |this, page| store_with_power_check(this, page, |this, page| {
-> +        let value = core::str::from_utf8(page)?
-> +            .trim()
-> +            .parse::<u8>()
-> +            .map_err(|_| kernel::error::code::EINVAL)?
-> +            != 0;
-> +
-> +        if value {
-> +            this.data.lock().submit_queues *= kernel::num_online_nodes();
-> +        }
+CSIGNAL is 0xff, so values in the range 65-255 are possible. However,
+valid_signal() only accepts signals up to _NSIG (64 on x86_64), causing
+a WARN_ON in do_notify_parent() when the process exits:
 
-kstrtobool again. Also, this is *multiplying* the existing submit_queues
-value by the number of NUMA nodes?
+  WARNING: kernel/signal.c:2174 do_notify_parent+0xc7e/0xd70
 
-> +        use_per_node_hctx: u8 {
-> +            default: 0,
-> +            description:
-> +        "Use per-node allocation for hardware context queues, 0-false, 1-true. Default: 0-false",
-> +        },
+The syzkaller reproducer triggers this by calling clone() with
+flags=0x80, resulting in exit_signal = (0x80 & CSIGNAL) = 128, which
+exceeds _NSIG and is not a valid signal.
 
-formatting (rustfmt ignores macros)
+The v1 of this patch added the check only in the clone() syscall
+handler, which is incomplete. kernel_clone() has other callers such
+as sys_ia32_clone() which would remain unprotected. Move the check
+to kernel_clone() to cover all callers.
 
-Alice
+clone3() already validates exit_signal in copy_clone_args_from_user().
+The comment above kernel_clone() states that callers are expected to
+validate exit_signal, but several callers never did. Adding the check
+to kernel_clone() enforces this for all callers centrally.
+
+Note that this is a user-visible change: previously, passing an invalid
+exit_signal to clone() was silently accepted. The man page for clone()
+does not document any defined behavior for invalid exit_signal values,
+so rejecting them with -EINVAL is the correct behavior. It is unlikely
+that any sane application relies on passing an invalid exit_signal.
+
+Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
+Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20260307064202.353405-1-kartikey406@gmail.com/T/ [v1]
+Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+---
+ kernel/fork.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 947a8dbce06a..89d7eb67baf5 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2687,6 +2687,8 @@ pid_t kernel_clone(struct kernel_clone_args *args)
+ 	    (args->pidfd == args->parent_tid))
+ 		return -EINVAL;
+ 
++	if (!valid_signal(args->exit_signal))
++		return -EINVAL;
+ 	/*
+ 	 * Determine whether and which event to report to ptracer.  When
+ 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
+-- 
+2.43.0
+
 
