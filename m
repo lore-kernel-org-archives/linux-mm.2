@@ -4,110 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5954F4645F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 12:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A80AF506C3
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 12:44:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6FBA6B0250; Mon, 16 Mar 2026 08:14:17 -0400 (EDT)
+	id 2B9D06B00C6; Mon, 16 Mar 2026 08:44:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF3406B0252; Mon, 16 Mar 2026 08:14:17 -0400 (EDT)
+	id 271FA6B0255; Mon, 16 Mar 2026 08:44:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A29C06B0253; Mon, 16 Mar 2026 08:14:17 -0400 (EDT)
+	id 6D7B76B00CA; Mon, 16 Mar 2026 08:44:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 90D326B0250
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 08:14:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 487A2B61AE
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:14:17 +0000 (UTC)
-X-FDA: 84551818554.26.04C569E
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7652420002
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:14:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aw1wXuoY;
-	spf=pass (imf03.hostedemail.com: domain of 3FfS3aQkKCDIOZWQSfmVZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FfS3aQkKCDIOZWQSfmVZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AC136B00C6
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 08:44:45 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E10791C16D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:44:44 +0000 (UTC)
+X-FDA: 84551895288.08.3230AB2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0929C1C000B
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:44:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WMjVI9iW;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773663255;
+	s=arc-20220608; t=1773665083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
-	b=wY3Ygodyvy5IRwJc9DZIjW/fi8Co2aYteiWNKKmLMreukazEFI8b9a0Ziu78r4qihrpqhg
-	5MSkEneDNdGSerkuq4uwsv0T8vUoiNKSoZZ8Xx00yk+5b4/Dfvo+inh8Jp3bqn1X0x32xW
-	ESbznk0cZaPnIONK2Lkl8wtGLsuzvUg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aw1wXuoY;
-	spf=pass (imf03.hostedemail.com: domain of 3FfS3aQkKCDIOZWQSfmVZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FfS3aQkKCDIOZWQSfmVZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773663255; a=rsa-sha256;
+	bh=GvQvuimntf0WkeYLwmFbZgNZkHNW+yJn8+eNNrtfOg4=;
+	b=cKVNKNEPcq6/UP3EV+Smy7DU5jMnxLNyISLyj3b8fMdFGuSXARAHipv4O+bwp6otPoIfB8
+	JgfZ8p8vzw9kFvhLd/K0vBvLgaUacQwyiiuZbmr0J8vHRnj3a82ADv+4TFPUlT4wGnlHg1
+	eYQ1Sj8W0brw6EK5nIolj21mQPQ+pCY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773665083; a=rsa-sha256;
 	cv=none;
-	b=19RnvC79Og//lwtvWRNN9dWjvo9bpeX5eMnHZSGkrtz8nG8hS6hH0FK0RfBIKyNbUe9Bsa
-	bcSuNs+bknMETaQHH560lFpXVAfS4K7w1k6XRHsG0KVvh3lty+6BzsKYHBrgQpEsg1xMm5
-	Wzgd9V02g4bUfjyqvVubJDZkrfSW/7U=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853b5b0fafso56343395e9.3
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 05:14:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773663254; x=1774268054; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
-        b=aw1wXuoYZD0zG+9RAbNTJWTr0fpA5W8a+Qtw7Emuv5qQ/ykKV27A7ZDCtsU+lwJ+0P
-         0fLTtIYCshqNRuY22wMIlgbu97HZxmBMJEYwE6uP9A34Zhw9CEj9e5YpmV9mEgRJfUrY
-         pMuUEMTXdC8FOm/Fm7HAFmQZhWoLxsCgD8dTPVfyTBx2BQOIzI/2KQvUO8igBYC1yuFc
-         /AP185bWT94zHWPJBobCXIb5RImbfWAMtFXvnedGYuv8dvuvHQclznR7xlyaP+jqPr3o
-         XfA2+9YWXBjJvtxToqI7hT8ukIrh4jmg+iZGigyzhRkXcG4ioPxQ1Vo4bSUMHYA2N+cr
-         9i/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773663254; x=1774268054;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
-        b=KYMZ7RrWAgvWgrMA1l+6oELoq+yeBFDVN8Te0PjBofJxWmZoPHO0Z3DR61F5At6K0x
-         EoB0bBTTGpSzKVEFsLqWVAgIB5u4lm20mOmYKDcjspU5lawvX9sG/Gksif/r719nQYjm
-         FCT9rLLPgeGJTWMzoKRQCrmFgH2uKzQVC9G59Y892DxjrumgYU0jv3Qs47cDpXudMYGq
-         jE1iwciMcMPkIcCiN2qGry2rAIWJP6KxoWu2xUJEdDuDexr2J+/4WTsxIq2AnyOWqo7b
-         AF45sISNJfQ2FgRyUd8cHVk1vS4iz9gI5FlQln9YIyUn+0yCSj7dbljzxjUaG2M+aHEs
-         vvqA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+vQV2xOMtB5AcXSfOirsr10m4v4qV6zGH1fn5trjrnN7Zjrh2mxeoeMMksHwInv7L+gcTohjL+g==@kvack.org
-X-Gm-Message-State: AOJu0Yx86IeBRkU/XRX4JQ+XRoCBzdsIb1iEnawaiF7qQue6fa2kld3Y
-	dC4dYuXCyK/YdZqU9VipkqD0DpoRZPB5Y0DtneB7Vh9dOzsmymHW6qa1g1k9mtMJH6w2v1W+pHw
-	qJscIQ50pL6pXCGTEVg==
-X-Received: from wrs7.prod.google.com ([2002:a05:6000:647:b0:439:f5a6:f90f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:45d5:b0:485:3ff1:d5c3 with SMTP id 5b1f17b1804b1-485566cfa3cmr204531455e9.5.1773663253523;
- Mon, 16 Mar 2026 05:14:13 -0700 (PDT)
-Date: Mon, 16 Mar 2026 12:14:12 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
-Message-ID: <abf0FHWkQzbnOtqD@google.com>
-Subject: Re: [PATCH 28/79] block: rnull: add partial I/O support for bad blocks
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 7652420002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nf1m414r8t1npik3binarirbx5kwahif
+	b=H9Dv/WbckT8dFoubOtEhkWK2ES+bT9BpfnBVpOYUMA7IWfryNwfafyYNyH2ZUVzjyEb5JB
+	8bTGA+n+Lsc6wcVsl+Sjkx+9C4+dWcPZmPGt8ZGVPQobaclU9QHFikGz4APk6Frc4MRQWY
+	x3oaYX+jlKtdaVHo/amyNX6y+bqNkig=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WMjVI9iW;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 090CB43DE9;
+	Mon, 16 Mar 2026 12:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCD6C19421;
+	Mon, 16 Mar 2026 12:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773665081;
+	bh=B6eErf0Rv8/pOP4wFmEW6JF0kE6gyF/QIuBdqW8vGtQ=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=WMjVI9iWkodLGabPriQPIp3DlznF5/DEc9dSKbJM6eEPare7zajZflkO1uG2lePs0
+	 aflrxJllg4kPZ5nNqLlkqP8hWO4W5ThAinZAww478FjUTEIpBi1Ib+eMZFEPV1p9Bq
+	 63p+2qrAZien6ta+ylnKSPyRklWsFXJUDifDcV3eT1OFfG9G1/DN97+6bwUCZTGOKd
+	 +14s/5fh/jo8qh/yHPZXsp5RJgNia7Ku9Kkrf87d7rw5cFJDsiIV4nyTJLMSCEsfYd
+	 yYyZ4fB1ojIfWyTkIeeAIiLj9fWOd2G0ELy4Ucd3MnS3UsDjE+SMPDNoot2+UAX7iG
+	 bwwId3d/VUuTQ==
+Message-ID: <12d8c91d-d839-4f3d-aca8-0c63e66354d7@kernel.org>
+Date: Mon, 16 Mar 2026 13:44:36 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: vbabka@kernel.org
+Subject: Re: [syzbot] [mm?] KMSAN: uninit-value in copy_from_kernel_nofault
+Content-Language: en-US
+To: Christian Brauner <brauner@kernel.org>,
+ syzbot <syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ mhocko@suse.com, rppt@kernel.org, surenb@google.com,
+ syzkaller-bugs@googlegroups.com, kasan-dev <kasan-dev@googlegroups.com>
+References: <69b7d9f6.050a0220.248e02.0112.GAE@google.com>
+ <20260316-fachtagung-gelitten-17389c00b6c2@brauner>
+In-Reply-To: <20260316-fachtagung-gelitten-17389c00b6c2@brauner>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1773663255-831926
-X-HE-Meta: U2FsdGVkX194Yz6WBUWgpEZd3NOcASyY2UTTHvBeYmutd2Uo0UwJ6ftRCSl+pNAr23a28il/V3ekhv39mXwdpu+UB8HiiSffRwBEvbl+H+qekqcIDlczekq5ll806cQAwmQOW4rNLjTVTu5VO0zN5BsB4daRslaQNyUY6fk9UeiT+CHzLV0rhz/BacsrREmhe+jz7NysZMJs8wY9yyNkKYprcyb8m6wdtzp/FOxdFcsVvNFD9erMNsuwMwKWo7NFV79TfRJtW5frOWU6WSRSJTI/sxn//iJ4fl+mg4tRZbkONquqEsgaefosbIQcX7qd3DMWzp/Du7oSTvOhSe6td+mA+sdvVnYgfoTILzcY5YLvDKkq+79L3EHmf5oektURSnsCIxBCeE0Vl1ptW53uaV9l8bX4JLXtpfSf2KkFUJOnhTrX7fh0iqcxciqp3Fxmxj1Y5qOy2xPAXq6UlLZCY1gJIhy7+O4zZi8Jsu9pzQFBiBFpDmuw+o3esrO0Am2+47LHHfvPgXZj3oDzdu7ZUxycsXwEn4xwu0kkpmk0WdyEXwR5pS6+Q6cr3ZJaA9694NJ1+99AjlNcmUY8AlqahBwMTbx0fxHPqqP633jlYguOXiYEEtZV1mLcKfTQUwJ0x25Zk/VpKR1KkOJ3NYSTSfs5xVplhMf3BA9TgwDmL6+mxzmf8a4R1YOYcRwS6u/PLuFhw5LLDbwFYrHEG2CMVgtiylwEvZSz7kkM8nZui5PjUvZPGXnQnJutIm4HIa7BYUG87ypdOO7XV37bfSmqg5T3NUl+ibu1KgXJvXB8vIpVy0XEOG/fT471tRhJI84YOGvlvvGp9vPT0AgMI4cHECfe7ke883Rp2a65XoMB3nK+BfPXtkJDfG5L/7lw4H3pURQM8gTm/f5mYbdRjKPFK7aw86K9ewJgXZfPdL6PdReusF/8PAPN5vCSz87ZeRyZI4H4TCXobY7AAmWGSa8
- 3C9WsB9I
- Rv/GLBe3qgVOytJKetV6THGmFg8MJOfPDRRAbh4XgAYZxXmP04YZT+kPUyju3A43fKOSqj+OdG0h/IP0YyHwB1tSwhohxzocSYdIhoXE+s0p15kynJ6GG/qDSI67sQUQIb/KYuEBSELw0D1VF6oLGtfS/rySjqW4JCIZT/ci6J3bC6oyBZXqFOH4Vje2D7mPPrQRAzfD+haVYg8AXHcOPJ3vnRBBI+AfZiO3ZeOUoYBy4gBPXWxWewKEmrJ0w6eM73lplbkr0IDZngb/ys4pLcBrjx1sN0emlRgpGH9iaNu2RGyeOstypG2Fi+qVcLDknbtQxgsu4LJ9woZDlEk4qfRN49Nwh+w1jewppIJbnu7aY1CTx00dhSlBEaSYQNXXIsRdQZrGAR6/yGOHy0chUZfGD8xji5b7XbvT5Ft3P46k46zodAVPKAchLASCe8FLRYv/lZ07G8HLA7r+HPnmdUm2dHYEL3VvtOySYa/RZsyu8g15puXlTyHgldS6NNjNP4tQPpibmONHUgaT3EROegGFdNo2cEgyZbUOMN6oifCacMD6GzsgmfFMlrdO8fii1uTolwuIf/XcHo8Wm6TJKvp/s0VxGb/8nZjsgcKPxRhjjJWIBoSF4XTjkNANILKPsT24PFCyH0SdOQoJ+G0XUKRwkwge+d8ekVXkHOD+m9RwMD0BFaU0M6nidkU8CK2qiWXqEmwJHUdu4RvJaLSRzSu19c8wCt8eiBZqk
+X-Stat-Signature: 745qti83mq3quzd61fkw641h4atqqsy6
+X-Rspamd-Queue-Id: 0929C1C000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773665082-681247
+X-HE-Meta: U2FsdGVkX1928p7EsLevgNNNu/32aNTwpZvGo2r947A41GzUd9ni04ebOJJag8ai+hfYXTZR8f47QpuH1G38XIsfcrspF2upzksYb57ah0JemepE9jXMXXer6lICNXpB5HzPMDOV/5khI1RH1T7e/pY1l21+3u0h6YYwzH7EC6IzoAvKTBJ6HYPp/0PB872w1cEJTO+Ye1cz+j9T/BjkzCkCQEMHqdBV1Tt/HhrLScW2nEHGR56/IHIOmkra6CsrO0b7rHDQsFfrIus0NALI+vSq9zMEwMfikmBfX6tKkYAS+Lk7VQA/QqJ0GGpeiqTS92NkdF8UAEN+YoEeCjmolwEqC9+w5qDapGuxpv+z13fd5n/f2A6fkzaYl3csWoqeXrkx027rCOHzWorsrKaH6gNoQLRj+QgG1/JV7cC77VJzDYHUFQ+owKs84syGgz6YVy/HQnBZrgCOEhvm5rvVZq7k02KWcq1PJQYMmb3PeOq26S42ipFQ34UMkCMoyUzcmyI1kXkCwO87GpQaKp4ZIrWNwgBEcqFUjfeWHJnnXEYlDYsJgP+khDehP/0A6xUIQfCyZh5NwBX6nWcbVa8pf7KFrsAelRhmx70vysZ853OFx7pSQOhULFUEpvwMu4efuLSYe6MwfLAHKZGDROFU4KTjBqtwQ7uaHZ/xrVxTdJvS7GPEK0akWE2AzkHzXYBATnF6KcF/7Z/ITp7n1rArHgQQaGUl+m/mUygMay2y97/W8gd2BgPTXsZD7Pq1DdMY22Dqfv69WNFLW9DV+DRvmIvzrS1FCRAk2bnrHeM+iLY3fN0IpPeiV6oI+3sdbvGrGKHOE1+4IeB5BxrZR8964gzyWA7Gv6lmYhW3FOcIwKnsJ+h01jfFoa05BiJiSs6hdgWFElfGWALVcFu7SuKRiXINGvWSPOMuDlKCUGddKSNkthvZUd9ah1AXgD9Lms1yYkaDj5yeCEo/87IRir5
+ 5/F/EXYx
+ gtWlzAsK/oFK54ua0v+hITIyfehWjPE0KuXZz8r7jppLdt3BQuFdk53xxkTwT0j8x6GUv3luJSJGiGQe9qveS8068+PjInzCMy8tNdmUGmXIzMghN+imiXW2y5xBjzmLMRYX1fuLuu3cVpHC4VHyoExfF26WelltODX8bN1IsP6cqzUwSM7oSX8/3EIAjgyb0CEkFjTPkdCcQ8CSYMAv/Pgv7Y4pdPzgapkV2Nh5kZw/J/tEaC93WF6dOyRPPcQV3x9qXnVyaWk1nScHU5fVdQYjm/sGPUpxUE3J08bmHk7xGJ558FTng+uHHkQOdx7f85pDfHlVbqeWRUPTaN/OFXzUXoq4+rG5nAqHGNbFjBFwlNqdvirNFfHyWTquXFbedQbhUAL4z5/A07BI/aXR8IRzeyj0dvR9D+NXfvo4Q7C4yvoQJH8Ziv4oY9UaFX3IzUOZ3gMCUGRmLvc2/pNF0evEK4QpzxwOPhong5gHrWkH+mxpRtTmSWTuD5gVIKab1KVi9Vs7mlOgKR+ZuOWlwb1SM3MhLntNEYOTQZT05cC/TE7WlBvpDyjYPrm+29CVmXHryZt01mC2QAzs+7ESdg998Qs+tF7cj9dnoNpr+9aZY6w7kplWFgVkoL6XHJBxycHPVMY1UnmzeytzPaKk1TOJ3f38FQdfIFkHZVu08aNOjxFLqlb4fYXLr1SC51elOd02Fwskbc0x6rCGntlbxS/Jzq9bNTM9gBZ1o2avw8+yRya+Tyi0i8OyFJML7duzOgY9WEldB7MTNMJOITgwMX69ZxyyMTHOaHCB2Dsc/ZhmeH6nNkcdcAMlSThquW6SQfXud0pbrx3XZRi0HS+j7FkjCB4B0+yKpONiaFvq3tLyUTACQ7fhXdzM6i6fyqJW02SVDS2qS8wo2Rf12PnjyUEJsO+M44ZpgLPS+UqaO07xB+LlfiahPgeFe3nyVhRFEMA88
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,76 +99,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:35:15AM +0100, Andreas Hindborg wrote:
-> Add bad_blocks_partial_io configuration option that allows partial I/O
-> completion when encountering bad blocks, rather than failing the entire
-> request.
+On 3/16/26 12:58, Christian Brauner wrote:
+> On Mon, Mar 16, 2026 at 03:22:46AM -0700, syzbot wrote:
+>> Hello,
+>> 
+>> syzbot found the following issue on:
+>> 
+>> HEAD commit:    80234b5ab240 Merge tag 'rproc-v7.0-fixes' of git://git.ker..
+>> git tree:       upstream
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=1474cd52580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=242f02fcd3fbc8f3
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=c18de0ad13d62f18469d
+>> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+>> userspace arch: i386
+>> 
+>> Unfortunately, I don't have any reproducer for this issue yet.
+>> 
+>> Downloadable assets:
+>> disk image: https://storage.googleapis.com/syzbot-assets/a0d037332dff/disk-80234b5a.raw.xz
+>> vmlinux: https://storage.googleapis.com/syzbot-assets/0a1f7f8b54f8/vmlinux-80234b5a.xz
+>> kernel image: https://storage.googleapis.com/syzbot-assets/83eb68ee6421/bzImage-80234b5a.xz
+>> 
+>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>> Reported-by: syzbot+c18de0ad13d62f18469d@syzkaller.appspotmail.com
+>> 
+>> =====================================================
+>> BUG: KMSAN: uninit-value in copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
+>>  copy_from_kernel_nofault+0x15f/0x570 mm/maccess.c:41
+>>  prepend_copy fs/d_path.c:50 [inline]
+>>  prepend fs/d_path.c:76 [inline]
+>>  prepend_name fs/d_path.c:101 [inline]
+>>  __prepend_path fs/d_path.c:133 [inline]
+>>  prepend_path+0x64e/0x1090 fs/d_path.c:172
 > 
-> When enabled, requests are truncated to stop before the first bad block
-> range, allowing the valid portion to be processed successfully. This
-> improves compatibility with applications that can handle partial
-> reads/writes.
+> I think this might just be KMSAN not being able to deal with seqlocks
+> appropriately? 
+
+Let's cc KMSAN folks then. Maybe there's a way to teach it that/add
+exceptions/ignores.
+
+> dentry->d_shortname.string[DNAME_INLINE_LEN-1] = 0;
 > 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> is initialized with a zero byte at the end instead of:
+> 
+> memset(&dentry->d_shortname, 0, sizeof(dentry->d_shortname));
+> 
+> which would prevent that warning. But that's zeroing 40 bytes vs one and
+> the dache is fast-fast-fast.
+> 
+> prepend_path() detects the initialization race via rename_lock seqlock
+> and retries d_absolute_path(). So this is entirely harmless and works
+> correct.
 
-> -#[vtable]
-> -impl configfs::AttributeOperations<13> for DeviceConfig {
-> -    type Data = DeviceConfig;
-> -
-> -    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-> -        let mut writer = kernel::str::Formatter::new(page);
-> -
-> -        if this.data.lock().bad_blocks_once {
-> -            writer.write_str("1\n")?;
-> -        } else {
-> -            writer.write_str("0\n")?;
-> -        }
-> -
-> -        Ok(writer.bytes_written())
-> -    }
-> -
-> -    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-> -        if this.data.lock().powered {
-> -            return Err(EBUSY);
-> -        }
-> -
-> -        this.data.lock().bad_blocks_once = kstrtobool_bytes(page)?;
-> -
-> -        Ok(())
-> -    }
-> -}
-> +configfs_simple_bool_field!(DeviceConfig, 13, bad_blocks_once);
-
-Squash this into previous patch.
-
-> +fn is_power_of_two<T>(value: T) -> bool
-> +where
-> +    T: core::ops::Sub<T, Output = T>,
-> +    T: core::ops::BitAnd<Output = T>,
-> +    T: core::cmp::PartialOrd<T>,
-> +    T: Copy,
-> +    T: From<u8>,
-> +{
-> +    (value > 0u8.into()) && (value & (value - 1u8.into())) == 0u8.into()
-> +}
-
-This is in the standard library.
-
-> +fn align_down<T>(value: T, to: T) -> T
-> +where
-> +    T: core::ops::Sub<T, Output = T>,
-> +    T: core::ops::Not<Output = T>,
-> +    T: core::ops::BitAnd<Output = T>,
-> +    T: core::cmp::PartialOrd<T>,
-> +    T: Copy,
-> +    T: From<u8>,
-> +{
-> +    debug_assert!(is_power_of_two(to));
-> +    value & !(to - 1u8.into())
-> +}
-
-Overlap with:
-https://lore.kernel.org/rust-for-linux/20260221020952.412352-22-jhubbard@nvidia.com/
-
-Alice
 
