@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ECB7EFCBB6
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 06:47:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228C7EFCBC4
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 06:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56A476B0146; Mon, 16 Mar 2026 02:47:27 -0400 (EDT)
+	id 0DE656B0148; Mon, 16 Mar 2026 02:58:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 534E46B0147; Mon, 16 Mar 2026 02:47:27 -0400 (EDT)
+	id 08C776B0149; Mon, 16 Mar 2026 02:58:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 478AA6B0148; Mon, 16 Mar 2026 02:47:27 -0400 (EDT)
+	id ED0606B014A; Mon, 16 Mar 2026 02:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 30E796B0146
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 02:47:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8F911D7F0
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:47:26 +0000 (UTC)
-X-FDA: 84550994892.18.392EA89
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 450F71C000A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:47:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BLFHWwM4;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D8FCE6B0148
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 02:58:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80759B85A9
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:58:08 +0000 (UTC)
+X-FDA: 84551021856.12.917C39E
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CF54F140006
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:58:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of 3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773643645;
+	s=arc-20220608; t=1773644286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nvlC4XtEhaXhUXXhIDgpBDyYD6p+n31AHCkGYyQotA4=;
-	b=GG9d1+sAW3asZ/moqtOzCLX9HInrEnecvIVXZ44XUAw2dKYwyth3vpYIHtL4B8NKdx32Ud
-	SGm6Bs0D8s4RQgO1RIKlET9q+x7JQRlrWCj9J8g1qvnLvfjuA/+dCB8A0b00NsorrJNz62
-	j5mr/R0n8JflvpHqWUDuUAHq3nsjmes=
+	 in-reply-to:in-reply-to:references;
+	bh=b0kUySBuU6Ume7jaBtPwcWKvQPPEY6e6MvBbaQw0SnE=;
+	b=zNfJg35AEpsyXaIyjM2BJ1iCxmGAsp1ymmDQpDSaCmiyW9ql9TpKZiUa2yN+lt8scL6Kks
+	VOm6laM+7cJA7jreXA5HwGdfVSoejEStqCn6HNd5/jIYbtyPZTWG18NWgFk2mOFV6zp0YH
+	TMYWOSwrYDamqdfiJuEx33365Xv/T9g=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BLFHWwM4;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773643645; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of 3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3_am3aQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773644286; a=rsa-sha256;
 	cv=none;
-	b=PdtwK9TUefN5A1xIGEAtKGPh44bNCJdkDn4NR9yHn4aiDKZxUKFZcY6Dr8JNp6Cda4G6Sd
-	D2tL+9CwTSPc/GykAq8aafbRgTSwk1FNp6zLx99Atr7UqQVc0+ycY6onHBnaHiYvgrxQQs
-	89bBQCCNGwBlRA7yIhg7f8/Bm+8i8sE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F128408F4;
-	Mon, 16 Mar 2026 06:47:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C97CC19421;
-	Mon, 16 Mar 2026 06:47:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773643644;
-	bh=ZDu+xUvhrChyttr6D5WuK5J+jLBduob1K3CBSUvWzKo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BLFHWwM4FysvgHmhk+4rELTKsRLvPP+wjzM/AXnEk4opaDmVP7zvG6aVaqvDS0Tl+
-	 qoBwoX/XCbc/WlCD0pLZlmfo4BaEXUVJ9OXay2jnv80DISXBU9d56ms86LfF4/OkJR
-	 lAwQEtTK7emx18u6CDQorQPwDUwFLrLhnd3g2Wc8i2008cM/a3YG4S5kyApwdFlxuD
-	 jO+n5zvq89xJa/SgiDCSte+tJKx0eOkCJxfr/u2TIYkRrG0a6rYri9Vz3EyCpHEtxR
-	 E3O/snFJxCWdflcpRk1CehXkP+qAhBhfxo1Da2SjGvUikwbsnmBf426ZaX2jP9PF6U
-	 3arAVeCeun/rw==
-Date: Mon, 16 Mar 2026 08:47:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Kit Dallege <xaum.io@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, corbet@lwn.net, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Docs/mm: document Boot Memory
-Message-ID: <abendSlwDIwB4teF@kernel.org>
-References: <20260314152527.100295-1-xaum.io@gmail.com>
- <0c981733-477b-496e-abe5-54eebaae04b1@lucifer.local>
+	b=WP+zfqg+SqKacQ9qtv32Uz+6HmMgL59TGh7f5fgLxRqea5OZUWkzj4qAe6Y6+fGzToruc9
+	kiv89cgh09AgjW0cmYD/2zI+p8VynXrmgLhzX+JAdZNqYKMz8GGHQp4LD0SqhWGYh5IVch
+	eaJB1IIRgDSCv4c1b+f1et+rK4ftKbA=
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-67bb57af478so5380929eaf.1
+        for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:58:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773644286; x=1774249086;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b0kUySBuU6Ume7jaBtPwcWKvQPPEY6e6MvBbaQw0SnE=;
+        b=CGPKN5KlCH+NEpU9fOheCYnI8T25LuFHaNayyZXIBiG5giv+m5JiKp4wU8JrqNDtbC
+         sNySs3bRa9ucySW3MWSwS3LQM2FvKPtvc1atUAxvTTV/NsxWWVQYA622/Isr2oNnCsDW
+         U4E14RmMYGoKMb9BAez0nihleiKV4tHhkPcPIcY/0pQamlXwCGju5BcpuKqZI66fPANP
+         McEoiPTEvGJny6ik0l2IPnNs4baJ87R3fpMPOUuJGYMrMKJYsnOuITzzEyYVB8+tFGdF
+         RPjbaYJ3tSO/3poGmGHqzy+gSl8NyaJ1fmC5ZX/ZA+jzkaNfZbvv8AI2+dj4lLla/zKb
+         YNFA==
+X-Forwarded-Encrypted: i=1; AJvYcCX94cWkHRiiQo7xUwX2d3+CFilr49qXRXYsXOcs9BeHvh6+bnetNTWnycMpYF4qrM+jTZEzzZfmSQ==@kvack.org
+X-Gm-Message-State: AOJu0YxUN3PoLQEkagoluTgWA6/A7ukh9kGIC1l+XNiQN9gmEVbIKwyu
+	o/s1UKeEH2Vc36h8DNBww8smr0tHOEBAofxKh4o/i6vr1RFc2IHXJViHgR9a3vN9LwRUnKJ4Esr
+	Db0aS/uYa3SgYk4L9zyXro3vQbRwMIsRcrbGJDMtA7dmm/Mbh3cN1JSriS1o=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0c981733-477b-496e-abe5-54eebaae04b1@lucifer.local>
-X-Rspamd-Queue-Id: 450F71C000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: x3nyd834tr7jiuymyfwmpkq184resi5d
+X-Received: by 2002:a05:6820:2918:b0:67b:c368:135b with SMTP id
+ 006d021491bc7-67bda9dd424mr8968791eaf.33.1773644285983; Sun, 15 Mar 2026
+ 23:58:05 -0700 (PDT)
+Date: Sun, 15 Mar 2026 23:58:05 -0700
+In-Reply-To: <abehBY7QakYF9bK4@hyeyoo>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69b7a9fd.a00a0220.3b25d1.0023.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in folio_add_new_anon_rmap
+From: syzbot <syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@kernel.org, harry.yoo@oracle.com, 
+	jannh@google.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, peterx@redhat.com, riel@surriel.com, 
+	rppt@kernel.org, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CF54F140006
+X-Stat-Signature: s5p1faxf1sob9bozcxuhupbyid3fjywk
 X-Rspam-User: 
-X-HE-Tag: 1773643645-989144
-X-HE-Meta: U2FsdGVkX1+rUN107IXwAeL/ERuVn6epxG/LqwtcW4jZk8glURLO9oiCn8oq9fTXytwEyDPziP+K0nymkKci9S7cijY8IlIorW31K8ugA0FzBU5CrvFI8u8QVYI+zb/CjxxHBk0SgHDE8+sG6Gnzel+pk7E/jTTd7Sqhgn062mHAs6lkmZ6d9mXoHlI8iRcXkMNB9iH0HAWm9K2A40+Ir/x+DoRDygYRC0d2GtyzzxQ3rik7N0rJrWb4M3CIi9xAmqOPL+nQoPg+LsPslKrLkk8edKC1MsMVb4N6YyE7U+k4t31NLMfTO/mlDzJC4vmYkwZkVe+peh2sORz2NddURDSFq/WKw585cMB16yyQKyDXw8MtSuiQJpGxppotjHv422S8WRfCcuX+wNQlT/O0XuCkvYYgz9lVXcWQWWt+wzasRZOcVygGw6YyhlJckka1eY0zPIq7RKjuOLW6X/CjN7d8k6rQb1ek3R7EQC5tfUJ9pdj3lpeSHJGSgL/7H/NPpJpp0mU0NuOWtA30XRQaK0uVmfYbsyvNK+z81UFCabWhRnB4xspPRMXwo7CMktYZIxsRDm6ds5eoE3dh1k8SpLALPIFeJKVABmfo6IxHCTUE13Of5+thssOnHITMwDW4oVwVhSq3E4VEJTjXOEZm+cAJuF7KLit8Lj4Yy4sdLISY7I/+m7jivMzMYY9ibQYSocSgM/nvNo/1eBae+8s0HPdtySWyybOIlUsexx113tdq/pNxBcYLN1ZOv1pnjE015NPAQAGuawDcNLdSdQ+dcUytFMgi5MbNu/peAWaykJRoP0pjDX9Mtt83DQ6cxFmDj0hJqJ/Crky1IuCdCAjg6cW3EKB5OPNi3mqFtUhmt4UNzDY28WAApamPQXHUwO3NjwsuXVrFDnEXjuSHlkmM3OFFyJqm4VJiTT74+IYTys77uCuGRjQt9+LZQm6xp2Pd2ABfnqRvb6zH9mywVMf
- fT6zb5xH
- 2LyoSMBWSQZzg3Vlq2dF+cleVc+s+VTHAz8F6XuY4odcaXEUKt/F5pD2SLxKaV3tsnUwum4YiI+yi82VqmPZ0X+rm/MORyN95CzQHjVXUCOzN4/TPU6vxNoTriBsHoMDrCdjl5AzdaxCuuFrcE1UaKv9dH72Ac4TdwSi9Z9DZLCVgMJ72xKfcHIjNm/q7YVfqx2mf7J2WzxWMtg9m/7JNJsJglw6jh1SeSdSUPc1H7ajEtrT8n3f8AmybGAcEX+mQNjkAHPC8NjSKfLla8NxPE6cfqS3hV2VYD22kr0B1xXd0XGLUiBBiB3FbENDbeJrjFqNT
+X-HE-Tag: 1773644286-110610
+X-HE-Meta: U2FsdGVkX1+2RddK1xmXf+/9OgBa/1NplNLWjuDiBc6JzwzqICdV4urHwg2VRaxGKVR1kyURHfjBANuAIhMvFQh3lM9TDd1NNvN2De8VFwCgfGC+SB5dyfyiGf0R2Q71suTF5BLJ3iDXniyhBpOYFpBdcSgjurfG4ly+GMCutYCG9qpFBNApJNISNpfJoGKhBVw/2lrqFJ+BqKu1Bflw+FAV5DUYy8NwSDOoQV/fxeNa9cPF7sxABJFeMod5rDF9a4IKvFGsR7Hr6KlvggKW8Ppq15WY9I0WkFpuCyhMe6kCyS5A0UmKtNpSsHI2a+F8ohXrR4ymOpbyif14bLj3vPooI1hFTZCAB/vCQasa7PmfcuiNh2hnmF+i/0YncmmTwlVj0SvhZsSWR9bjTo9KGzT9r7XlxcG9syDbxkyawitKyqvwv+Bri6JNB4e2LZssZ2TvKajqW5xCWboWyAJZkiDMKAXa3l5/PDycVP3B98fsK7uhVSFE/Nrm3y4NrspP4DmISyB/vffolX4FsJfMs7Kjwevkg97sTCPgtE+UjaIIJFF0vNKnLIrHL8MKtnjfN/sYGRjiEsrmpD5ye76o/1hjz0w2sv0ZEwUXJXwBcUnQtgnllmBHpt1MsXF1R6R3Am//mPvfdyjUtQs8XXLJnvZPxabqLJtCAOhVxuwZqJUJXzOgIHpCmpktCNUpi0pOg/oUaTa5p0dnFbYdqHMgfq+7ZziDWYiJ1hU9VgOjox91DArdmpw+YijjdCgn1ezgu1ucv3GogL7qKuyMA5eKvGpnYTpzc/+ImGgP7kCjnvH7ZH1JOAb3N+7daY3JedvRV7cieeJEgM/Ugo1HizxhLZ93rQNH16zEJjObevmOfLEgvcwLo94dd8LpHcRAmg99FcLL//gj+ZX6IeWqqAC0AAuPcMOuqyECgAhpWUkmixhkfbSMx0ex4g5rKiXJAqkzS145+hHHmWzozvkiHbC
+ PVeckxF3
+ LMbPCwhziD/QLr3umrZrDwTLszqsz4iu9qNfOI7yrYG2RcL4ZVQ/MrwmMdGy7xUEBjJ/Sn/0qSmU5X7u92R27YYbFR7uuKyqMrUciPtgYRffLoka2NbwsqDAslOJv+5EmBAiDkpJ+NyjaspgHvxupV1Z4A1ZY5sf+n9mVPawH3a06bxrmQreAN5y7xPOGHYgXqEoB4VWrbWYHD7YKR6x31b4YxJ2vTNfTso8jhi3xOLfMmwUMU9Q5vhjmQqPjNWISvxWpfclpRi9FgMovjV8OfVUYftg3BqcQVp4OvNWTDzXPNc22CokH5ri9qIVTq8JWt0aT3MJQwB73tn5xKBSJd1GW1GYP1nP3LJ6zuqAkXYzDhk3apQ8cE1F3Ol9zsHgvu33/5TSjmiEoClAh6NU/zO4uqlqYnHoTHtP5YYlVLh2w44qT0QGBBw3+z0x3Bmr2v1j+qzu/TuV+o42bbZmoXJ/zKvaP3CzmTtw9wkJgqxd4aDfExB5C9EN4Ru0r0hKjzUliIMxWuALrzdnWwMIEak9lT2EMrF57P0QAAI83JRcQVehcH/WMUvL6p0WfZ5DJUMDlsvCiSs3uat/E5Zm+H5VukC975yiJiNsesqA6LxvcuADVaBMlNEDU/kb5KpefZmhGODsIIKUC9BaFO/+ennv+A1kohVZFaroio4aFIW+uVlQyv351mDCBYpNwQdiM8+AaQJvJQtOuCqEIuiGMY5Td6vjPV+t1RhES7OT5q7+otmXoy+sECQ+ht1hIjkaB6AAoM6k4A2wjO3ilVRn2pJxQBjXhrThYZ5zGFozFD+chI1NvVm48VaJ0bpfZ0Y4948P5eyDUPgOYrp9jqbfx3EDQewg/Ub2FzbIUz+oZNPINLaqXn6NczvXEh0jM4crx+7SdvesRNDc/4aqOx4jkC+EeSemJnG++t1pzB9spBT84iFRMnwjuLXKMhv2O/lOAfz+W1VFOIci9F7e75OWYv1j/0//x
+ bL3p/eHe
+ YEuVoy+I4URpn/n/CTi6W0lhq7NWIqD/DNANeUJkK7Ju0Lp/rzT0USuyNqXwCS6Fkjw/wu6gHGA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,55 +98,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 15, 2026 at 08:43:24PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> NAK for being AI slop, again, obviously.
-> 
-> +cc Mike, the 'boot memory' maintainer, who again I'm sure will be
-> overjoyed by this.
- 
-I'm not going to review it thoroughly because
-"maintainers are entitled to reject your series without detailed review"
+Hello,
 
-> Reasons, as the rest:
-> - Worthless documentation
-> - Everything about patch screams 'zero effort, Claude did it all'
-> - Bad etiquette
-> 
-> On Sat, Mar 14, 2026 at 04:25:27PM +0100, Kit Dallege wrote:
-> > Fill in the bootmem.rst stub created in commit 481cc97349d6
-> > ("mm,doc: Add new documentation structure") as part of
-> > the structured memory management documentation following
-> > Mel Gorman's book outline.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-We don't need to fill in missing parts just to fill files with contents, we
-need quality documentation.
-This doc does not improve over what we already have in
-Documentation/core-api/boot-time-mm.rst.
+Reported-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
+Tested-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
 
-...
+Tested on:
 
-> > +The memblock allocator fills this role, managing physical memory from the
-> > +earliest stages of boot until the buddy allocator takes over.  The
-> > +implementation is in ``mm/memblock.c`` and ``mm/mm_init.c``.
-> 
-> This is at least reasonable.
+commit:         b84a0ebe Add linux-next specific files for 20260313
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=11f43406580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d079c776411aaf59
+dashboard link: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=16cfdd52580000
 
-But still wrong. mm_init.c is not a part of memblock allocator.
- 
-> > +- ``kernelcore=`` sets the amount of memory that must be in non-movable
-> > +  zones.
-> > +- ``movablecore=`` sets the amount of memory to place in ``ZONE_MOVABLE``.
-> > +- ``movable_node`` allows entire NUMA nodes to be treated as movable.
-> > +- ``kernelcore=mirror`` restricts non-movable memory to mirrored regions.
-> > +
-> > +These parameters control the boundary between ``ZONE_MOVABLE`` and the
-> > +other zones, which in turn affects how much memory is available for
-> > +transparent huge pages, memory hot-remove, and CMA.
-
-Oh, my ...
-How CMA and THP are related to ZONE_MOVABLE here?!
-
--- 
-Sincerely yours,
-Mike.
+Note: testing is done by a robot and is best-effort only.
 
