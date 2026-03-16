@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4154EFCBD4
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 07:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5215EEFCBD4
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 07:12:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F5006B00B9; Mon, 16 Mar 2026 03:10:43 -0400 (EDT)
+	id A8D976B0150; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A29B6B00BC; Mon, 16 Mar 2026 03:10:43 -0400 (EDT)
+	id A3B226B0151; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A50A6B014A; Mon, 16 Mar 2026 03:10:43 -0400 (EDT)
+	id 947B66B0152; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 19E1A6B00B9
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:10:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C01D5D6A8
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:10:42 +0000 (UTC)
-X-FDA: 84551053524.01.6D4DB44
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F3886B0150
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:12:57 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 31CA01B9476
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:12:57 +0000 (UTC)
+X-FDA: 84551059194.13.A0EAB52
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C6D37C0005
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:10:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tdmUk3Xv;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id B38ED180003
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:12:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SMDd1Sl2;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773645040;
+	s=arc-20220608; t=1773645175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6SgBybuAS2ZGbqanWRQGV+RzQL2nrXWkZqYNpKD4FYQ=;
-	b=P7cutxQzKMSQFrB+MmSx2+xrivM73Q/k33StzBQ9TFXL6YEhF8QlIPzF7JFpLh2eluQf1X
-	+/PwdVmBus/6lDLCCqz9uXiPdEv6+pb3V/kNIhvJ5osxmq3ZKiiGhA8AmrjQpJbxNpI3HV
-	tJIgU67Gzevg11kQlG/3/9hYkSZNLh8=
+	bh=H36Rh4jAsS0QoXhWjGsqigNoERHzKKkiQ3eU2//MTDI=;
+	b=texYs3AxBDkr8tcRD/uDt9GmRBcc43qA1Up8jryS117+QqRjlELrtnRxRi8PqQC+VPY5Pu
+	V6LZwqOgqlcbKj32SsbML7X+f34jiBz7OI0nFjPkqPcZ7yOj5eA3oVT629cMjGaYtDSR73
+	hk55m6EYS1cA/D2h00CgE3c8bNpJNZA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tdmUk3Xv;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SMDd1Sl2;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773645040; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773645175; a=rsa-sha256;
 	cv=none;
-	b=eSyiWVC/wOY4A//GwIlYpOq2uDhtjzDjbuvItzLXY4jtgjhb3ZiINg2uvoiH+QT97Mbak5
-	mHdC3J/+A41+lWoJlr9WkffNgI9UESha8DcrfMKBAdL9330UhW7YtH/pwEr1PfYcgb7FwQ
-	enzk6aDDsYOXAjLK8ZS0w9M+M8cLhUI=
+	b=qoVQsGZwgNtEDFdUTzZUMwAvyX9MFfGvygWdbmuw9d+fTVGxtBVQ3bHqext6wl3basNv6I
+	tyQCxFIVJnKaYWLrrIhmQ4vdIRuQhC5CD+cm89pjd3b11Mjp/z/59nRRsoLdNwgfXMAmX1
+	1mwPKR2QK49Tx6eMfE1yAxwTrDvEOzk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C3F8600AC;
-	Mon, 16 Mar 2026 07:10:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6546DC19421;
-	Mon, 16 Mar 2026 07:10:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 29A57600AC;
+	Mon, 16 Mar 2026 07:12:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF8C2BC9E;
+	Mon, 16 Mar 2026 07:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773645039;
-	bh=pnmC2GhPjFLjInhxncVX3Y5WnpxGERvRNgnd++x2L8c=;
+	s=k20201202; t=1773645174;
+	bh=csmW8+0vk8ePHltXghMcxvD+0rWN3gKYZg5DsV2YUHE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tdmUk3XvVJgXTVxu27ZbtHylwsBERi4a33TYpHhszEpyP7sNV7I6VaxOZtCpg42MS
-	 ntfxTuW9gPt37XOXU58sZ0iMvszs50HRAjPoLuwWG7kxL+rVjMMgalz0GyOPElMn0y
-	 xTdxomGkTsuJroFCyOhTDFNzCPFu41vy9WZhx9DCjeDKjG4uu9jtwJl3vDkx9fl2U1
-	 EFppQzodUXaHNYWKda1u9CkoV5wKGPIkQKvFWCzvSP3ksRnRnOvWiN2vcCbUMh8U6G
-	 bWGCf7dsuW6l2l8c/v9BiNTqkgf3H4o6ArynAJDoEKZyDvcJhLmszGYyxhcIZqVb0N
-	 dr4RK4TwABoMQ==
-Date: Mon, 16 Mar 2026 07:10:36 +0000
+	b=SMDd1Sl2gDiqkcGkpasG9q5rUYW/ZH+KeDmVfiWwasTyYVe1CHG0UHj95ptABoGzC
+	 NZkfRwI/MddUlG9iq4aNqWixkshRqz6nupTt86/2KmkyH0kSIMEAcsM0mJv99fwg4Q
+	 kn3pEY4O+MigkoHHqItE+T3mvNLqBvh2Jx6xBocRgbmUu6L2ISMaiO2yjmqxACsWs1
+	 aNKzaw/bFnP1Jy+OOwRWa03bLiaj0sz5gIF3m8M1DXhP6NBlQISitsMlAWhcFAAK1T
+	 ZB+gH+xw6j8qxiykH4n2i13rosSAlhW7nsjm7xAb1B3FcunnQkjxaNkVyQajjZgimT
+	 WRJPhNNad6RTg==
+Date: Mon, 16 Mar 2026 07:12:51 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Docs: mmap_prepare: don't italicize structs
-Message-ID: <2ae64217-ae32-4a4e-9c23-6809582ca7bc@lucifer.local>
-References: <20260315224506.1973566-1-rdunlap@infradead.org>
+To: kernel test robot <lkp@intel.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [akpm-mm:mm-new 378/389] drivers/mtd/mtdchar.c:1384:9: error:
+ call to undeclared function 'vma_desc_test_flags'; ISO C99 and later do not
+ support implicit function declarations
+Message-ID: <57eb2d3a-b9e5-49fd-ac71-4d48e444b7b5@lucifer.local>
+References: <202603161221.qNrB6fVE-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260315224506.1973566-1-rdunlap@infradead.org>
-X-Stat-Signature: q3o971z41fjfr5q9mosfykxd4gdwnceu
-X-Rspamd-Server: rspam09
+In-Reply-To: <202603161221.qNrB6fVE-lkp@intel.com>
+X-Rspamd-Queue-Id: B38ED180003
+X-Stat-Signature: jjzeerr7nm8gw15kqwkqzt8f8w1hjwed
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C6D37C0005
-X-HE-Tag: 1773645040-956952
-X-HE-Meta: U2FsdGVkX1+k2dfz5nGhgOvtMD2ID1MK4xvzNpkEh4S933SC3QKZEzRKrRUn1Uen1tECOLuks7Dy+AQDa6qKltAWDqkI4udRchkFJedmoOot9DmHNrzf60BtuNbO4SuzspD1ZqtpZsvTX9nEbeWsjvwQxYBBr+8fmaUjVJJKSd+Cw0MDQ8SINAF0W7aeMC6y+2ipFFLk6vvkpBUpGcxM/oP/6fBvdE6o5UFB/8OcZe2n9e7GYz2/KU+XEjGiyABKYghp6f4Iihygo0zBcWwps4XVRnQc7tmgWPFIyJFhMSmBLh+yvnQSuhVtIUKPTUZK1IteFTOfZKiQCHs3TqDJAsRtJ+HF5xRPRtwbZWGX/vt8VAY/ptT4liHR84y61BODx/t4tA0nXR056JViVdqRh/U7mAUKXQigP7CZhh4SWDYkjOMTTB3st8Q7u/Wd8gXo0SJja6Y2eelOhHSF2aY/qnkRipCFgEoV0UO1CbnrfRdGVXJ0QAHgxj+YZ0nPk5da2ISer/+ox/Po5vxVHo2w9N9gUe9vlDnBGpi4VJKoKEDw4NGVLS82sgphLyx/L7R+QdayX0DhHHGx94f+b/N6T3JaZoRam3nBxEfFPxcYZrYr4fTtG+9fkFtlSBXNS5cGyASQE/sh10/IiwEqcHlD/lUhYQJRRFwGROWf2ezxRvzNGYz2chSNxJActKLVD5NzzST5W4yBcnVB5uwgTCG5adRX7XUMMRmMpJO+jOnDrJg1EQrBmoc/V2f6JMDiqbn9cDYVlHq5fzhgC/cSiZwIWWYiUzSkpREUHD2AtVEB80Xx3wJYzg1E5Il+uoPLvoKZNroTcfBkoMN3gM4hD3LdlFLDyp6zWC5vCXVypTNZym51MwWlZVZwuvEBzhCPUkcXFh6gOXJKPkArHh3tkXeVBURKBErq1+WVASY+bYUtfb2ZtSDW5tfnxlYxwbIUSJ39BoIziTa0NPo2ithGp1F
- LBeo6zUv
- 3dq5as5M8sUiciq1BvutPgHnLgG+u3HifBKBWBBkZZjbqR/BoYUnkrqfjLd/vZUp1lOJAYP3sAWyhr6Hmiw2pr8AEG2C06mYYFTaWQ/fxTBwGgYkvep9AG2fHbRmaDgleFUMiWNdIAizB3Ioe14/137ZHnbHT/qgEHI32ilcdi3mUXZxN6k+Hr8oHEnuO+yLfA+IJlmyXCbZh0JgEPuJRZ89OO2CB6hw3/khtZdRSHp8Kdszig35dfgFgtgd8jWpi5NTqJ5GgBta7yS/p7WqlcRVbbpGMJuW0T0UNl0QbOrmk/02G7PRQfwh5dtts+SF7xP35Gz9PVU5xONDUCNtvacKMANxesbIsnCfRRU4/xFZMHBJpANRKy+MjByah2rDxO8DDHohlrijWaak8qF7WrDLXxidSzcf8dCV2AhrEaEiMV1uMtgkNM7q/riPhCJi3fKF/rpx6IxThJas=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773645175-548939
+X-HE-Meta: U2FsdGVkX19jev+jCDvnHIKHUlF/EpltYEjOlgff/m6i6ZI8KekayqeN/d9Rq4RepA81wRDSSZUU7clFAe+f7YZUIY319vt8aXM93XqRzKgPBOx6+6eDQTda1FJ6/siIZ+vfLY5WxShB8UPab9omIUozugw171VEQ/mzeh1QWStPMPZd+Hjg/BKyql8kTzv7jku/xbgmKsHq+dhj6siCNFQW8JZZu7Q1B9cgdnkss1NxDex4ISYMsjVMMAmH2nM6lueYZTMbQlgSa7GeCdIsxWGAYRkqFGR2ySxqUnNxNYJCi+Uqzl77Juy/XIGhQQzcmG1bIoYjTNaMtsdXMfojvVAvsOUn1m1LAyaerXrwUzd5van/pchFFsukX9w1j4qIj6IPhVnxqYeS5CiyVExT16BoIc4lRkyIxwvatgsqtTPfuD8x7wf4g+oXu4lF4QUnchPxEPd1CLOdz3GtkuGLf6VMfRXiWz0zqsQSg8KZQqMIgrMOop48Ga75De6xTvZbbHUIa2jWi6XLV9x+EbO7F812srT52Ou9mPd7UCn2Q+solSxzUownhUt4wdbQvcaEogmuc4VkelVNYmawXRE+4xZjxI+vmIjrnbnH8Kv52RLDSFkPRcRp3F6798s66YbIx9pOmjzj5G8b//U42X5G1RZwUAGVp6MMQAuBMeRBS1KaAtqYGiT6sKbCz+NNSrIp3px/wMkkjkm4vCKLTJtkUWaqEJAC9C+s9O8clajtANaLN6jVkmz15XtpAdSwgWkye8lU5U1iE6Z/azaC3YTKmvy4B+qbgwY8X57TWMNNdbeHwhF7gacfryTzviOH17ZaK2AMC0CRTzbfnIOQenqLgTI7lV4KbXWkg9+VCc2w0ZHKWV0237I//iPE6pUFMkXwqwT/v98+7GtpALi54UVzsEXs1VZfPlOdNNu4fPllNVT5a9vzKoDUVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,47 +91,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 15, 2026 at 03:45:06PM -0700, Randy Dunlap wrote:
-> Using a single quote mark `struct xyz` causes the html output to be
-> produced as italic. Omit the quote marks so that kernel-doc's automarkup
-> can make the "struct xyz" bold monospace ("code" style") in the
-> generated html.
+On Mon, Mar 16, 2026 at 12:20:38PM +0800, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> head:   c5a81ff6071bcf42531426e6336b5cc424df6e3d
+> commit: cf0dfae0323aa8b75cee0b94d5c7553b511d7bc3 [378/389] mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+> config: arm-randconfig-002-20260316 (https://download.01.org/0day-ci/archive/20260316/202603161221.qNrB6fVE-lkp@intel.com/config)
+> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 36041192cf6c9042615c8d2364cacc698ef89865)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260316/202603161221.qNrB6fVE-lkp@intel.com/reproduce)
 >
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202603161221.qNrB6fVE-lkp@intel.com/
+>
+> All errors (new ones prefixed by >>):
+>
+> >> drivers/mtd/mtdchar.c:1384:9: error: call to undeclared function 'vma_desc_test_flags'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>     1384 |         return vma_desc_test_flags(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
+>          |                ^
 
-This is fine, though given this series is still in-flight we should just
-fold this in no?
+Ack, this should be vma_desc_test_any(). Will fix!
 
-Anyway, LGTM so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-doc@vger.kernel.org
+>    1 error generated.
 >
->  Documentation/filesystems/mmap_prepare.rst |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> --- linux-next.orig/Documentation/filesystems/mmap_prepare.rst
-> +++ linux-next/Documentation/filesystems/mmap_prepare.rst
-> @@ -129,11 +129,11 @@ pointer. These are:
->  * mmap_action_simple_ioremap() - Sets up an I/O remap from a specified
->    physical address and over a specified length.
+> vim +/vma_desc_test_flags +1384 drivers/mtd/mtdchar.c
 >
-> -* mmap_action_map_kernel_pages() - Maps a specified array of `struct page`
-> +* mmap_action_map_kernel_pages() - Maps a specified array of struct page
->    pointers in the VMA from a specific offset.
+>   1375
+>   1376	/*
+>   1377	 * set up a mapping for shared memory segments
+>   1378	 */
+>   1379	static int mtdchar_mmap_prepare(struct vm_area_desc *desc)
+>   1380	{
+>   1381	#ifdef CONFIG_MMU
+>   1382		return -ENODEV;
+>   1383	#else
+> > 1384		return vma_desc_test_flags(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
+>   1385	#endif
+>   1386	}
+>   1387
 >
-> -* mmap_action_map_kernel_pages_full() - Maps a specified array of `struct
-> -  page` pointers over the entire VMA. The caller must ensure there are
-> +* mmap_action_map_kernel_pages_full() - Maps a specified array of struct
-> +  page pointers over the entire VMA. The caller must ensure there are
->    sufficient entries in the page array to cover the entire range of the
->    described VMA.
->
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
 Cheers, Lorenzo
 
