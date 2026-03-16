@@ -4,108 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10EB2F53D9B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 21:34:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 814A3F53D6C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 21:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BBAF6B03A6; Mon, 16 Mar 2026 17:34:51 -0400 (EDT)
+	id A75A16B03A9; Mon, 16 Mar 2026 17:45:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67BE66B03A8; Mon, 16 Mar 2026 17:34:51 -0400 (EDT)
+	id 9CF596B03AA; Mon, 16 Mar 2026 17:45:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A92F6B03A9; Mon, 16 Mar 2026 17:34:51 -0400 (EDT)
+	id 8B0696B03AB; Mon, 16 Mar 2026 17:45:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 476B76B03A6
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:34:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F33BB1B8365
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:34:50 +0000 (UTC)
-X-FDA: 84553231140.26.30F1702
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 689A6180004
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:34:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0p7TT1q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 771E96B03A9
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 17:45:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20CD58C09D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:45:51 +0000 (UTC)
+X-FDA: 84553258902.13.D39E807
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	by imf06.hostedemail.com (Postfix) with ESMTP id ABE3C180007
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 21:45:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773696889;
+	s=arc-20220608; t=1773697549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iuM8P49ooLQhwFHGIboUc001d9wKc/WAa+BKrlTGQa8=;
-	b=GUtAjhHBQzT4TRXgIEjd8F0SToW+sBY8dAu8aeWfFK20G3foE/3571rZDxyTfKAdrgc6Q3
-	0ZKwTulXKlusDCis6hFEqelXXJvv5IqA446r1BlnKveh8VkKJq6e4C4UjAtTxYO0SaqFzu
-	9aFk9OaRcrlxymEyACrrJEenQpPFB5o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773696889; a=rsa-sha256;
-	cv=none;
-	b=5Q6BeFcMwZB58FDmb9NJMKyv7Z4+fl32NF3kY8n2XgR3cJK7ptJmM3gmJETMkicOjr9xM+
-	QPhtbF8VFGUN76Uo63ZsZguCptTYXLZ0w+Iy3knUMNQJRxwON9DMtf3G+KVUcxdCORvGIm
-	QtdWa7SdTzoZD9kTxucnX3mDUJgb11w=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/UyC2rv+fuf1B8esy+O+vyfPhSfBzfj4uOXEAJ8jSnc=;
+	b=MXgmvAz4g8KkUB+VYLK8oz405cKOHjSTC5yI0l9+KiIWjZygaWE+Q8egXrMjjg2Micxzb+
+	3ola/Z+x7EtFSOJUBNmU2gknvTL2D/bTT/dxQtIK4cnXRZvTKAxzr1lE/CANKhYI3gV/T1
+	fypErpH7WRLLUmdOM9ThL0+kMKlZ3b8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0p7TT1q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC28560097;
-	Mon, 16 Mar 2026 21:34:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99E3C19421;
-	Mon, 16 Mar 2026 21:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773696888;
-	bh=L40tdksrN1YZ5CgQIu1l+Y9mS/QU8B6BSrvIBIK2t6E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u0p7TT1qUbZLWBdRbihT+dDRmijQhxCcwKQ2s+MQGH3d1CLBmTadAETV3GfeExwBB
-	 0yZz7LNpCcZT1gLjX5H8P5H6HPlcBVgbGnrP7l0DFqY5NqzBb6s1GMYAZWedY7yYFE
-	 WaJUN4WGR9Fc6BQLXQZ+gRG1y2qOPh/qANXDADZoLVHcGjvmCTksznSAaAawEFKn3M
-	 Xt9SNOrIp/mBUOktVJ82kR6/M5e9iWt/EsA82JYxGM9BX1v8+kPcpvnHlcFLrO1ukR
-	 4i4+Ly7w6H1DxNTo6LbkdvjBLSMM7oWMIsP4nWMpaP+1c1EG5iRDO8eur0UbFodXcX
-	 XQF0TBjpzSbhA==
-Date: Mon, 16 Mar 2026 14:34:40 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C
- helpers into Rust
-Message-ID: <20260316213440.GB1329928@ax162>
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-3-beb8547a03c9@google.com>
- <aasPsbMEsX6iGUl8@google.com>
- <20260314004012.GD534169@ax162>
- <abVE6VWCzZfyMEsu@google.com>
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773697549; a=rsa-sha256;
+	cv=none;
+	b=cPyNHBPK+0xIios3ds7hxUjcGNakVrZu6dUez+PpwPAFeYW4E2Laq96dK3uxn3gd1QlL7t
+	SfVfnT2B1+eWq/Z4fwdVJ+RTo6NbodE2GoXHxeoDPwEG4cvgS3DamqmTQvf/vuUiTXymI4
+	y5MAsev5TmHMOthkN4Y1336sci1ha4o=
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id DE7AC2C14A6;
+	Mon, 16 Mar 2026 22:45:45 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id gGqg7UAYOlZ6; Mon, 16 Mar 2026 22:45:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 3AEF62C14A8;
+	Mon, 16 Mar 2026 22:45:44 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Q-DUhqY-5-xt; Mon, 16 Mar 2026 22:45:43 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id A7EA82C14A6;
+	Mon, 16 Mar 2026 22:45:43 +0100 (CET)
+Date: Mon, 16 Mar 2026 22:45:43 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"K . Y . Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	mcoquelin stm32 <mcoquelin.stm32@gmail.com>, 
+	alexandre torgue <alexandre.torgue@foss.st.com>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, 
+	Bodo Stroesser <bostroesser@gmail.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, 
+	David Howells <dhowells@redhat.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
+	linux-hyperv <linux-hyperv@vger.kernel.org>, 
+	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-mtd <linux-mtd@lists.infradead.org>, 
+	linux-staging@lists.linux.dev, 
+	linux-scsi <linux-scsi@vger.kernel.org>, 
+	target-devel <target-devel@vger.kernel.org>, 
+	linux-afs <linux-afs@lists.infradead.org>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, ryan roberts <ryan.roberts@arm.com>
+Message-ID: <305430349.46051.1773697543461.JavaMail.zimbra@nod.at>
+In-Reply-To: <e3071ae43af79277d3919bafb71f009694d0854d.1773695307.git.ljs@kernel.org>
+References: <cover.1773695307.git.ljs@kernel.org> <e3071ae43af79277d3919bafb71f009694d0854d.1773695307.git.ljs@kernel.org>
+Subject: Re: [PATCH v2 09/16] mtdchar: replace deprecated mmap hook with
+ mmap_prepare, clean up
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abVE6VWCzZfyMEsu@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 689A6180004
-X-Stat-Signature: dk5f5wkrmhu1jmygsttmabkuor4f7byn
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [195.201.40.130]
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF148 (Linux)/8.8.12_GA_3809)
+Thread-Topic: mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+Thread-Index: pNh82O8fJN+FJCj96uoZroIJd3hL7Q==
+X-Stat-Signature: bj7q65x7a71ao5t9tyz5tawcry69h7t4
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773696889-252366
-X-HE-Meta: U2FsdGVkX1++NLNLsK2k1YG9/4FfYUiYZpuXE3wWaFxoSVGwviX9plcYxC1DeJBMvvv4b6CdBeqQhCL5GAgpnBAflVRFEZIflcNrAGGBW8PvyE0bPDYX19qTZBlvvYjBGaszF1CDqKsYFwuXLJG6D30wmm8CovJqXGTs3U5p9YUSB3U7hqhc5vtkNNGtfLxRPWH/GP1fSpksSvB4WXuKkEkYGQzBrXucINuCRcRaJ3yyYN0v0Vt6cH/gpmy4uUZeOIiZfZVP/uSvx4TdPZNS9ciyNAmG29FpYRart5OUK9eMCM0xiVolWLgfDUkngm2ldvXe6cSIqRCwzEEDREzGJzvdU5lNDJfRqwSc/eXjA7M2kXlXtg19jCLFtVwa3hkZqXufjjDoVSJC58AeQHB7pAQQ4ZTPstKjPzzD9aaOgneD2DNaAYr+n+CYI4wyBkB0VJZOqQRfhcOZm7qsHaa4yAvW4SyNHDcvar5jWeYpe5dh6ujeq4q0rQKu/Re6ALFi8bPctHW5YAA+0Kd7qx325j5xrmPB0K5e7sW7xOdSmnm5R0jyngAUunmCLPi8365kraozpXXyHqFvdWIyMQfe26xZGj07kl60LDXtoQhi3Roe45U+UTspUlo+dDC2WHvwh+Rh4dQA3egUB2st/sTEpt8sugE3glfu0d3Q+JQ6pXpufIBi934YlhN+l0pARByTgxLQtkBOpntiJKLCehlTBO2qUK0PrOUu+qhdpSTxG8zB/bzQEL/uT3XbpKQGbKc8bPKcByBZQbzuurv+3NVIbsBUC+L69OJmlk5wrmXZ4lxp4q6Mxmh0JrnyESmJ+WQG7u7UafG7Z/uXEq6I74D19pSrEuE40HYzhtUScjwuu0f2Au0Tu68hV/VXJ3Eyki9AbOFbmToQhnmBsCFRQHtN3pzKL7vfag2vcylGCnyGaLep7UrMAACSllZWXquQrpyUZMf/mrvyEmxzQmN9eSb
- UAyW7WAg
- kkRdZXLuColpm3ZTcEMzjnInDUGFiTB37BNFq0l6qT+MpVGTuRyeFFguhKT1It+KjedL8UuoTA9B8tsozovl+4D0x+O0qKZHrTDCPcfvBy7BFSQ1N09npVlWH9viPqJPRYZtb+6UHhVHUZEZ1oWggoUpjuJueb/kBwq1VWJgg1qVJnAl4t+eK7bJ+WxYnkP+qiFFyJZFr7xztOvSCazlJTaLLFsRhkny+Do/scXvibKQ9ERVDLr3CSVYSwBl9RmdVo6qyIePEV8/eRov86JZqP1VOOBkyvYBaKYk8Ek6cUa1b+oU0ToRnn1otb/jWRGG/5KFBIVmiYV30z2I=
+X-Rspamd-Queue-Id: ABE3C180007
+X-HE-Tag: 1773697548-312398
+X-HE-Meta: U2FsdGVkX19f1AZr9yNPu/GgEzOtVbuyF7JoobHaOkT1fecvwHreHcGJe6NjvoIEyHrUmdeyrKAf+UTUkgId3wIiAQ4Blw0oYO3Lcl0aSZilN7qckMEbVN1TBtN3UG8oH9mqKEG/SUlLob0SP+CtmRb23l4i0oz7bivRaABGS32Be/iGSuWPNc0s0RT3tXcrM9jcV0a95vVCmHkCcr/k2w03LYeRdForl1Lu70eipp3GJOocNVg647GmMqOCrNTqok0AHwo03mSyCyTmWqpZoVfmGNe3EmIKbLLlhPmGS3kUNWH6fPnTgITjUT0ws50R0p1xqxm5FS0UN5SaSmmDWmwn5j9CVkS5pnsyamPBpo3LNE5vXICJWzkY7Sb5SDak3hEDxEZpEDeVyRN38Fx2cZlrKhaisCIPsE92xIj6aZYsviosyBqEXwrIUtHDpqGzFMK2Ld6u3KDbROPP+Pchhsit49ukB+x1Zcw+DYdZQEOo+18/AQ7FazxxSdblbpllfncPfHm7XryGm/VAI92DtgtlVQCbZeAq7CHF8YDW2SyEZlIEeIPhqFhtTO5l4ZbpUVXG6hot8YQpuy2kbnhVDObH2X5T7p24g86s0Q2WuaLViXkmu8D0yYmeq5m5aOpTEHQRAmquAkUiF/UfEVxbwskLnas6tP8MF5hiAuCRu9C7jlkL0NGwtmzS7GpkIVl5TikScZNJgJE7iCqxZeLYIKJXOkPLgCLDoLVzT+hskvWdLUT272rWuO+RwR6gXeE6gXe6CeOxE5kk6SYckSQ52yD6X7EN5I+1TO4DwtfDD28dRL+WQ0nFn2tv1LZr5WTVDFz6O73cKRsi4loCr2vLVdRC3PD6Pjp8h+RU67LgXZaaOSnDQ3xdGn3iWazD5v4s/VUdYH8Dm4rNBH3f5mEzsocPwIZKKlHrWDZ90uQ9huDrfiQC/LNsxd9YeyWuGmktja8dmuAEhN8ybnxX6Pn
+ m7BUwoqm
+ OF6m1IfBzgPhWirHqBcJJqNzPzZIK5Q6Amk9t9X3aip39L0UJgOU7H6zxxUaTQSoC64ZvwkuFvTYv1LagQbrvpbkABsUKeHv6prhyobxpirqsyiCUSw/cNS5jlKTQp9h34u9Sbv1uEvwaBl0ugx48JTaNly4Xf+J+XoKd9sa4UXnCajOrEXhGQRkx1E0r1G/oBGymamCyu6jJ+Vw4W6T8xFfnEcD2+Y+Q19q7rd7JwzuCBEwOfI3+AJYIj49IngxKe/JOuGG17vFEWOH48Cb5O32Su+36DiOMRTaMFG1O7523Wemp4uVkYNQYKLVb6uViZSaCw7sji4N8Yoicw8aM17UB21bEIeapq5Xq/sa60a0LhWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,45 +127,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 14, 2026 at 11:22:17AM +0000, Alice Ryhl wrote:
-> On Fri, Mar 13, 2026 at 05:40:12PM -0700, Nathan Chancellor wrote:
-> > On Fri, Mar 06, 2026 at 05:32:33PM +0000, Alice Ryhl wrote:
-> > > On Tue, Feb 03, 2026 at 11:34:10AM +0000, Alice Ryhl wrote:
-> > > >  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
-> > > >  	$(call if_changed_dep,bindgen)
-> > > >  
-> > > > +quiet_cmd_rust_helper = HELPER  $@
-> > > > +      cmd_rust_helper = \
-> > > > +	$(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)) \
-> > > > +		-c -g0 $< $(if $(filter %_module.bc,$@),-DMODULE) -emit-llvm -o $@
-> > > > +
-> > > > +$(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpers.c FORCE
-> > > > +	+$(call if_changed_dep,rust_helper)
-> > > 
-> > > I think this needs:
-> > > 
-> > > $(obj)/helpers/helpers.bc: private part-of-builtin := y
-> > > $(obj)/helpers/helpers_module.bc: private part-of-module := y
-> > > 
-> > > at least it seems to make a difference for AutoFDO.
-> > 
-> > Would
-> > 
-> >   $(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: private is-kernel-object := y
-> > 
-> > work as well? Presumably, this is because c_flags only has the AutoFDO
-> > flags when is-kernel-object is set, which is only true when
-> > helpers/helpers.o is a part of obj-y.
-> 
-> I assume so, but isn't it more correct to set part-of-builtin and
-> part-of-module? I don't see any make rules making use of those directly
-> (instead of is-kernel-object) right now, but if someone adds such uses,
-> then this could become wrong, right?
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 
-Hmmm, yeah, I suppose so. Actually, adding those would allow you to drop
-the manual inclusion of -DMODULE in cmd_rust_helper because it will be
-included via modkern_cflags.
+[...]
 
-Cheers,
-Nathan
+> Commit f5cf8f07423b ("mtd: Disable mtdchar mmap on MMU systems") commente=
+d
+> out the CONFIG_MMU part of this function back in 2012, so after ~14 years
+> it's probably reasonable to remove this altogether rather than updating
+> dead code.
+>=20
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+> drivers/mtd/mtdchar.c | 21 +++------------------
+> 1 file changed, 3 insertions(+), 18 deletions(-)
+
+Acked-by: Richard Weinberger <richard@nod.at>
+
+Thanks,
+//richard
 
