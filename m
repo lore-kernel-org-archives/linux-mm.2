@@ -4,112 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96008D58B09
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 03:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F34ED58B09
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 04:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08FE66B0108; Sun, 15 Mar 2026 23:51:48 -0400 (EDT)
+	id 673236B010A; Mon, 16 Mar 2026 00:21:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0689F6B0109; Sun, 15 Mar 2026 23:51:48 -0400 (EDT)
+	id 6208B6B010B; Mon, 16 Mar 2026 00:21:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB69F6B010A; Sun, 15 Mar 2026 23:51:47 -0400 (EDT)
+	id 51F966B010C; Mon, 16 Mar 2026 00:21:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D71866B0108
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:51:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A5028D224
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:51:47 +0000 (UTC)
-X-FDA: 84550552254.04.241653B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 372F0C0007
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:51:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fJKFha3V;
-	spf=pass (imf22.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 401606B010A
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 00:21:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5A1B140DE8
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:21:15 +0000 (UTC)
+X-FDA: 84550626510.25.B5B00BC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 177C11A0007
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 04:21:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ewn3TCZT;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773633105;
+	s=arc-20220608; t=1773634873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U/bz/OlRIsr3yCmSufJAxeWqWIyBHqS7n7g2qlL+oDc=;
-	b=3L3WnMripOVQt4JHTZy4TeJx4tervo+0fv+7A8PyRt0iRXdrEm4mZcah0uhIprJmtMkPM7
-	glsvRwQs3Vnt9/ptZgsbuaBIF4gxpi2LSOICfbtPNwHwJCP0VEASdDJDZp5hBsNw23VzXS
-	YgNmwIEszdyOFU28DFfacYnpjem/uOU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773633105; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=F+GKFg7SYKIX3/MyQGz9jGHELnyUhEBMPGUzN6tbX+s=;
+	b=JVuhV6oWdOEqPk/t9V0mOs5SD+5Gw7H9bpOOQgbOXB3vOEy5RFYLarZkv3x3/kiSIWoMtY
+	STQxX1f3ls/egKrI+eYa9PZGcO/tP0pAsqsckVYaN6TsKtNfpjvQ5k2yLjBx7FuOfmRNpm
+	TDfvXyNdAf1Np9uEgiIp2Rjb1RU/K4o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773634873; a=rsa-sha256;
 	cv=none;
-	b=T8cqRM5F9FXnV5+WfgOYYODBkqU+ia330MAsRlvQlQLvYdAgr69KqSv8jNickCDP7x53Ob
-	gZjWbJUPTBsCSJ/LQDgh6e+0piitsbVSWklmMsyqpzBPIiVH/cZgGf8CRXn/H/r+3urgdZ
-	DXiEi7g9Bzcrk8gn++7UQe7fBZshUCc=
+	b=Y3sJ771PYGODpQuTmkomwPL8XNhWbVPYSiiTCENxzOHj0D9aWrkL8vcqOjX50LQU9VUNRM
+	Z3u3tq+KLIxoHfB8/VuCPsmH+o5tCmmmwTqtCFAs+8FdB0aPp69nWwJhQ3su6yrcrSArX8
+	sQhqCT+u+NZRYJd+mxxYDArC3zUx7yU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fJKFha3V;
-	spf=pass (imf22.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773633104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/bz/OlRIsr3yCmSufJAxeWqWIyBHqS7n7g2qlL+oDc=;
-	b=fJKFha3VWTZG6/o3lyqHiA2bafgRf1wRyFKDH5UzkrPQg6qqtlPQONktNv0JVQqc1vHPll
-	e4f9sbQCfFaBzmkHXNN+YxNEEGykKbOoERYPThaiCX91RAIQA1JNdsyIdY1+NnnAmkZMjU
-	UCyrjRfgmVCEa2zW3OHswYFGVZ4IUtk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-gq2VcK39PcazRcXZAKMU3g-1; Sun,
- 15 Mar 2026 23:51:41 -0400
-X-MC-Unique: gq2VcK39PcazRcXZAKMU3g-1
-X-Mimecast-MFC-AGG-ID: gq2VcK39PcazRcXZAKMU3g_1773633098
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 93B901800365;
-	Mon, 16 Mar 2026 03:51:38 +0000 (UTC)
-Received: from gmail.com (unknown [10.72.112.28])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A4AC8180035F;
-	Mon, 16 Mar 2026 03:51:28 +0000 (UTC)
-Date: Mon, 16 Mar 2026 11:51:23 +0800
-From: Chunyu Hu <chuhu@redhat.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org,
-	david@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
-	ljs@kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, Li Wang <liwang@redhat.com>
-Subject: Re: [RESEND PATCH 3/4] selftests/mm: split_huge_page_test: skip the
- test when thp is not available
-Message-ID: <abd-O8yFlB-ZFu7e@gmail.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-4-chuhu@redhat.com>
- <CD772D2C-F489-498D-A61C-9EA0D377B174@nvidia.com>
- <abQqLQ_6QqVgzunL@kernel.org>
- <DC5C1A71-2250-4723-9CEF-EDD300DD26E8@nvidia.com>
-MIME-Version: 1.0
-In-Reply-To: <DC5C1A71-2250-4723-9CEF-EDD300DD26E8@nvidia.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: 2YL4niJYw2b_w3lLXav2UPWw8LWXMiVFtxkUxfyPluc_1773633098
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 372F0C0007
-X-Stat-Signature: wzi1fnk18q693h88dk9d6chdbthmyod9
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ewn3TCZT;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773634874; x=1805170874;
+  h=date:from:to:cc:subject:message-id;
+  bh=ugDXr4umjV2wE5t9A2d87jF48b/dnuJsQFKJP2khR/s=;
+  b=Ewn3TCZTykOGSl6dNV891VOzfh58V2yFrIbzc1GWptZdJ1DeEvFzCbl5
+   eViA5Ou4rJkNIAR2sjpndx+7vM0+wWx2PAguAj+RhtWRDoZxmDi8xyUsV
+   GlhM/xw5DJBTjBc4BsYhsNvsj9AlAZyuAsjN6Ao3ZBfo3CBsVct6M7/WQ
+   qpCw5oemN1A9/T60JXaknKo3gkmbpGYKlHnzH/45BaS7Y7zpmJLDuwv/U
+   Wclm7aWkTHBtoIFJRuHvLXXOoad7UGxbbL4JgtkxLTZCt6yqcx4ActgOp
+   LWp9L/iXn2gNUQi/6WKvuP/lRg/TpYFwULv4fw0ekcVF47I4obsv5hBkn
+   A==;
+X-CSE-ConnectionGUID: ZkUjcKu2RG+J40OTndY2BA==
+X-CSE-MsgGUID: zPRC/eZPT5i+aAK8r0Qv0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74833892"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
+   d="scan'208";a="74833892"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 21:21:12 -0700
+X-CSE-ConnectionGUID: k/DesnSdRu2BYIyGIy55mw==
+X-CSE-MsgGUID: bZVj7hi7RCqXGawirR3+eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
+   d="scan'208";a="221876096"
+Received: from lkp-server01.sh.intel.com (HELO 892944969b78) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 15 Mar 2026 21:21:10 -0700
+Received: from kbuild by 892944969b78 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w1zRy-0000000006E-1uP7;
+	Mon, 16 Mar 2026 04:21:06 +0000
+Date: Mon, 16 Mar 2026 12:20:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 378/389] drivers/mtd/mtdchar.c:1384:9:
+ error: call to undeclared function 'vma_desc_test_flags'; ISO C99 and later
+ do not support implicit function declarations
+Message-ID: <202603161221.qNrB6fVE-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 177C11A0007
+X-Stat-Signature: aafdd99j3i4xzizigr7spqhf4p8ij8kr
 X-Rspam-User: 
-X-HE-Tag: 1773633105-567191
-X-HE-Meta: U2FsdGVkX19INXE4wKtLbv48b5qfzlQG9+ZUitoZm7g71RG7k7hjiMO0CuvszFkvijqZezMz5NqFxW8ZLmONywmCrPbM1zdoMfT52q/KvMFZcWejHLv4bdMWnCRhkDsqv6prRnYT2q4UwD+cx5jb/Hn40Vwp2y4ZF9X80hUSDQZqOwxW5Za3B39xVZz8V4F2xIVYgQx3rPkIMrLpNFgW3kbJieNrUnAbWi9P/n97ScWCie/x67ShwtNkvJ4DWz9ACte52heua10Z055J4xoBqL/spJ74GK4Be4yNGpBJ1XgfHhFiO0yFqZL8gw3Am44JBGl/g9ks+m9doAwSxhgMC1kNZPOV7De3KT/ekaZuk/8ohwOlQr+sOmLbLiM4Q8183uDT6TQzX5c5+DCSIC4vX9BnX0uNpTPoyS9dRsDG9532LTzzgElQvYGcrH1+e2sK/wsdraitLMiYdhBwxyO3wJ9fdmnrOiBHSZPZEy0LHOrrHZXGyT99uz4ZRxPJymTtZQvNxXGEJIC27lJlgLfDHvWW/zvOnHslCT0JBFvBgxSEFlFcpfOTAqpGgJx40oeSu0v35pkOYpjF3QHtmIA6YE1xBwRDaLQnmNvsqT2sI0RYdLyHtKrrDKyEYZxAc61JVclccMgcDnDM+hivRNmjRF6ZKQlOr7t0RKkbmn7DRxxF+PkhH8BLG8MB2LWRMSmERtHMTWl1UUrAt3eM9XTNzqTUXOIVclZS8XiGOfgL/jwg6zEW7wlEgklf0mPFdKhsJDTfi9YSXnTPEDs63sBgg8Qm3NmxRQdBp/Ihc4gu6AB5XNIARlEdAYxWi15cgr75zE8bKM7aba2hXewvvVaYqWVui7cSOIosAV5RqrYy0cjnfb7Qtg/8GAEFWzKK2QQNE+Az78O/+90LLKcqhd3SWDBjnPtACzOyhzf4BOc+YjRKQ02j2A8OcKSD1aEjPw1i9JHONgKx1IThsU4yDzF
- WEEBDMt9
- Ffn6QPNRSRv+gzhw1pMGcSZVFPz91qltZfIEnhyv6AHm7QGpixpieJdPxX5fs7G6LE+4GSuD2oOfNkbDmXUlyPT2GlX1AOh5GB50Vq8VKklkDIDdKzNTEEc0tryrYrxdtiJ/hVe8Pc4m/siYDIjxskdqsIX2C6xN5KOwdWWWiDUxwVhYLruzCeiDOS5o2KsAT86ZJ/QDjQjW4VwVOEUGLoLbqdrXqVArx8brScXNrAqwJI6nix2B/igvm4DtBNbGEs3s8RqD46GGxMxAqV7fe39ozu1/RX53+/PgbDypC3TsBRBGw9akryJprs5uPOBCs9s0W2gm1WfXfnsUmbU0vNf8DpJ6O8aUGygLRy/mYrQlYogS9VgspdGntjrvWtsOX9A3xFTCQtVLlZ8tkW/YTqmhiqw==
+X-HE-Tag: 1773634872-617918
+X-HE-Meta: U2FsdGVkX1+vu3qhtc148DeH6ybtyjTDIxrnQf36JxyR66Fbe75szQN2r6QcuFgZuXVZY//8k+E5Fn2ZvJsAg3Z7uXaKMuoq9fc2Q8b3NgyoY+TQ9KnMREiGGH1kpELtiZlgticj1adx9VYJe+WXMos7jfd2zVKZr4M6IChbqD0t4sVmsECa/3yg+p9StLFfQ0cvLPwLcX99wnPK9/R6v3W4JOTeNyl6DVF/zZ/Hu8oLBofV8PLHWtsnnYp5FIZ3ADkKmP6Ct30fvS6aad7nfeKD+sB5UDxtZdzAcqXl0T3GaLmOuvUny6VVOa/AwqnCEi+2P+G6fovUvrXwSgy3KPt8rfS5NsKMLeZ5K2V0FlekIqs8fjHs4gx1yQfzWDqKI95PWOW58pndBSq+DVCkTYBz+2Vkcr1lCEwbygx13kZ67SY43mPSpivGhKZnLTCKDbRH7ZKhWpBbTxDIAQ2fVOS+bOnhZKzdVJ/0eRYQttu57sRvMEwwDS1V3g2pySXUWZ8OosDM1b1P24xFtWeVXDrD90RQCMsbfXNdfEimeSxAa0gpphfALhdx1ok7CVpZz1bSTsBSnfzENNGXTZvRfxXog0Un0a2I35VV0KIAjo6nKh3waGeDoJoU/wZiB+quvI/UiPxxGVFZYW9p8ZTn/8j+fquyq+etPHlrLLNzeJcvteiuWFnV8iK/Dcbm3oZN44ZUP7WcX/7U/XnD9nS8aCWkhXg0vrtyq+XCfCb0o5bLip89rXoiw4lfUd6U4HQROer9ivhGwl/p3tpuLCyc5QyhOEk3wc3zb1IhAupbg/uo8fxae8UBsnp8X+W+vFvkVQPYuwNDp22zoOk24gR+5AfJbiKEzm/M2v1BrqpE7bm92TSWnwM7IDS/HK1RejK4LihoIuSPqDBaLkbZft0t9ysiKlZSTe68gQa5R4OHT7mCgevyRt+dDDxYEPW/uKXcRiyPl2CYbFaGcEdZm1I
+ B7Eo3gd0
+ Y0jGRzcEKv9IUqDj7r76V3lls6HlykVZuR0XWgRo3uVdOQ2dNygVPBUV4ZlbVvHIRjx+D42OaLJincXV238Kz6OQF+mfBNrNMPrjtKecAuPUOuPywqk5Q6R1YE3p24ZzawvWRczTajxJW8IYvaS9v4E86n69r6ZnFir/153AyyG5aCT3HzZ0t65JX8xmiYWhsk1ZLECaCWDCL0qnd7Un+ZT4xLZ5fdvw6EYy9lCQwa0OsmTc4G0uKHkoir0PRkkrxlDZFZaqiCDbojChIqTBlRRvQ0pNczDZAYV+24bQUXKwJkGt6VmE9ZdFN0S2VVw/w7Bpk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,135 +104,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 11:27:30AM -0400, Zi Yan wrote:
-> On 13 Mar 2026, at 11:15, Mike Rapoport wrote:
-> 
-> > On Thu, Mar 12, 2026 at 10:11:12AM -0400, Zi Yan wrote:
-> >> On 12 Mar 2026, at 7:40, Chunyu Hu wrote:
-> >>
-> >>> When thp is not enabled on some kernel config such as realtime kernel, the
-> >>> test will report failure. Fix the false positive by skipping the test
-> >>> directly when thp is not enabled.
-> >>>
-> >>> There's a naming conflict on write_file() function, both thp_settings.h and
-> >>> split_huge_page_test.c define it. To make use of thp_is_enabled() helper in
-> >>> the thp_settings.h, rename this local write_file to safe_write_file to
-> >>> avoid the conflict. The reason to use 'safe_' is it does some error check.
-> >>
-> >> Both write_file() do safe checks. Actually the code of both functions looks
-> >> almost identical except that the thp_settings one does exit() instead of
-> >> ksft_exit_fail_msg().
-> >>
-> >> Can you rename the split_huge_page_test’s write_file() to write_file_local()
-> >> and add a comment above the function like
-> >> /* add _local to avoid a function conflict with thp_settings.h */?
-> >
-> > Looks like we can move the version that uses ksft_exit_fail_msg() to
-> > vm_util and drop the other one.
-> 
-> Could work.
-> 
-> tools/testing/selftests/mm/khugepaged.c uses the write_file() from
-> thp_settings.h in file_setup_area(), which is part of struct mem_ops.
-> I thought struct mem_ops was passed to some syscall, but it turns out
-> that it is used locally. The only downside is that file_setup_area() now
-> has this ksefltest friendly code. Someone might want to clean up
-> tools/testing/selftests/mm/khugepaged.c with kselftests APIs. :)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   c5a81ff6071bcf42531426e6336b5cc424df6e3d
+commit: cf0dfae0323aa8b75cee0b94d5c7553b511d7bc3 [378/389] mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+config: arm-randconfig-002-20260316 (https://download.01.org/0day-ci/archive/20260316/202603161221.qNrB6fVE-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 36041192cf6c9042615c8d2364cacc698ef89865)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260316/202603161221.qNrB6fVE-lkp@intel.com/reproduce)
 
-It looks like work in my try, even before the cleanup with the
-kselftest APIs.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603161221.qNrB6fVE-lkp@intel.com/
 
-> 
-> 
-> >
-> >> With that, feel free to add:
-> >>
-> >> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> >>
-> >> Thanks.
-> >>
-> >>>
-> >>> Tested with thp disabled kernel:
-> >>> Before The fix:
-> >>>   # --------------------------------------------------
-> >>>   # running ./split_huge_page_test /tmp/xfs_dir_Ywup9p
-> >>>   # --------------------------------------------------
-> >>>   # TAP version 13
-> >>>   # Bail out! Reading PMD pagesize failed
-> >>>   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >>>   # [FAIL]
-> >>>   not ok 61 split_huge_page_test /tmp/xfs_dir_Ywup9p # exit=1
-> >>>
-> >>> After the fix:
-> >>>   # --------------------------------------------------
-> >>>   # running ./split_huge_page_test /tmp/xfs_dir_YHPUPl
-> >>>   # --------------------------------------------------
-> >>>   # TAP version 13
-> >>>   # 1..0 # SKIP Transparent Hugepages not available
-> >>>   # [SKIP]
-> >>>   ok 6 split_huge_page_test /tmp/xfs_dir_YHPUPl # SKIP
-> >>>
-> >>> CC: Li Wang <liwang@redhat.com>
-> >>> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> >>> ---
-> >>>  tools/testing/selftests/mm/split_huge_page_test.c | 9 +++++++--
-> >>>  1 file changed, 7 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> >>> index e0167111bdd1..615b75ca62cc 100644
-> >>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> >>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> >>> @@ -21,6 +21,7 @@
-> >>>  #include <time.h>
-> >>>  #include "vm_util.h"
-> >>>  #include "kselftest.h"
-> >>> +#include "thp_settings.h"
-> >>>
-> >>>  uint64_t pagesize;
-> >>>  unsigned int pageshift;
-> >>> @@ -255,7 +256,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
-> >>>  	return status;
-> >>>  }
-> >>>
-> >>> -static void write_file(const char *path, const char *buf, size_t buflen)
-> >>> +static void safe_write_file(const char *path, const char *buf, size_t buflen)
-> >>>  {
-> >>>  	int fd;
-> >>>  	ssize_t numwritten;
-> >>> @@ -283,7 +284,7 @@ static void write_debugfs(const char *fmt, ...)
-> >>>  	if (ret >= INPUT_MAX)
-> >>>  		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
-> >>>
-> >>> -	write_file(SPLIT_DEBUGFS, input, ret + 1);
-> >>> +	safe_write_file(SPLIT_DEBUGFS, input, ret + 1);
-> >>>  }
-> >>>
-> >>>  static char *allocate_zero_filled_hugepage(size_t len)
-> >>> @@ -772,6 +773,10 @@ int main(int argc, char **argv)
-> >>>  		ksft_finished();
-> >>>  	}
-> >>>
-> >>> +	if (!thp_is_enabled()) {
-> >>> +		ksft_exit_skip("Transparent Hugepages not available\n");
-> >>> +	}
-> >>> +
-> >>>  	if (argc > 1)
-> >>>  		optional_xfs_path = argv[1];
-> >>>
-> >>> -- 
-> >>> 2.53.0
-> >>
-> >>
-> >> Best Regards,
-> >> Yan, Zi
-> >
-> > -- 
-> > Sincerely yours,
-> > Mike.
-> 
-> 
-> Best Regards,
-> Yan, Zi
-> 
+All errors (new ones prefixed by >>):
 
+>> drivers/mtd/mtdchar.c:1384:9: error: call to undeclared function 'vma_desc_test_flags'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1384 |         return vma_desc_test_flags(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
+         |                ^
+   1 error generated.
+
+
+vim +/vma_desc_test_flags +1384 drivers/mtd/mtdchar.c
+
+  1375	
+  1376	/*
+  1377	 * set up a mapping for shared memory segments
+  1378	 */
+  1379	static int mtdchar_mmap_prepare(struct vm_area_desc *desc)
+  1380	{
+  1381	#ifdef CONFIG_MMU
+  1382		return -ENODEV;
+  1383	#else
+> 1384		return vma_desc_test_flags(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
+  1385	#endif
+  1386	}
+  1387	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
