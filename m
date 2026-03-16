@@ -4,111 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE99BF3028B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 03:47:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D127AD58B09
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 03:47:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE0196B00AD; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
+	id 4304B6B0104; Sun, 15 Mar 2026 23:47:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8E236B00AE; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
+	id 405296B0105; Sun, 15 Mar 2026 23:47:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D90876B00AF; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
+	id 331A26B0106; Sun, 15 Mar 2026 23:47:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C5D2F6B00AD
-	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:47:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48F65BDF47
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:47:09 +0000 (UTC)
-X-FDA: 84550540578.20.5C3A182
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 44258100007
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:47:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6TeGEoX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0786B0104
+	for <linux-mm@kvack.org>; Sun, 15 Mar 2026 23:47:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE841BD445
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:47:46 +0000 (UTC)
+X-FDA: 84550542132.18.58EE97C
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0FF3C40007
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 03:47:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CqdAeQ8x;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773632827;
+	s=arc-20220608; t=1773632865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+0D2y5TFtNEN6pRRzkIZxioYtJ8GpAfJqrdPquInSuc=;
-	b=pIwNnr+gQRMTyk1Wij6R4vZVTZlP4wOwbRQCONTkAQF/lVGfPeAnOl8yNGug9JvDrKSgQC
-	WURzotr5RHZcKKHe7aSB0FnZOvqTwpu9FbBbJF4ARO0D+AXw5dZfmCbCoYNVw+sgkgsww3
-	gg5u8xbxt2g965crj5c4coZh8kN3wI0=
+	bh=BC/9VRvnBx2Fbj7AWhZPfEGKyE+15so5XBYMY8jq8jw=;
+	b=JzgYL012up5ZKNwEYXYL8cVmlQ71XgUwKLlH0+uxn23O2NqsT+whGHQl8iH9cJ+tbCPPsA
+	v55cNgNxy7zKSNbQVELAg8TPL/uC9oj4aGdqRissCC1P5h/Z8mOq0dXFzEijKsyJHCpIUQ
+	uaCH+5rdRDUNf16HAAkNU2jSeaGPP1Y=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6TeGEoX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773632827; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CqdAeQ8x;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773632865; a=rsa-sha256;
 	cv=none;
-	b=xJ5KwSYCGErMfpLVJ5jIkj91AhPsttKWzDx/dYbdVEV16L3IAJ0PFaKkUp6j9AsWXCMAuy
-	qo6n3oi8gR93tWvKvltnLjs1+TgWfT9aBwxIJHx81+YYa3E0dCP1UuijiKUWqdgpqQ/OGU
-	ePmxMv5SZPROTqYbAShKxMzcXhxHa9U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773632826;
+	b=XaKbpJ1D8HAEz7Db4mf6zKk6DmNOkpthoTwgj11eS92h1Myu0qN0apDC20l/B3h7m/uJ4x
+	fiMXrFNBec/QC0S7ev0RgpLc1SJYEaH1/mYkXibBgFLg7/l73er6+Sc15eoYaJmR1cmCuH
+	FjUU7rp/7cY4eZFJXab94AJdl+QqnV8=
+Message-ID: <d07a0787-dd00-402c-b8bd-3a6380608c0d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773632859;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+0D2y5TFtNEN6pRRzkIZxioYtJ8GpAfJqrdPquInSuc=;
-	b=Q6TeGEoXLb2I9QLDoucS7P6nnaRjGYJUOrDCGmR17bHJwjwH9gDNcZ841L5CU/LlLp5/wL
-	yi+G1kcUZbvjXb4PbpSNbfoZpe34Wj/HnV/8j9Ti9ukJamQu4bl8kMPi13UCsrDNeANTO1
-	LTr6ShNW1nBgSXoZpAabzuyaxwS55N8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-WJ8Ob1AsNZyCLRk2U-RtOw-1; Sun,
- 15 Mar 2026 23:47:02 -0400
-X-MC-Unique: WJ8Ob1AsNZyCLRk2U-RtOw-1
-X-Mimecast-MFC-AGG-ID: WJ8Ob1AsNZyCLRk2U-RtOw_1773632819
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 056A11956048;
-	Mon, 16 Mar 2026 03:46:59 +0000 (UTC)
-Received: from gmail.com (unknown [10.72.112.28])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5DC501955D87;
-	Mon, 16 Mar 2026 03:46:47 +0000 (UTC)
-Date: Mon, 16 Mar 2026 11:46:43 +0800
-From: Chunyu Hu <chuhu@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, david@kernel.org,
-	shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev,
-	Li Wang <liwang@redhat.com>
-Subject: Re: [RESEND PATCH 3/4] selftests/mm: split_huge_page_test: skip the
- test when thp is not available
-Message-ID: <abd9Iyg99E7AUtYq@gmail.com>
-References: <20260312114027.634559-1-chuhu@redhat.com>
- <20260312114027.634559-4-chuhu@redhat.com>
- <CD772D2C-F489-498D-A61C-9EA0D377B174@nvidia.com>
- <abQqLQ_6QqVgzunL@kernel.org>
+	bh=BC/9VRvnBx2Fbj7AWhZPfEGKyE+15so5XBYMY8jq8jw=;
+	b=CqdAeQ8xg8xe5XJljnNCPre7futB6K0k00xwmOjFkgULmZSHb4opCfSw2vsPa5wzqNXcWO
+	fzFYYPFQ/K3WUWO6OY3euHKDMdSWVovLrYZEHR1esnICG4oK6qmP5mqeRgiuCt1q4tsrG1
+	NU7ZpkPh03uzkBJfquOm246sapaN1/8=
+Date: Mon, 16 Mar 2026 11:47:06 +0800
 MIME-Version: 1.0
-In-Reply-To: <abQqLQ_6QqVgzunL@kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: IRsfT4y87h6Tdne7fghVvivAPrc-InZdCrl-XWPBcPg_1773632819
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Yosry Ahmed <yosry@kernel.org>
+References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
+ <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
+ <hwcqvplnn2knclpivgagctmcaiutyv2qprgoqmwp7suzj6fqb2@diq6grkwo33b>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <hwcqvplnn2knclpivgagctmcaiutyv2qprgoqmwp7suzj6fqb2@diq6grkwo33b>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 44258100007
-X-Stat-Signature: d9nhwfos86ho46auu97m9drceeu7d6up
+X-Rspamd-Queue-Id: 0FF3C40007
+X-Stat-Signature: reptp6t76yw1sidac8fc6ho8egb6pogj
 X-Rspam-User: 
-X-HE-Tag: 1773632827-480782
-X-HE-Meta: U2FsdGVkX1/8I52zAQlsAOByk5G2z60oIz1Bc5uetiJZD6ueJB/xChXyhkx2je+ZckJ8zOml2Vcn+IQDBPiR7IEeRm782dhAPm2MdCcy4cnYqwaZ1eCOe1PPWvESxqT2g3KaeMnZbJyIl/mw8SDgGcm/y9hC9XJI06zMTQHTVWRYGlrZRnyme91pEy6BJTDERypNB/0tTF7+NVUCjyg6EKivE0TwBzccL1GjqokslIaGCiyppjMrnxXUID8eUTgOwzvuo3w9eCtpxmxhDLNq4Qg3Ie+2EueGgOdl3VObShHzRRU47uOFAP+mqk5mvekk+NP2u/R436vaCMnQc79uwYbnjU4GiaYHnY+PubGovgqYsUzAPDWsw3Udkyi0bUTq3tWY7/IUKjdRHIApqEiGNCtAYV5EsFm7n/JRUBa1CzeDo2AqJsmBXUkn2NCC2MADDiGB8c+7TOa1PAApKAJKIx74DhzNbX68ghRBebo1hGSdRg4GvLtV0s1+dcCt4FatzcUqXDEi7CbwAEU6qdhybRXrTRgCLzk/r7VIhwSoAtqO8X7gSpracgVl3m9/dXPJ3C8ycq5HoMAkJNJNvZu73/hks5DBwUJvUT9bgZ50Od0YuguBUvLYtMNC8atrOZq3FagnnSEhN8A+HLzqPtIM1XwU8+YwBMfdYv6XSrOv9ptMxidJdGBYmY/HugzhJvLxvsspitPg5YtTdpaTt5G0KM4ODahWiEVbW5Ji6c886UKnaI2H3sbPV1nmbQWvi3p7qNg7U6gXWrkv8gWQwCWR+4iW8Q61VupwNvmahw/WBKv02HhxRIhBPfGsJQ/RuXBzwAXdEK6clAO21dt/2BUCYM0CgRyC4TX0Z1m5AJ7V7qUZpf3uyNiisdIXvdGMQKWTOMw2jdfNzE2V1prWJtPthurokX1qdzplNVXU65F3Akf194mnT5RbrBuAvu6YmZaWIKr1ZZehVhkBLDPK/lE
- Oiq7YCYo
- IxpafVcskebYF8hvbUluDbKSR9VVUvVGqE6RrCeIUsr9x7Wty1EIPdAcJtWoDKLPeTeHzpHWS/BTmfVb9srkQ2jpoN6CSCXGVdbCBkBRrWWsssxattqW2a9caFrC841ary1ivKQnOJvhKeEBH0vVGFiMhIpulXxg1HL4tPJm9L/eqGbNNFNzhnR2eNgaSDXEs7IAg1sla+rc/Cp5HhoH7ymONU6VT3yAdYBYl/1u+LPF1yrzzvZfDByg8dm4hpCXozDsHDSnJsZ/GlfnFORp7+aEuHUFDPpbFCpaHp8/MatCIVb4cnrhF8pFV4uvlsI3gdtBPow6BtFWkGQI5lJVM81Le3TwIKE09TbJJ+8ou8EyRVSxNTesU+DbA1umnAwZcxPh5ADjxXS5wHTeM/jZcKSzjiA==
+X-HE-Tag: 1773632862-45421
+X-HE-Meta: U2FsdGVkX1+nKNZptCovuYHlpm17alPuMPwmYFk2QQtznZigdadGsmJcLoz6HIpR2zwrNHdLCjA8kC+7HNUHoCZa5V+BItge2RaCyrc/v9MVnw9CHSH3xSgnqu+fO5WmeW6SqcswF7cpbPJtwFO/INmfRQ7IzMmiEbsWUg41wo5CRCgi/dnwEeu/fXuMB5aWKbxIQJ1vbfLofdMP08h+Eh0kwU/1DGvpEHRhqbWMaRuL0fQBUJ6FHbQWsuC7B1FsazmG74c06e7ZQd6kF6L+i6WCrjAmJYewtnpDqQXJQJdTOL9g0xqXtzFHw/u+Q/7xQgddWuh330hUUd+gn68WauOaw+hre+GzmX1LFEU1qdrRHFjW10WqaR1/3YZAz8LYhmT9ojRbk+7auDW4zUqgsxxmPDvCqQQnr4V4zkbg6ocQ2dLvFtfc93rZ+PbaJ9VtO2men4vuvc2D4lVyBJ7iIEYlFyAKiFjX9MU44GTD27v1UoXSvKmvP5tV7F5dZxd0sp22P7ReqEhnTxOPWwZv2zftEL6vQXMY7davHm3nXWevX5t6SPMjwI5EtSiyfmaixMM1gh+iIziyw6aMTLDy76paMGdv6DSXuo2HNxxtPn/sugYsuxRSFyjGwwOFGn5oOFoYsb4qtx3ANJKT9+WJdriPuloSB+VHc00qqDZ90YHo6vw/cacBBAo8kSndyHCAPkahru45FEx98sWTxXHU2PItp+IWU0a140YSLWgPkCoOUUESmculPk5rcLudvTvERqje28JIrPYNhBUfiy3qqEo3HJUVdI+wE6cw3/gkH1ryq3HS/Oxyc14l0aTzuhPOXUjVnQWOtI56JLQXSKy7KZQJg9kUBZNiUo0CdzQ4uQQIRlbXDp+Hzg4Cequ10M52fkP+ubJ5PPpdATlHQwYCjk6RB14XwpJR3kARzQPK2944Sdc+8+CUoEkVdeL41wpB4ym50tvJSfauurEBRdr
+ xHuVmm5u
+ UunM6VV8shM7uRAQ2YBhyLCRspbfssil1fpdfx3C4a8kv7BER4VSswHZw2BDSdm/NKd81Edo0nDp90x/HSPpaNsDyXighOVPRO2lZicknjBuhxxdBHPLq2v8+TcYJ2mGLSPRv1T5ISlyoNA+cuWV6YwbPy8QF2h8pCn77DbxBZtd52+SW9GmbosYs4s3SBqB09UahWMVsoJQL8o32HAVeqpWjJQkH10ABygVCLKtstak0vXo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,118 +99,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 13, 2026 at 05:15:57PM +0200, Mike Rapoport wrote:
-> On Thu, Mar 12, 2026 at 10:11:12AM -0400, Zi Yan wrote:
-> > On 12 Mar 2026, at 7:40, Chunyu Hu wrote:
-> > 
-> > > When thp is not enabled on some kernel config such as realtime kernel, the
-> > > test will report failure. Fix the false positive by skipping the test
-> > > directly when thp is not enabled.
-> > >
-> > > There's a naming conflict on write_file() function, both thp_settings.h and
-> > > split_huge_page_test.c define it. To make use of thp_is_enabled() helper in
-> > > the thp_settings.h, rename this local write_file to safe_write_file to
-> > > avoid the conflict. The reason to use 'safe_' is it does some error check.
-> > 
-> > Both write_file() do safe checks. Actually the code of both functions looks
-> > almost identical except that the thp_settings one does exit() instead of
-> > ksft_exit_fail_msg().
-> > 
-> > Can you rename the split_huge_page_test’s write_file() to write_file_local()
-> > and add a comment above the function like
-> > /* add _local to avoid a function conflict with thp_settings.h */?
-> 
-> Looks like we can move the version that uses ksft_exit_fail_msg() to
-> vm_util and drop the other one.
+Hi Michal,
 
-Good point. I'll try this in the v2. And I think we can keep return
-value.
+On 3/14/26 12:22 AM, Michal Koutný wrote:
+> Hello Qi.
+> 
+> On Thu, Mar 05, 2026 at 07:52:48PM +0800, Qi Zheng <qi.zheng@linux.dev> wrote:
+>> To ensure that these non-hierarchical stats work properly, we need to
+>> reparent these non-hierarchical stats after reparenting LRU folios. To
+>> this end, this commit makes the following preparations:
+>>
+>> 1. implement reparent_state_local() to reparent non-hierarchical stats
+>> 2. make css_killed_work_fn() to be called in rcu work, and implement
+>>     get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
+>>     between mod_memcg_state()/mod_memcg_lruvec_state()
+>>     and reparent_state_local()
+> 
+> 
+> css_free_rwork_fn has() already RCU deferal but we discussed some
+> reasons why stats reparenting cannot be done from there. IIUC something
+> like:
+> 
+> | reparent_state_local() must be already at css_killed_work_fn() because
+> | waiting until css_free_rwork_fn() would mean the non-hierarchical
+> | stats of the surrogate ancestor are outdated, e.g. underflown.
+> | And the waiting until css_free_rwork_fn() may still be indefinite due
+> | to non-folio references to the offlined memcg.
 
->  
-> > With that, feel free to add:
-> > 
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > 
-> > Thanks.
-> > 
-> > >
-> > > Tested with thp disabled kernel:
-> > > Before The fix:
-> > >   # --------------------------------------------------
-> > >   # running ./split_huge_page_test /tmp/xfs_dir_Ywup9p
-> > >   # --------------------------------------------------
-> > >   # TAP version 13
-> > >   # Bail out! Reading PMD pagesize failed
-> > >   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > >   # [FAIL]
-> > >   not ok 61 split_huge_page_test /tmp/xfs_dir_Ywup9p # exit=1
-> > >
-> > > After the fix:
-> > >   # --------------------------------------------------
-> > >   # running ./split_huge_page_test /tmp/xfs_dir_YHPUPl
-> > >   # --------------------------------------------------
-> > >   # TAP version 13
-> > >   # 1..0 # SKIP Transparent Hugepages not available
-> > >   # [SKIP]
-> > >   ok 6 split_huge_page_test /tmp/xfs_dir_YHPUPl # SKIP
-> > >
-> > > CC: Li Wang <liwang@redhat.com>
-> > > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> > > ---
-> > >  tools/testing/selftests/mm/split_huge_page_test.c | 9 +++++++--
-> > >  1 file changed, 7 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> > > index e0167111bdd1..615b75ca62cc 100644
-> > > --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> > > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> > > @@ -21,6 +21,7 @@
-> > >  #include <time.h>
-> > >  #include "vm_util.h"
-> > >  #include "kselftest.h"
-> > > +#include "thp_settings.h"
-> > >
-> > >  uint64_t pagesize;
-> > >  unsigned int pageshift;
-> > > @@ -255,7 +256,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
-> > >  	return status;
-> > >  }
-> > >
-> > > -static void write_file(const char *path, const char *buf, size_t buflen)
-> > > +static void safe_write_file(const char *path, const char *buf, size_t buflen)
-> > >  {
-> > >  	int fd;
-> > >  	ssize_t numwritten;
-> > > @@ -283,7 +284,7 @@ static void write_debugfs(const char *fmt, ...)
-> > >  	if (ret >= INPUT_MAX)
-> > >  		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
-> > >
-> > > -	write_file(SPLIT_DEBUGFS, input, ret + 1);
-> > > +	safe_write_file(SPLIT_DEBUGFS, input, ret + 1);
-> > >  }
-> > >
-> > >  static char *allocate_zero_filled_hugepage(size_t len)
-> > > @@ -772,6 +773,10 @@ int main(int argc, char **argv)
-> > >  		ksft_finished();
-> > >  	}
-> > >
-> > > +	if (!thp_is_enabled()) {
-> > > +		ksft_exit_skip("Transparent Hugepages not available\n");
-> > > +	}
-> > > +
-> > >  	if (argc > 1)
-> > >  		optional_xfs_path = argv[1];
-> > >
-> > > -- 
-> > > 2.53.0
-> > 
-> > 
-> > Best Regards,
-> > Yan, Zi
+We need to ensure that when reparent_state_local() is called, no writer
+modifies the non-hierarchical stats of child memcg, otherwise these
+stats modifications may be missed.
+
+In the v3, we used synchronize_rcu() in reparent_state_local() to ensure
+this, but this could cause blocking, so in this version we changed to
+this asynchronous approach.
+
 > 
-> -- 
-> Sincerely yours,
-> Mike.
+> Could this be captured in the commit (if it's correct)?
 > 
+> 
+>> --- a/kernel/cgroup/cgroup.c
+>> +++ b/kernel/cgroup/cgroup.c
+>> @@ -6044,8 +6044,9 @@ int cgroup_mkdir(struct kernfs_node *parent_kn, const char *name, umode_t mode)
+>>    */
+>>   static void css_killed_work_fn(struct work_struct *work)
+>>   {
+>> -	struct cgroup_subsys_state *css =
+>> -		container_of(work, struct cgroup_subsys_state, destroy_work);
+>> +	struct cgroup_subsys_state *css;
+>> +
+>> +	css = container_of(to_rcu_work(work), struct cgroup_subsys_state, destroy_rwork);
+>>   
+>>   	cgroup_lock();
+>>   
+>> @@ -6066,8 +6067,8 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
+>>   		container_of(ref, struct cgroup_subsys_state, refcnt);
+>>   
+>>   	if (atomic_dec_and_test(&css->online_cnt)) {
+>> -		INIT_WORK(&css->destroy_work, css_killed_work_fn);
+>> -		queue_work(cgroup_offline_wq, &css->destroy_work);
+>> +		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
+>> +		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
+>>   	}
+>>   }
+>>
+> 
+> Could this be
+> 
+> #ifdef CONFIG_MEMCG_V1
+> 		/* See get_non_dying_memcg_start, get_non_dying_memcg_end
+> 		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
+> 		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
+> #else
+> 		INIT_WORK(&css->destroy_work, css_killed_work_fn);
+> 		queue_work(cgroup_offline_wq, &css->destroy_work);
+> #endif
+> 
+> ?
+> 
+> IOW there's no need to make the cgroup release path even more
+> asynchronous without CONFIG_MEMCG_V1 (all this seems CONFIG_MEMCG_V1
+> specific).
+
+Right. But I'm wondering if it's necessary to use ifdefing, since
+asynchronous methods shouldn't cause any significant drawbacks?
+
+> 
+> (+not so beautiful css_killed_work_fn ifdefing but given there are the
+> variants of _start, _end)
+> 
+>> +#ifdef CONFIG_MEMCG_V1
+>> +/*
+>> + * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race with
+>> + * reparenting of non-hierarchical state_locals.
+>> + */
+>> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
+> 
+> Nit: I think the idiomatic names are begin + end (in the meaning of
+> paired parenthesis, don't look at css_task_iter_start ;-).
+
+Both are fine for me, but changing the name requires changing
+[PACTH v6 30/33] and [PACTH v6 32/33], if we need to update to v7,
+I can include them.
+
+Thanks,
+Qi
+
+
 
 
