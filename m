@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E02A5F53D67
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1FA8F53D67
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:08:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEA46B02D2; Mon, 16 Mar 2026 11:06:38 -0400 (EDT)
+	id 366546B02D4; Mon, 16 Mar 2026 11:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C2596B02D4; Mon, 16 Mar 2026 11:06:38 -0400 (EDT)
+	id 326A16B02D6; Mon, 16 Mar 2026 11:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F2AC6B02D5; Mon, 16 Mar 2026 11:06:38 -0400 (EDT)
+	id 261156B02D7; Mon, 16 Mar 2026 11:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D9216B02D2
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:06:38 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DF0EB7125
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:06:37 +0000 (UTC)
-X-FDA: 84552252834.28.63BD3E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E1A971A0010
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:06:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MHmz72Ic;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 148806B02D4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:08:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B4CB857946
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:07:59 +0000 (UTC)
+X-FDA: 84552256278.27.D73DE83
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1DB2420011
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:07:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="n/71dJAg";
+	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773673596;
+	s=arc-20220608; t=1773673678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BNTLBCX/7krc1AxsjLcJKSMe12jLis/nSn59mHBCLKk=;
-	b=UOfHakU7xOCiMwyP4nt5Uzyt4+Ozsd3KJLzHsIhBgExMUkFN0wQc1cPJU60E5uASKdFal8
-	hOBWdVxjrDSyNkvN6OBObtyCnQDQElgq9nCSSPsZE2kAp+cXSyohlxenp3XScqJs9misTA
-	ouBlOGOvy1sGig5HvZqnbWsbSqd5m+c=
+	bh=tIXiIkMKBSx5alUKudrVvMHs59i35MsVHo4rN4Xzqj4=;
+	b=x0kkInxPoRwxSD9ulKKwOeSfe+lfxB4DfhPNzmmHC+PszgjPd2LMFJwkOoTFk5kLHSFn3k
+	D5US2Q9T9Hz96d+buozesaELluqybc3RrQa/0vJWd6x2ArKnxkw9j2pL3Zk5xmMQ+YV8tL
+	Gzkgo9IHeK5VIBPjlZZF3dJH4DRyVD4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MHmz72Ic;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="n/71dJAg";
+	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773673596; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773673678; a=rsa-sha256;
 	cv=none;
-	b=jGxjwJ4UP963JBYl5e9Hu8PiUnNFZTO42cgEqXlQUA2WITosCIRQ65hzNcr5dvazF+Vh/c
-	VD5wqf/C3ZZWz/RB1kfHge671+kx5pO3LwfI3WW6BqbshnJuySPbr/maFPcf1x6BaRRWV9
-	Dnhb3hcb0+NKhTRbmSbrf0pq6XX7ze8=
+	b=ON4zKIZbZ/QxeS0v0Dc7Ec9UCmGLs/lm5xsCUEN2tqY2OqqaTafgoCHJJ9wsIxE8nwptap
+	z5gse9k99xq5kOTrOW64ijK/h/Cm/c9pxVfZqkVhFt17oqKJNhElQN+97Pe1WbXAo0I3TS
+	MVVihk28tTjAUwZQW+T989gyBCgJ+p4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E74260018;
-	Mon, 16 Mar 2026 15:06:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F594C19421;
-	Mon, 16 Mar 2026 15:06:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 27CD4435AA;
+	Mon, 16 Mar 2026 15:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5946C19421;
+	Mon, 16 Mar 2026 15:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773673594;
-	bh=VUwHVs+S9Dc4lePhODG97FdAbzEBNXby5kox35Y5M+M=;
+	s=k20201202; t=1773673677;
+	bh=SFx5Z/wna4xcu75GgBDn3B1RzhlnGEjnrkDyKE4lF20=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MHmz72IcPyhBPK1xiztRGGigxvKxQXzHFT+c+fBoNMuKIRSPimSmliZjLewO7U+qp
-	 Nl6SRrf/G9V5T5UOfp+72suPDjCMpoP7MfOIA1YNKgGTh7CTxXvr1KmWM55zGJWHf7
-	 lGBmzyuLYlALfVmJczNKUvdCPo0mBQ+b8eodOX+qyZTlNH2EliwNzP1uUJ+FNnLXvJ
-	 dkXSc24LXROuoykfnzGbhvrTfDu8Fwk1n4Bplj1bHzxKdO2EcCyPYiTz5QWmnKMst2
-	 bxnO4cjcB5YjvAqguH2kPgKQSS8Qd+Q3oBreHxYmAoBHe/b1CcXjlCGKOmbqNVhzpG
-	 +dNTHIA7Czbuw==
-Date: Mon, 16 Mar 2026 15:06:32 +0000
+	b=n/71dJAg3PTsVQDyQK41XU4dKdci50IV808kKjc4dbMh4rOOlhlfu3u0JSoFlaYe/
+	 V8V1ktqJdBbfjTc/RG2rn02jK96yT+alvCIOXwXkPhlMaMFNENnD3V+laI5Q6fl4+y
+	 rqXP0MnMWsF/723x2nosaqnVS8txN0RPoE3I64Xs2jy8NcTIPV303d/YhTHXOsnatS
+	 2AdlzruJ7OrxZjXk6PNoudrnw8jwmbmP+BZwwbsPNntVnVQC1iFo3VObk92PBh9OTV
+	 Adns6HSKoI1/vHqIYvBjoPFIKG39gSAky8PMVapwRiHSb7GAlgWY4ldN7QT/i1Uajx
+	 SIQY0BqihKPUQ==
+Date: Mon, 16 Mar 2026 15:07:55 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Subject: Re: [PATCH 0/2] zswap pool per-CPU acomp_ctx simplifications
-Message-ID: <abgbx0YXbxu2mAHU@google.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org
+Subject: Re: [PATCH 1/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the
+ pool.
+Message-ID: <abgckU4DPI0hb6LV@google.com>
 References: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com>
- <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
- <CACpmpodjsMELCrJ-QX066CYiGgraysr_ZhFMvU5N-6nr2HsRsw@mail.gmail.com>
+ <20260314051632.17931-2-kanchanapsridhar2026@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACpmpodjsMELCrJ-QX066CYiGgraysr_ZhFMvU5N-6nr2HsRsw@mail.gmail.com>
-X-Rspamd-Queue-Id: E1A971A0010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zs53m7qk6r9o6mie8q43g4c5uriymnf9
+In-Reply-To: <20260314051632.17931-2-kanchanapsridhar2026@gmail.com>
+X-Rspamd-Queue-Id: 1DB2420011
+X-Stat-Signature: xp958upmgt1hok6i7gwgzze6kyq48fie
 X-Rspam-User: 
-X-HE-Tag: 1773673595-667090
-X-HE-Meta: U2FsdGVkX196JAS4rWUhkBhfPNj481tBiBrAzNcYYP1oSYGMxMFH33a5AY8fdpBfBaUqJYlGKNLRIJBvFbNs94XjDsnUUp2oNOqRpFJvuC0VwIfRiv9aAC/Eh+WPgjtG1tHmvueJ5Xic7tI0vWladCCzJSh3rBYTHfw7K4GhMrKsizpbDbTHZXYGe1Wf6wpD/CJwdQmuDI6sj6Fv7webUFRD5/3oCfsXUNF6Ftgl7yDARDbxZYtOF8Paa88KOxATHZ4Gz1C6JzmiD1r7jHgDv0uB7x6eh34EkPWsjGOr3u+pkR6sVqndZlyEDI3YlTWou31P5XtcYrbc4Yrl4cbP6t0bFmd0NUwH9jj0bQlLVJFJTT0Jws/vH/LcFt8Nv030SQG7FN6E2CXy1oQBf3EPv7K9TiMCjhnsLbiqrsIIUZ726MvQOAEoa5Ih8ZsgMgiPPRDI/7hwmDAgjyRXcA0jqYhxUdC/bZWAbERbDFAy/8by682JqnHmxIS/J14vUxDlOgPI6Hl1jBWpgJHaYjb0LKrGITCw/049DF1uiZpoMc9fw0ryp1Wm2LCtOc0QWjrVxLgZ4MC9lr7UqyXnj8uyaIOVcRsyYPItkiey20O4LqLe2s7OEtCAITFIMs53dDZg7rcI64edtavqEd52+osxcHGi1IR32VU/oiCTf0LAQbBEeV0lnMJpv0HJUYDKxiH2fh9vswozV/dxH+FIo4GwVsoqZ9Of3lig9ywV0qiXSIwarNDgRjmrz1hOUjuteptPKAqBNP7yfiy3Pi49B+SJRNXsxvn4Wtr5iCqJ/deOzuEUjN37Uf2pFLhyHfrcKKUYdwYUXFeHEMzA2FKAMNqmI1m+/qiSlEDw51yVso5JtnCxOVsdpCRbeO7CpaXy1yUj8LzpEkMrCtpUr/XxKVAe5OrIzIGYDidi90MiooOjz3iKBptZVXIIBdQVp2YYWgDRb/4ojs+i84koby9Lu3/
- SzuZbnf8
- oDzJvH+J7LRcxgSUExMaNAIIGp958A27fYEpteqxBXRRSPZzikaUUQ2LkjNFtRrlwnrSRUcvEow1+ayPypUx4DYD7vCW08kYuuIucwjooi+3AgoN+NamGO5EXYl/1s0E4kwTpaTd/n2xv+9VwpkNgAM9ql8y18KGyjks2bMOFKzb7yVIdFv/p+hBxBkeDOkV+9mLXr8H4JXh16Q7+WQcGbBDuWp9CBTf3wRuqhMZvFJMNmAFJERQQVb9SSrE2ayZtFHBx9iUQb+MWQeEmDbvz+49eQOxXdPZDMadn9XqtMbwpUi1kIlalGycInXtOR8lF/5Or
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773673677-814036
+X-HE-Meta: U2FsdGVkX1+EatnF28m9POpz8uX7jIz9j+JUXxw6kBgayhsOCCDT7ccCjDr2LbETKzSRFLuJZ0cLKlRMq+4lgR5hGnx2sQNIoESA43kz/z18U3Po//H2G8aVi7l8SyN0nMekWa8h+qjIzC34W5a0B2Jr4YjeKTyF7AM724Frqn2ClKssC+0Scc+3dukkVYSXzvrNcJbwLcd5vLfL/off9LkGRIo3OwNeSOnQt6DKmEgJN/i/hxUXbG6QaKmuyKyDCf4ksC6b37nFVKHfruQsDVUQdJjSstP5h/kpJcwaz4yQiB+IQV0A9IxXHwvDg3a27+1TiZi4BoCcXoCWGFYyb2Z4lha9nouzNd7rpob6eyoDreEa0lLvROt4Q3pBVoMoyWqZQhwwt4dBWUoejNEm0564VQ+8810BxwIxgtusFDxxzT65avtG5bwnnv54NEdBhfWGr0fr/PHwQ+Tr1JgwN2pr4cGmQ/6DyzdaY+90TwFqjuQuULPKWiwAOc6HYFgYZm9yra2SAdDiB8voJjroXuAf7s11jTM4jyhmeZerJkXQxLVi1yHBUrKk1iR4fIgwcGnouied/Jl+ziyeEoiKK4SFzD5A7LVbxG3Q237PMXR5dODijvlWpIXfH/GdnDBvmqtu4N0YsBWu1RDKOvOMCB5r7fz6JU9iTO6lM4Pm1FmLDCNJ5WGrOeQWLkol5LeYKETyb+NhnSl2t9qeaztajo5jHZjVc+Nz2erikvFqqpLWi3rRSbQ4q0laYSubaR1jLEQu0R6aZP9D+kPb6DO9Hv3KQ2NQP3u5e0F0A78ziT7gPNNXOQLMPuWV7krG4PdVz13GeQJ4DGEnvc87vKUHfbM3nPJO3WFdd4PZlAwNM48xiT9sR6UcZv/Xvr8Iq8aTOR9rGl9BAMWXd9uk5WybKju2fNnZDPTd+40l5weevOgorgKEG+UQraVH+Cuy2zDC4S1ayva02PXXIBieNOE
+ 2NEbHS1R
+ Bi3gd/oSlSxJXWNE4xq+63dJxiV56vnWIfxl0WyFApZ2WbFjCEfZa44nb1UOwJx53+A8JSyfRxPfvcLK9TWlUjjOEZmjl55EwFRxeFBchQuMDbn4V5bpY587sXSeyedIQhPqg1vdVD6xySLGFl1fwUQHbSPEShmJNdX0ocVi5sABRphZIQIizzX3HmnmW0wLagRad4XGh5D3TbSdW5WPItjB/TGuss5dWY6MVFOAZ2IJRNVoNu2JyBfEcuYEvXA4Itzq0aPI8smeF7/0nP3qGNI3IOEsdG2MPb9+ib+W3Lx3QekXUku5ZeDJDXatjBMsgV2YybCpxUhNCm3k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,59 +93,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > @@ -786,7 +786,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
-> > > return ret;
-> > >
-> > > acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-> > > - if (IS_ERR(acomp_ctx->acomp)) {
-> > > + if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
-> > Does crypto_alloc_acomp_node() ever return NULL?
-> > Looking at the error handling just below this check, if this were to
-> > actually return NULL, PTR_ERR(NULL) evaluates to 0. This would cause
-> > the function to incorrectly return 0 (success) instead of an error code,
-> > hiding the allocation failure.
-> 
-> This is a good catch. Just to provide context, this patch was
-> introduced based on Yosry's earlier comments in [1].
-> 
-> [1]: https://patchwork.kernel.org/comment/26282128/
-> 
-> crypto_alloc_acomp_node() currently does not return NULL. However, it
-> could, in future.
-> Since the rest of zswap_cpu_comp_prepare() dereferences
-> acomp_ctx->acomp, it depends on whether we want to future-proof the
-> code to handle a possible eventuality of crypto_alloc_acomp_node()
-> returning NULL.
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index bdd24430f6ff..26de0468e33b 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -242,6 +242,20 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
+>  **********************************/
+>  static void __zswap_pool_empty(struct percpu_ref *ref);
+>  
+> +static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx)
 
-Hmm upon revisiting this, I think keeping this as IS_ERR() here is a
-better documentation for the API, and the incossitency between this code
-and acomp_ctx_dealloc() is arguably documenting that the function can
-only return an ERR, but it can also be NULL-initialized by zswap.
-
-> 
-> If the maintainers think future-proofing is beneficial, I would need
-> to handle the PTR_ERR(NULL) which would send a false success status.
-> If we don't think we need to handle a future NULL return from
-> crypto_alloc_acomp_node(), then I don't think this change is needed.
-> We could leave it as IS_ERR(acomp_ctx->acomp). I would like to get the
-> maintainers' inputs on how to proceed.
-> 
-> > > acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
-> > > - if (!acomp_ctx->req) {
-> > > + if (IS_ERR_OR_NULL(acomp_ctx->req)) {
-> > Is this change necessary for acomp_request_alloc()?
-> > This function strictly returns NULL on allocation failure, not an error
-> > pointer. Changing this to IS_ERR_OR_NULL() obscures the actual API contract
-> > without providing a functional benefit.
-> 
-> As of now, acomp_request_alloc() returns a valid "req" or NULL in case
-> of an error. Same question as above. The only benefit would be making
-> the code more robust to handle changes in the acomp API in future.
-
-For this one, do we need to do IS_ERR_OR_NULL() in acomp_ctx_dealloc()
-to begin with? If acomp_request_alloc() only returns NULL, maybe that
-should also be a NULL check?
-
-In this case, we don't really need to make any changes here, and I think
-this patch can just be dropped.
+Nit: If you respin, please call this acomp_ctx_free(). It's more
+consistent with other naming in zswap.c
 
