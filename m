@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD67F53D6E
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97BEF53D6E
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A3496B02ED; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
+	id EF7206B0317; Mon, 16 Mar 2026 12:34:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 770EA6B0301; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
+	id EA52C6B0318; Mon, 16 Mar 2026 12:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 673C96B0309; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
+	id DA7096B0319; Mon, 16 Mar 2026 12:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 55E386B02ED
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE6D7160311
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:31:53 +0000 (UTC)
-X-FDA: 84552467706.27.D44F530
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EE6EDC000F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:31:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bk9S8whD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C90D96B0317
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:34:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6012714033C
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:34:00 +0000 (UTC)
+X-FDA: 84552473040.11.671F5A7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9B97E4000F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:33:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FMChSLEt;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773678712;
+	s=arc-20220608; t=1773678838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SIRbWDKtKNcpRy41cBty0WzRmJNX2DMXA0FO9+9q4pI=;
-	b=czUImxRBz9T2lakOYEiu/B1DzQCUfHcUZgcdsVhYNGNkLBRMvAGvMdDAG/7VhfRLiDpkb8
-	uPvhVsY6mAg9qwzPtK7NUIIowb80UUq0bnm0X0Hl5VwzPW3uZO1uCr/gwsnEk5h16xbtJm
-	UMO63MaMGALSDz+OYL7CQt/K8AT8Iow=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773678712; a=rsa-sha256;
+	bh=XkIWnOb05pafB4SBlFEuJf1zmGM6rhd+qOPyvC4k9+s=;
+	b=uJDuVDXYTMF6GiPvRRnp82TOIzIf7iSvxeqETYn/0fh+uPavTzPMMTw8kIalxOy6J9O6Jx
+	JA2Vk5mT8PmUPldTg7zMxuYdu3V7Spq1cT0MHDCvAgrEakK23yhIcjqkVJC9aPKeJoKWV5
+	pNuG7s3qGFBKM8wJ7MU3JsWIDmuFJWc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773678838; a=rsa-sha256;
 	cv=none;
-	b=zNpYb9VV8eKO/lYiITmZMuiIl2bnf4owJDbJdRvJQEjdbfXGOMcONSuOzkP8xdP7LYfyX7
-	jUBgIZF7gd/OE2Xpq6pmion2FF068fUiWUsU+XR/n0bGj1DJQ5AYi8D8pxm0CqYzKpvDpf
-	jFgAgQ1Zig5M3DwBEQ/XY/Bs4rUdV1k=
+	b=nujH1gz6vK1HR+5h1sLz+NZVuaKaD1pn8Qdhi9x9gLgnXNxX8suPyXLTsK6rB2s/v+QoFp
+	8LJ19thOBsH3HGgBeCxKmhkd5ZuXmk6oJMTveIxd48hL8J3qCzvKntIgHhL7vxyeuLWjcy
+	qPHg7VsSU82TN5fGkjjJew9ibADe2To=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bk9S8whD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FMChSLEt;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27CFA403CA;
-	Mon, 16 Mar 2026 16:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00A0C19421;
-	Mon, 16 Mar 2026 16:31:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 02F2C60123;
+	Mon, 16 Mar 2026 16:33:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B59C19421;
+	Mon, 16 Mar 2026 16:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773678711;
-	bh=9tTGJ8xmnCXmNkktqRH7NLuhVDHU2e7HFmvsJCGcDrU=;
+	s=k20201202; t=1773678837;
+	bh=N0DM7WgflxXMH9CI2Ekdcuzztaf1QkYHMyojhK3C5VE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Bk9S8whDQdEnqW8ivoY5HX7nZMwZc0L9+aRbd+FeNHoZjTq+j8OGcarcdrT1AG40R
-	 nrrLY+QC/TTcjOUasLpldywlhcZfBWmtht15G8LlwCB1WxLv9OxwvdpkbqX+76nI1I
-	 sjvnlEzt04Qkv3r0ZYl8hjOEgyqvC6kkELiiNLPbY6SLuXv+CRpoEZR+raUtV3KMhR
-	 Znw5eCXl0BfAnswB60wy+5Uz6imrsnGy/LwDqJ8f8LzRBAESWl09x1ti+wwAfQymsm
-	 jiLUPufNOanffV04CImNSB8s8lrBQUPEk8IeHdtQzKWkUwe3ttFiz+MU8LxWna40I/
-	 wUcm3gK29qIWQ==
-Message-ID: <488499f2-3e3f-4377-bc28-40ff7f5166ec@kernel.org>
-Date: Mon, 16 Mar 2026 17:31:42 +0100
+	b=FMChSLEtbpV8Fe0O1mCMgCpyyx/kSFa8HuP4jivAPKecTy2/YueOmPbbvxeDoKCvA
+	 HMb/n0MANqiGuD4T+Kb4GYr6oa99D9dG2MIg6BUHoboUGXiy/pJT1iN2XHoHhq2ezq
+	 U3AAY2dnSbcACPTNanXJy4wIqAuTtztUaWfbS5n5phR3V9CdkktTVAH3etZXlG3ACk
+	 QugccaXFzZdvwk976B5IlJxQ0XzY00WB0GIUS9n/WbBFNDnycHSnqbz7bgnfUtkt7B
+	 zTkuQu0LfnXmPjkLcA9lleK624DND6yTebw7vsQCJyBsyHFmXhvbaX881PS5NDmYKC
+	 wB4PPta+kOYwA==
+Message-ID: <13006181-d35b-4c1b-97fd-f1f88c3d66c9@kernel.org>
+Date: Mon, 16 Mar 2026 17:33:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 06/18] LoongArch/mm: Align vmemmap to maximal folio size
+Subject: Re: [PATCHv7 08/18] mm/sparse: Check memmap alignment for
+ compound_info_has_mask()
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
@@ -85,7 +86,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260227194302.274384-1-kas@kernel.org>
- <20260227194302.274384-7-kas@kernel.org>
+ <20260227194302.274384-9-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227194302.274384-7-kas@kernel.org>
+In-Reply-To: <20260227194302.274384-9-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE6EDC000F
-X-Stat-Signature: 8zquxhbonrf6ntj9tcf7rgtb75nx8zur
 X-Rspam-User: 
-X-HE-Tag: 1773678711-308686
-X-HE-Meta: U2FsdGVkX18/B/pVesRLUf6oIIWsmmYGNuR9eo6pn9JrCAbtwVBkwaMQKMsuffmBF1OWY8Dv7RXnH0PVX8S6YPSbCi0jhME857mBsUwxo0s3mVbGPZy6oiyj8P46d/RrjuysRUKxXMOMfQUMyyh4a0Rnu7WnmDK0IIRAhhXwwiKCEEh1xCxn0jJN7BstUE9WhJ4C25GB+rO+jN3qkdDB6czmJxRlYl9BM6ClHXlYWgj1mAbon/v2DuxyPfLOZo9tK0N4XT4fxDLMjtMMiGCr7r2v3J2ujt6W/+zY/hvd9HwUReDJnCJ9FbzUJGUqOPybYzgTUZ2erTNHzM46M1rfXedkyi2M3JAHJ2G8TlYTxo7CAdR5N0NUB02Suar5K3Lu3LU9OmdsPes/PIaAsEVD0XU/tN8zJyv0W3xgZq+0lrCa5YQgKfq47Scazb0jrK0WDwZSteVZt6s9L0llOdhRWrtwz4NZBP08b2ITBA5Cx551O2yfLmxoaoYyvZRRmQmUADuijUoPEQWCfoWwN9YZyYp2nsUOwxTTWokxCMggbcwr1nlI/oc8uA/5ItjYdWJXVetajfVxv7un8eVlUSEfLZn+5OcSIt+mCY0dkszbDY6bmqUHFtsA0feCzKWYoPj/wzcq5ZxWIWIjU4RR4CLbqT4FoDIgUqim7Hlqwb9k1i+o4cV+G2c65VtqrVCWb8lBAg8eChuJo5WJR7KabUfsf0+D+tLTX9S4vtFicGixSUthvQv0tX6usgQ6qi7GCgJuNV9PnD8zPZpYnf0GXcuDrQmXQrTVk4qvz7A2b8pAC77s0NXEJG75U/frAjyyInm7ifNmFqPXeSgdbiyfrIxM7gr1edicJAF/ABeDQ6zJL7/EPopDF+EHGePCJCfCHWueOWACUCf9qhnFTMFoaweHtHozXIvw0SzXcCoeMvbAQoqn/nYvG9sV/2fPsaRUVC/ThiiCoZ6vl81LOArpqjK
- G/QTcbea
- 6c9/GLYPeL9L51faOcXrAqyufOyfK7uH6lzf9YxohWuZ/zyL/XRt/Cfq6Mx41RInEqFxJpFmxLjYwfL78cyC3peYhkocdbU7y40ER+M39nhE7qp+/KfH53cNlLOHe75q47axaXu8d3KlyRqHSFkxrXKfwvSSA5AwNtSvrDBiVzH0E+XQgNJnkyNLykHPxex2G4QbrAwh1Fdeqb76hKihy0AXH5vXHNp/tXiTuHn5uidsTqeiVg0GYqlXIq8Cawn2eEKvPqeuGAp0UOJbHlonMxinjZ5l7tGE3+lfH
+X-Stat-Signature: ujk3nmgrbkhzu91pp1x4a9k3thmpdrca
+X-Rspamd-Queue-Id: 9B97E4000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773678838-228182
+X-HE-Meta: U2FsdGVkX1/OqHZlerLlja5qDO0b/8ZweDllpq1zbl0l6vXGKX62tjM33NdkQfcTVV1cTLFvsnTefvuVCdhOi3MZFp2dzyJ3sbOJRe2q1nJWDVgJXjVpYW2UwJrbB7tfq/bZrodVbnzxKbCQboac5STBKcH7g8Uy1wYXcG1GwGfCh3jXMbvKkBYUipNgo281/VXyR2bCcpZxFROcl9+Gz+BA5Q1sn4XB+OdQ0411hCWYm5rvQtMZporiuDSSPF6waMG5QEJGI1mXhZMdLntISRuMOI2pGgPYJ98z0D9b/9vCHm5aih0yIelngHsjZRhSXgPCsgD7KbFgmsMGYau150OFuxg9Jqwlb40ZBv0Z/eRQ3VShLG4QB0vXU2zWJrDAyMHi7eiuU5XwWhzrv5lcgs+TUj3KRhQgiI3Pe/uj58sB2uLppztUWMkihZg0xqimG+PiEDct4ZtGl7OOR+C+HxwRgrVZTNj/DSi7wIPRYLR/mxSbzubr1PY3dOg2qvvXWztCpOT7Bhm+vc8VtcEt9Y8kOWiQkJoTNRJy0Pe3KFZt6wIj4rEZkh1YAgkKSqkTFqqVLjqXKTZQz4QZc44gHBPM2YXm1NOFRqE/+mttDjDpqanZ8VX0gH7jG1lQryTQzSQN91GUEFQAT3l1S1pchWyoAQUlWdRIVoNFEA+Vw+cnJt482cih4DS61Qf2C1YUAGC4sQLZUmmB93ssz0zskO6Ama+0z2BIYYj6xl0Mni5l4Q/IyZE82dvmDxMrvH7Z7QBzgaEosVqmDlsoS31EyMGtOdFbmkWq/D7cKcC+6JZJG2czOnpapJ/26yRhEm3jSbqOIf2OSAphKPef9F0Cq3mCh1I4DUhj66Yj94KUOjXmuk1R3dDnRfwwiz566sYJOy6km5C/rzkXJzuwFrnHc/WYFBG4M9uypyndUty/pL3dl2v7LNEnBz4bbWcfmou62MOxao8R6TnKaRbA+da
+ 6UmLm8bM
+ Cv0TejRwxqtEhx97+/lF9goGAoXa+gYuSZDYYcfAIzagAE/y8PFEoBcp/9d4JW0Y6xRH44194A7YXOxtykHmcFXl4tVcMZqYR0KQbDM1aN9WZ6FSCZ6/luPWHhmO5D4HgK2D23niXVmobA29md97ymDVEtjloa4yph/PMTHSWiHFGP+T2Txipj+BY4wSZrTt8FRt2xbVWRcsltcoVn2CWLP2JCVQbkuhgS8oeqv5tvMa17LQqx6ryqIuRIN+u2WOckFgN80Pr2hs1ESr2AMfP+g+Gw3WrrxYxJYa0sQ3EzQeDXW+DZ+IqVogOV0j7OfH1HPvdV8IW52kE8aM/UYn02i8+XLP40Bsvnn3f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,14 +154,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
 > From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> The upcoming change to the HugeTLB vmemmap optimization (HVO) requires
-> struct pages of the head page to be naturally aligned with regard to the
-> folio size.
+> If page->compound_info encodes a mask, it is expected that vmemmap to be
+> naturally aligned to the maximum folio size.
 > 
-> Align vmemmap to MAX_FOLIO_VMEMMAP_ALIGN.
+> Add a VM_WARN_ON_ONCE() to check the alignment.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
 > ---
+>  mm/sparse.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index b5b2b6f7041b..dfabe554adf8 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -600,6 +600,11 @@ void __init sparse_init(void)
+>  	BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+>  	memblocks_present();
+>  
+> +	if (compound_info_has_mask()) {
+> +		VM_WARN_ON_ONCE(!IS_ALIGNED((unsigned long) pfn_to_page(0),
+> +				    MAX_FOLIO_VMEMMAP_ALIGN));
+> +	}
+
+You could drop the {} or incorporate it into the VM_WARN_ON_ONCE
+
+VM_WARN_ON_ONCE(compound_info_has_mask() &&
+		!IS_ALIGNED((unsigned long) pfn_to_page(0),
+			    MAX_FOLIO_VMEMMAP_ALIGN)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
