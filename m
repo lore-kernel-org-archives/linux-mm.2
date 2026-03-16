@@ -4,87 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F84F506D2
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 759D4F506D6
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:02:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECBAC6B0294; Mon, 16 Mar 2026 10:01:27 -0400 (EDT)
+	id DFC436B029D; Mon, 16 Mar 2026 10:02:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA2EF6B029B; Mon, 16 Mar 2026 10:01:27 -0400 (EDT)
+	id DBD266B029E; Mon, 16 Mar 2026 10:02:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCFCA6B029C; Mon, 16 Mar 2026 10:01:27 -0400 (EDT)
+	id CBFB96B029F; Mon, 16 Mar 2026 10:02:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CBC916B0294
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:01:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8655914026E
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:01:27 +0000 (UTC)
-X-FDA: 84552088614.01.6AC4E69
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E40DC80027
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:01:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C42kNjB+;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BB89C6B029D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:02:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84D5086984
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:02:01 +0000 (UTC)
+X-FDA: 84552090042.22.AA0E345
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6DEB62000F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:01:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LUUTdvOA;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.210.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773669686;
+	s=arc-20220608; t=1773669719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n6/CVwrBIrBRn312Lc89iD/Rji1uqlv4KD0/v5cXcqY=;
-	b=wS/yDX4OwQdcfnZCnEDhg0qeLk5oVhoCqqJnHgReytVoZXliHEclCSFXhebkEOcVBmWKc0
-	zcuX7PPvkMhzad3fUipoCBdm3D3wzSzj4d/StQQlQU0LbnkxT+3ilLRD6XRk2TA9mkoFp/
-	PtrD9/cbUJPRM5W8FkjDHbM3O5lBQzo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773669686; a=rsa-sha256;
-	cv=none;
-	b=zzy8a/GruTcs290/OLO3A8sBbJyU8gXW+J0TabFD7+eT0+kUSZxWhXWRDW2x75U0CPVlz5
-	WfUryBKz9xyvqPqHHxocqXxIeqJHK19xKRh8vU1Zk5EqOw4DKPE/dYAmRskysMAsScYzB6
-	WtWEx+TWePo6uRp0ZFPD/rIr65MEc44=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MtZYwSZiRvxHQC40LhvHohiVgnWOPcD9n8S8sVX1biU=;
+	b=6oEXj+rxmi2AVg3BGikJnaGls57T8ChsUAtAbROmlYuuJpQLEwXmGfx6h7Hjno15Vu9PAW
+	jK6QgBaCXulPhdh2zOIUdGLwFLraoM/G7Hr+EiLc/qwgZEd7iRuTLquQMSCTrVNoLqlQYX
+	+OtSzzEgGgczejwulBJxzHjzFbjWHRo=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C42kNjB+;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6C8B43A9C;
-	Mon, 16 Mar 2026 14:01:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4476BC19421;
-	Mon, 16 Mar 2026 14:01:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773669684;
-	bh=8V3rRaEbinASkU1E4LwT5DYCKUX2xJLJs2DXJrkSqHE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=C42kNjB+DOlpOn9IPsKKhkHGUEXdC3RsDDG1Dmr7sd2Xo5PAAsfKntUKVQRSey5we
-	 MPaE41pWSq0BQzeaF6lyHQ7RlYTfYede6wdIhRLXoL7pSbirxezLtxKbDoL8ufLEsU
-	 Mp4DJZRpaw2UCIJxHhQ+ciXr/H0/RkBa1Da6FudBvWYa/kdd9Fn9QQBKgDm5pIzoys
-	 A/4n/8SRMgk7+wc+stfHF/jkcbR/iZRuHpmTi3WgqAxmUUiRMRAD7ekoJwanLFxRvz
-	 UE5H58jBt/EqRgVvdJ46JHVC9i1ufQtoJw6KRq35RAmb6MduHhI2fT4GE37+ju/vi0
-	 hAhjND180Z2Pw==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
-Date: Mon, 16 Mar 2026 14:01:22 +0000
-Message-ID: <20260316140122.339697-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LUUTdvOA;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.210.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773669719; a=rsa-sha256;
+	cv=none;
+	b=YvEERsP91M/GjpoYWe1q5XI8k6TQr8s0921/FY3PZLJ4fwhRfxSz80adgbGzmX4MiyzvGz
+	7+99zmZunfga0KbRT8xOVIdFY1NVdei1zYmPW+M84s3GrbEj1mmXeNM0Rx7eXvNiQntlcr
+	15/MWDU2hFXyqiMMrNlP6tpxhV5wvDA=
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7d750eeaec3so1576109a34.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1773669718; x=1774274518; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MtZYwSZiRvxHQC40LhvHohiVgnWOPcD9n8S8sVX1biU=;
+        b=LUUTdvOAfvPjsPQ6cEOJrrv3BljTzn5WRugrtH9Gej0urWAl65RqzeeFD62UfB5nSC
+         u8Nw2sztzEp4MfXdPBv8Qzslhs3ih/9tiwDQC6v3crV9eAV7FgQGhmLwtCCP5RQHHoQP
+         /jU73njBs513EsLm9G62of/mCI5SgOzZ8oH6aWf2XsiBhIPTeRHAnM2MH/kLEnneYNUM
+         SOko3NUp/T3iZM9L82JLcRy2fhk9GAp5fHGTWulwko9IyiKWxmgsaxbuStuNWbZDaYgL
+         oMZz2GygCmDfzaKDEwBdkKRWFfwbRL6trjcfU9vdKjvYTfsnDeT7FBD7g3pd2AFnbpp1
+         G4uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773669718; x=1774274518;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MtZYwSZiRvxHQC40LhvHohiVgnWOPcD9n8S8sVX1biU=;
+        b=W/Qkv8YF5ZWMjoGyI2+rStwzEYzSNQF7ZdKo10Vw1DVg2twJrZfmN27VOmEhOkOYGT
+         F1OIWUWjX/50uV1/qhDH2HEda92SbMauV7ZzOKcG2RXenWYrtMm2fP9pMik0d1IBYOi+
+         VZjY4s7gBH/ycKcH5z/CD53BhDp8tLS0XNE0QllePTe1Bgrz1jtAq+L2wvhIvlaE6tHs
+         vLm53MlfedH+kxw18eaWaJYcMG17mfmpMtOoRuqFovqs0CydP4vhjyKIdrXPuFPpO+HA
+         csKe3wWpiVL60vf43rFTsj4LJgjxyY+7+LjbB3vs4ynuwVydFn4vcEiZ0XcWu2GMoo8B
+         hYhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcoMIHfZ0W3Ls+hulvdptVhx9nW5dkGhcwBPGm27C1a8Jh8b+xpiGoI05bWCysEFxNYTnZNyAXjg==@kvack.org
+X-Gm-Message-State: AOJu0YwseU/miKhp3dlRQBXYg1LP4cybAqrUVm0JtR73ytTVEbthXH76
+	1G8kugqBA/TNo8M0qK4oeJtk2mjqPhI0FhFgf+25qoFd7nkMwOt8Lp+utTgcUHC6Bpk=
+X-Gm-Gg: ATEYQzxeLWr0a72A5Z9Lz+4sERMqKCD/UturH4JwMe9NCas/dizkeySBgJs9kqpeo0Y
+	h6uprRcz+L9uwV0fPGXMbZ0tVl3B/3wvppWlDy4a4nND1TUyGFwNEjEW461SdcOoWy5Bc6zlYCz
+	MRRc2OHpoNBlDRQZ0LwrFl8Rcu6qeAQTPbQ2jbdBhJtUVq3FzL2UMZLPePKPJ63DXtzy62R08p3
+	7zW7Q2qeZcJE1uGTzdwPDZSS+AAmPdjUWUsrMpHCcEicOzTnhOBy+Mi7wUJnGgMOIzBcPfkwCQk
+	Q2Vs6V8f3jUACLNBHw14WrNHriHajXTZiDYmgj7i6WThY/e8wyfC0nX8dTNNxr+PCrxto/JNjyM
+	ttYcoU8AyZTIYoUXUxsyJCVQ4eUaXGM6OCmXW57j0izP/W9AWGGRmwrkuLQz5TzjEfb1UcX+WJe
+	Y8QQs6/seW8QQBVUSOQWno+J1w4jB8UcNq9R+S4chskyBRUN5ZiUIB6nI2HAodxs62/c1f+14bb
+	OVC706ucQ==
+X-Received: by 2002:a05:6830:6503:b0:7d7:4b65:e8d2 with SMTP id 46e09a7af769-7d78243bcc4mr8723153a34.1.1773669712512;
+        Mon, 16 Mar 2026 07:01:52 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65beeb7dsm134438116d6.19.2026.03.16.07.01.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 07:01:50 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:01:48 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Rakie Kim <rakie.kim@sk.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, dan.j.williams@intel.com,
+	kernel_team@skhynix.com, honggyu.kim@sk.com, yunjeong.mun@sk.com
+Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
+ socket-aware weighted interleave
+Message-ID: <abgNTMDM5xhRsWFU@gourry-fedora-PF4VCD3F>
+References: <20260316051258.246-1-rakie.kim@sk.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316051258.246-1-rakie.kim@sk.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6DEB62000F
+X-Stat-Signature: wex7r81435uabd6cpntkehe35yyg8hdm
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E40DC80027
-X-Stat-Signature: ruo93zd1btw179h8jqqh9j95kqxdiuyw
-X-HE-Tag: 1773669685-569012
-X-HE-Meta: U2FsdGVkX1/7jf+zS7oQZk68pVgNHV1tGbDclgKoIfzqPaukiTpUUWYRxKfEkO4Ytqi+bKDJIhy/kfr9rNcN44xlGBHXgs8aN8gPbxeIDa/y4EeV0MsCJbsfktKlQLvXRokaAsowPpqg5EWJ2Aly6+bOzAXV4EorqcUqB0UF//3tlV1QNvfdaZXB3RXa7yOy6+W9xo6r7Ki4/3g4ryVo4v6bggc8NSPWooWsUgjCFrmiOxKcLHUx1c+IiPp5ulYhvwEUF9DdD5p/FRgyNgmY79kYQXxtSOKf7HkPBtWKDPxbqdIz85jeykDDg5krVgWmnbtUczyBKxa2DgAxyYkhs0xVNf/P3eA/+g32lL5mZZT8AnAAzdIMjnQMx7vpa0g905u1b4Wv5qoxGne5Ed+9QuIunKZUdo0iFrHKBAcVnNo1BNzkGDNc0uUA5P3h/AlYc5Ig3AAaOZe+K2d+EipSaSgxSlRb//QHLUHwIEg08dDmk9JJVggpGf4DFFnDbh7pgD5XXmUpUyMvft42pUh8wfi19ZYzQZQnKCEVBNNbrr/jiLdMTpEr5B+5gM8Ar8NWouRgCIowIdgR8OsS49/Q8f8U1k8fnToLXLnpK9PYHS2NFxXhzhY/a6axagxu7mJJ2O/zy/uc0xPnrulZOH1KY7gn+2WjN+3+1z49eDhjYUh+c95JEVhEVlx4NgnW0lrtWPjoUOjLs0hc8khj4u4XbfGehacj6ZYNGB5sk3WWM7SB3MvWTx5ZH4OYN8gFDeav5zyZgrclHIT7763JC5RsdJaHyS16Mat/Bas14wYD/xdWk/UT0YpaZq/iBVYkOU2KAJm5bXbs34eh/GbVUlFyVDkRBxKttYkwBE81Xxyw+pr/BY57lKbUdBnycvWsR2LWygy6D4ORkho7KKuCOSj3JQIRFX/OVidoLDKph1u+KEnKY3xQgwvvuinjo4rkco3NHBqafgrH3NhlNh9FQtN
- fw6ueUJL
- hw3dR13Mtr3THdarjflppMd0TKUhdKZK+EuvNw+ZpANKaWVWSck6WYJQveZaBY3jRWZDAA48n95y1dowdpx3A4RBxtByToij9DUz9sxMtlxZF9w+rzwMtrcyuLKyWckmhCB3nzsFYPKCTZztM1FX+lnaKUghDrNaLjRkgGVMjhS7jp8Wbah0Up3nk4DjnWmW3xFRWkTxqbdk5+3g/TVQeo1VUapqpoepga745TN6XD6hYscVU6bSLb0QJrbTp269YiZWOGO3+P0dgH0ihMCc+9gqb1FDQVPv4+B06rdqDu2DV1Aj7l63QxLoX2t+Sl8IA6A93VfRWMBgK/NU7bUHYWxrcwfEe6CLxNHJsaplyL/SEH4Q=
+X-HE-Tag: 1773669719-37770
+X-HE-Meta: U2FsdGVkX18lQ3FQ9NuCH60LtEBMoxR2GntVTEDZxd0OtxJ9vQqWzIXByrUX8oNX+e9halESvvb7lMd8UaNrFrdj/ZvRFNwNRUbAVXkTJ6O41KDlQaDJs25DDuMznF1I9I1xo1afHcDWaDYogvDMsWCiEJN3rnxtzXoWsP/opaKrM2Yvw31EUxlkSHwoiwTw9Qy2vnNGnXUs6zhZFhbnlmucqP70ezW8CYhhW2GKTd6m3+seDJMmlbL2q3mRD5c0WnRG5m6vIT9CYiOFURm/fEmamAYsZanDbiu+voKPSqDsRXF7FpEkE7QA95/G+q/qIqz20TWIKiVy4xD1TapenJACTo2a+9WN535CJbBhfUjNDayPmShGGR4zvRb46T/s5SAywXIRFGQ0DSgcoa4uViiR2aefw+/06SA+IXQY+eiRxEf8GSTPXfbaOfgJto/ecVkRjMv1qlOIlae0sX+RlwFrtskdAtoCj2GSd50ShGgZ77vB8FSUSrqidIUIDtP8cp8bw4WKJts1Ri9vHE/Lk9Z+9mPoJS7VBrTOS5bX+9+OAiEsKLUX8AhgFG3aZqCyl14/pFDZIAkC+sz+r3bthK5R6WwQ5ifXMWWfqyD5WrtHs9kmBQgsoD2N8vHXkkWxuqRpegUPwHJPrI7MiMRlnsKgTOXgsEXePNLjf7wAr/vZItDK5bvUmA6j/IFq6GMSY6wqYREGA2nwjMwM2g37no4C/Qb/IIGlsaMq0yKOMr8UkHxdYgpE60ULE/5Dmb6TCmA+O/detD4Db+mxtcDgXh0oEKjz+gM1JEp1hN2DACjfNbMgDNSWRJ3va+5cTxE19jp5IWq04LKV1VKcij/s4mZFDiwEhLEkGqEm+SWdFsFZ16XUxttQa6yTNXHtAVgTherMGvoAvFBGrKu5cwG/K1R/L/KQxlg8lYW9+TC4/8q91IzsOeXUiGmHNDmkQzQSR10Tae1tkAbGJGjO8Tx
+ EqQhVYxQ
+ NRSe6vRf4vMDJdYsr/09cn5FTcOuZ4iDXzfrnuSGh3b9sTORGk3Uq3OZD8WynLmtUV4G7nV8bkTh64KZVSWg36v+DNCZP/Dxwfe9Tt47h/6Pn2VIRue96ctGTVTiYW7LngII1qkSRbUiwP5boMZG/+GYA2KypePEO0LL7poEXqD4lGt/xjMD1MDW456OpxfaQiMM9G7yOlugxodmA3r5tukBk2KHhTisqB+o1dm65rQDBjU2C4YpxeJBIr2whQ+w7U2Jt6MDi/ENYy9yDCid9+QNf3uLcwJjTCfPMCJEoGRhvFLNLTva68k6934aEsA2oqbno368aPjfyE/iy441XrGpNUfK75WUYxL1Xb+4E/Bo9+Hk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,46 +127,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from
-zsmalloc") updated zswap_decompress() to use the scatterwalk API to copy
-data for uncompressed pages.
+On Mon, Mar 16, 2026 at 02:12:48PM +0900, Rakie Kim wrote:
+> This patch series is an RFC to propose and discuss the overall design
+> and concept of a socket-aware weighted interleave mechanism. As there
+> are areas requiring further refinement, the primary goal at this stage
+> is to gather feedback on the architectural approach rather than focusing
+> on fine-grained implementation details.
+> 
 
-In doing so, it mapped kernel memory locally for 32-bit kernels using
-kmap_local_folio(), however it never unmapped this memory.
+I gave this a brief browse this morning, and I rather like this
+approach, more-so than the original proposals for socket-awareness
+that encoded the weights in a 2-dimensional array.
 
-This resulted in the linked syzbot report where a BUG_ON() is triggered due
-to leaking the kmap slot.
+I think this would be a great discussion at LSF, and I wonder if
+something like memory-package could be used for more purposes than just
+weighted interleave.
 
-This patch fixes the issue by explicitly unmapping the established kmap.
-
-Reported-by: syzbot+fe426bef95363177631d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69b75e2c.050a0220.12d28.015a.GAE@google.com
-Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsmalloc")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- mm/zswap.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index e6ec3295bdb0..499520f65ff0 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -942,9 +942,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
- 	if (entry->length == PAGE_SIZE) {
-+		void *dst;
-+
- 		WARN_ON_ONCE(input->length != PAGE_SIZE);
--		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
-+
-+		dst = kmap_local_folio(folio, 0);
-+		memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
- 		dlen = PAGE_SIZE;
-+		kunmap_local(dst);
- 	} else {
- 		sg_init_table(&output, 1);
- 		sg_set_folio(&output, folio, PAGE_SIZE, 0);
---
-2.53.0
+~Gregory
 
