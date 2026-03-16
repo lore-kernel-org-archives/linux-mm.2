@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1BE7F506CC
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F69F506CF
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:09:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1560C6B0274; Mon, 16 Mar 2026 09:09:29 -0400 (EDT)
+	id 9A9CC6B0275; Mon, 16 Mar 2026 09:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 100AC6B0275; Mon, 16 Mar 2026 09:09:29 -0400 (EDT)
+	id 97EB06B0276; Mon, 16 Mar 2026 09:09:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F30BF6B0276; Mon, 16 Mar 2026 09:09:28 -0400 (EDT)
+	id 86D4F6B0277; Mon, 16 Mar 2026 09:09:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E322D6B0274
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:09:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78DD61BC73
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:28 +0000 (UTC)
-X-FDA: 84551957616.12.0188095
+	by kanga.kvack.org (Postfix) with ESMTP id 6C7586B0275
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:09:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3083D4A88A
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:31 +0000 (UTC)
+X-FDA: 84551957742.06.F69AE07
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BEEB7180012
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nbJID5/G";
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A094C000F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lfxg9CkE;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773666566;
+	s=arc-20220608; t=1773666569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ruei/IAGEijYQn5JRTXgXzvj3Ub0bUp/Frh9jm9wYpE=;
-	b=8gfjeu/49C5E3of5KoFiSpcgrA8xO7Zd5xpF/ChIJguSdrP0tnHkHVZaL61XM0yXMdYlmc
-	wGFTAnhnYjLjG/oCWUp9nExik8axIv1ZByD+jN3MaEdKQ2p1U/wU2Mz/0MHjcCUa+B+21y
-	tSXSKB767/xHJ2YlhSaDuCj9WljnQ5s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666566; a=rsa-sha256;
-	cv=none;
-	b=nfgAn6/Zy+byi92yMOmhGlOtqEFysU2vZZfxxCXPtZ1pn+4enUpB1Ro0S38ujGclcZjXvI
-	4b0QqUt8soQ/UUdQicZiWOj9g6s1RdTHQx5eRw1EPOpl1IjnXxEZ7lK+7vEF0wwUQmkUtZ
-	PEn+oj/6ldACMvHqpk8/+U5DTpRxbjg=
+	bh=5K7eKfDaNC8F0R4YEvVj595iph2zwfv8FNQbISthhlI=;
+	b=Fs1QZewsilaSsO1w9XalLXlxR1DoMinWJ1uLBeAvoWiZNk4fqXdMoPFp2m4a12CsMhBtO6
+	njaSmsPuVzt68Rk24PxA0p/MM1acyyQuF6wbuEVMBmeRDBk200+PlI+OcrpiUcjaiD1CN/
+	0UdcZAv2/tiRDrH9ILSYKVllZALBn3c=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nbJID5/G";
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lfxg9CkE;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666569; a=rsa-sha256;
+	cv=none;
+	b=6ZZAwRJCx8dPWjzY6sKxYnalZ6Sym2RVwzZdph0G0uWXhiBYFZLAv7hpZhoFnhZ/wN0vgY
+	E1DjiuYVKYizbJBde9B4Avp3TgNX0ZJUBBjgPdZmSVhu9BcxXwMf+JVwy0QJ17uRJtfBiZ
+	XjVeqS6nCkP3ArX4DCREaeK6n0bb68Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EAFE841742;
-	Mon, 16 Mar 2026 13:09:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDE3C19421;
-	Mon, 16 Mar 2026 13:09:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A4A904459E;
+	Mon, 16 Mar 2026 13:09:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5F1C19424;
+	Mon, 16 Mar 2026 13:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773666565;
-	bh=Nd91i74SbHF4K4mlqvqBUuCkT/WUSKpdJLLX9/d34uE=;
+	s=k20201202; t=1773666568;
+	bh=LrLBS64c+lmBUJM2XbvLHLJnGjK9/zMfbb5TL2UTCws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbJID5/GdPCkHFc6dOnKw0Wnw18nOCtRLAO0Ocf9N91X9/g1IwwwjfH7YmqkhYfvj
-	 iow0v5NAiYMiIXhNSxV252ZjRcKVUvaX9GmZnyyU2S2eekBLV3jIKqAhr29YFBBsdC
-	 UjIwwkbfFNWOk1Y85lY0SpZ/MQXZ5uJ/S5ED/6HCbPiZtvPmkMQhMf2eV+ZkUJCIZO
-	 tu+stnPbneaWWZWauUltgZlyJfgHpcM7a8g5OUX8WfQydzgCmIYJBFREJzDFtbGkXR
-	 E2gKKC2uQEt2qBcRIbr24GJZyE+MCPTNGgRL4pBJizNIq66PIUFAMYqNrU1sYM2mgw
-	 7OxmaEws1YY6Q==
+	b=Lfxg9CkE3XOoc6lXpgYy2pcAO6Hc6ib8/1Qy1xhOw+VHHgoC4ldZaAz5MKdUunLwk
+	 evL0sHn+qUhum9zmcrNTCgtUpSE5CQ4CGNRa+00XBCSchPYXd/xWLfqxqYJ9skmE9K
+	 CX3Ww9RSRfWEGkTZ6eiJijkz9wIFZ61HqUkhV7WD8hwlK523wPS1op1w9qmYFyA7qG
+	 FJxsyW1CCw8XR7ax4KyCGwl3ZM0UKR9G6704RJ/9qqFcsQLVtG8dDN0s1e3aStfj+Z
+	 w3h7n/urDNIwuIScJ6XZgrH4/EcLdtsWhdHxvyM993b8PDpgqF9DMcTLvAZYv1YIFp
+	 WGnfsx1Vg/+6A==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,22 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH v2 11/23] mm/vma: introduce [vma_flags,legacy]_to_[legacy,vma_flags]() helpers
-Date: Mon, 16 Mar 2026 13:08:00 +0000
-Message-ID: <19cfb4297cb691dc16c75e9e6a24f6564743407e.1773665966.git.ljs@kernel.org>
+Subject: [PATCH v2 12/23] tools/testing/vma: test that legacy flag helpers work correctly
+Date: Mon, 16 Mar 2026 13:08:01 +0000
+Message-ID: <4f1956b7e1e15293f75bffb5eda3d967a1da6f5d.1773665966.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773665966.git.ljs@kernel.org>
 References: <cover.1773665966.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7A094C000F
+X-Stat-Signature: 4zaer8y99tragodwizbsrk1wbsgpj4f7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BEEB7180012
-X-Stat-Signature: dby6hax9e93by7jjbfgzoicsqqyzkexe
-X-HE-Tag: 1773666566-541480
-X-HE-Meta: U2FsdGVkX194DL1ejAxzSEs02TfMv+51KVOUzsS0fbEg1P4QpbY7UcFSbQYSwGgjKJxOSdG89M8aW8RYXrLPDcouG67snK2UppHmPbQtPjpMsGYDz5N5xXe4LPNap3B8SrXdBYkIo9TTRUbYHxT90Pf/9JJmboxkfxcXdSt1pNyzCyMBmwUoKqjm2IT1+aYWUUUX176VAqQRvkm39tQpAjCRFJc4w8jRJ13iDE588Xfna2sHllJGMOC160RbYYptMV4Psp0bCt6M6qkQD8i0Q5yvgkj7kwZrhHUBS7DmuKbB8BDh9KyE70RMQCDd5NHnY4Ee/Hlru+Pg38PkCyL+QA59KdqUFtid3ApLFesMCGlxBJuL5KQlMXeuba8d+ooY+MG15T2OPzbMiW9slA4qPANKnpEfl0FviO5cnSWwG0bX1GtcGub0oZ/BZ/wIPklziHRGdPsr4b7EYyIXVotZU/EfVW3wAkAuRxgzJlmLjzXuHbptLnrd3xh+nqJoyuHsjKzu3ue6LvWsVwPWt9cHNAR/R3Y/czgW1pvOmD9ANhP0BtTpTC9y5Q5vBzIbBwcGIWqiGF95vxrXcfNjPyOD6bitsV8fUtjr2ycaBeZkELPZ9z4GaSLVTikABcZzssrcrqaxHNwT8MVCruuD7Cu7sUmr+xZU00fpnmLR9vRaZ99jBKydO9jLlT44ZnA6mlyUXsSqmrA88epCla4flIKm0nU7lzACKx+rkEleYal+/tmPPkpaznR+edI7RkTq/rbQeHIdylpMZ9GBfXlwu1/ciJO4HvwZoebzQIM26t3WC4SdrBuEpVWeVSBIBZtwl7YGvHNeQfEn9j0UMwEdjP1fKlX2QmmSX2KolR3OWE+47t6n/cNFWC5m3wUr7uxjSLk458c8OypkZKXbFnrEM22ndPjL0N6vVWsozzassqvGZSedYfXrSFt6q5d7BOM+0dhxHJsW2drLLhYyp7z0TSZ
- Bm0z6LMN
- A5V4+JRL4UeBkI8EmOI41QAYLRzb7qxaSze9jrawfk2zCbrSAzF4BdENW0yHLip4qAi7biTt2WAF2fznHpLgjG37GLQtn/MwqvmDHxG+lCj6sLSLqQVgmWtA7MVOBReri318iZHpf7mSR+EiI82qCRM8VGG4n/ZlFjiNPqgiMGdiOgq6pvKvvWkx18rBV0weRIyNy0B5HmdVvadncb/t71IsDWqXIXSgaNMEPWgrYx1POIrEsvV1qr11CyYtdIVRkoXe0Keta22d7ECgxFCzNg4Avrb90rJ6hB5Mk5H2QLcjGSLo4swS9/CGIM6kWx7ee/AStH8iLpayAKm9lvru96kfYvi6j1ibyzkLp
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773666569-343924
+X-HE-Meta: U2FsdGVkX1/dp8pSlHgPKIesDapLVSwe0eIP6BdAi9a8cFqyAqySvPebj6lRwlwzycKK/ehRiyrvk0HK0mo7DXt86B7PjEVze8piV7boy2krhbbQWuHhTs83R50zY3pQj5xobHWCrcsK365ok3+5BiRH2z+xRcVTIS0FH8jKZv6g1mOXIeRpMBU5TWCDvUO2foEiM62HCPBXsu8r4cJnqFuo//B1GYNiu2SuwdMRt+jKkkUqMc24HdjPPECWqpuTpYjgS0muO3ryRbchEkmH84SUtI2geCNmYcpbrDYWYYDAtwvQmonFr9HDfW6ZLNPpr0DoWE273tMM0FqOuPEApGbNrwX24inzvFgR8s6vHiq6/uLid6YYUyWhSR7+JlIdsuSoivEd/7xk0eUahe5K8a4k6sJTHIw6U3G5DeMm92d5ZeqR7tasn2wvzUVmw1A2V8EPZ2eERPamT/LM+/dvD5Ud2vvcAAGwhmMF+05IIyl+0o8GTfbZX2G0GUx6PJ0QZpRyf3HYl6yh4FmIU/kA0m5ovhK/zkXpSi46JiEkhApwGEPtHCSCzAGWzrNIHfhsSmV0cei/uVZJ1416PHJzYbhZATnllEp3fBTb1dHa4/IOnvpmgDgVVSCP8e17lp8BeJxG0TlMOIU9EVSpnpK6G9eSj/IoYk+J03YnSlW5lFj1nisrwZTkGumnL+FhZ1T3x80QkAiY458x4PGNNKN0AKlqVdc6tozlgZFe1H17m9kgatl6QqDJQ2FQ9hmbKoXKF157tSp1YMYlXdH9xH31ThJkxUK6F/dK9dtRR5XaQNWN9wmLcveOr+FKUeRxqyaZdNg7HiQhtas9gKiICWIhCx8akeSfU39k+LHWdQRBoK2ZXMzucPLESM56oMo/GfGXdHp8NEIP/4IfgvKpfuHOxtAxcGD3tiTiPfF8OnzgLZC4bfb5eFGybVPx+4MSiomovSevehs1tinNC9WnPlv
+ l3QMwN9n
+ EcFWQhlGXqFFprkqbqUPdjy53pp01rthv2CgQ/istIjELz9IyMg/WuK2rNgsiVKH9E64QtkHP50UYkBXRYIv9MwuIY7lESLVfKrkJJZeWk6hOVc9GUJsyj/jMtol0fKKNTKppcqkVtAhoNq3Z6lIeHa7c6mZqNHBfsHnWjEFJ3uRieJy7p//77GZZc+6MIFibqFtRBRwKP3ctNin4Hk/o3vZr4/JQc1EAsI/Xi3LiU6YSN+jlTQ4cHiQgTpb1g1qY7ZfFUvBZX1OeTB8SB8IcA8R4B+5Y+BzAad2hflFycfjokFSBxz6Y0lLsiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,92 +149,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While we are still converting VMA flags from vma_flags_t to vm_flags_t,
-introduce helpers to convert between the two to allow for iterative
-development without having to 'change the world' in a single commit'.
-
-Also update VMA flags tests to reflect the change.
+Update the existing compare_legacy_flags() predicate function to assert
+that legacy_to_vma_flags() and vma_flags_to_legacy() behave as expected.
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- include/linux/mm_types.h        | 26 ++++++++++++++++++++++++++
- tools/testing/vma/include/dup.h | 26 ++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+ tools/testing/vma/tests/vma.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index ea76821c01e3..63a25f97cd1c 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1069,6 +1069,32 @@ static __always_inline void vma_flags_clear_all(vma_flags_t *flags)
- 	bitmap_zero(flags->__vma_flags, NUM_VMA_FLAG_BITS);
+diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+index 98e465fb1bf2..1fae25170ff7 100644
+--- a/tools/testing/vma/tests/vma.c
++++ b/tools/testing/vma/tests/vma.c
+@@ -5,6 +5,7 @@ static bool compare_legacy_flags(vm_flags_t legacy_flags, vma_flags_t flags)
+ 	const unsigned long legacy_val = legacy_flags;
+ 	/* The lower word should contain the precise same value. */
+ 	const unsigned long flags_lower = flags.__vma_flags[0];
++	vma_flags_t converted_flags;
+ #if NUM_VMA_FLAG_BITS > BITS_PER_LONG
+ 	int i;
+ 
+@@ -17,6 +18,11 @@ static bool compare_legacy_flags(vm_flags_t legacy_flags, vma_flags_t flags)
+ 
+ 	static_assert(sizeof(legacy_flags) == sizeof(unsigned long));
+ 
++	/* Assert that legacy flag helpers work correctly. */
++	converted_flags = legacy_to_vma_flags(legacy_flags);
++	ASSERT_FLAGS_SAME_MASK(&converted_flags, flags);
++	ASSERT_EQ(vma_flags_to_legacy(flags), legacy_flags);
++
+ 	return legacy_val == flags_lower;
  }
  
-+/*
-+ * Helper function which converts a vma_flags_t value to a legacy vm_flags_t
-+ * value. This is only valid if the input flags value can be expressed in a
-+ * system word.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vm_flags_t vma_flags_to_legacy(vma_flags_t flags)
-+{
-+	return (vm_flags_t)flags.__vma_flags[0];
-+}
-+
-+/*
-+ * Helper function which converts a legacy vm_flags_t value to a vma_flags_t
-+ * value.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
-+{
-+	vma_flags_t ret;
-+
-+	ret.__vma_flags[0] = (unsigned long)flags;
-+	return ret;
-+}
-+
- /*
-  * Copy value to the first system word of VMA flags, non-atomically.
-  *
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 29a6f62b01db..7c22aeb736e6 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -803,6 +803,32 @@ static __always_inline void vma_flags_clear_all(vma_flags_t *flags)
- 	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
- }
- 
-+/*
-+ * Helper function which converts a vma_flags_t value to a legacy vm_flags_t
-+ * value. This is only valid if the input flags value can be expressed in a
-+ * system word.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vm_flags_t vma_flags_to_legacy(vma_flags_t flags)
-+{
-+	return (vm_flags_t)flags.__vma_flags[0];
-+}
-+
-+/*
-+ * Helper function which converts a legacy vm_flags_t value to a vma_flags_t
-+ * value.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
-+{
-+	vma_flags_t ret;
-+
-+	ret.__vma_flags[0] = (unsigned long)flags;
-+	return ret;
-+}
-+
- static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
- 		vma_flag_t bit)
- {
 -- 
 2.53.0
 
