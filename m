@@ -4,87 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E108F4644A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 10:59:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7245BF46445
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 11:01:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5FBC6B01A3; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
+	id B61AF6B01A4; Mon, 16 Mar 2026 07:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D37506B01A4; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
+	id B0FBF6B01A6; Mon, 16 Mar 2026 07:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6DC86B01A5; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
+	id 9C7046B01A7; Mon, 16 Mar 2026 07:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B34FC6B01A3
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 06:59:36 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F0B7B69FE
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:59:36 +0000 (UTC)
-X-FDA: 84551630352.23.859AC84
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CD2EE40006
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:59:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V4VSDzwP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773658775;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8822E6B01A4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 07:01:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27AF0139441
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:01:40 +0000 (UTC)
+X-FDA: 84551635560.11.E32BAE4
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021106.outbound.protection.outlook.com [52.101.95.106])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3772840018
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:01:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=fGv5SBSu;
+	spf=pass (imf11.hostedemail.com: domain of gary@garyguo.net designates 52.101.95.106 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773658897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EbhO6dTmE8yQ+bj5s1qi0JOFi2eyMWftGCJvNxfMHO0=;
-	b=SH/FWevP9senq89gRPxU8XuJyS6xldMPdhteTGheBdoY1GF7MOs767qfZExa6rwKehLgdA
-	os5ajl6xDYJIWfNqLCT9anczHpmu0uIog4RB+aV7IFqy6J9rqmNQUIVcfx3HOfNq/zbfsF
-	FgDRvaP3YJ6sNE/Z1ow1j4DsUnObXHo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V4VSDzwP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773658775; a=rsa-sha256;
-	cv=none;
-	b=ALj+ICXLZ5GVZ4QP29LYQO2bVpDTTlcFVGWX25oDTyxjrgHqzYSWuox3hNJ4WhpWvq7uuG
-	2YC97lJHP3G2YznzQX11Oe2BOkAXg5Nx8ckJ5gSrmQEeeqEfXh3XbJkOiGFJ9Xuz4lCZXK
-	GwblfdrlV+qj6H7937L3cIUcE8z4vtc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CE78F43EB5;
-	Mon, 16 Mar 2026 10:59:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644E5C19424;
-	Mon, 16 Mar 2026 10:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773658773;
-	bh=KSbvaOM7T4lvkehB8ybCCIyypc9grzepYJ4R937Jz7g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V4VSDzwPwBaRFCtyXl8RGn8/zotr9AcFFnrlNOHuHN7cKX3gqOFHZDyYMa5iqeMuk
-	 s9d7f4UJF92XGiWtWA7dW5e6Qj6mZ4uTUW0T0DnQxD36dCZ4hWyMXdkYtsx+3TMSDR
-	 omULYYva/OpHfwXvMipXKigs0/jIYUUFJo22ePKs+uxBlns0em7XsoAJA4lBeDmE5Z
-	 KJV2HcPDErprePHPPGOXy7dl4rYN3S0yRnTlKr8Z3AfpHyn/cf83llU57kyDzejKMT
-	 Xiv5VMckPS/al9ql3Pxwr/356st56s4RrtEzpD479Xf1dE8/cq4MyS5Lk/8D5mAPw2
-	 7QmCyMIKOCHFA==
-Date: Mon, 16 Mar 2026 12:59:27 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/userfaultfd: re-validate vma in mfill_atomic() loop
- under CONFIG_PER_VMA_LOCK
-Message-ID: <abfij0twNRm7uYgt@kernel.org>
-References: <20260316070039.549506-1-kartikey406@gmail.com>
+	bh=6naU6PjPpBmlLL4oCRh+GdLpKLGpyZj2fp3dcpFbaCk=;
+	b=KGqLYvGqENT6bzbFbtywBftCanS1uw5kffP9LJ6+Ak5s+2MyxYoV3v9swWU/muR2wV3QVq
+	ACgHJH4wEVG6pFiTeshIUo+RBjfdwl0MGx6oVI4nRMi+S73ej0O/KuJJnI7179QhkB87uS
+	MJ4mVvRUVib7OSScoyTmIjGVfkksX+E=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=fGv5SBSu;
+	spf=pass (imf11.hostedemail.com: domain of gary@garyguo.net designates 52.101.95.106 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773658897; a=rsa-sha256;
+	cv=pass;
+	b=bP1IiJyQaiKt9Iqwg8ktu56GfMYqbSLUvQ+bhAAAPSxvd0b+39XZxe99ewxnS4owjyRawh
+	f4UN8ihGXOKJrtcs2a73yTj4MJUZ/5TvLvC7PM5sgt0fbyYg6Dymi4WGSHynXN2yuGNcTi
+	jl52iVk0+J5mABNJle6VrrVg4EOl1Wk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gncWwhBxZQLRoLXT+lWOgeoT+rcSUPLt0u4kcolr+UoQgynTf5ggaNUSrUCQFDw7/j2hoNmHE/o7jC256Q0tj/Wo1icY0LYPEj7K68zrS18fYNJoQadGSZDs8ZZl50+NTIYX1f9VKtzJ6e24VtOcgM5eDaKMfVz16Obrwwr+D8Wdg9MXpt8jrF+UwDQaRIHAVVdanixxkVnHumclfa2W7yc71XBUq0Lva/RPfo2ivLpRH1CMAYDKZ5JKA7i3K+xwgRZP/FRfPaLEzim5R9mcc1K+lIzC/jpRG1ME/x8cwfQmoPC3apx+O3dOBxGORT9VZrkyox1zZsF94DO6m2WSrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6naU6PjPpBmlLL4oCRh+GdLpKLGpyZj2fp3dcpFbaCk=;
+ b=RgLgQr6ItqQsqd66Dc3zSl9zEz2OicJZ33ALhGib3EVZvy8FEEW07rTUKG46lg8ADONqZfUKW6ifNKGDZ7kbdre7wRxAH7HW1/0bLzo2JJ1wVe5BMm3D4pJhlodYqZo8YB1DKKyX6b4adFtJzpa0d88+MVsRPuoguOBBKLcc8L7zj36QmY6G1/z9j+40LrzFn6mbHVzGKTNzD2rHVUJPJBV2xGLPAc2rrQA1DgJwH06uGt+sgDhs4teeMqTmvIHFnnyaIXxJo6vdKAb1MNhdx5PJqQNu2RCokIwqaoXFPxD5sEP6W0D5mk1I/l0SXjoKD10v1dpP9DmojEJxytwHNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6naU6PjPpBmlLL4oCRh+GdLpKLGpyZj2fp3dcpFbaCk=;
+ b=fGv5SBSuRy7+S6I9PDeKbcF9uv+pjpcBQpJxxiikKezVfpfeg5563wXhakl3G3ZrRQNAjH9Xu3M87qf8wQZEC/AnDzhd/K2HKcThSMfYacFKVRXcTNpCQewUSmLsffbdCzdN31OGj6c0OQDiMCYJrc7i5d7QP8REy3tn+Yo8PVs=
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO6P265MB6160.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Mon, 16 Mar
+ 2026 11:01:33 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.022; Mon, 16 Mar 2026
+ 11:01:33 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Mar 2026 11:01:32 +0000
+Message-Id: <DH45LQQ6VRB0.16G5TLOKF3LZ0@garyguo.net>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Jens Axboe" <axboe@kernel.dk>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich"
+ <dakr@kernel.org>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Frederic
+ Weisbecker" <frederic@kernel.org>, "Lyude Paul" <lyude@redhat.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>, "John Stultz" <jstultz@google.com>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, <linux-block@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config
+ option
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
+ <abfe2LbhLzXiGCkA@google.com>
+In-Reply-To: <abfe2LbhLzXiGCkA@google.com>
+X-ClientProxiedBy: LO4P265CA0151.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c7::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260316070039.549506-1-kartikey406@gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CD2EE40006
-X-Stat-Signature: 6zriibpnp5oiyaqd3g1k6en19ryk8u5j
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6160:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3806b415-46cb-42e3-5534-08de834b629f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	EpMzum7myf9tXZDRGpFo3hEJjkcaJufw8vp5AQ/nF7SSazbhlSkBgovlOW7+szo3c36q8PmIWAYz8T/HwzQpAbr2Ri0uTllYrfqGXCnqvzj+mnY6Q40OG4e8AASxTpnGnFwlOSzKOybLxSfDmpR3Gs9pXwCQojECPnRpbZrpyQOYBxDMdpcF72Jh/9DDDiSclwEKqxFURCMTuI5RwLKNFVFrEV0mEOkA5vBJCPnwvxRgZWGHb6Tq0oRhtWZYzPpHtZZxAyYm57ao4B9WWbllwAhI6+Nng1K12IMJrh+CvGVkUWOUW7LRH94GWJVvTAZNMU2VYwD8B7iIM7yqaidIzPd3kQQtYCnoN2cAZRo/iYk4BFn+NYSjY505aSvqGiitEUFEVynizrLZKbg58ksmQgDqnptEGjNZu1DjRYHf+qJGEDv+6Jx9oaBy5fqJsw5XpQOKOA5yc2LaXe+bubWq44XQfKyzQfif6qrGrgZdJHEnnS0f5cSWoAYtrfnF12cAB5DNn4sHs4uxxYu9uWUKjfAH01c7JwLRGVVboXmZOtJRhY5CGrKWlIBx/q0KuAL1MRJkKx2R2nPG85Mum+YYg9Iez2+XYVUjY2GyATYgdDbbgBKMhVDqBG1UbroaScz/A+gBTS+fgGY4S2C9SOBw7ul0wCy3T1SO5saA123BNN3eslTxPkHjqh0i830gGcdzhgnNZUA8DEkhfn4HuE59Uqi1gh47bKm/deGHrXXMsAs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UVFsOXJwTUtFTm9wNTFTN0dyYVhNRElBR0psNnRFL281SE90VTZrQWRLSi9B?=
+ =?utf-8?B?VnI2UVVQaDdwSzhCQXpDSFd0SEdFWnZKaTgwcjNQbjZSbnl5TnJSeUd5VmtW?=
+ =?utf-8?B?c2ludVJPYVZWcG9JdkVUcTl1SWZHOUdyamJPMWk3MmEvcHJ6UUZDMHpNUFYz?=
+ =?utf-8?B?VmdJYjhPMDlyZTVEQUVxUE5ubXVPMk9NNkZiVU5EOUlXdTR0WHFndmhOY0cr?=
+ =?utf-8?B?TnBwWm4yQmF6YTZDOEZIcVRtbmtUNHRLUDZKdkhvemF0bzU0V1F4Qkt0SjNI?=
+ =?utf-8?B?Vy9SM2dtWVJrVHZKQ2N6bmpTZUNBeVJBa0FwclBuZDFjcWYwOCtYUityeVlB?=
+ =?utf-8?B?Q3kvS3ZNZk5reVJnVUpYR1hMdEFYVEF4M2Z2ZEN4WURPREZlUG1yUms0WUND?=
+ =?utf-8?B?RmNDbkE2dnpOQURYcExDdVNMTFJDeXAyOW9xS0hrdldEbWRnZklyRVZvU1VB?=
+ =?utf-8?B?QmpsQUttNWZBZEM4RkwyQlJWeFRWWlhPUWVGdGZ1VTJONFd0OFp6Z3BMdUV2?=
+ =?utf-8?B?WENkTWk1NHF0SE9uQjhIbW4rRy9tb1dFN216OXVTVThabGdSVUxHa0hZTXdP?=
+ =?utf-8?B?V3JZNUpOTHNWeG51bWx2OC9odlNRS3VQYmFiVWViYzhaMjlwNEw5Y2hkaDlF?=
+ =?utf-8?B?VCs5bldXODJHbU9veWwzYU84NzVOQkF4a0ptbXMzZnRzYURiSmRZUkNOOEZF?=
+ =?utf-8?B?bWc1T0RKbmZkb09Bd0xXYUMxWXlDWWNvZmtDbjlyTWx5U3ZKb1JOd3RPd1pw?=
+ =?utf-8?B?QzZWWDYyQmJWWWpSQi9nSkFtLzhib1QxZnVka0N3R25wZXowUWlWV2Frc1RP?=
+ =?utf-8?B?b2NSSm1LSk1CdXlRL0ZIbVNmbW5ubWJvbjFFR2dzcGtJbjFHc2kyMVVoVkhn?=
+ =?utf-8?B?YWNjVFpEQXpzYythK1NlK0MwanNYWHl5bm9SdmpaVkRzQXlDdllDUW1wdWV3?=
+ =?utf-8?B?YUNVeWxkMkdqc29ZQ1V2QUhMaGpWaXU3Q3dCL1hjOWljMW50WVd4NTFqbmh4?=
+ =?utf-8?B?OWJBU0YrVWRFVVV6dXdwR2lCL3RrNUNrSGhld1QvcW9QTWc4Vks5SHEvL3NO?=
+ =?utf-8?B?MWxnbC9oRUthWkt3bEx4RzEvZFdUNlIwMlo0MjNKQndXWW1HbUlsUVR0T1Rs?=
+ =?utf-8?B?VnAzOVRIZE5FZ2s4aFdRbjMvT3B2cTN0UW1BSFVTVzE3czl2eEduMDg4VXNz?=
+ =?utf-8?B?V2lqejA5L2YzemFvNVFYREVWOHZnSnpTZThLZEFKQW5yT2h2REx4aTFCUVRH?=
+ =?utf-8?B?YUx1RGQwTVF3UVJxWWxtdk9nTHdTMlVBSjUzZ0tEQjhBcmxta0dCTE9RSTFO?=
+ =?utf-8?B?NmVybU9DalArSzVwYi9rKzRKNnNRaTlRQlA0aFNZM044cEx6b05BcUtROVJL?=
+ =?utf-8?B?VXlaTEhaWEJnaEZobURIaDkrRmV2UmJ4bE41b0E0allkWk51cmN5R0U5cHFY?=
+ =?utf-8?B?dGlPMG9DZ1o5Q2dNMUhaQ1ZycWZmSEVTRklPSEU0RXhHTTNHK3IwZmttL1VN?=
+ =?utf-8?B?TXNqOFhlZWFxMWtQOVA5L1dHbng5Y21icUxhT0xMYnZHZ3VPUURNaksvK0U0?=
+ =?utf-8?B?djhhVWp5T0lhbzc3SVhyM1FsZlM4NjNBYWo2MmtlRjZodTdJWUVIMnFOL3cr?=
+ =?utf-8?B?MHdWS2ZkNXRpaEt6L3BnRG1Kd1E5VENTSWMvaVluN1Ixa2NZUGtHSVMyS3ND?=
+ =?utf-8?B?M2Q1Tk94cUpGN0xRMUVhWXZkUm8xc1ZldlZKK1M3T0RaL29sR0JPR3lybU82?=
+ =?utf-8?B?bE5KRVdGL2VHWHFMSFZ4aXFGVm1VbDczbXBOWmRmV2YyckpGdVRGL0VvQ3hD?=
+ =?utf-8?B?MHZkMWZ2THJ3VXFQZWRzVGE1dEFUb1hvTWRubnlDNC9zd2J2L00rOGxIbW9K?=
+ =?utf-8?B?SGgyam9FcTlJWUl6Qk1VV2NxY1RudU9hckdnNUpGZkxWbEpLRHZRYWtDbVYx?=
+ =?utf-8?B?dFFGY1BQWlJhTmxaaVpjeTJWNFhiV1l0bzlyZ01GaXgyVkFTNnpYcTJEanpp?=
+ =?utf-8?B?VThSaXBBYTg3OU1MVnNWQ1N0SVZPaE45bmlJekIrenFybUIrOW9YL2gzbUNi?=
+ =?utf-8?B?Wjc1ODZDTUpZYndMM1dTem9aSEJUOVR2Y3NFUG55MVNzbkI4TFR4SjRXT1dD?=
+ =?utf-8?B?Nk5Za0JwMTh3cEJjVGo0MU5aZWFLMitwMnJtUXJLdUMxQVh2eUpTMzdSdDY3?=
+ =?utf-8?B?ZTd4d0RVY2VwTmVjQmdCTzUyMWdOc1ViYzdTcm1GQms3RjBOQ3JId3c2VWo2?=
+ =?utf-8?B?YitnWUZ5YTBQdkZraUdaaEdNVDBEVlFOUVF6cVhKT2tVYndLMzFQZlp5SXlP?=
+ =?utf-8?B?RXBFSjNtUG4vNHJldEN5YitMYmdTZkRNbVRDcC91cnVlNEJqcE1wdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3806b415-46cb-42e3-5534-08de834b629f
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 11:01:33.4391
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ufesMyiBnglGAtWrz0cqb8ufk96QeNwYbquqdxoBqLRZ1uFpDCKsurcVZZ6E3oIeZjkMVXvoRs8NBE4Mjux3IQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6160
+X-Rspamd-Queue-Id: 3772840018
+X-Stat-Signature: kc8m6qt9jt3piwqds6ytdf48a7ywzhfx
 X-Rspam-User: 
-X-HE-Tag: 1773658774-462019
-X-HE-Meta: U2FsdGVkX1/+Jf/Kc1Z+Y2gifQVtKU/9Rj2QYsi3YcALK+tCGzE+YwHXeX9K/EVaksA+O+bOp/niWp/YFCS1WwadxOjEUgDomVESfNDQcuGgb+ZLw9kOD+5InbVY6u39lCcHJZ2hDF+ZZ8pdyYCCf5BxqkosUeMD9O6/+Ds4RqPQtow0X+Dr2fySn04m+zg1iuFtUXZedwU0t5T3s7jo0wnWfORi04K69l2JqivDfVBz8dnvLWYwSIH7qoW6uSnHxzwyy+m/NbdEdm91VMKhCdR3w7YGrPRvHwIM6gC+RGN2nwjy+GAe0xgvOkProEpTVFCW5uHW94uSIglVckhmUvbsvH4STyPl9tVuLrE+9HrY725sMaiQui3F7hj30RJiGnjaxm2xsXa5hOZP1yrJyKW9ET3zLR+FXqDJ24koo9Gj1jzKqKB+gS7kY3wH0bBKmITOzA9Vn/M+xPSY+WsVwmBystSxqg9Ui2IlbPMQM4l710oIkQFampn9moV38O4GPp5i1E6Qv8dvSXk8NfIxBb4Tbbj49WxC5oxgGOFbD34MRifaHqDa66J3SBFZBzmY3iM6THemg5Hd/dqKke3wMmlS2SuhLYQ03he/YqXBIRSXe6lB/qr/NatxRGhYBhBqo6NRYREFLHY6euJ2o0UmPbTM4eTCvtQhziCEk6OStuYYprf7MNV6lbhK6P5vsEC6fzut73WCZKgGM3wIkvRsVatCh/Bl01vDq96uvlWhzIBpHVcfpooekWRScfaYIPdS28TP3Vgd1/hevS7KHrKpnOxKXbLHFw3n2aY8gsQRR76rxbdIFBOgSi8L1vQrArJpXcXHrFLZ0N5WOvmvEqnxLD8McVYvpjqt4vPp93wIyJn40b6MSq6e+QLFMYIEg/UOUtJ/9UM9HatDuN9LHSI+wqmlVofba0ply9Zr/+f8mfEjDZRF7ZlUU/wu/DgMrw1t8qkj4cuiqjqJcsm7ec7
- DOIKyzBX
- K2prACq6lCc2l64TTdrDgJ833rl6/76scZGrO82Q9yMP6fG48YYZz3wJmZ8yY41fFEp9nnqK145tF7MYGGPnuW6+mt7ITZJCmIRuRcaHlSCA2oJNTQbV70lusL6w3+nQqHUVdFRzOL1o3yJByBth4MZCnjDmf1qcsW77fLYEQZ1zPWzshkpedV0s183Bg3iUoJOGHOXq/PixeXu7cPcledVIDpKrAbe1PniC8HZFMzwuBTFtx9KgmcMTqsM+kF2w4XiVgzWQsmn6dthkFmPJ4/IdDEtpblwI+odY3JCPpF1lakmd5F4L9RHU6t6zPFijUtQnxnlgJVPJ+GeCOtsK3BHYS0fnVIXlHsleLC86a3QQ27SVpRxnAFhYrlpoEUPFsCIoRucF200hM/ZPEDzPnUDg+pyROH9kKFkn6To5Lh1Zlt8Ab5z+cP2d2C9Rp0qRzldQoyvIf2NTRdaWrf3EkKW+ULKVCYrJEI25BhUNEHiDKvs25txJ1GXcQo4oaVpS3Tc7MBeLraMZ+Dnh/2g++Joyr5ZPSx6JJxR9j8qfQb0xwdnheZs7fRzGfqA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773658896-159578
+X-HE-Meta: U2FsdGVkX18hQXD7R1/vum9xCcd78JgRyj6irCsYsMNSNaBdTe0XPuDGxAKrKLwctk85viCccPMT+Aew2M63cKtoHID7V85gPomP50swWigYxTeCDz7Q/ffPDbdIfRnIcYroF/5ONMrnZ7mNxnqwXYt9qR+l8VyywQav8P5tm6akoh/GbGAV6MagfCuQO2YKg92Qb1UJSnjrgWDZKlEDO+DhvaAnVbc8VXGV6TyJGPYuCh2i5hLDwLV9w8QwRDVYnNrS4VUzQFkjZG5vNAHDWuelNSmj5dbR3Fk5Kwy4JxbXecO/lj4raVIpY1wDb8/FtiTsCSEOlQ1zEjd0R7saMQSc2Aqf1DCyHsBLTERPu5lKDAlsi8QfCc8FrixbOLXBGc/tv78zDd9MOdDEHg2xz+IO5FU8+MFV/uGk1Q2cfLLfndIUuahEWa1qynE9+BF27YxWvFaQgkS+LRaCSw2gtRfrtl22lhP7MjdkdCPiZ0onzndb6VVFinIl7HUi8ItMnP+p/ITMzAfaINkQQVjWyQUi9W39ZU27eV+BCjVqFvF+FMRILTAbcq4wPue119mFOr3tS1vphNCm00f38Gy88Keq7JLJxlAs0Ui5S/NkysbcDCidF/MypfncyVzH65D9vsUZrUZi6Y3rXKQdQn3oS54ZtyXkca/zCDvc09HH+RgiBIP5rh7YgZtonRJBsTM3lFpqABMgKhpI50Eq7UQFWatWKYlIcnkmyUHgIXSOkmeUrFSawvz+sI7V3y8pWbXhaQlRc+S1+oDFLwne+uyyRadrDUcq9curucVmBrKN8MNV0S5MsVl4ucX1m03ldxFOIwlbdSJggq4Oy7O6NtSpfTLhczcjQaIOap27aHVAKPSnAPP4Hopx2qEgXizlBgB/BA8ZXt5uI6AOFS1YCLYuWrbcLm70AGzHu675ptXP6UplnvEisxF1IiNTfrIhf5mlKGdfoRedYv553XKlCnZ
+ +I+5Gwku
+ 4k3f2Ow/leKkxCFOYGhPyxpFWEjb1O18IbLLJC9cgI3wGZIuqMRLjJUF7nAz1QlJ9X7NlipFxO2Lj2YTIBFCmADunPRACCTdTEN4PyAIi0B3mxXeg4jdnWabaKcUAKZOz7nj6iIJTIuc1YUFekOj1lkwy/GpDYO56lKg6oAu+FWfbORRTaZbmPOe+iL8kSo9HR+Nq0Tj73ZOIJ36ij90nMJZKP7wNm4NjnzNwgjVxw/D+YPV/XnayIVi1n9aJebVXLebYPljESIzWztnjtG/v0DIRxyff8RvUJnKEKBSPuRB/KeCSNg+5sNndtXmepI7pO0lBHd73wNCd/qa2BErLhzzN3UPvVxPWo8aH4Erhf0ulASyWZWPiSt3wjTi53+VN2UWHs+fPgvPyysqAStYsRdMDEONgpN7QDG4gFJrcwYCr7VqGjwlSWv7BeMgzZmOnnJcYRT2AR3uY9p61qi4DyT8m8fi2y46epbkhoYHkUW8an+AS4NZD4+e6agiTuHzFaxijU7VN1z9ibvk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,81 +183,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Mon Mar 16, 2026 at 10:43 AM GMT, Alice Ryhl wrote:
+> On Mon, Feb 16, 2026 at 12:35:02AM +0100, Andreas Hindborg wrote:
+>> Add a configfs attribute to enable per-NUMA-node hardware contexts.
+>> When enabled, the driver creates one hardware queue per NUMA node
+>> instead of the default configuration.
+>>=20
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> This and other patches make me think that module parameters should have
+> value() return a copy of the value (and require Copy). For non-copy
+> types, there can be a separate value_ref() method. You would avoid *so*
+> many asterisks by doing that.
 
-On Mon, Mar 16, 2026 at 12:30:39PM +0530, Deepanshu Kartikey wrote:
-> Under CONFIG_PER_VMA_LOCK, mfill_atomic() holds only a per-VMA read
-> lock across its page-by-page copy loop. A concurrent UFFDIO_UNREGISTER
-> can acquire mmap_write_lock() and split the VMA mid-loop via
-> __split_vma(), which calls vma_start_write() via __vma_enter_locked().
-> 
-> The split happens in the race window between CHECK 1 and vm_refcnt++
-> in vma_start_read(). During this window vm_refcnt equals the base
-> attached value, so vma_start_write() sees no readers and proceeds
-> immediately without waiting, shrinking vma->vm_end in place.
-> 
-> Both seqnum checks in vma_start_read() miss this because after
-> mmap_write_unlock(), mm_lock_seq is incremented past vm_lock_seq
-> making them unequal, so a split VMA is returned to mfill_atomic().
-> 
-> On the next iteration, mfill_atomic_install_pte() calls
-> folio_add_new_anon_rmap() with state.dst_addr >= vma->vm_end,
-> triggering its sanity check:
-> 
->   address < vma->vm_start || address + (nr << 12) > vma->vm_end
->   WARNING: mm/rmap.c:1682 folio_add_new_anon_rmap+0x5fe/0x14b0
-> 
-> Fix this by checking on each loop iteration whether state.dst_addr
-> has fallen outside state.vma. If so, release the stale vma, update
-> dst_start and len to reflect the current position, and re-lookup the
-> vma via mfill_get_vma().
-> 
-> Reported-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=e24a2e34fad0efbac047"
-> Tested-by: syzbot+e24a2e34fad0efbac047@syzkaller.appspotmail.com
-> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-> ---
->  mm/userfaultfd.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+It's also the sensible thing to do if we're going to add modifiable
+module_params in the future.
 
-There's a simpler fix Harry posted:
-https://lore.kernel.org/all/abehBY7QakYF9bK4@hyeyoo
+Best,
+Gary
 
-and it keeps the original behaviour when copy bails out if the VMA was
-changed underneath it.
+>
+>> +configfs_attribute!(DeviceConfig, 8,
+>> +    show: |this, page| show_field(
+>> +        this.data.lock().submit_queues =3D=3D kernel::num_online_nodes(=
+), page
+>> +    ),
+>> +    store: |this, page| store_with_power_check(this, page, |this, page|=
+ {
+>> +        let value =3D core::str::from_utf8(page)?
+>> +            .trim()
+>> +            .parse::<u8>()
+>> +            .map_err(|_| kernel::error::code::EINVAL)?
+>> +            !=3D 0;
+>> +
+>> +        if value {
+>> +            this.data.lock().submit_queues *=3D kernel::num_online_node=
+s();
+>> +        }
+>
+> kstrtobool again. Also, this is *multiplying* the existing submit_queues
+> value by the number of NUMA nodes?
+>
+>> +        use_per_node_hctx: u8 {
+>> +            default: 0,
+>> +            description:
+>> +        "Use per-node allocation for hardware context queues, 0-false, =
+1-true. Default: 0-false",
+>> +        },
+>
+> formatting (rustfmt ignores macros)
+>
+> Alice
 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 9ffc80d0a51b..ab73c2106c38 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -910,6 +910,22 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
->  
->  	while (state.src_addr < src_start + len) {
->  		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
-> +	       /*
-> +		* Under CONFIG_PER_VMA_LOCK, a concurrent UFFDIO_UNREGISTER can
-> +		* split state.vma while we hold only the per-VMA read lock. The
-> +		* split shrinks vma->vm_end in place, causing dst_addr to fall
-> +		* outside the VMA bounds. Re-validate dst_addr on each iteration
-> +		* and re-lookup the vma if it has been split.
-> +		*/
-> +		if (state.dst_addr < state.vma->vm_start ||
-> +		    state.dst_addr >= state.vma->vm_end) {
-> +			mfill_put_vma(&state);
-> +			state.dst_start = state.dst_addr;
-> +			state.len = dst_start + len - state.dst_addr;
-> +			err = mfill_get_vma(&state);
-> +			if (err)
-> +				break;
-> +		}
->  
->  		err = mfill_get_pmd(&state);
->  		if (err)
-> -- 
-> 2.43.0
-> 
-
--- 
-Sincerely yours,
-Mike.
 
