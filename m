@@ -4,137 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62234F506D2
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1693BF506D2
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 14:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE4E66B02A4; Mon, 16 Mar 2026 10:06:36 -0400 (EDT)
+	id 6A54A6B02A6; Mon, 16 Mar 2026 10:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0D96B02A6; Mon, 16 Mar 2026 10:06:36 -0400 (EDT)
+	id 646516B02A8; Mon, 16 Mar 2026 10:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB2F46B02A7; Mon, 16 Mar 2026 10:06:36 -0400 (EDT)
+	id 57C3B6B02A9; Mon, 16 Mar 2026 10:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A402D6B02A4
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:06:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F8A657D50
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:06:35 +0000 (UTC)
-X-FDA: 84552101550.11.56DEDF2
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 474FB6B02A6
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 10:07:21 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B9B7B734D
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:07:21 +0000 (UTC)
+X-FDA: 84552103482.14.4CEF1A0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A6D8C40010
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:06:33 +0000 (UTC)
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3D11C40010
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:07:19 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oDjPz+SZ;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CfStdxdL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773669993;
+	s=arc-20220608; t=1773670039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/OajGqp2SlAb9lsMU6syqpjyd9d51ru6PjZJfX1/yZ4=;
-	b=b/hLI+dA4uNnHDv76X6WQBlxbgfOoBbYKxDIqXmNwNfevwRNL3ahVhddW4htmm4EYwm9g+
-	uSU8/OcSmne+cJGdOjvJ+gckV/iX9SpqdlcFE3jnRYm06zg/ojfdZumhVPVu11vr2CWgXI
-	TqPlO6XsYfsYqZne4GhjoLro2iML9mE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773669993; a=rsa-sha256;
-	cv=none;
-	b=TGzodcxHniiij033YkyBG/09KbsHYr9FLzDxUXbeFormUAKTgl3l80/q6hak7J9YE8aRUI
-	1iBDQZiDr/YMn2jRMKHg4l7/oEpBPSbeC3NLmitT3L/ApCjUzmoT4ch+GD/pPIEX96ULCf
-	zWBK74h6y01L60N19pnJvglCx2ItGzw=
+	bh=jwcAooz0ag51T4kAHl8PahI6wRlQgzZgCY3QNvWhWXg=;
+	b=iaJLmecJ9PxgfIyYgXJBJhUQ+NCs8rErhqVTTKajn6zfuwp8E3P/3na1i7ZT6TzoF8RoFp
+	5IG3hpQCw6crZetzPAVa1XpJiLSZf+BmzBsUL06i6NHVTVIpC4y2zunrOyDkjFjMDF8MR2
+	W6uDdW3o6sUBkPerviZ4g/7BLRJPwvw=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oDjPz+SZ;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CfStdxdL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773670039; a=rsa-sha256;
+	cv=none;
+	b=vIjVMLTts4Kn11eeN5asJ3W/8TGLZB+nWQBIQsmCv/5JTG05dGwYen5o80DZVqMYK1cF1f
+	RVHu0C5T11d+WyB8stx95SyyxghaR3CmuEf47uL+YHPQOZyYr80GfeJmo9RsOIcx6V5idT
+	741QSwGNb/LTHGNDufYEynFwTTcMaxA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B86A741992;
-	Mon, 16 Mar 2026 14:06:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74DBC19421;
-	Mon, 16 Mar 2026 14:06:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0144940BE5;
+	Mon, 16 Mar 2026 14:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C3BC2BCB0;
+	Mon, 16 Mar 2026 14:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773669992;
-	bh=afd4vFerHZuZDwwYgkareto4P7ZyDLUT2vOOmWWvhME=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oDjPz+SZbJH+CX/UgG+Y8rgCIz/PyCjUzfp6dusJq1X2Hnk5ei6U1Z4Ij3fHTYi4m
-	 CjgiCnA+XPR0hp3sGEa5UWoADfs9n2BBjTwu8g6RgHp5hTQO8BoFPhZdXIjHsw0LNr
-	 xtRsyYPrij1pBCmo9KUbT3C8HqYNKmCijkk23B4MiwrUp/e7DiFEFYTWWzOujMJ5XB
-	 FusXnuDNop4d3wqSVDJiu+YY6zhmPFFRKVUggmW0Dtxqdr2jYrmFpjytJWXfhkck/q
-	 Gluaa0k6qwbpjG2xDygJR54Zob1cHwuAlgL3j1YHSXWybzPSHV3Ezi2VPIW8O9Hz9n
-	 KADxaiZTyooYw==
-Message-ID: <a5625929-736b-4ddc-a8e3-30e3aa54df12@kernel.org>
-Date: Mon, 16 Mar 2026 15:06:26 +0100
+	s=k20201202; t=1773670037;
+	bh=W6h9b1n/Az4UpbvTnwPydHebOfLKFomQSqVZiewKgKY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CfStdxdL1BIZPOyF3hjQ0VVAAdKIPYU7MVUO9uisomji2Sg9gMkC+00YX9/9+cJFA
+	 W+R2oDt/y5mtp70bZEwnRsnH0BYjGAkDs2cXchR21hLHJYG8JOPHVrHThQstMz7dpU
+	 b0EIcIRV9NyEJzynfjRlo6MM8Suzb0qbjGnztVCNQlmLrfHaPUg1ciwMBKucjz+ii+
+	 eNOOc3kTu+3i5a8fJUDFA7zE2e3stiudZUheLPRD4gmrcDDGR+kyGOdQtIL3FJplxY
+	 bLTIx4SAJzZPcHY5Yw+JZylgqefZa7VC1XwxzIOgMsOXXEnAWJOW3Lv5Cwd9NuCiV+
+	 1WU8K0cXP47Og==
+Date: Mon, 16 Mar 2026 14:07:13 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: syzbot <syzbot+fe426bef95363177631d@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, rppt@kernel.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Subject: Re: [syzbot] [mm?] kernel BUG in __kmap_local_pfn_prot
+Message-ID: <94ea3644-4bd8-4ec9-aeb2-f6791fb3d4b8@lucifer.local>
+References: <69b75e2c.050a0220.12d28.015a.GAE@google.com>
+ <61380f09-f151-4440-bab9-b1129e0ef3cd@lucifer.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: filemap: fix nr_pages calculation overflow in
- filemap_map_pages()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- willy@infradead.org
-Cc: lorenzo.stoakes@oracle.com, kas@kernel.org, p.raghav@samsung.com,
- mcgrof@kernel.org, dhowells@redhat.com, djwong@kernel.org, hare@suse.de,
- da.gomez@samsung.com, dchinner@redhat.com, brauner@kernel.org,
- xiangzao@linux.alibaba.com, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <066dd2e947ccc1c304b54e847fbe628dccea1d7c.1773370126.git.baolin.wang@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <066dd2e947ccc1c304b54e847fbe628dccea1d7c.1773370126.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3hy37rmspsqq9bxxfrh4npyq4rs5yxf9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <61380f09-f151-4440-bab9-b1129e0ef3cd@lucifer.local>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3D11C40010
+X-Stat-Signature: mcu38jqmqsy4zhqp6zuof1t536we7qz1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A6D8C40010
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773669993-159438
-X-HE-Meta: U2FsdGVkX1+JrUHiCP29bAvX7ugKa/IRsaZWJ8fkORwRcmgqVh2ffxoCYWMLz2ujVR/X46gO8x72lIUdnRhCsbI2N1udetnYP+f1X8POjhuoG8/DvIdLYkiiMjN7zNEMj9h3hoC7bEpcohh0AXdkz55PGk6qXMZ4CorIsehTVsx1G865Bebu8v+EZuSrZpvoYnyGgqsD8ixwcc1FwBG+ACDJCfYEMBD9kg7PINaO59ua4l1BkKxeqM14vwxOtk6GEvxAXKUnmmpXJ8CF8jbEKxUc6VfitDLbMnew+PF85E4uMmNfTG2fzafIOv0oxfAcL1ifDQDbt+Jc2VniQbpn3FiZpWdMdqcAh6AFdWTeJBjMoAJKMfmmct4qmtkoGFRBCRiNqlXdgBOfcRCP9gAh8OHpu7y/k4miUqSBt18zN8Np6mFDvfBw1gWw4qBIVlUIepG09RXqIydK7IZ7UhcnzvX+poaQvVI6ypqx4C+qa32W+mNNcyCoQE6DDzBAIEjXZKwsnnSx2k4035s779T1TtBwUoSiyvw0uCI6qAUTADhD8OVyZO2v7zB7bUr5lO/+meTcXtcZURRM9w6SzzR81aXyiYAm03Hcsbo3H57aAPVP6Qi8506igNSTvLpfuEWYyOpnchxBhnb5TsOikNEgWhphZAXpeObfSfiqKGudPj5CL4kmjyaB554YSmWYwmDZBYzSRUAyOiVSZ6ppP/a+0PqHaPtKsds2NikhJLilHNu8zjz+l+6MdD+5kbRgg3NSCcbGPpvMiGSTej3NBR6lR2OXRSyFJOPYsXTfUNMLf8IvDh2d2uASd6yP814aXoI2pFs2upLqu/UkR4YSoj7ESlwHr3/PuNueoUp5H4d2MgJg7GVhns0dmFADeavPiBUYJ1iPYbCiIPalHj0/HANVdQiAdN5bAM5+iI/v09jyB6N5moka95eKRg+vs9V9az6wkWg0owNxok96CIra6tk
- 42uNeXaK
- Anq050vFlEAFqLA11ICHhznw5N1WjgWOLIi0DDfsZthD+AybjYcOgfIEku7DbllXw6PEfJZ6UVL+2Dwf3Ae9/dA4URP1/bD2GgJZB6vcH1fRe06v75wDpCwUwKzxRUZF4TX+5D4ztXaK4GvngTyUgjf3y88XoEPCjorLT4VVtLlL5dlxY/QLUczDu0jDcFHmC/aulcdlkI3AQ4TL5SiWmlAwA3R4wLZClQuUk747UldTtSQiUhir3OvqTH4BRzHMySFL5eyD4dSIybAWXCCd9SEzQc+TZzlMAmPrlTz6jjtG16TsSNEd0q296llNI0trbhDOvK77vjAiNdv4DljiXmT57ZOBQTvEQBWvxRPVyYD3UQiVrS0jW3QcJJpNfLIeO+HYgVEkdR3TfdGsuFsxhFLikourIQXOpZG9srNtNbhXDV3k41efJOUvxDRibU6x0K76xfI6aFAeYKho=
+X-HE-Tag: 1773670039-341453
+X-HE-Meta: U2FsdGVkX1/nKsV7SB4OP0Gj77ObgHKiG+N8ZWTxU6/cyWbMxOyXwqf/jZo7/GPRlgBtLE2gdDZ1VRZgxR/ydRISR4VOfVO0wjQ6BJl/ifDo++LqF4SzPbb1HGfL9CXM4D/KdySQYUipqkRh69/vkYa5E8V/UPiSMNhkWXHgRUm1alDkiHImtdIKndfIiDB+gO6CSlmyiiApuT5jaqLng1faGDi7vT8FmEEz4UZM3zTj4W0uywE4V+dP0IIZqqO2nETG2AUL2V7KkDdl4WNTLwAQe/shBVC1666WyJjtCFa8oqbMUW+ntYkYz7FbFTQzR8zWx5ltGMoNIFxkO+UyOhKnKmB1a7kEJRofUYr/n8UesAtnE+06oHxLv4+Gl9z2dknsrwkhDAyrOs5dRnY6iChw0YqTUTx7L8wlZ3Vf3xT2bEPlMBJdiGiTcBLKgGLnAaHst+Uc8InBkxNmbLZtgy+PdDg0FVlAslBVmwRk2ahBx+JVdMVCtOIDm4p1eQlNl2YNNNfra9SWxVs2QELhCn05dV62ia7GQM4gXUvaElTTy71zQU7fOzlVgP2nFY/XwqmVOgt+oOU0yXyfA+x85vURnGprVaUJ65JOT635Hgd/KMHTTG7uXQp/b9hmttfEUNobTi95kba4ObVwfMzMiu620EYCsM/gR0KJ05POx58jTaMsuRnkkAbL3SXINTAz82NkPhM/id8FOtws3X5F1GBpQorCsAnUvYZ98OV3YoXHpej/0mjBmFFU3o9hUc4UXRytjpruEZCajuMTve2+DD23Q4cxlOVG0/LGkyT0p4EADfeN8+In/ugyPOHnVhQJrVrmdquixb6kSBCyI00DTz2ofTcWLXcroYr9yuORxHhUoJdjXUDjU9NfXPd3z+Yecqum7jaIsd5WUR8zE+YITtiRqs9E6Sjw2yrXaGm2I2UeVPb73+AJnVxTDQPC8aAGMfGLnY8ufFl4ZUXEkXE
+ pyOhvyFJ
+ T09IN9QJRI/sqQ3oqhcIJR9UzlogxCC9wz0r16cc4X8ttkJ+nm3v3wMVtRjyRBK1IX5cC2cehN54VP5bkWPhPvalrbkl9188nB0mwDZQ8TfYbre3VOj3be5Bd71o4hqqKRjRTH9FrV2dzR/3cCoX7WNckRLQjlr5Bs/tns19nsqMFnob5dfPHmnMcgcbEHYbxRjKvTcBzBRV5hCjI4JNjrXQ57VLT3okg77tXAlJlm7eVLtaMsNK+20ECg5tIKSUUrpZmi1mPj9Ytj0wM/l2ckQ1n56HBDDe1Ipw4bBg4K/6cAVML6H4p4+ssoeSCgiNSFYFTvda+Cni89jGhRLhTRi4NcyNcaHTnLZUFBixldikxyUbAWmC6EWrajuheow5pnktcAENTTW3cDZrFyxxR9CNcK6Y28Y/pR/3eS9bCe1z+kH8ikZEDsv9iwlk8bOl02FwIfy4iC4L/cnXhFO4JKY3c3Xv6chptHhsKkW8aoCJLchef/vq5j7nP3mM2Dop0byrxDoOFx2c6c0CcfkDgH9XwNeT+BlNqlW7StcJtdNHEjtyvYCshSgigW0LNjmVL7XCkkB5w9dlQIJHlWrx2uzn6fu059hvnt82XEEcq5gJdHJLH88nIWRTVev/lXIjkuGAlo/oHpyKCk8RNWqeVHpskXiDOgI0mYwHcDNJ0y/jWhYj/WorwSyQmvUrtpY3vzqXr4+x75IbejTYIFuNPG/5Y2GqWIwgrjsKGC0LKzucTOdn+/PAQF3yylMcyGaRuV9TUtlIk0Ll8x26rMlFxIPwYuQ/ZKjXDb23TuUUQeF21/CqhHGSxe/ls1E0xdUadv/CzCixTEQUB53+F29SktWfyQaEICpsWDLpaH8D4pb+Tmpz0dlmm7KQKsC9BsKJysVExs3MWYzdE+a8WsoeApa6CefyNd3SqjQqx140wJfDqhJsuSgCrNSUfgoEB5TIxCcW55UGlYHrN7FF+/z38nn1wHSGr
+ kE3sLrOb
+ F5PP9VN80cp9k0PDmMdNYbYIwZ2XYywR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,144 +94,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/13/26 04:45, Baolin Wang wrote:
-> When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I encountered
-> some very strange crash issues showing up as "Bad page state":
-> 
-> "
-> [  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
-> [  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
-> [  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
-> [  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
-> [  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
-> [  734.496442] page dumped because: nonzero mapcount
-> "
-> 
-> After analyzing this page’s state, it is hard to understand why the mapcount
-> is not 0 while the refcount is 0, since this page is not where the issue first
-> occurred. By enabling the CONFIG_DEBUG_VM config, I can reproduce the crash as
-> well and captured the first warning where the issue appears:
-> 
-> "
-> [  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
-> [  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> [  734.469315] memcg:ffff000807a8ec00
-> [  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
-> [  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
-> ......
-> [  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
-> const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
-> (struct folio *)_compound_head(page + nr_pages - 1))) != folio)
-> [  734.469390] ------------[ cut here ]------------
-> [  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
-> CPU#90: stress-ng-mlock/9430
-> [  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
-> [  734.469555]  set_pte_range+0xd8/0x2f8
-> [  734.469566]  filemap_map_folio_range+0x190/0x400
-> [  734.469579]  filemap_map_pages+0x348/0x638
-> [  734.469583]  do_fault_around+0x140/0x198
-> ......
-> [  734.469640]  el0t_64_sync+0x184/0x188
-> "
-> 
-> The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio)",
-> which indicates that set_pte_range() tried to map beyond the large folio’s
-> size.
+On Mon, Mar 16, 2026 at 02:05:46PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> TL;DR: fixed it :)
+>
+> On Sun, Mar 15, 2026 at 06:34:36PM -0700, syzbot wrote:
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    b29fb8829bff Merge tag 'v7.0-rc3-ksmbd-server-fixes' of gi..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=11709806580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=6eb60188ef90336d
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=fe426bef95363177631d
+> > compiler:       arm-linux-gnueabi-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > userspace arch: arm
+> >
+> > Unfortunately, I don't have any reproducer for this issue yet.
+> >
+> > Downloadable assets:
+> > disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/98a89b9f34e4/non_bootable_disk-b29fb882.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/03c37f3b0853/vmlinux-b29fb882.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/58abf25b8259/zImage-b29fb882.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > Reported-by: syzbot+fe426bef95363177631d@syzkaller.appspotmail.com
+> >
+> > ------------[ cut here ]------------
+> > kernel BUG at mm/highmem.c:480!
+>
+> This is
+>
+> 	BUG_ON(current->kmap_ctrl.idx >= KM_MAX_IDX);
+>
+> Which strongly suggests that we are leaking a kmap.
+>
+> > Internal error: Oops - BUG: 0 [#1] SMP ARM
+> > Modules linked in:
+> > CPU: 1 UID: 0 PID: 12237 Comm: syz.3.10715 Tainted: G             L      syzkaller #0 PREEMPT
+> > Tainted: [L]=SOFTLOCKUP
+> > Hardware name: ARM-Versatile Express
+> > PC is at kmap_local_idx_push mm/highmem.c:480 [inline]
+> > PC is at __kmap_local_pfn_prot+0x230/0x24c mm/highmem.c:562
+> > LR is at get_lock_parent_ip include/linux/ftrace.h:1168 [inline]
+> > LR is at preempt_latency_start kernel/sched/core.c:5744 [inline]
+> > LR is at preempt_count_add+0x114/0x150 kernel/sched/core.c:5769
+> > pc : [<804d94c4>]    lr : [<8028d87c>]    psr: 20000113
+> > sp : eca19900  ip : eca198d8  fp : eca19934
+> > r10: 00000000  r9 : 00000024  r8 : 000e1380
+> > r7 : 0000071f  r6 : 00c00000  r5 : 83ff9800  r4 : 00000020
+> > r3 : 00000022  r2 : 0000071f  r1 : 00000011  r0 : 00000000
+> > Flags: nzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+> > Control: 30c5387d  Table: 8688cec0  DAC: 00000000
+> > Register r0 information: NULL pointer
+> > Register r1 information: non-paged memory
+> > Register r2 information: non-paged memory
+> > Register r3 information: non-paged memory
+> > Register r4 information: non-paged memory
+> > Register r5 information: slab task_struct start 83ff9800 pointer offset 0 size 3072
+> > Register r6 information: non-paged memory
+> > Register r7 information: non-paged memory
+> > Register r8 information: non-paged memory
+> > Register r9 information: non-paged memory
+> > Register r10 information: NULL pointer
+> > Register r11 information: 2-page vmalloc region starting at 0xeca18000 allocated at kernel_clone+0xac/0x428 kernel/fork.c:2654
+> > Register r12 information: 2-page vmalloc region starting at 0xeca18000 allocated at kernel_clone+0xac/0x428 kernel/fork.c:2654
+> > Process syz.3.10715 (pid: 12237, stack limit = 0xeca18000)
+> > Stack: (0xeca19900 to 0xeca1a000)
+> > 9900: 00000000 00000000 8050a67c 72c571c0 00000881 00001000 eca19978 00001000
+> > 9920: ffebe000 82a80518 eca19944 eca19938 804d9550 804d92a0 eca19974 eca19948
+> > 9940: 80818b4c 804d94ec 00000000 00000000 00000000 deddc6a8 8337ec00 eca199a0
+> > 9960: ff7f5e74 0000002d eca1999c eca19978 80818c90 80818b14 00000000 eca199c0
+> > 9980: 00000000 72c571c0 ff7f5e54 865a7ea0 eca19a1c eca199a0 80537bf8 80818c04
+> > 99a0: eca199bc eca199b0 00000000 00000000 00000000 00000000 00000000 00000000
+> > 99c0: deb9c9c2 00000000 00001000 00000000 00000000 00000000 00000000 00000000
+> > 99e0: 00000000 00000000 00000000 00000000 002d0000 72c571c0 deddc6a8 00000001
+> > 9a00: 865a7ea0 0000002d 85795f00 00000001 eca19a44 eca19a20 80539cdc 80537b30
+> > 9a20: deddc6a8 82ad6c20 00000000 85528900 00000001 00000001 eca19a94 eca19a48
+> > 9a40: 8052cc48 80539c54 0000002d 00100cca 83ff9800 eca19ab4 00000000 00000000
+> > 9a60: 00000000 72c571c0 8052ed9c 0000002d 00100cca 00000000 00000000 0000002f
+> > 9a80: eca19ab3 00000000 eca19b14 eca19a98 8052f18c 8052c958 eca19ab3 85420288
+> > 9aa0: 83ffa688 deddc6a8 00000028 00000028 01a19ae4 00000000 00000000 00000000
+> > 9ac0: 00000000 00000000 00000000 00000000 00000001 00000000 eca19ad8 eca19ad8
+> > 9ae0: 00000000 72c571c0 eca19b3c 00000001 00000000 00000028 00100cca 00000000
+> > 9b00: 84ce1400 eca19c30 eca19b9c eca19b18 8052f384 8052efc4 8022bc40 8022aba8
+> > 9b20: 00000000 804e0f7c eca19c0c eca19ba0 8028d88c 804e0f7c 00000000 00000000
+> > 9b40: 824ad034 72c571c0 eca19b7c eca19b58 ffec8000 83ff9800 00000028 85528900
+> > 9b60: eca19b9c eca19b70 8052d220 72c571c0 00000028 eca19c30 00000000 00000028
+> > 9b80: 00000000 00000000 84ce1400 85528900 eca19c0c eca19ba0 804e1294 8052f328
+> > 9ba0: eca19c28 87979800 eca19bc4 eca19bb8 804d9550 804d92a0 eca19bec eca19bc8
+> > 9bc0: 804f3820 804d94ec eca19c28 87979800 2000d000 eca19d28 00000000 eca19c30
+> > 9be0: eca19c0c 00000214 83ff9800 2000d000 eca19d28 00000000 00000000 00000000
+> > 9c00: eca19ca4 eca19c10 804e2bc4 804e0f64 eca19c64 00000000 eca19c4c 72c571c0
+> > 9c20: eca19c30 8575ad00 df871003 00000000 84ce1400 00000cc0 0002000d 2000d000
+> > 9c40: 2000d000 00000a14 87979800 8688cec0 00002880 00000000 00000000 00000000
+> > 9c60: 00000000 deb5fbb8 00000000 00000000 826c36c0 72c571c0 eca19d0c eca19d28
+> > 9c80: 2000d000 00000207 2000d000 00000214 8575ad00 00000007 eca19cec eca19ca8
+> > 9ca0: 80232fcc 804e2718 00000001 00000000 8280c82c 83ff9800 00000000 83ff9800
+> > 9cc0: 81c01eb4 8281d3d0 00000207 2000d000 eca19d28 80232edc 83ff9800 84df3318
+> > 9ce0: eca19d24 eca19cf0 8023357c 80232ee8 eca19d5c 80200c04 83ff9800 84df3318
+> > 9d00: eca19d24 81ab4034 80000013 ffffffff eca19d5c fffff000 eca19da4 eca19d28
+> > 9d20: 80200b2c 80233550 2000d000 7effffff a100d000 000006c0 2000d000 2000d000
+> > 9d40: b5003500 b5403587 fffff000 2000d6c0 84df3318 eca19da4 eca19da8 eca19d78
+> > 9d60: 804d0850 81ab4034 80000013 ffffffff eca19d94 b5003500 8047cd9c 0047ca50
+> > 9d80: 000006c0 00000000 00000000 000006c0 000006c0 81c1ee80 eca19dc4 eca19da8
+> > 9da0: 808f215c 804d07dc 00000000 00000000 0000c940 000006c0 eca19e2c eca19dc8
+> > 9dc0: 8047db10 808f211c 000006c0 00000000 debb5aac 00000000 eca19e1c 83ff9800
+> > 9de0: 00000000 0000c940 eca19ed8 eca19e60 2a7a3214 debb5aac 00000000 72c571c0
+> > 9e00: eca19e60 00000000 eca19e60 84df3290 eca19ed8 875806c0 00000001 00000006
+> > 9e20: eca19e54 eca19e30 804abc20 8047d87c 00002004 875806c0 00000000 eca19f88
+> > 9e40: 83ff9800 00000001 eca19ebc eca19e58 80572c54 804abbb0 00000006 eca19ed8
+> > 9e60: 875806c0 00000000 00000000 00000000 00000000 00000000 00000006 00002004
+> > 9e80: 00000000 00000000 eca19ebc 72c571c0 8028d87c 804abba4 00000000 875806c0
+> > 9ea0: eca19f88 83ff9800 00000001 0000016a eca19f5c eca19ec0 805743d0 80572b30
+> > 9ec0: 00000000 eca19ed8 00000000 00000000 00000000 00000000 00010000 0000c940
+> > 9ee0: 200006c0 000e4635 00000001 00000000 81af13d4 200006c0 000f0f75 00000000
+> > 9f00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+> > 9f20: 00000000 00000000 00000000 00000000 00000000 72c571c0 875806c1 875806c0
+> > 9f40: 00000001 20000080 8020029c 83ff9800 eca19f84 eca19f60 80574834 805742a8
+> > 9f60: 00000000 0013e480 00000000 00000000 003464f8 0000016a eca19fa4 eca19f88
+> > 9f80: 805760c4 805747b0 00000000 00000000 00000000 83ff9800 00000000 eca19fa8
+> > 9fa0: 80200060 805760b0 00000000 00000000 00000006 20000080 00000001 00000000
+> > 9fc0: 00000000 00000000 003464f8 0000016a 003464b8 00000000 00000001 76ec30dc
+> > 9fe0: 76ec2e88 76ec2e78 00018ba0 001302e0 60000010 00000006 00000000 00000000
+> > Call trace:
+> > [<804d9294>] (__kmap_local_pfn_prot) from [<804d9550>] (__kmap_local_page_prot mm/highmem.c:593 [inline])
+> > [<804d9294>] (__kmap_local_pfn_prot) from [<804d9550>] (__kmap_local_page_prot+0x70/0x74 mm/highmem.c:576)
+> >  r8:82a80518 r7:ffebe000 r6:00001000 r5:eca19978 r4:00001000
+> > [<804d94e0>] (__kmap_local_page_prot) from [<80818b4c>] (kmap_local_page include/linux/highmem-internal.h:73 [inline])
+> > [<804d94e0>] (__kmap_local_page_prot) from [<80818b4c>] (scatterwalk_map include/crypto/scatterwalk.h:111 [inline])
+> > [<804d94e0>] (__kmap_local_page_prot) from [<80818b4c>] (scatterwalk_next include/crypto/scatterwalk.h:146 [inline])
+> > [<804d94e0>] (__kmap_local_page_prot) from [<80818b4c>] (memcpy_from_scatterwalk+0x44/0xf0 crypto/scatterwalk.c:39)
+> > [<80818b08>] (memcpy_from_scatterwalk) from [<80818c90>] (memcpy_from_sglist+0x98/0xbc crypto/scatterwalk.c:72)
+> >  r10:0000002d r9:ff7f5e74 r8:eca199a0 r7:8337ec00 r6:deddc6a8 r5:00000000
+> >  r4:00000000 r3:00000000
+> > [<80818bf8>] (memcpy_from_sglist) from [<80537bf8>] (zswap_decompress+0xd4/0x28c mm/zswap.c:946)
+>
+> 		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+>
+> Note the kmap_local_folio() that never has a kunmap_local_folio() done to it...
+>
+> Looks to be commit e2c3b6b21c77.
+>
+> So a fix would be to add a kunmap_local_folio() here.
+>
+> Have sent a patch, which should be at
+> https://lore.kernel.org/all/20260316140122.339697-1-ljs@kernel.org/ but lore
+> just decided to break so you can also see it at
+> https://marc.info/?l=linux-mm&m=177367239109552&w=2
 
-We had a bunch of similar reports throughout the last year from syzbot,
-but always without a reproducer.
+OK lore's back, at least for linux-mm, so is at
 
-In particular this here:
-
-https://syzkaller.appspot.com/bug?extid=c0673e1f1f054fac28c2
-
-via
-
-https://lore.kernel.org/all/6758f0cc.050a0220.17f54a.0001.GAE@google.com/
-
-Could that be the same root cause?
-
-> 
-> By adding more debug information, I found that 'nr_pages' had overflowed in
-> filemap_map_pages(), causing set_pte_range() to establish mappings for a range
-> exceeding the folio size, potentially corrupting fields of pages that do not
-> belong to this folio (e.g., page->_mapcount).
-
-Sounds quite bad.
-
-> 
-> After above analysis, I think the possible race is as follows:
-> 
-> CPU 0                                                  CPU 1
-> filemap_map_pages()                                   ext4_setattr()
->    //get and lock folio with old inode->i_size
->    next_uptodate_folio()
-> 
->                                                           .......
->                                                           //shrink the inode->i_size
->                                                           i_size_write(inode, attr->ia_size);
-> 
->    //calculate the end_pgoff with the new inode->i_size
->    file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
->    end_pgoff = min(end_pgoff, file_end);
-> 
->    ......
->    //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
->    end = folio_next_index(folio) - 1;
->    nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
-> 
->    ......
->    //map large folio
->    filemap_map_folio_range()
->                                                           ......
->                                                           //truncate folios
->                                                           truncate_pagecache(inode, inode->i_size);
-> 
-> To fix this issue, move the 'end_pgoff' calculation before next_uptodate_folio(),
-> so the retrieved folio stays consistent with the file end to avoid 'nr_pages'
-> calculation overflow. After this patch, the crash issue is gone.
-> 
-> Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
-
-This certainly sounds like stable material :)
-
-> Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-> Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  mm/filemap.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index bc6775084744..923d28e59642 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3879,14 +3879,14 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  	unsigned int nr_pages = 0, folio_type;
->  	unsigned short mmap_miss = 0, mmap_miss_saved;
->  
-> +	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-> +	end_pgoff = min(end_pgoff, file_end);
-> +
->  	rcu_read_lock();
->  	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
->  	if (!folio)
->  		goto out;
->  
-> -	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-> -	end_pgoff = min(end_pgoff, file_end);
-> -
->  	/*
->  	 * Do not allow to map with PMD across i_size to preserve
->  	 * SIGBUS semantics.
-
-
-LGTM. I do wonder if we want to add a comment above the file_end,
-stating that this really must happen before the next_uptodate_folio()
-to handle concurrent truncation.
-
--- 
-Cheers,
-
-David
+https://lore.kernel.org/linux-mm/20260316140122.339697-1-ljs@kernel.org/T/#u
 
