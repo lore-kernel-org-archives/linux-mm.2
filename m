@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42407F53D88
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 18:39:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F85EF53D87
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 18:45:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E9996B0301; Mon, 16 Mar 2026 14:39:32 -0400 (EDT)
+	id 87DB26B0349; Mon, 16 Mar 2026 14:45:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6972B6B0304; Mon, 16 Mar 2026 14:39:32 -0400 (EDT)
+	id 7FDCA6B034A; Mon, 16 Mar 2026 14:45:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F356B0309; Mon, 16 Mar 2026 14:39:32 -0400 (EDT)
+	id 660286B034B; Mon, 16 Mar 2026 14:45:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 438586B0301
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:39:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3B861A042C
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:39:31 +0000 (UTC)
-X-FDA: 84552789342.23.47F939C
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E82E0100010
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:39:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 487706B0349
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:45:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF1881B7E58
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:45:27 +0000 (UTC)
+X-FDA: 84552804294.28.B46E455
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0B0681C0012
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:45:24 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lO6v6VNy;
+	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773686370;
+	s=arc-20220608; t=1773686726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=0CB5GKudPiGYyuQiFI2pYiORxmDKYtzN3F5Yz48Q8uw=;
-	b=6s3ku4Cve8yDl6/5uxkOpoa+eS40Gksbz6FknoCbsPv6ksTCaA/z3kQYwLdgBlIBPqOR5x
-	bkvsyGTWpDMlZey6ZylW5L8xKhERiChzdQukpA8rkUwsamocYKBNywNxaTXioCQZXaTm4G
-	JDxovH7qp5O5JgYPiA+BMjx5lOq2VBI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R/0Pmqo6gymewtsBJQ/y7Yj1oSkMScDskutIUZ+bJxU=;
+	b=7vrVw5Hfo6Kk9dw5oRrkhfzCdJqOc2y8dcjEFfOZN/0BJdyXllZLsd99O6csxqAmABznW/
+	9S+EnHzVeKJo1Clx/sZ/Upn23PcyJvKEttZ/v+x8VQs1wb4BaYmCVbT1G44m8y36GKx+CX
+	VEl1b9o/zq+za1YiwQAqpCvAcDwppqg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773686370; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lO6v6VNy;
+	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773686726; a=rsa-sha256;
 	cv=none;
-	b=K4A3kt3pZSdp6ViImM6Gx7U0UL4Ab6mvkVzY8SUVBnjaPWXnRWRLwo1pBtovMvFkO3JgXk
-	plhO+ODDLRCYSvkQyxXMSERcBXKNh7dmO1ZqMPFG1JO59Ss4IOh2AljfqH61Fq96L0Abvt
-	/a54bSPke8sH+5g4wy0gSrJO29bilKU=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fZP4p6stTzHnGfH;
-	Tue, 17 Mar 2026 02:39:06 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 042C140584;
-	Tue, 17 Mar 2026 02:39:25 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 16 Mar 2026 21:39:24 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <ljs@kernel.org>,
-	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <linux-doc@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v2 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
-Date: Mon, 16 Mar 2026 18:38:05 +0000
-Message-ID: <20260316183805.2090297-1-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
+	b=ejXmiBjpT4TL5aDfNqhAkZBtZnlgZlIPDRCvvSpPNAn4D5NLc4RQONGsfogIANffZW8Df1
+	urtsNr81JuhdLo10xoim3O11u9GJus3GPLSh+se6cG5AjKChBvc5+zlNymeYxlz+QMTHl/
+	Z5oqyjou1qcPNShNZX6WfB5qKNR+8Hg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=R/0Pmqo6gymewtsBJQ/y7Yj1oSkMScDskutIUZ+bJxU=; b=lO6v6VNygyX0u8SkoFE88YqNS2
+	DOcufX8BC2HzoQxDZvtRSRtxxuAeuRuV8oJQqZzRYuVyQsg76jokBcpc5i5UxehPO+qFZRbMCl4R5
+	ELo2t1dzKXtXna5XyYXUv1DnTAw1/8HdUMQgHzvhJlGWt88BsGX/pGggF1bAgFjHmYgETXj6UsRmb
+	xevH1jNpkgVSdduvn5I0E/x0zJbNKfo3DpJQWqJkC/GRmVMBiXU/RBGiKK0BJ7pADTCvXynaAJAZh
+	RINKCwp1Vp07Rquu8gs7whqnScuS52vnQi89O3c5L8sKRH22l19ouJAHFr+9vp+/QwtXYufw9Yyfg
+	q7oJzgvA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w2CwL-00000004hUc-3lEa;
+	Mon, 16 Mar 2026 18:45:23 +0000
+Message-ID: <81ef23ff-5042-4934-a227-2c6289b4f62b@infradead.org>
+Date: Mon, 16 Mar 2026 11:45:18 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E82E0100010
-X-Stat-Signature: a7hc1djh5b9jjzjymqntfaxbdudfnmd1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Docs: mmap_prepare: don't italicize structs
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org
+References: <20260315224506.1973566-1-rdunlap@infradead.org>
+ <2ae64217-ae32-4a4e-9c23-6809582ca7bc@lucifer.local>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <2ae64217-ae32-4a4e-9c23-6809582ca7bc@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 77pdaqu1kwtzt99ymh84bixcrsy4ttge
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773686368-819783
-X-HE-Meta: U2FsdGVkX19/IAEThoYOHmJBYPfEX+sYd8pumWCiWaG+QEKuHyv08zQeJ9QoLAe/IJyYxNoZM6x/JEcHykwKM9ZZCFyz0yGMNe72mdsgGV45K3tQe9DajeXfBYqP1F24ED/ZyA78o4VU49ZVuOfQ/hgfX3p86uHJiALY+x37J1lvXkS8ufv5YnmGcl6VjUJ2Gs3l1cxn2tQeAXJHE5lBr5xr82tW36xhPtiG4Nxt30KJP6yUGTWczY7+ZElSHtQT7fOuPuSdJ3GJbjEYS357iqNxz9shljf88Vhc2DGNVVhydGPeMk0cETGfknwCme3VcWg7/8vXJobgbiWEnbwB7vb2jcQ6DcyU5IZUdILk9d7F9YVQixtd6+HXxhVULhHlqgiG9oa1HRAF9IJWadx8Z3T+6HKk3L1tjLgkrz6axP8SR9j5iTWENV8dv1Bzk6Jj+SHT72tb7nMtYxZElzewk8ihNw0pTADnx5nr3XfLQUhLWgkT5HS24m4NTL+l/H/L+OX4Dq3vqCEJNTYVjrj/UUhCjBT5AIjHH1yw/UmH9G/bEtgUCxKCCyz+GnJqK4eqrOzvdrVtw4ymrIlXVHcPVh1memGw0MkbKlHT0+YXFiL35EeS8JjuH/gDCRlneb+jeSywQ+oA+kql6BVgf87IdqQDxE63UEhreT6HS5ZgtB00Ogkn8i+n96/D6CWS1H9prIdLvFMzS+FqiySeK4YH/+5y78780tihs36DDodh3FRNCcwHhKy3UxnhlM7iHvkwDx2CFHUzQ+CsyPKlXMee9b2DOzXbbnLb8mk3Mh8XPtzSqqgEnHXR+cw3LnGvmpz7pf04S9ydNgrbZMpJwGZruhfHtYs+LoKqcfPknmzzaL8cX8xdPS58sugRA7tVPo4pAPq3WOmSFzK4pLJ21jHkWDn2EZSuWsJEcrpp/XKsKpjhFf9p767vwxEzX95dA0WEr7Y/uGiePJ6tEvZiUlk
- R1CzOJ9u
- oqFOz/sdpZ//bxTg/4O7m6ufroxOlg9XT87NRqsNj83UJDL+xJZR7/DJPAh2VeNvCf+JyWvBUi4lus/9FE0Mt1M1y8PLQne9F3GuGQskzgbbYT8EdGesRTtAxyjkIomY8+P/J+yxLjFpjdOojSppFkuCmFYbCnpv8AS8SQaI6dOJbxx8uUP3xUe/eog8M0g/8Wy13Rwno5nlA9Hbn+mCbBcKQ5h3mNCjkFKLsNCC9RbUlFT/T+rRRd9EsSPwh7C1ywU+bvGpSzLqKtPKPeB8w+aQvWjoWxRPoDrbMNfkj4Fza6Ec=
+X-Rspamd-Queue-Id: 0B0681C0012
+X-HE-Tag: 1773686724-937558
+X-HE-Meta: U2FsdGVkX18mMV31CXnBH/99rRWQDHxtsmVkVqDI2wEEynYl9+GbgR0AIur9WxLzBs1zTKhf2O/e5ZiBTL+354EKJDfkAKsa9zUkGHFF7V0BZNkqhW2P4zwWanrsj9b20WczygGUMXgmPRd2pt4REmnW86uT2M4EQikne/vMEpw4CcQ68D6kKCqEArOUbRKzLaHaCOLXPpcoE/EfiPi24QbxMly+5n0oHgQMHbwXQ9bAewylDkOG5DTvrDryKhZ7KaY0JP5kZ9ISfQ6EfcxZCbPoTfDJ8QH7rdpmbXEkO/m6Pd9F2t6R1ylIJl+0I0O1j4x4J3hh5aTs/3QX7typzsI5fQT35eAi3KLsKQ3T1Y9WSNkurt9HWfib1CC5BwDxNguSWgUD10u0Et2PxnITHckCinPd4hHQb8I15R5Yoe1+DU93vfJmsinULWoq3XId2YOBZrYzTRZ5Rk/lOdLY8oMPfe27UdxCtA4Y96FL06uIDjiJh2MVOcQFKMDczV7owhsYOmh6OmZ/P1suya0NSh6PLFeLEYd/GJgDjBxpxsdt8JMcpn16xaHCK0mK4QXELVROsOwUwKuW3/sy2z3XBDeViQvfHT1Tbhi14BBD/sdV6QM9lYNtz7ECJ1DX4+KiWWA8b2BYqWQ/8sCXLQWFvyKW6oi/trGr8xphPs23FzWGiA4x8UKHDD5gMjyNEzPhpDRMFIhrdBeH+FQ630RcEzznULBLgFJd9XoQKtxnMy1JRZSjQLUpYZBHgIlTl4PLc/IFAuk52XQ2x02/qi6RjFBpkwJ8aY/VnbUGm0xiVXfzUgEmibPeWkxKVTikWXJhXo7E1iXj/CxpaGtXw3wd4SEFBCfOq2TB9fROGTrnMhPD3vPys0JMQ3WrIjtC2fUGQZsZVAtK8zVfeAFeV2Jv7rWw9sSonEz85m6ObhumiZHMU0npgZ2gBYwnmGBONtPtZ9PMigaD7lF/i902K3s
+ 0w8Ovb+E
+ rd98UGLONwrhddlhk00QYYcFo/TX6Dh8/MJCxOmABFdY6kkEg1lB5I61jrYTAYYO2Nxkg/aUgSIBCS/6UwvffflUzmwXnsZKz0PEpp1xxwIQ2qW2ooQaEti8EJT328zviCimmHAgYv/EdOYWGV1ELsM8epcZQv3/MGhTfWVzsJ47z0qZQOVCURaWyPEFiCRm0bWfIV7eet82MM71au2dO5zgAmnozgYDomVJlIPovkvaiX8eebR5wJ2CKXzELTQYxZDCo7tP4wwz1PSbq821Mk3qGTNqu97WynyImLpfetphTAf2wcGVR1XNCLgWumS3ufcl+sa2PRLzGTpIzk+klqZze0ahdHHU0qXGYawYoU+krWJkG2a4kr9dNcW2oNgNHEv2vz78uaEuvOEhQ/nbPz9+LqngSJzl6eiMMXGm9g3NeRCxneUIc8uaTu3Wz+dn9193zqPsRiF+MpoOtbI1HsK+XoWpuJbLYdNJZz5ht/nppWjdfyibrA1Mrit1ekFsl96qZt/Rk8n8T95Kw5UD+Ww/GqDp6aOFkdZx3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,91 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-This patch set introces a new action: DAMOS_COLLAPSE.
 
-For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
-working, since it relies on hugepage_madvise to add a new slot. This
-slot should be picked up by khugepaged and eventually collapse (or
-not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
-enabled, khugepaged will not be working, and therefore no collapse
-will happen.
+On 3/16/26 12:10 AM, Lorenzo Stoakes (Oracle) wrote:
+> On Sun, Mar 15, 2026 at 03:45:06PM -0700, Randy Dunlap wrote:
+>> Using a single quote mark `struct xyz` causes the html output to be
+>> produced as italic. Omit the quote marks so that kernel-doc's automarkup
+>> can make the "struct xyz" bold monospace ("code" style") in the
+>> generated html.
+>>
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> 
+> This is fine, though given this series is still in-flight we should just
+> fold this in no?
 
-DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
-the address range synchronously.
+Sure, any/either way works for me.
+Thanks.
 
-This new action may be required to support autotuning with hugepage as
-a goal.
+> Anyway, LGTM so:
+> 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> 
+>> ---
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Lorenzo Stoakes <ljs@kernel.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-doc@vger.kernel.org
+>>
+>>  Documentation/filesystems/mmap_prepare.rst |    6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> --- linux-next.orig/Documentation/filesystems/mmap_prepare.rst
+>> +++ linux-next/Documentation/filesystems/mmap_prepare.rst
+>> @@ -129,11 +129,11 @@ pointer. These are:
+>>  * mmap_action_simple_ioremap() - Sets up an I/O remap from a specified
+>>    physical address and over a specified length.
+>>
+>> -* mmap_action_map_kernel_pages() - Maps a specified array of `struct page`
+>> +* mmap_action_map_kernel_pages() - Maps a specified array of struct page
+>>    pointers in the VMA from a specific offset.
+>>
+>> -* mmap_action_map_kernel_pages_full() - Maps a specified array of `struct
+>> -  page` pointers over the entire VMA. The caller must ensure there are
+>> +* mmap_action_map_kernel_pages_full() - Maps a specified array of struct
+>> +  page pointers over the entire VMA. The caller must ensure there are
+>>    sufficient entries in the page array to cover the entire range of the
+>>    described VMA.
+>>
+> 
+> Cheers, Lorenzo
 
-[1] https://lore.kernel.org/lkml/20260314165156.86647-1-sj@kernel.org/
-
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
----
- Documentation/mm/damon/design.rst | 4 ++++
- include/linux/damon.h             | 1 +
- mm/damon/sysfs-schemes.c          | 4 ++++
- mm/damon/vaddr.c                  | 3 +++
- 4 files changed, 12 insertions(+)
-
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 29fff20b3c2a..3b1461f42987 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -463,6 +463,10 @@ that supports each action are as below.
-    Supported by ``vaddr`` and ``fvaddr`` operations set.
-  - ``nohugepage``: Call ``madvise()`` for the region with ``MADV_NOHUGEPAGE``.
-    Supported by ``vaddr`` and ``fvaddr`` operations set.
-+ - ``collapse``: Call ``madvise()`` for the region with ``MADV_COLLAPSE``.
-+   Supported by ``vaddr`` and ``fvaddr`` operations set. When
-+   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
-+   fail.
-  - ``lru_prio``: Prioritize the region on its LRU lists.
-    Supported by ``paddr`` operations set.
-  - ``lru_deprio``: Deprioritize the region on its LRU lists.
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 3a441fbca170..6720dc70c487 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -140,6 +140,7 @@ enum damos_action {
- 	DAMOS_PAGEOUT,
- 	DAMOS_HUGEPAGE,
- 	DAMOS_NOHUGEPAGE,
-+	DAMOS_COLLAPSE,
- 	DAMOS_LRU_PRIO,
- 	DAMOS_LRU_DEPRIO,
- 	DAMOS_MIGRATE_HOT,
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 5186966dafb3..aa08a8f885fb 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2041,6 +2041,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
- 		.action = DAMOS_NOHUGEPAGE,
- 		.name = "nohugepage",
- 	},
-+	{
-+		.action = DAMOS_COLLAPSE,
-+		.name = "collapse",
-+	},
- 	{
- 		.action = DAMOS_LRU_PRIO,
- 		.name = "lru_prio",
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index b069dbc7e3d2..dd5f2d7027ac 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -903,6 +903,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
- 	case DAMOS_NOHUGEPAGE:
- 		madv_action = MADV_NOHUGEPAGE;
- 		break;
-+	case DAMOS_COLLAPSE:
-+		madv_action = MADV_COLLAPSE;
-+		break;
- 	case DAMOS_MIGRATE_HOT:
- 	case DAMOS_MIGRATE_COLD:
- 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
 -- 
-2.43.0
+~Randy
 
 
