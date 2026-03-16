@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BDDAF506CE
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4736F506D5
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 13:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB7B76B0282; Mon, 16 Mar 2026 09:09:48 -0400 (EDT)
+	id 53AC66B0280; Mon, 16 Mar 2026 09:09:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78D96B0284; Mon, 16 Mar 2026 09:09:48 -0400 (EDT)
+	id 4FADC6B0282; Mon, 16 Mar 2026 09:09:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7A316B0285; Mon, 16 Mar 2026 09:09:48 -0400 (EDT)
+	id 3B2A56B0283; Mon, 16 Mar 2026 09:09:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BD96D6B0282
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:09:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89E12139E9A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:48 +0000 (UTC)
-X-FDA: 84551958456.20.E7CD699
+	by kanga.kvack.org (Postfix) with ESMTP id 242866B0280
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 09:09:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD5461A01F2
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:45 +0000 (UTC)
+X-FDA: 84551958330.07.AE9E2B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CAF5E4000F
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GoYjdYK+;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 16E73140009
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 13:09:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNUIJZvE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773666587;
+	s=arc-20220608; t=1773666584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QgtlNgL5opTpBn73U5l71gRYTR0A4QeyxntZU129xEE=;
-	b=UMF8wluv6b5erGus4WkYlKQY41L7KXuKAM0h6N0ZslNl49b6Ezf7r0byd0GagaVBiZm5tj
-	r5bnkpww1X+5sYKIPOsGWUNZPDsfZFbGtoKplS6+K0pi0l/6XgfWxMeOYSR3NJVUAOGWr2
-	51e+U/+F7xrXlPB8sy3A+UWdfHm7/Cg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666587; a=rsa-sha256;
+	bh=EADKZau66+K/eP/rjlzbkn3orhUerfZxMXTEaB3nElI=;
+	b=T8oJBpv9z2LTdmKI+IDpaU1CFOjpd9z37Wp+Fr38pvBPfTfS8d1HgN4m0Yf3dH/w4bUNvz
+	jPTo2kF0Vp2IyWlAFMBNxCKDBDiGRc0h2mpiAOZjSmBOW1djcz4UwjwPfDiEHx+CeZ2pSv
+	EZ+SUECKiuCljce0/U20Mq4C5jecDFE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773666584; a=rsa-sha256;
 	cv=none;
-	b=an5ONOqbjzsEAf5zgq6NzpJUgFF1brNOgiAWks5AHKEtXF5rDy+Vv9xcVG6N530fw6KxPn
-	V567uPkr5o3bnEMJ4LOhKF4gMLbS2iCIJb13z4iOvCgJZi73MUYHvM96e0RiJnxtfD9/E+
-	N7CEfmuCu+lmQk7IT4YNpQt2YWgsMuo=
+	b=zVV6voNccXzQFV49KAuyqbLUz66U4Dbweh06QszZwNOiMSKVnkkwTkJFdN6dZqdx1P66XG
+	WK7jq5zCLXh63c5WbSElK5ghpyzG0Vzt0b1Z2J+mU/zEwNaNP6howUH/1gn3Gr0BQirBoa
+	Q6LI2i4nGNPGnYyVWAuJt/7j8Ht1+qM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GoYjdYK+;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNUIJZvE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA3284082E;
-	Mon, 16 Mar 2026 13:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B5AC2BC87;
-	Mon, 16 Mar 2026 13:09:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A9D5436FB;
+	Mon, 16 Mar 2026 13:09:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC89C2BCB2;
+	Mon, 16 Mar 2026 13:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773666585;
-	bh=cshoMqhmsXn21+m564V6gRodJOxo+/21XTwmvJpWcIw=;
+	s=k20201202; t=1773666583;
+	bh=lxO4EKvmmEHGztVgnx+efIxFkiAgDANLumgTsEKBNDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoYjdYK+uvokPnGKuT3tc4SmdUKqIx09gnlf1i1/a6ik3xs2zAiEgRyMQmBT7XnHq
-	 5W0IXEMJIsxuNBLQoFNXi+P7nWI71CHQCAclhg6VRgt3ctqVGnmM0+ba8uvws/wIzN
-	 WHLV4C8QGtteLWCCHBdv5Ri58aZ95Cmo+uDYbFCBwbVw2TH0mo+x0PQuZWczCJa7lF
-	 0WrejdRKjymUGNI5gFdHuyMUwTEDpsxZZroj6vnq3ALslUw5YYLkoz87Ksi63EALhr
-	 4DEgEdhyB8ia4nSpei+grNhfrdUn/u5yx27XEj6UK9j6N/d+BrLJXs+U0omOi8nV/n
-	 UH0Yws4m9dtZQ==
+	b=BNUIJZvEnKHGoMrYeevv1xfMXzNelx88aoOsrdHAGoV0oCQcpX97ZUKoK2Q0J5ZDW
+	 YqN0Aci+ONZ8rzRlN6IFyFXtiMhLut14N9u3Jc0bHgoKWdza54yIp3eaCkge71neXz
+	 DGb8nlBKT+YC4iRTbiStTg/xHFJVBQ1HON2W87f+s9G9+ghm/EzAZ/nNaKocwOqZDa
+	 AiHvlrTo0hLW5riQTwn1IAh5q0gBf4/gi1KSrA2mXwz0rJ4LOdeuvCSAs3ny/i50xX
+	 N1mgSO3mcBMuPLjSep0306wcrkdoDNQjRv9+ZANc8eWAowCmeGrr6K6pPskUlGcB4N
+	 dgjFdTz1TJVog==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,22 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH v2 18/23] mm: update vma_supports_mlock() to use new VMA flags
-Date: Mon, 16 Mar 2026 13:08:07 +0000
-Message-ID: <2f82b5b93599e89b391ee4672928cefdfd2fb2f8.1773665966.git.ljs@kernel.org>
+Subject: [PATCH v2 17/23] mm: convert do_brk_flags() to use vma_flags_t
+Date: Mon, 16 Mar 2026 13:08:06 +0000
+Message-ID: <063af0422d99bee0195589aa63f8f44edaf409fa.1773665966.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773665966.git.ljs@kernel.org>
 References: <cover.1773665966.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CAF5E4000F
-X-Stat-Signature: wtsdi7su9aazra37wjdoyx7fzbddbkco
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 16E73140009
+X-Stat-Signature: doogg8xwqdmgp9uwbapw69d4ytp57dbh
 X-Rspam-User: 
-X-HE-Tag: 1773666586-374331
-X-HE-Meta: U2FsdGVkX1+45ohsCtjy1lWbKzKo37/oYRiUPOm6ZEKcLzMGKkp4reMDHMDypWkV4eVYxYAJZR78Hoa9sFOEeOME0IQ8vSNoMRlKdapq40C/Wje/MQGc1BCKnfxMi0rCNB4Ni7wZeLBHmJc2oSHm2y9NpLLBq2EN+VF18Vz/AGNX92WhUT08rLAOmhaulgh2qE5+x9ZlLUoyKr2b8XNIA4OIyblXMz9H/VKmXhvXbFWHz7J2vLfMfD8n2kqzyan4j6t3Z/5fJojWW+a3/Oz7JdXDVFyQAoQq9gYqkUqBD3IHhI3Ei0juL3ncLotwU+INtJFwXfHnVz0GUD8r9kBQzX8pN7AYw0UpqmzRs/1d8EF8KlCdDSGxNPfinnBlQlVJCrbfqi5LonkBRCEbPn7S525Dd/+vpPVTFLdS7DfElc7aLHA2Dsl5FhovG5BTp13iAboHm+w9XANNtNIK4b/ZX6hfDzVAb+OUaNUvOQi3lFI8fLRUOA1gP0+bfa4gh18wY5zUjuML1oeUfbFX4R7gSzFsTk1WQwEXVjDI0G2SVSePXXm5kCuiTKcTAcr3VBu630QvsCxBXeEkqoX/zWpcr+zZmc0FjjB3y+MIAusMaQbB6CDtF8NapX4jtuvqH97MiHZeovvVS70ltmgPx5dyy+gGPyjSLhjyFJ8c+EQKvvyku56KrUFvney25bjBkMpwYdJSBWJ0EbFMiTaG9bfL8zBEPK+75RRPJ4GVWvbjDxX2EA4bTDmoCPRd9b5JQc/kX0O8kDp8LSImWsJr4A132BLfK1AvKG0YTIEJ95O7jxds0awP3s57jDSks1bkyMVODmDfeAqLBAcjBAKAfGxaXSn48qVakDieqiP+wCfcPfFWXxplBYJVxrT/QIE3qp8i4W4Hyak2LMoSbkfTA322kfJZaI+nqdIM0r0dD2ldPtjeiwQsRiTGijeopsAttTpK5UVblLGWrrnynkWPY2K
- b+UJqSWP
- eBzGHg9J5ORk6oQyxKsbTu6HcrPuwDOLZ2vTpQ5Tcb9TQDoJ2jIFQuMER+SHKtHDko30RuIKC0T0j8zgqy7dycpcr5UaZtIcOQgsoNqfzTrcRCU7OicxmTlV+2Tyq0CReflvD5xc/tnRB+X0VAshmQMGdZgozY3JU20G0sp1kgjdhidU2+4zfCC4vsih2bI3rflaSQBVgGAuQ8eJbWj5wo07r6nO4efrrpgL1UUrIACshgR5RRq6W47pGGb3qFGDLoKZrSigpRLq2FkwO3Jrbwx+KBl9pH+tS3wnRLvd/ebO+ynVHQWWkUeecCHxzOu0TjzsD909zT6YGeHUEr5LFt+FU1z3D/d8W+IYr
+X-HE-Tag: 1773666583-17104
+X-HE-Meta: U2FsdGVkX19d+AmtUYiWr7vIuChDfCsCoy7yll3WeFR8QB6f9UC/EsqehmSZ1k8rkYYU/iJXi9uNvtHwyCa4CUAhjugTqBJq3uR75smZ/CGq9WOpaDJUs+iIyhmYuTucKV/Scy7bO4Opx0lhEokMfWvg6QnqQWnV058YPoH/g28uNb1lyUeWZGHw0dva1gVAkAyERM1hBRh0KV10hGvOJpD8HB6iyHB1oAuSPwt8WYH6myLb6P67Gv/GaPmS52Q1xFfWlevpst8EECBqF8NjUF/Kr/rx3H9FNKucsabVycVTRNQpZ30uk/PhHftPNVPte9Rw8guHPFPO1jk+MQzGWD1IR60XyTGOSJ2NTpbjf7hmrmgjT1A/+oAK8x/w2FDz11Yi1Prn9kjwFN+0X5cw0luPYulGMgR42ZfHgCPh3QALtuq4+1asgdY5+LHT5ZRYFsS47bMR/Ke0n3zbtUlN9nxvx0Op2h/S2FBPCOWTN2hJNew0Q1sihbtFrRAvQ8gwNaY2hIh/fVQsrbLw5jWFkP9LkigT5NSlDFfLEdhroGVIduXkWYmFMT7v7zwavCDZWryN5tL8Nabk0vSp2ayWIk4DAK43qE7Unf99jwbpy6kvok0HR3stQqZLJeWisSloeYiXFlaku/j7wZJWqMn2Rj2CJKvggvbvLwsl5NRfKZYxajqYRz6eVuBVGaQjXHrTXTetPt1Fv6Xs232QkRE1G2hYFeQGIaIocNcaCYfiCdBNhkJbrXTUaJt/MKyvv347aFlmEbv5r1ANEh6zem/jcxoRpRK1a1sbDptc40NcVxIPfVwC3BGC/BjsIFXKXmYOZT0uf0b16+VZgYJivOZowiJfqNnps/iP5S57nXGNNAtuji5LIru5ZopzAIHR25h0DQ44zPXUBqalAOd6YgWQKkFHinSWoFk5a6hUhxwbp93GdhzYb7ZmalzeBdmJ1bkrjtgY+cuKTOB+ar+f4iq
+ DCEu8JsG
+ 0lzvmbDCPVo+FTYRQ5tyiVAcpRKAuYABAU2qBFD969c74xBEAld/nLiT2gGcg2rO52sUuP3xffoo1Gn6podC54FXq1K2jA3Wm5qRSkmq/vuu8tkQSGpiKEsBvDvvo+2/Uy6846hHIBDphDM9T/C8w48ZI0JhcG/tGKPkbgWgkDBqvVy71k7V9bRY8yjIO8YyGq6/zKVaiCj6a6idnLPDiBtOB4bGfUGg16rD5PhrTDzWiIuNIjmLHalD3yGfD3FwDQpVbige8H1q8nzzDSogv3e68Af5/+I8L3ukxMw+9OSZAZCOx+T1uGiu9oX7wEx62WSHsZIUBHyPjdc1jZCss4gj30z6s3jSr5K5xhvwMZseoUTfYFDhjRorK0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,29 +149,1049 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We now have the ability to test all of this using the new vma_flags_t
-approach, so let's do so.
+In order to be able to do this, we need to change VM_DATA_DEFAULT_FLAGS and
+friends and update the architecture-specific definitions also.
+
+We then have to update some KSM logic to handle VMA flags, and introduce
+VMA_STACK_FLAGS to define the vma_flags_t equivalent of VM_STACK_FLAGS.
+
+We also introduce two helper functions for use during the time we are
+converting legacy flags to vma_flags_t values - vma_flags_to_legacy() and
+legacy_to_vma_flags().
+
+This enables us to iteratively make changes to break these changes up into
+separate parts.
+
+We use these explicitly here to keep VM_STACK_FLAGS around for certain
+users which need to maintain the legacy vm_flags_t values for the time
+being.
+
+We are no longer able to rely on the simple VM_xxx being set to zero if the
+feature is not enabled, so in the case of VM_DROPPABLE we introduce
+VMA_DROPPABLE as the vma_flags_t equivalent, which is set to
+EMPTY_VMA_FLAGS if the droppable flag is not available.
+
+While we're here, we make the description of do_brk_flags() into a kdoc
+comment, as it almost was already.
+
+We use vma_flags_to_legacy() to not need to update the vm_get_page_prot()
+logic as this time.
+
+Note that in create_init_stack_vma() we have to replace the BUILD_BUG_ON()
+with a VM_WARN_ON_ONCE() as the tested values are no longer build time
+available.
+
+We also update mprotect_fixup() to use VMA flags where possible, though we
+have to live with a little duplication between vm_flags_t and vma_flags_t
+values for the time being until further conversions are made.
+
+Finally, we update the VMA tests to reflect these changes.
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/internal.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arc/include/asm/page.h        |  2 +-
+ arch/arm/include/asm/page.h        |  2 +-
+ arch/arm64/include/asm/page.h      |  3 +-
+ arch/hexagon/include/asm/page.h    |  2 +-
+ arch/loongarch/include/asm/page.h  |  2 +-
+ arch/mips/include/asm/page.h       |  2 +-
+ arch/nios2/include/asm/page.h      |  2 +-
+ arch/powerpc/include/asm/page.h    |  4 +--
+ arch/powerpc/include/asm/page_32.h |  2 +-
+ arch/powerpc/include/asm/page_64.h | 12 ++++----
+ arch/riscv/include/asm/page.h      |  2 +-
+ arch/s390/include/asm/page.h       |  2 +-
+ arch/x86/include/asm/page_types.h  |  2 +-
+ arch/x86/um/asm/vm-flags.h         |  4 +--
+ include/linux/ksm.h                | 10 +++----
+ include/linux/mm.h                 | 47 ++++++++++++++++++------------
+ mm/internal.h                      |  3 ++
+ mm/ksm.c                           | 43 ++++++++++++++-------------
+ mm/mmap.c                          | 13 +++++----
+ mm/mprotect.c                      | 46 +++++++++++++++++------------
+ mm/mremap.c                        |  6 ++--
+ mm/vma.c                           | 34 +++++++++++----------
+ mm/vma.h                           | 14 +++++++--
+ mm/vma_exec.c                      |  5 ++--
+ security/selinux/hooks.c           |  4 ++-
+ tools/testing/vma/include/custom.h |  3 --
+ tools/testing/vma/include/dup.h    | 42 ++++++++++++++------------
+ tools/testing/vma/include/stubs.h  |  9 +++---
+ tools/testing/vma/tests/merge.c    |  3 +-
+ 29 files changed, 186 insertions(+), 139 deletions(-)
 
+diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
+index 38214e126c6d..facc7a03b250 100644
+--- a/arch/arc/include/asm/page.h
++++ b/arch/arc/include/asm/page.h
+@@ -131,7 +131,7 @@ static inline unsigned long virt_to_pfn(const void *kaddr)
+ #define virt_addr_valid(kaddr)  pfn_valid(virt_to_pfn(kaddr))
+ 
+ /* Default Permissions for stack/heaps pages (Non Executable) */
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+ 
+ #define WANT_PAGE_VIRTUAL   1
+ 
+diff --git a/arch/arm/include/asm/page.h b/arch/arm/include/asm/page.h
+index ef11b721230e..fa4c1225dde5 100644
+--- a/arch/arm/include/asm/page.h
++++ b/arch/arm/include/asm/page.h
+@@ -184,7 +184,7 @@ extern int pfn_valid(unsigned long);
+ 
+ #include <asm/memory.h>
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+ 
+ #include <asm-generic/getorder.h>
+ #include <asm-generic/memory_model.h>
+diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+index b39cc1127e1f..b98ac659e16f 100644
+--- a/arch/arm64/include/asm/page.h
++++ b/arch/arm64/include/asm/page.h
+@@ -46,7 +46,8 @@ int pfn_is_map_memory(unsigned long pfn);
+ 
+ #endif /* !__ASSEMBLER__ */
+ 
+-#define VM_DATA_DEFAULT_FLAGS	(VM_DATA_FLAGS_TSK_EXEC | VM_MTE_ALLOWED)
++#define VMA_DATA_DEFAULT_FLAGS	append_vma_flags(VMA_DATA_FLAGS_TSK_EXEC, \
++						 VMA_MTE_ALLOWED_BIT)
+ 
+ #include <asm-generic/getorder.h>
+ 
+diff --git a/arch/hexagon/include/asm/page.h b/arch/hexagon/include/asm/page.h
+index f0aed3ed812b..6d82572a7f21 100644
+--- a/arch/hexagon/include/asm/page.h
++++ b/arch/hexagon/include/asm/page.h
+@@ -90,7 +90,7 @@ struct page;
+ #define virt_to_page(kaddr) pfn_to_page(PFN_DOWN(__pa(kaddr)))
+ 
+ /* Default vm area behavior is non-executable.  */
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+ 
+ #define virt_addr_valid(kaddr) pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
+ 
+diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
+index 327bf0bc92bf..79235f4fc399 100644
+--- a/arch/loongarch/include/asm/page.h
++++ b/arch/loongarch/include/asm/page.h
+@@ -104,7 +104,7 @@ struct page *tlb_virt_to_page(unsigned long kaddr);
+ extern int __virt_addr_valid(volatile void *kaddr);
+ #define virt_addr_valid(kaddr)	__virt_addr_valid((volatile void *)(kaddr))
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+ 
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 5ec428fcc887..50a382a0d8f6 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -213,7 +213,7 @@ extern bool __virt_addr_valid(const volatile void *kaddr);
+ #define virt_addr_valid(kaddr)						\
+ 	__virt_addr_valid((const volatile void *) (kaddr))
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+ 
+ extern unsigned long __kaslr_offset;
+ static inline unsigned long kaslr_offset(void)
+diff --git a/arch/nios2/include/asm/page.h b/arch/nios2/include/asm/page.h
+index 722956ac0bf8..71eb7c1b67d4 100644
+--- a/arch/nios2/include/asm/page.h
++++ b/arch/nios2/include/asm/page.h
+@@ -85,7 +85,7 @@ extern struct page *mem_map;
+ # define virt_to_page(vaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(vaddr)))
+ # define virt_addr_valid(vaddr)	pfn_valid(PFN_DOWN(virt_to_phys(vaddr)))
+ 
+-# define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
++# define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+ 
+ #include <asm-generic/memory_model.h>
+ 
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index f2bb1f98eebe..281f25e071a3 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -240,8 +240,8 @@ static inline const void *pfn_to_kaddr(unsigned long pfn)
+  * and needs to be executable.  This means the whole heap ends
+  * up being executable.
+  */
+-#define VM_DATA_DEFAULT_FLAGS32	VM_DATA_FLAGS_TSK_EXEC
+-#define VM_DATA_DEFAULT_FLAGS64	VM_DATA_FLAGS_NON_EXEC
++#define VMA_DATA_DEFAULT_FLAGS32	VMA_DATA_FLAGS_TSK_EXEC
++#define VMA_DATA_DEFAULT_FLAGS64	VMA_DATA_FLAGS_NON_EXEC
+ 
+ #ifdef __powerpc64__
+ #include <asm/page_64.h>
+diff --git a/arch/powerpc/include/asm/page_32.h b/arch/powerpc/include/asm/page_32.h
+index 25482405a811..1fd8c21f0a42 100644
+--- a/arch/powerpc/include/asm/page_32.h
++++ b/arch/powerpc/include/asm/page_32.h
+@@ -10,7 +10,7 @@
+ #endif
+ #endif
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_DEFAULT_FLAGS32
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_DEFAULT_FLAGS32
+ 
+ #if defined(CONFIG_PPC_256K_PAGES) || \
+     (defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES))
+diff --git a/arch/powerpc/include/asm/page_64.h b/arch/powerpc/include/asm/page_64.h
+index 0f564a06bf68..d96c984d023b 100644
+--- a/arch/powerpc/include/asm/page_64.h
++++ b/arch/powerpc/include/asm/page_64.h
+@@ -84,9 +84,9 @@ extern u64 ppc64_pft_size;
+ 
+ #endif /* __ASSEMBLER__ */
+ 
+-#define VM_DATA_DEFAULT_FLAGS \
++#define VMA_DATA_DEFAULT_FLAGS \
+ 	(is_32bit_task() ? \
+-	 VM_DATA_DEFAULT_FLAGS32 : VM_DATA_DEFAULT_FLAGS64)
++	 VMA_DATA_DEFAULT_FLAGS32 : VMA_DATA_DEFAULT_FLAGS64)
+ 
+ /*
+  * This is the default if a program doesn't have a PT_GNU_STACK
+@@ -94,12 +94,12 @@ extern u64 ppc64_pft_size;
+  * stack by default, so in the absence of a PT_GNU_STACK program header
+  * we turn execute permission off.
+  */
+-#define VM_STACK_DEFAULT_FLAGS32	VM_DATA_FLAGS_EXEC
+-#define VM_STACK_DEFAULT_FLAGS64	VM_DATA_FLAGS_NON_EXEC
++#define VMA_STACK_DEFAULT_FLAGS32	VMA_DATA_FLAGS_EXEC
++#define VMA_STACK_DEFAULT_FLAGS64	VMA_DATA_FLAGS_NON_EXEC
+ 
+-#define VM_STACK_DEFAULT_FLAGS \
++#define VMA_STACK_DEFAULT_FLAGS \
+ 	(is_32bit_task() ? \
+-	 VM_STACK_DEFAULT_FLAGS32 : VM_STACK_DEFAULT_FLAGS64)
++	 VMA_STACK_DEFAULT_FLAGS32 : VMA_STACK_DEFAULT_FLAGS64)
+ 
+ #include <asm-generic/getorder.h>
+ 
+diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
+index 187aad0a7b03..c78017061b17 100644
+--- a/arch/riscv/include/asm/page.h
++++ b/arch/riscv/include/asm/page.h
+@@ -204,7 +204,7 @@ static __always_inline void *pfn_to_kaddr(unsigned long pfn)
+ 	(unsigned long)(_addr) >= PAGE_OFFSET && pfn_valid(virt_to_pfn(_addr));	\
+ })
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+ 
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
+diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+index f339258135f7..56da819a79e6 100644
+--- a/arch/s390/include/asm/page.h
++++ b/arch/s390/include/asm/page.h
+@@ -277,7 +277,7 @@ static inline unsigned long virt_to_pfn(const void *kaddr)
+ 
+ #define virt_addr_valid(kaddr)	pfn_valid(phys_to_pfn(__pa_nodebug((unsigned long)(kaddr))))
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+ 
+ #endif /* !__ASSEMBLER__ */
+ 
+diff --git a/arch/x86/include/asm/page_types.h b/arch/x86/include/asm/page_types.h
+index 018a8d906ca3..3e0801a0f782 100644
+--- a/arch/x86/include/asm/page_types.h
++++ b/arch/x86/include/asm/page_types.h
+@@ -26,7 +26,7 @@
+ 
+ #define PAGE_OFFSET		((unsigned long)__PAGE_OFFSET)
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+ 
+ /* Physical address where kernel should be loaded. */
+ #define LOAD_PHYSICAL_ADDR	__ALIGN_KERNEL_MASK(CONFIG_PHYSICAL_START, CONFIG_PHYSICAL_ALIGN - 1)
+diff --git a/arch/x86/um/asm/vm-flags.h b/arch/x86/um/asm/vm-flags.h
+index df7a3896f5dd..622d36d6ddff 100644
+--- a/arch/x86/um/asm/vm-flags.h
++++ b/arch/x86/um/asm/vm-flags.h
+@@ -9,11 +9,11 @@
+ 
+ #ifdef CONFIG_X86_32
+ 
+-#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+ 
+ #else
+ 
+-#define VM_STACK_DEFAULT_FLAGS (VM_GROWSDOWN | VM_DATA_FLAGS_EXEC)
++#define VMA_STACK_DEFAULT_FLAGS append_vma_flags(VMA_DATA_FLAGS_EXEC, VMA_GROWSDOWN_BIT)
+ 
+ #endif
+ #endif
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index c982694c987b..d39d0d5483a2 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -17,8 +17,8 @@
+ #ifdef CONFIG_KSM
+ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 		unsigned long end, int advice, vm_flags_t *vm_flags);
+-vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+-			 vm_flags_t vm_flags);
++vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
++			  vma_flags_t vma_flags);
+ int ksm_enable_merge_any(struct mm_struct *mm);
+ int ksm_disable_merge_any(struct mm_struct *mm);
+ int ksm_disable(struct mm_struct *mm);
+@@ -103,10 +103,10 @@ bool ksm_process_mergeable(struct mm_struct *mm);
+ 
+ #else  /* !CONFIG_KSM */
+ 
+-static inline vm_flags_t ksm_vma_flags(struct mm_struct *mm,
+-		const struct file *file, vm_flags_t vm_flags)
++static inline vma_flags_t ksm_vma_flags(struct mm_struct *mm,
++		const struct file *file, vma_flags_t vma_flags)
+ {
+-	return vm_flags;
++	return vma_flags;
+ }
+ 
+ static inline int ksm_disable(struct mm_struct *mm)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 324b6e8a66fa..eb1cbb60e63b 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -346,9 +346,9 @@ enum {
+ 	 * if KVM does not lock down the memory type.
+ 	 */
+ 	DECLARE_VMA_BIT(ALLOW_ANY_UNCACHED, 39),
+-#ifdef CONFIG_PPC32
++#if defined(CONFIG_PPC32)
+ 	DECLARE_VMA_BIT_ALIAS(DROPPABLE, ARCH_1),
+-#else
++#elif defined(CONFIG_64BIT)
+ 	DECLARE_VMA_BIT(DROPPABLE, 40),
+ #endif
+ 	DECLARE_VMA_BIT(UFFD_MINOR, 41),
+@@ -503,31 +503,42 @@ enum {
+ #endif
+ #if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
+ #define VM_DROPPABLE		INIT_VM_FLAG(DROPPABLE)
++#define VMA_DROPPABLE		mk_vma_flags(VMA_DROPPABLE_BIT)
+ #else
+ #define VM_DROPPABLE		VM_NONE
++#define VMA_DROPPABLE		EMPTY_VMA_FLAGS
+ #endif
+ 
+ /* Bits set in the VMA until the stack is in its final location */
+ #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
+ 
+-#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
++#define TASK_EXEC_BIT ((current->personality & READ_IMPLIES_EXEC) ? \
++		       VMA_EXEC_BIT : VMA_READ_BIT)
+ 
+ /* Common data flag combinations */
+-#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+-				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+-#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
+-				 VM_MAYWRITE | VM_MAYEXEC)
+-#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
+-				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+-
+-#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
+-#define VM_DATA_DEFAULT_FLAGS  VM_DATA_FLAGS_EXEC
++#define VMA_DATA_FLAGS_TSK_EXEC	mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, \
++		TASK_EXEC_BIT, VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,	  \
++		VMA_MAYEXEC_BIT)
++#define VMA_DATA_FLAGS_NON_EXEC	mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, \
++		VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT)
++#define VMA_DATA_FLAGS_EXEC	mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, \
++		VMA_EXEC_BIT, VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,	  \
++		VMA_MAYEXEC_BIT)
++
++#ifndef VMA_DATA_DEFAULT_FLAGS		/* arch can override this */
++#define VMA_DATA_DEFAULT_FLAGS  VMA_DATA_FLAGS_EXEC
+ #endif
+ 
+-#ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
+-#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
++#ifndef VMA_STACK_DEFAULT_FLAGS		/* arch can override this */
++#define VMA_STACK_DEFAULT_FLAGS VMA_DATA_DEFAULT_FLAGS
+ #endif
+ 
++#define VMA_STACK_FLAGS	append_vma_flags(VMA_STACK_DEFAULT_FLAGS,	\
++		VMA_STACK_BIT, VMA_ACCOUNT_BIT)
++
++/* Temporary until VMA flags conversion complete. */
++#define VM_STACK_FLAGS vma_flags_to_legacy(VMA_STACK_FLAGS)
++
+ #define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
+ 
+ #ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
+@@ -536,8 +547,6 @@ enum {
+ #define VM_SEALED_SYSMAP	VM_NONE
+ #endif
+ 
+-#define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
+-
+ /* VMA basic access permission flags */
+ #define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
+ #define VMA_ACCESS_FLAGS mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT)
+@@ -547,6 +556,9 @@ enum {
+  */
+ #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
+ 
++#define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
++				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
++
+ /*
+  * Physically remapped pages are special. Tell the
+  * rest of the world about it:
+@@ -1412,7 +1424,7 @@ static __always_inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
+  * vm_area_desc object describing a proposed VMA, e.g.:
+  *
+  * vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
+- *		VMA_DONTDUMP_BIT);
++ *              VMA_DONTDUMP_BIT);
+  */
+ #define vma_desc_set_flags(desc, ...) \
+ 	vma_desc_set_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
+@@ -4059,7 +4071,6 @@ extern int replace_mm_exe_file(struct mm_struct *mm, struct file *new_exe_file);
+ extern struct file *get_mm_exe_file(struct mm_struct *mm);
+ extern struct file *get_task_exe_file(struct task_struct *task);
+ 
+-extern bool may_expand_vm(struct mm_struct *, vm_flags_t, unsigned long npages);
+ extern void vm_stat_account(struct mm_struct *, vm_flags_t, long npages);
+ 
+ extern bool vma_is_special_mapping(const struct vm_area_struct *vma,
 diff --git a/mm/internal.h b/mm/internal.h
-index 80d8651441a7..708d240b4198 100644
+index f98f4746ac41..80d8651441a7 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -1252,7 +1252,9 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
+@@ -1870,4 +1870,7 @@ static inline int get_sysctl_max_map_count(void)
+ 	return READ_ONCE(sysctl_max_map_count);
+ }
  
- static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
++bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
++		   unsigned long npages);
++
+ #endif	/* __MM_INTERNAL_H */
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 54758b3a8a93..3b6af1ac7345 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -735,21 +735,24 @@ static int break_ksm(struct vm_area_struct *vma, unsigned long addr,
+ 	return (ret & VM_FAULT_OOM) ? -ENOMEM : 0;
+ }
+ 
+-static bool ksm_compatible(const struct file *file, vm_flags_t vm_flags)
++static bool ksm_compatible(const struct file *file, vma_flags_t vma_flags)
  {
--	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
-+	if (vma_test_any_mask(vma, VMA_SPECIAL_FLAGS))
+-	if (vm_flags & (VM_SHARED  | VM_MAYSHARE | VM_SPECIAL |
+-			VM_HUGETLB | VM_DROPPABLE))
+-		return false;		/* just ignore the advice */
+-
++	/* Just ignore the advice. */
++	if (vma_flags_test_any(&vma_flags, VMA_SHARED_BIT, VMA_MAYSHARE_BIT,
++			       VMA_HUGETLB_BIT))
 +		return false;
-+	if (vma_test_single_mask(vma, VMA_DROPPABLE))
++	if (vma_flags_test_single_mask(&vma_flags, VMA_DROPPABLE))
++		return false;
++	if (vma_flags_test_any_mask(&vma_flags, VMA_SPECIAL_FLAGS))
++		return false;
+ 	if (file_is_dax(file))
  		return false;
- 	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
+-
+ #ifdef VM_SAO
+-	if (vm_flags & VM_SAO)
++	if (vma_flags_test(&vma_flags, VMA_SAO_BIT))
  		return false;
+ #endif
+ #ifdef VM_SPARC_ADI
+-	if (vm_flags & VM_SPARC_ADI)
++	if (vma_flags_test(&vma_flags, VMA_SPARC_ADI_BIT))
+ 		return false;
+ #endif
+ 
+@@ -758,7 +761,7 @@ static bool ksm_compatible(const struct file *file, vm_flags_t vm_flags)
+ 
+ static bool vma_ksm_compatible(struct vm_area_struct *vma)
+ {
+-	return ksm_compatible(vma->vm_file, vma->vm_flags);
++	return ksm_compatible(vma->vm_file, vma->flags);
+ }
+ 
+ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+@@ -2825,17 +2828,17 @@ static int ksm_scan_thread(void *nothing)
+ 	return 0;
+ }
+ 
+-static bool __ksm_should_add_vma(const struct file *file, vm_flags_t vm_flags)
++static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
+ {
+-	if (vm_flags & VM_MERGEABLE)
++	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
+ 		return false;
+ 
+-	return ksm_compatible(file, vm_flags);
++	return ksm_compatible(file, vma_flags);
+ }
+ 
+ static void __ksm_add_vma(struct vm_area_struct *vma)
+ {
+-	if (__ksm_should_add_vma(vma->vm_file, vma->vm_flags))
++	if (__ksm_should_add_vma(vma->vm_file, vma->flags))
+ 		vm_flags_set(vma, VM_MERGEABLE);
+ }
+ 
+@@ -2860,16 +2863,16 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
+  *
+  * @mm:       Proposed VMA's mm_struct
+  * @file:     Proposed VMA's file-backed mapping, if any.
+- * @vm_flags: Proposed VMA"s flags.
++ * @vma_flags: Proposed VMA"s flags.
+  *
+- * Returns: @vm_flags possibly updated to mark mergeable.
++ * Returns: @vma_flags possibly updated to mark mergeable.
+  */
+-vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+-			 vm_flags_t vm_flags)
++vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
++			  vma_flags_t vma_flags)
+ {
+ 	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
+-	    __ksm_should_add_vma(file, vm_flags)) {
+-		vm_flags |= VM_MERGEABLE;
++	    __ksm_should_add_vma(file, vma_flags)) {
++		vma_flags_set(&vma_flags, VMA_MERGEABLE_BIT);
+ 		/*
+ 		 * Generally, the flags here always include MMF_VM_MERGEABLE.
+ 		 * However, in rare cases, this flag may be cleared by ksmd who
+@@ -2879,7 +2882,7 @@ vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 			__ksm_enter(mm);
+ 	}
+ 
+-	return vm_flags;
++	return vma_flags;
+ }
+ 
+ static void ksm_add_vmas(struct mm_struct *mm)
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 2d2b814978bf..5754d1c36462 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -192,7 +192,8 @@ SYSCALL_DEFINE1(brk, unsigned long, brk)
+ 
+ 	brkvma = vma_prev_limit(&vmi, mm->start_brk);
+ 	/* Ok, looks good - let it rip. */
+-	if (do_brk_flags(&vmi, brkvma, oldbrk, newbrk - oldbrk, 0) < 0)
++	if (do_brk_flags(&vmi, brkvma, oldbrk, newbrk - oldbrk,
++			 EMPTY_VMA_FLAGS) < 0)
+ 		goto out;
+ 
+ 	mm->brk = brk;
+@@ -1203,7 +1204,8 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 
+ int vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec)
+ {
+-	const vm_flags_t vm_flags = is_exec ? VM_EXEC : 0;
++	const vma_flags_t vma_flags = is_exec ?
++		mk_vma_flags(VMA_EXEC_BIT) : EMPTY_VMA_FLAGS;
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma = NULL;
+ 	unsigned long len;
+@@ -1230,7 +1232,7 @@ int vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec)
+ 		goto munmap_failed;
+ 
+ 	vma = vma_prev(&vmi);
+-	ret = do_brk_flags(&vmi, vma, addr, len, vm_flags);
++	ret = do_brk_flags(&vmi, vma, addr, len, vma_flags);
+ 	populate = ((mm->def_flags & VM_LOCKED) != 0);
+ 	mmap_write_unlock(mm);
+ 	userfaultfd_unmap_complete(mm, &uf);
+@@ -1328,12 +1330,13 @@ void exit_mmap(struct mm_struct *mm)
+  * Return true if the calling process may expand its vm space by the passed
+  * number of pages
+  */
+-bool may_expand_vm(struct mm_struct *mm, vm_flags_t flags, unsigned long npages)
++bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
++		   unsigned long npages)
+ {
+ 	if (mm->total_vm + npages > rlimit(RLIMIT_AS) >> PAGE_SHIFT)
+ 		return false;
+ 
+-	if (is_data_mapping(flags) &&
++	if (is_data_mapping_vma_flags(vma_flags) &&
+ 	    mm->data_vm + npages > rlimit(RLIMIT_DATA) >> PAGE_SHIFT) {
+ 		/* Workaround for Valgrind */
+ 		if (rlimit(RLIMIT_DATA) == 0 &&
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 9681f055b9fc..eaa724b99908 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -697,7 +697,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 	       unsigned long start, unsigned long end, vm_flags_t newflags)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	vm_flags_t oldflags = READ_ONCE(vma->vm_flags);
++	const vma_flags_t old_vma_flags = READ_ONCE(vma->flags);
++	vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
+ 	long nrpages = (end - start) >> PAGE_SHIFT;
+ 	unsigned int mm_cp_flags = 0;
+ 	unsigned long charged = 0;
+@@ -706,7 +707,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 	if (vma_is_sealed(vma))
+ 		return -EPERM;
+ 
+-	if (newflags == oldflags) {
++	if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags)) {
+ 		*pprev = vma;
+ 		return 0;
+ 	}
+@@ -717,8 +718,9 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 	 * uncommon case, so doesn't need to be very optimized.
+ 	 */
+ 	if (arch_has_pfn_modify_check() &&
+-	    (oldflags & (VM_PFNMAP|VM_MIXEDMAP)) &&
+-	    (newflags & VM_ACCESS_FLAGS) == 0) {
++	    vma_flags_test_any(&old_vma_flags, VMA_PFNMAP_BIT,
++			       VMA_MIXEDMAP_BIT) &&
++	    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
+ 		pgprot_t new_pgprot = vm_get_page_prot(newflags);
+ 
+ 		error = walk_page_range(current->mm, start, end,
+@@ -736,28 +738,31 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 	 * hugetlb mapping were accounted for even if read-only so there is
+ 	 * no need to account for them here.
+ 	 */
+-	if (newflags & VM_WRITE) {
++	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+ 		/* Check space limits when area turns into data. */
+-		if (!may_expand_vm(mm, newflags, nrpages) &&
+-				may_expand_vm(mm, oldflags, nrpages))
++		if (!may_expand_vm(mm, &new_vma_flags, nrpages) &&
++		    may_expand_vm(mm, &old_vma_flags, nrpages))
+ 			return -ENOMEM;
+-		if (!(oldflags & (VM_ACCOUNT|VM_WRITE|VM_HUGETLB|
+-						VM_SHARED|VM_NORESERVE))) {
++		if (!vma_flags_test_any(&old_vma_flags,
++				VMA_ACCOUNT_BIT, VMA_WRITE_BIT, VMA_HUGETLB_BIT,
++				VMA_SHARED_BIT, VMA_NORESERVE_BIT)) {
+ 			charged = nrpages;
+ 			if (security_vm_enough_memory_mm(mm, charged))
+ 				return -ENOMEM;
+-			newflags |= VM_ACCOUNT;
++			vma_flags_set(&new_vma_flags, VMA_ACCOUNT_BIT);
+ 		}
+-	} else if ((oldflags & VM_ACCOUNT) && vma_is_anonymous(vma) &&
+-		   !vma->anon_vma) {
+-		newflags &= ~VM_ACCOUNT;
++	} else if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
++		   vma_is_anonymous(vma) && !vma->anon_vma) {
++		vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+ 	}
+ 
++	newflags = vma_flags_to_legacy(new_vma_flags);
+ 	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
+ 	if (IS_ERR(vma)) {
+ 		error = PTR_ERR(vma);
+ 		goto fail;
+ 	}
++	new_vma_flags = legacy_to_vma_flags(newflags);
+ 
+ 	*pprev = vma;
+ 
+@@ -773,19 +778,24 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 
+ 	change_protection(tlb, vma, start, end, mm_cp_flags);
+ 
+-	if ((oldflags & VM_ACCOUNT) && !(newflags & VM_ACCOUNT))
++	if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
++	    !vma_flags_test(&new_vma_flags, VMA_ACCOUNT_BIT))
+ 		vm_unacct_memory(nrpages);
+ 
+ 	/*
+ 	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+ 	 * fault on access.
+ 	 */
+-	if ((oldflags & (VM_WRITE | VM_SHARED | VM_LOCKED)) == VM_LOCKED &&
+-			(newflags & VM_WRITE)) {
+-		populate_vma_page_range(vma, start, end, NULL);
++	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
++		const vma_flags_t mask =
++			vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
++				      VMA_SHARED_BIT, VMA_LOCKED_BIT);
++
++		if (vma_flags_same(&mask, VMA_LOCKED_BIT))
++			populate_vma_page_range(vma, start, end, NULL);
+ 	}
+ 
+-	vm_stat_account(mm, oldflags, -nrpages);
++	vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+ 	vm_stat_account(mm, newflags, nrpages);
+ 	perf_event_mmap(vma);
+ 	return 0;
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 36b3f1caebad..e9c8b1d05832 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1472,10 +1472,10 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
+ 
+ 	/* MREMAP_DONTUNMAP expands by old_len since old_len == new_len */
+ 	if (vrm->flags & MREMAP_DONTUNMAP) {
+-		vm_flags_t vm_flags = vrm->vma->vm_flags;
++		vma_flags_t vma_flags = vrm->vma->flags;
+ 		unsigned long pages = vrm->old_len >> PAGE_SHIFT;
+ 
+-		if (!may_expand_vm(mm, vm_flags, pages))
++		if (!may_expand_vm(mm, &vma_flags, pages))
+ 			return -ENOMEM;
+ 	}
+ 
+@@ -1813,7 +1813,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 	if (!mlock_future_ok(mm, vma->vm_flags & VM_LOCKED, vrm->delta))
+ 		return -EAGAIN;
+ 
+-	if (!may_expand_vm(mm, vma->vm_flags, vrm->delta >> PAGE_SHIFT))
++	if (!may_expand_vm(mm, &vma->flags, vrm->delta >> PAGE_SHIFT))
+ 		return -ENOMEM;
+ 
+ 	return 0;
+diff --git a/mm/vma.c b/mm/vma.c
+index 15d643eee97f..b05fe785cb00 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2384,7 +2384,7 @@ static void vms_abort_munmap_vmas(struct vma_munmap_struct *vms,
+ 
+ static void update_ksm_flags(struct mmap_state *map)
+ {
+-	map->vm_flags = ksm_vma_flags(map->mm, map->file, map->vm_flags);
++	map->vma_flags = ksm_vma_flags(map->mm, map->file, map->vma_flags);
+ }
+ 
+ static void set_desc_from_map(struct vm_area_desc *desc,
+@@ -2445,7 +2445,7 @@ static int __mmap_setup(struct mmap_state *map, struct vm_area_desc *desc,
+ 	}
+ 
+ 	/* Check against address space limit. */
+-	if (!may_expand_vm(map->mm, map->vm_flags, map->pglen - vms->nr_pages))
++	if (!may_expand_vm(map->mm, &map->vma_flags, map->pglen - vms->nr_pages))
+ 		return -ENOMEM;
+ 
+ 	/* Private writable mapping: check memory availability. */
+@@ -2865,20 +2865,22 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ 	return ret;
+ }
+ 
+-/*
++/**
+  * do_brk_flags() - Increase the brk vma if the flags match.
+  * @vmi: The vma iterator
+  * @addr: The start address
+  * @len: The length of the increase
+  * @vma: The vma,
+- * @vm_flags: The VMA Flags
++ * @vma_flags: The VMA Flags
+  *
+  * Extend the brk VMA from addr to addr + len.  If the VMA is NULL or the flags
+  * do not match then create a new anonymous VMA.  Eventually we may be able to
+  * do some brk-specific accounting here.
++ *
++ * Returns: %0 on success, or otherwise an error.
+  */
+ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+-		 unsigned long addr, unsigned long len, vm_flags_t vm_flags)
++		 unsigned long addr, unsigned long len, vma_flags_t vma_flags)
+ {
+ 	struct mm_struct *mm = current->mm;
+ 
+@@ -2886,9 +2888,12 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	 * Check against address space limits by the changed size
+ 	 * Note: This happens *after* clearing old mappings in some code paths.
+ 	 */
+-	vm_flags |= VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT | mm->def_flags;
+-	vm_flags = ksm_vma_flags(mm, NULL, vm_flags);
+-	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
++	vma_flags_set_mask(&vma_flags, VMA_DATA_DEFAULT_FLAGS);
++	vma_flags_set(&vma_flags, VMA_ACCOUNT_BIT);
++	vma_flags_set_mask(&vma_flags, mm->def_vma_flags);
++
++	vma_flags = ksm_vma_flags(mm, NULL, vma_flags);
++	if (!may_expand_vm(mm, &vma_flags, len >> PAGE_SHIFT))
+ 		return -ENOMEM;
+ 
+ 	if (mm->map_count > get_sysctl_max_map_count())
+@@ -2902,7 +2907,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	 * occur after forking, so the expand will only happen on new VMAs.
+ 	 */
+ 	if (vma && vma->vm_end == addr) {
+-		VMG_STATE(vmg, mm, vmi, addr, addr + len, vm_flags, PHYS_PFN(addr));
++		VMG_STATE(vmg, mm, vmi, addr, addr + len, vma_flags, PHYS_PFN(addr));
+ 
+ 		vmg.prev = vma;
+ 		/* vmi is positioned at prev, which this mode expects. */
+@@ -2923,8 +2928,8 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 
+ 	vma_set_anonymous(vma);
+ 	vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
+-	vm_flags_init(vma, vm_flags);
+-	vma->vm_page_prot = vm_get_page_prot(vm_flags);
++	vma->flags = vma_flags;
++	vma->vm_page_prot = vm_get_page_prot(vma_flags_to_legacy(vma_flags));
+ 	vma_start_write(vma);
+ 	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
+ 		goto mas_store_fail;
+@@ -2935,10 +2940,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	perf_event_mmap(vma);
+ 	mm->total_vm += len >> PAGE_SHIFT;
+ 	mm->data_vm += len >> PAGE_SHIFT;
+-	if (vm_flags & VM_LOCKED)
++	if (vma_flags_test(&vma_flags, VMA_LOCKED_BIT))
+ 		mm->locked_vm += (len >> PAGE_SHIFT);
+ 	if (pgtable_supports_soft_dirty())
+-		vm_flags_set(vma, VM_SOFTDIRTY);
++		vma_flags_set(&vma_flags, VMA_SOFTDIRTY_BIT);
+ 	return 0;
+ 
+ mas_store_fail:
+@@ -3069,7 +3074,7 @@ static int acct_stack_growth(struct vm_area_struct *vma,
+ 	unsigned long new_start;
+ 
+ 	/* address space limit tests */
+-	if (!may_expand_vm(mm, vma->vm_flags, grow))
++	if (!may_expand_vm(mm, &vma->flags, grow))
+ 		return -ENOMEM;
+ 
+ 	/* Stack limit test */
+@@ -3288,7 +3293,6 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
+ {
+ 	unsigned long charged = vma_pages(vma);
+ 
+-
+ 	if (find_vma_intersection(mm, vma->vm_start, vma->vm_end))
+ 		return -ENOMEM;
+ 
+diff --git a/mm/vma.h b/mm/vma.h
+index cf8926558bf6..1f2de6cb3b97 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -237,13 +237,13 @@ static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
+ 	return vma->vm_pgoff + PHYS_PFN(addr - vma->vm_start);
+ }
+ 
+-#define VMG_STATE(name, mm_, vmi_, start_, end_, vm_flags_, pgoff_)	\
++#define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
+ 	struct vma_merge_struct name = {				\
+ 		.mm = mm_,						\
+ 		.vmi = vmi_,						\
+ 		.start = start_,					\
+ 		.end = end_,						\
+-		.vm_flags = vm_flags_,					\
++		.vma_flags = vma_flags_,				\
+ 		.pgoff = pgoff_,					\
+ 		.state = VMA_MERGE_START,				\
+ 	}
+@@ -465,7 +465,8 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ 		struct list_head *uf);
+ 
+ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *brkvma,
+-		 unsigned long addr, unsigned long request, unsigned long flags);
++		 unsigned long addr, unsigned long request,
++		 vma_flags_t vma_flags);
+ 
+ unsigned long unmapped_area(struct vm_unmapped_area_info *info);
+ unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info);
+@@ -527,6 +528,13 @@ static inline bool is_data_mapping(vm_flags_t flags)
+ 	return (flags & (VM_WRITE | VM_SHARED | VM_STACK)) == VM_WRITE;
+ }
+ 
++static inline bool is_data_mapping_vma_flags(const vma_flags_t *vma_flags)
++{
++	const vma_flags_t mask = vma_flags_and(vma_flags,
++			VMA_WRITE_BIT, VMA_SHARED_BIT, VMA_STACK_BIT);
++
++	return vma_flags_same(&mask, VMA_WRITE_BIT);
++}
+ 
+ static inline void vma_iter_config(struct vma_iterator *vmi,
+ 		unsigned long index, unsigned long last)
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 8134e1afca68..5cee8b7efa0f 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -36,7 +36,8 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+ 	unsigned long new_start = old_start - shift;
+ 	unsigned long new_end = old_end - shift;
+ 	VMA_ITERATOR(vmi, mm, new_start);
+-	VMG_STATE(vmg, mm, &vmi, new_start, old_end, 0, vma->vm_pgoff);
++	VMG_STATE(vmg, mm, &vmi, new_start, old_end, EMPTY_VMA_FLAGS,
++		  vma->vm_pgoff);
+ 	struct vm_area_struct *next;
+ 	struct mmu_gather tlb;
+ 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
+@@ -135,7 +136,7 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+ 	 * use STACK_TOP because that can depend on attributes which aren't
+ 	 * configured yet.
+ 	 */
+-	BUILD_BUG_ON(VM_STACK_FLAGS & VM_STACK_INCOMPLETE_SETUP);
++	VM_WARN_ON_ONCE(VM_STACK_FLAGS & VM_STACK_INCOMPLETE_SETUP);
+ 	vma->vm_end = STACK_TOP_MAX;
+ 	vma->vm_start = vma->vm_end - PAGE_SIZE;
+ 	if (pgtable_supports_soft_dirty())
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index d8224ea113d1..903303e084c2 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -7713,6 +7713,8 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 
+ static __init int selinux_init(void)
+ {
++	vma_flags_t data_default_flags = VMA_DATA_DEFAULT_FLAGS;
++
+ 	pr_info("SELinux:  Initializing.\n");
+ 
+ 	memset(&selinux_state, 0, sizeof(selinux_state));
+@@ -7729,7 +7731,7 @@ static __init int selinux_init(void)
+ 		      AUDIT_CFG_LSM_SECCTX_SUBJECT |
+ 		      AUDIT_CFG_LSM_SECCTX_OBJECT);
+ 
+-	default_noexec = !(VM_DATA_DEFAULT_FLAGS & VM_EXEC);
++	default_noexec = !vma_flags_test(&data_default_flags, VMA_EXEC_BIT);
+ 	if (!default_noexec)
+ 		pr_notice("SELinux:  virtual memory is executable by default\n");
+ 
+diff --git a/tools/testing/vma/include/custom.h b/tools/testing/vma/include/custom.h
+index b7d9eb0a44e4..744fe874c168 100644
+--- a/tools/testing/vma/include/custom.h
++++ b/tools/testing/vma/include/custom.h
+@@ -95,6 +95,3 @@ static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+ {
+ 	return PAGE_SIZE;
+ }
+-
+-#define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
+-				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index d4149d9837fb..e68d3eb78178 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -314,27 +314,33 @@ enum {
+ /* Bits set in the VMA until the stack is in its final location */
+ #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
+ 
+-#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
++#define TASK_EXEC_BIT ((current->personality & READ_IMPLIES_EXEC) ? \
++		       VM_EXEC_BIT : VM_READ_BIT)
+ 
+ /* Common data flag combinations */
+-#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+-				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+-#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
+-				 VM_MAYWRITE | VM_MAYEXEC)
+-#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
+-				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+-
+-#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
+-#define VM_DATA_DEFAULT_FLAGS  VM_DATA_FLAGS_EXEC
++#define VMA_DATA_FLAGS_TSK_EXEC	mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, \
++		TASK_EXEC_BIT, VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,	  \
++		VMA_MAYEXEC_BIT)
++#define VMA_DATA_FLAGS_NON_EXEC	mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, \
++		VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT)
++#define VMA_DATA_FLAGS_EXEC	mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, \
++		VMA_EXEC_BIT, VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,	  \
++		VMA_MAYEXEC_BIT)
++
++#ifndef VMA_DATA_DEFAULT_FLAGS		/* arch can override this */
++#define VMA_DATA_DEFAULT_FLAGS  VMA_DATA_FLAGS_EXEC
+ #endif
+ 
+-#ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
+-#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
++#ifndef VMA_STACK_DEFAULT_FLAGS		/* arch can override this */
++#define VMA_STACK_DEFAULT_FLAGS VMA_DATA_DEFAULT_FLAGS
+ #endif
+ 
+-#define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
++#define VMA_STACK_FLAGS	append_vma_flags(VMA_STACK_DEFAULT_FLAGS,	\
++		VMA_STACK_BIT, VMA_ACCOUNT_BIT)
++/* Temporary until VMA flags conversion complete. */
++#define VM_STACK_FLAGS vma_flags_to_legacy(VMA_STACK_FLAGS)
+ 
+-#define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
++#define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
+ 
+ /* VMA basic access permission flags */
+ #define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
+@@ -345,6 +351,9 @@ enum {
+  */
+ #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
+ 
++#define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
++				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
++
+ #define VMA_REMAP_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,	\
+ 				     VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT)
+ 
+@@ -357,11 +366,6 @@ enum {
+ /* This mask represents all the VMA flag bits used by mlock */
+ #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
+ 
+-#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
+-
+-#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+-				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+-
+ #define RLIMIT_STACK		3	/* max stack size */
+ #define RLIMIT_MEMLOCK		8	/* max locked-in-memory address space */
+ 
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index 416bb93f5005..b5dced3b0bd4 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -101,10 +101,10 @@ static inline bool shmem_file(struct file *file)
+ 	return false;
+ }
+ 
+-static inline vm_flags_t ksm_vma_flags(const struct mm_struct *mm,
+-		const struct file *file, vm_flags_t vm_flags)
++static inline vma_flags_t ksm_vma_flags(struct mm_struct *mm,
++		const struct file *file, vma_flags_t vma_flags)
+ {
+-	return vm_flags;
++	return vma_flags;
+ }
+ 
+ static inline void remap_pfn_range_prepare(struct vm_area_desc *desc, unsigned long pfn)
+@@ -239,7 +239,8 @@ static inline int security_vm_enough_memory_mm(struct mm_struct *mm, long pages)
+ 	return 0;
+ }
+ 
+-static inline bool may_expand_vm(struct mm_struct *mm, vm_flags_t flags,
++static inline bool may_expand_vm(struct mm_struct *mm,
++				 const vma_flags_t *vma_flags,
+ 				 unsigned long npages)
+ {
+ 	return true;
+diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
+index d3e725dc0000..44e3977e3fc0 100644
+--- a/tools/testing/vma/tests/merge.c
++++ b/tools/testing/vma/tests/merge.c
+@@ -1429,11 +1429,10 @@ static bool test_expand_only_mode(void)
+ {
+ 	vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
+ 					     VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
+-	vm_flags_t legacy_flags = VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE;
+ 	struct mm_struct mm = {};
+ 	VMA_ITERATOR(vmi, &mm, 0);
+ 	struct vm_area_struct *vma_prev, *vma;
+-	VMG_STATE(vmg, &mm, &vmi, 0x5000, 0x9000, legacy_flags, 5);
++	VMG_STATE(vmg, &mm, &vmi, 0x5000, 0x9000, vma_flags, 5);
+ 
+ 	/*
+ 	 * Place a VMA prior to the one we're expanding so we assert that we do
 -- 
 2.53.0
 
