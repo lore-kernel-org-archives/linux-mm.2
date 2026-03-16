@@ -4,100 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28151F53D81
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 18:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 284CDF53D81
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 18:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80EDD6B033A; Mon, 16 Mar 2026 14:18:43 -0400 (EDT)
+	id 88E256B00CA; Mon, 16 Mar 2026 14:20:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FA4D6B033C; Mon, 16 Mar 2026 14:18:43 -0400 (EDT)
+	id 83BF86B00CC; Mon, 16 Mar 2026 14:20:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7105F6B033D; Mon, 16 Mar 2026 14:18:43 -0400 (EDT)
+	id 73E606B00CD; Mon, 16 Mar 2026 14:20:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E97E6B033A
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:18:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C8E01C464
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:18:43 +0000 (UTC)
-X-FDA: 84552736926.02.BA2C7B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4C658C0007
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:18:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZO8LSCe3;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773685121;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 614AB6B00CA
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 14:20:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FD2C1603E9
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:20:28 +0000 (UTC)
+X-FDA: 84552741336.22.50C0AB9
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3F5FB1C000F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 18:20:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=acXGXFV6;
+	spf=pass (imf20.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773685226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kdsFxZKqVklhMCc2ezVa0B23c9GGYqlzYvJOca5zp+4=;
-	b=JFBpPT8MxflOpJM1Iqdd67U/5KZUnaCA3B7b9DmUMKc0NEjVHqCOOPX/clC0XeNqmbh21C
-	nPwRAmnkm0/vHbxA1gvRWvXeD8pJnhuPDEFQZgKHzhQOGGI/WPQGIgRp7fVBK3rTrGIsF4
-	igNgH8bPHGLucsgpBepPHkxxpY3ippE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773685121; a=rsa-sha256;
-	cv=none;
-	b=RBKxCmz3yGC9BavSIQYOpKYO7ZyKXWWSkB+JyMtuAjpfzL5Wyrit2oXDagKa8A/61PjN31
-	Yzkj5sisq2QQxlvaX4C9ws5OuuAtmbU9l4ivTXyMffnFNpueYvDmWuDb91p29bRvDMFaqZ
-	djqLBaRgPFqOq0XvyhZz/Ruu8/jf18o=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZO8LSCe3;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 070B840AF3;
-	Mon, 16 Mar 2026 18:18:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E254C19421;
-	Mon, 16 Mar 2026 18:18:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773685119;
-	bh=MMg0evIPGaTN/2UdyQI4UEe3CJoma3zLEV+L9ukhSjY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZO8LSCe3Yfj91WA6DeilqxeaBn/768zT8gNpM2Ujdf8Li0pDTmXUqaUAWELebibXA
-	 RHN91Dx7+UL81itDRTW3safhSpvaeK49P1IljPCkfZprMN390o5xjL30tcu5lTPb1m
-	 Ubumwud3YWR8uzBg8REs6DKjdmI34T4NI8el7tiQo9YsjCYI1Cot8zuUtK6rRaGu2t
-	 woUltCaoM6x+1tf96rWz9Ed9X8cmgkrSckZ74IL8NiN3qT/fsW52eSCaxQdSpAONt8
-	 hNWVv2iU3g04//bsoK2+33NcNmHPwbQNRSaw9P0qeEvbp5+7UoEBAzJ+exg/fpFPlQ
-	 YA/BRNF10sxgg==
-Date: Mon, 16 Mar 2026 18:18:38 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, 
-	jack@suse.cz, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
-	kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
-	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
-	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
-	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v3 3/5] mm/khugepaged: define
- KHUGEPAGED_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
-Message-ID: <aa7a855c-88b6-44a6-a470-e1ca410057ec@lucifer.local>
-References: <20260311211315.450947-1-npache@redhat.com>
- <20260311211315.450947-4-npache@redhat.com>
+	bh=whl+jSHmqX1To/01dzedEyQPCGN8UBibir4a9aB04QU=;
+	b=lWPuDbOCFqqScYDQcGyeOpV5MPhwxbwgUucYpgAARhP216CwUFzZ23uK2K8P4e6swaY4Qx
+	6Ayx0hFZFVl7Z5/tzSl09VQui6dLG1RSfy2oJIHKqGX8VnenC7cRmTegLL/ngY1m7L+UML
+	5kAGTFR9pBxAo4EL1zhtgf1MWyIOGdc=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=acXGXFV6;
+	spf=pass (imf20.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773685226; a=rsa-sha256;
+	cv=pass;
+	b=5GXubAKA6UFhGqvqWitmBEG0XnLF8hhqMWLPvFhgk1mxAYLtGsA1LZfzHE8NGFuYn7ttJv
+	l+DHSEtnWRSlmc0xzkvJAUbUITOoA4JnFQlb4N72z2j2sP4b93U5hFenWAFPgpgc+lvfAC
+	y6szafWSuChgPKteH45EXtFDvMN6ibo=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b4520f6b32so6897798eec.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:20:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773685225; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dvLpyIb9CfhFsxVauP7CzLK02pSuyCtpMflYnRnuonPiUIqkQs4wzFNuWa+cypPMsr
+         cYQmgOqXZG2o6Vi1Q5NbuGb3gCYhd2YWqwx/Z5IkErQsjpkeutUj1Za5ztZRoG7uCFeO
+         ZF+WBEJpBo35imuDF6Mpj3JnQ0rwBH71RnSLAqcxo7vBCn3OqFhSzWcvIx2zkU4Lmw0D
+         NlCojo9AxfFNQ/i3Fb4Wn+zE4fU3onUWtwoXRwWPTsUR7ab97LibmWa6zzKBG4I0X2VI
+         r4HvWng0EU9wt1HH29h5Hfc2axnB88ButAiK3kzvQMr4/W/kjDRmxmDVwAjQiGdbvu6o
+         aXlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=whl+jSHmqX1To/01dzedEyQPCGN8UBibir4a9aB04QU=;
+        fh=ay1PkBTQy4NZHGWsr3jb0KDeX0LLrgNeL67pmdf9RZw=;
+        b=BPnSQdPuqCBK3YaA/aFn2vYnsPMU3aO73PY2sQZi7cnsu0DdZ5XBalwfTMBa/1JfC/
+         pGFurYLQCokETrvb6/7JhqLwP5KN0XIBMKaZ5yuiwTa4+esHrq+nBYbGpXNKG8IMKudm
+         jEtFb0Y5HvwwzWXXjnwWsBREk9rcR4IlxEGSdrmYv45/QLCnixsHSuThjyeMHKUlEKay
+         cmLQgnUU9MWAz1+49XJtbsy1VgYHFLFSIcwcrKJISNcD01B5NFTfsPUkMaDyvKEdGW4c
+         LpGC/W7+xdlBI30xQIuibRnKvKd6UAxLYFpLq3gHgWLh3HPkpAmDDN7wmg0AXQkrtiMk
+         tuNA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773685225; x=1774290025; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=whl+jSHmqX1To/01dzedEyQPCGN8UBibir4a9aB04QU=;
+        b=acXGXFV67K8lDUEeK5gntQYV4X5kbHv6ALR3I61r+dp464nFiZzma1nZ1O8H5UNQ8a
+         EyTH+BkebgUfJX0YuLvL2wNacPCvt7tkBrv29xGx/aMtaSvsKvMM0OzhjSZcwkL52MK5
+         pwppCow+jCEwMMQBumuwU6s+GmDnPoPMd+agQ+KSPy35xiKkErQ9cQm9+Kof/DnpFQAY
+         eaqMDlbuLPMFs+nY3H82FiSwegsn1z2as8fAYit5jBPqlHYSre6LXuVySGnR/hCMTp1E
+         lSeTkkPjkkFBy/Z5lF4bGjGVVTozA2Umsk6QvKrcYAu4opcHnWXZbg29b3s/jp7zUypn
+         O05Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773685225; x=1774290025;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=whl+jSHmqX1To/01dzedEyQPCGN8UBibir4a9aB04QU=;
+        b=Zs+uyldvd1PjH8r2YEx+6ucH9PMZ5VWSOzuwPcKe3CRiIgXJa1QIu5tMH65ErbgBNL
+         dbpZIGdKOO5XAhvpmjoY5hxbn7lqDelKt6XfWTasJQ6TjNm70YWtmW0o6V8qy0X59hea
+         U+N6cGfWNmHKDYlb1Bc+CRazfzQlEzP0BWr9FE/TnY22BsMeX2MVUGeRF53wqrV9YV8j
+         qvAK8K/7EAWyasLQEo7USUjB4xtmLdXUTV/sPJ5LIA8QPmfUTcDqZoOzmbqWI2Ni4luR
+         JvETCHTddF9RMHIVo6igQt/82jFYFeylteFjGxbuiV79jRZ/qgJrTYFSn2tl54QvtRso
+         e+EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX+YsTFXW9dg+2Ts8Lf0eo/x+MexfEJjKU1HjNi34RDCwYbYUw0YWFL14s9ubMLfizL7TBxKzcdFA==@kvack.org
+X-Gm-Message-State: AOJu0YxSWi6rJPyHFqq0/3c90iN9wDGWUfUjad60LIUkGesDebKs7vPq
+	47kP8w79gqPnf18cVkAdCJSUN71x8WMKN85rPcfhJj/+mnPgjVhF4hRsCpLGwWdjBvIxA2Qv2rP
+	mGUc6Pq5N8+owwwPt2HqD//KLkjSLkso=
+X-Gm-Gg: ATEYQzxEklQm6qf/EDP+tCLWYVkJufoGxMF6FW+z1yt9OcGkSIXlm5jX6ORDQVUT9pC
+	Xz9B2BlGCrU2JmP5aotQ+rBohmLZMiom+GCtezQScjKKRHMxQaV8fn9rnr+Gdhh/5TLymhpQPyp
+	nB3JWQG8Poj/LBG92IKqJGZcNb66qncJ1lMDJ3OxWdshJb9UwUNqcIbZ9vcYib4ClWn8GhDEhZF
+	b76xyjXCpaUlPggw/J6H0rIUIN5ICaEH4NxdBTdNFcJxb1DcyPgag5ijicnRGgbIJ/ZQmhv90cn
+	SmMybsNIZTsmveqaspjS7HYd
+X-Received: by 2002:a05:7300:8b83:b0:2be:2964:44c3 with SMTP id
+ 5a478bee46e88-2bea547ccb8mr6294076eec.10.1773685224740; Mon, 16 Mar 2026
+ 11:20:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311211315.450947-4-npache@redhat.com>
+References: <20260314051632.17931-1-kanchanapsridhar2026@gmail.com>
+ <20260314171150.fd6a80a8f51a5390144d20d6@linux-foundation.org>
+ <CACpmpodjsMELCrJ-QX066CYiGgraysr_ZhFMvU5N-6nr2HsRsw@mail.gmail.com> <abgbx0YXbxu2mAHU@google.com>
+In-Reply-To: <abgbx0YXbxu2mAHU@google.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Mon, 16 Mar 2026 11:20:11 -0700
+X-Gm-Features: AaiRm53SgJc7QPOWee7VxintIM50rtF8gXbOVjKKVT3lbvnfqiKE82CHN4oG1IU
+Message-ID: <CACpmpoeo0LhxkoA5Wx6q+9=2scn_az0u=3bar-JgBvTA-ZBkZg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] zswap pool per-CPU acomp_ctx simplifications
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3F5FB1C000F
+X-Stat-Signature: 1mzqxz3xht5ssr6jhdnwyt1ad5hyhgdg
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4C658C0007
-X-Stat-Signature: uqw67okj5dfkxzh957kqremonkefkn33
-X-HE-Tag: 1773685121-824688
-X-HE-Meta: U2FsdGVkX1/efglMNZHsu498CNYCo9OKQIfqHNkrCM8K3QjF9UoMGfEmuYLOxWrIarQz8hHRxkvNGl1qB2YztYko0k9IiYlPMMSw8xV98+qxXfyPoRSuQdyhfOOypQ1/8g2G/Q/0YXnEWVbrPNtqLRJPW9yjiBWfcsul5uyiAkt9pUZ10dZFblf+CRv+vOrtXez4Dh8wsVdhJijFu4nIGqdJ3Ha8rM8Xuc3yHXumXarMfTJ+FJU052QK4/+yYmMUPPnDZkdB4zzjloxFwPpu/uLIiDjtbQyOtph6YKbC6DKT/CkKHKkceXAu5nap4qZLmucw4JWZcm9+FkvDN7Zxkf1ZGwOWbiS68sQs+Uyc2i4qIT4ta8nFlhYWgmWyOKrVPnFlkDhUEJ37vNQawQrSfvmlFSj1xvU6BCLbODEz75D6HCD+I44RceR9/dTcAv70bPVyDtQ1cAJ8j1fT/bLpEvMCPdHQN9rtyfXeTEQSbAjw/7a5zkTT/TvKQh2lfE2MvG4K6IvTDgSmH5CnhXYHMiJydT/lNreJGl7qI0YOsPxrSbaITrR9Hm2dTFIBCoCI2Rc5GGzqXFT8s9MmUTWVWWCDpgFpZjFHilIgROfbwfJSuU2BOh95iIpitGJ0TQAzKXzkTVpNex27Nt/RvSiMb9kElRUXFvhKqnEcp3xlt+cgK2XQopcpBjvR8gGgBKjPAQXn6ttnpBqFfOX3/5Patvj06/wFpUJ8HstXr/5Ggbma4G+vdxoR7Rityy8IZd9XvvUo3G3WJKo9fCDCZSF4PXDecttRoawfva3V4teca8NOeMzoCCsBE+FEVl6zMTYtgD2MjFmCaPipuzNZ/imz2FJ4EWt9Kwk6V9UOjxO/HQ/0v2X9NvWbnu6F+835i+xMRDkz4LYbN8C5cwzjDj1QAHsaW1CbiqRloDQRii33lMG4LB6ewf5rQrwacjGJleM5SHEy/xcLJYCJBAkRBOE
- +AitJttR
- YzBHFJRuL+gG0zmVZKnxKGYAS7Hj9c1fGPy1wv+2xjhNbC3l71QiWVC2h8FjPuXMTYej/QcloK7BQpqzqbolJZecANBoq11CjYNj2M6fOfMOvdScKyT6UJiLewKIf0bnHLtYd0gZRmBUfoRi6iYoYM8QCkm5t7u+QIqIdzQP9rElkgVtSWePkr4VcF7VTnVC7WeR/bA9hWZzvbQP5fHrLfE624WKxKpLGUPAEdaBH9FOHZUMluc1PBIythRRb9Z7jvlPdURLhN1+CczOgp3kf1JyB9l/J4qJVtAySgRvWbkxiLcdHbAWp7y15S6N/vdSXzFEfTFfvsH4/56bbwWfzjFzES6odZA/n+DywxWKtk+DQfMPIvZne8YFyunXptEojEzV5zq2AcCRDQmz/jRV866kOoc8ARDlRpCyPwT9WQLnoslg=
+X-HE-Tag: 1773685226-173201
+X-HE-Meta: U2FsdGVkX18SuD3p3sk6U68TtLxXwKlj0Mdj1Ywz2ZLX+xBNz6rv+uC+0caGtCYS+qf3qHrHkFaEPORh7XTBMuT4D0nh7s24v7US+kOh0o0kATUwrdaWG2eALGdkIrNM379NLubdHKMnr741b8FEFbyfv/9ruE0nCV+Po9UlDLNXti5BdXYPSDZM8FVa7xhLQ/LqBfCrjlHFl+hSvmkgGrv50aSHVFqaKYyU820m+gNZvF62tndUM7nGfSgkfVg3P5OF7Y1xvwyuCZEM76BUJ2HkNDjEGHGt2FVqYbJRqIadt6vnsFNqlcCJV9Tk+xFv25FyR2Y0v/yh2teT3+V8luU1x17fkApQvjy+eQwCYTkel3LiBZS81tqdKY7dG6FUN3G9X781iB5GJSI40sk38RwAOX0ySaFDoGb2iIzJyjvrxfBvzxIpFg6asWmkb0DshNTmzJvtq7gKMVZX/Q3Lb01PSciaz11mYUfexvheXieSi64EKysY+qylhdqkuVvp4ylOllJ5AnrmwIPpiwtKHwbFCiZvYL8y/ronkIGvcBwQVFWqy6e9vLYJlNTAZHNI5Cwz7SJheIEIxfyshDpYP0tRYjcQMTKX7a/vou+nIu8BrsXbGimMF23WXu39CIdFVXSIABX/jkCEUzH6UrxQ6ie1jTym8XD+8zzOanmQIjR1wf/oK9rx9r8NDjHf9f3eHT7inCJeKI6ujTvRTotkPMNpnjc8Iv3iI4RquUFi/KjJqnvtUhmticKeqFyiTCfRuolq1QXmJYynfoxdtQvrUuadKDDk+M7GwenEouzp7OzHhREpWzUrBZSwcBnDzL1SsMzWleJOrGu2gs2S7YqX4OHRDGD15c1lLFRglKY0mn7BipMHKE0scQgF2bWDa906qSkzomNO2d39HxgOfD8hMDtHhuQBrgmdzttHIi0Cwf//oTrfwMoAm17ducTs3Aae6Y0lLiBOtyA5nGPMHi3
+ WHZYw75r
+ lSztlS9Xv/B0YCdRPTpHB3nhiWMiSkWxyefoW5zdrfyk3gl3A3y4yxonWfO2EY+/Cpap5xM/YYYYsyUyXxpz7VQckpVBZuJHeByuAXtxQCIpGTck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,76 +142,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 03:13:13PM -0600, Nico Pache wrote:
-> The value (HPAGE_PMD_NR - 1) is used often in the khugepaged code to
-> signify the limit of the max_ptes_* values. Add a define for this to
-> increase code readability and reuse.
+On Mon, Mar 16, 2026 at 8:06=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
 >
-> Acked-by: Pedro Falcato <pfalcato@suse.de>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
+> > > > @@ -786,7 +786,7 @@ static int zswap_cpu_comp_prepare(unsigned int =
+cpu, struct hlist_node *node)
+> > > > return ret;
+> > > >
+> > > > acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0, =
+cpu_to_node(cpu));
+> > > > - if (IS_ERR(acomp_ctx->acomp)) {
+> > > > + if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
+> > > Does crypto_alloc_acomp_node() ever return NULL?
+> > > Looking at the error handling just below this check, if this were to
+> > > actually return NULL, PTR_ERR(NULL) evaluates to 0. This would cause
+> > > the function to incorrectly return 0 (success) instead of an error co=
+de,
+> > > hiding the allocation failure.
+> >
+> > This is a good catch. Just to provide context, this patch was
+> > introduced based on Yosry's earlier comments in [1].
+> >
+> > [1]: https://patchwork.kernel.org/comment/26282128/
+> >
+> > crypto_alloc_acomp_node() currently does not return NULL. However, it
+> > could, in future.
+> > Since the rest of zswap_cpu_comp_prepare() dereferences
+> > acomp_ctx->acomp, it depends on whether we want to future-proof the
+> > code to handle a possible eventuality of crypto_alloc_acomp_node()
+> > returning NULL.
+>
+> Hmm upon revisiting this, I think keeping this as IS_ERR() here is a
+> better documentation for the API, and the incossitency between this code
+> and acomp_ctx_dealloc() is arguably documenting that the function can
+> only return an ERR, but it can also be NULL-initialized by zswap.
 
-Hm didn't I suggest this? Or actually I can't remember :P
+Yes, makes sense.
 
-Anyway LGTM, so:
+>
+> >
+> > If the maintainers think future-proofing is beneficial, I would need
+> > to handle the PTR_ERR(NULL) which would send a false success status.
+> > If we don't think we need to handle a future NULL return from
+> > crypto_alloc_acomp_node(), then I don't think this change is needed.
+> > We could leave it as IS_ERR(acomp_ctx->acomp). I would like to get the
+> > maintainers' inputs on how to proceed.
+> >
+> > > > acomp_ctx->req =3D acomp_request_alloc(acomp_ctx->acomp);
+> > > > - if (!acomp_ctx->req) {
+> > > > + if (IS_ERR_OR_NULL(acomp_ctx->req)) {
+> > > Is this change necessary for acomp_request_alloc()?
+> > > This function strictly returns NULL on allocation failure, not an err=
+or
+> > > pointer. Changing this to IS_ERR_OR_NULL() obscures the actual API co=
+ntract
+> > > without providing a functional benefit.
+> >
+> > As of now, acomp_request_alloc() returns a valid "req" or NULL in case
+> > of an error. Same question as above. The only benefit would be making
+> > the code more robust to handle changes in the acomp API in future.
+>
+> For this one, do we need to do IS_ERR_OR_NULL() in acomp_ctx_dealloc()
+> to begin with? If acomp_request_alloc() only returns NULL, maybe that
+> should also be a NULL check?
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+This one is debatable, since acomp_ctx_dealloc() is intended to
+replace zswap_cpu_comp_dead(), which has the IS_ERR_OR_NULL(). I think
+replacing this with IS_NULL(req) makes sense, but would like to
+confirm with you if changing existing behavior is Ok.
 
-> ---
->  mm/khugepaged.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
 >
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d3bdec4ec61b..db77ab5b315e 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -89,6 +89,7 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
->   *
->   * Note that these are only respected if collapse was initiated by khugepaged.
->   */
-> +#define KHUGEPAGED_MAX_PTES_LIMIT (HPAGE_PMD_NR - 1)
->  unsigned int khugepaged_max_ptes_none __read_mostly;
->  static unsigned int khugepaged_max_ptes_swap __read_mostly;
->  static unsigned int khugepaged_max_ptes_shared __read_mostly;
-> @@ -259,7 +260,7 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
->  	unsigned long max_ptes_none;
->
->  	err = kstrtoul(buf, 10, &max_ptes_none);
-> -	if (err || max_ptes_none > HPAGE_PMD_NR - 1)
-> +	if (err || max_ptes_none > KHUGEPAGED_MAX_PTES_LIMIT)
->  		return -EINVAL;
->
->  	khugepaged_max_ptes_none = max_ptes_none;
-> @@ -284,7 +285,7 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
->  	unsigned long max_ptes_swap;
->
->  	err  = kstrtoul(buf, 10, &max_ptes_swap);
-> -	if (err || max_ptes_swap > HPAGE_PMD_NR - 1)
-> +	if (err || max_ptes_swap > KHUGEPAGED_MAX_PTES_LIMIT)
->  		return -EINVAL;
->
->  	khugepaged_max_ptes_swap = max_ptes_swap;
-> @@ -310,7 +311,7 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
->  	unsigned long max_ptes_shared;
->
->  	err  = kstrtoul(buf, 10, &max_ptes_shared);
-> -	if (err || max_ptes_shared > HPAGE_PMD_NR - 1)
-> +	if (err || max_ptes_shared > KHUGEPAGED_MAX_PTES_LIMIT)
->  		return -EINVAL;
->
->  	khugepaged_max_ptes_shared = max_ptes_shared;
-> @@ -382,7 +383,7 @@ int __init khugepaged_init(void)
->  		return -ENOMEM;
->
->  	khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
-> -	khugepaged_max_ptes_none = HPAGE_PMD_NR - 1;
-> +	khugepaged_max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
->  	khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
->  	khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
->
-> --
-> 2.53.0
->
+> In this case, we don't really need to make any changes here, and I think
+> this patch can just be dropped.
+
+I agree.
+
+Thanks,
+Kanchana
 
