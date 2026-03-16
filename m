@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FFF1F53D70
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD67F53D6E
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 16:31:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803476B0312; Mon, 16 Mar 2026 12:31:01 -0400 (EDT)
+	id 7A3496B02ED; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DAD56B0314; Mon, 16 Mar 2026 12:31:01 -0400 (EDT)
+	id 770EA6B0301; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E6D36B0315; Mon, 16 Mar 2026 12:31:01 -0400 (EDT)
+	id 673C96B0309; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D3BA6B0312
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:31:01 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27E38C1952
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:31:01 +0000 (UTC)
-X-FDA: 84552465522.07.84DD467
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 55E386B02ED
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 12:31:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE6D7160311
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:31:53 +0000 (UTC)
+X-FDA: 84552467706.27.D44F530
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4242480003
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:30:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lS0PsNXH;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id EE6EDC000F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 16:31:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bk9S8whD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773678659;
+	s=arc-20220608; t=1773678712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KAsWhvFBN90fk0P8o0uitVlupNWubaaR1bvz/qcOZfE=;
-	b=yoxYLAqIX6LzQqLh6qPsA0POQVAsQEwPWBuZKexOpfQ60wHUeNm9k68FMBDumGZ8VirRo+
-	Qx8R/jTwzxr0s0rtI6VyaLK7suJzVXKfy2/MS3DFMo5o0kpqhWwB6buR4U/kl78OnLCYUO
-	+O6qBF0uhPBDqPhvZ+72gV8YzqVhn7w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773678659; a=rsa-sha256;
+	bh=SIRbWDKtKNcpRy41cBty0WzRmJNX2DMXA0FO9+9q4pI=;
+	b=czUImxRBz9T2lakOYEiu/B1DzQCUfHcUZgcdsVhYNGNkLBRMvAGvMdDAG/7VhfRLiDpkb8
+	uPvhVsY6mAg9qwzPtK7NUIIowb80UUq0bnm0X0Hl5VwzPW3uZO1uCr/gwsnEk5h16xbtJm
+	UMO63MaMGALSDz+OYL7CQt/K8AT8Iow=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773678712; a=rsa-sha256;
 	cv=none;
-	b=SLkzeZi2Iho56CBM6n+v+OQbSIRw+biXzYRKI/ubMkJWoSloEzFQginZtqLwsaEZleL/Px
-	7knyRfj+5tvBq2zD1grfWNn2pfPgnO51wQUn2AEoSGcoZeUuoMrsxuBVNGImJTIS5orHym
-	EpvRJPgv6Mi6pHxdQDKHjtFxfwj1IyA=
+	b=zNpYb9VV8eKO/lYiITmZMuiIl2bnf4owJDbJdRvJQEjdbfXGOMcONSuOzkP8xdP7LYfyX7
+	jUBgIZF7gd/OE2Xpq6pmion2FF068fUiWUsU+XR/n0bGj1DJQ5AYi8D8pxm0CqYzKpvDpf
+	jFgAgQ1Zig5M3DwBEQ/XY/Bs4rUdV1k=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lS0PsNXH;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bk9S8whD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CED5441B8;
-	Mon, 16 Mar 2026 16:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961D6C19421;
-	Mon, 16 Mar 2026 16:30:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 27CFA403CA;
+	Mon, 16 Mar 2026 16:31:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00A0C19421;
+	Mon, 16 Mar 2026 16:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773678658;
-	bh=CvqhlbZ6pZRpmgYEengTiRdk2wqsmPtfd4AlTRX6XAQ=;
+	s=k20201202; t=1773678711;
+	bh=9tTGJ8xmnCXmNkktqRH7NLuhVDHU2e7HFmvsJCGcDrU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lS0PsNXH9/7mKjFbl7P6BYXKU5yTyrWNZZgvFNT4ECWzUajz0KDb7gPKpFteZGR3F
-	 xd0gnK4HNCVXh9YpkBomXUnaGgldp1N6Rgf8QdFarxvNkGe6W4L9e0UWPDkWcrgBr1
-	 6YbftjhWSFs9ocW1Ak31uKAKbdPErLg7x9IGs6ryGTEwqny4xCRIi4C/M2iZOLX0ld
-	 I1hCgyfHQGxJk+lopAMeHCpqY1kTYSNWnOxYeXL0B+8TZ2oztbYTDOeXzuT/AbE3Cm
-	 JWAojxIDMDmnmBOnAWUQ41bnzyxd/N0ZFQOzZW7WR9rTWTsLFwV9NPP46L9zsQ+dsN
-	 2Uz8Da6DiL9bA==
-Message-ID: <02c62e7b-9ece-4334-8312-52d635dc6171@kernel.org>
-Date: Mon, 16 Mar 2026 17:30:48 +0100
+	b=Bk9S8whDQdEnqW8ivoY5HX7nZMwZc0L9+aRbd+FeNHoZjTq+j8OGcarcdrT1AG40R
+	 nrrLY+QC/TTcjOUasLpldywlhcZfBWmtht15G8LlwCB1WxLv9OxwvdpkbqX+76nI1I
+	 sjvnlEzt04Qkv3r0ZYl8hjOEgyqvC6kkELiiNLPbY6SLuXv+CRpoEZR+raUtV3KMhR
+	 Znw5eCXl0BfAnswB60wy+5Uz6imrsnGy/LwDqJ8f8LzRBAESWl09x1ti+wwAfQymsm
+	 jiLUPufNOanffV04CImNSB8s8lrBQUPEk8IeHdtQzKWkUwe3ttFiz+MU8LxWna40I/
+	 wUcm3gK29qIWQ==
+Message-ID: <488499f2-3e3f-4377-bc28-40ff7f5166ec@kernel.org>
+Date: Mon, 16 Mar 2026 17:31:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 05/18] riscv/mm: Align vmemmap to maximal folio size
+Subject: Re: [PATCHv7 06/18] LoongArch/mm: Align vmemmap to maximal folio size
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
@@ -85,7 +85,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260227194302.274384-1-kas@kernel.org>
- <20260227194302.274384-6-kas@kernel.org>
+ <20260227194302.274384-7-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227194302.274384-6-kas@kernel.org>
+In-Reply-To: <20260227194302.274384-7-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4242480003
-X-Stat-Signature: hdmsqb8ugfyup5beg6s6zrj66x4nnwb3
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EE6EDC000F
+X-Stat-Signature: 8zquxhbonrf6ntj9tcf7rgtb75nx8zur
 X-Rspam-User: 
-X-HE-Tag: 1773678659-487228
-X-HE-Meta: U2FsdGVkX1+nXqMd3HmmNKn8t8dloTrw5rfOLc0YhO7jYXBRv1l0tsfC8Xw4wb/hy6Bh+2cijsa78oEZjxUoKsbQJK0jw0auGrNqHqNNZ33+SxX6JYXMpjg+TDWN3znJcEIuyDQ5Aigfgz+fMKes2WqiNmxQnFv4QIIz6T6OIQqZIQyAdwejxPIxnnt1CDhl2m6G830FkvhPO5j4fMjiaqMS6ol55wNQjEuY+Rrt/J4TSCe70T89Nv2ha7Lx32qENL5bZK2qCl3SrMXEwnZkfIQ0CZIt9EvUcl9pCz/aPGKWXpJhErW4MA1lNXuX+BvGte3ixjqzLuFqKAMeMN2LNLzR5zlOEN0p1r570GUF4xmBTwhE/9a6sNOUDB34YwGYzjK51NqKACP9gYBCt4akj160y9M9gOeb2ELXU02dkhZz3mMQPTlT+2Go62mF6b09y1JGHSdtJOp2eCzZCRbjSGkE97OwqQHMNoeUi2Pc9jr+HCUyN7BG6s7uwOWHXKL0mkG93xRyis29awzDpQLw0qmsD1T2SbCV0w/Ch4gafnWfwodDpf6N1DVJ4AGZTcuNUFzqpIsGS6PIkHdwNGhbyRLB4oRXiVCRcUUgDR5tFikunv03fUFL59BW8PA6EFKuy6S4utW4ZnV9JyO/PIYVMrwvRaU6pUjXlYmEVAqPzy4ZBjyJZXYmrNrrTctf/s1ex3gXjWRGeqBt5WFlfTRekj3QEVoF/1YEwxnCJ07k5bLS7f0rk3tXcW03VpPJjWz+vrUQdhbXJQmg94Hpbb/AfUfAyKDJK88hZXrNT8cUAu9a82glVsztuNxPCajSrzCZMGkz/YmV8KVs8NuuIXW5I6QnT3QmhXq+62vjGgdWlaNqE8VGKljH+eUfW9ssZxKS8X6vlFmIh39b7efF5SZu/JtrUNijL1f/R1roZtH1p5oz1TzK0yp4OpAtSI3aEbSBInJAUgozZ5dqqapzwxp
- iIKr3Ybv
- 4d4uS1r5bQbXmB/40SO7O7zkIZH0tHxxfaELd75/q8NjTuf/ZqI737y0CQX1f26ifuW1cjo72uY0Bet64p9ZQfQuEwDN3HlzGJKDoiOEt1iY6aPlfXDK3Qe6kZqKy65cOm42f0g0gUkJN6mlGiJLb7TjDQJp4HiE6f+4UzOHNSpDX1s2Mwfw9mO6p0chSPu63CtxFTg09Desf0u2zIL/7AR8themuKzYqW+n0uhWuM2MoQ2dpsf0pCRiSWzKnQ59+rVZ3MzYKCNGCdaz5tObhoS54Vsh1994GBEcj
+X-HE-Tag: 1773678711-308686
+X-HE-Meta: U2FsdGVkX18/B/pVesRLUf6oIIWsmmYGNuR9eo6pn9JrCAbtwVBkwaMQKMsuffmBF1OWY8Dv7RXnH0PVX8S6YPSbCi0jhME857mBsUwxo0s3mVbGPZy6oiyj8P46d/RrjuysRUKxXMOMfQUMyyh4a0Rnu7WnmDK0IIRAhhXwwiKCEEh1xCxn0jJN7BstUE9WhJ4C25GB+rO+jN3qkdDB6czmJxRlYl9BM6ClHXlYWgj1mAbon/v2DuxyPfLOZo9tK0N4XT4fxDLMjtMMiGCr7r2v3J2ujt6W/+zY/hvd9HwUReDJnCJ9FbzUJGUqOPybYzgTUZ2erTNHzM46M1rfXedkyi2M3JAHJ2G8TlYTxo7CAdR5N0NUB02Suar5K3Lu3LU9OmdsPes/PIaAsEVD0XU/tN8zJyv0W3xgZq+0lrCa5YQgKfq47Scazb0jrK0WDwZSteVZt6s9L0llOdhRWrtwz4NZBP08b2ITBA5Cx551O2yfLmxoaoYyvZRRmQmUADuijUoPEQWCfoWwN9YZyYp2nsUOwxTTWokxCMggbcwr1nlI/oc8uA/5ItjYdWJXVetajfVxv7un8eVlUSEfLZn+5OcSIt+mCY0dkszbDY6bmqUHFtsA0feCzKWYoPj/wzcq5ZxWIWIjU4RR4CLbqT4FoDIgUqim7Hlqwb9k1i+o4cV+G2c65VtqrVCWb8lBAg8eChuJo5WJR7KabUfsf0+D+tLTX9S4vtFicGixSUthvQv0tX6usgQ6qi7GCgJuNV9PnD8zPZpYnf0GXcuDrQmXQrTVk4qvz7A2b8pAC77s0NXEJG75U/frAjyyInm7ifNmFqPXeSgdbiyfrIxM7gr1edicJAF/ABeDQ6zJL7/EPopDF+EHGePCJCfCHWueOWACUCf9qhnFTMFoaweHtHozXIvw0SzXcCoeMvbAQoqn/nYvG9sV/2fPsaRUVC/ThiiCoZ6vl81LOArpqjK
+ G/QTcbea
+ 6c9/GLYPeL9L51faOcXrAqyufOyfK7uH6lzf9YxohWuZ/zyL/XRt/Cfq6Mx41RInEqFxJpFmxLjYwfL78cyC3peYhkocdbU7y40ER+M39nhE7qp+/KfH53cNlLOHe75q47axaXu8d3KlyRqHSFkxrXKfwvSSA5AwNtSvrDBiVzH0E+XQgNJnkyNLykHPxex2G4QbrAwh1Fdeqb76hKihy0AXH5vXHNp/tXiTuHn5uidsTqeiVg0GYqlXIq8Cawn2eEKvPqeuGAp0UOJbHlonMxinjZ5l7tGE3+lfH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,7 +157,7 @@ On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
 > struct pages of the head page to be naturally aligned with regard to the
 > folio size.
 > 
-> Align vmemmap to the newly introduced MAX_FOLIO_VMEMMAP_ALIGN.
+> Align vmemmap to MAX_FOLIO_VMEMMAP_ALIGN.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > ---
