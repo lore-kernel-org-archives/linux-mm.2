@@ -4,132 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80923F53D65
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63047F53D69
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:21:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D63DD6B02DF; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
+	id C08BA6B02E0; Mon, 16 Mar 2026 11:21:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3B946B02E0; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
+	id BB5AC6B02E2; Mon, 16 Mar 2026 11:21:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C308A6B02E1; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
+	id A96E56B02E3; Mon, 16 Mar 2026 11:21:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC976B02DF
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:20:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5193013A5EF
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:20:12 +0000 (UTC)
-X-FDA: 84552287064.23.50D6FD8
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7FBB940011
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:20:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="YMC/RDqk";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB306B02E0
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:21:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B8501602E3
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:21:57 +0000 (UTC)
+X-FDA: 84552291474.03.CD6C21F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2D0C910000E
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:21:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pIH9+2Ar;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ojuQcjj3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pIH9+2Ar;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ojuQcjj3;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773674410;
+	s=arc-20220608; t=1773674514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=W09BwawQXBw7qZlw0AhGoZ1ZZiQnOnbL7dJOy6IZMDo=;
-	b=OFD4XCB+tanjSaKZAU6G7iepMksMNC+CMNNPBuDontWxI3Wyr5Sgln6aI47o61z2e91vC4
-	gX8k8oKaoKWhgM947SGF8DnvWQQG/nrH1PZQPJuX/9mMYsq9bCsciOHwGraw575dei0L2w
-	4/Q0+pzCOMhaY/Jbb0+Xq8xgB4oLcN4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773674410; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=69w6Pf4LvsBQHR3bSr5yOfdqGpd6SqeyH4ovMjNicm0=;
+	b=OysTAglMMDUcj+pE2s6RFjKm8LOEdHTKOR0+x8PzQNx0VVOzCafTZvCr4EoSu4ezmP3m5X
+	fMUjeDw6X4i2gqzKwoG7RXF1GCBs1B1s/YRkxQH34d7lU4+mPgzTRe1Wz0VRArVFZQ8Mqe
+	9mh79ENNUBLjdjBDZzDIyfymEjRuQvo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773674514; a=rsa-sha256;
 	cv=none;
-	b=I5+Hkqvw8orWCkvntiEBkokFXAWJR7C6W+GzJfFZGV6OFcNB0j2EDHKTPbAJoI8oxey+NN
-	BgalZTuURETqAnkqMkEbRTTZN4+WEhhIKOI/OkjD/IAQAgHkbG4x5quPuG9qThQj1PqdvA
-	xK9ZWCoXkzb5Wi41/DcA8lAHWeaNZF0=
+	b=LJsXx0kOQ7p206aZdLwlLDroGJqqFGLfy0e9JDIbsqtTqZZHmXLEFkLJXxSyr6czDe5t4c
+	y5DbllcjRfG6oRTRjUK4CrRwql6t8ePQf+y7GHU3U8EUOC7o/QRAcofTlvhEMFQ6EgGR2s
+	8b7pLjzZ6FZyEj2BDd59tlHTNIqWX6w=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="YMC/RDqk";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35a1230c60eso2429598a91.3
-        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 08:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773674409; x=1774279209; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=W09BwawQXBw7qZlw0AhGoZ1ZZiQnOnbL7dJOy6IZMDo=;
-        b=YMC/RDqkMAvH7l52vitZID2V5uqjFJAiHSnSb1M6/4syLeDs/kQ/GT3U0AFp0KK8zy
-         McE2EtpMfL39TQapsPM/XrxhQPXIdGhhjSL50DTye8SIdlFKZR05jQfve7hlcuTabjgB
-         0vAT5B5Et81fU6yloqKO5cfBPMGosNWfg8nEwtpPKVZu5KVSimaZSRJOUL8jEaLch+lK
-         Bs2xsxbYB440jxzIMhPcyieNZUcvzH3eOyTCXWIqPXh4eSqIx2qAEBOlc8ftGqA7IBZA
-         QuqqpvmQzz5yKS4S1Yf3vjEuGpyg1ETjrT8bvQnueBV96uZUhpykeJ/ABJsypS9YitQJ
-         TS0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773674409; x=1774279209;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W09BwawQXBw7qZlw0AhGoZ1ZZiQnOnbL7dJOy6IZMDo=;
-        b=W63g2vp7CB56KtYgfa8ZRs+lwhtDnjtPbe3Yy0BTpYssw/YR1IigY6P6crpLTw3AYw
-         SX0qx7A1DOjqo34S05Xoozj8PgMOV5iPOIr3q6/n5z7ICKvV9Tz//9h02REXiC6SzU42
-         9F7X02hdKVlaVQ6Pm7jxlD1ElGnwo86ATEQrf1qv9gXvgf7Qhb5bdXOHnf+ijXlBc38F
-         POLj6RDSMrpv2ywUzv6e22dPHMp6gVcbI7mNS7gN2xoQvEwTCo96nhf+cgZJ6CsjNZfs
-         d/0yDMElCsy37Ldhk9RO+OOO/VuleMaAYhScSzMv9y6vskpagGT+rSQLS+nW8VsodQTb
-         Q+kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0RHFy+xdql4lESTYEMvDOB+x1vtgUGIoZ0A30PVfYoshYqFddZfQ/kkabBakbj7u+Wz7Uyfb0mA==@kvack.org
-X-Gm-Message-State: AOJu0Yz5OzR5TBqYAAgDQj9CjkHWD+7lVzhVXNykFBB5DqK9Ci+qUKKZ
-	15UB0mrJgGS1DeeVFE0ohNnsCDioN4dsnBOIJqvV0IgQKOLIZZK73TxJ
-X-Gm-Gg: ATEYQzxCwwVbMmklwVfb5VDkPT0ia877ZbCVD3bjyqWp+pWwNofpwQQ7QsNMJG5UNHk
-	LSxybEDN+LmkwfOlwvjuK1lbo0he17+K48CDJtvoY5md1wVUb5IiIUqSbn9ohEA+zWBn13Gt7dw
-	ZtTRcpOCN1Znr1BD7Lw0R9ET8jGqn2TkQPqyx/X/dZalfznT72Z/Z41y3GztgOcG2g+hFDZx9Qg
-	4opgh/Tg355EPF/YgR9v7kb1E7rxoXkBq1Nptzj08VJ9DWHujBr1d1SKKQZgCKGQfneKO64Yeiy
-	mtRrt/kTQqXfrtvpzkyzUOWEGM4myu03aMqz0GbTSgi6Ms0/Wvvg+BFZCn5t51t4gu1NxAw1qwk
-	JmqTys9k1GwQL87Mq/mVqtbbex1S5pViyXYk1OXZFVsTUhe1a/7oxEZVwMEdwe2BI+Rag0/r0vD
-	+B+n/5TT9ESDobtffRcEnkT6Wi+6GO07RBBC2ab+DXbSgJF/C4mBTxBQvCIbZ2dgYzrw3fBaPpy
-	nshp3I=
-X-Received: by 2002:a17:90a:d408:b0:35b:a9f3:62ee with SMTP id 98e67ed59e1d1-35ba9f36aa5mr978278a91.27.1773674409030;
-        Mon, 16 Mar 2026 08:20:09 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:52ce:671a:31ef:56a1])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7400000532sm4626033a12.27.2026.03.16.08.20.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 08:20:08 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kees@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	brauner@kernel.org,
-	oleg@redhat.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>
-Subject: [PATCH v3] kernel/fork: validate exit_signal in kernel_clone()
-Date: Mon, 16 Mar 2026 20:49:56 +0530
-Message-ID: <20260316151956.563558-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pIH9+2Ar;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ojuQcjj3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pIH9+2Ar;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ojuQcjj3;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 517295BD6A;
+	Mon, 16 Mar 2026 15:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773674512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=69w6Pf4LvsBQHR3bSr5yOfdqGpd6SqeyH4ovMjNicm0=;
+	b=pIH9+2ArvYiAjQ9BoSmYh68CN6wcN3UG4yHdH7fJ7swPDgvAvMS+1yAVsyBo111goT28MK
+	ScSsjKaiAQiLHOw4EdfVEBysOOZXfcykdcFBgM9t8N1+JD9dEij+y5uoc6R01mgiSs5/GI
+	E4vUaMsW3MjnMTZv3sR6ePk3tS/61Wc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773674512;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=69w6Pf4LvsBQHR3bSr5yOfdqGpd6SqeyH4ovMjNicm0=;
+	b=ojuQcjj3A2xffZpFIF5WsVVAEUvS1YjhxVW8hWq5TPdO8ytBoFfP6oXusJR7zsL9kXz5jC
+	J20HyI5ljT6F/aAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773674512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=69w6Pf4LvsBQHR3bSr5yOfdqGpd6SqeyH4ovMjNicm0=;
+	b=pIH9+2ArvYiAjQ9BoSmYh68CN6wcN3UG4yHdH7fJ7swPDgvAvMS+1yAVsyBo111goT28MK
+	ScSsjKaiAQiLHOw4EdfVEBysOOZXfcykdcFBgM9t8N1+JD9dEij+y5uoc6R01mgiSs5/GI
+	E4vUaMsW3MjnMTZv3sR6ePk3tS/61Wc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773674512;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=69w6Pf4LvsBQHR3bSr5yOfdqGpd6SqeyH4ovMjNicm0=;
+	b=ojuQcjj3A2xffZpFIF5WsVVAEUvS1YjhxVW8hWq5TPdO8ytBoFfP6oXusJR7zsL9kXz5jC
+	J20HyI5ljT6F/aAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1513F4273B;
+	Mon, 16 Mar 2026 15:21:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id p1vYBBAguGkWVQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 16 Mar 2026 15:21:52 +0000
+Message-ID: <220e97f0-dc82-4f37-b833-7160aee46cea@suse.cz>
+Date: Mon, 16 Mar 2026 16:21:51 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v2 1/3] mm/page_alloc: Optimize free_contig_range()
+Content-Language: en-US
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>,
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, Ryan.Roberts@arm.com,
+ david.hildenbrand@arm.com
+References: <20260316113209.945853-1-usama.anjum@arm.com>
+ <20260316113209.945853-2-usama.anjum@arm.com>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260316113209.945853-2-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7FBB940011
-X-Stat-Signature: i9a4oempr55o4kcnyg9i9iuabdnx5uon
+X-Rspamd-Queue-Id: 2D0C910000E
+X-Stat-Signature: qxwj91cfhsnds9eoxromaxyji8ha83qi
 X-Rspam-User: 
-X-HE-Tag: 1773674410-76236
-X-HE-Meta: U2FsdGVkX1/rNrVRBnx+/uV3aCy4Qb7WscDA3T7x3ioGxmw47aaf/d0+xhBX84u3PyKB1bVhBAHcK3LTwEvYZjKly+I6PutWMN1yVP1q2GS6qdfVeDEzD1Fd+DX/M2FvRw+d0oPWU6OoInn5mOhuBxpAZ53hZfN02vUIevr6zw2RVXgQuDEb0IKXXDd5Em/dIjdzVE1KBIzZAqDxlZIcGDpNBBbwC5h9ywpe8lBwsh+vhLZBJGCRp7J+Rb9o01OILIUcIyznpSkVS9Yn/Sz6ibCwLnOdko3tbl008Afeg2Z8houmjDZtmQSEp/Uu4hdiM4qTFNexG2lhtqVv7ym/SDXPX0IN9NT01/Lp3pIYcVaVw4Vs1pMfu0ldBZ6HaOvKgsxedWEw+hF5ViGO5lC3qvb0vxK1ygYZCeE7ubN2bffhL+f1pXJkKHebE6saL8M1ZLOKYnGmz3Tq/WtIUu4nNtN8BuQL3isX0xbx2/Tp56tbm1UgGBV/Dn+/om2YfzQY2ePiDdYJpJDMg0MEYIoFM9dkuhT9cd6X7FjZCPOvEWhHIkS6Zpg2vt+wLvxN2lAmMLTMqkTlhFYCfmUgI93ThKtjRMQZYhYe3s8SFr4ZPdwJhD0F8JQv+BdhMQ7fwero/ZsqcuNDhzRfVSyLbinfNxcmDdmxyYBKZXrc3jJx/RMkKl5ai0At+/bSDAtkjEYYJgRqXPFiQiCZqPXi7dK/tyHxtSP/m8MLodrkutmUYRm/ZP6tO4wtpDmtWVh5IPKWKKqeiviyaPTZJgEqIszHlvLHst5meS48XblXlk16/LxvvszsugeDB4KYaWWML1ftJD3uPmaKyn9OJZShxdl2bD+rSwu60fdQ4KZc3qzT/AvyZc5KkCQgHRDYjN86l2ZTDP3Qsf1VWBueZbEVA7KGt/nTbY8eHQgcu2kGDc2RWLz3B0zOiKzpz3vx4A0lNdz+vLj/Mc01UqrxIxrTd8P
- 8tGB6lyp
- Rmj07zALFETNU/f/LyGPK6RRPiEesL+12d2GdcRtAkktsGqLIW72bXTdyZ2zhU8KWIZmiavQkK+0/jVXVIt4osvv95kOwYhd8hjeIi0qt+rja3zzSIgkScJ+aQiQw68O1k59BNs+7ITrlTFp5dMsmXgO+nbR3Uwoydi+9QvEwFhUO/Puwu1veC8nljmMdq1f5cPuq9GUmOd7AB6l8B/ov2La0cPkxpK8bibBcRZfhKLYMe7/tGCZ9tNZsusZltRfRHd4M+sOh1DxyuVLXMdXM2ZoMHNfHsuWpUb/TUiTQnIdDxtRPjY74Gb6ZB0hd2GTytmJF/koQ8y9cq8BXyIWW1C5O0SvCgZMjNeoGjXiKm0xUxPagqhUWufCPXXqDwzOcrU6f8X3pINWIObuV0iBGflyytmlHstzO6s+1+geLLzqcEv6T0Nh5wrywkGLVqJuRgG/je+lVF0w74imyD4DzPVufLpNvtVuaapUEQaVadSE5125rpW+bta4OnEgV8LKhkyrN0DTLqFPOwGJo+4cyQiNITx79ZQBHDt1UIkWfdqQ8aXl/eGLUt4wXv0lqEaT+Im1p7SZ1j7GF7Acpg5tqwcaUnRRkssx/+Kax9NpYI1JjnCzLjnw/avTHe4fQPMoXI4nIKJTe7M36pvKRQmZL13wisRMiQxxqgMkIlqRXcreZ3Jh67DZ4Fshd4KZ4Jd/VhkCb1x4uJQYFWwHt8h5HqvZB3WKhOS3loGUU
+X-HE-Tag: 1773674513-634802
+X-HE-Meta: U2FsdGVkX19d0uodywRzrut4VHCvloRyn9rAUSSs0qdfdSxPMI65Mf7MJ87GhwPN0P2GTtSAyaJZf0ZOfj7ZHMdnag/0ULm+tEYphfXQFEk4e3M8UBRogbg0f7v+b6R3fZ+ibyx2rVKnCjFIxTFINJ7Q9MCJ3GAxliVOaNOcUk5lAMGSx32DPU6O2mYxxtCZB2jTbC1bpWEyq2ZWyd+GDPzne7GpC6rJbcfoBIntfnJGFW1ocDnGypdtKQU2izUyR0tt9WSsK2j5+nag6z4oY+bk5a+UUIPg5xWIn29btIATJyd0oYRKPIJ0ALBkycI6KbZ2cPCjLBV7L3GoCG4nbiWxGNOPjd69URe6BOyWnj2BXRqILGNP6LVdLqQe0Sh6KQOMJ2aMgHNo4X3NdNSJw8DOgLJa/61PR+V2qZNaiWgMGBDd/2zdy6EDwjQKXNO2na9Iu57C9RudfxKje88jt05RFJfg+gP8zlwqRQgRtT3RZhb631DQnrhqCMwZGZiC4fVclUq9OZVp91fPexfdBg5i2qdLhL3xu0hEn0t18uK3B4r8HOxBm3i3lX8TXLyRn7QBEZ8UTM7Ow5hpRwuj0mjpG90T3Y8Hr435+V9Ms8EsbhcnvZmfXZVWL7Gl/wfEbUNxpqHFNHbOAP/YAR3vyi4Q6wXFtHUfkAFR9hvGIusj/tSweQHe3FwogKBF/UUzeHCUDkw2Chr6fEpaoKwOHvfGRKio0UjlSUxjeVau4sBJVxfQF87PFZfTfe8HuhTyiSmXQpUZkoaTtuvfWopsbxc89BSnjEErV+7Lomer5+BJlX13TWPuDySaI4Iay/hn8a2Gxa5of+msGN7Grmgb9/Ri3Uy06H3q4MIF5f4Ea9ApAib38G5ycZM7Fvp3PFErvRjQu5llmS9NcsNC5eH0uMnK/t3B2bMxpfWQtcDb3nXqvw1ndTm5ak0DilV77toj4HPByFJkjrnaYWOuI3a
+ OHw03kcQ
+ hxj26X1cloohpgpnSN8o1etoE/i8YkHG9UyJ2oc1F3ThJW1JFp6ZoiECdDdxpLAtURMqdHB36vPUxlIal76qd9QRTBOFUfyIkocuqXAmiKioo9MhgujgB+wHrJzgesQcebf+w8osEcK6cUq2+7rkMKyG7YiDYLi+xedSFxsC7TNrZ7QH/A/hmLPyCIzLTxEVh5G8IkcNiqgkeZPcUHkbmXM36120crTGnf46eAgEW+JVnEXoDYfRAfjx/28Rg7eGSexF3c01Q3bBPcutJHWE5AxiIVGOTR+tP+iDLjXXJLEuYEy4mSfKfopelWnKsfer+31mXaPy77uUYAKkERoA+vlqwYic6wn9f5r7B4ahYJHRt2l9pErCX46JZMj7fRdWgfkNgtqHj0V6pJW84LOm+yFuM8Nhv2MkCtjAIylhhfgT274LjqP62y0i5O2h2MowtFHqUN486nq4FdM/SI67rUe1fdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,88 +185,323 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a child process exits, it sends exit_signal to its parent via
-do_notify_parent(). The clone() syscall constructs exit_signal as:
+On 3/16/26 12:31, Muhammad Usama Anjum wrote:
+> From: Ryan Roberts <ryan.roberts@arm.com>
+> 
+> Decompose the range of order-0 pages to be freed into the set of largest
+> possible power-of-2 size and aligned chunks and free them to the pcp or
+> buddy. This improves on the previous approach which freed each order-0
+> page individually in a loop. Testing shows performance to be improved by
+> more than 10x in some cases.
+> 
+> Since each page is order-0, we must decrement each page's reference
+> count individually and only consider the page for freeing as part of a
+> high order chunk if the reference count goes to zero. Additionally
+> free_pages_prepare() must be called for each individual order-0 page
+> too, so that the struct page state and global accounting state can be
+> appropriately managed. But once this is done, the resulting high order
+> chunks can be freed as a unit to the pcp or buddy.
+> 
+> This significantly speeds up the free operation but also has the side
+> benefit that high order blocks are added to the pcp instead of each page
+> ending up on the pcp order-0 list; memory remains more readily available
+> in high orders.
+> 
+> vmalloc will shortly become a user of this new optimized
+> free_contig_range() since it aggressively allocates high order
+> non-compound pages, but then calls split_page() to end up with
+> contiguous order-0 pages. These can now be freed much more efficiently.
+> 
+> The execution time of the following function was measured in a server
+> class arm64 machine:
+> 
+> static int page_alloc_high_order_test(void)
+> {
+> 	unsigned int order = HPAGE_PMD_ORDER;
+> 	struct page *page;
+> 	int i;
+> 
+> 	for (i = 0; i < 100000; i++) {
+> 		page = alloc_pages(GFP_KERNEL, order);
+> 		if (!page)
+> 			return -1;
+> 		split_page(page, order);
+> 		free_contig_range(page_to_pfn(page), 1UL << order);
+> 	}
+> 
+> 	return 0;
+> }
+> 
+> Execution time before: 4097358 usec
+> Execution time after:   729831 usec
+> 
+> Perf trace before:
+> 
+>     99.63%     0.00%  kthreadd         [kernel.kallsyms]      [.] kthread
+>             |
+>             ---kthread
+>                0xffffb33c12a26af8
+>                |
+>                |--98.13%--0xffffb33c12a26060
+>                |          |
+>                |          |--97.37%--free_contig_range
+>                |          |          |
+>                |          |          |--94.93%--___free_pages
+>                |          |          |          |
+>                |          |          |          |--55.42%--__free_frozen_pages
+>                |          |          |          |          |
+>                |          |          |          |           --43.20%--free_frozen_page_commit
+>                |          |          |          |                     |
+>                |          |          |          |                      --35.37%--_raw_spin_unlock_irqrestore
+>                |          |          |          |
+>                |          |          |          |--11.53%--_raw_spin_trylock
+>                |          |          |          |
+>                |          |          |          |--8.19%--__preempt_count_dec_and_test
+>                |          |          |          |
+>                |          |          |          |--5.64%--_raw_spin_unlock
+>                |          |          |          |
+>                |          |          |          |--2.37%--__get_pfnblock_flags_mask.isra.0
+>                |          |          |          |
+>                |          |          |           --1.07%--free_frozen_page_commit
+>                |          |          |
+>                |          |           --1.54%--__free_frozen_pages
+>                |          |
+>                |           --0.77%--___free_pages
+>                |
+>                 --0.98%--0xffffb33c12a26078
+>                           alloc_pages_noprof
+> 
+> Perf trace after:
+> 
+>      8.42%     2.90%  kthreadd         [kernel.kallsyms]         [k] __free_contig_range
+>             |
+>             |--5.52%--__free_contig_range
+>             |          |
+>             |          |--5.00%--free_prepared_contig_range
+>             |          |          |
+>             |          |          |--1.43%--__free_frozen_pages
+>             |          |          |          |
+>             |          |          |           --0.51%--free_frozen_page_commit
+>             |          |          |
+>             |          |          |--1.08%--_raw_spin_trylock
+>             |          |          |
+>             |          |           --0.89%--_raw_spin_unlock
+>             |          |
+>             |           --0.52%--free_pages_prepare
+>             |
+>              --2.90%--ret_from_fork
+>                        kthread
+>                        0xffffae1c12abeaf8
+>                        0xffffae1c12abe7a0
+>                        |
+>                         --2.69%--vfree
+>                                   __free_contig_range
+> 
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since v1:
+> - Rebase on mm-new
+> - Move FPI_PREPARED check inside __free_pages_prepare() now that
+>   fpi_flags are already being passed.
+> - Add todo (Zi Yan)
+> - Rerun benchmarks
+> - Convert VM_BUG_ON_PAGE() to VM_WARN_ON_ONCE()
+> - Rework order calculation in free_prepared_contig_range() and use
+>   MAX_PAGE_ORDER as high limit instead of pageblock_order as it must
+>   be up to internal __free_frozen_pages() how it frees them
+> ---
+>  include/linux/gfp.h |   2 +
+>  mm/page_alloc.c     | 110 ++++++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 108 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index f82d74a77cad8..96ac7aae370c4 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -467,6 +467,8 @@ void free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages);
+>  void free_contig_range(unsigned long pfn, unsigned long nr_pages);
+>  #endif
+>  
+> +unsigned long __free_contig_range(unsigned long pfn, unsigned long nr_pages);
+> +
+>  DEFINE_FREE(free_page, void *, free_page((unsigned long)_T))
+>  
+>  #endif /* __LINUX_GFP_H */
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 75ee81445640b..6a9430f720579 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -91,6 +91,13 @@ typedef int __bitwise fpi_t;
+>  /* Free the page without taking locks. Rely on trylock only. */
+>  #define FPI_TRYLOCK		((__force fpi_t)BIT(2))
+>  
+> +/*
+> + * free_pages_prepare() has already been called for page(s) being freed.
+> + * TODO: Perform per-subpage free_pages_prepare() checks for order > 0 pages
+> + * (HWPoison, PageNetpp, bad free page).
+> + */
 
-(lower_32_bits(clone_flags) & CSIGNAL)
+I'm confused, and reading the v1 thread didn't help either. Where would the
+subpages to check come from? AFAICS we start from order-0 pages always.
+__free_contig_range calls free_pages_prepare on every page with order 0
+unconditionally, so we check every page as an order-0 page. If we then free
+the bunch of individually checked pages as a high-order page, there's no
+reason to check those subpages again, no? Am I missing something?
 
-CSIGNAL is 0xff, so values in the range 65-255 are possible. However,
-valid_signal() only accepts signals up to _NSIG (64 on x86_64). A
-non-zero non-valid exit_signal acts the same as exit_signal == 0:
-the parent process is not signaled when the child terminates.
+> +#define FPI_PREPARED		((__force fpi_t)BIT(3))
+> +
+>  /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
+>  static DEFINE_MUTEX(pcp_batch_high_lock);
+>  #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
+> @@ -1310,6 +1317,9 @@ __always_inline bool __free_pages_prepare(struct page *page,
+>  	bool compound = PageCompound(page);
+>  	struct folio *folio = page_folio(page);
+>  
+> +	if (fpi_flags & FPI_PREPARED)
+> +		return true;
+> +
+>  	VM_BUG_ON_PAGE(PageTail(page), page);
+>  
+>  	trace_mm_page_free(page, order);
+> @@ -1579,8 +1589,10 @@ static void __free_pages_ok(struct page *page, unsigned int order,
+>  	unsigned long pfn = page_to_pfn(page);
+>  	struct zone *zone = page_zone(page);
+>  
+> -	if (__free_pages_prepare(page, order, fpi_flags))
+> -		free_one_page(zone, page, pfn, order, fpi_flags);
+> +	if (!__free_pages_prepare(page, order, fpi_flags))
+> +		return;
+> +
+> +	free_one_page(zone, page, pfn, order, fpi_flags);
 
-The syzkaller reproducer triggers this by calling clone() with
-flags=0x80, resulting in exit_signal = (0x80 & CSIGNAL) = 128, which
-exceeds _NSIG and is not a valid signal.
+This is not a functional change, can we drop it?
 
-The v1 of this patch added the check only in the clone() syscall
-handler, which is incomplete. kernel_clone() has other callers such
-as sys_ia32_clone() which would remain unprotected. Move the check
-to kernel_clone() to cover all callers.
+>  }
+>  
+>  void __meminit __free_pages_core(struct page *page, unsigned int order,
+> @@ -6784,6 +6796,93 @@ void __init page_alloc_sysctl_init(void)
+>  	register_sysctl_init("vm", page_alloc_sysctl_table);
+>  }
+>  
+> +static void free_prepared_contig_range(struct page *page,
+> +				       unsigned long nr_pages)
+> +{
+> +	while (nr_pages) {
+> +		unsigned int order;
+> +		unsigned long pfn;
+> +
+> +		pfn = page_to_pfn(page);
+> +		/* We are limited by the largest buddy order. */
+> +		order = pfn ? __ffs(pfn) : MAX_PAGE_ORDER;
+> +		/* Don't exceed the number of pages to free. */
+> +		order = min(order, ilog2(nr_pages));
+> +		order = min_t(unsigned int, order, MAX_PAGE_ORDER);
+> +
+> +		/*
+> +		 * Free the chunk as a single block. Our caller has already
+> +		 * called free_pages_prepare() for each order-0 page.
+> +		 */
+> +		__free_frozen_pages(page, order, FPI_PREPARED);
+> +
+> +		page += 1UL << order;
+> +		nr_pages -= 1UL << order;
+> +	}
+> +}
+> +
+> +/**
+> + * __free_contig_range - Free contiguous range of order-0 pages.
+> + * @pfn: Page frame number of the first page in the range.
+> + * @nr_pages: Number of pages to free.
+> + *
+> + * For each order-0 struct page in the physically contiguous range, put a
+> + * reference. Free any page who's reference count falls to zero. The
+> + * implementation is functionally equivalent to, but significantly faster than
+> + * calling __free_page() for each struct page in a loop.
+> + *
+> + * Memory allocated with alloc_pages(order>=1) then subsequently split to
+> + * order-0 with split_page() is an example of appropriate contiguous pages that
+> + * can be freed with this API.
+> + *
+> + * Returns the number of pages which were not freed, because their reference
+> + * count did not fall to zero.
 
-Since the valid_signal() check is now in kernel_clone() and covers
-all callers including clone3(), the same check in
-copy_clone_args_from_user() becomes redundant and is removed. The
-higher 32bits check for clone3() is kept as it is clone3() specific.
+We probably don't need this part.
 
-Note that this is a user-visible change: previously, passing an invalid
-exit_signal to clone() was silently accepted. The man page for clone()
-does not document any defined behavior for invalid exit_signal values,
-so rejecting them with -EINVAL is the correct behavior. It is unlikely
-that any sane application relies on passing an invalid exit_signal.
+> + *
+> + * Context: May be called in interrupt context or while holding a normal
+> + * spinlock, but not in NMI context or while holding a raw spinlock.
+> + */
+> +unsigned long __free_contig_range(unsigned long pfn, unsigned long nr_pages)
+> +{
+> +	struct page *page = pfn_to_page(pfn);
+> +	unsigned long not_freed = 0;
+> +	struct page *start = NULL;
+> +	unsigned long i;
+> +	bool can_free;
+> +
+> +	/*
+> +	 * Chunk the range into contiguous runs of pages for which the refcount
+> +	 * went to zero and for which free_pages_prepare() succeeded. If
+> +	 * free_pages_prepare() fails we consider the page to have been freed;
+> +	 * deliberately leak it.
+> +	 *
+> +	 * Code assumes contiguous PFNs have contiguous struct pages, but not
+> +	 * vice versa.
+> +	 */
+> +	for (i = 0; i < nr_pages; i++, page++) {
+> +		VM_WARN_ON_ONCE(PageHead(page));
+> +		VM_WARN_ON_ONCE(PageTail(page));
+> +
+> +		can_free = put_page_testzero(page);
+> +		if (!can_free)
+> +			not_freed++;
+> +		else if (!free_pages_prepare(page, 0))
+> +			can_free = false;
+> +
+> +		if (!can_free && start) {
+> +			free_prepared_contig_range(start, page - start);
+> +			start = NULL;
+> +		} else if (can_free && !start) {
+> +			start = page;
+> +		}
+> +	}
+> +
+> +	if (start)
+> +		free_prepared_contig_range(start, page - start);
+> +
+> +	return not_freed;
+> +}
+> +EXPORT_SYMBOL(__free_contig_range);
+> +
+>  #ifdef CONFIG_CONTIG_ALLOC
+>  /* Usage: See admin-guide/dynamic-debug-howto.rst */
+>  static void alloc_contig_dump_pages(struct list_head *page_list)
+> @@ -7327,11 +7426,14 @@ EXPORT_SYMBOL(free_contig_frozen_range);
+>   */
+>  void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+>  {
+> +	unsigned long count;
+> +
+>  	if (WARN_ON_ONCE(PageHead(pfn_to_page(pfn))))
+>  		return;
+>  
+> -	for (; nr_pages--; pfn++)
+> -		__free_page(pfn_to_page(pfn));
+> +	count = __free_contig_range(pfn, nr_pages);
+> +	WARN(count != 0, "%lu pages are still in use!\n", count);
 
-Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
-Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/20260307064202.353405-1-kartikey406@gmail.com/T/ [v1]
-Link: https://lore.kernel.org/all/20260316104536.558108-1-kartikey406@gmail.com/T/ [v2]
-Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
----
-v3:
-  - Remove now redundant valid_signal() check from
-    copy_clone_args_from_user() since kernel_clone() now covers
-    all callers including clone3()
-  - Update changelog to remove WARN_ON mention and describe
-    actual bug behavior instead
+And we almost certainly don't want this warning. Spurious temporary page
+refcount increases (get_page_unless_zero()) can happen e.g. due to memory
+compaction pfn scanners. It just might mean that side will be then the last
+one to drop the refcount and freeing the order-0 page. For us it means only
+that we abort and restart the batching, so we get worse performance, but
+functionally it's ok, and should be very rare anyway.
 
-v2:
-  - Move valid_signal() check from clone() syscall handler to
-    kernel_clone() to cover all callers including sys_ia32_clone()
-  - Update changelog to document user-visible behavior change
----
- kernel/fork.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 947a8dbce06a..73f7fe958a30 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2687,6 +2687,9 @@ pid_t kernel_clone(struct kernel_clone_args *args)
- 	    (args->pidfd == args->parent_tid))
- 		return -EINVAL;
- 
-+	if (!valid_signal(args->exit_signal))
-+		return -EINVAL;
-+
- 	/*
- 	 * Determine whether and which event to report to ptracer.  When
- 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
-@@ -2885,11 +2888,9 @@ static noinline int copy_clone_args_from_user(struct kernel_clone_args *kargs,
- 		return -EINVAL;
- 
- 	/*
--	 * Verify that higher 32bits of exit_signal are unset and that
--	 * it is a valid signal
-+	 * Verify that higher 32bits of exit_signal are unset
- 	 */
--	if (unlikely((args.exit_signal & ~((u64)CSIGNAL)) ||
--		     !valid_signal(args.exit_signal)))
-+	if (unlikely(args.exit_signal & ~((u64)CSIGNAL)))
- 		return -EINVAL;
- 
- 	if ((args.flags & CLONE_INTO_CGROUP) &&
--- 
-2.43.0
+> +
+>  }
+>  EXPORT_SYMBOL(free_contig_range);
+>  #endif /* CONFIG_CONTIG_ALLOC */
 
 
