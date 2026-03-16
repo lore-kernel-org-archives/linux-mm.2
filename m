@@ -4,112 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C34F53D67
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:30:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7705FF53D69
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Mar 2026 15:32:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 037C46B02E2; Mon, 16 Mar 2026 11:30:14 -0400 (EDT)
+	id CA93F6B02E4; Mon, 16 Mar 2026 11:32:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00F596B02E4; Mon, 16 Mar 2026 11:30:13 -0400 (EDT)
+	id C28E66B02E6; Mon, 16 Mar 2026 11:32:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84326B02E5; Mon, 16 Mar 2026 11:30:13 -0400 (EDT)
+	id B5FBD6B02E7; Mon, 16 Mar 2026 11:32:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D80466B02E2
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:30:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 83F651602D6
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:30:13 +0000 (UTC)
-X-FDA: 84552312306.10.9110213
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 80934180010
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:30:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=AjB2ahiD;
-	spf=pass (imf24.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A379D6B02E4
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 11:32:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 733DD1C2F7
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:32:14 +0000 (UTC)
+X-FDA: 84552317388.17.6FED460
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4655F18000F
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 15:32:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=EDifI+bq;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773675011;
+	s=arc-20220608; t=1773675132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U7slseaDj6C8xVlIDRB7RUZn6pKjdSWyND29MxBSYuw=;
-	b=R+eqOTnWabMCjKP+Yh0rSkLgjx+G7qfsOCohdL6/rPeH2W8qNPEwqsfW4LEyyoxtxQX8bF
-	PfLL+/A6T7/QWFoNwCioVEV37j3YxXZt8D9C6B/mLLls2M7VewMBHZD86HoIjWUoDdA+CM
-	kb3kDbqm1LYyyerglvN4qltr7IdPWHU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773675011; a=rsa-sha256;
+	bh=Z7lLkAHeLGSHr1ZiNnNC5vKEy7HRABxlzZYRGN1R9Ko=;
+	b=Rg7MX9ijUUXJO+wOaEKspA6tFxLSdXdv/g9HdqE/iVONkvd031QFAfgNS7RHwecAIS8xsW
+	6Il6YTloyy1Nb6cDFwZ2HlV/2Xwvkty1cBachl4590C0ps8oF52YsBOxVY8U946o0kpF1T
+	a1sCUXHlnxZ08FcKBmVQfLVQyv/GncQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773675132; a=rsa-sha256;
 	cv=none;
-	b=gZD0m9Z1rb89DPz9ed4NyQh0kmuTzuYcFc5p1LZlO+9JspTMhvj/JGroIdWorxQRM1hOfv
-	Bc9UQ10CJY62LfYPyYQz+WPnTp9elgpXpUq8K5ChzkkE/spUvoeSVF+tzaGubLcFlhtk+d
-	Qk82acQHVSJnbv7M92Yj0VFQLAuYViU=
+	b=S3rIhnbJ8ez0pCHJQsvjzNvG8Sio5qODBLJ4t7fz/1YME1b+QOypcHzAs+jMq23048S3Dc
+	ZwuJl8gHwrEkcw7RDLM6+6XRLmykSEHE0Z/82tHOJyvpClLMO1H5HvTBaKDwiAjp1kUGlQ
+	mv+rnj6jCGmQ5zcPkNoBOpQI+5SG1qA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=AjB2ahiD;
-	spf=pass (imf24.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1773675008;
-	bh=sJlh9H3N2opqWbIg/g+qK1TX2NRyE9ISgUQRRxJCTOU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AjB2ahiDilqjYy0u/5XQ84g9XV1/7Ng8t8Adp0N445JowglBk6dMAF0PnkXSYZ+9R
-	 ld5VQY8Us/oJHn3rMNvvG6tYjEK3cwzSMHvzW2mYadKU0jwFmDoOCVrjGWU3io+WJZ
-	 o0bDDFRNM+/chrU4cQSfRiVwP74gTC3bYRzEJwGkUz31k8yUOEZ7eDSuDyPox5iwyg
-	 oeL2/0Zw3DNyYHaGNXBykgMryprB6ZrJ5AX4ouWscJWl5fEzNMBNrt5h7JWbvkaFL0
-	 ud8rk/wfaZM7nC7uQ/QLxpK6hMDHYAq+PvE7NP6ZdNtvR9Ej5QHMcQbo23mPyEsrds
-	 8848+e6u0bbvw==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id EE1A517E1330;
-	Mon, 16 Mar 2026 16:30:07 +0100 (CET)
-Date: Mon, 16 Mar 2026 16:30:04 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>, Tommaso Merciai
- <tommaso.merciai.xr@bp.renesas.com>, "loic.molinari@collabora.com"
- <loic.molinari@collabora.com>, "willy@infradead.org" <willy@infradead.org>,
- "frank.binns@imgtec.com" <frank.binns@imgtec.com>, "matt.coster@imgtec.com"
- <matt.coster@imgtec.com>, "maarten.lankhorst@linux.intel.com"
- <maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
- <mripard@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>,
- "simona@ffwll.ch" <simona@ffwll.ch>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-Message-ID: <20260316163004.1f8a6d8c@fedora>
-In-Reply-To: <53f11658-5466-49a3-816a-ff6fd2e1da6f@suse.de>
-References: <20260227114509.165572-1-tzimmermann@suse.de>
-	<20260227114509.165572-6-tzimmermann@suse.de>
-	<abL5rcYIaFFO3GW2@tom-desktop>
-	<TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<20260313111851.4c1f89f3@fedora>
-	<f3384342-cdc5-4260-b670-4ffde76a2802@suse.de>
-	<20260313125644.65131b27@fedora>
-	<TY3PR01MB1134662A395AA0A048CEE152E8645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<20260313131835.52c5c935@fedora>
-	<20260313134328.3166c4d0@fedora>
-	<20260313135521.07823792@fedora>
-	<20260313184549.08656eed@fedora>
-	<53f11658-5466-49a3-816a-ff6fd2e1da6f@suse.de>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=EDifI+bq;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 96513B3C3A;
+	Mon, 16 Mar 2026 15:32:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1773675130;
+	bh=Z7lLkAHeLGSHr1ZiNnNC5vKEy7HRABxlzZYRGN1R9Ko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EDifI+bqJWjIpRUPhvq5Kq4913/23Qez627nTi2AuX1yqmD1y0HHxvbDQ5k+/Qloj
+	 DgZlV+vg+osCbj4k/Qg+UMc9RNVHWi4408Qw0NIafP7VLI9p4xK7i7j/QN7dX/V6On
+	 sS1ijjJGrNsqj8L1QiY4a3OWhsKxqzLeRcX96Ea8=
+Date: Mon, 16 Mar 2026 15:32:07 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 2/2] locking: Add contended_release tracepoint
+Message-ID: <abgid9TwAaPJVw1b@shell.ilvokhin.com>
+References: <cb89caf58885858433711f0ed6238484f5f1a67f.1773164180.git.d@ilvokhin.com>
+ <20260312113815.2107882-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 80934180010
-X-Stat-Signature: un8bh63ogojrim6j7wimh5ej3imk8iio
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312113815.2107882-1-usama.arif@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4655F18000F
+X-Stat-Signature: da9ajyfnfr4nwumsit3sgya5dfxbocmz
 X-Rspam-User: 
-X-HE-Tag: 1773675011-680968
-X-HE-Meta: U2FsdGVkX1/umkE4CL5+skXQjSzilzbChAmPSqjbiTv63lc78rddCMTqsu/lKv5LWnzHl6Y8QDonCS9aWeqSwTG8yXid2wTZBBvF36k0X7pLh/kzdT2CKSJp3oBOM06obvcNIIfHQgdXxuAZtIE9GjxhsBITk3VIKeBCqRl1lqrkemWKoI1VVCarB5c9qYunWZOkViujD+8Tlp+mP/QiABQXB7oU9oNFnLiQS7VQqL58UrIrO7zWjJohsHREXYbabODVs1MRSArt4gn0R+kyM3I3FPOgIKKUvtlj9HATlFs3XftV4ZHbG2Bd/1d0au5ZrXQfNcMJ+DzpSigPOVeQ2jvQxmQfVwpS5x2/IVL8p+uaAH+Gk9wtJzhwB7jk2oF/ItgauRLQqvoEXe/+vqDhzALfWK2C9ukRp+//k2nctVZvsCSdDfQnw08fxYmrCw856mHXkZn8j9izLCPtxafo4W9iIIiqk3y00ROGL0xqBsiKd5YcCmsFXsDOWjX96jkPSRp2Hg1ndIDwjVT28u0v0o0uEKDjBcYUnrX8WI4GXn8Q0rQmWoMY5Ef09+ZCYGFZk6CRnBWAKUbj30HHFs9cnkTQPynjmSkNlhyOoZA1zYuNRS0sWTuQNWj9Rvnql82LLSXdODyio3xgM6C5L+f0QlnDSU4N/pO56SVPztuV7qCqYyqvMesFoYdImyRBqPii522MJA6MNANmXywAsjDWvKMAnTCWytxj5BFIcIM4qEX6SpTpFN7B+BiyVp6Bddlg/QDtYjmeoXgGgBw6Oe1I53NYpdCW1xwnUoLUYZ+L9irDoPWwUQDK8H6780eUCQGuni7wQ0MTegAyBJz5w6mNhGRktREOpaS/1mtAKlWfkolW7k3YPwj6g1bXp8fwySJ65GKBHVkT8C86aHZrBvc7Gi85dWRjiVW/6h0mb4mUi3h2aYqf70kB9g2S9r5/OYK2CkO8KJCr1aTZzC9l1m2
- 1u+tX5K5
- RNv/NctRDq2LINu2xg7mxoL54atyzG4E0aIoq10kmNPhLwG6iQTOBI838Q0XSRQ5VXt7cKv0r9UHIEXY/tkC9epPecfpOWs3OaB7hxQwyl2CtL5zYuxgTyhD56C3fI9cE8wHdPnk+FNvXvh9sOeMP9OTAhIi66+5SS1jh0EKTHj2Zls6t7MMsYWHiLd9v4vbyCPoTc05JcwwqkRYNHJNy+kZ8MfX3KLvQah8U91FGw2R6QzvNUwb7fVueTJc66gg+HnEQQWfIhMsRpeVdCdrJqVeeJ12zTE+/65he/hu87fFTLpQmOE8aisB7usPcXXXt1Fz1Ir63/zT66ponOfrHRsdRU4rlSCpNYeAm9/aERSDju386BXZKEXNbsU7Dz2THGHizIWTqStKGZl09mrbCAxNKg0tyo//KW6+yziPUAzCVuPhmz1SOWh9Q+XsKp9B6+ck3XLGbhqhbX62qOedCi1ijDLfYAywFqB/nqcj0Lf/2Vqt9wnnM9OPGQOBPqlNhK3mbuNXqzUSk2HYY3lQ/pprM/8ydKhI3vpE+I1TDq0O2pYAPcyi6/XQh5ql5izqoQilz4/fA9jg6AFFewDaAKHzCgcZYrdU0yQaNfz8kgiu9HnnIDpvyewadkjaZJ4uHoxqm
+X-HE-Tag: 1773675131-898223
+X-HE-Meta: U2FsdGVkX1/jpc3c2MQG/W/mYIOlQQkO5OSvoEWyWUKGVoLToyS7rFmyoA4noPgb2mWhUIhmoI1jHnSrJ89AkhEfHbGckbacJ6oC7XWHswqKd9fMwD1o/kbtHjzCmQQCJFM6GrAhGxYfQfVTB+/Zg9GxfntPLfQLdXuKEK+2o5WbB+iBArk8u+KqgkL4ZIePBQCUvEH5l5NQkD/7uQd0MZpCnMtjzCRdZqjydSsqeY9uMPe7nfCiT08TtJCeDfrKVL5EQgGC0P96MUxIMJhUcNEy4SsQuj8wucavYXVyPY35cf6KCaFQmhG8TcxEh1URkuExsPKmekLepYthFarPbReG8OFbvOAChf9D0wEdtiMOh8o8bB7/AvBiEGegnd/BAjVFxhIyGXKHcv+Vr40mRr5GQN9D/JeVQyMeLHxJwz8phN3rbU8jWqUh2rq6VSldwGB7KXXVo3GEmFwzhS2IenjNjRe/PL4jGWN2fxbfz0vcQTVawYhDHhXytHQy3OoEMEybJnpQPZe1fA/dukSnWElKyRhsjHPdjVv09aE73g7MFKTGJzUOUa7pv71wk1usrh29kRfntO1C8fhQgQS3is6Ee3y5cWOMUuLamASp4r4fe4kpVkxTqrlYRT4SAaTWeUHtA16o+ojcvlp6xvVOabtZmTE8jzQ+0/rh03pr5NUsEkEggJVULV0BzRDvR1z4oG+dN/UH+L1K/lu3IFvVbVSXKI9LaAoHJtRWcMWXQvLa+90WUYip95HdYRz2baBQGbgCS6ZS23g2EDevy+6r43qcbU0qSXUANOYlLO2XaWxeQSfwUYc1WgMZ6UwbOjYjORf/kGn8Rnk8YSCNzTHIVdZWoQykVFMQlLSa1T6ONdKRzWKbgRW5mCmHATn6xiSUeyCHQIEvICTMC8xuSZ5dm48dIi6HUZy0+/UoTGOhF++B1pCvQHpkkdmIWxVCQa9yplqKKl2amuRRDUT2vM1
+ NsWNDWD+
+ 51FzVY5byoSMbA/34GGtp/dwNZ3zfDJHpoTWYA2SL2qej2flBxTefT+ioQkQNWRAAfc9zpuDb1Q4fpsQcoY3vZjD1h0yDnCSS4/V+YhEZaJZ3JH/+AEoHnzI7waUkn0up2ubhbk5U9DGFQ+hEo7j/uQoW1Fedd7OdnxhfSRMatJO9sPs3kVhYjabUbzOPCBJYsfijLtLR/5JQ3PYx0O1Xmn1qDavsL+UphzMjbLXzZGRJoMxvohPFL4YPtNgfnohNfxP7LEz2i5kVCv0oqC6pAhM/9yow31FvLrIZ4zKOThMoSPXrsCOCUIroxE2PQoAM6QrBu/EgGHpqGyHctnP50zEXvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,88 +95,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 16 Mar 2026 09:45:49 +0100
-Thomas Zimmermann <tzimmermann@suse.de> wrote:
+On Thu, Mar 12, 2026 at 04:38:14AM -0700, Usama Arif wrote:
+> On Tue, 10 Mar 2026 17:49:39 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> 
+> > Add the contended_release trace event. This tracepoint fires on the
+> > holder side when a contended lock is released, complementing the
+> > existing contention_begin/contention_end tracepoints which fire on the
+> > waiter side.
+> > 
+> > This enables correlating lock hold time under contention with waiter
+> > events by lock address.
+> > 
+> > Add trace_contended_release() calls to the slowpath unlock paths of
+> > sleepable locks: mutex, rtmutex, semaphore, rwsem, percpu-rwsem, and
+> > RT-specific rwbase locks. Each call site fires only when there are
+> > blocked waiters being woken, except percpu_up_write() which always wakes
+> > via __wake_up().
+> > 
+> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > ---
+> >  include/trace/events/lock.h   | 17 +++++++++++++++++
+> >  kernel/locking/mutex.c        |  1 +
+> >  kernel/locking/percpu-rwsem.c |  3 +++
+> >  kernel/locking/rtmutex.c      |  1 +
+> >  kernel/locking/rwbase_rt.c    |  8 +++++++-
+> >  kernel/locking/rwsem.c        |  9 +++++++--
+> >  kernel/locking/semaphore.c    |  4 +++-
+> >  7 files changed, 39 insertions(+), 4 deletions(-)
+> > 
 
-> Hi Boris,
-> 
-> thanks for investigating this problem.
-> 
-> Am 13.03.26 um 18:45 schrieb Boris Brezillon:
-> > On Fri, 13 Mar 2026 13:55:21 +0100
-> > Boris Brezillon <boris.brezillon@collabora.com> wrote:
+[...]
+
+> > diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
+> > index f3ee7a0d6047..1eee51766aaf 100644
+> > --- a/kernel/locking/percpu-rwsem.c
+> > +++ b/kernel/locking/percpu-rwsem.c
+> > @@ -263,6 +263,8 @@ void percpu_up_write(struct percpu_rw_semaphore *sem)
+> >  {
+> >  	rwsem_release(&sem->dep_map, _RET_IP_);
 > >  
-> >> On Fri, 13 Mar 2026 13:43:28 +0100
-> >> Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> >>  
-> >>> On Fri, 13 Mar 2026 13:18:35 +0100
-> >>> Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> >>>      
-> >>>> On Fri, 13 Mar 2026 12:04:25 +0000
-> >>>> Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> >>>>        
-> >>>>>> -----Original Message-----
-> >>>>>> From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of Boris Brezillon
-> >>>>>> Sent: 13 March 2026 11:57
-> >>>>>> Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status in mmap
-> >>>>>>
-> >>>>>> On Fri, 13 Mar 2026 11:29:47 +0100
-> >>>>>> Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> >>>>>>            
-> >>>>>>> Hi
-> >>>>>>>
-> >>>>>>> Am 13.03.26 um 11:18 schrieb Boris Brezillon:
-> >>>>>>> [...]  
-> >>>>>>>>>>>> +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
-> >>>>>>>>>>>> +		return VM_FAULT_SIGBUS;
-> >>>>>>>>>>>> +
-> >>>>>>>>>>>> +	file_update_time(vma->vm_file);
-> >>>>>>>>>>>> +
-> >>>>>>>>>>>> +	folio_mark_dirty(page_folio(shmem->pages[page_offset]));  
-> >>>>>>>> Do we need a folio_mark_dirty_lock() here?  
-> >>>>>>> There is a helper for that with some documentation. [1]  
-> >>>>>> This [1] seems to solve the problem for me. Still unsure about the folio_mark_dirty_lock vs
-> >>>>>> folio_mark_dirty though.
-> >>>>>>
-> >>>>>> [1]https://yhbt.net/lore/dri-devel/20260312155027.1682606-1-pedrodemargomes@gmail.com/  
-> >>>>> FYI, I used folio_mark_dirty_lock() still it does not solve the issue with weston hang.  
-> >>>> The patch I pointed to has nothing to do with folio_mark_dirty_lock(),
-> >>>> It's a bug caused by huge page mapping changes.  
-> >>> Scratch that. I had a bunch of other changes on top, and it hangs again
-> >>> now that I dropped those.  
-> >> Seems like it's the combination of huge pages and mkwrite that's
-> >> causing issues, if I disable huge pages, it doesn't hang...  
-> > I managed to have it working with the following diff. I still need to
-> > check why the "map-RO-split+RW-on-demand" approach doesn't work (races
-> > between huge_fault and pfn_mkwrite?), but I think it's okay to map the
-> > real thing writable on the first attempt anyway (we're not trying to do
-> > CoW here, since we're always pointing to the same page, it's just the
-> > permissions that change). Note that there's still the race fixed by
-> > https://yhbt.net/lore/dri-devel/20260312155027.1682606-1-pedrodemargomes@gmail.com/
-> > in this diff, I just tried to keep the diffstat minimal.
+> > +	trace_contended_release(sem);
+> > +
+> 
+> Hello!
+> 
+> I saw that you mentioned in the commmit message that you do this for only
+> blocked waiters except for percpu_up_write(). We can use
+> waitqueue_active(&sem->waiters) to check for this over here so that
+> its consistent with every other call?
 
-    ^ "that's not present in this diff"
+Thanks for the feedback, Usama.
 
-sorry for the confusion.
+I thought about it and even mentioned in the comment, but I forgot what
+was the reason. Now, I think you are correct. I added wq_has_sleeper()
+locally instead of waitqueue_active() locally, since we are not holding
+the lock here and waitqueue_active() requires a barrier based on the
+comment. It might be not very important here, but I'd rather make it
+correct even for tracepoint.
 
-Aside from that, I've been looking more closely at the code in
-mm/memory.c, and other implementations of .pfn_mkwrite(), and I'm still
-not confident that:
+Note that __percpu_up_read() doesn't need this guard. Maybe I was
+thinking at __percpu_up_read() part before and just made it symmetric.
 
-- we can call folio_mark_dirty() without the folio lock held in that
-  path unless we have the GEM resv lock held (the pte lock is released,
-  and I'm not sure there's anything else holding on the folio).
-- we can claim that the huge vs normal-page paths are race-free. That's
-  probably okay as long as we only do the dirty bookkeeping in
-  pfn_mkwrite (we might flag the folio dirty before we know the
-  writeable mapping has been setup propertly, but that's probably
-  okay). What worries me a bit is the fact most implementations call
-  their fault handler from pfn_mkwrite() and do the page table update
-  from there. There's also this comment [1] that makes me doubt we're
-  doing the right thing here.
+Anyway, thanks for suggestion.
 
-Would be good if someone from MM could chime in and shed some light
-on what's supposed to happen in pfn_mkwrite (Matthew, perhaps?).
+> 
+> 
+> >  	/*
+> >  	 * Signal the writer is done, no fast path yet.
+> >  	 *
+> > @@ -297,6 +299,7 @@ void __percpu_up_read(struct percpu_rw_semaphore *sem)
+> >  	 * writer.
+> >  	 */
+> >  	smp_mb(); /* B matches C */
+> > +	trace_contended_release(sem);
+> 
+> Should we do this after this_cpu_dec(*sem->read_count)?
 
-[1]https://elixir.bootlin.com/linux/v6.17.2/source/fs/xfs/xfs_file.c#L1899
+Good point. I moved it after this_cpu_dec() so the tracepoint fires
+after the lock is released but before rcuwait_wake_up(). I also went
+through all other call sites and made the placement consistent where
+possible: after release, before wake. It should be fixed in v3.
 
