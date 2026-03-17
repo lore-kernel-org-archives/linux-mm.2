@@ -4,147 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72DCAF506FF
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 06:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FE92F33806
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 06:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BAD96B0005; Tue, 17 Mar 2026 02:00:44 -0400 (EDT)
+	id DA4726B0005; Tue, 17 Mar 2026 02:44:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9925E6B0088; Tue, 17 Mar 2026 02:00:44 -0400 (EDT)
+	id D56376B0088; Tue, 17 Mar 2026 02:44:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 881BE6B0089; Tue, 17 Mar 2026 02:00:44 -0400 (EDT)
+	id C446E6B0089; Tue, 17 Mar 2026 02:44:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2366B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:00:44 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11EB113B0C9
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:00:44 +0000 (UTC)
-X-FDA: 84554506008.27.C31055B
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 94E39C0003
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:00:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="A/HXc1Yo";
-	spf=pass (imf22.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773727241;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A98FD6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:44:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD780C2023
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:44:01 +0000 (UTC)
+X-FDA: 84554615082.21.291FC99
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B8ADCA000E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:43:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fnsxDOMN;
+	spf=pass (imf15.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773729839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Yjg5g/Ahc6j34B08hDY6aKdtXUYcqbFsbEYEzxC3OU=;
-	b=BL16oUWnhR1Nq3XjEwB3/cz13Z+XrMl314IXygMqsHvOa1bN56AVf+asftxdw6FB4Kapft
-	FCs0sOCLgb8LDi+ilQ/qGk0fyKd7DyIujucoFTuZwj2hjn/TqOtXqLjsyL8c+UvU1nw1y0
-	9a5nzbmDAmZVGhzfxOCemXZXE/MWLzY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="A/HXc1Yo";
-	spf=pass (imf22.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773727241; a=rsa-sha256;
-	cv=none;
-	b=4D+3ECbsWzD0vYcRolH569hNRvpuW5lgmyWAok+oKmSIZsKJg5m2A5U+8mbNAT3faMzZd1
-	cX3/PRYmcuvQL+VZ/RejAOUhIQ0lHygHgUZwablTRJhqxaeCei+/ON3sy1xG0ltbX1VUiX
-	lBcSRRL4Gex3DHBFxOMiU7tb2RMa7uQ=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GNNRLK3931551;
-	Tue, 17 Mar 2026 06:00:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5Yjg5g
-	/Ahc6j34B08hDY6aKdtXUYcqbFsbEYEzxC3OU=; b=A/HXc1YoYpQ8e0y0khcJx7
-	YkJ1bo4JF3HC7EyuqyQsPGg0tVAynOUnVoxW3sRGBuQIGnLOHD4KFYg6TyzT/JJs
-	RTXRW3emRR7IeCRym7NjxelfxZW8tIzCNAY3UNwml6l4SEMnKE2a0aUI5Wvb+xbC
-	rX+Ii+6WnDueAhBDu41lq7K6jig1/z4UbfkVK7JcRubNz9WFC1Xy0+LsyKYfeS6c
-	htpjOG6es0mDIeKkIA/UFFY1M647NOIKsbmuOPJqxH5mu0JgZkE6GgztZb4/gegQ
-	xl1n3NSdAsp+wcr7UxknXAWLIB6eeX4MLHxbDytBWm8wmJsHbaztrVzbc8CSp1KA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvyauas9j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 06:00:33 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H5sKeJ005412;
-	Tue, 17 Mar 2026 06:00:32 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwj0s7xyj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 06:00:32 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62H60VbG30409360
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Mar 2026 06:00:31 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFBA958052;
-	Tue, 17 Mar 2026 06:00:31 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B945C58050;
-	Tue, 17 Mar 2026 06:00:26 +0000 (GMT)
-Received: from [9.109.249.251] (unknown [9.109.249.251])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Mar 2026 06:00:26 +0000 (GMT)
-Message-ID: <cf815c21-138e-44c8-986d-d8496503ee32@linux.ibm.com>
-Date: Tue, 17 Mar 2026 11:30:25 +0530
+	bh=GxQBVRRKByq6v33EyBsLpkYv5kgyt0VBov8tr6iRv2M=;
+	b=TOpUfbwwFVzqO8esEgv5T4EIv1X26jw/DhYa8u690Hp4m73pGr65huB+lD84IJiRukEDgV
+	S/YcQpS/ptUfuX+2+G2Xt23kf6vkny5ISkM64Mv17LFcZGEdvWrVkl75h7YTdF1fTuow7o
+	htPQ52SjSRFWWDRWs2TrgsGPGBC/z5c=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773729839; a=rsa-sha256;
+	cv=pass;
+	b=lqZfAKihauNNuLuTxfc7yGZYUo5WHLKSn22HOsBYkLKRdrF+XRFW0i0CbkiSfu92wbalLM
+	H/Fj+LPFkOnK9r0j583qIM4wPLA6ecrPKu1HpQOPQGtybdbKmKkqb0yN0AWrX1XxQVXn5W
+	zQWqSeDvw8gzoCt569YxThrv+WHbjZg=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fnsxDOMN;
+	spf=pass (imf15.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38a2fb8ad36so3436291fa.0
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 23:43:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773729838; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KCjO5TTze6SQ+qxJVPTJe7m5ojwWaJaJMYlmIq8ODNfY0yf6JEPP3cEewK3GghXLew
+         099rEJxYZaRI9wp+vHzEHzGAbs6h4DBe25Fo3/k8uOE7qW/B0zYqKFSaC/ig29zGNv6J
+         yUmd4yiYSKCF6+gcjpndh2GwTrfJiLRJwmjR5daW05la42dNam+fiZcPkftzHFzBARvx
+         Wasgx1nQaCOfjqtoNlWY4RvaMKswi5mc1FDEsgaVdJOYbb2YuUZ2XeO62K39oDRqPdYo
+         IMwdFWu7Wd3Tdx1FcQ5vnRS3ZEoxNDVNGLlZxrMLE2IiKZQumHpqCapCvjkK9V4nPAia
+         olOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GxQBVRRKByq6v33EyBsLpkYv5kgyt0VBov8tr6iRv2M=;
+        fh=XKOQgFSc7AXj0jSbnWSmVWKUlbysX8MXDbnhqy3nytg=;
+        b=YIliLbsR4KhM28NfRWfLu6Qef244tnGtfdf5+8HkoavkPlxizE3n5fCRP78ZbumGLC
+         rVNgmTZg/25wrITDLlR4VeDNbhM/g3RTSgrvM8gAovDlWcRbNJTDgG+VZNumXOXdv1x2
+         OW7sPcpOY1P6p9tbpgbMuaDeBULPRh0X09f09wKen+xx+AH3DfV0tyF0A5PF+iu4CZmE
+         3IbiNPo8m5dvzE/WOzPT09YKBnhOB1VhPzgSQSjUWzvUgqNdFDCnJokMPncaPC5vc1iV
+         Z7EjsbA0C+e99eQYztitTvmZgwjqSQfATtNAXx7JIhcF0Ba4+eywRlpXT13cskughr4j
+         VHjg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773729838; x=1774334638; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GxQBVRRKByq6v33EyBsLpkYv5kgyt0VBov8tr6iRv2M=;
+        b=fnsxDOMNS8PZudKFcAtVydSXUy4YWEY1KodnMX7c72ImF3K7Q5uN/8APuaH7Fj4II0
+         3eqz+ZMM+80hvJYvd5RzCvnBW88nlo/7yHDGi0VASel1YEE/DGQAo9+fzP7XWzXXYSSD
+         olYxSYWU70ppnHnK33zGdrITk3nRL4YQ/aRIvYY70pH6wpLhZ0rHIHmHencoHPuPcI3d
+         S6O0Qp33TFa4Ks2EyjmiYgfol7e+QySOn7PTu8LA1MsM2qp4naIm0vExx7moToRO1VdA
+         9jdBeGdcpTtf12QuJfrJ3gKNlHwC7fk75RNr9nm0Me5kraSa8H5Pv6xbCsD6MUgOSxdd
+         1CpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773729838; x=1774334638;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GxQBVRRKByq6v33EyBsLpkYv5kgyt0VBov8tr6iRv2M=;
+        b=R+9ggza3ZqB//YMV6C/FI0zw3gNgnMBSz0hDQAIK0Ob0NEFal0MYqUQiTV4sQrFR04
+         g3j6TESMEdsoDlYKGhSvvkr9J6jQ695nWkyIDo3LzInLEqTGMjfe62j4Vd2royXnPAWX
+         kRa9Hy6hT/vImF8GdhxVi++/GedhHkFIUSjYwQhcet2dyQjcT5q+K+nPgy6EgqETi7iq
+         VUXIk/wo0xjV0WNuMvYTeGr37AEOah0i9uEnN+CZ5B9boMRD4Xt+vPorUnyLcz1JGtl8
+         ERLocHqKjWF0YZMxjbKuzft1pYqoJ22MncsS9rsdyOgqx5P7MswmPnSjjNUw/cO6zA0O
+         R3Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIq/qKdbkaMIewrnyV5haLBIZMHGy3GoUdKIT90iqkBA8OK2x6irJeQDzekvZV9KSd67GI8kWZug==@kvack.org
+X-Gm-Message-State: AOJu0YyhecpC/vrWblrU+QrlmvumbBrNShs9nFiNp1iM9rBZb759rmun
+	FI/49HbFPpTLiTiXmHGgB6O9nklTgsce2j66qaWltqNW5dgoWYjmT8nFq6TFDGCnG3aTb4w1hKq
+	c+fUMBvg/n7pfAOhPD54TtEVFFi/7jNk=
+X-Gm-Gg: ATEYQzyKU9Ee1hv+6oKxpuKI6aN5sKI4thubpCKl6q+J7ssMQk70OsgQyxBO2oP0jrO
+	pdN5/McwfImIY7BXpUl16pBzWNS1gEvuDjLHrNpF2EYksCxhq7o7cKva/huLqne9tU6BFgx4ijf
+	vgR2vDCQx9xUL+2Fr4WXGuqcr3BO7Ivt4XUZ3apw6RTz1UMGzEHkgXQB+Ye5BPu3s16oG8IMJfP
+	PLbduFb01lDvUTEliEqWPDtZQ6qwtpW7DfCdI0IiVrGfpuQG2oAklEekHkTnUVxD7Gwmpvh9dpI
+	z/0GZLNa
+X-Received: by 2002:a05:651c:3242:b0:389:edbb:55d4 with SMTP id
+ 38308e7fff4ca-38a892dbef7mr28117211fa.0.1773729837495; Mon, 16 Mar 2026
+ 23:43:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/13] selftests/mm: fix failures and robustness
- improvements
-Content-Language: en-GB
-To: Sayali Patil <sayalip@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        David Hildenbrand
- <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko
- <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org
-References: <cover.1773305677.git.sayalip@linux.ibm.com>
- <20260312150526.3662b2717b9a91776a2e43f5@linux-foundation.org>
- <1f944b56-acb6-44ee-8cc2-6031fcedaeaa@linux.ibm.com>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <1f944b56-acb6-44ee-8cc2-6031fcedaeaa@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA0NyBTYWx0ZWRfX+UdZtfvf5grV
- 4145cssHg2Zlpgr4ZiB8zKRTrq5yXg7hPMvdvqWjwhroyurTRe1ut+wD0PuJec0919RNjAIREbE
- CoiKtyGwKHQwWEbClIC93aJ8ctkSiEBYQhrXjdw5+cB03EEc5bqsE/Cbw1PPSqgRSm31WP2k51n
- YzG44mJR2QNhcArUOKMCYffu/pnQ7+0EQm0zYwYGKHzaHFoQxMq5rpJcZ1cBlmTK2T4gDv6JLvZ
- pEwn/0LeqEYaRY8bq/tgEMEwGqH2N//4sNRWd1wx+V6j7DWL3Y6nIiT1cRrWMB3uVMC4QUkPvmE
- YXxb20OXEsZxEFgejEooJL/hMzBsSTulYdYJi+N2y0uRqVQX9c3XCMVBkPEzSBA5TU/dKDP1AAX
- AemShboyQQmrzXojp0TkMdW+n3pDzpGbsIkfH+aPPEpFF9xbv7kCEno+xk6NAsf+eORcCrwGsda
- Q4zIXMSr2uqFG62sbjQ==
-X-Authority-Analysis: v=2.4 cv=GIQF0+NK c=1 sm=1 tr=0 ts=69b8ee01 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=v5kZQaA_ZERCB-NnuxkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: cRTqZndxSEC7CgUEAR5nuNwsEFknjtV0
-X-Proofpoint-GUID: aPR9dRKlnxe4-p9tKIl3u6q1blr5e4HN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 impostorscore=0 suspectscore=0 adultscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603170047
-X-Rspamd-Queue-Id: 94E39C0003
-X-Stat-Signature: fddrhp4xwjhuieditdhou4wny1n5gc4t
+References: <20260212032111.408865-1-zhaoyang.huang@unisoc.com> <abhh3lKb6med1LSp@tiehlicka>
+In-Reply-To: <abhh3lKb6med1LSp@tiehlicka>
+From: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Date: Tue, 17 Mar 2026 14:43:44 +0800
+X-Gm-Features: AaiRm52oJTkxxmbVNJeLnvy0ukOwr6sw2jvdR8OFbzaHZ9S21OAnw5ueFBsmmx4
+Message-ID: <CAGWkznF1oVLvY6UwCGZShfoikmAQ27juuDeowiHLvv8acR4cZw@mail.gmail.com>
+Subject: Re: [PATCH] mm: remove '!root_reclaim' checking in should_abort_scan()
+To: Michal Hocko <mhocko@suse.com>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yu Zhao <yuzhao@google.com>, Rik van Riel <riel@surriel.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, "T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773727241-368003
-X-HE-Meta: U2FsdGVkX1+waYH3tdUkFeqVgfTLzZ/ohz/+cz/LUE1Tjymcel2aIdkLLYFVpH5xIucmG75x2g/XpURPOPjKLKgg0BxvfGwpl+jIUsHALMkVfn7OHKhCC2I7wy07t6FhmRPqxVw8YzhOiuZjNyWebiJ6EXcrRX+RNplBmKL9xBDzjY0CrxXzVZzPHJF5xjjZcff66nqg9Spvf758VBDUqX6cAu7GmMlJwu6sxSHKHT2B+2wFnjEpizOKwbVY1REAQknU2M/sWoso+2ygtpi/eyvlTlgd3adhYerNd9jU5W5xE8fLKxNHRZ2LLMCef7jIga9IaXvapmgycR5uIuw6pFm0pkdc2DIl80b15muEhrIxvwFzLCkHr0mlrbvCfAMIp+XPUkvJWpkJ4vaHfj9SnDdj3GmvUxzgBG8IBjytbFJLQNf0hLQA8EvoVvyCYtLUHpbwxosgL5eApZyuN+IEV2EYp2LluC89hh07jM4zQCCfrjsq/KX3L9P2sc/uy4hP5MErutuqaovKkGzVEi6DfHK9Ll4mcydWiu9qGbFRNXmmA53RJNti5yVv0hgYE2Nv7dbRc0WBjjgEXIvP8T2YPOHbVM/86pcOzzD6pq8xL3YI+pJFWm/h6vMKIMPa/h/jhhwenV2uLgi/2j5dW9VtbxXbN0+4I1Wj6O1dRt3Dgy6QfaWfu8D670ynL7E/r9LOHsybkF8ZDTt0WQwLSNM3NFkzFTvxonaoWtcwP7CwNHZgG/CVfA9dufWoHKzb5x3s41wPADcpBm3KUETGlKr7+Y6ZGpI1jkrFWoIp0WwPXynn95gE/NSoBN7rcvxC0HzZGCvVoPYhWLhkjnpJkGBHfl5F46vzmzzDfx+pU9yyp0otmjCj3HXVi0bzwGGhZz5YtnVUIgFXsUNfKDiL/+v0+LnmFhPOnZ5qgTZ1XcCc3vE5s3mGboBPcTI627WytcxZZyGze47R4FIRum+Jv9e
- GIqN2d5m
- gAOjTDny1plHKFt/0tCqvwkeIgRDAJAThRrbQOqVjjnoMm1xl8YiORMIizCPW/szscecJJO7emMLX/CJNhycmM89lQATLoX7kRGQpgdu6TdNb0weiCSuog2ywaFWEDmz3ZVL+om78UcT8L8xSvgMALJWfeqXiVj3xoc1ePu0C0uHWV2DLA/mrHSNhhP+A7fssdcGOitBXs6Gpe/0BpzFBVVMf0sHRXt2wYFOB7HKyNMTWMprmlfRSdq2xgarTYiVkuD+x2hDpINFRWJm14nhWkU5fkpZ/mdQ0Cs7YpoK393X+gDaRtQQgdLLwwpjWF5Mo1a9o+LwechFhD6AdIHvpNLbl8Yyt3tSqJhO71yzYBvNTvKfXUuROwawHix7DzlN+rS4909eDBWdpAWyQTqJKPbntqbY6HzwkxUNLzcKBTJtdxyvYoYsI3sAdPQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B8ADCA000E
+X-Stat-Signature: 8whud8j58bd6gsyyri7ttz5r7zgecyff
+X-HE-Tag: 1773729839-654961
+X-HE-Meta: U2FsdGVkX19lh65NXd7WmzO9ppuwJI19viDzRuGluPCN9NqY10hoZ/REH6e2h0uUkNECRTvY6bS76f1laFkJrNtny+/dlhsEyOS4m/13nG3HOW5uwtKHFq+V1f9e1sZWuukvJrVg93oCo77/455kzCDZsltyFOaYGJUN/QLVH7aFRY+NT42UWc7xE3IhCKuGVoK2bHv3f8hLd9W+c4OItZjSp7K5/IjS/XxZfxS/YagG8Znsbc7B8PmOzsqdy8OtWxyOrm7eUM1Nqe0zZytuZomHpicfG5smzTm0cn60ycnEsEtOWS1pUSJQ6JelxlX5kUOqIH8OoNxSN+4gU7bddGT81eii15YLgifba7rdyR3Jo2n84xVfFAxN0gOZNaDmxjw1nbaIu+YNzUeJ5w+ghZCjtRbhg2/aKd04JEt0E5evQWJGcNRYpaNWAkF+ALV6Dp5xnV9e1iw/o2s5Hu2P6BElmOTetDkBJDtVXkkWjBLmObYOnrlLcA6xKBlwsPK8dKi6jWSmMszqNtBy3uoZlmJMzEfKTm/QhhwUkxph2fH+hKUpvDNaxqyyWmCezU8wN0XcmjYULPmrbPI51PvdMrCFMvoqiM8NJ1K1nH3ZOGt7zqlJ2NBuRGo0eZfcWJwNNcQt2LfWVzpyZ8ELbiFLZcQ1UiS08n0CVSgWmxA/G5KRRKKnj7rOKTOIpsopaeDZjY1nkiXZ+7+eiQ8MTuJ86I0cODi4hF1mC49L77EXt0hJiEsR9o7jICvBRg5BmBecna2uW5/pykCvJn04AVU5M8qetuBxzzHMGxjTv7AmWtDsyY7jgDHy5l0mMh2IPEqMDuGnXWtCTUvSI2hiffnaw50XnMfObn/DNQKZl7GzlvNShPE90sM15UORUEGugsop0cLERbCEt6EcofWjFLpNvmsjBbOza1rE8/o8x/2LrNrmNfwVqUqLYU0d8tEA1OShOFOg7iPIqxs8zdNbE3N
+ 0KQua8D4
+ IIjS1ONsswIXEGGrhMzJ7APLZWMhjuTNDmikriWIahNKMLyAGaqBid78m2WK5UKyhyc5sQ3ADxLeOannTNVvtd+GkTMogjnBq8pk02vUqFK+9EKZ2sy/heCi+9sWfzC5ykkyCxUdVPUo1Ss2oWE6e7uNoDrGnU54EVdXCzoBypJ4IPHWTe3onbrpTWUAr1dzJK+LvCWysMjGJ7tnz/srt7XHkiGnjC+Z8xJ/GZgwrruLuEaw2+NDmobzAtjO6XprRv8gDNJ6xHOOAkg2lRgBg/xZtHHD8NsQTqIQUH2n8H+TjrOqi+tbeNmLH3dfiVPqqXpgbJxmcuxJPiRkaNaflhLtfTGSC6G1jZNTRM0CNuTXMcrY1efJEQPVV4K8RHNAK+1rd6a1CL9t6vjlUg3vsKWJFUikDoORwnbXeMVppVleISvAWMYE4rRR/+eTbtPM+38UyrlsCnCgmLvMhJ/KoqIZ8eaCwT9uE3NmG0M8HPdGFOnKOHlH0IEGwJYjwE1N5FvI/dDtUmFNjBcD0OuAAnLfMA9UyoJ91/Bls5eLGcBUUtTNWcvybdmTIGP6FiLqUkzNsoJxcn34kPiiGY8KQOZKh4h6mbzOtRndj9heQa2B4qhvCdhqcSwzxB7ZrV+G4s1rW2LE6PxDKYMzAteegtTAbGrr/8CnS9WgsHzE4UvFBtlF2zrbHl7AzuUixRk1vHKuKvW7wHj42z1qldSLKoBdojA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,136 +141,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 13/03/26 7:46 pm, Sayali Patil wrote:
+On Tue, Mar 17, 2026 at 4:02=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
+e:
 >
-> On 13/03/26 03:35, Andrew Morton wrote:
->> On Thu, 12 Mar 2026 17:55:27 +0530 Sayali Patil 
->> <sayalip@linux.ibm.com> wrote:
->>
->>> Hi all,
->>>
->>> Powerpc systems with a 64K base page size exposed several issues while
->>> running mm selftests. Some tests assume specific hugetlb 
->>> configurations,
->>> use incorrect interfaces, or fail instead of skipping when the required
->>> kernel features are not available.
->>>
->>> This series fixes these issues and improves test robustness.
-
-
-Hello Sayali,
-
-
-I still see, below test failure. Apart from this, everyting else is 
-working as expected.
-
-
-# # ------------------------------------------------
-# # running ./hugetlb_reparenting_test.sh -cgroup-v2
-# # ------------------------------------------------
-# # cleanup
-# #
-# # Test charge, rmdir, uncharge
-# # mkdir
-# # write
-# # Writing to this path: /mnt/huge/test
-# # Writing this size: 26843545600
-# # Populating.
-# # Not writing to memory.
-# # Using method=0
-# # Shared mapping.
-# # RESERVE mapping.
-# # Allocating using HUGETLBFS.
-# #
-# # rmdir
-# # uncharge
-# # cleanup
-# # done
-# #
-# #
-# # Test child only hugetlb usage
-# # setup
-# # write
-# # Writing to this path: /mnt/huge/test2
-# # Writing this size: 26843545600
-# # Populating.
-# # Not writing to memory.
-# # Using method=0
-# # Shared mapping.
-# # RESERVE mapping.
-# # Allocating using HUGETLBFS.
-# #
-# # Assert memory charged correctly for child only use.
-# # actual = 11 MB
-# # expected = 0 MB
-# # FAIL
-# # cleanup
-# # [FAIL]
-# not ok 12 hugetlb_reparenting_test.sh -cgroup-v2 # exit=1
-
-
-Regards,
-
-Venkat.
-
->> Thanks, I updated mm.git's mm-new branch to this version.
->>
->>> ---
->>> v1->v2
->>>    - For "selftests/mm: ensure destination is hugetlb-backed in 
->>> hugepage-mremap":
->>>      update FLAGS definition to MAP_HUGETLB | MAP_SHARED | 
->>> MAP_POPULATE and
->>>      used it for mmap() calls as suggested during review.
->> That was a really small change (below).  It's better to wait a while
->> (half to one week) before resending an entire series.  So as to
->> hopefully accumulate more changes.
->>
->>
->>
->> --- a/tools/testing/selftests/mm/hugepage-mremap.c~b
->> +++ a/tools/testing/selftests/mm/hugepage-mremap.c
->> @@ -31,7 +31,7 @@
->>   #define MB_TO_BYTES(x) (x * 1024 * 1024)
->>     #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
->> -#define FLAGS (MAP_SHARED | MAP_ANONYMOUS)
->> +#define FLAGS (MAP_HUGETLB | MAP_SHARED | MAP_POPULATE)
->>     static void check_bytes(char *addr)
->>   {
->> @@ -121,23 +121,20 @@ int main(int argc, char *argv[])
->>         /* mmap to a PUD aligned address to hopefully trigger pmd 
->> sharing. */
->>       unsigned long suggested_addr = 0x7eaa40000000;
->> -    void *haddr = mmap((void *)suggested_addr, length, PROTECTION,
->> -               MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
->> +    void *haddr = mmap((void *)suggested_addr, length, PROTECTION, 
->> FLAGS, fd, 0);
->>       ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
->>       if (haddr == MAP_FAILED)
->>           ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
->>         /* mmap again to a dummy address to hopefully trigger pmd 
->> sharing. */
->>       suggested_addr = 0x7daa40000000;
->> -    void *daddr = mmap((void *)suggested_addr, length, PROTECTION,
->> -               MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
->> +    void *daddr = mmap((void *)suggested_addr, length, PROTECTION, 
->> FLAGS, fd, 0);
->>       ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
->>       if (daddr == MAP_FAILED)
->>           ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
->>         suggested_addr = 0x7faa40000000;
->> -    void *vaddr = mmap((void *)suggested_addr, length, PROTECTION,
->> -            MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
->> +    void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, 
->> FLAGS, fd, 0);
->>       ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
->>       if (vaddr == MAP_FAILED)
->>           ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
->> _
->>
->>
-> Thanks for the guidance. I'll make sure to follow this approach from 
-> next time.
+> On Thu 12-02-26 11:21:11, zhaoyang.huang wrote:
+> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> >
+> > Nowadays, ANDROID system replaces madivse with memory.reclaim to implem=
+ent
+> > user space memory management which desires to reclaim a certain amount =
+of
+> > memcg's memory. However, oversized reclaiming and high latency are obse=
+rved
+> > as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
+> > when MGLRU enabled. Besides, this could also affect all none root_recla=
+im
+> > such as reclaim_high etc.
+> > Since the commit 'b82b530740b9' ("mm: vmscan: restore incremental cgrou=
+p
+> > iteration") introduces sc->memcg_full_walk to limit the walk range of
+> > mem_cgroup_iter and keep the fairness among the descendants of one memc=
+g.
+> > This commit would like to make single memcg's scanning more precised by
+> > removing the criteria of 'if (!root_reclaim)' inside
+> > should_abort_scan().
 >
+> This changelog, similar to its previous version is lacking details on
+> what exactly is going on. How much over-reclaim are we talking about
+> here? Is this MGLRU specific? Why doesn't our standard over-reclaim
+> protection work?
+Here is a previous test log which shows a nr_to_reclaim=3D32 pages
+proactive reclaim ended with nr_reclaimed=3D394. T.J has explained the
+reason for no limit over nr_reclaimed when !root_reclaim happens.
+
+[  485.100981] sc ffffffc08b963ba8 memcg iter ffffff8086535a00
+nr_to_reclaim 32 nr_reclaimed 0
+[  485.106927] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8086535a00 nr_to_reclaim 32 nr_reclaimed 127
+[  485.109652] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff80744e1400 nr_to_reclaim 32 nr_reclaimed 127
+[  485.112255] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff80744e4600 nr_to_reclaim 32 nr_reclaimed 127
+[  485.115766] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8150306e00 nr_to_reclaim 32 nr_reclaimed 191
+[  485.125635] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8157608a00 nr_to_reclaim 32 nr_reclaimed 191
+[  485.131366] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8157754600 nr_to_reclaim 32 nr_reclaimed 216
+[  485.136688] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8157752800 nr_to_reclaim 32 nr_reclaimed 216
+[  485.140495] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8157755000 nr_to_reclaim 32 nr_reclaimed 216
+[  485.147322] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8159461400 nr_to_reclaim 32 nr_reclaimed 216
+[  485.150605] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8159466400 nr_to_reclaim 32 nr_reclaimed 216
+[  485.158260] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8159460a00 nr_to_reclaim 32 nr_reclaimed 216
+[  485.160819] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8159460000 nr_to_reclaim 32 nr_reclaimed 216
+[  485.163200] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff8159463c00 nr_to_reclaim 32 nr_reclaimed 216
+[  485.171778] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff808912ee00 nr_to_reclaim 32 nr_reclaimed 216
+[  485.174156] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff808912a800 nr_to_reclaim 32 nr_reclaimed 216
+[  485.179110] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd3a800 nr_to_reclaim 32 nr_reclaimed 216
+[  485.181537] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd39e00 nr_to_reclaim 32 nr_reclaimed 216
+[  485.184877] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd3da00 nr_to_reclaim 32 nr_reclaimed 219
+[  485.187245] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd38a00 nr_to_reclaim 32 nr_reclaimed 219
+[  485.189654] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd38000 nr_to_reclaim 32 nr_reclaimed 219
+[  485.192029] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd3bc00 nr_to_reclaim 32 nr_reclaimed 219
+[  485.194509] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd39400 nr_to_reclaim 32 nr_reclaimed 283
+[  485.197107] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd3c600 nr_to_reclaim 32 nr_reclaimed 330
+[  485.201361] sc ffffffc08b963ba8 target_memcg ffffff8086535a00 memcg
+iter ffffff814bd3ee00 nr_to_reclaim 32 nr_reclaimed 394
+
+>
+> > Suggested-by: T.J.Mercier <tjmercier@google.com>
+> > Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> > ---
+> >  mm/vmscan.c | 4 ----
+> >  1 file changed, 4 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 670fe9fae5ba..9d900be478ea 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4832,10 +4832,6 @@ static bool should_abort_scan(struct lruvec *lru=
+vec, struct scan_control *sc)
+> >       int i;
+> >       enum zone_watermarks mark;
+> >
+> > -     /* don't abort memcg reclaim to ensure fairness */
+> > -     if (!root_reclaim(sc))
+> > -             return false;
+> > -
+> >       if (sc->nr_reclaimed >=3D max(sc->nr_to_reclaim, compact_gap(sc->=
+order)))
+> >               return true;
+> >
+> > --
+> > 2.25.1
+> >
+>
+> --
+> Michal Hocko
+> SUSE Labs
 
