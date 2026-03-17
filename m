@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C40FEDA00
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 18:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B9BBFEDA00
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 18:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8A36B009F; Tue, 17 Mar 2026 14:34:56 -0400 (EDT)
+	id DAED76B009D; Tue, 17 Mar 2026 14:37:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 879D76B00A1; Tue, 17 Mar 2026 14:34:56 -0400 (EDT)
+	id D600A6B009F; Tue, 17 Mar 2026 14:37:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78F986B00A2; Tue, 17 Mar 2026 14:34:56 -0400 (EDT)
+	id C9CBB6B00A0; Tue, 17 Mar 2026 14:37:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 64F166B009F
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:34:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35F8413A7C2
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:34:56 +0000 (UTC)
-X-FDA: 84556406592.19.A88CC54
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 78727A000C
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:34:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VJmIiWTA;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA1686B009D
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:37:34 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A3E21601BA
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:37:34 +0000 (UTC)
+X-FDA: 84556413228.30.A7F462F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C08B740009
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:37:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xBLlVrZS;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773772494;
+	s=arc-20220608; t=1773772652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kH19adobjrSUO/rzQzyhecHCH2gBA866CXMqGvmtPjU=;
-	b=W/c/eI6EU9II4ClaPzWYc7vXvSd708c2ocRq2sHZXSGv4Nlorwy4UAmoicvt4IXGPRDWAU
-	wLi9nHTOVWVdlvT9gHsdR8+hVV9yhnFOMMh1fg7LdHtV/QycsqRZHNeJ7Hi6d6xegoTB8s
-	eSczXxdtYnK3Oq3rgTQJdwMc4P5LfHY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VJmIiWTA;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773772494; a=rsa-sha256;
+	bh=X1fPag/Ma0Or3n9BwLwG0BHnymxAfli1gvz6SmhvgXc=;
+	b=s93b0hnTx2zWxTaWThLQaKODx/xBgvwCarsrbCxBPXasHgGmgTkpdroSawers14x2szyr1
+	bD7MM5+QsNuOhwcJBfYm2Hz07WOuDrITlAcjF0fxij5SlE76LZcasUULywntPgdUwyetPa
+	+g6pMDqVeCptpIdT1xa48RFGMeqlWOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773772652; a=rsa-sha256;
 	cv=none;
-	b=ATCFyxoXmaRvxRtSRaVSkUBRarUi1Lzn/eqRb0POlSoCyFWkiUW+M5TfGBZM8YvNK7W/DQ
-	Oyz9j+brWvbxiH3VwdQBMVoTwGtj6WKc2dI7GDjVk7XfBdnnQRa8Zq2pyB9OIhp0g9vOzu
-	5CdXgFeD78LAciT6sM5UXZ2n6Js8e+4=
+	b=G14ShQ+l5HGKmMDJQyhqdUWSLYBSEX41FZ9FdV4J+OHo/5VN82G9HJaD/OVxY7/PYG1JdF
+	+n/i9dnKuqNXxjhquEAlcgJ4oiDzYTIZ86GegtUrIVqeDvgjct7/OqpJBuEPDSlUE00hYN
+	9Wqv6bogoUTpOEACh9xOqO6EsZNZTLA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xBLlVrZS;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D60D960018;
-	Tue, 17 Mar 2026 18:34:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEFDC4CEF7;
-	Tue, 17 Mar 2026 18:34:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7388F4400A;
+	Tue, 17 Mar 2026 18:37:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2CDC4CEF7;
+	Tue, 17 Mar 2026 18:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773772493;
-	bh=RVsjb7gSf8Tl+ZYDVu7R87RYo7eeBrQ5V3crBd21s4Q=;
+	s=korg; t=1773772651;
+	bh=X1fPag/Ma0Or3n9BwLwG0BHnymxAfli1gvz6SmhvgXc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VJmIiWTA0SPyUd6NSFdCQFTKb6GeSYwPjILc5D1E8i7ClalIhZ9mdBAqtzS0SHYYU
-	 At3POUaIk2b3XJJmmlb19kMgI80FrM9kOY8UrTQuTHQe0p2cmad7gzZMCXbMDHBqqo
-	 Cq4rvbeMeBVC4cE8g4+V9vm0ZsVBfhPy9BnerRmI=
-Date: Tue, 17 Mar 2026 11:34:52 -0700
+	b=xBLlVrZSOfM9FPIB0k7xOsujepC5gsf6N9xIoEhu0lP7W7dyGaurgbK030QQFBJLG
+	 uvPeZNqE/I/Hpo6HjsIoE2XzGgo2h0w/sf9uQIYKx7uXY/WKXYI1NsikK3REwoNNky
+	 L+q5URynkmWbhbeuvVKmsijD61veTJYwQWSeDvI4=
+Date: Tue, 17 Mar 2026 11:37:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
- checks
-Message-Id: <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
-In-Reply-To: <abld-ilvMEZ7VgMw@redhat.com>
-References: <20260316151956.563558-1-kartikey406@gmail.com>
-	<abld-ilvMEZ7VgMw@redhat.com>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Subject: Re: [PATCH v3 0/5] selftests/mm: skip several tests when thp is not
+ available
+Message-Id: <20260317113730.45d5cef4ba84be4df631677f@linux-foundation.org>
+In-Reply-To: <20260317094419.1429259-1-chuhu@redhat.com>
+References: <20260317094419.1429259-1-chuhu@redhat.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 78727A000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4wwfgamn7cpxhr4bk1se14eeyntwoy5m
 X-Rspam-User: 
-X-HE-Tag: 1773772494-665008
-X-HE-Meta: U2FsdGVkX190pljr7lyP/v02hpi1QAgng73uLmHKEAOZ1d4HzC5dqu4bNTqe8STW748NK02+Gk5mjHbmJqY9/BtzrNtpNsRB6mU8I/vw8ak8bVuEZnJuOLNtIGB9mgAdy/zbSnq4ziS5lzak1cxxylFbNN0ly0nNfeU+tF7mYaCTdRd1P8aHAkXGAprFSS8KK+JlsKZlsmTHcnVGOu16ViPZtJpWYqpvP7CuRfzmh/LZx/NLPLUf01ro05JxYiUH30JREFl/Bk+h4x20jH8FkaFMOQ1S3kqj4QAeClmqsfvR6p2VFxIjNLPbA1kgxmBQT0E3TLhp2PIMYaSH6goVrYKIaupcs/dy8eLtpxCC6vHPaGmcuB97iHIP6bSQtvMI2OgVjBqsy9gMFI92+F19ZqEosL1lG9ijdgo5pfEtsljd0QIiS298Zn0cfleB1EKanGUvctD2iobMpxxxJoMRa8UHkJB9p0Uho483OFXdH3SDqDzzyGF9XlRyuu+2e1EG9at9nG+zIslk09BN5TA4coZwYgXnrNPWUQSSDnmS6ziSLvpYZMYLomIVLt3++7M1SHq3z5X0WtDaH3vuJ2gvtb4ABUQmdyBrkDLfmSRbTtG6kOTAItwj901acWCOWvtmoZocs7dabFjesZTffJpy90rnbzSBHudW0yDLIs4eN1U7zlNN65nC+xHELrSTsQYPiX4qQAtWLb1WGhZLSuheXfTXgOPF333yiuke1j+rNq5ZPvTQXGOWXpNUypK1jgFhCcMVVAnmIUSGH9VuS0p14JI5+RUlK9qpYs9+2Z2O6FEg1V3hsodZvcLsStXtjc+ywUAqmmorilwHkLepxhVb9baEvJ2y7xOlIxygqWY9EHvtv8O4lVMPPxsR1poCDuuyJ9gayKmbBOWaYIZB5zvgE2X3ggEWhhS4uJ2EZW/jWBdiv0aEykPam4llXGQB7FG7FXlKOSYsEDE1DeeSkKJ
- Qyrm1EXC
- DiGPfPtp+hkhaSDYzsGcTsm/6H6XnhYon9arYc/hVPFsJe9uvyXc0pjrzEhq7/I04knZ1PysNfDOIDxJKWcd0+rzeZ5r8f9lIvZlowtRD1hwmn1deyScMYGa5vtuOGbMh2ky/9b2SxKZI0Qqne4bhhPPgxrN3XYVJUGVwSgQoWgdKI0nES3y7gWZgcC6h9WVYvBX/994M4o7BMFjrbf2wCXka9Z27YrpEglpZCRCXneRqfkoTZRxcg7Fa8UoBzERgNeBL5Niu+TSa6woOslyuf+uCi5/lETmBmZula+6skxc+NmiSS3dSI/rfdBaF05hAhKPie/Ex/8BZbxcSZGuS8Sgb0szUpHi5k5NYXEBA3alaEg7EWULga9brqK5VSnPYKKEy
+X-Stat-Signature: d8n9a696qfbbozozbuefde1iz6otzk11
+X-Rspamd-Queue-Id: C08B740009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773772652-118292
+X-HE-Meta: U2FsdGVkX19BD611Divbk/Kveao9G4tgNGCzjcy+BozAH56m/kaocBq8/DlfZ7ssmThayCnpFh37vL6ZFqNIu9qCs3LED+Rr5l6XMCFXuevULe/Hp+oNxPaVVapeM9ZBPmFiX6/9/ERXZ1tPHdV6URgxWaPyX6B8+a8dyt8EjdyRoNBwtBp1wYt2jcpCZ6B3nBMu1Ykif9eFaZaxv0c3LQTUly8lH1SbCbjmfsu63LXDkllYQSVtsxSEqRbQXGDNmuSAMc/MqC/ZuIXu8PSzL3hjcqrqRB5r3XrYD3EiK1Oo4+as02MO0hPQNkws5bBQx4hdXl+hEA2yq2K0AImI6NexpzJa6uY1ZtT5bdTvS4R3LxbzLr9Y33HGLy3EjRFjQkJ0HGDZQt3vb9CyUibo7Bed5KJ6l7rA+74yB53rjBasRTR1DKWuMiTIoyHiPGvgNNs2HH3SXsjTssCO4gF9hZcTdwdMxZGzs1RNQKtWIEbcCWaeCuSiB8i9fx0QgBiL6jFowdjl2P76Mf6VUwyIB4YEfkePp6LdEF1QJomIuIpcYzZr27MJ98hZ0z7j3Kk8/Z3txBPHqm4piHKPptar1SJbSl104H6eaq9bzRX6PYajB1IJ/hC1hlwvHJQi0VIEo4XpTX7muLPzau76noBWf7IGO9/j7W7Ycj7nr6j3Y+E3oKpbd+e//ajh/UEiYr7p2/KjM3PDfJb7NwNrwHUkdWp01nSCiaox+aRuSnywVplqsIsBaVKzHaz2M3KIoMdVoQN6dBe+tkhtlj2eXQHmRf24VYyVvSSL0WEIoA6Prdb9EuHs2JNyXuM81RaFUU521s4dcZyLF13oEI+TlgXA1ZUjcDUYMM5JYERJmZiLMJcCXEI2EPWf+HpKBWV+ONGvPX9x7+sIqTSGSTg+jf5r9DOuaMgZq41HrxWaF5cLhQthXbDl/j4C5r828tqWx7/D/4EMG7ZjHZByP95cHRx
+ 2M1+5Eoc
+ 5+UCqSh3/jWpBcTI3JPEJR9XEWpfhc9nYqMWcezu8OAisAgN2hsQ5zqDuVyFYkLzbk9P6/AHGQH7ol/731PJs2Ema468TgF4APMc/GYdP+OR5kf+Tfr3Rrw25/rfVaMh6hhGjF4kPYkU2THGjwXJazflYMP8rYf96lsnzhhhfgFCTmLCUFj+P86Wpo3vc6q2CiqcqmNQociK2avRR5iB3CHPIyqxEPhGJ6zv17/69vfJVyTDj37340ejk9bE1cHhqIN7WcnttwMheH6NssaYaBJ1Scy/GQ/Vz+n2m8BuU7e+R3RhUXNRv+9KUpFToEpW1bMHA7CZ5/kW69sQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,17 +94,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
+On Tue, 17 Mar 2026 17:44:14 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
 
-> Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
-> argument of do_notify_parent() must always be valid or we have a bug.
-> 
-> However, do_notify_parent() only checks that sig != -1 at the start, then
-> it does another valid_signal() check before __send_signal_locked().
-> 
-> This is confusing. Change do_notify_parent() to WARN and return early if
-> valid_signal(sig) is false.
+> There are several tests requires transprarent hugepages, when run on thp
+> disabled kernel such as realtime kernel, there will be false negative.
+> Mark those tests as skip when thp is not available.
 
-Sashiko has a question:
-	https://sashiko.dev/#/patchset/abld-ilvMEZ7VgMw%40redhat.com
+AI review asked some questions:
+https://sashiko.dev/#/patchset/20260317094419.1429259-1-chuhu%40redhat.com
 
