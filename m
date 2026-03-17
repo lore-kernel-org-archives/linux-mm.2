@@ -4,146 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 014CDFB5EA6
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 02:40:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08D60FB5EA4
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 02:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A95F6B0088; Mon, 16 Mar 2026 22:40:01 -0400 (EDT)
+	id 173C96B0005; Mon, 16 Mar 2026 22:50:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57F786B0089; Mon, 16 Mar 2026 22:40:01 -0400 (EDT)
+	id 0FCFD6B0088; Mon, 16 Mar 2026 22:50:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 495856B008A; Mon, 16 Mar 2026 22:40:01 -0400 (EDT)
+	id 0124E6B0089; Mon, 16 Mar 2026 22:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F33D6B0088
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 22:40:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B804C140456
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:40:00 +0000 (UTC)
-X-FDA: 84554000160.12.857FBCD
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 484E51A0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:39:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=nVrnEhTT;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf19.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DD0DF6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 22:50:56 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74D75B9334
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:50:56 +0000 (UTC)
+X-FDA: 84554027712.16.F4C62A3
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C5254C000B
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:50:54 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WF0oJIBL;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773715198;
+	s=arc-20220608; t=1773715854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WAyxlZOb18faDii1hcBxce5sODl/jY3fcpYkQYaZOtY=;
-	b=QkJ8VfI09ojzu5G0LWpxVr1Dqaq+4Ys5N376jCSG4Cbm6cxqtE96kRd/w7dln+HdDvIL2C
-	3gJ7k30PU4+dEmcC28f1ekJWAPXg7pxwDZy3Ucs7MSGMnQfJHSKqCZZLFuHGSCr6BSetQm
-	jsTriTDk0XZxThXlUiZ38Ubqsvbyr8s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773715198; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZrwP9vzVGfaNwMkvnLtT3luNTNC+jo4F7BZmDmDkAs0=;
+	b=rjECZaGneT64btR6jnKN0S9rZKts9LPLOHP4Eds+zZ5Nwrg79E2Hx60AMuf5xomYMntUOg
+	yMgU1pPL5NJD+2av7dtOW57+dXAqEug5GSiDqpuGzI4ic6Umh2+LM6abqAGZzoZckEsB2Z
+	uiDM4YTyF0tReJfR1Uuz+AIeHE6z40U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773715854; a=rsa-sha256;
 	cv=none;
-	b=kVvnyL5tRhGCY/ZHDmANlm82e26IYQZdEuDpAlRbBNlyOzqzR1gKTn5lHkyrLHQhrs1rYz
-	DTNbLbcTYwEvcHAmUs2ucRJfJm7JiAmq6UdbL0m5Z7zkReuVqrsepXnyhUDPwx3CtuCE/K
-	zn9PPQPJlsbstX0+pwMNDe5Xc7h/TpQ=
+	b=z9brwFyaD/KKMPfma5WJddys3u2ZZdZn47giyZBT7uww2lI5XD/R4PB12TrR+2mVxTRL7P
+	ob84TDRuROyeHXKjV67ohTdFnkN4lV1iRZewJgtchXcDtte8hJ3DR/xFsDQuEK6c7tz2F7
+	pPKp08pJRAhs4WDvGoi9RqZWUps5XFQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=nVrnEhTT;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf19.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GFmO7Q1067860;
-	Tue, 17 Mar 2026 02:39:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=WAyxlZ
-	Ob18faDii1hcBxce5sODl/jY3fcpYkQYaZOtY=; b=nVrnEhTTLbk/Spff2mRY4U
-	Bk1xD4c7IRsuUQn2vkQWWQnsTW/n9CztKIRqpCqgswr1gAN9izU/AmUNyr52krq7
-	Ebjv73kCfCp7xk9eKMg6LYkMGxzpLeIpffM6NWo3IyGvQeEvApEQ9bDSBAJq7/CP
-	rh45PAGE4cd4d8eKVA7j+ks402Bw2yiQLotdYBs52KJN62oiR2atI6uHi9TxLj5J
-	OdH+C5rgBXaTz7snJSJf4qXaj95VxdkqOKTARCFoApbhPLCiDoLPYef7WRdP0Fma
-	q/leTHOKiVDuZ8EtsU1N4KXXIHZ/JZll9xoTl88NeNZRiGiB882uJ3B99myaGbBQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybs2pa9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 02:39:50 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H1NC99028708;
-	Tue, 17 Mar 2026 02:39:48 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwkgk77u0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 02:39:48 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62H2dkFp58327300
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Mar 2026 02:39:46 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AEF492004E;
-	Tue, 17 Mar 2026 02:39:46 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E8312004B;
-	Tue, 17 Mar 2026 02:39:43 +0000 (GMT)
-Received: from [9.123.14.142] (unknown [9.123.14.142])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Mar 2026 02:39:42 +0000 (GMT)
-Message-ID: <161b024f-9022-45c6-9808-815b8ea83bd9@linux.ibm.com>
-Date: Tue, 17 Mar 2026 08:09:41 +0530
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WF0oJIBL;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-79a3ba1653fso17445077b3.3
+        for <linux-mm@kvack.org>; Mon, 16 Mar 2026 19:50:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1773715854; x=1774320654; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZrwP9vzVGfaNwMkvnLtT3luNTNC+jo4F7BZmDmDkAs0=;
+        b=WF0oJIBLaQx4QjvqMOifItQVyzbnXWcQt1L88DKQUr8QPBd5AD5skfJzBE1rv/Ce3y
+         F6U/k6C/iu4s8Tv+fCllL7tzt0Qk+XFwXfT0mu/NhWUEuHa/9zi1X+/nc6jl41anbt43
+         F8Z+IA/8hCqdjL2KK50qEgrmv+PPUOcjYeaDukcDyRd+VFf7QQ5iYq/wd8whVy4TR0o0
+         jBKI9ncUGxs4L2ZJ4nAXvAPFbD++dYHSCTVdwkzGWwDdyTJhgmvvPo2PBkd+ofvQsD9/
+         L/lWtEY3efFZbwPGhVS//LqSad1J1SwHd9lwG30jI/ocneuZb9zYzPwpu36vKi9Qp8VJ
+         5IMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773715854; x=1774320654;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZrwP9vzVGfaNwMkvnLtT3luNTNC+jo4F7BZmDmDkAs0=;
+        b=Id4GKUg2/U8B1/VDDOMljUuCHrYo0cvld97dEOkeNE2EK9nS0wwPFR9jC8mcfie6P3
+         Oyhe8W8wi2T9xj0gsnxY2ytfhR4XumYZINbaGBQH7VNLrjpXVWllph6DV7gstVMpUObf
+         uYqgpqeWEVEBGjsUigQtjx1Q0m10Pqbr1ynOc8CSZJX84rFvBO60AnS2OD3QvPQXGPtV
+         17yFn70unIYq9/7rlTcaIv8bv7oEw3ZCoyCbYxWHDgxMNoA7KBV1z32JXGVde+yLVgm7
+         yn1aYBx++bCxZ9QZUKz9CYfiRQDd0v60oLz2qLLHp5dx+f+UKcA61++T29RiVGMA/6jp
+         uH0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWQT1K73e6RDPtLOLyucAshRFsbrCE2RpzYkVRGbs3zobhM3uP2uT8W6KCxGqpGxZW5ns6DRS6Qsg==@kvack.org
+X-Gm-Message-State: AOJu0YxgQe+LKxRnlSi1W0uFbrJsKtfFPC83hfmkSJ8XQQbV55rnduFm
+	LI62X2bdLP0e/DSOAZZZ4RXuxN6HdCnS6+6lCzgvX+gVPP6hiyHrPL1/oEePdTmqNgg=
+X-Gm-Gg: ATEYQzzInBSLeNp4gCyFGoZopigQ810tW8/7PXSwdibXXAi1xQZDGCDv/s9iAS7skQp
+	9Rgn278M0jOCaKGzmThW4cwOfSPTnRyfsDPOe/vhktB1ZUOIsOFnpnhjgqx894NqxPpjEszZgcY
+	rtri00kA8OArGgGTvPocYSxsCby9n4jYwkrFI3uk73uTbaGFtO2wwwiKiPQcyIwn22RYCD4wq3J
+	Khw12I25kELQq7ThbQwePZgi7am7C9CjK/wzkki7wmHZOl8t+Y4bfJMSjtKxWwFktgAHUpUCPRH
+	/9G1U9QpMGkPXTnnfGfLed10WKUZGPZAzFpebozCGK4cZTPdZC9F3Vnv/h8Tgwud1hhgC1nq6n9
+	Qyjy3+jm5zq/mQbwyFnLkuFls+6g1oUYpPl0+7bqjHB37OJ0r+FpqdKFKpZg1K91u62/N6EbSX5
+	TawnkCr59hpzfMEhzLqU5FQg82e2bJT6EPLImVZexcdPlc+WFLwrOLrdVpxHDTK86XLfwNpKewB
+	my8bSj9k5tqY1tWhEQq0kTvZlBQpaHKEMLVc9NQHYXQS85KSg==
+X-Received: by 2002:a05:690c:6d81:b0:79a:668a:b6e8 with SMTP id 00721157ae682-79a668ad14bmr3958707b3.61.1773715853738;
+        Mon, 16 Mar 2026 19:50:53 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a5a866c85sm14951757b3.35.2026.03.16.19.50.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 19:50:53 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	pratyush@kernel.org,
+	linux-kernel@vger.kernel.org,
+	dmatlack@google.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/6] liveupdate: Fix module unloading and unregister API
+Date: Mon, 16 Mar 2026 22:50:43 -0400
+Message-ID: <20260317025049.494931-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/15] arch/powerpc: don't initialize kasan if it's
- disabled
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com
-Cc: linux-mm@kvack.org, andreyknvl@gmail.com, ryabinin.a.a@gmail.com,
-        glider@google.com, dvyukov@google.com, linux-kernel@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, x86@kernel.org, chris@zankel.net,
-        jcmvbkbc@gmail.com, linux-s390@vger.kernel.org, hca@linux.ibm.com
-References: <20260225081412.76502-1-bhe@redhat.com>
- <20260225081412.76502-10-bhe@redhat.com>
- <71921cca-b890-41c4-93e9-957d3f647ffa@linux.ibm.com>
- <0bc30137-3f1d-4a4a-8573-8f26866fcc26@kernel.org>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <0bc30137-3f1d-4a4a-8573-8f26866fcc26@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69b8bef6 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=20KFwNOVAAAA:8
- a=voM4FWlXAAAA:8 a=VnNF1IyMAAAA:8 a=5rPG81X-PvUkzTHTjkcA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=IC2XNlieTeVoXbcui8wp:22
-X-Proofpoint-ORIG-GUID: HWoExDelsoEK2cbRMVIpcCVRBxC05kk2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDAxNyBTYWx0ZWRfXywbZf72OQQWO
- 6dqxsntbcC6njezyY+HUqTo0rMFEcHOa573IhojGtmtl6Ek/h9rDkQ2yRH41g07ro4PtNLNlOC6
- bI4CP+Eo7cJqO30z4F4OpwJRb7oS9s2B+PdrBZGIhhBwTfWdoX+mdVUGUIDK9tPDGQazj/yuJTA
- 8yPRocQXGhSyuDnhQ4sEbwI/SIqoTBAF+OwumN6W7cofg79urUof1tkhBjgR3ss/tzvou0Gkwsd
- kjOMcJu1j/1arCqKQXLU99t6T+WhXTTVqGlTTLue2d9D5oEUDDDzvtgbq8qOG3+dpMjYEFX37y/
- MF9157RX5GHtISXonVIOAQoXt0lzPq516Jmwt2G/r+aSNaAAKuzXUoWGFtTXrZT8xJszLvgcI2P
- Fo9Fl3eSCV46HHhRmWODojBiOnxk4jwwWvyrUxIBwQYEXgzcNqAiNbnyKMgsdgR+EmKOgA328e5
- Ky+m+8qMEGSY1KVS2Cw==
-X-Proofpoint-GUID: ey18HYg4huOLB-DOzeSP3hWnR40_py-b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_06,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603170017
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 484E51A0005
-X-Stat-Signature: h9bhwmkgccxu6ot77mdwd4x4r86qtuax
+X-Stat-Signature: jyaspdk3omqutxugr1aretag84t8mmbi
 X-Rspam-User: 
-X-HE-Tag: 1773715198-11707
-X-HE-Meta: U2FsdGVkX1/l8ZaTSn0ULXnX1WyxKmOKWS332nDSDG9jIJN/MBnd2KGAt9dxQNx77WhhsCNrMIV+WFciXoYyzNMh/hOTuKUMZ3HKckd4z4vhbi0IkMX8dHpx/L312GS4ccuJuxYJZrWBFpLdCddrLK2k7/6AKns8baDJwYg37E7kOFpmpZL5oYO/2jYWl/Gl5PVPQA1qGieCtUJ17BvhRJIB45YChxObnQroDaNNFNe7cChaO9XjMaA+BOKISVnOSCSc+/wCYNQjxdXIwETIhg19/h7/b0/W0zmzfPubXt+F9lJj+7OFO7G3z/pfGEJCAfVx2x5ClLSvylnCzwZ+rwxyb8YVrvqAgI/FeANGAAmJnOUn4kYddAHmznEOiVEOQFS4I6PMQgiA7Ir+vIZIkNUwxdXMv4JxxeQy1JmkW5K1XDX1xXQ4m9QeROcNAabXZF+1a59QEWZPbY+t2FUG9kqyJog35q1gUUIiFlVQBCEBk2f/VFoYY+lMsoo04MJs9N0l/tT/5J0EaTZG5LVhBuy9nUYBNJEFcXvJMRklvrq9aeoM8SzhvE+LmexoPrj83OtBGAgKYBCqo603wHl8sSxWXFenzeUdMD2pfyz3pJZMykdhU72QAaF9hxyfcBQ04IE5zMJTUI7nC6IkT0ehT3Q2W86+N9zWozCmt9vjrIAd5q3JBF0P2fBqPFCi7xERao1XGzU+wxMtwmZ86G7wuaCl3Ddecq16y8uGGtRJob2ArP3Ni/qrgp4X5TsFKur3q2RdSKTAJPjy8Ukv6xi+U0EwEpXdztNWhPnLdy/gduY4elq6IX6l3QezDWZiwjGuncXmzKjRCphH6tLnOhj1P/D995Ubm/Rrj2aGuChNPnL7Cj+h9sGI9cvG5wt6pa1jHDVOVjpJKOy1x2tcfpdbcfsCb9YVPMKhgwFDgFP0RP+WOQOhF9g2/I1AQcUkKKy97p1AgVIakV3p6bAQSbf
- aZh4NWLz
- zqwvPiNL0GCCaIPHrCz+u39EmVOVruN+16zD+9tgsuCXP2Quk+aij+IWJ7fo3UBU+obz4YdPqan6NVfXT2Y78KL6OZaWXwEAxxp49/57reQWNdoFqjW0Cmm987fdofBJ9gmUU/N2IZwEKTHAcijsQ/MkAlLtQDqBj6uWmPiDviKToAQnrX/Os9w/92wBDwWWxetvzja4red+PcDg6t44lP4PQpgRT14RQv03WP/PVJM0L7b7gFBpCOf5IvWucNd3LbIfyEeTAOIcNez3w15TaFqq++XlPaLiiKjA+3F1ePEZ6a0a/adeSEQisrCg8g/PyfjV81ehgi28/xmbHFbXgdIxiz4rmYJJBQ5RN1Zw7C0pDp9nkUmjtxOEnOSB4DiDLVoFB4dbM+e10DlhrBKjJEYVtvoKF0B1f72vngSNOiS2TsUP0nEUiJ0V7ww==
+X-Rspamd-Queue-Id: C5254C000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773715854-143446
+X-HE-Meta: U2FsdGVkX1/XfQppCV65s9S2UTzVX3f+GMp/aIdDQvRn+LCgY+Jcc7k4/9iI9VJhTDdpC5M6vkKD8AMJwR0OluAxEc+ohFj4yEkkDidjUsCGkVyI9hgmMHv1EbR92b/oattUJdg1ZoPdrjnrUpLUBgBQbjD1Zbhnybf+YqsjLmjkxXcfE+5eV2/+1qBilU4F1eafGcRAEQBCor5OVy9j0B/opRv5AzGYzjirqFkOSa+sAPE8dA+ufXpLr9My9FrBxM5pJitAUPVWLyc6AJWbtLDSgmJoUxEIkCv3Jpf+ofRa6BJ2zm7i6X+fnruq2/LOzysE7qIEJVOIgcH16QzkbiiteCPwf5n3O1/3qsw7i+PFMWsT4x8OK51f+otUhYFlC0WuAHFCcUlO67lO1P2DaJvlFyC4+mDXpWmCSlAauwMeyN1O0JDKozAUmyjnQtPpnC/fpAJ6RDwCRWUG83/1uKpne26brrP9KhtwHt++cavFeQqy049bf3dUefXaYW8A4OY6VO6QcszkZ1E3ji8/+lVV9hb/y+MYagO9SoePDywPUWUUG0loAD+GF7EV1Op/Ch9YmJaovugdq5y3jLsd4+yKU8ukJC0/jkBiUM9f33cKoJTzwHDxy37vQB/6WUbty3GdU+5N7s6Q9s9dKSCczr1GJDGPg+VhS9VVJI0E4A8AMXY7ccvNKjVKdD34pz2UDVTd3R6+m+FnmV0FKrdyfhECM8Qphdb8JgTlMsSzSftjjhkI3q+N5paKXfPdIsIygskmo5jvVyEhtpmd5No6n2ZAunbZC9Ye7nuz70D5HldTj+y81If+sF37p0pjNjOq8qaK+wH4BbT33GDG+vgD2HsNm9c7YQ3/PZG4Ni9qgyScCPfhGA4vfmYnAcd2JxQRLZdM53fquSBgNhsM858f8zlyVcrhI2wEBIeOkafXuhcCOiajU7Za6FPFrYHYkXHPToBFyvLq3iePIP+4k5N
+ 126JGBv5
+ UD6kqV3yw3P/2GjSFg2B5U+uEUMoek//CLICnuYSPEuKHKoOiEREvZeGoRgnpZQi28dkq2zA6T4IqO6f7mgZeI03yISczDEsICoak7qdD2RPL97lvXVQzqRg7lsNNthEVJgNxeXIxTqL4Tq4lrko3U76N6UUBzLK5+H0NCZ6QHQ/MzxTiO+7vtceZt5wDbF0JZiwuk2ktET8zD9GEe53kR1uyVpn/6qjR+Qzq5ywnGnKy+BnqIJhSWpCmQzFpp6MAh6XcoaYzfaw/F2dJOOt376pgeg4ObcUIktAbJcCeFFktxK3t3VhasgC9XF7aVsdyh0Kn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,111 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This patch series addresses an issue with how LUO handles module
+reference counting and unregistration during a module unload (e.g.,
+via rmmod).
 
+Currently, modules that register live update file handlers are pinned
+for the entire duration they are registered. This prevents the modules
+from being unloaded gracefully, even when no live update session is in
+progress.
 
-On 12/03/26 16:53, Christophe Leroy (CS GROUP) wrote:
->
->
-> Le 12/03/2026 à 12:12, Sourabh Jain a écrit :
->>
->>
->> On 25/02/26 13:44, Baoquan He wrote:
->>> Here, kasan is disabled if specified 'kasan=off' in kernel cmdline.
->>>
->>> This includes 32bit, book3s/64 and book3e/64.
->>>
->>> Signed-off-by: Baoquan He <bhe@redhat.com>
->>> Cc: linuxppc-dev@lists.ozlabs.org
->>> ---
->>>   arch/powerpc/mm/kasan/init_32.c        | 6 +++++-
->>>   arch/powerpc/mm/kasan/init_book3e_64.c | 4 ++++
->>>   arch/powerpc/mm/kasan/init_book3s_64.c | 4 ++++
->>>   3 files changed, 13 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/mm/kasan/init_32.c 
->>> b/arch/powerpc/mm/kasan/ init_32.c
->>> index 1d083597464f..0ea2a636c992 100644
->>> --- a/arch/powerpc/mm/kasan/init_32.c
->>> +++ b/arch/powerpc/mm/kasan/init_32.c
->>> @@ -141,6 +141,10 @@ void __init kasan_init(void)
->>>       u64 i;
->>>       int ret;
->>> +    /* If KASAN is disabled via command line, don't initialize it. */
->>> +    if (kasan_arg_disabled)
->>> +        return;
->>> +
->>>       for_each_mem_range(i, &base, &end) {
->>>           phys_addr_t top = min(end, total_lowmem);
->>> @@ -170,7 +174,7 @@ void __init kasan_init(void)
->>>   void __init kasan_late_init(void)
->>>   {
->>> -    if (IS_ENABLED(CONFIG_KASAN_VMALLOC))
->>> +    if (IS_ENABLED(CONFIG_KASAN_VMALLOC) && kasan_enabled())
->>>           kasan_unmap_early_shadow_vmalloc();
->>>   }
->>> diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c 
->>> b/arch/powerpc/mm/ kasan/init_book3e_64.c
->>> index 0d3a73d6d4b0..fbe4c9a7e460 100644
->>> --- a/arch/powerpc/mm/kasan/init_book3e_64.c
->>> +++ b/arch/powerpc/mm/kasan/init_book3e_64.c
->>> @@ -111,6 +111,10 @@ void __init kasan_init(void)
->>>       u64 i;
->>>       pte_t zero_pte = pfn_pte(virt_to_pfn(kasan_early_shadow_page), 
->>> PAGE_KERNEL_RO);
->>> +    /* If KASAN is disabled via command line, don't initialize it. */
->>> +    if (kasan_arg_disabled)
->>> +        return;
->>> +
->>>       for_each_mem_range(i, &start, &end)
->>>           kasan_init_phys_region(phys_to_virt(start), 
->>> phys_to_virt(end));
->>> diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c 
->>> b/arch/powerpc/mm/ kasan/init_book3s_64.c
->>> index dcafa641804c..f7906f9ef9be 100644
->>> --- a/arch/powerpc/mm/kasan/init_book3s_64.c
->>> +++ b/arch/powerpc/mm/kasan/init_book3s_64.c
->>> @@ -54,6 +54,10 @@ void __init kasan_init(void)
->>>       u64 i;
->>>       pte_t zero_pte = pfn_pte(virt_to_pfn(kasan_early_shadow_page), 
->>> PAGE_KERNEL);
->>> +    /* If KASAN is disabled via command line, don't initialize it. */
->>> +    if (kasan_arg_disabled)
->>> +        return;
->>> +
->>>       if (!early_radix_enabled()) {
->>>           pr_warn("KASAN not enabled as it requires radix!");
->>>           return;
->>
->> Should we log in the kernel log buffer that KASAN is disabled?
->>
->> Right now, I don't see the kernel advertising the same.
->
-> When KASAN is enabled it is advertised with:
->
->     pr_info("KernelAddressSanitizer initialized (generic)\n");
->
-> Isn't the absence of that message enough to understand KASAN is not 
-> there ?
+Furthermore, if a module is forcefully unloaded, the unregistration
+functions return an error (e.g. -EBUSY) if a session is active, which
+is ignored by the kernel's module unload path, leaving dangling
+pointers in the LUO global lists.
 
-Yes this should work. Thanks.
+As pointed out by Jason Gunthorpe and Alex Williamson during the review
+of the VFIO PCI live update patches [1]:
+> "destroy" functions that fail are evil. :)
+> IMHO blow up the kernel or something in the core code, you can't stop
+> module unloading once it starts so it is pointless to propagate this
 
+To resolve these issues, this series introduces the following changes:
+1. Adds read-write semaphores (luo_file_handler_lock, luo_flb_lock, and
+   a per-handler flb_lock) to protect the registration lists. This allows
+   highly scalable concurrent access for file preservation without
+   blocking, while still preventing traversal races during module unload.
+2. Defers module reference counting (try_module_get / module_put)
+   so that modules are only pinned when their handlers or FLBs are
+   actively used in a live update session. This allows the core kernel
+   module code to correctly reject an unload attempt (-EWOULDBLOCK)
+   only when a session is actively running.
+3. Changes the unregistration functions to return void instead of
+   an error code. If they fail to unregister due to dangling references,
+   they print a warning instead of aborting, aligning with standard
+   kernel destroy/unregister semantics.
+4. Removes the global luo_session_quiesce() mechanism. Now that module
+   references properly handle the usage of file handlers and FLBs
+   during active sessions, we can safely remove the quiesce/resume logic.
 
-- Sourabh Jain
+[1] https://lore.kernel.org/all/20260303210733.GG972761@nvidia.com
 
+Pasha Tatashin (6):
+  liveupdate: Protect file handler list with rwsem
+  liveupdate: Protect FLB lists with rwsem
+  liveupdate: Defer file handler module refcounting to active sessions
+  liveupdate: Defer FLB module refcounting to active sessions
+  liveupdate: Make unregister functions return void
+  liveupdate: Remove luo_session_quiesce()
 
->
->>
->> $ dmesg | grep -i kasan
->> [    0.000000] Kernel command line: BOOT_IMAGE=(ieee1275//vdevice/v- 
->> scsi@30000070/disk@8100000000000000,msdos2)/vmlinuz-7.0.0-rc3+ 
->> crashkernel=2G kasan=off
->>
->> Tested this series on powerpc Pseries platform.
->> So feel free to add:
->> Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->>
->> - Sourabh Jain
->>
->
+ include/linux/liveupdate.h       |  16 +++--
+ kernel/liveupdate/luo_file.c     | 118 ++++++++++++++-----------------
+ kernel/liveupdate/luo_flb.c      | 108 ++++++++++++----------------
+ kernel/liveupdate/luo_internal.h |   2 -
+ kernel/liveupdate/luo_session.c  |  44 ------------
+ lib/tests/liveupdate.c           |   8 +--
+ 6 files changed, 113 insertions(+), 183 deletions(-)
+
+-- 
+2.53.0.851.ga537e3e6e9-goog
 
 
