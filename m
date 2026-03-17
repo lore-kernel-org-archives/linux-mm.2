@@ -4,104 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AA7DFD8764
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 12:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F23FD875E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 12:59:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B09F6B0089; Tue, 17 Mar 2026 08:50:37 -0400 (EDT)
+	id E2BB86B0005; Tue, 17 Mar 2026 08:59:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9604E6B008A; Tue, 17 Mar 2026 08:50:37 -0400 (EDT)
+	id E036C6B0088; Tue, 17 Mar 2026 08:59:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84FDE6B008C; Tue, 17 Mar 2026 08:50:37 -0400 (EDT)
+	id D18C26B0089; Tue, 17 Mar 2026 08:59:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 725586B0089
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:50:37 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25699560D4
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:50:37 +0000 (UTC)
-X-FDA: 84555538914.07.4F4D0F7
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5BD6F100017
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:50:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q2efUdLM;
-	spf=pass (imf05.hostedemail.com: domain of 3GU65aQYKCO4XcQpkhWeeWbU.SecbYdkn-ccalQSa.ehW@flex--hmazur.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3GU65aQYKCO4XcQpkhWeeWbU.SecbYdkn-ccalQSa.ehW@flex--hmazur.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF7856B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:59:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8FAAE1BD0E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:59:41 +0000 (UTC)
+X-FDA: 84555561762.13.165978E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D6B2E20002
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:59:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kblk4t7b;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773751835;
+	s=arc-20220608; t=1773752379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=80bKeW1QbA+rd5FHvp3sCEKth7+hZO62IH1Tt9MSVyQ=;
-	b=AhaqtT7HHRkiYzim/0YfWhbtN4kxzHUNz97dQPwv53rSKoz5wGrzHPVKwa37hJaXYTkFDz
-	mQuY/kzf5a1oQgmfMUK6TKq4++YZc1nClL+DmXuC8yg9UeWEJYd2LOevXnTyD0l+dgVsik
-	prdga+G1lZ3yKZOe1JSc7aRaibxs69s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773751835; a=rsa-sha256;
+	bh=E11J2IlbpIIzPWA+vs2j//e0OAYJEehNOYzPhmQ6Soo=;
+	b=MpVVDF4Mm+TaTvK0nk7gFRvMsccvABcTAD/sRdIO1vlRu3QjkzE+jmrO6PFi9xLZsvWiOQ
+	TqbCr2ZaA/tpY+I8QUwmISu9v0mQr55OF9mOlxVry4YzfBx3n6sRInHiYdSj86fT/ERRIF
+	LUBbnqFVgT86sixEzW2IMr4sYH7zbQs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773752379; a=rsa-sha256;
 	cv=none;
-	b=VCBo4nY5seHMCJKU9UO1WIRwl0+MC8jeJIM1unPOgo3bssX6UaL38coothKIGMeeiHEhK4
-	G9L9RBVMIEqOrg+KNep7FnQMLUNM7ElSaDpaqoSwphC4v3wmYGBJ+vlUfyvQVvIY49OFiB
-	IhVetMg+4uTB4Bd63Uk+yPOSovUi3IQ=
+	b=4zAxRDO/xQnTVLcgACVSp8yI8zv+Slxts62Ts2WiDGy+QLmwA0ecM5eUpG6TZdXQOGN5M7
+	AFqxGyIzOFnzT21ZIf49RB/3LLNYQuVuMuTdsraKatX/OkCftN7DDUgNV5I4vsDrKyMXtq
+	wsi8Av6ath35uNVcAOzONyMVscs6Cxo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q2efUdLM;
-	spf=pass (imf05.hostedemail.com: domain of 3GU65aQYKCO4XcQpkhWeeWbU.SecbYdkn-ccalQSa.ehW@flex--hmazur.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3GU65aQYKCO4XcQpkhWeeWbU.SecbYdkn-ccalQSa.ehW@flex--hmazur.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4362197d1easo5803948f8f.2
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:50:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773751834; x=1774356634; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=80bKeW1QbA+rd5FHvp3sCEKth7+hZO62IH1Tt9MSVyQ=;
-        b=Q2efUdLM/KcQFRHRdBCIWdyWGDiklqZUxvEqwOrQ88b0Qc02UikuyadoukoLLppocU
-         wUQAvazE0031N7W0rO2VXmJ+lAo4Jn9JPX1a2LAmLsva1DYUpLzCoAzBwp8aPqNzEmjn
-         d2QcNMCO2R7znoVjfAj1fbavyD5xq2N9e+U0jPFj4s4DIuFfXcn2baEvtSPioHRkNpZh
-         kbyTqvwx6IYogEuubpwzKGrcYaLI0mUpMyF2j174Az2Os8Ou0UOW7+aQu/2xvvbGe04y
-         4VwI36gButqPezfRBGyrvmMCWGnLax3KHJZc2KUmtWUYt2IQ0mYevS1L25Q1ofjHMpJI
-         zmSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773751834; x=1774356634;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=80bKeW1QbA+rd5FHvp3sCEKth7+hZO62IH1Tt9MSVyQ=;
-        b=DCYuryqZeTydzIPF47Hvt/AA2KKt5jLLHIvgD67eGVeKs0kN2JAqHpwx64JeuNDrmP
-         sRqU99VHXHvwdpcD1l3v3xB7wbKNl+9NRhfBP2iW7uOjaWTBtMmAhmcVz0uExFwJCyH1
-         3C3w/rFgt3GBEFJS3eU+DmjMjmyj9tBsz2WOoUlL3KJH9JPCyPh2Te9tBuswfbobUU86
-         CRlNGGbKC6UleU5JOAOF6M78us+Y4ShJJNGPuoyglI7OcIxZSZOiFSi1NVBK6VXDksrs
-         VXhFYj1mzrmF+xhfKbIHqW1gOZqNdPyxnEp6g4s0gDoTYjf1hcigMymSMKU7bTiwtNqW
-         SLWw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7YvIl81WN9hdaFKNFE1ElPoAOFDi5Bqy4oatD9xRY6pE6DDKAZkf9ovDJv4vEalTpF3XgkW82qg==@kvack.org
-X-Gm-Message-State: AOJu0Yx/ZUTaYItziRdqiwuo+L5zbfHblvKv05DSM6TD4elxtSShNOq7
-	E59Ipm3ti2VVubNafYUtCHdrALlDnpxRl5dB0SmCrwLMSxk31M3KH5HrZo4o7jtR4qsgBk2AFW6
-	SnpzRWQ==
-X-Received: from wrj13.prod.google.com ([2002:a5d:5a4d:0:b0:43b:458d:a320])
- (user=hmazur job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2086:b0:439:b791:f920
- with SMTP id ffacd0b85a97d-43a04d88460mr31112421f8f.17.1773751833804; Tue, 17
- Mar 2026 05:50:33 -0700 (PDT)
-Date: Tue, 17 Mar 2026 12:50:20 +0000
-In-Reply-To: <20260317125020.1293472-1-hmazur@google.com>
-Mime-Version: 1.0
-References: <20260317125020.1293472-1-hmazur@google.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260317125020.1293472-2-hmazur@google.com>
-Subject: [PATCH v2 1/1] mm/execmem: Make the populate and alloc atomic
-From: Hubert Mazur <hmazur@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stanislaw Kardach <skardach@google.com>, 
-	Michal Krawczyk <mikrawczyk@google.com>, Slawomir Rosek <srosek@google.com>, 
-	Lukasz Majczak <lmajczak@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hubert Mazur <hmazur@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kblk4t7b;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A492141679;
+	Tue, 17 Mar 2026 12:59:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BD8C2BC86;
+	Tue, 17 Mar 2026 12:59:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773752377;
+	bh=q6EJXCXJtuF8E4RQdQBVl5lEuUK5e61KxXJSkpmgyq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Kblk4t7bZ60o17/rBn6VoB5c+fR8+jssR+EcCG9NYztXItjne+3wBrtS+KE734n3H
+	 hxlrBReZU8jMHyBOKunDhYPOfmC+GZZaVtRy6R/LkpwOqacZryqJ2UKmFTmfQdXc/O
+	 JJcQt+v0YHWCKPeV3rEQ4WMXPlAYA5nnMKMkAICSMY13I2iQ0VGjDf4f1N/Eeg+hc8
+	 ygSNw6knz7GM2LHFsaI6UpiDuvfyxxm95rD53S6RFKOEDrnoByp1aTIGIdymCcPdRI
+	 Us1BdtMdRC3IVDeDnZ4MEjHzfRtuHKIVAXmUcyTABdfg7xNB25XA10hUnE8Na28DTq
+	 HzkSCrWsp+63w==
+Date: Tue, 17 Mar 2026 12:59:35 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
+Message-ID: <13e09a99-181f-45ac-a18d-057faf94bccb@lucifer.local>
+References: <20260316140122.339697-1-ljs@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316140122.339697-1-ljs@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5BD6F100017
-X-Stat-Signature: p1jnc7or91jynujkxbbsw3msgrqg9jfz
-X-HE-Tag: 1773751835-689270
-X-HE-Meta: U2FsdGVkX19Lq3MahEztOMrVxXiP+TycDQ1z0/PYsaElGSGn8g3jL4YOU6jXbAqFE+4SddXiDy24zv3Sl5FiAikV6pd6zanBEA+COTYAdE6HioIZCJ/Do7omngZw7h1qdAABnSt4Wc0JjdAXpM0reIEncVr16jX5N0Ta4iHxNeSGBYvJQZgsp2050LHx0XuLRqB3xj9I7f9gRt4Nom3OMo3CNRpwu93YBWP9q9jHwheAo5r2D12i1v1Mv/SlKM4/mEdeFJLJuYa1WB44nnebgfAf+uav/m5dX1+Uuv7TUHlVG5o7bFT0rkCA/7XQcZRTdNLaO3rvf/ZS2Eg00F/EHOxBfOT9O7hHwxhaDNoCaEnfrfGpwBLCYT49lWbmWx3WeYUR777W3mQCf+MAB7kNr+CqwGhb4r9G5wHg7ZzrApfX95qug6k1j6mB9sLtQ7wEDL1JMiTlTAuZHqbLjHn3v+0ZKIczk0dA5IgFxyK18zPGn2q1KR2O8T2UQoDveuozE0od5vIzim7JfzzpYsQO8atYAWbLAcqLXrlMDUmmdFJuO12HjVmFxmnTRMhVAQOw+8lz0BuQyPU37SKR7oR6AUui0OfZhvBTeiEJFm1Ikr+6Esu5oPcxenQIkv+0B6G/qn96JUH7bVneyS9ipasd9aaBdkRn+VXVhjQoyVkJOGfmsikvgF47BzETC5LMnXxIUt8AYxw/Juq6svxF1fLTcXWlUDBZjWZom4o+8h5QKXXggvg1Yb6fQetw0vKPFAK9gqJzysOxE0ilmeBjaJ0anhT6VF5pztax5Z9jWNMoNOKQRnUHfYaadGxzGHAYhiwscF5E2m3rblFxmTVZDuDHjNVMbPq9fUID3RWa2UV9WNzNCzCGOiI8YKfYst62lzLuvRoU6ADmJquuvB8dXrSGdHUMqqDJaOMx01V08rSitNWtA4phNcpsFPQbRTKI12eW7qyDX/Mvfv0H+Zj49cE
- X2bk/xpf
- gY9FnppVjeeZKnQNwyuLTSeoNf/ngWUL9BQRHos0COW9Uq9jFIHJVeeMjIZu/xwqBgxpzjN9X06/db+9Wrb0Oih2V/ELAaXSYL52d4bvXNMlrVpVgz0ThLIzwuLqz0LvztC2pcZ656yzIvgJ3EzE7R0qLzsrrHiqXVTJYQ4MkwxrE1MjkHPcQvX9s1ynlMbnxwbviA065CDHdVoc30gqwEFZDx5F2veke6K9Bmk2AGpvbFSRcZPPK3GYheUvKskvO3XcDUDNykjp3rbEVssrtuo6I0u50ghJP6FXYoBZ+jhG/WH04HMtZGN5sc/u4ziDSz98QM9N3Tl91BWHPGmaQyyV6/vIlRnLhgC2/5BZzfmFKFfTzretqM8KaAgPY+0/wBJNyloKz+4AKGogV1q0LLCZFpRZOw9mveIenx8AhZm/JmPdHPmdpzo9jjO21rcSfLkpdB0TuZjGJNgw+Llu0VuQJ6ir7ECnZ600FlKlk52lqOGsKV7foPV3RVuwy1CW2MxGCUrK7VpfljEKn7etr4n9qVMALSb90tpAr
+X-Stat-Signature: krjk1mipechozohkw1hy7d8g7sfbutm6
+X-Rspamd-Queue-Id: D6B2E20002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773752378-448048
+X-HE-Meta: U2FsdGVkX1936E8I4SFYnrlP4D0qCAI9l+IxI/uQG3bf3ijl1pz/gwckAUSACGA29BgVRkDuRj/hV35tVmpFRchai4uK6tKvfAO6PzfJ0MpBk2j/+8XqQ8KqwGxhvUb1B+GNgF/uSINapc3ibyHblCXPXD3sHJPXMp6404jzPZPpuh5UuW3zozzUCbRlT3ZvYTRC1L4qlm8VjcYgFoeOV7i6ECvAzyPTwIAH3YrRd4A7HWJ2NJ0H/wk1VUiQEddLtk1MV63ur81dA1fKyD1zszYGozGBcOBxSpq5vwGPNC+YzWgT01xNlPRW4PHnc1od+GJL2dj/BnHvfgib5Lsvb6TXdKsoSb3Y8MguzYSPkgaYn6Q6oBxdYxPKyLX7An8S/sbkdsIOMln70p/vxE9PE/MOg2tWehQRyEjIFbWk1CeUJM7cu79RbIwplM2r3U5X1+v8NShDdozZwiybizJakkTRWlKf2/lx9e/1IOjX3+y+IhKy8HUOULX2X4Tjskoxyki9nQTh7J7RHGTPYyV/X8C5oheX5nT+LF2Pen7NuHQedQlMc+0VhbbaIRVL6HhDwyIdJ7dvhEWBGJCkbqKk9zGXhNlOiDEk0JSYKlrNpzSF/6xlg1xgnuqZripFiduP0X2V740D184YYX/tNOlIiKJv/IhtBHxRzwjeiAf/sEz8ADQA1j99EOLlygXRulZweo2by7mcPz+FwnBu0SU95l8qw4/oD5PwbW6llio06ONJWPh3oQCgeYZNv1s6Da9zlZkuDWqUu748L7EglWQwxAuAgiYpp21HwnYF0qOJqK1zmtosTNaQ8SjPSpgUSMoTyL4E7qbK6Xns6/dbmX3WwCH99yXrHiSwJMMwOPjvHnN+dwHYqMyuTYJAhn6HBM45pKzFTfk5v7Kxjpk7kKdAKP0x1b3mq4YWTw5KYjotpQfEVSNH+Iyc9SZvAuH/mosbIkNR7gpd5y5/o2n5rTe
+ IXTAo+4C
+ y8QeSRe22y1sF5NfT7h/02h0vtc53XdWRmlsW4QCpi4gRYPShpMa2nVY4Xy+xwvavvpWDZiRjTFdMAVW4ksfZIZ7/U1NQ1v8GsxLwxS3XPxSACfW0RhGSrGST7KmqgzPsjnFrj6QQVh3YeZI3WUUKaT0j6sf7Qb7iE6bD+HtuBYzyjFprYtPiKeyeWg8XNjiMhYHf+yvg2jE0zTRVn5iCo6dSZZ6M5MxoSba0PU42KD2822/D5tIrjv5R17orXm+q8TRGKwhTQ26FlsDXFJzcRjJFKMVxAEHTnZXbgCyR+h0+QC/wfLxARy89ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,167 +91,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a memory block is requested from the execmem manager, it tries
-to find a suitable fragment in the free_areas. In case there is no
-such block, a new memory area is added to free_areas and then
-allocated to the caller. Those two operations must be atomic
-to ensure that no other memory request consumes it.
+Hi Andrew,
 
-Signed-off-by: Hubert Mazur <hmazur@google.com>
+Please apply the fix-patch enclosed to add a dcache flush which was also
+missing here.
+
+I had assumed that a new folio here combined with the flush that is done at
+the point of setting the PTE would suffice, but it doesn't seem that's
+actually the case, as update_mmu_cache() will in many archtectures only
+actually flush entries where a dcache flush was done on a range previously.
+
+I had also wondered whether kunmap_local() might suffice, but it doesn't
+seem to be the case.
+
+Some arches do seem to actually dcache flush on unmap, parisc does it if
+CONFIG_HIGHMEM is not set by setting ARCH_HAS_FLUSH_ON_KUNMAP and calling
+kunmap_flush_on_unmap() from __kunmap_local(), otherwise non-CONFIG_HIGHMEM
+callers do nothing here.
+
+Otherwise arch_kmap_local_pre_unmap() is called which does:
+
+* sparc - flush_cache_all()
+* arm - if VIVT, __cpuc_flush_dcache_area()
+* otherwise - nothing
+
+Also arch_kmap_local_post_unmap() is called which does:
+
+* arm - local_flush_tlb_kernel_page()
+* csky - kmap_flush_tlb()
+* microblaze, ppc - local_flush_tlb_page()
+* mips - local_flush_tlb_one()
+* sparc - flush_tlb_all() (again)
+* x86 - arch_flush_lazy_mmu_mode()
+* otherwise - nothing
+
+But this is only if it's high memory, and doesn't cover all architectures,
+so is presumably intended to handle other cache consistency concerns.
+
+In any case, VIPT is problematic here whether low or high memory (in spite
+of what the documentation claims, see [0] - 'the kernel did write to a page
+that is in the page cache page and / or in high memory'), because dirty
+cache lines may exist at the set indexed by the kernel direct mapping,
+which won't exist in the set indexed by any subsequent userland mapping,
+meaning userland might read stale data from L2 cache.
+
+Even if the documentation is correct and low memory is fine not to be
+flushed here, we can't be sure as to whether the memory is low or high
+(kmap_local_folio() will be a no-op if low), and this call should be
+harmless if it is low.
+
+VIVT would require more work if the memory were shared and already mapped,
+but this isn't the case here, and would anyway be handled by the dcache
+flush call.
+
+In any case, we definitely need this flush as far as I can tell.
+
+And we should probably consider updating the documentation unless it turns
+out there's somehow dcache synchronisation that happens for low
+memory/64-bit kernels elsewhere?
+
+Thanks, Lorenzo
+
+[0]:https://docs.kernel.org/core-api/cachetlb.html
+
+----8<----
+From 94989ab3d97f0cde0dcf59eba6466fee932ec4ba Mon Sep 17 00:00:00 2001
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Date: Tue, 17 Mar 2026 12:29:55 +0000
+Subject: [PATCH] fix
+
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/execmem.c | 61 +++++++++++++++++++++++++++++-----------------------
- 1 file changed, 34 insertions(+), 27 deletions(-)
+ mm/zswap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 810a4ba9c924..9043f0f8f61a 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -203,13 +203,6 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
- 	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
- }
- 
--static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
--{
--	guard(mutex)(&execmem_cache.mutex);
--
--	return execmem_cache_add_locked(ptr, size, gfp_mask);
--}
--
- static bool within_range(struct execmem_range *range, struct ma_state *mas,
- 			 size_t size)
- {
-@@ -225,18 +218,16 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
- 	return false;
- }
- 
--static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-+static void *__execmem_cache_alloc_locked(struct execmem_range *range, size_t size)
- {
- 	struct maple_tree *free_areas = &execmem_cache.free_areas;
- 	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
- 	MA_STATE(mas_free, free_areas, 0, ULONG_MAX);
- 	MA_STATE(mas_busy, busy_areas, 0, ULONG_MAX);
--	struct mutex *mutex = &execmem_cache.mutex;
- 	unsigned long addr, last, area_size = 0;
- 	void *area, *ptr = NULL;
- 	int err;
- 
--	mutex_lock(mutex);
- 	mas_for_each(&mas_free, area, ULONG_MAX) {
- 		area_size = mas_range_len(&mas_free);
- 
-@@ -245,7 +236,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 	}
- 
- 	if (area_size < size)
--		goto out_unlock;
-+		return NULL;
- 
- 	addr = mas_free.index;
- 	last = mas_free.last;
-@@ -254,7 +245,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 	mas_set_range(&mas_busy, addr, addr + size - 1);
- 	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
- 	if (err)
--		goto out_unlock;
-+		return NULL;
- 
- 	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
- 	if (area_size > size) {
-@@ -268,19 +259,25 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
- 		if (err) {
- 			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
--			goto out_unlock;
-+			return NULL;
- 		}
- 	}
- 	ptr = (void *)addr;
- 
--out_unlock:
--	mutex_unlock(mutex);
- 	return ptr;
- }
- 
--static int execmem_cache_populate(struct execmem_range *range, size_t size)
-+static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-+{
-+	guard(mutex)(&execmem_cache.mutex);
-+
-+	return __execmem_cache_alloc_locked(range, size);
-+}
-+
-+static void *__execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
- {
- 	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-+	struct mutex *mutex = &execmem_cache.mutex;
- 	struct vm_struct *vm;
- 	size_t alloc_size;
- 	int err = -ENOMEM;
-@@ -294,7 +291,7 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
- 	}
- 
- 	if (!p)
--		return err;
-+		return NULL;
- 
- 	vm = find_vm_area(p);
- 	if (!vm)
-@@ -307,33 +304,43 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
- 	if (err)
- 		goto err_free_mem;
- 
--	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
--	if (err)
-+	/*
-+	 * New memory blocks must be propagated and allocated as an atomic operation,
-+	 * otherwise it may be consumed by a parallel call to the execmem_cache_alloc
-+	 * function.
-+	 */
-+	mutex_lock(mutex);
-+	err = execmem_cache_add_locked(p, alloc_size, GFP_KERNEL);
-+	if (err) {
-+		mutex_unlock(mutex);
- 		goto err_reset_direct_map;
-+	}
- 
--	return 0;
-+	p = __execmem_cache_alloc_locked(range, size);
-+	if (!p) {
-+		mutex_unlock(mutex);
-+		return NULL;
-+	}
-+	mutex_unlock(mutex);
-+
-+	return p;
- 
- err_reset_direct_map:
- 	execmem_set_direct_map_valid(vm, true);
- err_free_mem:
- 	vfree(p);
--	return err;
-+	return NULL;
- }
- 
- static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
- {
- 	void *p;
--	int err;
- 
- 	p = __execmem_cache_alloc(range, size);
- 	if (p)
- 		return p;
- 
--	err = execmem_cache_populate(range, size);
--	if (err)
--		return NULL;
--
--	return __execmem_cache_alloc(range, size);
-+	return __execmem_cache_populate_alloc(range, size);
- }
- 
- static inline bool is_pending_free(void *ptr)
--- 
-2.53.0.851.ga537e3e6e9-goog
-
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 499520f65ff0..16b2ef7223e1 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -950,6 +950,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 		memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
+ 		dlen = PAGE_SIZE;
+ 		kunmap_local(dst);
++		flush_dcache_folio(folio);
+ 	} else {
+ 		sg_init_table(&output, 1);
+ 		sg_set_folio(&output, folio, PAGE_SIZE, 0);
+--
+2.53.0
 
