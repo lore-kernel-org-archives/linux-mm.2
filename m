@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B49CF33820
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F5E6F33811
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:30:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BC8D6B0005; Tue, 17 Mar 2026 05:29:52 -0400 (EDT)
+	id E9F796B0088; Tue, 17 Mar 2026 05:30:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 994346B0088; Tue, 17 Mar 2026 05:29:52 -0400 (EDT)
+	id E76D86B008A; Tue, 17 Mar 2026 05:30:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D1186B0089; Tue, 17 Mar 2026 05:29:52 -0400 (EDT)
+	id DB9596B0088; Tue, 17 Mar 2026 05:30:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BBB36B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:29:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 135ED1C91A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:29:52 +0000 (UTC)
-X-FDA: 84555033024.05.6DA9607
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C925C0009
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:29:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CBADA6B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:30:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75FFAB9E64
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:30:10 +0000 (UTC)
+X-FDA: 84555033780.09.5A0B8A3
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 32D63120004
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:30:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="PgR1b/KM";
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773739790;
+	s=arc-20220608; t=1773739809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JxY8q1mI/jqO70BINIdZ/Gt5SpSL8YbhKHaNsSKphkE=;
-	b=2PF1FHNieFnn5WrPBHuq04pRyskUJNnbmoquMk2rEWKKmytj0S3bF7StSRU+7olw94oHrK
-	QOWgRugljEBDk1KBSngEkYC8H5TbedO6UqKMHUPeNbW8MlGA+J5zNrVylfvVLLvl+Nl7k6
-	q2W6PngZYcPAH49IL30sNgioA/BIMSI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773739790; a=rsa-sha256;
-	cv=none;
-	b=3eJySksHGjKBwbanS/s76UUkSC0LteMns7srs4DUC39cbXTVkfuwiMDOkIIRTZ1xdAwOiB
-	YyXAPY3U/SmF82mNvRUclBbPW8fu8jilF6QMIlon7mfZALqykdO+psOnD7RKfvaqF/pAv6
-	bbSZoszzZyO8WI4E5ZMewqSSiKe26Hs=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NOPXzgbt6DYvEkPrO9B4OVlwk27lezTRUE3vS2vBtJg=;
+	b=iYny6uziVVd0VZ4RNWJyjLuo5QGLiAECpJgyMOJNzuREevS3kpIIkPgBCYoIj6GzQAkqc2
+	go9hcKEmH3eKCFKjIDbCp9KZvNjAWk8KhuWDpjIk4y6yEmeAg94JDa117OUZBpFsA/UKL8
+	bSLVtqLNOapcMw7iu7Nk6Br92B6q9t4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 475C61476;
-	Tue, 17 Mar 2026 02:29:43 -0700 (PDT)
-Received: from [10.57.60.143] (unknown [10.57.60.143])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC3B93F778;
-	Tue, 17 Mar 2026 02:29:46 -0700 (PDT)
-Message-ID: <6c0ed052-5f3c-405a-b53f-4ea21a24479d@arm.com>
-Date: Tue, 17 Mar 2026 10:29:44 +0100
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="PgR1b/KM";
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773739809; a=rsa-sha256;
+	cv=none;
+	b=Qft4HQHgE/eLuQYY03oQWeG0RNmr1E6bfY4BBeNO+iTgUMD7JVbGaFrAY2H0i9f1Up7t5R
+	JBH/ptt1i5uYp9A6JCiwHTGUE7Qf7aHAw893Hs2KMg2VHQ8SPjtT/dZhmXJXcMrAeSW1x6
+	uicjnE+QrZ2tIagZFpAIjPsWunAizLY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773739804; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=NOPXzgbt6DYvEkPrO9B4OVlwk27lezTRUE3vS2vBtJg=;
+	b=PgR1b/KMZs/3YFaqWxPqpgU13UCHkGVjn5fdwOWwTCAeWAHSXeaAH9eJt3voR8IU1rKgRCUzvIwwzwJls3mcTBjT5uR2L6Zz2rjFIKTyCoZUGKMA+VJeF7W03soNPVZkpr6wQfquKFPmax5GhLHTb+5iz02TeaoQi7g1zwN3Kkw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R671e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.Abv.D_1773739802;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.Abv.D_1773739802 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Mar 2026 17:30:02 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	willy@infradead.org
+Cc: david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	kas@kernel.org,
+	p.raghav@samsung.com,
+	mcgrof@kernel.org,
+	dhowells@redhat.com,
+	djwong@kernel.org,
+	hare@suse.de,
+	da.gomez@samsung.com,
+	dchinner@redhat.com,
+	brauner@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	xiangzao@linux.alibaba.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
+Date: Tue, 17 Mar 2026 17:29:55 +0800
+Message-ID: <1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Yang Shi <yang@os.amperecomputing.com>, Jinjiang Tu <tujinjiang@huawei.com>,
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com, ardb@kernel.org,
- dev.jain@arm.com, scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
- <0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com>
- <de0b06cf-15a5-4109-b339-75c10d9b8a18@arm.com>
- <0a740020-4780-4156-a9c5-f8b4ada9c8c0@os.amperecomputing.com>
- <4ad2ea40-b23b-4231-a0de-585b205865c5@arm.com>
- <9dded616-989b-4846-8596-1c45a6304d36@arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <9dded616-989b-4846-8596-1c45a6304d36@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 32D63120004
+X-Stat-Signature: pkucapj6kdezto3cgapx1ikxcqi3e1je
 X-Rspam-User: 
-X-Stat-Signature: b4w5ekb8m3x8fu7sogjzoeq3bzf3uphc
-X-Rspamd-Queue-Id: 4C925C0009
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773739790-42504
-X-HE-Meta: U2FsdGVkX19tiz6Kw6TZfQg3Md2B58fgXmK8FFuME+We6fAwsQp256u602Po4LNmSzr+sJyeCi6eYMYnxvpUlC6pSS7L9udLgZNjb6d04Tx+hHreXg/L4SFq5vZQf0Tnc9DRHbvJAx44hFYaRUkSKPZV9CmSvEKTqFWW5x0DR/WThNUkV1hdeLTQ10q1B/j4Wsj6L4Hz7KqDoZfbYDWv4ofTQMpEjsqTNbphRPFPuUq1Tc0vWQc2zIYs3B5ox+4pBxe3oqMM81DNSg0cx+476A5NIz/znu9bsfc6nVb1Gdf59X8XAYAdIEw8UEerZ+lVPG+4wEy18X82/yfRvIU3zhTWOMMqoFou5ze2PDfaYBddZBiVNmM8vC/K+dBa948xL/4N9oKvas/PBoXbzfdD9bW+ul8G87z7EtiBg3ykQRWZql/uBCQ219RVA/vRn0oj1iUBYlJRY76gs83JfTWcOAVaCn8kJXr+A4O7UgnhazR9MVknY5ZI1XlapU1Fww7LHTPwzo/qOwP58fQp3fWr86Ob4ajIt5vHwtR+6uLVUgC32xFayp2vCu0sXXb3u+48JfvOcxYqzMoop79BJl5C2smd338djTfpicSOX13LNg57Vubm5ywF+k/ckb1HJ/HKrj5ngwuePA0Db33aCr57pzTwDSlQdSsE8ArQC1H7zJ8VJXvV7Z1IL1rBvN/5PRvkDFw0PpMc0Se0FSjkjM26Hb0zmUz3H0zYmvU1pOXIGAVgmJblSf/OsUbouxtmykwEAVINL4XECUMSeZVU5+04a7vRS4uoRpADW43mnhHBEvbNG3m4ozOkXamchNF1dePXrVKj0AbTDaG8RXvJhzJVED14jByP/KaR0LRdt9GlzhGrSSpqB/8Z/t6q/DCdPNg3hH/7dFhw0ywR6m2wICCutwcICmarLSTc+wrKZYUFaamxUCHgxveb/Ix6P6r08j+SdEm/GNtV6/Y7LxgU7Jb
- 6ewYujTM
- Fdf2klFMqM4dg0gwz40HTejwnT5/dm6rlg7tmpWvyqSHxGdHWH95Y+uFg8MriXkyt+CFgol+4E48QGGp831w5QlPxxMBe+p7FzYCWYCuk1tXz+jYk5PbnUm01cXzJh/or5edqRP1fmM8BpTvV7w3RhgmbgKlESC9tVWQYECdOo8W2LLWcT4Vkt6WFdmj/3K0G9Dh6x3PAGZOgIvgAa1Ea11Y4IeYcipyYOJTmLC+Qs0eSew0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773739806-544117
+X-HE-Meta: U2FsdGVkX188ELPKfU1CBOni3D2e7mbIXVfLHEjoMHobJierrrHVtY16Ak4HQPhlWnZb0micPh5QD8QMos3T5shM2GSlyOa5sdFaiOplgtX9P+DQHNgoursHDjI0c5S0Q4v9vSz2UL9pC2K43MKrOdqXGQIVgVSrrDowufqVtbJeSoRwJOHMuQMVo+KZbPcMYifnl87N5D0MVoyqyS8g/jtv9t9E3unxLL3sQEJ2bZvROnqG7tyubztTwyO+8baa2QDmp3AHqZZ/wBzDu9Utey8Eo2i7VsXtObIVlcafNkFDbsiURlC9j3fqDTER7SgtABGseqIfAI8InhDBH4nmhWce34ddIfRb/gvUW/J8KKTbAmdepkNoV/48EYfgECa4SbbpWW/pXjr3B7qfNZ3c/GeK4ysUrWf1SXLB1R9pYx4GlVoHspauBn7Bz4NF5vih2yBXPWSLQQqj8fqG9anUmIbA7WEQFRjIDq7acM01V4+fYYnhnuWSNz2N2rlyhc1l1UuC1v9FCpJBSxaVWwJmVUsLtvv+VZ6557iaAd2qnQ53vdlkdmEMdFu9ZS/hGzr8ajRNxYLOY9rCFU8BQnZIBE7IhxcnhRlST6NPvCWOKhTpxgcdCPefENyklmlQ4pPyV7hPRuoFycEHEd98VvF2mVYd57tvbs8CSk68IYjawRp7o16+z9k+Sab+VsW2/pO5a8O22JMD5TXEybxq9ZQ1jFaGJUfIxh1GGVtLHCOPehAzw2BegepZelU+kOoaBXyNG4Tr6tGcQARaglPKER6MJcxg8TeDd7XsOWEY7I1P1RxiVbif0bxwDoguqmMRIs64sC0oResYCTjIDty3N1e1sAUa8pezH3IGMTM2z8tbG5imXpITnbLZlAH59E89u5AwKgFBLHmv3s0YwZ5o+z0UsNqbsfzTP0N/q26weUmwEjY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,42 +96,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/03/2026 10:13, Ryan Roberts wrote:
->>>> Another option would be to initially map by pte then collapse to
->>>> block mappings
->>>> once we have determined that all cpus support BBML2_NOABORT. We
->>>> originally opted
->>>> not to do that because it's a tax on symetric systems. But we could
->>>> throw in the
->>>> towel if it's the least bad solution we can come up with for solving
->>>> this. I
->>>> think it might help some of Kevin's use cases too?
->>> May be an option too. When we discussed this there was no usecase for
->>> direct mapping collapse. But if we can have multiple usecases, it may
->>> be worth it. 
-> I could imagine that if user space creates and destroys lots of secretmem areas,
-> then it will completely split the linear map to ptes and that will never recover
-> currently. So I think in the long term, having the ability to collapse would be
-> useful. I just don't particularly like forcing symetric systems to map by pte
-> initially (which is slow) only to collapse later (which will cost even more
-> time). But it does feel inherrently more robust.
+When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I encountered
+some very strange crash issues showing up as "Bad page state":
 
-Now that you spell it out, I'm realising this would actually make things
-pretty complicated for protected page tables. In that series, page
-tables for the linear map are allocated by a separate memblock-based
-allocator [1], tracking the allocated ranges to set their pkey later.
-There's a strong assumption that these page tables are never freed.
+"
+[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+[  734.496442] page dumped because: nonzero mapcount
+"
 
-If we initially PTE-mapped the linear map and then later collapsed it,
-that assumption clearly wouldn't hold. It could be handled by poking
-holes in the tracked ranges, but it gets ugly and increases fragmentation.
+After analyzing this page’s state, it is hard to understand why the mapcount
+is not 0 while the refcount is 0, since this page is not where the issue first
+occurred. By enabling the CONFIG_DEBUG_VM config, I can reproduce the crash as
+well and captured the first warning where the issue appears:
 
-On the whole I'm not sure there's a sufficiently good argument to always
-have the linear map PTE-mapped initially.
+"
+[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  734.469315] memcg:ffff000807a8ec00
+[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+......
+[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+[  734.469390] ------------[ cut here ]------------
+[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+CPU#90: stress-ng-mlock/9430
+[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+[  734.469555]  set_pte_range+0xd8/0x2f8
+[  734.469566]  filemap_map_folio_range+0x190/0x400
+[  734.469579]  filemap_map_pages+0x348/0x638
+[  734.469583]  do_fault_around+0x140/0x198
+......
+[  734.469640]  el0t_64_sync+0x184/0x188
+"
 
-- Kevin
+The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio)",
+which indicates that set_pte_range() tried to map beyond the large folio’s
+size.
 
-[1]
-https://lore.kernel.org/linux-hardening/20260227175518.3728055-19-kevin.brodsky@arm.com/
+By adding more debug information, I found that 'nr_pages' had overflowed in
+filemap_map_pages(), causing set_pte_range() to establish mappings for a range
+exceeding the folio size, potentially corrupting fields of pages that do not
+belong to this folio (e.g., page->_mapcount).
+
+After above analysis, I think the possible race is as follows:
+
+CPU 0                                                  CPU 1
+filemap_map_pages()                                   ext4_setattr()
+   //get and lock folio with old inode->i_size
+   next_uptodate_folio()
+
+                                                          .......
+                                                          //shrink the inode->i_size
+                                                          i_size_write(inode, attr->ia_size);
+
+   //calculate the end_pgoff with the new inode->i_size
+   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+   end_pgoff = min(end_pgoff, file_end);
+
+   ......
+   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+   end = folio_next_index(folio) - 1;
+   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+
+   ......
+   //map large folio
+   filemap_map_folio_range()
+                                                          ......
+                                                          //truncate folios
+                                                          truncate_pagecache(inode, inode->i_size);
+
+To fix this issue, move the 'end_pgoff' calculation before next_uptodate_folio(),
+so the retrieved folio stays consistent with the file end to avoid 'nr_pages'
+calculation overflow. After this patch, the crash issue is gone.
+
+Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+Changes from RFC:
+ - Add acked tag from Kiryl. Thanks.
+ - Add some comments and CC stable, per David.
+---
+ mm/filemap.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index bc6775084744..598890871635 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3879,14 +3879,19 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 	unsigned int nr_pages = 0, folio_type;
+ 	unsigned short mmap_miss = 0, mmap_miss_saved;
+ 
++	/*
++	 * Recalculate end_pgoff based on file_end before calling
++	 * next_uptodate_folio() to avoid races with concurrent
++	 * truncation.
++	 */
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	end_pgoff = min(end_pgoff, file_end);
+-
+ 	/*
+ 	 * Do not allow to map with PMD across i_size to preserve
+ 	 * SIGBUS semantics.
+-- 
+2.47.3
 
 
