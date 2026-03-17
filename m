@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF6D3FEDA1B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:48:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32135FEDA1B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:51:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 281986B008A; Tue, 17 Mar 2026 15:48:56 -0400 (EDT)
+	id 7674A6B0088; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 258F46B008C; Tue, 17 Mar 2026 15:48:56 -0400 (EDT)
+	id 717B06B008A; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 195F96B0092; Tue, 17 Mar 2026 15:48:56 -0400 (EDT)
+	id 606896B008C; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 08DAC6B008A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:48:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFC271C8F4
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:48:55 +0000 (UTC)
-X-FDA: 84556593030.26.88280E9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C4EF6B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 186AAB8947
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:51:39 +0000 (UTC)
+X-FDA: 84556599918.22.E52350D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3DCC9180004
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:48:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YJfUoC5i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5C6251A0011
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:51:37 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s1dQCYTe;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773776934;
+	s=arc-20220608; t=1773777097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eP3H1L9pgFxb59wQ0cTMuW8ob0iOwbk9jwO9AhdaiWE=;
-	b=pCQ0VXdJbDEmelmrOlJPcjsyq2MxzytgY9sZEGDqCVVNfrVDIP4KX8Y47yFwqqd6SgGKF9
-	AeCnlRkQZh1k/IpcICJ0HXT0qDTGmWZ/Svqjjpr3lGVj+Bq8xvcNeTAD8jA+nmghxGySGu
-	ne+BYNW0TyRVJQkMGCKvXRwVeIsBbeA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773776934; a=rsa-sha256;
+	bh=QS/mFA1khawZSH4y54LCF7F+h4yELEnh1Rx67TR0DmY=;
+	b=PASAj0r6biunzx/OBMOSOAfu+qtn3stlV9nZzoFC3eIIpPKU425FI3bYplJwtRSkzUKHmY
+	bqvSoh+mTx6iBVdF04LgbhKdvcN7x7RMK+xGxdgM9OE5lgFZ7o65eloG6pOk2XKWgSERzl
+	ES5EHMAgb7lGyPyMfaAu8ZJXDOgJrtI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773777097; a=rsa-sha256;
 	cv=none;
-	b=qFjkUaZyN7njQDRGKA5pSwbpobRBexM6pZ6ZqCtgUxH0PdOSNBqgYd0bej7kGWfM9oGHQg
-	vu4C6skpnZz49QqgFE9nW68wpuMtnnzSNVsDZvSW3lsHm5i+pDVZg6Xq5tJl9krb8B/Odk
-	x3xJj/GT2kBixsjDwzAW79cok2LxZj4=
+	b=vhHqoj1LYdpZhJIer1HDKucWuvIJJrRfXrTteomLmPEdqGb94wKsvC5di9Kkv8k8PJq8St
+	KqA8H66ghKtWv6m6IhtOIW6uMVcO/HBztQ2GtWqxkJ1VzQLsm+1Q89QY8waW9H/GY5Sc8+
+	4wRzL6TeoAThwTT4CjuAa00KH6ly+3A=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YJfUoC5i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s1dQCYTe;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59D51437FB;
-	Tue, 17 Mar 2026 19:48:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99217C4CEF7;
-	Tue, 17 Mar 2026 19:48:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6053C42A14;
+	Tue, 17 Mar 2026 19:51:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6424C4CEF7;
+	Tue, 17 Mar 2026 19:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773776933;
-	bh=g5W03nIUJQ8AH7zq0zLLZ73bPV9N4HQkXCDIdzXVvP8=;
+	s=k20201202; t=1773777096;
+	bh=iu2cOBnlv8s0sPRqFeh8Lvb5iEQfijsU+S3paiRMUPo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YJfUoC5iPRJk6u771gEhRmH2sdePOmvBwKs9YVXG0awVVQfqY1WqyMEnCgmpJQdXC
-	 Y+AwUe15L1y/xqHIVp7Xqei4JkqU+hu/H4ldbufeh2MEs3v8uzI6rhGRVrBxFXvSAT
-	 QNNBmctW32KJRrjacwL0EpuEMj+UgbK/nKuwI8uAc0Ln9pxmBmj4+P6aXJmvbgNz3z
-	 2WfZiY0lo6bnFRvaqkiveWAyUvwoPnW0J0Q81pjfvu5JVBdIyfCOTzle1yV35ZbLl3
-	 gOxZNREDIAGEHS4N5iFZE+yprOUuRW7s67iE2MFXlhWf3yRX2LbrDm9QGYC6SXdt0V
-	 pqeHiSBc2zC6w==
-Date: Tue, 17 Mar 2026 19:48:51 +0000
+	b=s1dQCYTegDy2569WFfrMTmWIMTBZA/60RJwwnXYXwzqTP00HyOjBN3LLeq7rCa7Wg
+	 q1sOkQuf/5w9FWqLuj0sgz1mGK+DT8GaQbzC+slmDgJPnucdTQH2Q2d5dX5ZQuV2KL
+	 7Dxeq/EqYJ3B16Ko9V6xIaKpCODeLAOKWKtNx7aD6BcoGksdepPy+2y37VV+HKB3HI
+	 Qze7nClTtHearOiCGQqKElBC+AFYEaE75cUkxIf6S2fSkiYxBF5VAlQZN5W9U1b6E5
+	 E10NA/5deA2pIybcmP7TclZbYnkuatsA9g/CheKbXyLhCIOAPw2QGBzMy9av5PWYRP
+	 VVjRnH7Mp3vvw==
+Date: Tue, 17 Mar 2026 19:51:34 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
@@ -73,21 +73,23 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
 	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 09/14] mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific
- usemap allocation handling
-Message-ID: <f23aa64a-d78f-4c57-a08b-5c589889b7fc@lucifer.local>
+Subject: Re: [PATCH 10/14] mm: prepare to move subsection_map_init() to
+ mm/sparse-vmemmap.c
+Message-ID: <cb710be1-5fec-409a-a017-c794ecad0382@lucifer.local>
 References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-10-david@kernel.org>
+ <20260317165652.99114-11-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-10-david@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3DCC9180004
-X-Stat-Signature: xkx9ttbrhry7c78p3otqdtsurdef6xe8
+In-Reply-To: <20260317165652.99114-11-david@kernel.org>
+X-Stat-Signature: gemu3womm8d9aonfi3id67brxrfc8ttb
 X-Rspam-User: 
-X-HE-Tag: 1773776934-95485
-X-HE-Meta: U2FsdGVkX18ZCJrESQYuA5tO0SqgdvysSVF4crrmfUN/nPTDuMvYBbaBnRhoFS0i96YsO3fNidNR9esrd8quExO6WdB2gEzXITYPBmTv0uec8NIZAWlua05iBXA/GmyGEIKCHQyKoE9Dh/41daV0TIdEk0VL9ZwqXVL8lKwyTQGLp141IuXYF7ZxGstVuA6pm9wDGQEQqAqCoeDs0L/jkdS4ObvaI1LJTzvXTXGZ2EiA89IG40+x+4dJfIRrQ87ZN4Taeaj/9PXeOUMWfUpzGaQgGfCEjdI2KpMz9EHjHSniJI7+gPM5cJ4TUO/AVkhc5AikcpuozvdAQdroLWfEcHGzOVWbuXx2DNJ+0G/SBJL6qMJw/2sB0mcM2IB/R4yl0bKLvuzFrKIi0azpBQ4ilY2D0YaenWtQGNVJpzp5/aSq+h8eQWznrV+7CR8HCfL/twTk9Vcph7V4kVPKmaHYq+4KtCo/OIFCPJetJ5wpGV67BHr6KUhBXm3TlHNsfDhyzyqDBM0RFlqMs6osPCPWqoYqyU9gSvKpXpbdZBkkdbsrGJ5/JJJxZZo/kgg3so5inlmcDYJ1KIiq0AXeEz/c3ofQQDFcPDvMCO7YnvuSic4gqYMRWSlmHKBYBAdcIuFYfVbzaCW3jgfChe1sQoYYX4+isGDOdI/r5XD9NHmzAL9rNbtNjuR78Rk7p/SkVVES/1M1HwzZMJv0Te7pE/rUlwluuh1vRizlKTlRRFnjGMCTyZ0fYi8XVZlrbzYC6VeM2B7Utihafzi9XGJZXWveyYymyBdmTPVr8W5A0IO0dSaO3MTI7qVBvqJq01eRorqnbeT22X3MpLRfvHR/8539Srp3UvewhMdZ+LfJVDbDnsGnMNULWbMjyUu2ITgBzMfsbP8CDEEjR3vEqFjbUKs2NCcRQmjedLJsY2u83UgIq5+i36aN4omVdA==
+X-Rspamd-Queue-Id: 5C6251A0011
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773777097-714333
+X-HE-Meta: U2FsdGVkX1/bxJsASaHxyFaGzGl8LgSuyake0h8xF6FApuPjdtCh9aBsqcO7+S0PS2AHz1Q+4+6uF/21K2oiMArCdHAVg+ceRMh9s4HsbHc96xr+amgnmlk+ACaPaQ7KbIHY5HI5dAWvQa8TNmvAoLGWoQgw3H2oV8JbR9cpD8TfFDziZTmy2D1cJCj3btdOSqZfZJ3B97ahW+aOdlt2fMkBCSB3PCk3FjsNfTjbrfOA1299hG4Y5WFq/g87+Ah2DIj7zvF/FnfOPngSDNfqCMmuyAESJT6nc4lc9GyI+a5+4zOcSKbUpDuahmH49qNx8O7yOzG2Cx9MOtURUbrXp8LsmonIiYgB5Qik1yE1QQmGT+cBs8rPXhbG7Sj+7AMD+gCd1Dxgn7ZEOaWKd8RiM+POHSBoJd6br4rZZDJTqPGsXQYxNMCTDUxQzXhACrzL8qCmfTEbzssnMYvSg8Zr1hJbCYUCL+bLkai1+CHtus10WfyNmotge8ykgVByJsiim+xzMn7tjHnZGui+mYeTRMG0mpcxhz70/EpBW99HijwTCwPMAmFL4OJ+4S6gFjoVYEGglB2/DtF5rxdLYMJMQEnfFVksUh3zIeUOk/MhUg60FSradCbYx9F+/WRfXpoP9TqdODnLe4rke8XzFz84Ttgw3sEc7whZkubOIjveXAUPDXe4Q7Dun5yMclUwIKhQ+/dLzhO1kSLUPAvjrOp3qdYZ+kgE3brHHrdey5c8uXB+AXD9wJCzaEuHTTCWQ/NLlyq2iTpJD1Rove0PjPXK3XBy4aY9MpRPvuRfb740e4mUiRllX7gWXyHkxc6vZsb/MAF+AmXGNgpPg/7FCEqZqrMeMn3IjFhKtkvP9+r+oMOrm0Vnz5o0omLDmd3wfcur3CKD1Ijv3G5qwQQrXW7Eqnsm9TLnL9ZOJ/jD9CJnO9J03VSnfkIkVCftHZjejxK7ndCHCrVzOgxWZlq92j2
+ P8SlqtOz
+ CVZMLnAG3HQqtwMlwSbALNrV4mEvHegUGW3a5vNn47QI4akEDxhaF8I/idMZ8fyFiPoIKAcHo72qQjUvpWalkUiQP/smrAk5drAb7yp+lcQb5B6yVcYZyQvygNOcEoumG9X824eeJumVTkzbbDuDP284Hh388VvtPTTqu0ozlZdqeQwYHwweDJzB0WHUQ0N/8HRDzUd9cyX90HDcb9dI/yLi5WV2YNixeCvsNJ6yWH4vgIHzWOLLCU0vUbgF/BONzFs+BIPZCeij++STsFTVkfjCoQHgv3+kv6BinaLKDAeVkjphCTVaqePBgRuyKFnIpJIER
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,214 +97,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:47PM +0100, David Hildenbrand (Arm) wrote:
-> In 2008, we added through commit 48c906823f39 ("memory hotplug: allocate
-> usemap on the section with pgdat") quite some complexity to try
-> allocating memory for the "usemap" (storing pageblock information
-> per memory section) for a memory section close to the memory of the
-> "pgdat" of the node.
+On Tue, Mar 17, 2026 at 05:56:48PM +0100, David Hildenbrand (Arm) wrote:
+> We want to move subsection_map_init() to mm/sparse-vmemmap.c.
 >
-> The goal was to make memory hotunplug of boot memory more likely to
-> succeed. That commit also added some checks for circular dependencies
-> between two memory sections, whereby two memory sections would contain
-> each others usemap, turning bot memory sections un-removable.
-
-Typo: bot -> both. Presumably you are not talking about memory a bot of some
-kind allocated :P
-
+> To prepare for getting rid of subsection_map_init() in mm/sparse.c
+> completely, use a static inline function for !CONFIG_SPARSEMEM_VMEMMAP.
 >
-> However, in 2010, commit a4322e1bad91 ("sparsemem: Put usemap for one node
-> together") started allocating the usemap for multiple memory
-> sections on the same node in one chunk, effectively grouping all usemap
-> allocations of the same node in a single memblock allocation.
->
-> We don't really give guarantees about memory hotunplug of boot memory, and
-> with the change in 2010, it is pretty much impossible in practice to get
-> any circular dependencies.
+> While at it, move the declaration to internal.h and rename it to
+> "sparse_init_subsection_map()".
 
-Pretty much impossible? :) We can probably go so far as to so impossible no?
+Why not init_sparse_subsection_map()??
+Or sparse_init_map_subsection()????
+Or <all other permutations>
 
->
-> commit 48c906823f39 ("memory hotplug: allocate usemap on the section with
-> pgdat") also added the comment:
->
-> 	"Similarly, a pgdat can prevent a section being removed. If
-> 	 section A contains a pgdat and section B
-> 	 contains the usemap, both sections become inter-dependent."
->
-> Given that we don't free the pgdat anymore, that comment (and handling)
-> does not apply.
+Joking that's fine ;)
 
-Isn't pgdat synonymous with a node and that's the data structure that describes
-a node right? Confusingly typedef'd from pglist_data to pg_data_t but then
-referred to as pgdat because all that makes so much sense :)
-
-But I'm confused, does a section containing a pgdat mean a section having the
-pgdat data structure literally allocated in it?
-
-A usemap is... something that tracks pageblock metadata I think right?
-
-Anyway I'm also confused by 'given we don't free the pgdat any more', but the
-comment says a 'pgdat can prevent a section being removed' rather than anything
-about it being removed?
-
-I guess it means the OTHER section could be prevented from being removed even
-after it's gone.. somehow?
-
-Anyway! I think maybe this could be clearer, somehow :)
-
->
-> So let's simply remove this complexity.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-I think what you've done in the patch is right though, we're not doing any of
-these dances after a4322e1bad91 and pgdats sitting around mean we don't really
-care about where the usemap goes anyway I don't think so...
-
-I usemap and I find myself in a place where I give you a:
+You've initialised the sparse subsection of my heart, so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-!
-
 > ---
->  mm/sparse.c | 100 +---------------------------------------------------
->  1 file changed, 1 insertion(+), 99 deletions(-)
+>  include/linux/mmzone.h |  3 ---
+>  mm/internal.h          | 12 ++++++++++++
+>  mm/mm_init.c           |  2 +-
+>  mm/sparse.c            |  6 +-----
+>  4 files changed, 14 insertions(+), 9 deletions(-)
 >
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 7bd0134c241c..b694c69dee04 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -2002,8 +2002,6 @@ struct mem_section_usage {
+>  	unsigned long pageblock_flags[0];
+>  };
+>
+> -void subsection_map_init(unsigned long pfn, unsigned long nr_pages);
+> -
+>  struct page;
+>  struct page_ext;
+>  struct mem_section {
+> @@ -2396,7 +2394,6 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
+>  #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
+>  #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
+>  #define pfn_in_present_section pfn_valid
+> -#define subsection_map_init(_pfn, _nr_pages) do {} while (0)
+>  #endif /* CONFIG_SPARSEMEM */
+>
+>  /*
+> diff --git a/mm/internal.h b/mm/internal.h
+> index f98f4746ac41..5f5c45d80aca 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -960,12 +960,24 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
+>  		unsigned long, enum meminit_context, struct vmem_altmap *, int,
+>  		bool);
+>
+> +/*
+> + * mm/sparse.c
+> + */
+>  #ifdef CONFIG_SPARSEMEM
+>  void sparse_init(void);
+>  #else
+>  static inline void sparse_init(void) {}
+>  #endif /* CONFIG_SPARSEMEM */
+>
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +void sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages);
+> +#else
+> +static inline void sparse_init_subsection_map(unsigned long pfn,
+> +		unsigned long nr_pages)
+> +{
+> +}
+> +#endif /* CONFIG_SPARSEMEM_VMEMMAP */
+> +
+>  #if defined CONFIG_COMPACTION || defined CONFIG_CMA
+>
+>  /*
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 969048f9b320..3c5f18537cd1 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1898,7 +1898,7 @@ static void __init free_area_init(void)
+>  		pr_info("  node %3d: [mem %#018Lx-%#018Lx]\n", nid,
+>  			(u64)start_pfn << PAGE_SHIFT,
+>  			((u64)end_pfn << PAGE_SHIFT) - 1);
+> -		subsection_map_init(start_pfn, end_pfn - start_pfn);
+> +		sparse_init_subsection_map(start_pfn, end_pfn - start_pfn);
+>  	}
+>
+>  	/* Initialise every node */
 > diff --git a/mm/sparse.c b/mm/sparse.c
-> index 2a1f662245bc..b57c81e99340 100644
+> index b57c81e99340..7b0bfea73a9b 100644
 > --- a/mm/sparse.c
 > +++ b/mm/sparse.c
-> @@ -294,102 +294,6 @@ size_t mem_section_usage_size(void)
->  	return sizeof(struct mem_section_usage) + usemap_size();
+> @@ -185,7 +185,7 @@ static void subsection_mask_set(unsigned long *map, unsigned long pfn,
+>  	bitmap_set(map, idx, end - idx + 1);
 >  }
 >
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
-> -static inline phys_addr_t pgdat_to_phys(struct pglist_data *pgdat)
-> -{
-> -#ifndef CONFIG_NUMA
-> -	VM_BUG_ON(pgdat != &contig_page_data);
-> -	return __pa_symbol(&contig_page_data);
-> -#else
-> -	return __pa(pgdat);
-> -#endif
-> -}
-> -
-> -static struct mem_section_usage * __init
-> -sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
-> -					 unsigned long size)
-> -{
-> -	struct mem_section_usage *usage;
-> -	unsigned long goal, limit;
-> -	int nid;
-> -	/*
-> -	 * A page may contain usemaps for other sections preventing the
-> -	 * page being freed and making a section unremovable while
-> -	 * other sections referencing the usemap remain active. Similarly,
-> -	 * a pgdat can prevent a section being removed. If section A
-> -	 * contains a pgdat and section B contains the usemap, both
-> -	 * sections become inter-dependent. This allocates usemaps
-> -	 * from the same section as the pgdat where possible to avoid
-> -	 * this problem.
-> -	 */
-> -	goal = pgdat_to_phys(pgdat) & (PAGE_SECTION_MASK << PAGE_SHIFT);
-> -	limit = goal + (1UL << PA_SECTION_SHIFT);
-> -	nid = early_pfn_to_nid(goal >> PAGE_SHIFT);
-> -again:
-> -	usage = memblock_alloc_try_nid(size, SMP_CACHE_BYTES, goal, limit, nid);
-> -	if (!usage && limit) {
-> -		limit = MEMBLOCK_ALLOC_ACCESSIBLE;
-> -		goto again;
-> -	}
-> -	return usage;
-> -}
-> -
-> -static void __init check_usemap_section_nr(int nid,
-> -		struct mem_section_usage *usage)
-> -{
-> -	unsigned long usemap_snr, pgdat_snr;
-> -	static unsigned long old_usemap_snr;
-> -	static unsigned long old_pgdat_snr;
-> -	struct pglist_data *pgdat = NODE_DATA(nid);
-> -	int usemap_nid;
-> -
-> -	/* First call */
-> -	if (!old_usemap_snr) {
-> -		old_usemap_snr = NR_MEM_SECTIONS;
-> -		old_pgdat_snr = NR_MEM_SECTIONS;
-> -	}
-> -
-> -	usemap_snr = pfn_to_section_nr(__pa(usage) >> PAGE_SHIFT);
-> -	pgdat_snr = pfn_to_section_nr(pgdat_to_phys(pgdat) >> PAGE_SHIFT);
-> -	if (usemap_snr == pgdat_snr)
-> -		return;
-> -
-> -	if (old_usemap_snr == usemap_snr && old_pgdat_snr == pgdat_snr)
-> -		/* skip redundant message */
-> -		return;
-> -
-> -	old_usemap_snr = usemap_snr;
-> -	old_pgdat_snr = pgdat_snr;
-> -
-> -	usemap_nid = sparse_early_nid(__nr_to_section(usemap_snr));
-> -	if (usemap_nid != nid) {
-> -		pr_info("node %d must be removed before remove section %ld\n",
-> -			nid, usemap_snr);
-> -		return;
-> -	}
-> -	/*
-> -	 * There is a circular dependency.
-> -	 * Some platforms allow un-removable section because they will just
-> -	 * gather other removable sections for dynamic partitioning.
-> -	 * Just notify un-removable section's number here.
-> -	 */
-> -	pr_info("Section %ld and %ld (node %d) have a circular dependency on usemap and pgdat allocations\n",
-> -		usemap_snr, pgdat_snr, nid);
-> -}
-> -#else
-> -static struct mem_section_usage * __init
-> -sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
-> -					 unsigned long size)
-> -{
-> -	return memblock_alloc_node(size, SMP_CACHE_BYTES, pgdat->node_id);
-> -}
-> -
-> -static void __init check_usemap_section_nr(int nid,
-> -		struct mem_section_usage *usage)
-> -{
-> -}
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
-> -
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
->  unsigned long __init section_map_size(void)
+> -void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
+> +void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages)
 >  {
-> @@ -486,7 +390,6 @@ void __init sparse_init_early_section(int nid, struct page *map,
->  				      unsigned long pnum, unsigned long flags)
->  {
->  	BUG_ON(!sparse_usagebuf || sparse_usagebuf >= sparse_usagebuf_end);
-> -	check_usemap_section_nr(nid, sparse_usagebuf);
->  	sparse_init_one_section(__nr_to_section(pnum), pnum, map,
->  			sparse_usagebuf, SECTION_IS_EARLY | flags);
->  	sparse_usagebuf = (void *)sparse_usagebuf + mem_section_usage_size();
-> @@ -497,8 +400,7 @@ static int __init sparse_usage_init(int nid, unsigned long map_count)
->  	unsigned long size;
+>  	int end_sec_nr = pfn_to_section_nr(pfn + nr_pages - 1);
+>  	unsigned long nr, start_sec_nr = pfn_to_section_nr(pfn);
+> @@ -207,10 +207,6 @@ void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
+>  		nr_pages -= pfns;
+>  	}
+>  }
+> -#else
+> -void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
+> -{
+> -}
+>  #endif
 >
->  	size = mem_section_usage_size() * map_count;
-> -	sparse_usagebuf = sparse_early_usemaps_alloc_pgdat_section(
-> -				NODE_DATA(nid), size);
-> +	sparse_usagebuf = memblock_alloc_node(size, SMP_CACHE_BYTES, nid);
-
-I guess nid here is the same node as the pgdat?
-
->  	if (!sparse_usagebuf) {
->  		sparse_usagebuf_end = NULL;
->  		return -ENOMEM;
+>  /* Record a memory area against a node. */
 > --
 > 2.43.0
 >
-
-This is quite the simplification :)
-
-Cheers, Lorenzo
 
