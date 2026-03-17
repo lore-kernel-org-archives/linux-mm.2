@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFC9FD877B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F8F3FD877B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:11:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 965186B0095; Tue, 17 Mar 2026 10:11:27 -0400 (EDT)
+	id 03DC26B009B; Tue, 17 Mar 2026 10:11:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D586B0096; Tue, 17 Mar 2026 10:11:27 -0400 (EDT)
+	id 0153D6B009D; Tue, 17 Mar 2026 10:11:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82C056B0098; Tue, 17 Mar 2026 10:11:27 -0400 (EDT)
+	id E46DB6B009E; Tue, 17 Mar 2026 10:11:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 750336B0095
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:11:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 114031C16D
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:11:27 +0000 (UTC)
-X-FDA: 84555742614.19.266FDB5
-Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 72232A0019
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:11:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=IBbFxnxX;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4F376B009B
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:11:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADF0E1B6F2E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:11:36 +0000 (UTC)
+X-FDA: 84555742992.15.DA1C542
+Received: from fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.75.33.185])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 125EC40019
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:11:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=nDIrBGSc;
+	spf=pass (imf17.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 3.75.33.185 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773756684;
+	s=arc-20220608; t=1773756694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QH/0pY+L5Mnx+GXH9O+3FVFXbnxf+J6Zf5bgE/TnHq0=;
-	b=Wk0u5tN/wR7cVSOTpT9ahGgE56oKcZxHN3sfD6X5d+ltKKw1JMBr2lKD2EFupPsM1Cmyno
-	3ytwJzT9VVqWS8RkzbFmCyDQmyN6AUj5CyrPSic2+0ZzeUi8uVfnkgwGp9Fjfp07Zuu1cn
-	9PLnxNLloGAI5ADQdsyn+dEtCAku3IM=
+	bh=yq/Z/mNNjYHh4gnEoHNSJLkORCM9JDhCuatXRLcv2PA=;
+	b=luUVD3Bq+nG66NcU45lUiS/MhJh9aLNRbwRO1ImArXs7Pe7shA1TAC4csN+IK5Xy6byANu
+	OhnE1BYA1MFSxBTPQKdBqrABjRhj8CDsXuVXCuRduAV8VOBKFwFe5HjsJ8Ag6KWe3A6trl
+	ELNvmbuHd4n9EGwLzJb5tEnZHlAxQZU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=IBbFxnxX;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
+	imf17.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=nDIrBGSc;
+	spf=pass (imf17.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 3.75.33.185 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756684; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756694; a=rsa-sha256;
 	cv=none;
-	b=YsYedc1cLoLrZ+U4/AJlJjpQdCCYsJROCShJ9gHn+cGmypBUd8RI+TXfUTesEHeSRn0Zeg
-	BfYqgN5ASqdbJgXi5lbKB6/khTpxuFZL0vYaMle2lo+TtNaYe88hzFUT7WOlN1BE5WdfSP
-	5r52MDG7FHTHT/b3y+JokiJFmgmsb7Y=
+	b=svtHtuJ0g2ZXTB5aYzwomvGhkcU5EepHTwrjnalDYQ8LtXEXLGuzqwc2bosLyStfJm9xCt
+	dJErMO2u1qeuKalDKXWkU1ItECu6aaYWdtsuFUZjJJlGEaF66xFU+IDJnUzctfknu7xuxF
+	VHSx/g4Uzun05+vWX0RKB68md5PT3zE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1773756684; x=1805292684;
+  s=amazoncorp2; t=1773756694; x=1805292694;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=QH/0pY+L5Mnx+GXH9O+3FVFXbnxf+J6Zf5bgE/TnHq0=;
-  b=IBbFxnxXaOMpt4G+TYoY/pbcYqEncVSInOIuXZ8hpqR41Is06pFF0f45
-   sOhw1y3oboIcb9Kb2s6SQufuAYeIOEsOEaK6H7/G5UP20gfSpKC87oeJp
-   jX1azaxsjDvwaqEMrOYldxiBpPhtwVDDXqjS93rCMboIK0WMYbiw4udLM
-   ESuhK6udPleKqdvyM096m5ycE4Ijhcos4BH8DwQ4+TmIqLtmVTvom9Jzy
-   OZzN3hnOyBVom2cweZBzOPxgbQMXviN3rtXMlc+yLsqAZfDouRzJcEhUs
-   pqp5buX79FawOlgc30aoJaqOqzJP9D3AcoiCvBUbxVVZt15FDr6wmgb+7
-   w==;
-X-CSE-ConnectionGUID: bjZm6s3/TCWdkXS4JpYsMA==
-X-CSE-MsgGUID: Uv/u4CHeTxOSFi5l4I+Zag==
+  bh=yq/Z/mNNjYHh4gnEoHNSJLkORCM9JDhCuatXRLcv2PA=;
+  b=nDIrBGSccuyX9OTJ6U//EafXn+n2zuHhOEgWKfYpPUUK+vamJwTehws3
+   K9kaDJbCQqzUH9jrF/C3z2VIxosE9wscYE7nZFSmwNt57mXIePKusAsf+
+   SdzpJndI7S/aLhbJVg5sPR+fvIqjfC+u4Mqd3JwpD8y6+7kl1LwUjcc/E
+   rX5ZojWoFgm/Ha4J20A+WnBoOVyz4WT3lTWW/k2jQbjSmlsMXabFU/kKP
+   zQpj2U3KHoLQ2pgfqd4vi1K19GbmyQglHW4RWj44yrIBi4KT6nOzSfP/F
+   LWOLpcwHdqL9LZo075XcxEsTXRm1Vu9e50oH0dDhj7PIK18ZGbEPvue5y
+   Q==;
+X-CSE-ConnectionGUID: aH9ubdWDST6jSOpzSPbiCQ==
+X-CSE-MsgGUID: r7wP3IKWR+GcRQYSRa2qvA==
 X-IronPort-AV: E=Sophos;i="6.23,124,1770595200"; 
-   d="scan'208";a="11017718"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 14:11:20 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:28302]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.29.244:2525] with esmtp (Farcaster)
- id 2703a9d0-a65e-493e-aff8-54f3e9f5b406; Tue, 17 Mar 2026 14:11:20 +0000 (UTC)
-X-Farcaster-Flow-ID: 2703a9d0-a65e-493e-aff8-54f3e9f5b406
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+   d="scan'208";a="10997942"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 14:11:32 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:2083]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.12.17:2525] with esmtp (Farcaster)
+ id 8ba284ac-6fe7-47a6-8347-fb5d3507a06d; Tue, 17 Mar 2026 14:11:31 +0000 (UTC)
+X-Farcaster-Flow-ID: 8ba284ac-6fe7-47a6-8347-fb5d3507a06d
+Received: from EX19D005EUB002.ant.amazon.com (10.252.51.103) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:11:19 +0000
+ Tue, 17 Mar 2026 14:11:31 +0000
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19D005EUB003.ant.amazon.com (10.252.51.31) with Microsoft SMTP Server
+ EX19D005EUB002.ant.amazon.com (10.252.51.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:11:19 +0000
+ Tue, 17 Mar 2026 14:11:30 +0000
 Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
  EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
- 15.02.2562.037; Tue, 17 Mar 2026 14:11:19 +0000
+ 15.02.2562.037; Tue, 17 Mar 2026 14:11:30 +0000
 From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
 To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
 	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
@@ -159,14 +159,14 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack"
 	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
 	"Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin, Nikita"
-	<kalyazin@amazon.co.uk>, Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH v11 04/16] mm/gup: drop secretmem optimization from
+	<kalyazin@amazon.co.uk>
+Subject: [PATCH v11 05/16] mm/gup: drop local variable in
  gup_fast_folio_allowed
-Thread-Topic: [PATCH v11 04/16] mm/gup: drop secretmem optimization from
+Thread-Topic: [PATCH v11 05/16] mm/gup: drop local variable in
  gup_fast_folio_allowed
-Thread-Index: AQHcthfsUhUKrmwTXkGd7H9F3DgqvA==
-Date: Tue, 17 Mar 2026 14:11:18 +0000
-Message-ID: <20260317141031.514-5-kalyazin@amazon.com>
+Thread-Index: AQHcthfziSFmLyCfmUqH6JhuxYgvLA==
+Date: Tue, 17 Mar 2026 14:11:30 +0000
+Message-ID: <20260317141031.514-6-kalyazin@amazon.com>
 References: <20260317141031.514-1-kalyazin@amazon.com>
 In-Reply-To: <20260317141031.514-1-kalyazin@amazon.com>
 Accept-Language: en-GB, en-US
@@ -177,14 +177,14 @@ x-originating-ip: [172.19.103.116]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 72232A0019
-X-Stat-Signature: e8pccsgap8wepcw3gw7jf4s9xwmkthtf
+X-Stat-Signature: 9ofru9wwegdpbmejra5n8eceypuktxnk
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773756684-296176
-X-HE-Meta: U2FsdGVkX18ZHTspwtDwOQaj7oM5IveDRAAZBgC9Y9V0G5W+qeIIzPs4SiqGfw5LBNNriyORDaodukqQt/nMh3uK0A8MzEeS85o05FAtYvoQyRgmWESZeYDmFY4egGcY997fHxLa9hG0oOCneU0goUFthH8KvnS06VIodzo37Hnw5DnKu3JEbS/VOvCjHWq77scpj2ALPsQoO7l+TcNCRsOqXZHkXH/FoieqI7LSVZl/++I36lLF4v1VuE092Fh5Au4rzlWcdRvixJYwnmmCXq95QPY4kRymVhPzU0j9W3TGJH98NzfGzY70gXiUUo28VQ7Vrw7eJhnf9iog8DOulJxZ6J8ZIx+SirzjR5GEzZAHQP+KKjWc8jEaLU6yinJUsCI17n2hDoGcJCf6yP/Khp0dxjzD+/rWkDJ3txkS9k38F55PiSJezCi+5vBxqw1Ic3MJ/Tc5jzD3t49w/BGRyKsLBMmHcDHyvsDgD94mstyKhwfEi8iacA0COFyCAztMJSFN8llq0rQOsFxxnjtwWHXO3+LtDH0Y0J2C8GvGrA197V6DqrLuk9Km9OqbNIyFEMC8N5qVQ8yybCVCambtHxHzYtJnUUCOB2NK3uHGAa56lBi7yy83aZ3BmqAEi/yXzjsRJMFa4NC1vmIjVd5GEGkXyQVkkif86iRFFcF3PrrbK7Ij7TKZcbGxvX60pGSdqrFXzQz6Z9Qa4+zsocBz27tLF+3R9tR37UmBUr7osr4Yz2POlHheELL0zGkj5jJnXYBTr/Jix6swwDDJlEyQD1URz19X9xmM9eFfCUHo0wynniLZYs17jATflT/0YYJmHGRTHRh4O50AmRlLXvXivCGzvP3gc0fAo8uFyljcDpOAYk3NlgTY8d8SKSRDKatuRYqqGzbRg0BprTDLDcWOX0LpvAgot2/db6uUAgIb2N+4qj9ej2wxBHdxTUyGBYzCi8SQpgJT+vXbpvdfi/y
- IFGvdzar
- MS6KeV3QitwTMMCVvkaIXGM9a+HIk5DgjhEMGBG9sA430HxlGGmcbl9h4ob68FQZfE0MOsA4dhmTz/fGJdHRPKF5D3+QTxEs0DQV1O/dGb2RTDNnNBkHB20FbLD0vz2YT20vguQAMfxIHuvBxOnjZtIizY6A3Mq07WMaXzJIncdFY585SMWcKRxXStSHYLWDLNrjavj6PYpKOl06mqKWqlU1CDAr5pkZJ80saiDiPqzyzI0ydpSMY3r8zyqqHmFqH2R9yEvDwEjs85yKq9KVr4a41DJ+Rs4f3skacQ0kqgK78Y39MPTix/gIetvHl2Z/HtSXp34bXUtSTuJ6vtvARvah1MM0riP3xlFiaEou1YgC8QKc9JWnQsBStF055QPD2fbUpJkgAJy5rX8xYkduuZfZup6KEUTeOduFHM7aY9OiOYMGoexqxbGNc1bopX5TjL0dyqRJqwm6/mbp8vtdUJeR99iXr4YAE3Newola09ZXi8u823OAmQBH+VRlTXZ8/0tJ2iHYYo5eSQeDl2+OLUynS6KtMuZC3rtU1FBzV+S2FUHWIkQHGruvpM86iGgnd4MEmd3wY1ILLcHje3p9eDnObK4QJWT52fv1DFSoHNdYmIW3R1qHIemQ6mKa+ZeqVpOQLOvfMup3apzFrZb99N65x4BkSL1uvjos+VEagiax1NTpkbh+RpsdpUCJqpOYZbHclQzhpR6jnnOp1pyaq6vGrcXxJ+mB1K9WqVFdymH7DuXqd47mYNNS0plYtegB6X7El
+X-Rspamd-Queue-Id: 125EC40019
+X-HE-Tag: 1773756693-388799
+X-HE-Meta: U2FsdGVkX1+ggyxRsbQeXdxH8PRBgTu4WNuCyZWtH6S6uL/YcYiFrHMLdQzuJZV6AlAzNoE715OcvUEUdD+pmr/POjA91ICp6Za/dzKaK9hIsRA0fRQ8C/PsiUHX2ZPVIJR3S9C12sMDH4XdcN4Paa+teybthjbe42kyz2u8mrRyvWUM3a72ca/YHmQ6po2Kdmodeyn3UJnkNWoP4tdoU5KAIDDi4cP/+dvGQwqPwg9SD+Sg/9m1b0Y+g7PLXK3Ei3NY5Q2NEpFRbXdsZQ3TZyiNC4j9QR3EnHO3jXyeKxSnnT/NCnQx+No3TC5C39LmNomfA8MF5nMk15x3jUfMd6vhBan8jCHlhZKzn5xQ217MP8rbLdaYgOXJ19Im7MX2KSBeh4HO8Yc5GVnhGzauenZMtpE9M77ImyeTV81Suav8x1j9eRSHKhuZsTeh93mgzXztwDGSN74/7Oucx2c0/At8ONSdub6dGFDYzZfuofoVrWQAc5AqFNs56R/RTohF9nicl+hC75ixh9G44O2cRlYRDeLedQUDE8bZgrQuRhP9c5u9Zi45aSFb3XaFv+PuX+VNZc2yh5Z/6phIDFaw3jLFWuZhg+Qg6jD+szAM6xOIgp4YaZNQVOoVDMFb7n59xSjOd45Q04srPVj8m57cMzhSejkyv38UvMRT3sIGPBsHAAa/IbWM+PAv5JF06nnev13NvOej2cp8RRSo8RtiONpa6zpBaIUGc1o6m2yvB1bd6se6wo+4jV/HTkJS8iEBF39CTY9Dm1lddFtBcZWNGl3CuluboHVotZSH1974qAccvmbv/nC357BD8rMF1h88uRm9z3edRNOAGxCsCbboazS0Tx8zu5HYbdaXENBvsD6Uuc2XML6/ds7tdLdLBXnTzgDI/v79cLccfyocUXAscFqAEJ+O5rIg1VNDh2FIQBCiRzQyD5CFWSo33CGwMPouB0h+rgGOklr8ZFYsSJt
+ MaB8p1Fm
+ OLHbMHwJLRXva+n8T1TEHABKPx/GoWXlrAkAyZEnkYBO//8B5mMkjZWZGrC/OVcr53k22FGTFbQRPlBtMzbH+IEhnOVX82JrRd0AQetFb+ffoqKvAAEZCdfluoUc2fFEWeZKc0tc1Z6TEtGQCdY4xqxwGayazwneQKFXcMVxIrCHw54ASWD1REUHA6ZmwfrOecwDhfeWgolXMNc3INn/jGwvc6X7ke3WhMPL8uNB+ITKkwW0pXXJlusKxr+awPIozLuRYOa/Zu8/sCr2kitUICAZHW7wEMafSlRjM0lTtZYGQGPDga51I2KZT9NW7Qpmn2N9X+VnSY6l4Zriq6BtnxNc/U7B9b65oI5UQpxWsB2el32SA9ea4WvJ60FXBk8X/TkOp87UQXNkk+i/PJfDxrXXgtYpbe4fQdSBxUTvUQsx6Y08d7HYFWB5zELn3E0bue42Td3H2vb4H8FaGHD2zGV6rv/UE+51EwE+oHOtxxG7zHE0+H7PpHbtPQCotBceGaO5+4jfrOeLdUe/RQX+/bBCqSgAwYVqG72D/fUhKhgyW6wjNgnJDOyWEK8UclTeU4qM/LS1j/VCnri6wt+BA2SMmALWhYjhVSKxpyaA7STZL1gQ7/nDEYkkRM1KyWKUXonFPyOxy7xTMcXS84BFXXC/SjYPajcdX+zm6UHXYTPh4TBeq5THEm1lrMBp6S2xmK7Kk2Zk1tvpKCkGxKvyKIasR/0gIaVkP4w9qz+CQLm7n4tojh2mWiiwhZsDejksohddZRmzuD5xV8mk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,68 +192,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Patrick Roy <patrick.roy@linux.dev>=0A=
+From: Nikita Kalyazin <kalyazin@amazon.com>=0A=
 =0A=
-This drops an optimization in gup_fast_folio_allowed() where=0A=
-secretmem_mapping() was only called if CONFIG_SECRETMEM=3Dy. secretmem is=
+Move the check for pinning closer to where the result is used.=0A=
+No functional changes.=0A=
 =0A=
-enabled by default since commit b758fe6df50d ("mm/secretmem: make it on=0A=
-by default"), so the secretmem check did not actually end up elided in=0A=
-most cases anymore anyway.=0A=
-=0A=
-This is in preparation of the generalization of handling mappings where=0A=
-direct map entries of folios are set to not present.  Currently,=0A=
-mappings that match this description are secretmem mappings=0A=
-(memfd_secret()).  Later, some guest_memfd configurations will also fall=0A=
-into this category.=0A=
-=0A=
-Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
-Acked-by: Vlastimil Babka <vbabka@suse.cz>=0A=
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>=0A=
 Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>=0A=
 ---=0A=
- mm/gup.c | 11 +----------=0A=
- 1 file changed, 1 insertion(+), 10 deletions(-)=0A=
+ mm/gup.c | 23 ++++++++++++-----------=0A=
+ 1 file changed, 12 insertions(+), 11 deletions(-)=0A=
 =0A=
 diff --git a/mm/gup.c b/mm/gup.c=0A=
-index 8e7dc2c6ee73..5856d35be385 100644=0A=
+index 5856d35be385..869d79c8daa4 100644=0A=
 --- a/mm/gup.c=0A=
 +++ b/mm/gup.c=0A=
-@@ -2739,7 +2739,6 @@ static bool gup_fast_folio_allowed(struct folio *foli=
-o, unsigned int flags)=0A=
+@@ -2737,18 +2737,9 @@ EXPORT_SYMBOL(get_user_pages_unlocked);=0A=
+  */=0A=
+ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags=
+)=0A=
  {=0A=
- 	bool reject_file_backed =3D false;=0A=
+-	bool reject_file_backed =3D false;=0A=
  	struct address_space *mapping;=0A=
--	bool check_secretmem =3D false;=0A=
  	unsigned long mapping_flags;=0A=
  =0A=
- 	/*=0A=
-@@ -2751,14 +2750,6 @@ static bool gup_fast_folio_allowed(struct folio *fol=
-io, unsigned int flags)=0A=
- 		reject_file_backed =3D true;=0A=
- =0A=
+-	/*=0A=
+-	 * If we aren't pinning then no problematic write can occur. A long term=
+=0A=
+-	 * pin is the most egregious case so this is the one we disallow.=0A=
+-	 */=0A=
+-	if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) =3D=3D=0A=
+-	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))=0A=
+-		reject_file_backed =3D true;=0A=
+-=0A=
  	/* We hold a folio reference, so we can safely access folio fields. */=0A=
--=0A=
--	/* secretmem folios are always order-0 folios. */=0A=
--	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))=0A=
--		check_secretmem =3D true;=0A=
--=0A=
--	if (!reject_file_backed && !check_secretmem)=0A=
--		return true;=0A=
--=0A=
  	if (WARN_ON_ONCE(folio_test_slab(folio)))=0A=
  		return false;=0A=
- =0A=
-@@ -2800,7 +2791,7 @@ static bool gup_fast_folio_allowed(struct folio *foli=
-o, unsigned int flags)=0A=
- 	 * At this point, we know the mapping is non-null and points to an=0A=
- 	 * address_space object.=0A=
+@@ -2793,8 +2784,18 @@ static bool gup_fast_folio_allowed(struct folio *fol=
+io, unsigned int flags)=0A=
  	 */=0A=
--	if (check_secretmem && secretmem_mapping(mapping))=0A=
-+	if (secretmem_mapping(mapping))=0A=
+ 	if (secretmem_mapping(mapping))=0A=
  		return false;=0A=
- 	/* The only remaining allowed file system is shmem. */=0A=
- 	return !reject_file_backed || shmem_mapping(mapping);=0A=
+-	/* The only remaining allowed file system is shmem. */=0A=
+-	return !reject_file_backed || shmem_mapping(mapping);=0A=
++=0A=
++	/*=0A=
++	 * If we aren't pinning then no problematic write can occur. A writable=
+=0A=
++	 * long term pin is the most egregious case, so this is the one we=0A=
++	 * allow only for ...=0A=
++	 */=0A=
++	if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) !=3D=0A=
++	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))=0A=
++		return true;=0A=
++=0A=
++	/* ... hugetlb (which we allowed above already) and shared memory. */=0A=
++	return shmem_mapping(mapping);=0A=
+ }=0A=
+ =0A=
+ #ifdef CONFIG_ARCH_HAS_PTE_SPECIAL=0A=
 -- =0A=
 2.50.1=0A=
 =0A=
