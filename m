@@ -4,90 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 723D1FD877F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:45:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1490F3383D
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:46:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B94AB6B0096; Tue, 17 Mar 2026 10:45:53 -0400 (EDT)
+	id 15C356B009E; Tue, 17 Mar 2026 10:46:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B45426B0098; Tue, 17 Mar 2026 10:45:53 -0400 (EDT)
+	id 1339A6B009F; Tue, 17 Mar 2026 10:46:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5AAF6B009B; Tue, 17 Mar 2026 10:45:53 -0400 (EDT)
+	id 070846B00A0; Tue, 17 Mar 2026 10:46:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 95EB36B0096
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:45:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 29B99140167
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:45:53 +0000 (UTC)
-X-FDA: 84555829386.07.6B637D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8A03A180017
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:45:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rYAOlfU1;
-	spf=pass (imf06.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E854F6B009E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:46:12 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A42D61B7154
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:46:12 +0000 (UTC)
+X-FDA: 84555830184.11.A3F44C3
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E1E681A0018
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:46:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=leemhuis.info header.s=key2 header.b=iZQaMoUL;
+	spf=pass (imf19.hostedemail.com: domain of regressions@leemhuis.info designates 194.59.206.189 as permitted sender) smtp.mailfrom=regressions@leemhuis.info;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773758751;
+	s=arc-20220608; t=1773758770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+DjvRt5Plf4cbtyVJdQoNIMI9qxeEUQHVaHtnOgyUY=;
-	b=aITMHUhbUAVlhSLom0BeAb0oU0kmlXS4csUQRZdL1NkEfn02tCPnjdYZ8i8Od5ONEAxHxr
-	s0zvOeVGeODMg0ajj7hcgFSQQkvSDEcvrRqW+raVL7Vw2FZdyL9e7JFhMnYfDjj3fonsfI
-	D1o297uGPDkeQsuAd8QYifIwZvERVWE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773758751; a=rsa-sha256;
+	bh=6GL2gx7ss1pzX264rddGdC76Cpil2U2XTalVR+xU99k=;
+	b=FNPWgQRA55nlKcP7eojYCeIcnJW1rAM1gCIuz204XevXYuj8iuCLAzaiBJsHnlpIy75avL
+	Hey/OFnKfUv22XLZ6AM7THi5bkyP7l3uA1+uDejUf5oo3aPB76S/mrfNJQkwIkqHBbOFHg
+	hE1FN6hXMtvtnxLIwIQ8w19ANZOEXB0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773758770; a=rsa-sha256;
 	cv=none;
-	b=tkfIlE5dRhA53uzJoehqqgHoQDY9i9n9AvR6led1FpziFaNBUCMZnL7xG5H4SDSCRw1occ
-	rKXS6/ItdkvuEMG15fcrdA4La6IMOd7gQecvjDD5OZZDpdIb3JCNR7cGo+c+dL+942qSkc
-	aRqcEFNMWfpcbH8fwD9pZCNNvQT+H3w=
+	b=TDsE8z/l67D7d1/a60FjqYRGlgv0GpOr5P5dBLsFt1JNU9p8lQkTQAZPtxnpCUo7K39Prv
+	yju9xUaY1VwWlrdUpVVbeHR7K4R/TqnjlubZU665xYu1OzpDS+Aa2uRtqsQ7JF2SkM4Z4W
+	A0VOa+ttt4DIl5tMLwgENGqv6cqTHIc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rYAOlfU1;
-	spf=pass (imf06.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E269360008;
-	Tue, 17 Mar 2026 14:45:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0CEC4CEF7;
-	Tue, 17 Mar 2026 14:45:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773758750;
-	bh=vWWXSXsJOObdgoBPa0ZCzYH49f6ax9/VVCivy/CV+jQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=rYAOlfU1LhAd33yPEOu0WvE7C2l35cFvPVoYDzFyFoaaxRtVtZOoT1IFgxIQuXo1Y
-	 3hha8ywax6Q0nTV3aqfco4vLdEh6KFpEWP38aJmMY6FeeAVEcV36s/o5CrpW9EYgK2
-	 FP8teTaUv3yhkB0T0IZ/4uSAoBBk7QDUhoSK0l573zFH1SJYfL5mh9nqT5Z7MeqZSV
-	 hVfvZjsxmBzPHCj6/0EO2CKlAxGIb7JcCToDeK/GNlRhQGksUEZJBGI5IY330BSbTc
-	 ahedwupp5RwGF6SOZIeJaxd9MM832F7ip2hAeygK2S4Jq3qko+vfxmV4Te9VHZu50T
-	 gPorz5mqji+7Q==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	imf19.hostedemail.com;
+	dkim=pass header.d=leemhuis.info header.s=key2 header.b=iZQaMoUL;
+	spf=pass (imf19.hostedemail.com: domain of regressions@leemhuis.info designates 194.59.206.189 as permitted sender) smtp.mailfrom=regressions@leemhuis.info;
+	dmarc=none
+Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4fZvsW4vvzz4DtN;
+	Tue, 17 Mar 2026 15:46:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1773758767;
+	bh=hU7Ja8MxE/dZQQrcMBR1UXNehBbNM13GFFWz7ogHftw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iZQaMoUL+oEc/38KhuA8S8+7E2NC0J9rVIUVZT1JJx77OS2j03vgj/xPlEfi1f+0P
+	 2E/ZAkpooyMSNVCR4T3TYQVQ3+OwddXBwg7Y+3xoXtRP3DFc5KNG8fP+yXV9/cfZSV
+	 3EzJwd34x2jmlmbejI6WdW8jHuCLwJzCDBWEuh9Tg+wuceQFsDh4WaGmC5hJKDTA3r
+	 67oSp6nLaKx47Ueixr32DUPLT7p9+kllIMM41Exr1T0pZI4f5i0pEXrMQ4KobMEtEc
+	 k3qh4fDeKdkqz9s+0mbTL/7yXh+BO/eRgcFgbfyzO6w375znWGq2hZ3OEUqDAkKer6
+	 F/Pt2AlX37nsQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4fZvsW4Bygz7wZR;
+	Tue, 17 Mar 2026 15:46:07 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fZvsW0drvz8svF;
+	Tue, 17 Mar 2026 15:46:07 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 7C11D632D3;
+	Tue, 17 Mar 2026 15:46:06 +0100 (CET)
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <bbba90be-5825-41d5-a0b2-49a56f75256a@leemhuis.info>
+Date: Tue, 17 Mar 2026 15:46:06 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: [regression] Re: RCU stall in unmap_page_range during exit_mmap (6.19
+ regression)
+To: Benjamin Eikel <debian@eikel.org>, linux-mm@kvack.org
+Cc: rcu@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <6261958.lOV4Wx5bFT@thinkpad-benjamin>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <6261958.lOV4Wx5bFT@thinkpad-benjamin>
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 15:45:48 +0100
-Message-Id: <DH54ZZSBOJ0D.2PR3WTIRSH2OW@kernel.org>
-Subject: Re: [PATCH v5 2/3] mm/vmalloc: free unused pages on vrealloc()
- shrink
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Uladzislau Rezki"
- <urezki@gmail.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Shivam Kalra" <shivamkalra98@zohomail.in>, "Alice Ryhl"
- <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
- <20260317-vmalloc-shrink-v5-2-bbfbf54c5265@zohomail.in>
- <ablnha2sgGUMO96d@google.com>
-In-Reply-To: <ablnha2sgGUMO96d@google.com>
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <177375876673.4092997.3395963888020776942@mxe9fb.netcup.net>
+X-NC-CID: VI8GR9lw6G18Uo1yXINFhZklGUWTm/u/WkVDAqWoHVKv1JU15aY=
+X-Stat-Signature: 8gos4p6kcnjhg4ar7xhaaem3p1jwqzho
 X-Rspam-User: 
-X-Stat-Signature: jw3ukr4rsqpdbn815c7ai7inwspyshoh
-X-Rspamd-Queue-Id: 8A03A180017
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773758751-187541
-X-HE-Meta: U2FsdGVkX18Z0I05XXtkX7DpWT2kT5uMHkr/YeDiER9vlQY9DXQc/KPkprvNbOqtpnZhGiRIHRlAuijBIswfRfNvm3rXL+kI2ON3pvERQE3Twa7b6V4EKCNBkE6JgLDiPRI/b6M22I2KmSZBnprVaZU9ViwCj0fw9L0HdWit30qIUXXSXu+HQjSJOlai/ph7nxv3MgSWQq8A8Nhww7ZiagtoHOnXVTU4PFs5KudG4bsJ7k3BaiUkzPRmzgzZacq/7aSSlznkCn5Mwp1Q4CmYrejsyuNXcc8RQhfwBOSMhsIv2bFqaUH0UnBBQcIkSTaOHpdTpVfvdcmG6ITYu1LzOPnKFTGCMX7sRJRZxIxELZExjnuRtVcdAYvfdwvu75EuHfSa8A0qg79SdNdYVWO4x4RXB9yda5MX8oBo/8+NoxJ4lzVuacgEHk0mqLB0BMzlMJEwQbAeXTfTZ+NADY4Lr5D2zVUdZRGl+E/oREe8Cr6/fCS/3rLYJZWcMTDUtpXx4UA/44PcRAWKRgYRo8KeSS7CBCdQgXXMl11dqIOZju0nLC75OHHjQUJn5ky+ZJeZiKyahWoL1/hLlPOyd6HyN9JWCYkF4ngw0xpByPlhtGKdZvbFod0Jetgl0eZpV+prDXVMdJ5hN/v9s3hRMHcmuKxBOSqgDtZfXDHwTYGKmg8FufjeqxVBcRCefrWQ/h0o3651yn0fCKLnly2d7Zf0dT/hjhA0PRbYs0bZWEK3qU2dkCvBQ91rc2KxRgeSi7IzYvmWv3MTneiCAYe5hT/jjhIdWOB9x0psjZ/HAROP0JlfjR2qdNLyt0TNKRgVK8p8B6IeDO/DPCGXnt/6uKog0QryNav1rjn4Ba6E70pFcpTXDJw3eP9pVg6QCI1xUmE6/vgbYa+nwkMbHvBLep6bxaZpYqkDEUjJAKdJqk8hYgfTgjPgyLaS7TkL6O/F8jGgx9Nv3noZQghkX3Q5S66
- tzqYErQ9
- OTlaQDrr5s/A5ZkQ+X8ijn/3ZbZO+BctKwkPxTzb8ATHexHZOsQcq8f1F1jbJsvbg23ffCnNAbUaf+aDG0OBD+CTKsOXjCAAZS76pc1FTaTLOM7TsXyxoFGPiDBsS3+nehDPHG9wMFpG8SA++FBOfVFynQXnhBoKFo2YqzJAvwpAHeuBJp0msOjVfzXMXzyXspfBbOpCn+DPECGP9VdkRJezD51af99U/Ai1qEbKgINll2mM+CEvg28j7jB3AIjjIMbRFdNX2ddY2xlXtUlnzUyI7If0mA9JSmk2b1L8ccHkCKYE=
+X-Rspamd-Queue-Id: E1E681A0018
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773758769-234909
+X-HE-Meta: U2FsdGVkX19OON3kRMxElrhgQ8fIm6JFLWMRQ6+mu3Bm7Lsy0MHA8uwjvR9CsjFpmgT2N2h0dQLC1hlTPNVe4LPrMdyp7jZ8WgSBPG3+uLnNzbMS/QQQObpY8Qs7BXNL5DYh2OE2FyP8C9ObrL5ZzHGf/RuiyLZBKYa/IYnhps3kJ/8GpPU2fe7IGkBHiM4o07vCV6SSXmnBoI5gN20iWbMvZt5dwh7t8gsNg0QvRq+NsZfqBQ914NIrMWULIV7tWqrnLbIaTrkcQZkOoX/p+dIICwidrMIYmY7V88vh0kyFhRHOreSRwY2UU0fwwz9N6vVxALd8/J4Dbx5XSYv+gdQQoL8ceNbPYRSak1iLrcq3RCOxKw9GenLKLUAmGq1u5LNVDdGrIfcLIjNco6KfVgT9qEUO88oYNpPr7TTX8y87LvxAvEkG0ctzgSuZaqLMggHqfdPFDowrnXYZHh8/nr70yxiYTs1EHtQSLV3w+wr9cxTghc73USwIXTk5rWXaqF/fvTMuZiNoMcwGFowAnDzhhFgh66FxuZUS0yAiLxOqJoT+IHM/WxyCR1mBLJO8/j5ytiT47tiV5XN8imZ8vP3nQ0swLvWWoHUnXzSZu98T9I8c3AG82iDzsjS8NnAYhMpQ73bVzOSJTlV3QyDhPFPSu5IuPeNvs3io6U2w/rxRuVZolH+q3rYnQQWSWdPWxrPE1yex2rm4gQW7/cjcraVTbQMbBe8VtqJP20p2j2sLGMZFNseiVBGsxdKlT4WJZanf1aop4w7Y1+nL4rnYF8FmGYnBg74Uj7B2gh1Bi1vNh9l8DKr21WA01NLKeFzQTISIXQPq78xea56Jx3To66meTX2+pY7bjCT+1oHfo0jVtd5Ini7A0b45Q3kJtz/nNIUBix0JGeXHk2NkhtLpv19TlvhPIbaO72MAMfXI3zuqO/S53+d6q9IrAqENYCz0uugPd4co4yq5ew0B8Zt
+ 48kVIHkT
+ B92icnKDzR+j4vprBm5Jwdddr3jx2QGXZjrBYS/aTibsIDiIDAR5MBiE8/fpDKuQogewmE/aYcVY3q1TBrbzYQBRg9h5Kt3SxiI/GcWYUPyqH2yvx/RsWwaEJ7zJvxertm5u4+BFEloQNElIBJzIO6ePK+WQ9d05LY12KebZpq/vwCfLECsIQ2xuP3h3FW7d0Hw4xCH2zBk8xSzhnfPnyQsyuN/8GLEoEEQpbBqkWjzHuaBdice00ojhYo6axhresJzkSFNpiVrtNLawsWGMpz1u25in6/2Yq89SMjp2uhL957WV1fki7gfZXxfmosSe2nu92TSJXSZaMvtuiMgHDCOxfNCjauLYwDzELFZUJjhSfQBXIjvQF2h+4f+xChIH/fFQmsMIPLFStxefMH1ZidAjN0hK2oy47FmNnS4uOvUJr6iLdAbNe92kq2rfDgunWPWZXizpUHgosv24dgfHcR7Hho2ByW1cfabdTWJs1OQBdlzsmH/A+NldUCWMI085LDIZULyUXdf1jgKXuwYxMbqtn5CyJG14kuBwz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,102 +107,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Mar 17, 2026 at 3:39 PM CET, Alice Ryhl wrote:
-> On Tue, Mar 17, 2026 at 01:47:34PM +0530, Shivam Kalra wrote:
->> When vrealloc() shrinks an allocation and the new size crosses a page
->> boundary, unmap and free the tail pages that are no longer needed. This
->> reclaims physical memory that was previously wasted for the lifetime
->> of the allocation.
->>=20
->> The heuristic is simple: always free when at least one full page becomes
->> unused. Huge page allocations (page_order > 0) are skipped, as partial
->> freeing would require splitting. Allocations with VM_FLUSH_RESET_PERMS
->> are also skipped, as their direct-map permissions must be reset before
->> pages are returned to the page allocator, which is handled by
->> vm_reset_perms() during vfree().
->>=20
->> The virtual address reservation (vm->size / vmap_area) is intentionally
->> kept unchanged, preserving the address for potential future grow-in-plac=
-e
->> support.
->>=20
->> Fix the grow-in-place check to compare against vm->nr_pages rather than
->> get_vm_area_size(), since the latter reflects the virtual reservation
->> which does not shrink. Without this fix, a grow after shrink would
->> access freed pages.
->>=20
->> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+[ccing the regression list]
 
-Feel free to add
+Lo!
 
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
+On 3/16/26 09:18, Benjamin Eikel wrote:
+> 
+> I have reported this issue as Debian bug #1130138 [1], which has been marked 
+> “upstream”. I am therefore also reaching out here to make you aware of it. 
+> Please let me know if you need additional information.
 
->> ---
->>  mm/vmalloc.c | 20 +++++++++++++++-----
->>  1 file changed, 15 insertions(+), 5 deletions(-)
->>=20
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index b29bf58c0e3f..f3820c6712c1 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -4345,14 +4345,24 @@ void *vrealloc_node_align_noprof(const void *p, =
-size_t size, unsigned long align
->>  			goto need_realloc;
->>  	}
->> =20
->> -	/*
->> -	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
->> -	 * would be a good heuristic for when to shrink the vm_area?
->> -	 */
->>  	if (size <=3D old_size) {
->> +		unsigned int new_nr_pages =3D PAGE_ALIGN(size) >> PAGE_SHIFT;
->> +
->>  		/* Zero out "freed" memory, potentially for future realloc. */
->>  		if (want_init_on_free() || want_init_on_alloc(flags))
->>  			memset((void *)p + size, 0, old_size - size);
->> +
->> +		/* Free tail pages when shrink crosses a page boundary. */
->> +		if (new_nr_pages < vm->nr_pages && !vm_area_page_order(vm) &&
->> +		    !(vm->flags & VM_FLUSH_RESET_PERMS)) {
->> +			unsigned long addr =3D (unsigned long)p;
->> +
->> +			vunmap_range(addr + (new_nr_pages << PAGE_SHIFT),
->> +				     addr + (vm->nr_pages << PAGE_SHIFT));
->> +
->> +			vm_area_free_pages(vm, new_nr_pages, vm->nr_pages);
->> +			vm->nr_pages =3D new_nr_pages;
->> +		}
->>  		vm->requested_size =3D size;
->>  		kasan_vrealloc(p, old_size, size);
->>  		return (void *)p;
->> @@ -4361,7 +4371,7 @@ void *vrealloc_node_align_noprof(const void *p, si=
-ze_t size, unsigned long align
->>  	/*
->>  	 * We already have the bytes available in the allocation; use them.
->>  	 */
->> -	if (size <=3D alloced_size) {
->> +	if (size <=3D (size_t)vm->nr_pages << PAGE_SHIFT) {
->>  		/*
->>  		 * No need to zero memory here, as unused memory will have
->>  		 * already been zeroed at initial allocation time or during
->
-> Hmm. So what happened here is that it has previously always been the
-> case that get_vm_area_size(area) =3D=3D vm->nr_pages << PAGE_SHIFT, so th=
-ese
-> constants were interchangable. But now that is no longer the case.
->
-> For example, 'remap_vmalloc_range_partial' compares the vm area size
-> with the range being mapped, and then proceeds to look up the pages and
-> map them. But now those pages may be missing.
->
-> I can't really tell if there are other places in this file that need to
-> be updated too.
+FWIW, if no developer soon shows up to look into this, you likely need
+to perform a git bisection to identify the change that causes this; you
+might also want to check if mainline is affected:
 
-This may well be possible. I remember that when I added vrealloc() and look=
-ed
-into growing and shrinking, I concluded that it might need a bit of rework =
-in
-terms of tracking the sizes of the different layers. Unfortunately, I don't
-remember the details anymore, but I'm quite sure there were some subtleties
-along the lines of what Alice points out, so I recommend to double check.
+https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
+https://docs.kernel.org/admin-guide/bug-bisect.html
+
+Ciao, Thorsten
+
+
+> After upgrading from linux-image-6.18.15+deb14-amd64, I see this error several 
+> times and the system shortly freezes. It seems related to Zoom crashing first, 
+> but the freezes were not noticable with older Linux kernels.
+> Currently booted into 6.18.15+deb14-amd64 which does not exhibit this issue. 
+> The stalls occurred when running 6.19.6+deb14-amd64. More information about my 
+> system can be found in the Debian bug report.
+> 
+> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
+> stalls on CPUs/tasks:
+> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu:         Tasks blocked on 
+> level-0 rcu_node (CPUs 0-15): P10008/1:b..l
+> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu:         (detected by 5, t=5252 
+> jiffies, g=177537, q=28067 ncpus=16)
+> Mär 09 09:13:48 thinkpad-benjamin kernel: task:zoom            state:R  
+> running task     stack:0     pid:10008 tgid:10008 ppid:2089   
+> task_flags:0x40040c flags:0x00080802
+> Mär 09 09:13:48 thinkpad-benjamin kernel: Call Trace:
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  <TASK>
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  __schedule+0x48a/0xfc0
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  preempt_schedule+0x32/0x50
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  preempt_schedule_thunk+0x16/0x30
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  _raw_spin_unlock+0x22/0x30
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  unmap_page_range+0xbcb/0x1700
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  unmap_vmas+0xa1/0x180
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  exit_mmap+0xe1/0x3b0
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  __mmput+0x41/0x150
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_exit+0x251/0xa70
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_group_exit+0x2d/0xc0
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  get_signal+0x8a4/0x920
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  
+> arch_do_signal_or_restart+0x40/0x250
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  exit_to_user_mode_loop+0x8e/0x480
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? __x64_sys_sched_setaffinity+0x6a/
+> 0xb0
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_syscall_64+0x20b/0x600
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? ksys_read+0xcd/0xf0
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? __x64_sys_close+0x3d/0x80
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? exc_page_fault+0x7e/0x1a0
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> Mär 09 09:13:48 thinkpad-benjamin kernel: RIP: 0033:0x7f2876359e2d
+> Mär 09 09:13:48 thinkpad-benjamin kernel: RSP: 002b:00007ffc91243ad8 EFLAGS: 
+> 00000246 ORIG_RAX: 00000000000000cb
+> Mär 09 09:13:48 thinkpad-benjamin kernel: RAX: 0000000000000000 RBX: 
+> 00007f2875207700 RCX: 00007f2876359e2d
+> Mär 09 09:13:48 thinkpad-benjamin kernel: RDX: 00007ffc91243ae0 RSI: 
+> 0000000000000080 RDI: 0000000000002718
+> Mär 09 09:13:48 thinkpad-benjamin kernel: RBP: 0000000000000020 R08: 
+> 0000000000000001 R09: 00007f2875206de8
+> Mär 09 09:13:48 thinkpad-benjamin kernel: R10: 0000000000000000 R11: 
+> 0000000000000246 R12: 00007ffc91243ae0
+> Mär 09 09:13:48 thinkpad-benjamin kernel: R13: 00007ffc91243c80 R14: 
+> 0000000000000000 R15: 0000000000000020
+> Mär 09 09:13:48 thinkpad-benjamin kernel:  </TASK>
+> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
+> expedited stalls on CPUs/tasks: { P10008 } 5361 jiffies s: 1609 root: 0x0/T
+> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: blocking rcu_node structures 
+> (internal RCU debug):
+> 
+> Another one:
+> 
+> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
+> stalls on CPUs/tasks:
+> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu:         Tasks blocked on 
+> level-0 rcu_node (CPUs 0-15): P10008/1:b..l
+> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu:         (detected by 5, t=21007 
+> jiffies, g=177537, q=87903 ncpus=16)
+> Mär 09 09:14:51 thinkpad-benjamin kernel: task:zoom            state:R  
+> running task     stack:0     pid:10008 tgid:10008 ppid:2089   
+> task_flags:0x40040c flags:0x00080802
+> Mär 09 09:14:51 thinkpad-benjamin kernel: Call Trace:
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  <TASK>
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  __schedule+0x48a/0xfc0
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  preempt_schedule+0x32/0x50
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  preempt_schedule_thunk+0x16/0x30
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  _raw_spin_unlock+0x22/0x30
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  unmap_page_range+0xbcb/0x1700
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  unmap_vmas+0xa1/0x180
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  exit_mmap+0xe1/0x3b0
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  __mmput+0x41/0x150
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_exit+0x251/0xa70
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_group_exit+0x2d/0xc0
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  get_signal+0x8a4/0x920
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  
+> arch_do_signal_or_restart+0x40/0x250
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  exit_to_user_mode_loop+0x8e/0x480
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? __x64_sys_sched_setaffinity+0x6a/
+> 0xb0
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_syscall_64+0x20b/0x600
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? ksys_read+0xcd/0xf0
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? __x64_sys_close+0x3d/0x80
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
+> srso_alias_return_thunk+0x5/0xfbef5
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? exc_page_fault+0x7e/0x1a0
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> Mär 09 09:14:51 thinkpad-benjamin kernel: RIP: 0033:0x7f2876359e2d
+> Mär 09 09:14:51 thinkpad-benjamin kernel: RSP: 002b:00007ffc91243ad8 EFLAGS: 
+> 00000246 ORIG_RAX: 00000000000000cb
+> Mär 09 09:14:51 thinkpad-benjamin kernel: RAX: 0000000000000000 RBX: 
+> 00007f2875207700 RCX: 00007f2876359e2d
+> Mär 09 09:14:51 thinkpad-benjamin kernel: RDX: 00007ffc91243ae0 RSI: 
+> 0000000000000080 RDI: 0000000000002718
+> Mär 09 09:14:51 thinkpad-benjamin kernel: RBP: 0000000000000020 R08: 
+> 0000000000000001 R09: 00007f2875206de8
+> Mär 09 09:14:51 thinkpad-benjamin kernel: R10: 0000000000000000 R11: 
+> 0000000000000246 R12: 00007ffc91243ae0
+> Mär 09 09:14:51 thinkpad-benjamin kernel: R13: 00007ffc91243c80 R14: 
+> 0000000000000000 R15: 0000000000000020
+> Mär 09 09:14:51 thinkpad-benjamin kernel:  </TASK>
+> Mär 09 09:14:52 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
+> expedited stalls on CPUs/tasks: { P10008 } 21233 jiffies s: 1609 root: 0x0/T
+> Mär 09 09:14:52 thinkpad-benjamin kernel: rcu: blocking rcu_node structures 
+> (internal RCU debug):
+> 
+> Note the stall duration escalating from t=5252 jiffies (~5s) to t=21007 jiffies 
+> (~21s), with the same grace period (g=177537), indicating the unmap_page_range 
+> operation blocked for over a minute.
+> 
+> Kind regards
+> Benjamin
+> 
+> [1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1130138
+> 
+> 
+
 
