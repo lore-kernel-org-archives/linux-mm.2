@@ -4,156 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FFE9FD876A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 13:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCFCDFD8769
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 13:33:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 466C56B0005; Tue, 17 Mar 2026 09:25:54 -0400 (EDT)
+	id EF9C66B0088; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 417C66B0088; Tue, 17 Mar 2026 09:25:54 -0400 (EDT)
+	id ED1446B0089; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DEC56B0089; Tue, 17 Mar 2026 09:25:54 -0400 (EDT)
+	id E0E426B008A; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 18AA66B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:25:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31A45C107C
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:25:52 +0000 (UTC)
-X-FDA: 84555627744.19.C6902E8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CC6626B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D7C01B6F3D
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:33:56 +0000 (UTC)
+X-FDA: 84555648072.03.7D55EA4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 44A7B80013
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:25:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EyRGysGg;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6FB6EC0017
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:33:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o0UGYuCD;
+	spf=pass (imf10.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773753950;
+	s=arc-20220608; t=1773754434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JTaxwy4HLfT9jPtHO5EgOJIr9pAZ8f4jsk7l3CBFPvE=;
-	b=k6jQeYv+CTUDJMyymA6xreMRU0PxS3n0O8zOne4P22sAz7QAZVdyMoWtWi3pT1THRjs3tb
-	V3PLfTTwxaZM8duWf5p1R23Gc4AxOYG2iC51oqz1pQYF62MxNXk7YChL42EJsIiueFJ94I
-	nCVptuwAUjbmXG7udoFUqC2knvHQvrk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773753950; a=rsa-sha256;
-	cv=none;
-	b=vAgPrJgLMbAAPublyqmluoK8xk2kE9RC1dv5ORpeR42FjTHWF7wpwsO1qtzeJ6w1+PPcs+
-	iK+JRaR5ay+eIS/VL8tWgfEl1imiDdLm/Dw2hxJZ+tbzbVzNCxS5+pghJM5rD/dSJp6lSe
-	mn8c9QHglokhnM+Rr0bq3O77JOVdzxE=
+	bh=7wLThk9vqFCL8eaVlk4gPK1xgF/La36KrS918s5Lj0k=;
+	b=Ka30nRGxI5q2dEvlePDitwMHA8RNAIW3YPsAMcTo04PH5xyBgQRZKG88UJ8HwZ6bep2GG3
+	yIjsppMA4FfOGwTuIc0hG1zEqGAB9RuubOUFgd20tY1OT5Aei6KQoYhYYG1PGnJOYeUxsF
+	dJrp6cp3rJaUmQV0VtIqir12ujxrRiE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EyRGysGg;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o0UGYuCD;
+	spf=pass (imf10.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773754434; a=rsa-sha256;
+	cv=none;
+	b=F/BkjZJrpC0T5gyPHGkg7q8OQT1sDrmg+U4c4+XlOSYg8K07NJiQrvY2OBv3ibKy3QYyCh
+	pQX/y7Lzlzwuu113tKANXvAsfth5vHrjpcASM9733Cw5qU6NItnNbi/cMjxLnQcxG7ygJ/
+	DWSA0YX3nNYPpQGAotrU5O2URu7WmDY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D4F7402D7;
-	Tue, 17 Mar 2026 13:25:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E33C4CEF7;
-	Tue, 17 Mar 2026 13:25:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 592504347A;
+	Tue, 17 Mar 2026 13:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1141C2BCB5;
+	Tue, 17 Mar 2026 13:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773753949;
-	bh=NbMxuERCb9JHAsoZXa40NtkHjx682HdeZjRT7I45/4A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EyRGysGgOyFFvG7qMB5gGnylt0h0q9g8KKVIFOAcPBTTzTr300k+WkSOCAQXMWcex
-	 7ccF18bHEaCKDandZn4R8JHkPf92HY9s+bux2XaUPPWclIlNabVXUvq9WPwV0JFStS
-	 VhebImaylFWTQB5xxBEmA6GdQL1GEyFf/2PViHN/P5BCV73QbtRRj+KJx7wD/Htl6g
-	 f8TfUluXqVSUtK5o4eg8Ws6XPGx0vu8BIHEZj+/gnde3WE6FZpyfeR9A//oynqFsCl
-	 GKzjjIbuUs71EuzjSLWz8sT6Bdx2faIwpimHvFqZLz7P/QmvhQ+SzN/4jJCvIFYoot
-	 xCH6zuoklkiZw==
-Message-ID: <3342acb5-8d34-4270-98a2-866b1ff80faf@kernel.org>
-Date: Tue, 17 Mar 2026 14:25:29 +0100
+	s=k20201202; t=1773754433;
+	bh=JX2H/y+49Q+R+OOqtdz8X6bLyH5h+JbiWbT3ZJSu2fk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o0UGYuCDKbFzDohH8kmxaxfxkxtFGeKr7GKbCyr4wkvQ9TsXZYxbSoxtpKJjSdqgP
+	 pNgeUMuOnaaZcUjXRvQButrVBuYnMEb1lNrkme28GAWyEW/GvTok+Q7axIywujx3W5
+	 P/McHw3f1Gnv1I7OKFswPVL8zJk5t+evfJYWgDYCy4QmQzNrejd+Ceas6JvxzkA6hk
+	 UBrgVHaHPWAR+SpnHw/LeGUUhG0ddsheT4reiI5OURWEpbZnXxe2tdzzlzRxJV4flU
+	 Hgq7PcMz+WSt0/9Qg5qry7/XinL13DvY6vhquBW7DrSn3jCnLgR3O6TwQ3X36QWbBX
+	 uItNt/pwlq+dg==
+Date: Tue, 17 Mar 2026 14:33:50 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush
+ work
+Message-ID: <ablYPt92Y63GcIu2@localhost.localdomain>
+References: <20260302154945.143996316@redhat.com>
+ <20260302155105.214878062@redhat.com>
+ <abSH40oW9qiVDXZS@pavilion.home>
+ <abb2E3QW7t5Rhxrt@WindFlash>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-To: Gregory Price <gourry@gourry.net>, lsf-pc@lists.linux-foundation.org
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
- kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
- linux@rasmusvillemoes.dk, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
- mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
- riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
- roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
- zhengqi.arch@bytedance.com, terry.bowman@amd.com
-References: <20260222084842.1824063-1-gourry@gourry.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abb2E3QW7t5Rhxrt@WindFlash>
+X-Stat-Signature: 1h87eg4ekcey9wgsi37bstf7j638hpsq
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 44A7B80013
-X-Stat-Signature: bgyufj98mfzoceg1p14irt9nxwhb3zca
-X-HE-Tag: 1773753950-879209
-X-HE-Meta: U2FsdGVkX18xlHiyl2Lx9OMnr61pzqGGdQOTcriFX4ANqaN2wa4qO85+MwPAkb8HSYOPzxf2fgtgnrFYFAif0y0pg6EwlGZZjBiWKyZhQhk5qiM8miZ42RA0xoTKFVPhiIbTWPbzxTf/ZKinwaNDnwAWtbfepsNjSDdNYkmEcs6BvqzZ7af5iX/U9BA1pZ3PY57hboujqUgP3uSGUO77A78F8eKxQbjM2mSn2lXPVEZeDzNciBsKcTwTW5jGjKt0jTzgfK3WYL9l1NSzBRuYcVJdfJWEknrl2c3uz6FGBL3s7gFKvrjKT9/VvFAzOLHgmxvLSk08QE1/SVtW9TfDwB7HH9EASE1U6ywwmYJwDRR1shPCMTIxdRg2Pnv6jX2IxIuq7bhjKC1fhDH3KPMbLzSeVl7s74UpXEdkBUffjx348mWy2LPHcV7iqwsCUND/mIUyj6wJYE/Fa0yYDMYhCWZesJ7946TXjeGX5E7sVzWkjEajorPvqZ5x8MyENqO5UMo+tCwmTJ75rpur4Y3Xr1CrKQ/3cq3pcEZrrlrNqsZQSz5Auq5aTnW7vBYbAnGBfpNbvL2YVkAUKcb4fs/U0fZ9Z05axArEd6AXQRH5XVfnM/e6TfrZzRlpEcbF5JmLuBroc7zGaVPv0Qigzw8WMF7a7WPe27E16FcgYOo8yyTfFN/WcNJskaOpRCkquBhsEuPbYBoCpG+PThVh1kzg/kuXBZWlmxFXUAtYRjQp56KQic5fNjYI63XZxPOY+81/4Vg5dQ31K6qOJUSE2OcW890tUkmK56ezMEhZC4MP24XtPy8CPF3LZ78BghHUvDLsBD7JgK0rrndpJ1VE7VBtIIQfzw+N5/NzJEQSxo7jHoUiYzv5imIrhD346eW6qxCblZeLe4oLagk+2VzQd3bZNRygQUQ/TkUe8GV2wG9uquXIKyjmeOcYXBa/CIrFn7FXzvdUUv1OOGGUyh8lgLA
- JVr0p0ML
- gNos3yl1p+xTCgCMlY+mxpUCtCNPu3pjwOctmiSaChuEKi2qLkUgJlLg+FR6qlnqW739fIYo6R5vy3BujnVnAogubn0hWdk7LxNbvgah7gjJpkLhQSkCrvoCZjbGC8Nqs8p76H/AH4P3x0/0G96MEQfH1b149YKsRo+g1mMw6WiLYBTIo+vTG9AlLwhWRqvTmHp/QnNfv0I59QPja81Q42m/pgMRWSL3hlhCdCuhXVAv4NhfzxqW+bu3kHv6oyL43oQIi6KVBRjJb8Yahdkx6KiLVWf9h6VCBXN1lecTFVjNj7ONxhKCNQMQSn4HwV2jhyFLoLkizA0CY5po=
+X-Rspamd-Queue-Id: 6FB6EC0017
+X-HE-Tag: 1773754434-262783
+X-HE-Meta: U2FsdGVkX1+o+zl39wdwl5Si4eSW52kLUDDQpl8aOwhN78c13BPceJ78FE481T0XOhWpI2LYhvyXpDZWmzGl/NPy7O492FJr9vJjqO/+OfiLmPDNxiDMYoAFlJrZB5b42Tk8pxlZaXxYLw996110NsYlkdFe56FZ1cHvRrajd9lvua2nMmKA8lufwSY+2k1FFmIYPFLbdIX1+9P0DXAxCarba2ZN6rU7yJ68IzNvLFEiMKU9vFmWIKL5KRRzE/Ar3gNfP9dtl207OrWSSW5+6DXo3pjidmi7SMO3eWU0sQ4qM4l4qzyElDz+EMyyEdRe9u5zwtxzShM1POjxTnSjnFVCWWNHFI4vlvG8W6e8PRxZnYsM+isVqr+5Vo+El6kwz4Lum2mmBJdJvjNx7El/tjz/A5tKD105WSjh95cpu6QiY56lOJvt+lNksvW5KcSkpB8qkW7Gw8PHQqOQZ44hQEFXdq/kRbtQR52Dd9/dVzfdFW/dqOrAaL73BuMStlhWeMxBWNLRq7Gus85fC+/bKlkJp8hXciSpBj9mEHbs0Qgz/KyCWKeiWoNSaWxUtvMNIs0pnVlc3OJwi/CsTvGasb0AwYTAGkCTFYFAMFZe2XzvHKDPEH6YygzmVABK0z+5viriKqdM+V2epmO2m5Z9nVoO1CeR3nhrjOd8V4J4pteHg7hVUoFU075ofsglKFB/n5+10ZW6QVceVwXCjBqwCMfG70Fkt8+gkBu32iwLQuRWM6waBxtWCjCfKgxey1jvKSI1IaERWwIlgrievlVGVaAU29aOEySmcaK/v7fKdNuBoocV37qpIjpK66eCNgPf5IMyyqbElt+MdaNi+grMb5mi0/xhfcZPduRlcRE2Mog5g9TxeAp4xhVLj/rO94ak/uaA4dximfX3jidh0U9/gGcmnqeTaX2WeP4UhOGGv9Wg93w/fr1ZBy6rKjC45Gxhz6yVT06YZo1Vx70ivby
+ oIPzUqSB
+ TIBwy14MIK9pBQYkT+GEa8O3KerFVy419NFT9ev3v5gHEaDN8qMhUo4V53jaiTDqI5dtIBp6RnmlGt8ZoUbYSGIGDteXXBDAs09qUAs2NmcjuHowrYPWLCBvdiAnPyaw2zWy38c9b9hQBzecmTgKtorI0vTXHhPKrH3Z5RB+6OphUsSt/7/OV6D2pvdYI3+tOypM1Dp+3063XSAJeECEdi8nNbuC+zIrU17RwhR7upoHo6xswcgpmx5OX0ELdfw1sC30JEJVjMHmSGBJGZJLzIJFHtsZZHGN1nb+r6l6kgqwNPJq3axjs2SCI00/kjR91oh/UzWQmH6oy3No1qR+RYTVG5RwRCMMYhy2WtFYYj2idlzkUwydY81qkYgaZg1W06GPl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,206 +108,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/22/26 09:48, Gregory Price wrote:
-> Topic type: MM
+Le Sun, Mar 15, 2026 at 03:10:27PM -0300, Leonardo Bras a écrit :
+> On Fri, Mar 13, 2026 at 10:55:47PM +0100, Frederic Weisbecker wrote:
+> > I find this part of the semantic a bit weird. If we eventually queue
+> > the work, why do we care about doing a local_lock() locally ?
+> 
+> (Sorry, not sure if I was able to understand the question.)
+> 
+> Local locks make sure a per-cpu procedure happens on the same CPU from 
+> start to end. Using migrate_disable & using per-cpu spinlocks on RT and 
+> doing preempt_disable in non_RT.
+> 
+> Most of the cases happen to have the work done in the local cpu, and just 
+> a few procedures happen to be queued remotely, such as remote cache 
+> draining. 
+> 
+> Even with the new 'local_qpw_lock()' which is faster for cases we are sure 
+> to have local usages, on qpw=0 we have to make qpw_lock() a local_lock as 
+> well, as the cpu receiving the scheduled work needs to make sure to run it 
+> all without moving to a different cpu.
 
-Hi Gregory,
+But queue_work_on() already makes sure the work doesn't move to a different CPU
+(provided hotplug is correctly handled for the work).
 
-stumbling over this again, some questions whereby I'll just ignore the
-compressed RAM bits for now and focus on use cases where promotion etc
-are not relevant :)
+Looks like we are both confused, so let's take a practical example. Suppose
+CPU 0 queues a work to CPU 1 which sets a per-cpu variable named A to the value
+"1". We want to guarantee that further reads of that per-cpu value by CPU 1
+see the new value. With qpw=1, it looks like this:
 
-[...]
+CPU 0                                               CPU 1
+-----                                               -----
 
-> 
-> TL;DR
-> ===
-> 
-> N_MEMORY_PRIVATE is all about isolating NUMA nodes and then punching
-> explicit holes in that isolation to do useful things we couldn't do
-> before without re-implementing entire portions of mm/ in a driver.
+qpw_lock(CPU 1)
+   spin_lock(&QPW_CPU1)
+qpw_queue_for(write_A, 1)
+    write_A()
+       A1 = per_cpu_ptr(&A, 1)
+       *A1 = 1
+qpw_unlock(CPU 1)
+    spin_unlock(&QPW_CPU1)
+                                                   read_A()
+                                                       qpw_lock(CPU 1)
+                                                           spin_lock(&QPW_CPU1)
+                                                       r0 = __this_cpu_read(&A)
+                                                       qpw_unlock(CPU 1)
+                                                           spin_unlock(&QPW_CPU1)
+                                                   
 
-Just to clarify: we don't currently have any mechanism to expose, say,
-SPM/PMEM/whatsoever to the buddy allocator through the dax/kmem driver
-and *not* have random allocations end up on it, correct?
+CPU 0 took the spinlock while writing to A, so CPU 1 is guaranteed to further
+observe the new value because it takes the same spinlock (r0 == 1)
 
-Assume we online the memory to ZONE_MOVABLE, still other (fallback)
-allocations might end up on that memory.
+Now look at the qpw=0 case:
+                                  
+CPU 0                                               CPU 1
+-----                                               -----
 
-How would we currently handle something like that? (do we have drivers
-for that? I'd assume that drivers would only migrate some user memory to
-ZONE_DEVICE memory.)
+qpw_lock(CPU 1)
+   local_lock(&QPW_CPU0)
+qpw_queue_for(write_A, 1)
+    queue_work_on(write_A, CPU 1)
+qpw_unlock(CPU 1)
+    local_unlock(&QPW_CPU0)
+                                                   // workqueue
+                                                   write_A()
+                                                       qpw_lock(CPU 1)
+                                                           local_lock(&QPW_CPU1)
+                                                       A1 = per_cpu_ptr(&A, 1)
+                                                       *A1 = 1
+                                                       qpw_unlock(CPU 1)
+                                                           local_unlock(&QPW_CPU1)
 
-Assuming we don't have such a mechanism, I assume that part of your
-proposal would be very interesting: online the memory to a
-"special"/"restricted" (you call it private) NUMA node, whereby all
-memory of that NUMA node will only be consumable through
-mbind() and friends.
+                                                   read_A()
+                                                       qpw_lock(CPU 1)
+                                                           local_lock(&QPW_CPU1)
+                                                       r0 = __this_cpu_read(&A)
+                                                       qpw_unlock(CPU 1)
+                                                           local_unlock(&QPW_CPU1)
 
-Any other allocations (including automatic page migration etc) would not
-end up on that memory.
+Here CPU 0 queues the work on CPU 1 which writes and reads the new value
+(r0 == 1). local_lock() / preempt_disable() makes sure the CPU doesn't change.
 
-Thinking of some "terribly slow" or "terribly fast" memory that we don't
-want to involve in automatic memory tiering, being able to just let
-selected workloads consume that memory sounds very helpful.
+But what is the point in doing local_lock(&QPW_CPU0) on CPU 0 ?
 
 
-(wondering if there could be some way allocations might get migrated out
-of the node, for example, during memory offlining etc, which might also
-not be desirable)
+> > > 
+> > > @@ -2840,6 +2840,16 @@ Kernel parameters
+> > >  
+> > >  			The format of <cpu-list> is described above.
+> > >  
+> > > +	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
+> > > +			and remote interference mechanism on a kernel built with
+> > > +			CONFIG_QPW.
+> > > +			Format: { "0" | "1" }
+> > > +			0 - local_lock() + queue_work_on(remote_cpu)
+> > > +			1 - spin_lock() for both local and remote operations
+> > > +
+> > > +			Selecting 1 may be interesting for systems that want
+> > > +			to avoid interruption & context switches from IPIs.
+> > 
+> > Like Vlastimil suggested, it would be better to just have it off by default
+> > and turn it on only if nohz_full= is passed. Then we can consider introducing
+> > the parameter later if the need arise.
+> 
+> I agree with having it enabled with isolcpus/nohz_full, but I would 
+> recommend having this option anyway, as the user could disable qpw if 
+> wanted, or enable outside isolcpu scenarios for any reason.
 
-I am not sure if __GFP_PRIVATE etc is really required for that. But some
-mechanism to make that work seems extremely helpful.
+Do you know any such users? Or suspect a potential usecase? If not we can still
+add that option later. It's probably better than sticking with a useless
+parameter that we'll have to maintain forever.
 
-Because ...
+> > > +#define qpw_lockdep_assert_held(lock)			\
+> > > +	lockdep_assert_held(lock)
+> > > +
+> > > +#define queue_percpu_work_on(c, wq, qpw)		\
+> > > +	queue_work_on(c, wq, &(qpw)->work)
+> > 
+> > qpw_queue_work_on() ?
+> > 
+> > Perhaps even better would be qpw_queue_work_for(), leaving some room for
+> > mystery about where/how the work will be executed :-)
+> > 
+> 
+> QPW comes from Queue PerCPU Work
+> Having it called qpw_queue_work_{on,for}() would be repetitve
 
-> 
-> 
-> /* This is my memory. There are many like it, but this one is mine. */
-> rc = add_private_memory_driver_managed(nid, start, size, name, flags,
->                                        online_type, private_context);
-> 
-> page = alloc_pages_node(nid, __GFP_PRIVATE, 0);
-> 
-> /* Ok but I want to do something useful with it */
-> static const struct node_private_ops ops = {
->         .migrate_to     = my_migrate_to,
->         .folio_migrate  = my_folio_migrate,
->         .flags = NP_OPS_MIGRATION | NP_OPS_MEMPOLICY,
-> };
-> node_private_set_ops(nid, &ops);
-> 
-> /* And now I can use mempolicy with my memory */
-> buf = mmap(...);
-> mbind(buf, len, mode, private_node, ...);
-> buf[0] = 0xdeadbeef;  /* Faults onto private node */
+Well, qpw_ just becomes the name of the subsystem and its prefix for APIs.
+For example qpw_lock() doesn't mean that we queue and lock, it only means we lock.
 
-... just being able to consume that memory through mbind() and having
-guarantees sounds extremely helpful.
+> But having qpw_on() or qpw_for() would be misleading :) 
+> 
+> That's why I went with queue_percpu_work_on() based on how we have the 
+> original function (queue_work_on) being called.
 
-[...]
+That's much more misleading at it doesn't refer to qpw at all and it only
+suggest that it's a queueing a per-cpu workqueue.
 
+> > Perhaps that too should just be selected automatically by CONFIG_NO_HZ_FULL and if
+> > the need arise in the future, make it visible to the user?
+> > 
 > 
+> I think it would be good to have this, and let whoever is building have the 
+> chance to disable QPW if it doesn't work well for their machines or 
+> workload, without having to add a new boot parameter to continue have 
+> their stuff working as always after a kernel update.
 > 
-> Background
-> ===
-> 
-> Today, drivers that want mm-like services on non-general-purpose
-> memory either use ZONE_DEVICE (self-managed memory) or hotplug into
-> N_MEMORY and accept the risk of uncontrolled allocation.
-> 
-> Neither option provides what we really want - the ability to:
-> 	1) selectively participate in mm/ subsystems, while
-> 	2) isolating that memory from general purpose use.
-> 
-> Some device-attached memory cannot be managed as fully general-purpose
-> system RAM.  CXL devices with inline compression, for example, may
-> corrupt data or crash the machine if the compression ratio drops
-> below a threshold -- we simply run out of physical memory.
-> 
-> This is a hard problem to solve: how does an operating system deal
-> with a device that basically lies about how much capacity it has?
-> 
-> (We'll discuss that in the CRAM section)
-> 
-> 
-> Core Proposal: N_MEMORY_PRIVATE
-> ===
-> 
-> Introduce N_MEMORY_PRIVATE, a NUMA node state for memory managed by
-> the buddy allocator, but excluded from normal allocation paths.
-> 
-> Private nodes:
-> 
->   - Are filtered from zonelist fallback: all existing callers to
->     get_page_from_freelist cannot reach these nodes through any
->     normal fallback mechanism.
+> But that is open to discussion :)
 
-Good.
+Ok I guess we can stick with the Kconfig at least in the beginning.
 
-> 
->   - Filter allocation requests on __GFP_PRIVATE
->     	numa_zone_allowed() excludes them otherwise. 
-
-I think we discussed that in the past, but why can't we find a way that
-only people requesting __GFP_THISNODE could allocate that memory, for
-example? I guess we'd have to remove it from all "default NUMA bitmaps"
-somehow.
-
-> 
->     Applies to systems with and without cpusets.
-> 
->     GFP_PRIVATE is (__GFP_PRIVATE | __GFP_THISNODE).
-> 
->     Services use it when they need to allocate specifically from
->     a private node (e.g., CRAM allocating a destination folio).
-> 
->     No existing allocator path sets __GFP_PRIVATE, so private nodes
->     are unreachable by default.
-> 
->   - Use standard struct page / folio.  No ZONE_DEVICE, no pgmap,
->     no struct page metadata limitations.
-
-Good.
-
-> 
->   - Use a node-scoped metadata structure to accomplish filtering
->     and callback support.
-> 
->   - May participate in the buddy allocator, reclaim, compaction,
->     and LRU like normal memory, gated by an opt-in set of flags.
-> 
-> The key abstraction is node_private_ops: a per-node callback table
-> registered by a driver or service.  
-> 
-> Each callback is individually gated by an NP_OPS_* capability flag.
-> 
-> A driver opts in only to the mm/ operations it needs.
-> 
-> It is similar to ZONE_DEVICE's pgmap at a node granularity.
-> 
-> In fact...
-> 
-> 
-> Re-use of ZONE_DEVICE Hooks
-> ===
-
-I think all of that might not be required for the simplistic use case I
-mentioned above (fast/slow memory only to be consumed by selected user
-space that opts in through mbind() and friends).
-
-Or are there other use cases for these callbacks
-
-[...]
-> 
-> 
-> Flag-gated behavior (NP_OPS_*) controls:
-> ===
-> 
-> We use OPS flags to denote what mm/ services we want to allow on our
-> private node.   I've plumbed these through so far:
-> 
->   NP_OPS_MIGRATION       - Node supports migration
->   NP_OPS_MEMPOLICY       - Node supports mempolicy actions
->   NP_OPS_DEMOTION        - Node appears in demotion target lists
->   NP_OPS_PROTECT_WRITE   - Node memory is read-only (wrprotect)
->   NP_OPS_RECLAIM         - Node supports reclaim
->   NP_OPS_NUMA_BALANCING  - Node supports numa balancing
->   NP_OPS_COMPACTION      - Node supports compaction
->   NP_OPS_LONGTERM_PIN    - Node supports longterm pinning
->   NP_OPS_OOM_ELIGIBLE	 - (MIGRATION | DEMOTION), node is reachable
->                            as normal system ram storage, so it should
-> 			   be considered in OOM pressure calculations.
-
-I have to think about all that, and whether that would be required as a
-first step. I'd assume in a simplistic use case mentioned above we might
-only forbid the memory to be used as a fallback for any oom etc.
-
-Whether reclaim (e.g., swapout) makes sense is a good question.
-
+Thanks.
 
 -- 
-Cheers,
-
-David
+Frederic Weisbecker
+SUSE Labs
 
