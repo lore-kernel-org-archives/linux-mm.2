@@ -4,103 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCFCDFD8769
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 13:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6993FD876A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 13:45:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF9C66B0088; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
+	id 0B3226B0005; Tue, 17 Mar 2026 09:45:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED1446B0089; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
+	id 063E76B0088; Tue, 17 Mar 2026 09:45:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0E426B008A; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
+	id E6DE56B008A; Tue, 17 Mar 2026 09:45:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CC6626B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:33:56 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D7C01B6F3D
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:33:56 +0000 (UTC)
-X-FDA: 84555648072.03.7D55EA4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6FB6EC0017
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:33:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o0UGYuCD;
-	spf=pass (imf10.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773754434;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D5DBF6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:45:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A179B61DD
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:45:43 +0000 (UTC)
+X-FDA: 84555677766.19.7426657
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010038.outbound.protection.outlook.com [52.101.61.38])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6F2B41C0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:45:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=Nvidia.com header.s=selector2 header.b=GcO1oFgz;
+	spf=pass (imf21.hostedemail.com: domain of leonro@nvidia.com designates 52.101.61.38 as permitted sender) smtp.mailfrom=leonro@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773755140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7wLThk9vqFCL8eaVlk4gPK1xgF/La36KrS918s5Lj0k=;
-	b=Ka30nRGxI5q2dEvlePDitwMHA8RNAIW3YPsAMcTo04PH5xyBgQRZKG88UJ8HwZ6bep2GG3
-	yIjsppMA4FfOGwTuIc0hG1zEqGAB9RuubOUFgd20tY1OT5Aei6KQoYhYYG1PGnJOYeUxsF
-	dJrp6cp3rJaUmQV0VtIqir12ujxrRiE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o0UGYuCD;
-	spf=pass (imf10.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773754434; a=rsa-sha256;
-	cv=none;
-	b=F/BkjZJrpC0T5gyPHGkg7q8OQT1sDrmg+U4c4+XlOSYg8K07NJiQrvY2OBv3ibKy3QYyCh
-	pQX/y7Lzlzwuu113tKANXvAsfth5vHrjpcASM9733Cw5qU6NItnNbi/cMjxLnQcxG7ygJ/
-	DWSA0YX3nNYPpQGAotrU5O2URu7WmDY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 592504347A;
-	Tue, 17 Mar 2026 13:33:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1141C2BCB5;
-	Tue, 17 Mar 2026 13:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773754433;
-	bh=JX2H/y+49Q+R+OOqtdz8X6bLyH5h+JbiWbT3ZJSu2fk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o0UGYuCDKbFzDohH8kmxaxfxkxtFGeKr7GKbCyr4wkvQ9TsXZYxbSoxtpKJjSdqgP
-	 pNgeUMuOnaaZcUjXRvQButrVBuYnMEb1lNrkme28GAWyEW/GvTok+Q7axIywujx3W5
-	 P/McHw3f1Gnv1I7OKFswPVL8zJk5t+evfJYWgDYCy4QmQzNrejd+Ceas6JvxzkA6hk
-	 UBrgVHaHPWAR+SpnHw/LeGUUhG0ddsheT4reiI5OURWEpbZnXxe2tdzzlzRxJV4flU
-	 Hgq7PcMz+WSt0/9Qg5qry7/XinL13DvY6vhquBW7DrSn3jCnLgR3O6TwQ3X36QWbBX
-	 uItNt/pwlq+dg==
-Date: Tue, 17 Mar 2026 14:33:50 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Leonardo Bras <leobras.c@gmail.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
-Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush
- work
-Message-ID: <ablYPt92Y63GcIu2@localhost.localdomain>
-References: <20260302154945.143996316@redhat.com>
- <20260302155105.214878062@redhat.com>
- <abSH40oW9qiVDXZS@pavilion.home>
- <abb2E3QW7t5Rhxrt@WindFlash>
+	bh=pnPneM6OE4D8kHxrsb0gZc8qXdHPFBQWUf/K9FjkaeM=;
+	b=KYPQBi7431W+YbbDeEro6f1p5n3I92HZTVsM/pK4oTNJa64rK4YRdKL6kbdr8GZUxsuqRQ
+	GfApHGWgW0w+S8oWVfzr9LDFV3kqSk149f8ZF7Il5Z/ehiMTXnArxagXAgKTAcP90+TfpC
+	laJjGy7s53R9MRS5DWxDvZG/dSnJmxQ=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=Nvidia.com header.s=selector2 header.b=GcO1oFgz;
+	spf=pass (imf21.hostedemail.com: domain of leonro@nvidia.com designates 52.101.61.38 as permitted sender) smtp.mailfrom=leonro@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773755140; a=rsa-sha256;
+	cv=fail;
+	b=kyM8XFLhsKDOptincj+AC7kpW5ClmwUyaY3Tkju32gahMrq2zfv22avcjGdiApGAIcOfOu
+	IGr6R2bX6Bzu7KVkUN7SxLnCsoe9MuKWKBXNcw/bWfs70iHVwEPCVnJGY33Jeo/cEd2oLE
+	vp59qJ1yPsUsqM94VCdB+05RCTnCDQs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l13wot9nzAc/wmYOk4hHIa3adnQaD9+iQZ9KC8lZJVlP8LVDd9WpfZCBENRLe9G3OmTDhSJl/uiL88tW0SJU7Dsw0lomcfcuB7Du2B4NyDS3wj8ulchQ6SfdM09ZQ0VDnZjHSnjMnZbAzAYxBYdgyRnIZzAJc2N/nMi/IifWPgyPWljmyHMO0Ce/x3OhPL2FMwacsyWUEcejJ7a82GZUrTnF8HSa5bV8WqUcqCXGQQy8y+vjxsbevjEj35kZaRIoBpkc5SnSvIN5w/LHKkogC0N/RtmRrF4u8Uuab0xfMLGjHOPNgzPNQWyV/eil4GMO3IP/tJXsi4kDmOlx9WlY0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TZ8q1Gr2sBie0HpFJh+zk3S264yKHkq8RdPcNUoZ1Ec=;
+ b=eqi28mCu+4/+dH6N4xYd7+Xe4tqQb5QZhsVUiVVn/lgFgVWfF1Gk6Aij6BFdiN2jkSgbtgWTIKcwbl6QBishrS8DRK79HB/AaZDepwRhlW55AR58Ymqcjx32m1shKrqV4f5Gz/VZ65CACBPhhyRuoFFZ0UAUr9XK36i9rsEq6wM7PPO/VbubZf4sgJxJ3KRIgFFiizKpd+XR0hh9u4moqK1TQhvbcLz2tDcaKEvACksBxtA0bENt5wo5k3dIS2uVQ3IiLowL+LimYpLzBaUiEjUgb+jncGazllznh7yCI3BrRammbIQqoKGsj2182HpmU6Km9edoyBRN3s05dhwObA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TZ8q1Gr2sBie0HpFJh+zk3S264yKHkq8RdPcNUoZ1Ec=;
+ b=GcO1oFgzh2qBX662EsKBhXl3+Ifa9fMpkKnmdjJUOcXC2Vw7hOEsjF7oGbXc4sLTOBYCYxtIz1izbSe8B4JoHIKBVlzFsqalQA6sUaOcjfZqQmoHURA9E6tbL3s1xasJKQNWh7XLov3+3f9WrAcYINL8C4OWXjVeQK+B9xJVGZvE3XqB4h2SfoxIoUohG5za99RZ5Ug1YMfBkQTUdKf3JyajFSIWxzo6s1XhgERpG0yuhJa0UmfHOUuZZ+vD+4zkehs2QbEkrJs6xcg61jR5CRAiCnCcxmwOo7dxHlcZLJLqlLxe5UsDPXOp8GFDSsibOgKdsnM4s1Vo7DJiWshSgA==
+Received: from CYZPR14CA0042.namprd14.prod.outlook.com (2603:10b6:930:a0::18)
+ by MW5PR12MB5599.namprd12.prod.outlook.com (2603:10b6:303:194::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Tue, 17 Mar
+ 2026 13:45:35 +0000
+Received: from CY4PEPF0000FCC4.namprd03.prod.outlook.com
+ (2603:10b6:930:a0:cafe::4f) by CYZPR14CA0042.outlook.office365.com
+ (2603:10b6:930:a0::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.27 via Frontend Transport; Tue,
+ 17 Mar 2026 13:45:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000FCC4.mail.protection.outlook.com (10.167.242.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 13:45:34 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 17 Mar
+ 2026 06:45:14 -0700
+Received: from localhost (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 17 Mar
+ 2026 06:45:12 -0700
+Date: Tue, 17 Mar 2026 15:45:09 +0200
+From: Leon Romanovsky <leonro@nvidia.com>
+To: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
+CC: "David Hildenbrand (Arm)" <david@kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Alistair
+ Popple" <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>, Zi Yan
+	<ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>
+Subject: Re: [PATCH v5 2/6] mm: Add helper to convert HMM pfn to migrate pfn
+Message-ID: <20260317134509.GZ61385@unreal>
+References: <20260211081301.2940672-1-mpenttil@redhat.com>
+ <20260211081301.2940672-3-mpenttil@redhat.com>
+ <3c0578a9-ce1c-4d26-86d5-681cae4b8200@kernel.org>
+ <59d3c0e5-23fb-4a30-825a-d90fd07bd34e@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <abb2E3QW7t5Rhxrt@WindFlash>
-X-Stat-Signature: 1h87eg4ekcey9wgsi37bstf7j638hpsq
-X-Rspamd-Server: rspam09
+In-Reply-To: <59d3c0e5-23fb-4a30-825a-d90fd07bd34e@redhat.com>
+X-Originating-IP: [10.126.230.35]
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC4:EE_|MW5PR12MB5599:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd3f06aa-1972-4c5a-20e9-08de842b771b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700016|7053199007|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	wOmnnxID5tXzG0olRSRunfCmqCPkGgnKg/pE4u+4qPVbwBnQ3Vd9J7brqTgtUxP521SnG7M3MgIG2c1oEjDFKG8irjvQXoHCEpPS5YL2Eq/dlp3QDfxcSx7DBDgG3zJQphGiFXzX1pYAG7jOhNgPR85hJkPtipk9VDWAfVirw99aAI2fUWUVP41SBL99ZnEDrw4ip0kFVau4o6WcIe7d4evoMSSYsjVB0fzwtu6uI7g19qzB5qNahTmAw+H4/+F9fn5SU3y2p4i6e19JTDTTAhhEhqi4tdFt+kc2n46toNc6edus+tzmbVK2tlCFkafyVvT+yufoNFbEs3S7Wz74iJFzGasq803AJdW5Lto60Ez5RRY6tBK5fJF61g47ZJ7X5NpvTAoZU3m/9JWwxLjv9sTVAdE5xUKPygO6r36b4fTrpcZtQAR+lmoU09h3ONdjnVms+tQMWoOYqT9+YGA3fMZOUK3S6G66MDBEDspRqwNXTeWOLe9qR2A3NtCWCAL4PV+mj8plljafUANWkh7nMQQIY2jjIwtvdVp+/+viNs4oD2j/HZXlkdKucaY2hscR9FpLzpd2YwngJ/pzzBcHTSLb1FhG1VTn/krZ3EbRM5tw8qsKPf2dCzzx9Ny6C4OPzUKDdLbcrCEMbUkp5LZCyQ3qpzpQHBDAp5jLdm+nHVHQmeJ/l5fb5ML4QN4a1+Xwye+hn/VX8mByK1dkKiOH5oAxsHclspDXsY2ub444Jhi8OU9lFIpogTRq9Yhg6nUVEzBsUMpvIr2/+b3aS2IxGA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(7053199007)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	5sG+nW5936lSW5IMfV+Nq2IW8rbDl9geDm9QHvdS/PV3OqK/24N/MjslBnPwbkJPyjtPewMmm5BK3GBrCCnCRrwF8kpDYKESj0xr1ILtzdFpQfu6Yx3ZWl7nMlLUQquKRXDaI+WjARUvisiQXyH+5tCjBns2xIPb7iHdmHvIkoGUZqM/5zs780U0wVtq1mwsWAt93dwaQYzb2klKdxmw1pu6pDNCDJ19UM6z5JW/UdBcqLNsBCmH/+wbhKa5/4qt0faPB5xDVzg4bGAxt4uH/53K1cuuHgLdbxsNcibeIVyXtuyhGIbwkKLI/JAEB69LRiQKJB+wlPaLFKxfcdt2GPeRwwVUEYElYDF9YCpZ7Mtzihj8Ti2cm9RGwj63mCCvVP0hT+TgpPn+Cb6m56x4H1NMWJmAeGSe12KIbAg4U7sJG35A9UwVPft8l6gzt79l
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 13:45:34.8732
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd3f06aa-1972-4c5a-20e9-08de842b771b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000FCC4.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5599
+X-Rspamd-Queue-Id: 6F2B41C0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1ad1nut9snmbx3h8ii8igq4577pbm6hp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6FB6EC0017
-X-HE-Tag: 1773754434-262783
-X-HE-Meta: U2FsdGVkX1+o+zl39wdwl5Si4eSW52kLUDDQpl8aOwhN78c13BPceJ78FE481T0XOhWpI2LYhvyXpDZWmzGl/NPy7O492FJr9vJjqO/+OfiLmPDNxiDMYoAFlJrZB5b42Tk8pxlZaXxYLw996110NsYlkdFe56FZ1cHvRrajd9lvua2nMmKA8lufwSY+2k1FFmIYPFLbdIX1+9P0DXAxCarba2ZN6rU7yJ68IzNvLFEiMKU9vFmWIKL5KRRzE/Ar3gNfP9dtl207OrWSSW5+6DXo3pjidmi7SMO3eWU0sQ4qM4l4qzyElDz+EMyyEdRe9u5zwtxzShM1POjxTnSjnFVCWWNHFI4vlvG8W6e8PRxZnYsM+isVqr+5Vo+El6kwz4Lum2mmBJdJvjNx7El/tjz/A5tKD105WSjh95cpu6QiY56lOJvt+lNksvW5KcSkpB8qkW7Gw8PHQqOQZ44hQEFXdq/kRbtQR52Dd9/dVzfdFW/dqOrAaL73BuMStlhWeMxBWNLRq7Gus85fC+/bKlkJp8hXciSpBj9mEHbs0Qgz/KyCWKeiWoNSaWxUtvMNIs0pnVlc3OJwi/CsTvGasb0AwYTAGkCTFYFAMFZe2XzvHKDPEH6YygzmVABK0z+5viriKqdM+V2epmO2m5Z9nVoO1CeR3nhrjOd8V4J4pteHg7hVUoFU075ofsglKFB/n5+10ZW6QVceVwXCjBqwCMfG70Fkt8+gkBu32iwLQuRWM6waBxtWCjCfKgxey1jvKSI1IaERWwIlgrievlVGVaAU29aOEySmcaK/v7fKdNuBoocV37qpIjpK66eCNgPf5IMyyqbElt+MdaNi+grMb5mi0/xhfcZPduRlcRE2Mog5g9TxeAp4xhVLj/rO94ak/uaA4dximfX3jidh0U9/gGcmnqeTaX2WeP4UhOGGv9Wg93w/fr1ZBy6rKjC45Gxhz6yVT06YZo1Vx70ivby
- oIPzUqSB
- TIBwy14MIK9pBQYkT+GEa8O3KerFVy419NFT9ev3v5gHEaDN8qMhUo4V53jaiTDqI5dtIBp6RnmlGt8ZoUbYSGIGDteXXBDAs09qUAs2NmcjuHowrYPWLCBvdiAnPyaw2zWy38c9b9hQBzecmTgKtorI0vTXHhPKrH3Z5RB+6OphUsSt/7/OV6D2pvdYI3+tOypM1Dp+3063XSAJeECEdi8nNbuC+zIrU17RwhR7upoHo6xswcgpmx5OX0ELdfw1sC30JEJVjMHmSGBJGZJLzIJFHtsZZHGN1nb+r6l6kgqwNPJq3axjs2SCI00/kjR91oh/UzWQmH6oy3No1qR+RYTVG5RwRCMMYhy2WtFYYj2idlzkUwydY81qkYgaZg1W06GPl
+X-HE-Tag: 1773755140-793137
+X-HE-Meta: U2FsdGVkX18A9zJtvCL8B7a+dRZaDmszOu4T8xgVFXcyvMvjg8Z6b09dBaTncYqpDmW4pXRNleSEkb8UpIstIAmYNXlQ2ng5UOSLclWNCevvdKyztqXcUjNPGN4AuxVjVNfvgeYLDnB20Kb5XP/taHbJtYg3GRe2Hn4Fv+3UE1pywRhKK/LjeRmj6z20+8ieVpJKVKGOzrW2Hwbr8NU0qnDabBKTJVj6FZmN9EWF8edJw+K8wdgMsqC1GcGWxqbf+BNYP+ySDdXnXlyJQVQF9+n3eP+n/SMRFX5hE+sUItUSnruCaf08bdKpuhpuM+CARQAWDLwpiS6hP7I8e+m5pzDOzEcwIH2SGK0HLH0mYTXFOUZkHNujjDAWtEGRMo1shqAtKqzjml7oin5JSCXXtx/CqlWf02MJru26x9Qo6XhBV5pdccjefoo4QA7JA5O/jPRxfh3SisjDYBB5+eqziUatvP6saAbtxqYkjz0FqBvFN9NZDqEjKA+KkYmrbPjLJ4ize8YSTAHrUqHh0o63ysxk5avxfRuyagRaFs/bo762yM/wOlOHgpdTJ6Xw8chJgGQ3L66hJNrMU8VIy1qkAAFp1YDuTqN3JQqbXbbO56M6aNFif9B2lbnvLmJPTy3lTYWHZ+b5aD5NouJ75XlPlyTzILzT+C9PpaS0zXuTun+N2lps8GnJY/xEzgk3PA7ZdUCyV/Mm4Xv1ceIL8/5UF97Qjvk+YSOwKqfvZjh5yfl59CQbc56rZCzve5oy8SLPftFlID5osPrRo+k1zkftK+4qHS7zJfc0yiFgrxBJxyLrDZGCmpzTZPLu1kSzNm8TNBXOQodZq1NSQR96Ywv793It1IUiYrql8jzyPFVcnAWu1115xKTKp+U0gZt9xdteP78Jl45Pgol26IOvJYl1/DQ4LaKX9GLJDxXmlNPLZ7wkY1qsw8l8p4gFKIK+QbJLkDZz8rDdQ7TbUn/KyPW
+ 7Fc3oL8j
+ zX71RvbXNrYATelbrM2HL/18NSpHCbkdw7lISCxgxbOB+m1+/sPXfZMI1H4lHkGj88iuTsQIjMbWCs2ZdVQw1xGeJxqfhCZ1UwatDZ1wl20z/o38aBJeaHh4qPM5H6s658jWyEKqAszRrVN/U/1Ls+uTImzvQNm9fTCkSp7KUDwiDY9QDdxrXsxW8BsjYYr3kSXJ1O63+J/aF2jwGqfuQnRo4uBtpzeuCnDCDCakd8PavUD19yeuxtqKVs2RLuywqActl0Gs5uQmOouPTWdQThajEozbj90vk3oAUw74UydRUdERbw0HMRsJi+RVyohd5iNKKm71nILqwQ+8L/NajrXhZWLh929+uf1zjvHIjfyL0Bd1cQ+gGo68n9ZKD2lv+Kkg8yVYVPsITpzpN8OrXTXF6Oxs8nJBujUf4/SR4mO2UXwjeOq04scrlZf9mCwQ3spkkvqitSsuXA7nS8pbB7nnh2soP7zVykeRkia51D+Zxr82fiVjD+wp1wqv96/psf1Vss1+rnfuN8NyqWE+9XAXY+DlCle1Hu+NKXoMcwUDYnKxIyskF610J7+RXme5qhQyScQ92c3FR8c8rU5fEZQX8tNdfBDWyGdHOd6fVbEo/uaUPyx3z/w3z48fK7usCNbvH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,158 +157,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Sun, Mar 15, 2026 at 03:10:27PM -0300, Leonardo Bras a écrit :
-> On Fri, Mar 13, 2026 at 10:55:47PM +0100, Frederic Weisbecker wrote:
-> > I find this part of the semantic a bit weird. If we eventually queue
-> > the work, why do we care about doing a local_lock() locally ?
+On Tue, Mar 17, 2026 at 03:01:09PM +0200, Mika Penttilä wrote:
+> Hi,
 > 
-> (Sorry, not sure if I was able to understand the question.)
+> On 3/17/26 11:05, David Hildenbrand (Arm) wrote:
 > 
-> Local locks make sure a per-cpu procedure happens on the same CPU from 
-> start to end. Using migrate_disable & using per-cpu spinlocks on RT and 
-> doing preempt_disable in non_RT.
-> 
-> Most of the cases happen to have the work done in the local cpu, and just 
-> a few procedures happen to be queued remotely, such as remote cache 
-> draining. 
-> 
-> Even with the new 'local_qpw_lock()' which is faster for cases we are sure 
-> to have local usages, on qpw=0 we have to make qpw_lock() a local_lock as 
-> well, as the cpu receiving the scheduled work needs to make sure to run it 
-> all without moving to a different cpu.
+> > On 2/11/26 09:12, mpenttil@redhat.com wrote:
+> >> From: Mika Penttilä <mpenttil@redhat.com>
+> >>
 
-But queue_work_on() already makes sure the work doesn't move to a different CPU
-(provided hotplug is correctly handled for the work).
+<...>
 
-Looks like we are both confused, so let's take a practical example. Suppose
-CPU 0 queues a work to CPU 1 which sets a per-cpu variable named A to the value
-"1". We want to guarantee that further reads of that per-cpu value by CPU 1
-see the new value. With qpw=1, it looks like this:
+> >>  enum hmm_pfn_flags {
+> >>  	/* Output fields and flags */
+> >> @@ -48,15 +50,25 @@ enum hmm_pfn_flags {
+> >>  	HMM_PFN_P2PDMA     = 1UL << (BITS_PER_LONG - 5),
+> >>  	HMM_PFN_P2PDMA_BUS = 1UL << (BITS_PER_LONG - 6),
+> >>  
+> >> -	HMM_PFN_ORDER_SHIFT = (BITS_PER_LONG - 11),
+> >> +	/* Migrate request */
+> >> +	HMM_PFN_MIGRATE    = 1UL << (BITS_PER_LONG - 7),
+> >> +	HMM_PFN_COMPOUND   = 1UL << (BITS_PER_LONG - 8),
+> >> +	HMM_PFN_ORDER_SHIFT = (BITS_PER_LONG - 13),
 
-CPU 0                                               CPU 1
------                                               -----
+Please don't add fields which are not flags to enum hmm_pfn_flags.
 
-qpw_lock(CPU 1)
-   spin_lock(&QPW_CPU1)
-qpw_queue_for(write_A, 1)
-    write_A()
-       A1 = per_cpu_ptr(&A, 1)
-       *A1 = 1
-qpw_unlock(CPU 1)
-    spin_unlock(&QPW_CPU1)
-                                                   read_A()
-                                                       qpw_lock(CPU 1)
-                                                           spin_lock(&QPW_CPU1)
-                                                       r0 = __this_cpu_read(&A)
-                                                       qpw_unlock(CPU 1)
-                                                           spin_unlock(&QPW_CPU1)
-                                                   
+Thanks
 
-CPU 0 took the spinlock while writing to A, so CPU 1 is guaranteed to further
-observe the new value because it takes the same spinlock (r0 == 1)
-
-Now look at the qpw=0 case:
-                                  
-CPU 0                                               CPU 1
------                                               -----
-
-qpw_lock(CPU 1)
-   local_lock(&QPW_CPU0)
-qpw_queue_for(write_A, 1)
-    queue_work_on(write_A, CPU 1)
-qpw_unlock(CPU 1)
-    local_unlock(&QPW_CPU0)
-                                                   // workqueue
-                                                   write_A()
-                                                       qpw_lock(CPU 1)
-                                                           local_lock(&QPW_CPU1)
-                                                       A1 = per_cpu_ptr(&A, 1)
-                                                       *A1 = 1
-                                                       qpw_unlock(CPU 1)
-                                                           local_unlock(&QPW_CPU1)
-
-                                                   read_A()
-                                                       qpw_lock(CPU 1)
-                                                           local_lock(&QPW_CPU1)
-                                                       r0 = __this_cpu_read(&A)
-                                                       qpw_unlock(CPU 1)
-                                                           local_unlock(&QPW_CPU1)
-
-Here CPU 0 queues the work on CPU 1 which writes and reads the new value
-(r0 == 1). local_lock() / preempt_disable() makes sure the CPU doesn't change.
-
-But what is the point in doing local_lock(&QPW_CPU0) on CPU 0 ?
-
-
-> > > 
-> > > @@ -2840,6 +2840,16 @@ Kernel parameters
-> > >  
-> > >  			The format of <cpu-list> is described above.
-> > >  
-> > > +	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
-> > > +			and remote interference mechanism on a kernel built with
-> > > +			CONFIG_QPW.
-> > > +			Format: { "0" | "1" }
-> > > +			0 - local_lock() + queue_work_on(remote_cpu)
-> > > +			1 - spin_lock() for both local and remote operations
-> > > +
-> > > +			Selecting 1 may be interesting for systems that want
-> > > +			to avoid interruption & context switches from IPIs.
-> > 
-> > Like Vlastimil suggested, it would be better to just have it off by default
-> > and turn it on only if nohz_full= is passed. Then we can consider introducing
-> > the parameter later if the need arise.
-> 
-> I agree with having it enabled with isolcpus/nohz_full, but I would 
-> recommend having this option anyway, as the user could disable qpw if 
-> wanted, or enable outside isolcpu scenarios for any reason.
-
-Do you know any such users? Or suspect a potential usecase? If not we can still
-add that option later. It's probably better than sticking with a useless
-parameter that we'll have to maintain forever.
-
-> > > +#define qpw_lockdep_assert_held(lock)			\
-> > > +	lockdep_assert_held(lock)
-> > > +
-> > > +#define queue_percpu_work_on(c, wq, qpw)		\
-> > > +	queue_work_on(c, wq, &(qpw)->work)
-> > 
-> > qpw_queue_work_on() ?
-> > 
-> > Perhaps even better would be qpw_queue_work_for(), leaving some room for
-> > mystery about where/how the work will be executed :-)
-> > 
-> 
-> QPW comes from Queue PerCPU Work
-> Having it called qpw_queue_work_{on,for}() would be repetitve
-
-Well, qpw_ just becomes the name of the subsystem and its prefix for APIs.
-For example qpw_lock() doesn't mean that we queue and lock, it only means we lock.
-
-> But having qpw_on() or qpw_for() would be misleading :) 
-> 
-> That's why I went with queue_percpu_work_on() based on how we have the 
-> original function (queue_work_on) being called.
-
-That's much more misleading at it doesn't refer to qpw at all and it only
-suggest that it's a queueing a per-cpu workqueue.
-
-> > Perhaps that too should just be selected automatically by CONFIG_NO_HZ_FULL and if
-> > the need arise in the future, make it visible to the user?
-> > 
-> 
-> I think it would be good to have this, and let whoever is building have the 
-> chance to disable QPW if it doesn't work well for their machines or 
-> workload, without having to add a new boot parameter to continue have 
-> their stuff working as always after a kernel update.
-> 
-> But that is open to discussion :)
-
-Ok I guess we can stick with the Kconfig at least in the beginning.
-
-Thanks.
-
--- 
-Frederic Weisbecker
-SUSE Labs
+> >>  
+> >>  	/* Input flags */
+> >>  	HMM_PFN_REQ_FAULT = HMM_PFN_VALID,
+> >>  	HMM_PFN_REQ_WRITE = HMM_PFN_WRITE,
+> >> +	HMM_PFN_REQ_MIGRATE = HMM_PFN_MIGRATE,
+> >>  
+> >>  	HMM_PFN_FLAGS = ~((1UL << HMM_PFN_ORDER_SHIFT) - 1),
+> >>  };
+> >>  
 
