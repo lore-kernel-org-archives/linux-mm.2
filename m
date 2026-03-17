@@ -4,82 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05C68F3380F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D42BCF3380C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:31:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73C896B008C; Tue, 17 Mar 2026 04:28:07 -0400 (EDT)
+	id 1273B6B0005; Tue, 17 Mar 2026 04:31:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ED576B0092; Tue, 17 Mar 2026 04:28:07 -0400 (EDT)
+	id 0D8B26B0088; Tue, 17 Mar 2026 04:31:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DBF76B0093; Tue, 17 Mar 2026 04:28:07 -0400 (EDT)
+	id F093A6B0089; Tue, 17 Mar 2026 04:31:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 476D76B008C
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:28:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DDB6E13B2B3
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:28:06 +0000 (UTC)
-X-FDA: 84554877372.22.00870F2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0CF7720007
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:28:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=refhG2sJ;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id DD6126B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:31:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8DE759738
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:31:49 +0000 (UTC)
+X-FDA: 84554886738.03.50FA807
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EC7664000F
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:31:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfZYjmXI;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773736085;
+	s=arc-20220608; t=1773736307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U6Cq51ZcvU6GX565GyL+uxjoUVud3ApDOI6/vQ7+A98=;
-	b=6EvvGvPeccecf/B7qvTz9AEjjgjm01aA5rZrVX/MvwD5NSUsCv/d0eYNLg3HZMne6x6u9P
-	SdiZpMMJ9sGm0Y0t7P1YQsJyqJMJ7/iSL5zoiL6+7Dy0wUz0Gi9ZKpsdFCqtvuJ1FccDh5
-	e4/8D35ihZfJV9p8Hm+70yliSlC6xe8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773736085; a=rsa-sha256;
-	cv=none;
-	b=FIyxL/sXpAkQZChA419cJgJdoRoso/yreGH/UI+JX4XneR3RvqaudDXzP2iD7B0+ZNQ6pG
-	tsa1RAYIArhx69gdr05BswBkz4ITsNVy2v8JOPkMOYLPYI/9uhubAD0SQyMpYcqv9Rg2Ms
-	+XVpxfFTTD3fECbTWmdzmviC7Xl59vY=
+	bh=Crt0FUtXZUlQRT5EK8GRozTxAFs1h9ZhTI4kYw69QgM=;
+	b=zVMS4pUBccIjUaTsSXU+gzK4tgA4ZuytQ7kEVlfPa9E0l+c3NxOvAJKw91+Y3JIoshmzdH
+	vRVOZn/DefXVC+PhPM7KPEo6SoEqi56EFKhZ4SdDrBI8TzWvFX1BPjSl1pKssEIgLKULC8
+	tmK/JuIhgn1JA79TbMxshEa3Tp57c1o=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=refhG2sJ;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfZYjmXI;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773736307; a=rsa-sha256;
+	cv=none;
+	b=3l5XaKEXLOuHzs2RfOI6/BPcgxMhmh4eBy8tEiQ/6N/5xQpeAxdmJLTsjA1pSjQJpCgEEK
+	J9NwSH0rEL38Z4LBbsemLyH6OY16unpC9sTmXbpZiLxjmkMhA50ickZZ33+89zhbmokB1U
+	mNW4xamLFA/zyN4EXFgwQd6p86Epsk0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4670B414FF;
-	Tue, 17 Mar 2026 08:28:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02901C2BCAF;
-	Tue, 17 Mar 2026 08:27:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FC5460127;
+	Tue, 17 Mar 2026 08:31:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582CEC4CEF7;
+	Tue, 17 Mar 2026 08:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773736084;
-	bh=s0mX9OKppXx1MLSUtDAxDsL4gxQjgUId5GHLf/L4xgY=;
+	s=k20201202; t=1773736307;
+	bh=WeIKA7wMjc9z3DOyJDTCgVuCaNGqn4/m4m3a/ZuQRMY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=refhG2sJmhwyQ8hGpRC+QL1PYk1IlsUWSLDzCbKXhBNy3vu9wXDg2OMVRA0idpXAi
-	 VY1102lBfwFuRL0DVDD/JzAR5AtBJh/1g1aPrlcRiZFF+RhjlGt6ea4xVTN02yttqL
-	 ySZwGu/UDFHhj1wp1Bxp0+Vd4JK3JnIKlGvA7KUL3Ooeig/IiKZthfRjqUPgeO9dxG
-	 6uRr5JHC1mtM/v3HG3P2LBkYL//Q0GuSDFU/ao9tO2/BFMM4n2P6PRmP+KDOWbUetL
-	 KVpv12l0GK1Mp8z0t0za/6thV/yw9NLzN9gwI9Ad6NZiVqJt5MG3WzbWvebj8jCz8X
-	 AoKy3tdmbdy4g==
-Message-ID: <ed50e523-8834-4a35-8e54-06f3db89e7ee@kernel.org>
-Date: Tue, 17 Mar 2026 09:27:57 +0100
+	b=tfZYjmXIX93uh23VwW9nzPGKKfdLoN0eRENcO/0HFeXZdn3bXCPLRbZWcRIKtqCEZ
+	 SV3sT38PrTQouLaUz7I8jIGf29xqfjxwy+o39rOiPt5oqoXG9UE4ZqwVxxoVOtaMgX
+	 lxi2KH9oulV7LEJjDOPub1Y+MkIkvzu85un4W5h8IeF598/pp07Du8j3c1pnWoQy5j
+	 XlyolfZ4hZc15gTXLKve0c0DPujWBQAkf0m8Co+d1aC9+NzDnA4aDofc0kwAil3onf
+	 VzSwdg1bJoYBkCNyacVkU+FSHoYpU+cBCGIqR/5JU5wprzmMiEuM4CmtFJK7vHoaA+
+	 4qaZBHXlHFz9Q==
+Message-ID: <55ec2b7d-4f14-4687-8977-1bcfde8cc938@kernel.org>
+Date: Tue, 17 Mar 2026 09:31:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: filemap: fix nr_pages calculation overflow in
- filemap_map_pages()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- willy@infradead.org
-Cc: lorenzo.stoakes@oracle.com, kas@kernel.org, p.raghav@samsung.com,
- mcgrof@kernel.org, dhowells@redhat.com, djwong@kernel.org, hare@suse.de,
- da.gomez@samsung.com, dchinner@redhat.com, brauner@kernel.org,
- xiangzao@linux.alibaba.com, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <066dd2e947ccc1c304b54e847fbe628dccea1d7c.1773370126.git.baolin.wang@linux.alibaba.com>
- <a5625929-736b-4ddc-a8e3-30e3aa54df12@kernel.org>
- <23953888-15d6-4cef-af8c-be15ed6d6e20@linux.alibaba.com>
+Subject: Re: [PATCH v5 1/6] mm:/Kconfig changes for migrate on fault for
+ device pages
+To: mpenttil@redhat.com, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+References: <20260211081301.2940672-1-mpenttil@redhat.com>
+ <20260211081301.2940672-2-mpenttil@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <23953888-15d6-4cef-af8c-be15ed6d6e20@linux.alibaba.com>
+In-Reply-To: <20260211081301.2940672-2-mpenttil@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0CF7720007
-X-Stat-Signature: jo6ji5y8kyicb9o5fjkcsfthfxfrub8x
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773736084-784678
-X-HE-Meta: U2FsdGVkX18ISZg4NAQ8xbVH+M7A3ZJk0h/kEkZyTZh9VqOvpTPcpBAGGaOqAk/MOdGjBex6kk8J9MRTu+IP8WNdZgMwbmNb87crzOYBUsIkvnmi+QTYAQiIVQLWNAAif42SB0MZHD4Zld4tutxZyDpLIiavnVPGufL4Fzuq1MRvGBuwzZbsVEO6oSEfld/sEESZrdOeNa59Bfea7+MKu1Ok8ncB53LLrhFmAoCT1Wf94kQf9VpcQC76o2vqBP1cfBncOCEBA/ei+yZsaqYrSf6oVk2W2zBeKNX9mz3iCt01iEdxvvbMq3RdeKe2PR9NDrKtV095AZ1hZmV67o1wlWJw0Id/nrtgamjzCWD8a2XpwaYDvpk2y98QJe6mtb1DRGFnISU+4/lMvfFe8SakoWTckNsL7mDBOZC0aPiInye0El3uBnlfV32ctj0HQ7+/huD3qWUR5ao23t/6YJD6YsVrxLtI5yBd8Du8LajcwkKmIwmdsisGl548mRCZMTQsJEN8cw1oLQromg9F6ESBfmx8wDrWI4U554u8qjZVVQpHz8ZG7ajcM7nez1WXdvHzaNueV2KdALhF2NKLUFiI4OsMDlkuqQXVN/+yyQ77cof9eZs3w/hLThMpqMg97w4P5cjDmWS4tLOZAy0e543fPguVTcjUqq9NMPqBHGkTb5LjeL7k+qXz1QNsmz+nL/Ak2mRL5itxbmfM+MZGQ2sP/S1qO3iMm6AMM5DZ2pDoVfe19MyusfsckeJry6FsRfo0ip7CPYGdBVcBofkElSLzSk69jO3ssEi0ySdqLlnQp70jNc7He5ja6lle0mwGBkboUv6rE4T2qaECxTpPTV1jhNaD4HTbP8DHj7xzcA5WY+zgqEiqfBy/J1wP3L7yNKVW5gjbelM7t8KRB22ZsBxbwPAUG5sWzagLSAHjGbC3x9ER8cRILKvYIxObJ66I3PX33PGdenLS+JF5MXPyCsB
- ZH9DQVyc
- vk0uAqLhB37mHd4hbjD6dNncuVLWHErwQwQ+cjZw8BMeg4zDeWiicI7Gsws7BXx5hel9F6P1o/0roDuOvPcDYYDYbVtAdIHTCjj1i+IkaDKngbgkAQSYPhrdOyqZF/2Wy8qpghd83LcV7tdQZcgLzhtjuceOjR56ngXi8HjRdP2JUHLx5hJxGsQcPTA/We2k4/llDUCrQVS43c0+sJBuVG5p68yvU4NqtFxpI4YRrrrjysmGtehsrVa8IvblgQXv0jztm0faufnWkgXRSuT669WFmM8fwQ/NMs/nLpHgQ7ck9Av1mnyWlz8InQ7r8UIS8rFsswCPLBbFzrRI=
+X-Rspamd-Queue-Id: EC7664000F
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 3it9i8hxdehz98j1fwg9tr36xgnaj33p
+X-HE-Tag: 1773736307-795970
+X-HE-Meta: U2FsdGVkX1/QAiuS+S6zjT4h8tVLWkf3jVDAkQs9+X8VFZRWgeN2IyDb/S7wKwH4XiQ1a7emI7HT+lDnkeAD7eD2xWRZY05KOSoQeNfH9GMOh2eVlsl0vP+0M+VbHTup1YO0bogiDEsHbJ5TQfTQaJbifKLOCtGhzDFKAX5R6IRW1uUhVRTmAGeFXuTT02eer1HJbmq1di62cNsYGWA28O719pb0QMuV+O7Doi2ewL7RYZMUHl+hY340+NyjmC95o7grONV7/bObqACQtfJLFzAbsxxkYPsZNf70qMSzkD8G7ktnSPNOhtAWdvXs4YAu8nR0XleZwkPqRDQEwRq9MlQbM/vQlvLFB4+ofGLvDE0v/EeOlkonbNqe0HeJYWx4hbVCAXM6LksyLgwL07hQnKwkDeFPrHfRJjVZ41OJlx4ownmAPnBr7W8pdPX9apBTEWOfqWFuId9iCtrOI+L1GLcIMD9VgllZQHQPSEZZwWefJUlio+nVlbcvtWkbRhMxqP3srvqW0Ms39SVTM1OSfFO15yb/xBDsOUDRx2qWqK/qpQ/lzNGJOep8PQAaD9dnSUFgPleuq8m9Io9/Y5mE8p1FPlW8v0eKQ1bieh++oMvCqLhIFkqH9+QmYs6iP4sAWriJz5zhc9251UMTIE1tqbTMz9PY7U0lnlx9ljyVA9JNYq8UiQUoASBq0SzA/Hg/oivztV/cP/6UmolHqWzAF8zNnUXoMW5iMoBS3joWWjiXlJK4cpGfpZ8Q0wYbnCdIC63ubTIgG2w23aq1CTwU5psrFBs1B84IOJyj597uTKBzkGrAuZ1nBWcmq/WZs25Nkw73hl7nh/QHPyRPK+wE5h3L8qFxjimo1Ec3cxZC0qhA0Mxzpj7qk2wI6OlNFkQxJG/LaSevljeN1ZWV209lUwwinHsxht5ZDscyW5jJGUJRPW8n+JN0eJYp6PJB89SFkR65lVb9L+oK7QJ3qc9
+ dVCoDmE7
+ Na6hwrmXEIdqc+xL40Z2UI4ICLj8VILeGESdEziA2cQF45CqO0BlqWw6dWayygifZMv5ifh1Vg7iM5gNwF0Dxp0vLr8S6ozYXkQPMeWyT/kM+KKXjWkm4tpEefg1jlggswXkftojZTUKkADK5LH1sWsg1yghadLE97SFE6wRhF975oO9HQju9cvkSW/nUwvysYgak/SVxtQM3tLpOWIGL5ep5veMEV4kJvqABpkH7oG3pOWw5tOUPHAwGZondwtrUKWxJPbMGX66HkHWkHgZ5hUZJvrtjNfZAG7sLpxucVavh5+BJBuVvVKgWiFgMv7GWBWXllcSFq/Qw1RR3bIylXxdBvS+3mBm7yPwU+YQKqUCJ/N+LRWTF+sAZS6IjIKk4ItMfb4Gflo8sHFEvDn+6jvbatB0o6CQTpI+X657zky53PQ1JB92vdrdfhu+DClNGhYym4VeQ5MUzd3gIO/l8EHtGolB7k5IpQiQyVZNFYB1KHTZZ5Qj9EcSENbdS5j4/veI6u+tDMfjIr48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,19 +142,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->> LGTM. I do wonder if we want to add a comment above the file_end,
->> stating that this really must happen before the next_uptodate_folio()
->> to handle concurrent truncation.
+On 2/11/26 09:12, mpenttil@redhat.com wrote:
+> From: Mika Penttilä <mpenttil@redhat.com>
 > 
-> Ack. How about adding the following comments?
+> With the unified HMM/migrate_device page table walk
+> migrate_device needs HMM enabled and HMM needs
+> MMU notifiers. Enable them explicitly to avoid
+> breaking random configs.
 > 
-> "
-> Recalculate end_pgoff based on file_end before calling
-> next_uptodate_folio() to avoid races with concurrent truncation.
-> "
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
+> ---
 
-Works for me, thanks!
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
