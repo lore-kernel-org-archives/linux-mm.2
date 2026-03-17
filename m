@@ -4,134 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7BBFED9EB
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DA48FED9EE
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C65C06B0005; Tue, 17 Mar 2026 12:39:22 -0400 (EDT)
+	id 2B3C06B0005; Tue, 17 Mar 2026 12:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C16016B0088; Tue, 17 Mar 2026 12:39:22 -0400 (EDT)
+	id 264E86B0088; Tue, 17 Mar 2026 12:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04736B008A; Tue, 17 Mar 2026 12:39:22 -0400 (EDT)
+	id 17A656B008A; Tue, 17 Mar 2026 12:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A6EC6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:39:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EAE81602F3
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:39:22 +0000 (UTC)
-X-FDA: 84556115364.08.A02EB30
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1CD584000B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:39:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e4Q0h9cS;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773765560;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0663C6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:51:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B0D671A028C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:51:32 +0000 (UTC)
+X-FDA: 84556146024.29.AD71615
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9E179180003
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:51:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AGVc1Xt8;
+	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773766290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7sJfLF5I6/Rhit4bg4ZJG0NGnrJvX7/hS6JTmMC1Y8=;
-	b=PIOIDMFUbpB3etaQixLqHPZwTI7sWW6FnSR+e0l10/zs+VZOU+bpGsjVj0WZE2vb8EFM+X
-	SDvIIHBcvyD324dtsFvPPvhSk+kcDx+32zsqbLUcsxxUSlNMieXC2XKKhmcjcYnNOMt/OF
-	QZbBgvUaUkhYUtUVb4mLV78ioxM2H+c=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e4Q0h9cS;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773765560; a=rsa-sha256;
-	cv=pass;
-	b=6qBb/zdYzXTEJWb7Fhl2dzYJbO1gF9jo/Dqrg2fApbQBqf0asfCPZzuKk1XqAPeKYFN7E7
-	hZZSXmckUwbEJeaj1MiDmsYf+LaGrdOzS+rkEulbLL+9ooH7Zk9wmuRRsZOEyH8hQ+8m6E
-	OeiWN6s9MIu9PNN+yitsGOtBGC6Jd2w=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a1330ac6c3so6327986e87.1
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:39:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773765558; cv=none;
-        d=google.com; s=arc-20240605;
-        b=k1KdiduTW9jJcThH8dXQNhZNN+eeiQIhsidGxFtbpujG87YW8EOfe05GHpqS8nEQH6
-         epLhz+NaOEWLu4XBvvJPAkBUlpauqjGjMVkpzsEWPb+ESRbYKha86QgMSM6x2Ho7hmbv
-         1bNSLOStrFD10E+lzLzDLY/BY6zLIPFvO0fKkTIha8Jacu/+UiKHnP79AKoocs2oYGDR
-         u8zN4+iMenJ3pftlhDCYNYgIZbsc8+TYXJHTxB65TfjYcMvcZPksz9oq53EA5VgExpdp
-         C3yn/F5vV6KL2PDd0kc1xkPHcDCiWAuwnnts/GasqLnNLWQx7+c3jQNcF78tydwyRsrF
-         kikw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=M7sJfLF5I6/Rhit4bg4ZJG0NGnrJvX7/hS6JTmMC1Y8=;
-        fh=xj8a4MFQDd/+8O/Ad/bC4225SbTJKqq36SL6A7MhpsI=;
-        b=FahjZYl2LeSxMQaicFfcjPfsmaMJz6Kn5v+AxBRlJk4i+AxyKSTwqveX4/j44hJjZL
-         SGv6t0zq2NitZL3fjC5eodC4CVfPTJS5/QepvepIuexM2MxLGm7nj4e4X9jpz9jSqrDI
-         nkEhfnxyjDhFfI38OUJquzBdNonx0xbXEqg2Hlx0SDdeB6UWkI68nPHRWnQdHXgIY45w
-         oKvgJRFMQUW38FtEc9ylQU7Kb1NpG6Tv024luyIUZNN8oRBeWoNXsmWHtYGcGlxSdsO3
-         PyeG64989R6VPj+/szp+D3f9R5m1jxJYKDE1M/hLO0gACEH1aN57y6gX9lygtCWU/JIQ
-         Yvaw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773765558; x=1774370358; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M7sJfLF5I6/Rhit4bg4ZJG0NGnrJvX7/hS6JTmMC1Y8=;
-        b=e4Q0h9cSqQ+QX2JBGKf6YgqY8aS8GZGYkNgAkKipG2EPjIkQ6Z+nQptl1piriWfKnI
-         6veLgOaweFed70Gl/L44Tmoj94jm1f93naT8ljAV5v+dwWyA4MfZkE7VilJv5SRHGYdd
-         AFRx4jXA8d7Sy0Vp0paHJnHRhZ8HW9YHgz5ZQOXJmce5hGTnv88I9prbZ4gBXvD0lAo4
-         +bYiCJ6Md1gnPdKLAss5TaczaiW865PQv4Rfk65KP9itNw03vb6qvatDp0AQA+ZMQwBY
-         jYux4+K7lx1s39gBffO1lWSMkZOoMVq7hDRneURyLnt+VkP6E0qTSDkGgI+OQ7CwTw7a
-         GWGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773765558; x=1774370358;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=M7sJfLF5I6/Rhit4bg4ZJG0NGnrJvX7/hS6JTmMC1Y8=;
-        b=OU+YdR2/sSD/loFZF0wjIkNtACMPF950kKUhwk1EKpPg9VvlLseyDkzdUIHoPxwDyo
-         GwbdHxgmpYFV8jpdY5mDjrF5ZPTPuYstfNWUjCBSZoEeJdgN7ZfPZfvne5GiTJ6W6mIv
-         RDBdCxxwjyFYrRghmh+LIrnWsnsNQa4R/nt10GNYaLh8Jvd6oJufbyCxFxejJiqUbGhw
-         sXGd9Vf19xM/cjhJsAiiUL2m7NApY3TkbzFfPAJo5YWH8iMY4TSV3fA5i4K+EeT24DOk
-         Csgoz1+XEEmRIGeBgYYa3qJqeBNiXt7U6S7cI9OaKZjhg2IRyC4ZSunhKf4DUKFllGwV
-         9+gA==
-X-Forwarded-Encrypted: i=1; AJvYcCUu6udz/+3udJmCm9ap256U0msefVkTVyViTGOcSd5RsxxF+DtWxLOzTiMSLpI5a22dpZ5luThO6A==@kvack.org
-X-Gm-Message-State: AOJu0YxgAcEn7czJVSvAu0EelUv8qvzHpSPgbYjNGdz+WkzAg+FUzNfV
-	2Jn+wEd1x7fFUXBub0+r6GAb0UhBDGj7XGOvUnBK4pIVVCnbbUKiVLCMQTiomNuMMRIEvZ8h1Pl
-	Gyo2IC4Vd1zt+SotV50OzDpBdzD3KVC2frHmgY1JK
-X-Gm-Gg: ATEYQzxg37KYwKdKTK0lOOfu7HKoPqVVIrswYu0AiLT+2mp7PZNP+Tb5ir1DZ6VC2TO
-	Kb3eyeTyvEF4MkqihXT9WKMtWddRV3/Kzi/lxznWSt+fl75PfhgXnO6Ksy4T1OEwpXhrdJdo6f9
-	xDKLquL+9A1wyAMu228j8Oga43N7f6fpcogwl+58pTxSFofd0mgbgKhgq2NpmtORIYcSX5F0EbY
-	3a+Zwihb3SR2Mb8TrOy4pnvw5PTSBhWTqletJIsM3hnhdZkfHBXSfvBj8c/PjAqzTXMuPNP2x1f
-	m0N7g8sB
-X-Received: by 2002:a05:6512:3605:b0:5a1:1074:e1ed with SMTP id
- 2adb3069b0e04-5a279699781mr68304e87.11.1773765557662; Tue, 17 Mar 2026
- 09:39:17 -0700 (PDT)
+	bh=hlRZf+1klkDtNdL1crLosxTI4J+DLVi+i/8N7BfE66k=;
+	b=Y6oAvDUK6vWOy8P/yE01SoWBCfzbV1MjTxMbPY/BNsTNm8LdlxkE+SxSU5V6ItOJuvhUXW
+	ZuCc1QUISX01Z2xmAb3NZJwUxLi12aKaHC1J4cw/ENaRiyOp5YyFtO8Yn/5K9szqEiJQ8k
+	TqTXKtCtMjBWA848qCEhaI3xmQAnaSo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AGVc1Xt8;
+	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773766290; a=rsa-sha256;
+	cv=none;
+	b=axF8+u2P4OY6rdb/KFKX9y2WHuLvu7ZodHVggeLVdDh0xAhQrlw9iCMSaKOkuYwTUXUSlE
+	4q4h/G7K0TCCPBMXJnXmrXJsUv+eAYAwQUX0vRQT1Rby+zcvJ/5Bf8nbJx1qcS1xrT9vCQ
+	mUIQoqE7bi+rluTjmE1+gOvy2ChSwEI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9428043F1F;
+	Tue, 17 Mar 2026 16:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3219C4CEF7;
+	Tue, 17 Mar 2026 16:51:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773766289;
+	bh=YkXEYIH74A56mhfHo8kocYF0waTbnTtPT4gCDq7DILc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AGVc1Xt8VNAQFCNx6mZFG9maV6EngS7Ao5CWcaJY7AD+jHgO+vgoCCjZZY8d0ZN1V
+	 Ts12XZk6SkA0C1v/EHxgaUDsQWEFcGQNrPa44yUsFSxsRKzd62S/15F6NjPX96wOUC
+	 5/IYPdfey4inKNiQa6VqbrApyOcLik4yvzuv8PMc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.19 212/378] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue, 17 Mar 2026 17:32:49 +0100
+Message-ID: <20260317163014.806356728@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-References: <20260317025049.494931-1-pasha.tatashin@soleen.com> <20260317025049.494931-4-pasha.tatashin@soleen.com>
-In-Reply-To: <20260317025049.494931-4-pasha.tatashin@soleen.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 17 Mar 2026 09:38:50 -0700
-X-Gm-Features: AaiRm51I6Y9jp9_Iramv-jPdxRAPpMtjBUm1hRG8sOIFy-KOi6SP_ShQcC0KoCY
-Message-ID: <CALzav=cY4G-1MrEv1zNbqjdu3eXYnFLUK4xgo0r=DrbSdsXPLQ@mail.gmail.com>
-Subject: Re: [PATCH 3/6] liveupdate: Defer file handler module refcounting to
- active sessions
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: rppt@kernel.org, pratyush@kernel.org, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1CD584000B
-X-Stat-Signature: tuy34t6qgq3xgw49jgexymoh7hf9bfbd
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9E179180003
+X-Stat-Signature: c61h4ioxgqcm3ixo9gjy69fo1oihmhtg
 X-Rspam-User: 
-X-HE-Tag: 1773765559-169107
-X-HE-Meta: U2FsdGVkX18T+10D5j657QS72YGdL2DX+Wv1UTkwgTtV39pEypOoKxPt2f6eLaFlp/8mVXipWkL/TCv/4GQSxyRf+MRbN61k0TTXNENn1lf/KtJwKM7yX2QBO4BoXhGVqtGz5ZyhQ5izUvJyir8AhL7I4RHptdNxJbGZUF6TvLbzs6tzPc7Bn+xL6yv36tr92oltQgnCcozxoODSjAK4eoG3K4Gp1kAAlmWg7J8Lnhp0GQ4XNekHyLTzdkLciWM2gSriIlL6QOcxa1qOK3UBjQRFHHanNsdiOw+TfFHlVkHo9g40OU9AkdZAWP0VmJbGSB7guD9n3L1acmSIjkAOlgLc5NzfefiWLO2YeAJQx2Z/5Tny6L6lb3CwvVc/NNDR6UW/JAwTs0RlGgHv+LZniAIdOjw3CXSoqPsEl2bh63Sc2S8/EH1MlD9V0+bbsQ+f/CKxDKyKqAaOTbDceF6tp99sO/A0MgNemvBKC7iy0hO4ybrfb4cl0Kc/fu4kQqmDpA1z3io2Weh3tM8q2xqao1UP4oWF4SUuupzXjtUxzkJ53qFyANcXUSUBxWqTE8u7WOkwT6Vc2mkQGeEAN2RdYqrWSzRfxUN/T1tez9jhIECQGehBMU+BsU98j5CGxReyG5v34MzfiTeWdUQsAOP7mvLcU7P5lTP5w7vF9Ig3t1ZuNlruzXilAbZldKv3jzJTWtTQIE0+jmH/6cHfZevSp3DK69EMBSd15Vr5VGVXDchGNMRaEOPV02g99kNPMhzFz2ga+nSgpvTI2PPj3r8LGdW4PzshUVjWNQYxLzHKEERdk7BjlsdgzjjDH7nIpq05X/9Oln5+VNhZjdQ2SN5sq9G6wIn99Vz1uarifJDGDB35AcfzlgIUtqE5pXsCgB7rorOQWovQALU1g3cJruCFbx5NlHD9/aYFAeQowNgiHwm8P8ZEPnymnTQ0hdg9ujhUEOY7E6GlQ7aVAi2TDz7
- EBMYv5AP
- 7Odq3okZz/BKLKfOQL58UXQ0LPK5m+CRFKR9iPuc1BT1Ax7rH17HAHfnFJHxT4DY+WRaUS5Hp2Cd2IaQVVtYCUVLVB14LgvIZqs/C2aESnH8iBbdm8uC2HMALARlVnUtZ6/z2OePkQHnIS0K816T70NAAB/NLebSmli8v5NUHoV8eGCr9p7B8UmIcrXPKqdT6AzFmgpPld09MmyCq9h9V7m3Un42fZWuTC2e79nNVVuzye9SMTMoenpegdro7wcc0kg8jwE2gPEd0zCPUGh9JbopdQwY4NX08dLPT3oZP45GaiQw=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773766290-192388
+X-HE-Meta: U2FsdGVkX1+WA3fApFe5raWCBICabyq93TNL4Ws/SqtHQjnjua8yI8H1nIL64qD7f3aOxMlqp5SvdAHdi9YtCX9qsd1OhHHOEIIAPP82JzLFX1m3yG6ft/kKMrqEiiQOGGQcITezcjNzt+uWlmrLbOFdsNu1svpKtq2xj4qAoxSvhHEEEaE2fhLZyXZb7z+MukUeJZ9b2p2Qvv1QuUIP2c6a+0yIx1ZV5LITdy47o3RBgGzcOQA2kn5w099kGAmNzKGOyeyHmf2C3wvxgGGKFLmtjVN+olZYyMMZXzYBy9WEZjU8agjnnRwW/f8M+xOqOoONs4+Kqnvlv+MJmwzwcrEzmDt9tVwni42eORDnEbni2EtM5jLCWDOO4ANsNrOaP72YpLoXiEltK3RdBdWmZIqFDJM/gw0em6nWDRQUNUM/gXoD1WnklYFlukTjqbK/yHRi+icoJcQ/Ov20m5PX36zyJkcMcucbSH7bQ6BJjg9O/LjepvYRIcpGcV49zDRKzggC4eH91QqjoNtgUrmyzkAKdrd4jqk7W4QpO0m/p+O9cKMPkdxUgKPz5k1HH/ktK6TpCvI1UUF4caxuQcTFEfRx8gNVi7oxxgibM/L/YdXnnyWFp8w2StCs+WYGMDhONea3K2EExU+UsfgY9bs/Qgw0jyjVUAdK9o64Oe/MpSzCKxjTpz37qmi0JiXknNkol6TWIR80N1aN9QBk2ZKYIvwfbz3hMs8jftTzGocXgJL4hiqZQusSanIdgAtY9ZRgxdvVxGsO8qq62OCFiBIh3+ZrDaOGKKoUTPiY0YDCwRUqqi8cFzkjdjIAeL/mTg2it/J76q5LdWFDAXXcdQj5ud69GCCSFoYVPEhUlTiVDMLNCO9KiP7XCqSrU0Ckb7qNBwg5u3BOWmpok8hOjbyds3KlIjKz06M7Ez5dvtEQbpK6X4fWvGoAsc3nAbMgY3LAzCvmBTlrJhi2e/+sOJO
+ CEZ9OOfU
+ CkC1JOdv2C2JB40ICjl9haEMkZnhOJgsY8prbm39EulG4GMltNn4A0DT/KsDukZmW1ovHOPlrQy98myOb69h8t/FDvo+LC4MOqx+79Yal3J45UuPY7RHPjMYuOV6nOWOilVJh7w5EfsLu70nOq5Zavey88KtVvzk1HTvv0VGL/lN7ojGG877rU7jZuTomCTeDc6Sdmhht7und00d//N2VUHm6+b7QpPNCejw8JqG0k2zrsqbpu1yojZbMLefguSFjCb4MugEmcFMBl4B4VzjHcK8D8DvxLtoyl0mSgMnGupzO6at/HmxngBrmxN/yWqSkX2kKVqE6sC+AZDryorYWLEl8ANxofBG9RzTMdhJktbXRTZmzPXKPhgqugc9LPRH50v/f1MlKNO9zS4eVlPk9OotL0SbPiAfr7jYkdU5ynaAOWF9pplXCoNbyaUX3Hrd+HI34dpj2umsH31dRuEwF807AmbUc2D46/ZZvmAKb9WfywDbIhIDkcoO60WcDmvoxstXvFrbfkO0dqq9rU/Vc0c2R642YoSNCZ0gRoRBGKtcI9zU2z2W69XahETM5y6rnla6mdwPtS7Vyd1tyH7dipLSA1Nj1Jx6fVHWwTG2BicWj/QqEdR+B0/AqKmIir0ldqxx1bgQtLURwjkVym2iUFTD7TUJ7SFCzIpJiq6tERzYNRybj08aghQ6Rzmrs2mD5Vfikz6yBHSVodm889gLcQbLyGN1KDvKHqtgYbPvx7zigDJAnq1/janPmKnRirC7UxGtzFxz2hnBFQsuLYxpdq3yMZnptNdBEwU3H+3YQbvO3ggwOrBDXJXPCVdvltCKvTop7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,30 +105,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 7:50=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
-> @@ -281,7 +282,10 @@ int luo_preserve_file(struct luo_file_set *file_set,=
- u64 token, int fd)
->         scoped_guard(rwsem_read, &luo_file_handler_lock) {
->                 list_private_for_each_entry(fh, &luo_file_handler_list, l=
-ist) {
->                         if (fh->ops->can_preserve(fh, file)) {
-> -                               err =3D 0;
-> +                               if (try_module_get(fh->ops->owner))
-> +                                       err =3D 0;
-> +                               else
-> +                                       err =3D -ENODEV;
->                                 break;
->                         }
->                 }
+------------------
 
-Does LUO even need to take a reference to the file handler owner?
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-LUO already takes a reference to the file, and the file should already
-be holding a reference to the file's owner, which should (must?) be
-the same as the file handler's owner.
+commit b570f37a2ce480be26c665345c5514686a8a0274 upstream.
 
-For FLB it makes more sense since the FLB's owner is likely not the
-same as the file's owner.
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
+
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
+
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+sinc lru_add_drain_all() requires a short work-item
+to be run on all online cpus to complete.
+
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
+
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in do_swap_page().
+
+Rename migration_entry_wait_on_locked() to
+softleaf_entry_wait_unlock() and update its documentation to
+indicate the new use-case.
+
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
+
+v2:
+- Instead of a cond_resched() in hmm_range_fault(),
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+v4:
+- Rename migrate_entry_wait_on_locked() to
+  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+v5:
+- Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
+  version of softleaf_entry_wait_on_locked().
+- Modify wording around function names in the commit message
+  (Andrew Morton)
+
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Link: https://patch.msgid.link/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit a69d1ab971a624c6f112cea61536569d579c3215)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ include/linux/migrate.h |   10 +++++++++-
+ mm/filemap.c            |   15 ++++++++++-----
+ mm/memory.c             |    3 ++-
+ mm/migrate.c            |    8 ++++----
+ mm/migrate_device.c     |    2 +-
+ 5 files changed, 26 insertions(+), 12 deletions(-)
+
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio
+ 
+ int migrate_huge_page_move_mapping(struct address_space *mapping,
+ 		struct folio *dst, struct folio *src);
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 		__releases(ptl);
+ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+@@ -97,6 +97,14 @@ static inline int set_movable_ops(const
+ 	return -ENOSYS;
+ }
+ 
++static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	WARN_ON_ONCE(1);
++
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1379,14 +1379,16 @@ repeat:
+ 
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * softleaf_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1394,7 +1396,7 @@ repeat:
+  * This follows the same logic as folio_wait_bit_common() so see the comments
+  * there.
+  */
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	__releases(ptl)
+ {
+ 	struct wait_page_queue wait_page;
+@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(soft
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_stru
+ 	if (!softleaf_is_migration(entry))
+ 		goto out;
+ 
+-	migration_entry_wait_on_locked(entry, ptl);
++	softleaf_entry_wait_on_locked(entry, ptl);
+ 	return;
+ out:
+ 	spin_unlock(ptl);
+@@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm
+ 		 * If migration entry existed, safe to release vma lock
+ 		 * here because the pgtable page won't be freed without the
+ 		 * pgtable lock released.  See comment right above pgtable
+-		 * lock release in migration_entry_wait_on_locked().
++		 * lock release in softleaf_entry_wait_on_locked().
+ 		 */
+ 		hugetlb_vma_unlock_read(vma);
+-		migration_entry_wait_on_locked(entry, ptl);
++		softleaf_entry_wait_on_locked(entry, ptl);
+ 		return;
+ 	}
+ 
+@@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_
+ 	ptl = pmd_lock(mm, pmd);
+ 	if (!pmd_is_migration_entry(*pmd))
+ 		goto unlock;
+-	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
++	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+ 	return;
+ unlock:
+ 	spin_unlock(ptl);
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(
+ 		}
+ 
+ 		if (softleaf_is_migration(entry)) {
+-			migration_entry_wait_on_locked(entry, ptl);
++			softleaf_entry_wait_on_locked(entry, ptl);
+ 			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+
+
 
