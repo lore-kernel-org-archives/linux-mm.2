@@ -4,136 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FAFCF33809
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 07:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 940AFF3380C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:02:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFEA66B0088; Tue, 17 Mar 2026 03:52:21 -0400 (EDT)
+	id 9FBF86B0005; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB65A6B0089; Tue, 17 Mar 2026 03:52:21 -0400 (EDT)
+	id 9D4456B0088; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9774F6B008A; Tue, 17 Mar 2026 03:52:21 -0400 (EDT)
+	id 874556B0089; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8716B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 03:52:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BE6CC1FEC
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:52:21 +0000 (UTC)
-X-FDA: 84554787282.09.9D977A2
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 19E1240002
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:52:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K41Bw1IQ;
-	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7095B6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F36B13B2A2
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:02:34 +0000 (UTC)
+X-FDA: 84554813028.13.419F885
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1AA494000B
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:02:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="d/nNTqq1";
+	spf=pass (imf27.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773733939;
+	s=arc-20220608; t=1773734552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wXuSrwefBf4r7rRiK0LKFFEFXQP30aBEiH93AgmCVb0=;
-	b=RxjpYv1zUdhsUBTZSga6jnY5Ic0Qysu7S2NQhFMk8/QNCLwVaiM9dqVfRTmaZqyONwi92G
-	W/fyixTAD1TCPR6kkMxFwbforfq6ttiiNqJ20uSgdKu8gjDVFSdn96Yf68hondJ/1lPuuz
-	1K6C+z5cpvRFnZLdjeVgqhJx+IBLLqA=
+	bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+	b=YpDBEYoh3nFJVJB1FNkYNnzY3yTKT0aingMizAIBkOem47GY3koCf2xnabYaqFBOny32ZG
+	jTi8YinApebbz4R2Up1taw4Efs6QNI2Mbd+1xnEHJe8GiG72Srvag8Tzce+laL19JgL9qy
+	0sXSaTzsD41le9csHOIGqNQY8TobUqQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773734552; a=rsa-sha256;
+	cv=pass;
+	b=aRODVZZimZEicQzpcUMp5oE3S/G0vc8weoZwbIw9LPt7sGhfgna216Ir+r9HK2h9KhOrwK
+	e8WFRt5KGUwK45KKedf8IvWPRpBVcoKerROZFELHriXGp3ACroGOMtflzQXICTW1sCvmi2
+	3IujZeuNsWAsAyU8N4poqEUNGy23RDg=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K41Bw1IQ;
-	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="d/nNTqq1";
+	spf=pass (imf27.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773733939; a=rsa-sha256;
-	cv=pass;
-	b=KuN8cr4o53q/kv/qIN0dP8AEibxB6QJ+IfsybceOU4xCccsFB6ewTnIAkweYmfVjOXbb03
-	9k7b5Ov9R5OWjLUf8w3i8n3lWFM7FYNb7Wzb+BpV6MOiTjSx7qH7w7cJ/P94E/AGwbo6x2
-	3geWrdo42GYLluMW9MQ4l3vHNfk36nw=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-89c55a0a470so18763766d6.0
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 00:52:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773733938; cv=none;
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-127148c2112so218667c88.3
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 01:02:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773734551; cv=none;
         d=google.com; s=arc-20240605;
-        b=GLhrnOSaPnSUzALQl1vIxBfo3Lk/m7e9xGaf1GjkroBEy2+73UxrzQA7S1vwBqQLCe
-         RstVeN7hJFARYnrSjLgd5QaFt8SRWpAbq5kmQmz8s/mVz8sSSPMnNzIzRjcsdQ17Ca5D
-         420Ht8ugV560C7+MfGx7/TOifrGqQvzV8Vyli+w2EvkWGqiG1vp6GwGZETLgG0nTrAHr
-         LfmD2jw3I5LuNi54ieFVA7MzjsB9OVx6r+LP7nwBWeRt8CPO+ftWgCUjVpQn4mcbe+XD
-         EkFwvpIqjkp4OCLa7PlVGjeRnKNxvKHmB/YZNlRKBMSaNz87VRuoyvfxPh5afGAChWnQ
-         X6Xg==
+        b=UrG2YxlKVbuIN2Vm1airLLRvQIOMzoTVankiIRGPsFtdIhEoOLmkxIngdrtt32748q
+         8IEMeiJk9P3aSSr6EVjJygiUsDGiyHoc6Lh4AlbfOD1/AL2fjPt4O+rifnvQcXshhJtb
+         DA2vQmYlnZtZjYHXJ44M14xTFb6ds2h1SaBVhIepd9pRhVOJpCftXWi+rhl7/V5Uzkhn
+         Zd4TiCqO5v8rS1SddZHlmJRpT7D+VI1Vh4kcG8bCReW3tCeM9fIc2arZpqR78wBvgf6B
+         Yw7CMNxji19h04BcTVA/qZK3iWbATIqRHJRMG2E4Zq8BHhNjKuYbpeSfTISXaDRDgCgf
+         TgBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=wXuSrwefBf4r7rRiK0LKFFEFXQP30aBEiH93AgmCVb0=;
-        fh=pY1NKYZzVXOPpfN0tRqcI069yzoewMdijUYqvVi3R3Y=;
-        b=Kz3TTzRZ+qH6O4wNgBIj9X/d95A/KT5kbG+9mmE4yE7qckZJutUyzJ3LxV4KPom5JF
-         Nq5uXgfPyN3vWXMD+uBWG40Ef9Eli7B2a7Yy0O4U2JnfS3HvQBRgBB8RzFgNqE6i5RL/
-         +RkfkXFOFqUYPZJPPgq+rDixkK2yp1f4pPKfsx23F6gr7JWPyGOhNR5D9zV7C+1PMeEf
-         JTJuOjZM8SS28x1EGRvUUbO+AC7wV7MUh1oxk3uMqfilX9dNiBAaHVfe7t9GnN48SKVk
-         rakqNoJNobgnLV/k4RCP3NTywkYPle1VP2N6w9M9Y8lkrr2ahs5osUAngx+YEdZrA4e5
-         H0Cw==;
+        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+        fh=1twl/bZO6CD1qke6KyCAptmwq5ilWBWDENf7XjpNkRs=;
+        b=kjH8nZzeD7jnJT28kXatMEguRAsdKcF1vG/ro/2nR/FfLw+ZpTohG/SJJQ6jFV7nVa
+         aoBuRvUvNrU+rmfQ74j3Uj8TUMiIYkM2s6NK4Er/1VmCC6BhovpCNvBiAs/0ufHWKGVm
+         816aic71Qw9/060GBRZJ6zX9aWOeIJIjvH2XQPSTY4R2JSkswzzfG9Hsqq491POibTnt
+         Y6bUHPB5DsrJEFkR64mcQfZtWozA//eeCuJ8B13v2pZNpxtU6ZnjUeCATdECLKIQKH+x
+         fubiQV7EZKgB9pqEIRp3CVVySWCKu572n0t+GgLef0tn1uW3/KSsMfhTZ/YSB6xefSWe
+         vZEA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773733938; x=1774338738; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773734551; x=1774339351; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wXuSrwefBf4r7rRiK0LKFFEFXQP30aBEiH93AgmCVb0=;
-        b=K41Bw1IQcnEp2GNhRx1RuBjAA3xDO6/PgIXfDVkKdZmPldLfO8ZcAgn5UDxCdjD5VZ
-         168Lq3qhoh6doB0AxWofUiH1H+k0dIDBdY0vIjuIonBDAISFyuDyjBybmklIB6psVbq1
-         pCy73RgxF6fPSmSaNoZ03WtYEeZPFyd38GYpwC3P4IRkivoMJmPXEzIi4oqOOLWNb5+2
-         FDBGVroUG79QcRbTr8ytI4U9nZRA0EoX3VhvRYD6gNhen46xzXVI/dzhZAxVfE86WITs
-         8qsL/eJU0Twzn9ABppu2ew8qjJhiLjPLYOcSe8lYU3Y73Er/mWrL6RQ6WYwbKkX2lpri
-         mCgg==
+        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+        b=d/nNTqq1dN2lX0aVa/lmTO0HsChLnh4Wt8SyBqqjXhbnnpdnt0Ip90Vld0foDJOz7Y
+         Rhb/MG87KK1BlUJRTm10cJycpiRO3nocC0CfqBKuGcWZ64nYCkUttYzDhxWJMNajZ1IB
+         SGmob3JxwkW+jKVSp5QUI+M68yHjBEK1ZmPrIv6/9cMGfqIfiYsWkanq7UQ03NDZzDCx
+         ViEK4c0AXISjDBCTQWPe6x5Jl9Z+VGlmCvHdstsxKaLP6Ccu3vM3o/P+sm1henfuwbxx
+         JJ6OCpVi1DIDW0/bfa4rm3urb0llEe+MG9D0Ou4Hxz4jBNUdl7KN3G2rq4u5hlTnEgQZ
+         hNBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773733938; x=1774338738;
+        d=1e100.net; s=20251104; t=1773734551; x=1774339351;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wXuSrwefBf4r7rRiK0LKFFEFXQP30aBEiH93AgmCVb0=;
-        b=O/acF5goJsWDfyGEtdILdxyLSaV6RNBA4RFClGSHbr1FBQRA1Cp/DsEWmbdZ2FJYAl
-         O3O+GXz4JfTqdu/frMUaUwiqe1QYEUrPWg/N/GteVTW19zFllpxd4UYOMUXGgZAydIfr
-         zzhNEivgBlZWnqzpLjKa0Z3BiDJBw7FkIctb8wilWG3NTBffTOE4eGLcaQnv08AnaYVX
-         Oc2Lsv8w/bzkBDKJU8Ldi9IQw9R1a5BTvTDGRVUlppvgz6UbeYoqq9qFXXrg5I5VnrqL
-         UNIjHbRlpqb9xrL9HoY0xzIsum2m18QI4CYIVKosE89INMO2n1BVVPksmm8M0s5b+O96
-         jyIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWnyjWXuBP3fejRrGEKczP/H4qNXVJEHDdqA0Yv52c9AXRgW7UsFVV+/FTXLmEozC/jt82LSdjVQQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz5bOgUVA+lekmJzbHWjEt5U0eLeIQBMz2gnH0w5eWSDo3/airH
-	pcE2c8tdvzbvICBgYoqLjSpI5lBxyutaszbjSJkgC28/a5oSBZvDVMUEaVA3cA1Q4D+PrhHZYNx
-	6rx1Qnse/pZbUCff4Padq0NtUC28Sfls=
-X-Gm-Gg: ATEYQzymFzkDiW+Xmfnkhes3Wq8YrMBRzHZGzDcyOzED/cy2EO+aJhsUVmgeBtsc3Xn
-	9XpFVzpSAG1i+QvNSDuxn1bc6vq6ICj2FmUJ7vFEXEE/am2WD7wdZmEqtuGwe6Qt4qGf9rM6IMV
-	GrOk/NN4Tq7uCnQHfaQntMZ/U4hMt78GTh1OH+ba+bNp/I0H/WDhU3nqJz35Dns4pjhBWCicQTX
-	k5zK3x/KGXusc5OEgbXcM4vvgZBr5vHtpUbtUl/34uIcDn9aFgNkNVdQQVchSarcyzgPuNlCkxX
-	2pkeYA==
-X-Received: by 2002:a05:6214:1c85:b0:895:4bec:c629 with SMTP id
- 6a1803df08f44-89a81f72f79mr239209446d6.31.1773733937720; Tue, 17 Mar 2026
- 00:52:17 -0700 (PDT)
+        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+        b=ZPIn+lyMJtVQuMrV8VAMvYmuYHh0do5FvZpYj89vQC3Md+idZl68wEFffj0gzHZRUx
+         OdJ8JtE/OErjPWS2YXZGjf370rIUY3X3MIX9HLsRLdStwNCmvfQVVsHrFMF7BmpG3H6d
+         R4YRyU69TCA3wzooCjhVU8S1pwuV5faUZDknycg4dMVTM+v0VlVQJ48rvreRmdqZM9Mm
+         xUrGPCd2KTfELHNJjV/A4lIFEtJG8GzfCskrUedzy6erkImb7jZUYF86HNob2iY4D0eZ
+         /biyytywGNcioFg4GKek5NGrGhNhGVTjPaYMS2cDq1KSElDFluHp2Vc0El2UE6cHaO2Q
+         Wr2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVCTIEpIYSpfq4JIaqwHelXjp8i95xhxtHQY8mtQGo+Xv3Kv2+Xm0mjESmghst2L+RantdQLHXZuQ==@kvack.org
+X-Gm-Message-State: AOJu0YyohXb+9a7zpdsTbM2yvDR2TBF4RLTPwWgB5EDO4BxwhvE3NlzX
+	Oc/j0sjDj9Yriwjl4L3PdPjAnPcYD5crtSPiis6OAY8X0zFjKUz11yMa6xMW3xE7ahZ7mGFBJNm
+	oVWFXEgouTzbxt17zCQSwD7NcWJZa7yI=
+X-Gm-Gg: ATEYQzw/j4L9o1/WicAByrZm9YLl31oTM0wW4bC9HgBZx0/R4Y+83KNyqml1nTxfCq/
+	OSUnScGWtu5kFwqP+V/7ZI9p3g/gnQh2eiV8W++FQ4dQLTOj8mz9FmSx47FCn3X911m4YLaRdoE
+	TCZDvFrJbNLgqwQAJvxYWoBgGAm9rZogupgaY8TjmtxznXS3wuohmkiVVrOk6XwvSLltH8vEABW
+	1cpFPtLoavUxXFV1ePgU9D7q/jfwzKxQM4ex6YAG93ETQ0GB/VfUGwDJLXvk3QWs56So0dV8hUZ
+	//wUlK1S2u65AUDz91ec77GJRATfVHK937esumqzwV1M3gc19b1n7vKJZIgKgjulxYhv2jc5i/a
+	RmG6GdYrouV+p6B4Vdhwc7ko=
+X-Received: by 2002:a05:7300:e887:b0:2b9:ddef:2c13 with SMTP id
+ 5a478bee46e88-2bea5590bcemr3462168eec.5.1773734550615; Tue, 17 Mar 2026
+ 01:02:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260316-b4-switch-mglru-v2-v3-0-c846ce9a2321@gmail.com> <20260316-b4-switch-mglru-v2-v3-1-c846ce9a2321@gmail.com>
-In-Reply-To: <20260316-b4-switch-mglru-v2-v3-1-c846ce9a2321@gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 17 Mar 2026 15:52:06 +0800
-X-Gm-Features: AaiRm51GNcm7uVy_98J3LHYNT9VWrNs49syxqXXl6QSWhyKbrp0fFX5BWdE32Y4
-Message-ID: <CAGsJ_4wvmZMnLp9V68zOAs9xze3zpSrNGhGZT9gSi_9-93LjgA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] mm/mglru: fix cgroup OOM during MGLRU state switching
-To: lenohou@gmail.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Jialing Wang <wjl.linux@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260203-inline-helpers-v2-3-beb8547a03c9@google.com> <aasPsbMEsX6iGUl8@google.com>
+ <20260314004012.GD534169@ax162> <abVE6VWCzZfyMEsu@google.com> <20260316213440.GB1329928@ax162>
+In-Reply-To: <20260316213440.GB1329928@ax162>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 17 Mar 2026 09:02:18 +0100
+X-Gm-Features: AaiRm50RfwFM9fMmqm7H6QEiWpid4KdXpZyBrHWN7l2K7PyOj7AradadNJ2iMyA
+Message-ID: <CANiq72nEFH8onFqA-8qXxeT1izR+xJdHT3AWrAqAzjPsEMJrsw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
+ into Rust
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 19E1240002
-X-Stat-Signature: 6o36mqx6pftjhx6pyn8aokpdwkson91t
+X-Stat-Signature: day6thkum1in38bqfoa7nfabhqh1dfrz
 X-Rspam-User: 
-X-HE-Tag: 1773733938-227709
-X-HE-Meta: U2FsdGVkX18FmfZf6FmzpN6is9kqyrjJTQYkmVKLWxqS6qI56srCId8jGG1PPX6W2LGuQv59stEroXgfUNYhzrFvwRcFnD2OlvpZWhy8EaaDE//6GNQZGHX7WZG3JZHPA+yBCV65BFzM6bZeowPQI2ot7M8HD3sejMKCTSTeyKnHgXoQ9mP/DpT3PaVm75yhcP/z7Bo2/WDjoA5tkjZZ0U3o7P3Hbif7wF5G3NWkrKuFvFL9ne5UQSZ9qRVv+54Z9awx+ULhhapGZdaXD1O9QxtUXEPQjDHpiPr5oEqeII+mxRVa5P03BIwXowFzKOjXghqMWTJDskIlrqEmdFdAIOeGHZfjPj5I0WN8UmG4HefYDlDMsEHVtfSvM1CyNE5TV0ww6P7K9KpxS5uZ9YU9U/Jz1kVwtFJeqSgp11Na2AJebmVBJ2gPFaCtHUWRWqlmfHK0IovmForzCVCoMZf5uzd1qogoTqncNsXlaQoX4/AsMxO2ki0Vx9WnsqZRZTO6cp7NyKdW8TKPRBK8h834133fz+UHxRqzrft+A/pHt2maYDSLVSOv7f9eSjTHdAOGA7YxSIdwoLil2TuHkNSwu2VbU0oTiG/NoTBg93tZ4bjHyvjvPeqidW0I0yvokcZv/kl/pEmTn8J/feXVGH/VWDwEfJJW7P1eKS1oCXFNk2cZPZybYpAM4RnVWhejhqLH/5yu2g99YkKYSyEev1Y7093gdZ9oaa14JDrUchdXrM+YHdtMGr4s3ttOVeja4hETNwO9rKEgc9wjk1FiCj+wbuBJZ3VNNhh/KTruMJ0Ocj4AYzqNftUhBC3RnRdCn/YFJLSEIu++ziS5PTd6bfKuLS1ZsrF1VrCLorvpgTOKsAdBZMeofmQPq09fgZSvTcbQkOORk4KVxrIzz9aRmIDgaut12ZukYznvW6Ez7nP83CUGCxE+sq/0GnDmjnzvVjh1miG0q9sO2gKxlJvrQne
- ROAkzPZ0
- PiB1s6yZHSDdbEalrrw3OiYwz2zK1+dNXUYcYBM1TyyoM7cuJDUJDzfeT6DZYXlYcbkkBYFiHruEtWwM2hQI3ChNqEFB3K6cIKOv3bhc6OppiJx3VVEh3wsI+yifZvy51akxeB7JOYsOa419Ssai2s7TkAFYALcHTwXz9l2a7WH8QX4J2Lb/sIBrLN7nGHTNHktckzVLS0+2PzcRPKWreJ3X52NQZjsTKEOp5SC5BXZRHgI7sqQvumtqua+KqbyaKWKyuIG8Zh/N6f2mBv63VoDNZqx9WQ/FBH+dyWoexbFHWAXk9T4o3JnukOPiCn9YgbsMX9oTRGE24LZtuReHKAeqcOsMnKI3PEcNGV2Wy6OJ03AJxpGrAYgxk+zj9cm7+CI7cveUODtGET6lvsg7sFg38kkqR5IK1fofJFc1nwCXNcI00T2TKO24iTDJ3Y/ISBRad0nK3wda1thHBBRQlsSPl2iUZ4QK+1JY5Rnmk9MqPYvHoiV2CzUmFapMAG8VaNI4BuWfqGkzPGAwL+F9ltnGtEdU5W2Pz5EMtKMLQiSrKIdbPlyrT7Ib27oKqTVSr4Z3D/acx6DNQ6UoKwaqe/bTh92J0EDu5efJbTvyCxlDD7zhbGI1oD0NwAbJc9VVwBFDpNA9LVjELTx4gNBkQReQ5I/8gMo52jUNeJv9FNFcukXhzoZNsOzaXUg==
+X-Rspamd-Queue-Id: 1AA494000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773734551-487441
+X-HE-Meta: U2FsdGVkX1/XXqL//24vDOnb2Jmvjdwe5hSfddq2nh3a/EKEX6woBRXPd8FknV0gBHtNU1J/UZYQHEANdwDMr5FRtdnUCBR8EZy5eNfgrCgtn/82US5lOFYfhqD/fjMY1CePAf5becjHWBHDT0KSe/je3TDWw6IPpFuUhZTntlNZWbGj288w9eDFQz0lKyTaL9c3x7qBCqdRBM67UV5pmGm3DMZCEhzFe1qRK8fr4QKFVBLTtTnmHMoZWhT+5JX3nt/KCvLGlV3SaFcYALwsefV2rrQYjCvgs50uVqoKqPqDC5HoXVSwwPvYhPZ+fPyMV93OyqrmP6N3LwqXMjFp5hbfRUBA3v+qCXSN988NSskwl6y9tg8NQpACJVOPy18KWHRl6bcFe4LsS373Ut3QURBOUCbKFTPCPYuQIv5Zi8UmZIG1YtGMohKTnOtKRwn54eixpghKSoRWgcUzUgLI3DLRHz3rEoJrfXcQ3IS5x7JK3gBsfdXBznTXXHGOotmU+3BNebAJaYHnYOveccsNCoV1w5jCtOBCH5H4LlxCw2lWDfZbj1pgdW1hFDsgOiAysr+sI9b7OtkIiTi+T8jPKaJ7oioi7iQf0zb2PEuIQEc8ucRq8c9o31EIjWYX2QWC2kdUGrvHT/hos80TCT74oPDHgXyiwo7lxx0IOOPAAHANb1tKQJW0hnti36g3SWO/9arwyM6bUyHBjnuK0HFcMOB9D8bw9sVyWAEI8l5hYYiWMtYDne0CZcmNaNcTkWpmpCevb0IzL3pruQeu39d5j4LYlrfFys5soE+nCTjbYBC34d/goIs9Lp/LjNIvc1uiNwj3QCPBoUzux4TCKBXD5B6SLZIJcdbS+YBJuA2UqDYXm3MViTA0PWXPVDm3nhV2Ps6fjjR0Tx4En4CzXMzKWgvzPoADyJxZ28+Dj+Ya4Uq/zKa12ryD8HpqNUkBKo9TxeSwT9nRJCzlyXrzS1h
+ C8N5InbZ
+ jPp2flnHqdIRXJEkpSq40qQ3Gzm5GVxuopEXLGztDELDU91nwWjXGCSDgiIMtw0SjgXPnYW8KRzZXZKDZrzlWIwgknPERdlXA8f1R2UCtZujyDcCpnD1FM4qtBpcGDcObRvwTHnNaVoK8l3+wAkHiaTiD2u6/9Eh8D+GUOs4OtEnPOotEkjuUVbIKqV3F/OVK/ZBCV/eFBy2wvlP7ZDssR57HSWqzn3p03voehtj1iO2X1WZlIksthT2JYXAPTRE1+hGBzoCMecT+T/BQouufj8JsStHgvv3ZbmH/QOJIYfoRYMD7BmlzcOkNnpzOdOXdCoh0cDBg+e+25JWz8zd1iz6gWsWwqRr7YMYPu7sSVmP3/uDODjf/Ojy6C6PvIJBozZXQxrQsKvXZWbiv6baZ+bsarNXFPaARmqnAgpl5RmacFagC3Sf8bQ88+CUNYzu3vDMgNKCUjEcGNZqowbrHKJmevYaX4K8YaFTg4/E05+vmz06UcWYH+o67uNNILsP6WMNRYfjzmW1VMksds3yrOFRtrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,192 +153,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 1:56=E2=80=AFPM Leno Hou via B4 Relay
-<devnull+lenohou.gmail.com@kernel.org> wrote:
+On Mon, Mar 16, 2026 at 10:34=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
+rg> wrote:
 >
-> From: Leno Hou <lenohou@gmail.com>
->
-> When the Multi-Gen LRU (MGLRU) state is toggled dynamically, a race
-> condition exists between the state switching and the memory reclaim path.
-> This can lead to unexpected cgroup OOM kills, even when plenty of
-> reclaimable memory is available.
->
-> Problem Description
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> The issue arises from a "reclaim vacuum" during the transition.
->
-> 1. When disabling MGLRU, lru_gen_change_state() sets lrugen->enabled to
->    false before the pages are drained from MGLRU lists back to traditiona=
-l
->    LRU lists.
-> 2. Concurrent reclaimers in shrink_lruvec() see lrugen->enabled as false
->    and skip the MGLRU path.
-> 3. However, these pages might not have reached the traditional LRU lists
->    yet, or the changes are not yet visible to all CPUs due to a lack
->    of synchronization.
-> 4. get_scan_count() subsequently finds traditional LRU lists empty,
->    concludes there is no reclaimable memory, and triggers an OOM kill.
->
-> A similar race can occur during enablement, where the reclaimer sees the
-> new state but the MGLRU lists haven't been populated via fill_evictable()
-> yet.
->
-> Solution
-> =3D=3D=3D=3D=3D=3D=3D=3D
->
-> Introduce a 'draining' state (`lru_drain_core`) to bridge the transition.
-> When transitioning, the system enters this intermediate state where
-> the reclaimer is forced to attempt both MGLRU and traditional reclaim
-> paths sequentially. This ensures that folios remain visible to at least
-> one reclaim mechanism until the transition is fully materialized across
-> all CPUs.
->
-> Changes
-> =3D=3D=3D=3D=3D=3D=3D
->
-> v3:
->  - Rebase onto mm-new branch for queue testing
->  - Don't look around while draining
->  - Fix Barry Song's comment
->
-> v2:
-> - Repalce with a static branch `lru_drain_core` to track the transition
->   state.
-> - Ensures all LRU helpers correctly identify page state by checking
->   folio_lru_gen(folio) !=3D -1 instead of relying solely on global flags.
-> - Maintain workingset refault context across MGLRU state transitions
-> - Fix build error when CONFIG_LRU_GEN is disabled.
->
-> v1:
-> - Use smp_store_release() and smp_load_acquire() to ensure the visibility
->   of 'enabled' and 'draining' flags across CPUs.
-> - Modify shrink_lruvec() to allow a "joint reclaim" period. If an lruvec
->   is in the 'draining' state, the reclaimer will attempt to scan MGLRU
->   lists first, and then fall through to traditional LRU lists instead
->   of returning early. This ensures that folios are visible to at least
->   one reclaim path at any given time.
->
-> Race & Mitigation
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> A race window exists between checking the 'draining' state and performing
-> the actual list operations. For instance, a reclaimer might observe the
-> draining state as false just before it changes, leading to a suboptimal
-> reclaim path decision.
->
-> However, this impact is effectively mitigated by the kernel's reclaim
-> retry mechanism (e.g., in do_try_to_free_pages). If a reclaimer pass fail=
-s
-> to find eligible folios due to a state transition race, subsequent retrie=
-s
-> in the loop will observe the updated state and correctly direct the scan
-> to the appropriate LRU lists. This ensures the transient inconsistency
-> does not escalate into a terminal OOM kill.
->
-> This effectively reduce the race window that previously triggered OOMs
-> under high memory pressure.
->
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: Axel Rasmussen <axelrasmussen@google.com>
-> To: Yuanchu Xie <yuanchu@google.com>
-> To: Wei Xu <weixugc@google.com>
-> To: Barry Song <21cnbao@gmail.com>
-> To: Jialing Wang <wjl.linux@gmail.com>
-> To: Yafang Shao <laoar.shao@gmail.com>
-> To: Yu Zhao <yuzhao@google.com>
-> To: Kairui Song <ryncsn@gmail.com>
-> To: Bingfang Guo <bfguo@icloud.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Leno Hou <lenohou@gmail.com>
-> ---
->  include/linux/mm_inline.h | 16 ++++++++++++++++
->  mm/rmap.c                 |  2 +-
->  mm/swap.c                 | 15 +++++++++------
->  mm/vmscan.c               | 38 +++++++++++++++++++++++++++++---------
->  4 files changed, 55 insertions(+), 16 deletions(-)
->
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index ad50688d89db..16ac700dac9c 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -102,6 +102,12 @@ static __always_inline enum lru_list folio_lru_list(=
-const struct folio *folio)
->
->  #ifdef CONFIG_LRU_GEN
->
-> +static inline bool lru_gen_draining(void)
-> +{
-> +       DECLARE_STATIC_KEY_FALSE(lru_drain_core);
-> +
-> +       return static_branch_unlikely(&lru_drain_core);
-> +}
->  #ifdef CONFIG_LRU_GEN_ENABLED
->  static inline bool lru_gen_enabled(void)
->  {
-> @@ -316,11 +322,21 @@ static inline bool lru_gen_enabled(void)
->         return false;
->  }
->
-> +static inline bool lru_gen_draining(void)
-> +{
-> +       return false;
-> +}
-> +
->  static inline bool lru_gen_in_fault(void)
->  {
->         return false;
->  }
->
-> +static inline int folio_lru_gen(const struct folio *folio)
-> +{
-> +       return -1;
-> +}
-> +
->  static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio=
- *folio, bool reclaiming)
->  {
->         return false;
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 6398d7eef393..0b5f663f3062 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -966,7 +966,7 @@ static bool folio_referenced_one(struct folio *folio,
->                         nr =3D folio_pte_batch(folio, pvmw.pte, pteval, m=
-ax_nr);
->                 }
->
-> -               if (lru_gen_enabled() && pvmw.pte) {
-> +               if (lru_gen_enabled() && !lru_gen_draining() && pvmw.pte)=
- {
->                         if (lru_gen_look_around(&pvmw, nr))
->                                 referenced++;
->                 } else if (pvmw.pte) {
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 5cc44f0de987..ecb192c02d2e 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -462,7 +462,7 @@ void folio_mark_accessed(struct folio *folio)
->  {
->         if (folio_test_dropbehind(folio))
->                 return;
-> -       if (lru_gen_enabled()) {
-> +       if (folio_lru_gen(folio) !=3D -1) {
+> Hmmm, yeah, I suppose so. Actually, adding those would allow you to drop
+> the manual inclusion of -DMODULE in cmd_rust_helper because it will be
+> included via modkern_cflags.
 
-I still feel this is quite dangerous. A folio could be on the
-lru_cache rather than on MGLRU=E2=80=99s lists.
+Yeah, a week ago I asked Alice about simplifying to `is-kernel-object`
+as well (mostly because I used it elsewhere in our `Makefile` in the
+past), but similarly I ended up thinking that if we are OK using
+directly `part-of-*`, then it would be better anyway.
 
-This still changes MGLRU=E2=80=99s behavior, much like your v2, which
-effectively disabled look_around.
-
-I mentioned this in v2: please avoid depending on
-folio_lru_gen() =3D=3D -1 unless it is absolutely necessary and you are
-certain the folio is on an LRU list.
-
-This is hard to verify case by case. From a design perspective,
-relying on folio_lru_gen() =3D=3D -1 is not appropriate.
-
-Thanks
-Barry
+Cheers,
+Miguel
 
