@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 619AFFEDA0F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B0CFEDA0F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 943E66B0096; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
+	id BDFF36B0096; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F4CD6B0098; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
+	id B90B06B0098; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A706B0099; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
+	id AA66C6B0099; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F7B36B0096
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36ACE13A42E
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:05:46 +0000 (UTC)
-X-FDA: 84556484292.11.F2C94E5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8D8D5C0002
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:05:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VRWgTDqb;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 988636B0096
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1CE4C571A7
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:08:25 +0000 (UTC)
+X-FDA: 84556490970.05.9C15140
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DE3A820011
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:08:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZowhB4Yb;
+	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773774344;
+	s=arc-20220608; t=1773774503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=inV/tXyTEKWdCfYJg7Qync+7HkKGnW+PK4sn/riZ7uo=;
-	b=vFTc5vIAFY6hZkkXKUJ6kRTfwp580/lqlb3Y696BnWb9VHkDKMrGqDYH88pvw3TgIRPJjj
-	NkvSDhBa0WYFvaUMH18H1Z0kXErmkfeOgHkPPI6OF6TibkPnIx1x9dHCS3PzEswQVlrQNa
-	2MCqdH6UOFkoy2G3/YQklIjsvxqKPic=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773774344; a=rsa-sha256;
-	cv=none;
-	b=u7pKtkmAu1qNi4Sdnb7TXlOIo5lYwHUyKAgTtI0e6+tjmjBZPDt0s1Dd8Adbwj53c3okqK
-	61syR31Q25umqV9HDuiAT1ZqcEHR3Z6vHnichh/1C4xvAJCiXNJI0q+MXRWjs3F1TQjKuc
-	liPMFT0yZuIvAlkPi1MIGEoIWsP306A=
+	bh=9cMncruhV3zGKox3/ctrnX7MA7dyJ750pVWwUyV32A0=;
+	b=YDeDXQBwDWUkRwib3beK3famoEqz801QByFBandHS4xw4/pjbGo8ohypXY+tNa3C8TaKe4
+	ylBeVvbWlYp2as7VkzbPqOdOc6i7XTI/nA6EBbKljVNwX9rPFRttL2br7g4+aGZrOF+D9/
+	xd+2QWnEHpJ+A2GYYu8XYXD5TvSU37s=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VRWgTDqb;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDAB860018;
-	Tue, 17 Mar 2026 19:05:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F64C4CEF7;
-	Tue, 17 Mar 2026 19:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773774343;
-	bh=syW3z0x80IUsDkJqDO1sfU4YY8HBrpHtA77ObK08ZFo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VRWgTDqbWe3Q1W3JoxRORGEv9cJSyULlIC1z8Bw/dttRqK0xrUjV3jcLj+FCNIlhA
-	 yfquFZi5RuoGYh094bwpTEqzMSy1oi20VB/mwVmDasAQXUEDUj69QwmFrLNkzzaaEW
-	 TxL4IoR2tfqmdocyZECPzry0Flux1xfTuoo78wga02G7HX9CfQP86SEbWHmeki3bnG
-	 fQQPAweWzmsOQWPyYRrr1vn+O2GeAM0lXjxVoRUKicNl0fMpfX0u90da1igsahAgWD
-	 lVpeDEoTnLCevj3RHVAGT/mI6ZPAnZpFvQykUFfbUgqTYwv27pZul8kECdVX2mxKrW
-	 MJpheC1EsGxUQ==
-Date: Tue, 17 Mar 2026 21:05:38 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Petr Tesarik <ptesarik@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-rdma@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/8] RDMA: Enable operation with DMA debug enabled
-Message-ID: <20260317190538.GD61385@unreal>
-References: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZowhB4Yb;
+	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773774503; a=rsa-sha256;
+	cv=none;
+	b=zcQDzOJm7bvVqCArARQCy13A183cePmGUPgFFNHK1gZVG8HIrwxvr2i5pa32q4JTFeSKfQ
+	yjF4sw2R/4HNSWPiMnZ2CdexsijRi34LQNK3FNgAHTzYNhbciwYiURk7Juhrkb617mRzua
+	p2J+V73x/zpaObEynGnE+RV5O+R7ix8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773774502;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9cMncruhV3zGKox3/ctrnX7MA7dyJ750pVWwUyV32A0=;
+	b=ZowhB4YbTTdF8rV+ziUMo6dxTMvMA6zLMfBRwp5zpYse0ZejYk3JFV79PLHYBaMYrbJYMh
+	C5uIeBAaqPBQAqLmh2VyznZx61Dola0POd3JThA3bDHL+LaT5zdKdqtYDxGzeXhANgn9ws
+	xo1ps0UIDiDHexdhshVDnrzmjpZXpeQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-183-eCvhrhSaO-murqpA7XqfXg-1; Tue,
+ 17 Mar 2026 15:08:18 -0400
+X-MC-Unique: eCvhrhSaO-murqpA7XqfXg-1
+X-Mimecast-MFC-AGG-ID: eCvhrhSaO-murqpA7XqfXg_1773774497
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6E4BC1800245;
+	Tue, 17 Mar 2026 19:08:17 +0000 (UTC)
+Received: from fedora (unknown [10.45.225.204])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 9EEEC30001A1;
+	Tue, 17 Mar 2026 19:08:15 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 17 Mar 2026 20:08:17 +0100 (CET)
+Date: Tue, 17 Mar 2026 20:08:14 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
+ checks
+Message-ID: <abmmnjgxrrGLKn2D@redhat.com>
+References: <20260316151956.563558-1-kartikey406@gmail.com>
+ <abld-ilvMEZ7VgMw@redhat.com>
+ <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: a2xWOlorrVdZgsYviiGMtRJ3yYPZjWNOwAmkN2KTyhM_1773774497
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
 X-Rspam-User: 
-X-Stat-Signature: rwazteq1cw3ea8hyndywm53f9bdmjzyh
-X-Rspamd-Queue-Id: 8D8D5C0002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773774344-598688
-X-HE-Meta: U2FsdGVkX18ZOnnN0CotlR50PQ3WkvpTb6jlPRJhaVMi7lGMGG8SG9KjX/DXV2ys98CVOydF33y2tp+55ib7HvDFDET91EeWGcSNk8y7q2JJ/tYn6+kGLufPKDMIBRdQTv8ZMIaKhC2oIGgFhw0FvSILuLBrhTTGEAQ3mcELmfuYQgxw7JhscpuWkoxyvQZ2y/2uTHGZaN40eCzBW/g5U6c/6MnUA/lv60mNcGISOKVWeT58olw39OmfcQXLpdZzj5GWZf1IJJmxR2dvH+2WKhDNydlVKXTV/IzsyKG3wWa9q6n6MQ29E6iab+Ejl5FosgvSie0oQ0GexPCV5jPAYikhvOw/vQWT+EHHQ79g+FiApPIAITcrPDBLz5Wla4zk3Q1vGLEO3He/tpzc6rVHvyELRYI7a7Ft3Ar5/3l2akBzmJ61kVqWPsQfQmUCROJSz/qU2kAAHCbzm8X6W1klA/9QryLqYMxS2r3bb8f8kCz5IT+0t5I4/NCJvRVK+DH3yVlWQ0hbWD5XGAb26x/WO2aC4u/CkKHThpEGOjitdvw/kVnG6rowfbIRc5WY9/H3wzRWIJpjiONV1aqAFe1tzit3KH/Ugthp7Qn64YZxSSd5oDy6M94ZJodijqLVg1LcX2F3BAAu2GP8mJdiTym/5Z6+GsyGry9gU2Cng3WOB6SnetTUDZcD26OJWfyRJTqBWluXpJZRydx6WlcefahQxSO2knqsH0GAnkuRgMgP8LJ/rr72AHH8D5g7Pya0nauGx9xjY8kkqS1d9QRP3O7H+kuPi4WEPwNj/Di6JQm+5T7XpmosSy+U5YXasDlo2haCgFwlFGUUGXBQn2wxqLsiMXZfYQtYiMM8AoPt3rqlvp1bgl2fdZUJiadehHBX/ux5I79pMo/ZxjHc/ZVBjrIIzv/ektJkfPi30QOpqoqPYbO9V+Q7CjA9iPqy6eC6EzJrs7LGwLR2YXU6FudswOC
- focS6YT2
- upZnGZVpgjTjuYoJC8gbCuzaZWjkT3zmnQZbdsuAAUzeG3yXCZ6GtFCbeaIG2xAKaP6WZRjOV6Kei/4s+SzglHjs4v8DfoWnTmJLn7qCAitTqF1+f6ANwT4YEx5DNu+s7o6+nyyeRdfjTIrRzNpAzhPUatZnd0/1z4cHCKqE3KpMm8MyyjA/mdZtoDZqY32eTbz+44op6cQdCc60S+h/UeFFO7D/JmmzTHdPjtzs1LEsvw9SS5Czy/j+ucTJw+mxSSs7PSn4hGuC3f3Rf8DL/Dup69jTJ1Nxe01g67Q49bqBWwEE=
+X-Rspamd-Queue-Id: DE3A820011
+X-Rspamd-Server: rspam08
+X-Stat-Signature: kfgyxibxu36p37f7mrrckz7ox496mwxj
+X-HE-Tag: 1773774502-77199
+X-HE-Meta: U2FsdGVkX1/+J19zrcGYbw9VX6RdglftvVnhnIYHdktQCD4qeEVgencEufKPD1M6G+Z+eQgJgYItudAwE07zY4Mdk1MXAwo8OcuKacKW4+4sNJmUIqVOb5GKo+qWZ0yw5X1BFDuFNpkqPlAjZO6MlIsfJIRs14jPtT3Sq7Rs6o9mlL35r5aB6l5fwcU11MLEIZ6aDn6xit1OoI1YnB5AzyZIIdpOiTmSSeb6j1Kk1L5v0FZl2+pk/LnKSGiUy1hPcjfnVw+wEbp6eXmKhgeplDyyuO4BOr+ACtDKuDcKmZh19Qb7YtS4eEeAeY9ZKhDiZFAbuwC5c6aTyGA197bKSCJQQhPSuUBt1NHKaJHIht4VQzH1Pjn0dH48Anrgko5TRSIm+FCQaYgs0H9DSA4ysl64bf1UkpY5jYaigclucZrMaOM3Ae8AS7W3+VIov8dlkM1O+0NFwmqCMXAZ94sBi7pahFN8fDYG7d3x+od/YzItCYY24BNpgFItgRYg2xyRRg9k3iHsZy5WQYSFKhMJpRMSLxQ4UAQP4TnhuxOv8mquZBpOjg8z+sOALOHBMjPky8Hg5+qVylHE968xYIoTirc1sB452pESsyO9JmlrzHianHkEBBkJXzshVExoYM67h07txzwSyCy5zoqsf6s+LscSYhSkjU0Q3Gma4RWKp9e+4CD5gj4XF7foe++Qiyv8NjjXB9I+ml950pYoDwOimajS5FDWJ1Uw428TBzOzbZX+zBw9Kwa8G9mCa6+LrikCx8wwu5eMd7UPVCsZoYiHlrqyIBml5q6IJFvYvjbOyBeYVjS2HJta2pn/9iQAeuWk6jA5U70YgVM16E7JXB2+R3uGXPaArFlBOzbKc3S26kk0AnIOVNj/LQVlQbE8kkiLCj9+lzadlBoUcUTFeeU5esSNf5tS9IsJCUkWK6EUU85EjlvpWfaFwn81fzG7338H9G527NbXB2WtZnnB31t
+ J17mXa90
+ 14Uz0IdkEUHbH1z9nbm6fyTwC68eLcHeLgTTJ8zvgYctRSWyV69YhhRf04LJe8MrknJ2F3yfovxzlDlckGb6rofqvevQrPxecXBZt3I5UO/Ed+bzaUzybnq1VRyR+Orijjr0MMldPCqC1nh0hpzzJzT+C4MQpnaca8ZIuVdRkWFOqGQHv+gJoNR1H4x6kyRffZdjIpSHBL5vgrmoqrkucN4mvlM/AN4HBHdC10VUPMgFMt7txdJcn7S2lpgIijyeOysuKeEo5g/4YbSLkuOslLg8tv1eAAAvOJypl4fdTsgeT+DQMsuCHvTvsfda9MjMvH0/touj4ZFsV8k2Zb7K8USl5TKOzddkEM+9X2M6YAZCyFZvaMtPlYg1UDD3Vqasy011D0Iwm+884CE6LGiWU/FW0P7+OWjgwN7DzqO5LFpWG8bNys52DseAGG1+pjcZ5KdXq4nnSZfm0hv5+lAQBvobMh3Cls57AvBtH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,57 +108,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 09:06:44PM +0200, Leon Romanovsky wrote:
-> Add a new DMA_ATTR_REQUIRE_COHERENT attribute to the DMA API to mark
-> mappings that must run on a DMA‑coherent system. Such buffers cannot
-> use the SWIOTLB path, may overlap with CPU caches, and do not depend on
-> explicit cache flushing.
-> 
-> Mappings using this attribute are rejected on systems where cache
-> side‑effects could lead to data corruption, and therefore do not need
-> the cache‑overlap debugging logic. This series also includes fixes for
-> DMA_ATTR_CPU_CACHE_CLEAN handling.
-> Thanks.
+On 03/17, Andrew Morton wrote:
+>
+> On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
+>
+> > Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
+> > argument of do_notify_parent() must always be valid or we have a bug.
+> >
+> > However, do_notify_parent() only checks that sig != -1 at the start, then
+> > it does another valid_signal() check before __send_signal_locked().
+> >
+> > This is confusing. Change do_notify_parent() to WARN and return early if
+> > valid_signal(sig) is false.
+>
+> Sashiko has a question:
+> 	https://sashiko.dev/#/patchset/abld-ilvMEZ7VgMw%40redhat.com
 
-<...>
+I think that userpace can't bypass kernel_clone() (which checks valid_signal)
+before copy_process().
 
-> ---
-> Leon Romanovsky (8):
->       dma-debug: Allow multiple invocations of overlapping entries
->       dma-mapping: handle DMA_ATTR_CPU_CACHE_CLEAN in trace output
->       dma-mapping: Clarify valid conditions for CPU cache line overlap
->       dma-mapping: Introduce DMA require coherency attribute
->       dma-direct: prevent SWIOTLB path when DMA_ATTR_REQUIRE_COHERENT is set
->       iommu/dma: add support for DMA_ATTR_REQUIRE_COHERENT attribute
->       RDMA/umem: Tell DMA mapping that UMEM requires coherency
->       mm/hmm: Indicate that HMM requires DMA coherency
-> 
->  Documentation/core-api/dma-attributes.rst | 38 ++++++++++++++++++++++++-------
->  drivers/infiniband/core/umem.c            |  5 ++--
->  drivers/iommu/dma-iommu.c                 | 21 +++++++++++++----
->  drivers/virtio/virtio_ring.c              | 10 ++++----
->  include/linux/dma-mapping.h               | 15 ++++++++----
->  include/trace/events/dma.h                |  4 +++-
->  kernel/dma/debug.c                        |  9 ++++----
->  kernel/dma/direct.h                       |  7 +++---
->  kernel/dma/mapping.c                      |  6 +++++
->  mm/hmm.c                                  |  4 ++--
->  10 files changed, 86 insertions(+), 33 deletions(-)
+This includes ia32_clone() and sparc_clone() mentioned in the link above.
 
-Marek,
+There are in-kernel users (fork_idle, create_io_thread, vhost_task_create).
+But if they pass a non-valid exit_signal (they don't), we do have a kernel
+bug and WARN_ON() added by this patch should catch the problem.
 
-Despite the "RDMA ..." tag in the subject, the diffstat clearly shows that
-you are the appropriate person to take this patch.
+In short. From the link above:
 
-Thanks.
+	While kernel_clone() expects the caller to validate args->exit_signal
 
+this was true before
 
-> ---
-> base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
-> change-id: 20260305-dma-debug-overlap-21487c3fa02c
-> 
-> Best regards,
-> --  
-> Leon Romanovsky <leonro@nvidia.com>
-> 
+	kernel-fork-validate-exit_signal-in-kernel_clone.patch
+
+from Deepanshu, and my cleanup depends on it.
+
+Oleg.
+
 
