@@ -4,103 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB30BF3380F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:17:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFA12F3380F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD6536B008A; Tue, 17 Mar 2026 04:17:43 -0400 (EDT)
+	id 9630E6B008A; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB4926B008C; Tue, 17 Mar 2026 04:17:43 -0400 (EDT)
+	id 8E6626B0092; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D9056B0092; Tue, 17 Mar 2026 04:17:43 -0400 (EDT)
+	id 7AD826B0093; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 777766B008A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:17:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 473B28BEF0
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:17:43 +0000 (UTC)
-X-FDA: 84554851206.11.9DF91B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1E25640010
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:17:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IW3jln2N;
-	spf=pass (imf17.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 67AB66B008A
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18A2259671
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:26:03 +0000 (UTC)
+X-FDA: 84554872206.07.F9CF3A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 95A34C0003
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:26:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUcG/RcM";
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773735460;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773735961;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=owEN78PfObGBNZSxCtX1dUlEuW4Ejyx550rHZNSxopQ=;
-	b=LCK1gbKW93huP8fB5aaswucr4rL9kJDW01AUmxUIkSKCF+yfijLgJ1UHduANGzy0dkAxeN
-	Wt2uczMY7RYorAyeU7nH159b4FQ4sknaf4LlGUa7lJmuMU3/GSOnqvJJjAbOFXHmGpQb88
-	2DE4nOWNBVNBFdTrwuEvI08vVj3T9mA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773735460; a=rsa-sha256;
-	cv=none;
-	b=OlLEzeViMVHwFXdojXtUvAKDDtqhDaKRkzuFT3yRueDb7l6Rv2jgT7F9lm1d3dJydgcEUn
-	tS+7wuThFB3XLOGR10uNOC/1Qje6Hhun9ZQeL+cuvJ9c8sZbEoIsSmOb5rbv45eGm3xSpQ
-	TYZCjuhBI986AYaBGgZKqFobAa5BNK4=
+	bh=6HCO5uPSGeOaMZcJw6nr0BVRKGBfSPMmN8QCDipCPTc=;
+	b=QFsniY/MLRCvgm8CUHKKx1mo2M975Qux7nOiebxKt+QHsCmwFs56XMI5Q6v/GXoF/28P2f
+	3OlQsTLWkYPMcdu/X9yWLmislpVZMWm5KrtqTZHP93Yt0fDA2X2Ou3GIXGaWIbNxtacTrM
+	g3dSXJB3WmlMIfPVCpfbzeX/5hNJ0KQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IW3jln2N;
-	spf=pass (imf17.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUcG/RcM";
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773735961; a=rsa-sha256;
+	cv=none;
+	b=zupt1G9vh2skc6DZCLEpyKPFMHw1qWsTmsR0+Ziky8AW5mi65PNJcpVJWts/G/9i2gXekT
+	XdCpjH97Xkva7CJg1kVFt59VR9Bmzjyh21VCZw+x1JzXrm0S7zyi+8VNIScNXq1MLfXzOB
+	TJFUWRTlVlIfynXRhRi2E5e7nKQW88o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D902943F2A;
-	Tue, 17 Mar 2026 08:17:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B2A15C2BCB0;
-	Tue, 17 Mar 2026 08:17:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 00F2A60133;
+	Tue, 17 Mar 2026 08:26:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B294C4CEF7;
+	Tue, 17 Mar 2026 08:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773735458;
-	bh=jBYCjJmBms2DTTsjPA/t+ysWQ3lvt2urtM5GKlMCmk4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=IW3jln2NTRcvpUk+O1SS+2AT+d3HJQmMcE2yZoLKg8TW/d5AAd3Hazu6dSo5WOIMZ
-	 t7QueaTTXzVcfqJQOEpp4WrifSUUjakH0fTXe6q3QgRNNOkbeiLfiCRhYWYKLIvoi3
-	 urovkdAI93Kdg6/JvBiHsJz+JE3em718uN5gRabTNjP+Jl0MmJdELBj/9cZOOuRd5m
-	 bolb+wvIf8/OHuqNHpa31gRR0AXznAzRhAkVeo+8vOpAeGZdnVrI+KqAyhaIoNFxnI
-	 nhlHtuNqp+cgO5HFhLIuUh2C6/O3Btymk+mS4SCjk5NgX5cX+HcpESfjohkSx5ZdiO
-	 x/yz10+Qiyx2w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4F11F3380E;
-	Tue, 17 Mar 2026 08:17:38 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Tue, 17 Mar 2026 13:47:34 +0530
-Subject: [PATCH v5 2/3] mm/vmalloc: free unused pages on vrealloc() shrink
+	s=k20201202; t=1773735960;
+	bh=6HCO5uPSGeOaMZcJw6nr0BVRKGBfSPMmN8QCDipCPTc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eUcG/RcMZtaj14Gihl0G/ahNqH+BeBeIakaQmbDtYO95yN5aBqlhS17SCZzXnqzSK
+	 tt4jainE8Ae1JjEz4Bx8Txdi21R2Cxvbv4UFiCLGf7S/Ii3s130y0a+ef53ttNF6j8
+	 oyWVVSe++PFiYUTROTpRvwUfy/XNQ8hxvxAl+Oa3lvFmbbkqz2PRmBzn8Kvxu6U4Qt
+	 /FQIywhewBIhiwmhr4xFiRqep87IBrnz3mMnEUrUbVTBmqrVfE8Q5PJ4Z115yrGWCP
+	 gCNlJlV+Cu9SKs8x55zjEd2KAfQCjuzWT7rRhxMYULSWdOXlpAL89d8jKX8EOtcufk
+	 /w0Pdf6T7O37g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland
+ <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Nicolas Schier
+ <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org, Alice Ryhl
+ <aliceryhl@google.com>, Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+In-Reply-To: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+Date: Tue, 17 Mar 2026 09:25:42 +0100
+Message-ID: <877brasvzt.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260317-vmalloc-shrink-v5-2-bbfbf54c5265@zohomail.in>
-References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
-In-Reply-To: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773735454; l=2798;
- i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=AcrwNUcas9eCuK1NFOLlNfncYjEO6WE6bt7Rp71YBEE=;
- b=lHMbWjW2Nez8n6V3NFUQo5wXOvs640kPXAiMbokRB7o+nYf/wCqWNYVkn8b1HLh8PKar7Ksl0
- IDffUeDyhMFDbr5kNiV2yW0swOvB/QXZTFpWH7ZNOOCfKLplDGKUkpK
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
- with auth_id=633
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
+Content-Type: text/plain
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 95A34C0003
+X-Stat-Signature: p3de5w5dh5ax79cnz7f5mpzd8cup7yyr
 X-Rspam-User: 
-X-Stat-Signature: yagksshdto83gyugq11atfhptbmuhoba
-X-Rspamd-Queue-Id: 1E25640010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773735459-245173
-X-HE-Meta: U2FsdGVkX1+4F/3MeHt+cmdAWkER1Gj5Sp3tF+9Vw6oNF7tYByjjM+nLOZrKnZjOi+5EZsE44Dfac/vkLKObzD43PoLu5oOt8NZ+6NSiZpbt/hdhz63permIOpE3K8SfYycHTqzW+qNTFIjRtIcTZ5RIUYSd+OReuvr6PmnzrK5hrOSNu76Vj6ZjEscV5sg7Mn/rgoAW1ggwTGGY6sJU0r9Ei5k+39Kdvk6U2VzesvpXnsavG7iBlbfQiwbDl1jedSpTTAWA/RdEiffvgkvtFsLR0AnRYF8Sb0ll9E6RWh9ovXfLNgDhKXBoy54XxzmB5v5ZhPd7opdN46rVIIyVWXdneQM/iAHkdxZHV6CqTWYzruNgl7jcq7GcG7BjGkvo8IsXxsWMOEEzmvga/dmUSD5ncZB8M4gQWGQrJ2pitlGfdfjQRVJdJcr2xhcVhU+AltOCi4IhjBw0WWo816K8JKyaPfSoetsENhEtr/0xjhgXkyK7mnV5+Kgyo1cgwV6q4wBj5BcQ2kLMuhJtjRcPXzg5CCE+fnIel5DL2+H7zsHHEQ7ArAQT858eFBGJdlP67XeVmveTg6aEPaw1JVYAWmOEx6O6srxIJvZ06+/dY9WGLfBXlom6wJSsmJsopeePkRoXJzqEFA8KvHSsgXHFKCBj+yr17ajYl8P7eY7PbtddN71tA6mCqTgWN2XzmlE4uFGIhw42Bi9kuarwNd2Ivg5yXQhCY2Ecl63qcyJOV3+QrtU4mZeZg6N1l2Y7/2NHGGDDZbG1JOXhWUds591t39i+lNfVsckTBGdCt5WbVt7TBTLZ7EgXekrDsyzNtyHKwzAh3vCw+YWtE76X+FFuwrHzZ3YfaTtnK2mQgbs9KAgdwdhgyo1epXbgwxMMFX57O9S8aNsxQfwT9BUEA8oMBNuVUrLhrvdrWzSDoZD2HaLoqA7ExHHeE0sDex+xWrxFvOiILbVM8jAS5zcK3Xb
- QCkxMwaW
- ojKY2z71HlUAHZP7pNW90AwjLLpEGe1yGB5jGTHJLjeH5IMJHqtgvzz4erYq/Fqi/CZz9FlpV6ISL07CFYcnvp7JIxP4U6ZTj2OwNX5qIRIcTaALx/fPRs8tsDr0TczCamVrXLwZxWY0rQdmkKtDL3E3wJ8pgGiaCnD/NPTcdzgklBxY8+t2aMqbZDtM33KjV6SN/QuCHzBiLX7e4mbSwn4y7o+y//SKhRxG/MGTspTM2eKI1kN5ijhQv+v9YYygWJePnTGJmXnOfJqJ2zR/vUJD/wy9cVwSwCEJ8TWHpPK0lo+9YCYoyptMxiJljZhOSCobBgVntidMTzrC2bAslnJV9rCI/9kx28SyjvgWbTPMgC3I=
+X-HE-Tag: 1773735961-955787
+X-HE-Meta: U2FsdGVkX19Ueflzp+f1pf9cZGSBAk5Xl5jiH2Pnnk5+kG/oPwXla9W3sqbAvLQRvHLBIbZCOE34PSLoNeceOPqi73xXcrqTXzEOFkbRn95YyAyToyaTp5tqdaWO+ENk+W+y0rPyoL7BZkIRSPNexgzNc/yjNzBrVlhwh6TitAjEWqJT1fl9Rs/QwG0Q6Y1sf/mdfwufc3ZmrPcqt3yT12BWMCgTGLVz/b0vsgjwF4+Sadr6J0kv5vi3YxbhbaBPKU97qPxejgdybdBRKstyV9ejnvgEfhucR8/dtAGw1NbjfJNWCMH39ZsQK0nHis/g7pgPpRSyPIClVrBvcfArCg85/RBSXnNC3NrT4o0NT5XeaOLm7C7m5zQ9WFofgKktXPuiB41uQbqj5nSaOngTm88LU02SyfjUbJ/a64iNK3MVBs28P3LOb/R7fuLtpuyTMPFcA42j7D8OBtgtsRnVYSNx8A/sWpdJ4Ru57im7caPFn8tWLACXg3Tnn3993w6w8Vf7EgiMxM93wGjPbae2RFAwU62quDOrxAxU77MQ/4JhtJsyl3lsCGUmhLSUrf1QcbPJzPVV/Tn7SY3bIgp45j6jil1tPl46qFRM3pZeBHXrjOHSk8Ubt9PQNrg9quOr87mWM21pZ4KBj2SCJqgpMF6jqpo4YHYaC3K8xOAZTlMPJw68L+1gHFigJ0rdqGimWDEdka1tYeVfuEN7qFp9eoh1YeOVjsdZXMC91BAwQf0WllwmfeCDTX30IzQdzTzPyUwZqfocI6SEm2hxBGqUOho387GrJTILgnGFXWBph62EJvIJa0JnSeN9E059IM6KYBKQS+wKa5YJfUmHOUfZcrLOsFlPYutUL6m0IpHyhihvQmpLLI/YJcwNq/mUB7E2KPtwCbZFmFPQHFLu/s8aAw0GHbd16P9k6nhziHKEQEyjFbLM/+h3932O7HPTl8bYLrRQJ1wXDXfEmRiEoP7
+ 2NIb03W3
+ y+FU40ZHX/xjQpwqmYTaHl+Iv17jRe9c5ME3tRw72vqNIGP9Ns3okLPM9A4lhAr3Tj+EXwe27g4HjT1vJ2DabV7/DdRAVaET4GlPUY5pFN9Zsv204gxdNFDpVotgALTCHna711MmEot5C77IHHi7Z5PdO+bykxnoJUOiShs7IwNhle8eej+3wrUi1CDnl9Onvyhn3nroa9Rqcl3BX93tYuag3DDstxoFZ6s801BInC1fRAXAJc469jtvanzx1W86Yvm0t9rKIx8U/VbTwMdUwAKgq8ceQ9O8LBzy8fmWq41x7qCWosz6sArrU5MoVxcxuAm0HePdR8lKTlzNvr3aSBa6AfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,79 +101,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Alice Ryhl <aliceryhl@google.com> writes:
 
-When vrealloc() shrinks an allocation and the new size crosses a page
-boundary, unmap and free the tail pages that are no longer needed. This
-reclaims physical memory that was previously wasted for the lifetime
-of the allocation.
+> Currently the only way for Rust code to call a static inline function is
+> to go through a helper in rust/helpers/. This introduces performance
+> costs due to additional function calls and also clutters backtraces and
+> flame graphs with helper symbols.
+>
+> To get rid of these helper symbols, provide functionality to inline
+> helpers into Rust using llvm-link. This option complements full LTO, by
+> being much cheaper and avoiding incompatibility with BTF.
+>
+> I ran a microbenchmark showing the benefit of this. All the benchmark
+> does is call refcount_inc() in a loop. This was chosen since refcounting
+> is quite hot in Binder. The results are that Rust spends 6.35 ns per
+> call vs 5.73 ns per call in C. When enabling this option, the two
+> languages become equally fast, and disassembly confirms the exact same
+> machine code is used (in particular there is no call to
+> rust_helper_refcount_inc). Benchmarking Binder also results in an
+> improvement from this change.
+>
+> This patch is complementary to:
+> https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The heuristic is simple: always free when at least one full page becomes
-unused. Huge page allocations (page_order > 0) are skipped, as partial
-freeing would require splitting. Allocations with VM_FLUSH_RESET_PERMS
-are also skipped, as their direct-map permissions must be reset before
-pages are returned to the page allocator, which is handled by
-vm_reset_perms() during vfree().
 
-The virtual address reservation (vm->size / vmap_area) is intentionally
-kept unchanged, preserving the address for potential future grow-in-place
-support.
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Fix the grow-in-place check to compare against vm->nr_pages rather than
-get_vm_area_size(), since the latter reflects the virtual reservation
-which does not shrink. Without this fix, a grow after shrink would
-access freed pages.
+Tested with the rust null block driver patch series [1]. I did a
+few functional verification tests and a set of performance tests.
 
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
----
- mm/vmalloc.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+For the rnull driver, enabling helper inlining with this patch gives an
+average speedup of 2% over the set of 120 workloads that we publish on
+[2].
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index b29bf58c0e3f..f3820c6712c1 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4345,14 +4345,24 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 			goto need_realloc;
- 	}
- 
--	/*
--	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
--	 * would be a good heuristic for when to shrink the vm_area?
--	 */
- 	if (size <= old_size) {
-+		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-+
- 		/* Zero out "freed" memory, potentially for future realloc. */
- 		if (want_init_on_free() || want_init_on_alloc(flags))
- 			memset((void *)p + size, 0, old_size - size);
-+
-+		/* Free tail pages when shrink crosses a page boundary. */
-+		if (new_nr_pages < vm->nr_pages && !vm_area_page_order(vm) &&
-+		    !(vm->flags & VM_FLUSH_RESET_PERMS)) {
-+			unsigned long addr = (unsigned long)p;
-+
-+			vunmap_range(addr + (new_nr_pages << PAGE_SHIFT),
-+				     addr + (vm->nr_pages << PAGE_SHIFT));
-+
-+			vm_area_free_pages(vm, new_nr_pages, vm->nr_pages);
-+			vm->nr_pages = new_nr_pages;
-+		}
- 		vm->requested_size = size;
- 		kasan_vrealloc(p, old_size, size);
- 		return (void *)p;
-@@ -4361,7 +4371,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 	/*
- 	 * We already have the bytes available in the allocation; use them.
- 	 */
--	if (size <= alloced_size) {
-+	if (size <= (size_t)vm->nr_pages << PAGE_SHIFT) {
- 		/*
- 		 * No need to zero memory here, as unused memory will have
- 		 * already been zeroed at initial allocation time or during
+Best regards,
+Andreas Hindborg
 
--- 
-2.43.0
-
+[1] https://lore.kernel.org/rust-for-linux/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org/
+[2] https://rust-for-linux.com/null-block-driver
 
 
