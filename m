@@ -4,126 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78B8FD8748
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:37:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CF6BFD8746
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:40:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A0536B0005; Tue, 17 Mar 2026 07:37:08 -0400 (EDT)
+	id D16EE6B0088; Tue, 17 Mar 2026 07:40:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 178146B0089; Tue, 17 Mar 2026 07:37:08 -0400 (EDT)
+	id CA06C6B008A; Tue, 17 Mar 2026 07:40:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08E306B008A; Tue, 17 Mar 2026 07:37:08 -0400 (EDT)
+	id B68056B008C; Tue, 17 Mar 2026 07:40:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB4C46B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:37:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C3BAAC875
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:37:07 +0000 (UTC)
-X-FDA: 84555353694.13.A00458F
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DAE0240007
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:37:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D2946B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:40:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 446E3160116
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:40:03 +0000 (UTC)
+X-FDA: 84555361086.22.70E1A67
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D2FE6A000E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:40:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YptRYm3o;
+	spf=pass (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773747425;
+	s=arc-20220608; t=1773747601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VT6JrNxcCsv/pUv9JSpzMspyBPoJW48BC8MRzPMlqzA=;
-	b=RWQoYEzobcGHejpx0wYMiVNRN+xSuv7hQwyYMqXF+8y+x+E4Ok+4P6BDAZx0jGF8NbGJ7i
-	1SuIaFzIrPhe/AeBPkYA1IuKSU2qDYlBFuH4Y9U2AWBsWRKa9P4sCylqcFIHqUADTD53kn
-	CuTmvOuLT5ue2i16bwwa515i+hBH5/Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C0dOuYZ9665JyjRzs52t+EPnVMxJiUbFuVuNik4vFBo=;
+	b=LYnTs21J1xyTq4NWUMdz1g8LXt6eM/bQWOMOd4lmhpqsYh8I5qCHA5rw+Yg7Deh7CyEPJ0
+	HhaQIYp7lj2GBbsLusnNT32RQxtlq+aXACeq1UWSLt0e8c1lV7NY6ByaTPH64PY6H8/5mT
+	XIyxcmsJ085V9/A0O0QYpYp572FszCM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773747425; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YptRYm3o;
+	spf=pass (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773747601; a=rsa-sha256;
 	cv=none;
-	b=Kyl2YKYcvfqzqA5sDRBIXZ+c275qUVDaiikzmxrUkI0RrbP+x8yxJcSdphShA1klZB9tHL
-	T7ri6TD2whzOZgzMUEdG8YC8IcQJimoD8EcVOaOJBbC/tff8ApTbETPvafnqPskgiJdMyH
-	hz0KA6m+4nRg0AvCM0hEyCBnctCC1PA=
-X-AuditID: a67dfc5b-c2dff70000001609-83-69b93cdaea53
-From: Rakie Kim <rakie.kim@sk.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: akpm@linux-foundation.org,
-	gourry@gourry.net,
+	b=kCaRTOtqL2xIYaNMghW+gFKb4cHa6pTih/Up1v1cHAIG9M/pHvlF7L/Qe7jEzCtSejdM0A
+	CBqGNCQlAmqJj0VJJISkJHloeCKUloXF3GpxCb8UNGteLO96r/cW+LHPkh2Gq0CFeFcFnr
+	+l8ljMuK+v55b5oco0Q96mNNFSvw/NE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773747601; x=1805283601;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SRgtFoQIanVkXzBuwaf/6kB/9aC7bCosZ4GDzrkN5kQ=;
+  b=YptRYm3o9WELwA84NM5TCFVOWgfWRclwOUQ4bpUqO9eeqN/8ZbSUFQSq
+   cSWgZ7BdyHyWo6YuWnkKNJsfK7J1h7RXhVUQJ/LQXcb0KP5az6KdMRo2p
+   TEf20n5kQS/Rw4HiguPoRIB2K549drlWN/OXFWMcn60pBHFIieBwwKIBm
+   stOyHV6D8i9x6qZXHZItaW+NTJDWCWXkYuOT9CIrEdvzeEzO9jyxFYr7M
+   1VvlG/DJCvorhVdZPbQcOaKqwEHc/Go3n9gaau/GM1gg4inOA+5UmuVac
+   x3zB1vzPUxp5EisWvzIgA/kn3cXSKGwIyvq47cKqMNYM5RPqYbOhVn8cK
+   w==;
+X-CSE-ConnectionGUID: kNwrnmpFTTWgQBLEii9kJw==
+X-CSE-MsgGUID: 1th1sjobRymfw1RvSBKW+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74893925"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="74893925"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 04:39:59 -0700
+X-CSE-ConnectionGUID: xPRzCKTrSqOQHh5rh5AZ8w==
+X-CSE-MsgGUID: egKHkaI0QjGYmbobZe8KqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="226930061"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO fedora) ([10.245.245.163])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 04:39:56 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	harry.yoo@oracle.com,
-	lsf-pc@lists.linux-foundation.org,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	Rakie Kim <rakie.kim@sk.com>
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce socket-aware weighted interleave
-Date: Tue, 17 Mar 2026 20:36:53 +0900
-Message-ID: <20260317113656.283-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260316151933.3093626-1-joshua.hahnjy@gmail.com>
-References: 
+	dri-devel@lists.freedesktop.org,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.18.y] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue, 17 Mar 2026 12:39:30 +0100
+Message-ID: <20260317113930.193553-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026031727-elective-spilt-6870@gregkh>
+References: <2026031727-elective-spilt-6870@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHIsWRmVeSWpSXmKPExsXC9ZZnoe5tm52ZBvfbmSzmrF/DZnH38QU2
-	i103QiymT73AaHHiZiObxeqbaxgtnm/9xWjx8+5xdov7y56xWOx/+pzFYtXCa2wWx7fOY7fY
-	3vCA3eL8rFMsFpd3zWGzuLfmP6vFyVkrWSz2vd7LbPGtT9rifp+DxZH125ksJl9awGYxu7GP
-	0eLWhGNMFqvXZFjMPnqP3UHKY+esu+weCzaVenS3XWb3aDnyltVj8Z6XTB6bVnWyeWz6NInd
-	48SM3yweOx9aeky+sZzRo7f5HZvHx6e3WDymzq73WL/lKovHmQVH2D0+b5ILEIjisklJzcks
-	Sy3St0vgyli/OqBgglVFe2s/SwPje+0uRk4OCQETibm7LjPD2J+2L2LpYuTgYBNQkji2NwYk
-	LCKgKXGidRJQCRcHs8AXVok3q/4xgiSEBTIkJiz/D9bLIqAqsXDXfDYQm1fAWOLm9b1sEDM1
-	JdZtvMUCYnMK2Eu82HONCcQWEuCReLVhPyNEvaDEyZlPwGqYBeQlmrfOBlsmIdDIIdG9oYMJ
-	YpCkxMEVN1gmMPLPQtIzC0nPAkamVYxCmXlluYmZOSZ6GZV5mRV6yfm5mxiBsbys9k/0DsZP
-	F4IPMQpwMCrx8N5g3ZEpxJpYVlyZe4hRgoNZSYR32ZFtmUK8KYmVValF+fFFpTmpxYcYpTlY
-	lMR5jb6VpwgJpCeWpGanphakFsFkmTg4pRoYuevSOg3v9i7h8mvS+ae2ZanMEs34hUWzzgpo
-	TRVt+FydEBEswDvD3WWXTlphoYKyf2eGZ2dv7XSTzrRPFSfYXBcb3Zx29V7TLNPAxaFJa/pk
-	Ts6oVeBcU5ZdEeQoPLmO1cbDoTV7WcC5Z5yLJE2OSPyM9/ij82C7qfvdskVTFujf19aavEOJ
-	pTgj0VCLuag4EQCCgFZM4QIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYQCG+XbOzjkuJ8cldNAfwkDEIu1i9ilSkmUfQWBUJCboykM7ODfZ
-	VJwUTU0zrTlvpJuZpmipZA3vaOY0ddFFG3mZqFnpNCuvCKZkLQn89/A+L++fl8JEPbgrxcnj
-	WaVcIhMTAlxQ5Bmx3xrYyh1IyfCBJfV1BBz/MkDAtpEL8F2BgYD3CwcA7B9NIWDtaB2AtsZf
-	AK6P95FwsmoGhysz8xjsnLbhsKZ8iIB9jaUk7H5g5sNmzScSvte/xqGlrYSAE3VbfGjWP8Hh
-	i/kODK5p3eCkNgiahmx82FPfzIP5H8oIaEjRAmjV9fJgbZ0UbjQ9/hu9miCD3FGrfpxEZcYE
-	lJ1hIdGtnh98VNE+x0PGmjsEMi7nkai/aANHrVP+KH+kGqB7aT8JtDRtxdHaGEIVs4s8VGi4
-	ieobPuKhonBBYDQr4xJZpc+xKIG0vjY0TheQdDs9B9eAhX1ZwIFiaF9mufkRngUoiqDFTG9H
-	hD12ob2Y/vQ8LAsIKIxe5TPfa34Du9hNSxld9RZmZ5z2YMrbHhJ2FtKHmdHhDmJ704t5+tyK
-	29mBPs7Mtg/x7CyiHZlvzzrBdt+ZMRd//dfBaHcmrdGA6YCjfofS71BlgFcDXDh5YqyEkx3x
-	VsVI1XIuyfuqItYI/n5bdWMztwWsWk6bAE0BsaNwhN/CifiSRJU61gQYChO7CKt6mjiRMFqi
-	TmaVikhlgoxVmYAbhYv3CM9cYqNE9DVJPBvDsnGs8r/lUQ6uGjBd6mRQD3b5Sd9eL0DmFWVT
-	uW+2YjmMKh22eWpONc8FOdGyQS/y5Ipoi/Wnhu5OZYQFbHavX4zp1p44ZBYe7epVLIWk+kV0
-	2i43yINzXu7yP+thCd/KrFxIHSvMxFW6N5+LB3Sbi962qHNYS3J6UySVWxniXKq/sh5cIThv
-	EOMqqeTgXkypkvwB51Ng4dcCAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: DAE0240007
-X-Stat-Signature: 98hwqimu35qyosw9rki3srfzriq8dtqn
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D2FE6A000E
+X-Stat-Signature: kn58aywbss4ggyxctd9jqrub7g3kw6ra
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773747424-246306
-X-HE-Meta: U2FsdGVkX184TIxgVr8jsNjN6KUnh9uB2YnT7D58BIKpEiNhJbYOg+JklaQkiQfcMs7iy+YfQDIqRzHfpVZUfTCm45o3NYJF4D3NsDAXQoowXiAgIFPLKZzUUg8lRGRhl1LF3DUnrATRETSLrgxqSiq9ftJdChhsWb7htmujiMr9mxG1VRG4/wIhTaXn5rO8eAdSTzxXjW0hi7hg+q2tzJwU+1lcqp331xHYt5J+z/0iCYIW+CQIEektWL2ZUL6P9fv/uln8iWD7a0u1KdKy/a7caH4c4YkCnwsTtIIHcnT6dLfBdU7wKOyWFah9n4J47b/spCiu5MsSZQ+/nkj3LlL/OLdeWa36nw0WkA6fAf+opG8IiKwFs46ZzV3syppHKfyflbW/VNADElkNv0AXvEWS2WMVOPVqIxdIqfQhqCds8Q/9mjmO7rQxHQ8s3QRShn+2ldmY3FqfEZa6WNVMeFL4yfut2YnMFrAPBR/bAr7oFVvUQrxZbnqZjSHH4iPQUkUbSAVsg5H3R0svesHX5vPYK3C/0TXjylkTWWHPOJnURi/0NokfbJWo6QxJKHiOFDdwjtUUU0KWiDkIyokK8a1XV0MFOQqfeLUZ5DpXOGkCil33X0+R9HK5YRDSiQjyx25NeHVinEbK/YUBSiZi6k/QoBZuAtg9DTANzZwSjW+B3oTNtVX+3rHmXU7MP8UC0UzKhUKeHSAC0OzutfCk98jqSTO+4PcawTgBCzsc4CmAL32dyf/1aoB99vwznViXw1+jvbHvRIApGcBsJkY0lbp7C+XkXs3sFC3Aqks6qcNu/ZJVUkGfaawC1877PipPvTLHa8K0TPJT5pwdOYySdwT9/YLG0a1l96Do+i3eeXccSMp86DRqg8b0yWmbLeQt1jZ/VGwl1kTmQzEWYp1i6mqfTWTBmaPjQC787W/0P8UgWsKi1ZsJYUVvfz9eSeR+QYrbzGtvt55kudj2dTE
- X+iIz2ts
- 5oMSTVoQuDnVWaHaMRW40TTxJImx2tOPP7j5X
+X-HE-Tag: 1773747600-40155
+X-HE-Meta: U2FsdGVkX1+gYOxPwsC8AfKzCHlMsptCbLVJUcShtedn8w4/hIjbod/3sqs3yx5qEnaA1ffvAsm3Ubm2pzUQsvuTOSPkH+ezDGgOCtDIW/Qo87wlq5/zn00FVNi0oGClofUIb/asrFYanutfSlyRcX3ZFyAghgIvCuV17A2TM2+ABumf9gVPiQXDKE8UUuVj7Q2gupD24IjTNeAd5tuEEvkmJmCoHrCfPi49hgwTiRiwyyTJvfG1f2RHZDhojaFWX8Eni9uAAv8Su0KN3LqBPJmWU9ntsZbB35CWdsbTCS2too22huNBE6HByymaNs4m9cfyL5Hs6MJNMPBAYak54G91VQLC8VzN5VVq0HcUUiNqlAdcBdHxnSeEbzHDE73v9lBJedgZh7XJu44l8hYVl4J90TcsSwa0k3qDvL73qixUls4ZD2e17s00TEtgIVeAt+l8+9UV9G5RkqWauD/8VxdrBBm60aRNEcnhx9mDYHgYve29mVQkuKi0bWZFY7B7YnkafrKkGY1V1/belSmgj0xnOAtcYDif2ILS41icWG1JChMsRNsnu+vGOexsR6hW3ho6l6HK0O4YgdB6sfwTr+FWq7kFndC8qCLZkqjuvin9gM7DwagpuMd82X587a3weVei56gW1HvCC1nWLAcv7tEwHNO8SaxziF2tWFXUBxQKlTASrCSYEyU3/69V3P9AG96GdcikflJMQRPz/gMUkcmYw5yZPVDmVJb5n53t/Owk06VQjJm10ivhTczXGfYzrWQ1r5vCCtSSOSDaFun9cjIAqwFXA3BnQfQljjQRYDOA0atcrQx+lWdilpe0+CFzu6bIe8IHkef8eq8lsLoHzXQrJelAdWdrxz9lsKIvfb03ZMbp9WAoyTnPaJABCdESKWX6qqEkgOfjgFb3eLzhAr7KYkqa0gPTUejykpsEl0laTL+XZcNFX2wAMzZfXdd0OiMeV9QnKIu3/8mYuvM
+ EjtT8oCV
+ YaB38vYsmTGwWM93ukqSAVQVSGIeBtHTdtMm8ReCzzqbWTyVGgz2v97Z41RvYF1rdCrgITnGBg0o6+M9kLmqyoTOPsrCmvqQU7IX+omujum6OXZXu/j/WFtftzcUC+rVDOrgyP1E1OH5stkXvKtkyf4+/9ad7NOqDkrV1m8KhCa9DLrJh90ZHNwPL+1Tzv5SpT6xVzVh++SoA0mqBcBC98eyXDrC/jC2NHYA5t18l2et8d8BW1XWE0FoKhPcrNZgcR6bA7Q8r3CNZ5VVgCQO5fnYH1diuJvrqOVrB1LU4v7rOUmGwnLLhPcu3IM9gY+gDsPT7Y+bN08tHV1jv6OHrWDnBLvxB4Qmsr790pCXhCJFJFmbJ2F8Nu6Z5ErXBx16Eicjhzavm3MInNLdisGAY6tpa8Xjovn1pwdQ4+MPmwqNKTZzP1pO6AfDqOdGjbmP960Xo7AqUX7dUnCue45CqU2kjAk5WaYdGDJgFwWswGXshacp+qXPNELr2hmu6p/9vb15HjpXC6yAzcapos/PJL0iArE1z7SqDRMhaZt/ez+9B5gf/+zs0e3glIlGrZkL4V50DLg/8Toux/Jk6+QVROPGf/uG1BYBdkRu6OxpeXlOSClTNFZ4GATgBjCsOQk6g+TwBRDlEYKLXaqAZxlkW3+vA5T62iwgd0GFL0OCPTozoXt1dIm7UtjVYBI1oFDyL1WNN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,170 +115,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 16 Mar 2026 08:19:32 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> Hello Rakie! I hope you have been doing well. Thank you for this
-> RFC, I think it is a very interesting idea. 
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
 
-Hello Joshua,
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
 
-I hope you are doing well. Thanks for your review and feedback on this RFC.
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+sinc lru_add_drain_all() requires a short work-item
+to be run on all online cpus to complete.
 
-> 
-> [...snip...]
-> 
-> > Consider a dual-socket system:
-> > 
-h >           node0             node1
-> >         +-------+         +-------+
-> >         | CPU 0 |---------| CPU 1 |
-> >         +-------+         +-------+
-> >         | DRAM0 |         | DRAM1 |
-> >         +---+---+         +---+---+
-> >             |                 |
-> >         +---+---+         +---+---+
-> >         | CXL 0 |         | CXL 1 |
-> >         +-------+         +-------+
-> >           node2             node3
-> > 
-> > Assuming local DRAM provides 300 GB/s and local CXL provides 100 GB/s,
-> > the effective bandwidth varies significantly from the perspective of
-> > each CPU due to inter-socket interconnect penalties.
-> > 
-> > Local device capabilities (GB/s) vs. cross-socket effective bandwidth:
-> > 
-> >          0     1     2     3
-> > CPU 0  300   150   100    50
-> > CPU 1  150   300    50   100
-> > 
-> > A reasonable global weight vector reflecting the base capabilities is:
-> > 
-> >      node0=3 node1=3 node2=1 node3=1
-> > 
-> > However, because these configured node weights do not account for
-> > interconnect degradation between sockets, applying them flatly to all
-> > sources yields the following effective map from each CPU's perspective:
-> > 
-> >          0     1     2     3
-> > CPU 0    3     3     1     1
-> > CPU 1    3     3     1     1
-> > 
-> > This does not account for the interconnect penalty (e.g., node0->node1
-> > drops 300->150, node0->node3 drops 100->50) and thus forces allocations
-> > that cause a mismatch with actual performance.
-> > 
-> > This patch makes weighted interleave socket-aware. Before weighting is
-> > applied, the candidate nodes are restricted to the current socket; only
-> > if no eligible local nodes remain does the policy fall back to the
-> > wider set.
-> 
-> So when I saw this, I thought the idea was that we would attempt an
-> allocation with these socket-aware weights, and upon failure, fall back
-> to the global weights that are set so that we can try to fulfill the
-> allocation from cross-socket nodes.
-> 
-> However, reading the implementation in 4/4, it seems like what is meant
-> by "fallback" here is not in the sense of a fallback allocation, but
-> in the sense of "if there is a misconfiguration and the intersection
-> between policy nodes and the CPU's package is empty, use the global
-> nodes instead". 
-> 
-> Am I understanding this correctly? 
-> 
-> And, it seems like what this also means is that under sane configurations,
-> there is no more cross socket memory allocation, since it will always
-> try to fulfill it from the local node. 
-> 
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
 
-Your analysis of the code in patch 4/4 is exactly correct. I apologize
-for using the term "fallback" in the cover letter, which caused some
-confusion. As you understood, the current implementation strictly
-restricts allocations to the local socket to avoid cross-socket traffic.
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
 
-> > Even if the configured global weights remain identically set:
-> > 
-> >      node0=3 node1=3 node2=1 node3=1
-> > 
-> > The resulting effective map from the perspective of each CPU becomes:
-> > 
-> >          0     1     2     3
-> > CPU 0    3     0     1     0
-> > CPU 1    0     3     0     1
-> 
-> > Now tasks running on node0 prefer DRAM0(3) and CXL0(1), while tasks on
-> > node1 prefer DRAM1(3) and CXL1(1). This aligns allocation with actual
-> > effective bandwidth, preserves NUMA locality, and reduces cross-socket
-> > traffic.
-> 
-> In that sense I thought the word "prefer" was a bit confusing, since I
-> thought it would mean that it would try to fulfill the alloactions
-> from within a packet first, then fall back to remote packets if that
-> failed. (Or maybe I am just misunderstanding your explanation. Please
-> do let me know if that is the case : -) )
-> 
-> If what I understand is the case , I think this is the same thing as
-> just restricting allocations to be socket-local. I also wonder if
-> this idea applies to other mempolicies as well (i.e. unweighted interleave)
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in do_swap_page().
 
-Again, I apologize for the confusion caused by words like "prefer" and
-"fallback" in the commit message. Your understanding is correct; the
-current code strictly restricts allocations to the socket-local nodes.
+Rename migration_entry_wait_on_locked() to
+softleaf_entry_wait_unlock() and update its documentation to
+indicate the new use-case.
 
-To determine where memory may be allocated within a socket, the code uses
-a function named policy_resolve_package_nodes(). As described in the
-comments, the logic works as follows:
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
 
-1. Success case: It tries to use the intersection of the current CPU's
-   package nodes and the user's preselected policy nodes. If the
-   intersection is not empty, it uses these local nodes.
-2. Failure case: If the intersection is empty (e.g., the user opted out
-   of the current package), it finds the package of another node in the
-   policy nodes and gets the intersection again. If this also yields an
-   empty set, it completely falls back to the original global policy nodes.
+v2:
+- Instead of a cond_resched() in hmm_range_fault(),
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+v4:
+- Rename migrate_entry_wait_on_locked() to
+  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+v5:
+- Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
+  version of softleaf_entry_wait_on_locked().
+- Modify wording around function names in the commit message
+  (Andrew Morton)
 
-In this early version, the consideration for handling various detailed
-cases is insufficient. Also, as you pointed out, applying this strict
-local restriction directly to other policies like unweighted interleave
-might be difficult, as it could conflict with the original purpose of
-interleaving. I plan to consider these aspects further and prepare a
-more complemented design.
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Link: https://patch.msgid.link/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit a69d1ab971a624c6f112cea61536569d579c3215)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit b570f37a2ce480be26c665345c5514686a8a0274)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ include/linux/migrate.h |  8 ++++++++
+ mm/filemap.c            | 13 +++++++++----
+ mm/memory.c             |  3 ++-
+ 3 files changed, 19 insertions(+), 5 deletions(-)
 
-> 
-> I think we should consider what the expected and desirable behavior is
-> when one socket is fully saturated but the other socket is empty. In my
-> mind this is no different from considering within-packet remote NUMA
-> allocations; the tradeoff becomes between reclaiming locally and
-> keeping allocations local, vs. skipping reclaiming and consuming
-> free memory while eating the remote access latency, similar to
-> zone_reclaim mode (packet_reclaim_mode? ; -) )
-
-This is an issue I have been thinking about since the early design phase,
-and it must be resolved to improve this patch series. The trade-off
-between forcing local memory reclaim to stay local versus accepting the
-latency penalty of using a remote socket is a point we need to address.
-I will continue to think about how to handle this properly.
-
-> 
-> In my mind (without doing any benchmarking myself or looking at the numbers)
-> I imagine that there are some scenarios where we actually do want cross
-> socket allocations, like in the example above when we have very asymmetric
-> saturations across sockets. Is this something that could be worth
-> benchmarking as well?
-
-Your suggestion is valid and worth considering. I am currently analyzing
-the behavior of this feature under various workloads. I will also
-consider the asymmetric saturation scenarios you suggested.
-
-> 
-> I will end by saying that in the normal case (sockets have similar saturation)
-> I think this series is a definite win and improvement to weighted interleave.
-> I just was curious whether we can handle the worst-case scenarios.
-> 
-> Thank you again for the series. Have a great day!
-> Joshua
-
-Thanks again for the review. I will prepare a more considered design
-for the next version based on these points.
-
-Rakie Kim
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 1f0ac122c3bf..8061efd89041 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -97,6 +97,14 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ 	return -ENOSYS;
+ }
+ 
++static inline void migration_entry_wait_on_locked(swp_entry_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	WARN_ON_ONCE(1);
++
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 024b71da5224..8a7f4ce69aff 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1386,14 +1386,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * migration_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1435,6 +1437,9 @@ void migration_entry_wait_on_locked(swp_entry_t entry, spinlock_t *ptl)
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 61748b762876..e43f0a4702c4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4642,7 +4642,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				migration_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (is_hwpoison_entry(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+-- 
+2.53.0
 
 
