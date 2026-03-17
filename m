@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA6E4FED9E8
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10282FED9E8
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:57:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C2D36B0005; Tue, 17 Mar 2026 12:52:19 -0400 (EDT)
+	id 553F46B0005; Tue, 17 Mar 2026 12:57:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59AA36B008A; Tue, 17 Mar 2026 12:52:19 -0400 (EDT)
+	id 505876B0088; Tue, 17 Mar 2026 12:57:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7106B008C; Tue, 17 Mar 2026 12:52:19 -0400 (EDT)
+	id 3F3A86B008A; Tue, 17 Mar 2026 12:57:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 406D76B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:52:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0992D1A02A1
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:52:19 +0000 (UTC)
-X-FDA: 84556147998.07.44DB6AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4AB0716000A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:52:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XpIlqsRY;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C5FD6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:57:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B28991402A6
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:57:03 +0000 (UTC)
+X-FDA: 84556159926.08.3CBE8FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 36E4BC0018
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:57:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BviKTgEi;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773766337;
+	s=arc-20220608; t=1773766622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mRPink/CGZvESsnn0HJkI/kxX1Yf3lMocbpsQtBlpSY=;
-	b=4d/jpdJo4oWBlzjq7IxqHNlq3JWkI+7y67WcJLAGajmsq+LxQ2XRoy9QAXyfjx/HGaJR4l
-	7WhEh1z1g8jUtzCLpz07/V6nNpUvIDozHcf07yl/SV1tm+wJOIgk7l6SBlU4SrWvl/g2si
-	+yE4w3gaOD9Y+7Ae5WjGvWg5S5uBEpk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XpIlqsRY;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773766337; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KiKPqPoJ0d/Myqb2kGIHChqGOTUJPir7GtVBipKTU4g=;
+	b=8dfCMDjbew3AxL7rkp4ktVDSbgeTIOtsiq6JSoYt6O+fkXnTWofHqSWTxOjD+lNLAup3RI
+	2zKZLfGRp1RRAoJ1nUuBRB1LZTl5ID7t1ymLmeR1gRALEotBzFyrp+ygvcoF3ZTVX55ea6
+	D1YTSLrKBmfBlfsWLSTcoCPZnNDJ6H4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773766622; a=rsa-sha256;
 	cv=none;
-	b=WEkTSX2mtY1DlTsKuIHJRzW066FVWwPyZsa/QVUirX7KB+CPVMf6LHuzhKWjXGwcSm5CmT
-	GgUB8ihiHkcjFQXZtkz1NdilwhtU0dmldu1JlVEL+jkQ0SIGNVc5Jf9/vQ+iu9gLqbUvXn
-	mSVKVfz2OikdvK9FOxzgcpLvlAczaaw=
+	b=P3ziJlnz1WeKF1oKkkg3BBnQY9YLP6eRw+HEfCLF6pNHhrSAKQKnUiH2KNMy8ROhCf2I3L
+	QBlRmcNJVvVSVuvKXqxi6dsUxVGEbcMi8Rm7JLS+zC1f0noxHZUk0vZsgOtcuHDJEiqz8p
+	DCN7A81CCrS3XMO5y7ft/9Si6diALnk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BviKTgEi;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C401260126;
-	Tue, 17 Mar 2026 16:52:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4487C4CEF7;
-	Tue, 17 Mar 2026 16:52:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773766336;
-	bh=/hoB1sO0J8/RDD1AeuSJTXY291QSQFnBtallbctCtdY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XpIlqsRYEe2SxDQVq5auvQeATk74ih0mn9WgbAexAhU+Rq1ZO0SnKKK19K9S6V/u7
-	 S2sQ8XWpFAPiML62L0t3w2HlOry6WIGT6DIZu+w4lSfcphMLG9VrhzLdXLrSzPpCm4
-	 DnhY3Sb72RWi1L6MWWt0ACeOCV6HhdpaiBAiakOg=
-Date: Tue, 17 Mar 2026 09:52:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org,
- kernel-team@meta.com, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Wei Yang
- <richard.weiyang@gmail.com>
-Subject: Re: [PATCH v7 0/4] mm: thp: reduce unnecessary
- start_stop_khugepaged() calls
-Message-Id: <20260317095215.26a696018c6d3d1acb8e35f2@linux-foundation.org>
-In-Reply-To: <20260317-thp_logs-v7-0-31eb98fa5a8b@debian.org>
-References: <20260317-thp_logs-v7-0-31eb98fa5a8b@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4AB0716000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: sih3p1nqaemyfx1k5oupwy1tfjajhxy8
+	by sea.source.kernel.org (Postfix) with ESMTP id 18E0B406F6;
+	Tue, 17 Mar 2026 16:57:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D908CC4CEF7;
+	Tue, 17 Mar 2026 16:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773766621;
+	bh=4WgVt6EG/HFCGbU0HiZBZDpDmgR6tfOQ4rfofBAntFk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BviKTgEiT7EcUlsk7PLxEp4xdjdmk5atU4hSdsAOy6wHSk7KJ8KxyhvvUHycVWfIV
+	 sKd3jak2pOAJaIPtdfO6IEuT9TkKWNzj0rCREE4A5tQwtCCBStJ6XmQV870joLzToB
+	 IVrwqv986PbxSFGr7LJIi4Cb22cG+oaFk+x5252QHaGC+HHW4vriTp7OcsYNXpLERT
+	 cCkGpKTbKqUnllQhOkZvGrBFZKLbY16Qtwt2dWj0EZjrvSbj9BVzXuBshD19FMWShb
+	 hYHBNPi4S1MJgdRK4QRQu/PGbg4HAuUtSS8M5DEqs2K87vXBjiqio96q65EWPNpxid
+	 zSuz9kSYmWj4Q==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: [PATCH 00/14] mm: memory hot(un)plug and SPARSEMEM cleanups
+Date: Tue, 17 Mar 2026 17:56:38 +0100
+Message-ID: <20260317165652.99114-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5ifugdgyu3u3t7jaiy1s6dm143hitejr
 X-Rspam-User: 
-X-HE-Tag: 1773766337-515705
-X-HE-Meta: U2FsdGVkX1/HWb9LBF5toc88ykqAgIw1Qrr1QgM51BlmgWuLTFs0y1Xh+lun45gMlPMt195NQCCYn+tDMga4BYkHo9BzZuEncUiIRygFXQLaGRBnfVoFFXDwrUyRWdv8RxopHUPyaI3M7WuydmkXkEdiq++ZSmCkit9pmgG/JDlVi5VvE3ZNtL4YAPJ4Xz+nJlIEHQyiA+OltVjVjy3qEmAmL1b2af9AVyxNucM15QGCRAxFjCdnJAXYulL/uJP7Cr9UvgK6siPH9WJmF9sE8n1YH7XK9emIsLdPTzXqoirJoIfx78W/R6xg4wpzJeCZdZNCztAIVYXNWc62VjcXMendkJpdnaJ++FblwJRN1qSjcuzDu+l9SeHjcZo6bzILtgGPc/xJIcYt3lG1qqWULunjIeMOfqJlnFYSi1aI3sYNYO8MfCfTu+fxPaJwB71tmHQJPdqls7zCQAJufOHbDbytflF0rNImP+wm1UJYEwnjal8Abzh5yzpxpLFRRYY/PkCLfF8Lwkpi0wi60LMgRyxXMU/qz7+bvXYAkC/KL7lnUJDo5uVUOryN5ZPUjPqcniscDODctc6K839eRuvt6YMlEhvgbDh8ZPHrcB9gQkWjzZF25B+L6NBL0wGjiy6bzgkTXoW7RcyTUMQIZIv8QxXJo8SAJModf/sHJK64PtrcgDH7OCwT5CkJT+npROzomyMi4e6g9b+CQI6zBjeKpIVZk28VhpkoxKvqvGYZX5DCT6S8PBHyCpfLU5Hl0+ZKS4FoSWCJOFuE9UGEhQg+3NZCF06740axSdrqVwCDTADZIkLGf08lu2m+rQqjCEEkAWQqK6OJqWX/H++aV2WFbpJfjrTuKOC5hZDVGau+PCkYQhDdO6MSmXV6REevjN2F/fqTWDDea2hNFRDXQj5n+jKUYtt3WbijHXNzMOQ5XB/kZ3FY4IUEG6G4GCihY4pEt6CnMnNDXYq6mbuDeIk
- 2qzk9+bH
- drc6E3q8HcG+cMCJxelr4UARb5iK0/z1iQlfy4forCDZNAA52xiDCIESYYQG3QZmUIy5qxHC4nPblhCmJ9Ono/rpI4effU/IXd+5XsCv2FXTRxfpqONYMvlNaQLH80vscCxsSK36jA3seQJo4YhBmwAUXys//oXehALe/pJgxL/VVsKdZeh3+W3dhGTiCpuucKZYVBOth6bIAmt/yZEJU4yfD4JWRL7ttvWnMo2IdujX1EsnA686RgO8zntWNlBXauALpZvA0Ou0m+MeRNcwVrBZim1B9FoDngjxJ9W+pwJO8TGqOI9oxHvz3M9n0vxwIBKUI1uueylCrCl8csSpozM/ntLNreusVCFQpXp8Uzx/95/TqVrf0LURCVqSjutAo0VEC1BXH2rWu1t36AD0lL+3LGrirjvtjhQM06U8ej+Mw0wh68ubTt8d1Bj/0UDFzZ9qdqfx5ck6K8rdfoD5vPIFNEMuvpyX7cf/X
+X-Rspamd-Queue-Id: 36E4BC0018
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773766622-461731
+X-HE-Meta: U2FsdGVkX1/yAyLsp0AyaAiHJkx99563mgONPMa3EWy+4mMkQlXCKN2O34T48Im6WNngo+nAhQw8D/x7x7/SF9PuDV+9xC/fs4LJAVjfG8ZeaJn8G2S/oDTlmpI2hz0OuBnEHpDggcUoJyf6BVilsC/RaUNJqdtwumsbNJ+8IakEwJbC3W/85c1b1SDz6g+T0i/HQz42Y36j09VNJ8ZYhMHfsr00Nx/DFvj+qAu/i5/JqJfg0jrWhc9MB05dc8ZJrT0YFFi7jmOHhoIv8j0hahE8B2NVTqd9UJY9sD8gKG5yj+DjRUbKhxDNDpeHJgJngshTyoL/DtqcTx9XDK8a401rjlk3LHQYIa0aA5KHHwwYtct1v1wpci20KG+rExSmagm5s/I8ipnhRvnjOREWkYIrX2Ss3kNZ5Mjtpa6sF5EtAaQ80Kw9njGhOuCrle4AXrACu4vjr8qDU9MwWibB1R6QHOn7bXrv0+NkscjEk8aC8Q5rweFSqbywGpekG4i3m7iFozKuaH4WABq8oRQhzW9+LwPT+9AIkv6BJaEcaBmqfPK7I/OpP6YXyp7X/UTD3/IHtmdSu4e6MNIVx52lRSdrIfoBrEDgLH2WwBZydjOstJFxROEgG66EgCfLpTgS2etR3DAxkAlNPRL/mwGoPwJO2NTwEjHw3vMVH+buS81jBlYGx0FhmvErEyalMctx4lGoZRAER8VQNkpNuOKPcf6D/5BIM1UkuwjMhspaBFI08L6kLdub1zUo0b24mujPmIJxyY+e8LcRPqsLNT50KVebPcSK5B62doP6cfALhmnl8MEg89BfSsyZdl5RxgbQB1L5lqZ/5zFVvlsecR62bya8noIBNmtM7egifsjD7ggoJrT8FfgwDffCZ3bw0DQYydY+6mDrLHCE+qtHBQTuLOmK9ZjyFv/crEp96Bm//w8dAyZKSQcUAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,76 +98,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 17 Mar 2026 08:33:55 -0700 Breno Leitao <leitao@debian.org> wrote:
+Some cleanups around memory hot(un)plug and SPARSEMEM. In essence,
+we can limit CONFIG_MEMORY_HOTPLUG to CONFIG_SPARSEMEM_VMEMMAP,
+remove some dead code, and move all the hotplug bits over to
+mm/sparse-vmemmap.c.
 
-> Writing to /sys/kernel/mm/transparent_hugepage/enabled causes
-> start_stop_khugepaged() called independent of any change.
-> start_stop_khugepaged() SPAMs the printk ring buffer overflow with the
-> exact same message, even when nothing changes.
-> 
-> For instance, if you have a custom vm.min_free_kbytes, just touching
-> /sys/kernel/mm/transparent_hugepage/enabled causes a printk message.
-> Example:
-> 
->       # sysctl -w vm.min_free_kbytes=112382
->       # for i in $(seq 100); do echo never > /sys/kernel/mm/transparent_hugepage/enabled ; done
-> 
-> and you have 100 WARN messages like the following, which is pretty dull:
-> 
->       khugepaged: min_free_kbytes is not updated to 112381 because user defined value 112382 is preferred
-> 
-> A similar message shows up when setting thp to "always":
-> 
->       # for i in $(seq 100); do
->       #       echo 1024 > /proc/sys/vm/min_free_kbytes
->       #       echo always > /sys/kernel/mm/transparent_hugepage/enabled
->       # done
-> 
-> And then, we have 100 messages like:
-> 
->       khugepaged: raising min_free_kbytes from 1024 to 67584 to help transparent hugepage allocations
-> 
-> This is more common when you have a configuration management system that
-> writes the THP configuration without an extra read, assuming that
-> nothing will happen if there is no change in the configuration, but it
-> prints these annoying messages.
-> 
-> For instance, at Meta's fleet, ~10K servers were producing 3.5M of
-> these messages per day.
-> 
-> Fix this by making the sysfs _store helpers easier to digest and
-> ratelimiting the message.
-> 
-> This version is heavily based on Lorenzo's suggestion on V1.
-> 
-> ---
-> Changes in v7:
-> - Keep the atomic test_and_set_bit() in set_global_enabled_mode (Sohil)
-> - Link to v6: https://patch.msgid.link/20260311-thp_logs-v6-0-421e30d881e0@debian.org
+Some further/related cleanups around other unnecessary code
+(memory hole handling and complicated usemap allocation).
 
-Thanks, I updated mm.git's mm-unstable branch.
+I have some further sparse.c cleanups lying around, and I'm planning
+on getting rid of bootmem_info.c entirely.
 
-Below is how v7 altered mm.git:
+Cross-compiled on a bunch of machines. Hot(un)plug tested with virtio-mem.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+
+David Hildenbrand (Arm) (14):
+  mm/memory_hotplug: remove for_each_valid_pfn() usage
+  mm/sparse: remove WARN_ONs from (online|offline)_mem_sections()
+  mm/Kconfig: make CONFIG_MEMORY_HOTPLUG depend on
+    CONFIG_SPARSEMEM_VMEMMAP
+  mm/memory_hotplug: simplify check_pfn_span()
+  mm/sparse: remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for
+    CONFIG_MEMORY_HOTPLUG
+  mm/bootmem_info: remove handling for !CONFIG_SPARSEMEM_VMEMMAP
+  mm/bootmem_info: avoid using sparse_decode_mem_map()
+  mm/sparse: remove sparse_decode_mem_map()
+  mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific usemap allocation
+    handling
+  mm: prepare to move subsection_map_init() to mm/sparse-vmemmap.c
+  mm/sparse: drop set_section_nid() from sparse_add_section()
+  mm/sparse: move sparse_init_one_section() to internal.h
+  mm/sparse: move __section_mark_present() to internal.h
+  mm/sparse: move memory hotplug bits to sparse-vmemmap.c
+
+ include/linux/memory_hotplug.h |   2 -
+ include/linux/mmzone.h         |   6 +-
+ mm/Kconfig                     |   2 +-
+ mm/bootmem_info.c              |  46 +--
+ mm/internal.h                  |  47 +++
+ mm/memory_hotplug.c            |  24 +-
+ mm/mm_init.c                   |   2 +-
+ mm/sparse-vmemmap.c            | 308 +++++++++++++++++++
+ mm/sparse.c                    | 539 +--------------------------------
+ 9 files changed, 373 insertions(+), 603 deletions(-)
 
 
---- a/mm/huge_memory.c~b
-+++ a/mm/huge_memory.c
-@@ -353,11 +353,11 @@ static bool set_global_enabled_mode(enum
- 
- 	for (m = 0; m < ARRAY_SIZE(thp_flags); m++) {
- 		if (m == mode)
--			changed |= !__test_and_set_bit(thp_flags[m],
--						       &transparent_hugepage_flags);
-+			changed |= !test_and_set_bit(thp_flags[m],
-+						     &transparent_hugepage_flags);
- 		else
--			changed |= __test_and_clear_bit(thp_flags[m],
--							&transparent_hugepage_flags);
-+			changed |= test_and_clear_bit(thp_flags[m],
-+						      &transparent_hugepage_flags);
- 	}
- 
- 	return changed;
-_
+base-commit: 3f4f1faa33544d0bd724e32980b6f211c3a9bc7b
+-- 
+2.43.0
 
 
