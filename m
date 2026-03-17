@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFA12F3380F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:26:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED8D3F33812
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:27:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9630E6B008A; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
+	id 5DD226B0089; Tue, 17 Mar 2026 04:27:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E6626B0092; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
+	id 592F16B008C; Tue, 17 Mar 2026 04:27:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AD826B0093; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
+	id 4A5236B0092; Tue, 17 Mar 2026 04:27:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 67AB66B008A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:26:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18A2259671
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:26:03 +0000 (UTC)
-X-FDA: 84554872206.07.F9CF3A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 95A34C0003
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:26:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUcG/RcM";
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 31FC86B0089
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:27:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFD2B14042C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:27:57 +0000 (UTC)
+X-FDA: 84554876994.03.8B0CE2D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 019731C0002
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:27:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rPHlFxRm;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773735961;
+	s=arc-20220608; t=1773736076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6HCO5uPSGeOaMZcJw6nr0BVRKGBfSPMmN8QCDipCPTc=;
-	b=QFsniY/MLRCvgm8CUHKKx1mo2M975Qux7nOiebxKt+QHsCmwFs56XMI5Q6v/GXoF/28P2f
-	3OlQsTLWkYPMcdu/X9yWLmislpVZMWm5KrtqTZHP93Yt0fDA2X2Ou3GIXGaWIbNxtacTrM
-	g3dSXJB3WmlMIfPVCpfbzeX/5hNJ0KQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUcG/RcM";
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773735961; a=rsa-sha256;
+	bh=HFZXx6yxpltKOjN6nUio2ywnViz7PUAkjtLMNs2Qr6o=;
+	b=qGBeSwWbJOoox+63ZkgTnlJf3JWfMurmREbC1n1vDmXkNvIL8Z9WKRboLIJ7mB5jtIA9R4
+	ElsbyH9pl4Je4ArWh+6khSR0BJaZJA907gDEnec1JXsuJLCZJ4mAfYU9vs1AVWRfasCTTB
+	3yREL1O051scc4UXa9rD6ZfMECaefwk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773736076; a=rsa-sha256;
 	cv=none;
-	b=zupt1G9vh2skc6DZCLEpyKPFMHw1qWsTmsR0+Ziky8AW5mi65PNJcpVJWts/G/9i2gXekT
-	XdCpjH97Xkva7CJg1kVFt59VR9Bmzjyh21VCZw+x1JzXrm0S7zyi+8VNIScNXq1MLfXzOB
-	TJFUWRTlVlIfynXRhRi2E5e7nKQW88o=
+	b=NaY3/hRO+4p3g4Bg9H8Wd+HtSyHjI1UwLD5MEI/N/7qGK+xQ8JGUVlta91bpkkXE57Wjp7
+	N1DqPG4SlS0FHA3/ZgWIBleLkmLik6SAkL7L0EZ3FO8TIusbFsZ8LrlsR4tJnn4j4IgAqT
+	uKyNi5nY+7HvqAmnmMejyDll4kiOjdw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rPHlFxRm;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00F2A60133;
-	Tue, 17 Mar 2026 08:26:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B294C4CEF7;
-	Tue, 17 Mar 2026 08:25:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 05E8F43E2E;
+	Tue, 17 Mar 2026 08:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B08AC4CEF7;
+	Tue, 17 Mar 2026 08:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773735960;
-	bh=6HCO5uPSGeOaMZcJw6nr0BVRKGBfSPMmN8QCDipCPTc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=eUcG/RcMZtaj14Gihl0G/ahNqH+BeBeIakaQmbDtYO95yN5aBqlhS17SCZzXnqzSK
-	 tt4jainE8Ae1JjEz4Bx8Txdi21R2Cxvbv4UFiCLGf7S/Ii3s130y0a+ef53ttNF6j8
-	 oyWVVSe++PFiYUTROTpRvwUfy/XNQ8hxvxAl+Oa3lvFmbbkqz2PRmBzn8Kvxu6U4Qt
-	 /FQIywhewBIhiwmhr4xFiRqep87IBrnz3mMnEUrUbVTBmqrVfE8Q5PJ4Z115yrGWCP
-	 gCNlJlV+Cu9SKs8x55zjEd2KAfQCjuzWT7rRhxMYULSWdOXlpAL89d8jKX8EOtcufk
-	 /w0Pdf6T7O37g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Mark Rutland
- <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Nicolas Schier
- <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- linux-kbuild@vger.kernel.org, linux-mm@kvack.org, Alice Ryhl
- <aliceryhl@google.com>, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-In-Reply-To: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
-Date: Tue, 17 Mar 2026 09:25:42 +0100
-Message-ID: <877brasvzt.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1773736074;
+	bh=5J7bm5yZK2SOAa9ngMWjA/xHVCb4YicboOTrm+PNtwU=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=rPHlFxRm+xTAI1x38mz3jSy00ZKkrVmPpnz40uyihNJE5MPDov1WHJdJUitOMXLrJ
+	 un6A8dglaKzNMTlYW8p7vZW0d/oZcVWwNHhf/Jc3EQk9CIAxFAO/TV0PTJBAU+xMX4
+	 4SBdtLTLv0tJnRV+H5bHNxvG3TGygef8kayz+xsC/OhwS6JmnTucI7EVfjQhUW5fnz
+	 k3HNS0/A8/i+4SKgBrqCtG5hCNiS/Mi7XpynSOplR0cxRbCaHa5k0NLGFDr8WykDK6
+	 iDppdA+7VLxcxSyM0fPEPfd6hcmf9cf2OqNpnno0ACsAJBsUbqlJQ5m8sBErpDSyAz
+	 PJg3HBBRH7D1A==
+Message-ID: <abeb4474-8f3a-49c4-bb73-50f2a633d179@kernel.org>
+Date: Tue, 17 Mar 2026 09:27:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 95A34C0003
-X-Stat-Signature: p3de5w5dh5ax79cnz7f5mpzd8cup7yyr
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH v3] iomap: add allocation cache for iomap_dio
+To: changfengnan <changfengnan@bytedance.com>
+Cc: Dave Chinner <david@fromorbit.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Hao Li <hao.li@linux.dev>, guzebing <guzebing1612@gmail.com>,
+ brauner@kernel.org, djwong@kernel.org, hch@infradead.org,
+ linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, guzebing@bytedance.com,
+ syzbot@syzkaller.appspotmail.com, linux-mm@kvack.org
+References: <20260115021108.1913695-1-guzebing1612@gmail.com>
+ <aWh06YoiJrR3-J-X@dread.disaster.area>
+ <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.e7ce3c98.9b89.4c0d.96b4.bddcc787e1ed@bytedance.com>
+ <d2598f65-8666-43f4-a9c1-73bee678f8d7@kernel.org>
+ <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.e7a4a183.1b5a.4776.80f3.36cd4d9bdb3b@bytedance.com>
+Content-Language: en-US
+In-Reply-To: <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.e7a4a183.1b5a.4776.80f3.36cd4d9bdb3b@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773735961-955787
-X-HE-Meta: U2FsdGVkX19Ueflzp+f1pf9cZGSBAk5Xl5jiH2Pnnk5+kG/oPwXla9W3sqbAvLQRvHLBIbZCOE34PSLoNeceOPqi73xXcrqTXzEOFkbRn95YyAyToyaTp5tqdaWO+ENk+W+y0rPyoL7BZkIRSPNexgzNc/yjNzBrVlhwh6TitAjEWqJT1fl9Rs/QwG0Q6Y1sf/mdfwufc3ZmrPcqt3yT12BWMCgTGLVz/b0vsgjwF4+Sadr6J0kv5vi3YxbhbaBPKU97qPxejgdybdBRKstyV9ejnvgEfhucR8/dtAGw1NbjfJNWCMH39ZsQK0nHis/g7pgPpRSyPIClVrBvcfArCg85/RBSXnNC3NrT4o0NT5XeaOLm7C7m5zQ9WFofgKktXPuiB41uQbqj5nSaOngTm88LU02SyfjUbJ/a64iNK3MVBs28P3LOb/R7fuLtpuyTMPFcA42j7D8OBtgtsRnVYSNx8A/sWpdJ4Ru57im7caPFn8tWLACXg3Tnn3993w6w8Vf7EgiMxM93wGjPbae2RFAwU62quDOrxAxU77MQ/4JhtJsyl3lsCGUmhLSUrf1QcbPJzPVV/Tn7SY3bIgp45j6jil1tPl46qFRM3pZeBHXrjOHSk8Ubt9PQNrg9quOr87mWM21pZ4KBj2SCJqgpMF6jqpo4YHYaC3K8xOAZTlMPJw68L+1gHFigJ0rdqGimWDEdka1tYeVfuEN7qFp9eoh1YeOVjsdZXMC91BAwQf0WllwmfeCDTX30IzQdzTzPyUwZqfocI6SEm2hxBGqUOho387GrJTILgnGFXWBph62EJvIJa0JnSeN9E059IM6KYBKQS+wKa5YJfUmHOUfZcrLOsFlPYutUL6m0IpHyhihvQmpLLI/YJcwNq/mUB7E2KPtwCbZFmFPQHFLu/s8aAw0GHbd16P9k6nhziHKEQEyjFbLM/+h3932O7HPTl8bYLrRQJ1wXDXfEmRiEoP7
- 2NIb03W3
- y+FU40ZHX/xjQpwqmYTaHl+Iv17jRe9c5ME3tRw72vqNIGP9Ns3okLPM9A4lhAr3Tj+EXwe27g4HjT1vJ2DabV7/DdRAVaET4GlPUY5pFN9Zsv204gxdNFDpVotgALTCHna711MmEot5C77IHHi7Z5PdO+bykxnoJUOiShs7IwNhle8eej+3wrUi1CDnl9Onvyhn3nroa9Rqcl3BX93tYuag3DDstxoFZ6s801BInC1fRAXAJc469jtvanzx1W86Yvm0t9rKIx8U/VbTwMdUwAKgq8ceQ9O8LBzy8fmWq41x7qCWosz6sArrU5MoVxcxuAm0HePdR8lKTlzNvr3aSBa6AfQ==
+X-Stat-Signature: mpwiythh9dip9fgikrqzq3sets9azfw8
+X-Rspamd-Queue-Id: 019731C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773736075-243086
+X-HE-Meta: U2FsdGVkX1+nKfAH4N+T8wRu3qRoz3r7F+KCMqNbIINO36P0oRhjcg2lmJAUYyOpBQ0J8ukYVb41FJ0f/WXRqDXghVIWXOdtRngsD06UMY2iy21rgQhi0loQgEgM3f9yAfrIr17LO3KVOyfG0AeaiuUBZWeTvEEO9vCX/ZXSu9dHofOqNZZaOZOFovXjvFqIlRa3nJDjyNdMbi7DYyiATOKlXglWp092i+BstwNFI09MrYasxDPkbRwVh7uE2j0FlxryqxpZIRVDb3oGbh1i21eLhICvH25ukAUVDExMxGaJDuXVDUOW/l8DgW0jOxN1m2JTdhLBgspzrW576+uaBlJJfJrum+oUBrY1tkDmHII/8jV4psykhU5jTh+NeHre1WTQVXhiwILbFac0AaPuIWWE1qlff9doPO0dK5FDo5sbGfT3CElGBGqP98o9Ar5uNW0KfNo0C0JteDmWsGBJZa2VxclOfbWie6V7KCPLR/MreHXthbrtgoWHmtWEsMSg/plb2zE+uuQWMUT64QurU9fTyyArgofJzVoV456WvlWi1WBRXrx7H0wj9/E1FrM87P++jswRuGb9osTDbpaJebOdKcb5OtFjZPFHv3HW3gI6hQyu1J3WMGmYC6EtKwORrF2vk7vP9DoESnEKga1N04YF1Sx3Ohpc5jJagwMdWOGUYF3QxjPFVsHxBl5YNK96eB5U8EzReK4NpKKUx1yKYd6CdaKAZS370Spso7HTMRZviqswNO1Y1S8A8msufMnUj4lCwkvO6Ybyl8mCz1J3bUqH1Hxy7jrSKGtRdcUvhWvSrdzt3GMj2vszbhcg9Lq9yvxk/QIiDYuq7ZeBOXsysedQAN3BlHmqgoxlw++nwrL5AfmAqwaI7Yt2dAGsYDjaduWhSC/qWzIpAZgGpV5U0CnkP7KX53VdvvXYaF2ea9nZBE5uJNUhWMbAzwZ7J8PJp7Ts2YAsNWrTlXxf3oa
+ fo45UXaw
+ A5ErNLH0hecMQZ3tiDFgIJEKcG3ej6RP0DEA6V63otGCoE7zeAq87hbrNzxs5qbuxH/ZysBKELLlt39kiwLK9IklwQcKtzEFEBfE7kFRe8FmXPq3tMEaOYN56kX+xPa6tTl7NnhOjQcoUjhSJ+TdNXnv9qsUuIWVeZwsyK+bxEOIeyEDsIS/oddJTtHAjuVnC4lTxCHaL8SYmhBGhPIroOmgtckkD61152lzv+dMjbQ90UwYMEF6a/DkChP17AYXK93VoiCV/C3whr1bF+aFEJ2J60jTbNX4y4Vyrpg8CkqpTE8VdxNFouwrcU8rBKyRcO2TNSu15EsbcgGQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,46 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
+On 3/17/26 08:28, changfengnan wrote:
+> 
+>> That suggests in that test you used larger capacity than the automatically
+>> calculated.
+> The 10% improvement is due to the every cache has sheaves.
+> When I tested 256-byte objects, default sheaf_capacity is 26, allocating and
+> freeing 32 objects did not show a noticeable difference, but allocating and
+> freeing 128 objects resulted in a significant improvement, about 3-4x in a 
+> multithreaded environment.  about 12% improvement in single thread.
 
-> Currently the only way for Rust code to call a static inline function is
-> to go through a helper in rust/helpers/. This introduces performance
-> costs due to additional function calls and also clutters backtraces and
-> flame graphs with helper symbols.
->
-> To get rid of these helper symbols, provide functionality to inline
-> helpers into Rust using llvm-link. This option complements full LTO, by
-> being much cheaper and avoiding incompatibility with BTF.
->
-> I ran a microbenchmark showing the benefit of this. All the benchmark
-> does is call refcount_inc() in a loop. This was chosen since refcounting
-> is quite hot in Binder. The results are that Rust spends 6.35 ns per
-> call vs 5.73 ns per call in C. When enabling this option, the two
-> languages become equally fast, and disassembly confirms the exact same
-> machine code is used (in particular there is no call to
-> rust_helper_refcount_inc). Benchmarking Binder also results in an
-> improvement from this change.
->
-> This patch is complementary to:
-> https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Great!
 
+>>  
+>> > I'm thinking that maybe these improvements may not be significant enough to
+>> > see the effect in the io flow.
+>> > Using a simple list seems to be the most efficient approach.
+>> 
+>> I think the question is, what improvement do you now see with your added
+>> pcpu cache vs kmalloc() when 7.0-rc4 is used as the baseline?
+> 
+> On 7.0-rc4, pcpu get 1.20M IOPS , kmalloc get 1.19M IOPS, new cache with set sheaf_capacity 256, 1.19M IOPS
+> On 6.19, pcpu get 1.20M IOPS,  kmalloc get 1.17M IOPS, new cache with set sheaf_capacity 256, 1.19M IOPS.
 
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Thanks a lot for that data. My conclusion is that kmalloc before sheaves did
+indeed worse and custom pcpu cache improved it relatively more. Kmalloc with
+sheaves does better, and the improvement of custom pcpu cache is smaller.
+Also the default sheaf capacity seems to be enough for this workload.
 
-Tested with the rust null block driver patch series [1]. I did a
-few functional verification tests and a set of performance tests.
-
-For the rnull driver, enabling helper inlining with this patch gives an
-average speedup of 2% over the set of 120 workloads that we publish on
-[2].
-
-Best regards,
-Andreas Hindborg
-
-[1] https://lore.kernel.org/rust-for-linux/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org/
-[2] https://rust-for-linux.com/null-block-driver
-
+IO is not my area but getting from 1.19M to 1.20M doesn't look like it's
+worth the custom code? (possibly from 1.17M to 1.20M it also wasn't).
 
