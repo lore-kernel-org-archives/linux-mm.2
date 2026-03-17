@@ -4,103 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B0CFEDA0F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:08:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A473DFEDA11
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:11:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDFF36B0096; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
+	id 0C1936B0099; Tue, 17 Mar 2026 15:11:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B90B06B0098; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
+	id 04B406B009B; Tue, 17 Mar 2026 15:11:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA66C6B0099; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
+	id EC9D46B009D; Tue, 17 Mar 2026 15:11:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 988636B0096
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:08:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1CE4C571A7
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:08:25 +0000 (UTC)
-X-FDA: 84556490970.05.9C15140
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DE3A820011
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:08:22 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZowhB4Yb;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D90846B0099
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:11:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 79BC1138E6D
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:11:49 +0000 (UTC)
+X-FDA: 84556499538.08.EF51CC9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B89CFC000C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:11:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GjHBVpRI;
+	spf=pass (imf10.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773774503;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773774707;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9cMncruhV3zGKox3/ctrnX7MA7dyJ750pVWwUyV32A0=;
-	b=YDeDXQBwDWUkRwib3beK3famoEqz801QByFBandHS4xw4/pjbGo8ohypXY+tNa3C8TaKe4
-	ylBeVvbWlYp2as7VkzbPqOdOc6i7XTI/nA6EBbKljVNwX9rPFRttL2br7g4+aGZrOF+D9/
-	xd+2QWnEHpJ+A2GYYu8XYXD5TvSU37s=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZowhB4Yb;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773774503; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VVashgK/NscXt9OIKeVHNy4upg0CYooZbnA5rTNvmKA=;
+	b=N5+q7709P9T2mDsbFEqxLBGO6Ah+kK9kaXu73Jrb8QcHSIf+vNcMQeMBnvJq9F2XYoTWJu
+	J2+HHIctfJqgKQlr6Shk2Nhq81RDuMxzTU8XzOX7PvqG2j7ulqcXzdSXbsT3l8ioR4toef
+	dCOaYTfqbZjWJYZ1XEApqSCBHmAHtYE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773774707; a=rsa-sha256;
 	cv=none;
-	b=zcQDzOJm7bvVqCArARQCy13A183cePmGUPgFFNHK1gZVG8HIrwxvr2i5pa32q4JTFeSKfQ
-	yjF4sw2R/4HNSWPiMnZ2CdexsijRi34LQNK3FNgAHTzYNhbciwYiURk7Juhrkb617mRzua
-	p2J+V73x/zpaObEynGnE+RV5O+R7ix8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773774502;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9cMncruhV3zGKox3/ctrnX7MA7dyJ750pVWwUyV32A0=;
-	b=ZowhB4YbTTdF8rV+ziUMo6dxTMvMA6zLMfBRwp5zpYse0ZejYk3JFV79PLHYBaMYrbJYMh
-	C5uIeBAaqPBQAqLmh2VyznZx61Dola0POd3JThA3bDHL+LaT5zdKdqtYDxGzeXhANgn9ws
-	xo1ps0UIDiDHexdhshVDnrzmjpZXpeQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-183-eCvhrhSaO-murqpA7XqfXg-1; Tue,
- 17 Mar 2026 15:08:18 -0400
-X-MC-Unique: eCvhrhSaO-murqpA7XqfXg-1
-X-Mimecast-MFC-AGG-ID: eCvhrhSaO-murqpA7XqfXg_1773774497
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6E4BC1800245;
-	Tue, 17 Mar 2026 19:08:17 +0000 (UTC)
-Received: from fedora (unknown [10.45.225.204])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 9EEEC30001A1;
-	Tue, 17 Mar 2026 19:08:15 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 17 Mar 2026 20:08:17 +0100 (CET)
-Date: Tue, 17 Mar 2026 20:08:14 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
- checks
-Message-ID: <abmmnjgxrrGLKn2D@redhat.com>
-References: <20260316151956.563558-1-kartikey406@gmail.com>
- <abld-ilvMEZ7VgMw@redhat.com>
- <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
+	b=28T/kMjxc7lFrVhrCJL7C2K86bv7R75RUxdYm2iUG0MYsfIfn8Ea1E0sGVnr7X867+qvBg
+	31AC0KEDC/f4OTG0czTCy8G7bfIrp8UvL64zRtsYqH2jIdMNOjGdT8+7RUcC1thzs07dGA
+	W8loZPZknCAL1wBewboIN3NAAtp0BKc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GjHBVpRI;
+	spf=pass (imf10.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D3DB760103;
+	Tue, 17 Mar 2026 19:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7498FC4CEF7;
+	Tue, 17 Mar 2026 19:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773774706;
+	bh=eZeE1mwOeuM5/QjG3PuY0PEhuNcZEzv0BBmgZNb4+Rs=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=GjHBVpRIW7E8iTfb6wArljv47u3UxiZ9LlCxcl/8lqmiQu3C43u/BtRMxaZjKDn5/
+	 lYVSj+P8y89nA1MC0qI9X9+TygRYckWZ+PwypTPTedv7F1MWxdel+h6k518ohJEQco
+	 6fH97Mlcx0EK91JcrwEp+2EuJy4QK+MdqzZ3hZs/S2rJBEwX5KLzxYdv2bj46sNKSK
+	 qHnfFW6Ub+tFYNC4DrwD6G2mf5biI1ZuT1dJQV0GNglusIf3hY7Rq1KAMSqsUp/Zc4
+	 1VTZrEWtuFtS7EmZKWGF5VOVZmdabsGtfwohF6Vyq3AILwI5yXP891OUeXhnnXWRlC
+	 sR5AmGb6gOLnA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6346AFED9E1;
+	Tue, 17 Mar 2026 19:11:46 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Subject: [PATCH 0/8] mm/mglru: improve reclaim loop and dirty folio
+ handling
+Date: Wed, 18 Mar 2026 03:08:56 +0800
+Message-Id: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
 MIME-Version: 1.0
-In-Reply-To: <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: a2xWOlorrVdZgsYviiGMtRJ3yYPZjWNOwAmkN2KTyhM_1773774497
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDY0MT3dz0nKJS3aLU5JzEzFxdw2TLFBPTxGRT8zQzJaCegqLUtMwKsHn
+ RsbW1AG6uAetfAAAA
+X-Change-ID: 20260314-mglru-reclaim-1c9d45ac57f6
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <zhengqi.arch@bytedance.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
+ Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773774704; l=8290;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=eZeE1mwOeuM5/QjG3PuY0PEhuNcZEzv0BBmgZNb4+Rs=;
+ b=jhx+mMde0iZszca8qAee8NTHEc6ojHlS8lIfUW/7+CJ90slmaadJUMyraGAtguVBxYhZ22XVp
+ jG77v9Ix9CXAVejof5vdGyIGk29v2TxrZLy5Hwad9vtBlrYKh/KQ9wc
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Stat-Signature: wo7aw3qf4q8i3ax8iasuhupa7ntbggd6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DE3A820011
-X-Rspamd-Server: rspam08
-X-Stat-Signature: kfgyxibxu36p37f7mrrckz7ox496mwxj
-X-HE-Tag: 1773774502-77199
-X-HE-Meta: U2FsdGVkX1/+J19zrcGYbw9VX6RdglftvVnhnIYHdktQCD4qeEVgencEufKPD1M6G+Z+eQgJgYItudAwE07zY4Mdk1MXAwo8OcuKacKW4+4sNJmUIqVOb5GKo+qWZ0yw5X1BFDuFNpkqPlAjZO6MlIsfJIRs14jPtT3Sq7Rs6o9mlL35r5aB6l5fwcU11MLEIZ6aDn6xit1OoI1YnB5AzyZIIdpOiTmSSeb6j1Kk1L5v0FZl2+pk/LnKSGiUy1hPcjfnVw+wEbp6eXmKhgeplDyyuO4BOr+ACtDKuDcKmZh19Qb7YtS4eEeAeY9ZKhDiZFAbuwC5c6aTyGA197bKSCJQQhPSuUBt1NHKaJHIht4VQzH1Pjn0dH48Anrgko5TRSIm+FCQaYgs0H9DSA4ysl64bf1UkpY5jYaigclucZrMaOM3Ae8AS7W3+VIov8dlkM1O+0NFwmqCMXAZ94sBi7pahFN8fDYG7d3x+od/YzItCYY24BNpgFItgRYg2xyRRg9k3iHsZy5WQYSFKhMJpRMSLxQ4UAQP4TnhuxOv8mquZBpOjg8z+sOALOHBMjPky8Hg5+qVylHE968xYIoTirc1sB452pESsyO9JmlrzHianHkEBBkJXzshVExoYM67h07txzwSyCy5zoqsf6s+LscSYhSkjU0Q3Gma4RWKp9e+4CD5gj4XF7foe++Qiyv8NjjXB9I+ml950pYoDwOimajS5FDWJ1Uw428TBzOzbZX+zBw9Kwa8G9mCa6+LrikCx8wwu5eMd7UPVCsZoYiHlrqyIBml5q6IJFvYvjbOyBeYVjS2HJta2pn/9iQAeuWk6jA5U70YgVM16E7JXB2+R3uGXPaArFlBOzbKc3S26kk0AnIOVNj/LQVlQbE8kkiLCj9+lzadlBoUcUTFeeU5esSNf5tS9IsJCUkWK6EUU85EjlvpWfaFwn81fzG7338H9G527NbXB2WtZnnB31t
- J17mXa90
- 14Uz0IdkEUHbH1z9nbm6fyTwC68eLcHeLgTTJ8zvgYctRSWyV69YhhRf04LJe8MrknJ2F3yfovxzlDlckGb6rofqvevQrPxecXBZt3I5UO/Ed+bzaUzybnq1VRyR+Orijjr0MMldPCqC1nh0hpzzJzT+C4MQpnaca8ZIuVdRkWFOqGQHv+gJoNR1H4x6kyRffZdjIpSHBL5vgrmoqrkucN4mvlM/AN4HBHdC10VUPMgFMt7txdJcn7S2lpgIijyeOysuKeEo5g/4YbSLkuOslLg8tv1eAAAvOJypl4fdTsgeT+DQMsuCHvTvsfda9MjMvH0/touj4ZFsV8k2Zb7K8USl5TKOzddkEM+9X2M6YAZCyFZvaMtPlYg1UDD3Vqasy011D0Iwm+884CE6LGiWU/FW0P7+OWjgwN7DzqO5LFpWG8bNys52DseAGG1+pjcZ5KdXq4nnSZfm0hv5+lAQBvobMh3Cls57AvBtH
+X-Rspamd-Queue-Id: B89CFC000C
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773774707-905555
+X-HE-Meta: U2FsdGVkX19+xL22oS/3pz+STu8MLmnDwoPkNh44GAg8meuE1AfZn7pQtG+PCnT5FzpPxGheGjHd6kQH2y9FR0JJzajpFce/UPsb2yoifuywGhrSe6mDE+gGI7bwhdGQwqUu/rCKesNUmRQyfPLnmHVD5l8ZYTdsqkYjanmzlEtcAWzxq2MPBWSvTiSv3wI/lpAkC0W+4WqKiTlltuuQlrJzkgQROqbohufCk2MhC89O/0xQBBIA9EN9xhlsDg/MEys7O2hvz2gbHWgamDZDtIMe2yI+K6mgH3Bz0A8p0vUHgJwMa3CMWNJNWze56Qu3nbb5Ohgd6AiwrdGB0PZw2iXRIbcqCsI7p454gD8I0mtJzHbR4CdfsIhdb4SLPDpA56/e17RtcvXd8waq4TXwR5qALIn0fEBZ9qi+kTqJblnIitG/tgeN1QOtLJqDOMAadlHW4KRBWnSYhl8jI7UzOcArw+rdTW1LQfUXmgRg7LBd2dbI+Ga0BQ92G8zBstHivN/xBWi23gq9sJpjORqEQuvCyVcafDp8UZaKNNmGYQjUooDLtP8U4Cqiu+ki2E1Ng2ioz8EW7rqo95Or0aqO/bYz4x6AGvFe02SxE9k1cTCa+s8Xvvlzk3vOInnWlcJb5Hbomqx0UHnUBXuKy1+vBLE+GIbtn7y2lhnnVGueguSsSXIFI0rYqNVDuei84bnz5k4sO5SQJ2bq/Tqq+1ByikACxmsOoJHsINHzpYCNWUHFu987sphmmNM3JivlMqLrKu8q5tcz/041zPxofcgTQYVPfMTR0D9xFc5dr8FunPJt0c/Amw5DkdnR2mAC5l6JGC5gcCwm0e1+vwq7g7BqriQUwiD48kZDm41g4/z1hKJU588SLhPN85JfkG1ozBRo6piia1G7qRq8q/4cd7J94dCrFaviDJip3YMcboBp+osyQYUznS9j7AdQZ9dSNMK7pr/etOQhkylqjAHLisL
+ AcKotGKz
+ baHyFs/pxx0bv5arH6MenTRmc9kd7OWXresVumWPpZcNw8MI1patN0qyHDcRvkDC9EOjQy5PmlrC7yJT+3M1+1KIS939npwWtAKA/EN8V5mtywgiK/WZzYjkdiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,41 +119,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/17, Andrew Morton wrote:
->
-> On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
->
-> > Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
-> > argument of do_notify_parent() must always be valid or we have a bug.
-> >
-> > However, do_notify_parent() only checks that sig != -1 at the start, then
-> > it does another valid_signal() check before __send_signal_locked().
-> >
-> > This is confusing. Change do_notify_parent() to WARN and return early if
-> > valid_signal(sig) is false.
->
-> Sashiko has a question:
-> 	https://sashiko.dev/#/patchset/abld-ilvMEZ7VgMw%40redhat.com
+This series cleans up and slightly improves MGLRU's reclaim loop and
+dirty flush logic. As a result, we can see an up to ~50% reduce of file
+faults and 30% increase in MongoDB throughput with YCSB and no swap
+involved, other common benchmarks have no regression, and LOC is
+reduced, with less unexpected OOM in our production environment.
 
-I think that userpace can't bypass kernel_clone() (which checks valid_signal)
-before copy_process().
+Some of the problems were found in our production environment, and
+others are mostly exposed while stress testing the LFU-like design as
+proposed in the LSM/MM/BPF topic this year [1]. This series has no
+direct relationship to that topic, but it cleans up the code base and
+fixes several strange behaviors that make the test result of the
+LFU-like design not as good as expected.
 
-This includes ia32_clone() and sparc_clone() mentioned in the link above.
+MGLRU's reclaim loop is a bit complex, and hence these problems are
+somehow related to each other. The aging, scan number calculation, and
+reclaim loop are coupled together, and the dirty folio handling logic is
+quite different, making the reclaim loop hard to follow and the dirty
+flush ineffective too.
 
-There are in-kernel users (fork_idle, create_io_thread, vhost_task_create).
-But if they pass a non-valid exit_signal (they don't), we do have a kernel
-bug and WARN_ON() added by this patch should catch the problem.
+This series slightly cleans up and improves the reclaim loop using a
+scan budget by calculating the number of folios to scan at the beginning
+of the loop, and decouples aging from the reclaim calculation helpers
+Then move the dirty flush logic inside the reclaim loop so it can kick
+in more effectively. These issues are somehow related, and this series
+handles them and improves MGLRU reclaim in many ways.
 
-In short. From the link above:
+Test results: All tests are done on a 48c96t NUMA machine with 2 nodes
+and 128G memory machine using NVME as storage.
 
-	While kernel_clone() expects the caller to validate args->exit_signal
+MongoDB
+=======
+Running YCSB workloadb [2] (recordcount:20000000 operationcount:6000000,
+threads:32), which does 95% read and 5% update to generate mixed read
+and dirty writeback. MongoDB is set up in a 10G cgroup using Docker, and
+the WiredTiger cache size is set to 4.5G, using NVME as storage.
 
-this was true before
+Not using SWAP.
 
-	kernel-fork-validate-exit_signal-in-kernel_clone.patch
+Median of 3 test run, results are stable.
 
-from Deepanshu, and my cleanup depends on it.
+Before:
+Throughput(ops/sec): 61642.78008938203
+AverageLatency(us):  507.11127774145166
+pgpgin 158190589
+pgpgout 5880616
+workingset_refault 7262988
 
-Oleg.
+After:
+Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
+AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
+pgpgin 101871227                        (-35.6%, lower is better)
+pgpgout 5770028
+workingset_refault 3418186              (-52.9%, lower is better)
+
+We can see a significant performance improvement after this series for
+file cache heavy workloads like this. The test is done on NVME and the
+performance gap would be even larger for slow devices, we observed
+>100% gain for some other workloads running on HDD devices.
+
+Chrome & Node.js [3]
+====================
+Using Yu Zhao's test script [3], testing on a x86_64 NUMA machine with 2
+nodes and 128G memory, using 256G ZRAM as swap and spawn 32 memcg 64
+workers:
+
+Before:
+Total requests:            77920
+Per-worker 95% CI (mean):  [1199.9, 1235.1]
+Per-worker stdev:          70.5
+Jain's fairness:           0.996706 (1.0 = perfectly fair)
+Latency:
+Bucket     Count      Pct    Cumul
+[0,1)s     25649   32.92%   32.92%
+[1,2)s      7759    9.96%   42.87%
+[2,4)s      5156    6.62%   49.49%
+[4,8)s     39356   50.51%  100.00%
+
+After:
+Total requests:            79564
+Per-worker 95% CI (mean):  [1224.2, 1262.2]
+Per-worker stdev:          76.1
+Jain's fairness:           0.996328 (1.0 = perfectly fair)
+Latency:
+Bucket     Count      Pct    Cumul
+[0,1)s     25485   32.03%   32.03%
+[1,2)s      8661   10.89%   42.92%
+[2,4)s      6268    7.88%   50.79%
+[4,8)s     39150   49.21%  100.00%
+
+Seems identical, reclaim is still fair and effective, total requests
+number seems slightly better.
+
+OOM issue [4]
+=============
+Testing with a specific reproducer [4] to simulate what we encounterd in
+production environment. Still using the same test machine but one node
+is used as pmem ramdisk following steps in the reproducer, no SWAP used.
+
+This reproducer spawns multiple workers that keep reading the given file
+using mmap, and pauses for 120ms after one file read batch. It also
+spawns another set of workers that keep allocating and freeing a
+given size of anonymous memory. The total memory size exceeds the
+memory limit (eg. 44G anon + 8G file, which is 52G vs 48G memcg limit).
+But by evicting the file cache, the workload should hold just fine,
+especially given that the file worker pauses after every batch, allowing
+other workers to catch up.
+
+- MGLRU disabled:
+  Finished 128 iterations.
+
+- MGLRU enabled:
+  Hung or OOM with following info after about ~10-20 iterations:
+
+    [  357.332946] file_anon_mix_pressure invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+    ... <snip> ...
+    [  357.333827] memory: usage 50331648kB, limit 50331648kB, failcnt 90907
+    [  357.347728] swap: usage 0kB, limit 9007199254740988kB, failcnt 0
+    [  357.348192] Memory cgroup stats for /demo:
+    [  357.348314] anon 46724382720
+    [  357.348963] file 4160753664
+
+  OOM occurs despite there is still evictable file folios.
+
+- MGLRU enabled after this series:
+  Finished 128 iterations.
+
+With aging blocking reclaim, the OOM will be much more likely to occur.
+This issue is mostly fixed by patch 6 and result is much better, but
+this series is still only the first step to improve file folio reclaim
+for MGLRU, as there are still cases where file folios can't be
+effectively reclaimed.
+
+MySQL:
+======
+
+Testing with innodb_buffer_pool_size=26106127360, in a 2G memcg, using
+ZRAM as swap and test command:
+
+sysbench /usr/share/sysbench/oltp_read_only.lua --mysql-db=sb \
+  --tables=48 --table-size=2000000 --threads=96 --time=600 run
+
+Before:         22343.701667 tps
+After patch 4:  22327.325000 tps
+After patch 5:  22373.224000 tps
+After patch 6:  22321.174000 tps
+After patch 7:  22625.961667 tps (+1.26%, higher is better)
+
+MySQL is anon folios heavy but still looking good. Seems only noise level
+changes, no regression.
+
+FIO:
+====
+Testing with the following command, where /mnt is an EXT4 ramdisk, 6
+test runs each in a 10G memcg:
+
+fio -name=cached --numjobs=16 --filename=/mnt/test.img --buffered=1 \
+  --ioengine=io_uring --iodepth=128 --iodepth_batch_submit=32 \
+  --iodepth_batch_complete=32 --rw=randread \
+  --random_distribution=zipf:1.2 --norandommap --time_based \
+  --ramp_time=1m --runtime=10m --group_reporting
+
+Before:        32039.56 MB/s
+After patch 3: 32751.50 MB/s
+After patch 4: 32703.03 MB/s
+After patch 5: 33395.52 MB/s
+After patch 6: 32031.51 MB/s
+After patch 7: 32534.29 MB/s
+
+Also seem only noise level changes and no regression.
+
+Build kernel:
+=============
+Build kernel test using ZRAM as swap, on top of tmpfs, in a 3G memcg
+using make -j96 and defconfig, measuring system time, 8 test run each.
+
+Before:        2881.41s
+After patch 3: 2894.09s
+After patch 4: 2846.73s
+After patch 5: 2847.91s
+After patch 6: 2835.17s
+After patch 7: 2842.90s
+
+Also seem only noise level changes, no regression or very slightly better.
+
+Link: https://lore.kernel.org/linux-mm/CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com/ [1]
+Link: https://github.com/brianfrankcooper/YCSB/blob/master/workloads/workloadb [2]
+Link: https://lore.kernel.org/all/20221220214923.1229538-1-yuzhao@google.com/ [3]
+Link: https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure [4]
+
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Kairui Song (8):
+      mm/mglru: consolidate common code for retrieving evitable size
+      mm/mglru: relocate the LRU scan batch limit to callers
+      mm/mglru: restructure the reclaim loop
+      mm/mglru: scan and count the exact number of folios
+      mm/mglru: use a smaller batch for reclaim
+      mm/mglru: don't abort scan immediately right after aging
+      mm/mglru: simplify and improve dirty writeback handling
+      mm/vmscan: remove sc->file_taken
+
+ mm/vmscan.c | 191 ++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 81 insertions(+), 110 deletions(-)
+---
+base-commit: dffde584d8054e88e597e3f28de04c7f5d191a67
+change-id: 20260314-mglru-reclaim-1c9d45ac57f6
+
+Best regards,
+-- 
+Kairui Song <kasong@tencent.com>
+
 
 
