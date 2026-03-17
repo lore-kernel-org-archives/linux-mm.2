@@ -4,100 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5019FFD8775
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 13:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAE72FD877B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:03:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CBB06B0005; Tue, 17 Mar 2026 09:58:33 -0400 (EDT)
+	id 38CE46B0088; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77C0F6B0088; Tue, 17 Mar 2026 09:58:33 -0400 (EDT)
+	id 364896B008A; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 692546B008A; Tue, 17 Mar 2026 09:58:33 -0400 (EDT)
+	id 27A3D6B008C; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 58D4A6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:58:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E77981601B5
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:58:32 +0000 (UTC)
-X-FDA: 84555710064.23.1237EE4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 79C8340007
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:58:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LB+FXGXa;
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 15BD46B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D2B11A0240
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:03:12 +0000 (UTC)
+X-FDA: 84555721824.06.AC345BD
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E251B14001A
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:03:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="uGK/Pyja";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773755911;
+	s=arc-20220608; t=1773756190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CjnQmRkU/l3UkgRwp+/DaDM7NsRFp28HdJQYirkFQAo=;
-	b=JlhJrrQ+EYMSXXRjtY5sM7awN31KD9S/u/lc9E1sZ/AuOtQuM18gWqVTxmKRiV8yghsklb
-	tr1qDxf2WzzefvAQQLfXvOmxTRsdohkh7/jKKfxpnqjpDVip0Jzl3hxRtC7ruaZpP1p1ZK
-	laVV7n5a/kc0B+6imQ88nPGgDMX+rxU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773755911; a=rsa-sha256;
-	cv=none;
-	b=4koNcFST1pI+Y4uh6Bzs5WUyXnfNaoLin0A2FmyNgXHdKVAVYFiiG1Tp8k8iAAdhRHxZBh
-	XPRENTTpcNRmcTxj9NnFZxkKFnAD0MqmouoTz45iIb14JpqlgP0zXKZj9tR5dCTOuZgEJs
-	fLknfz9T+1DD2WhngsJUsWf6Xql1Xjw=
+	bh=Q0tipdXjQf1YFueIG3pjpKIi6COxIgjA+uwJOLkXywE=;
+	b=RQUUDe8KMiZn7zNk8dFqQNOtPTv3HsZrIesDSi4LBzJ3U42CWZ8Arzu7hecsYGGmHvdDFZ
+	COnfYmc4EktY2yCFLYxZYjRFJUaXpMrkzc1NMLUUE3mY82MUWuEnIlQ3ohikpJ9qeY78Sx
+	OY1c0BKYXqt95eTGzIkQ9LxrPMoargg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LB+FXGXa;
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773755908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CjnQmRkU/l3UkgRwp+/DaDM7NsRFp28HdJQYirkFQAo=;
-	b=LB+FXGXaHrnE2yNpNmqOzUMGm4neQlsRwtysg5rbj/hP6MOYHY3wqZ5wjsdqy1mCBp9+/N
-	kODayPdBL2pE76dg2PkZrDuaGoqdyNww1RwjCf6bLV0LwAvqCtkMi9hasF1zpdUtBEqZIg
-	lEcdZgkxzDrHmDVJpy9McU6No6Eh9YU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-fBy6XB6YM-C6LUV4Vt7LRg-1; Tue,
- 17 Mar 2026 09:58:23 -0400
-X-MC-Unique: fBy6XB6YM-C6LUV4Vt7LRg-1
-X-Mimecast-MFC-AGG-ID: fBy6XB6YM-C6LUV4Vt7LRg_1773755902
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8A2A1800245;
-	Tue, 17 Mar 2026 13:58:21 +0000 (UTC)
-Received: from fedora (unknown [10.45.225.204])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 2742219560B1;
-	Tue, 17 Mar 2026 13:58:19 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 17 Mar 2026 14:58:21 +0100 (CET)
-Date: Tue, 17 Mar 2026 14:58:18 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal() checks
-Message-ID: <abld-ilvMEZ7VgMw@redhat.com>
-References: <20260316151956.563558-1-kartikey406@gmail.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="uGK/Pyja";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756190; a=rsa-sha256;
+	cv=none;
+	b=3bn4y2yhSGbSk5GvCnxLti2Dw7/vjkoIcJjZ8yaXR0sve3qCbAQ4zZVpZPtoz0XJfnTSe2
+	eQXrjqK8dsMOVAC6fo4Q/zSO2gTkCaJpRVT0toUtBQ/dr93L+ak2PtS8CDt0rjk+FFhKWy
+	jnf8xd/WDg4GIz+0G3l8j8TRo2J58ds=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5094e1d17d3so50088871cf.3
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:03:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1773756188; x=1774360988; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q0tipdXjQf1YFueIG3pjpKIi6COxIgjA+uwJOLkXywE=;
+        b=uGK/PyjaFBcA0AVynYOwGX+SfQs+w4VMemO+8NEXovmYIrPN20cmU24b8YrrroJrpW
+         Cu1scn4vUd83PQcgEprefpuZpKvxGiE7CrV0/QJAxIqi+nZNKtjuijNIcyn++kDpot7t
+         cuEvDLw9dMaAel3b//N/+mBDzcThnWxUPfFN+YAfAr7Zl0CsIjOrPl2zGA4wfYbzpnnM
+         oidREqVHQW2k6HRYXs1bBNvo/MqDeDeb96CsdVunhgUF4vsjCLeFFi1Gg7XT9/J0Yeuu
+         uDgSHyqXSFH/wMP71tuc2ema2h3h/L7GIcd4ye3dm+nm3UhWxpARC9i1W3VojgVOMXS/
+         clTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773756188; x=1774360988;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q0tipdXjQf1YFueIG3pjpKIi6COxIgjA+uwJOLkXywE=;
+        b=eQ7RpG7D+8PWcoRXo3oHnshpi24G145gjj6iaPi+3FC+nB4EsNbJfKegC1Q35rjK9D
+         Tnw/HQOwXIhmChtQ79hZ9TAnSaHizTgs+JsvBuQIST8YML9g/hX4o6Q6RMkACI4wmo2z
+         I0oZgBntvTbhrDNWFLvgMfKHEeNodcLR9bD2qLOUHkAPZ5wjYb+tlpwp2zVPetcvm8EH
+         VxKinIQKmU+yaKrDOMUgSr6z/nD3FjirKjFnXZJ3AgUxG16pkqqJqWMk9DTM+uGMtIny
+         LOEjcuiHm7rCE7DeoonKDa6T69fsNhparMAsxtWx/4cDhIb8FUaSZVMMoQ9jRbAaDpxP
+         iyZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHtkzFX/qlO5YY4IYL+pXxQ8oXoM+4H3Znkh7fz90UVYxViUdCMTnz1nRj4ZYFIe2clPLGPj+LvQ==@kvack.org
+X-Gm-Message-State: AOJu0YzOslJcfbNWqlJ59TuJpsqg1i0OIl/hrUsjtj6huMxxVLDNaaWg
+	/W1cFtbSSBrjfr+tPKQq59xHV5tJ4FzT/6vTbAj28dY3dLaytNZsb4RC+aI2Hi+sMVE=
+X-Gm-Gg: ATEYQzxiXHaCgQma7GIin/r4UwPazp4J1BEznFuYoMuLUo3DXTzhK9TcsQLD9pK/du2
+	6nUQefGpieAO8bKtGriado9t5ocqjoFDJSr8K9jbd/LZR3g/fBbghJaJmMsh6LIA+tvRYtN/hQs
+	rvZ7hDNf4ON/0XWtbGt+1fmprZ6K8CqQRBTjE4Ts70mCFQr6tM0wAws9D/2TN0vpyMPjD0FOqnz
+	4SiBJ6Gb3jaGyECVt40rlmPFmxCPIFcb7T6yG1VKOsWIQTeCf8BmBFVQhyfLLg8bZDove94t5tL
+	KXG55+Y893m0TS6dZ9bFrFfG7RbcICSiTZ8cjSP//T2lbQK7EDljBOf/F9/jsWe9YXr6VJDyTxC
+	LDx2TzCnyb6Jg4j9iw1InjRv82+DASVAAc2pYN9MryM1DxRT/YJtGUeYtqCQXQMxY7gUDiYO6cd
+	RpTkxFIbfUyGG6bWHhi7iKZw==
+X-Received: by 2002:ac8:5fc9:0:b0:509:1e54:a501 with SMTP id d75a77b69052e-50957cb1c78mr217731181cf.9.1773756187953;
+        Tue, 17 Mar 2026 07:03:07 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5093a0ea244sm143096271cf.16.2026.03.17.07.03.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 07:03:07 -0700 (PDT)
+Date: Tue, 17 Mar 2026 10:03:03 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/7] mm: list_lru: introduce caller locking for
+ additions and deletions
+Message-ID: <ablfFy6xnWwZQyUq@cmpxchg.org>
+References: <20260312205321.638053-1-hannes@cmpxchg.org>
+ <20260312205321.638053-6-hannes@cmpxchg.org>
+ <46d9173e-98cd-4f59-b0f3-e477afd5283b@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260316151956.563558-1-kartikey406@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: irMgn3AXeQn-mO02F4KEHrzwU1O8aCp0eAHz7lWxZm8_1773755902
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: ug5xwenbtin39h99dix8955q4fd1brbe
+In-Reply-To: <46d9173e-98cd-4f59-b0f3-e477afd5283b@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E251B14001A
+X-Stat-Signature: j8c4dge46mqdbdpmce91b3zekzknts4t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 79C8340007
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773755909-648553
-X-HE-Meta: U2FsdGVkX19X6r2po2ryBB1V9MoCWWcfASUJuBscz3/eXX3vmfyMk1CgToukhULD5XHJJFe/EG5QVMxhc0MWfCzzV6gb2mC962X8IIfY9ALvo3A29ie+jIoRw90eeyKuwfQgGb12gEDfzto2dk/jbvq139LbzMFya/WqhxylhcrGP1pfOxaXnkOmO3brw2apKQV57FvocW8WnWL0wOMOZzUdsMbyI3EFhS/EZkZFB5YWQdBIKBoa/ueHkzHlRjhKZ72Vdk7mVGxRsK1hLW4c1vSExTHgMTQmNubJaN/wbv9sz1Fwlf4+0gKoLgpERe2p7KjFwTvUJXTWLqCfo60pSpk8mafVtzrrACO81WK23NCVmaFMp0VpDd9a7JGMP3zADGRvXxIXuoZXGKG13Vk8z0NfO28at9X/oQ9P7+y3Fc0Nm6mMqfjy1T+3RIBXPhCcFllQ6Cz1mlZbvZ5dLGdazPhS+u4L1pyf6VQbOmJKH8M2EG77gFz8lUdvMhKABZcEB0xl3e9Nw5msRMviuMLWvvRPrwqp5pzIhHnzeIGkaaIndCwdxKm1pIzpm/XpwD5OFrli9Ojn3j3velie0UoJUNBoe2b7OlDynF7k6CX7yhn/oWnNp1Nt4SZiCbLD4PwQUDSsGxzh3TCSPhEuydGNxgRqXTFy53gc2k12yE33IbMq7B2Ksy2DOmasyjL4WDTn17iV+ZdCge1el9gXHTo7kUUvCNzJwiGzLJEjnRiOneI+2orBGx8IVx+xo+9MI08QC7g9Fd2pftQeP0M//f4jgQsoCkotHgA/VUIVjjlGIEdI2xnM8+5NCsl+VMqdK/lyuM7BhesAsirsi7WhxzIHXWPULt/p7hPGxj7MUUkoABHlrSsT8lAiBcW0FD3p33MbqGUNU6KNkroopGkbJZhICddX3ZfjUKesaU8nbnyIbGzQy6FnBIp7URZD3zrib6+ucP76XQ2zCXZuCaZGTpr
- 7+7X2Ker
- fFDOXItIet4NaM1iCsUONqIJr7E65WmQR41qOPhLIMSU7LMNVkdZkLyNYPiu7M2Q4NoXIMoXn1qZyVdibwMNdIds3ZxLcnQrHklgRMLeVQQg+l5ieIprNkKm7jjyNjzYt3QgPu/4NMMTMrUeiXlpuIndaesTqMaS6Eua1zTNiWiXwIoORP/jlHCxQ9wi3yb9+fYJpEorNhLXICf+jE4q6aeJL6p3kwHL3N0CViX8hAu/NRZYq7tT85lJOPpe8hWOUz/HAnNHJBxvvsxO1fvLqBjJ23OgyRixLHg/dB60E3t+lD2w494x4rNPblGO0J39bOzG7KHadKdx50JojVRol6i/s1T/9Y82zfichIvruPo8M+hobLjhq46Fya0fXLgenPBq+
+X-HE-Tag: 1773756189-843483
+X-HE-Meta: U2FsdGVkX18EaxjliRs0Sp4n4vh1xIVx47Ol3lLGXLtE29H9CXFvcPSyOTBSnUqLPSQ+iRmKjAJiY3ZfiydzX9VFZMeW8wvtkkxFxqAINfkqp/gOy/cdEC8KCA9Qwz6in1CAMI0NNUn4GX0fwSP3nuwtUefrWGSvmrIaSKL2vWWTUdl60UO7rS0ghvlYym3Wlgr/T3OJdZrB4OvQxG560vezyCezotK+PwwGRwcvt2jls4YWc0O+iXCHjqn799NY/Q7JGF/7GjjFoBhDeKNstqJHFOiITPncNFU3FmXGU/cYl2ffnvI29dgaaa9dRf0yGTj14Zs2ivndqRqq/3HOOqoBypqJq6yvfhmHfYgYen5hZDz6T6lWwkneLeJlXmD5K4yH3M9WK5ng/Hu7J3YupFl8w8I39buv+RmzJGELgILm0MOyYobXpLaLyJf8hOZcl8hvugPGOOEPn38MBsrMSOrjUfd/bbileOHOXbm5C9wJ66Wc0hVucD63jojl6BDtPOBnJRXvnVGiHvobzNlOKQeJqI2AfPiTMfA9DDXi3XzGkvJzSb8dYz7wKXFODy6uIW4vYm9o7OGWSqcyGIUhcKZm0uwYGy8cJ+HrWP3u/wKNtwxMcQ+0x/L1bFMJ/DqeHbD25BnZ24quD/+EwUUvkHHLvqWVq4tAH2EiyrZGFrdxW8YYKWPzZMwdWKpaWb0ZLZQICTT0DFYwBi0R0fJwQQ+tlZzmePW/VEeWLcEFvh3Eek7OPvxnHrKPb5QsiEfCG+EL/gab2D/9KcxvfjhbPIey5snTr8F1nDak+dD5Mp04sRSPNGyhyfm/uMeC8lwiqIaKjVBQvSEGICXxozLXZOOLAGTWFtNx6GXql/Ee54rffZ/vStQIok+SWj+HEENVGMHwoKdrZ09015ujjaL7SQupU55v4QmbMFPnqmeCGDymjuaqRgUO8lCOOyCUU0eUyydWei/kzb2M528QR/D
+ 0gkUyHh0
+ Gz1j1aBu/3t0S52PSEazhRs3o/Sn1aodhzVPf/M1f6q56MC9FKfcHbe9Js3LObm988YScDNeDUoLG1BHuZlf6/6XaFMXpuzFATMEvv3MdrokuCLjAfS/SvkdRSh7jvtZKFbPQLS3cejac9+29h6onYe57zvlEL/WrNQ2CP0SfKza5CoEAOG0QXxeWObboQzbLdt9Tz02EwKIXiomq1Q2Ew4RST6cCYn+ojjX/+S90oFi+y3GwqX7S4VhFZbcFSe6uW9vSG99Az/WMDWLg3w62HOR7xHgfbpB8gRzuovW8xokjq9bq3DsjfuC+6cxRvgNx+SGHbhgZ7U6jBTkSbM+7C0Wl78/jVFaa3nRPlHwLy3hQUuYY9OwxLxVwWpqUxPKAqqMJvvaDvWIeXTPx91tSds/9W1VjeD8i35XF+GTDfjqD9ny0TaAbPQeLhULBCsyULaJEKQgHUelvzlxtSS4ohBk2BZ/UShfgCW8+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,45 +125,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
-argument of do_notify_parent() must always be valid or we have a bug.
+On Tue, Mar 17, 2026 at 11:00:59AM +0100, David Hildenbrand (Arm) wrote:
+> On 3/12/26 21:51, Johannes Weiner wrote:
+> > -/* The caller must ensure the memcg lifetime. */
+> > -bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+> > -		  struct mem_cgroup *memcg)
+> > +struct list_lru_one *list_lru_lock(struct list_lru *lru, int nid,
+> > +				   struct mem_cgroup *memcg)
+> >  {
+> > -	struct list_lru_node *nlru = &lru->node[nid];
+> > -	struct list_lru_one *l;
+> > +	return lock_list_lru_of_memcg(lru, nid, memcg, false, NULL, false);
+> 
+> The two "bool" parameters really are ugly. Fortunately this is only an
+> internal function.
 
-However, do_notify_parent() only checks that sig != -1 at the start, then
-it does another valid_signal() check before __send_signal_locked().
+Yeah, I absolutely hate this too. I only didn't look further because
+it's internal, but...
 
-This is confusing. Change do_notify_parent() to WARN and return early if
-valid_signal(sig) is false.
+> The callers are still a bit hard to read; we could add /*skip=empty=*/true).
+> 
+> like
+> 
+> return lock_list_lru_of_memcg(lru, nid, memcg, /* irq= */false, NULL,
+> 			      /* skip_empty= */false);
+> 
+> Like we do in other code. But I guess we should do it consistently then
+> (or better add some proper flags).
+> 
+> Anyhow, something that could be cleaned up later.
 
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
----
- kernel/signal.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+This is a great idea.
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 86aad7badb9a..683ef92f7234 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -2171,7 +2171,8 @@ bool do_notify_parent(struct task_struct *tsk, int sig)
- 	bool autoreap = false;
- 	u64 utime, stime;
- 
--	WARN_ON_ONCE(sig == -1);
-+	if (WARN_ON_ONCE(!valid_signal(sig)))
-+		return false;
- 
- 	/* do_notify_parent_cldstop should have been called instead.  */
- 	WARN_ON_ONCE(task_is_stopped_or_traced(tsk));
-@@ -2252,7 +2253,7 @@ bool do_notify_parent(struct task_struct *tsk, int sig)
- 	 * Send with __send_signal as si_pid and si_uid are in the
- 	 * parent's namespaces.
- 	 */
--	if (valid_signal(sig) && sig)
-+	if (sig)
- 		__send_signal_locked(sig, &info, tsk->parent, PIDTYPE_TGID, false);
- 	__wake_up_parent(tsk, tsk->parent);
- 	spin_unlock_irqrestore(&psig->siglock, flags);
--- 
-2.52.0
+I have to send a v3 for the fix in __folio_freeze_and_split_unmapped()
+and the lockdep key, so I'll make this change along with it.
 
+> > +void list_lru_unlock(struct list_lru_one *l)
+> > +{
+> > +	unlock_list_lru(l, false, NULL);
+> > +}
+> > +
+> > +struct list_lru_one *list_lru_lock_irqsave(struct list_lru *lru, int nid,
+> > +					   struct mem_cgroup *memcg,
+> > +					   unsigned long *flags)
+> > +{
+> > +	return lock_list_lru_of_memcg(lru, nid, memcg, true, flags, false);
+> 
+> And here it gets really confusing. true false false ... am I reading
+> binary code?
+> 
+> I guess the second "false" should actually be "NULL" :)
 
+Good catch, I'll fix that.
+
+> > +/* The caller must ensure the memcg lifetime. */
+> > +bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+> > +		  struct mem_cgroup *memcg)
+> > +{
+> > +	struct list_lru_one *l;
+> > +	bool ret;
+> > +
+> > +	l = list_lru_lock(lru, nid, memcg);
+> > +	ret = __list_lru_add(lru, l, item, nid, memcg);
+> > +	list_lru_unlock(l);
+> > +	return ret;
+> > +}
+> 
+> Nice.
+> 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks for your review!
 
