@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B990FED9E1
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 15:05:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BE43FED9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 15:08:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82F336B008A; Tue, 17 Mar 2026 11:05:35 -0400 (EDT)
+	id F115A6B0088; Tue, 17 Mar 2026 11:08:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 806FE6B008C; Tue, 17 Mar 2026 11:05:35 -0400 (EDT)
+	id EC2196B008C; Tue, 17 Mar 2026 11:08:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71CAB6B0092; Tue, 17 Mar 2026 11:05:35 -0400 (EDT)
+	id DD8776B0093; Tue, 17 Mar 2026 11:08:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 606766B008A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:05:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DCD488A979
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:05:34 +0000 (UTC)
-X-FDA: 84555878988.30.BBE4F6A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9C843A000C
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:05:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD1BF6B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:08:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 83388B7A9B
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:08:53 +0000 (UTC)
+X-FDA: 84555887346.11.E1082AB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3C5D3C0014
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:08:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DrQ0Fuuo;
+	spf=pass (imf28.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773759933;
+	s=arc-20220608; t=1773760131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tn0SZO83j1egoKZj5ZrOFWPkgvEVOpvUCaCtsW+ARy0=;
-	b=UYBsiX2N14mX9HaeWjpTfWH99TUKQZiF6otBBOnZ74rE2VDwSg8SHCRM5PZ1H+cxTTkIAe
-	cGnRUhKGjctMi0lL8u4yAJ3dACT0BS/Q1yVulgW5PbR/5HE+FhqOo+hfK4L5oQ3g8n4OW6
-	A3kwClc5uNfAX3ERrAIOuWDmsYqUFew=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773759933; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4GR98Iuqt7XunvK/D0lZVC+JOV+h/F1TlWUdvlnrG74=;
+	b=yK21qcpVK5gDSWh8PQfbzr/7o86PsLo47YHXJUPRT2DxiT1d1sacUnoNEqnRv76XrwxrGC
+	Zv396WR73Q6lQLFAGb0p/4PQEaDBkoVr9S6GJjGy1Suhlt4MtPPqwl5dMrdJwkYHE1fQNW
+	hfNvWEzv645COO0y7hxKDfzXZCdeZG8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773760131; a=rsa-sha256;
 	cv=none;
-	b=OHbvFq1AhdNFKhLPVNeqVvu/9y5kwUdNrI3ivyIXJY7TkSqPA+yKsIwTIekQ1Cg+IFUUeN
-	GgwmrFpfmsFUVAJq7IkonIGeqYbRRNWb7kpAhYtxB9WD64zRBcEwDOT3gjQsftiky98wlK
-	3Lvy+p1E6BOP4J40uWsI3rsWsI28KRc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D4961477;
-	Tue, 17 Mar 2026 08:05:25 -0700 (PDT)
-Received: from [10.1.37.182] (unknown [10.1.37.182])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 48ECB3F778;
-	Tue, 17 Mar 2026 08:05:29 -0700 (PDT)
-Message-ID: <f7105fbe-2141-4036-a6b2-5ec4384b77e6@arm.com>
-Date: Tue, 17 Mar 2026 15:05:27 +0000
+	b=vGDe2+EjlCeF7j4qy7xDi8P8cydW0dJFleMpH+IC/fGy6y/pjEhD3Ndfpi78lrb/D/KRmD
+	iy0plQWQa9L4JxcG+LMco2iGkOQYYt9HFYxq5e5RuaP29eGpKTO0ZGq3AXbinc18FF5ps/
+	pW29e4mgVUv3mxrLQb/GFSZYWHs9GcY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DrQ0Fuuo;
+	spf=pass (imf28.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773760130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4GR98Iuqt7XunvK/D0lZVC+JOV+h/F1TlWUdvlnrG74=;
+	b=DrQ0Fuuova1lMGPznQztgxJEIi+IFwzxoQ3Kg6jmgY8MRXXTELGZbWZjlP/k2wHaMJ2FaU
+	LTOMkKFOGs5iomlFqVbWdw0R/HD7vyP4BdgMJQQs1QofOdmzTDRO1OpuGNdQwh/jWjtJb4
+	bYMGpy5KE+/gVP3cH52pA4upUoHEkzs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-jb3R1-qHPtq-hR_gdhRPhA-1; Tue,
+ 17 Mar 2026 11:08:44 -0400
+X-MC-Unique: jb3R1-qHPtq-hR_gdhRPhA-1
+X-Mimecast-MFC-AGG-ID: jb3R1-qHPtq-hR_gdhRPhA_1773760123
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B05501956055;
+	Tue, 17 Mar 2026 15:08:42 +0000 (UTC)
+Received: from fedora (unknown [10.22.80.202])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B2A41800576;
+	Tue, 17 Mar 2026 15:08:40 +0000 (UTC)
+Date: Tue, 17 Mar 2026 11:08:37 -0400
+From: Audra Mitchell <audra@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	shuah@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
+Message-ID: <abludfGu4upPcyRI@fedora>
+References: <20260218184210.206466-1-audra@redhat.com>
+ <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-Content-Language: en-GB
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
- Yang Shi <yang@os.amperecomputing.com>, Jinjiang Tu <tujinjiang@huawei.com>,
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com, ardb@kernel.org,
- dev.jain@arm.com, scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
- <0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com>
- <de0b06cf-15a5-4109-b339-75c10d9b8a18@arm.com>
- <0a740020-4780-4156-a9c5-f8b4ada9c8c0@os.amperecomputing.com>
- <4ad2ea40-b23b-4231-a0de-585b205865c5@arm.com>
- <9dded616-989b-4846-8596-1c45a6304d36@arm.com>
- <6c0ed052-5f3c-405a-b53f-4ea21a24479d@arm.com>
- <a76e2d63-7217-407f-bf6c-98cf58dd70c5@arm.com>
- <3d2e8e41-8b41-4d1d-9292-de90425708ec@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <3d2e8e41-8b41-4d1d-9292-de90425708ec@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6c4wbdwf5amtmkbihei1x49hnehgg844
-X-Rspamd-Server: rspam09
+In-Reply-To: <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: AgeK1_8YEz45HDJKdAdxHgtQy6My2ywrdohM4IiZ-98_1773760123
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: 1e7oo4cfzffafh4q4cgtqm4nmf9it4gz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C843A000C
-X-HE-Tag: 1773759932-8857
-X-HE-Meta: U2FsdGVkX18wPqoztayOfhu2Mb80zFPY33PPbc/Sw4lOMAanjn5lC/T44ISvQtZTapWbKLoYtax+lbZ6cWrlJ3GfiHEBXyft+Jp0JYHCRC4TYOJNL2a9YJHFVMxG3miIUBMb4KQ5/AAf099xGwjoBo4ml9QyeL/NJ6NrlSzEn5/XuFQfKUUoZVlOQpFw+4j51qkz3UfCBdYAhMZLERp5An3jcaQfgajORXwF1dE0PduIrPg2oVo4ZQtGL+9FIfT2/Q4drfOXXQ8H/tSQyrD1gu+obi7U5+Omun/50+O3E8hTbjlzqnIvmKdYmW59WSM3jYH31EUpKmQiW44Y7RwPrvzukvGZ+/6IcIndzwsqRPXRXIsYLD0GHx54S7fKTYWl1s69C4y9Ia2BdaumxxRCofn8I175tekhwrbeQh3TmqPLE5a/URPsZcjxVx02m2Lix72+qkTJesYzMEeFz5WWScM3TfdC2+JmpQqDbVHR8bpVeDN5oWYFsVKbOGGZ/xz431RvNR04QuMOWSuT9owKKLExl9OW6wGXd7nStENo6n4xCS95vsVEHCJVCnnKkrKjJiyUk+Zo+i4q3CzH1L7lj/gcOnsI5SKA8eQBAxQG+R82MDIl1BAxTcL4daHaqK6x+sxoBWQ53Y7IpEk4RoGAp3snw7oZF0cKersKJQawbwgLSa3i6GccyTCEZkqtp4kKD8wtOxoLwZJNSsPhr/kJsMnvfpG1vPZrXRELd2Hh7EKot+2uvfH0Z4fiyXL9CMu3qBMpGiE9NXTcuIAL4pwYAcla/bvsWpGfkPoVm/osmbutP/hBH7RJJl0Ka4Cs4qVP0AjnON8ommchj307Bc04XO+wp71ymqF1cXUyK4iDJcP+ZxaRaVua5pJQeExltJ0zLGofaBhXp6ly8AFcPqvxC/hDgKDHISR4I9D9y7rc4nnLyynKyygTCgSnU9+Yon/dSZc5/M4PX8+6YJunMIt
- maW1yfsS
- M1GfCUlsZvRg3SwaRc6PhSSGRwwNiWziif1//AMUQLv40uMVjTnEmt10PeRMCGpl5yNNNRTTZUMSgxZ6VusL59Oe/ZqrhskK79FE7H3QaokvMY6PqkIXSjUebHhl4+KAeGDwue5YJjNR7HSq23kOQQuxO0Q==
+X-Rspamd-Queue-Id: 3C5D3C0014
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773760131-646357
+X-HE-Meta: U2FsdGVkX19jQbCi5q7Zi91jcQf3rojJGtF7mL2wsQ1ynqZPZBXRUIasNvga/4dovYu6C+Rxl67QNpWowPf2bTSAHYBq8EXnMY7yEVq3p03WlFNeR/8Z8PFKzy7w5B0NVoK+jSu1yF6porrai2WUZ70+myhNj6pkeVDknohH7iQIpn8NUADxuEwHIL7N0orfShzqxJCwmzDj/P9V6SWVWnn0MkEywEL99Y7Xj9jBZsFqVjpzUUKR1XMBWqyNhRo55BViVn6beK5SbkEH7HZO2yBHXZncXf62tgbs4ovnCu7c+I/YsWz6edADyLsi1W/+Z/BfCl9BN3gw/75Hus9RLpDlaa7NSuRYxNyc/3D68GsCOkqEOF9hrVPUwRb2EiDCCPE4qf14TeYVxhuvsp7uNINKX0DJhjOvGES3Rec1boLYkqeEuMiLBDwPyYyNIBPdCMUOmxtInGFYOxwR/7ogvJX8M6MEKCbCGs/pApUWVxDUzQQefja01ezXUjd23EfmGLKaDdNAcmP5HMbod2LpfebSdJk2Hz2we+A8gAXyREu2E9BgwIwIQmMeLu6fnawA/fLlIk6GvjkjPYuBG2p46Fddm0kS8/zsccLPr1/JUYpCaWYkEsQJGLPj7GOG8HvYGSvZHqCgRDaJddB1OwkWwlG0GxHP88A3scQZUOl1s0vlknXPsI4oJ5xV2o2tQbGyKkUsAMvw6MI2AB3vnvvdU9gTaGywY+NIgXWwzco9aMdmdO53hb2nURdArLsI5lh7X1svAiV02TSm97cMUoMd9JTh5g3smX5TrSaPb1oAmadfNf4K9D63gRSO1UuQSdXBTDezTQ6qtBUNSZVJp0INrzfU0Q6yrVwFI6zNGRqzxp88Hs1MWW5fYBtkL6VI8pWluSIZW2JlXBR2bQbXl6aQTnXbIBs28gpfuMsEqb3qzZ68GH4cHndmRgHItd1IpSMfvLgQPUhcP+GYenbFbv9
+ I+EuliC4
+ E5wr+7SkLwiJCWeyuhldMWvTwCGUFJ06lHJOIvNwlxz0RfGH9QrpXUC6+O4SG6Zod4hZ+MLJztCDH0AZUasqRhWxL5694LlYH/g/DolP//xqpADlfInRVz4Im0zJQsWDF03zl0TDjUZol/aRY+m2OFQdF+846IqbWM7hi4rx58X0X8JGlh65QeuDlHG8n44Ht8Fc49/mo++Jr4hVAUdqLtwMlZWNX2wm6uSdKrMeTiiVTRsscxittOvOS8CI2dxQBm0BKQFKVzRdiYjgPJMnI5idZxKxIisxGx3sk1IDLNlia2CcBE/SisSrlBInp10eOVfW9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,68 +106,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/03/2026 12:43, Kevin Brodsky wrote:
-> On 17/03/2026 12:45, Ryan Roberts wrote:
->> On 17/03/2026 09:29, Kevin Brodsky wrote:
->>> On 17/03/2026 10:13, Ryan Roberts wrote:
->>>>>>> Another option would be to initially map by pte then collapse to
->>>>>>> block mappings
->>>>>>> once we have determined that all cpus support BBML2_NOABORT. We
->>>>>>> originally opted
->>>>>>> not to do that because it's a tax on symetric systems. But we could
->>>>>>> throw in the
->>>>>>> towel if it's the least bad solution we can come up with for solving
->>>>>>> this. I
->>>>>>> think it might help some of Kevin's use cases too?
->>>>>> May be an option too. When we discussed this there was no usecase for
->>>>>> direct mapping collapse. But if we can have multiple usecases, it may
->>>>>> be worth it. 
->>>> I could imagine that if user space creates and destroys lots of secretmem areas,
->>>> then it will completely split the linear map to ptes and that will never recover
->>>> currently. So I think in the long term, having the ability to collapse would be
->>>> useful. I just don't particularly like forcing symetric systems to map by pte
->>>> initially (which is slow) only to collapse later (which will cost even more
->>>> time). But it does feel inherrently more robust.
->>> Now that you spell it out, I'm realising this would actually make things
->>> pretty complicated for protected page tables. In that series, page
->>> tables for the linear map are allocated by a separate memblock-based
->>> allocator [1], tracking the allocated ranges to set their pkey later.
->>> There's a strong assumption that these page tables are never freed.
->>>
->>> If we initially PTE-mapped the linear map and then later collapsed it,
->>> that assumption clearly wouldn't hold. 
->> Sorry I don't understand why the assumptions change? All I'm proposing is walkng
->> the linear map to find compatible PTEs and collapsing them into the biggest
->> possible blocks. The pages aren't being freed, they are just being mapped
->> differently (which can be done live for BBML2_NOABORT). PTEs with different
->> pkeys would be considered incompatible, so we would end up with a boundary in
->> the leaf mappings at that point.
-> 
-> I'm not sure I'm following, if all entries in a PTE page are compatible,
-> then surely we just convert the parent PMD entry to become a leaf and
-> then free the PTE page? And same idea one level above.
+Sorry! I missed this email so never responded!
 
-Ahh - good point! That totally passed me by before. But I'm not sure it's the
-end of the world...
+On Tue, Feb 24, 2026 at 05:15:14PM +0100, David Hildenbrand (Arm) wrote:
+> On 2/18/26 19:42, Audra Mitchell wrote:
+> > On architectures with separate user address space, such as s390 or
+> > those without an MMU, the call to __access_ok will return true.
+> 
+> Where is this __access_ok() you mention here? Somewhere in
+> fs/proc/task_mmu.c?
+>
+> Where in the soft-dirty test is that triggered?
+> 
+> I'm wondering whether the soft-dirty test should be adjusted, but I did
+> not yet understand from where this behavior is triggered.
 
-We would end up with about 0.2% (4K/2M if I've done my maths correctly?) of the
-linear map sub-optimally mapped. Personally I don't think that would be the end
-of the world.
+The problem arises when we are checking to see what features/categories are
+supported. The call chain for the soft-dirty program goes:
 
-> 
->>
->>> It could be handled by poking
->>> holes in the tracked ranges, but it gets ugly and increases fragmentation.
->> You'd still want page tables to be allocated from contiguous physical (and
->> virtual) memory so that the boundaries where pkeys change are minimized.
-> 
-> Yes that's for sure, that's why I'm concerned with individual pages
-> being freed in a middle of a block.
-> 
->> I guess I've misunderstood something...
-> 
-> I might have too :/
-> 
-> - Kevin
+  main()
+    ->test_simple()
+      ->pagemap_is_softdirty()
+        ->page_entry_is()
+          ->pagemap_scan_supported()
+            ->__pagemap_scan_get_categories()
+              ->ioctl()
+  
+We enter the kernel with an ioctl, expecting to have an EFAULT returned (see
+the comment from pagemap_scan_get_categories():
+    
+          /* Provide an invalid address in order to trigger EFAULT. */
+        ret = __pagemap_scan_get_categories(fd, start, (struct page_region *) ~0UL);
+
+Once we enter the kernel, we will check the arguments passed which includes the
+call to access_ok: 
+
+  do_pagemap_cmd()
+    ->do_pagemap_scan()
+      ->pagemap_scan_get_args()
+        ->access_ok()
+
+Here is the path within pagemap_scan_get_args where we expect to fail return
+the EFAULT:
+
+        if (arg->vec && !access_ok((void __user *)(long)arg->vec,
+                                   size_mul(arg->vec_len, sizeof(struct page_region))))
+                return -EFAULT;
+                
+However, if CONFIG_ALTERNATE_USER_ADDRESS_SPACE is enabled or if CONFIG_MMU is
+NOT enabled, then we just return true:
+
+        if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
+            !IS_ENABLED(CONFIG_MMU))
+                return true;
+
+The intent appears to be just getting the categories available to us and
+verifying that we have the feature available for testing. However, this corner
+case means the soft-dirty test will fail with the following:
+
+  # --------------------
+  # running ./soft-dirty
+  # --------------------
+  # TAP version 13
+  # 1..15
+  # Bail out! PAGEMAP_SCAN succeeded unexpectedly
+  # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+  # [FAIL]
+  not ok 1 soft-dirty # exit=1
+  # SUMMARY: PASS=0 SKIP=0 FAIL=1
+  1..1
+  
+Since the intent is just to validate that the features are available to us for
+testing, I think we can just modify the check so that we don't fail if we
+return 0.
+  
+Let me know what you think, or if you have more questions!
+
+> Do we have a Fixes: tag?
+
+I always hesistate to add a Fixes tag on situations like this since this is a
+corner case that was not considered by the original author. If we need a
+fixes tag, then it would be:
+
+Fixes: 600bca580579 ("selftests/mm: check that PAGEMAP_SCAN returns correct categories")
+
+Thanks a bunch!
+-- Audra Mitchell
 
 
