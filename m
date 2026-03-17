@@ -4,126 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B368FD8746
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:51:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BEAEFD8755
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 12:14:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70D8A6B0088; Tue, 17 Mar 2026 07:51:01 -0400 (EDT)
+	id 13C676B0005; Tue, 17 Mar 2026 08:14:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BE546B0089; Tue, 17 Mar 2026 07:51:01 -0400 (EDT)
+	id 09EC96B0088; Tue, 17 Mar 2026 08:14:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ACC96B008A; Tue, 17 Mar 2026 07:51:01 -0400 (EDT)
+	id EA86C6B0089; Tue, 17 Mar 2026 08:14:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AA406B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:51:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2678C011D
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:51:00 +0000 (UTC)
-X-FDA: 84555388680.21.0664DA1
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7AAF614000A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:50:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D20D46B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:14:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EA471B6C1F
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:14:12 +0000 (UTC)
+X-FDA: 84555447144.03.F3F85B8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7EF111C0002
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:14:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ows9e84F;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773748259;
+	s=arc-20220608; t=1773749650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eJPcRpwIoY8lxu34CSFv8eOn+HCjO8LE3kQkkvlb90o=;
-	b=pxYO87/pFrCClXKKSE6/maYFqvgxeUK29DQWMT8zUmpmCRSe5hKPn1jjNv76zIDmjEUmsM
-	uHsyhVGzOoc+VAz1QI5myDwkJqLPRg2SZ3MQDIDOZtBW7FSuexpTuW1i7C3iOHIhn6Y7yr
-	WiHS/ivJ/p5wD3cBLh1WSypzBoj5Wlc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773748259; a=rsa-sha256;
-	cv=none;
-	b=y/eJOjZHhCOVFyR1fACgMTs4lclDJHBl1xkpSSPFkxiD22oIdjHx16YxCN1yjzebEFA8xg
-	ksjO4OlO8Hu8q8Kh+/p7LXkZLDFeZZgBJgb1xWp+NyqCsOiuHZhdp2us1EX4iKWEM1ye4l
-	MeJ7EkTLB6iL6OLfxVjbx3vukH6Spv4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0jxMNeD+XvOscmoxPWl3tQ4UM3/rwmlnhkwX+6Q+sMk=;
+	b=2FJfjviG/n4eiIOttjWh+rkIfb0BgCpnDzTxLu9coSO/MKyEx2Z3QVJ4B+RrrcKtk2H8kX
+	H2O8xT4KRKIn3I+tHjyFk6C1c6i0dyrhhAtvJ+GIvAI0iq93KgML9Vi0ZcE8W6be1I9+dX
+	B2b/rGPVWuQ+vdBkNSie/Z8jEdUGUSU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com;
-	dmarc=none
-X-AuditID: a67dfc5b-c2dff70000001609-67-69b9401fe92c
-From: Rakie Kim <rakie.kim@sk.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: Rakie Kim <rakie.kim@sk.com>,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	harry.yoo@oracle.com,
-	lsf-pc@lists.linux-foundation.org,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce socket-aware weighted interleave
-Date: Tue, 17 Mar 2026 20:50:47 +0900
-Message-ID: <20260317115052.294-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <abhd1BXSST0BTDaN@gourry-fedora-PF4VCD3F>
-References: 
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ows9e84F;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773749650; a=rsa-sha256;
+	cv=none;
+	b=m0Kh96pyVQQEiMm1EXO1a4rUQWQ7uAsT4UIF9CMcEaTGlMn5J/mPjJLfdNKCX/LIykdUqt
+	08Ep1rbv09dGPzMXOwmNnPLUDy3XnVsA8JhmyYIsp35u6GEFiRrbzR5JC4/1IGRgVOHUet
+	hPEj2VXqT/TSp4iPLrI26cfzuqsD3hQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C8DF860134;
+	Tue, 17 Mar 2026 12:14:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213DAC19425;
+	Tue, 17 Mar 2026 12:14:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773749649;
+	bh=h2yNj/JlK8uUWz6oueVZrppiSDLJqWd0uEjVTtCBuyY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ows9e84F4eolPF6a0yRJ+ZioFE3OdIGV4p+J5awFCnKRj03CyNoc3Wix4W1oioAV1
+	 KByL/Fg9tQPh1ZWFCVDaxlCyK9TBDIwiKbYJ2MrphlT4seY33NXo0fDys6FIPxTAui
+	 4VhYIIbPQgodQ9d22mzQtI3uz/IFAaiwAli+8oFtQdIgcJBgMZrPyJB3l06FH6w1iZ
+	 8xBru0mGQwGukYjkrOCjb4McWDPbbXYY8JNGcmI0s5j9lnTKGYOhqom29VRQyJlZjO
+	 NDD5qPNMMi5yR3mBjdrRBpd9mvw/DfdVIwGmncQY2vnEaf6wndQ5V58hyLRLS8gH9q
+	 Q9RIEtdQgEi/A==
+Date: Tue, 17 Mar 2026 12:13:59 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Mateusz Guzik <mjguzik@gmail.com>, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
+Message-ID: <4587357e-e503-4a01-ae2c-df4ebd2c24a7@lucifer.local>
+References: <20260316140122.339697-1-ljs@kernel.org>
+ <a4973bb0-9286-4b49-9e53-656eec2e9d93@lucifer.local>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrLIsWRmVeSWpSXmKPExsXC9ZZnka68w85MgwuXJC3mrF/DZnH38QU2
-	i103QiymT73AaHHiZiObxeqbaxgtnm/9xWjx8+5xdov7y56xWOx/+pzFYtXCa2wWx7fOY7fY
-	3vCA3eL8rFMsFpd3zWGzuLfmP6vFyVkrWSz2vd7LbPGtT9rifp+DxZH125ksJl9awGYxu7GP
-	0eLWhGNMFqvXZFjMPnqP3UHKY+esu+weCzaVenS3XWb3aDnyltVj8Z6XTB6bVnWyeWz6NInd
-	48SM3yweOx9aeky+sZzRo7f5HZvHx6e3WDymzq73WL/lKovHmQVH2D0+b5ILEIjisklJzcks
-	Sy3St0vgynj97ShbwSPBinuzj7M2MH7m7WLk5JAQMJHo27OWDcbet3I+SxcjBwebgJLEsb0x
-	IKaIgKpE2xV3kApmgQ42iWmnZUBsYYEMiQnL/zOD2CxAJScad7OA2LwCxhJt3Q9ZICZqSqzb
-	eAvM5hQwk7j/sxVsk5AAj8SrDfsZIeoFJU7OfMICMV9eonnrbKCZXEC9P9klnl5bDnWapMTB
-	FTdYJjDyz0LSMwtJzwJGplWMQpl5ZbmJmTkmehmVeZkVesn5uZsYgZG8rPZP9A7GTxeCDzEK
-	cDAq8fDeYN2RKcSaWFZcmXuIUYKDWUmEd9mRbZlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeY2+
-	lacICaQnlqRmp6YWpBbBZJk4OKUaGF3CNRVaD1fd0ki4xGIQbGfZ4iJUOMtxNQebnMu7LI7S
-	0z1LT3n+mM59LCF31ozejg3Llkz+kqZz/eMHpkXX5lxe/3KCrnuUIPPJWZ7S17UF925uXMKc
-	VPPhB9f34/rvbQ5wzl63u9SH90En5wvbmC/vLr9lWm+lf0EhZ4v+ZvXJfNnMk01331FiKc5I
-	NNRiLipOBAA/p30y4AIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYRyHe3fec3YUF8cledJAWFRT8kZlr1Cmn3wJQokgCkmHHtzJK5uK
-	E6KJKalommm6WRmSl7m8jLytVPI+u0mmuXnLzDt2MyQvYC4J/Pbwfx5+X/40Ie6CTjQfm8Ap
-	YmXREsoW2hYfD3F38W/lveY1NCqt01NoYmaQQsbRy+jdfS2FHhQOAtRvTqVQjVkP0HzjBkDr
-	E31CNFUxB9Hq3DKBOmbnIdI9GaFQX+MjIep6aCJRs/qzEL3XDEA0ZCyl0KR+m0QmTTVE7ctt
-	BFrLdUZTuf6oc2SeRN11zQJU8KGMQtrUXIAseb0CVKOXo82mqp1Tz6TQ3wW3aiaEuMyQiLMz
-	hoT4dvcKictfLgqwQZdJYcOve0LcX7wJceu0Ly4YrQQ4J+0bhX/OWiBeG8O4fOGHABdqb+G6
-	58MwWHzN9mwEF80ncQpPvzBb+fJaDxX/xT55UttHqsGqKAvY0Cxzim2vfgyzAE1TjITtbQux
-	ogNzlM34GGgtCOYOxRa9PmzlA4yczavcJqwMd5L+1BfQyiLmJJuRPQ13F13Z2gbLP7ZhfNip
-	9XTKymLGjl2q7wC7vT1rKvkKd/dd2LRGLZEH7DR7lGaPKgMCHXDgY5NiZHz0aQ9llFwVyyd7
-	hMfFGMDOaytubuW3gN9DgZ2AoYHETjRKtvBiUpakVMV0ApYmJA6iiu4mXiyKkKlSOEVcqCIx
-	mlN2AmcaShxFF65wYWImUpbARXFcPKf4bwW0jZMalKCtJoHrK/MZ92U+DfrW7p9rTvmUsmBU
-	x9O68YPSnEubM25sbtu5jWCfsXFp0TF5VOJbL5Pl+g3VoqOncCNc375dFXC113vhTZDfeZeB
-	gtCiYYKoP0SK/yyZT5QG5auznu27KA2UjqVnPo2YarsbKfEyxjV8LzO5rQQFHFG1S6BSLvN2
-	IxRK2V8pEuWd1gIAAA==
-X-CFilter-Loop: Reflected
-X-Stat-Signature: 1ieb3ztuxmw9dgd1ismngejrnmiz6uz6
+In-Reply-To: <a4973bb0-9286-4b49-9e53-656eec2e9d93@lucifer.local>
+X-Stat-Signature: hbta9acqw8fjnce4h7ps3m4cnfcy1o1q
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AAF614000A
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773748257-534617
-X-HE-Meta: U2FsdGVkX18Y6N03rVmc8LV5StJSzN/sL4+Z3hiSpwgDWHj3h/HPF8IaQ/bCTls1VQ5/+a6rhAFfoESGKLxnpLKBg1GTwJRKvupqO9S1K+lHl19JDUTSnG2DUNWBksGMaAwA+t4CaVXY5WfT6CJhKJU3zXAZ8Ndvy+Kj6Nuhd7krcgmoIGGV7rzftmY9VM9y8gjz7E0hk+uWpSVWQCTB6tJ89JbVqpV49OdDSh7hq8CTMbA1/0Xs8QNtTrJNOAa+qrYeZCYI5CXBOtF8P3zy6+7+YWqkkkBRqVQ9ESybSnODHG55Q2P/gqu3yc/OcFdVN5hPqER4HrRX7syxCUd/V0y1CW3zpQWgtPNjPmWVzLDb8nQvOEcDfysI2ecOStZ2ItXBX3JTKXEpDmLF/21o5RDEOESFyyjBMMq9xM3r8VEIOxlFn6RhrVwPlGo1f2nExZqav3GH+f4Xcvvo87SPMu2JD9S4hYaXTfYsvRh3WI5/Z7YvzQYlTLMxbjh/sH36TDq70WFQGGn8WkbndFHArRA+G4+xFauNLDFN2Xfk0JX/nzND+hLckrg6TgXJMo4hvs9Ef3bvdOdEqS3oK18OcMJ91sMP/jpcLCE0KqSCausk5HQtfW3fhzC/4ib0HPC2QFeX0zzlwwufM8Iq/0XuCUWdeOCZrxtMm+tHs/D11b25QA2p5oi95aFYlrPwEJ8d68jCWQPXdn26vdv0WeGLBT/J3aJ7lehWPAvytXrp3oEBz70WgGRanwcdYz3kjaSlSulCY2aaYhAQCTcmjie6t9cGJHgY2xSClYYS+lnMB1nAG8SJ/CPrAsNl+IbaqP03AUbenjjRNnZGW0m1GEJYk4q3vdosC7FHF7CJn3thTebMEIPi2uCmqMiN+pVLchPMW2EDoM5Ft7QSfpJgJtqCa2gsA9FEB8AWd6tUdKpzXV7RKS8VyGU29Dma+cjvsJBwt6t2FFgrkTD/QteL4Lz
- rWA5E1JL
- o0lsi6XAYYErsA4MIlWP6fP2QVakJVQFpsxPTuUJ09ftpZKKrpcZkstLSLXMroGui33Hu85cXgV+8X54=
+X-Rspamd-Queue-Id: 7EF111C0002
+X-HE-Tag: 1773749650-458761
+X-HE-Meta: U2FsdGVkX18ZT9CM0CB+NvSFW8mThzSNnTXmce2sfho+pCbzy1eKLWzreXEphtW5sFJZuWI2+AJbC/xfqItp/1jveCtTVOK1d3Mca9r4vuFMkzkY9c85l/EBcmqbxNIQXwXJr4JukOmrXqvkoO67B4806eJrh+5iabKVRT8+uU0/7NLvShZsflxUCBaa2lM9TdN46OuIGMLzMuvDPWmRcgzGfWECD/acUnb+eZN5VDVfuy50PgRwBhIjYiCaAdr2zzzBkNYuLz4qZoly602mrDYrq7hYvYGJOwoP4eXYcgG5HdGyB08c9iD12bFV2nJ79ePOI7Ux50SVoy0KtM/cMoHpnEJiDbDEJE/Hv73843aqbCOl3HPgJsfEXisYvRjPc9l7V/NvNkpsjoV4j29P2JcR1s253vD1p4MxS28zjgF6CGH0ILUUXhFYjnGgQSmOucnsbMFaeqJ/+6mdCFP9oJ6AmfQZSqwLJuHT1qz+5SSrTPPxShT/RL84S3AfP4tBG42f2KuM/CsW0CgJZgxlTIaEJUpbSJ6/ft1E9C/m2IEf2FvwPbgc6M2L9iBLbTy1I/RArC/BRFPPqrWykkp7rqfhTBSdVkPEAUzTbdtZ9eRjGQYMPnKlrUfe6o4Dw60wIpcWVVS5DHg5CPO/H7J8ic3q0BrsAWSfsAUjgp0OVStTqKrmxcLwvzBlPgwxZzCwq4OH7Kvia1qxCk60kx3K8vLO3tHqdfMrXITXt71BdKqLW8hbWBlkXJIa1YdC4fqCw0adfNbX1vw8Z1F7YUQNbRcogwAELOndE10lapQRVD26c10qFESGa1aTJbOl0rChHj8LSdHrBH9pZi7Qlsz3247dJlRzaZ0S/ZOe32ZmS9RkWUG6eR+6422mX2dZC2+3fj6vaNVEtmikahEA9qqQr8vwv3yvB9QpsymHYnoyGXmQ3vanlNpOUry58fXyPpNEpoMwQag/jfIsClqawBi
+ XBBc1Os+
+ a71M3mgQNyr3FdSo9s0eQheWnxOFxagUmOx8Dngd+n8grvtxYip8Iq5laG/vSdpWN9Q9duihmHuaLYEnrcgRNnwHBBTI/uboAsLAGpXi3sVSaWctc/q1Hb1pLkahQr8e0kDHhlTtxkO+kmTyaN7Sx9d9awVHxEmfJm4iZ04AW2s9ofrU103/qsW6OuNre91SkBR7OHLBMS2y5rUiOkIJXf3BdFUqFbB1lLk3zS7jiMzekwtct2yFC1aFjX6Y80RHUsuQKgXVFbxbshvThKDNa6TdB+huPtABENA4I8xYD9fEcpAKwYyxGSZ/yjhx1Ehycpe1s+jG+O9pXQMSMG4q7vI4RJ6UAYYAJAhd3rK2vabubLKn3rvCQsPZ8wmKWl4ht+ZM8wXo6JC9PYQMoooBjTr304g3akeIBWwdK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,58 +94,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 16 Mar 2026 15:45:24 -0400 Gregory Price <gourry@gourry.net> wrote:
-> On Mon, Mar 16, 2026 at 08:19:32AM -0700, Joshua Hahn wrote:
-> > 
-> > In that sense I thought the word "prefer" was a bit confusing, since I
-> > thought it would mean that it would try to fulfill the alloactions
-> > from within a packet first, then fall back to remote packets if that
-> > failed. (Or maybe I am just misunderstanding your explanation. Please
-> > do let me know if that is the case : -) )
-> > 
-> > If what I understand is the case , I think this is the same thing as
-> > just restricting allocations to be socket-local. I also wonder if
-> > this idea applies to other mempolicies as well (i.e. unweighted interleave)
-> > 
-> 
-> I was thinking about this as well, and in my head i think you have to
-> consider a 2x2 situation
-> 
-> cpuset             |   multi-socket-cpu      single-socket-cpu
-> ==================================================================
-> single-socket-mem  |     mem-package            mem-package
-> ------------------------------------------------------------------
-> multi-socket-mem   |       global                 global
-> ------------------------------------------------------------------
-> 
-> But I think this reduces to cpuset nodes dictates the weights used -
-> which should already be the case with the existing code.
+On Tue, Mar 17, 2026 at 10:01:19AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Mon, Mar 16, 2026 at 02:01:22PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > Commit e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from
+> > zsmalloc") updated zswap_decompress() to use the scatterwalk API to copy
+> > data for uncompressed pages.
+> >
+> > In doing so, it mapped kernel memory locally for 32-bit kernels using
+> > kmap_local_folio(), however it never unmapped this memory.
+> >
+> > This resulted in the linked syzbot report where a BUG_ON() is triggered due
+> > to leaking the kmap slot.
+> >
+> > This patch fixes the issue by explicitly unmapping the established kmap.
+> >
+> > Reported-by: syzbot+fe426bef95363177631d@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/all/69b75e2c.050a0220.12d28.015a.GAE@google.com
+> > Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsmalloc")
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > ---
+> >  mm/zswap.c | 7 ++++++-
+> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index e6ec3295bdb0..499520f65ff0 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -942,9 +942,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+> >
+> >  	/* zswap entries of length PAGE_SIZE are not compressed. */
+> >  	if (entry->length == PAGE_SIZE) {
+> > +		void *dst;
+> > +
+> >  		WARN_ON_ONCE(input->length != PAGE_SIZE);
+> > -		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+> > +
+> > +		dst = kmap_local_folio(folio, 0);
+> > +		memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
+> >  		dlen = PAGE_SIZE;
+> > +		kunmap_local(dst);
+>
+> FYI to address (in advance) the AI review from [0] which a couple people made me
+> aware of - we don't need a flush_dcache_folio() here, because the folio is not
+> yet accessible by userspace, so we can't have virtual aliasing of the folio's
+> physical address on VIVT architectures.
+>
+> Examining call paths:
+>
+> zswap_writeback_entry() -> only calls zswap_decompress() if allocated
+> -> zswap_decompress()
+>
+> swap_vma_readahead() -> only calls swap_read_folio() if allocated
+> swap_cluster_readahead() -> only calls swap_read_folio() if allocated
+> read_swap_cache_async() ->  only calls swap_read_folio() if allocated
+> do_swap_page() -> called in path where folio allocated
+> shmem_swap_alloc_folio() -> as name implies, allocated folio
+> -> swap_read_folio()
+> -> zswap_load()
+> -> zswap_decompress()
+>
+> So actually no longer doing this is a de-pessimisation ;)
 
-Hello Gregory,
+On second thoughts, I'm wrong, this is required. The documentation is really not
+clear on this, which is a problem given how horribly fiddly this is.
 
-Thanks for your additional feedback.
+https://docs.kernel.org/core-api/cachetlb.html it super vague on
+update_mmu_cache_range() -
 
-I agree with your analysis. The final behavior should follow the nodes
-dictated by the cpuset or mempolicy configurations.
+"At the end of every page fault, this routine is invoked to tell the
+architecture specific code that translations now exists in the software page
+tables for address space “vma->vm_mm” at virtual address “address” for “nr”
+consecutive pages."
 
-> 
-> I think you are right that we need to be very explicit about the
-> fallback semantics here - but that may just be a matter of dictating
-> whether the allocation falls back or prefers direct reclaim to push
-> pages out of their requested nodes.
-> 
-> ~Gregory
+It doesn't mention that you really need to have invoked dcache flushes in
+advance for anything you changed, and that the architecture may then choose to
+not do anything at this point otherwise.
 
-As you and Joshua pointed out, making the fallback semantics explicit
-is the most critical issue for this patch series. We need a clear policy
-to decide whether the allocation should fall back to a remote node or
-force direct reclaim to keep the allocation local.
+Anyway, I'll send a fix-patch.
 
-I will explicitly define these fallback semantics and address this
-trade-off in the design for the next version.
-
-Thanks again for your time and review.
-
-Rakie Kim
-
+Cheers, Lorenzo
 
