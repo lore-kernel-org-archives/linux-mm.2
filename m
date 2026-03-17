@@ -4,98 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C371FEDA0A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 619AFFEDA0F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:05:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 609EE6B0099; Tue, 17 Mar 2026 15:01:56 -0400 (EDT)
+	id 943E66B0096; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BADC6B009B; Tue, 17 Mar 2026 15:01:56 -0400 (EDT)
+	id 8F4CD6B0098; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A95D6B009D; Tue, 17 Mar 2026 15:01:56 -0400 (EDT)
+	id 80A706B0099; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E826B0099
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:01:56 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2F5F5611B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:01:55 +0000 (UTC)
-X-FDA: 84556474590.16.3715CF1
+	by kanga.kvack.org (Postfix) with ESMTP id 6F7B36B0096
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:05:46 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36ACE13A42E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:05:46 +0000 (UTC)
+X-FDA: 84556484292.11.F2C94E5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1523D4001A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:01:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcEFPDX7;
-	spf=pass (imf17.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8D8D5C0002
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:05:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VRWgTDqb;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773774114;
+	s=arc-20220608; t=1773774344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G6DnMrpwy81R+1cg28Zzd0r8ovxNQwv+LEtPGLckKTg=;
-	b=bhkCTmKO9zs1IQe+GYXCvxyV162a7sMi3Hz/ROVy4r82BPVXW51Rh+USgDvL9q0QeSLRRK
-	r89quVjwn5IIHEsywZPjL0TWJwpqMK4o6dpLFaatlRuSkWhLbWXJml13sCXOpCs7OWZlFu
-	lWsp6OV0Rnh5SMyR7OvhSKE3WccZ890=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcEFPDX7;
-	spf=pass (imf17.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773774114; a=rsa-sha256;
+	bh=inV/tXyTEKWdCfYJg7Qync+7HkKGnW+PK4sn/riZ7uo=;
+	b=vFTc5vIAFY6hZkkXKUJ6kRTfwp580/lqlb3Y696BnWb9VHkDKMrGqDYH88pvw3TgIRPJjj
+	NkvSDhBa0WYFvaUMH18H1Z0kXErmkfeOgHkPPI6OF6TibkPnIx1x9dHCS3PzEswQVlrQNa
+	2MCqdH6UOFkoy2G3/YQklIjsvxqKPic=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773774344; a=rsa-sha256;
 	cv=none;
-	b=DftPwEqTxtQBsDj9gGJ/zvHiqHr9tjxXinTCMR74uDarJCwlHm5jinPN/rx2J02ZhiTFIX
-	D3swkrRfFgNkmuAloaZKK+6rE7uvDbLCRS/BF9fPbaMWa/ISXdorzqzrAEiByrEI3Ap3cN
-	WNyLJ8nOQvHVlrzsevoE+TfX1uGiLFs=
+	b=u7pKtkmAu1qNi4Sdnb7TXlOIo5lYwHUyKAgTtI0e6+tjmjBZPDt0s1Dd8Adbwj53c3okqK
+	61syR31Q25umqV9HDuiAT1ZqcEHR3Z6vHnichh/1C4xvAJCiXNJI0q+MXRWjs3F1TQjKuc
+	liPMFT0yZuIvAlkPi1MIGEoIWsP306A=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VRWgTDqb;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6898D60103
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1740FC2BC86
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:01:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDAB860018;
+	Tue, 17 Mar 2026 19:05:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F64C4CEF7;
+	Tue, 17 Mar 2026 19:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773774113;
-	bh=X7+GZqk8XCTD7ztLtdVckDBkeqEbcXbOGabMkquTHY4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dcEFPDX7cHxHSgGJsjPkKNXCtgDq8YWDFkFT1/9yyZl2SjWq8qDHBmWIMS5spzVRa
-	 LvStT4CyFvqRsZTa/j6aq6hMZx+thQP8HAbE4cJb36zHptDxmaPnfxHWHz4cLWJRmR
-	 5FNH8Fe+EOshQQqha+V3mAHGCoDLhFsHFa7NDkfqwmH1QRGP9QQgJ0Cx8jSnJqkYfZ
-	 MHZbMY2FqK0ThjMUEvMWkBdR8Pd9EOHsgrzhr9jYWofI4DX2QyJ6QK9iG6kC94pEsU
-	 BtSveGdtFawavfkfHdpIUxMRxJH9ubeO0BRT9n5TzGJLXMfIQNc5225a7xzyx0f9bb
-	 i+aPN9Nyn010w==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-661d20c9787so8803786a12.0
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:01:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXIpDS9ln9j0m6LJOlOTha3qDp3nl5jd4GjXke94rt2ssa6nJ6slAOKU/3+9XDcBr31debK9iCDXg==@kvack.org
-X-Gm-Message-State: AOJu0Yww9+jkKJxrSRBF9lF8QcMpJKm07y+0rMCiUaHEw69OJ6ErD7FP
-	OYB/zoG3cgbXH9kypieTW2zqofg3iODNzbikzg+YXRrQ2MdP9Jejw7JEsiqlpzMzdaiFJixZi0H
-	GbkGFC1mTSJwuK9JkiJ6lQD9HHVSy4R8=
-X-Received: by 2002:a17:907:e10d:b0:b96:f0a0:c7be with SMTP id
- a640c23a62f3a-b97f4827ae3mr18589266b.24.1773774111734; Tue, 17 Mar 2026
- 12:01:51 -0700 (PDT)
+	s=k20201202; t=1773774343;
+	bh=syW3z0x80IUsDkJqDO1sfU4YY8HBrpHtA77ObK08ZFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VRWgTDqbWe3Q1W3JoxRORGEv9cJSyULlIC1z8Bw/dttRqK0xrUjV3jcLj+FCNIlhA
+	 yfquFZi5RuoGYh094bwpTEqzMSy1oi20VB/mwVmDasAQXUEDUj69QwmFrLNkzzaaEW
+	 TxL4IoR2tfqmdocyZECPzry0Flux1xfTuoo78wga02G7HX9CfQP86SEbWHmeki3bnG
+	 fQQPAweWzmsOQWPyYRrr1vn+O2GeAM0lXjxVoRUKicNl0fMpfX0u90da1igsahAgWD
+	 lVpeDEoTnLCevj3RHVAGT/mI6ZPAnZpFvQykUFfbUgqTYwv27pZul8kECdVX2mxKrW
+	 MJpheC1EsGxUQ==
+Date: Tue, 17 Mar 2026 21:05:38 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Petr Tesarik <ptesarik@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-rdma@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/8] RDMA: Enable operation with DMA debug enabled
+Message-ID: <20260317190538.GD61385@unreal>
+References: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
 MIME-Version: 1.0
-References: <20260316140122.339697-1-ljs@kernel.org> <13e09a99-181f-45ac-a18d-057faf94bccb@lucifer.local>
-In-Reply-To: <13e09a99-181f-45ac-a18d-057faf94bccb@lucifer.local>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 17 Mar 2026 12:01:40 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMnDBNcssqG2zQgS85tzPLgZ+Xt436jdwdcqGi1d-=BxA@mail.gmail.com>
-X-Gm-Features: AaiRm50rOuxq5oD3gn_aXSroXWD1S0LheU_1ipU_wik855j6J7PadPbdyuVIPsY
-Message-ID: <CAO9r8zMnDBNcssqG2zQgS85tzPLgZ+Xt436jdwdcqGi1d-=BxA@mail.gmail.com>
-Subject: Re: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1523D4001A
-X-Stat-Signature: e6qu3ws1dwpuexm1ko8d6sr8thpbyugy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1773774113-276826
-X-HE-Meta: U2FsdGVkX1937nxwmIw8/W1maLLzjc9EhRbM9ixNGOVUdWGOEeNc60ja/t/17IKeL1d+pCS3exii7fLo875ucgSz57XKSKFjbaYPpQwJjNZQrdnTagSRuFAC6vCQAonKMEqlFGM/1p/DvUpx5LW4O9hzqJq5huzc91ynq2BmWOyy5s6ny6sxtrWTvSuiMQ11bjKwgvj7FkYK4r6deM/zXLiBC5aJhR1gPmhFQ03v/wN06xbEOUVnGym1MJkUTNSb9JAf9YmxUTV3DvYRb0rmHtbK7QxaYVYs2DzNuXLtITKePpruAgmP6N5owI3iU1aFWsRSrQ478owTyQvNkSc+X3Ghs4OwhiqZ4axHAPU5xc6+02JUugh3GXdWOg8wv6xFyq4HjvudEH/uDZOL+4fEJFJ+/h9X+gx8Bkcjh191n8anG8AQrxqIrI3v4rrfzKFylSLg44DrG/d1WOwmjLvda8nedygGoy4upyUL/Pum1snliDRC8CrUsuAqjoJD+aJ9ywzaI4/QrXaJ0sexLyP/6XIHMCVimKsMy0ZO0r0vmluptfNkbM6PaPPbmgyovS/JayRHvu9Ee/6EIjZjgSsWXs6wNhx5y1EnTxtUFxX1Rlm/RnTaW0cBTaX6jlO73VQL9mG1cXk71MNlm6tYxr7P99w3JQfhxVdNN2/7Ml4BeJR4+rm6Y/FlONUmirhgfp3yFsO5eh+b7VajOB9ixdGg4NKPR1c9oZsdKAn2gOEm1ps++MkR/i4cPQ7VpVz4DqwEmQAJ7at/VD4Mb6RgQX6QToPHVVKgRoqJvOsZqTQuwOm9CRJ8clfDTkRUexetQ6f/RmEBp7WojF27s2TbwLdkScHeTL1cZutTlyp8jH97PGwrUyIB2VtS3vHKXfMddPxWZY4+FEnHeVzp5RzXrT3HOZbDhFK+tP4wsNFnLnJEdhk4upaCsND9YQZ5ooxTQ3Nhq+F1IAsB84JcJHIfIPD
- q5rprjW4
- CP8SX2vbD04TqZFVtbT5vqFjAeQsBkY2vGzwx
+X-Stat-Signature: rwazteq1cw3ea8hyndywm53f9bdmjzyh
+X-Rspamd-Queue-Id: 8D8D5C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773774344-598688
+X-HE-Meta: U2FsdGVkX18ZOnnN0CotlR50PQ3WkvpTb6jlPRJhaVMi7lGMGG8SG9KjX/DXV2ys98CVOydF33y2tp+55ib7HvDFDET91EeWGcSNk8y7q2JJ/tYn6+kGLufPKDMIBRdQTv8ZMIaKhC2oIGgFhw0FvSILuLBrhTTGEAQ3mcELmfuYQgxw7JhscpuWkoxyvQZ2y/2uTHGZaN40eCzBW/g5U6c/6MnUA/lv60mNcGISOKVWeT58olw39OmfcQXLpdZzj5GWZf1IJJmxR2dvH+2WKhDNydlVKXTV/IzsyKG3wWa9q6n6MQ29E6iab+Ejl5FosgvSie0oQ0GexPCV5jPAYikhvOw/vQWT+EHHQ79g+FiApPIAITcrPDBLz5Wla4zk3Q1vGLEO3He/tpzc6rVHvyELRYI7a7Ft3Ar5/3l2akBzmJ61kVqWPsQfQmUCROJSz/qU2kAAHCbzm8X6W1klA/9QryLqYMxS2r3bb8f8kCz5IT+0t5I4/NCJvRVK+DH3yVlWQ0hbWD5XGAb26x/WO2aC4u/CkKHThpEGOjitdvw/kVnG6rowfbIRc5WY9/H3wzRWIJpjiONV1aqAFe1tzit3KH/Ugthp7Qn64YZxSSd5oDy6M94ZJodijqLVg1LcX2F3BAAu2GP8mJdiTym/5Z6+GsyGry9gU2Cng3WOB6SnetTUDZcD26OJWfyRJTqBWluXpJZRydx6WlcefahQxSO2knqsH0GAnkuRgMgP8LJ/rr72AHH8D5g7Pya0nauGx9xjY8kkqS1d9QRP3O7H+kuPi4WEPwNj/Di6JQm+5T7XpmosSy+U5YXasDlo2haCgFwlFGUUGXBQn2wxqLsiMXZfYQtYiMM8AoPt3rqlvp1bgl2fdZUJiadehHBX/ux5I79pMo/ZxjHc/ZVBjrIIzv/ektJkfPi30QOpqoqPYbO9V+Q7CjA9iPqy6eC6EzJrs7LGwLR2YXU6FudswOC
+ focS6YT2
+ upZnGZVpgjTjuYoJC8gbCuzaZWjkT3zmnQZbdsuAAUzeG3yXCZ6GtFCbeaIG2xAKaP6WZRjOV6Kei/4s+SzglHjs4v8DfoWnTmJLn7qCAitTqF1+f6ANwT4YEx5DNu+s7o6+nyyeRdfjTIrRzNpAzhPUatZnd0/1z4cHCKqE3KpMm8MyyjA/mdZtoDZqY32eTbz+44op6cQdCc60S+h/UeFFO7D/JmmzTHdPjtzs1LEsvw9SS5Czy/j+ucTJw+mxSSs7PSn4hGuC3f3Rf8DL/Dup69jTJ1Nxe01g67Q49bqBWwEE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,119 +107,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 5:59=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
->
-> Hi Andrew,
->
-> Please apply the fix-patch enclosed to add a dcache flush which was also
-> missing here.
->
-> I had assumed that a new folio here combined with the flush that is done =
-at
-> the point of setting the PTE would suffice, but it doesn't seem that's
-> actually the case, as update_mmu_cache() will in many archtectures only
-> actually flush entries where a dcache flush was done on a range previousl=
-y.
->
-> I had also wondered whether kunmap_local() might suffice, but it doesn't
-> seem to be the case.
->
-> Some arches do seem to actually dcache flush on unmap, parisc does it if
-> CONFIG_HIGHMEM is not set by setting ARCH_HAS_FLUSH_ON_KUNMAP and calling
-> kunmap_flush_on_unmap() from __kunmap_local(), otherwise non-CONFIG_HIGHM=
-EM
-> callers do nothing here.
->
-> Otherwise arch_kmap_local_pre_unmap() is called which does:
->
-> * sparc - flush_cache_all()
-> * arm - if VIVT, __cpuc_flush_dcache_area()
-> * otherwise - nothing
->
-> Also arch_kmap_local_post_unmap() is called which does:
->
-> * arm - local_flush_tlb_kernel_page()
-> * csky - kmap_flush_tlb()
-> * microblaze, ppc - local_flush_tlb_page()
-> * mips - local_flush_tlb_one()
-> * sparc - flush_tlb_all() (again)
-> * x86 - arch_flush_lazy_mmu_mode()
-> * otherwise - nothing
->
-> But this is only if it's high memory, and doesn't cover all architectures=
-,
-> so is presumably intended to handle other cache consistency concerns.
->
-> In any case, VIPT is problematic here whether low or high memory (in spit=
-e
-> of what the documentation claims, see [0] - 'the kernel did write to a pa=
-ge
-> that is in the page cache page and / or in high memory'), because dirty
-> cache lines may exist at the set indexed by the kernel direct mapping,
-> which won't exist in the set indexed by any subsequent userland mapping,
-> meaning userland might read stale data from L2 cache.
->
-> Even if the documentation is correct and low memory is fine not to be
-> flushed here, we can't be sure as to whether the memory is low or high
-> (kmap_local_folio() will be a no-op if low), and this call should be
-> harmless if it is low.
->
-> VIVT would require more work if the memory were shared and already mapped=
-,
-> but this isn't the case here, and would anyway be handled by the dcache
-> flush call.
->
-> In any case, we definitely need this flush as far as I can tell.
->
-> And we should probably consider updating the documentation unless it turn=
-s
-> out there's somehow dcache synchronisation that happens for low
-> memory/64-bit kernels elsewhere?
+On Mon, Mar 16, 2026 at 09:06:44PM +0200, Leon Romanovsky wrote:
+> Add a new DMA_ATTR_REQUIRE_COHERENT attribute to the DMA API to mark
+> mappings that must run on a DMA‑coherent system. Such buffers cannot
+> use the SWIOTLB path, may overlap with CPU caches, and do not depend on
+> explicit cache flushing.
+> 
+> Mappings using this attribute are rejected on systems where cache
+> side‑effects could lead to data corruption, and therefore do not need
+> the cache‑overlap debugging logic. This series also includes fixes for
+> DMA_ATTR_CPU_CACHE_CLEAN handling.
+> Thanks.
 
-Yeah the documentation is unclear to me too. Given that the flush
-existed before, I agree that we should re-add it here even if it's
-just cautionary tbh. This feels like something that should be handled
-by the kmap API or memcpy_from_sglist() though, sounds like it's easy
-to get it wrong.
+<...>
 
->
-> Thanks, Lorenzo
->
-> [0]:https://docs.kernel.org/core-api/cachetlb.html
->
-> ----8<----
-> From 94989ab3d97f0cde0dcf59eba6466fee932ec4ba Mon Sep 17 00:00:00 2001
-> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> Date: Tue, 17 Mar 2026 12:29:55 +0000
-> Subject: [PATCH] fix
->
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > ---
->  mm/zswap.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 499520f65ff0..16b2ef7223e1 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -950,6 +950,7 @@ static bool zswap_decompress(struct zswap_entry *entr=
-y, struct folio *folio)
->                 memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
->                 dlen =3D PAGE_SIZE;
->                 kunmap_local(dst);
-> +               flush_dcache_folio(folio);
->         } else {
->                 sg_init_table(&output, 1);
->                 sg_set_folio(&output, folio, PAGE_SIZE, 0);
-> --
-> 2.53.0
+> Leon Romanovsky (8):
+>       dma-debug: Allow multiple invocations of overlapping entries
+>       dma-mapping: handle DMA_ATTR_CPU_CACHE_CLEAN in trace output
+>       dma-mapping: Clarify valid conditions for CPU cache line overlap
+>       dma-mapping: Introduce DMA require coherency attribute
+>       dma-direct: prevent SWIOTLB path when DMA_ATTR_REQUIRE_COHERENT is set
+>       iommu/dma: add support for DMA_ATTR_REQUIRE_COHERENT attribute
+>       RDMA/umem: Tell DMA mapping that UMEM requires coherency
+>       mm/hmm: Indicate that HMM requires DMA coherency
+> 
+>  Documentation/core-api/dma-attributes.rst | 38 ++++++++++++++++++++++++-------
+>  drivers/infiniband/core/umem.c            |  5 ++--
+>  drivers/iommu/dma-iommu.c                 | 21 +++++++++++++----
+>  drivers/virtio/virtio_ring.c              | 10 ++++----
+>  include/linux/dma-mapping.h               | 15 ++++++++----
+>  include/trace/events/dma.h                |  4 +++-
+>  kernel/dma/debug.c                        |  9 ++++----
+>  kernel/dma/direct.h                       |  7 +++---
+>  kernel/dma/mapping.c                      |  6 +++++
+>  mm/hmm.c                                  |  4 ++--
+>  10 files changed, 86 insertions(+), 33 deletions(-)
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Marek,
 
-Do you mind sending Andrew an updated changelog capturing the
-reasoning here, I'd hate for that to be lost. Or maybe a v2 including
-the full patch and updated changelog. Up to you/Andrew.
+Despite the "RDMA ..." tag in the subject, the diffstat clearly shows that
+you are the appropriate person to take this patch.
 
-Thank you!
+Thanks.
+
+
+> ---
+> base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+> change-id: 20260305-dma-debug-overlap-21487c3fa02c
+> 
+> Best regards,
+> --  
+> Leon Romanovsky <leonro@nvidia.com>
+> 
 
