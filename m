@@ -4,120 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAE72FD877B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:03:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FC90FD8770
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:03:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38CE46B0088; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
+	id 145716B008A; Tue, 17 Mar 2026 10:03:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 364896B008A; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
+	id 0A5E36B0092; Tue, 17 Mar 2026 10:03:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27A3D6B008C; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
+	id E88476B008C; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 15BD46B0088
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D295B6B008A
 	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:03:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D2B11A0240
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF87E1B6FBF
 	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:03:12 +0000 (UTC)
-X-FDA: 84555721824.06.AC345BD
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E251B14001A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:03:09 +0000 (UTC)
+X-FDA: 84555721824.04.1A6F22B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 84E0A14000D
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:03:10 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="uGK/Pyja";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXMIuAAt;
+	spf=pass (imf26.hostedemail.com: domain of devnull+mboone.akamai.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mboone.akamai.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773756190;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q0tipdXjQf1YFueIG3pjpKIi6COxIgjA+uwJOLkXywE=;
-	b=RQUUDe8KMiZn7zNk8dFqQNOtPTv3HsZrIesDSi4LBzJ3U42CWZ8Arzu7hecsYGGmHvdDFZ
-	COnfYmc4EktY2yCFLYxZYjRFJUaXpMrkzc1NMLUUE3mY82MUWuEnIlQ3ohikpJ9qeY78Sx
-	OY1c0BKYXqt95eTGzIkQ9LxrPMoargg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lmI89me5/KAO3ADGfZtvrFqhtoPqicS1XCzqIT74zFo=;
+	b=HVRqXW+SyrxYNKqTBDz78k7J9Bs1gvolo2jwnWAlL2y5FncshnYD5UqRUPGtnkrcX3HTSR
+	tVPkkNnLD5dyEwpzHfE3J2lqWByGBHcc2kZk73JOugUGJOQ/i0L7FzrOHVznTlYN/7kVDH
+	LcXIAOAPcxmQ4DmWC2vflMSzfN/gL3Q=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="uGK/Pyja";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXMIuAAt;
+	spf=pass (imf26.hostedemail.com: domain of devnull+mboone.akamai.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mboone.akamai.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756190; a=rsa-sha256;
 	cv=none;
-	b=3bn4y2yhSGbSk5GvCnxLti2Dw7/vjkoIcJjZ8yaXR0sve3qCbAQ4zZVpZPtoz0XJfnTSe2
-	eQXrjqK8dsMOVAC6fo4Q/zSO2gTkCaJpRVT0toUtBQ/dr93L+ak2PtS8CDt0rjk+FFhKWy
-	jnf8xd/WDg4GIz+0G3l8j8TRo2J58ds=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5094e1d17d3so50088871cf.3
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773756188; x=1774360988; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q0tipdXjQf1YFueIG3pjpKIi6COxIgjA+uwJOLkXywE=;
-        b=uGK/PyjaFBcA0AVynYOwGX+SfQs+w4VMemO+8NEXovmYIrPN20cmU24b8YrrroJrpW
-         Cu1scn4vUd83PQcgEprefpuZpKvxGiE7CrV0/QJAxIqi+nZNKtjuijNIcyn++kDpot7t
-         cuEvDLw9dMaAel3b//N/+mBDzcThnWxUPfFN+YAfAr7Zl0CsIjOrPl2zGA4wfYbzpnnM
-         oidREqVHQW2k6HRYXs1bBNvo/MqDeDeb96CsdVunhgUF4vsjCLeFFi1Gg7XT9/J0Yeuu
-         uDgSHyqXSFH/wMP71tuc2ema2h3h/L7GIcd4ye3dm+nm3UhWxpARC9i1W3VojgVOMXS/
-         clTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773756188; x=1774360988;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q0tipdXjQf1YFueIG3pjpKIi6COxIgjA+uwJOLkXywE=;
-        b=eQ7RpG7D+8PWcoRXo3oHnshpi24G145gjj6iaPi+3FC+nB4EsNbJfKegC1Q35rjK9D
-         Tnw/HQOwXIhmChtQ79hZ9TAnSaHizTgs+JsvBuQIST8YML9g/hX4o6Q6RMkACI4wmo2z
-         I0oZgBntvTbhrDNWFLvgMfKHEeNodcLR9bD2qLOUHkAPZ5wjYb+tlpwp2zVPetcvm8EH
-         VxKinIQKmU+yaKrDOMUgSr6z/nD3FjirKjFnXZJ3AgUxG16pkqqJqWMk9DTM+uGMtIny
-         LOEjcuiHm7rCE7DeoonKDa6T69fsNhparMAsxtWx/4cDhIb8FUaSZVMMoQ9jRbAaDpxP
-         iyZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHtkzFX/qlO5YY4IYL+pXxQ8oXoM+4H3Znkh7fz90UVYxViUdCMTnz1nRj4ZYFIe2clPLGPj+LvQ==@kvack.org
-X-Gm-Message-State: AOJu0YzOslJcfbNWqlJ59TuJpsqg1i0OIl/hrUsjtj6huMxxVLDNaaWg
-	/W1cFtbSSBrjfr+tPKQq59xHV5tJ4FzT/6vTbAj28dY3dLaytNZsb4RC+aI2Hi+sMVE=
-X-Gm-Gg: ATEYQzxiXHaCgQma7GIin/r4UwPazp4J1BEznFuYoMuLUo3DXTzhK9TcsQLD9pK/du2
-	6nUQefGpieAO8bKtGriado9t5ocqjoFDJSr8K9jbd/LZR3g/fBbghJaJmMsh6LIA+tvRYtN/hQs
-	rvZ7hDNf4ON/0XWtbGt+1fmprZ6K8CqQRBTjE4Ts70mCFQr6tM0wAws9D/2TN0vpyMPjD0FOqnz
-	4SiBJ6Gb3jaGyECVt40rlmPFmxCPIFcb7T6yG1VKOsWIQTeCf8BmBFVQhyfLLg8bZDove94t5tL
-	KXG55+Y893m0TS6dZ9bFrFfG7RbcICSiTZ8cjSP//T2lbQK7EDljBOf/F9/jsWe9YXr6VJDyTxC
-	LDx2TzCnyb6Jg4j9iw1InjRv82+DASVAAc2pYN9MryM1DxRT/YJtGUeYtqCQXQMxY7gUDiYO6cd
-	RpTkxFIbfUyGG6bWHhi7iKZw==
-X-Received: by 2002:ac8:5fc9:0:b0:509:1e54:a501 with SMTP id d75a77b69052e-50957cb1c78mr217731181cf.9.1773756187953;
-        Tue, 17 Mar 2026 07:03:07 -0700 (PDT)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5093a0ea244sm143096271cf.16.2026.03.17.07.03.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 07:03:07 -0700 (PDT)
-Date: Tue, 17 Mar 2026 10:03:03 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/7] mm: list_lru: introduce caller locking for
- additions and deletions
-Message-ID: <ablfFy6xnWwZQyUq@cmpxchg.org>
-References: <20260312205321.638053-1-hannes@cmpxchg.org>
- <20260312205321.638053-6-hannes@cmpxchg.org>
- <46d9173e-98cd-4f59-b0f3-e477afd5283b@kernel.org>
+	b=2CbO6x+QvTceakelp8gAUUMro0fRNDlLA94LPyk+IJWKHui6G9XqfWcT43SzaPF9LBDNBb
+	FXO26qlSIg6vmZMIs/sjey66R0okacVm5eiWPSdNR2OLIotVQGeQ9NOiP5El8bDrXulBow
+	Pm2/x+pFrXAmZwCIK8eoaWO3wY84nfE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 31E3E445AB;
+	Tue, 17 Mar 2026 14:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 020B3C4CEF7;
+	Tue, 17 Mar 2026 14:03:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773756189;
+	bh=lgwo9KS3008kg15rv+pTQG9FZaWHCxL0N5M1/wcsyX4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=BXMIuAAtCLErz6TJtAX4cqxNKNuNylxIz6b464gVjA9gVYGuBvp0/9bvMtvzqnmnL
+	 aG1KTFHVXNaYu89cyJH8mUxA0m/QJAmOS00YXoFOam263CWGT9Q00fCAwlA4RydoM2
+	 QRGUqPn2sD2jSx+0ebd4EJ0wBx+B+Ow4R3yvNUSFQfj2jEZDKCFL3latDfZrPHpSaf
+	 eEITNtV1mkKhFxb56BUTSLCI18q0Ir81b0gyCABH38MoLjX3uYkXUoyokADfe50eKd
+	 bTNTpdASU/69tJ7pwWZm/+vSntWF6l2KWvISHtfhKjfHTzvfCvlfGydxTnbXjG7Lt/
+	 OaqJN40b7l2KA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3502FD8748;
+	Tue, 17 Mar 2026 14:03:08 +0000 (UTC)
+From: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>
+Date: Tue, 17 Mar 2026 15:03:04 +0100
+Subject: [PATCH] mm/pagewalk: fix race between concurrent split and refault
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46d9173e-98cd-4f59-b0f3-e477afd5283b@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E251B14001A
-X-Stat-Signature: j8c4dge46mqdbdpmce91b3zekzknts4t
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
+X-B4-Tracking: v=1; b=H4sIABdfuWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDY0Nz3YLE9NTyxJxs3eSM1ORs3YLcFN2i1LTE0pwS3ZRUizRDk7SkVLN
+ EUyWgAQVAicwKsOHRsbW1ABoIXCRsAAAA
+X-Change-ID: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ stable@vger.kernel.org, Max Boone <mboone@akamai.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773756187; l=5185;
+ i=mboone@akamai.com; s=20260317; h=from:subject:message-id;
+ bh=QGHVUo+03M+dpGE5pLcz4dqKumPJOTwrXl5sg1teplQ=;
+ b=foxzADgcbaI48K33hsp85pjr9ORwpB7l8TxVBMkYjfsDCdXtHe8MI8OCynPuJKCG2UfIekJUl
+ q6L4mIIzY93DHQMjP5N06BAZoPRbEtF1wVRP7By0VBKWYMiGfH56m/j
+X-Developer-Key: i=mboone@akamai.com; a=ed25519;
+ pk=jWdC/h5H2KWQCiC2kpr/puMVX0mJmP9W5sM8YTGBXA4=
+X-Endpoint-Received: by B4 Relay for mboone@akamai.com/20260317 with
+ auth_id=685
+X-Original-From: Max Boone <mboone@akamai.com>
+Reply-To: mboone@akamai.com
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 84E0A14000D
+X-Stat-Signature: fyc3bxu5cb76xdqhcqiahqyqyoir7w57
 X-Rspam-User: 
-X-HE-Tag: 1773756189-843483
-X-HE-Meta: U2FsdGVkX18EaxjliRs0Sp4n4vh1xIVx47Ol3lLGXLtE29H9CXFvcPSyOTBSnUqLPSQ+iRmKjAJiY3ZfiydzX9VFZMeW8wvtkkxFxqAINfkqp/gOy/cdEC8KCA9Qwz6in1CAMI0NNUn4GX0fwSP3nuwtUefrWGSvmrIaSKL2vWWTUdl60UO7rS0ghvlYym3Wlgr/T3OJdZrB4OvQxG560vezyCezotK+PwwGRwcvt2jls4YWc0O+iXCHjqn799NY/Q7JGF/7GjjFoBhDeKNstqJHFOiITPncNFU3FmXGU/cYl2ffnvI29dgaaa9dRf0yGTj14Zs2ivndqRqq/3HOOqoBypqJq6yvfhmHfYgYen5hZDz6T6lWwkneLeJlXmD5K4yH3M9WK5ng/Hu7J3YupFl8w8I39buv+RmzJGELgILm0MOyYobXpLaLyJf8hOZcl8hvugPGOOEPn38MBsrMSOrjUfd/bbileOHOXbm5C9wJ66Wc0hVucD63jojl6BDtPOBnJRXvnVGiHvobzNlOKQeJqI2AfPiTMfA9DDXi3XzGkvJzSb8dYz7wKXFODy6uIW4vYm9o7OGWSqcyGIUhcKZm0uwYGy8cJ+HrWP3u/wKNtwxMcQ+0x/L1bFMJ/DqeHbD25BnZ24quD/+EwUUvkHHLvqWVq4tAH2EiyrZGFrdxW8YYKWPzZMwdWKpaWb0ZLZQICTT0DFYwBi0R0fJwQQ+tlZzmePW/VEeWLcEFvh3Eek7OPvxnHrKPb5QsiEfCG+EL/gab2D/9KcxvfjhbPIey5snTr8F1nDak+dD5Mp04sRSPNGyhyfm/uMeC8lwiqIaKjVBQvSEGICXxozLXZOOLAGTWFtNx6GXql/Ee54rffZ/vStQIok+SWj+HEENVGMHwoKdrZ09015ujjaL7SQupU55v4QmbMFPnqmeCGDymjuaqRgUO8lCOOyCUU0eUyydWei/kzb2M528QR/D
- 0gkUyHh0
- Gz1j1aBu/3t0S52PSEazhRs3o/Sn1aodhzVPf/M1f6q56MC9FKfcHbe9Js3LObm988YScDNeDUoLG1BHuZlf6/6XaFMXpuzFATMEvv3MdrokuCLjAfS/SvkdRSh7jvtZKFbPQLS3cejac9+29h6onYe57zvlEL/WrNQ2CP0SfKza5CoEAOG0QXxeWObboQzbLdt9Tz02EwKIXiomq1Q2Ew4RST6cCYn+ojjX/+S90oFi+y3GwqX7S4VhFZbcFSe6uW9vSG99Az/WMDWLg3w62HOR7xHgfbpB8gRzuovW8xokjq9bq3DsjfuC+6cxRvgNx+SGHbhgZ7U6jBTkSbM+7C0Wl78/jVFaa3nRPlHwLy3hQUuYY9OwxLxVwWpqUxPKAqqMJvvaDvWIeXTPx91tSds/9W1VjeD8i35XF+GTDfjqD9ny0TaAbPQeLhULBCsyULaJEKQgHUelvzlxtSS4ohBk2BZ/UShfgCW8+
+X-HE-Tag: 1773756190-864257
+X-HE-Meta: U2FsdGVkX1+FTNABqyiifmThvAMyCtmaAVvKKEcaTRVV1Q06o4qFCryLuueD4UBUGZkhRHnfgqip4zA6zD6VAJ53VhuEjkelsB+02LpSPKs2uOTGik5TJzNH56kktI2UHe7TbLpu75OkmntfDij1bGBd8YZIkX2h8Oz/BxqAuXqJe0D5LvJAlaLyntBIclQkkkwnAoWoi2fFnXTGKb+403xrKWh+RldIzyQ85I62Kasz0IjvdSx+/7VP1fsGV2uosUlSiWv7OPvephPe+7YiBIWrn6Ismvi6cgey+vR1Jqx32QP5J3PheHeU/lMCnGNCeVjgUuJYxScDtPa43df2G56vskQkTHObqB53w4q11wVDITIqXTU40W63JPssHSIhtgGfr6oUgaeJ2NiXRMhT7FuqZo2zvej8QYoJlaRCGTUeWCJIWp5pY1IzfzAbTZvL+LK5IB+ld/Ky38vPI5MN46MQN8a3L/nmIJ8cJakUcNbkb+3U4Av7OsjfvB9EleGt9QTEoc2ssyal+WDnzszhJz2eAqOYFyzbXClFF6jvksTKIiv+Scpme1VfVT+sSxXfW2hEptqulL+pEMPfXM3vqmfyoMrFLUwDcTaNz3JF56FgJUtV9HpFYSWxSZUxUdEBJmqYvC+CNPgbZMmeZGWG0Z+ULK8oMXVR0eMvyqBqs/MOwB5XGhc10XJlB1V/GZGPt6cLH8eCSRWEP2wOP4Xqx6qaY2K+6/gsrtjXZ1GMHZ1xEYEoBkNiSXSAmsZxVG68d8Oyv2Om0fDoV/PshO4zSrTqfiodvqh126lDWmQH0fw49042BAbvMbsnlU6MzJPI8Cv1rA17+3FaweFY9s/CXUjTlJyqMTK5uNs98foJxttpfUSXVJ2FYhEdGgspbJ6HLtQkvbYpR0Ha9NDrM94wNYO2cLNIBRPnNdNGZNV7InYAvS5JQEeFU2ZfhsWGlSLtCd6A7LSHk3QXb0DDNr7
+ MhZ0pWSc
+ e3B6GlFgpqzJ6EOCaOXpxyrSWahaclVx8J4nIA5F+NYA9VzPFXu4NncNvYXvaOlv6+ZoEW3D2uPnw5m3VXdEFvW7Iyrr+lWesZysqaJeQCm+zoMFmxJEonhDHJ9lv/9nP83/wwaGfrwxzlJt4TaSdiYhl/C2/KLietDMo1nfxN5sRNH8MT1mpXawyaPUR3/9ZlglURLn3OdrEn/eFitmPsbkHEtQrIKay/wTjHDAHbQ9W8dbi5mlatfSHbDhvAUAMJ4tRxoWJMiBJxzlVEh68used9UfoUF3FdCo8D/z3/e5Kdp7aLAbQDvQoeoce0BPZzZzIRAK5Fz8w5W54wKDztFMZ/uS9aP+8gOksylR90sycu64PXhi4LKcNIARGubFKfTBfbG4WFQxPmxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,75 +111,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 11:00:59AM +0100, David Hildenbrand (Arm) wrote:
-> On 3/12/26 21:51, Johannes Weiner wrote:
-> > -/* The caller must ensure the memcg lifetime. */
-> > -bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-> > -		  struct mem_cgroup *memcg)
-> > +struct list_lru_one *list_lru_lock(struct list_lru *lru, int nid,
-> > +				   struct mem_cgroup *memcg)
-> >  {
-> > -	struct list_lru_node *nlru = &lru->node[nid];
-> > -	struct list_lru_one *l;
-> > +	return lock_list_lru_of_memcg(lru, nid, memcg, false, NULL, false);
-> 
-> The two "bool" parameters really are ugly. Fortunately this is only an
-> internal function.
+From: Max Boone <mboone@akamai.com>
 
-Yeah, I absolutely hate this too. I only didn't look further because
-it's internal, but...
+The splitting of a PUD entry in walk_pud_range() can race with
+a concurrent thread refaulting the PUD leaf entry causing it to
+try walking a PMD range that has disappeared.
 
-> The callers are still a bit hard to read; we could add /*skip=empty=*/true).
-> 
-> like
-> 
-> return lock_list_lru_of_memcg(lru, nid, memcg, /* irq= */false, NULL,
-> 			      /* skip_empty= */false);
-> 
-> Like we do in other code. But I guess we should do it consistently then
-> (or better add some proper flags).
-> 
-> Anyhow, something that could be cleaned up later.
+An example and reproduction of this is to try reading numa_maps of
+a process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
 
-This is a great idea.
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
 
-I have to send a v3 for the fix in __folio_freeze_and_split_unmapped()
-and the lockdep key, so I'll make this change along with it.
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further. This mirrors the
+retry logic in walk_pmd_range().
 
-> > +void list_lru_unlock(struct list_lru_one *l)
-> > +{
-> > +	unlock_list_lru(l, false, NULL);
-> > +}
-> > +
-> > +struct list_lru_one *list_lru_lock_irqsave(struct list_lru *lru, int nid,
-> > +					   struct mem_cgroup *memcg,
-> > +					   unsigned long *flags)
-> > +{
-> > +	return lock_list_lru_of_memcg(lru, nid, memcg, true, flags, false);
-> 
-> And here it gets really confusing. true false false ... am I reading
-> binary code?
-> 
-> I guess the second "false" should actually be "NULL" :)
+Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
+Cc: stable@vger.kernel.org
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+---
+ mm/pagewalk.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-Good catch, I'll fix that.
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index a94c401ab..c74b4d800 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 	int err = 0;
+ 	int depth = real_depth(3);
+ 
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim. If we spot a PMD
++	 * table, it cannot go away, so we can just walk it. However, if we find
++	 * something else, we have to retry.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
++	}
++
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
+ 
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
++
+ 	} while (pud++, addr = next, addr != end);
+ 
+ 	return err;
 
-> > +/* The caller must ensure the memcg lifetime. */
-> > +bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-> > +		  struct mem_cgroup *memcg)
-> > +{
-> > +	struct list_lru_one *l;
-> > +	bool ret;
-> > +
-> > +	l = list_lru_lock(lru, nid, memcg);
-> > +	ret = __list_lru_add(lru, l, item, nid, memcg);
-> > +	list_lru_unlock(l);
-> > +	return ret;
-> > +}
-> 
-> Nice.
-> 
-> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
+change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
 
-Thanks for your review!
+Best regards,
+-- 
+Max Boone <mboone@akamai.com>
+
+
 
