@@ -4,102 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1490F3383D
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:46:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3E72FD877F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15C356B009E; Tue, 17 Mar 2026 10:46:13 -0400 (EDT)
+	id 135E56B009F; Tue, 17 Mar 2026 10:47:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1339A6B009F; Tue, 17 Mar 2026 10:46:13 -0400 (EDT)
+	id 0E72D6B00A2; Tue, 17 Mar 2026 10:47:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 070846B00A0; Tue, 17 Mar 2026 10:46:13 -0400 (EDT)
+	id 0241F6B00A3; Tue, 17 Mar 2026 10:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E854F6B009E
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:46:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A42D61B7154
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:46:12 +0000 (UTC)
-X-FDA: 84555830184.11.A3F44C3
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E1E681A0018
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:46:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=leemhuis.info header.s=key2 header.b=iZQaMoUL;
-	spf=pass (imf19.hostedemail.com: domain of regressions@leemhuis.info designates 194.59.206.189 as permitted sender) smtp.mailfrom=regressions@leemhuis.info;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E54FF6B009F
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:47:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8D50589885
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:47:30 +0000 (UTC)
+X-FDA: 84555833460.12.93F4423
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 00E5914000E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:47:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZDq37969;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773758770;
+	s=arc-20220608; t=1773758849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6GL2gx7ss1pzX264rddGdC76Cpil2U2XTalVR+xU99k=;
-	b=FNPWgQRA55nlKcP7eojYCeIcnJW1rAM1gCIuz204XevXYuj8iuCLAzaiBJsHnlpIy75avL
-	Hey/OFnKfUv22XLZ6AM7THi5bkyP7l3uA1+uDejUf5oo3aPB76S/mrfNJQkwIkqHBbOFHg
-	hE1FN6hXMtvtnxLIwIQ8w19ANZOEXB0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773758770; a=rsa-sha256;
+	bh=WTYjSkXSseflRhA4pO4chunRfiS1yM3xejc0KOzPZCM=;
+	b=cg6eOBlzQfr7tiVuWcpnWcTotHykHnU7g92sjKQUAQciQnL1G7mWgO+mMjjwTp1LzCCMGQ
+	SscIVNVWhjT/dfGyjLqikUpxKnArn+J7jFJ4i3A6dSHqtg3PandGo/+NO9cfulKb+Iazzk
+	xhe8L687R0X1+a7lKyp6ulv3Kov/oSc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773758849; a=rsa-sha256;
 	cv=none;
-	b=TDsE8z/l67D7d1/a60FjqYRGlgv0GpOr5P5dBLsFt1JNU9p8lQkTQAZPtxnpCUo7K39Prv
-	yju9xUaY1VwWlrdUpVVbeHR7K4R/TqnjlubZU665xYu1OzpDS+Aa2uRtqsQ7JF2SkM4Z4W
-	A0VOa+ttt4DIl5tMLwgENGqv6cqTHIc=
+	b=EuJzch9HgjUS8aMveLmELR8bOwuRnAPZSih6JKCcj4GrEB+r/o3fY5FgWIW1g3UnbE3pPx
+	RxlpGdmcv0pdSmZYlFc7qBuCrB2+2I3y24aoMU0YeJThyx6H1F+JyaaoDXCA7UkupaapuU
+	epYteYyFMSVOOr8SK17xK2JKvf13yUw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=leemhuis.info header.s=key2 header.b=iZQaMoUL;
-	spf=pass (imf19.hostedemail.com: domain of regressions@leemhuis.info designates 194.59.206.189 as permitted sender) smtp.mailfrom=regressions@leemhuis.info;
-	dmarc=none
-Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
-	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4fZvsW4vvzz4DtN;
-	Tue, 17 Mar 2026 15:46:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1773758767;
-	bh=hU7Ja8MxE/dZQQrcMBR1UXNehBbNM13GFFWz7ogHftw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iZQaMoUL+oEc/38KhuA8S8+7E2NC0J9rVIUVZT1JJx77OS2j03vgj/xPlEfi1f+0P
-	 2E/ZAkpooyMSNVCR4T3TYQVQ3+OwddXBwg7Y+3xoXtRP3DFc5KNG8fP+yXV9/cfZSV
-	 3EzJwd34x2jmlmbejI6WdW8jHuCLwJzCDBWEuh9Tg+wuceQFsDh4WaGmC5hJKDTA3r
-	 67oSp6nLaKx47Ueixr32DUPLT7p9+kllIMM41Exr1T0pZI4f5i0pEXrMQ4KobMEtEc
-	 k3qh4fDeKdkqz9s+0mbTL/7yXh+BO/eRgcFgbfyzO6w375znWGq2hZ3OEUqDAkKer6
-	 F/Pt2AlX37nsQ==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4fZvsW4Bygz7wZR;
-	Tue, 17 Mar 2026 15:46:07 +0100 (CET)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fZvsW0drvz8svF;
-	Tue, 17 Mar 2026 15:46:07 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 7C11D632D3;
-	Tue, 17 Mar 2026 15:46:06 +0100 (CET)
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <bbba90be-5825-41d5-a0b2-49a56f75256a@leemhuis.info>
-Date: Tue, 17 Mar 2026 15:46:06 +0100
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZDq37969;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F5C2600AD;
+	Tue, 17 Mar 2026 14:47:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107F4C4CEF7;
+	Tue, 17 Mar 2026 14:47:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773758848;
+	bh=2ceXF7k1cz+eNiwIK9YtDL8+tk9HAHG9agGbAGaVGg0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZDq37969ypAziqaAbBH+62/kfGuMDApezgt/9hRQLBa7ZwNhS+YeD7L8SItHdwu3U
+	 EOEQF5ufrv51nIsUGFg6wFRphmBw4pmh+OWiShTo6Schi7yiimtok2F18vh+Tgn2fA
+	 HeO4MEUcyVCUd7Ly/F3hhW5l2lwh5Pud2QOJtoQVbkQRxkKt4BFVd34vBj6vtNz/6C
+	 sPgRBanJkw61FfXGycTXjtOwN7DteVEr3edS4adxl4xCgq6xnffQv9aBQ0D8HydX+Z
+	 z7ToxdHjl/7GD+R+07URdiT9xIUxISPBGxTdWPfNbR85DUnM+YyTAidiZQN7gkWFNC
+	 4t7r2t5XVjIvw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 2/5] mm/damon/core: support addr_unit on damon_find_biggest_system_ram()
+Date: Tue, 17 Mar 2026 07:47:24 -0700
+Message-ID: <20260317144725.88524-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260311052927.93921-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [regression] Re: RCU stall in unmap_page_range during exit_mmap (6.19
- regression)
-To: Benjamin Eikel <debian@eikel.org>, linux-mm@kvack.org
-Cc: rcu@vger.kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <6261958.lOV4Wx5bFT@thinkpad-benjamin>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <6261958.lOV4Wx5bFT@thinkpad-benjamin>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177375876673.4092997.3395963888020776942@mxe9fb.netcup.net>
-X-NC-CID: VI8GR9lw6G18Uo1yXINFhZklGUWTm/u/WkVDAqWoHVKv1JU15aY=
-X-Stat-Signature: 8gos4p6kcnjhg4ar7xhaaem3p1jwqzho
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 00E5914000E
+X-Stat-Signature: 1z5qr5ecmjarrun5zef5dea4kt75tbxr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1E681A0018
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773758769-234909
-X-HE-Meta: U2FsdGVkX19OON3kRMxElrhgQ8fIm6JFLWMRQ6+mu3Bm7Lsy0MHA8uwjvR9CsjFpmgT2N2h0dQLC1hlTPNVe4LPrMdyp7jZ8WgSBPG3+uLnNzbMS/QQQObpY8Qs7BXNL5DYh2OE2FyP8C9ObrL5ZzHGf/RuiyLZBKYa/IYnhps3kJ/8GpPU2fe7IGkBHiM4o07vCV6SSXmnBoI5gN20iWbMvZt5dwh7t8gsNg0QvRq+NsZfqBQ914NIrMWULIV7tWqrnLbIaTrkcQZkOoX/p+dIICwidrMIYmY7V88vh0kyFhRHOreSRwY2UU0fwwz9N6vVxALd8/J4Dbx5XSYv+gdQQoL8ceNbPYRSak1iLrcq3RCOxKw9GenLKLUAmGq1u5LNVDdGrIfcLIjNco6KfVgT9qEUO88oYNpPr7TTX8y87LvxAvEkG0ctzgSuZaqLMggHqfdPFDowrnXYZHh8/nr70yxiYTs1EHtQSLV3w+wr9cxTghc73USwIXTk5rWXaqF/fvTMuZiNoMcwGFowAnDzhhFgh66FxuZUS0yAiLxOqJoT+IHM/WxyCR1mBLJO8/j5ytiT47tiV5XN8imZ8vP3nQ0swLvWWoHUnXzSZu98T9I8c3AG82iDzsjS8NnAYhMpQ73bVzOSJTlV3QyDhPFPSu5IuPeNvs3io6U2w/rxRuVZolH+q3rYnQQWSWdPWxrPE1yex2rm4gQW7/cjcraVTbQMbBe8VtqJP20p2j2sLGMZFNseiVBGsxdKlT4WJZanf1aop4w7Y1+nL4rnYF8FmGYnBg74Uj7B2gh1Bi1vNh9l8DKr21WA01NLKeFzQTISIXQPq78xea56Jx3To66meTX2+pY7bjCT+1oHfo0jVtd5Ini7A0b45Q3kJtz/nNIUBix0JGeXHk2NkhtLpv19TlvhPIbaO72MAMfXI3zuqO/S53+d6q9IrAqENYCz0uugPd4co4yq5ew0B8Zt
- 48kVIHkT
- B92icnKDzR+j4vprBm5Jwdddr3jx2QGXZjrBYS/aTibsIDiIDAR5MBiE8/fpDKuQogewmE/aYcVY3q1TBrbzYQBRg9h5Kt3SxiI/GcWYUPyqH2yvx/RsWwaEJ7zJvxertm5u4+BFEloQNElIBJzIO6ePK+WQ9d05LY12KebZpq/vwCfLECsIQ2xuP3h3FW7d0Hw4xCH2zBk8xSzhnfPnyQsyuN/8GLEoEEQpbBqkWjzHuaBdice00ojhYo6axhresJzkSFNpiVrtNLawsWGMpz1u25in6/2Yq89SMjp2uhL957WV1fki7gfZXxfmosSe2nu92TSJXSZaMvtuiMgHDCOxfNCjauLYwDzELFZUJjhSfQBXIjvQF2h+4f+xChIH/fFQmsMIPLFStxefMH1ZidAjN0hK2oy47FmNnS4uOvUJr6iLdAbNe92kq2rfDgunWPWZXizpUHgosv24dgfHcR7Hho2ByW1cfabdTWJs1OQBdlzsmH/A+NldUCWMI085LDIZULyUXdf1jgKXuwYxMbqtn5CyJG14kuBwz
+X-HE-Tag: 1773758848-780560
+X-HE-Meta: U2FsdGVkX1+buoY4+rfb2Kpotr9OMXFxT00JJgZ6Qb5bileMlssjdtZIvNug5icgp2zoaldRBbuJjxIgfCJm6k+2Rx3yqesRNq2wlpC+SZ05lTrAaFAFNYNzTLFz1yEfUHWY7cyJm0LIWUwDJVbcPwQ78UIhykqoOKk1sXXuWCysoWnXDsibrny6vpZ2XUHVB0I71m69rNJJB2t6HiydW54H/ijdC2C00rPtSlQltZdZXK7hjE4iHd44AiDkBMYMy+kxNrWhvCP1oacVarRmeclNbJh3ym9TauuTPkSXFT67UlzkH8QRntNG/u+Y5+aOJy08a6tpTmhjeX2DhCfDK108v4rKuX7+PIFO50ksr+RSIz7CNubN5OnNHCP1DwP7bHfCeiQy6cUHDAHXOBxW6IWzVZKbFHVBR1HOauPzQYJGrVvYAiPfcga5qu5Lrl/tugSlXjS81fnY6cX2aEo5Ku9mlGd2IzpE5o3QOHJE5QS2cvBj3SZjF0GqHErfD2y2zChKUbqDtt8PVMQMaFpz2zcPDeXlEapQQ0yZo5KEmo5NWnySqmx/0rwIJreF74FdSYNJIo2z+77O2q7XGsW7lYW2SIxaFzznbZGQHsNP1nDLIWawXBMyJSahqwn/oVGAjkFQ+wsdKSIwABOMQs3lgk5VePMM9dQ91ORm6lH+uvbLcQBo+nqjq3GtB5VyYyLlT+I1IvT7jWQzKKfmozw9sX51GZffk9yRUnzWeavamThE4TVWMtDmwQwsKzJ5cBI6M7lPDJcHOjTpcCmECmQgmP7nfGie+/1lKcOZ7MN0z7FaJJtNjBE+9ghptVJW6CkOeuuNOehFgUwJSmtiyfOn8i5LmWv/Q2c75ufBJRP7CYbc0BYNKGdX1RrXwzAogsNczK3REwSh6mWCLSEIt4vThMrSJ5qaHYf0c46DUSpw9EEtq3wgDWpiUHKGfsdaaS3q+GwACbXZ7X6/SCMJHQ4
+ yUgogoe3
+ ekBdee8yF9122QSRC3L7z8bvXKEXQ8XRlHplccBfIkcXmgTgmAGhdUdOkY4Dlbrj1vNgq8EGgMJEsyPaxFg6fYPXAbqHBTSvR/vyNkc6kUXLSLd55zZq8xJmaKAIzlzKiIL1A5sJla7DO2A8BWBHoyQPQ+xu+ZN+g0oZco1yZ3weZIgMn74DRK8zBRoCEKmN87c6JGqyNVEFJQErmdAIAy2X7uzCsVqyYEoOSdGLe54ycaXbH0/q+ytFHSCcXcQHos1u5qulSF9zM6Zjk74o6cnyTZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,178 +92,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[ccing the regression list]
+On Tue, 10 Mar 2026 22:29:23 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Lo!
+> damon_find_biggest_system_ram() sets an 'unsigned long' variable with
+> 'resource_size_t' value.  This is fundamentally wrong.  On environments
+> such as ARM 32 bit machines having LPAE (Large Physical Address
+> Extensions), which DAMON supports, the size of 'unsigned long' may be
+> smaller than that of 'resource_size_t'.  It is safe, though, since we
+> restrict the walk to be done only up to ULONG_MAX.
+> 
+> DAMON supports the address size gap using 'addr_unit'.  We didn't add
+> the support to the function, just to make the initial support change
+> small.  Now the support is reasonably settled.  This kind of gap is only
+> making the code inconsistent and easy to be confused.  Add the support
+> of 'addr_unit' to the function, by letting callers pass the 'addr_unit'
+> and handling it in the function.  All callers are passing 'addr_unit' 1,
+> though, to keep the old behavior.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  mm/damon/core.c | 33 +++++++++++++++++++++++----------
+>  1 file changed, 23 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 3925720a172a6..aee61bf991baa 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3056,31 +3056,44 @@ static int kdamond_fn(void *data)
+>  
+>  static int walk_system_ram(struct resource *res, void *arg)
+>  {
+> -	struct damon_addr_range *a = arg;
+> +	struct resource *a = arg;
+>  
+> -	if (a->end - a->start < resource_size(res)) {
+> +	if (resource_size(a) < resource_size(res)) {
+>  		a->start = res->start;
+> -		a->end = res->end + 1;
+> +		a->end = res->end;
+>  	}
+>  	return 0;
+>  }
+>  
+> +static unsigned long damon_res_to_core_addr(resource_size_t ra,
+> +		unsigned long addr_unit)
+> +{
+> +	/*
+> +	 * Use div_u64() for avoiding linking errors related with __udivdi3,
+> +	 * __aeabi_uldivmod, or similar problems.  This should also improve the
+> +	 * performance optimization (read div_u64() comment for the detail).
+> +	 */
+> +	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
+> +		return div_u64(ra, addr_unit);
+> +	return ra / addr_unit;
+> +}
+> +
+>  /*
+>   * Find biggest 'System RAM' resource and store its start and end address in
+>   * @start and @end, respectively.  If no System RAM is found, returns false.
+>   */
+>  static bool damon_find_biggest_system_ram(unsigned long *start,
+> -						unsigned long *end)
+> +		unsigned long *end, unsigned long addr_unit)
+>  
+>  {
+> -	struct damon_addr_range arg = {};
+> +	struct resource res = {};
+>  
+> -	walk_system_ram_res(0, ULONG_MAX, &arg, walk_system_ram);
+> -	if (arg.end <= arg.start)
+> +	walk_system_ram_res(0, -1, &res, walk_system_ram);
+> +	if (res.end < res.start)
+>  		return false;
+>  
+> -	*start = arg.start;
+> -	*end = arg.end;
+> +	*start = damon_res_to_core_addr(res.start, addr_unit);
+> +	*end = damon_res_to_core_addr(res.end + 1, addr_unit);
+>  	return true;
 
-On 3/16/26 09:18, Benjamin Eikel wrote:
-> 
-> I have reported this issue as Debian bug #1130138 [1], which has been marked 
-> “upstream”. I am therefore also reaching out here to make you aware of it. 
-> Please let me know if you need additional information.
+On 32 bit systems having PAE (>4 GiB physical memory address space), above
+start and end address could be overflowed, resulting in making an invalid
+address range (end <= start).  The range validity should be tested here, like
+below attaching fixup patch.
 
-FWIW, if no developer soon shows up to look into this, you likely need
-to perform a git bisection to identify the change that causes this; you
-might also want to check if mainline is affected:
-
-https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
-https://docs.kernel.org/admin-guide/bug-bisect.html
-
-Ciao, Thorsten
+Andrew, could you please add the fixup patch?
 
 
-> After upgrading from linux-image-6.18.15+deb14-amd64, I see this error several 
-> times and the system shortly freezes. It seems related to Zoom crashing first, 
-> but the freezes were not noticable with older Linux kernels.
-> Currently booted into 6.18.15+deb14-amd64 which does not exhibit this issue. 
-> The stalls occurred when running 6.19.6+deb14-amd64. More information about my 
-> system can be found in the Debian bug report.
-> 
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> stalls on CPUs/tasks:
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu:         Tasks blocked on 
-> level-0 rcu_node (CPUs 0-15): P10008/1:b..l
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu:         (detected by 5, t=5252 
-> jiffies, g=177537, q=28067 ncpus=16)
-> Mär 09 09:13:48 thinkpad-benjamin kernel: task:zoom            state:R  
-> running task     stack:0     pid:10008 tgid:10008 ppid:2089   
-> task_flags:0x40040c flags:0x00080802
-> Mär 09 09:13:48 thinkpad-benjamin kernel: Call Trace:
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  <TASK>
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  __schedule+0x48a/0xfc0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  preempt_schedule+0x32/0x50
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  preempt_schedule_thunk+0x16/0x30
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  _raw_spin_unlock+0x22/0x30
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  unmap_page_range+0xbcb/0x1700
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  unmap_vmas+0xa1/0x180
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  exit_mmap+0xe1/0x3b0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  __mmput+0x41/0x150
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_exit+0x251/0xa70
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_group_exit+0x2d/0xc0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  get_signal+0x8a4/0x920
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  
-> arch_do_signal_or_restart+0x40/0x250
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  exit_to_user_mode_loop+0x8e/0x480
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? __x64_sys_sched_setaffinity+0x6a/
-> 0xb0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_syscall_64+0x20b/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? ksys_read+0xcd/0xf0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? __x64_sys_close+0x3d/0x80
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? exc_page_fault+0x7e/0x1a0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RIP: 0033:0x7f2876359e2d
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RSP: 002b:00007ffc91243ad8 EFLAGS: 
-> 00000246 ORIG_RAX: 00000000000000cb
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RAX: 0000000000000000 RBX: 
-> 00007f2875207700 RCX: 00007f2876359e2d
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RDX: 00007ffc91243ae0 RSI: 
-> 0000000000000080 RDI: 0000000000002718
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RBP: 0000000000000020 R08: 
-> 0000000000000001 R09: 00007f2875206de8
-> Mär 09 09:13:48 thinkpad-benjamin kernel: R10: 0000000000000000 R11: 
-> 0000000000000246 R12: 00007ffc91243ae0
-> Mär 09 09:13:48 thinkpad-benjamin kernel: R13: 00007ffc91243c80 R14: 
-> 0000000000000000 R15: 0000000000000020
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  </TASK>
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> expedited stalls on CPUs/tasks: { P10008 } 5361 jiffies s: 1609 root: 0x0/T
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: blocking rcu_node structures 
-> (internal RCU debug):
-> 
-> Another one:
-> 
-> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> stalls on CPUs/tasks:
-> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu:         Tasks blocked on 
-> level-0 rcu_node (CPUs 0-15): P10008/1:b..l
-> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu:         (detected by 5, t=21007 
-> jiffies, g=177537, q=87903 ncpus=16)
-> Mär 09 09:14:51 thinkpad-benjamin kernel: task:zoom            state:R  
-> running task     stack:0     pid:10008 tgid:10008 ppid:2089   
-> task_flags:0x40040c flags:0x00080802
-> Mär 09 09:14:51 thinkpad-benjamin kernel: Call Trace:
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  <TASK>
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  __schedule+0x48a/0xfc0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  preempt_schedule+0x32/0x50
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  preempt_schedule_thunk+0x16/0x30
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  _raw_spin_unlock+0x22/0x30
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  unmap_page_range+0xbcb/0x1700
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  unmap_vmas+0xa1/0x180
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  exit_mmap+0xe1/0x3b0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  __mmput+0x41/0x150
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_exit+0x251/0xa70
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_group_exit+0x2d/0xc0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  get_signal+0x8a4/0x920
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  
-> arch_do_signal_or_restart+0x40/0x250
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  exit_to_user_mode_loop+0x8e/0x480
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? __x64_sys_sched_setaffinity+0x6a/
-> 0xb0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_syscall_64+0x20b/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? ksys_read+0xcd/0xf0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? __x64_sys_close+0x3d/0x80
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? exc_page_fault+0x7e/0x1a0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RIP: 0033:0x7f2876359e2d
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RSP: 002b:00007ffc91243ad8 EFLAGS: 
-> 00000246 ORIG_RAX: 00000000000000cb
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RAX: 0000000000000000 RBX: 
-> 00007f2875207700 RCX: 00007f2876359e2d
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RDX: 00007ffc91243ae0 RSI: 
-> 0000000000000080 RDI: 0000000000002718
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RBP: 0000000000000020 R08: 
-> 0000000000000001 R09: 00007f2875206de8
-> Mär 09 09:14:51 thinkpad-benjamin kernel: R10: 0000000000000000 R11: 
-> 0000000000000246 R12: 00007ffc91243ae0
-> Mär 09 09:14:51 thinkpad-benjamin kernel: R13: 00007ffc91243c80 R14: 
-> 0000000000000000 R15: 0000000000000020
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  </TASK>
-> Mär 09 09:14:52 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> expedited stalls on CPUs/tasks: { P10008 } 21233 jiffies s: 1609 root: 0x0/T
-> Mär 09 09:14:52 thinkpad-benjamin kernel: rcu: blocking rcu_node structures 
-> (internal RCU debug):
-> 
-> Note the stall duration escalating from t=5252 jiffies (~5s) to t=21007 jiffies 
-> (~21s), with the same grace period (g=177537), indicating the unmap_page_range 
-> operation blocked for over a minute.
-> 
-> Kind regards
-> Benjamin
-> 
-> [1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1130138
-> 
-> 
+Thanks,
+SJ
+
+[...]
+=== >8 ===
+From d5654a6cce8a21ae100625ed54c0885556f89645 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Mon, 16 Mar 2026 23:32:48 -0700
+Subject: [PATCH] mm/damon/core: verify found biggest system ram
+
+On 32 bit systems having PAE (>4 GiB physical memory address sapce), the
+final start and end address could overflow, resulting in returning an
+invalid address range.  Verify the returning region.  Also remove the
+resource validation after walk_system_ram_res(), since the validation
+means not a lot.
+
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f9854aedc42d1..339325e1096bc 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3089,11 +3089,10 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
+ 	struct resource res = {};
+ 
+ 	walk_system_ram_res(0, -1, &res, walk_system_ram);
+-	if (res.end < res.start)
+-		return false;
+-
+ 	*start = damon_res_to_core_addr(res.start, addr_unit);
+ 	*end = damon_res_to_core_addr(res.end + 1, addr_unit);
++	if (*end <= *start)
++		return false;
+ 	return true;
+ }
+ 
+-- 
+2.47.3
 
 
