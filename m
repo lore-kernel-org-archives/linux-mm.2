@@ -4,97 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD9A0FF6E90
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 22:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02073FF6E9B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 22:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E49C6B009D; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
+	id E991F6B00A0; Tue, 17 Mar 2026 18:54:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76E5C6B009F; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
+	id E4AAE6B00A1; Tue, 17 Mar 2026 18:54:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 636086B00A0; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
+	id D38FB6B00A2; Tue, 17 Mar 2026 18:54:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B9056B009D
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A474C1603D7
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:29:58 +0000 (UTC)
-X-FDA: 84556998876.29.CDE3447
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B724E140008
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:29:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=fyc1TcUA;
-	spf=pass (imf23.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	dmarc=pass (policy=quarantine) header.from=objecting.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C324F6B00A0
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:54:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7426EB913C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:54:05 +0000 (UTC)
+X-FDA: 84557059650.01.AF49F97
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7C7B92000D
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:54:03 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=BtWw0eiC;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of yunzhao@cloudflare.com designates 209.85.161.48 as permitted sender) smtp.mailfrom=yunzhao@cloudflare.com;
+	dmarc=pass (policy=reject) header.from=cloudflare.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773786597;
+	s=arc-20220608; t=1773788043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tt4RF9KNtssGzdEl51RiADXjFbSZ7mpR4OrL6sbsIPM=;
-	b=NTssZuAJXqSxtnd/2C4dpzoSUrO+956dZRFezT7bUr8iCF8kLhsvZmgcyCVSKljiQW4k/a
-	s0ZM2R0nJ2msR1i+NBCgYvPOgQFXY/bxFicsOlECn+MZMJm4Lm4bNLL6CuQfR2mwUGI901
-	ULFaFUSwOvlQVtQzOhtwnolz0mqhxvQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773786597; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=WuZBsh+s5SrqXpiwYWIUnhrYft2HdckwZzDp0JVX5Yk=;
+	b=1QYqwAJyADUlSIKQzyzGTZG8YNLyta8FBvb5KVPLIdK5weIRIr7FSCffjP4eL47Tf5+a1T
+	QGs6L6O1rnrO8VZRoZc8lGi4cUu3DlD177uTpwjQ+csNGRFzgqiKQQQopBwQ3xRer7L4km
+	i0jk8vVRYoNZ7/bGJexgmpx1TuqT1Og=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773788043; a=rsa-sha256;
 	cv=pass;
-	b=vDFJ01wqKVy7UeIXFZnJaZXmshlj7NzD9XHItlqv1tepZT6RmFdBE9bCDc/seb6WbnRehb
-	G8gxy+5AOao5K4wrUmV5kb0/spooLt9UFQeJMLeEn5S/cwZ2rtn1gzD2KrzxJzA/9AmWEY
-	KcGQCzPVW5bHQUTsMsnKM1IJoc958mk=
+	b=nBc9YVIaSp0joaqhkDx99KiAO0ixWTYh26DdDeILYHrmRKu72Xyq8RVmU5yzz6QxMA+A9l
+	/vUhxpJESpjIJFwGWCRQMwEPmB8sVbWr74XQOZ4ciipQ8RYKUciRJkJokdavV99voj5gIu
+	VezelyjUVAqRSTM0qvw3tl8+hbkZHMM=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=fyc1TcUA;
-	spf=pass (imf23.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1773786569; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=LrO8uIjgDsxf2WxX6XYuJaDHUGdDoot9AxxVOR4O6IxHTNsN3d1UPvS2jyxKbyguTP1sfftbjDMZh747aHwtGCDKaswO2aOb6bltzGvqUbNHQnTY7kdqY7TVhtU5llaSj/Y85EJeaKdYcw4dfl0usYYlz4AwGDvU8H+T3bZggKo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1773786569; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=tt4RF9KNtssGzdEl51RiADXjFbSZ7mpR4OrL6sbsIPM=; 
-	b=DBeo/PFN56NF5W2j7hD2ud/SKRHxpQ6iAPTAks6SMOsJHZzWR6DpgjTGy57hJUv/ATIi57jiaAnOds1eBl3fC8aVgDOO1iTNMCOVF3umrSIJK/QDF8tb8adwSB4JBv54EtXTytncJBYdzAkgPU4oF+gTRt6qCTk0Bn2ajjtV1+k=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773786569;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=tt4RF9KNtssGzdEl51RiADXjFbSZ7mpR4OrL6sbsIPM=;
-	b=fyc1TcUAwIjJbAp+5obQfgkztqugMkuE1xp8ijhx8QH3XDTSG6/p26aWk2pMquq2
-	C5yl9E9iivYoLCRvyIm8dHFwcztQTosxy4I9bf7xIThsROy9hAbaHnsFvO96GRb/dVm
-	n0eWcIplvI8EKkxRfuX6UPdRE2R6RB+6uaSke9Xo=
-Received: by mx.zoho.eu with SMTPS id 1773786567108939.6708811150448;
-	Tue, 17 Mar 2026 23:29:27 +0100 (CET)
-From: Josh Law <objecting@objecting.org>
-To: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Josh Law <objecting@objecting.org>
-Subject: [PATCH] lib/maple_tree: fix incorrect dead range comparison in mas_topiary_replace()
-Date: Tue, 17 Mar 2026 22:29:25 +0000
-Message-Id: <20260317222925.87929-1-objecting@objecting.org>
-X-Mailer: git-send-email 2.34.1
+	imf03.hostedemail.com;
+	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=BtWw0eiC;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of yunzhao@cloudflare.com designates 209.85.161.48 as permitted sender) smtp.mailfrom=yunzhao@cloudflare.com;
+	dmarc=pass (policy=reject) header.from=cloudflare.com
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-67bb5f989c4so3850124eaf.1
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:54:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773788042; cv=none;
+        d=google.com; s=arc-20240605;
+        b=h9UpIvOSkI8VRaPTt8ByoeIikrByjlJsxyyfAJHlh62C8jTXoUKnnvx8c5YDrPGkgC
+         gYblP9k001it8onoNkZLbK4KpWH6Jhk9MstoB4q/s3gvXT6ce4FRqx9iPrZJRmwA8DNf
+         gn63LS5ooGtfeb/8QX398fjocRBJRY8MyS21EcA/RfTp1nziys4EQgyU6RcaQ4usf483
+         xsB4/QLX4Pzjnnr9ksTXOQ6k37Ao81F2SHg/kGUFbFS6jc5AjS9d25zOpeIxkWaUtxs/
+         mB3j6XROR1d5qhlmHx+PYR8EagpoO9AIJB+HpLCD97Xc/Zsyxf+eB6gHBErlfP3FnpF7
+         xXXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=WuZBsh+s5SrqXpiwYWIUnhrYft2HdckwZzDp0JVX5Yk=;
+        fh=n1IFgfNulkeVpNpmkh/cuZsvniHEZy8FqFiEytzxKqE=;
+        b=EyRAXL7uRRmzsjF54ZBcu1PngU1IwVyAPXRdw4OA4pS08W8iYR2ALROfhk0CBL1wR0
+         C+xWgCHARAxl1FEij5psDgrPaXpjz2vrYhehqom5FxmEMtk9i3JL04qMRv/HHgz6m+0H
+         TeMxwADDpM2scjTfKNy6Al47mqyQsHVTyIPQti53NZLoTfo0JJkTsDI9r6wEHQKXVrv1
+         XNI1cMazEcs+uTlY0RGBegUbJTtDb+fUNqLf27vX0KKIavgFQs1/aenrXVSb8yFBVlkS
+         eqHmBUNxU8uWSJmFdasuxXw8aSvoz3oFc21yhnJAlJ6zTzVfQH8MOcuAAWgdfy58yue1
+         0rSw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1773788042; x=1774392842; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WuZBsh+s5SrqXpiwYWIUnhrYft2HdckwZzDp0JVX5Yk=;
+        b=BtWw0eiCK2U/Or+qIp6yyj0qXKsezkddC4VK28dcWv3jqEyOE+tTd+CTthTxRAyFLj
+         4zdFurB5ahLzi/D4F8mF+kP8BRpQdNgUhqAfLQz2sNAgGyfSGaIOoJnBnqism6VlrKqu
+         TJTe65EpXWe2siFTMD1QcGIGUfc5PWze0n5uG9G030P/Hl7E5EcTmJkmASV3ccO2Hp3y
+         eyD3xeW3nUZDVVCGDbwffkl2WXjN0NfHdI0/drPW//7nQsl6KYLuWIVUQ8v2DkTLJbQ3
+         uYd2WgoNSZB70J1Y7u6K+ngGm2YI+EofplfqBQEmodNoSr3Ke0CMZ7mP2u75l38A2W0j
+         plWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773788042; x=1774392842;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WuZBsh+s5SrqXpiwYWIUnhrYft2HdckwZzDp0JVX5Yk=;
+        b=Ic1tmXQoqXHcoSTN2oVWPlSSMfM/tyHi5HYQL4RUVqvY1a/Fyf7qBMfM9ugn0ZtFXo
+         54M5s5DrEmIZ3pY/7i1M01LMtahrPa/bpehniROFIswXFjUhEOD9towqpHVQco6UZofA
+         1UY9jTdpZ5IcFK1hKizd7hG9xiN0QdRYzxMMFpjVZdNeeMGp9/8izy5LXu2KzHVx4l9C
+         duwr1sk793EstQX0nKL/gN9t7z0bWPvmOfdclFEnb7ZmGCBTROU0hOKZlcGhiziuQiu/
+         jvSxKcaZTkpVLlZ4gR3zdp5rkn2w9zZXVfQv6l93iWTYOfSjDKLlNTMYcmA2CbiA4gXC
+         yUEg==
+X-Gm-Message-State: AOJu0YwKInsX3qcnTs2WfALRQr7XHu6C+ikzDdLR6sGihIw7QVUEkXuL
+	fnDcMvhmuCrhCLq8QhSZA9DT8N2RsNFLjs155uEotlQ1LPKfLPhmfHx0RnC4o5moKYBt4JU1VZK
+	PtpXwxNwMQMO0T0EVEJXXT2JjQuwK4Fm01fHQNZGuS/Rqi1yrWIW6MKL92Q==
+X-Gm-Gg: ATEYQzxKpAcXa0+3q6YeKkXYv7LBR1J9JstRDtaWDXSxcaDKLVvGIgK1mWamuHYH1oT
+	zvuQnNZIaI8OW3QUjzfxv5PmqLbG4Nh6Pp/N54Hao2iNSsZAckxINwhV4i+De/aLku+NiCxqhKJ
+	Q67XgRrDxeqxaTEr4Eu1wB6vVYqNknMXcsOvoo8aLkfz37vTAusLJMTbswLxOOpakOoB7VFgN9D
+	c4n7bjb4Mb3ZWGOcZM8pk+whdBKfoRKS/4oFtiyiQSUCUVKsYYDj7rebXKjRzsm2out6KmI//MJ
+	3lxwjgKNEWHr57Jw8Dwodswp
+X-Received: by 2002:a05:6820:611:b0:67b:af79:4c1f with SMTP id
+ 006d021491bc7-67c0daffbefmr791587eaf.40.1773788042196; Tue, 17 Mar 2026
+ 15:54:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B724E140008
-X-Stat-Signature: ftxq31fhcu1bwtznhfzoyipa7toh9p36
+From: Yunzhao Li <yunzhao@cloudflare.com>
+Date: Tue, 17 Mar 2026 15:53:51 -0700
+X-Gm-Features: AaiRm53XXsD9OA9FNRRdR7iAKF-aZdVZqHAn8W1aiVtyOZqm281mMdLbU0-fB7A
+Message-ID: <CAAnvDSwOoEOkMEDgKUcHkx-SdmZ_ar5AbVy4Gp-XT7i04ON5fg@mail.gmail.com>
+Subject: balance_dirty_pages() causes 40% IO PSI (full) with no drain benefit
+ on 384 GB machine
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, Jesper Brouer <jesper@cloudflare.com>
+Content-Type: multipart/alternative; boundary="000000000000299200064d403688"
 X-Rspam-User: 
-X-HE-Tag: 1773786596-123836
-X-HE-Meta: U2FsdGVkX19rH38ekoCFFq8hxLezm09k85OKPDEXXNqzcKOP1qGWV3n14AjqSSr7yrrS4RJh/HyCe1sS3HZ7bhuppaKsXj8RuFO2pQorWXLeP0dKhqr4zClbFR6381Fd0hmUz7bXeNGY217EPYL0cFDu7bkcyoH4XBUTkrsG1z5hjc1mFqkqG1hq66t/rPdG+j+3wtuIfRzVOJrG0h0YJ/94dxUm6CdhERaYzPqEL0WPlN1jb3krJtAG+RPWRWz4i2ozlYtb1CC9ZZqYcROKjxnC2uALYCW8LWbMN/bvLxDvS0i8VE4mKGlqaMUUTS22VrqHiyAPMM6ELfldUBJKgGpNskZhDU4Aq4Y3TVqBo9CWU8JWxSgfjpkitQMdeYmWcIs3McqCLZFUix0Zr1+IyALxV/RcEwM+KpEqbQlUjvK3dQLjhIWUmlmr/saB3ZTU2Z5OBQhWm+ewG6LWq/wFwqkIJQHfH8Yx8gkn0PL6uIfMPDIDexsXTtuxAHJKAWcQdC2h9+9OBgCEHAKjFFiEe8xVG4t771mPdZYIX2ENA2tdytT+XEvnmPt81QwPGyKQkcP6fAGVOrBBrQV9HeM7UeRI9qV4ttYiA8y6lSzZt8MJC/450/JrqRu4fZZG8UgfkSvQKJAmmt094zzJ0njOQbg6WKIfVqsVOUM9qnubSOHv3iI2ulI//b5rG1gU0p315wZqXKlrszO36Wq2RqmnAOTuLT99QcvEfDpQe7D/JzAv7oyjblqfQ8SZhkYadq0fzjge4N4ueHFYOF6u+60CtVZvqTcvPi4Egc83l7vdwsIlJZt8ccZdvL3ywpk2EBH2xEg6TL+GpyNKJoYNO6JEAyHtx/HeMY+odSAK86UNP2BNTRIYv7QptmHHJDy9QWiwZEa0mcPHEuSxmC1yXLH6oAH8BByPUOftdC2nIH2E8siBeqy99qDwjzpW4xHs8gDEvUZ2x30u18fZHsjntfg
- 3At3EuBv
- l05GJFtqdD70sLuL7ZZI3olC8VBFM24WklVisqu/zFyguQNkR4LVskM5+no1mEoRAnoAaHl2Km8B2+unTbw8GFoMEPH6FQ1xHdWwbt+ZcAcTss8gY6RIg2LwpQr6drRDkDVGInaTApfJJ/OoXIh+bQLajGoPVnlydXxcZqko+noJDiPkvwlo4QQchcUT4evZHqAPVqHjWIk3yyHkwmtDAOEAOfQR4V951RT/DsmGCvDrnOFeEvso3wRb79fFTvtvKHYvAgynvYOGXSvvGLZwH51Pb5d8NDnJwCG/TH0NM2oBWTC73RPoyd0Q5tAwBa57k6GQT/gSXX+QJ1x7zKzu1nfS//WeMFn7s9sLhod1KsH/6x662RhMOFBetyj4HgYUrfH57XpM9rdmN26o=
+X-Stat-Signature: cpcjg17j5izjjdiopjm7opw7ff3syt3g
+X-Rspamd-Queue-Id: 7C7B92000D
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773788043-768203
+X-HE-Meta: U2FsdGVkX19kD6tZY9zBSuBZZuS4TrvhLTlbpq5zzrwJhW43S5F8lhKoTlRGvsDhZb2UGqvUeZiLcoD/cKjXWSHYnnKaATL1vrtzrFT9rPiafeIZGB0Sv7pTzLbfMvuisXUw9WWS4+W4Wi7NSzNTSvoVa2sZDy+5l156A7tN0FDa3VZPl2askhg3sM+CFuEB2iOj/Nh0yBqsuDo22AVXa8xjNIKzOjKOzTa4VHohbtHnN7lJoHJxnPBrY9ySJbu1UIeGuMTCL0uIbJo/2F/wQebZIuGOgOhcoy2ixT2OuA238sTIq/72S6uc80zbkss9HFlxSY5sSu6J+ZVsc8geDW3EED5YKy/1mEvlXkVnPTrocKSpPcWaEdJG+Mh71DMw58y5ehU0wpj0ma0qleJfuEYQrV68LO6LcbAnymEtnLJjIRGyPMC3nHx3NJPVtsF74a2kysjyTYOhi0g8sH2Yzg0P7fWUOJ0P5FsbsrdU7H3k2aqm//XcEIsYZRJev06DRtcrOgkonyNb7zmMIe0Pzx1ctb++gaKF9kxsocuP3+I8pUV6fyKiAPbHJeUrzDQsiA7ut9aLYMZjk3MZgRNtV9kMjXaydGUlaCzqWkdlwMrcA5AmoP9glKaBGSYfip4NaKTbLIa7bnCmJlYoVBGY5LyVdu4kbBnskLcbD5A3r6BvJ8wkb9u+d+5sTOaXAdGSU6s+dWqZU9Zp1c6FYA3DbLy4YC9wwFXKsVBvcp5fDq52MRuSs74NKoumeXcTYNDDz3ZrIN5NklO8pmKJrsGzgGm5YnCD3xOxMjz1J0cw40lCAZQDCGBNS0v0e1t1WJ0stwzSGy6vh1vBLCpKAd3/7VBWGGHi1B5p7xmU867u7MZ6LZaziXOrpXEpnGE8XpAA5xF4CtB8wvUp2ACt4Lb0Yn0BrubNY+pQ7YoAo/XK48aLklAmCM9sjolJFxiEsa3Ib4ew/z0QhVpdECTnxjT
+ YHukb5Fj
+ 6N/fPoCH4gy5Tj5iqWRX6S3E3K7U7v9BYsNwYU0ADw1QEEsDTsoCzHBMgaJ9xEFABTIBFNs+WpsfVZYmoeq7HuGxyQBRUvEDup5mPo1bh82SC7zSUeB8q+kMHRht5ssg0xdDiZwjroVAPUhhMjogK4B6t0/CYYXg31nKtOoUdseQ+N50n9g3fevtbULQr9VlzBOhDTuyWL/zHO9iFaFqA938p0vybXKNUJhTNmSP0/RI/VWj+hYQ18UYAPrUI+RzZEdPsD/ZBMhvczvfuuPPy4/OGUhJzkNr3z8RIhNHan+Q3t7FgRpZcFh4I+ERZRB7EjCDc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,39 +130,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When collecting old nodes for destruction, the dead range check uses
-tmp_next->index and tmp_next->last, which implicitly dereferences
-tmp_next[0] rather than the intended dead range. This means children
-at indices n=1 or n=2 are compared against the first child's state
-instead of the replacement range [mas->index, mas->last].
+--000000000000299200064d403688
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This currently produces correct results by coincidence -- mas_find_child()
-copies the parent state and mas_descend() preserves index/last, so the
-values always equal mas->index/last. Fix it to use the canonical source
-directly, as documented: "Nodes within [index, last] are dead subtrees".
+Hello,
 
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Josh Law <objecting@objecting.org>
----
- lib/maple_tree.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On a 384 GB machine with NVMe storage (2x NVMe RAID0, dm-crypt,
+XFS, kernel 6.12, AMD EPYC 9684X 96-Core), balance_dirty_pages()
+throttles writers via io_schedule_timeout(), causing 26-40% IO PSI(full).
+But the throttling doesn't actually drain dirty pages faster.
+The flusher only submits ~578 MB/s of writeback regardless of
+whether writers are throttled, and the NVMe device has ample
+spare capacity (1,044 MB/s benchmarked).
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 1eaaa5f964e9..64ba117ec254 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1874,8 +1874,8 @@ static inline void mas_topiary_replace(struct ma_state *mas,
- 				if (!mas_find_child(&tmp[i], &tmp_next[n]))
- 					break;
- 
--				if ((tmp_next[n].min >= tmp_next->index) &&
--				    (tmp_next[n].max <= tmp_next->last)) {
-+				if ((tmp_next[n].min >= mas->index) &&
-+				    (tmp_next[n].max <= mas->last)) {
- 					mat_add(&subtrees, tmp_next[n].node);
- 					tmp_next[n].status = ma_none;
- 				} else {
--- 
-2.34.1
+I'd like to understand whether this is expected and what the
+right approach is.
 
+The setup
+---------
+
+  dirty_background_ratio=3D10, dirty_ratio=3D20 (defaults)
+  dirtyable memory: ~77 GB
+  -> bg_thresh:       10% * 77 GB         =3D  7.7 GB
+  -> freerun ceiling: (20%+10%)/2 * 77 GB =3D 11.7 GB
+  -> limit (hard):    20% * 77 GB         =3D 15.5 GB
+
+  Write generation:   ~580 MB/s (HTTP cache miss writes)
+  Flusher drain rate: ~578 MB/s (device can do 1044 MB/s
+                       flusher can't feed it fast enough)
+
+Below freerun, balance_dirty_pages() returns immediately.
+Between freerun and limit, pos_ratio ramps from 2.0 down to 0
+via cubic polynomial that tasks sleep proportionally in
+io_schedule_timeout(). At limit, pos_ratio=3D0 and all writers
+block (max 200ms sleep).
+
+Generation =E2=89=88 drain, so dirty settles at 10-14 GB =E2=80=94 crossing
+the freerun ceiling into the proportional throttle zone.
+
+The observation
+---------------
+
+                 throughput  IO PSI full
+  dirty 5-10 GB:  494 MB/s       1.4%
+  dirty >10 GB:   578 MB/s      26.2%
+                  (dirty still accumulating at +2 MB/s)
+
+  Peak IO PSI full: 39.5%.
+
+The proportional throttle adds 26% IO PSI (full) but dirty
+still grows. The flusher is already at its submission ceiling
+and sleeping writers doesn't help it submit I/O faster. The
+device is actually starved: writeback-in-flight drops from
+6-8 MB (baseline) to 1.8 MB (during throttle), and NVMe QD
+drops from 45 to 37. The device could drain more if fed
+more, but the flusher can't feed it faster.
+
+Meanwhile, memory is not scarce:
+
+  Dirty:          16 GB
+  Clean file LRU: 57 GB  (instantly reclaimable)
+  Memory PSI:     1-2%
+
+The dirty pages aren't causing memory pressure. 57 GB of clean
+pages remain available for instant reclaim. The throttle is
+protecting a resource that isn't scarce, at a cost of 40% IO
+PSI (full).
+
+Our workaround plan: dirty_background_ratio=3D5, dirty_ratio=3D40.
+This raises freerun to ~17.5 GB, keeping dirty in freerun.
+The flusher drains identically. It runs to bg_thresh either
+way.
+
+Questions
+---------
+
+1. When should balance_dirty_pages() sleep writers? Currently
+   the criterion is "dirty > fraction of dirtyable memory."
+   This doesn't consider whether sleeping actually helps
+   drain dirty faster, or whether the remaining clean pages
+   are sufficient. Should the decision factor in flusher/
+   device saturation or available reclaimable memory?
+
+2. Is tuning dirty_ratio to 30-40% the expected approach for
+   high-memory (>256 GB) systems? Documentation doesn't
+   cover this.
+
+3. The freerun ceiling gates entry into the proportional
+   throttle path. Even moderate sleeping shows up as IO PSI
+   (io_schedule_timeout is accounted as IO stall). Dirty
+   never hits the hard limit in our case. It sits in the
+   proportional zone, but cumulative PSI from many tasks
+   sleeping short durations is already 26-40% (full). Should
+   the throttle path be skipped when sleeping cannot help
+   drain?
+
+Thanks,
+
+Yunzhao
+
+--000000000000299200064d403688
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><pre class=3D"gmail-bz_comment_text" id=3D"gmail-comment_t=
+ext_0" style=3D"font-size:medium;width:50em;color:rgb(0,0,0)">Hello,
+
+On a 384 GB machine with NVMe storage (2x NVMe RAID0, dm-crypt,
+XFS, kernel 6.12, AMD EPYC 9684X 96-Core), balance_dirty_pages()=20
+throttles writers via io_schedule_timeout(), causing 26-40% IO PSI(full).=
+=20
+But the throttling doesn&#39;t actually drain dirty pages faster.=20
+The flusher only submits ~578 MB/s of writeback regardless of
+whether writers are throttled, and the NVMe device has ample
+spare capacity (1,044 MB/s benchmarked).
+
+I&#39;d like to understand whether this is expected and what the
+right approach is.
+
+The setup
+---------
+
+  dirty_background_ratio=3D10, dirty_ratio=3D20 (defaults)
+  dirtyable memory: ~77 GB
+  -&gt; bg_thresh:       10% * 77 GB         =3D  7.7 GB
+  -&gt; freerun ceiling: (20%+10%)/2 * 77 GB =3D 11.7 GB
+  -&gt; limit (hard):    20% * 77 GB         =3D 15.5 GB
+
+  Write generation:   ~580 MB/s (HTTP cache miss writes)
+  Flusher drain rate: ~578 MB/s (device can do 1044 MB/s
+                       flusher can&#39;t feed it fast enough)
+
+Below freerun, balance_dirty_pages() returns immediately.
+Between freerun and limit, pos_ratio ramps from 2.0 down to 0
+via cubic polynomial that tasks sleep proportionally in
+io_schedule_timeout(). At limit, pos_ratio=3D0 and all writers
+block (max 200ms sleep).
+
+Generation =E2=89=88 drain, so dirty settles at 10-14 GB =E2=80=94 crossing
+the freerun ceiling into the proportional throttle zone.
+
+The observation
+---------------
+
+                 throughput  IO PSI full
+  dirty 5-10 GB:  494 MB/s       1.4%
+  dirty &gt;10 GB:   578 MB/s      26.2%
+                  (dirty still accumulating at +2 MB/s)
+
+  Peak IO PSI full: 39.5%.
+
+The proportional throttle adds 26% IO PSI (full) but dirty
+still grows. The flusher is already at its submission ceiling
+and sleeping writers doesn&#39;t help it submit I/O faster. The
+device is actually starved: writeback-in-flight drops from
+6-8 MB (baseline) to 1.8 MB (during throttle), and NVMe QD
+drops from 45 to 37. The device could drain more if fed
+more, but the flusher can&#39;t feed it faster.
+
+Meanwhile, memory is not scarce:
+
+  Dirty:          16 GB
+  Clean file LRU: 57 GB  (instantly reclaimable)
+  Memory PSI:     1-2%
+
+The dirty pages aren&#39;t causing memory pressure. 57 GB of clean
+pages remain available for instant reclaim. The throttle is
+protecting a resource that isn&#39;t scarce, at a cost of 40% IO
+PSI (full).
+
+Our workaround plan: dirty_background_ratio=3D5, dirty_ratio=3D40.
+This raises freerun to ~17.5 GB, keeping dirty in freerun.
+The flusher drains identically. It runs to bg_thresh either
+way.
+
+Questions
+---------
+
+1. When should balance_dirty_pages() sleep writers? Currently
+   the criterion is &quot;dirty &gt; fraction of dirtyable memory.&quot;
+   This doesn&#39;t consider whether sleeping actually helps
+   drain dirty faster, or whether the remaining clean pages
+   are sufficient. Should the decision factor in flusher/
+   device saturation or available reclaimable memory?
+
+2. Is tuning dirty_ratio to 30-40% the expected approach for
+   high-memory (&gt;256 GB) systems? Documentation doesn&#39;t
+   cover this.
+
+3. The freerun ceiling gates entry into the proportional
+   throttle path. Even moderate sleeping shows up as IO PSI
+   (io_schedule_timeout is accounted as IO stall). Dirty
+   never hits the hard limit in our case. It sits in the
+   proportional zone, but cumulative PSI from many tasks
+   sleeping short durations is already 26-40% (full). Should
+   the throttle path be skipped when sleeping cannot help
+   drain?
+
+Thanks,
+<br></pre><pre class=3D"gmail-bz_comment_text" id=3D"gmail-comment_text_0" =
+style=3D"font-size:medium;width:50em;color:rgb(0,0,0)">Yunzhao</pre></div>
+
+--000000000000299200064d403688--
 
