@@ -4,102 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D4EFB5E90
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 00:32:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C09A7FB5E93
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 00:38:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72FCF6B03C7; Mon, 16 Mar 2026 20:32:18 -0400 (EDT)
+	id 0CF786B03C9; Mon, 16 Mar 2026 20:38:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E2396B03C8; Mon, 16 Mar 2026 20:32:18 -0400 (EDT)
+	id 081236B03CA; Mon, 16 Mar 2026 20:38:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7C56B03C9; Mon, 16 Mar 2026 20:32:18 -0400 (EDT)
+	id ED8E96B03CB; Mon, 16 Mar 2026 20:38:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 44F076B03C7
-	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:32:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A44011403D7
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 00:32:17 +0000 (UTC)
-X-FDA: 84553678314.12.7919FF3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D58DA6B03C9
+	for <linux-mm@kvack.org>; Mon, 16 Mar 2026 20:38:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 788B21C504
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 00:38:12 +0000 (UTC)
+X-FDA: 84553693224.23.E0C4C1E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 38BAEC0010
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 00:32:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WzhKXsyn;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id E441118000E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 00:38:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LLFZVYwd;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773707536;
+	s=arc-20220608; t=1773707890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jXKxuj/Ma/nsFbb++vm1857Nj6vB3v9h+rGrq4cwWZg=;
-	b=JxAs1y19bSDrq+A5qJUvZEGyL6FO54v4HOAlZubo1gyemRCc902S22Ub/Aa4RWTBNWNg6v
-	DJqaFJM/qlEDFQCjBE4r4GfLxHnUWjfUjeXCx1/yY2A2I17dCL8fQSSkI+huSim5ByS80h
-	iy+RDhbbpG9ALhGqpVyrN7lnLLZAO+E=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WzhKXsyn;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773707536; a=rsa-sha256;
+	bh=AWREopsOMXmUIKruLlb75+6U391VwaIZecuCS19SxAY=;
+	b=fg/4iG3/yzfnnCv7Zt9mYR7a/WQQfLclpj738+moJtISLaC5n5v2F0IfFowZJ4YPy1Noll
+	PQOWYF5I68G/5IQ0ZIyY5hLC7chRucWtpkMh7JTbypRBHV9CAZqAIoWeRGox/JXYRV24Yf
+	qxQbb5CXTNvkE8I/9C3/4zguvRdG4X4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773707890; a=rsa-sha256;
 	cv=none;
-	b=kg4bTCkICPMkUl3fuk6xfksZOquN03tZ/24qyrzfnkjAtdhCFEtZB1Ccz8TNrHWcXPA6+1
-	3Xa8ZzkI0qq4+IPFjspYQz1PlIsZmE615untrli+ZnH/OLIq5UsoJCCMIMBiNnfS3rd2f9
-	PMmDwh7kR02Ha3uqV/KvrwVLyR1fP+s=
+	b=ZkyAjG/e33DICDAmh2m1qN8SRVneT6h/Xh7PVx8y7jmosHh8gAGYn370/KC8XgKqf4w0cd
+	Z1Bkt7glfMlygh9rSpAuQHpTB7H5MwGnTU2fEpMsoSFNM8OvtLgqy4udCE6M0EqN99ldI5
+	UKJnCD0uTZ46MqDy+PfrawxtmjxajyA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LLFZVYwd;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 713A060103;
-	Tue, 17 Mar 2026 00:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CFAC19421;
-	Tue, 17 Mar 2026 00:32:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 575C160018;
+	Tue, 17 Mar 2026 00:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83C8C19425;
+	Tue, 17 Mar 2026 00:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773707535;
-	bh=SxztNyjsBWFQa6rSjGITiRSfE6ka6QEjlqxvt3CSyEs=;
+	s=k20201202; t=1773707890;
+	bh=mZHx5DcjeRrffIZU8QhIytqAzGsXs8r26tpr+jy+FEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzhKXsyn1mncyjXxEA3xKr3mJtet7x5eO/3Q1n1ufQQ5KMSCpzjlIe++T4iQ9+lN0
-	 lT2c8CUJq/5Ip4nkn64NRQBoCRe6CNs9+4epjtSt+VCtOQYPEQ03XmlvQY9rVIhpjU
-	 5+FDmvPkcQWbLijhEfOx6JmmAxx84SWlML1MzNNnTKaXaIsCkqwHyKHxrupQ4Dkl/r
-	 jYS2GrVsAsS8W8Mu7CLG1M8YP4VqRhNaHiuupLC9hSHsAv44m4UbZ+gO1RnJZRAv6p
-	 nzyqRKBqpgWuf1gZKWlvYPoOEA01VJ1+XGsjqAhK3vnBWrVBukfE0b5g3cSp0+mQ5d
-	 xcENaeB0rhncQ==
+	b=LLFZVYwdRQRn5LS9+rcV07qD/UHANjm3rQURxV/A/h0lUkTiFrAtI7nDn5foYS6N+
+	 G4b1u2kDHw7TxZBpfFPVF7rmbjCozhcGY4gOt/NzJg2/CsIJLvl8kdmEC5KSJBNe/t
+	 Ei/y6LWzSC6gpJ+oV3eof8Vh8mAM8+pAQE3TAGQ7QizjWjyVwwd9ts3mHTwXweSbMT
+	 lyjsYBvZPf0gcpmEaWtcvgQ/7gtbYAHWh4tRPSlYaQr4VmgI3HeMRnfQuzff7FrmBK
+	 krSmSqQvGfzxyX8ofsI/zCaJfnXzChUltPqDagN4lT+/vew6Fi0rRXs3n64Kd2ZZ9e
+	 SYrcg/dQtuotA==
 From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
-Date: Mon, 16 Mar 2026 17:32:05 -0700
-Message-ID: <20260317003206.89342-1-sj@kernel.org>
+Subject: Re: [PATCH mm-hotfixes] mm/zswap: add missing kunmap_local()
+Date: Mon, 16 Mar 2026 17:38:02 -0700
+Message-ID: <20260317003803.89459-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260316183805.2090297-1-gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260316140122.339697-1-ljs@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 38BAEC0010
-X-Rspamd-Server: rspam08
-X-Stat-Signature: zh5kyyy5wpfxx1qcaw74ubgp6apkfi8h
-X-HE-Tag: 1773707536-886605
-X-HE-Meta: U2FsdGVkX19mRBF5PMxeOg8V8HpE4fQ6Irn9cD2Y72iIYavRc8NWktnVC+4bbCOFnSeT5YyBK+FQXVmT5ybAW7Dfy4EQo9moqx6pO78u6HPy9llB4TL5JGOKxLULoyFIGM5pNKWeyJcQyzIt5z7sfKmwtn/BUr5gs/DlysPJJj5Kz0VXBN0qK+1qZCAgpNM70C9yGCV7T3Ddpbdov7lHHRH+Zomxz2teRDLnVH/N8MfhFQo3MErb+4suntfKSEm+gTJp+lI59gBK9R5iqc1DeIzb9qG5x1vQLEel1IskXGwafZgYLbPJGWqFRlc/bTl5vOScORKQSxyurbWrY1uutTSa7awy2f5vg79nA84sD4SSC/hYrFuDCHtDqPo0W1akChHvU3+PUZ1v50LV0NsMpGn5OAvYzdknzcmgX9sGE8Q83KyfX/qZN1vAXCPwIEmhPWORkydT7Gjy8Jy7tZLueg4hKbBySvg2e7IMORJWH2W0L7u6frLS+8e9MQOSOpitfPH5Ty1SpLZcDVtpNe4/7tKkzCHV7rnb01GDwKrU6yW3DFghslHtiGdJQayYoHxo5U5f8RGk/C16LwgAyKJ9zn0TkVBOZISx0Y8StF3kByqwWcEaVEkyo2GdlMLnJ014RqYBVt6Sg9TpOIq6yx7O/J5x+MwbqDMOHAbQFkb9jeBsLtDSIsypiJhuV5YFa+lQxqusjvy6xsiFMF14p1o+QxdkAnAKYpr+mZXSpgZin6wdqxhdUw1Lyc0xsF1wrTyJniP3nMF++rmujcJeSd9PnWYJFT06TbLS8WIDrniwBmSK6atWVjc9R6nNAKYzKPfi3GJl6P1fm8aJ9jf6fWgTwEuDUH924Ui/hki3Ut+Tg/lQhh5xip47S7UtZTUMAMfnYRekB7DZe30MvOoUfIRH08u97rKCpd1Mka2QRoSQBQ7Xh+1KDxvQQFUTZ3YpPSgYQmUBfko9gAOGQTH9odd
- 2DKErek6
- XhOTF
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E441118000E
+X-Stat-Signature: nx1o411sckdddeejpd7aojxmfjrhud9w
+X-HE-Tag: 1773707890-663707
+X-HE-Meta: U2FsdGVkX1+K03PDSkvjsx5EHdyLjPqx+xk3OUb5JumTZ1kKZf8L+ByEyzBK+dg3jLwFKtDWzzIqnzuVwhN4CPsM0+DR+93VK3uXNAr5+3234gSUIu+UupCO5ZhpJrNevQ5CrrQirIIM//2vfrAY/BatB+TDk8k9o27B+wiWeSYHxt4EgNGSJlA2eJKEANERJZYsf1HBZvjF5zETxSTLk/yKzbG5+otohuPMx2JZgE//ZXjPB+6mHd7RQWvjdeNlCNy8mR6mE2hvI4n4hLq29g78K7LRBaGuWmeMqc/fJ3JxSxiYlkICtqe0SCN0oRH/KNTMPOQ/t1CVnniDVeOm38dKlvx9UeQhVVak0wG5sVqtOWAWpr61NTAIW0YuxaOQ334cflge4lAzisa/t8wENsSp6YvyMtmWD2iM/9weqjHTpyydB2cayrMKe8UmB2rxdLCNT44yx5GLaa45S4a/XjnSasJO1vJLasNKiEPA0/o2qpueFOzuAE1Ugadqguw/dIPEK9DRyyfy+tpA7OXsNuQziGvHlPIXqkpIaoSwF1/rYnkVMGNS2kxAPELmvTUIAoCSOoBfPP/WE6gfwPeuFpuE9rmyLkhhSGJVjmgePGtjubFFUeFRvsyod06zyc+iji5rZrq61SzNpVSQGsRtxYQO+iKaRHEKnEUhh5o2ph8J48XJ69ilGFNPk6F795xG79M4+2aaBLC4zYmzq8Bm/9sSH6sRNKaNYqpZ2QAFiGuEv1gJzdIgGH0gYOhfDC54to2lX8WnD/kxvo/2NnfW6MsRV1BpfnyP/BQQhxUqmihYYv91XlUyXCC1doGA1R0l+eT4tNH3iOytGa6QsTApZcMM8QSptWkjHUhxXZJV9hk5QhC6wL8YDkFtrVz2+1xu0jjfo/tihcuLnd24Pp/HveksNvvbjyFo481y2oEePp4+d2ApKIGUqShkIxWUn9eUi7Ya+9XRYxIsFT5DA1I
+ aS55LkKb
+ YlllUxg4+WJ6Pc2iB+dYUYCLPTu3r/jAfoHfK3LOJrT7y7LK+zhaxgonQGLEWo2R0a47Yu0ZDfmjATAVk4wAlQaXkXowvDJyE0KSLBlJ4g56m1aYehSr8f+A44DoeRu7IhimwGCP3JjZULzlwvqau+NmAMj2kuH56dgaQY4xw29/l27U0iVc6MoufptSnO6un6JmfIwBFRfTpuq8faoC6ZaU0GI/dY0KCLfi4gzGYlmruTqt/yDu9RCEFsmpokD/uDAmDJAAsVtB2QX3FG7Q5lV0b6K8RAsmBwqLMBkMsQQtP9x6IBblglzkHGZHFhsuZ6i1LFQ9AkeE7C/HaMMQwVJ5FpK+T+AjIZE7e9A7eprk5JJU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,92 +96,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Asier,
+On Mon, 16 Mar 2026 14:01:22 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-On Mon, 16 Mar 2026 18:38:05 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> Commit e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from
+> zsmalloc") updated zswap_decompress() to use the scatterwalk API to copy
+> data for uncompressed pages.
+> 
+> In doing so, it mapped kernel memory locally for 32-bit kernels using
+> kmap_local_folio(), however it never unmapped this memory.
+> 
+> This resulted in the linked syzbot report where a BUG_ON() is triggered due
+> to leaking the kmap slot.
+> 
+> This patch fixes the issue by explicitly unmapping the established kmap.
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> This patch set introces a new action: DAMOS_COLLAPSE.
-> 
-> For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
-> working, since it relies on hugepage_madvise to add a new slot. This
-> slot should be picked up by khugepaged and eventually collapse (or
-> not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
-> enabled, khugepaged will not be working, and therefore no collapse
-> will happen.
-> 
-> DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
-> the address range synchronously.
-> 
-> This new action may be required to support autotuning with hugepage as
-> a goal.
-
-Above all makes sense.  Thank you for posting this patch.
-
-Do you have some test results that you can also share together?  It would be
-nice if it can demonstrate the benefit of DAMOS_COLLAPSE over DAMOS_HUGEPAGE.
+Nice catch, thank you for this fix!
 
 > 
-> [1] https://lore.kernel.org/lkml/20260314165156.86647-1-sj@kernel.org/
+> Reported-by: syzbot+fe426bef95363177631d@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69b75e2c.050a0220.12d28.015a.GAE@google.com
+> Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsmalloc")
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Seems the above link is just added by a mistake?  If not, please clarify.
-
-> 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> ---
->  Documentation/mm/damon/design.rst | 4 ++++
->  include/linux/damon.h             | 1 +
->  mm/damon/sysfs-schemes.c          | 4 ++++
->  mm/damon/vaddr.c                  | 3 +++
->  4 files changed, 12 insertions(+)
-[...]
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 3a441fbca170..6720dc70c487 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -140,6 +140,7 @@ enum damos_action {
->  	DAMOS_PAGEOUT,
->  	DAMOS_HUGEPAGE,
->  	DAMOS_NOHUGEPAGE,
-> +	DAMOS_COLLAPSE,
->  	DAMOS_LRU_PRIO,
->  	DAMOS_LRU_DEPRIO,
->  	DAMOS_MIGRATE_HOT,
-
-sashiko.dev adds [1] below comments.  Let me also add my comments in line.
-
-: This isn't a bug, but should a kernel-doc entry for @DAMOS_COLLAPSE be added
-: to the comment block above this enum?
-
-Makes sense.  'make htmldocs' may complain otherwise.  Asier, could you please
-add the kernel-doc comment for DAMOS_COLLAPSE in the next spin?
-
-: 
-: Also, does inserting DAMOS_COLLAPSE here shift the integer values of the
-: subsequent enum entries like DAMOS_STAT?
-: 
-: The DAMON sysfs selftest script (tools/testing/selftests/damon/sysfs.py) uses
-: a hardcoded dictionary action_val to map string names to their integer enum
-: values.
-: 
-: If the enum values shift, the test's assertion:
-: 
-: assert_true(dump['action'] == action_val[scheme.action])
-: 
-: might fail when checking the struct memory via drgn. Could the python test
-: dictionary be updated to reflect the new values, or could the new action be
-: added at the end of the enum list?
-
-There is no test that uses DAMOS actions that defined after DAMOS_NOHUGEPAGE,
-so no real test will break.  But this is a good point.  It would be better to
-update the hard-coded value together.  Asier, could you also update the
-'action_val' dict of assert_scheme_committed() function in
-tools/testing/selftets/damon/sysfs.py for the updated enum value in the next
-version?
-
-[1] https://sashiko.dev/#/patchset/20260316183805.2090297-1-gutierrez.asier@huawei-partners.com
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
