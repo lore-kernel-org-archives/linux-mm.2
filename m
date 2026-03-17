@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA4CF3381D
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D1B6F3381E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:13:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAF486B0088; Tue, 17 Mar 2026 05:12:26 -0400 (EDT)
+	id D73E66B0088; Tue, 17 Mar 2026 05:13:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C60E26B0089; Tue, 17 Mar 2026 05:12:26 -0400 (EDT)
+	id D4BA96B0089; Tue, 17 Mar 2026 05:13:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B76526B008A; Tue, 17 Mar 2026 05:12:26 -0400 (EDT)
+	id C62646B008A; Tue, 17 Mar 2026 05:13:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A398A6B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:12:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45426140621
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:12:26 +0000 (UTC)
-X-FDA: 84554989092.29.45539C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 89C1C40005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:12:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mCZgaD6K;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B58E06B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:13:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D47D13B385
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:13:00 +0000 (UTC)
+X-FDA: 84554990520.27.72EC74B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7328114000F
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:12:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="AG/3HAK4";
+	spf=none (imf09.hostedemail.com: domain of BATV+6844032b00f4c4208e8c+8241+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+6844032b00f4c4208e8c+8241+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773738744;
+	s=arc-20220608; t=1773738778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CLI/bZM+cSBD8wVwTESyfSKw+Jwsxjddwt/oR6H0SR0=;
-	b=XUclQyQOOMGH0rElxj5eIrsYofUrf3G+1ulPv9AyVcvShxQqIDs2jqA9Y+Ay8u2+Fl568S
-	3YvDdFbLBYDZSG/bGZnMs8Nssp3Zhet9W3znfNLDIFW0d83Dg6Z+i8sRb/6XdGS1vyFM1M
-	coqOo3PD1FnvWQ+4HlgRHJ7nDZofJ/U=
+	bh=fJgFDdVVNtRZq/ve183e/9QuXJnpu/Eq4FFwP2YIxlQ=;
+	b=zlOpxvYhr2HMn60V+wJrInwPZ+aiCZ1/ks6ktwpN5ZPPrN2ibtyA4d4E8KZk5szuwNy+eM
+	MjUYPd8zSx1N9rbuI2V6LBbodHFsCW8M8/TDo2jTwEMBToxXYYbBXbAqQmUWP/SNI1ZKso
+	7cN+2FM6sODWyPR7sZqKMTMwDPWQwKs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mCZgaD6K;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773738744; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="AG/3HAK4";
+	spf=none (imf09.hostedemail.com: domain of BATV+6844032b00f4c4208e8c+8241+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+6844032b00f4c4208e8c+8241+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773738778; a=rsa-sha256;
 	cv=none;
-	b=1aQuBYrUaLo9OsovOIRTQ4IlcQKqtTaeQ4dkp7tL28mskKfJGCAxPrtzhwYd11EUA+zKgK
-	5M0TTiAv6DKChqAdKPcjnXoy2iwLO8tj4TkUYMLKhCwMWfj3x7rQJfqDIlw4oFAQlfobtL
-	oh2P7ctinIllFTKQ4p/ggSQCA7qynoU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78CFC434DC;
-	Tue, 17 Mar 2026 09:12:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B50C4CEF7;
-	Tue, 17 Mar 2026 09:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773738743;
-	bh=mg1XRSjP0lyWKLduKNpAhmOLtj6KEMMUpquKvbP4yzo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=mCZgaD6KOl4NSTvradsDqu9gM/HxUVIdrWrJzFCG3NpmQRzxXB6cpFVf7i0XSNUsU
-	 sBBhdtVC3l6lOJ6gKK9nyDiKxhm7+JhNmY3pMoBWtjsfFWPR3xt8E5iBfgXdibGoL6
-	 C2d2zx/FUoHViLg4+OOcVbYNrXtg+72aw7pDXGnEsQ4xx72BH5L5eweQQB6EcMhZzC
-	 jUjYJkPeMtkj26MK8yF35s38QTxuf9lHnHoAtlI+pgUyqBuI7YS8bc6UVDhWYF4tgn
-	 0VrUCQIQtzOGZY4IS5H2EruN/PN4SICGCPHyUshAIx5ayU6jIV4J539TcrC3l2IFIa
-	 Az3X55mxCQJ1g==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] kho: drop restriction on maximum page order
-In-Reply-To: <aa_zglmh3AU2_RA0@kernel.org> (Mike Rapoport's message of "Tue,
-	10 Mar 2026 12:33:38 +0200")
-References: <20260309123410.382308-1-pratyush@kernel.org>
-	<20260309123410.382308-2-pratyush@kernel.org>
-	<aa_zglmh3AU2_RA0@kernel.org>
-Date: Tue, 17 Mar 2026 09:12:19 +0000
-Message-ID: <2vxzo6kmddl8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=GkK4AySqNKm/y8Qqcg06rD2umB92EI9aqm6aVibMQOLmDFw9ENEruu3aBLZ8cEIrqWtDEk
+	JJZ65RELBP8BOlM2j30zTJQ9EjReR3/tvmKdTBiyV7HmVjuXVMoW/Bv2OcEWh3wDhY7+5E
+	CC9iU2fWaghaaFdwJ23w8nsshtRsXAw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=fJgFDdVVNtRZq/ve183e/9QuXJnpu/Eq4FFwP2YIxlQ=; b=AG/3HAK4O8ayyVuOPZnyB2Uh9P
+	tmWEwIZEROjZynpvbdpq+DNRMbvkY2gybeTuDrtfY1/+jnWqz08TGfzJP533FGrx+D8zlGC0KK+eW
+	8IUU9Ycke52oz97aq7wtzygtu+Cqrfs3Ky3ics5cWclSxsoLrPtk+otIY8WuqG20IB0coqQmKBkpy
+	H5BH34XfTk19Hd1e984MffKBwB6b+R0adtFusadkFbMEY+DB9Ab+WKP4lGH4vJVQxTesd1JJ4hTcP
+	7SsXxzngnle7K2ehUDtH+F6iBa2NbXTdiR1u6h3KtK094IoHBra+tjt3/4rg/rhEITBPz3pbbceiH
+	L8dxodpA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w2QTr-00000005ouA-17Aj;
+	Tue, 17 Mar 2026 09:12:51 +0000
+Date: Tue, 17 Mar 2026 02:12:51 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: changfengnan <changfengnan@bytedance.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+	guzebing <guzebing1612@gmail.com>, brauner@kernel.org,
+	djwong@kernel.org, hch@infradead.org, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	guzebing@bytedance.com, syzbot@syzkaller.appspotmail.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3] iomap: add allocation cache for iomap_dio
+Message-ID: <abkbE_zh79iCd5zs@infradead.org>
+References: <20260115021108.1913695-1-guzebing1612@gmail.com>
+ <aWh06YoiJrR3-J-X@dread.disaster.area>
+ <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.e7ce3c98.9b89.4c0d.96b4.bddcc787e1ed@bytedance.com>
+ <d2598f65-8666-43f4-a9c1-73bee678f8d7@kernel.org>
+ <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.e7a4a183.1b5a.4776.80f3.36cd4d9bdb3b@bytedance.com>
+ <abeb4474-8f3a-49c4-bb73-50f2a633d179@kernel.org>
+ <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.b89f1572.8ddd.443e.a91a.9f6964f1a150@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: ryort6xy3rzepjndnyw3xirr9zax4bk6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.b89f1572.8ddd.443e.a91a.9f6964f1a150@bytedance.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: r4j7kkd33g3zp84356qzsya3nh3rc47s
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89C1C40005
-X-HE-Tag: 1773738744-102804
-X-HE-Meta: U2FsdGVkX1+S/ihG+XBFFoxGWB7Jh4kXm2ZavSv/BCdXB6Be7SNsy4C86Vka2kqOMGPgHh4EnfggrAJdU8jKyakU9Qh9lKX/CJpUNpcVAqLZn+TyJ75BMxjE9nFwMs8YdK6iTQOFNpM5FNjE+FxYw1Ga2O6EvT6Mg75g3btJa7nKv13W/plgmQDGcsCocXZXOPmK3qsxGTYlA5nys/zK+jUwaFVPtkJCZwEy1oTYxblkFXhBdxSRFUxm42I02uDVKjBbZiEydob6KN+qgMtOIFoOcHUfSjURHkTKywIwgrU0RnWqVafeTZwbEY2Y8rnWZ7ZDXug7Ec+SZOscgwaqQ6ZMRVN5PrQFeOZtgDhR5/7ZkM6gtRGfFeCSG1YBmNzWrZWEcw9I+3HjrsbJUdKYWN/2y21BYIM9S6PtPm/q+G8sRE31pE1HKg3VxY6SQUl3ZtVEoNT76pqxzL+Pq7vb4lN9XD1d4x/XwsPcCfJ5wNqLQfnsOslR5jOCbVAx5bQgUBxnviCq4M5NgR8ratP/NUo96YxQHWtaGQAC7fuqQQYx4vW7EA7J1XnqREeQvjGusY5BNzTq3N8DsbHKrHH1YCaCbamoxXR8oyZgTQq1O7rNbtU4SoOZceX9bKTCHSfQH5A5O1ZhMypqhUKKu2PgWmUwcWIYjAxUtbZW+b6ZVXss83bl3YHk/cDaioDTx+JoujfdkzttZre4Wxd96twTWW0i6KblVbWOQBUmFcoVDsIode9CP7GAYBvA6M7vtNxiibAC/LEoLS6oQ6fN9fV/JSJJrmF3mfN+/STTVWdntwyALPuwh4q4GzVvV6KlmbK2AW4jSTKd5zVegRLnkdZ26hnoFSAGxvY+tkR81+rDY0HfKtIbbi98n0cY7oPuU0bl+tfRnaJbmd4GULYYPSGV8B0Qyjg13O30Izku2AD4M0sqsnWR4bY9qHJRPp2DvzqbzuSKdxIbEx/xjRNKifi
- EGm9VJBU
- c7A0VtF5saNntiDaEXzjfGqIpReugSLswdXPuxTw0Hl1hBhWdUNwukUuV19vzzNxeaWuYAo9xMz3I4jfKsH63c7rDCkGIBRnRNsu3BnuFKmkcdNM3o0UyEwDsMADC3Sd7KD4WK7rIybPP3lXUsa5iFCTFdbHwIjHl+b3tKnjx6Obmuj5tDTwJMTZWke/z6Q0flvTd
+X-Rspamd-Queue-Id: 7328114000F
+X-HE-Tag: 1773738777-546598
+X-HE-Meta: U2FsdGVkX19jbY8OIDnxWp9u50PqzHxze3PeX33HU9utxeePCuqrAJwrK/3lHFsAVqMeOd400sdbAxH3kX57gRiwrEfSVXEDKc0DynCrPqRT5P0tdGqjliQoeG274jU2Xxrxfbyt9DGuBCr+t7t4/EC9IZOBdiOMWFLqbpFvo000aujkgTISKzXgklm/SGh6zXkCdnKujXfIfL+hpdGvCY/f0KIN6gUM5mxmAG8izVN4i9CgQaAcCQ8l3VZud8p6z3OPxzKHM4cnUqNA51aUUsnXYk4ZDGItwqgI40u1bKax3nCyZHTZk31veJFBONRCHKdICuMCMAjs8lCLUdExgZiHl542bEZDUk5gGERR+9y9RIMncb5+pE6sFYqIXCDofPA7v3hmpu5KWQ8PCo8BCEz7BuihK8g6UXjyU4/ZbWZMn04RKxoLaHoHSV/oOK9lO2MOoT7KHkmQE73Q/YZIJDBBBN/nZvwyIy8AE8XBRyVGQgvnxDnyxda2bEfsYRIE1mgiYAidCHc9RFinA25OO8ySxN4JGRNUMPcUrJEYXCVtDKgPnCOcfhFiRE1wx6PbUCS9o4NEJS9yejh8x76ZcHboDh9OFuSKVLVEY5Kt5ip2z+eTcQQ3Mbff368namFN6ZefouugtBTklYfIB1BRZe8gpEq8yXdNvdwHrcraRoNzBD1H2370j3RiQ1GBJJ6ibBax4Z7ubZ5Qtwdc1i+w1dsXXOXfFnT8Vl9FW6EqYFr1Zc33GLAnjR25JmhGHS2irY6gbPwCd2qS6b2/1PfODn7Rlah1Y5txKrqUj0GAw5HyPvAelK1AnMIbVPKyZxKZA+4KJAkJLD67CnFFsaCxnaz2i48Tm6iypNf/xUC5JTuKOiJQmz+KitCJDus0qYVG0ga19w0XOZNzMi5rq0ku7w0mcO/vwa4vZoDPzvJC81qyCQrbNlji4VGUs+ZWRdfjin1+cjmSCfw3FP29I2E
+ qre1s3MY
+ UnEF4SZ3imGqdd9lClpa3sh4CJ07ILR7veYvUZgPJ59C43RTQ8246l4Acx98k4mr1fc6XPW6HkZUWv2ryRZfAVv1Fig7JfNEUX0uz4av/clNdu26H9jSWXID8PPMYO8mvOb+KnyOWua0h2rQPSasiro6ZdcHtbIK/gGwgFHNmV7JkePgVB6iiMKpNiTT+yXAHGQbMnW1kgyFsIbYbj+jf9ZtLo542AgGnCYR2nUmEyrBUJANBep0jmT4DzGYlLb4P4JRG7AB9VzfUZPx61Cy+GdDD70QqSc98GvNMjAAFjmJriIF5D0c0zi6Blv9e6dwl+R0lB03kMQ8r0dipmNPm/rwCWP0uKCgOmD5Dk4kxgHf9GBzuBl1Bav+7cOlUCDIsSUmzzRFGiynzsiE0iaa4DlWfM9FIn1vRn8LkwyIU8RL+q91j4eHUOAnSRtgetcgU0+2rN5Embq6tYlcugoihmKLCv5BsAhYvV9wGU2pWTKR36HkyfHMQ8j8kT/z2wl8WqXvjAIUl8XEHQK6mfo8a4AoFPTilHfDquitqLTWA/ASe8/s8GEn7YcGOfv911bHR1Akk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +103,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10 2026, Mike Rapoport wrote:
+On Tue, Mar 17, 2026 at 04:33:24PM +0800, changfengnan wrote:
+> > IO is not my area but getting from 1.19M to 1.20M doesn't look like it's
+> > worth the custom code? (possibly from 1.17M to 1.20M it also wasn't).
+> Yes, at least for now, there’s no need for a per-CPU.
+> It might be better to replace kmalloc with a new cache, but my tests so far
+> haven’t shown any performance improvements.  I’ll look into it further.
 
-> On Mon, Mar 09, 2026 at 12:34:07PM +0000, Pratyush Yadav wrote:
->> KHO currently restricts the maximum order of a restored page to the
->> maximum order supported by the buddy allocator. While this works fine
->> for much of the data passed across kexec, it is possible to have pages
->> larger than MAX_PAGE_ORDER.
->> 
->> For one, it is possible to get a larger order when using
->> kho_preserve_pages() if the number of pages is large enough, since it
->> tries to combine multiple aligned 0-order preservations into one higher
->> order preservation.
->> 
->> For another, upcoming support for hugepages can have gigantic hugepages
->> being preserved over KHO.
->> 
->> There is no real reason for this limit. The KHO preservation machinery
->> can handle any page order. Remove this artificial restriction on max
->> page order.
->> 
->> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
->> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->
-> One SOB should be enough ;-)
+Does using a kmem_cache help?  That should generally be a nice win
+anyway due to keeping the objects together.
 
-Hmm, I figured the unemployed me (who originally wrote the patch) and
-the employed-by-google me (who is doing this new version) would count as
-two separate entities and there should be a S-o-b for both.
-
-Anyway, I am fine with dropping either one of the two.
-
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Thanks!
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
 
