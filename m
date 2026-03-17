@@ -4,90 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67349FD707A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE60FD707B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE3966B0088; Tue, 17 Mar 2026 07:06:35 -0400 (EDT)
+	id C48146B0005; Tue, 17 Mar 2026 07:07:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6D836B0089; Tue, 17 Mar 2026 07:06:35 -0400 (EDT)
+	id BF8D86B0088; Tue, 17 Mar 2026 07:07:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B34EF6B008A; Tue, 17 Mar 2026 07:06:35 -0400 (EDT)
+	id A99966B0089; Tue, 17 Mar 2026 07:07:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B9096B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:06:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 438AEBA599
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:06:35 +0000 (UTC)
-X-FDA: 84555276750.20.4D5D4D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8682E40006
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:06:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lmSJnFTl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773745593;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 90E796B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:07:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 215758C096
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:07:11 +0000 (UTC)
+X-FDA: 84555278262.19.3D47D43
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010023.outbound.protection.outlook.com [52.101.193.23])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2D7E3140006
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:07:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FaQBo1Bi;
+	spf=pass (imf09.hostedemail.com: domain of dtatulea@nvidia.com designates 52.101.193.23 as permitted sender) smtp.mailfrom=dtatulea@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773745628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1QDRvWVMZ0ve6qv2iLjyX1aSvbOnJhjO6iiFMaGmoDc=;
-	b=C6WTovZsEJFsHTeMmmQAp9swvkELw7j7XL3i6fppLoEIabziyUk/4hfbFWA6FhrmBZH5A1
-	WOQjzwsI6upvchow+8AD95xFD4QF8vOYWeaZk4NXzbM8RjudeROka1w8kWsdwZe2hk37n/
-	nqZ4kfEUwDF+RFcSIAEthjR4C4hjpik=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773745593; a=rsa-sha256;
-	cv=none;
-	b=dWeeobpa3YyNR6uYAoR5rj4VYLGzL9AJAwA8a8pkycrHdorrVkwEiFqKchZrN8JMOG3FB7
-	Qn7bmYzxcVsmMTPJyFdzkA3qREBX7WqJAFCyw2mUKlTCRI6YszJVIwad3N39kApLWdQUtY
-	zqkMi1/LhYasypXoMRAsN8O0WJBO9sY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lmSJnFTl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85B9D435A2;
-	Tue, 17 Mar 2026 11:06:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D040CC4CEF7;
-	Tue, 17 Mar 2026 11:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773745592;
-	bh=GaokrveUokIisK/+DETje6sGOZkgS/z9TBu/9gRZN5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lmSJnFTl1AnFGTixEw9WHdnuFQttEx8Q2Rob8HTXIYf/i7JuOWyAbyV6LXh2t0xiT
-	 +ZW5sIJbWn0M+FP219O+HWwffQUjS9/Vz08zvKASjMxI9Ft1xCxLhUm7EYM4MkX8dQ
-	 x/IHthkjgClslIyDmThpxnPh6vO7m9cYRpfI3EhftGm8QkTDfZyTCO+/uQc253Gt8T
-	 z3nHxO8mrDyfMlB69iTmZ42Xt7Wis9Ybtgq6nboLMwDTjx2QU4htpFDz3sQej0HTYx
-	 DKAzNzvAK0rljeQvEj6TtvQtJsP4jCueK08si0P5IYoS/kUgdoPBDeozi6qVR+1hmC
-	 Rvt36IXGOE3zg==
-Date: Tue, 17 Mar 2026 11:06:25 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev
-Subject: Re: [PATCH v3 3/5] selftests/mm: move write_file helper to vm_util
-Message-ID: <c07844af-e508-4320-adb0-b05a5f026a82@lucifer.local>
-References: <20260317094419.1429259-1-chuhu@redhat.com>
- <20260317094419.1429259-4-chuhu@redhat.com>
+	bh=ZJlS+z/oy5pPxJLyMXp1QH22d8twnoSTGHxxZdVALhQ=;
+	b=e+MxlcmJ/aB2lEkoKs49uv8WN2ma7Kh+s4q5ecOjc1DUFdfHAlglw8dTc+wMOhsqFk6gPP
+	L7f4S9teZ3e+n1Ej9daRQZneMVqWd+MtbAQ4oIEArMr3+G2wlTwQc9NGeE5Sm+GKFiqQqU
+	CfDXot1lMlB11p3xHDKDHzeGsWr+0R4=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FaQBo1Bi;
+	spf=pass (imf09.hostedemail.com: domain of dtatulea@nvidia.com designates 52.101.193.23 as permitted sender) smtp.mailfrom=dtatulea@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773745628; a=rsa-sha256;
+	cv=pass;
+	b=wZXTFtKl/HNcwXf7nRcmX1QwoHd4LZZWdKuc3/GIsSRAwQqVNBCZZtigq/Kq6gVPS9ex5x
+	elqRAhSVFwI3pZthH6CTU6L8hboR/cKPENXwOIp+M+m38MZ9PV88CbL5pUBNJDI8o3N7W9
+	ZhWhwdfGxVckGGjdycu4NXbeOcnWPTg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MBe0/ZSTm+ic6T6n+YwgXrtaVECbtVJn4e/lYsucGsc7icCgMhjZojKNePD8QCfVjClE4PViXddrWrkp7v53+NYCEgnEUGxg+13HOgkh6uVBRNjgjZXJuH7fYHrrLubwOJ+MIgA8uku0Cc/yJ55MqVwjjYA4Dp730GWdQkzXrqbnFvfa+si3TQCk5prLHQfwNJs5D9EfsPKTvYEVQfEPskMXA6/r+z7udS421PX74bO8YepuPrH98HG7081hq1LpHWiaQVKZqyX2nvwcKphgpUgW1BddykoPtlbl3xpmj0lSKRS3GSmVnTz89XMjY+iM0u1z3fg07RaaHgAA4b9nkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZJlS+z/oy5pPxJLyMXp1QH22d8twnoSTGHxxZdVALhQ=;
+ b=TY2nRLDWwl81eUTpJRSri5666orSWuKFj7V41w/IxDo8CRn0MloF4WcPCsMrTelBismm0us5dzulNM2fS7G4kv0SqUhIfLffd7drdZOUJ7w0seH38JspNmpk8BkdZTfKIDann2go15A3F/GWGySgQ0nUkcM4Ctao6A8jC8F6hZkStW5Ov33DRjmNyJyWwZkaV1W4br6cu9mz00bFrov2r9H76ia/T70RS46qjspa6XcQ8C+T3xbThNEX3SCnspKIDuXECqS9ww4BAcce7VNjZecrgbu82fPxvCBz0sxuUrzkUve7aEjOxLlSa9yOeoZ8KLQJZJxM0pQ+aDQ6Xflnhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZJlS+z/oy5pPxJLyMXp1QH22d8twnoSTGHxxZdVALhQ=;
+ b=FaQBo1BiV5I1s9kLQ7UAd+NNlJEbDKwLylCDMtGXUkW/yq4KBRA97BAcuj1BaE6Atvpl3Xr1GXmXM4H1N+PlSM1nPYskGFK6c2fTXyxbYX0ygCcc6VCOUwnksEycVzVXYnTU1fElLVG98oCpVNufm0jZ7eqiwnEOAYdRSWwULbsRtDdvACVF/G+wMWNdaJaB77ZahqAzbY0RRfKpSf2Jey8ZvL09Z2+iOUi4pRWPYs9OCVz/QB++O8Gg8o/2D4r8n3Daa9VahmwR39Y1Q80muy5KxyWED1iXaJCPf0ayftGwXHY9V9RP3hCtFPl9bWECuBM32l7P/zTForxYr4zZDw==
+Received: from IA0PR12MB8716.namprd12.prod.outlook.com (2603:10b6:208:485::18)
+ by IA1PR12MB7759.namprd12.prod.outlook.com (2603:10b6:208:420::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Tue, 17 Mar
+ 2026 11:07:02 +0000
+Received: from IA0PR12MB8716.namprd12.prod.outlook.com
+ ([fe80::c18d:8eab:b36c:32da]) by IA0PR12MB8716.namprd12.prod.outlook.com
+ ([fe80::c18d:8eab:b36c:32da%3]) with mapi id 15.20.9723.014; Tue, 17 Mar 2026
+ 11:07:01 +0000
+Message-ID: <05c0db9b-c92f-4758-a356-e035a174b5dd@nvidia.com>
+Date: Tue, 17 Mar 2026 12:06:51 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm: introduce a new page type for page pool in page
+ type
+To: Jesper Dangaard Brouer <hawk@kernel.org>,
+ Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ Toke Hoiland Jorgensen <toke@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, john.fastabend@gmail.com, sdf@fomichev.me,
+ saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, asml.silence@gmail.com, bpf@vger.kernel.org,
+ linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
+ ap420073@gmail.com
+References: <20260316222901.GA59948@system.software.com>
+ <20260316223113.20097-1-byungchul@sk.com>
+ <ebd00055-d4aa-4612-8bf3-ef0a308512f8@kernel.org>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <ebd00055-d4aa-4612-8bf3-ef0a308512f8@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0335.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ea::15) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317094419.1429259-4-chuhu@redhat.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8682E40006
-X-Stat-Signature: 17ciowurqrjpdr566xpbge6zr3zsp56w
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8716:EE_|IA1PR12MB7759:EE_
+X-MS-Office365-Filtering-Correlation-Id: b506fb3e-c508-4cfd-3f2f-08de8415502e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	UQJeP8hPUrCrSMAfIc+2CaNS6GMMDStaHmlyOqY1hozRsAT+Zz0SpERi0KAvhrQfqpcPxc4nGyT2JQ9iyh2kj82lrSt9w0x0FxSz1+UEMYDynPmZylEoek+GK/OFNbzOpIoIyxEey60OqsxsPeEQRUgzWe49kST86P8LDqz6mRl+5d+5kJU7mXH8X6bpAmP307rAet+2QrUQsPTcAjG8SzwCXRf9Y0RHA3EOSl+lTwj6x+UU39IS6cqM+eJaUNjeMK8M/SlKieiJwG8rATVvOpzo0JCUNk/L+4bIy5JiazVIXEyM23giI2pIhExMAV5x3MZFkc1Uc/36OykVZZr7ZW3WaiZ5y5n8qpapWvLV044bboOiX8F57D/esRqXzlte3B++JtgIzVGhPqjQDm0qTEVjPZnlp5egK3yPVzW74siothy5ZSCXXYz9/LWoJcJEbipY4IFTGSPWpcDTOa/80qDfaSknuoRniRxN+NO7ENTHgNWpCfDJwKSegEOictQT3TsnJx2P8/mdrtKB4/rXewiqWeQQ5bb5jlIlXhnkWvmRsfW8WQkK7NUDO+Z5QwANa171m7nUVZMfBlh6TNU2vQj01zajKJ/FZx9M09HVtxzkucjlD1t8qJzLP8tQT/VYQnlqWR0wGcniIMDP/ws/Rz/6uJ5fum0RGfrZ8rPykJKBQpZ9agMg7wPRdRzMoxwxA72j0IPcxoNcx96Kg0/YThtVSuQ4wZDqtQi4gJWun6o=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8716.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S2hka2dtcGJKM2FzNStucllCVyt2K3ZvS09iK2MyS0V1Z2VMYy9jcjRGbXBV?=
+ =?utf-8?B?NXY5dC9NMCtHWnR5UW5KeGQ1Rk8zYldWWGNKYzZxN1cwY211Mm1WTW5UaTJ1?=
+ =?utf-8?B?ZnZZR0RVeThvdVB2UWpha2E2ZEpzZVgwYjMyYlBlZTdWQmJ1TERFVkZjd3JB?=
+ =?utf-8?B?NVhJdTBWRjV2MmprVE5pdnFXb01uc0U2eXNPU3lrTGdJODh2c3c2R2pNN1hK?=
+ =?utf-8?B?Vi9VeldrU2xKMkhrWVNnVnE3K3kyS0N5bUJyNmJFOEVFcHpPZzNEb3FYQ3JJ?=
+ =?utf-8?B?RCtIY0R2RXdFeUVWZXpCSEQ5VXlrL2c2Z3NBVTR5RmNXcU5GVFU1RUJrUC9L?=
+ =?utf-8?B?ZHRPaGJ2VG5oeWhHa3h0d1dTSVRNYTJOZlRyTkc0bmI0MW9lNnVyc0JuZDNy?=
+ =?utf-8?B?MXZNaTVydUlUUkVaVVc4ajJUT3NjTitVcjBrc29HRTVTMXhIbUNMWWFKb3Qz?=
+ =?utf-8?B?d0xhVlpKY01kcUFCQmkxSFhEaVVycjVPS0tkaU9POCsrRlg1KzN1bHljYWNI?=
+ =?utf-8?B?dWZCWFNBUDloQS9NZm05WERjOUZrSFhtSXMxN0lqdldmLy9mTGhVYWN0M0tl?=
+ =?utf-8?B?M01tb0Z5eUhjMjRyTnZNYWVKdWVqbU5leHVYMjU2MFZyNjdDbnh3ekZNc1pz?=
+ =?utf-8?B?QnVQaHI5T1c4eWMwR3gwNmNLL1pOVGd3OTc5eUZ0RWpqdzB6empLNHpFcE5C?=
+ =?utf-8?B?dnRHODQ4NWk1OVdKKytZaTNYVERDcFdOUDFSK1Jvbm95aWpRRTk1amZzNEhx?=
+ =?utf-8?B?UFpjWkJTWko2UUNOU1N3ZlFYWG00cTNuRXlhbjV5dHBqUnpGVWhPOVB3U2lU?=
+ =?utf-8?B?S1NHTWpRN1QvY2lSaExXanpzbFU2aWJkOWxrVTJPczNTdXZRbm1xWWQvdUFQ?=
+ =?utf-8?B?OGhQK1Q4dWFScHdMMGJkMHI1U0VBeUZoOVJCanVMaUhvek0yeEg5b0RwdHF3?=
+ =?utf-8?B?OTkwQ3FFcGxFVG43cnJGdW1sZE0rU0JVTXkxQUx5MUljUFhCNEs0cHFEUEIr?=
+ =?utf-8?B?UVBiMkFzRWxvc1E5aHYwaWdPa0dhU3RRYTZmWVV0RklLcEdtcGJ4Q29SVU5G?=
+ =?utf-8?B?ZVJQOUxmTVpFcjQySjliSFRuNThabXlXMmttbEIxWlZMVWY4a0hGSFdxZXNq?=
+ =?utf-8?B?d3NwSW1lMnBxWXFHTVorc0hxTU1qSWowOFBSSTYxMTQvcFNNRFdYNWxlMnk5?=
+ =?utf-8?B?dStxcHBydW15UHhVaG1wTWc0Q2ZlN1VpRWZjS1orNVBBYWhUQlAzWDQvK1ZO?=
+ =?utf-8?B?Ri82QXpmdXlSM2NkeGxTMVdJTEVhaG5QOVN2Nng0UW5zSWR5R05DTmxJcHB1?=
+ =?utf-8?B?cEt5QnV6OThCRmhQZFo4TnpmM045a001ZFVxejc0d1orSkxWZkdkalVUYjBy?=
+ =?utf-8?B?YmZHbFdNRC9HN3RLR0Q5cytrZ2daalZiN1pkTzVpRjYxd2VQb1Zpak1qWUFn?=
+ =?utf-8?B?cHpvbHQzRmNZQlprTHowTW1weEliVTR4QXNWRG5vTWY2YWlnV29VNENUbFhV?=
+ =?utf-8?B?eUlpc2t0cU1GVzlwZ0VwRnpHLzZxVHJlc1hXVjVPbkVRU0N2ZkVVTVozWWlC?=
+ =?utf-8?B?UkpkNkExRlpBR2VnWGwyOFRhbmdYbjdFQzZ1RGN2RmdkVkc1K2F5VnhJdkxa?=
+ =?utf-8?B?N0JXTXVjbTg4Z3Avekw4SlRMOTIybVpDSWRYVG1YaWEzaFdkeHkvTUFpK1Fw?=
+ =?utf-8?B?WlNVWFNESjFPTHdBYkRpaGxCcFM3aUcxdUg2b21xbGkxamJmVVRsWFY4MlVC?=
+ =?utf-8?B?RVQ5UWlmVU1nbHlQQk9PVmJVQ3hxN2dnZk1zbTRHRWt5cXVENDkvUnZoaGNo?=
+ =?utf-8?B?MVVyRm10TUJzNENiN2Y1OWorU0s2YmJsRGZUM3podUR5T3o5bDRXTEpRZFhn?=
+ =?utf-8?B?VmJuRjRLU05TdGN3amFmYUlOaEdMdU0rRnpSTnQxZHdscExtbklSM0ZsVjcx?=
+ =?utf-8?B?N01pQWFGSVQzdmZCbXYrdkdmeXU5MXRtcmFTKzhZa0lLVzZRS2VFaXVWRXpn?=
+ =?utf-8?B?RXUwaVJtVkxpWEZFOExWQzE3czBJcXlGMGZzZGNidE10Y3JSanl5ejRocXZz?=
+ =?utf-8?B?WTNQQzcvNWR6MVFHbWx3dmNjOHk1UG5qVEJqbUMyS3hWd3VaWldVbE9rMmJI?=
+ =?utf-8?B?RlFMdEQ0cmhyaFJWQkxOQ1NmVkxneEZDRG5PcGMwSjN2Mm5Ta2xlZUdQNUpS?=
+ =?utf-8?B?dVNmM0szZ0ZqekhDUTJaWDYvd3lKTWorbktWT2VTRTMxZHFVZldWc214U2Fi?=
+ =?utf-8?B?VkRuWHNIbTRkcHdoamNDc094Ym93RWI2Z3FVWmwvbmppaTZhZGZjeWZObWpM?=
+ =?utf-8?B?bngyRXpDZkpheFpTY0Y1eTRnQzV6TkRsb3lEV2dycmVBSW1KNkRlZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b506fb3e-c508-4cfd-3f2f-08de8415502e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 11:07:01.7670
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y6v+3fczj7LZIGfo6SODTFueix45pQK13LydVG7c2+81stZOS5NpQdGk8wFN/h3lWHB3dmhHXbR60MzAuaRJpg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7759
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2D7E3140006
+X-Stat-Signature: dcixg1g1q7zirq4cemjhkze1td7jj6bw
 X-Rspam-User: 
-X-HE-Tag: 1773745593-756950
-X-HE-Meta: U2FsdGVkX1/H/QNMC74eyGgxLup0id4wXTUNEiy1RgO5NpuBn0qEVwXJmWo5IgEA8VKT6coMF/WwDojt6vM+PqDqK+ONmVgz4R4uSqkEcQQ35UGlgaAz8+zGb+dp2Y/4oJGT9g5CT5KPK2rVppdoM1Z29SqzQ3kXK0mRz+3wjSGN6UTbm0qAsuPu8H0z0wI0doOHCJf+LE4J1Xicz6hoEs8uCEvIifBXfFQBOfVaIf1Um77SV6P4AXCvTgFjvwxXXxLJmUa6jrCGmqbolnLaVFUFxWlsp3Ll+BfmDHhTlT12VbWyKg0Ohb0Az8nAub46KImNhofl813JXrjbby1fXyRyEKyMw7nZ2pR5OqVZwyCHxFGkvnm22A3uFBLMuMPncoo29DShWHdUbpMmxcH6mpbMVPmwHBnOOIgSMAP+yffF1fd+yfdY08s2Wot4bXazEbOTMRc5oK+XcPmuNBODlXhYoPjXIGcyhZTvmDVnM0V0EYj0H7X9kKHFK0x6FowwZ0e/QHQBwthnPKCPB0xyOLWZ4xwmFt1OjIJOams9FOoTwpcQvhUNfSMXF8vXzHNP8ii8xrDbjj+EOYo2fEYGxFEaCZQ051T7H5y/9PU8NX9e721GdBIp83MmY/dQFeqIep9kiHFC2sac95qJ1/U60qiAxRmowSfA6qLvliwwgPgaHbimWmS2BareKEmmrVUvKIxc1zp6NBcHBY1sVJKt6ezKuHqI2dVM4OEDqIOOuZ/JyRIZz0u6dq4gWYsLUDHiD00jkCnbejXK8D6G8gCYRjZ/+Ko6dm6XUu58FJYPyeXilPrKeXyh7C7E1D0vwHFkNuCBBcWJp1f+gs9tUMvJkGrdUooN95RbMZz/AUInJD5uhpEMKffhGUpUVDbySmyZm1Ip7ovu6ZDfHU3ORhVVQVHlOAsCTc+6eF+4/3QI+yoK28jwFqASpEDp78BgpVNOPdN16GJ1n2uC6jw+j1G
- ligOCIzA
- HBhDDX6fLddCMGWrhhfD1wRwFtz8f160UfsLJ4xbXT2nNZ0aD4ZlyNPHPsGg1dJSK/hh3mycAC5Bmr+tPjAE6G/lT5m7g/HVrLt9DHXSspuKMcYQCf7WnBqh3J1e+n3metCVHbTncUEqL4lY0PhewxUd1ZNrHatfYlLQ035rT4dpTkeKs6Qphdc1K6MqGoAPvVQYg5v1Anj8LVDdWP+dImNoFwqK9gxFhCi7hPqn0hNKB1nzNb4qnCtGM1m4TkwD5rIl0N2GN+lIgBielZzLandYp6XpuAc9I68Hd7smBXH9MltRETHkz2Sm85Q==
+X-HE-Tag: 1773745627-883719
+X-HE-Meta: U2FsdGVkX19N1g3ghuXPyM2oQyKLwS9bkRhNeJiKeIkWEJHAsT52WvXrW0gZi0BO/qcMIzdRkqWpzOlFMd4Vh/MYJleB55iTeSbwOjqOXiAXGgb3mAP2nsHLiA5xfTAb5c3buKBmaO3lI7PIoSY/N57taMacKA4P35M7rVFcwv9yR69MNjTIK/7qLmiy+p7Rn2lLl/3g52unCgDjz0uguPpsyIwRTbzvIROo2e0Q36F8WKrB4elL4Bl3UfBQsG4k6nrlEZzpaft7rLYFzeBB4xbILomiICYbET2YQ5Vu8Y93BC9D7d8ity9x3CWYZHeIibtGdSaCgDWeud0iNGQFl8KttorhdEBo4Owz0P+daeAjnTfpoOXd6tfTKpAjKZtemORzaBg6m8JOqlf/FEXlsK8hyCilxI96Xez/q0neCfJmpzrXRr+x/wcJTW/R3YgEJByFF1ps2tNXWjZ3tyKKflTMVKam7APxLjTx6KyjaB4TK4h5hHV81gIOdauDJWanaAK9Gpha5QG4aQ+14rrO5PU2uSdXYwdSQiChGFvhTR9X7Virn9571EjEBNVr9JUJOmPbKfgX7ZJ6ep9bkNava811/ybES0rS8pxVHbKTUyvnYTJ0pcsw8OeLDf5QH9vbvG+IyXVTeqpw7x0nWueK3y8al0itbpwFiyQUnzrKFDEpi6yaKm258UlnBvI7DYhTrzPc9pMLbo8cKv3aLKfxYIL3fpsX6Pc6xG8wSWTgvL9qSr+RofX6O2Rmqr0bUcckIov02FCFMcWlcub9MzPcL0PJT73jjpfK4GYlernPMG4In0JbiseIV7Dn7yC/oBUDaexjorp5+aUTKxYvlR2//8uwokX56x1aVTOjrAWn9nlhza9vetCVRiCjyde15Xyv9sSpEy7miPGxrxPPbLToxkoNYSC+6ahA8/aaBn6BgqCuFup6fcjhnw0WEb2A3YEJAfDWBtq57JX2BS6rdee
+ flNPysbs
+ sPUm5BJO7+9wFvFDlw3VQ6YUqqBjzinugf/YNQabsq+9PY7sNdo7IWx4b1DbA0g5gQEJ2sqIXRMG9LpwvlzHalCUSuprGsvOaJoUj0QCOZB24l2VgFHjzK0KkVPDAjD2FLb2okJZ/7T+jy7eQvKpRcjCuLMZGi8ZPHPmFhFm+fs59mcPTbBzuB0/TZLTmmBtUJ69M+juFvNafQ17gvugpMqcCR0fM91Pkj+C7P4d/7PG+V8lA7tsJ3VaKTrtdqpGKcKPJdJAkMfg/ASMzWvQBoXa41uK3r4T0GVmtqQ3aOpvNf/LyWl7teRZ3kIvWvKAJUZV97oN23V0Cy9mj+BwZHclr5WCZ3RLdQodRnW0H8JIbj7kh5NMH/JyStJ5R648DTe4sLPvVvF/AeLPwNZD/1QV1UMQxxaLG1nUD5k/JAUFXnzQNYb01G5z7kOjAcqy654BG7rsNhvd8lJgFjgMA7aFS5Etb3vr6qC1/yG1JP2+KTh+2PjSqZp3+xo7IAAW88Ax940O8jFJ1ZIpDVYiGtx6GBFQLGfgPW+Hw5Ry/v/3Nz4HX3jA9EZMn/HA8HWGOmpnK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,195 +188,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:44:17PM +0800, Chunyu Hu wrote:
-> thp_settings provides write_file() helper for safely writing to a file and
-> exit when write failure happens. It's a very low level helper and many sub
-> tests need such a helper, not only thp tests.
->
-> split_huge_page_test also defines a write_file locally. The two have minior
-> differences in return type and used exit api. And there would be conflicts
-> if split_huge_page_test wanted to include thp_settings.h because of
-> different prototype, making it less convenient.
->
-> It's possisble to merge the two, although some tests don't use the
-> kselftest infrastrucutre for testing. It would also work when using the
-> ksft_exit_msg() to exit in my test, as the counters are all zero. Output
-> will be like:
->
->   TAP version 13
->   1..62
->   Bail out! /proc/sys/vm/drop_caches1 open failed: No such file or directory
->   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
->
-> So here we just keep the version in split_huge_page_test, and move it into
-> the vm_util. This makes it easy to maitain and user could just include one
-> vm_util.h when they don't need thp setting helpers. Keep the prototype of
-> void return as the function will exit on any error, return value is not
-> necessary, and will simply the callers like write_num() and write_string().
->
-> Suggested-by: Mike Rapoport <rppt@kernel.org>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 
-LGTM and broadly a good idea, I do share David's concern about what if tests
-that don't use the usual framework have an issue, but really that's an issue
-with _those tests_ more so than this.
 
-Anyway, nice cleanup so:
+On 17.03.26 10:20, Jesper Dangaard Brouer wrote:
+> 
+> 
+> 
+> On 16/03/2026 23.31, Byungchul Park wrote:
+>> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+>> determine if a page belongs to a page pool.  However, with the planned
+>> removal of @pp_magic, we should instead leverage the page_type in struct
+>> page, such as PGTY_netpp, for this purpose.
+>>
+>> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+>> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+>> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+>> netmem_clear_pp_magic().
+>>
+>> Plus, add @page_type to struct net_iov at the same offset as struct page
+>> so as to use the page_type APIs for struct net_iov as well.  While at it,
+>> reorder @type and @owner in struct net_iov to avoid a hole and
+>> increasing the struct size.
+>>
+>> This work was inspired by the following link:
+>>
+>>    https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+>>
+>> While at it, move the sanity check for page pool to on the free path.
+>>
+> [...]
+> see below
+> 
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 9f2fe46ff69a1..ee81f5c67c18f 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -1044,7 +1044,6 @@ static inline bool page_expected_state(struct page *page,
+>>   #ifdef CONFIG_MEMCG
+>>               page->memcg_data |
+>>   #endif
+>> -            page_pool_page_is_pp(page) |
+>>               (page->flags.f & check_flags)))
+>>           return false;
+>>   @@ -1071,8 +1070,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+>>       if (unlikely(page->memcg_data))
+>>           bad_reason = "page still charged to cgroup";
+>>   #endif
+>> -    if (unlikely(page_pool_page_is_pp(page)))
+>> -        bad_reason = "page_pool leak";
+>>       return bad_reason;
+>>   }
+>>   @@ -1381,9 +1378,17 @@ __always_inline bool __free_pages_prepare(struct page *page,
+>>           mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+>>           folio->mapping = NULL;
+>>       }
+>> -    if (unlikely(page_has_type(page)))
+>> +    if (unlikely(page_has_type(page))) {
+>> +        /* networking expects to clear its page type before releasing */
+>> +        if (is_check_pages_enabled()) {
+>> +            if (unlikely(PageNetpp(page))) {
+>> +                bad_page(page, "page_pool leak");
+>> +                return false;
+>> +            }
+>> +        }
+>>           /* Reset the page_type (which overlays _mapcount) */
+>>           page->page_type = UINT_MAX;
+>> +    }
+> 
+> I need some opinions here.  When CONFIG_DEBUG_VM is enabled we get help
+> finding (hard to find) page_pool leaks and mark the page as bad.
+> 
+> When CONFIG_DEBUG_VM is disabled we silently "allow" leaking.
+Some leaks could still be caught at the page_pool level through
+the YNL api of disconnected page_pools. Not the nasty/interesting
+ones though...
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Should we handle this more gracefully here? (release pp resources)
+> 
+Releasing of a leaked page_pool page could lead to many harder to track
+side-effects further down the line. Isn't it better to simply let the
+page in a leaked state?
 
-> ---
-> Changes in v3:
->   - make the write_file void return
-> Changes in v2:
->   new patch from v2
-> ---
->  .../selftests/mm/split_huge_page_test.c       | 15 --------
->  tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
->  tools/testing/selftests/mm/thp_settings.h     |  1 -
->  tools/testing/selftests/mm/vm_util.c          | 15 ++++++++
->  tools/testing/selftests/mm/vm_util.h          |  2 ++
->  5 files changed, 20 insertions(+), 48 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> index e0167111bdd1..93f205327b84 100644
-> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> @@ -255,21 +255,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
->  	return status;
->  }
->
-> -static void write_file(const char *path, const char *buf, size_t buflen)
-> -{
-> -	int fd;
-> -	ssize_t numwritten;
-> -
-> -	fd = open(path, O_WRONLY);
-> -	if (fd == -1)
-> -		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
-> -
-> -	numwritten = write(fd, buf, buflen - 1);
-> -	close(fd);
-> -	if (numwritten < 1)
-> -		ksft_exit_fail_msg("Write failed\n");
-> -}
-> -
->  static void write_debugfs(const char *fmt, ...)
->  {
->  	char input[INPUT_MAX];
-> diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/thp_settings.c
-> index 574bd0f8ae48..e748ebfb3d4e 100644
-> --- a/tools/testing/selftests/mm/thp_settings.c
-> +++ b/tools/testing/selftests/mm/thp_settings.c
-> @@ -6,6 +6,7 @@
->  #include <string.h>
->  #include <unistd.h>
->
-> +#include "vm_util.h"
->  #include "thp_settings.h"
->
->  #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
-> @@ -64,29 +65,6 @@ int read_file(const char *path, char *buf, size_t buflen)
->  	return (unsigned int) numread;
->  }
->
-> -int write_file(const char *path, const char *buf, size_t buflen)
-> -{
-> -	int fd;
-> -	ssize_t numwritten;
-> -
-> -	fd = open(path, O_WRONLY);
-> -	if (fd == -1) {
-> -		printf("open(%s)\n", path);
-> -		exit(EXIT_FAILURE);
-> -		return 0;
-> -	}
-> -
-> -	numwritten = write(fd, buf, buflen - 1);
-> -	close(fd);
-> -	if (numwritten < 1) {
-> -		printf("write(%s)\n", buf);
-> -		exit(EXIT_FAILURE);
-> -		return 0;
-> -	}
-> -
-> -	return (unsigned int) numwritten;
-> -}
-> -
->  unsigned long read_num(const char *path)
->  {
->  	char buf[21];
-> @@ -104,10 +82,7 @@ void write_num(const char *path, unsigned long num)
->  	char buf[21];
->
->  	sprintf(buf, "%ld", num);
-> -	if (!write_file(path, buf, strlen(buf) + 1)) {
-> -		perror(path);
-> -		exit(EXIT_FAILURE);
-> -	}
-> +	write_file(path, buf, strlen(buf) + 1);
->  }
->
->  int thp_read_string(const char *name, const char * const strings[])
-> @@ -165,11 +140,7 @@ void thp_write_string(const char *name, const char *val)
->  		printf("%s: Pathname is too long\n", __func__);
->  		exit(EXIT_FAILURE);
->  	}
-> -
-> -	if (!write_file(path, val, strlen(val) + 1)) {
-> -		perror(path);
-> -		exit(EXIT_FAILURE);
-> -	}
-> +	write_file(path, val, strlen(val) + 1);
->  }
->
->  unsigned long thp_read_num(const char *name)
-> diff --git a/tools/testing/selftests/mm/thp_settings.h b/tools/testing/selftests/mm/thp_settings.h
-> index 76eeb712e5f1..7748a9009191 100644
-> --- a/tools/testing/selftests/mm/thp_settings.h
-> +++ b/tools/testing/selftests/mm/thp_settings.h
-> @@ -63,7 +63,6 @@ struct thp_settings {
->  };
->
->  int read_file(const char *path, char *buf, size_t buflen);
-> -int write_file(const char *path, const char *buf, size_t buflen);
->  unsigned long read_num(const char *path);
->  void write_num(const char *path, unsigned long num);
->
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index a6d4ff7dfdc0..ad96d19d1b85 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -764,3 +764,18 @@ int unpoison_memory(unsigned long pfn)
->
->  	return ret > 0 ? 0 : -errno;
->  }
-> +
-> +void write_file(const char *path, const char *buf, size_t buflen)
-> +{
-> +	int fd;
-> +	ssize_t numwritten;
-> +
-> +	fd = open(path, O_WRONLY);
-> +	if (fd == -1)
-> +		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
-> +
-> +	numwritten = write(fd, buf, buflen - 1);
-> +	close(fd);
-> +	if (numwritten < 1)
-> +		ksft_exit_fail_msg("Write failed\n");
-> +}
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> index e9c4e24769c1..1a07305ceff4 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -166,3 +166,5 @@ int unpoison_memory(unsigned long pfn);
->
->  #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
->  #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
-> +
-> +void write_file(const char *path, const char *buf, size_t buflen);
-> --
-> 2.53.0
->
+Having a way to track this leaked state though would certainly be
+useful though.
+
+Thanks,
+Dragos
 
