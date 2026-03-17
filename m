@@ -4,108 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B56FB5EBB
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 05:07:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2575CF3029B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 05:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B5F86B0005; Tue, 17 Mar 2026 01:07:33 -0400 (EDT)
+	id 049546B0005; Tue, 17 Mar 2026 01:36:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2670D6B0088; Tue, 17 Mar 2026 01:07:33 -0400 (EDT)
+	id F3B5C6B0088; Tue, 17 Mar 2026 01:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17C6E6B0089; Tue, 17 Mar 2026 01:07:33 -0400 (EDT)
+	id E50FE6B0089; Tue, 17 Mar 2026 01:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 04B226B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 01:07:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 985BD1C7CF
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:07:32 +0000 (UTC)
-X-FDA: 84554371944.02.9426225
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 62EF6180009
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:07:29 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kq8XzDBT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE9CC6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 01:36:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C94B1C6E7
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:36:36 +0000 (UTC)
+X-FDA: 84554445192.09.AFEB02C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8E6DB1C0003
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:36:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A841uQKU;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773724051;
+	s=arc-20220608; t=1773725794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jvrzqhBOTMeu5FRh46JduvKJCMGJbDc0HHQDFMieGFg=;
-	b=UTLtTtwt6wRtPIuYFE9yFh8rhMRU/QNUhJxxc0KuM16MvhCbXMppasdY97TeNwNs2ywAQ+
-	TfBWCHke5kEeL8JkzkM7ICfFDEcUp2PnT+/7Gzn5iB+EmiwW0NnjRvdLEjSk4j+PFzUoly
-	TRRQTMs8vcRqDsaMxW23E8C5AqnBzW0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773724051; a=rsa-sha256;
-	cv=none;
-	b=Atjn/fzk4wbOaLXNGIrOeaHQ4w2z5UHQxJmBHrT1xKGGXOpY7kV4qTk6znSq5V4SxtGcOn
-	QH0BP2mUG/yKgdRnnjiRjhovYK4PXhcxZlWG5Vuk9YOSuKuvkjzOLMbGIX9ZYWIYUKQTXv
-	3n7Xc3H5+wzS+A4aqQSN4Fk9PRge1SA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EYRgzKh1Nx8rUjLir7NgOhvz/HZqs8HWJ51p8UYtLEA=;
+	b=8DqUjv29K1/fp2bqiLx0B4vkkQt+gQEocyh/eqphZnxneiXygjq9P5+CB++VXIe/tUwq26
+	xIrzR0ofneYqpHzulxoqt3vpwqhTAx0aweo/xDFBz84tCQF8VTJ63gQo4af3dhOakCqa61
+	3B6Gd7U2FVkIKQK/+R0lyPHZxbMOYog=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kq8XzDBT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773724045;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jvrzqhBOTMeu5FRh46JduvKJCMGJbDc0HHQDFMieGFg=;
-	b=kq8XzDBTIQsxWSNBDIDdDU3wpU2A9uAaKLj7F9RRgUTdEKLh/aUKY096/XXdbF1cfVia0G
-	UuxREMFrxr3Gnv+Z8n/bBMoN3+lBsu+rPARb1wyLivp3zdOxajcPEPmzxts+MYlwKHRhra
-	ybVR7w+A29IdIhXoL6edmwz2nJTjky4=
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	mhocko@suse.com,
-	vbabka@suse.cz,
-	ying.huang@linux.alibaba.com
-Cc: apopple@nvidia.com,
-	axelrasmussen@google.com,
-	byungchul@sk.com,
-	cgroups@vger.kernel.org,
-	david@kernel.org,
-	eperezma@redhat.com,
-	gourry@gourry.net,
-	jasowang@redhat.com,
-	hannes@cmpxchg.org,
-	joshua.hahnjy@gmail.com,
-	Liam.Howlett@oracle.com,
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A841uQKU;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773725794; a=rsa-sha256;
+	cv=none;
+	b=w5SnFFKmV1wMWGspURbCCBReXL9eRts+rm4wIFpJI6hMopyC3uUVaw7UdQ8t/h4ji7nGDV
+	Dj0mVg8R13fkHTf3WW7JfxTDVF5GjLLKwxl5tOjETEqMwsndxTiQe5KLobOELeNFMZdmYZ
+	O3LRB8Nd+ORtZS4BzLSj4KEU9iodiPM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CAAA4366C;
+	Tue, 17 Mar 2026 05:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5A7C4CEF7;
+	Tue, 17 Mar 2026 05:36:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773725793;
+	bh=/21WQ/IOtHu4dvnXgF2/nu4A18vGdKJxEcpXgHCCKGU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A841uQKUOfqgjvLaPC0o8iVD3qLdenC2SHF2SBaJEZiRlJ+edfKAGybSXd4hMKI7G
+	 GRi7lY7658ozFWQWFXC2Ue5g4vGpDybr1of1ClBghi9RV3JTQzcukZEQnPDsElDt3R
+	 5YLPiXL6V91zmefZNpbZcz1wwofiOqDUSLNruYWZNMAB6X2vEDMuGQQQzBw5v8QlbZ
+	 W65ihHvHH70srQ/eFmdtvhCkaGjSBPKpWS3v1bAJ3JkDC1NRpXMDIPgN17y5ouNwlQ
+	 fJRzfMm0YfWFx3+STjKA48vqkuKfv3vtOWssYhtbAlRru0OAeVq7PqZbIbH9de8dvo
+	 MAtSIYcvKnqhA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com,
-	mst@redhat.com,
-	rppt@kernel.org,
-	muchun.song@linux.dev,
-	zhengqi.arch@bytedance.com,
-	rakie.kim@sk.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	virtualization@lists.linux.dev,
-	weixugc@google.com,
-	xuanzhuo@linux.alibaba.com,
-	yuanchu@google.com,
-	ziy@nvidia.com,
-	kernel-team@meta.com
-Subject: [PATCH v3] mm/mempolicy: track user-defined mempolicy allocations
-Date: Mon, 16 Mar 2026 22:06:57 -0700
-Message-ID: <20260317050657.47494-1-jp.kobryn@linux.dev>
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm/damon/stat: monitor all System RAM resources
+Date: Mon, 16 Mar 2026 22:36:30 -0700
+Message-ID: <20260317053631.87907-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260316235118.873-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 62EF6180009
-X-Stat-Signature: fsbj8m4d8q9ybpgq4sgw9bmzhibzjwcb
+X-Rspamd-Queue-Id: 8E6DB1C0003
+X-Stat-Signature: tbfjk34hxuoag6p3mu8sdmqpt3dngknw
 X-Rspam-User: 
-X-HE-Tag: 1773724049-73082
-X-HE-Meta: U2FsdGVkX18vJCLqIdXHM7eKObwnv/gNEebZcNTV7enqRkURK3t2pDkarbvTAr58uHne3YKtUowDclIQ9Y7OJN0JXt0B72YdxiKgqZd6PNpki7HzMuS2WjgqrFbTfbrRKqLUWwOh/0jkSplGrO64DkhfTvIfDAEbfXted3mBZm7usLpPob6mvbEP0qJNiyGMUqT+hZdCDNUbP5Rpi/Pvvw/lWiYiISFjpaBKSWEpBBxEgbeyyPy85cM/ZsllF+e96Sdodi40JIHHrpt0Xw/JlnJlR3fNCROydiQIIgqsPILzSJWk7opcXT58HpnLAVB6JhoB7b8rDJY7bref2De+RCizhEIxOymt2/ViucrBJc9feGhqhyBRywLSdaPcYhpiU3KdmKdYvUBKfExIa4JM8RwIUJmfgW/Mp4TSDxiFNUyus3r/jfO7PDbfx2IoTSbltrMvDiOhW41/Iz7iDStSOKOsGAUFdoQ0tE/d27lvssWvWZ/iYamIffwDRAEHUEQoKsTmOAe/RIj7UZO4jf+kMDK0fkCeOpWRat3tW1Qveh9AMJpdzCdN0vQe6i+uZt3ELGe09QXnEDCm4JwSnwJbK0STpKYda1gtMjgaUWBAVKbRuNRRMbys960hKUsc+DFFaXaC+08SH+ug8XZ+ct6i0ERjN6en9YvF6wsixX6NBY3r9h5xhEDDbpUNtdGgst935Dia9yFXOmx5uZrjLskMLdhVd8OQiom4YMEc8ki6RUrozS5FyRFYzap9G5Ow1f/n17QptnQfeKRf6wpcNEaiR1nvxwCdhxcQAyCnGE7eGahXLfUZEUoSJ/fY8oVT148srgPsgd2y7JSx6E5c/Iv7hvIXkgVQnsh0ezR1SeEadO0ZABHVJa8YkmWJ+/zxrMZBtjaEQpfPlhAKPfKdzINA7hutj8AS6vWExkvulm+qQTSxOZY7he1m6fGOuOrWNBQZHE8As2LDCf9m8KhDGC9
- e0/Fxrnf
- hz684iLmEl12Ilc+ZTTI4xMHF7c6k93Kk3r+T5uJvljDxJYFgQledcpb2IAs3i/hr4UfGWvCIPaFGMSz6mtjZ30OqoeASyAVB080X18/mxT7TKMsWZ27h/2Yp4eGgz9V8ddbkzy0EUARFbOzFUQselYOT/uK3aKw2VcJ8uOcldhDjRhTUxO4zlGhrQAssD7eHPXYjoWOhVw85v4mHSArip7gPXyHn+5TKBLBO4MSDlj63P+fUeBrR9mj3V3UoqDptZEIXYQTuDNiPivYBwEpSlcgIcXwo7IwkBr5USawqnyLQol1j6ae6xmsASbYmJRLnLCTL
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773725794-566538
+X-HE-Meta: U2FsdGVkX18UIh158xXpQG3CEDEwIXlvSngobD7Zq0rDRyTYqySQk2FY3NRZ6V+2WrXX+nL0f8WgHRE0LzTAxO/B3PuWYtihiRT65MQdxIbhaJU3qfU+VvrcEHff3HiSk7N/TVi9zmFcb52FPVrAZNXiLDzlJyogjjTx8LCiUHMb9UEkuHdSF2adwhm66sK9V7u5R4cxTLIPdt74CgAfAuR8OTSpsxTge4+ancmxKETTi2C8gbmMjFCs2gsxaqSXvPYe12wej8Blidl8SYVh1D+GqqukkEgkV7YSLUf44CG7Ngn/+80rhDrYtjssd0J9a+fXdZ5VPcb1iFYz6Cvx0QbaNXJiC24RJ2MepL4LYIYl5EHMXpkHAOkjXUvbg3EFcUCFQ4u3+mHt3HMTyzcvJnyiqvSKCZ9BWNXyCTdT/OQbQNww5xz6YChptS18IuwJyzmZMGO2kmjtNF1OE0uG1NAXjwRkiJlIoJC79c72BMjqZFQaFUz9Y/fysqTzjTZ8zwEgrgVWcbkIvOIpOmzKIJUH5GhXxFKKOTXx64IYGZYBm1vh880M5VfMEdmfaHpSCddW9LoDP/yw5tcziMv2+QbRhxr5zJ4q39L8qoqzXFgGbpI4XQl9bPug+M886ZI/lee10Kl4g0azE7YUTa0Lj4i0VU6GW5lpHgghT7yUzEGb6qq/6au1mBqTTRoUhxAcqU+Ox6U1/uu8NdfgB8M/A8tOrAHrC/Z/xyIV8RzezC6rsYZVJOm0RM7DaLXEM3oKtIlFKlLuQv/I9L0zDFILc1K/3bEV/2kGnWmQAVzp1q6mow9aV0I/Hs2PAjH8TAPsS3HRffyxBPaG3kIBgMIEDL1bB5wY4AQ8Gz5oLREPnQ4xkbLs7PFYKLOoUt57Tt5+3VzWohewqdh0S49NzhIKur8kG46JzKaNi5isnZIGyoOH986dc2zMS1YEG7RFlyQLxpdfUz14gt2cWEKMo/f
+ ACLgdbng
+ JnP8l9vMrp4qwtB4gqaYa+woSoGEj5mE6SDDbiEIC2zUU5fjlo2t0IsiZuSedHk4Yj8m6wjq8c6dryunOxiyJGqjxEwoG/GnQjoWYXlmsAMh0BrTkL+0IeM+p0rHGnI7U+Yr+K3JQY5/XDqsWuz7Yuy1Hk36h58wepSPhDEQt+pcnGRpRvCoHtiFatLMKSAQyIDXLRS3U4qyJ5U2pwHBnmHoJkSLXxXSug6HsQq8puOaYaYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,191 +93,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When investigating pressure on a NUMA node, there is no straightforward way
-to determine which user-defined policies are driving allocations to it.
+TL; DR: sashiko.dev found a problem in this patch.  Andrew, could you please
+add the attached fixup, or let me know if you prefer v4?
 
-Add NUMA mempolicy allocation counters as new node stat items. These
-counters track allocations to nodes and also whether the allocations were
-intentional or fallbacks.
+sashiko.dev added [1] comments.  Quoting the comments with ': ' line prefix,
+and replying to it in line below.
 
-The new stats follow the existing numa hit/miss/foreign style and have the
-following meanings:
+On Mon, 16 Mar 2026 16:51:17 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-  hit
-    - for nodemask-based policies, allocation succeeded within nodemask
-    - for other policies, allocation succeeded on intended node
-    - counted on the node of the allocation
-  miss
-    - allocation intended for other node, but happened on this one
-    - counted on other node
-  foreign
-    - allocation intended on this node, but happened on other node
-    - counted on this node
+> DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+> says it monitors the system's entire physical memory.  But, it is
+> monitoring only the biggest System RAM resource of the system.  When
+> there are multiple System RAM resources, this results in monitoring only
+> an unexpectedly small fraction of the physical memory.  For example,
+> suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
+> 500 GiB System RAM resources in order on the physical address space.
+> DAMON_STAT will monitor only the first 500 GiB System RAM.  This
+> situation is particularly common on NUMA systems.
+> 
+> Select a physical address range that covers all System RAM areas of the
+> system, to fix this issue and make it work as documented.
+> 
+> Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+> Cc: <stable@vger.kernel.org> # 6.17.x
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+> Changes from v2
+> (https://lore.kernel.org/20260315162717.80870-1-sj@kernel.org)
+> - Rebase to mm-hotfixes-unstable
+> Changes from v1
+> (https://lore.kernel.org/20260313044449.4038-1-sj@kernel.org)
+> - Fix wrong argument for damon_set_regions().
+> 
+>  mm/damon/stat.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 48 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> index 25fb44ccf99d0..c5af8ad4bcb65 100644
+> --- a/mm/damon/stat.c
+> +++ b/mm/damon/stat.c
+> @@ -145,12 +145,57 @@ static int damon_stat_damon_call_fn(void *data)
+>  	return 0;
+>  }
+>  
+> +struct damon_stat_system_ram_range_walk_arg {
+> +	bool walked;
+> +	struct resource res;
+> +};
+> +
+> +static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
+> +{
+> +	struct damon_stat_system_ram_range_walk_arg *a = arg;
+> +
+> +	if (!a->walked) {
+> +		a->walked = true;
+> +		a->res.start = res->start;
+> +	}
+> +	a->res.end = res->end;
+> +	return 0;
+> +}
 
-The existing numa_* counters cannot be adjusted to fill this role because
-they are incremented in zone_statistics(), which also covers non-policy
-allocations such as alloc_pages_node(). The mempolicy context is not
-applicable at that level since in-kernel callers may make their own node
-decisions independent of any task policy.
+: Does creating a single bounding box from the start of the first RAM resource
+: to the end of the last one force DAMON to monitor massive unpopulated
+: physical memory gaps?
+: 
+: On NUMA systems, memory nodes are often separated by large holes. Passing
+: this single large range to damon_set_regions() might spread max_nr_regions
+: over these holes, which could dilute the accuracy of the memory bandwidth
+: statistics since sampling non-RAM addresses yields zero accesses.
+: 
+: Would it be better to dynamically allocate an array of struct
+: damon_addr_range covering only valid System RAM boundaries and pass the
+: multiple ranges to damon_set_regions() using the nr_ranges parameter?
 
-Allocations where task mempolicy is NULL are excluded since they do not
-reflect a user designation and are already accounted for in the existing
-numa_* stats.
+Yes, it can force DAMON to monitor massive unpopulated phyiscal memory gaps.
+But, because DAMON utilizes its adaptive regions adjustment mechanism, the
+overhead will be negligible.  This is an intended behavior.
 
-Counters are exposed per-node in nodeN/vmstat and globally in /proc/vmstat.
-They provide the information needed in step 3 of the investigation workflow
-below:
+> +
+> +static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
+> +		unsigned long addr_unit)
+> +{
+> +	/*
+> +	 * Use div_u64() for avoiding linking errors related with __udivdi3,
+> +	 * __aeabi_uldivmod, or similar problems.  This should also improve the
+> +	 * performance optimization (read div_u64() comment for the detail).
+> +	 */
+> +	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
+> +		return div_u64(ra, addr_unit);
+> +	return ra / addr_unit;
+> +}
 
-1) Pressure/OOMs reported while system-wide memory is free.
-2) Check /proc/zoneinfo or per-node stats in .../nodeN/vmstat to narrow
-   down node(s) under pressure.
-3) Check numa_mpol_{hit,miss,foreign} counters (added by this patch) on
-   node(s) to see what policy is driving allocations there (and whether
-   they are intentional vs fallback).
-     - If active: a user-defined policy is driving allocations to the
-       node. Proceed to step 4.
-     - If inactive: pressure is from allocations without a user-defined
-       policy. Stop and investigate task placement or node capacity
-       instead.
-4) Use /proc/*/numa_maps to identify tasks using the policy.
+: Could this silently truncate physical addresses above 4GB on 32-bit systems
+: with PAE enabled?
+: 
+: The function walk_system_ram_res() scans the 64-bit physical address space,
+: and resource_size_t can be a 64-bit integer, accurately holding addresses
+: above 4GB. However, this function returns an unsigned long, and DAMON's
+: struct damon_addr_range uses unsigned long for its boundaries.
+: 
+: Since damon_stat uses an addr_unit of 1, any 64-bit physical address might
+: be truncated to 32 bits when returned. This could create an inverted region
+: where the truncated end becomes smaller than start, breaking the
+: damon_set_regions() initialization and causing out-of-bounds memory accesses.
 
-Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+This is correct, and the consequence is problematic.
+
+> +
+> +static int damon_stat_set_monitoring_region(struct damon_target *t,
+> +		unsigned long addr_unit, unsigned long min_region_sz)
+> +{
+> +	struct damon_addr_range addr_range;
+> +	struct damon_stat_system_ram_range_walk_arg arg = {};
+> +
+> +	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
+> +	if (!arg.walked)
+> +		return -EINVAL;
+> +	addr_range.start = damon_stat_res_to_core_addr(
+> +			arg.res.start, addr_unit);
+> +	addr_range.end = damon_stat_res_to_core_addr(
+> +			arg.res.end + 1, addr_unit);
+
+
+: Is it possible for arg.res.end + 1 to overflow here?
+: 
+: On 32-bit architectures without PAE, resource_size_t is a 32-bit unsigned
+: integer. If physical RAM extends to the very top of the 32-bit address
+: space, arg.res.end will be 0xFFFFFFFF.
+: 
+: Adding 1 to this value triggers an integer overflow, resulting in 0, which
+: is then assigned to addr_range.end. Passing a region with a start greater
+: than 0 and an end of 0 to damon_set_regions() creates a structurally invalid
+: inverted region, which might corrupt subsequent DAMON calculations and
+: sampling operations.
+
+Again, this is correct, and the consequence is problematic.
+
+We can avoid the problematic consequence by checking if addr_range is valid,
+and return an error if not.  Below attaching fixup patch is implementing it.
+Andrew, could you please add the fixup patch?  Pleae let me know if you prefer
+v4.
+
+
+Thanks,
+SJ
+
+[...]
+=== >8 ===
+From e1fd7cf6469977cf1a58ee98b977eec53219ffc2 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Mon, 16 Mar 2026 22:11:22 -0700
+Subject: [PATCH] mm/damon/stat: return error if monitoring target region is
+ invalid
+
+On 32bit systems with LPAE, the end address might be overflowed or
+truncated, resulting in invalid range (the end address is equal or
+smaller than the start address).  Return an error for the case.
+
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
-v3:
-  - Moved stats off of memcg
-  - Switched from per-policy to aggregated counters (18 -> 3)
-  - Filter allocations with no user-specified policy
+ mm/damon/stat.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v2: https://lore.kernel.org/linux-mm/20260307045520.247998-1-jp.kobryn@linux.dev/
-  - Replaced single per-policy total counter (PGALLOC_MPOL_*) with
-    hit/miss/foreign triplet per policy
-  - Changed from global node stats to per-memcg per-node tracking
-
-v1: https://lore.kernel.org/linux-mm/20260212045109.255391-2-inwardvessel@gmail.com/
-
- include/linux/mmzone.h |  5 ++++
- mm/mempolicy.c         | 53 +++++++++++++++++++++++++++++++++++++++---
- mm/vmstat.c            |  5 ++++
- 3 files changed, 60 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7bd0134c241c..a9407a3b4c8a 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -323,6 +323,11 @@ enum node_stat_item {
- 	PGSCAN_ANON,
- 	PGSCAN_FILE,
- 	PGREFILL,
-+#ifdef CONFIG_NUMA
-+	NUMA_MPOL_HIT,
-+	NUMA_MPOL_MISS,
-+	NUMA_MPOL_FOREIGN,
-+#endif
- #ifdef CONFIG_HUGETLB_PAGE
- 	NR_HUGETLB,
- #endif
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index e5528c35bbb8..c3bacc927a21 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2426,6 +2426,47 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
- 	return page;
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index c5af8ad4bcb65..cf2c5a541eeea 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -188,6 +188,8 @@ static int damon_stat_set_monitoring_region(struct damon_target *t,
+ 			arg.res.start, addr_unit);
+ 	addr_range.end = damon_stat_res_to_core_addr(
+ 			arg.res.end + 1, addr_unit);
++	if (addr_range.end <= addr_range.start)
++		return -EINVAL;
+ 	return damon_set_regions(t, &addr_range, 1, min_region_sz);
  }
  
-+/*
-+ * Count a user-defined mempolicy allocation. Stats are tracked per-node.
-+ * The following numa_mpol_{hit/miss/foreign} pattern is used:
-+ *
-+ *   hit
-+ *     - for nodemask-based policies, allocation succeeded within nodemask
-+ *     - for other policies, allocation succeeded on intended node
-+ *     - counted on the node of the allocation
-+ *   miss
-+ *     - allocation intended for other node, but happened on this one
-+ *     - counted on other node
-+ *   foreign
-+ *     - allocation intended for this node, but happened on other node
-+ *     - counted on this node
-+ */
-+static void mpol_count_numa_alloc(struct mempolicy *pol, int intended_nid,
-+				  struct page *page, unsigned int order)
-+{
-+	int actual_nid = page_to_nid(page);
-+	long nr_pages = 1L << order;
-+	bool is_hit;
-+
-+	if (!current->mempolicy)
-+		return;
-+
-+	if (pol->mode == MPOL_BIND || pol->mode == MPOL_PREFERRED_MANY)
-+		is_hit = node_isset(actual_nid, pol->nodes);
-+	else
-+		is_hit = (actual_nid == intended_nid);
-+
-+	if (is_hit) {
-+		mod_node_page_state(NODE_DATA(actual_nid), NUMA_MPOL_HIT, nr_pages);
-+	} else {
-+		/* account for miss on the fallback node */
-+		mod_node_page_state(NODE_DATA(actual_nid), NUMA_MPOL_MISS, nr_pages);
-+
-+		/* account for foreign on the intended node */
-+		mod_node_page_state(NODE_DATA(intended_nid), NUMA_MPOL_FOREIGN, nr_pages);
-+	}
-+}
-+
- /**
-  * alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
-  * @gfp: GFP flags.
-@@ -2444,8 +2485,10 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 
- 	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
- 
--	if (pol->mode == MPOL_PREFERRED_MANY)
--		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
-+	if (pol->mode == MPOL_PREFERRED_MANY) {
-+		page = alloc_pages_preferred_many(gfp, order, nid, nodemask);
-+		goto out;
-+	}
- 
- 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
- 	    /* filter "hugepage" allocation, unless from alloc_pages() */
-@@ -2471,7 +2514,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
- 				nid, NULL);
- 			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
--				return page;
-+				goto out;
- 			/*
- 			 * If hugepage allocations are configured to always
- 			 * synchronous compact or the vma has been madvised
-@@ -2494,6 +2537,10 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 		}
- 	}
- 
-+out:
-+	if (page)
-+		mpol_count_numa_alloc(pol, nid, page, order);
-+
- 	return page;
- }
- 
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index b33097ab9bc8..4a8384441870 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1291,6 +1291,11 @@ const char * const vmstat_text[] = {
- 	[I(PGSCAN_ANON)]			= "pgscan_anon",
- 	[I(PGSCAN_FILE)]			= "pgscan_file",
- 	[I(PGREFILL)]				= "pgrefill",
-+#ifdef CONFIG_NUMA
-+	[I(NUMA_MPOL_HIT)]			= "numa_mpol_hit",
-+	[I(NUMA_MPOL_MISS)]			= "numa_mpol_miss",
-+	[I(NUMA_MPOL_FOREIGN)]			= "numa_mpol_foreign",
-+#endif
- #ifdef CONFIG_HUGETLB_PAGE
- 	[I(NR_HUGETLB)]				= "nr_hugetlb",
- #endif
 -- 
-2.52.0
+2.47.3
 
 
