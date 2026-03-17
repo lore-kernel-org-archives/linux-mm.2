@@ -4,133 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1037FED9EC
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98563FED9EB
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:35:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20E306B009B; Tue, 17 Mar 2026 12:19:18 -0400 (EDT)
+	id C86ED6B0005; Tue, 17 Mar 2026 12:35:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5406B009D; Tue, 17 Mar 2026 12:19:18 -0400 (EDT)
+	id C5E846B008A; Tue, 17 Mar 2026 12:35:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D4EC6B009E; Tue, 17 Mar 2026 12:19:18 -0400 (EDT)
+	id B743F6B008C; Tue, 17 Mar 2026 12:35:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F17386B009B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:19:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99D5D13A3DC
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:19:17 +0000 (UTC)
-X-FDA: 84556064754.09.30E287A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 19F7DC000E
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:19:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=onANVyMs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nlxj7QJh;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=onANVyMs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nlxj7QJh;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A82466B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:35:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5395013A4F6
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:35:31 +0000 (UTC)
+X-FDA: 84556105662.24.76236F8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 737E480003
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:35:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SPczWlC1;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773764355;
+	s=arc-20220608; t=1773765329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vRuj8oliuRB8vfh4ORqIsVuipaAv9fM7y492n9A5HMI=;
-	b=DmanIM72EP6g+YSAyH/omkUHC2TC7CnQ8jYpp68EvYFQnDUO8Y7YqFmPotJSvtcGediCxj
-	dOn4gjTSUntg1M74ArlHOflv0eGV7btMM2PHD9npev+txOMyDPMS6NfWd6cKIppHZ/iSIi
-	ys9zn38YxZTw4kjKbsW2SuRSDae5XQI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773764355; a=rsa-sha256;
-	cv=none;
-	b=lA9PHE5T1Qsod9Jy42o6rFcRB3rylosd0VarsvlHpwysNX9MiVSTJl+2k3bfEri21y6bVG
-	xd5hj85ER4JxeoJoIFCrCeBL0e+GRnkdSoU7DWxkpexI9fVN+azBn6kyDu5nKfhDgujaie
-	Zm9eAqgnNmilKa3H5hRGe8/EdcQgq1E=
+	bh=HkIZKxSdH2isIftBVF0AO3ipWXy6AhFi+nEwH9Iy78M=;
+	b=cG7rC9Pq0ad7x3awrDWJouceNNUwXz0PsNouS8ZHimWpAFlagRPDUczE8LXFjHj2tQlFVN
+	fNPOWZHRwFlKxt86hV1L1bSpvL4G2/pLNFwZk7e0IUMmMS20dhNzXLCILxIw4XYBpJ15N5
+	6VJjh3dnVd4xc8g1lFl157JhV12fJVs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=onANVyMs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nlxj7QJh;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=onANVyMs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nlxj7QJh;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6CB7E4D300;
-	Tue, 17 Mar 2026 16:19:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773764353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vRuj8oliuRB8vfh4ORqIsVuipaAv9fM7y492n9A5HMI=;
-	b=onANVyMsJfK7ABC1vv+qswwa87L39qBQ4jINzeVewhK1AxkNO/aRCI0CPap79lhYmdLKSa
-	fBkVn6baSYdEsoEOnc7lpQdzmJvqcZGY0CWer1mbj7P/l64FvIaNGGGWY7kOzAZ444NUhK
-	22BYKQH0txhm6fSYB5w5cnbI31YuNaw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773764353;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vRuj8oliuRB8vfh4ORqIsVuipaAv9fM7y492n9A5HMI=;
-	b=nlxj7QJh47csd9CoxFDXIr77mCwdKUKjxJu3FlJGc8Egx7/Y9EgsYBwk1XVPUJUSw2Vomz
-	msNdQCjpVK2rTuCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773764353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vRuj8oliuRB8vfh4ORqIsVuipaAv9fM7y492n9A5HMI=;
-	b=onANVyMsJfK7ABC1vv+qswwa87L39qBQ4jINzeVewhK1AxkNO/aRCI0CPap79lhYmdLKSa
-	fBkVn6baSYdEsoEOnc7lpQdzmJvqcZGY0CWer1mbj7P/l64FvIaNGGGWY7kOzAZ444NUhK
-	22BYKQH0txhm6fSYB5w5cnbI31YuNaw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773764353;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vRuj8oliuRB8vfh4ORqIsVuipaAv9fM7y492n9A5HMI=;
-	b=nlxj7QJh47csd9CoxFDXIr77mCwdKUKjxJu3FlJGc8Egx7/Y9EgsYBwk1XVPUJUSw2Vomz
-	msNdQCjpVK2rTuCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD75C4273B;
-	Tue, 17 Mar 2026 16:19:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8njFLgB/uWkddQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 17 Mar 2026 16:19:12 +0000
-Date: Tue, 17 Mar 2026 16:19:11 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Benjamin Eikel <debian@eikel.org>
-Cc: linux-mm@kvack.org, rcu@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>
-Subject: Re: [BUG] RCU stall in unmap_page_range during exit_mmap (6.19
- regression)
-Message-ID: <6ccygsneky6la4unzj2qd6m6o3ty3ek6xwidznzgrpdvc7tfel@qeoj7rramrmu>
-References: <6261958.lOV4Wx5bFT@thinkpad-benjamin>
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SPczWlC1;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773765329; a=rsa-sha256;
+	cv=none;
+	b=APKmhCg5oCrXhahOiHIcOMj6xkTsMrsSKpiWuy4vPy465OHn/L9mb+gKlGRkMO9uCdxbK9
+	bfrjjw5RXehTdlWTMF7u7bIQ0qxCWn6n0nD2bBp2jSKpbhHOuOIeZulfvra7li67/lNlUb
+	ki0jd/wV9IDkSHwq8/ddv/6CxMOB+YY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2FAF340407;
+	Tue, 17 Mar 2026 16:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DEFC4CEF7;
+	Tue, 17 Mar 2026 16:35:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773765328;
+	bh=ST8KtsD3ALVMbCZqs/+q7FuajmhnAedaz/VdlEk78aw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SPczWlC1g3QXHKfX7zK2mFHmT5IbND++CLr7/8HN6vHEvw5g3az1/6YvENlniet/W
+	 6Y1ruHLKUIhe3+eXDUIJwbu7+wEw5eRz2AAH1c/xn7BnnbyVqqnlGatUXgWBRGe/5n
+	 j2v6HLWcMpfx2aDoahT2FgKW/p8SzI+btZQopNUVYNIiihe1I7GRepRZCHHxZt+0rO
+	 /otFhoBrHnQ99LI1NxY6seDy7Vx3W7S3YvqazER48ec0Iffm22s3gUQ0cy1djLMZ/Y
+	 AsfrGCOXD3xrS4ONGbxT5YZOMPqw6M7IZ9pRp1u80luaP3KSgSmmD9Ff9tlfY1BaAu
+	 wENlXKmnmU2rQ==
+Message-ID: <bfa8b7d5-364a-4322-ab07-d85038309767@kernel.org>
+Date: Tue, 17 Mar 2026 17:35:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6261958.lOV4Wx5bFT@thinkpad-benjamin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/7] mm: list_lru: introduce caller locking for
+ additions and deletions
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Dave Chinner <david@fromorbit.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260312205321.638053-1-hannes@cmpxchg.org>
+ <20260312205321.638053-6-hannes@cmpxchg.org>
+ <46d9173e-98cd-4f59-b0f3-e477afd5283b@kernel.org>
+ <ablfFy6xnWwZQyUq@cmpxchg.org> <ablmYhfNFIfHqzX5@cmpxchg.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ablmYhfNFIfHqzX5@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 737E480003
+X-Stat-Signature: 63bdpmnddim96nm8ewdpschf4metkc4r
 X-Rspam-User: 
-X-Stat-Signature: 394dddhuqj9ecfgy4hnn3tjxgncr4uds
-X-Rspamd-Queue-Id: 19F7DC000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773764354-290261
-X-HE-Meta: U2FsdGVkX1/Q78Oq7XTlNQHRs6teJEqM6TQehUknYcbb26HvgmtwevzPWjTCnXq8Q93MgetjTQiMatjnDPC87GBsvtPizQr0JVeOrkxM9owgpXx+qkQyKrNQbDSOKO3l//tCZT7AOmZRZhu8SY4K0Muczt8UfQsRo/gNgvEE4KfYCBeFpzLG/IaGp0H4x+w6jP1Cq/YJNsmxW/MtswGsDSIE9qGNQeWWVg0p2wp9iaw/UZGyTRTktOY1BcGVB3eJDohLBrxJEn0qp0Zn0DJzi0OIRVQ4rqdIJIkODvebymg2DYvOEgQmkFmEoH6GPa/U6WoHxqxrm/KL1AxqUg3JjvNkNjnDJyhZlc1W/6xfIYW8p0Gu0O05H8ydMYFlualfv+E/RGxCPIP1a9Vr02lNLcwajnZrbNdnbLpb7EMgMSa+DQ6z3lt62TxyTLkhknkN90n1qpvK6J3ADWh4d39xKX4p/1n4TI697ZZkBL+vSr84l7SVrrM/2FB2T7l2P6dQpOGisu+p0HBPt6eTfcRe3s+lXVlmYJmH/+rKT96g3VA/gRuLzOeVi34BMXk0CxoUlLXD3cWvJQvPbPgkavLgZRihgCIEvHyO6QXHFk7draxThhj4xF0BBsgvMH8U92jj/pY7PM/2xONd8hEj7khoyuB9Uo8qInhlHrEdXLAvSZOvJFZJbT9rtzy178K8Ho8n7z5pIHQEyEZPzQs3LFZn6qDMK88FQX7hEUtbDrmG9sfkoZZXSzbkL2nf/Qy8+czkmkOoMz8JGPp/y7ga8+Fy5nC2vkv4UcSByvXN5D2K9BHW+E0otm7Q5OVlQrMeMMDG1ZSiAwvRu3paH3zIGzmCGlSztkcpvBQFgOlRvwdI7bDWFWuHg4oDS2bT2nTUwFk2Qu8jbF03uoSMEILDcRb3o+MKniOXDqeSP5N7BfAvEvtw25zPOVfCfMp1WVX3oDOnQD+iZuccguYWWmZ3+Z1
- lE02kPdt
- OtDiniPCzjSwCPpwcq7URwmL2EmUexRcxwTJFYBCXUUN7kdG6amL4git12oL33vzM42nQ5p+jKETMUntDXyYtWchqgSn14cEfkJ9nIR2uSrXjo6qdqKgtw1OcPzpCoD1gxvZB/DAFiApiRmAfxXOI4xRxWv9g7aWqXBCpYGeKxIF/Psd8tUILv4/zYnixDKQBls1VoTr5kDYhjtblpaXTMncjTLy+Oqov0k3WDetWRaaJhNEoz2XvZpYfQgtepxS9CAIA4yMA0SUcdQTnoWuQySdSZor/vvJXCtEOYcxZ5ADRIib6RpFuloWN5szxq8oZX5xmEwCO0/ma/XOuw8wLNkgiUAKBx1Ms2vvQ1Wzs/X8sVKlvdMkC3wRvXjdfxaOJI+4oVd0KbqSlaEyCfkk1GTy/KRS/hpsPGZ96Vx8N+1aYuTUzHCeXS/1TAQ==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773765329-50126
+X-HE-Meta: U2FsdGVkX18wVeSdrnteU8MrRdmprQeRxHp9EFBiOxsOXvXhaKlQrfHL6UFEtsmkOX+7ocPJYoL1SY2KyG3vkbuz9LRvamHv5fa4YhRY1hLjXRoVEM3fsM2rHB/PqE8FgdLzvFU6GrOtSedvYYr4Db6gsEjDsw1sxz18T6j5wkNvWd0eaMB2XK/0B+Kv5KBTuO8PsZLwcAlxY5K27u025iu3WPBIjVFHtr3ncAxzoA+8ciiB1KhfHNtofj+39fIIt4jXfd94LhcLeUki+5p8asiUrMbnlWzkZj7zGa3rqXUia5RZhPdWfcP3mfhvXfjkkVPsIjFZ7rGdH/7L87h0vl4wMrnl9ToKTU5lpWhcYDucQA6CxKPzV0JFGIHxv2Xf6QFnMcfmvNJ8Eh+mmD4X0199KQjghZsH0zxWcZ6zXGN/1oYBny1hQ3ISM7tZsIG8HqCH5nKRUOBxrESQZZHvwkAOYPyLSfi73d9BK89ONpQtLKgBJqd8zE/LPqL378ts787SicrLa9U8NYOMkC3K4sm18VYyQ+7rhbBpnginK8dnN3kK/WiEXM/GLYogEDZzAFiRDW2mGYJvLhTLe+t0HU2pbvnSIstLsN8RFRxJtrJdgyjuRckLAHw6IErduHViu0NVvToClD1FfMoAiyt9lR1PhQuVXTMSVe+7omfJ3Cdkmk0wmc1HXUCRKF3mlH4YXsF+hse5he3s3KkijOJJGOMYs+TUC4GAPBJQAdjxtOWsd33gfP4AGwPPi9TD0rQ99gmshyED+Mq5WHwcFzOk64Il94vh6NmjG7dYDFQ1xXIpRCjq239mpugwWphmXAU+8zQoNlMwgI8/MR4vPci1rlQkKc++LEEvzJnKBOIzvF6wfwyUyvZhjPOr+IuDNKmdMUHudjy8kVGKn0PZcfk2acfuaUCe+znQaEK0+OY5rq7Wg4GvbmPs/9TfklLSVwabEQ1RTHbbF2czY8WK0Y6
+ Sdu+CyNf
+ 7bf8A+G+fkE/8XwRXk59Oij7dXQMuC+AWAw1EtbFXWyf6NGG5UOPc4v4wG6XtIunp5C1pCFBVUNsDM4c9WkgFHnQ1jyt13uEnESdUrzkem+PEPKp6GIeqTWCN//HVCDg+ZuFw6is2hlz1uhcyzzLK+14gaM8ndsM2DI43FOjMAvHA9Rw3SbIMTG7SF4loO/wvVaZ5EZ+N82G68X+xZ6UCMMw7DGZStl0YD1z5R8RQ8Oh7fk31KPLYoVaLEO6ki2vKzMoob/v+HcwsiqDxn0eEuL5gJ7lMVvHOMbJSnOImU9DqbnMChUDkkwHiAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,181 +145,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc a bunch of relevant people
-On Mon, Mar 16, 2026 at 09:18:37AM +0100, Benjamin Eikel wrote:
-> Dear Linux kernel developers,
+On 3/17/26 15:34, Johannes Weiner wrote:
+> On Tue, Mar 17, 2026 at 10:03:08AM -0400, Johannes Weiner wrote:
+>> On Tue, Mar 17, 2026 at 11:00:59AM +0100, David Hildenbrand (Arm) wrote:
+>>>
+>>> And here it gets really confusing. true false false ... am I reading
+>>> binary code?
+>>>
+>>> I guess the second "false" should actually be "NULL" :)
+>>
+>> Good catch, I'll fix that.
 > 
-> I have reported this issue as Debian bug #1130138 [1], which has been marked 
-> “upstream”. I am therefore also reaching out here to make you aware of it. 
-> Please let me know if you need additional information.
-> 
-> After upgrading from linux-image-6.18.15+deb14-amd64, I see this error several 
-> times and the system shortly freezes. It seems related to Zoom crashing first, 
-> but the freezes were not noticable with older Linux kernels.
+> That's actually "flags" haha. But it supports your point.
 
-Do you have a simpler repro you can share?
-
-> Currently booted into 6.18.15+deb14-amd64 which does not exhibit this issue. 
-> The stalls occurred when running 6.19.6+deb14-amd64. More information about my 
-> system can be found in the Debian bug report.
->
-
-Can you attach the debian kernel config? Is it possible something relevant
-changed since 6.18?
- 
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> stalls on CPUs/tasks:
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu:         Tasks blocked on 
-> level-0 rcu_node (CPUs 0-15): P10008/1:b..l
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu:         (detected by 5, t=5252 
-> jiffies, g=177537, q=28067 ncpus=16)
-> Mär 09 09:13:48 thinkpad-benjamin kernel: task:zoom            state:R  
-> running task     stack:0     pid:10008 tgid:10008 ppid:2089   
-> task_flags:0x40040c flags:0x00080802
-> Mär 09 09:13:48 thinkpad-benjamin kernel: Call Trace:
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  <TASK>
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  __schedule+0x48a/0xfc0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  preempt_schedule+0x32/0x50
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  preempt_schedule_thunk+0x16/0x30
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  _raw_spin_unlock+0x22/0x30
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  unmap_page_range+0xbcb/0x1700
-
-Hmm. We have a bunch of cond_resched() sprayed around this code. This _should_
-work. I don't see anything particularly interesting that changed between
-6.18 and 6.19.
-
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  unmap_vmas+0xa1/0x180
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  exit_mmap+0xe1/0x3b0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  __mmput+0x41/0x150
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_exit+0x251/0xa70
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_group_exit+0x2d/0xc0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  get_signal+0x8a4/0x920
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  
-> arch_do_signal_or_restart+0x40/0x250
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  exit_to_user_mode_loop+0x8e/0x480
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? __x64_sys_sched_setaffinity+0x6a/
-> 0xb0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  do_syscall_64+0x20b/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? ksys_read+0xcd/0xf0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? __x64_sys_close+0x3d/0x80
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  ? exc_page_fault+0x7e/0x1a0
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RIP: 0033:0x7f2876359e2d
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RSP: 002b:00007ffc91243ad8 EFLAGS: 
-> 00000246 ORIG_RAX: 00000000000000cb
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RAX: 0000000000000000 RBX: 
-> 00007f2875207700 RCX: 00007f2876359e2d
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RDX: 00007ffc91243ae0 RSI: 
-> 0000000000000080 RDI: 0000000000002718
-> Mär 09 09:13:48 thinkpad-benjamin kernel: RBP: 0000000000000020 R08: 
-> 0000000000000001 R09: 00007f2875206de8
-> Mär 09 09:13:48 thinkpad-benjamin kernel: R10: 0000000000000000 R11: 
-> 0000000000000246 R12: 00007ffc91243ae0
-> Mär 09 09:13:48 thinkpad-benjamin kernel: R13: 00007ffc91243c80 R14: 
-> 0000000000000000 R15: 0000000000000020
-> Mär 09 09:13:48 thinkpad-benjamin kernel:  </TASK>
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> expedited stalls on CPUs/tasks: { P10008 } 5361 jiffies s: 1609 root: 0x0/T
-> Mär 09 09:13:48 thinkpad-benjamin kernel: rcu: blocking rcu_node structures 
-> (internal RCU debug):
-> 
-> Another one:
-> 
-> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> stalls on CPUs/tasks:
-> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu:         Tasks blocked on 
-> level-0 rcu_node (CPUs 0-15): P10008/1:b..l
-> Mär 09 09:14:51 thinkpad-benjamin kernel: rcu:         (detected by 5, t=21007 
-> jiffies, g=177537, q=87903 ncpus=16)
-> Mär 09 09:14:51 thinkpad-benjamin kernel: task:zoom            state:R  
-> running task     stack:0     pid:10008 tgid:10008 ppid:2089   
-> task_flags:0x40040c flags:0x00080802
-> Mär 09 09:14:51 thinkpad-benjamin kernel: Call Trace:
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  <TASK>
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  __schedule+0x48a/0xfc0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  preempt_schedule+0x32/0x50
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  preempt_schedule_thunk+0x16/0x30
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  _raw_spin_unlock+0x22/0x30
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  unmap_page_range+0xbcb/0x1700
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  unmap_vmas+0xa1/0x180
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  exit_mmap+0xe1/0x3b0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  __mmput+0x41/0x150
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_exit+0x251/0xa70
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_group_exit+0x2d/0xc0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  get_signal+0x8a4/0x920
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  
-> arch_do_signal_or_restart+0x40/0x250
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  exit_to_user_mode_loop+0x8e/0x480
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? __x64_sys_sched_setaffinity+0x6a/
-> 0xb0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  do_syscall_64+0x20b/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? ksys_read+0xcd/0xf0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? __x64_sys_close+0x3d/0x80
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? do_syscall_64+0xbe/0x600
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? 
-> srso_alias_return_thunk+0x5/0xfbef5
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  ? exc_page_fault+0x7e/0x1a0
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RIP: 0033:0x7f2876359e2d
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RSP: 002b:00007ffc91243ad8 EFLAGS: 
-> 00000246 ORIG_RAX: 00000000000000cb
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RAX: 0000000000000000 RBX: 
-> 00007f2875207700 RCX: 00007f2876359e2d
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RDX: 00007ffc91243ae0 RSI: 
-> 0000000000000080 RDI: 0000000000002718
-> Mär 09 09:14:51 thinkpad-benjamin kernel: RBP: 0000000000000020 R08: 
-> 0000000000000001 R09: 00007f2875206de8
-> Mär 09 09:14:51 thinkpad-benjamin kernel: R10: 0000000000000000 R11: 
-> 0000000000000246 R12: 00007ffc91243ae0
-> Mär 09 09:14:51 thinkpad-benjamin kernel: R13: 00007ffc91243c80 R14: 
-> 0000000000000000 R15: 0000000000000020
-> Mär 09 09:14:51 thinkpad-benjamin kernel:  </TASK>
-> Mär 09 09:14:52 thinkpad-benjamin kernel: rcu: INFO: rcu_preempt detected 
-> expedited stalls on CPUs/tasks: { P10008 } 21233 jiffies s: 1609 root: 0x0/T
-> Mär 09 09:14:52 thinkpad-benjamin kernel: rcu: blocking rcu_node structures 
-> (internal RCU debug):
-> 
-> Note the stall duration escalating from t=5252 jiffies (~5s) to t=21007 jiffies 
-> (~21s), with the same grace period (g=177537), indicating the unmap_page_range 
-> operation blocked for over a minute.
-> 
-> Kind regards
-> Benjamin
-> 
-> [1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1130138
-> 
-> 
-> 
+Ohhh, haha. Well, at least nothing to fix then :)
 
 -- 
-Pedro
+Cheers,
+
+David
 
