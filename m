@@ -4,148 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 940AFF3380C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:02:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9803F3380E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 08:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FBF86B0005; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
+	id 09DE96B0088; Tue, 17 Mar 2026 04:17:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D4456B0088; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
+	id 04DD76B0005; Tue, 17 Mar 2026 04:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874556B0089; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
+	id E7DA06B008A; Tue, 17 Mar 2026 04:17:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7095B6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:02:34 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F36B13B2A2
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:02:34 +0000 (UTC)
-X-FDA: 84554813028.13.419F885
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1AA494000B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:02:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="d/nNTqq1";
-	spf=pass (imf27.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773734552;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D05DA6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 04:17:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 731DF596CD
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:17:41 +0000 (UTC)
+X-FDA: 84554851122.01.190F0D2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 96F1318000B
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 08:17:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rbi4/LDN";
+	spf=pass (imf16.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773735459;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-	b=YpDBEYoh3nFJVJB1FNkYNnzY3yTKT0aingMizAIBkOem47GY3koCf2xnabYaqFBOny32ZG
-	jTi8YinApebbz4R2Up1taw4Efs6QNI2Mbd+1xnEHJe8GiG72Srvag8Tzce+laL19JgL9qy
-	0sXSaTzsD41le9csHOIGqNQY8TobUqQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773734552; a=rsa-sha256;
-	cv=pass;
-	b=aRODVZZimZEicQzpcUMp5oE3S/G0vc8weoZwbIw9LPt7sGhfgna216Ir+r9HK2h9KhOrwK
-	e8WFRt5KGUwK45KKedf8IvWPRpBVcoKerROZFELHriXGp3ACroGOMtflzQXICTW1sCvmi2
-	3IujZeuNsWAsAyU8N4poqEUNGy23RDg=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="d/nNTqq1";
-	spf=pass (imf27.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-127148c2112so218667c88.3
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 01:02:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773734551; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UrG2YxlKVbuIN2Vm1airLLRvQIOMzoTVankiIRGPsFtdIhEoOLmkxIngdrtt32748q
-         8IEMeiJk9P3aSSr6EVjJygiUsDGiyHoc6Lh4AlbfOD1/AL2fjPt4O+rifnvQcXshhJtb
-         DA2vQmYlnZtZjYHXJ44M14xTFb6ds2h1SaBVhIepd9pRhVOJpCftXWi+rhl7/V5Uzkhn
-         Zd4TiCqO5v8rS1SddZHlmJRpT7D+VI1Vh4kcG8bCReW3tCeM9fIc2arZpqR78wBvgf6B
-         Yw7CMNxji19h04BcTVA/qZK3iWbATIqRHJRMG2E4Zq8BHhNjKuYbpeSfTISXaDRDgCgf
-         TgBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-        fh=1twl/bZO6CD1qke6KyCAptmwq5ilWBWDENf7XjpNkRs=;
-        b=kjH8nZzeD7jnJT28kXatMEguRAsdKcF1vG/ro/2nR/FfLw+ZpTohG/SJJQ6jFV7nVa
-         aoBuRvUvNrU+rmfQ74j3Uj8TUMiIYkM2s6NK4Er/1VmCC6BhovpCNvBiAs/0ufHWKGVm
-         816aic71Qw9/060GBRZJ6zX9aWOeIJIjvH2XQPSTY4R2JSkswzzfG9Hsqq491POibTnt
-         Y6bUHPB5DsrJEFkR64mcQfZtWozA//eeCuJ8B13v2pZNpxtU6ZnjUeCATdECLKIQKH+x
-         fubiQV7EZKgB9pqEIRp3CVVySWCKu572n0t+GgLef0tn1uW3/KSsMfhTZ/YSB6xefSWe
-         vZEA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773734551; x=1774339351; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-        b=d/nNTqq1dN2lX0aVa/lmTO0HsChLnh4Wt8SyBqqjXhbnnpdnt0Ip90Vld0foDJOz7Y
-         Rhb/MG87KK1BlUJRTm10cJycpiRO3nocC0CfqBKuGcWZ64nYCkUttYzDhxWJMNajZ1IB
-         SGmob3JxwkW+jKVSp5QUI+M68yHjBEK1ZmPrIv6/9cMGfqIfiYsWkanq7UQ03NDZzDCx
-         ViEK4c0AXISjDBCTQWPe6x5Jl9Z+VGlmCvHdstsxKaLP6Ccu3vM3o/P+sm1henfuwbxx
-         JJ6OCpVi1DIDW0/bfa4rm3urb0llEe+MG9D0Ou4Hxz4jBNUdl7KN3G2rq4u5hlTnEgQZ
-         hNBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773734551; x=1774339351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-        b=ZPIn+lyMJtVQuMrV8VAMvYmuYHh0do5FvZpYj89vQC3Md+idZl68wEFffj0gzHZRUx
-         OdJ8JtE/OErjPWS2YXZGjf370rIUY3X3MIX9HLsRLdStwNCmvfQVVsHrFMF7BmpG3H6d
-         R4YRyU69TCA3wzooCjhVU8S1pwuV5faUZDknycg4dMVTM+v0VlVQJ48rvreRmdqZM9Mm
-         xUrGPCd2KTfELHNJjV/A4lIFEtJG8GzfCskrUedzy6erkImb7jZUYF86HNob2iY4D0eZ
-         /biyytywGNcioFg4GKek5NGrGhNhGVTjPaYMS2cDq1KSElDFluHp2Vc0El2UE6cHaO2Q
-         Wr2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVCTIEpIYSpfq4JIaqwHelXjp8i95xhxtHQY8mtQGo+Xv3Kv2+Xm0mjESmghst2L+RantdQLHXZuQ==@kvack.org
-X-Gm-Message-State: AOJu0YyohXb+9a7zpdsTbM2yvDR2TBF4RLTPwWgB5EDO4BxwhvE3NlzX
-	Oc/j0sjDj9Yriwjl4L3PdPjAnPcYD5crtSPiis6OAY8X0zFjKUz11yMa6xMW3xE7ahZ7mGFBJNm
-	oVWFXEgouTzbxt17zCQSwD7NcWJZa7yI=
-X-Gm-Gg: ATEYQzw/j4L9o1/WicAByrZm9YLl31oTM0wW4bC9HgBZx0/R4Y+83KNyqml1nTxfCq/
-	OSUnScGWtu5kFwqP+V/7ZI9p3g/gnQh2eiV8W++FQ4dQLTOj8mz9FmSx47FCn3X911m4YLaRdoE
-	TCZDvFrJbNLgqwQAJvxYWoBgGAm9rZogupgaY8TjmtxznXS3wuohmkiVVrOk6XwvSLltH8vEABW
-	1cpFPtLoavUxXFV1ePgU9D7q/jfwzKxQM4ex6YAG93ETQ0GB/VfUGwDJLXvk3QWs56So0dV8hUZ
-	//wUlK1S2u65AUDz91ec77GJRATfVHK937esumqzwV1M3gc19b1n7vKJZIgKgjulxYhv2jc5i/a
-	RmG6GdYrouV+p6B4Vdhwc7ko=
-X-Received: by 2002:a05:7300:e887:b0:2b9:ddef:2c13 with SMTP id
- 5a478bee46e88-2bea5590bcemr3462168eec.5.1773734550615; Tue, 17 Mar 2026
- 01:02:30 -0700 (PDT)
+	bh=QkCimjeh/vtI6FJp+wpJJIqG3YJuOd+Kn2bwa/KyLEI=;
+	b=O1XsazvQ6/h9w4Duv//RrDp5qyIeZFS5iD/1bHkqiNx//46bZI+BzePgpRTv8GDN55iCsc
+	AHNJ3DrJUdJqxxD2xNyLypWgH05yNoddAGZHolJnFTUF2m4/IQ4Yp1CUCwPr4JDm6hmfIe
+	iQOCYGHK/nXp5Tb4ChBIhcpYl4MdbC0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rbi4/LDN";
+	spf=pass (imf16.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773735459; a=rsa-sha256;
+	cv=none;
+	b=8bRNTZOmy87Q+KTRcmNUP+7dXRl+5eU015/L35rlHZESFfz3DkPQHjDTutQAB9uTMyY3J3
+	VEm1aupc14kZ+79PAUOmfd0iWNZDFQvZTU1tv/nuFg8qvfMWDmPLkFu1HxH6K1Tils6ZYd
+	lnvQcmYdR6d92aUwwadDdgeOKONSU6s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 082BB60133;
+	Tue, 17 Mar 2026 08:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A7BDCC2BC9E;
+	Tue, 17 Mar 2026 08:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773735458;
+	bh=k7MxutspFB0C8aBYZ+Cn6E/z5wK6f9LqrZ6dx5IdwE4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=rbi4/LDN1bSr5gDxvdfcnNb6t5Youim7kzKt4c3F+c6g+9uSi2XEEA+IVZvdcgENz
+	 wA0HipJ7wBJX6slVr1w+1S/iNns+nr6/SMIfXh4yuo8ZIewcmx2TpVGLNzJ7zSyndi
+	 DdrVx/f4YwV7x7xmhRg/sAbJ4G1XwgK/2l8SQJ2YSym5WcLXnj8xCtVZLSmMRbIiOC
+	 P1xyyXIJ6URnZOE8gIe5WZQf2wVgg29riZV71zbTcd9W1NvB3vfstVmZ87EzzHFTv8
+	 WEWNd/kZgL+Xgkba2PhBOdCmH/L7LdOR3dU7Mx0N6Zd6LXB5ATYIOfPu1iwo0ucy5b
+	 C8Ip/TNL6Rv3A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9521EF3380F;
+	Tue, 17 Mar 2026 08:17:38 +0000 (UTC)
+From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
+Date: Tue, 17 Mar 2026 13:47:33 +0530
+Subject: [PATCH v5 1/3] mm/vmalloc: extract vm_area_free_pages() helper
+ from vfree()
 MIME-Version: 1.0
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-3-beb8547a03c9@google.com> <aasPsbMEsX6iGUl8@google.com>
- <20260314004012.GD534169@ax162> <abVE6VWCzZfyMEsu@google.com> <20260316213440.GB1329928@ax162>
-In-Reply-To: <20260316213440.GB1329928@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Mar 2026 09:02:18 +0100
-X-Gm-Features: AaiRm50RfwFM9fMmqm7H6QEiWpid4KdXpZyBrHWN7l2K7PyOj7AradadNJ2iMyA
-Message-ID: <CANiq72nEFH8onFqA-8qXxeT1izR+xJdHT3AWrAqAzjPsEMJrsw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
- into Rust
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: day6thkum1in38bqfoa7nfabhqh1dfrz
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260317-vmalloc-shrink-v5-1-bbfbf54c5265@zohomail.in>
+References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
+In-Reply-To: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Shivam Kalra <shivamkalra98@zohomail.in>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773735454; l=2682;
+ i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
+ bh=Y7LaORkgehK4lKdbYmYreDeAD1S2R1PpyepoUGhj4EQ=;
+ b=s6l1O5XrvfxrHoFwKEGesRMgIGpBIDNBbqv8cm9CXTCul4vnZf75J2fgg+sq40Vf7HTRxXOLj
+ n8FBz8SjNGKAZvUEWq0aKtDU6RIzCoLj9bHAuV0DRAXJZbnw9v6dhlY
+X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
+ pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
+X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
+ with auth_id=633
+X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Reply-To: shivamkalra98@zohomail.in
+X-Stat-Signature: 6xpxws7iz641adwjowunbnoc95em7n4e
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1AA494000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773734551-487441
-X-HE-Meta: U2FsdGVkX1/XXqL//24vDOnb2Jmvjdwe5hSfddq2nh3a/EKEX6woBRXPd8FknV0gBHtNU1J/UZYQHEANdwDMr5FRtdnUCBR8EZy5eNfgrCgtn/82US5lOFYfhqD/fjMY1CePAf5becjHWBHDT0KSe/je3TDWw6IPpFuUhZTntlNZWbGj288w9eDFQz0lKyTaL9c3x7qBCqdRBM67UV5pmGm3DMZCEhzFe1qRK8fr4QKFVBLTtTnmHMoZWhT+5JX3nt/KCvLGlV3SaFcYALwsefV2rrQYjCvgs50uVqoKqPqDC5HoXVSwwPvYhPZ+fPyMV93OyqrmP6N3LwqXMjFp5hbfRUBA3v+qCXSN988NSskwl6y9tg8NQpACJVOPy18KWHRl6bcFe4LsS373Ut3QURBOUCbKFTPCPYuQIv5Zi8UmZIG1YtGMohKTnOtKRwn54eixpghKSoRWgcUzUgLI3DLRHz3rEoJrfXcQ3IS5x7JK3gBsfdXBznTXXHGOotmU+3BNebAJaYHnYOveccsNCoV1w5jCtOBCH5H4LlxCw2lWDfZbj1pgdW1hFDsgOiAysr+sI9b7OtkIiTi+T8jPKaJ7oioi7iQf0zb2PEuIQEc8ucRq8c9o31EIjWYX2QWC2kdUGrvHT/hos80TCT74oPDHgXyiwo7lxx0IOOPAAHANb1tKQJW0hnti36g3SWO/9arwyM6bUyHBjnuK0HFcMOB9D8bw9sVyWAEI8l5hYYiWMtYDne0CZcmNaNcTkWpmpCevb0IzL3pruQeu39d5j4LYlrfFys5soE+nCTjbYBC34d/goIs9Lp/LjNIvc1uiNwj3QCPBoUzux4TCKBXD5B6SLZIJcdbS+YBJuA2UqDYXm3MViTA0PWXPVDm3nhV2Ps6fjjR0Tx4En4CzXMzKWgvzPoADyJxZ28+Dj+Ya4Uq/zKa12ryD8HpqNUkBKo9TxeSwT9nRJCzlyXrzS1h
- C8N5InbZ
- jPp2flnHqdIRXJEkpSq40qQ3Gzm5GVxuopEXLGztDELDU91nwWjXGCSDgiIMtw0SjgXPnYW8KRzZXZKDZrzlWIwgknPERdlXA8f1R2UCtZujyDcCpnD1FM4qtBpcGDcObRvwTHnNaVoK8l3+wAkHiaTiD2u6/9Eh8D+GUOs4OtEnPOotEkjuUVbIKqV3F/OVK/ZBCV/eFBy2wvlP7ZDssR57HSWqzn3p03voehtj1iO2X1WZlIksthT2JYXAPTRE1+hGBzoCMecT+T/BQouufj8JsStHgvv3ZbmH/QOJIYfoRYMD7BmlzcOkNnpzOdOXdCoh0cDBg+e+25JWz8zd1iz6gWsWwqRr7YMYPu7sSVmP3/uDODjf/Ojy6C6PvIJBozZXQxrQsKvXZWbiv6baZ+bsarNXFPaARmqnAgpl5RmacFagC3Sf8bQ88+CUNYzu3vDMgNKCUjEcGNZqowbrHKJmevYaX4K8YaFTg4/E05+vmz06UcWYH+o67uNNILsP6WMNRYfjzmW1VMksds3yrOFRtrg==
+X-Rspamd-Queue-Id: 96F1318000B
+X-HE-Tag: 1773735459-377214
+X-HE-Meta: U2FsdGVkX18Td5nInsSw5cgERfu1jXZaldALrz6Bxs9sI+pRfc9iYpSzgK/nLyuHY43QTd2CSSi1VC+Yvg728w5W6Pr6jxVCag7o0a3vPsA1KKeWgNdVtcImug8PDdYRHnRlPLzUfJglDxEOqJT12ZSRh3T+hYzz5RsydhfbpA1Cx8SqKgL7p83Op6bpTkN8hQsxSgQ45lJ8yPLmNVzFzV2e15jGEUL93v4hGmx0zWhZSv4f1G7erG6gTF5ChVdBdu4WzK1BkcCCTHkSQ48lM1eO+6oDCltcHdS3VpWid4JV0uNTgq5wk/MAPAMSzbmw/YtxySZxe6tPDp0Q3s1AsJnTUwlNZa3zsAOmzeXKwa1kWuf72zzb86+ZrOILRqMYksF89A0gYfd7pVPgQL4sTXraL2YTX5vqMOejoyTjH7t7EGA75UDmZfCplYJebQ5JrecMgLnqQnYcqWIGIUN2zDDZrb9BUltk3mreNbmKyBbe0ouZz1lXkJy498QtWHXJr+1tsxEc6m1OkgTqZ23pvBiX32tQcOYq2/TnD5KY8VHfHouCMWAe62jtVGMV3Zd+rZ4mU6AizW5MDZOWSeD9eP6rQRgAn5gjtjCBBmmaDkbw1GPU82Pru44VnbsMR2Qh7M6rVCA34AbDc6H5SBDcIIXOrCbgh9lZ2Jq9o6ztJ4vA0MttkuhL47Z2C10Z3M3jC/hTcZSUz0XnUBgRuvINn5M5ziYNySCnSGrSyn0BhpXeyL4+ihCggHdg2SnSFLtqWAdAt2ECKaecNkAogDyVlIY20W3XiT89+1FX2Xjlj+Z0wI8Q72D5htWRT4mNZQhV6kgYImqh3LowK/eMq3h/1fgSD/kZNw1Pj6yt4xH24GJmQMT9eqWdrQQni42Db6wNSNtlMiYmDfkA/dp9fMJ8jRNJpXNEaYYxgBoESPcrHWpjO0phkC7esRIoJdKNY/34GFCIrqJ/dcR135H07cR
+ lYO8mRrG
+ A+XGcjTdDVA34WwgXYzCdPv1HpZQflfv/GKxEEHivckT+azMmVMtZE5/9x9k+Cz2Sl5Ae59vYs5nIrig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,18 +109,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 10:34=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
-rg> wrote:
->
-> Hmmm, yeah, I suppose so. Actually, adding those would allow you to drop
-> the manual inclusion of -DMODULE in cmd_rust_helper because it will be
-> included via modkern_cflags.
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-Yeah, a week ago I asked Alice about simplifying to `is-kernel-object`
-as well (mostly because I used it elsewhere in our `Makefile` in the
-past), but similarly I ended up thinking that if we are OK using
-directly `part-of-*`, then it would be better anyway.
+Extract the page-freeing loop and NR_VMALLOC stat accounting from
+vfree() into a reusable vm_area_free_pages() helper. The helper operates
+on a range [start, end) of pages from a vm_struct, making it suitable
+for both full free (vfree) and partial free (upcoming vrealloc shrink).
 
-Cheers,
-Miguel
+Freed page pointers in vm->pages[] are set to NULL to prevent stale
+references when the vm_struct outlives the free (as in vrealloc shrink).
+
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+---
+ mm/vmalloc.c | 47 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index c607307c657a..b29bf58c0e3f 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3416,6 +3416,38 @@ void vfree_atomic(const void *addr)
+ 		schedule_work(&p->wq);
+ }
+ 
++/*
++ * vm_area_free_pages - free a range of pages from a vmalloc allocation
++ * @vm: the vm_struct containing the pages
++ * @start: first page index to free (inclusive)
++ * @end: last page index to free (exclusive)
++ *
++ * Free pages [start, end) updating NR_VMALLOC stat accounting.
++ * Freed vm->pages[] entries are set to NULL.
++ * Caller is responsible for unmapping (vunmap_range) and KASAN
++ * poisoning before calling this.
++ */
++static void vm_area_free_pages(struct vm_struct *vm, unsigned int start,
++			       unsigned int end)
++{
++	unsigned int i;
++
++	for (i = start; i < end; i++) {
++		struct page *page = vm->pages[i];
++
++		BUG_ON(!page);
++		/*
++		 * High-order allocs for huge vmallocs are split, so
++		 * can be freed as an array of order-0 allocations
++		 */
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			mod_lruvec_page_state(page, NR_VMALLOC, -1);
++		__free_page(page);
++		vm->pages[i] = NULL;
++		cond_resched();
++	}
++}
++
+ /**
+  * vfree - Release memory allocated by vmalloc()
+  * @addr:  Memory base address
+@@ -3436,7 +3468,6 @@ void vfree_atomic(const void *addr)
+ void vfree(const void *addr)
+ {
+ 	struct vm_struct *vm;
+-	int i;
+ 
+ 	if (unlikely(in_interrupt())) {
+ 		vfree_atomic(addr);
+@@ -3459,19 +3490,7 @@ void vfree(const void *addr)
+ 
+ 	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+ 		vm_reset_perms(vm);
+-	for (i = 0; i < vm->nr_pages; i++) {
+-		struct page *page = vm->pages[i];
+-
+-		BUG_ON(!page);
+-		/*
+-		 * High-order allocs for huge vmallocs are split, so
+-		 * can be freed as an array of order-0 allocations
+-		 */
+-		if (!(vm->flags & VM_MAP_PUT_PAGES))
+-			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+-		__free_page(page);
+-		cond_resched();
+-	}
++	vm_area_free_pages(vm, 0, vm->nr_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
+
+-- 
+2.43.0
+
+
 
