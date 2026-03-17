@@ -4,92 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32135FEDA1B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADFEFEDA1C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7674A6B0088; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
+	id 1049E6B0088; Tue, 17 Mar 2026 15:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 717B06B008A; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
+	id 0B6246B008A; Tue, 17 Mar 2026 15:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 606896B008C; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
+	id EE6746B008C; Tue, 17 Mar 2026 15:55:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C4EF6B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:51:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 186AAB8947
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:51:39 +0000 (UTC)
-X-FDA: 84556599918.22.E52350D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5C6251A0011
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:51:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s1dQCYTe;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773777097;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D602E6B0088
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:55:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6BE9CC1898
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:55:27 +0000 (UTC)
+X-FDA: 84556609494.21.6DD97DB
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7C3C21C0003
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:55:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tQYN7PSO;
+	spf=pass (imf20.hostedemail.com: domain of yuanchu@google.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=yuanchu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773777325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QS/mFA1khawZSH4y54LCF7F+h4yELEnh1Rx67TR0DmY=;
-	b=PASAj0r6biunzx/OBMOSOAfu+qtn3stlV9nZzoFC3eIIpPKU425FI3bYplJwtRSkzUKHmY
-	bqvSoh+mTx6iBVdF04LgbhKdvcN7x7RMK+xGxdgM9OE5lgFZ7o65eloG6pOk2XKWgSERzl
-	ES5EHMAgb7lGyPyMfaAu8ZJXDOgJrtI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773777097; a=rsa-sha256;
-	cv=none;
-	b=vhHqoj1LYdpZhJIer1HDKucWuvIJJrRfXrTteomLmPEdqGb94wKsvC5di9Kkv8k8PJq8St
-	KqA8H66ghKtWv6m6IhtOIW6uMVcO/HBztQ2GtWqxkJ1VzQLsm+1Q89QY8waW9H/GY5Sc8+
-	4wRzL6TeoAThwTT4CjuAa00KH6ly+3A=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s1dQCYTe;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6053C42A14;
-	Tue, 17 Mar 2026 19:51:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6424C4CEF7;
-	Tue, 17 Mar 2026 19:51:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773777096;
-	bh=iu2cOBnlv8s0sPRqFeh8Lvb5iEQfijsU+S3paiRMUPo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s1dQCYTegDy2569WFfrMTmWIMTBZA/60RJwwnXYXwzqTP00HyOjBN3LLeq7rCa7Wg
-	 q1sOkQuf/5w9FWqLuj0sgz1mGK+DT8GaQbzC+slmDgJPnucdTQH2Q2d5dX5ZQuV2KL
-	 7Dxeq/EqYJ3B16Ko9V6xIaKpCODeLAOKWKtNx7aD6BcoGksdepPy+2y37VV+HKB3HI
-	 Qze7nClTtHearOiCGQqKElBC+AFYEaE75cUkxIf6S2fSkiYxBF5VAlQZN5W9U1b6E5
-	 E10NA/5deA2pIybcmP7TclZbYnkuatsA9g/CheKbXyLhCIOAPw2QGBzMy9av5PWYRP
-	 VVjRnH7Mp3vvw==
-Date: Tue, 17 Mar 2026 19:51:34 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Oscar Salvador <osalvador@suse.de>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 10/14] mm: prepare to move subsection_map_init() to
- mm/sparse-vmemmap.c
-Message-ID: <cb710be1-5fec-409a-a017-c794ecad0382@lucifer.local>
-References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-11-david@kernel.org>
+	bh=cf6xcX6LPn2aTsZTpuOtqAfzvryLLX6OBv+6yD4/UOY=;
+	b=U+BhFoQD0no/UjCscwhVZhyPuwdiVChJWAMDFWvJVOSmtJXdGsQbmpdqetx/xErvjtYFnc
+	S/TKtwogPZ880vZ/hOxsMRbvDfw5n846QJCjZVv6oacQTtG00bnGjcmFH4DOUrrn/i5uLg
+	cu2Y4dRAWQ/mJXyURBPq/tbBVC2QC/w=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tQYN7PSO;
+	spf=pass (imf20.hostedemail.com: domain of yuanchu@google.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=yuanchu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773777325; a=rsa-sha256;
+	cv=pass;
+	b=Yt3upttgYu41UW24aB5oMjog986hI+3MWtbz/mX1MUKu1q6IaahZ9VpATNj3zYrcM4NV4Y
+	MkUy7vjLdgGLLZvl9Iz1+RPX+8Ec3rtvqoIX+zBQpPmJNSJoT26i8l9pNXOqw6naPilWVF
+	V7vuGI9THyKnzZLy9/txJPnbcQOziaw=
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1270f10a774so409c88.1
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:55:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773777324; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PpRla5EzSF6HOVI+EQvtZ6TzDgKX5mxShVYQnjAaefd892zF0v5259O5ZHkKOBC9SJ
+         Mr3ja38OuOUoAHqXQW31Idg5heyIJ+VbHYpvSK/d6KHvlmFXYpt19pS1uSaqZHavq9fS
+         VOjme/JN/DeZt/2YJ3wi7RB18a+4lgF2Elx5pRYHR2OqiPtB4MJE5fYERP2oNDWwG+PR
+         j8u7TcShnjDJdTTPLHJ4UVgV1Rce/hZ/Nm7HkW/snIeCmOa+txKci2Xg0KqlDpyN5zpt
+         8+nFQ754nnaYdU98hEg/wp6cgRU+z64y17H1OJF8GtcY7ONWLcLJqDS+p+ziVTWtl2WJ
+         4bFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cf6xcX6LPn2aTsZTpuOtqAfzvryLLX6OBv+6yD4/UOY=;
+        fh=su5hi/0O13gzV4lzZ8h2kIEUr9YLLzt6aeoK3ddyyNM=;
+        b=QQUBrNn/Zw7PlzopzWRyd+kV+GrGG8mtM8Us2+2DKwoYQHP3BbZdfAmgkT9U27S1fu
+         e+ZHayBnuf3oFmIc2CQoAuM4og2xro65lpZqcPS0ybHmN1l3cRX3i1vCNvSpSd9UZYSd
+         MUGGI1JXkAu5MuKcdx3EA1B5l+bkT+hiaEisjgmN9zJIbA0zbIXNkZvMowo+rjiq3Cm2
+         6A13wBaPyPBlTgOHUfkVUsOQ4Z8h5DrWVZY0RpfOQ4NyjOxKTUxKuTM9sZDznAmGpOr1
+         pSiMEqag9pUghgs3nfvdvuAwYzpJGCZ18vXgtOf3pFl1wWflUNLmAOO72zgq9cpVnSGT
+         GrMA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773777324; x=1774382124; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cf6xcX6LPn2aTsZTpuOtqAfzvryLLX6OBv+6yD4/UOY=;
+        b=tQYN7PSOVOiYB6jmtfcPzGYQzQenzl8RNnY8aiIijpPOhdGG+zpme7slOljYuHOtPB
+         vXiMqeZ681HP65KFqiOm2RrQKY3tsKiD+ceE6U85cW6qx+32vLtWJ6WjAhdzDg4yeD8r
+         SnX/i7S11hZ8FKOcx9i+mJSm7iKjaSuxdsHZ5inKaBYY4c/PaCjAz39neGkmeBd3mOUs
+         uU2BTAc+jnSpPqy+vZ9GvAVg2FmYn0NB9MPWxR0XNzGYWzUOYwuq2BrKezVkCcrVrCe4
+         VyjIA2Z/Nuil0Tv+TrPgzJpjyzF9gKlc6MCICoit/yN4rpeYnP7PHdCVuK0kE1yEa5l3
+         nsuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773777324; x=1774382124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cf6xcX6LPn2aTsZTpuOtqAfzvryLLX6OBv+6yD4/UOY=;
+        b=EpK4qxntQ8PIxO1WZisexo1THIh/En8AAp5dc0W4BQx7Iy+Cvw/pqKJZfM4mUud2Tz
+         xBRz1lfw9oy2KeAx8iHeDOavnRaK+PgdDwvmPiA9Byt2Oe0fZI0zl0btkghE1kCwiNo6
+         a4cin4cx7OfrOjvVnZswl+j8feGK2Cr21xrfBbF3E9BJw7YMv2k8jzf5mOtpXquczYdr
+         YLfdbuQCpSOTd/Q8SZpWNMnWDcYn8VEmmixCwF//9PZ3M3Yzl9vg5dLSU5gPZQl/lOeX
+         MzikUno+R6vW310gaorb4vKNHy+UA+cl6bynRmSVREnRDMihWru4ci5jOOrmtnfZCdp2
+         uqlQ==
+X-Gm-Message-State: AOJu0Yw6SvLOcYy4Cvs+Tw7D6qaJLjZxWv9hfqbjOIHGUVLWElo51hzr
+	vu++GK8yEPJ3M+O/iP0BddcNk8scSmw9eZUGxhRAb6URfW4PuPFnLCBlid2+5eihUJe0GUcR2WJ
+	/HF4+yl6XdxlwiVIyESujlskoryDjsVDVUrSRXLB1
+X-Gm-Gg: ATEYQzxy+zmsTqFPKrdPnn4T/kO709vSLFzUcVELvHM8+WtVJGCp7ONGjof5pXkGxie
+	1j1KVVXQNaU2FRAIuIsj5w4t3siTuZo6aFF5CHdouzN/fx82kxbMIXDQq138qlHqWIsqSCQeUpb
+	1GQYo6Gl/gTjwlElKzZhOInPRaA8rHFB43zGDBjVrb0u7diVfcu8HFw+CvUosnGxYGKE3vGFDdM
+	1JKGf8izxH5s0ySQHzjGWOtLRUklKY4ho+UQeH9Ee90xxvFATGlVoNYtQtQ7dGtnUZdrVJn5Dtn
+	lQEaS/m/CKiwMInnRTRJkLgcbn3kGw5lVqog39nqo7jNiavR
+X-Received: by 2002:a05:7022:628b:b0:123:3641:674f with SMTP id
+ a92af1059eb24-129c5896693mr63046c88.2.1773777323264; Tue, 17 Mar 2026
+ 12:55:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-11-david@kernel.org>
-X-Stat-Signature: gemu3womm8d9aonfi3id67brxrfc8ttb
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com> <20260318-mglru-reclaim-v1-1-2c46f9eb0508@tencent.com>
+In-Reply-To: <20260318-mglru-reclaim-v1-1-2c46f9eb0508@tencent.com>
+From: Yuanchu Xie <yuanchu@google.com>
+Date: Tue, 17 Mar 2026 14:55:07 -0500
+X-Gm-Features: AaiRm51QnXp4QXeINUjJq9Fod3slbq-2FKXUaKQYziK0TfM6zQQ-feC_QRXHYow
+Message-ID: <CAJj2-QG54DHOPxwaES0hcxUCTweQeZRS0DtHVzu-5Bf8Wu7ghg@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm/mglru: consolidate common code for retrieving
+ evitable size
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7C3C21C0003
+X-Stat-Signature: 18okdpmt7oz9ce5jisbdnb4mecxbztxw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C6251A0011
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773777097-714333
-X-HE-Meta: U2FsdGVkX1/bxJsASaHxyFaGzGl8LgSuyake0h8xF6FApuPjdtCh9aBsqcO7+S0PS2AHz1Q+4+6uF/21K2oiMArCdHAVg+ceRMh9s4HsbHc96xr+amgnmlk+ACaPaQ7KbIHY5HI5dAWvQa8TNmvAoLGWoQgw3H2oV8JbR9cpD8TfFDziZTmy2D1cJCj3btdOSqZfZJ3B97ahW+aOdlt2fMkBCSB3PCk3FjsNfTjbrfOA1299hG4Y5WFq/g87+Ah2DIj7zvF/FnfOPngSDNfqCMmuyAESJT6nc4lc9GyI+a5+4zOcSKbUpDuahmH49qNx8O7yOzG2Cx9MOtURUbrXp8LsmonIiYgB5Qik1yE1QQmGT+cBs8rPXhbG7Sj+7AMD+gCd1Dxgn7ZEOaWKd8RiM+POHSBoJd6br4rZZDJTqPGsXQYxNMCTDUxQzXhACrzL8qCmfTEbzssnMYvSg8Zr1hJbCYUCL+bLkai1+CHtus10WfyNmotge8ykgVByJsiim+xzMn7tjHnZGui+mYeTRMG0mpcxhz70/EpBW99HijwTCwPMAmFL4OJ+4S6gFjoVYEGglB2/DtF5rxdLYMJMQEnfFVksUh3zIeUOk/MhUg60FSradCbYx9F+/WRfXpoP9TqdODnLe4rke8XzFz84Ttgw3sEc7whZkubOIjveXAUPDXe4Q7Dun5yMclUwIKhQ+/dLzhO1kSLUPAvjrOp3qdYZ+kgE3brHHrdey5c8uXB+AXD9wJCzaEuHTTCWQ/NLlyq2iTpJD1Rove0PjPXK3XBy4aY9MpRPvuRfb740e4mUiRllX7gWXyHkxc6vZsb/MAF+AmXGNgpPg/7FCEqZqrMeMn3IjFhKtkvP9+r+oMOrm0Vnz5o0omLDmd3wfcur3CKD1Ijv3G5qwQQrXW7Eqnsm9TLnL9ZOJ/jD9CJnO9J03VSnfkIkVCftHZjejxK7ndCHCrVzOgxWZlq92j2
- P8SlqtOz
- CVZMLnAG3HQqtwMlwSbALNrV4mEvHegUGW3a5vNn47QI4akEDxhaF8I/idMZ8fyFiPoIKAcHo72qQjUvpWalkUiQP/smrAk5drAb7yp+lcQb5B6yVcYZyQvygNOcEoumG9X824eeJumVTkzbbDuDP284Hh388VvtPTTqu0ozlZdqeQwYHwweDJzB0WHUQ0N/8HRDzUd9cyX90HDcb9dI/yLi5WV2YNixeCvsNJ6yWH4vgIHzWOLLCU0vUbgF/BONzFs+BIPZCeij++STsFTVkfjCoQHgv3+kv6BinaLKDAeVkjphCTVaqePBgRuyKFnIpJIER
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773777325-794735
+X-HE-Meta: U2FsdGVkX19eHwCJtJ4LzFcl2jt9Tdei/Zl9AuOBjFYekfUEsHRqM9O0HVc40MZRJFpFpqD/QQAWU7JmaHMcLEARja+0y6I2v88h5UW6tQ/tS6AjlsNQ6/zjELb6GxVcTj6tr9e5SzO68ySozpSmgDE8VrK+ybH2POlr0K+wmlP0CQvhvuwD+QkkKpMKqWFfd++dk3WuhTDOkdcS7erPHpeemJM+S1AI7YlUzeqx2NnPrhspr81iTmQM21TOE/p7EcihOvnDrZ9db/FeLgm6rUlDmwQEuaP5QsThrWlYQ5oICTCiCqB47XrANRrCdOSuis9HykyT0nBlygA6kkzMIqB7277Dveue99O3Q2kNkVkYFGZazBOSTmIWNisKIZhIO/vYowjzDGwcGu6sGqOLHYgq/q2uAyTDly7eglKrdlRbwG6RszlT3xYoNqKfnN40M8Bm9kHQN8kUdMsik/tLwhGfNNsjLqaCPOQ1YEhSuJPqpqLxemR6CqbCdf7M/GX7JFN41jcMOiSE3Xfpfg5O2ZHOTHgmIUs8tAzdnbl6CYTODMoEweCocr1qM3qYt/efbnuhO4u2YdoKKDky88YCW02IJMllYTBdyzSeMvwuzs3SBjgiYsK3nN/Md2BijA3BFv5YFKs3SDoEKypLJGi7OPa0hN/eMiq2l5A6cdpDGYI52xraInmRVVVejmXE5aBEun5jD5wlOkYfOlnKv9JqbzygUu7Tebs0gzmep14+hEaQqdLc+IixR7zHjniT6VLQqKbeu/cfOoRmOKlbphqeHNrcMQH2WXXfsSwXV323gyfgxP0HgQvh+qer5MmIIT9yZbiik7MdBV2hHT3urY2kOxuWCZ5dMDBSNAq0glCetTuKSn0Co/iHCWV6c/hbNdEfcoGXu/35/c6dTZYppkisZnhIr3faBqvDLoPY6y5L/AnRjAxU9gts/ot8/pbsl9q7+RUUekTldWOWLdFEd3C
+ 1C6ZIWJS
+ dP6yOeqeDZz4bgtU662DJ5jx1BclvKPxGJki2fJX3OKDjs2BHmpZY85FSQPD6UlsTtFaGGFQQfPjaKmqRL1RGWOnMVcJ5QXVMN03m6xi6B7hh1YD9Bazz9Mnh6sKh187qwCIZsZF5eO+XAqxgrcLcGDLen0lkZgDq8MyZL+oPlbtfuE+dhqbpZM6NQxitfgIzT1gV80d4VLXOWuoEyyeQdNwHGIztKZQeGSTn0dlUvyU5VAE7+Diy5W5i7SNckhYZophVaOohBN+YHkNnRLY8f3lB4exaY0V2dAF1bEHZySNvSJaqw+V3rNoTWlu6IUUOBoNnnfnSCxKGzOJlU9vaLqg//3UtyTx+7mHqh6azhqmUkSolW8EpFM+jKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,123 +146,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:48PM +0100, David Hildenbrand (Arm) wrote:
-> We want to move subsection_map_init() to mm/sparse-vmemmap.c.
+Hi Kairui,
+
+On Tue, Mar 17, 2026 at 2:11=E2=80=AFPM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
 >
-> To prepare for getting rid of subsection_map_init() in mm/sparse.c
-> completely, use a static inline function for !CONFIG_SPARSEMEM_VMEMMAP.
+> From: Kairui Song <kasong@tencent.com>
 >
-> While at it, move the declaration to internal.h and rename it to
-> "sparse_init_subsection_map()".
-
-Why not init_sparse_subsection_map()??
-Or sparse_init_map_subsection()????
-Or <all other permutations>
-
-Joking that's fine ;)
-
+> Merge commonly used code for counting evictable folios in a lruvec.
 >
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-You've initialised the sparse subsection of my heart, so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
+> No behavior change.
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  include/linux/mmzone.h |  3 ---
->  mm/internal.h          | 12 ++++++++++++
->  mm/mm_init.c           |  2 +-
->  mm/sparse.c            |  6 +-----
->  4 files changed, 14 insertions(+), 9 deletions(-)
+>  mm/vmscan.c | 42 +++++++++++++++++-------------------------
+>  1 file changed, 17 insertions(+), 25 deletions(-)
 >
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 7bd0134c241c..b694c69dee04 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -2002,8 +2002,6 @@ struct mem_section_usage {
->  	unsigned long pageblock_flags[0];
->  };
->
-> -void subsection_map_init(unsigned long pfn, unsigned long nr_pages);
-> -
->  struct page;
->  struct page_ext;
->  struct mem_section {
-> @@ -2396,7 +2394,6 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
->  #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
->  #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
->  #define pfn_in_present_section pfn_valid
-> -#define subsection_map_init(_pfn, _nr_pages) do {} while (0)
->  #endif /* CONFIG_SPARSEMEM */
->
->  /*
-> diff --git a/mm/internal.h b/mm/internal.h
-> index f98f4746ac41..5f5c45d80aca 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -960,12 +960,24 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
->  		unsigned long, enum meminit_context, struct vmem_altmap *, int,
->  		bool);
->
-> +/*
-> + * mm/sparse.c
-> + */
->  #ifdef CONFIG_SPARSEMEM
->  void sparse_init(void);
->  #else
->  static inline void sparse_init(void) {}
->  #endif /* CONFIG_SPARSEMEM */
->
-> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
-> +void sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages);
-> +#else
-> +static inline void sparse_init_subsection_map(unsigned long pfn,
-> +		unsigned long nr_pages)
-> +{
-> +}
-> +#endif /* CONFIG_SPARSEMEM_VMEMMAP */
-> +
->  #if defined CONFIG_COMPACTION || defined CONFIG_CMA
->
->  /*
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 969048f9b320..3c5f18537cd1 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1898,7 +1898,7 @@ static void __init free_area_init(void)
->  		pr_info("  node %3d: [mem %#018Lx-%#018Lx]\n", nid,
->  			(u64)start_pfn << PAGE_SHIFT,
->  			((u64)end_pfn << PAGE_SHIFT) - 1);
-> -		subsection_map_init(start_pfn, end_pfn - start_pfn);
-> +		sparse_init_subsection_map(start_pfn, end_pfn - start_pfn);
->  	}
->
->  	/* Initialise every node */
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index b57c81e99340..7b0bfea73a9b 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -185,7 +185,7 @@ static void subsection_mask_set(unsigned long *map, unsigned long pfn,
->  	bitmap_set(map, idx, end - idx + 1);
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 33287ba4a500..d7fc7f1fe06d 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4078,27 +4078,33 @@ static void set_initial_priority(struct pglist_da=
+ta *pgdat, struct scan_control
+>         sc->priority =3D clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
 >  }
 >
-> -void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
-> +void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages)
+> -static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control=
+ *sc)
+> +static long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
 >  {
->  	int end_sec_nr = pfn_to_section_nr(pfn + nr_pages - 1);
->  	unsigned long nr, start_sec_nr = pfn_to_section_nr(pfn);
-> @@ -207,10 +207,6 @@ void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
->  		nr_pages -= pfns;
->  	}
+>         int gen, type, zone;
+> -       unsigned long total =3D 0;
+> -       int swappiness =3D get_swappiness(lruvec, sc);
+> +       unsigned long seq, total =3D 0;
+>         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> -       struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>         DEFINE_MAX_SEQ(lruvec);
+>         DEFINE_MIN_SEQ(lruvec);
+>
+>         for_each_evictable_type(type, swappiness) {
+> -               unsigned long seq;
+> -
+>                 for (seq =3D min_seq[type]; seq <=3D max_seq; seq++) {
+>                         gen =3D lru_gen_from_seq(seq);
+> -
+>                         for (zone =3D 0; zone < MAX_NR_ZONES; zone++)
+>                                 total +=3D max(READ_ONCE(lrugen->nr_pages=
+[gen][type][zone]), 0L);
+>                 }
+>         }
+>
+> +       return total;
+> +}
+> +
+> +static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control=
+ *sc)
+> +{
+> +       unsigned long total;
+> +       int swappiness =3D get_swappiness(lruvec, sc);
+> +       struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+> +
+> +       total =3D lruvec_evictable_size(lruvec, swappiness);
+> +
+>         /* whether the size is big enough to be helpful */
+>         return mem_cgroup_online(memcg) ? (total >> sc->priority) : total=
+;
 >  }
-> -#else
-> -void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
-> -{
-> -}
->  #endif
+> @@ -4921,9 +4927,6 @@ static int evict_folios(unsigned long nr_to_scan, s=
+truct lruvec *lruvec,
+>  static bool should_run_aging(struct lruvec *lruvec, unsigned long max_se=
+q,
+>                              int swappiness, unsigned long *nr_to_scan)
+>  {
+> -       int gen, type, zone;
+> -       unsigned long size =3D 0;
+> -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+>         DEFINE_MIN_SEQ(lruvec);
 >
->  /* Record a memory area against a node. */
+>         *nr_to_scan =3D 0;
+> @@ -4931,18 +4934,7 @@ static bool should_run_aging(struct lruvec *lruvec=
+, unsigned long max_seq,
+>         if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_se=
+q)
+>                 return true;
+>
+> -       for_each_evictable_type(type, swappiness) {
+> -               unsigned long seq;
+> -
+> -               for (seq =3D min_seq[type]; seq <=3D max_seq; seq++) {
+> -                       gen =3D lru_gen_from_seq(seq);
+> -
+> -                       for (zone =3D 0; zone < MAX_NR_ZONES; zone++)
+> -                               size +=3D max(READ_ONCE(lrugen->nr_pages[=
+gen][type][zone]), 0L);
+> -               }
+> -       }
+> -
+> -       *nr_to_scan =3D size;
+> +       *nr_to_scan =3D lruvec_evictable_size(lruvec, swappiness);
+>         /* better to run aging even though eviction is still possible */
+>         return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=
+=3D max_seq;
+>  }
+> @@ -4954,7 +4946,7 @@ static bool should_run_aging(struct lruvec *lruvec,=
+ unsigned long max_seq,
+>   */
+>  static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *s=
+c, int swappiness)
+>  {
+> -       bool success;
+> +       bool need_aging;
+>         unsigned long nr_to_scan;
+>         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>         DEFINE_MAX_SEQ(lruvec);
+> @@ -4962,7 +4954,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, s=
+truct scan_control *sc, int s
+>         if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
+>                 return -1;
+>
+> -       success =3D should_run_aging(lruvec, max_seq, swappiness, &nr_to_=
+scan);
+> +       need_aging =3D should_run_aging(lruvec, max_seq, swappiness, &nr_=
+to_scan);
+>
+>         /* try to scrape all its memory if this memcg was deleted */
+>         if (nr_to_scan && !mem_cgroup_online(memcg))
+> @@ -4971,7 +4963,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, s=
+truct scan_control *sc, int s
+>         nr_to_scan =3D apply_proportional_protection(memcg, sc, nr_to_sca=
+n);
+>
+>         /* try to get away with not aging at the default priority */
+> -       if (!success || sc->priority =3D=3D DEF_PRIORITY)
+> +       if (!need_aging || sc->priority =3D=3D DEF_PRIORITY)
+>                 return nr_to_scan >> sc->priority;
+>
+>         /* stop scanning this lruvec as it's low on cold folios */
+>
 > --
-> 2.43.0
+> 2.53.0
 >
+>
+
+Yep, the cleanup makes sense.
+
+Acked-by: Yuanchu Xie <yuanchu@google.com>
 
