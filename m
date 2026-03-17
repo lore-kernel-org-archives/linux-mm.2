@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDBFBFD877B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:13:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C50FFD8770
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326AD6B00AD; Tue, 17 Mar 2026 10:13:21 -0400 (EDT)
+	id 87D576B00AF; Tue, 17 Mar 2026 10:13:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FDF56B00AF; Tue, 17 Mar 2026 10:13:21 -0400 (EDT)
+	id 855E86B00B1; Tue, 17 Mar 2026 10:13:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ECC16B00B0; Tue, 17 Mar 2026 10:13:21 -0400 (EDT)
+	id 7447E6B00B2; Tue, 17 Mar 2026 10:13:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 099156B00AD
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:13:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB7371B66C8
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:13:20 +0000 (UTC)
-X-FDA: 84555747360.20.6CB7282
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 63FB46B00AF
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:13:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37639C0DB7
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:13:34 +0000 (UTC)
+X-FDA: 84555747948.03.C98BA50
 Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3EA7CA001A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:13:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=EYZyvHez;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7C8B180013
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:13:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=B2Gzcln8;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773756798;
+	s=arc-20220608; t=1773756811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYsgkotQwsE3twzfNgwzCUddRr5tCg6gdL5/vBTBngA=;
-	b=O39vA8U2eN8S/5xL/gR+k8VQFPjYdHl33ircoIOWpYzGupTsn7zG1XiBKXKMjIhAT6QfU/
-	FzlHDf9A3MAirfA5+gEla1VVFVUfc3hA9pgCUd+ELx5jGesMkqVQeODHhRtzyd72AYi7me
-	lQY3ATSj5W4qvrMDzsCdzIlbSo836jk=
+	bh=W8/3+FJkxcsEROL2thE2+vYz46ZwvVX20jiL524cKzw=;
+	b=pHQZWoEs/3rDE1pi+fvcXNdfFWk4rnd3YpRYnsEuRFGjyPhGPAlP1yp4QjUosruS6JzU1M
+	MvKyJ9Id0TgOA6/HxMlaewufJ5UoS+pQWUv+sa2VxYUWCVnYUhAVGPDz4ZOe/ydm8ItUWJ
+	+JQy7/9zUBiLsdIH6whKuTyPzuNGYtA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=EYZyvHez;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
+	imf30.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=B2Gzcln8;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756798; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756811; a=rsa-sha256;
 	cv=none;
-	b=fmVPwdNhqufWEgbiIHDJMj99eLQQ69bSfin9FdSd+35nO2OHlyom5J67NQjx/2Flt6JTYg
-	H7MY6LNPZvjW4yRyBEoKFibgfSQvhAkfqwoubopsjd/ZVmQ6IF4NXKb6DuRELVTkojUbkl
-	qNmNn/rKv/QxejTS01kOpu6OSmM4H1U=
+	b=2ERIlMIHknoA/wW4P5lKbXBI3odjLNHyCVUwyimASVDQ6tS8s7ORh+qnoBDoYFtTtr4FI3
+	NHukEx1uNz1XYbsurjf1mhyu7Y5tA+Pq9hU9GfXcEJFtjbY8yq9+YX3A7PyZOk+vMlAzCm
+	iFgtFs4+sOVZv5+hRqflYoruh9vJgxs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1773756798; x=1805292798;
+  s=amazoncorp2; t=1773756811; x=1805292811;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=FYsgkotQwsE3twzfNgwzCUddRr5tCg6gdL5/vBTBngA=;
-  b=EYZyvHezjPmrOd6lAK1D4mGGpYwNOO+VGJFUPNyGmf1ZA052+ZxZhFcJ
-   d+Ob39SwJDxI2hXUkRaSUs0ebVoJYiVUSSG+vYyQKK03V8ha9ogch13Aq
-   bmfDvh8dw3oWw61h6pL6uKoM4YYGbmpzwUVC9oiKIKSkrBDJKXEa251Ey
-   yWJ/DNRxqOPrLzmOFPS8tDlL4wvJGvCY9wLoX1Crseicj7zPZZodayy9U
-   A63sxF5uLY/JJley+/jE3M4Sct/mScvCye1U4Foxo5ssJIz38pvyEbb8a
-   IJxV7ve55+Aq/PyM3qydMLpu4DtjjWmypUcSBjN4yV2EpsHH9QJwPEISp
-   w==;
-X-CSE-ConnectionGUID: dQ50hGlCS+mVkdXQCi27XQ==
-X-CSE-MsgGUID: 75IWVisKTEGJehvuWkfBTw==
+  bh=W8/3+FJkxcsEROL2thE2+vYz46ZwvVX20jiL524cKzw=;
+  b=B2Gzcln8NBKKNFF/9psf++acxn/R92pmLh3/dLEdMoLHMo8RhK8q+f9D
+   dt7BACAhf2s+jr7jGwesQVybSlj0aYPebpxdFqg1AQ8WdDi3KN1SWohR2
+   E+J/u1G9o22WrwyLKCzWSuMTxmucBuXpp+15tnBu1I7eJYcKguOGfv8cM
+   BuHFBgIBTiXfK+MOdLJRP8WsPV3OUxzhLX35oe15WjbUxSdZfcwPr4ffr
+   97Hn3pMm6gg8+F58d8vBk4xkf5lH5gKjlCD7WeQiY4FLgvjxzYKwQSrZ3
+   i0gxqSKmwdC85CPe3dD0TtLKA+OSbks9opZaSY9MehvQHMjUriunFUnbc
+   A==;
+X-CSE-ConnectionGUID: vvu2lbIiSLmcEXI8TC/SSQ==
+X-CSE-MsgGUID: Iet4OOZCTCSe8j9NC+6vfg==
 X-IronPort-AV: E=Sophos;i="6.23,124,1770595200"; 
-   d="scan'208";a="10999470"
+   d="scan'208";a="10999490"
 Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 14:13:16 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:19246]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.18.122:2525] with esmtp (Farcaster)
- id 2f13a2a9-ef77-4a1d-b7d5-f69766945acd; Tue, 17 Mar 2026 14:13:16 +0000 (UTC)
-X-Farcaster-Flow-ID: 2f13a2a9-ef77-4a1d-b7d5-f69766945acd
-Received: from EX19D005EUB004.ant.amazon.com (10.252.51.126) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 14:13:28 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.233:1609]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.15.31:2525] with esmtp (Farcaster)
+ id 2ed1f63a-ffce-4676-acd4-ff83462d1eaf; Tue, 17 Mar 2026 14:13:28 +0000 (UTC)
+X-Farcaster-Flow-ID: 2ed1f63a-ffce-4676-acd4-ff83462d1eaf
+Received: from EX19D005EUB001.ant.amazon.com (10.252.51.12) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:13:15 +0000
+ Tue, 17 Mar 2026 14:13:27 +0000
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19D005EUB004.ant.amazon.com (10.252.51.126) with Microsoft SMTP Server
+ EX19D005EUB001.ant.amazon.com (10.252.51.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:13:15 +0000
+ Tue, 17 Mar 2026 14:13:26 +0000
 Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
  EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
- 15.02.2562.037; Tue, 17 Mar 2026 14:13:15 +0000
+ 15.02.2562.037; Tue, 17 Mar 2026 14:13:26 +0000
 From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
 To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
 	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
@@ -160,13 +160,13 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
 	"Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin, Nikita"
 	<kalyazin@amazon.co.uk>
-Subject: [PATCH v11 14/16] KVM: selftests: cover
- GUEST_MEMFD_FLAG_NO_DIRECT_MAP in existing selftests
-Thread-Topic: [PATCH v11 14/16] KVM: selftests: cover
- GUEST_MEMFD_FLAG_NO_DIRECT_MAP in existing selftests
-Thread-Index: AQHcthgyuwe8FmKDH0i+WVkM5uY4og==
-Date: Tue, 17 Mar 2026 14:13:14 +0000
-Message-ID: <20260317141031.514-15-kalyazin@amazon.com>
+Subject: [PATCH v11 15/16] KVM: selftests: stuff vm_mem_backing_src_type into
+ vm_shape
+Thread-Topic: [PATCH v11 15/16] KVM: selftests: stuff vm_mem_backing_src_type
+ into vm_shape
+Thread-Index: AQHcthg5pbxN1A1x+UmyJTMMAgm/Rw==
+Date: Tue, 17 Mar 2026 14:13:26 +0000
+Message-ID: <20260317141031.514-16-kalyazin@amazon.com>
 References: <20260317141031.514-1-kalyazin@amazon.com>
 In-Reply-To: <20260317141031.514-1-kalyazin@amazon.com>
 Accept-Language: en-GB, en-US
@@ -177,14 +177,14 @@ x-originating-ip: [172.19.103.116]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3EA7CA001A
-X-Stat-Signature: an96moapnfnraqm8ws86uhxq45d4up4k
+X-Rspamd-Queue-Id: 7C8B180013
+X-Rspamd-Server: rspam07
+X-Stat-Signature: emmrrpuark5c5sgqawjxy1kjyswnngd7
 X-Rspam-User: 
-X-HE-Tag: 1773756797-555203
-X-HE-Meta: U2FsdGVkX1+XidXyZQnXt3faip9NZ3HXp/eMd0X3I+yIByJy3eK5L6cpi+eftMfHy/BF9hqfOdPgUzmTgHPnvOJoYpqxjTHk+uGzRm+WUGz7JKjpFje03TX9l7q4AbZbX7v5/RFNQwLpdP0KyTI4Lo6ZNtkJOoyGW0Oqki+0K0AVftAsZlPXZOK7mW37YJvE35NSyHMY2w4gDvzCtGNf94VDay9F5OUXodyfwP0R7RnN+Iuz4aw9kekJrSuH1i9jIk4xIAt/JS/iQ/nyjkmmvzgNS4dTqY/5ouhWKD/MEAE2uH/32abq7qvNtx1eMumBpoigbk7wtRWfSRMFLes/Eq4tAr/sUjrrmYgOwg5cU00vmxpUT52WZaoYy6BCkzjzv0+tvTyi9vXoFwX2K6CYnpzHM1s9ikPXEYx6iJF3a96+pGobZ6hCEExjfdO4xfpnq2p9UOcIcLIuzyfAv5TbHxwN1PffAbtWS/SYRo3Ua+QKAe6FZ//LVGHGWN+GsN0IxBf0FPCLyMIl6RWG3jqg9PE2tkC44OyiYA1oytA6VUcoDxQOEPnI0UgPXZGpiWzlRINq6xlChMngXkeWVLo5kQATVmRGmc+eWLxGhf54Z+9+XyRtbCpGCxqXBjIQ+uFovj8oZ8vPv7ta4kgPZwmCc5cKEU+3Vo9dx5MqlZ/wGSfwCzS8HSh/Hl2tRpkdbUzcFWGI2SkanwTDIP3Q1q7HrZMVB0TT+D7f/Hwi4QZjcS8q7Mh6B2J9JX9VIC6f/oZPbefcvBvYybThx2RchsHOyTwZSHaEgCoYmdHpnmn8sfYtjofDDMOugn5POUfJ0iScoMBqJazuU87DRh2pwqy7mW0VY9cNQyS8gRP6lGGL/nk6TlwnyBOBDtyrzA92aiz5FJgaPAfPantmJrB06CIOIJWqQRkJLckO632l29Le75Zn07u88QuLOp8lh5YudEbNDJNxa6rqnK6/2AxXq4A
- clyxfIO3
- weGJq7qw2RTNbOAnvm7i9BUMyjAkRuFGdNS7jMkHbgDSYqQpHqKQlxxZVCf/LQxiUO5lDMeByycFbiBMkLy64+Q9I/omM4cyHAOdPlKCwG7N8EoN+AFehcnH0NjO+HKrV4/9fxTaVKl0kiphRph8oJM+QabyE14tuFfOJnIJKq1jc2yplXi9O1lu6TIAlHU43vtDDMfq9gIaR+WuxZGsFD75yYqO2tD6nqfJpp98dzHbQxq+OJGbeBRDILddko0h6d0RzqwMpX99QdvTrM67DmJknsxxqNvmI1Cpm1C5u8EeZq2p5i4wvyOPcthnnokPMLuiLWytzBL/BGmA0B6AW1EVU2PEk2DZWCR8eJrtWelrIFojtfiMQp+kdjEzzxauCEU9zBCu4W39ecaFR4IqUiFbTFT2sYFUe7sTFejNqbIGxvxVmD6FuOAWsGpdGtxNKvgQ3zRLxr0/x81Wwq4pY/cYibu4mwD3XCPOgT4mfRIqrhpf2oEWRSUKHQf3Cu+G2sTCngs45MnGqkcD07tlyARwqRP2SedBc2uaZPkL9SeW5zQ3Lau+rSnzahpMw4I9h7QkV27zZTVSD2rvWH3Rl1U2fNsjVwSqeQiHZ7a0Y/Udz8CpM/AtL+gw1soJyvJW8+vZ/j4+Mb1KyosRnggrx32V0kD33d4uIhXJA1sJ4RW4DEnr/cAl78wyVFJ6BrhKOh1AENHDDkHu3ZTH5kXaK/6tpugNqTsQ1roJhx3nDLx+Dfb/fkLyUN1WLHA6qM83W4N4HEUiZ6ES9/yA=
+X-HE-Tag: 1773756811-843015
+X-HE-Meta: U2FsdGVkX19DBpy8NyK0WTmRqwPg2Xke46fWQ6pS/RWXcdhf1fT9r2FbRtBSsbwhA5usPU2utDGTYFFLfIHopuxBSGAnWpjgeGpxo70Gi5ePaMtMN2Q2uVDzu4UfmQD1L2eYEWQ/PxIoSGzBzWJYVTbPRuDEQTV0JF/O3e0EXoATYa0ZqjrT2X6CMpUnFKxN1PZ9Ydug7GeUy0Br+Z9FR7H/pmlOi087owEUT8JGOlCxD+D65tZOhZ5wtHiTx8QVTYeEegmTmBNWy/MCughWtYlOXZjprkcdi9BPKmYWQE1SgML/k55Qa18EpYSchJax2sQTn716Fxjn9rkmgrq6xuC4LeOmMSEL+bG8m3CEv7Qd+bd79h9jeWmBUMqII5KB74QQ55R3WoZOdaS3/RYZPa3x5Rrz2fX/15/9dnrHCrvF7eJWpo7+b2w87zwrElXmIJYpzVJ3BkBCMwanmHGcwk8VPfH1md+IsSZ43rKcs2cdwBbhlMd5vVuCduzzB0VkqvKTF7eJa4a7lWwKEDTxdHx65RSbmxBOVbU0Xto2iVzL+EtL+Xv6XQfRju/KK8X+dYGYEgpJycrnk3C9qicsmhgB2NFZnhalc4A/CMghR07wvQNsqgFAFaxNtvc5JYQJjISniL+GIpPeIHlp8ziZDpwfgGAPZY0/P2FzEb3oS0psArbqg/o8V5WGhaxWzmG2vXkhIhfS3Robub3CGJvwbVIyvqSF62abIZRPABTalTZz069vR4JDTqZWcStTNehefgP7U+YmXgnpAQgUcyrnM36yeIKLy7hUPZksn7/WMknOfA5ASMXrtkpTD4Bh89EdRncqEg+AhSB5CkBbdOsemO+0JDS0csxzccij6I6Q/bINjA9ihhJeWgsejuYOGXGesBWWWyiw67+gP0t4kdS2+X3CX3+VWrMyX83TolI3RwQRSCG/e7gITI2280nXG07uEThJAnfwkjSUNPsCoXT
+ XzW+nDJg
+ Lj9gt/GjY+CaPDU73SU3iNlVavUjTkUZH7zOmFdxvOMUfyyndyj/vgTUYg5jsHqTvxcy3ebAY259/pJckS+oir50zUs5jhjXTGl5UvhU85kC8JnOIImJCmKg/mpDfD/IIhAJjBMJg3NovouHT3EEX9blDkuZybRc/gvy3PiWGB4Rg3jclm9KvkEr4yJxSi9evB8WE7FOa+q7BbQC1FtM9pbfI7yydbKgxxCtomJZyB7yCzjpFhKrovB+ITgcLugrUVYZnNk8bGTQI0vf225RVHNBJnHgAqhYo3HmT23NFzNdqT+SrOI56idE6thvDSrQSHMLAbFasA2DJWS45AiU2yw20jFbJK/Wd5zklqrAAaUcVKnerUtTgPNzcdcwEx58RGdg5x7K2RhYYUphA3IzgjK5GiHsKQrIT5/CjCnMO2PyZHXrbzQfLXRnhGTuKHopRg0gAvMKaBM6snHOFaQmexDlsCs4Sfsz/NFXF3UY/he3vBZnNdeiPnriUZrfgxTGdKz0TtWyrv6dPN/Kuub1gLWm0LpTl3X8IiDqrfOV3vkZh8pLm6XzvklEkDmpaM4p5PIndG1CZNMbHUPCVJejGc1PBtoOAVkK7i8ry1ITjEuHUcrEK3DwrHEjIIJSg7L6QrLrZ/1mE1IluzaV5u+ucQZXdHFXxRZHlkT/WZqHwipFmShwkEhnuhyh8TeDGIxzBQpqwJoUOp95Aiaq0M9KkvDrVPTnsMqgpx1+TWy0iVQdCehxS2bLWm08HgeUnXn5B/zZ73FFcjMlaARXvHjv2Bmpm4h0ixaYVmUPP44u8Zxvt/bI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,98 +194,106 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Patrick Roy <patrick.roy@linux.dev>=0A=
 =0A=
-Extend mem conversion selftests to cover the scenario that the guest can=0A=
-fault in and write gmem-backed guest memory even if its direct map=0A=
-removed. Also cover the new flag in guest_memfd_test.c tests.=0A=
+Use one of the padding fields in struct vm_shape to carry an enum=0A=
+vm_mem_backing_src_type value, to give the option to overwrite the=0A=
+default of VM_MEM_SRC_ANONYMOUS in __vm_create().=0A=
+=0A=
+Overwriting this default will allow tests to create VMs where the test=0A=
+code is backed by mmap'd guest_memfd instead of anonymous memory.=0A=
 =0A=
 Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
 Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>=0A=
 ---=0A=
- tools/testing/selftests/kvm/guest_memfd_test.c  | 17 ++++++++++++++++-=0A=
- .../kvm/x86/private_mem_conversions_test.c      |  7 ++++---=0A=
- 2 files changed, 20 insertions(+), 4 deletions(-)=0A=
+ .../testing/selftests/kvm/include/kvm_util.h  | 19 ++++++++++---------=0A=
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  2 +-=0A=
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +=0A=
+ .../selftests/kvm/pre_fault_memory_test.c     |  1 +=0A=
+ 4 files changed, 13 insertions(+), 10 deletions(-)=0A=
 =0A=
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing=
-/selftests/kvm/guest_memfd_test.c=0A=
-index cc329b57ce2e..64c1200c182e 100644=0A=
---- a/tools/testing/selftests/kvm/guest_memfd_test.c=0A=
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c=0A=
-@@ -403,6 +403,17 @@ static void test_guest_memfd(unsigned long vm_type)=0A=
- 		__test_guest_memfd(vm, GUEST_MEMFD_FLAG_MMAP |=0A=
- 				       GUEST_MEMFD_FLAG_INIT_SHARED);=0A=
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing=
+/selftests/kvm/include/kvm_util.h=0A=
+index 056a003a63c0..48b6ee8223aa 100644=0A=
+--- a/tools/testing/selftests/kvm/include/kvm_util.h=0A=
++++ b/tools/testing/selftests/kvm/include/kvm_util.h=0A=
+@@ -215,7 +215,7 @@ enum vm_guest_mode {=0A=
+ struct vm_shape {=0A=
+ 	uint32_t type;=0A=
+ 	uint8_t  mode;=0A=
+-	uint8_t  pad0;=0A=
++	uint8_t  src_type;=0A=
+ 	uint16_t pad1;=0A=
+ };=0A=
  =0A=
-+	if (flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {=0A=
-+		__test_guest_memfd(vm, GUEST_MEMFD_FLAG_NO_DIRECT_MAP);=0A=
-+		if (flags & GUEST_MEMFD_FLAG_MMAP)=0A=
-+			__test_guest_memfd(vm, GUEST_MEMFD_FLAG_NO_DIRECT_MAP |=0A=
-+					       GUEST_MEMFD_FLAG_MMAP);=0A=
-+		if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)=0A=
-+			__test_guest_memfd(vm, GUEST_MEMFD_FLAG_NO_DIRECT_MAP |=0A=
-+					       GUEST_MEMFD_FLAG_MMAP |=0A=
-+					       GUEST_MEMFD_FLAG_INIT_SHARED);=0A=
-+	}=0A=
-+=0A=
- 	kvm_vm_free(vm);=0A=
- }=0A=
+@@ -223,14 +223,15 @@ kvm_static_assert(sizeof(struct vm_shape) =3D=3D size=
+of(uint64_t));=0A=
  =0A=
-@@ -445,10 +456,14 @@ static void test_guest_memfd_guest(void)=0A=
- 	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) & GUEST_MEMFD_FLA=
-G_INIT_SHARED,=0A=
- 		    "Default VM type should support INIT_SHARED, supported flags =3D 0x%=
-x",=0A=
- 		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));=0A=
-+	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) & GUEST_MEMFD_FLA=
-G_NO_DIRECT_MAP,=0A=
-+		    "Default VM type should support NO_DIRECT_MAP, supported flags =3D 0=
-x%x",=0A=
-+		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));=0A=
+ #define VM_TYPE_DEFAULT			0=0A=
  =0A=
- 	size =3D vm->page_size;=0A=
- 	fd =3D vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP |=0A=
--					     GUEST_MEMFD_FLAG_INIT_SHARED);=0A=
-+					     GUEST_MEMFD_FLAG_INIT_SHARED |=0A=
-+					     GUEST_MEMFD_FLAG_NO_DIRECT_MAP);=0A=
- 	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL=
-, fd, 0);=0A=
+-#define VM_SHAPE(__mode)			\=0A=
+-({						\=0A=
+-	struct vm_shape shape =3D {		\=0A=
+-		.mode =3D (__mode),		\=0A=
+-		.type =3D VM_TYPE_DEFAULT		\=0A=
+-	};					\=0A=
+-						\=0A=
+-	shape;					\=0A=
++#define VM_SHAPE(__mode)				\=0A=
++({							\=0A=
++	struct vm_shape shape =3D {			\=0A=
++		.mode	  =3D (__mode),			\=0A=
++		.type	  =3D VM_TYPE_DEFAULT,		\=0A=
++		.src_type =3D VM_MEM_SRC_ANONYMOUS	\=0A=
++	};						\=0A=
++							\=0A=
++	shape;						\=0A=
+ })=0A=
  =0A=
- 	mem =3D kvm_mmap(size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);=0A=
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c=
- b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c=0A=
-index 1969f4ab9b28..8767cb4a037e 100644=0A=
---- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c=0A=
-+++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c=0A=
-@@ -367,7 +367,7 @@ static void *__test_mem_conversions(void *__vcpu)=0A=
- }=0A=
+ extern enum vm_guest_mode vm_mode_default;=0A=
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/sel=
+ftests/kvm/lib/kvm_util.c=0A=
+index fa4a2fc236fe..824c94c64864 100644=0A=
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
+@@ -500,7 +500,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint3=
+2_t nr_runnable_vcpus,=0A=
+ 	if (is_guest_memfd_required(shape))=0A=
+ 		flags |=3D KVM_MEM_GUEST_MEMFD;=0A=
  =0A=
- static void test_mem_conversions(enum vm_mem_backing_src_type src_type, ui=
-nt32_t nr_vcpus,=0A=
--				 uint32_t nr_memslots)=0A=
-+				 uint32_t nr_memslots, uint64_t gmem_flags)=0A=
- {=0A=
- 	/*=0A=
- 	 * Allocate enough memory so that each vCPU's chunk of memory can be=0A=
-@@ -394,7 +394,7 @@ static void test_mem_conversions(enum vm_mem_backing_sr=
-c_type src_type, uint32_t=0A=
- =0A=
- 	vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));=
+-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, fla=
+gs);=0A=
++	vm_userspace_mem_region_add(vm, shape.src_type, 0, 0, nr_pages, flags);=
 =0A=
+ 	for (i =3D 0; i < NR_MEM_REGIONS; i++)=0A=
+ 		vm->memslots[i] =3D 0;=0A=
  =0A=
--	memfd =3D vm_create_guest_memfd(vm, memfd_size, 0);=0A=
-+	memfd =3D vm_create_guest_memfd(vm, memfd_size, gmem_flags);=0A=
- =0A=
- 	for (i =3D 0; i < nr_memslots; i++)=0A=
- 		vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,=0A=
-@@ -474,7 +474,8 @@ int main(int argc, char *argv[])=0A=
- 		}=0A=
- 	}=0A=
- =0A=
--	test_mem_conversions(src_type, nr_vcpus, nr_memslots);=0A=
-+	test_mem_conversions(src_type, nr_vcpus, nr_memslots, 0);=0A=
-+	test_mem_conversions(src_type, nr_vcpus, nr_memslots, GUEST_MEMFD_FLAG_NO=
-_DIRECT_MAP);=0A=
- =0A=
- 	return 0;=0A=
- }=0A=
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/self=
+tests/kvm/lib/x86/sev.c=0A=
+index c3a9838f4806..d920880e4fc0 100644=0A=
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c=0A=
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c=0A=
+@@ -164,6 +164,7 @@ struct kvm_vm *vm_sev_create_with_one_vcpu(uint32_t typ=
+e, void *guest_code,=0A=
+ 	struct vm_shape shape =3D {=0A=
+ 		.mode =3D VM_MODE_DEFAULT,=0A=
+ 		.type =3D type,=0A=
++		.src_type =3D VM_MEM_SRC_ANONYMOUS,=0A=
+ 	};=0A=
+ 	struct kvm_vm *vm;=0A=
+ 	struct kvm_vcpu *cpus[1];=0A=
+diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/te=
+sting/selftests/kvm/pre_fault_memory_test.c=0A=
+index 93e603d91311..8a4d5af53fab 100644=0A=
+--- a/tools/testing/selftests/kvm/pre_fault_memory_test.c=0A=
++++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c=0A=
+@@ -165,6 +165,7 @@ static void __test_pre_fault_memory(unsigned long vm_ty=
+pe, bool private)=0A=
+ 	const struct vm_shape shape =3D {=0A=
+ 		.mode =3D VM_MODE_DEFAULT,=0A=
+ 		.type =3D vm_type,=0A=
++		.src_type =3D VM_MEM_SRC_ANONYMOUS,=0A=
+ 	};=0A=
+ 	struct kvm_vcpu *vcpu;=0A=
+ 	struct kvm_run *run;=0A=
 -- =0A=
 2.50.1=0A=
 =0A=
