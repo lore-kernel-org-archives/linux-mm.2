@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88D2DFD8777
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91954FD877D
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:15:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37B16B00B3; Tue, 17 Mar 2026 10:15:47 -0400 (EDT)
+	id 06AB56B00B4; Tue, 17 Mar 2026 10:15:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0FAE6B00B4; Tue, 17 Mar 2026 10:15:47 -0400 (EDT)
+	id F0F8A6B00B5; Tue, 17 Mar 2026 10:15:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4CAA6B00B5; Tue, 17 Mar 2026 10:15:47 -0400 (EDT)
+	id E4CB06B00B6; Tue, 17 Mar 2026 10:15:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D0CBA6B00B3
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:15:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A52AEB5BA3
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:47 +0000 (UTC)
-X-FDA: 84555753534.11.07F61A3
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BEA74100012
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ZQc/gEZA";
-	spf=pass (imf14.hostedemail.com: domain of 3D2K5aQoKCA40qzo3w16ywu22uzs.q20zw18B-00y9oqy.25u@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3D2K5aQoKCA40qzo3w16ywu22uzs.q20zw18B-00y9oqy.25u@flex--mclapinski.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D5D7E6B00B4
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:15:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9261A1A015A
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:50 +0000 (UTC)
+X-FDA: 84555753660.28.243E924
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B5B5D1C0011
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N8mYGV8q;
+	spf=pass (imf21.hostedemail.com: domain of 3E2K5aQoKCBI4u3s705A20y66y3w.u64305CF-442Dsu2.69y@flex--mclapinski.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3E2K5aQoKCBI4u3s705A20y66y3w.u64305CF-442Dsu2.69y@flex--mclapinski.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773756945;
+	s=arc-20220608; t=1773756948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6pQdqVuW3s3IY2V2/GcIHf4+cwJRcBc6iC91+pnO9/s=;
-	b=xVz9NvkRKi1obaSqGNdsnpVOw6rbwwTqPdvX9X0lxcJbqogEBK1KLB83C82WQXzdmXpgkq
-	DzuqRllqpbD5m7VrsUMgzoqfBMNl/QGqrNf+AAA88qOIKdRr0/RKI5gNGvBNCJlevN+ZVV
-	VutXFp3HygQ5L/l5mhN2aAMdN6A3DUc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ZQc/gEZA";
-	spf=pass (imf14.hostedemail.com: domain of 3D2K5aQoKCA40qzo3w16ywu22uzs.q20zw18B-00y9oqy.25u@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3D2K5aQoKCA40qzo3w16ywu22uzs.q20zw18B-00y9oqy.25u@flex--mclapinski.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756945; a=rsa-sha256;
+	bh=ENui0Js8tkhd80bmpMrXzJoFIzd5GZKUFokCk0GUoAI=;
+	b=x10YWilUPNU0FgbN3YLPlg0Dc4GMYHvFoAojMKfw2yI9unZ0XkbyYs1oXxs+VrG6arOkoe
+	KiwSMhlR/5q/iasG/ZykVDwA8nbG5gLGKLbCUlbe42NWlVAcYggadad+m8zvzIA1TYWk11
+	UDm/8z/2wj7BD86SheP7z3VSknvQxQY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756948; a=rsa-sha256;
 	cv=none;
-	b=SmwoPDTPjC6qDI+FffPx/2y+W+DXyl51TG5kSFaPE1ZVLTcz6Ts2t8YZtdOLDvhayYwJmb
-	h8+7KFWi1tHU5PXG44nvOg1Q/76ZdUyQR2lwv14A4LomySJAjfAlyPPKORAgPGjvKQirX8
-	bvHHmPob5fM9zxd/Fo/bl+QgAUTfjHA=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-485397788b3so54364985e9.2
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:15:45 -0700 (PDT)
+	b=MsN8cJ+Rw2GLWAgMAUjA75GxLFflbnkpvjyowOCK84JmpiMmeNmmtzedKHnZv5JlgiVRo9
+	QmpphmXNsQxadPiwaK7ucOerjx1CiVdbKUi/hodkliI+NuRXhnUoswIl8meMdg/sWzxNqw
+	Skj9qqEPg9pLzdhQ4/dvARDseIuw2oo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N8mYGV8q;
+	spf=pass (imf21.hostedemail.com: domain of 3E2K5aQoKCBI4u3s705A20y66y3w.u64305CF-442Dsu2.69y@flex--mclapinski.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3E2K5aQoKCBI4u3s705A20y66y3w.u64305CF-442Dsu2.69y@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-66142e571c9so5863109a12.3
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:15:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773756944; x=1774361744; darn=kvack.org;
+        d=google.com; s=20251104; t=1773756947; x=1774361747; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6pQdqVuW3s3IY2V2/GcIHf4+cwJRcBc6iC91+pnO9/s=;
-        b=ZQc/gEZAGrI+L94a/4EozRGx+3aS/tR15Yrf53+owIZtQIimniezjKOGkspyaUbMgY
-         pymwcyBjsaW5AE40sbyM3gf4+uAu/YxLFtUIdO7ZqnyIUsGCwbdKH8r6KYw1Fm5zSapO
-         CrdaHvgxZ4k3laupSr2DX+mcn0VKgmQO6hzQVpD+eLNpyFG0+Ggp5+ZkGgefuiaGpZW5
-         svVVDnJIkIWj9T1F7zZB9axTuc3ids7ent4im9/mPRkUH44RjETfbkW5fAWDikWreKIk
-         PnpQBOgH3V9neP4D2pJixxoQ22ocgZMxT3GGXT5NkjfOemrHfnv+ibS++b72LnJE9wJ2
-         scdA==
+        bh=ENui0Js8tkhd80bmpMrXzJoFIzd5GZKUFokCk0GUoAI=;
+        b=N8mYGV8qXGuTSpkKGRRL0KXbh6wsbW2soFA2tV1jKxmS/gjz09fwDpIeyzbkfH9AFo
+         TVyAq82OqqSyQIn9Khe9OUySIMDSBBRiNKrQW++dk/5IOFw29bjK/lLGndohFzYxl3Lu
+         q2HLm1E9bTXjTE4n2DqkCCMLsaemUroFWePHU0QVhzEdxk86WMNYTzy2KKPD87fWuuFo
+         CmseIxA2eT1wBN9fFiCLy8M2cd+DaWvy8wV94KBtc9BJ/gu+Ao+zeawNVh+lvg87qcbN
+         aileGBVhd/YiIXh84GFXowNH6p8WFCTA52ADvOgm6W5cfUergVmt4kEyg2EmXfKL0YYh
+         /zXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773756944; x=1774361744;
+        d=1e100.net; s=20251104; t=1773756947; x=1774361747;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6pQdqVuW3s3IY2V2/GcIHf4+cwJRcBc6iC91+pnO9/s=;
-        b=MVeSXPop2AEV5rVYVTI5WmhrzinC/Nw7fpVQDvaOJI1oaemNx1JFdBmpjC2ewVm8wU
-         K0q19wn4dw5Z26kwkdXeui+uDpLt1GOA41RvR2aspkKPJ9VkWu/wKA2PfNC3kPplVxeY
-         ZSzm7n6gLCtF2WrQ7CgtlZsej+ri2BxuUfQ2EhfL2DxXOaHiAITyhRrrPUDy7xALkdMN
-         6y9T4dtQN5IJf7CjJbfxEiKLMTIUyVIN3GTtIOxrXrXPHJ2u6Rl6RMb6Uy+LS5J+Kl03
-         cCvFcDaZORsaIGky9offE8dHOXu+I+ovPdMWeW0NnGF+52ti6n8FEifA/+goLVAMtPlf
-         AMLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxkWp7c5+XJA9Q9k0rC/7XKkGKLFmYYgt9zaam8EaG0PKpc5nMWyhufpIFUQvf2VxqroWf7ZaBJg==@kvack.org
-X-Gm-Message-State: AOJu0YxIuq2/00a77Q7ZwqXbVyPkkuuaDURv32TGPpvG8aMPw8oUilow
-	m/PEKB8+Nk4GyKLGxrICxcAm0SCKSpO8xeQG1j1s2y92OQofJwwGWFGwRbRi7Efm8m3MumLzZT9
-	Ga3WiIFFH5ME9uHrHXEAWLg==
-X-Received: from wmz7.prod.google.com ([2002:a05:600c:6b67:b0:485:3aa2:da59])
+        bh=ENui0Js8tkhd80bmpMrXzJoFIzd5GZKUFokCk0GUoAI=;
+        b=Co2c2xPZzeq0MBQEPdVeURBB33jYGc/WqYJDSa+7G733OW2B8jnaO2fImLajfeq6/P
+         z4A7vCoKDeO4O1l85XgfVhFnANQLGfc8eZBsfIBS85EiNyAtfVXCdQeb0T5/C8sAz8ZW
+         T9WHLZgpI9ed/kL5We7y44kEe24v4vb1jYg/GGJQtd4XSZsxEBTGQ9ZXbL7tph+UFTeo
+         3wU8uiAz4z2sGPlhKJ9Io5sFjVfNmI9RCtvwHHlaNeumx0x7QMaqC7aGMjFRIwxl2VYq
+         tiG2l/MUyarU1HQJ2LcqvGgj1TrREJPwlB/gZa0EcynneiKPnpH7dO31YIZvV5c08kJE
+         sq7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVMkstSOPNNYskpW5JqliZ69ua5ij8j+zQyBnmT6dRR/Bdr6aF34d7oX8+uVSRlQSmIds8zw0aJfA==@kvack.org
+X-Gm-Message-State: AOJu0Yx1jovfanBV33mZlkyUmHVRtw5/HU+A3B8egZDmuLeac4nkyMZr
+	QRcScw0yOCuwowfwRIuZAz3mC7I4u88amJLrkMnnB4thQh8fEeg97Ca9ofLcrHnssd7TrtksEHf
+	ykdRSbw9+GO+WGZyD1SWIew==
+X-Received: from edew21-n1.prod.google.com ([2002:a05:6402:a215:10b0:662:4e97:3bc9])
  (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4583:b0:485:3f17:410 with SMTP id 5b1f17b1804b1-485566fd031mr299341025e9.16.1773756943916;
- Tue, 17 Mar 2026 07:15:43 -0700 (PDT)
-Date: Tue, 17 Mar 2026 15:15:32 +0100
+ 2002:a05:6402:26c5:b0:667:5318:2bc9 with SMTP id 4fb4d7f45d1cf-66753182f33mr1449370a12.15.1773756947028;
+ Tue, 17 Mar 2026 07:15:47 -0700 (PDT)
+Date: Tue, 17 Mar 2026 15:15:33 +0100
 In-Reply-To: <20260317141534.815634-1-mclapinski@google.com>
 Mime-Version: 1.0
 References: <20260317141534.815634-1-mclapinski@google.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260317141534.815634-2-mclapinski@google.com>
-Subject: [PATCH v7 1/3] kho: make kho_scratch_overlap usable outside debugging
+Message-ID: <20260317141534.815634-3-mclapinski@google.com>
+Subject: [PATCH v7 2/3] kho: fix deferred init of kho scratch
 From: Michal Clapinski <mclapinski@google.com>
 To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
@@ -94,14 +94,14 @@ To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@so
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Michal Clapinski <mclapinski@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BEA74100012
-X-Stat-Signature: q48d67iggpjtabkss7mui9mdayeeznpi
+X-Stat-Signature: sk8jf7edpr5u58d4n8gzi1immeg5zpby
 X-Rspam-User: 
-X-HE-Tag: 1773756945-531574
-X-HE-Meta: U2FsdGVkX19/ke7+MqxNDNNT5pWCzLtFHPe18y3A7zBsw2sR+kdM7jS1UChXQPo4e5Bv/Q6RxRRHfZiNSw0TovQctlk5AnFzrYPct7Ygt41hMKiPtvradddgW9IeYKwnxWqm+3+kdhhkQjaUhs7ZnXpCnnYETd29V9PUC0l4exyRv6WgAqb38nzEYSfuZR9GkZ80drHB+kAAz14CV+lhqQoSWul26Cw0/jWKHr0GnvJ3sUJvkhv5dSV/hwH9FUCyZrLdP8MMJpF83dBGgv41k3eq9wf3HDkOPVjRLRRl24ggz/EdYzQw6w7vjazXarXuHiNjtPqf959QyEJim8XtBg9pI68Cmwbuf14EuEl5UY3NvJpPi+TJXe/jKeocTIsG2IqkWKcEGuIdyo30WSKkDsGAMoRDFpR95UiIKKvLI5CsfkHTcCm9vbVeulusNNd+Ilxxx1P/JBwknC9vIn8JUaEZ8iVF/fyLLpGLEKq49mTVMZl5vYjSOaKOrYgTDg6wCWXa9PYFFsXeow96IXLDUJcdzROD0WW32Baww4YUVePV/CIPHXISeMLlPW/a9LEkPXY2vT00agsWYR9ZW35nK3tmrbJA5z+qrYCg38q9IzObBoKpfsjwuX30UmOvLTCbkciaqxVEWyB7NoaDPpVzIniKfLzf0OT7i3x0pybZ6VkSEtYUnT8vm0qZJ8w3tJsHcH11fw+2JN2Bln7MYy5CWmKxfh4/mAo74IqgnXWmJV4NrXCY8XayY7xvmBMouDSu/Po8lYqWhUyoYWIBqUhKVkIVLRCdLVIabY4gsk0+fpxL/Lv1Adgi+Tn6Rl0YaaslGOi5KL0OZfWsIVkkh4luymTOh85HdD48hKWva1CObzvfFjBkqTNbCNM3J7iZUy26x1W4vg5YHei7t40mr1EcfmeJxjdjzFrSFECiWQxBB4p04F08ClP7ewWX6I2jd9G/PaRz+5kGV2eK65cIwVn
- mZ+sMhEY
- /X6wTjtuJoeIkyfmmFNETQIVWF/qr4D10TZCxRSQ5wdafzy0ma9ABwZnDbVTepG4nYmHm9XOKvINpUZV95FG7Zj/QTu3tT0ZT7dUVme9VhdAk5p4MABOUe6XDc1CfxwNHYRhabQ642fV5n6Ub91Zia5J1YEBgoFL8iApukir2mWt1BVDIvjLIZCvVBNC4FVD0x+8ViO2moivfeHUKLalVEfclBAD4cEecLRplwZ5TW47JyAUazuoM70kfI6l+SwvhTW2pq3gExQvpIvKyF40JJ8RTLhlb1aD29JeY9i4P0bm/0SnKr9Jv6qP8FiO7ev5Fi2uMJsdG3LsKwyyADxMvR0Zm4vyZuI3T3Apj8Qzy9G62DGMApUGK9tn6o2QnC9h5uNLCxs70IdnD1SQpXSM/0SHNi6NSvw/diST3ECy3Kb3Y26ir4R5Fut0XfgZjAmuna5FEBS7MbVo7KNtiYuXflQuya37LGYrLfk9CenmTAHnGNQ1A972wvBNlY3/gL9MsM/EKExpOOX3udVNVIk3VEAR0E48T4ojFENdAVH1Wbut2+1pQQIdsdLBwPpFREVBtnDREUsPw5gQgoqLHtUgMWFVVnUPBMAbO2TR+0ITl7rhCp74NGV2ySrEBnqdBdowtNYU+SUTS7TFuVzNm8+um8BL6RadfgDhoERt6VvbLNZWgf88=
+X-Rspamd-Queue-Id: B5B5D1C0011
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773756948-148714
+X-HE-Meta: U2FsdGVkX18Wcc7kIy/0ozFFr0XfFaQyo8NNNL8i18hE3aCV+SwJYykI22NXVN4IaIJcoU8+lE14biXVyxg0fWX5+eI87bsl0MDTLR7mrC3c8xw//Mxpp+hAqxj1U1eishP3FN2qXN908Ij7B2hYCWCZtC495GfHkWmxeR/OK4jyMXbK+ys/mVLrJE/BAwGGRytcmwPbD8exhlFh4h8XSFn0k1TUtdSA2fKb+orYcEnH9BnzdRbkhvncmptOc/wzKxwRLOfzGrxryX8twg26DfxoPHwbfUhxsBEsSC+wvkdNn4rQX5fwDgObly+TeIyKgqKQ096buYB/XBWt3YetVPuRoa2l1gHd6pVxTXKCUTq1lE9zPn3uAF5gtm4F3B0DXeFfE54BqTQSzpksz87DI+02RKnevG8TGKYBIM5UwhycyO9d0mNfdoKYVkWPp8kQ4PCFHw/BV7G/+4l8H99xDLkY592CExTW5gphhDbR2gG/VTLqs/JNgjr7n5/v/vX21R6IOFwuJWvEqZXxP6DNWnln6Bf2cYs8H/RPowWY8NHYzMtzNLRFb1yaJE/viIL4eQlJ3HgFrrncCXH3uOFZGm4tCd0bNjLEYLgbOMcyqi6VbFECJjDt+SsV+oGz92i0468QrPyPS6xh91b6oTHnJdI3F5kRFpoUyL4wwmE9xFjgTOYS/d7N0UXiZWy9pgmgc54N/Crvnwab7iCOWDr9BGAYW5+GnBXYQqETofPDfij+eYfkALo1nRNi3d+htbaJonRgmG1sRaIyFEaywn+CCGF8SKwoBTNoQieVONsptg7V4SSIfUtx2YZx9CYSjsPd8XQab5eOhB7v64cRiZjiVYQxyFReMEfNQzjblW4pT3YxqHecwpcKMpBVhPmCgI/5cVlZHyjYNGKNHNgrBNbNyemtV/PFI0LAXFjC4W3NeaY1x13Gq4/wHeZLKdMDSXSDFt1/eRD0glF0WFmELpT
+ MH7nHleQ
+ h9NR+17eePHY3EVNJy07tTdPR2tLl1ldsCGQ3yJlNXpy53ljZvLlx3JNZ6bN4hihA6ehcNMnnAdipb280ST2JBZIf1rPnlmhmZrkIbUKFScZfB2MuIYmoK20FM2+06clgd0TBkdp0FmalS0EuI8/8F56ttFrtfEnLDL9od8DKqSKx1TkUkh0OzIjXNa6jL0BpQsyw0cGk/QBeLoAEmeJwrxZgyNvaiGqCfCgNamw2KmM2HMuysFvZUAme2GnleTutoaa0TwX4eOcWJZqC5VY74E7h/0baQSoXRO5oPTf3jCWIBkvgt+s7Ysm7dXA/JexHxBnZ577zQ92HYQUJckwCLV9iZmrN3g6L2snACazFrEULNKzaAHk3/MhKI9nHAR4zKnE+er1+S8t9eRCKzIIVlZS+BmjNpZ9Nr46npPH7H35mruSw/5+IwIgbg2gwXxT9QxdDPhgdsqAvyCr8NbT5oB3FH3uERr888QNjnR/oRbHNCtWg7aVpRVjUyevNG70tJmchzyzTqY2O06KlswFOsetgjjVIOCXFc2y4dkCpyDPQg9l8kvJrzvnK80e6WPfz6aHU/BLEaUETLuc5HphVF6IityVCOFBpLHRFO+q/Jekl/noYysgaHJs13p5VyOgGRKv5ZudqpYpxCtBE25pud8OwWYd09oyXa1ma
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,158 +109,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Also return false if kho_scratch is NULL.
+Currently, if DEFERRED is enabled, kho_release_scratch will initialize
+the struct pages and set migratetype of kho scratch. Unless the whole
+scratch fit below first_deferred_pfn, some of that will be overwritten
+either by deferred_init_pages or memmap_init_reserved_pages.
+
+To fix it, I modified kho_release_scratch to only set the migratetype
+on already initialized pages. Then, modified init_pageblock_migratetype
+to set the migratetype to CMA if the page is located inside scratch.
 
 Signed-off-by: Michal Clapinski <mclapinski@google.com>
 ---
- include/linux/kexec_handover.h              |  6 +++++
- kernel/liveupdate/Makefile                  |  1 -
- kernel/liveupdate/kexec_handover.c          | 28 ++++++++++++++++++---
- kernel/liveupdate/kexec_handover_debug.c    | 25 ------------------
- kernel/liveupdate/kexec_handover_internal.h |  7 ++++--
- 5 files changed, 35 insertions(+), 32 deletions(-)
- delete mode 100644 kernel/liveupdate/kexec_handover_debug.c
+ include/linux/memblock.h           |  2 --
+ kernel/liveupdate/kexec_handover.c | 10 ++++++----
+ mm/memblock.c                      | 22 ----------------------
+ mm/page_alloc.c                    |  7 +++++++
+ 4 files changed, 13 insertions(+), 28 deletions(-)
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index ac4129d1d741..6a0e572c3adc 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -35,6 +35,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
- int kho_add_subtree(const char *name, void *fdt);
- void kho_remove_subtree(void *fdt);
- int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
-+bool kho_scratch_overlap(phys_addr_t phys, size_t size);
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 6ec5e9ac0699..3e217414e12d 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
+ #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+ void memblock_set_kho_scratch_only(void);
+ void memblock_clear_kho_scratch_only(void);
+-void memmap_init_kho_scratch_pages(void);
+ #else
+ static inline void memblock_set_kho_scratch_only(void) { }
+ static inline void memblock_clear_kho_scratch_only(void) { }
+-static inline void memmap_init_kho_scratch_pages(void) {}
+ #endif
  
- void kho_memory_init(void);
- 
-@@ -109,6 +110,11 @@ static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
- 	return -EOPNOTSUPP;
- }
- 
-+static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	return false;
-+}
-+
- static inline void kho_memory_init(void) { }
- 
- static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index d2f779cbe279..dc352839ccf0 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -7,7 +7,6 @@ luo-y :=								\
- 		luo_session.o
- 
- obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
--obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
- 
- obj-$(CONFIG_LIVEUPDATE)		+= luo.o
+ #endif /* _LINUX_MEMBLOCK_H */
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 532f455c5d4f..c9b982372d6e 100644
+index c9b982372d6e..e511a50fab9c 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -820,7 +820,8 @@ int kho_preserve_folio(struct folio *folio)
- 	const unsigned long pfn = folio_pfn(folio);
- 	const unsigned int order = folio_order(folio);
- 
--	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
-+	if (WARN_ON(kho_scratch_overlap_debug(pfn << PAGE_SHIFT,
-+					      PAGE_SIZE << order)))
- 		return -EINVAL;
- 
- 	return kho_radix_add_page(tree, pfn, order);
-@@ -864,10 +865,9 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
- 	unsigned long failed_pfn = 0;
- 	int err = 0;
- 
--	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
--					nr_pages << PAGE_SHIFT))) {
-+	if (WARN_ON(kho_scratch_overlap_debug(start_pfn << PAGE_SHIFT,
-+					      nr_pages << PAGE_SHIFT)))
- 		return -EINVAL;
--	}
- 
- 	while (pfn < end_pfn) {
- 		unsigned int order =
-@@ -1327,6 +1327,26 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
- }
- EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
- 
-+bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	phys_addr_t scratch_start, scratch_end;
-+	unsigned int i;
-+
-+	if (!kho_scratch)
-+		return false;
-+
-+	for (i = 0; i < kho_scratch_cnt; i++) {
-+		scratch_start = kho_scratch[i].addr;
-+		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
-+
-+		if (phys < scratch_end && (phys + size) > scratch_start)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(kho_scratch_overlap);
-+
- static int __init kho_mem_retrieve(const void *fdt)
+@@ -1477,8 +1477,7 @@ static void __init kho_release_scratch(void)
  {
- 	struct kho_radix_tree tree;
-diff --git a/kernel/liveupdate/kexec_handover_debug.c b/kernel/liveupdate/kexec_handover_debug.c
-deleted file mode 100644
-index 6efb696f5426..000000000000
---- a/kernel/liveupdate/kexec_handover_debug.c
-+++ /dev/null
-@@ -1,25 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * kexec_handover_debug.c - kexec handover optional debug functionality
-- * Copyright (C) 2025 Google LLC, Pasha Tatashin <pasha.tatashin@soleen.com>
-- */
+ 	phys_addr_t start, end;
+ 	u64 i;
 -
--#define pr_fmt(fmt) "KHO: " fmt
+-	memmap_init_kho_scratch_pages();
++	int nid;
+ 
+ 	/*
+ 	 * Mark scratch mem as CMA before we return it. That way we
+@@ -1486,10 +1485,13 @@ static void __init kho_release_scratch(void)
+ 	 * we can reuse it as scratch memory again later.
+ 	 */
+ 	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+-			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
++			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+ 		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
+ 		ulong end_pfn = pageblock_align(PFN_UP(end));
+ 		ulong pfn;
++#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
++		end_pfn = min(end_pfn, NODE_DATA(nid)->first_deferred_pfn);
++#endif
+ 
+ 		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
+ 			init_pageblock_migratetype(pfn_to_page(pfn),
+@@ -1500,8 +1502,8 @@ static void __init kho_release_scratch(void)
+ void __init kho_memory_init(void)
+ {
+ 	if (kho_in.scratch_phys) {
+-		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+ 		kho_release_scratch();
++		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+ 
+ 		if (kho_mem_retrieve(kho_get_fdt()))
+ 			kho_in.fdt_phys = 0;
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..ae6a5af46bd7 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
+ {
+ 	kho_scratch_only = false;
+ }
 -
--#include "kexec_handover_internal.h"
--
--bool kho_scratch_overlap(phys_addr_t phys, size_t size)
+-__init void memmap_init_kho_scratch_pages(void)
 -{
--	phys_addr_t scratch_start, scratch_end;
--	unsigned int i;
+-	phys_addr_t start, end;
+-	unsigned long pfn;
+-	int nid;
+-	u64 i;
 -
--	for (i = 0; i < kho_scratch_cnt; i++) {
--		scratch_start = kho_scratch[i].addr;
--		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
+-	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
+-		return;
 -
--		if (phys < scratch_end && (phys + size) > scratch_start)
--			return true;
+-	/*
+-	 * Initialize struct pages for free scratch memory.
+-	 * The struct pages for reserved scratch memory will be set up in
+-	 * reserve_bootmem_region()
+-	 */
+-	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+-			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+-		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
+-			init_deferred_page(pfn, nid);
 -	}
--
--	return false;
 -}
-diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-index 9a832a35254c..804d6a1209b8 100644
---- a/kernel/liveupdate/kexec_handover_internal.h
-+++ b/kernel/liveupdate/kexec_handover_internal.h
-@@ -41,9 +41,12 @@ static inline void kho_debugfs_fdt_remove(struct kho_debugfs *dbg,
- #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
+ #endif
  
- #ifdef CONFIG_KEXEC_HANDOVER_DEBUG
--bool kho_scratch_overlap(phys_addr_t phys, size_t size);
-+static inline bool kho_scratch_overlap_debug(phys_addr_t phys, size_t size)
-+{
-+	return kho_scratch_overlap(phys, size);
-+}
- #else
--static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+static inline bool kho_scratch_overlap_debug(phys_addr_t phys, size_t size)
- {
- 	return false;
- }
+ /**
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee81f5c67c18..5ca078dde61d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -55,6 +55,7 @@
+ #include <linux/cacheinfo.h>
+ #include <linux/pgalloc_tag.h>
+ #include <linux/mmzone_lock.h>
++#include <linux/kexec_handover.h>
+ #include <asm/div64.h>
+ #include "internal.h"
+ #include "shuffle.h"
+@@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(struct page *page,
+ 		     migratetype < MIGRATE_PCPTYPES))
+ 		migratetype = MIGRATE_UNMOVABLE;
+ 
++	/*
++	 * Mark KHO scratch as CMA so no unmovable allocations are made there.
++	 */
++	if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
++		migratetype = MIGRATE_CMA;
++
+ 	flags = migratetype;
+ 
+ #ifdef CONFIG_MEMORY_ISOLATION
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
