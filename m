@@ -4,112 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C1DFED9E9
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 23:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27368FF6E9B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 23:15:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B047E6B00A7; Tue, 17 Mar 2026 19:07:30 -0400 (EDT)
+	id 4CDB16B00AA; Tue, 17 Mar 2026 19:15:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8DC66B00A9; Tue, 17 Mar 2026 19:07:30 -0400 (EDT)
+	id 47E3E6B00AB; Tue, 17 Mar 2026 19:15:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E4756B00AA; Tue, 17 Mar 2026 19:07:30 -0400 (EDT)
+	id 394176B00AC; Tue, 17 Mar 2026 19:15:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 671C26B00A7
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:07:30 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 06A0D58C3F
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 23:07:30 +0000 (UTC)
-X-FDA: 84557093460.29.7C3CD46
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7BAD8100016
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 23:07:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cCoBewV4;
-	spf=pass (imf05.hostedemail.com: domain of 3rt65aQgKCKcIPUNQPHVNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--bingjiao.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3rt65aQgKCKcIPUNQPHVNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 29C626B00AA
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:15:02 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D10EEB9643
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 23:15:01 +0000 (UTC)
+X-FDA: 84557112402.28.ABC580F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C882F140006
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 23:14:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iG7+n74J;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773788848;
+	s=arc-20220608; t=1773789299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2sLkrHizaGZBp890B7+nzygesvVkoY/tFf4Qx2iHrc0=;
-	b=AD8cnxlC38f9bLK1BZmT7jBl5LUiaqSSBeaxsHLhM696uhwkoulsaOl3L16QzyWJGf0K35
-	b/gppT1KMOBheOVQoh2l/pkmK6nCk03mMWjkNZVofv1/2dZpONiEtqj7ka7S/t9kRoBT10
-	BoShYSKNqNDVcIF4KE3oatLXVYThQvg=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=51eJPnoRW64EYCWzVyWg9nSeegyZbxlmFyw5nLz6ki0=;
+	b=eR3Ntmgsp9XgAop1H9nfNFQ1BHfMku0hc9y5MnMvFr5U5OQB2qifF26FfwdMJ62QWRs9Ee
+	M27bNNj+4xDyBxX/W4XQ6YkUcFuF9uA0kXaHKb62xhXsvcxg6VjvdvXHeLK9O3NDACDCDd
+	9kCGk9+oExoj+WGkR/2EGRd3+IV3r/E=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cCoBewV4;
-	spf=pass (imf05.hostedemail.com: domain of 3rt65aQgKCKcIPUNQPHVNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--bingjiao.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3rt65aQgKCKcIPUNQPHVNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773788848; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iG7+n74J;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773789299; a=rsa-sha256;
 	cv=none;
-	b=jlneCRrL80HHiQu0Jy+a7HquKjhBOjP4FoUDmOHw8b3F7F5VqatN1is/T8mTzyx64KnI2k
-	V6Daz5g6TCnLFBtbewdN7NHsDn4xXR0EZrnHVNl7pPMZKBdJahQlKmxIG83X6rQUz/Y3Xn
-	WhA9+bGa0BxEj6qo0uSqMt2/pRK1htk=
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-128d59030d0so2037839c88.0
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773788847; x=1774393647; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2sLkrHizaGZBp890B7+nzygesvVkoY/tFf4Qx2iHrc0=;
-        b=cCoBewV4uIcJ3yda3PsqdsvtXCKu8lJICafF2Qk6N7CjeB0dUVXX7dSze/Q2X1NAZr
-         YcFb08Nsu84P7gKuZ627lxj8nc/WKzIVdBViHgmwHp0LViHDVq55mZuXDKU55NEKTegF
-         kJT/rV23wMU0Cb5VYl2cV/raS1E5fWZ9uwpZfgf78DBru1Z2XjznVM3/ZSXES9r/8qob
-         Fbm99Wku8sGgJmMt7ajy65yoIltCtBZ+QgdjGu3dieO8v8kDWFXoOmRJcXqobjE62QAJ
-         FDHqzkRiQEAfavZk6onXTcZH9mnfpCmnIXCGKMaAsWjbSBPE6pQsiBih/NA3b1HWOsGK
-         RuLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773788847; x=1774393647;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2sLkrHizaGZBp890B7+nzygesvVkoY/tFf4Qx2iHrc0=;
-        b=id9W2FJdeAdqB4RWzNX37/gCsdqrgy4UixW28CjpUrbLCF4Uli+w11o0xIwGVeDvSZ
-         D1EfIcfxY2JprmJ7IpJQoTEA41CUC8dkY5ZXhAfhChjC8N2R/XVyuHxP6zwmLArW/XeV
-         Vv41djm9eoF0KALwmWYxCMsAIWWvnXJXFZjfj3a5JOx2cAg9Orck825Ou/ez/cTlxjkr
-         B3qVG9jBakTrGTEiPnjejDDNg100hb/wjJyuo/7MLSNnBjq7zh9vyySjNSjcWI5TbHa3
-         BqvgUBHFEEg0w317JhtafdyflM7ogfXLwPeSLaQACuElvoJoSHAfGvn3OrRqVZFlSZtY
-         qh1A==
-X-Gm-Message-State: AOJu0YwFu/suHPJ9xdfZVVywNaPKf3FShjNmDsJ8YHncYA1Oz3FqPG0u
-	QDucSPwqqdtPOnR9VlXLb34S5Zg0Mos7XaSZcJsT4OB/7t6dLXUeyqeTlsCr/xtH234VFVvq1RA
-	/GE7hD7fq0/bqjO0mgCkGcZQ4f0mFOVZwpKYiUtypbaQjE/V+Bi7JDptcTgCLp+mqiZimC3V3eR
-	PovDpgiB9bxJVWw4182Gs362RCTwd+0fL5f3veg1Xqaw==
-X-Received: from dlbrn2.prod.google.com ([2002:a05:7022:1502:b0:128:d185:c6ff])
- (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:2218:b0:119:e569:fb9b with SMTP id a92af1059eb24-129a7111483mr694227c88.10.1773788846767;
- Tue, 17 Mar 2026 16:07:26 -0700 (PDT)
-Date: Tue, 17 Mar 2026 23:07:02 +0000
-In-Reply-To: <20260317230720.990329-1-bingjiao@google.com>
-Mime-Version: 1.0
-References: <20260317230720.990329-1-bingjiao@google.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260317230720.990329-4-bingjiao@google.com>
-Subject: [PATCH 3/3] mm/vmscan: add demote= option to proactive reclaim
-From: Bing Jiao <bingjiao@google.com>
-To: linux-mm@kvack.org
-Cc: Bing Jiao <bingjiao@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Rientjes <rientjes@google.com>, 
-	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7BAD8100016
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mnewdntmg8bip6wpag7rh7pokhfca8ms
+	b=t0jromIsRZ5gjc/vErbuel3Fn8xzS7JWZu4JzxN0RaJQS+ygnvQtjSReKdJC1Hjf5NswZF
+	gygIxyhZbtPCRUrrAY5bMiNN00vkJEQz0Opd99YPoOn7XoyZHRwT3acstFL7m5SneF0h3w
+	BG44TtRyQcjc+8RemdmrL056t9qC4E0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773789298; x=1805325298;
+  h=date:from:to:cc:subject:message-id;
+  bh=v9b0lVxagdfBNG3cjyaaHJRAr1KsZRo+WTWLZN5n2TU=;
+  b=iG7+n74JfAbrGndeDSytRQonYWnvZmg7KAAxoAAR4RAS1IiGUhjMV9F7
+   bd6rTxECoFc2xObBzgpqefCndXPfDxvZpNRLvaZqI7aOw1yC/LZXuDILa
+   8dlVjTWYIYdEU8lUGOYI6HV7uAnexthXw4AIzpasPHuml/4fo3Bzi5KMC
+   srFYnZyOh4usRAMtzwYWJrRgd9JrQoscUiM6iWF/eGDdU4hOdD9fPCEub
+   zb1/hg7jWCBI9+aoPcAe65pz3TYyr4baMBAp/F9MzrDQtyKMVskSb3glA
+   NpbNAJcPr+3ULPh9XgbD4Vl9G4mUSWY7W6uEQff05KFAU9q36skqjVbK9
+   Q==;
+X-CSE-ConnectionGUID: 6jlLyzyjTbCGHuZqJ1ySPw==
+X-CSE-MsgGUID: GVxazoi0R9GF4NsrqmFfRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="92221147"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="92221147"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 16:14:55 -0700
+X-CSE-ConnectionGUID: hd1YebRkQm+ZfR6btRJWRQ==
+X-CSE-MsgGUID: 7Dd/QOLURMmbyeWk6getkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="227098958"
+Received: from lkp-server01.sh.intel.com (HELO 63737dd503cb) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 17 Mar 2026 16:14:52 -0700
+Received: from kbuild by 63737dd503cb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w2dcf-0000000029p-3F6X;
+	Tue, 17 Mar 2026 23:14:49 +0000
+Date: Wed, 18 Mar 2026 07:14:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 424/425] mm/page_alloc.c:557:17: error: use
+ of undeclared identifier 'MIGRATE_CMA'; did you mean 'MIGRATE_SYNC'?
+Message-ID: <202603180711.mqOPviIG-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C882F140006
+X-Stat-Signature: wwz53r1unhq7bwpef5owtktaouia1urz
 X-Rspam-User: 
-X-HE-Tag: 1773788848-828517
-X-HE-Meta: U2FsdGVkX1/fe8QreS1xr/hUxd+DUdPwU54X0aclBW5EPXJvyEZnllL355eXw8NIe54PQBGxQmqw69xZCbomL+J9MMaDiiOIMsojy7/o5kaFVQd3uXmWqGLpvN7Mci7IsW/XFuRiYbeyIJZrouYkHUR+3DhR5GSBUYnOOvdpuKfSDBiGTu9Syq1iSd2lKGe9aL5Jdc13idT8B8tVD4BDlksd6xoV5pneYzMfQryXLlxqGzeCm3oE1NPzyhsR5iF1KfgQKct0r3q7c1XVOuE6IEbhuamegx5i7wvc/nFyfVWpRmn3aZlbZLeHQRLYJvvj1Y6iQZKe2B/YhotvshCXAv7sivwtnDC3xHx6EEhRnj91+x6KcodeRcIFeIM1RGf2pGwnxLjzeFdkmrVwDGn7Uvv2OKec4BAIvPw1hacNDjthK0sGKlM9CsGwHne0Q+w63XRdTulgbcU5uq9v8RE0d3K5avA4pWci8durQ4Ce5YtR1YbPaLN71jozI+uOS9oQiGWzaIT3wYKkaBiU53sjTwQLsN8GoGLAe3S4o3MBzPQmHB0FaBFgy/EGPKurNyWU/2bgKeuNReFLOi+kuUM9tgrdRfmPInlAWfVY85QWmi8hm7W0xNyC/67JpxkvMipiy8Xe0HU7WOfONOH2A1jo5SKqqo3G5tKw7W2VJ/dbYU7EPJixgn76IdURclilNAVBNf1P8X59rX0LHT1jD5MGs85aJb/fMeU8Dz2ycQO2pRXJcBU2duAOIsLW8ScTiAMQpffeVGtweiYGsUbEs3kgwPngY707zoLyh5DwU1gd/9PBzN1SpDetLhVHKMPYsvXaK6VGY4Zpb4ekGn/diU8HrgQ1XZodJYZVfhfwqmtD/kQ1anZ9wYDKyr/5dnrTwGTbodkukmbuvEWOh0mlYYxEzfC5oa6oAWN+wc4+jgxJgd4rn2CcKp9Sls2n+nVq3pz15/q945q6Xo8SYiS/QYm
- eOJ0x+OU
- QRcREwNANLDBnCXPuNeivTyy/US4ox80alGrP6MYdFLL+rHq+xGENf5BLOzdeCkTYYcmqZQp8920iFuk9lD+DWS88vhe+UdyoXO62M1V9O+jUupwLvI4azoDc4YGIWOjYVxieDcq2zj5TxYKJ+sYAdCdnoHk9B6DEK6MReJQ3stAkK2zhanXw24RTgSVSg9GNKEILP79AD/uRBbYYjQNZQllpJhdEpI15JBJ4QjxBm8bha4AhAkCNPXIRf2cavUufTHo81AK70P2Sf5nx8jZLdDcWEjaj0Idf7PRYMujvzSM46sgl8xPGAjzOJnh0HNvQntri77K+ZwcHrOXznfZJB9dVG+Lr9Srd7TpJvD3vmygxG717vRUDJ6oS5nywyDiz1Mw3LMxR8nDpBeNt83XUvilCIMXFKQTWvGpjZvtUxJC7GCU=
+X-HE-Tag: 1773789297-891405
+X-HE-Meta: U2FsdGVkX18jTaoCGZ2bvu/qhVfZZzxd/lEOuaS09jwl5/1PaGcp1Gf8FUCUDDz8Efus22OutZ0guo2o8fmjfGNcDG1HDFygAeCY6mxnU1IewPVU6V0MW9y59KnQCk9SEt+LufvkGuuwSCHM6RELSCer+rf43uvh35Sp7ZYyoCVpVt0LpvFsfR4a1gtzRUZD+cFKa+G1pIJhlFrbjg3WS2DwTUbzap3mdLqLAcMlnmlzS/II8J0EVsEs6Hly1a4P68NOVBLb039WWfnvPbgc0IM1YC0lzVnY00+JQMhXbPDN/tNsl3KQPJDdpUYXTS3WTUbd97LWonwcIXi0pR81QMA5uME8X15+0X8zlqui0CyD6g26K9+9G4ByX3rkvGahpE1y+F6og8Rj7MSqzG+U6rwgQ7t4NJJUFz/0YXWfMQ6dmiroeChFER2IfItn7EdetXkVKE+0beclp35HExUd82gPIlRYrZ6gvN0vlrxyGsrsMxNFsyvuwxq0ywq/Qtq/tFNHsMTt/H1s084MVszSOU2WVpFcoR4VHA0VqnMs9SCJrm6AzoKHkPSh4nEdh8FKGljWjXZ4Z23JwOEPzknfjRbQQpHv71NhzsGTJZVwmuZswM8Pi0jfkYO1pkCmYcAGgFlLxmN7YGmngEwSwOzpc/CBvBIpASXDKN6iz7iqgMschWvSLWdNHqlUxiwNsxw56GYBhuLieaYYC2WfkgpkK3na5e4TtmNSVNRpprXopHmioMpDvAqBoPlAo4YAnJR+7Qylm0wPQps/fxMUgTyTmBhUnueqK0oOyjcFQhSQkhcRybFTIDMz+VAB+LOVYDU8oV5XSbuYXYUlSkKk9AnKDw0/HW+upg48VR+JfKphoQ8gNNzKnnKg9At3UIqm3SMAyW98vVYxjJM1KJ1YtczANAx+UtSdX93WjNAbeWyZGtMCKQNmxWRboXnujaCGH0+GeySe5sppVhLkvYbUvuu
+ GK7VuksQ
+ AoPZrbX/sQDX/nLh9jYNAPJ0D29Q4wy/CM+U3Ak/NDMy7tO3KJFqcKdtVrkZOOYN6YyjRVf6Q3zQgFcRGkXzjo4NvUGD4e3zuYY4D0nESkhMaix52Ox/6AOpLRal8lv19GZ5ag0FnuF6cw3q3RV+GpyUkOOL5iXMMrcf/dMmDoOZ+JmAkRNpAbeLqQpd6G5eIkWSnn4lS4zThfRr6GR1kWGnF3F9WwtMOXXkP13kXQCwUCXysmH5cxPTFKS/fVvj12pzBjvgWMiIZV1tYVZdA5+QQDQ43glt8WQ8N0YNZTQt7jBMm0fCae0A0aSuWjAwdiaLFS7sebLsYFMQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,79 +103,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In tiered-memory systems, proactive memory reclaim (via the cgroup
-memory.reclaim interface) can demote pages to a lower memory tier
-before eventually reclaiming them to swap.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   c31e58126afa2665dc5b7f78c60e5fb25218d7e5
+commit: 1e1dab36a7f3e06700a97696f62e7691ce4ea85a [424/425] kho: fix deferred init of kho scratch
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260318/202603180711.mqOPviIG-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603180711.mqOPviIG-lkp@intel.com/reproduce)
 
-Add a 'demote=%u' option to memory.reclaim to allow users to control
-this behavior. Setting 'demote=1' enables demotion, while 'demote=0'
-disables it. By default, demote is disabled (0).
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603180711.mqOPviIG-lkp@intel.com/
 
-This change ensures that proactive reclaim behaves consistently with
-cgroup limit-based reclaim (e.g., memory.high), where the goal is
-typically to reduce the overall memory footprint rather than migrating
-it to slower tiers.
+All errors (new ones prefixed by >>):
 
-Signed-off-by: Bing Jiao <bingjiao@google.com>
----
- mm/vmscan.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+>> mm/page_alloc.c:557:17: error: use of undeclared identifier 'MIGRATE_CMA'; did you mean 'MIGRATE_SYNC'?
+     557 |                 migratetype = MIGRATE_CMA;
+         |                               ^~~~~~~~~~~
+         |                               MIGRATE_SYNC
+   include/linux/migrate_mode.h:14:2: note: 'MIGRATE_SYNC' declared here
+      14 |         MIGRATE_SYNC,
+         |         ^
+   mm/page_alloc.c:557:17: warning: implicit conversion from enumeration type 'enum migrate_mode' to different enumeration type 'enum migratetype' [-Wenum-conversion]
+     557 |                 migratetype = MIGRATE_CMA;
+         |                             ~ ^~~~~~~~~~~
+   1 warning and 1 error generated.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7a8617ba1748..80194270fa2e 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7878,11 +7878,13 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
- enum {
- 	MEMORY_RECLAIM_SWAPPINESS = 0,
- 	MEMORY_RECLAIM_SWAPPINESS_MAX,
-+	MEMORY_RECLAIM_ALLOW_DEMOTION,
- 	MEMORY_RECLAIM_NULL,
- };
- static const match_table_t tokens = {
- 	{ MEMORY_RECLAIM_SWAPPINESS, "swappiness=%d"},
- 	{ MEMORY_RECLAIM_SWAPPINESS_MAX, "swappiness=max"},
-+	{ MEMORY_RECLAIM_ALLOW_DEMOTION, "demote=%u"},
- 	{ MEMORY_RECLAIM_NULL, NULL },
- };
 
-@@ -7890,6 +7892,7 @@ int user_proactive_reclaim(char *buf,
- 			   struct mem_cgroup *memcg, pg_data_t *pgdat)
- {
- 	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
-+	unsigned int allow_demotion = 0;
- 	unsigned long nr_to_reclaim, nr_reclaimed = 0;
- 	int swappiness = -1;
- 	char *old_buf, *start;
-@@ -7922,6 +7925,10 @@ int user_proactive_reclaim(char *buf,
- 		case MEMORY_RECLAIM_SWAPPINESS_MAX:
- 			swappiness = SWAPPINESS_ANON_ONLY;
- 			break;
-+		case MEMORY_RECLAIM_ALLOW_DEMOTION:
-+			if (match_uint(&args[0], &allow_demotion))
-+				return -EINVAL;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -7947,6 +7954,8 @@ int user_proactive_reclaim(char *buf,
+vim +557 mm/page_alloc.c
 
- 			reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
- 					  MEMCG_RECLAIM_PROACTIVE;
-+			if (!allow_demotion)
-+				reclaim_options |= MEMCG_RECLAIM_NO_DEMOTION;
- 			reclaimed = try_to_free_mem_cgroup_pages(memcg,
- 						 batch_size, gfp_mask,
- 						 reclaim_options,
-@@ -7962,6 +7971,7 @@ int user_proactive_reclaim(char *buf,
- 				.may_unmap = 1,
- 				.may_swap = 1,
- 				.proactive = 1,
-+				.no_demotion = !(allow_demotion),
- 			};
+   542	
+   543	void __meminit init_pageblock_migratetype(struct page *page,
+   544						  enum migratetype migratetype,
+   545						  bool isolate)
+   546	{
+   547		unsigned long flags;
+   548	
+   549		if (unlikely(page_group_by_mobility_disabled &&
+   550			     migratetype < MIGRATE_PCPTYPES))
+   551			migratetype = MIGRATE_UNMOVABLE;
+   552	
+   553		/*
+   554		 * Mark KHO scratch as CMA so no unmovable allocations are made there.
+   555		 */
+   556		if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
+ > 557			migratetype = MIGRATE_CMA;
+   558	
+   559		flags = migratetype;
+   560	
 
- 			if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED,
---
-2.53.0.851.ga537e3e6e9-goog
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
