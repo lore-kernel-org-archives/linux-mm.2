@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9695FED9EE
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0E35FED9EB
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 16:57:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 506E16B0088; Tue, 17 Mar 2026 12:57:08 -0400 (EDT)
+	id 358FA6B008A; Tue, 17 Mar 2026 12:57:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B73C6B008A; Tue, 17 Mar 2026 12:57:08 -0400 (EDT)
+	id 2E2BB6B008C; Tue, 17 Mar 2026 12:57:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A73B6B008C; Tue, 17 Mar 2026 12:57:08 -0400 (EDT)
+	id 1D1636B0092; Tue, 17 Mar 2026 12:57:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ABC66B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:57:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9ADB140284
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:57:07 +0000 (UTC)
-X-FDA: 84556160094.03.79F3AA1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DA286B008A
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:57:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF38B1402CE
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:57:11 +0000 (UTC)
+X-FDA: 84556160262.10.71B8325
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3250D40009
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:57:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LO80KQZL;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2706C100003
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 16:57:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QHskvkxx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773766626;
+	s=arc-20220608; t=1773766630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1RtejmdJ3DTKLvAcmORh/JRYMXYZiDrWckhESr3GSYI=;
-	b=I71WSmbxHz5VJMbJVDhqIDeCMo6QO/6Idhd6B5pAD5zSJxyfkEu9bckFPWGuaCvGsX7leo
-	I3resFAkvuQEdidbsZ5ogiCd054tauU51OQZE/Lua/HbQVn2+/Y0gQSawgvQZHHT/Hg2O7
-	3fmEIlV6I6zAlLEKCdROTvg7nYTmEXQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LO80KQZL;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773766626; a=rsa-sha256;
+	bh=I4OWRqmoUDp5UCqoQGC6TtFxCzZ5lzB9MnreT6p82/Q=;
+	b=RWpemoj+bbWK81Ilx+KOqSywwlEP1wrDIrleStr1uqO7OhgokHwq8btzaXV+ycZeHVyFBn
+	HDEn45TNz2qMxHvtX+lh8tUmX9p+oItnwJli9RRclmnOQ9STuiIYiF2kkaK+YkICXBTgfe
+	uCcOsGBPwftYmu43o5t6gJXanZFrQJU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773766630; a=rsa-sha256;
 	cv=none;
-	b=LHAuFgfC82kxJL9/OgL+r35KM8Kmzcech49byPsc94i/kwN/3lv0BLyv+fUpmCSzeqcP+e
-	471d6wBnSIwC8tlQxk6ollNz3RnXhF6DXd2cPJhbDXhbNokorluIrY4hYqYjTGmZa2+EJ5
-	JgeWz+E47VpGt6W3eQtvjOkvEOiS04c=
+	b=abd4LqsI5ML4wE1C8ETtzfBPe80t8cBJo3HmjC7yiiTZcFjfjihAbrcos4Q+8aHtylxfwY
+	TezPvQ/FLQc1Oejf/UxRem6Nq9fnq3Al0chZXWyBPIF7De0Ev27hsgY9jpmNHHdxEagvcD
+	V00Iyp48j5ncfHg+3uzBlDe6ZmCN3dk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QHskvkxx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60A9A4097D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4624F406F6;
+	Tue, 17 Mar 2026 16:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62C5C2BCAF;
 	Tue, 17 Mar 2026 16:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB83C4CEF7;
-	Tue, 17 Mar 2026 16:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773766625;
-	bh=enaf/WHlxY0+rUz/sR0jg/TQSIcygwkranNM2RjUkME=;
+	s=k20201202; t=1773766629;
+	bh=kzrTKM3vlrjilIM3sQvWnlvy3VBosxv9H7E3QmkzRlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LO80KQZLO7/y5oXQFwtwUJ0/a9RhLfjeBQuSn8qocvIykFu/p0BLR7KGJKb2A5JqP
-	 PPoruzqnYUL8+CG8tw0kc6SqV14FbtFCEBTdKN1cuyY2OkyZfa8sXIAtPRxszTOJdX
-	 cFa/uDAO+FzUH/CSM3+jM2HdbYBNvbFkmuw6iozaq8GeqCFVitPnVz18N35lN7/188
-	 6MlhgdwanmY0jnhsl+jgHYJNmaVnUqb1Oggk6TLSnA6tgghgwlH/1bRQcUKaJJdkU5
-	 IjedjUKfm3/olQK+OP4IaqHxQetBGgX59nK99evDpDoCe5igVI6ojJkVhNSNB+0mjh
-	 JvE7X95S26utA==
+	b=QHskvkxx07TedlGeSfCg3qWrbY+3uik23yxdt4OBz7Ty8WtpRTbVRWFH27KQzM7ih
+	 DMHCC6mbfKZd5XFSR4idzYoIP8JoBJXzxxedXgJ1qEdJo62bf9cMlJirqoQ35/wGrk
+	 k928oEnRTJNB1+nuXT0TnCr036BPdr782+F1/qr5oU3luAsNCEI4oy7y9gVY+ddcv/
+	 aguPC8Ef0KfVcO0aD/qWl0X6tfm45jxxrCfboq0PgYA/OdDH9+M1tgRCvlLpH3G3pF
+	 Vo5vhQmp/XBajQRU26TkQBt1sGRmzjjQtpQGDg8Bm6/IRpRQJUX0gESRAuFhynz+x1
+	 3xzcWj1mRkogQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -79,22 +79,22 @@ Cc: linux-mm@kvack.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH 01/14] mm/memory_hotplug: remove for_each_valid_pfn() usage
-Date: Tue, 17 Mar 2026 17:56:39 +0100
-Message-ID: <20260317165652.99114-2-david@kernel.org>
+Subject: [PATCH 02/14] mm/sparse: remove WARN_ONs from (online|offline)_mem_sections()
+Date: Tue, 17 Mar 2026 17:56:40 +0100
+Message-ID: <20260317165652.99114-3-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260317165652.99114-1-david@kernel.org>
 References: <20260317165652.99114-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3250D40009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: i43ux79ceu1epkfbmpfrcx5zrqsg5rek
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2706C100003
+X-Stat-Signature: k6p49b5n9cq4d8bktxir79ijwyfzgfd3
 X-Rspam-User: 
-X-HE-Tag: 1773766626-193872
-X-HE-Meta: U2FsdGVkX1//KoRqXMxrV9i9H4Z9Y7acl4lB6fDhGrk0zrKUeu1F39oocbu1nj1dUoibgEpZ2w7W0wwsgLGQw7qtSGG9NH1aJuX6ZKFRcrrUyRe9gHXKGUiVcjmy8xIfe8I3qK/chp8TJj/YAaTpTRf/ZClahiUZ5EWCFgiuFRpQx+xzO78RTxY01s6UARzp2cUGT0WDva1mXBvg1CLU3bO1NIYc5VvOUe3RBtfhv/FmfhmNgeWppcplyNEru8qg0zcUFgSUYggXTXDs1rt/JkKsoeEaTZx67pRjhTh6u/DBxUYbMGWRn0ifTzzAS/3QObKWMhgvaD+h/5Eux4Hl+yw74evdu9NPmn8rlDUZTZYyc2+nwpMceGeddYJO6IZQuj3wJ6LHHjnnPcUtsyYAvcsZkqB4gg9/3OdJ0CmLhDvxY8XAmN1MHqMujBYP+ZfT+NCTvzTPDl9GuvdPGTMZd4JzunI02Valnggbm9go/TRmNN4My/n4H9vS0TT0qMRn0cpGS8tRInKnyNfe7+Y4pjDAgrW4V/h2eT2m0yRONliIFSvhVgpWWpkMfFxCwqpt6FLXYZHUKtXj9fzrrU9y25MbjjhflRUutw+9P/loioygx23sxnR3P5jThKR4gisVry8bDpBf0XXDNDuMTUD5yxYveNIeQWTwKDQspZEzJyskUIzBeeT2TGBJ6WlTUEfznIrGn9XM/+iBvrnaVHn8sQzTLcesMXR/SGr2tdSPisGPhpazQm+I4jxAUtKdVU79kzmYLLP7JL7v2nPwp1mmgG4Pmmb0js/zDjJTzWtcfNNH+Mew0PttUDVOZGhbF3LAJ0cUgS9VXFGe2YYBOOSrQnKSRhcx75UPDOOmaFTrDrpXzJzdsx9vpNU2TcWzE+l7Rcrmm/V9VyYsi05BHWyFMXj25Vbl/B7iR//0vyiOPw2KEDEygm1DaCFjBD9WuyuFK3FJiTDfBeTUVqL7Dso
- kCZ2Egie
- qH6iAbfDtxfcRb4s7A+rpuXFvPcvM2mRx8l2R13IekdkeafA5uImoVtnWYhcuK8QjaVF4ZRe4npm7bzp4K1kx+mzxwQxpiDx5gbzY+Vd1MkWuc+GoS3/dVo3+wkKM0bU0ahW/CoMB9iNv96kpS7aMR0fIXfFKMY02JFOhrRLPqi56uTWh5SCMqkC01wa38yFK9M00CKfdYZNtRxPoLRGDUNsBTtlVP16tgSfYwEWxX69cCR5xrX3rz6EclDGnRNM38lehJsPAmXqTFgq76/2/covaLg==
+X-HE-Tag: 1773766629-409605
+X-HE-Meta: U2FsdGVkX1+aYX/Ut85e1rI1GTcL81lqzD0PpoVBPLm+xclQk6KwpgVQO981Z/hW6GUl918Fk+k6iu/Q9iu22eXHyH4QZRah357QnvvJsd5JMupqVo7tO74joqLib3Gg6Rzy8gj4ipFKWC3Mpjg8XnWRZfv2QJAztKaHAPajlZjAyV7XBxbeDFKrbor6Rj/egWW7YBIE+1fzUgEU5cjBRqbYM9fYLIR0lFCsdHh6b6GlgglJ0tqSZ73C1hNoRBo/pMVWrn/YM5Sglw23tJvkSClPd9l9n5pwwoIoBIT+QaFwI9Nt0y4xJNSfkTe162IYmk3STLiokPHZaCWAvVrbaXIXwhgtNODdbOwnltyyZyuIbb0VTq1artbHExVgUTMEotpe5H/ggh6eUmbKzKViJ164XxTB3Kc4+gXr3mHQGKlRP+qV00wbPskmhdQ47xHUcxZe3fgzYPlB7a3ELBv0RihpgLcuyrX2vZFXY/K8cWCxACQiiIvJHozn3qGI3FS9GI4/F6exkditx8IqfOeyNrsTZ/UoZA2cvoPWbxXgEqQ7W8t/8AxF/Bof1ZruFKJWlXs3d097SZVcKWnj+jYLiByBMIDOZj7ERvCIGah3v8nki0UJvCYaGkpt7zRf1VVnVS3WPHG53gKsO2LdPVWhiDEkd8zMm6Q81C0aXu7cA5GT3kz7n87LAZkEH+L23kbaQc/Og0/wEQeg1IUurZLfbUaGYX70z/GTnZVmEQAhqtyOMl9rQ12NsTH0JKlkyCp3DETtz60Br5Zruy10JnjVjKC2TDFHwarj78RuTtaE7kJ8tt3Q1CAnS3xxQDcaJuxrtvMmlSr5EjNFFDib/Hqn+4Ewt7Z82AeMtV1NOc4MO6ft+9XR867dpol3GG+ywT+v4SW7tGk5d4UAOL+1fzUYwWbd+eQMqcjB4SayR/3qkxLeHGuxvP0V1EIyJN0L2C06YGxoltNkN/42n/9pNvb
+ 9xI1vf+E
+ R0jMbV7d741NQ1nRb7yCTxgz28YqQLnzOBpbFuuP2xyzvCHBzzLLeO4Qs2KLp71xbQQCq8nNkW5SpIGffOct12KFjNr/ic6M2r2RNJiL9iYBDdiSZrComDgTspXBmEGS1UM76vN9367+gu2qo/EdcRq/opAiZ3j6/DPf/8X7sWLVakvTIZGwPrmJHyVbztUMyiKeCSvK/OWV1/Uyad8KPmM3OxdTLP2xpwIXncW/Mq8Q9njZ+m+Libq1HMu0ZnQVPZdqqk5bHV6ivMODXjsE9XYTA5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,36 +102,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When offlining memory, we know that the memory range has no holes.
-Checking for valid pfns is not required.
+We do not allow offlining of memory with memory holes, and always
+hotplug memory without holes.
+
+Consequently, we cannot end up onlining or offlining memory sections that
+have holes (including invalid sections). That's also why these
+WARN_ONs never fired.
+
+Let's remove the WARN_ONs along with the TODO regarding double-checking.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/memory_hotplug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/sparse.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 86d3faf50453..3495d94587e7 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1746,7 +1746,7 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
- {
- 	unsigned long pfn;
+diff --git a/mm/sparse.c b/mm/sparse.c
+index dfabe554adf8..93252112860e 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -638,13 +638,8 @@ void online_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
  
--	for_each_valid_pfn(pfn, start, end) {
-+	for (pfn = start; pfn < end; pfn++) {
- 		struct page *page;
- 		struct folio *folio;
+ 	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+ 		unsigned long section_nr = pfn_to_section_nr(pfn);
+-		struct mem_section *ms;
+-
+-		/* onlining code should never touch invalid ranges */
+-		if (WARN_ON(!valid_section_nr(section_nr)))
+-			continue;
++		struct mem_section *ms = __nr_to_section(section_nr);
  
-@@ -1791,7 +1791,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
- 	static DEFINE_RATELIMIT_STATE(migrate_rs, DEFAULT_RATELIMIT_INTERVAL,
- 				      DEFAULT_RATELIMIT_BURST);
+-		ms = __nr_to_section(section_nr);
+ 		ms->section_mem_map |= SECTION_IS_ONLINE;
+ 	}
+ }
+@@ -656,16 +651,8 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
  
--	for_each_valid_pfn(pfn, start_pfn, end_pfn) {
-+	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
- 		struct page *page;
+ 	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+ 		unsigned long section_nr = pfn_to_section_nr(pfn);
+-		struct mem_section *ms;
++		struct mem_section *ms = __nr_to_section(section_nr);
  
- 		page = pfn_to_page(pfn);
+-		/*
+-		 * TODO this needs some double checking. Offlining code makes
+-		 * sure to check pfn_valid but those checks might be just bogus
+-		 */
+-		if (WARN_ON(!valid_section_nr(section_nr)))
+-			continue;
+-
+-		ms = __nr_to_section(section_nr);
+ 		ms->section_mem_map &= ~SECTION_IS_ONLINE;
+ 	}
+ }
 -- 
 2.43.0
 
