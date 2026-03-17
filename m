@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8694DFD7077
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 10:58:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79608FD7078
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:00:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B294A6B0005; Tue, 17 Mar 2026 06:58:19 -0400 (EDT)
+	id D4F896B0005; Tue, 17 Mar 2026 07:00:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B00C56B0088; Tue, 17 Mar 2026 06:58:19 -0400 (EDT)
+	id D006F6B0088; Tue, 17 Mar 2026 07:00:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3D406B0089; Tue, 17 Mar 2026 06:58:19 -0400 (EDT)
+	id BEF7E6B0089; Tue, 17 Mar 2026 07:00:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 93F8B6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:58:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C4F4BA44B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:58:19 +0000 (UTC)
-X-FDA: 84555255918.26.08350C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9427216000A
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:58:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lrdGJ9/i";
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id AF4D36B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:00:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70DF71B8633
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:00:55 +0000 (UTC)
+X-FDA: 84555262470.23.BF9715E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6C9F41C000F
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:00:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CRBf+0v8;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773745097;
+	s=arc-20220608; t=1773745253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0+dFpKRmqF0aFlDjP7jIygjmaXLuGqGmWNgNqzjWZDo=;
-	b=jrnUJapOgvFlhHax730KCEw367R/Tm2qB3olJ1shITya/zIFd/Qka9Wby+9zdtU+jB08gF
-	oSv3dKAOyb1YJqxc4VoCJmrHnv8J7AnSvMMAyDEUWQgxZifLYbm0YBMf0lyToXCKxvyMXf
-	iLeWEsXfTJGuBDJskHrsbYAhi8nFaPE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lrdGJ9/i";
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773745097; a=rsa-sha256;
+	bh=OU9HeMbqI29tof6Rtl7nuJTqNNWh/njQGsMtuCZxsoE=;
+	b=UJ4kv8qxC7JkhfH5thu6EnYuhXz/eAQtyPNc9sdFfOSMDqSDQ2FpCMHMxTMd6lv98MhXeK
+	NGDSWDpbrkeTrQPKZ43rWfZQ/SAaCr2QZxyP0swfpQQYLwoukHdjLHRuY8Dy9ykXgMY7NB
+	+WdW4vHxdCKzZ6nQXAtxD3T5gIbzNc0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773745253; a=rsa-sha256;
 	cv=none;
-	b=2nmLl0ijxJF8uXCraJyTB+CUHQYviBl+7RF+0SvwXRNSqz7WiFx94j1GT/aPrR15ZFUl8c
-	vBJf/dEmrnpM3oh9YTKEwbo2XdtQnYw3sXOzy1qODMfsYtqT3pHC2zyBc8MHV+v+Wyjhf3
-	rL694pH3Obqc1chTdkBk9F4nOoT0yqY=
+	b=mbRmm4QkMWUEoo0bWb7DMngCjR5P7mVzZ8urpZ0c2wcAunV3zjDzgXnw73XMs8CijDjPq8
+	oQ8KntVEWaPoo954giJrkzB83ZfWtoTNs5f18AGHA+ZmJy/s/Gs7k7wXllZGLU8EOq9skN
+	k1TYkGi+m5Q9ZLyYif0ZbPbFghKmqGE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CRBf+0v8;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A966560018;
-	Tue, 17 Mar 2026 10:58:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9883C4CEF7;
-	Tue, 17 Mar 2026 10:58:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3E9B741A7E;
+	Tue, 17 Mar 2026 11:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228B9C2BC9E;
+	Tue, 17 Mar 2026 11:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773745096;
-	bh=JRICjwmVdpqzYAIOq+YrlzgrUpxdi4BRyqT6V9luW6w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lrdGJ9/iis3b83G40HFKGqhkIYJXHTqFAkYNA/h4LpOAxnlaqvG7OKR3o7mN6WPvv
-	 FfeUpmVK6vb/7YovtaTzl+r8Ww3zHpqalWMmkmHCjdAwZwSC9ERWWQnCGrpKB57/9G
-	 s4jDs7jjGXMX+pPfbPyvG3EwBiBMgL5Zy8NRs6Taf8fYruEi5EWEG0C9Uu1G59mtsI
-	 5nU9L1fPycnOu0sG25ZiSIuGI21yppb5N+cry3GbOqo+jyHeeaarIBhqjq39//yG9C
-	 sb2Jc0gwLyaMrEBHsykPyIZPpxcdYWdR3/D546Dyq64sRivKCRyu5UnguGpvo+vX7v
-	 fhEGskjIuW/Ww==
-Date: Tue, 17 Mar 2026 10:58:14 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, 
-	jackmanb@google.com, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
-	kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
-	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
-	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
-	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v15 12/13] mm/khugepaged: run khugepaged for
- all orders
-Message-ID: <a74178af-54f3-44ba-a007-4eaf49e40ab3@lucifer.local>
-References: <20260226031741.230674-1-npache@redhat.com>
- <20260226032650.234386-1-npache@redhat.com>
+	s=k20201202; t=1773745252;
+	bh=oj7nohgoi4g+nFKcItDav0B2W2ZLJfi60fDH0eZKBxI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CRBf+0v8BAFxiJEwAGlzA4PCbbAq9cgkT4n7aoC4DF4BVfG/fEiESc+rMbX30IiHD
+	 IsXd65rWUOWuNdxJVGu8HjGXvCTE1vRM7ZbbqWk5JqBDOHWOuzAgN7ahJb0P+jwVxj
+	 pVDzAX6wW4gsnuVXPdcDUcXH9AdbZOHjC7dFW2CdziFC5ZELQMxaqmV646OTZvKgvq
+	 /XNaoJp7Tsz6OnS7TGIA0n1lcWKBHsu+QRBjQM8TZrS65wjYq7k51XXtTT2+1hS5oV
+	 3oG99B7y35oM9QTyIrOxNlbOh67ctwH/x6QTYQexb+h9pvczN/ZXSBHcSAaPe7S7QL
+	 GTjFz7kVeBKQw==
+Message-ID: <fe849bdc-485b-4cac-88e5-d8c5c49f36dd@kernel.org>
+Date: Tue, 17 Mar 2026 12:00:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226032650.234386-1-npache@redhat.com>
-X-Rspamd-Queue-Id: 9427216000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ef6ncpqumwjanmzxaii5szdtidn61a9i
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] selftests/mm: move write_file helper to vm_util
+To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
+ shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+References: <20260317094419.1429259-1-chuhu@redhat.com>
+ <20260317094419.1429259-4-chuhu@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260317094419.1429259-4-chuhu@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oik9po6etsaruhgb6k6hcjpyhdz4u1oq
 X-Rspam-User: 
-X-HE-Tag: 1773745097-597430
-X-HE-Meta: U2FsdGVkX1/kDbqobjlRawoGrJwm8HvVReVodcngc26uXNvs1Y1SlK6DhAqxW9v174DkxVtKFdrWY1sYzd3b0rOTFrjwT8fhJbXRMhIi7a36Z2vmfxq/tNddf/DBJw8YMsiDvkX4vj3BaMjBGHsfb+nsKyoDLtGkalgwlqv3HW5hlJwCTHKBNqzKRQzB6v7FRvc/D0fV8/Y0L8DWYCpbjB+ORPwZT3haeTApCe6ElKdPgSO1yzsMGdVU3SIiKkU8Ekf0FyF+HL7UVLa5AkRr0/p1bHdf+04B+U5pxqWVcw+dMcf2P32tOZ7t8PY5vKjVqOLiMnrDyxgbifKopPcEtsibcb9u2wDIG0KsP2dA65pcAYEJjViWXr7KHkAlMPrJGjAFTJFTbzsl4yatt/OuiZHXWP8FnEDSAC1tq9uUso+ZbAvLDByzIx/le3/QkpXxZhohqOXtiHXx8TmDTzhvBN+mPGTSipNMvn2SpLIw1rlDWXCFOCeSFw6MN0ahtZt3npP5pb9tKyLHD3A3ecAeeTrBHkqjn3DxCjEZZQbUzqWfEitBx4t9ZG3prsj7UI0kTpzABiI4emUbwU5zfDGCCw3hAUAsNTPfsvG5nmTEBvuBe238X/pKPFKt7QWrFRURiGJv4I2cV5AmyAYkMTjUpTxEQ5xoLjcyF8yGVWE8gvzdj0lfuLFtVfzgsV5dEcR6XOnEMbs2Xgr41AdlzAdVRC+ZjtPLZBQh8SDMS6MmD5tmvVBlMeVk0so8rNjtNOKmSVnwRVixizyk6B3pVm+dA0Efg2lrhCLGab7mnYkcs0aE4hEXalFYIQYHFLNIb/4ncMzCvJGUMMUWVFjSiNtN4SzFUln0BDBEwLK5LBaDLO2Cw5wCK6JchMtNZGSM8Q1cn4quVn39fI4Di0LmSI13PWcChKd3bfXRHGj0EfRkU2ZGabQcLsoKyUbUVApLKfes3uDoMxyN9ZW/IQNEJDh
- OmcZkllw
- xlWi69JjPCGMvRCf3GEPzF1+V1oyfEViqyVwZ3okYC5MHSjU+Zi5jWWvFewnVrOePA2yT/ankbwt1YlfvSrKZm5rXpbhyaN1L8PRSS0nS6sCyMwcNXqI6Ut3g1h1Y59cb42U3pJl/TG1sCSt1tbib+n2JGC4WY/kJCv4Xcd/3ZDP10FnjcL/5/Qx37B2p6sT5KFxzJ2dCqmVOthp/HcyC60r2/J6/4w+hqwyIT7/Vw0z5WSt4ZykkEFKsPBnXFwJxC/z7PC2+spkzMPB95AjH1HXeWLDkORwS39kZyujdI5FyXErBmFpXaQeQnQ/a7oCm+81qHxxFRA0vm0QUCv64oFY3ddPWnZhOQa1X
+X-Rspamd-Queue-Id: 6C9F41C000F
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773745253-827705
+X-HE-Meta: U2FsdGVkX1/B02oSPjRqd5hC8nvAJl0VPMbWGzG3OzlFM7Cyzh8PIGri5XpLgcjmWnKRGQIGm6pCB1L6PbnK6lew89OLJtZTF30BAqU2bA1UlrKnfZf1qfC9VO+14w5Aly2U2C2Bheb8HJsZUr2n1pwFmTo9qCan8WuXI3mJrFo4QHlF22RDx/K0ypacJ9VNrFGDOSfHFOwAHsFrzywRSWHMKwZ28KNTuasaDKUvjqwNsjp60i5hh806cayBoV48m05XuTZpOV86kIqRAUEQDVBSfT2JmYIsp1xinUhuMro5p8nLjn52lJRkf8jo1kUbD5NrJ6oZX1t5CDvzfufwai44N3TMCVLS/qzsfrej50IuIctBToFnnIMN+L80KcRti72c3dgxjpeNR31r534qqUIZzcNqwaeVDO/ROrdjVsS1/RHzaeDWeB/va6zQi3J2CcYEh+6IyVgGcnYiGuiSZqFx32qQS9M4WK6Rt+z2+UkHBJR+3QXgheS0af99v1etYV6NsPTqZ3ydpB7KVKD4JWZEpKMyAIEGMTsYGXR37ew3cOw0bI2wNuSUucoRQj7l75sW9Rz0gO6/o29LfVQItXfEFRT5Ee0d9iGhmL8TGzH8GYjBHXQpzOzeCUcT1Bx6X+LZwhdQ7pnlT+hwjX1jsmys6nDvOi2VSN9JDseThYst9DKH2AMFdTCjFVVyARBOpPbzG4A9EeX/SuBbZTN4NvzHkXAE89qdkoSVhXo4dfHacL+wO3qK8V2TJ5p+QV0oFCwbsLV55A5rbE+AuLCHZagGZ08M+6Z0ozmKkR75RqWzR3aELa0cnZ4DlT7Td6UDN7pCWP5xrCPzpiKLrvflT7p+Xhz4VHT/bp+UWZDR5NS43nyVccPy9kWi/NtXwM7nMZ7LouG/MtlbVMGK2ixm9U/FI+3Vx9R+US3gWsFgVE1l2Q7A3qjTYKmwDGDgpkFWxe7ciqnIdXqgRy1+kNM
+ Bgg3Cpuo
+ efopX5cx86fSaACt36fxK3bTQlH+3pBkBBzbYvSzrPw8Y8lpU+GXjpqsE8m72rPOoNJMLFyKJpu55LGnoDanPxCUI8Sm5k3Jb5gRFa5tByUu+fXpFS+MuUN905Esm0eOy3+U71QutLOYUut3x6ibrXHjiuqZN/pD/ldtvVdORebaKIn+1r6OBFX0WIvUmG4T7FKVuus5jze6sB/LrSJpGUazpsaglb02BcZQMEyjl4p/kM/t7q3EBUaMTcXZTXzNN8hmheG/f9klxh0rKMC6uzzk5MgwcyjO5w0byCfGgAnfPFqjhoN7PitKcNLsKBMb3MuuGuQopcu/MR7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,143 +142,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 08:26:50PM -0700, Nico Pache wrote:
-> From: Baolin Wang <baolin.wang@linux.alibaba.com>
->
-> If any order (m)THP is enabled we should allow running khugepaged to
-> attempt scanning and collapsing mTHPs. In order for khugepaged to operate
-> when only mTHP sizes are specified in sysfs, we must modify the predicate
-> function that determines whether it ought to run to do so.
->
-> This function is currently called hugepage_pmd_enabled(), this patch
-> renames it to hugepage_enabled() and updates the logic to check to
-> determine whether any valid orders may exist which would justify
-> khugepaged running.
->
-> We must also update collapse_allowable_orders() to check all orders if
-> the vma is anonymous and the collapse is khugepaged.
->
-> After this patch khugepaged mTHP collapse is fully enabled.
->
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
 
-This looks good to me, so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  mm/khugepaged.c | 30 ++++++++++++++++++------------
->  1 file changed, 18 insertions(+), 12 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 388d3f2537e2..e8bfcc1d0c9a 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -434,23 +434,23 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->  		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->  }
->
-> -static bool hugepage_pmd_enabled(void)
-> +static bool hugepage_enabled(void)
->  {
->  	/*
->  	 * We cover the anon, shmem and the file-backed case here; file-backed
->  	 * hugepages, when configured in, are determined by the global control.
-> -	 * Anon pmd-sized hugepages are determined by the pmd-size control.
-> +	 * Anon hugepages are determined by its per-size mTHP control.
-
-Well also PMD right? I mean this terminology sucks because in a sense mTHP
-includes PMD... :)
-
->  	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
->  	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
->  	 */
->  	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->  	    hugepage_global_enabled())
->  		return true;
-> -	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
-> +	if (READ_ONCE(huge_anon_orders_always))
->  		return true;
-> -	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
-> +	if (READ_ONCE(huge_anon_orders_madvise))
->  		return true;
-> -	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
-> +	if (READ_ONCE(huge_anon_orders_inherit) &&
->  	    hugepage_global_enabled())
->  		return true;
->  	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
-> @@ -521,8 +521,14 @@ static unsigned int collapse_max_ptes_none(unsigned int order)
->  static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
->  			vm_flags_t vm_flags, bool is_khugepaged)
->  {
-> +	unsigned long orders;
->  	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
-> -	unsigned long orders = BIT(HPAGE_PMD_ORDER);
-> +
-> +	/* If khugepaged is scanning an anonymous vma, allow mTHP collapse */
-> +	if (is_khugepaged && vma_is_anonymous(vma))
-> +		orders = THP_ORDERS_ALL_ANON;
-> +	else
-> +		orders = BIT(HPAGE_PMD_ORDER);
->
->  	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
->  }
-> @@ -531,7 +537,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
->  			  vm_flags_t vm_flags)
->  {
->  	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
-> -	    hugepage_pmd_enabled()) {
-> +	    hugepage_enabled()) {
->  		if (collapse_allowable_orders(vma, vm_flags, /*is_khugepaged=*/true))
->  			__khugepaged_enter(vma->vm_mm);
+>  
+>  int thp_read_string(const char *name, const char * const strings[])
+> @@ -165,11 +140,7 @@ void thp_write_string(const char *name, const char *val)
+>  		printf("%s: Pathname is too long\n", __func__);
+>  		exit(EXIT_FAILURE);
 >  	}
-> @@ -2929,7 +2935,7 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *
->
->  static int khugepaged_has_work(void)
->  {
-> -	return !list_empty(&khugepaged_scan.mm_head) && hugepage_pmd_enabled();
-> +	return !list_empty(&khugepaged_scan.mm_head) && hugepage_enabled();
->  }
->
->  static int khugepaged_wait_event(void)
-> @@ -3002,7 +3008,7 @@ static void khugepaged_wait_work(void)
->  		return;
->  	}
->
-> -	if (hugepage_pmd_enabled())
-> +	if (hugepage_enabled())
->  		wait_event_freezable(khugepaged_wait, khugepaged_wait_event());
->  }
->
-> @@ -3033,7 +3039,7 @@ static void set_recommended_min_free_kbytes(void)
->  	int nr_zones = 0;
->  	unsigned long recommended_min;
->
-> -	if (!hugepage_pmd_enabled()) {
-> +	if (!hugepage_enabled()) {
->  		calculate_min_free_kbytes();
->  		goto update_wmarks;
->  	}
-> @@ -3083,7 +3089,7 @@ int start_stop_khugepaged(void)
->  	int err = 0;
->
->  	mutex_lock(&khugepaged_mutex);
-> -	if (hugepage_pmd_enabled()) {
-> +	if (hugepage_enabled()) {
->  		if (!khugepaged_thread)
->  			khugepaged_thread = kthread_run(khugepaged, NULL,
->  							"khugepaged");
-> @@ -3109,7 +3115,7 @@ int start_stop_khugepaged(void)
->  void khugepaged_min_free_kbytes_update(void)
->  {
->  	mutex_lock(&khugepaged_mutex);
-> -	if (hugepage_pmd_enabled() && khugepaged_thread)
-> +	if (hugepage_enabled() && khugepaged_thread)
->  		set_recommended_min_free_kbytes();
->  	mutex_unlock(&khugepaged_mutex);
->  }
-> --
-> 2.53.0
->
+> -
+> -	if (!write_file(path, val, strlen(val) + 1)) {
+> -		perror(path);
+> -		exit(EXIT_FAILURE);
+> -	}
+> +	write_file(path, val, strlen(val) + 1);
+
+Wondering what happens if a test like migration.c that uses
+kselftest_harness.h ends up calling ksft_exit_fail_msg().
+
+I assume the ksft_exit_fail* will simply set exit(KSFT_FAIL) and make
+the __wait_for_test() helper happy.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
