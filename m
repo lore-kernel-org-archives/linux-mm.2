@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72449FEDA10
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:17:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B696BFEDA0D
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 19:19:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC2856B00AD; Tue, 17 Mar 2026 15:17:40 -0400 (EDT)
+	id 07F8B6B008C; Tue, 17 Mar 2026 15:19:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73906B00AF; Tue, 17 Mar 2026 15:17:40 -0400 (EDT)
+	id 02FEA6B0092; Tue, 17 Mar 2026 15:19:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62DC6B00B0; Tue, 17 Mar 2026 15:17:40 -0400 (EDT)
+	id EAF6F6B0093; Tue, 17 Mar 2026 15:19:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B242E6B00AD
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:17:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 510D11B7786
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:17:40 +0000 (UTC)
-X-FDA: 84556514280.08.EC81BE8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D54AA6B008C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:19:57 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25D9B1C4FF
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:19:57 +0000 (UTC)
+X-FDA: 84556520034.04.76E9B87
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9F0C9C000F
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:17:38 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iw8Z4lVG;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf11.hostedemail.com (Postfix) with ESMTP id 375854000C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:19:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jJaw1geG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773775058;
+	s=arc-20220608; t=1773775195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0w7IfElQr7VaLU6OevkZFSAxmXqv7IQN+Gv8BvPx+xg=;
-	b=XrcONBWCUuo4AcC5yg+BgpHf4Ki7pMjGyLww+7OHVMNGuS0AmqYuNHwO8YtXuDyIea+iBV
-	P05mCrn+qZ6+dRC8FKMrtJQV35VEFHKvd+JCac55yH0yupDBG6DdJCFPKEivswFzKKh87r
-	CzSi38Ynznxw2R7uZnId/CzOTdBthJw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iw8Z4lVG;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773775058; a=rsa-sha256;
+	bh=iou0t69FV1T83sB4BPefDDJC1y/7+r6bHz/p8PwGrA4=;
+	b=u7pOtOc1cs4fcImNibMrPO2/lczwslxDCB18tQwo+uPTiVQBQWRumE2FiEufAitPnD77MR
+	tciO0RBR2NvZQ4FCucAw0WtoUlymsKZBiC6SeguTJi3a8OF7CiokD+BuiRidR63w37J+iD
+	OMh3qwV5CtzdDrVcNX7r0E3cTHAqFog=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773775195; a=rsa-sha256;
 	cv=none;
-	b=2eRJIC3erbOmBaJ+4SEDifTE7klAJsaRdPdNRl/jT0DWGZU4AXCowsA//TkJMBBoi1YfeU
-	2LWgRTeOQDlqCnE7SHs0xotj853tcSPp64QtX8MCTcrpT0wReGhsRvlvlMDARCyXGEffVK
-	5DnMpNY6GE1+Na69UokZftkh6Kx+Cfg=
+	b=622uP7Bj8UNCP0NpONSnRES2P4CPhLbtvJqwmpObK27BBwdzTWtDJ/3JT6u9Ay78FaZBhP
+	aVC/inUJFWa+jXOQj03Up+qga37UA2kWGuOx74Hgvq5Diqe9kkUa6afCt+WrzIW4DKoBY0
+	Ju+dRzWrbacpAJn/FcYpoZfiixA0KqM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jJaw1geG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9BD0401A2;
-	Tue, 17 Mar 2026 19:17:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD00C4CEF7;
-	Tue, 17 Mar 2026 19:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773775057;
-	bh=W+368n3zmFZXeS0XIlxfHQZMscjYF0bb1lj3Rt3JIVs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Iw8Z4lVGvpXYmOoizM4V5P1V32PyCVMQTnvl26cVXiRi6dtxJJ1g0tmIH9JcrXS8h
-	 NfHGAkv96sULc+DE8OA+1bvXBc9em3BR73SRfmzq6nTN7LI8/5PVHhI2mAGE0sC7k5
-	 RDUCUrZaMzokURlDmCZIYxiThV5Xbk43KYwfcb6w=
-Date: Tue, 17 Mar 2026 12:17:36 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Brendan Jackman
- <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
-Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
- attribute
-Message-Id: <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
-In-Reply-To: <20260317100058.2316997-1-d-tatianin@yandex-team.ru>
-References: <20260317100058.2316997-1-d-tatianin@yandex-team.ru>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9F0C9C000F
-X-Stat-Signature: da5tdygr4xwp4yehp64ry1uttx7wp14c
+	by sea.source.kernel.org (Postfix) with ESMTP id 46C5744230
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:19:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B84C2BCB5
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 19:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773775194;
+	bh=iou0t69FV1T83sB4BPefDDJC1y/7+r6bHz/p8PwGrA4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jJaw1geG+M8nxP5HXZJoIvnKvGekDgdgkNAc8agEXV0GXIvQ2nFAsxGgd7jydY6bS
+	 4NMQcuXRbILKwL921E12jNKPY3Glmcg2lK+yt+Jwrrt/PXSORVZiGx/m60/O6bjdT/
+	 ez89oUHMfeBwTEsjkRhPYcoeh3cH+pKK5Ax1WU7QOTWWEfZLJ65nB5Za0ffgcT9M82
+	 EBUlxUk7zCAscD5e1r3tBvWcjXooWbGv1eso11TsueyFH9JHxL+jotOxjaAIzQC1qM
+	 EhNPJDDaEperPX/3td/6QUSWo5Y6YSCYBij+pvFILAMxg7OnjWj6hafA40hSOUdcEy
+	 tFj8C4OdL+lVA==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-667952a44dfso801795a12.1
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 12:19:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXBjPDN+/+dr/S+L4TGx7fffH6On2hYKd5HOyBPRz9zCFHpHxp8lHs8mNLlw8oo0lrYYoRLWnRToA==@kvack.org
+X-Gm-Message-State: AOJu0YwJK8h8/vn1ULyDeDRZJOM/KRdlY51+MtJy36ATAQXxyTD7frHx
+	GxSWgxTBqCXJfwXPQapvgPZ9tWdwepye4mK6CQaSBvvvP2gC6bDMYQcvsyXp6pUnrLcgICjxnTG
+	0wQ8ZLg+ooiE+I2a+tMsyR+b5Lb+AM7I=
+X-Received: by 2002:a17:906:a892:b0:b96:d877:3c9c with SMTP id
+ a640c23a62f3a-b97f4ab458amr22347966b.38.1773775192818; Tue, 17 Mar 2026
+ 12:19:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com> <20260317014802.27591-2-kanchanapsridhar2026@gmail.com>
+In-Reply-To: <20260317014802.27591-2-kanchanapsridhar2026@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 17 Mar 2026 12:19:41 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOD4UxqCmtAS1UM9o_AzOoe_09F8+ApTC6S0kkfFPg8wQ@mail.gmail.com>
+X-Gm-Features: AaiRm52ZqVEZ4I2eLDPJC24YQ4sCHyY0lb-up-D3dXZzzMjVZHWQiFXAreOyORM
+Message-ID: <CAO9r8zOD4UxqCmtAS1UM9o_AzOoe_09F8+ApTC6S0kkfFPg8wQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm: zswap: Remove redundant checks in zswap_cpu_comp_dead().
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 375854000C
+X-Stat-Signature: 7udcbnqja5jq56bzpgjq86iio53nx9t7
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773775058-345372
-X-HE-Meta: U2FsdGVkX18j6CJjaDkbhHLJJ9fds7Z9kpmSInz56Kf2b6tmkq7R2CeBvcWgg+6+tvau1YY5u9vp5cQ2iiNI1vJP3ea3laVQ/rYgX5RjKUkD8NeSmuljVLJkv6UnZwH5gHXcgvxSmxg465A0rxeLFU+zigmj0dgVKdFpVpQY4jKRiQiBcA2AGG9EQjzzYbXdzSbh+eyXq5o5MOJQOO9SH0y0Jnc/XVEkJVXMYzAd2mn19r9pl9xW8NhPxVWhpAKxNdCXGnJkupbLMN9JAt6m3vgu36EsHJqKTq0aMlaD8SknIGG/V5C7BBc8Epxf/DwjzcgGXThNfCr3KzWv98l86Dpw8jFM1rjLXrUbClk82srzQlX2JSQmPaQcCtR2UgDhrZxJUnGDB4QINrMn95DAWAZwobf5jWaS4Xo9leR/SrhdSgRThZgoFVPj8OfsYXsc0E5iWE5NhpQRQHt7mYIM23j/AyZCcCia8ylJrhbWKnc9BXNDHB8aqXTErC41tqONBLR6XpKYecHUtvofB4DfEr6z04RP0Yf3tBIv79XdbqATV9YkXYFnFZXx10adeCe30lwnL7B1jzeRU+aWjcct+Dd8pw8xriAP2fR0oJsgTbCLw0S/ACWTuVEE0pDvvaUMXSC/8AdkyvisdLSQRSuHHr4djzma/9hcGhS8Lgto5HcqKTbcN3135zTfsskZ6hKYeuo/JnbSNsvaAbw+5HVpIGZJnTsnJSct1wdS+aNLtPWQgy5AwVCsT4pqB+D3dGeh/wULpDS3yg7GzcBjKnk2SIQd13eKd4JE5wN166DVQquFpQ1mdJgx+ivqOiywQFPN5eprhyyNKZAVuM8rShRdYrLdXB5bpcN2Wrnu7Ju3GCgFZrDOSYX3TdRQsFjB7bY4QH7xQJR97dHq7raf7M8HsVdGZbu67B5eNAZUB29ZaMSIxx0sOwGiFSgyb5iLz34+dmfbThln3p/niUpUdpe
- N4tmI7rS
- 6hIoL0kY9V1A5nQNYS+wcxvNgtEKc+d4tzMRpVL306IC1NyRX4+XhjyUnvUBQHGVrjiJY+MOag0JCmLnU8b/mMbZ9AgBvfBVtKyD0eh/pGjTs4D1Sw2a8Namr8gbA/ejLvsJEwCQf14p2sCUCAqFEGwxjZZIhC0X7bQRQz+m1YX9E5dzjpWns9F5D5OiRbdiTY4pmEoUaKB2MfuWLOIU+LGwziJSaa2kupyo5GI+tfo0vCKuGz8RWO14tMgQisEhhzWzAJWKvuFHaEjOh6KlHqMAIre9oistbgd8dFfAPw6UGA764Pf6M2SjZiycQWMfQP6NGF6QsgnYFWFELLMeZOYi7K7/wcR/fxobzCWMpHjbR5cSGFsAOiD1qS9ONjGm3FMCk
+X-HE-Tag: 1773775195-687193
+X-HE-Meta: U2FsdGVkX1/8siQLKnvkLlYk3Zw/xLv87eepp8/xd6I6dJ4Svwnpm4vzt+FxgPeFbLx0DwwfPYJ48WPsISRll1n0wb29pd2F1V6D2T5uIgUCW0LueawO8GepAX5YidHBjiJVtWbp/gdX+zIszyZAnHdSfgoP2TgE7TCz+IJ2KPkLAEKye4M/rzzVJcedDPNtp9SOnWyzS3HmwsBUVqP3gtqWBiqVWr55Dvsnsjb6w8zhceYthoapmmIR+dHxawTFeszzCnMjZbCAs94Pdrmc6KB59icUTan+isqID4kt2dJMr6Nj8gv3RUQz+32WJeOt3+QS8A6uL5XL/ikB+rDBkJK9nwY8h241d52BPU78rYtgq64uXckpDSL7czn5bQ7HSvjp5Kmrnt39hqMxe7wpub9qK6e0XWHzDn4K7/1KTUjmkRsPM4dlo1cB6O4c15u43ZNoeKvvGbW4SkJ4Cste4Vk1EVI/bwkOZnJcY9PI/CJib4EsvLhLPS1y8p1CnamxkvocD3GD0Fmye3QKwSZZUiNSjSujyt6/SUH24sxv6YaX0QHznP34zIeIBJ3j9FFAMQq272SGJz14hBJzohqRIu5Ba+xSNwXRoHcZCsIRuvEUluPy2lzYITtyjSIMdf45a6l5Jutd8qgu2luPGfiHrO6jCNJQ4O11gcOzenuBpULvU3bvTvy8A6Y75+7z36WV5hcuafSaIdmuw3bl0lUrHemfhH5/j8oM1j3Rc70TdzROsAPvR9ImeHPrzPVVboUmxsyZVzoN2/tl2rAXLdMz99RGXqAEsaktZOdIiL8cABf7+UrLvS9F29kNjg8N7T7RBEjW2YYgaFSCxcxM+n2CSw/TN1pflfZ32qdu0GFabmHHBCaYleSAzHivk2JPmFTSTzy8AxMb7eBt273CNRcZhsx54jzlNHez+EmZlZZzYPnEgd3AP6UG4mpvd5LRCR/Hd8AUh2tspBTYiqlZfm1
+ BHMAU1MW
+ VyqselxZhZyFH+LUgGHf3A9AfY3P2tN8KRc5k3x9txaNirDujLEl938CbejXnCH931cL4+yXn3GDKkQ2E+N8QReme/5R3E6jFZw60JWViiqZvClpvaOQbulx9xpmPsfKo2a1QCPQcVUe0c+plhCKtv6aHH9UJLFStqgKncmO3O7YR9d8eJQiKxWSOTbNcL/PvmouTjTuCojXNHqcPEVA9ZCkqYQxW+bgXmvVnCz42Xe2ZF4yqj6z0of7zEP9TtV03Kujh7xvkF+AT9OC4vkuZE4+akDDvqYIs2oDDlcAJZMMLCLUc3a6bFBLD1896Z9LHEKafddYCe50MIMXAdPosiGUozSNR4QSWiLWz62WfeYwkfN6QvbWydHA1RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,24 +103,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 17 Mar 2026 13:00:58 +0300 Daniil Tatianin <d-tatianin@yandex-team.ru> wrote:
+On Mon, Mar 16, 2026 at 6:48=E2=80=AFPM Kanchana P. Sridhar
+<kanchanapsridhar2026@gmail.com> wrote:
+>
+> There are presently redundant checks on the per-CPU acomp_ctx and it's
+> "req" member in zswap_cpu_comp_dead(): redundant because they are
+> inconsistent with zswap_pool_create() handling of failure in allocating
+> the acomp_ctx, and with the expected NULL return value from the
+> acomp_request_alloc() API when it fails to allocate an acomp_req.
+>
+> Fix these by converting to them to be NULL checks.
+>
+> Add comments in zswap_cpu_comp_prepare() clarifying the expected return
+> values of the crypto_alloc_acomp_node() and acomp_request_alloc() API.
+>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 
-> The current global sysctl compact_unevictable_allowed is too coarse.
-> In environments with mixed workloads, we may want to protect specific
-> important cgroups from compaction to ensure their stability and
-> responsiveness, while allowing compaction for others.
-> 
-> This patch introduces a per-memcg compact_unevictable_allowed attribute.
-> This allows granular control over whether unevictable pages in a specific
-> cgroup can be compacted. The global sysctl still takes precedence if set
-> to disallow compaction, but this new setting allows opting out specific
-> cgroups.
-> 
-> This also adds a new ISOLATE_UNEVICTABLE_CHECK_MEMCG flag to
-> isolate_migratepages_block to preserve the old behavior for the
-> ISOLATE_UNEVICTABLE flag unconditionally used by
-> isolage_migratepages_range.
-
-AI review asked questions:
-	https://sashiko.dev/#/patchset/20260317100058.2316997-1-d-tatianin@yandex-team.ru
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
