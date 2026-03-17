@@ -4,105 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F364FD8777
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4390DFD8777
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF026B00B5; Tue, 17 Mar 2026 10:15:54 -0400 (EDT)
+	id A7EE96B00B8; Tue, 17 Mar 2026 10:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7961E6B00B6; Tue, 17 Mar 2026 10:15:54 -0400 (EDT)
+	id A2F346B00B9; Tue, 17 Mar 2026 10:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D2DC6B00B7; Tue, 17 Mar 2026 10:15:54 -0400 (EDT)
+	id 944FA6B00BA; Tue, 17 Mar 2026 10:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BF576B00B5
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:15:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F176FB7684
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:53 +0000 (UTC)
-X-FDA: 84555753786.02.78DB6DA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8103E6B00B8
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:16:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43412138DC2
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:16:59 +0000 (UTC)
+X-FDA: 84555756558.25.BFCB47A
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 10D1620013
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fL0vQ6t7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3FmK5aQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FmK5aQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5C6F614001C
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:16:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AVM+jZN2;
+	spf=pass (imf23.hostedemail.com: domain of 3V2K5aQkKCFYy9602FM594CC492.0CA96BIL-AA8Jy08.CF4@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3V2K5aQkKCFYy9602FM594CC492.0CA96BIL-AA8Jy08.CF4@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773756952;
+	s=arc-20220608; t=1773757017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=20jDT7vbb/pcwg3RWwDlyXHU14Ovqo1gDrXuULw2Qtw=;
-	b=yJIj6V6eQLGDI0E8nJNVCC/Adzmiyn+sRkXpJgXBtUwIjFyAGHAG8LhqFZPINDhTl5A0rf
-	7Noh3cozERlrDmxNkzqcoLgSHHwkUZnh+6Yu90qfyGqNfS22HQ45GSbFzx1P7moMaUM+Pi
-	nMo9wmO3dlYi6dbkWu1PXoctG8xm/T0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756952; a=rsa-sha256;
-	cv=none;
-	b=7yfuuaDBcToSHF3uC29lkWDa10GmQH/d5by6Ajn6gm7e4uluau5ntGFxvwU/GmRjPDzuYo
-	fs6sW4jZjNdY/jkJLT+hdPFk/X3IhffHglmmfJLdmKp3qVSQ/GGfM4bcZoL27TY1+RX8fc
-	oVc1xx0UqCavtJgY3PmejzS0w25nAjc=
+	bh=sHyQW1j38add3gC7b1p33IpvUlEz/eLArJFX9nPP2uU=;
+	b=QhPX1JZkkC3HQn0NuH/1GxyhE1AicnaxmcUA2qOBe9eAa4tD+5waOYQXRveP3JWKBL7ZJz
+	vc9yuEvUpD7hdkMqG9ohupQlOXUkk0mMqADxV9OPR8AliFpqTYcXL+LsuFixRv4nYwUbZe
+	zIcJ5nvSu2cdeWmC4pn8b8Ey1BachE0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fL0vQ6t7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3FmK5aQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FmK5aQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso76641245e9.1
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:15:51 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AVM+jZN2;
+	spf=pass (imf23.hostedemail.com: domain of 3V2K5aQkKCFYy9602FM594CC492.0CA96BIL-AA8Jy08.CF4@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3V2K5aQkKCFYy9602FM594CC492.0CA96BIL-AA8Jy08.CF4@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773757017; a=rsa-sha256;
+	cv=none;
+	b=oE4JcAPaqPZYUsRIcGy5iRZiLXZ4iwve347YI0AnaKlUDhRFEnUuq/mfCHpeqWECioY0IF
+	AdMhtyPri+AqWspEY7ZiZ9sUrVurYC4hXobkW1LxaDkt+MGg+4o/npGjpnrz3uICFpPrSz
+	gnnFU1i8Axe6G9a+zXVqDgOr/ZFBnU4=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853553944fso8112765e9.0
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773756950; x=1774361750; darn=kvack.org;
+        d=google.com; s=20251104; t=1773757016; x=1774361816; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=20jDT7vbb/pcwg3RWwDlyXHU14Ovqo1gDrXuULw2Qtw=;
-        b=fL0vQ6t7uS5ItgMeyiMNJIon75p/4rgfssyEpPVbTsvuMzDt3hyPCLrHBL+UmZ5pD1
-         OpS1ljU8ylyLRo+zWE5sBfOGx/dX9nEHvBBltg7GOnjCy0vXXKP6XEbSdtJAdbttCKK/
-         /bEk4cqVhAyd0tY8KALaGxnKfqg0IVkWK8QDVjkvoQm9gtoZI9FCFrzB9nOyk+Rr/ZSH
-         S4pqW+HbbhwQpH8IF2/VBA/859rof2uBSnX7dDDuiuYF9Z+HxPF2VCrahpQB9XFquN/3
-         Sgv5LLy+fUwJSQkucgEROuQX5x6vFhaOCfmDWuQ6XPwUb3+locO7GQllH49+2A+aRYWC
-         RUtg==
+        bh=sHyQW1j38add3gC7b1p33IpvUlEz/eLArJFX9nPP2uU=;
+        b=AVM+jZN2KdqHz2cQ6qT6PSV3fkr4eqqY1YpI6hyimNdy8McEborBNrNgZcgd5BnYtD
+         jqyYerZSlWvMCr0FH/tjCuy0HW28SAqRt0TfjEjlhbf+8YZeqPQhpHRxcOTqUq3gyrth
+         bXS+H0cSKLRBjKySyojr7AlkUeOcMHWByyBV4/mKsB2Jfo+qK0q9tVs/bnbgzro1/OT8
+         dlOB/rvq7OF4se3ypNK0IXrkE4HWhVIWGSgY5d3l2tcjRyzLuSsIEumEADsQBxcwPA/a
+         p0VH8yvu15phZx5kuaDIcazq6W2R9MIrAGdWKt9h1agWvUBvTdDR3EGFIEVSXmOTXhdh
+         tWTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773756950; x=1774361750;
+        d=1e100.net; s=20251104; t=1773757016; x=1774361816;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=20jDT7vbb/pcwg3RWwDlyXHU14Ovqo1gDrXuULw2Qtw=;
-        b=op6A2vCiFmwpO362Ef+LkgB+8mcssLbhH7HILr7D0o+4x63IkjdgNxdlJ+vVWhFwrr
-         eQuRfp9WHYxOGNA7HRlOZ8oX0S6q1wGzqN7y5lwk423DNuGRdANEO153B1xlkRYNl0Z1
-         /va5/qoyTS1F/Nytu2gUsSCpyC+zuxAlomh7xiQ4BfwUrW/JP1Pv79gfq3sf5XtD9z3F
-         UrpYcXPYSrFGx/5hAUh/OOT5SIDX8insDY9tR7VHEyuz7EGR2VeIxSwgLr5Mnbtu4eMA
-         IXaNJ2yITTbFjZyzQGSKkjo0+wh+UVy3SadLKB5si6ucl7cwKsk0QoWIvsQ+9BlFQm9x
-         9jfA==
-X-Forwarded-Encrypted: i=1; AJvYcCX588Iq9xQ5YfVSL5LJrc/TC/0W9fRF9IjzZzWirQw5Gp9kQcaERlPqe2Uxe7FV/QuSG7xJpzrZ5Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyxi1JJLAjjZ4w2v/muQFcL1O0QYfHdEwhVdLMp/bYx6rA/ZV/P
-	CIY6UmYIE5UbWRcyRgW2QOtx8X5KNJEKYfEJ2JASBR1QoCtUoOxcfVqDCuJUNK/boNTohIgj1p9
-	D5fPoLzTVv+2CJNf2I1FsiA==
-X-Received: from wmpj20.prod.google.com ([2002:a05:600c:4894:b0:485:3c21:d5f0])
- (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b45:b0:485:30d4:6b9e with SMTP id 5b1f17b1804b1-48556702853mr281166825e9.21.1773756950287;
- Tue, 17 Mar 2026 07:15:50 -0700 (PDT)
-Date: Tue, 17 Mar 2026 15:15:34 +0100
-In-Reply-To: <20260317141534.815634-1-mclapinski@google.com>
+        bh=sHyQW1j38add3gC7b1p33IpvUlEz/eLArJFX9nPP2uU=;
+        b=cdnzLOTEhWOWGDmeHUD/QCSzOlAkb4ZVaPS9JJK1lm4iAjsGzARf+bDgiHA2Np5bZ7
+         tZdOrqg+FmEkCHc4ExOQDSlEzQN5LIi1CSJ7dmvsrNsyWUVbwUveL6K3JM4ZrrnC3ZLq
+         kzi1hc/KWZGGyMx6fxahKOVvn6HaX4Ot1AjnCgDwUbNaIUszWiEUPPh2Ub/ekheaMkpF
+         nJhob9rtlxGXXGbNMwEaZtu57xlajBU5s6CJ9IrcZMjhxouvZUxY2ik68xrr1NUUwtGi
+         A7HyBIZLHlAiFhUQ3fl0FE1F6+f5zpBv1ZAvI/52zTcp5E5DUerD+PDYh7SxL4TUw9KS
+         H4sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWw02wigly5xoyNSTrTH+K3Xn6vp/ipg1pAAE7HIuyjwYBLo1FIEKXtVO+Zr+WGBYngcATHn2ILyQ==@kvack.org
+X-Gm-Message-State: AOJu0YyBoRyGn4eKe/1g7RJ8ZNMC+CB5oRds3JsmQ+23Otkd5cazK6uG
+	iyfsjHIhVuV63aPuWJfsQCto3dSDGp5J+axNlAfX0kUSu6v/WsXDWstWkZFsyIaUmJX1dhuPZ0s
+	wK2AA6Y0LGyVndnmRcA==
+X-Received: from wmz7.prod.google.com ([2002:a05:600c:6b67:b0:485:3aa2:da59])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8488:b0:479:13e9:3d64 with SMTP id 5b1f17b1804b1-4856eadba01mr59151605e9.15.1773757015602;
+ Tue, 17 Mar 2026 07:16:55 -0700 (PDT)
+Date: Tue, 17 Mar 2026 14:16:49 +0000
+In-Reply-To: <20260317-vmalloc-shrink-v5-1-bbfbf54c5265@zohomail.in>
 Mime-Version: 1.0
-References: <20260317141534.815634-1-mclapinski@google.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260317141534.815634-4-mclapinski@google.com>
-Subject: [PATCH v7 3/3] kho: make preserved pages compatible with deferred
- struct page init
-From: Michal Clapinski <mclapinski@google.com>
-To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Clapinski <mclapinski@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 10D1620013
-X-Stat-Signature: nz6enkeefag5eu9agsyai8j5h1xmcr34
+References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in> <20260317-vmalloc-shrink-v5-1-bbfbf54c5265@zohomail.in>
+Message-ID: <abliURxm14-xxgFJ@google.com>
+Subject: Re: [PATCH v5 1/3] mm/vmalloc: extract vm_area_free_pages() helper
+ from vfree()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Shivam Kalra <shivamkalra98@zohomail.in>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-HE-Tag: 1773756951-835541
-X-HE-Meta: U2FsdGVkX18BWQvJjZn6c7eQA4dsvwVe2xiZHf471DnDDB4YZf2xM6WsV5/72HKP92x8cP57s9FDsteAVnk+89C5vqzGbJwbLzPTh3IBN7iW2Uu7v2O2OcYJbzq4GpcShofwf3iXd5EP9MGmvVb5M2/1EfWi1l21odTcQf8hsklIojUtpKyTye0AFxU7ERE1WsYkB+5yRBJdT0Zrb504gKa2cBlTdumla3BggjPq4LLu1zDD8oxhtutVqawg2jg4nt9P3H1ug0geHFin/tHW3GpCTfCS/kuU2g0Th8gJW2JTF+UOCS+nf5qh7sRGmHPdpw0SXo38mrD62XuGuzbr3TTkr1YdLDBg4E4l7M9yDBjss7UnwxvoUhYu8r6xI8vE+1kfoHZqZnvk+85sqlSKO0IEeE+IvPhGvpPJTGIQo34a0dxutKPY935jqYY+QprddnJJJlIoRLo74IuODfIPp2GN58yvpQotZk9kaNrUtBOyRIg7BloqvkGZ3J26j6frPCU7H0G9Mc1TWo1KSZRCFkJV9RVsHpfWYRAAjxSU4UBg9440W94mB7iiAV0O+hRKliuUSYzuOwjOeHWw0Po8wXBXNGeVRe4QpJMFnto7A2q14Dunvc5P2v8HBYZB+IUd8ToP15HsfNFkMSFXIk2GGrrrx9xgRS0PpUh5IbehUsl1wymcX6A/oCjLFERltIWhIy4dBck0+hOFgv0A7Rzjo19vwWp37U1GY7VAwB4IDOuhCG+V91NUkhooVyMeIm7trMm/ffnIev0gMBv6Lu7rGyDgRDgwSBcOtMlNNC2S6PYR6/Hu2+cf2/Hl04Uv99zd8lM0fpwq+Dj/koY9M0hH0Pfky0ZP+qvx+kpT+4lcViDrHcRhNlcF0k+uFAypJW7SDlEnqY6uvxndA7dgkMkZvVetqntO5dwrOCpIyYoKoQLGkzCqvmZQoUsI9ZKBW+dOU5yJ4Ap+CqcaafMC/mz
- gOmEJWU3
- Y8rzHDhTGmZq6dexj/XYeipgsBiXW+lTeJzgSjHuu3yEIfeNjanXMwkWW9BJpgO43GQFNYByYwhUJsSveAWwnJTZyyYCRwhxvdGlQQd1ThI+tk5ah2qo4Sa3EZyzt0JUd9qHzLUGIdnazmbaI0LlwuqMs7z48ygjbflm++LF1Xb1dvXvgc5pzOq3SIy0btO0ercRaOt2iGQT8S2tl1CCJ/SCRDFyxSojU3Iy8vY3Jl+riyB4LFvgCg/zK0KHU09J44c8oZmVvDYz4MgonXvTlJ0uCIgIhidl7eNPQd0uQKwu1d0vwmF0UpeZk/f84SoJbRduTFypcXlvRid2FOuTV87qrN7XrECduxF2nKzla61mFvhXtbIhhET1DY1aqoMwZgEHfPNHRXdISfaJ5mWEdBX8vKb3yc1sb3zAA+G/749Jw+aOWxIqqypePObRB5TEo6JYDYbKH8rPlzlvfP2TYl5ZymgyFFhdI9ZV70qpXzeymmb3REclfEEWwNFj5Pk8P5YIrX97PytcmLG13osRswvOoXse8m+tzJNn/upVAmCVnHED802KA02/LXut4rbsbRZMfDazrm53+F7ErVkh/Z+UNrhtyHZBsX29LzDAvJL2fiKxUjdT82Fp+iZatlZskfwKAGYutN8JI0kCLr/fGnonwhw==
+X-Rspamd-Queue-Id: 5C6F614001C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: n9aze9usgscg8ngnyfre6whw1b3wsptp
+X-HE-Tag: 1773757017-666494
+X-HE-Meta: U2FsdGVkX18j+DkGGzXTshdOoTKbK21K/XLEH6I5OJtlGSyslofP5OqmfCKDDplrmvlaPBNXuSaKZhUQq+z60LGN1ea53VxsjbkgqcG8c8ZJOyIbgprjlgFAFUNrbpYkbT7j2LuYrAeqlbmyJioTNbV+4ozzg7LCcYjKdQl2StCP+Qtq/9Y7CjZkOjBENqNa+GVhF2cFFSDZ+vXxr39pr+nG8/1BznPgkxIPPOX+DmD8W4SrtOQeZQRidzHw7VPrrnnYEC9xj5/SO6ZkAT0+LzOFI5AbWycnIfl+j+JP0ycq1miVQtDCHWhAmL9CAiuMkopan0IK1UKjy1m+8G8xygxJS7iAWbF6t0nBW3J5+TjCyvtkS1wOIizlWWINWu/gIs/0dlFjITYgTAEOnohSNE0ZnqZ0YvkB+IR3jNFBnBxGVY02Og2Um8dSsu13CUAk1hBshyrGK6fY9VP/0GJIHDBxEl0ls8Qcw6C3RRB29hBA+kwz5TwmTZhnTPzDMWOPEbehFxOBPmAlMAz7uO39YVZADoj2PR1V3cIwrsj2SUP7xv+yNp7Ox9J2wt/LHeSyfiW9/w66bdsblAIKwbNzi6nLqJ9Pno8DKHiyEEkU0dfrPn1dIkyOqNqKVp2b/9MnXGXhuNVhvjtbcD1gbpu68Rsm/eDPjneXOGOnIM7+eBvee6tvp26JGrEAXv2QrSYtMDUOraBFnjAjb+sRJHlkqBwbOoerSqhxaD7Xlk+R/4pmHNe9svCZA5MT+hvKOATwEY8EfjhUdNoE1PpwTOVepOVomLBtckuLYcJEduaRZ6fhgk54aVLAyJSzbzWkRVU152sL27S4Le6kTjMxmuoCx8MiC7D3v09t5ww2kM2xF7hvmzjVfYrhYsrvZvDbSj69gDWJMV27nMPrm5h/64OuKS42Rzw8cne1G7FCZYH3NrRd2nIDikCeGfyEMoD2F1KtpsFl0KPD0/8NbYRGdCv
+ 5b9QxaNB
+ rFKmCeGuj4GhKlRbZstBoQjEH9YsVHDTNfFsP4sJwKcOyX+fusSC6362SqyE1cpi82+S4yg+R/nGk42b5fqrJYwd9JUa8f8kZQVbkjLsr//xity7mSQvtKlsLdZjz1SMzoT7dTsl16ob7S/m9vuiZ/VOWV0GdADM+IPHXSPAim1TN+qE/yjf6o+XNa26WDXldPtYIU1N/19+ou7draEcgX82Bwei7HNW/6z+hoBg2o53NQAdGdbRfAeUhpdqrS9ZVrCpt6eVwkS5fXhR3boMbyNuqayY4B2nHr+ZWy1zZL+Y7wZD0VWfGjsPf0cOpyl6CrPKxMGRMe8lp+56d5w89A2C/72L4ZWYhF5a1fmEmY3+ewAiIZx0XBHbdLdpIYpSh8bdOWAtbEZTSJXFt5aGYkIgOWG2U/FbpsQ34GPQ8fmqvnOHt8AGBOy8t6EIgJGnFPsSK13TOyU8XbD2ex7UP0N1uiU5lHF6zjPv0+VtR74wExRdRbIBdpSyF1/DXQCswBmsY3AGRBbGt/CUm/+TXdPWUOxOKU/pv3c0LiFBrTpyTL2gBs2YFsk9Tyxa4z2eyBUjgOpQ5WnBSycon2IgfhXBwXb+tbtVeMY1liufj3NABU4Btn7ftbbzvavZqaBZKNyKiYJpdDagctTA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,119 +107,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Evangelos Petrongonas <epetron@amazon.de>
+On Tue, Mar 17, 2026 at 01:47:33PM +0530, Shivam Kalra wrote:
+> Extract the page-freeing loop and NR_VMALLOC stat accounting from
+> vfree() into a reusable vm_area_free_pages() helper. The helper operates
+> on a range [start, end) of pages from a vm_struct, making it suitable
+> for both full free (vfree) and partial free (upcoming vrealloc shrink).
+> 
+> Freed page pointers in vm->pages[] are set to NULL to prevent stale
+> references when the vm_struct outlives the free (as in vrealloc shrink).
+> 
+> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 
-When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, struct page
-initialization is deferred to parallel kthreads that run later
-in the boot process.
-
-During KHO restoration, kho_preserved_memory_reserve() writes metadata
-for each preserved memory region. However, if the struct page has not
-been initialized, this write targets uninitialized memory, potentially
-leading to errors like:
-BUG: unable to handle page fault for address: ...
-
-Fix this by introducing kho_get_preserved_page(),  which ensures
-all struct pages in a preserved region are initialized by calling
-init_deferred_page() which is a no-op when the struct page is already
-initialized.
-
-Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
-Co-developed-by: Michal Clapinski <mclapinski@google.com>
-Signed-off-by: Michal Clapinski <mclapinski@google.com>
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
-I think we can't initialize those struct pages in kho_restore_page.
-I encountered this stack:
-  page_zone(start_page)
-  __pageblock_pfn_to_page
-  set_zone_contiguous
-  page_alloc_init_late
-
-So, at the end of page_alloc_init_late struct pages are expected to be
-already initialized. set_zone_contiguous() looks at the first and last
-struct page of each pageblock in each populated zone to figure out if
-the zone is contiguous. If a kho page lands on a pageblock boundary,
-this will lead to access of an uninitialized struct page.
-There is also page_ext_init that invokes pfn_to_nid, which calls
-page_to_nid for each section-aligned page.
-There might be other places that do something similar. Therefore, it's
-a good idea to initialize all struct pages by the end of deferred
-struct page init. That's why I'm resending Evangelos's patch.
-
-I also tried to implement Pratyush's idea, i.e. iterate over zones,
-then get node from zone. I didn't notice any performance difference
-even with 8GB of kho.
----
- kernel/liveupdate/Kconfig          |  2 --
- kernel/liveupdate/kexec_handover.c | 27 ++++++++++++++++++++++++++-
- 2 files changed, 26 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index 1a8513f16ef7..c13af38ba23a 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -1,12 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
- menu "Live Update and Kexec HandOver"
--	depends on !DEFERRED_STRUCT_PAGE_INIT
- 
- config KEXEC_HANDOVER
- 	bool "kexec handover"
- 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
--	depends on !DEFERRED_STRUCT_PAGE_INIT
- 	select MEMBLOCK_KHO_SCRATCH
- 	select KEXEC_FILE
- 	select LIBFDT
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index e511a50fab9c..b49ebcd0b946 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -471,6 +471,31 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
- }
- EXPORT_SYMBOL_GPL(kho_restore_pages);
- 
-+/*
-+ * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, struct pages in higher memory regions
-+ * may not be initialized yet at the time KHO deserializes preserved memory.
-+ * KHO uses the struct page to store metadata and a later initialization would
-+ * overwrite it.
-+ * Ensure all the struct pages in the preservation are
-+ * initialized. kho_preserved_memory_reserve() marks the reservation as noinit
-+ * to make sure they don't get re-initialized later.
-+ */
-+static struct page *__init kho_get_preserved_page(phys_addr_t phys,
-+						  unsigned int order)
-+{
-+	unsigned long pfn = PHYS_PFN(phys);
-+	int nid;
-+
-+	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
-+		return pfn_to_page(pfn);
-+
-+	nid = early_pfn_to_nid(pfn);
-+	for (unsigned long i = 0; i < (1UL << order); i++)
-+		init_deferred_page(pfn + i, nid);
-+
-+	return pfn_to_page(pfn);
-+}
-+
- static int __init kho_preserved_memory_reserve(phys_addr_t phys,
- 					       unsigned int order)
- {
-@@ -479,7 +504,7 @@ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
- 	u64 sz;
- 
- 	sz = 1 << (order + PAGE_SHIFT);
--	page = phys_to_page(phys);
-+	page = kho_get_preserved_page(phys, order);
- 
- 	/* Reserve the memory preserved in KHO in memblock */
- 	memblock_reserve(phys, sz);
--- 
-2.53.0.851.ga537e3e6e9-goog
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
 
