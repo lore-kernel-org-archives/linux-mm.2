@@ -4,139 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BFD0FD8740
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78B8FD8748
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 11:37:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E5316B0005; Tue, 17 Mar 2026 07:36:28 -0400 (EDT)
+	id 1A0536B0005; Tue, 17 Mar 2026 07:37:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BCA56B0089; Tue, 17 Mar 2026 07:36:28 -0400 (EDT)
+	id 178146B0089; Tue, 17 Mar 2026 07:37:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2DA6B008A; Tue, 17 Mar 2026 07:36:28 -0400 (EDT)
+	id 08E306B008A; Tue, 17 Mar 2026 07:37:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B4E86B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:36:28 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2FCA136099
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:36:27 +0000 (UTC)
-X-FDA: 84555352014.30.C824C54
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BF5058000F
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:36:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dwppiON6;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB4C46B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:37:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C3BAAC875
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:37:07 +0000 (UTC)
+X-FDA: 84555353694.13.A00458F
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DAE0240007
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 11:37:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773747386;
+	s=arc-20220608; t=1773747425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VT+l0NoxtCN2POSc30sRXgy/SfJJNPBcPtl6tSMxKRI=;
-	b=tXnoIi1venMv47iEM+tkGr85+p3bFPRsYKHVO96WaazjncfvOgHL0p/QCLzhoKi4AH3I/+
-	f/TwRaIIxIwSzF6TTBgJ5e4fdqpVMpisKX0AOBsjUxtMBLIVx9F1ErZOPNqGq51DdH2rFZ
-	VnFckOSXMj8+8zPANTiGqDi0/pZ78bk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dwppiON6;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773747386; a=rsa-sha256;
-	cv=none;
-	b=6+VEvDawNi5P27W6MuahNpmi9Y5j4GNkAlRPH1tp/3eI4QNWzIr8r4g8IALMNU1JmBO8o4
-	xahs8KqLc0JLbJxXpHeuxSJeBx3jOEsgsF/XRcmzVidvRp/nK2ex7jZW7ipaskzs6xKamr
-	ncOEb0RMZ6eLdrAtsl8k2riftesXIAk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773747382;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VT+l0NoxtCN2POSc30sRXgy/SfJJNPBcPtl6tSMxKRI=;
-	b=dwppiON6++TNajZIhgZNiFzR8/cX90H08HvMApiMyr1F4NW6yiLXBbD+CFIXFPOcDaI5JW
-	GKh1yHSxEQUglU/Uao3Gw2tg9/XukokBGXTUVK/YBYZRniXj7kkWL0YKeU5E4OhvSCj0ow
-	E84M77Y/Tvyx7cQYrH7ZQTaDJ8iQl3M=
-From: Lance Yang <lance.yang@linux.dev>
-To: baolin.wang@linux.alibaba.com,
-	npache@redhat.com
-Cc: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
+	bh=VT6JrNxcCsv/pUv9JSpzMspyBPoJW48BC8MRzPMlqzA=;
+	b=RWQoYEzobcGHejpx0wYMiVNRN+xSuv7hQwyYMqXF+8y+x+E4Ok+4P6BDAZx0jGF8NbGJ7i
+	1SuIaFzIrPhe/AeBPkYA1IuKSU2qDYlBFuH4Y9U2AWBsWRKa9P4sCylqcFIHqUADTD53kn
+	CuTmvOuLT5ue2i16bwwa515i+hBH5/Y=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773747425; a=rsa-sha256;
+	cv=none;
+	b=Kyl2YKYcvfqzqA5sDRBIXZ+c275qUVDaiikzmxrUkI0RrbP+x8yxJcSdphShA1klZB9tHL
+	T7ri6TD2whzOZgzMUEdG8YC8IcQJimoD8EcVOaOJBbC/tff8ApTbETPvafnqPskgiJdMyH
+	hz0KA6m+4nRg0AvCM0hEyCBnctCC1PA=
+X-AuditID: a67dfc5b-c2dff70000001609-83-69b93cdaea53
+From: Rakie Kim <rakie.kim@sk.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: akpm@linux-foundation.org,
 	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
 	ziy@nvidia.com,
-	zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v15 12/13] mm/khugepaged: run khugepaged for all orders
-Date: Tue, 17 Mar 2026 19:36:11 +0800
-Message-Id: <20260317113611.94006-1-lance.yang@linux.dev>
-In-Reply-To: <20260226032650.234386-1-npache@redhat.com>
-References: <20260226032650.234386-1-npache@redhat.com>
+	matthew.brost@intel.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	harry.yoo@oracle.com,
+	lsf-pc@lists.linux-foundation.org,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Rakie Kim <rakie.kim@sk.com>
+Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce socket-aware weighted interleave
+Date: Tue, 17 Mar 2026 20:36:53 +0900
+Message-ID: <20260317113656.283-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <20260316151933.3093626-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHIsWRmVeSWpSXmKPExsXC9ZZnoe5tm52ZBvfbmSzmrF/DZnH38QU2
+	i103QiymT73AaHHiZiObxeqbaxgtnm/9xWjx8+5xdov7y56xWOx/+pzFYtXCa2wWx7fOY7fY
+	3vCA3eL8rFMsFpd3zWGzuLfmP6vFyVkrWSz2vd7LbPGtT9rifp+DxZH125ksJl9awGYxu7GP
+	0eLWhGNMFqvXZFjMPnqP3UHKY+esu+weCzaVenS3XWb3aDnyltVj8Z6XTB6bVnWyeWz6NInd
+	48SM3yweOx9aeky+sZzRo7f5HZvHx6e3WDymzq73WL/lKovHmQVH2D0+b5ILEIjisklJzcks
+	Sy3St0vgyli/OqBgglVFe2s/SwPje+0uRk4OCQETibm7LjPD2J+2L2LpYuTgYBNQkji2NwYk
+	LCKgKXGidRJQCRcHs8AXVok3q/4xgiSEBTIkJiz/D9bLIqAqsXDXfDYQm1fAWOLm9b1sEDM1
+	JdZtvMUCYnMK2Eu82HONCcQWEuCReLVhPyNEvaDEyZlPwGqYBeQlmrfOBlsmIdDIIdG9oYMJ
+	YpCkxMEVN1gmMPLPQtIzC0nPAkamVYxCmXlluYmZOSZ6GZV5mRV6yfm5mxiBsbys9k/0DsZP
+	F4IPMQpwMCrx8N5g3ZEpxJpYVlyZe4hRgoNZSYR32ZFtmUK8KYmVValF+fFFpTmpxYcYpTlY
+	lMR5jb6VpwgJpCeWpGanphakFsFkmTg4pRoYuevSOg3v9i7h8mvS+ae2ZanMEs34hUWzzgpo
+	TRVt+FydEBEswDvD3WWXTlphoYKyf2eGZ2dv7XSTzrRPFSfYXBcb3Zx29V7TLNPAxaFJa/pk
+	Ts6oVeBcU5ZdEeQoPLmO1cbDoTV7WcC5Z5yLJE2OSPyM9/ij82C7qfvdskVTFujf19aavEOJ
+	pTgj0VCLuag4EQCCgFZM4QIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYQCG+XbOzjkuJ8cldNAfwkDEIu1i9ilSkmUfQWBUJCboykM7ODfZ
+	VJwUTU0zrTlvpJuZpmipZA3vaOY0ddFFG3mZqFnpNCuvCKZkLQn89/A+L++fl8JEPbgrxcnj
+	WaVcIhMTAlxQ5Bmx3xrYyh1IyfCBJfV1BBz/MkDAtpEL8F2BgYD3CwcA7B9NIWDtaB2AtsZf
+	AK6P95FwsmoGhysz8xjsnLbhsKZ8iIB9jaUk7H5g5sNmzScSvte/xqGlrYSAE3VbfGjWP8Hh
+	i/kODK5p3eCkNgiahmx82FPfzIP5H8oIaEjRAmjV9fJgbZ0UbjQ9/hu9miCD3FGrfpxEZcYE
+	lJ1hIdGtnh98VNE+x0PGmjsEMi7nkai/aANHrVP+KH+kGqB7aT8JtDRtxdHaGEIVs4s8VGi4
+	ieobPuKhonBBYDQr4xJZpc+xKIG0vjY0TheQdDs9B9eAhX1ZwIFiaF9mufkRngUoiqDFTG9H
+	hD12ob2Y/vQ8LAsIKIxe5TPfa34Du9hNSxld9RZmZ5z2YMrbHhJ2FtKHmdHhDmJ704t5+tyK
+	29mBPs7Mtg/x7CyiHZlvzzrBdt+ZMRd//dfBaHcmrdGA6YCjfofS71BlgFcDXDh5YqyEkx3x
+	VsVI1XIuyfuqItYI/n5bdWMztwWsWk6bAE0BsaNwhN/CifiSRJU61gQYChO7CKt6mjiRMFqi
+	TmaVikhlgoxVmYAbhYv3CM9cYqNE9DVJPBvDsnGs8r/lUQ6uGjBd6mRQD3b5Sd9eL0DmFWVT
+	uW+2YjmMKh22eWpONc8FOdGyQS/y5Ipoi/Wnhu5OZYQFbHavX4zp1p44ZBYe7epVLIWk+kV0
+	2i43yINzXu7yP+thCd/KrFxIHSvMxFW6N5+LB3Sbi962qHNYS3J6UySVWxniXKq/sh5cIThv
+	EOMqqeTgXkypkvwB51Ng4dcCAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: DAE0240007
+X-Stat-Signature: 98hwqimu35qyosw9rki3srfzriq8dtqn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF5058000F
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 5p856tgx59kwps5w45gaw8m57rcemwq5
-X-HE-Tag: 1773747385-112275
-X-HE-Meta: U2FsdGVkX19I93omWnGYF8vx9Dz2PMJVTUJrecUv1If3KzUb+JDNCBMnlhDCXNCIMM1Ieqv6mGv6H5hoNf/92dF8iUPPiQWBPldqUX6SFjANagyTF/7raFu92rJZ61reoi6aAO/Cg7yIz5ch6sbsoJZk/4/fJfLnTXJ9BVjfdZdqW72Hm6ODcud6btxZT0DEGBnHVTkPrc6VmQe4YRJHZpOFAFZPsw2egxzNFz3XCyk26Tb0BPzk12/DYR2fKvVPYcLkYe2HX3TaEIyE7cnKHpF9WQb8AecH9fOwcE7EPQ6GJ8kh5gDgR5z/3S0UPD4EJ406LJk6+YkXJAFqsBqc6IrrnYNKsXahf7BtglTeONCiFjcY16jGcNKpm2XsDbkidZdzaILHM8VsBjVc3e4Sj/s7yrpeQQVDOkp1BItIFt01XuCD5cP8PJ3cWEOz3xea0sNsZwQxLDa/QU0G/XE7dzX51yUp1puhaq3mYMt5EXo3OIIVbPx1tgA3iXDviwhncmimcWi0c6W39LzAOoRiKqRhbTNwECxg9WswqOzHuNgAEby9rpjGE3RPOkEV9e79MAhQd/kp/GRDxKWYxHIXWr9ezeTpR+8VucBldKzCJnp1wgRTOMxULSUqnUTJ1JCsi/Em0+mGezrqUSfzp6BDvHN2V3UeU7+uDaT4XKBKIwjD4tgKrHAU89kt7V6RVVMz5x21xtDR62tx3cVgwVG8Mo1/00iR9E9VK/ehDZvPinK750WKnUPTLiDBrxvEycCbJhuIxY9FsGBDxrYLwvlG9LeOt3VsPzTjai+keI/81cWDRtV+b054Y1OcxDaxngZZ2aFC/Dko8ekGbsxDrL9sDLQs4iqY0yGJDMVFXhk9p1u7nGDAd+ib35N4+2EWoENT7P1DZUwTQvRRXVS20s5S7fUv2NSNriPIIC3NOXk8uDogASM5TERCFHn0Hc3eRaR34gtviGcs9CPW1AtVBwO
- 939oDcFy
- pHLlmpwueOiVlFbCovEJhwqCBsnVzmIi28BFF0lGh0tECv4NJIKOi9mUaN9PS3sB5t95fvfA7ToMl1CVPi6mWTVBGNuKwULNe6tVsK0DjU/5JWy5uItFHA51xCWEMbGJyXimNQcm/BgZ9+QroNU0465x9XM+knpymj67HHtc2oSYGRdq29tmG+m7Dh7qa9tZ1g7XCmLxmxzKPFanHApvcBJNtToY8U+sqUb6nM864a2JLynOrxUlwxKulZhHH84wUCNVU4MakRAkIAf3TevU0HKuABrdVg+2yzdKE90A1rWou9PKGjKbmsnB9q2ZHx2SN1E7s
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773747424-246306
+X-HE-Meta: U2FsdGVkX184TIxgVr8jsNjN6KUnh9uB2YnT7D58BIKpEiNhJbYOg+JklaQkiQfcMs7iy+YfQDIqRzHfpVZUfTCm45o3NYJF4D3NsDAXQoowXiAgIFPLKZzUUg8lRGRhl1LF3DUnrATRETSLrgxqSiq9ftJdChhsWb7htmujiMr9mxG1VRG4/wIhTaXn5rO8eAdSTzxXjW0hi7hg+q2tzJwU+1lcqp331xHYt5J+z/0iCYIW+CQIEektWL2ZUL6P9fv/uln8iWD7a0u1KdKy/a7caH4c4YkCnwsTtIIHcnT6dLfBdU7wKOyWFah9n4J47b/spCiu5MsSZQ+/nkj3LlL/OLdeWa36nw0WkA6fAf+opG8IiKwFs46ZzV3syppHKfyflbW/VNADElkNv0AXvEWS2WMVOPVqIxdIqfQhqCds8Q/9mjmO7rQxHQ8s3QRShn+2ldmY3FqfEZa6WNVMeFL4yfut2YnMFrAPBR/bAr7oFVvUQrxZbnqZjSHH4iPQUkUbSAVsg5H3R0svesHX5vPYK3C/0TXjylkTWWHPOJnURi/0NokfbJWo6QxJKHiOFDdwjtUUU0KWiDkIyokK8a1XV0MFOQqfeLUZ5DpXOGkCil33X0+R9HK5YRDSiQjyx25NeHVinEbK/YUBSiZi6k/QoBZuAtg9DTANzZwSjW+B3oTNtVX+3rHmXU7MP8UC0UzKhUKeHSAC0OzutfCk98jqSTO+4PcawTgBCzsc4CmAL32dyf/1aoB99vwznViXw1+jvbHvRIApGcBsJkY0lbp7C+XkXs3sFC3Aqks6qcNu/ZJVUkGfaawC1877PipPvTLHa8K0TPJT5pwdOYySdwT9/YLG0a1l96Do+i3eeXccSMp86DRqg8b0yWmbLeQt1jZ/VGwl1kTmQzEWYp1i6mqfTWTBmaPjQC787W/0P8UgWsKi1ZsJYUVvfz9eSeR+QYrbzGtvt55kudj2dTE
+ X+iIz2ts
+ 5oMSTVoQuDnVWaHaMRW40TTxJImx2tOPP7j5X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,112 +131,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 16 Mar 2026 08:19:32 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> Hello Rakie! I hope you have been doing well. Thank you for this
+> RFC, I think it is a very interesting idea. 
 
-On Wed, Feb 25, 2026 at 08:26:50PM -0700, Nico Pache wrote:
->From: Baolin Wang <baolin.wang@linux.alibaba.com>
->
->If any order (m)THP is enabled we should allow running khugepaged to
->attempt scanning and collapsing mTHPs. In order for khugepaged to operate
->when only mTHP sizes are specified in sysfs, we must modify the predicate
->function that determines whether it ought to run to do so.
->
->This function is currently called hugepage_pmd_enabled(), this patch
->renames it to hugepage_enabled() and updates the logic to check to
->determine whether any valid orders may exist which would justify
->khugepaged running.
->
->We must also update collapse_allowable_orders() to check all orders if
->the vma is anonymous and the collapse is khugepaged.
->
->After this patch khugepaged mTHP collapse is fully enabled.
->
->Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->Signed-off-by: Nico Pache <npache@redhat.com>
->---
-> mm/khugepaged.c | 30 ++++++++++++++++++------------
-> 1 file changed, 18 insertions(+), 12 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 388d3f2537e2..e8bfcc1d0c9a 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -434,23 +434,23 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
-> 		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
-> }
+Hello Joshua,
+
+I hope you are doing well. Thanks for your review and feedback on this RFC.
+
 > 
->-static bool hugepage_pmd_enabled(void)
->+static bool hugepage_enabled(void)
-> {
-> 	/*
-> 	 * We cover the anon, shmem and the file-backed case here; file-backed
-> 	 * hugepages, when configured in, are determined by the global control.
->-	 * Anon pmd-sized hugepages are determined by the pmd-size control.
->+	 * Anon hugepages are determined by its per-size mTHP control.
-> 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
-> 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
-> 	 */
-> 	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> 	    hugepage_global_enabled())
-> 		return true;
->-	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
->+	if (READ_ONCE(huge_anon_orders_always))
-> 		return true;
->-	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
->+	if (READ_ONCE(huge_anon_orders_madvise))
-> 		return true;
->-	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
->+	if (READ_ONCE(huge_anon_orders_inherit) &&
-> 	    hugepage_global_enabled())
-> 		return true;
-> 	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
->@@ -521,8 +521,14 @@ static unsigned int collapse_max_ptes_none(unsigned int order)
-> static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
-> 			vm_flags_t vm_flags, bool is_khugepaged)
-> {
->+	unsigned long orders;
-> 	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
->-	unsigned long orders = BIT(HPAGE_PMD_ORDER);
->+
->+	/* If khugepaged is scanning an anonymous vma, allow mTHP collapse */
->+	if (is_khugepaged && vma_is_anonymous(vma))
->+		orders = THP_ORDERS_ALL_ANON;
->+	else
->+		orders = BIT(HPAGE_PMD_ORDER);
+> [...snip...]
 > 
-> 	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
-> }
+> > Consider a dual-socket system:
+> > 
+h >           node0             node1
+> >         +-------+         +-------+
+> >         | CPU 0 |---------| CPU 1 |
+> >         +-------+         +-------+
+> >         | DRAM0 |         | DRAM1 |
+> >         +---+---+         +---+---+
+> >             |                 |
+> >         +---+---+         +---+---+
+> >         | CXL 0 |         | CXL 1 |
+> >         +-------+         +-------+
+> >           node2             node3
+> > 
+> > Assuming local DRAM provides 300 GB/s and local CXL provides 100 GB/s,
+> > the effective bandwidth varies significantly from the perspective of
+> > each CPU due to inter-socket interconnect penalties.
+> > 
+> > Local device capabilities (GB/s) vs. cross-socket effective bandwidth:
+> > 
+> >          0     1     2     3
+> > CPU 0  300   150   100    50
+> > CPU 1  150   300    50   100
+> > 
+> > A reasonable global weight vector reflecting the base capabilities is:
+> > 
+> >      node0=3 node1=3 node2=1 node3=1
+> > 
+> > However, because these configured node weights do not account for
+> > interconnect degradation between sockets, applying them flatly to all
+> > sources yields the following effective map from each CPU's perspective:
+> > 
+> >          0     1     2     3
+> > CPU 0    3     3     1     1
+> > CPU 1    3     3     1     1
+> > 
+> > This does not account for the interconnect penalty (e.g., node0->node1
+> > drops 300->150, node0->node3 drops 100->50) and thus forces allocations
+> > that cause a mismatch with actual performance.
+> > 
+> > This patch makes weighted interleave socket-aware. Before weighting is
+> > applied, the candidate nodes are restricted to the current socket; only
+> > if no eligible local nodes remain does the policy fall back to the
+> > wider set.
+> 
+> So when I saw this, I thought the idea was that we would attempt an
+> allocation with these socket-aware weights, and upon failure, fall back
+> to the global weights that are set so that we can try to fulfill the
+> allocation from cross-socket nodes.
+> 
+> However, reading the implementation in 4/4, it seems like what is meant
+> by "fallback" here is not in the sense of a fallback allocation, but
+> in the sense of "if there is a misconfiguration and the intersection
+> between policy nodes and the CPU's package is empty, use the global
+> nodes instead". 
+> 
+> Am I understanding this correctly? 
+> 
+> And, it seems like what this also means is that under sane configurations,
+> there is no more cross socket memory allocation, since it will always
+> try to fulfill it from the local node. 
+> 
 
-IIUC, an anonymous VMA can pass collapse_allowable_orders() even if it
-is smaller than 2MB ...
+Your analysis of the code in patch 4/4 is exactly correct. I apologize
+for using the term "fallback" in the cover letter, which caused some
+confusion. As you understood, the current implementation strictly
+restricts allocations to the local socket to avoid cross-socket traffic.
 
-But collapse_scan_mm_slot() still scans only full PMD-sized windows:
+> > Even if the configured global weights remain identically set:
+> > 
+> >      node0=3 node1=3 node2=1 node3=1
+> > 
+> > The resulting effective map from the perspective of each CPU becomes:
+> > 
+> >          0     1     2     3
+> > CPU 0    3     0     1     0
+> > CPU 1    0     3     0     1
+> 
+> > Now tasks running on node0 prefer DRAM0(3) and CXL0(1), while tasks on
+> > node1 prefer DRAM1(3) and CXL1(1). This aligns allocation with actual
+> > effective bandwidth, preserves NUMA locality, and reduces cross-socket
+> > traffic.
+> 
+> In that sense I thought the word "prefer" was a bit confusing, since I
+> thought it would mean that it would try to fulfill the alloactions
+> from within a packet first, then fall back to remote packets if that
+> failed. (Or maybe I am just misunderstanding your explanation. Please
+> do let me know if that is the case : -) )
+> 
+> If what I understand is the case , I think this is the same thing as
+> just restricting allocations to be socket-local. I also wonder if
+> this idea applies to other mempolicies as well (i.e. unweighted interleave)
 
-		hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
-		hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
-		if (khugepaged_scan.address > hend) {
-			cc->progress++;
-			continue;
-		}
+Again, I apologize for the confusion caused by words like "prefer" and
+"fallback" in the commit message. Your understanding is correct; the
+current code strictly restricts allocations to the socket-local nodes.
 
-and hugepage_vma_revalidate() still requires PMD suitability:
+To determine where memory may be allocated within a socket, the code uses
+a function named policy_resolve_package_nodes(). As described in the
+comments, the logic works as follows:
 
-	/* Always check the PMD order to ensure its not shared by another VMA */
-	if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
-		return SCAN_ADDRESS_RANGE;
+1. Success case: It tries to use the intersection of the current CPU's
+   package nodes and the user's preselected policy nodes. If the
+   intersection is not empty, it uses these local nodes.
+2. Failure case: If the intersection is empty (e.g., the user opted out
+   of the current package), it finds the package of another node in the
+   policy nodes and gets the intersection again. If this also yields an
+   empty set, it completely falls back to the original global policy nodes.
 
+In this early version, the consideration for handling various detailed
+cases is insufficient. Also, as you pointed out, applying this strict
+local restriction directly to other policies like unweighted interleave
+might be difficult, as it could conflict with the original purpose of
+interleaving. I plan to consider these aspects further and prepare a
+more complemented design.
 
->@@ -531,7 +537,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
-> 			  vm_flags_t vm_flags)
-> {
-> 	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
->-	    hugepage_pmd_enabled()) {
->+	    hugepage_enabled()) {
-> 		if (collapse_allowable_orders(vma, vm_flags, /*is_khugepaged=*/true))
-> 			__khugepaged_enter(vma->vm_mm);
+> 
+> I think we should consider what the expected and desirable behavior is
+> when one socket is fully saturated but the other socket is empty. In my
+> mind this is no different from considering within-packet remote NUMA
+> allocations; the tradeoff becomes between reclaiming locally and
+> keeping allocations local, vs. skipping reclaiming and consuming
+> free memory while eating the remote access latency, similar to
+> zone_reclaim mode (packet_reclaim_mode? ; -) )
 
-I wonder if we should also require at least one PMD-sized scan window
-here? Not a big deal, just might be good to tighten the gate a bit :)
+This is an issue I have been thinking about since the early design phase,
+and it must be resolved to improve this patch series. The trade-off
+between forcing local memory reclaim to stay local versus accepting the
+latency penalty of using a remote socket is a point we need to address.
+I will continue to think about how to handle this properly.
 
-Apart from that, LGTM!
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> 
+> In my mind (without doing any benchmarking myself or looking at the numbers)
+> I imagine that there are some scenarios where we actually do want cross
+> socket allocations, like in the example above when we have very asymmetric
+> saturations across sockets. Is this something that could be worth
+> benchmarking as well?
+
+Your suggestion is valid and worth considering. I am currently analyzing
+the behavior of this feature under various workloads. I will also
+consider the asymmetric saturation scenarios you suggested.
+
+> 
+> I will end by saying that in the normal case (sockets have similar saturation)
+> I think this series is a definite win and improvement to weighted interleave.
+> I just was curious whether we can handle the worst-case scenarios.
+> 
+> Thank you again for the series. Have a great day!
+> Joshua
+
+Thanks again for the review. I will prepare a more considered design
+for the next version based on these points.
+
+Rakie Kim
+
 
