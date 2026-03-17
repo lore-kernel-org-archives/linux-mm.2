@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B38FED9F0
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4443AFED9F6
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 247636B0098; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
+	id 99CE86B00A8; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21F036B00A2; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
+	id 974A46B00A9; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15BE56B00A7; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
+	id 8B12A6B00AA; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 02B1E6B0098
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 91D4A1C591
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:22:32 +0000 (UTC)
-X-FDA: 84556224144.30.7C5F2F9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0952A180002
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:22:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqqxV3K2;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A42A6B00A8
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33C15C167E
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:24:32 +0000 (UTC)
+X-FDA: 84556229184.03.E65A57B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 78AF9180013
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:24:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KguY9pQQ;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773768151;
+	s=arc-20220608; t=1773768270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EJxJEmRypfWuM6YddlInSIyFtia1teHIB6WSqhxdiX4=;
-	b=IKfFwwPUSEHs0Kh2E5EFXJPjKFC1LYBRXFM5V+54TUJkI0i+lc2tiB1R71npAKWN0RN9GX
-	AN7uwiTJyugYe4vwX27IVAS7IYa925Aat6TWN/MUvgh3MKh/YmC5Zh3/ujhb7OMQkmdnQR
-	oLDfftulw1a6/QGtHi3jBUzw8XyyqCs=
+	bh=p7OhlRGCFrpDp2nPgWBDg3IuTR//rV9BoLAQOIahHdo=;
+	b=QVqMF2+c/W2QTewgtteqCwpbPlZuLvW8qzxsP5z4DWHWNcpHoBsIcb+XIehBov7tUHgSOT
+	MOKFW3BycBDjmS46/+a/ojKb8OvXK3o4unvf3A1+O4AG04vUKGwCiSME+fNHVkXtKVmLhe
+	5uS1xRCWcMqIShUgq743cvQ9zjjqlfs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqqxV3K2;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KguY9pQQ;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773768151; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773768270; a=rsa-sha256;
 	cv=none;
-	b=LItnnC9olDUZJnonkG6z1f+0EuA+ZAXehO2CtSXNJVi8yiF/a31bDQ/FxCppXsGrXKhefx
-	+q73VB1BpXVrHW+HrV1FYrIng+0xhgV9XGCXIEMYhgitq4GyQjLUpIuEZFmBxnYia6Uc+Y
-	VNED675WAjuuKE6mpEQkk6PyqBwrcyc=
+	b=ZVD+StpF75e+iE8xcNmXWsaApls07u2Kci+oVZoE7dhRvGzWDZQZR1Ot0UPSV4NmlnQjVe
+	iEcGmjZvG6dshbPOwniRf1pZMN6M26YWJ9n2YF2OjaXZ7ULRLeF877ZfjhQ6HFOwISwG5x
+	aOulOVNDa6fbwQnI7Rd6tKLZ22FbYc8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B9676012A;
-	Tue, 17 Mar 2026 17:22:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0416C4CEF7;
-	Tue, 17 Mar 2026 17:22:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D99243A9E;
+	Tue, 17 Mar 2026 17:24:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D1DC4CEF7;
+	Tue, 17 Mar 2026 17:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773768150;
-	bh=CXmAL0fZMhCd313IWOg1p205CurpMDcHyDTWRrkP3T4=;
+	s=k20201202; t=1773768269;
+	bh=7h4fdWHPisrK7hpCv9173Ird3vPPfJMliYRCEuqwTi0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZqqxV3K2taXpMWi9I62jvNQ2Nbso5h2AQWq9+9AMlJt1uQeV4Zp2+ZS8jEuqfRAL+
-	 5P2lzLcgxOr49+x7RDobgdg28kMumEGpA3ZyMDGstaZSkrG5JYpbg/McqRZWAZCYei
-	 73OfWn9fjHM8Bu95B1KzPK5r7ITT6SpI2BbF10Y3cnkspn7unPF+0+XRRKXtiLkJH3
-	 frvYeeYaJ1JFtOWfhoW286UeyI3Mnx76+/Wo2h9CWCwMwUjldhiLVyyNNBT9LgS04E
-	 Wz4AhiYhp1vyLWqOGGU3qIqIA+H/gUANoKxn+pQH3CRRy7K2uGi3JVI618ROa9d9Cp
-	 BK2WzmJVxPVng==
-Date: Tue, 17 Mar 2026 17:22:24 +0000
+	b=KguY9pQQ+/Dcad5ECFToTJEfKGgZPCKsWP07r9JfQttL/4O6e7dESxx/zbmbXRYPF
+	 caRLA6N989yTl2M5KWUN6xTnQgUjDKA6l7C8I/cog2s0iDP3UNXyMJNWGlX/qqAZH7
+	 XzNrFmBGegjnk1ME4oq7ttSBrlhYsK3eEdB1xK4SyD7319/TRRLPBqjCwwUYhgWPGv
+	 ZJ2codPYjQPrcxe05joUDN4MipwCrJFTydKwg5AOEBjGqe+WIViMJMkG1yKm7QR6Cy
+	 +irNlZAheB3I/KdW5osUcrYqyuCqjyVnsxZP3TyEF4mFDgD9R64qVA17uSfnBriLki
+	 8K7xAPejbDSsQ==
+Date: Tue, 17 Mar 2026 17:24:24 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
@@ -73,23 +73,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
 	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 03/14] mm/Kconfig: make CONFIG_MEMORY_HOTPLUG depend on
- CONFIG_SPARSEMEM_VMEMMAP
-Message-ID: <02b0cc59-bc6e-477e-831a-9f699b7e529a@lucifer.local>
+Subject: Re: [PATCH 04/14] mm/memory_hotplug: simplify check_pfn_span()
+Message-ID: <c7bd7372-ab23-4f48-af39-ea33a59dfd53@lucifer.local>
 References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-4-david@kernel.org>
+ <20260317165652.99114-5-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-4-david@kernel.org>
-X-Stat-Signature: ryh5sekin7y8idbkfasqzw864yhqo63b
-X-Rspamd-Server: rspam09
+In-Reply-To: <20260317165652.99114-5-david@kernel.org>
+X-Rspamd-Queue-Id: 78AF9180013
+X-Stat-Signature: 7zztzwo45jtj67dsmptxmj4uyicjzenq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0952A180002
-X-HE-Tag: 1773768150-202939
-X-HE-Meta: U2FsdGVkX191Kqfl4NTSVMnTU7RqTGTBbgxGP87LCrzzGiEa0mmkI/R0IWMknpORlV/F0tXMg3LSS1OLYvmtU/xweywKTfSfcmge1sX3JFExN65pZXFx4LjTGUXoah2lMGTjWYtllpuc90TV+3u/fDh6GW6vWmJQJGGHv52/kWGb0+O4FJft84X2W2ZLnhY2mCM1FXQqmWDTBEj+1PfXW+JNaCheQgvFUBLzAW7cOkG9xTsBQ0KskltVrM5OAgL9vNBwmV8cP22I0qP/pfssr+TLR5YSyt0PyCOd4MxrfCpcMJI4jJcCix6pvp8sO1Tn3TdV/i7a5vlfuVv953WwcAjBelOYzonG7HS/Ry57q2CH0R9FsOVFsON+7a6csyetyFeu4IPD0qH9H7YpyM68WXLTJ/k4sYSMjWo7RfzQQNGjh0mlN4Ohb1l30nO2V566T/P0HHde2jHlf4nqcI034Wcye2WGETdY880LHZrX1s1HdcrfnxMNjkFN8UdtP4GhP5APF52gy1+L5M3wH475PQRCdmGs3QFZBQEcOvbaRdLaLUBSvdsjo2pdSplY+3Aezw/BkLZzMOHQbf+tJ4Bw/GDKvqZAWxg4rYAYaLaeyev7vZu1om+YctMSzjw4gJlhn3SHGpWSWIOOaHLJ6PmukE4/g43X0x5Xc/GVYODJcriUfYynSYqitTasYMhz/NBhh4X2ltnCRiYFZ7AVrx8e1tkphhAivs46KKPwB/MmLDG7vbAGNyG3yd37Htug4K4kfleUSgl27aYAryNEr437JtzgtsmNBo+K65UIMERjk+02m81m6eSwR58dxS9vIQJ97jNJhjXd1DJberq4mw4eAyqZW8xb6XBz6Pa42PWFzxwtqsMzwwQkESTZ6yX2qPSrIU4/vBRcQD/JPCslsNX+VpfSxbr9Ebv8cj6FK85XMo7nuiOR/KW7uWHrmnjdoVxh2mVrZBJ7gyfWBQ3zrL4
- WfQjFMAF
- PrEO7GIvO9F21+jfzVLTss8btijIh1hp1V/XseWP2S8PIO5XO0+ogO6pk/yw067wJt1qTSWH8dpUtKHlxwAde7h5QK0VyaZMrC7rQ+ZdSoX4DR6JqWl6/ENzuB8QVAbCim+msposm1Chnsoal5rvNokFnSK5EHIsWTD2AeDwtyBb4wLIUicbMWGjsCieiIRcnFdDpBkRMQFqZTvEi6jbBzf1mMaUWZ5zPW7YGOYBdF5Rq5WWDOm6lK2dFtNA48+2MLeukinoY4IlCYiwl8Mdqv9EsuooDSgsnwbWP
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773768270-659688
+X-HE-Meta: U2FsdGVkX19WDg1nAuzmLd4GqU8Swi8+aeNKgKGb7+BryYOA1/XVUHKdTWbc5MP6X9oVr7pK1a8GSf16/fUdMbqSxczSxDrMUCXwS+Q8LFDAcqJ3cWW2q8QWxETCDcxMnA3ztH2JvYy05BzKydq4XHrWka79hms4gmkPGTkASB1nLpgiW522FISQMqIcBWNqNCyNc0TALAxB92/NBHB1qWCqd0cWYTPi7uz9yEOcufNMK7tNIDdlaeY20ir4PQ2x2edNXexr0KJ6grK3JZY8l4B0dyavPmpp6vqcQTYGDwxvKlDtqWrunCWiBK5FcDTNmcHLldO3oBxON/cq370EuvoPmaD9lFOMdL+XVAKIznuXUtui855iL/OzJlXwFAu+AmbnGYvPmapr+FCD/9sFwFKIlKeoc4sLY5HE0Hgt7cRaGnDIze07RSDlMNHszCQ8wPofJc6UKg49Co4W6jOvV6PX8+Z2bVFPKZhLxmjLe/NU6Qd2BkM1/Xh3/V8xxpzgX63ohFq3VpJ+pEMaVnm/71RTy5tC6QSzN5zaH06DQsM9vX+iQ9QLimPpbFhKfixMHv7fWk3iBZrAf45nHWopDp6qO6NgXDE+YcAKH7qXlr2wzDIY9BBdLtPV7lRfiw3eRgxHc8gTpid22uOcC2vaIVjHJ9UYh/9RITXUu0571F3MBxVtYZUcdgFLmy03LV2nKSS97Bld8rSPk5FQd9nO8kVMBQEWhkqAfNbqgdoYfCe3dbgNXJeOkvhuBx9KssRKYLsv/wssOLPn5pEP6E31CW/PqNoXml1/leOhloq3yuiqxKS4xcYwIl6uw0XTQqj4aJv4uqvy5dY3/EdREqfHDtHtzCzhnTwwK9mZBHABdNmfbJ/INCncvX5YIwOdL3/XHUehB9bEy67UQpYBcDYoC0znCtcBLi2mDfImzuuyq64vk3xG0TwMmEqa2+mWmrAid8C/XJuYbcSrHjtYESt
+ 3ePp2i+8
+ ngYM9LRlWZ25HEpynbIgpZTKp1T9XgAcHbvkKzhEVstrZMSjokkDXF1hDoD/4Des8zFNNfVSCjKjcU4aFc7PVu/aolLDAE16YnX+qOXYjMXvZjEwILib8n6e1ZwVXSBsnLPN39mm3fs1XZZDaur96CiZIBC4R3UCr8Dwf5o3Kagkd6Tq7IMFFkejyIFHFFs9WatC6UfklUlGlB8JCnBx0KC4or74ZaTFRwaNYy2705vbd7XcvU8vN7jytWN19NTT6xIoKGm3RelSDxeBLJC3gJZIyPQFIt/ej5lN4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,48 +96,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:41PM +0100, David Hildenbrand (Arm) wrote:
-> Ever since commit f8f03eb5f0f9 ("mm: stop making SPARSEMEM_VMEMMAP
-> user-selectable"), an architecture that supports CONFIG_SPARSEMEM_VMEMMAP
-> (by selecting SPARSEMEM_VMEMMAP_ENABLE) can no longer enable
-> CONFIG_SPARSEMEM without CONFIG_SPARSEMEM_VMEMMAP.
->
-> Right now, CONFIG_MEMORY_HOTPLUG is guarded by CONFIG_SPARSEMEM.
->
-> However, CONFIG_ARCH_ENABLE_MEMORY_HOTPLUG is only enabled by
-> * arm64: which selects SPARSEMEM_VMEMMAP_ENABLE
-> * loongarch: which selects SPARSEMEM_VMEMMAP_ENABLE
-> * powerpc (64bit): which selects SPARSEMEM_VMEMMAP_ENABLE
-> * riscv (64bit): which selects SPARSEMEM_VMEMMAP_ENABLE
-> * s390 with SPARSEMEM: which selects SPARSEMEM_VMEMMAP_ENABLE
-> * x86 (64bit): which selects SPARSEMEM_VMEMMAP_ENABLE
->
-> So, we can make CONFIG_MEMORY_HOTPLUG depend on CONFIG_SPARSEMEM_VMEMMAP
-> without affecting any setups.
+On Tue, Mar 17, 2026 at 05:56:42PM +0100, David Hildenbrand (Arm) wrote:
+> We now always have CONFIG_SPARSEMEM_VMEMMAP, so remove the dead code.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Some risc-y business Dave but I believe in you! So:
+It's a sparse patch but that's ok, so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  mm/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/memory_hotplug.c | 20 ++++++--------------
+>  1 file changed, 6 insertions(+), 14 deletions(-)
 >
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index ebd8ea353687..c012944938a7 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -472,7 +472,7 @@ config ARCH_ENABLE_MEMORY_HOTREMOVE
->  menuconfig MEMORY_HOTPLUG
->  	bool "Memory hotplug"
->  	select MEMORY_ISOLATION
-> -	depends on SPARSEMEM
-> +	depends on SPARSEMEM_VMEMMAP
->  	depends on ARCH_ENABLE_MEMORY_HOTPLUG
->  	depends on 64BIT
->  	select NUMA_KEEP_MEMINFO if NUMA
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 3495d94587e7..70e620496cec 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -320,21 +320,13 @@ static void release_memory_resource(struct resource *res)
+>  static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
+>  {
+>  	/*
+> -	 * Disallow all operations smaller than a sub-section and only
+> -	 * allow operations smaller than a section for
+> -	 * SPARSEMEM_VMEMMAP. Note that check_hotplug_memory_range()
+> -	 * enforces a larger memory_block_size_bytes() granularity for
+> -	 * memory that will be marked online, so this check should only
+> -	 * fire for direct arch_{add,remove}_memory() users outside of
+> -	 * add_memory_resource().
+> +	 * Disallow all operations smaller than a sub-section.
+> +	 * Note that check_hotplug_memory_range() enforces a larger
+> +	 * memory_block_size_bytes() granularity for memory that will be marked
+> +	 * online, so this check should only fire for direct
+> +	 * arch_{add,remove}_memory() users outside of add_memory_resource().
+>  	 */
+> -	unsigned long min_align;
+> -
+> -	if (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP))
+> -		min_align = PAGES_PER_SUBSECTION;
+> -	else
+> -		min_align = PAGES_PER_SECTION;
+> -	if (!IS_ALIGNED(pfn | nr_pages, min_align))
+> +	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION))
+>  		return -EINVAL;
+>  	return 0;
+>  }
 > --
 > 2.43.0
 >
