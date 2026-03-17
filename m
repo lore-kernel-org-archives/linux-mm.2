@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4443AFED9F6
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC7AEFED9F8
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99CE86B00A8; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
+	id DE8E66B00AA; Tue, 17 Mar 2026 13:29:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 974A46B00A9; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
+	id D99CD6B00AB; Tue, 17 Mar 2026 13:29:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B12A6B00AA; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
+	id CAF5F6B00AC; Tue, 17 Mar 2026 13:29:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A42A6B00A8
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:24:32 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33C15C167E
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:24:32 +0000 (UTC)
-X-FDA: 84556229184.03.E65A57B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 78AF9180013
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:24:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KguY9pQQ;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B7DD26B00AA
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:29:01 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6840513A619
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:29:01 +0000 (UTC)
+X-FDA: 84556240482.15.60F6C82
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BA6264000B
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:28:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ZdR4s/7X";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf27.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773768270;
+	s=arc-20220608; t=1773768539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7OhlRGCFrpDp2nPgWBDg3IuTR//rV9BoLAQOIahHdo=;
-	b=QVqMF2+c/W2QTewgtteqCwpbPlZuLvW8qzxsP5z4DWHWNcpHoBsIcb+XIehBov7tUHgSOT
-	MOKFW3BycBDjmS46/+a/ojKb8OvXK3o4unvf3A1+O4AG04vUKGwCiSME+fNHVkXtKVmLhe
-	5uS1xRCWcMqIShUgq743cvQ9zjjqlfs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KguY9pQQ;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773768270; a=rsa-sha256;
+	bh=Ra2RmPh5RuJo8d8C71BBQ1EEFV+2ZazLgHXIUcbhywg=;
+	b=Y+rQnm2AGZEt9vPwiMSvB1uQX1sc8z0oM+apisnTd8T9f+3a035DzejN897IfrVR79tYMt
+	g6t7W+BsDBxmGxVK+OHP7VjX5HF++YlEwxH1TRF1UiWod9SaZGX/3uD2eh66nQKD9nIdC7
+	TEhB7kv1L8QBMvlJzm2AvvtKat3cHHk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773768539; a=rsa-sha256;
 	cv=none;
-	b=ZVD+StpF75e+iE8xcNmXWsaApls07u2Kci+oVZoE7dhRvGzWDZQZR1Ot0UPSV4NmlnQjVe
-	iEcGmjZvG6dshbPOwniRf1pZMN6M26YWJ9n2YF2OjaXZ7ULRLeF877ZfjhQ6HFOwISwG5x
-	aOulOVNDa6fbwQnI7Rd6tKLZ22FbYc8=
+	b=BbSFWMLYJ98x7RcwO3C4SBOTesrmImTpDIbnjGmcwuQem4YoKHqLJoBgPag6qrt593eTcj
+	7dlu9fD5FL3ee55Kn8tjTN2VoQV0G5i43GXtC5s+0qcR8sPggRq1ATzU+H/Jlf3Jvsn5lc
+	szsBy3ZLLCGiZnPbzsaJw2ZMg2AZKHU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ZdR4s/7X";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf27.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D99243A9E;
-	Tue, 17 Mar 2026 17:24:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D1DC4CEF7;
-	Tue, 17 Mar 2026 17:24:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773768269;
-	bh=7h4fdWHPisrK7hpCv9173Ird3vPPfJMliYRCEuqwTi0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KguY9pQQ+/Dcad5ECFToTJEfKGgZPCKsWP07r9JfQttL/4O6e7dESxx/zbmbXRYPF
-	 caRLA6N989yTl2M5KWUN6xTnQgUjDKA6l7C8I/cog2s0iDP3UNXyMJNWGlX/qqAZH7
-	 XzNrFmBGegjnk1ME4oq7ttSBrlhYsK3eEdB1xK4SyD7319/TRRLPBqjCwwUYhgWPGv
-	 ZJ2codPYjQPrcxe05joUDN4MipwCrJFTydKwg5AOEBjGqe+WIViMJMkG1yKm7QR6Cy
-	 +irNlZAheB3I/KdW5osUcrYqyuCqjyVnsxZP3TyEF4mFDgD9R64qVA17uSfnBriLki
-	 8K7xAPejbDSsQ==
-Date: Tue, 17 Mar 2026 17:24:24 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Oscar Salvador <osalvador@suse.de>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 04/14] mm/memory_hotplug: simplify check_pfn_span()
-Message-ID: <c7bd7372-ab23-4f48-af39-ea33a59dfd53@lucifer.local>
-References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-5-david@kernel.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id 11393600AD;
+	Tue, 17 Mar 2026 17:28:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F31EC4CEF7;
+	Tue, 17 Mar 2026 17:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773768538;
+	bh=ni9KnkEM49HfIQy7PSdXAs68H+yiwWUClh7elHlsmeg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZdR4s/7XJ7nVo0ncX8q71RrybZG6FjywtcqPw5iNTMfDdETCjP4n989NMaY6DF8zG
+	 GNEO9pvLHYW2JgNHcaOHXM8SKQ0ZRnlz9JXLTQXQv8oxJZqBiYBkW3EIB3tgWdZke0
+	 gS3JZJNAUi5eraLUafsaEeNmk+pvEMpLDc36ak8o=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.18 316/333] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue, 17 Mar 2026 17:35:45 +0100
+Message-ID: <20260317163011.100781577@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-5-david@kernel.org>
-X-Rspamd-Queue-Id: 78AF9180013
-X-Stat-Signature: 7zztzwo45jtj67dsmptxmj4uyicjzenq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BA6264000B
+X-Stat-Signature: cqbx71n4c8xhazinzang94buihmo7ttt
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773768270-659688
-X-HE-Meta: U2FsdGVkX19WDg1nAuzmLd4GqU8Swi8+aeNKgKGb7+BryYOA1/XVUHKdTWbc5MP6X9oVr7pK1a8GSf16/fUdMbqSxczSxDrMUCXwS+Q8LFDAcqJ3cWW2q8QWxETCDcxMnA3ztH2JvYy05BzKydq4XHrWka79hms4gmkPGTkASB1nLpgiW522FISQMqIcBWNqNCyNc0TALAxB92/NBHB1qWCqd0cWYTPi7uz9yEOcufNMK7tNIDdlaeY20ir4PQ2x2edNXexr0KJ6grK3JZY8l4B0dyavPmpp6vqcQTYGDwxvKlDtqWrunCWiBK5FcDTNmcHLldO3oBxON/cq370EuvoPmaD9lFOMdL+XVAKIznuXUtui855iL/OzJlXwFAu+AmbnGYvPmapr+FCD/9sFwFKIlKeoc4sLY5HE0Hgt7cRaGnDIze07RSDlMNHszCQ8wPofJc6UKg49Co4W6jOvV6PX8+Z2bVFPKZhLxmjLe/NU6Qd2BkM1/Xh3/V8xxpzgX63ohFq3VpJ+pEMaVnm/71RTy5tC6QSzN5zaH06DQsM9vX+iQ9QLimPpbFhKfixMHv7fWk3iBZrAf45nHWopDp6qO6NgXDE+YcAKH7qXlr2wzDIY9BBdLtPV7lRfiw3eRgxHc8gTpid22uOcC2vaIVjHJ9UYh/9RITXUu0571F3MBxVtYZUcdgFLmy03LV2nKSS97Bld8rSPk5FQd9nO8kVMBQEWhkqAfNbqgdoYfCe3dbgNXJeOkvhuBx9KssRKYLsv/wssOLPn5pEP6E31CW/PqNoXml1/leOhloq3yuiqxKS4xcYwIl6uw0XTQqj4aJv4uqvy5dY3/EdREqfHDtHtzCzhnTwwK9mZBHABdNmfbJ/INCncvX5YIwOdL3/XHUehB9bEy67UQpYBcDYoC0znCtcBLi2mDfImzuuyq64vk3xG0TwMmEqa2+mWmrAid8C/XJuYbcSrHjtYESt
- 3ePp2i+8
- ngYM9LRlWZ25HEpynbIgpZTKp1T9XgAcHbvkKzhEVstrZMSjokkDXF1hDoD/4Des8zFNNfVSCjKjcU4aFc7PVu/aolLDAE16YnX+qOXYjMXvZjEwILib8n6e1ZwVXSBsnLPN39mm3fs1XZZDaur96CiZIBC4R3UCr8Dwf5o3Kagkd6Tq7IMFFkejyIFHFFs9WatC6UfklUlGlB8JCnBx0KC4or74ZaTFRwaNYy2705vbd7XcvU8vN7jytWN19NTT6xIoKGm3RelSDxeBLJC3gJZIyPQFIt/ej5lN4
+X-HE-Tag: 1773768539-870054
+X-HE-Meta: U2FsdGVkX1/ZneWDgy3+TG1TSm2ZOvBUKZfCX9uXsLu3pBqbe0oKai4ghcoKPFijaXAhLx45gZgXLlrNzo1UJNi6w95E3uufdl/f6kxyQYNknebnZBnAWeCT3es7WrSjmD7+A0QJTQWMnH4I/PUCt03I/PKDBkUrX+UV6J/eAyDx50MfrsMA2eHyJKHmciJ/Pe9BsFkGE3jASOuoE/vPDjmsUQpAH65aVeBQhbqHHxxFF6BI69kit0Tyf3e8YizbL7S/9iPOVP5DO9OtSS2HmnruS60QwoHF9IJclhcHKp2WV1y7fNPMqbBhPTw3/RxdqHTTWz0artA+ihw5HA329xtNVQbQt17uVd3fCuu+Kg0M+gSsqdxbUbCP7fzQPD6l7BC/cYqVkNq0wstbF04OzIi4Z3uihLuoRs7OtGxMBsBTWJYMQRvPKL1EXkETB4r4x+k+jc9f3YmMTpox65Ozf4i4oYVEoNwcvYlpgkrH/DUW1+TxmUbEnmVAjK9bWRwqyiZ+WPbRy8MrHuvb5+KKQQ+NAGX264n4BvGuviuitNnf+ksBzk5s1siDiED144n1J9Tu9L+eeZATxgO/QnA+Nz6vR6K4rs/b9J4oAhSt2WQLg73cFuPhspXcoaPQQOQMMkRNUVJpyX0LfKdBWrMbtAP/o4TohMl2QP5FVJ0UUgfVd7I1olkLFeQtJRogimG5K21OID8EFFryhnB8wFfAg/nOdhiDhvuHdB1QTidN4GKrC7lA4AF2QlaTtnGLKrB/2J1LEOOYy8I/13EUBbXubtsRc1r7ZQHiiGTw9xViTXGVhC6LRK/YXVPxdUYxlEbDmZ4EFcxXDcn4p5VpWwnYphG2Ze3gSvPgqr6Hz3Lsd4vAihfiu2NVgI3bcsKhWqFy7UPWlozqX4rj62AD++T6k/3znXg+ygyyyk0/MDC7Thvm6tyGfnujqFf6zNqvdkLitXsTjgqZKUQtlmlAh7q
+ RXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,52 +104,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:42PM +0100, David Hildenbrand (Arm) wrote:
-> We now always have CONFIG_SPARSEMEM_VMEMMAP, so remove the dead code.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-It's a sparse patch but that's ok, so:
+------------------
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-> ---
->  mm/memory_hotplug.c | 20 ++++++--------------
->  1 file changed, 6 insertions(+), 14 deletions(-)
->
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 3495d94587e7..70e620496cec 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -320,21 +320,13 @@ static void release_memory_resource(struct resource *res)
->  static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
->  {
->  	/*
-> -	 * Disallow all operations smaller than a sub-section and only
-> -	 * allow operations smaller than a section for
-> -	 * SPARSEMEM_VMEMMAP. Note that check_hotplug_memory_range()
-> -	 * enforces a larger memory_block_size_bytes() granularity for
-> -	 * memory that will be marked online, so this check should only
-> -	 * fire for direct arch_{add,remove}_memory() users outside of
-> -	 * add_memory_resource().
-> +	 * Disallow all operations smaller than a sub-section.
-> +	 * Note that check_hotplug_memory_range() enforces a larger
-> +	 * memory_block_size_bytes() granularity for memory that will be marked
-> +	 * online, so this check should only fire for direct
-> +	 * arch_{add,remove}_memory() users outside of add_memory_resource().
->  	 */
-> -	unsigned long min_align;
-> -
-> -	if (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP))
-> -		min_align = PAGES_PER_SUBSECTION;
-> -	else
-> -		min_align = PAGES_PER_SECTION;
-> -	if (!IS_ALIGNED(pfn | nr_pages, min_align))
-> +	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION))
->  		return -EINVAL;
->  	return 0;
->  }
-> --
-> 2.43.0
->
+commit b570f37a2ce480be26c665345c5514686a8a0274 upstream.
+
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
+
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
+
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+sinc lru_add_drain_all() requires a short work-item
+to be run on all online cpus to complete.
+
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
+
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in do_swap_page().
+
+Rename migration_entry_wait_on_locked() to
+softleaf_entry_wait_unlock() and update its documentation to
+indicate the new use-case.
+
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
+
+v2:
+- Instead of a cond_resched() in hmm_range_fault(),
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+v4:
+- Rename migrate_entry_wait_on_locked() to
+  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+v5:
+- Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
+  version of softleaf_entry_wait_on_locked().
+- Modify wording around function names in the commit message
+  (Andrew Morton)
+
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Link: https://patch.msgid.link/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit a69d1ab971a624c6f112cea61536569d579c3215)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ include/linux/migrate.h |    8 ++++++++
+ mm/filemap.c            |   13 +++++++++----
+ mm/memory.c             |    3 ++-
+ 3 files changed, 19 insertions(+), 5 deletions(-)
+
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -97,6 +97,14 @@ static inline int set_movable_ops(const
+ 	return -ENOSYS;
+ }
+ 
++static inline void migration_entry_wait_on_locked(swp_entry_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	WARN_ON_ONCE(1);
++
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1386,14 +1386,16 @@ repeat:
+ 
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * migration_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1435,6 +1437,9 @@ void migration_entry_wait_on_locked(swp_
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4642,7 +4642,8 @@ vm_fault_t do_swap_page(struct vm_fault
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				migration_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (is_hwpoison_entry(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+
+
 
