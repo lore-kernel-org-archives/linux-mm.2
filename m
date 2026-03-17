@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B077FED9F1
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:21:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B38FED9F0
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1FC76B00A5; Tue, 17 Mar 2026 13:21:28 -0400 (EDT)
+	id 247636B0098; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6CD6B00A7; Tue, 17 Mar 2026 13:21:28 -0400 (EDT)
+	id 21F036B00A2; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A33B56B00A8; Tue, 17 Mar 2026 13:21:28 -0400 (EDT)
+	id 15BE56B00A7; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 914B66B00A5
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:21:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C2DA1A02DB
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:21:28 +0000 (UTC)
-X-FDA: 84556221456.10.1527C48
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 02B1E6B0098
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:22:33 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 91D4A1C591
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:22:32 +0000 (UTC)
+X-FDA: 84556224144.30.7C5F2F9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 83D5AC0007
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:21:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpXaC+4I;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0952A180002
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:22:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqqxV3K2;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773768086;
+	s=arc-20220608; t=1773768151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NT2wJ1aTmqW81Py6vQ7bIascniqxbhpLxrxeObfJjzk=;
-	b=38PqFEDcKwuSDtv6uXBAi2AvNejERH39CK67wG6KTzFANRMf900VQOpCWwllZKFzHMI4FU
-	jJhRQs/Qg9H/ErO/CudPIm6Sl+RpWBgk/qLZgwMfph0qLMjWr8f8V3HA1Zz0iKEyVz/17T
-	dyoSLb3Q02VOlT9Ixr5mCcltiusgZj4=
+	bh=EJxJEmRypfWuM6YddlInSIyFtia1teHIB6WSqhxdiX4=;
+	b=IKfFwwPUSEHs0Kh2E5EFXJPjKFC1LYBRXFM5V+54TUJkI0i+lc2tiB1R71npAKWN0RN9GX
+	AN7uwiTJyugYe4vwX27IVAS7IYa925Aat6TWN/MUvgh3MKh/YmC5Zh3/ujhb7OMQkmdnQR
+	oLDfftulw1a6/QGtHi3jBUzw8XyyqCs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpXaC+4I;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773768086; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqqxV3K2;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773768151; a=rsa-sha256;
 	cv=none;
-	b=HZqG/c3x3sQKDg05aEI1KUZ3UBMRmGn95O5MY9TBpvL9ejkgJEnkqyNQoXwcsJKbdS85mk
-	YhKdAfGLRrauROop4SupKD/XmCx911ojM2jG00SgcqDToPBDNNFMMVr5YlF/ElygDGYMN5
-	47Vj6gsuo4miJNlfF/OQo5JA3y8Lr3c=
+	b=LItnnC9olDUZJnonkG6z1f+0EuA+ZAXehO2CtSXNJVi8yiF/a31bDQ/FxCppXsGrXKhefx
+	+q73VB1BpXVrHW+HrV1FYrIng+0xhgV9XGCXIEMYhgitq4GyQjLUpIuEZFmBxnYia6Uc+Y
+	VNED675WAjuuKE6mpEQkk6PyqBwrcyc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E935360133;
-	Tue, 17 Mar 2026 17:21:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6E1C4CEF7;
-	Tue, 17 Mar 2026 17:21:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B9676012A;
+	Tue, 17 Mar 2026 17:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0416C4CEF7;
+	Tue, 17 Mar 2026 17:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773768085;
-	bh=aCHrUD8+LmC43GsbN4nEVNsRfFAFX8etI0ZbsdYUK/4=;
+	s=k20201202; t=1773768150;
+	bh=CXmAL0fZMhCd313IWOg1p205CurpMDcHyDTWRrkP3T4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LpXaC+4IB9mCgF/42BlBRhw6KVqOa7RR79BYddvDCTBgjA1gLWe+RD+aF3NGvHsIs
-	 ebZVzsc1DAjrIciSrlH7qS2i4CrudMkxxc8IIgtbzG2gu1vfsrz4YEk5ZTNzwV/7jz
-	 1TIZruvkoK5fMndOp0pMbv9pc7nyi3gfX2lgr9AgRGkGsTovEHui3yWHJkjTQB9IRY
-	 /pq3TyUUeDI1GFbTMgqJJFTNVhz4d9utSWqf97jJ+VT21vmAlHQuwIh1GJJCXxwHNZ
-	 9p+fcsYVNQutrx8dnSA2jC3vnGK90ju3XFrX6ww98WIen8Qlg8ghuPrAWI75EdQl4e
-	 ATXExyJTigkjQ==
-Date: Tue, 17 Mar 2026 17:21:20 +0000
+	b=ZqqxV3K2taXpMWi9I62jvNQ2Nbso5h2AQWq9+9AMlJt1uQeV4Zp2+ZS8jEuqfRAL+
+	 5P2lzLcgxOr49+x7RDobgdg28kMumEGpA3ZyMDGstaZSkrG5JYpbg/McqRZWAZCYei
+	 73OfWn9fjHM8Bu95B1KzPK5r7ITT6SpI2BbF10Y3cnkspn7unPF+0+XRRKXtiLkJH3
+	 frvYeeYaJ1JFtOWfhoW286UeyI3Mnx76+/Wo2h9CWCwMwUjldhiLVyyNNBT9LgS04E
+	 Wz4AhiYhp1vyLWqOGGU3qIqIA+H/gUANoKxn+pQH3CRRy7K2uGi3JVI618ROa9d9Cp
+	 BK2WzmJVxPVng==
+Date: Tue, 17 Mar 2026 17:22:24 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
@@ -73,23 +73,23 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
 	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 02/14] mm/sparse: remove WARN_ONs from
- (online|offline)_mem_sections()
-Message-ID: <7056316c-e811-403f-9edf-8ac3c4248dba@lucifer.local>
+Subject: Re: [PATCH 03/14] mm/Kconfig: make CONFIG_MEMORY_HOTPLUG depend on
+ CONFIG_SPARSEMEM_VMEMMAP
+Message-ID: <02b0cc59-bc6e-477e-831a-9f699b7e529a@lucifer.local>
 References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-3-david@kernel.org>
+ <20260317165652.99114-4-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-3-david@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 83D5AC0007
-X-Stat-Signature: omhgggqagx39jx73gtuk18eu6czfor8p
+In-Reply-To: <20260317165652.99114-4-david@kernel.org>
+X-Stat-Signature: ryh5sekin7y8idbkfasqzw864yhqo63b
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773768086-541956
-X-HE-Meta: U2FsdGVkX1/jX4TjvPNi3X5tCW8epSnDzv8KBQYXxp2sWiLj88AljuvTBRSYWa2PAixrPHiG4Bw8RnsK3FM9Bgdg9Y8fWIbu1Q6DHTppKcy7Bp36HEZqy6AlGLbqNI3lfVsFqbMofNzzowC7CBeP4nzRnVXmbgkmwYJcXh6LeSiUxPkWm5vlCGgXIng3310JLWhhjbL13Sa7LGd5T/G+lPL6gM2u/wQ9wSywXp3lo5E63hlbLndcP9zFILcfXdckTyWULab6fN1chVIze9aD5futePSQE5yf8rkbahQaWRB9JasJKcW+9yzYB38G4jKIr0pKXfkxQrrHdh8tKak9SD+mngUaJAtM7wQ+I1zMfv7r6FTpnEuY2dH8KwkSnhVjsvn9d0VNi4WhC99clxQBDdVVulF4l5308WPngrSTGlhJLviyP/es0U8ZjKVDYTZpGN33WygPXG9EpZbR9NhN+jVgP+nIVGXQ7/ZAXVggOwVMZjM5fzoKyh525fNoz6FEY7oxAbkvtRwCl5cb0kQpvc5DQ5sWCvtBGSFrxWx1b1wWZXLH2e7kKGOLb0IqVC3IkrzPC8waS5aYh2P2ul1AGDhj5No8GISEzKak9hfxEHHflQ87wsrjlgYdDtXqAf7BrttAsqXNzl49HQAly7WTHH//P6ajIhPxLvW7qf/b+NWbvERvVbovzLpTYkHrOYNxCDmid4WHWgpNN3rWhXkNkdg1Qcs+0cozd3Kmd5KJPAAL44yABB9jsGSQyrKZfgJWjFjui1u72YDCTpHx/gGLRdkpy769mEqh4mOK+IZIIACckKtzwYjJPumxrIK00dh9I1ykL+FcVTKC2VkWIvix7QP0m8nYxuH1qnMV3SYDstgWviP/NbYpKY1jLMDAFAOY4gJL84xyFXqnJshexbu3R+Iu4ggmvWeYRc7k55DqcGcovjpVGv1odN0UmaUUGNV7G+wOzvU/tL8FQoY2fG3
- iBSrdtgZ
- 7jlx+VHXhCyijrQAm1YfdJ+Ui0TkGfQpkVYIPGdlJJWrbzzGLwwKw9EcH54/Y+5ZhXKS5Gc7Q4ZYzrtSO5wZcbFz7PU+Am3K91jAo3dO+H2gBdYxSBeB09AZ0989lkI8QUyPV9iQ/4TIYkTMQ0jLSJHUEGHkGL6WhG+Cbipm6jtkVpoOlGQij2AXUxjH4G/tKLHMB/ooAcFgl+1HmWAdb0catzVukdMZCVv8FADQzjJFKiI4yXvNrxHQ0CHcbBiY2iU6tCGdwbT+D5fqnW2pzaM9uyGJC9olZSUDgX8GaTx5sOzJyTpveyzzfWuWuByF5J6yA
+X-Rspamd-Queue-Id: 0952A180002
+X-HE-Tag: 1773768150-202939
+X-HE-Meta: U2FsdGVkX191Kqfl4NTSVMnTU7RqTGTBbgxGP87LCrzzGiEa0mmkI/R0IWMknpORlV/F0tXMg3LSS1OLYvmtU/xweywKTfSfcmge1sX3JFExN65pZXFx4LjTGUXoah2lMGTjWYtllpuc90TV+3u/fDh6GW6vWmJQJGGHv52/kWGb0+O4FJft84X2W2ZLnhY2mCM1FXQqmWDTBEj+1PfXW+JNaCheQgvFUBLzAW7cOkG9xTsBQ0KskltVrM5OAgL9vNBwmV8cP22I0qP/pfssr+TLR5YSyt0PyCOd4MxrfCpcMJI4jJcCix6pvp8sO1Tn3TdV/i7a5vlfuVv953WwcAjBelOYzonG7HS/Ry57q2CH0R9FsOVFsON+7a6csyetyFeu4IPD0qH9H7YpyM68WXLTJ/k4sYSMjWo7RfzQQNGjh0mlN4Ohb1l30nO2V566T/P0HHde2jHlf4nqcI034Wcye2WGETdY880LHZrX1s1HdcrfnxMNjkFN8UdtP4GhP5APF52gy1+L5M3wH475PQRCdmGs3QFZBQEcOvbaRdLaLUBSvdsjo2pdSplY+3Aezw/BkLZzMOHQbf+tJ4Bw/GDKvqZAWxg4rYAYaLaeyev7vZu1om+YctMSzjw4gJlhn3SHGpWSWIOOaHLJ6PmukE4/g43X0x5Xc/GVYODJcriUfYynSYqitTasYMhz/NBhh4X2ltnCRiYFZ7AVrx8e1tkphhAivs46KKPwB/MmLDG7vbAGNyG3yd37Htug4K4kfleUSgl27aYAryNEr437JtzgtsmNBo+K65UIMERjk+02m81m6eSwR58dxS9vIQJ97jNJhjXd1DJberq4mw4eAyqZW8xb6XBz6Pa42PWFzxwtqsMzwwQkESTZ6yX2qPSrIU4/vBRcQD/JPCslsNX+VpfSxbr9Ebv8cj6FK85XMo7nuiOR/KW7uWHrmnjdoVxh2mVrZBJ7gyfWBQ3zrL4
+ WfQjFMAF
+ PrEO7GIvO9F21+jfzVLTss8btijIh1hp1V/XseWP2S8PIO5XO0+ogO6pk/yw067wJt1qTSWH8dpUtKHlxwAde7h5QK0VyaZMrC7rQ+ZdSoX4DR6JqWl6/ENzuB8QVAbCim+msposm1Chnsoal5rvNokFnSK5EHIsWTD2AeDwtyBb4wLIUicbMWGjsCieiIRcnFdDpBkRMQFqZTvEi6jbBzf1mMaUWZ5zPW7YGOYBdF5Rq5WWDOm6lK2dFtNA48+2MLeukinoY4IlCYiwl8Mdqv9EsuooDSgsnwbWP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,63 +97,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:40PM +0100, David Hildenbrand (Arm) wrote:
-> We do not allow offlining of memory with memory holes, and always
-> hotplug memory without holes.
+On Tue, Mar 17, 2026 at 05:56:41PM +0100, David Hildenbrand (Arm) wrote:
+> Ever since commit f8f03eb5f0f9 ("mm: stop making SPARSEMEM_VMEMMAP
+> user-selectable"), an architecture that supports CONFIG_SPARSEMEM_VMEMMAP
+> (by selecting SPARSEMEM_VMEMMAP_ENABLE) can no longer enable
+> CONFIG_SPARSEMEM without CONFIG_SPARSEMEM_VMEMMAP.
 >
-> Consequently, we cannot end up onlining or offlining memory sections that
-> have holes (including invalid sections). That's also why these
-> WARN_ONs never fired.
+> Right now, CONFIG_MEMORY_HOTPLUG is guarded by CONFIG_SPARSEMEM.
 >
-> Let's remove the WARN_ONs along with the TODO regarding double-checking.
+> However, CONFIG_ARCH_ENABLE_MEMORY_HOTPLUG is only enabled by
+> * arm64: which selects SPARSEMEM_VMEMMAP_ENABLE
+> * loongarch: which selects SPARSEMEM_VMEMMAP_ENABLE
+> * powerpc (64bit): which selects SPARSEMEM_VMEMMAP_ENABLE
+> * riscv (64bit): which selects SPARSEMEM_VMEMMAP_ENABLE
+> * s390 with SPARSEMEM: which selects SPARSEMEM_VMEMMAP_ENABLE
+> * x86 (64bit): which selects SPARSEMEM_VMEMMAP_ENABLE
+>
+> So, we can make CONFIG_MEMORY_HOTPLUG depend on CONFIG_SPARSEMEM_VMEMMAP
+> without affecting any setups.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-I'm warning up to your series! (The bad puns may/may not continue) so:
+Some risc-y business Dave but I believe in you! So:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  mm/sparse.c | 17 ++---------------
->  1 file changed, 2 insertions(+), 15 deletions(-)
+>  mm/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index dfabe554adf8..93252112860e 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -638,13 +638,8 @@ void online_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->
->  	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
->  		unsigned long section_nr = pfn_to_section_nr(pfn);
-> -		struct mem_section *ms;
-> -
-> -		/* onlining code should never touch invalid ranges */
-> -		if (WARN_ON(!valid_section_nr(section_nr)))
-> -			continue;
-> +		struct mem_section *ms = __nr_to_section(section_nr);
->
-> -		ms = __nr_to_section(section_nr);
->  		ms->section_mem_map |= SECTION_IS_ONLINE;
->  	}
->  }
-> @@ -656,16 +651,8 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->
->  	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
->  		unsigned long section_nr = pfn_to_section_nr(pfn);
-> -		struct mem_section *ms;
-> +		struct mem_section *ms = __nr_to_section(section_nr);
->
-> -		/*
-> -		 * TODO this needs some double checking. Offlining code makes
-> -		 * sure to check pfn_valid but those checks might be just bogus
-> -		 */
-> -		if (WARN_ON(!valid_section_nr(section_nr)))
-> -			continue;
-> -
-> -		ms = __nr_to_section(section_nr);
->  		ms->section_mem_map &= ~SECTION_IS_ONLINE;
->  	}
->  }
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index ebd8ea353687..c012944938a7 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -472,7 +472,7 @@ config ARCH_ENABLE_MEMORY_HOTREMOVE
+>  menuconfig MEMORY_HOTPLUG
+>  	bool "Memory hotplug"
+>  	select MEMORY_ISOLATION
+> -	depends on SPARSEMEM
+> +	depends on SPARSEMEM_VMEMMAP
+>  	depends on ARCH_ENABLE_MEMORY_HOTPLUG
+>  	depends on 64BIT
+>  	select NUMA_KEEP_MEMINFO if NUMA
 > --
 > 2.43.0
 >
