@@ -4,100 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36657FF6E8C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 22:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD9A0FF6E90
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 22:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 461356B0099; Tue, 17 Mar 2026 18:03:28 -0400 (EDT)
+	id 7E49C6B009D; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 412B76B009B; Tue, 17 Mar 2026 18:03:28 -0400 (EDT)
+	id 76E5C6B009F; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 328066B009D; Tue, 17 Mar 2026 18:03:28 -0400 (EDT)
+	id 636086B00A0; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2206A6B0099
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:03:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C6066139983
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:03:27 +0000 (UTC)
-X-FDA: 84556932054.07.D555DB2
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4AEAFC000E
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:03:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jvymggxD;
-	spf=pass (imf10.hostedemail.com: domain of 3rM-5aQYKCIcyzrtvsrzzrwp.nzxwty58-xxv6lnv.z2r@flex--nogikh.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3rM-5aQYKCIcyzrtvsrzzrwp.nzxwty58-xxv6lnv.z2r@flex--nogikh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773785006;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B9056B009D
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 18:29:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A474C1603D7
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:29:58 +0000 (UTC)
+X-FDA: 84556998876.29.CDE3447
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B724E140008
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:29:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=fyc1TcUA;
+	spf=pass (imf23.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773786597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=a5ROHSj5Kev7hvsbjDyb4mWRpxoAV8o5zFiVg3Mbgk4=;
-	b=bfWCltkboCm8kmCTffRIPvyiiU1rwTRb2lnntXmZ1bFB/cGtjPApvJvrbAILhSyzA1ZCp7
-	zHmJUmarXG/TneH3WSzYi6kVmivR0rQSK9gJbM1CFnZl8cAPG/+OUeOVwdSBTXZUtQNSXF
-	/HYnT9xLEH1Hure1Hjj/CgDqeX4//ac=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jvymggxD;
-	spf=pass (imf10.hostedemail.com: domain of 3rM-5aQYKCIcyzrtvsrzzrwp.nzxwty58-xxv6lnv.z2r@flex--nogikh.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3rM-5aQYKCIcyzrtvsrzzrwp.nzxwty58-xxv6lnv.z2r@flex--nogikh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773785006; a=rsa-sha256;
-	cv=none;
-	b=Pl+vC6aOoI/fhjSiEmEEjyjr8O19LHs1aBN1ZlnmySMXcYZU4a6Mn43m6vNN4TxL4KLwiv
-	mPCtCGEO5NEziwU+TbHQV8ff077THLdn2inwaB63s/sPYpLTHntDHuc2rx/KlYjjiVz61W
-	WRdTOMYLjYsemYHOV+onXJLKKBmFeuY=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4868e691614so7461355e9.1
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 15:03:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773785005; x=1774389805; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=a5ROHSj5Kev7hvsbjDyb4mWRpxoAV8o5zFiVg3Mbgk4=;
-        b=jvymggxDTlFAT7b/EsCICSirVTibq0nx+ac9Legi5pmgclZLv/oibIptKM3t9P45m7
-         n8Vix4LP7Fpmsfn561swRIcbByGhZTAfjiJYFpjE6HsArQI0DJb1bJmXdib7qcQoBp2t
-         p8zEVwJ4KebtoNtNAd5owSQkSgqZTbnT5tO0OohvXPMoOVHQ9OGj3jYQ6x3IGehKarxA
-         yax2TdWzbrrpg6xurh4E0CdwO6BlV9LXUIw7odNotxy4D42uMBGxS7AK1tUUy3KZcUUs
-         x2KPB4VM/PNmYv6RiZibZY9UcBX4FF8/PoYy5lUEwDaPXwd6lUZRlYuVU9m2GZWUB8nO
-         U3/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773785005; x=1774389805;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a5ROHSj5Kev7hvsbjDyb4mWRpxoAV8o5zFiVg3Mbgk4=;
-        b=o86gINp99yhW97tjmN6fcbZJajOz+xhXAmUr6EqpoczydwYovJGt15h2qbMDvnKHeA
-         Mtwrp9zishQ9L7wp6dsjt/lk+XhTu+KT5i8fo99j/UB88DQ1u2iKzDfpK4Tj7SVtPMuB
-         JWBIDEf+JBaQEdnmT2QOBu7tq/hbyDLjG8N759tZ2YbaPjO1NcC8JSuq0FJifSd5dQJn
-         gEdZw1N7RSE4d9K6H77aV8h/Wk9iqKjx73eEc8LwyzGEGvavsPkVyRlHdDDktjmR7gJv
-         Nb3D0MCQiD+Eo99KiRutewBDgfI7EZD24/mM2kUt6aXXOhA8urXD0KyFCjqqS7zZ+ozz
-         s20A==
-X-Forwarded-Encrypted: i=1; AJvYcCVdZpagE9yr794WLcl31gXIoNuyK1W2TdunRfRbGUt+iL2LXCzToZFBs8QK7gw00L2Jl7CXqosA2g==@kvack.org
-X-Gm-Message-State: AOJu0YycEZborn6JFTc4+XJEpVIzrlUtPa30T7pOhKUR1/kxytjdLHII
-	SdRDNMe4oZoZEPMAuPfGAuyM8uiEl8CpucBvfjREmdLGPwKdnFEb37A5RKTihFFwkz+gLzNlrFA
-	rIEvw8g==
-X-Received: from wmpo21.prod.google.com ([2002:a05:600c:3395:b0:483:b1c6:5b34])
- (user=nogikh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3514:b0:485:3a03:ced1
- with SMTP id 5b1f17b1804b1-486f458107fmr19079455e9.28.1773785004419; Tue, 17
- Mar 2026 15:03:24 -0700 (PDT)
-Date: Tue, 17 Mar 2026 23:03:19 +0100
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
-Message-ID: <20260317220319.788561-1-nogikh@google.com>
-Subject: [PATCH v2] x86/kexec: Disable KCOV instrumentation after load_segments()
-From: Aleksandr Nogikh <nogikh@google.com>
-To: bp@alien8.de, tglx@kernel.org, mingo@redhat.com
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, dvyukov@google.com, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	Aleksandr Nogikh <nogikh@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4AEAFC000E
-X-Stat-Signature: kmseokpcc6xiuyedchhikisd1g8d79en
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=tt4RF9KNtssGzdEl51RiADXjFbSZ7mpR4OrL6sbsIPM=;
+	b=NTssZuAJXqSxtnd/2C4dpzoSUrO+956dZRFezT7bUr8iCF8kLhsvZmgcyCVSKljiQW4k/a
+	s0ZM2R0nJ2msR1i+NBCgYvPOgQFXY/bxFicsOlECn+MZMJm4Lm4bNLL6CuQfR2mwUGI901
+	ULFaFUSwOvlQVtQzOhtwnolz0mqhxvQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773786597; a=rsa-sha256;
+	cv=pass;
+	b=vDFJ01wqKVy7UeIXFZnJaZXmshlj7NzD9XHItlqv1tepZT6RmFdBE9bCDc/seb6WbnRehb
+	G8gxy+5AOao5K4wrUmV5kb0/spooLt9UFQeJMLeEn5S/cwZ2rtn1gzD2KrzxJzA/9AmWEY
+	KcGQCzPVW5bHQUTsMsnKM1IJoc958mk=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=fyc1TcUA;
+	spf=pass (imf23.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Seal: i=1; a=rsa-sha256; t=1773786569; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=LrO8uIjgDsxf2WxX6XYuJaDHUGdDoot9AxxVOR4O6IxHTNsN3d1UPvS2jyxKbyguTP1sfftbjDMZh747aHwtGCDKaswO2aOb6bltzGvqUbNHQnTY7kdqY7TVhtU5llaSj/Y85EJeaKdYcw4dfl0usYYlz4AwGDvU8H+T3bZggKo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1773786569; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tt4RF9KNtssGzdEl51RiADXjFbSZ7mpR4OrL6sbsIPM=; 
+	b=DBeo/PFN56NF5W2j7hD2ud/SKRHxpQ6iAPTAks6SMOsJHZzWR6DpgjTGy57hJUv/ATIi57jiaAnOds1eBl3fC8aVgDOO1iTNMCOVF3umrSIJK/QDF8tb8adwSB4JBv54EtXTytncJBYdzAkgPU4oF+gTRt6qCTk0Bn2ajjtV1+k=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773786569;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=tt4RF9KNtssGzdEl51RiADXjFbSZ7mpR4OrL6sbsIPM=;
+	b=fyc1TcUAwIjJbAp+5obQfgkztqugMkuE1xp8ijhx8QH3XDTSG6/p26aWk2pMquq2
+	C5yl9E9iivYoLCRvyIm8dHFwcztQTosxy4I9bf7xIThsROy9hAbaHnsFvO96GRb/dVm
+	n0eWcIplvI8EKkxRfuX6UPdRE2R6RB+6uaSke9Xo=
+Received: by mx.zoho.eu with SMTPS id 1773786567108939.6708811150448;
+	Tue, 17 Mar 2026 23:29:27 +0100 (CET)
+From: Josh Law <objecting@objecting.org>
+To: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Josh Law <objecting@objecting.org>
+Subject: [PATCH] lib/maple_tree: fix incorrect dead range comparison in mas_topiary_replace()
+Date: Tue, 17 Mar 2026 22:29:25 +0000
+Message-Id: <20260317222925.87929-1-objecting@objecting.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B724E140008
+X-Stat-Signature: ftxq31fhcu1bwtznhfzoyipa7toh9p36
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773785006-235059
-X-HE-Meta: U2FsdGVkX1+aDGmkoN+s8Gs6tx9f+QKcVM5dARGiSbFjZtsNTwOZx3+r0ePRjRPVMc1yBPOWHqdexlGWNWbO70lOjb+4fFx3mcCnRJW7NQIrpNhavmejYZDm7eH7/ygzjWsypkDhWHgtcSRRCBzo/marSB49LKP9UG6xFpx5ujzYFN5AvgmxhG2GfS9AoDcEUnXxx0IFbfVOczQFbc/UbZbjnfatrqREwC2PgLTqUt+8Eu5p3dDlgt0PYLr6qisHG0i1VmdvObj+Qdl3g/tRjQ6SdclUKKkhqa6MydfcC62hZnlNEls9RiZYyIhDq0Ut6bUIBIDG7FoLqg41AXmIOtCUUDPeA3FZFPMKism21fRp4v7CGfSewxHdwhArsQlU6Nnws0LrnFqcUTATglrF9uu3mktDuDqqJs8uTtnU0e8hT2BfPtKdKXCh4PttoPYJLP8LMpa56O5IJbSwrqK0IjwUvI4E/OuI8MFxaBCg/auVfIrqdCFN3bq4kt4eTZCshTowOZV7ndCIfbkY7XcIEo7bgpVzHGGwa2c+CNXVgxcfwue/mFeepfKKAtVV2RfYfJ2BpLUgStStOUnZFTxzTLmty9ttL/4pRrNuVfq1tdTEo/eFHlzeBY9/BDV5k3kIETfrE473hFH7vNNAQkL7aBqPx2S016sGdklbeLkPvrFC4FtPQUyx0rjvCTbpe6S5LfOWBFhDxyON798AzbK7Fy+ttGLN68vJqv8bQ4rGfV5RxqbIADFBP7hyoVTCOg4arD61QigBsRbq13/g+9HeacSMbpePWBPyMzx6P2rzMUVixbAQIu7s2eszOp90NIOEL3X3U3LZL5gVb/BTy7IZqoqj9oVhVGd5/4MfNT1rhEm6apYrBA9bKJsbKBh175Rq5+Ipkqvl1TM2cCGWQCH84RCtih7oTgqIOld2hCDw03L6T0OpbmcSDmr4RFza2Fiib5XwVrQB41xthT568Ty
- LyDKL0G7
- 8VFn5s41/t6B0yaQfHYG1Vj50sgd0WBlRDn2CK3nh0TgQbOk7XnNkx1844ZInTPGpMBMOFYMPs2U5fcD4MoP7CIGHyCEv43/1zmM6TSpgyzba46TqXV4PbIYcgX7v+W5TIMUnn2sJaUsOmA/YnoFmXVKLd6AiCMc04K5CZv5dhUJvHfmqAYK8ae2KEd6HAhuTE+QLNDCTNCB0zMInmwImLcnqxeklSMhV4Am4u5uwdbwdZ3mDmP6M8H80mJllEzO4aRusX9tMbLp8ATzKh0UtRbH2HRB3heTqppv1UYY93Fk40VM=
+X-HE-Tag: 1773786596-123836
+X-HE-Meta: U2FsdGVkX19rH38ekoCFFq8hxLezm09k85OKPDEXXNqzcKOP1qGWV3n14AjqSSr7yrrS4RJh/HyCe1sS3HZ7bhuppaKsXj8RuFO2pQorWXLeP0dKhqr4zClbFR6381Fd0hmUz7bXeNGY217EPYL0cFDu7bkcyoH4XBUTkrsG1z5hjc1mFqkqG1hq66t/rPdG+j+3wtuIfRzVOJrG0h0YJ/94dxUm6CdhERaYzPqEL0WPlN1jb3krJtAG+RPWRWz4i2ozlYtb1CC9ZZqYcROKjxnC2uALYCW8LWbMN/bvLxDvS0i8VE4mKGlqaMUUTS22VrqHiyAPMM6ELfldUBJKgGpNskZhDU4Aq4Y3TVqBo9CWU8JWxSgfjpkitQMdeYmWcIs3McqCLZFUix0Zr1+IyALxV/RcEwM+KpEqbQlUjvK3dQLjhIWUmlmr/saB3ZTU2Z5OBQhWm+ewG6LWq/wFwqkIJQHfH8Yx8gkn0PL6uIfMPDIDexsXTtuxAHJKAWcQdC2h9+9OBgCEHAKjFFiEe8xVG4t771mPdZYIX2ENA2tdytT+XEvnmPt81QwPGyKQkcP6fAGVOrBBrQV9HeM7UeRI9qV4ttYiA8y6lSzZt8MJC/450/JrqRu4fZZG8UgfkSvQKJAmmt094zzJ0njOQbg6WKIfVqsVOUM9qnubSOHv3iI2ulI//b5rG1gU0p315wZqXKlrszO36Wq2RqmnAOTuLT99QcvEfDpQe7D/JzAv7oyjblqfQ8SZhkYadq0fzjge4N4ueHFYOF6u+60CtVZvqTcvPi4Egc83l7vdwsIlJZt8ccZdvL3ywpk2EBH2xEg6TL+GpyNKJoYNO6JEAyHtx/HeMY+odSAK86UNP2BNTRIYv7QptmHHJDy9QWiwZEa0mcPHEuSxmC1yXLH6oAH8BByPUOftdC2nIH2E8siBeqy99qDwjzpW4xHs8gDEvUZ2x30u18fZHsjntfg
+ 3At3EuBv
+ l05GJFtqdD70sLuL7ZZI3olC8VBFM24WklVisqu/zFyguQNkR4LVskM5+no1mEoRAnoAaHl2Km8B2+unTbw8GFoMEPH6FQ1xHdWwbt+ZcAcTss8gY6RIg2LwpQr6drRDkDVGInaTApfJJ/OoXIh+bQLajGoPVnlydXxcZqko+noJDiPkvwlo4QQchcUT4evZHqAPVqHjWIk3yyHkwmtDAOEAOfQR4V951RT/DsmGCvDrnOFeEvso3wRb79fFTvtvKHYvAgynvYOGXSvvGLZwH51Pb5d8NDnJwCG/TH0NM2oBWTC73RPoyd0Q5tAwBa57k6GQT/gSXX+QJ1x7zKzu1nfS//WeMFn7s9sLhod1KsH/6x662RhMOFBetyj4HgYUrfH57XpM9rdmN26o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,95 +102,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The load_segments() function changes segment registers, invalidating
-GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
-enabled, any subsequent instrumented C code call (e.g.
-native_gdt_invalidate()) begins crashing the kernel in an endless
-loop.
+When collecting old nodes for destruction, the dead range check uses
+tmp_next->index and tmp_next->last, which implicitly dereferences
+tmp_next[0] rather than the intended dead range. This means children
+at indices n=1 or n=2 are compared against the first child's state
+instead of the replacement range [mas->index, mas->last].
 
-To reproduce the problem, it's sufficient to do kexec on a
-KCOV-instrumented kernel:
-$ kexec -l /boot/otherKernel
-$ kexec -e
+This currently produces correct results by coincidence -- mas_find_child()
+copies the parent state and mas_descend() preserves index/last, so the
+values always equal mas->index/last. Fix it to use the canonical source
+directly, as documented: "Nodes within [index, last] are dead subtrees".
 
-The real-world context for this problem is enabling crash dump
-collection in syzkaller. For this, the tool loads a panic kernel
-before fuzzing and then calls makedumpfile after the panic. This
-workflow requires both CONFIG_KEXEC and CONFIG_KCOV to be enabled
-simultaneously.
-
-Adding safeguards directly to the KCOV fast-path
-(__sanitizer_cov_trace_pc()) is also undesirable as it would
-introduce an extra performance overhead.
-
-Disabling instrumentation for the individual functions would be too
-fragile, so let's fix the bug by disabling KCOV instrumentation for
-the entire machine_kexec_64.c and physaddr.c. If coverage-guided
-fuzzing ever needs these components in the future, we should consider
-other approaches.
-
-The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
-supported there.
-
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Cc: stable@vger.kernel.org
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Josh Law <objecting@objecting.org>
 ---
-v2:
-Updated the comments to explain the underlying context.
+ lib/maple_tree.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v1:
-https://lore.kernel.org/all/20260216173716.2279847-1-nogikh@google.com/
----
- arch/x86/kernel/Makefile | 10 ++++++++++
- arch/x86/mm/Makefile     | 10 ++++++++++
- 2 files changed, 20 insertions(+)
-
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index e9aeeeafad173..41b1333907ded 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -43,6 +43,16 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= n
- KCOV_INSTRUMENT_unwind_orc.o				:= n
- KCOV_INSTRUMENT_unwind_frame.o				:= n
- KCOV_INSTRUMENT_unwind_guess.o				:= n
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), we could either
-+# selectively disable KCOV instrumentation, which can be fragile, or add
-+# more checks to KCOV, which would slow it down.
-+# As a compromise solution, let's disable KCOV instrumentation for the
-+# whole file. If its coverage is ever needed, we should consider other
-+# approaches.
-+KCOV_INSTRUMENT_machine_kexec_64.o			:= n
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 1eaaa5f964e9..64ba117ec254 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -1874,8 +1874,8 @@ static inline void mas_topiary_replace(struct ma_state *mas,
+ 				if (!mas_find_child(&tmp[i], &tmp_next[n]))
+ 					break;
  
- CFLAGS_head32.o := -fno-stack-protector
- CFLAGS_head64.o := -fno-stack-protector
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 5b9908f13dcfd..ea3a31b54e49e 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -4,6 +4,16 @@ KCOV_INSTRUMENT_tlb.o			:= n
- KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), we could either
-+# selectively disable KCOV instrumentation, which can be fragile, or add
-+# more checks to KCOV, which would slow it down.
-+# As a compromise solution, let's disable KCOV instrumentation for the
-+# whole file. If its coverage is ever needed, we should consider other
-+# approaches.
-+KCOV_INSTRUMENT_physaddr.o		:= n
- 
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
-
-base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+-				if ((tmp_next[n].min >= tmp_next->index) &&
+-				    (tmp_next[n].max <= tmp_next->last)) {
++				if ((tmp_next[n].min >= mas->index) &&
++				    (tmp_next[n].max <= mas->last)) {
+ 					mat_add(&subtrees, tmp_next[n].node);
+ 					tmp_next[n].status = ma_none;
+ 				} else {
 -- 
-2.53.0.959.g497ff81fa9-goog
+2.34.1
 
 
