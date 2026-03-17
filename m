@@ -4,98 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED7BAF33804
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 06:45:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC5C4F33805
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 06:51:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284976B0089; Tue, 17 Mar 2026 02:45:19 -0400 (EDT)
+	id D3BEC6B0005; Tue, 17 Mar 2026 02:51:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25ADC6B008A; Tue, 17 Mar 2026 02:45:19 -0400 (EDT)
+	id CECD16B0088; Tue, 17 Mar 2026 02:51:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1985E6B008C; Tue, 17 Mar 2026 02:45:19 -0400 (EDT)
+	id C02A76B0089; Tue, 17 Mar 2026 02:51:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 05ADD6B0089
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:45:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9656A1A0524
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:45:18 +0000 (UTC)
-X-FDA: 84554618316.30.86E7122
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7D0538000B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:45:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NodgPK+6;
-	spf=pass (imf30.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A97E56B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 02:51:54 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E86E8BA81
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:51:54 +0000 (UTC)
+X-FDA: 84554634948.15.A8C3C72
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6D75A160004
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 06:51:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Z64OCw/i";
+	spf=pass (imf08.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773729916;
+	s=arc-20220608; t=1773730312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d9m8AenGNBSpK6f9o8GrCon857vC2vFuEB2dcmCEqmU=;
-	b=vVwJbfxpnKAT3i0roIDR8z5uUll+8nXU9Sg+cf+Ffni1nfDkIMJSc+eNX5OfiKZacSQaZt
-	582AChQdVW5WlyP2PI6Qc1MegTC9at4LlAUleMu6C+s6m0Fl6uou+sk7Y2Xmu2e2XljNqY
-	COe9LVDAjOdmzJmoZtSKUxLqtKDuegA=
+	bh=TL/fWTjraSCjuZfGO3tSrGYlWQVfbLF6OpcjEIyvfWw=;
+	b=IrIvvxbYMaGI3FAQsS0KNEDAKuRbEzeaWd+AJUp1MNQo5Ec7xzce127rSEngblNQ2fxeI3
+	vuc3TaGjQXB2Z+G0wgqM+dCYnujqp0zdFyK8Ds93KQRn/kiWoPlxwE0aNu5plTNdQRTCQl
+	+GDRzb7MieYhnZuNgVknlKyKuB91ZVs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NodgPK+6;
-	spf=pass (imf30.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773729916; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Z64OCw/i";
+	spf=pass (imf08.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773730312; a=rsa-sha256;
 	cv=none;
-	b=56gyQu7dHKMum7h48ZvLDgKz7Ym+nUdjUM9H5GwZO1tkZZMhh6A31Z2Nshih/C36y52wH2
-	vqf7k7wHcMijpUKBya068w+DRqwgOM5BEPIPxmOrT+J6IgIaoou4Dp21CyPqInZPkFBqfC
-	8uSl5t/VzYh2j+XbSXAr+WoZ/ieoiXk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773729909; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=d9m8AenGNBSpK6f9o8GrCon857vC2vFuEB2dcmCEqmU=;
-	b=NodgPK+6dMbsoNxKCOUFABB5sTnX/b91O4OB0qArN11uTlAl/bU7IXw2m2OH0Cz1YYXvuSwT0Q36PXu4OKZ2WJ1n004RV+/mGSlDRbS6XW2W3Zzd+C0j12V0f5nOGpF/VzpzExUl003vx4UMQQyd8ktXORCLXZO1mihya3Hrydw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=33;SR=0;TI=SMTPD_---0X.9ya0W_1773729894;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X.9ya0W_1773729894 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 17 Mar 2026 14:45:07 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,  linux-mm@kvack.org,
-  akpm@linux-foundation.org,  mhocko@suse.com,  apopple@nvidia.com,
-  axelrasmussen@google.com,  byungchul@sk.com,  cgroups@vger.kernel.org,
-  david@kernel.org,  eperezma@redhat.com,  gourry@gourry.net,
-  jasowang@redhat.com,  hannes@cmpxchg.org,  joshua.hahnjy@gmail.com,
-  Liam.Howlett@oracle.com,  linux-kernel@vger.kernel.org,
-  lorenzo.stoakes@oracle.com,  matthew.brost@intel.com,  mst@redhat.com,
-  rppt@kernel.org,  muchun.song@linux.dev,  zhengqi.arch@bytedance.com,
-  rakie.kim@sk.com,  roman.gushchin@linux.dev,  shakeel.butt@linux.dev,
-  surenb@google.com,  virtualization@lists.linux.dev,  weixugc@google.com,
-  xuanzhuo@linux.alibaba.com,  yuanchu@google.com,  ziy@nvidia.com,
-  kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-In-Reply-To: <0d66401f-9874-4047-971b-632723b0b7ee@linux.dev> (JP Kobryn's
-	message of "Mon, 16 Mar 2026 21:37:01 -0700")
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
-	<3a42463b-9ddd-4d64-b64c-6c2e6e4fc75d@kernel.org>
-	<343bbd5b-67a0-46c4-8ec4-69158bf26b3f@linux.dev>
-	<874imkpba1.fsf@DESKTOP-5N7EMDA>
-	<cd3d7e2c-79fa-4c00-89ad-83beddf98bae@linux.dev>
-	<60f71f4c-71d9-4751-8c6b-10179b98bef0@kernel.org>
-	<c4e5cc3c-5daa-404e-8c55-cface8aa969d@linux.dev>
-	<87sea0o55p.fsf@DESKTOP-5N7EMDA>
-	<0d66401f-9874-4047-971b-632723b0b7ee@linux.dev>
-Date: Tue, 17 Mar 2026 14:44:59 +0800
-Message-ID: <87a4w7x8d0.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=uUDwzYARRcTtrCOnuRWQ0D7HNC3yoTP/jkwuV33gQy8AvvvwuSw+MD/icSk2vO6ksPIEhy
+	owO0+177BYqrlP3uNVeQhAFukO6R8PgYnpOv38YnesD5spL6NwX8ZblBBr2PkaEM3wKMnI
+	mEZ7U/tCe0cGDF2I/R66NjlsyDkp6bg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773730311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TL/fWTjraSCjuZfGO3tSrGYlWQVfbLF6OpcjEIyvfWw=;
+	b=Z64OCw/izRGuy6iMGmbpm3+nlfv0UXs7rgpzQvJXfJ42hByTKw1ybMPMZZUnzNQOe6q4KD
+	uBGEH+xTrlUqmaeR0QW7kL1+80/lOw2fHbaBOLIyo1JLUGbtGipux+ScNZhCczsMCaPGW5
+	02CVCVdVvDR6hQOIyIsa4A8kppc4uBo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-ZAKWPj5aPtqNY99GEXHHvA-1; Tue,
+ 17 Mar 2026 02:51:47 -0400
+X-MC-Unique: ZAKWPj5aPtqNY99GEXHHvA-1
+X-Mimecast-MFC-AGG-ID: ZAKWPj5aPtqNY99GEXHHvA_1773730304
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 84CF01956062;
+	Tue, 17 Mar 2026 06:51:43 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.28])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 79B383000223;
+	Tue, 17 Mar 2026 06:51:33 +0000 (UTC)
+Date: Tue, 17 Mar 2026 14:51:28 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev,
+	Li Wang <liwang@redhat.com>
+Subject: Re: [PATCH v2 1/5] selftests/mm/guard-regions: skip collapse test
+ when thp not enabled
+Message-ID: <abj58FQF31aaIMM-@gmail.com>
+References: <20260316044335.1390608-1-chuhu@redhat.com>
+ <20260316044335.1390608-2-chuhu@redhat.com>
+ <abegwBHT_2nlmWKM@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 7D0538000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9ayu3rt5z4w7icfzfde63m41kciy7qxp
+In-Reply-To: <abegwBHT_2nlmWKM@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: Y7fwgM78IVqGC-po41usCSSdnQb0IiPEdMSymfg38fI_1773730304
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D75A160004
+X-Stat-Signature: 9dwgx35jo36d9rnjsgoprqx3dcxy9ymj
 X-Rspam-User: 
-X-HE-Tag: 1773729915-916235
-X-HE-Meta: U2FsdGVkX1+qn14746q7Pl+jz+2D2S6Bp+1AMGbA7rgj2/q5jnklq54ZmM9BP19JQAT7HJgJFv/KKkPQ19jc5xFo2HnqI98UzX7dmVdnPs/1UdiJzAWSJ/GpPvR839MgDxXUN8/xUR7skO9x/ePZGXEOivfI1oRdhv73I9xzBksbmhKOLJIk1BISoeU2iqCKCcyNf3zs1vPlJ30llwbk0qZbbP/e8ZdkNJAuU525jFOE42N0VnO/k/u7pBLa7/TNlLsBCPl7fbmjEoO8xUwwJSOWDs+g4/9kQMgh63IyMVyWZyJgli/C0swIJxYzHEwMsAKk7T1hpV/wUCObCKuZ8LNbV4KcmdY7MK3WkmOzqJMPxJwKTfUOiWGNuLIr4PtRvnCvrG+keiULIG0bFsoNMSzeu5OCy6HAFKwtLV/x/Ljw6zZjmYPlEPqlnBBllXEm94WAIA4MUmuebhAn0lC2Qer4/lfEL1nXBRw7WOVO0y7ueAcYi3SmAU+zfrDaGUs+5ivSYmBPxfIIz4QE5tCOukjQZu/JcFNpoQnB99+b0eB0PapOLh5sk/Ns0AyQH0pZA28geHAP7g4SyoRuHDVtR7beN9anssxYU5Hu0VTNf/dBBpvFEgXJ/5JgRr765712UJEEsZjIOfzzdxoQ6wPGVh3iHX0yN+SML8t1d8hUDWMX1sN3XroVhvYvgzgzFJGHS8Em71ocZTnbVLmyq2JYNMLYx4oEKTFQfOvsurprlAnXpxC+5sO2EPE6atu9mExFdyI/46C2IAKzS4NdC+PKVRehCKmwPfskxWXaEbubqx8jFaxUY9BFPpe2ij6QWAn6jacVcI2fNL0rSHv3q3/uA1w1cvS86ajgNY4PAqEgmVTpeyeLGrjY8Wlzcm45m2BGkBM9rBfvZ+o8FyB9GA1+1uBQatJLBI52EbuWFHASpBuk/8jE1DZQU//HiIz5ZwGFNCNEQiUQAlRAvJx+zgb
- mxVauWHz
- Ok3byyfDS/Zovnev0QiMv/8TVru5q953pog1LJV4qotRR7jqwMC9lYC0SvRq5bI92Z4OzryB91JvWopo5I+hOwUPPsATqM2HNLqeeJ51yMi1AxgCmBK9DAyI33jFxT5UuRY6AO8+AZcocS4pcA9i/7b0aMQF5nzlrYKYWKKMAaWjQV4aCZ6L+jua/XmaFC10F8NLM4vQ25o7RYNoAfWUf4G60YDv9yc7H5s6Xj/jcQI0wCqgO3MzKz61ZMRIvK7YxwnUU/7owMgTFgdVIHmGmqdPfgIqlltUG2wInS0fHz9fwAy/nEBzI1d6vwe8Ponz6Ep5lTCp9c1MURxX4/DWDbARqhw==
+X-HE-Tag: 1773730312-981138
+X-HE-Meta: U2FsdGVkX1/dSOt4+/w1iSJXxO1+bKYRJtd9EYccdJcSAixxPONlbCD4TdCEI1mMlOF/DdS0GUl31kEvfgFJtmUfvz9rF8762bsVInjjqDmp9Bb6tDZq+1AHVDvftr5+fNRDO+Wmy/LPPK41Sm8Y8HvJgYLwwns7LxRnrwD7ajbN7vVc32O+I1mTxfWr24o02r8I73PvWWUAliWll+Ry6A0rvuueQOiDyLa67yb+HYJL6Df0cHfcHNSaCexh5/E6i1t+rkgR4+ezwYNY3KgdKQ8iZJ/gIHWQ2GYmroTti4+sFxBKCxHuWIJO9qAKXs1br+YiYRq94pnSLpkOofVkVaEdwgIV/RJCFcfwn3VGq2gqVVapSwrhJIp+cWw0GdAU8FHNw2Ii9IMzpfht9nK12Bj9byt1jqmEP6UqFo1We0cypXfdO+qaSxibmfvtEJJQY1qdNKIuBoFc8DpBsiWIYM1cQ3NvzSRQwrN/rb5r++0mwaJXFoDUysTVSaP6T/Q/ETeGmpRYzFAPvMs3V9mZCHdFXCV3vFvhYOfRBrCt8uVI0pGWe/1XdaFNSUSk5hV05opbhlXd2keSUWEuqx9fMGul5FaRq6zM+Kqj5px1CIHcV7LrFXA60Rq15j+A4Gy5Zp7f20gGTcFUO0ek6QU4hDZmd0QgeGh2Z+ZhaEi0Iq5laL/UGVkqgkOVoU3H71dd+1uhIcTmPdjoqofgm62VEob7tmoGMtoy25Kd1uBDaT+J+hc3pJNDAPiOo4AON86b7Jjtn/qoxdgti0VkQgZGOLy6Th6WPvZZ/a8PCDMKX0YsK/klYKAVyCJvXjpAlps8iscKXRa8gGD+QUO74ju5Ul6WMctSmr+nT44Jikn2+HUiod8vHG3B4hFd4bxRyiVpS49j8q0eU8xznpq3CiR/EB5TfOl1eq+/uAHo2JdG+sRI/Hnuxk+F2cnSVnxB+upVNpqtM6MHBf8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,56 +110,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
+On Mon, Mar 16, 2026 at 08:18:40AM +0200, Mike Rapoport wrote:
+> On Mon, Mar 16, 2026 at 12:43:31PM +0800, Chunyu Hu wrote:
+> > When thp is not available, just skip the collape tests to avoid the false
+> > positive.
+> 
+> ... to avoid the false negative
 
-> On 3/15/26 7:54 PM, Huang, Ying wrote:
->> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
->> 
->>> On 3/13/26 12:34 AM, Vlastimil Babka (SUSE) wrote:
->>>> On 3/13/26 07:14, JP Kobryn (Meta) wrote:
->>>>> On 3/12/26 10:07 PM, Huang, Ying wrote:
->>>>>> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
->>>>>>
->>>>>>> On 3/12/26 6:40 AM, Vlastimil Babka (SUSE) wrote:
->>>>>>>
->>>>>>> How about I change from per-policy hit/miss/foreign triplets to a single
->>>>>>> aggregated policy triplet (i.e. just 3 new counters which account for
->>>>>>> all policies)? They would follow the same hit/miss/foreign semantics
->>>>>>> already proposed (visible in quoted text above). This would still
->>>>>>> provide the otherwise missing signal of whether policy-driven
->>>>>>> allocations to a node are intentional or fallback.
->>>>>>>
->>>>>>> Note that I am also planning on moving the stats off of the memcg so the
->>>>>>> 3 new counters will be global per-node in response to similar feedback.
->>>>>>
->>>>>> Emm, what's the difference between these newly added counters and the
->>>>>> existing numa_hit/miss/foreign counters?
->>>>>
->>>>> The existing counters don't account for node masks in the policies that
->>>>> make use of them. An allocation can land on a node in the mask and still
->>>>> be considered a miss because it wasn't the preferred node.
->>>> That sounds like we could just a new counter e.g. numa_hit_preferred
->>>> and
->>>> adjust definitions accordingly? Or some other variant that fills the gap?
->>>
->>> It's an interesting thought. Looking into these existing counters more,
->>> the in-kernel direct node allocations, which don't fall under any
->>> mempolicy, are also included in these stats. One good example might be
->>> include/linux/skbuff.h, where __dev_alloc_pages() calls
->>> alloc_pages_node_noprof(NUMA_NO_NODE, ...) which eventually reaches
->>> zone_statistics() and increments the stats.
->> IIUC, the default memory policy is used here, that is, MPOL_LOCAL.
->
-> I'm not seeing that. zone_statistics() is eventually reached.
-> alloc_pages_mpol() is not.
+Oops, I missed this one. Will update.
 
-Yes.  The page isn't allocated through alloc_pages_mpol().  For example,
-if we want to allocate pages for the kernel instead of user space
-applications.  However, IMHO, the equivalent memory policy is
-MPOL_LOCAL, that is, allocate from local node firstly, then fallback to
-other nodes.  I don't think that alloc_pages_mpol() is so special.
+> 
+> > Without the change, run with a thp disabled kernel:
+> >   ./run_vmtests.sh -t madv_guard
+> >   <snip/>
+> >   # #  RUN           guard_regions.file.multi_vma ...
+> >   # #            OK  guard_regions.file.multi_vma
+> >   # ok 89 guard_regions.file.multi_vma
+> >   # #  RUN           guard_regions.file.basic ...
+> >   # #            OK  guard_regions.file.basic
+> >   # ok 90 guard_regions.file.basic
+> 
+> It would be useful to include output of two failing THP tests rather
+> then just the output of the last two test.
 
----
-Best Regards,
-Huang, Ying
+Will update in next version. 
+
+> You can also add '-n' option to run_vmtest.sh to reduce amount of leading
+> #, but for that I don't feel strongly.
+
+Good to know. Thanks.
+
+> 
+> With that updated
+> 
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+> 
+
 
