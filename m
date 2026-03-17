@@ -4,187 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8390FD8770
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C176FD8770
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 14:15:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FBB76B00B1; Tue, 17 Mar 2026 10:13:52 -0400 (EDT)
+	id E4D546B0005; Tue, 17 Mar 2026 10:15:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3B66B00B3; Tue, 17 Mar 2026 10:13:52 -0400 (EDT)
+	id E25196B00B3; Tue, 17 Mar 2026 10:15:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2576B00B4; Tue, 17 Mar 2026 10:13:52 -0400 (EDT)
+	id D3B3B6B00B4; Tue, 17 Mar 2026 10:15:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BCB76B00B1
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:13:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D20A81A01E0
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:13:51 +0000 (UTC)
-X-FDA: 84555748662.24.B0A591B
-Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3BA5E40016
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:13:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=ouOwfMhY;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFE7D6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 10:15:44 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 91E46139E18
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:44 +0000 (UTC)
+X-FDA: 84555753408.22.78B1CA6
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D0BC7100010
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 14:15:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="pd/jSNlA";
+	spf=pass (imf05.hostedemail.com: domain of 3DGK5aQoKCAsxnwl0ty3vtrzzrwp.nzxwty58-xxv6lnv.z2r@flex--mclapinski.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3DGK5aQoKCAsxnwl0ty3vtrzzrwp.nzxwty58-xxv6lnv.z2r@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773756829;
+	s=arc-20220608; t=1773756942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pnj38ZEunZJJVUWYRSPy2Hkqiw4TfDVhbTQYfcLSb24=;
-	b=5VY8HtFzdqZhKB/sBmJqqBxkgNbSiJhsO4ksQVBFo49+SickmEW2BSU1x5iY4g0w863iWQ
-	9hfWpgHt2DnMQydCgsEImPjegwZftuH9WIuIzLln6LyTUJTmsKoRRbFT92Uiop2k4vzu65
-	iGiXMtJesZKP8isBAmXuY5cwJAggEFg=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Lm1/04AucX09o7Vc1s8OzOzNp6FWCOos1z+TBuLIodY=;
+	b=23D2tnN+lvIyvmcH/fnm+Y77DvNtULhk1YxeMz/9ulNy4iS82MBN39tR+uoND7RYzWTTBy
+	dj3iGZg1fJAB21+UGPCm5Vd/YOUG1Nof/QoJioGtMlOvaC4dHkD68oeHwvDoTJYPaxuu1V
+	3d7Jbmi1d4JapFAcuc9MsPSIAjeK2Ew=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=ouOwfMhY;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=529a8c084=kalyazin@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=529a8c084=kalyazin@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756829; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="pd/jSNlA";
+	spf=pass (imf05.hostedemail.com: domain of 3DGK5aQoKCAsxnwl0ty3vtrzzrwp.nzxwty58-xxv6lnv.z2r@flex--mclapinski.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3DGK5aQoKCAsxnwl0ty3vtrzzrwp.nzxwty58-xxv6lnv.z2r@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773756942; a=rsa-sha256;
 	cv=none;
-	b=IkJvyow1/GdVli6vtk0Yyf7OcnNTcOMKB1bH323KpOZyt7XDfiKTvSgJWuIbcFZHYVe4zx
-	pSuqBDp7BYJFrLOf4rttvFPKdw3EWIDELiFyPGXyOmfwdW+fhrWgC1rV0IXdFy/hqAwZ6e
-	nnOmW12IZACpHtDb37obOe+dhvvMAw8=
+	b=qVL5xABB5BxIWEYxKzV4tFCGrz9QERtgqs8b6a7I0cyar+Sin+sBX9tuTy1gA8IOKp/H42
+	DxVtDAJ3jIluYzi5a9I85j9yYcTmPJr5FabcrS1vuIDplzllzTKiysvEzTLXmC47j+Yyay
+	l96+0XwY3WpjMahtuOXhTRaR5nY9bbg=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-662ff83887eso7900961a12.1
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 07:15:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1773756829; x=1805292829;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=pnj38ZEunZJJVUWYRSPy2Hkqiw4TfDVhbTQYfcLSb24=;
-  b=ouOwfMhYSyUlChYoqmn/NMyW3hdepDUUXh2+G7Rov6JbuPsIIP2E56+E
-   IlAwxfYLoQaa7ElG3kTrfdVUGIY5jGdMyCBw3USJurG/IYJ44GkCImzqX
-   fMjBSf7mU+U1WSG9mi6NPbVK5czSCRz7Fj7Ib76NdwrQ/0iTQFB6SDY/D
-   osRSzyGcXEwjr8c0xeTK+iwjvlPLFcdnWwKk12PLAK+Rm1MyzzGzAg3nn
-   mFUrmyQXjhxYqa1vzlkDPr2ziq9+wm319f9jBQwhA23soraLpa1uIscHs
-   VaGDqVx6j4ICEmHebLpOzxj1oZgIXE4Udplo50wr+0qA3qAHPqRosPKue
-   A==;
-X-CSE-ConnectionGUID: 6tEFsmMKRiKCju09h+6xXg==
-X-CSE-MsgGUID: Nb9k9SOhTdC17ygw1ts0mw==
-X-IronPort-AV: E=Sophos;i="6.23,124,1770595200"; 
-   d="scan'208";a="10887386"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 14:13:45 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:9034]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.29.244:2525] with esmtp (Farcaster)
- id 46addb52-27dc-449b-b609-08b4010fe2c8; Tue, 17 Mar 2026 14:13:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 46addb52-27dc-449b-b609-08b4010fe2c8
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:13:38 +0000
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19D005EUB003.ant.amazon.com (10.252.51.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:13:38 +0000
-Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
- EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
- 15.02.2562.037; Tue, 17 Mar 2026 14:13:38 +0000
-From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
-	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
-	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
-	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
-	<willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
-	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
-	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
-	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
-	<jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
-	<jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
-	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com"
-	<riel@surriel.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
-	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
-	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
-	<yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com"
-	<tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
-	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com"
-	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
-	<agordeev@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
-	<borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
-	<gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>,
-	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>, "thuth@redhat.com"
-	<thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>,
-	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
-	<urezki@gmail.com>, "zhengqi.arch@bytedance.com"
-	<zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
-	<gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
-	<jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>,
-	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org"
-	<pavel@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
-	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
-	<jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack"
-	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	"Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin, Nikita"
-	<kalyazin@amazon.co.uk>
-Subject: [PATCH v11 16/16] KVM: selftests: Test guest execution from direct
- map removed gmem
-Thread-Topic: [PATCH v11 16/16] KVM: selftests: Test guest execution from
- direct map removed gmem
-Thread-Index: AQHcthg/KCzYvBJTJ0yQSSHK2da0LQ==
-Date: Tue, 17 Mar 2026 14:13:37 +0000
-Message-ID: <20260317141031.514-17-kalyazin@amazon.com>
-References: <20260317141031.514-1-kalyazin@amazon.com>
-In-Reply-To: <20260317141031.514-1-kalyazin@amazon.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.103.116]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3BA5E40016
-X-Stat-Signature: zxacmkpjd7ii1yz6h8c99qxf69tsgrmp
+        d=google.com; s=20251104; t=1773756941; x=1774361741; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Lm1/04AucX09o7Vc1s8OzOzNp6FWCOos1z+TBuLIodY=;
+        b=pd/jSNlA1tLPTLZzyMEYmRVXWrFjhI2Pp3sLcPyLlvtjuf5gTsoHgWc+yG2FmWcyUK
+         HXu6pO7BWHkup6ivjcv0yPPl44Zo595w7d0TZlusq1GqtFztrCSZrurzblDLO29AVsfK
+         jCxtfGpUJKXkYtPeOL3Sv/IuJy/SaJR/PXsEONJfaYZnBuMMcLPX/h6//bT6NJSPED5X
+         uvea5fM8ti2qVyneDNmXZUWGTjoXSmCeFn1wZEqpGYrdNJHpfjvWeKKY5NEscXhNfOkl
+         pLaRsZyKvBrVRjm2td3oJLh+vnMWuri4EG77enRJMz/kaMa1bBFlO2odRP0ngdHZTnkl
+         ZhKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773756941; x=1774361741;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Lm1/04AucX09o7Vc1s8OzOzNp6FWCOos1z+TBuLIodY=;
+        b=sgJ+zDC3M8WNA+RxpDuFK1VpWvt9wDbmqzEkH5xInZ2xsAKSWBzuhh3XH4wptzKfV8
+         zIwEAcXHLkQ+TdhlzraGbXor8sSK2adjNCVxS1aIgVoaFpncTjKwCX98FkI7he/UyeBe
+         9HB7c5e2zfz3pHYA1XMHZycocRqi8UJ6FUCDu+TWZn/F/FbXp2t78U4yenXvM67IMy4k
+         Lvd1iKZjjbtP8Gz9u/sKoNcCNR9LSuquTZfcFHTrPxhK8vQ7dNAshx3z9IzC2v2T+FpP
+         39BXKUfNdsPWHH8//M09M52BQurPgbHQ49Jhrnzk52kkW1xYVSwidQwLlsPlmOLaGwkN
+         FImg==
+X-Forwarded-Encrypted: i=1; AJvYcCU03yTM5DuMWsgAjmoi1zX8B5caExlmafJo2GtEVKqSMawQHSlb+L9WljkpTAtDJQtb+/9PIOCQ4Q==@kvack.org
+X-Gm-Message-State: AOJu0YybUi9F6qTYbt5nw7eoHlLrBIR3/lknF0G03nYRlkCR/b78xcbV
+	7f0g6Sp0gRRX+JYhnIfuvJP+uK7LFrbGVmUuMO7R4Yrw7wZlppHSYwdWr2e52uWfg8rz7ekU6qk
+	054wrYZ+zHnHVL4kA4+k24w==
+X-Received: from edya2.prod.google.com ([2002:aa7:cf02:0:b0:667:8c6d:ee30])
+ (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2809:b0:662:f12c:257b with SMTP id 4fb4d7f45d1cf-663babc560emr10556033a12.12.1773756940594;
+ Tue, 17 Mar 2026 07:15:40 -0700 (PDT)
+Date: Tue, 17 Mar 2026 15:15:31 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+Message-ID: <20260317141534.815634-1-mclapinski@google.com>
+Subject: [PATCH v7 0/3] kho: add support for deferred struct page init
+From: Michal Clapinski <mclapinski@google.com>
+To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Clapinski <mclapinski@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D0BC7100010
+X-Stat-Signature: poxe5kft4wozzyn9f351t5ogoerf8d7t
 X-Rspam-User: 
-X-HE-Tag: 1773756829-548301
-X-HE-Meta: U2FsdGVkX19EkeZ37CgFPIbin8AvjPTPcGeXqQJA+ffzFI6vQE7f78g5JSu7DwdknnPSenLR+cWNzgNea3pl4iUKvAL88qFv4FSl8Q+KXzV4gz6zY6ff0mbW+hE/QeLLdTVOuXynLvCaRxMSJB4coWg54Tt68UkwkidF02n5bEpH6pD4crJkNBHryhVkgOsBsGTodhDHpGV93NUhPKxB6LvOzMpOGjZtJeR0y8q5ALLhKspPIlrg7tr902Bap9q9dBelwTkhX3DIjXapanKXQUUNnbJYv8KqtnXbyEgQ7jqdVJoCC7xI5Wyibui617583qW3s3u+ifyTSC9htuCUQibY0NcAeS7O4BXML/0bgMIsHgeMBCki1zttgqzBwRh2gJuLdw8EQW0DzEro343GO21f6ZtGryOT1+qY7O+wzEfy1XV3p4r1uBO7zamMgLL+GfjjmZDSFzQTJGIrkTzuO+mqXz1TdhCIsVLqL1RDr733SMyBASWXL+AygF6NUSxJct5RVgMdD4A8rUyCU+Fyf24qwuP4C/P/eEekuhLjOFm2cigRnYulpLPwK7sw3/nLr7jVomPhcL/ejHvhLQZUt9R+PSJUC66vVojSnN6GwLmSqxYeoTqdlE+LPJJ3chnd5DyQTAndCWjRanfIzSYmmuH34K0otc9LEecx+Phf/XlHBXIDIRXhRqduk6B2Rbsp7NGdVyeHPxc0sBpE5sw7MsWxPJxIX6y1HLhBT0aq9sWXudSTt5BwrocIEhPo3k7aiYFb2JCusA2k0koPPhAP5SPuq0z9YPPekZxCc2ruIcnbKbn5a23c6ND515S7t4lMu8x6ckxOLhfJhVd4kCAh6QhPSfyAEfkA1xGooU9wNQ5FvVodVeq7in7P7Jw2cHUzpyCh2kS+8xAyrdMq9rsvmYkph2JrcrBQSqt8FIQKRVw8MR53Gp3oOzmwA2Y8XrP1kS47JNqS3YpHRo3aNPS
- MVqQjBVj
- UX7Lbyg88CIm28xIlA529sqxjF5f5so7bkb9oad5RAAAqMztM33FBhb162YIXXF8BuyrVD9jvreY4RhKqAxvtrCXhfD5dIAPXZG6OdfxNvlN7xdfo7Z/K7PHpfU9e/KtFNY3rutLaYi2HmKzcFZiM9ybaeOaOVP2x4n1Cx7QSjXwA/AFe22mnU9ruLfpt1fFBAvkn30p2zKZRSSIQZSMM3kw7jIX7gpDzTWDKFXU39PsMPIhok2CKTjIY3iKBG1/RIi/zHfpnso5S9RpSBjpoYVTsX2mdiR/TfO6xHFhGwD+vzdua7T2kNhzbUEni6x4mNcSmouCJpBScyyru1mv51FgVDk8HaAIyhp++QhcGHXAAOBNm9DAFXgs68q33w6vXB44//dgpOlaxmwL1hELEN5DSaDwmV2ALv0L5B1mhRkxKNCUihcGFz5h8yxx9yPjxdvkP7HExk4KtPH+PCI4Hh9ph5H+U5cQcm5YuHDoQNcjJWTGKH7QhsMd4twilNx3QeSRZ9lgBBRkH/fknRrcAsbj/a1pfoeIDTtZZjazokQICYbgB0+yZzS72CGfSabFSo4QiNfe4dss8C7IIkTWE9o953DCtcnHgpDo8KpA5VEJsq5fCqByPwrW6AZbE5epQKI2+TRCeSh4oKj70PHCTUDyRykIhdeeALOiFd3mzFDbilvdZgH4Pc2CE49O3OYLkJ2VDD7VsSkN4+nlFSMMXQNO2iJqhP4x9chdI
+X-HE-Tag: 1773756942-780814
+X-HE-Meta: U2FsdGVkX18Ycq4V7/RzWx5dGFuYi2BagASb+r2Mzckj1oO3gTGc+sWCvUZuIP6XxmZ5IHgN/4SimMJZ1s0UyUrGAxu6TCPs7ELC1JFcqbbF1I3wDLmOgxar1X7h3ZIBSnQ6Ue4D4v8mnfWP0/HFId7ocuL9NBNgXX2OzihM3yyJUU5iUkwK0wvfJLmbSY9gga+7V5mCP9TjaKQDize1UPWXSwyUYv17SNHpwhL1FCrRlr/qtXTbP0RE3qZQ8b+SYtVB1B6ZfQVQWnPSpa8p+CBkWdtuaiNDd7OELbCq/VhmWeTidonnvmYEXFJfsiKl10MtbU1ynrG10xg76Jg1kunff/8W4A9z2Wuzlr9RVeWhwH6PlKje4MPNbtBR7yHK2l8KWhODMj2/Loi5Y7EDsoDbavV9iAmN+jWn4bhbJ2KC4/vlY6BM0XGZPJQKenTY9bJLuQxf81i+OiQypNX3YUdW/P6y6hrsOoereS8MNViuPWvEJQrwxlHafS8/+Yfvcrz2FojKw5JcqEaVXRYOXAs/7lbh9/ozTCVoRfk59z6LBoSnIfKheQmeI3saT3jnEhqFZrE7uTYKpWutqMJgOR4Ag0BsQ2GS0R43BPu2YP9sFIarFnnEOpubbpmYCu+NO+mKLz3xFstfKvvOodoGbtXpsoCqaK/04fi7cNgXOuUgRcEwn1bAXRVxgU+b1/J5K2eBvYrG+MfnnjumzCluDh4AV2lk0TdJ1BlFpJ7q7JBvErgo6FygbbK8RvX/NDkjvRr9sOagzapJRO8Vesg1BSZ826Pqv3Ewto0shUAYmCormA4pXlG/Fk0sq2DG6OxrIshCnWQEn8EM4hETN7zrU95xOpvHigLiKtQhKkDlAtWZp2BUAFNk70j1ONzuiPh3DKIajS0mmH2WELkvCe1Jlv4kIrLqQrXPJOUm/lZVecsY5MtKNLIRzuWib/4F0UcpE/v2cuQMdFY/Ki+RcDI
+ GWzlldZL
+ fg/4h/rA94ODHnYuSHzWC7RX4tM1yCU9j8LBEoTZZxQFkuRh1Vp5nt7+mTmQ8QKE3WE06S1QdT/Eb4ibN7L27L5hRk7Qpli36Ik2qgo3XwGFem8/XF2Ls0/YU8bQ2NJMhQAM6gV0Hqnfl35v36VQ+i0fDB/bRYs/1Z3RYQx0qQzbxW9fWzktsjZEreLV24TXQjYN8xOcTVOpQYBXemKAbogzEY9MMDYlt2YDcIdEDLbpYpMu5OW3oQZFLfccgDk4GCPP2a2GT2y9xHSs0UwRw+8GG7xqfAfkVEC6RyFTd7XQGHJ/0k+ekzyDOcP+R9YBwR7VsPvEz8GtSkQAzpObt1NDtJLeL8lsDQ9JEsIZJClfNulQ6QLz4YDuXLek5tBjZJh1s/Xy236M9OzIvB1nxdde6/tVmXXJD8CcomDNR5koJK8CPMB2WJ6G31B9/PAQ0gI7UNtOw9S5aaVfynwws+NRfORYdu7z0ovjY0VDsXAWrGOqYXlR+t1R7luHWX/cMuRUojMMViD7noc8Rwo1HD2er5iZRk4V2IYm2U44G/XcTInuSSXucC1J0zOtjfCfIO29b5xO56JsxWkDfuDcoJKIGxpUrWZWwCov0XLhu1F0TTHa/KZ0NbFp6zVWbCrJeNr23ynTT/OBcTH1ZSKPXVn51U+SERPD2or0K9OEufTza21gtTT2ONdld4/XUIAsZL/FaKc1Bo+vlF42ewq1LWfIaDSQoi/NPYKQe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,99 +106,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Patrick Roy <patrick.roy@linux.dev>=0A=
-=0A=
-Add a selftest that loads itself into guest_memfd (via=0A=
-GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
-exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
-memslots where the guest_memfd folios are direct map removed.=0A=
-Particularly, it validates that x86 MMIO emulation code (guest page=0A=
-table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
-that's been reflected into the memslot's userspace_addr field (instead=0A=
-of trying to do direct map accesses).=0A=
-=0A=
-Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
-Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>=0A=
----=0A=
- .../selftests/kvm/set_memory_region_test.c    | 52 +++++++++++++++++--=0A=
- 1 file changed, 48 insertions(+), 4 deletions(-)=0A=
-=0A=
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
-esting/selftests/kvm/set_memory_region_test.c=0A=
-index 7fe427ff9b38..cb445d420e8c 100644=0A=
---- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-@@ -602,6 +602,41 @@ static void test_mmio_during_vectoring(void)=0A=
- =0A=
- 	kvm_vm_free(vm);=0A=
- }=0A=
-+=0A=
-+static void guest_code_trigger_mmio(void)=0A=
-+{=0A=
-+	/*=0A=
-+	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
-+	 * as MMIO and tell userspace to emulate the read.=0A=
-+	 */=0A=
-+	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
-+=0A=
-+	GUEST_DONE();=0A=
-+}=0A=
-+=0A=
-+static void test_guest_memfd_mmio(void)=0A=
-+{=0A=
-+	struct kvm_vm *vm;=0A=
-+	struct kvm_vcpu *vcpu;=0A=
-+	struct vm_shape shape =3D {=0A=
-+		.mode =3D VM_MODE_DEFAULT,=0A=
-+		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
-+	};=0A=
-+	pthread_t vcpu_thread;=0A=
-+=0A=
-+	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
-+=0A=
-+	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
-r_mmio);=0A=
-+=0A=
-+	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
-+=0A=
-+	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
-+=0A=
-+	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
-*/=0A=
-+	pthread_join(vcpu_thread, NULL);=0A=
-+=0A=
-+	kvm_vm_free(vm);=0A=
-+}=0A=
- #endif=0A=
- =0A=
- int main(int argc, char *argv[])=0A=
-@@ -625,10 +660,19 @@ int main(int argc, char *argv[])=0A=
- 	test_add_max_memory_regions();=0A=
- =0A=
- #ifdef __x86_64__=0A=
--	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
--	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
-=0A=
--		test_add_private_memory_region();=0A=
--		test_add_overlapping_private_memory_regions();=0A=
-+	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
-+		uint64_t valid_flags =3D kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS);=0A=
-+=0A=
-+		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
-+			test_add_private_memory_region();=0A=
-+			test_add_overlapping_private_memory_regions();=0A=
-+		}=0A=
-+=0A=
-+		if ((valid_flags & GUEST_MEMFD_FLAG_MMAP) &&=0A=
-+		    (valid_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))=0A=
-+			test_guest_memfd_mmio();=0A=
-+		else=0A=
-+			pr_info("Skipping tests requiring GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_F=
-LAG_NO_DIRECT_MAP");=0A=
- 	} else {=0A=
- 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
- 	}=0A=
--- =0A=
-2.50.1=0A=
-=0A=
+When CONFIG_DEFERRED_STRUCT_PAGE_INIT (hereinafter DEFERRED) is
+enabled, struct page initialization is deferred to parallel kthreads
+that run later in the boot process.
+
+Currently, KHO is incompatible with DEFERRED.
+This series fixes that incompatibility.
+---
+v7:
+- reimplemented the initialization of kho scratch again
+v6:
+- reimplemented the initialization of kho scratch
+v5:
+- rebased
+v4:
+- added a new commit to fix deferred init of kho scratch
+- switched to ulong when refering to pfn
+v3:
+- changed commit msg
+- don't invoke early_pfn_to_nid if CONFIG_DEFERRED_STRUCT_PAGE_INIT=n
+v2:
+- updated a comment
+
+I took Evangelos's test code:
+https://git.infradead.org/?p=users/vpetrog/linux.git;a=shortlog;h=refs/heads/kho-deferred-struct-page-init
+and then modified it to this monster test that does 2 allocations:
+at core_initcall (early) and at module_init (late). Then kexec, then
+2 more allocations at these points, then restore the original 2, then
+kexec, then restore the other 2. Basically I test preservation of early
+and late allocation both on cold and on warm boot.
+Tested it both with and without DEFERRED.
+
+Evangelos Petrongonas (1):
+  kho: make preserved pages compatible with deferred struct page init
+
+Michal Clapinski (2):
+  kho: make kho_scratch_overlap usable outside debugging
+  kho: fix deferred init of kho scratch
+
+ include/linux/kexec_handover.h              |  6 ++
+ include/linux/memblock.h                    |  2 -
+ kernel/liveupdate/Kconfig                   |  2 -
+ kernel/liveupdate/Makefile                  |  1 -
+ kernel/liveupdate/kexec_handover.c          | 65 ++++++++++++++++++---
+ kernel/liveupdate/kexec_handover_debug.c    | 25 --------
+ kernel/liveupdate/kexec_handover_internal.h |  7 ++-
+ mm/memblock.c                               | 22 -------
+ mm/page_alloc.c                             |  7 +++
+ 9 files changed, 74 insertions(+), 63 deletions(-)
+ delete mode 100644 kernel/liveupdate/kexec_handover_debug.c
+
+-- 
+2.53.0.851.ga537e3e6e9-goog
+
 
