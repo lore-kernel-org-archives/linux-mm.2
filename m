@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F213FED9F6
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:46:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AEBFFED9F6
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 17:49:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C9CE6B0088; Tue, 17 Mar 2026 13:46:29 -0400 (EDT)
+	id 57CF96B00A2; Tue, 17 Mar 2026 13:49:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A17E6B0095; Tue, 17 Mar 2026 13:46:29 -0400 (EDT)
+	id 52CBB6B00A3; Tue, 17 Mar 2026 13:49:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 305CA6B0099; Tue, 17 Mar 2026 13:46:29 -0400 (EDT)
+	id 3F4B86B00A4; Tue, 17 Mar 2026 13:49:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 220D86B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:46:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D15098AF46
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:46:28 +0000 (UTC)
-X-FDA: 84556284456.27.8349D23
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1FDD2C000D
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:46:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kr5RM9wU;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AA436B00A2
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 13:49:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D45FA1C4E0
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:49:51 +0000 (UTC)
+X-FDA: 84556292982.10.7022BCA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1C04E100005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 17:49:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DgYf2ED6;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773769587;
+	s=arc-20220608; t=1773769790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RFQ4/Uk0OnU8Uzn96aCwudKt9KCdVYsJEmnR9W6qol8=;
-	b=ix+LGtxPB2OQlAPt1dtQ40tyc1nXi4CwppGcRMNaveJQujcnZSHDRRQ8X/eukiKpr3A/wu
-	0/TK+LBnjQOZhMy8E7pfqOxCTzixLG1s52YP647yqs5u/zL/siN4F57jUYgDgu2akPJXnz
-	z0xrDFNsKoFykEZL0dnzW3rY/w6M5BM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773769587; a=rsa-sha256;
-	cv=none;
-	b=nXQxFehC8FIscLQHPZ5hAdkJ18wMKwHfYxqlVb8fI/fgruodlOVXSDTDYSaTtwBeP6N4+7
-	xuOgti/n2njYsS1COKbfZMgEm6sL3qSjrI556X0IX35ksMSlYYGoKz8UT7HqiDwgp8fXAi
-	8YazNLsYmYfgYbx/cA5SiCBecz8JVA4=
+	bh=pgcwuq7yJOBZLL22aLhDLV7sk1P74dqMGRnES9qXgEk=;
+	b=W2IrVn2tSzudNfbedVn0NduJTN1GgI5LmbLZthIOweY0Ld4NRwngfpoWpqPLjhyFA9ItQI
+	pSOg44uL6juh7JZ6quZ6NiKp4iWWWAIE+rcU4orUk739Ag9unSZQzBF7asAtIXIlnB9p/0
+	MuC74AhzH0YZ+U8UGFbvG+4LuwjJVE8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kr5RM9wU;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DgYf2ED6;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773769790; a=rsa-sha256;
+	cv=none;
+	b=CJZQGQSz7HEIDyqd80BW6rD0lGJCxaD1tE/ORQkHCWMoPNu1rFvZ6x4WgNF0OCAayaRoF5
+	wN4ietLviAwxyzzr0RpQOllGqSxYYYDI3vFi8aPr0Jjgh8REkxMkvBecsYyV8Yu57x7VOp
+	7QATM5tV1TUj+2Mkw99ICx54p2beblU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B42460126;
-	Tue, 17 Mar 2026 17:46:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0109C19424;
-	Tue, 17 Mar 2026 17:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773769586;
-	bh=Neeh7yEwpO7wPq33nH/ZwuuqV0Bm2MY9dbkvHmC0dwY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kr5RM9wUs9ATcTy0zc7o/9tj1vXw0pknsUZz1SYg0K99Vlr9lS/Ia+Owmfhrgjqwu
-	 dyYMJekdmpSa/pcHBmElTxRq1UbiMiFNtJyc8BjkVOFFbjLF5xUMX/LYtLBfyYVa/z
-	 FEF+TzW61e9+urqFy74VxpjQI0qWtx5Kmgr7eo3Q=
-Date: Tue, 17 Mar 2026 10:46:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, Pratyush
- Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, Samiullah
- Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/3] kho: add support for deferred struct page init
-Message-Id: <20260317104625.fd6a006871dcceaceafe990b@linux-foundation.org>
-In-Reply-To: <20260317141534.815634-1-mclapinski@google.com>
-References: <20260317141534.815634-1-mclapinski@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id E9D414326B;
+	Tue, 17 Mar 2026 17:49:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FF5C4CEF7;
+	Tue, 17 Mar 2026 17:49:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773769788;
+	bh=9raS/7flhBB8OwQhQ4gASkXcC/85pn+Jci4JhvWANfI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DgYf2ED6QD1WJ+wF8r91rGazHA0yK1ttXIt6EgYz/ua6lP49TQKs9tNT3lc66Z8pO
+	 45gKll3wHvsc6O9VqDVQa9uZqKq4w5aUHQDbesOjd6jP09d7ogziHFouxypjZSpo0o
+	 2wZpBvDckbvCLNZg7aVWL341chOXXdpGcYr4vmJRT2RKDUhU5+zbBzIPq1n3mVuluo
+	 AeDMkpCFpKCaBFdpD+3b1x3W52Gjl0rWrzcCOjlux8F14oXL1DHBZK6u/ykghz1pYp
+	 gRnffeSK5tTS+NsmIGd5fMIpUv7siOEr8D8bYSu2ymCA21XTVCYzAv77I2Iv+6Si2B
+	 sTvLY98exQj1w==
+Date: Tue, 17 Mar 2026 17:49:44 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Oscar Salvador <osalvador@suse.de>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 06/14] mm/bootmem_info: remove handling for
+ !CONFIG_SPARSEMEM_VMEMMAP
+Message-ID: <e0e1ad60-5901-44cd-b077-a0aa6924ebf4@lucifer.local>
+References: <20260317165652.99114-1-david@kernel.org>
+ <20260317165652.99114-7-david@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260317165652.99114-7-david@kernel.org>
+X-Stat-Signature: 73qtxdahssrjdqbnf1fjn6xz879z8bhh
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1FDD2C000D
-X-Stat-Signature: w5ijcdkt83mx8xjpdn6rogozzmpzk1r4
-X-HE-Tag: 1773769586-651010
-X-HE-Meta: U2FsdGVkX1+y39sVxHbjYzxtFnD2HCINEF7dERXGTN4WlBXOiDd9xn99bYUneh7tz2qYQA1MELFnlbobL2um2RoTBdXfEcrIC/cwSugSY1RODIiPFy9SPS9AqQbCk3Y+qFiY1Hay2dm2h2+IF6ddVKHI+SX0/mP7SOnchEfFvuk0zq/9qv6cCnw8VW+KLyE1fjZn1vnroKfZAwgvqMlSi5AXpbJiEkN3uZZMCn2Xm7an3tpX5dvDTHR/EZp3Y2ZpztUlneyWZfe7RFAB74WLPUw8ioCCykZGlduqB9wawgmctc1RH1OHQIwbhgI8Kd8++Kikgg91Fl5szEER1NO+a4IAPprsFh2eUcv/3HU9pU9BVyEcjCrpwp858TsvRYC7iER8f0p5WbEgG2NG2QKIO/jqNAdyDK6SRY4UCIWz2brupDKFuNOIJomZMz8TQLVJY3Zuxh4v1H5RQEklBmN07Nt+Lom5v5YaDPJmoGVUBzj+zdeIG9lxDu/UFR3bmvik4guQ7Cxk9vwLpKyd4CcXh8VuC3EmdbYqG4BStmdXX4FDiRyTSEMkl3J/dhCYfpON/omIdSw0J7pkoTve1RZbWg4XDsNSHUIls/PTJsVMv6VQJeKlVg8f1DkiBBNW7h5h6Uapi2hUc8SPlYTZR5BO4tZHMmb4tEkkLZNAWoCBQzpSF6RoHkNNZVX+7fgu/3p/MWkMGHtstaGsQj6tAcgokgH1KkRuNOGHjOH3XHeEd+FrLGL6YVZKfATSaFG+EYqXZS8DJPB9QyqNA5VhhzLjm9OwWMp6JMhh/8qzzCqK5xAZcr8VYW0t6fbKyg/1pb115OdHHf/LtV4SkPwVxWJS2cmAQh8K0RgYR8BOTuhrIr2nlY0YNcZS6VgI/eRgI28QaU3mdmGthRLsKT0Ty0xZwskT7yhrp9pGmO98L9KN0SNvWjEzb0CgGFo/oxKfYD9xokOkvQxAeoUY4cRKdyz
- qI6nkj0m
- qxTHZR2f9o+Ru2KefMR7tGOP3upilGLnhHXgtO73065MbJWEer9CdIpdiAQHcxgmhkbDpXABezfgS9yqMdsce1lIjEP8Afmgk27imMHbp05FTqUe0VuNTfCKzEg6aqpdGucaZ7dfToOjbleBSQzDzZLdX6qcaadgucQmEztnEUkNf7ak1VjfBWDO7gRDNdiBgz0BJAqHAELNOfu6V6GC2MQ+avz593yUvnBZGHD67osjswbkDwKNK3o9CI3g1Pg2Ye9os0aV/PuQnwjw+47KP/5D3yg==
+X-Rspamd-Queue-Id: 1C04E100005
+X-HE-Tag: 1773769789-873011
+X-HE-Meta: U2FsdGVkX18Wi4xQI61u+kMQU9y/2ygfUxE+XXlwFFvzcu4fLUt+y4030UKMPkq67FWDYIQ2VGqHmio53Md1NmuSmimTNRLrTplxIWhNniJbQLKB29r+prtD3ryKdHvzc37R24fpTQaUERUGxcEBgtMdYqBXQZqhz8Xi3P/Sfh/9M9ARopREcyNkKOju0FxhsMRPJMvQR8+0Y9XhWzgFcjD0AHM6MXLNEPNHxJUSx0z4NBST/PKkvOa6ki74LAlpYNTmPa1QVJKl6MrRamLZtpHPExl+8hp74r4k+7GwJtcxVTUeOMSyf2M9xTMj19JvL3oUkMLDM39PA+DXmQ4rYFp+u2sypbehEHloJ81pqAmTVcnpIF5X2+SEQ6Y6LwfIPdeXvUtmjJDGecHNBKO32TZ2+AG0qOhS3381tTggXh5ZbRrEjfVi22EfjQ2yCG/OXfGTP/MO+9/5DYCRm1LJIjSG+jKXg6Hm7+UoYtH7LKh32vpYQW02mzhytP6vl/MmlfAhTWHlWZazFjzyY6Uy4MVMBMFo7X7i6IwmTGHynVVYv4xw3HhwFYvII19XVd+act449Ht88BFMF5ecrFs0QoazjjEq/FzBoSsQqCJFGFYwcoAcpiGDU2yMgvX2MvW2FIAlxOFWBnOx6q5q6WCN40K8TrvPP2Jef7fnVSzA6mMp1+lIaHJFrBoycpqDMhUfXtubI2Ve+fi8t32JYMmC35ZCglmg8HLwZ5e3hMmsxY6lVVfM72iO0tFiHnayW/eAUp5aRMuFkJhl6uLo64Jj5LBzSuJrFmVDlPH7s6srdmgVLdrtip8S48pphN0fjrYJIGeKXq52NbCPMbbVJn3O60kzUF1t8+cYIqK3/eVO/3sPQwm2FmbFvd/tkwSFCeomNiVEpf0cuLw/zJeIK2LERF/aGWh0vZHpjRRRM0wVgkWkeyvDZje9rEaLoFPJ6xt//mLAss1oBzGHspfBzYd
+ 1xxLoZIF
+ JpJgDj8KsuHa8enU7TfwQFEC1Y+28XdSmd7TufeSiVDS2xW2mL4gry5t5thWXEv37iOSKx/iPGP+VcvAsfRachwf5kUM8wG+ELG6XqzFJTRSY7HNJ7suZB6JqCAAM382Riyvo2JClEQeRYvYoyr+SCkUc0hReHpDb3+MSWa9Iy4M24dYFOGz4a5tLGMXCNPIb4kvaktJH/tTVkqOyFPPDXYMhgqgleIude7eIbGVYUvT/505VrRUEvuHMPD8I4sbX5Pd0JSl5CGS8h0Qg6O4DaJmfon9FUcebqAXzjXrcIp6JNGtK+3cxqkL6bwqLIJGMo4SCXfpHJj1zXBW5yYK7MeOtaN8elZHCGOj0CmakJhLQTbs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,22 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 17 Mar 2026 15:15:31 +0100 Michal Clapinski <mclapinski@google.com> wrote:
+On Tue, Mar 17, 2026 at 05:56:44PM +0100, David Hildenbrand (Arm) wrote:
+> It is not immediately obvious that CONFIG_HAVE_BOOTMEM_INFO_NODE is
+> only selected from CONFIG_MEMORY_HOTREMOVE, which itself depends on
+> CONFIG_MEMORY_HOTPLUG that ... depends on CONFIG_SPARSEMEM_VMEMMAP.
 
-> When CONFIG_DEFERRED_STRUCT_PAGE_INIT (hereinafter DEFERRED) is
-> enabled, struct page initialization is deferred to parallel kthreads
-> that run later in the boot process.
-> 
-> Currently, KHO is incompatible with DEFERRED.
-> This series fixes that incompatibility.
+Ugh god.
 
-Thanks, I've added this series to mm.git's mm-new branch for testing. 
-All being well I'll move it into the mm-unstable branch (and hence
-linux-next) in a few days.  All being well I'll move it into the
-non-rebasing mm-stable branch a few weeks hence.  Then into mainline
-during the merge window!
+>
+> Let's remove the !CONFIG_SPARSEMEM_VMEMMAP leftovers.
 
-[1/3] and [2/3] aren't showing any review at this time, but the
-well-reviewed [3/3] is the meat of this series.
+Maybe worth explicitly saying 'dead code' here just to underline how stupid this
+was...
 
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+This might be dead code, but this is a dead on patch, so:
+
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  mm/bootmem_info.c | 37 -------------------------------------
+>  1 file changed, 37 deletions(-)
+>
+> diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
+> index b0e2a9fa641f..e61e08e24924 100644
+> --- a/mm/bootmem_info.c
+> +++ b/mm/bootmem_info.c
+> @@ -40,42 +40,6 @@ void put_page_bootmem(struct page *page)
+>  	}
+>  }
+>
+> -#ifndef CONFIG_SPARSEMEM_VMEMMAP
+> -static void __init register_page_bootmem_info_section(unsigned long start_pfn)
+> -{
+> -	unsigned long mapsize, section_nr, i;
+> -	struct mem_section *ms;
+> -	struct page *page, *memmap;
+> -	struct mem_section_usage *usage;
+> -
+> -	section_nr = pfn_to_section_nr(start_pfn);
+> -	ms = __nr_to_section(section_nr);
+> -
+> -	/* Get section's memmap address */
+> -	memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+> -
+> -	/*
+> -	 * Get page for the memmap's phys address
+> -	 * XXX: need more consideration for sparse_vmemmap...
+> -	 */
+> -	page = virt_to_page(memmap);
+> -	mapsize = sizeof(struct page) * PAGES_PER_SECTION;
+> -	mapsize = PAGE_ALIGN(mapsize) >> PAGE_SHIFT;
+> -
+> -	/* remember memmap's page */
+> -	for (i = 0; i < mapsize; i++, page++)
+> -		get_page_bootmem(section_nr, page, SECTION_INFO);
+> -
+> -	usage = ms->usage;
+> -	page = virt_to_page(usage);
+> -
+> -	mapsize = PAGE_ALIGN(mem_section_usage_size()) >> PAGE_SHIFT;
+> -
+> -	for (i = 0; i < mapsize; i++, page++)
+> -		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
+> -
+> -}
+
+So this was just dead code before? That's gross.
+
+> -#else /* CONFIG_SPARSEMEM_VMEMMAP */
+>  static void __init register_page_bootmem_info_section(unsigned long start_pfn)
+>  {
+>  	unsigned long mapsize, section_nr, i;
+> @@ -100,7 +64,6 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
+>  	for (i = 0; i < mapsize; i++, page++)
+>  		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
+>  }
+> -#endif /* !CONFIG_SPARSEMEM_VMEMMAP */
+>
+>  void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
+>  {
+> --
+> 2.43.0
+>
 
