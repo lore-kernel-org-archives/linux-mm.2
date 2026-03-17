@@ -4,99 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C23F33829
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E849EF3382B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:38:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A88F66B0088; Tue, 17 Mar 2026 05:37:50 -0400 (EDT)
+	id 5CF136B0089; Tue, 17 Mar 2026 05:38:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A12D76B0089; Tue, 17 Mar 2026 05:37:50 -0400 (EDT)
+	id 57FE66B008A; Tue, 17 Mar 2026 05:38:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DB396B008A; Tue, 17 Mar 2026 05:37:50 -0400 (EDT)
+	id 447F96B008C; Tue, 17 Mar 2026 05:38:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B8606B0088
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:37:50 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41F5F5977F
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:37:50 +0000 (UTC)
-X-FDA: 84555053100.02.78503B8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 832C810000B
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:37:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ID4VjXHp;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FADE6B0089
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:38:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCC3D1CA03
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:37:59 +0000 (UTC)
+X-FDA: 84555053478.05.D197718
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 747414000A
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:37:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A+0DMHAb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xmUefSO9;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HfXH0TzA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JOi5WNGR;
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773740268;
+	s=arc-20220608; t=1773740277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6lv+QlfAmvz8ULPA8N3IV0L31NrfpUQoIkLYWeyK4h4=;
-	b=BIyJNIegFGaZ7V11/PNVYrTGe9e92yVEI151E1dA9UB8qMuZmbWJXkKP5GuFYqLOkb78fA
-	IqSsQWbrcfvTrdMajK1GJM19EH9In6q/iNcdBxQ4kj9WJxwwALYzlZFF6NbgzSpkEhwS6c
-	XwnCE4OpYZjO9C5YOXx7hK2fQ6sdgRc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ID4VjXHp;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773740268; a=rsa-sha256;
+	bh=XMAS/3KJsstwA3paQv6TW+kjF9gkITW3NZUnc7bZnuU=;
+	b=F5yx5AD42cVxZdx+WyJP3Do2efbbHb/XOmpcOMM/vmdk3bAZnA0LtlYpiFnzC1E6LGiXs1
+	9SafQU+oNHNVfDTT2tj8QYVmNWiPeP6Sxv46lBKZ3lQAQmXxVJzK9u258gTZ3vCemeQUjN
+	kxCJinT/b/2RjDrTW8JfTknbr5e//RA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773740277; a=rsa-sha256;
 	cv=none;
-	b=6loZ13U6ra3RSM0wPKQCkRZGqBMFk055sZJ1GvwbpmbwEJ84MfTpgS1GJ4yWaj/DcyqKd3
-	gUF3d5IVRMDIUuGW73g1ULs5/zbRvQ5Olatg5iVEyAWBVM4mYJm529IY6tRtnZUxSih0Om
-	5Qx3iYrDZLMqpC0hXRiTm2OeeqTqhqM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5047E403DB;
-	Tue, 17 Mar 2026 09:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683A1C4CEF7;
-	Tue, 17 Mar 2026 09:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773740267;
-	bh=3908OmCkPwPpavgQLfiWA7d+Y76sSzivYABpXZDKedU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ID4VjXHpTAT1SyuqsuYtdSP8PqxsJf6Ik/YXiROwmdjgJoJyGAKM+NUEj9VlRMrHL
-	 cn0tHf+PB4Mw74GlOpNKA1iSnuFMPbMNLsMVK2VnqvT86Qb8FhRW8GUBXSUaakgS4T
-	 G92uznoQYNWb8Asz/4FhSNJktgF4Mh0H750nj6XpMGA5XYr5TNgJXqeLbcfFpmsBkI
-	 2MwrzN4OeCnEm3VPpe5qMP2cgzZncu5aObz5L/6StWNfNT8MuPPE+tXnwXlr7XSGaL
-	 1BtIaRaK4uWC4wnrgDGyhdZjxMUqHyD1hE42yCJBK5j7t6yea8ZztUjF/irNJRCVTl
-	 7A9kTOE1hn96Q==
-Date: Tue, 17 Mar 2026 09:37:39 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Breno Leitao <leitao@debian.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
-	Wei Yang <richard.weiyang@gmail.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>
-Subject: Re: [PATCH v6 3/4] mm: huge_memory: refactor enabled_store() with
- change_enabled()
-Message-ID: <1b7d1bdf-c002-4543-b858-09fd2b1b73f9@lucifer.local>
-References: <20260311-thp_logs-v6-0-421e30d881e0@debian.org>
- <20260311-thp_logs-v6-3-421e30d881e0@debian.org>
- <322f6f2f-840e-462f-96b0-b603b9c88582@intel.com>
- <abfVLky1zanZyEx8@gmail.com>
- <a503cbfc-e7d9-40f0-99ef-d640a0b5d78e@intel.com>
+	b=ZZMwOJ5fkwdM2K11hrAjjiXd1M81Izc+Z35EHTWrIV7hFdHNibEjBhUiBwpu18Rs/xdlrH
+	K2NuUximGY/g5y+4dhpnSX3PSwsyoRv73MF1N/Tlkh1JMASL3VV1HM/LH9sIH7sb7TW9Pk
+	Xr68dKpiQwP2fYSPKq0Haxe/kv+r9cE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A+0DMHAb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xmUefSO9;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HfXH0TzA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JOi5WNGR;
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8F3F85BD96;
+	Tue, 17 Mar 2026 09:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773740275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XMAS/3KJsstwA3paQv6TW+kjF9gkITW3NZUnc7bZnuU=;
+	b=A+0DMHAbfbhM8MnlBUqVL+W87T4tqLjqUGgvxNRqk88xckeEeRm82e+ypnsFgad4/XiqOe
+	eFQnLDIV+dM8cXwaoMX9AvcuSz0XaJOKBqB0bzHsm6RA5PfmHqn2hYLlC9HiNT/X/xWX3q
+	BqIvjViI9CtSct4EF5Es0QJY/LKW1HI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773740275;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XMAS/3KJsstwA3paQv6TW+kjF9gkITW3NZUnc7bZnuU=;
+	b=xmUefSO9ArclnNvP01TmJwVa9hwB1H9Ezy/G04E5yEHJeukkDoWlTMUncfdfe52pgfQsy2
+	oR1nH2U5mzv18+CA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773740274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XMAS/3KJsstwA3paQv6TW+kjF9gkITW3NZUnc7bZnuU=;
+	b=HfXH0TzA0f1d2CSbAyldJl2xl9aWzYbpw10loZV1kNcn1txaCSCXzrSvfKHAIHGI00VNao
+	b//U5Itged1fc1C/uxZj0ysYyWI8ysEt0UM5ZsojSOhxVbgzKeS+lof0B9W59LS9IUq6E2
+	yDhoArHhElh4lGLUjlD4eJXEl3bpa6o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773740274;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XMAS/3KJsstwA3paQv6TW+kjF9gkITW3NZUnc7bZnuU=;
+	b=JOi5WNGRhJfP08gEJXjzmktG0GqpaBSxSS7XTpG6foqsalkoejj3JitKc4S0PHtQ5wznJC
+	I5D56EajKt5gebCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D7054273B;
+	Tue, 17 Mar 2026 09:37:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Cg+ZHvIguWnvMwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 17 Mar 2026 09:37:54 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 43970A0AB1; Tue, 17 Mar 2026 10:37:54 +0100 (CET)
+Date: Tue, 17 Mar 2026 10:37:54 +0100
+From: Jan Kara <jack@suse.cz>
+To: NeilBrown <neil@brown.name>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Jeff Layton <jlayton@kernel.org>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
+	Jan Harkes <jaharkes@cs.cmu.edu>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Howells <dhowells@redhat.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Steve French <sfrench@samba.org>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
+	Yuezhang Mo <yuezhang.mo@sony.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Breno Leitao <leitao@debian.org>, Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
+	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Tyler Hicks <code@tyhicks.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, coda@cs.cmu.edu, linux-mm@kvack.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, ceph-devel@vger.kernel.org, 
+	ecryptfs@vger.kernel.org, gfs2@lists.linux.dev, linux-um@lists.infradead.org, 
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH 33/53] ext4: use on-stack dentries in
+ ext4_fc_replay_link_internal()
+Message-ID: <pb664u5mzlaqthyhwfsio66wgv2hwuqazzbrtzunnja76khowi@v7l5o4xkzci2>
+References: <20260312214330.3885211-1-neilb@ownmail.net>
+ <20260312214330.3885211-34-neilb@ownmail.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a503cbfc-e7d9-40f0-99ef-d640a0b5d78e@intel.com>
-X-Stat-Signature: ugfdeadg1c43szp4a534eymrnhdzm8zx
-X-Rspamd-Server: rspam09
+In-Reply-To: <20260312214330.3885211-34-neilb@ownmail.net>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 832C810000B
-X-HE-Tag: 1773740268-640327
-X-HE-Meta: U2FsdGVkX1+PE7h4BT+vY45VvSXxB1/a1ZNnGHpSaRC1wTDiPKBHyBe6QLLgkKHUUv2AgFenIV01MqaEbgipILr4ZAsn/6+Y0gftNshKdfO0Cih5sJnFjhO/hUNsM6NHn5zf2B/QAjNt0l0rCD6jvTwViFxVl06qDM5XbJWMoOriGpevBGuy2/G2meC1kN+9Dc1wCW9HMemzcv1yZcGAtdu3wvkZBgucVQWjV/QdLaOoJmkJ783sRlyV+40yFXBhYECR4EQUOYtfRK051BbISDk75oxpA9PrZqiCT1xdkb2zx/bHRjI3zE1ATn/ZyQdMijrHFswtUIcjDdk2hp9aMFM/wu0H5SF0++qLlcDCXm2wu0pqH+ev1PO8hDiQzOm12PSJujbIs+0fe46Z8PNVhLpl/y7Lj6XPngw6atmgXQhvXYBuHhClJ5FjL/pu/tVZnBO60sqzc4Lqv9ol89S057X0gRW1HJ/sA2yLjWy6SCKtl9yMKkhnpYQLUum0rzMu3PuqqFQdJxZCIlmk8O7P3oX+YImIRzItR3GprCGrCVXy2rJfD75LTeSig7bdmJUJ8RUMdwYJ8o+X8+Ye7sS2jQ9KWYykoHzsWFO+60wltIlGvWl35Lp1ZH+Pqw+Ef/towYPulkBi6NjbVzvg8TLxEDW7fHld7OmBONU7BrH/+Ui/qtfiut3Mc86bpIQGocqoaLYYNn+2M/kCuQC1iUt2774XN5oMHDp5U6RI4axjHqcHHHjW6/k329kVffQo/vAwpTZDJ21Xv0khWh2BD0zqPqdTZmLiITzzWL79hAj1kE0sXpQQISjNOikXPAl6mg70f1H2XMfrPRutZi0oqLHaizCSSiGiqlvY1PXOsXeu2JckcP0TXKGMg6jOZp0V35A6BdN/A5dpHh4/LS2YjCO7G0XNFcntPezCL9DMuOOPUPOMFiI1ceTmnWf/yLywNuujxhAFQ6NdBHM3V7S8rZu
- Kntm9g81
- 5DJODQiVclkBOGf3xf8vnECp87s2n/KxYptdkrp6u6aXu13wQRsZwiIaQXxiDyrbQrz9PW16ixlAsNnLMYT6RTAKE438+inXZU77OMnsynpi79419lnbOJMVadxKhdjqsQPvYgzk/foSiCX2nZ/mcwkky/iWV6P6Me1h6bw3pIUA4HU3HA1gwR14snCPXJ26af5Xy4OYdtplnxVjQCVrt7aLdlFy3APyKrDHMmyK+jrUYHeJ3sY7Yoac00R3WnXIEhEMyRbbFY6U62Vl8uUjoU+efzHE3w4YBmUA3KrJ9dZWb4+ecWKJeUDh1Zctc0+f3dQdj83ukeNHWM0w=
+X-Stat-Signature: opt7e1h9x86gjupfbda49mw3684c9d4x
+X-Rspamd-Queue-Id: 747414000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773740277-181463
+X-HE-Meta: U2FsdGVkX19IiblEx/OZkHRkVRNaYXbJtonDVPy6tMFYFzcm+mLwJhPyD3iJ5xOgaFrCVuNu2J66KEgzVGoggIiyNhYV8Tmd/bcZrnM1D9I4Pmas2580cwMZsmaIcZ87b21Qfpz8vzScP0YpQGwpYg3Ee1fIdWrlfDIOQd+c1fqSnTR3K0ehwDlUjyk8JVCaiskKrQZC+TuGqE5ImD2K0iiGYzDakKOcEAFmubjpWGq3OHJ0n46hG/wnzzqPtCjDGaRRn8F1ekhepOYcbDc81UILo6qlzOrmqq3fO+4bIYjw+hiH+9I4Mc7a/jnBxS2AnOHvZ0Tn8rX80XBn51Ull+wBWAThL4bRnulSNfqZ/hbeKyqqIAO0A8NRhYXbre1ZlCZOiGs62rrn+4GOsJ0z9oWC4B8eg9fFN44jH1mhX65wu/p0DsadYLfurONvVxTmhHUmLMVSNtRyvs7PXcJ3hyv8glPZRLw0YeGzAAPkITMj+qTztQtz62o1qRaypQ6Iz9iwRYnADIil/74DkQi8Y99C7k/WmAkdTC8xHGpq7HTfww+P+YBH8Vu602k99GlDP1F2tcthOQwztoGlDjDE06UCSfiMNX4v92j9gnA8y8Rp9N8JWV0N6pfx9LLNoo2Dc9hcvU2nBf7ahOk6yFLdh6soj7asOi+1cTqKYL4dI+pHC1it36qCFCHPV/5HbThkrrr9ZygIXXLZPVJ7F45UI5uaz+oC4kl2AHnwni4ebLUVfduQag1YULQRYG5Gyhq9UVWwZ8yvdS2m9N5kd6iddHWN2WWgKBvQmXl5mI5mc3+AND/8rZP5ZM3LDjd/ZyotozRG87d91sWbtySJqQvmhrSTZQxZbDn0N73ahbAHJ7DqvA26hebFb1ys/urcbbADUg6IF0pRynPQjm8DHPezVLqiptq5VBLIx9EPgl9SqYKfE/KjGkv6888Ap8FU+C2bJHrIMPiHy4x3gTDEqhi
+ iWAwARvz
+ jzshIUt3T0Fnlw7Mna2vvAXTxsmbS82YC9P7U4nK7mX3Ah2TPNRlSBnVTO09+OmkjbZKSPSn1JsBANtD3ALDoSsyRB64mMn6pdJ3OWPlwsrXaNYeN4xd7VFqG7KkY1JCXc0UHxk1UVO/JbnMIKbrpIoCcVuK9i7MJNyJHEPh/9M6cKaK2c8FXaLi8Q3i/NAc5Ssii8Rbynay7CCSqKhqHEdWElyKNzdMb4WgfNnkf/KhDLtChR9HA+YQ7xdYx8mK5vGm2Q8P0mzB9kq8l3X9kCKTxTbQTr4ZkkA8a9lK74Iq0wyVKY0LvUQcMTlLrBNskwEDbHqBFc4F1oU91mXUF9l+M5kXDTSIkolo0B98DOvsXcm4DT9vbriLVn4vbHxZevku8L8F/YL6EL5IqGm+4V2MhfztRB6tt69ZrC00IzdLwDAU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,82 +154,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 04:26:30PM -0700, Sohil Mehta wrote:
-> On 3/16/2026 3:12 AM, Breno Leitao wrote:
->
-> >> I am not a mm expert and typically do not follow the mm list. Is there
-> >> an issue with the usage of non-atomic variants here? The commit message
-> >> says this uses the same pattern as set_anon_enabled_mode().
-> >>
-> >> However, set_anon_enabled_mode() has a spinlock=>huge_anon_orders_lock
-> >> protecting the access. But, transparent_hugepage_flags seems to be
-> >> unprotected in that regard.
-> >
-> > I don't think that the atomic vs non-atomic will not help much, given
-> > this is a compoud operation. Independently if this is atomic or not, it
-> > is racy with anyone changing these fields (transparent_hugepage_flags).
-> > In other words, Atomic ops make each individual bit flip safe, but
-> > set_global_enabled_mode() and defrag_store() need to flip multiple bits
-> > as a group. With atomic ops, two concurrent writers can still interleave
-> > and leave the flags in an invalid state.
->
-> You are right it is a compound operation. So, there is an existing issue
-> with two concurrent writers which can leave the flags in an invalid state.
->
-> But, I was wondering if there is a slightly different issue now due to
-> the non-atomic part. Some updates could be lost depending on the timing
-> of the operation.
->
-> For example,
->
-> CPU1 does:				CPU2 does:
-> set_global_enabled_mode("always")	defrag_store("always")
->
-> ___test_and_set_bit():
-> // Trying to set bit 1
->
-> old = *p
-> // reads flags, sees defrag bit=0
->
-> 					set_bit(DEFRAG_DIRECT_FLAG)
-> 					// atomic: sets bit 3
->
->
-> *p = old | TRANSPARENT_HUGEPAGE_FLAG;
+On Fri 13-03-26 08:12:20, NeilBrown wrote:
+> From: NeilBrown <neil@brown.name>
+> 
+> ext4_fc_replay_link_internal() uses two dentries to simply code-reuse
+> when replaying a "link" operation.  It does not need to interact with
+> the dcache and removes the dentries shortly after adding them.
+> 
+> They are passed to __ext4_link() which only performs read accesses on
+> these dentries and only uses the name and parent of dentry_inode (plus
+> checking a flag is unset) and only uses the inode of the parent.
+> 
+> So instead of allocating dentries and adding them to the dcache, allocat
+> two dentries on the stack, set up the required fields, and pass these to
+> __ext4_link().
+> 
+> This substantially simplifies the code and removes on of the few uses of
+> d_alloc() - preparing for its removal.
+> 
+> Signed-off-by: NeilBrown <neil@brown.name>
 
-> // writes back old value with bit 1 set
-> // DEFRAG_DIRECT_FLAG is lost (reverted to 0)
->
-> IIUC, this issue didn't exist before. I think it might be safer to use
-> the atomic test_and_set_bit() to be compatible with the older code.
-> Though, I'll leave it up to you as I don't have expertise here.
+Looks good to me. Feel free to add:
 
-No, it's up to the maintainers :)
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Given the above I think we should switch back to the atomic accessors.
+								Honza
 
-We can address the broader issues with this horrible code in a separate
-series.
-
->
-> Overall, as you mentioned below, protecting transparent_hugepage_flags
-> with a spinlock seems like a better, long-term solution to me as well.
-
-Yeah, let's look at doing a follow up that cleans this up in general and
-address that then.
-
->
-> >
-> > That said, Although I don't think this patch is making it worse, I think
-> > the is a racy issue here that we can make better.
-> >
-> > My suggestion is to move the rest of the helpers (defrag_store()) to use
-> > sysfs_match_string(), and then create a thp_flags_lock spinlock to
-> > protect operations against transparent_hugepage_flags. Any concern about
-> > this approach?
-> >
->
->
-
-Cheers, Lorenzo
+> ---
+>  fs/ext4/fast_commit.c | 40 ++++++++--------------------------------
+>  1 file changed, 8 insertions(+), 32 deletions(-)
+> 
+> diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+> index 2a5daf1d9667..e3593bb90a62 100644
+> --- a/fs/ext4/fast_commit.c
+> +++ b/fs/ext4/fast_commit.c
+> @@ -1446,8 +1446,6 @@ static int ext4_fc_replay_link_internal(struct super_block *sb,
+>  				struct inode *inode)
+>  {
+>  	struct inode *dir = NULL;
+> -	struct dentry *dentry_dir = NULL, *dentry_inode = NULL;
+> -	struct qstr qstr_dname = QSTR_INIT(darg->dname, darg->dname_len);
+>  	int ret = 0;
+>  
+>  	dir = ext4_iget(sb, darg->parent_ino, EXT4_IGET_NORMAL);
+> @@ -1457,28 +1455,14 @@ static int ext4_fc_replay_link_internal(struct super_block *sb,
+>  		goto out;
+>  	}
+>  
+> -	dentry_dir = d_obtain_alias(dir);
+> -	if (IS_ERR(dentry_dir)) {
+> -		ext4_debug("Failed to obtain dentry");
+> -		dentry_dir = NULL;
+> -		goto out;
+> -	}
+> +	{
+> +		struct dentry dentry_dir = { .d_inode = dir };
+> +		const struct dentry dentry_inode = {
+> +			.d_parent = &dentry_dir,
+> +			.d_name = QSTR_LEN(darg->dname, darg->dname_len),
+> +		};
+>  
+> -	dentry_inode = d_alloc(dentry_dir, &qstr_dname);
+> -	if (!dentry_inode) {
+> -		ext4_debug("Inode dentry not created.");
+> -		ret = -ENOMEM;
+> -		goto out;
+> -	}
+> -
+> -	ihold(inode);
+> -	inc_nlink(inode);
+> -	ret = __ext4_link(dir, inode, dentry_inode);
+> -	if (ret) {
+> -		drop_nlink(inode);
+> -		iput(inode);
+> -	} else {
+> -		d_instantiate(dentry_inode, inode);
+> +		ret = __ext4_link(dir, inode, &dentry_inode);
+>  	}
+>  	/*
+>  	 * It's possible that link already existed since data blocks
+> @@ -1493,16 +1477,8 @@ static int ext4_fc_replay_link_internal(struct super_block *sb,
+>  
+>  	ret = 0;
+>  out:
+> -	if (dentry_dir) {
+> -		d_drop(dentry_dir);
+> -		dput(dentry_dir);
+> -	} else if (dir) {
+> +	if (dir)
+>  		iput(dir);
+> -	}
+> -	if (dentry_inode) {
+> -		d_drop(dentry_inode);
+> -		dput(dentry_inode);
+> -	}
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.50.0.107.gf914562f5916.dirty
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
