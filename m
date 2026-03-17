@@ -4,105 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0439F3381D
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E6F5F3381E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Mar 2026 09:05:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9A56B0005; Tue, 17 Mar 2026 05:00:28 -0400 (EDT)
+	id 8ADF06B0005; Tue, 17 Mar 2026 05:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0B96B0088; Tue, 17 Mar 2026 05:00:28 -0400 (EDT)
+	id 85F096B0088; Tue, 17 Mar 2026 05:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EEA86B0089; Tue, 17 Mar 2026 05:00:28 -0400 (EDT)
+	id 74DD86B0089; Tue, 17 Mar 2026 05:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A9856B0005
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:00:28 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0DE2C221D
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:00:27 +0000 (UTC)
-X-FDA: 84554958894.28.83B018A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7A74F180013
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:00:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hYiihZtc;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5D6606B0005
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 05:05:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E392EB9FE7
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:05:53 +0000 (UTC)
+X-FDA: 84554972586.21.250FC27
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1ED1220008
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 09:05:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kP7Ici7H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773738025;
+	s=arc-20220608; t=1773738352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LfW4PQO+j4EnEpboaPKhMu3WfMztmYGSmgtjCkFC7Vk=;
-	b=NbVNvqZ1df0wU1KwAg+haf2mPxrjFXr3o7PLBoqSoR7bLbUDnZEMLjpPaEzZBCCEl9/8SO
-	S+zMkgSqJzOUpUsTTR6vaXdxhhkkHxBJZJaS8BQ1UrsJbCjc8S88j+wX1Y9cxN0tWrCSN+
-	kza2d7VcPyVpf1be8KjDgYObOgQynF8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773738025; a=rsa-sha256;
-	cv=none;
-	b=Q6exgSsjuwt91o8vap5i1lI7RgXy5sGgkIr0UgWyp+KIt7x5rNjn2ljyN5kHHSVM+Re1vV
-	0XH59rIV7qxwunyEkc0cXmlk1kh5uCq20shvUqCIrPjajzWjzjpRclQpjUehetAuQXmz6J
-	oPB5ILxWee2xYoQepshfALDITJtzLR4=
+	bh=+ew+xuRAmBQAMG19DlsKdHCE6NGseHlNGZHKCnhY1Qg=;
+	b=0fN2PiObRVXcUPH+5DJO5nW9lV8kp6rA0OIlzjFSX2O3pVOcLDnMTeml5R/jWZQyaT/VcC
+	P1U8y9RRcJr5jXNVFfx6ySJpQRIogjNmN5jXHbgIdMcmNOM/DFiqzQk/g/BwTUv9t4rVnv
+	HvU04qUOSJAxCisL+f44/NOHAPsvSN8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hYiihZtc;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773738024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LfW4PQO+j4EnEpboaPKhMu3WfMztmYGSmgtjCkFC7Vk=;
-	b=hYiihZtcBS1RX4NgTdC0Oj24bMkpg5zdn8Tc/pYEBaWMyw49tAyXNkBTOBtABdycGyAuZ4
-	Y7o6zaGHX7DUpFG6uhrcIwHaTVQWMRvRgVx+HeB3I6pwF0he85JsrZLT8YiPOaGg6FJlF1
-	ovC3osVrdsgMQgKFDXzo5y1/FlRMrCs=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-490-x904NKE3O2OvpD80PB_H_g-1; Tue,
- 17 Mar 2026 05:00:21 -0400
-X-MC-Unique: x904NKE3O2OvpD80PB_H_g-1
-X-Mimecast-MFC-AGG-ID: x904NKE3O2OvpD80PB_H_g_1773738018
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 30E0C18005B3;
-	Tue, 17 Mar 2026 09:00:17 +0000 (UTC)
-Received: from gmail.com (unknown [10.72.112.28])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E6D41800576;
-	Tue, 17 Mar 2026 09:00:07 +0000 (UTC)
-Date: Tue, 17 Mar 2026 17:00:03 +0800
-From: Chunyu Hu <chuhu@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH v2 3/5] selftests/mm: move write_file helper to vm_util
-Message-ID: <abkYE-tUzy6cz_kH@gmail.com>
-References: <20260316044335.1390608-1-chuhu@redhat.com>
- <20260316044335.1390608-4-chuhu@redhat.com>
- <abekn9aBMw1e1Rw1@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kP7Ici7H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773738352; a=rsa-sha256;
+	cv=none;
+	b=HvukJbhbYQ6gU3bWlFLZFWrGdkDa5OkaNHagCqO9Ma0wXT7naQgDcQHPCmlXSwjHMaBAwh
+	SHKw8Cf4KfqA+dhexhoKGYcn6fUV7dNNvkAYoBinPCvZjbf+TMNFDReR6vKs0c+UQWdKDI
+	xKYWR0wno0jHOgOXLjhuXkp+QyfKi6A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 23C814046F;
+	Tue, 17 Mar 2026 09:05:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B205DC4CEF7;
+	Tue, 17 Mar 2026 09:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773738351;
+	bh=60NzU8YkM6iiNLUY0cDgOBqgulQyzYJR4ZpS5nAoKLU=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=kP7Ici7H+aJUMRHtWb2tkP2qGDmvHXShG1b9j1WI8PTdcx9aMtyPAKkb2GrjN/5P6
+	 j03L8EMmu9j/B27o2ex70jUTnaYpdaZIPCWFdGKq7kQY/idsKz/pw9HaemsfpUFvpO
+	 aTN3pvgA5OpqT1dPaWGBEPYESzG4Sy2lGEa/duzmMb7wNlKwRCDquZ18TEEwcE+/SF
+	 6lGdBpYd3ygrdisYEAVHbZ1dJW8uVRf/2xhHh8jgAqRDB4x/kAIZBPdNgbhxkAzIz/
+	 pzCSYaoQ5BYGeUL21N2eU3q7nBG5MdZoU4mYLRSm6C0ROHxO1p4LnMKW3VRUUwWtPr
+	 wYToyZQhjLoVA==
+Message-ID: <3c0578a9-ce1c-4d26-86d5-681cae4b8200@kernel.org>
+Date: Tue, 17 Mar 2026 10:05:46 +0100
 MIME-Version: 1.0
-In-Reply-To: <abekn9aBMw1e1Rw1@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: HZJB-n1TXYlcCYG8nDuyQ5L-7ed2PXKrmfYTf767Uiw_1773738018
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7A74F180013
-X-Stat-Signature: 4a3qw1wkmzwn1hi7p497hrzd43htng65
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v5 2/6] mm: Add helper to convert HMM pfn to migrate pfn
+To: mpenttil@redhat.com, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>
+References: <20260211081301.2940672-1-mpenttil@redhat.com>
+ <20260211081301.2940672-3-mpenttil@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260211081301.2940672-3-mpenttil@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1ED1220008
+X-Stat-Signature: twn71opi4nsrn49xzorhu1e77ywwco77
 X-Rspam-User: 
-X-HE-Tag: 1773738025-975981
-X-HE-Meta: U2FsdGVkX1/4X7Qlm2mXv21oEyO0eksnmroh00a1Yu1AF7Ae4EgKiZYPBokldb8XHqxj68RZJf63Q//HP91yeQ8AjCnErPJSF1u7CczjSwcH7FJqcmJmFIF517sPanY/ms959V9HaTjt4VHFwSwoAIa3AIw18cAzUX0pDpkj+9OT7mJzsOjiOjk+er5o+1yvmGSutQpmdGojPath+yxUAJAQQaict2NxD/73y1SjHdyMmUaGNMRxUa7b5xN8TZmgHSPFZ7n6lpfnErYgu4fRZGbVky63zWy7ewDe+3PnIzO1/Er7YHqRPKEaIWSC8fQnfhSqG/2m8aFeQOOQZVLmxfSo7pO2MmWayccDn5zECy/vKFW+qBynBb3tujRsdjrTa7xqRGg7HT273wWisGb23bhh8YOKJqF244p56NI3A/BMGvu8oemRCppAQro2YUWwO3PHa69qBkM6YsO+QD5D0ToI9CuEgdc4aEe3CqySl8F7zc6RLE1rwwLc+vJNnfA3VlBnT6366NIXEz20KUPRjPXIY3eS8gdTVaxyXT45XX5raIyT6+sZKYrk7AcnPmEuKuBVwwUEQtjkOZnXnYBOGjcovV2zcJ79TcEc+1VEr+Im1rUlMlAxgkfnr6ijTzyKDuyIrjaTuclkgBuWx6pN/xnqETn/2RXcaerQpqPeLeqfi23nRVP4RRud7BOP6aI5ewBsR72SgdAenDiqAc103hQVqn1CU1sgDVPFa0vc1XmEy2xH1Iuk3dftCh8Z4k218Kku/A4UtzRX42Ugwz7osLtqL3vQQwuShz5CD4PDjTFoKxH1woRBjQTWjs3Wjl4/13CjUftXS4XlBncmYv0VZAIn0uhJqfg7osTc/2HhjB+0hEQeTyadyHm/thIaLxWkjA9FTx7JNj7+Or0QqpXvlYnq6jw78aeCYxPLSh4i9VcjTIBIAJJujlACx0p8b2e/NGjAySApxhSUClz4LSD
- T2bDvwZ8
- bwSCzsRy5tCcgGWgi1HTjutlLK3C3/U2wT6SZyiZ4x5X76iUnQj5tGjz7pCBoQ/ys4NRsmb+WEXMpPN04bYxzmxfaprqUWh45sLPeLB06U6d2YqHOXqUTHyBdyKAIBhdnDdZnzHC3L9yI0LbiXvuA8eO2ayBYdJM6PgiQ7AlU9kPLXs9ZDyyUc7KytBcoklo56kbkKdpX+1CjGvRYK8XkE3M3YbWJL63PePl2tXatyCW0YbN2rq4hQFHSW+6KfjzHrdPHCHhZmmir2KiZyrEMfngTEdx1ASm4LqtZ0pB+k21OiwviBT4T8UXK2GzlN+5enlTaau/96hoSGASFyvrrQ4vFddXtNkMZ9LCoMLVpx3aAHbg2aX1U3k8Wvg==
+X-HE-Tag: 1773738351-261851
+X-HE-Meta: U2FsdGVkX19CWe4yI4IthaZ1bMSHMZDc2cesbALB4SSEXLjyOvwVI48/JgQdbfpl1/M45RKdYzirS5MiH0WQ3dBzAzID1VXjrPAjpdZQse1Gl55CqpNY6/29vcCRSJXLxepHBMcrmNuP48hGIl8DQRlNpsZl2ASv4BCuRfkKFyDRTUq34aU/BfSrAchnuoYHTvGjA3cjhGDR3B/SKwRmjCNCMX+zrA9M3537ql8+NgrSKC0lxguvk8ykYtSgKX4gONNueOvFPTYydl3sd5ranlOioSqDz4/KlDw1Tw2C6KWwkKkjOE0riJQUw8lPp+6xnlRB7Kti/dEWV0wopSDI4B/51Cuqi5lOcTFIHN/RHehEVzeZ9HHqzmMmpEgpXCD1tNqMkcDVInBqX/wgiMXN7RmPzx2AJG4HNmLi85hXvbresz/Q2jMVgkHoagK0FNQe/zM/58ilU4Li6nz+RZMsnd6XaXtt+KIy5vuShyvFLFhXgJf5789lPmOLIvU+hj3YAIpuG2TtBYZ4wZaHGhuOmIwJoCCKdXclJQJ70h5aTb4s083N3/z51f+J6S0G0Z6Hi9fqn5Epz9V5V+ewNwWuT59qUjZytKteN8fA2gwfVd5QjwiokEqBsHLokMUTicTPGDuixcuG5oNRc5QMndZjhSsa+HZBNq9ubnh4O5bz3gt87KvCwLTh/mHvs+SAmYKXZdxRQRLf1iQ5/sw/3IjyIvXDYiJ2phJQfEJNhaS5o2O8gG0vzshmTO/eeiumDeW47qn9OB5gmSman52nXUPZ/nw+ogGkwfBwkLC4GegwHm3b5ZldRdWTQbSJpy1vrtAjf+DJ0GQObIFPHJYG8YY0cM81DA/Ue9J9Q8ulrZ31TCu/+GjGKQuxZpT3EuiYgPXkY31cVmV+42vWyg+W/MPjhjdXpWLAcyJmy2xbyk7FdyXDeKMQRKGW4gHTJF0YpADJLpU3TJ0iExw1GXAnTdU
+ f4NiKQbb
+ FkSZDjW6GAOBEw0L0gLO6ib9+FJipNE0fpRsDhQ7ohTQeq0YpQEdNZYblFJIlCtAKQiW1yh1Wk5lDogGXgYeHa2TqzLQfeLKyH1AChUSYPPwRGqjZ5RyBc6q/xl8nBIWm4LUpHRyaeFZ/m67De/Efy42Q1iYuvJr1+DVLrKqpB/R6BGRvSD9geRu+w63E/dT9xIlfwyvNbMCzD6Qta9Tz1UyJ2JIrnerCQt+n5mqyQH72RXum8PiDTMjg+AhwccbNC38rvjhoHPHxsP1U1Pa+SS7La9mWGs0BcBVtqtUIL9AJVgkiTQiox2K7ldG1mqtdb0P6EhFWbGKN0brn5/L6xJtkuRyGXyTR7ScHafDRqbSDxSfqPLK9d0VlYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,174 +140,273 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 08:35:11AM +0200, Mike Rapoport wrote:
-> On Mon, Mar 16, 2026 at 12:43:33PM +0800, Chunyu Hu wrote:
-> > thp_settings provides write_file() helper for safely writing to a file and
-> > exit when write failure happens. It's a very low level helper and many sub
-> > tests need such a helper, not only thp tests.
-> > 
-> > split_huge_page_test also defines a write_file locally. The two have minior
-> > differences in return type and used exit api. And there would be conflicts
-> > if split_huge_page_test wanted to include thp_settings.h because of
-> > different prototype, making it less convenient.
-> > 
-> > It's possisble to merge the two, although some tests don't use the
-> > kselftest infrastrucutre for testing. It would also work when using the
-> > ksft_exit_msg() to exit in my test, as the counters are all zero. Output
-> > will be like:
-> > 
-> >   TAP version 13
-> >   1..62
-> >   Bail out! /proc/sys/vm/drop_caches1 open failed: No such file or directory
-> >   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> > So here just leave one version of write_file, and move it into the vm_util.
-> > This make it easy to maitain and user could just include one vm_util.h when
-> > then don't need thp setting helpers. Keep the prototype of returning the
-> > written bytes num.
-> > 
-> > Suggested-by: Mike Rapoport <rppt@kernel.org>
-> > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-> > ---
-> > Changes in v2:
-> >   new patch from v2
-> > ---
-> >  .../selftests/mm/split_huge_page_test.c       | 15 ------------
-> >  tools/testing/selftests/mm/thp_settings.c     | 24 +------------------
-> >  tools/testing/selftests/mm/thp_settings.h     |  1 -
-> >  tools/testing/selftests/mm/vm_util.c          | 16 +++++++++++++
-> >  tools/testing/selftests/mm/vm_util.h          |  2 ++
-> >  5 files changed, 19 insertions(+), 39 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> > index e0167111bdd1..93f205327b84 100644
-> > --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> > @@ -255,21 +255,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
-> >  	return status;
-> >  }
-> >  
-> > -static void write_file(const char *path, const char *buf, size_t buflen)
-> > -{
-> > -	int fd;
-> > -	ssize_t numwritten;
-> > -
-> > -	fd = open(path, O_WRONLY);
-> > -	if (fd == -1)
-> > -		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
-> > -
-> > -	numwritten = write(fd, buf, buflen - 1);
-> > -	close(fd);
-> > -	if (numwritten < 1)
-> > -		ksft_exit_fail_msg("Write failed\n");
-> > -}
-> > -
-> >  static void write_debugfs(const char *fmt, ...)
-> >  {
-> >  	char input[INPUT_MAX];
-> > diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/thp_settings.c
-> > index 574bd0f8ae48..02de28ecf31a 100644
-> > --- a/tools/testing/selftests/mm/thp_settings.c
-> > +++ b/tools/testing/selftests/mm/thp_settings.c
-> > @@ -6,6 +6,7 @@
-> >  #include <string.h>
-> >  #include <unistd.h>
-> >  
-> > +#include "vm_util.h"
-> >  #include "thp_settings.h"
-> >  
-> >  #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
-> > @@ -64,29 +65,6 @@ int read_file(const char *path, char *buf, size_t buflen)
-> >  	return (unsigned int) numread;
-> >  }
-> >  
-> > -int write_file(const char *path, const char *buf, size_t buflen)
-> > -{
-> > -	int fd;
-> > -	ssize_t numwritten;
-> > -
-> > -	fd = open(path, O_WRONLY);
-> > -	if (fd == -1) {
-> > -		printf("open(%s)\n", path);
-> > -		exit(EXIT_FAILURE);
-> > -		return 0;
-> > -	}
-> > -
-> > -	numwritten = write(fd, buf, buflen - 1);
-> > -	close(fd);
-> > -	if (numwritten < 1) {
-> > -		printf("write(%s)\n", buf);
-> > -		exit(EXIT_FAILURE);
-> > -		return 0;
-> > -	}
-> > -
-> > -	return (unsigned int) numwritten;
-> > -}
-> > -
-> >  unsigned long read_num(const char *path)
-> >  {
-> >  	char buf[21];
-> > diff --git a/tools/testing/selftests/mm/thp_settings.h b/tools/testing/selftests/mm/thp_settings.h
-> > index 76eeb712e5f1..7748a9009191 100644
-> > --- a/tools/testing/selftests/mm/thp_settings.h
-> > +++ b/tools/testing/selftests/mm/thp_settings.h
-> > @@ -63,7 +63,6 @@ struct thp_settings {
-> >  };
-> >  
-> >  int read_file(const char *path, char *buf, size_t buflen);
-> > -int write_file(const char *path, const char *buf, size_t buflen);
-> >  unsigned long read_num(const char *path);
-> >  void write_num(const char *path, unsigned long num);
-> >  
-> > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> > index a6d4ff7dfdc0..b4b3b48f8dc9 100644
-> > --- a/tools/testing/selftests/mm/vm_util.c
-> > +++ b/tools/testing/selftests/mm/vm_util.c
-> > @@ -764,3 +764,19 @@ int unpoison_memory(unsigned long pfn)
-> >  
-> >  	return ret > 0 ? 0 : -errno;
-> >  }
-> > +
-> > +unsigned int write_file(const char *path, const char *buf, size_t buflen)
-> > +{
-> > +	int fd;
-> > +	ssize_t numwritten;
-> > +
-> > +	fd = open(path, O_WRONLY);
-> > +	if (fd == -1)
-> > +		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
-> > +
-> > +	numwritten = write(fd, buf, buflen - 1);
-> > +	close(fd);
-> > +	if (numwritten < 1)
-> > +		ksft_exit_fail_msg("Write failed\n");
-> > +	return (unsigned int) numwritten;
+On 2/11/26 09:12, mpenttil@redhat.com wrote:
+> From: Mika Penttilä <mpenttil@redhat.com>
 > 
-> If we exit on any failure, the function can be void just like in
-> split_huge_page_test.c. This will also simplify write_num() and read_num()
-> in thp_settigns.c
+> The unified HMM/migrate_device pagewalk does the "collecting"
+> in HMM side, so need a helper to transfer pfns to migrate_vma
 
-Good point. I will change it to void. I wont touch read_file() here.
+s/in/on the/ ?
 
+"so we" ?
+
+"to the" ?
+
+> world.
 > 
-> > +}
-> > diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> > index e9c4e24769c1..22c8805e0d7a 100644
-> > --- a/tools/testing/selftests/mm/vm_util.h
-> > +++ b/tools/testing/selftests/mm/vm_util.h
-> > @@ -166,3 +166,5 @@ int unpoison_memory(unsigned long pfn);
-> >  
-> >  #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
-> >  #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
-> > +
-> > +unsigned int write_file(const char *path, const char *buf, size_t buflen);
-> > -- 
-> > 2.53.0
-> > 
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: Leon Romanovsky <leonro@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Suggested-by: Alistair Popple <apopple@nvidia.com>
+> Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
+> ---
+>  include/linux/hmm.h     | 18 +++++++++--
+>  include/linux/migrate.h |  3 +-
+>  mm/hmm.c                |  6 ----
+>  mm/migrate_device.c     | 69 +++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 87 insertions(+), 9 deletions(-)
 > 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
+> diff --git a/include/linux/hmm.h b/include/linux/hmm.h
+> index db75ffc949a7..b5418e318782 100644
+> --- a/include/linux/hmm.h
+> +++ b/include/linux/hmm.h
+> @@ -12,7 +12,7 @@
+>  #include <linux/mm.h>
+>  
+>  struct mmu_interval_notifier;
+> -
+> +struct migrate_vma;
+
+Keep the empty line, please.
+
+>  /*
+>   * On output:
+>   * 0             - The page is faultable and a future call with 
+> @@ -27,6 +27,7 @@ struct mmu_interval_notifier;
+>   * HMM_PFN_P2PDMA_BUS - Bus mapped P2P transfer
+>   * HMM_PFN_DMA_MAPPED - Flag preserved on input-to-output transformation
+>   *                      to mark that page is already DMA mapped
+> + * HMM_PFN_MIGRATE    - Migrate PTE installed
+
+I have no idea what exactly that means. Can we a bit clearer?
+Especially, what does it mean when this is set alongside HMM_PFN_VALID? What if it
+is not set alongside HMM_PFN_VALID.
+
+
+Shouldn't we document what HMM_PFN_COMPOUND and HMM_PFN_MIGRATE mean as well somewhere?
+
+>   *
+>   * On input:
+>   * 0                 - Return the current state of the page, do not fault it.
+> @@ -34,6 +35,7 @@ struct mmu_interval_notifier;
+>   *                     will fail
+>   * HMM_PFN_REQ_WRITE - The output must have HMM_PFN_WRITE or hmm_range_fault()
+>   *                     will fail. Must be combined with HMM_PFN_REQ_FAULT.
+> + * HMM_PFN_REQ_MIGRATE - For default_flags, request to migrate to device
+>   */
+>  enum hmm_pfn_flags {
+>  	/* Output fields and flags */
+> @@ -48,15 +50,25 @@ enum hmm_pfn_flags {
+>  	HMM_PFN_P2PDMA     = 1UL << (BITS_PER_LONG - 5),
+>  	HMM_PFN_P2PDMA_BUS = 1UL << (BITS_PER_LONG - 6),
+>  
+> -	HMM_PFN_ORDER_SHIFT = (BITS_PER_LONG - 11),
+> +	/* Migrate request */
+> +	HMM_PFN_MIGRATE    = 1UL << (BITS_PER_LONG - 7),
+> +	HMM_PFN_COMPOUND   = 1UL << (BITS_PER_LONG - 8),
+> +	HMM_PFN_ORDER_SHIFT = (BITS_PER_LONG - 13),
+>  
+>  	/* Input flags */
+>  	HMM_PFN_REQ_FAULT = HMM_PFN_VALID,
+>  	HMM_PFN_REQ_WRITE = HMM_PFN_WRITE,
+> +	HMM_PFN_REQ_MIGRATE = HMM_PFN_MIGRATE,
+>  
+>  	HMM_PFN_FLAGS = ~((1UL << HMM_PFN_ORDER_SHIFT) - 1),
+>  };
+>  
+> +enum {
+> +	/* These flags are carried from input-to-output */
+> +	HMM_PFN_INOUT_FLAGS = HMM_PFN_DMA_MAPPED | HMM_PFN_P2PDMA |
+> +		HMM_PFN_P2PDMA_BUS,
+> +};
+
+Why is that an anonymous enum with a single value? Ah, you are moving
+that. This should be spelled out in the patch description (and why you
+are doing it).
+
+Is there any reason we can't move that into hmm_pfn_flags?
+
+> +
+>  /*
+>   * hmm_pfn_to_page() - return struct page pointed to by a device entry
+>   *
+> @@ -107,6 +119,7 @@ static inline unsigned int hmm_pfn_to_map_order(unsigned long hmm_pfn)
+>   * @default_flags: default flags for the range (write, read, ... see hmm doc)
+>   * @pfn_flags_mask: allows to mask pfn flags so that only default_flags matter
+>   * @dev_private_owner: owner of device private pages
+> + * @migrate: structure for migrating the associated vma
+
+Is it really for "migrating a vma"? I assume it's for migrating a range
+of a VMA.
+
+>   */
+>  struct hmm_range {
+>  	struct mmu_interval_notifier *notifier;
+> @@ -117,6 +130,7 @@ struct hmm_range {
+>  	unsigned long		default_flags;
+>  	unsigned long		pfn_flags_mask;
+>  	void			*dev_private_owner;
+> +	struct migrate_vma      *migrate;
+>  };
+>  
+>  /*
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index 26ca00c325d9..8e6c28efd4f8 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -3,6 +3,7 @@
+>  #define _LINUX_MIGRATE_H
+>  
+>  #include <linux/mm.h>
+> +#include <linux/hmm.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/migrate_mode.h>
+>  #include <linux/hugetlb.h>
+> @@ -192,7 +193,7 @@ void migrate_device_pages(unsigned long *src_pfns, unsigned long *dst_pfns,
+>  			unsigned long npages);
+>  void migrate_device_finalize(unsigned long *src_pfns,
+>  			unsigned long *dst_pfns, unsigned long npages);
+> -
+> +void migrate_hmm_range_setup(struct hmm_range *range);
+>  #endif /* CONFIG_MIGRATION */
+>  
+>  #endif /* _LINUX_MIGRATE_H */
+> diff --git a/mm/hmm.c b/mm/hmm.c
+> index 4ec74c18bef6..21ff99379836 100644
+> --- a/mm/hmm.c
+> +++ b/mm/hmm.c
+> @@ -41,12 +41,6 @@ enum {
+>  	HMM_NEED_ALL_BITS = HMM_NEED_FAULT | HMM_NEED_WRITE_FAULT,
+>  };
+>  
+> -enum {
+> -	/* These flags are carried from input-to-output */
+> -	HMM_PFN_INOUT_FLAGS = HMM_PFN_DMA_MAPPED | HMM_PFN_P2PDMA |
+> -			      HMM_PFN_P2PDMA_BUS,
+> -};
+> -
+>  static int hmm_pfns_fill(unsigned long addr, unsigned long end,
+>  			 struct hmm_range *range, unsigned long cpu_flags)
+>  {
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 23379663b1e1..c773a82ea1ed 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -1489,3 +1489,72 @@ int migrate_device_coherent_folio(struct folio *folio)
+>  		return 0;
+>  	return -EBUSY;
+>  }
+> +
+> +/**
+> + * migrate_hmm_range_setup() - prepare to migrate a range of memory
+> + * @range: contains pointer to migrate_vma to be populated
+
+"pointer to hmm_range to be migrated" ?
+
+Why can't we just pass the migrate_vma? Or is there another use case for
+adding the migrate_vma to hmm_range?
+
+> + *
+> + * When collecting happens by hmm_range_fault(), this populates
+> + * the migrate->src[] and migrate->dst[] using range->hmm_pfns[].
+> + * Also, migrate->cpages and migrate->npages get initialized.
+
+Can you please document what exactly this function does with
+the magical HMM_PFN_VALID | HMM_PFN_MIGRATE, and why it skips
+everything else?
+
+What is the caller supposed to setup?
+
+I am getting the feeling that this is severely under-documented :)
+
+> + */
+> +void migrate_hmm_range_setup(struct hmm_range *range)
+> +{
+> +
+> +	struct migrate_vma *migrate = range->migrate;
+> +
+> +	if (!migrate)
+> +		return;
+> +
+> +	migrate->npages = (migrate->end - migrate->start) >> PAGE_SHIFT;
+> +	migrate->cpages = 0;
+> +
+> +	for (unsigned long i = 0; i < migrate->npages; i++) {
+> +
+> +		unsigned long pfn = range->hmm_pfns[i];
+> +
+> +		pfn &= ~HMM_PFN_INOUT_FLAGS;
+> +
+> +		/*
+> +		 *
+
+Please don't add unnecessary empty comment lines above/below the text.
+
+> +		 *  Don't do migration if valid and migrate flags are not both set.
+> +		 *
+> +		 */
+
+
+/*
+ * There is nothing to migrate if the entry is not valid
+ * migration entry.
+ */
+
+Which raises the question:
+
+When would HMM_PFN_MIGRATE be set without HMM_PFN_VALID
+
+> +		if ((pfn & (HMM_PFN_VALID | HMM_PFN_MIGRATE)) !=
+> +		    (HMM_PFN_VALID | HMM_PFN_MIGRATE)) {
+> +			migrate->src[i] = 0;
+> +			migrate->dst[i] = 0;
+> +			continue;
+> +		}
+> +
+> +		migrate->cpages++;
+> +
+> +		/*
+> +		 *
+> +		 * The zero page is encoded in a special way, valid and migrate is
+> +		 * set, and pfn part is zero. Encode specially for migrate also.
+> +		 *
+> +		 */
+> +		if (pfn == (HMM_PFN_VALID|HMM_PFN_MIGRATE)) {
+
+
+I think you can simplify all that by doing a
+
+if (pfn & ~(HMM_PFN_VALID|HMM_PFN_COMPOUND|HMM_PFN_MIGRATE))
+	migrate->src[i] = migrate_pfn(page_to_pfn(hmm_pfn_to_page(pfn)));
+else
+	migrate->src[i] = 0;
+
+migrate->src[i] |= (pfn & HMM_PFN_WRITE) ? MIGRATE_PFN_WRITE : 0;
+migrate->src[i] |= (pfn & HMM_PFN_COMPOUND) ? MIGRATE_PFN_COMPOUND : 0;
+migrate->dst[i] = 0;
+
+
+And I wonder whether you could replace the (HMM_PFN_VALID|HMM_PFN_COMPOUND|HMM_PFN_MIGRATE)
+by HMM_PFN_FLAGS, to only check for non-zero PFNs?
+
+
+-- 
+Cheers,
+
+David
 
 
