@@ -4,96 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90666FCD0A7
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 05:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B520FCD0AE
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 05:26:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F381D6B00EA; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
+	id 91BD66B00EC; Wed, 18 Mar 2026 01:26:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8D06B00EB; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
+	id 8CCAC6B00ED; Wed, 18 Mar 2026 01:26:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFE726B00EC; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
+	id 7E29B6B00EE; Wed, 18 Mar 2026 01:26:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C59546B00EA
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9662C1D335
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:02:04 +0000 (UTC)
-X-FDA: 84557986968.22.7264D7C
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B4DC1A0013
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:02:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of 3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B7F36B00EC
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:26:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A2E9F13B234
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:26:54 +0000 (UTC)
+X-FDA: 84558049548.29.F70424F
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CE5574000A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:26:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AgcAb+ih;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773810122;
+	s=arc-20220608; t=1773811613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=XP4T4iMaCErg7kQXZBXgUrqdcl4Ozy9ZpxYT+MtYY3I=;
-	b=N4nfRFL45EZjbdBweTwGKrowAlOYeRrUB8sNTSVWNK+UO8DiynHI0JBLAGIAm37GvLWNl4
-	iq70oNgcSk4zaz3CvA3fLVRCYSXup1uHpGUYddl1jEB9gcDz2Vn2FEWkqsP8YzkkKNYgiq
-	iuNPPQwPKLtcf/OG1Rl+mi6S6vAEl6E=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of 3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773810122; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Z4amKDNTYd95vquDsXEN0iZpe11i0wN2Sp8KnGkFtCE=;
+	b=QKpHbHiGj8yHRgzYKmUCHgWTPYStMmUN85N2H7I10yprdZJeOVknE8cNa0xseaSf5qv0bb
+	wHfA7C0+9aiNG9oqkN/hSghd4alVL+QfDNTuUTNBg8pv+l1Z7nFUMSN+wDtN/qggToPLqk
+	96cs9I5Hx78KDAcgmkta7++2Gs67GUY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773811613; a=rsa-sha256;
 	cv=none;
-	b=WYBxGHAmkP+jrWVn839RZ8zxDAlG0ikv6aSWWZygKFxNiXyx1c/OYEKw30IxvaJ0mLpni5
-	c5Ss+TAJGmDmhzy6172Ck9a8bh189QOqoDIYDqmBMYrdA2JMjFX7mAPHJlS9MZMB8yRrNo
-	Xn9QOzu89zdz94d4epK3D+xYttB7l4E=
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67c1228b2a1so2244549eaf.0
-        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:02:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773810122; x=1774414922;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XP4T4iMaCErg7kQXZBXgUrqdcl4Ozy9ZpxYT+MtYY3I=;
-        b=COUB7G6RDHOhh4P5v928wabRM0XcEuOQoj5al1YHdex7SwtI6oF+CV/Lydrl+J1Ptw
-         z4m0rK0NhHA23ia5u0OYCNWdHFQukVVsY4KkMoxdYE8iRHaP3kZGw5cy44bo6ElKZ/4b
-         VjPXDNoy5vzchz24Qu2H4PYBVf8Cz7blvnovkVrhsMfQVAcadJ5JO56x7LacZYJfYzGs
-         O4dlqbQUqiWpOEikxMwb84DM0gpFxE3SE6bl+OEOifYSydJQH/r8Ex8IDClPrW+fnVWN
-         C2GI1tDUxXZ5NQJM5wBLl/Z/EodTIpVj5GfdU8ox8x5q7Qo9GQCiwi4wOQ059pDsf0wp
-         nRow==
-X-Forwarded-Encrypted: i=1; AJvYcCVWNTXjcjWSErwuYq00w3JVAiMqAzRF0z+LEcZgiigz+US/BiOxR8wUkhQ8nDda5Yn0vXbUuS5VMg==@kvack.org
-X-Gm-Message-State: AOJu0YwCyBsg3/Z117eemVl4gBLhYtnZfTsVzD2IMZAWDbIEFPZQdNws
-	i/Vrk1csGag4wt/vsBNrh6izkrInCzkO8IKiAWYcTppFmijnqinvP0wg9wq5JbZwk2Yz2LXSd1R
-	nOph9H8rRY4dTWJCMpTXMrEoLSq3Jvc+cwiflCMqJFDIBLqMCwWlfY60dCoE=
+	b=LHiQzrEX3kBhhG4g6wFcPiKyNUNAgbUxpIUhwqiSn3aEMzrFi6qaOF73/f5f37swD/ZnlG
+	xmk2XAjlh1xbmeBxCNzWi+RUR+EL+NCVNUM7kT9fByc6y9f1L3mtBEFBr6VU+lcG/xuNM3
+	Vj3ofe6sY+EHXM5y2eYuSDN/U5Dz8X0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AgcAb+ih;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+Message-ID: <8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773811610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Z4amKDNTYd95vquDsXEN0iZpe11i0wN2Sp8KnGkFtCE=;
+	b=AgcAb+ih8Bt20XGQZ3JD8GSpVg3oPLc5aYOIv89KXtIZOdjLPO48xNrmqSTLbc0mAdDRug
+	yIabSPw5sFeU/e1IqRZljvKBLXZBCD+gUYatMGXKQYyhV5NDZNj/UstSCsDR73Ik/004n8
+	4KBzbxk90jFQ3xDwaG2C9D36BPJ2BZs=
+Date: Wed, 18 Mar 2026 13:26:39 +0800
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4887:b0:66b:6862:18d5 with SMTP id
- 006d021491bc7-67c0da588ddmr1007794eaf.8.1773810121701; Tue, 17 Mar 2026
- 22:02:01 -0700 (PDT)
-Date: Tue, 17 Mar 2026 22:02:01 -0700
-In-Reply-To: <abolyGbAyynUANDB@hyeyoo>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69ba31c9.050a0220.3077e3.0002.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
-From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, catalin.marinas@arm.com, chao@kernel.org, 
-	hao.li@linux.dev, harry.yoo@oracle.com, jaegeuk@kernel.org, jannh@google.com, 
-	liam.howlett@oracle.com, linkinjeon@kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	pfalcato@suse.de, sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org, vbabka@suse.cz, wangqing7171@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: B4DC1A0013
-X-Stat-Signature: x5g8e68y39g7sh6ustjfskpos1e36ow1
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zenghui Yu <zenghui.yu@linux.dev>
+Content-Language: en-US
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Subject: running mm/ksft_hmm.sh on arm64 results in a kernel panic
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CE5574000A
+X-Stat-Signature: kbrqffnri478z5prgcimni1z5iozpxy5
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773810122-29976
-X-HE-Meta: U2FsdGVkX18m9FbN6IkVxjGv1ATjuroow9tlsUVTp/1TdRwcwpSP1mCSShh7W91W9EZmavKRGT0XGn/zw89ceclIF2KCeO/cogZpP72OGtb95IQh6hfqG1rkz6LMEfB9PnkD0+3vWCkHBjesMWVa3XFEWpGAWdQpvsrOEWVmnEdo2F/u2PRbbw9srXocvwmaZ3o/2gy/tEocW6CGGBg6l65pw+oUTD5Q+ZTFNo+GQBMHRFiJHRFk6Pkn7hmPZmAExt0/vp7Vq91UxHxXvTxyqMeVp72WJCfAzib7yxJGBTKjLh4vGKqITh0qpMXRbJ1Bdn/yWoa7MdK7iNJJGixSyhCe9igbf5RzjXA9C15arC+byhcok/n7ZSNDHUqIQzuIswTsTp8i+BOh+HcO+hFb0CTLpLtE06DWzW101A7QBak4DjwtAZswHeUDxmVFhdtv07lSAAMjoUG6YdBTw0HmSzqpgz7JSjrBR8/cFbOrRgEEogzWRORAUZ6GQjo4So6OH9I5JjBo3o5eE/wZPokoKegOqQZXc6VV+uBWre6bkAP/7nkjV1MGd1KBwOjkgy60+w8gMplneQh+rM4N3E1espEFFqDoPL4vejvPUWCd+UlkoPkrKwUZu3/u7+e+BOyWBQdnIKFhl7GhASTgHJbGAE+qghvwdjDIcDbx7MQvUuBVsyv33E0Ve9vhgU+jEDIUF41DjMNZYDIxeMsd3eYiT4ZMLlo12pHn746QBYiMZ87utuNczp3s9xZc7Dv4gV+oLJk8j1NlJCRyTeSvlX9rH6abP6zj9RIwxPAuJzv6NKJryA7qdQCJzyowEpDq51g6R+oxYCPDYP321y5XcViPESmSGOygp/iqnjmTlt6jH9cDvcHCE5il8Nd+07WoBkasLK7pnaIVJy5vfkVE407CaGOEh9NmYDevm816pf1Tvqbsy9jPk5QCYOAtjaqp9RAjgsPOjPKHmLzCiErsKHg
- OI0NiRlu
- TnKg1Fc/+eVV/Rt9tAG8zTwStmlwZcAYMBQFlPWUywAJizmxkBtL5MhuA6kuxZxVbTLbF0SrNJlJ/8guObIr8mAbEInfFJsILANiuc5zXsx2kOUT9afDtfTMzBrmc0pln0A1rlNCm/zfDhzFnx6DPOP8QL9eRrC9gbx1RGhCKo02SqpoYn0ybnEkaiQxJ3ey+OWoU936DehAYuoQJsxD+6boS9c2ZFxPV3iJe49b8AO/wij6J0Pdv4YYYQuXt4vivsqopZzMkg5KGmql0u1wwOGfK8U3nsCkjEdyT0EMkvAtoV/3ws+xfbSqMPcDIbT7DoB9r7PEH3xh/WDsiwyX5U6L3tPTybLAn7PNK+G9wKWoAImEDjd1TMz48VHzUA1HltRP+p7pBhqmVqJHX4CJVpN1+93E3gEpWwJJ4q4nq/kf3H/IaQSG7yEoiTPxKWhZLaRcvSOdElv/OVYJJdtWEZgnFN3XhfPgFfo1V+ZlxzL6hGJOvygD/IhHkPw5WHnkhd3mGrCw3mD4H9Nutg6+In6qVT7HLtb1PEKthdQDZ8otgkkjdyrq9Gx5syO3qk7R5gR3U4aFjJrT58MxOUtjf98y6oEUsiaUOaA0SBUq2JMP6MdmdEcG8Zm3d2Rw2PDI8JPmoQNGDVf1/EBOnsTJ+7BPm07zIEk6JiMUyL/BmMFESffIDfj6vL0/UTaY4YBjsi74XoMKgB3S2kUhTPh8wGIXogAXf5vEkAtJQAd7M+sFoYEGb8LQEoPOe0Ex4jKfJh7cgTAp/A6g4ld2xm1af80DGg3AU1rvRZkOtqe49ksSZuV9+wq9ZnPUw9RDxqZuvmRLxMJJX9h7k23ZOsFBi7x1wKEcNOsZS+Ik/Z/3AGuf6BZ5Zttuk33nax7qaahpDD6BU9OWtOME/XHNEaoyExzalTvPKkfdWeXGsXlcHR2cYGK1ecTb/RDKURdYFAmDM/j38mxAQyKQsrZ2Y9kIFLyGKKUjc
- BVIK9X1J
- ndK6EW67l7lw+knxV8UsjHGJJ0W+J7qqr3H08CXY/OpPHL5SmtAU7w==
+X-HE-Tag: 1773811612-758123
+X-HE-Meta: U2FsdGVkX18j/aSQBvRyNftmqJPUscXwINQ8zfBesTS4xMeSQMgjE0ai5SX63jfvQNa13sHjrsp03oG3VA4cAjiIE+UXr/e1EG3+TKSEbRnm2GZkd31QOvzUuhOpJcUTjeGUMmCKFpbGjXEesul5oLNEklJhCFAwGA2elyRdXxuLLeG5cp7lzd+/Q0Vmmn0LLn0tc8W24+V2K1Bft2HxIyRP+1p8xS7sHn1sNWwgqamcNl1Yvr2uHi8lrYCwRDpSMeYEGFa1tMj9wqA+cBz0gSqxsSBaeTf42Yd2ep48K7HhLKtuTe6ERvuxLMyCKX3E5r6PPxamzoG22Vv2Fj5JJqGexaKm4ypVweGgIlWN2HLt3syUCvY4Y0H1Msn+MHxOYzuTgq2klnLFt6c4kiw5tWLPmBzbwi4QHeMf9kF5QONKqxexyBqib5F4OMCbwJDVqrHMvfu7HA8m+w9XKzROvzoYBR3TGJEAsHL1n0IiAoecxy6wD98nqCPRczWk9lFiNmGZPxgINTo6zhys+olpT1dzYtGIOTSpws8iMozJ17n2ccQYpeZ0LwJ5+qWH/7W8mMDSoga928xptkb5mBIBzjw9V/2TTrAcx22kI71C7/mO5NruNA9x/FDI2Sea7psQVz9d0qNB/yjpayV+iktfQS0Jw2goD+T6iDeq/K8LnIwpCosuxjvj5nf79kE3jQtea8+K7yFfqwKYK0rVsfu9SpwAGWz6XVpcfezxGSsrPWdxFsBtBUbwFali+kFa9aVkF11lrnv7k02rsNaQH5sUB6T0jFc3rIDA88l7bhl0+7v2GiuxcE88r/bFRoMC99ufh3gB7rtFLDrSQiH0C8ZYdSQR5s9+fNMSh3hZvVEYggI9axJ76/lVhYK4Xu0qqAVeKNGw5X0r0QS4wr6v6BSoMCfJhjVx1AOE/iaPMN+/qxMxOtmaj/8+1rQ9vQXabBMx44dtr8XGj4WVyR77n3y
+ wdA5quTJ
+ 9c6qSAnIsDPhGsIdlgZfyAojhnhq0GWCkE3cpEzW4KNLHFyI+MWERRFQpwua5fl3FkW1pGOjDx1/eymv87W1mmMsovSKL5RJaIc995Xs9CNcMGnMUIh9KEBFED3CVdWFTY88VNahSM7OYQ456Who/+Ga7IwkcZfLfpsCWeH3IJXU+qnN2lu08+ULz9LXK2+C4VpF2Hw1L4ubMxajeKvkte2jQfVwzedi132YF+J0Om6GTvl75XUTDSkGSSZ31NKxueZbPe4djk1Ki2qFYtd8DAQiY8Hojr0ELz3MZoG81ruloEqTnmhuM/DscsD7VwPLpdb54
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,145 +86,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi all,
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-memory leak in __pcs_replace_empty_main
+When running mm/ksft_hmm.sh in my arm64 virtual machine, I ran into the
+following kernel panic:
 
-BUG: memory leak
-unreferenced object 0xffff888129413800 (size 512):
-  comm "kworker/u8:3", pid 58, jiffies 4294947638
-  hex dump (first 32 bytes):
-    00 ac 98 1c 81 88 ff ff 00 18 6b 0a 81 88 ff ff  ..........k.....
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc 10da2a4f):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4543 [inline]
-    slab_alloc_node mm/slub.c:4866 [inline]
-    __do_kmalloc_node mm/slub.c:5259 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5272
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2764
-    alloc_empty_sheaf mm/slub.c:2779 [inline]
-    alloc_full_sheaf mm/slub.c:2829 [inline]
-    __pcs_replace_empty_main+0x1e0/0x2f0 mm/slub.c:4626
-    alloc_from_pcs mm/slub.c:4717 [inline]
-    slab_alloc_node mm/slub.c:4851 [inline]
-    __do_kmalloc_node mm/slub.c:5259 [inline]
-    __kmalloc_noprof+0x4c5/0x560 mm/slub.c:5272
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    cfg80211_inform_single_bss_data+0x21d/0xa70 net/wireless/scan.c:2344
-    cfg80211_inform_bss_data+0x13f/0x1dc0 net/wireless/scan.c:3226
-    cfg80211_inform_bss_frame_data+0x108/0x340 net/wireless/scan.c:3317
-    ieee80211_bss_info_update+0x13a/0x320 net/mac80211/scan.c:230
-    ieee80211_rx_bss_info net/mac80211/ibss.c:1094 [inline]
-    ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1575 [inline]
-    ieee80211_ibss_rx_queued_mgmt+0xb75/0x1230 net/mac80211/ibss.c:1602
-    ieee80211_iface_process_skb net/mac80211/iface.c:1748 [inline]
-    ieee80211_iface_work+0x6af/0x9b0 net/mac80211/iface.c:1802
-    cfg80211_wiphy_work+0x1db/0x280 net/wireless/core.c:440
-    process_one_work+0x277/0x5f0 kernel/workqueue.c:3276
-    process_scheduled_works kernel/workqueue.c:3359 [inline]
-    worker_thread+0x255/0x4a0 kernel/workqueue.c:3440
-    kthread+0x14e/0x1a0 kernel/kthread.c:436
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+[root@localhost mm]# ./ksft_hmm.sh
+TAP version 13
+# --------------------------------
+# running bash ./test_hmm.sh smoke
+# --------------------------------
+# Running smoke test. Note, this test provides basic coverage.
+# TAP version 13
+# 1..74
+# # Starting 74 tests from 4 test cases.
+# #  RUN           hmm.hmm_device_private.benchmark_thp_migration ...
+#
+# HMM THP Migration Benchmark
+# ---------------------------
+# System page size: 16384 bytes
+#
+# === Small Buffer (512KB) (0.5 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 0.423 ms        | 0.182 ms        | -133.0%
+# Dev->Sys Migration   | 0.027 ms        | 0.025 ms        | -7.0%
+# S->D Throughput      | 1.15 GB/s      | 2.69 GB/s      | -57.1%
+# D->S Throughput      | 18.12 GB/s      | 19.38 GB/s      | -6.5%
+#
+# === Half THP Size (1MB) (1.0 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 0.367 ms        | 1.187 ms        | 69.0%
+# Dev->Sys Migration   | 0.048 ms        | 0.049 ms        | 2.2%
+# S->D Throughput      | 2.66 GB/s      | 0.82 GB/s      | 222.9%
+# D->S Throughput      | 20.53 GB/s      | 20.08 GB/s      | 2.3%
+#
+# === Single THP Size (2MB) (2.0 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 0.817 ms        | 0.782 ms        | -4.4%
+# Dev->Sys Migration   | 0.089 ms        | 0.096 ms        | 7.1%
+# S->D Throughput      | 2.39 GB/s      | 2.50 GB/s      | -4.2%
+# D->S Throughput      | 22.00 GB/s      | 20.44 GB/s      | 7.6%
+#
+# === Two THP Size (4MB) (4.0 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 3.419 ms        | 2.337 ms        | -46.3%
+# Dev->Sys Migration   | 0.321 ms        | 0.225 ms        | -42.6%
+# S->D Throughput      | 1.14 GB/s      | 1.67 GB/s      | -31.6%
+# D->S Throughput      | 12.17 GB/s      | 17.36 GB/s      | -29.9%
+#
+# === Four THP Size (8MB) (8.0 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 4.535 ms        | 4.563 ms        | 0.6%
+# Dev->Sys Migration   | 0.583 ms        | 0.582 ms        | -0.2%
+# S->D Throughput      | 1.72 GB/s      | 1.71 GB/s      | 0.6%
+# D->S Throughput      | 13.39 GB/s      | 13.43 GB/s      | -0.2%
+#
+# === Eight THP Size (16MB) (16.0 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 10.190 ms        | 9.805 ms        | -3.9%
+# Dev->Sys Migration   | 1.130 ms        | 1.195 ms        | 5.5%
+# S->D Throughput      | 1.53 GB/s      | 1.59 GB/s      | -3.8%
+# D->S Throughput      | 13.83 GB/s      | 13.07 GB/s      | 5.8%
+#
+# === One twenty eight THP Size (256MB) (256.0 MB) ===
+#                      | With THP        | Without THP     | Improvement
+# ---------------------------------------------------------------------
+# Sys->Dev Migration   | 80.464 ms        | 92.764 ms        | 13.3%
+# Dev->Sys Migration   | 9.528 ms        | 18.166 ms        | 47.6%
+# S->D Throughput      | 3.11 GB/s      | 2.70 GB/s      | 15.3%
+# D->S Throughput      | 26.24 GB/s      | 13.76 GB/s      | 90.7%
+# #            OK  hmm.hmm_device_private.benchmark_thp_migration
+# ok 1 hmm.hmm_device_private.benchmark_thp_migration
+# #  RUN           hmm.hmm_device_private.migrate_anon_huge_zero_err ...
+# # hmm-tests.c:2622:migrate_anon_huge_zero_err:Expected ret (-2) == 0 (0)
 
-BUG: memory leak
-unreferenced object 0xffff88812a621a00 (size 512):
-  comm "kworker/u8:3", pid 58, jiffies 4294950606
-  hex dump (first 32 bytes):
-    00 18 62 2a 81 88 ff ff 00 d6 04 00 81 88 ff ff  ..b*............
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc 231cde90):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4543 [inline]
-    slab_alloc_node mm/slub.c:4866 [inline]
-    __do_kmalloc_node mm/slub.c:5259 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5272
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2764
-    alloc_empty_sheaf mm/slub.c:2779 [inline]
-    alloc_full_sheaf mm/slub.c:2829 [inline]
-    __pcs_replace_empty_main+0x1e0/0x2f0 mm/slub.c:4626
-    alloc_from_pcs mm/slub.c:4717 [inline]
-    slab_alloc_node mm/slub.c:4851 [inline]
-    __do_kmalloc_node mm/slub.c:5259 [inline]
-    __kmalloc_noprof+0x4c5/0x560 mm/slub.c:5272
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    cfg80211_inform_single_bss_data+0x21d/0xa70 net/wireless/scan.c:2344
-    cfg80211_inform_bss_data+0x13f/0x1dc0 net/wireless/scan.c:3226
-    cfg80211_inform_bss_frame_data+0x108/0x340 net/wireless/scan.c:3317
-    ieee80211_bss_info_update+0x13a/0x320 net/mac80211/scan.c:230
-    ieee80211_rx_bss_info net/mac80211/ibss.c:1094 [inline]
-    ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1575 [inline]
-    ieee80211_ibss_rx_queued_mgmt+0xb75/0x1230 net/mac80211/ibss.c:1602
-    ieee80211_iface_process_skb net/mac80211/iface.c:1748 [inline]
-    ieee80211_iface_work+0x6af/0x9b0 net/mac80211/iface.c:1802
-    cfg80211_wiphy_work+0x1db/0x280 net/wireless/core.c:440
-    process_one_work+0x277/0x5f0 kernel/workqueue.c:3276
-    process_scheduled_works kernel/workqueue.c:3359 [inline]
-    worker_thread+0x255/0x4a0 kernel/workqueue.c:3440
-    kthread+0x14e/0x1a0 kernel/kthread.c:436
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+[  154.077143] Unable to handle kernel paging request at virtual address
+0000000000005268
+[  154.077179] Mem abort info:
+[  154.077203]   ESR = 0x0000000096000007
+[  154.077219]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  154.078433]   SET = 0, FnV = 0
+[  154.078434]   EA = 0, S1PTW = 0
+[  154.078435]   FSC = 0x07: level 3 translation fault
+[  154.078435] Data abort info:
+[  154.078436]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+[  154.078459]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  154.078479]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  154.078484] user pgtable: 16k pages, 47-bit VAs, pgdp=000000010b920000
+[  154.078487] [0000000000005268] pgd=0800000101b4c403,
+p4d=0800000101b4c403, pud=0800000101b4c403, pmd=0800000108cd8403,
+pte=0000000000000000
+[  154.078520] Internal error: Oops: 0000000096000007 [#1]  SMP
+[  154.098664] Modules linked in: test_hmm rfkill drm fuse backlight ipv6
+[  154.100468] CPU: 7 UID: 0 PID: 1357 Comm: hmm-tests Kdump: loaded Not
+tainted 7.0.0-rc4-00029-ga989fde763f4-dirty #260 PREEMPT
+[  154.103855] Hardware name: QEMU QEMU Virtual Machine, BIOS
+edk2-stable202408-prebuilt.qemu.org 08/13/2024
+[  154.104409] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS
+BTYPE=--)
+[  154.104847] pc : dmirror_devmem_fault+0xe4/0x1c0 [test_hmm]
+[  154.105758] lr : dmirror_devmem_fault+0xcc/0x1c0 [test_hmm]
+[  154.109465] sp : ffffc000855ab430
+[  154.109677] x29: ffffc000855ab430 x28: ffff8000c9f73e40 x27:
+ffff8000c9f73e40
+[  154.110091] x26: ffff8000cb920000 x25: ffffc000812e0000 x24:
+0000000000000000
+[  154.110540] x23: ffff8000c9f73e40 x22: 0000000000000000 x21:
+0000000000000008
+[  154.110888] x20: ffff8000c07e1980 x19: ffffc000855ab618 x18:
+ffffc000855abc40
+[  154.111223] x17: 0000000000000000 x16: 0000000000000000 x15:
+0000000000000000
+[  154.111563] x14: 0000000000000000 x13: 0000000000000000 x12:
+ffffc00080fedd68
+[  154.111903] x11: 00007fffa3bf7fff x10: 0000000000000000 x9 :
+1ffff00019166a41
+[  154.112244] x8 : ffff8000c132df20 x7 : 0000000000000000 x6 :
+ffff8000c53bfe88
+[  154.112581] x5 : 0000000000000009 x4 : ffffc000855ab3d0 x3 :
+0000000000000004
+[  154.112921] x2 : 0000000000000004 x1 : ffff8000c132df18 x0 :
+0000000000005200
+[  154.113254] Call trace:
+[  154.113370]  dmirror_devmem_fault+0xe4/0x1c0 [test_hmm] (P)
+[  154.113679]  do_swap_page+0x132c/0x17b0
+[  154.113912]  __handle_mm_fault+0x7e4/0x1af4
+[  154.114124]  handle_mm_fault+0xb4/0x294
+[  154.114398]  __get_user_pages+0x210/0xbfc
+[  154.114607]  get_dump_page+0xd8/0x144
+[  154.114795]  dump_user_range+0x70/0x2e8
+[  154.115020]  elf_core_dump+0xb64/0xe40
+[  154.115212]  vfs_coredump+0xfb4/0x1ce8
+[  154.115397]  get_signal+0x6cc/0x844
+[  154.115582]  arch_do_signal_or_restart+0x7c/0x33c
+[  154.115805]  exit_to_user_mode_loop+0x104/0x16c
+[  154.116030]  el0_svc+0x174/0x178
+[  154.116216]  el0t_64_sync_handler+0xa0/0xe4
+[  154.116414]  el0t_64_sync+0x198/0x19c
+[  154.116594] Code: d2800083 f9400280 f9003be0 2a0303e2 (b9406800)
+[  154.116891] ---[ end trace 0000000000000000 ]---
+[  158.741771] Kernel panic - not syncing: Oops: Fatal exception
+[  158.742164] SMP: stopping secondary CPUs
+[  158.742970] Kernel Offset: disabled
+[  158.743162] CPU features: 0x0000000,00060005,11210501,94067723
+[  158.743440] Memory Limit: none
+[  164.002089] Starting crashdump kernel...
+[  164.002867] Bye!
 
-BUG: memory leak
-unreferenced object 0xffff88812a621800 (size 512):
-  comm "kworker/u8:6", pid 932, jiffies 4294950638
-  hex dump (first 32 bytes):
-    00 18 6b 0a 81 88 ff ff 00 1a 62 2a 81 88 ff ff  ..k.......b*....
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc 9a0f4a55):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4543 [inline]
-    slab_alloc_node mm/slub.c:4866 [inline]
-    __do_kmalloc_node mm/slub.c:5259 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5272
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2764
-    alloc_empty_sheaf mm/slub.c:2779 [inline]
-    alloc_full_sheaf mm/slub.c:2829 [inline]
-    __pcs_replace_empty_main+0x1e0/0x2f0 mm/slub.c:4626
-    alloc_from_pcs mm/slub.c:4717 [inline]
-    slab_alloc_node mm/slub.c:4851 [inline]
-    __do_kmalloc_node mm/slub.c:5259 [inline]
-    __kmalloc_noprof+0x4c5/0x560 mm/slub.c:5272
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    cfg80211_inform_single_bss_data+0x21d/0xa70 net/wireless/scan.c:2344
-    cfg80211_inform_bss_data+0x13f/0x1dc0 net/wireless/scan.c:3226
-    cfg80211_inform_bss_frame_data+0x108/0x340 net/wireless/scan.c:3317
-    ieee80211_bss_info_update+0x13a/0x320 net/mac80211/scan.c:230
-    ieee80211_rx_bss_info net/mac80211/ibss.c:1094 [inline]
-    ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1575 [inline]
-    ieee80211_ibss_rx_queued_mgmt+0xb75/0x1230 net/mac80211/ibss.c:1602
-    ieee80211_iface_process_skb net/mac80211/iface.c:1748 [inline]
-    ieee80211_iface_work+0x6af/0x9b0 net/mac80211/iface.c:1802
-    cfg80211_wiphy_work+0x1db/0x280 net/wireless/core.c:440
-    process_one_work+0x277/0x5f0 kernel/workqueue.c:3276
-    process_scheduled_works kernel/workqueue.c:3359 [inline]
-    worker_thread+0x255/0x4a0 kernel/workqueue.c:3440
-    kthread+0x14e/0x1a0 kernel/kthread.c:436
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+[root@localhost linux]# ./scripts/faddr2line lib/test_hmm.ko
+dmirror_devmem_fault+0xe4/0x1c0
+dmirror_devmem_fault+0xe4/0x1c0:
+dmirror_select_device at /root/code/linux/lib/test_hmm.c:153
+(inlined by) dmirror_devmem_fault at /root/code/linux/lib/test_hmm.c:1659
 
-connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+The kernel is built with arm64's virt.config plus
 
++CONFIG_ARM64_16K_PAGES=y
++CONFIG_ZONE_DEVICE=y
++CONFIG_DEVICE_PRIVATE=y
++CONFIG_TEST_HMM=m
 
-Tested on:
+I *guess* the problem is that migrate_anon_huge_zero_err() has chosen an
+incorrect THP size (which should be 32M in a system with 16k page size),
+leading to the failure of the first hmm_migrate_sys_to_dev(). The test
+program received a SIGABRT signal and initiated vfs_coredump(). And
+something in the test_hmm module doesn't play well with the coredump
+process, which ends up with a panic. I'm not familiar with that.
 
-commit:         a989fde7 Merge tag 'libnvdimm-fixes-7.0-rc5' of git://..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15c4974a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e2bba615ee79faa5
-dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=178fc216580000
+Note that I can also reproduce the panic by aborting the test manually
+with following diff (and skipping migrate_anon_huge{,_zero}_err()):
 
+diff --git a/tools/testing/selftests/mm/hmm-tests.c
+b/tools/testing/selftests/mm/hmm-tests.c
+index e8328c89d855..8d8ea8063a73 100644
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -1027,6 +1027,8 @@ TEST_F(hmm, migrate)
+ 	ASSERT_EQ(ret, 0);
+ 	ASSERT_EQ(buffer->cpages, npages);
+
++	ASSERT_TRUE(0);
++
+ 	/* Check what the device read. */
+ 	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+ 		ASSERT_EQ(ptr[i], i);
+
+Please have a look!
+
+Thanks,
+Zenghui
 
