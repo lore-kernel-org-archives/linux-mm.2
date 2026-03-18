@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73B3810854BE
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 09:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E00B10854D9
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 09:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DA2C6B0143; Wed, 18 Mar 2026 05:17:02 -0400 (EDT)
+	id C25AA6B0145; Wed, 18 Mar 2026 05:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98AFF6B0145; Wed, 18 Mar 2026 05:17:02 -0400 (EDT)
+	id BAFA96B0147; Wed, 18 Mar 2026 05:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A1576B0146; Wed, 18 Mar 2026 05:17:02 -0400 (EDT)
+	id A9E3E6B0148; Wed, 18 Mar 2026 05:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C67D6B0143
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:17:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 157258C014
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:17:02 +0000 (UTC)
-X-FDA: 84558629484.02.D36BBFF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C5828C0009
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:16:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SatqFpHz;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E4AE6B0145
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:18:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 37AD51A05ED
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:18:05 +0000 (UTC)
+X-FDA: 84558632130.15.001E0CF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0AD0618000B
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:18:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773825419;
+	s=arc-20220608; t=1773825483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4vg5DApBLnRnveNhDxPd4z30pMeAh61oVheOSKulSZc=;
-	b=fI8UEiVpPZyNTRAf1Bm8d/aA38QwLTy6r/e4tnAvZeNFwBLe+LcTxZYRj78RdSS3xBHKJP
-	nvYkNm8+tIC8U0emmVcAl5jo1OzLpFx3468NBfmLtNoobyqftkVx0NHoZhelysM+MTWjuT
-	OJVCwa5ajyZoH4ge1SrNTd0Nzu7HPBc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SatqFpHz;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773825419; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxR0bcuF3dGnll3sLuhchZno2fiJX45yspLdktuOj9U=;
+	b=08Vaqe/vMWRfZRl+zXrfmNej+B78yKIfh11Sd8IRlAaMfKE4Lzm+ILj3FOXquKvSqYsIvd
+	5DY5XTEMJ86THjkRiSuJd+xzPrgBXXj3t74Jph7jLA/lpgSOchVDUw226+4uLgxqNyDbYX
+	VBbk/EvWv7fj+5GPuuquaSNdFdwY56g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773825483; a=rsa-sha256;
 	cv=none;
-	b=K8CAuIJDI6mIODFrBBkIPTmxaESfO67qFNK8OoUzlRtw/jOcZ4rM/raLcsvthOcawKSuNt
-	KUq7UFQGyIAXVU4g/7vYP8jX/9rr4/SHd5RCkSUxRR6fOl8dRpeMSaeqLHYH7Egsmxop4P
-	c4H8FMVuJVjq0YiXRh+iki/GnT7BWk0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A67E60054;
-	Wed, 18 Mar 2026 09:16:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1BAC19421;
-	Wed, 18 Mar 2026 09:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773825418;
-	bh=xreC6OjhR8b2vuZLjpAzaLuVTmeRPkmKaKfrFoVsz/k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SatqFpHz9cPpL4L9ndUa2Q6S/y7v2dDfhqXQV+g3eARqBCjHhO9MFCQ2P55gjUWul
-	 g7zwGiodabII84x0E11Xosw6CTV4bb/yzmzS/LGXeM2GWyyc8SagTIXrqGbTEVPNfx
-	 IU9qETigMDz7cl8RW6taGT8IXfs5eO66iraSElrf/8a4PVuBHBUZV4jCgsV1n8+8M1
-	 eC5AWdLXkpaxYdtzqWW2wPvCKfZpCYxkRmLSPOkuWjmzSVdGYSFeUmX5sZem/RgdVj
-	 ZQCWpMv0zTq6MuG1sMxKK0zzaxCIvICxv9NQzoDIxUXWgCufqjn/qggVhXmbxGiczg
-	 mJ+i5r0WZjRwQ==
-Date: Wed, 18 Mar 2026 11:16:51 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 1/3] kho: make kho_scratch_overlap usable outside
- debugging
-Message-ID: <abptg2AObfxkkxKf@kernel.org>
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-2-mclapinski@google.com>
+	b=3n7RkOiosrrlcYKBTdGPjPnEkp8urj6dXX49SwPEGuTp2XZcPQFVwyHQmFvmeNoPpFxHZ9
+	I/Z2RxIdcek7rFbAxUUKnf6JlPCDpS1rWULGypk9r8gSI3IsKDk8Uu323o+WK1PME9zVJf
+	q7iRd8BNfMmy5zH/dIfHm1XEI/pTN+g=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD6C61E7D;
+	Wed, 18 Mar 2026 02:17:55 -0700 (PDT)
+Received: from [10.1.29.145] (XHFQ2J9959.cambridge.arm.com [10.1.29.145])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9521A3F836;
+	Wed, 18 Mar 2026 02:17:59 -0700 (PDT)
+Message-ID: <2ad08475-bdc8-4d50-96cb-b66d6bd6e3f1@arm.com>
+Date: Wed, 18 Mar 2026 09:17:58 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317141534.815634-2-mclapinski@google.com>
-X-Stat-Signature: bohdz6n6etjao943m5ecqy1udy4dx1o4
-X-Rspamd-Server: rspam09
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
+ mapping when rodata=full
+Content-Language: en-GB
+To: Jinjiang Tu <tujinjiang@huawei.com>,
+ Yang Shi <yang@os.amperecomputing.com>, catalin.marinas@arm.com,
+ will@kernel.org, akpm@linux-foundation.org, david@redhat.com,
+ lorenzo.stoakes@oracle.com, ardb@kernel.org, dev.jain@arm.com,
+ scott@os.amperecomputing.com, cl@gentwo.org,
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
+ <0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com>
+ <de0b06cf-15a5-4109-b339-75c10d9b8a18@arm.com>
+ <0a740020-4780-4156-a9c5-f8b4ada9c8c0@os.amperecomputing.com>
+ <e35ee155-81aa-453a-8197-2c87d923f84c@huawei.com>
+ <d0fbd3f6-b6ed-4a44-8b64-c6e77f63e91b@arm.com>
+ <0b656663-c3df-49e0-96ad-d426112e3d99@huawei.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <0b656663-c3df-49e0-96ad-d426112e3d99@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5828C0009
-X-HE-Tag: 1773825419-332253
-X-HE-Meta: U2FsdGVkX1/sQgAc/PzF+aDoKjke8jJXnPgJ2bgX09O9KSTdTTbvOBHDPPXjE0TKEP2cwq2qc83wRTBgtuAN1kyJqElUVqSBOyaBUSQP+vPHxkwjQtL9IRApvmxQHNDQApLE3ydgSh74FTjg14zGwE7EIskjD8dHAR9jLPIffFKInGVPEOD5Ha6ViK8QVF9224FtgMZMAgrUYRdChWYWWXCrwmG/S6Q3xCFvadJ4MtgPMI2Tko4Jbl+R9unYu1kUxI/A3ltGYxPPxoYyky16gnRfih1cIecJfgB3p3mXCdOUJ4ANuADe0AMUB2Df3OggWQbzB2YXtOLHO02EUMgrLLLmR0IrCs/ov6SqAycpb4uvXUPkAuf1PsYf/NbJQKW02MNveSZ1RJ21PxDP/D4A+qv9Ex34/hFOqvkdGnqYT3RKtnOlH+T2ZMilEvEyRvMwS0ln5kipPtzpu7zH/cKZr4WxvJjCMPYP45uNkoCq4ofPralhntSCgoMPmAiUQLzjhQ33AzR6e3h/7hBO+khbaf/T4gmJqTs4jPiIAAFWtiMCvNoMmJeICQliZTWVUOjvVvXzngLCR/R4neeZy75WP1EONTCrenBatWgNUnWqx/c4rUs6VjiR29GkVLOygCRon3m13vhDTsPvqJTNoWH4FTjUXvaf6euz1QN7ButNBbdpUHLo2rBasXN5nvwqNNOZPShch5xMHo0/4viNQAI98kjOek6v++B091xvw3XFv7W7HmOV2lilauW3H27cO7WdnqRM3F0nnRgr4EyUhwusBM8cBLDwlxFp9ZoY7EMqW6ItQeARnQFHlk1l/cLYegr/HAO9u8eBAVCKJVh9riMgvGfgf3HzyXNh+ajwgnP0Uy66JEG6McYkuEv8aXdbvGHIRexmKul3BHIp32XjsO9IHaN1dSbqa1ISNHOQBRblLSzzxZ1iUFR44dffin7wxr0pFMuYrZSqCXPEm0zJkaP
- 9szH+8Lu
- i0DjNxtXrc4sDnog3gxKjgAoWTC2R22HdTsFjsWUMCCoCLBqtqPHz6Er8ub6MXHv9sbz2mFznyCM1pJrZlQc4VK8JDa79B5kgVL4F6gycxI2uQjRRCy6v0FrvqPQIEkvCUkiQJnVoZw4bgux/AdAWI+ifPVEKs9dW0p79pDJhi5Egc7LxV77QnbNQdijOcmhO3b+MHpOl9LwGXrOhZoMnYJF6VmAJKfLTwFqWTvGZPTq3h3N+5RXlceKoyzg9RVwpCqdrlVJJnhJphRWTM6aVPluDq4qXyYKjjU90Bl1ndjGfhQM4xICjPNhM2gnkELJQ6pmj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0AD0618000B
+X-Stat-Signature: zf5a4ozf1k3xgn6s356mwwrbprz8hni6
+X-HE-Tag: 1773825482-229010
+X-HE-Meta: U2FsdGVkX18comr5N9+ORa7gUHwqePpcFWDwevxxwvQJ2HiuSvmmCyaI8N29Y8dDKhtvipggzNpElJ18tmccXulob4brVhZag7FEwlGhzylhSVyJ8c8ajUnEby9DBWJw7uyGmAkIzq0dEfbwKoDWAMZQ+UeBNh0KbQ4PwJ072oweUZROfVpHApRo7aTEk9T1Yphg0ya4EwxLzAyvZNhFuZhKoM0SF7+jUdXEm6G+2yJTCFoH7+d6FinYKOjQO6DH7nPUUl285JLRlltko9klD5+5Q+tvi4GnfIcIL6jlnqMMamxTaGDB9uHw/3iR+QcDPj55bkcWCjEzwTqLPKPOdgMscmbLPxpOqKDItPKVDXQjtWNY2kR44W7NNai5l9/4XWKC1UV5mM5vqjFlxIGiLCn7+TVulEDrmdPgAY/WYNATdi+qMaGEhwx9lxiID3geficHutyhj+LzWzVVr9dYRRpx/T5cUhEnTBy6qXAL0T1rxsSaHcMImnaTgGAKPYNo3w6BxfTBVV2J3PT1bq0x5WnCE2PXizR52p1yRdecsgpKTWy47VvVrAyKJ86oWW2QoLKmsWAoecQuHuMKIWkKnwF5Pa8eR59rxO1mAtPeUOG+MeHHhYMgitMkPz0OMVhG/nIFHMtGOhR3ep+TqOQlbV0YXAg6MBxn4Ju98wpFRxY82F1hkjlWSZvphfkvv7hludWGF159hOrjiVJgKoqVsDm495FvOdaF8tXMVey5w4O9rpZIh+sQdlRa/qG5vSDnoXRI5NYJZv+rIMEJH9VCsTpM9bnOFL4mmC+AVG7DxQmGcXGyBRgvW6nTI+AB9nuQbCXTZ7NM/PLHhMOhBbfISfin5TUR5ZZLrXJJZHo0jT0L31MJlz1gUZPgQ5s6sTB1i+Ayforr2vEbjvI+rGJkxB5CJdrFE6sORHUj3Q3kgL5zB0oDecLWYubSf3GJ+Sd/beGMxBJGgAiVfe7d8D6
+ 8Tt+karp
+ MIgE4UFMDnNOCKcAKum3V4KDwZeCri+whKdo+ue/MiongA1jj7mXZ5vTsKjmlXw0g3sELti7y1vffEmYywO8ARshPdZeXej5rTyeGk/GxwPKCL3rPH/ogEKZaBfeVTcMPUqzIQh/creUQOqYkJsIq2HRqpx27yTPXKsZ8q2JF+BVqgwR0ifK68cFLS7HjGPPNthJAoNBCRPDzmF6BeiQnl2AcYJPm+c8x/gtbFwjojWLkguogdMdcO+WH8M3C6XJsaYXhWmhubFPXwuGOiXUD0veYxEFMTlihNntZD1J/pKkzBK4MCVZayNTsXIfQ+AZznkEyWPDk5l3zxzlnp/44lxxNMBYu77nvVAee/BeGVS7mQE6IA1EkQoQUQbA7lE7nK0BNa+1Cm7oWvx4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,126 +96,538 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
-
-On Tue, Mar 17, 2026 at 03:15:32PM +0100, Michal Clapinski wrote:
-> Also return false if kho_scratch is NULL.
+On 18/03/2026 08:29, Jinjiang Tu wrote:
 > 
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> ---
->  include/linux/kexec_handover.h              |  6 +++++
->  kernel/liveupdate/Makefile                  |  1 -
->  kernel/liveupdate/kexec_handover.c          | 28 ++++++++++++++++++---
->  kernel/liveupdate/kexec_handover_debug.c    | 25 ------------------
->  kernel/liveupdate/kexec_handover_internal.h |  7 ++++--
->  5 files changed, 35 insertions(+), 32 deletions(-)
->  delete mode 100644 kernel/liveupdate/kexec_handover_debug.c
+> 在 2026/3/17 17:07, Ryan Roberts 写道:
+>> On 17/03/2026 02:06, Jinjiang Tu wrote:
+>>> 在 2026/3/17 8:15, Yang Shi 写道:
+>>>>
+>>>> On 3/16/26 8:47 AM, Ryan Roberts wrote:
+>>>>> Thanks for the report!
+>>>>>
+>>>>> + Kevin, who was looking at some adjacent issues and may have some ideas
+>>>>> for how
+>>>>> to fix.
+>>>>>
+>>>>>
+>>>>> On 16/03/2026 07:35, Jinjiang Tu wrote:
+>>>>>> 在 2025/9/18 3:02, Yang Shi 写道:
+>>>>>>> On systems with BBML2_NOABORT support, it causes the linear map to be mapped
+>>>>>>> with large blocks, even when rodata=full, and leads to some nice performance
+>>>>>>> improvements.
+>>>>>> Hi,
+>>>> Hi Jinjiang,
+>>>>
+>>>> Thanks for reporting the problem.
+>>>>
+>>>>>> I find this feature is incompatible with realm. The calltrace is as follows:
+>>>>>>
+>>>>>> [    0.000000][    T0] ------------[ cut here ]------------
+>>>>>> [    0.000000][    T0] WARNING: CPU: 0 PID: 0 at arch/arm64/mm/pageattr.c:56
+>>>>>> pageattr_pmd_entry+0x60/0x78
+>>>>>> [    0.000000][    T0] Modules linked in:
+>>>>>> [    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.6.0 #16
+>>>>>> [    0.000000][    T0] Hardware name: linux,dummy-virt (DT)
+>>>>>> [    0.000000][    T0] pstate: 800000c5 (Nzcv daIF -PAN -UAO -TCO -DIT -SSBS
+>>>>>> BTYPE=--)
+>>>>>> [    0.000000][    T0] pc : pageattr_pmd_entry+0x60/0x78
+>>>>>> [    0.000000][    T0] lr : walk_pmd_range.isra.0+0x170/0x1f0
+>>>>>> [    0.000000][    T0] sp : ffffcb90a0f337d0
+>>>>>> [    0.000000][    T0] x29: ffffcb90a0f337d0 x28: 0000000000000000 x27:
+>>>>>> ffff0000035e0000
+>>>>>> [    0.000000][    T0] x26: ffffcb90a0f338f8 x25: ffff00001fff60d0 x24:
+>>>>>> ffff0000035d0000
+>>>>>> [    0.000000][    T0] x23: 0400000000000001 x22: 0c00000000000001 x21:
+>>>>>> ffff0000035dffff
+>>>>>> [    0.000000][    T0] x20: ffffcb909fe3b7f0 x19: ffff0000035e0000 x18:
+>>>>>> ffffffffffffffff
+>>>>>> [    0.000000][    T0] x17: 7220303030303178 x16: 307e303030306435 x15:
+>>>>>> ffffcb90a0f334c8
+>>>>>> [    0.000000][    T0] x14: 0000000000000000 x13: 205d305420202020 x12:
+>>>>>> 5b5d303030303030
+>>>>>> [    0.000000][    T0] x11: 00000000ffff7fff x10: 00000000ffff7fff x9 :
+>>>>>> ffffcb909f1e27d8
+>>>>>> [    0.000000][    T0] x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 :
+>>>>>> 0000000000000001
+>>>>>> [    0.000000][    T0] x5 : 0000000000000001 x4 : 0078000083400705 x3 :
+>>>>>> ffffcb90a0f338f8
+>>>>>> [    0.000000][    T0] x2 : 0000000000010000 x1 : ffff0000035d0000 x0 :
+>>>>>> ffff00001fff60d0
+>>>>>> [    0.000000][    T0] Call trace:
+>>>>>> [    0.000000][    T0]  pageattr_pmd_entry+0x60/0x78
+>>>>>> [    0.000000][    T0]  walk_pud_range+0x124/0x190
+>>>>>> [    0.000000][    T0]  walk_pgd_range+0x158/0x1b0
+>>>>>> [    0.000000][    T0] walk_kernel_page_table_range_lockless+0x58/0x98
+>>>>>> [    0.000000][    T0]  update_range_prot+0xb8/0x108
+>>>>>> [    0.000000][    T0]  __change_memory_common+0x30/0x1a8
+>>>>>> [    0.000000][    T0] __set_memory_enc_dec.part.0+0x170/0x260
+>>>>>> [    0.000000][    T0]  realm_set_memory_decrypted+0x6c/0xb0
+>>>>>> [    0.000000][    T0]  set_memory_decrypted+0x38/0x58
+>>>>>> [    0.000000][    T0]  its_alloc_pages_node+0xc4/0x140
+>>>>>> [    0.000000][    T0]  its_probe_one+0xbc/0x3c0
+>>>>>> [    0.000000][    T0]  its_of_probe.isra.0+0x130/0x220
+>>>>>> [    0.000000][    T0]  its_init+0x160/0x2f8
+>>>>>> [    0.000000][    T0]  gic_init_bases+0x1fc/0x318
+>>>>>> [    0.000000][    T0]  gic_of_init+0x2a0/0x300
+>>>>>> [    0.000000][    T0]  of_irq_init+0x238/0x4b8
+>>>>>> [    0.000000][    T0]  irqchip_init+0x20/0x50
+>>>>>> [    0.000000][    T0]  init_IRQ+0x1c/0x100
+>>>>>> [    0.000000][    T0]  start_kernel+0x1ec/0x4f0
+>>>>>> [    0.000000][    T0]  __primary_switched+0xbc/0xd0
+>>>>>> [    0.000000][    T0] ---[ end trace 0000000000000000 ]---
+>>>>>> [    0.000000][    T0] ------------[ cut here ]------------
+>>>>>> [    0.000000][    T0] Failed to decrypt memory, 16 pages will be leaked
+>>>>>>
+>>>>>> realm feature relies on rodata=full to dynamically update kernel page table
+>>>>>> prot.
+>>>>>>
+>>>>>> In init_IRQ(), realm_set_memory_decrypted() is called to update kernel page
+>>>>>> table prot.
+>>>>>> At this time, secondary cpus aren't booted, BBML2 noabort feature isn't
+>>>>>> initializated,
+>>>>>> and system_supports_bbml2_noabort() still returns false. As a result,
+>>>>>> split_kernel_leaf_mapping() is skipped, leading to WARN_ON_ONCE((next -
+>>>>>> addr) !=
+>>>>>> PMD_SIZE)
+>>>>>> in pageattr_pmd_entry().
+>>>>> If no secondary cpus are yet running, then it is technically safe to split
+>>>>> because we know all online cpus (i.e. just the boot cpu) supports
+>>>>> BBML2_NOABORT.
+>>>>> So we could explicitly only disallow splitting during the window between
+>>>>> booting
+>>>>> secondary cpus and finalizing the system caps. Feels a bit hacky though...
+>>>> I think we can check whether system feature has been finalized or not. If it
+>>>> has not been finalized yet, we just need to check whether the current cpu
+>>>> (should be just boot cpu) supports BBML2_NOABORT or not. It sounds ok to me.
+>> No I don't think that's sufficient; if the secondary cpus are started (even if
+>> not running the code path doing the split) we have to assume the secondary cpus
+>> are sharing the linear map pgtables, so if we split them on the boot cpu and the
+>> secondary cpus don't support BBML2_NOABORT, things could break.
+>>
+>> I think 2 options would be:
+>>
+>>   - disallow split for the window between starting the secondary cpus and
+>> finalizing the system caps.
+>>
+>>   - Do the split in stop_machine() if any request for splitting is made between
+>> starting the secondary cpus and finalizing the system caps.
+>>
+>> Both feel pretty ugly. I'll have a chat with Catalin and try to guage opinons...
+>>
+>>
+>> In the meantime, would you mind trying this (uncompiled, untested) patch? It's
+>> attempting to implement option 1. TBH, I'm not sure if this is legal since we
+>> will now try to get a mutex; is that allowed in early code that can't sleep? I
+>> guess we only have a single thread running so there can't be any contention...
 > 
-> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-> index ac4129d1d741..6a0e572c3adc 100644
-> --- a/include/linux/kexec_handover.h
-> +++ b/include/linux/kexec_handover.h
-> @@ -35,6 +35,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
->  int kho_add_subtree(const char *name, void *fdt);
->  void kho_remove_subtree(void *fdt);
->  int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
-> +bool kho_scratch_overlap(phys_addr_t phys, size_t size);
->  
->  void kho_memory_init(void);
->  
-> @@ -109,6 +110,11 @@ static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
->  	return -EOPNOTSUPP;
->  }
->  
-> +static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-> +{
-> +	return false;
-> +}
-> +
->  static inline void kho_memory_init(void) { }
->  
->  static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
-> diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-> index d2f779cbe279..dc352839ccf0 100644
-> --- a/kernel/liveupdate/Makefile
-> +++ b/kernel/liveupdate/Makefile
-> @@ -7,7 +7,6 @@ luo-y :=								\
->  		luo_session.o
->  
->  obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
-> -obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
->  obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
->  
->  obj-$(CONFIG_LIVEUPDATE)		+= luo.o
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 532f455c5d4f..c9b982372d6e 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -820,7 +820,8 @@ int kho_preserve_folio(struct folio *folio)
->  	const unsigned long pfn = folio_pfn(folio);
->  	const unsigned int order = folio_order(folio);
->  
-> -	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
-> +	if (WARN_ON(kho_scratch_overlap_debug(pfn << PAGE_SHIFT,
-> +					      PAGE_SIZE << order)))
+> page table is allocated from buddy with GFP_PGTABLE_KERNEL. In init_IRQ(), the
+> buddy is initialized, but we shoudn't assume it? 
 
-Can't say I'm fond of kho_scratch_overlap_debug(). How about we make it
+Yes that's a fair point. So we also need to reject split requests made prior to
+initializing the buddy. It looks like there is an optional mem_init() arch hook
+which arm64 doesn't currently use which we may be able to use to signal "buddy
+available"?
 
-	if (IS_ENABLED(CONFIG_KEXEC_HANDOVER_DEBUG) &&
-	    WARN_ON(kho_scratch_overlap(...)) 
+> And, is GFP_PGTABLE_KERNEL
+> reasonable here? allocation may block.
 
->  		return -EINVAL;
->  
->  	return kho_radix_add_page(tree, pfn, order);
-> @@ -864,10 +865,9 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
->  	unsigned long failed_pfn = 0;
->  	int err = 0;
->  
-> -	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
-> -					nr_pages << PAGE_SHIFT))) {
-> +	if (WARN_ON(kho_scratch_overlap_debug(start_pfn << PAGE_SHIFT,
-> +					      nr_pages << PAGE_SHIFT)))
+I think in practice it should be fine; this early in boot we can't possibly be
+out of memory so won't try to block.
 
-Ditto.
+But I was really just intending testing with this patch to validate that there
+weren't any other issues, not proposing it as the final fix. Personally I'm
+leaning more and more to initially mapping by PTE then collapsing once we know
+the capabilities of the whole system.
 
->  		return -EINVAL;
-> -	}
->  
->  	while (pfn < end_pfn) {
->  		unsigned int order =
-> @@ -1327,6 +1327,26 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
->  }
->  EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
->  
-> +bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-> +{
-> +	phys_addr_t scratch_start, scratch_end;
-> +	unsigned int i;
-> +
-> +	if (!kho_scratch)
-> +		return false;
-> +
-> +	for (i = 0; i < kho_scratch_cnt; i++) {
-> +		scratch_start = kho_scratch[i].addr;
-> +		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
-> +
-> +		if (phys < scratch_end && (phys + size) > scratch_start)
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +EXPORT_SYMBOL_GPL(kho_scratch_overlap);
+Thanks,
+Ryan
 
-I don't think we need to EXPORT_SYMBOL() it and it'd better grouped with
-scratch allocation functions.
 
-> +
->  static int __init kho_mem_retrieve(const void *fdt)
->  {
->  	struct kho_radix_tree tree;
+> 
+>>
+>> ---8<---
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 8e1d80a7033e3..72790126db55c 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -779,7 +779,16 @@ int split_kernel_leaf_mapping(unsigned long start, unsigned
+>> long end)
+>>        * and let the permission change code raise a warning if not already
+>>        * pte-mapped.
+>>        */
+>> -    if (!system_supports_bbml2_noabort())
+>> +    if (system_capabilities_finalized() && !system_supports_bbml2_noabort())
+>> +        return 0;
+>> +
+>> +    /*
+>> +     * If system capabilities are not finalized and there is only 1 online
+>> +     * cpu, then we must be running on the boot cpu during early boot before
+>> +     * any secondaries have started. If the boot cpu supports bbml2, we can
+>> +     * safely split.
+>> +     */
+>> +    if (num_online_cpus() > 1 || !cpu_supports_bbml2_noabort())
+>>           return 0;
+>>
+>>       /*
+>> ---8<---
+>>
+>> Thanks,
+>> Ryan
+>>
+>>
+>>
+>>>>>> Before setup_system_features(), we don't know if all cpus support BBML2
+>>>>>> noabort,
+>>>>>> and we
+>>>>>> couldn't split kernel page table, in case another cpu that doesn't support
+>>>>>> BBML2
+>>>>>> noabort
+>>>>>> is running.
+>>>>>>
+>>>>>> How could we fix this issue?
+>>>>>>
+>>>>>> 1. force pte mapping if realm feature is enabled? Although
+>>>>>> force_pte_mapping()
+>>>>>> return true if is_realm_world() return true, arm64_rsi_init() is called after
+>>>>>> map_mem(). So is_realm_world() still return false during map_mem(). Thus
+>>>>>> realm feature relies on rodata=full. If we fix by this solution, we need
+>>>>>> to add a new cmdline to force pte mapping.
+>>>> I don't quite get why is_realm_world() relies on rodata=full. I understand
+>>>> realm needs PTE mapping if BBML2_NOABORT is not supported. But it doesn't mean
+>>>> real relies on rodata=full.
+>>> https://lore.kernel.org/all/5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com/
+>>>
+>>> This is the discussion why realm relies on rodata=full. The initization of realm
+>>> coudn't move to before map_mem(), so is_realm_world() is false. As a result,
+>>> realm
+>>> need rodata=full to indicate we need to make pages shared/protected at page
+>>> granularity.
+>>>
+>>>>> I think we just need to make is_realm_world() work earlier in boot? I think
+>>>>> this
+>>>>> has been a known issue for a while. Not sure if there is any plan to fix it
+>>>>> though.
+>>>>>
+>>>>>> 2. If we could try to split kernel page table before setup_system_features()?
+>>>>> Another option would be to initially map by pte then collapse to block
+>>>>> mappings
+>>>>> once we have determined that all cpus support BBML2_NOABORT. We originally
+>>>>> opted
+>>>>> not to do that because it's a tax on symetric systems. But we could throw
+>>>>> in the
+>>>>> towel if it's the least bad solution we can come up with for solving this. I
+>>>>> think it might help some of Kevin's use cases too?
+>>>> May be an option too. When we discussed this there was no usecase for direct
+>>>> mapping collapse. But if we can have multiple usecases, it may be worth it.
+>>>> AFAICT, the ROX execmem cache may need this, which Will or someone else from
+>>>> Google is going to work on.
+>>>>
+>>>> Checking current cpu BBML2_NOABORT capability before system feature is
+>>>> finalized seems like a fast way to stop bleeding IMHO before we find more
+>>>> elegant long-term solution.
+>>>>
+>>>> Thanks,
+>>>> Yang
+>>>>
+>>>>> Thanks,
+>>>>> Ryan
+>>>>>
+>>>>>
+>>>>>> Thanks.
+>>>>>>
+>>>>>>> Ryan tested v7 on an AmpereOne system (a VM with 12G RAM) in all 3 possible
+>>>>>>> modes by hacking the BBML2 feature detection code:
+>>>>>>>
+>>>>>>>      - mode 1: All CPUs support BBML2 so the linear map uses large mappings
+>>>>>>>      - mode 2: Boot CPU does not support BBML2 so linear map uses pte
+>>>>>>> mappings
+>>>>>>>      - mode 3: Boot CPU supports BBML2 but secondaries do not so linear map
+>>>>>>>        initially uses large mappings but is then repainted to use pte
+>>>>>>> mappings
+>>>>>>>
+>>>>>>> In all cases, mm selftests run and no regressions are observed. In all
+>>>>>>> cases,
+>>>>>>> ptdump of linear map is as expected. Because there are just some cleanups
+>>>>>>> between v7 and v8, so I kept using Ryan's test result:
+>>>>>>>
+>>>>>>> Mode 1:
+>>>>>>> =======
+>>>>>>> ---[ Linear Mapping start ]---
+>>>>>>> 0xffff000000000000-0xffff000000200000           2M PMD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000000200000-0xffff000000210000          64K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000000210000-0xffff000000400000        1984K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL
+>>>>>>> 0xffff000000400000-0xffff000002400000          32M PMD ro NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL
+>>>>>>> 0xffff000002400000-0xffff000002550000        1344K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL
+>>>>>>> 0xffff000002550000-0xffff000002600000         704K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000002600000-0xffff000004000000          26M PMD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000004000000-0xffff000040000000         960M PMD RW NX SHD AF
+>>>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000040000000-0xffff000140000000           4G PUD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000140000000-0xffff000142000000          32M PMD RW NX SHD AF
+>>>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142000000-0xffff000142120000        1152K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142120000-0xffff000142128000          32K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142128000-0xffff000142159000         196K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142159000-0xffff000142160000          28K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142160000-0xffff000142240000         896K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142240000-0xffff00014224e000          56K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff00014224e000-0xffff000142250000           8K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142250000-0xffff000142260000          64K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142260000-0xffff000142280000         128K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142280000-0xffff000142288000          32K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142288000-0xffff000142290000          32K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142290000-0xffff0001422a0000          64K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff0001422a0000-0xffff000142465000        1812K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142465000-0xffff000142470000          44K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142470000-0xffff000142600000        1600K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000142600000-0xffff000144000000          26M PMD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000144000000-0xffff000180000000         960M PMD RW NX SHD AF
+>>>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000180000000-0xffff000181a00000          26M PMD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181a00000-0xffff000181b90000        1600K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181b90000-0xffff000181b9d000          52K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181b9d000-0xffff000181c80000         908K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181c80000-0xffff000181c90000          64K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181c90000-0xffff000181ca0000          64K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181ca0000-0xffff000181dbd000        1140K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181dbd000-0xffff000181dc0000          12K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181dc0000-0xffff000181e00000         256K PTE RW NX SHD AF
+>>>>>>> CON     UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181e00000-0xffff000182000000           2M PMD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000182000000-0xffff0001c0000000         992M PMD RW NX SHD AF
+>>>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff0001c0000000-0xffff000300000000           5G PUD RW NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000300000000-0xffff008000000000         500G PUD
+>>>>>>> 0xffff008000000000-0xffff800000000000      130560G PGD
+>>>>>>> ---[ Linear Mapping end ]---
+>>>>>>>
+>>>>>>> Mode 3:
+>>>>>>> =======
+>>>>>>> ---[ Linear Mapping start ]---
+>>>>>>> 0xffff000000000000-0xffff000000210000        2112K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000000210000-0xffff000000400000        1984K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL
+>>>>>>> 0xffff000000400000-0xffff000002400000          32M PMD ro NX SHD
+>>>>>>> AF        BLK UXN    MEM/NORMAL
+>>>>>>> 0xffff000002400000-0xffff000002550000        1344K PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL
+>>>>>>> 0xffff000002550000-0xffff000143a61000     5264452K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000143a61000-0xffff000143c61000           2M PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000143c61000-0xffff000181b9a000     1015012K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181b9a000-0xffff000181d9a000           2M PTE ro NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000181d9a000-0xffff000300000000     6261144K PTE RW NX SHD
+>>>>>>> AF            UXN    MEM/NORMAL-TAGGED
+>>>>>>> 0xffff000300000000-0xffff008000000000         500G PUD
+>>>>>>> 0xffff008000000000-0xffff800000000000      130560G PGD
+>>>>>>> ---[ Linear Mapping end ]---
+>>>>>>>
+>>>>>>>
+>>>>>>> Performance Testing
+>>>>>>> ===================
+>>>>>>> * Memory use after boot
+>>>>>>> Before:
+>>>>>>> MemTotal:       258988984 kB
+>>>>>>> MemFree:        254821700 kB
+>>>>>>>
+>>>>>>> After:
+>>>>>>> MemTotal:       259505132 kB
+>>>>>>> MemFree:        255410264 kB
+>>>>>>>
+>>>>>>> Around 500MB more memory are free to use.  The larger the machine, the
+>>>>>>> more memory saved.
+>>>>>>>
+>>>>>>> * Memcached
+>>>>>>> We saw performance degradation when running Memcached benchmark with
+>>>>>>> rodata=full vs rodata=on.  Our profiling pointed to kernel TLB pressure.
+>>>>>>> With this patchset we saw ops/sec is increased by around 3.5%, P99
+>>>>>>> latency is reduced by around 9.6%.
+>>>>>>> The gain mainly came from reduced kernel TLB misses.  The kernel TLB
+>>>>>>> MPKI is reduced by 28.5%.
+>>>>>>>
+>>>>>>> The benchmark data is now on par with rodata=on too.
+>>>>>>>
+>>>>>>> * Disk encryption (dm-crypt) benchmark
+>>>>>>> Ran fio benchmark with the below command on a 128G ramdisk (ext4) with
+>>>>>>> disk encryption (by dm-crypt).
+>>>>>>> fio --directory=/data --random_generator=lfsr --norandommap            \
+>>>>>>>        --randrepeat 1 --status-interval=999 --rw=write --bs=4k --loops=1  \
+>>>>>>>        --ioengine=sync --iodepth=1 --numjobs=1 --fsync_on_close=1         \
+>>>>>>>        --group_reporting --thread --name=iops-test-job --eta-newline=1    \
+>>>>>>>        --size 100G
+>>>>>>>
+>>>>>>> The IOPS is increased by 90% - 150% (the variance is high, but the worst
+>>>>>>> number of good case is around 90% more than the best number of bad
+>>>>>>> case). The bandwidth is increased and the avg clat is reduced
+>>>>>>> proportionally.
+>>>>>>>
+>>>>>>> * Sequential file read
+>>>>>>> Read 100G file sequentially on XFS (xfs_io read with page cache
+>>>>>>> populated). The bandwidth is increased by 150%.
+>>>>>>>
+>>>>>>> Additionally Ryan also ran this through a random selection of benchmarks on
+>>>>>>> AmpereOne. None show any regressions, and various benchmarks show
+>>>>>>> statistically
+>>>>>>> significant improvement. I'm just showing those improvements here:
+>>>>>>>
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>> | Benchmark            | Result
+>>>>>>> Class                                             | Improvement vs 6.17-
+>>>>>>> rc1 |
+>>>>>>> +======================+==========================================================+=========================+
+>>>>>>> | micromm/vmalloc      | full_fit_alloc_test: p:1, h:0, l:500000
+>>>>>>> (usec)           |              (I) -9.00% |
+>>>>>>> |                      | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000
+>>>>>>> (usec) |              (I) -6.93% |
+>>>>>>> |                      | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000
+>>>>>>> (usec) |              (I) -6.77% |
+>>>>>>> |                      | pcpu_alloc_test: p:1, h:0, l:500000
+>>>>>>> (usec)               |              (I) -4.63% |
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>> | mmtests/hackbench    | process-sockets-30
+>>>>>>> (seconds)                             |              (I) -2.96% |
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>> | mmtests/kernbench    | syst-192
+>>>>>>> (seconds) |             (I) -12.77% |
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>> | pts/perl-benchmark   | Test: Interpreter
+>>>>>>> (Seconds)                              |              (I) -4.86% |
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>> | pts/pgbench          | Scale: 1 Clients: 1 Read Write
+>>>>>>> (TPS)                     |               (I) 5.07% |
+>>>>>>> |                      | Scale: 1 Clients: 1 Read Write - Latency
+>>>>>>> (ms)            |              (I) -4.72% |
+>>>>>>> |                      | Scale: 100 Clients: 1000 Read Write
+>>>>>>> (TPS)                |               (I) 2.58% |
+>>>>>>> |                      | Scale: 100 Clients: 1000 Read Write - Latency
+>>>>>>> (ms)       |              (I) -2.52% |
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>> | pts/sqlite-speedtest | Timed Time - Size 1,000
+>>>>>>> (Seconds)                        |              (I) -2.68% |
+>>>>>>> +----------------------
+>>>>>>> +----------------------------------------------------------
+>>>>>>> +-------------------------+
+>>>>>>>
+>>>>>>> Changes since v7 [1]
+>>>>>>> ====================
+>>>>>>> - Rebased on v6.17-rc6 and Shijie's rodata series (https://
+>>>>>>> git.kernel.org/pub/
+>>>>>>> scm/linux/kernel/git/arm64/linux.git/commit/?id=bfbbb0d3215f)
+>>>>>>>      which has been picked up by Will.
+>>>>>>> - Patch 1: Fixed pmd_leaf/pud_leaf issue since the code may need to change
+>>>>>>>      permission for invalid entries per Jinjiang Tu.
+>>>>>>> - Patch 1: Removed pageattr_pgd_entry and pageattr_p4d_entry per Ryan.
+>>>>>>> - Used (-1ULL) instead of -1 per Catalin.
+>>>>>>> - Added comment about arm64 lazy mmu allow sleeping per Ryan.
+>>>>>>> - Squashed patch #4 in v7 into patch #3.
+>>>>>>> - Squashed patch #6 in v7 into patch #4.
+>>>>>>> - Added patch #5 to fix a arm64 kprobes bug. It guarantees set_memory_rox()
+>>>>>>>      is called before vfree(). It can go into separately or with this series
+>>>>>>>      together.
+>>>>>>> - Collected all the R-bs and A-bs.
+>>>>>>>
+>>>>>>> Changes since v6 [2]
+>>>>>>> ====================
+>>>>>>> - Patch 1: Minor refactor to implement walk_kernel_page_table_range() in
+>>>>>>> terms
+>>>>>>>      of walk_kernel_page_table_range_lockless(). Also lead to adding *pmd
+>>>>>>> argument
+>>>>>>>      to the lockless variant for consistency (per Catalin).
+>>>>>>> - Misc function/variable renames to improve clarity and consistency.
+>>>>>>> - Share same syncrhonization flag between idmap_kpti_install_ng_mappings and
+>>>>>>>      wait_linear_map_split_to_ptes, which allows removal of bbml2_ptes[] to
+>>>>>>> save
+>>>>>>>      ~20K from kernel image.
+>>>>>>> - Only take pgtable_split_lock and enter lazy mmu mode once for both splits.
+>>>>>>> - Only walk the pgtable once for the common "split single page" case.
+>>>>>>> - Bypass split to contpmd and contpte when spllitting linear map to ptes.
+>>>>>>>
+>>>>>>> [1] https://lore.kernel.org/linux-arm-kernel/20250829115250.2395585-1-
+>>>>>>> ryan.roberts@arm.com/
+>>>>>>> [2] https://lore.kernel.org/linux-arm-kernel/20250805081350.3854670-1-
+>>>>>>> ryan.roberts@arm.com/
+>>>>>>>
+>>>>>>>
+>>>>>>> Dev Jain (1):
+>>>>>>>          arm64: Enable permission change on arm64 kernel block mappings
+>>>>>>>
+>>>>>>> Ryan Roberts (1):
+>>>>>>>          arm64: mm: split linear mapping if BBML2 unsupported on
+>>>>>>> secondary CPUs
+>>>>>>>
+>>>>>>> Yang Shi (3):
+>>>>>>>          arm64: cpufeature: add AmpereOne to BBML2 allow list
+>>>>>>>          arm64: mm: support large block mapping when rodata=full
+>>>>>>>          arm64: kprobes: call set_memory_rox() for kprobe page
+>>>>>>>
+>>>>>>>     arch/arm64/include/asm/cpufeature.h |   2 +
+>>>>>>>     arch/arm64/include/asm/mmu.h        |   3 +
+>>>>>>>     arch/arm64/include/asm/pgtable.h    |   5 ++
+>>>>>>>     arch/arm64/kernel/cpufeature.c      |  12 +++-
+>>>>>>>     arch/arm64/kernel/probes/kprobes.c  |  12 ++++
+>>>>>>>     arch/arm64/mm/mmu.c                 | 422 ++++++++++++++++++++++++++++++
+>>>>>>> ++++
+>>>>>>> +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>>>> +----
+>>>>>>>     arch/arm64/mm/pageattr.c            | 123 +++++++++++++++++++++++
+>>>>>>> +---------
+>>>>>>>     arch/arm64/mm/proc.S                |  27 ++++++--
+>>>>>>>     include/linux/pagewalk.h            |   3 +
+>>>>>>>     mm/pagewalk.c                       |  36 ++++++----
+>>>>>>>     10 files changed, 581 insertions(+), 64 deletions(-)
+>>>>>>>
+>>>>>>>
+>>>>
+>>
 
--- 
-Sincerely yours,
-Mike.
 
