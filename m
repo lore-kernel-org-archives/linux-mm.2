@@ -4,93 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BD98103E168
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69277103E16B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:22:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 622A86B0198; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
+	id 9B4CE6B00EF; Wed, 18 Mar 2026 08:22:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D37E6B019A; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
+	id 9668B6B00F3; Wed, 18 Mar 2026 08:22:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E8ED6B019B; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
+	id 82DAB6B00F5; Wed, 18 Mar 2026 08:22:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4116E6B0198
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07EB41406AB
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:12:08 +0000 (UTC)
-X-FDA: 84559070736.12.D3F8A8C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2709C40012
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:12:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVTfzGBL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773835926;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FB846B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:22:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1914FC25F0
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:22:15 +0000 (UTC)
+X-FDA: 84559096230.13.1B9DC35
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11021104.outbound.protection.outlook.com [40.107.130.104])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 33FAF1A0005
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:22:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=wOkulb4c;
+	spf=pass (imf19.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 40.107.130.104 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773836532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ngWHmMiI/B2TpdxBcQ3CpDvIjvhvkyGbI2cI1LZxnoU=;
-	b=xzN62v5olH84Az7KJpQsvxcFi1Peqs+oxJrrZO4Jn+F2yhbfp9SdE67oX+mnee6SZxKvhI
-	PHUCNs9rilBJYgktaK45+hgDbebd7JaqSv6Z4Xtqfi5vHpPKy/jQYE4BH8hkrq1+pMxZB5
-	brIYtxa2vPlodDmankopiIKDJzGZ49s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773835926; a=rsa-sha256;
-	cv=none;
-	b=3+emznIm1XUuxG02xk2qe2W+oeHefm1E0u2WcVA83Pra9SpiWdSh4QDp/e8g+808qqSQjJ
-	rxv12c2mt0uAZop4CyB+THL2cGQlEoyKyG8M7BUAgWx+fbXLFzZiG3azBtGKtYNfW9vQba
-	I4YyxW5w5lgRcRjfI16uMu1JzQDGhO8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVTfzGBL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8499441758;
-	Wed, 18 Mar 2026 12:12:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E764EC19421;
-	Wed, 18 Mar 2026 12:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773835922;
-	bh=ZMYbeHXn5zcZyLE7ospsCFai3TF1Q88zpyazKVHp95c=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=kVTfzGBLiLfFZZLfDcB7uMhQXM6phIcJMoOUvNZkUbV0grhPwH3kOkp+KJvXGGl6O
-	 wt04L80HUJ1EjG7ELX8/nMRIiZv/Eg41E0I95mIwx1eHr/QMbBlcVKhU6mKIn2ly4o
-	 xOn0UVITpVe9bURrSCD0vJQ5OTZpwNME943JPU149h4z9G//vQkhgvFNdFdHRSHn0t
-	 noO5kPzor/Thi26xccF3eDjlhtT4PdVT9HcTtpDaijjWgSc4VQ+qP20UqFjpV0Ati7
-	 sz+pD3v93INrBTR1RgE71vkb9nsdqeVnuI1rWDvQ5vke/gOQsNJ0hSOH/xhFhgXL28
-	 OYkSV3BT5XRUA==
-Message-ID: <4659c675-6949-4295-b385-1ab26921a975@kernel.org>
-Date: Wed, 18 Mar 2026 13:11:58 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: Re: [PATCH 2/3] slab: create barns for online memoryless nodes
-To: Hao Li <hao.li@linux.dev>
-Cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
- <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
-Content-Language: en-US
-In-Reply-To: <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cII6IWXqlDfrwosr4EmtT1W7PdmqCqC/TgOY5suwxNA=;
+	b=TCHjVz97vIULicCWrwmBpiq+KRUohOTBDWqCVVMWA2KaMw4mv/s+zHcNs7Jxdy5l+oNSm/
+	P92rKxtEReGqdy7GyF/X0U+yWxYdCdcSACiDQ6UmnyyjWp093vclfh4fWbv/TBCAPuqA1A
+	GWIdfznssedN1xESWGgQc8PMEb1wBL8=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=wOkulb4c;
+	spf=pass (imf19.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 40.107.130.104 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773836532; a=rsa-sha256;
+	cv=pass;
+	b=lJBFPPTZzGQbkQLhMsl7VbOt8Hg0r8TpI9Z9p7vrtzcnDgaKJZ96aoqAhI+foTAQrcSIRH
+	/buEjVzmAEyu51JdEZ3BynYrOpW/B3p6SF/GlvVgXQaIvV8yzRlTwhdocix653qIjuI9NP
+	Kb+U9RpCTkAN+4eOKsmWG17Vn/u070c=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FG4149eeF2BypUeCc3oTpTNoT8xaq3fLJsPhQTR0qVqBTA8Hi8DgBoikPfOjoJclMbDeojIqbUeirW36/RK7jAiLU6e/lIkRL1U7ccwBEHiUV2pmU/HoXt1d1FbUFNw6u+7tW1cv78Fpk28AkpfESbAGmfntKPZdEWaV2Dfa293sSze7jAWGNgjWOYxm0nl0fjukP7VnEZi1oo9gj9KECLKHnzxJzVmzJvdeiTVapMP/cQXFRzF6hj2fle0ZjpVE0ggm6KTRtiDJk7y95ziqdc6hlygP0ltVCfypkVYfMax0sGkOQzRqjWS4yY5ePyaXSvKKrisxdpgPRVCECnROpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cII6IWXqlDfrwosr4EmtT1W7PdmqCqC/TgOY5suwxNA=;
+ b=upbY2dtuqxYEWiQyKMNpSdi/S7t0i42ynVBIW4Kc6khzfrRvyK24C7+3IcL/FPeDav0faSVkg7OghaDwiAQgj8aMFcgXiBqWBMPouQc9mKrmWJw0ST76RJZYL2IC+Uq5uqHYqW8fZeC67Q9/SnD8ZsGaxRVOa2Upwvukno/ax53yHh9YTNXZeGp+V1kNVBGv+HfLh7k1T9h/trkLXUgWtafaqQA9tNb/T0vExqmoxVIyknHvFQWVTVJl/Ht0U0oyJn9V1q8E6JkUIoKxQZujBs78OpDjqWV1LN/c2dsEaA+0TWJ7LRgsorpLMVd8rFNBa3QqkOLoJErLlc7Jxp3w+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cII6IWXqlDfrwosr4EmtT1W7PdmqCqC/TgOY5suwxNA=;
+ b=wOkulb4c2ObMa8JGXaGPzdmfrMH6sMYKUL+AgGFHv7La+D/D9k2bu7umR1gN5HOSz0UrIencLkaDqXj6Fv18X7EMqKyF8Fo0/7oYXi4PlQPcR7cobfLYI6uJ380xIYiiJsLEgPoF22+9+MCCe305wD+gLwFuwMT/hgFNGjOptWm16bP48wML9fu9oG/d49tO6idHOuPgvqd7r+E7rb+u2HhyuMtxXtRU+hmidSN+yytJeon4qJ9OTP8xiVUsyMRz2MkA5BevePTD/viXB8Xok9i41pMo3OfU3yafNOFLt1Q144CBdgrVP/QfI421i7fLM48wXpECguAKjUWjKxztTQ==
+Received: from DU0PR08MB9003.eurprd08.prod.outlook.com (2603:10a6:10:471::13)
+ by DBAPR08MB5830.eurprd08.prod.outlook.com (2603:10a6:10:1a7::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 12:22:08 +0000
+Received: from DU0PR08MB9003.eurprd08.prod.outlook.com
+ ([fe80::3470:51d7:36e4:36d2]) by DU0PR08MB9003.eurprd08.prod.outlook.com
+ ([fe80::3470:51d7:36e4:36d2%4]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 12:22:06 +0000
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Jan Kara <jack@suse.cz>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Andrei Vagin <avagin@google.com>,
+	Kirill Tkhai <tkhai@ya.ru>,
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
+	Adrian Reber <areber@redhat.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v6 0/5] pid_namespace: make init creation more flexible
+Date: Wed, 18 Mar 2026 13:21:48 +0100
+Message-ID: <20260318122157.280595-1-ptikhomirov@virtuozzo.com>
+X-Mailer: git-send-email 2.53.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2709C40012
-X-Stat-Signature: ctdhrkn4t4qsrmq5dw6f6k1t6quck9fs
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0045.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c7::14) To DU0PR08MB9003.eurprd08.prod.outlook.com
+ (2603:10a6:10:471::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR08MB9003:EE_|DBAPR08MB5830:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a1b2dcf-aa04-4d20-d931-08de84e8f826
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|10070799003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	q2Tv2Q95XJBn9Ilwav93YKH3Tq7B8K7qyCB3JVEYHP+HI0z8R1zSjkndciEIk0zAEJpveH2/D8CyAyrPs1znsyb9PKeLiEEhHM0+kToGffY/GHBbTP19vjxQ5vtK7IYWR9fdANZy50B8dhzOVgraqes6M5AOxcujRzw+zomSaJjuFVEyZKGp0oLN0cr3XpdSWI03nUkvappKbwyyMPlg7lLO2uE8u3s+GzYbhXapq1MAVokLxyo7LtfUBTl0KncmTA52BK3eCxJ8iXn/c4I7A0RgtgrO61sMsGCyoTG/IaBrXrT+TyLs2p7TjOITxMG2tlf0RX9aSNcTCeKQN8Y9u/1DaK3GVE/mFowfzDLGhY3FRpiH/7ajc6rJvTiaNXnBzEYcf0s75IYUdUY7+3AUFw8+y5J7s4u7EV7M5oJq3pmWyl5asQtFsaaVzy8tIza4mRbYvVx387aaBr6qptThGk2l9FO9ufi5hthnpXoQWC/2OrR2SM2Ro6XyonbFwsDyqMvkyXN56hnM2PNI59sKFaeaeen8cf+gvF8p34xJfkRzuc8Zg4aFW76yJe1tbUn78msL+A/x5hzdHefzjT9SIKedHpBX040RQyLXa2H6Fn29mKGk7mtXAq2ePrzDZzMYgRGFMf4NUoqYpe6q23gtNP/tNrKY67FOZrx3c43VTpVLrFU/eitjhHiGGXLLPbPbHKkTXENzyF+NPr3cK6GTPzXUa0TtGY6cdOfr0125ERU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9003.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(10070799003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHZIamZZTmp1cXUzMk52RmozYmtMOHltYzMxZjVlc092VUd5TUdERU10dGdE?=
+ =?utf-8?B?V09kODgrLzRQeGk0QWdleFZHWEo1RFhXMHQ3RlNlSDFKeFFEQTRkdzNxU2Fj?=
+ =?utf-8?B?R2FNRnZrYnpsd2lUTGt1ZHc3U0JlZ3piQ3MwYjZmUGo3MmhGa2FOZndmREFv?=
+ =?utf-8?B?cmlSUlR3Ui8ySHVzbmFSMG1KbWlEQTlXUDlnVHYrdXhzRStzc1BRQVl2OTJj?=
+ =?utf-8?B?b2dEVm1pNTJyaUJ1cnQxck5qZTN3bmFYN1BiQzYwYVRjN3Q0bENQVW5UNjQy?=
+ =?utf-8?B?K3h5OUl6OGFCbDE0MUF2T05tbzV6OUd1ckhwTWsyWFFWbGMrWUdVUTA4WUc5?=
+ =?utf-8?B?QWEvZnhkTnh1VXdvZjdpRUtrNHloNzJIeHNZZ0ZoVE9KYkxZRngvVmVxU1JL?=
+ =?utf-8?B?bkxNUTJCUzlWejB3R1FSNUQwNWEzZDdvR04rOWprdkNkZFkvVEdqSnJBeHVZ?=
+ =?utf-8?B?eGRDYVBvcjk5L1VMYnNzWWtxa0tPSmI3U3dMNUYxVTd1Nys3S05XczVHSWEx?=
+ =?utf-8?B?d2trY1NqeDZlZXlNN2pQSk5TUzZqZDR1VXVTeVlvNjFyV2VZTXkzcFZ1bEUr?=
+ =?utf-8?B?d1ovWmRCcDMxMTQ1czhweE1MY2FYbURHYlE5SWtrYXdYaksxWGw2YUJ0cHAr?=
+ =?utf-8?B?dVVsSllsYkhKWlN2UkFvWThBRUdUZDMyc1JaTDdibHd5WGhVRDY4N2lsbDJr?=
+ =?utf-8?B?b0hBVnJWSmdiQ2tQb3ZZODFpRmZRZjI4YVFPTURhaFJYR3JDT1VWeHVRYlZG?=
+ =?utf-8?B?Rk1SeWZrMzZPMzNEa3d2eVJQNWJBVlBxbmxLOFRldExGcU9XaWVUZVJDMEdw?=
+ =?utf-8?B?cm10OEZob3pNcTVML2QrVWhudjVzNzkzeXZMblFVVVZQYkRKemZSRGcyYU51?=
+ =?utf-8?B?eUpPYldBS0FveWtNcVFuZEdpM0JCb2pqcnJoVDhBZ0lOdnRMVXl5ZnpFWjNO?=
+ =?utf-8?B?T3dGS25hdFVVaXF4S3dkMW15S1d6UStYT1F1d1JKaFZabVQ3c1hwZHNOQUpS?=
+ =?utf-8?B?WTIxNk13cFlPYWVLZXlWSzFRc2MvNXZwUmZhTWdrMVRJd1Bsb0VDNHRWaEVC?=
+ =?utf-8?B?aC9YRytVVjl2dkF6M2FXUnE5T3ZGUU5DZXA4aitCaTQ5cjZRc3NsdXdrdit0?=
+ =?utf-8?B?N0J6b3VVbHNNRmN3aXRTZXd1TGhYUDVDWitnTEV3bUxzU3RqanAvVUpkdU4v?=
+ =?utf-8?B?eTd1cDBFRFFBRUlXT2I5cUpaQzVEQzBZYlJ3ZDdyNnB0emFPcFZTMGE5empY?=
+ =?utf-8?B?UmlBdTdPZkorNG50enZVTlhMMzNmVzR4Ni9MVXpXMWpodzROdmR5N3RSUVc0?=
+ =?utf-8?B?L2FmNXBMZXZyRlJ4ajNQbXlkcXdXNHNqT1IraldwSTA5ZUovM1JwLzB6TFp6?=
+ =?utf-8?B?aUlWWTdjc3Y0NVYrenVDNzlRemgrMFAwYnpNUXMxTURNZHcrcDU3cURoZ2N6?=
+ =?utf-8?B?NnZtdGxwelZkT24xVG5hN3lmcFFCU3creWd3RGlRR053dEpKL1BqYlJHTWFP?=
+ =?utf-8?B?Q2swMWJkOXhvNlRmd0FKc2REd09VRHVLWUh0RExEem5uVTB0MHlyckV0c3lI?=
+ =?utf-8?B?dnZhUm5DSGxPdEoxRmtTNSt3VS95bEFTMXVKZFo1Vi9TeEk1bDJad1VQQ0Ey?=
+ =?utf-8?B?ZnY1aGVOaEVPTURsdUs2TGdOMWVHZW45QmFuNHd6VGtNUExiOWhGUW1hdUhr?=
+ =?utf-8?B?enhLZ1pXSWFsOVJaU0pmM3JTekYzalFmai9ndk9mV0pDZ01LMWNiSS9nck9z?=
+ =?utf-8?B?UWNyTSsxcHJONHRwYml0WnV6SVR3QUw0S3JZQ2RxMXRMK0J3WGF2OS8vQXRj?=
+ =?utf-8?B?c1Zaek1LL0Z2a2xhNXI5Q0RmQ2FMZVdERmJsN0JIZXo0cmN2RG5Md1g2SUNs?=
+ =?utf-8?B?QlFsNExDS1RlQUR4T3dQNW4wQ3A5OFAzbkhtRUxrekl5ZTVWL3RoVHNOUEs0?=
+ =?utf-8?B?NDZTZytSY3JwTk5JOXVLdWZoVDVaMVV0dVBzSG1jUzVVTTdBTXVPcTIxeTRu?=
+ =?utf-8?B?SXliUXV0SllSeUVqckhMRmVvYmEvRmR0SUkvZWZuRnVmUGE5WVozQ3pIdGNr?=
+ =?utf-8?B?UXdYa0YzNjROdGRJUnROTS9GVk1pVFpKRTMzM1lwRUdiaTc3bkVjZCt4Rkpv?=
+ =?utf-8?B?RWdhb005SmJGdTdQTUZsLzJQZkhpSkY5OXZ1UE50WDFza3hQWHRPSkpXc2VE?=
+ =?utf-8?B?anNBUm1IZk01SUlRRFRtYzBkWGJVQkhpQ0RCd3kyTWRnZERVcEU3S2FLZkI0?=
+ =?utf-8?B?R2oxbGJmUlJXbDBxNXpuZWpRNHQrK3JMd2R3b2t0d2x1Lzd1SXJGSC84Y1ZE?=
+ =?utf-8?B?UjdzSkNHYVlkYVJxcVdMMkFobE96eGlKeWhBNUlyd3BudnMydGZUVEZtV1g3?=
+ =?utf-8?Q?p1GAEnKVV3xn9aD5gLcStldDz0fbct/Kwl3kyQXTWdjIm?=
+X-MS-Exchange-AntiSpam-MessageData-1: 632nDw9uVM5SKsiIea9VHmUG/e2J3IVtTR8=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a1b2dcf-aa04-4d20-d931-08de84e8f826
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9003.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 12:22:06.6031
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qdPH9tFv3nm7oLtDZCbmNWiPsrUNt6Gl6twKsVV8p+vgTXSQq/X2NhxOPfF8uDOf8di0RZvNpC8EculO9QKwJ2h3iW3K/ZnlwjCW3rlJHTY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR08MB5830
+X-Rspamd-Queue-Id: 33FAF1A0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 5h1fhou195ch4b7nrdf5urht8tiksexb
 X-Rspam-User: 
-X-HE-Tag: 1773835925-379598
-X-HE-Meta: U2FsdGVkX1/PPUDJIPgAbX6GBhJqHEfme3Dd0vL6piSShwqiri6vb3vZvbxO+kMO5XpyYiNLXx63EcTidnUTbK1D5ItWW7jaIxXpm9D59nSrsMvi5cWSUOmPfx9f1yQLCd5JGG+uNtwsUBzqy0wamuqkkdZvbCoKz2V2+gxy68fanie4P8/0ame0Kg+WqO5f1eyg3hmPqHQ5rOY+RPXlNUNm2FdNUlnqSpF1rACRVgT24B2xBcP2ZrxFO5/7gL2byHbW4CXCyPPWgkwAqgVt5SLjmX/jn4WCM4wow5GZ9IHtuBaWvhU8PCE8szfhfs+TbhkMNuYvDilsuqXjwi3zQEvjLfpoLuoDIMChyI34Ob1KvHNKX5R/iHy/ueyIoCxxZc1Eg7h6ArQduOhncPDxv5oLAeGMLN5wuL6pt3LqSiSE20kIynHuu4PdaAu9iM8c0u2ANv+5ZrRwP3a/WEh/9bl9r96enrfPwxNAtjoaQv2J3YWjxgKdOvRz3J4wCJwne5O+D59Y1mGSQLLYiQpZxpOWfgKr8wG6wmhMmEqYybcb1LKdRsL4icCcTM3WVR+FArLJax6YLBdFp5NjGJB5AT1a2GVzNEu50ms3N+CybGbsltWo1OJncSN4sI5gGMYWpv2Jk5M9J/ZMHsVe1ncuKtL6LT8w0eRLHp0tw8CKIAPOx+uDpiG0nYlvZXoOODP6D35VjFBcKYmIcqi8Uc300XsMU1LvoYBnU6lvtPSAI+xwuwcnlvK79EqLHmAyUlPcxiCG0kODKuVBp3VaHuCYpvTcUXQaP2+YChl1yTiKnmCm3Hu2HpzqtpM/MkrYtnhFQ/728wpT+fCzBmaNAggGKhwwAOvwomdNbgZgwaK2YfbXu4ZxNwoOtQpM/VWJYPZANaanv8e34k7Ws8t3mb9cep2Em2cD6nBjXUz6+BHWgWLO1npMIwXYfZalYIOgWff0gJsUxbD208o71CdQkLl
- O4j6smTK
- Gjnh9ipLmW0kfnIx51gqbOzE6yBvLnHOUAmNLoVf4v7mW5b7TiYbGstB+fZubAJEK5vODJLl1VgcGTPX/ix1L81CvttZm8erqGFWZPgA7MvUxEnEsMbeB0yA/392cCMxMmw0LCTdatkMLJ7YLQ3rQp7BqUrPY9eEc/cQhzNpd1IegRq2LKPp95ZJWsRExPoO+XOXnnOvp0sQnxRrPTHCWEfwNTusq/tP2B081bSr4QDIT4cAdhuxV6xpLiC7lVdmaAWIjoKDTbNWzkDtcRnj78wjoZy7mfNHbPq7/HnQgInTwkfs=
+X-HE-Tag: 1773836531-413340
+X-HE-Meta: U2FsdGVkX1+Y7mOGrAGC4XBdSxKRiN3ORYYzg/xNL4arzpDXz8JKGUJ5sM60x8GbvEvbiYXRw9sydenl8pnbZeyPEndzPCEW4aFG0lDoWdrh88de38GE7tfGw/vJyrFMiVSCSt48U+H6plA8WGWddkJIlVPJAn4dS9eG97BmArtCYDNSrDgEX2XzfqAIooCSnst5kYBJ9d0YIWObGk3qOyunjXmi2ircLiQADa+yqsEhHLubDaqzQu5IihFbA0AIQObW78l3xxEn/J87jtN16fDiIJO8Yns0pNMRTyWI2X7X89eayMwrh48VRTqy87P2UddMpMb5SQ1oopyIHDwlUMaTGmCRpxk8SEqfBriNj9RAg/AZhyRoSmUKLXbcrCZwqSaOoDJyCfpzR6pzTys9lYVelzP85+jBOM2lQnSF6kvHg2NgUnBp7afwd22qgFTXUVPvk8GVRaaxA06Z1BjtfwFnV3TZTo2vEwLFWIjNzfNUtSPBKZZdXD1G6O4U14TRW3Tc/a+SfAklxF8BOtMzI1vhJr1WmU0hLICKSZNi2KITnq/nrGl3ZEvBJC7D5fwK8cUTAi5s72C04swzs/ductzJ+WEauaiEFCJSr0P5ECryuldqKIHAx1WOKNWj/HmZ8RQASm35j48KypHNQvxvZtZ5ASYoj41zGp8opT6svGZy451729gYX1phaRLasZStLin1LlGPxg4kZO2qUIoDDbBZ3bgeQNXhl8/L9tDQZT+qN/Ja2Yf4BCp7Z/6CF+KYrdttS61HD31ZCNEYb9U50O0i3wcLH0sXC73wgrU1XWnXNuDcsFmlZgIBrUBEVfnLtOeUNM6IToTYLq1RE4XBfW1ZQDAZdYhoIsqfPaKPHfJE1TBUXU1UCwEBa0q9CJdhUNwR3NWtUvWTXo6R4pwgfkNSbPyCOz7hGFvJiDNvu03MzPzhbkdTFdbz1Ydrc8ooeA/gyb8Z2HKkmRWjYl+
+ hQAPIfxe
+ xdLW1LOL33j+TgYLxPqimeYbCG25jTYpblqmAHoq9R+fvY26pcYxyO/KjULDhrbA2z/71RkCZM0JBOdDfD6I8M3g3kJ1HHIyCcHzgjqbe79ILnwF1cAPO90W9n8KiBixp+vyIr+zAj/w0ebMvvdMxKrUwJHBXZfp6fEW2kawpWxkL7hkJL/4WURlOJ2ex9hYgFHG0Dt99qv5cx3ufEInnetkxuui7g2GIPHM1LUiGhEiIxhuMOMo9+N2xkcsZyUm1gwpQTFjWO3dpXkLHAOhmLcaJq1NtHGtdImZu8P6bHJu/s6xPYM+I2XZFtcsD2KWUFecNMjK8DTAqxRD1RnYfpbfpB5GSZNSy+9T6EP6NM4DadoMXSM6EJRRVWu4mf9LBdVbNcP36iqLPZgY+Iop9JJASDb1mOtW/kTN7CUKiXD+F/3yxSlNOsRqVPE+WPuG2nBvtjQqE9EVEC/+vokVmdIYNSi3cBO1LxuAN9sXc3ubz6eGvQ3U0GqY0NNmtxllsTx174d3gIOOCg9U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,86 +186,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 10:27, Hao Li wrote:
-> On Wed, Mar 11, 2026 at 09:25:56AM +0100, Vlastimil Babka (SUSE) wrote:
->> Ming Lei has reported [1] a performance regression due to replacing cpu
->> (partial) slabs with sheaves. With slub stats enabled, a large amount of
->> slowpath allocations were observed. The affected system has 8 online
->> NUMA nodes but only 2 have memory.
->> 
->> For sheaves to work effectively on given cpu, its NUMA node has to have
->> struct node_barn allocated. Those are currently only allocated on nodes
->> with memory (N_MEMORY) where kmem_cache_node also exist as the goal is
->> to cache only node-local objects. But in order to have good performance
->> on a memoryless node, we need its barn to exist and use sheaves to cache
->> non-local objects (as no local objects can exist anyway).
->> 
->> Therefore change the implementation to allocate barns on all online
->> nodes, tracked in a new nodemask slab_barn_nodes. Also add a cpu hotplug
->> callback as that's when a memoryless node can become online.
->> 
->> Change rcu_sheaf->node assignment to numa_node_id() so it's returned to
->> the barn of the local cpu's (potentially memoryless) node, and not to
->> the nearest node with memory anymore.
->> 
->> Reported-by: Ming Lei <ming.lei@redhat.com>
->> Link: https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/ [1]
->> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> ---
->>  mm/slub.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
->>  1 file changed, 59 insertions(+), 4 deletions(-)
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 609a183f8533..d8496b37e364 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
-> [...]
->>  
->>  	/*
->> @@ -7597,7 +7648,7 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
->>  	if (slab_state == DOWN || !cache_has_sheaves(s))
->>  		return 1;
->>  
->> -	for_each_node_mask(node, slab_nodes) {
->> +	for_each_node_mask(node, slab_barn_nodes) {
->>  		struct node_barn *barn;
->>  
->>  		barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
->> @@ -8250,6 +8301,7 @@ static int slab_mem_going_online_callback(int nid)
->>  	 * and barn initialized for the new node.
->>  	 */
->>  	node_set(nid, slab_nodes);
->> +	node_set(nid, slab_barn_nodes);
-> 
-> I had a somewhat related question here.
-> 
-> During memory hotplug, we call node_set() on slab_nodes when memory is brought
-> online, but we do not seem to call node_clear() when memory is taken offline. I
-> was wondering what the reasoning behind this is.
+The first patch properly annotates accesses to ->child_reaper with
+_ONCE macroses, to protect unlocked accesses from possible cpu/compiler
+optimization problems.
 
-Probably nobody took the task the implement the necessary teardown.
+The second patch makes sure that the init is always a first process in
+the pid namespace, previously this was only checked for set_tid case.
 
-> That also made me wonder about a related case. If I am understanding this
-> correctly, even if all memory of a node has been offlined, slab_nodes would
-> still make it appear that the node has memory, even though in reality it no
-> longer does. If so, then in patch 3, the condition
-> "if (unlikely(!node_isset(numa_node, slab_nodes)))" in can_free_to_pcs() seems
-> would cause the object free path to skip sheaves.
+The third patch allows to join pid namespace before pid namespace init
+is created, that allows to create pid namespace by one process and then
+create pid namespace init from another process after setns(). Please see
+the detailed description in the patch commit message. It depends on the
+second patch.
 
-Maybe the condition should be looking at N_MEMORY then?
+The forth and the final patch is a comprehansive test, that tests both
+basic usecase of creating pid namespace and init separately, and a more
+specific usecase which shows how we can improve clone3(set_tid)
+usability after this change.
 
-Also ideally we should be using N_NORMAL_MEMORY everywhere for slab_nodes.
-Oh we actually did, but give that up in commit 1bf47d4195e45.
+This change is generally useful as it makes clone3(set_tid) more
+universal, and let's it work in all the cases evenly. Also it is highly
+useful to CRIU to handle nested containers.
 
-Note in practice full memory offline of a node can only be achieved if it
-was all ZONE_MOVABLE and thus no slab allocations ever happened on it. But
-if it has only movable memory, it's practically memoryless for slab
-purposes. Maybe the condition should be looking at N_NORMAL_MEMORY then.
-That would cover the case when it became offline and also the case when it's
-online but with only movable memory?
+v2: Use *_ONCE for ->child_reaper accesses atomicity, and avoid taking
+task_list lock for reading it. Rebase to master.
+v3: Separate *_ONCE change and "init is first" checks into separate
+commits.
+v4: Update second patch commit message. Include Oleg's review tags.
+v5: Handle one more READ_ONCE case. Include Andrei's review tags. Base
+on top of mm tree.
+v6: Require root in pidns_init_via_setns_set_tid test and move the
+wrapper userns creation to the top of pidns_init_via_setns. Add an entry
+to MAINTAINERS file for the tests. Base back on top of master.
 
-I don't know if with CONFIG_HAVE_MEMORYLESS_NODES it's possible that
-numa_mem_id() (the closest node with memory) would be ZONE_MOVABLE only.
-Maybe let's hope not, and not adjust that part?
+This series is also available here:
+https://github.com/Snorch/linux/commits/allow-creating-pid-namespace-init-after-setns-v6/
+
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+
+Pavel Tikhomirov (5):
+  pid_namespace: avoid optimization of accesses to ->child_reaper
+  pid: check init is created first after idr alloc
+  pid_namespace: allow opening pid_for_children before init was created
+  selftests: Add tests for creating pidns init via setns
+  MAINTAINERS: add a new entry for testing pidns init creation via setns
+
+ MAINTAINERS                                   |   7 +
+ kernel/exit.c                                 |   3 +-
+ kernel/fork.c                                 |   5 +-
+ kernel/pid.c                                  |  19 +-
+ kernel/pid_namespace.c                        |   9 -
+ .../selftests/pid_namespace/.gitignore        |   1 +
+ .../testing/selftests/pid_namespace/Makefile  |   2 +-
+ .../pid_namespace/pidns_init_via_setns.c      | 238 ++++++++++++++++++
+ 8 files changed, 264 insertions(+), 20 deletions(-)
+ create mode 100644 tools/testing/selftests/pid_namespace/pidns_init_via_setns.c
+
+-- 
+2.53.0
 
 
