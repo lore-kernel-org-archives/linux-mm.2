@@ -4,103 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C45FCD0DB
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0616FFCD0DD
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:31:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 242FD6B012C; Wed, 18 Mar 2026 04:29:46 -0400 (EDT)
+	id 48E236B012D; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21A516B012D; Wed, 18 Mar 2026 04:29:46 -0400 (EDT)
+	id 43EE76B012F; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12FFF6B012E; Wed, 18 Mar 2026 04:29:46 -0400 (EDT)
+	id 354D76B0130; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6DD6B012C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:29:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF7BD13B406
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:29:45 +0000 (UTC)
-X-FDA: 84558510330.24.981D8C0
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4E042A0005
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:29:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=iY0YNekd;
-	spf=pass (imf15.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773822583;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 203BE6B012D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7AF5F1B8466
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:13 +0000 (UTC)
+X-FDA: 84558514026.15.3C53E9A
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8584C4000D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O1gP7w6d;
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773822671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nW/2LBMKxG1/lGSEeJHOxde7s82NFIEDqluCwqBb7lc=;
-	b=tVwU1OE2yHLPG2XquyFG8Ft4Q0r5VtlYmIufc7RuK3AF55UTx7AMd9fIzQkz4L2EhYDqCL
-	0WhBvelELvxv6MrAFNtunc4FKtR3JFKDInImIb4iD1jX/elogaxPrHJ0yKhB4o02KE9RrH
-	K+/Z43TThLe3CLRgHjFyDjhx6WfBwpU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=iY0YNekd;
-	spf=pass (imf15.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773822583; a=rsa-sha256;
-	cv=none;
-	b=L6L3HKBvAoxW+xx17GlNO4YjneqJxEHceUMQOdRNM9NMYuZ2nt/ICOpWFnDC7G9IYwMQQO
-	2uJOSX9czRmJprbl8aGdkTAN+KA83TvnCX3oJrgOD1fZmnwFTY8q1JJsSfQkUzeIpTQRbS
-	Iiy7u7BfDwwCAVeRJk5SYvxirltG2ls=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=nW/2LBMKxG1/lGSEeJHOxde7s82NFIEDqluCwqBb7lc=;
-	b=iY0YNekdOyFWFGL3smJ4Tt3T1zTlZ357iz4YpVKSjFmVhyFlLS8bY07seDV3AD3eoKiAZe79G
-	smAlQiYeLgT2RXyhH0dOo1ud46Uc0nXwby9aB/G1Vt9+JdEJwVsVwyUDe+Jjuw5ZL5WIj1TvVkR
-	aALqKr0Ybm6xygImBLmC3x4=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4fbML72BQNzcZy5;
-	Wed, 18 Mar 2026 16:23:59 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 44ADC40363;
-	Wed, 18 Mar 2026 16:29:38 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 18 Mar
- 2026 16:29:37 +0800
-Message-ID: <0b656663-c3df-49e0-96ad-d426112e3d99@huawei.com>
-Date: Wed, 18 Mar 2026 16:29:35 +0800
+	bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
+	b=7FOFydhCJVOpbNTMrqP5cC6iA1YpIZ/weOSD/Z4yHTHvSBCaEhg5rp7IZB3qwW6gW453kx
+	nqNzCrJogFHekTR9pNspJtTaSB9GbUiDZT4IoK/Ny0kcNGRXhfh6N1HNQHAYTs9yqB9bnO
+	zIHciUxQ+4i7X8V7IB/o0eN5G6IO+68=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O1gP7w6d;
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773822671; a=rsa-sha256;
+	cv=pass;
+	b=oZorrARiF/zSKQ70uxxiLHP4Ee6Vxtpx4a5MQFI+VMkvprmacDn7uUmnXyqS9TSA1Vo1cc
+	tuhlIyCQuIfkCGjIuH9g9cF/SqKfutA069Oa72BEO472o3JlFgbGUNYBnWDqLWPbo4a2RO
+	9OYyGaiYVvyXra08kZDdaZT/Wh3zUnI=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-506362ac5f7so61765481cf.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:31:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773822671; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cv69mM+0lbyMPfPKjigQgCGSYDom5P9lZxNhJu4I5ilOG1pUqLF9XxQxqwO14ejNPV
+         jLHupCbohvZ2F0lbOcXltAlcVlMoSrDUpZJZYyux0Y8RSSBA8WobKrzBzyOABdavXX27
+         XcRQf2icHrnd8qmYqMcVAxAmwyKCpc124aAgjPNYlQooleFy2u6FSYyyeMVl1JNbFARN
+         Pd0GJwzMVsSTOJIaIV3XuNBNSinMEYdmxE2Cc29QFAF3PBTDPLOCgSBrmJXRl18+srSq
+         3Q55k9rLS4vgYUzHIC5lX9wG0N25Xmzn/+Vr2rZbRjUzGylNqmo/T+tZcSUwMwXEZl52
+         nChA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
+        fh=a3TjRLgfDK0dFNqPgsMW87AR1cdALavO7ptuOr4jphA=;
+        b=gMPT0OK3QO99Fr6L4/jAIirTfM4qL/Cd0TCrqbWo3nujq1EFoGDr6MvmAQ+MzMNOCh
+         9Yc1vs1cOZp3dzo+mPIBgmg8QYhXY3Rnqs2RoRN1pfvHP7POy684wLLJSmsfFORmHlbx
+         9ZFmVjwFuoIXslQnxurJ/bzgZGIxCcXHc6GYtZ7XYaalVs2/ctKB7od47uw2zIbfOuVA
+         /pSS7ErVd0g7WbKR+HMm2xBNjF03uBx7cwap+VUl6pb5DuHPz9q8RHrvLitmMPXZZ7Fv
+         i7rXev/WawNmPGdeF35xv5vk4tIfzVCWCDRZJDHsHV8RT4gKu6VpDfsEE2SLiWLhLbiU
+         L1Xw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773822671; x=1774427471; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
+        b=O1gP7w6dq+YZiVSWRQBiOWH67+1GAZPhhKOf5oNoPBFvxallBIuegPOPWJGfDgPtG7
+         wROagiUvml7wpaMWTLSr2fpx88jXpgsGha4CHzkjD3VOODbfkfaiOxKgc1zX2n5+wh+a
+         M8fiiFCJXQgG8ISv90y30oioW1iLVy1CXCTgAqREaZHkM93KtKvsDfV5Ep8jvFXwrzmh
+         y1besPuavE0q3Xr1hqy21TNT0H8Di6fnfuE5FwOQAxr/APl4spnwMPUokU7U7mleXIog
+         GOw3vB0AwTuXPuiHA1+lihLYryru7OhBClUDDBZMOaH39chYMt2pXexCwCeU3mhTNUSd
+         o+Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773822671; x=1774427471;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
+        b=KHyY06Ln3ysxMbTnReVkjIsCuf6viuZWtgLKQslYbFM5NxdgFkhhBXU5btxRYyhfWP
+         YeegO48DBFJhW7prrQtYv3DpEMkCm1OcD6ZlAzVqfSCI4GL7b4lhX9TR2CbUK3Ow+YDe
+         HJTWhxo37Zd7FYGRkDv1iNl+9IIKQykTkCbfWAiHQha8QS6aV2uacqj0ux0MiKdGzJZc
+         TgRljzbbbEFSNHz6YjVgVUGYCwFiWcswkrwQY9s5QgY9mSpN9MiAFwebFKIQIQeCH7wI
+         DK8mJyKA+i6ITimCTRV0y4Gol75b4W1dkqZ03DokJzuryy0dMPV5yAv+j9PIOtjLY6wu
+         PZ1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXycFlrtCp/MppfSGcegRI/Bc6qHuJYGhY6d8uk5W4BpHxaa7v1InsWa7Z6Vs1GhxNxblubNlBjWw==@kvack.org
+X-Gm-Message-State: AOJu0YwY9wz2HmSKZhxFwdwqvmRCTmJ7qQNehZ6tr9tp2BcxNLAYBaHS
+	1F6Xyo7fDgZ31MYKIUDe1auIT68fcQ6nV9cqG74R8pQI9vnBVENPInXXiU2iEefdIDMcnfIFONT
+	UAHxeyc8Nd/7iPQa66bZ4evVhkb9fECs=
+X-Gm-Gg: ATEYQzzU8wpagLztKSS8W60KIE8i/LGH2eGc9oirsSwt2GpbbkuJ3sgbcMS2QPnZYn0
+	lgl3/jvYZB5g65THOUyvwt4JRBrX0EotXIaUc2rt4ylUl9cpTAOSCz51BtN1ymj+Yr/90p0CEjs
+	zNFWM82hY352r3Wq3dlUbQ2dPR+HSy/oQ+0cS3LVygJUecP7Q6D1NnV6hSOjgZrUgyzvyNvnnA6
+	bqj6ce0gdvff6ANjOQr8HrQ3E07d2S2CakO/Ex+NWbRhQ7XeQy6AFAl6Yt8yNmUuTWVGoFA5HHu
+	avkGr5UPR2TY5a2t
+X-Received: by 2002:ac8:5848:0:b0:509:3257:c050 with SMTP id
+ d75a77b69052e-50b14797e3cmr30015331cf.24.1773822670066; Wed, 18 Mar 2026
+ 01:31:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-To: Ryan Roberts <ryan.roberts@arm.com>, Yang Shi
-	<yang@os.amperecomputing.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
-	<akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <ardb@kernel.org>, <dev.jain@arm.com>,
-	<scott@os.amperecomputing.com>, <cl@gentwo.org>, Kevin Brodsky
-	<kevin.brodsky@arm.com>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
- <0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com>
- <de0b06cf-15a5-4109-b339-75c10d9b8a18@arm.com>
- <0a740020-4780-4156-a9c5-f8b4ada9c8c0@os.amperecomputing.com>
- <e35ee155-81aa-453a-8197-2c87d923f84c@huawei.com>
- <d0fbd3f6-b6ed-4a44-8b64-c6e77f63e91b@arm.com>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <d0fbd3f6-b6ed-4a44-8b64-c6e77f63e91b@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Stat-Signature: msy6t69ao9u8h5fdueo8cs3eiznweidj
+References: <20260318-b4-switch-mglru-v2-v4-1-1b927c93659d@gmail.com>
+ <CAGsJ_4xHvtjkPp5Ar16UXqZhQYHpdYcqCWMmFbGGUvK-kCH+uw@mail.gmail.com> <8c01a707-f798-4649-8441-d82dd0dac7b9@gmail.com>
+In-Reply-To: <8c01a707-f798-4649-8441-d82dd0dac7b9@gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 18 Mar 2026 16:30:56 +0800
+X-Gm-Features: AaiRm524WVeBJOY_8tdt1YQPr1Lf4x2tyyTbog5tXqKO39Orsqdtt0nbwdFu61c
+Message-ID: <CAGsJ_4y+SwwCtDu8zPYnuSdyS+1=q77d1Fwq6eHbqrnw8-6K=w@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: Leno Hou <lenohou@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Jialing Wang <wjl.linux@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4ioynn7beorw8iyye6gpqqnxfknnmcqr
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E042A0005
-X-HE-Tag: 1773822581-290935
-X-HE-Meta: U2FsdGVkX1+2tZeCS17cCYyZtzIRyI2XuYypTjfeWGlZMACrezHfZM1+NoCQCGm7YL3H/rma/FpUdzGPSnPnHkdtdNOjjYtaTbNOsTJjUc1uxw0orFir8DLUrMHGWd7yX93VvuMJwJP2Z2FeZmIWlcyrRuZCYBM6kF2LKzqT1nycSab9qLEzYy/ePcBE3xbmKjS8eO1o4U9PmYS7WmdKnaY7THjdZ7zPytgNs7dZlxm7AP/dop4du2KMo4Nv2Z7hYqD9W4LVINnhCojRjR0nDphbOvVpRsJPjMHE2SM0IRBRFBQFCHMuA5Me9awqjC2GkHKNcJTa0aAoVikxznF4mtzdhVsr+0iL3HdcM6pK6e16ipp6+xq0zm5DXvQvyHoWDtAtXsgmHVwfS5K0Fkv3Bcxvb2bxCBCKGsRoAKOk7HjJPP9auTOFKo1CNUVBqnkM8AqsEtDwmQ/+XkpT3mRDh8JxTuZsHS6YJ3Owze+LgtW1xghqUg6c+W/9zo96+ZyUuaRdfxuGU5SIkud3nBJjB3MJAdnKOyalcKPyIR8Fy20wJP0oC1c4VspsGuuL0ToFOvzukVP1+gLKc21pahDP9Qr57bkuVVONZztgaEqiNo789rHkUnNy6o11BwuLcSQltq5y37Kp64HKeSfvIB2im3vpmbTQzMAmBqYjG6eU+iHUx/r3SwgkB/c19ZXRP+evqPl+ZoP1J3Ydn0LLIAlk/fhGUFdTJ62Bju98FpXiK0N7nZ+S2+EXHbLx+q0+oV+aClxalvBx6TkasIdGPVHeelJinzDGsy0t18kYzu2Hkd3RiTMo2DUSgE4uKslmXINoqiGdiSDp4m1aaUCDcn2bpPqnBTlviNidAS4zYbLzjUcYWVc54ag5hlsYdckeJLaqWDTOTEZFbLd7KwKr/U4Zh1OzTpVctno9/jOBiqvIJyiGFW4z9sE5u8MOl2UI2rZuGqxEvqI3YylyaEiA0V7
- lVFWyuBj
- FH1h8YfDD/9XaY5h+SOXtKz72/DcBRTgnPSdzpIjph9FZPWzzMf7Em/xxQvnzjIIqLaOwW0lwSYJqDb9lm1BWwsz2TlHjrVmbTO3vhbzXsf7k5ZPx6U9Py3wr4vZ/1QX85yNgz7vuDR3ftsjXWfc9Y/eoDTF6FML3rzfH1HUQAOIJPVnw02RCR38/Mqsn19nx9/XwH7stADaYwqU5Rjt5tZl/+K3dioTLOw2PUPudzhRQFfICPr1UNILORexca0VuY/NmBPdVF0jpWVKYpRYFvVq9KriyI2Sv+bqXNiOT3VlPAO2+evWqZ392r8amdmcABrD+uS2eoQQqkF2A+0GUJxf5Zavu/iqU5WtO6f5TK2zAICR5ih2KvxWYErh1EccuzIF9Xv9RX3ET2f3YT/x7REQpUyEToc4cCkoABJLi/0OG3MveEn/f+hSzTK7qzUYzmXp4or6rkeo992OxnHLw+NPwOA==
+X-Rspamd-Queue-Id: 8584C4000D
+X-HE-Tag: 1773822671-704189
+X-HE-Meta: U2FsdGVkX18P53C6OjTiHSVXverq8+ijPb6vR1clrWpCQcYU/4bQVVlHGtleKebctUCjxfllSG08euKEF2aqSZoo5XdZwwLTIoyq2NL+7641hQSYn11OJE4JNKOKoHWoKqi2SePGz8kqQtsYKDjtUk0I098q0KhNjnuj3jWlCZ+hFwaMRA4ZL0zfXJNWfH2b4WjaFx+C2vtXiP2HOQkXbdVxgOsGqEKafJDk5MJoa1/z5rgQgAqTtWhXvflfnzJByR1pdf1uVkR/9booUtC42NCTDT4BpGqgmzY1R68DktqiGdOryxI1XUq/jy5n/zcndffhAcooFWUdoh9pJLRsKCCqfAXOHBvQq8ku7CGjETEkzpgUlK73fPWAFjpQgHiC37AvepEYMYOoGAuHoBRjhV65QMnkSrxPhqHneQh2bssfwCTNhn/Fk9lCQEFMn2XqgVqeke4mUuU+6jjpV2/k6mkkiwPB9BM2w/L/FMt8W8eFxX4DNtIFbAgzHxpiMXjCya6jFtGHRjaliNrJ/PrK3kGt3ARgBPVw3TiF8yKyoHWpVWawmHfXQnqeug9qn59vbmFkMQgQVV/VIGeN8xgCrIHXjhaPczjQqlpttHeMNw33SjikNNHh4Qrzli8rTYaHJGZ7GvRc+0Qy9FNdXB1iuFs3S/OEFRltnHB7Bst+fVVVhXkzLYDBGBiqy7vxe4q71ImPBAVLZo2urvO3QLx3aDMeH/XHeTPmOS2fdC6pbiCo7dWL5I5G6J80Sp3zzijkmtxWvhTRX5FhF0Fa6ap7cfaEJUvXq/TjXzL+KeToCWJxerRpe+X/Tpz/VTNWufojxD5IXOFdHy9kZQzGroZeo7hW8gFK8QHAGZoQI63dYBEFfI6xZZUwNMY1PEUXkIlTfc4b1YxGs6hwMT/OWvHqjb0yfExNs6teHqrGdeYu/GEZzbQVTFz6KlNcUfcBSVceZGIPRf3WOGu050s854c
+ UomhYVHx
+ 3QmbHsCd7M2uGLzxtj2rUwjYIr9AMmh/MSeWcZH80mtIfAf9J6eK+TJRQD+MevHepkluQ5Cq4sovgdBSytglNk0fWDclKW+jKcAxgxb43odkP8CJvYXxSWxDFueXtwpAtRI0K4t81at5pBYEdIHRYLzJlzM6fNqcXOf7/P26Ediy4L/G2FAP5uWoSzXo7yaQ9H9lIMIZCk2c7tWmWzJlVF/EKPx6i3VAFt4DNQUFM8HXfFQuY3FaA1QcM65sW346lEUTm7/ppbzIu1FCpCGi0qkY7u5bFM1OeZGVBFi3ZEivF7o80yOOZD2aaiwosnjHJc624Yfo8LliGV9ypPnpwLd04uwX/0C7v1AVKmJJJTm2fWQQFR5OBXDRlguHHGWwI8+4a+vq6Ofr8By2HRgXoFTtsB5FX1Hk2hS5jSMYqHaH0niImvBKYywRBuBZpm1WEG0/z6yBVlA2S4TSEMUIq/ZOS3A3HPl4hl7cFJGXekKh4/omhDGTX2MDKWrwinNbO/pFUQYxLD7gg49c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,499 +142,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/3/17 17:07, Ryan Roberts 写道:
-> On 17/03/2026 02:06, Jinjiang Tu wrote:
->> 在 2026/3/17 8:15, Yang Shi 写道:
->>>
->>> On 3/16/26 8:47 AM, Ryan Roberts wrote:
->>>> Thanks for the report!
->>>>
->>>> + Kevin, who was looking at some adjacent issues and may have some ideas for how
->>>> to fix.
->>>>
->>>>
->>>> On 16/03/2026 07:35, Jinjiang Tu wrote:
->>>>> 在 2025/9/18 3:02, Yang Shi 写道:
->>>>>> On systems with BBML2_NOABORT support, it causes the linear map to be mapped
->>>>>> with large blocks, even when rodata=full, and leads to some nice performance
->>>>>> improvements.
->>>>> Hi,
->>> Hi Jinjiang,
->>>
->>> Thanks for reporting the problem.
->>>
->>>>> I find this feature is incompatible with realm. The calltrace is as follows:
->>>>>
->>>>> [    0.000000][    T0] ------------[ cut here ]------------
->>>>> [    0.000000][    T0] WARNING: CPU: 0 PID: 0 at arch/arm64/mm/pageattr.c:56
->>>>> pageattr_pmd_entry+0x60/0x78
->>>>> [    0.000000][    T0] Modules linked in:
->>>>> [    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.6.0 #16
->>>>> [    0.000000][    T0] Hardware name: linux,dummy-virt (DT)
->>>>> [    0.000000][    T0] pstate: 800000c5 (Nzcv daIF -PAN -UAO -TCO -DIT -SSBS
->>>>> BTYPE=--)
->>>>> [    0.000000][    T0] pc : pageattr_pmd_entry+0x60/0x78
->>>>> [    0.000000][    T0] lr : walk_pmd_range.isra.0+0x170/0x1f0
->>>>> [    0.000000][    T0] sp : ffffcb90a0f337d0
->>>>> [    0.000000][    T0] x29: ffffcb90a0f337d0 x28: 0000000000000000 x27:
->>>>> ffff0000035e0000
->>>>> [    0.000000][    T0] x26: ffffcb90a0f338f8 x25: ffff00001fff60d0 x24:
->>>>> ffff0000035d0000
->>>>> [    0.000000][    T0] x23: 0400000000000001 x22: 0c00000000000001 x21:
->>>>> ffff0000035dffff
->>>>> [    0.000000][    T0] x20: ffffcb909fe3b7f0 x19: ffff0000035e0000 x18:
->>>>> ffffffffffffffff
->>>>> [    0.000000][    T0] x17: 7220303030303178 x16: 307e303030306435 x15:
->>>>> ffffcb90a0f334c8
->>>>> [    0.000000][    T0] x14: 0000000000000000 x13: 205d305420202020 x12:
->>>>> 5b5d303030303030
->>>>> [    0.000000][    T0] x11: 00000000ffff7fff x10: 00000000ffff7fff x9 :
->>>>> ffffcb909f1e27d8
->>>>> [    0.000000][    T0] x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 :
->>>>> 0000000000000001
->>>>> [    0.000000][    T0] x5 : 0000000000000001 x4 : 0078000083400705 x3 :
->>>>> ffffcb90a0f338f8
->>>>> [    0.000000][    T0] x2 : 0000000000010000 x1 : ffff0000035d0000 x0 :
->>>>> ffff00001fff60d0
->>>>> [    0.000000][    T0] Call trace:
->>>>> [    0.000000][    T0]  pageattr_pmd_entry+0x60/0x78
->>>>> [    0.000000][    T0]  walk_pud_range+0x124/0x190
->>>>> [    0.000000][    T0]  walk_pgd_range+0x158/0x1b0
->>>>> [    0.000000][    T0] walk_kernel_page_table_range_lockless+0x58/0x98
->>>>> [    0.000000][    T0]  update_range_prot+0xb8/0x108
->>>>> [    0.000000][    T0]  __change_memory_common+0x30/0x1a8
->>>>> [    0.000000][    T0] __set_memory_enc_dec.part.0+0x170/0x260
->>>>> [    0.000000][    T0]  realm_set_memory_decrypted+0x6c/0xb0
->>>>> [    0.000000][    T0]  set_memory_decrypted+0x38/0x58
->>>>> [    0.000000][    T0]  its_alloc_pages_node+0xc4/0x140
->>>>> [    0.000000][    T0]  its_probe_one+0xbc/0x3c0
->>>>> [    0.000000][    T0]  its_of_probe.isra.0+0x130/0x220
->>>>> [    0.000000][    T0]  its_init+0x160/0x2f8
->>>>> [    0.000000][    T0]  gic_init_bases+0x1fc/0x318
->>>>> [    0.000000][    T0]  gic_of_init+0x2a0/0x300
->>>>> [    0.000000][    T0]  of_irq_init+0x238/0x4b8
->>>>> [    0.000000][    T0]  irqchip_init+0x20/0x50
->>>>> [    0.000000][    T0]  init_IRQ+0x1c/0x100
->>>>> [    0.000000][    T0]  start_kernel+0x1ec/0x4f0
->>>>> [    0.000000][    T0]  __primary_switched+0xbc/0xd0
->>>>> [    0.000000][    T0] ---[ end trace 0000000000000000 ]---
->>>>> [    0.000000][    T0] ------------[ cut here ]------------
->>>>> [    0.000000][    T0] Failed to decrypt memory, 16 pages will be leaked
->>>>>
->>>>> realm feature relies on rodata=full to dynamically update kernel page table
->>>>> prot.
->>>>>
->>>>> In init_IRQ(), realm_set_memory_decrypted() is called to update kernel page
->>>>> table prot.
->>>>> At this time, secondary cpus aren't booted, BBML2 noabort feature isn't
->>>>> initializated,
->>>>> and system_supports_bbml2_noabort() still returns false. As a result,
->>>>> split_kernel_leaf_mapping() is skipped, leading to WARN_ON_ONCE((next -
->>>>> addr) !=
->>>>> PMD_SIZE)
->>>>> in pageattr_pmd_entry().
->>>> If no secondary cpus are yet running, then it is technically safe to split
->>>> because we know all online cpus (i.e. just the boot cpu) supports BBML2_NOABORT.
->>>> So we could explicitly only disallow splitting during the window between booting
->>>> secondary cpus and finalizing the system caps. Feels a bit hacky though...
->>> I think we can check whether system feature has been finalized or not. If it
->>> has not been finalized yet, we just need to check whether the current cpu
->>> (should be just boot cpu) supports BBML2_NOABORT or not. It sounds ok to me.
-> No I don't think that's sufficient; if the secondary cpus are started (even if
-> not running the code path doing the split) we have to assume the secondary cpus
-> are sharing the linear map pgtables, so if we split them on the boot cpu and the
-> secondary cpus don't support BBML2_NOABORT, things could break.
+On Wed, Mar 18, 2026 at 4:17=E2=80=AFPM Leno Hou <lenohou@gmail.com> wrote:
 >
-> I think 2 options would be:
+> On 3/18/26 3:16 PM, Barry Song wrote:
+> > On Wed, Mar 18, 2026 at 11:29=E2=80=AFAM Leno Hou via B4 Relay
+> > <devnull+lenohou.gmail.com@kernel.org> wrote:
+> >>
+> >> From: Leno Hou <lenohou@gmail.com>
+> >
+> > [...]
+> >
+> >>
+> >> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> >> index ad50688d89db..1f6b19bf365b 100644
+> >> --- a/include/linux/mm_inline.h
+> >> +++ b/include/linux/mm_inline.h
+> >> @@ -102,6 +102,12 @@ static __always_inline enum lru_list folio_lru_li=
+st(const struct folio *folio)
+> >>
+> >>   #ifdef CONFIG_LRU_GEN
+> >>
+> >> +static inline bool lru_gen_draining(void)
+> >> +{
+> >> +       DECLARE_STATIC_KEY_FALSE(lru_drain_core);
+> >> +
+> >> +       return static_branch_unlikely(&lru_drain_core);
+> >> +}
+> >
+> > Can we name it lru_gen_switch() or lru_switch?
+> > Since =E2=80=9Cdrain=E2=80=9D implies disabling MGLRU, the operation
+> > could just as well be enabling it. Also, can we drop
+> > the _core suffix?
 >
->   - disallow split for the window between starting the secondary cpus and
-> finalizing the system caps.
+> OK. Next V5 patch will be:
 >
->   - Do the split in stop_machine() if any request for splitting is made between
-> starting the secondary cpus and finalizing the system caps.
->
-> Both feel pretty ugly. I'll have a chat with Catalin and try to guage opinons...
->
->
-> In the meantime, would you mind trying this (uncompiled, untested) patch? It's
-> attempting to implement option 1. TBH, I'm not sure if this is legal since we
-> will now try to get a mutex; is that allowed in early code that can't sleep? I
-> guess we only have a single thread running so there can't be any contention...
-
-page table is allocated from buddy with GFP_PGTABLE_KERNEL. In init_IRQ(), the
-buddy is initialized, but we shoudn't assume it? And, is GFP_PGTABLE_KERNEL
-reasonable here? allocation may block.
-
->
-> ---8<---
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 8e1d80a7033e3..72790126db55c 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -779,7 +779,16 @@ int split_kernel_leaf_mapping(unsigned long start, unsigned
-> long end)
->   	 * and let the permission change code raise a warning if not already
->   	 * pte-mapped.
->   	 */
-> -	if (!system_supports_bbml2_noabort())
-> +	if (system_capabilities_finalized() && !system_supports_bbml2_noabort())
-> +		return 0;
+> +static inline bool lru_gen_switching(void)
+> +{
+> +       DECLARE_STATIC_KEY_FALSE(lru_switch);
 > +
-> +	/*
-> +	 * If system capabilities are not finalized and there is only 1 online
-> +	 * cpu, then we must be running on the boot cpu during early boot before
-> +	 * any secondaries have started. If the boot cpu supports bbml2, we can
-> +	 * safely split.
-> +	 */
-> +	if (num_online_cpus() > 1 || !cpu_supports_bbml2_noabort())
->   		return 0;
+> +       return static_branch_unlikely(&lru_switch);
+> +}
 >
->   	/*
-> ---8<---
+> >
+> >
+> >>   #ifdef CONFIG_LRU_GEN_ENABLED
+> >>   static inline bool lru_gen_enabled(void)
+> >>   {
+> >> @@ -316,6 +322,11 @@ static inline bool lru_gen_enabled(void)
+> >>          return false;
+> >>   }
+> >>
+> >> +static inline bool lru_gen_draining(void)
+> >
+> > lru_gen_switching()? >
+> >> +{
+> >> +       return false;
+> >> +}
+> >> +
+> >>   static inline bool lru_gen_in_fault(void)
+> >>   {
+> >>          return false;
+> >> diff --git a/mm/rmap.c b/mm/rmap.c
+> >> index 6398d7eef393..0b5f663f3062 100644
+> >> --- a/mm/rmap.c
+> >> +++ b/mm/rmap.c
+> >> @@ -966,7 +966,7 @@ static bool folio_referenced_one(struct folio *fol=
+io,
+> >>                          nr =3D folio_pte_batch(folio, pvmw.pte, pteva=
+l, max_nr);
+> >>                  }
 >
-> Thanks,
-> Ryan
+> OK. I'll be add following ducumentation that just you said.
+> /* When LRU is switching, we don=E2=80=99t know where the surrounding fol=
+ios
+> are. =E2=80=94they could be on active/inactive lists or on MGLRU. So the
+> simplest approach is to disable this look-around optimization.
+> */
+> >> -               if (lru_gen_enabled() && pvmw.pte) {
+> >> +               if (lru_gen_enabled() && !lru_gen_draining() && pvmw.p=
+te) {
+> >
+> > Ack. When LRU is switching, we don=E2=80=99t know where the
+> > surrounding folios are=E2=80=94they could be on active/inactive
+> > lists or on MGLRU. So the simplest approach is to
+> > disable this look-around optimization.
+> > But please add a comment here explaining it.
+> >
+> >
+> >>                          if (lru_gen_look_around(&pvmw, nr))
+> >>                                  referenced++;
+> >>                  } else if (pvmw.pte) {
+> >> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> >> index 33287ba4a500..88b9db06e331 100644
+> >> --- a/mm/vmscan.c
+> >> +++ b/mm/vmscan.c
+> >> @@ -886,7 +886,7 @@ static enum folio_references folio_check_reference=
+s(struct folio *folio,
+> >>          if (referenced_ptes =3D=3D -1)
+> >>                  return FOLIOREF_KEEP;
+> >>
+> >> -       if (lru_gen_enabled()) {
 >
+> documentation as following:
 >
+> /*
+>   * During the MGLRU state transition (lru_gen_switching), we force
+>   * folios to follow the traditional active/inactive reference checking.
+>   *
+>   * While MGLRU is switching,the generational state of folios is in flux.
+>   * Falling back to the traditional logic (which relies on PG_referenced/
+>   * PG_active flags that are consistent across both mechanisms) provides
+>   * a stable, safe behavior for the folio until it is fully migrated back
+>   * to the traditional LRU lists. This avoids relying on potentially
+>   * inconsistent MGLRU generational metadata during the transition.
+>   */
 >
->>>>> Before setup_system_features(), we don't know if all cpus support BBML2
->>>>> noabort,
->>>>> and we
->>>>> couldn't split kernel page table, in case another cpu that doesn't support
->>>>> BBML2
->>>>> noabort
->>>>> is running.
->>>>>
->>>>> How could we fix this issue?
->>>>>
->>>>> 1. force pte mapping if realm feature is enabled? Although force_pte_mapping()
->>>>> return true if is_realm_world() return true, arm64_rsi_init() is called after
->>>>> map_mem(). So is_realm_world() still return false during map_mem(). Thus
->>>>> realm feature relies on rodata=full. If we fix by this solution, we need
->>>>> to add a new cmdline to force pte mapping.
->>> I don't quite get why is_realm_world() relies on rodata=full. I understand
->>> realm needs PTE mapping if BBML2_NOABORT is not supported. But it doesn't mean
->>> real relies on rodata=full.
->> https://lore.kernel.org/all/5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com/
->>
->> This is the discussion why realm relies on rodata=full. The initization of realm
->> coudn't move to before map_mem(), so is_realm_world() is false. As a result, realm
->> need rodata=full to indicate we need to make pages shared/protected at page
->> granularity.
->>
->>>> I think we just need to make is_realm_world() work earlier in boot? I think this
->>>> has been a known issue for a while. Not sure if there is any plan to fix it
->>>> though.
->>>>
->>>>> 2. If we could try to split kernel page table before setup_system_features()?
->>>> Another option would be to initially map by pte then collapse to block mappings
->>>> once we have determined that all cpus support BBML2_NOABORT. We originally opted
->>>> not to do that because it's a tax on symetric systems. But we could throw in the
->>>> towel if it's the least bad solution we can come up with for solving this. I
->>>> think it might help some of Kevin's use cases too?
->>> May be an option too. When we discussed this there was no usecase for direct
->>> mapping collapse. But if we can have multiple usecases, it may be worth it.
->>> AFAICT, the ROX execmem cache may need this, which Will or someone else from
->>> Google is going to work on.
->>>
->>> Checking current cpu BBML2_NOABORT capability before system feature is
->>> finalized seems like a fast way to stop bleeding IMHO before we find more
->>> elegant long-term solution.
->>>
->>> Thanks,
->>> Yang
->>>
->>>> Thanks,
->>>> Ryan
->>>>
->>>>
->>>>> Thanks.
->>>>>
->>>>>> Ryan tested v7 on an AmpereOne system (a VM with 12G RAM) in all 3 possible
->>>>>> modes by hacking the BBML2 feature detection code:
->>>>>>
->>>>>>      - mode 1: All CPUs support BBML2 so the linear map uses large mappings
->>>>>>      - mode 2: Boot CPU does not support BBML2 so linear map uses pte mappings
->>>>>>      - mode 3: Boot CPU supports BBML2 but secondaries do not so linear map
->>>>>>        initially uses large mappings but is then repainted to use pte mappings
->>>>>>
->>>>>> In all cases, mm selftests run and no regressions are observed. In all cases,
->>>>>> ptdump of linear map is as expected. Because there are just some cleanups
->>>>>> between v7 and v8, so I kept using Ryan's test result:
->>>>>>
->>>>>> Mode 1:
->>>>>> =======
->>>>>> ---[ Linear Mapping start ]---
->>>>>> 0xffff000000000000-0xffff000000200000           2M PMD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000000200000-0xffff000000210000          64K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000000210000-0xffff000000400000        1984K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL
->>>>>> 0xffff000000400000-0xffff000002400000          32M PMD ro NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL
->>>>>> 0xffff000002400000-0xffff000002550000        1344K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL
->>>>>> 0xffff000002550000-0xffff000002600000         704K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000002600000-0xffff000004000000          26M PMD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000004000000-0xffff000040000000         960M PMD RW NX SHD AF
->>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000040000000-0xffff000140000000           4G PUD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000140000000-0xffff000142000000          32M PMD RW NX SHD AF
->>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142000000-0xffff000142120000        1152K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142120000-0xffff000142128000          32K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142128000-0xffff000142159000         196K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142159000-0xffff000142160000          28K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142160000-0xffff000142240000         896K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142240000-0xffff00014224e000          56K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff00014224e000-0xffff000142250000           8K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142250000-0xffff000142260000          64K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142260000-0xffff000142280000         128K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142280000-0xffff000142288000          32K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142288000-0xffff000142290000          32K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142290000-0xffff0001422a0000          64K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff0001422a0000-0xffff000142465000        1812K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142465000-0xffff000142470000          44K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142470000-0xffff000142600000        1600K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000142600000-0xffff000144000000          26M PMD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000144000000-0xffff000180000000         960M PMD RW NX SHD AF
->>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000180000000-0xffff000181a00000          26M PMD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181a00000-0xffff000181b90000        1600K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181b90000-0xffff000181b9d000          52K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181b9d000-0xffff000181c80000         908K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181c80000-0xffff000181c90000          64K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181c90000-0xffff000181ca0000          64K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181ca0000-0xffff000181dbd000        1140K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181dbd000-0xffff000181dc0000          12K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181dc0000-0xffff000181e00000         256K PTE RW NX SHD AF
->>>>>> CON     UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181e00000-0xffff000182000000           2M PMD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000182000000-0xffff0001c0000000         992M PMD RW NX SHD AF
->>>>>> CON BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff0001c0000000-0xffff000300000000           5G PUD RW NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000300000000-0xffff008000000000         500G PUD
->>>>>> 0xffff008000000000-0xffff800000000000      130560G PGD
->>>>>> ---[ Linear Mapping end ]---
->>>>>>
->>>>>> Mode 3:
->>>>>> =======
->>>>>> ---[ Linear Mapping start ]---
->>>>>> 0xffff000000000000-0xffff000000210000        2112K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000000210000-0xffff000000400000        1984K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL
->>>>>> 0xffff000000400000-0xffff000002400000          32M PMD ro NX SHD
->>>>>> AF        BLK UXN    MEM/NORMAL
->>>>>> 0xffff000002400000-0xffff000002550000        1344K PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL
->>>>>> 0xffff000002550000-0xffff000143a61000     5264452K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000143a61000-0xffff000143c61000           2M PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000143c61000-0xffff000181b9a000     1015012K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181b9a000-0xffff000181d9a000           2M PTE ro NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000181d9a000-0xffff000300000000     6261144K PTE RW NX SHD
->>>>>> AF            UXN    MEM/NORMAL-TAGGED
->>>>>> 0xffff000300000000-0xffff008000000000         500G PUD
->>>>>> 0xffff008000000000-0xffff800000000000      130560G PGD
->>>>>> ---[ Linear Mapping end ]---
->>>>>>
->>>>>>
->>>>>> Performance Testing
->>>>>> ===================
->>>>>> * Memory use after boot
->>>>>> Before:
->>>>>> MemTotal:       258988984 kB
->>>>>> MemFree:        254821700 kB
->>>>>>
->>>>>> After:
->>>>>> MemTotal:       259505132 kB
->>>>>> MemFree:        255410264 kB
->>>>>>
->>>>>> Around 500MB more memory are free to use.  The larger the machine, the
->>>>>> more memory saved.
->>>>>>
->>>>>> * Memcached
->>>>>> We saw performance degradation when running Memcached benchmark with
->>>>>> rodata=full vs rodata=on.  Our profiling pointed to kernel TLB pressure.
->>>>>> With this patchset we saw ops/sec is increased by around 3.5%, P99
->>>>>> latency is reduced by around 9.6%.
->>>>>> The gain mainly came from reduced kernel TLB misses.  The kernel TLB
->>>>>> MPKI is reduced by 28.5%.
->>>>>>
->>>>>> The benchmark data is now on par with rodata=on too.
->>>>>>
->>>>>> * Disk encryption (dm-crypt) benchmark
->>>>>> Ran fio benchmark with the below command on a 128G ramdisk (ext4) with
->>>>>> disk encryption (by dm-crypt).
->>>>>> fio --directory=/data --random_generator=lfsr --norandommap            \
->>>>>>        --randrepeat 1 --status-interval=999 --rw=write --bs=4k --loops=1  \
->>>>>>        --ioengine=sync --iodepth=1 --numjobs=1 --fsync_on_close=1         \
->>>>>>        --group_reporting --thread --name=iops-test-job --eta-newline=1    \
->>>>>>        --size 100G
->>>>>>
->>>>>> The IOPS is increased by 90% - 150% (the variance is high, but the worst
->>>>>> number of good case is around 90% more than the best number of bad
->>>>>> case). The bandwidth is increased and the avg clat is reduced
->>>>>> proportionally.
->>>>>>
->>>>>> * Sequential file read
->>>>>> Read 100G file sequentially on XFS (xfs_io read with page cache
->>>>>> populated). The bandwidth is increased by 150%.
->>>>>>
->>>>>> Additionally Ryan also ran this through a random selection of benchmarks on
->>>>>> AmpereOne. None show any regressions, and various benchmarks show
->>>>>> statistically
->>>>>> significant improvement. I'm just showing those improvements here:
->>>>>>
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>> | Benchmark            | Result
->>>>>> Class                                             | Improvement vs 6.17-rc1 |
->>>>>> +======================+==========================================================+=========================+
->>>>>> | micromm/vmalloc      | full_fit_alloc_test: p:1, h:0, l:500000
->>>>>> (usec)           |              (I) -9.00% |
->>>>>> |                      | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000
->>>>>> (usec) |              (I) -6.93% |
->>>>>> |                      | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000
->>>>>> (usec) |              (I) -6.77% |
->>>>>> |                      | pcpu_alloc_test: p:1, h:0, l:500000
->>>>>> (usec)               |              (I) -4.63% |
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>> | mmtests/hackbench    | process-sockets-30
->>>>>> (seconds)                             |              (I) -2.96% |
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>> | mmtests/kernbench    | syst-192
->>>>>> (seconds) |             (I) -12.77% |
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>> | pts/perl-benchmark   | Test: Interpreter
->>>>>> (Seconds)                              |              (I) -4.86% |
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>> | pts/pgbench          | Scale: 1 Clients: 1 Read Write
->>>>>> (TPS)                     |               (I) 5.07% |
->>>>>> |                      | Scale: 1 Clients: 1 Read Write - Latency
->>>>>> (ms)            |              (I) -4.72% |
->>>>>> |                      | Scale: 100 Clients: 1000 Read Write
->>>>>> (TPS)                |               (I) 2.58% |
->>>>>> |                      | Scale: 100 Clients: 1000 Read Write - Latency
->>>>>> (ms)       |              (I) -2.52% |
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>> | pts/sqlite-speedtest | Timed Time - Size 1,000
->>>>>> (Seconds)                        |              (I) -2.68% |
->>>>>> +----------------------
->>>>>> +----------------------------------------------------------
->>>>>> +-------------------------+
->>>>>>
->>>>>> Changes since v7 [1]
->>>>>> ====================
->>>>>> - Rebased on v6.17-rc6 and Shijie's rodata series (https://git.kernel.org/pub/
->>>>>> scm/linux/kernel/git/arm64/linux.git/commit/?id=bfbbb0d3215f)
->>>>>>      which has been picked up by Will.
->>>>>> - Patch 1: Fixed pmd_leaf/pud_leaf issue since the code may need to change
->>>>>>      permission for invalid entries per Jinjiang Tu.
->>>>>> - Patch 1: Removed pageattr_pgd_entry and pageattr_p4d_entry per Ryan.
->>>>>> - Used (-1ULL) instead of -1 per Catalin.
->>>>>> - Added comment about arm64 lazy mmu allow sleeping per Ryan.
->>>>>> - Squashed patch #4 in v7 into patch #3.
->>>>>> - Squashed patch #6 in v7 into patch #4.
->>>>>> - Added patch #5 to fix a arm64 kprobes bug. It guarantees set_memory_rox()
->>>>>>      is called before vfree(). It can go into separately or with this series
->>>>>>      together.
->>>>>> - Collected all the R-bs and A-bs.
->>>>>>
->>>>>> Changes since v6 [2]
->>>>>> ====================
->>>>>> - Patch 1: Minor refactor to implement walk_kernel_page_table_range() in terms
->>>>>>      of walk_kernel_page_table_range_lockless(). Also lead to adding *pmd
->>>>>> argument
->>>>>>      to the lockless variant for consistency (per Catalin).
->>>>>> - Misc function/variable renames to improve clarity and consistency.
->>>>>> - Share same syncrhonization flag between idmap_kpti_install_ng_mappings and
->>>>>>      wait_linear_map_split_to_ptes, which allows removal of bbml2_ptes[] to
->>>>>> save
->>>>>>      ~20K from kernel image.
->>>>>> - Only take pgtable_split_lock and enter lazy mmu mode once for both splits.
->>>>>> - Only walk the pgtable once for the common "split single page" case.
->>>>>> - Bypass split to contpmd and contpte when spllitting linear map to ptes.
->>>>>>
->>>>>> [1] https://lore.kernel.org/linux-arm-kernel/20250829115250.2395585-1-
->>>>>> ryan.roberts@arm.com/
->>>>>> [2] https://lore.kernel.org/linux-arm-kernel/20250805081350.3854670-1-
->>>>>> ryan.roberts@arm.com/
->>>>>>
->>>>>>
->>>>>> Dev Jain (1):
->>>>>>          arm64: Enable permission change on arm64 kernel block mappings
->>>>>>
->>>>>> Ryan Roberts (1):
->>>>>>          arm64: mm: split linear mapping if BBML2 unsupported on secondary CPUs
->>>>>>
->>>>>> Yang Shi (3):
->>>>>>          arm64: cpufeature: add AmpereOne to BBML2 allow list
->>>>>>          arm64: mm: support large block mapping when rodata=full
->>>>>>          arm64: kprobes: call set_memory_rox() for kprobe page
->>>>>>
->>>>>>     arch/arm64/include/asm/cpufeature.h |   2 +
->>>>>>     arch/arm64/include/asm/mmu.h        |   3 +
->>>>>>     arch/arm64/include/asm/pgtable.h    |   5 ++
->>>>>>     arch/arm64/kernel/cpufeature.c      |  12 +++-
->>>>>>     arch/arm64/kernel/probes/kprobes.c  |  12 ++++
->>>>>>     arch/arm64/mm/mmu.c                 | 422 ++++++++++++++++++++++++++++++
->>>>>> ++++
->>>>>> +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>>> +----
->>>>>>     arch/arm64/mm/pageattr.c            | 123 ++++++++++++++++++++++++---------
->>>>>>     arch/arm64/mm/proc.S                |  27 ++++++--
->>>>>>     include/linux/pagewalk.h            |   3 +
->>>>>>     mm/pagewalk.c                       |  36 ++++++----
->>>>>>     10 files changed, 581 insertions(+), 64 deletions(-)
->>>>>>
->>>>>>
->>>
+> >> +       if (lru_gen_enabled() && !lru_gen_draining()) {
+> >
+> > I=E2=80=99m curious what prompted you to do this.
+> >
+> > This feels a bit odd. I assume this effectively makes
+> > folios on MGLRU, as well as those on active/inactive
+> > lists, always follow the active/inactive logic.
+> >
+> > It might be fine, but it needs thorough documentation here.
+> >
+> > another approach would be:
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 33287ba4a500..91b60664b652 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -122,6 +122,9 @@ struct scan_control {
+> >          /* Proactive reclaim invoked by userspace */
+> >          unsigned int proactive:1;
+> >
+> > +       /* Are we reclaiming from MGLRU */
+> > +       unsigned int lru_gen:1;
+> > +
+> >          /*
+> >           * Cgroup memory below memory.low is protected as long as we
+> >           * don't threaten to OOM. If any cgroup is reclaimed at
+> > @@ -886,7 +889,7 @@ static enum folio_references
+> > folio_check_references(struct folio *folio,
+> >          if (referenced_ptes =3D=3D -1)
+> >                  return FOLIOREF_KEEP;
+> >
+> > -       if (lru_gen_enabled()) {
+> > +       if (sc->lru_gen) {
+> >                  if (!referenced_ptes)
+> >                          return FOLIOREF_RECLAIM;
+> >
+> > This makes the logic perfectly correct (you know exactly
+> > where your folios come from), but I=E2=80=99m not sure it=E2=80=99s wor=
+th it.
+> >
+> > Anyway, I=E2=80=99d like to understand why you always need to
+> > use the active/inactive logic even for folios from MGLRU.
+> > To me, it seems to work only by coincidence, which isn=E2=80=99t good.
+> >
+> > Thanks
+> > Barry
 >
+> Hi Barry,
+>
+> I agree that using !lru_gen_draining() feels a bit like a fallback path.
+> However, after considering your suggestion for sc->lru_gen, I=E2=80=99m
+> concerned about the broad impact of modifying struct scan_control.Since
+> lru_drain_core is a very transient state, I prefer a localized fix that
+> doesn't propagate architectural changes throughout the entire reclaim sta=
+ck.
+>
+> You mentioned that using the active/inactive logic feels like it works
+> by 'coincidence'. To clarify, this is an intentional fallback: because
+> the generational metadata in MGLRU becomes unreliable during draining,
+> we intentionally downgrade these folios to the traditional logic. Since
+> the PG_referenced and PG_active bits are maintained by the core VM and
+> are consistent regardless of whether MGLRU is active, this fallback is
+> technically sound and robust.
+>
+> I have added detailed documentation to the code to explain this design
+> choice, clarifying that it's a deliberate transition strategy rather
+> than a coincidence."
+
+Nope. You still haven=E2=80=99t explained why the active/inactive LRU
+logic makes it work. MGLRU and active/inactive use different
+methods to determine whether a folio is hot or cold. You=E2=80=99re
+forcing active/inactive logic to decide hot/cold for an MGLRU
+folio. It=E2=80=99s not that simple=E2=80=94PG_referenced isn=E2=80=99t mai=
+ntained
+by the core; it=E2=80=99s specific to active/inactive. See folio_mark_acces=
+sed().
+
+Best Regards
+Barry
 
