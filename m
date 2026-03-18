@@ -4,169 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 565AE103E195
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA3DF103E195
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 861896B026A; Wed, 18 Mar 2026 11:03:18 -0400 (EDT)
+	id 1D2E86B0269; Wed, 18 Mar 2026 11:03:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 811B26B0269; Wed, 18 Mar 2026 11:03:18 -0400 (EDT)
+	id 1AA3F6B026C; Wed, 18 Mar 2026 11:03:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664F96B026B; Wed, 18 Mar 2026 11:03:18 -0400 (EDT)
+	id 0C0196B026D; Wed, 18 Mar 2026 11:03:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 562946B0269
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:03:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B3BC313BB18
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:03:17 +0000 (UTC)
-X-FDA: 84559502034.30.7F67CAC
-Received: from GV3P280CU013.outbound.protection.outlook.com (mail-swedencentralazon11020135.outbound.protection.outlook.com [52.101.75.135])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9172740021
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:03:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ECF3B6B0269
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:03:28 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADC631B8A0E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:03:28 +0000 (UTC)
+X-FDA: 84559502496.21.655C8E5
+Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E1DE8140008
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:03:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of andreas.larsson@gaisler.com designates 52.101.75.135 as permitted sender) smtp.mailfrom=andreas.larsson@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773846194;
+	spf=pass (imf23.hostedemail.com: domain of 3ur66aQkbAHcntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.206 as permitted sender) smtp.mailfrom=3ur66aQkbAHcntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773846206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6ZTtq4nXRk6+KhGJu/weqPZ7z4ays1SpgVejxGvxGA=;
-	b=i4VXGSU+Xy9AzUJWrd4vNvRyv0rUf2GVwQRRRFkPzvYkqP1oSDpKyfkb4pGOLSCvgWcaZv
-	Bk0n28hTGkZPREvcx4CRf20EOOG9mtywBwZXsvUwN845BY50VQjR9zykXruN87Ga/ID/4Y
-	O1Z9SeA60kqr7gwDkui+aV/NOZUk4Es=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=448yYbzRRxq6bdAx7wW1zfDT2Iu6eXFzWfA4H8JFuxY=;
+	b=Sksh1nrlaCLypsPgZprIouswC5KJMIuRH4Icu7gAtO2Ihte3RemevL4wDM4ag6QIcCOHA2
+	+UhfzDv1yFrn9De0Lir129y/eSvoshfHkrZ9yZ6Na84l9nFLa8RyOMvpf4+30CHPnq2wPd
+	frY7DcalsSHVNat+d2cOK43wyDcfZXk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773846206; a=rsa-sha256;
+	cv=none;
+	b=GXARoCn2YmcbIuNNf95PQ25Nay2D5+z0S2VldPA7xjsDAeGUqpYaRvohUdWz52VGlsw5n9
+	LmbHucjaAk89oP+6kOFHsAB3hQrDpt42dDM9C1MWkQ5RM8BIoM2Z/jXeNAk+wuisQSNbSo
+	BD5lmqBiSDgh/TwvEw2eFHRNyaF1M1w=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of andreas.larsson@gaisler.com designates 52.101.75.135 as permitted sender) smtp.mailfrom=andreas.larsson@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773846194; a=rsa-sha256;
-	cv=pass;
-	b=4hw6NDEEYcoF1ieknpQPfAMhifppjPqJ4nkgPH7OwTdcqjyhe2FzNkzXNLrMOeA8S9hUpp
-	mVNGQbQRjKr/tWpE5YMpjGh695Q3kxe6lChMvNKdIJOmQroGl/GymCeIXCuVJIRgfA2A2k
-	kfAC21iRdhCH7HRy96CTicSciWqjkY4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I5kv/AOeKY0Ijm1H8eZJjjgnPSbZHH2dCk+QH2KD+hdIYUorUxc//wpffMYXhmv7njNjM+rm50CbAGuZzRWExNJCCIqwi4eo02su3dc/hzkJSe5qLYn5/O0jV0T/5ZYGcR/mR+h3ffpiBRo6Kbxclf9yFGhhkEWL2OCJoSQRVVEIwslZs+6BtqNsmNOS/Est/lxvy0tKw87cjxEGI2pxCecICp2+HcLD+kjsLph1JuqaFCJKO0wfwaIkgfUn0l0XiWMVZFF1dwYfKVTgsyQZFKS1ErqPw9G9rQVDqcmK3hsTJbKUT1/SDLt4Al9X6sGNW28DZovH6npW2xqXS7W3xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r6ZTtq4nXRk6+KhGJu/weqPZ7z4ays1SpgVejxGvxGA=;
- b=QUfHzjnhF+mVBQBnOhU2eJq2gM+Ofl2JQh5gpNZky5Dmkq0J/llU3jXocqKcEaA7N7R4Or9/3u/ZD8yIdz0lF45C4ifQuaXkbFISN4JilbgdvNFtVIh++CqM+jPsQy2wAQUo3zo/EhBbtsFpEmboipld2ENoSxaVcKpUp9Ii1sZ6a3K1pMqpBgNUAvEA8NduwaeroH0MBW53Ae0j7LxR3VCAwYG9kKaDmd6izL7+85mcFKm4DKiDhBcVSAk/eheZ7Ja3PrRnJD9ZfDU2ImK65bcPKev93SKPU0hZ+tpJn94LIq6AupMixZ+GA4icHv3+VSowOpbib4HjHPcUDB7uIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gaisler.com; dmarc=pass action=none header.from=gaisler.com;
- dkim=pass header.d=gaisler.com; arc=none
-Received: from GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:195::18)
- by GVZP280MB0010.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:49::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 15:03:09 +0000
-Received: from GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
- ([fe80::be76:7636:f4ac:6773]) by GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
- ([fe80::be76:7636:f4ac:6773%5]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
- 15:03:08 +0000
-Message-ID: <0f67e5e4-5331-4205-9bed-3e43104fed11@gaisler.com>
-Date: Wed, 18 Mar 2026 16:03:07 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-To: Chengkaitao <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, akpm@linux-foundation.org, david@kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, kevin.brodsky@arm.com,
- dave.hansen@linux.intel.com, ziy@nvidia.com, chengkaitao@kylinos.cn,
- willy@infradead.org, zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260111074453.66728-1-pilgrimtao@gmail.com>
- <20260111074453.66728-2-pilgrimtao@gmail.com>
- <aaf30e1e-be55-4212-b096-69f71bafd406@gaisler.com>
- <CAAWJmAYmMtdE7nSJ8BWSnt2DObipqGi_KdXdMJrHfwc0ANBSPQ@mail.gmail.com>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <CAAWJmAYmMtdE7nSJ8BWSnt2DObipqGi_KdXdMJrHfwc0ANBSPQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: GV3PEPF0001DC31.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::10d) To GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:195::18)
+	spf=pass (imf23.hostedemail.com: domain of 3ur66aQkbAHcntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.206 as permitted sender) smtp.mailfrom=3ur66aQkbAHcntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-464a0af43deso98237b6e.3
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:03:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773846203; x=1774451003;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=448yYbzRRxq6bdAx7wW1zfDT2Iu6eXFzWfA4H8JFuxY=;
+        b=WlBkCn/6ndaZRF7DLz7igwbkfXsqyJHCtDftst2q+yweWfxr1rGo4bk9tn8YXDCG5M
+         6Z/SGiqV4NSOGsnFjfayzSHq/q/YwPa1XEer2XYP2E66pdapZrPXjM0lnZ5eyi4FzphD
+         CLfbyW5ssgPatGwDpbt5m2WtV9jtreuSu0iuVeQ32gp9p1YQrHeKKb/Y4BsuRwqkK4gU
+         fzAw//FOvwM4VbJxZUywz4KFXnqweKxR8vKkeOr6KNs7TDPrHntVmucGdqNPMf5SI3qT
+         vjOvef5n8778e4gj/loiajTJ5Qlmxhsix3o3OfE+lH37FNfBRrBr+0f7cLE+Td9HdMbQ
+         pKQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBtJClM8Bi+PrYEvcTvWVmkTX3TOw4wtLaJxMSAt833V1Jnb2yTL/SHyTxfGfvTvjv6W+sPSz6fA==@kvack.org
+X-Gm-Message-State: AOJu0YykD4P6YWrVbwUQAd4KNwi0fIpCyO9TQBIKhemPkEV15RQfHMsS
+	CQA55wwoWZuDM+PKlK3h/wZkEzx4j4CnrkJRu5F8y1g8zbFqDgwKOC04jVWpTJarO/r6lwnbiJq
+	2tDssRZMytUy/3KJgRYMQ7UWkCUt3kD7y4lxklgOJAfnk+9t+oqhhYAijgSw=
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVYP280MB1290:EE_|GVZP280MB0010:EE_
-X-MS-Office365-Filtering-Correlation-Id: d61c7ff7-7892-4d5d-68d0-08de84ff7723
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	x0mqh8EoU+D2h9AOxsp7/fJ5A7qiXRv40vv9tJpY3WChtox0pMqPiCfatDHZFHVM0quLI6299deDem02GVPlyKkxzTwd2ojA6UAHfy8p2Li2jhYyXbRc7KbmFCuasPJsj2P1evd5XP3N2r9bi0OR3v/h3XCnMj49WRUlTLJWefjp0EtFdvo+CTxLPVC52KSPi0UxPqAEaTp4CmcfXD6+JgtMQwHIW7UnNZFSSzyU1Tl/11s0zHpexppmRlsFYSwSc+le+irp6TzmP1IpIwYHA3A8f9E3Z03MrraA1NIm8GgDHKMMonv2030DdOJw8rXu8vN6UFwPZ2DAvO+tgJr3OXIcO+pFnGGzGQlR4TOgtfywchY2ZXIu4hhieK/Y2Qpv148Usu3tUk6SIMPHe0Ekad4uP6StA+xCSeKibqyThK/1Yp1eqfMBtLn+qFiI+mbStNL7UJ6ZAlfLi3tVVhyAmkY+NmuFonixHPCfbLS9el+3/kwE5WGi+UR2ZIK7Km8poQbOpCjNgPl7vmNZaEwi2htL2Ye74xHk3J6FnKKS1IMjaQC8c2CXArdITbKBNjYZiGdtAWX3NM+CzXcrHkfxMVEmVxM7n5BPyyHxVqBVXrWPEC9MmMLqCZR+nk2eYykOhEZll2GkvV/tFBMrubfLb0sk/4RYtbnEOygZytlCwMYlONob1vrRk31DQ4PuKxR3SvfYDV6YTsleGCJmCBRfa6xKPLDjFpfHxC0x4zmY3V4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VlcrVDB6WTVWVG5LUHVwOXA0RzlJUTVtYVFBNDFycjJsV2l0NEc3V2NKa1gv?=
- =?utf-8?B?QmdsMi9KU1FsWFpLVXIyUDNQalBXYnFTMlZuMW11anQybHdHZ3FZQnpwY1hK?=
- =?utf-8?B?THZpbWc3MGhVUG5VOTZ3YmNyUXozMnZNUUZOZU4yZ3VNMWFPSkpBTG9XOTV6?=
- =?utf-8?B?NHFlK3FXNVEyOTlHc3FTRGVOUVhjVkkyaUlyZ1pDdm9HUGg5dFNmM3UzOVNp?=
- =?utf-8?B?TlNORXNreDZheVVQRVZXcFhDNmp2N1JRTXlwSG1FWkl6Rm1sN2Noa2l2Q0tk?=
- =?utf-8?B?UVZpWDJkTS92YSt1K1NJaDBtQ0pYZzRNRTQ0TXBvQTJUaDFYVFh4MmFwbDEw?=
- =?utf-8?B?ejgrc2ExS3BxNzZ6L09EcE9aN1JuakxmRVFXTmhOdmxXaGt1ajZUbEduRFN6?=
- =?utf-8?B?amtCZllLa2JDTkdwUDk1UFo3ek5NTmdZUS81NVRqck05UDNyMks0S3N3ckI2?=
- =?utf-8?B?dnBQcWNoVXBZYlVEYVlOQ044VjZydFZQb2lKd29QZFM0Z0xWSVB5Zk5KRkFU?=
- =?utf-8?B?bzFwVUFFelFDdGN0L2tnRjc1aHBtd0ltTmkvMlV2Q00yNTNTNE1LN2ZEaWhN?=
- =?utf-8?B?UnFFQm5DdWlYUHZId1VDUSszdFNIUlJvM0F6MktKS25Lc0paQURSZCtSSnZL?=
- =?utf-8?B?cXM0VVY4ZUhhZ2xIR3RDR083T05YRTJLendhb20xYUsrQ1hDazFnKzVTOURs?=
- =?utf-8?B?cjNKK3BNTHBTa0I1UUNYdlU3TitTRVlxY0R6a2YycGgwQm9NSkJhRHdhbHhh?=
- =?utf-8?B?TnNRbjdBQ0VqZElBRE5WUlJLZGFYb3JYYmNBVmpVbXdaNEFpWXAxWXFkcFhW?=
- =?utf-8?B?ZXRwemoyM1NoQ2pzclFmRWFsQWxycmNOcEdCcjNnZkQzUUV4cUpEYXIrNHZh?=
- =?utf-8?B?RVhMMlRZWk5paWNMeDdpWnZkN1AwaHF1VjQyTXJveFJEeCs5UlhuNFhQUlVm?=
- =?utf-8?B?YjZZNm81OEtXeWVFdkFuYTYxdzVZK2VpTGM0SU9PdkFwOE9BZXZGbWltbktR?=
- =?utf-8?B?Q2JaTW1xS3JQbmNjK1VER1R3ZzRlRXZIc1hxWVg4WVZLRnZ5VkVFUTVUM2pD?=
- =?utf-8?B?YnBzRjlNaW5LaG42cTJ1cDltOEN1TVh2V1pzSDRXQ0ZXbGlnbFh6T1BqZUFs?=
- =?utf-8?B?cTVuQ2dBbHA5cVdhT25GT3JWdk5hbTRMMWhmOUVYM0htL1l0UjZFWVZQcSts?=
- =?utf-8?B?dyswa0JReFBvVjBKcmRrZ2FnM0VTeXpXQURtMWhWTUdBb01yNlBRWFliVWhi?=
- =?utf-8?B?ZnUvQXZ1K3NOQTlHS0ZZZWVOb0dIRXdKM0FwK1Y0aUlZbHltODcwb3A1Z3lY?=
- =?utf-8?B?NVdTOVI3UVhubW1GVytDbXh0Z0wxWTFTUmsva0tXTnhhQ2l6NlFSaytsZHlk?=
- =?utf-8?B?Ryt1NXNlWSsxSk55L1hGWndxb3hjZjdKSDhWRmRWRjZqSjA1OFc1MTN5alVw?=
- =?utf-8?B?MHhvUmpIZm1YU3NsMGY2MFU0OSt1MjFUZWZmYkVJdHY2UUNmeWlFclI1N25S?=
- =?utf-8?B?NTB4NTVLbXpMTXR1d0NuckZIc1J2RnZpd2hwS09rK29HUk9uZVlpclVLMHNR?=
- =?utf-8?B?Vk5taEpNV2d3Q2RmQTN2TzUyc2VqZ1l4TUhIUGltVDFaVGZYVnhEVnZnUnc0?=
- =?utf-8?B?cnFUWWdKaHlXbHYwZVJ1c3FYblhIVm1HejhMMUpmaFZaMFVRaWxkTXk2L3hp?=
- =?utf-8?B?NkxjSzI5cU0ySnIxS2FJQ04zRDRhY1BIRzBUaFF3SFA2YlNVN3NaaU1CY096?=
- =?utf-8?B?Ym9xR001eEhOMnpDTSs2MGNCUHJMdmF6K0pBVGJSNUIyVHZuMjIwd3VoL0Yx?=
- =?utf-8?B?TzNvbUx0NEtWUUlCYU1MSUlSaTVYY0M5WGhyS0JaL3l2ME4xaHlwYmg4UzFk?=
- =?utf-8?B?OEpVR1Y3UEN0TmdvNXpFZkIwOEMvWWRwY29UWmliNXBicE85UmNHamRQTHVD?=
- =?utf-8?B?MVM3S0w3SDJ0dy9OdmFyL1FHYWQxT0dRell2U0R5Nm9rMjBHODBuWWY2NEM2?=
- =?utf-8?B?REkzZmZYckRIR2YySSs0R01lMGhmbDBrNjY0VTc3YWhDWjloenZ0MUN2Z1BS?=
- =?utf-8?B?K3R6NnJ1cUxXdlc5UThnMGd4Z2N1aENDeHFod05HSVd0Ykg1RkVOMnY1UTM0?=
- =?utf-8?B?VnU2V0p4QmpwQnVsTGFlTlh3aGRsbEhtZG9NVUJYM08zakRHbmxhK1pKTDdh?=
- =?utf-8?B?RUNZbUlvQkpGVG1RckZyVGloYWlBaWZkL2w1SlZzSUFxNjl6UnVYdXdZQWxt?=
- =?utf-8?B?MEdJSGdvY1pPekxUeTUwbHNOdmN0KytJelF3UWlyUEkxTDl4SjkvOXZhUmFr?=
- =?utf-8?B?NStYTXdrUktFRmxyR21rRkxoSVFIQmJJTnZqZnhsNmtpdTc2VnU0ejczYmNV?=
- =?utf-8?Q?wV/w0mN0qo3w2Spo=3D?=
-X-OriginatorOrg: gaisler.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d61c7ff7-7892-4d5d-68d0-08de84ff7723
-X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 15:03:08.5820
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 91fa4a59-2167-458a-8318-e45d80469d7e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Hq9j07x+PHRGKLKmcuuv6UAhJ9k6lWj+wmFjb16qfopIREn06aXR9OQv968MKdUzSPFYGa6F6TTjw/p6aMCi9IdvbpNQyIrIfGFBE82r2ms=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVZP280MB0010
-X-Rspamd-Queue-Id: 9172740021
-X-Stat-Signature: sszosood4hi51pcu9zxefj8uwtq9f391
+X-Received: by 2002:a05:6808:16a5:b0:455:d3f2:4bf9 with SMTP id
+ 5614622812f47-467ba4167e8mr2193966b6e.30.1773846202215; Wed, 18 Mar 2026
+ 08:03:22 -0700 (PDT)
+Date: Wed, 18 Mar 2026 08:03:22 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69babeba.050a0220.1b2d94.0003.GAE@google.com>
+Subject: [syzbot] [mm?] general protection fault in zap_huge_pmd
+From: syzbot <syzbot+de14f7701c22477db718@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	ljs@kernel.org, npache@redhat.com, ryan.roberts@arm.com, 
+	syzkaller-bugs@googlegroups.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773846194-950337
-X-HE-Meta: U2FsdGVkX1+UeJpIaFxIdHq+TK/eM5rR1x3WrNSau7o2/H+AfxDea8umAUWRQ//N726qE7SF4QQQrBCAB9sZS4Ua7wDQ8TaAlSrog2DWhBPf9ryC/Z/ycgC0iTqjemiMey4cMj71/npu8y3XtkGY0VJmm0MEH18xPAE5nu8LhvM5KIs3vtwBGOvBNYMAAmj1VBx3GavB/v0f14kODBOu76Y0zhIPBwgpBrn4/+V4H5ykFT85GqgTTbs6f3pKOSq51AM0wrnklC6boVbmW7N8J0VOQvntMBqOsLBETK/shQeEv3KKZkJBPC5Dkcr+aNO9fHDgYEPbI01IWfdLodKSgHXoptnFZFA+EtdjjK1hXfID9qF1eFkxYlf1iiv3VRvlIaAWSzwhELH4MWKnz4k4krzVulEV0kRxrYuu8BwQOxuXuRpvUM3ir9Zl8uVIYR+vwqhVoBXrUAbOkV5ua+brRKOaqt1qdJFxqoDw8ZgTBFGaKWsGHHTZ/b9B+S5pd6QTaiXWJR1hYsBHhxH+sY8e6wqECsXtz9T9lGsyJcpNmrFVndDglyUacf4+JW6JeHOVec/4IyMfozn/GGW4Eg3Zn4lVImxrQfsEZlYNnR2ujyViiBdVWYomDTAohF7zxWTEpUilweZaWrNbpagP9K9Iromr7gBVOueVoIZMlF/MvppHZ3VcJOSHv1mBHGYkg0vgP4mcDk0LLk4j/jMcAr+qPkenR3WT3fMXTo8cWpRJWOB11gC5t4iYYO4ffU/Q10MCIDMqZLNLYTINcdFfqMn6Pq/0oo6T93QQS90OCYfGGlEuxTWPyJ3oAI7Q/SEX2hzStOCuhMvyRWc3DP+Hj4/2jZ1ThDG2cp0HsQbG6OSJXosvSo7oHcSOrSJzbln+niP41fX3+r33f1skajnojEY98Oj2BOBavsYQ1V8b3X5tnUVOWEiqumRQrczhuy4gja3JKsRasOY49xGAsV7yRFj
- aUgZ9GVg
- 9492msIrnwJZNa2/y9w5x8IlMKBAHRZ4oJaXm89uYHJQ/iL6puFsMLLR6F18dzi9G45LnXDizvmGf3+INRzq9M5WQOoQ1as9Q00uWwog9txHsq00xBMSX552uZisv4QRikP9zmvO+Q63TGEPD3AedkuC48ytipyYD0mJlEdvDf256xrTvnHalj8VYpdrL11MeGlaKlOW1V8/U8nx5t2YTb9b9NoCVpH7J+UT9hjzFpV8lFtYDpvXjXnYOlDF/4qfyJL6GIE2Bcj+3wmYeGeP9Od1/6ftrnSd2xneRl7TIsNMCwBAwIdZrGNPpPFnJzolHKvOY1SRTf3R+KdQ50JU3/P0XdBRe/dbSMDtBCpx/XdKQpnjIUzP+TwN21MtdOycnB3/bmG4IIZ+5jTu9vxvKJhOflnOry7Z//FnA2/dNXtmVpUehq5C+usKr05gn8rRLkekVhkmLAV+7B6rzX/oJSgSl07hOSQDErhUH8k64KjtRRs9VprCSiL4QwJlCuECm5itm0d3rGPYZX43MFbDsdp9kUWBASEguR0LnYXYD4pDB2GzkWHhFe3TeQzcgmOY+xa62K045N/A9xfAC4ToD6Sasp/IYHzkDpQleFAGhUtd2QyoNViV57EWeag==
+X-Stat-Signature: eo5gd6651fzgobuaypnzzxoog6fi41i8
+X-Rspamd-Queue-Id: E1DE8140008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773846203-701719
+X-HE-Meta: U2FsdGVkX19UFaNIknGUPlW7cECSKWnVnUu3K9k1Y+OtUkZ+xb1cSLtaSFRIyZ+xe+u+acBbrPcKMgeTA3WtwgR/jdTADzNAOQWX5L2kRPL697VmtTCNI1d0QmzUmqRxYmfQx9D+C9YpxmDmvbTx+wWiiEevtxHcH/FnA0O9O8lrqwcvEeydfDvkTLKHbVpQTBkHSMSQfiDz+u4sWSN156u4zmmU7IW+2Bw2J+TBli0lcmCvJzugnTGDGZwML29CHkriLahzgsjsqqpy/H6Ls6QnX7PcMVXS/GKPXx/XUethm9KbxUmNE4jCS5jVWK4HZksco3AHHAN6RpMG9Mev1eYDykgLHJXUpfGJwvg5z6l3u3sswhvrTlEhF3LcTtqaKcwFCRx5QXs32qDQVUmdaWQl2ngS7gxKBBR6/t/KATGkE1PL8wwdwshRSFmCEkepxBWo9HvfVj3Pgg6HtRKqt/jW75MLBLGVrdUEhIyb4zZGjDCt7RpUz5YskzZTPRSeQKiYa5TGJou/G6e7e0Vd+GwtXjDUe/p9yhm38tcfCzyQa22X6Q6eBiXhWcL8b3NZ62MmQx6IoiH0bsfgQj9nOlUwvO6swPAxog78obeAGtR4eyrPSHMamgm5BuG98yYQdndpcTvQTd6ANdeiPpT+s8cVey5pOaKgCRtTEAtD/8XHtEJorGjYo5KCMOctGJubttlzXyx+aHUsFwUO9Gx5yFb9WYv5CwMlaGNDf3RQO9LJZSIbU5eTknPKJkXF3FLrylBRAutbcS2fgmV4HtawZ2ogFCE4rOSMe1U+iB+CU8fsyk0zKw6NSLE3MXj6cxVm2mB7xg4cds6g4WKh1VNlMHEbnbJtnTUKX4T3iPsqjeQKdeWnAjb3yobY54IxstDe3aTa6W7tuSC1PPNcvrl7uTntLeHABdV0FK1ueHBwsvz3P307eiebjtHFi7ppPf5JUmpypmWkDRi4w+lnkTa
+ Dhj8gudq
+ Tp7wBEv0S0HPhQmNwgVJ3xNQdmyzyqV1XdlwGZZ+caqAehCHHi8wOz0mF1HbDfzBJ61rFMqRCU7dpTYNPCbgBavkN3QFfCDxal77q+w1wOqsAPW+YQP7n5drYeSv5gFt2APIL4aBcgLWP62HU9Y7A0ik67vLfiLMIodyXTgXlgVCVezvYD44q0Tobj5Qnxhp6s9oooBHykov7RbiB117BJg8BIBAurnIk8k9Zk0jVGdQVHWrlSJd/vgIvCkLCqM66m1CEqqyCJ1G5D9s/+vGMxYUQwwCh0TbOxEotWu3yONcTcRoMG8NO++T8Hhv5FVrpSaQ8yqDNUHL0V7IDihj/mYHyXPBX67eM6JemP8sloRY0MgdITzfJEq00z2ldbmQDHVUi9nxwRvlhvV7cyVBgz0HZFIhpCOWNEZflpp+LV/jNU5SljPin3qy3nv2a/oLcdKO9LUfuoiLM9ahCMvDKV0oS5Wh8Xi0qZA06R7H9J18a2dO570P0AT5dpBhGVd/7yYz13t8mETVkvBbI1IG1ddOONKHvZeaw2t5iL5gQ7x2UqQMVoNB3L36vMY5+EAOI2F+uWEAHHfAU43Xd3GmU0JUlf8Trn3gblNIncX33JIrCTgiuCGBeckURhBVLtQv0p3rFckN+UmojDPln93cenX5S+usXIawaxDwB+rOMMjnZ4vij7om9zwmBengW0DuhrRiej8ITIPfvZ3sc8wivfAwhGtor+A/dDCFnkVrdggIXf+0MzKfskhVlM35dXUW6bQdPQAjp2EVr8BJjGnNthg/BABZnVaWBiBcOQkCjdkp9fF1H+8Ht9W0VjUMA5KDzPZ11ZouXzYP/OjPDiQSjfvqvfzr0h0n+TmkzH5/hSQbkOXJXRqZQ78yP5RvgYtx5//9mm6xUVc48R/zd3dO45gjcZQ7X2ozaByRUz/pzdYRnN0bMMtk5VrS2kwVTcXegwU63326vWcLhULBTYH3lc/Z/h5Zh
+ 3A6gHagS
+ dEKy7FqFj/cLkfM+bPVGy0JBh+lTp3/z2bdmTi/zBDkTPqQ+gOmCvaqRKh99IUQdqmKcWiXtwd9NjKmGhdZ6qCCEMLOS1UKRfC5XquGnOd34wxvl0Ymn4NjKSQe3rW5hJTihyhDJzT90LKVEKQPvaszXlGusE0Vftn6f6+s/Nc7BXbICOlzfDhfvdsaMCKcRIMLRgpG96v/4D/613rHDDAaeZXrK/dMaZyQqcDjfF+bhZ50VAXZrELXvl/boYmC61VaDPWppbAGGAJwlQlLOgZ6JVpcwjjmnE7KcDUwoYzZK0h7ZFodJmEUJafLb417YHKGtg+MEfRPakOyiPo7caonj2Fo3gnzGDY1lXS+xAbxzpn73zvXtDM7N7M6Z8BhD6VWodoBunEyHN3tMjlu6uLyel51EuGzHUvjSGrouENJCXsWn9aAjdoUmobNqRzPhSRkoyLGLfa6aR35PEsXjUT9ParH7J0gV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,158 +97,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-01-28 04:25, Chengkaitao wrote:
-> On Mon, Jan 26, 2026 at 10:50 PM Andreas Larsson <andreas@gaisler.com> wrote:
->>
->> On 2026-01-11 08:44, chengkaitao wrote:
->>> From: Chengkaitao <chengkaitao@kylinos.cn>
->>>
->>> 1. In the SPARC architecture, reimplemented vmemmap_populate using
->>> vmemmap_populate_hugepages.
->>> 2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
->>> when vmemmap_alloc_block returns NULL.
->>
->> This patch seems to potentially make more functional changes than what
->> the descriptions gives impression of.
->>
->> Given the amount of changes this seems to introduce, more on that below,
->> I'd like to see more description on the changes and why they can be done
->> than this.
->>
->> Nit: use active language, "reimplement", not "reimplemented".
->>
->>
->>> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
->>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>>  arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
->>>  1 file changed, 16 insertions(+), 31 deletions(-)
->>>
->>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
->>> index df9f7c444c39..858eaa6615ea 100644
->>> --- a/arch/sparc/mm/init_64.c
->>> +++ b/arch/sparc/mm/init_64.c
->>> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
->>>  EXPORT_SYMBOL(_PAGE_CACHE);
->>>
->>>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
->>> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->>> -                            int node, struct vmem_altmap *altmap)
->>> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->>> +                            unsigned long addr, unsigned long next)
->>>  {
->>>       unsigned long pte_base;
->>>
->>> @@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->>>
->>>       pte_base |= _PAGE_PMD_HUGE;
->>>
->>> -     vstart = vstart & PMD_MASK;
->>> -     vend = ALIGN(vend, PMD_SIZE);
->>
->> It seems that this patch removes alignment of both start and end. Is
->> this a functional change in practice or are these always aligned for
->> some other reason?
->>
-> Whether vstart and vend are aligned with PMD_SIZE doesn't seem to
-> affect the behavior pattern or output of vmemmap_populate_hugepages.
-> The vmemmap_populate_hugepages function performs necessary alignment
-> processing internally, such as pmd_addr_end and pmd/pte_index?
-> 
->>> -     for (; vstart < vend; vstart += PMD_SIZE) {
->>> -             pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
->>> -             unsigned long pte;
->>> -             p4d_t *p4d;
->>> -             pud_t *pud;
->>> -             pmd_t *pmd;
->>> -
->>> -             if (!pgd)
->>> -                     return -ENOMEM;
->>> -
->>> -             p4d = vmemmap_p4d_populate(pgd, vstart, node);
->>> -             if (!p4d)
->>> -                     return -ENOMEM;
->>> -
->>> -             pud = vmemmap_pud_populate(p4d, vstart, node);
->>> -             if (!pud)
->>> -                     return -ENOMEM;
->>> +     pmd_val(*pmd) = pte_base | __pa(p);
->>> +}
->>>
->>> -             pmd = pmd_offset(pud, vstart);
->>> -             pte = pmd_val(*pmd);
->>> -             if (!(pte & _PAGE_VALID)) {
->>
->> It is not the same thing, but is this equivalent to if
->> (pmd_none(pmdp_get(pmd))) at this point?
->>
-> For PMD entries, there shouldn't be cases where pmd_none and
-> _PAGE_VALID exhibit inconsistent behavior. I've observed that
-> pmd_none is widely used in the SPARC architecture.
-> 
->>> -                     void *block = vmemmap_alloc_block(PMD_SIZE, node);
->>> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
->>> +                             unsigned long addr, unsigned long next)
->>> +{
->>> +     int large = pmd_leaf(*pmdp);
->>>
->>> -                     if (!block)
->>> -                             return -ENOMEM;
->>> +     if (large)
->>> +             vmemmap_verify((pte_t *)pmdp, node, addr, next);
->>>
->>> -                     pmd_val(*pmd) = pte_base | __pa(block);
->>> -             }
->>> -     }
->>> +     return large;
->>> +}
->>>
->>> -     return 0;
->>> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
->>> +                            int node, struct vmem_altmap *altmap)
->>> +{
->>> +     return vmemmap_populate_hugepages(vstart, vend, node, altmap);
->>>  }
->>>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
->>>
->>
->>
->> This change introduces using vmemmap_alloc_block_buf() instead of
->> vmemmap_alloc_block() seems to introduce two new behaviours that was not
->> in use for sparc64 before:
->>
->> 1) Using altmap_alloc_block_buf() for a non-null altmap, that was not
->>    used before. Also the fallback to vmemmap_populate_basepages() passes
->>    on altmap.
-> 
-> If altmap validation isn't required, I can retain the original code
-> logic by setting altmap to NULL.
-> 
->> 2) Trying sparse_buffer_alloc() before vmemmap_alloc_block(), which was
->>    not done before.
-> 
-> In SPARC, sparse_init() is called to initialize the sparsemap_buf.
-> If the SPARC architecture doesn't support using sparse_buffer_alloc,
-> we can remove the sparse_init() call path.
+Hello,
 
-Thank you for the details.
+syzbot found the following issue on:
 
->> Neither the commit message nor the cover letter touches upon this. Could
->> you elaborate here?
->>
->> Given all the (at least seeming) functional changes could you share how
->> you tested this change?
-> 
-> My original intention was to help architectures adopt more generic
-> kernel APIs to reduce maintenance costs. However, due to my lack of
-> physical SPARC devices, I couldn't perform comprehensive testing,
-> I've only verified compilation correctness based on code analysis.
-> I sincerely apologize for this limitation. If you have access to
-> physical SPARC hardware, could you kindly help with testing?
+HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=119ddd52580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
+dashboard link: https://syzkaller.appspot.com/bug?extid=de14f7701c22477db718
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b44da580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1537b8da580000
 
-Yes, I have tested v6 on SPARC hardware.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/09145161a8a9/disk-b84a0ebe.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b64c254e474c/vmlinux-b84a0ebe.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a7c33f5f7f45/bzImage-b84a0ebe.xz
 
-Cheers,
-Andreas
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+de14f7701c22477db718@syzkaller.appspotmail.com
 
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 1 UID: 0 PID: 5994 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:folio_test_anon include/linux/page-flags.h:718 [inline]
+RIP: 0010:zap_huge_pmd+0x7b1/0x1030 mm/huge_memory.c:2463
+Code: 08 00 00 e8 11 e0 92 ff 48 c7 44 24 10 00 00 00 00 4c 8b 3c 24 4c 8d 75 18 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 f1 43 fc ff 49 8b 1e 48 89 de 48 83
+RSP: 0018:ffffc90003bb7550 EFLAGS: 00010206
+RAX: 0000000000000003 RBX: f000000000000000 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+RBP: 0000000000000000 R08: ffff88807cc9802f R09: 1ffff1100f993005
+R10: dffffc0000000000 R11: ffffed100f993006 R12: ffff88807cc98028
+R13: fffffffffffffa00 R14: 0000000000000018 R15: ffffc90003bb7ac0
+FS:  0000000000000000(0000) GS:ffff888124ee0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000000c0 CR3: 000000000e94a000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ zap_pmd_range mm/memory.c:1990 [inline]
+ zap_pud_range mm/memory.c:2032 [inline]
+ zap_p4d_range mm/memory.c:2053 [inline]
+ __zap_vma_range+0xa82/0x4bd0 mm/memory.c:2093
+ unmap_vmas+0x379/0x530 mm/memory.c:2162
+ exit_mmap+0x280/0xa10 mm/mmap.c:1302
+ __mmput+0x118/0x430 kernel/fork.c:1180
+ exit_mm+0x18e/0x250 kernel/exit.c:581
+ do_exit+0x8b9/0x2490 kernel/exit.c:962
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1116
+ __do_sys_exit_group kernel/exit.c:1127 [inline]
+ __se_sys_exit_group kernel/exit.c:1125 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1125
+ x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdd0b39c799
+Code: Unable to access opcode bytes at 0x7fdd0b39c76f.
+RSP: 002b:00007fff630f1d78 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fdd0b39c799
+RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000003 R08: 0000000000000000 R09: 00007fdd0b5e63e0
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fdd0b5e63e0 R14: 0000000000000003 R15: 00007fff630f1e30
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:folio_test_anon include/linux/page-flags.h:718 [inline]
+RIP: 0010:zap_huge_pmd+0x7b1/0x1030 mm/huge_memory.c:2463
+Code: 08 00 00 e8 11 e0 92 ff 48 c7 44 24 10 00 00 00 00 4c 8b 3c 24 4c 8d 75 18 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 f1 43 fc ff 49 8b 1e 48 89 de 48 83
+RSP: 0018:ffffc90003bb7550 EFLAGS: 00010206
+RAX: 0000000000000003 RBX: f000000000000000 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+RBP: 0000000000000000 R08: ffff88807cc9802f R09: 1ffff1100f993005
+R10: dffffc0000000000 R11: ffffed100f993006 R12: ffff88807cc98028
+R13: fffffffffffffa00 R14: 0000000000000018 R15: ffffc90003bb7ac0
+FS:  0000000000000000(0000) GS:ffff888124ee0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000000c0 CR3: 000000000e94a000 CR4: 00000000003526f0
+----------------
+Code disassembly (best guess):
+   0:	08 00                	or     %al,(%rax)
+   2:	00 e8                	add    %ch,%al
+   4:	11 e0                	adc    %esp,%eax
+   6:	92                   	xchg   %eax,%edx
+   7:	ff 48 c7             	decl   -0x39(%rax)
+   a:	44 24 10             	rex.R and $0x10,%al
+   d:	00 00                	add    %al,(%rax)
+   f:	00 00                	add    %al,(%rax)
+  11:	4c 8b 3c 24          	mov    (%rsp),%r15
+  15:	4c 8d 75 18          	lea    0x18(%rbp),%r14
+  19:	4c 89 f0             	mov    %r14,%rax
+  1c:	48 c1 e8 03          	shr    $0x3,%rax
+  20:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
+  27:	fc ff df
+* 2a:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1) <-- trapping instruction
+  2e:	74 08                	je     0x38
+  30:	4c 89 f7             	mov    %r14,%rdi
+  33:	e8 f1 43 fc ff       	call   0xfffc4429
+  38:	49 8b 1e             	mov    (%r14),%rbx
+  3b:	48 89 de             	mov    %rbx,%rsi
+  3e:	48                   	rex.W
+  3f:	83                   	.byte 0x83
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
