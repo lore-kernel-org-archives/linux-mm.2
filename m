@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9664F1077609
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 19:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD6D107760C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 19:09:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 083BE6B02E8; Wed, 18 Mar 2026 15:09:50 -0400 (EDT)
+	id 73AC06B02EA; Wed, 18 Mar 2026 15:09:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05B8F6B02EA; Wed, 18 Mar 2026 15:09:50 -0400 (EDT)
+	id 6C4586B02EC; Wed, 18 Mar 2026 15:09:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDAA66B02EB; Wed, 18 Mar 2026 15:09:49 -0400 (EDT)
+	id 5DA666B02ED; Wed, 18 Mar 2026 15:09:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7D96B02E8
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:09:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 902C8138972
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:09:49 +0000 (UTC)
-X-FDA: 84560123298.27.74DF7AC
+	by kanga.kvack.org (Postfix) with ESMTP id 4EFC76B02EA
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:09:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1198A160121
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:09:52 +0000 (UTC)
+X-FDA: 84560123424.29.7ACA928
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A7EE8100011
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:09:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=PGFyI47g;
-	spf=pass (imf05.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+	by imf13.hostedemail.com (Postfix) with ESMTP id 662B820011
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:09:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=YNRPCRI5;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf13.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773860988;
+	s=arc-20220608; t=1773860990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=m0lXHU2lWcqrhkJQ99ARYJjJF2+Qcqk4dCFKUtuKU8M=;
-	b=R6yyTvUGshomlHeLiMrWJxqeSx8sNFaUdCUCneGss5ziRi3hsDi5uG/IEioVjT8a/Yrg1v
-	zGltQYP0ehOzGOIOeQAHjlDpUh4W9Sz+llTLJT5cpKKeXfyM8WLJ8r7SFTViyZY85eo+/h
-	CRkd3HuzhCczu6zjYSKzsnDDf4wQ5oo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773860988; a=rsa-sha256;
-	cv=none;
-	b=VmQ+bBgvtGlfVRHpct2NgiuVG1f7b90SBCroPDo7D8Wzo/YFZ7UfEPgNBan/o3xtQ/rCNg
-	8ggA7dy5AxEFmCKGuLmHmLexv2nJ8/1IGwmYqhcYnkhUSghMQNgu2MFtOkyiSXRem2wytY
-	p9HtAsR2jHoUfJ2mnsDk+LXQSAy62EU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=c5teEie7C3ePZgybh/X+lnNmt1q5goT5Jx00idPTCrA=;
+	b=6VA2lefi34mif2JHnEK/rx+WGb2Qjclrom0d4XFTJfVTEHRvRq5Z+3+8InYR/kVxxOJY8+
+	RJ1WntSEC3OePCcv0AUYKHgvXsH9yTnsXE0HKxqpkjrMtf/G0SfQupGZC4YwTijUvWo+ea
+	5RmkiWnwa0ER3Nov9y6omGXsemvg6QQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=PGFyI47g;
-	spf=pass (imf05.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=YNRPCRI5;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf13.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773860990; a=rsa-sha256;
+	cv=none;
+	b=frPPG0xJbViKd2WjxlHxDVTZRKbH04ydChS9MOxiGgu+7GpXUP54+SvzLRLC+lc4tMxGrV
+	7H1k2QyuB+QX37wCRxGInEf59FZhO46AhhytQQN7T3OniY9pmCrBLgB2820+MgIONzSlGh
+	nfMVdjykSGGTJUda66YQ8HqbjvfKo28=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=m0lXHU2lWcqrhkJQ99ARYJjJF2+Qcqk4dCFKUtuKU8M=; b=PGFyI47ggsVMStJB0225Z9/zCT
-	jsrAgwI7gWlppPGrC/7q5UDXcgm6qxgTNim7bit7Co+RdTxblE67sg5cfbAxAdVHZUHowMzMLf9D9
-	jvoyLR0mxEuNfhbcGtm37Tp4nDwC2kKAP+JchHVSSzYaTc3wDZbGdnzkmNSjePibu80o266dyRBNV
-	rFCsqGZrt+VaKR6ub5zjJPtDnfN4c5Ww7VhsqI4e+Bkf25szCet1HOPlFTvq7S4i4YZUwfkXrHk43
-	DgGf4d2GNVidQrAau8OaRqyKvlQM4seYAMCUdmKXQBeuvuh6hBxLO4R5EYNzMEEqnHkxerFSbBo0y
-	yRz/U9jg==;
+	bh=c5teEie7C3ePZgybh/X+lnNmt1q5goT5Jx00idPTCrA=; b=YNRPCRI57rf3zAqRC0P7QRYu92
+	p7mPCnkVq2GJl1vWixeCAsenGmp9lGyZantrZEIOtPonMlp9y2rbDcbvT7w3hP0MkUvi3TyHlNcxi
+	fsBIY7KIxgeCu31eC7xpDBAdnBetqAD/A8qVAp2yDuF0euH5Pfw8wgB3qg3PaqcTTjSQ3xTjs4eZF
+	Mk1oo5K6Wl9qqFXsXybx5w1hG1UWJrlH6sdhVCppR/IK+Z/T1f3miUeuZMQUKNo89wcK8tRgu5U81
+	s0sfBV4ZKKD1EEt+qDul1FlJUOpkOzPXuLTi0k5N87mfCBLMQ/kXRwGdYpuya1WnewsG2jw/6yzr6
+	soGTiMGA==;
 Received: from [179.93.15.111] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1w2wH0-002x5O-Ca; Wed, 18 Mar 2026 20:09:42 +0100
+	id 1w2wH5-002x5r-Ku; Wed, 18 Mar 2026 20:09:48 +0100
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -74,20 +74,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	SeongJae Park <sj@kernel.org>
-Subject: [PATCH v3 0/2] Small improvements to reserve_mem, 3rd attempt
-Date: Wed, 18 Mar 2026 15:56:31 -0300
-Message-ID: <20260318190816.1811325-1-gpiccoli@igalia.com>
+Subject: [PATCH v3 1/2] mm/memblock: Print out errors on reserve_mem parser
+Date: Wed, 18 Mar 2026 15:56:32 -0300
+Message-ID: <20260318190816.1811325-2-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260318190816.1811325-1-gpiccoli@igalia.com>
+References: <20260318190816.1811325-1-gpiccoli@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 662B820011
+X-Stat-Signature: xpn1kmo85gmsomsf74rxnt13jdcyhwge
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A7EE8100011
-X-Stat-Signature: rrd9eanraes6m57ck8q14w6f8utx1eew
-X-HE-Tag: 1773860987-751680
-X-HE-Meta: U2FsdGVkX1/bRGHAbkQEZz/DZDAYn7+ApJA6TnExvQJ9b91rIKaRuxNpWKX4IzEdaAIlfERsymiix7c/qWjajzRtG1MjotM0E07hwpzOIwt/4rL0YIuDm9PKXlFfCJ0ijk76T/abyxv1QdtsN5hysXYi/4L5XIDO+xpv0ycEluVj9dDuV7hN88ZT43RzpYqyG/Ky8UU+OQfP+9skP/CauOyiVcDwA9PgOkZGRgdOLy8ktqa+3R5AS9eWxBmwy4SBfp5q7qTBLLtkZudjhKsaoxDWgLi/yDLoK47a/sKU0HGgjC/G7ZivcODFF/17xc6sL0vfGkofYGjligw3rDKDTo03vOv762ewnBIn4/X3TdxqUj2Eur5l9umKNHQcBZEoCiaMkXDEgLhump+2+gB7BNvkySjG1qqZXVAXGyi6pVskJ5BkEXAbSyQzZ5p0zGcylcS4CD8UVEDUBvdWiOR8GPLEVkO6m8zQuNvgH5F41kWv9+bqN6Yi87SSVcAzKAQhaHtG01pc2s4+Nxn0twRT5UfEA/NSFHFuPSa+LhkiYp0AuPcw4tOZOc1sau8XUtUUyoDNDv0EKZiTRLeivykenpPiv1r17BIB+oKHYR2buMMzWvAnf01ypp+/xEWxUFIyqHSFcUvE4kcHBaWnpgSv2B5iolfDDLTyB/ZChzGOWfqcYsfv2uTNb5wIxaSP1XJUSbyTkiohUjvILG+dloYW5TmB19eUSY1nXFn5Buo7uN5matSuW/nvhP7t+vRHTmRDcg9T1lifJLzeo3biMTPJEbuSKWSAHoDFEi7RrJOmy//H0ohZjTg9hAVcgu+drtZ2ACO7V5w6+jeIFmL/uuBHvHoNp7FYeRTjDYd25vFakKN7ycnQdbRpVzE0BMQTFLMuyFymCAqgBOCvBfYwnHhPzIYAlAqLDUJl/WsKt58GkopOAeCmPBFln+RyEabuZ6tjhlnMhUab2liwGYyyKrP
- yx38ie9a
- IAMMBwkVvivUOrSfLDv30ppiGzS1eX0xgGTEbw1ShIlPpt4vLn2Afe9rKo06ZFBIpqedIW4tC/941BVRBANx3EKkXWWVsjMO3eNB/b3E51lL9pDT0TGk7gZ22MNEujE744hz3m7Y6EkbLPrwdk75+SlW38lAdUdCcSTbQxmqzdcnqR7LxszKQt3Vtg87lqacHWUC0XEbNDc5Ixh2NESqxpWMuT/MiEUDszh55eKzy1wojvl41t0ndT9Ahngl8ZYBAN3WMpfLtopWXEZaNzUcLENhXMkdbpZv5ZTMX7l6zarvspTA=
+X-HE-Tag: 1773860990-194458
+X-HE-Meta: U2FsdGVkX1+F/YhJtj0mCtthkMMlrDi8mmE9cY1wIxFfYM4GJpwfz2ONPfcM/sb1YfTgxptW0ud2BPxn/hARpkx8cks4Ic6OyLEygApY0Gb83vuw/u3QoEZqGfo0nhED171DSjtCYTylbgKONMg/vYGcXtIgo/BW1EmKvOw077VGK2WUGAE5S8frQ3Jb3K9npyx1KPdwTfP7JzQBA5OKPIE9i0n3OUI+4Us+TdWn4Gul/uQJ37kwbdYOb8e191R3Yn+dkz5IuakurS0y/K+2NLanE2LN/a6coKSe9TB9wIKjzP9l7XBQTgGcr3aiCpDLmrAgdQ+bBNPUbO6Y/T9EPj4TStK9obR7r/jQ3b8Yv768MQUJV0cMEglv/hVx3YgM8RyD/x3BSJrjRSdUf6EtjLli6Cnyz6GdlCCTTlE+LYbm5jzabQIimdMARkbqhBRbOO3ohVt4W5PK1HauGZeOya6ChseRWaKNZUZR1lSpq3+FyBu9DadWa4K6LAj2JOuE2b+Yb+/NImXouO3eb67kv5q6KKYvoPKxQtkc9cAI0guMmEwtj2rqqf4wMYqNZ+z8j2xD7b+Ju/wIVJi4EvhYfcy4JWwIdYXqUbkUdlhx66DqObq//6ihuWSFelB7vS8evFDHUnCZmai0kKS1lxpdx53lzg6HeqvdT4fF4fMvxp+RFVchf6KzOgiGyF7V7WfllUCv/kBKocyoapOERXTFtI7pxalPzt1T4qgkAreiX7L1wWtlm7+Fl+OPqNaob/P/yHXi85LtnKmEcM48+Vr/bEFTkDyHU8Eas0uUXndeVvbBDJUrHr8Ceg9t0StzpXMy9s3faJRHQMcRnCM5L8Adczx8fFAin2CxM4oDMAo9oT3U5cBFJGx/hTAVd60LshIgksH8e4emyz37yiIoTQ1WWSKpA8Jk8/4FSVqm3UPDpJWGb0Siy5lliRyPz3688ncl8DdW+WNErHmmxllwxLd
+ SQV/rTZZ
+ Qh2jkCFp2qDit+mHqDidlsqbQM9MMiP7UPt35ob+oAI/KlHk7TrwxGffxJVFcZcfEJjmx6uO4B3HcI5KWDUGlJQqZvhNA6meSV4jyhOpqc9RWxZGo17aeiErg+3F8iNDH4OJa77IkQAppDMEKMctBvH7sUBdCR3PxiYX+GGdnoBC0kXy8QIqLdGhPiMEuNkkuF24ErLAbRZWPXWo3OWjsqYazAIP+B/2YPFDM88a0rMnIot79iZxGYvbEgoh/gyR++jd0sIz1n7VLIpvmLcWUv2syzfkaqH6MW1C+QTCRamibrLlVZQpJAY+YVkHo3okvPWYwgJDDs4qKgnBhb2xS/N+0hOk+LfXl3x9AzRNgX3ANoQFVRObeP/kel3HWExUxvKaGfF+av7YxTGEBeYrB9xQNu6QyU0vFUBnrgtsg2L/OkKmRrUdZAMtf6KhmVJY3I5eY/z9AJgJ5tlY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,30 +97,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi folks, this the 3rd iteration of this patchset.
+The parsing of kernel parameter "reserve_mem=" is subject to
+multiple failures, like duplicate naming, malformed expression
+or even lack of available memory. Right now, all of these fail
+silently. Let's add some messages so the kernel log can provide
+useful information in case of failures.
 
-tl; dr: we are adding here error messages in case of failures when
-reserve_mem parameter is used, and also a debugfs file to show
-successful reservations, with name and size as passed in the cmdline.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-More details and history, please take a look at:
+---
 
-V2: lore.kernel.org/r/20260304203300.1414286-2-gpiccoli@igalia.com/
-V1: lore.kernel.org/r/20260217195816.861684-1-gpiccoli@igalia.com/
+V3:
+- Removed unnecessary blank line (thanks SJ!).
 
-Special thanks to Mike and SJ for the reviews =)
-Thanks in advance for suggestions / reviews.
-Cheers,
 
-Guilherme G. Piccoli (2):
-  mm/memblock: Print out errors on reserve_mem parser
-  mm/memblock: Add reserve_mem debugfs info
+ mm/memblock.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
- mm/memblock.c                                 | 83 +++++++++++++++----
- tools/testing/memblock/linux/string_helpers.h | 10 +++
- 2 files changed, 76 insertions(+), 17 deletions(-)
- create mode 100644 tools/testing/memblock/linux/string_helpers.h
-
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..ac08d7f8c15e 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2642,23 +2642,25 @@ static int __init reserve_mem(char *p)
+ 	int len;
+ 
+ 	if (!p)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Check if there's room for more reserved memory */
+-	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES)
++	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES) {
++		pr_err("reserve_mem: no more room for reserved memory\n");
+ 		return -EBUSY;
++	}
+ 
+ 	oldp = p;
+ 	size = memparse(p, &p);
+ 	if (!size || p == oldp)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	if (*p != ':')
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	align = memparse(p+1, &p);
+ 	if (*p != ':')
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/*
+ 	 * memblock_phys_alloc() doesn't like a zero size align,
+@@ -2672,7 +2674,7 @@ static int __init reserve_mem(char *p)
+ 
+ 	/* name needs to have length but not too big */
+ 	if (!len || len >= RESERVE_MEM_NAME_SIZE)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Make sure that name has text */
+ 	for (p = name; *p; p++) {
+@@ -2680,11 +2682,13 @@ static int __init reserve_mem(char *p)
+ 			break;
+ 	}
+ 	if (!*p)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Make sure the name is not already used */
+-	if (reserve_mem_find_by_name(name, &start, &tmp))
++	if (reserve_mem_find_by_name(name, &start, &tmp)) {
++		pr_err("reserve_mem: name \"%s\" was already used\n", name);
+ 		return -EBUSY;
++	}
+ 
+ 	/* Pick previous allocations up from KHO if available */
+ 	if (reserve_mem_kho_revive(name, size, align))
+@@ -2692,12 +2696,17 @@ static int __init reserve_mem(char *p)
+ 
+ 	/* TODO: Allocation must be outside of scratch region */
+ 	start = memblock_phys_alloc(size, align);
+-	if (!start)
++	if (!start) {
++		pr_err("reserve_mem: memblock allocation failed\n");
+ 		return -ENOMEM;
++	}
+ 
+ 	reserved_mem_add(start, size, name);
+ 
+ 	return 1;
++err_param:
++	pr_err("reserve_mem: empty or malformed parameter\n");
++	return -EINVAL;
+ }
+ __setup("reserve_mem=", reserve_mem);
+ 
 -- 
 2.50.1
 
