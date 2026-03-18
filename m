@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BCDD1077612
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DF311077614
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7900F6B030F; Wed, 18 Mar 2026 16:13:09 -0400 (EDT)
+	id 419D86B0311; Wed, 18 Mar 2026 16:20:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741006B0310; Wed, 18 Mar 2026 16:13:09 -0400 (EDT)
+	id 3F1166B0312; Wed, 18 Mar 2026 16:20:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6566F6B0311; Wed, 18 Mar 2026 16:13:09 -0400 (EDT)
+	id 32DEB6B0313; Wed, 18 Mar 2026 16:20:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 53EC26B030F
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:13:09 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 000F0B6391
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:13:08 +0000 (UTC)
-X-FDA: 84560282856.16.CF7B859
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0C57E18000C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:13:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BfTCnSMq;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 246E76B0311
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:20:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D043E1B6E33
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:20:48 +0000 (UTC)
+X-FDA: 84560302176.15.4C99F11
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CD3ECA0005
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:20:46 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AGPJdqR8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773864787;
+	s=arc-20220608; t=1773865247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8S68DA/9ME5Lv59GmMoHWUV46BnyFgsIWC59IN4av2k=;
-	b=V0dQo98XBx+h+DsCPWHRRn4CNWNKv8dvKMWH29YIEvIyNOsEcLJY9h+fvOXOETUEkvdqCS
-	rgnNREX4Z3cJMr0TAQ8Tu6/YlKrBEvXlKO20NgduylGJeToa8ZeZtHu9wRYU+1DCXteKsj
-	0GIV70mGjNb3xVDmFN6rjQvRiIq1p/4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BfTCnSMq;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773864787; a=rsa-sha256;
+	bh=Bxij6mVCRTnlUykaXUvSflJ+OI3kIm5C5tdfjXoBy0M=;
+	b=LUyY+EH2JKM1wn1iqb6bbMgQhrelvY6SP8sOvmsh7c6mW1H51cd+ZN/1ig+7lGvesoMwR9
+	/+IjsrWVUrpST+VnQP3rI9ZFQXA2lxaDT2SUkZmzr1Vgan72kp6R4JDKfo0yvRrFs7G/MM
+	0fr5fP+sheDiW6uGwQ0dORZt26lCz64=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773865247; a=rsa-sha256;
 	cv=none;
-	b=m2fovnuujmaQJ7rQsrQ7Pp35gnYyunCVV5LR6SaiozkL7cSwwZ4Kji59saka1hg8PZPfIQ
-	flLPlHE37EWSHc7zGAvdVSLfR6Lv7PtFKHFnV/HClbXEZiha8KyMzJ3nuo1+6tMiYehw2A
-	17uIkevveXed3P+RKgXwBtjMsKCl/Hg=
-Date: Wed, 18 Mar 2026 13:12:56 -0700
+	b=e9AiEQsn+WwYf+I8Mmsy5s52Uepd0in3RlznpFT4DxpP2UYY0uZqxvalm88OksdGNaF90T
+	KbEwFUgtuB3Q1+zPqiUAcp/0Dz/9Vu9uF/rYaO/9mXBNVMrlvKqL2xlQMJq37rGrhW322w
+	VlOh3QlsXXLLl+PwTN9VsYClGefNAzo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AGPJdqR8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Wed, 18 Mar 2026 13:20:39 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773864784;
+	t=1773865244;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8S68DA/9ME5Lv59GmMoHWUV46BnyFgsIWC59IN4av2k=;
-	b=BfTCnSMqJYyl4URiq5AlrUuWV/Z0vub4mgczj/BcqbocIUs2nytukQZMA/lejIMPfjwDTF
-	GGv8kiQsCohZhRGkdCkKOFTFNiL31rSqDWWXSkAOKalq7KLpLHSI1klibeZd71D9QX9j3u
-	bN3b3HZ14/I8SWIIKL8Rh8LR0rUJzNg=
+	bh=Bxij6mVCRTnlUykaXUvSflJ+OI3kIm5C5tdfjXoBy0M=;
+	b=AGPJdqR840yx7hCYhDNUHhQbLZXhnhtqWDSzOrzyNM2g/ftgiV05r8G1Eznli34ZBqo3qS
+	ieBww6a5LWJpQcvU04CklRPkuEuayZPvE8sM4JbsKBaB/F3Qw4ArY+LsWJvgvxJ3DxaVqd
+	QTmyYSxQkBVFhFvvfsa7VqX60mWwGoE=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>
@@ -66,24 +66,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
 	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/7] mm: list_lru: lock_list_lru_of_memcg() cannot
- return NULL if !skip_empty
-Message-ID: <absHLnVKCSUO_noT@linux.dev>
+Subject: Re: [PATCH v3 3/7] mm: list_lru: move list dead check to
+ lock_list_lru_of_memcg()
+Message-ID: <absI-U8-3c63pCIT@linux.dev>
 References: <20260318200352.1039011-1-hannes@cmpxchg.org>
- <20260318200352.1039011-2-hannes@cmpxchg.org>
+ <20260318200352.1039011-4-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260318200352.1039011-2-hannes@cmpxchg.org>
+In-Reply-To: <20260318200352.1039011-4-hannes@cmpxchg.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 79a56ngr1jfg9sopyxrwz8qyu1tqe78z
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CD3ECA0005
+X-Stat-Signature: pahztzykqwzbcs7q1hxgztmd7cyfum6x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C57E18000C
-X-HE-Tag: 1773864786-705323
-X-HE-Meta: U2FsdGVkX18ID44wwxPSeOaolAAWqiTBS80EtdCugllwCzqIMVbuIcEXc2hYCCZQ7WjSJi/GV506DMoewEMnJCuUCdGm0ooZy78LQDF+Pu78ZJyHA41AJG265/XB5cbcV4iupqwvCSPNt3bGzFq1Hb35o+pKoJRPMcX1VLryqHP7+IluGTHJYu5aK+9U/Kxha9MwvjIFMzKcdOznRfgxXk5trcJpzZDtlhNblxEVEEfPjU4dLzQ5QiNHW2PnHdqFXVWZM1fY1ymFQbvywozP8nTwUtB0B2NCWwcKEuAdpworUb3EQWuF4HgpRZgkWjyR9xPuJWVptFMyfhhtwVE9NJUyDY5uSHZi/cVzdtOoH3ZrLWwbtnfs1V+UI/NsW3NtXEWbzsKx7Ui2rd24Rw+nqDUHT3ZlV712/9L7NPhmXeggJkO5jJG/J3zC9f7yXgFtNMwzbomZ5tBfkOB88DiBFwAfxbyFhoAyOX/b2Ry39i4Hd2haKZTRy3ZZw2KMaCmN57jGTvXeW7OI9GlyvG7qR+DKcEht/OifsxRrTvVxzd0lxEUhX5e9/kQZFUmF67GQgxzfKJeFCZu6xUs2ri/XcmzPsd+NcEjGM5Ig6hwUeEjnPMDt+VF7WW/0SzacUN9i75zpDG8GP6RM2vElmMBSp5pF36KbXI+Ms0odeHkh7jnrHvKolCg9aBqOYWegoHb1dMbSnGE/b1q/QDnc3mZl9BlnLZAXqT04OMWoT7nGVD+o95Pr0yCSprjC4FkV+j2y0sBkTVCCS+44Z0qJbA2JFuLTMAsY4Z/WDLQO3UeuvdbiVPzN1whGye+PJYNOx7PHLFfRNZCelS518/16zwgLS0bRTViOIDRWEDyEuspEPG3iw7cy7mcqjnimVW/efy4UXXWw1Ghk+B+lk4ufAEonyRhReIriaFB2SXhm8wmFJSbEj6F1oylCwq8T5rykccbzTR0owsBqECWcjuf8hOL
- UY+D2GHP
- 3lW8qx1Ehddzbu/JhlnSWOccZfl0+t4w1itI9lEpWJyMjwuk4v38szb+WAg+W3LWwY/6EKG9KxJUELxK77613UPpWeOrQgPdWoUshYp3AxcfyABw/agsmIdX+h58Jra/VPH7WqyRNAhLKmkxpBAu52Qz3JbOcKjnhNaGRZ260365opl1eYCNWKCttNx95/X3zr1E5MWaz4m0MT5cLdBLPpP+YMX4njFpazh5lL3BbeAWMpq3PIUKLSHA3pb0jCGV6JYcATtroM6zNrRMBoVP5o7gjF4ZmsbYMg0DzJViLPAzrwNcHn2kdUJJvgTdvY0+8I29xZb840c5qF4JohJ6UstozrIziBUnYh82jLeayxBDxyMJR6sNhHeTBQG+bgY8mCf5L
+X-HE-Tag: 1773865246-4970
+X-HE-Meta: U2FsdGVkX192Twt0D+Vsa8GSAv4CUBKQIcnsBog+SBEY5JiP5Z2BpadzrvVSh49QQ1huXMQ2FeeodyEj/OI1nNPwxtpMRKh4QhjlZEmJHk87Hk3GWfuAVDsq+8XNSUo3JQbrngK7nQynarmGR4IvqEm2WCsX7YFb9qC+Bp9gNWB7DFzpp6I+RW6MjI+GUXHxeemZwFzrE/XyVfNmgFiKClJ8VKvfpKyREdeFTkzWl16umXQxJjLsS2XziLN6MSeYAMQ9ahsd6YON7qHgjN8+7xBJeBm0cipTptvVe64/Y7+e7oKUNrnD6Zc8bFPcBjmRINeDbWz8lAhXpBraVA3oZ/TwLhpoCMO3+Ws9baYXhh38pC2AnhRGF2pE7QnNde0wBq9K0S/iDC1Yk5mZw6hBoDgD3ajpawOHdj7FUWshoEhJYRH1cYeUVfyGd7va+4BNIl/p6p7DLV+FLguDFBn95acfXWxowenaiaf4pMLIYcxDhY+/b5eglrtKIJI7PaXNDYdO3gK4j1rGau3Qy7mmYAVisAiBhaD+w5ZOD31d0a7j5G804kbgD4czXGFmQPnB+zWVhMH+X/6EmkI2b/J0q0+f2J7WbHoujlky//2k5pOYTPk0270bmzkdCuwQSjeyX1yGx9SMwcdZZDnTtjNnIVwG8CuFWWXi/QBD3iLvOh0KP+B9f0s/X+AUP602UOjlWmOw/knWk9kDUb+5StN2JhNRzC0NRYwWAhuJ/UkWe0ZDt8vYLEpVBv1Wf5ZxgfY1aj/YrFRSOIEAVa7aVruww1Mpfgq2nOmzFEpyALjoE13mlZK7DKSqTBLOZqgIrS5x0I98iAbDE9HIxGH73BJ2cLCe5wp9xB125Xdx9IFqPXe9WylbPJLytuMjkvnnj4HYtxsBvnqIzCH8osjO1NaOURI4ufgD+pUTF7j7xV6o+TB7PLAC8TqxdeMY6piCX8Jw49fmhHHUXj0aPdg2Qn1
+ VKZZBxB5
+ RHbOjmXpRDCSlVfU1m/Jw9DmdOs89Ktfp2DtHLIXpugydQ57AIb6XwF0kT1kiDp7drfUDDs4RoPFjHod4p7CtI0mVV/m72sNlhyhoIjivovv7wluyrg1zP3lMDSUwj62Ct1VMj/zoxINZAIVwMPp1u+ZasvrqegXDRTFn6cElVQDb3FtJ9wavVinFiPrBxV45LwiNCHhrEaYp6dHkpf2wBkRJtSKwUQj60DDBKKS92b5/QXPWBg+C0p1bARPbuYHcTFr7ede3oAoQFwFLVhnxcrPG2jWPkygVXZ4MF8hWzvCa7witSfkjoVO+swXBRuOlfBIv8ZHLx0qtO5bksJjnHbbltg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,14 +91,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 03:53:19PM -0400, Johannes Weiner wrote:
-> skip_empty is only for the shrinker to abort and skip a list that's
-> empty or whose cgroup is being deleted.
-> 
-> For list additions and deletions, the cgroup hierarchy is walked
-> upwards until a valid list_lru head is found, or it will fall back to
-> the node list. Acquiring the lock won't fail. Remove the NULL checks
-> in those callers.
+On Wed, Mar 18, 2026 at 03:53:21PM -0400, Johannes Weiner wrote:
+> Only the MEMCG variant of lock_list_lru() needs to check if there is a
+> race with cgroup deletion and list reparenting. Move the check to the
+> caller, so that the next patch can unify the lock_list_lru() variants.
 > 
 > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
