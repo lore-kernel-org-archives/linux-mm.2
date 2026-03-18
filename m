@@ -4,175 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AF310775EB
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 17:36:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58FD10775FC
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 17:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E2E56B02C7; Wed, 18 Mar 2026 13:36:19 -0400 (EDT)
+	id 11B186B02C9; Wed, 18 Mar 2026 13:48:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA766B02C8; Wed, 18 Mar 2026 13:36:19 -0400 (EDT)
+	id 0CBC16B02CA; Wed, 18 Mar 2026 13:48:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEC456B02C9; Wed, 18 Mar 2026 13:36:18 -0400 (EDT)
+	id EFD8B6B02CB; Wed, 18 Mar 2026 13:48:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBDFE6B02C7
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 13:36:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 999351D6FE
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:36:18 +0000 (UTC)
-X-FDA: 84559887636.24.6B85131
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012037.outbound.protection.outlook.com [40.93.195.37])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9F56340012
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:36:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="ISac8f/s";
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773855375;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DAFDB6B02C9
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 13:48:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 931F9BB859
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:48:04 +0000 (UTC)
+X-FDA: 84559917288.20.E7B4F0F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D05E3120014
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:48:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jzROPGVp;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773856082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0mQQaMZU0DTE99t6jVs2NEo3NyBoCnGRw9BbPAjCGMs=;
-	b=BE2HmNREC4pRZtytMoA7tf4LiHZzdtXSk0+DAFjZMEA87sred33cDMnZcX4xNT9Wo3DjzG
-	3SRkNP2OG6piCjxD43YOKshAeP0vJXyLpcJdU+2pNBNBIdidg5jrgO54QH8aoF2ZYUTnhC
-	UnRy1UIuX6GL8DvUBn1jlMZFtgBiZd0=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="ISac8f/s";
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773855375; a=rsa-sha256;
-	cv=pass;
-	b=sdQtkiLReypKaAx5QJBAwEFiVB6LJOVCwTY+II5WX66D9RAXs93JL4xbOijyltigFcddIu
-	RVoDZnyzug/7yj83078LYDRwULpNtw7R4TmPN8r3YvZHC5WDXtF/IpvVPKVYlyrjrwj851
-	V89SfDfox+J5ggxC7qPn3DLTACo8ogM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZkaU8FpoYZiQxNG042QhLkeDLv5LRJ4bCaJCQZSOUwQ+XlFk1TXK4z7bp7HDw5LqrV7SiDGmpS+IA45Cs3tbIfD+oXAwp088tbD3STTtxfiWRk8mvftExQjufFou8la0cC9uY9aJDJrIo9TMBHDkoE55BqFZ4AbZySYKvcW9iJFU1EQy6Z+TOte2W5CVNhiZB+AV9UeGanEEoOb03goCnGTTLTDuKhP1ztg4HFYYNGbbnRrEmDZCcgWlzJ0XpdcMUMOa33bM3VFBgiDGlMVUSdlX17xX6LG9+orMASqCoKL+bhflBVFU5FlCKp5EbU39xTDrtz012fBJvLgYvqL6jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0mQQaMZU0DTE99t6jVs2NEo3NyBoCnGRw9BbPAjCGMs=;
- b=PkTBCNuu8pWwBv6bx+UjZQfxsbij+P1Qqdd/HoPd40EagYj//iPCcujuf9ZMHUxFnlRBquFcKx5uRUWX7P4TwQC63wCJxCgT7nWwhxc0h5Rj8RuDQdaLVvmud4bD6D8onCA+k/Au8tbep2h5s5Gec3SPg5NA/gX6wqywgLm+psreCuOxWmxIIt2o5cqNkLpW6gzeSAdIRRIYnpzEhJ4yPz+msIi7iw/sBh0E1lxSAHiJchig9/XdLLdCCDw6befaf3TN6DDmFO17LgAmP8lO09vvnsbR78e/Zsr3SoyV+hEcGScOM5EZP9zwiMpdSsDcICQ7EFhtizzeyfP2nMdf9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0mQQaMZU0DTE99t6jVs2NEo3NyBoCnGRw9BbPAjCGMs=;
- b=ISac8f/sA8Y9WdWm4l/NGMwYNdOZnMRw8T4sB65TZ0mt1SgoDtfyVXWVD0zLiHeQPieszWMKSFf9iSixSWtxGZQ0o6RqJezemuJScOvO0ZIlV2CI8l/g5iNvmmBRGe6J/iaXPmsOvDnyk7lzjI+00Cq+XjLcUUfdf8RbLyXF0eHkaHsutCmjYXoDegXU5rfps88A0i9LnynRzJgeFQ+X9ie1SWwESggjYt9WltNu/xpYtOWsfLIuarNPHsP6mlQoQ5hfk/ViSxL79dq+o7TT3e04xVbgL3Y24z7gyMCQpb3p0xacubevnW50tAiKYOTAM7OVbLHT4RUrgqD3+T9/Dg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- BN7PPF5D27497F1.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d1) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 17:36:11 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9723.016; Wed, 18 Mar 2026
- 17:36:11 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: =?utf-8?b?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>,
- Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-Date: Wed, 18 Mar 2026 13:36:07 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <58A8B1B4-A73B-48D2-8492-A58A03634644@nvidia.com>
-In-Reply-To: <CAAi7L5fvUPUqd3A4m6wubeYh90NH+S2KBRE1R8WKerBYhkU8kg@mail.gmail.com>
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com>
- <AD9E1B18-C813-480E-894C-FEEB51EE8A93@nvidia.com>
- <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
- <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com>
- <CAAi7L5ex+66qgFzRkLDbuOmC=cVrMyBctPZv6wd15n1rc2U9KQ@mail.gmail.com>
- <0D1F59C7-CA35-49C8-B341-32D8C7F4A345@nvidia.com>
- <CAAi7L5fvUPUqd3A4m6wubeYh90NH+S2KBRE1R8WKerBYhkU8kg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BYAPR06CA0071.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::48) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|BN7PPF5D27497F1:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a7a3abb-5a4d-4766-3102-08de8514d858
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|18002099003|56012099003|22082099003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	j2xX4yvF+fKqcTej2dZSYkxf/mG1RdWokEKsk590lXTeXY20lknPJ74r4/WEwCfP/fuyAiDSJLxZR7uZnseJlrGGg+13NZqBJ5+FmJsKTqdseZuYzvHhsEd7IkTwC9EykxaCzzcfT7AlLfvJCPrA/R5RxL560amt9tQ4ocvV62QLAVhsRR5qmQe4M0FaJ1CCsrmN6v55qnhxBMibJtS1G9zJDWLvNE2bvGpHTBB1R7c0zVlWWHsgsgI3czNJXN7/9kWSqMclxHA8qKBvZjgqz4UhxzcfmQWyqJU2QxtX97yJHE5xBPW4XF73Qsmu2PSpWuvuZPtCGiZNK68sk3FNAvkm1jJ/VuLD7D6FLRh5+haKHyPxSV4VFc6mCl/oV4D1c/C53ws2BzD8D9sqCG0E6JTAWik0jgrcdEnWjRr0dQhnosq/iiqJeXmpIEGwdsFPCMBSGckB3va8Z2tdQX1CrobeHsWg0OVwEcyEYUBk+0cGkGbT1pxaGDwuEuuuIhHHBVjTf6ZGlhndWLsA02ufzVmyC5vbtj9zhIHPcKL3e2DK6HOeveac2bYJme7KdZ1g2dZgJ+ZtX0MIX/+PeZWxnI9MLCrFE8mLingpwp4rWbiUTdTEb+M7X7OO/FdEgD2wgbbWh6SYXykt/cKdIjB+hmuC0xT/YL1V+RpHAb/wbhxW703+P4edv4o2K2HRJ2YB4BKNXu1meB4MU1Zq2xvuqgIev4PSQrNcmzFiy+PTVSQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(18002099003)(56012099003)(22082099003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WEZrWlZCd3djLzI4b1NSbjRqYkhac2U5dUgxTVhRc2s5Z2V6SXE3YzRIRmZh?=
- =?utf-8?B?UU5nS0JGNnQ5Zng1OEJyc0dkY3kvYkhITHYranlzNlNuZ2ZZRFNYZlR4UjY0?=
- =?utf-8?B?L2dQOVA3NkF1TjI3dkswYkxsWmVEM2xSa2hLL1F1bUxQUzJCaERrb3J1OEZV?=
- =?utf-8?B?ZDZlVzlxcVdLRFhwTjYzRXlUS3FBTGh6dDBqM09VVDY0bFM0K1R2SCtmU2tr?=
- =?utf-8?B?cnRxVG4wVVI2SkN1RDlUckh2UnNxTFFHMGtScHpOSlNPOHlpNTlIQ1krNk9r?=
- =?utf-8?B?MmtYOXBSdnpTWUVHMHBzbGd2T0NmdkdGRUxoVWs0VXBVY2V4eGtTNzI3R1JF?=
- =?utf-8?B?K3dNSENLNytTRUd3RUxQNkFiQTFCNGViK1RCeGN1enc4UGVORVVpaEttenln?=
- =?utf-8?B?eUU0cERvdExtUERTOFFETWhSTFU5TEQxWG1RMmd1eG5xeEJ5QXN1K0RZUEtu?=
- =?utf-8?B?eENDa2tLM205U0Fta3owbnFYZ2JaNGw1UUhSZDhId2tUSytwVUo4RzBBZmRG?=
- =?utf-8?B?YWVUYVByOVVFbnBiREFtZkQwcjg1UWc2QU9GVVZiMEtXNERTaXpheURZTUd5?=
- =?utf-8?B?YTFvaTV0aEJINEpySGhoMU1Vc0hrTW5icTI2WGZRSUhWeDlHc3JUeVcyOVNR?=
- =?utf-8?B?Z2huWVMvQm0vZ3pGYkx6THVvRVZlTHB6Q0NLMzlxMkhTY3Nhcy9YcW1zanVD?=
- =?utf-8?B?clJTeWl5UkIzaHVNWDNnWEFvZTdOUThIcGhtWmRKLzVDY01QWElsZEFXVG9J?=
- =?utf-8?B?amFLSUN2eEx5THNDU285amhwbmliOVB3cUdlU0p6Yk5ZeTNrVGtKNXFQZ3Vn?=
- =?utf-8?B?NjEySjZBOWJQWGxjZ1duTEZXNjdYRzNhN0RjRm4vZlVlTVFYb2JSdHp5OXRp?=
- =?utf-8?B?b1NMM1huTlFCMlpnaXVQT0RVb2Zab3B0cTI4VlVrT0lMYS9KVFdrSVZaMEZ6?=
- =?utf-8?B?V1p5aVoxVjlSOXlJYVVoeExNUUpyT21SNm5PRHRXeXc0SUxGSXhvbGN0YjVv?=
- =?utf-8?B?eko1c0ZWRXU3Y0FBOHdSVWpvbEFlMzRrbUlYV0ZUVDdGVDJkOUNSU1psRlZS?=
- =?utf-8?B?MFcycTVjTjlzdUwyUEV0cCtYL2tvSzVVcjVqQzJHSzVhUWUyazRndnc3ZUM5?=
- =?utf-8?B?c3NEM2dGYlovMytPMkpVRUtITG05dlBXamFnSUtrbXBRY2VYZVRKNnJPV2s0?=
- =?utf-8?B?QU1MZWVReS9sM2l3ODROck5GNDkzUFhUakRINEhNamE0NExLSjBJcEVvN1A5?=
- =?utf-8?B?ZzZVMWRYYTVISlZZVkkyQWhUdmoyZUo2VHhnK3ZwZUZmdDRjTC9LcmpXQTht?=
- =?utf-8?B?MnNsUTFPeHZ0QWE2aGhNVU4xSTRFSkJ5YklMRDBrNkRzVThqd3J4ZnBWU1I3?=
- =?utf-8?B?SkhlN1JXZUlzYWVETXdZREJqWktlQk1TVzJuV0RyTjFOeCtva0ZaRzNDUWRk?=
- =?utf-8?B?U0xkYWFmdVRVZmErOVBxb2h2eUh0MTFFYTlYNm1tU0dBMmdJYjBRUGZ6R3Y5?=
- =?utf-8?B?ZE9DTXYzVFJRWjY0OGNGemM0TkUwWDl1UkJpVEpYUytXa0o0dEJtVlpoRG5r?=
- =?utf-8?B?aXBqWFhNQjlGaCsxRDVGcUk1dnlac1VneEJmMEJFKzhJeGhwWWRSemxWeGN3?=
- =?utf-8?B?ZjZ1T3RCRVN6S0MrZHNvSU52ekRXZWVJbnkrcks1Wk5FZ2RNZHpKc291eS9L?=
- =?utf-8?B?RzVxTUp5aE1MQUNJR2VlMWxza3pRc2ZjcThqNkxDVVlhWmxZUzVSeG0yQTVN?=
- =?utf-8?B?azNYd3A3TUlZaXRNVnBmNStVbEVnU3JGY0ZZeHRNZndYL0ZMWGc1WjlCdS9z?=
- =?utf-8?B?YmJVYWo3cER4NGVBYkpud1A3Rlh1RUdZWURJL2EwQW1NUGcxc0RLYVYrSUo4?=
- =?utf-8?B?T1R1UytDVG0wdEhKaTdNSUFoSHZPdG5sa0pNMGNjaHcvUDJtMm5NMTduaDhW?=
- =?utf-8?B?ekU2bnA2Z0pjOW5aZzhHMTNxTnVFMUE0UDhQbWRmVUhvSUxTb3cyNW9FVjU4?=
- =?utf-8?B?Z2IyNjAybWRVMnVMUHBjUWpGU2lXUkRndi9aOXdTbVdOMXREL1ZFRmFrbUNI?=
- =?utf-8?B?S3JnMFRCeGcyMWJMeVcvSmVRMHdMZFNPL1pwWk1sVzBseUQ2SGNoWFRZZFNx?=
- =?utf-8?B?cGtVWldKSStYTFJIaVFSRHNNOURseVhHUXNtKzEvV2M3dlQrb2dzQnpWMkRL?=
- =?utf-8?B?b0wvc0NvWDhFMDN5aktERGZ6dUN5cVg5TnRaTEp6aHAzT1F2dk5pQm05OGw4?=
- =?utf-8?B?VmlCYjRlTEpIVGtCelZXYXVlOSt6aytvZUE2elJ2cnl3T3QxYWtuOVlPVlRB?=
- =?utf-8?B?RE5LaHR3cGFWL3RNQi92UGYvVGROVjU5bHAxTXNiWlppdjJ1Wlpqdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a7a3abb-5a4d-4766-3102-08de8514d858
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 17:36:11.0209
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M33A95z88CowiGQxKou1NY6LFwdccNpNouwCboX/mFI7LlND19uJTTiuQwYnbzKs
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF5D27497F1
-X-Rspamd-Queue-Id: 9F56340012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 47mss3se5pk69ocz7ruqbzr4byg4g8u9
+	bh=VGL8ZCoxxnmMgegD515h89Z98Ff8Q4k3igrZcTWq+F4=;
+	b=FT3PeYDzpyKCFs0/tZ2tq4oCfgTOyXpPF3JX9x3/Q5rOGdNPJpq6NnnhRMiUMdcqeFWfYk
+	/Y9OllI+flprDlFwZyLTfFvc/PpYf+tdaHx/gGIoE/7R6CSUVfr89LClmCKM5VjL1QGxVq
+	kpswYhIV2IqWovs0OrDxAoBYEF2HKD4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773856082; a=rsa-sha256;
+	cv=none;
+	b=xzzu4OwSru8ROQ6HwT/mx0ROT2vfO1xFo0EsbOsa+UTtA1XjBW6/M6JCYkW2nQEhihQtqu
+	2IK4JJVacAXz4oDMTPvZBFKZIXKMsUn1Jbb4FcfgsiUiJxO2KhYB07/s1kJL311q94uS1i
+	bxsRRdySOCtiseGq/Ki5B9NYIo584Y8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jzROPGVp;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EB51A60132;
+	Wed, 18 Mar 2026 17:48:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B7CC19421;
+	Wed, 18 Mar 2026 17:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773856081;
+	bh=hq72KfDI9YIjm4UqddYP9KoqIbbXOeXeI0l+6wtPMMo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jzROPGVpzZ38jRINIUlrs6pYfFojw6d5rE/vbNiFKT2UViwtaZd0lDJtPPR3nnuYS
+	 FF9HJXYzwRihCsjyfkE7AMRmpanGALhCQ9VX7i/W6cYBSjxY2y2GwDDanrboMs/kOZ
+	 kogswLXx++OfebTDVl2acbny9BYIqCrFpBBH+dng=
+Date: Wed, 18 Mar 2026 10:47:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Kees Cook
+ <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Vineet
+ Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian
+ Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh
+ Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
+ <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Michal
+ Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, Stephen Smalley
+ <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ selinux@vger.kernel.org
+Subject: Re: [PATCH v3 00/23] mm/vma: convert vm_flags_t to vma_flags_t in
+ vma code
+Message-Id: <20260318104759.92b339d382e7d8d25daea54b@linux-foundation.org>
+In-Reply-To: <cover.1773846935.git.ljs@kernel.org>
+References: <cover.1773846935.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D05E3120014
+X-Stat-Signature: oedig7x9zs5jmhoe3d1dy5w8tzqi8etg
 X-Rspam-User: 
-X-HE-Tag: 1773855375-338312
-X-HE-Meta: U2FsdGVkX19cfogrtk88amgU73zZOdla0l1DJ5JhvdebT7yT4LdfZwobUonBU3sJCtNjIRL3nqh74RmqrUz6hB7Kx4R6d/b5DBMOAQR/DIMrcD/0o0sj1tNPEbbtfpI9bbranYElzTNP3zaMq0thdK7FfNMX3Fi+aAPh4nwAOnzPZcndGKY6ar5HT4Bs0YgKQ7PQvO6gbqcvLV9m1g08fidVk/EOByRgnZGXAXKbBc/JANZymqQ1BmeMNcEH5ZFmlK9EGFjsJr6oyHRouPiDXKUflbF3Nc2LPpcCBMP2HmbjFiSyZXH0KRQ8V8OeGTA4aL5ApzQV6a4SeznuvNJraftVodQWomS2Aciy130/OMYFHJz3bF3XJ7PqWzLtQXlbshrVGPySL+NvSxU1JZW+KusZ9ZHlXMAo+6e7G+MFKHBMXwYDFalUBDuSIbst4zBDXXJRWzzahcHGFokR32XvpMoNSkJ8Z0PGQQboeMiOYKwJtQ6zqBySRkh6l5FYru1g1R1aYmGIgflZ7lo7qTeMr/98tcRihI1PqdnEwP4d4NyfM9kPlVpxsn/+Dvb18gNLUrHfzdv5gBJewjjw1jcOnH1LC/CAIL3vrGtZWQ8tYFM5GhO68ch/slRXKxXiyCk5TSaoGaXfKfTwSlxQVJc5NpCQSrwFbRE6seUOUmSiIZI080cNV/wiDFP4+mBtL9nArKfL0tEgzLWtCJ9clyNtro/KY8za3nzVwU++I2XsrdVnXpyCB8tdq1Sf10UUv0fHLx1sWLr/mJ07/lAjQ6WnglBMY2VcNugIgEO3vLxUL/1mcVsXaxJhvqYUJnN29dzzJ3X+4XbT7VOFA8DR34wMob490rInn53LD5+akpaqrS92r/sNacOreyvbpX18DbSHzeFkjdCeJx3fwu3aQyEYyyyJPkVcsBvBW6R18r0/2+FKnNzDJgJeFf/QzG8MIC9e3rZjQqTv5TY3lG7f9ql
- 5rWj8Rti
- r1jNlpjWrCO8boL6phhi2Zp6TIZ3EpOskzIcxcwbdVrcpMUO/GkR07Uq9m87H1mHAKaFdaAn22CM3lMyM82K5mVF3z0Bs+psV6jBaaj880g0S6oha3yH3Ai7XvTP2V4iO8/krJkxnYG5zKzCnLa4nrD5kDpRia4oIrnOoI6ozcFlqzP2CHiiXEgSo+FP74fFnjZi8QU6gS7bgydeSyfgOBBxhRLK84lVu4SjFc1Vn5ihpeqba9sWYWw+BwTpNTabsQp7ypEMrTB4S9URV1KDUQ3sEsk3o4+AdNCMcWLWIgmksyibEr2UAcA1ZCOt8O7sURupEhp9OGBHF3jd4fw+uvMcxdeuCXaUvT4kiKs+W0G7/o+IF+Z7aSSZceg3FnrfGYpvBn4EVEGXsZ3JFlsNKdENLBcf5kRaGPMqBY9HUZs3w6So=
+X-HE-Tag: 1773856082-486228
+X-HE-Meta: U2FsdGVkX1+mWgn94GEDIQURoyjPw/Ipx9Hggxu3wvXettsyHZGgwjuHZVnTmEbJlS7ZeAV3wN/BQ6mUpnCQuV/+dqLXZopbUZARyroC+383JAhw8Y9PXfGMLbTjyH4rdtTCOQhwGWxW9jVJesFikjpDz7JczyRbVRMrwAhI1cocFvmQFLPsF3J8vk7jzBa1gFE+pUp+H50eQlZL6xtBQwoB/+3jq1VvESBT3CpYIumKLLmoKtU5KkJ5SsCTxQwoLEHYakao0TMX0VQ7eDotn6PVn0XatolbJp4ZEdMeNIw2BevEb7E/aNlTK7WN4EvCYYm0M93S2QwynNQHA05SSHv2XG6/l9N51+9qsETR2uk0DW080I/PD0ZM1ZhGhB2qLnA9m+GlreLRNIfQjLhoGDXfZHpRjIGP8S7Ez8phUl2DHF2e2MWxnQEqLBn4emQQevjvmhqPc2TwoCRuqtRJPBEC02prjq6eNl7gRVOdiZF+fNjd8koXfjwj1+DC+IH+d3XGFIfMcziXCiehYNJD7Rfkpp9hWXeo5z5l4TfXdwpRCN4O50xee2wdZVJEQmYHzLOPMJEN18dLYTyjgYJh1chdF2btnl4PV7WJn61UywXgpRLnEg4Knl7YcUi92CH1C/xA2l8uYaNB0i62XTiW1/QtMIzXISdV5TvDume1PTh85o2Y/eDTR/P5IWU41C5rMPKitetQZgVW3lGKXlc8+Utlt8nkYk658dbEU0fzWyZY/6469Y9lg6dP5CiF8kEmR8k9LDUeFeVFSkv+sg2wwz9qq1dWzdqDDhi4GUV0paFoUxOjtJjdLCjHc3VdxCRiIeezkqvlK/gg5RUoUQutukrDfZVFwN5y9XhGe56kuIb8BtyurT/MOdt1VolxUYzbqcKsCPIvOMqsrkK1g+kCbTW+u3/cv2jeOLHfDcm9i5jxAk9n+f3fuYpYfXqNzyfFTDpYZcvbOHlaVwIcQg2
+ jYADEaMF
+ 3NE7S7B/bgrT2V1p3O0o/S4Jzo4xFwBRPDsYVWrlG55492MG+XkOfDDor0lCn8hBrCMrY+e0f4Us+hJkSsWAoed8CjAfp4/w5fnJ/TO72+Wh9XGII3REjENDvznf8DOFB6JvwaR8pafavPnZLcd3eyyNEQEXm25sa9Md91VpLmYIdhY6KVsIF7OOKQCfu3gNzPS9PPmAOnegmZI8Tl68gUDJdNuUH37BWb9uv0qVzffFMchltxxgU3Sr9AZN0zXFu2AZurS2LG6dNAlntbz4tTJg0dqcMBk6PbrJDaFQZTKVOg2NDSnj6stUu8aiwsZwmTI1C8SiGY524SD+idafCwJiYqg2INiuurWdyB+nf1712uDTFNbKAoyfKO8gFcKamRLDZwBzZ4G6JxpA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,187 +120,273 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18 Mar 2026, at 13:19, Micha=C5=82 C=C5=82api=C5=84ski wrote:
+On Wed, 18 Mar 2026 15:50:11 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-> On Wed, Mar 18, 2026 at 6:08=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->>
->> On 18 Mar 2026, at 11:45, Micha=C5=82 C=C5=82api=C5=84ski wrote:
->>
->>> On Wed, Mar 18, 2026 at 4:26=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->>>>
->>>> On 18 Mar 2026, at 11:18, Micha=C5=82 C=C5=82api=C5=84ski wrote:
->>>>
->>>>> On Wed, Mar 18, 2026 at 4:10=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote=
-:
->>>>>>
->>>>>> On 17 Mar 2026, at 10:15, Michal Clapinski wrote:
->>>>>>
->>>>>>> Currently, if DEFERRED is enabled, kho_release_scratch will initial=
-ize
->>>>>>> the struct pages and set migratetype of kho scratch. Unless the who=
-le
->>>>>>> scratch fit below first_deferred_pfn, some of that will be overwrit=
-ten
->>>>>>> either by deferred_init_pages or memmap_init_reserved_pages.
->>>>>>>
->>>>>>> To fix it, I modified kho_release_scratch to only set the migratety=
-pe
->>>>>>> on already initialized pages. Then, modified init_pageblock_migrate=
-type
->>>>>>> to set the migratetype to CMA if the page is located inside scratch=
-.
->>>>>>>
->>>>>>> Signed-off-by: Michal Clapinski <mclapinski@google.com>
->>>>>>> ---
->>>>>>>  include/linux/memblock.h           |  2 --
->>>>>>>  kernel/liveupdate/kexec_handover.c | 10 ++++++----
->>>>>>>  mm/memblock.c                      | 22 ----------------------
->>>>>>>  mm/page_alloc.c                    |  7 +++++++
->>>>>>>  4 files changed, 13 insertions(+), 28 deletions(-)
->>>>>>>
->>>>>>
->>>>>> <snip>
->>>>>>
->>>>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>>>>> index ee81f5c67c18..5ca078dde61d 100644
->>>>>>> --- a/mm/page_alloc.c
->>>>>>> +++ b/mm/page_alloc.c
->>>>>>> @@ -55,6 +55,7 @@
->>>>>>>  #include <linux/cacheinfo.h>
->>>>>>>  #include <linux/pgalloc_tag.h>
->>>>>>>  #include <linux/mmzone_lock.h>
->>>>>>> +#include <linux/kexec_handover.h>
->>>>>>>  #include <asm/div64.h>
->>>>>>>  #include "internal.h"
->>>>>>>  #include "shuffle.h"
->>>>>>> @@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(stru=
-ct page *page,
->>>>>>>                    migratetype < MIGRATE_PCPTYPES))
->>>>>>>               migratetype =3D MIGRATE_UNMOVABLE;
->>>>>>>
->>>>>>> +     /*
->>>>>>> +      * Mark KHO scratch as CMA so no unmovable allocations are ma=
-de there.
->>>>>>> +      */
->>>>>>> +     if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZ=
-E)))
->>>>>>> +             migratetype =3D MIGRATE_CMA;
->>>>>>> +
->>>>>>
->>>>>> If this is only for deferred init code, why not put it in deferred_f=
-ree_pages()?
->>>>>> Otherwise, all init_pageblock_migratetype() callers need to pay the =
-penalty
->>>>>> of traversing kho_scratch array.
->>>>>
->>>>> Because reserve_bootmem_region() doesn't call deferred_free_pages().
->>>>> So I would also have to modify it.
->>>>>
->>>>> And the early initialization won't pay the penalty of traversing the
->>>>> kho_scratch array, since then kho_scratch is NULL.
->>>>
->>>> How about hugetlb_bootmem_init_migratetype(), init_cma_pageblock(),
->>>> init_cma_reserved_pageblock(), __init_page_from_nid(), memmap_init_ran=
-ge(),
->>>> __init_zone_device_page()?
->>>>
->>>> 1. are they having any PFN range overlapping with kho?
->>>> 2. is kho_scratch NULL for them?
->>>>
->>>> 1 tells us whether putting code in init_pageblock_migratetype() could =
-save
->>>> the hassle of changing all above locations.
->>>> 2 tells us how many callers are affected by traversing kho_scratch.
->>>
->>> I could try answering those questions but
->>>
->>> 1. I'm new to this and I'm not sure how correct the answers will be.
->>>
->>> 2. If you're not using CONFIG_KEXEC_HANDOVER, the performance penalty
->>> will be zero.
->>> If you are using it, currently you have to disable
->>> CONFIG_DEFERRED_STRUCT_PAGE_INIT and the performance hit from this is
->>> far, far greater. This solution saves 0.5s on my setup (100GB of
->>> memory). We can always improve the performance further in the future.
->>>
->>
->> OK, I asked Claude for help and the answer is that not all callers of
->> init_pageblock_migratetype() touch kho scratch memory regions. Basically=
-,
->> you only need to perform the kho_scratch_overlap() check in
->> __init_page_from_nid() to achieve the same end result.
->>
->>
->> The below is the analysis from Claude.
->> Based on my understanding,
->> 1. memmap_init_range() is done before kho_memory_init(), so it does not =
-need
->> the check.
->>
->> 2. __init_zone_device_page() is not relevant.
->>
->> 3. init_cma_reserved_pageblock() / init_cma_pageblock() are already set
->> to MIGRATE_CMA.
->>
->> 4. hugetlb is not used by kho scratch, so also does not need the check.
->>
->> 5. kho_release_scratch() already takes care of it.
->>
->> The remaining memblock_free_pages() needs a check, but I am not 100%.
->>
->>
->> # kho_scratch_overlap() in init_pageblock_migratetype() =E2=80=94 scope =
-analysis
->>
->> ## Context
->>
->> Commit a7700b3c6779 ("kho: fix deferred init of kho scratch") added a
->> kho_scratch_overlap() call inside init_pageblock_migratetype() in
->> mm/page_alloc.c:
->>
->> ```c
->> if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
->>     migratetype =3D MIGRATE_CMA;
->> ```
->>
->> kho_scratch_overlap() does a NULL check followed by a loop over the
->> kho_scratch array. For non-KHO boots (kho_scratch =3D=3D NULL) the cost =
-is
->> a single NULL load and branch. For KHO boots the loop runs on every call
->> to init_pageblock_migratetype().
->>
->> ## Question
->>
->> Does this add overhead for callers whose memory range cannot overlap
->> with scratch? Can the check be moved to the caller side?
->>
->> ## Call site analysis
->>
->> init_pageblock_migratetype() has nine call sites. The init call ordering
->> relevant to scratch is:
->>
->> ```
->> setup_arch()
->>   zone_sizes_init() -> free_area_init() -> memmap_init_range()   [1]
->>
->> mm_init_free_all() / start_kernel():
->>   kho_memory_init() -> kho_release_scratch()                     [2]
->>   memblock_free_all()
->>     free_low_memory_core_early()
->>       memmap_init_reserved_pages()
->>         reserve_bootmem_region() -> __init_deferred_page()
->>           -> __init_page_from_nid()                              [3]
->>   deferred init kthreads -> __init_page_from_nid()               [4]
->> ```
->
-> I don't understand this. deferred_free_pages() doesn't call
-> __init_page_from_nid(). So I would clearly need to modify both
-> deferred_free_pages and __init_page_from_nid.
+> This series converts a lot of the existing use of the legacy vm_flags_t
+> data type to the new vma_flags_t type which replaces it.
 
-Sure. But other callers I mentioned above do not need to check kho_scratch,
-right?
+Updated, thanks.  Below is how v3 altered mm.git:
 
 
-Best Regards,
-Yan, Zi
+ arch/arm64/include/asm/page.h   |    4 +++
+ include/linux/mm_types.h        |   32 +++++++++++++++---------------
+ mm/mseal.c                      |    1 
+ mm/vma.c                        |   27 +++++++++++++------------
+ tools/testing/vma/include/dup.h |   22 +++++++++++---------
+ tools/testing/vma/tests/vma.c   |    3 --
+ 6 files changed, 48 insertions(+), 41 deletions(-)
+
+--- a/arch/arm64/include/asm/page.h~b
++++ a/arch/arm64/include/asm/page.h
+@@ -46,8 +46,12 @@ int pfn_is_map_memory(unsigned long pfn)
+ 
+ #endif /* !__ASSEMBLER__ */
+ 
++#ifdef CONFIG_ARM64_MTE
+ #define VMA_DATA_DEFAULT_FLAGS	append_vma_flags(VMA_DATA_FLAGS_TSK_EXEC, \
+ 						 VMA_MTE_ALLOWED_BIT)
++#else
++#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
++#endif
+ 
+ #include <asm-generic/getorder.h>
+ 
+--- a/include/linux/mm_types.h~b
++++ a/include/linux/mm_types.h
+@@ -871,9 +871,9 @@ typedef struct {
+ #define EMPTY_VMA_FLAGS ((vma_flags_t){ })
+ 
+ /* Are no flags set in the specified VMA flags? */
+-static __always_inline bool vma_flags_empty(vma_flags_t *flags)
++static __always_inline bool vma_flags_empty(const vma_flags_t *flags)
+ {
+-	unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap = flags->__vma_flags;
+ 
+ 	return bitmap_empty(bitmap, NUM_VMA_FLAG_BITS);
+ }
+@@ -1082,20 +1082,6 @@ static __always_inline vm_flags_t vma_fl
+ }
+ 
+ /*
+- * Helper function which converts a legacy vm_flags_t value to a vma_flags_t
+- * value.
+- *
+- * Will be removed once the conversion to VMA flags is complete.
+- */
+-static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
+-{
+-	vma_flags_t ret;
+-
+-	ret.__vma_flags[0] = (unsigned long)flags;
+-	return ret;
+-}
+-
+-/*
+  * Copy value to the first system word of VMA flags, non-atomically.
+  *
+  * IMPORTANT: This does not overwrite bytes past the first system word. The
+@@ -1110,6 +1096,20 @@ static __always_inline void vma_flags_ov
+ }
+ 
+ /*
++ * Helper function which converts a legacy vm_flags_t value to a vma_flags_t
++ * value.
++ *
++ * Will be removed once the conversion to VMA flags is complete.
++ */
++static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
++{
++	vma_flags_t ret = EMPTY_VMA_FLAGS;
++
++	vma_flags_overwrite_word(&ret, flags);
++	return ret;
++}
++
++/*
+  * Copy value to the first system word of VMA flags ONCE, non-atomically.
+  *
+  * IMPORTANT: This does not overwrite bytes past the first system word. The
+--- a/mm/mseal.c~b
++++ a/mm/mseal.c
+@@ -77,6 +77,7 @@ static int mseal_apply(struct mm_struct
+ 					       curr_end, &vma_flags);
+ 			if (IS_ERR(vma))
+ 				return PTR_ERR(vma);
++			vma_start_write(vma);
+ 			vma_set_flags(vma, VMA_SEALED_BIT);
+ 		}
+ 
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -905,20 +905,21 @@ static __must_check struct vm_area_struc
+ 	vma_start_write(middle);
+ 
+ 	if (merge_right) {
+-		const vma_flags_t next_sticky =
+-			vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
++		vma_flags_t next_sticky;
+ 
+ 		vma_start_write(next);
+ 		vmg->target = next;
++		next_sticky = vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
+ 		vma_flags_set_mask(&sticky_flags, next_sticky);
+ 	}
+ 
+ 	if (merge_left) {
+-		const vma_flags_t prev_sticky =
+-			vma_flags_and_mask(&prev->flags, VMA_STICKY_FLAGS);
++		vma_flags_t prev_sticky;
+ 
+ 		vma_start_write(prev);
+ 		vmg->target = prev;
++
++		prev_sticky = vma_flags_and_mask(&prev->flags, VMA_STICKY_FLAGS);
+ 		vma_flags_set_mask(&sticky_flags, prev_sticky);
+ 	}
+ 
+@@ -1170,13 +1171,14 @@ int vma_expand(struct vma_merge_struct *
+ 	bool remove_next = false;
+ 	vma_flags_t sticky_flags =
+ 		vma_flags_and_mask(&vmg->vma_flags, VMA_STICKY_FLAGS);
+-	const vma_flags_t target_sticky =
+-		vma_flags_and_mask(&target->flags, VMA_STICKY_FLAGS);
++	vma_flags_t target_sticky;
+ 	int ret = 0;
+ 
+ 	mmap_assert_write_locked(vmg->mm);
+ 	vma_start_write(target);
+ 
++	target_sticky = vma_flags_and_mask(&target->flags, VMA_STICKY_FLAGS);
++
+ 	if (next && target != next && vmg->end == next->vm_end)
+ 		remove_next = true;
+ 
+@@ -1192,12 +1194,6 @@ int vma_expand(struct vma_merge_struct *
+ 		       target->vm_end > vmg->end, vmg);
+ 
+ 	vma_flags_set_mask(&sticky_flags, target_sticky);
+-	if (remove_next) {
+-		const vma_flags_t next_sticky =
+-			vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
+-
+-		vma_flags_set_mask(&sticky_flags, next_sticky);
+-	}
+ 
+ 	/*
+ 	 * If we are removing the next VMA or copying from a VMA
+@@ -1214,8 +1210,13 @@ int vma_expand(struct vma_merge_struct *
+ 		return ret;
+ 
+ 	if (remove_next) {
++		vma_flags_t next_sticky;
++
+ 		vma_start_write(next);
+ 		vmg->__remove_next = true;
++
++		next_sticky = vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
++		vma_flags_set_mask(&sticky_flags, next_sticky);
+ 	}
+ 	if (commit_merge(vmg))
+ 		goto nomem;
+@@ -2950,7 +2951,7 @@ out:
+ 	if (vma_flags_test(&vma_flags, VMA_LOCKED_BIT))
+ 		mm->locked_vm += (len >> PAGE_SHIFT);
+ 	if (pgtable_supports_soft_dirty())
+-		vma_flags_set(&vma_flags, VMA_SOFTDIRTY_BIT);
++		vma_set_flags(vma, VMA_SOFTDIRTY_BIT);
+ 	return 0;
+ 
+ mas_store_fail:
+--- a/tools/testing/vma/include/dup.h~b
++++ a/tools/testing/vma/include/dup.h
+@@ -441,9 +441,9 @@ struct vma_iterator {
+ #define MAPCOUNT_ELF_CORE_MARGIN	(5)
+ #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
+ 
+-static __always_inline bool vma_flags_empty(vma_flags_t *flags)
++static __always_inline bool vma_flags_empty(const vma_flags_t *flags)
+ {
+-	unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap = flags->__vma_flags;
+ 
+ 	return bitmap_empty(bitmap, NUM_VMA_FLAG_BITS);
+ }
+@@ -775,7 +775,9 @@ static inline bool mm_flags_test(int fla
+ static __always_inline void vma_flags_overwrite_word(vma_flags_t *flags,
+ 		unsigned long value)
+ {
+-	*ACCESS_PRIVATE(flags, __vma_flags) = value;
++	unsigned long *bitmap = flags->__vma_flags;
++
++	bitmap[0] = value;
+ }
+ 
+ /*
+@@ -787,7 +789,7 @@ static __always_inline void vma_flags_ov
+ static __always_inline void vma_flags_overwrite_word_once(vma_flags_t *flags,
+ 		unsigned long value)
+ {
+-	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++	unsigned long *bitmap = flags->__vma_flags;
+ 
+ 	WRITE_ONCE(*bitmap, value);
+ }
+@@ -796,7 +798,7 @@ static __always_inline void vma_flags_ov
+ static __always_inline void vma_flags_set_word(vma_flags_t *flags,
+ 		unsigned long value)
+ {
+-	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++	unsigned long *bitmap = flags->__vma_flags;
+ 
+ 	*bitmap |= value;
+ }
+@@ -805,7 +807,7 @@ static __always_inline void vma_flags_se
+ static __always_inline void vma_flags_clear_word(vma_flags_t *flags,
+ 		unsigned long value)
+ {
+-	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++	unsigned long *bitmap = flags->__vma_flags;
+ 
+ 	*bitmap &= ~value;
+ }
+@@ -835,9 +837,9 @@ static __always_inline vm_flags_t vma_fl
+  */
+ static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
+ {
+-	vma_flags_t ret;
++	vma_flags_t ret = EMPTY_VMA_FLAGS;
+ 
+-	ret.__vma_flags[0] = (unsigned long)flags;
++	vma_flags_overwrite_word(&ret, flags);
+ 	return ret;
+ }
+ 
+@@ -1073,8 +1075,8 @@ static __always_inline void vma_clear_fl
+ 	vma_flags_clear_mask(&vma->flags, flags);
+ }
+ 
+-#define vma_clear_flags(vmag, ...) \
+-	vma_clear_flags_mask(vmag, mk_vma_flags(__VA_ARGS__))
++#define vma_clear_flags(vma, ...) \
++	vma_clear_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
+ 
+ static __always_inline bool vma_desc_test(const struct vm_area_desc *desc,
+ 		vma_flag_t bit)
+--- a/tools/testing/vma/tests/vma.c~b
++++ a/tools/testing/vma/tests/vma.c
+@@ -356,10 +356,9 @@ static bool test_vma_flags_clear(void)
+ 
+ 	/* Cursory check of _mask() variant, as the helper macros imply. */
+ 	vma_flags_clear_mask(&flags, mask);
+-	vma_flags_clear_mask(&vma.flags, mask);
++	vma_clear_flags_mask(&vma, mask);
+ 	vma_desc_clear_flags_mask(&desc, mask);
+ #if NUM_VMA_FLAG_BITS > 64
+-	vma_clear_flags_mask(&vma, mask);
+ 	ASSERT_FALSE(vma_flags_test_any(&flags, VMA_EXEC_BIT, 64));
+ 	ASSERT_FALSE(vma_test_any(&vma, VMA_EXEC_BIT, 64));
+ 	ASSERT_FALSE(vma_desc_test_any(&desc, VMA_EXEC_BIT, 64));
+_
+
 
