@@ -4,116 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58055103E18F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:17:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5045E103E183
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DD226B024F; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
+	id 6BD146B024D; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 361386B024E; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
+	id 66F8D6B024E; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3DA6B024F; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
+	id 5375A6B0251; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 003646B024D
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:17:06 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B33F71A075F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5836B024D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:17:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DBED913B786
 	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:06 +0000 (UTC)
-X-FDA: 84559385652.10.276DE0F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CB9B8C0009
+X-FDA: 84559385652.19.0F326B5
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EE48880004
 	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2n98eIW;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OBwW1B9e;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773843425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5FZ5QXHUzU1ata4VbBabv3m2vQppMp/lSd5sxHdN7Sc=;
-	b=ZiOb2RZdq75kXNmNyxno5uKj4Ur2OVj39TeCCUbeR0FGlXMIjfd+zMZPIv+vDkYXwmqGwz
-	6hrVWTSMTwyhiFakdleJowL4y6OoDKBBlM7sJ9WSebQ1bCihd+9s1/s4knx4MQfnJr4BYV
-	6FhyvXEGvhe/26gPQB+vZsnctnEVZIc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2n98eIW;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ttHPCX4MWc57OiDPcB0pv4zDHcsSOXKOATFAKs8NkL8=;
+	b=JJ3ui1L15zR9sZKf0ci/GuQOnzc5r+nPJq0ESDemH2Xg7D3fNRVpPFD5GrcgQ1k3j1jcei
+	ZC6JjIPip5zseWbgY2cTF9nqxH3BPM1bzYMDBILwsds4dFgKqH2e4hjdl3uMZ7G/0RBwPx
+	pwIkmQVAm3Joq8T4t/e+U8q/Sqch35o=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773843425; a=rsa-sha256;
 	cv=none;
-	b=6ScTwHvt9Q2jp4Eu1dJswo1rfhNFcVsN9FTOpIOvmIAoXZSrw3qxH//trkZCyQJKk3wfVv
-	HbO2I6fMcfJ09GF+sTQvZySygB8xSN1pQndtFvZjMDnn5tcd/Mb62zcN4ReBdBW5nd6zNH
-	vwjY5bdZXOe0l2mIgHxv9k6xA7v4hI4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCAC7415F6;
-	Wed, 18 Mar 2026 14:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B834CC19421;
-	Wed, 18 Mar 2026 14:16:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773843423;
-	bh=Nka2tAu2xfrAzh/LVz+kPzjJGV26abtbTSAN+jQ1zCs=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=l2n98eIWgaO3CjkFjgd0Sou85/DdxxIF5f5x0NNXjCnRCCUzjcWJiinkayJ878aww
-	 BMJ0pXZVJUefOLLhpj2fMemzle19sO2O1t5wBOu4oWg54p9ZGJdEhdeS/Czy9hnQXA
-	 eulz6Qr5rpmd86XRFktfVxpPiPuG0bWwvXiusqCzjYmb/h8nhtFZfXIiV7SJql6pbr
-	 L4xv+2VnZl426NR2cd+2lb906X8FppURSFBE0mng0zk5Fvon36cCbedPT6Sf5MOPBk
-	 nKWZjGbed3op7zsa/QhDxrRfMTA0/5KlsKm4GWT7flFR84ReuRSkL4lH9ODOoxK1Dd
-	 vepd5z1nkYYfQ==
-Message-ID: <11428d25-7bea-4be6-a6ee-bfeac1d50807@kernel.org>
-Date: Wed, 18 Mar 2026 15:16:52 +0100
+	b=NzgCMPk02ZxkETfd/vgqfQE6W95IF4u43h9hq2fj4HZUmCWxri9idwj0vx3Zyj7hNoo9GM
+	oEr+576bhcnR3bD8BT7kf1ciEt3xzDimTCBal/FvhkLaqs9fBCwt2i0f5bWmWsWT2yb7gp
+	bdu7rNyjG3zGYv3gzJAtU3iMQBjsovg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OBwW1B9e;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-64ad8435f46so7638811d50.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:17:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1773843424; x=1774448224; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ttHPCX4MWc57OiDPcB0pv4zDHcsSOXKOATFAKs8NkL8=;
+        b=OBwW1B9eD89IP7FmwSCS/1IjQBisah+TbkO5w4UnVbofhVAK79M9Lp6VciGk/D66fm
+         al14dWWMXBB4RN9T8FNI0ildieXgWO6fzI4AF6gd01fC1asT4NNkYqBPfWZ2vrV1F3RO
+         YeCiBRoUPYMvVZw3/10IrpNzuFkbtRgR3PitWTJQDObr7S2VOSHj2WjXUtGF1dw5Dzsz
+         HEzUBCauE/LnjBkK/ZwcxDKa2tvIX2h8vtZu/6PMRAt8uJAEeL4ACiYt6TmAByVHkKQc
+         cpBMM2q9X1/leg3i3irVWp8v+F8QDXNPU2ObvBJDK+0d1k8pxh1E+5V+jBuLUV791rk/
+         5AWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773843424; x=1774448224;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ttHPCX4MWc57OiDPcB0pv4zDHcsSOXKOATFAKs8NkL8=;
+        b=aR7KikUX2ERxUz0fwmEuwkQU5twrdGpUgkm2sy1sE16k6hXI/Vg9Qpe8DUDmt9iMzH
+         EUxcI7d8cYwh0i3d21iVF+4yGBPPXvrrgr3fC4n7IhHOO8jrIfIAjKs0x55F8zIuNbC1
+         lcd0H8TE+4hPu65l7h3yuat6EfLf4UkMR9xgUE5CZ2afxTSBdvhk2jV/5eRHWoWMnTJP
+         jfNmXPPstnZT/rT8p8wy/NazcKILxquqQQQ61ivs/zV66gBm/SlBV1Z98KGs5umrUdl+
+         rQJ7lHnikSfiB2GCQIbec0PltFBPhQHtaWKnIZ8nw0VY+K54ehAQKeiIiisPHCIBR+TK
+         Zhmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGRqR90eX0Bqey31zboPZBy4UjXu9Nv+tVdlv08jMS71JrJhYUC82k8/LIbB7Q5vkpsVWp5zMriA==@kvack.org
+X-Gm-Message-State: AOJu0YzlsvhjgIW6HssFXO9g3oyhTW/ExwL8tHPywwBvvZyI7Awi9RFW
+	uVYShfLHbHzqV1w/gJEYl8SeaUqmHcoxhaywsw9C+OVYwD/RgmFif0b8vfocRKToVvY=
+X-Gm-Gg: ATEYQzyvXZQLhzAD9B/HyOCK8Vs2VYkO5VnDH9FV00zM3o4mZGcSjYPCHWooTURHbur
+	U0Mb6uzOpOfRr3WxUt8q4QiHKa6MqvUzfVLcHyEzj5yfJQ8MKVrqcN7Jc6Z46SFgJnTEB4sTQxL
+	UUaEEzg6bxSi3f2/XknpIupZBMy82gR2+Y38i0LPjRKYVDL8bOQOjsikhU4ZVSXp0PFe3buXZIo
+	wRR2Za/sSTYXFIxDpGobOq9x3wiedjg9JxqXs2bkQzcUmsH5bRMYUWXxqlrjp07T19wf72IKkBQ
+	QdrwRUEMJIkeu9lD9jxn0ImZkMKWiIkA+BFX5wRCOsUjvdBhOiwoDl3Hr05qhwkdBMO/CAg7t9Z
+	JqcbJwQ6AoSPlL612wKFXI4PZRU4mK2RrCm/ZM3maPEqz0vsLjZZkLawjZIV6MgREvyHskxbFta
+	6EIMv9nVOgF8yRDPG/qIbNSvjIyr3eTf0+BreQSuoNdN8mtW8OpfClJpSmn9Bn4rg2IrpXpzfIj
+	hzlNLWAFpDuWkaoHOXC+RgTY9OjCxlj0P+T+AWujQyyIiFYJA==
+X-Received: by 2002:a53:b191:0:b0:64e:597a:f5c2 with SMTP id 956f58d0204a3-64e915e80f8mr2412684d50.65.1773843423813;
+        Wed, 18 Mar 2026 07:17:03 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64e91be0e91sm1672028d50.15.2026.03.18.07.17.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 07:17:03 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	pasha.tatashin@soleen.com,
+	dmatlack@google.com,
+	pratyush@kernel.org
+Subject: [PATCH v2 7/8] liveupdate: Remove liveupdate_test_unregister()
+Date: Wed, 18 Mar 2026 10:16:45 -0400
+Message-ID: <20260318141637.1870220-17-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+In-Reply-To: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
+References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH 3/8] mm: move free_reserved_area() to mm/memblock.c
-Content-Language: en-US
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Potapenko <glider@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Andreas Larsson <andreas@gaisler.com>, Ard Biesheuvel <ardb@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Brendan Jackman <jackmanb@google.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christian Brauner <brauner@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
- Johannes Weiner <hannes@cmpxchg.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Michael Ellerman
- <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Rob Herring <robh@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Saravana Kannan <saravanak@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Will Deacon <will@kernel.org>, Zi Yan <ziy@nvidia.com>,
- devicetree@vger.kernel.org, iommu@lists.linux.dev,
- kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
- linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, x86@kernel.org
-References: <20260318105827.1358927-1-rppt@kernel.org>
- <20260318105827.1358927-4-rppt@kernel.org>
-In-Reply-To: <20260318105827.1358927-4-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CB9B8C0009
-X-Stat-Signature: cchfehuzo6r6oq5rmscozhsqqf43oo8t
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2549; i=pasha.tatashin@soleen.com;
+ h=from:subject; bh=K0BUPL/dwXL3g5pX2ncyNWZVq0YZ4fBzU0LlavaQGd4=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBpurPP1LV3yCAjinWTg6lNdro69Oow89FShnYUd
+ 5XBSotUvG6JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCabqzzwAKCRC7dyhM23N6
+ 3gxdD/kBAcbVuJAln8vuFoiIAN/2+S34O9sqBq1g8GB8w094PpFKGMIVriocJu24Nugz9RgvsJc
+ aYXnK4/JiWqX8HH2J3v7lPblg4lHrxQdrU2BwTYV1zsXXgGuWOlN72SPcYr3RnadUL0JWLByL1C
+ Z8iQRIPsrIXO3XPVh4ym+36kyAQqYTCqF8rB4jUu4RmQkLYKb7xogSPXz79WeIH8jCAbn01JWd7
+ Bu7MkunLbH66XySlw86xMt7m2cjo6OySzpJSSzJQAX7TFoNkYmL1bhs4aWt60/+PXmwOskOI5kL
+ s9F07J6nCAkvcksHFljYSlxWWDlXTQS8yonCFone3vpZjwSxtR95odn7coLdP1ZF9QOfnqGiFCq
+ SYfhoi3lAnh6o8DCPhHPUvLSqQXIt3riz1iMF8wst4/PHvsPVpll0kJ57yT8FioUNqtBpIpaOCQ
+ HLr6SXaOue7bV7NryUZIBgAoLH/gqdAMvN3W9uxG6EvtTQkTHr5TogqT/GXOUpNU729IjQA+B9L
+ INIDFx/1WpjBN1njv04RDwITIsilyEcyZoORtbG0TdCPf/qQdwIA/qi7QUopi11DcztF1MippWz
+ cIembuzdpPOOKQT/tDjQoPjwzJ+YjK+VMIfo8ow4j1f5C1soH+AlvM1ceVHiAKBnpvDzaepMtQP xXcnPwGm1ALSP7Q==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp; fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773843424-265305
-X-HE-Meta: U2FsdGVkX1//cvmrNRK19PgXVrU3+ygFL4l0mZ/CF9C6RBu59+7+SD24NFd1S8Av0oiytotORaA71z9ZjqvecO45h4/0iPFKXShTc9KUb2/Ki5v4x3d6VBZ1PErd7mCFE+z2q12hH4osQzZOszOML2z+kLvBrUhi+NcIGMzKz3f4TVgTlFPPAsMOLLfWVesJzQ7vCgEG+lSpSBLsoWKxnf/Q57QSd9yht2zrgWvYCXcqISj3J8gAk8hmlVD22KvPsK7QT5JCMqE+QRqrZqhnaTkN1ISHLKZmFr0R0ynL1siTSsvR3JVKFnXWH6IK1p6tRCpjwFON12GXnSvDJ1XISXwpWMj9+UJhdJlpQ4KQ5KkT4sYsktcqBzjCx4hAqonhtCnUdej8xU2EbCxxgUUsR+xta+6McnCnJHG5POMIufKm/oq7h+VVwrW5jyX0vDtFCCiJNr7tbnreUUMXY2CUpV0/qXD5lo3aCH73uJZlB5qcnkdcdyAumBWLK4znIi2wk714rEN57W+aXsr8gQWx8J0Q77FskduTZKhwd/4JiA+2XFsV7UzOKOz6B+Bpf77Q/qruHB/0Ik3yzdq7SeB/Yc9M36rAd4L/+zRIzcJGkhiuBvlPMMil6Zkgz0tAsnMv1q5+lHAg9jkNMxnL7mdbsqTt9GU97JvVkjQ35j9wbofR6IgDnglLvYJanrHxkS8cvLVEmn0OtniJlYLGGqZKmXJTi2h4w0CQJlpsdVhuu03hSAX+D1TXpV1+DnvcFIKEB/YbQvedXZmZaXyEaTq8WQSAjNFdZZOHj0a5+bnFfUB22SwBZ5aAdpQfocp34m50ltEfU3hstanQOh484mQhqj7GCYOSnlL9LuIuh5oTf0hVnNJ8aPq3X+YMEoFISYuNMa79CAJLyrw9tVk5JgmNBsK3k4NAMwJE3vu56LXiaHhCRd6VO/8LwwVQzdCsCekK1QpsXrWuEYAlkUticSw
- bnqEwfbt
- dvpgxxc2eNRpBChTijI1dAlAQvR7Ry3/AY8KexkotPavdp52isjU6TiMX4OgspcR2yxjFvEE1UhPwEO2bRBoZFVOU+cGzcNH1TsCQLUCw0EFtypKvR4TN4l9hJ2wDioHxdZX1I+hwE0MvsnDOW45aHNrePnBTmnAGvMspZ8zsIClRuyFJ2ZgfbD5ZWJ+jkC3kU0eM+jrhEL2c5cRlU5rNGb5LEp4rczrMsPrC+oG73n8YvJI85a+6I92krdwAXEMV98FS2H4P9MaJFVtILa/hUqEEGyJ7vKAEcvfvVpAiyE9znQ1tE3pxw2/tkGhTBW/e37B74Pr+bbnctNcsxr2NJRtsaPagPrxT1lf+/s9jMhs5DrE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EE48880004
+X-Stat-Signature: t5szjy1e7wmc3tmdrmz1deiyo3u9cdho
+X-HE-Tag: 1773843424-336930
+X-HE-Meta: U2FsdGVkX1+snA6btbrYweXVQDQF1ZlBuSOESohB+EhGwMnNMUWlJhXC/xB6HCSdYJuh9+05Rcx9ewkV04dbqV/z6Ic7kKOBQh9uira4BM58hRBXUDzb3DDOF28X+3q3ipsiHj3uxkr2Has9zMQNikphizhh5T6b59fpWLN2hyn2OGG7fxsUWYaRTZcRGfbohfNIyYOjZaSRpdQF5w/I6XJMUe0flx5zcqtkhhpzNCof1HcWFpy8GWjQRrwKlXClcT7NKR+CJSPtoW5l7tX6kLgQaCbkejCdaMXkbfmd8WctE7hhX5PwJB0lm5G6s90bJIZXmp3BPzUXPpt9dAxBM+omdGtvyS8mKamaLL9JfytbQB+fZorbDxOM8uSnW9ATJwleEpW0P5cn4EKUbrLyzU7Y7SOe8BZuR9/PFZ71OR7RuDoWBv8Fc7zV9kQQDxjTZxUMoMQj6N/SeKymVYaF3dcFDB11GVx35narCc/uF/skvjUTy3R+YSrg7NMDbZrbtzh9CYQ/u0/a7VpJc5nzotBVOBI282ol2gTUjsfXEh1/eKrvbuaAiiNGFBqbMEkWL1dPnHcAmx16P6oXnpbm6TDAdhh7cQU0YIr/ZLM8RYTpWYmGwbxWhaaUoYxdPlS6U3CLeb+ePYsr9nXURNEXsL61WIY9Rt/8vXgfljqRK8+JVQx+fGLwfWmHhRMjaL4OHYdy2xv/W2XnUn/omFoaFpdqUm44Ht4KodSntr5Cb++nocZYCdPyllZLToLXpAcxFWKCW1Dj1S9dQ25nHQweZXkf9bfjqKll+MxWK85KcRMqt0PceX1+zBFOOKE1+AF6hdqtF49Q4MtiPbFtAmqIs5XA8hfbRuM7331X92psbPCJfbgMhg42G/91D5DolIWux50Y1uGYabqgMzJt0txQYyNsolVM6uu/WvTsGJAD3MFZia7pDvHyI/n6vYC5uWbbNAD+qhtIDqbSA1z5f16
+ 4UkfafN0
+ QKzC5EAGsc7RLByEbN+xpLqyFi3gf5kXFW+i0AEiqc8SkM8ZiL4i7u4c+sZktroFzP+ltFgmk9LetdpzMbDXzvkhEU4qVAPX/gyCAMQBnzl2fK9wS7eyMha3acPaKGOuJyN3kQ3mnrdkR+xgI+FTj0yyIcZGYMtpHPKNIWlGybT2d3a753roRYlO9/EIqL6z8Hsao26BPXA+txpZz4STTFN4RgtQH1BYrb1yK5ylh4IjVVBxRcIvgQwNpO4D6C3eYZLrPRWp4+eWHEbFdcL4clBTpulZw5s/pwuF6Ij/Cn8Br+js8SOizU4nh7et1AdzalBxCEtr30rGrb9KbJPeDIxSURA5ml0hosU5XPQcsJpM6mIy5PFjTmtOJXPfB5fq+KJLrURiL/tlN+8TSj7g3uIMVhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,128 +136,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 11:58, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> free_reserved_area() is related to memblock as it frees reserved memory
-> back to the buddy allocator, similar to what memblock_free_late() does.
-> 
-> Move free_reserved_area() to mm/memblock.c to prepare for further
-> consolidation of the functions that free reserved memory.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Now that file handler unregistration automatically unregisters all
+associated file handlers (FLBs), the liveupdate_test_unregister()
+function is no longer needed. Remove it along with its usages
+and declarations.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ kernel/liveupdate/luo_file.c     |  2 --
+ kernel/liveupdate/luo_internal.h |  2 --
+ lib/tests/liveupdate.c           | 18 ------------------
+ 3 files changed, 22 deletions(-)
 
-
-> ---
->  mm/memblock.c   | 37 ++++++++++++++++++++++++++++++++++++-
->  mm/page_alloc.c | 36 ------------------------------------
->  2 files changed, 36 insertions(+), 37 deletions(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index b3ddfdec7a80..8f3010dddc58 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -893,6 +893,42 @@ int __init_memblock memblock_remove(phys_addr_t base, phys_addr_t size)
->  	return memblock_remove_range(&memblock.memory, base, size);
->  }
->  
-> +unsigned long free_reserved_area(void *start, void *end, int poison, const char *s)
-> +{
-> +	void *pos;
-> +	unsigned long pages = 0;
-> +
-> +	start = (void *)PAGE_ALIGN((unsigned long)start);
-> +	end = (void *)((unsigned long)end & PAGE_MASK);
-> +	for (pos = start; pos < end; pos += PAGE_SIZE, pages++) {
-> +		struct page *page = virt_to_page(pos);
-> +		void *direct_map_addr;
-> +
-> +		/*
-> +		 * 'direct_map_addr' might be different from 'pos'
-> +		 * because some architectures' virt_to_page()
-> +		 * work with aliases.  Getting the direct map
-> +		 * address ensures that we get a _writeable_
-> +		 * alias for the memset().
-> +		 */
-> +		direct_map_addr = page_address(page);
-> +		/*
-> +		 * Perform a kasan-unchecked memset() since this memory
-> +		 * has not been initialized.
-> +		 */
-> +		direct_map_addr = kasan_reset_tag(direct_map_addr);
-> +		if ((unsigned int)poison <= 0xFF)
-> +			memset(direct_map_addr, poison, PAGE_SIZE);
-> +
-> +		free_reserved_page(page);
-> +	}
-> +
-> +	if (pages && s)
-> +		pr_info("Freeing %s memory: %ldK\n", s, K(pages));
-> +
-> +	return pages;
-> +}
-> +
->  /**
->   * memblock_free - free boot memory allocation
->   * @ptr: starting address of the  boot memory allocation
-> @@ -1776,7 +1812,6 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
->  		totalram_pages_inc();
->  	}
->  }
-> -
->  /*
->   * Remaining API functions
->   */
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2d4b6f1a554e..df3d61253001 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6234,42 +6234,6 @@ void adjust_managed_page_count(struct page *page, long count)
->  }
->  EXPORT_SYMBOL(adjust_managed_page_count);
->  
-> -unsigned long free_reserved_area(void *start, void *end, int poison, const char *s)
-> -{
-> -	void *pos;
-> -	unsigned long pages = 0;
-> -
-> -	start = (void *)PAGE_ALIGN((unsigned long)start);
-> -	end = (void *)((unsigned long)end & PAGE_MASK);
-> -	for (pos = start; pos < end; pos += PAGE_SIZE, pages++) {
-> -		struct page *page = virt_to_page(pos);
-> -		void *direct_map_addr;
-> -
-> -		/*
-> -		 * 'direct_map_addr' might be different from 'pos'
-> -		 * because some architectures' virt_to_page()
-> -		 * work with aliases.  Getting the direct map
-> -		 * address ensures that we get a _writeable_
-> -		 * alias for the memset().
-> -		 */
-> -		direct_map_addr = page_address(page);
-> -		/*
-> -		 * Perform a kasan-unchecked memset() since this memory
-> -		 * has not been initialized.
-> -		 */
-> -		direct_map_addr = kasan_reset_tag(direct_map_addr);
-> -		if ((unsigned int)poison <= 0xFF)
-> -			memset(direct_map_addr, poison, PAGE_SIZE);
-> -
-> -		free_reserved_page(page);
-> -	}
-> -
-> -	if (pages && s)
-> -		pr_info("Freeing %s memory: %ldK\n", s, K(pages));
-> -
-> -	return pages;
-> -}
-> -
->  void free_reserved_page(struct page *page)
->  {
->  	clear_page_tag_ref(page);
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index b9ba1b8dce84..c9c26015020b 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -879,8 +879,6 @@ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ 	if (!liveupdate_enabled())
+ 		return -EOPNOTSUPP;
+ 
+-	liveupdate_test_unregister(fh);
+-
+ 	scoped_guard(rwsem_write, &luo_file_handler_lock) {
+ 		luo_flb_unregister_all(fh);
+ 		list_del(&ACCESS_PRIVATE(fh, list));
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 730c3faa7616..137ae317188a 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -108,10 +108,8 @@ void luo_flb_serialize(void);
+ 
+ #ifdef CONFIG_LIVEUPDATE_TEST
+ void liveupdate_test_register(struct liveupdate_file_handler *fh);
+-void liveupdate_test_unregister(struct liveupdate_file_handler *fh);
+ #else
+ static inline void liveupdate_test_register(struct liveupdate_file_handler *fh) { }
+-static inline void liveupdate_test_unregister(struct liveupdate_file_handler *fh) { }
+ #endif
+ 
+ #endif /* _LINUX_LUO_INTERNAL_H */
+diff --git a/lib/tests/liveupdate.c b/lib/tests/liveupdate.c
+index 496d6ef91a30..e4b0ecbee32f 100644
+--- a/lib/tests/liveupdate.c
++++ b/lib/tests/liveupdate.c
+@@ -135,24 +135,6 @@ void liveupdate_test_register(struct liveupdate_file_handler *fh)
+ 		TEST_NFLBS, fh->compatible);
+ }
+ 
+-void liveupdate_test_unregister(struct liveupdate_file_handler *fh)
+-{
+-	int err, i;
+-
+-	for (i = 0; i < TEST_NFLBS; i++) {
+-		struct liveupdate_flb *flb = &test_flbs[i];
+-
+-		err = liveupdate_unregister_flb(fh, flb);
+-		if (err) {
+-			pr_err("Failed to unregister %s %pe\n",
+-			       flb->compatible, ERR_PTR(err));
+-		}
+-	}
+-
+-	pr_info("Unregistered %d FLBs from file handler: [%s]\n",
+-		TEST_NFLBS, fh->compatible);
+-}
+-
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Pasha Tatashin <pasha.tatashin@soleen.com>");
+ MODULE_DESCRIPTION("In-kernel test for LUO mechanism");
+-- 
+2.53.0.851.ga537e3e6e9-goog
 
 
