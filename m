@@ -4,131 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7272107760E
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32D5107760E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41DA96B0332; Wed, 18 Mar 2026 16:52:41 -0400 (EDT)
+	id 9075B6B0335; Wed, 18 Mar 2026 16:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F56F6B0334; Wed, 18 Mar 2026 16:52:41 -0400 (EDT)
+	id 8DE2B6B0336; Wed, 18 Mar 2026 16:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30B406B0335; Wed, 18 Mar 2026 16:52:41 -0400 (EDT)
+	id 81BCE6B0337; Wed, 18 Mar 2026 16:58:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DE236B0332
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:52:41 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD2281401C1
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:52:40 +0000 (UTC)
-X-FDA: 84560382480.26.AE9B54B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 17B111C0010
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:52:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k7zvu5MI;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 70BD46B0335
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:58:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1469B1601A5
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:58:02 +0000 (UTC)
+X-FDA: 84560396004.10.481E9F6
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 35A2340010
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:58:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nlsW0lJy;
+	spf=pass (imf01.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=bingjiao@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773867159;
+	s=arc-20220608; t=1773867480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v0KbAbSrDD+LwNPPQOnmwucCZsjcovNfZ7tqg9JQnkM=;
-	b=PMgn++Hvx+rYBDxoNe4IXsc0TaU8wMUUiefJM7Qd+j8D2VL4kGLANm637Wl6pt4PO9dMQV
-	am5NqMRrN4nODgq72t3VAMW4P/aCGd58sYFESIz2EN9byl9lKY1gKykW/vc0uNJ0rTzkUt
-	5BQSwGRferWt4SGMn0X1oNpwGsTXBHM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k7zvu5MI;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773867159; a=rsa-sha256;
+	bh=Oy0njUjW6R5iexNMz3wzKCSxfU2YGWhYv9JL6HRw5xo=;
+	b=DAiTAv0OAJ4btD7PI5uIJCWlr0g4EzSs+TUwaAXiCAK5HGuOvKBms8SDGtXTTp7dWTmX4V
+	dWx+Z6I+0f5jN5bbN7nE+Myrx+eUE6pFY03MfRR2Ib1uZRTGqqGTwaz3an7H6472lgk8R8
+	Hz/OMGhhSMtlxhAqEsbrrEtsISqP60Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773867480; a=rsa-sha256;
 	cv=none;
-	b=iw39wM1+kPNiLhHZ2cp7RtHv4B7f2gyi1ODw1ecebFkD1lKyIq93Ful1DjXwKm7W/H80vY
-	LlZ1eNzDCSKnXEfmeGxZcl8X1YuLQp87VbP2qlm1IB/a/T7tpT1Ev+W363dfodM6XmNIhN
-	uKVYcgZpDuxNlPIo7KM3/M4HgkWElrU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D39D6011F;
-	Wed, 18 Mar 2026 20:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF7BC19421;
-	Wed, 18 Mar 2026 20:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773867157;
-	bh=kbGM3c4xh2xtlPKItuu8b0plWdnAptUOEmkS13CYnz8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7zvu5MIc5CYIGmjWx+P+mS8/hs2GooJWHfXhDPqFeWyum4sz6NQ2neYQyXlUtlCv
-	 SOoz9lLS4EQYDGViVf0oRa8oUQ4wZWHCy5DjVMkrRZlzhDZfSxX8btIRC6pKKcZtqq
-	 HqFvYKZdPu6NZcu/RPV8yxBpMtnFC8Ki3vcf/rOBJrcG5AcAzdMR2gnTomxyf7IP8H
-	 zHZMPsz/wlq4Amx6dQtpM7EHwIuIilXwCtH35+nfGyIdYuPry8qYRVdyy1g3sS3ITk
-	 esmcmpAq0Qm7xqoPTPtpTIaBIFFTr4xbzEGttviQsDf6G2SgDxhQSQi5C5yhB9KCwG
-	 yOFQuYZFuGWzw==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Potapenko <glider@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	b=AMwKmnJch2l6gzt3VCxWss4IyfS0K4EOPACB/jXxtZ1SLTW/0b9NeAWVXT2QWJ7lKQYKVY
+	Lt0JPhhtzAplrOBXFRgWumCr4kxrs+O0T0WRVHHQgaVeosjUC78Bf3jYn2DefzZSOiq/k/
+	RQuFg8spfs8uX0i/1sMnGHvnOOTzMsA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nlsW0lJy;
+	spf=pass (imf01.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=bingjiao@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so8335ad.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 13:57:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773867479; x=1774472279; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Oy0njUjW6R5iexNMz3wzKCSxfU2YGWhYv9JL6HRw5xo=;
+        b=nlsW0lJyGUlOq4fQMjPOp5e0ui7wpIcQCgsNHAcDoSnWonD/QzNCkqtkGHZJ/Ze5+C
+         OLAyXeYAUaGzxLmpsl0MWCJcTt3JnrpoO0Hn0bjkYbIh7BSPfhIjaaq1pI7tPIyo9wrE
+         u9WTHbK6y8xnwQShKaoIaxohT+Lu4vsTsoozIpSd04+yJzbrRQTVGnnWMWoKQaEIziqo
+         9HbyEZ0GTzhCKejEEa/ARkNbsjFjFgPvZl62v+opeVvSah++KJ0ndRJVWhChx4/B26L1
+         7UDHVPZMXT6P4Ezi0VgGU4rUDntcHoaCTrmM/Kn0pfnzu1CUxt93lTy0xj5qxur95PLq
+         HH4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773867479; x=1774472279;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oy0njUjW6R5iexNMz3wzKCSxfU2YGWhYv9JL6HRw5xo=;
+        b=tKCNcsLIV8yXnPRGL302DadCtF6q2InBI31/UvB82g4+N0yzJ6Vn4xdngTqISXddEl
+         7AxyJ3s7hfHf6v6cCIKpnLmEtlfwuyDhftyDAQktEOZ9pfJbn1azQWPzsL8tKoF2dxPi
+         4ffbYhpjrVcgPjL83sZloG7AkQ6OWtNIW3aOKbVFXdBoCgK3IvgdeaqQfpECWspoDoi5
+         q+/mkEHVmG7evXu6ZTAVGaGCNKV04sODYxqeirwlgsyesQ5J/FtHqFudKJE4DdOs0tIe
+         SCrZzVl0BelZ0O/6KSFyup+gafM+a252OEo7YiWfwIfxw/+DolWAZtcxkr5RaY+x3DJp
+         SfgA==
+X-Gm-Message-State: AOJu0Yx4CZBzDCyM3GqZ5CdGtJI3Mzba3lyeXTTyILCgXzJKO7mEVk3S
+	Gic0IXZYdQ8w2JsyTHQOzwjHAwQ0wUbVfS10qmP8kJj2Vj6/rC7egl/EnnPQDLwigw==
+X-Gm-Gg: ATEYQzz+OT6zE/61XrEA4oqN5GfzKdgfKKk8wdcPJwxi1FGd4HZiJ6oDw1+2SqjtpF2
+	2jLr4cGL3qyqm/Anr/IEBSTHpM6gnD1v4LUGoQynlXPHrfhtFkYY7HjDJLgnZm/nwBUbHRCnq//
+	mKBE9O5VSSX+YH2VZpDNIZIM4G3NNXuvG7Zu3Ui6hZydmTYq0IQqlV26C9IUufL6odYX6qH7L5L
+	R1OOx9FA/voah7pJfvHERioGr0NJ8/oRiCNs3J+SICsPn2SVHciIUAvmMIClVrCm3wnx2dI7SdL
+	aVQysGgEZenT7rm7jLZWa2GGFZq+FC+Gx807Sd2V/m098YEAgFuE4NTRi+4nCRikpNt/nWah7g6
+	UYfnFmKP2WDJ72eIteup4Qn9P7NOXSiFpFKR85J91DPrg4xCE8faZPLoC69RMrh4zosnFzDsBJj
+	dd1+GdiCt3puKpYDDzMYUPDsnoig4nWRGzyeNBHfROyZ9bjXqqMCxZxZ2U/UTgjBaaCD6U+84V1
+	tA=
+X-Received: by 2002:a17:902:d549:b0:2b0:5ba3:2416 with SMTP id d9443c01a7336-2b079f9f6d5mr203135ad.7.1773867478553;
+        Wed, 18 Mar 2026 13:57:58 -0700 (PDT)
+Received: from google.com (206.238.125.34.bc.googleusercontent.com. [34.125.238.206])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bbad77e50sm1525460a91.6.2026.03.18.13.57.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 13:57:57 -0700 (PDT)
+Date: Wed, 18 Mar 2026 20:57:51 +0000
+From: Bing Jiao <bingjiao@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Rientjes <rientjes@google.com>, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
 	David Hildenbrand <david@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Rob Herring <robh@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	devicetree@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org
-Subject: [PATCH 9/8] memblock tests: add stubs required for free_reserved_area()
-Date: Wed, 18 Mar 2026 22:52:21 +0200
-Message-ID: <20260318205221.1402161-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260318105827.1358927-1-rppt@kernel.org>
-References: <20260318105827.1358927-1-rppt@kernel.org>
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH 2/3] mm/memcontrol: disable demotion in memcg direct
+ reclaim
+Message-ID: <absRz4U_IMk0ofxl@google.com>
+References: <20260317230720.990329-1-bingjiao@google.com>
+ <20260317230720.990329-3-bingjiao@google.com>
+ <CAO9r8zP5HmeE1uOZE9WxN1GyC59mM_F2JGaKLEkxzzCvnxpW2g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 17B111C0010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: axqtfknudq69wo3xc881fepongmcmono
+In-Reply-To: <CAO9r8zP5HmeE1uOZE9WxN1GyC59mM_F2JGaKLEkxzzCvnxpW2g@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1773867158-134539
-X-HE-Meta: U2FsdGVkX1+HfWU50UwDuxEx7T5k0hj3Y2bO3+RPd7rZjWiI6zb0QnM9lScqBxfp/svYZ7ae91sH6ReAaX0tZeijQpAk0P5VKmLDQvmY4Cl/hYnKoDuiXBUk6mdghuJGI1UhWGZmQ718uAzuxebkEU8SmQAmFiSFD9cW3zqRPTcuS220eLN88Tf26d5HGlCMwRw2EdHm4GPnWVyi/i5mKLbuQ2KHZrdswWNfzQBxF8eAy3R2IkQ3vZJL9kfQhcuxdngPMSeBlfNMWLqAA624J4Rvxw3MEqaZ/FDLNucHT3yI7zo7g9QHOv2BGxwmKa7QURVxmNRirpstESrxkZd5tUdymxbKQ3vEQa7F0HZLZRPiN7tKWuhAkgMbHIZtOlauEhGCkTmPkQP/OqPw8EA29StI0SGL79vDRofpbw3VfywYjnHrkWgNBN7kZZrZFOiLIzSSPnD5rXhrhDKm49xebABMBBH61rlMb+fIUQzQ7VDvy1gmYDKg6C66ejBQuvz2JeSW/RpyUYQWDj1JbnlSKaN37fJ1tQQrIYTM9jkfR9vCF0OigpQcPeQhGzd0HGaowOdmnz+z/1nLpDAKj48qPYhLhZfJmQ+HxLgEGjG4/P9Cxzp4r3uSJk3I3NGOEq+fvDdtYe2XA56fLv6jT0BWpfkcOoX2gv+sLAgFO3DYFS98JmPtR4niVBPGfobtChUWE8ZhPUnzwRMtuJMGDv/B3c4Og4p4Q9sKFw2oARMJBqS0RVaU0e52jgaVDxiYfPt/HWI8T4glyL8isDRVgifVjXE+61uhEKYI2m/vcu4ZV4Mh21/zBiS/Sq9iKbHcVxXbZBidmUNCfpK/5G6V+V4Wkw3LELQoEmOm0Ft3IWfeda0KOOjjCnBO4UT8ct0RMfNKO0LXjlyALTgdmB+jeTKSSZcKBI4VpAikHowW+A8QeCZ6/U7EpkPP1uDdDAHvV+AJZahrC4y4vXl5UdG9rGy
- dyXmg+IF
- 1kFIvBsK8W9RxDs6ap3qJvE++ywWMUXuz6K2ZCrpwXAFKcTMg3Y+D6zSqloK6Id/KmquV5t0GQwI5Bh59jbhHLShLcAJLK4AG3MUBv2uMGJrGYch3YVGwfKYJpha2qkSYfPN3rGjAnYPOLDC7nDKeNo1LueujjtieF2BudnBFicijFOOtn8QQuKzXXK+vW4c/c/9KWTNSqPQ7YOHN8cHSzmpHWO44ZZxkO8xUXteJq/jGlO+RUN4MgUxP3BtWQkOixKhO7Rm9xyFtPiLMp6zhLBfo6g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35A2340010
+X-Stat-Signature: 9aj61rsu5ab9pjubt3ktt6zbw7xwfpa1
+X-HE-Tag: 1773867480-264472
+X-HE-Meta: U2FsdGVkX1/7AxBCimXyl3EPt0ubXDrT0Ck9NvDCfAouOrSdJptxOPaERO52/jyatlk7JfbVvZ/E0b8ip81WErPZ+VK8yV4xpJTRyphHX3WNkzE1M3MZHfCJFOq5uvKUWeJEC/3xkV9cKJWwQBPgHCsnoeC/mLYUvj1GbNjkPgzOE4pQYlP+c1rgxFn/pa2XslNhTFk6+kM3Aq67M72qW9+PgjJ8Wzks82ppGEvBMtfOmiWmIpERWbXCxHTecDJbJUC5OLbd2ogR3fLG4+CrYmlvuvG21cjeeQNATuyA6mIcM/9fq7p4y8pMCYEYHyMMHhSBjNqgK60J2qr3rwXQO5RnkwMHUxu3kkKdjK/m+zcdAa3+fvJSQibbferf/NKqUIElY7cjtUsBgfAeeRc+xu4euIUqEza8/NuMMb9lS+TaWmXC8fsD91xb+ARcvZXCncazrvUlrpeozs/xYLWa/0VzSxwAijrt8K302E09d0hFnolK21LG3WKRGiVB8I/NBtGzfuL0f+RVg1zEE5eVKXrBPL/a/sPheJijZeQ8wDywy5fOE1WxgyeZWwoqCFHqR5A15IPa2wbDciutTITIU2rNqvBA61ADIk/w5A08dGTggY556idhDcbZFTqctIY7VfI86SsDGkp4doyBrb2ID+UcUxxPfKrbXDoxI5PHg0GHqOvxhUS2UTU2ytwtcaM6+awNgiMjVJ49n5WPeu6mbLpInWjkH+fj4Pv7MaVfyytOxcxWMFClN7ZzRyAMK1XaGUhuOrJL8ECvY/G8H1UGxFfZux24rc0pKeqdljmt9spoBVN8WU0o3lKQWbYTEAAFkZCcesTcO/7WLQzXn0UsBEZQqq3QkduPCDFGuYEsZ+PU5I1aWkXI7wQz6hu5h2Z36mpxXlNqahUtJ/w5ZjKiEcQrGLBVC4iuro7lL3w7llOlBZZLjH2YClHt7N81g3qpI28jYHoCeGQqyTJOgPE
+ ld5v0n6D
+ DJBwUVI02UR5HW46ldGbDt7vWAjYmNrowo8sOTdK+Bhiv4SMTA5Ks31PkefoHukaxJcXbKhB1GLAAmvZk4doNNRKwn/9XBfkhsfKDTIJpkEc4GGve1aTTS3Hu8WYc7dGgwJ54dswIjeukiu4FIipQCkH/il5SKLN98pWhx+XawZFooqQzF1WvhlX65QSlGfN6vpJ9D1TZl3V5VoG+0hfRg7gCxoQd1o5RK7cEx5mgE5dYi82loAho93LMP61fSuqU3e04I42JcrXx/BUm1zSBJRrX2TbLVDdLvaW2lpv4hEg3anB/GtGfCJPqoJDzLmj5KcL6sN0kPzFSwU9TpLLC1zRH0eSz10AUMAHTfN/0003EWxQLN2nufViNeG8+dLMfa7MnwsRaMJ+eHw1M8xSz5n2niYfy2GF1P3wcJMDMjbn89mTqKotrqAhgBTI6EN2j/jwdtgd4+l5LKyzlIYyNX2UjL2OevtQ6Fb2bJeVci+jHEQJ1TRqxJAruV3x8+TrN7yZhVCVeUZqeF+oGEAnbIRYFaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,82 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Tue, Mar 17, 2026 at 04:44:34PM -0700, Yosry Ahmed wrote:
+> On Tue, Mar 17, 2026 at 4:07 PM Bing Jiao <bingjiao@google.com> wrote:
+> >
+> > NUMA demotion counts towards reclaim targets in shrink_folio_list(), but
+> > it does not reduce the total memory usage of a memcg. In memcg direct
+> > reclaim paths (e.g., charge-triggered or manual limit writes), where
+> > demotion is allowed, this leads to "fake progress" where the reclaim
+> > loop concludes it has satisfied the memory request without actually
+> > reducing the cgroup's charge.
+> >
+> > This could result in inefficient reclaim loops, CPU waste, moving all
+> > pages to far-tier nodes, and potentially premature OOM kills when the
+> > cgroup is under memory pressure but demotion is still possible.
+> >
+> > Introduce the MEMCG_RECLAIM_NO_DEMOTION flag to disable demotion in
+> > these memcg-specific reclaim paths. This ensures that reclaim
+> > progress is only counted when memory is actually freed or swapped out.
+>
+> See the discussion @
+> https://lore.kernel.org/linux-mm/20250909012141.1467-1-cuishw@inspur.com/
+> and the commits/threads it is referring to.
 
-After moving free_reserved_area() function to mm/memblock.c memblock
-tests lack stubs for several functions and macros this function calls.
+Hi Yosry,
 
-Add them.
+Thanks for pointing it out! I was unaware of the previous discussion
+regarding demotion as aging progress.
 
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- tools/include/linux/mm.h          |  1 +
- tools/testing/memblock/internal.h | 28 +++++++++++++++++++++++++---
- 2 files changed, 26 insertions(+), 3 deletions(-)
+I will drop patches 2 and 3 from this series and resubmit patch 1 as
+a standalone fix by replying to this thread.
 
-diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-index 028f3faf46e7..4407d8396108 100644
---- a/tools/include/linux/mm.h
-+++ b/tools/include/linux/mm.h
-@@ -17,6 +17,7 @@
- 
- #define __va(x) ((void *)((unsigned long)(x)))
- #define __pa(x) ((unsigned long)(x))
-+#define __pa_symbol(x) ((unsigned long)(x))
- 
- #define pfn_to_page(pfn) ((void *)((pfn) * PAGE_SIZE))
- 
-diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-index 009b97bbdd22..7ff61172ab24 100644
---- a/tools/testing/memblock/internal.h
-+++ b/tools/testing/memblock/internal.h
-@@ -11,9 +11,16 @@ static int memblock_debug = 1;
- 
- #define pr_warn_ratelimited(fmt, ...)    printf(fmt, ##__VA_ARGS__)
- 
-+#define K(x) ((x) << (PAGE_SHIFT-10))
-+
- bool mirrored_kernelcore = false;
- 
- struct page {};
-+static inline void *page_address(struct page *page)
-+{
-+	BUG();
-+	return page;
-+}
- 
- void memblock_free_pages(unsigned long pfn, unsigned int order)
- {
-@@ -23,10 +30,25 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
- {
- }
- 
--static inline unsigned long free_reserved_area(void *start, void *end,
--					       int poison, const char *s)
-+unsigned long free_reserved_area(void *start, void *end, int poison, const char *s);
-+void free_reserved_page(struct page *page);
-+
-+static inline bool deferred_pages_enabled(void)
-+{
-+	return false;
-+}
-+
-+#define for_each_valid_pfn(pfn, start_pfn, end_pfn)			 \
-+	for ((pfn) = (start_pfn); (pfn) < (end_pfn); (pfn)++)
-+
-+static inline void *kasan_reset_tag(const void *addr)
-+{
-+	return (void *)addr;
-+}
-+
-+static inline bool __is_kernel(unsigned long addr)
- {
--	return 0;
-+	return false;
- }
- 
- #endif
--- 
-2.51.0
-
+Thanks,
+Bing
 
