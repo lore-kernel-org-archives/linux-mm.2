@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E09E1077617
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DA6E107760E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:26:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 028AE6B0315; Wed, 18 Mar 2026 16:25:27 -0400 (EDT)
+	id 6BC436B0316; Wed, 18 Mar 2026 16:26:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF4ED6B0316; Wed, 18 Mar 2026 16:25:26 -0400 (EDT)
+	id 692B26B0318; Wed, 18 Mar 2026 16:26:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D958C6B0317; Wed, 18 Mar 2026 16:25:26 -0400 (EDT)
+	id 581146B0319; Wed, 18 Mar 2026 16:26:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C31E46B0315
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:25:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 656BD1390D2
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:25:26 +0000 (UTC)
-X-FDA: 84560313852.20.83026E9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 89A3D140016
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:25:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Axa2bfrR;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 444CA6B0316
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:26:54 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E49B0C075D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:26:53 +0000 (UTC)
+X-FDA: 84560317506.30.4B80833
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A22E180011
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:26:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cjqhWUjo;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773865524;
+	s=arc-20220608; t=1773865612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bukDbMZbEtVa4Eav7k6MP5pU3zwKbPcddu/zzByWQys=;
-	b=x3ebrorxgJJqgsTUHCkfJGAuAt0V/pUFf6wtML2OVvnMudx4klHNQ1NAkhwu2LlACXuOFH
-	J6zltdtNGr8JeS8v4d2IEcIFaq+mH4sUcbJqptbgV9EjlpCTveowACgGEWq35sg6kxH9eH
-	ljSwXI/HlBsgvBjdsQ+GkpdTfvw3uSc=
+	bh=omCcHdWRdOm+fTURf5ga/RaE/DEpsT+QV5gLfRlUUgM=;
+	b=5TCoWxDojPzCU6T8Y1YTrne+o/Ixhaz4m0vzOtq/Lws7KC4uuSSsIx5WCK2Y2Doe+n7v4q
+	lK24DgH8qJVPAN/ZhVwwQhMaI1p6+QihtnX3oIkoHrCyNqM5MZs8NWk0ddh0up8ya+WrSk
+	oQtVcvCsvxmWPA/RbPVGWw2dm+0yIQ0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Axa2bfrR;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cjqhWUjo;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773865524; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773865612; a=rsa-sha256;
 	cv=none;
-	b=lyfr/h19ixK4a8qBYvNyXHpgCUfL7R0/rRwC3bPGZN5KZt0E7drTV7gFoXtQDmdr9/79gD
-	rNxNTRh1F+w41lcz16ysIJtv0OTwnUiZ4S7FHmgNjEkOD/A0wAiGQCsmtdTbaitnSdv6MZ
-	V4LUN8dN/sIv1hzcTe3lVjI3WooeWXo=
+	b=jKha1EUA1azJx/syNMbFy+oF6UkaUmS0sBa+krfxROpBjFznd3kxP4xYqiEcsUs4OboyKH
+	OQI0UOGVUGlEMj2UlNBVwAq9F9g9VZdtOKIqUwVabi1FQ4p5iECENmHAvUCYlERTmW0w/K
+	R2/NJgaJC2ZAfzYA7dSlNdugjIjVPO8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3FDA44424F;
-	Wed, 18 Mar 2026 20:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E86C19421;
-	Wed, 18 Mar 2026 20:25:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9551C60103;
+	Wed, 18 Mar 2026 20:26:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCB1C19421;
+	Wed, 18 Mar 2026 20:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773865523;
-	bh=mdvbQ1tn7ST4LxwKLY9jxhU4Fn365EEeLx0lD1neL3I=;
+	s=k20201202; t=1773865611;
+	bh=XBUlp6yu/XzavvGDQ2oaardMxGyBi9eSjX+6zu8ibzk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Axa2bfrR+vFXIn2OLHz5yzvI8zsrqvlpYIiRcZlfngiCW0CtrIuol0gm+Ro2gmT9J
-	 DVO68Xz4neacd/yVCLpdAbNtDgcivQVKdbFYpUHSQl3eQVEKFmsLDspTnpwHV1O5ed
-	 3Jr/JyxK84pWs+MGBEcsRLxX2+cUWRImJwlnMvReLphGJ9IZjGn32CxvK8bgAjpGpn
-	 gzgxm7zA1H7gJqKv5o7NcFHPo8FzdTtfGRtMhq96YDP6Eazd560lR38exv1Nu9InLq
-	 SSrSGOIKV7Ori6NRExhZ3KfGIOHpOoM2tqJ5NOXOomU64HIqI2N+rfqD2IBntmXeN3
-	 zTWX0+Uare4yQ==
-Message-ID: <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
-Date: Wed, 18 Mar 2026 21:25:17 +0100
+	b=cjqhWUjoO7OVNBr8eT0cH2ultC3uPUsJAnHb8/H4br0yZ9sWzUcECe0zjtCjW29PI
+	 vDJe/W9iX1vJGagrsL1tf/X9+o0lq7LLAvT2V4MJD8c5kUkLXZSlIrLliteopaYypg
+	 1CoBPYGqvTRioCVH01ASzNw6hGcvTf/0rsk16f7Ai8ALjOfA7jKXpfUVntNEIGkGRf
+	 5p84O5j6snHUYnoU/xJwn9joQlHjLOWpwYzrM+QF+AGgpaZMJceeX8qRNzSjniP0yf
+	 ADyblZ8OHYi3MKAprQkcynEYQ+9QX2fMCO5QpDzfp0C0SBMo+QNppC+d73PfkehLZv
+	 oAqO+nhHSyUjQ==
+Message-ID: <fb40be0f-7a75-4116-8d96-c025b811cd6c@kernel.org>
+Date: Wed, 18 Mar 2026 21:26:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] mm: switch deferred split shrinker to list_lru
+Subject: Re: [PATCH v3 7/7] mm: switch deferred split shrinker to list_lru
 To: Johannes Weiner <hannes@cmpxchg.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed
@@ -77,8 +77,8 @@ Cc: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed
  Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
  Dave Chinner <david@fromorbit.com>, Roman Gushchin
  <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260312205321.638053-1-hannes@cmpxchg.org>
- <20260312205321.638053-8-hannes@cmpxchg.org>
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <20260318200352.1039011-8-hannes@cmpxchg.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260312205321.638053-8-hannes@cmpxchg.org>
+In-Reply-To: <20260318200352.1039011-8-hannes@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 89A3D140016
-X-Stat-Signature: 6dg4ckcppiqm9usk14axrwcyaehuat6s
+X-Rspamd-Queue-Id: 3A22E180011
+X-Stat-Signature: 4x9uhpibsrxrr4374iddexh7h9j7at4o
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773865524-427643
-X-HE-Meta: U2FsdGVkX1/vJ70hDwoxH63GmW0pnfgzjHFoZiiyd5EB1QAhT1rH0ntKNx4z9WHEfFVorrGBDqlHVPDO8v6/cI0ahlIVRPILB6bGBZwfRKNhH2eAYrvBenvx2cIIjlBDO5/Jfnm9jS5FOp7lxr1gQp4uYyOFMdvfiD/BHqP6HuXSiSXbjI6rSRulQGfFoObi9rvSuv24xKHlJIOtLU7YxPp8GL1Aj54gWBB8rFHEyzxJk6XqXFA5eYfTBoQjD1FNZm4e1QAxVzm7SyoIbECIOAB8JqK1+nXE8e4d5VbbKA4UiZqhft6MxK0AkGXIB13EPR8eyWa/P08yEeBn2p85D53GqG2ZW6WP/RPMrRIBW3bqK0pALYUyDlVu1CwYWdW6EuMoDKBBweicv93Q8o8sQXWtgUsO48QwfRIyKFtxjhHSoPYa9lsFwMO7vH8yQDilr3VZdTFMX7vm+vfXtXO8iG8+pC4T+wopZBX7G0P7New3u4anMaX9TPw7OBgczFBoKR6wsTaVB4bnGek2w43laHaPLwPyBaOrRMfBn53Q1DWgPL5UbGPPFcfs5SDz7is5heQOD9e3HUIMsVXv9I3a4M8Ch/XmNxzYQc/Gr/Ah1RnPbNV1Bl9HEY3xy1H8WYxReq7HHNrACjlMtTSq0dcs9Lm36z129AWrlTGl3zLB7/+00zu29wL02OuK1sy8b3dQlRZ1nUn7hllQo+eOWIS01wKlpS7ANsRiyibXqTZwOybFS9WIuKga9X0wRHzQmjr6yIWi35xyeuN1l3VXn/aobqYK3DHwmQGDdPY8xSFEVuaCqGc/3nDLgMd7CzX6dFGVE4Wssn7g/fgna1CgFfpUkBZ+F6O1xVnD/dJTaJChheeBmfa6WHkmgqub9QeJ2R4Geyr/FDE9u+5Zm08YdaeQofNIyhLk0NOwIQL0v33GlJsKDw9oKOqFB+gyzlYCREV2HQy1r/EeITxGvFz7sCs
- sHgG7YvY
- MRDC78cbuM0oVvzLHSwhjRO2vGuHh4WxgR3G3ueacv3eQ6MMhj689evo+QNldtxRZ8CChikHg4qFUHYT9QXQImR3pBZJRSj2YvsZJHPrO9jVxMrygT4xkMFW7PE7wdmza7pQq/95YMdvRZGqwFjKsaXwHLztMQ0iUZ1YrQvE40Kec8qcEMjJzI/rZu3jHmrUEUEOzi4L7bxsfs13f7BFc0DHppj1LTuGqrvc8U1q2f2417GMWjrz4to3fWMWtTmbiIw8SiFKszFLAHBsZ9K05oqOAxBZhaNWQNt2Sd5xNuRrEKsyq6hWkIGzfyA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773865612-187410
+X-HE-Meta: U2FsdGVkX1/LfSJPFVpmjTaBuDOMqQJZuuW4GXdhfmK5CnJyU0IhENtGAD+9D8ck/tE2vHSbWEaRdid1O2CfWuBBC4YiIsS92asoxOoJ4+TevXTU5KVPhi5tHj6r816lrwjgwshGVF6U+XFh3QKQpaBnG6gA/YM4ndptVeD4wW0vllIBTXth31P8MF2gfoqU2SCbmWQWMjn54+rfm0AlG770W8t6+nGB+C1+lNeezvykKdqMW1iDibrhozO/+pcNwkeds1zqknb9UIoBw+Hrhab1Mj1nlp3/uMWT+76DSkmYTtpQmZM+P1cm/x2eYtOkouKreRy1cJlbMgtxNGHzCW3iYpHKYET+Kzg5KTpTYQho6jPXzjZbJgBqp4+gQdAGiM0Yw877ZmTdo0wValodtaoxxHhakiPpjn2C2G/ZLdJO8rOcSuzml+zH+0PYLxESKFTEm4pcu2K0/92M1n4pm9+VXEvnCaRDqnaHfrOkqgOgScQVO9v1tdKnH1xhPJbpJWQ10WG4obrwfWFHIijodfKJJJUCmUTYOrmnYX7O6m5dXjjL5FTIEt4+pCkqJrfDd6l5FFU5xWh8mvTQvB5LXBeZS7/6onPCrZ7AkNpTQD47oTCz2UqGIi7wPI+8QjCU8B00aJz64Un/I5uFklqjZtP97oZBhvZdbjZthIPoWusJ+iMLdBcEvl1d+fQ5noO2rDOq9VeZ3NP/owEYGCY90r3DpdBsV2lV2QUGFUFUgDQ926MrHk1WSGIH8nD6O8oO+u5haNUNAtoljgfF68UzUVz5RYJuMlY9IC/8f6p97uzeljSZ21tQ5Ibovim+pH84O0rqv2nmvRhgY7raE2tvZw9JNvfWVec/4pxZ0FhGirXnxa37unWaht78mGtYLERE2cWMImY2C9hwxREw9sMa2hC6bWVGDWyC58Oa3gXJ5I++Mu7eW3ypgPaEemJfbASnAQW/Tg4bgBC667d071o
+ DtvX0pov
+ 1+3PUEdnuuDlVoHdPOosj1J5rNUEyOzWvpIWSHOojf3GT5wXXtGm2nMRLQ4fqFTdhF1h5HmXvwKqz+/yXr4BDCmEBosYutS5+24av179NxTrTnPU/mzr4Y6FJDRonZGPkwccYo/c5yTWvGK1WGJGHevVoGbKoHHcauOJjWRy18Wj9kV6n18P0LEtBtiQgbMR1hbvIC7A5GayNsODcSbuDRRj9QtnnTKeikYxzyx7eeW4oUCdnxJT7Gv250+UOAsnVYFHHtjv0Foqj7c2mxLcMoFiPtK16RnTV9Gti/R0Pyk2kD2WAuiq8KhVCbF/Y7up0r+xlRr4DzoTqnzPNlgJhK/mGNPYhZEVw5T69NhGtEBncpmA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,7 +143,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/12/26 21:51, Johannes Weiner wrote:
+On 3/18/26 20:53, Johannes Weiner wrote:
 > The deferred split queue handles cgroups in a suboptimal fashion. The
 > queue is per-NUMA node or per-cgroup, not the intersection. That means
 > on a cgrouped system, a node-restricted allocation entering reclaim
@@ -173,124 +173,16 @@ On 3/12/26 21:51, Johannes Weiner wrote:
 > 
 > The list_lru per-memcg heads are instantiated on demand when the first
 > object of interest is allocated for a cgroup, by calling
-> memcg_list_lru_alloc_folio(). Add calls to where splittable pages are
+> folio_memcg_list_lru_alloc(). Add calls to where splittable pages are
 > created: anon faults, swapin faults, khugepaged collapse.
 > 
 > These calls create all possible node heads for the cgroup at once, so
 > the migration code (between nodes) doesn't need any special care.
+> 
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
 
-
-[...]
-
-> -
->  static inline bool is_transparent_hugepage(const struct folio *folio)
->  {
->  	if (!folio_test_large(folio))
-> @@ -1293,6 +1189,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->  		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
->  		return NULL;
->  	}
-> +
-> +	if (memcg_list_lru_alloc_folio(folio, &deferred_split_lru, gfp)) {
-> +		folio_put(folio);
-> +		count_vm_event(THP_FAULT_FALLBACK);
-> +		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
-> +		return NULL;
-> +	}
-
-So, in all anon alloc paths, we essentialy have
-
-1) vma_alloc_folio / __folio_alloc (khugepaged being odd)
-2) mem_cgroup_charge / mem_cgroup_swapin_charge_folio
-3) memcg_list_lru_alloc_folio
-
-I wonder if we could do better in most cases and have something like a
-
-	vma_alloc_anon_folio()
-
-That wraps the vma_alloc_folio() + memcg_list_lru_alloc_folio(), but
-still leaves the charging to the caller?
-
-The would at least combine 1) and 3) in a single API. (except for the
-odd cases without a VMA).
-
-I guess we would want to skip the memcg_list_lru_alloc_folio() for
-order-0 folios, correct?
-
-> +
->  	folio_throttle_swaprate(folio, gfp);
->  
->         /*
-> @@ -3802,33 +3706,28 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->  	struct folio *new_folio, *next;
->  	int old_order = folio_order(folio);
->  	int ret = 0;
-> -	struct deferred_split *ds_queue;
-> +	struct list_lru_one *l;
->  
->  	VM_WARN_ON_ONCE(!mapping && end);
->  	/* Prevent deferred_split_scan() touching ->_refcount */
-> -	ds_queue = folio_split_queue_lock(folio);
-> +	rcu_read_lock();
-
-The RCU lock is for the folio_memcg(), right?
-
-I recall I raised in the past that some get/put-like logic (that wraps
-the rcu_read_lock() + folio_memcg()) might make this a lot easier to get.
-
-
-memcg = folio_memcg_lookup(folio)
-
-... do stuff
-
-folio_memcg_putback(folio, memcg);
-
-Or sth like that.
-
-
-Alternativey, you could have some helpers that do the
-list_lru_lock+unlock etc.
-
-folio_memcg_list_lru_lock()
-...
-folio_memcg_list_ru_unlock(l);
-
-Just some thoughts as inspiration :)
-
-> +	l = list_lru_lock(&deferred_split_lru, folio_nid(folio), folio_memcg(folio));
->  	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
->  		struct swap_cluster_info *ci = NULL;
->  		struct lruvec *lruvec;
->  
->  		if (old_order > 1) {
-> -			if (!list_empty(&folio->_deferred_list)) {
-> -				ds_queue->split_queue_len--;
-> -				/*
-> -				 * Reinitialize page_deferred_list after removing the
-> -				 * page from the split_queue, otherwise a subsequent
-> -				 * split will see list corruption when checking the
-> -				 * page_deferred_list.
-> -				 */
-> -				list_del_init(&folio->_deferred_list);
-> -			}
-> +			__list_lru_del(&deferred_split_lru, l,
-> +				       &folio->_deferred_list, folio_nid(folio));
->  			if (folio_test_partially_mapped(folio)) {
->  				folio_clear_partially_mapped(folio);
->  				mod_mthp_stat(old_order,
->  					MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
->  			}
->  		}
-> -		split_queue_unlock(ds_queue);
-> +		list_lru_unlock(l);
-> +		rcu_read_unlock();
-> +
->  		if (mapping) {
-
-[...]
-
-Most changes here look mostly mechanically, quite nice. I'll probably
-have to go over some bits once again with a fresh mind :)
+Was just hitting sent on a reply on v2 when I spotted this in my inbox.
 
 -- 
 Cheers,
