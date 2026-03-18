@@ -4,134 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7962F103E160
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:47:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0D5103E166
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:47:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 909EB6B018E; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
+	id A1BE36B0190; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BAE46B0190; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
+	id 9CC9B6B0192; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A9206B0191; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
+	id 8E23C6B0193; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 69DEE6B018E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BC3C1606A1
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:07 +0000 (UTC)
-X-FDA: 84559007694.24.5721AA9
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2005514000F
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:04 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NCTN7Hmc;
-	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 79F266B0190
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06858C253E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:20 +0000 (UTC)
+X-FDA: 84559008282.01.5907303
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 151B04000B
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=OtUVOSbP;
+	spf=pass (imf04.hostedemail.com: domain of r@hev.cc designates 209.85.210.170 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773834425;
+	s=arc-20220608; t=1773834439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sXC+9ZKhTZVbYXK2Yzou2mwOrk2yBPN5TmkkaKwC8RI=;
-	b=6HR3wk9bmLrtPUJ5Wp8BiwftXhBF/cYVhZPpB7bK7hDN7SR2Y2kQYk0diGrrTj9qr+X2xQ
-	mqx26ElNJuQzQ2eyhF6DyiO/8/rrsgR6tZVrMfL8KgdIeyeHmS9UDSr32a9onDiqt9R4WO
-	SYq96f3umf2nijN0bmEFBMG0tFb5mQ8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834425; a=rsa-sha256;
+	bh=kLqnHb2ogCoxqHkELJxhX6U8ujBBduz9IxDDxqOJz0g=;
+	b=qM2NV9eu5Nj+86przPbArvSvenp0RCNv1101gvy57cs+1maG3661sQx3N4Mi6YAOIWX8EL
+	TW4YO25kneDNI5FDs3FctIDcxTSEKO5IqzkdJG+8gLYOw0qqm5wLCrzwpl+WTijhjhWeOb
+	fYF+ImS0jh8VRNc2cQmJXXJDiDdGwRU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834439; a=rsa-sha256;
 	cv=none;
-	b=zd2jdpUUXpdoZGIz0DMp+Y1VJ/+3BDC5qiVfIvHuM+KzL8yOI8x05tCwz704rxOvr3NB1q
-	aZGE9z/DeDp+MhhNfUoDBbl6RdfByj7pOC4qu3I9adgj6gQHRddHbAL54XSNRalYMFnXtG
-	gfPZv16sIkhq9nJVSDXtaSuHMQ2hD6Y=
+	b=qCd7/VkE3xqcyimlvrXaiFCYtxQN/+FPTx8jyrZYOIE+nLDuMX3jNhalShrcQfhoNmPr1O
+	C1BsOmDX7fINg7ZEI5OIl+tG+t5+zcd0Q10x5+I1YGA5UEgcy3mKF7QWDvTxWw4RxY5nRl
+	uk0KmYm5RNhvOF6kmfC0RC8pqqzh3GM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NCTN7Hmc;
-	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43b3f91a7abso2236922f8f.1
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:47:04 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=OtUVOSbP;
+	spf=pass (imf04.hostedemail.com: domain of r@hev.cc designates 209.85.210.170 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829928e512aso3514440b3a.2
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773834423; x=1774439223; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sXC+9ZKhTZVbYXK2Yzou2mwOrk2yBPN5TmkkaKwC8RI=;
-        b=NCTN7Hmc6GDutjjjzKfPfAchyxOZtpaxVWPSOxcRsNqDPjsyBo9mnIsP3yoXXRJnzh
-         jUJ7huOOZlBchXatZPTYNSoWE0Il4o10OHwk/SfmLT/Vgu+Nrh9da4xU6wFCRLfiawXt
-         UX1eyqfVgjph6m8qhx+0/4Qp/bgSJWPinpSac8qU9LXOYpuJDuEXkMxDUBBpRsj66mdh
-         3qSu9gv58Oh2WP42DBKaisIT7JLyVL6TLIZynDgE4muJq+JaNheiTHOwmLVjrzAyZDFD
-         4ggAQhKFiedOvCsN8CLskEJy095WKTCY05iSon7XPLnN0AA38QPTX3fI6zbx+49V5jby
-         ljkQ==
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773834438; x=1774439238; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kLqnHb2ogCoxqHkELJxhX6U8ujBBduz9IxDDxqOJz0g=;
+        b=OtUVOSbPjImHFAf1BFyV/5r4ExDGB7fUZhDZFccRw8s6zOuZJ+eqImwhIdcITMFqZv
+         ysnyT95VaxSweZXx7B9ok2iLahaf1ZNPbA+e89HMDF2EeCQiwNO4s4sBl7JThLDDLdDo
+         H0O19q+tm1cfdpssIM2g3AMWBDB2wuM9r7/OEIjjBFEeWEC4oHPwXQQlSme6fWx9TIhE
+         t6mgsg59AGIOLHtVYmJHH4t/UaRlx7JMeau3OCpIexVoYOmzmllH/w0rZuVtvMPXKd2l
+         4RcD+wbq8isijCxOtGojC3U/C4bJdqpynVohF7w+TTAI+Gikbo8PBsDwyHAwhg+t4p18
+         s8nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773834423; x=1774439223;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sXC+9ZKhTZVbYXK2Yzou2mwOrk2yBPN5TmkkaKwC8RI=;
-        b=INSmDVR+giF02S33pD7I00V0TSSrQNwYkCanV4E8vSNSG860xKRqBQXU6MVNaGXWbx
-         gZd7JLzryMoNJsb7CP4LsAc7W/jNKtcDSO+JvoG3IrxjGR1rbw2sRuOyICCDSsk7mVB6
-         R8/UGhgYDTAvhpctWhtMEHA+md5og3Z9bTCGev0pujqtIM3mN8UVMwHzHz5CCo7r0wQF
-         NgJ2gdhbBBvwjQiRFYQz8c5B3FurUPkLDEa9Fc/Tyxa3wRcK4Xl9H2oV06QcGzSlo0fG
-         DaFHuyy5lwgF3ctbaEgB+7NVOaGR1DNYUgq6My/fHSiEsVY3MOS7dVMY45nz+osPf2ca
-         q2cw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMVBFBvsxQ/4cOEZNMrR8noBxG4hBsPj8jB9Hg/4N6je7vE3M4dfYtnp2BkjEpmUgNhZbOSIx3Yw==@kvack.org
-X-Gm-Message-State: AOJu0Yxx4wASoyWpImlSpVdBeZnxZG9tsgx6oZSW8p9+JkXhup3kK06H
-	j5tg7yqMzBTEpvT5Ia1Woq/zQ11ZMNQfrC6c/3+XyCcHymGXLH3Qb7f8WllnY+bNqWQ=
-X-Gm-Gg: ATEYQzyA0dPlDLJaLymvHSJKigAD9AAuxBbNkWdAHqkENGtXQk6x2QZ4d3Epa7WWnXG
-	lH/DcjvQhCheHWhyxEhEXX82awNBUSjm6pVOD6FVp+7Y/GH5ZkJyvGIjdTc6F+ae6hZ+zcdX/A3
-	zaxi9N98nfbT7jHjfmVadu26W1ee4BdBPCxGBE9ja+s0dyLiJWOpxFDxwLjRnAXEtyqpvQdnNEx
-	GGIn2rVkpR8aqqj4kRXsFq9FYgms2+uUTf1vXa4a1byyD6iSAGA5ToAaGIuov4TKYkKnX8mHeqK
-	I4ennKCg605kvo0cX5QgTb+1KTPOiBquCKI33FYI4aQ9xr1/EUfEnUasoWh3Mwu8Ma2JBy/qsNc
-	kQ8ZZc3QjvOvMrS5ZDBDMIrAC15hyKGAzhvVAngOH24GF78h4KDjnp1VwPsqYjQD125nxtgvTzO
-	IsCmgoUOjfxz1FCtPNgFGC/icVb7f4+E3ZSzJD
-X-Received: by 2002:a05:6000:1ac6:b0:43b:4362:8ef5 with SMTP id ffacd0b85a97d-43b527cb2fdmr5198029f8f.51.1773834423360;
-        Wed, 18 Mar 2026 04:47:03 -0700 (PDT)
-Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b518588a0sm11451811f8f.16.2026.03.18.04.47.02
+        d=1e100.net; s=20251104; t=1773834438; x=1774439238;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kLqnHb2ogCoxqHkELJxhX6U8ujBBduz9IxDDxqOJz0g=;
+        b=F3fptfzpSbII1uHU+HfuIhMOgNIOZj/VYKrY/qUA7VOeyDy4ZogRVtPnQOagW0BdCw
+         RVx4psmxZ/7qhFVyGRU46Jo0ryothO8VE6kSzd9zv4f6qODI9xJtziqclK5lC0vfugrE
+         ooBifs0KEHgAv7sOQPqHFF2UUSgvRttdVLB9BY/7dp0NKS91jOXtB/mtja/p0hldW3SF
+         y/D1sBLv5TNfmJ/FWyREgkrZVQxv8VmYEl/as7nJXz/KtsfNOlpkhLrJo6m9KpgYKMbH
+         5cjC8PnawZclbs1y20g43BXFGsZGcLFBVjd3cWn3dx2IbqsqFSE27aUWsrqpDTd7tlTU
+         z3/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXMV3/xVl0+PzceMzDkyw+1NHFsUGY2oy+9r3SoksuPH9n6MCWUPYZk48rsB7+eT0o7SwkJFYb4CA==@kvack.org
+X-Gm-Message-State: AOJu0Yx2uZ67zIOjV2+9DmmpTBVjO4dwmhW6zx/2Zgne6LwDpgf2WMO+
+	NbTyN2Bo+8Hfh+aTof4L5KRgNSsZNgHWBu1qDQ5lywGo+lt2P+sqq10EYUGHplc9+iY=
+X-Gm-Gg: ATEYQzwu8G9UguXqWy9akLMrG7JvLEf6LH/uFAuKgDl4CySSA8VFoBkt6pySmV3ztCT
+	tAHbdbA3RmJD9gOy28QHu7uCsqGv48zLo+eV6+WNE37NlJLZ0uybH9XEqTdFQskyiLF01cGDaUS
+	RERSvth5fUOL4rfKAbQI3aJncQv1MAmmvxioRal+4aol0zifIkU3CzM+yR8AjPr0owh3D+BYham
+	4UrY1HMgLpvbPmHMarubxjp5fzwFP4KXIoWwTVyEVb4rqCB0F6rTTfj9Y6sgZdXBwzwPuS+qrzF
+	njlYaqCbUxzHaRdGBWFYC/9sXI942zibAziqW6UR2WYJvY+7GOE+u6obRbU9nclF8u8Y5Q4b6P1
+	/TaT6gH0GO+/ysqwsemC27Q4MDqkdgjdNJhCxrtV8F/1FezC0MrnmEhRT8iJZVGIb99W/piVtw5
+	/D
+X-Received: by 2002:a05:6a00:1ca3:b0:81f:4ce8:d64b with SMTP id d2e1a72fcca58-82a6ae4f234mr2558433b3a.44.1773834437848;
+        Wed, 18 Mar 2026 04:47:17 -0700 (PDT)
+Received: from gpc ([2400:8902:e002:ded5:78c1:8178:95c1:6ca3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6bf0cf5fsm3176671b3a.61.2026.03.18.04.47.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 04:47:02 -0700 (PDT)
-Date: Wed, 18 Mar 2026 12:47:01 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
-Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
- attribute
-Message-ID: <abqQtcNqxzxiZyf1@tiehlicka>
-References: <20260317100058.2316997-1-d-tatianin@yandex-team.ru>
- <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
- <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
- <abphjNOYaNslTA90@tiehlicka>
- <7ca9876c-f3fa-441c-9a21-ae0ee5523318@yandex-team.ru>
- <abpue_k_9mjQAP6X@tiehlicka>
- <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
- <abp3-iJbazCpygIm@tiehlicka>
- <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
+        Wed, 18 Mar 2026 04:47:17 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: usama.arif@linux.dev
+Cc: Liam.Howlett@oracle.com,
+	ajd@linux.ibm.com,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	brauner@kernel.org,
+	catalin.marinas@arm.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	hannes@cmpxchg.org,
+	jack@suse.cz,
+	kas@kernel.org,
+	kees@kernel.org,
+	kernel-team@meta.com,
+	kevin.brodsky@arm.com,
+	lance.yang@linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	r@hev.cc,
+	rmclure@linux.ibm.com,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	viro@zeniv.linux.org.uk,
+	will@kernel.org,
+	willy@infradead.org,
+	ziy@nvidia.com
+Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K pages
+Date: Wed, 18 Mar 2026 19:46:53 +0800
+Message-ID: <20260318114653.123656-1-r@hev.cc>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <d0c0ac64-be15-4683-89ec-e32bf4867109@linux.dev>
+References: <d0c0ac64-be15-4683-89ec-e32bf4867109@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
-X-Stat-Signature: de1s159akfwiqzemfmm8fdtuneqwothh
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 151B04000B
+X-Stat-Signature: zw1zcctmoows4n7wzya93mdj5196jmjc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2005514000F
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773834424-773263
-X-HE-Meta: U2FsdGVkX19L9F4/lWULA0EaHQhCrZn1DqSfBAprJonQptK7Sx9IJfxQQJL+6AUlFAF69gzBNlKZTTOamjdhXOqRQDQjGwP949JLbuZ0A82VJd4zpgLYjlJ1b37bfm2Ga7e5Fn4mQmLkyPvzFcUD23dyq4osCYM5EFFyMX4zDMCjkabJOpha1dqBWj+wLFsQXQ+xouOFUpBpbV0ImPw4tw7vDNM9dSvwNRh/b5YkCVJloEW99ZEVO71vwFL419sK8hx56wEXJxykxhMFE46POjuYHBcgpexbufEfwjDrzd7r/bZ7ZGxteovZK6u4LqA+Rdf9vYa483VG9Oj9EwqSTD+ww8c+RU5ApDdJuHYNzgcahrvdrMPxOxFf+OuiJ5wACrLsNOIHh+SocS9rPrMeXO76iXpbj5X6fVMpFIg2WTZ+d6TgyLA9DfjSwjsbe7C1Akxv/jS23L0pS+moQiB9D/Y2y0pQv6YwULepuqZE8wVCfPlmTrQNagbaLVM8AGVwJxLZ9ohzbcZf2Uz5cz/+CDuIWjXSdcGCWTDhLVrFtTWLijKoNnpup3eurQuYRz++dE9MffejcYliBgbhrfueMeEop1kOHb4p4WMYCyaMK9ujC8xIi3glUnMApONmrZwrj12120bF4TGM9F6mX5JA/KsyCeRnVKKFCVuhn0pOgAlc7OHviKPhPsXAd0uylg3pdTiFbrqLn2llIkqg+DxSnY+La8rmh+j0dGkLn0aQPIJN1meMu09fm5ioeL4iqOB0MISPHDccrIJRurkpND5H/DDZ7yB1NUj7VJsYoDlHIFQrDRlNslYKuaBo7U7KIaXAHPitlLLA7SO8hmNStKs5glvBu5D0lvYntO88aHR97YvOH7udwRmR/T+vd90NXyubLhIwDOl3oeqR19CcDIQpVqxX7R11qoAfXIPuoAjZYjQBcUBx6X5CCHhnmpwJZuw1XNJonb1nLu3UIpbXuYr
- Ll/EhCk8
- bjMWYGP8csEo8cl8cZrfvH+c8qn+3y4kW9166msIUnAVcDCkOSLLjGdTReqK0jvOE8NDFtISxKXUfyC6oNcUJXoZzr/Jgmi/J4QCoGSgitME8J7aAUwOgHiQp99KWEj8BenATLmD211TtUm+NdQRq8r9FQrzCY/o3PAfROh5KHGHuWNknAn61xaJHYZ79TyDWsbFEPs8pj8M7/TIPktMmb+Ob1jh+FMIYs+P2oXQid3roYayGe/nJX7liopqh4gr7qte8aFNrSqJVpth8Zp492ItbVmHMBnywl5tEZ3fFZ/gAK8u2vtj5uMZDYAFKO9Bn6bjM4iLGfTGr/66UqjKPbXg6Mlp/em6bIcpMJKsDgic2R/Eu5z5YY994oVK6k1z1uNQZArLAzq5KklAwmVhrOB1+aQ==
+X-HE-Tag: 1773834438-484897
+X-HE-Meta: U2FsdGVkX1/7NgOOCdig49oDev4f2240xLySidQ001NS/NHuyWvmUZmYfG2y2+rKb4Be9CviudaU0LLAMhTPA4Io6gAk2Sx3jSy/dBaUdfj4imAoS2cwI3mWb8P5/IzCdK3lOrlUVlbxX024I9yKVvRrn//cc3UA5MY4Fi1BQ1G7wcbtF4Ya989Ux/S3tQso+h1ZPFMrxp71fbbbguvFFE8/BCbopwcLt1v64E2L2oEbkzTKLXlZPi5x0k+aZwbqbloMhwHf7QBJz+uWCGJXuSHjQugda7Rqy0EFX8i+YG5JLP0auEd1BEHFZejRUWrMVQDN+kQOpkJgvtUoaexbkwxGSedfD7wqFtceDQjoAuo89OxHQXEoatEYm5su673wSXpwFxuSQ+nwI0IFvOue/EUvZdUcYnJBmMf2FZX7xjHG6iPWj0z+k1jBknt9XTAf4rGAVVx52nd0SMR/6PDC02xq2Z+dTz/qSOubQ6G4J5ClrbF3R/2XQIVVSI8YzASkj//jzovCrFv8W5jq4jqTZUYw+lNzFy0OfBo7tLdw0UHDlCV9hM6I3sQEgsmwUs2OLmlUCFUigEEWZH/1oIUrhTNhI2BnEjDU2Ym9mvqAC/Xij+OlW/h//v26Q4ZHr27k3NXoeveDSiiEPex24Qhfeew8UZmQvKDhVz/DjGK/4aFQ8BTDTJBXu1GRGzEBd2tM+KNzrnFhGrLE5iTejSA2DiW5I/FEm/MZYRy73r+xFS3OcwA5SztilIbhgb8w/LyO1tSqyVSpVcVGSU/WXZKdvon2Il+q1q8eeQFRD0YEgfDlog3K66tHhdwxIHRFTjknJqJJq6f3SjNcjIyBtHs0brwt8ACiKBVAQx1rjTAVOREARqGnB6pmBzKrNQQN/e3mpDWQeldhy0bcVyyVSfyyb7yrrTm1r9BkdxUIVKcE/l9UDycbscxJ1R5mQG1XlZKgQnURO3iNlQQVDh1Jj2V
+ 7Jz4QtFE
+ vyEdnf9mjv6ruOOD5mH9Ubtfl11qRuzhwPNbezptEVFOWPdNigmudnXPdwgAMoOdEdgReNg8S84zAuEBmdKSrHi8E/HIkdGJEbeR3Qm5GZ0aPq4hbBu/LH/nUVEMInbmGt9fwL7M3c4E5kme3gKe3P3BuhMDf/v8LsujGz1QMv3Jq2c08IRg4n1BhbADhYL9qFdxs7b26zhmVHLuXtzA/fG+v3qpRGkeVdHTHFFvxvVt7Aj31wqaNZxn7FwMXrfVw76N6dWsLP4qW4bLRmQm6iTozOV2mKX7G3PDAVZKFKWXPzLmQk5E5HVCtuy2k30/3ULyXPZ1qjIH7aCUIDc59sz3VaLpgZj61vgl71dusIzZtiQSDb6qjQQEzQ8MUDcKJfVldG4I8+M/K7we1HNGZn6u1EtsTlXS6o6M65cyl3DY4fUVzdKzw0aQSrfqNoiKX0ylBFOjIitkI4xWXvvp+DOhdwX2Mx+XcOcCtBny5nzCXBz/9lYSLaQWc5tJulLRiJpONStrcUL2kXdjQ/2Gpf4xILQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,45 +147,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 18-03-26 13:08:31, Daniil Tatianin wrote:
-> 
-> On 3/18/26 1:01 PM, Michal Hocko wrote:
-> > On Wed 18-03-26 12:25:17, Daniil Tatianin wrote:
-> > > On 3/18/26 12:20 PM, Michal Hocko wrote:
-> > [...]
-> > > > Shouldn't those use mlock?
-> > > Absolutely, mlock is required to mark a folio as unevictable. Note that
-> > > unevictable folios are still
-> > > perfectly eligible for compaction. This new property makes it so a cgroup
-> > > can say whether its
-> > > unevictable pages should be compacted (same as the global
-> > > compact_unevictable_allowed sysctl).
-> > If the mlock is already used then why do we need a per memcg control as
-> > well? Do we have different classes of mlocked pages some with acceptable
-> > compaction while others without?
+> Thanks for running these! Just wanted to check what is the base page size
+> of this experiment?
 
-OK, I have misread the intention and this is exactly focused at mlock
-rather than general protection of all memcg charged memory. Now 
+base page size: 4K
 
-> The way it works is mlock(2) only prevents pages from being evicted
-> from the page cache by setting unevictable | mlocked flags on the
-> page. Such pages, however, are still allowed for compaction by
-> default, unless /proc/sys/vm/compact_unevictable_allowed is set to 0.
-> That property essentially "promotes" ALL such (unevictable) pages to a
-> new synthetic tier by making compaction skip them. The per-cgroup
-> property works similarly, however, it allows the scope to be much
-> smaller: from a global setting that promotes literally ALL unevictable
-> (mlocked) pages to this tier, to only promoting pages belonging to the
-> cgroup that has memory.compact_unevictable_allowed as 0.
+> Yeah I think introducing Kconfig might be an option.
 
-This is clear but what is not really clear to me is whether this is
-worth having as mlock workloads are already quite specific, the amount
-of mlocked memory shouldn't really consume huge portion of the memory so
-you still need to have a solid usecase where such a micro management
-really is worth it. In other words why a global
-compact_unevictable_allowed is not sufficient.
+I wonder if it would make sense for exec_folio_order() to vary the
+order based on the code size, instead of always returning a fixed
+value for a given architecture and base page size.
 
--- 
-Michal Hocko
-SUSE Labs
+For example, on AArch64 with 4K base pages, in the load_elf_binary()
+case: if exec_folio_order() only ever returns cont-PTE (64K), we may
+miss the opportunity to use PMD mappings. On the other hand, if it
+always returns PMD (2M), then for binaries smaller than 2M we end up
+reducing ASLR entropy.
+
+Maybe something along these lines would work better:
+
+unsigned int exec_folio_order(size_t code_size)
+{
+#if PAGE_SIZE == 4096
+    if (code_size >= PMD_SIZE)
+        return ilog2(SZ_2M >> PAGE_SHIFT);
+    else if (code_size >= SZ_64K)
+        return ilog2(SZ_64K >> PAGE_SHIFT);
+    else
+        return 0;
+#elif PAGE_SIZE == 16384
+    ...
+#elif PAGE_SIZE == ...
+    /* let the arch cap the max order here, rather
+       than hard-coding it at the use sites */
+#endif
+}
+
+Thanks,
+Rui
 
