@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A33CE107761B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 21:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B2B8107761B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 21:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A6B76B0337; Wed, 18 Mar 2026 17:01:03 -0400 (EDT)
+	id 710F86B0338; Wed, 18 Mar 2026 17:02:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0304F6B0338; Wed, 18 Mar 2026 17:01:02 -0400 (EDT)
+	id 69A376B033A; Wed, 18 Mar 2026 17:02:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E60EC6B0339; Wed, 18 Mar 2026 17:01:02 -0400 (EDT)
+	id 562886B033B; Wed, 18 Mar 2026 17:02:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E6D6B0337
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:01:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E81756B75
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:01:02 +0000 (UTC)
-X-FDA: 84560403564.15.82FA470
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BA192100010
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:01:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XnG8RSXJ;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EF196B0338
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:02:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0AFE13539B
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:02:08 +0000 (UTC)
+X-FDA: 84560406336.22.C48FF56
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0893D18000E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:02:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A+EOEniy;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773867660;
+	s=arc-20220608; t=1773867727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDNSzQK4DuyW7llVyriIQHBv3g+jfE0tBybPwJp6L7Y=;
-	b=z78IYZ95Xa93tBECMb6ElQCPvXecy/6fVOZrTHPrB/oiRl9ZVEJ4dqP4oI4YAavJBowUkC
-	C0zYYIhoaKBqMY62tyxDNPMBqHSjMGF2gsW6Slm55dZxhR5sZ3TxLAqoZch5/v1SWt5Ng7
-	8N4DeVTtQ5StwJ+W6syVZ/6aFswZ848=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XnG8RSXJ;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773867660; a=rsa-sha256;
+	bh=+gPDPE3uP04XSuNdZbsheC2vtbIrc4cqcngmTQFNGy0=;
+	b=sAaIgSKJooUafYX/QlGQkcLU89Z8sk3oWo7rdidIWduqkdhaGu4a5V5jy1hRFq9X3CCeH5
+	5K4u1D2Xx/H6OKA562OnFqBB5SJf9BGAAIVre3a+HlRw9zCrts/D2BW69O0F0XVRZ4QESH
+	3lWhXB0KfOyByLBj+aiaR+8Cz4Xxusw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773867727; a=rsa-sha256;
 	cv=none;
-	b=ZidUe+EgPfIE4Vj54xBBbd3KdRPM29UGf8KdKlJGi19ME9iK+7Hx7f+Kkf94X0hVERZAfz
-	lTkRbNVSoANZUbpsh4d/iAi3xLw8XJa1aCdIfwEIdvkS0c6Lv67ymbtE/t6AtOyPmoE+R2
-	9+K/Tin+68jl9yXs4HIJ+Xqxijfbkvs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 21A9960121;
-	Wed, 18 Mar 2026 21:01:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AB9C19421;
-	Wed, 18 Mar 2026 21:00:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773867659;
-	bh=t2u/NnQgkVtNG7BfbPf/TNx+7WNl3R3jdzkDm5jRCao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XnG8RSXJ6zH8fh0H/wNcde4MurnuGyvetEucoOmX2ytbL2vrnFcoA9aOZghTaO7Ws
-	 +sUccvmCrPh7LWgo5iiCpKdXulIwuBzAApI6BBon2O4EYIOC9RF/VmWVEbzCXX8pgu
-	 OeesZtZGHYJIgZGfkT/2XcaWMCYW6E5tw/CL+8D/nJ6QumME8YFZyP9Pw1FHHq5q/P
-	 fSq6ptmb4YXz/wmLRznCkUsnPAo7XBCgKfD4C1YrFYFL7WHCY7ugoD61tZfGJf2yIH
-	 fJRtzhtsoDnvz279bnSisBxD+YXI4Es1I/YWyhpO9Xlc3YmlTaRR0Owkd2WllIpPRG
-	 3SGDBtbU5n9/w==
-Date: Wed, 18 Mar 2026 21:00:57 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+	b=cPTx6+j3tkyEfTLMYrbyMAPUw0DDB8QsPagaWyAA9GhkJOIcGugBNfxhDUhI6fldQmY3vG
+	MbIA3Cnsv18BjzLfJZ+26Agsjf4Y9ORYc537ZiaWozlu+ojbI0SbzTold21I6K4WiDZghW
+	NdHuzjkRNZetxWlosCVXjMNmN4lUF0w=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A+EOEniy;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 18 Mar 2026 14:01:59 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773867724;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+gPDPE3uP04XSuNdZbsheC2vtbIrc4cqcngmTQFNGy0=;
+	b=A+EOEniyWQYhVl61shViOBJbhpEB+/bVhL09lUHRy4w2KAytPlP17s1k1J02xZwSxZA/8Q
+	GurPFTE5HsA77/+1QbOb/rFmQPY1Pcg1wNES1HRi5Q7zA/Yt+ghc68alknlCEya6uYGxQ2
+	5+NAHszXSoSn5V9GnVX6tIHSGIJ8Cv0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	David Hildenbrand <david@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
 	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
-Message-ID: <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
+Subject: Re: [PATCH v3 6/7] mm: list_lru: introduce
+ folio_memcg_list_lru_alloc()
+Message-ID: <absSrpzmvvNbrhRD@linux.dev>
 References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <20260318200352.1039011-7-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260318200352.1039011-1-hannes@cmpxchg.org>
-X-Rspamd-Queue-Id: BA192100010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9fa1cfxk9891idswqrk6sq3yts9n3hbe
+In-Reply-To: <20260318200352.1039011-7-hannes@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1773867660-342868
-X-HE-Meta: U2FsdGVkX1/gy6Blnsngmx7u81EMPmVITIT7QFw42lUZlJGSFCTP5ftkAw04dYVw7m01UCjHJBuheBs3SPGiKXzE4SEXM1ShAZqUY7Eap/ar/V4H6EtAcCq1Y8IGdFlgziBlJ9b7HhYcgGYD6JWswOe8JLeihZR9hgp6ZRUPRJ2mYDHs0Rw/p5WBtIhWq8ahSZaPrM5JUwNbPgEwP0srWzHofe3L6a2r0tuoUFKfFTLAhGKNv99vP5FvEpXNIyaUe+Re2ij7UiarKgVerovd9T1ZX1fEdfj0R8IIUMgYVdiDBk33fpoHctkFz0nb13BCIhpJwSLnTRbYrlV3zX5rqjbkcoOTJP473O0TKGTVPX7BJHD/RcU500YSQ+sQ7Ij3efUx0mZlx8JO5Tt3jg9GKoN02CZOsdF7w/GhLL4E6W+CjGm0ec6849OTTgFoSQFgp328faWjKo/EY1sTsMI/EHqbkdpYvqGpEqoZVUfQUEiMNg7HdgAxEjbpWQ0tOov2zTYMrDxycRchknBe5Qmj487rf/F4qgPGzRLOzjEj0vlZ4d3Aev/VpDoERIcB3DxDXrktXkk11L+c/jHuq0m+V4yvgz7aoSDYWz1NCTnTtVfLhCQiILtkbTSICTJsbujrNByQxCwS4Od2c7stc1oZoIXflt92YCwSMEVrGlwqGo/7JdYPvka7kir54FnsGlaYYyuaHpUhqnkBCG4pXUV+KLIbEhmVYPWPOdETjCbf1DXhlu8zs2TspeSIbrLFNRCuUjqAy6z+qKvfVbogSqngDh1BJHLlzsVN0tj3wnbceW8IlRvfS/aXAIVPEOvzlgmWocEGE2KbCqvKHv0x/C0c6Dr1lQCiIC8GCG+73Zplb+theFQv52TWY/pkchiL2EQis6domk27y7FnJui+iKoIzyVIiTL8e7MTu0tN55sCk0OxJsU8ua0uYy9d0AK8B+h1pTkJ+ynVnyd79ZRdNe+
- bNZgULoi
- ppRLJO0/p/FU4jKST84q2A7i7z+ghpm7j9VTawf1RHXTZJPcarkSL39fv25fIBQVd+Db/y+qRVaD1kO7KikR9jAIc+oPS77mGmPyNK6vTvsxx/jYBMoM0ryUU1Ont3ofrNZL1QrN2osd0ePGVxdpg5/+dtfF6rQ5ukPinno0Il3I/rpJPgNeE5NpZm5j4qM3qOzH6HtgMIg3TZ3/YOVkB7iBXwyXDEy6DNMmOyD3Apes8dEADW1LDsTZJjiohvdTzG5ZtFo8Yicht4KQZD3cV0rTEnbTxapV6o6Aw2ewDoj9MQrltANnMT27WG/0s055LPvzbSQHBqioOmQsgBIXwck9IhIFsB7cmDlRr7Zi/bBUwMe6E0ZOx/d3Po2zmZ4Tkx9dqsNB2dfE0K/wdPTFYjBlrqZImfRxwLwJ/draKwxMQ+bbkfIHB9pRmz4012xRI5pTJ5o5aMz/a8HARQ2wWHAVAgAEChvydnbD/vwUKjAOf2rXXPO+USP7OUA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0893D18000E
+X-Stat-Signature: 5xbdt51gzwrygzcc4munhwbgya3ewpzp
+X-HE-Tag: 1773867726-671593
+X-HE-Meta: U2FsdGVkX1++VHasdauXhEmM2sPU1lSC0UTEIDIKibkw8/EkD8Mry/wFAnyhYztkrT4F0jxKIiYfSipfdJONzf1rzafcCoLyB3TpcIO+qhmrPjQs8s1TgXAn0Czm3WOYkG3bctKEIm6wDVdVHuOSkDiRMrbtT3xQB4QPw3akfJ3QUOTVzSTMFhL+9L3x7+9iH8Hj0BK1860d1A2EYxdlHss+vf6KmaYBTUJIh11tYVh6Lh1SSSKNx+dURFxbsM9xgjPnlzDIQfcHpPHEERPNBvtTmz+juJ1Lbfdi6GLyOovMJts2OhLirselsOF9ezFEz1+yRMaGnkm/pFJjWVf/pG1XHQb6nI0foyu61myROc0U04F6Z70B/jjppltEx7YrClqN3ML9UsfP//yyGWQq1TLqjtFgv6rNtS7jWpIalw3cvylNXiCxCNSslgFyTY3jCiq9UHE/eKGP5iGaa/YgQm695NCSduFiNhFqGEQHCGHxs0MYgLpFE0UDQ9h2Z0QcTABTw19JZo1LxyRdXP1UQaqc8rF0OmWdHjUsDJ9IBjUk36qncnVyyG9trddvWA/yCT3vKQmOqbRouqn8rE/gJ1qafXe4cry3uFR1kfAuvgbi6Z8pYn6//wO3a3l2DrEu3k6dsE0uvKm10eDOXBjohKDrxLc70oGHsnfZkG04y5VRLQR1NVprjbGzudZ1GYqerf3pP/T5amyZWfYxes7IIIHVn2yrXrnkCEuLkzK7tT1WgalIYaX2yyyi5dwt0VoHrTyMUEgeeiN9IcIzlS4bgx9TDtnaO9Qr9XkceOpbrFu9NChgv69/5fIRG5y9x9eO9cWz0PuxzFYsn6oD48dUPYu1wPPoWQB78RePazSJq4U7DjlO6HWb7hiQy3PVLcAGlB6lFTnZYFoulzptnAr0ntsb6bHETEkbrv4J7HbF03YYvmiz3mgOgzGNvy1MBQihH380UVpeM+3yDZyQBpj
+ oFXM0e2V
+ 9pIWaMEW5uthoiEPCmPFrBGS6UK3q60utdbe/toPcihkkqX2gvfn3uUv7Czh2gDJnvwp/8Pal05wA+4Hwhp/0/KKZAO9NRVpVYTrDC+ThftYYMaR+W/MLmoZDDq2zx0ADTn//BVhid32+3hQMb0Ugj1O8o0tDhAli1PykTvz7g+smed1Kgj1I2A9A4jmnRgjos7Ae1ByLWuVZVN/Q7TF71kau0T0pO6ewaHiveb35QF29+BYYMVPBZl6q92tbGeibFb2Gh922MpK0RNssq8jdxatVeKpkiYYuvqPLbDXGKGlM/5YiIjHAKvtCRcBJIENs/IZyHKkD741cpFU3xVxySWAMyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,33 +91,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Joannes,
+On Wed, Mar 18, 2026 at 03:53:24PM -0400, Johannes Weiner wrote:
+> memcg_list_lru_alloc() is called every time an object that may end up
+> on the list_lru is created. It needs to quickly check if the list_lru
+> heads for the memcg already exist, and allocate them when they don't.
+> 
+> Doing this with folio objects is tricky: folio_memcg() is not stable
+> and requires either RCU protection or pinning the cgroup. But it's
+> desirable to make the existence check lightweight under RCU, and only
+> pin the memcg when we need to allocate list_lru heads and may block.
+> 
+> In preparation for switching the THP shrinker to list_lru, add a
+> helper function for allocating list_lru heads coming from a folio.
+> 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-This is at v3 and you've not cc'd the majority of THP people:
-
-MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
-M:	Andrew Morton <akpm@linux-foundation.org>
-M:	David Hildenbrand <david@kernel.org>
-M:	Lorenzo Stoakes <ljs@kernel.org>            <--- (!)
-R:	Zi Yan <ziy@nvidia.com>
-R:	Baolin Wang <baolin.wang@linux.alibaba.com> <---
-R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-R:	Nico Pache <npache@redhat.com>              <---
-R:	Ryan Roberts <ryan.roberts@arm.com>         <---
-R:	Dev Jain <dev.jain@arm.com>                 <---
-R:	Barry Song <baohua@kernel.org>              <---
-R:	Lance Yang <lance.yang@linux.dev>           <---
-
-I'd assume it was an oversight but you're an mm sub-maintainer yourself so
-I'm a little surprised...
-
-Anyway could you please make sure to do that going forward?
-
-I'd like to rely on lei's file-tracking stuff to catch cases like this, but
-I just haven't got new mail tracking working properly in that environment
-and it's really too slow.
-
-It sucks to rely on people cc-ing but email development is what it is :)
-
-Thanks, Lorenzo
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
