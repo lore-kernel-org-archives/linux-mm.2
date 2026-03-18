@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EDA9FEDA09
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 01:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF167FEDA17
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 01:37:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86F076B00C7; Tue, 17 Mar 2026 21:17:15 -0400 (EDT)
+	id AD6306B00CA; Tue, 17 Mar 2026 21:37:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 846926B00C9; Tue, 17 Mar 2026 21:17:15 -0400 (EDT)
+	id A86F66B00CB; Tue, 17 Mar 2026 21:37:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 783F86B00CA; Tue, 17 Mar 2026 21:17:15 -0400 (EDT)
+	id 99D0B6B00CC; Tue, 17 Mar 2026 21:37:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6725A6B00C7
-	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 21:17:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E3E0D160407
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:17:14 +0000 (UTC)
-X-FDA: 84557420388.10.8F04CEA
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 12221C000A
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:17:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PVMAhDDj;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 88C5D6B00CA
+	for <linux-mm@kvack.org>; Tue, 17 Mar 2026 21:37:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1AD098B89D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:37:22 +0000 (UTC)
+X-FDA: 84557471124.28.7866317
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A7832100003
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:37:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NjtDm5Ti;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773796633;
+	s=arc-20220608; t=1773797840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n76Vl/YByYovXpfiSJaIiV6BYs7tkM/M9VUvPvWWK24=;
-	b=di+yFkGGdrOUhCdP2sDB5Y9JoAkePi4FbvZd93EJlF0nLG/eMQopBeY53Uz9Saq8Kdx3Pg
-	AjxSNDdoLgi31MdzA06uh3gCNffm3xL9BtDc0WVl6j9o10mdnFNVe9kPpaIDK5kiaz6zes
-	rrgG7TUAcyAER04LrNKQjmvQ3bvuEr0=
+	bh=3xoH794872OOyFq01xqhggvd+hqwGGLWmSAPwLLP/Fw=;
+	b=6HKeHWGrb8YgFNlE4LdyOfjWeSDmboyboslAYstgY+PpFokfrA4hwFpYoys7Dz5jjdrLzD
+	wVfPGxDjEchcvyCreqEjHaKifGUmJdVFKQZ8aRYNMtSRJJM0hECAvdFOCJ6N9EqxN7XvCQ
+	/bYDiJwCCJmdQJIHhiV4hkcY2uy/FIw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PVMAhDDj;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NjtDm5Ti;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773796633; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773797840; a=rsa-sha256;
 	cv=none;
-	b=onL5QYEVkmNaB7ElFrrekWrj9Y1vbm+bh0Y+JciCbflDcAdZqtLdSp+aCq2B4rict+w2Ry
-	5hzV38JGGmZefJ1b/JRTwMg8AOi3wq7ITZgaiDPLciPuwSutyrYfrsjgYE04DoCCrvLEtT
-	LY76wfwJuTGPLdL+/2/agYy/cJMkYVs=
+	b=rk5lZO6nsGCGrYoGsdYQrCqvqqw++zKD/o5x9MEUXRR0DcTPAIwef8ciW+ZZyYPrcUypaP
+	JqLfXOojs7pptVrstAShucLQB4V66m9+cLl3IyfyIydFpbTKQcAh+eudpEFwXfXwrqfUoo
+	jho6Y37rDH4EaN9atI4mgEy2ojdO4lA=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1773796627; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=n76Vl/YByYovXpfiSJaIiV6BYs7tkM/M9VUvPvWWK24=;
-	b=PVMAhDDjNikU09WU3DMxOqfmhScJfYvYnVz5n4Fnsu5z6iLDjUCfC59P1d1qXZwzmQ4pzdied1/R7/51PV0uONTV9hEhLPRA1QQosr1vLSJ67ODLeH1SqWXMnHj1TcZDkQJDAYHYx8TtcHANOB1K6Lk7mwwt/UNINSfRDVAD8do=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.CWN2v_1773796625;
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.CWN2v_1773796625 cluster:ay36)
+	t=1773797835; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=3xoH794872OOyFq01xqhggvd+hqwGGLWmSAPwLLP/Fw=;
+	b=NjtDm5TiJtE07eVJGZWRHJUIQ/dvDon4obdRsxw0sPVyY6R8o/YzKffSjtwV+tmFHrBpqutkBYzRs7N2gFgynH/j8DE4WIXxxc5qaboPhe9RFxsLxNi7/+4jCvKKuOt0ctMRxHlasBBmPnwpen2RqxRE5VeFv9VBnq32U507jGs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R961e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X.CcSSy_1773797832;
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.CcSSy_1773797832 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 18 Mar 2026 09:17:06 +0800
-Message-ID: <dd67c771-8530-40d7-93c3-cd6f405c32dd@linux.alibaba.com>
-Date: Wed, 18 Mar 2026 09:17:04 +0800
+          Wed, 18 Mar 2026 09:37:14 +0800
+Message-ID: <6bdc4b03-9631-4717-a3fa-2785a7930aba@linux.alibaba.com>
+Date: Wed, 18 Mar 2026 09:37:12 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: filemap: fix nr_pages calculation overflow in
- filemap_map_pages()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- willy@infradead.org
-Cc: lorenzo.stoakes@oracle.com, kas@kernel.org, p.raghav@samsung.com,
- mcgrof@kernel.org, dhowells@redhat.com, djwong@kernel.org, hare@suse.de,
- da.gomez@samsung.com, dchinner@redhat.com, brauner@kernel.org,
- xiangzao@linux.alibaba.com, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com>
- <9d968181-95a9-477e-9aa0-763117e4d1a0@kernel.org>
- <82019011-023c-4bce-a524-6eab119f0a4a@kernel.org>
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
+ for large folios
+To: Barry Song <21cnbao@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ dev.jain@arm.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
+ <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
+ <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
+ <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
+ <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
+ <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
+ <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
+ <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
+ <CAGsJ_4wZq7ZvMzMq513a89=VYs7gGkeVwSnAczxs_yYCHGFDQA@mail.gmail.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <82019011-023c-4bce-a524-6eab119f0a4a@kernel.org>
+In-Reply-To: <CAGsJ_4wZq7ZvMzMq513a89=VYs7gGkeVwSnAczxs_yYCHGFDQA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A7832100003
+X-Stat-Signature: imdzz9zkszmnpu3c4m54cq5r83e3y4kh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 12221C000A
-X-Rspamd-Server: rspam08
-X-Stat-Signature: rg4zwn7gij4yq3q8ha1kz9mw5grzckps
-X-HE-Tag: 1773796631-278752
-X-HE-Meta: U2FsdGVkX1+m6Hlyj0UmALK817bPyWXpKAt+p81wwkA7VbSYJ96a4t6vVODyuOmbBxTPTO7pL9VS89+V7e1mP1bRnJ0VOiA1As+9OgbTO/w6fherhrpu9d86r4FWxlZ421QqZM0XHsgiY636aThIPN0i9zY6AXOKFg4Z+afZYxeFNPebPWqPcntGTPC7nfcS8zL95hmC1XwVkA2Q0R/4tvEa3qtM6dcBC/NR4abG/XU5uVijrb4ciBCnMxZGdNU9/vHSjwd565O3oEnNVADkFqrvNMe2FKkB48/dXDOFrz+wcr5pxSPy880bEUk3oyIP1J1zpf71cQxrrYkN60qvHSsnQN5IGLn3Y85w9aP5mFXX0mry9ML2nyBmZViHK3ogv8jAXGC1n8VGUR11EueVwFIWUh5WUfGlDMr5hrGBhB1Q2CszLmh+DUsPMg2mTb/8ll0Z60zNQwHgWDQSN5C56fBueHYNPmLNvxB42Kl3KwFGIRXVmuWBH2soURjL5dWEQDvuHqxqAEQ748ag/AkyqMn6ix3tWryGpqyewRW7RuuIZVU2CxCVj203zRUMgIlaSlVgZ85v5a8o0kxjOZetNnvISqdL58j45u/uZW7T8TKq7zaB6iZzkHSYRx731vg5YeRf3Bk7LYkQJfApvXDElX5oMNIclLeafL8/Bg/a/AwMyvTXE8eSHpps/8QHGbd2fMEC96izhMfj3D27+p4IgcZ46ElBAqWPMqODpntwlv/p4aw6gJeDjNY5ExqJs8eUyc4Yj4CMCwve6P/Uh7OGFvTbFRect0CzCv8j+DIDB7BLW8SsfzZH3ZA2dFrsukKrlpgcm6Humk7RDVVeUUxCvhqm7aMfFcJIqMAvwTJ1QKI0rYcFx/tViep9waZ+q5EqLwEvFlyYuadAQdE0ZvXhRduHZQK3SOh7VGUAnyn+7eiq5IbOASZV0hCp+MuXtVe8eIEorIkAuZc8+nkIjZ8
- 5UJodrFd
- Zr009b7SSB3zKJpllwJkZCD7QhXdXse5i4vWyyF70RgguZdd4XGUJgRUsEPoBlggBpOxJpS/zgFyYL/NqpuK1Pt/WQsrkC+q8L/wYwTXLKtxL1+wzkI+DvufkpQcoGeuNNIAR4/aeFVCtljpTGMyibo+B+xt+No5nY8paCKAGpjrQnVBTTZ5aIboChPy/YA+Nh6Zn+cb3lrDVVsxLi7gU96Z3niwHugsy6uy4C+ARtH1vcswJAu3D2d9YXZtbP8i632NMqwrLtyn1UwPl+Uew91XEDNn+ESj697V8fN1UcNVdVOVXZZgvpvJiAFFmEVa1nWIREx7rHSbZ5e2hD22Qq5iEwjHTXm/DKAlqJxJLOma/mhVOHQ1ytCW87G466TlrmzWkNyA24Ok5AbrKVVMo1PU5KH8pSdVUD0tR7NFIrwhHLAku2rVwntF3i3c6Kc0emCn2upqNs5DE9+4=
+X-HE-Tag: 1773797838-906488
+X-HE-Meta: U2FsdGVkX194Wn00HFd59xKri6Yy6nM1vLiCoOgPDwkbXKWla4zXRBp+/7uPI5G1vTldruM3n5/Ep9e3p+yCSdXJ3mHsgBw3hmkb9aDSismbFzZ+G1h3b40Jq0Vt9OwO65ETZtthEKI9FbU77qMimDqWjPtiS6YVtuQpglEoMSTRBJtk8H3gCD6vsvfBte/3Rp35u20wOkCOdvv4QzKBFHlTIG/z1DzehBZi6VgSOkwSksIs7hRX7gli/Afq0NXIGRN/uKoEVe5cJWgzkqh3Itrov+nrGtFcpwztQbtt868o9iu1GVYDHRumtE8t1LxbyDFMdsQRR4QzPLK+LmBUN33ipV9nEpUY+TtFjCKJItCR0ol8Etp6sadWyApjAuDw3HZPRJ+GVNu3vy86NeDNcbDx2CkCb6yvH/WPZnwlPFb9nNR5U9nJ4v4OCJW2j6egg4hjt60907XeoRresLBKHvCbFRha1TR5MWJp+xWRNzLcbXU5f9fn0sPpiRSg5/yN08WifWjA51dpkaTmCpqgZ7ILm7wBzfQzb55rtVfeXF1ki5c+GHUk58KaQZhvlASrI29mBMbrDaI832m7P5PiUwR66cGCaL+mNmkSCzPju1SLlWom7ccrkFZAkAUKAzgO5qSg3AALdaj2vacawDPvmWPqKODZfrc1+EaGfDdAPtkHpUVLfDGfAkGNtGSA4rYdxuRf93yHwuf4dUTCtnV89XwFotQICpRRTabBS/7wpVX4dN4h+XRKKVGxuXPTB7r0UA6kx7penT8+eLqy5cjHV58bvdcm9RprWY975YWMMq7bGgtTWf5W9pYMPqn3SlOvLBlm1NwIr5NF5gLcw6Lcg+UXsHiwcbvowmTclMRBiOeggjcX+HtQTfy8C0qTbZ34pbx0ZRksqPWIV/LGt/iup/ARC8VK1Qut
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,116 +100,98 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 3/18/26 4:49 AM, David Hildenbrand (Arm) wrote:
-> On 3/17/26 10:37, David Hildenbrand (Arm) wrote:
->> On 3/17/26 10:29, Baolin Wang wrote:
->>> When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I encountered
->>> some very strange crash issues showing up as "Bad page state":
->>>
->>> "
->>> [  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
->>> [  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
->>> [  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
->>> [  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
->>> [  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
->>> [  734.496442] page dumped because: nonzero mapcount
->>> "
->>>
->>> After analyzing this page’s state, it is hard to understand why the mapcount
->>> is not 0 while the refcount is 0, since this page is not where the issue first
->>> occurred. By enabling the CONFIG_DEBUG_VM config, I can reproduce the crash as
->>> well and captured the first warning where the issue appears:
->>>
->>> "
->>> [  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
->>> [  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
->>> [  734.469315] memcg:ffff000807a8ec00
->>> [  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
->>> [  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
->>> ......
->>> [  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
->>> const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
->>> (struct folio *)_compound_head(page + nr_pages - 1))) != folio)
->>> [  734.469390] ------------[ cut here ]------------
->>> [  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
->>> CPU#90: stress-ng-mlock/9430
->>> [  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
->>> [  734.469555]  set_pte_range+0xd8/0x2f8
->>> [  734.469566]  filemap_map_folio_range+0x190/0x400
->>> [  734.469579]  filemap_map_pages+0x348/0x638
->>> [  734.469583]  do_fault_around+0x140/0x198
->>> ......
->>> [  734.469640]  el0t_64_sync+0x184/0x188
->>> "
->>>
->>> The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio)",
->>> which indicates that set_pte_range() tried to map beyond the large folio’s
->>> size.
->>>
->>> By adding more debug information, I found that 'nr_pages' had overflowed in
->>> filemap_map_pages(), causing set_pte_range() to establish mappings for a range
->>> exceeding the folio size, potentially corrupting fields of pages that do not
->>> belong to this folio (e.g., page->_mapcount).
->>>
->>> After above analysis, I think the possible race is as follows:
->>>
->>> CPU 0                                                  CPU 1
->>> filemap_map_pages()                                   ext4_setattr()
->>>     //get and lock folio with old inode->i_size
->>>     next_uptodate_folio()
->>>
->>>                                                            .......
->>>                                                            //shrink the inode->i_size
->>>                                                            i_size_write(inode, attr->ia_size);
->>>
->>>     //calculate the end_pgoff with the new inode->i_size
->>>     file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
->>>     end_pgoff = min(end_pgoff, file_end);
->>>
->>>     ......
->>>     //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
->>>     end = folio_next_index(folio) - 1;
->>>     nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
->>>
->>>     ......
->>>     //map large folio
->>>     filemap_map_folio_range()
->>>                                                            ......
->>>                                                            //truncate folios
->>>                                                            truncate_pagecache(inode, inode->i_size);
->>>
->>> To fix this issue, move the 'end_pgoff' calculation before next_uptodate_folio(),
->>> so the retrieved folio stays consistent with the file end to avoid 'nr_pages'
->>> calculation overflow. After this patch, the crash issue is gone.
->>>
+On 3/17/26 3:30 PM, Barry Song wrote:
+> On Mon, Mar 16, 2026 at 2:25 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
 >>
->> Thanks!
 >>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks for reviewing.
-
-> I just skimmed over the AI review:
+>>
+>> On 3/10/26 4:17 PM, David Hildenbrand (Arm) wrote:
+>>> On 3/10/26 02:37, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 3/7/26 4:02 PM, Barry Song wrote:
+>>>>> On Sat, Mar 7, 2026 at 10:22 AM Baolin Wang
+>>>>> <baolin.wang@linux.alibaba.com> wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> Thanks.
+>>>>>>
+>>>>>>
+>>>>>> Yes. In addition, this will involve many architectures’ implementations
+>>>>>> and their differing TLB flush mechanisms, so it’s difficult to make a
+>>>>>> reasonable per-architecture measurement. If any architecture has a more
+>>>>>> efficient flush method, I’d prefer to implement an architecture‑specific
+>>>>>> clear_flush_young_ptes().
+>>>>>
+>>>>> Right! Since TLBI is usually quite expensive, I wonder if a generic
+>>>>> implementation for architectures lacking clear_flush_young_ptes()
+>>>>> might benefit from something like the below (just a very rough idea):
+>>>>>
+>>>>> int clear_flush_young_ptes(struct vm_area_struct *vma,
+>>>>>                    unsigned long addr, pte_t *ptep, unsigned int nr)
+>>>>> {
+>>>>>            unsigned long curr_addr = addr;
+>>>>>            int young = 0;
+>>>>>
+>>>>>            while (nr--) {
+>>>>>                    young |= ptep_test_and_clear_young(vma, curr_addr,
+>>>>> ptep);
+>>>>>                    ptep++;
+>>>>>                    curr_addr += PAGE_SIZE;
+>>>>>            }
+>>>>>
+>>>>>            if (young)
+>>>>>                    flush_tlb_range(vma, addr, curr_addr);
+>>>>>            return young;
+>>>>> }
+>>>>
+>>>> I understand your point. I’m concerned that I can’t test this patch on
+>>>> every architecture to validate the benefits. Anyway, let me try this on
+>>>> my X86 machine first.
+>>>
+>>> In any case, please make that a follow-up patch :)
+>>
+>> Sure. However, after investigating RISC‑V and x86, I found that
+>> ptep_clear_flush_young() does not flush the TLB on these architectures:
+>>
+>> int ptep_clear_flush_young(struct vm_area_struct *vma,
+>>                             unsigned long address, pte_t *ptep)
+>> {
+>>          /*
+>>           * On x86 CPUs, clearing the accessed bit without a TLB flush
+>>           * doesn't cause data corruption. [ It could cause incorrect
+>>           * page aging and the (mistaken) reclaim of hot pages, but the
+>>           * chance of that should be relatively low. ]
+>>           *
+>>           * So as a performance optimization don't flush the TLB when
+>>           * clearing the accessed bit, it will eventually be flushed by
+>>           * a context switch or a VM operation anyway. [ In the rare
+>>           * event of it not getting flushed for a long time the delay
+>>           * shouldn't really matter because there's no real memory
+>>           * pressure for swapout to react to. ]
+>>           */
+>>          return ptep_test_and_clear_young(vma, address, ptep);
+>> }
+>>
+>> I don't have access to other architectures, so I think we can postpone
+>> this optimization unless someone is interested in optimizing the TLB flush.
 > 
-> https://sashiko.dev/#/patchset/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang%40linux.alibaba.com
+> The comment is interesting. I think it likely applies to most
+> architectures, including ARM64. The main reason ARM64 doesn’t use
+> this approach is probably that it can issue tlbi_nosync and then
+> rely on a final dsb to ensure all invalidations are completed—
+> and tlbi_nosync itself is relatively cheap.
 
-Thanks. Zi Yan also sent me the AI-generated comments, and I don’t think 
-this is an issue.
+Actually, we both tried this a few years ago, but neither succeeded :).
 
-> And I'm not sure if it has a point, in particular whether
-> i_size_read(mapping->host) could return 0 and underflow file_end.
-> 
-> I'd assume, in that case (truncation succeeded), also the
-> next_uptodate_folio() would fail.
+My patch: https://lkml.org/lkml/2023/10/24/533
 
-Yes. If truncation has succeeded, next_uptodate_folio() cannot find a 
-folio. If called before truncation, next_uptodate_folio() also checks 
-i_size_read(mapping->host) and returns NULL:
+Your patch: 
+https://lore.kernel.org/lkml/20220617070555.344368-1-21cnbao@gmail.com/
 
-max_idx = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
-if (xas->xa_index >= max_idx)
-	goto unlock;
-
-So I don't think this will cause a real issue if 
-i_size_read(mapping->host) returns 0.
+Now I’m more inclined toward your approach, to align with MGLRU. It’s 
+time to restart the discussion on this patch? :)
 
