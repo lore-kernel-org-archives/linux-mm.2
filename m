@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DCF7103E162
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE71B103E166
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BB326B018B; Wed, 18 Mar 2026 07:32:24 -0400 (EDT)
+	id CF8C36B018C; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76C216B018C; Wed, 18 Mar 2026 07:32:24 -0400 (EDT)
+	id CA9C96B018E; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6819D6B018D; Wed, 18 Mar 2026 07:32:24 -0400 (EDT)
+	id BBF516B018F; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5792B6B018B
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:32:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DAE771606A5
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:32:23 +0000 (UTC)
-X-FDA: 84558970566.05.CC4884F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B60764000D
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:32:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W5jM9K95;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A569B6B018C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41C4559E26
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:41:16 +0000 (UTC)
+X-FDA: 84558992952.04.88E4B00
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C642B1C0003
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:41:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qEzVkat+;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773833541;
+	s=arc-20220608; t=1773834074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R//hRNxAoqWyABoXCwcHk7g7S0ZjvnmQaJYFCwkVb3M=;
-	b=eLVZoTIFrfgDpjlWgG1Yo2wXB3Ze1ZltdTQhNABSTMDbKXUW2/7/7HckNj3JQfNwbJDHK/
-	HtD6tYZjDl4RCNrKXFy2wJhxuGaBj9N+nyMXFirehFu4FnfDex0qBA4BAg/jxRxoYkIy53
-	SM/zfSLlwTqNp24guTvf2oDptCn5wyA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773833541; a=rsa-sha256;
+	bh=nQ8MkqEsKrVdCQ9govDMyEZ0IN5SlmXcdUBBNXTui9E=;
+	b=QqGNNyq1L0FTVd9wbsUYEwo5NlAfUnyhevxBu/m8aJZuXpEve5SDPV+gVTvE9m/DX3Ovj2
+	Z0czyTpTHAaB/vuTEXk4m85DD6GsxVLEAZiR31IUeL8eBoXOmMNyt8rIuu4CU0PrIEhklC
+	pIny2AGvwQJ73/YCv0ArS4LBOpounko=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834074; a=rsa-sha256;
 	cv=none;
-	b=oTMwfx+vo+I1ay+CMowf9JdkwlQph7+2G8uR6ehl4rgo+97Vg7QP7fVdrwXfEMD07MpMOJ
-	2UesiStoc754LNV2Q424fZLPr8iyd/8740tkBIL3QbSh6tote3S3lrnQoIHaPv9lwZapUX
-	uFGjJ+jykzb9mAP3DG2QwpmxPMR/WDQ=
+	b=oMpcKuNKJFvvJ/K+MxfCLbIXofThHVRT1XdkQKAaNFMWSxuh7qPMHiyG9SpTJZl7RiixyA
+	nlMbNysH+VZEwV02mDacsq29B+lSRX9lM0gXmCJDN3TSa9Sf21mhUU8QMeAtBuB67FMPJy
+	02ZHpbf6flAb3A4tf16r0rERcTK820I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W5jM9K95;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qEzVkat+;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4843C44839;
-	Wed, 18 Mar 2026 11:32:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B008C2BCB4;
-	Wed, 18 Mar 2026 11:32:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1DA53600C4;
+	Wed, 18 Mar 2026 11:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B7C2BC9E;
+	Wed, 18 Mar 2026 11:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773833537;
-	bh=R//hRNxAoqWyABoXCwcHk7g7S0ZjvnmQaJYFCwkVb3M=;
+	s=k20201202; t=1773834073;
+	bh=nQ8MkqEsKrVdCQ9govDMyEZ0IN5SlmXcdUBBNXTui9E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W5jM9K95/DWUgYu5hZ+3p6ju4Ia4B7o5b9j30H6XgD6UoSIvS/lTsTypNXXToZ6OF
-	 wtYxJ1mqPlFEp3qPt6cnv1+m+TaYK80euQ7i7TB1WFDU5L0QUy1WJ96ydPXcCQGdHu
-	 AID/65D6nRppq07Vr3DknUSXuGve8NHQK8m47isO5RudZObvJbqfae8VkMVLl4tUTg
-	 vyUSYUR/IOjG7gV/uz9je96K2vXsBSGh46x1fBCWakynXRo/DP/dWVRHlwXtYXRNHF
-	 BpJFsJafe0rDG/AHvUt2CzARvRGz9EaVQ42yasLMqKV7I0wnPeOhyxO99+QGoQkIEJ
-	 RKnBrwEYsXg+w==
-Date: Wed, 18 Mar 2026 11:32:10 +0000
+	b=qEzVkat+FFXzCyXvoV6eGzMGPuWW6u/V/Eji+qDjQfneEHEL5tSwpazkVdPYGvp8h
+	 xHTdDwpihZRffG4+u/8XASLEhByyaxi8U6iiGDD/iKj2hBvTx5QWgcrUo230hTc5m8
+	 JdxFLQl2C+XdV93NBevFhbS5shJW2qelm0hCzojuakn8vdsHXwT6k36s6Y57WMI5Pl
+	 OgiiH6DnsdWu899M5a69kPnrtmWD66jPvFI7R4WSIuzi9KPcSpw+A4n8lixJ3N/KHs
+	 qJEmDb2Y20VILWrqIsUtirpmyT+NNmDtKSqeSBsmzaJ7JNK4gxqm8YxvskZLgPdkwr
+	 PRRZ3fzsmRY1g==
+Date: Wed, 18 Mar 2026 11:41:11 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH v3 0/5] selftests/mm: skip several tests when thp is not
- available
-Message-ID: <893e70b9-1ed2-419b-9079-5b397b2cec54@lucifer.local>
-References: <20260317094419.1429259-1-chuhu@redhat.com>
- <20260317113730.45d5cef4ba84be4df631677f@linux-foundation.org>
- <abpu4OMsy3Xl5QA0@gmail.com>
+To: Jiakai Xu <jiakaipeanut@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	harry.yoo@oracle.com, jannh@google.com, riel@surriel.com, vbabka@kernel.org
+Subject: Re: [BUG] WARNING in unlink_anon_vmas()
+Message-ID: <64b4b6b6-dfe7-4873-9474-5ef980352fea@lucifer.local>
+References: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
+ <12501051-98d4-479a-8f10-547b2c08ad59@lucifer.local>
+ <9f192045-f348-4341-8a45-867f4fd34a0b@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abpu4OMsy3Xl5QA0@gmail.com>
-X-Stat-Signature: c39ujoe7znkf86s7bpfxs5ktqrp7py6t
+In-Reply-To: <9f192045-f348-4341-8a45-867f4fd34a0b@lucifer.local>
+X-Stat-Signature: g94d9h8qx1wq3ecckis4kyshw9atzufy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B60764000D
+X-Rspamd-Queue-Id: C642B1C0003
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773833541-919672
-X-HE-Meta: U2FsdGVkX19yHk6qOcR4COeElLK+KjRuVjJynCQTHyRlwk/a3HSPviEeoJQvqvfeIxXLCTITg/wdZ4UhNwG4kw2PFHH2xiI6hfhkgLXp+fOyojpfCf0Kmka1XdmZ+LhRBCcnRG6kJDoQYYKpiXP3gkLLgqsOTeH7ITO79oLwLfVd1Li86BXYBiah0NtNzLp9hTqhuSyP8pbpa4XUibKRsDB4liWla0s28UpjFIAwLmQ6MB+Qp29LSn7P87NHThtLwyW5bImsWVDlWYlYtSUdtIDojqqlrIlnBs32lf16jw/49dHQP47WRpt1QcC9psRWbx27XkTxPKeVAmSweQYmua105Y8C8HLfWS6spTwMx/GYkk37VMp40FC030aLwVhJapHIntb1HGqnz/6tmury/OVs5dtn7b+lHDiilx5256f2advo4IXbDb4ugS1Omlu93BZEYWUAyiivJImlhLFhR7tNYfgDUw9qlDXXFBXmq74tbIVsZlpby3Lh7/rkgf6w175R39FNrPo8Kz7b44P5HK5g1iANH92FqOYVsM7eUj+RB/lYI/i0C18uGnGFvHpgyf3RMbuA4CfvZ400L6zYryuaOofi5kwTkY2dOt5q9nk6OGIMtvjJigceX6Xj3bbrBiR1qkwGSyQM2Zy1ClCU7YSBsEhmRX4T3NASsNTALeyjmAxHxF39smkA39pDawT2ULapi+EDfkayNtwqtyhm0cttWsG7boAsSVMt366m5KMXCkC2wXEhKUa7YGIPuizXFOaklTxa9eixIF3UEqkAJ1TBSCfo1dO9KL1lCpujghfQjlVAPuqSRiUKikWMeYsy17ismoF8FIA6iUbxCGFh2NJpV+SPaaG2h0egiQCAqBxezSgirGgzWoC91DrDjl8WmpJFmVJAmTVHz+IVM5ggiWNLx6MNDytBIxFJPFYO5rm0vvKm2ue4M7XD53xiWUdXkv77krIAqJBEjhOSuq4
- k3QAvijO
- 7zqkdnn1DLpdj+rnZHTRx9YU8Bw/wHwDEi1IAyCBa9oDYbkLn43KY1s1s9xzfrLd1PkfhWcy8CpA7U7+q1ijeNHkeXaR4kXes2bQ4WIfOWEKxXytnDi4yjL3qvmdT4dNXugngkPYY/7UiQ3lxh0Z4BzjkoPUWg6lCasikMxTUazqTJtcO+ntg8bVtbJwNTb9fnr3jxmSZnS83MK2spw8Fkph3kxz9V07sB5FXTCGY7DlkPLw=
+X-HE-Tag: 1773834074-664776
+X-HE-Meta: U2FsdGVkX19ILk/EBkS8EEad9MwWK+UxVQfFrEj1Lh/7MyLkoybpA2I33Ppk5e5TJXdyHl3OTaKW1bLVvpCYC1kSbjqFQ2/azhoPLX0srifmF1a153OnQiEiO4TYFPBDYa0JyoN6rQY1QS1Nwsg1uE9gqiBR1ECvGow6jIU8wYhwB+J3AYsVG4xyu7KvB0fB6kVDLaeVMVMzgEH+3jeaCFOdX7gax2wgY/xhi7nH0gGMTbCKJsOvBjnf2paTW/rlNmgr8pvTWm3qQvYcFcyVpKDHp9TjijyOpxVjmGCKiRv2LKBehLsxYu8hWsILiqzOYW1AfoAf84MsRSSm0yvUcx8rxwCMhkb+kV8mdkCt+FlST95jHwoZcv/DH+KjDOe2OHp1ySjmL14Z4ZXs3kDTVKm8JxR6wTqhDCq38XjS/+GZmViKxSL9okfms6/KUaoupbbVX3xVH61Kxg0mkKVmPlPZdVCa8eE5LVbbE2m9ZXZqw/nSUlG7J79ZsW6ib4fNWooJXb6hTmfPfQNQ1E18Xd/kctC0Oz4cMSDei3iy37AFVbO0V7nYXaiuZjGicoLUEI9S0HuhpGii+qY2wvnfSFZ3Q3RfYLEG5NC2AKfrCgW8NmodZdsZkYDf0ppvPLHA/qnIZxXyHOBtswzkjcm1cfO6dKSHaCZnaOpKIqJnqnTul99Pajm+20YWzURmBi8gdg9XewBp1E9LuY0O9h88yduR146ZCmzZDCWaZWFKoOstCNG2t6nosdWMn7VtXvpqAJcBhh85Wv53ng6KqOK4jjbQMDducTIdy2oxo2QQrabEmUzNVNlJuFZSm9K6XWr4m1K8jbp5dTZVZoTJrArmOmShRrKurRSibbIW+0D66eomMSqy0yv4D7kyjE0fSeHbr1+Cdijmhs/+FrP1qvfHOKOdLmYy1lS7yek15nJ12AL4YYFj2zy43g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,19 +91,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 05:22:40PM +0800, Chunyu Hu wrote:
-> For question one. In guard-region test, collapse tests are for checking
-> collapse is denied when operating on guard region, not for checking
-> madvise(MADV_COLLAPSE) will fail when thp is setup to 'never with sysfs,
+On Wed, Mar 18, 2026 at 11:23:20AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > On Wed, Mar 18, 2026 at 06:42:49PM +0800, Jiakai Xu wrote:
+> > > If this turns out to be a real bug and there is anything I can do to help
+> > > with fixing or testing, I am happy to do so. I hope this report is useful
+> > > and sorry for any noise if it has already been addressed.
+> >
+>
+> Do you happen to have a copy of the full dmesg output? Particularly looking
+> for where the fault injections were made.
+>
+> Does this reliably repro for you consistently or is it now and again?
+>
+> If reliable repro, could you try it with the upstream tree also?
+> e.g. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ at
+> master?
 
-No, if thp is set to never, madvise(MADV_COLLAPSE) still succeeds. This is a
-source of confusion for many :)
-
-> result is same, but it's a different test. Maybe we don't have strong
-> interest to test when thp is set to 'never' in this collapse test.
-> Do you perfer we let it run when thp is setup with 'never'?
-
-Yes because it should still function then :)
+Actually no need figured it out :)
 
 Cheers, Lorenzo
 
