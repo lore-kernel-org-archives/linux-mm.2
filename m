@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 734BA103E163
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:03:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C1BC103E160
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:05:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B395A6B0184; Wed, 18 Mar 2026 07:03:03 -0400 (EDT)
+	id 0DD426B0186; Wed, 18 Mar 2026 07:05:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC30C6B0186; Wed, 18 Mar 2026 07:03:03 -0400 (EDT)
+	id 08DCD6B0188; Wed, 18 Mar 2026 07:05:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2146B0187; Wed, 18 Mar 2026 07:03:03 -0400 (EDT)
+	id EE5C46B0189; Wed, 18 Mar 2026 07:05:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 84A7A6B0184
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:03:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4AA92BA992
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:03:03 +0000 (UTC)
-X-FDA: 84558896646.12.1B59B9A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 67EE680003
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:03:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r+3MoTCF;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D9D5D6B0186
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:05:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9323A1D461
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:05:48 +0000 (UTC)
+X-FDA: 84558903576.07.83AD23B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0D72C140013
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:05:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sPdggG2e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773831781;
+	s=arc-20220608; t=1773831947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HHsENFWJu5RfeUAa+mJU7gbm+1K/VwnjpaZM6gtznCA=;
-	b=Zs/QPvc2rwOUliA+7oIAJVkhXEmRMzzkdHhgLATPhzo6ZjpMX72Q4x0wNiuEf9NJ6kc7xl
-	/PGHkh3DY/KdZEFnmyTacAWP9EBN2FPbzZ40TtpoESUwdjOQaDbXo4C4NpDSbiXFA3o89i
-	pfAwUSibtTck6BQJxIchhn86Q3lyl0U=
+	bh=VqPr/6StOIbbEkT3vaUU95eaAszOCOg0UC27fGYUCcg=;
+	b=oN5RNZN1dp3HCCGkug39oHEApZeuHMQEWeI9R/IzqvUowDPzR23/pgFV4JwsnqTnBDU1Lo
+	2XkW4MjDtGKMYwyaugAGd9t73YmApKPJGiY3CDv/5WKsJUEHDwZuu5wsU6rXHa1iFlG+Pv
+	fZrFvLoeRXBXjvKzAqmdB3I8YbJLxwc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r+3MoTCF;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773831781; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sPdggG2e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773831947; a=rsa-sha256;
 	cv=none;
-	b=drcxjR4gSPWnM3x0JTCgZgqZwwh9j0Rs29Eh5F6zYEqWiWJimPPFGCdGv+o90jeANSUY0z
-	jheWq1xOym0ad8a1lupKZ2c7aqMkoFRX88FLF+MMzCzDRonguRQq7eEfQpq/XXCQi0A1oW
-	P1XZ6wo9MUpO4ozxq4TybsQnbN5b6O4=
+	b=CS5BZzvLE2I6ENVJm2MnTrXvZRafV7NciBa22x7xMzwOir/ZtMApkHmcDo6iC/hhwoy8EF
+	m/7FcOQ6H10qVIh94MmclCkBW0jM0tNfvJCjOVRzMXZR/nK3E9mU7k2/s+ojsOLwj4R0HQ
+	/+ed27XQs5ctYR2wMJ7SghPvzHuK1Kk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CAF13439DC;
-	Wed, 18 Mar 2026 11:02:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6ABBC19421;
-	Wed, 18 Mar 2026 11:02:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 59191600AE;
+	Wed, 18 Mar 2026 11:05:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE09C19421;
+	Wed, 18 Mar 2026 11:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773831776;
-	bh=zfsdZBqryydH27u6JZMfb3afJOf35YTfOia93PQ1C00=;
+	s=k20201202; t=1773831946;
+	bh=IsYSic/2YA56AaUZG1fD4YzwRZS3rUPak0g4WIt1YCs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r+3MoTCFbOoSCaDnsO98mty6x/IRu1jwhpGqiG9UdhI2m9A4L+uLhSAyE8ok1p0Ai
-	 CO9lM8wb7ZgHkq4g3ptKIChmnYSYqVIhmg8gKwDFU0PrqHJgFki/7/SmmLwcdTFf98
-	 wKffjIZN34gzR3Nep6U+Va9Ipn9NsKn3+Wuump9CHVsQZ5bgo6n9SdcmTAj44pTc/y
-	 YDEGzmLqWRm92GzrlnLvCttlhG3bpFVJwFP72Ssvpo/99OatfSjmPSlDtusovF3NdX
-	 nQ0WhL22ieafm7WwepuzVuyKxNjn9eOkayIYmeA1LJ8wiUDvRp6nHUYoSDLr63/XYp
-	 F1GelnWWCD1Wg==
-Date: Wed, 18 Mar 2026 13:02:49 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-Message-ID: <abqGWfEINMEeh9B6@kernel.org>
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com>
- <abpxUEijdHJzziEV@kernel.org>
- <CAAi7L5e9GxgvGTFvPfcn81Ve59N-K-o7FOh+Y8qKHwpuCYycCw@mail.gmail.com>
+	b=sPdggG2eXs0rVAg5czG72B5HUCaYmaM4flqKaqH+K0NoJB4DoibB79ASkAARVjoJx
+	 z0Cbx+jxGsCEZk3LJFh9siE33UAp431+hNu8MtCVmCvWm2eCqdcdmGsl77H5v9c8v5
+	 wVYC+ArNh806Jhx+XFj7DmUWxXvAXJzQaToGtjDqimVzAbYQxfA+LDdIVU6BFYQFii
+	 zWuCKbMr9oLFsfNeL6BqRO+CbuEhzARndn5WIzx2xgBVzIe64kLlvwIei3OAxdLwqu
+	 FML4v/sElabHYqDXjI4lG6JXkx6/GUqVO7mMev5cX3AGUE5d6zP0Ko9eyLJXJAB905
+	 R+JZW3rqjtIxQ==
+Date: Wed, 18 Mar 2026 11:05:42 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Jiakai Xu <jiakaipeanut@gmail.com>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, Liam.Howlett@oracle.com, 
+	akpm@linux-foundation.org, harry.yoo@oracle.com, jannh@google.com, 
+	lorenzo.stoakes@oracle.com, riel@surriel.com, vbabka@kernel.org
+Subject: Re: [BUG] WARNING in unlink_anon_vmas()
+Message-ID: <e6fde5af-2ab9-44a6-8543-4fc9d7a2393e@lucifer.local>
+References: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
+ <7eb61bf4-5483-43e5-a1b0-87a36cd67b9c@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAi7L5e9GxgvGTFvPfcn81Ve59N-K-o7FOh+Y8qKHwpuCYycCw@mail.gmail.com>
-X-Rspamd-Queue-Id: 67EE680003
-X-Stat-Signature: atuihpybf38u7gq5z63pmhnp9oe8y1ip
+In-Reply-To: <7eb61bf4-5483-43e5-a1b0-87a36cd67b9c@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0D72C140013
+X-Stat-Signature: f7qtmaezu6pnhcmuqagchkfhtnkopqhz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773831781-402189
-X-HE-Meta: U2FsdGVkX1+PkcIUgiVKF/MUw1C1AGuJRwfcFqCVR8BzR6tsjsMY/6ht/tnZOl6DqL3qsp2//g9PCiaCixJkB/25iwZVGzAaeg0idQa2qooE03XTF3X22jWwNcoOhrBuNZibtfiuYNCj0XKSBoFRTlAr9Sbgjmj7ArciXWNKi1ER4+TMmMlZlJG+14QlMXlI/Pt0pGuUb8+s/xXiDcFRoXPodY6otwtIfIKBt2mcClLx+gUsHVrF46vHMENsOWm0f6IY+ZJRywggbZLhtoPN0bnqtubPlpnvIbI5zi9SgU2BaTAk86YkI/ocXGMS97IEbCEFI9F+Fbm9V8WXN5kavxH1D96JwINQx2l8wzuQUjWriPjbAldA3X8HdlPDtHbWUmg+0GRn8rtha4tR1GJRHUoEf4jhnGmJdd2xDnlCowP6PxR4ZEL9VePUAundn7PyaYR435f+XgqXloyW+uJ6nhWRN/VAnLNCUIN+aK2lTTmcHbZMwJvPkuxKxhHWQ4KbGdzIqGQ2ICCma6Z92cDbcNxWT8TobeHXbWN0iy83b8QhPUNDR/Rgr4Kemp5G9b4bIELJtFPuhq57U3aczkqoA7S+MwJ2fIbAyt7vkudVsO7/sBFB+8g3fmqyibKqja6/8xdmqg/GLq7nHmKGbhOaxs6MQeECf/XX7jvicKSOwgAHecBOJmNT04AheSRDvCB7SOw+IjTD7oJywILUmg8j5R8czTm6OnA1z6KSAjXmMxzXS5lWi6ZqIwjl4GyVthSJJ2vxwCpnT7prKzAa7OErtkgftwFwkKHbI2IisiCCmQNkqL+8PLC3pPz6C8bKgBZBfHhY0PKEWhzDTMi1IkKCV5npDT7NalLYpDvaklsLr6CRUJZ24sVSz8Tc0YYWv1IiP2tOL9vTZPo4JOPk9Z+0i0bxz6qgzdxPU9th1wbHwB5X3XRtJazJzrf01fHLyHVe8A4Y7KZwHbHHymksxcR
- qxyhXOuU
- VdXuEW7NjF1JUgFWQPZBeMnCNfTlGRbWU4or7f5YmY8cmTPPGDVfg2Kr6RwtDHWpcdCXtWZ/rdlhKt63jKjYw0t13M1j8/rOpwwM6loEuXqdnmP9V3lTQrCME8NV0MorMlFC6aRmY3ggo4vu9Jt4CltdmDgaVHphg73l4PPKI95qjt213N5PPk8vVhEGbHOU7QqoJXoeJPxB4A11duYFLF4RGP1URtRVm3E9bMhKzoPK6sjNF3p4yAHLlNPtW9bwBhrUvZpv4SLyeM9LEb76zczu+JkVxFEcaPMU14UT3HgsP8Vo=
+X-HE-Tag: 1773831946-723492
+X-HE-Meta: U2FsdGVkX19Nt/kenum0XA4LyCx0+ebaQSzDkjXjCyxouaHPO/ae1iqloSfXND4RP4fXvZbDfcUqmERMZtm7kK6OQ/8OlZBMy8hdfMKydqHHZgJYKRYuRkcIIqqNdy9U9mS0Kh3/PNqleAdfUphtlQuVUvtwiKCj2P3rf3Wr6C5Jkp7OWdMw+/rJwvs6EPTAqOO4VGCBGFyZc5/DcMvg13ex9lmzVvF8AJFeZ3PtaG32Prb8H+zXO587/ZI+VsivzgF+Ox8MIN9uaHpvbkCc9/wgdiNxMidK5B7msn4lZve3QocJgPbG8FWpQSDHZUfExQFdOVUy1WKBwCRHbLr3nhHAVZX+xYrPFMnYbjizZ8x6caA8RSqD1H09YWKuNLyMx5mNNwh8CdG5PEVXfcXZUo0DXCeQsfFOC7ggd73JlBbRq+qkaJPxUC0m45uCntuyZfZozolMcHNkQKX0LmDmNbVz5txqzcWaLNN6g8Z4HP6AsRUGKdIfwth5nm9KP7kkBnr3VVrEmyiSc/gRDDgVtEJ8WpBtEDjcQ69g7bkcFeiflaFzqjz1LAro9PJUV2UiTp/acp1nWEWEbO2sgP1cLpjqyPONWsL3lVfsyy58xTzC24goO5QyO0UEiFdT7OI8HGaXMFjHA/aG3A+sFhR9mmucOtJ1NHD/6d3yf7j9pDFb6gxcypitFEyL1vBdybbLT85odebiXu5hJZeamqCjQaxONqdPo2NYHpuGRVfooBOS4+4k7yFLhIwpXfv+HmLo/jPLFDPZL15Y9FFg7QaBRukKBJ8epN+xO97/wOwuZpioCHWmWiKrA4P4Nuhf9vZqW7AenE2yxZ1ftzZaxpCPs1ITqLY+GYncK8SZGhcMu/YTaKvLfcg3/l1ThNGPIA3UlGHhY9wrpgWc+UzUU0EDHC72dHZMva1IlmWXsbRnSCLleM4FliFpznoSjGEHnSAoacEkwbPcOa0Hf+6RZxq
+ VuzT1zkk
+ HHBOW93kgBSKas5njS1f6TiRPKiEFBkdBoLC5wymjWs1VZ0vOnE61LMsgm1tXzmXgTPfDgd4sMJ7j0vUK7gXjsa11TmdIeMIco8zlwv43AMeSYnghbsk0eDXNg4DtdC96J/FIPrwPWu97Vr84mLqC0Kw39EBnLYGRFqRKIiTmODdnNeLJVuwqwu50ljXsqvix4NXSCIX9k8FQzoAk5fk3y1rsN3gV9TniHFYSmwcn1ebu1NNI+vlES2ljHeWjE/g/NwKWXmfbV/KCB2fYSa0OOZqU7rlz92HelqS/yPQG4hr+qCYXz1pOSwEB0ptLEf9r0Patv9FO7/meV/jiWW8n3vBAUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,28 +93,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 11:33:09AM +0100, Michał Cłapiński wrote:
-> On Wed, Mar 18, 2026 at 10:33 AM Mike Rapoport <rppt@kernel.org> wrote:
-> > > @@ -1500,8 +1502,8 @@ static void __init kho_release_scratch(void)
-> > >  void __init kho_memory_init(void)
-> > >  {
-> > >       if (kho_in.scratch_phys) {
-> > > -             kho_scratch = phys_to_virt(kho_in.scratch_phys);
-> > >               kho_release_scratch();
-> > > +             kho_scratch = phys_to_virt(kho_in.scratch_phys);
+On Wed, Mar 18, 2026 at 11:57:24AM +0100, David Hildenbrand (Arm) wrote:
+> On 3/18/26 11:42, Jiakai Xu wrote:
+> > Hi all,
+>
+> Hi,
+>
 > >
-> > Why this change is needed?
-> 
-> It's not necessary but kho_release_scratch() will call
-> kho_scratch_overlap(). If kho_scratch is NULL, kho_scratch_overlap()
-> will return early, making it slightly faster. Alternatively, I skip
-> invoking kho_scratch_overlap() if migratetype is already MIGRATE_CMA.
-> (resending this since the last email was html)
+> > While fuzzing the KVM subsystem on RISC-V, I stumbled upon a kernel WARNING
+> > that triggers in unlink_anon_vmas().
+> >
+>
+> Looking at the log, this is against 7.0.0-rc2-00014-gc61ec3e8cc5d
+>
+> >  WARNING: mm/rmap.c:528 at unlink_anon_vmas+0x562/0x768 mm/rmap.c:528
+> >  unlink_anon_vmas+0x562/0x768 mm/rmap.c:528
+> >  free_pgtables+0x2a0/0x860 mm/memory.c:427
+> >  exit_mmap+0x406/0xd14 mm/mmap.c:1314
+> >  __mmput+0x114/0x3d4 kernel/fork.c:1174
+> >  mmput+0x74/0x88 kernel/fork.c:1197
+> >  exit_mm kernel/exit.c:581 [inline]
+> >  do_exit+0x7de/0x2adc kernel/exit.c:959
+> >  do_group_exit+0xd4/0x26c kernel/exit.c:1112
+> >  __do_sys_exit_group kernel/exit.c:1123 [inline]
+> >  __se_sys_exit_group kernel/exit.c:1121 [inline]
+> >  __riscv_sys_exit_group+0x4a/0x54 kernel/exit.c:1121
+> >  syscall_handler+0x94/0x118 arch/riscv/include/asm/syscall.h:112
+> >  do_trap_ecall_u+0x39e/0x62e arch/riscv/kernel/traps.c:344
+> >  handle_exception+0x15e/0x16a arch/riscv/kernel/entry.S:232
+> >
+> > I am not an expert in this area and have not done a deep manual analysis.
+> >
+> > The full crash log, a reproducer, the kernel .config, and the relevant
+> > source/commit info are available in my GitHub repository:
+> >     https://github.com/j1akai/temp/tree/main/20260318
+> >
+> > If this turns out to be a real bug and there is anything I can do to help
+> > with fixing or testing, I am happy to do so. I hope this report is useful
+> > and sorry for any noise if it has already been addressed.
+>
+>
+> We trigger a VM_WARN_ON, so that's certainly something to resolve.
+>
+> Seems to be:
+>
+> 	VM_WARN_ON(anon_vma->num_active_vmas);
+>
+> Which was added by
+>
+> commit 2555283eb40df89945557273121e9393ef9b542b
+> Author: Jann Horn <jannh@google.com>
+> Date:   Wed Aug 31 19:06:00 2022 +0200
+>
+>     mm/rmap: Fix anon_vma->degree ambiguity leading to double-reuse
+>
+>     anon_vma->degree tracks the combined number of child anon_vmas and VMAs
+>     that use the anon_vma as their ->anon_vma.
 
-Thanks for the explanation.
-Let's keep the change and add a sentence about it to the changelog.
+I suspect my recent series + some error path is a cause here, investigating! :)
 
--- 
-Sincerely yours,
-Mike.
+>
+>
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
