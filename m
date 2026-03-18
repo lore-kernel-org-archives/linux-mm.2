@@ -4,86 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE71B103E166
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7962F103E160
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:47:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF8C36B018C; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
+	id 909EB6B018E; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA9C96B018E; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
+	id 8BAE46B0190; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBF516B018F; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
+	id 7A9206B0191; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A569B6B018C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:41:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41C4559E26
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:41:16 +0000 (UTC)
-X-FDA: 84558992952.04.88E4B00
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C642B1C0003
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:41:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qEzVkat+;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 69DEE6B018E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:47:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BC3C1606A1
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:07 +0000 (UTC)
+X-FDA: 84559007694.24.5721AA9
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2005514000F
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NCTN7Hmc;
+	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773834074;
+	s=arc-20220608; t=1773834425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nQ8MkqEsKrVdCQ9govDMyEZ0IN5SlmXcdUBBNXTui9E=;
-	b=QqGNNyq1L0FTVd9wbsUYEwo5NlAfUnyhevxBu/m8aJZuXpEve5SDPV+gVTvE9m/DX3Ovj2
-	Z0czyTpTHAaB/vuTEXk4m85DD6GsxVLEAZiR31IUeL8eBoXOmMNyt8rIuu4CU0PrIEhklC
-	pIny2AGvwQJ73/YCv0ArS4LBOpounko=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834074; a=rsa-sha256;
+	bh=sXC+9ZKhTZVbYXK2Yzou2mwOrk2yBPN5TmkkaKwC8RI=;
+	b=6HR3wk9bmLrtPUJ5Wp8BiwftXhBF/cYVhZPpB7bK7hDN7SR2Y2kQYk0diGrrTj9qr+X2xQ
+	mqx26ElNJuQzQ2eyhF6DyiO/8/rrsgR6tZVrMfL8KgdIeyeHmS9UDSr32a9onDiqt9R4WO
+	SYq96f3umf2nijN0bmEFBMG0tFb5mQ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834425; a=rsa-sha256;
 	cv=none;
-	b=oMpcKuNKJFvvJ/K+MxfCLbIXofThHVRT1XdkQKAaNFMWSxuh7qPMHiyG9SpTJZl7RiixyA
-	nlMbNysH+VZEwV02mDacsq29B+lSRX9lM0gXmCJDN3TSa9Sf21mhUU8QMeAtBuB67FMPJy
-	02ZHpbf6flAb3A4tf16r0rERcTK820I=
+	b=zd2jdpUUXpdoZGIz0DMp+Y1VJ/+3BDC5qiVfIvHuM+KzL8yOI8x05tCwz704rxOvr3NB1q
+	aZGE9z/DeDp+MhhNfUoDBbl6RdfByj7pOC4qu3I9adgj6gQHRddHbAL54XSNRalYMFnXtG
+	gfPZv16sIkhq9nJVSDXtaSuHMQ2hD6Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qEzVkat+;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1DA53600C4;
-	Wed, 18 Mar 2026 11:41:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B7C2BC9E;
-	Wed, 18 Mar 2026 11:41:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773834073;
-	bh=nQ8MkqEsKrVdCQ9govDMyEZ0IN5SlmXcdUBBNXTui9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qEzVkat+FFXzCyXvoV6eGzMGPuWW6u/V/Eji+qDjQfneEHEL5tSwpazkVdPYGvp8h
-	 xHTdDwpihZRffG4+u/8XASLEhByyaxi8U6iiGDD/iKj2hBvTx5QWgcrUo230hTc5m8
-	 JdxFLQl2C+XdV93NBevFhbS5shJW2qelm0hCzojuakn8vdsHXwT6k36s6Y57WMI5Pl
-	 OgiiH6DnsdWu899M5a69kPnrtmWD66jPvFI7R4WSIuzi9KPcSpw+A4n8lixJ3N/KHs
-	 qJEmDb2Y20VILWrqIsUtirpmyT+NNmDtKSqeSBsmzaJ7JNK4gxqm8YxvskZLgPdkwr
-	 PRRZ3fzsmRY1g==
-Date: Wed, 18 Mar 2026 11:41:11 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Jiakai Xu <jiakaipeanut@gmail.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	harry.yoo@oracle.com, jannh@google.com, riel@surriel.com, vbabka@kernel.org
-Subject: Re: [BUG] WARNING in unlink_anon_vmas()
-Message-ID: <64b4b6b6-dfe7-4873-9474-5ef980352fea@lucifer.local>
-References: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
- <12501051-98d4-479a-8f10-547b2c08ad59@lucifer.local>
- <9f192045-f348-4341-8a45-867f4fd34a0b@lucifer.local>
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NCTN7Hmc;
+	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43b3f91a7abso2236922f8f.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:47:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773834423; x=1774439223; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sXC+9ZKhTZVbYXK2Yzou2mwOrk2yBPN5TmkkaKwC8RI=;
+        b=NCTN7Hmc6GDutjjjzKfPfAchyxOZtpaxVWPSOxcRsNqDPjsyBo9mnIsP3yoXXRJnzh
+         jUJ7huOOZlBchXatZPTYNSoWE0Il4o10OHwk/SfmLT/Vgu+Nrh9da4xU6wFCRLfiawXt
+         UX1eyqfVgjph6m8qhx+0/4Qp/bgSJWPinpSac8qU9LXOYpuJDuEXkMxDUBBpRsj66mdh
+         3qSu9gv58Oh2WP42DBKaisIT7JLyVL6TLIZynDgE4muJq+JaNheiTHOwmLVjrzAyZDFD
+         4ggAQhKFiedOvCsN8CLskEJy095WKTCY05iSon7XPLnN0AA38QPTX3fI6zbx+49V5jby
+         ljkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773834423; x=1774439223;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sXC+9ZKhTZVbYXK2Yzou2mwOrk2yBPN5TmkkaKwC8RI=;
+        b=INSmDVR+giF02S33pD7I00V0TSSrQNwYkCanV4E8vSNSG860xKRqBQXU6MVNaGXWbx
+         gZd7JLzryMoNJsb7CP4LsAc7W/jNKtcDSO+JvoG3IrxjGR1rbw2sRuOyICCDSsk7mVB6
+         R8/UGhgYDTAvhpctWhtMEHA+md5og3Z9bTCGev0pujqtIM3mN8UVMwHzHz5CCo7r0wQF
+         NgJ2gdhbBBvwjQiRFYQz8c5B3FurUPkLDEa9Fc/Tyxa3wRcK4Xl9H2oV06QcGzSlo0fG
+         DaFHuyy5lwgF3ctbaEgB+7NVOaGR1DNYUgq6My/fHSiEsVY3MOS7dVMY45nz+osPf2ca
+         q2cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMVBFBvsxQ/4cOEZNMrR8noBxG4hBsPj8jB9Hg/4N6je7vE3M4dfYtnp2BkjEpmUgNhZbOSIx3Yw==@kvack.org
+X-Gm-Message-State: AOJu0Yxx4wASoyWpImlSpVdBeZnxZG9tsgx6oZSW8p9+JkXhup3kK06H
+	j5tg7yqMzBTEpvT5Ia1Woq/zQ11ZMNQfrC6c/3+XyCcHymGXLH3Qb7f8WllnY+bNqWQ=
+X-Gm-Gg: ATEYQzyA0dPlDLJaLymvHSJKigAD9AAuxBbNkWdAHqkENGtXQk6x2QZ4d3Epa7WWnXG
+	lH/DcjvQhCheHWhyxEhEXX82awNBUSjm6pVOD6FVp+7Y/GH5ZkJyvGIjdTc6F+ae6hZ+zcdX/A3
+	zaxi9N98nfbT7jHjfmVadu26W1ee4BdBPCxGBE9ja+s0dyLiJWOpxFDxwLjRnAXEtyqpvQdnNEx
+	GGIn2rVkpR8aqqj4kRXsFq9FYgms2+uUTf1vXa4a1byyD6iSAGA5ToAaGIuov4TKYkKnX8mHeqK
+	I4ennKCg605kvo0cX5QgTb+1KTPOiBquCKI33FYI4aQ9xr1/EUfEnUasoWh3Mwu8Ma2JBy/qsNc
+	kQ8ZZc3QjvOvMrS5ZDBDMIrAC15hyKGAzhvVAngOH24GF78h4KDjnp1VwPsqYjQD125nxtgvTzO
+	IsCmgoUOjfxz1FCtPNgFGC/icVb7f4+E3ZSzJD
+X-Received: by 2002:a05:6000:1ac6:b0:43b:4362:8ef5 with SMTP id ffacd0b85a97d-43b527cb2fdmr5198029f8f.51.1773834423360;
+        Wed, 18 Mar 2026 04:47:03 -0700 (PDT)
+Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b518588a0sm11451811f8f.16.2026.03.18.04.47.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 04:47:02 -0700 (PDT)
+Date: Wed, 18 Mar 2026 12:47:01 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
+Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
+ attribute
+Message-ID: <abqQtcNqxzxiZyf1@tiehlicka>
+References: <20260317100058.2316997-1-d-tatianin@yandex-team.ru>
+ <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
+ <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
+ <abphjNOYaNslTA90@tiehlicka>
+ <7ca9876c-f3fa-441c-9a21-ae0ee5523318@yandex-team.ru>
+ <abpue_k_9mjQAP6X@tiehlicka>
+ <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
+ <abp3-iJbazCpygIm@tiehlicka>
+ <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9f192045-f348-4341-8a45-867f4fd34a0b@lucifer.local>
-X-Stat-Signature: g94d9h8qx1wq3ecckis4kyshw9atzufy
+In-Reply-To: <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
+X-Stat-Signature: de1s159akfwiqzemfmm8fdtuneqwothh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C642B1C0003
+X-Rspamd-Queue-Id: 2005514000F
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773834074-664776
-X-HE-Meta: U2FsdGVkX19ILk/EBkS8EEad9MwWK+UxVQfFrEj1Lh/7MyLkoybpA2I33Ppk5e5TJXdyHl3OTaKW1bLVvpCYC1kSbjqFQ2/azhoPLX0srifmF1a153OnQiEiO4TYFPBDYa0JyoN6rQY1QS1Nwsg1uE9gqiBR1ECvGow6jIU8wYhwB+J3AYsVG4xyu7KvB0fB6kVDLaeVMVMzgEH+3jeaCFOdX7gax2wgY/xhi7nH0gGMTbCKJsOvBjnf2paTW/rlNmgr8pvTWm3qQvYcFcyVpKDHp9TjijyOpxVjmGCKiRv2LKBehLsxYu8hWsILiqzOYW1AfoAf84MsRSSm0yvUcx8rxwCMhkb+kV8mdkCt+FlST95jHwoZcv/DH+KjDOe2OHp1ySjmL14Z4ZXs3kDTVKm8JxR6wTqhDCq38XjS/+GZmViKxSL9okfms6/KUaoupbbVX3xVH61Kxg0mkKVmPlPZdVCa8eE5LVbbE2m9ZXZqw/nSUlG7J79ZsW6ib4fNWooJXb6hTmfPfQNQ1E18Xd/kctC0Oz4cMSDei3iy37AFVbO0V7nYXaiuZjGicoLUEI9S0HuhpGii+qY2wvnfSFZ3Q3RfYLEG5NC2AKfrCgW8NmodZdsZkYDf0ppvPLHA/qnIZxXyHOBtswzkjcm1cfO6dKSHaCZnaOpKIqJnqnTul99Pajm+20YWzURmBi8gdg9XewBp1E9LuY0O9h88yduR146ZCmzZDCWaZWFKoOstCNG2t6nosdWMn7VtXvpqAJcBhh85Wv53ng6KqOK4jjbQMDducTIdy2oxo2QQrabEmUzNVNlJuFZSm9K6XWr4m1K8jbp5dTZVZoTJrArmOmShRrKurRSibbIW+0D66eomMSqy0yv4D7kyjE0fSeHbr1+Cdijmhs/+FrP1qvfHOKOdLmYy1lS7yek15nJ12AL4YYFj2zy43g==
+X-HE-Tag: 1773834424-773263
+X-HE-Meta: U2FsdGVkX19L9F4/lWULA0EaHQhCrZn1DqSfBAprJonQptK7Sx9IJfxQQJL+6AUlFAF69gzBNlKZTTOamjdhXOqRQDQjGwP949JLbuZ0A82VJd4zpgLYjlJ1b37bfm2Ga7e5Fn4mQmLkyPvzFcUD23dyq4osCYM5EFFyMX4zDMCjkabJOpha1dqBWj+wLFsQXQ+xouOFUpBpbV0ImPw4tw7vDNM9dSvwNRh/b5YkCVJloEW99ZEVO71vwFL419sK8hx56wEXJxykxhMFE46POjuYHBcgpexbufEfwjDrzd7r/bZ7ZGxteovZK6u4LqA+Rdf9vYa483VG9Oj9EwqSTD+ww8c+RU5ApDdJuHYNzgcahrvdrMPxOxFf+OuiJ5wACrLsNOIHh+SocS9rPrMeXO76iXpbj5X6fVMpFIg2WTZ+d6TgyLA9DfjSwjsbe7C1Akxv/jS23L0pS+moQiB9D/Y2y0pQv6YwULepuqZE8wVCfPlmTrQNagbaLVM8AGVwJxLZ9ohzbcZf2Uz5cz/+CDuIWjXSdcGCWTDhLVrFtTWLijKoNnpup3eurQuYRz++dE9MffejcYliBgbhrfueMeEop1kOHb4p4WMYCyaMK9ujC8xIi3glUnMApONmrZwrj12120bF4TGM9F6mX5JA/KsyCeRnVKKFCVuhn0pOgAlc7OHviKPhPsXAd0uylg3pdTiFbrqLn2llIkqg+DxSnY+La8rmh+j0dGkLn0aQPIJN1meMu09fm5ioeL4iqOB0MISPHDccrIJRurkpND5H/DDZ7yB1NUj7VJsYoDlHIFQrDRlNslYKuaBo7U7KIaXAHPitlLLA7SO8hmNStKs5glvBu5D0lvYntO88aHR97YvOH7udwRmR/T+vd90NXyubLhIwDOl3oeqR19CcDIQpVqxX7R11qoAfXIPuoAjZYjQBcUBx6X5CCHhnmpwJZuw1XNJonb1nLu3UIpbXuYr
+ Ll/EhCk8
+ bjMWYGP8csEo8cl8cZrfvH+c8qn+3y4kW9166msIUnAVcDCkOSLLjGdTReqK0jvOE8NDFtISxKXUfyC6oNcUJXoZzr/Jgmi/J4QCoGSgitME8J7aAUwOgHiQp99KWEj8BenATLmD211TtUm+NdQRq8r9FQrzCY/o3PAfROh5KHGHuWNknAn61xaJHYZ79TyDWsbFEPs8pj8M7/TIPktMmb+Ob1jh+FMIYs+P2oXQid3roYayGe/nJX7liopqh4gr7qte8aFNrSqJVpth8Zp492ItbVmHMBnywl5tEZ3fFZ/gAK8u2vtj5uMZDYAFKO9Bn6bjM4iLGfTGr/66UqjKPbXg6Mlp/em6bIcpMJKsDgic2R/Eu5z5YY994oVK6k1z1uNQZArLAzq5KklAwmVhrOB1+aQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,23 +139,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 11:23:20AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > On Wed, Mar 18, 2026 at 06:42:49PM +0800, Jiakai Xu wrote:
-> > > If this turns out to be a real bug and there is anything I can do to help
-> > > with fixing or testing, I am happy to do so. I hope this report is useful
-> > > and sorry for any noise if it has already been addressed.
-> >
->
-> Do you happen to have a copy of the full dmesg output? Particularly looking
-> for where the fault injections were made.
->
-> Does this reliably repro for you consistently or is it now and again?
->
-> If reliable repro, could you try it with the upstream tree also?
-> e.g. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ at
-> master?
+On Wed 18-03-26 13:08:31, Daniil Tatianin wrote:
+> 
+> On 3/18/26 1:01 PM, Michal Hocko wrote:
+> > On Wed 18-03-26 12:25:17, Daniil Tatianin wrote:
+> > > On 3/18/26 12:20 PM, Michal Hocko wrote:
+> > [...]
+> > > > Shouldn't those use mlock?
+> > > Absolutely, mlock is required to mark a folio as unevictable. Note that
+> > > unevictable folios are still
+> > > perfectly eligible for compaction. This new property makes it so a cgroup
+> > > can say whether its
+> > > unevictable pages should be compacted (same as the global
+> > > compact_unevictable_allowed sysctl).
+> > If the mlock is already used then why do we need a per memcg control as
+> > well? Do we have different classes of mlocked pages some with acceptable
+> > compaction while others without?
 
-Actually no need figured it out :)
+OK, I have misread the intention and this is exactly focused at mlock
+rather than general protection of all memcg charged memory. Now 
 
-Cheers, Lorenzo
+> The way it works is mlock(2) only prevents pages from being evicted
+> from the page cache by setting unevictable | mlocked flags on the
+> page. Such pages, however, are still allowed for compaction by
+> default, unless /proc/sys/vm/compact_unevictable_allowed is set to 0.
+> That property essentially "promotes" ALL such (unevictable) pages to a
+> new synthetic tier by making compaction skip them. The per-cgroup
+> property works similarly, however, it allows the scope to be much
+> smaller: from a global setting that promotes literally ALL unevictable
+> (mlocked) pages to this tier, to only promoting pages belonging to the
+> cgroup that has memory.compact_unevictable_allowed as 0.
+
+This is clear but what is not really clear to me is whether this is
+worth having as mlock workloads are already quite specific, the amount
+of mlocked memory shouldn't really consume huge portion of the memory so
+you still need to have a solid usecase where such a micro management
+really is worth it. In other words why a global
+compact_unevictable_allowed is not sufficient.
+
+-- 
+Michal Hocko
+SUSE Labs
 
