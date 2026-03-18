@@ -4,174 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F31A103E16C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:22:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE317103E16B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:22:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76C256B019D; Wed, 18 Mar 2026 08:22:31 -0400 (EDT)
+	id 4FC996B019E; Wed, 18 Mar 2026 08:22:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 743766B019E; Wed, 18 Mar 2026 08:22:31 -0400 (EDT)
+	id 4D40B6B01A0; Wed, 18 Mar 2026 08:22:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60B896B019F; Wed, 18 Mar 2026 08:22:31 -0400 (EDT)
+	id 410DD6B01A1; Wed, 18 Mar 2026 08:22:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F6146B019D
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:22:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8BAB61B8832
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:22:30 +0000 (UTC)
-X-FDA: 84559096860.15.CA210EA
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023098.outbound.protection.outlook.com [40.107.162.98])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9633E140006
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:22:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=oYIfx95c;
-	spf=pass (imf09.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 40.107.162.98 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773836546;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CA1A6B019E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:22:55 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFA4CBAB88
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:22:54 +0000 (UTC)
+X-FDA: 84559097868.06.745B6CF
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EC5EB40005
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:22:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773836573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vs3By2K2+N7O04VPitwDlFvry+2pepCa+9ziz5w52yo=;
-	b=b/EvVa2cEOyBNF3hwm2E3EKutJzX5r5KUsoaW/ZUp0xKjsYoHuN3LDHiwdA5a7e4UmP1Bj
-	IGJpNleuN6FRNcvuhje1cigx2xabt0E3JZl2U6DJ5iWhTfyyQkYBCE5cRQC+laxg4QOjZM
-	DTAHZwIEWhmpEgX5cdpiOntbgLkrQDc=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=oYIfx95c;
-	spf=pass (imf09.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 40.107.162.98 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773836546; a=rsa-sha256;
-	cv=pass;
-	b=qFoZcL989xG3ECuPxI8W7XzEwOmRpXS5ZuCfIsh1zOh4LuHCFFGwRBVj6BveXHrOACXmsE
-	PrxKIQx95NThIiVbAT5LplpVa5ZqYK6r/tNO0/wzB2ZY2o5Hws2AsD1iqfH3YmH0WHKhn3
-	mKObFyUR9pR/TA3qaQa1pmOEcuELXok=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xr8M299yfl9/I7hJSyHvstbR8gwteMM2nhT3Q6SbGxcbHUV2xHCg+zuvhuIphHJs3BD5l6kMjTAms77Bu20IfU7YQ2au7bz9dcu6iR+uzud7o86fFgSNUxPVtE+ks5NDCrv7DYvVLKIVN/aJUUqaJuTmNhTc2kJ2v8HQovBAthhWUk2NrQGx+O0x1nqS0ENE39fkT30IRO6anW/2u6g+/EyCHu/+rsfnmJ3J3QfW2jU+QVFMVW8mDMSMv8ZQF0/DaFaxiCxTlG3tQzndpQnOfzFcUUFXN/tVVbUVZH80Uw1dqOg3F3HuyUjVcVESdzogM6DWMmKGkZAbrvG7Akaipw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vs3By2K2+N7O04VPitwDlFvry+2pepCa+9ziz5w52yo=;
- b=HhpZZpWChvteCcBThANXqvqxUeZ3Jx8HXKRNh+sLUxuibtQQ+xvZlKHE+HzGP/lUbV9UPuKJpe/dtWCbkYIFQgpevjQ6kUUNytEFQCic3x+7YefbvJDpebMzP7/fkHzP8qckJ4uXVh6YhIM074ss7GQjr+xbUHJAtEPwEwsfOGdTv9VCy/kXwhJAAXSgv4JJgo1/chOrhsIEUGd1SfjMRMk19S9B3dGSco5QjeCbJp2B8ZcqboyvkOtgmuI6C8StKyprhcMM3E31TwspQQpqegvY7Id4m9FWsvvbmtTdbua0L5xgYpeZoiJz0wMS12Jf7bbXPSjrCIFfPTY2bq6S1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vs3By2K2+N7O04VPitwDlFvry+2pepCa+9ziz5w52yo=;
- b=oYIfx95cN2Ro/2Lw1KmInE7KalohPXq0pwwfinBucuR/uZJ/yUeFwSGPX1dXqoT6EAA/RdhyUhrYGblqk6vSbit57jK5aoqAzroRTj21o2XW/Rt4b5ZQ9O7B3hYgyvTNQVRCsL2PFYEAmTJJYPLDIKRiKicOYQ6e2obl9yCdZiymH9qkhjO3Ydytrhevt1zunqIbTgbTv3RxDhCGX3oRsvrZQT0kbB9Bj1ryLtepsFIbNAeIDU6sfgohNMoNqe1tf3pYXGDqNFlJR49EHyqS4gBWirzDqRb2ZxioQa7WR8ce99CgZ8c1ZTUUhdqetENICZj+G2qJirHN5BYbEoRtHg==
-Received: from DU0PR08MB9003.eurprd08.prod.outlook.com (2603:10a6:10:471::13)
- by DBAPR08MB5830.eurprd08.prod.outlook.com (2603:10a6:10:1a7::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 12:22:10 +0000
-Received: from DU0PR08MB9003.eurprd08.prod.outlook.com
- ([fe80::3470:51d7:36e4:36d2]) by DU0PR08MB9003.eurprd08.prod.outlook.com
- ([fe80::3470:51d7:36e4:36d2%4]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
- 12:22:10 +0000
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Jan Kara <jack@suse.cz>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Andrei Vagin <avagin@google.com>,
-	Kirill Tkhai <tkhai@ya.ru>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	Adrian Reber <areber@redhat.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v6 2/5] pid: check init is created first after idr alloc
-Date: Wed, 18 Mar 2026 13:21:50 +0100
-Message-ID: <20260318122157.280595-3-ptikhomirov@virtuozzo.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260318122157.280595-1-ptikhomirov@virtuozzo.com>
-References: <20260318122157.280595-1-ptikhomirov@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0045.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c7::14) To DU0PR08MB9003.eurprd08.prod.outlook.com
- (2603:10a6:10:471::13)
+	 in-reply-to:in-reply-to:references:references;
+	bh=hguOLG8tXpzBnLBsPAWJ8LxN455CBQZdyyZ129zZHaY=;
+	b=nrQBx/sgMqh3VwX+IwhQw64ybx1AS/Ausr/FmduEMicT3CIfiyT0BJ2V1R9KRIvB8zMhxU
+	SmdhmpuF2kHjp+uuUfFNoIg5rxvzghjLQYS7n69Q9lwxhG+dKYF8m4fyqgnuxWBE3HT0wS
+	zZY6tozx6cgVhBNspfo5Jgxw416mz9Q=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773836573; a=rsa-sha256;
+	cv=none;
+	b=GcBXkTkmnFcrHltmpNAtV1eApUxpmt0SKkMucnnjyFuD3jqv7HmELXrmu9ZV1QsS5mVAql
+	oDtJhI9xY/DHuoY0gqLFAusjcTX25/gj8wyQmx5+HRJwFhvjz8Fp+uSOYH+0dTNCm/Jfi0
+	4bEUHcdt0/0x7AY7yHg1IXmP70jRiM0=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fbScW3QDJzJ46cQ;
+	Wed, 18 Mar 2026 20:21:47 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2DA0B40584;
+	Wed, 18 Mar 2026 20:22:45 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 18 Mar
+ 2026 12:22:43 +0000
+Date: Wed, 18 Mar 2026 12:22:42 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Rakie Kim <rakie.kim@sk.com>
+CC: <akpm@linux-foundation.org>, <gourry@gourry.net>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<ziy@nvidia.com>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
+	<byungchul@sk.com>, <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
+	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
+	<dan.j.williams@intel.com>, <kernel_team@skhynix.com>, <honggyu.kim@sk.com>,
+	<yunjeong.mun@sk.com>
+Subject: Re: [RFC PATCH 2/4] mm/memory-tiers: introduce socket-aware
+ topology management for NUMA nodes
+Message-ID: <20260318122242.00004e0d@huawei.com>
+In-Reply-To: <20260316051258.246-3-rakie.kim@sk.com>
+References: <20260316051258.246-1-rakie.kim@sk.com>
+	<20260316051258.246-3-rakie.kim@sk.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR08MB9003:EE_|DBAPR08MB5830:EE_
-X-MS-Office365-Filtering-Correlation-Id: f7245605-f4cb-45ba-2964-08de84e8fa7d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|10070799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	iK6bCTlaU5thLPnCUNqXgJ7vGsXOi9icnix/CkHCrFoiehZpgWV/6PSiWY6V/OghJhxSku26Q1myk73I5XoRzmcuIRNkN1uMMN8eykaj7C6gKClyty9dCUcNiOfN0nrAmiTk779cw51dEsS+izYzKr0dqQqRIE7kSa24nbB8+jca2eUkbGtihDvsWAeczGe6/6qkN/SuiXgwuzY6neGMok3uzobrMHuNh9emlAI/HB5DhBydgDq1IPzWQjIDPq8O5K1LOtR6k4F2zlt1o56kwq/PW7zjzRYnV4Gie7qelaC4/mKWGN3EhLCk/z3QOpD6sGtGv9w4iozLxoaLBE2C6RulU2CNp2oIuT1JDEApQAKdqAtA/XRaiNc8EaBWMhufYwbT89L+iRi5DtFb9R6vzkHgi05cqj7XCl6ptFihPW+CmTlMLFpTt7vCMgGB2t0rQxYVTyxCUBD7PZwOHj4u+itk0+N1OspJZ4K/fEi9M6Y6vNiuORC9ELXf8raJXw5ISLCdQ/tGLwy0GhgPJZ9D23PipGNCTRc2u1atjlvouDz/+P3U68cdLfkEOfPwzZdNk1dO7ZsVuqKBwK7Zq0t6VxcZxJh0tLGnscuZ7eeDindZHw+p18i1WLXgQdpfiejnvcYwQvFGm18qUv13/w/PKEJ8HOE5Ew3EbR6vBqEJgbe6d8azDw2Rv2AJ95WLKlu6QCMtq2yHIeBgMAYW0JqUKW4pPlU7OcgexpEKDjBl3mg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9003.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(10070799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EI8jkrVBy22s+3MX3MqKse9g6e+181nKDIcM0oYLWJYGViJ58H3HitVGgf7k?=
- =?us-ascii?Q?YIPDwPJuWxASBYFZngaGPirFlwxjyJ8OWHxuiS6uT5Jmx6G7kGecwnDkXsI0?=
- =?us-ascii?Q?GJVna0kaJbo5umM6JslmyxSdMxwEwgqy6vZZ6aLO0nOpEOkXuUXSFQR6ITRY?=
- =?us-ascii?Q?gUVtrkzgEPe7M2nbHCfc0CrgHPVStBtSRj0va6/1YbTCKvE3jS/hqB7FOCf+?=
- =?us-ascii?Q?lZXQLjzEqd+bznw9o0IZploc7D33TauM8npuz2d8BMl/4kZ7jf7FdD9XyrGu?=
- =?us-ascii?Q?GOeLuczUp3eECQki2U9i4l+r8oTm5oc7azXRKANjiDt6bzMaIgUeo6LLLAZe?=
- =?us-ascii?Q?gZCGcoEjvf9jJr1UdCfL0SE2CtLGZ1kjPyb/k8KJxgUY8+C+jjdRktr1lLau?=
- =?us-ascii?Q?V/Oekmq/o3mY9PD+I8llUqHijLHpTejdpFBMk+2KHRk2OMDF/HyIkEQwNuKC?=
- =?us-ascii?Q?ty8H9wA074B2mIiqMAp1t2feiQ5sjsonShUL+d05WLBzDrlJ5/htFGEXBEKY?=
- =?us-ascii?Q?pnWjdYqJSHwnoVZGDg8Uuy9gWFRSXi0We7W8Xpz/MjD1HBcvOUr4fd2qgp3k?=
- =?us-ascii?Q?8w/K9IXSuWiaMEg0NJpS9a3jFSM1pL+ssYfJtJRbV3QLk2QLAeUo+EYmN5pk?=
- =?us-ascii?Q?IhNo53TlQAAGoCFJW8pD6zXNpfZOjdFU9xafcMaKYdgsuVQxu9w24xU40I7b?=
- =?us-ascii?Q?7O4xSEIrPU88DLFP9uHCNwcoQPe26JhOfdxqKdBohhg43MfStxjU3GHuJeP1?=
- =?us-ascii?Q?Y3Er40ZgapKYw4rM7RYIQ/YIiPHOZRgQmZ1AVu2hByCu6YjJnATQASHAcq47?=
- =?us-ascii?Q?YsHPXJVlpQbuPpne2IikWHBFYUYKVm94AzaTJ4rm1/cOua4gCCYyN+0Vctic?=
- =?us-ascii?Q?o/IeGTZfpoYEUYHFk5VGW12iCcSv7xewTc/D1wyygVAKkphVixnYHEC6nOoA?=
- =?us-ascii?Q?wS9iT/su0+41AEVHb1O0vyUIFsrz8Y9IdBcmjGwv3iuVf+2gV1mOR7HD0zaG?=
- =?us-ascii?Q?x1wszJu4R0Zb1s77viK7I8a9lMmng4tzn2u1bPdkU8DD6zZ693qeJ3VEhbEu?=
- =?us-ascii?Q?4UbGUTKK0W4IURi4vl2e8Ys7lBo3qPZm3SH8lOKAffrY2VbhjvyOWTdFXtqC?=
- =?us-ascii?Q?peRaZt8uHzTDxGWN53mt/DiUzbIRCYLEYsxMDnhYkbNEyPjvVwNrWmVc0CVx?=
- =?us-ascii?Q?TihOoi2dG9/HIN+qKIqqtHcc1L4NW1R3zPLKX4cmlU1NslARlPol1PG8Rwrn?=
- =?us-ascii?Q?EfX7ujOG8JbHozQGlrfUycg7jLNOICxsHvR5aQ1HYMU+q8KcTrBMbEN/k7x+?=
- =?us-ascii?Q?fSu2Xrk/MFNMPAfbIg9K58iouXmrSbBBLhvamYzil2DyndNQgT9w+sdynwi2?=
- =?us-ascii?Q?ci2J3VT48U0mChRqpnZnTb8cqU2htUMeJ4jOsYF5sujvvKDzErKlVQYOxYEX?=
- =?us-ascii?Q?P7Kg90Z6c9HIXTCp2/49m9puJqDjEa4lAq4uLORdkb9SBZB1lzYFLaQp2/07?=
- =?us-ascii?Q?cjV59MTvS9pAl3rkjzSKPlPD4lgbtaECZs6sClJoaL82N7DoFl1uRs4Hxfqk?=
- =?us-ascii?Q?d9WdZv2Bw7MQqfbJnNR5cs269AwtzyOt+PXXS5RTQERkfjnYyaTKFPdCwiFu?=
- =?us-ascii?Q?i5aA1uf+BXhFf6PZKcVDj2s9WdkYEhbZKLwizGa+rIHS6ipDOOl+atxIKAzG?=
- =?us-ascii?Q?UA4ncRa0M6YXdn294TQIr1cYBwoYQyUEAZWrBUGfbKB2TKz6HUxAW4MJjMJa?=
- =?us-ascii?Q?FpbFjQLuhgX8cH3KZq25LSlKiYGEOrsjrIhDCoAgKmBgbtw6cKQggK+9a/fd?=
-X-MS-Exchange-AntiSpam-MessageData-1: ++S4XDDN5Wmk9hSdJvV+6mLiH1ej39HhiEU=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7245605-f4cb-45ba-2964-08de84e8fa7d
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9003.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 12:22:10.4638
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CS6WSE/UwPwZEt/wZnyixlStMRbMILg27qTUUcTAzoY+tEwD55xWtlMsx65cJUUYTJdfPz5xDw/mss793KSyagrPBk2RyX0o0Z/Qfv3OQAQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR08MB5830
-X-Rspamd-Queue-Id: 9633E140006
-X-Stat-Signature: wzokrfksshg4yi53kdh87gbi9g7yp63p
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Rspamd-Queue-Id: EC5EB40005
+X-Stat-Signature: 63g1zrso565jcygnb3onuitb3ik6t8br
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1773836546-222903
-X-HE-Meta: U2FsdGVkX18fjduefcvzD6PvAvyo/gnAMPoFgSX64uwJQ8XRS4QWewdbikxAkF/wnDfz3VHMrdt4ZacTx/txDRi9EwYA1RXeSVhPhVr/Zm9bIK54/RLes3JPiy0pENa2Boh2ZdMDVXxzC7+YI2T03MupIpWif1/4GS8DsnJ+Ks8IMgDadTZ6rGa2nCMVVK6HtEibJeQEHSU1vRTH1I5p7l+aEKPda1JaWXehHrKsELOv2rQPgebXY5qOHUNHpsiw6NwDKRLWuWknpIrRajVJvCe+xpufTGHvUPYdnqqPFDvy8+fxUM31X2SbFKaSo67MEaNLHEpMa+PHRZ7kr9xwPMf8771TJ92htcl37NJ4dp61IfAGO20m1yBDwBI/eziNAescJDJLb7+RIZHxVr2Sefzbh0w0NLT2vNcI90u7229l7DyAURctXywJuZ/MtG+rsFx2wvTXZlgKmaAD2Og7KMEgvQfbFjQw0VtkQqAudpxjHw4oCDiQ79kPWgNZzw0OEbkUVp3cbs4nwWsh9U5MtwkShhdixccb2Ogwt60rI9mr8+GypciTtVo0Q1mzeXjfMLMXluWfa4YA6lZD18IXgvhyCqbENKKVIDSsOqRZ5pXvSJM/uTmM9S9TRFG5xXgOyIiWyC+zOjdksuiEpxLwT1Mle9DCgEz8vhn73xfUUzUNPc4k89A0ZXaLdDsKx1R6Q+Ni4fmBwOb/lzo4aVbPk/ALg+mLDSEFlkyT6YkEVJrK33Nfmug0+XvOzQoc4WoE1lX+aNDC3UkiKKgtUyWQRjdQQ8kN5MJu6pjO//k+jfPwxWaJ97uMh/OBY9cIEGpaEh5ZQN5UgS+RIZKipBaBSgAHSJ4lTH4d60MkPKPYGOxEFqinZCehLh1+LSpPONwyY9kj1kNBq3Q4yAOMJOQLOkusR7Rp9fijUQBUBTNs0e8IN4USuezX+BqdFSg10qWjk18+JVswhW3omxzPELY
- 83SoSgAW
- ErjwA7y1daZDAiLWbLsuEydA18JkQ2KPj8965PPOIDwevmaPZ9z4bloVtHS7S7ev7WFfatUo8/ZiC4hjtj66VbZJ9sxWiaPbrCGxlBuKV1mjlLChautx1GOaomilUxV7BXMifBSL1oveBErVVmmGqvSpVWSy3ULkj42/KBjDYMSjM3X85nqs7RgcDrNmEcH4TPF9YYWZUGRufRohaJVsUcS0UKmBXk1YuVOD90RPpAJrxPfDUXKRLbAKiYhnljV4mXRYsypmVBd72EWZhtS6g2iSpLBf6qBQVH7iXzE0Tr+FwfpxAQ9eEph7+R7twl/uQNg/PRshFEgLq+UyQUFyd/pFEl4nwGjpZujxiVi2jMuT9ttDqxc6GYjXce+JcpWGGl1VZ7piA11dqqdHgLCx6GanviKAImBZKTDCTSh4yZ5UTMVPQDc1doKsjNnqNum8Gdevd6GvOZF5vjoBh75g37vEuZUiT8ftMrTvQNeYrGPXQw6w=
+X-HE-Tag: 1773836571-419248
+X-HE-Meta: U2FsdGVkX1/codNkUAg5taSGZzFYKXl+bUjo3Fq+WLPyQBXZi+L1mLHZl/V6Uy0tVqg00OZieXCfPVAk6w3bP2m7BIApfyntP6GlKzY32EZvR14em6EPHbf3ZrJV19xD58xfNMNHoHqP+AkwfZMnbQUbcQIqHeDCxoJ1/r70qrG20R8SVLgklnXWwh18LkG4lwdb5aekFuYbUw3mCfkEhmwhtwEMQZFsS+pCXViOllhtsh+oGJsyoYAGMWqlKG7EWIg0jWAZJrhbFgs3POInMdoeP3BjgXEt4Ljvo683mDi20UGt1OfqGCH3f7/mNYOxBceO8JCztOeq7m3LbBK60XH/iZA5BTXxX7f3YLqHSwR6JTG02quuuM5HbR4MYDSI/Ecf8DksG1tJFc8f5qkdaA/b02nEJ7i5NZIjoQBl5ucjumYFxEUH1/axi+1vzTxWmP9K0pBtTUPrCXODVGZrFOCVpnZvh60Gcx6Pqxc82ZtCEj/uJPnXKdk1y+mI7cTdZQFgL8FhPy8chuI/VGisBLV9cPUjYJhyzHF2GZ1MDwpW6dAjBtpa3LRyg2S4DUuJauPOgz5aNuCEL1iNzNGeWcf6k5nwiHCwtaHIJOSHl/wUUuf95Sd9V8jxGi3oiYhvbBBV762WQaw1504DJDDHNz5KgBYqO3eh4QUJz7StwNIWJ83GaLBclB9Zjk7/mBsyzQyamtMJfJMMMR2aPWJQRlBN8KlzXDWGTLua4KrwOX1JpSNoiRhe9iUdrUiCxWfCwPkT1vkyXyfgHLxn6cY3CF7uNGfNtrr7+LZ7H3CDLfj0ObogIgHjI0oM0Pmcphk+8ZbXwm0FOUAMnY0ezgS2rmYDyZST/eF7BCFQp6bYh1fQHHyhfFErh/ci+e5cfkJydQp9KVh21DiPwbMTz1e3qZPE8s+YLjiLZVMSFW0TEDf1uh/QE70dHGv0C8WBaizgVrNXfwnjIMscKEr3cZj
+ f0OIXmcB
+ oMGiBpdKl3lYxvyt95ILJmtxvDZj+D4oIcmYKICguIxdp+n8OfWd6SD2PE3da33aRjyVG7o3BSOdWhcNoPBYsyXUF5QAsDWl6TsQ3f5EusKp9Ku7s9OOVLO21QkBDQDc1/vWfJalzttn8e6ZkzNxYVuA+EW91Yhuajn3W27nAMQMZPkFbAfrCmVA0peHHWJM5pX4iyOhnSg+dhqlM/vhP2f8DIOqrmEgs8GK46RylBSYWGhou/34qpTXKkXRy84HxwpVrDNhxggBfGdSx7ZP0OA1/qD4HOYfdiXBJV2nExCvltU/gvFeuciS9Nx8u0I6Wekt96MbT+7VrCotLRunYcRZiokEFqEs95uYzKplEcWIjpkDXh5AT0SwAr2SvQZyKythal9WG35ADCs8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,73 +100,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This moves the condition (tid != 1 && !tmp->child_reaper) to after idr
-alloc, so it not only covers that first process in pid namespace has pid
-1 in case of clone3(set_tid) requesting wrong pid, but also if idr
-itself gives wrong pid for some reason.
+On Mon, 16 Mar 2026 14:12:50 +0900
+Rakie Kim <rakie.kim@sk.com> wrote:
 
-This could've been the case before this patch, when creating first
-process the alloc_pid()->pidfs_add_pid() code path fails, so that the
-idr->idr_next is non zero anymore and next process calling to
-alloc_pid(), will get 2 as a pid from idr_alloc_cyclic(). Though thanks
-to PIDNS_ADDING logic, free_pid() disables further pid allocation in
-this case and it does not lead to any real problem.
+> The existing NUMA distance model provides only relative latency values
+> between nodes and lacks any notion of structural grouping such as socket
+> or package boundaries. As a result, memory policies based solely on
+> distance cannot differentiate between nodes that are physically local
+> to the same socket and those that belong to different sockets. This
+> often leads to inefficient cross-socket demotion and suboptimal memory
+> placement.
+> 
+> This patch introduces a socket-aware topology management layer that
+> groups NUMA nodes according to their physical package (socket)
+> association. Each group forms a "memory package" that explicitly links
+> CPU and memory-only nodes (such as CXL or HBM) under the same socket.
+> This structure allows the kernel to interpret NUMA topology in a way
+> that reflects real hardware locality rather than relying solely on
+> flat distance values.
+> 
+> By maintaining socket-level grouping, the kernel can:
+>  - Enforce demotion and promotion policies that stay within the same
+>    socket.
+>  - Avoid unintended cross-socket migrations that degrade performance.
+>  - Provide a structural abstraction for future policy and tiering logic.
+> 
+> Unlike ACPI-provided distance tables, which offer static and symmetric
+> relationships, this socket-aware model captures the true hardware
+> hierarchy and provides a flexible foundation for systems where the
+> distance matrix alone cannot accurately express socket boundaries or
+> asymmetric topologies.
 
-Note: This is also a preparation for the next patch in the series, which
-will introduce an ability of creating init from the task different to
-the task which had created the pid namespace. Needed to make sure that
-init is always first, even in this new case.
+Careful with the generalities in here. There is no way to derive the
+'true' hierarchy. What this is doing is applying a particular set
+of heuristics to the data that ACPI provided and attempting to use
+that to derive relationships. In simple cases that might work fine.0
 
-Suggested-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
---
-v3: Split from main commit. Merge two checks of ->child_reaper into one.
-v4: Update commit message about PIDNS_ADDING.
-v5: Add Andrei's review tag.
----
- kernel/pid.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Doing so is OK in an RFC for discussion but this will need testing
+against a wide range of topologies to at least ensure it fails gracefully.
+Note we've had to paper over quite a few topology assumptions in the
+kernel and this feels like another one that will bite us later.
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index 386e51fcebb3..677c84e319dd 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -215,12 +215,6 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 			retval = -EINVAL;
- 			if (tid < 1 || tid >= pid_max[ns->level - i])
- 				goto out_abort;
--			/*
--			 * Also fail if a PID != 1 is requested and
--			 * no PID 1 exists.
--			 */
--			if (tid != 1 && !READ_ONCE(tmp->child_reaper))
--				goto out_abort;
- 			retval = -EPERM;
- 			if (!checkpoint_restore_ns_capable(tmp->user_ns))
- 				goto out_abort;
-@@ -296,9 +290,18 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 
- 		pid->numbers[i].nr = nr;
- 		pid->numbers[i].ns = tmp;
--		tmp = tmp->parent;
- 		i--;
- 		retried_preload = false;
-+
-+		/*
-+		 * PID 1 (init) must be created first.
-+		 */
-+		if (!READ_ONCE(tmp->child_reaper) && nr != 1) {
-+			retval = -EINVAL;
-+			goto out_free;
-+		}
-+
-+		tmp = tmp->parent;
- 	}
- 
- 	/*
--- 
-2.53.0
+I'd avoid the socket terminology as multiple NUMA nodes in sockets
+have been a thing for many years. Today there can even be multiple
+IO dies with a complex 'distance' relationship wrt to the CPUs
+in that socket. Topologies of memory controllers in those
+packages are another level of complexity.
+
+
+Otherwise a few general things from a quick look. 
+
+I'd avoid goto out; where out just returns.  That just makes code
+flow more complex and often makes for longer code. When you have
+an error and there is nothing to cleanup just return immediately.
+
+guard() / scoped_guard() will help simplify some of the locking.
+
+Thanks,
+
+Jonathan
 
 
