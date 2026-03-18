@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D64310854DB
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 09:29:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BEC010854DB
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 09:33:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BC816B014F; Wed, 18 Mar 2026 05:29:48 -0400 (EDT)
+	id 81CA56B0151; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46DA16B0151; Wed, 18 Mar 2026 05:29:48 -0400 (EDT)
+	id 7F4FE6B0153; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382F96B0152; Wed, 18 Mar 2026 05:29:48 -0400 (EDT)
+	id 731D26B0154; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 285456B014F
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:29:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B694E13B2D6
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:29:47 +0000 (UTC)
-X-FDA: 84558661614.12.E493D33
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 77135C000A
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:29:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 61DF66B0151
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02960C2238
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:33:13 +0000 (UTC)
+X-FDA: 84558670308.03.2F29E2F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3FCB9C0006
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:33:12 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=NnSCuGs8;
-	spf=pass (imf10.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N36oty7D;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773826185;
+	s=arc-20220608; t=1773826392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=usbua+fVWZNE41Kwxxy719LfZpIisbyb51veGjr6KVI=;
-	b=CdpxBaFTfptrsJH5vL0dowcoZQMF/hb+ozwzNG0Si4AsJ/LzZtEq0gosdpg30oFT7dqawi
-	EYli6AFPOPtONkWXoj6HxQeurnuZ0SKs1ZKNE/pv5C6ieRkoJCYM+TN7dvF9aBr03pph4K
-	IPDTw1Rzc26kgJUNKRsDPsW87tz8F/w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773826185; a=rsa-sha256;
+	bh=Ka9ekrAm+PRtEIBddzjSTlGztFbLJbLcrB/yL7pqAII=;
+	b=cETMWAPML7Z3l3j/EW3Al7vzPIxLF9dKIQeid89bDnaJM+np2TwNuAucaKl62Ip7cu8MBr
+	KPDsDEa0BJO/1nk1GBBdu6fB956iXjHbrO7rlAhrwzpK6+HK3EikLI8AKhwhBWt5ZDKJBo
+	iGKKdYWhl+RTtqXk1alVj4iTH0DGRho=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773826392; a=rsa-sha256;
 	cv=none;
-	b=CUaWFmyjPdDDB8XhhsnnMr+3d8tlcwTXSCW9V+Uhg6i7xzLREEL3hZ+VfLA8mdjPlEqk+I
-	oce3ZE4LJxKrU0+Sq8vXq3Nj4d0Pvlw+v075GNOuyIELgQMQ2JCE6e2d2wDqPvKgie2bke
-	e0UmzPccMlZm5tNP3JzOn+d4IH1xFf8=
+	b=XrXZf8CHD5qPE7LaK1w4aMXh3D49AbkOLbwbj0f/8LSmyFq10rtyqHZ/dd+aRGlllTUqB9
+	18pRQOJthT/CzltAwrrfVrY3H13i1CFNPjoOatLvtM8F8hiRa1+QT9UjChtyuuRiiZVNxV
+	vExs7Fn966B/Cz+TCK22ZI0jsvB8dsU=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=NnSCuGs8;
-	spf=pass (imf10.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=usbua+fVWZNE41Kwxxy719LfZpIisbyb51veGjr6KVI=;
-	b=NnSCuGs8eIwrZePTN/26H3GYw2h4BzG8MFaIDc32uzXnx6RCNf/7BnMaHWOSqizsD6T7ol/2U
-	Mpjm5eyZKypVQLAAX+2f4zs2xQhyZNjmgoGuzgoIgmZKKKgvNzwyR8bH9RWUodtJvaakvGsTjwk
-	GevnT5xT85iZDAG27BbY9rk=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4fbNgL0nKWzcZy5;
-	Wed, 18 Mar 2026 17:23:58 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 304742025F;
-	Wed, 18 Mar 2026 17:29:37 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 18 Mar
- 2026 17:29:36 +0800
-Message-ID: <04888291-d7ba-4df0-8f76-c9eb15408b37@huawei.com>
-Date: Wed, 18 Mar 2026 17:29:34 +0800
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N36oty7D;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C628431CD;
+	Wed, 18 Mar 2026 09:33:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9091C19421;
+	Wed, 18 Mar 2026 09:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773826391;
+	bh=uEHOHnogW56+g2NCkawlI23RrTbijq7RbohziykD1t4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N36oty7D6IXjGFsZKN4yobNwiu0L0Ch9p0graCXyTqc4EJXSZSe8IbzaBoOHfCzpJ
+	 sE/i0ORGRTpFLanJH4LyEMsIhSGXpsOD1dR5Lu3vJHyjiDXxDXX2t8L2hzHtAqdbjn
+	 KXxWVtpg7F6L70xB27ys4lh6EwtEZIWhueY4gEkaR/WV+REmobZHZyVfCck5YHMx12
+	 Bzc1lWlRay5jpkfJyIH8DA66pip9nhUPRJSZinp3ov8EG78kaU59S5ZLS/9vWGgxoL
+	 Q3YL6QsXyKGBvh1C0nr7gjgdpAhKBmDc3jfBTMpVo/5Fj6oECzoN4iYa1FvAJw+y7F
+	 vt4lFIRnrdzCQ==
+Date: Wed, 18 Mar 2026 11:33:04 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: Evangelos Petrongonas <epetron@amazon.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
+Message-ID: <abpxUEijdHJzziEV@kernel.org>
+References: <20260317141534.815634-1-mclapinski@google.com>
+ <20260317141534.815634-3-mclapinski@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: fix folio isn't locked in
- softleaf_to_folio()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<fengwei.yin@intel.com>, <baohua@kernel.org>, <ryan.roberts@arm.com>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260318012055.3593216-1-tujinjiang@huawei.com>
- <88f37900-5c8b-4606-9081-e9b72acb0941@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <88f37900-5c8b-4606-9081-e9b72acb0941@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260317141534.815634-3-mclapinski@google.com>
 X-Rspam-User: 
-X-Stat-Signature: is6c8kqqyjkhcbg4mye34rfkaieeuq9r
-X-Rspamd-Queue-Id: 77135C000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773826184-852416
-X-HE-Meta: U2FsdGVkX192cjn9IieIjCDO4fWt9IBRIPSJAWGAOe5NQY57iYDtsQN02gRJ/F3zT9otqY7hioQIlJrO75xZljNH84X+p4G7XaOME4+zM49KJo2YDlNc36A3bjuOOnP5dxwZUwHQ2Ghv4QstsnnjBn+j73lRdeHPaXMbV/kc3CGG404LGgAVHnPi+g1vcsDvFnPlWIUFBSV+6poX+XTds/VyXivplFlHvK7wEjmWJrdi/siSODGrI4QwDCQIYeB0RWdM7IFvPmlwNrYxsKBbA8gKI5vg+v5ChZ8PUzOKiSA/BI3TFNdCl8Z84UMIXfyLgcKhKuXD9Im8/WCUvQvEtstL9sGbWWrntTeeo+hZn+m4PTH0FyLrlcXHY9YULq2cVPbwFAw5LphuJRkJJEFkSdAdqIN3LPIs16vF6KouwLerDQS4bya+n2C5Rs5viJzDHuWRlWAr4Y9ZNhFak33KcP24l/ZBs4sBogzYPtI7KeB2y20aS21SEdmTN/tuQq4PhSJwdaAme8rRgGMI/YKZ2+sx/M8yPJQZbOwHv5YfWhLBRTivtUfGPyr2FmcGhXB9NpGG6CSidNAVfeCjgNkaHOiTfQSwXZezZHGI5ZMcDL9zzZdNVN1PtVIW2xPf5lViMtE+S48Ek+cQMdxOJ8f92RxITwSmDYL/QpaXvRI5Qx7rmhv3ktbgLDPh+Fg4Qs7wtgukzUZh1OJ5Evho4iiUswho4vRAfKWU4AxfqL0aMG5c18kz0G0jDp4HO6oDYWOgOajOPjmOKXQ0PvouVpepu+l13Jb8kUL6n4fZYnwKTuCOIp6pzUlZWYzoL35YN3XopqADieD2sKI/PT3FiMyBYz+aEMG1ximTxhLmZf4IDQy9ycpi/uxHhHQn7L7JB1fkmDXeSug8HTDRO0bIQDtdsGYTp/qljUdjQB57tmTGQXOLoMxVQTKX3Ks4GcTV3PfMreQecKbh1GlJ+fQWZ3M
- EZjpHPML
- FZ25slJkmy9gMOqe1OqMi75It9EQWETchVb8jlEYuNnGSzbVsYIeGgvg4LbyjuHXRsnWyE6F8Iqx+NpKnW8Ky52bA+wd6ss6iG/m/yUr6IM9C38bxmvS8cfKzU2wvJMvJIebxJGNLUIpmmgTa2zN4wnQsBQqiTV9FRGUs6bidA+LpRdlTCZrV0FrckWE5R31A5CrJQZfOsF3+I+X2+rmmGoNUot45dQ2syfrD2FKZ0yoOptJn8thYV2Jft4BlYRs8qIJh8nlNxihGMN0h5o5zwefs5SdH5yROOqYb59ARJtlNZPlHZlUUgBMRuhgPV6DVUFQF5J45VbPYitRXOQP3dWYccYwIHtSxY29pTnJHayQ7NaXhMuyPXItDanipdhQ48BaKs210zaHSsugbmcVachmZU/dazH8/bgp9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3FCB9C0006
+X-Stat-Signature: wfsokd5p9a8h868yxr6hjspody9du5w4
+X-HE-Tag: 1773826392-399637
+X-HE-Meta: U2FsdGVkX18VF3scGRmE2syzQ2tXjaUtGhOS3yBSZHQaoKrGKeXKfmboHzKZHCWCjWTr1Z2dAY273ZysCQFKAd9kGROmjNqr4znk6Z5M28TXQcA5dhQXx0IGjQJNynn9SnUFsor2eLlkp66lWX+drP/sU3zlMJ/aUL2WjU2kScdrwpWfpfgD8W+kjVQdK9WAbx7NueSNbDR0EDpDRhrFWvbtGHot153wpYhXpHKWsyDesZekoVpHbtsfU2naWz/S66cOclshsCJAfLxOYZH6jtsLcdJaIhiU/fW6Y7Qp4NdHLNwj5W4Z9nYj+0wYasiIftlXuhfOeLdmgkcWgFWL53JGbmwzY9TcOgIaDZ4ZBJUzFEGWuAn2S4BTZILJWEC2pwPAoPktN+uc1Hi/z4yK2WUbREbkNDmUSUOBaCGgH6SDo3yJzZyziEHU3A5ekdcnuv58HVQrw0DVPEArVazHPsLEympRs8Nlod37To+sf+G4a5Sm130KOj1od4uKLkc3woUu+QohYcuu4lileAVkEWb8tkbEzZaPNRSEwXdmcKl7sbNHxA0dVJoLxoUNOH12e95LvwDz56g0SZ3yTujL3kDyka13OcX4fBb18T2ru63aCe2wZR0966F1gJnRhSKkvIp5YxxsepMjhwH6Zbg63qjln2NUGa+2qeqVjozAj8lYDp++axzDzbHWOLbB9HUOdTaLKOj4NtFlZnHPBkpkxhKehha/HDA2WBkndFA8vHoHXHUqja6TRbXTPLxnPcQYcWeNMspMnZeDrHw7Uz+c7AzsfhqFxIE0UhXWfgjgdd2+pWJ+WMaxFCPpB3poT+VuCkemBPs3LxKCjpUBLIzqg0vKJ/3Nd0Ho9FhypNxQrqUr82VPqGdMvLFPxXuwgMxWfTtR4bMyIQ6TKlCzlKhvvSs6ERbhcw+dTl6bawXONfj1REHiqgdCXzmT2RauykBcW85aqSZrH8X7VUJMCvu
+ RA4f3ys7
+ iPI5qK1/6pv/NEI7GCK7E0KTTUexWjASo0rsPcGJf2jb8tq/Dqq43w5VhG165Awi/HHFIkacPHs1bjRO4I3U4bGeLPIVXQ+8iirHaYCMikMYz5ULcHXPbcgtYWAonIfN6D1UcFUyHMhGGg9bPOAZlrF0Jr0mSZPaNIZHmsFHiGgZTuNNln2eufGlJuTMzcnbOrFdPYe/9egmgBBg3QuBUglqiv1dV9XXeeSfSsEZaDfXN85HEso5mTsPJu942fNc+mfP+RjTZIDenLwG/PrL+5D5C2c9CzqZtDwp2lGlpAI0ymw0/lC/eGYieDNfpipnaPbHXS9mma3PjQHsLLI60nj/UlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,98 +96,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Michal,
 
-在 2026/3/18 17:02, David Hildenbrand (Arm) 写道:
-> On 3/18/26 02:20, Jinjiang Tu wrote:
->> On arm64 server, we found folio that get from migration entry isn't locked
->> in softleaf_to_folio(). This issue triggers when mTHP splitting and
->> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
->> in softleaf_to_folio(). The race is as follows:
->>
->> 	CPU0                                             CPU1
->>
->> deferred_split_scan()                              zap_nonpresent_ptes()
->>    lock folio
->>    split_folio()
->>      unmap_folio()
->>        change ptes to migration entries
->>      __split_folio_to_order()                         softleaf_to_folio()
->>        set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
->>        smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
->>        prep_compound_page() for tail pages
->>
->> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
->> are visible before the tail page becomes non-compound. smp_wmb() should
->> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
->> result, if zap_nonpresent_ptes() accesses migration entry that stores
->> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
->> page before page->flags.
->>
->> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
->> in softleaf_to_folio() and softleaf_to_page().
->>
->> Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> ---
->>
->> Change since v1:
->>   * update fix tag
->>   * use helper softleaf_migration_entry_check()
->>
->>   include/linux/leafops.h | 29 ++++++++++++++++++-----------
->>   1 file changed, 18 insertions(+), 11 deletions(-)
->>
->> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
->> index a9ff94b744f2..c7dbc3fb8ab6 100644
->> --- a/include/linux/leafops.h
->> +++ b/include/linux/leafops.h
->> @@ -363,6 +363,22 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->>   	return swp_offset(entry) & SWP_PFN_MASK;
->>   }
->>   
->> +static inline void softleaf_migration_entry_check(softleaf_t entry,
->> +			struct folio *folio)
->> +{
->> +	if (!softleaf_is_migration(entry))
->> +		return;
->> +
->> +	/* See __split_folio_to_order() comment */
->> +	smp_rmb();
->> +
->> +	/*
->> +	 * Any use of migration entries may only occur while the
->> +	 * corresponding page is locked
->> +	 */
->> +	VM_WARN_ON_ONCE(!folio_test_locked(folio));
->> +}
->> +
->>   /**
->>    * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
->>    * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
->> @@ -374,11 +390,7 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
->>   	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
->>   
->>   	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
->> -	/*
->> -	 * Any use of migration entries may only occur while the
->> -	 * corresponding page is locked
->> -	 */
->> -	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
->> +	softleaf_migration_entry_check(entry, page_folio(page));
-> It might be better to do
->
-> if (softleaf_is_migration(entry))
-> 	softleaf_migration_entry_check(entry, page_folio(page));
->
-> Removing the softleaf_is_migration() check from
-> softleaf_migration_entry_check(). Then, we don't do the unconditional
-> page_folio() and don't call the function for non-migration-entries.
+On Tue, Mar 17, 2026 at 03:15:33PM +0100, Michal Clapinski wrote:
+> Currently, if DEFERRED is enabled, kho_release_scratch will initialize
 
-Indeed. Although the compiler may be able to optimize it, it's better to write
-like above.
+Please spell out CONFIG_DEFERRED_STRUCT_PAGE_INIT
 
-Thanks.
+> the struct pages and set migratetype of kho scratch. Unless the whole
+> scratch fit below first_deferred_pfn, some of that will be overwritten
+> either by deferred_init_pages or memmap_init_reserved_pages.
 
-> With that LGTM.
->
+Usually we put brackets after function names to make them more visible.
+ 
+> To fix it, I modified kho_release_scratch to only set the migratetype
+
+Prefer an imperative mood please, e.g. "To fix it, modify
+kho_release_scratch() ..."
+
+> on already initialized pages. Then, modified init_pageblock_migratetype
+> to set the migratetype to CMA if the page is located inside scratch.
+> 
+> Signed-off-by: Michal Clapinski <mclapinski@google.com>
+> ---
+>  include/linux/memblock.h           |  2 --
+>  kernel/liveupdate/kexec_handover.c | 10 ++++++----
+>  mm/memblock.c                      | 22 ----------------------
+>  mm/page_alloc.c                    |  7 +++++++
+>  4 files changed, 13 insertions(+), 28 deletions(-)
+> 
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 6ec5e9ac0699..3e217414e12d 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
+>  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+>  void memblock_set_kho_scratch_only(void);
+>  void memblock_clear_kho_scratch_only(void);
+> -void memmap_init_kho_scratch_pages(void);
+>  #else
+>  static inline void memblock_set_kho_scratch_only(void) { }
+>  static inline void memblock_clear_kho_scratch_only(void) { }
+> -static inline void memmap_init_kho_scratch_pages(void) {}
+>  #endif
+>  
+>  #endif /* _LINUX_MEMBLOCK_H */
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index c9b982372d6e..e511a50fab9c 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1477,8 +1477,7 @@ static void __init kho_release_scratch(void)
+>  {
+>  	phys_addr_t start, end;
+>  	u64 i;
+> -
+> -	memmap_init_kho_scratch_pages();
+> +	int nid;
+>  
+>  	/*
+>  	 * Mark scratch mem as CMA before we return it. That way we
+> @@ -1486,10 +1485,13 @@ static void __init kho_release_scratch(void)
+>  	 * we can reuse it as scratch memory again later.
+>  	 */
+>  	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
+> +			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+>  		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
+>  		ulong end_pfn = pageblock_align(PFN_UP(end));
+>  		ulong pfn;
+> +#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+> +		end_pfn = min(end_pfn, NODE_DATA(nid)->first_deferred_pfn);
+> +#endif
+
+A helper that returns first_deferred_pfn or ULONG_MAX might be beeter
+looking. 
+
+>  
+>  		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
+>  			init_pageblock_migratetype(pfn_to_page(pfn),
+> @@ -1500,8 +1502,8 @@ static void __init kho_release_scratch(void)
+>  void __init kho_memory_init(void)
+>  {
+>  	if (kho_in.scratch_phys) {
+> -		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+>  		kho_release_scratch();
+> +		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+
+Why this change is needed?
+
+>  
+>  		if (kho_mem_retrieve(kho_get_fdt()))
+>  			kho_in.fdt_phys = 0;
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index b3ddfdec7a80..ae6a5af46bd7 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
+>  {
+>  	kho_scratch_only = false;
+>  }
+> -
+> -__init void memmap_init_kho_scratch_pages(void)
+> -{
+> -	phys_addr_t start, end;
+> -	unsigned long pfn;
+> -	int nid;
+> -	u64 i;
+> -
+> -	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
+> -		return;
+> -
+> -	/*
+> -	 * Initialize struct pages for free scratch memory.
+> -	 * The struct pages for reserved scratch memory will be set up in
+> -	 * reserve_bootmem_region()
+> -	 */
+> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+> -		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
+> -			init_deferred_page(pfn, nid);
+> -	}
+> -}
+>  #endif
+>  
+>  /**
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ee81f5c67c18..5ca078dde61d 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -55,6 +55,7 @@
+>  #include <linux/cacheinfo.h>
+>  #include <linux/pgalloc_tag.h>
+>  #include <linux/mmzone_lock.h>
+> +#include <linux/kexec_handover.h>
+>  #include <asm/div64.h>
+>  #include "internal.h"
+>  #include "shuffle.h"
+> @@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(struct page *page,
+>  		     migratetype < MIGRATE_PCPTYPES))
+>  		migratetype = MIGRATE_UNMOVABLE;
+>  
+> +	/*
+> +	 * Mark KHO scratch as CMA so no unmovable allocations are made there.
+> +	 */
+> +	if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
+> +		migratetype = MIGRATE_CMA;
+> +
+
+Please pick SJ's fixup for the next respin :)
+
+>  	flags = migratetype;
+>  
+>  #ifdef CONFIG_MEMORY_ISOLATION
+> -- 
+> 2.53.0.851.ga537e3e6e9-goog
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
