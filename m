@@ -4,86 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 900D2103E160
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3596103E163
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05ED36B017A; Wed, 18 Mar 2026 06:59:39 -0400 (EDT)
+	id 93A5B6B017C; Wed, 18 Mar 2026 06:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00F2F6B017C; Wed, 18 Mar 2026 06:59:38 -0400 (EDT)
+	id 9108F6B017E; Wed, 18 Mar 2026 06:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E673F6B017D; Wed, 18 Mar 2026 06:59:38 -0400 (EDT)
+	id 7D7686B017F; Wed, 18 Mar 2026 06:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D79EA6B017A
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:59:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0D95160646
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:59:38 +0000 (UTC)
-X-FDA: 84558888036.22.8827355
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 665856B017C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:59:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1BBFB140663
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:59:39 +0000 (UTC)
+X-FDA: 84558888078.21.A160ADB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 19D5E4000C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:59:36 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RnSbOvdZ;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8A4FC40010
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:59:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AYu8UWE0;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773831577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2rOA8H+GQtvpdRvXXbxgFmO+ydfxm9AeRJ39qbow0dg=;
-	b=Y30AFPhday9qZ4+1/vSBfGSCGwMWR0e+qG0Nl9Mc/xXc7gF1lT1MY/tA6tyuF58dfrntqi
-	ZIl74jKDJhbHUUIHdmtSHpcX/9QvPeRZzR3UBQwvnMn/W1FpwyHb4AyOuphus4Q49KhkRt
-	8qHgCfcmdIaNzxIjncrxn0hfSsFwU4Q=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RnSbOvdZ;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=zJu5x2uLTjIhsDpuoLPzs71v39SAQiFydPYWvdNiy2Y=;
+	b=zsQuKSQBBR+2aQCbS488UDDapF8nmvAMjjCjRTsmhjOih2vgy723AKWq7kn4DYpKhdplhL
+	ja+dgyU1miJWllCwgRvUhWAhCfdOhigyPAAhdZ/yQQNdiJftLIGCeODd4A3K0dLJGl0nIS
+	dR9EGZsT1dXwCIiLKpL7FcM5Bue+i8M=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773831577; a=rsa-sha256;
 	cv=none;
-	b=Ojt1SUb2LrpM9Mi1Uz1W9gfUKVBRFo3KYWTs1hjtSwDW/VjiGtyJm5tk41E3pRHG1R1YLl
-	1lic+LaZiRFwwFJ4FzxqHsANNcx/v2aqlH7GMOonx1N7ctjsjCWJ2qAMWrNALvO46koyYY
-	Cpm81DZRQseYxLpjkVB3sOr6ISsN73g=
+	b=ESJXo2tyRrUvqbBWVbOXhgU2QtXru4fjpekSFnm55IwGXui4GveCx8GaECmBVA0l7mvHT/
+	fDj0daWG/sWpzIJX0hvtbuqOhLISli8rHKfLFXPMgj20bD51Uf/l5mVt3VYdH+YnS7cv+k
+	rZyRwOjLAwrJDuhOYG8c7kEJeR7N2ps=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AYu8UWE0;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B79760130;
-	Wed, 18 Mar 2026 10:59:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33DCC2BCB7;
-	Wed, 18 Mar 2026 10:59:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B6E96013A;
+	Wed, 18 Mar 2026 10:59:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2464EC2BCB3;
+	Wed, 18 Mar 2026 10:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773831576;
-	bh=0ShdU6XnHry9BalQwUrCEadIrmh8eEmlFfcW58xBUdo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RnSbOvdZOETy+Kgv5ZzXnwjSaFczKrOid2HwZ5foMfSo2d5oliCd/6fp4a5Nf1NVc
-	 /vARLcLVdio9+MC9DffplSNb1AayJthJAl/zW1L3ReOLZlBqA4jT0WiTU2bO13B9T+
-	 2c0g7R5o5YVep7A3tCL2dLfEnyKCca2HL9DD3LAG57Wc0kTo6E5bylr6sYLgGP0F4V
-	 dNFM7CyT99aJUkK0qLvi6TsRW/st9BczIE4hsUC+XlwGb5gHxGn6fR+UFXDYHemc3U
-	 GaJ1rdMKkVldDwujLwFgooKmSsQoqO7E2dBnpXIdR5PVBL4D/cvFza6yDP73yd4sqs
-	 5bjcSVbwy00tQ==
-Date: Wed, 18 Mar 2026 10:59:33 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Jiakai Xu <jiakaipeanut@gmail.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	harry.yoo@oracle.com, jannh@google.com, riel@surriel.com, vbabka@kernel.org
-Subject: Re: [BUG] WARNING in unlink_anon_vmas()
-Message-ID: <12501051-98d4-479a-8f10-547b2c08ad59@lucifer.local>
-References: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
+	bh=3jRGnlRsbxlziNoo+921sbArWCqbGJ6zS/W7kucFKbQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AYu8UWE0uFP7kB52RIh6t5RHb8Lm82CthAw5o2Oz3/zBoVceCs4mevcwy6gXgoXy3
+	 zXfPELcxFDWWiacgMliiuggXx4CV15PRxM42zTRXwcC3AeoBO09S3lAQHEwKxmkc7u
+	 S7zXJ3CpTFE4MwPOLMtCKjhcoKMWuzWjdNv96Yp+/yqtszyHDPqhX4x4WIqEjLXCRy
+	 S3fvXz5m7LXo+SKILBEx1LpyBkMBSiLRc03d6ukL/MmLsvH4qH3q9/64XLA1d9HPwg
+	 5R9bM+nCssf+m8rw1md06HV3Yf1v3AkdohGI5IDu5nkObk79u9DBk47nkf1xIJ97j2
+	 QS9n6tdkUUzmA==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Rob Herring <robh@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	devicetree@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH 5/8] memblock: extract page freeing from free_reserved_area() into a helper
+Date: Wed, 18 Mar 2026 12:58:24 +0200
+Message-ID: <20260318105827.1358927-6-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260318105827.1358927-1-rppt@kernel.org>
+References: <20260318105827.1358927-1-rppt@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: so97oac49futa1p18tc1rms6n63pbz3q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 19D5E4000C
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 4n9zrckuapjoqfw3aghy88j84a177kpp
-X-HE-Tag: 1773831576-113572
-X-HE-Meta: U2FsdGVkX18EQN4qdEM9o5U1uAHMz+/NR/zcchpIHUO77QhlFt8q+KuqOHQeaIiMDuRcsNnEHaN3tIr5eTDfO4A/171IsQT1ju4MPnXktUmJn5qCClyBW4exYXpR57kOQYz7E+bH7tko0Lb1iKr1Ybz3sb2n1eftoU5L+lZEQE5K0B6h5Kdxv2Ri9rJaBqquH88Zwh5MmyxsjbydMwONaaVB8GUjm9veN/cXn1MxV/0N9op3PbEQK/Dtgcrib90OCqeN5DoVTfq2zyTxFkXuRPCfo0xIPdt16TL2RjerdNaLHj/Wl48klf1PG2yGMjLOIOxpPHsxz8XFMPn++amNd0IaK0ZCXGVGiKMdDAnFAedaO7nMtSKc0UglK9aam9upcts+50KPInlXJH7K65woeb0FnF9cI0D4FKjrjiMFw+1f/RR4N9XqliDzrUg6pdwskdHwOyV78nWF9wA/uU6Ybweo4v062WLPfGOKZyFH+Ci1RId4UHYhnUGghbyaJd6j4j4eGpYrOWET0n9wZ0CVie5+wtPk2Ofhp97iOPAY1a3d4nZEQqttwhqHttzNEy9plNqqFWKMIkTsTqgWXEfExmuJGA9dDr4gu46HbyJ+i4mHktxp+3NXsYZLmq8xnBIUJhNn0XwrQ6Q3SLmLS3VgDcPHgqH1EnpU4eImBKavkTYmUHbbaacz+SuVd5qPBEaq2mZzghjNm5ZUBQM1q1vYT8GbhVAAGL2uOXntFWIUhoWSDkWEtKuBGTANmZH+lvhQuwfCB3kmiAu6XmUKJUYt8TiCUWsW0p7xi2VIIPD7SXBIcba/iDdR6VyHEu1cV/pO74pBsNJUGrjc/SSIBoYRzjGdEmOBvsVvAJMidxml+JxwwVKoESZJepXx9DYwOsfgnRLbvm9dx1I7KBwUsIjk2fq9uJ0IPMiR6rzhd2578MbA1mPG+ofNs3CaedV45Apde4X0VSP7XNnXLyVSMTs
- syWjbjP9
- cAE8kBZ2rHiesfWR5wQmUThfXhZ0dUAV+8vqW/7mf6OoU5MS6dVARfyE4+tzS7f/4bppC/j65KF5BRjvBrgxr2sH9fZxZiTVwyN10OeCym6+yIHvh/UzUZwR++oLDemtjOMYeRjlfCt9jsJNsa//nFxFc/7EXDdKNWq1dYf87AgXgsKuaWhGR8cYfSSO7AAcoQdfCEWIGD6jcw48z0ju4R1o9pGz2Nj8aNBAx1UlD24TcnXGUbf5MlObD9v9zusC7j31N2XKOVqzDft6zuiKRPrnxAewdFQqqhPwMcegrn8WtgCvSk08amOZXLaBw/bGbAUx0
+X-Rspamd-Queue-Id: 8A4FC40010
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773831577-240420
+X-HE-Meta: U2FsdGVkX1+KNQBQQpCfp1p1vC8ylS+3D9sled4ZSEuJdGp/U0M2lO/+VN7oF5CccvToZw20/ZNjTpzETHqXUO4R70rzbT4MCvi0WgH5gjClgkDroA81zkLxJTWmfyxx6fzENmA9O9r0MV0APnRmsAiFVGC7Dx0uBPMYBMZJizyPZMdjyGCPh8bXkzm+lzQIt6PS9ySCEctiRyLEBi2wGJRdBmh21ZZ1KL8/dMPJIn7thh3Y5WEIvzPDsuaHc77lBjgmBSVrrXy8OAVYMjz7u3Ti2UNbeeoL90MjLRE0ziN+3jkUI3jkvutvb1jaiWh/sb0toCyg0o3+tFevnlz5HzChc9Gc1QrWLjZMq3ZuEdHeIkepdwt6kA3uCUd5Uc0fJkKv/+lR1/jrclapjBZsEFd4Hyvy4wSZvpUGcPcUyXn/vXK8xbhun6B9tOrYgDpay7eq6VUhZJtmfwPxvmaEtIJ4s8Nl+JPec4ic8Dx4x0rVax7hwp10P6jAsp1QFz4fcUeyR6OS2FrnTvtyP6P1PKI1yu6tcpeNZ651ZjKg92i41g7lv9JZb8omQSlh6v93oyH8Vp4Jur6FASctMUk1+nb3qx5whT/sdpZXm+zzuw1f+WtK0b6HAiOsErtjAe1FWL7V1wCWtd/1iDHCiKgCFj2MADIyZkOnTA8U7HVlsqH7cUhgOphQsPedb+JPR3I2YK2J3Jt1pXyXWyEIId/W0vNwKsPrAG0GlzoFdnX5UypSxYM6qRq481ObpLVBFmpmzpfLZp9MJ5XzSVs4DTKfLxuo4O7uVDV8yTJbN2yBIvMY47o1QeRH1/CtxCfpawAVQ7auTs6j4oxOzOoIi1SMmLQr4MBSwAA+SYtFnivSHK6G7hwAI8L1Ih/tArnWAz8zgr4nCZg//60ok86hQj/Px+zEvVKOS2iwZpeF0ChyW3DHV2r18AFbsZLn6aGbJVHCiZIDrLwks6lreYwwNsr
+ 8Nlop3f3
+ HsB8Fg6bkmcE5TcBgSvZ98RqHj+/eSp53RCoeDbl6WBnxoSqwxy+4Z7V9lRpsd2NnfaG0tlOV9J322CNWuWdAhBmLGwirtAPxj4e1nCEjqUGPMKz+YYdGrWO1yBvAmCTd49J+BTAI3nn+NuSmj2UfeynredKipJQ+vtZBeAvpgBBcoJoTzcKN3Fer31GrSbWThmv9tb9CrGl88mHvmOw1Y1QoKU+ZpTzgS2H1DwQ9plEujiqXQYI9Pp2IX+QPcEhyMggt2EVj7gyWUiZ1KCbH/elkFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,68 +136,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(-cc old email)
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-On Wed, Mar 18, 2026 at 06:42:49PM +0800, Jiakai Xu wrote:
-> Hi all,
->
-> While fuzzing the KVM subsystem on RISC-V, I stumbled upon a kernel WARNING
-> that triggers in unlink_anon_vmas().
+There are two functions that release pages to the buddy allocator late in
+the boot: free_reserved_area() and memblock_free_late().
 
-Thanks!
+Currently they are using different underlying functionality,
+free_reserved_area() runs each page being freed via free_reserved_page()
+and memblock_free_late() uses memblock_free_pages() -> __free_pages_core(),
+but in the end they both boil down to a loop that frees a range page by
+page.
 
-Will have a look at this.
+Extract the loop frees pages from free_reserved_area() into a helper and
+use that helper in memblock_free_late().
 
->
->  WARNING: mm/rmap.c:528 at unlink_anon_vmas+0x562/0x768 mm/rmap.c:528
->  unlink_anon_vmas+0x562/0x768 mm/rmap.c:528
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/memblock.c | 55 +++++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 26 deletions(-)
 
-Assuming there's not some big mismatch with kernel versions this is:
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 27d4c9889b59..87bd200a8cc9 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -893,26 +893,12 @@ int __init_memblock memblock_remove(phys_addr_t base, phys_addr_t size)
+ 	return memblock_remove_range(&memblock.memory, base, size);
+ }
+ 
+-unsigned long free_reserved_area(void *start, void *end, int poison, const char *s)
++static unsigned long __free_reserved_area(phys_addr_t start, phys_addr_t end,
++					  int poison)
+ {
+-	phys_addr_t start_pa, end_pa;
+ 	unsigned long pages = 0, pfn;
+ 
+-	/*
+-	 * end is the first address past the region and it may be beyond what
+-	 * __pa() or __pa_symbol() can handle.
+-	 * Use the address included in the range for the cnversion and add back
+-	 * 1 afterwards.
+-	 */
+-	if (__is_kernel((unsigned long)start)) {
+-		start_pa = __pa_symbol(start);
+-		end_pa = __pa_symbol(end - 1) + 1;
+-	} else {
+-		start_pa = __pa(start);
+-		end_pa = __pa(end - 1) + 1;
+-	}
+-
+-	for_each_valid_pfn(pfn, PFN_UP(start_pa), PFN_DOWN(end_pa)) {
++	for_each_valid_pfn(pfn, PFN_UP(start), PFN_DOWN(end)) {
+ 		struct page *page = pfn_to_page(pfn);
+ 		void *direct_map_addr;
+ 
+@@ -934,7 +920,29 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
+ 		free_reserved_page(page);
+ 		pages++;
+ 	}
++	return pages;
++}
++
++unsigned long free_reserved_area(void *start, void *end, int poison, const char *s)
++{
++	phys_addr_t start_pa, end_pa;
++	unsigned long pages;
++
++	/*
++	 * end is the first address past the region and it may be beyond what
++	 * __pa() or __pa_symbol() can handle.
++	 * Use the address included in the range for the cnversion and add back
++	 * 1 afterwards.
++	 */
++	if (__is_kernel((unsigned long)start)) {
++		start_pa = __pa_symbol(start);
++		end_pa = __pa_symbol(end - 1) + 1;
++	} else {
++		start_pa = __pa(start);
++		end_pa = __pa(end - 1) + 1;
++	}
+ 
++	pages = __free_reserved_area(start_pa, end_pa, poison);
+ 	if (pages && s)
+ 		pr_info("Freeing %s memory: %ldK\n", s, K(pages));
+ 
+@@ -1810,20 +1818,15 @@ void *__init __memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align,
+  */
+ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+ {
+-	phys_addr_t cursor, end;
++	phys_addr_t end = base + size - 1;
+ 
+-	end = base + size - 1;
+ 	memblock_dbg("%s: [%pa-%pa] %pS\n",
+ 		     __func__, &base, &end, (void *)_RET_IP_);
+-	kmemleak_free_part_phys(base, size);
+-	cursor = PFN_UP(base);
+-	end = PFN_DOWN(base + size);
+ 
+-	for (; cursor < end; cursor++) {
+-		memblock_free_pages(cursor, 0);
+-		totalram_pages_inc();
+-	}
++	kmemleak_free_part_phys(base, size);
++	__free_reserved_area(base, base + size, -1);
+ }
++
+ /*
+  * Remaining API functions
+  */
+-- 
+2.51.0
 
-VM_WARN_ON(anon_vma->num_active_vmas);
-
-I seem to remember a possible case where the resource cleanup was wrong on
-certain error paths which I was sure I fixed, but I can't find the patch
-right now :/ so let me check that also.
-
->  free_pgtables+0x2a0/0x860 mm/memory.c:427
->  exit_mmap+0x406/0xd14 mm/mmap.c:1314
-
-Fact this is on exit path suggests either misaccounting of
-anon_vma->num_active_vmas, or a VMA is somehow not being cleaned up
-properly, most likely the former I would say.
-
-
->  __mmput+0x114/0x3d4 kernel/fork.c:1174
->  mmput+0x74/0x88 kernel/fork.c:1197
->  exit_mm kernel/exit.c:581 [inline]
->  do_exit+0x7de/0x2adc kernel/exit.c:959
->  do_group_exit+0xd4/0x26c kernel/exit.c:1112
->  __do_sys_exit_group kernel/exit.c:1123 [inline]
->  __se_sys_exit_group kernel/exit.c:1121 [inline]
->  __riscv_sys_exit_group+0x4a/0x54 kernel/exit.c:1121
->  syscall_handler+0x94/0x118 arch/riscv/include/asm/syscall.h:112
->  do_trap_ecall_u+0x39e/0x62e arch/riscv/kernel/traps.c:344
->  handle_exception+0x15e/0x16a arch/riscv/kernel/entry.S:232
->
-> I am not an expert in this area and have not done a deep manual analysis.
->
-> The full crash log, a reproducer, the kernel .config, and the relevant
-> source/commit info are available in my GitHub repository:
->     https://github.com/j1akai/temp/tree/main/20260318
-
-Thanks, much appreciated, will try to repro locally.
-
->
-> If this turns out to be a real bug and there is anything I can do to help
-> with fixing or testing, I am happy to do so. I hope this report is useful
-> and sorry for any noise if it has already been addressed.
-
-Thanks, and no it's not been addressed AFAIK but let me dig into this.
-
->
-> Thanks,
-> Jiakai
-
-Cheers, Lorenzo
 
