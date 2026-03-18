@@ -4,142 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0D5103E166
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:47:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC4C103E166
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 11:55:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1BE36B0190; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
+	id 5E2D86B0192; Wed, 18 Mar 2026 07:55:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CC9B6B0192; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
+	id 56C2B6B0194; Wed, 18 Mar 2026 07:55:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E23C6B0193; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
+	id 434656B0195; Wed, 18 Mar 2026 07:55:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 79F266B0190
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:47:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06858C253E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:20 +0000 (UTC)
-X-FDA: 84559008282.01.5907303
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 151B04000B
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:47:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=OtUVOSbP;
-	spf=pass (imf04.hostedemail.com: domain of r@hev.cc designates 209.85.210.170 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B55E6B0192
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:55:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CEB955A01C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:55:47 +0000 (UTC)
+X-FDA: 84559029534.27.D35AFA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 47BC3180009
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:55:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bd8FpXyB;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773834439;
+	s=arc-20220608; t=1773834946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kLqnHb2ogCoxqHkELJxhX6U8ujBBduz9IxDDxqOJz0g=;
-	b=qM2NV9eu5Nj+86przPbArvSvenp0RCNv1101gvy57cs+1maG3661sQx3N4Mi6YAOIWX8EL
-	TW4YO25kneDNI5FDs3FctIDcxTSEKO5IqzkdJG+8gLYOw0qqm5wLCrzwpl+WTijhjhWeOb
-	fYF+ImS0jh8VRNc2cQmJXXJDiDdGwRU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834439; a=rsa-sha256;
-	cv=none;
-	b=qCd7/VkE3xqcyimlvrXaiFCYtxQN/+FPTx8jyrZYOIE+nLDuMX3jNhalShrcQfhoNmPr1O
-	C1BsOmDX7fINg7ZEI5OIl+tG+t5+zcd0Q10x5+I1YGA5UEgcy3mKF7QWDvTxWw4RxY5nRl
-	uk0KmYm5RNhvOF6kmfC0RC8pqqzh3GM=
+	bh=xrBDiAZKPy87YoJANJkvcYcuU6dFIp2F16czTKG53uQ=;
+	b=Bha/cXsi/XfzerxuWNxdIPrWnXJjBCHtE3BtX0PKXlhuwoVcDQyTWvaQYPLcr98A30mfjf
+	dnuo7MO8Tlr26idFUGg2W1WXiqzNEr2RmNMAuw7CAjH6sywgBmfbKMjhvl+75+y3eHlTM5
+	UlrwWPfIK3ziCwE/famAEDQ2gtVTxkw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=OtUVOSbP;
-	spf=pass (imf04.hostedemail.com: domain of r@hev.cc designates 209.85.210.170 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829928e512aso3514440b3a.2
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:47:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773834438; x=1774439238; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kLqnHb2ogCoxqHkELJxhX6U8ujBBduz9IxDDxqOJz0g=;
-        b=OtUVOSbPjImHFAf1BFyV/5r4ExDGB7fUZhDZFccRw8s6zOuZJ+eqImwhIdcITMFqZv
-         ysnyT95VaxSweZXx7B9ok2iLahaf1ZNPbA+e89HMDF2EeCQiwNO4s4sBl7JThLDDLdDo
-         H0O19q+tm1cfdpssIM2g3AMWBDB2wuM9r7/OEIjjBFEeWEC4oHPwXQQlSme6fWx9TIhE
-         t6mgsg59AGIOLHtVYmJHH4t/UaRlx7JMeau3OCpIexVoYOmzmllH/w0rZuVtvMPXKd2l
-         4RcD+wbq8isijCxOtGojC3U/C4bJdqpynVohF7w+TTAI+Gikbo8PBsDwyHAwhg+t4p18
-         s8nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773834438; x=1774439238;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kLqnHb2ogCoxqHkELJxhX6U8ujBBduz9IxDDxqOJz0g=;
-        b=F3fptfzpSbII1uHU+HfuIhMOgNIOZj/VYKrY/qUA7VOeyDy4ZogRVtPnQOagW0BdCw
-         RVx4psmxZ/7qhFVyGRU46Jo0ryothO8VE6kSzd9zv4f6qODI9xJtziqclK5lC0vfugrE
-         ooBifs0KEHgAv7sOQPqHFF2UUSgvRttdVLB9BY/7dp0NKS91jOXtB/mtja/p0hldW3SF
-         y/D1sBLv5TNfmJ/FWyREgkrZVQxv8VmYEl/as7nJXz/KtsfNOlpkhLrJo6m9KpgYKMbH
-         5cjC8PnawZclbs1y20g43BXFGsZGcLFBVjd3cWn3dx2IbqsqFSE27aUWsrqpDTd7tlTU
-         z3/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXMV3/xVl0+PzceMzDkyw+1NHFsUGY2oy+9r3SoksuPH9n6MCWUPYZk48rsB7+eT0o7SwkJFYb4CA==@kvack.org
-X-Gm-Message-State: AOJu0Yx2uZ67zIOjV2+9DmmpTBVjO4dwmhW6zx/2Zgne6LwDpgf2WMO+
-	NbTyN2Bo+8Hfh+aTof4L5KRgNSsZNgHWBu1qDQ5lywGo+lt2P+sqq10EYUGHplc9+iY=
-X-Gm-Gg: ATEYQzwu8G9UguXqWy9akLMrG7JvLEf6LH/uFAuKgDl4CySSA8VFoBkt6pySmV3ztCT
-	tAHbdbA3RmJD9gOy28QHu7uCsqGv48zLo+eV6+WNE37NlJLZ0uybH9XEqTdFQskyiLF01cGDaUS
-	RERSvth5fUOL4rfKAbQI3aJncQv1MAmmvxioRal+4aol0zifIkU3CzM+yR8AjPr0owh3D+BYham
-	4UrY1HMgLpvbPmHMarubxjp5fzwFP4KXIoWwTVyEVb4rqCB0F6rTTfj9Y6sgZdXBwzwPuS+qrzF
-	njlYaqCbUxzHaRdGBWFYC/9sXI942zibAziqW6UR2WYJvY+7GOE+u6obRbU9nclF8u8Y5Q4b6P1
-	/TaT6gH0GO+/ysqwsemC27Q4MDqkdgjdNJhCxrtV8F/1FezC0MrnmEhRT8iJZVGIb99W/piVtw5
-	/D
-X-Received: by 2002:a05:6a00:1ca3:b0:81f:4ce8:d64b with SMTP id d2e1a72fcca58-82a6ae4f234mr2558433b3a.44.1773834437848;
-        Wed, 18 Mar 2026 04:47:17 -0700 (PDT)
-Received: from gpc ([2400:8902:e002:ded5:78c1:8178:95c1:6ca3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6bf0cf5fsm3176671b3a.61.2026.03.18.04.47.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 04:47:17 -0700 (PDT)
-From: WANG Rui <r@hev.cc>
-To: usama.arif@linux.dev
-Cc: Liam.Howlett@oracle.com,
-	ajd@linux.ibm.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	brauner@kernel.org,
-	catalin.marinas@arm.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	hannes@cmpxchg.org,
-	jack@suse.cz,
-	kas@kernel.org,
-	kees@kernel.org,
-	kernel-team@meta.com,
-	kevin.brodsky@arm.com,
-	lance.yang@linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	npache@redhat.com,
-	r@hev.cc,
-	rmclure@linux.ibm.com,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	viro@zeniv.linux.org.uk,
-	will@kernel.org,
-	willy@infradead.org,
-	ziy@nvidia.com
-Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K pages
-Date: Wed, 18 Mar 2026 19:46:53 +0800
-Message-ID: <20260318114653.123656-1-r@hev.cc>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <d0c0ac64-be15-4683-89ec-e32bf4867109@linux.dev>
-References: <d0c0ac64-be15-4683-89ec-e32bf4867109@linux.dev>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bd8FpXyB;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773834946; a=rsa-sha256;
+	cv=none;
+	b=gMzNqQ2LBix4nkVvTDRVItXPJxct8gTCTCLAOfC0pLGfK4bQb8c/CPkKJX1qqWENnypR5R
+	kZLjZNG9KkaV9l6ob494EDigoDapdjrgHjVevkhu+Z8vPb0DW70bgh4X6w37dO4FcGIHrJ
+	jSrX7rDXYU2xxDLOYlNBAuQFm//Hg7w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A1BFF60053;
+	Wed, 18 Mar 2026 11:55:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9016C19421;
+	Wed, 18 Mar 2026 11:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773834945;
+	bh=bpccDuS6OLTp8o1NwaEwGiI7WGiKxLq+rged8ze6+KM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bd8FpXyBrIGAVDD+7UEAwyGSFXaMeO9Ubxc5dc2TijU5DljuY69dYoF0K0oHB35ee
+	 FBeI8fpbd355KkrEUNjB7XnTAi+Zh121TBfwp1S1cBRPN+qo678evIrOIm/s2cXvtF
+	 RXJbKG7pCCTdHfjNfZzt4wz5fBid1TpOteNZlrJAgVSO639qw5gW/uYAvCIddbo6za
+	 V99s08wo0UtWM8nvFXzoYKiigirfBEQNsZagCv6IlOPhSps0NZz2T8bV7exWZc1eQM
+	 WScNEWMcHvLswh3NQvqglZ3qqi/U5fpkK/AsODfW+xj3WSeEEXcgvrwXwkc6Kh9f5o
+	 wedCPqF21sgeg==
+Date: Wed, 18 Mar 2026 11:55:42 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Jiakai Xu <jiakaipeanut@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	harry.yoo@oracle.com, jannh@google.com, riel@surriel.com, vbabka@kernel.org, 
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [BUG] WARNING in unlink_anon_vmas()
+Message-ID: <b4e59cb0-c57c-472e-a70c-10ac450f4a6f@lucifer.local>
+References: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
+ <12501051-98d4-479a-8f10-547b2c08ad59@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 151B04000B
-X-Stat-Signature: zw1zcctmoows4n7wzya93mdj5196jmjc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12501051-98d4-479a-8f10-547b2c08ad59@lucifer.local>
+X-Rspamd-Queue-Id: 47BC3180009
+X-Stat-Signature: 6ripmnc1i9upk43913hx9hue4qoj43t4
 X-Rspam-User: 
-X-HE-Tag: 1773834438-484897
-X-HE-Meta: U2FsdGVkX1/7NgOOCdig49oDev4f2240xLySidQ001NS/NHuyWvmUZmYfG2y2+rKb4Be9CviudaU0LLAMhTPA4Io6gAk2Sx3jSy/dBaUdfj4imAoS2cwI3mWb8P5/IzCdK3lOrlUVlbxX024I9yKVvRrn//cc3UA5MY4Fi1BQ1G7wcbtF4Ya989Ux/S3tQso+h1ZPFMrxp71fbbbguvFFE8/BCbopwcLt1v64E2L2oEbkzTKLXlZPi5x0k+aZwbqbloMhwHf7QBJz+uWCGJXuSHjQugda7Rqy0EFX8i+YG5JLP0auEd1BEHFZejRUWrMVQDN+kQOpkJgvtUoaexbkwxGSedfD7wqFtceDQjoAuo89OxHQXEoatEYm5su673wSXpwFxuSQ+nwI0IFvOue/EUvZdUcYnJBmMf2FZX7xjHG6iPWj0z+k1jBknt9XTAf4rGAVVx52nd0SMR/6PDC02xq2Z+dTz/qSOubQ6G4J5ClrbF3R/2XQIVVSI8YzASkj//jzovCrFv8W5jq4jqTZUYw+lNzFy0OfBo7tLdw0UHDlCV9hM6I3sQEgsmwUs2OLmlUCFUigEEWZH/1oIUrhTNhI2BnEjDU2Ym9mvqAC/Xij+OlW/h//v26Q4ZHr27k3NXoeveDSiiEPex24Qhfeew8UZmQvKDhVz/DjGK/4aFQ8BTDTJBXu1GRGzEBd2tM+KNzrnFhGrLE5iTejSA2DiW5I/FEm/MZYRy73r+xFS3OcwA5SztilIbhgb8w/LyO1tSqyVSpVcVGSU/WXZKdvon2Il+q1q8eeQFRD0YEgfDlog3K66tHhdwxIHRFTjknJqJJq6f3SjNcjIyBtHs0brwt8ACiKBVAQx1rjTAVOREARqGnB6pmBzKrNQQN/e3mpDWQeldhy0bcVyyVSfyyb7yrrTm1r9BkdxUIVKcE/l9UDycbscxJ1R5mQG1XlZKgQnURO3iNlQQVDh1Jj2V
- 7Jz4QtFE
- vyEdnf9mjv6ruOOD5mH9Ubtfl11qRuzhwPNbezptEVFOWPdNigmudnXPdwgAMoOdEdgReNg8S84zAuEBmdKSrHi8E/HIkdGJEbeR3Qm5GZ0aPq4hbBu/LH/nUVEMInbmGt9fwL7M3c4E5kme3gKe3P3BuhMDf/v8LsujGz1QMv3Jq2c08IRg4n1BhbADhYL9qFdxs7b26zhmVHLuXtzA/fG+v3qpRGkeVdHTHFFvxvVt7Aj31wqaNZxn7FwMXrfVw76N6dWsLP4qW4bLRmQm6iTozOV2mKX7G3PDAVZKFKWXPzLmQk5E5HVCtuy2k30/3ULyXPZ1qjIH7aCUIDc59sz3VaLpgZj61vgl71dusIzZtiQSDb6qjQQEzQ8MUDcKJfVldG4I8+M/K7we1HNGZn6u1EtsTlXS6o6M65cyl3DY4fUVzdKzw0aQSrfqNoiKX0ylBFOjIitkI4xWXvvp+DOhdwX2Mx+XcOcCtBny5nzCXBz/9lYSLaQWc5tJulLRiJpONStrcUL2kXdjQ/2Gpf4xILQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773834946-114152
+X-HE-Meta: U2FsdGVkX1/jiDRoeb2TdH7o3hGTZjPwthOF8kzOd904t+uQQJlXT+2uu0qP+D3pQROA/q4inCjopDGYnJ0jckmGOKswbovetTkxO8VPA3qr4HE/7zKqkww0lp03q8aEWzqFKbbAFHLQAiRj7DRdalOQMWVypEjIPCNI0352gxMTctK+shoGavuwEEPO8exml+qiYcZGDBtwyrUENJpTOkHRkKmVe0+qjHtBYgOK9r1n6Dqf/qU0TzfuibWefgsCYdoDNBctwKuIpGCzcgaa6nLjyh5zBUJTaN/V17R3QSDaZyiWSj4U/kXA9SNA2ofEA0Py4ptt23vRfSeeAlPNT3dmErxFvk+84pyESRbrFq7sbZ93zlUNDJyIlhthxFcms9u11gunK+Y/zyq0tXww2wy9/AkjILfU3RYevFmv24bR6Q5zxO+SJDdmjWmbH8Z9Gpl0xMrf6B6sgCtRmis9v/5hM9AgxXZelyGJJ3WvAjxrwBy1xx1D4lSQqO2gbMdZPM6JuTk7CNi2B+tTleaO1XC5dbatf4hVaPF5CeXv13q6HIYPCQNr5I5JzSuhWvNERgBErCR7sSUSLOnw9iBfYDZ/ePeidfTc5pp2ySCkE+umeQUqd6kMl1qyHXbH9lr2RsZB6Ap/X2oBToTPuluU4yWU2J/Nigz+8KN4NqG02aOBXdbJ1uDRHxXXJblpLUVRUoR9nHQpMUexjjGTSL+P1V5asC36tRgnQmxtBDXXXSLBgC86q7ojZ3G06fvlE/mmIY0ZJpjxAXU3GZFKQNUgbvmwPk3S2+HdU3qfFNkTxFTWaSOK4rwEYl2NIorVYiz6+0gjY2S/lGvyQ00gXOfrmThiJSMDTxxcZ0elJydO2KCVbN1zhIomvq+RYZh0mWsVtT//Io1qyKKMc+CGIyJTE1fivmQtAu4rEZIT46l4uz38UlS6vav2zjSSoAvclMmewfKJbiiLvY0CPWmFpKD
+ 2wUdjSBe
+ QROALXHh1uaPs+UL2M37Pim1xQokGz0/7Eo93mego3FFBetEMQc82Kps9qhRWYcG39fidH6TnqoqRwe7OoA6Ksnyqcq2zs0G8U+1KEieE+wK9DvTkv/d8WNT9o0G6ZLo/YKmjZD7L77d33BYDlySUAMJp7AbxZmSyWQfOq3XpuZMKaps6iqo2qboHp4UObvkd9XzxxRBxL97gwotkMOrXuP2GWig8kn0Q/wlgHUAU+obO3we3DmxpLcSG6cNWFx1LQ+V1YeXumv/qhtzUNHQrA7j9/6csG5jtE7w/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,42 +93,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Thanks for running these! Just wanted to check what is the base page size
-> of this experiment?
++cc Sasha
 
-base page size: 4K
+On Wed, Mar 18, 2026 at 10:59:33AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> (-cc old email)
+>
+> On Wed, Mar 18, 2026 at 06:42:49PM +0800, Jiakai Xu wrote:
+> > Hi all,
+> >
+> > While fuzzing the KVM subsystem on RISC-V, I stumbled upon a kernel WARNING
+> > that triggers in unlink_anon_vmas().
+>
+> Thanks!
+>
+> Will have a look at this.
+>
+> >
+> >  WARNING: mm/rmap.c:528 at unlink_anon_vmas+0x562/0x768 mm/rmap.c:528
+> >  unlink_anon_vmas+0x562/0x768 mm/rmap.c:528
+>
+> Assuming there's not some big mismatch with kernel versions this is:
+>
+> VM_WARN_ON(anon_vma->num_active_vmas);
 
-> Yeah I think introducing Kconfig might be an option.
+OK so this _was_ reported by Sasha (via an AI assessment), but it completely
+dropped off my radar sorry about that!
 
-I wonder if it would make sense for exec_folio_order() to vary the
-order based on the code size, instead of always returning a fixed
-value for a given architecture and base page size.
+https://lore.kernel.org/linux-mm/20260302151547.2389070-1-sashal@kernel.org/
 
-For example, on AArch64 with 4K base pages, in the load_elf_binary()
-case: if exec_folio_order() only ever returns cont-PTE (64K), we may
-miss the opportunity to use PMD mappings. On the other hand, if it
-always returns PMD (2M), then for binaries smaller than 2M we end up
-reducing ASLR entropy.
+I want to fix this a slightly different way though.
 
-Maybe something along these lines would work better:
+SO what's happening is in dup_anon_vma() we do:
 
-unsigned int exec_folio_order(size_t code_size)
+static int dup_anon_vma(struct vm_area_struct *dst,
+			struct vm_area_struct *src, struct vm_area_struct **dup)
 {
-#if PAGE_SIZE == 4096
-    if (code_size >= PMD_SIZE)
-        return ilog2(SZ_2M >> PAGE_SHIFT);
-    else if (code_size >= SZ_64K)
-        return ilog2(SZ_64K >> PAGE_SHIFT);
-    else
-        return 0;
-#elif PAGE_SIZE == 16384
-    ...
-#elif PAGE_SIZE == ...
-    /* let the arch cap the max order here, rather
-       than hard-coding it at the use sites */
-#endif
+	...
+
+		dst->anon_vma = src->anon_vma;
+		ret = anon_vma_clone(dst, src, VMA_OP_MERGE_UNFAULTED);
+		if (ret)
+			return ret; <-- fault injection error here
+
+		*dup = dst;         <-- NOT set
+
+	...
 }
 
-Thanks,
-Rui
+Then:
+
+int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+		   enum vma_operation operation)
+{
+	...
+
+	list_for_each_entry(pavc, &src->anon_vma_chain, same_vma) {
+		avc = anon_vma_chain_alloc(GFP_KERNEL);  <-- FAULT INJECTED HERE
+		if (!avc)
+			goto enomem_failure;             <-- so we do this
+
+		anon_vma_chain_assign(dst, avc, pavc->anon_vma);
+	}
+
+	...
+
+	if (operation != VMA_OP_FORK)
+		dst->anon_vma->num_active_vmas++;        <-- does NOT get run
+
+	...
+
+ enomem_failure:
+	cleanup_partial_anon_vmas(dst);
+	return -ENOMEM;
+}
+
+We only clear down the partially allocated anon_vma_chain objects:
+
+static void cleanup_partial_anon_vmas(struct vm_area_struct *vma)
+{
+	struct anon_vma_chain *avc, *next;
+
+	list_for_each_entry_safe(avc, next, &vma->anon_vma_chain, same_vma) {
+		list_del(&avc->same_vma);
+		anon_vma_chain_free(avc);
+	}
+}
+
+But, crucially, dst->anon_vma is LEFT IN PLACE.
+
+So on process exit, we call into unlink_anon_vmas() for that VMA:
+
+void unlink_anon_vmas(struct vm_area_struct *vma)
+{
+	...
+	struct anon_vma *active_anon_vma = vma->anon_vma; <-- is SET
+
+	...
+
+	/* Unfaulted is a no-op. */
+	if (!active_anon_vma) {                           <-- is not called
+		VM_WARN_ON_ONCE(!list_empty(&vma->anon_vma_chain));
+		return;
+	}
+
+	...
+
+	active_anon_vma->num_active_vmas--;               <-- Incorrect (*)
+
+	...
+
+	list_for_each_entry_safe(avc, next, &vma->anon_vma_chain, same_vma) {
+		...
+
+		VM_WARN_ON(anon_vma->num_active_vmas);    <-- triggers
+		put_anon_vma(anon_vma);
+
+		...
+	}
+}
+
+* If anon_vma->num_active_vmas was 0, it underflows, but otherwise it'll get
+  decrement one time too many, and so will _eventually underflow_ guaranteed and
+  trigger the bug for for VMAs associated with this anon_vma.
+
+The fix is to set vma->anon_vma = NULL in this situation, which I think is best
+done in the cleanup code as I said at
+https://lore.kernel.org/linux-mm/a709c736-fd76-4bc9-a1d2-e1351742b321@lucifer.local/
+but then... didn't do as it dropped off my radar (oops!)
+
+Will send a fix + cc, attribute Reported-by etc., thanks very much for reporting
+this Jiakai, was very useful!
+
+Cheers, Lorenzo
 
