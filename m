@@ -4,116 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD4E210775FC
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 17:53:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47F6910775FE
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 17:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1EB06B02CA; Wed, 18 Mar 2026 13:53:13 -0400 (EDT)
+	id 8A22B6B02CD; Wed, 18 Mar 2026 13:57:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6096B02CC; Wed, 18 Mar 2026 13:53:13 -0400 (EDT)
+	id 879E26B02CE; Wed, 18 Mar 2026 13:57:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE50B6B02CD; Wed, 18 Mar 2026 13:53:13 -0400 (EDT)
+	id 7B6F66B02CF; Wed, 18 Mar 2026 13:57:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CA7B6B02CA
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 13:53:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 540B11DB23
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:53:13 +0000 (UTC)
-X-FDA: 84559930266.04.5089404
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6604C40012
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:53:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MMm77PkX;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B9E46B02CD
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 13:57:05 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F0E31B8CF1
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:57:05 +0000 (UTC)
+X-FDA: 84559940010.05.21098D5
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D4227180014
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:57:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QJwTNINT;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773856391;
+	s=arc-20220608; t=1773856623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QjV2QZzHL9l+hZN/pbl5bOZQEFWnVMl5pJ0Dn0m8n2Y=;
-	b=BB6WHx3TLor/PVkTKz7OI8blAfSVpmAL4VrjkagR1iflqpCVEvr/Jg97hJgyA9qVOUCarX
-	68U1f8Bfx8YcxiisQp+DtjW9/JHt/VU8wNbLTa5ZopyXT4Yn8thA/+mD7GQsS7pGo6aglV
-	QjrJHettS8qih9fk0JGLV7c2sqzBufY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MMm77PkX;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773856391; a=rsa-sha256;
+	bh=GkJmm1x6RQPn/UFRPa7/2straKzSBCtOE1HckM7TXds=;
+	b=j0ilboY+IXc1Vooz+6tXFgCtH5Mx7PE0l1TZqYDl/piyD/xYujIR/LnKxem/lMTmK8CkMn
+	MM2Tv+WgGUhMkoKyigW19SNL0pJh/G2vMO0oFmVxPAbzo3whSr2ev6+DYuHq4vO0zDB4dp
+	SIWyUH+UibMcaN2UE8AmGxsGF4eBDtI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773856623; a=rsa-sha256;
 	cv=none;
-	b=gtaXDdmA0p/OwbvJl/ZlrHxyeEo3oAadxRHG7DA4T5a1t2TxzK7RT5XV/EOgH9vF6d5p7m
-	5UC2A4hGc2OK8f6jgIFihPMusky67+SY+fWEDhmlVt8FOq2InseUywpdo8bnQjNqUCw6p5
-	O2uwyawEKFgoQrcSrDicEOVAvzRwX98=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a1307438ddso124066e87.1
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773856390; x=1774461190; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QjV2QZzHL9l+hZN/pbl5bOZQEFWnVMl5pJ0Dn0m8n2Y=;
-        b=MMm77PkX3u3tgnviahCXjKp8U9BRKEVW4RLdfXp89qy5TrgofFoE2u7ALWl05pgii3
-         YCUCMKFLEPcogzGBB3tpEtj76Way+kT7LofPYsWCj/fGN5MQt9Td7m+3mAoIEKBqKlxl
-         SpLLQOaOrdGHoZ3zaDHxBiRjEECH8tk7PmWgnkfs74RE14xYWa5Ywo6Odw6YaYrIpRGK
-         p7nGBa0OriHglqpeQAWL0F0OeMJ6yKln33S64C+Yybl2SQqg56EgGXcisoZg4Br2zQHj
-         xhvB0v9Y8KcJ5Gg6uapAiVw42AJ9hysirueNaMb64R1hbbE4I2aadXiiiN7PiVhx+V++
-         m0DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773856390; x=1774461190;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QjV2QZzHL9l+hZN/pbl5bOZQEFWnVMl5pJ0Dn0m8n2Y=;
-        b=G3w4Zu94czV0YdbHCXSq+ecYMSyQbsKGxOA8/7iqatdQfPRz8rc2cxfZNKEAEqsXoU
-         X42MJBMwUyzCJNTbayDiUAMnbFV11BtkgWrnvATuuzgq+GVgazqsJxgsdi26yyzu2p3e
-         xOsvlK9G0HznRc5SS7Sm41vjDawFAXZLn+k2qc147x6q1brVaC/Eekl0ey2gNjU3wbmD
-         Oi9UNovxosAKtEgJpfm4nd8bN6Yea9M594oSOv0ADAObDcqF2Ri4rjIBAUImzksuqKbK
-         e4ypBNFLDe8qteciUQMR02BHPO5/FxlF4cNsJAzSrq+3nACywr/v5M5187kgKi6QblX3
-         3uAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrA6mgBBsYysltU9meMG3FMENfFf0anTnrfWjO2mijHyWCxYhPlKVP/fmz3bQ1MxaTQcpyfnhP/g==@kvack.org
-X-Gm-Message-State: AOJu0Yy//GrpaT3/kg9sEH0k64ydmrbWZkJn4rc3pt7lWkwJsEAn1fSH
-	7TgOH2kKjkCGXhDBbeLu6pfhi/z1f5OWdHJY52zZg1PQl9mL7ki/eEcL
-X-Gm-Gg: ATEYQzzYj6FL/+Qy/XKimlRTKG3UkMztv5LzrdbMk9dRQC+aSLRdXUftJu/TCxir2cA
-	KO7aI/ioazx5dtg1MrfSjHg/1SICSj9EE20vy3yPLyDW7WJIbD08LjOPThgrPTwj+k4tmRhP1WI
-	QEKbb75L8ugOrcDY2pUYixtVHDID39VTsgfNbKNwTw5dNq7TKrxhjKOudJXY9L0hS/QH68b3lZf
-	yJgytRw/YFpdVramrzWhSuweo1NIsVPAw3rlL7CY5okdag3nfQ7YAjGKshcE7ZbM8SLOQ9fsGvB
-	ycFiYlSP4ss6rutQ+jjVwcVL1eP+YAxUbvxMkUT95nknUfHirzILzXj+YJeZfSP16fe2ccNBE1d
-	eMYmIFhgtjaJC5ORTP9cCpiulhCszMtGklqyasFH3CxuiUn72G4B9hzljp601HJ6Vp3YyKSuAkL
-	M=
-X-Received: by 2002:a05:6512:2390:b0:5a1:34d2:b6da with SMTP id 2adb3069b0e04-5a2796b3872mr1813995e87.31.1773856389225;
-        Wed, 18 Mar 2026 10:53:09 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a279c79442sm669216e87.70.2026.03.18.10.53.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 10:53:08 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 18 Mar 2026 18:53:07 +0100
-To: shivamkalra98@zohomail.in
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v5 1/3] mm/vmalloc: extract vm_area_free_pages() helper
- from vfree()
-Message-ID: <abrmgwxireNnqra6@milan>
-References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
- <20260317-vmalloc-shrink-v5-1-bbfbf54c5265@zohomail.in>
+	b=6iiDYYeW8aNiQjOXul225j9ux239fSIEjkqVL8RT8Jk6BUxOsxy7KW4tMeJgPoj119r2e7
+	99KS6iZzaVL+WRUldqwK5tIyPrBD39yCT4lZtnvxYkPtYdoSeiqmMCNKoN3O/zey2f5Z+U
+	M43oLy5nAAcVwdYpP8G3hEYVlca5dSE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QJwTNINT;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 18 Mar 2026 10:56:55 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773856620;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GkJmm1x6RQPn/UFRPa7/2straKzSBCtOE1HckM7TXds=;
+	b=QJwTNINTQL+jMZFdoubsJO40Gl+9oi6Z6gTZUpMTv94GJR4Uyuy1JqE88syGHOSxP4F6oP
+	Bgva392i/tNsGGYmW4zJfhjU5+iarpthTuco3W4RmluY18hUBjZLfXMnd5wsMhfHxn7LmC
+	4R9WA7WtCQzbh9dI02FZSBI/4Fhx5uo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] mm: list_lru: lock_list_lru_of_memcg() cannot
+ return NULL if !skip_empty
+Message-ID: <abrnEU-wHNkqGK2k@linux.dev>
+References: <20260312205321.638053-1-hannes@cmpxchg.org>
+ <20260312205321.638053-2-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317-vmalloc-shrink-v5-1-bbfbf54c5265@zohomail.in>
-X-Rspamd-Queue-Id: 6604C40012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ozh4a4kjuk9jiuikgjztxdg4ib1g1hcu
+In-Reply-To: <20260312205321.638053-2-hannes@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1773856391-677989
-X-HE-Meta: U2FsdGVkX1/fhVI8td4HHtHZz9pdEegiK1utbWx8Q6sKpsc6IpqRRl+AyHLmBOyfLQSW8Oh62f4fETBT5Dj7DRMw3ptDdHUa6/NmkcUZFl/ygAAMIhqQ97gmAQolHLZs00EIntDe8c9ECkpqg/XF0+DtxDlDw7J4GkCTs6vj7dWb5fa3QunSHF+wBKWaamLcipxsGoN8a4jAPUznYtmQFbi3FYbFxCJ/X1PCXh36hLfNwPZDFcXGyX09/yNpI5GsXf0AkoordywX2M6RS/oP7wyWWv0g4NKvoscozwBr34EHca09gYtrghbn5+sMAUwt4/mbeoZWCAaa3hhdko7J4eKTPaF7fmSt6/GeSoXkBfANH6tsU726nxKFvbCTj7932NzpbhQlUuXIzMIkqpuI9U5xZL9t6lP2UYVXsF8pSCbpK1C/g+S/52hdOPihpzbFDfw4oxwWosuBt/aTrnDTVkEfDdbM32s+Hy7a/mEDLrgYYQiuZHStJx1A7Hl0AU3O5XWcXKgo6qI3TZI7y0sHOjrSONUwywryUPVd4L5VdV27SUsyo7ALw6O0cqR0IoofZQEetvnFWmfUNfNh+Kzsmun+ENNk9OwCiVyfZbFOeOC9DRpniTg2qb44ADiYHvvhzvifYMiigUdbQUxqr5rWcIINjjqdP63nveQP5HdkrLJhMjLXKa/BH7v2zvyx3f+ivLR/gNNYPOsieFrhIcVmNbrdJ1B722J5q+VrSbygHPjS/oxRoOQl7wB4b1liOtHGokQWe4rohAr/or8403PIIj3iPSF9yplo+QCERR/i2tFRpUi3aQFNr2J0wRfnc+Og00z2ivqvmmWLj7XHU+Km4wy5tmPO6zh6z5r3qCcOdqeS5hInttmgSKa4n/GotJT18TmcsAnSIhuuOLCUEDGXEHktmqoFUaf3tl11WuU4eykiEFkRkNWVmHAFeKPGyGbMpo9t2bmcZM/wWp6i8Pb
- Cg2uLJ3v
- PVBap6WztHAWPAZd5tchTnjYsZeje4ULQ+8T8tM8bl9RMBMcCGJ+b4CwVLbIXnLwe8ccLT/tRCdJt4bbh+QGaxGqN+lM2Yb7JcSSQ/M71YJxseKhVeyVYEqGc2iCIv0EUBZOr2y+sSyYbGLXDRhCWR1tS7MXr5C3ROM9Q4pCQeFsHSGWq7Wae7YrPt/MqiPNiIiMpDwxuy916S0uILFySQOLikdZzAyNdV/I26Gb+tIZQ7Okpl+7EN/l5JYzptBZ0P7OVGbhn9yBr0NvQHTfY5UPdSPNtn2mbmhJQk/sLfZwhCKM6pL0hmM3iaxEzYc/StJjrzJtIXnA3cwD/9s8O2+E4CLTeLySv1hMg+VEGE8ZB9wjYH+TLfN6nQcGQPaYoa0Im9RT+atH02HUpAhCiS4KMC5gXG5JqfEAAVWsJr8q1dIaQVwg2gqQOeoQzaDkRQTk+8ZgU7kryOwKnw60iTmu4FrlQf8ansLH9xaBjpUemdue6tbT53UXrw9BnW1iOexFHkskoKc+4KCo=
+X-Stat-Signature: bdqicp9hd6j7533ard57s7ksm6baa1w8
+X-Rspamd-Queue-Id: D4227180014
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773856622-984016
+X-HE-Meta: U2FsdGVkX18VdAPQz8IHrthvSbMDvGKP3Y8fP8QGq2Exmq7xQ/CO/d2kN16EsS6fqzFM8OTX38HV3GIEofpuh7xmiJeKr8ZGkW5a1VuwdRD0JDmmAzX/7MRplGp28/b34Rasi+5oW8/o92lV+uD6t/TFTLjdljdU2z2EL8ZlZ6I97q9EvBBLpKSAQWqcw8jiFLUK3i8KFGx8MwJ/AwikhgFLH5shm7jD2/veoEmGyKuKJRlvkYjhVfZZXmGozh1WT1sGq3nE6ws4ltyUTjW83yXfkbVq8fS5fFbyKIY9zTZ21YsAE101Xfe0H3wHNv3RRmWIjSUk49SQnumoIA3BKfHyJVUhmzMa4k0LAQc2NQdUoiQZq0qcQhYL3Nrlol7ekmV080hZdmTRFr7az6jd70aZo9jScYNzpKU0Gw4w7U7ylkWj1gBZattNw3PIhKwvrGB4ve8fNC+8Wawe4geTyJz6srrmG3JB7gEQMAx5PSVESCQlsmPWpMqiTxYMClU/GSfALCt854FpF/BCylpacTk5UrkY8270IA3rr6d4mE82lNm7SlpgY34Mm6k2Q1gXRRGcbck0qaVRL8ybOEo5yxhfu+oeuQW7mYHZdpXjU9Gqu5uVk9VqDXHYNmYLwZGAfnf8cW3BiDAu/gVs06RGsOy09Q8Ws4d5LnnqReMUELcm3BmJK7sRalSR2nCbdBJS0oczyR+uklwMF2A6YxqVYVa8fRNKhh0r8r1JKZPWAWu7jCEpQe5A8h38QngooDPVqKWhdpE4QKVVBjfrdXrE+exeyxq6R3QXm5EdpmMaUvfWHK5+Mp+XPPso9x6vCp+Tv4ovShsgxbIKNLSX7CrrlFL62fbdOpsi4ZPfZnGhtEmfX+v29rsZhzuvfg2G13picZCMyHwXLmK5SVmC6VamKmmcsndUOl0yUa7ConPZ5LgWA6A0QkMjf308TE9RxYOZlR8IZvUfNgg3de0M+ZG
+ 5Yk92Uke
+ m2lwHnhd2NDJwT6gWtReMz5PUH6MHArfv3h+joB/DM3pIt9BbeTPzXK86Il+HyL/5JNAFTAPXWPn3zPYOUpg0wj+mc0RcAW/UNBZF8h0RtXZDI1fm+dqn3DwPVjx2hV9Od7bvs21KzauFSDHhjc28FnCVtwFsF517nCRAJHbHApR3ULkYUpV1+j+yfEUsgGpoVRDXVpxNHMHQ9mX+tab6nVvuE2VmC7xgsFNT6ui5EsN5v/h0yjZd83LrT+vywj7TA1dC+TndWIy3dJW8KI6N5qaJmLEPd2szgZkIHd0uqKcJDd5OBi/mM93lm2nZXvwK9VvRdymrMyL/5s/KXFwhS0OUnaLqUjD6Sh18FB5sa+PTxCY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,69 +91,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 01:47:33PM +0530, Shivam Kalra via B4 Relay wrote:
-> From: Shivam Kalra <shivamkalra98@zohomail.in>
+On Thu, Mar 12, 2026 at 04:51:49PM -0400, Johannes Weiner wrote:
+> skip_empty is only for the shrinker to abort and skip a list that's
+> empty or whose cgroup is being deleted.
 > 
-> Extract the page-freeing loop and NR_VMALLOC stat accounting from
-> vfree() into a reusable vm_area_free_pages() helper. The helper operates
-> on a range [start, end) of pages from a vm_struct, making it suitable
-> for both full free (vfree) and partial free (upcoming vrealloc shrink).
+> For list additions and deletions, the cgroup hierarchy is walked
+> upwards until a valid list_lru head is found, or it will fall back to
+> the node list. Acquiring the lock won't fail. Remove the NULL checks
+> in those callers.
 > 
-> Freed page pointers in vm->pages[] are set to NULL to prevent stale
-> references when the vm_struct outlives the free (as in vrealloc shrink).
-> 
-> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 > ---
->  mm/vmalloc.c | 47 +++++++++++++++++++++++++++++++++--------------
->  1 file changed, 33 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index c607307c657a..b29bf58c0e3f 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3416,6 +3416,38 @@ void vfree_atomic(const void *addr)
->  		schedule_work(&p->wq);
->  }
->  
-> +/*
-> + * vm_area_free_pages - free a range of pages from a vmalloc allocation
-> + * @vm: the vm_struct containing the pages
-> + * @start: first page index to free (inclusive)
-> + * @end: last page index to free (exclusive)
-> + *
-> + * Free pages [start, end) updating NR_VMALLOC stat accounting.
-> + * Freed vm->pages[] entries are set to NULL.
-> + * Caller is responsible for unmapping (vunmap_range) and KASAN
-> + * poisoning before calling this.
-> + */
-> +static void vm_area_free_pages(struct vm_struct *vm, unsigned int start,
-> +			       unsigned int end)
-> +{
-> +	unsigned int i;
-> +
-> +	for (i = start; i < end; i++) {
-> +		struct page *page = vm->pages[i];
-> +
-> +		BUG_ON(!page);
-> +		/*
-> +		 * High-order allocs for huge vmallocs are split, so
-> +		 * can be freed as an array of order-0 allocations
-> +		 */
-> +		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> +			mod_lruvec_page_state(page, NR_VMALLOC, -1);
-> +		__free_page(page);
-> +		vm->pages[i] = NULL;
-> +		cond_resched();
-> +	}
-> +}
-> +
->
-Since you will update second patch, probably you can also improve this
-one. To me start/end variables sound like a VA range whereas it is
-indices in the array.
 
-Any thoughts?
+What do you think about squashing the following into this patch?
 
---
-Uladzislau Rezki
+From bd56ea4505f792e00079b1a8dd98cb6f7a5e7215 Mon Sep 17 00:00:00 2001
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Date: Wed, 18 Mar 2026 10:43:53 -0700
+Subject: [PATCH] list_lru: cleanup
+
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/list_lru.c | 53 ++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
+
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 26463ae29c64..062394c598d4 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -77,27 +77,30 @@ static inline bool lock_list_lru(struct list_lru_one *l, bool irq)
+ }
+ 
+ static inline struct list_lru_one *
+-lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
+-		       bool irq, bool skip_empty)
++__lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
++		       bool irq)
+ {
+ 	struct list_lru_one *l;
+ 
+ 	rcu_read_lock();
+-again:
+ 	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(memcg));
+-	if (likely(l) && lock_list_lru(l, irq)) {
+-		rcu_read_unlock();
++	if (likely(l) && !lock_list_lru(l, irq))
++		l = NULL;
++	rcu_read_unlock();
++
++	return l;
++}
++
++static inline struct list_lru_one *
++lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg)
++{
++	struct list_lru_one *l;
++again:
++	l = __lock_list_lru_of_memcg(lru, nid, memcg, false);
++	if (likely(l))
+ 		return l;
+-	}
+-	/*
+-	 * Caller may simply bail out if raced with reparenting or
+-	 * may iterate through the list_lru and expect empty slots.
+-	 */
+-	if (skip_empty) {
+-		rcu_read_unlock();
+-		return NULL;
+-	}
+-	VM_WARN_ON(!css_is_dying(&memcg->css));
++
++	VM_WARN_ON_ONCE(!css_is_dying(&memcg->css));
+ 	memcg = parent_mem_cgroup(memcg);
+ 	goto again;
+ }
+@@ -135,8 +138,8 @@ list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+ }
+ 
+ static inline struct list_lru_one *
+-lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
+-		       bool irq, bool skip_empty)
++__lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
++		       bool irq)
+ {
+ 	struct list_lru_one *l = &lru->node[nid].lru;
+ 
+@@ -148,6 +151,12 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
+ 	return l;
+ }
+ 
++static inline struct list_lru_one *
++lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg)
++{
++	return __lock_list_lru_of_memcg(lru, nid, memcg, false);
++}
++
+ static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+ {
+ 	if (irq_off)
+@@ -164,9 +173,7 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+ 	struct list_lru_node *nlru = &lru->node[nid];
+ 	struct list_lru_one *l;
+ 
+-	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
+-	if (!l)
+-		return false;
++	l = lock_list_lru_of_memcg(lru, nid, memcg);
+ 	if (list_empty(item)) {
+ 		list_add_tail(item, &l->list);
+ 		/* Set shrinker bit if the first element was added */
+@@ -203,9 +210,7 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
+ {
+ 	struct list_lru_node *nlru = &lru->node[nid];
+ 	struct list_lru_one *l;
+-	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
+-	if (!l)
+-		return false;
++	l = lock_list_lru_of_memcg(lru, nid, memcg);
+ 	if (!list_empty(item)) {
+ 		list_del_init(item);
+ 		l->nr_items--;
+@@ -287,7 +292,7 @@ __list_lru_walk_one(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
+ 	unsigned long isolated = 0;
+ 
+ restart:
+-	l = lock_list_lru_of_memcg(lru, nid, memcg, irq_off, true);
++	l = __lock_list_lru_of_memcg(lru, nid, memcg, irq_off);
+ 	if (!l)
+ 		return isolated;
+ 	list_for_each_safe(item, n, &l->list) {
+-- 
+2.52.0
+
 
