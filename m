@@ -4,91 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E3A9103E17A
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4351103E190
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8A876B025E; Wed, 18 Mar 2026 10:42:04 -0400 (EDT)
+	id 366FE6B0260; Wed, 18 Mar 2026 10:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EEDE6B0260; Wed, 18 Mar 2026 10:42:04 -0400 (EDT)
+	id 337836B0266; Wed, 18 Mar 2026 10:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903586B0261; Wed, 18 Mar 2026 10:42:04 -0400 (EDT)
+	id 225D56B0269; Wed, 18 Mar 2026 10:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FDE26B025E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:42:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C11161405D7
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:42:03 +0000 (UTC)
-X-FDA: 84559448526.08.B4CACC6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0E65A140003
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:42:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZweRF6sX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 111DC6B0260
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:42:41 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BDF788C0AE
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:42:40 +0000 (UTC)
+X-FDA: 84559450080.07.54B2607
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 178EB1C000A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:42:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Brfo6kwq;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773844922;
+	s=arc-20220608; t=1773844959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ocQyl5qQ1lVbPqoOrFvESGCrySyf/wu9bjduHpbv378=;
-	b=BSM0IiwTa85GHxDj3Ud2qIMhDdyxSQ5PciRnNtnKfNcC3cyeJUSHEnY4cq7FN57mhH84oW
-	J2iVRTFaiTh0nDCQjVsghg7kcnCvXmBXJLKfdEW0CHw/rXyNk9m1l4YbAZDv5qs4ZRQ898
-	+FhtmOdbIyh+IdZFfdqUANJJXFVqwy4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773844922; a=rsa-sha256;
-	cv=none;
-	b=uItgdpSA8snW8Eos81eLesmyCnL4BvyeQB15dVyZ9DH0qv5i5akPJm4hUWwIE+jMARVM0P
-	ODu2VhpfNWBHDbc45ZXZhLO/teZlUr4CGaun27Lkxzt7cT+AIF4B0NPaa3osYlLm846ch8
-	lgos0xpaM/0YcdzGn5f0x8gLWrTrQL4=
+	bh=FYBZKpgI6tybeKvEVdsHvPcDW9/RMvTX7D+4dmU7p0I=;
+	b=rjxHadRvJ00gF3E/ur1bPd20XASq4sU1TpUfbA9G0HClzU0josrH/ML2f/g8ZyjNPv+a7h
+	IqpoJaECB9sdxOlcYiVecHqqKvMr85gRKnC2iTtKYvb1IbA4vcljeaKcGwQtR1vj24tsjS
+	d72buyHJHMuJgSgK21ZnP+tTFXVNBWA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZweRF6sX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Brfo6kwq;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773844959; a=rsa-sha256;
+	cv=none;
+	b=h6+u9nQnBwzibsFx1oeGZZwY0YMV0iWT7upfDDxoD2FNPXlSUTDq61NbU0Jqkp9x8HBXhs
+	Whg5cbvgmp34B5Yf2M5jjL3CGn67tntGL6rk+WGjnsWnERPaD4aNETY/Jd+z65u8Brcyl2
+	sFdBhBUCJXOjydKvqmukeOSsmRsFE8s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 21D3C40845;
-	Wed, 18 Mar 2026 14:42:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9775C2BCB0;
-	Wed, 18 Mar 2026 14:41:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 616DA600C4;
+	Wed, 18 Mar 2026 14:42:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C9AC19421;
+	Wed, 18 Mar 2026 14:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773844921;
-	bh=gvbA48VpWYkVOPX5lZqPv7gAo3cly3u7OwHMgGbjqZ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZweRF6sX91Ge+ftPX9NqiTY3bKofWcnje0RqZ0GXbBGuNjj/FDdce+dSPMd3ciI5a
-	 +YJjtTOk0Rp/ZxnvrODXkXmaZyisuc3NsjK2AU9wl/IAQtXxny04zdoPxp98m663Ip
-	 pHrKypzwH9lMKMR2KMmjpoQMHW+MEApp4lssb5AQIv/9BPbRHwsehQhxznJsLfeOix
-	 48drbi58N196v1dfEm1kwdS0pyVjpZgaxfowuQP6IAf3SAQdLM69+wAHrGRVVEpsOp
-	 pt8Rx+Qk/R7cdzyBAfS+KPZ7JLKnZItiewwT7Crw2HI13/Y+NcDzRj/Sd8lx0vZXjU
-	 qT81LYKT1xQYQ==
-Date: Wed, 18 Mar 2026 16:41:54 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Hubert Mazur <hmazur@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Stanislaw Kardach <skardach@google.com>,
-	Michal Krawczyk <mikrawczyk@google.com>,
-	Slawomir Rosek <srosek@google.com>,
-	Lukasz Majczak <lmajczak@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm/execmem: Make the populate and alloc atomic
-Message-ID: <abq5ssET4kjny9Y6@kernel.org>
-References: <20260317125020.1293472-1-hmazur@google.com>
- <20260317125020.1293472-2-hmazur@google.com>
+	s=k20201202; t=1773844958;
+	bh=o3Vqfegoze9voxgxHT8hNS1xVKI7tWzSZbrQEQde8dg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Brfo6kwquW7beM2eQzf+4i3bKNLjG6pitESp5wXj5j3/u4EMe+7TKVtW2kDQi189b
+	 ksXjz2HFO5CzN39JGKjLjl5Cz6xte8b16X4vUnfN0qyNtCbUwrFXww9J7LQMWeH4tV
+	 XxLcTaXa36dEp3pR9f5ACT1A0MF31tlrAm2w9z71HsxNJA+lhDEy4wTslHSjno+Jr+
+	 oUiTxttBYh7Xfz9WqNET76CHoWG5D2z7or5j/VSvQHP6oD/BMerKadPNSlJmAi/h8i
+	 4hOfDPVsWi8QZQJI/KS7nt3ccmQBTwTGOCza7YTyeCo9Fsju2QNwapLG0bKt1L3tAC
+	 KTJlXh0jWxX4A==
+Message-ID: <b706a64f-c142-419d-a151-931847cf8444@kernel.org>
+Date: Wed, 18 Mar 2026 15:42:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317125020.1293472-2-hmazur@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0E65A140003
-X-Stat-Signature: n8x4jnfpx9f1nxj3n5xxdckk5qu4mqtd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/23] mm/vma: add further vma_flags_t unions
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773665966.git.ljs@kernel.org>
+ <a37030f2eefc90147e84f9273e325cc289cb9e1d.1773665966.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <a37030f2eefc90147e84f9273e325cc289cb9e1d.1773665966.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 178EB1C000A
+X-Stat-Signature: umffqsf4wj7j5kibn3p78p15xcgp91xi
 X-Rspam-User: 
-X-HE-Tag: 1773844921-794761
-X-HE-Meta: U2FsdGVkX18SntwDAgnemdvS2u/fs5MzJj01EKpgdpZBXSvhQ9kGUrGpvA6zv7zdQeyaeyYDmMOpQTel5bIfkYNAF4oRyJlbf9aU05Du61yW1dXTNAVRhzL0yGdD6fG+SpKfUd0rKqmOcp+NFlHYXbesbT1vqEBb+PbxgP7yNn2TaootI9jEMcgVGSIH3YKgGPM5BXIQacSGrNdI6sSkj+QjwyeJ/eqj3UTbCMhxYD4DxxgLCDBW0IYZ8cg0lMYBVyNDuQ3Z08uTZs6DDhMKxSeni+eOKwOAonAsHCsIhbv11lRy4/Vt/izwJ0YCjayJK9284wwvQZbe8K5sQM8STguFGQvR849wbnqOS/hFJjGJMh3uyHtBRY4eva5bu+qJDUZmDjd9cpEhnpUOrKw/UfpZLTqMqTcENpgOXzoEAgylouBtxAK9KuoFo8b1evlhhpsLrZzVhmyMW+dil7QFLmeYfkuvyr66qAGeW5ocHSvMUENPuQEV7+7yJsY3Zrs9CbZ8Byy/am/JwdZ823t6aS7Xw3wGSy+aotM7+86GwnWdYzAelh/LSUNrQNvu8+tATZvXr6Q7G/82LwxHi6sImOEurEbqkcIHjTosDlnV4tAFrBaU21LeboW8sZpGzcXbbu4nWRAYaNKSWbtr38bdvYv8JHA40NfyYVUSrnLIR/pz4VFm9Nv5WJI9XPXDPsWd7PiZgnrfTOxY5PBP4U0t63IuRBob+14CmMapieXgV9+6RUEJTuuSBhHN4KYPXhP7GHAPMucXdzUvfz60pJFD+kN/qaAgq7tVo/pavXclHRiY8gXnZUqT4wKimm0W5ix4f+uQZuw+5/vRJbsLTcxzDZEe6AjCt6jIwCG+ZxRhBxMPIDPq0+wh6KganJMXLT30IrIOI3lXgQonRCSRGtyK4pn70ueeWFmEsgkz+QmvQUMzWjO/eop+GiKbGPfhP6ilwRMkZk++wRN8crXGc5Q
- IMXnRgNe
- CtwvAJ30+SdQ6afwlnvHAd15qZkDQIFevUT5UGX+Jta/KN1BhWGcWDz7nhB/MLnzvolv0YTOjSKQYKyrwn7d2jmyYtEqEP3ARWXofMrLz0uFLGE6C6cpJR2yuKZIcqCT/KRu2YY1UW7YTUXeiLyTcep+W9Ds0UAyWjNz1jgRIBrnvOq5R7Tu9BpQYMAu1ecxmczx+2MGLdfMsSrv332BVSSDpHD9trwd348a+4a+uxlEBgHi3c7AYh2EDJABg6IB8KBIpcDjc59596+88bZPcPKvFnA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773844958-687036
+X-HE-Meta: U2FsdGVkX1+XcT+NWoMwBsIndMV3/t8stTcBwiDWlo/8c9UQ5BtK9lESPelw/vx57E8G/Cr2WAaNuzpoHsL3hX8pPOPACcRNXpohIu9WKfhjIe+gMCZ5R/mvW2c/8gY1za28zIohjZRxXtO19dGlwh5AtnMaqV5pYoUoYeMnPkUTEHcCOvc1LmCwfsYk2OVfj/xVm8IOu68E5lQiToBk29TnoFcaLlwk7ey6CH1g8ekXl2HXKmu0yD+bk7zKWjyEE9ZONDxjYClbvG5jtaj+IeiPXQInnAMPoROWVCXuKedhNf82YqBVFtfrqQ6zyV0c+vhWi8S8ws/OuN1mFgdyujv/NJm6JsWZZOEkQzu1E7lR6PQQBNr0H/OPRYCP7D2Janxznjhnr4SGPMunury76SIMlcC6rW3NwuJ5azM6rn9iis7qS2lX93+HllQQR1elwcqGfDZwurHl+0LsvtprsZF/y79ANkWw1sHP24XVEQXQSLWbpMavQjgGziHCCyQA2pnqcRVBUwELpxOwcWsSBwGmuWNu70fHFTVaWPu+SctiGbWF+pqDrOfroqJWaRkXiAC61l/oXcw/HDNCGKB7+2ZaLVlbnIChmUG6r+fnsGMdsz+R8YSNg68eJiTRWTK6ibFsp+AP8D8VjDCL3uXVvr+TwOFr8XfqrdXlfHO6rbq6XGhfl1jEWzWZrBTPRusRbv01BPky/L/Fa0lob0qyxCiLAGOV15UEp6jBHfvBo79KPG1DlI8cKDPktcz9OdWCHeUrEyEt5FA7zCg2A/TSAa8GNXSn8ucZ2t6jnKoCNfqLEL66Zfj3q1CH7KWoz2MPEmfjvRQp41/scQKon4WiNr/gIilfpk1D2sF9B7rGFtUNd+iZDm+9D7/4zxUPgp5QgJVBgie/PktYu4CL5GSfm1y0Jkvk//Cwol1oT5o8xQKz5Np7VQ/OPM1dg1lYhsklmE9jqUyzsvRxfiCWkvj
+ /vXvgySz
+ 6FXJK3ywhWVwLjMjBGNwCC4ZwLGh6U1LaZKSA1GlEYXntsO9jwaoF9ZTiPSlg/XGIWcG1tSJNgj1vutYp/gR9rVy+Z/0MWNCZP/DEXF03WKxCzgXXnjMdCsE5qWiCOTuE7zHa+0/HrVHWlzFeWQADuZQZt1u3qI13UUZmE1vwQ4a+ojm65rf/DlXHmIjGu3SIqFfN/Jyo6Hb+EN9/p6rXTHcM4iiFJsuawVRku6oORf10X3KI1ks/R/sF31xv+V5GKzNAupDnb7S9coX6/7jKwh8qGQE0P63YIuOK3OeOaHDMAWp1OWDCEFtTfSnpV7oWpzZLkjz+FdZSfKkwWl9Rg92j/HAjlVXlEii2mC+GssLbfrQ1kKPXVO0E8ebeaAdgeHLuXZm4tIOE4tw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,193 +128,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Hubert,
-
-On Tue, Mar 17, 2026 at 12:50:20PM +0000, Hubert Mazur wrote:
-> Subject: mm/execmem: Make the populate and alloc atomic
->
-> When a memory block is requested from the execmem manager, it tries
-> to find a suitable fragment in the free_areas. In case there is no
-> such block, a new memory area is added to free_areas and then
-> allocated to the caller. Those two operations must be atomic
-> to ensure that no other memory request consumes it.
+On 3/16/26 14:07, Lorenzo Stoakes (Oracle) wrote:
+> In order to utilise the new vma_flags_t type, we currently place it in
+> union with legacy vm_flags fields of type vm_flags_t to make the transition
+> smoother.
 > 
-> Signed-off-by: Hubert Mazur <hmazur@google.com>
-> ---
->  mm/execmem.c | 61 +++++++++++++++++++++++++++++-----------------------
->  1 file changed, 34 insertions(+), 27 deletions(-)
+> Add vma_flags_t union entries for mm->def_flags and vmg->vm_flags -
+> mm->def_vma_flags and vmg->vma_flags respectively.
 > 
-> diff --git a/mm/execmem.c b/mm/execmem.c
-> index 810a4ba9c924..9043f0f8f61a 100644
-> --- a/mm/execmem.c
-> +++ b/mm/execmem.c
-> @@ -203,13 +203,6 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
->  	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
->  }
->  
-> -static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
-> -{
-> -	guard(mutex)(&execmem_cache.mutex);
-> -
-> -	return execmem_cache_add_locked(ptr, size, gfp_mask);
-> -}
-> -
->  static bool within_range(struct execmem_range *range, struct ma_state *mas,
->  			 size_t size)
->  {
-> @@ -225,18 +218,16 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
->  	return false;
->  }
->  
-> -static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-> +static void *__execmem_cache_alloc_locked(struct execmem_range *range, size_t size)
-
-No need to keep prefix underscores here.
-
->  {
->  	struct maple_tree *free_areas = &execmem_cache.free_areas;
->  	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
->  	MA_STATE(mas_free, free_areas, 0, ULONG_MAX);
->  	MA_STATE(mas_busy, busy_areas, 0, ULONG_MAX);
-> -	struct mutex *mutex = &execmem_cache.mutex;
->  	unsigned long addr, last, area_size = 0;
->  	void *area, *ptr = NULL;
->  	int err;
->  
-> -	mutex_lock(mutex);
->  	mas_for_each(&mas_free, area, ULONG_MAX) {
->  		area_size = mas_range_len(&mas_free);
->  
-> @@ -245,7 +236,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
->  	}
->  
->  	if (area_size < size)
-> -		goto out_unlock;
-> +		return NULL;
->  
->  	addr = mas_free.index;
->  	last = mas_free.last;
-> @@ -254,7 +245,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
->  	mas_set_range(&mas_busy, addr, addr + size - 1);
->  	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
->  	if (err)
-> -		goto out_unlock;
-> +		return NULL;
->  
->  	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
->  	if (area_size > size) {
-> @@ -268,19 +259,25 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
->  		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
->  		if (err) {
->  			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
-> -			goto out_unlock;
-> +			return NULL;
->  		}
->  	}
->  	ptr = (void *)addr;
->  
-> -out_unlock:
-> -	mutex_unlock(mutex);
->  	return ptr;
->  }
->  
-> -static int execmem_cache_populate(struct execmem_range *range, size_t size)
-> +static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-> +{
-> +	guard(mutex)(&execmem_cache.mutex);
-> +
-> +	return __execmem_cache_alloc_locked(range, size);
-> +}
-> +
-> +static void *__execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
-
-No need for leading underscores here as well.
-
->  {
->  	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-> +	struct mutex *mutex = &execmem_cache.mutex;
->  	struct vm_struct *vm;
->  	size_t alloc_size;
->  	int err = -ENOMEM;
-> @@ -294,7 +291,7 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
->  	}
->  
->  	if (!p)
-> -		return err;
-> +		return NULL;
->  
->  	vm = find_vm_area(p);
->  	if (!vm)
-> @@ -307,33 +304,43 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
->  	if (err)
->  		goto err_free_mem;
->  
-> -	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
-> -	if (err)
-> +	/*
-> +	 * New memory blocks must be propagated and allocated as an atomic operation,
-> +	 * otherwise it may be consumed by a parallel call to the execmem_cache_alloc
-> +	 * function.
-> +	 */
-
-Please keep the comment lines under 80 characters.
-
-> +	mutex_lock(mutex);
-> +	err = execmem_cache_add_locked(p, alloc_size, GFP_KERNEL);
-> +	if (err) {
-> +		mutex_unlock(mutex);
->  		goto err_reset_direct_map;
-
-Please add a new label that will unlock the mutex and goto to the new
-label.
-
-> +	}
->  
-> -	return 0;
-> +	p = __execmem_cache_alloc_locked(range, size);
-> +	if (!p) {
-> +		mutex_unlock(mutex);
-> +		return NULL;
-
-This if is not needed, we anyway unlock the mutex and return p, if
-__execmem_cache_alloc_locked() failed p would be NULL anyway.
-
-> +	}
-> +	mutex_unlock(mutex);
-> +
-> +	return p;
->  
->  err_reset_direct_map:
->  	execmem_set_direct_map_valid(vm, true);
->  err_free_mem:
->  	vfree(p);
-> -	return err;
-> +	return NULL;
->  }
->  
->  static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
->  {
->  	void *p;
-> -	int err;
->  
->  	p = __execmem_cache_alloc(range, size);
->  	if (p)
->  		return p;
->  
-> -	err = execmem_cache_populate(range, size);
-> -	if (err)
-> -		return NULL;
-> -
-> -	return __execmem_cache_alloc(range, size);
-> +	return __execmem_cache_populate_alloc(range, size);
->  }
->  
->  static inline bool is_pending_free(void *ptr)
-> -- 
-> 2.53.0.851.ga537e3e6e9-goog
+> Once the conversion is complete, these will be replaced with vma_flags_t
+> entries alone.
 > 
+> Also update the VMA tests to reflect the change.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
--- 
-Sincerely yours,
-Mike.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
