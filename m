@@ -4,136 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B004C107BCF2
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 345BD107BCF4
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:42:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2336C6B0162; Wed, 18 Mar 2026 06:33:26 -0400 (EDT)
+	id 5C1F76B0165; Wed, 18 Mar 2026 06:42:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20A626B0164; Wed, 18 Mar 2026 06:33:26 -0400 (EDT)
+	id 573536B0166; Wed, 18 Mar 2026 06:42:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F9926B0165; Wed, 18 Mar 2026 06:33:26 -0400 (EDT)
+	id 489496B0167; Wed, 18 Mar 2026 06:42:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F2B2D6B0162
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:33:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F29513B4DF
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:33:25 +0000 (UTC)
-X-FDA: 84558821970.08.754EBDE
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 92DB840010
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:33:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a0n9zBmm;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773830003;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 394986B0165
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:42:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C8BEA1D5A8
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:42:00 +0000 (UTC)
+X-FDA: 84558843600.30.1723DC1
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B0FC480003
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:41:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fj8auFFd;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773830519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h1YwBcD7XlNYfw4PFQzrHzcpcYPaaxw4aJMR4YVcRA4=;
-	b=3YV3RD82QannDD9Vr0FM1LxQ6VxqhXRqSjKHjX6zFEffNctDGENi4Z0bdK5Iu4e7QMdEzL
-	qu6j9P06+iODmCba5GMwpZ1se46Wdfwwf2+2hXtpFVQ8aXeUYSNU/3mkGV+IXB36BTYQJl
-	QZOko+A5eAmsHJHXZnEDAsMmeuvEmdk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773830003; a=rsa-sha256;
-	cv=pass;
-	b=Np+uwW3SmuD1vdPNupK7+A3kF8zzL0DHB8h14vz5OcsjecgtvZ2+WLAsWR7kGrm+3oUi8a
-	KJ5YfjdqEA1VT4FV4Nt2qA5eHqG/1FwOiYDO+XrvFEoKgH0kiObiCAM5f5KfUI5JP1eRWe
-	zBVm2Hm3eHQBrBdP8WiGhA72/a2f+nw=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a0n9zBmm;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-128ce536fe0so9383c88.0
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:33:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773830002; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GaRVHaBM/Dy3y0a4RzJL/ZAuaNEdfPdslycaIUJ2MvW2gfk96SMrVGJ2WQuREOumZv
-         WCD+fFtej91klVAdGpvQ7UnO2oVYJsxYXzovCFMxJmHSGeKjFB7/xBsiwkEzY/dl4hxc
-         yj4I6CxXPGdUgeoTWzC4pwImfQz1JzYN3FVGM9/kEDiEBS+H9zsAzepax40H1AcwzHDq
-         uSvCOHpNTQDCzv32iif084lLXgQYQ1ioPBF8up2KmncGgfL9ihvq7wMxtBOvqs2OM5Yy
-         +Ot2ejzRmckdqxh0FEnddIMEww7l8258tpNJ0ByztbWlV4rIwiL1oYgSSrp7lBYOSimK
-         LMHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=h1YwBcD7XlNYfw4PFQzrHzcpcYPaaxw4aJMR4YVcRA4=;
-        fh=uDkBClrt11L7AvQpW5jr2FNhoRUZdTK8hDDuDnNVEUk=;
-        b=iiH+zru7GtrscS14uatTVHaFvxtu44xtZZqRlAErOnuSPcDpndS/yBLCsPFecVD7Fq
-         wjlssj5OyoThP++Myv/QxO/lfKqWuH8ZktHxINcCmGuH9OI9A5tG5ImPx+WXse6PE8Eo
-         7Z2WWBWq0pnRd1lx3j0TDfpQyoRwEJXfLrX6G9fKNFPFh3s0lHL55fU4wbakJePmDDiH
-         AyfSrC3LD6TYTAE/dh88on1PC0DKlMbpz8HxmUVnOjzUXB0mvq8fj0gp8v7etRf83YPP
-         OS+xh/HswR7dAxWBMsgHIGhJ5uA4oxt2uWtbMX/mtgCwwwgPjtI6n9ulIb2zu9FxNhSL
-         VY4w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773830002; x=1774434802; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h1YwBcD7XlNYfw4PFQzrHzcpcYPaaxw4aJMR4YVcRA4=;
-        b=a0n9zBmm+Nsb5x3w/ho/l8Vl1+sha1SZM7a8Keg1pmwhns15XOmpZQ82U7UAwaOmii
-         baZhTVzQunpL237YW3rBWofotE7SBNvdvNTQUUo1Tvn4ZyM7ABVJdfEBk8Ll6lGSj0lA
-         xlUmBsJ3xEAzzAQgwZ3JG5zLIlVeSEYHByysMLWUE5AWSVRzwkk0ewtH1BtPrrmrw9ac
-         8jCFIpFiwOw02TW60skedQVz+kytrnXusztsCN/QIrlQMk7uHJUdikxE0gWcRi8akLER
-         CdJzoV2VYT+DJM+vvYTSDdfsRmSRuD6GFdawj+bP5nWG7dePAuaA/YMUBxlSAuvp8u6K
-         AabA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773830002; x=1774434802;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=h1YwBcD7XlNYfw4PFQzrHzcpcYPaaxw4aJMR4YVcRA4=;
-        b=s2THX7DTVuIAZLNZC2ywItFhlEPYhoH4q3AucRsvglICdkz26BWEpXclNr11cZ93up
-         3AcvGx2RPjy5sFncjb+xtdxEhtLwQ56c7tmMH32gkeyGmLJ0FnbEJEOdPRL35O/ZG1rD
-         pcn/poK5U0Djv9//8DNoZw6yFCUNMLbGSh5r38fDaAkF9iItixhvK24G7Wzpipa60HiE
-         CB5+Sjb9EzV/ZlI4DBEcxm60W9WYmuo/Ixmlmri0Ll3dH1b1xxYU5RvEGdH904A+/1GQ
-         mLiXRXM8kJ5Qn0E5pU0wqa6oH1hex9AOMgQQDN66bRfKJ3CXLJA+fDnOXTV/Ji0nqIxM
-         7hCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmhksoAh/1mLX2ETPSSm6Nu6nbT+/RkY7GvRUDdTwZXqdmL3aVToHJIP6+GObK2W2gptsBHaD96Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy/AwYB1PY8lDHn97jbynef2+zJgxDjO09xOHL1+nru3nS/crMg
-	Pcl/UHiZXfXGny19b+CYLa5SDKbZlxWy49NEJ7QM8SW2ppx33sEHErv8m217ktGo/voZh1ZDRhT
-	1oZH9HoAyXVH2JVdZFPEmGEOPtR+7jYerMASd72zH
-X-Gm-Gg: ATEYQzyWpyyYuiv6g9llV0Gq8bpZzCujWehN+ONjHj7SL+oW8p57bk1ADqDJXE1n82d
-	4VELMCVeeFQ2awAIRvb3OQKnRQCoCZbtp80gmgBxIhOdagsVZ6NrCfiVWr9WaVPPIgAw6SB5Tqu
-	Kmw+spW1XK1+UBoVP8KZW9Tn6k42n8dDNe1qFYvNbYdzC4e6mlIEep1GaH3VhysCbjIKDcUAA9g
-	DiMlc8Bfkp+mOTc3aCiqZAu/bb+Vsk+duKr6fIpoaFiLPXgmm/THC9RqOmehO3He73p7+ENXNVF
-	yh5Vig==
-X-Received: by 2002:a05:7022:3a83:b0:128:def1:f77f with SMTP id
- a92af1059eb24-129c5927900mr173162c88.20.1773830001815; Wed, 18 Mar 2026
- 03:33:21 -0700 (PDT)
+	bh=EgT48koR2AFBfU9d+XRES0muWQ8eJqKljwuWM5+7rPc=;
+	b=yTOOA7XrcEAhuxUv8kKCygIaTUjKz/mMwkw/5/ZG8f1PBt8Bw7OxQSlaAk3eijgkcV49jV
+	HX452zceFsf4zKfl134mbFHp8gSuOpolrIgauHIMiS22EWOyP7AF0+AwqTNKpKkYw17uYM
+	ZzK1LPOES7yglHRjLeegbbVW0ukZKo4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fj8auFFd;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773830519; a=rsa-sha256;
+	cv=none;
+	b=QbvxXudNgpuDspODXluWuTjaEm8APESU9LEOBXPcjWb+j14TCgBEc7Kld0UQuWCMFQJkWC
+	OjWZ+EWoteaWzaaxv//IliEZoYjhrBs0j0Ojg6SVTDslck8dQcKW3gRErbTAf1/G5R7Xn6
+	kJajtQfwiBwjWZ8OoRxFeC1TRccrBh8=
+Message-ID: <562fb349-c2d2-4fbe-83f9-75c26cc4b7ae@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773830516;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EgT48koR2AFBfU9d+XRES0muWQ8eJqKljwuWM5+7rPc=;
+	b=fj8auFFdVi5ti/XLJTBpcsBC0Gd/J4LPBvkAKdEy6ilHFgLsYQJbQpBt2vecZloUmBB1Hf
+	AszJSJP7VAGpLAbWtHz5Nnz/RKvxbtLm3xGTgoBvc2USbtjb9KJ/Ifu/x8TVzCKgs8RAhC
+	CqGlKjvmllPI+s4y7ToX198UHOa06Fc=
+Date: Wed, 18 Mar 2026 13:41:33 +0300
 MIME-Version: 1.0
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com> <abpxUEijdHJzziEV@kernel.org>
-In-Reply-To: <abpxUEijdHJzziEV@kernel.org>
-From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Date: Wed, 18 Mar 2026 11:33:09 +0100
-X-Gm-Features: AaiRm51MWIfBPmVPLB2qYcQk0b3M6X8XFd5NBfBzpi7jH-NiRIi6OxA361n9fs0
-Message-ID: <CAAi7L5e9GxgvGTFvPfcn81Ve59N-K-o7FOh+Y8qKHwpuCYycCw@mail.gmail.com>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K
+ pages
+Content-Language: en-GB
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, ryan.roberts@arm.com
+Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ catalin.marinas@arm.com, dev.jain@arm.com, jack@suse.cz, kees@kernel.org,
+ kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
+ Al Viro <viro@zeniv.linux.org.uk>, will@kernel.org, willy@infradead.org,
+ ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ kernel-team@meta.com, WANG Rui <r@hev.cc>
+References: <20260310145406.3073394-1-usama.arif@linux.dev>
+ <608c87ce-10d9-4012-b6e9-298d5a356801@kernel.org>
+ <9e9edebb-3953-4bcd-80e2-614dcec5b402@linux.dev>
+ <be65e710-997c-413c-8455-2d687fc51fc6@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <be65e710-997c-413c-8455-2d687fc51fc6@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: B0FC480003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 713h3urui6a6gj3tfqrsht7pya9ecq3y
 X-Rspam-User: 
-X-Stat-Signature: e8e56184mumh5tife1aat4okaj933mfq
-X-Rspamd-Queue-Id: 92DB840010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773830003-902415
-X-HE-Meta: U2FsdGVkX1/EEIo6+aNOe2060Hx9tFB/bV2TqU8D9+It6gp2lcJmItD1ujmjm5f3VA3jCbQ4U9Z22oqyNRA0rmwk8SQdSHQG+iDeYgEaFRUp5bD0JuUtMa3PmW5N9XiGGxrvawccMbEKm/dtzStX1UIJqRgr0fYwy2wjNhUVOy1kTJ4+gZ6uhBNgpoSnsWbga/6OQ2hgnw5otnWmBq+KGiiWauiG/eWhntA4DInvrFZK5BZ6S7PwpHnRRGYxeC+9FTYKuCqzOdHsTq+l6YWwGyn6VwsdNys4BwBt8l4fM/y/tfKGgyS6ZV3vqlz1y8dZt3iHWGgH5L0F0EI+2Co0cda2gLO1VC2BJ14YnhUYviEDWHW0t3F5HLwToAx1444mdaSkqkxzBusBZK3B9xsNHythU/eJU1ZAO/fcgDEV591bqgqE7gwRVPATBj0A/euAvgnAFyw1fJ0aaKPPKbruBCScVxHtNKrtS2c0tzHRqCuTTtCLf//S5BrbN3kdMdSIqgkCMOgmq8aZgynyTfie7UxI7Adk0gPSOEAEnJNq0tDWOnBfMTaQvWN5vRqcgEMegzJiMQsMNmALmfWtJPPnxrGYgVhF8cnFiQTFfZYPq8LHew7hLFuZC0OBDnmslQNkxnHf/JrzsTCq76WFtcmaaEkjmoobkJSRObIepX9HVlMER7OjW68pFOAj1kyx0i3ipmbDV2+tIu7yiw8pZsLFPd9OC/E1sBBICfM72+ebfDA9s7kfeyvSinP6eeF1JXDK1yC+45B3nkmC8ljYNOmyyDikOqToCTtTTgkb8f/FDbHkPkam3lEu7VCzY1GtyeONN0gRVsJx6cpjkSJ3ePZW+TMdhieFWXPndkPDl4IrLWtGjBl/jsuR4QrtXblCTU/JFldOnFlVqimg5WkZPXJW8KQiJSqVsWEKsmAH4MbyebSd3SQAL/+4pchEGk5a/3ua+l4JFr4YbEYa/+9S+AE
- TzAj5bBY
- p4hrfdl6Ds6+NWavrwd2dPLjabpW6lwyTDOsCSRE/VJH6c2crT0Km4rNDPikjvWF2b+iiFZZ+UvrAHPF8aZUhWP+6tdq/LFpJhGNlLsAs0vphj3npMjA1/40yQlDi/pTcsaj1p8aJhWhQnXi2aEb0MnMuxMBGHKmKxJMT4S9NB5cyFJNAhJ/1+rfT8nAbECLl44Dtm5/XAt7ZXqF8N3xjh/nHHPorC1DaNYfE1hDOo5ldxkdmVpXBsW1fPknWEqFrVrAo3YCrZ7Lb2AsaTcI/4qydpxNVAaQ0uYSh/ePigEtRtIh44MZ7Jg2y5vyH5My5LTWs+zZr+J3Lfxskga7qJDr30vCzioM0GY1CgyygZTXjBrZSx13+DAqU2PYDmK85XbSj
+X-HE-Tag: 1773830518-159335
+X-HE-Meta: U2FsdGVkX1+vzJqwJdSmwH2p/xI3ctByPTVH0KFESEtHwjt50oLQDn7MS2mYLm4LnS1J5h3WmlshuUkZE3anw11oLkqUyrTrjajJaKbVKy3p1ylpOhxP3BSOL5tObMDPW/bq9I3bpiHkzVOmP91OvszTBEnFhZvkVE6z1AdoIOrH/utMg8rPWPcd2JjXHzSFFjinztPlrvqjKkAGabVh0yncWKhviU2/umgPDu3+RE3nrCRafUbqpT7zHKLswFfR5b/M/vVYRYOQKLtgZx96q50TcFvAzAJhmKVJDbto7fif63cPoMvtud6vyjJaZwwi9g0VSfdXx9me6D9yJqK5fIQWxC3yZgztj6O6UsZsRJCDsW0Eqc5K+oWgRZ9Xb/jiCepL7XdOWOFsEnRm7KfLPyzJdoFUAvzGqPoa/vlI5JUGkRInS8LTxjo2Ukn2/DzF2yDAmn4XsbgteZBFPEHJ5vJYBErDoym3hOIXv/p3MVinsoD5y/EYvPz58K4dvwUv3ad6LwovGK30teVjsC2W4HgNsUsfvEwlDGSHA9W8ft9I9krr7wbbDgmrcDIkRqJSrRo1DyYfzIFm3giqNx+5HF8jNpyFWsbIWL2TsImT2sFLdOCyu+t+WNDfZ2N57Nxa5FQWKDseXzG3TrzXRG2rqH7YLPJinUfwzT8Dt8AYNwxer1UFGQaiApiktV/GzqxNwswoOBKl15bZfw8oq/uRz3GUbTDy4t32fJ6/hIGUZ8fKgvaejdTHqk7xyLT14p2PSNOco+jAyVSqDxtp3jf4KDsA8E5WEl9a80+sA3j8V6hG9KWzIM5+GJG4FKiQiMpB5svmMHYLX7vJxDU2ncqaEBoBxZV0WTqqkFCJ8LSqCy8Wre8+7Xht5exT4IZKr8PrXKQVzvwFLFukQZIp2Z6x89Dq05RZVooXPH94jNKy2QXPH0gmDadh+Iis97CKhxJ5ujVTt7zJXZv/uGjKlUj
+ C/ROmvgx
+ EpoGFUwpfwyzYksYJXUK/3Jm87fzg6iBbwdTD10hehn07HblD+j0Vvx1Wwu4qjB45x2vCCi2dMowN+vWmQ0woZ4fJ4kUQv/0AWvf0C2TRqvIyyV6IzCpVEfgYtVBZi1YW0ODJ9mYd32RBiMVCO+dEBm+g8Ncs/iwVcbBNcDy4uAIerPId0JBPUIjsbbIpYZO4YzDUZAoKbqOW5r/wpWldv7de9Cjhl6ewuvlvIVps+DuxCHE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,178 +102,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 10:33=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> Hi Michal,
->
-> On Tue, Mar 17, 2026 at 03:15:33PM +0100, Michal Clapinski wrote:
-> > Currently, if DEFERRED is enabled, kho_release_scratch will initialize
->
-> Please spell out CONFIG_DEFERRED_STRUCT_PAGE_INIT
->
-> > the struct pages and set migratetype of kho scratch. Unless the whole
-> > scratch fit below first_deferred_pfn, some of that will be overwritten
-> > either by deferred_init_pages or memmap_init_reserved_pages.
->
-> Usually we put brackets after function names to make them more visible.
->
-> > To fix it, I modified kho_release_scratch to only set the migratetype
->
-> Prefer an imperative mood please, e.g. "To fix it, modify
-> kho_release_scratch() ..."
->
-> > on already initialized pages. Then, modified init_pageblock_migratetype
-> > to set the migratetype to CMA if the page is located inside scratch.
-> >
-> > Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> > ---
-> >  include/linux/memblock.h           |  2 --
-> >  kernel/liveupdate/kexec_handover.c | 10 ++++++----
-> >  mm/memblock.c                      | 22 ----------------------
-> >  mm/page_alloc.c                    |  7 +++++++
-> >  4 files changed, 13 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> > index 6ec5e9ac0699..3e217414e12d 100644
-> > --- a/include/linux/memblock.h
-> > +++ b/include/linux/memblock.h
-> > @@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct s=
-eq_file *m) { }
-> >  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> >  void memblock_set_kho_scratch_only(void);
-> >  void memblock_clear_kho_scratch_only(void);
-> > -void memmap_init_kho_scratch_pages(void);
-> >  #else
-> >  static inline void memblock_set_kho_scratch_only(void) { }
-> >  static inline void memblock_clear_kho_scratch_only(void) { }
-> > -static inline void memmap_init_kho_scratch_pages(void) {}
-> >  #endif
-> >
-> >  #endif /* _LINUX_MEMBLOCK_H */
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
-ec_handover.c
-> > index c9b982372d6e..e511a50fab9c 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -1477,8 +1477,7 @@ static void __init kho_release_scratch(void)
-> >  {
-> >       phys_addr_t start, end;
-> >       u64 i;
-> > -
-> > -     memmap_init_kho_scratch_pages();
-> > +     int nid;
-> >
-> >       /*
-> >        * Mark scratch mem as CMA before we return it. That way we
-> > @@ -1486,10 +1485,13 @@ static void __init kho_release_scratch(void)
-> >        * we can reuse it as scratch memory again later.
-> >        */
-> >       __for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> > -                          MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
-> > +                          MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> >               ulong start_pfn =3D pageblock_start_pfn(PFN_DOWN(start));
-> >               ulong end_pfn =3D pageblock_align(PFN_UP(end));
-> >               ulong pfn;
-> > +#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> > +             end_pfn =3D min(end_pfn, NODE_DATA(nid)->first_deferred_p=
-fn);
-> > +#endif
->
-> A helper that returns first_deferred_pfn or ULONG_MAX might be beeter
-> looking.
->
-> >
-> >               for (pfn =3D start_pfn; pfn < end_pfn; pfn +=3D pageblock=
-_nr_pages)
-> >                       init_pageblock_migratetype(pfn_to_page(pfn),
-> > @@ -1500,8 +1502,8 @@ static void __init kho_release_scratch(void)
-> >  void __init kho_memory_init(void)
-> >  {
-> >       if (kho_in.scratch_phys) {
-> > -             kho_scratch =3D phys_to_virt(kho_in.scratch_phys);
-> >               kho_release_scratch();
-> > +             kho_scratch =3D phys_to_virt(kho_in.scratch_phys);
->
-> Why this change is needed?
 
-It's not necessary but kho_release_scratch() will call
-kho_scratch_overlap(). If kho_scratch is NULL, kho_scratch_overlap()
-will return early, making it slightly faster. Alternatively, I skip
-invoking kho_scratch_overlap() if migratetype is already MIGRATE_CMA.
-(resending this since the last email was html)
 
-> >
-> >               if (kho_mem_retrieve(kho_get_fdt()))
-> >                       kho_in.fdt_phys =3D 0;
-> > diff --git a/mm/memblock.c b/mm/memblock.c
-> > index b3ddfdec7a80..ae6a5af46bd7 100644
-> > --- a/mm/memblock.c
-> > +++ b/mm/memblock.c
-> > @@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
-> >  {
-> >       kho_scratch_only =3D false;
-> >  }
-> > -
-> > -__init void memmap_init_kho_scratch_pages(void)
-> > -{
-> > -     phys_addr_t start, end;
-> > -     unsigned long pfn;
-> > -     int nid;
-> > -     u64 i;
-> > -
-> > -     if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
-> > -             return;
-> > -
-> > -     /*
-> > -      * Initialize struct pages for free scratch memory.
-> > -      * The struct pages for reserved scratch memory will be set up in
-> > -      * reserve_bootmem_region()
-> > -      */
-> > -     __for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> > -                          MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> > -             for (pfn =3D PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
-> > -                     init_deferred_page(pfn, nid);
-> > -     }
-> > -}
-> >  #endif
-> >
-> >  /**
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index ee81f5c67c18..5ca078dde61d 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -55,6 +55,7 @@
-> >  #include <linux/cacheinfo.h>
-> >  #include <linux/pgalloc_tag.h>
-> >  #include <linux/mmzone_lock.h>
-> > +#include <linux/kexec_handover.h>
-> >  #include <asm/div64.h>
-> >  #include "internal.h"
-> >  #include "shuffle.h"
-> > @@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(struct p=
-age *page,
-> >                    migratetype < MIGRATE_PCPTYPES))
-> >               migratetype =3D MIGRATE_UNMOVABLE;
-> >
-> > +     /*
-> > +      * Mark KHO scratch as CMA so no unmovable allocations are made t=
-here.
-> > +      */
-> > +     if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
-> > +             migratetype =3D MIGRATE_CMA;
-> > +
->
-> Please pick SJ's fixup for the next respin :)
->
-> >       flags =3D migratetype;
-> >
-> >  #ifdef CONFIG_MEMORY_ISOLATION
-> > --
-> > 2.53.0.851.ga537e3e6e9-goog
-> >
->
-> --
-> Sincerely yours,
-> Mike.
+On 16/03/2026 19:06, David Hildenbrand (Arm) wrote:
+> On 3/13/26 20:59, Usama Arif wrote:
+>>
+>>
+>> On 13/03/2026 16:20, David Hildenbrand (Arm) wrote:
+>>> On 3/10/26 15:51, Usama Arif wrote:
+>>>> On arm64, the contpte hardware feature coalesces multiple contiguous PTEs
+>>>> into a single iTLB entry, reducing iTLB pressure for large executable
+>>>> mappings.
+>>>>
+>>>> exec_folio_order() was introduced [1] to request readahead at an
+>>>> arch-preferred folio order for executable memory, enabling contpte
+>>>> mapping on the fault path.
+>>>>
+>>>> However, several things prevent this from working optimally on 16K and
+>>>> 64K page configurations:
+>>>>
+>>>> 1. exec_folio_order() returns ilog2(SZ_64K >> PAGE_SHIFT), which only
+>>>>    produces the optimal contpte order for 4K pages. For 16K pages it
+>>>>    returns order 2 (64K) instead of order 7 (2M), and for 64K pages it
+>>>>    returns order 0 (64K) instead of order 5 (2M). Patch 1 fixes this by
+>>>>    using ilog2(CONT_PTES) which evaluates to the optimal order for all
+>>>>    page sizes.
+>>>>
+>>>> 2. Even with the optimal order, the mmap_miss heuristic in
+>>>>    do_sync_mmap_readahead() silently disables exec readahead after 100
+>>>>    page faults. The mmap_miss counter tracks whether readahead is useful
+>>>>    for mmap'd file access:
+>>>>
+>>>>    - Incremented by 1 in do_sync_mmap_readahead() on every page cache
+>>>>      miss (page needed IO).
+>>>>
+>>>>    - Decremented by N in filemap_map_pages() for N pages successfully
+>>>>      mapped via fault-around (pages found in cache without faulting,
+>>>>      evidence that readahead was useful). Only non-workingset pages
+>>>>      count and recently evicted and re-read pages don't count as hits.
+>>>>
+>>>>    - Decremented by 1 in do_async_mmap_readahead() when a PG_readahead
+>>>>      marker page is found (indicates sequential consumption of readahead
+>>>>      pages).
+>>>>
+>>>>    When mmap_miss exceeds MMAP_LOTSAMISS (100), all readahead is
+>>>>    disabled. On 64K pages, both decrement paths are inactive:
+>>>>
+>>>>    - filemap_map_pages() is never called because fault_around_pages
+>>>>      (65536 >> PAGE_SHIFT = 1) disables should_fault_around(), which
+>>>>      requires fault_around_pages > 1. With only 1 page in the
+>>>>      fault-around window, there is nothing "around" to map.
+>>>>
+>>>>    - do_async_mmap_readahead() never fires for exec mappings because
+>>>>      exec readahead sets async_size = 0, so no PG_readahead markers
+>>>>      are placed.
+>>>>
+>>>>    With no decrements, mmap_miss monotonically increases past
+>>>>    MMAP_LOTSAMISS after 100 faults, disabling exec readahead
+>>>>    for the remainder of the mapping.
+>>>>    Patch 2 fixes this by moving the VM_EXEC readahead block
+>>>>    above the mmap_miss check, since exec readahead is targeted (one
+>>>>    folio at the fault location, async_size=0) not speculative prefetch.
+>>>>
+>>>> 3. Even with correct folio order and readahead, contpte mapping requires
+>>>>    the virtual address to be aligned to CONT_PTE_SIZE (2M on 64K pages).
+>>>>    The readahead path aligns file offsets and the buddy allocator aligns
+>>>>    physical memory, but the virtual address depends on the VMA start.
+>>>>    For PIE binaries, ASLR randomizes the load address at PAGE_SIZE (64K)
+>>>>    granularity, giving only a 1/32 chance of 2M alignment. When
+>>>>    misaligned, contpte_set_ptes() never sets the contiguous PTE bit for
+>>>>    any folio in the VMA, resulting in zero iTLB coalescing benefit.
+>>>>
+>>>>    Patch 3 fixes this for the main binary by bumping the ELF loader's
+>>>>    alignment to PAGE_SIZE << exec_folio_order() for ET_DYN binaries.
+>>>>
+>>>>    Patch 4 fixes this for shared libraries by adding a contpte-size
+>>>>    alignment fallback in thp_get_unmapped_area_vmflags(). The existing
+>>>>    PMD_SIZE alignment (512M on 64K pages) is too large for typical shared
+>>>>    libraries, so this smaller fallback (2M) succeeds where PMD fails.
+>>>>
+>>>> I created a benchmark that mmaps a large executable file and calls
+>>>> RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
+>>>> fault + readahead cost. "Random" first faults in all pages with a
+>>>> sequential sweep (not measured), then measures time for calling random
+>>>> offsets, isolating iTLB miss cost for scattered execution.
+>>>>
+>>>> The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
+>>>> 512MB executable file on ext4, averaged over 3 runs:
+>>>>
+>>>>   Phase      | Baseline     | Patched      | Improvement
+>>>>   -----------|--------------|--------------|------------------
+>>>>   Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
+>>>>   Random     | 76.0 ms      | 58.3 ms      | 23% faster
+>>>
+>>> I'm curious: is a single order really what we want?
+>>>
+>>> I'd instead assume that we might want to make decisions based on the
+>>> mapping size.
+>>>
+>>> Assume you have a 128M mapping, wouldn't we want to use a different
+>>> alignment than, say, for a 1M mapping, a 128K mapping or a 8k mapping?
+>>>
+>>
+>> So I see 2 benefits from this. Page fault and iTLB coverage. IMHO page
+>> faults are not that big of a deal? If the text section is hot, it wont
+>> get flushed after faulting in. So the real benefit comes from improved
+>> iTLB coverage.
+>>
+>> For a 128M mapping, 2M alignment gives 64 contpte entries. Aligning
+>> to something larger (say 128M) wouldn't give any additional TLB
+>> coalescing, each 2M-aligned region independently qualifies for contpte.
+>>
+>> Mappings smaller than 2M can't benefit from contpte regardless of
+>> alignment, so falling back to PAGE_SIZE would be the optimal behaviour.
+>> Adding intermediate sizes (e.g. 512K, 128K) wouldn't map to any
+>> hardware boundary and adds complexity without TLB benefit?
+> 
+> I might be wrong, but I think you are mixing two things here:
+> 
+> (1) "Minimum" folio size (exec_folio_order())
+> 
+> (2) VMA alignment.
+> 
+> 
+> (2) should certainly be as large as (1), but assume we can get a 2M
+> folio on arm64 4k, why shouldn't we align it to 2M if the region is
+> reasonably sized, and use a PMD?
+> 
+> 
+
+So this series is tackling both (1) and (2). When I started making changes
+to the code, what I wanted was 2M folios at fault with 64K base page size
+to reduce iTLB misses. This is what patch 1 (and 2) will achieve.
+
+Yes, completely agree, (2) should be as large as (1). I didn't think about
+PMD size on 4K which you pointed out. do_sync_mmap_readahead can give
+that with force_thp_readahead, so this should be supported.
+
+But we shouldn't align to PMD size for all base page sizes. As Rui pointed
+out, increasing alignment size reduces ASLR entropy [1]. Should we max alignement
+to 2M?
+
+[1] https://lore.kernel.org/all/20260313144213.95686-1-r@hev.cc/
 
