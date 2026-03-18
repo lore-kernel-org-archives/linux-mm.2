@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 806EE103E16D
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22675103E16F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:28:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA1566B01A8; Wed, 18 Mar 2026 08:26:43 -0400 (EDT)
+	id 507716B01AA; Wed, 18 Mar 2026 08:28:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E79386B01AA; Wed, 18 Mar 2026 08:26:43 -0400 (EDT)
+	id 4B8936B01AE; Wed, 18 Mar 2026 08:28:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5F76B01AB; Wed, 18 Mar 2026 08:26:43 -0400 (EDT)
+	id 3CDFC6B01B1; Wed, 18 Mar 2026 08:28:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CAD016B01A8
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:26:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93BEA1D6D9
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:26:43 +0000 (UTC)
-X-FDA: 84559107486.11.756DFA3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BBC76B01AA
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:28:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC9B01A06C9
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:28:52 +0000 (UTC)
+X-FDA: 84559112904.26.86326FC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EEF1240011
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:26:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HjRFv400;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 117871C0007
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:28:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cIun73gh;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773836802;
+	s=arc-20220608; t=1773836931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kkIay9ZlQYHgLbMEIJHy5NQ9GxMMZTjjOr0jouTVDiM=;
-	b=b33TilmSJlnvA0OPxjWSMyFzwVq9Lg8AHc8bbwXC+bIpe/UXL22ljJjZfMo2l9C16Hhwt0
-	TgWRJK7Wlw47CLUOKpL8ZLRd82mTIMpJhLGUMxp4oGJ3iO+I8S4yS+Mk9lDBIjgQmpoUxk
-	Nr7XiV6HvYDm5L45OsRdP1Z9x5/pNcM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773836802; a=rsa-sha256;
-	cv=none;
-	b=cou+x7D2sxqgBtBlLV8+3PBZckGeNYRDvtEsQKVhNFAz7kiZ4tTmCKSQG/c/1JYnAS6kZO
-	ILHsJH1mH4d7TuLMHVfNo21HJtsvpvhx8nduYL/Mr5N0h3oUzdGJvyiNVyuUCreLo0JZL7
-	YYINcuPZ/MjKi+Bo6R21UX1uMMhROo8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zAEpCFGo40Np+/4E1MzPv7gHDUphsYzuiX0aayCsclQ=;
+	b=Ob3k+1P99RIzAOMerJ2YOVRjUPYj8maMakEvNVc9eODq7epmES2QxY9gyPKuh8PKh+kUjn
+	9P0f+JyFzk++86GHugGOdlpZIy32FQUvHEo0t6tNjVPvhIwNPoGrQUmQpl0pm7R8jQC3z3
+	W4xwIraTP3sNY/+rm6kIErhqBEXf92w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HjRFv400;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cIun73gh;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773836931; a=rsa-sha256;
+	cv=none;
+	b=sjwhRPIscnJKHZIPSZGGK8ZWUBLDz43CKJGDfDRT3WEbA+bkH+UVnroKkYuA9tV1R5NnWL
+	9h+EvCg5AV8VNokmU+6OhuIki/BcJD77TXY8tRZfA0x4+vP2x5R5rAbrrKNpPA6yt0y621
+	0s2dMo0h+4B/MT1aMQfmvsOuKYtmg3w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02918439E6;
-	Wed, 18 Mar 2026 12:26:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CFDC19421;
-	Wed, 18 Mar 2026 12:26:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0914E440B6;
+	Wed, 18 Mar 2026 12:28:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF26C19421;
+	Wed, 18 Mar 2026 12:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773836800;
-	bh=wlo6/KmRGeDlUQg4uZ5/ZwNJBHL6qZdYnfzLfFT0mzE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HjRFv4007y/PrRV1FU6H7y2F+D0zeEEji4DUTBFRMoQltXzjT8Sf1lBJbVJc9UvZI
-	 tkp18Os4zDDMnUTg/ItfBtIqbcJgAhnEQ0rJgnczob2BzIUaSzjR3gEv9Q+ruLpPl8
-	 9yxRM3j5la+5Zw5sxYqKOuPZb5/UZPmNAKYWcBjoLgGKzrzJgAblsD1yrQvjCIsMDt
-	 7ESlXLv8vNCbU/f9AA6ICRk9DKdM5rIqs/ZbjaGBpvtKwl7Erw0HxopdKOFsjUna8I
-	 80dQ/ETgezHlVDC+EgG3C9yYZbXROu3zcyCZdyZMJ4gd0a+pvJ+c+R+XvkflmzvLEM
-	 BiIAOGzx7baNw==
+	s=k20201202; t=1773836929;
+	bh=zAEpCFGo40Np+/4E1MzPv7gHDUphsYzuiX0aayCsclQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cIun73gh3acajyRAQTK5HIqsgWjlWiu62CXaUg5kFVRi9+EkcD3TXjyE/yOBOTa2h
+	 g3nKh4EXL6bWB5V3ctT4zQdxzNoJOreu1USdvSEAYv6f/xcXU8DkJAfWOfLZ4SZm5e
+	 RgM+g6E9EUH9RYJwiStgK17u/Xs2LP0pUYWU/9jXykupvgqwlQEMqTc1hK219FmWr9
+	 k83c/gIV+6PyHfUpxakfBkyg5UpC0zRycsCJ9NlZwRCDut5lDyAuIFRE2+tw1pnwaH
+	 IXMjCAsuJR2lPjw1m5Rqsrn10G6iJyO/F4FXJDvQPebyxodgKObZFWeAXfbxhDzzwb
+	 Em4SAyTihBENQ==
+Date: Wed, 18 Mar 2026 12:28:44 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jiakai Xu <jiakaipeanut@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH mm-hotfixes] mm/rmap: clear vma->anon_vma on error
-Date: Wed, 18 Mar 2026 12:26:32 +0000
-Message-ID: <20260318122632.63404-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+To: Jiakai Xu <jiakaipeanut@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	harry.yoo@oracle.com, jannh@google.com, riel@surriel.com, vbabka@kernel.org, 
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [BUG] WARNING in unlink_anon_vmas()
+Message-ID: <390a3cfa-661d-495e-88ad-eeebf4bc39f7@lucifer.local>
+References: <CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com>
+ <12501051-98d4-479a-8f10-547b2c08ad59@lucifer.local>
+ <b4e59cb0-c57c-472e-a70c-10ac450f4a6f@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EEF1240011
-X-Stat-Signature: jc986fssfw9qefndjbkzgzjf7rtk96in
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b4e59cb0-c57c-472e-a70c-10ac450f4a6f@lucifer.local>
+X-Rspamd-Queue-Id: 117871C0007
+X-Stat-Signature: ntk8nyzxjzcqsuu1ewordj16wjxjst8h
 X-Rspam-User: 
-X-HE-Tag: 1773836801-468557
-X-HE-Meta: U2FsdGVkX19tZ2fxXQYgRI6XXrlXc/PS4u7Qd2Yb1bg7Y1gmeflkLvYcDxtPEOyEqWFW0vf6GbWvUc/TVxbwsbc/gOHFKY8qTEMsl/Bk5dy87vwKdEbiWG/F5Rd44hAtdlB9BITa638yvG6OCGbDAHUz/bZV8WquF53QaWlEw1ox8i1sSi5SiIBr732gcD9OxQMAopQ2mvSRos2wli1Y+vDouwkzQat8rT6lPGTh79IwPZsdA+ELhi6QyEzk0tPiXSKR2IfbhZ/DP3YHiHCO6gbFUQPz/DZ5USTht4a7K0Ah26VXbR27MJc7iyKRBn+1ZaoAeZEQFp2wUCxhNIS6sSLiqm9vU9oFUQ/nRW+UmVmVBFsCHCIs/K2LRCbzc9lNIn22PXEncD+F047T8h+EFDntjjDGig0Mcdn7mJzOzmRFdiY5wOuCAJI9o1cmYHdIzouQdeyVijbYqNp5kC2pDm/rCBZ9Ej46+qYKgiaG6LVAWeo6hK+jDkYlzTaupX5qXNt20Y56JgJ00/6f8xrzMYaN61Ehas889xKXX2EZCU+wn46ENKtHE+ZESbNAo0gdqxwLTjC81x6tNXidLRyx7Q7TfTt78qjJSe5RBMESvB5OstHYyPbeTLriITu/hq+L/DwBQPwe+7Im23VENvarGUspS2936VdLI2QQeXA86UxxJ1XhPRK0dfqqSzVImmIjSzAWpqbA8xXukTM/SiEigCoxVYZ0qZ+RxP3W2FOtzrDeFH6gzG8QJ0LAKgjBxkGef4f2vpWrglnkUGnCYp2orIF1m0b9b5gOHzfVdVwHLW7isUZcSP5DK5jggRNPWZTh4mLrWiG9Gcm+gqSr1rFCnGmaZsvA65Hwawk9Kiowz/oM/Gd0wjD5wwKq+fvqTY4V460Z3hIONPB/k3HUeJzrWb0W0vvujwoEIQUzI6Za/Bwt7IuyobcwVV6p3N/Akzi/HsvgWOXMtda6Hib4up/
- vUOburh3
- ePvT6vpyhbHscp5H7kIAzKKdGHKzEyQsMZSyqGOJcOMkd7uDMyhuL/uunguq7bMisFZw3rTGjAwqkUEapxFrl4D5WeDAQ8nMXo0Oci1ewJOM8qDsiY7nFauc8i0Wo1ulHjRuC/sdlCKGdeGJ4eibbyEnRTVgj3lb/FFyZIc1T5bC2/WQt/pjYjITA0b4aMk0Ol1ohkXmIG0DaKhBJNfzFi3P7Vrb5Dxq+n7DQHXc12nntnu0UCjuUYIHlxPTcprF+WhshhicWABPPkTtye6adKzoF9ZJx3A5WOHrsR/blUFo57J6dvvezUfLqF31iANM9kZ4FaPkkfPE3vWGWCalvpT/wMA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773836930-251771
+X-HE-Meta: U2FsdGVkX1/nvgT/yUr3X+yz6EEoKqfPbzgkeOsX9R8q+JxNPiT9r9QPcK7qiKkd3CWhX9ah3WUaJyymFiSAL0Iv500y+iZLlbZ96b3hEiYG4EcdeRZ2JXMZJWKWIXxtho4iLZHsi8+W9hRN5CCJ0axmzfho9se1XSmLKhqJ/BO4Nka206A8H7B20FzgXyUEeYig/ixYHYf/tz/5ggXW/wjDRCRTh+jZVxy+55KKbYzjOI7+bD1J9JmZXomtOjt0l/gXOVebeocdOR/tANShMU+gVizc5G8zRaw+mGyWfRp9at70tGKmzEzafz9oZNYSEB8KytYgeFWe1zGggnpETS3B5rySUBFY0Ufmw+zx1917XWs63lFTgSwtEYZz8X/eilTHaPO9+sMafPRw1SiaFEtokxeEtEjkLZXWOTbgIjC74Gi2W0XUBI2kWBU58xGnw8NjB3Y0CNZTKpdA7a9Y8+ywfat5Vha8Y8Te884xzHvBfBjCzbPDz963/I9DDOLDrShCXrN3zsdit/INOuhUDTPYfFJMd55I7BVLyScEerl+nDMP+9wpDLi2ieGonNGty50rGThH5DM7txU5BJpfXsaaqDp2KEjpmN9IPMLQG+NXdh/T3RPFtRPQ+3LOIrOFSLHAjVpCF+PE9nhRDfxD8dJrYR/ZUHEqx47M2rB5732o3cRytN2ko/FGEipUnXOz5Cg99t11m+1GRU9AsAZ9E6SM8RHyMlEuDkkEYsA0aAfrBlDNhOfMz6Jb9n5fSzBDo6qx55J+rHvOIrPFEA7hjAF7Ce9Bh9EInWg2+/TxkR9fERpYz/OyFUYnV2qqYPjwiHncOA0EUXFQ5MDXQ7F0C5zu0eZfPN6uf4v2FkHfNEIvq3ZtZluVPIoP/9s0ak2EacgP5fsQHMm1O165sZgpXF68nSN2iIWDFTh6a2VEqTF/aNpdN/D34QR298/vvB+nssZrH/s25/M49gtPTXP
+ /GXkwLBp
+ XvDEDNowPkmv4+ooHMw7Exc59AhfyqXSwWgHLDAl/y+5s0FFwT85gRjn3eFnzVjm0zqD12KblVFM/sV4vB/5W6/PUFm8ehVlBlMyMd6KUb/yRdKHSVoBKBSRKYKlh1EYVfJQdeM5XwyfKZ1s+8FSigYj+qrslxZ4Ge03/zuPBpPPk6s2p1i43/uypAOfUVHYVQYu9SllQAijW48XiKNAXSy/AdaEqlCVskdzD8VypzdwFulWZFToa4BFB+yLZEAweWuylylUjCDysph9SxphBntap+XfaK6IIKrefRyUocVEdS4jWEq9secHidZ+EfRot389lZo8v/WNXjrw2hnBk3uqrWYgL/g4ERbe7NiYj4psyJ/o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,67 +94,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 542eda1a8329 ("mm/rmap: improve anon_vma_clone(), unlink_anon_vmas()
-comments, add asserts") alters the way errors are handled, but overlooked
-one important aspect of clean up.
+Fix at
+https://lore.kernel.org/linux-mm/20260318122632.63404-1-ljs@kernel.org/
 
-When a VMA encounters an error state in anon_vma_clone() (that is, on
-attempted allocation of anon_vma_chain objects), it cleans up partially
-established state in cleanup_partial_anon_vmas(), before returning an
-error.
+We like to turn things around quick in mm ;)
 
-However, this occurs prior to anon_vma->num_active_vmas being incremented,
-and it also fails to clear the VMA's vma->anon_vma field, which remains in
-place.
+Could you check to make sure that fixes the issue? If so could you reply to
+that email with:
 
-This is immediately an inconsistent state, because
-anon_vma->num_active_vmas is supposed to track the number of VMAs whose
-vma->anon_vma field references that anon_vma, and now that count is
-off-by-negative-1 for each VMA for which this error state has occurred.
+Tested-by: Jiakai Xu <jiakaipeanut@gmail.com>
 
-When VMAs are unlinked from this anon_vma, unlink_anon_vmas() will
-eventually underflow anon_vma->num_active_vmas, which will trigger a
-warning.
-
-This will always eventually happen, as we unlink anon_vma's at process
-teardown.
-
-It could also cause maybe_reuse_anon_vma() to incorrectly permit the reuse
-of an anon_vma which has active VMAs attached, which will lead to a
-persistently invalid state.
-
-The solution is to clear the VMA's anon_vma field when we clean up partial
-state, as the fact we are doing so indicates clearly that the VMA is not
-correctly integrated into the anon_vma tree and thus this field is invalid.
-
-Reported-by: Sasha Levin <sashal@kernel.org>
-Closes: https://lore.kernel.org/linux-mm/20260302151547.2389070-1-sashal@kernel.org/
-Reported-by: Jiakai Xu <jiakaipeanut@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3UKjYBJjCd09OfH55CKg@mail.gmail.com/
-Fixes: 542eda1a8329 ("mm/rmap: improve anon_vma_clone(), unlink_anon_vmas() comments, add asserts")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- mm/rmap.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 6398d7eef393..abe4712a220c 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -457,6 +457,13 @@ static void cleanup_partial_anon_vmas(struct vm_area_struct *vma)
- 		list_del(&avc->same_vma);
- 		anon_vma_chain_free(avc);
- 	}
-+
-+	/*
-+	 * The anon_vma assigned to this VMA is no longer valid, as we were not
-+	 * able to correctly clone AVC state. Avoid inconsistent anon_vma tree
-+	 * state by resetting.
-+	 */
-+	vma->anon_vma = NULL;
- }
-
- /**
---
-2.53.0
+Thanks, Lorenzo
 
