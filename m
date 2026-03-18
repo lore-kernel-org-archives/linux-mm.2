@@ -4,87 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F2610775E1
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 16:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5602110775E7
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 16:54:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2C9F6B02B8; Wed, 18 Mar 2026 12:53:57 -0400 (EDT)
+	id 9A5376B02BA; Wed, 18 Mar 2026 12:54:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0406B02BA; Wed, 18 Mar 2026 12:53:57 -0400 (EDT)
+	id 955A96B02BC; Wed, 18 Mar 2026 12:54:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B77F06B02BB; Wed, 18 Mar 2026 12:53:57 -0400 (EDT)
+	id 81E3C6B02BD; Wed, 18 Mar 2026 12:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A14536B02B8
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:53:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D32CBB9D5
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:53:57 +0000 (UTC)
-X-FDA: 84559780914.24.EEE8C77
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 71D30140008
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:53:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h7kRifsp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BED96B02BA
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:54:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 188C01A0688
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:54:29 +0000 (UTC)
+X-FDA: 84559782258.19.2C59091
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BAC7B1C000C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:54:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TRQoWLI+;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773852835;
+	s=arc-20220608; t=1773852866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFBJheRcxnFvhtIcW2IDEBpPz+t2EMg7OGGBrmDY/eg=;
-	b=zXnUjAIcngE7+iV4owFV5s5l2wcfXdzxNSrAMlc6Ves7Wrkfy3H1MnJPk000GzUvna8VDe
-	3JcqeUy2UWXpkWaDl8dNch72WsxI24b5gHSgsqcLUuPXlFV91PNxUdWPXeRGZT1+A2s/Ow
-	36oPsGa1QcUlZkxDotNzw/CbHdl0SfY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h7kRifsp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773852835; a=rsa-sha256;
+	bh=5OuDH7w+MEOkpCyOkBC284YTNWCtVlDRe0pmxFHD+ck=;
+	b=s6EOPp0kGDC/QAF8lcuDkjLSj9kSLELYa4F/eUZ/tykN3Pz7Xxoly1DiedlJXqwTSOdAOf
+	RfkfX5/+j//x7KPxxg1pk/GgFUWZ0ilsK/HpVeHcuhRZvR17f8kPD5+h6elGi+n0o22TlB
+	9nAIDU3SNhqeJyHIS3FVeB7HKvr25eU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773852866; a=rsa-sha256;
 	cv=none;
-	b=E6vxbSoEbczIiPB3pEl7YlKIgHA77WgValrImnFnBLag+aiiO5/vaBbMEhSJnTYORIwgvs
-	zZmyzPJ6/1tBJoKsn9E7PUfgNRUOw/5Ok69X1kwaa/hZngVo2Zdhmy5AniW1UdxC+Lz5mk
-	mnn5EKQ5vyFCyjhZPNumFYHaxBLh5yk=
-Message-ID: <cfa40f51-0a39-49e3-adac-48b2709e67c8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773852832;
+	b=PiX2nC1xWTfxGq7rn7pv0P30XTHYVdbbuhUNRE2WnFLY+TabcqxWTauEqaxFPRp1ffew0v
+	Q5WkXkcmf7cEXbsaPgJfvblUaXz9G0L0GiO1tTDKjwKGtzY0LytGvWJoCKAV1ZjiQq4ejH
+	naoFIx0ZW7RRaFbJMWU6ClAnA6WMWpI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TRQoWLI+;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773852866;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JFBJheRcxnFvhtIcW2IDEBpPz+t2EMg7OGGBrmDY/eg=;
-	b=h7kRifsp+R+PKcozL0bLph/GAkDSTIbUZN48QOqMUvMot+q16sFxCj3RgjWgxd5DqjjOai
-	phlHPgrB/psjGgWbhHnZCG0LM4AhE9uH1yQkvV9/BJKaUX0hMnsGydrkwRv9k2FlTFDHlA
-	0ghfZjylmp3aD1r9a0ThSarY+nXZ/fE=
-Date: Thu, 19 Mar 2026 00:53:46 +0800
+	bh=5OuDH7w+MEOkpCyOkBC284YTNWCtVlDRe0pmxFHD+ck=;
+	b=TRQoWLI+AwIqHGLuy0zas+naJhpSpi7niHW1L0c9d7iJh5bLsh7NWmEATrvr0dgmYYSvtM
+	+0GLahVjYFVkxKeUDstCEIQ79E+IFCG67/qTQjtk6210OKDOragJ7tasNtYwYTPuCXUE+T
+	oxYzqMFDhvhI/gjn6n+HaK0dO30l4C8=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-626-DWx-Q8c9MDyZ0yXQ1WvdVw-1; Wed, 18 Mar 2026 12:54:25 -0400
+X-MC-Unique: DWx-Q8c9MDyZ0yXQ1WvdVw-1
+X-Mimecast-MFC-AGG-ID: DWx-Q8c9MDyZ0yXQ1WvdVw_1773852864
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5093b92f327so342631cf.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:54:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773852864; x=1774457664;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5OuDH7w+MEOkpCyOkBC284YTNWCtVlDRe0pmxFHD+ck=;
+        b=d7zIsv5UVRm5eh74XpbHYK1F+f52OJiRCZMmG8cmSxPGWc0osR7Apkmon5QDFvy7hE
+         2iAeVB5LNsFnsNiqNxjrk2TZl1u6jqFOlCNhqcxILNG8gz/CU6S0jLbgb0kQ4WtFiGh7
+         5cJiKojp86k/Snb5YMC/4ij3L++UYqBckL4WBY8pXToLSh9vEu5wrAqgap5tcoOp9aGv
+         jUn1eL4qqUGmdTX3y1q2P30gMM3sDp3dU3fmhTJxrfrJ8GIbNX2V2tRgB/tjOZe/Xxft
+         j60A2zKLAJkGf8uhCiX+q/JLNo3HH+C0SxULwAfrh4in91oALR7pyTQ3SP3P4Al+/srl
+         Ct1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWCdVTKuzi4WcovKfzBQPGdVqFztn79TWIftZCR/7Qa44u3AONYaPPW2IRJbVmK0FQ/saVYilGOPA==@kvack.org
+X-Gm-Message-State: AOJu0Yyq5ExbCal5NpsBBu3Q4Aa9SZj/UcDcJbhX+XOrSZMjEJMZ2ZoY
+	7cDoSykVe6mQLoi6PEaiWXvrKYlWUdPDqBsSlt//Pavm7jShhEjeJ/BWnXKoO43NnbvPZpLfb9J
+	Zfrl58URZ8dbHo6MAmx6SU7IzqovtIz3PqFsKSoN65s+XfaQsC848
+X-Gm-Gg: ATEYQzxA5ZawqSdNXtvpV3cfYG4qvDd2TSfH8fWsMLmcSyMgj/YI1TWDmkM64scIuLq
+	R5QOrnVLWbxYp7uBTqCYZd2koQ3Yfvladhyll9TXTVNvCKpdS8bBfzvxzY336mfdraaYJ7UWxqZ
+	EzD4fdfBzwyGnfNo9SP3Tf2srzSqOc8p/BrEfm1MhpzeRkG4vSvPD8wwZzDkaOvHMiwdAAQcpAB
+	FUv8uUbwDo65nP/pl+1JHMzqqheEcjGEWX6Q7CjhuAnFhwPL6WDOiK7LN5AgQ6/hiUKwZa5rKjn
+	WkgK5xxgGqDzWmW0fvoYRTUhfYrzf/7GRWhDqyjzwv/K+m4B8QF91BwqlHgtzc/UsFGECaGsW/i
+	+8Kgrz20uRrHRYf9Y4pGVKAzS0rgnjBg1U1OmrUwlJ05PCeTiNb5VSmNBQ5a4
+X-Received: by 2002:a05:622a:5d1:b0:509:1253:fb27 with SMTP id d75a77b69052e-50b1476270amr53569211cf.15.1773852864241;
+        Wed, 18 Mar 2026 09:54:24 -0700 (PDT)
+X-Received: by 2002:a05:622a:5d1:b0:509:1253:fb27 with SMTP id d75a77b69052e-50b1476270amr53568281cf.15.1773852863475;
+        Wed, 18 Mar 2026 09:54:23 -0700 (PDT)
+Received: from [192.168.10.111] (c-76-154-99-94.hsd1.co.comcast.net. [76.154.99.94])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b135d6194sm26020621cf.28.2026.03.18.09.54.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Mar 2026 09:54:22 -0700 (PDT)
+Message-ID: <ac9a96a0-18d7-489f-aba2-675d8ff1af03@redhat.com>
+Date: Wed, 18 Mar 2026 10:54:17 -0600
 MIME-Version: 1.0
-Subject: Re: [syzbot] [mm?] general protection fault in zap_huge_pmd
-To: syzbot <syzbot+de14f7701c22477db718@syzkaller.appspotmail.com>
-References: <69babeba.050a0220.1b2d94.0003.GAE@google.com>
-Content-Language: en-US
-Cc: david@kernel.org, ljs@kernel.org, ryan.roberts@arm.com,
- npache@redhat.com, Liam.Howlett@oracle.com, ziy@nvidia.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, dev.jain@arm.com
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <69babeba.050a0220.1b2d94.0003.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable v3 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+ jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org,
+ ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com,
+ surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de,
+ usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com,
+ wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
+ yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com,
+ zokeefe@google.com
+References: <20260311211315.450947-1-npache@redhat.com>
+ <20260311211315.450947-6-npache@redhat.com>
+ <20260312020454.qpwjldisaqcstjer@master>
+From: Nico Pache <npache@redhat.com>
+In-Reply-To: <20260312020454.qpwjldisaqcstjer@master>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: YuOyo83pg-upeWP_cik1ll42tP0lJrrrO8WXfL9_lM4_1773852864
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-ZM
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 71D30140008
-X-Stat-Signature: qyfdia8859ptzzb3g8enjthmcnqsr5ic
 X-Rspam-User: 
-X-HE-Tag: 1773852835-60593
-X-HE-Meta: U2FsdGVkX19CCWQhhilTJJDN5rP81aVmXNtSk95M01I98YtR8dCkYsvK+Q1oYoa5IEFHtSqxang52xPkhBFIBktuxEEvENflmfu6nKTHKtIvtym9qDnaMCmoZ6vIUUAleIQr0LgxnQXOTE85LqIS3RsABstfAcd6rMx5rCMWLnf3fZDyM9Hs6pn/YycaKtLqo2GsT2X/jcoForY4irFm88rgTaM0DWQS7Vt9P7W6r4iLbTaUe0vMHGQDCoqRUHSDdkjAY5WRA6vEmupFn1jWg05bfHaoWmAgyXzPcijAG40KaMrqPUbKyU81pXvo6qxhGx2bC5tnK1555oeT+7ID8Jm2TKZPiPB5zKb3Oqp2poTdcsy2FJ1xSoCfgd0ndN40c5ZpzXNmf7rAHJHr5WsM+5iXQvu1AqdYGDeMFyXVqToUSqMHuy9UPvBk3ua9DPk0spMqVhQID/xuC50NH5xqwbTC81mL3QwN9wtONt1okzMNxQuQeZIbHdfzdP4UEYV3bSRq4MBLkS3Z/dTM5ufNI57AEur34yU4OuAOTNMpL+eFFbHZeGjMOfSwJVT+oNca2LMOfqIF4JKEsrESuB0G++PlTkzDcRbsiQcE/K1fzB456DIWsxne84k+vQVoIVFRwPCEgzEK4ItTdfErxWRjBOEWbtZt/OR4uB/aP6dCA0wS/BaOVn3XPvAmTfGbRGvqzvIsffzwRNyfFkN+NFveZeSGsYNgywwDa8TclL2sHB6SDmqzuXc9r30nRrLEEX0xmzLJ2iVAG7E6gAdA0LKE7bap3kVgOkGtpscEyMDhanZCm88kQVbcPzaZb6jXqFt5lyAn8mycScsfV8wI6o5QePgVnKOIQX6Ec9d5Rly/IfFRLL9FVzSP51C7io4qvYWUo2L37GLHm5oRBWvZNxf+sHd8BIIEIRmOzBd4Nna47g6WTEJGpY25xtGEkiRGzpRDJLUdrILjx+WrDdTemKd
- 0jV/wPhL
- zfxmlvyscFbbRFNnyEFflgn5tlgNW/+gwdM3GBeUVjGkaPtOFQbyHukxvULQ86ANRV2m+A6KoZSsRHEieNuWB8BugEJEr9jQGybFlaT9c2lqehCW9GNldiQ9vXsg1wPrcBwlCa1E3yVwqdIXZEhGSCFh6dnxsC53YcnCz9o49J1jjpMKVbEOC3WQgjHGCBuHXV2RSYFo8e4Yjy1fpc5nwg8Ux4zauWwRPNFcUq5AqkKbncjU5oyiey0n/UfsgPDbe97C3Lxj2Rsrm5MsoqUzWzX4xkt4AWcQfgUJrRVtL2eCUA2KTYrM1CJy57jBgquf7vID2/Qnpd7qjGauTqq1qIhg/yfNO6L7j5CRl3ThhmtAPFdm1BVpInGVrNP2Qb7B4UvPQTdlPIV5nbfwzrjOZfGm35GORiGVTu4zzQ3QGyQ/Tl+Km4nK3rD53bVdTcOAb/0Q3KGShexqADiXKKMBRuS4Z5EvqVY3CF8oRNntljf//1CRFt56lMVL+hLRAl6FLd5B9/ahUr/Tvx/eocorP2BlMSkC3xb+dJ9Py94LzyZOHGaWd+D86NOJOMxlHJOvgYQJW2ORcidIKI7YqEh1P1Y+HFOnchNjKpefsi7GNoUCLypz3hf1ASXI4uX4oZWxfXI9G8GTlTOOeWlVPCis25U4KPGS6zBkSEK8tbnk+sQyD9BmBlir7Bc5ej+UkY0Cy+9zQLuCpCjZgGnRbeOypgRFPa5rn2TGVV0GH9Ibv57PZnwq5ywhLeFqYIcdpnw3iL+QVplwRpImbgFuH9iwvj4f9jOyTOrI/3QqhpH1x+ArkSGZ76VhtXC3NIy1+0w6kJWKhC9vQSR17FGIMPwKY3Qz+yK8R8apS3DcC0fNRZvo/7PUuV4p6thbIvn/rdg7t7SjXPc7k4N/fCO7CuyiLLTbv2LSskaha+GgLwyfLDstAD0XsXq4MOGpqQucZUGipDGDA0TkpwN02uwY=
+X-Stat-Signature: 8tsmik9bpa4677p7wo6sk5wuijd7jdjr
+X-Rspamd-Queue-Id: BAC7B1C000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773852866-436751
+X-HE-Meta: U2FsdGVkX1/uhuduveIF9r+nM9UnZkY5pOXUd/3PCMm0NkcnHEcS6mjryBUDncsOeKaqaiTaqvG0IwtEcxN1Ewyb+BxAX/z9XAbyHSFHriaq5/PcTudOWmgjLpWSYMFqOvelk95dPsZpJtpkmITR1IC0Wl1RBMq9eaX2IzuGHpIEOotUv6ksXLSGjbnzTqwGlphKkOcmshIGF1CsfTrWtUPTfFDOd7wBu5pIMPftfodiACO+p0fQlifibM3iJPya8ruZOTpBQFB2DWHfmr8z2Qoy3iNIH1dv2enoQiajLBj+Vv99Ow+Tc7k1VVPiOtn+vMmKnOJm7r58GxyScjIJTziBfNVwUqbMGBtjtknTOr98xIPXpS+U5hDfaoJ+Wf8+CkQTcgeykJkVspfLa/JT/AAFuUPrwe5iunkRmf4+d3lXel4kPyRQy9aycTJs+7ZarY2bgs+Esrz6gtuc3FP5TFcHmsAY36aKdPbg1rFs0KVdfn5BzZi4fgDIKvYRwHFtyTtIwBSoimY/PLUR0OvuPD4ZtuHBfEskEzBO1yhoDuRoLmbBvJ8Cvla4IDwy6iDLbrgDkqSXuC900O3qnPsXtchWGzmVS74RMZCGwAarbkL5z4JW9yj59wVz7qNkhHCe8Lz5x3CPlMP3ERu1eXHV0tZullkqfCRIl/f/++i7AcPJphNKtcPnJ17KoHaF8sMBMXTrsMKAHGtKRhOYNPZhR2NIGRCZdoNQ30ZabyY0sUbR8fA7SCFOCSMD+epmuId0TOsqa6LefKONwZ6npRIDS5TPZIIZFUpqIZnSn/UDEtpOrYbhRFKxSOYMaIwsQBLeD8LwLeaD/nMVJ47WZvub3nYGUQthBri3urnqHzMDQxYSJdJZ4E27XHOT0X2Os2t/vXXPDn269esVJzGcVAeKEL+HCsLM+0vplFgh3Edr20pheJhlAdR1DHcxFJS2K1/0elN5/uUPwhvAvRW5Tl1
+ +tn80aia
+ baMKe2t/h5DEI7dI0u3hd0yQX0Z3mxbuho0Wim/kS1ImxG/19gAsweBzf9/P8CUdqha0nHUQgrZElk5KB9EP1beXWLsrjH1ecP/yXVcKEQe/eXgfBIyy42hmxTdZRHvmZCVjZBdLnaCutkMU52jenUiHSe9DnmOLMFuiSuDCyXbRvojOolCznORA409SGMvexoMferlx5bPXZdhtUtbJbEvnxU5H4if6lXpMD8OD08waerO3cbDusZolb1zUYgQNYd3dPYYjWZpBoF9eYDWGAcLFbbyDs2Q2uoMt+MuRHnzVx4Pr37gMb1lfuTgGJba+hnISDNjtkcpiNpj/a+bjfy5x5jdTUYFf9xwXmk46nBGjtRtdDVdeOnps7HhCBNCT+wXi+klQQTzTk+QsJNB8vOxq0aD0YxknKJzolq45Eaj/H9YMqYWdkDQPlrcAcWpjy+eZ4c+MN4rnlRQ6YZEVn4G8AV7SqMe9tEok6762MMr45UVlOWcgILBYOW+O5ysnYYdVDGxGMn93o5q8ma3mSkPoStlZuJaNszMAgzBH2ra1o6yc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,152 +152,92 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/3/18 23:03, syzbot wrote:
-> Hello,
+On 3/11/26 8:04 PM, Wei Yang wrote:
+> On Wed, Mar 11, 2026 at 03:13:15PM -0600, Nico Pache wrote:
+> [..]
+>> @@ -2823,46 +2855,20 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>> 			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+>> 		}
+>> 		mmap_assert_locked(mm);
+>> -		if (!vma_is_anonymous(vma)) {
+>> -			struct file *file = get_file(vma->vm_file);
+>> -			pgoff_t pgoff = linear_page_index(vma, addr);
+>>
+>> -			mmap_read_unlock(mm);
+>> -			mmap_locked = false;
+>> -			*lock_dropped = true;
+>> -			result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>> -
+>> -			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
+>> -			    mapping_can_writeback(file->f_mapping)) {
+>> -				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
+>> -				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
+>> +		result = collapse_single_pmd(addr, vma, &mmap_locked, cc);
+>>
+>> -				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
+>> -				triggered_wb = true;
+>> -				fput(file);
+>> -				goto retry;
+>> -			}
+>> -			fput(file);
+>> -		} else {
+>> -			result = collapse_scan_pmd(mm, vma, addr, &mmap_locked, cc);
+>> -		}
+>> 		if (!mmap_locked)
+>> 			*lock_dropped = true;
+>>
+>> -handle_result:
+>> 		switch (result) {
+>> 		case SCAN_SUCCEED:
+>> 		case SCAN_PMD_MAPPED:
+>> 			++thps;
+>> 			break;
+>> -		case SCAN_PTE_MAPPED_HUGEPAGE:
+>> -			BUG_ON(mmap_locked);
+>> -			mmap_read_lock(mm);
+>> -			result = try_collapse_pte_mapped_thp(mm, addr, true);
+>> -			mmap_read_unlock(mm);
+>> -			goto handle_result;
+>> 		/* Whitelisted set of results where continuing OK */
+>> 		case SCAN_NO_PTE_TABLE:
+>> +		case SCAN_PTE_MAPPED_HUGEPAGE:
 > 
-> syzbot found the following issue on:
+> It looks we won't have this case after refactor?
 > 
-> HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=119ddd52580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
-> dashboard link: https://syzkaller.appspot.com/bug?extid=de14f7701c22477db718
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b44da580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1537b8da580000
+> Current code flow is like this:
 > 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/09145161a8a9/disk-b84a0ebe.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/b64c254e474c/vmlinux-b84a0ebe.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/a7c33f5f7f45/bzImage-b84a0ebe.xz
+>   result = collapse_single_pmd()
+>       result = collapse_scan_file()
+>           result = collapse_file()
 > 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+de14f7701c22477db718@syzkaller.appspotmail.com
+>       if (result == SCAN_PTE_MAPPED_HUGEPAGE) {            --- (1)
+>           result = SCAN_ANY_PROCESS;
+> 	  or 
+> 	  result = try_collapse_pte_mapped_thp();
+>       }
 > 
-> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASAN PTI
+> Only collapse_scan_file() and collapse_file() may return
+> SCAN_PTE_MAPPED_HUGEPAGE, and then handled in (1). After this, result is set
+> to another value to indicate whether we collapse it or not.
+> 
+> So I am afraid we don't expect to see SCAN_PTE_MAPPED_HUGEPAGE here. Do I miss
+> something?
 
-Looks like it hits a general protection fault in zap_huge_pmd() while
-dereferencing folio->mapping via folio_test_anon() ...
+No your assessment is correct, should I remove it from the list? I've been quite
+confused about requests to list all the available ENUMs, does that mean we want
+all the enums that are reachable or all the enums that are available as a
+result? Im guessing the former based on your comment.
 
-zap_huge_pmd() fails to handle non-present, non-none PMD entries that
-are not valid PMD softleaf entries, leaving folio as NULL and
-dereferencing it ...
+Cheers,
+-- Nico
 
-For PMD-sized hugetlb mappings like the reproducer above,
-hugetlb/userfaultfd would make such PMD entries that can be
-non-present and non-none without being valid PMD softleaf entries?
-
-I'll look into it :)
-
-Thanks,
-Lance
-
-> KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-> CPU: 1 UID: 0 PID: 5994 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-> RIP: 0010:folio_test_anon include/linux/page-flags.h:718 [inline]
-> RIP: 0010:zap_huge_pmd+0x7b1/0x1030 mm/huge_memory.c:2463
-> Code: 08 00 00 e8 11 e0 92 ff 48 c7 44 24 10 00 00 00 00 4c 8b 3c 24 4c 8d 75 18 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 f1 43 fc ff 49 8b 1e 48 89 de 48 83
-> RSP: 0018:ffffc90003bb7550 EFLAGS: 00010206
-> RAX: 0000000000000003 RBX: f000000000000000 RCX: dffffc0000000000
-> RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-> RBP: 0000000000000000 R08: ffff88807cc9802f R09: 1ffff1100f993005
-> R10: dffffc0000000000 R11: ffffed100f993006 R12: ffff88807cc98028
-> R13: fffffffffffffa00 R14: 0000000000000018 R15: ffffc90003bb7ac0
-> FS:  0000000000000000(0000) GS:ffff888124ee0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00002000000000c0 CR3: 000000000e94a000 CR4: 00000000003526f0
-> Call Trace:
->   <TASK>
->   zap_pmd_range mm/memory.c:1990 [inline]
->   zap_pud_range mm/memory.c:2032 [inline]
->   zap_p4d_range mm/memory.c:2053 [inline]
->   __zap_vma_range+0xa82/0x4bd0 mm/memory.c:2093
->   unmap_vmas+0x379/0x530 mm/memory.c:2162
->   exit_mmap+0x280/0xa10 mm/mmap.c:1302
->   __mmput+0x118/0x430 kernel/fork.c:1180
->   exit_mm+0x18e/0x250 kernel/exit.c:581
->   do_exit+0x8b9/0x2490 kernel/exit.c:962
->   do_group_exit+0x21b/0x2d0 kernel/exit.c:1116
->   __do_sys_exit_group kernel/exit.c:1127 [inline]
->   __se_sys_exit_group kernel/exit.c:1125 [inline]
->   __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1125
->   x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
->   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->   do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fdd0b39c799
-> Code: Unable to access opcode bytes at 0x7fdd0b39c76f.
-> RSP: 002b:00007fff630f1d78 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fdd0b39c799
-> RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: 0000000000000003 R08: 0000000000000000 R09: 00007fdd0b5e63e0
-> R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007fdd0b5e63e0 R14: 0000000000000003 R15: 00007fff630f1e30
->   </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:folio_test_anon include/linux/page-flags.h:718 [inline]
-> RIP: 0010:zap_huge_pmd+0x7b1/0x1030 mm/huge_memory.c:2463
-> Code: 08 00 00 e8 11 e0 92 ff 48 c7 44 24 10 00 00 00 00 4c 8b 3c 24 4c 8d 75 18 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 f1 43 fc ff 49 8b 1e 48 89 de 48 83
-> RSP: 0018:ffffc90003bb7550 EFLAGS: 00010206
-> RAX: 0000000000000003 RBX: f000000000000000 RCX: dffffc0000000000
-> RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-> RBP: 0000000000000000 R08: ffff88807cc9802f R09: 1ffff1100f993005
-> R10: dffffc0000000000 R11: ffffed100f993006 R12: ffff88807cc98028
-> R13: fffffffffffffa00 R14: 0000000000000018 R15: ffffc90003bb7ac0
-> FS:  0000000000000000(0000) GS:ffff888124ee0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00002000000000c0 CR3: 000000000e94a000 CR4: 00000000003526f0
-> ----------------
-> Code disassembly (best guess):
->     0:	08 00                	or     %al,(%rax)
->     2:	00 e8                	add    %ch,%al
->     4:	11 e0                	adc    %esp,%eax
->     6:	92                   	xchg   %eax,%edx
->     7:	ff 48 c7             	decl   -0x39(%rax)
->     a:	44 24 10             	rex.R and $0x10,%al
->     d:	00 00                	add    %al,(%rax)
->     f:	00 00                	add    %al,(%rax)
->    11:	4c 8b 3c 24          	mov    (%rsp),%r15
->    15:	4c 8d 75 18          	lea    0x18(%rbp),%r14
->    19:	4c 89 f0             	mov    %r14,%rax
->    1c:	48 c1 e8 03          	shr    $0x3,%rax
->    20:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
->    27:	fc ff df
-> * 2a:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1) <-- trapping instruction
->    2e:	74 08                	je     0x38
->    30:	4c 89 f7             	mov    %r14,%rdi
->    33:	e8 f1 43 fc ff       	call   0xfffc4429
->    38:	49 8b 1e             	mov    (%r14),%rbx
->    3b:	48 89 de             	mov    %rbx,%rsi
->    3e:	48                   	rex.W
->    3f:	83                   	.byte 0x83
 > 
+>> 		case SCAN_PTE_NON_PRESENT:
+>> 		case SCAN_PTE_UFFD_WP:
+>> 		case SCAN_LACK_REFERENCED_PAGE:
+>> -- 
+>> 2.53.0
+>>
 > 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
 
 
