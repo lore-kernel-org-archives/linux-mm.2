@@ -4,87 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9709103E195
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:05:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ED8E103E195
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:08:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15FED6B026C; Wed, 18 Mar 2026 11:05:41 -0400 (EDT)
+	id B4EBD6B026E; Wed, 18 Mar 2026 11:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 111AD6B026E; Wed, 18 Mar 2026 11:05:41 -0400 (EDT)
+	id AFF796B0270; Wed, 18 Mar 2026 11:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026926B026F; Wed, 18 Mar 2026 11:05:40 -0400 (EDT)
+	id 9EE2B6B0271; Wed, 18 Mar 2026 11:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E0FE06B026C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:05:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CBB61607FA
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:05:40 +0000 (UTC)
-X-FDA: 84559508040.28.D31D5C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 83A6D1C0019
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:05:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i0FiVqMn;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773846338;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA8B6B026E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:08:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BF998C288A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:08:03 +0000 (UTC)
+X-FDA: 84559514046.14.68B08BA
+Received: from GV3P280CU013.outbound.protection.outlook.com (mail-swedencentralazon11020113.outbound.protection.outlook.com [52.101.75.113])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CEC5AC0009
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:08:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of andreas.larsson@gaisler.com designates 52.101.75.113 as permitted sender) smtp.mailfrom=andreas.larsson@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773846481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+mPOv44cn20MbMO3nwiA/pGyDxNpzpqLiZdaFl+Slk=;
-	b=5x7tswbx0Mkthl2ImNTzRMeirFva5AyLVRdM55JMnCHU+c4lAwVjY2v/f2og1VRsSV8GTJ
-	MrJzZ3TfUZzI2eqVYFE2mrQteh+jCIlQh3ImAszFkrmxNG2ph/JPmljqcRRW+KFdIL/tUm
-	ZtAHQIYN5svVdfH2E/vbQvlvKbei4dM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773846338; a=rsa-sha256;
-	cv=none;
-	b=8D3YKxSSrchMCeyMlaB+haCBGJzVytSwb5ok81GjIiPmvuXqDz6dOPzV4w8n24VPWQDkCS
-	3RU8AjRHIJ+UfsllO4AaH+VH6fD/udQ2JvKrh2Jg8M89MSQfE1R+FooFcwqul/sL3Tvn9W
-	pHjEZgH4dTOEVdBaSeOy8z7XdytYti8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i0FiVqMn;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 40C0D434F1;
-	Wed, 18 Mar 2026 15:05:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57ADDC19421;
-	Wed, 18 Mar 2026 15:05:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773846337;
-	bh=+RkusO5tORcNLy97IFZ2zGptLBs0NF+ENbJvxHQgkus=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i0FiVqMnbCcGHRSh1pmKaoeXTS0DSpeVIYPP5DreYtlOv6HxPpyiiH9LGjABHz47V
-	 IbQHo9TBzbF9bOKaWrMF4q/sR795bYcMbcDMOAibc1FsI2yHhT1mcPpTlx7q4yhWJZ
-	 9VkR7QHUsvdIhto1ZrZcQca3OzIgCPKMMnYEaRiHTKrrBm00i2qRSWWVjKfxVJR1a8
-	 sIwf1JtJ3x6nWcxQngVFXYAT/5nAZz0FdkysUCOW2XckA2isnA6cjrDt++ieMOL+IU
-	 Nl4bN/z1X9UzO5k4L/PmDCiDuZ6uSYb8xOLBEJvMTDXVcW68noOESN9L4mf/vRNRIo
-	 nU3xlm61ovKHQ==
-Date: Wed, 18 Mar 2026 15:05:31 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, jgg@ziepe.ca, 
-	leon@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com
-Subject: Re: running mm/ksft_hmm.sh on arm64 results in a kernel panic
-Message-ID: <3f58a6f6-bf26-4c6c-8bc4-c05264ad0cc3@lucifer.local>
-References: <8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xpbMIsqvUF5TkdpHspvLo8KBTFUPJJGAZOVkwWVQ1a4=;
+	b=sCQ4ibWJpdN+NEpT+JTU6Ra9i/dcvRtoLztEiPk3nF+hyx8CEUnLkieeWWHsiRz9EwSsCv
+	ouCaKiGq/I6IftZyNsqPNXnWkFfEbrnpi0GKpkQrcuavwHhBrfJTvlQ1dHXX2eXIhcER7p
+	dfFw+vOBv+2h6cOu2/gQGPh31xDdAQQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of andreas.larsson@gaisler.com designates 52.101.75.113 as permitted sender) smtp.mailfrom=andreas.larsson@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773846481; a=rsa-sha256;
+	cv=pass;
+	b=Uzkmdu2E+hAqx/oYgzQLpMC4xLOu3ktUi3a92BbYkiHCj7VBcnvzTG2m4L5wbbKUJbUsYq
+	x52pUd1N5GHosIQaIYjjruAd4eTM7mmIXCPlmvkDPdG6BM+PYyASXibKG6DeaH7M9OMElr
+	Eo8H/TKSyffRJkKdxnIfkjmBtmxGVqE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aGODX9J8Hhh/QfLme0UAZi3MQJA39OWcddovqtpLLoKczArmotgiPb8PoYaPKV00Q8TzyCZbZqiXhj4rkgrc7hZjQhnAJ5aMfp8Ci9Zk+UUMIdHCNM/Em9ygPtFtD5ioX/xMVIRtLxdgaY7Kzf6vf7qbuIflNclwI1/Ohm5LwfEdCTDPwWb0cz6mwf5TIRtYWSb0c6gwBFtg7QjLPVWovhzbTsAzpWuAm9W+GUghbkNqpKuIPqILU/1FUXw3plnDxhcEqa0foIyd46D/AszwINrgsjJBLhtL7/Rj+SzeQ/J3jKHu0OHhBUhZQtSZlbLbmUFuKI+ypHXrCN6973RV9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xpbMIsqvUF5TkdpHspvLo8KBTFUPJJGAZOVkwWVQ1a4=;
+ b=k0DlQ9y7DzopT1+0gpnYz48Ao8RJQaMMzwECq97e8h/2zNmALr2CaED7iyhLfxihLWgz9qITwbCezTARD8EvgeJrd9d3+wsM7O6P4EJ1dFOZOK31WLNK3gtgcQ0ue4C92TeOdrssDBAbpHp8J3ilnKyi9AR8ur7n+M+0WObXVMqVC8lNALtGSCeG1B/RhNbyjZRiBljmgwpt4Oy25HYk1PnchQnTXoe20ajnhE+2cN9QzvdxueAlc66K/2edu2lL37Lgs5vh8lRqqLymtYLa5EG+skVbMOFFux3VpqEB4nNzr4gWCdIKHY+ofCq25LBkOqMtCWPc3Ly3G+One2quJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=gaisler.com; dmarc=pass action=none header.from=gaisler.com;
+ dkim=pass header.d=gaisler.com; arc=none
+Received: from GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:195::18)
+ by GV5P280MB2155.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:376::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 15:07:51 +0000
+Received: from GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
+ ([fe80::be76:7636:f4ac:6773]) by GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
+ ([fe80::be76:7636:f4ac:6773%5]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 15:07:54 +0000
+Message-ID: <ad2695a5-e696-4f40-9d66-3d46bb911e4b@gaisler.com>
+Date: Wed, 18 Mar 2026 16:07:53 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/2] sparc: Use vmemmap_populate_hugepages for
+ vmemmap_populate
+To: chengkaitao <pilgrimtao@gmail.com>, davem@davemloft.net,
+ andreas@gaisler.com, akpm@linux-foundation.org, david@kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: kevin.brodsky@arm.com, dave.hansen@linux.intel.com, ziy@nvidia.com,
+ chengkaitao@kylinos.cn, willy@infradead.org, zhengqi.arch@bytedance.com,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260201063532.44807-1-pilgrimtao@gmail.com>
+ <20260201063532.44807-2-pilgrimtao@gmail.com>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20260201063532.44807-2-pilgrimtao@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GV2PEPF0002399C.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::19c) To GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:195::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 83A6D1C0019
-X-Stat-Signature: fs5ec33do4bbtzgpx7q16dsqzogykdmp
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVYP280MB1290:EE_|GV5P280MB2155:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e43330f-b8a9-4c86-e0d4-08de85002192
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|22082099003|56012099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	qX+Q8n/fy8K74FZ/82wGBGlqOyxDcQ6BcSKAPJNMbth6mWy3yOo/qarrZ7Dg3azye09eGF3uKeaKu5ZH7YLnAPkxgAsr4K+tb0kehQVqD6Nts6QQ2gGE1RqAR3CXF+DTuWtonr3ZZdHJZESTRGDDfsPYqZVc2r1XNX9xgIxo83SkIiUVZL/TDezM4q46xwmNVKHMDPSw7fb/hmhNc1ISAzaugDb+zkmpNRvDUYqGVALdrMuJQKqhHo2IkFdrE2mDqzjFCov5c8CGn8xB6IWv/LmpZF1qgYbDJszuNzYeM0EizX4Z3d6wcZmdOCIkZZ7DzhXX8fD/oMhnUgx4yeoHRF8DTWFTdEAJeVfOiBrUodfJHQZVyfqib4+xqJEhtYK6wfLhcUgyUqW5mvntDpUeFad40Lyk7Ej8g9IQpD/z90HzVeg6efJMxM+Bk/kbRBoWJOYQOem/O64oDU75rW6Djet6gakRaopNf1GSvfGl8KoU0KzNhZ9BKQWrzQDjudg/c/yi5mKTsUaGWnqhiTVOG1ZyOa15mecBxWh1/Y3foY8b7yLi/45WRmVfPPwt1UoJ/1J+WFf9szdND69geTMtHwEdCCzRZW8oNBY9yBjxev2kjQajYmRkRcodv3BlzAAX5JweoSm9gt4hcBBr0Pk5u9ukRIOmN+uM40ali6qShfBkcnzv1tLrnJPeqSBqrGKXZv0COQMYe8LkRj9xtdeT3JmzGu2xaAOD1CsdJQGvsde1Fv3FG7eosCK111h0/egHrgvIW66ZPFsvEmE3k2H3ug==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(22082099003)(56012099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZDdQMmF6MHR3Nk1MVVN1QUk3WTNid3lMS2N2ejVTMGpBaVZvZ3NtYjJFdmt6?=
+ =?utf-8?B?eU9EeElMdjFOcFR5dEJ3WVFGUCsrYWtJaFEyZXVGRGJldUgxaE9vYkE4Y0Y5?=
+ =?utf-8?B?SmNaQ2ZRN2pPZU9BdGozUGRRZkhidkVHc0FkUkpGMERPdm4waHZlNjFjMFpn?=
+ =?utf-8?B?ZmFKQ29yMkY5NTdXNWRHcEE4MXZUbkx1UitDTEMzMGc5dzlPcGJJRm9WUlhw?=
+ =?utf-8?B?U05UaTRtbGozNWphc1Via2NldEtRd2FncXhoVmh2RHBDWGpVTUx2YURKMElW?=
+ =?utf-8?B?K2w5VGpWQm92dEhtbGxTN09RanFjOFhXd0NLc1J6ZkRaRUZSbU53WkJlaDlZ?=
+ =?utf-8?B?L2ZtYVUvSGVDOTFjN202cmJnSHhkT3RISzI3OC90eGlaTXJ3eEhMd1FvZDVy?=
+ =?utf-8?B?SEFsSDgrbm5vMFJIdDBPNXhGd295SDdxRlNPYWMrdlBHMG9RRmZFbHNBMzU0?=
+ =?utf-8?B?QXZoSVZUbXRQc0M4YWF3RHNvaG5pUFFBMFJDUnk3YlBQUVlNR0tLaStYZ3dr?=
+ =?utf-8?B?L2pnVVhLbXBWdFJDMXlDSEw0aDhJeWlaNFRJMGxBTzVvSWRGOU42VzVES0RI?=
+ =?utf-8?B?c1FKb09lY0tMazRBYVRFZ0tySGlva3lNVFZLSXZOd21kejhNTEEzNG1mNlRO?=
+ =?utf-8?B?Z2RFZGVtMk4xbWFjSUF6cmRSOGZTa2VucXU1NnZYSFRBc2VuZEtPRXF4WWE0?=
+ =?utf-8?B?THhzaVZqa0RYTkU2cDJTRStZdVNNczF0L0o5MjJOcEFZd3lnSnNhQTFkQUox?=
+ =?utf-8?B?cWNHbDAzNzdRelFXUDA3cVdpTmQzTTRFZHNYdU9tZ2JUSFc2RWl1WWovYVl3?=
+ =?utf-8?B?ZzNoMm5YV0U1ZWZ3V3FnUlNZRHllcWhXbGhIbVJKd3VNUndUL0h3S0kwTXk5?=
+ =?utf-8?B?eHVhRHlFbTR6Q2MxeEdVTmdTUG1lRFdLR3dmS3Frbi9RVWltaHpkUnA1UWhS?=
+ =?utf-8?B?N3ltWlVoOTRYdnBMTDI5OUQ4UE56N0tJRVZ5TVJ0ditWU0IzeWIzV0EyN01Z?=
+ =?utf-8?B?Z1VqQnlBUCthc2ZtOGhtUHg4OFVzM0Q3NEQ0RzBTaCtUK3M2ZVVacFlCTXQ5?=
+ =?utf-8?B?by9QalNPaWZyNy9hdkZValM3Z0NrcC9yc0t5MUhQNWdnMmNWcFJ5RURPY2dH?=
+ =?utf-8?B?SVlldWlQOGdXckJXcWlsTlRpck94Vk8vVm5qZDVKM3pnQzlSQlN4U2hkZVNJ?=
+ =?utf-8?B?RG1BUzJPVnZiSlpMRTJINVRxcVdORlRrWHdTVC9Nb09pR3o3SEh4SXpVRWFa?=
+ =?utf-8?B?SzNyNUQvVzg0dEdDM1FIOXUwRmxVT3E0QzJzcGkvTHl2dDZEQzZrRUcyN2lH?=
+ =?utf-8?B?dlIxVklmbE5EZmdHbDFrRTZka0lYWWgraDdXc3E0YTF0bksyT2FYUHE2b2dt?=
+ =?utf-8?B?RHNZbFBndkFpVXlxZXZUV05BY2lnM0kzYUlpcnZnN3VNYk5POXhQdFZhWDNS?=
+ =?utf-8?B?azdlTUVYNWliRWE0dUpqMGhxQm5wekEyNG93WDBEN0pCS2E5SGVWYnhtV1Fs?=
+ =?utf-8?B?OE1ONGQvQlRFQTBndDJOT0JHb2kwLzRYM2c5dThIWUx6YTkzc2Q5L3Jpa04v?=
+ =?utf-8?B?TmlMSTNJaW4rQlJFNEpmcXZRTUtHcXlUd1V4dkk4cUVDMFl3SXpsRmlOeVpz?=
+ =?utf-8?B?N2N0alNKL2h2bnpjcE5jSC9iWDhBdzJ1Z1pldHV0V3E0U1lUbFY1eWkrNDlH?=
+ =?utf-8?B?WWhPV2VDN2xJVWpwQmRhNisreWxZTTdkdWZoeDRYcXFBSHJOSDMyS3A4SzlX?=
+ =?utf-8?B?QlZjeDJSenAvUkl6KzA2NmlFbFYyaDYzZ3pKYmtpU2tCM1BGQjhWbUNvVkFv?=
+ =?utf-8?B?U1Q4SDArZ2lGSjhtSFY1S0I1UnE3WmJoMVg5YXZCbm8yRE04MGhXSFljVUla?=
+ =?utf-8?B?cmNLK3Y0NXNUV0h3ZDRQWnhrU0NFNXJBZk5reTZxM2JUUkxPc0FlcE1OUTZB?=
+ =?utf-8?B?cXJzUDgxcjdOYlNxUzc2QUtyZlEwbHNXN2Z5cTBDV0UzRlU5TnBLSFhqRDQ4?=
+ =?utf-8?B?aDRqd0Y2RDFQZk1LUDZzOU1DbkRqOTlEdkI5MnVzYUU4ZlhTaU5sTVpUc2l6?=
+ =?utf-8?B?MFhHbC9URVFtSzFxZVdHT2hxOXNuTWc3MWVNeklYRUJLTTZaektPMTRhREJv?=
+ =?utf-8?B?Yks5dy95QStRQnhNTVpzaHo3MnpkZVJBa3I5Mm5YeXBDU2N0Y25qRTJLVWNB?=
+ =?utf-8?B?UWxLd1gybXVVV2wzVTRNRGdFM3dvTWIwTno4NHQvakQvVEJRZjlnSlU1V3Zj?=
+ =?utf-8?B?WHYvb3JycnNMaGwxN1doNEZOL0ZLNTlWRk9mZXhWR1R5Y01GZTRHTHpGWlUv?=
+ =?utf-8?B?cGF4UE1VZ2dzWEx3cVFESXROcTcyR0Z5Q29wdjFnT3VmRFc5Q1ZIZFFZRWx2?=
+ =?utf-8?Q?jskVyLwPnCi4Kmuw=3D?=
+X-OriginatorOrg: gaisler.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e43330f-b8a9-4c86-e0d4-08de85002192
+X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1290.SWEP280.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 15:07:54.4513
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 91fa4a59-2167-458a-8318-e45d80469d7e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KuhBRUGDPwVZ0kqE60WGfft6TeaCL92vO/RSBYvn7S+6j8nZW82DuB+Lhg7RGqyBmhstFotc2GQlyWJ6K4W+SN5US05gtqs0sjPDYQlH5n4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV5P280MB2155
 X-Rspam-User: 
-X-HE-Tag: 1773846338-123781
-X-HE-Meta: U2FsdGVkX19dTHSUEx039SUDJ6r2rSjF5idruLUFo/cuMSLbvEjf7YWrGQ7P+lFChvU8VMR2gBGzTao7mm3eQp8Z6e6gP/edIZeOdxk3SjyvC5ntLa0wvLS1/J3mHNarOUcx2EA2MWMA3K4eA2s9hb4jEUUfeRgdg7A+XYJUNKCTMsLyxUZBmgQrcuUDh8j0uQRxSHqImCewl3ce9s+ezLts4ODHJJxvsBZkQq9vGyP5s7daskIayJXFndn7f4UEyUhk7rWQ52Lgih3VgxILTDnI9oiuoGey/2Z/MaApEP4DS0ScYkZURNnSyF9D84YYAQj7wsX8H3CmsuKUL1fLjnnx7g07JyqZGMvJgERbk7OnZUZDKJDF5TH00Lm6dYHRXw9PtpFeCHxgwgxzxAXB7F04uWikfVnYaoy727vGuBpKFTN0svI2+QaQDlTzZXSECmdN78s0bkAF9ruRGOHchIn+XdJD/s9iloGiLtLLFSnfYF5xfsa9R+M4NWaDTUwndn7FfjSNBeArr/gU0ibMtQX23etvQhxtlgCDOPT+HseKUJ/LLvFqETTW4+ZUNFKLNPE1ISq40ZFG4aIloqVP2DLabqjxunoUwRW4kKu+rY8Cz2VO6yTP17OhRs7RLYJptP5v5C19xtf1JADEQVPATi17VMZIf3KbRsgnFBi0/o26ShIBFUazJOKvp4mwPPJ6o2RV2iGj02s3uEvzrl6Ifa1uPu1yB6/vVCuzT9VCXVHatcqO0OtUjl5zSg8l1Pgz1JvRdtLrXlItZPVThUmu2WAx1ZhkXC5V57GYPbbI35Ea32CufU1G46RZLSW0krNhxib7FrRfOoU4WS+4OQaYjDj+EkX9MENAm0sVEP0spocwsOqOr9KpGIGcJfEf7YJAU/ohrW+ft7pYgkn9RUaLU+L/25BVTfA7tb+YNkgphiQ2JkDi2qrCtSIRMQjpQ3qYxKEr3sA+MrkB9NFL9fV
- kk+xV2qf
- aHdg7Jwgr6VAk481bbUthb/LBTbqgOkpgtB1Rzw22+wyV+SwqYsR1MNoVi8Y5MKVXTykNLbDgtjx/VoNVzYFTBAyjn4rqMBToWAdq1MmDfhp1Q+5Wu4MwzCT6mIRa/D35Bci6o0YbHymi5H4i10M0ifBW5p2+riQqK5mMMiYZblmqziZuIHdVgXnBSuSDpNTCPXdVzhbUdr2WiaEKrvCCsoYj1i56pEqQ0l4WqEwBclAUTpnGbQkOmpbPg16GDxAqFmJEllSgDnhzCi6YRxgFiQBSX7fki9kJzk5+OJQWjOla5kzyIvWzonhkUtyrvbWii9YX
+X-Rspamd-Queue-Id: CEC5AC0009
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 3kc4fcojc1d8e31zf4q5nhddehpwm5yr
+X-HE-Tag: 1773846480-352630
+X-HE-Meta: U2FsdGVkX19QhsV1cX2zM1nyN/jJtlWi+6+vVeAO8PnNRyw/bBPrbbsHpYJIrM83M5gWxMnU7dPDZt0ZqY09/tJweRsQC/Qd8u2njwBs/v6DsPVbPzTiN1Y1rLl3AOfYIlK0e1qCU60TFQVuL5b/LAv8BAn3wq6L2kmks9DdScOCZBAL/vQiOGBCYdTTdLQ9jcqH9G+yLKE/DdBsnSPKnGnpzBjrmEM8xx+gGl1S6Wr6EuAW3n+kI4FKhy3QOu350leoMONeYBvc44aTXBTsS8ZMGMCxg0fZIcgXFpd+JYVL+Z02qNar8SN4+tgU8X0IzOZg1EZgHwhMMa+LJD00eZRgI89/t1mjLvyAU/HB4QjlSvQoYWo5lcR/05K6iI3BrBMDys1sjO9vcZ4mjm19Gzl+I3V7RVyHiPMFRU0gXd5aQIf3lGuJOE9povhOgSOa6Xe3hAmnxbcPxo4MGOTUPTZJK032Ri1vibledo2l//Ooh0LyJeBUnzDLNrXZ3QKZmLXMDEHz9uF/ATKvRQayPuhlff8xRzYftIrqMQiogRmXZlAhc3AxzxUPwuzGHNbQWV2LZtxcaM9PjzjqPIQ4baQbgMTK7SDDDgblParfK0Wv5Toc/zO9DTJ6VwvKBtp3w1WVYt+u+m/1BweMjHw0bZZfVQB6chzALBlJ8AyxK3XvWheghTRywkcj+4cQYdfKbrEXOsRYNmeUStK71qXaaHMTNFVeNNOkLRW4ZEnPrWauV8rSizXHYXzGNaGQ+NCew/NoW4bkOKPhByl2aJMoMPW166JWL0p62dC364DdByadzfb83/zf2GmIY2B9frYpgetD/zG2izz8IxNxkl//P51phwR2l7X65N9b7n4CTvEod4zEkkINCRmpKhmG1sNqo62XhNhNJcfIrgGbcjU+Q588nEDa7tK8IxWEy4NuZuRBXJ62yULCoezZ/Ly187D6rFkOrzMu40bY0KCblDb
+ 7qK7qMqU
+ 1YhhaC3zTAULKlIwUb7Cq0KSKyPdP2dvfh2FhQbINmCAFUp3+i5THC2wWQjlNhxEEo2zHiRnomoSi009WhHF3pfzTA/qY/NDpzASFKXlMsWsbtRoPB4xmYzfb23nsV1dGtdpCYzIAJOzIxeeq8ibSRNu6JF0S4KW3bYPMp5fJKUS/KgI7BmeAQeLjbyeTte3yJr/tmbye2HKOmaC4GzfgqKxDSRDP8C8JnHJzcZQW5uwF3ksJjlaZaMA0JbFeueXj9fewXA2gAmOu413Sp6MQSFLTEIANqcQT9ulVR6iblpdMX4U/F2U5CciQY8R+CmKgpy73YO3u+0UW62aho1fwLQnUoWrpIZtw/DY5ufycCT5JJqcYbLRDzZAsxxhRDgORoZh+3V6yXwNtqEdiZT6s+/tw3zksfAgPQ9hjI7mWDzC9mrZEEFtW6QOoSOUnooYB6jfNvtvyVrHAqBvcHgLnIZsyFxcpI54g9OIedH+bg0CNddj1cWHK+C0uaEo1m+HhOZViILtt+CvpqL7Q/rw1j2gBDK60hB0qNW2Mq4IpaGbuY9kTC1DhUxkPblrPr5e71m0HL8tQUvBd52BLC5/OPepMKMr9Qq4LeTqT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,422 +173,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 01:26:39PM +0800, Zenghui Yu wrote:
-> Hi all,
->
-> When running mm/ksft_hmm.sh in my arm64 virtual machine, I ran into the
-> following kernel panic:
->
-> [root@localhost mm]# ./ksft_hmm.sh
-> TAP version 13
-> # --------------------------------
-> # running bash ./test_hmm.sh smoke
-> # --------------------------------
-> # Running smoke test. Note, this test provides basic coverage.
-> # TAP version 13
-> # 1..74
-> # # Starting 74 tests from 4 test cases.
-> # #  RUN           hmm.hmm_device_private.benchmark_thp_migration ...
-> #
-> # HMM THP Migration Benchmark
-> # ---------------------------
-> # System page size: 16384 bytes
-> #
-> # === Small Buffer (512KB) (0.5 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 0.423 ms        | 0.182 ms        | -133.0%
-> # Dev->Sys Migration   | 0.027 ms        | 0.025 ms        | -7.0%
-> # S->D Throughput      | 1.15 GB/s      | 2.69 GB/s      | -57.1%
-> # D->S Throughput      | 18.12 GB/s      | 19.38 GB/s      | -6.5%
-> #
-> # === Half THP Size (1MB) (1.0 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 0.367 ms        | 1.187 ms        | 69.0%
-> # Dev->Sys Migration   | 0.048 ms        | 0.049 ms        | 2.2%
-> # S->D Throughput      | 2.66 GB/s      | 0.82 GB/s      | 222.9%
-> # D->S Throughput      | 20.53 GB/s      | 20.08 GB/s      | 2.3%
-> #
-> # === Single THP Size (2MB) (2.0 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 0.817 ms        | 0.782 ms        | -4.4%
-> # Dev->Sys Migration   | 0.089 ms        | 0.096 ms        | 7.1%
-> # S->D Throughput      | 2.39 GB/s      | 2.50 GB/s      | -4.2%
-> # D->S Throughput      | 22.00 GB/s      | 20.44 GB/s      | 7.6%
-> #
-> # === Two THP Size (4MB) (4.0 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 3.419 ms        | 2.337 ms        | -46.3%
-> # Dev->Sys Migration   | 0.321 ms        | 0.225 ms        | -42.6%
-> # S->D Throughput      | 1.14 GB/s      | 1.67 GB/s      | -31.6%
-> # D->S Throughput      | 12.17 GB/s      | 17.36 GB/s      | -29.9%
-> #
-> # === Four THP Size (8MB) (8.0 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 4.535 ms        | 4.563 ms        | 0.6%
-> # Dev->Sys Migration   | 0.583 ms        | 0.582 ms        | -0.2%
-> # S->D Throughput      | 1.72 GB/s      | 1.71 GB/s      | 0.6%
-> # D->S Throughput      | 13.39 GB/s      | 13.43 GB/s      | -0.2%
-> #
-> # === Eight THP Size (16MB) (16.0 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 10.190 ms        | 9.805 ms        | -3.9%
-> # Dev->Sys Migration   | 1.130 ms        | 1.195 ms        | 5.5%
-> # S->D Throughput      | 1.53 GB/s      | 1.59 GB/s      | -3.8%
-> # D->S Throughput      | 13.83 GB/s      | 13.07 GB/s      | 5.8%
-> #
-> # === One twenty eight THP Size (256MB) (256.0 MB) ===
-> #                      | With THP        | Without THP     | Improvement
-> # ---------------------------------------------------------------------
-> # Sys->Dev Migration   | 80.464 ms        | 92.764 ms        | 13.3%
-> # Dev->Sys Migration   | 9.528 ms        | 18.166 ms        | 47.6%
-> # S->D Throughput      | 3.11 GB/s      | 2.70 GB/s      | 15.3%
-> # D->S Throughput      | 26.24 GB/s      | 13.76 GB/s      | 90.7%
-> # #            OK  hmm.hmm_device_private.benchmark_thp_migration
-> # ok 1 hmm.hmm_device_private.benchmark_thp_migration
-> # #  RUN           hmm.hmm_device_private.migrate_anon_huge_zero_err ...
-> # # hmm-tests.c:2622:migrate_anon_huge_zero_err:Expected ret (-2) == 0 (0)
->
-> [  154.077143] Unable to handle kernel paging request at virtual address
-> 0000000000005268
-> [  154.077179] Mem abort info:
-> [  154.077203]   ESR = 0x0000000096000007
-> [  154.077219]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [  154.078433]   SET = 0, FnV = 0
-> [  154.078434]   EA = 0, S1PTW = 0
-> [  154.078435]   FSC = 0x07: level 3 translation fault
-> [  154.078435] Data abort info:
-> [  154.078436]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
-> [  154.078459]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> [  154.078479]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> [  154.078484] user pgtable: 16k pages, 47-bit VAs, pgdp=000000010b920000
-> [  154.078487] [0000000000005268] pgd=0800000101b4c403,
-> p4d=0800000101b4c403, pud=0800000101b4c403, pmd=0800000108cd8403,
-> pte=0000000000000000
-> [  154.078520] Internal error: Oops: 0000000096000007 [#1]  SMP
-> [  154.098664] Modules linked in: test_hmm rfkill drm fuse backlight ipv6
-> [  154.100468] CPU: 7 UID: 0 PID: 1357 Comm: hmm-tests Kdump: loaded Not
-> tainted 7.0.0-rc4-00029-ga989fde763f4-dirty #260 PREEMPT
-> [  154.103855] Hardware name: QEMU QEMU Virtual Machine, BIOS
-> edk2-stable202408-prebuilt.qemu.org 08/13/2024
-> [  154.104409] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS
-> BTYPE=--)
-> [  154.104847] pc : dmirror_devmem_fault+0xe4/0x1c0 [test_hmm]
-> [  154.105758] lr : dmirror_devmem_fault+0xcc/0x1c0 [test_hmm]
-> [  154.109465] sp : ffffc000855ab430
-> [  154.109677] x29: ffffc000855ab430 x28: ffff8000c9f73e40 x27:
-> ffff8000c9f73e40
-> [  154.110091] x26: ffff8000cb920000 x25: ffffc000812e0000 x24:
-> 0000000000000000
-> [  154.110540] x23: ffff8000c9f73e40 x22: 0000000000000000 x21:
-> 0000000000000008
-> [  154.110888] x20: ffff8000c07e1980 x19: ffffc000855ab618 x18:
-> ffffc000855abc40
-> [  154.111223] x17: 0000000000000000 x16: 0000000000000000 x15:
-> 0000000000000000
-> [  154.111563] x14: 0000000000000000 x13: 0000000000000000 x12:
-> ffffc00080fedd68
-> [  154.111903] x11: 00007fffa3bf7fff x10: 0000000000000000 x9 :
-> 1ffff00019166a41
-> [  154.112244] x8 : ffff8000c132df20 x7 : 0000000000000000 x6 :
-> ffff8000c53bfe88
-> [  154.112581] x5 : 0000000000000009 x4 : ffffc000855ab3d0 x3 :
-> 0000000000000004
-> [  154.112921] x2 : 0000000000000004 x1 : ffff8000c132df18 x0 :
-> 0000000000005200
-> [  154.113254] Call trace:
-> [  154.113370]  dmirror_devmem_fault+0xe4/0x1c0 [test_hmm] (P)
-> [  154.113679]  do_swap_page+0x132c/0x17b0
-> [  154.113912]  __handle_mm_fault+0x7e4/0x1af4
-> [  154.114124]  handle_mm_fault+0xb4/0x294
-> [  154.114398]  __get_user_pages+0x210/0xbfc
-> [  154.114607]  get_dump_page+0xd8/0x144
-> [  154.114795]  dump_user_range+0x70/0x2e8
-> [  154.115020]  elf_core_dump+0xb64/0xe40
-> [  154.115212]  vfs_coredump+0xfb4/0x1ce8
-> [  154.115397]  get_signal+0x6cc/0x844
-> [  154.115582]  arch_do_signal_or_restart+0x7c/0x33c
-> [  154.115805]  exit_to_user_mode_loop+0x104/0x16c
-> [  154.116030]  el0_svc+0x174/0x178
-> [  154.116216]  el0t_64_sync_handler+0xa0/0xe4
-> [  154.116414]  el0t_64_sync+0x198/0x19c
-> [  154.116594] Code: d2800083 f9400280 f9003be0 2a0303e2 (b9406800)
-> [  154.116891] ---[ end trace 0000000000000000 ]---
-> [  158.741771] Kernel panic - not syncing: Oops: Fatal exception
-> [  158.742164] SMP: stopping secondary CPUs
-> [  158.742970] Kernel Offset: disabled
-> [  158.743162] CPU features: 0x0000000,00060005,11210501,94067723
-> [  158.743440] Memory Limit: none
-> [  164.002089] Starting crashdump kernel...
-> [  164.002867] Bye!
-
-That 'Bye!' is delightful :)
-
->
-> [root@localhost linux]# ./scripts/faddr2line lib/test_hmm.ko
-> dmirror_devmem_fault+0xe4/0x1c0
-> dmirror_devmem_fault+0xe4/0x1c0:
-> dmirror_select_device at /root/code/linux/lib/test_hmm.c:153
-> (inlined by) dmirror_devmem_fault at /root/code/linux/lib/test_hmm.c:1659
->
-> The kernel is built with arm64's virt.config plus
->
-> +CONFIG_ARM64_16K_PAGES=y
-> +CONFIG_ZONE_DEVICE=y
-> +CONFIG_DEVICE_PRIVATE=y
-> +CONFIG_TEST_HMM=m
->
-> I *guess* the problem is that migrate_anon_huge_zero_err() has chosen an
-> incorrect THP size (which should be 32M in a system with 16k page size),
-
-Yeah, it hardcodes to 2mb:
-
-TEST_F(hmm, migrate_anon_huge_zero_err)
-{
-	...
-
-	size = TWOMEG;
-}
-
-Which isn't correct obviously and needs to be fixed.
-
-We should read /sys/kernel/mm/transparent_hugepage/hpage_pmd_size instead.
-
-vm_utils.h has read_pmd_pagesize() So this can be fixed with:
-
-	size = read_pmd_pagesize();
-
-We then madvise(.., MADV_HUGEPAGE) region of size, which is now too small.:
-
-TEST_F(hmm, migrate_anon_huge_zero_err)
-{
-	...
-
-	size = TWOMEG;
-
-	...
-
-	ret = madvise(map, size, MADV_HUGEPAGE);
-	ASSERT_EQ(ret, 0); <-- but should succeed anyway, just won't do anything
-
-	...
-
-	ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_FLAGS, buffer,
-			      HMM_DMIRROR_FLAG_FAIL_ALLOC);
-}
-
-Then we switch into lib/test_hmm.c:
-
-static void dmirror_migrate_alloc_and_copy(struct migrate_vma *args,
-					   struct dmirror *dmirror)
-{
-	...
-
-	for (addr = args->start; addr < args->end; ) {
-		...
-
-		if (dmirror->flags & HMM_DMIRROR_FLAG_FAIL_ALLOC) {
-			dmirror->flags &= ~HMM_DMIRROR_FLAG_FAIL_ALLOC;
-			dpage = NULL;  <-- force failure for 1st page
-
-	...
-
-		if (!dpage) {
-			...
-
-			if (!is_large) <-- isn't large, as MADV_HUGEPAGE failed
-				goto next;
-
-	...
-next:
-		src++;
-		dst++;
-		addr += PAGE_SIZE;
-	}
-}
-
-Back to the hmm-tests.c selftest:
-
-TEST_F(hmm, migrate_anon_huge_zero_err)
-{
-	...
-
-	ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_FLAGS, buffer,
-			      HMM_DMIRROR_FLAG_FAIL_ALLOC);
-	ASSERT_EQ(ret, 0);                  <-- succeeds but...
-	ASSERT_EQ(buffer->cpages, npages);  <-- cpages = npages - 1.
-}
-
-So then we try to teardown which inokves:
-
-FIXTURE_TEARDOWN(hmm)
-{
-	int ret = close(self->fd);  <-- triggers kernel dmirror_fops_release()
-	...
-}
-
-In the kernel:
-
-static int dmirror_fops_release(struct inode *inode, struct file *filp)
-{
-	struct dmirror *dmirror = filp->private_data;
-	...
-
-	kfree(dmirror);  <-- frees dmirror...
-	return 0;
-}
-
-So dmirror is fred but in dmirror_migrate_alloc_and_copy(), for all those pages
-we DID migrate:
-
-static void dmirror_migrate_alloc_and_copy(struct migrate_vma *args,
-					   struct dmirror *dmirror)
-{
-	...
-
-	for (addr = args->start; addr < args->end; ) {
-		...
-
-		if (!dpage) { <-- we will succeed allocation so don't branch.
-			...
-		}
-
-		rpage = BACKING_PAGE(dpage);
-
-		/*
-		 * Normally, a device would use the page->zone_device_data to
-		 * point to the mirror but here we use it to hold the page for
-		 * the simulated device memory and that page holds the pointer
-		 * to the mirror.
-		 */
-		rpage->zone_device_data = dmirror;
-
-		...
-	}
-
-	...
-}
-
-So now a bunch of device private pages have a zone_device_data set to a dangling
-dmirror pointer.
-
-Then on coredump, we walk the VMAs, meaning we fault in device private pages and
-end up invoking do_swap_page() which in turn calls dmirror_devmem_fault() (via
-the struct dev_pagemap_ops
-dmirror_devmem_ops->migrate_to_ram=dmirror_devmem_fault callback)
-
-This is via get_dump_page() -> __get_user_pages_locked(..., FOLL_FORCE |
-FOLL_DUMP | FOLL_GET) -> __get_user_pages() -> handle_mm_fault() ->
-__handle_mm_fault() -> do_swap_page() and:
-
-vm_fault_t do_swap_page(struct vm_fault *vmf)
-{
-	...
-		entry = softleaf_from_pte(vmf->orig_pte);
-	if (unlikely(!softleaf_is_swap(entry))) {
-		if (softleaf_is_migration(entry)) {
-			...
-		} else if (softleaf_is_device_private(entry)) {
-			...
-
-			if (trylock_page(vmf->page)) {
-				...
-
-				ret = pgmap->ops->migrate_to_ram(vmf);
-
-				...
-			}
-
-			...
-		}
-
-		...
-	}
-
-	...
-}
-
-(BTW, we seriously need to clean this up).
-
-And in dmirror_devmem_fault callback():
-
-static vm_fault_t dmirror_devmem_fault(struct vm_fault *vmf)
-{
-	...
-
-	/*
-	 * Normally, a device would use the page->zone_device_data to point to
-	 * the mirror but here we use it to hold the page for the simulated
-	 * device memory and that page holds the pointer to the mirror.
-	 */
-	rpage = folio_zone_device_data(page_folio(vmf->page));
-	dmirror = rpage->zone_device_data;
-
-	...
-
-	args.pgmap_owner = dmirror->mdevice; <-- oops
-
-	...
-}
-
-So in terms of fixing:
-
-1. Fix the test (trivial)
-
-Use
-
-	size = read_pmd_pagesize();
-
-Instead of:
-
-	size = TWOMEG;
-
-2. Have dmirror_fops_release() migrate all the device private pages back to ram
-   before freeing dmirror or something like this
-
-You'd want to abstract code from dmirror_migrate_to_system() to be shared
-between the two functions I think.
-
-But I leave that as an exercise for the reader :)
-
-> leading to the failure of the first hmm_migrate_sys_to_dev(). The test
-> program received a SIGABRT signal and initiated vfs_coredump(). And
-> something in the test_hmm module doesn't play well with the coredump
-> process, which ends up with a panic. I'm not familiar with that.
->
-> Note that I can also reproduce the panic by aborting the test manually
-> with following diff (and skipping migrate_anon_huge{,_zero}_err()):
->
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c
-> b/tools/testing/selftests/mm/hmm-tests.c
-> index e8328c89d855..8d8ea8063a73 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -1027,6 +1027,8 @@ TEST_F(hmm, migrate)
->  	ASSERT_EQ(ret, 0);
->  	ASSERT_EQ(buffer->cpages, npages);
->
-> +	ASSERT_TRUE(0);
-
-This makes sense as the same dangling dmirror pointer issue arises.
-
-> +
->  	/* Check what the device read. */
->  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
->  		ASSERT_EQ(ptr[i], i);
->
-> Please have a look!
-
-Hopefully did so usefully here :)
-
->
-> Thanks,
-> Zenghui
-
-Cheers, Lorenzo
+On 2026-02-01 07:35, chengkaitao wrote:
+> From: Chengkaitao <chengkaitao@kylinos.cn>
+> 
+> 1. In the SPARC architecture, reimplement vmemmap_populate using
+> vmemmap_populate_hugepages.
+> 2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
+> when vmemmap_alloc_block returns NULL.
+> 
+> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+> ---
+>  arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
+>  1 file changed, 16 insertions(+), 31 deletions(-)
+> 
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index df9f7c444c39..f1981adc99ac 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
+>  EXPORT_SYMBOL(_PAGE_CACHE);
+>  
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+> -			       int node, struct vmem_altmap *altmap)
+> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+> +			       unsigned long addr, unsigned long next)
+>  {
+>  	unsigned long pte_base;
+>  
+> @@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+>  
+>  	pte_base |= _PAGE_PMD_HUGE;
+>  
+> -	vstart = vstart & PMD_MASK;
+> -	vend = ALIGN(vend, PMD_SIZE);
+> -	for (; vstart < vend; vstart += PMD_SIZE) {
+> -		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+> -		unsigned long pte;
+> -		p4d_t *p4d;
+> -		pud_t *pud;
+> -		pmd_t *pmd;
+> -
+> -		if (!pgd)
+> -			return -ENOMEM;
+> -
+> -		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+> -		if (!p4d)
+> -			return -ENOMEM;
+> -
+> -		pud = vmemmap_pud_populate(p4d, vstart, node);
+> -		if (!pud)
+> -			return -ENOMEM;
+> +	pmd_val(*pmd) = pte_base | __pa(p);
+> +}
+>  
+> -		pmd = pmd_offset(pud, vstart);
+> -		pte = pmd_val(*pmd);
+> -		if (!(pte & _PAGE_VALID)) {
+> -			void *block = vmemmap_alloc_block(PMD_SIZE, node);
+> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+> +				unsigned long addr, unsigned long next)
+> +{
+> +	int large = pmd_leaf(*pmdp);
+>  
+> -			if (!block)
+> -				return -ENOMEM;
+> +	if (large)
+> +		vmemmap_verify((pte_t *)pmdp, node, addr, next);
+>  
+> -			pmd_val(*pmd) = pte_base | __pa(block);
+> -		}
+> -	}
+> +	return large;
+> +}
+>  
+> -	return 0;
+> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+> +			       int node, struct vmem_altmap *altmap)
+> +{
+> +	return vmemmap_populate_hugepages(vstart, vend, node, NULL);
+>  }
+>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>  
+
+Tested-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+
+I assume this goes through the mm tree.
+
+Cheers,
+Andreas
 
