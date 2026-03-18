@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB4EE1088E49
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 22:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43051088E48
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 22:30:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC0E6B035E; Wed, 18 Mar 2026 18:30:16 -0400 (EDT)
+	id 80BB26B0360; Wed, 18 Mar 2026 18:30:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3B0A6B0360; Wed, 18 Mar 2026 18:30:16 -0400 (EDT)
+	id 798146B0362; Wed, 18 Mar 2026 18:30:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8D936B0361; Wed, 18 Mar 2026 18:30:16 -0400 (EDT)
+	id 4FE456B0363; Wed, 18 Mar 2026 18:30:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A04916B035E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 18:30:16 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69D49139A45
+	by kanga.kvack.org (Postfix) with ESMTP id 3746B6B0360
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 18:30:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0AED81A01B4
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:30:18 +0000 (UTC)
+X-FDA: 84560628516.29.2F75BCB
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2D06920005
 	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:30:16 +0000 (UTC)
-X-FDA: 84560628432.10.0D0DFB3
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AB42F2000C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:30:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dco5Cnec;
-	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m8oMUPg5;
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773873014;
+	s=arc-20220608; t=1773873016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXKD+ZPBl4vkSnE6k01eq304ZeGimzAEjHRoiYkG/+4=;
-	b=RyIK+rUs5o6sNC6iU6/430gnes8W5dOVsQNkfl0F69y4FgquwprAjilftzd2BuA9Ytk0G/
-	MxK8WTbceazUA6T/oKoulfStqz7WjCs/dhcGgZK81VfBTTQB4jzUI0Ks8ceAf3JXZ1nxAI
-	A6OWZpeimANDXRN73pfwPvngiO/YC+8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dco5Cnec;
-	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773873014; a=rsa-sha256;
+	bh=/r4lbyJWNRb4OPU+FwoTkjRVnxoVbk6U7PxvuQ43o+8=;
+	b=ngpAHGNeggGM0GTm1GZnzDSNWD+iqz3oPQfWh3eXpwOZO1ahTT1i1BreyJlC5OuBszBkuO
+	qDjfPn/s6zyNRlBw8C/ORrE6HpagUwzZpmufmubtkN6d5VKPfTDEQ4s9+I7PnkS8OMsrTJ
+	JVRbVt1Jm7SSETjGKyxtymkJcSJZm+I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773873016; a=rsa-sha256;
 	cv=none;
-	b=0z68D6VOodiyFwf6woHLILdbwv6woApadusxsOabxdZUijQmKob46yXoo3gFI39v36tZHX
-	trjkCzGFSxlMMKOJGupjdlfzmAEsYPhY4hyMRCAUOEmHLpwDeOwvISrfMjcll8fRVcezM1
-	VnlrGQNbsvSAn5BaVd6s8Klf+hz4oZw=
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-463a0e14abfso54429b6e.2
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:30:14 -0700 (PDT)
+	b=BU5DQSTmDyreoDQeyoYbfxGbCgSImFHBGPfq+2iRIHx/qs7ULIzFKdYGzb12b6yI2TzMe4
+	o9yDcTUvUzpT55OIcALmcCVRhQKoKDe/BA0aaQHsq/BukHLDcGZi5NMnPItFDp2yNeWSUj
+	UWDSCGMwrSz69uHPvj0AX9pbTubDddo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m8oMUPg5;
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-467161c4a1cso33266b6e.3
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773873014; x=1774477814; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773873015; x=1774477815; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iXKD+ZPBl4vkSnE6k01eq304ZeGimzAEjHRoiYkG/+4=;
-        b=Dco5CnecSDTY9JpDvgmdvHIUMfGAFLXh6r9Opvo/Ck31JpezU7dBnqQj8dkHORKavK
-         QadbPjaTF97iHB7mfLItQRLnv49sk8foj1b5s1/yliv5A6EqOExRJak2Yb95lQLx3UPT
-         rhaTp1FNDRBECusRzFPK6O2ZGIcTf/GqIzRkSbdxZeSCPOo9K5IZM8gpIZgCEYUPgp7O
-         CxFpCiNO3SwY9yHF4fkjUpbvlSY6B29xfahNFX0MJbPB3JTgKzzN/5ptLA6Ot3NMoIwJ
-         cZnRh8sICpVmh0OEO5FSQSq2mmCbwY5jSKeU+qxHKz4QzWYZeZ7mIwR5hrlU4kb8aoSe
-         Rt/w==
+        bh=/r4lbyJWNRb4OPU+FwoTkjRVnxoVbk6U7PxvuQ43o+8=;
+        b=m8oMUPg5AAaGIzT49f3Scace2CUkqYahVpW9IFcbesciqRTxDcPNYCIeynd6X2LlQS
+         LiwNLx1/BQbVV6c7GRtEWfRlMTqA7QQOt+wIhEx1MtYAycphwq9vNSYGIS0ZzTUQ+5BN
+         6V+lfSyRtukGNX6GuopQEJi17+hUUQm9NtYQ9UTDWnvn0RXkAUVtKsEGvOlSIRDMy5ae
+         xywEYghZyIHndUOpnUa3GMEcp2F2C6B4VnZFRdU10LgOk32iCB2zGwPYdQYkY6JmUmJ8
+         e1vJin2gtYLXs2ykd5aRbKn3tV4HGdOqcJHSKiDtT20vvbLv4/ayr3L5fgb0JZUzHrN4
+         iiTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773873014; x=1774477814;
+        d=1e100.net; s=20251104; t=1773873015; x=1774477815;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iXKD+ZPBl4vkSnE6k01eq304ZeGimzAEjHRoiYkG/+4=;
-        b=Z3WK7U+EnSWYuQmQYTYaBEfBMt+weZ/I6zrGojav7ZSB6mfnZD0CG+HuQiODn/U4rL
-         s6RgXl3I54sOlWB2Z5UuAVZ5RoSv6T9oh5jZUvFkfw8vn2lTzRuCfuOnRZzOi/jkn3n3
-         W4ePQidi6W5lxnRmh6wSO2enSVz6ik/I3Fn4z38h0MP6xUzhs1esgi0SzDYRuccr5sbD
-         7fu1dRRyIKruAygOMoIvVZ44Wz8PE+FI5tZC7vPzHxd1LOjPBIsG1alTvEc9JsRBYtsT
-         /nkToMUYhX+BVGJh3tupmFthwZTIVzzqRMgJ5zhOmpcuEsYFHdtKIgGNwkFqdVwtXUB6
-         GrUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWkeaq5Tk0edr9w05JNfHTkX5/wVZOE9X/P4D1mvQYfC+CZuIz3ZFIvoo9VGitOWRP2mvI/KCbzLg==@kvack.org
-X-Gm-Message-State: AOJu0YzMBxTwORCJrtXYvsOM6E08Z/rYun6ONW1l5CXOa5Oi8w4i2Vsv
-	JvdavgkBJ3kOqWXX5KWBgNqdFCXxKbBKoAOPUW61dku4rIsTH/ImTVHN
-X-Gm-Gg: ATEYQzwOCkZxZ7+C2PNcPFTNIwwzxbuxf8RM1SS0tJmK1+vU6vGuMAFN75qSieYpDQ1
-	8ZO70vFXZpt1t5s8lXCLDx8IZ1y2RILh7ku8rcJx8U7qw98pCPx24fVxCWBc10cSbdp7GfVzLlA
-	6AqvWM7fulvnKmDDXivvlj33wKgQXU/CMQDx53NMyuAXYeT464fjBeg5U97BtE+LPkj6gBndSIT
-	1HMJp47dRpLdG2I7GRwT9aPbe6zjYv3Yu5KT0A03J1cVaN444W2fiWY//VUBNY8W+IDZceA4xti
-	bz8h+RucZQ8ph052lrEMdwLappEIZtIayrC7uFbokGry3plWBrEeBO6NYvn1aeM3p9rF/FNHQgi
-	eGVr2L4MWt6NTYwhCPQdLyb7kpasjCrKC7uby48kSm8mtacEZxovs6JlRdU5jV+mWL/QNT4q8Yv
-	iltF9905+zQleZQ3Qx/eeWIsoB4WxIaiodltbMIwfswJvm
-X-Received: by 2002:a05:6808:10cc:b0:467:11f6:917a with SMTP id 5614622812f47-467ba293991mr3007396b6e.38.1773873013609;
-        Wed, 18 Mar 2026 15:30:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:3::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-467baa8db48sm2569039b6e.10.2026.03.18.15.30.13
+        bh=/r4lbyJWNRb4OPU+FwoTkjRVnxoVbk6U7PxvuQ43o+8=;
+        b=hFmDDaORm1opVnPn7K7tlOgDGATTfg7KdJAzc6/5vvwdez7e/MrEgKsrGb1qEc6I5N
+         aY7Qjh4mCWvagBPIbm1gGnlNLHV9ufTRepSH1kXmSeidw19Sf4vyA1eyRB139ZUH1B5i
+         dCDVtzWfowndRTSC2+q7CtemOlBB2kKv7hK0CgNi8Fani4fnjohHzEc6JEZVN9MhX/7F
+         Dw3e1pTPSWYU2a6i/DBGUqUx5xHBfvzBXWhrtoAYZPux6o9nsXE+3CtMOGt7+ol5nsjT
+         4pjpum9FlOl1dSWiAQ+ZznsR0M6rQwm3UeBw13I4gvxOzU2+JIv446DwOgKkNsZYEAwh
+         +YLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnmH7uhdIY6Akxrm+XaFGx9UXO0S5wvNRvGp/HVEK+ZFs+/86m+GezEH9gePrI7EUTLX0KnL8CJA==@kvack.org
+X-Gm-Message-State: AOJu0YxCr1k5OyT6SBeXaeCRcAypQ1+Ai31SJ89/ZMxKbLbNhPEUXARf
+	ToaWSGpriJwSl13Ls5ftOtnp8FoQqAOVgKcqFo/gCsK0pgBMSyYsc8QJ
+X-Gm-Gg: ATEYQzyoKoWUibJOwTYspx+WNrDh5qGk3ktSC+LRCq7lGsX1DoJ3shGvpAl7eLUy7//
+	65qABpodKVXH/C56uz+SDbYvOmuINcOkje3ppMsvDYCatkutKP2udNESP8QByShgrObnbHaR3Z4
+	GTl+XV44d1N6q7Ox/0fHxJ67VNmz53wC1TTwxoJE/1psle6uNwfITZ6GeuioGgisEKvj9eZEO4u
+	3GsFIXOaanHzZ4dvSA45l1LDo6JKmPnZvsFpC5a3qqGj7wwdWbcP1Y0c2Wby49ePlOaIoDL7hin
+	bXBdPywY1XMm1VWyV0aLYnTJWbInpwjkb6j2ZyjqR3VrSd9/cUvRda9GXFsIp2ESHPb+pyMwAuh
+	fT82Q9GZlfiEaWxkfd7K5snZg4g6/wCCnX9rYliwjdiJbWWT7gHyt2aZmwciMboDKzNfek3g80X
+	qKlotY5xjSxHV86J8BaYXLqkYuLp1VCBapaOQwk0TeHIK7cg==
+X-Received: by 2002:a05:6808:16a7:b0:467:db5:8b21 with SMTP id 5614622812f47-467b9f4cf4bmr3062816b6e.0.1773873014996;
+        Wed, 18 Mar 2026 15:30:14 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:71::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41bd2c2d51esm4194088fac.11.2026.03.18.15.30.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 15:30:13 -0700 (PDT)
+        Wed, 18 Mar 2026 15:30:14 -0700 (PDT)
 From: Nhat Pham <nphamcs@gmail.com>
 To: kasong@tencent.com
 Cc: Liam.Howlett@oracle.com,
@@ -145,22 +145,22 @@ Cc: Liam.Howlett@oracle.com,
 	ziy@nvidia.com,
 	kernel-team@meta.com,
 	riel@surriel.com
-Subject: [PATCH v4 11/21] zswap: move zswap entry management to the virtual swap descriptor
-Date: Wed, 18 Mar 2026 15:29:42 -0700
-Message-ID: <20260318222953.441758-12-nphamcs@gmail.com>
+Subject: [PATCH v4 12/21] swap: implement the swap_cgroup API using virtual swap
+Date: Wed, 18 Mar 2026 15:29:43 -0700
+Message-ID: <20260318222953.441758-13-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260318222953.441758-1-nphamcs@gmail.com>
 References: <20260318222953.441758-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AB42F2000C
-X-Stat-Signature: u6d1ty7rmst4n1ahscy1hau8e8fhcryg
+X-Stat-Signature: orej7m83qsnf858m7uese78w1cd6ho8s
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773873014-701563
-X-HE-Meta: U2FsdGVkX1+3NBDx0ROMApYGwVxBW6wYR5fD5Yj/P3BSLUl+3U/lVMmGHkI8wb2XZ0HiudxlodfWwShkq7s61Sfvqs8cVoPdw25/MYSgWdv9tLpHhUh+qH8VHkPBfU/Fe6V+VmQsa9zWP4gYaU4STRslUAP1fJZZcLrzab4yR4E04pUWrP7QsBkN+GCUWV50TzhnE16oic/cxwO8DOKqVrexnJH61ekhN/hxgwDk5oSk6+5UZi2/a04aQdjx5QjweMU6F3yxKTMhBY/sptd3xIDy7XpDzTz9+v+A1BeDxlbEFUgJHNGRMKxV28qroZHznjc5n+AIJSrR1gV/9W4GN49Ge6Wfae5PfQes8bNXXIv1hNHAiUyoWvWRNTKGRPJzzgldPMokxirHozoKdDjmXEUnId14Tf8xn7s+cFryFwIWHOCASbTuJUx6rRmmQHBYQQ7TGjA5b4ukNk0opGdO10xrbDnMPCWNrk5ZCr10I1coQIoEWuonSta1Qc7P8N/jXTFbk224lK6RRBDivRh11cD0aMSd+jgXoyhrOSlBF9xC/quzH5P1EFQ3izYkGP7GDnyxvkg82mrzgdxa6OqdPeIfhz7U/Upjljh9Y1sgm/nIKeRGHuk3LBVJUJImvG0VhGhMj1ZJXz+ds17byz+UJ47TqIcgli4nH5RAoKZZjV268E8dRToNlPl7Ny1PhQfz18aRDNNftLveMmt4Lg1rBI5qdGb0kJ+K/jkhdCW6Jj6prpn/mlvsfT/wnhVqogqE39HYZyajdSo8V+oEzdU3P99s0tTJ1oKgwFii2Wr4STnBX4u2L0+W3M+h6cWnYeSM0VJKK5ZoMNvXnM6bljHxLPvDbviJNryok2+TcLn6hpsVRuEIUrrUMJ+0rS7Y19dXnvQdba60K7Dh8Zs2tVjTLAgLMXW/iCwggUPaBLBZCiRMAt7rji1GjqTpUM7PkKsxchoVg9mkGh0yKmBOAKq
- dGzARkoM
- Bdwhz2D+p9ur/2H2Cy31C3T4Y2G2TJ+pXGHc3llJ/BzBkA9qmRIroNULnXGYJJco5OzIm2BlODp9epIghIL1cRLF+Fbn7FYTZ4vnHl3LNhySedCw+szRL0ESvv+EjqwSi55LklammmVMjJmRqd/t8nyKLQXLAmZYjFOM+KIiMCnynShAe18p8sE4AikwDriy1haFGtz6IGpJchbNMkFO6ZeJuOQ==
+X-Rspamd-Queue-Id: 2D06920005
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773873016-507206
+X-HE-Meta: U2FsdGVkX199ksnzaxC6TqcOVDGE0ZWeGFPFKPYgrXh7Y9/BkVy0V6zNgoh+FA8wuaS2qckhl8DxIucqMzxuJzBW94P2x4jqyn+oNB4wUXE7mvVISpExHp/kDHQNf6DXGFX4hiSyUShrD0YyDI5XWCoKZ5tA776MC/ROjyPLBYcAaU8y/MhUXI1L5yTBM0LqPv7W+bYgl/cxMsdroyYnzF3W5y3dqVFn+WO7BkymzdmT4RlWMr4/eGnjMoTxAX3kUsesNEzxtxqV89CHH/OPsbqO11lQeTmkStOOEnytWKaolf12mOi07be7CK1UHIn27qLVdG4CsuY/2dYxwmwy6uGJBaYze9sizrhE0uFzN/x2Plaqxt4MOxdUKqnNb807qwl+qLr4zCgEMcbsjpTvNZmjT5BEo44LXdkWv+Ajz5d1Y+sdA6O/wRLHdIXIsYNe/cow6oPCcFtIj7ZzXWjIPlzlue+34P5cOB9No1iYHuvTUQ1IJNK0xZj8M5mL2hB8yedI4gtvmOeS2DxIKR5HBQZIMHDXzsNZKOyczToifEJBKLE2HRvgPZ860rM4ecKHFZxbglCeDnwr7+7vtOD3UPEJ/lEC0GU2pnOvZ6mZgepelrAUOnwgsNReBMuCIzU/+1cSEZxRQw1pTa/1Q1eBdIHtw8gcf92uY9ScdmA58tdZq4bIpC1HIdnkYDbFnW6muttvbVNddNZDfT5qDJb7BnDAGXU0sNczHwBQqcSsZriXogaSk4itwffg+enBpXnA6Ek0cMnYeMLwDua5943g72fn3/qWPLxtUsG8RhhPLqOWKvq1We9W8pv3QeRu36+ciQONYtx9y2vVli+i7n2eIuLqR0RtajfUkj+II6YcOPsPIuZKSJ3yobJHRXlfSDBO0rOtIZ8X79qs1rPiVxIwvjZPxf/MaxiqGS0l9xLHFItIlFp4m2qsHtq9qaR5hItlKtlk+JOovKbEAhccFHM
+ LaMadbG+
+ g2SM3pLvRbXBb3F1qgYdHJBoXGO62hT7+Ha8g0zZoJB5nMyk9v3WoT9tnH4RDtYOWNy0Ajdwz0vKvVmDMgIHvuImYQ1jNqkVdtXjrfMoch42Gk0gMm4jg1hOmyUkPCn4tRx2ldHzJ1LC980oyqNKBpfiLRFgM12gumnMRptuK79z0wmGoPdmkGv2chvT4bfgUjBgfwoR34sopirtJGCg6hOO1AGx7gaYjTl0dDGqgMfqoGFuLVPgbEafC5hb2zJU8cojH364F41TUJCmq27RqZq8uMtuBcVSldGtPsl4Q/MP0+C2KfaLUTgl2jMZRkWjpDdR4byr6eXJfo3KG5gPGtiIDjWULWDdUwSVkb9UxFLg8kycnblypjl2mud3TFyD/EEORN8Zh8ZDU4o2Y7MxbdgIuQFiaSaL1OVGHmI50r2wS2q5t9cUyKLdkoJLO28aDWHCgGh+EVOvZivD8HxniO/2PLPqPRSV+LA/SrK2tPLXc9N/upLIEukMx8rYw6qS1lk6/UwdhKfEXHg0axzPKbY5YEku8HhHf4GXdhPO7QmX3cfh+dgYmBj52VQvanxie9S1CfFhkxCz0oCs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,243 +168,413 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove the zswap tree and manage zswap entries directly
-through the virtual swap descriptor. This re-partitions the zswap pool
-(by virtual swap cluster), which eliminates zswap tree lock contention.
+Once we decouple a swap entry from its backing store via the virtual
+swap, we can no longer statically allocate an array to store the swap
+entries' cgroup information. Move it to the swap descriptor.
+
+Note that the memory overhead for swap cgroup information is now on
+demand, i.e dynamically incurred when the virtual swap cluster is
+allocated. This help reduces the memory overhead in a huge but
+sparsely used swap space.
+
+For instance, a 2 TB swapfile consists of 2147483648 swap slots, each
+incurring 2 bytes of overhead for swap cgroup, for a total of 1 GB. If
+we only utilize 10% of the swapfile, we will save 900 MB.
 
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- include/linux/zswap.h |   6 +++
- mm/vswap.c            | 100 ++++++++++++++++++++++++++++++++++++++++++
- mm/zswap.c            |  40 -----------------
- 3 files changed, 106 insertions(+), 40 deletions(-)
+ include/linux/swap_cgroup.h |  13 ---
+ mm/Makefile                 |   3 -
+ mm/swap_cgroup.c            | 174 ------------------------------------
+ mm/swapfile.c               |   7 --
+ mm/vswap.c                  |  95 ++++++++++++++++++++
+ 5 files changed, 95 insertions(+), 197 deletions(-)
+ delete mode 100644 mm/swap_cgroup.c
 
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 1a04caf283dc8..7eb3ce7e124fc 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -6,6 +6,7 @@
- #include <linux/mm_types.h>
+diff --git a/include/linux/swap_cgroup.h b/include/linux/swap_cgroup.h
+index 91cdf12190a03..a2abb4d6fa085 100644
+--- a/include/linux/swap_cgroup.h
++++ b/include/linux/swap_cgroup.h
+@@ -9,8 +9,6 @@
+ extern void swap_cgroup_record(struct folio *folio, unsigned short id, swp_entry_t ent);
+ extern unsigned short swap_cgroup_clear(swp_entry_t ent, unsigned int nr_ents);
+ extern unsigned short lookup_swap_cgroup_id(swp_entry_t ent);
+-extern int swap_cgroup_swapon(int type, unsigned long max_pages);
+-extern void swap_cgroup_swapoff(int type);
  
- struct lruvec;
-+struct zswap_entry;
- 
- extern atomic_long_t zswap_stored_pages;
- 
-@@ -33,6 +34,11 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+void *zswap_entry_store(swp_entry_t swpentry, struct zswap_entry *entry);
-+void *zswap_entry_load(swp_entry_t swpentry);
-+void *zswap_entry_erase(swp_entry_t swpentry);
-+bool zswap_empty(swp_entry_t swpentry);
-+
  #else
  
- struct zswap_lruvec_state {};
+@@ -31,17 +29,6 @@ unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
+ 	return 0;
+ }
+ 
+-static inline int
+-swap_cgroup_swapon(int type, unsigned long max_pages)
+-{
+-	return 0;
+-}
+-
+-static inline void swap_cgroup_swapoff(int type)
+-{
+-	return;
+-}
+-
+ #endif
+ 
+ #endif /* __LINUX_SWAP_CGROUP_H */
+diff --git a/mm/Makefile b/mm/Makefile
+index 67fa4586e7e18..a7538784191bf 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -103,9 +103,6 @@ obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+ obj-$(CONFIG_LIVEUPDATE) += memfd_luo.o
+ obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+ obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+-ifdef CONFIG_SWAP
+-obj-$(CONFIG_MEMCG) += swap_cgroup.o
+-endif
+ obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
+ obj-$(CONFIG_GUP_TEST) += gup_test.o
+ obj-$(CONFIG_DMAPOOL_TEST) += dmapool_test.o
+diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
+deleted file mode 100644
+index 77ce1d66c318d..0000000000000
+--- a/mm/swap_cgroup.c
++++ /dev/null
+@@ -1,174 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/swap_cgroup.h>
+-#include <linux/vmalloc.h>
+-#include <linux/mm.h>
+-
+-#include <linux/swapops.h> /* depends on mm.h include */
+-
+-static DEFINE_MUTEX(swap_cgroup_mutex);
+-
+-/* Pack two cgroup id (short) of two entries in one swap_cgroup (atomic_t) */
+-#define ID_PER_SC (sizeof(struct swap_cgroup) / sizeof(unsigned short))
+-#define ID_SHIFT (BITS_PER_TYPE(unsigned short))
+-#define ID_MASK (BIT(ID_SHIFT) - 1)
+-struct swap_cgroup {
+-	atomic_t ids;
+-};
+-
+-struct swap_cgroup_ctrl {
+-	struct swap_cgroup *map;
+-};
+-
+-static struct swap_cgroup_ctrl swap_cgroup_ctrl[MAX_SWAPFILES];
+-
+-static unsigned short __swap_cgroup_id_lookup(struct swap_cgroup *map,
+-					      pgoff_t offset)
+-{
+-	unsigned int shift = (offset % ID_PER_SC) * ID_SHIFT;
+-	unsigned int old_ids = atomic_read(&map[offset / ID_PER_SC].ids);
+-
+-	BUILD_BUG_ON(!is_power_of_2(ID_PER_SC));
+-	BUILD_BUG_ON(sizeof(struct swap_cgroup) != sizeof(atomic_t));
+-
+-	return (old_ids >> shift) & ID_MASK;
+-}
+-
+-static unsigned short __swap_cgroup_id_xchg(struct swap_cgroup *map,
+-					    pgoff_t offset,
+-					    unsigned short new_id)
+-{
+-	unsigned short old_id;
+-	struct swap_cgroup *sc = &map[offset / ID_PER_SC];
+-	unsigned int shift = (offset % ID_PER_SC) * ID_SHIFT;
+-	unsigned int new_ids, old_ids = atomic_read(&sc->ids);
+-
+-	do {
+-		old_id = (old_ids >> shift) & ID_MASK;
+-		new_ids = (old_ids & ~(ID_MASK << shift));
+-		new_ids |= ((unsigned int)new_id) << shift;
+-	} while (!atomic_try_cmpxchg(&sc->ids, &old_ids, new_ids));
+-
+-	return old_id;
+-}
+-
+-/**
+- * swap_cgroup_record - record mem_cgroup for a set of swap entries.
+- * These entries must belong to one single folio, and that folio
+- * must be being charged for swap space (swap out), and these
+- * entries must not have been charged
+- *
+- * @folio: the folio that the swap entry belongs to
+- * @id: mem_cgroup ID to be recorded
+- * @ent: the first swap entry to be recorded
+- */
+-void swap_cgroup_record(struct folio *folio, unsigned short id,
+-			swp_entry_t ent)
+-{
+-	unsigned int nr_ents = folio_nr_pages(folio);
+-	swp_slot_t slot = swp_entry_to_swp_slot(ent);
+-	struct swap_cgroup *map;
+-	pgoff_t offset, end;
+-	unsigned short old;
+-
+-	offset = swp_slot_offset(slot);
+-	end = offset + nr_ents;
+-	map = swap_cgroup_ctrl[swp_slot_type(slot)].map;
+-
+-	do {
+-		old = __swap_cgroup_id_xchg(map, offset, id);
+-		VM_BUG_ON(old);
+-	} while (++offset != end);
+-}
+-
+-/**
+- * swap_cgroup_clear - clear mem_cgroup for a set of swap entries.
+- * These entries must be being uncharged from swap. They either
+- * belongs to one single folio in the swap cache (swap in for
+- * cgroup v1), or no longer have any users (slot freeing).
+- *
+- * @ent: the first swap entry to be recorded into
+- * @nr_ents: number of swap entries to be recorded
+- *
+- * Returns the existing old value.
+- */
+-unsigned short swap_cgroup_clear(swp_entry_t ent, unsigned int nr_ents)
+-{
+-	swp_slot_t slot = swp_entry_to_swp_slot(ent);
+-	pgoff_t offset = swp_slot_offset(slot);
+-	pgoff_t end = offset + nr_ents;
+-	struct swap_cgroup *map;
+-	unsigned short old, iter = 0;
+-
+-	map = swap_cgroup_ctrl[swp_slot_type(slot)].map;
+-
+-	do {
+-		old = __swap_cgroup_id_xchg(map, offset, 0);
+-		if (!iter)
+-			iter = old;
+-		VM_BUG_ON(iter != old);
+-	} while (++offset != end);
+-
+-	return old;
+-}
+-
+-/**
+- * lookup_swap_cgroup_id - lookup mem_cgroup id tied to swap entry
+- * @ent: swap entry to be looked up.
+- *
+- * Returns ID of mem_cgroup at success. 0 at failure. (0 is invalid ID)
+- */
+-unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
+-{
+-	struct swap_cgroup_ctrl *ctrl;
+-	swp_slot_t slot = swp_entry_to_swp_slot(ent);
+-
+-	if (mem_cgroup_disabled())
+-		return 0;
+-
+-	ctrl = &swap_cgroup_ctrl[swp_slot_type(slot)];
+-	return __swap_cgroup_id_lookup(ctrl->map, swp_slot_offset(slot));
+-}
+-
+-int swap_cgroup_swapon(int type, unsigned long max_pages)
+-{
+-	struct swap_cgroup *map;
+-	struct swap_cgroup_ctrl *ctrl;
+-
+-	if (mem_cgroup_disabled())
+-		return 0;
+-
+-	BUILD_BUG_ON(sizeof(unsigned short) * ID_PER_SC !=
+-		     sizeof(struct swap_cgroup));
+-	map = vzalloc(DIV_ROUND_UP(max_pages, ID_PER_SC) *
+-		      sizeof(struct swap_cgroup));
+-	if (!map)
+-		goto nomem;
+-
+-	ctrl = &swap_cgroup_ctrl[type];
+-	mutex_lock(&swap_cgroup_mutex);
+-	ctrl->map = map;
+-	mutex_unlock(&swap_cgroup_mutex);
+-
+-	return 0;
+-nomem:
+-	pr_info("couldn't allocate enough memory for swap_cgroup\n");
+-	pr_info("swap_cgroup can be disabled by swapaccount=0 boot option\n");
+-	return -ENOMEM;
+-}
+-
+-void swap_cgroup_swapoff(int type)
+-{
+-	struct swap_cgroup *map;
+-	struct swap_cgroup_ctrl *ctrl;
+-
+-	if (mem_cgroup_disabled())
+-		return;
+-
+-	mutex_lock(&swap_cgroup_mutex);
+-	ctrl = &swap_cgroup_ctrl[type];
+-	map = ctrl->map;
+-	ctrl->map = NULL;
+-	mutex_unlock(&swap_cgroup_mutex);
+-
+-	vfree(map);
+-}
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index a47e024f2152c..adfcce286258f 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2934,8 +2934,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	vfree(swap_map);
+ 	kvfree(zeromap);
+ 	free_cluster_info(cluster_info, maxpages);
+-	/* Destroy swap account information */
+-	swap_cgroup_swapoff(p->type);
+ 
+ 	inode = mapping->host;
+ 
+@@ -3500,10 +3498,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto bad_swap_unlock_inode;
+ 	}
+ 
+-	error = swap_cgroup_swapon(si->type, maxpages);
+-	if (error)
+-		goto bad_swap_unlock_inode;
+-
+ 	error = setup_swap_map(si, swap_header, swap_map, maxpages);
+ 	if (error)
+ 		goto bad_swap_unlock_inode;
+@@ -3608,7 +3602,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	si->global_cluster = NULL;
+ 	inode = NULL;
+ 	destroy_swap_extents(si);
+-	swap_cgroup_swapoff(si->type);
+ 	spin_lock(&swap_lock);
+ 	si->swap_file = NULL;
+ 	si->flags = 0;
 diff --git a/mm/vswap.c b/mm/vswap.c
-index 371dd147bf70d..f2ebd79854572 100644
+index f2ebd79854572..95d683cf4505e 100644
 --- a/mm/vswap.c
 +++ b/mm/vswap.c
-@@ -10,6 +10,7 @@
- #include <linux/swapops.h>
- #include <linux/swap_cgroup.h>
- #include <linux/cpuhotplug.h>
-+#include <linux/zswap.h>
- #include "swap.h"
- #include "swap_table.h"
- 
-@@ -37,11 +38,13 @@
-  * Swap descriptor - metadata of a swapped out page.
-  *
-  * @slot: The handle to the physical swap slot backing this page.
-+ * @zswap_entry: The zswap entry associated with this swap slot.
+@@ -41,6 +41,7 @@
+  * @zswap_entry: The zswap entry associated with this swap slot.
   * @swap_cache: The folio in swap cache.
   * @shadow: The shadow entry.
++ * @memcgid: The memcg id of the owning memcg, if any.
   */
  struct swp_desc {
  	swp_slot_t slot;
-+	struct zswap_entry *zswap_entry;
- 	union {
+@@ -49,6 +50,9 @@ struct swp_desc {
  		struct folio *swap_cache;
  		void *shadow;
-@@ -238,6 +241,7 @@ static void __vswap_alloc_from_cluster(struct vswap_cluster *cluster, int start)
- 	for (i = 0; i < nr; i++) {
+ 	};
++#ifdef CONFIG_MEMCG
++	unsigned short memcgid;
++#endif
+ };
+ 
+ #define VSWAP_CLUSTER_SHIFT HPAGE_PMD_ORDER
+@@ -242,6 +246,9 @@ static void __vswap_alloc_from_cluster(struct vswap_cluster *cluster, int start)
  		desc = &cluster->descriptors[start + i];
  		desc->slot.val = 0;
-+		desc->zswap_entry = NULL;
+ 		desc->zswap_entry = NULL;
++#ifdef CONFIG_MEMCG
++		desc->memcgid = 0;
++#endif
  	}
  	cluster->count += nr;
  }
-@@ -1009,6 +1013,102 @@ void __swap_cache_replace_folio(struct folio *old, struct folio *new)
- 	rcu_read_unlock();
+@@ -1109,6 +1116,94 @@ bool zswap_empty(swp_entry_t swpentry)
  }
+ #endif /* CONFIG_ZSWAP */
  
-+#ifdef CONFIG_ZSWAP
-+/**
-+ * zswap_entry_store - store a zswap entry for a swap entry
-+ * @swpentry: the swap entry
-+ * @entry: the zswap entry to store
-+ *
-+ * Stores a zswap entry in the swap descriptor for the given swap entry.
-+ * The cluster is locked during the store operation.
-+ *
-+ * Return: the old zswap entry if one existed, NULL otherwise
-+ */
-+void *zswap_entry_store(swp_entry_t swpentry, struct zswap_entry *entry)
++#ifdef CONFIG_MEMCG
++static unsigned short vswap_cgroup_record(swp_entry_t entry,
++				unsigned short memcgid, unsigned int nr_ents)
 +{
 +	struct vswap_cluster *cluster = NULL;
 +	struct swp_desc *desc;
-+	void *old;
++	unsigned short oldid, iter = 0;
++	int i;
 +
 +	rcu_read_lock();
-+	desc = vswap_iter(&cluster, swpentry.val);
-+	if (!desc) {
-+		rcu_read_unlock();
-+		return NULL;
++	for (i = 0; i < nr_ents; i++) {
++		desc = vswap_iter(&cluster, entry.val + i);
++		VM_WARN_ON(!desc);
++		oldid = desc->memcgid;
++		desc->memcgid = memcgid;
++		if (!iter)
++			iter = oldid;
++		VM_WARN_ON(iter != oldid);
 +	}
-+
-+	old = desc->zswap_entry;
-+	desc->zswap_entry = entry;
 +	spin_unlock(&cluster->lock);
 +	rcu_read_unlock();
 +
-+	return old;
++	return oldid;
 +}
 +
 +/**
-+ * zswap_entry_load - load a zswap entry for a swap entry
-+ * @swpentry: the swap entry
++ * swap_cgroup_record - record mem_cgroup for a set of swap entries.
++ * These entries must belong to one single folio, and that folio
++ * must be being charged for swap space (swap out), and these
++ * entries must not have been charged
 + *
-+ * Loads the zswap entry from the swap descriptor for the given swap entry.
-+ *
-+ * Return: the zswap entry if one exists, NULL otherwise
++ * @folio: the folio that the swap entry belongs to
++ * @memcgid: mem_cgroup ID to be recorded
++ * @entry: the first swap entry to be recorded
 + */
-+void *zswap_entry_load(swp_entry_t swpentry)
++void swap_cgroup_record(struct folio *folio, unsigned short memcgid,
++			swp_entry_t entry)
 +{
-+	struct vswap_cluster *cluster = NULL;
-+	struct swp_desc *desc;
-+	void *zswap_entry;
++	unsigned short oldid =
++		vswap_cgroup_record(entry, memcgid, folio_nr_pages(folio));
 +
-+	rcu_read_lock();
-+	desc = vswap_iter(&cluster, swpentry.val);
-+	if (!desc) {
-+		rcu_read_unlock();
-+		return NULL;
-+	}
-+
-+	zswap_entry = desc->zswap_entry;
-+	spin_unlock(&cluster->lock);
-+	rcu_read_unlock();
-+
-+	return zswap_entry;
++	VM_WARN_ON(oldid);
 +}
 +
 +/**
-+ * zswap_entry_erase - erase a zswap entry for a swap entry
-+ * @swpentry: the swap entry
++ * swap_cgroup_clear - clear mem_cgroup for a set of swap entries.
++ * These entries must be being uncharged from swap. They either
++ * belongs to one single folio in the swap cache (swap in for
++ * cgroup v1), or no longer have any users (slot freeing).
 + *
-+ * Erases the zswap entry from the swap descriptor for the given swap entry.
-+ * The cluster is locked during the erase operation.
++ * @entry: the first swap entry to be recorded into
++ * @nr_ents: number of swap entries to be recorded
 + *
-+ * Return: the zswap entry that was erased, NULL if none existed
++ * Returns the existing old value.
 + */
-+void *zswap_entry_erase(swp_entry_t swpentry)
++unsigned short swap_cgroup_clear(swp_entry_t entry, unsigned int nr_ents)
++{
++	return vswap_cgroup_record(entry, 0, nr_ents);
++}
++
++/**
++ * lookup_swap_cgroup_id - lookup mem_cgroup id tied to swap entry
++ * @entry: swap entry to be looked up.
++ *
++ * Returns ID of mem_cgroup at success. 0 at failure. (0 is invalid ID)
++ */
++unsigned short lookup_swap_cgroup_id(swp_entry_t entry)
 +{
 +	struct vswap_cluster *cluster = NULL;
 +	struct swp_desc *desc;
-+	void *old;
++	unsigned short ret;
 +
++	/*
++	 * Note that the virtual swap slot can be freed under us, for instance in
++	 * the invocation of mem_cgroup_swapin_charge_folio. We need to wrap the
++	 * entire lookup in RCU read-side critical section, and double check the
++	 * existence of the swap descriptor.
++	 */
 +	rcu_read_lock();
-+	desc = vswap_iter(&cluster, swpentry.val);
-+	if (!desc) {
-+		rcu_read_unlock();
-+		return NULL;
-+	}
-+
-+	old = desc->zswap_entry;
-+	desc->zswap_entry = NULL;
-+	spin_unlock(&cluster->lock);
++	desc = vswap_iter(&cluster, entry.val);
++	ret = desc ? desc->memcgid : 0;
++	if (cluster)
++		spin_unlock(&cluster->lock);
 +	rcu_read_unlock();
-+
-+	return old;
++	return ret;
 +}
-+
-+bool zswap_empty(swp_entry_t swpentry)
-+{
-+	return xa_empty(&vswap_cluster_map);
-+}
-+#endif /* CONFIG_ZSWAP */
++#endif /* CONFIG_MEMCG */
 +
  int vswap_init(void)
  {
  	int i;
-diff --git a/mm/zswap.c b/mm/zswap.c
-index f7313261673ff..72441131f094e 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -223,37 +223,6 @@ static bool zswap_has_pool;
- * helpers and fwd declarations
- **********************************/
- 
--static DEFINE_XARRAY(zswap_tree);
--
--#define zswap_tree_index(entry)	(entry.val)
--
--static inline void *zswap_entry_store(swp_entry_t swpentry,
--		struct zswap_entry *entry)
--{
--	pgoff_t offset = zswap_tree_index(swpentry);
--
--	return xa_store(&zswap_tree, offset, entry, GFP_KERNEL);
--}
--
--static inline void *zswap_entry_load(swp_entry_t swpentry)
--{
--	pgoff_t offset = zswap_tree_index(swpentry);
--
--	return xa_load(&zswap_tree, offset);
--}
--
--static inline void *zswap_entry_erase(swp_entry_t swpentry)
--{
--	pgoff_t offset = zswap_tree_index(swpentry);
--
--	return xa_erase(&zswap_tree, offset);
--}
--
--static inline bool zswap_empty(swp_entry_t swpentry)
--{
--	return xa_empty(&zswap_tree);
--}
--
- #define zswap_pool_debug(msg, p)			\
- 	pr_debug("%s pool %s\n", msg, (p)->tfm_name)
- 
-@@ -1445,13 +1414,6 @@ static bool zswap_store_page(struct page *page,
- 		goto compress_failed;
- 
- 	old = zswap_entry_store(page_swpentry, entry);
--	if (xa_is_err(old)) {
--		int err = xa_err(old);
--
--		WARN_ONCE(err != -ENOMEM, "unexpected xarray error: %d\n", err);
--		zswap_reject_alloc_fail++;
--		goto store_failed;
--	}
- 
- 	/*
- 	 * We may have had an existing entry that became stale when
-@@ -1498,8 +1460,6 @@ static bool zswap_store_page(struct page *page,
- 
- 	return true;
- 
--store_failed:
--	zs_free(pool->zs_pool, entry->handle);
- compress_failed:
- 	zswap_entry_cache_free(entry);
- 	return false;
 -- 
 2.52.0
 
