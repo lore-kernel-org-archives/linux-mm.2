@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419FC1088E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 23:41:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE30B1088E58
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 23:41:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E8C96B0387; Wed, 18 Mar 2026 19:41:32 -0400 (EDT)
+	id E974E6B0388; Wed, 18 Mar 2026 19:41:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 398D96B0388; Wed, 18 Mar 2026 19:41:32 -0400 (EDT)
+	id E476B6B038A; Wed, 18 Mar 2026 19:41:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 288716B0389; Wed, 18 Mar 2026 19:41:32 -0400 (EDT)
+	id C73556B038B; Wed, 18 Mar 2026 19:41:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F3E46B0387
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:41:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95BD3160118
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A74E16B0388
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:41:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CDEE1B6FAB
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:41:33 +0000 (UTC)
+X-FDA: 84560808066.15.EF2891D
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8DF60C000A
 	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:41:31 +0000 (UTC)
-X-FDA: 84560807982.07.E9BB37B
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E943C1C0007
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:41:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="SKz7/v2D";
-	spf=pass (imf20.hostedemail.com: domain of 3KDi7aQsKCNkNJPM5QK5I85BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--souravpanda.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3KDi7aQsKCNkNJPM5QK5I85BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--souravpanda.bounces.google.com;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JBwC9DXS;
+	spf=pass (imf10.hostedemail.com: domain of 3Kji7aQsKCNsPLRO7SM7KA7DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--souravpanda.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Kji7aQsKCNsPLRO7SM7KA7DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773877290;
+	s=arc-20220608; t=1773877291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=da/no8+opguB6P/AaUZzqXEtIBqgc3BRBZUSTCjb+wg=;
-	b=B/Ht2hlZ2DVqMckdvsC9S/a1ZxUWD77seXcZzJypiY0zxBs3qhE826R6yG5DJdktN0ubP6
-	JIJzSEaJmu49wDUocqFqJ5IqsXneaA6mrBVyeVFXEaVkfV2SVhQ4opWDUDWd3tO0i4DCiw
-	sjh7VmH2/ojLZNaWPRwF0h30rAlO0Vg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZAE7XM+sTZKgqzB4BrZL2AJoWNFQZI9gaPUtJ4ReKmE=;
+	b=V+FwK8FLf9xN9lhzIr94vkpRFo31OC1VI0UippM5AwukfKxwkafLhOQd0JtNi2fDya6Wae
+	PnFJIw/A7o2PiPsbuqSjsZQ5acDt2NDqt8kVXyvqokNzZ/d3XZZcAcHaHXcos9Tm7zniVS
+	xx32rM+bBVW/MvHJY7JBd000rgi1HKM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="SKz7/v2D";
-	spf=pass (imf20.hostedemail.com: domain of 3KDi7aQsKCNkNJPM5QK5I85BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--souravpanda.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3KDi7aQsKCNkNJPM5QK5I85BJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--souravpanda.bounces.google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JBwC9DXS;
+	spf=pass (imf10.hostedemail.com: domain of 3Kji7aQsKCNsPLRO7SM7KA7DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--souravpanda.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Kji7aQsKCNsPLRO7SM7KA7DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773877290; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773877291; a=rsa-sha256;
 	cv=none;
-	b=TcI8VT6DMrVb/1QHrECcZdyQ6381DwuE2IBvhfTBx46o93AMpFcYhSosyPSkd+OAEJolAS
-	LbTQYSYsnolG9U+zt6oVDbZdvjfTjuO6OjsT6jxsRwb7ChRJJLKwRpUyImf0ztmfL71X8u
-	Jzmq2RthetYkbrGjrkIymDDzSa1+Gnw=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c741c4cebf3so306756a12.2
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:41:29 -0700 (PDT)
+	b=qAZOnTt1W3ceR68pZo3HVTxb3HUJ9VpN4mmQppjnZj18fUHrsYvulGaKy01+Esn9VYHLRx
+	W5DbusZ2M6YWrR3Mg3+upEJ4KUEOfTAtYlV6v+mHTf8z++8qXDyaL4BCyRU44yowX66Du7
+	Ca6FR4I4nbBtajMyeiuqMTAlGOzyvv8=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b06b68783dso3675395ad.3
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:41:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773877289; x=1774482089; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=da/no8+opguB6P/AaUZzqXEtIBqgc3BRBZUSTCjb+wg=;
-        b=SKz7/v2DISAaTTGQu7Xxx781kKAbXOb3r85sZ4nefRcj+h84xdB+DsxCTJNnPeDNuV
-         LrIqXcr5sa2qavLxTwNlyhq2sHkDZxTWgKg3VY8S6G7bDAWOrovAP6hzgka160oaRHDg
-         sf6Wt1TUn1bcQoNhp81o3wuaAwmjLt8EpbNeS4C/JJ+7PSqS6WKWWeqBbbaicWluf2/W
-         0LQmFTwX10rTrlklDr8mr4JBIF3gs5WXSDsnYJ+RMWFA+2qScTShPGEGjuJb5lmamLGT
-         9uih2LtuPM9/nRpjEKE9dd7HHuAT7vitLYiYXJG+bbpX8Vre8tRLfWjOZqvjwZurqFZ8
-         uygQ==
+        d=google.com; s=20251104; t=1773877290; x=1774482090; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZAE7XM+sTZKgqzB4BrZL2AJoWNFQZI9gaPUtJ4ReKmE=;
+        b=JBwC9DXSGvic7F1m/Fc3rZe6cXdE6bVPkPOKHPLFVj2jdQMZqdPJnJ4zpdZWHZkc7Y
+         +lS+ZMy3HmwT4ie0zSDr6Dno3crCCVtVnQUo7r87PLywKA679VU5E4OjKDrTlXvwobty
+         52UdX7VynrNeQaAiINL04up196Fu8B79UCNHRhPTQO8HJCumkrxFXKUFMy3YyfTzWph/
+         syVl4htB7p5dUYDqaauhKQ02IW88Z+EgFDn2i7MkTQT/RAxkxWNRawgVqY4LevpT/iKo
+         cGZDFiVBcNleE2bCKL2L/zJuyd+G5N387pqFhpMMwFKSq+7OU+2JjjDoB+GfyySmiel1
+         oQCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773877289; x=1774482089;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=da/no8+opguB6P/AaUZzqXEtIBqgc3BRBZUSTCjb+wg=;
-        b=oCxs4Lh1RUrliO5b1ZnOqMyrsk5HMDxzJ5aGvbNDudwlxFCbMjrYw3vMHij13RbD8a
-         MLD+mR4oxpw6xFoN8agvQs3u/GTEg1tFLiiv9fFHaSqHMvPrF0+O3UWaIWZMvdButRV1
-         5Dfwl2Ry+8j12UPzdH8hxKnBoF9kVPITfaA6Y5ev2cnd+u3+AXnK4s2FB68p1YIvgE+r
-         d/O4gKAXVXVt7cUxJfQmOJEzKAyuOwon7JWtOGYoE7L3ZiAKCU88FaiK+bkqxgzlD8OK
-         RgqCwd2mejxVDCsOPk/Zi/B/8XRLPQmcEhs5axEB+eKrF2HDlv6B9cwpwNudwr1H8XUN
-         hD4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUpDn6aWaBlz4M0kBxVjGA8cGsyb46uxCYv2h1YpMI2T5F4kpH8Lyep+R4P1v+UCDfbjF+H+zMJ8g==@kvack.org
-X-Gm-Message-State: AOJu0Yw/SO8oAAFFHaDhcHBtrlcf/1Re4uTn26N2jOe6uqUiBeDF2zTn
-	pN8LQVhxRh3iC3NVjGmRo8vNDL4Q/NWbpdUpk7YApeye10lC0x5Dsx/suEo1WOeeR6WNj3TgGr7
-	AHOf543ZVr/4gfkd+1MZqo38UeQ==
-X-Received: from pfbfd31.prod.google.com ([2002:a05:6a00:2e9f:b0:829:808f:cb8d])
+        d=1e100.net; s=20251104; t=1773877290; x=1774482090;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZAE7XM+sTZKgqzB4BrZL2AJoWNFQZI9gaPUtJ4ReKmE=;
+        b=qejF8aJgrBW/WkuwQiXdIHFwRhK3/UttsZFpVFgO2t1T/a2jq8g5Hd217lxFkD+nxU
+         JWJDRt0PcqvHc3ojklhuWpEH8tnma46ono4zHoJBDq9wb1hk/Hymdqz5v7tXDK9aSu1F
+         iSn02gAOZr2pI+T6K+g8NhZOoBi66i5fGKXj68jvI0faKpEi8ktusIjCZAlZrVWck8+4
+         Q+0h3JkNaeC+ziveFuZZGDINgYI/lrdB1tNZ7yEUetVjoSHSDr4S7mFmRnBf1p8LZDaX
+         zzwd7Q9GGB6om0br6MUK22B7PkNm0iJP6Ce6Rf2Qp7oto9t617Xm9gwMm15/ldasHnOs
+         oyLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgmRrd1gpeLJ5zlLrgvUmTIfXPHrqKRM6PpBtvzN+TD8YdzNQtl/6AZE26bYaQbgUe/l8mmPHLFg==@kvack.org
+X-Gm-Message-State: AOJu0Ywg3LBeeC0ipOh248YB4sujR/wKTFRPeNUg8NVTnzuJeAll8E1i
+	zuIHudTcNZerqhZSszpV+eKLM5pHFrr1W5mOUdlxJhKacadaJUKDJkqYUsnRu7jj8jRTYYM9QGp
+	CxaBUoWyiHPugX+fq4BwyTZc2JQ==
+X-Received: from pfay33.prod.google.com ([2002:a05:6a00:1821:b0:829:72ec:561c])
  (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:778a:b0:39b:a3d8:d81c with SMTP id adf61e73a8af0-39ba3d8e864mr3052896637.61.1773877288488;
- Wed, 18 Mar 2026 16:41:28 -0700 (PDT)
-Date: Wed, 18 Mar 2026 23:41:24 +0000
+ 2002:a05:6a21:4781:b0:39b:9644:6e98 with SMTP id adf61e73a8af0-39b99c9eb04mr4939494637.8.1773877290134;
+ Wed, 18 Mar 2026 16:41:30 -0700 (PDT)
+Date: Wed, 18 Mar 2026 23:41:25 +0000
+In-Reply-To: <20260318234126.3216529-1-souravpanda@google.com>
 Mime-Version: 1.0
+References: <20260318234126.3216529-1-souravpanda@google.com>
 X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
-Message-ID: <20260318234126.3216529-1-souravpanda@google.com>
-Subject: [LSF/MM/BPF TOPIC][RFC PATCH 0/2] Hugetlb Fungibility for page
- metadata savings and network performance
+Message-ID: <20260318234126.3216529-2-souravpanda@google.com>
+Subject: [LSF/MM/BPF TOPIC][RFC PATCH 1/2] mm: add hugepage shrinker for
+ frozen memory
 From: Sourav Panda <souravpanda@google.com>
 To: akpm@linux-foundation.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
@@ -94,14 +97,14 @@ Cc: lsf-pc@lists.linux-foundation.org, songmuchun@bytedance.com,
 	rientjes@google.com, weixugc@google.com, gthelen@google.com, 
 	souravpanda@google.com, surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E943C1C0007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hhbhsuy17mwtqjmz6cskcmj6xqtuphdw
+X-Rspamd-Queue-Id: 8DF60C000A
+X-Stat-Signature: hkozmtuowmfqtmw1haik53ggpsxrxfns
 X-Rspam-User: 
-X-HE-Tag: 1773877289-72965
-X-HE-Meta: U2FsdGVkX19Wf7p5ss/6BYrZ3rsGTwZfyWNK9GBJY2NACNQkQO0Grm2EWm+JAPADk7mTSuSr6fcEAY7hik1pQQJ/eWBseDBNm0WSkbAlpsWdgxXhynDCsvOo76BpOIvw5suVUy9XOG3fgwFc6x4aYpQx5Zy+acoAdrNxdMRXNHsDytLHmX8DSaEZb7LSzhsC6sFgOVP71xcL9uyGP8y6YeyddHkmqk/cwfp6YPkBM2VvmV6UVRNXIckfopeXWXJMMW8F8AP4Y5FiK/I7YaDtMYNaIqPrWNdC4VRonBCF3VmuShuhh9XnMGqvTCpraMCej63yAxKKsEATBMbJwHmrUcNhAJ4A6u9PuCtE4IPZn8HzMlBtycb/uRtj18XXa3k9nPZFRZG91T88k1Or8t7aRgy5k17JboAdfzW3qx6R9nCVmw4cJcuo3nhXigtfWK4ubUArbGZEmz5S89BtBmrNchjiKy7a2T2tyhc+q9PqN0ZF2PuHgQpU1qrRC8H3tJfaXPUFnfp6T1UbazTAZO/VozfFSKEhbWmFF5STXiu3B7vhmLmB4/7Tqd/y+u3qVgwZjCXw14/CwCpclnyQI1fUFA/W0LDbTf4IDLa+dRvvEj23GgkvV6lHl3imDOMgjz7AF9afIEWVpGSIjR8iUwD9zvRmpvm6wZdMx2cu36BBfDUzOX7HlkTH//Kp3Zdb1JH4R1IJOkfLa9UNKnVpjx4kLqzS9BEjToGxGm2XH1FAKU0o0pS0Byk1KZkrm6zf6K9ymc3pGEJXrWTfcWYY+HYBJYmm//3Lh3oDcPquFaw7NOVhfclNHqOr+LQY+yUsmdlKRHRWlawfWOfSNe5gBJk+MZ2SlOktNGVet4azQYXfCZ5bDOo00Idf3C9WpL8ejqMHNK28yKgL0b6Zr1tFs7G+aq/hZnoJ6hA5f75GWH5fcmcAdlJRtskJxFL6JCZfgHlDNf5u0FtwPUN+GRe2o67
- 0anu7B3j
- 2WsTIs/hT0VQyNXGetVTWi1YCRBNYMDrebKSgbgYRthuByQdM7bZPwh0X3TbAyEtOu34tvjLpa38s3pBcmnICa9ky7mW1osC884YtxMgp7EGNy9BbNX6sxx4ipfJ9r9YNtWh5Kv93LsnPLPrMS5EljRA+sf49asyhxJdPhp3rdwg6Yby34XG0sR5uQCKoJYCQqkyf2V6gOu0avAHydigrgEa3qR1U6V2s1409rI+odaesxcbD1PlaktuwgxEsYnONQAEYkFBx9o28XGn9wRDQWReBAdH5fcbg4lMslTbjY9jf3urqiZjloZyxx3hP4/I0WkgrMCOPoMcghhf1QHjhJnhq4RDErwTHU6zbxpK8fNkAANqw4QngUCd5Fq6pyLNYJVqj9vu5fL14rIG9/+xihFqUg0lry25lpy5Qw9zQs37pszfYW7oWpTa/GcuaYorAwOGTJ11swFDIi+KXrO0cs0nW6Vn/e9TxZ6VTpt/ahPpoDyYVfZqy52LXt8hkg3afb2BVgDsxgcmmDmZOAgGEGC+pIae9Sm4fDu5CZYNIjnQBOSx3dFr0UeTY5kTn8+wD/9MAIIAPCsBq7sYPB0Idl5TiF3OEzHBzurz8c29Y06PEyzpiue2vCooCekEyinQskcF4eKofU51qJDryLeHwkqrHP+CLV3B8jdZ4YV606AgEPkHEVp340ZWO3g==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773877291-160184
+X-HE-Meta: U2FsdGVkX1+pHKQoA00c2QChBfTaJPPo9WEMjeWjQbwGiUjfXhv97F4CHNabSh1PM/xw9zAumXUbqcxk9VyxwkFbq6yxDkz2d11uVWIZZ9f8nUeooavpOVJo4YQekZLkPzAOeegbjkGQ4TvmSnTzw2N/KzInqNwgIa/x2ltjpRBx53LlaqpFhBemzce7S18CB4koOs6wUDBcAjTETGQ91PIf13APbcLyhqVUSLGTcPAgbn6JBLwft/LCB8Cj26Szm6o9eSaXkG0nBVfU7QM83PB3UQL9dH4c8D+9QpjANSM9Hrq7pjorIH4GQwrdtTtwJBMWjpPtFOd2BR5coCbOlxSm0lpUwhKBNuV+hn0qgxlI86m5OBQ9M4TBqCo3MwebSuJF5epi6Ibda/f9iP9/B1pG8B9z+/RQH1ujAmqgdxKDHMZMeq4ZN450/WIW34QzSUGLAjxaxQLphh8XhU7maaxowIW+u39C9oGDKBTRA33cElYNqbWdw7SIi0Qj+K4BfK/3S17+SRcEXEJjhIX3d7N0kSTN0nhiL/kFbN6W4UbNGsDBRrUfTcVEQ1syFr7CojLSGZFIxBQVtzXqTO0PdaBgmMEU/+Wx+Vvw8sAGkAraCzo/ro6thsL+oJ6n64KANXPUYqRgb02j/NN4acekPjer1czw1cJgB2Pj9LzYjJHJHQgQCCk96DBdloc7c03CyPMy6WeMKXFizJz2X55w0KiSqxvdQAHnkGJ3BFdvX2g+Ru1QQN42jFO5umwqneuF8KU0Gwlh/mlfacDTVuq8ZGcO6yk4okBEHGGhUIMrXQqvUb+vIQEAYQYmE9t3gnZC21hHHeDvYvcH2zZsTY+M0PkyKrDfGeNZ4ldutv07kMuT9SW3+Jk+WlMOPkIjJKYTYkEoKka2GfaM5jZOwLK3q1ztXf/qwUIocc2n5ogzV5BFZr4kU/bRXgw68xqTWJke6fV/4+gXo8pLPmOEFew
+ y/8HnC+c
+ yEYvHkFE478U3qXHI/OyD6YyqYv5WSkQbNMdB+wTvtAi7PDT3aLJR6pyoZmGMu7MToClLMF2A/Lk+01lRaRvW4UTOXEPe3bfT21xbt75JN21Vrd37UXmt2LQ3gdgQ1cwW/1BYtErkyyZ8ihrq03Lb7EDlUlo0mksDchChKSDUvFuKOnqG8hNxW7jAoggAwTy4xgf+QhI0RAB2yXoWzDET/tClfnF329YF6rKGyrN5pXAL58Yc2FNVVH8KkTI13+plB52djDJBc5nyxTv2MmdUG6dGXJwrcQtF59b0FBgqz8WstEt8l4n5QnAe2IdhmGu7/FiY5lALoM7q4j0cbfIR+iPf47mjSueVuklyahTl52t0+NGG2jgGg6TwcdSAgoSAmJaNLBP7E7YAS2w/r6WOpENZAHGlSFCF6WSizKV1Q0NzhDu1gTcvSiWYOlY73O8rm25IxW15TvCOmDLUqI5N5d2fLUwB1CaysV8OEZKZWe4M9BaQYSqm+Ma+w5/biiIxrdy6pccEw5oHWSmwLpEEoVlI8DA5gnMOZhZTTEESkaf0OJaGBdoK6CsG0++Zr24fqheUhwWTGD7H7ZMq38KMcS2KUjphWNCB2JeX3hUDUcgEfl8v47OjB37ztFqafsK8qGJA/UGgASN6WTVtarNuKULcwthSQkZA9K772tJ3s1PC3EbkrYAidKESakieCNgeHuEkzD4R0ijXzgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,42 +112,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The purpose of this RFC is to supplement our discussion in LSF/MM-26.
+Implement a shrinker for the hugetlbfs subsystem to provide one-way
+fungibility, converting unused persistent huge pages back to the
+buddy system. One Huge page at a time.
 
-This is sent as a proof of concept. It applies on top of v7.0-rc3.
+This is designed for virtualization user cases, where
+a large pool of huge pages is reserved but kept free, acting as a
+"frozen" memory reservoir. When the host experiences memory pressure,
+this shrinker thaws the memory by reclaiming huge pages on-demand.
 
-In VM environments, the guest frequently utilizes 1GB HugeTLB pages to
-reduce TLB misses and minimize page table walk overhead for
-network-functions. This has the added benefit that it reduces redundant
-struct page metadata overhead through Hugepage Vmemmap Optimization (HVO).
+Pass the hugetlb_shrinker_enabled=1 kernel command line param to enable.
+Please note the nr_huge_pages will change without user intervention.
 
-While this saves significant overhead memory, this memory is not available
-for other purposes; such as the hosted VM-workload or pagecache.
+Both kswapd and direct reclaim can shrink gigantic hugepages when
+the system is under memory pressure.  To safely support concurrent
+reclaimers (e.g., kswapd and multiple direct reclaim tasks), a new
+mutex `hugepage_shrink_mutex` is introduced.
 
-The guest must balance two competing memory requirements:
-HugeTLB Pool: 1GB pages reserved for high-performance NFV applications
-and yielding page metadata savings.
-Buddy Allocator: 4KB pages required for business logic, system services,
-and page cache.
+Signed-off-by: Sourav Panda <souravpanda@google.com>
+---
+ include/linux/shrinker.h |   2 +
+ mm/Kconfig               |   9 +++
+ mm/hugetlb.c             | 125 +++++++++++++++++++++++++++++++++++++++
+ mm/shrinker.c            |   2 +
+ 4 files changed, 138 insertions(+)
 
-Current kernel limitations prevent fungibility of memory between these two
-pools. As a starting point we propose a hugetlb-shrinker to provide one-way
-fungibility wherein ~90% guest memory is allocated as 1G hugepages at boot
-and then converted to buddy pages on demand.
-
-Sourav Panda (2):
-  mm: add hugepage shrinker for frozen memory
-  mm/hugetlb: skip hugetlb shrinking for proactive reclaim
-
- include/linux/shrinker.h |   3 +
- mm/Kconfig               |   8 +++
- mm/hugetlb.c             | 131 +++++++++++++++++++++++++++++++++++++++
- mm/internal.h            |   2 +-
- mm/shrinker.c            |  12 ++--
- mm/vmscan.c              |   6 +-
- 6 files changed, 154 insertions(+), 8 deletions(-)
-
+diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
+index 1a00be90d93a..5374c251ee9e 100644
+--- a/include/linux/shrinker.h
++++ b/include/linux/shrinker.h
+@@ -51,6 +51,8 @@ struct shrink_control {
+ 	 */
+ 	unsigned long nr_scanned;
+ 
++	s8 priority;
++
+ 	/* current memcg being shrunk (for memcg aware shrinkers) */
+ 	struct mem_cgroup *memcg;
+ };
+diff --git a/mm/Kconfig b/mm/Kconfig
+index ebd8ea353687..a88f370c7485 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -769,6 +769,15 @@ config NOMMU_INITIAL_TRIM_EXCESS
+ config ARCH_WANT_GENERAL_HUGETLB
+ 	bool
+ 
++config HUGETLB_FROZEN_MEMORY_SHRINKER
++	bool "HugeTLB Frozen Memory Shrinker"
++	depends on HUGETLBFS
++	help
++	  Enables a shrinker for the hugetlb subsystem that allows
++	  unused huge pages to be released back to the buddy
++	  system under memory pressure. One huge page at a time.
++	  Further gated by kernel cmdline hugetlb_shrinker_enabled.
++
+ config ARCH_WANTS_THP_SWAP
+ 	def_bool n
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 327eaa4074d3..d4953ff1dda1 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -27,6 +27,7 @@
+ #include <linux/string_helpers.h>
+ #include <linux/swap.h>
+ #include <linux/leafops.h>
++#include <linux/shrinker.h>
+ #include <linux/jhash.h>
+ #include <linux/numa.h>
+ #include <linux/llist.h>
+@@ -4127,6 +4128,129 @@ ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
+ 	return err ? err : len;
+ }
+ 
++#ifdef CONFIG_HUGETLB_FROZEN_MEMORY_SHRINKER
++
++static bool hugetlb_shrinker_enabled;
++static int __init cmdline_parse_hugetlb_shrinker_enabled(char *p)
++{
++	return kstrtobool(p, &hugetlb_shrinker_enabled);
++}
++early_param("hugetlb_shrinker_enabled", cmdline_parse_hugetlb_shrinker_enabled);
++
++static unsigned long hugepage_shrinker_count(struct shrinker *s,
++					     struct shrink_control *sc)
++{
++	struct hstate *h;
++
++	if (sc->priority >= DEF_PRIORITY - 6)
++		return 0;
++
++	if (!gigantic_page_runtime_supported())
++		return 0;
++
++	for_each_hstate(h) {
++		if (hstate_is_gigantic(h) && h->nr_huge_pages_node[sc->nid] > 0)
++			return SWAP_CLUSTER_MAX;
++	}
++	return 0;
++}
++
++static bool hugepage_shrinker_is_watermark_ok(int nid)
++{
++	int i;
++	pg_data_t *pgdat = NODE_DATA(nid);
++
++	for (i = 0; i < MAX_NR_ZONES; i++) {
++		unsigned long mark;
++		unsigned long free_pages;
++		struct zone *zone = pgdat->node_zones + i;
++
++		if (!managed_zone(zone))
++			continue;
++
++		mark = high_wmark_pages(zone);
++		free_pages = zone_page_state(zone, NR_FREE_PAGES);
++		if (__zone_watermark_ok(zone, MAX_PAGE_ORDER, mark,
++					MAX_NR_ZONES, 0, free_pages))
++			return true;
++	}
++	return false;
++}
++
++static DEFINE_MUTEX(hugepage_shrink_mutex);
++
++static unsigned long hugepage_shrinker_scan(struct shrinker *s,
++					    struct shrink_control *sc)
++{
++	int err;
++	struct hstate *h;
++	unsigned long old_nr;
++	nodemask_t nodes_allowed;
++
++	if (sc->priority >= DEF_PRIORITY - 6)
++		return SHRINK_STOP;
++
++	if (sc->nr_to_scan == 0)
++		return SHRINK_STOP;
++
++	if (!gigantic_page_runtime_supported())
++		return SHRINK_STOP;
++
++	if (hugepage_shrinker_is_watermark_ok(sc->nid))
++		return SHRINK_STOP;
++
++	mutex_lock(&hugepage_shrink_mutex);
++
++	if (hugepage_shrinker_is_watermark_ok(sc->nid))
++		goto unlock;
++
++	init_nodemask_of_node(&nodes_allowed, sc->nid);
++
++	for_each_hstate(h) {
++		if (!hstate_is_gigantic(h))
++			continue;
++
++		old_nr = h->nr_huge_pages_node[sc->nid];
++		if (!old_nr)
++			continue;
++
++		err = set_max_huge_pages(h, old_nr - 1, sc->nid, &nodes_allowed);
++		if (!err)
++			goto unlock;
++	}
++unlock:
++	mutex_unlock(&hugepage_shrink_mutex);
++	return SHRINK_STOP;
++}
++
++static struct shrinker *hugepage_shrinker;
++
++static int __init hugetlb_shrinker_init(void)
++{
++	if (!hugetlb_shrinker_enabled)
++		return 0;
++
++	hugepage_shrinker = shrinker_alloc(0, "hugetlbfs");
++	if (!hugepage_shrinker)
++		return -ENOMEM;
++
++	hugepage_shrinker->count_objects = hugepage_shrinker_count;
++	hugepage_shrinker->scan_objects = hugepage_shrinker_scan;
++	hugepage_shrinker->seeks = 0;
++	hugepage_shrinker->batch = 1;
++
++	pr_info("Registering hugetlbfs shrinker\n");
++	shrinker_register(hugepage_shrinker);
++
++	return 0;
++}
++#else
++static int __init hugetlb_shrinker_init(void)
++{
++	return 0;
++}
++#endif
++
+ static int __init hugetlb_init(void)
+ {
+ 	int i;
+@@ -4183,6 +4307,7 @@ static int __init hugetlb_init(void)
+ 	hugetlb_sysfs_init();
+ 	hugetlb_cgroup_file_init();
+ 	hugetlb_sysctl_init();
++	hugetlb_shrinker_init();
+ 
+ #ifdef CONFIG_SMP
+ 	num_fault_mutexes = roundup_pow_of_two(8 * num_possible_cpus());
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7b61fc0ee78f..8a7a05182465 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -529,6 +529,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
+ 				.gfp_mask = gfp_mask,
+ 				.nid = nid,
+ 				.memcg = memcg,
++				.priority = priority,
+ 			};
+ 			struct shrinker *shrinker;
+ 			int shrinker_id = calc_shrinker_id(index, offset);
+@@ -654,6 +655,7 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
+ 			.gfp_mask = gfp_mask,
+ 			.nid = nid,
+ 			.memcg = memcg,
++			.priority = priority,
+ 		};
+ 
+ 		if (!shrinker_try_get(shrinker))
 -- 
-2.53.0.959.g497ff81fa9-goog
+2.53.0.983.g0bb29b3bc5-goog
 
 
