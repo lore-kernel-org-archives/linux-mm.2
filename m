@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3871088E43
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 22:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2AF1088E4B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 22:49:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7983A6B0374; Wed, 18 Mar 2026 18:31:24 -0400 (EDT)
+	id A23D56B0377; Wed, 18 Mar 2026 18:49:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 748E56B0376; Wed, 18 Mar 2026 18:31:24 -0400 (EDT)
+	id 9D5286B0378; Wed, 18 Mar 2026 18:49:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65EE56B0377; Wed, 18 Mar 2026 18:31:24 -0400 (EDT)
+	id 8C3FA6B0379; Wed, 18 Mar 2026 18:49:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2B16B0374
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 18:31:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 224A6160167
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:31:24 +0000 (UTC)
-X-FDA: 84560631288.23.0C84E9B
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CD80A1C0003
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:31:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=YpGwhr6J;
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 78B166B0377
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 18:49:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 246CA1C26F
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:49:03 +0000 (UTC)
+X-FDA: 84560675766.29.7CBAB85
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D583210000F
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 22:49:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=EMFkAEP2;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773873082;
+	s=arc-20220608; t=1773874141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=feR+WZOS3OTfblzJeHeIi+2BIqJt5V6mtxKjgXtF058=;
-	b=3v/AqZhcvj/RALoCeGP5g9mez7nPYolcAdlKVTnz0YBg4BDZUWAywNgksjxxa99XuYQTdc
-	wAVihYxDEGLjb1e8soh2vE60wcTjur2D1lxqDBIJq1gWUBIe01BVZ1Mk0s/LAxc4OvPwQW
-	J5Mqk/a/5vgqd7LZozrT6+f4zKieA40=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773873082; a=rsa-sha256;
+	bh=PMr7aJnn5tbpENmXs0hgUd4j/FxLseJeRUZelWseNrw=;
+	b=LYw29xDMp/4YApTsj/y/P3KiUgwoDdNzRPDj2ChwWk5GBT/u9tk/YHsT0EEiTPM1TNyMxO
+	KABkryRE6qZiip0zFqk3gmXGl9DmBrP2fTC+n7JoH71yUBf5Gr/npDsWSBj7/uFiellXDT
+	IIrqo3tI8qICbG1k2PUY5fxmj3ZDnDE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773874141; a=rsa-sha256;
 	cv=none;
-	b=i7jMmlyvp3NLSYBQlOwKYlypxp5HTkJpkpAkAkWyAR0p3fao8k692cxQt/XYTbUo4EPPGP
-	EhYChhivHUbd7LFbzzzPOiKBUmofJ9Mz7tpkI9+6jkfjV8rVOGrUiWVWuzSOVBcMPU+bp3
-	T2oyIZ2a8sGpu/ATJr3No7vVeRBY36k=
+	b=f+spRJ1c9ArcMhPiHyfOsURQvbYG723MUf+TEtCLVP2hyTPDhomxX4LzK+DFl7hvalYTIx
+	GdLAjN69+wr36fiiLKBpS+XjKe2PNvyWC+WypOMogZ8NY+UpxObQ3E/mJfy0t/Z2lUmnth
+	aINNn7ixixDYw83LHh0dDiU/muJXiKc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=YpGwhr6J;
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cd7c372929so3397185a.0
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:31:21 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=EMFkAEP2;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89a465bd7edso3987376d6.0
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773873080; x=1774477880; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1773874140; x=1774478940; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=feR+WZOS3OTfblzJeHeIi+2BIqJt5V6mtxKjgXtF058=;
-        b=YpGwhr6JZWJDjDdmYRbcBADSqFEAOrn7dLzZet4BA4rIYzG12lYILp21N1T7nMI3mG
-         o9sOJKIBYT4V8OnAQC2QeH587NZh39cqlrsYSYecEhbkqf6nNLVEa9q99MVchGzODgd+
-         Q6a8+KN16B4vW5fbl+01n0fZYxtPap5Jglz+5l2DKWn0/QJd7XKRBuu6fxRbq+JYPmZo
-         6zFPsO9QlLCxfla+FxwmgHgbIPazcZxGWakAH4jkf/XnAjXG2qU3+4p8nHMB/Y6SKxBh
-         cH9YTU+DO0NCY2CS8q1W6li9we/OvI7T+20Fu27q8u6PpkLWw1bj9J+P7rNO+tRGTDWT
-         uDjg==
+        bh=PMr7aJnn5tbpENmXs0hgUd4j/FxLseJeRUZelWseNrw=;
+        b=EMFkAEP2UosVwGsrVpBXBeW369xoM/r2EXORAa7JtW0cBuP6p7F0GJRcKP4Ep3Kq1B
+         LhsVVZrZLsmnqbXzj2jBQ+JgPoFlv2kKYS6HNh/Or+rMRXnvUB8n6NF8DNj1rqzgh8w/
+         ArM+TH0XFPefgybfpsi3pQfriuzXrA/nqi++36dJaZVnZwj5LsbAJotvxpf/UQptKdT6
+         ZVKM49PUq7MugkwQkPogPq1+AtWDGRxGYVwJedZqNlKGHvg7a7wALNCQOK6aCTygoD5Q
+         bDQPrkYNSPkzdpVUQLwT2EKUlv+CWQT5IovBb5ToleyA4QCREaSUC+PNlZyfCdhMWrK3
+         HTNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773873080; x=1774477880;
+        d=1e100.net; s=20251104; t=1773874140; x=1774478940;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=feR+WZOS3OTfblzJeHeIi+2BIqJt5V6mtxKjgXtF058=;
-        b=oZcGMYrucC+PtEgzhm7Ekwcwb05UXXUFZonEVfWG34wtjGUXxq4mE353zG5LRp2GJy
-         ML2OLOA9lgn88Htfx9gUC6SUJPOxXOTRBtCbHu+furPEzo6UFWLxEZ4cWTMlutfiC0p7
-         B9H0rDsKwioWbEyCw6oJJGVTWS7pt3fSty5zUrkoTzmLy/9z7jAjVqb2Gn5N28qjqZ1M
-         Iwr56okEYpOFwLreVQCRRYcwVa32vfqW2sisf5un6CRDaZIBUNFcND/95ZEjdqhjlKhl
-         iFOis3z7pcE2Sf2h/dtM1D/JNDdvj00XfmdLFo/7eIGzFTaDVW40N3MRmNsyLxdB68EV
-         UZiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHCLb7ZOIQtiPyRFKQcGfhizhxRxsXCC+zY6d9ykgdeLiaMSU6qC8FzEYOSYwVzzfVhAP2l0G1MQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzl6m1QSWLU/gSQ8/6iolrlW7CLbEDgVA22dI0lHUzj8sSUnS9n
-	Hzu7jZCxOL84U2wwVEDPrvRMFWzfdCBVaT8lbqypDxL6hX+Pp+qgbeIt2h9FF508a00=
-X-Gm-Gg: ATEYQzyX3tnrubdgQsBgCC7mfqbfRYu5l/By0ifHe755HpAS84xVRT8/OSQlnvLpyZM
-	Yvx1UgRI7GFF6RiTDimqcuEwy66XRB9stdL+z/eK2gqHfOpsDU75Is4F1oVq3QUYKZVWj6Sh/Km
-	cPwd0RhT02W/XnYmtIv95JyGfc9Gin46U+VFzpF9hI9tLKhRm+seUYcvC4d7BTj+yuwWybxDgsi
-	hwvIQ8JhGJfb+uoze57Mx+oCzx66AP43kcwyHw6PulG6EV7B0t53z6ELvPz18OvD8+UAXioMPvR
-	kZRlJx584Q/EE5hdyQiWrWj9biUs3Y96VIAdg1pI6cTvN3PPj6gKRUAlrNoAda0I8bEVPieBeWw
-	VWsbzqH/1E7VHngjZ9/HzOotCELa/JH3bXRClU6nm/Glk45ZgTHwwIDvaD9YiwSuZ6S3uF7W4cH
-	WLByMq2/i5oN5n62xZl/tgzA==
-X-Received: by 2002:ac8:59d1:0:b0:4ee:168a:9ebb with SMTP id d75a77b69052e-50b148bb1f5mr65777391cf.58.1773873080466;
-        Wed, 18 Mar 2026 15:31:20 -0700 (PDT)
+        bh=PMr7aJnn5tbpENmXs0hgUd4j/FxLseJeRUZelWseNrw=;
+        b=lZzF9W2jel/pk7oBc/wcYJS4JBA13Rj2hhCUwpROz9LivFy+yQ2U5hEPIyqRyoMbmn
+         4ibIOqK9X2e8zDeU91Xm/t+Z9IsIB5jMXWM3E1pYOtlaWRZoouCQ57NUCGowN0fIZXDc
+         Jr+eXNNBsnFMuITz3k4B4YAs6l70AM8Dt2nw0J+f1q2febTSIi8A1SMpumABo2HBD4a1
+         Ju7plwzQoVAb2OybgBGBg0K9QbBsP2EmoFiXwvf2Gt012YH5ijSIOZgZdMeGqvbUbEz0
+         ASTf9SKhJ16tdwUiMovmCO4JY8xxSoxzymqDUCWUza8clfycCb7MeGCGuaaB223gMn3v
+         4ROA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9p99t933QaHw/hObCSgyy8eIDg/pvuRzyEndTKoL7pi8y88MU2bXS9EDEEFTXiIvyNHsLnpUziA==@kvack.org
+X-Gm-Message-State: AOJu0YwkR7AObs4/Exfs6d7WmZxlbAStNxrkigoKvs1PKAoF1EaywGde
+	+ncjzB1smo2PlW585ixzJBF6PmTePtQSlXLTurFtQO00lk+eh/bC9MkqM4hL1U+Bqb10vPOkttX
+	kVEC4
+X-Gm-Gg: ATEYQzwSD9RxfzS4xcYFPfOr9n3Fm0scAfQ0EZ3aIKPRP1iLhMA2wbReqMQIGMNLv1I
+	nVNt4xkp6Tq/TzfYdOfbwkGNl+r6BAGtPz7hhxSRP9/zMJIXc2aWIi0j72ZpZ0+pFqRTzEcBeNe
+	uN6K3nbhsDRQ3m43idwSgFBq+tc6sKAfrQbhzZJ5TSFFLt876NR9x0rhgPYfqisYSWkhZLTae9o
+	/sMvrqtKijpSGHy7y6aTooca0+effL/CURYQnWb+fhP+LcPr+Zxw3dO1cKrvhrjhKJVh1/ON6u+
+	8rvVBJ3syvoJzNCFLfZnLcRATR9J/1v+fQ0uOlJpDBPfRHOzZci3UyAPqp5jaxZ0hyug6cbdnrA
+	OMgZJ6J43FWAS8BCEw47+oh0f3ianu3HvWuLA906KqPttEvsCDP0/Jv6CbopaMDD4X1n5Lgj5YT
+	3fMhJ6wnhbRphkYmGsHr8k8Q==
+X-Received: by 2002:a05:6214:21a2:b0:899:f570:3167 with SMTP id 6a1803df08f44-89c6b5af178mr69240396d6.46.1773874139756;
+        Wed, 18 Mar 2026 15:48:59 -0700 (PDT)
 Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b135d523bsm32134991cf.27.2026.03.18.15.31.18
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c6b9ce6cfsm37644246d6.24.2026.03.18.15.48.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 15:31:19 -0700 (PDT)
-Date: Wed, 18 Mar 2026 18:31:14 -0400
+        Wed, 18 Mar 2026 15:48:58 -0700 (PDT)
+Date: Wed, 18 Mar 2026 18:48:54 -0400
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -101,22 +101,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Dave Chinner <david@fromorbit.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
-Message-ID: <absnshL4E4iXSC1y@cmpxchg.org>
-References: <20260318200352.1039011-1-hannes@cmpxchg.org>
- <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
+Subject: Re: [PATCH v2 7/7] mm: switch deferred split shrinker to list_lru
+Message-ID: <absr1vgNP_tM1OEP@cmpxchg.org>
+References: <20260312205321.638053-1-hannes@cmpxchg.org>
+ <20260312205321.638053-8-hannes@cmpxchg.org>
+ <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
+In-Reply-To: <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D583210000F
+X-Stat-Signature: xk1fcu41fo3uf1brjibhnua369cz1qje
 X-Rspam-User: 
-X-Stat-Signature: 5cj8ag789ydmxgwhirjwhrxidqeztnj5
-X-Rspamd-Queue-Id: CD80A1C0003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773873081-491673
-X-HE-Meta: U2FsdGVkX19SrgE2wbcADsmmQm5EvUFt6evceU1rmAsYUpa4eEa7OdAesanKY/F4mWUwINx28W7cXICeYnYlwQtCUl/7rsjWPQYMZbau7V/T406FLMaUkPUCMpSWsI9NUTFqJpgTmq2kj5yVcD2JDTFxnMfFkQ2RayiVqxZd43AnlKjHexMeQM2iadZTSO5SFudDVfshxS8zcxpg4aW5gcEpg81SFFUgatQEax/wME0Z2eChZ4YjiF7Ob7+rIoc7dBbGWt5qt1LZn5ArsEE3rWMMGlbUlpn7oM8Zmms99nCudQhv100JoNfE0MFTWJDohn9V5/YxgGIuGOpH3ysim3iG9KIxPMGErAPjieBwrSTGTNVDf01dof4FWaN+n3kuzl70Rh9Ja9jh2YoWHTkDziXsy32+oIqZe2N9daHmQDwSSj9HeRsr0L9MuUsTUdiWO1m1L2N6gaiEkRq+TNcK1N+rPc5dQpXNWpG5VvYyKIXegQnehRwokRy7ZXd9ycEM0yqlTiX5uE/1XdL4eFdZrvllXNyLrFnKNZN0OKXJNyrQoNQq7PiiUGvSLxushyYeorsHXQMYVJ8UPU5vIRC6D0n0xA6CMqkSSN1k92f6UNAaO1ii2JY/TAmee6DDAfKAk6WNyrz8M5mOHrnCt4Vr/wLinkYCf8nYaenkWBFFIZi01S73OBMm6CfBu2QaTNJBk6SU4c8ceosW7Fxzi8r9kl4/nK2C87dTd86iXyGHm9oD752AdD/ybnzZ+A4/UQ0u92Neh55ikaG/0B3ayjvdP+/HPRV71n1JRWXDeP0P9U6yZYrKh6lDux36nR1JRFVuhmrNgfyOBmCn3wbbhBrEM4no/dcpA5WXcKbZXb7FXtzRnblm9tcSjY1TYq/YvQPDHTEwdidGw9xudOhbFmAyiBqeCYJBrcsiymiUptV4ZBE+rc1NQDfHfhFNe8URJx8L4b2N6mNLWUl5e5jtASX
- mhR0GHZO
- vCnqQDRjNibjTwk1apXA6Us75q5eKMDUoU5twpV4Dzhy946Ex+m40HzdVRqIpHys42QG6WolmdjCehYDR+AgjVfu65gcarw2beP6QyMJ2FNZHLDUUFBh+T3fICHgB1e//hO3tPJfdvP8YL9UBNolzjmERWsl4ioUURMq8Wcd2LfL8C4byv/ShFISC2LEsBphT6jVeKzAwGCElqjV3TzOiIh92a/m/gu+iMM9NqTkBmg3vcSBwsX9ZUG1kE7oWsVANOd4OPXOW+US1xAxvM2vak3ZY+1+U5l/5bPNpGseOeu7PZSpsF0WRdDfebSs+SAZJ/dail2Ttau62hFDfm8moa4dEBKGIjMKVnoCWdPSV8OCpMwb/4K+DlCyQH6XE1rd/+76yMS8GaNk3Vyei2Fcl4MQRrY2zMFnd796Q16EaVVWccJoPrlX3ZrDijOqYOhdWqiz16T3Pz9+eprZ66RWe21NFJd/p4YYaWpnGmxZVHAJDHl1koVlfVJg/ze8/gGENp221wZg5UapVU94VBBMCDRcSMfUQI5SGDRDfrX2ymwIcQLUX+vZWUfwnVD/l3UyQC3JeYv1G7l3PH+DxEjunHhvmA3kPNgGu18rKUDY0fKv+NzJwwy8U0IR6adDPmiSexnl2isDe8WgBceRQwy5gxIFF+p6ol9K1RHqOsQjAIgtKP18ao8i5xWLROA==
+X-HE-Tag: 1773874140-197473
+X-HE-Meta: U2FsdGVkX1/VqDoHEspvCa7LffjCVDwXErmHWLOPSlIA19+5HarqQU2mHum2wZlMdwYh6gHQA2E8o9e/YMPxX+CtSLja1R1FTiROHb2s+Yh7hWMiEBgi15ao4TTKP9DGEk1+ERetHMro0ugyT6+fWBu+QuITofRhGTWjJzFz7aTDjOEFBfGyLy+xb2C6aQO0cn7NJqQS8Hw03QpTkUUIeHq2fHLlMcZ0gpggR7a2+8wg9yKHbtVAxKh/paXdmusu0eXTcjRucTdz0WBr3/QTBNn/1M/NccmG+xBV9mJ3j4I6492C+DLGGPdj8sS94+/sj0Kvfv8EmH8Qm5cl+e+qAOY9VDbGshDOmRDuonrHvq5VtZlDJU7sDPkWBNndZeK+pVvgwDyxgrzEO9d4gjK9pQeWBXE1ap1iwvJo4Si1igtRB49/PIxZWYbh/M0FC2yjPg4YDdJfKBXXpUvkwAsi94b6IfdXLUtDDdX2JiCv8QiWbrpo/S3SqcMwWsOERW938Vi/RCZmhMatGmdZ/gBQl3tIV86Wghmbq5KAp3ya7Ei6bl2zebdU771uZfq1o669jTpRegKZpY5BjZE/4ZU2ea6sAp4g+TLwBEgQWT++FTtcDzJSfdcvhYuVJSKW0bpmOPRc7QpR0GnZytg0Ypn1xYCqxo9GcLhSNZKrGvECrGDSjXUVRmMXyyfq9iEWt+y9myCSXC2nNOsOQ4mXt6GigjlMNUq6vKWAL6VfI2ov+MFbj6R2Hy4vKC4jwbTmzDXLfdVOjsV2iQwFFgpYwGz2LwfwHASYKTzCefuxnx7U5YZ+xOTl6N30fNwg26e1mrp7IX2DQ7BKI3oQ/Z2MKQdX3+vObynK22yrNYIJhC8LPykwruSm7YZBwOUZQjoHQDUFyaPB1DGl4ddklhCqO8GB3AKzU9kojZ2hAvgbCEJHE9dG+i60nLI5/fCPGmsiPV7S1yaSHn/WRpwAzkTB+O+
+ vnvz+m9t
+ +9GoQWaXWU1eraqMRmpYhR5rAb0dh3LPg8GTHHpH+UO3rJSehWxj2+EtzUthe9hJXoFQuzNPTDCULabDEtSZvlZHjYG2iJj+WXKwX8KDOQ0CjR0hBSTMQ6zos78ySrucSXR0oP+WlBdKNzlDuxI2lVi1W4Szb2Ag5erVeGLqAGbjv4HnTL4Vj+1JnHY6fSpZDFBlyM6h5W7yeu7VX9WFqUelhVJqyqgoCuP8/42PBCfduNp84X7kI4jbrtHQwJG8DpZ/kdw9Z5/T2FSSrlKZFjCbJ188MKKv4GMRatB0/8zhAmjANtJ5nJ7c2SfX50MstwzIRmzjWYGY1YyEZcHvPabrVDaOeOZa4WzZNmF/7Lk1i6TGdnpsXslnUXqWlGukN0cdOt3YuCfOwC6e0obY6KVAkajJvDGXzzG51POA9FSMazfmJ7VLCFVGVE63qOoCPENJQGfFp32UctAw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,46 +125,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 09:00:57PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> Hi Joannes,
+On Wed, Mar 18, 2026 at 09:25:17PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/12/26 21:51, Johannes Weiner wrote:
+> > The deferred split queue handles cgroups in a suboptimal fashion. The
+> > queue is per-NUMA node or per-cgroup, not the intersection. That means
+> > on a cgrouped system, a node-restricted allocation entering reclaim
+> > can end up splitting large pages on other nodes:
+> > 
+> > 	alloc/unmap
+> > 	  deferred_split_folio()
+> > 	    list_add_tail(memcg->split_queue)
+> > 	    set_shrinker_bit(memcg, node, deferred_shrinker_id)
+> > 
+> > 	for_each_zone_zonelist_nodemask(restricted_nodes)
+> > 	  mem_cgroup_iter()
+> > 	    shrink_slab(node, memcg)
+> > 	      shrink_slab_memcg(node, memcg)
+> > 	        if test_shrinker_bit(memcg, node, deferred_shrinker_id)
+> > 	          deferred_split_scan()
+> > 	            walks memcg->split_queue
+> > 
+> > The shrinker bit adds an imperfect guard rail. As soon as the cgroup
+> > has a single large page on the node of interest, all large pages owned
+> > by that memcg, including those on other nodes, will be split.
+> > 
+> > list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
+> > streamlines a lot of the list operations and reclaim walks. It's used
+> > widely by other major shrinkers already. Convert the deferred split
+> > queue as well.
+> > 
+> > The list_lru per-memcg heads are instantiated on demand when the first
+> > object of interest is allocated for a cgroup, by calling
+> > memcg_list_lru_alloc_folio(). Add calls to where splittable pages are
+> > created: anon faults, swapin faults, khugepaged collapse.
+> > 
+> > These calls create all possible node heads for the cgroup at once, so
+> > the migration code (between nodes) doesn't need any special care.
 > 
-> This is at v3 and you've not cc'd the majority of THP people:
 > 
-> MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
-> M:	Andrew Morton <akpm@linux-foundation.org>
-> M:	David Hildenbrand <david@kernel.org>
-> M:	Lorenzo Stoakes <ljs@kernel.org>            <--- (!)
-> R:	Zi Yan <ziy@nvidia.com>
-> R:	Baolin Wang <baolin.wang@linux.alibaba.com> <---
-> R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-> R:	Nico Pache <npache@redhat.com>              <---
-> R:	Ryan Roberts <ryan.roberts@arm.com>         <---
-> R:	Dev Jain <dev.jain@arm.com>                 <---
-> R:	Barry Song <baohua@kernel.org>              <---
-> R:	Lance Yang <lance.yang@linux.dev>           <---
+> [...]
 > 
-> I'd assume it was an oversight but you're an mm sub-maintainer yourself so
-> I'm a little surprised...
+> > -
+> >  static inline bool is_transparent_hugepage(const struct folio *folio)
+> >  {
+> >  	if (!folio_test_large(folio))
+> > @@ -1293,6 +1189,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+> >  		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
+> >  		return NULL;
+> >  	}
+> > +
+> > +	if (memcg_list_lru_alloc_folio(folio, &deferred_split_lru, gfp)) {
+> > +		folio_put(folio);
+> > +		count_vm_event(THP_FAULT_FALLBACK);
+> > +		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
+> > +		return NULL;
+> > +	}
 > 
-> Anyway could you please make sure to do that going forward?
+> So, in all anon alloc paths, we essentialy have
 > 
-> I'd like to rely on lei's file-tracking stuff to catch cases like this, but
-> I just haven't got new mail tracking working properly in that environment
-> and it's really too slow.
+> 1) vma_alloc_folio / __folio_alloc (khugepaged being odd)
+> 2) mem_cgroup_charge / mem_cgroup_swapin_charge_folio
+> 3) memcg_list_lru_alloc_folio
 > 
-> It sucks to rely on people cc-ing but email development is what it is :)
+> I wonder if we could do better in most cases and have something like a
 > 
-> Thanks, Lorenzo
+> 	vma_alloc_anon_folio()
+> 
+> That wraps the vma_alloc_folio() + memcg_list_lru_alloc_folio(), but
+> still leaves the charging to the caller?
 
-I apologize, there was no ill intent here at all. get_maintainers.pl
-gave me 27 addresses for this series and I honestly thought that was
-too aggrandizing and self-important for what these patches are lol.
+Hm, but it's the charging that figures out the memcg and sets
+folio_memcg() :(
 
-So what you're looking at is a (poor) attempt at trimming down the CC
-list based on who I had talked to about these patches at the THP
-meeting and who I remember had worked on shrinkers & cgroups.
+> The would at least combine 1) and 3) in a single API. (except for the
+> odd cases without a VMA).
+> 
+> I guess we would want to skip the memcg_list_lru_alloc_folio() for
+> order-0 folios, correct?
 
-I can CC everybody going forward, not a problem. Personally I don't
-mind getting CCd generously, but my understanding is that some people
-do...
+Yeah, we don't use the queue for < order-1. In deferred_split_folio():
+
+	/*
+	 * Order 1 folios have no space for a deferred list, but we also
+	 * won't waste much memory by not adding them to the deferred list.
+	 */
+	if (folio_order(folio) <= 1)
+		return;
+
+> > @@ -3802,33 +3706,28 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+> >  	struct folio *new_folio, *next;
+> >  	int old_order = folio_order(folio);
+> >  	int ret = 0;
+> > -	struct deferred_split *ds_queue;
+> > +	struct list_lru_one *l;
+> >  
+> >  	VM_WARN_ON_ONCE(!mapping && end);
+> >  	/* Prevent deferred_split_scan() touching ->_refcount */
+> > -	ds_queue = folio_split_queue_lock(folio);
+> > +	rcu_read_lock();
+> 
+> The RCU lock is for the folio_memcg(), right?
+> 
+> I recall I raised in the past that some get/put-like logic (that wraps
+> the rcu_read_lock() + folio_memcg()) might make this a lot easier to get.
+> 
+> 
+> memcg = folio_memcg_lookup(folio)
+> 
+> ... do stuff
+> 
+> folio_memcg_putback(folio, memcg);
+> 
+> Or sth like that.
+> 
+> 
+> Alternativey, you could have some helpers that do the
+> list_lru_lock+unlock etc.
+> 
+> folio_memcg_list_lru_lock()
+> ...
+> folio_memcg_list_ru_unlock(l);
+> 
+> Just some thoughts as inspiration :)
+
+I remember you raising this in the objcg + reparenting patches. There
+are a few more instances of
+
+	rcu_read_lock()
+	foo = folio_memcg()
+	...
+	rcu_read_unlock()
+
+in other parts of the code not touched by these patches here, so the
+first pattern is a more universal encapsulation.
+
+Let me look into this. Would you be okay with a follow-up that covers
+the others as well?
 
