@@ -4,137 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88624103E197
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41C17103E198
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C724F6B027A; Wed, 18 Mar 2026 11:45:41 -0400 (EDT)
+	id 7701A6B027C; Wed, 18 Mar 2026 11:50:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C226C6B027C; Wed, 18 Mar 2026 11:45:41 -0400 (EDT)
+	id 720F86B027E; Wed, 18 Mar 2026 11:50:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B11616B027D; Wed, 18 Mar 2026 11:45:41 -0400 (EDT)
+	id 60FBC6B027F; Wed, 18 Mar 2026 11:50:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B4966B027A
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:45:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7045813BB47
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:45:41 +0000 (UTC)
-X-FDA: 84559608882.17.F2E0963
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4F410140009
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:45:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sMi9NWdN;
-	spf=pass (imf23.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773848739;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 48E426B027C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:50:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6DD71607D6
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:50:42 +0000 (UTC)
+X-FDA: 84559621524.11.445EECF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 68077160006
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:50:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AAFfqGYQ;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773849041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6gmeMVPdTQy9BEMRG9Pt8pp3Mke6GzH6nH2NXf+FRA=;
-	b=KFUABAdKAq1VmvH1oVxcQJrgayz4eFHhs3kBTHeYWqfeo1ubiV310i/H5LKwycSzOw2ZZC
-	2Y9pqvfvVxsHtGN09Ale5oDnYiYInNaOoA5HPbMZ4uVHAfo54ELgFeKWe/13bKQJHVlGm2
-	/R/ZFp0wkdiY5NVd/mhcU2mHwIY1B+o=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773848739; a=rsa-sha256;
-	cv=pass;
-	b=jgBelYdi4VNF+Gj+755a0YX3ewjJqmbVaxYrnVAD70WT8mLtFxcZCnk04o2PH04Ou7sGWM
-	H1cmAXraN3R7JMKzGiHX7d++jzOuj3CwocpyafDNNjuOwpo/dYh7yYzxvsYOo1Fmtx7K/b
-	gSr1pxyUcGirrKtIQVf+KuNAIqulMdU=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sMi9NWdN;
-	spf=pass (imf23.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1270f10a774so10231c88.1
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:45:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773848738; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QBPqlH0B5b/EfJIa9YudJNc78ycM/dKCoheg5S+ZgP1uE+Gg2vtPPFCW0yQ8Z+z+SX
-         qbLXiWJhYcJjSikbwmQyIiMAxbTjR0isSdZoImIsziBM1OO/STvOx/ACi1UcOtjcN9JT
-         hq48J6F4IjYRdUhspzHbi4p2XFjqjLHg6+8dO5Pq27SeSwxX9ZHzmD/1ahYHQlsdmrDn
-         mZ9T4NTFwJDGNrRcozc5QZpmjdV0U10Mq8NlEVi6O9r6hFuDXWQyYlfnxYdFAiuOoCOT
-         IfZlafual0XjAWqEF+DuomJD0d+vC9nxrytcMzf3l3b8oJry1kbZYr6rQmjAYuV5iAmr
-         BqSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=O6gmeMVPdTQy9BEMRG9Pt8pp3Mke6GzH6nH2NXf+FRA=;
-        fh=GsWnPO3I4jhHjSvQaa8toAIma26oeI5U7+cul5k66NA=;
-        b=NZ23/+al6qBjx+OT1AzwtoxoVvv+x/nvRld+5ghVFtS+hPa3VpbRDBji+InitE8rb3
-         hWiugROryJCotM6qBA0fCHHzKQK6UFVeC64dylsrCksHWhP3DJ59wcODqnJDjhR/0jKz
-         mE9LNMCRIFcrRBTUadPpZl7gv2bOpAOM9iXRTZu4UIJJBfpOt9Ca+byXAiLoDrFye9s1
-         FGjcuXkHty+B3O/7ysRrhKIP/UZMr1d+9opGWNngXl5oTxi1cBrnBUm11hnuvOjdNSta
-         vFA7THGqN2yf9EmL3ddXON1Q5+HP9TDAxLHG7SUcgqQa6gORp7S/dAVsPkcB2q6zo6mp
-         fEFA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773848738; x=1774453538; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O6gmeMVPdTQy9BEMRG9Pt8pp3Mke6GzH6nH2NXf+FRA=;
-        b=sMi9NWdNT93dAeAVVNcRxF7F3ImQ7k1ZwCfea+9f8fG3deP1zd9BgDlQ3Emg7cfJoF
-         YHcjDmboTJf9q+2Iz3bO7UQAOmCE3W6r4PlDtG7AFyh02bfa5yv9pwY/uhT+nmMEOwUu
-         Mb1efzfgqHONBB20MabYIDfzfyxP+X1nE84U650V8fljvfHDWmKQpvgEg50HBaFotOdq
-         S6YmWrBiaA4v5jMz66hmCOZqbNroIwO0WCmAG2GYc8mrJH7HtSlcLbFXF5C+orknDICI
-         Rx6FxV6oZRebb7kpSq8HevYMj9OW/NVUSUh1D5yStrnADK/ZF3VrAQOFbaskm97qAH7y
-         ijhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773848738; x=1774453538;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=O6gmeMVPdTQy9BEMRG9Pt8pp3Mke6GzH6nH2NXf+FRA=;
-        b=gzKZ+WtMITeUaLehcR0PSQwi/r50kRmiJuxGL7YLvvEaWsGMxyUMtJsBaYM6mPn/Ow
-         aNnDDk0eEtAXKQrxR9wmaJmAg7v5xoWY0rWlLt1cNRiz+kpOOJvqDKnwq2DODeis97rD
-         cqQ1LsPY/GX4WvEINgPyFbCP6QTWMVHJAxcVGT6JFu6IMtBnIVcyrTSrQwp8VP5/gc07
-         r4duSjnD9zAOOJ+ORxI88/mnruTsofwGa2iAbZ2FrrkLTOTuc+52m1X31jEvwnqZnE/w
-         wiGBCn9N9I3Gldr5KVm7PPqIGx0lZ8EUDXH83IxK/Dkxh7nhiNNLDNdCiQTKug77TxbK
-         3qmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVMiknDf08a11a/f+lObJmsc6fj4M5tYyKr3d5cvuBNSrgH6bjK2H/olwXWql9wQfVnbhibd105TQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw88+oGz0+TE7uVIBkxIw1wJNjFGJ/yaBNyB+z5M9NvohQpNvNg
-	lHMtL4ITVTyUY/f0RE2hZGRe0u/o9UPP5EZFPUy+ftbYI7U4ziVSNzj9dGoTgDBeAYzV1dMICHI
-	wFH+9ojVB0Xh9hCtwrxpRRMAlP6AtxjhKsCkvpnsC
-X-Gm-Gg: ATEYQzz9RGr4Y8cXWVvzxJKetk0pqv9l0QPsU0+ykopHZVTegSp+lvt1VRm8LTrqqEQ
-	ftU6pBgFTQ+24meL0LCjGjHhaisxrUaEwlG44Wc+CbWeSUOy710ptfOa1YD+C4IvUn0LnUMpNcu
-	bbqQld6aVC+3N3yAvKRaOuesBlUPuTLn+CNSw1ph2qMBgek0j6kjqHz3B2PDWdlA4XojnHXTKe3
-	Wlo3dX4/JJP294Y0koOSy4cQokW7xcyG5A6CSS2SFdS38KitIEsPXR561kF+liGRBfYnkSrWLXl
-	2PtNKw==
-X-Received: by 2002:a05:7022:158d:b0:120:5719:624e with SMTP id
- a92af1059eb24-12a11f010acmr183038c88.21.1773848737286; Wed, 18 Mar 2026
- 08:45:37 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fgOUl/nTYsFlZlCglicvnRIJOYHEIfXsIVweRMwl46c=;
+	b=45prnvJ6n3SPQHZCKzXevT7sYkWU7n9xN7/zGGhH46nvnVbk7Vh+sRHQVZjhrAEFT2QYB6
+	GxOC2Gvlt4OP3NIpMw8gtZ991cxajc3cjVq4GUKl7b/Q0YKuapHwewhov3v6oK618+XkJ8
+	VuP0iBpkVtJ4VU/SajfmrcNTpGnYxX4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773849041; a=rsa-sha256;
+	cv=none;
+	b=rAzBF/FnytNKjvo+7a3XEXXoSt+j4J3D7/uHxmkfvEETsQVv+81jcilDpjfVqDYg9Y2lGC
+	MTxAc/4gI9dsHB/zOIGLUW6WA7dGfTcT5vSC5QqJFhN2rwVP5NFGE/5pRKJFwL5QLNAo6E
+	2CHvkN6GEb1VP7orw0w6n7npugpGcXQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AAFfqGYQ;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4660942A25;
+	Wed, 18 Mar 2026 15:50:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EED9C2BC87;
+	Wed, 18 Mar 2026 15:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773849040;
+	bh=VbL3vAwO1cMuvFosJZiW6nFGpT2xBVdrJqX0D4K97+Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AAFfqGYQjrNAaikG4d58f7LT11O0f7S5Nbf54jlY2cMK5jf5dEZJLAD13NoXMPC1F
+	 vI9adgRokefNTjvg/a7A2EQRndqW1kl15xOJC8eIWSTPTzjKJkYxd7M+KOzeI9qelX
+	 qCxQAgiRAKDyyyPqy2LwyNTX1MN/vbMCQQSSNfaQm4Amsz0CXjbCVbQVLMHpQkP/iU
+	 xI4mrH9MWarFuuw4lqv/5of3VXlBMa5aK/Jpk6IVOUGlZzqx9UNdMcbL/kr2ZFn/+H
+	 LezLJjFgzaMnWnuWNJFP/UqGvxok4yXnBI3n9D1eh1DkFckpRgieaDTJmwyznkcevS
+	 R9Vmwjo1EyS/A==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Brian Cain <bcain@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [PATCH v3 00/23] mm/vma: convert vm_flags_t to vma_flags_t in vma code
+Date: Wed, 18 Mar 2026 15:50:11 +0000
+Message-ID: <cover.1773846935.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com> <AD9E1B18-C813-480E-894C-FEEB51EE8A93@nvidia.com>
- <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com> <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com>
-In-Reply-To: <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com>
-From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Date: Wed, 18 Mar 2026 16:45:25 +0100
-X-Gm-Features: AaiRm51mIhUJpu9fr7jrOrLMxLU9hXk7UnvNj60zpy5QVyfWqaaH2yeHe6cwuAQ
-Message-ID: <CAAi7L5ex+66qgFzRkLDbuOmC=cVrMyBctPZv6wd15n1rc2U9KQ@mail.gmail.com>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-To: Zi Yan <ziy@nvidia.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: uctgw41hb6xjq3iqhsajpsrg5531x7wp
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kfnn48oihcpt4atmckztt6fd8buqkc71
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F410140009
+X-Rspamd-Queue-Id: 68077160006
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773848739-591498
-X-HE-Meta: U2FsdGVkX1/kckgV2voHNy409C3kySzc5AvwEbAAhOBBjH4gDbc4IcwpiNER+nDyj2EagzND9xMTLGrEkCK9KYuvusi82mo3lCKBnrL2yB+QhxzrmMDgW0iqN0X37OTlB9nC+q7CWN/cdUfLEB/Y880hldwEUFwvZEaGZQv3nvnx++zmAoqMIruV8CfhDkowMyr9Zw6LFVBUo0NCuzaZqZGy+JRYTnZySdS/moSFgEIbmiPx9xz0g9gmlBSvIVZ4tYihsrPdzZslIdWimWYeDmNezLrQdh9cUmzAro3RgfuT1cyVewA6o+D8+M+xnuXY65FP/js4BMTK9x8SeK4b7zzve1zuQ8wucewxQLUu2pBjbvAEgEx1HSfYd7CJr2udpeyGCbfnRW5pNdsdGB+vwte9ZA1BMxaiM9ceN5Lzmxjseio6JEY7oqdgNYabZparbVuye6NxOBQ7I5rrqAI2QD2Jo30QHKX47QMJQ66S0GGr1IoFTDJWy7VTqppT0hXokNWqcFrSoolwGhB79xJwaaxns61FGabHN8Ai1iAjqa6RNmRA+CiyIho+F6NeNl/catf8j/rnktZ4eYvI5MEb9jyjj/jRfCsZrRjpXP3GT32xCAeRz7p5p0xsibTDQ50W35dy7jooK/qciIDP6JaaroovAjUmp2kvPnbrIkfngDMEcSRm42M8mU9kxjFo1vZ0zVtV1jAXOHbh96LM/qhLaz7c1q+vs71C7Oa7azF/EPWi4jT/3pAE/U1rG67496AMHPZEAYH8w02knrYl8uaB1u39Fumh/DXrMqRx5JGBGQGwSMy2Ejxu4PyGk+b/qXakEg+8JWicN2BYDwqW7af22ZaNfQ5jr+60NQYGX8Har4YQKCGMmhd/GAhUexx1YKpyAG5ayOa3g+wMyVnPMVw0xDTH1h+EVeg/z0t532PwLQyFKTagJKtZEWhHZuRGjPFNRFq0a3LTAU/tDV1BZbd
- 0tii5ksx
- NyYOOrY7vc1Qc5MAttoTlXzSdpR7WyFj+vEGIzQnl29bcTyGXfEVziwqG55tGEjsD7SY3Y3cu/Vr6wH81uu+bM2eijvS/wssf/tzr9vB73JU5NKYB4RzWxjw/idPb32+i8hRR9TyIcNXUG9UeguwOk8bZWQUFi2ynBCscZE0EoFzz0tM/5J8KawnxI+yGc5MzxRXjcxb753Sq0xuLBUCQZxXTBWZyWFNLIlhb26HPxyJzioyj15es50oGfYcYe2W1Wp478ktpC876eLqoGA497wXGaljVllG+uY6k3/V/OvDT2XEMydU4nPwrMgmTXjqA0Oxf3r8pNonUTdPN8WFmKaShJ0w2EN/MfJKb
+X-HE-Tag: 1773849041-404741
+X-HE-Meta: U2FsdGVkX18zWH2lgf8ZRrccyPRFqp9wjP4ePcCyqTu9uc/4MYF3eut+Rt0dEjPKFsRsHnfE+v4OfFAVbwaH1TpepfXya7iiMrhtoSErN895mu4lXLUxhggSqiWXoikAfrc2xahtGXYicI/wV9GASqvwsC6xN6OeKX1a/8x9W78cBVtgBJmRkq8RU76TyOEw1v4FJNtx/R3k5gZtKxLZ0Qd0hDbrN8ZpyAzt2qEKLalvf0Fzdpg9innVVUcAOBvWdlPF+Af+aIIrD4TLqKEc36XJb4Ml3hyhghS4dYex0wj+Z637PHtvaYc7CNIJlxZ/OrpIdBN6Ndren5Fn4B0ohOuyc7ESw7E3uKYJ4PFg0IEfGW7QCuGR3+/h6wPLNtRJ9K4GCaFQxSOw7H1tiIXkPysTO6zRcg5R1cB6n9g0qdTbp6WL7eMYE43B9IG6qT7PXTUUpVwq0B7G3n+xwGzMO98KwKHeO0iXagZR2GvVtynF0bR/62OdR2oWy9wECF+W/+xyVDmAL6jRVSzbBnmSWB9+fiX0N+JhfCJhnHmPOHl7iiQWwjNirhVaWvK2OEgGKQUClYHWICzlaqhyRK2GCWub6kcUFRdg1caPhn0I1SaMw00+xu2isgFIgvz4gIZI+eGyaA3jmKbPf3YPzYyzma0M8ZfyHXyJ9sWL0eQDDkGrvuc2+fbKK2GWEyX7kXQhRrHvpssrdlqMWEx60jElaJh3cS64QCAPrT1GqtohQF4jfmYVOCkSfzbpK2TaSf7UKMg3st5z0R0B2+sq/bCkDlYTYCWJku/qVdbjMLE/tHZynOhNBk0iet3OjTKNEmOC5tiLQgWf6BeM/lmjNtVe0/XG/ZM0s5brfOZUm78YVDUdSLFBprBXx5TM/zwyZ4DJdHIGRzpdNeRTAHBQV9Cuvq30UdIOwKmw8Rg10kxkl5YIHDW95ID2LkLuOajnrFQwl5ZXrPYTdqEdDZTSE4K
+ ThkjFd6W
+ pdjAtoQv4mLZC+oqEsf1kHad9S6kDl1fKWnhgtIlq+iiQuoPfdpL6FV8U/0Mlgn3X0OgBlbsg8K4mzgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,101 +147,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 4:26=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On 18 Mar 2026, at 11:18, Micha=C5=82 C=C5=82api=C5=84ski wrote:
->
-> > On Wed, Mar 18, 2026 at 4:10=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
-> >>
-> >> On 17 Mar 2026, at 10:15, Michal Clapinski wrote:
-> >>
-> >>> Currently, if DEFERRED is enabled, kho_release_scratch will initializ=
-e
-> >>> the struct pages and set migratetype of kho scratch. Unless the whole
-> >>> scratch fit below first_deferred_pfn, some of that will be overwritte=
-n
-> >>> either by deferred_init_pages or memmap_init_reserved_pages.
-> >>>
-> >>> To fix it, I modified kho_release_scratch to only set the migratetype
-> >>> on already initialized pages. Then, modified init_pageblock_migratety=
-pe
-> >>> to set the migratetype to CMA if the page is located inside scratch.
-> >>>
-> >>> Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> >>> ---
-> >>>  include/linux/memblock.h           |  2 --
-> >>>  kernel/liveupdate/kexec_handover.c | 10 ++++++----
-> >>>  mm/memblock.c                      | 22 ----------------------
-> >>>  mm/page_alloc.c                    |  7 +++++++
-> >>>  4 files changed, 13 insertions(+), 28 deletions(-)
-> >>>
-> >>
-> >> <snip>
-> >>
-> >>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> >>> index ee81f5c67c18..5ca078dde61d 100644
-> >>> --- a/mm/page_alloc.c
-> >>> +++ b/mm/page_alloc.c
-> >>> @@ -55,6 +55,7 @@
-> >>>  #include <linux/cacheinfo.h>
-> >>>  #include <linux/pgalloc_tag.h>
-> >>>  #include <linux/mmzone_lock.h>
-> >>> +#include <linux/kexec_handover.h>
-> >>>  #include <asm/div64.h>
-> >>>  #include "internal.h"
-> >>>  #include "shuffle.h"
-> >>> @@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(struct=
- page *page,
-> >>>                    migratetype < MIGRATE_PCPTYPES))
-> >>>               migratetype =3D MIGRATE_UNMOVABLE;
-> >>>
-> >>> +     /*
-> >>> +      * Mark KHO scratch as CMA so no unmovable allocations are made=
- there.
-> >>> +      */
-> >>> +     if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)=
-))
-> >>> +             migratetype =3D MIGRATE_CMA;
-> >>> +
-> >>
-> >> If this is only for deferred init code, why not put it in deferred_fre=
-e_pages()?
-> >> Otherwise, all init_pageblock_migratetype() callers need to pay the pe=
-nalty
-> >> of traversing kho_scratch array.
-> >
-> > Because reserve_bootmem_region() doesn't call deferred_free_pages().
-> > So I would also have to modify it.
-> >
-> > And the early initialization won't pay the penalty of traversing the
-> > kho_scratch array, since then kho_scratch is NULL.
->
-> How about hugetlb_bootmem_init_migratetype(), init_cma_pageblock(),
-> init_cma_reserved_pageblock(), __init_page_from_nid(), memmap_init_range(=
-),
-> __init_zone_device_page()?
->
-> 1. are they having any PFN range overlapping with kho?
-> 2. is kho_scratch NULL for them?
->
-> 1 tells us whether putting code in init_pageblock_migratetype() could sav=
-e
-> the hassle of changing all above locations.
-> 2 tells us how many callers are affected by traversing kho_scratch.
+This series converts a lot of the existing use of the legacy vm_flags_t
+data type to the new vma_flags_t type which replaces it.
 
-I could try answering those questions but
+In order to do so it adds a number of additional helpers:
 
-1. I'm new to this and I'm not sure how correct the answers will be.
+* vma_flags_empty() - Determines whether a vma_flags_t value has no bits
+  set.
 
-2. If you're not using CONFIG_KEXEC_HANDOVER, the performance penalty
-will be zero.
-If you are using it, currently you have to disable
-CONFIG_DEFERRED_STRUCT_PAGE_INIT and the performance hit from this is
-far, far greater. This solution saves 0.5s on my setup (100GB of
-memory). We can always improve the performance further in the future.
+* vma_flags_and() - Performs a bitwise AND between two vma_flags_t values.
 
-> Thanks.
->
-> Best Regards,
-> Yan, Zi
+* vma_flags_diff_pair() - Determines which flags are not shared between a
+  pair of VMA flags (typically non-constant values)
+
+* append_vma_flags() - Similar to mk_vma_flags(), but allows a vma_flags_t
+  value to be specified (typically a constant value) which will be copied
+  and appended to to create a new vma_flags_t value, with additional flags
+  specified to append to it.
+
+* vma_flags_same() - Determines if a vma_flags_t value is exactly equal to
+  a set of VMA flags.
+
+* vma_flags_same_mask() - Determines if a vma_flags_t value is eactly equal
+  to another vma_flags_t value (typically constant).
+
+* vma_flags_same_pair() - Determines if a pair of vma_flags_t values are
+  exactly equal to one another (typically both non-constant).
+
+* vma_flags_to_legacy() - Converts a vma_flags_t value to a vm_flags_t
+  value, used to enable more iterative introduction of the use of
+  vma_flags_t.
+
+* legacy_to_vma_flags() - Converts a vm_flags_t value to a vma_flags-t
+  value, for the same purpose.
+
+* vma_flags_test_single_mask() - Tests whether a vma_flags_t value contain
+  the single flag specified in an input vma_flags_t flag mask, or if that
+  flag mask is empty, is defined to return false. Useful for
+  config-predicated VMA flag mask defines.
+
+* vma_test() - Tests whether a VMA's flags contain a specific singular VMA
+  flag.
+
+* vma_test_any() - Tests whether a VMA's flags contain any of a set of VMA
+  flags.
+
+* vma_test_any_mask() - Tests whether a VMA's flags contain any of the
+  flags specified in another, typically constant, vma_flags_t value.
+
+* vma_test_single_mask() - Tests whether a VMA's flags contain the single
+  flag specified in an input vma_flags_t flag mask, or if that flag mask is
+  empty, is defined to return false. Useful for config-predicated VMA flag
+  mask defines.
+
+* vma_clear_flags() - Clears a specific set of VMA flags from a vma_flags_t
+  value.
+
+* vma_clear_flags_mask() - Clears those flag set in a vma_flags_t value
+  (typically constant) from a (typically not constant) vma_flags_t value.
+
+The series mostly focuses on the the VMA specific code, especially that
+contained in mm/vma.c and mm/vma.h.
+
+It updates both brk() and mmap() logic to utils vma_flags_t values as much
+as is practiaclly possible at this point, changing surrounding logic to be
+able to do so.
+
+It also updates the vma_modify_xxx() functions where they interact with VMA
+flags directly to use vm_flags_t values where possible.
+
+There is extensive testing added in the VMA userland tests to assert that
+all of these new VMA flag functions work correctly.
+
+
+v3:
+* Folded in tags, thanks Paul, Vlastimil!
+* Respun to apply the correct suggestions/reports from
+  https://sashiko.dev/#/patchset/cover.1773665966.git.ljs%40kernel.org
+  (note there is also quite a lot of noise, that is ignored).
+* Const-ified vma_flags_t * param for vma_flags_empty() as per Sashiko.
+* Obtained sticky flag masks after VMA write lock acquired on merge and
+  update vma_expand() similarly. This is meaningful, as the maybe guard
+  flag is set atomically which might race outside of a VMA write lock, as
+  per Sashiko.
+* Dropped comment about 'VM_NONE convenience' from 5/23 commit message as
+  the VMA_xxx form flags can now provide that.
+* Updated legacy_to_vma_flags() to ensure upper bits are cleared for
+  NUM_VMA_FLAG_BITS > 64 as per Sashiko.
+* Updated legacy_to_vma_flags() to use vma_flags_overwrite_word() for
+  consistency.
+* Refreshed vma_flags_overwrite_word(), vma_flag_overwrite_word_once(),
+  vma_flags_set_word() and vma_flags_clear_word() in the VMA test dup.h
+  header to keep them consistent with the kernel.
+* Updated VMA_DATA_DEFAULT_FLAGS declaration on arm64 to be predicated on
+  CONFIG_ARM64_MTE as to whether VMA_MTE_ALLOWED_BIT is set, as per
+  Sashiko.
+* Fixed bug where the VMA did not have VMA_SOFTDIRTY_BIT set if
+  pgtable_supports_soft_dirty(), but rather the stack variable vma_flags,
+  as per Sashiko.
+* Corrected vmag -> vma typo in VMA test code as per Sashiko.
+* Fixed typo in 20/23 commit message 'correctly' -> 'correct' as per
+  Sashiko.
+* Fixed VMA flag clear tests to consistently do vma_clear_flags_mask(&vma,
+  mask) rather than vma_flags_clear_mask(&vma.flags, mask) as per Sashiko.
+* Added missing vma_start_write() in mseal_apply() as per Sahiko.
+
+v2:
+* Rebased on mm-unstable.
+* Added vma_flags_count() and vma[_flags]_test_single_mask() for testing
+  whether flags have a single flag set depending on an input flag mask,
+  returning false if the flag mask is empty.
+* Added tests for vma_flags_count() and vma[_flags]_test_single_mask().
+* Updated the KSM VMA_DROPPABLE test to use vma_flags_test_single_mask().
+* Updated the newly-introduced-since-rebase vma_supports_mlock() to use
+  vma_flags_t.
+https://lore.kernel.org/linux-mm/cover.1773665966.git.ljs@kernel.org/
+
+v1:
+https://lore.kernel.org/linux-mm/cover.1773342102.git.ljs@kernel.org/
+
+
+Lorenzo Stoakes (Oracle) (23):
+  mm/vma: add vma_flags_empty(), vma_flags_and(), vma_flags_diff_pair()
+  tools/testing/vma: add unit tests flag empty, diff_pair, and[_mask]
+  mm/vma: add further vma_flags_t unions
+  tools/testing/vma: convert bulk of test code to vma_flags_t
+  mm/vma: use new VMA flags for sticky flags logic
+  tools/testing/vma: fix VMA flag tests
+  mm/vma: add append_vma_flags() helper
+  tools/testing/vma: add simple test for append_vma_flags()
+  mm: unexport vm_brk_flags() and eliminate vm_flags parameter
+  mm/vma: introduce vma_flags_same[_mask/_pair]()
+  mm/vma: introduce [vma_flags,legacy]_to_[legacy,vma_flags]() helpers
+  tools/testing/vma: test that legacy flag helpers work correctly
+  mm/vma: introduce vma_test[_any[_mask]](), and make inlining
+    consistent
+  tools/testing/vma: update VMA flag tests to test vma_test[_any_mask]()
+  mm: introduce vma_flags_count() and vma[_flags]_test_single_mask()
+  tools/testing/vma: test vma_flags_count,vma[_flags]_test_single_mask
+  mm: convert do_brk_flags() to use vma_flags_t
+  mm: update vma_supports_mlock() to use new VMA flags
+  mm/vma: introduce vma_clear_flags[_mask]()
+  tools/testing/vma: update VMA tests to test vma_clear_flags[_mask]()
+  mm/vma: convert as much as we can in mm/vma.c to vma_flags_t
+  mm/vma: convert vma_modify_flags[_uffd]() to use vma_flags_t
+  mm/vma: convert __mmap_region() to use vma_flags_t
+
+ arch/arc/include/asm/page.h        |   2 +-
+ arch/arm/include/asm/page.h        |   2 +-
+ arch/arm64/include/asm/page.h      |   7 +-
+ arch/hexagon/include/asm/page.h    |   2 +-
+ arch/loongarch/include/asm/page.h  |   2 +-
+ arch/mips/include/asm/page.h       |   2 +-
+ arch/nios2/include/asm/page.h      |   2 +-
+ arch/powerpc/include/asm/page.h    |   4 +-
+ arch/powerpc/include/asm/page_32.h |   2 +-
+ arch/powerpc/include/asm/page_64.h |  12 +-
+ arch/riscv/include/asm/page.h      |   2 +-
+ arch/s390/include/asm/page.h       |   2 +-
+ arch/x86/include/asm/page_types.h  |   2 +-
+ arch/x86/um/asm/vm-flags.h         |   4 +-
+ fs/binfmt_elf.c                    |   3 +-
+ include/linux/ksm.h                |  10 +-
+ include/linux/mm.h                 | 328 ++++++++++++++++++++------
+ include/linux/mm_types.h           |  52 ++++-
+ include/linux/mman.h               |  49 ----
+ include/linux/userfaultfd_k.h      |   3 +
+ mm/internal.h                      |   7 +-
+ mm/ksm.c                           |  43 ++--
+ mm/madvise.c                       |  10 +-
+ mm/mlock.c                         |  38 +--
+ mm/mmap.c                          |  19 +-
+ mm/mprotect.c                      |  53 +++--
+ mm/mremap.c                        |   6 +-
+ mm/mseal.c                         |  11 +-
+ mm/userfaultfd.c                   |  21 +-
+ mm/vma.c                           | 211 ++++++++++-------
+ mm/vma.h                           |  86 ++++++-
+ mm/vma_exec.c                      |   5 +-
+ security/selinux/hooks.c           |   4 +-
+ tools/include/linux/bitmap.h       |  13 ++
+ tools/lib/bitmap.c                 |  10 +
+ tools/testing/vma/include/custom.h |  25 --
+ tools/testing/vma/include/dup.h    | 287 +++++++++++++++++------
+ tools/testing/vma/include/stubs.h  |  11 +-
+ tools/testing/vma/shared.c         |   8 +-
+ tools/testing/vma/shared.h         |  22 +-
+ tools/testing/vma/tests/merge.c    | 311 +++++++++++++------------
+ tools/testing/vma/tests/mmap.c     |  18 +-
+ tools/testing/vma/tests/vma.c      | 359 +++++++++++++++++++++++++----
+ tools/testing/vma/vma_internal.h   |   6 +
+ 44 files changed, 1435 insertions(+), 641 deletions(-)
+
+--
+2.53.0
 
