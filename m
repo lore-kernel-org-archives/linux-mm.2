@@ -4,81 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 053B6FCD0C6
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:31:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21718FCD0C6
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:35:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6356B00FD; Wed, 18 Mar 2026 03:31:50 -0400 (EDT)
+	id 720B86B0100; Wed, 18 Mar 2026 03:35:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D216B00FF; Wed, 18 Mar 2026 03:31:50 -0400 (EDT)
+	id 6F7E46B0101; Wed, 18 Mar 2026 03:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E1E66B0100; Wed, 18 Mar 2026 03:31:50 -0400 (EDT)
+	id 60DB06B0102; Wed, 18 Mar 2026 03:35:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2516B00FD
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:31:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E467DC2174
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:31:49 +0000 (UTC)
-X-FDA: 84558364338.25.A1FCF98
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2491BA000B
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:31:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q6yEcEXC;
-	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A2ED6B0100
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:35:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15B951B8494
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:35:16 +0000 (UTC)
+X-FDA: 84558373032.21.2EFCD3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 78C0A180007
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:35:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBGgZIb+;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773819108;
+	s=arc-20220608; t=1773819314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4eK33YHoFdr17RO57NYgTKQzBSCrnmY/AC+hh3sskTE=;
-	b=O8J0DTSF7a/+aenGmIkQx3q7sEIVWynOcpm70fzwDeMPRqGDStenZ533w83woeCs11dfLD
-	attg6fuQxD0wn/kuVzSY86lIV+5cNVGHbGZFXi0gUjX+F2OWz7ttrzaowXhG86+FuMqjhQ
-	WaNzTBCDlTskrI6jv1EdTOg2myeF7VU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773819108; a=rsa-sha256;
-	cv=none;
-	b=yRTmcSHxM45mVaQjtLfLGLJTHXldp8Ht5ZYR9HUQWz9dgjeTCbm8H5k6zhyH51KKUGoml0
-	KQPoUfGn2zc5tGbRTsU4Iz3w9GD5gOZhDffmQgazxBwDTa6ACkhHKeflRPRAWPT3BzS4rt
-	R17c9c0k7eG5pJNHT8HNUn0H+eYMrSw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Bcw7IxI11CEg//xlfL26dtvaJDpmUaHg39UI1yQRbpk=;
+	b=U/ETKi6VzKjhO3mZSU6y/2V1z0jpDMU9whh1GR26S9iE64ac24jhuZp/uIB3rKv4+pWZGw
+	TVAJroJmS5oINxqfjvUWCtwo9dZ8qdFQ5QNgucSqD1/CCdQ2RCWGsynaN+tFQF812Gt/NX
+	+2xs/9yq+fn2oHVcGYjckTeMJm4Se+k=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q6yEcEXC;
-	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773819105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4eK33YHoFdr17RO57NYgTKQzBSCrnmY/AC+hh3sskTE=;
-	b=Q6yEcEXCwrotndBsaTdAD2UOU8SMZjsDebOqSSK2242NaXKEKNJ3dKWnj6cw6tXauhJ5+3
-	ApvoZjdH9enWf65rTpw1azIL+hxtPAvrNqvw3cU5EJOtgX9b83CFDe3PBznVVOhGk6lARP
-	IUBG6TkMDoGA4VvfgawI5hyyhxRPwc0=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBGgZIb+;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773819314; a=rsa-sha256;
+	cv=none;
+	b=2b15CXRFJuQFr9tmUV6JYUvapDBzo32lXbM4YLXNXzVClh8l3HruQsNNcDc+weeTp/rwbL
+	HXmUdYx5fPMLg1wAg3cOBxLGFO44ycz+JBtyF2ctHmoQHjflhO1FLzaKVKu6TYROjV9NBX
+	kK8dQUVIzYqGhfL4e8VdDjRvn/mnHY4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C670060131;
+	Wed, 18 Mar 2026 07:35:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8163C19421;
+	Wed, 18 Mar 2026 07:35:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773819313;
+	bh=aKgcvPGTjYha//Cur4xRQFNmv+GIS6eHhEkPZRVaV+g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dBGgZIb+ecwylwaxTk0P155leL9bw1r4hZwUIDB4+tm7bPE1ypoetja9t3ZmzSaDD
+	 6KxanD+Ro5fANTpuBuHWvBvR0zNIlB1k173drlfkGBzTC7JqBDGNp5RN7GAGQTLzja
+	 tia7yL5G8mVVk+2pKUWkiXIDw9IrDSNsOUhfEWc9sPs1ikgIdTYT+0h2/AhnvyYSTj
+	 i/EDNUnE5nChQY6TsfWPo/7nLECcFXsGVOYHVHYS9vLwCmWF/57Mf+YCdwYkz4dbAy
+	 t5UVqN2Yn4DaNlx8BZvTdR0lEFoXcNyV+1COoQ5YrcFuBPEbIjkJ1AWGAdMAF1zI1U
+	 20t2h+ipomKZQ==
+Date: Wed, 18 Mar 2026 09:35:08 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: teawater <zhuhui@kylinos.cn>
-Subject: [PATCH] zsmalloc: return -EAGAIN for zspage migration lock contention
-Date: Wed, 18 Mar 2026 15:31:14 +0800
-Message-ID: <20260318073114.34858-1-hui.zhu@linux.dev>
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 4/6] selftests/liveupdate: add test for zero-size memfd
+ preservation
+Message-ID: <abpVrFwp9h6lqfhm@kernel.org>
+References: <20260309115441.266805-1-pratyush@kernel.org>
+ <20260309115441.266805-5-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260309115441.266805-5-pratyush@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2491BA000B
-X-Stat-Signature: whjytpnz8enzhux94cpfh15oz84k17yb
-X-HE-Tag: 1773819107-427561
-X-HE-Meta: U2FsdGVkX1/ZKgEWTco+MY3PMUNdREYuUG9wQ+mJ+wpA5dgRnsJ+ArF5qKrL+mHI8GSw4tCH85QagKnzpLKU6MfleVIMdAPX14rL7R2V49XvvnnXqRkaaPJlHZalceXrs8bWFqwYEbKlQEu/NOzzRNILXGmPDwiT/Ew3ZTZ/jkh1lp0qBVJdfw62xqcjy4uiH+KxoOcRI55Jk3Gghm/nHj8TESIWyLS6SxiK4jg/zB6+WfifIF7DSJ4A6gDZMyxSwJDPfBMmc1QPqjTTGRGTPoY6VBSbb4eumTw4ANtAv7oJkOcIyogl7AmlRe/gIPxEb960keB5Wl/+BHMD9cBCe1bOaXJ44lNkcwpJshBs1wHEYsTXFPG6M5oK3QxttUwfnUPbJJx55jWUk0VemMyYA37t01NiJHZE3Di4SfEAj+pXr58q1aKxV1bm4iKCJrtc41tOk7htlWhxhz3wK22vZb8GEgXMKrRAphL1pmD8cUyCZudXFGWyYUAm2Ehj8rNm3zpO2CDj7YISqWX1mKZZm7AV/B7VvpNbOfnMuENdkyyIGy4a0jbJWnUzM4cudSCF2p/+uTVNDi42DVk22x6l6lp2NuYFTYTFEdXhWCH3yCW+1sap2xV4DCyf/9/ng3EE6Pcy5Heo7CXV7G5vBgJTFQxZ0fY6uJH5aABXN2twC0tcYk3dxC8jXS9HenkdNnA3EFDdJ+a13lDIEb3RJVEF922/UpiNq5y5s6fZDquO9FniWeMy36ZYcc+fN9ATxJgIzh7wswVlg34esBlx8zaPivuQiA8SSWHXeU9o2AxsoKbNFkRVS0/Nt4Srd9ORYWAM7nTo18uq2YF3/1vHnPPSNF71jrw7JJcrZlqOJa4afy5Y3iV7FPxID5iA/3HP+lAeKIWljRFZ0H8RKighSeNVc1UGZOGcZFz7erlvaBdRrzUEgxQnKLtLUbqV0JGlo6rfkHCJ0aSZt37Krf/GDZD
- D2RWRTyp
- FH8UX3IZoJUl/4AwzWM6Ucax7ceM0oZG0CXQQFJh2KRQJvVOTXPbOpxNaBq5pBhQNnwQ1DJ8U5M6LbqFcMX1iPTcnIa9FTDfW727PFG6WEb8Lw5wuif/ywU3M0w80KqtYudPWOIhzDspVlWs31Mq/4MSxQGzhzf1Ik95A+ytvie6fggTT3OybZengII3M888/KidB
+X-Rspamd-Queue-Id: 78C0A180007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: ads5j47rge58xm41q8tzgk5t1axm9p7d
+X-HE-Tag: 1773819314-511600
+X-HE-Meta: U2FsdGVkX1/TSu4bYpSVfxKhUarCgvHhdFfbUYKu8wc7engswbln28BJj5+pD7l2f1PNuX2iJu/1F3hn+7vm0Gk61LVFNHSacV/s/M9z3ieBu/N6gYfyLTSt5VCjKl7xSCeIlwxgYd4S8WKaatZ4mzx5mcU6Z434NsEwJ5R1XhA3w66k0PaRJl3JZHxQZtf08MWaKSEWr1E6z8ek7CH/967/ZrWwjV/+kkZx9YezXyiq0M25uElezSa2Z7uPBaLs/gmjY2yh6QtV6nc1f+fH6zP/pyFXxXVTbOEkfchihDAeRpnntpilA4Xk/93GrdVtX2mWPEUyfxhWHeyj6YimJrzIDmaI//xI11t/B/kep2QZcIEjezUSnexX5t7F9VrG0SUzCKIFqo0pfwSUkOnaLWdNlBHdssPtD6ST15uIU0Efcb6fcORUzzp2KBqXf5FfTELVXTeU/5u+GzR6mjDoMv0hfxVhqPrgAb25oDWWZNCdWRFuIz2mT5ozisLOD9g+M5NH/kuveFwW1Oy+QD7bq2QiLnzHiy7Sv6aH6S2jFgwOO5urRyT6bqNUenQxzPQPT6v31KjTBvd8GDdIC/STZkPHpAbgTCtM411WFWP6+dXDktPK8wIXKi5A1sjH81nKAlXejUAI5PWDuAn3amu/QkQbit3PyfaPDK2C34CdT9zSNmzxcwH00plyEStgTtYE5aV0ZYsmW4WrVWe/fz7YJt3yDoAm0PxcyxPoyl7SEPM3tZuTClgWgXs6OXKA9a4jBw3AMQpgOcV8aqpVjnekChi9yhW9FA3ulKbH4N4SZVP5S6z38+0E1U8VZGvY6OEzoIxUNbKC5noLqWFuwUNFDZ3SCDWi/R1rE5ArmSigqP/53PVpJV7CuHloNXzUzQl321oK2cGkoNwinE8fFQfib0EfvKU3EwyUbB3f0ufnNX5hWcj9XZ1kwxuGjhaSM2uaTnVa6NledfuAtPHMHgm
+ 5QrIDpdy
+ jjjMa5kuJzCmUwCKL8KIOhIsxH1n6WWjYCoOVpQk+z4A4YwigSHY5DAh9LhYxubSJ66q95yF+++nLIqlSJ19JWedI2IuEz4Ef3XTl9CENnKrrmgYgyW0/6jWeA+csyG0cq+XyDH5NQFz6oPU9zHQbWcUBTnpFsg4rMU0aEwsgerXN/gFIJlYB/tF4PKAM+zI3qOQpL5wgjeJpXd80KhCvcZBcv4gR8PLA3R5e6NzT5sE3vhqxkcC4qKI7XO/I6Ul5WlkMHmm/Or5BzQhPxLVqhtoVIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,39 +95,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: teawater <zhuhui@kylinos.cn>
+On Mon, Mar 09, 2026 at 11:54:37AM +0000, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> A zero-size memfd is a special case of memfd preservation. It takes a
+> different path from normal both during preservation and during restore.
+> In the serialization structure, the number of folios if zero and the
 
-movable_operations::migrate_page() should return -EAGAIN for temporary
-migration failures so the migration core can retry. Other negative
-errors are treated as permanent failures.
+                                                       ^ typo: is
 
-zs_page_migrate() currently returns -EINVAL when zspage_write_trylock()
-fails. That path reflects transient lock contention, not invalid input.
-Returning -EINVAL misclassifies the failure and can reduce migration
-success under contention.
+> vmalloc array with folios is empty. The restore logic should check for
+> this and make sure to not touch the invalid array.
+> 
+> Add a test to make sure this path works as expected. In stage 1, the
+> test creates and preserves a memfd without any data. In stage 2, the
+> test retrieves the memfd and makes sure it is still without data.
+> 
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+>  .../testing/selftests/liveupdate/luo_memfd.c  | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/liveupdate/luo_memfd.c b/tools/testing/selftests/liveupdate/luo_memfd.c
+> index 52b5f6b16e19..56106cd09978 100644
+> --- a/tools/testing/selftests/liveupdate/luo_memfd.c
+> +++ b/tools/testing/selftests/liveupdate/luo_memfd.c
+> @@ -36,6 +36,9 @@
+>  #define MEMFD_DATA_BUFFER_SIZE SZ_1M
+>  #define RANDOM_DATA_FILE "luo_random_data.bin"
+>  
+> +#define ZERO_SESSION_NAME "zero_session"
+> +#define ZERO_MEMFD_TOKEN 1
+> +
+>  #define LIVEUPDATE_DEV "/dev/liveupdate"
+>  static int luo_fd = -1, stage;
+>  
+> @@ -89,6 +92,50 @@ TEST(memfd_data)
+>  	}
+>  }
+>  
+> +/*
+> + * Test that a zero-sized memfd is preserved across live update.
+> + */
+> +TEST(zero_memfd)
+> +{
+> +	int zero_fd, session;
+> +	struct liveupdate_session_preserve_fd preserve_arg = { .size = sizeof(preserve_arg) };
+> +	struct liveupdate_session_retrieve_fd retrieve_arg = { .size = sizeof(retrieve_arg) };
+> +
+> +	switch (stage) {
+> +	case 1:
 
-Return -EAGAIN in this path.
+Helper functions?  And in other tests that do save and restore too?
 
-Fixes: e27af3f9360e ("zsmalloc: sleepable zspage reader-lock")
-Signed-off-by: teawater <zhuhui@kylinos.cn>
----
- mm/zsmalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Otherwise
 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 2c1430bf8d57..1d26eda7f50c 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1727,7 +1727,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
- 	if (!zspage_write_trylock(zspage)) {
- 		spin_unlock(&class->lock);
- 		write_unlock(&pool->lock);
--		return -EINVAL;
-+		return -EAGAIN;
- 	}
- 
- 	/* We're committed, tell the world that this is a Zsmalloc page. */
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+
+> +		session = luo_create_session(luo_fd, ZERO_SESSION_NAME);
+> +		ASSERT_GE(session, 0);
+> +
+
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
