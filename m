@@ -4,110 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E1FFCD0CF
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:14:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B9F0FCD0CC
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:15:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02F926B011C; Wed, 18 Mar 2026 04:14:54 -0400 (EDT)
+	id A1BC46B011D; Wed, 18 Mar 2026 04:15:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F22CA6B011D; Wed, 18 Mar 2026 04:14:53 -0400 (EDT)
+	id 9F3476B011F; Wed, 18 Mar 2026 04:15:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E38736B011E; Wed, 18 Mar 2026 04:14:53 -0400 (EDT)
+	id 92FF16B0120; Wed, 18 Mar 2026 04:15:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF3366B011C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:14:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B0721C250
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:14:53 +0000 (UTC)
-X-FDA: 84558472866.30.D4AEB2B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5727BC000E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:14:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BpR5p4Lb;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EA846B011D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:15:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 32AD61D3FD
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:15:10 +0000 (UTC)
+X-FDA: 84558473580.09.A4B118F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A277C40015
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:15:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nw4Iq8vY;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773821691;
+	s=arc-20220608; t=1773821708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dvyk+rmMU2+r1/fLDKtW2SvJ7b9t4sHtJbxXhCORNNg=;
-	b=hgnlRbKDMsHOUpqDUfdwW+sduiTx1cDsElxEjPPIjhLj7BGOAUEMf3Ss6ObZ2GlUdR++xg
-	N/TbjVUV3KSI0Mel+pe6YAgI9hgfg5zibbs+7t6t5/ZpBAMjFMBwYO+mONu6BjBcDLonD6
-	3qDHbmvVX2rFVASqozgeB80xou9TXFE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773821691; a=rsa-sha256;
-	cv=none;
-	b=aANURUoTHHLQu9ztCbjgHGrVt4zCtz6JfApnfbosrOTQmzxI2yAU85cKH1hQkwtrzglGeO
-	7gwCuJ2oluCVy9deGbOLgA695RA0WgA0w4SV9pKYb+txAF+qz+UFLWwtkee9+wtapaSFYc
-	bT1gl4Yb0H2U1thgk7FeSz7evrErAl4=
+	bh=nA4FhAwitjbMx4fSEAXwn/fLSpojQUqHhpfXKSoM48M=;
+	b=3Wih6FtqQkKlmT+52lKnBLL8jMZ6NZPaZEc65lKoZKDThc/gTM9meyQPvjg3JqpoQlxQ8G
+	1vG7f48xROrt1enTCBexeVuS0l6bvSSapskJQyA0LM/nxTE5QVHJ9kpiwWPBWjjauCCMUo
+	Bkka+XD4dkxsd5OfLvgB7PKZJx4EODw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BpR5p4Lb;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773821688; x=1805357688;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KnJQnAwoUMsLr/BjQ2p+6cnCTXVLGYccKQ2pW1Askdk=;
-  b=BpR5p4Lbxa2jZRzmZ9VEuIzlvC5BMpyGpbNuDS5Nn7KOMno0AZmO8wpu
-   decP58Tx1JR4AY7QlEIM0QVK4ZDbRa2fimUhiBP6EnlV6+jLQwo+fhITS
-   V8kizfOwCapAU2JApG3Ds9Sh69Bvd+jgVyI4wLgoQzhY3YdLNDgRuP3wo
-   /r3ZGg58QcaoNMmOSwpIxUQNbxkfZqWU3uMdgjR5hBEdOEQVwdKasfc/e
-   wXLyBM8GusRXs9E0Eb3ghxD3XPBBpMnaFBg6eNC8rU/3z90L2lm9ns3O8
-   dYCGMXtMQo8donELberH+LkmBvoqN37kEj7a/X7KKkVa6EIB6KhH6JW9u
-   g==;
-X-CSE-ConnectionGUID: YIKyMUE3SsKsyBaFa4OJpw==
-X-CSE-MsgGUID: lHEjv7EXRPKmx9Kt+XjUDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="75051370"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="75051370"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 01:14:46 -0700
-X-CSE-ConnectionGUID: 2h8ZQetNT3CK/+F1r6g9MA==
-X-CSE-MsgGUID: soGT5hiJSj2k7sFnrbUVvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="253026050"
-Received: from lkp-server01.sh.intel.com (HELO 63737dd503cb) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 18 Mar 2026 01:14:42 -0700
-Received: from kbuild by 63737dd503cb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w2m34-000000002i9-3nhJ;
-	Wed, 18 Mar 2026 08:14:38 +0000
-Date: Wed, 18 Mar 2026 16:14:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Leno Hou via B4 Relay <devnull+lenohou.gmail.com@kernel.org>,
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nw4Iq8vY;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773821708; a=rsa-sha256;
+	cv=none;
+	b=0yAv+F7/v/hljKh7ioAlNDY/nM3MykcDtWCdKhAK5Thw2OTWyu3A/shuGKuFEp6DGX3QTs
+	kycHDP0CPYR80OlXSAMcKt8IGBa9vDXJXwRMQr5tlsT7zC+6ZAw7IIlKj5kTv6lXdoZ5lS
+	oubBwqrqX8atF68HWIcamOBPlziyRVs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CFFE6600C4;
+	Wed, 18 Mar 2026 08:15:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33813C19421;
+	Wed, 18 Mar 2026 08:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773821707;
+	bh=yqTaqO+qzEFFDEYd3nxXky9PFfRd40iUXDeJGUIdVPA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nw4Iq8vYYab1bMNPqPjAgVJ4mwmMciGmr/iEwes3FeiiJhS+EzCJy2d4r7EW/uvCA
+	 MfXOzHbzlRcsN9JeGJse+2M+mm2bb2QXNC0AuW/0qDmZoNyMhdp2HJgWjxJR54of0o
+	 4+5+PkO5TcDrJwk2T7kF+GmN18rITr7yIjxGc5NZ6oH+heE98W6xNyYLYDtGwX1MCV
+	 bfox/sfXQLKPIdAukr/Squ9VDyuDAiyaS/OmZEQS765cE0/CapPXXr1vmRtmVlzA4W
+	 iK1OM/L46e1H4FgmURjcOZKe3O/m71feiDhRgxY/U8hOKm+gJaKmz4L0vtpRCnlAZC
+	 xntlLjorMM19g==
+Date: Wed, 18 Mar 2026 10:15:01 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Jialing Wang <wjl.linux@gmail.com>,
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
-	Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>,
-	Barry Song <baohua@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, Leno Hou <lenohou@gmail.com>
-Subject: Re: [PATCH v3 2/2] mm/mglru: maintain workingset refault context
- across state transitions
-Message-ID: <202603181625.6juiPMws-lkp@intel.com>
-References: <20260316-b4-switch-mglru-v2-v3-2-c846ce9a2321@gmail.com>
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 06/14] mm/bootmem_info: remove handling for
+ !CONFIG_SPARSEMEM_VMEMMAP
+Message-ID: <abpfBcnGOemxQxzL@kernel.org>
+References: <20260317165652.99114-1-david@kernel.org>
+ <20260317165652.99114-7-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260316-b4-switch-mglru-v2-v3-2-c846ce9a2321@gmail.com>
-X-Stat-Signature: t35etysk9oq5ryqqp7qeigms3ekqd145
+In-Reply-To: <20260317165652.99114-7-david@kernel.org>
+X-Rspamd-Queue-Id: A277C40015
+X-Rspamd-Server: rspam07
+X-Stat-Signature: yuui1u66efc3an841t786ehg9qrnx81u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5727BC000E
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773821687-121044
-X-HE-Meta: U2FsdGVkX1+G5lINppibL4P8TpbsV+1LKDOf2qLRmLyflkyxnJJXli5m905tcCeIBWK0en3gwnnwzJrdy8hzMYg67tw60l6bJUOYhx1Tsk+fdRupnrO0fudDQsBYnoWXMN+MXRegi1dAHu5eJgO8EbJ3nsdl4f9+mdrKOo07HvPgfOkAyp6gMD3n12JtdNgQ/+EnAPMAIUralCl+HO6yc6EWeNhCW7VGKExmWarw90zIH1e2V3lDIo5IZk1OsIwR1kIfq5UdE/sMNox9YOzMvbiFN4oB/8g8A7PUmD4x2kH0nUl+CbSxEqwGY9PdDsnnCrKtnp662l5RSaNFdesSffk+BvQ6UU9bIA0KkGW8J9rs0psgk1+Pb0ODsUxyIY+N1pRv63JGIzkb+xIXjxD4V47Kl1sUWO2twrRYprqqCpRRRJOfkvMzeCX+XWmzra49LKzlOwi/IryDjph0XzF2mhGo4xIr4e/61XVaXPmrzkandrEt873T6csMPquwjhSUqUQe3akamZwazsm0Ohx95uSjQ5LaLZTjTupJgQS9cQ4BQXRKm9w0hwT+1Ze0gtd8tVNzR2Dwl7QkzNeT6asnKCsI+9S48PQS7K3DKfxKantT1mIZevv5LYfl1rZqbgwEQDkJBJQsaB5hSDBIdDeLCEgWTBimn5rfvvSSD6pS0ytf//E+7LjAAVYD9bfoAFEUwf7ohma9t9sHByiqZFAWohk39NduiZWsKDQEkFjmGJCnJtc/3PwLGOrXHXdZFJnKCgm3f215UKbjOaFzlvPqafwhIrXnUigh3Sp9cW5QggYcKCgTiEMal4eKZIq+kBULbgiuyViXsAq51nHpnsNCgK679yxcHHdxw5AXeHfSnhRy18vhQD2iJSUGOqRgscV8Dxb0svJbCC8GLiDklF9JXHbshuVT+5LaQAvYkX16Z7CgbMBqd8Vcorll6hy9yd/1Ob5ys/Ke4c0bcpeuLRB
- pBnkwWOD
- p5I+vEhzasltnGrRxvZxiDSYPC2HJIkrszxr2Y2CzzuWRklVHqoyG9x8Ngz456vGpfwJmfP34AX3dzor170EMX21mpxt3H//EyNUFFjBfBdkN0wrWmQWddLTVvJ71rTVLQCMCKTQ0+wf3blnWOaU6lTQge/KZ4wqUMqA5HB8TpgHRATXHHSfmQNDqI9psOX5uUy0GFgzrDNM7rNVBQTUbLjDmztWM+MT50ABIofcubGKxpxFBhjAAeywL7Q+K50Ezpx8YvUmodJWXtwgROVHzEHf8ruXv6lMBEicU00hVK+ufxyxkNN5ij4tT6HttRe/nXirD5AVOAuzD0mmglwXpBBs88Eqc5rj1pSGilPh9VeLfM4efb/z2VgN4ROqrvHlHKKCWLAcl7+y0b7vRMFbMInFmtn3x6UuN9BEJZ6aHKOPVzEaHLw5O2CWF+AotFsclxxJ4
+X-HE-Tag: 1773821708-820179
+X-HE-Meta: U2FsdGVkX19ssb3oe5OT1GLWOzpIUPOk0KELesVDa+iciHEX+7dA4NTkOB525zemxeyVR3FLDfDRajFlCiOsuwdY0Sgs4iqTxeXPDbHM2wZFBKR/RNb+i09k+LhYIPui7ZZPZC2Q44eQHGPl0A1ZTUG11rEG7p8WUUEqNJzerjR0GIfVYRKuzpl0G/rywXt753R5oiThmR/SQY7aLFZkwRYJrbk8I7X3SCRh/vhb0EfiPgolXXmKtCA1oKPYg9nLP1qL95mNUztUeR1QfJ40anTdc6jKNuXV/HIoDsgiyJJzS6rdiYYyF2JMPvMp9Mqj4BSpgecLTiAFdUdPSpfHwRQDVOpYs5sl7mu2HtiFeuWlBE8Ym0UwldRfxUDRcuwOuCV/It0WpLRLOFILi4CZw7koTmN7q7bdfMh1jYIT2xsMuHKDHY580TDLRrfBw1ktnMAK4ZfzYyQs4d+poCDP1zSfrjgKrcBOOzPuSchh20pPoIFJNNphiQtU6M6WkD2O/tnt5qSQl+BH/41NHCpV4oVT8Eu0Nnfh4OVNuFnp0GYbL2rulID+3+BoyA6PfI/vyG10zWZ6iRYTncVN3ihBMiUkZ8n8qWzJFDO4cpPNMt5IlMsoODGHtDRWtNjacd/xH8HD7HyAVol7HL7J0eYFSWTZ/Zi3sBPX8DxPCoGAPIwEt8YBYOcG2v4v3QaBpovbfQVa2ll9F/PIsUDUHOm8d5WmCNZO9bM3j+zHtjXxnU6UW2pkw7E3b2wi4qR+nLLeqK3SaCASr0Sn4+e5JKSPZdGtl73KhtHs8/WARyFmpVJc5pjKNR3G4b0CuDBUawNZYbrj+eIltby4dOM18x0JzFkfzS9TF/brtClHrF1yA0S7TteKuazzxd1P0JCoJKWLdtQH+4xW/ovyJppfInxKqGsy9l++tYnWYNvEcEf9ouBsLfQRZgoQiUoExpsWAE5SoCP9NNFh4y2gyyoZutc
+ ND/ZsGS0
+ JIsf4/Y6sj5nsLzMTD3rNdwggSjbnd3kDdX8HGRQosAOfgq4YQJiHR2Kn5fwHyxAH4gJwWGV4pXzXF/hUCsEzCGeCkhwfBjahav3VZLhfMG6Z/NitNLqT3FKA2I1OpakprDt4YyXfSMu6XKnYXI8HCfQuZ2y7kTF3DaC0K3l7vqUd3KeNcPzjiIlFosAm3QF5tmE5zWVKItogb4qIpYCxpPVJ2A3K9aDHpEa9u9/3C+LFhUpEF3e0bYequk8cx7ctjDMzmp4dJi9oVz3vaJhhyfzyQYxZb71/rj/nX+p1e1GJqatprXuJ2xMDwXmkXLQKihae+xPQI0sVyTlPzNgI8PHBZxZ0E0GHwLaR15+cn9wO5Fy0mj211pe09w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,31 +101,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Leno,
+On Tue, Mar 17, 2026 at 05:56:44PM +0100, David Hildenbrand (Arm) wrote:
+> It is not immediately obvious that CONFIG_HAVE_BOOTMEM_INFO_NODE is
 
-kernel test robot noticed the following build warnings:
+Would be nice to make it more obvious, e.g. something like the patch below.
 
-[auto build test WARNING on c5a81ff6071bcf42531426e6336b5cc424df6e3d]
+> only selected from CONFIG_MEMORY_HOTREMOVE, which itself depends on
+> CONFIG_MEMORY_HOTPLUG that ... depends on CONFIG_SPARSEMEM_VMEMMAP.
+> 
+> Let's remove the !CONFIG_SPARSEMEM_VMEMMAP leftovers.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Leno-Hou-via-B4-Relay/mm-mglru-fix-cgroup-OOM-during-MGLRU-state-switching/20260316-140702
-base:   c5a81ff6071bcf42531426e6336b5cc424df6e3d
-patch link:    https://lore.kernel.org/r/20260316-b4-switch-mglru-v2-v3-2-c846ce9a2321%40gmail.com
-patch subject: [PATCH v3 2/2] mm/mglru: maintain workingset refault context across state transitions
-config: openrisc-defconfig (https://download.01.org/0day-ci/archive/20260318/202603181625.6juiPMws-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603181625.6juiPMws-lkp@intel.com/reproduce)
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603181625.6juiPMws-lkp@intel.com/
+> ---
+>  mm/bootmem_info.c | 37 -------------------------------------
+>  1 file changed, 37 deletions(-)
 
-All warnings (new ones prefixed by >>):
-
->> Warning: mm/workingset.c:395 function parameter 'lru_gen' not described in 'workingset_eviction'
->> Warning: mm/workingset.c:395 function parameter 'lru_gen' not described in 'workingset_eviction'
-
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 102ddbd4298e..261abc3e1957 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1841,4 +1841,18 @@ config ARCH_WANTS_PRE_LINK_VMLINUX
+ config ARCH_HAS_CPU_ATTACK_VECTORS
+ 	bool
+ 
++#
++# Only be set on architectures that have completely implemented memory hotplug
++# feature. If you are not sure, don't touch it.
++#
++config HAVE_BOOTMEM_INFO_NODE
++	def_bool n
++
++config ARCH_ENABLE_MEMORY_HOTPLUG
++	bool
++
++config ARCH_ENABLE_MEMORY_HOTREMOVE
++	bool
++
++
+ endmenu
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ad7a2fe63a2a..2d6f348d11f7 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -127,6 +127,7 @@ config PPC
+ 	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
++	select HAVE_BOOTMEM_INFO_NODE if MEMORY_HOTREMOVE
+ 	select ARCH_HAS_COPY_MC			if PPC64
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index e2df1b147184..ef2d2044f1a9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -70,6 +70,7 @@ config X86
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
++	select HAVE_BOOTMEM_INFO_NODE if MEMORY_HOTREMOVE
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if (PGTABLE_LEVELS > 2) && (X86_64 || X86_PAE)
+ 	select ARCH_ENABLE_THP_MIGRATION if X86_64 && TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+diff --git a/mm/Kconfig b/mm/Kconfig
+index ebd8ea353687..a371df4f8da4 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -455,19 +455,6 @@ config EXCLUSIVE_SYSTEM_RAM
+ 	def_bool y
+ 	depends on !DEVMEM || STRICT_DEVMEM
+ 
+-#
+-# Only be set on architectures that have completely implemented memory hotplug
+-# feature. If you are not sure, don't touch it.
+-#
+-config HAVE_BOOTMEM_INFO_NODE
+-	def_bool n
+-
+-config ARCH_ENABLE_MEMORY_HOTPLUG
+-	bool
+-
+-config ARCH_ENABLE_MEMORY_HOTREMOVE
+-	bool
+-
+ # eventually, we can have this option just 'select SPARSEMEM'
+ menuconfig MEMORY_HOTPLUG
+ 	bool "Memory hotplug"
+@@ -539,7 +526,6 @@ endchoice
+ 
+ config MEMORY_HOTREMOVE
+ 	bool "Allow for memory hot remove"
+-	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
+ 	depends on MEMORY_HOTPLUG && ARCH_ENABLE_MEMORY_HOTREMOVE
+ 	depends on MIGRATION
+ 
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sincerely yours,
+Mike.
 
