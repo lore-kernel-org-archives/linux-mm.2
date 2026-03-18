@@ -4,132 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD1C103D926
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47405107BCF2
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:21:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49DAC6B015A; Wed, 18 Mar 2026 06:01:39 -0400 (EDT)
+	id 52F886B015D; Wed, 18 Mar 2026 06:21:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 474C16B015C; Wed, 18 Mar 2026 06:01:39 -0400 (EDT)
+	id 4E09A6B015E; Wed, 18 Mar 2026 06:21:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38C376B015D; Wed, 18 Mar 2026 06:01:39 -0400 (EDT)
+	id 3F61F6B015F; Wed, 18 Mar 2026 06:21:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 26ECB6B015A
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:01:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1A5B13B590
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:01:38 +0000 (UTC)
-X-FDA: 84558741876.05.D15B083
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D76104000E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:01:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=eIdZvx5n;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ECD86B015D
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:21:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFEC5C22E7
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:21:56 +0000 (UTC)
+X-FDA: 84558793032.22.DA380EB
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AE06312000C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:21:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ZE6dykck;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773828097;
+	s=arc-20220608; t=1773829314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=30lcLe83ZfeeJjPOw57FdUnRLS2QbPrl5sgOSEvO6uE=;
-	b=5Xr5vpKJtIzBIN86ORfCr2KYe7+lg4lIkSBa2jcM6Wq5mOrtUc+l+u4bilNQb4OXTBKayg
-	mwBsDoklPkNe7T+7FnN5WDmfoRVGD7gRP8qmWIM+CUOZd+OtLJNMbdpHS9fMowMmKF87iT
-	1/+pZhSy8bbaokPf4kK5x3Y62sRuGJg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=eIdZvx5n;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773828097; a=rsa-sha256;
+	bh=qW/HtjzV8WdcLRBcHrmOTY12iTWbgQKE1pQl0yEikjc=;
+	b=N1amRAjUk0vgZNyrouA6CJKmv3oTZB3jQ66KGQl+aFu4z3Eemu0cst0pGj67YVkxQ/h1Pl
+	rRPcdh8wkuuZTFIaiCoJwO44B5dDhs5G2kUKx++2KOVi1Qq9C/CgtTZPtWqCmBHIO7xJ9s
+	d+a4PyXIPjpjixD6CeG/BOkz5CXh+CU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773829314; a=rsa-sha256;
 	cv=none;
-	b=JvJBwMkXAI9d2OiK92/aEl94D/9QLVBFzfX0OdCeHtKHA++43MqxbWzTLQfaD6eoPltAiu
-	1lEmoCEp7MDVDDgN/JMkiXWxK59VvLWEtuOHaR/lyUxn48Gbwd+VP+aUIQghgSJJPKtqNZ
-	JuuFxHuOeGHAfBNzrZZXyyouOjYJIEs=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4852afd42ceso56774885e9.2
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:01:36 -0700 (PDT)
+	b=iZtLGLaCRs12fzrsIIPbnrW5sxNpUE67a39JSadMhn97BxXJQsFGEZfq+ZTzi+PMFrF7Yi
+	hbfC0/deuO0ZIqz8zHV3PPsBlSdAqCrMXnhRS3FE9Pjxl4M2HwiScW8PwA7MmNQMjCfOOu
+	HG89EAWLR/8drtOZvmKPOyqs2OxQUa8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ZE6dykck;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35a09e0dd63so7640644a91.3
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:21:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773828095; x=1774432895; darn=kvack.org;
+        d=chromium.org; s=google; t=1773829313; x=1774434113; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=30lcLe83ZfeeJjPOw57FdUnRLS2QbPrl5sgOSEvO6uE=;
-        b=eIdZvx5n4xeqnapU8uLPDTOVb/xM0jyz19OrpxKPI4Sv8ZNwEW+H7sGUZ1DyerBpEs
-         YWoFiOgbXaJQwgh/4zYzdlPbGJXJZmBBeAegujR2dQ7yYGuQ4f5W/IytIYNSN0XL0zF1
-         we/rpJpYWpi7PscHT1/NsysHXO6xKg9oo+93hncO8OLWrm0iH8a7/RB8G0APigv0/oQv
-         zgrNOoR5j14eaNuVpxq0aJdCBFUQeI7sOJvKGIIZNA2tuLLvFTD6lZBNczII3D9mngI5
-         fGTLxlzAh81RqczReY0q1pJNxnK0HLqMkyPTOzh0ACIzPNl6TdfigPuvKqtvL3SDzmHH
-         Q6qA==
+        bh=qW/HtjzV8WdcLRBcHrmOTY12iTWbgQKE1pQl0yEikjc=;
+        b=ZE6dykckthghINUGKOCgPzPHTp9WzD7K/P7y8ugHOKjSF+QLBhkXM8Cn8CwtOtpZ3e
+         WELks5/pz6aPUJ23I+PxELf5GKxhU1+/fNcSot3aJR5yXjn+n0NdohRGAKhvj83Jk2o4
+         igtYsOZ0cvQ7vUC7mfjKgNZKyugFQocyTecYY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773828095; x=1774432895;
+        d=1e100.net; s=20251104; t=1773829313; x=1774434113;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=30lcLe83ZfeeJjPOw57FdUnRLS2QbPrl5sgOSEvO6uE=;
-        b=FkEQZ+OdP7+gYlgF8ivtvoCkuxG4u7pbh+yArEGQb+arZt44oc+Rj3MIIv/i08e8mD
-         ZBp3l3Nsz5RvSyl8IvWz+vNq84Mgp9JdwiR3HIAl8l5cauy4Ja3CijeO/ywY1umlGNXS
-         UUuqn5RkdDxaLflHWnmuRAhov43757qqwIGG3KkJLz7MxPxS0Nq2a6J6ErKOswQSF9ih
-         1Tr9fnTi8TQLwX5d/Y/6cIVD5L4pRxlarpgWwuwM+91hd0P3maBZ+qrEOADtJ/craNLT
-         etKn6aWsRrITGbu92KVocnZlNDVjHQishZ0ODKII3ropdzHpuAbA0hLCN64jZGTulMCa
-         ANWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnEHY+sE3kzopOUVBxJzpKlNA+VAAnYjd5bsLOAebQSADMJo2OD/gu0tV8IMXtED0WLuERySWvkg==@kvack.org
-X-Gm-Message-State: AOJu0YxMhxdkzp/6tRjM8yEUWESAuW02vDqBOXXb6V5uoygvQGdvnkp/
-	Lu5NqKAKK2omygrHrk32wsvrNCXz2K4lx0aX4uNqR4vC0mAOZYY33Biml9vlFJ4yd2s=
-X-Gm-Gg: ATEYQzx3686J+8jD3H5gnUIs7bycwATTOZMO3VqD3TnamzJgUx//oWx1mMA1h3KKJsp
-	utb/S+7WjvIql1TDBb5DeLQPRht7d0Yn04T7HdSEO1015zeU6eAPgiRSDQ6a9i0u0tba7coHyvT
-	brpm3xOHtYGL/LGcccTLp5HUtkIWYiaxyJzUrlOLFmCHs9Ptfd4bQ0dBlJ0LhsIjfymrOpLT9PC
-	4gf12WadxirvT2n8HjZD4B7DdxpC8yGHfc9Fj45xFguJH1rGT62+3zSQDydlI1gHd4uVcK69ggY
-	QIWNaT7ZmkZati/O7azg7ye7/KZezmS9w3UlzmOr8Xsye5kUlUSmL+XxO+4HB0h7RreSZj/kxdO
-	uEdE/lPHC7Hp0+6Yy6eSXeSXXM0pYIpADfxOtNg25n3K6e/RjogJ2PHJMijp7nmhmy0uy32tXLo
-	UV9OMiqkxD7Lh/DJrtic+BUsmfM5RgL3u9s7Es
-X-Received: by 2002:a05:600c:4fc4:b0:485:3b00:f92e with SMTP id 5b1f17b1804b1-486f441bc46mr42711335e9.2.1773828095163;
-        Wed, 18 Mar 2026 03:01:35 -0700 (PDT)
-Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f5e162d7sm10843415e9.33.2026.03.18.03.01.33
+        bh=qW/HtjzV8WdcLRBcHrmOTY12iTWbgQKE1pQl0yEikjc=;
+        b=cHYQcf83Zid+QMgnUfCiyjE8mPkI3uvEtlej4yPyuongbivGxud6r4P0CWPIdicgCW
+         tDKUPunDTZi9wR10Gz9mgxWgVx1KzYRZNRoQMWJe2hQFUi683pJE+N/yGpDbwP1A6IMf
+         Ix8taUiKCVpobuokHZqix/4/xpY+oUihkO6aekqjtFBVdQ8CtMs9tC7H/AWtFIwuVT7Q
+         RjRgQxdw6uq0FBP+2603dgqDt98NFV0inWNvnr1+CHDhY0IjppSGbEYRJXdpBGR1HQ2e
+         3tEHwy28NPjW4G0JCE7o7fxvGZoNo0Wdrw2X+HOQ7zCK9C9eW+e/evLpvQksHQTZL2vW
+         Tijg==
+X-Forwarded-Encrypted: i=1; AJvYcCXfaKHUIMsB+a9ciN2pcANbYxICCVxLogBXnnYl03/CUsh7hhlAVMyMaog4SnbYUflSal+GfqlUSA==@kvack.org
+X-Gm-Message-State: AOJu0Ywhd92GYrmzs2QDbiTipvFnR08mtB447WgYkLmsuBJvP0rPPbaS
+	2ysMJK98qW9aBTf15+YwFqI+wOJSf1fUW9K8kVF/2yNp23pwga+NgpDsmUxA8BV+mQ==
+X-Gm-Gg: ATEYQzz2+N8sE+wJFsphGqkb9swq8AS+fQ3kqIj9otGqyzbIXn9BRF4wPlEEoP6V9cp
+	4d6RmGOe+ojlCKQL6ghjkwtT8xlktc9mB5kAIaCF7n/0Ml8s4/iBJaKVe8uqhl28PJZFMWRrpAf
+	Ksb0ITUj8CKxeBbMLYsS5tLwgTx6ydsAYnqHnJ+FCd4Gkda3xVMj1YJbX7Ib0Pu9VjrcWlxjl/v
+	fEfnnjA3AIWczyYXgZmPISdvDQNQtzj6mwcEIEUG29++DsbqVgpq8Uytyq9LEgFnm6e5E46/s74
+	iTD85Qv+TGSdwuGUUCyzK/SduB8TegEFYSN/vaS+i+laSIkJegreRc9NoPfefTx44eOWyqv3xAo
+	n5U3S5jv5Jrn423swVFfJHeRIjDWKYjreCskFzKKmRYxRjFtZaCS8b9a9mrl0vX/sSdDmDycKHX
+	ePg+d/gOkZi2u8DofOc8RuPa5ukQkLKhMP8yHWWBad5BvZi8hnDZsq82RnGUP8mYo2pmvBwQ==
+X-Received: by 2002:a17:90b:3c85:b0:359:fd9a:c513 with SMTP id 98e67ed59e1d1-35bb9f0f6b8mr2541663a91.24.1773829313412;
+        Wed, 18 Mar 2026 03:21:53 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:2eae:ed87:1d:8a5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c741e545d38sm2039576a12.19.2026.03.18.03.21.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 03:01:34 -0700 (PDT)
-Date: Wed, 18 Mar 2026 11:01:30 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
-Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
- attribute
-Message-ID: <abp3-iJbazCpygIm@tiehlicka>
-References: <20260317100058.2316997-1-d-tatianin@yandex-team.ru>
- <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
- <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
- <abphjNOYaNslTA90@tiehlicka>
- <7ca9876c-f3fa-441c-9a21-ae0ee5523318@yandex-team.ru>
- <abpue_k_9mjQAP6X@tiehlicka>
- <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
+        Wed, 18 Mar 2026 03:21:52 -0700 (PDT)
+Date: Wed, 18 Mar 2026 19:21:48 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, teawater <zhuhui@kylinos.cn>
+Subject: Re: [PATCH] zsmalloc: return -EAGAIN for zspage migration lock
+ contention
+Message-ID: <abp7HJRZQi35wHn-@google.com>
+References: <20260318073114.34858-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
-X-Rspamd-Queue-Id: D76104000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mam7zofzjummk7qbqqnr5igjadabwqns
+In-Reply-To: <20260318073114.34858-1-hui.zhu@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AE06312000C
+X-Stat-Signature: 85qyprzrnswpugybcb193tnm1f4pekie
 X-Rspam-User: 
-X-HE-Tag: 1773828096-6264
-X-HE-Meta: U2FsdGVkX19pO7uPfQuLWUVUsCbycBrFxRTyP38M9S92DpD4TAAW8/qeW7ZX5U52DTDftXbiluP/4lbgRttfYXKVhPxsybHaOhmSyFg/zv6+J0YsaCnlvwHGY1r32XilXnFbTHD6W6SfVrKc6BDaCZqNXkUgjqbb0SKvoik+Fnq+mG3hWoRhDTxMMOLiDATPBxLplVJrsbe3XhoCHlaP1aVSUSMqmcuUR8TQ9S8ipuJCwQdLXP3ffgtqIuTqYHdM0Zuvg0rVu9PdeqORWcFnIa4cNyJg0SnxEXSp2W761jMz1qLj4QeJb68K7vVKBzqw2licIJKeOBvN9qMtMHDly1ucuBSJaLcthtZJEwO/NviTiyOc0KZOu7UKC45C+Qod0g18GJrnPK23GAl0fQHq63gffKC5TOG1oG6vtUDbZEyxLhab8oEDS3HyhB+gTXtiAAsJpky0Ysu8nDABLfho/6Qn7iUk5ZW68wp4KogN50UKPx7fRZb4xPoKnDRVXn0Xq5eXYW9ZGYheB22Rjc7xrCgQUomoGvAu68ujlZxDK3JcFePKZLsg5QM5IP748HUJao8l9dVd4nvz95nnUuuzOMYkhp7T2ZbtlgY5A9ShI6NQ2nGHpAnIBqmmVH9/aSKvICfAAaaFlIm24kG3ywou6yt4Vd89hyXMZ6OQxAREwr/w6zDR+td5cr03a5haNrUjXkafBSC955vXOnROQWv9chU0sQ+HI4T0ktShc4Uijsyra2adDizsTNQwIOdeZF+2LPXTw1wtzT4QVmGGIpQJT2y2d6ixjjPtlVKfDIVU0jMQbYCtYHXyrF46HG3po8dk/Xi44R4qHnBnhPnhoeK5sDdVwVpicUF6BzmJwWpAk8kTmNq7KligNP589D/eqAmNb421I5Rmu/zv0NDZXIJwK3u8GqfHhxVL7L78Zw70MwDVehoAjaKMmLQQ7qIDLNDeBWEz4+kCp+9EiWnOw9X
- nN65ABTD
- KEN39kT8dglHm2gEK3lwejLqWtWkrDaKguvCMHGHS8vBu5nnJC7dfXjsChjHlKdQ3TdSEdxE1Ibfyo0azRN8GayTCLC47lxqPiYvZsvl6TjtD01+gIGEhb7g/HYaS5N/tB/N8OEtuOY33w51pv16KkeA7KaWg2bk5Hvv6FxzlowlcdmVlp/WW8z5Wwczog3tNKjq9WOEYZb9zzc4hZljREabYl93UFDXIMAEEXvzi7LkdldEZOEFXHvN834CpowB04BY0/O1+8LXKSbuuWVvLhl7jUvPyLB85k2H39T4p9y0gDL2RGkhrsW4y1FGltaY7SPVE9T0l8+qiZ9RrY5+bKTEU3dJYZWqG+MxWeIEYQbOBA+5upvHgCxNbZpykqFRz/EKQti2b2861nYfAjsRyjvuHAQ==
+X-HE-Tag: 1773829314-909799
+X-HE-Meta: U2FsdGVkX1+T5t5XYpcIlVzUMzsnBe0TIPvGWPRXCs0zruwUyBaArEkkD9V8uILYoaytZUFXmuIOU6vAPFpRti2L6o1wRO3UAxMd2swDgV2lx4dAOR+BVyFJnTxN7d3n2YoZKul325uWQl8HP7XBoI1MK7VXzKBu6DKmZOM8DMbGacvtSL9xqEptHnx4/xHNh/nlO4YzaJfLeFaFAN7nJkjeS8XB2tM9OPh222KCqE3Ovx/V/pzP5/yvogwVYer9OEttUPmeNDzJRzT6oC2BtD3vypjfei6cvftCPQ3ak1BsMfpF58rHKqitRqa1l1ERebDr7lPjIjcSfuRJNwKXXHhzyJx1MejhpX5WJxEUQpTvwYuoVM9eLnoiT4YOQ6Yx2/jjoR/roicfoijDhiDADo83q7tN+PXDsTXSt4hy4IPTAQjC1iHxuTYuUIt2zAKaoQiMEnGkmXae4yl622CxhMrMUPBtN+yfEq0SfePSutP978uCPY2kL70GbQVRtnbllpGtxW1oxHp34MPm17/s6UuVWWkaJ5DckAV9FeI61s52w890mpW/0XMIq8zCsIwDHmlfkuPob+SqDVwflgozpaVCybfgYCFKQzjikT2K+2XhSag7rMQ6kTMl+7m0NvvCrFUV5adIxTAK644BEjINxffwvjsL3qIYmNWNbHQfKUllvoREG6RIMc6uQWn8b4+saVeSIsj1V65Lp1kQ83N0zbU77Q3AZ5JmyYw+cw/zANUgnP0j6aEzijF5QBTFLraALPKEQBVtCskLNcTfcWZvQ3A8ZmKzP8e+klMjGzzW1BrfRB2fqQhVuRgqKt93tNu0sRUGLJCG5Ok/59BCUpUzkj3NLHSMuPXpO/aZraudTXmKBCk5Pfq1BcivwfnUCNWN44F7LN6pEoMZgqY8DOz5olqqDfo4NZCh4ub46mN4OR1bX1LTLbAtrQrVTx39PeyG6zFKtWigWrNOF2zZWHx
+ WF8ZoVl1
+ dmM0o0nXsODdlIWdyR8hsQrRNDQ+9HKP3GD1tVANPW/52dq9udEAgf7WJf1X6nm4tYgzh30ajBrPCZLzOEQMvQUXFpKq8SL4nzYLE2DwYG+mHPlV89n3b6uCk7C9av8Ilsd2PsSdzKUPs968cCotiKqlJjE04cXWLJO8sN8QurhTo7cA0XKhIUn0kQC3hyB4VDOkPqSn4wz/9DSfWOYAycs9AWxv7lL+7ufsgLRZCCNWT25/FzxR8EliZv3SrQYbVVYxUuvdcTqA57QGZcvAAJzpxPVZSJfcHkVGhp8v+QoWLgsO0a7oQzBnymJXRpXrKubI77Bw1bHUjZaWeieA22AdU1RTvmBPdlD1n9msAjuc2fUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,24 +115,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 18-03-26 12:25:17, Daniil Tatianin wrote:
+On (26/03/18 15:31), Hui Zhu wrote:
+> movable_operations::migrate_page() should return -EAGAIN for temporary
+> migration failures so the migration core can retry. Other negative
+> errors are treated as permanent failures.
 > 
-> On 3/18/26 12:20 PM, Michal Hocko wrote:
-[...]
-> > Shouldn't those use mlock?
-> 
-> Absolutely, mlock is required to mark a folio as unevictable. Note that
-> unevictable folios are still
-> perfectly eligible for compaction. This new property makes it so a cgroup
-> can say whether its
-> unevictable pages should be compacted (same as the global
-> compact_unevictable_allowed sysctl).
+> zs_page_migrate() currently returns -EINVAL when zspage_write_trylock()
+> fails. That path reflects transient lock contention, not invalid input.
+> Returning -EINVAL misclassifies the failure and can reduce migration
+> success under contention.
 
-If the mlock is already used then why do we need a per memcg control as
-well? Do we have different classes of mlocked pages some with acceptable
-compaction while others without?
-
--- 
-Michal Hocko
-SUSE Labs
+The zspage's reader-lock owner can be preempted for unknown duration,
+so I don't know if returning -EAGAIN is safe.  On one hand, migration
+attempts are limited by NR_MAX_MIGRATE_PAGES_RETRY, on the other hand,
+those attempts are performed basically immediately (?), I'm not sure
+if we have good chances for preempted reader-lock owner to get scheduled
+and release the lock in time.
 
