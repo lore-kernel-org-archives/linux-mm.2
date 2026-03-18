@@ -4,96 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6F91103E160
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E43103E160
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 10:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27E736B016E; Wed, 18 Mar 2026 06:57:46 -0400 (EDT)
+	id DA4966B0170; Wed, 18 Mar 2026 06:58:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 230036B0170; Wed, 18 Mar 2026 06:57:46 -0400 (EDT)
+	id D7BE06B0172; Wed, 18 Mar 2026 06:58:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16C8B6B0171; Wed, 18 Mar 2026 06:57:46 -0400 (EDT)
+	id C91FC6B0173; Wed, 18 Mar 2026 06:58:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 06C0A6B016E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:57:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A3D921D5FF
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:57:45 +0000 (UTC)
-X-FDA: 84558883290.23.EEA412F
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C171C40009
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:57:43 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SH99kRsY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B90346B0170
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 06:58:46 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5933C1A0652
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:58:46 +0000 (UTC)
+X-FDA: 84558885852.11.68CA833
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 50B894000A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:58:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKiMcZ85;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773831463;
+	s=arc-20220608; t=1773831524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IgLjZjiZAQDujWNQO4KkWHp+1oa/NVCBWzOVCA3bnuk=;
-	b=ha+dRlyoBhJ+5CSk0OF2QzvC8xiDIKcBcRC7Z8IwJBWxEz4kB0MDmz9lbNSESajmBm0HRA
-	c/Vi8Ym4mVEMBmF+93vsW0rF1CudnVrc2LCKsSKI05PFzXt4i5GqUbQJbVtfsurcBgGJqx
-	uLrIa5/Ibljz+9aSpAn5FEbW+zsXmkM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773831464; a=rsa-sha256;
-	cv=none;
-	b=IHJfFLvDN3JgNUrTWY5/vybGbV86Lr0cYutaB5oDvnEQmpB0F/2X+3iAS7yC+VTXZeshLH
-	yP/hIgd8mbCy4Dl5mrVN52EHyIC4RX7sI8Z0a9Fjb77ndYTWpTxq+a1A8DtiGNnv5DH/WZ
-	rByHmXKyNbDuOhYG/kQ+Yb8RDX1a/+4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YpWbdmy2u35pquIoQDOkSYbA2SDw10dr75CUG2SUk9Y=;
+	b=K9oq1GAYnx+5tCao1v0smuRNBKFPlyvIwTfa1U9jBKld1ZvSvA1sqaZLU5aCwH0z4TAehD
+	U+wF82VQ0PRq0MfXuBZuiLX5l8LEi2U/l5Y6FEn9d8v7znNjjA0AvsOtWKnHYd5Da68hFn
+	EPhYXb0Qx84r5FEy5IYj9GgIkRr86r0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SH99kRsY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-Message-ID: <d0c0ac64-be15-4683-89ec-e32bf4867109@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773831461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IgLjZjiZAQDujWNQO4KkWHp+1oa/NVCBWzOVCA3bnuk=;
-	b=SH99kRsYhm85fHzLq0PeXe+Bmssa3uLHL41zHKFW5m1uq3oVO68YMdQA5P0yhRRb3VjGCC
-	zwlkGEaEamADlJ7708FKSc+i+m9W/j3VIF8nSyB2yhNspkesHeRK3OvWgc/BXvo6Qra6Zf
-	/L9tRcXOOfqx8oI1ud0jioievUKdyT8=
-Date: Wed, 18 Mar 2026 13:57:31 +0300
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKiMcZ85;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773831524; a=rsa-sha256;
+	cv=none;
+	b=Oa3W9hMzeZUt5QPv87RQFwk3+VpXBi7zxRsPZ4I/qafJMVWrkYNqRy3DaJg3Cevh1WYZyG
+	yX1rrK0BhiNeSLe/TmBkuzdkwZ5DnBxYYEnq2T9hl6UBH+UaKo4DLtJAjEHxw/pviF9/Gk
+	fiM36VQHPgLf9V5m4mNuL14Cqahu/7o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AC42B4474A;
+	Wed, 18 Mar 2026 10:58:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65881C19421;
+	Wed, 18 Mar 2026 10:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773831521;
+	bh=kLYySycm4Q+kO2x2jmLEs+z7oAnQtdjmqDIbHrWcbjw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eKiMcZ85WLFC8bXWA/cKx5AD46CSeZMTj7t+7hTK626aenEZLjVU/M1bTaE/8BRRS
+	 X6S1Y6bTAssMWXPL91D/crg1FtPFmAE77lAntj2Q7m/PYz0wUHGJzu4AZOtr5VKYhD
+	 O9x+2NB3x0e+Qee3RPqpqmkTck/x41t2dPoDUPGIkmdpXAuih590JlibeZmTDiQlQj
+	 +q9tqVFXNLT50Bo4J93EDhzKNN36MtH2iOtNw1iebPTvJL5rSLJyP/H3K7GSINY4cU
+	 Jl739DvgI4xC+TxFvGCyIhqDj4Pg7a/bTjrprZ63VJjVDKtRWfpfjBV+NYDfdH+Dsr
+	 4yKWpa/0srIqQ==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Rob Herring <robh@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	devicetree@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH 0/8] memblock: improve late freeing of reserved memory
+Date: Wed, 18 Mar 2026 12:58:19 +0200
+Message-ID: <20260318105827.1358927-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K
- pages
-Content-Language: en-GB
-To: WANG Rui <r@hev.cc>, Ryan Roberts <ryan.roberts@arm.com>,
- David Hildenbrand <david@kernel.org>
-Cc: Liam.Howlett@oracle.com, ajd@linux.ibm.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
- david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org, jack@suse.cz,
- kas@kernel.org, kees@kernel.org, kernel-team@meta.com,
- kevin.brodsky@arm.com, lance.yang@linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
- ryan.roberts@arm.com, shakeel.butt@linux.dev, viro@zeniv.linux.org.uk,
- will@kernel.org, willy@infradead.org, ziy@nvidia.com
-References: <20260310145406.3073394-1-usama.arif@linux.dev>
- <20260314095022.217231-1-r@hev.cc>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260314095022.217231-1-r@hev.cc>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C171C40009
-X-Stat-Signature: dtes33a1jhcomo1ufeodxh1q81gtm9iu
+X-Rspamd-Queue-Id: 50B894000A
+X-Stat-Signature: 44otscdscef7uok9jyo3b5san6yqc7ms
 X-Rspam-User: 
-X-HE-Tag: 1773831463-683071
-X-HE-Meta: U2FsdGVkX18mhbGtzmf+4Psa8nB7llvt/vt1WImOmm4hTG05LrFgWdGBTNvqSdwEJi5pf5iINHJK8kfb8lyXOiNB8Sk8tbgfBXL+A4YfybLIQUgx30/7LMcM4wE+FnZg1bHpwsYb8+20fusWsxVB+Yjq0UDxhoxISmdcpk8q6c4tM+ADalmJhU+fZ92xH173qOYZUyWWZIYivYZlpJgfnoSwZXP3RMEiuaD8o5UfXOeC5jLRg92aSmwfFb5eSAffuPi/glxy5wjma6jo+Wk2LrwZXgC6/hp3j7WWFP0BRxST3xCx1uig2g6lBP/w2fCbShUIDE6PmJbQQHiZYgDc8e2SpgACJZTHW+9kWQP04qFkpZBE7TJ5acg/8Wv0K4WMZq8gVfFCp0F0+HjA+iFUWrbwvsVpXZB4p5/4PkeiyTr4s+wSvJRo2HQQfBDPBmMW8rRohzdwppYkcky7o2hiKcuXutDVYKaUy3wXybrhluzkMISTQItJ7K0ymjEPT40W/lcT8GKX8a84DDRRHBGBd2Hh2PUAoeZeONg/XSMvZm8e0rOcLPsbdaLE11uyE7HLbGoY5A7sjXoQAdt9u9q/SUw/ivNuyEA6bcJv7O8naw0tJGvBWtWD4hpTe8NMhvll09y2n2n6ldY/y4/xxcmPeIgqVP+CR+gyxViyPLcYvZDFeozWMQUFdR/sAh687I9zEdfcTuRJzMeivsmMMSb+GaN3s/iXnuoG9GhawW5d5v8eRjYvmr36VkCyYztnWBmKZxjr3QixqZQlG7rVvTNfb+0slzqxXQ/GLEbXzCfSlP6DREk9Bh5urkc/kJWsrSOYmD94wrhOt6rCJ3KD/Kgnn+tz/xzcVwfzOJH9KMXkseux84yi+JBIOs1siNSzoFxAOFXeTu6u/8oLfJ7Db3hDa9mwwy7Vi0J2r78ghQmjZItJgsT4fBymyaB83xWj0ucbKD5PUN8qIN57gF5TY7B
- mYV68mpp
- T/GSMa1RfNdBDjYUslTOaGyLnFX61BDbseYzo+5qQEuLraHhZ5VC0oGC3+XXVrChr4v7LLiZAz5WNIf5+vGKk5R4rvenGqLUDfazY9681JxOL2ByMH6sCIRfkmGIql3g+V5V0k/1l+uev/RUMozb6TAdBagZmkasJ1Q3o3H36F5UBweEsE7OQxvI4cyyD2R08m/7rAu2XWXDfsS4ZvyjUc1JGeo4CdKMzdY/1whUO9g9lkk72tW4oD0rtVw3Y9xH+SLqdP/ayq1De5ClMskZudQL44WFOhGArZC+pQA9ceICSUZuDJT+gJt+VsfuVFJvSk5mi
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773831524-434412
+X-HE-Meta: U2FsdGVkX1+HM3LZ7PDsdROtdc/KgEXNYhz4DuzR2A7GaDe0SYejm2QTivP8b8NYpTiKpmjEhw11OqKpM1cWVkNyRkXLwjTSV/0koNHAeDAyD9V0jJf5eiZsCrRuzTSkX/B2FOBQ4ee3mQMx4C3x97dTiWMOPwNIYLYKlyYTiQ9EHYNydJK6R5IsRgOkSwh9QRsmQsKWN6bHVIxKFOSMg8bNikscLEtfKsIZVHKkXxAMNHi2K5I4NRIdWVNlGyocr+ICokLMB73RMj4Msl3lMzVA0NcHEI1bRDQy1ZMrg09vh0CS8IXWTFHYBBfnzZH88cD6D4UeT1u1sLfLY4KGHzBhm/OVyKr5o9tAhxLiiff6NMS4lIZJbJzrEs2gwBaWoHk9FwFFtlWbMPyXBz7Gug53z5VSNVshwhmZ4wyYdnyMQqf8zVoYettM1IlRHdB8SUGDdSoUPgiW2jpP9ekH9Tsq7/tdPTVp0pcJCIlq46GAbgD/2ZefiuT65s9gzQV0TsweXndpeeVpeWZ/Bs9hcNGHBqiVOCH8kZy7kkTY0i3G0t0XdEjt3oZa8Y6KVw8jViBn882Pi6DkhczVi+W9OZ+keQwrmx+UtHcu9D39w6/dgJn6Czh2LzphxuoSt5Rr2iypO0+L2EzgGrjNdm7sMDwaluJy/RaxRAkoaGiJZ7kJfawwNJZ5O9ziozg6rWxhLm9DeZQwd34VgIHLp68Toz64IfMMz68wxf/sgBLOWnhZDLjy0fv1IuNoh5rLz+57I/QICWPKskyCw8IxRw1IciMGwBwWhiUB+wX2Latu/IR74lBy8JQ1u0hu1cOTS3Xrnw9BfMLX0gdgjCqWQdaJXEGxcLNTAqaKX/szr614X/tUsVLuhmsFPUg+hPZw8TaMSSUdRnjnySqXEc96vcnLjzNB7ZS398WP9MtsjJbAe1sEiaaSaNk5yP7dw4oVx/h+Ci6sbUWTdfzgnna8gu+
+ t8ssZjRU
+ FvPOja4BB+RWsPlcyfC8wgd4bcvV5yFZ2YQyag/f6QhWvTIBP36rlOTmk+amp1uC42Z/MNY0mubMa7/wAOSjYADwqSQ6fGyUYtqZJGQztSv/BJcEvxt9eh1ixSRDTQN0mRzexVWGXJ5kQXyoj8tXI4tyFj+hBodxuWO/cFwv+TdPTrHValAkmUMNaLBAAag6Xkdu4XWQyDkl6EyRBut3D9mFySXB7JQo7/qP4+h3IIPqzM1oihMyZ1SVmr0oISouDr35sDE5FOnAPqcyZOGPXrX6Q0fW8EvMnuK4d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,60 +134,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+
+Hi,
+
+Following a recent discussion about leaks in x86 EFI [1], I audited usage of
+memblock_free_late() and free_reserved_area() and made some imporovements how
+we handle late freeing of the memory allocated with memblock.
+
+[1] https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org/
+
+Mike Rapoport (Microsoft) (8):
+  powerpc: fadump: pair alloc_pages_exact() with free_pages_exact()
+  powerpc: opal-core: pair alloc_pages_exact() with free_pages_exact()
+  mm: move free_reserved_area() to mm/memblock.c
+  memblock: make free_reserved_area() more robust
+  memblock: extract page freeing from free_reserved_area() into a helper
+  memblock: make free_reserved_area() update memblock if ARCH_KEEP_MEMBLOCK=y
+  memblock, treewide: make memblock_free() handle late freeing
+  memblock: warn when freeing reserved memory before memory map is
+    initialized
+
+ arch/arm64/mm/init.c                       |   3 -
+ arch/powerpc/kernel/fadump.c               |  16 +--
+ arch/powerpc/platforms/powernv/opal-core.c |   9 +-
+ arch/sparc/kernel/mdesc.c                  |   4 +-
+ arch/x86/kernel/setup.c                    |   2 +-
+ arch/x86/platform/efi/memmap.c             |   5 +-
+ arch/x86/platform/efi/quirks.c             |   2 +-
+ drivers/firmware/efi/apple-properties.c    |   2 +-
+ drivers/of/kexec.c                         |   2 +-
+ include/linux/memblock.h                   |   2 -
+ init/initramfs.c                           |   7 --
+ kernel/dma/swiotlb.c                       |   6 +-
+ lib/bootconfig.c                           |   2 +-
+ mm/internal.h                              |  10 ++
+ mm/kfence/core.c                           |   4 +-
+ mm/memblock.c                              | 110 ++++++++++++++-------
+ mm/page_alloc.c                            |  46 ---------
+ 17 files changed, 102 insertions(+), 130 deletions(-)
 
 
-On 14/03/2026 12:50, WANG Rui wrote:
-> I only just realized your focus was on 64K normal pages, what I was
-> referring to here is AArch64 with 4K normal pages.
-> 
-> Sorry about the earlier numbers. They were a bit low precision.
-> RK3399 has pretty limited PMU events, and it looks like it can’t
-> collect events from the A53 and A72 clusters at the same time, so
-> I reran the measurements on the A53.
-> 
-> Even though the A53 backend isn’t very wide, we can still see the
-> impact from iTLB pressure. With 4K pages, aligning the code to PMD
-> size (2M) performs slightly better than 64K.
-> 
-> Binutils: 2.46
-> GCC: 15.2.1 (--enable-host-pie)
-> 
-> Workload: building vmlinux from Linux v7.0-rc1 with allnoconfig.
-> Loop: 5
-> 
->                 Base                 Patchset [1]         Patchset [2]
-> instructions    1,994,512,163,037    1,994,528,896,322    1,994,536,148,574
-> cpu-cycles      6,890,054,789,351    6,870,685,379,047    6,720,442,248,967
->                                               ~ -0.28%             ~ -2.46%
-> itlb-misses           579,692,117          455,848,211           43,814,795
->                                              ~ -21.36%            ~ -92.44%
-> time elapsed            1331.15 s            1325.50 s            1296.35 s
->                                               ~ -0.42%             ~ -2.61%
-> 
-
-
-Thanks for running these! Just wanted to check what is the base page size
-of this experiment?
-
-Ofcourse PMD is going to perform better than TLB coalescing (pagefault
-itself will be one less page table level). But its a tradeoff between
-memory pressure + reduced ASLR vs performance. As Ryan pointed out in
-[1], even 2M for 16K base page size might introduce too much of memory
-pressure for android phones, and the PMD size for 16K is 32M! 
-
-[1] https://lore.kernel.org/all/cfdfca9c-4752-4037-a289-03e6e7a00d47@arm.com/
-
-> Maybe we could make exec_folio_order() choose differently folio size
-> depending on the configuration and conditional in some way, for example
-> based on the size of the code segment?
-
-Yeah I think introducing Kconfig might be an option.
-
-> 
-> [1] https://lore.kernel.org/all/20260310145406.3073394-1-usama.arif@linux.dev
-> [2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.cc
-> 
-> Thanks,
-> Rui
-
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+--
+2.51.0
 
