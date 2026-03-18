@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C85E7103E198
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B647103E19F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:51:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2686D6B028E; Wed, 18 Mar 2026 11:51:09 -0400 (EDT)
+	id A09FF6B0290; Wed, 18 Mar 2026 11:51:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23FCC6B0290; Wed, 18 Mar 2026 11:51:09 -0400 (EDT)
+	id 9E0DC6B0292; Wed, 18 Mar 2026 11:51:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 108256B0291; Wed, 18 Mar 2026 11:51:09 -0400 (EDT)
+	id 8F6B66B0293; Wed, 18 Mar 2026 11:51:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F0EE36B028E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:51:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B95B11D933
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:51:08 +0000 (UTC)
-X-FDA: 84559622616.16.6D88389
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5816B0290
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:51:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47EA11A0864
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:51:11 +0000 (UTC)
+X-FDA: 84559622742.14.2FE6AE8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 231AE180007
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:51:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qRmRwK5E;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id AF9F5C0004
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:51:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rmU8NO6l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773849067;
+	s=arc-20220608; t=1773849069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5LcyvyxIOLVdYaAU5Bxn0i4OubCwHTKQhVNhc5NrCdg=;
-	b=G0tB+zbQtjtK4HSN/K2SaI9uMCnbFWG/AfUxaFvD3EqbKwf3jjioWHXaLusGaBojnGKyZS
-	Cc8gRWd/B1TNVG0+fjTWLHItgpcxOI8U62IYywLMlpiykjqSv+EdFWLL4gPvZRv0BaNvL2
-	gJhoJGCx33Tl+H4YVnQX5H8OnMrPDEE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qRmRwK5E;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773849067; a=rsa-sha256;
+	bh=YPXp+xUw+qiLA4n8LAet54qmXzrkhyXPlTkMGV//3zM=;
+	b=8qeI2sTzg06JqIVjLSOKmt7Th3NFCxu/a9IGOyHHIcsPkT3AFacO7xFarDVZzp02dbJyzU
+	8gnVLt0QLhfwf/6TXLge9POSKDv4zd8SOrJt1aeGdlqWjjx/EsNGfP3qbfanm0M+skRPl6
+	wqOyTRuYtSmyR4++I0cy9sYpiSJ3hoc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773849069; a=rsa-sha256;
 	cv=none;
-	b=oZTD3JmpJvUJ3x9l95hzWRrtb1iQssc2Dec4Zp6i0UqrCQLRuEADdGGKqDejKzT0i8z+Mh
-	CmVJPMmOq9BNaToipcjD8TeAk+KpKGKimYvc6wxOpqBRNPe2YumhPYUjBmvaR2ZnMrSWH5
-	+5m/hELxpX1y7pQpQ6390XbtXCP0k20=
+	b=YtynpNaIjtW08EzBy2wT9hWQQtl9UCQc75QYLtxDHGPj0Cg4ano5pe1ylXnGgTFX8H3BQ0
+	aIlTiqvg4oaP58uGyR9LDFkDCGw3DjzjCaZ/4+0c6wnc4R11JTDg9zQa7F16cumF/O71a/
+	eGOuLZKRGRAxGixfsC7AL8D0IRXPzyk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rmU8NO6l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F6ED60097;
-	Wed, 18 Mar 2026 15:51:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89945C2BC87;
-	Wed, 18 Mar 2026 15:51:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3574560123;
+	Wed, 18 Mar 2026 15:51:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF68C2BCB1;
+	Wed, 18 Mar 2026 15:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773849066;
-	bh=clA2hZhQDNrIO1dM44PAOkABP99g52R3GtrWkpxAR4A=;
+	s=k20201202; t=1773849068;
+	bh=8XdVGVcW7Q/NIDMCLqZpb+/JQ5inTXzEVPggkjMwfDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRmRwK5EHKlQwjSTRVwAErmzVWakMjusf90wdgyO+urvmE3hrp/3Pi8VanuwLCxXs
-	 oezhBV1dQ/m2/dCjcbXHDYlAufAN/N0UVWQicDXNYQh2MHtRFduQPbG5spjHiU6Sxg
-	 yWLXRMCxWItFAjCmENz0C20y9c3cnZN6eaj0sfOkXStiqcgcy7ojb+rggCowKX72T/
-	 0XDisaTDD5BLm3pIfLOvQeLQ3rlG3HqSoKcH1/AQz8hst/N7DR65yS69DX0XgLbkuw
-	 pc7/oVI+01jmzr1mpJV1sIMnbXf825eQ/+CxWisYftsLG9yIkQy6PeQ2ym1YWWLFII
-	 XXVqcd1aeZ+Dg==
+	b=rmU8NO6lu68m7dsZm627W2f/PRCpD8agMZwIp+xMIgX3czLSrnNm8zNu3djfRt6xe
+	 K7LKrCAiyXun/G+k/XcklluBNhmNgw58TR7VtJEgPXQ0NShUpCjteDW7+kNP25/+sY
+	 9Ai7sjoZ1e4/pEsOVNxeuqeSz8JqvGhpTpWpoBfF/kvsWoRc6/xHf4WA4Rk7XFSeIS
+	 F3HzRFhNHylMgXuj29cO/H96cAW9cNDQ2yLiWwgiZPsIYY04EPSlgQT3IiNmYdUhMK
+	 OtLdkgTgXSMcLSR4tbu8hdjfRD/kZ0UuCJlTEU7HgVskr1JVtwqQK4Lq8IG47CskcN
+	 m1/8kOa7UNNvw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,22 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH v3 09/23] mm: unexport vm_brk_flags() and eliminate vm_flags parameter
-Date: Wed, 18 Mar 2026 15:50:20 +0000
-Message-ID: <297c7690f17257ba11a7b8c94fe54709a64d89fb.1773846935.git.ljs@kernel.org>
+Subject: [PATCH v3 10/23] mm/vma: introduce vma_flags_same[_mask/_pair]()
+Date: Wed, 18 Mar 2026 15:50:21 +0000
+Message-ID: <028d03f1b980b7f65fcc556db2e97224c06af1a6.1773846935.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773846935.git.ljs@kernel.org>
 References: <cover.1773846935.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 231AE180007
-X-Stat-Signature: 3bfnspgz8bxpgcjm3yr4i8qn7hdc3h5s
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AF9F5C0004
+X-Stat-Signature: 4m6b1cizpzewibw39a6itn96brrqok3o
 X-Rspam-User: 
-X-HE-Tag: 1773849066-26091
-X-HE-Meta: U2FsdGVkX18iL3gcEis5yuS/eCI8eAY3NDHlmaUXuj9yLS95fUrQHghYtAtWLlVOBy/mflj80liLZvf41sSgZKtLKprk2ZfzZ15KG5pO5qRMmP6KNxzDqVIBOnp6DRhOxPehKkPxTLVDCYjPQnGc65gk36cxDgd+Uy1jzfySC8HIrtA0Re7+55aYIRcmZ6cOFlZCCDmdIn6HCTn+JNqTkoukQInDaeW395ORUrM0XMmCzF+lMKJQyfE920ZAWrdWFAqLT0LoYrhnAN5AIi+CROtPjeZzNdzTWoS174QZ0+q7f1X4JunNAuSP45SSJo15yFkgkz6I/qOH6B9XxfKdTqiRPgK2tHip64Bt5sAzj+iopl7OElo3hW2BIezDyCjPSbajkxL16s9xhvU+O/dF9sdgQbQ72jSvVekk68Z/BMAjcDddg013ZvDeSHgkQn1n1/48udsZpxnQWcE/0K9aeI4gVoLsMLbkYvoLSvlpKbiMoW2XHKEOrqEpGA5ZXP5Ue1Nlg8tVfqA2fwybyFb7gXIfgNcWyJDu2dYYaLE+8Zb0xwrxH0UTON0fi7ShHwf+b1Zw7g5lG9JTrG/yHo7d0h/1xlr6AvRJu1kZfJXyRkMZ0RxPUhSpgpi5epo0DFYj9WVg6/+TPRPf18lhgnyolBAeKyRlDg7Rlboap51wlxfa1/u5rehffIaCpdyNnUX1HJYWKYKwOl9pKpn01Q92Nrdkhrte/jbE5Ms3yWc6us4YVOkc4UmI6DW/hRgLaDIfR2cbY3PZeyZfwRRre7QrPejsoz5xAm7/QeFH+8JQwHO3IXbDu2g3rbtdvuCYNOpHkh6viWl/oaJ6/x+b0K9FAtpqjaogDyrkbHvI2KXSWUVJyHgrqHvuHM8VihNGJAiyZOHdoead5FgsPh0EijY/cQGohMGZIIpMkFXMjiL+0NUq/yQsOFMIUDMinR45N4cZ1NqKeH/qhqL4d/mdZpv
- D665exj2
- SE32JS8MvNxst8OqrP1O+rGI2u7sNAvHUZOcGDU3yihK9I8CCQqFhm03X6tdF7+3Ew+ZSITSvR7dWAQ/6SdZFyMOF1YG0C2UojT1CvWIyNixNi9TsYPUVbUnnkbIzT9+gmrvFBDOYutXucLEone0XPfm+leP0uKSt4UOlZDgp3kBCK55Kav27qDFZGSLAcqqCWEXQS3TGt/cbaXy1CgPi6hdwKWTDy8R8gxzwU6PpnR0FJ9olu9uhD05n3H42806bDZzR0P7VcMBfjIgRTnIuC4YBhYydF16uGVobTYk3mzqC4+kDBUEDSLk2969nUF9/mMtyoxS3bNHWXPV5jajVNr7C/8K/TsTsa/JQ
+X-HE-Tag: 1773849069-623594
+X-HE-Meta: U2FsdGVkX1/E5PvODt2kHJ3/fOoDmxLOJdUsW2u0NQsBoXgYHzdfz3vkbTYhfspBMuQsqq8Qv5b8Bd4Ff5sEVYEWbmGgkXr3HE9GufS4R7upYjCMwsTTb+skPqxkbfSQWh0YgqAe5vM3K/VoQyh8JzKhvM9e4s7Tk2GQB6KSPh24H4i15wuQI7IgeU1nBk6rfmpADLyifKLYtcDsYz5WHzZLXQwOPNl4hbHmplrEWB1/SIHO1ZIkA3bW4fCNVqgA+5s35YNrt3D9mU90xR9CdqpVhN1CYLYRvSwpQ9NmKsgoniOtaErvZLTunqcW6m0lHOrgmveU4Yz4M2YQD6Uu1oRO31X2N0UIQip21S9cpIlWkPFVRBXJLFvEjJRulQwkShcT8hrmTzF44eV+i6oD+DYfjsM7BwLVE2LsZux+kPmV9tDYceChvKKzVdP3chPdZWqerHzpfFZpFMDdjlydlfFnTokQrwKQy3xGJeyNtfFJHzvdkROjC1o4RodBxt8Lp6o37FpHjP4MoBPFhj8P8T3LLpWswQP2hRrF8dPPuyG0gOBtfFBc6QNAHVb3sElhPZpgq5J8xEFKeu2PjFtLt0fkHXh4F+fOlfT/e++3UObByWaX1u/0sn9yYqd/gC+2Ye12XUxgg3q/JjJz29Z8qbWK4PK3hEWiX1KourpZ9ovJ/zc2h/HsMQDvSda5WzraH9EwUG2y7ok+I5BVI8a0lAsE/78XeP7bJC+IPt6aLyxtSqkbgE4HaQtE7ag4+21pzeS/Rt6RPBeWToglLGDm3eVVWVjjDzv9JnSS0LX78L1QcXFwppn+pp/wd8Gu4lwLJpttmSxX330vpIhHwhVpTSuqduiWqIMNZgPfGqAl3Ki8IIx8cwCGftBHIhYtfSCZ555pRBjUqB2GUfH+AV42/Z/RHz9yAkE2qczlqrBGbYvn94utSCx2r84fgNZZXziLofGk23ZhS0hcJQaw5zw
+ w92QnHU2
+ wH9ouVx4/XDXjLuGmiMHUkJSzxwcdNBvNkIEo6J4QZxbM+zQIQrMEJbWXnZW5PcyJqQ1+GW1VT6bqy2kSPYbRSXBb5HGX1HokQJ5jTDlSxZ3w1XKOr+Y5Zp9/JI/ctC8covTDtNJm0In0NP8YBxh1BmRHQdgk9K2PE4xa1GPTMo/L7rTrBfgSVcz+tBbfit75wI1gXS05Jcq1MPPxn97ubQx2W/Ihk9C3nSBssa4lR6f69y0LAZYIyNcfQ7gvegOSR9kuboOWeBTpIjE3/knfyBprnem7BrKq7koyJd/qEjz4+nWSqIj6HyjAl6BYG+74+HARJhb6o2MP3olBLx/8tAgYu3CSx/O7L40q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,101 +149,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This function is only used by elf_load(), and that is a static function
-that doesn't need an exported symbol to invoke an internal function, so
-un-EXPORT_SYMBOLS() it.
+Add helpers to determine if two sets of VMA flags are precisely the same,
+that is - that every flag set one is set in another, and neither contain
+any flags not set in the other.
 
-Also, the vm_flags parameter is unnecessary, as we only ever set VM_EXEC,
-so simply make this parameter a boolean.
+We also introduce vma_flags_same_pair() for cases where we want to compare
+two sets of VMA flags which are both non-const values.
 
-While we're here, clean up the mm.h definitions for the various vm_xxx()
-helpers so we actually specify parameter names and elide the redundant
-extern's.
+Also update the VMA tests to reflect the change, we already implicitly
+test that this functions correctly having used it for testing purposes
+previously.
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- fs/binfmt_elf.c    |  3 +--
- include/linux/mm.h | 12 ++++++------
- mm/mmap.c          |  8 ++------
- 3 files changed, 9 insertions(+), 14 deletions(-)
+ include/linux/mm.h                 | 28 ++++++++++++++++++++++++++++
+ tools/testing/vma/include/custom.h | 11 -----------
+ tools/testing/vma/include/dup.h    | 21 +++++++++++++++++++++
+ 3 files changed, 49 insertions(+), 11 deletions(-)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index fb857faaf0d6..16a56b6b3f6c 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -453,14 +453,13 @@ static unsigned long elf_load(struct file *filep, unsigned long addr,
- 		zero_end = ELF_PAGEALIGN(zero_end);
- 
- 		error = vm_brk_flags(zero_start, zero_end - zero_start,
--				     prot & PROT_EXEC ? VM_EXEC : 0);
-+				     prot & PROT_EXEC);
- 		if (error)
- 			map_addr = error;
- 	}
- 	return map_addr;
- }
- 
--
- static unsigned long total_mapping_size(const struct elf_phdr *phdr, int nr)
- {
- 	elf_addr_t min_addr = -1;
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0c35423177bf..42d346684678 100644
+index 42d346684678..b170cee95e25 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -4005,12 +4005,12 @@ static inline void mm_populate(unsigned long addr, unsigned long len) {}
- #endif
- 
- /* This takes the mm semaphore itself */
--extern int __must_check vm_brk_flags(unsigned long, unsigned long, unsigned long);
--extern int vm_munmap(unsigned long, size_t);
--extern unsigned long __must_check vm_mmap(struct file *, unsigned long,
--        unsigned long, unsigned long,
--        unsigned long, unsigned long);
--extern unsigned long __must_check vm_mmap_shadow_stack(unsigned long addr,
-+int __must_check vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec);
-+int vm_munmap(unsigned long start, size_t len);
-+unsigned long __must_check vm_mmap(struct file *file, unsigned long addr,
-+		unsigned long len, unsigned long prot,
-+		unsigned long flag, unsigned long offset);
-+unsigned long __must_check vm_mmap_shadow_stack(unsigned long addr,
- 		unsigned long len, unsigned long flags);
- 
- struct vm_unmapped_area_info {
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 79544d893411..2d2b814978bf 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1201,8 +1201,9 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	return ret;
+@@ -1207,6 +1207,34 @@ static __always_inline vma_flags_t vma_flags_diff_pair(const vma_flags_t *flags,
+ 	return dst;
  }
  
--int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
-+int vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec)
- {
-+	const vm_flags_t vm_flags = is_exec ? VM_EXEC : 0;
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma = NULL;
- 	unsigned long len;
-@@ -1217,10 +1218,6 @@ int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
- 	if (!len)
- 		return 0;
++/* Determine if flags and flags_other have precisely the same flags set. */
++static __always_inline bool vma_flags_same_pair(const vma_flags_t *flags,
++						const vma_flags_t *flags_other)
++{
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_other = flags_other->__vma_flags;
++
++	return bitmap_equal(bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
++}
++
++/* Determine if flags and flags_other have precisely the same flags set.  */
++static __always_inline bool vma_flags_same_mask(const vma_flags_t *flags,
++						vma_flags_t flags_other)
++{
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_other = flags_other.__vma_flags;
++
++	return bitmap_equal(bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
++}
++
++/*
++ * Helper macro to determine if only the specific flags are set, e.g.:
++ *
++ * if (vma_flags_same(&flags, VMA_WRITE_BIT) { ... }
++ */
++#define vma_flags_same(flags, ...) \
++	vma_flags_same_mask(flags, mk_vma_flags(__VA_ARGS__))
++
+ /*
+  * Helper to test that ALL specified flags are set in a VMA.
+  *
+diff --git a/tools/testing/vma/include/custom.h b/tools/testing/vma/include/custom.h
+index 8f33df02816a..2c498e713fbd 100644
+--- a/tools/testing/vma/include/custom.h
++++ b/tools/testing/vma/include/custom.h
+@@ -102,16 +102,5 @@ static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+ 	return PAGE_SIZE;
+ }
  
--	/* Until we need other flags, refuse anything except VM_EXEC. */
--	if ((vm_flags & (~VM_EXEC)) != 0)
--		return -EINVAL;
+-/* Place here until needed in the kernel code. */
+-static __always_inline bool vma_flags_same_mask(vma_flags_t *flags,
+-						vma_flags_t flags_other)
+-{
+-	const unsigned long *bitmap = flags->__vma_flags;
+-	const unsigned long *bitmap_other = flags_other.__vma_flags;
 -
- 	if (mmap_write_lock_killable(mm))
- 		return -EINTR;
- 
-@@ -1246,7 +1243,6 @@ int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
- 	mmap_write_unlock(mm);
- 	return ret;
+-	return bitmap_equal(bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
+-}
+-#define vma_flags_same(flags, ...) \
+-	vma_flags_same_mask(flags, mk_vma_flags(__VA_ARGS__))
+ #define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
+ 				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 802b3d97b627..65f630923461 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -954,6 +954,27 @@ static __always_inline vma_flags_t vma_flags_diff_pair(const vma_flags_t *flags,
+ 	return dst;
  }
--EXPORT_SYMBOL(vm_brk_flags);
  
- static
- unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *vmi,
++static __always_inline bool vma_flags_same_pair(const vma_flags_t *flags,
++						const vma_flags_t *flags_other)
++{
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_other = flags_other->__vma_flags;
++
++	return bitmap_equal(bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
++}
++
++static __always_inline bool vma_flags_same_mask(const vma_flags_t *flags,
++						vma_flags_t flags_other)
++{
++	const unsigned long *bitmap = flags->__vma_flags;
++	const unsigned long *bitmap_other = flags_other.__vma_flags;
++
++	return bitmap_equal(bitmap, bitmap_other, NUM_VMA_FLAG_BITS);
++}
++
++#define vma_flags_same(flags, ...) \
++	vma_flags_same_mask(flags, mk_vma_flags(__VA_ARGS__))
++
+ static inline bool vma_test_all_mask(const struct vm_area_struct *vma,
+ 				     vma_flags_t flags)
+ {
 -- 
 2.53.0
 
