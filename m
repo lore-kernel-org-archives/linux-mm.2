@@ -4,131 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A6E2103E18D
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:17:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F647103E183
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:29:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F13C6B024E; Wed, 18 Mar 2026 10:17:08 -0400 (EDT)
+	id 8A3AC6B0255; Wed, 18 Mar 2026 10:29:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9575E6B0255; Wed, 18 Mar 2026 10:17:08 -0400 (EDT)
+	id 853DD6B0256; Wed, 18 Mar 2026 10:29:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 731016B024E; Wed, 18 Mar 2026 10:17:08 -0400 (EDT)
+	id 742C36B0257; Wed, 18 Mar 2026 10:29:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CC896B024E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:17:08 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0BC5A140799
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:08 +0000 (UTC)
-X-FDA: 84559385736.04.8E7015E
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 29379100010
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RwkoAJud;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773843426;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60DA36B0255
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:29:36 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 009B6C1F32
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:29:35 +0000 (UTC)
+X-FDA: 84559417152.11.5C1560A
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012041.outbound.protection.outlook.com [52.101.43.41])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E79A320005
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:29:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BSh7bxIM;
+	spf=pass (imf13.hostedemail.com: domain of shivankg@amd.com designates 52.101.43.41 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773844173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zJIAgTqcwEqKxZF+DzcRiR6G39ka6soPVjhZwY8SjyM=;
-	b=XErbX+xzi92CnHhzq5Bmo5AN/UuznonRoP5/v/zzp5i/Eonfpr6wjAyBW2J12KHWYO+jmL
-	0a8bB1PC9246IZ9MQMpATlaHYmiQjJFncv0a3xdeBTQzvUsMIox6grBBKsERc3EmG0Q7Df
-	bPilCc9BxT11+WEGUIUhu7N76vPixoo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RwkoAJud;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773843426; a=rsa-sha256;
-	cv=none;
-	b=4hIf1l6Bn+Ba3LKM/utA47s2dQ34S+6BvIaMzcO34jLN9Km6uMhGMMF+Cciez4L4/JhY9e
-	Lk5Bdtkj/wx8d+GR/Yu9tdmczNFQhZ6YXc2cFBt/5TMHdiav7KgavvZcqwTUSoM3FKhM50
-	szGL23dnD/TjAZlT6Ko6Ml4KNP+YQXk=
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64aedd812baso7040909d50.3
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:17:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1773843425; x=1774448225; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zJIAgTqcwEqKxZF+DzcRiR6G39ka6soPVjhZwY8SjyM=;
-        b=RwkoAJudz4kmFZE1YrOI2H95rSphhaOv2KE08KQnxkcBDXzYVEI27hqWDsOCqksOSS
-         QuhAgOxNE4Z0rBUDs3M1pI92y8h8yfP9D1Bfu9VYn5r8N2Pd/Ws3ku9TtqRiI7E3oOiI
-         aly4XVekfQAcSA+v0TmTOwEyiDmWoBGvtBEFkp62DHLucWkJQfr5oX7slH5NNk7VvJnL
-         768A57wwj4t5EsRE2t4PUSEK1BFPYHsXcrsLCsxHTRCKHXL7oFz1FgrDcAkwgGL+DejD
-         4mkAGuYsFhWGa9p4+2AM+ror/MFBi/skIN53CjTDQ3Y1wv6yFZkFSOzii0q37x07AjY4
-         B3Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773843425; x=1774448225;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zJIAgTqcwEqKxZF+DzcRiR6G39ka6soPVjhZwY8SjyM=;
-        b=MKw8xNBUF4DTrPjkyvUqjaTB3Tnw8xqv42vjoTkaklMSLiweNEUu2oz7ND3/Rdm1qq
-         XgOtBIk8toootVPXD+oBOigmVgbO1lRe8RzbiNaub57j3slQc9kwW4kl7aRQmkAAiIQF
-         E0Qnn6uuLL1ZbYa2wCgoa+sY6UCcl1MxI3XsUVa9c1ETSld59MH32VxAlWYNgoMLIF7N
-         7NSZ1SID3SSfajl4BYPcXgVu8iuBQNmagm7RXDxai+4Tdzv30RjUZhDhyCCaTX7h0q69
-         DwAwXlm8Zl8NU21W0pqvJLmdd28/xjw38JL3FrEwF1TAx+6S8xokE38FSvKYT3HMUslI
-         Ci6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVk6Khhp3D3BYBXzq+NxYTP3BD6CKEHJQcdxspR/5G0CuzgDDlTS1bjcafe1NVIKB6JQgsCMPbXOA==@kvack.org
-X-Gm-Message-State: AOJu0YxPFxcx1eNAS60P0E0HdwNnWumvD905uAwv35u8G3MEZSva7UYm
-	5ZkMm+0G/OCbAPEKVAZi2Uva/jb2q6t3Y7ph3B1qqrb1C8fPMWgT2eTPCgtcBY8HME0=
-X-Gm-Gg: ATEYQzwv9PaZPjtmKhQABkzs5E4v087sgb/b/PXv8X8nRI1KB9UBvrKOpZBoJz7WBOo
-	pQqy1M0lcV2FLx0i2YdbazsnS8JUif1DV8RaBdJ/NYdxRaQ4p5hfaPIA+kHhNuXZKbSn+E+DQQX
-	2fqPY0Os44ttkPtQv5UpjyqqpIViElec3OVlhFDF1zw8Cb+mgK+9uOiaQvC/Mb645IjiDytxd0W
-	0QHafP+/c0QZUpOHXDqNqP8f5XQGzqbyQuP+G77TPu21x6vhJ+2V1h1KshW2htfSa0kAO/r7XBK
-	7YqwCANtrb7lkiuW56DwWx8tb6IZ7qqtN6cniAV2P+APfY0unr+yPATl8puNhW0D6Pi7iDF4sZ6
-	i6wuqW9VovBdFKMzKnHM5te5GNF+NIQ4y6yI9zQa6PJSywD+oz5WAMuEkyFryFMr+5e6lZ8Je1x
-	B/ZI7DKyi5YmV/CfdwnNARAvjfh0AQ6QCJX/fjTK6Mxd6FtS2i3YO29aGkptgCd6RQ/DvpwFu7r
-	FTyQuT8VW2uU1mDeHwkJDe3MbIKLJSSWv3n1bygaMqQFDyk3A==
-X-Received: by 2002:a53:b451:0:b0:64e:7d41:29a6 with SMTP id 956f58d0204a3-64e9172c834mr2927143d50.78.1773843425032;
-        Wed, 18 Mar 2026 07:17:05 -0700 (PDT)
-Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64e91be0e91sm1672028d50.15.2026.03.18.07.17.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 07:17:04 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: rppt@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	pasha.tatashin@soleen.com,
-	dmatlack@google.com,
-	pratyush@kernel.org
-Subject: [PATCH v2 8/8] liveupdate: Make unregister functions return void
-Date: Wed, 18 Mar 2026 10:16:46 -0400
-Message-ID: <20260318141637.1870220-18-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-In-Reply-To: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
-References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4047; i=pasha.tatashin@soleen.com;
- h=from:subject; bh=iQJqefJr/CoUSt54uwlSGDn/SfrrD/dJQLTwLis101Q=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBpurPQ01nnBZVHBvgS5KZW9wUgfyP0EgxeiXQoQ
- Aio6skXjrSJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCabqz0AAKCRC7dyhM23N6
- 3qYdEADIX8djMB8QpL7SqEjHbjgNU4y6AHtYiJSRuvwaqKvRH9B/uTysQ9JuByNUn+QCH+u9yOI
- uAgpflNxMb3xxezKl/4CjMyqMwjxcIhdw3kAY4O5GoJsMHpCDtqVfHLPJ+CH31h1hH50Il0NKGV
- AcT3X53LUz0Zlv7nXC0/5pB+mkR0KSLbtrCLMs1NNl3RqJ43a+2jtRq2+uYnqakButu+3GcdBx7
- MjogkEWuhtHzgYCI0sa8gq8AdUFMxf8Ng62w6E6DGlaSOm8h+V0xKlV9ZczAeQ3oK7eis2RdYuA
- Y/zb58JqMTHw7jILMxq8Q8kUiv/5AI3SS/jLuyE7eDwUz3s627zXDITXdBOkkW6QcyxFNlFMu56
- jQVigdcJm/8S8w9d/3ghjQ8Jr7QuhlG3SptT8J9QG4Wld5Zi13Gcd1keHjw9Tp5QDzVk2yfHMOc
- a//f0+R9F4VJshhpzAlFiJzVpb7GE/gCxB37WyLq+/av7UqWlRICO4o9J9TTcUujty4N4LekaS9
- VtluW/IkW4XIviSrynpY4KxRWo4kiBocTX+d+SlK/sj6nKUhG4KW7IrTg7V3uK9XO5x3lD4AR6Y
- EJfxB9ZuNiX7eruEQWckstsGNqwrh+d11lM+YPWBix0OTifxDCn3iO/m4PENWX3FBhfYWa+qOAy IrUAF+aiUQjauCQ==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp; fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+	bh=2pQ8WV0OTiy/Tj6Y9TgrJEoPswM7uGxkcxVvmTW9DUk=;
+	b=Cc9TiqQYUb31yE5o+QT6XHiI6uTb8Bs+BP17gfcrNXwRj2wgCTwN3AdMcCXhNhQQNtx5tt
+	xvBIcnr8Bsl/yOrTEcuSz7EKHD4chHIT0gpsajY9nh7yoN63Wme4+8r6tRmsAYVu47sub/
+	269Cnnw5bvKuHdxro6Px4eLoS6cdsCE=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BSh7bxIM;
+	spf=pass (imf13.hostedemail.com: domain of shivankg@amd.com designates 52.101.43.41 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773844173; a=rsa-sha256;
+	cv=pass;
+	b=lD59lxDEM4UZ9uEE1mbi3FeiW0vlzyvIfeTZjCBv7yuuaIdGtl7DeV39UA+lGtWGi2x4oP
+	CoRNv+u22AddEcyE3d8tKFTOMRP/mhSmkoEKl0tVP6qero03jwWVbGll8WszdBYiA2RG1i
+	6wdR/AB+HGdV1ZqfUqiVsDpJo34YZP4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bc1TgSZCQz2Jh9+XVoWxOOa/dQRaOdid+02VQffVD8449bu10XtSeVspw2ct9Rf7ezCf0sSpJ6H2froF2O+3Zwg0yW/ZWYDvb7UxiB1YLKR4fYsWQCahp4D9Cxs1J/yT3BIU0rtnhnhXaa7hSfzqQkQvSyarFwwB/XF1sVrPhOxjn1RvHsXOSmNFESga1jD+ycgGj2YolLD/lu1SNTQjPKt1IzZOqJUd2aDqWyc4jb4TearS2pubFZszOdSrkhfUD9o/cmM9fnHS2wrvSavaCjIa3lx/Asw1U/hK/V8fR/I0MNPzizyD8zmJ1+y9gLPkJyfWGUmn7mmJrb12IoIhmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2pQ8WV0OTiy/Tj6Y9TgrJEoPswM7uGxkcxVvmTW9DUk=;
+ b=xslg3PRd/lWIUOyI6bb4LcWZfp5jZu+uEyKOkIlt3mb/T89RaT4pTa4VZQ72YPMsK20235G3WU1w9u2ovYL6etKDyZ3JTScA6HRw6TK4JVjCjwpoNf+6hgTv0wyoNFxxo6UEyfiGidHPDe7YQiBmlylLoek0EvkxInfwXZTABbLeD3yAX5zK6lc5eDDW/vJIUW9xgsR3ovnySxGfyR3f1PB4tjc+3AsWQM4KXvNC4gkormnc4oKqv/YvMzXfSIl0hQ6lWMA97OwN6FfcKJIjC0vGttQ05g8QDNi4esA4YrzHgfW+4wnMrF1Dq8x5GZ808oi+bYUf0zadWKO0AUiRMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2pQ8WV0OTiy/Tj6Y9TgrJEoPswM7uGxkcxVvmTW9DUk=;
+ b=BSh7bxIMfNaI5vwqT6BGibM53YmOWkXe3e1RLn24+74BFo5Q1enAQ9m7M0l0wVk6SQBksZlREov6MculDHi7GhrSig/LmVbjNZdGPI6H7xrQAKkAzrdtl3HckJu+p++vloi1EwpMyphiy2BCsC1iXjvf4HL6L5mEn+TmRrZSSoc=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by CH1PR12MB9672.namprd12.prod.outlook.com (2603:10b6:610:2b0::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 14:29:24 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%3]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 14:29:24 +0000
+Message-ID: <a69f463c-0ee3-492c-8505-710d757a1f21@amd.com>
+Date: Wed, 18 Mar 2026 19:59:07 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 0/6] Accelerate page migration with batch copying
+ and hardware offload
+To: akpm@linux-foundation.org, david@kernel.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ willy@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, dave@stgolabs.net,
+ Jonathan.Cameron@huawei.com, rkodsara@amd.com, vkoul@kernel.org,
+ bharata@amd.com, sj@kernel.org, weixugc@google.com,
+ dan.j.williams@intel.com, rientjes@google.com, xuezhengchu@huawei.com,
+ yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
+ jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
+ shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
+ nifan.cxl@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260309120725.308854-3-shivankg@amd.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20260309120725.308854-3-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 29379100010
-X-Stat-Signature: dienyf8ss5rdxtzmdn5msmw141h4d3k6
+X-ClientProxiedBy: BM1P287CA0023.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:b00:40::28) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|CH1PR12MB9672:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76cb3e95-4ab6-432a-baeb-08de84fac070
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	I42mTN7NXqSKI8umw+srM9GdN9rzKaFlqQH703xrVIAUFKl7nln9r8Z4qWrUCyJkvNTSlSjwfShCzplkoQbU6N1QCrHD/NhnN9Qtek9pncDgbDY4v3TYi7LKJTI33NDT/Kc3ISEdEDYItcpTRiH9ysFs/4cLMgpH/2ZpAqgj3fPUqK25251XO4SrfeA6f/LkJjHOcxKjzu9Q+2nAFyIaiToPUxCnlHg4xn6qm6XaLSugHr6UnXzlTf81+oe2aC+AVrK6qVT+A9p0SJuHwiB7DR62HADAuRQVXGySRHbOEibJLqFb9kMpp1E/koXl/5qbMNLegyoyyPc9YpXzy1/eWt9wrKOtKsJZddSVL70AGOM5m7OY5bbOMd3uMRQVLA6c4xVqOLrdVf5J7ILeWqcEQC7ClhOMesys7r+EUlpA2vmjLSOHM/k7x8refk9AY1W4SZRg4+2mTdKJ+zXqMnPS0JedS5lJYG+zg8++FGHfPnBdsa4f3Ej33dp5TK0tBgkkNkY3vYWjvjijrqnMwetE/pB1x4CpWo07Dy55cTwPrC94KwUI89Yf0/S3uedu8rCvdnJg0hZ26y3LWZrLrq9lkP0TAl4JDkrqDbvISmcTsD/WpR2ADjaqrod/HmU0arYetQkOxeQlX/mnaj9LKsIdHfu1x5n1yW1JBqXb7Dfpi5d3TMzfNaif0znftLxP66XVaOD5jx+GuJnauBvChJboTNnrBg2n0yLVeErcqt2BhPY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WXhmUUxwQ3czR2tIbjFoSkRTbDVYQkYxZ0c2Zkp0UU1xV01yTk9TV2ZNdm9H?=
+ =?utf-8?B?QzdVMVFqQ0MvemFqM00wNHN0UWE5cjJGeVZ3QVVITkhIaXpZdzg3bjFRa2Zp?=
+ =?utf-8?B?Vm1lRHBlY1pvNytLa29IVGdHUXVZaHRQYmZ0NG1kdk0zSy9FQ1FrcjBtbUEy?=
+ =?utf-8?B?QVZEODkyZitQa0xVb2RQcVNWdEVlK3g1WkRpTE1BZmJZTng5em9MV09CRlFs?=
+ =?utf-8?B?aXJocERLNlljazdmVzFoSHZ3YitmbE1iWEhsQWg3THkvR0JCd3pqa2c1T1E1?=
+ =?utf-8?B?Zm9vK25sVEg2QzdJRHRsQTk5Z3dIelB1Tk0wbjdYSGlVbDYzb1hrWnlNaEMz?=
+ =?utf-8?B?MzN5TElGb0FQcUNnUHZMZlFiRlRLazFQUHJ4aTg4RG8vOFM1U3ZWS1RidmpV?=
+ =?utf-8?B?cVRsRGxqbzRzTVNLcG9veWFVRjJySmRCZWZ1d2JOWkk1Y0plQmFvM01NVWY4?=
+ =?utf-8?B?elI1dXRKQVNBcmkvd0tCSWVQWkpCWjF3QVNjRUd1KytIMlB0UzVQZXY5TUZX?=
+ =?utf-8?B?eFg1ajM2ckdUbSs0QjNackRzNVlWZW9iY2pURnBRMlFuSSs4bkNSN1dJZUpk?=
+ =?utf-8?B?bXUyV1YwcWFPMytsYWVMS3lobG9tV2JMOTZFc2lSMnFjeU9aYkk4cm9OeVNK?=
+ =?utf-8?B?SjhtN3dIclJFMEVNMDlySU1UVWZZd0RxZ21OdXZVbkxTajg5VFI0UlJEVnh3?=
+ =?utf-8?B?aXpRWXVSVkpIY2t0cUJEajlicnNYV2N2U1E4U2piTnFXYy96ZnZnbkZzSkpY?=
+ =?utf-8?B?MHhiNmxaTzRxMVpZOXlHYVBRMm1Zei96a3FuNkRJdlNrN3poVVNYc2JOWmly?=
+ =?utf-8?B?R1VUa0MyUzZ0WU5aUU1IZWVveUY2eGRDMWRWcDZlTndqUnR3S1Qwc1dyZXVk?=
+ =?utf-8?B?emp5eDlFYXVzdzNvN01nS3gxOVNhYjI4YTN6bWRxbjR5cmluOHI1eVp1NGpG?=
+ =?utf-8?B?ZlQyV0c2VGRtaE5CTDdyeXRidE1ROVJ3b1o0VXJ3VEExT0xTL3JobzBhYlRl?=
+ =?utf-8?B?VXhyRllCWWhLd0ZvZG1ZWnRoZkh5b2VZMmxZRUFscUlORkdJL0tNY0VhYzk0?=
+ =?utf-8?B?YzZwMFNvRytORTBpaWZFZGdyZTdiMGx2OVp2MXJTRmlUTkZIN1UzSkQ4STBS?=
+ =?utf-8?B?TGJjZGE5N3BRZ3B6WVN2QXl0ZUFDa2JpMmZVRFJhSXJ1MHI3aDdZOE9ybzFG?=
+ =?utf-8?B?dy9vbUhsVTRuYUVJeUxmMVhnaWF1V1dmTjhQdGQwQVZ0aUErU2hvR2FsMWRn?=
+ =?utf-8?B?WW85ck5PQzM4bENqeHlvcm9YU2dFRjFxQVk5UXRoYTlFTW4zeW1VL01DdG80?=
+ =?utf-8?B?L09hYmFaMlFOR1E0SGlpMkNka1JYMExkQXRpZTFEWE1SSUpXa2x1U09xc3ND?=
+ =?utf-8?B?aHBhSitjbW1rRjBKeGV4Y00vbm9xeXJya09mQm4rcWkwTnh6NDI5cDE4Vjc2?=
+ =?utf-8?B?OGNBUXJ5VEZqaXFDZG1HaXhmY3dMTi9DRW43bWtGVllMeStBbXMvcTA3elRH?=
+ =?utf-8?B?bWZ4a0x4T09uRTB5Uk9vd1Q0cnRDMTRvMlBJNGFwQ1pqOSt3dDY1aDVPTWtZ?=
+ =?utf-8?B?d2NwV205aEZuejROOHpaSk9zRjlQakNLeHdmK3lVWjNSVDJFakVDc1VNSTZI?=
+ =?utf-8?B?TEZBbGw5TFBNcE9BOEF2VEVTbktvdVdIYUxFUDVoUmZkOC9jTlhQWU4yZ0VC?=
+ =?utf-8?B?NW9OTTVZSzIrL09EY0tXa3JNd09mRy8rbVNyQk11RE9CMUh5WXZuT0t5NEpI?=
+ =?utf-8?B?UWlvOUg1Q1ZiQmxudDhWVng1OURSZTNaanhBYkZjVkxjS0tmbUwra2phbHVi?=
+ =?utf-8?B?NDVTVGxKNGYwbTAzMHlrQjlHSXpNb21pMEN4cVNYS2hLT0R3S2NIZzRoRHRq?=
+ =?utf-8?B?bkdTZjE4WnM0MzVXdzd1ZGJ4SnVCR25CeTdjR0xsWXRReGppUzZGeE9OTjJl?=
+ =?utf-8?B?b3ltbHFpZEwyNll1ZWJqcmVBc2czbWZkSlZmR1B2Nm1adnRWNFZlS0syUHI0?=
+ =?utf-8?B?TjNzOW5LYXZNU0x2bnpTSDhCQmVYeEFQNXJuVlZOQm03R3VCY3VseTZJU1Zj?=
+ =?utf-8?B?ejJkeThKNUQzMUNHK3VJOHZyY21JbnlhcFNhRnhTTGlRajZXdEFZcnVEaSs0?=
+ =?utf-8?B?Z1dlZzFnRjQ5S1Bvc0VEMHhpcW0rU0p3RkZuZmVJVDBRRGZxRE9URWpENmtx?=
+ =?utf-8?B?N2oyL1dBQ2NndWxzL1lWUFhaWHltS0pTTlFqZ3RWSG96dzdqUGUrYVlYQ3M0?=
+ =?utf-8?B?aGxSSkthTFFabkFtbWNUK2hRbXEycGwrQVRVNFV5Zy9LME1RRWxxV2x0a0pu?=
+ =?utf-8?B?UGY3ek9hTEc3SFBCVmtDWWVtSlZ3c3lONVZWSkhiQzMzMUFUMUh5dz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76cb3e95-4ab6-432a-baeb-08de84fac070
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 14:29:24.2243
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9wKp5eB4AQAJ/jpREUxIJ3cSpu+BnEn6SRhO4nVR0pYbVx2P7zPd6ERI0H/Vqz49NLiV4RbiaMRZsFDcEKXiig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9672
+X-Rspamd-Queue-Id: E79A320005
+X-Stat-Signature: sqy34nmjosegh7rt9ggdzo7sp54x3z74
 X-Rspam-User: 
-X-HE-Tag: 1773843426-818121
-X-HE-Meta: U2FsdGVkX19KQFMWRHK39g0/VCeuO7GakvlaVhw+E5uFr5pY9K2XmMzD4vy1/qSznfYvAsvfpgG2XqhcreFie8lU9dGvp88bBSgB+9E4F+LmhjIXIrxMKGvUxIzJhrPyFR3vLkVcuF0EvnDp9O5Kax28B6Q1Zq6jQWeRbENH0kq00juTAGmqexJDTZh8VQQUMhxJKvHNJVpGqacA+IhhrofU2uszg/a3e4P8k0O44ERGUva3CEL2esPIfGxF2zwmaldgUvl7+vwUd29qqy47BzK45JXfa8FEyl9Q5UzX5/BZPyBY8siEEyya5RmHPa49XtVgcuxNkpE1gT+bxsm73FlP1GNAdrTBjibmkULZLZiyJnG3HuhFVsuGB0xdGyyaGp0dINgapnNMnoaHrFEomiwiu1ULjkdCvKC16UphXuqc3lWfScCA4Q4eZi+nYHpIOtrkFbXxrNJNxxNO6XCMS2sha4Lxi/AT3j2TD4JuQR97/VDDxH2eqOZmU7Jvi418Y+vtP2acQEkPWJDrq5JA+4LxVEDv4kPNT48G5JrNNGTfw2bFxbQTDNi95OCSxh3rMF/zbaqRrwCJbsH6s7n6275Sr+ae+T7DHKh+bOjTjprwNG/XleVO0+BLsb//B4KuBpbojO9fIG71FIZwsvx/NEMNqT+ppVAn+sQ6ryHgrTzcvPPh130miUpe9p25yQN+w/WEfIhIJZg+6xhL4hfAYgx3osWn29c+L4CYZoh9qQsA/aGc3fAKTZQnIAWVD2TWKRWE+dseeRZQxOEotvKcv8lJPoM53y3GIjOLF4J/T439npmj0tfGO20UWfcblkat6nKL2brLXWLZsXdOxCKBR2mCVegaGvolt4W0jKLb0cyAxMyTyGBeR2fMsgAh6i9uxU1oqriwEIiOH/FS1FVbJvGBp9aDl845mxtkyOrEBn1OfOaGFBnAny3TRavLi7P7oRrby0g2hcWnsjkz75+
- 4dKLgnRX
- 9KW+dHIoRcOrrWsI/Xi2EdROl18oVGj7Zvp3D6+tHWMN9EQCHT7xS24WmRkInAdq+NPxpBRBQWHL1gZv0vrYA2nrZ8OVi4Niyx2ONJ6iRFNcVojy6rqOedCZ+V//bxarDR3X5OZ+TQxQJ8rQq3etcE1/aRDYFlL2JEow/V7nuoiy9KXCHcn8Tbbm9jDdHHKWWI/0VRhrzDlhR+WEF5k8T2E0lZtU/ocya3OE0KrkrAWb0n9yCg3v0Ncb8oMqVoLaJBpu5Nznbx05h9fP7jFI3NLt29qxtDlH/NN1I6tFwSFUwuFZKL8f4xWI8JYlUu2T2Yky159a3AMAZTRsRs8+sRfS1XDhe0FhVQxjH83vwmBL+tiI=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773844172-103274
+X-HE-Meta: U2FsdGVkX1/OkoKq2fWMwyEzdeYxJZC6ehSSvrmauonV3ifi3Tc9QSxr8YltO/SyrY6NR2CQ3PJx278LeUPaZlpn6/zw41Na7Wv/8PKTSstqlsWQF7u165qVV0X/9AaMKJtujeOecf73VQfj3lnAJcdqEmmPlHe4tkBvEXelCcpebm7eNxqNY8muplZoc0q+DXrZUAK1qW46nF2oHlPa6ItTvoQT/kyDnJ0kQrjmFQvwWFjwnGCrf4LSMs4pmX6iXisF6AGtaae0nXg7OZgkPTg87ccNDmFv2GoKmzr38WTwS8dOVJQhrbKRJ4OLpOaHvX2TZUmHIeO4Or0MZn/mfBLbP0lTUO8sma2F4FYZw+Un67qPZq6C9B3OXugE6m+m3V7kj0OqItAcnGam38DFbIHCpFKFd8RPHNkV2NBjOm9uvrxvek4vT00WVbvcbE5awrjbFT9JObfieaRXSdVdm3R8t0I9G86Q1bhqs0usLBnlA7eV7TI/eC/xpSpsBtu1eFzy6dk5Hfz7K7aUzbIDkxDmA9p1ivdiv+07Hk/mLjBgsBLhtRLCgYsAZWAhCQSzHDlwgBwVSGRVgo4vD1MAPdb9ZuFUe215rp8BVGm25yctnwYH3Ecfcuetp4OgqAol4K+oK12EjQ1Wb6Rg4iTv/rhPLg4Dz0bcawnMao9fS1oJLtdKl6Dzj0EcYXkyXBpmXFJl+k4T+3JgmmoudSREk4OJSHb/LHmYdgTAnwOJNKYlMSDrmep6yFoA3vhFbRdLbSgL1+MX5Bg62O7rPTGDyE0v+p/uUEuig2ldHgLtHXVJOkCTRNBOQQqhlSU4lEAyBZKzLLiwxdItmLYjgB5Zv8SKhmXP6cyBQ/YNrjvL2FstbE1TgGy85MAeUTjbGA+vxLKKrll/KPcfZtWKnS9I9e5kkE/EP2oAoay6ub68f5GHBA5/IkFzIK7TqvNZAbfUKBUNsON0vUE7w8p5ZT/
+ RFl8GptX
+ 7lTLWWzuxXsc59TbhjPISodMCjfXrgSjt4lCvx40APiZqRXQlwK44tpYG5lzM2EYH/n+HcltOnZhvgcUjy+IyZU2Q5XGZlzkgSXkB6ZixlXd4DdsrFmDUfRKcMSK0p9VHiM5SitXq62KWtuQLxh/F86oGArihophKAzQP3obzChj5lSAI9+i2nesyClJKmX627X39aOnpaYMitmT4j89a4dEJ+V8QO+S/co9RWGlnOHhi2Ydreblteo47pxKbGWzLQzgQw9wlTBGpwRfWMiB/BGOm2K7g0WGetUwTpSlJw/rB5oWm8yAKSiLX/s+wFELDygA9jZQ6zDGHn/dhmyHzkhbmnb8WMHkhNx2MktGX8whw49hTlTpoVOFdROM3zlp5zPwYj0Q54LzS91eZRZrgQzIvJ6kw0xDaEour0OtjziJy1ap1B7rZ9VP1+qiD8PwK9YteUj2e9zeRq1k5J79T5Y6V1CYVmM5fhfssnyMrX4sorSv0LMg4UQEuWJnBzwR7BFyp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,111 +180,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Change liveupdate_unregister_file_handler and liveupdate_unregister_flb
-to return void instead of an error code. This follows the design
-principle that unregistration during module unload should not fail,
-as the unload cannot be stopped at that point.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- include/linux/liveupdate.h   | 14 ++++++--------
- kernel/liveupdate/luo_file.c |  6 ++----
- kernel/liveupdate/luo_flb.c  |  8 +++-----
- 3 files changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index 8394fb2d8774..636175432d62 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -231,12 +231,12 @@ bool liveupdate_enabled(void);
- int liveupdate_reboot(void);
- 
- int liveupdate_register_file_handler(struct liveupdate_file_handler *fh);
--int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh);
-+void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh);
- 
- int liveupdate_register_flb(struct liveupdate_file_handler *fh,
- 			    struct liveupdate_flb *flb);
--int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
--			      struct liveupdate_flb *flb);
-+void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-+			       struct liveupdate_flb *flb);
- 
- int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp);
- int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
-@@ -258,9 +258,8 @@ static inline int liveupdate_register_file_handler(struct liveupdate_file_handle
- 	return -EOPNOTSUPP;
- }
- 
--static inline int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
-+static inline void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
- {
--	return -EOPNOTSUPP;
- }
- 
- static inline int liveupdate_register_flb(struct liveupdate_file_handler *fh,
-@@ -269,10 +268,9 @@ static inline int liveupdate_register_flb(struct liveupdate_file_handler *fh,
- 	return -EOPNOTSUPP;
- }
- 
--static inline int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
--					    struct liveupdate_flb *flb)
-+static inline void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-+					     struct liveupdate_flb *flb)
- {
--	return -EOPNOTSUPP;
- }
- 
- static inline int liveupdate_flb_get_incoming(struct liveupdate_flb *flb,
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index c9c26015020b..a38ea4975824 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -874,15 +874,13 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
-  * Unregisters the file handler from the liveupdate core. This function
-  * reverses the operations of liveupdate_register_file_handler().
-  */
--int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
-+void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
- {
- 	if (!liveupdate_enabled())
--		return -EOPNOTSUPP;
-+		return;
- 
- 	scoped_guard(rwsem_write, &luo_file_handler_lock) {
- 		luo_flb_unregister_all(fh);
- 		list_del(&ACCESS_PRIVATE(fh, list));
- 	}
--
--	return 0;
- }
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index 5b61c0844a49..874830f8e44d 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -476,18 +476,16 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
-  * owner module (acquired during registration) is released.
-  *
-  */
--int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
--			      struct liveupdate_flb *flb)
-+void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-+			       struct liveupdate_flb *flb)
- {
- 	if (!liveupdate_enabled())
--		return -EOPNOTSUPP;
-+		return;
- 
- 	guard(rwsem_write)(&luo_flb_lock);
- 	guard(rwsem_write)(&ACCESS_PRIVATE(fh, flb_lock));
- 
- 	luo_flb_unregister_one(fh, flb);
--
--	return 0;
- }
- 
- /**
--- 
-2.53.0.851.ga537e3e6e9-goog
+On 3/9/2026 5:37 PM, Shivank Garg wrote:
+> This is the fourth RFC of the patchset to enhance page migration by
+> batching folio-copy operations and enabling acceleration via DMA offload.
+> 
+> Single-threaded, folio-by-folio copying bottlenecks page migration in
+> modern systems with deep memory hierarchies, especially for large folios
+> where copy overhead dominates, leaving significant hardware potential
+> untapped.
+> 
+> By batching the copy phase, we create an opportunity for hardware
+> acceleration. This series builds the framework and provides a DMA
+> offload driver (dcbm) as a reference implementation, targeting bulk
+> migration workloads where offloading the copy improves throughput
+> and latency while freeing the CPU cycles.
+> 
 
+[snip]
+
+> System Info: AMD Zen 3 EPYC server (2-sockets, 32 cores, SMT Enabled),
+> 1 NUMA node per socket, v7.0-rc2, DVFS set to Performance, PTDMA hardware.
+
+> 
+> a. Baseline (vanilla kernel: v7.0-rc2, single-threaded, serial folio_copy):
+> 
+> ============================================================================================
+>        | 4K          | 16K         | 64K         | 256K        | 1M           | 2M         |
+> ============================================================================================
+>        |3.55±0.19    | 5.66±0.30   | 6.16±0.09   | 7.12±0.83   | 6.93±0.09   | 10.88±0.19  |
+> 
+> b. DMA offload (Patched Kernel, dcbm driver, N DMA channels):
+> 
+> ============================================================================================
+> Channel Cnt| 4K      | 16K         | 64K         | 256K        | 1M          | 2M          |
+> ============================================================================================
+> 1      | 2.63±0.26   | 2.92±0.09   |  3.16±0.13  |  4.75±0.70  |  7.38±0.18  | 12.64±0.07  |
+> 2      | 3.20±0.12   | 4.68±0.17   |  5.16±0.36  |  7.42±1.00  |  8.05±0.05  | 14.40±0.10  |
+> 4      | 3.78±0.16   | 6.45±0.06   |  7.36±0.18  |  9.70±0.11  | 11.68±2.37  | 27.16±0.20  |
+> 8      | 4.32±0.24   | 8.20±0.45   |  9.45±0.26  | 12.99±2.87  | 13.18±0.08  | 46.17±0.67  |
+> 12     | 4.35±0.16   | 8.80±0.09   | 11.65±2.71  | 15.46±4.95  | 14.69±4.10  | 60.89±0.68  |
+> 16     | 4.40±0.19   | 9.25±0.13   | 11.02±0.26  | 13.56±0.15  | 18.04±7.11  | 66.86±0.81  |
+
+I ran experiments to evaluate DMA offload for Memory Compaction page migration (on above system)
+
+Each NUMA ~250GB per node. I bind everything to Node 1 (CPU 32) and keep background MM daemons disabled.
+
+The experiment has two phases: Fragmentation and Compaction(/migration)
+
+1. Memory Fragmentation
+
+I allocate ~248GB of anonymous memory on Node 1 and touch every page to
+ensure physical backing. Then, for each 2MB-aligned region (512
+contiguous 4KB pages), I free 50% of pages at evenly-spaced offsets using
+MADV_DONTNEED. The freed pages return to the buddy allocator, but the
+remaining 256 occupied pages in each region prevent merging into higher
+order blocks.
+
+After this, Node 1 is 100% fragmented with 50% free memory means every
+hugepage allocation requires compaction.
+
+[ ] [X] [ ] [X] [ ] [X] [ ] [X] [ ] [X] [ ] [X] ...
+
+The fragmenter process stays alive throughout the measurement, with
+oom_score_adj=-1000 to prevent the OOM killer from targeting it.
+
+
+2. Compaction Trigger
+
+To benchmark compaction in a reproducible way, I use a kernel module that
+calls alloc_pages_node() in a tight loop for the target node. Each
+allocation enters the slow path:
+__alloc_pages_slowpath() -> try_to_compact_pages() -> compact_zone() -> migrate_pages(),
+performing page migration under MR_COMPACTION. The allocation is pinned
+to CPU 32 on Node 1.
+
+Target: Allocate **16384** order-9 pages (32GB), producing ~4.5 million
+4KB page migrations per run.
+
+
+3. CPU Contention (Busy System)
+
+To emulate a real-world scenario for busy-system, I run a cpu hogging
+process on the same CPU as compaction:
+
+while (run) { counter++; __asm__ volatile("" : "+r"(counter)); }
+
+Both compaction and the hog are pinned to CPU 32, so they compete for the
+same core, emulating a real-world scenario where compaction shares CPU
+time with application workloads.
+
+
+I measure the following metrics:
+1. Wall time: elapsed time for all hugepage allocations
+2. Pages migrated: delta of /proc/vmstat counters (pgmigrate_success)
+3. DMA copies: DCBM sysfs counter (folios_migrated)
+4. /proc/stat for the pinned CPU — user%, sys%, idle% during the run
+5. Hog iterations (busy modes): total loop count of the CPU-hog process
+
+
+Experiment Results:
+
+I run four configurations on fresh reboot to avoid buddy allocator
+state degradation between runs:
+
+Baseline (vanilla kernel) and DMA (migration offload enabled),
+Each on an idle and a busy system.
+
+  Mode            Wall time(ms)  Migrated   DMA_Copy  Hog_Iters    User%     Sys%    Idle%
+  --------------------------------------------------------------------------------------------
+1 baseline         16708         4563506          -      -          0.00%   99.40%    0.29%
+2 dma              18887         4622952    4623181      -          0.00%   76.65%   22.55%
+3 busy-baseline    33256         4599846          -   62300165085  49.90%   49.75%    0.06%
+4 busy-dma         32475         4602750    4604672   66022189744  56.32%   42.97%    0.06%
+
+
+Inference:
+
+1. On an idle system, wall time increases with DMA (~13%) because the
+current compaction batch size (COMPACT_CLUSTER_MAX = 32 pages) is
+too small for DMA to amortize its setup cost. However, kernel sys%
+drops from 99.4% to 76.7%, freeing 22.5% of CPU time.
+
+2. On a busy system, wall time decreases slightly (~2.3%) and the hog
+process accumulates 6% more iterations with DMA offload. The CPU
+time freed during DMA transfers goes directly to the competing
+userspace workload.
+This shows that DMA offload for compaction benefits busy system with
+high fragmentation.
+
+
+Note:
+Tuning the compaction algorithm for larger DMA batches and using DMA
+hardware optimized for small-size transfers should improve the results
+further.
+
+
+Thanks,
+Shivank
 
