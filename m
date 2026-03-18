@@ -4,96 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EFF0FCD0CC
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3258FCD0CE
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E3FC6B0115; Wed, 18 Mar 2026 03:58:48 -0400 (EDT)
+	id 4FDB86B0117; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5952D6B0117; Wed, 18 Mar 2026 03:58:48 -0400 (EDT)
+	id 4D4F16B0119; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA566B0118; Wed, 18 Mar 2026 03:58:48 -0400 (EDT)
+	id 3EA526B011A; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 38EC16B0115
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:58:48 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA9AD140612
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:58:47 +0000 (UTC)
-X-FDA: 84558432294.08.4FBA373
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3D2A718000D
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:58:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g4UgzqYJ;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773820726;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D6B16B0117
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C478F8BFFE
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:00:54 +0000 (UTC)
+X-FDA: 84558437628.18.6C2934E
+Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 58107A000E
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:00:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=MpZeDk72;
+	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773820852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wC7UO73KH72YNre22MCS31L2BBAxLoXqRKQRwydJYVY=;
-	b=td6pGOqgn9iXDEF+7WZ5KmjGBKyeYHejCTyn3gjNLr6D3Umdnx5TePPZS4ANdRspPRyEgx
-	PhecJEG6lcd5lIn5jr/Nw+lMzZ9Rh+4GTKtR8D1FTCqGNOYwsAxFJc9kqVKT23QBVlB+EG
-	xy/qJJpQO9I6WSMJv+ASet2o/I7sriM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g4UgzqYJ;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773820726; a=rsa-sha256;
-	cv=none;
-	b=4q48fnCehmBXxud1fQrgTO5KsikWIZFprn8zRj5gzDazu6pKKEpR5YJkhmrnN8q/7NuQis
-	U26QByONKM2QcOLm8SfN3y9m+9YqzzczKPAWYPoRM6qgWLc48UN5XxmApImzMHLfVP238I
-	sxqRdGoSWFB1seCsVtwsewjMe0+mhwM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E30560131;
-	Wed, 18 Mar 2026 07:58:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5681C19421;
-	Wed, 18 Mar 2026 07:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773820725;
-	bh=TSz9o5tvOTZ2cq3b3ru2k7TcaEErBWRbUWWJKKC2YWI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g4UgzqYJCE+HF+LMkXzFA+nazQ678pnyMe9kot/PdZix3yF54zqQdRYZYbdnCHxHP
-	 iC54hPjuOjwVn8q5/7EPGqd49/GeYZJB3GaKW9KFjaK1sCYLesYMhla+cRMOUUMZqt
-	 9LxzG7uG/i67y9x6zfzs8TCWu+g2YfxD3A79sTQGlO54yGSDa7YwwiL5udcvdggDLq
-	 wFZRJlGmlKZNArvHlQoxb5dX/AY6JES+5QN3y/Wns35IV9uGc3oI+1wkqdnuWVowkl
-	 E3Fsi8iaEWNVeIk1SloYX05eWi0cM5B4Oe4lPytbtcZzhD0/Vtn9EZDdQjWv71jR8B
-	 NcBWkAG56+P0g==
-Date: Wed, 18 Mar 2026 09:58:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 05/14] mm/sparse: remove !CONFIG_SPARSEMEM_VMEMMAP
- leftovers for CONFIG_MEMORY_HOTPLUG
-Message-ID: <abpbLRegIPqAuvJU@kernel.org>
-References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-6-david@kernel.org>
+	bh=UilG0Kn2TFWgSp6woEE/NFCFkjSyupPzRMtqI4OVI+o=;
+	b=RBewk2vC+yUtMLN3xgH6Iu1UJcbGX8ySFgcO4F14SL+qm1eYpM8XbZZnVTEIOR6MwkL53I
+	DlE07VuF1Ouywl5bV2bfDDYVNCKcZirej6Ag6RZvPEwWinHNmJ2a7jZ+B/jF5eAP88yr+0
+	BqnIgbaNwPqDFiBwz523J47Aq3Rx4bY=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=MpZeDk72;
+	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773820852; a=rsa-sha256;
+	cv=pass;
+	b=xJViFV1icsUIE0aE2buZdT5J6wiRO/e4TkEDWv4nOq1bQQ5RiOiHhTxI8pka4oowkPFOiU
+	9C+h6vhW/SOu7hdskHSUmTJRS8l4a2LjCKjFKKnf//ASdXjD3zfomcne6yIxvKgzGwKxpu
+	owo/qVajzHEnJUfUz/7pkS0rf6J+jGc=
+ARC-Seal: i=1; a=rsa-sha256; t=1773820828; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=Gcbb3/Y4mEkkVBR3KM0WlKeL5ASrDa3jklumh2rQTQy7QljFqKzERPVKyb6HThWUwmfoFeDxzlMzgAK/58AOGDqS9nOtSnFO8xFSTcdgDiRE53cyHE5YfRXWix6RkID3vDgDDe3ZFzAmU/fyx5AN4ifq+BQsRivihs3Bq+13z/4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1773820828; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=UilG0Kn2TFWgSp6woEE/NFCFkjSyupPzRMtqI4OVI+o=; 
+	b=Ig+2GioJGYxd+ymcQ61lFp+vungCH9zSx1izOpluq047/xToRvnHEwfqLLZhULGRVmUqNqqIa+yeshdENOePtIGN3EkkDChz1OVTuiJMf5hcxcVQkYAb4rnRV/dhjn3v7bKI11AAOH9UJqyClvOuH4bFEtxYK/RQOfHO8nep50M=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773820828;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=UilG0Kn2TFWgSp6woEE/NFCFkjSyupPzRMtqI4OVI+o=;
+	b=MpZeDk72634c3zdO6D0kHCnz92VeBMnYvccedA/J979TbgAo6sFmT16IPtenLc2w
+	HCbah641wDv15XFrELC48zc/Gki06SH7MxyYmLePjPXTIZ9WtSXoL1QaqWWPC1fkcd1
+	hONG7V8yZnc/q3DATA+cdfKoN6OdJnd1zG6t7ib4=
+Received: by mx.zoho.in with SMTPS id 1773820826456999.2247798495597;
+	Wed, 18 Mar 2026 13:30:26 +0530 (IST)
+Message-ID: <bda928ed-6268-4b50-9fdc-64c09b3c8310@zohomail.in>
+Date: Wed, 18 Mar 2026 13:30:22 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-6-david@kernel.org>
-X-Stat-Signature: catm7x7h5cnrpi6fhf6xwfcikeapu6bn
-X-Rspamd-Server: rspam09
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/3] mm/vmalloc: free unused pages on vrealloc() shrink
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
+ <20260317141151.6ef2a2bedb74fcaf2883c0ed@linux-foundation.org>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <20260317141151.6ef2a2bedb74fcaf2883c0ed@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 58107A000E
+X-Stat-Signature: bxmo9u1p7p6dduaw1krwdoxiq5zbht1s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D2A718000D
-X-HE-Tag: 1773820725-733272
-X-HE-Meta: U2FsdGVkX19UfxTxmzKe5NbB0/KldMZiVeFku0LFvCG7GvTX1sguc0b3yjSVulRTSCzy0jfQ2yA+HbmM+EwH4j3S+wrBuCVH+kYZa8093/aP0U33wzNU8nCBjA8u38mLSHkCND4sFSpL65CyDf8bRtCdDwosBzFerI4Z4zPHRyFuH5VRKXKJICsfgXoAQZe6ODJ7pQcyKglVbtOHwygxU1DVt/Z9ypjZZy4Q6alEoniy1BPm2G1qx/OfRcL51fjFCoNNjDMFyawLtOb/tC2AfXM9vJxv4SK/z3J5Xv89civHirK4G1taufTEhmZprCHItDaBu/9TZITlAjAh26jU1Rsi8pAjZaMTHRd9JTwfLnoBbQpRC7jVHuiyr1ktVZzGaZRg6CFxRSKOrVhmA18owrJ3hrYsSOCFh9fXqHIDY2TWpPKhAmFGLzwrKJsO+RlxkiYpsGT7AFJsYqT+hc41ShgIZt4knN2X/IP+U8zoHiu5TjRk/PRPr3ws+yO0dX9B3ol7IPGnjNtZ+snEtb1pr3LoJ/bAR0kplMxCC9IH6l9kBo7hoNqHqJCm0c60kaHYU43Pn/TQzRr0GIbgw/CV6n61hNDMdiPNgBLjRIh0tYGIpKTHvBZnBN+8q4Q/j8TnXfTqDdmKe3xBfn4FvmiPjCeiPNxaFNq0so5SQir03xEOMUao0IzeVZ7cLAU1gI8eOee47DF+9NDICC+7bfDWHanCPJNZXoqE+JM8AFWKD5ffSTSNMzJac7VFhKY5ZvXgYHWpYAeCwcgy2gOID6vrASp16D6KrwsICEA4vEsftZNj0l59EftwIYAhlQ89AXdbupAAVq9gyFvp6aOfHH1oTMT7oadyCgJ4ypyaRqm7LZA9H7jwUIHFEwAJApljz5jmX8BbKY0cEFy8sxfckc/ksuEkD1g20y/jDmyWeCHNyZwem2oEKBmWPQdrQHGc/CDOU+LFf8+WvAZPDVSoGmy
- Ub4dsM6K
- IkK4sV+WBzPs4fNUlHvqPw54Sy1fcOl4V/+lWlHrwGYN8D+T9C862cQIHVZS91hdMT1/F2WMehNvSC4xMCJXkbOk4OldVpKf2PuE/aJMvc654r93tPOqcN5UwZLIMswSZPBtLq/1xlKtc77NO0F3TPc4614HnuRYU9wEpuuTlGqHShexlLvq/M4o+kK+c8R/G1i2GtVNL0RDAuKpB+8NULex0GKsGQSTMUd/f/35BRoSSUh94gSWzIJxEuh6u+1WINqVkw8vRkg4tC+6RdSyGabK32kqIgNGeb+r+BMSf3k6f6h9hYGZeScwxkZTiTetZTMJ6p8dgpeKTClgESBPpDUeSEphv1j6/tG9eNoTtQUPVdoFEFBpfZOtjwQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773820851-295423
+X-HE-Meta: U2FsdGVkX1/B8mUV6Pb2pwo+UTmcBnVUAkGg9Cll9n0GGgjrLG0ArbFiD2rzlwh7bI/YrUHoH4+FdENcx+fCVt7OCwkUzxilwUu/tLrEw55Hc6ssPqf/Lb2cbNS5v7sHpEsquCP2S++NoYE+p3o6gi2dlYckbEupSHZS8SFxnoVIw7hUnYjAI2As2Rl6H1vCYhmsUrjhtMY+Jjc2VN526WP7Qf2WamRQHegE70jVJMAUDjv52S+O+b/IMdFHdBWEeUde/ImCpvSZ9oRYk8UhJ5OecfLbd9IpQZFZRGQug+sY+6UCYWGE29EQUQE2rGIBTcDNdv1zOkPi35rLaNYPHdHEqH1lVAGqPF0tS6Z1oYZ0k4Qh67CPCJPwlzWU/67uart2FP8mbEX8N+mIJiPVvTVHTxqGW4nt5xX9r4IQYl9zCvaIIU0BHKiNcr2i4yhzYiKm0lDn1ks5VGaqjOlPQ3J8pIYv2zStCeHQzUv/xhWGtqF3BuEKnRWFN0+UECIPwbbtABSWPi03g49z/UaqgaARpepuPXtZ3/NEgbFTLfX1y1hCCPmOOG8i6XKhJCkglXJyFmCOag6cmYmISWuCCFXNFoV1ZcH73mo7UXWFp87M+S+SViuk6Df7rXMH6GyHiYFKK/BH6nKzGANQvlhGPAla7wk2GEcOZlYH5vyaBC9GAz5xLBFKP9VojD6lLj57SY3aSdahHeAT9kBzph4ezvXl1e0BT6bfYT0Jq865Ql0rQ5Rym548viDiBcaDVqWm/gF17O/j/8gzZeKfc6FI89cfVwNb+JM3tbuVGZLo6ImxTitdKMqvMHXpMReIs4vxcD+BAme46S27C3WtXKbbXXgR1Ag7nQcnLV5dIQEXDaA3xhcud7TK1pJlwHHIhL4cEShxoQTf7tP/qUt1/xLYdDUbtiC0v9Vqu4PpxWvrPg/xT5i4PxAdgI3dnIOhBf0DFyzC4VJuHjRktfh2QDe
+ 30eXNZlF
+ 5exns24SKuTKixSf3O3AHAg+4BA9GtKvuiTDu3lcNxiEdMqZQR0lHv9yQJSPneBsbbsBmLufNruqb5M+63h7QgsATcoiCdSU1lz708m3q9h4+NJvmIDFdhw2yexORbjAEkg0FXlL73zZbq/4z+fQPTEo99jYbCsF4dqY8sV4Tvwx7mo1Ui2lLGYSwT1VWIVh7qehU9ZVRWkdcnR/Pa01xDGUcbRKHM4Lv7h8fn1O6k+DtqQSdHh+7pxpSWPgyaApTgmaOE1uusMNqE9lffu/zurEI/KdYWJagqL+uRwc2AJYPfvbcb1FMGbiV4cAUcvr4hPlDg4rWFu93wj/c1r3cxj8iUyIm2DFmS3FYc63VdHZ2OlO7zuIqA8NReU/al08wY6O+J3OYd5KQLU5fmMt6ngFLcfyT/9KW8h+DrZdfaLTc6fZPro7V8/ZIw5uaD25AxNGUGJAwSh7sZwjrZKM5tHd7sQKg53QOydl6lGRTOp1mhjYgMXdaeZ+8LKue7B3zEN93RGxo9Og9ucmUYGq1MUyy8WkZZfOzEYI2N8Huzxuwp4E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,24 +104,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:43PM +0100, David Hildenbrand (Arm) wrote:
-> CONFIG_MEMORY_HOTPLUG now depends on CONFIG_SPARSEMEM_SPARSEMEM. So
-
-                                      ^ typo: CONFIG_SPARSEMEM_VMEMMAP
-
-> let's remove the !CONFIG_SPARSEMEM_VMEMMAP leftovers.
+On 18/03/26 02:41, Andrew Morton wrote:
+> On Tue, 17 Mar 2026 13:47:32 +0530 Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  mm/sparse.c | 61 -----------------------------------------------------
->  1 file changed, 61 deletions(-)
-
-Nice :)
-
--- 
-Sincerely yours,
-Mike.
+>> This series implements the TODO in vrealloc() to unmap and free unused
+>> pages when shrinking across a page boundary.
+> 
+> Lots of questions have been posed by AI review:
+> 
+> https://sashiko.dev/#/patchset/20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in
+These seem like valid concerns. I will revisit the patch series,
+and post a new improved version of it. Allow me some time.
 
