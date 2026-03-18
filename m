@@ -4,99 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3258FCD0CE
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:00:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC942FCD0CE
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:03:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FDB86B0117; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
+	id 290126B011B; Wed, 18 Mar 2026 04:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D4F16B0119; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
+	id 26C936B011C; Wed, 18 Mar 2026 04:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EA526B011A; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
+	id 1A46A6B011D; Wed, 18 Mar 2026 04:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D6B16B0117
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:00:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C478F8BFFE
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:00:54 +0000 (UTC)
-X-FDA: 84558437628.18.6C2934E
-Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 58107A000E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:00:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=MpZeDk72;
-	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773820852;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 08CA66B011B
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:03:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB0F4C2258
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:03:07 +0000 (UTC)
+X-FDA: 84558443214.20.3F0CC70
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 00272140009
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:03:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=QgHOLe5E;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf26.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773820985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UilG0Kn2TFWgSp6woEE/NFCFkjSyupPzRMtqI4OVI+o=;
-	b=RBewk2vC+yUtMLN3xgH6Iu1UJcbGX8ySFgcO4F14SL+qm1eYpM8XbZZnVTEIOR6MwkL53I
-	DlE07VuF1Ouywl5bV2bfDDYVNCKcZirej6Ag6RZvPEwWinHNmJ2a7jZ+B/jF5eAP88yr+0
-	BqnIgbaNwPqDFiBwz523J47Aq3Rx4bY=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=MpZeDk72;
-	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773820852; a=rsa-sha256;
-	cv=pass;
-	b=xJViFV1icsUIE0aE2buZdT5J6wiRO/e4TkEDWv4nOq1bQQ5RiOiHhTxI8pka4oowkPFOiU
-	9C+h6vhW/SOu7hdskHSUmTJRS8l4a2LjCKjFKKnf//ASdXjD3zfomcne6yIxvKgzGwKxpu
-	owo/qVajzHEnJUfUz/7pkS0rf6J+jGc=
-ARC-Seal: i=1; a=rsa-sha256; t=1773820828; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=Gcbb3/Y4mEkkVBR3KM0WlKeL5ASrDa3jklumh2rQTQy7QljFqKzERPVKyb6HThWUwmfoFeDxzlMzgAK/58AOGDqS9nOtSnFO8xFSTcdgDiRE53cyHE5YfRXWix6RkID3vDgDDe3ZFzAmU/fyx5AN4ifq+BQsRivihs3Bq+13z/4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1773820828; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=UilG0Kn2TFWgSp6woEE/NFCFkjSyupPzRMtqI4OVI+o=; 
-	b=Ig+2GioJGYxd+ymcQ61lFp+vungCH9zSx1izOpluq047/xToRvnHEwfqLLZhULGRVmUqNqqIa+yeshdENOePtIGN3EkkDChz1OVTuiJMf5hcxcVQkYAb4rnRV/dhjn3v7bKI11AAOH9UJqyClvOuH4bFEtxYK/RQOfHO8nep50M=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773820828;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=UilG0Kn2TFWgSp6woEE/NFCFkjSyupPzRMtqI4OVI+o=;
-	b=MpZeDk72634c3zdO6D0kHCnz92VeBMnYvccedA/J979TbgAo6sFmT16IPtenLc2w
-	HCbah641wDv15XFrELC48zc/Gki06SH7MxyYmLePjPXTIZ9WtSXoL1QaqWWPC1fkcd1
-	hONG7V8yZnc/q3DATA+cdfKoN6OdJnd1zG6t7ib4=
-Received: by mx.zoho.in with SMTPS id 1773820826456999.2247798495597;
-	Wed, 18 Mar 2026 13:30:26 +0530 (IST)
-Message-ID: <bda928ed-6268-4b50-9fdc-64c09b3c8310@zohomail.in>
-Date: Wed, 18 Mar 2026 13:30:22 +0530
+	bh=5GOrx/bM09mWS7d4FWSxDkysESa+9H3SzC9X1DevVpM=;
+	b=W0TKIOZnrWtWs6GQkQDZY1fhfxLbnfrIb2beENxzeN0qDQntHJ6KhW3SwL1EMI60zemg/z
+	U6PnQ5JvKQ7E0rzsogYxE1a9rhTCaUJrYzGJ9uDelMR75gXq13m9/p+EBkyLjgB+PNFdGa
+	ZvneUv8NcVUUACbebf5TV16+VGfONaw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=QgHOLe5E;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf26.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773820985; a=rsa-sha256;
+	cv=none;
+	b=4Ez8Oro+NngTHr3fYa/zABiuSakImEex5iZSGMqavHVcqxtOZa1J7eR7raRHpOWcYrKCvc
+	T5SFl8tyjrG0flZJs8g1OOV15FW4Vc62xoFUQkuRCCRqzOwFrkzYWXEEzQUkkie3DKQkDw
+	Wp4cRAv/hgGJiXjj8FVpJ28T6XG9LW8=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260318080302euoutp01c12cdd03f6ad40b564091bc73a8e4a81~d4Mkk9r1-0393903939euoutp01t
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:03:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260318080302euoutp01c12cdd03f6ad40b564091bc73a8e4a81~d4Mkk9r1-0393903939euoutp01t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1773820982;
+	bh=5GOrx/bM09mWS7d4FWSxDkysESa+9H3SzC9X1DevVpM=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=QgHOLe5EykCGGsrBolTj2JuPKhQ1Bki0f6knoOEenxKjutlnI1f1a+IvYzTNANjPB
+	 g3MbC1nXSFcfIo0O8YAnngJsBgO+mlGjP/L4WRyaF1fcYTT5wusxKKB3bQtIBpaz+e
+	 S5X3ZWGOfil6XUIO2rZg9WqmuiJ2qfPQBkCSac3g=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260318080302eucas1p2c05885afc838bdc98d55972adc31ab96~d4MkRZpJ60631706317eucas1p2v;
+	Wed, 18 Mar 2026 08:03:02 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260318080300eusmtip289c1a6818cde8d982e474c8d0c9ee8f6~d4Mi2Bedq1876518765eusmtip2G;
+	Wed, 18 Mar 2026 08:03:00 +0000 (GMT)
+Message-ID: <de23ccf6-75ef-48af-8c69-2f416c564f2d@samsung.com>
+Date: Wed, 18 Mar 2026 09:03:00 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] mm/vmalloc: free unused pages on vrealloc() shrink
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
- <20260317141151.6ef2a2bedb74fcaf2883c0ed@linux-foundation.org>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v3 0/8] RDMA: Enable operation with DMA debug enabled
+To: Leon Romanovsky <leon@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>, Petr Tesarik <ptesarik@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-rdma@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org
 Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <20260317141151.6ef2a2bedb74fcaf2883c0ed@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 58107A000E
-X-Stat-Signature: bxmo9u1p7p6dduaw1krwdoxiq5zbht1s
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260317190538.GD61385@unreal>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260318080302eucas1p2c05885afc838bdc98d55972adc31ab96
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260317190552eucas1p28f3e818f88d252b1e4161332be084177
+X-EPHeader: CA
+X-CMS-RootMailID: 20260317190552eucas1p28f3e818f88d252b1e4161332be084177
+References: <20260316-dma-debug-overlap-v3-0-1dde90a7f08b@nvidia.com>
+	<CGME20260317190552eucas1p28f3e818f88d252b1e4161332be084177@eucas1p2.samsung.com>
+	<20260317190538.GD61385@unreal>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 00272140009
+X-Stat-Signature: a1tai48747fgxyxnui7e6utqptakc1q3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773820851-295423
-X-HE-Meta: U2FsdGVkX1/B8mUV6Pb2pwo+UTmcBnVUAkGg9Cll9n0GGgjrLG0ArbFiD2rzlwh7bI/YrUHoH4+FdENcx+fCVt7OCwkUzxilwUu/tLrEw55Hc6ssPqf/Lb2cbNS5v7sHpEsquCP2S++NoYE+p3o6gi2dlYckbEupSHZS8SFxnoVIw7hUnYjAI2As2Rl6H1vCYhmsUrjhtMY+Jjc2VN526WP7Qf2WamRQHegE70jVJMAUDjv52S+O+b/IMdFHdBWEeUde/ImCpvSZ9oRYk8UhJ5OecfLbd9IpQZFZRGQug+sY+6UCYWGE29EQUQE2rGIBTcDNdv1zOkPi35rLaNYPHdHEqH1lVAGqPF0tS6Z1oYZ0k4Qh67CPCJPwlzWU/67uart2FP8mbEX8N+mIJiPVvTVHTxqGW4nt5xX9r4IQYl9zCvaIIU0BHKiNcr2i4yhzYiKm0lDn1ks5VGaqjOlPQ3J8pIYv2zStCeHQzUv/xhWGtqF3BuEKnRWFN0+UECIPwbbtABSWPi03g49z/UaqgaARpepuPXtZ3/NEgbFTLfX1y1hCCPmOOG8i6XKhJCkglXJyFmCOag6cmYmISWuCCFXNFoV1ZcH73mo7UXWFp87M+S+SViuk6Df7rXMH6GyHiYFKK/BH6nKzGANQvlhGPAla7wk2GEcOZlYH5vyaBC9GAz5xLBFKP9VojD6lLj57SY3aSdahHeAT9kBzph4ezvXl1e0BT6bfYT0Jq865Ql0rQ5Rym548viDiBcaDVqWm/gF17O/j/8gzZeKfc6FI89cfVwNb+JM3tbuVGZLo6ImxTitdKMqvMHXpMReIs4vxcD+BAme46S27C3WtXKbbXXgR1Ag7nQcnLV5dIQEXDaA3xhcud7TK1pJlwHHIhL4cEShxoQTf7tP/qUt1/xLYdDUbtiC0v9Vqu4PpxWvrPg/xT5i4PxAdgI3dnIOhBf0DFyzC4VJuHjRktfh2QDe
- 30eXNZlF
- 5exns24SKuTKixSf3O3AHAg+4BA9GtKvuiTDu3lcNxiEdMqZQR0lHv9yQJSPneBsbbsBmLufNruqb5M+63h7QgsATcoiCdSU1lz708m3q9h4+NJvmIDFdhw2yexORbjAEkg0FXlL73zZbq/4z+fQPTEo99jYbCsF4dqY8sV4Tvwx7mo1Ui2lLGYSwT1VWIVh7qehU9ZVRWkdcnR/Pa01xDGUcbRKHM4Lv7h8fn1O6k+DtqQSdHh+7pxpSWPgyaApTgmaOE1uusMNqE9lffu/zurEI/KdYWJagqL+uRwc2AJYPfvbcb1FMGbiV4cAUcvr4hPlDg4rWFu93wj/c1r3cxj8iUyIm2DFmS3FYc63VdHZ2OlO7zuIqA8NReU/al08wY6O+J3OYd5KQLU5fmMt6ngFLcfyT/9KW8h+DrZdfaLTc6fZPro7V8/ZIw5uaD25AxNGUGJAwSh7sZwjrZKM5tHd7sQKg53QOydl6lGRTOp1mhjYgMXdaeZ+8LKue7B3zEN93RGxo9Og9ucmUYGq1MUyy8WkZZfOzEYI2N8Huzxuwp4E=
+X-HE-Tag: 1773820984-380326
+X-HE-Meta: U2FsdGVkX19jt1hemarPuLeUpewbnLbTrQniLFyh1t5Z2tgYk2ZmmlyM0KVEEowUk4ljXrE8M17BGV4eUe+qeWqhzl6iZs2lsS5tIT3QpC0ICPmzrUMEVcyse97iYhSaXs0gtpbeghjYZbipACrJUMIQ67okXgBAcVOW/GrDkFB0o6RmNa/06D5q2hxEqhdn1pOPfhPbzfo4xkg679iIoq6FwphK4McjXX5Oou3YTs0YSpTa/1Zfx8I6Qb8XXcHkf+Ue5g9cx13IdFvlLxNaozWNCCCmSq/VI3rVcYIFy9cbICJGu6BRGw7DX15jSeg2EVSJy14TnI0hYMUf5LY6coSnVHOuWTTMPdB9kADkYnVlUNZ0de5ZZkRFH7BoB2bxmWNejCVpGOW58ngm1u4oJwCPgrpcmke1VazoErxhJeuOBX8MxWSkwcxpcXVYXYluTku3Sn9ofehZ4XxfvJd1GdObExZw3ZyuPUgdSI2UmqP1XOoFa9WYLiSadqt5H+DW1ldc5CEhEkc3SoWI1p4ZgpFFkk5aLdN+7LE1rOM0IrZpjB/ZaZLJRzlRViOd+Zu5NaWVWuo4N2Gc1gGICC2wCgtkV3Ya426ZgYtwVTps638Ii8GILwZD8eHmK/6B8vJuipZEMg7MgL2dwCFEJpTgcJCIeLI5W2ZkkdP4rsMBJ8fWbIqClwuu0AdKK6Dk4FKnAJlkKSgagsCTsd54S/3A4xsaDbQ0nFmmXXYTtTBA3os98IuUcF5VCy90xrifkcAfhgHUNhBQj0WG8XJBshTICZeZtpL07G2MdjL4n4uSy/gqtsNZjpWqgtIYkWiP36O8TKXCQSENTmdM2oGDOzj+pQLl7dKrYbfL/gGhFMJUJRQu8vonAY7Els+vRTFK9V/tALZ3yLz0+VWI4zb3QuRurXVm8UawK9/a+CfZlNtZrX1RGtVd3gL4ribHBhkoNxu/Lzbrscd7f/7mcGPIB7i
+ ACC7UmVB
+ YyEcB4SEQInxQy3Oaf/549pYC0QT6Smj52s/JeyPMeu2GKipT4o1BbfNJ0hdLc23nb7yaQubmHaWzrl/y727dvAOQ5ofTOb3tpZj3B/GHfYeHK3uGfEdE0IQJvBxaiT+42u9H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,15 +114,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18/03/26 02:41, Andrew Morton wrote:
-> On Tue, 17 Mar 2026 13:47:32 +0530 Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
-> 
->> This series implements the TODO in vrealloc() to unmap and free unused
->> pages when shrinking across a page boundary.
-> 
-> Lots of questions have been posed by AI review:
-> 
-> https://sashiko.dev/#/patchset/20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in
-These seem like valid concerns. I will revisit the patch series,
-and post a new improved version of it. Allow me some time.
+Hi Leon,
+
+On 17.03.2026 20:05, Leon Romanovsky wrote:
+> On Mon, Mar 16, 2026 at 09:06:44PM +0200, Leon Romanovsky wrote:
+>> Add a new DMA_ATTR_REQUIRE_COHERENT attribute to the DMA API to mark
+>> mappings that must run on a DMA‑coherent system. Such buffers cannot
+>> use the SWIOTLB path, may overlap with CPU caches, and do not depend on
+>> explicit cache flushing.
+>>
+>> Mappings using this attribute are rejected on systems where cache
+>> side‑effects could lead to data corruption, and therefore do not need
+>> the cache‑overlap debugging logic. This series also includes fixes for
+>> DMA_ATTR_CPU_CACHE_CLEAN handling.
+>> Thanks.
+> <...>
+>
+>> ---
+>> Leon Romanovsky (8):
+>>        dma-debug: Allow multiple invocations of overlapping entries
+>>        dma-mapping: handle DMA_ATTR_CPU_CACHE_CLEAN in trace output
+>>        dma-mapping: Clarify valid conditions for CPU cache line overlap
+>>        dma-mapping: Introduce DMA require coherency attribute
+>>        dma-direct: prevent SWIOTLB path when DMA_ATTR_REQUIRE_COHERENT is set
+>>        iommu/dma: add support for DMA_ATTR_REQUIRE_COHERENT attribute
+>>        RDMA/umem: Tell DMA mapping that UMEM requires coherency
+>>        mm/hmm: Indicate that HMM requires DMA coherency
+>>
+>>   Documentation/core-api/dma-attributes.rst | 38 ++++++++++++++++++++++++-------
+>>   drivers/infiniband/core/umem.c            |  5 ++--
+>>   drivers/iommu/dma-iommu.c                 | 21 +++++++++++++----
+>>   drivers/virtio/virtio_ring.c              | 10 ++++----
+>>   include/linux/dma-mapping.h               | 15 ++++++++----
+>>   include/trace/events/dma.h                |  4 +++-
+>>   kernel/dma/debug.c                        |  9 ++++----
+>>   kernel/dma/direct.h                       |  7 +++---
+>>   kernel/dma/mapping.c                      |  6 +++++
+>>   mm/hmm.c                                  |  4 ++--
+>>   10 files changed, 86 insertions(+), 33 deletions(-)
+> Marek,
+>
+> Despite the "RDMA ..." tag in the subject, the diffstat clearly shows that
+> you are the appropriate person to take this patch.
+
+I plan to take the first 2 patches to the dma-mapping-fixes branch 
+(v7.0-rc) and the next to dma-mapping-for-next. Should I also take the 
+RDMA and HMM patches, or do You want a stable branch for merging them 
+via respective subsystem trees?
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
