@@ -4,137 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0616FFCD0DD
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1239FB5EAB
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48E236B012D; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
+	id 0BF106B012F; Wed, 18 Mar 2026 04:31:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43EE76B012F; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
+	id 06EF76B0131; Wed, 18 Mar 2026 04:31:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 354D76B0130; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
+	id EC7236B0132; Wed, 18 Mar 2026 04:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 203BE6B012D
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:31:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7AF5F1B8466
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:13 +0000 (UTC)
-X-FDA: 84558514026.15.3C53E9A
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8584C4000D
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O1gP7w6d;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773822671;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D70C56B012F
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:31:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 888021604A2
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:39 +0000 (UTC)
+X-FDA: 84558515118.20.9DAECB2
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C2AC8100011
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="QLxLSZ7/";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773822697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
-	b=7FOFydhCJVOpbNTMrqP5cC6iA1YpIZ/weOSD/Z4yHTHvSBCaEhg5rp7IZB3qwW6gW453kx
-	nqNzCrJogFHekTR9pNspJtTaSB9GbUiDZT4IoK/Ny0kcNGRXhfh6N1HNQHAYTs9yqB9bnO
-	zIHciUxQ+4i7X8V7IB/o0eN5G6IO+68=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O1gP7w6d;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773822671; a=rsa-sha256;
-	cv=pass;
-	b=oZorrARiF/zSKQ70uxxiLHP4Ee6Vxtpx4a5MQFI+VMkvprmacDn7uUmnXyqS9TSA1Vo1cc
-	tuhlIyCQuIfkCGjIuH9g9cF/SqKfutA069Oa72BEO472o3JlFgbGUNYBnWDqLWPbo4a2RO
-	9OYyGaiYVvyXra08kZDdaZT/Wh3zUnI=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-506362ac5f7so61765481cf.1
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:31:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773822671; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cv69mM+0lbyMPfPKjigQgCGSYDom5P9lZxNhJu4I5ilOG1pUqLF9XxQxqwO14ejNPV
-         jLHupCbohvZ2F0lbOcXltAlcVlMoSrDUpZJZYyux0Y8RSSBA8WobKrzBzyOABdavXX27
-         XcRQf2icHrnd8qmYqMcVAxAmwyKCpc124aAgjPNYlQooleFy2u6FSYyyeMVl1JNbFARN
-         Pd0GJwzMVsSTOJIaIV3XuNBNSinMEYdmxE2Cc29QFAF3PBTDPLOCgSBrmJXRl18+srSq
-         3Q55k9rLS4vgYUzHIC5lX9wG0N25Xmzn/+Vr2rZbRjUzGylNqmo/T+tZcSUwMwXEZl52
-         nChA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
-        fh=a3TjRLgfDK0dFNqPgsMW87AR1cdALavO7ptuOr4jphA=;
-        b=gMPT0OK3QO99Fr6L4/jAIirTfM4qL/Cd0TCrqbWo3nujq1EFoGDr6MvmAQ+MzMNOCh
-         9Yc1vs1cOZp3dzo+mPIBgmg8QYhXY3Rnqs2RoRN1pfvHP7POy684wLLJSmsfFORmHlbx
-         9ZFmVjwFuoIXslQnxurJ/bzgZGIxCcXHc6GYtZ7XYaalVs2/ctKB7od47uw2zIbfOuVA
-         /pSS7ErVd0g7WbKR+HMm2xBNjF03uBx7cwap+VUl6pb5DuHPz9q8RHrvLitmMPXZZ7Fv
-         i7rXev/WawNmPGdeF35xv5vk4tIfzVCWCDRZJDHsHV8RT4gKu6VpDfsEE2SLiWLhLbiU
-         L1Xw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=6skfg/AvsBEcmXuLugiIr35grUcj1HHR8OGJRT9dj14=;
+	b=IHRK7aHNObR+BONvZ+4RP7/VBcaFq7TgxecZ9wYPDJpUbnEHjiex0PymyH6r5AYnFkUfsi
+	j/PKBq3mhwvZSAdr7OOhWtg3ASw/qHWzo2L9bEeHuHN1Gb5b5PggGlMid7oD/xzmVyjLKe
+	LGheqG8vja8SMhA9qMgNht1TGXJ/jBQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="QLxLSZ7/";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773822697; a=rsa-sha256;
+	cv=none;
+	b=LZMkm6va5BH3gVpUi/Ta6LYsSx7B4VYJejEIgGvKcsVnTNBcmNBHwy9H2FQuwmlsTLUHqE
+	E50UgTlzcOQ/X13Lu4yO+KmzK+uE0XCdDYCcbVWmM5r3oz/kcSoDxhV+VqBEDAcIutc/ne
+	PDeLB/YGQ2KrvHgJ3gc4ZXqxvrkdbEA=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-485410a0a8aso59283135e9.2
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773822671; x=1774427471; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
-        b=O1gP7w6dq+YZiVSWRQBiOWH67+1GAZPhhKOf5oNoPBFvxallBIuegPOPWJGfDgPtG7
-         wROagiUvml7wpaMWTLSr2fpx88jXpgsGha4CHzkjD3VOODbfkfaiOxKgc1zX2n5+wh+a
-         M8fiiFCJXQgG8ISv90y30oioW1iLVy1CXCTgAqREaZHkM93KtKvsDfV5Ep8jvFXwrzmh
-         y1besPuavE0q3Xr1hqy21TNT0H8Di6fnfuE5FwOQAxr/APl4spnwMPUokU7U7mleXIog
-         GOw3vB0AwTuXPuiHA1+lihLYryru7OhBClUDDBZMOaH39chYMt2pXexCwCeU3mhTNUSd
-         o+Dw==
+        d=suse.com; s=google; t=1773822696; x=1774427496; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6skfg/AvsBEcmXuLugiIr35grUcj1HHR8OGJRT9dj14=;
+        b=QLxLSZ7/+oG8MNgzS1PvbjBN11XIGXdibojgcODJNU95Fm2EfL/+IwpmzX93ewm8Rm
+         l0JFc5yQvy2B99WZnStEtmUsi6bYJvRodb+UKa/KoA/EbaKRDjqZ/ML9hFTjyh89fUwl
+         eUlN7UDtSWyQ57pZjZvFb7r3Q2NZyU+7ydvel8zU5OJTL5q8uyIkeIorMqLbPcA9TFDD
+         0sjSc2Ppft9zIcWvRTMjyEklur7tltco+RfDsxfwsZRlphLBR2v0VSnt4GCDhB5w/pBe
+         X8Qt1bOViuK1mO1yU4FMRDmc7GiqHKwD6jbd2L4QOsmwA2/nwUhuHcS2Q3XSWsgHkCuc
+         VLbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773822671; x=1774427471;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7+1fVeUC+UYdNq0tyzSP85sezL1o3FF4lDWSJaKwgMc=;
-        b=KHyY06Ln3ysxMbTnReVkjIsCuf6viuZWtgLKQslYbFM5NxdgFkhhBXU5btxRYyhfWP
-         YeegO48DBFJhW7prrQtYv3DpEMkCm1OcD6ZlAzVqfSCI4GL7b4lhX9TR2CbUK3Ow+YDe
-         HJTWhxo37Zd7FYGRkDv1iNl+9IIKQykTkCbfWAiHQha8QS6aV2uacqj0ux0MiKdGzJZc
-         TgRljzbbbEFSNHz6YjVgVUGYCwFiWcswkrwQY9s5QgY9mSpN9MiAFwebFKIQIQeCH7wI
-         DK8mJyKA+i6ITimCTRV0y4Gol75b4W1dkqZ03DokJzuryy0dMPV5yAv+j9PIOtjLY6wu
-         PZ1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXycFlrtCp/MppfSGcegRI/Bc6qHuJYGhY6d8uk5W4BpHxaa7v1InsWa7Z6Vs1GhxNxblubNlBjWw==@kvack.org
-X-Gm-Message-State: AOJu0YwY9wz2HmSKZhxFwdwqvmRCTmJ7qQNehZ6tr9tp2BcxNLAYBaHS
-	1F6Xyo7fDgZ31MYKIUDe1auIT68fcQ6nV9cqG74R8pQI9vnBVENPInXXiU2iEefdIDMcnfIFONT
-	UAHxeyc8Nd/7iPQa66bZ4evVhkb9fECs=
-X-Gm-Gg: ATEYQzzU8wpagLztKSS8W60KIE8i/LGH2eGc9oirsSwt2GpbbkuJ3sgbcMS2QPnZYn0
-	lgl3/jvYZB5g65THOUyvwt4JRBrX0EotXIaUc2rt4ylUl9cpTAOSCz51BtN1ymj+Yr/90p0CEjs
-	zNFWM82hY352r3Wq3dlUbQ2dPR+HSy/oQ+0cS3LVygJUecP7Q6D1NnV6hSOjgZrUgyzvyNvnnA6
-	bqj6ce0gdvff6ANjOQr8HrQ3E07d2S2CakO/Ex+NWbRhQ7XeQy6AFAl6Yt8yNmUuTWVGoFA5HHu
-	avkGr5UPR2TY5a2t
-X-Received: by 2002:ac8:5848:0:b0:509:3257:c050 with SMTP id
- d75a77b69052e-50b14797e3cmr30015331cf.24.1773822670066; Wed, 18 Mar 2026
- 01:31:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773822696; x=1774427496;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6skfg/AvsBEcmXuLugiIr35grUcj1HHR8OGJRT9dj14=;
+        b=VJnO/dGkDsIQhOKLJXbIVqHANKfa61V2B+Wuk+OhnJ7POwMue2hIbcvC4leF9nxXzo
+         nyPMlAcv87vLG5ZiTjhAenZsU5V2H4P2LHARq6zSyVqlZB7YfF0eaKKprF6as+4eSXpP
+         0CTl6LUWrxe7CAkWn0Td8Q4MxEhBwzmUqMz1PmJiASkzxGRM1hz4dBgsSBvS5LhP6MuD
+         KWIqKTpJU80cy0hv/whip7QbYYINfOrv8CUyM5aXtCWligQvmeI2c851WkDnIMCCIk4Y
+         GGib4MIgZbFXChPz3/MwpJVstTHLRB54Tf4iWuSLnI7UQRgCmqXe9lwE3S613DiMnzQN
+         dGmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVICXwBafT54Wfuxh2FmucRZnki7alEcPQCX0/8C+Mvk9cOE4dCR9GEUYJocCN62d4Ws9DCmCeHVg==@kvack.org
+X-Gm-Message-State: AOJu0Yw2gF3MfO5y9MPae+Z+vdj9sdPgv5SmqwSHyI5bmIo4E5vxsRSI
+	cFHhmPGBR0aFc8fwzY5AysSIaiE1Mul5cJ6zp5j8o1Xfw6v/bCisuJ4hZZeCSqId+lM=
+X-Gm-Gg: ATEYQzwvCGRj4ZZIm/v8JhPNcknlQhpsvTFUrB9f+qAhq4T+sx1XShSm7/RxzxhDf3h
+	op1M3sL6Ij0bnJHxERgMglX8EAZ5vnGRCskyTfkvK7uxsacJNcAdjZL8gZRHToQip8AEG7xzQsq
+	OLYVyBoINzOotlSZj0g+d59elv01J+CqwioO5+MnH0tXzWmKl/p97QYWur/t+1n/SCPpxxAHZej
+	YjW/a95WCtm1NuBJjqwGOjLhhVRSeDa2qHTfXnRmncUzXdCcT4UFvoTWARBGWclpKj9cqHCzsHr
+	iujs6Cy/6egBGmLmaaxgrD5kx72/o5bNtIUDm8auBBA8eBC2M9QBDI9ROYD4Vav1sN8neSkvW54
+	Ic6QD3Dgc86NFag+9yi3pZXTx8e0Cr6B+RIa7Mr3xdOxArwO8r4T9N3Ayb9B5R1RUs46gV6IJhb
+	c0UUyrVVZOtKKFJP3IVmwuK6QYajTkn6142Cf1
+X-Received: by 2002:a05:600c:3b07:b0:485:3026:2b8b with SMTP id 5b1f17b1804b1-486f446fab2mr40802755e9.29.1773822696147;
+        Wed, 18 Mar 2026 01:31:36 -0700 (PDT)
+Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f4214ab8sm48028185e9.6.2026.03.18.01.31.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 01:31:35 -0700 (PDT)
+Date: Wed, 18 Mar 2026 09:31:34 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+Subject: Re: [PATCHv3] mm: remove '!root_reclaim' checking in
+ should_abort_scan()
+Message-ID: <abpi5gh9XhUygW-J@tiehlicka>
+References: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
 MIME-Version: 1.0
-References: <20260318-b4-switch-mglru-v2-v4-1-1b927c93659d@gmail.com>
- <CAGsJ_4xHvtjkPp5Ar16UXqZhQYHpdYcqCWMmFbGGUvK-kCH+uw@mail.gmail.com> <8c01a707-f798-4649-8441-d82dd0dac7b9@gmail.com>
-In-Reply-To: <8c01a707-f798-4649-8441-d82dd0dac7b9@gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 18 Mar 2026 16:30:56 +0800
-X-Gm-Features: AaiRm524WVeBJOY_8tdt1YQPr1Lf4x2tyyTbog5tXqKO39Orsqdtt0nbwdFu61c
-Message-ID: <CAGsJ_4y+SwwCtDu8zPYnuSdyS+1=q77d1Fwq6eHbqrnw8-6K=w@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/mglru: fix cgroup OOM during MGLRU state switching
-To: Leno Hou <lenohou@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Jialing Wang <wjl.linux@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4ioynn7beorw8iyye6gpqqnxfknnmcqr
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C2AC8100011
+X-Stat-Signature: 3mgep6i41u5tdmsqngmucfrzen8gpu61
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8584C4000D
-X-HE-Tag: 1773822671-704189
-X-HE-Meta: U2FsdGVkX18P53C6OjTiHSVXverq8+ijPb6vR1clrWpCQcYU/4bQVVlHGtleKebctUCjxfllSG08euKEF2aqSZoo5XdZwwLTIoyq2NL+7641hQSYn11OJE4JNKOKoHWoKqi2SePGz8kqQtsYKDjtUk0I098q0KhNjnuj3jWlCZ+hFwaMRA4ZL0zfXJNWfH2b4WjaFx+C2vtXiP2HOQkXbdVxgOsGqEKafJDk5MJoa1/z5rgQgAqTtWhXvflfnzJByR1pdf1uVkR/9booUtC42NCTDT4BpGqgmzY1R68DktqiGdOryxI1XUq/jy5n/zcndffhAcooFWUdoh9pJLRsKCCqfAXOHBvQq8ku7CGjETEkzpgUlK73fPWAFjpQgHiC37AvepEYMYOoGAuHoBRjhV65QMnkSrxPhqHneQh2bssfwCTNhn/Fk9lCQEFMn2XqgVqeke4mUuU+6jjpV2/k6mkkiwPB9BM2w/L/FMt8W8eFxX4DNtIFbAgzHxpiMXjCya6jFtGHRjaliNrJ/PrK3kGt3ARgBPVw3TiF8yKyoHWpVWawmHfXQnqeug9qn59vbmFkMQgQVV/VIGeN8xgCrIHXjhaPczjQqlpttHeMNw33SjikNNHh4Qrzli8rTYaHJGZ7GvRc+0Qy9FNdXB1iuFs3S/OEFRltnHB7Bst+fVVVhXkzLYDBGBiqy7vxe4q71ImPBAVLZo2urvO3QLx3aDMeH/XHeTPmOS2fdC6pbiCo7dWL5I5G6J80Sp3zzijkmtxWvhTRX5FhF0Fa6ap7cfaEJUvXq/TjXzL+KeToCWJxerRpe+X/Tpz/VTNWufojxD5IXOFdHy9kZQzGroZeo7hW8gFK8QHAGZoQI63dYBEFfI6xZZUwNMY1PEUXkIlTfc4b1YxGs6hwMT/OWvHqjb0yfExNs6teHqrGdeYu/GEZzbQVTFz6KlNcUfcBSVceZGIPRf3WOGu050s854c
- UomhYVHx
- 3QmbHsCd7M2uGLzxtj2rUwjYIr9AMmh/MSeWcZH80mtIfAf9J6eK+TJRQD+MevHepkluQ5Cq4sovgdBSytglNk0fWDclKW+jKcAxgxb43odkP8CJvYXxSWxDFueXtwpAtRI0K4t81at5pBYEdIHRYLzJlzM6fNqcXOf7/P26Ediy4L/G2FAP5uWoSzXo7yaQ9H9lIMIZCk2c7tWmWzJlVF/EKPx6i3VAFt4DNQUFM8HXfFQuY3FaA1QcM65sW346lEUTm7/ppbzIu1FCpCGi0qkY7u5bFM1OeZGVBFi3ZEivF7o80yOOZD2aaiwosnjHJc624Yfo8LliGV9ypPnpwLd04uwX/0C7v1AVKmJJJTm2fWQQFR5OBXDRlguHHGWwI8+4a+vq6Ofr8By2HRgXoFTtsB5FX1Hk2hS5jSMYqHaH0niImvBKYywRBuBZpm1WEG0/z6yBVlA2S4TSEMUIq/ZOS3A3HPl4hl7cFJGXekKh4/omhDGTX2MDKWrwinNbO/pFUQYxLD7gg49c=
+X-HE-Tag: 1773822697-486308
+X-HE-Meta: U2FsdGVkX1+9jwHW+QOhMkKi5Bh0+ZCeBIwGe0slq1YTlweRYDQs6NuEnSA1NkuNJ4i3ypV4jkWZAXQI5lhD+wjKIdgyZvBFx0L4ZU9j7knUiKjUb5pShLaIBkFiWoPm2ClY0l3bqnhucj4MFvzOwMnKS2VXepaFHTZ+o+lA1+3MSLxQNE0+6UTT/c9KTa4sdFHWAuz1MdaYQUavYs2nxfyAurlo1XGhoYs2uM0V2vmxn8bNDH55A7EJwxp19l0g0lCGQAMkefMCvuGlDe7H8X0BPY8gdepbI4kVqoA3nRYlOvkPAkquA8jzSS8oLi46i6eIfPuMsKmZcjYC+wtSYRLUA7it0PUtDsHKVzKqJejA5HCQ/uMSb3pVZ1nw+m6nW1F6UcZ+4RbLJO8atzwR/BfzeOVroFIzwTCjYDb3HHor0PbdWKxsBmvkdF7AXB81KeXJgJ7eNQooavpXZ7C59VCjhcWEZd+wWE0qvk9YLPRjBUIbyxA6aBlGBZUkC82WSRFl/gSX/c0Dz15b1O6KeRogE7mtO8rqMa7yVHzeRNqRJS0D+1NhB/mP7Lr1ZF3ySf2BkkVQeedrIC+TIkK4cyCLjsrJ8WKk0Na5LZxmvkQKSE3jO0yXiBjd7qIWkOnBDbUZrqkwdbxq1G2VUPHloagdR9WF+QWXVIE9z/608awtP1ohZKN3AnDhkNBVuGAGSQjwQKOGp8x/ErYMycAI3dkreGpLItvFTmDQI0K2T/0pUWSpSmnyKUWIDg8oeGdLoDM5UYaVkoCrBfHDOhJAiPuNooe7SjEOY1PRrvn5T1Re69MN03OHVM+h3VKiTRDxxOwyMh6rXaP6h9OYphc3oUMql1+OSeb53Mt/r8glpB4Vlu186C3tJZ2BvbWquI0oAaCvCgmMn6wYxVFXocQrgQUBd6Ay4v7+7egIufBMfX6EcIZgHryq1aQ16aAepQpmWV3E6XD+GQpB6W0+7A1
+ g/I5jxdB
+ gJ5fFPhZNUKx4vst43UI857GPyvLlm7BvGwj++pOi2i1FH89gXRWcpcaRgujMLb33+a647WKT062OQywhAwIGAmvAYJcoZooGJOcnpR7FRbIr79ooKhU9cnPC5g7GZBXIQIQkf5HWV1/3CtPdMN+33eq2czXr4jcOf1kTFxPH0Y8xdtScSqkL3Ils6bxC2PKvOpHIH3mmNRhDZzyCToHJJeAyRn1vXqwe6uCt/JHFFlb4MsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,197 +121,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 4:17=E2=80=AFPM Leno Hou <lenohou@gmail.com> wrote:
->
-> On 3/18/26 3:16 PM, Barry Song wrote:
-> > On Wed, Mar 18, 2026 at 11:29=E2=80=AFAM Leno Hou via B4 Relay
-> > <devnull+lenohou.gmail.com@kernel.org> wrote:
-> >>
-> >> From: Leno Hou <lenohou@gmail.com>
-> >
-> > [...]
-> >
-> >>
-> >> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> >> index ad50688d89db..1f6b19bf365b 100644
-> >> --- a/include/linux/mm_inline.h
-> >> +++ b/include/linux/mm_inline.h
-> >> @@ -102,6 +102,12 @@ static __always_inline enum lru_list folio_lru_li=
-st(const struct folio *folio)
-> >>
-> >>   #ifdef CONFIG_LRU_GEN
-> >>
-> >> +static inline bool lru_gen_draining(void)
-> >> +{
-> >> +       DECLARE_STATIC_KEY_FALSE(lru_drain_core);
-> >> +
-> >> +       return static_branch_unlikely(&lru_drain_core);
-> >> +}
-> >
-> > Can we name it lru_gen_switch() or lru_switch?
-> > Since =E2=80=9Cdrain=E2=80=9D implies disabling MGLRU, the operation
-> > could just as well be enabling it. Also, can we drop
-> > the _core suffix?
->
-> OK. Next V5 patch will be:
->
-> +static inline bool lru_gen_switching(void)
-> +{
-> +       DECLARE_STATIC_KEY_FALSE(lru_switch);
-> +
-> +       return static_branch_unlikely(&lru_switch);
-> +}
->
-> >
-> >
-> >>   #ifdef CONFIG_LRU_GEN_ENABLED
-> >>   static inline bool lru_gen_enabled(void)
-> >>   {
-> >> @@ -316,6 +322,11 @@ static inline bool lru_gen_enabled(void)
-> >>          return false;
-> >>   }
-> >>
-> >> +static inline bool lru_gen_draining(void)
-> >
-> > lru_gen_switching()? >
-> >> +{
-> >> +       return false;
-> >> +}
-> >> +
-> >>   static inline bool lru_gen_in_fault(void)
-> >>   {
-> >>          return false;
-> >> diff --git a/mm/rmap.c b/mm/rmap.c
-> >> index 6398d7eef393..0b5f663f3062 100644
-> >> --- a/mm/rmap.c
-> >> +++ b/mm/rmap.c
-> >> @@ -966,7 +966,7 @@ static bool folio_referenced_one(struct folio *fol=
-io,
-> >>                          nr =3D folio_pte_batch(folio, pvmw.pte, pteva=
-l, max_nr);
-> >>                  }
->
-> OK. I'll be add following ducumentation that just you said.
-> /* When LRU is switching, we don=E2=80=99t know where the surrounding fol=
-ios
-> are. =E2=80=94they could be on active/inactive lists or on MGLRU. So the
-> simplest approach is to disable this look-around optimization.
-> */
-> >> -               if (lru_gen_enabled() && pvmw.pte) {
-> >> +               if (lru_gen_enabled() && !lru_gen_draining() && pvmw.p=
-te) {
-> >
-> > Ack. When LRU is switching, we don=E2=80=99t know where the
-> > surrounding folios are=E2=80=94they could be on active/inactive
-> > lists or on MGLRU. So the simplest approach is to
-> > disable this look-around optimization.
-> > But please add a comment here explaining it.
-> >
-> >
-> >>                          if (lru_gen_look_around(&pvmw, nr))
-> >>                                  referenced++;
-> >>                  } else if (pvmw.pte) {
-> >> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> >> index 33287ba4a500..88b9db06e331 100644
-> >> --- a/mm/vmscan.c
-> >> +++ b/mm/vmscan.c
-> >> @@ -886,7 +886,7 @@ static enum folio_references folio_check_reference=
-s(struct folio *folio,
-> >>          if (referenced_ptes =3D=3D -1)
-> >>                  return FOLIOREF_KEEP;
-> >>
-> >> -       if (lru_gen_enabled()) {
->
-> documentation as following:
->
-> /*
->   * During the MGLRU state transition (lru_gen_switching), we force
->   * folios to follow the traditional active/inactive reference checking.
->   *
->   * While MGLRU is switching,the generational state of folios is in flux.
->   * Falling back to the traditional logic (which relies on PG_referenced/
->   * PG_active flags that are consistent across both mechanisms) provides
->   * a stable, safe behavior for the folio until it is fully migrated back
->   * to the traditional LRU lists. This avoids relying on potentially
->   * inconsistent MGLRU generational metadata during the transition.
->   */
->
-> >> +       if (lru_gen_enabled() && !lru_gen_draining()) {
-> >
-> > I=E2=80=99m curious what prompted you to do this.
-> >
-> > This feels a bit odd. I assume this effectively makes
-> > folios on MGLRU, as well as those on active/inactive
-> > lists, always follow the active/inactive logic.
-> >
-> > It might be fine, but it needs thorough documentation here.
-> >
-> > another approach would be:
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 33287ba4a500..91b60664b652 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -122,6 +122,9 @@ struct scan_control {
-> >          /* Proactive reclaim invoked by userspace */
-> >          unsigned int proactive:1;
-> >
-> > +       /* Are we reclaiming from MGLRU */
-> > +       unsigned int lru_gen:1;
-> > +
-> >          /*
-> >           * Cgroup memory below memory.low is protected as long as we
-> >           * don't threaten to OOM. If any cgroup is reclaimed at
-> > @@ -886,7 +889,7 @@ static enum folio_references
-> > folio_check_references(struct folio *folio,
-> >          if (referenced_ptes =3D=3D -1)
-> >                  return FOLIOREF_KEEP;
-> >
-> > -       if (lru_gen_enabled()) {
-> > +       if (sc->lru_gen) {
-> >                  if (!referenced_ptes)
-> >                          return FOLIOREF_RECLAIM;
-> >
-> > This makes the logic perfectly correct (you know exactly
-> > where your folios come from), but I=E2=80=99m not sure it=E2=80=99s wor=
-th it.
-> >
-> > Anyway, I=E2=80=99d like to understand why you always need to
-> > use the active/inactive logic even for folios from MGLRU.
-> > To me, it seems to work only by coincidence, which isn=E2=80=99t good.
-> >
-> > Thanks
-> > Barry
->
-> Hi Barry,
->
-> I agree that using !lru_gen_draining() feels a bit like a fallback path.
-> However, after considering your suggestion for sc->lru_gen, I=E2=80=99m
-> concerned about the broad impact of modifying struct scan_control.Since
-> lru_drain_core is a very transient state, I prefer a localized fix that
-> doesn't propagate architectural changes throughout the entire reclaim sta=
-ck.
->
-> You mentioned that using the active/inactive logic feels like it works
-> by 'coincidence'. To clarify, this is an intentional fallback: because
-> the generational metadata in MGLRU becomes unreliable during draining,
-> we intentionally downgrade these folios to the traditional logic. Since
-> the PG_referenced and PG_active bits are maintained by the core VM and
-> are consistent regardless of whether MGLRU is active, this fallback is
-> technically sound and robust.
->
-> I have added detailed documentation to the code to explain this design
-> choice, clarifying that it's a deliberate transition strategy rather
-> than a coincidence."
+On Wed 18-03-26 09:15:58, zhaoyang.huang wrote:
+> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> 
+> Android systems usually use memory.reclaim interface to implement user
+> space memory management which expects that the requested reclaim target
+> and actually reclaimed amount memory are not diverging by too much. With
+> the current MGRLU implementation there is, however, no bail out when the
+> reclaim target is reached and this could lead to an excessive reclaim
+> that scales with the reclaim hierarchy size.For example, we can get a
+> nr_reclaimed=394/nr_to_reclaim=32 proactive reclaim under a common 1-N
+> cgroup hierarchy.
+> This defect arised from the goal of keeping fairness among memcgs that
+> is, for try_to_free_mem_cgroup_pages -> shrink_node_memcgs ->
+> shrink_lruvec -> lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the
+> !root_reclaim(sc) check was there for reclaim fairness, which was
+> necessary before commit 'b82b530740b9' ("mm: vmscan: restore
+> incremental cgroup iteration") because the fairness depended on
+> attempted proportional reclaim from every memcg under the target
+> memcg. However after commit 'b82b530740b9' there is no longer a need
+> to visit every memcg to ensure fairness. Let's have try_to_shrink_lruvec
+> bail out when the nr_reclaimed achieved.
+> 
+> Suggested-by: T.J.Mercier <tjmercier@google.com>
+> Reviewed-by: T.J.Mercier <tjmercier@google.com>
+> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-Nope. You still haven=E2=80=99t explained why the active/inactive LRU
-logic makes it work. MGLRU and active/inactive use different
-methods to determine whether a folio is hot or cold. You=E2=80=99re
-forcing active/inactive logic to decide hot/cold for an MGLRU
-folio. It=E2=80=99s not that simple=E2=80=94PG_referenced isn=E2=80=99t mai=
-ntained
-by the core; it=E2=80=99s specific to active/inactive. See folio_mark_acces=
-sed().
+OK, this is easier to understand. Although you have avoided some
+clarifications I have asked for explicitly in prior version. If MGLRU
+maintainers are OK with this then just go ahead. Btw. I have only now
+noticed that they have not been involved. Adding them now.
 
-Best Regards
-Barry
+> ---
+> Patchv2,v3: update commit message
+> ---
+> ---
+>  mm/vmscan.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 0fc9373e8251..10f1e7d716ca 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4839,10 +4839,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+>  	int i;
+>  	enum zone_watermarks mark;
+>  
+> -	/* don't abort memcg reclaim to ensure fairness */
+> -	if (!root_reclaim(sc))
+> -		return false;
+> -
+>  	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
+>  		return true;
+>  
+> -- 
+> 2.25.1
+
+-- 
+Michal Hocko
+SUSE Labs
 
