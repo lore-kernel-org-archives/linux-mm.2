@@ -4,89 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 697ACFCD0C6
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:15:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1EC9FCD0C5
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:17:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D6D26B00F6; Wed, 18 Mar 2026 03:15:41 -0400 (EDT)
+	id 15EAA6B00F7; Wed, 18 Mar 2026 03:17:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860CC6B00F7; Wed, 18 Mar 2026 03:15:41 -0400 (EDT)
+	id 0E8CB6B00F9; Wed, 18 Mar 2026 03:17:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 728916B00F8; Wed, 18 Mar 2026 03:15:41 -0400 (EDT)
+	id F40E36B00FA; Wed, 18 Mar 2026 03:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 582646B00F6
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:15:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C59E1C3DF
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:15:41 +0000 (UTC)
-X-FDA: 84558323682.02.DED113B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 75CFB160003
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:15:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9cufFL5;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773818139;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2346B00F7
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:17:02 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7B6D21605AE
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:17:02 +0000 (UTC)
+X-FDA: 84558327084.30.4F25590
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 80FB640008
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:17:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="XY/owpya";
+	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773818220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e6JCeNZ95+yBjSjR4N0wXMT4ez3TrIwcOmTSFq9XJmg=;
-	b=ffiuW8xaRjpkO3W58AUGT9SkQQdYqTbNZVxCMFi9X1WiMdR0BMwHRmrNKsjJRH8Igzf0/4
-	AWSn+B6EAC6iI6bt83B9wN8GlHu06r7rhgCmK+CKl1tiUY715H4NUtU4FTUEXRGjirBH5R
-	zUxMFJFiRjDyxx5BDpfj0l53Ol435/w=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9cufFL5;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773818139; a=rsa-sha256;
-	cv=none;
-	b=U9QR4+Lje9tBcubbw1n+0Fju43xr5RMkGTNSG4HwgquV4nUJim6lXdq592/efVdfdyhuUa
-	QZIpFPYo+lkoY8TWLft75uJ5giY3vRd4EkC9JvDVCo+ugOeuuiD1056fZiVNDYX7lteESe
-	kmd1LwCwZFe6/eWzVZ6uH4+jIUmoI98=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B138C60121;
-	Wed, 18 Mar 2026 07:15:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7960C19421;
-	Wed, 18 Mar 2026 07:15:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773818138;
-	bh=HA57TZoe4kUHc2+bGmz45ludm6iUpxni9mm++DOzFxw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T9cufFL5XjwyV8VXoZUq2Dftqo/gLYu5x7FdiDrcQd3PhMf4B3ZtRpskY4DrsJJf6
-	 BzCUja/lf6wGuGhbSazOGuLsVkWXa/rlQpcfrcIEAeKNMCscbjfjpXws473vaOElIR
-	 dUGryHxVz5asQsZwiGhc1D6dCqiHeq88gfVDNuslgWqkGi5lQQP8IVrAkZwPBnuL5F
-	 AhbCCG3Pb0ZuzyCND91nwa/v0KsO7/pMp9TVbz/MsRydZlXlpZzvL3B1q/mO2hx5eH
-	 6FFpKCA3y0F3bJuNjTkXh0pt0lztkIS9GX5nJZLKi8yykdnUkdfdCeeEllMbdSx2xx
-	 /+XFAKcy+FeMA==
-Date: Wed, 18 Mar 2026 09:15:31 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/6] selftests/liveupdate: add framework for memfd tests
-Message-ID: <abpRE6cfsyuoeiiq@kernel.org>
-References: <20260309115441.266805-1-pratyush@kernel.org>
- <20260309115441.266805-2-pratyush@kernel.org>
+	bh=Rp7+h0doflGXOukRq82H4Fs8MStLttKylnpU51TIfKU=;
+	b=2uTrM6jaheHA9xsxplg4Hj83O7M5udY/8CXaDbhJgoi8cyomViG3RdGAhhmO85xs0itebl
+	Ji363Q93sXYS+OXGM+yS1EC/HynrVdK8yc4OHUPG0aXX/WegvyS96H0w1TL5IM9GR8oS0V
+	AU50kRlsrJUxy/7zGVTi66zPaVMwALU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773818220; a=rsa-sha256;
+	cv=pass;
+	b=jOjLQefAQUu9GBEu6b5KLjMVgpG5V8nzxk3Ka4fPezl3JdkxdC9i5rI8EvADPtkaFamXfZ
+	9A4/T0gnoVCrwb5dXzjM1UxqvY6A6y5LQLX0AZcbiLgAQ0Vv7FBMXZS2l48gN/uCbINkcR
+	23DeWTZUmDPrQfDxAbhHRpal16kd/Is=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="XY/owpya";
+	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-89c4f7f8650so48357436d6.0
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 00:17:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773818219; cv=none;
+        d=google.com; s=arc-20240605;
+        b=esBUY2Hr5QXqFJNBdtu2feO8Z4/x4a3wGp41f6wPYb8DTAwXS61m/cMjS+aG5b6kIH
+         6VmYVhTYyI31uB2iTQrXXKMvDIFsCWZy2LZ5YikOVeL8kEYxFhZIrkH/dkU2StxbyZPH
+         B/kESvtVvdwtMQLbR+k88VFxdVcqZzYqlr+EfNUmZhuLgKTRPCO9NOoy654W3Ak9fORx
+         eFweC0we6ENN7UQwKIoxrjG25GoQ0iAW37jq+zSFUAYzqv8L8U0Pu+QPO/cWo2yDzlRG
+         Q4UzpKWZrRLY3fFodJQGEd1QgWDcNz5DlXvx8kBbd9jiib/lOV02PhyFLqE6URJltdNc
+         8LjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Rp7+h0doflGXOukRq82H4Fs8MStLttKylnpU51TIfKU=;
+        fh=D53f7Fo8+mdyXh1sJiYliixSE/1MVwMwoIjIryOowkw=;
+        b=T8AzReSdKnO+exQL/8KnnoJS4/AWJ8fI6HpbrSIj/5nE56SWiR0qYDqVj205TSToxV
+         tmwbn6qZtjHjiQbyG+V1pBKNMe62Uf4ZzoNdQkoxJD8Jf0ua7ChN4zT5SucY64p0X8Ez
+         j9oK8qPkX3fY1/MpD3lsOIyEqppLzlOt9L7U36EYo8UNlmgwK0ALS66dfIjZ+/O4xMOn
+         oqLxGBKLQGHRaA3lfduxGu8XjrmbHZ4XHgMM4oGvYpIMDbtEnLrAUgJOlwzfviMNIYL2
+         DnTyg9no+RUJcVHgCAo3FlaguFVOCBcTCGZow1Hmw20jIoR232Ino8JTZcaEyHFI9Ne0
+         kDbg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773818219; x=1774423019; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rp7+h0doflGXOukRq82H4Fs8MStLttKylnpU51TIfKU=;
+        b=XY/owpyae4AEz5NKomK6bRMSf58r8zSLKCWRHYm8bE/20IudmFf02GSkMlIpA1O2ER
+         X3UicmU8g1FYbdPyfkhI87pv3VtrwYxIoYa+QrI82JL5g9/n36U1xzO0E9HJRjBuZqyv
+         ijV0M8syjllHu4wNwWLtLbsuL7f9QYwNsjd4jMm0FDiHnmTWw/ceXO8QEHKy5/tk/Gjt
+         aGFnkaEmfDhrFvvddiQUfdh1rqdI3GA4WfMclN6w2K581yVj9yLIGyni+FcPbY3/5Ang
+         fQC8dpGB5fgpbCbRl0+HsQmRbwwNY3j4JbUIZ6x/L1z3vWi9e69v3qEOCeMEHGkG8BEz
+         5PmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773818219; x=1774423019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rp7+h0doflGXOukRq82H4Fs8MStLttKylnpU51TIfKU=;
+        b=Bv+vK7FwYzq1/oX6iiliX2mCSzvu54QjLj4TPvygwHzURez/8x4sxmPDcokSsznmex
+         4RwHzmLJPdiq9fuedVF+UZ7nOwiNYvh9raufDr+BA94vrj44qYchO3r+H9zT3mwXU/O3
+         quZ6VcImW6BwYheVCbo8l5mjCYZMehaWkAT2T5CVdHxMaHr5YxZBfKMqpi8emlvcztiU
+         OXAihVElOS2B6M/pM8sOl9LeELZ2sS/icdAxRDK/IlA9IrxycYigTwjW2mWJ6Yl3Xe+O
+         +eEoKfOfwvCqJLzKRjYEJszRM04qUKjGnvfa3RST0jso0nWW3oNWjpLmm7gqasluj49b
+         Rv7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXkpbK/FOHMQguScY3JHPHbzydYPPUtYWWRiFpBubUYAvd48SETDcs1FV1OWNqeZAHdOvhl3L31dA==@kvack.org
+X-Gm-Message-State: AOJu0YzcE072gBI0fvg6ixBAjB3N3YFWpCfXvSJICZWKGztekt2KO6iR
+	lMUI1HUSnPhV8ThCmJvaN3XLijyrnbRys0ox8BYmvjRFkhInbc2OcJeZ24DRxf1572cmsQODfgo
+	ol3uVF5Z27Z3BNDvYLdQqkZHQXe2PxcM=
+X-Gm-Gg: ATEYQzxFh+T8cfuROKNa0z4tpOWlx6zSEr8UF7f0v3WYHYO2rV2xPdmdc2pq3ZskHsX
+	wlO8Pe9HJVv3cehDRTsSt2Ba1V/lJy5XfrZCzipIqs9MRQS4K5LRJ6FGwoThEKbZPeH869OXS+V
+	RHL1fH2VOnMM9yyAY0vQa9j3uKb/SKVgiOyzcmsQNdojsJ2vC5wZTG0jsco0EydJiNifh1uOMUn
+	9rm8Easo1e2XNkya+G2csSW64g5d3nEG/Yt5EcPpsYzi8YyRzhfFXXcZefwCru9eknKybU+l7of
+	msoi/Q==
+X-Received: by 2002:a05:6214:2dc9:b0:89c:52b6:ba7a with SMTP id
+ 6a1803df08f44-89c6b490e69mr35139636d6.5.1773818219175; Wed, 18 Mar 2026
+ 00:16:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309115441.266805-2-pratyush@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 75CFB160003
-X-Stat-Signature: jm1iqdiwdzcxf1hn3azmf1upx98nq4xp
+References: <20260318-b4-switch-mglru-v2-v4-1-1b927c93659d@gmail.com>
+In-Reply-To: <20260318-b4-switch-mglru-v2-v4-1-1b927c93659d@gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 18 Mar 2026 15:16:46 +0800
+X-Gm-Features: AaiRm51XzoukxjfyFHtsHhfDYDts37UvlaucsPU_xoBbYFa3LYp9hOiYs1EWWUY
+Message-ID: <CAGsJ_4xHvtjkPp5Ar16UXqZhQYHpdYcqCWMmFbGGUvK-kCH+uw@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: lenohou@gmail.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Jialing Wang <wjl.linux@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 48jgi4p46ofigw9tmcyq8dsbwuzswiyz
 X-Rspam-User: 
-X-HE-Tag: 1773818139-144513
-X-HE-Meta: U2FsdGVkX18NyPtjQqU6VW5vuJPbgxDA6YuPMxFeE7WMMGzyao+wr26jhEcEVluR1eJ3/Ro4ZE250y4tWKy3D1Fdpxez7oK2nVtwus4EsUiLoVvckyCLO9QNflSDlhS6JfKBaDABmhp4TV8KtJTFxeZWpMo9dapZIuCLTlariEBi68VxBXChPWrxeOZYrdVGkiukPyp2PXsFKP8XLLp/a/UOuowDzacefqeUyLEVS10c4EMojd5ifPxmw/rRDZywwObnQJmHU2YZxf8Jz04B8y3DPWx1wjjPzpSoZLOFafL/gbdVXINkItsashr6BKs/DzoORHdd80TVTxdBrWzl+Zpp/CAGNz/I0H/zkpyyTkl3Hu3cx+RuPZKrYoms0lVB4IeXXxOfKtyTAPNu61MDCdesLFX4jVKz4kwIAFDgeSelrfvSanWjuVA9qdBtG17RdaX3AFZatya94yecZ2y9IUHdquznJkZULrzbFEFE0xr7ELbK/Fdgl1YPAS/ruD69KlVuQ0J0uvF993BK1Nqn0L0Ss08mjF6uLCCZ+CKAhsN3oQalmLew+sC+0WZFdEAtpbhE+JwESnb8iC3g9tmA7/1Xyqcuk39FlGcQdlYg8Z1amkL53cWUUxMfiaNJb8vEVYaaH/wdOfFu4fwOQFVuppp82vsJBpSBBe9Rc2tkVR6EKwdkHqHEi64f3+/G91MQr+Z+OGGGa/62BkunZ5NWwZ9I4xh+5/X8/qdlk2l8jm3EjfS0CflfNsiRWh1Q/lzgpOC6m7wMeD9kmllUaDJo8lx1xP3WECDA1jIO5c/oZzDv5f89G6yGiXnKIL8fo1Rb2S+P9RxqCBFrz2SXalGn2+hqSeoLaHFJG9tmdfNnsEdHbQjASRjQpbIu2i1ozfMPMbTTHklKOLc9RR0ht8jdn/NVGdEnNTrlcHOHY7FT01BknlBrjgaHoQCHl4nLOCdDs29Y/GwRJ8Vij1XLcww
- QBeAqi/F
- e4PByF4Kpa09PeTeIAOkLBxx2VBQLHcKdn/7WKJxdagc2zkJhWXCK3yt8ZkkFASQH4V8fTcMMjXCAJqsRkyxtClruMNN5mewguJaUuTVcbjYJc3cbU9F/MEulC51vJ06yM5xKWtGog9bUqymZ1wZRYXHMAWAzYtmSnwgR7FoErOadqIkXGv2uoPINZOd6r/75EUgCDcKB0TzMtgoZW9FnCZw+RZZDxEZ6zpJ846J7hw6p7znm5O9leKoxgQqM6nBszDvo3UJ6BccVm6eV+RfIYHGZhTjd990xknheJw1myqMDEEn1UffLaP3fCQ==
+X-Rspamd-Queue-Id: 80FB640008
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773818220-786993
+X-HE-Meta: U2FsdGVkX1/7/0AhxrE5tM4ZODctJ+Lsp/JDaNrAjvaVwebnhyygiwMA/d98ABR2b91gRt7cNQ8jd0N0zdGtIvWuScGqOGc2NJvZncuKMO7vKkF8CMAa4KTnxAOjRag35dIaw0ueaLiASGNDG9HHC7FEfLwuBrxa1swd5HCOrY9coJRizKFQWzXtBhl57kDAZYQyJHf6IMUvaLxwaKYIxH8wGvrb2VB/MIUlSddMQj9xxTJ8lHhj/VcZaOnFbSB9HV453/wtLk3ZQ7F4tKijFSfaRWdBMzKSIlM2FOlox+ljffmXouvPxx6xEtj3MRGDgrvQpFRwTYy18MDbKdYZbIJ9aHdtMD93MByJJFkbYhKYW86Di6BdyPAKvU8zASlFm7d/8YFke1FaNxgtGg5KvYEM/TA/CrLzs/G5Fvp40l+LeQ075UUSjQwAu+KoBNe3xTL11NwqcpLm+LvgK0yEy0Xt1kbrQmbdMGXkSO/fuDX791q8t1HkwEg/lf6zuQfGYGWfGZQfbVy/OERAyHb757atUNQ8IiJ1qnfUtMsxrwkIufqFGyu+SHnyOzsqt1bH+xzIo9t63E6t1X0sZ8+2Xdk8u0J83N8QHn1dBojvJlHYDRg5n8jE5zyIEmtsZ8v1UfYuuikKSmIit0kRpQBTIB6/28t3oWy1lHLkPovGKHLRlXyF5J2teGmWgZaDBmbTvL5ZrL8apvLsT3g2Yy++lOjO7k6N9r+BbYAK2jYpOyTAaqgj3MD9zwnO8UScCCiA1IwL2KYUjiWY43+S04YfBttAxltj9ijsuUyYRSypHl+jAsOrQ+B/2OZpL4WuvB95yu/OknsyJwdtG/75Ffyw+7up2oj6N4cNzl9etQYIRGS3RDspW0dDAMLDTpNGr82ZrWBq/Qd4vxwGj0Ok4wMn17nV1dAs+SuGtn//ofd0Bmnau6x9sAZ8Ha66TUie4cQXNZXI0g3whMPliOwTiIY
+ PDrArWz7
+ +dL6XqkX7xwRcapYkdPd9Rz03aHDyuUkmBNgxRkvciSoEi3JunpDd4MvUEXxZMUvN11OFwIexhclH/WeE8b7VtJ9quA9LnBTd1N3ftNiQNh7B/Wor9G0cn4mqU76qRZng5j6MEblmIwk5WuMM9BbKPCNjftPY+IRxY6ja+Uz1mRPmwyY56Sn3Ftc6bxK4kAVAyqDtlXbGwng9cP///WLd6E84Tt//lRKoOZ8RtltO747Kj9pGOVFhIGyB40vLvWm2vhRtkBQC0P+vG8cYLi14eSdfag5Sbcxs5Ad3kWoICF/A5J8N0wAgCrG2WSWfoUUtta1F7QbYXMWSB2vAVDtw4vd6Wo8tt83bjhCXCDxAjyWLB7wbHD3JdQqmWWBhPUgkHgWDJLL8Sl2QyVrJzX4Q7ueR1umMDQK9mlc5+oufdLXHEi5IBF/CqedEQK1TS4DZX0TeT0V3GAjaox5/Mmzd85jZAwh1F6sOydUiILhDY1qPIeBIfLryL84Uq33cAho9XV19EcY6i0OdBZU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,161 +141,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 11:54:34AM +0000, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> Currently memfd preservation using LUO is only tested indirectly via the
-> luo_multi_session or luo_kexec_simple tests. Their main purpose is to
-> test other live update functionality.
-> 
-> Add a framework for writing memfd tests. The framework hooks into the
-> kselftest harness, but adds some things on top to make it suitable for
-> live update.
-> 
-> The LUO FD (/dev/liveupdate) can only be opened by one process at a
-> time. Each test runs in its own process. This means the LUO FD must be
-> owned by the main process and shared to children. main() opens the LUO
-> FD and shares it to child runners using a global variable.
-> 
-> Live update tests run in two stages. One before kexec and one after.
-> Detect the stage using a special state session. If the session is
-> present, it means the test is in post-kexec state.
-> 
-> Additionally, take in an optional --stage argument that lets callers
-> specify expected stage. This is useful as a safety net to catch LUO core
-> failures. If LUO core fails to preserve the state session properly, this
-> option can help detect this and fail early. Since the option is not
-> recognized by the kselftest harness, remove it from argv before calling
-> test_harness_run().
-> 
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+On Wed, Mar 18, 2026 at 11:29=E2=80=AFAM Leno Hou via B4 Relay
+<devnull+lenohou.gmail.com@kernel.org> wrote:
+>
+> From: Leno Hou <lenohou@gmail.com>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+[...]
 
-with a few nits below.
-
-> ---
->  tools/testing/selftests/liveupdate/Makefile   |  1 +
->  .../testing/selftests/liveupdate/luo_memfd.c  | 77 +++++++++++++++++++
->  2 files changed, 78 insertions(+)
->  create mode 100644 tools/testing/selftests/liveupdate/luo_memfd.c
-> 
-> diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-> index 080754787ede..051daae55eec 100644
-> --- a/tools/testing/selftests/liveupdate/Makefile
-> +++ b/tools/testing/selftests/liveupdate/Makefile
-> @@ -6,6 +6,7 @@ TEST_GEN_PROGS += liveupdate
->  
->  TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
->  TEST_GEN_PROGS_EXTENDED += luo_multi_session
-> +TEST_GEN_PROGS_EXTENDED += luo_memfd
->  
->  TEST_FILES += do_kexec.sh
->  
-> diff --git a/tools/testing/selftests/liveupdate/luo_memfd.c b/tools/testing/selftests/liveupdate/luo_memfd.c
-> new file mode 100644
-> index 000000000000..b779eee18387
-> --- /dev/null
-> +++ b/tools/testing/selftests/liveupdate/luo_memfd.c
-> @@ -0,0 +1,77 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright (c) 2026, Google LLC.
-> + * Pratyush Yadav (Google) <pratyush@kernel.org>
-> + */
-> +
-> +/*
-> + * Selftests for memfd preservation via LUO.
-> + */
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
-> +#include <unistd.h>
-> +
-> +#include <linux/liveupdate.h>
-> +
-> +#include "../kselftest.h"
-> +#include "../kselftest_harness.h"
-> +
-> +#include "luo_test_utils.h"
-> +
-> +#define STATE_SESSION_NAME "luo-state"
-> +#define STATE_MEMFD_TOKEN 1
-> +
-> +#define LIVEUPDATE_DEV "/dev/liveupdate"
-> +static int luo_fd = -1, stage;
-
-Nit: declaring stage on a separate line is a bit clearer.
-
-> +
-> +int main(int argc, char *argv[])
+>
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index ad50688d89db..1f6b19bf365b 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -102,6 +102,12 @@ static __always_inline enum lru_list folio_lru_list(=
+const struct folio *folio)
+>
+>  #ifdef CONFIG_LRU_GEN
+>
+> +static inline bool lru_gen_draining(void)
 > +{
-> +	int session, expected_stage = 0;
-
-Ditto.
-
+> +       DECLARE_STATIC_KEY_FALSE(lru_drain_core);
 > +
-> +	/*
-> +	 * The test takes an optional --stage argument. This lets callers
-> +	 * provide the expected stage, and if that doesn't match the test errors
-> +	 * out.
-> +	 *
-> +	 * Look for the stage. Since test_harness_run() doesn't recognize it,
-> +	 * once found, remove it from argv.
-> +	 */
-> +	for (int i = 1; i < argc; i++) {
-> +		if (strcmp(argv[i], "--stage") == 0) {
-> +			if (i + 1 < argc) {
-> +				expected_stage = atoi(argv[i + 1]);
-> +				memmove(&argv[i], &argv[i + 2], (argc - i - 1) * sizeof(char *));
-> +				argc -= 2;
-> +				i--;
-> +			} else {
-> +				ksft_exit_fail_msg("Option --stage requires an argument\n");
-> +			}
-> +		}
-> +	}
-> +
-> +	luo_fd = luo_open_device();
-> +	if (luo_fd < 0)
-> +		ksft_exit_skip("Failed to open %s (%s). Is the luo module loaded?\n",
-
-LUO can't be a module :) Maybe
-
-"Is LUO enabled in the kernel?"
-
-
-> +			       strerror(errno), LUO_DEVICE);
-> +
-> +	session = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
-> +	if (session == -ENOENT)
-> +		stage = 1;
-> +	else if (session >= 0)
-> +		stage = 2;
-> +	else
-> +		fail_exit("Failed to check for state session");
-
-There is ksft_exit_fail_perror(), would be more consistent with other exit
-paths.
-
-> +
-> +	if (expected_stage && expected_stage != stage)
-> +		ksft_exit_fail_msg("Stage mismatch: expected %d, got %d\n",
-> +				   expected_stage, stage);
-> +
-> +	if (stage == 1)
-> +		create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-> +
-> +	test_harness_run(argc, argv);
+> +       return static_branch_unlikely(&lru_drain_core);
 > +}
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
 
--- 
-Sincerely yours,
-Mike.
+Can we name it lru_gen_switch() or lru_switch?
+Since =E2=80=9Cdrain=E2=80=9D implies disabling MGLRU, the operation
+could just as well be enabling it. Also, can we drop
+the _core suffix?
+
+
+>  #ifdef CONFIG_LRU_GEN_ENABLED
+>  static inline bool lru_gen_enabled(void)
+>  {
+> @@ -316,6 +322,11 @@ static inline bool lru_gen_enabled(void)
+>         return false;
+>  }
+>
+> +static inline bool lru_gen_draining(void)
+
+lru_gen_switching()?
+
+> +{
+> +       return false;
+> +}
+> +
+>  static inline bool lru_gen_in_fault(void)
+>  {
+>         return false;
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 6398d7eef393..0b5f663f3062 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -966,7 +966,7 @@ static bool folio_referenced_one(struct folio *folio,
+>                         nr =3D folio_pte_batch(folio, pvmw.pte, pteval, m=
+ax_nr);
+>                 }
+>
+> -               if (lru_gen_enabled() && pvmw.pte) {
+> +               if (lru_gen_enabled() && !lru_gen_draining() && pvmw.pte)=
+ {
+
+Ack. When LRU is switching, we don=E2=80=99t know where the
+surrounding folios are=E2=80=94they could be on active/inactive
+lists or on MGLRU. So the simplest approach is to
+disable this look-around optimization.
+But please add a comment here explaining it.
+
+
+>                         if (lru_gen_look_around(&pvmw, nr))
+>                                 referenced++;
+>                 } else if (pvmw.pte) {
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 33287ba4a500..88b9db06e331 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -886,7 +886,7 @@ static enum folio_references folio_check_references(s=
+truct folio *folio,
+>         if (referenced_ptes =3D=3D -1)
+>                 return FOLIOREF_KEEP;
+>
+> -       if (lru_gen_enabled()) {
+> +       if (lru_gen_enabled() && !lru_gen_draining()) {
+
+I=E2=80=99m curious what prompted you to do this.
+
+This feels a bit odd. I assume this effectively makes
+folios on MGLRU, as well as those on active/inactive
+lists, always follow the active/inactive logic.
+
+It might be fine, but it needs thorough documentation here.
+
+another approach would be:
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 33287ba4a500..91b60664b652 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -122,6 +122,9 @@ struct scan_control {
+        /* Proactive reclaim invoked by userspace */
+        unsigned int proactive:1;
+
++       /* Are we reclaiming from MGLRU */
++       unsigned int lru_gen:1;
++
+        /*
+         * Cgroup memory below memory.low is protected as long as we
+         * don't threaten to OOM. If any cgroup is reclaimed at
+@@ -886,7 +889,7 @@ static enum folio_references
+folio_check_references(struct folio *folio,
+        if (referenced_ptes =3D=3D -1)
+                return FOLIOREF_KEEP;
+
+-       if (lru_gen_enabled()) {
++       if (sc->lru_gen) {
+                if (!referenced_ptes)
+                        return FOLIOREF_RECLAIM;
+
+This makes the logic perfectly correct (you know exactly
+where your folios come from), but I=E2=80=99m not sure it=E2=80=99s worth i=
+t.
+
+Anyway, I=E2=80=99d like to understand why you always need to
+use the active/inactive logic even for folios from MGLRU.
+To me, it seems to work only by coincidence, which isn=E2=80=99t good.
+
+Thanks
+Barry
 
