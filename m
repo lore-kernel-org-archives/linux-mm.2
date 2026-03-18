@@ -4,171 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73758103E199
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE97103E199
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 15:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B43376B0274; Wed, 18 Mar 2026 11:26:57 -0400 (EDT)
+	id 1FE856B0276; Wed, 18 Mar 2026 11:33:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACD4A6B0276; Wed, 18 Mar 2026 11:26:57 -0400 (EDT)
+	id 1B0126B0278; Wed, 18 Mar 2026 11:33:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96E126B0277; Wed, 18 Mar 2026 11:26:57 -0400 (EDT)
+	id 077AC6B0279; Wed, 18 Mar 2026 11:33:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EF6B6B0274
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:26:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 171E413BB0C
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:26:57 +0000 (UTC)
-X-FDA: 84559561674.01.5490E33
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012051.outbound.protection.outlook.com [52.101.53.51])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0D8A8140016
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:26:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=m7cawqUc;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E828C6B0276
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 11:33:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 805331B8A94
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:33:43 +0000 (UTC)
+X-FDA: 84559578726.21.F73970D
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A1356A000F
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:33:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mqcdum8w;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773847614;
+	s=arc-20220608; t=1773848021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lXqZA9zN7T90QFSiyVp1GjLsHZraE5Om2AWUj+QTzAc=;
-	b=AswPpFlBjhL9l0FdO8DYeYeehLY7hEVlPXkRN23JDyNhIdhAu1ZPAG3oDFmPqqp7xlI+2c
-	PBlvXTLUDKDCV0CZbdIYMpeeHPN7/PEdGEVRZI2UwBSB/gVDJQrHTLJSZJXG3J3kVGQXf4
-	/2QeBO5mXBVYBPS7ng7aQTCV+zcNrN8=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=m7cawqUc;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773847614; a=rsa-sha256;
+	bh=nGhskv71iGk4a6C8n6je30dgNR8JdURCG8MPG7t6BPg=;
+	b=LWQm0OwKWsgmbQEzXf6IEVVKF6yYQ0S/m3qtmoN8PEBxeNZnRTojQc+J1KzzsvgwJ+JQZc
+	W2cMow8wJbrLkGCeDT0fVOdsLO8Ak0Iryj6x7R/fbKyLflJPBK1CEiV9a1jK8zLi6X8M3l
+	sNzf4EOxTKg6yml9WxZiU1e4wli+jdU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773848021; a=rsa-sha256;
 	cv=pass;
-	b=XlbmGICcLbIZLYs2DC1OeEfo6+2Irn1L21tu8ebZLvA1TiIo+ynmuGempE8tv9ilmCrrVX
-	HIWZlfD62vmDowA9Gb1PF2Z2bikgjLLpmo2j/8R+VO0Mxjkn3JaY6D9jc8wxEm5wtHypj0
-	sHSOROvpLZ7xxj+MiyW24rJquesHQkQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JYjAGv3GCA3mP6f2RY+jbBj+Z9NgwbVUeEJGvVO4dFUATsbWBkNHSELAx+GfRylelQrvn8YWWXya8eYZFRETKgyNsGu/qEEn0lncj+KArDJ9VX8OoPuXeJ/J4EWzS5cFp6B+cHsUQyMIZzqsROrrtoKVk8XTwxzfDEO+IF9DvkpkOUYGrWci+ScLDum59ippfTvcFfaB8Mad3xE6P6z1y6GbjaA07pd/46Fhzn/4dHWlGbPl+7gyaecGSHZVqXEM7lKRlykTnUqhv8XkcGKUvUry49Cz0scFfzI8CUQqcMNL6EJaZNA2SSCZGwiucCXMTQ459ietLRFoJR2aYZcyog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lXqZA9zN7T90QFSiyVp1GjLsHZraE5Om2AWUj+QTzAc=;
- b=SnH9imPlAS8racnz9dnfQS3cft5JYbhsMt91473zM+JsltSGgiXnfNMwIquvQ3+Hg1gLIdnfYouGdORG24D1MViKqFEYq/GawfPg0I4OBuXeSCDkbt78mUC8e+qzNoIzcCWpiRYHjdavMEJK/YQKtttQe4lZF26Bj8w6WHPW+cdXapvDFUlPNx/9lT3LRVB/QGNcNjC1+jDDgnCjkWainUHRuY3rJrMUf5KnIJPyLPcr2dL1PtVoYDWgqB5WEByp5SsgRE6xq/SpvF4NEhFQZusradjLSdIc93CFqFnHCDjmkWGOjSqX9rdWsSuUYCe3tiKB/wkX48MvDVEsAsKcMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lXqZA9zN7T90QFSiyVp1GjLsHZraE5Om2AWUj+QTzAc=;
- b=m7cawqUcVkdmDbk0K/wGr5qqTKEJ6yq5UAPxdfzkxPRZ8p5InDfM+MNb7rIhljSQB44lj/zHwNKY5YHdPu22QoMVJMsW2Tft4aVJ0vFfQl/9HNVJKMFUwYqLgwn1f3roydmeNcEP6d1ScO2TKK8GTyrV5Ee81QC4kDgYC4sFquN6ULBuWjFUUBkF5DpPkrn8OaDFJowhzpgLSEj78VleabKq7pgPVrqPBCWHJ60Pvdrxe+t5B/uzVVZPl8AVo7tigDfjHtxm+bwtIs9zJrUULXMsJ0GOf0peh2t3phNhK7Yr+UTyGLd+a1HEpnS6N0/4YhOUHSdAzsX+gmPGfG3EZw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA1PR12MB6284.namprd12.prod.outlook.com (2603:10b6:208:3e4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 15:26:49 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9723.016; Wed, 18 Mar 2026
- 15:26:49 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: =?utf-8?b?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>,
- Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-Date: Wed, 18 Mar 2026 11:26:45 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com>
-In-Reply-To: <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com>
- <AD9E1B18-C813-480E-894C-FEEB51EE8A93@nvidia.com>
- <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0124.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::9) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	b=e0IVOxIxYOWeY/k3qkgun/F0vjBzw8fYCeIBG2UE+sWtST/QgtgsSI+vDKNNsRozLDAFaT
+	GyGsX+8fK8istOcGveoHTMsFB0u1rD8tyJhVof8QMrCGQqRevjW3WQtbTVH4QaWsAoGGBN
+	sVA1KjTOGkOq2HArvLJXKdaTUdx6OmA=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mqcdum8w;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50906a98ffeso571971cf.0
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:33:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773848021; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CTTO/dv3byhBuR94H82icnwdRLP0MV15UAUndR4WoUvh78h9ccz8+ixMJurqtZP28s
+         gasRbW5iB/3rbtzWHZVjNqxYg/3wzAoE/euPNtg3VOShK67vhwz1XTx/n5Z2NHvnU96C
+         RRlB5exxKKZER+k23yu3idUVgDUXoZSjqJOL90On+39sIaeBQWaDtJoHLo979YZIW191
+         nwZ5CVGC4OyccVVf+tsM3MUM7z39peV4y0OSK/xjgtPn46cXGztC3bQoT6yNP27mdN7p
+         uMXV8zwiRPBI8dbdI9Oe2+zL6948m6Cl3hxq8GxnOkrmwf/7Zy35GtTZ4QBVyAUb74Yp
+         CZFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nGhskv71iGk4a6C8n6je30dgNR8JdURCG8MPG7t6BPg=;
+        fh=jfqxfJmyYR7DdSZV1fpxq2lvrpWLGVn4vW6sj6xg3Qg=;
+        b=CjI8XvlE/iBz+qCwtMWFz21qtvNswWoGtbFIRyJlBlssUEzSAh3ii4KS/erbjvpxEY
+         uo87UeG3EXyGslzWSuhppOzZ7Faf208K9jATstAHKDdxEzPJ9fH4+9cKb1uM9U9BHssl
+         OTrG/DLJqlsCkRnfknIUjYt6RlqMJi1TtT8dUmQTpM4xsjDzhLKTJmXClxsiN2eAdIhP
+         Q0kxrlE2e1qhCz1lf1/IILJpLMRXT5NzEpvDwRW+9YnWOFbK4an/KTJFGsiKMejdIPYu
+         H/PQRZlEXLyhu+e1kmeeFj4W4bQFkUbVhAcGOlXLt7hziUzG9DPqgip2eiuzi1j2C+OY
+         +6kA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773848021; x=1774452821; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nGhskv71iGk4a6C8n6je30dgNR8JdURCG8MPG7t6BPg=;
+        b=mqcdum8w3ZiZY0RfacofeGo4CMRCFGlRb7Iyv7xbDAq3wHkR0IdwpEThrjZh7e7PbY
+         uBtok7Bqne+5yo4Eq+VC0GVgmA0DEZwCwcM1wFEtR18l1A2/YTtwBv9vPQ/lyr7e68xo
+         3wKQm+yuo/E8TQr1FKN7M/vueYDvc8tjBj/IWKlWascHaTYALlJZV3ztZQTcC24YAUA+
+         RCSXOoxTutG5p9T2UwsqBkuXiIZhd1vDGUMvv/1ZEmmJ4coQrMeVuPhhWMV4/cW4YEvG
+         rnge7+x03HxpX9+6AOYohYfWqjCxQqgD9DE1TPfG/709jvueY3j+qmqSLIKE/MUkf3D0
+         rppg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773848021; x=1774452821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nGhskv71iGk4a6C8n6je30dgNR8JdURCG8MPG7t6BPg=;
+        b=HQQVHyYrPt4vd3PMaCCFPrJrFB3suj8/xIN4iRMgPnrg6nHkKoOocUdGUZQa/ZlTIB
+         Y5ofISRWPRA70ZisYst30Vi+LQZWWUt4K19o1Wgo4qQrkw7obXcDok+/fw5RPMxCUPo3
+         HX2T+PNsUN+FutujFhZN6Wqp3b7jrF1QYmDBRNZxBdzNwGLDnZ1BkI3+VvGPSMQP4qVz
+         Rq0SGe0vvoTQSXzHuuLyzHAlTMGaO52qYXDraOBVshpsVcGnnRJUOSI2k16mRMVHWE4l
+         x6ekfphNp5pr4pvqycDg8aQqu0Jb/tfcpaCTxZdUi2zetGc0edf6uIGeGSwf5ROE/PvI
+         HHgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWXvw7yA6WFvz8sUgbQEEBmdkWTgjuJHJae5yLUHh0GKrCvbn2tncYlclA9LLNMftf64Bgon2Mjpw==@kvack.org
+X-Gm-Message-State: AOJu0Yz2JFJFmrs8HnJBye6d062Oz6hBev4lCAwJrv+HJDBzjANymXRN
+	bxvlY472NJoO1IxYmILJsV63SjJ6mkN7TYdyHwmgoiu5Fq4CszafaBeQMrtRqgdQ4W/GWeYauXO
+	VBh+mSrs9pmysaOtyB43lwv9qtiF+d3Bfwp5UQypI
+X-Gm-Gg: ATEYQzwVhR0VIqeplb6G291kxTptkncyep2Egrjt+m7PBxYtTQI11xogeIZ6MpJ1Jhp
+	GQQvMVrIroP/DFnm6tzLpF6V3FrJlFjNa5gYTJMD9V6vEgvDE5CbiKJDRLxAz8wkLZ6ETDxXeZG
+	p5D8P+4p87fsTdJ3cXjijdJx0VKl+OGC0boh1zURflw3DhKifpaRG6hr6jfCjuqckbqBrflzY6M
+	zvjjCyTT/7SWcBYWS9iN01rn6+Ho0qcooUyyd866qfK0T67cX0NcEs2Yz8wQsh0dxTPMkKBzY1v
+	QyKtzN3Ou/zKsphF7WRh7Xml4vDjTjEVFC8u5Q==
+X-Received: by 2002:a05:622a:1ba1:b0:4ff:cb75:2a22 with SMTP id
+ d75a77b69052e-50b15a39ceemr13764641cf.3.1773848019468; Wed, 18 Mar 2026
+ 08:33:39 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB6284:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3b86b41-47a2-4e4a-3c9b-08de8502c605
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	9ftB8sqB28Iv7gw4T8Xmlk+PZH/WU3an5/MmQRG7hKVH0aiaOAmMJsZtSuGdvBJdPqpGLHympiFd5GPhMpomdIJl3OVwO6YMGlobAVUWeIYtixniarsw1GzCpxMOcMCyFbruWmGThy2mZ4e3tvHno+afQOjKsx7eCY/9YcMTaM8E/S3IB5U3Mw2Muz1j49ReygQAgGPnoyMIMIU2/bzrGVCMarMYLhNNKWg/wCHBS9l/Fm2GY2EHS94vKV49oCr0aoj3Runh3GEfK34Tk6QDp8LX4PfMS6nOz/Zyx9m8Xf+u4zVdfBvGr8bxtH+FI9uwdzP4+/p9mDCHA4F9hBDAZTF3CjNU3TCDWT4CTJYpIaim36UsNEfJUE3qUlVQIMClFtN1G/rpq3NBP3bjskBm46AHd+TC3B7oMkzurIK2Fm8qzmyBxLi7HaEPPWkx4X9lDb/lZlx57aomVsJheyT1c4j/PiPaIWWvJmug+3mtFT/xlRKGV0AGNSgvFlcyx/uKPEpsmf93GTtXF9ha2fje9xZoJ4oKR+vYMgmc2KcEKZzSL2Wgs48ObCH5Qep/NkCVfgvkD7mp6cz3v2EpC0EkO4/GUpU5PwBdvpNeTCqEHJUlxFsvF1mv07XmQ5LrxfM5MN9eJEN8pHg9Qvq72/Bzcb6NvnPxc/CCcm1fn95Y1wnpJFlEj+HvQLrGmRR4cI0qsqW2A2aTHp+rxuQA/h4Wpt0WOly/0o0z5ec9D2tr4Es=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q3VzSWlRZzhrOHdDMjVmSVVWOVE0aENIdTUxQXN6U0RaZ2l3TzZzeFlWOEwy?=
- =?utf-8?B?eHlCL05xZXYzaGpreEdPTlRUbTNqcWpRVEJpdHhJckU5c3Y2YlBCR1VOMm5x?=
- =?utf-8?B?WTJyS05DOFh4WlB1SDF1amJJOHJ6OXRrcFMvQm1HVk9OV3J6c21oL3JNVnNE?=
- =?utf-8?B?T2hDT3R3Qis2Q1o4MloxWXhOTU8yK3VmOTlPUnpZWTd1cjlVV3RPUldwQzdZ?=
- =?utf-8?B?Y25Ib1BLZmZzSTF4VFZTaXNuVzROTUFSeXFxNEc1eUM2RFc0WURQMDk1aEhG?=
- =?utf-8?B?a0RQVXN6by9XVUdLUUorMUpEbVhHRHZTUGNZanJ6NlpKUDVVQklXRWhtdnhn?=
- =?utf-8?B?MXlxbDFsYmZ0bGpJL0IwRW9GVjFNeCtHRkE4VHF5VCtFM01iM2ZsZkkvbllO?=
- =?utf-8?B?R0ZqeWJoWkRmc3NqT3Q2TzRrcXV4eGFJQU81TlBmNjFjMDRTS1N2Z1dNSGZh?=
- =?utf-8?B?MXJWSy8zdUpja0lNMVEvdlRSOVZZVUVpbzR0M1lCVjNtc3dudGh2NnZBREFK?=
- =?utf-8?B?Uy96ME5rKzFqc2hpRlhaT0t3ZDY3cVAyY0VRZFZndGNBUHE1dy9hTTBIQ21l?=
- =?utf-8?B?enR6aUttb3R1cUxMVFF0a3c5eVJCL0hkN1Rzait2L0JaRmxFU2pleXN3V1Uy?=
- =?utf-8?B?NVJDWm56c2lEbFdJOW1JVit3c0xuNGNoeE82UkxkVWhRSnJlVExYOFhFY3Zm?=
- =?utf-8?B?U0QyQWxkTW1YTWF2ZWdmeVEvdEEwOEw3aHZCNzc5UnFUMjdUdXVSOFJ1L3Vn?=
- =?utf-8?B?VXR2ZFBwN2oxSTg5eG84QzBRNHd0TURMMmFsbVNaRGR2U2gyeFg2OHpPMVg5?=
- =?utf-8?B?MUhkY2l4YkxFejFuSkJ3NWpCa01NZ2tITWZPNlAxZjl5T0hxd3I0ZVdDV2sw?=
- =?utf-8?B?b2RaK1JteDZ2N050QkJZaWhJK3o3TUFadXZ5Tk1KSDJLQVltcTVncmI4a3Bm?=
- =?utf-8?B?V1ViRW5Hb1Fqd0dqbFBWeDE2eU9kdTVxMm1qb3hrQ1ZtOERXQkhNdkNmWXBk?=
- =?utf-8?B?MXljWTRKdHh2WlZ2VC84eW5DalRWRno5dncvcDY1RXp1VEptSXdKQWpzZ1Bx?=
- =?utf-8?B?SHJoL2QyaXl5OWhiNEdWVWNxQ1lIaEI5QzArTnFIeXFyNm9TTVlpTGFNMkdM?=
- =?utf-8?B?T2daOWkvNWE2ajkvdHowdnRITEhvZk1lRWltQUlOZXhFVkhTQkNidVFkeWlz?=
- =?utf-8?B?TlNrWVRWam9EMEtmdTY5ZVBQWnc2ZHRmdDg2eStiVWdReFRtN1JIVko0WGpR?=
- =?utf-8?B?MWF0MUc3NDlkWlIzVEVFRHBJc25KallBTGlXN3g0SkxJTmV6bHdDSmVBS2tW?=
- =?utf-8?B?ZkkxR1cwa0ovMWd1dlVaWU5lVGQyMnFTVnV6MFZLZWNSQURVbjF0eGs5TTNP?=
- =?utf-8?B?Ujk5QmYyOXJtandiQUZ3YUwzSXJHOGU2NGY5RXN2TDVaZUNtRTVxbFFXeXM2?=
- =?utf-8?B?N1NaQkRxTnR4bDVpV0pNZWQwdHk2Q0I2RDhnYWhJTFBEeEpJeTRkWXo4NXhy?=
- =?utf-8?B?Ymk1VnZnMjFDN3JqWVZ3ZE1HRW9RNW9BV0JPQklwRXRTd2FIVVUwaDBCY0w0?=
- =?utf-8?B?VFV2M1liMTgzMnU5d0JVLzFwa0V3TndadC9NZzg2RHVEZzFRb1V5Ri9jYnJt?=
- =?utf-8?B?WVNBelV2RGVLWFRPMUl3MWYyYVh1Y1hEVEU5bGxsS2l5WHYxWUdySG5xZU55?=
- =?utf-8?B?Mk4yTVIxUTJVYXA4SDM2aUp3WGVyd1hTUzB6WmF4WDZPbXJ6L2pHKzQxb2Vx?=
- =?utf-8?B?Z0lnNHg0MnhaU1ExOWw3N3hiMSs2M2dLczg0aFUveENCbnp6ZEZsRUtTRE8y?=
- =?utf-8?B?cFg1UmhDNW1kc0JlOExxbEY5VFZFaXg1c2VmUlVNcTFWSXBvWHFEQXVSRFNQ?=
- =?utf-8?B?amt1WmtMN2JYWTFhbzZoWWQybmI3cnpSenlHdkJycS91bkdqK3lwdHN1WktW?=
- =?utf-8?B?Z0pIK2daNDArOFRDeWRYN1dEYzNiRzZUQm1UWEZjckVnNnNvRnBCT3BNbEdW?=
- =?utf-8?B?TzdYSzRGbDdVTWVKWU1LU0VBd0FRdUI2cW1Bc3BadkI0OTBLazZyRy9kM3Ri?=
- =?utf-8?B?M1R1VlFqa29pUU03YVU4VE5iTVlIV1hPUWhGcStwVFN2M3hsYVE3SHArekVj?=
- =?utf-8?B?Nlg0WFcxZWpaRGM1L2ppQ0NhZUN1WVVRamp3K1RmVFdLNXlUaGR0V3FjL3B3?=
- =?utf-8?B?VmwrV3dWaFhpQkptK1krQksvZTlQTENramxvVUE4OERhMCtiYWRmVHlwV2t2?=
- =?utf-8?B?aFJLRStnUHVnZjVVK0cwem9JVjA4Q1ErZEh1SU9Sd2VDYXEvdVFQbWdEZ3cr?=
- =?utf-8?B?RjBmUTQzY0svNUkrMHZJRElRQjlvUTdEbkV6Tm9mVmlOdkg1ZVBOdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3b86b41-47a2-4e4a-3c9b-08de8502c605
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 15:26:49.3279
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9s/TvXbF4hicVG7Kj5sNgYvYMA07jaUMbxlS/NIFo+kPRfClW25oTkuXvnoqu6MW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6284
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0D8A8140016
-X-Stat-Signature: cugyoshwuexx9qp5hsiyrgwcf4akhj8i
+References: <cover.1773695307.git.ljs@kernel.org> <72750af6906fd96fb6f18e83ac3e694cf357a2c1.1773695307.git.ljs@kernel.org>
+In-Reply-To: <72750af6906fd96fb6f18e83ac3e694cf357a2c1.1773695307.git.ljs@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 18 Mar 2026 08:33:28 -0700
+X-Gm-Features: AaiRm508CWHJHcUlp19xyhaUwtV3CnPlFdxPDN6Oc3HfEVsGmxYRJXSDE9dIRHk
+Message-ID: <CAJuCfpFr8_uU28S=v7y74Opa4L_4s9J70NgUXg1WGmraDhsxRA@mail.gmail.com>
+Subject: Re: [PATCH v2 12/16] mm: allow handling of stacked mmap_prepare hooks
+ in more drivers
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "K . Y . Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Bodo Stroesser <bostroesser@gmail.com>, 
+	"Martin K . Petersen" <martin.petersen@oracle.com>, David Howells <dhowells@redhat.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand <david@kernel.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
+	linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org, 
+	target-devel@vger.kernel.org, linux-afs@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Ryan Roberts <ryan.roberts@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1773847613-832812
-X-HE-Meta: U2FsdGVkX1+gOqjMGlkdIxzkVpmM8/BYSYxb6+ULzQvW0umggz3R0uwwZAF07v8KdUPfMLcBizguSbXqePyNkEPcXcMqDLAEGqUWGEIwrTPmM2OqOCtY7xDS/Aa64ItjspfffXFhNtqeYSi4XNl250N/Tnf9iYrsAvIf9N8yEL0NmjWlPzshIkkpxbO8oYne78B+hnqSn+ZwTG7V6Ntc2ay9YkomE+o5Y0R673RweOPD8ICSZVAlhv3TIWltredK4ytzoCCr7LPHoAk0+LSjCEPdI9GR/ma6cQNZ51g0k1dCJwr/+NgmPyfXeLdAIwue5g1VsDr7rxZX9FhUcu2oXCJUk6FNz5q6iY/E6hNzOv6PGTDRGzyGrO/WOhPEJreknCeaC/nUn7mjDbLLGQ8C0fzbCNRxI0QberrsUT8DmGM4hN0fndBTBjaOoNqZsofbP9atqJjgjucOWvPqJuwKo78qJ1N/+c//7NTeEHP0Sl40odnf46cWJbhQzXTdIBibhJtyKGgi2QkRuALTnWGv6825QdJHBCOaPKHa8eIJfofxapO6nWiszCrHO51UUijB0qVYmYueWMlNjt/j/wdKX09aUXhheS7lutNV0ZvABP35by/RYQ4g8OLDpm2/fFQGpm23WfnIWEHRYrgHMUneuLqLYq0whIEmqmfPZ9Y80x+9K34lE0KgamugLJh+sCcDEas2PRj3C8LaUDy0tjYBDKzgPf8S76HuffJ2YxQ8/iZtcEZYvnIZ/CDr0tnzGvieqAQkfsTltVnMnIeEXFgqX4ZLP8/ZDNyt9nWbWwsfXzNr+KxL5FhDlqGsnNqoXhy6+gnL6/LhCge5P5dqW85Wfe2uZAB5saBj1oabXuaKQQNVUsQithLHvCBq8nTqvUr4ex0lr/eGbt7hORmAtAMaM7TawGWWR+2aCdQ1ifELTcSBWfb/wQjJExUt/qY49PkLue8+PtNC3YUcGJ0n2tf
- GIgcmSP+
- +Ar2KXl6TEQbDo52K6SDPOWa7hJYTSpn6z0UytxCXAk9BmxewfphGMTot//YMqoGSazFeVAqWgoNVfF/eNjBBIS82QdKvXWW44FIILtz7rW/A17j0jrdjJCJR9RWtesJIlA80INGSRQk4vhqyRykFh/osn5OSl+XU2k50nGf37Zu4kQl7i3lf52CbhNAl8Ia+nJeC7xb+xLFecfS4X87jWL17h8LXF9nq4+sarQX1hhIOz5DzpwnOa3Rgc/NxEi/7W5vA1TXZ5VIFZ/gewcpJYOo2Xofd7Y1e9LvRAS0dtON1lJG28DvEe0ICgXzI6I/3TuENbR+TxgiO5rtsWpurUJ5aBzBqW5LAjXSkbCbTLEKmg0J47yiRbDdLfmCj5zxUwcak3xvmVuDMjzu9FR3wOgjqB+ldmdsuO9c6cjT1ljd+4BBva7+LpQ53C1hj2kNeLxCi
+X-Stat-Signature: eoi337mrxuci55pnwontcgudnadssezm
+X-Rspamd-Queue-Id: A1356A000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773848021-689129
+X-HE-Meta: U2FsdGVkX1/M3fMoa4h6GNpW856EetLNyYkYSotWyLp31M8yXY4SG9cPrNpd2n8J9BzQB+C2pnjAKmD1oTzgEwVCRld4+XsHXDMi4QjyzsmqtbhSLSELPE0n5F/X0FD5xqiyiKu/GzIYHZlk1lAFhjUkrc/ggz7Wmdq3w0Bz9TkpWQUQRpDXc40rBRmakIVyiDfwS+n7qwIyQyd4XQz1QtW0fnQDG88Y9s0Sr+41rGqyUhMjZBJ2TKvVqd9J6J/TmA6GAZQ2H8Oj6JzTUfAUQMiQ12XDRHK6oTMZEMn9Gt9XH+E6zYxDbrT9YhW+r7NJUF0iGYqoWUEUhVQLYBpSy7tpEgBrlqqiSgqsBPg4eKoqBhj9NVKrd8oKdVZHSY52nz9KqaHsYbVpJo8fo5ZvH6QFf0jeKtSv7SXHLEvaNh5u05ZryCoLQXM8CfGaS4DbJP0Cbl1ejlvCC44rC1z/wM1frI+FxIY4FosuvjLd3UR8O9b7FIV7r0qIE/nTnQRuJqosqY2VoFCBJKrFGEXE5A3yZFsya1QxwbKjI/aMP99V3rhKyFrUS/pRe4vpCiyJRbHEXFY4tteKhKJCUCug4s3VXA3x2xLL8xrH7EgEw8WS9enzoHbXJdy8CG3du//M4zOFgQkY9o41+sAnzOoxZ+bAUczDXnEBhrthSZkfAwFVa2y93mhPGeuyCZCHXTPDCjBrTcaNpoU/49ds+gGeaEL6kdO9KeJ+8GLLTG8iSQSGLujgN5vnOnJuppzRPkBRPPjwlkjzdV6xG+jE4exJVuuTtXREYFO1S2oJTx+wqj1minTEgJSLMyDjfCATK9Fy0dudRaGukmPMuRWyvjCJrUanL2dq1ANAx07wG7utn7GALHlctgDXcvAODYc35ApYwNrUvwV/oWFxMaw6U0o2DRfUzOx1LpcEUYHeS7y0VywTWQdy8u+LW73j6Wvtl5WeX17MTDBGwq2LeaZ0mop
+ nBZUTT+i
+ FF2naVjQT+5KKB+GOxxStTvSWRPjy1G10f4FoK8bRyhzceaI9LJLqN3pKmIyazgD5KggqP36CBJz1f40eCVyMpycilR9e9wAl3A8r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,78 +158,509 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18 Mar 2026, at 11:18, Michał Cłapiński wrote:
-
-> On Wed, Mar 18, 2026 at 4:10 PM Zi Yan <ziy@nvidia.com> wrote:
->>
->> On 17 Mar 2026, at 10:15, Michal Clapinski wrote:
->>
->>> Currently, if DEFERRED is enabled, kho_release_scratch will initialize
->>> the struct pages and set migratetype of kho scratch. Unless the whole
->>> scratch fit below first_deferred_pfn, some of that will be overwritten
->>> either by deferred_init_pages or memmap_init_reserved_pages.
->>>
->>> To fix it, I modified kho_release_scratch to only set the migratetype
->>> on already initialized pages. Then, modified init_pageblock_migratetype
->>> to set the migratetype to CMA if the page is located inside scratch.
->>>
->>> Signed-off-by: Michal Clapinski <mclapinski@google.com>
->>> ---
->>>  include/linux/memblock.h           |  2 --
->>>  kernel/liveupdate/kexec_handover.c | 10 ++++++----
->>>  mm/memblock.c                      | 22 ----------------------
->>>  mm/page_alloc.c                    |  7 +++++++
->>>  4 files changed, 13 insertions(+), 28 deletions(-)
->>>
->>
->> <snip>
->>
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index ee81f5c67c18..5ca078dde61d 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -55,6 +55,7 @@
->>>  #include <linux/cacheinfo.h>
->>>  #include <linux/pgalloc_tag.h>
->>>  #include <linux/mmzone_lock.h>
->>> +#include <linux/kexec_handover.h>
->>>  #include <asm/div64.h>
->>>  #include "internal.h"
->>>  #include "shuffle.h"
->>> @@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(struct page *page,
->>>                    migratetype < MIGRATE_PCPTYPES))
->>>               migratetype = MIGRATE_UNMOVABLE;
->>>
->>> +     /*
->>> +      * Mark KHO scratch as CMA so no unmovable allocations are made there.
->>> +      */
->>> +     if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
->>> +             migratetype = MIGRATE_CMA;
->>> +
->>
->> If this is only for deferred init code, why not put it in deferred_free_pages()?
->> Otherwise, all init_pageblock_migratetype() callers need to pay the penalty
->> of traversing kho_scratch array.
+On Mon, Mar 16, 2026 at 2:14=E2=80=AFPM Lorenzo Stoakes (Oracle) <ljs@kerne=
+l.org> wrote:
 >
-> Because reserve_bootmem_region() doesn't call deferred_free_pages().
-> So I would also have to modify it.
+> While the conversion of mmap hooks to mmap_prepare is underway, we wil
+
+nit: s/wil/will
+
+> encounter situations where mmap hooks need to invoke nested mmap_prepare
+> hooks.
 >
-> And the early initialization won't pay the penalty of traversing the
-> kho_scratch array, since then kho_scratch is NULL.
+> The nesting of mmap hooks is termed 'stacking'.  In order to flexibly
+> facilitate the conversion of custom mmap hooks in drivers which stack, we
+> must split up the existing compat_vma_mapped() function into two separate
+> functions:
+>
+> * compat_set_desc_from_vma() - This allows the setting of a vm_area_desc
+>   object's fields to the relevant fields of a VMA.
+>
+> * __compat_vma_mmap() - Once an mmap_prepare hook has been executed upon =
+a
+>   vm_area_desc object, this function performs any mmap actions specified =
+by
+>   the mmap_prepare hook and then invokes its vm_ops->mapped() hook if any
+>   were specified.
+>
+> In ordinary cases, where a file's f_op->mmap_prepare() hook simply needs =
+to
+> be invoked in a stacked mmap() hook, compat_vma_mmap() can be used.
+>
+> However some drivers define their own nested hooks, which are invoked in
+> turn by another hook.
+>
+> A concrete example is vmbus_channel->mmap_ring_buffer(), which is invoked
+> in turn by bin_attribute->mmap():
+>
+> vmbus_channel->mmap_ring_buffer() has a signature of:
+>
+> int (*mmap_ring_buffer)(struct vmbus_channel *channel,
+>                         struct vm_area_struct *vma);
+>
+> And bin_attribute->mmap() has a signature of:
+>
+>         int (*mmap)(struct file *, struct kobject *,
+>                     const struct bin_attribute *attr,
+>                     struct vm_area_struct *vma);
+>
+> And so compat_vma_mmap() cannot be used here for incremental conversion o=
+f
+> hooks from mmap() to mmap_prepare().
+>
+> There are many such instances like this, where conversion to mmap_prepare
+> would otherwise cascade to a huge change set due to nesting of this kind.
+>
+> The changes in this patch mean we could now instead convert
+> vmbus_channel->mmap_ring_buffer() to
+> vmbus_channel->mmap_prepare_ring_buffer(), and implement something like:
+>
+>         struct vm_area_desc desc;
+>         int err;
+>
+>         compat_set_desc_from_vm(&desc, file, vma);
+>         err =3D channel->mmap_prepare_ring_buffer(channel, &desc);
+>         if (err)
+>                 return err;
+>
+>         return __compat_vma_mmap(&desc, vma);
+>
+> Allowing us to incrementally update this logic, and other logic like it.
 
-How about hugetlb_bootmem_init_migratetype(), init_cma_pageblock(),
-init_cma_reserved_pageblock(), __init_page_from_nid(), memmap_init_range(),
-__init_zone_device_page()?
+The way I understand this and the next 2 patches is that they are
+preperations for later replacement of mmap() with mmap_prepare() but
+they don't yet do that completely. Is that right?
+To clarify what I mean, in [1] for example, you are replacing struct
+uio_info.mmap with uio_info.mmap_prepare but it's still being called
+from uio_mmap(). IOW, you are not replacing uio_mmap with
+uio_mmap_prepare. Is that the next step that's not yet implemented?
 
-1. are they having any PFN range overlapping with kho?
-2. is kho_scratch NULL for them?
+[1] https://lore.kernel.org/all/892a8b32e5ef64c69239ccc2d1bd364716fd7fdf.17=
+73695307.git.ljs@kernel.org/
 
-1 tells us whether putting code in init_pageblock_migratetype() could save
-the hassle of changing all above locations.
-2 tells us how many callers are affected by traversing kho_scratch.
-
-Thanks.
-
-Best Regards,
-Yan, Zi
+>
+> Unfortunately, as part of this change, we need to be able to flexibly
+> assign to the VMA descriptor, so have to remove some of the const
+> declarations within the structure.
+>
+> Also update the VMA tests to reflect the changes.
+>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+>  include/linux/fs.h              |   3 +
+>  include/linux/mm_types.h        |   4 +-
+>  mm/util.c                       | 111 +++++++++++++++++++++++---------
+>  mm/vma.h                        |   2 +-
+>  tools/testing/vma/include/dup.h | 111 ++++++++++++++++++++------------
+>  5 files changed, 157 insertions(+), 74 deletions(-)
+>
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index c390f5c667e3..0bdccfa70b44 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2058,6 +2058,9 @@ static inline bool can_mmap_file(struct file *file)
+>         return true;
+>  }
+>
+> +void compat_set_desc_from_vma(struct vm_area_desc *desc, const struct fi=
+le *file,
+> +                             const struct vm_area_struct *vma);
+> +int __compat_vma_mmap(struct vm_area_desc *desc, struct vm_area_struct *=
+vma);
+>  int compat_vma_mmap(struct file *file, struct vm_area_struct *vma);
+>  int __vma_check_mmap_hook(struct vm_area_struct *vma);
+>
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 50685cf29792..7538d64f8848 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -891,8 +891,8 @@ static __always_inline bool vma_flags_empty(vma_flags=
+_t *flags)
+>   */
+>  struct vm_area_desc {
+>         /* Immutable state. */
+> -       const struct mm_struct *const mm;
+> -       struct file *const file; /* May vary from vm_file in stacked call=
+ers. */
+> +       struct mm_struct *mm;
+> +       struct file *file; /* May vary from vm_file in stacked callers. *=
+/
+>         unsigned long start;
+>         unsigned long end;
+>
+> diff --git a/mm/util.c b/mm/util.c
+> index aa92e471afe1..a166c48fe894 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1163,34 +1163,38 @@ void flush_dcache_folio(struct folio *folio)
+>  EXPORT_SYMBOL(flush_dcache_folio);
+>  #endif
+>
+> -static int __compat_vma_mmap(struct file *file, struct vm_area_struct *v=
+ma)
+> +/**
+> + * compat_set_desc_from_vma() - assigns VMA descriptor @desc fields from=
+ a VMA.
+> + * @desc: A VMA descriptor whose fields need to be set.
+> + * @file: The file object describing the file being mmap()'d.
+> + * @vma: The VMA whose fields we wish to assign to @desc.
+> + *
+> + * This is a compatibility function to allow an mmap() hook to call
+> + * mmap_prepare() hooks when drivers nest these. This function specifica=
+lly
+> + * allows the construction of a vm_area_desc value, @desc, from a VMA @v=
+ma for
+> + * the purposes of doing this.
+> + *
+> + * Once the conversion of drivers is complete this function will no long=
+er be
+> + * required and will be removed.
+> + */
+> +void compat_set_desc_from_vma(struct vm_area_desc *desc,
+> +                             const struct file *file,
+> +                             const struct vm_area_struct *vma)
+>  {
+> -       struct vm_area_desc desc =3D {
+> -               .mm =3D vma->vm_mm,
+> -               .file =3D file,
+> -               .start =3D vma->vm_start,
+> -               .end =3D vma->vm_end,
+> -
+> -               .pgoff =3D vma->vm_pgoff,
+> -               .vm_file =3D vma->vm_file,
+> -               .vma_flags =3D vma->flags,
+> -               .page_prot =3D vma->vm_page_prot,
+> -
+> -               .action.type =3D MMAP_NOTHING, /* Default */
+> -       };
+> -       int err;
+> +       desc->mm =3D vma->vm_mm;
+> +       desc->file =3D (struct file *)file;
+> +       desc->start =3D vma->vm_start;
+> +       desc->end =3D vma->vm_end;
+>
+> -       err =3D vfs_mmap_prepare(file, &desc);
+> -       if (err)
+> -               return err;
+> +       desc->pgoff =3D vma->vm_pgoff;
+> +       desc->vm_file =3D vma->vm_file;
+> +       desc->vma_flags =3D vma->flags;
+> +       desc->page_prot =3D vma->vm_page_prot;
+>
+> -       err =3D mmap_action_prepare(&desc);
+> -       if (err)
+> -               return err;
+> -
+> -       set_vma_from_desc(vma, &desc);
+> -       return mmap_action_complete(vma, &desc.action);
+> +       /* Default. */
+> +       desc->action.type =3D MMAP_NOTHING;
+>  }
+> +EXPORT_SYMBOL(compat_set_desc_from_vma);
+>
+>  static int __compat_vma_mapped(struct file *file, struct vm_area_struct =
+*vma)
+>  {
+> @@ -1211,6 +1215,49 @@ static int __compat_vma_mapped(struct file *file, =
+struct vm_area_struct *vma)
+>         return err;
+>  }
+>
+> +/**
+> + * __compat_vma_mmap() - Similar to compat_vma_mmap(), only it allows
+> + * flexibility as to how the mmap_prepare callback is invoked, which is =
+useful
+> + * for drivers which invoke nested mmap_prepare callbacks in an mmap() h=
+ook.
+> + * @desc: A VMA descriptor upon which an mmap_prepare() hook has already=
+ been
+> + * executed.
+> + * @vma: The VMA to which @desc should be applied.
+> + *
+> + * The function assumes that you have obtained a VMA descriptor @desc fr=
+om
+> + * compt_set_desc_from_vma(), and already executed the mmap_prepare() ho=
+ok upon
+> + * it.
+> + *
+> + * It then performs any specified mmap actions, and invokes the vm_ops->=
+mapped()
+> + * hook if one is present.
+> + *
+> + * See the description of compat_vma_mmap() for more details.
+> + *
+> + * Once the conversion of drivers is complete this function will no long=
+er be
+> + * required and will be removed.
+> + *
+> + * Returns: 0 on success or error.
+> + */
+> +int __compat_vma_mmap(struct vm_area_desc *desc,
+> +                     struct vm_area_struct *vma)
+> +{
+> +       int err;
+> +
+> +       /* Perform any preparatory tasks for mmap action. */
+> +       err =3D mmap_action_prepare(desc);
+> +       if (err)
+> +               return err;
+> +       /* Update the VMA from the descriptor. */
+> +       compat_set_vma_from_desc(vma, desc);
+> +       /* Complete any specified mmap actions. */
+> +       err =3D mmap_action_complete(vma, &desc->action);
+> +       if (err)
+> +               return err;
+> +
+> +       /* Invoke vm_ops->mapped callback. */
+> +       return __compat_vma_mapped(desc->file, vma);
+> +}
+> +EXPORT_SYMBOL(__compat_vma_mmap);
+> +
+>  /**
+>   * compat_vma_mmap() - Apply the file's .mmap_prepare() hook to an
+>   * existing VMA and execute any requested actions.
+> @@ -1218,10 +1265,10 @@ static int __compat_vma_mapped(struct file *file,=
+ struct vm_area_struct *vma)
+>   * @vma: The VMA to apply the .mmap_prepare() hook to.
+>   *
+>   * Ordinarily, .mmap_prepare() is invoked directly upon mmap(). However,=
+ certain
+> - * stacked filesystems invoke a nested mmap hook of an underlying file.
+> + * stacked drivers invoke a nested mmap hook of an underlying file.
+>   *
+> - * Until all filesystems are converted to use .mmap_prepare(), we must b=
+e
+> - * conservative and continue to invoke these stacked filesystems using t=
+he
+> + * Until all drivers are converted to use .mmap_prepare(), we must be
+> + * conservative and continue to invoke these stacked drivers using the
+>   * deprecated .mmap() hook.
+>   *
+>   * However we have a problem if the underlying file system possesses an
+> @@ -1232,20 +1279,22 @@ static int __compat_vma_mapped(struct file *file,=
+ struct vm_area_struct *vma)
+>   * establishes a struct vm_area_desc descriptor, passes to the underlyin=
+g
+>   * .mmap_prepare() hook and applies any changes performed by it.
+>   *
+> - * Once the conversion of filesystems is complete this function will no =
+longer
+> - * be required and will be removed.
+> + * Once the conversion of drivers is complete this function will no long=
+er be
+> + * required and will be removed.
+>   *
+>   * Returns: 0 on success or error.
+>   */
+>  int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+>  {
+> +       struct vm_area_desc desc;
+>         int err;
+>
+> -       err =3D __compat_vma_mmap(file, vma);
+> +       compat_set_desc_from_vma(&desc, file, vma);
+> +       err =3D vfs_mmap_prepare(file, &desc);
+>         if (err)
+>                 return err;
+>
+> -       return __compat_vma_mapped(file, vma);
+> +       return __compat_vma_mmap(&desc, vma);
+>  }
+>  EXPORT_SYMBOL(compat_vma_mmap);
+>
+> diff --git a/mm/vma.h b/mm/vma.h
+> index adc18f7dd9f1..a76046c39b14 100644
+> --- a/mm/vma.h
+> +++ b/mm/vma.h
+> @@ -300,7 +300,7 @@ static inline int vma_iter_store_gfp(struct vma_itera=
+tor *vmi,
+>   * f_op->mmap() but which might have an underlying file system which imp=
+lements
+>   * f_op->mmap_prepare().
+>   */
+> -static inline void set_vma_from_desc(struct vm_area_struct *vma,
+> +static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
+>                 struct vm_area_desc *desc)
+>  {
+>         /*
+> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/=
+dup.h
+> index 114daaef4f73..6658df26698a 100644
+> --- a/tools/testing/vma/include/dup.h
+> +++ b/tools/testing/vma/include/dup.h
+> @@ -519,8 +519,8 @@ enum vma_operation {
+>   */
+>  struct vm_area_desc {
+>         /* Immutable state. */
+> -       const struct mm_struct *const mm;
+> -       struct file *const file; /* May vary from vm_file in stacked call=
+ers. */
+> +       struct mm_struct *mm;
+> +       struct file *file; /* May vary from vm_file in stacked callers. *=
+/
+>         unsigned long start;
+>         unsigned long end;
+>
+> @@ -1272,43 +1272,92 @@ static inline void vma_set_anonymous(struct vm_ar=
+ea_struct *vma)
+>  }
+>
+>  /* Declared in vma.h. */
+> -static inline void set_vma_from_desc(struct vm_area_struct *vma,
+> +static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
+>                 struct vm_area_desc *desc);
+>
+> -static inline int __compat_vma_mmap(const struct file_operations *f_op,
+> -               struct file *file, struct vm_area_struct *vma)
+> +static inline void compat_set_desc_from_vma(struct vm_area_desc *desc,
+> +                             const struct file *file,
+> +                             const struct vm_area_struct *vma)
+>  {
+> -       struct vm_area_desc desc =3D {
+> -               .mm =3D vma->vm_mm,
+> -               .file =3D file,
+> -               .start =3D vma->vm_start,
+> -               .end =3D vma->vm_end,
+> +       desc->mm =3D vma->vm_mm;
+> +       desc->file =3D (struct file *)file;
+> +       desc->start =3D vma->vm_start;
+> +       desc->end =3D vma->vm_end;
+>
+> -               .pgoff =3D vma->vm_pgoff,
+> -               .vm_file =3D vma->vm_file,
+> -               .vma_flags =3D vma->flags,
+> -               .page_prot =3D vma->vm_page_prot,
+> +       desc->pgoff =3D vma->vm_pgoff;
+> +       desc->vm_file =3D vma->vm_file;
+> +       desc->vma_flags =3D vma->flags;
+> +       desc->page_prot =3D vma->vm_page_prot;
+>
+> -               .action.type =3D MMAP_NOTHING, /* Default */
+> -       };
+> +       /* Default. */
+> +       desc->action.type =3D MMAP_NOTHING;
+> +}
+> +
+> +static inline unsigned long vma_pages(const struct vm_area_struct *vma)
+> +{
+> +       return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+> +}
+> +
+> +static inline void unmap_vma_locked(struct vm_area_struct *vma)
+> +{
+> +       const size_t len =3D vma_pages(vma) << PAGE_SHIFT;
+> +
+> +       mmap_assert_write_locked(vma->vm_mm);
+> +       do_munmap(vma->vm_mm, vma->vm_start, len, NULL);
+> +}
+> +
+> +static inline int __compat_vma_mapped(struct file *file, struct vm_area_=
+struct *vma)
+> +{
+> +       const struct vm_operations_struct *vm_ops =3D vma->vm_ops;
+>         int err;
+>
+> -       err =3D f_op->mmap_prepare(&desc);
+> +       if (!vm_ops->mapped)
+> +               return 0;
+> +
+> +       err =3D vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff,=
+ file,
+> +                            &vma->vm_private_data);
+>         if (err)
+> -               return err;
+> +               unmap_vma_locked(vma);
+> +       return err;
+> +}
+>
+> -       err =3D mmap_action_prepare(&desc);
+> +static inline int __compat_vma_mmap(struct vm_area_desc *desc,
+> +               struct vm_area_struct *vma)
+> +{
+> +       int err;
+> +
+> +       /* Perform any preparatory tasks for mmap action. */
+> +       err =3D mmap_action_prepare(desc);
+> +       if (err)
+> +               return err;
+> +       /* Update the VMA from the descriptor. */
+> +       compat_set_vma_from_desc(vma, desc);
+> +       /* Complete any specified mmap actions. */
+> +       err =3D mmap_action_complete(vma, &desc->action);
+>         if (err)
+>                 return err;
+>
+> -       set_vma_from_desc(vma, &desc);
+> -       return mmap_action_complete(vma, &desc.action);
+> +       /* Invoke vm_ops->mapped callback. */
+> +       return __compat_vma_mapped(desc->file, vma);
+> +}
+> +
+> +static inline int vfs_mmap_prepare(struct file *file, struct vm_area_des=
+c *desc)
+> +{
+> +       return file->f_op->mmap_prepare(desc);
+>  }
+>
+>  static inline int compat_vma_mmap(struct file *file,
+>                 struct vm_area_struct *vma)
+>  {
+> -       return __compat_vma_mmap(file->f_op, file, vma);
+> +       struct vm_area_desc desc;
+> +       int err;
+> +
+> +       compat_set_desc_from_vma(&desc, file, vma);
+> +       err =3D vfs_mmap_prepare(file, &desc);
+> +       if (err)
+> +               return err;
+> +
+> +       return __compat_vma_mmap(&desc, vma);
+>  }
+>
+>
+> @@ -1318,11 +1367,6 @@ static inline void vma_iter_init(struct vma_iterat=
+or *vmi,
+>         mas_init(&vmi->mas, &mm->mm_mt, addr);
+>  }
+>
+> -static inline unsigned long vma_pages(struct vm_area_struct *vma)
+> -{
+> -       return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+> -}
+> -
+>  static inline void mmap_assert_locked(struct mm_struct *);
+>  static inline struct vm_area_struct *find_vma_intersection(struct mm_str=
+uct *mm,
+>                                                 unsigned long start_addr,
+> @@ -1492,11 +1536,6 @@ static inline int vfs_mmap(struct file *file, stru=
+ct vm_area_struct *vma)
+>         return file->f_op->mmap(file, vma);
+>  }
+>
+> -static inline int vfs_mmap_prepare(struct file *file, struct vm_area_des=
+c *desc)
+> -{
+> -       return file->f_op->mmap_prepare(desc);
+> -}
+> -
+>  static inline void vma_set_file(struct vm_area_struct *vma, struct file =
+*file)
+>  {
+>         /* Changing an anonymous vma with this is illegal */
+> @@ -1521,11 +1560,3 @@ static inline pgprot_t vma_get_page_prot(vma_flags=
+_t vma_flags)
+>
+>         return vm_get_page_prot(vm_flags);
+>  }
+> -
+> -static inline void unmap_vma_locked(struct vm_area_struct *vma)
+> -{
+> -       const size_t len =3D vma_pages(vma) << PAGE_SHIFT;
+> -
+> -       mmap_assert_write_locked(vma->vm_mm);
+> -       do_munmap(vma->vm_mm, vma->vm_start, len, NULL);
+> -}
+> --
+> 2.53.0
+>
 
