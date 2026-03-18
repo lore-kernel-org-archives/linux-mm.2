@@ -4,96 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D659107760E
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 19:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F391077610
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 20:04:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD1656B02FC; Wed, 18 Mar 2026 15:56:04 -0400 (EDT)
+	id E86FB6B02FF; Wed, 18 Mar 2026 16:04:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A823D6B02FE; Wed, 18 Mar 2026 15:56:04 -0400 (EDT)
+	id E37526B0300; Wed, 18 Mar 2026 16:04:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9980F6B02FF; Wed, 18 Mar 2026 15:56:04 -0400 (EDT)
+	id D4D446B0301; Wed, 18 Mar 2026 16:04:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 875826B02FC
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 15:56:04 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3DA7356677
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:56:04 +0000 (UTC)
-X-FDA: 84560239848.03.FC6C260
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 659C2160004
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 19:56:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nkNHq1UK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C69246B02FF
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 16:04:03 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75E5556C52
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:04:02 +0000 (UTC)
+X-FDA: 84560259924.25.EE2F4D3
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7C0C840016
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:04:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Tb8tXqQw;
+	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773863762;
+	s=arc-20220608; t=1773864240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qn28qcTqY23acAMwPqY5EzcQaQiRCWYQzB9ll9fxjks=;
-	b=Sxrz+bhLtu3iyoQm7M+7x3F8oXWF+kwwCLtY/SgdyFAz9uLRGYxUuPVazq3vPH5AEsr8XP
-	eZYatTv3y2m3r7J+EPkuscOvOuZ0Mld6xe4B5nw3wl0oF12nbSHKCCwgliYtzXAmozFnPy
-	v4Qgx3NSA5X8DMAxry38UJE1Rc9egvA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fGu/XcrTRq1flrtcSeYIVqct01kI0jM/rXSQN6Lz7ok=;
+	b=ZSnn1fR4FkEA//BJAWj9TH+lNzBjQw9VYD2XvHw4/bGmFUBbu9RVbGpWWTUdd7Y+fszLWM
+	f2V9Vz1j3+QZSPJJNOQQX8PyFBYIAoFXWpghDXSYPYNaGOJ9E64gDX20chW7l8iY363kuq
+	uiJRBBrnZaqi8RqTc0HeKYnWTtABXf0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nkNHq1UK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773863762; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Tb8tXqQw;
+	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773864240; a=rsa-sha256;
 	cv=none;
-	b=zhtGDj9hF3JW11ooc7GEF784HVlWp5aufSwHKlTL2TzP3yU3o3zvE9znxNrk3LkVb/KKBx
-	bKe2xYkwcA7NdfV3MQf+A2ctz9PcMZmdUsJ1DgaIWZoamUE4CCZHttC/N9wo/OTtUfJG/K
-	6ImnmTeLKu6yltC0120h+M8mpl70Hzg=
-Date: Wed, 18 Mar 2026 12:55:49 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773863759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qn28qcTqY23acAMwPqY5EzcQaQiRCWYQzB9ll9fxjks=;
-	b=nkNHq1UKY0IObCr6MXOxnFOXYvZm2QkeEXwfwhyKIOC/nQgOgcRJ1odex9tA1LmOyv8J3N
-	0HD+6PaSAg+JNu+4lj6sN6Z4n301cAV78luQjzQCHIjT6m9uBa6nSAjjkQrlKWWU79Op3h
-	xe4ADbiNKxzt7MtIJ/uQwO/4G8zuo4Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Michal Hocko <mhocko@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
-Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
- attribute
-Message-ID: <absA_ryDAnfaKJXC@linux.dev>
-References: <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
- <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
- <abphjNOYaNslTA90@tiehlicka>
- <7ca9876c-f3fa-441c-9a21-ae0ee5523318@yandex-team.ru>
- <abpue_k_9mjQAP6X@tiehlicka>
- <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
- <abp3-iJbazCpygIm@tiehlicka>
- <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
- <abqQtcNqxzxiZyf1@tiehlicka>
- <fd7409a3-5f8c-492b-836d-559b001a61dd@yandex-team.ru>
+	b=owUvn5ozh7AcLSuFUP69sam98iCgkSvHkOfPE6ePpkxTBHosL2izaIGH6kEZ765KfZ52f1
+	469YUXyyIeOI47fIUJIR9Z3TWZ/y4ktnp1zQg71Y9vIBG7fEcsLy2YY7iEbBFEVm0LJOXV
+	OZ/5DzXaTFKK3xzZInJm8Gb0B/nAdJ4=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-89c52db6231so4211386d6.3
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 13:04:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1773864239; x=1774469039; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fGu/XcrTRq1flrtcSeYIVqct01kI0jM/rXSQN6Lz7ok=;
+        b=Tb8tXqQwEyTwWq4XQfy8gOAW6831uJb/bcOSs8PlucOyGGCkKJ4kRZ/f50LkD/uS7C
+         mBvx2Vbqyw1vsZy5lKzGKSoibMQJGRMHgnrioD629RV+MB5KqXOjVlnR2WRoFP0nMHOR
+         3zYLIm7+F9Xj5FgVpNLPr/+yVn/jX6PWvV93n5ApwLmU4rmhdFLvDGOJ3vAkb73CHo4Q
+         p5pGv+6gO00hF6sNOLNUjajavxFDV9qkiyMHrjmxmEiHniZpKMRHiknVQrMvl2OHJfle
+         t2NTlyPQzz2+bt4aLaW2r3nhT+f8ws/7r4qUuNOOqUtTqGVnO8hojE1Eb7P8bu6hdN9q
+         ucLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773864239; x=1774469039;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fGu/XcrTRq1flrtcSeYIVqct01kI0jM/rXSQN6Lz7ok=;
+        b=JqZnrwu26WcrC1RdmCe2gtpSg8l031UgMxigKnv5n++XkFoXGsHBznul8YvuGa4vYk
+         y3svX71cCwnaf7mhM1gSvYSna6DQI3X74S7TzMMniTTOuQU7Fie901aMnvB64b1oQNm4
+         IuKA9ya07Eg9z0vLZCoQZucHOeKUHg+0dysPC4mlteuXJYF4iDHCzP0CZkrjrfy1NnGF
+         6vRlmbCsjulzuQ6Bg4IYGfBQrje2sAa0blnyFzm3zLLyap3P0UhkCU4wrGb9GKrSCTvQ
+         M76XeHQjTGtsOMSYBkcStJt9Nh4Qp9bgh42E5pkZ+xySf9TsmWGfOhcURwmbBaoAjM54
+         lFqw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+ylPR2ndtM3x/dpcy3NEsNOQ7xCI4Be0UzPgB/B/GdBiGaluznTr/g3ZQsZ0ltmRJg1mTIWGMbg==@kvack.org
+X-Gm-Message-State: AOJu0YwiKPr+Zj10JIOMcrdmlrDSYX6X9qYpQbC7un35K+QFMWhKcYoT
+	CSGDiMqXbDWGacQdrVunwk7S6HJr9GTMhpTPhrmoSaWqmajejhEsBoPaufsbnDj+p7g=
+X-Gm-Gg: ATEYQzxWc0l3jcwEaV/sCKXElrDUa9TgYvJ+AwUP/XprrZJ0ukh149XpE3VRUCudxOs
+	IxT9noJK3QoEZLeuAh1rTBy/L+kM44JNcwQ4O+3G3PGiiAHxEkfxnW0YVNPXXdZAstxDrp7+UOr
+	GX3oQuxFMLjlohs6JKjY1Q4MHiREDWzCBYvk/Qw9SwskoLnCIefHDGPBipztFnkJiJkG/RsTt7s
+	qiI8w5UnIbHk6yXyBIFDI0l7wMoKv0gtzOSyowoeO0jGQ367AMO1guAAxLgib0lavM28e4xcgKq
+	jF12ex3oruGcbmxFl7qVx55TcWjJPp/Iakk4NX95CiPKc4exvwE+suTXhLzqJqrbg7BjXBFuSkp
+	nf6rXuf7rOogwABc/tVkEjP6al59RBH3rK+OVFH4TCqW2Zvikc9gmw4ElS8eRqs5cPFHIxjKyx0
+	zx2L9r/pMxu9LAUNwG7Um4lA==
+X-Received: by 2002:a05:6214:5081:b0:89c:62fe:330c with SMTP id 6a1803df08f44-89c6b73392amr63680026d6.63.1773864239269;
+        Wed, 18 Mar 2026 13:03:59 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c6b8e225fsm29544756d6.3.2026.03.18.13.03.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 13:03:58 -0700 (PDT)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
+Date: Wed, 18 Mar 2026 15:53:18 -0400
+Message-ID: <20260318200352.1039011-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fd7409a3-5f8c-492b-836d-559b001a61dd@yandex-team.ru>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 659C2160004
-X-Stat-Signature: h3mr457grwap5xwk8j4mysferat5q5ha
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7C0C840016
+X-Stat-Signature: w9h3co9d1uxom7w4n6wgpcdrmndszp9y
 X-Rspam-User: 
-X-HE-Tag: 1773863762-445914
-X-HE-Meta: U2FsdGVkX1/euJZKkpPRYtr34TrmyRrgLCuEWvuSkv3l7oCOZdhGhqQW2seG6i0dYbVXFLI29Dga/YBfHKU3CFD50vZe3tC087o8TVL2K3Go/NWYwLAvAVrSY4BTX7mvg8HHKJegB/Ir0XlbsqRXgenM72LhM8jKnADU1LbnpMXpf/UTqCqsi6MyH2CcNCInbq1PDVgjWutE6oAmp9SKsSe1QQhBTO82j1PpcSEz+CpG9CWmkV7qH4z+v8/Ku6htxmPbHPfZ0+6Kikd5kY4aMEk36jw359UW1y1LgBDpa4mwq/py5IIy/qaANa16rHWHZe8XJ2K5oJprc5iPTHAPguEYBSFzsWbPC8smKyQI5kV3JOb3F1rln4j3RYvqUyQ+d+zNlV+NBavy1I2RSZyCVAmY6gBwm5xVTG9CvWjisum7V0BopYcDrrc2b5bwwKAj4REREc2ETp2h1KHeLd9djhPuua+jn9ePpgKYBBlF44aOlImrm1Pa18SpXE3uNkdVG13PU0+7fAVMQ7X9oQJpUjc4FgWUZH1QCFXheWFZxuFcTFg3BNeWuXwh6nS8adwlbCOfj7XTYqG5pv87X8Op3yvan0NHzbYhTBt2Z/dhylRzorzxc0nBZPA78ErN0M7t+rXnPfHNzDbC98GUQGaVSpxdtIAv1VgAbpVnPUIUSsFBCqu259RG8UJeu1uFYA2Q7LMfJ3M7238LrnFQtNmodmmcbGjn2hRwzhe3bQ3yBI8iktQgn/NApyCo0YAqzXmbYR7raIsS9fsmLc4SSNb/YcSMp4qqGvM/m1ew/abICkwd8LM8+kpbNDZCO2rExB6cBaZ1rf7e7TlNT21OHENz81GQakQQAI53Wkvx4rn32MuLAmVAw0Dro/44qHMHtoNuaHIw5vxk80x0dE3cOFW8a6heiCojupd7
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773864240-710630
+X-HE-Meta: U2FsdGVkX18kT/ihFkVJ0APXqFkhONTNnl1lZB/HhFKZgLyiNDgf+Y4hgtgAooL/Qb2OUdW7ODv+FgAna+LlI9myQfK5P6cWLqatCiP5Wm+/VOT67QvxDz2Jzo50sYWVQUm11v+H7M5wRgdRj7iq18jSjLf2aep5qsOWT8OYn31hW6kUytEngtC1gh6l9C5UzjoQ+xqFhLwWP2d9+ybBvC2FU1hSodToJumXvfYWcazAOZ1cOHILvMIPY+AemmcSHC1jjfg3QH/IHrYl+jTuasppKJm5/OLiaXTWNfxd0IV9dIF9lSuaJNtyhOJEfEAOG6PYmnrM7yTbC5mW8JyjNq9JP5sroN8la0QCNByUZa0j0Aaa9BznXPP38eAhAXf7kwXo9Aw1De9hKPffZezDonriETUoMy85EJXwgevmBw12jC+y1OJscMjTymjZST/yaviUmo7ufN1LrnDSTvtxyLc/BJz4r7dvL64Pn1lSCKt4wJ57StNr4U2tQ2WYQzLalinBkclmc7QVwH2E1KOAIlzYH+Kv7zUdlE2bfMbF+MPprJvCGUp8fA9I3VeqJIO/ql+FrACsz+Ob+fR6M1LlZq2gfRSHNTQN9eBd/Bu+RW5k1aPTLzjoV4SqHuMos6xE9jvp6O7+32RbkX3g1c59Uwww1Cgn9WVghRcWcmXsO0HKnjc69jyKWKG9RCCh/30uPO1VYGHY57swHHHXUMsVNF3jrJrQF/rMVJg3VQJjqJgZN09fzAumfoKDyKjAvic2ZTuC6yey+6LpahE87qst+pg3P7Z6QSg3y5aoZ8MbwZHqTPDRopqkR9eu6vhQNp0cvx6vcy+YSXWAGxs91KiC1sKijZrSWGb7k71hzBxalYChLtpHfDs3c9LHOSwuWl522JErZRSx1Yg7N+GcxiWIwxHDf/6NLYFB5/yGx3jBGVenfbL7zxDrbu7hxffdKLsPc0TOoOh9dng5cfzoJft
+ nFhHBhhO
+ YbbHwhJUCHlKXjn/DkduXsWwBNg2wGS4DSlEj0h2r0tbv7fzCNwr9cdOcv8qNySpcadx5DKRiVBljsXJKZkbidZ1T2UZ1So87WEknYATcgbdV7UAkkUYx81Beu4nk6DNM1gzUVrTixkQT4YxiOpdLVQVMcqF7+O2VGLUeXZp7LZsOmkcGmxIRUT3PKZNSEKjIeKw9vSUl/j+oxopywW1ZQgaNAR7IgN21qwWAyvCJvKec5Kqv5C4Ywfn+/Okg4GG/k+dyiqvfNDABE2iomt0j9I1DU1YsfKc2Ew/7WkySKLXexxjhcfJTRaNZCFJPeaDDrMctkI98PHlMUXgVuIPdYeExFgezCnTi28nlV1w5LYISJko2GyVqcddE36L9aSMPegKkvixpzU5ZQAx5vVRIw01g3WHvKvZf2Nfb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,79 +123,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Daniil,
+This is version 3 of switching the THP shrinker to list_lru.
 
-On Wed, Mar 18, 2026 at 05:03:53PM +0300, Daniil Tatianin wrote:
-> 
-> On 3/18/26 2:47 PM, Michal Hocko wrote:
-> > On Wed 18-03-26 13:08:31, Daniil Tatianin wrote:
-> > > On 3/18/26 1:01 PM, Michal Hocko wrote:
-> > > > On Wed 18-03-26 12:25:17, Daniil Tatianin wrote:
-> > > > > On 3/18/26 12:20 PM, Michal Hocko wrote:
-> > > > [...]
-> > > > > > Shouldn't those use mlock?
-> > > > > Absolutely, mlock is required to mark a folio as unevictable. Note that
-> > > > > unevictable folios are still
-> > > > > perfectly eligible for compaction. This new property makes it so a cgroup
-> > > > > can say whether its
-> > > > > unevictable pages should be compacted (same as the global
-> > > > > compact_unevictable_allowed sysctl).
-> > > > If the mlock is already used then why do we need a per memcg control as
-> > > > well? Do we have different classes of mlocked pages some with acceptable
-> > > > compaction while others without?
-> > OK, I have misread the intention and this is exactly focused at mlock
-> > rather than general protection of all memcg charged memory. Now
-> > 
-> > > The way it works is mlock(2) only prevents pages from being evicted
-> > > from the page cache by setting unevictable | mlocked flags on the
-> > > page. Such pages, however, are still allowed for compaction by
-> > > default, unless /proc/sys/vm/compact_unevictable_allowed is set to 0.
-> > > That property essentially "promotes" ALL such (unevictable) pages to a
-> > > new synthetic tier by making compaction skip them. The per-cgroup
-> > > property works similarly, however, it allows the scope to be much
-> > > smaller: from a global setting that promotes literally ALL unevictable
-> > > (mlocked) pages to this tier, to only promoting pages belonging to the
-> > > cgroup that has memory.compact_unevictable_allowed as 0.
-> > This is clear but what is not really clear to me is whether this is
-> > worth having as mlock workloads are already quite specific, the amount
-> > of mlocked memory shouldn't really consume huge portion of the memory so
-> > you still need to have a solid usecase where such a micro management
-> > really is worth it. In other words why a global
-> > compact_unevictable_allowed is not sufficient.
-> 
-> In my opinion both mlocked memory and non-compactible memory have the right
-> to
-> co-exist on the same host without a global switch that turns one into the
-> other. I agree
-> that it's not a super common thing, but I still think it can be beneficial.
-> 
-> Some examples include but not limited to: security: so that sensitive data
-> is never swapped
-> to disk yet we have no problem if it gets compacted and the actual physical
-> page gets replaced,
-> performance for some apps: so that we can e.g. memlock a large binary in
-> memory to keep it in
-> page cache and improve startup time, but again don't care much if the actual
-> backing pages are
-> replaced via compaction.
-> 
-> On the other hand, some critically important/real time applications do need
-> protection from compaction
-> as well on top of the regular mlock, so that they have predictable latency
-> and response time, which can
-> really fluctuate during heavy compaction. Both of these cases can coexist on
-> the same physical machine.
-> 
+Changes in v3:
+- dedicated lockdep_key for irqsafe deferred_split_lru.lock (syzbot)
+- conditional list_lru ops in __folio_freeze_and_split_unmapped() (syzbot)
+- annotate runs of inscrutable false, NULL, false function arguments (David)
+- rename to folio_memcg_list_lru_alloc() (David)
 
-IMO we should actually deprecate compact_unevictable_allowed and always allow
-compaction for unevictable memory. We should decouple the notion of mlocked
-memory from the pinned/unmovable memory. Pinned memory has much more
-consequences on the system related to fragmentation and availability of larger
-folios than mlocked memory. If there are applications which need unmovable
-memory, they should request it explicitly. I don't think there is an API for
-such memory but for such use-cases, it makes sense to have an explicit API.
+Changes in v2:
+- explicit rcu_read_lock() in __folio_freeze_and_split_unmapped() (Usama)
+- split out list_lru prep bits (Dave)
 
+The open-coded deferred split queue has issues. It's not NUMA-aware
+(when cgroup is enabled), and it's more complicated in the callsites
+interacting with it. Switching to list_lru fixes the NUMA problem and
+streamlines things. It also simplifies planned shrinker work.
 
+Patches 1-4 are cleanups and small refactors in list_lru code. They're
+basically independent, but make the THP shrinker conversion easier.
 
+Patch 5 extends the list_lru API to allow the caller to control the
+locking scope. The THP shrinker has private state it needs to keep
+synchronized with the LRU state.
+
+Patch 6 extends the list_lru API with a convenience helper to do
+list_lru head allocation (memcg_list_lru_alloc) when coming from a
+folio. Anon THPs are instantiated in several places, and with the
+folio reparenting patches pending, folio_memcg() access is now a more
+delicate dance. This avoids having to replicate that dance everywhere.
+
+Patch 7 finally switches the deferred_split_queue to list_lru.
+
+Based on mm-unstable.
+
+ include/linux/huge_mm.h    |   6 +-
+ include/linux/list_lru.h   |  46 ++++++
+ include/linux/memcontrol.h |   4 -
+ include/linux/mmzone.h     |  12 --
+ mm/huge_memory.c           | 342 ++++++++++++++-----------------------------
+ mm/internal.h              |   2 +-
+ mm/khugepaged.c            |   7 +
+ mm/list_lru.c              | 196 ++++++++++++++++---------
+ mm/memcontrol.c            |  12 +-
+ mm/memory.c                |  52 ++++---
+ mm/mm_init.c               |  15 --
+ 11 files changed, 323 insertions(+), 371 deletions(-)
 
 
