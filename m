@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BEC010854DB
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 09:33:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA38410854DB
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 09:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81CA56B0151; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
+	id 3D8656B0153; Wed, 18 Mar 2026 05:34:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F4FE6B0153; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
+	id 3B0A16B0155; Wed, 18 Mar 2026 05:34:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 731D26B0154; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
+	id 2EDA66B0156; Wed, 18 Mar 2026 05:34:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 61DF66B0151
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:33:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02960C2238
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:33:13 +0000 (UTC)
-X-FDA: 84558670308.03.2F29E2F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3FCB9C0006
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:33:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N36oty7D;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 219876B0153
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:34:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E70FB1B833C
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:34:16 +0000 (UTC)
+X-FDA: 84558672912.13.4407D86
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5A1F0180008
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 09:34:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qamBkgFm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773826392;
+	s=arc-20220608; t=1773826455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ka9ekrAm+PRtEIBddzjSTlGztFbLJbLcrB/yL7pqAII=;
-	b=cETMWAPML7Z3l3j/EW3Al7vzPIxLF9dKIQeid89bDnaJM+np2TwNuAucaKl62Ip7cu8MBr
-	KPDsDEa0BJO/1nk1GBBdu6fB956iXjHbrO7rlAhrwzpK6+HK3EikLI8AKhwhBWt5ZDKJBo
-	iGKKdYWhl+RTtqXk1alVj4iTH0DGRho=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773826392; a=rsa-sha256;
+	bh=CEeNeGSuoJbwavsVGKqIrrGpZX/tRWL23KECmmLaw5o=;
+	b=BGS1qSOdwYrTNgx/ubrc5uY1u0v3vR3e6ZjAPQKoQ8EGWjfkVKi+iXoFwFIVA8NxnDPKXz
+	uzWRSYbD11OZYlTddRmTJdbeRTaZIq8vmTuidKrkzQJkrgTAQNntRMWwTO6Wi2reZl96HX
+	Tjnvf7I3gIuqEIQ+VNd2iHs5Wzt9oS8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773826455; a=rsa-sha256;
 	cv=none;
-	b=XrXZf8CHD5qPE7LaK1w4aMXh3D49AbkOLbwbj0f/8LSmyFq10rtyqHZ/dd+aRGlllTUqB9
-	18pRQOJthT/CzltAwrrfVrY3H13i1CFNPjoOatLvtM8F8hiRa1+QT9UjChtyuuRiiZVNxV
-	vExs7Fn966B/Cz+TCK22ZI0jsvB8dsU=
+	b=UBl/fhl87JmNguFpfijE74B+Ao3Fm2QiDoY0s3ghgjK2cSBmlYCjvia+iNbfJcnhCnzANn
+	IqzZGxM4O2dEdMBTpflL+PPuf+nrIhSo3/RYMmRDfciUhu9LLZR6oeV4pQmWsDPBmA3Zbu
+	h2R5TAotMh/lYNDWb5boZ7I9L79cDWc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N36oty7D;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qamBkgFm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C628431CD;
-	Wed, 18 Mar 2026 09:33:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9091C19421;
-	Wed, 18 Mar 2026 09:33:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF58160131;
+	Wed, 18 Mar 2026 09:34:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834DCC19421;
+	Wed, 18 Mar 2026 09:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773826391;
-	bh=uEHOHnogW56+g2NCkawlI23RrTbijq7RbohziykD1t4=;
+	s=k20201202; t=1773826454;
+	bh=RNmLphyfgBoFzN7pwRjKveGHVFoZvoAzSTPSlQqJSbc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N36oty7D6IXjGFsZKN4yobNwiu0L0Ch9p0graCXyTqc4EJXSZSe8IbzaBoOHfCzpJ
-	 sE/i0ORGRTpFLanJH4LyEMsIhSGXpsOD1dR5Lu3vJHyjiDXxDXX2t8L2hzHtAqdbjn
-	 KXxWVtpg7F6L70xB27ys4lh6EwtEZIWhueY4gEkaR/WV+REmobZHZyVfCck5YHMx12
-	 Bzc1lWlRay5jpkfJyIH8DA66pip9nhUPRJSZinp3ov8EG78kaU59S5ZLS/9vWGgxoL
-	 Q3YL6QsXyKGBvh1C0nr7gjgdpAhKBmDc3jfBTMpVo/5Fj6oECzoN4iYa1FvAJw+y7F
-	 vt4lFIRnrdzCQ==
-Date: Wed, 18 Mar 2026 11:33:04 +0200
+	b=qamBkgFmmvA2Gb1XpCOtLpa/pLT/8rI3SHSEPpp2OkOt5UqDx2qZT/QqYKxDgrx2N
+	 auNVEDZQD45erneLBRq49YfmhkuK5IdkzUk2TUbiYSIN2Zgjj9jau8jp/2obyC1mlt
+	 oiDCcn9ALby+qpo0uT2L18eWQqJy3pzpNQPrydq7ZbLA+B3GHaJ5KWHfS89obCvnvq
+	 ZrNeEA9QqK6WY/l3FE9ahaKbNWHy99ZlxS0hcpwUnQMDVYBgBM3bsPBLYL2b1SekYN
+	 sXCLHta8bd6bDdmYU9TPJnuA114W3jzhAU+OFP3XBQTOMiDMgACy9H3dKiD5v54H4X
+	 zdUI6ziOS0f+g==
+Date: Wed, 18 Mar 2026 11:34:07 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Clapinski <mclapinski@google.com>,
+	Evangelos Petrongonas <epetron@amazon.de>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Alexander Graf <graf@amazon.com>,
 	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-Message-ID: <abpxUEijdHJzziEV@kernel.org>
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/3] kho: add support for deferred struct page init
+Message-ID: <abpxj3hOmNJlodvF@kernel.org>
 References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com>
+ <20260317104625.fd6a006871dcceaceafe990b@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317141534.815634-3-mclapinski@google.com>
+In-Reply-To: <20260317104625.fd6a006871dcceaceafe990b@linux-foundation.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5A1F0180008
+X-Stat-Signature: qzqce9dqb9wuurcn4ajfhi6r3bzthrrz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3FCB9C0006
-X-Stat-Signature: wfsokd5p9a8h868yxr6hjspody9du5w4
-X-HE-Tag: 1773826392-399637
-X-HE-Meta: U2FsdGVkX18VF3scGRmE2syzQ2tXjaUtGhOS3yBSZHQaoKrGKeXKfmboHzKZHCWCjWTr1Z2dAY273ZysCQFKAd9kGROmjNqr4znk6Z5M28TXQcA5dhQXx0IGjQJNynn9SnUFsor2eLlkp66lWX+drP/sU3zlMJ/aUL2WjU2kScdrwpWfpfgD8W+kjVQdK9WAbx7NueSNbDR0EDpDRhrFWvbtGHot153wpYhXpHKWsyDesZekoVpHbtsfU2naWz/S66cOclshsCJAfLxOYZH6jtsLcdJaIhiU/fW6Y7Qp4NdHLNwj5W4Z9nYj+0wYasiIftlXuhfOeLdmgkcWgFWL53JGbmwzY9TcOgIaDZ4ZBJUzFEGWuAn2S4BTZILJWEC2pwPAoPktN+uc1Hi/z4yK2WUbREbkNDmUSUOBaCGgH6SDo3yJzZyziEHU3A5ekdcnuv58HVQrw0DVPEArVazHPsLEympRs8Nlod37To+sf+G4a5Sm130KOj1od4uKLkc3woUu+QohYcuu4lileAVkEWb8tkbEzZaPNRSEwXdmcKl7sbNHxA0dVJoLxoUNOH12e95LvwDz56g0SZ3yTujL3kDyka13OcX4fBb18T2ru63aCe2wZR0966F1gJnRhSKkvIp5YxxsepMjhwH6Zbg63qjln2NUGa+2qeqVjozAj8lYDp++axzDzbHWOLbB9HUOdTaLKOj4NtFlZnHPBkpkxhKehha/HDA2WBkndFA8vHoHXHUqja6TRbXTPLxnPcQYcWeNMspMnZeDrHw7Uz+c7AzsfhqFxIE0UhXWfgjgdd2+pWJ+WMaxFCPpB3poT+VuCkemBPs3LxKCjpUBLIzqg0vKJ/3Nd0Ho9FhypNxQrqUr82VPqGdMvLFPxXuwgMxWfTtR4bMyIQ6TKlCzlKhvvSs6ERbhcw+dTl6bawXONfj1REHiqgdCXzmT2RauykBcW85aqSZrH8X7VUJMCvu
- RA4f3ys7
- iPI5qK1/6pv/NEI7GCK7E0KTTUexWjASo0rsPcGJf2jb8tq/Dqq43w5VhG165Awi/HHFIkacPHs1bjRO4I3U4bGeLPIVXQ+8iirHaYCMikMYz5ULcHXPbcgtYWAonIfN6D1UcFUyHMhGGg9bPOAZlrF0Jr0mSZPaNIZHmsFHiGgZTuNNln2eufGlJuTMzcnbOrFdPYe/9egmgBBg3QuBUglqiv1dV9XXeeSfSsEZaDfXN85HEso5mTsPJu942fNc+mfP+RjTZIDenLwG/PrL+5D5C2c9CzqZtDwp2lGlpAI0ymw0/lC/eGYieDNfpipnaPbHXS9mma3PjQHsLLI60nj/UlA==
+X-HE-Tag: 1773826455-192096
+X-HE-Meta: U2FsdGVkX1/Ayz8EhQFK0YXoec/UQcgYa1TnCF47GjBAAftb1OGZRY1WmmTBQWwHT4cl8cRNg6IbHODlcSD3lkuggAD5g75ABcaAPptmectHew4zFd+X1Q0eDgBfthlqINsVZje0m/6071oF63LfEYdVIjDhcb2JOBfbQLkW4hPypU8Dp8ffiTOYqGRyiEy7uL3E6KZp2nYqkrfwD/yPOJZKIQTOjT0sbndm6QivbGq9DLxWyWMhyFuMEt0t/wkvcHqeoHbqUjrJBxWvrNkDcvl+rTyPpWC7AUv5C+FeGqOpulfdGon+CYDZl7ytrzuv2v0+PNBS/53serW27wGo1X0tnmKjdoaRYe+Dotf4saG8DAFfd+SjCjpxBaRrNfnJtRncukDpQjOE3iRoquLO5iir7oL0wWi8/ahLVVpH7+vIwssyyecJNV4ibHdCaDrj6Ct8/egE0cklV2EF04bije0s9NyRzLt8MU/K7fZovAtaZOUbgWBTEVObPl0ZLXlknTtldad3ngbgR1j/MG2HTRIBhwi6VfSjVczDp11zBQsJkpWDxU91ceh8A6ye0ItaRijaXp3F4tr9K5PZSkvVj3mBmDoA8RGbXfFLo/E0P2dpKRNzq66l3s8D0B3IMG5EuDa/SR+yHl2VUDvLRm86R+CvBlwtfblct6GEAlRN1xJQp1jtD1rCFJx+85bjpQmG0uo4UfDKmwdCbUFR4JhUs9BauaNQL/VH1EPnfDMaF7Rk31g16gn/mkBs7gcAV4KqeU0JFsM6VZYF7zlDJaeU5yM2813ppYyMXwJyO/QrRfHL20+5+9RrAbf4+vBAmPYh9fiNAtXVXBMX59nl4hRSi6UAbbCckTC96Jj1Zr4jOMfO2gn4t6HTEJIU6LLIDTplxxHt+hdTzbCcjaJAlU0S8DrzPzcIrx6mJsrR6oPjEsljHKQInH0kdg0fNcreoolLtlh5QPGvxqO7E46qwob
+ gxWEMMSk
+ 7R7DHDde4PzMDODLkGtt2tpXaKKC+xlSwVL3x1LOK5vdkLOPWAQnSH8bM6VmyiIh3c2TdxkfHVdSxkAQgjjfNMwGyQck7VRMhjB5Vrsgqp39fRONwbVNuZfRA5pWS3qvbo0HjJYFrpvLPe6JPzKMOGwfMrWXVkf/Q5P/qnTJMFfSwimogTTq7t9ztsKUTXi/2fNnWoynyISfs368MXpwZeBQYYCjAxEw05XTcB/3LTB/R/qbo4v/7u0p+J44kBDSMbYVrXIxz1gw72Tdf80HkTQSvvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,161 +96,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
-
-On Tue, Mar 17, 2026 at 03:15:33PM +0100, Michal Clapinski wrote:
-> Currently, if DEFERRED is enabled, kho_release_scratch will initialize
-
-Please spell out CONFIG_DEFERRED_STRUCT_PAGE_INIT
-
-> the struct pages and set migratetype of kho scratch. Unless the whole
-> scratch fit below first_deferred_pfn, some of that will be overwritten
-> either by deferred_init_pages or memmap_init_reserved_pages.
-
-Usually we put brackets after function names to make them more visible.
- 
-> To fix it, I modified kho_release_scratch to only set the migratetype
-
-Prefer an imperative mood please, e.g. "To fix it, modify
-kho_release_scratch() ..."
-
-> on already initialized pages. Then, modified init_pageblock_migratetype
-> to set the migratetype to CMA if the page is located inside scratch.
+On Tue, Mar 17, 2026 at 10:46:25AM -0700, Andrew Morton wrote:
+> On Tue, 17 Mar 2026 15:15:31 +0100 Michal Clapinski <mclapinski@google.com> wrote:
 > 
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> ---
->  include/linux/memblock.h           |  2 --
->  kernel/liveupdate/kexec_handover.c | 10 ++++++----
->  mm/memblock.c                      | 22 ----------------------
->  mm/page_alloc.c                    |  7 +++++++
->  4 files changed, 13 insertions(+), 28 deletions(-)
+> > When CONFIG_DEFERRED_STRUCT_PAGE_INIT (hereinafter DEFERRED) is
+> > enabled, struct page initialization is deferred to parallel kthreads
+> > that run later in the boot process.
+> > 
+> > Currently, KHO is incompatible with DEFERRED.
+> > This series fixes that incompatibility.
 > 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 6ec5e9ac0699..3e217414e12d 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
->  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
->  void memblock_set_kho_scratch_only(void);
->  void memblock_clear_kho_scratch_only(void);
-> -void memmap_init_kho_scratch_pages(void);
->  #else
->  static inline void memblock_set_kho_scratch_only(void) { }
->  static inline void memblock_clear_kho_scratch_only(void) { }
-> -static inline void memmap_init_kho_scratch_pages(void) {}
->  #endif
->  
->  #endif /* _LINUX_MEMBLOCK_H */
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index c9b982372d6e..e511a50fab9c 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1477,8 +1477,7 @@ static void __init kho_release_scratch(void)
->  {
->  	phys_addr_t start, end;
->  	u64 i;
-> -
-> -	memmap_init_kho_scratch_pages();
-> +	int nid;
->  
->  	/*
->  	 * Mark scratch mem as CMA before we return it. That way we
-> @@ -1486,10 +1485,13 @@ static void __init kho_release_scratch(void)
->  	 * we can reuse it as scratch memory again later.
->  	 */
->  	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
-> +			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
->  		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
->  		ulong end_pfn = pageblock_align(PFN_UP(end));
->  		ulong pfn;
-> +#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> +		end_pfn = min(end_pfn, NODE_DATA(nid)->first_deferred_pfn);
-> +#endif
-
-A helper that returns first_deferred_pfn or ULONG_MAX might be beeter
-looking. 
-
->  
->  		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
->  			init_pageblock_migratetype(pfn_to_page(pfn),
-> @@ -1500,8 +1502,8 @@ static void __init kho_release_scratch(void)
->  void __init kho_memory_init(void)
->  {
->  	if (kho_in.scratch_phys) {
-> -		kho_scratch = phys_to_virt(kho_in.scratch_phys);
->  		kho_release_scratch();
-> +		kho_scratch = phys_to_virt(kho_in.scratch_phys);
-
-Why this change is needed?
-
->  
->  		if (kho_mem_retrieve(kho_get_fdt()))
->  			kho_in.fdt_phys = 0;
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index b3ddfdec7a80..ae6a5af46bd7 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
->  {
->  	kho_scratch_only = false;
->  }
-> -
-> -__init void memmap_init_kho_scratch_pages(void)
-> -{
-> -	phys_addr_t start, end;
-> -	unsigned long pfn;
-> -	int nid;
-> -	u64 i;
-> -
-> -	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
-> -		return;
-> -
-> -	/*
-> -	 * Initialize struct pages for free scratch memory.
-> -	 * The struct pages for reserved scratch memory will be set up in
-> -	 * reserve_bootmem_region()
-> -	 */
-> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> -		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
-> -			init_deferred_page(pfn, nid);
-> -	}
-> -}
->  #endif
->  
->  /**
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index ee81f5c67c18..5ca078dde61d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -55,6 +55,7 @@
->  #include <linux/cacheinfo.h>
->  #include <linux/pgalloc_tag.h>
->  #include <linux/mmzone_lock.h>
-> +#include <linux/kexec_handover.h>
->  #include <asm/div64.h>
->  #include "internal.h"
->  #include "shuffle.h"
-> @@ -549,6 +550,12 @@ void __meminit init_pageblock_migratetype(struct page *page,
->  		     migratetype < MIGRATE_PCPTYPES))
->  		migratetype = MIGRATE_UNMOVABLE;
->  
-> +	/*
-> +	 * Mark KHO scratch as CMA so no unmovable allocations are made there.
-> +	 */
-> +	if (unlikely(kho_scratch_overlap(page_to_phys(page), PAGE_SIZE)))
-> +		migratetype = MIGRATE_CMA;
-> +
-
-Please pick SJ's fixup for the next respin :)
-
->  	flags = migratetype;
->  
->  #ifdef CONFIG_MEMORY_ISOLATION
-> -- 
-> 2.53.0.851.ga537e3e6e9-goog
+> Thanks, I've added this series to mm.git's mm-new branch for testing. 
+> All being well I'll move it into the mm-unstable branch (and hence
+> linux-next) in a few days.  All being well I'll move it into the
+> non-rebasing mm-stable branch a few weeks hence.  Then into mainline
+> during the merge window!
 > 
+> [1/3] and [2/3] aren't showing any review at this time, but the
+
+They keep changing because of review comments, that's why there still no
+tags for them,
+
+> well-reviewed [3/3] is the meat of this series.
 
 -- 
 Sincerely yours,
