@@ -4,116 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1239FB5EAB
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E454FCD0DC
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BF106B012F; Wed, 18 Mar 2026 04:31:40 -0400 (EDT)
+	id D45356B0132; Wed, 18 Mar 2026 04:34:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06EF76B0131; Wed, 18 Mar 2026 04:31:40 -0400 (EDT)
+	id D1CC66B0133; Wed, 18 Mar 2026 04:34:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7236B0132; Wed, 18 Mar 2026 04:31:39 -0400 (EDT)
+	id C5A306B0134; Wed, 18 Mar 2026 04:34:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D70C56B012F
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:31:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 888021604A2
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:39 +0000 (UTC)
-X-FDA: 84558515118.20.9DAECB2
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C2AC8100011
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:31:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B42FF6B0132
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:34:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 779641D32A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:34:12 +0000 (UTC)
+X-FDA: 84558521544.18.B2D6350
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BE71F100015
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:34:10 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="QLxLSZ7/";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tx6xdKdn;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773822697;
+	s=arc-20220608; t=1773822850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6skfg/AvsBEcmXuLugiIr35grUcj1HHR8OGJRT9dj14=;
-	b=IHRK7aHNObR+BONvZ+4RP7/VBcaFq7TgxecZ9wYPDJpUbnEHjiex0PymyH6r5AYnFkUfsi
-	j/PKBq3mhwvZSAdr7OOhWtg3ASw/qHWzo2L9bEeHuHN1Gb5b5PggGlMid7oD/xzmVyjLKe
-	LGheqG8vja8SMhA9qMgNht1TGXJ/jBQ=
+	bh=ZxGivEO5lpHkxDwooBgSQeam/H2t9SBwXtpsQFV20iE=;
+	b=Jn7cVP2hCgQARlV9qF6KD498pHPQwUq//LaTqABYwYrpwzkwXetHCeDSG98ycSO6OEuLZq
+	IZlbpmsjaxWvqNMumLoI+MVFYMSTrkIdO2xVQR2xmCnpCGWHYPtfdkCDYlVbPtU4NXcCmn
+	pi22/yrn0h6aWqOEiovElTOkf1yaXYg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773822850; a=rsa-sha256;
+	cv=none;
+	b=DSK8AoAms89F706Vbo1qrX5rdQXvtgpnIDXKduQqXjGEDl+WnruWoSu2p3cwF2SwFvjcmB
+	iFKSmS4kBj/jZvJey8/VXYATeShC84QJC6gUGw2cA2rhh1Q2K6F0RVm4w+cbJ4TEvCEJ1w
+	rRfUsX0Vpk4ijjun/0UoRJWKDAgk1G4=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="QLxLSZ7/";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773822697; a=rsa-sha256;
-	cv=none;
-	b=LZMkm6va5BH3gVpUi/Ta6LYsSx7B4VYJejEIgGvKcsVnTNBcmNBHwy9H2FQuwmlsTLUHqE
-	E50UgTlzcOQ/X13Lu4yO+KmzK+uE0XCdDYCcbVWmM5r3oz/kcSoDxhV+VqBEDAcIutc/ne
-	PDeLB/YGQ2KrvHgJ3gc4ZXqxvrkdbEA=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-485410a0a8aso59283135e9.2
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:31:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773822696; x=1774427496; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6skfg/AvsBEcmXuLugiIr35grUcj1HHR8OGJRT9dj14=;
-        b=QLxLSZ7/+oG8MNgzS1PvbjBN11XIGXdibojgcODJNU95Fm2EfL/+IwpmzX93ewm8Rm
-         l0JFc5yQvy2B99WZnStEtmUsi6bYJvRodb+UKa/KoA/EbaKRDjqZ/ML9hFTjyh89fUwl
-         eUlN7UDtSWyQ57pZjZvFb7r3Q2NZyU+7ydvel8zU5OJTL5q8uyIkeIorMqLbPcA9TFDD
-         0sjSc2Ppft9zIcWvRTMjyEklur7tltco+RfDsxfwsZRlphLBR2v0VSnt4GCDhB5w/pBe
-         X8Qt1bOViuK1mO1yU4FMRDmc7GiqHKwD6jbd2L4QOsmwA2/nwUhuHcS2Q3XSWsgHkCuc
-         VLbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773822696; x=1774427496;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6skfg/AvsBEcmXuLugiIr35grUcj1HHR8OGJRT9dj14=;
-        b=VJnO/dGkDsIQhOKLJXbIVqHANKfa61V2B+Wuk+OhnJ7POwMue2hIbcvC4leF9nxXzo
-         nyPMlAcv87vLG5ZiTjhAenZsU5V2H4P2LHARq6zSyVqlZB7YfF0eaKKprF6as+4eSXpP
-         0CTl6LUWrxe7CAkWn0Td8Q4MxEhBwzmUqMz1PmJiASkzxGRM1hz4dBgsSBvS5LhP6MuD
-         KWIqKTpJU80cy0hv/whip7QbYYINfOrv8CUyM5aXtCWligQvmeI2c851WkDnIMCCIk4Y
-         GGib4MIgZbFXChPz3/MwpJVstTHLRB54Tf4iWuSLnI7UQRgCmqXe9lwE3S613DiMnzQN
-         dGmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVICXwBafT54Wfuxh2FmucRZnki7alEcPQCX0/8C+Mvk9cOE4dCR9GEUYJocCN62d4Ws9DCmCeHVg==@kvack.org
-X-Gm-Message-State: AOJu0Yw2gF3MfO5y9MPae+Z+vdj9sdPgv5SmqwSHyI5bmIo4E5vxsRSI
-	cFHhmPGBR0aFc8fwzY5AysSIaiE1Mul5cJ6zp5j8o1Xfw6v/bCisuJ4hZZeCSqId+lM=
-X-Gm-Gg: ATEYQzwvCGRj4ZZIm/v8JhPNcknlQhpsvTFUrB9f+qAhq4T+sx1XShSm7/RxzxhDf3h
-	op1M3sL6Ij0bnJHxERgMglX8EAZ5vnGRCskyTfkvK7uxsacJNcAdjZL8gZRHToQip8AEG7xzQsq
-	OLYVyBoINzOotlSZj0g+d59elv01J+CqwioO5+MnH0tXzWmKl/p97QYWur/t+1n/SCPpxxAHZej
-	YjW/a95WCtm1NuBJjqwGOjLhhVRSeDa2qHTfXnRmncUzXdCcT4UFvoTWARBGWclpKj9cqHCzsHr
-	iujs6Cy/6egBGmLmaaxgrD5kx72/o5bNtIUDm8auBBA8eBC2M9QBDI9ROYD4Vav1sN8neSkvW54
-	Ic6QD3Dgc86NFag+9yi3pZXTx8e0Cr6B+RIa7Mr3xdOxArwO8r4T9N3Ayb9B5R1RUs46gV6IJhb
-	c0UUyrVVZOtKKFJP3IVmwuK6QYajTkn6142Cf1
-X-Received: by 2002:a05:600c:3b07:b0:485:3026:2b8b with SMTP id 5b1f17b1804b1-486f446fab2mr40802755e9.29.1773822696147;
-        Wed, 18 Mar 2026 01:31:36 -0700 (PDT)
-Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f4214ab8sm48028185e9.6.2026.03.18.01.31.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 01:31:35 -0700 (PDT)
-Date: Wed, 18 Mar 2026 09:31:34 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com,
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tx6xdKdn;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AFAB14036A;
+	Wed, 18 Mar 2026 08:34:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261AFC19421;
+	Wed, 18 Mar 2026 08:34:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773822849;
+	bh=ZzFleRXrNFkpynaqPdY/YosKojmZPLThpwZ+pBJV9FE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tx6xdKdntAjvd7zE1xx0i/755mKqecG8zfCeb9yA6qg4bILeyQ/h0kUS2/5MwMpbS
+	 nF8Bu6Jk1u8LDaZoODu9BxV0GCpYF9N3g5DvU9gZR9NPcOorLdNDqr7kbMqnWiea7w
+	 BFzvbSdhNsD/8a51s5GiNRNiUKeI3EUO49KHTptG1brdZ+2wbEOGP24kJegQj9G+ZZ
+	 e5FdJsHN/EAubdH3Pd3z5UwnADXx7X4136xXfg+ZnugM9ZaLqwIZzweuMdgoNeKBD2
+	 Hs9NqodI6fPKRQp6WVzzrb3dmiS7eoryorSfPN+PO8XpHTySird+IyC/CyTAbXSi3m
+	 KT21E8nwgxgBQ==
+Date: Wed, 18 Mar 2026 10:34:02 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
 	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
-Subject: Re: [PATCHv3] mm: remove '!root_reclaim' checking in
- should_abort_scan()
-Message-ID: <abpi5gh9XhUygW-J@tiehlicka>
-References: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 09/14] mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific
+ usemap allocation handling
+Message-ID: <abpjeswfbBeDi6e6@kernel.org>
+References: <20260317165652.99114-1-david@kernel.org>
+ <20260317165652.99114-10-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C2AC8100011
-X-Stat-Signature: 3mgep6i41u5tdmsqngmucfrzen8gpu61
+In-Reply-To: <20260317165652.99114-10-david@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1773822697-486308
-X-HE-Meta: U2FsdGVkX1+9jwHW+QOhMkKi5Bh0+ZCeBIwGe0slq1YTlweRYDQs6NuEnSA1NkuNJ4i3ypV4jkWZAXQI5lhD+wjKIdgyZvBFx0L4ZU9j7knUiKjUb5pShLaIBkFiWoPm2ClY0l3bqnhucj4MFvzOwMnKS2VXepaFHTZ+o+lA1+3MSLxQNE0+6UTT/c9KTa4sdFHWAuz1MdaYQUavYs2nxfyAurlo1XGhoYs2uM0V2vmxn8bNDH55A7EJwxp19l0g0lCGQAMkefMCvuGlDe7H8X0BPY8gdepbI4kVqoA3nRYlOvkPAkquA8jzSS8oLi46i6eIfPuMsKmZcjYC+wtSYRLUA7it0PUtDsHKVzKqJejA5HCQ/uMSb3pVZ1nw+m6nW1F6UcZ+4RbLJO8atzwR/BfzeOVroFIzwTCjYDb3HHor0PbdWKxsBmvkdF7AXB81KeXJgJ7eNQooavpXZ7C59VCjhcWEZd+wWE0qvk9YLPRjBUIbyxA6aBlGBZUkC82WSRFl/gSX/c0Dz15b1O6KeRogE7mtO8rqMa7yVHzeRNqRJS0D+1NhB/mP7Lr1ZF3ySf2BkkVQeedrIC+TIkK4cyCLjsrJ8WKk0Na5LZxmvkQKSE3jO0yXiBjd7qIWkOnBDbUZrqkwdbxq1G2VUPHloagdR9WF+QWXVIE9z/608awtP1ohZKN3AnDhkNBVuGAGSQjwQKOGp8x/ErYMycAI3dkreGpLItvFTmDQI0K2T/0pUWSpSmnyKUWIDg8oeGdLoDM5UYaVkoCrBfHDOhJAiPuNooe7SjEOY1PRrvn5T1Re69MN03OHVM+h3VKiTRDxxOwyMh6rXaP6h9OYphc3oUMql1+OSeb53Mt/r8glpB4Vlu186C3tJZ2BvbWquI0oAaCvCgmMn6wYxVFXocQrgQUBd6Ay4v7+7egIufBMfX6EcIZgHryq1aQ16aAepQpmWV3E6XD+GQpB6W0+7A1
- g/I5jxdB
- gJ5fFPhZNUKx4vst43UI857GPyvLlm7BvGwj++pOi2i1FH89gXRWcpcaRgujMLb33+a647WKT062OQywhAwIGAmvAYJcoZooGJOcnpR7FRbIr79ooKhU9cnPC5g7GZBXIQIQkf5HWV1/3CtPdMN+33eq2czXr4jcOf1kTFxPH0Y8xdtScSqkL3Ils6bxC2PKvOpHIH3mmNRhDZzyCToHJJeAyRn1vXqwe6uCt/JHFFlb4MsA=
+X-Stat-Signature: etkiqr75ktn6whuq519ne8iw16it5czm
+X-Rspamd-Queue-Id: BE71F100015
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773822850-891305
+X-HE-Meta: U2FsdGVkX19KtyLZW4kcHYtHVQK4r3oJ4s0+WtgVMRjU/z8aLPUgOS/aPb9cqb4gy2PTmX1YE/YAbw5ei7dTcMKTHWGMst5imF0Gc4bfrgDqaypH3WT2MUsUgnNCterhe5vkxpJ2nR9TbldF7jqrciRKrx9UQgpKKPt7ZwKnMP3JPWFIE2uhkp6Aj5gnlpffqaqM+Qw1XsaeBAe1F745Lq0P00H8RgYZrtFK4RSPMkz5stFkLs+v/nsjhtLTZTWKbdvDKw8EPoqh+3fF5Y9dr5qlDummoZDB2x0QjUC55F84nsRhLt0aJnFSnK6EVphwU1eihus5mzTiCVJsHJObF/WJgNSz+qqwpzFNxzSTZVOOqnjE0h5VQ1Pcr2FZII/qtX10qX/MBDzg3ZRWcz5JPzy2QY89nnqk+45HWi/PweOfYKL/KGazp0o6ocrXZHzFoRvWcRX+G2vbKdBEuq7ytWuBrm1F0w6tKPHnoCbwHeTyLabC0jOFgM0Jlq16bx+xwfJQhwZpr4+x8oDK2+na/K6uuWU5flOKv8UH0/qaXkmgK7q3dicKBKDjKJ2kClI3l1xuicadTNOCCwPhSUTKnZAbZl6vPisr+OeFf/cwBYVI10hH5rgNMELBwY8aAROgXR9Q3KaNPhy7WKIoRCqO1Xgyk3SUxtGsRYU73Pw/+/qtbuTcUT/FTB3BoMzTUVXPjmHPYjuqS8XxU/7nVJVM3FTB5R3vw9DRdiob7Gpa4gmsMnyEE/MtAyXAPKZKPpd1NeXLUdadCIlvmmRuxbIbQ9fqrubdEkdRX+6PMroSp7k3+NF8sueCZs8t4geLy2eEOMVd2tydpLLXTM1ixF/rjHw/n6vRC2mq59ca+gvkgSGuABultU0wqFySa3jFUZRfkBhXk+dxqEYmZzFpHRQYSGJwLjxa8wKkH4RVAEQ4f/L2o3ifYphSSSlZYh1jae/lK7I/YmoXHxkZeVP2Utb
+ FSjMLcua
+ 6mSUT4OWQyboULo++vx32Vqx3yoji0fw/CaLpZovG2063bkyInH1Mrfg5P0m8znaD2Z1LoGrgYJvIVZwwTl0E6/olh3JEIzvM1hWSDUGT0+Zcf7Q2VWUwrajmtLJZYd1Qvh3v4dWTbeFdRJ/Dx+PTEffvfh9zVpVUmLCiyi7kF4kxYZHzbj2JQIqR36N4A3JenCrjixaw3gAFseOQigqh1DRMTcRrdwe+IoveqZvYa2bU+zaUqgqo3IwA3kdNLck9mzXaKBUn0qSghr/b6pooHNiSey/HaO0s25WUmlcoOA13JVPJyOLZ/K//SAmODn+crbv/SyzdJYDxjQw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,63 +101,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 18-03-26 09:15:58, zhaoyang.huang wrote:
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On Tue, Mar 17, 2026 at 05:56:47PM +0100, David Hildenbrand (Arm) wrote:
+> In 2008, we added through commit 48c906823f39 ("memory hotplug: allocate
+> usemap on the section with pgdat") quite some complexity to try
+> allocating memory for the "usemap" (storing pageblock information
+> per memory section) for a memory section close to the memory of the
+> "pgdat" of the node.
 > 
-> Android systems usually use memory.reclaim interface to implement user
-> space memory management which expects that the requested reclaim target
-> and actually reclaimed amount memory are not diverging by too much. With
-> the current MGRLU implementation there is, however, no bail out when the
-> reclaim target is reached and this could lead to an excessive reclaim
-> that scales with the reclaim hierarchy size.For example, we can get a
-> nr_reclaimed=394/nr_to_reclaim=32 proactive reclaim under a common 1-N
-> cgroup hierarchy.
-> This defect arised from the goal of keeping fairness among memcgs that
-> is, for try_to_free_mem_cgroup_pages -> shrink_node_memcgs ->
-> shrink_lruvec -> lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the
-> !root_reclaim(sc) check was there for reclaim fairness, which was
-> necessary before commit 'b82b530740b9' ("mm: vmscan: restore
-> incremental cgroup iteration") because the fairness depended on
-> attempted proportional reclaim from every memcg under the target
-> memcg. However after commit 'b82b530740b9' there is no longer a need
-> to visit every memcg to ensure fairness. Let's have try_to_shrink_lruvec
-> bail out when the nr_reclaimed achieved.
-> 
-> Suggested-by: T.J.Mercier <tjmercier@google.com>
-> Reviewed-by: T.J.Mercier <tjmercier@google.com>
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> The goal was to make memory hotunplug of boot memory more likely to
+> succeed. That commit also added some checks for circular dependencies
+> between two memory sections, whereby two memory sections would contain
+> each others usemap, turning bot memory sections un-removable.
 
-OK, this is easier to understand. Although you have avoided some
-clarifications I have asked for explicitly in prior version. If MGLRU
-maintainers are OK with this then just go ahead. Btw. I have only now
-noticed that they have not been involved. Adding them now.
+                            ^ typo: boot
+> 
+> However, in 2010, commit a4322e1bad91 ("sparsemem: Put usemap for one node
+> together") started allocating the usemap for multiple memory
+> sections on the same node in one chunk, effectively grouping all usemap
+> allocations of the same node in a single memblock allocation.
+> 
+> We don't really give guarantees about memory hotunplug of boot memory, and
+> with the change in 2010, it is pretty much impossible in practice to get
+> any circular dependencies.
+> 
+> commit 48c906823f39 ("memory hotplug: allocate usemap on the section with
+> pgdat") also added the comment:
+> 
+> 	"Similarly, a pgdat can prevent a section being removed. If
+> 	 section A contains a pgdat and section B
+> 	 contains the usemap, both sections become inter-dependent."
+> 
+> Given that we don't free the pgdat anymore, that comment (and handling)
+> does not apply.
+> 
+> So let's simply remove this complexity.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
-> Patchv2,v3: update commit message
-> ---
-> ---
->  mm/vmscan.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 0fc9373e8251..10f1e7d716ca 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4839,10 +4839,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
->  	int i;
->  	enum zone_watermarks mark;
->  
-> -	/* don't abort memcg reclaim to ensure fairness */
-> -	if (!root_reclaim(sc))
-> -		return false;
-> -
->  	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
->  		return true;
->  
-> -- 
-> 2.25.1
+>  mm/sparse.c | 100 +---------------------------------------------------
+>  1 file changed, 1 insertion(+), 99 deletions(-)
 
 -- 
-Michal Hocko
-SUSE Labs
+Sincerely yours,
+Mike.
 
