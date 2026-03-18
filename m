@@ -4,95 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF179FCD0CC
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D302FCD0D2
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 08:25:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 346C46B0127; Wed, 18 Mar 2026 04:21:08 -0400 (EDT)
+	id 6A9EE6B012A; Wed, 18 Mar 2026 04:25:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31DD46B0129; Wed, 18 Mar 2026 04:21:08 -0400 (EDT)
+	id 659DB6B012B; Wed, 18 Mar 2026 04:25:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25B8C6B012A; Wed, 18 Mar 2026 04:21:08 -0400 (EDT)
+	id 5488A6B012C; Wed, 18 Mar 2026 04:25:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15A626B0127
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:21:08 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B20921D360
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:21:07 +0000 (UTC)
-X-FDA: 84558488574.05.A859698
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2E6AC40011
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:21:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dopbr9ya;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F6B26B012A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:25:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DFF4B140476
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:25:53 +0000 (UTC)
+X-FDA: 84558500586.29.3A0508E
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 221C74000A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:25:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bZXlKWqZ;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773822066;
+	s=arc-20220608; t=1773822352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FNio4ocBHgQ4v2WEdI1XT3k/LjRB8Ux8VLQ82Nh0FmY=;
-	b=mjyR7QjGH6JbeIdrKx3tcILHE56cxIUo4e6JyYJX2+mPdgR5ziLKPXdm1YUtEeJO/R4CpE
-	BUR8vOKvs5P6/4am6FCmDwGYgib5GFpWOxeummWE1ASY0BRYIkjDT9evfRUvfGYfNBsMd5
-	crM047M7XVUqhl2TEmb44Nfhd85GYT0=
+	bh=qct1M6uDgddyZIwhlydpZnvmv7ZwIfwluJBCESYJnoQ=;
+	b=dkoI/+CjSdWxWhzIRzVkG0+2xjVNXcka27FY9OUkwpB6qzNZTWImRdoOCS20UPNXBDUbD+
+	rhLlpwg3ih54JfE2f4o9DnMKZD+OvcB1m2DG6phwxf06SsRm3kEukBDxYdufofnjDQk297
+	sjD4yGwrJK8PYr8dZMHlOIMcdZBjtzg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dopbr9ya;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773822066; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bZXlKWqZ;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773822352; a=rsa-sha256;
 	cv=none;
-	b=USIbeo94OuElUcGP7TrwpRH+2B1x00dfwiPgO3NB48u8VSp8Ulm0ZAdzVQL4fil4GaSOfY
-	lWk5Y+M0gj9SyhRdpR4a5tkjplLZZX3zTUfPfZWOw1LHFm0vYCAgI7TngkHZOvJkD+jE2h
-	o7WYeNWmt02pGQP4H8tf/5KS0rIb+Uk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABBF2600AE;
-	Wed, 18 Mar 2026 08:21:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209E8C19421;
-	Wed, 18 Mar 2026 08:21:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773822065;
-	bh=EA79S28YVeZYHQpiP11IUWT/puy5gsehhvHI39K5RCg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dopbr9yafQgjd3ZiDSZBGn/mrAXnmFXRG0L6C4WtOtDytHn3DWBdmF6Yn8Mb7Yxl0
-	 Ulwn3CljS3CGdFVb0E46PE1tphGRF6X0dV6JP45JIvTBuFdX7043OZKOgisLM7Nw65
-	 vBUyo5nIeT/oKBeASofgIeXFwhVo7Zphn/Kvn9jECbGCGcFM/4ILQm8/XEGMs1/MYY
-	 yfB1kz+TUiMTsP8cH+KOvkBB7472VS8/1FEfJCvIsydVdViqkiK0PmcF216+iWLf2k
-	 89atoDsTCZVmnzV/XgzPCJVvcWLEb+VaA5IQGFHZ25s6FteU3fFl3606PSa2MXOsoG
-	 ihSq7wogzqhRw==
-Date: Wed, 18 Mar 2026 10:20:58 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	b=GUjjJQr05IP5DSIuDMVJGLe751lovVOZa5qPGgCtTG4bA40bfZzWbWAC5Nbe9s/bQYadBY
+	ywzR4rC/lQMbpAzN+9ogofbTiTAj0wEbSR+HShGR/DRPaOi6kZwASA+wUKzXNjR1NtDPWo
+	ART4mFIXzEKI7libiG+3gGwud92XPg0=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48534237460so70497105e9.3
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:25:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773822350; x=1774427150; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qct1M6uDgddyZIwhlydpZnvmv7ZwIfwluJBCESYJnoQ=;
+        b=bZXlKWqZqOCAQzqkntbobpGLJcFm8XnZtBERiUfXf/BbU2W1Qoac3s/NWcz9lUt4E3
+         091AASJ5v9TLOtthvq4aOy+pqklwP0U14Y2SXuZFXmo0lZ2sxaQGuk+qofyJSsQ9cD6H
+         HGsUmRnJYrFadp+oOEMdDItr4qKFJD16TzNDVv4Bgj+T8CqhQVOLr//mFVhsmZ0cRgNA
+         Yp04rER1NMyUqiLKy5M9LRf4E6gDpVqWrb62zjt+atf7gXlNY9Cw9iVYrHXXuFIG6m/n
+         szhYS40R7ntGUts4rYDv6Bay7pVuHkabLekhbjhT2ZDbyGkZ8rRHNEFfNo10KvTvCz8I
+         U6Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773822350; x=1774427150;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qct1M6uDgddyZIwhlydpZnvmv7ZwIfwluJBCESYJnoQ=;
+        b=R6lBAGgdriWTmU8cmhVbvIsf3R5+AyAPnie4wmW/+sunYR7eVOhGQFfIMBvPnxapR0
+         kvpudAazdEaOKxes8WVitz7hVvJ1b0GUmTBPVEcLaSw9rxKjYPwQ6t0yk5c6nnU4yB7S
+         zjHMspOHU/V3sl0W7HqsY0TG0zYEGntOPbVLsY0heyUvhle2aqlFaDaUij/2CZo6pLfZ
+         wOHew7zmY48MXNbNQRzCrhBhX5eNnrV2fv3lyhAvXRH7qLWhh+GP15UJS7FG6st2nGWw
+         /Q9lIjVniwQgSowsT4vcow8L97QW+S4SfcoUJUxm4VeWnoPKW/hdO4eYOlYnCa7b532w
+         +AgA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/NeHFqKOr4lrQf066Y4hPMWxKrrFS1wsGVH3VLJPq/tpT1vj5QjQn8gnKOl4nIXE81z/+Ikd7xw==@kvack.org
+X-Gm-Message-State: AOJu0YyFF5YmiGVvyXwI2s0gCN6mua+crwrIcqZnKNTO6GX8ptydsT+c
+	YtZgQriaJMlMwGsWu8xGxAGriK26MtmkHT03qZHTpZDTlvkm9JUkvsARA5M2XTwqi1A=
+X-Gm-Gg: ATEYQzxqWJ+Xz2P9leBA7Nv1laew9MdNQbWJt7YFtALendX5RRgO1AKEhqna95RR2Tf
+	iXKWoHGUNppb5++28qyg6tmlWc3iGVlTELGpj+3UkyeSXUYLcnzSaU2h5LzQy0GiJGRlYJlPPlJ
+	9tiBZfw92hC2nJdD9V1V4uaJveJz+2W9tZRSjSxgmHom2mJg1yRb13mFzCLXo3HjpUBfIA8c3H9
+	VkqPkLa/2Qf0Pw/8LOQgqg8wyikikcniykxxFkUbv/hUdogRzy3QJxJs0HpBR71AkZcwpbrgzes
+	/mqEINO6Pqv2KPNyvRvZJO0U/FGTLRRwCzbwGBrK/t14CEysDRtEcS2qHsWDybPtzSjZOO39vyA
+	pseluhjoDVDntaEKfHdxVY2n8s5saG33dSWmvQmAdHNDVbKmnE+DWtYmfZi2IrJLpOO+EezbdQN
+	C3g3va93kz7E/PzQI8e0wq3KuWFUX4aFSERX9n
+X-Received: by 2002:a05:600c:8486:b0:485:3a22:69b9 with SMTP id 5b1f17b1804b1-486f4457e6dmr35524025e9.29.1773822350370;
+        Wed, 18 Mar 2026 01:25:50 -0700 (PDT)
+Received: from localhost (109-81-21-195.rct.o2.cz. [109.81.21.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4856eae3322sm105879665e9.10.2026.03.18.01.25.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 01:25:50 -0700 (PDT)
+Date: Wed, 18 Mar 2026 09:25:48 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 08/14] mm/sparse: remove sparse_decode_mem_map()
-Message-ID: <abpgagKxOP7klxWC@kernel.org>
-References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-9-david@kernel.org>
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
+Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
+ attribute
+Message-ID: <abphjNOYaNslTA90@tiehlicka>
+References: <20260317100058.2316997-1-d-tatianin@yandex-team.ru>
+ <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
+ <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-9-david@kernel.org>
-X-Rspamd-Queue-Id: 2E6AC40011
-X-Stat-Signature: cejdfdhrxhtfpwjfk1qs4zs6y99rb5fg
+In-Reply-To: <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 221C74000A
+X-Stat-Signature: z7ej38ru8kmmm445t4w8d4898urimwnx
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773822065-87646
-X-HE-Meta: U2FsdGVkX18IX1AZ+l+tbuSFXHMnUcLPNJ4PTVf6qO8NVtIrC6MovSYm3sOgCI1bTnO8aIooS95Ig+3wBFf15qM7Ln0i0/um4VbPlUeEUpKw4BZbG1XWeg6BZSXt4AQIBmwUcRcl9KIsZU0a2kvrSx/V/1myo0t8lvUI9BrBGr0lfdvwN0qr9ZONXTQPDXKpzA0W/KtRf6Ok8I2hPSFqlb2SgW61oV8BOsDveUIPztLpTh9DVodXPLoP6da5NLjXjEm52pNUC4LnwJIAD1QEjTWq2U/ku8ozN2HUqoPZEXtLFo1nTiNXyqjHs6ZVl1Pqf28uYCJeZGE18SNR4qi/OeeHgRH1zWqZ/nPjuzTR741Gt54/cDQYuSjpnUwKwCbfV670bknlv1Sowqk2mDlL3m6jcPyRfzhhM6zj0B/T+nu+e1H3rxgyZisGg8V81HB1lMORKgn6T4tLbl2dg7xyKSqAnhpt2ZqTm2GyzLrRTdW3YTcgew2T5o/9coO29CXwbbUVtowCr/9yVn7TPONkTU5vGAW0/iuK4FY0te13Dw3hZieGEgNtt9DbZvbKTP11EeGdlBCAEg0xUcMEIcoSf7xm5hlxm3lX86nQmazaiTWhOdYpJrnu/Wpeh4JR/44umxQ5dI4OXDUrPyyVHfyEub/3ko3ZL1zutZrk7psXjeVgmeqyAeQiyns5kf0k5FnQYz3EknB45prjaBvefLvkLyeTiwc7EzHPHm++AvYxKWdzKQGxQl79gt+tbKk/J+JtIHBNIY/ekvgiB6LK2pjXTq3djV2z4fkKM2rbtAPfhi+18bwCRdA7K7LuWtcFQFGdY/83pZGYq1sYsLV6IDqcHRZOon32PLV5ulFTcgoN4NPWROALtNeamvO4iAz0251Rra+FHwDqx/wgdLfvwkxiS8zwEgZVAn24bjgSVhYOXpE+WwNSVQNggUFIdVnNT/+woD8/N7gV6E9vfi3/Bjl
- h+M7/q6Q
- kRttgON3X/WCelYTHly5+eJ/Nyf9mg/FxbKHVe0HYH3W3+7gIzumqk7nn7764dU01cWtg6sYkf7Lg0hyrAeCaDdAfCi+vga/CNRgWE139ywW/vd8pUs9B42sbHYBz/7StHp4/Vb1OitLLiT7j45nivRLoGnW4i0MFulCb6/rJaD/VNwHdWpOvpwvCF3GISdoRoR/nWBYQCskwL5dHFYvhvGx3U3L2DC761K0n3WaX5fbLmGxuqjJqumWKDx8aI/g3Jxf0kgW13GaBnGdmC70qV7/0T7uL2/uINmIpIih/2l/xazjtTmYfTuCD+fs1tpYsYDpv
+X-HE-Tag: 1773822351-182686
+X-HE-Meta: U2FsdGVkX1/RuZB0TkIWHT+TpcoTDL18YT+zv7Po06OX0wlcwCajjLIyomwOI+5h9Q/DKt+5Vs6zLOj7nawU0wCUunJSrRHEkutNrRAwl0kT9Y1iN35ROSQjdTT33vh9aN+7g6JIhdmEDMs3cBoBOpub0snyUskEl3A9E6jrFM70YbB7hruwgMUrLUPvgQ0uoKbl1HS3/68lddThauQxwNK+UQ6BBmL/BrGIKhzEwuBbwrTkZxLgU2udn/P5fwvPuEuW4Gh7se3QBefNhRHqJ5DyQ+T3PZwDlnC7DsATE2sLcpdqluUw4Vdu/gJBqMyO3Jby51MsjB54+w7nW1ApD7fLYH5d38U5+6S1HhkKnk6P7rhwKXxL9xilg3FivCHBUUghRWQDxIOvMw/wCsjsqfVdDeUSVb3Mr+FA8DUBPvNFIk4JA7vgR1r0kSZ0C883c748sT/OD8wQSBDge/Aai0S3uUVg3Il0rkIGGsds3cL1NOe2UUuxoON8z0qYSd422w/kar1mb0phzHgDq6FrqYCKDCQJnTXsNVNzE1JN1wrsOyK0KxEDeR/kPjBdAlZZel71W82fQpUruPWi1HkE5qLafqlA7auuCX899aGjHHB5fq1Rw5XAA85xuoyIKRmij8+5/h5jkBXTMTHscyH8ua8eoruVkFcpgkffHlkjiX0MpSVQmHFPoUbo//uhFprtDVwXeZtp3qN9G9RVYbRhts9WWNHSZSCwafMSzRll4x0u/hsIeJXpayptwoN7l7sq8UQbcURwCoVQMOkesSeqrv4sQDvZu4u5T71jTslrK2yKOlEYIM9GNEOIJnj0p6zjvZlkq+LykpNg2+OsfPlJzCglUEi0BZJzHiKFMHWaLROq6JEvrOe6jilhZ1fPTk/qJ9owCrE6QVz966zONFV0k7hZd3PuAURWjyXF+MFc+/saKId3EOb2zRScRW4eWHo8tvvn17vUKAvMytMmt4C
+ 2nIHiuwH
+ 5yqE8jvDGYWD+mATtXnlw2O0Kopm3e1xVskL9iKTjw3ijdV7Y3Dtln9nuiM430cbYgVsF91+uGpZLk1AApPMO/iXDI8oL+phUwu4PLqPOPwUtFFU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,79 +133,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:46PM +0100, David Hildenbrand (Arm) wrote:
-> section_deactivate() applies to CONFIG_SPARSEMEM_VMEMMAP only. So we can
-> just use pfn_to_page() (after making sure we have the start PFN of the
-> section), and remove sparse_decode_mem_map().
+On Tue 17-03-26 23:17:28, Daniil Tatianin wrote:
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  include/linux/memory_hotplug.h |  2 --
->  mm/sparse.c                    | 16 +---------------
->  2 files changed, 1 insertion(+), 17 deletions(-)
+> On 3/17/26 10:17 PM, Andrew Morton wrote:
+> > On Tue, 17 Mar 2026 13:00:58 +0300 Daniil Tatianin <d-tatianin@yandex-team.ru> wrote:
+> > 
+> > > The current global sysctl compact_unevictable_allowed is too coarse.
+> > > In environments with mixed workloads, we may want to protect specific
+> > > important cgroups from compaction to ensure their stability and
+> > > responsiveness, while allowing compaction for others.
+> > > 
+> > > This patch introduces a per-memcg compact_unevictable_allowed attribute.
+> > > This allows granular control over whether unevictable pages in a specific
+> > > cgroup can be compacted. The global sysctl still takes precedence if set
+> > > to disallow compaction, but this new setting allows opting out specific
+> > > cgroups.
+> > > 
+> > > This also adds a new ISOLATE_UNEVICTABLE_CHECK_MEMCG flag to
+> > > isolate_migratepages_block to preserve the old behavior for the
+> > > ISOLATE_UNEVICTABLE flag unconditionally used by
+> > > isolage_migratepages_range.
+> > AI review asked questions:
+> > 	https://sashiko.dev/#/patchset/20260317100058.2316997-1-d-tatianin@yandex-team.ru
 > 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index e77ef3d7ff73..815e908c4135 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -308,8 +308,6 @@ extern int sparse_add_section(int nid, unsigned long pfn,
->  		struct dev_pagemap *pgmap);
->  extern void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
->  				  struct vmem_altmap *altmap);
-> -extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
-> -					  unsigned long pnum);
->  extern struct zone *zone_for_pfn_range(enum mmop online_type,
->  		int nid, struct memory_group *group, unsigned long start_pfn,
->  		unsigned long nr_pages);
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index 636a4a0f1199..2a1f662245bc 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -274,18 +274,6 @@ static unsigned long sparse_encode_mem_map(struct page *mem_map, unsigned long p
->  	return coded_mem_map;
->  }
->  
-> -#ifdef CONFIG_MEMORY_HOTPLUG
-> -/*
-> - * Decode mem_map from the coded memmap
-> - */
-> -struct page *sparse_decode_mem_map(unsigned long coded_mem_map, unsigned long pnum)
-> -{
-> -	/* mask off the extra low bits of information */
-> -	coded_mem_map &= SECTION_MAP_MASK;
-> -	return ((struct page *)coded_mem_map) + section_nr_to_pfn(pnum);
-> -}
-> -#endif /* CONFIG_MEMORY_HOTPLUG */
-> -
->  static void __meminit sparse_init_one_section(struct mem_section *ms,
->  		unsigned long pnum, struct page *mem_map,
->  		struct mem_section_usage *usage, unsigned long flags)
-> @@ -758,8 +746,6 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
->  
->  	empty = is_subsection_map_empty(ms);
->  	if (empty) {
-> -		unsigned long section_nr = pfn_to_section_nr(pfn);
-> -
->  		/*
->  		 * Mark the section invalid so that valid_section()
->  		 * return false. This prevents code from dereferencing
-> @@ -778,7 +764,7 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
->  			kfree_rcu(ms->usage, rcu);
->  			WRITE_ONCE(ms->usage, NULL);
->  		}
-> -		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
-> +		memmap = pfn_to_page(SECTION_ALIGN_DOWN(pfn));
->  	}
->  
->  	/*
-> -- 
-> 2.43.0
+> > Should this dynamically walk up the ancestor chain during evaluation to
+> > ensure it returns false if any ancestor has disallowed compaction?
 > 
+> I think ultimately it's up to cgroup maintainers whether the code should do
+> that, but as far as I understand the whole point of cgroups is that a child
+> can override the settings of its parent. Moreover, this property doesn't
+> have CFTYPE_NS_DELEGATABLE set, so a child cgroup cannot just toggle it at
+> will.
 
+In general any attributes should have proper hieararchical semantic. I
+am not sure what that should be in this case. What is a desire in a
+child cgroup can become fragmentation pressure to others.
+
+I think it would be really important to explain more thoroughly about
+those usecases of mixed workloads. Is the memcg even a suitable level of
+abstraction for this tunable? Doesn't this belong to tasks if anything?
 -- 
-Sincerely yours,
-Mike.
+Michal Hocko
+SUSE Labs
 
