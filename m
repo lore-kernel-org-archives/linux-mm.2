@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 853A2FCD0A7
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 04:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90666FCD0A7
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 05:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B11F66B00E8; Wed, 18 Mar 2026 00:57:31 -0400 (EDT)
+	id F381D6B00EA; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC31D6B00E9; Wed, 18 Mar 2026 00:57:31 -0400 (EDT)
+	id EE8D06B00EB; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D8976B00EA; Wed, 18 Mar 2026 00:57:31 -0400 (EDT)
+	id DFE726B00EC; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A496B00E8
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 00:57:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07A8C13AC45
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:57:31 +0000 (UTC)
-X-FDA: 84557975502.19.0185402
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D8BA6140013
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 04:57:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id C59546B00EA
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 01:02:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9662C1D335
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:02:04 +0000 (UTC)
+X-FDA: 84557986968.22.7264D7C
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B4DC1A0013
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 05:02:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	spf=pass (imf25.hostedemail.com: domain of 3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773809849;
+	s=arc-20220608; t=1773810122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D/1RyWAy+uYvlqz6c/m4iD1cMOGeEJJ7xcNyXpNhxtI=;
-	b=GsXUwyFQE3CBaa2qyi1nqcXEhi1jVb3zxf3v2i6R6Twd4K1t5n6zFAP2SapAAo+Bv+huDC
-	nBT6RjUdaOcioxBFtXBPve04OBW/FGUByaVby3vJZYRfeTNtvb7r+VxjeRIepM9O+uxU4M
-	M1gz0OhsGMKANjO/JNzRixnoylXsGNk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773809849; a=rsa-sha256;
-	cv=none;
-	b=4x/0I3bK/ul13nJAWrJd/1O6KmonUwSpvkdzDBUHYw/nMHWBzanowJJjBKlWdj9LAfh7+t
-	8dYUV+GfLvKZR9LAvPQgPVfYeG5hj8fFZYvPZbmHcyU87djv+acZ9/aqymn+DuNvyt+ElT
-	gw52zPdlBfnPwjBnfp7rGuGPk7lE+8U=
+	 in-reply-to:in-reply-to:references;
+	bh=XP4T4iMaCErg7kQXZBXgUrqdcl4Ozy9ZpxYT+MtYY3I=;
+	b=N4nfRFL45EZjbdBweTwGKrowAlOYeRrUB8sNTSVWNK+UO8DiynHI0JBLAGIAm37GvLWNl4
+	iq70oNgcSk4zaz3CvA3fLVRCYSXup1uHpGUYddl1jEB9gcDz2Vn2FEWkqsP8YzkkKNYgiq
+	iuNPPQwPKLtcf/OG1Rl+mi6S6vAEl6E=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
+	imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 18 Mar 2026 13:57:24 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 18 Mar 2026 13:57:24 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com,
-	taejoon.song@lge.com, austin.kim@lge.com
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-Message-ID: <abowtIXxfFCPrpHK@yjaykim-PowerEdge-T330>
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev>
- <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
- <aZjxP2sTavBRGC1l@linux.dev>
- <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
- <20260221163043.GA35350@shakeel.butt@linux.dev>
- <aZpY1FIjYLtLdu5F@yjaykim-PowerEdge-T330>
- <aaXM58EsMtbGri2B@linux.dev>
- <aafe6VXoCLlajp8b@yjaykim-PowerEdge-T330>
- <abofwUe6Lz_Qap1x@linux.dev>
+	spf=pass (imf25.hostedemail.com: domain of 3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3yTG6aQkbAGoaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773810122; a=rsa-sha256;
+	cv=none;
+	b=WYBxGHAmkP+jrWVn839RZ8zxDAlG0ikv6aSWWZygKFxNiXyx1c/OYEKw30IxvaJ0mLpni5
+	c5Ss+TAJGmDmhzy6172Ck9a8bh189QOqoDIYDqmBMYrdA2JMjFX7mAPHJlS9MZMB8yRrNo
+	Xn9QOzu89zdz94d4epK3D+xYttB7l4E=
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67c1228b2a1so2244549eaf.0
+        for <linux-mm@kvack.org>; Tue, 17 Mar 2026 22:02:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773810122; x=1774414922;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XP4T4iMaCErg7kQXZBXgUrqdcl4Ozy9ZpxYT+MtYY3I=;
+        b=COUB7G6RDHOhh4P5v928wabRM0XcEuOQoj5al1YHdex7SwtI6oF+CV/Lydrl+J1Ptw
+         z4m0rK0NhHA23ia5u0OYCNWdHFQukVVsY4KkMoxdYE8iRHaP3kZGw5cy44bo6ElKZ/4b
+         VjPXDNoy5vzchz24Qu2H4PYBVf8Cz7blvnovkVrhsMfQVAcadJ5JO56x7LacZYJfYzGs
+         O4dlqbQUqiWpOEikxMwb84DM0gpFxE3SE6bl+OEOifYSydJQH/r8Ex8IDClPrW+fnVWN
+         C2GI1tDUxXZ5NQJM5wBLl/Z/EodTIpVj5GfdU8ox8x5q7Qo9GQCiwi4wOQ059pDsf0wp
+         nRow==
+X-Forwarded-Encrypted: i=1; AJvYcCVWNTXjcjWSErwuYq00w3JVAiMqAzRF0z+LEcZgiigz+US/BiOxR8wUkhQ8nDda5Yn0vXbUuS5VMg==@kvack.org
+X-Gm-Message-State: AOJu0YwCyBsg3/Z117eemVl4gBLhYtnZfTsVzD2IMZAWDbIEFPZQdNws
+	i/Vrk1csGag4wt/vsBNrh6izkrInCzkO8IKiAWYcTppFmijnqinvP0wg9wq5JbZwk2Yz2LXSd1R
+	nOph9H8rRY4dTWJCMpTXMrEoLSq3Jvc+cwiflCMqJFDIBLqMCwWlfY60dCoE=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abofwUe6Lz_Qap1x@linux.dev>
+X-Received: by 2002:a05:6820:4887:b0:66b:6862:18d5 with SMTP id
+ 006d021491bc7-67c0da588ddmr1007794eaf.8.1773810121701; Tue, 17 Mar 2026
+ 22:02:01 -0700 (PDT)
+Date: Tue, 17 Mar 2026 22:02:01 -0700
+In-Reply-To: <abolyGbAyynUANDB@hyeyoo>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69ba31c9.050a0220.3077e3.0002.GAE@google.com>
+Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, catalin.marinas@arm.com, chao@kernel.org, 
+	hao.li@linux.dev, harry.yoo@oracle.com, jaegeuk@kernel.org, jannh@google.com, 
+	liam.howlett@oracle.com, linkinjeon@kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	pfalcato@suse.de, sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org, vbabka@suse.cz, wangqing7171@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: B4DC1A0013
+X-Stat-Signature: x5g8e68y39g7sh6ustjfskpos1e36ow1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D8BA6140013
-X-Stat-Signature: 6ttxrntxpdjkkzpk16uaypome3wobjz5
-X-HE-Tag: 1773809847-890713
-X-HE-Meta: U2FsdGVkX1/SpaeCg/wxfLxmXhMUoW6+SqzeLY+RgaGk6856cbvmO9SBBP9r5TakWKy1j7GwHtvUPqTyrsC+uJf091+a4swWYKNY5eJY6qRMtJH2doVYqEg+4V6kwareSOGv+/oaFu08RSMn0I7EztzIpHBAqIxPaXNjz3iONkqDFfe3GXuEg/kQSc+4n5Z2N1PHnGMePZeCvfz64D5gHbtNAFwsybrkEH23WJeO3PpueP1gDSi3ZH/ZW4n/Q7FBxbIZ1JApc77vonz0pp9YiJ2Ax8bkpp2/VfjV/EWQuZvOxUw//I/w6MORt1L0vQSg5fmHZNJxGT4n+w+VgUjuWKML9S94cYJIQO9mDFi0kHUeS6MKe+TRl03QW69ChRouKscyfDA1T7u3/KD3m7XFjJJYVFb5axlCG066gVwAwR2fzvEfnvbIQXiwVjH8TLmHxXRJ3FQ8iJUG5cQKGOB8odeb3iQToYL7TxNV0ElCQt7n4zLBKnWnOi6KrHd1WmGXSp2hq8/T8umlfG4e2/pIeCbHlhVH80IStZaRfGEs/EAYXrysNpXWRqjcaHEgPHwiUAevZ2SFHmjPgwNrA5kHmODT3qS7w+22NGUebSpoARUvZf353cAVsal95jjKPCHqKroAo15flI4ES+nkVu8JPykeTXf5BPp3qXCxVrSW8unHhgNLuUR2Qjje75xScj5/WFnGZ9PvH3FqmxHWosNdcggCEdfRRKq5YYAZEugLlECcWAlJY3FPBvdd66mE7tzWYgoS9lJnDeZ/0tAKU4E3FdFmvpeCCAsF+iV82yOzrPNFSvr51uFPUg3kAO3FAz8Twa6VHcybLo8a0Dji2ePRSyQHB23J8FkPcJqss44y0CZ3rFqIm804iU5XqH4mmXVFqT06xl3+pCchOjBanEUxy/yvqAwCtCm3Qx0g9eTBo1/Oy9ndTzx+HVDLAe22wve8XEHKyaeXMjBjXih74Bf
- 9SCEpImN
- rQlJDNKD6vb/utHg8rEG+hF+bB2RpHnMV+IvftuOeZqOfFtau8GI4b4Wtd72DHNCQMV9DkiR0qAnPSJmSPzVHYq2knKrkLl1tGJMcBJfpQbDNJRXVcenETM1LtkOrqpNww2oJ3RUMdV8+O3ZT/jm7nwQXX1NUUQOKuh8ovHPZVvQhR+3NgMx2KfUqXYE7znN1Dt+oIvj4J0qp3LhWufLSN6zZowqa4KFIS322cROH38QT+ZSdPJZOzzglbg3RU2ubnt4A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773810122-29976
+X-HE-Meta: U2FsdGVkX18m9FbN6IkVxjGv1ATjuroow9tlsUVTp/1TdRwcwpSP1mCSShh7W91W9EZmavKRGT0XGn/zw89ceclIF2KCeO/cogZpP72OGtb95IQh6hfqG1rkz6LMEfB9PnkD0+3vWCkHBjesMWVa3XFEWpGAWdQpvsrOEWVmnEdo2F/u2PRbbw9srXocvwmaZ3o/2gy/tEocW6CGGBg6l65pw+oUTD5Q+ZTFNo+GQBMHRFiJHRFk6Pkn7hmPZmAExt0/vp7Vq91UxHxXvTxyqMeVp72WJCfAzib7yxJGBTKjLh4vGKqITh0qpMXRbJ1Bdn/yWoa7MdK7iNJJGixSyhCe9igbf5RzjXA9C15arC+byhcok/n7ZSNDHUqIQzuIswTsTp8i+BOh+HcO+hFb0CTLpLtE06DWzW101A7QBak4DjwtAZswHeUDxmVFhdtv07lSAAMjoUG6YdBTw0HmSzqpgz7JSjrBR8/cFbOrRgEEogzWRORAUZ6GQjo4So6OH9I5JjBo3o5eE/wZPokoKegOqQZXc6VV+uBWre6bkAP/7nkjV1MGd1KBwOjkgy60+w8gMplneQh+rM4N3E1espEFFqDoPL4vejvPUWCd+UlkoPkrKwUZu3/u7+e+BOyWBQdnIKFhl7GhASTgHJbGAE+qghvwdjDIcDbx7MQvUuBVsyv33E0Ve9vhgU+jEDIUF41DjMNZYDIxeMsd3eYiT4ZMLlo12pHn746QBYiMZ87utuNczp3s9xZc7Dv4gV+oLJk8j1NlJCRyTeSvlX9rH6abP6zj9RIwxPAuJzv6NKJryA7qdQCJzyowEpDq51g6R+oxYCPDYP321y5XcViPESmSGOygp/iqnjmTlt6jH9cDvcHCE5il8Nd+07WoBkasLK7pnaIVJy5vfkVE407CaGOEh9NmYDevm816pf1Tvqbsy9jPk5QCYOAtjaqp9RAjgsPOjPKHmLzCiErsKHg
+ OI0NiRlu
+ TnKg1Fc/+eVV/Rt9tAG8zTwStmlwZcAYMBQFlPWUywAJizmxkBtL5MhuA6kuxZxVbTLbF0SrNJlJ/8guObIr8mAbEInfFJsILANiuc5zXsx2kOUT9afDtfTMzBrmc0pln0A1rlNCm/zfDhzFnx6DPOP8QL9eRrC9gbx1RGhCKo02SqpoYn0ybnEkaiQxJ3ey+OWoU936DehAYuoQJsxD+6boS9c2ZFxPV3iJe49b8AO/wij6J0Pdv4YYYQuXt4vivsqopZzMkg5KGmql0u1wwOGfK8U3nsCkjEdyT0EMkvAtoV/3ws+xfbSqMPcDIbT7DoB9r7PEH3xh/WDsiwyX5U6L3tPTybLAn7PNK+G9wKWoAImEDjd1TMz48VHzUA1HltRP+p7pBhqmVqJHX4CJVpN1+93E3gEpWwJJ4q4nq/kf3H/IaQSG7yEoiTPxKWhZLaRcvSOdElv/OVYJJdtWEZgnFN3XhfPgFfo1V+ZlxzL6hGJOvygD/IhHkPw5WHnkhd3mGrCw3mD4H9Nutg6+In6qVT7HLtb1PEKthdQDZ8otgkkjdyrq9Gx5syO3qk7R5gR3U4aFjJrT58MxOUtjf98y6oEUsiaUOaA0SBUq2JMP6MdmdEcG8Zm3d2Rw2PDI8JPmoQNGDVf1/EBOnsTJ+7BPm07zIEk6JiMUyL/BmMFESffIDfj6vL0/UTaY4YBjsi74XoMKgB3S2kUhTPh8wGIXogAXf5vEkAtJQAd7M+sFoYEGb8LQEoPOe0Ex4jKfJh7cgTAp/A6g4ld2xm1af80DGg3AU1rvRZkOtqe49ksSZuV9+wq9ZnPUw9RDxqZuvmRLxMJJX9h7k23ZOsFBi7x1wKEcNOsZS+Ik/Z/3AGuf6BZ5Zttuk33nax7qaahpDD6BU9OWtOME/XHNEaoyExzalTvPKkfdWeXGsXlcHR2cYGK1ecTb/RDKURdYFAmDM/j38mxAQyKQsrZ2Y9kIFLyGKKUjc
+ BVIK9X1J
+ ndK6EW67l7lw+knxV8UsjHGJJ0W+J7qqr3H08CXY/OpPHL5SmtAU7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,81 +101,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 08:54:11PM -0700, Shakeel Butt wrote:
-> 
-> Hi YoungJun, sorry for the late response.
-> 
-> On Wed, Mar 04, 2026 at 04:27:37PM +0900, YoungJun Park wrote:
-> [...]
-> > > > - You already acknowledged the use-case for assigning
-> > > >   different swap devices to different workloads. Your
-> > > >   objection is specifically about hierarchical parent-child
-> > > >   partitioning. If the interface enforced uniform policy
-> > > >   within a subtree, would that be acceptable?
-> > >
-> > > Let's start with that or maybe comeup with concrete examples on how that would
-> > > look like.
-> > 
-> > So, just to clarify, are you open to discussing this restricted direction?
-> 
-> I am open to all options. The only thing I am looking for is we have thought
-> through the pros and cons of all the options and have thought about
-> extensibility of the interface.
-> 
-> > 
-> > To reiterate, this would mean enforcing a uniform policy for all children
-> > within a memcg where the swap tier is configured.
-> 
-> Give me an example on how this would look like.
-> 
-> > 
-> > For our use case, this is currently sufficient.
-> > 
-> > We deal with memcg's tree itself as one workload. 
-> > This workload can use its specific swap device selectively.
-> > This is my view.
-> > 
-> > Chris, would you be okay with proceeding in this direction as a starting point?
-> > 
-> > > Beside, give a bit more thought on potential future features e.g. demotion and
-> > > reason about how you would incorporate those features.
-> > 
-> > Regarding demotion (assuming you refer to migration based on swap device
-> > tiers), I don't foresee issues if we apply tiered swap devices per memcg.
-> > 
-> > In fact, the 'tier' concept was proposed specifically as an abstraction layer
-> > to structure hierarchical swap devices. Since the current direction treats it
-> > as a unified tier view configured by the parent memcg, features like demotion
-> > should fit naturally.
-> > 
-> > Regarding future extensibility, I would like to add:
-> > 
-> > 1. From the memcg perspective:
-> > Applying memcg in this restricted manner minimizes complexity. While future
-> > expansions (such as complex tier inheritance rules or handling setting
-> > differences between parent and child) will require careful discussion, the
-> > restricted approach avoids immediate conflicts and side effects.
-> > 
-> > 2. The swap tier abstraction itself:
-> > The introduction of swap tiers primarily enables swap device assignment.
-> > However, this abstraction also opens the door for extended use cases such as
-> > inter-tier migration (demotion), round-robin policies between tiers, tier-based
-> > VMA swap, or even per-process swap controls in the future.
-> 
-> These are good examples. Just show how the proposed interface will be good for
-> such features. No need to implement any such feature.
+Hello,
 
-Thank you for the feedback. I understand your point.
-I have already replied to the other comments as well. Since this
-thread has become quite cluttered with various topics, I believe
-it would be better to address this in the upcoming v5 patchset.
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+memory leak in __pcs_replace_empty_main
 
-I will decide on the implementation and design based on our
-discussions (including the ones with Chris). I will also provide
-an explanation of the reasoning and future extensibility in the
-v5 cover letter. It would be great to continue our discussion
-and make a decision in the new v5 thread.
+BUG: memory leak
+unreferenced object 0xffff888129413800 (size 512):
+  comm "kworker/u8:3", pid 58, jiffies 4294947638
+  hex dump (first 32 bytes):
+    00 ac 98 1c 81 88 ff ff 00 18 6b 0a 81 88 ff ff  ..........k.....
+    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
+  backtrace (crc 10da2a4f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4543 [inline]
+    slab_alloc_node mm/slub.c:4866 [inline]
+    __do_kmalloc_node mm/slub.c:5259 [inline]
+    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5272
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    kzalloc_noprof include/linux/slab.h:1188 [inline]
+    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2764
+    alloc_empty_sheaf mm/slub.c:2779 [inline]
+    alloc_full_sheaf mm/slub.c:2829 [inline]
+    __pcs_replace_empty_main+0x1e0/0x2f0 mm/slub.c:4626
+    alloc_from_pcs mm/slub.c:4717 [inline]
+    slab_alloc_node mm/slub.c:4851 [inline]
+    __do_kmalloc_node mm/slub.c:5259 [inline]
+    __kmalloc_noprof+0x4c5/0x560 mm/slub.c:5272
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    kzalloc_noprof include/linux/slab.h:1188 [inline]
+    cfg80211_inform_single_bss_data+0x21d/0xa70 net/wireless/scan.c:2344
+    cfg80211_inform_bss_data+0x13f/0x1dc0 net/wireless/scan.c:3226
+    cfg80211_inform_bss_frame_data+0x108/0x340 net/wireless/scan.c:3317
+    ieee80211_bss_info_update+0x13a/0x320 net/mac80211/scan.c:230
+    ieee80211_rx_bss_info net/mac80211/ibss.c:1094 [inline]
+    ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1575 [inline]
+    ieee80211_ibss_rx_queued_mgmt+0xb75/0x1230 net/mac80211/ibss.c:1602
+    ieee80211_iface_process_skb net/mac80211/iface.c:1748 [inline]
+    ieee80211_iface_work+0x6af/0x9b0 net/mac80211/iface.c:1802
+    cfg80211_wiphy_work+0x1db/0x280 net/wireless/core.c:440
+    process_one_work+0x277/0x5f0 kernel/workqueue.c:3276
+    process_scheduled_works kernel/workqueue.c:3359 [inline]
+    worker_thread+0x255/0x4a0 kernel/workqueue.c:3440
+    kthread+0x14e/0x1a0 kernel/kthread.c:436
+    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
+    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
 
-Best regards,
-Youngjun Park
+BUG: memory leak
+unreferenced object 0xffff88812a621a00 (size 512):
+  comm "kworker/u8:3", pid 58, jiffies 4294950606
+  hex dump (first 32 bytes):
+    00 18 62 2a 81 88 ff ff 00 d6 04 00 81 88 ff ff  ..b*............
+    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
+  backtrace (crc 231cde90):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4543 [inline]
+    slab_alloc_node mm/slub.c:4866 [inline]
+    __do_kmalloc_node mm/slub.c:5259 [inline]
+    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5272
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    kzalloc_noprof include/linux/slab.h:1188 [inline]
+    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2764
+    alloc_empty_sheaf mm/slub.c:2779 [inline]
+    alloc_full_sheaf mm/slub.c:2829 [inline]
+    __pcs_replace_empty_main+0x1e0/0x2f0 mm/slub.c:4626
+    alloc_from_pcs mm/slub.c:4717 [inline]
+    slab_alloc_node mm/slub.c:4851 [inline]
+    __do_kmalloc_node mm/slub.c:5259 [inline]
+    __kmalloc_noprof+0x4c5/0x560 mm/slub.c:5272
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    kzalloc_noprof include/linux/slab.h:1188 [inline]
+    cfg80211_inform_single_bss_data+0x21d/0xa70 net/wireless/scan.c:2344
+    cfg80211_inform_bss_data+0x13f/0x1dc0 net/wireless/scan.c:3226
+    cfg80211_inform_bss_frame_data+0x108/0x340 net/wireless/scan.c:3317
+    ieee80211_bss_info_update+0x13a/0x320 net/mac80211/scan.c:230
+    ieee80211_rx_bss_info net/mac80211/ibss.c:1094 [inline]
+    ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1575 [inline]
+    ieee80211_ibss_rx_queued_mgmt+0xb75/0x1230 net/mac80211/ibss.c:1602
+    ieee80211_iface_process_skb net/mac80211/iface.c:1748 [inline]
+    ieee80211_iface_work+0x6af/0x9b0 net/mac80211/iface.c:1802
+    cfg80211_wiphy_work+0x1db/0x280 net/wireless/core.c:440
+    process_one_work+0x277/0x5f0 kernel/workqueue.c:3276
+    process_scheduled_works kernel/workqueue.c:3359 [inline]
+    worker_thread+0x255/0x4a0 kernel/workqueue.c:3440
+    kthread+0x14e/0x1a0 kernel/kthread.c:436
+    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
+    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+BUG: memory leak
+unreferenced object 0xffff88812a621800 (size 512):
+  comm "kworker/u8:6", pid 932, jiffies 4294950638
+  hex dump (first 32 bytes):
+    00 18 6b 0a 81 88 ff ff 00 1a 62 2a 81 88 ff ff  ..k.......b*....
+    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
+  backtrace (crc 9a0f4a55):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4543 [inline]
+    slab_alloc_node mm/slub.c:4866 [inline]
+    __do_kmalloc_node mm/slub.c:5259 [inline]
+    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5272
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    kzalloc_noprof include/linux/slab.h:1188 [inline]
+    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2764
+    alloc_empty_sheaf mm/slub.c:2779 [inline]
+    alloc_full_sheaf mm/slub.c:2829 [inline]
+    __pcs_replace_empty_main+0x1e0/0x2f0 mm/slub.c:4626
+    alloc_from_pcs mm/slub.c:4717 [inline]
+    slab_alloc_node mm/slub.c:4851 [inline]
+    __do_kmalloc_node mm/slub.c:5259 [inline]
+    __kmalloc_noprof+0x4c5/0x560 mm/slub.c:5272
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    kzalloc_noprof include/linux/slab.h:1188 [inline]
+    cfg80211_inform_single_bss_data+0x21d/0xa70 net/wireless/scan.c:2344
+    cfg80211_inform_bss_data+0x13f/0x1dc0 net/wireless/scan.c:3226
+    cfg80211_inform_bss_frame_data+0x108/0x340 net/wireless/scan.c:3317
+    ieee80211_bss_info_update+0x13a/0x320 net/mac80211/scan.c:230
+    ieee80211_rx_bss_info net/mac80211/ibss.c:1094 [inline]
+    ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1575 [inline]
+    ieee80211_ibss_rx_queued_mgmt+0xb75/0x1230 net/mac80211/ibss.c:1602
+    ieee80211_iface_process_skb net/mac80211/iface.c:1748 [inline]
+    ieee80211_iface_work+0x6af/0x9b0 net/mac80211/iface.c:1802
+    cfg80211_wiphy_work+0x1db/0x280 net/wireless/core.c:440
+    process_one_work+0x277/0x5f0 kernel/workqueue.c:3276
+    process_scheduled_works kernel/workqueue.c:3359 [inline]
+    worker_thread+0x255/0x4a0 kernel/workqueue.c:3440
+    kthread+0x14e/0x1a0 kernel/kthread.c:436
+    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
+    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+
+
+Tested on:
+
+commit:         a989fde7 Merge tag 'libnvdimm-fixes-7.0-rc5' of git://..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15c4974a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e2bba615ee79faa5
+dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=178fc216580000
+
 
