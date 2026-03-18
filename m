@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ED38FCD0C5
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE475FCD0C5
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 07:54:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C90EB6B010E; Wed, 18 Mar 2026 03:52:03 -0400 (EDT)
+	id 3E14C6B010F; Wed, 18 Mar 2026 03:54:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C41BE6B010F; Wed, 18 Mar 2026 03:52:03 -0400 (EDT)
+	id 391CA6B0111; Wed, 18 Mar 2026 03:54:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B307B6B0110; Wed, 18 Mar 2026 03:52:03 -0400 (EDT)
+	id 2A7AD6B0112; Wed, 18 Mar 2026 03:54:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F6FD6B010E
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:52:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4E10E1D416
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:52:03 +0000 (UTC)
-X-FDA: 84558415326.13.3169A7E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16F166B010F
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 03:54:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A56518BFED
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:53:59 +0000 (UTC)
+X-FDA: 84558420198.08.B064F45
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BD8B9160002
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:52:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7siPfEp;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 06C7C1C000A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:53:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HpzsE4Wy;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773820321;
+	s=arc-20220608; t=1773820438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w+wwh92G+R0TqtainBcq4s1QKvHlOG0hq2oonV1PwSg=;
-	b=sU6/uFFBstCCwN19f2bo1XtQYka71MPDksGRrdzCwoXg4rRBHhfWu0TI4lAR1GznnBYn5Q
-	LD3JkoXx9UMCfdsq5hLrqGd8SMgG6MGhJeTqywrgi9f4fgKrN3p/+feR0B/5bztFUtrjt7
-	xN2Vma/uD/3DV2emg/G49xT9EpyfxgQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7siPfEp;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773820321; a=rsa-sha256;
+	bh=oxt05z2JrjlDVPAU2XqalmGQqT+zahdNgwpwyn20miE=;
+	b=pZT54IkAWwqYlY38OIJf5r6px+3uj5wiJoCpubTg7DpmQ02DzarNi19U5eZT3leppZVL1+
+	FT5Ljs60pvvYLUhgaV6S8agIJ01o7TYpIbmd7ytdZDZ5t8lVb3ms9Iq01QJiKkW1Oc6Lmi
+	u29SFv6P8syfpYy1TfZW7nYRXHYeFNM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773820438; a=rsa-sha256;
 	cv=none;
-	b=5kChUmVnXca6ZZh88YVjQJOD5IDW2bD6h/zJh1G0QIx7UVBIJ5fGwCbM00FIef38TfXaVJ
-	s8Tp4ofa5FwIlxhjyvBCt9VstpD2E0skICh3JDSgvWOVv7vPERF4ffkqfnNPVWZkkSt845
-	wh94DRrm37ua4hJ8rL0vyjPw60lv3kk=
+	b=MdDDslnlU9s5CW22iXMb+IKSDUPLWV6Xp2tYddEnIfPNk+tr2q2eAd8P/IahJ1pGnIAX6b
+	OeHT1PpBidGT/Ybg/j83T5FDQ07S46EygTSEYFIne8be1NRWyrMSaDy+1zOfRXMBTZb/ci
+	HDUXRGOL0gWpa/Ce7BF8lzwdarTDqh8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HpzsE4Wy;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F2FE600AE;
-	Wed, 18 Mar 2026 07:52:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EE6C19421;
-	Wed, 18 Mar 2026 07:51:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 66973600AE;
+	Wed, 18 Mar 2026 07:53:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E9AC2BCB1;
+	Wed, 18 Mar 2026 07:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773820320;
-	bh=6YXJGpN/05ciWRewmyb6r+eM6RpAt346T43GsTHL1l0=;
+	s=k20201202; t=1773820437;
+	bh=QOTn4h9c0XtF8yhxZi704PPjn7nl6uZFa/xNu70MWAA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R7siPfEp1dmzCHK1SuAPFV/Ernz2/GEx2Z6EQTxtVJlCUd3kvGvtPQTagNt/hvXIM
-	 dGFhvKAAEIPYEuBrZrrzCXPO/NGZlvcROJGXxUuLppJKQ870T9qsQWl+NlOM5oRomX
-	 +X1BnwHYBBeZVTydEK0L+diJ4VlSMfVGQ8s1B18BOKhgWlBhiFTZktJKvDaUc2Ps4a
-	 XSGigvBdp47Q/KVexhBsCZ7RO4btnFGwsGTerU5lXep5NbqyrloXrxVt3TsWXK6K+f
-	 rHH2DhB2c7v7usKbwdOTuoviy7UCHhX4KoMyguwv4mDByNs4ObUpEux2xleleQkUHx
-	 /wE7v1D76ggkQ==
-Date: Wed, 18 Mar 2026 09:51:52 +0200
+	b=HpzsE4WyRNLn+Xvhih2ZXL2M+GOXeLOut/S5fo1SIWKaLYBhjbpw7jqc5ebwA35DN
+	 g21uDWcZ57UKgXMUUXZEf30l4NjtC1dHQlHrJYcSk7QQFl/owbH+1IBU6JV2YuXEsk
+	 CJuOYC2Gx6v5yPWqGulyZlSa1CulmoQvRtK7eH4c4GNo5mxsGAJsz+7EkqzYSqw3ow
+	 K3oLBK2fhoIDz88IXQz2iZfbmU56gksb1VZMP7wZqhOlHUEl+z4RTlbVEKpjAX/EtV
+	 fmsz1j/MaoDN3rzrHIVeVp5HvTFAr3aL1GyotmG7VzafM6YkKXHcs4hZrRkERWGmAf
+	 RykQd2M5dNznA==
+Date: Wed, 18 Mar 2026 09:53:48 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
@@ -77,23 +77,23 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 01/14] mm/memory_hotplug: remove for_each_valid_pfn()
- usage
-Message-ID: <abpZmD9zVtctGaGH@kernel.org>
+Subject: Re: [PATCH 02/14] mm/sparse: remove WARN_ONs from
+ (online|offline)_mem_sections()
+Message-ID: <abpaDCXit9cadpJh@kernel.org>
 References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-2-david@kernel.org>
+ <20260317165652.99114-3-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317165652.99114-2-david@kernel.org>
-X-Rspamd-Queue-Id: BD8B9160002
-X-Stat-Signature: 5yd1h6c3hkpefgn9qnr41crgop3qxq5e
+In-Reply-To: <20260317165652.99114-3-david@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773820321-521422
-X-HE-Meta: U2FsdGVkX19RJN94SOaivHeqPJP4IUfvxw6AScnaTGPB4XywfThDeXTCdb4FnmWaB0dw4uzTUUqoFGn7OA9ly2ueX0DKx2DIUVnSmP8rsqjEA85SIa06A3zuoVSOawm8EJHUKMAzX+NLPFKNeQtBIyFAirk9KQHR70mwv9DsSdEr2lLz4bTAhvCVZTUMyLkgvHwayiRGGO7yVWj1fcwvEp0QjQzXRwEtVvuwcldeei0zBRzrOubBEL44ypQqmQrSDGnenifd+AbVJtyZfAz0beSIMHOMNy44Gy7iWf4Jtpm+o89bGZ44HvKfYK94I1nGsGJPiAOQ4Y8dAwcaYD1fuc/ZvsfGG0wwZ2jaY4F579AO4gfR9KsXJqh0OHJfzV49HQYPTJHNY4EjZQdbju/5IuhsGNe+eWWOBCfs+nIsX4PApjAUlJ4iBABQStO5+auKvxQDsCFvJbn0BAjcw8DbSXjqvX8cU7Z8qGsHlLWLTNYvB/9wWQ0wPsStmkvWXLlvKPPlAWgpiJ3a+GijQp5yw1ThZ1uKVWocsK0OSidTW9hWUMA4d+ZwcyFH16sYisUFVwRiH2qZBOzP33nRIFA6UcmTH6lwOpDvDN+uLq14W0gFQ3XcDb4hla7OgF6+q1IZy8FI/Mnb9r5ESMPSWAh0RquS5YM54F8iIFdIwGHJji/CuXCAqRiRh9tzNwbutzT9EqbD426KFBOYAZx2bvzyQVNzlIc+PWAYgTVIyDX7gUWWmLaNHPUmPGfird588ehr0mvGazacqz+65OOusJEmxHURX6KXzpFdWeiB9bw060zfx2tPx2u4WoPzFqtbgXmXpxwwE5+/i8EJhg/s4oSu7/KpsApackJ3r3aU+C7KTxp3ULQ7rWZL4AfNOg2vcXWLA5pUDgwwIXl0ZAiy1WDcrcqgmJ2HXCYWq92YACOKsLLgiD651wN2FZzP70Nte3SR9dQdzcIvZa2MoQVzGHi
- 3u3d6Pbd
- NvRYETcIhz1DWIJamzgs4VAba2V53cvHPN81pP4CTOOl6USL+9Gl3QqFGbkpfuuzPCb66OrcdR878mt2magSSwPYNyRC4mlKZq6cNnetBgUSEnc0HBi55XOGGKmL7QwvShmYicfC6ceytp+y/qDMWUX59Q3kevBBX8K5MCd8wBFim33w5HsPb0aRKpIOBfzwPhK+hoJDY2aNVtNk/NwATuvoY8uygRNArE+oQpwUzaaL1cD5QvWGtChJdf881q5fgI1jHzGihivGYS9NrHzh8UsYxj1ZcIaiT7DVZa5HL807O5T4n9HurUD7BAdgG8rHls8Ut5N1YOwcQR3I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 06C7C1C000A
+X-Stat-Signature: nya4ccnzbn3cq5cd4yi7cra3nrgkfqbu
+X-HE-Tag: 1773820437-137442
+X-HE-Meta: U2FsdGVkX18woPcPTVDUbzXvOKGxPkaeFgLb7eXK9AQBpYkDJA+TZcCVB6rcKA7fqVTi+LN4WKZ33AjwpX2Qqjr+EWglKvxm9D5SCpDBRsnO3tnkGlde6GjJzjo1sLYuH3hxzvbXzYwInn/Eg9E1QnmWrU+07+ZOkYltQdR6XbWyzkSPDbL0Qme7yBRd2Bcy5s5Ub09X9aAZT3rgsEG1zjJEj/7U4r1+VRaGo5cpHQmdZSj3iP0c8vOSX51Wzl3ahJWnMx8PSukCt0/WmI1sJN9q5Ot6TeWgRN8BAMra9iGgYV8nIOmsUfrt8rmr+FkYCAUtKKsHWvwzQ71u8ybpiCnj3/rob//5FK855yy8WOnok6dJ97lrzSEnPKvnGQrrGea/br549+7bW41NQFIP3HH+Du1XXTJUpUUC6qwxfkGxVXPzjs/7c7/5TzU5bwfxPpoHWLXt4lKfyqsuOdT6YCVz3xmSnimE6AZpzvustvWlSSoJMviyUe5tCiNjLUlWhjDuU7+FKF7F3uVqHMo0gm9jaMlIInfrwPCF3GMc5jRUHq4c/3xIRQVESOERZ3ZsQwu4Y46q3reLRg/rPZ4GOA7mDl+pUg5izX9Ue6foxRwofo59EH29LqHEw/HNp/lUcGfv0ykLUPkDMigEYjdqRH0A6UhcjrXCzErE2Z45cJM5Ong5xZcidkZ24hiuXMoEPfKsbM+jdGjp0DtQdC+IULJtFQHrEd4/MkXqiHA+ZsWq/vQdJ01i8SioBRdgNRPzB+yxrufDe+vOF7ymn20eYfEkWjyP1ZgIqoQ+GJD4N9Pfe7M3dCRVfjXnbAmNhlDLK4CutHjSUAAIy/gs38wDpZ14AMa+HDGD7Pd+e9CWTQbB1q4QHYhWVD0NlsMFRpxCjbKVN+iutlN1L1QRcmx4jlHBlOpgCuQ5DfMmnj9uu9ejBo/LFlkNTiixV9Jas3r/hiS/G9trO+C+x9n6E6z
+ vDyHPUNa
+ qR5LIh+N3EkzebtAIZD7eVYDTUdWc3EVnNEmuBn69QHv+TMIdutu2Lyf5TxDbeVsg9BEdg/h1MzEkGMZYwlLgPeBNZXjWvT0xphM33Sze52W1ykxLpTrJr1NbJ83NEmcl1+iBc5bq4WTXiaK2VX6d93x451gFv4FTBtykxAfx1oqHO0I1CkL9vnlrvGFHbogqldDKsOE01GkfY42dmkzs4jhtzukzHXdDGGIgcqhO7Eljsb+E+1pvtmeo5tWrEqCpJ1edoyks32gm9f5Ei1lhhTplbT5ADXg1QFYk35J1Jrh+vw5kdlI/QNbpYWtak/sKX6xp/gAXGtpFNwL/nHBhk29T2VTlmeKrWNeK3+GvJIVn6pU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,40 +101,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 05:56:39PM +0100, David Hildenbrand (Arm) wrote:
-> When offlining memory, we know that the memory range has no holes.
-> Checking for valid pfns is not required.
+On Tue, Mar 17, 2026 at 05:56:40PM +0100, David Hildenbrand (Arm) wrote:
+> We do not allow offlining of memory with memory holes, and always
+> hotplug memory without holes.
+> 
+> Consequently, we cannot end up onlining or offlining memory sections that
+> have holes (including invalid sections). That's also why these
+> WARN_ONs never fired.
+> 
+> Let's remove the WARN_ONs along with the TODO regarding double-checking.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  mm/memory_hotplug.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  mm/sparse.c | 17 ++---------------
+>  1 file changed, 2 insertions(+), 15 deletions(-)
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 86d3faf50453..3495d94587e7 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1746,7 +1746,7 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
->  {
->  	unsigned long pfn;
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index dfabe554adf8..93252112860e 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -638,13 +638,8 @@ void online_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
 >  
-> -	for_each_valid_pfn(pfn, start, end) {
-> +	for (pfn = start; pfn < end; pfn++) {
->  		struct page *page;
->  		struct folio *folio;
+>  	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+>  		unsigned long section_nr = pfn_to_section_nr(pfn);
+> -		struct mem_section *ms;
+> -
+> -		/* onlining code should never touch invalid ranges */
+> -		if (WARN_ON(!valid_section_nr(section_nr)))
+> -			continue;
+> +		struct mem_section *ms = __nr_to_section(section_nr);
 >  
-> @@ -1791,7 +1791,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
->  	static DEFINE_RATELIMIT_STATE(migrate_rs, DEFAULT_RATELIMIT_INTERVAL,
->  				      DEFAULT_RATELIMIT_BURST);
+> -		ms = __nr_to_section(section_nr);
+>  		ms->section_mem_map |= SECTION_IS_ONLINE;
+>  	}
+>  }
+> @@ -656,16 +651,8 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
 >  
-> -	for_each_valid_pfn(pfn, start_pfn, end_pfn) {
-> +	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
->  		struct page *page;
+>  	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+>  		unsigned long section_nr = pfn_to_section_nr(pfn);
+> -		struct mem_section *ms;
+> +		struct mem_section *ms = __nr_to_section(section_nr);
 >  
->  		page = pfn_to_page(pfn);
+> -		/*
+> -		 * TODO this needs some double checking. Offlining code makes
+> -		 * sure to check pfn_valid but those checks might be just bogus
+> -		 */
+> -		if (WARN_ON(!valid_section_nr(section_nr)))
+> -			continue;
+> -
+> -		ms = __nr_to_section(section_nr);
+>  		ms->section_mem_map &= ~SECTION_IS_ONLINE;
+>  	}
+>  }
 > -- 
 > 2.43.0
 > 
