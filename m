@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D987103E18F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:17:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4574F103E18D
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 14:17:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D50966B0248; Wed, 18 Mar 2026 10:17:03 -0400 (EDT)
+	id 2EC586B024A; Wed, 18 Mar 2026 10:17:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFD4C6B024A; Wed, 18 Mar 2026 10:17:03 -0400 (EDT)
+	id 227F66B024D; Wed, 18 Mar 2026 10:17:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4EFC6B024B; Wed, 18 Mar 2026 10:17:03 -0400 (EDT)
+	id 050796B024A; Wed, 18 Mar 2026 10:17:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 973E86B0248
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:17:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 454C8C2853
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:03 +0000 (UTC)
-X-FDA: 84559385526.22.358863A
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 56BF540017
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Kl+XEn90;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CF2686B024A
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 10:17:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87D8A1D898
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:04 +0000 (UTC)
+X-FDA: 84559385568.04.C1A223B
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9B9491C0005
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 14:17:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Jr2pX82O;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773843421;
+	s=arc-20220608; t=1773843422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+VqvYB4/DwM+CB2Xe5IvCpNGUCzC20aSBPm99ZSf4E=;
-	b=dM/x7LIgHOdKeCPtcyO+iSBo6jAd96wcekq/pQpQwdFGSG4wewmbG1gap/Goc1SNyZ2JS4
-	SfcAc6uxkTHVlYaWkwM11iYdWbN232uFA3uzmfPxWi4bxDyeXiNQ8p9ZVA14pkcw08blkr
-	SVFPKp47lTFSTAxsiq6UJUjit2FDsk4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773843421; a=rsa-sha256;
-	cv=none;
-	b=oLuUITwy5m1DLQmRWgNNp/0v9kI3OukMOqGlweFEhoid9h4qIF6VE90w8P+aUK1MfzessB
-	4Glz/XcYWoLxAVdyPvxJfkqUGNxdl9R7Id9EgEVSnP1oEVIFCKG1NCtV9kEbiOu3V9QCai
-	0wMfPVpChinpzbLEzez4suSbVUv9OhI=
+	bh=9grmrBps2hK+s63PftzZmwOuMlZ/QyGcOsJY971KUOk=;
+	b=8iIFy5KMTNdSxQ3hsaNmwUd4P8kOx7JcicO7GztX/JHnvxstpTHkSYznODiZL+lUbQ8adH
+	kJXpNNprGkn8SQJNjlDq+Y7N1XecbTioM6/Z7nHNiQvBOBdhl5G1WQT737qi02ZukaeljV
+	Lfg6IHjmuuir11nNRc0JPvASEOK9VUQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Kl+XEn90;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Jr2pX82O;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64aedd812baso7040740d50.3
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:17:01 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773843422; a=rsa-sha256;
+	cv=none;
+	b=6haOhpjO1ltuudoxjywdAJh+APKngslfsxNjd0tvnY6ksNJJ9RzxiLDJ1ml9gPA9YO90mi
+	+N6PGgiQsdrN9zEDrwFFNeC+Tuvelp/nVsN/8hNqecnse1jGlNh8/dCKuEjGpHJ/M6IlJT
+	n+QVtuJR1wq/GbZ/GBsW4W644T2RmR4=
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64ae2ce2fe1so6776753d50.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 07:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1773843420; x=1774448220; darn=kvack.org;
+        d=soleen.com; s=google; t=1773843422; x=1774448222; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=r+VqvYB4/DwM+CB2Xe5IvCpNGUCzC20aSBPm99ZSf4E=;
-        b=Kl+XEn90dxaVA7P9wh6aEo7ujP64IA2l0bfpJLsqyWls3pDHbsGa0bgqliKIJ98YMq
-         wCgTEleTjT79VO26JBfCeJNxoevOBYjAx/vhrNN4tc9YJlFBTnPVSt9S4BLWA9XE+U21
-         YZpTgibCa2RBP2JWtfrhdQMK6lAfrgUYj6VweabQhm86pdzxIsT/eFzWVM9ZJlhL2XZc
-         8MAQH7PA+dwf0NXfmAtbFJ+8eW8d7UQ+Wg0dnKjWEEgf0npL/Se8S2mawpI1lUx6AOS6
-         AMjg055srfJ4z4lrjhyRykGddWY+DMCzNN8UKLCoA4kutUPQ8j9sDbuWZMGPZE/6yZXe
-         5Vuw==
+        bh=9grmrBps2hK+s63PftzZmwOuMlZ/QyGcOsJY971KUOk=;
+        b=Jr2pX82Oq/zhoenQfs3ZiSaEYU2zn9ALgaDrxU2Gl5AnaFtfpU5wJ6mRQwWgckhV2D
+         qNxB7Uu0fL9jK3dHQMSIant/vMoUjRBuhilswXP50GyKkppUlqfgIiJNot7BN+7IfRdH
+         jWRqDuPzKMvPQ8Am+cX2ldV2c2ZgvBoQHiuih5sck5udRhezhGcLGUNGYFMo7vrgBZZP
+         uPqowzggpwB1YkMuCLvRVzomUOqZit6iWeLqy0k8Qkq1SSapvqZ6hXtbcfC/jDXZYy/X
+         E247/3D1KPg6lyQ3x2EenQrzimM05CCBjVcZZSbNy4e4NmDQh+wkyIb62TLjSLaHy5LZ
+         vbkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773843420; x=1774448220;
+        d=1e100.net; s=20251104; t=1773843422; x=1774448222;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=r+VqvYB4/DwM+CB2Xe5IvCpNGUCzC20aSBPm99ZSf4E=;
-        b=eBf16MhgmqMz79ag1BaYmzdUTtL6LWYkbEd2LhGp9IdMxND8WZPv6XbjyEHX8OSMLH
-         /86oj6p+Ioy+j2GUe5cUEzByhzCzKzp3jIrnNO9RC1AQmJzd14bv4+37jsE5gAUkIY2f
-         1Zr/ibsf/n/IjA9MeeQVvrf4ECk/7BmKHv2X7DbNp6MFgvOxA0mg68UEuMzCrwSEEMJj
-         Fu7mLxpxgxBohAd47CQdk/9JCBb2tSr5SG9jxbfuk4FbCXB7/Tf1GpIwR8aBblFZtwm/
-         gwDJPIMClTLrwnM8cs1tLMorZC+RnWnh0OjzwLQmlDSLkYxR/COQlDQ1k+kRYv1/dgua
-         4h6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ5DefnyXzoxYqJ1k6jeyaXfvdO3fOhofJOVrr1CguMa57kxTeE9/91Y8+V0SGkcTo2yHcstauIg==@kvack.org
-X-Gm-Message-State: AOJu0YztAE5xS0PFHsVKKHPa6N334P8lkoErU02tETHLzXoRUdm7zIHS
-	3cNvKqu3rineXzXsNihirvF+mT4R55tDM5Hgfnq1NtQqvavZsvozm+5oZVjuEBkbLkk=
-X-Gm-Gg: ATEYQzzlKV7a+TlyMgQ90kWlTag+q12A3hoAXNkSIN4Sp4eau0NpXmKH0qjs2bYBX2U
-	jsOYGKM5v1FCG/qU7O9J7dxGouzdYJoHe/szoShbIK87wHrAnmmcVI3VKDQNxonBten3EqDEm9c
-	AvtjS4aE9UEmnenUdsuWxskY74dRYubZ0FPD9/efyFTq7MJ0dnKS6fLN9JW6yUORpjgsY4pTbrZ
-	rrMDcUS9X5dGNbbbyf0Th0mbfAYck1wOBIE5EiSab9BSMlsOE3Jg9WFy5sEFOsOCWfsH5K6mTy7
-	v66iyRCVy04iOMLJ7v70El5UELlhvNi9sOhUVrVZzQJVXVwMhMEwjCJHp6gamDydPbxhQkzFZdY
-	ZzD5srIOxcKdup+Ts2k6ALUQBV4lOjut7Y6F9+RNjrq+FMUL7tjwWwbjctzzWAB9e67Z9d/HOEs
-	VHYKVqQkls6MQ6D6hugVsw8WwhwHb+DmJzYcuVN3THNHww8BvVWBncPkqC1n45C9X6PI3D8Qm3m
-	sH+VIgKtk+rAVBSSgvpFo1OG/TPzx+tHVQg9KK2AN6bGEn/YQ==
-X-Received: by 2002:a05:690e:4466:b0:64a:e799:1d92 with SMTP id 956f58d0204a3-64e916017c1mr2847774d50.61.1773843420339;
-        Wed, 18 Mar 2026 07:17:00 -0700 (PDT)
+        bh=9grmrBps2hK+s63PftzZmwOuMlZ/QyGcOsJY971KUOk=;
+        b=eQKe90lz3pa7skAwlZ+Tn4vMKpbG5TbrrH9OEZKvhzSxsTLfN6nYi640Qh+PEX34e/
+         AXqIFPYEWfAafXIzHwqMfhyYXlq+/mTHK3wWHnr06+fFHZx7mnBWxtNE+gNG+Afr/KAy
+         wFntKgd+anDwJJc8r7w4q+SI9Rzcd1d2EcXj6nHHseAGxp7hcnA4Mn5bSxmGMdtKbQ9m
+         1GLBU/vdDnD14MP3bCmS1UevQtGEr2Do7u87ZgKXz2M8c73xckWMe2rUKP60LdguA2l6
+         Q9A9nE41ZIL4QoM9MwP4gIlO+ubGYkdbZKjBvyf7gPfMJbxR3WjPyBuN9ySbiHDCB54/
+         zDgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnGeCSQ503057uSBCqTGRrSIATT16J7LLzfg9FSUIqkIN3sD0pXGk6lWIgPGWnKez/rm7xkw/PKg==@kvack.org
+X-Gm-Message-State: AOJu0YwjvF2JuCqz3g8ovgryoP3ygaWix8a4a+dcpoeQ7Mq4wOJfwvNa
+	pbmhrlhxiViOm7Yjic1zUBjtfWv/LRg07KUPRc2rNZ/lqRAGNm0LMVlq1K0NgF2uk4M=
+X-Gm-Gg: ATEYQzympHol3zRTpkJbluP3Plz2VweLdakOKCOctUurGVt/9IoMeU39fm2fhLT+UWc
+	gB/80F9B7qzu1WdCkpr3BXqcE8XLTWSxyT4KAuDKYar6zg7iDKxnvuzGkvf4YhJwdPBksXzt2KX
+	RETluvjwEaiRSPl15oSw/L7hVRTlx7F4hM6CKhePO+IxQXuiS4rCFwfdlJXSkEz2/1/M+XT+TQQ
+	aTfu8IkkKfwS3/+yanuWEfKXa8kj7WXPx8ssj4WFj24bs+4Vz8RUu8HTIo16dFMLqbiM+MDv5wX
+	LvGuS5B2hsT2+09uzpY4scH2JtuTCGso0mfBHACtl+5ETxiSRGwaZILQIuWJttDEUx9hexG3Lke
+	m/nYvXiKY9lb5QL/k6tlw9JdqnUZP+3BAbIexDqyaoav+5NKjuv5zs/9epUOqfJM3fgf+l4BAGh
+	6fRIpZ1ef79+gn98qy5eNfC0w8frfiDNINgZd1rpo93ZRyX2a9xGMCwkbEnqQeL2wciVP8EuNd8
+	Ht2GrQwgq38IliPx8EssRiuTGttIUFLpMOZcIe5yp98b9P6GpQPXjinLO6Q
+X-Received: by 2002:a53:b6c4:0:b0:64a:d444:48f5 with SMTP id 956f58d0204a3-64e915f5a33mr2644882d50.65.1773843421452;
+        Wed, 18 Mar 2026 07:17:01 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64e91be0e91sm1672028d50.15.2026.03.18.07.16.59
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64e91be0e91sm1672028d50.15.2026.03.18.07.17.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 07:16:59 -0700 (PDT)
+        Wed, 18 Mar 2026 07:17:00 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: rppt@kernel.org,
 	akpm@linux-foundation.org,
@@ -99,36 +99,36 @@ To: rppt@kernel.org,
 	pasha.tatashin@soleen.com,
 	dmatlack@google.com,
 	pratyush@kernel.org
-Subject: [PATCH v2 4/8] liveupdate: Defer FLB module refcounting to active sessions
-Date: Wed, 18 Mar 2026 10:16:42 -0400
-Message-ID: <20260318141637.1870220-14-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 5/8] liveupdate: Remove luo_session_quiesce()
+Date: Wed, 18 Mar 2026 10:16:43 -0400
+Message-ID: <20260318141637.1870220-15-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
 In-Reply-To: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
 References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3373; i=pasha.tatashin@soleen.com;
- h=from:subject; bh=iR8I+/StaBXxEZV0NdnOtDjxL5dTWNF5Ps57FdSsCf8=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBpurPLbaFvSonT8zodhVCWfmkfgUrhZ5neWD5Yl
- lk0n7d4NhSJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCabqzywAKCRC7dyhM23N6
- 3vfYEACHkJvJO9RYAfuX2GirFrKaaIB1vkyXHVlN0h/nFzPddsyK5i19XDsQTcvXCge6ahu3UTH
- QG8HNKcbZjJvx7aDk7SPLi/2X8jNZInKJMQN7qOQJpByfZlf/7EFZkPHlhYp58nXtiHhatYpfiM
- 1ijBMgNWE7matlz77/Wtwl9Ui2Nm3W/qO/cGQZlOXcS7bDpvv7eJYvtHKwc45M/SUB8j9ZElMMT
- kab0YWyftiMI2k5iV53LW1maimBM2EqWBDHHzwEFc/q7lX+2aEuZ4U/6dJgO8PfaB8VEVQS6B+U
- DUKqln4zzhSZmv5w4h8fYJA1lIsYQ2HW5CexIApQwlwC0bsFY+N+FrkFlzgMHTN+YuHiijvSMyx
- 1p/1y6B6icDeXAdqL2cOJxfiIlS/QqmyuScGvYXzOTvtEzI5fLc/FVAQCVOA+3WWv+VXPqMik8K
- yGMGAkGLyLMAVhaU+yPZfmYwVJa+28qAv/mmu6s5VTiqKwENAYH3b/y++dUjr0be30fGrs7Pyt3
- RQ6HEVxKRgNN0bK8Odx6Z81L5oYtb9gxXR6ZQiJvvEX9hhDo08K22fuT1fBx75a9C/iYz9ZfV3X
- TEBKUim3pjj6/SLjNedVct0R0tJsvT0hef9EGDz+wj6t5ceKKI7UTNLu+99dPhkBHwNXdh+n2yn CoT+ZEqbfukS3Rw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8396; i=pasha.tatashin@soleen.com;
+ h=from:subject; bh=k1U60ogGlFKqcQ2VNpd3YPvxEKZ2keFaPByWtDwKlOE=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBpurPMnXDInX88G54UAYQw0L/MaWlYrn9GAm0fu
+ o0ri6gq5VyJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCabqzzAAKCRC7dyhM23N6
+ 3gmbD/99nCQV/oK6edHYLGsZT66H9puZFs6qMQEpgTm6zlLogKeyxMRCqK6A7YRthVSDghj74Rh
+ RICG130O8omn6beue1D1lsRqw/DOru4IBblYemY58l3GXqKeSomGocmVRpqWbFfX29GI1JAgHci
+ hsMce4Y0eDpQ3dna8egsI/n2CIsRyxRqpyQrWq3HMoNfh1568mJJySo2QRH27woXqp4wvuR1lqZ
+ 9UWFUFor+y52QT0kSisHxtiPmFrJniJTvMczuurWKHGpLPoEpmFXPtvAWYmRuJNXuAY1f5bU4vN
+ FR86KxDLO62Gsqb4HpU3ZkFF/6oRL1smCrOHSbLfMhc/FP3UetnR5MB8x4iETa64Su0HihhyRPW
+ +H0Xdz60BnYpqdVsWEUcJH0PY7nKgRO26NtwGflBwSfPbUYvlsrVWUNezFluRFeriIwizGwo0Dz
+ qBC3+i/YYbd3Sk0GZbHVBmjrUOKeiQ6pdMN5K/KThiz2+lqZHT0If2i+2PYP4pozzC5tr1ZeSkX
+ 4/iUzzh6EG4THuQLswajM8XwVH/NIHfXheTVqQ1680u6BaFwF0rm+j1tSAghM+Y/YPQxS1OaDrt
+ zk7MUgdHyThGi3mdCJ1/krI2gycuujBF92BxIMNbEkT7qm6H/sjaakPLUY5CN2BDOBsHP65c2Ly exBOBsfe3n4paXw==
 X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp; fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hr45hiqx64ng8sjachfysj3gb356ts8e
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 56BF540017
-X-Stat-Signature: w69jobqa46epigen374ebxfm8xa6wmk8
-X-HE-Tag: 1773843421-83624
-X-HE-Meta: U2FsdGVkX1/4E9I7lXpzOG0xBs2LEcTD60+xB5XDU7/KBsx4Weh6ErfV7HtjBhZUuSbUIMtgQhlp44n1R39jsQ2mzjOnpEmz2ZtJYJtNDhL5HeTPAwisCZH5jCaFA5DRjaOjd2h8fLENlLhY8KvcmZ/2sumDgg/rsd6lP05a0MuvlILf7+08ds0yQI96XmP7OsPaIY1ecCVZCjXHGTNxP/TJJXwwDQuwK8KBnEIqymmlnLgdY0zsimoh/NL65l9Mq5dAM0N3IKkJr2hqgoZsPXb1L1vaJqtbb7OCYprIlyrxCXeTVoiPOQ16y+J46uxYabA7d9CwrppffZRyjoUgTNGWEQ4V/jjGKUtrB6hjyGSW3duhTtRQTnZoRCCrIGanlbo/sURdkV4leYsmqeyUwZu32d5mfD/ZNGSSQcTsss4jczeR/rA3VCKKYGVdAyQMBJZVkKZOc/Yqt9LVB+xtE57lkRX7c46uohKFyj+5NTn8KBjWVlyaYkQVo1Q3M/C2/K/NQDfoCmNG7wEi3JFP/Nj4eOKgjpEfgSWJehi9kaNK1hCsHJbRaYMmX6OgSTimNTN6OATHD0bgFEzkXwe4r1uW6R8rO/rE27s/tpnv2kty7amFXz2M4t66o28p5pLYBP1UI4Lhr4664YdX70a/Xsrf/fsoJobpMHxI9c+7Npv6IP5LU8YjBTwdkC5UU1/RMp/lCBnPCtB1047liHHFMExvaCQ3iyHIZE7ENsNe2bqaJXtcAYreBYpVOeu5lfBXd/EtnDPp/vqWo5LWOLRRvda08K2E1FTGqjW9GqkYZSQLRvTJHTxS7lcgDvoHjJo2YAGWwpZqNfkqSleDxavDyFopT2ChapPzYWfOZwkcnZ18MSVomb6HLwQ7srLxmKsw3oPyIjGNy4UrtJKZv6O9DubYhI+5SK86ewgmnGAfTtpxg09EOhkNb7cR/mnaAHivDP7/bJKc440KYsJQp+h
- DQ/o9HSk
- NoSNNJt61CR17db9o9GBZ0DMeXTSP8qJbwfW0jddXGkOZVBLJC5kKxDm1PPfURUYhIq4veBOMOUSximmARw1KbL+1p8n/swbdBsGdHq5frR8+p6AjZVIix/ZJl5bAYrfC5NqeeOmP7sJrW/X1+zmn1DQXFN+dDAmmlbaN6+B9HzoDodlktT9VdlgDynt5dYYkT398sJNyAJubNNR5J7yRqbtqCeO2KAcUWT1eOCmPZnL7t4Mxz7Qxo2bIwCwrcmCJCPvagL/PEfqInzcB2gBL8LP0t98u1m/MqKIFF+hp1kbmFZvYOzJhKa/QR4iA6l7cFCMW
+X-Rspamd-Queue-Id: 9B9491C0005
+X-HE-Tag: 1773843422-95945
+X-HE-Meta: U2FsdGVkX1/vyzuFDeTLO+N7Pf0N1j2k9indEZeLJ57N63aDcEvLc7kDB9iRIX+P1NhSwTBSc7w+NwQGzH1d48oUTUEYO8L5pTQFpNzKFKgedsMFgwpxuEr6NXf4dfIT4z0RZ69Cf0jJ2d9FcCV38MhUX5SjxHrtqM/ifbeubpTiLTFipDMrFwJP3IDE12ORw513BSrYFICh1j3Rueo6PE17w7VuYVnMlWWDnH4GdQH13z90QfKhXK+R4Jwm6g0jFWi8UKb9yWDUKmUgA4VwGI++9O5LVTHUf9LIJbqgbufTYNAW4JlppCDAbJFmQOb54GEBqHLuEMMoTHw9l6S6pLYxP8vUauMXiXND6kGm6IW5lRMYL4aL/PINqLdk7LetPp+1OXW17DReQT+w+T+rJ9DdH1GXv3IHkvaDbowJxfhtUEVPjSYpWjyv9Y+39RHh/+BiTn9C27qpaqbUGUQ7o4h3yrWBBq2Zl7/9rjrfvKwAi0LNY9XMwtDAYjz77Esw9q9eci5aaT6TRUmJLLHYzPCz/KUxyVcIAsvym4cV+D3Xr90rLjf0oKIc9BNAK1cWZ7CFfhuGa/rE7dn1wuwa97EuZdTFe9Y5CyqvukmUfLBSM5x/53Kogz1TkGg44HwizIHCnJ9aa1WN0vphxm8bVDqsQ5NJvYYmNi1sI4fPi827gs7bHgBwaw7oghSGxoJALy0MUAYw8t9TCfh7UaAcQUp5kUNxxfk4Ic024BO/xMdMMJIn3makPafrKcUaaGJGUVriEJ9EoAzaiLy8lhHt+MbH/+vacg/XGoAardKx7asGxZIGH22fvG4rKGo1NynbuINtFgX/OmknJdzhDZlzX+nTYq2uNWMCpNjRe4r4y9XiYegSJl6aE+NZqf6aPlTyPo3SK63IR7D12iUysa5yFIXdnKuGaMoD5w0jIHVyvlHm3pCW2D7R97T7B880fVdZ7qTf3jHHYUVcTZ/DSLe
+ T/9/CX3P
+ zM6gxs57C7YwU5cTo+D03BWAqQRFoHeX8Ql8rXbDmKHw6ovsDTBASuIKFdMfKezldsUaINY7JUoiq9s/0nIB8YMBOexbSZXQkEhp72INCmWGpEMs74V6zZTM6UTZ/uAcFhyY4GSZqQnL8CDdb/7sSRjQVoHzlwah1WIsNslKreuX7cwXcPYBgjQ5KM8pNzWWfZZU9FKWZ+DBwQ+40LPf51TvpIO5SeROEQXxM6pjmW+tgBEW0k7DZLBNJZpKEF3Yj3QjUN81QsDxKWIKtLU0itkoux3VcNsS3LTkXqyfck0PlyYIpaG+cq+7ZW7mMrTREYSN/5XZeGEUb6e5OWS+JN7yBdtH6oUjB0lmr9pfdj37npxJav/iokF1etQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,111 +136,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Stop pinning modules indefinitely upon FLB registration.
-Instead, dynamically take a module reference when the FLB is actively
-used in a session (e.g., during preserve and retrieve) and release it
-when the session concludes.
-
-This allows modules providing FLB operations to be cleanly unloaded
-when not in active use by the live update orchestrator.
+Now that FLB module references are handled dynamically during active
+sessions, we can safely remove the luo_session_quiesce() and
+luo_session_resume() mechanism.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/luo_flb.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ kernel/liveupdate/luo_file.c     | 21 ++-------------
+ kernel/liveupdate/luo_flb.c      | 46 +++++---------------------------
+ kernel/liveupdate/luo_internal.h |  2 --
+ kernel/liveupdate/luo_session.c  | 44 ------------------------------
+ 4 files changed, 9 insertions(+), 104 deletions(-)
 
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index b124fd747841..c0ce08d55747 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -846,21 +846,12 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+ 		return -EINVAL;
+ 	}
+ 
+-	/*
+-	 * Ensure the system is quiescent (no active sessions).
+-	 * This prevents registering new handlers while sessions are active or
+-	 * while deserialization is in progress.
+-	 */
+-	if (!luo_session_quiesce())
+-		return -EBUSY;
+-
+ 	scoped_guard(rwsem_write, &luo_file_handler_lock) {
+ 		/* Check for duplicate compatible strings */
+ 		list_private_for_each_entry(fh_iter, &luo_file_handler_list, list) {
+ 			if (!strcmp(fh_iter->compatible, fh->compatible)) {
+ 				pr_err("File handler registration failed: Compatible string '%s' already registered.\n",
+ 				       fh->compatible);
+-				luo_session_resume();
+ 				return -EEXIST;
+ 			}
+ 		}
+@@ -870,7 +861,6 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+ 		INIT_LIST_HEAD(&ACCESS_PRIVATE(fh, list));
+ 		list_add_tail(&ACCESS_PRIVATE(fh, list), &luo_file_handler_list);
+ 	}
+-	luo_session_resume();
+ 
+ 	liveupdate_test_register(fh);
+ 
+@@ -885,13 +875,12 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+  * reverses the operations of liveupdate_register_file_handler().
+  *
+  * It ensures safe removal by checking that:
+- * No live update session is currently in progress.
+  * No FLB registered with this file handler.
+  *
+  * If the unregistration fails, the internal test state is reverted.
+  *
+  * Return: 0 Success. -EOPNOTSUPP when live update is not enabled. -EBUSY A live
+- * update is in progress, can't quiesce live update or FLB is registred with
++ * update is in progress, FLB is registred with
+  * this file handler.
+  */
+ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+@@ -901,18 +890,12 @@ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ 
+ 	liveupdate_test_unregister(fh);
+ 
+-	if (!luo_session_quiesce())
+-		goto err_register;
+-
+ 	scoped_guard(rwsem_write, &luo_file_handler_lock) {
+-		if (!list_empty(&ACCESS_PRIVATE(fh, flb_list))) {
+-			luo_session_resume();
++		if (!list_empty(&ACCESS_PRIVATE(fh, flb_list)))
+ 			goto err_register;
+-		}
+ 
+ 		list_del(&ACCESS_PRIVATE(fh, list));
+ 	}
+-	luo_session_resume();
+ 
+ 	return 0;
+ 
 diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index 91910d806d1d..98336cd23aa5 100644
+index 98336cd23aa5..8bbe11a7286b 100644
 --- a/kernel/liveupdate/luo_flb.c
 +++ b/kernel/liveupdate/luo_flb.c
-@@ -112,10 +112,15 @@ static int luo_flb_file_preserve_one(struct liveupdate_flb *flb)
- 			struct liveupdate_flb_op_args args = {0};
- 			int err;
+@@ -346,7 +346,6 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+ 	struct luo_flb_link *link __free(kfree) = NULL;
+ 	struct liveupdate_flb *gflb;
+ 	struct luo_flb_link *iter;
+-	int err;
  
-+			if (!try_module_get(flb->ops->owner))
-+				return -ENODEV;
-+
- 			args.flb = flb;
- 			err = flb->ops->preserve(&args);
--			if (err)
-+			if (err) {
-+				module_put(flb->ops->owner);
- 				return err;
-+			}
- 			private->outgoing.data = args.data;
- 			private->outgoing.obj = args.obj;
- 		}
-@@ -143,6 +148,7 @@ static void luo_flb_file_unpreserve_one(struct liveupdate_flb *flb)
+ 	if (!liveupdate_enabled())
+ 		return -EOPNOTSUPP;
+@@ -367,22 +366,13 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+ 	if (!link)
+ 		return -ENOMEM;
  
- 			private->outgoing.data = 0;
- 			private->outgoing.obj = NULL;
-+			module_put(flb->ops->owner);
- 		}
- 	}
- }
-@@ -178,12 +184,17 @@ static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
- 	if (!found)
- 		return -ENOENT;
- 
-+	if (!try_module_get(flb->ops->owner))
-+		return -ENODEV;
-+
- 	args.flb = flb;
- 	args.data = private->incoming.data;
- 
- 	err = flb->ops->retrieve(&args);
--	if (err)
-+	if (err) {
-+		module_put(flb->ops->owner);
- 		return err;
-+	}
- 
- 	private->incoming.obj = args.obj;
- 	private->incoming.retrieved = true;
-@@ -217,6 +228,7 @@ static void luo_flb_file_finish_one(struct liveupdate_flb *flb)
- 			private->incoming.data = 0;
- 			private->incoming.obj = NULL;
- 			private->incoming.finished = true;
-+			module_put(flb->ops->owner);
- 		}
- 	}
- }
-@@ -394,11 +406,6 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
- 				goto err_resume;
- 		}
- 
--		if (!try_module_get(flb->ops->owner)) {
--			err = -EAGAIN;
--			goto err_resume;
--		}
+-	/*
+-	 * Ensure the system is quiescent (no active sessions).
+-	 * This acts as a global lock for registration: no other thread can
+-	 * be in this section, and no sessions can be creating/using FDs.
+-	 */
+-	if (!luo_session_quiesce())
+-		return -EBUSY;
 -
- 		list_add_tail(&private->list, &luo_flb_global.list);
- 		luo_flb_global.count++;
+ 	guard(rwsem_write)(&luo_flb_lock);
+ 	guard(rwsem_write)(&ACCESS_PRIVATE(fh, flb_lock));
+ 
+ 	/* Check that this FLB is not already linked to this file handler */
+-	err = -EEXIST;
+ 	list_for_each_entry(iter, flb_list, list) {
+ 		if (iter->flb == flb)
+-			goto err_resume;
++			return -EEXIST;
  	}
-@@ -474,12 +481,11 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
- 	private->users--;
+ 
  	/*
- 	 * If this is the last file-handler with which we are registred, remove
--	 * from the global list, and relese module reference.
-+	 * from the global list.
+@@ -390,20 +380,16 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+ 	 * is registered
  	 */
  	if (!private->users) {
- 		list_del_init(&private->list);
- 		luo_flb_global.count--;
--		module_put(flb->ops->owner);
+-		if (WARN_ON(!list_empty(&private->list))) {
+-			err = -EINVAL;
+-			goto err_resume;
+-		}
++		if (WARN_ON(!list_empty(&private->list)))
++			return -EINVAL;
+ 
+-		if (luo_flb_global.count == LUO_FLB_MAX) {
+-			err = -ENOSPC;
+-			goto err_resume;
+-		}
++		if (luo_flb_global.count == LUO_FLB_MAX)
++			return -ENOSPC;
+ 
+ 		/* Check that compatible string is unique in global list */
+ 		list_private_for_each_entry(gflb, &luo_flb_global.list, private.list) {
+ 			if (!strcmp(gflb->compatible, flb->compatible))
+-				goto err_resume;
++				return -EEXIST;
+ 		}
+ 
+ 		list_add_tail(&private->list, &luo_flb_global.list);
+@@ -414,13 +400,8 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+ 	private->users++;
+ 	link->flb = flb;
+ 	list_add_tail(&no_free_ptr(link)->list, flb_list);
+-	luo_session_resume();
+ 
+ 	return 0;
+-
+-err_resume:
+-	luo_session_resume();
+-	return err;
+ }
+ 
+ /**
+@@ -455,13 +436,6 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+ 	if (!liveupdate_enabled())
+ 		return -EOPNOTSUPP;
+ 
+-	/*
+-	 * Ensure the system is quiescent (no active sessions).
+-	 * This acts as a global lock for unregistration.
+-	 */
+-	if (!luo_session_quiesce())
+-		return -EBUSY;
+-
+ 	guard(rwsem_write)(&luo_flb_lock);
+ 	guard(rwsem_write)(&ACCESS_PRIVATE(fh, flb_lock));
+ 
+@@ -476,7 +450,7 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
  	}
  
- 	luo_session_resume();
-@@ -506,7 +512,8 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-  *
-  * Return: 0 on success, or a negative errno on failure. -ENODATA means no
-  * incoming FLB data, -ENOENT means specific flb not found in the incoming
-- * data, and -EOPNOTSUPP when live update is disabled or not configured.
-+ * data, -ENODEV if the FLB's module is unloading, and -EOPNOTSUPP when
-+ * live update is disabled or not configured.
-  */
- int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp)
- {
+ 	if (err)
+-		goto err_resume;
++		return err;
+ 
+ 	private->users--;
+ 	/*
+@@ -488,13 +462,7 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+ 		luo_flb_global.count--;
+ 	}
+ 
+-	luo_session_resume();
+-
+ 	return 0;
+-
+-err_resume:
+-	luo_session_resume();
+-	return err;
+ }
+ 
+ /**
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 8083d8739b09..ec949f91c8c1 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -83,8 +83,6 @@ int __init luo_session_setup_outgoing(void *fdt);
+ int __init luo_session_setup_incoming(void *fdt);
+ int luo_session_serialize(void);
+ int luo_session_deserialize(void);
+-bool luo_session_quiesce(void);
+-void luo_session_resume(void);
+ 
+ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd);
+ void luo_file_unpreserve_files(struct luo_file_set *file_set);
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index 783677295640..067ffb54c36a 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -600,47 +600,3 @@ int luo_session_serialize(void)
+ 
+ 	return err;
+ }
+-
+-/**
+- * luo_session_quiesce - Ensure no active sessions exist and lock session lists.
+- *
+- * Acquires exclusive write locks on both incoming and outgoing session lists.
+- * It then validates no sessions exist in either list.
+- *
+- * This mechanism is used during file handler un/registration to ensure that no
+- * sessions are currently using the handler, and no new sessions can be created
+- * while un/registration is in progress.
+- *
+- * This prevents registering new handlers while sessions are active or
+- * while deserialization is in progress.
+- *
+- * Return:
+- * true  - System is quiescent (0 sessions) and locked.
+- * false - Active sessions exist. The locks are released internally.
+- */
+-bool luo_session_quiesce(void)
+-{
+-	down_write(&luo_session_global.incoming.rwsem);
+-	down_write(&luo_session_global.outgoing.rwsem);
+-
+-	if (luo_session_global.incoming.count ||
+-	    luo_session_global.outgoing.count) {
+-		up_write(&luo_session_global.outgoing.rwsem);
+-		up_write(&luo_session_global.incoming.rwsem);
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+-/**
+- * luo_session_resume - Unlock session lists and resume normal activity.
+- *
+- * Releases the exclusive locks acquired by a successful call to
+- * luo_session_quiesce().
+- */
+-void luo_session_resume(void)
+-{
+-	up_write(&luo_session_global.outgoing.rwsem);
+-	up_write(&luo_session_global.incoming.rwsem);
+-}
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
