@@ -4,139 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 834E3103E169
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:07:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BD98103E168
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Mar 2026 12:12:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7F4C6B0197; Wed, 18 Mar 2026 08:07:14 -0400 (EDT)
+	id 622A86B0198; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E304E6B0198; Wed, 18 Mar 2026 08:07:14 -0400 (EDT)
+	id 5D37E6B019A; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1EDC6B0199; Wed, 18 Mar 2026 08:07:14 -0400 (EDT)
+	id 4E8ED6B019B; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C18B86B0197
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:07:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72632160579
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:07:14 +0000 (UTC)
-X-FDA: 84559058388.30.2B2380F
+	by kanga.kvack.org (Postfix) with ESMTP id 4116E6B0198
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 08:12:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07EB41406AB
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:12:08 +0000 (UTC)
+X-FDA: 84559070736.12.D3F8A8C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 85E94140012
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:07:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=leByJek7;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2709C40012
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 12:12:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVTfzGBL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773835632;
+	s=arc-20220608; t=1773835926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/jako9m7ef30u2KIKlYNuTkvtuk1qZaI001IqwwoxZI=;
-	b=wsSQ2fxid4NZAX+5r+xtN44YeG4ssdgLnzeqO0ZP/z6/4i86LgdP7j24BQ1t1kgAaYFmfu
-	BbyWIRhYL7qukTL8/i9OirPm1ASN/uDh6Pgw8kHpADq2P7AgN0U7zQnZ9Ld6rZcOqVRQ2j
-	YfYFcVJiGf/EaFD15flDd+rmVf8nNnI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=leByJek7;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773835632; a=rsa-sha256;
+	bh=ngWHmMiI/B2TpdxBcQ3CpDvIjvhvkyGbI2cI1LZxnoU=;
+	b=xzN62v5olH84Az7KJpQsvxcFi1Peqs+oxJrrZO4Jn+F2yhbfp9SdE67oX+mnee6SZxKvhI
+	PHUCNs9rilBJYgktaK45+hgDbebd7JaqSv6Z4Xtqfi5vHpPKy/jQYE4BH8hkrq1+pMxZB5
+	brIYtxa2vPlodDmankopiIKDJzGZ49s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773835926; a=rsa-sha256;
 	cv=none;
-	b=XIGZ14U16/ULVQWI7PsIcxlL8LkMi8WCsXdRMGIOKNU+cVpRQ7XOqBYg4rY7HWuoxA1gGf
-	IH7W7Fb8lsFYTnWHgJ9B5nFM3VmXXIfisBXvX28f5gqudtoucl2lLEhjdGSAd3AsmtnEr2
-	L/hvtLZGfivI3A2JVMCTO3ji+RFCOTQ=
+	b=3+emznIm1XUuxG02xk2qe2W+oeHefm1E0u2WcVA83Pra9SpiWdSh4QDp/e8g+808qqSQjJ
+	rxv12c2mt0uAZop4CyB+THL2cGQlEoyKyG8M7BUAgWx+fbXLFzZiG3azBtGKtYNfW9vQba
+	I4YyxW5w5lgRcRjfI16uMu1JzQDGhO8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVTfzGBL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13D5E40646;
-	Wed, 18 Mar 2026 12:07:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D426FC2BCB3;
-	Wed, 18 Mar 2026 12:07:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8499441758;
+	Wed, 18 Mar 2026 12:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E764EC19421;
+	Wed, 18 Mar 2026 12:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773835630;
-	bh=Qwy/Zw7mfBZ5j/QG9jUPEflfhiHhV/iYcxuVi6gsuBg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=leByJek7uVZg6cUI421E1qlsRgFu5i1j9Nrcp9TwCu1n/m2wuj0G9A52e2o93gCeH
-	 UE8Pm3pCz99lvNY5DqI85yN3uJYOlzA3MSCA7F49p9zmHwWV9oVeNp2NZ1TNGNAfRS
-	 oGhFtbj4lm5IYM6RTSEdhV8PdXr6kYryFRfIw7C4fAjIQdQMagG3Z2yZR9xv/SxKwc
-	 zK9ZzLYMWbYW2D+n2DghLnEarPNB2t3FbiaIQPvqj5iRhnDXQEt2/q1ki88ccS2Q9s
-	 b7uYJ/mi0bRuEp60/+SEKCMz7RW1DeHIkSAEHZKEVgY1R4GQiYyZ8OaOiRipCnMwrN
-	 uolUohi6Gzm/A==
-Message-ID: <ee3ca88c-d6ea-44cf-8f75-e996d52c4c92@kernel.org>
-Date: Wed, 18 Mar 2026 13:07:03 +0100
+	s=k20201202; t=1773835922;
+	bh=ZMYbeHXn5zcZyLE7ospsCFai3TF1Q88zpyazKVHp95c=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=kVTfzGBLiLfFZZLfDcB7uMhQXM6phIcJMoOUvNZkUbV0grhPwH3kOkp+KJvXGGl6O
+	 wt04L80HUJ1EjG7ELX8/nMRIiZv/Eg41E0I95mIwx1eHr/QMbBlcVKhU6mKIn2ly4o
+	 xOn0UVITpVe9bURrSCD0vJQ5OTZpwNME943JPU149h4z9G//vQkhgvFNdFdHRSHn0t
+	 noO5kPzor/Thi26xccF3eDjlhtT4PdVT9HcTtpDaijjWgSc4VQ+qP20UqFjpV0Ati7
+	 sz+pD3v93INrBTR1RgE71vkb9nsdqeVnuI1rWDvQ5vke/gOQsNJ0hSOH/xhFhgXL28
+	 OYkSV3BT5XRUA==
+Message-ID: <4659c675-6949-4295-b385-1ab26921a975@kernel.org>
+Date: Wed, 18 Mar 2026 13:11:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/5] selftests/mm: skip several tests when thp is not
- available
-To: Chunyu Hu <chuhu@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-References: <20260317094419.1429259-1-chuhu@redhat.com>
- <20260317113730.45d5cef4ba84be4df631677f@linux-foundation.org>
- <abpu4OMsy3Xl5QA0@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH 2/3] slab: create barns for online memoryless nodes
+To: Hao Li <hao.li@linux.dev>
+Cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
+ <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
+ <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <abpu4OMsy3Xl5QA0@gmail.com>
+In-Reply-To: <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 85E94140012
-X-Stat-Signature: dn5b6q5rd54f3ugb9wka3x1k4p4kn8rt
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2709C40012
+X-Stat-Signature: ctdhrkn4t4qsrmq5dw6f6k1t6quck9fs
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773835632-348475
-X-HE-Meta: U2FsdGVkX1/X0iYMdUFzqxSB12MznEQYKtXCgIA6CL+gXAELiyGOii6EWVxfyE7eKdD2KgpvrawXLZoVDfQft3ubXUGQe3mY3BUiTEe6oLSlfu3S359ZKB9YC4OCTbs7M4iATovHLnfFEsHnbeZDYi7YMb7GBCwdoF5vI6ndwrOewRYRF59TrI1X1Mo+wn4NFHnRfi4IZFmX8k5rxIe1SQdpe5bEuLdFtPmhP9R6AW7SfM6W02sdhF+LR2ldxrUa9/sS6Zn8i9Jkz9xH3djiVPNm2n5RFzQa7ietqEMoor84+Oow7XLudxQqBWhA+kmVV2doqx+xquIP8zQLZDvmpWYlaLt3mNUyanbLa068s3w99RJ/WbxETdQGwHTqOHo4rCXNQJlvSQliuGTf6yOF64t1+Qg6zoMCACBj2/iNuUKjQn12N8Ot4mLkj5nnOkU85ioljfworMQkmg02B07iJt880gjKhbq7PapuMYYo1uxrv6SApJp+1l3FncE88JWUBUzBO6LjaikBqe26YuRHXEeO2d7YegmTRe60VV2z7XjvNIjHiD6buTCB2vlgtm2A0qk/OVYVuerUnYHnE69J2ke36tHa5E7HQ17ZH0eDls1ZKuNKYSmpJayr+6jtTVNWTG4QbAuX1/gJUn6Ri6hHmjnH5kIa+UZHfLLt3aAKG0U0SS4sPkUACLuJEB/ZRjJHoH4BZ8tzx4KUdRb3H/lAgCz9PZ1veUUxyoVT65jP5inrCi0Fcm0oEAngrX63864txOVk1l7EiLaRfcK6SJVlBCcntiIFnZ4OlcUF1A6vA2Qq+HxzPJWsrJqaERG91fbjTn2H3YalyknhZ/fdOtO7s7Qm21A7HWdt4P3OO8FQcORqNeVuO03xZGos9KFPITpoNLFVGVx/XLXTUrCdgpNBAgq4j+EAHE0oz0IaAixuksfSLBhM7NWcH4vD9kCuLFgDsCr6vNWlaAT9YhYAgep
- OJ+c6yUg
- 9URVS8k+McqKGqxrwx3zn4fvhZN1IlgI+EJ5ND+fQX7+9DO4codm5x2fY7VxoS0JXZatWHZ0PLqriwzlGZdLzK/5SCjtdarUeNr5XCzIpxKpMNS07afFjv8px6WWAQGZOjKjBwKh2LbdZ1QHFMTWf4M50FY4LBwHvcnyH904x+MsOnVmjQ4niY6WvnK/yivrlgHsfebsnqawBMVZaVsoW36HOeJ/JpFcwS0odlznyS0BsNqkraqEHRXqvIsGvag7DTSMtSNaT0UkHm1wRx9/5BvnOhEixCEf5HlAzzzRWC/weCeRxl5JjIZOXd38ZKbCDOuFPQyu/BKBQ8krQAAExuUWFPw==
+X-HE-Tag: 1773835925-379598
+X-HE-Meta: U2FsdGVkX1/PPUDJIPgAbX6GBhJqHEfme3Dd0vL6piSShwqiri6vb3vZvbxO+kMO5XpyYiNLXx63EcTidnUTbK1D5ItWW7jaIxXpm9D59nSrsMvi5cWSUOmPfx9f1yQLCd5JGG+uNtwsUBzqy0wamuqkkdZvbCoKz2V2+gxy68fanie4P8/0ame0Kg+WqO5f1eyg3hmPqHQ5rOY+RPXlNUNm2FdNUlnqSpF1rACRVgT24B2xBcP2ZrxFO5/7gL2byHbW4CXCyPPWgkwAqgVt5SLjmX/jn4WCM4wow5GZ9IHtuBaWvhU8PCE8szfhfs+TbhkMNuYvDilsuqXjwi3zQEvjLfpoLuoDIMChyI34Ob1KvHNKX5R/iHy/ueyIoCxxZc1Eg7h6ArQduOhncPDxv5oLAeGMLN5wuL6pt3LqSiSE20kIynHuu4PdaAu9iM8c0u2ANv+5ZrRwP3a/WEh/9bl9r96enrfPwxNAtjoaQv2J3YWjxgKdOvRz3J4wCJwne5O+D59Y1mGSQLLYiQpZxpOWfgKr8wG6wmhMmEqYybcb1LKdRsL4icCcTM3WVR+FArLJax6YLBdFp5NjGJB5AT1a2GVzNEu50ms3N+CybGbsltWo1OJncSN4sI5gGMYWpv2Jk5M9J/ZMHsVe1ncuKtL6LT8w0eRLHp0tw8CKIAPOx+uDpiG0nYlvZXoOODP6D35VjFBcKYmIcqi8Uc300XsMU1LvoYBnU6lvtPSAI+xwuwcnlvK79EqLHmAyUlPcxiCG0kODKuVBp3VaHuCYpvTcUXQaP2+YChl1yTiKnmCm3Hu2HpzqtpM/MkrYtnhFQ/728wpT+fCzBmaNAggGKhwwAOvwomdNbgZgwaK2YfbXu4ZxNwoOtQpM/VWJYPZANaanv8e34k7Ws8t3mb9cep2Em2cD6nBjXUz6+BHWgWLO1npMIwXYfZalYIOgWff0gJsUxbD208o71CdQkLl
+ O4j6smTK
+ Gjnh9ipLmW0kfnIx51gqbOzE6yBvLnHOUAmNLoVf4v7mW5b7TiYbGstB+fZubAJEK5vODJLl1VgcGTPX/ix1L81CvttZm8erqGFWZPgA7MvUxEnEsMbeB0yA/392cCMxMmw0LCTdatkMLJ7YLQ3rQp7BqUrPY9eEc/cQhzNpd1IegRq2LKPp95ZJWsRExPoO+XOXnnOvp0sQnxRrPTHCWEfwNTusq/tP2B081bSr4QDIT4cAdhuxV6xpLiC7lVdmaAWIjoKDTbNWzkDtcRnj78wjoZy7mfNHbPq7/HnQgInTwkfs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,48 +98,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 10:22, Chunyu Hu wrote:
-> On Tue, Mar 17, 2026 at 11:37:30AM -0700, Andrew Morton wrote:
->> On Tue, 17 Mar 2026 17:44:14 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
->>
->>> There are several tests requires transprarent hugepages, when run on thp
->>> disabled kernel such as realtime kernel, there will be false negative.
->>> Mark those tests as skip when thp is not available.
->>
->> AI review asked some questions:
->> https://sashiko.dev/#/patchset/20260317094419.1429259-1-chuhu%40redhat.com
+On 3/18/26 10:27, Hao Li wrote:
+> On Wed, Mar 11, 2026 at 09:25:56AM +0100, Vlastimil Babka (SUSE) wrote:
+>> Ming Lei has reported [1] a performance regression due to replacing cpu
+>> (partial) slabs with sheaves. With slub stats enabled, a large amount of
+>> slowpath allocations were observed. The affected system has 8 online
+>> NUMA nodes but only 2 have memory.
+>> 
+>> For sheaves to work effectively on given cpu, its NUMA node has to have
+>> struct node_barn allocated. Those are currently only allocated on nodes
+>> with memory (N_MEMORY) where kmem_cache_node also exist as the goal is
+>> to cache only node-local objects. But in order to have good performance
+>> on a memoryless node, we need its barn to exist and use sheaves to cache
+>> non-local objects (as no local objects can exist anyway).
+>> 
+>> Therefore change the implementation to allocate barns on all online
+>> nodes, tracked in a new nodemask slab_barn_nodes. Also add a cpu hotplug
+>> callback as that's when a memoryless node can become online.
+>> 
+>> Change rcu_sheaf->node assignment to numa_node_id() so it's returned to
+>> the barn of the local cpu's (potentially memoryless) node, and not to
+>> the nearest node with memory anymore.
+>> 
+>> Reported-by: Ming Lei <ming.lei@redhat.com>
+>> Link: https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/ [1]
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+>>  mm/slub.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+>>  1 file changed, 59 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 609a183f8533..d8496b37e364 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+> [...]
+>>  
+>>  	/*
+>> @@ -7597,7 +7648,7 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
+>>  	if (slab_state == DOWN || !cache_has_sheaves(s))
+>>  		return 1;
+>>  
+>> -	for_each_node_mask(node, slab_nodes) {
+>> +	for_each_node_mask(node, slab_barn_nodes) {
+>>  		struct node_barn *barn;
+>>  
+>>  		barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
+>> @@ -8250,6 +8301,7 @@ static int slab_mem_going_online_callback(int nid)
+>>  	 * and barn initialized for the new node.
+>>  	 */
+>>  	node_set(nid, slab_nodes);
+>> +	node_set(nid, slab_barn_nodes);
 > 
-> Hi Andrew,
+> I had a somewhat related question here.
 > 
-> Nice tool.
->  
-> For question one. In guard-region test, collapse tests are for checking
-> collapse is denied when operating on guard region, not for checking
-> madvise(MADV_COLLAPSE) will fail when thp is setup to 'never with sysfs,
-> result is same, but it's a different test. Maybe we don't have strong
-> interest to test when thp is set to 'never' in this collapse test.
-> Do you perfer we let it run when thp is setup with 'never'?
-> 
-> For question two. In soft dirty test. Yes, test_mprotect skip logic has
-> similar issue when open failed. 'Bail out' would be shown. Maybe we
-> do this in other series or you prefer me to fix it in this series?
+> During memory hotplug, we call node_set() on slab_nodes when memory is brought
+> online, but we do not seem to call node_clear() when memory is taken offline. I
+> was wondering what the reasoning behind this is.
 
-IMHO, that's something for another series (if at all).
+Probably nobody took the task the implement the necessary teardown.
 
-> 
-> For question three. Add buffer length check in write_file() helper and
-> check if written bytes equal expected bytes. It's easy to add a buffer
-> lenghth check and make it robust. It's not easy to do the partial
-> written check as that will make the helper more complex and need one
-> more parameter as expected written bytes. Maybe for such question, we
-> should do with other series, not in this one?
+> That also made me wonder about a related case. If I am understanding this
+> correctly, even if all memory of a node has been offlined, slab_nodes would
+> still make it appear that the node has memory, even though in reality it no
+> longer does. If so, then in patch 3, the condition
+> "if (unlikely(!node_isset(numa_node, slab_nodes)))" in can_free_to_pcs() seems
+> would cause the object free path to skip sheaves.
 
-The AI brings up many things that are irrelevant in practice (in
-particular for tests). So I wouldn't worry about that. You are only
-moving code.
+Maybe the condition should be looking at N_MEMORY then?
 
--- 
-Cheers,
+Also ideally we should be using N_NORMAL_MEMORY everywhere for slab_nodes.
+Oh we actually did, but give that up in commit 1bf47d4195e45.
 
-David
+Note in practice full memory offline of a node can only be achieved if it
+was all ZONE_MOVABLE and thus no slab allocations ever happened on it. But
+if it has only movable memory, it's practically memoryless for slab
+purposes. Maybe the condition should be looking at N_NORMAL_MEMORY then.
+That would cover the case when it became offline and also the case when it's
+online but with only movable memory?
+
+I don't know if with CONFIG_HAVE_MEMORYLESS_NODES it's possible that
+numa_mem_id() (the closest node with memory) would be ZONE_MOVABLE only.
+Maybe let's hope not, and not adjust that part?
+
 
