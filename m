@@ -4,142 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0EA5107526F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C846107526D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:43:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F38C6B041E; Thu, 19 Mar 2026 03:40:36 -0400 (EDT)
+	id 00EDB6B02E0; Thu, 19 Mar 2026 03:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A50F6B0420; Thu, 19 Mar 2026 03:40:36 -0400 (EDT)
+	id F02146B0422; Thu, 19 Mar 2026 03:43:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED60F6B0421; Thu, 19 Mar 2026 03:40:35 -0400 (EDT)
+	id E17D56B0423; Thu, 19 Mar 2026 03:43:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DBF066B041E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:40:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9113C8B88E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:40:35 +0000 (UTC)
-X-FDA: 84562015230.17.769D235
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B795D100005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:40:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBereu8Z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D0F496B0421
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:43:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B7BF58C88
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:43:26 +0000 (UTC)
+X-FDA: 84562022412.03.B5BE945
+Received: from outbound.baidu.com (mx20.baidu.com [111.202.115.85])
+	by imf30.hostedemail.com (Postfix) with SMTP id 1D6898000B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:43:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=aN+ebKE8;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=md1532F6E9FC=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md1532F6E9FC=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773906033;
+	s=arc-20220608; t=1773906204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JZvTKENtcCv2cSZKl3LDo5qu3izmZZmpsJiVt93OIbw=;
-	b=BVN6sFyhNaFS999xncwR/vyUF9T3P60tOqU764gFRXAuf3zrvrwWNczHik6zv99zoYomSI
-	zOB8+JbHOrz5h5dFaXl6Q/0c4PAMLbZSP/YsEiXFGJSrT+/EIv5/TK/gF59kKzLXpuxGbh
-	pzlar4xFJi0YzmrAdz7KhObUdroKQ2E=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBereu8Z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773906033; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZYaovtd9STTHHi4P6uKPiHfVgDEzzqsGQYk6Ozrb4I8=;
+	b=cz4LzeoIvLpKAJSCuGXOFqRbC+Rh91eCizIfNuW1flveffUYjelrACdneR7+HvOUufWZsQ
+	k4hHQlAeNBJChrBDHDzIxNHGFF4/r9koWU+e5i2HikeG7nqr2rdufB70m4bcgI6KuFWdhM
+	lBdomISCC8dtQFWSH9gMy6ayv6ZYJI0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773906204; a=rsa-sha256;
 	cv=none;
-	b=MJvJbmqIjBHAUqLb/tnIhuYrC1YgyjniM3doAk0KVm90MmAhTrXh5piI8fETGlCYcBBvx0
-	B3SwdTe5NtcieIhwW5HHEwa8Ni8RYfumxLMJryBCEY3K16uXn8RnWUbEayADvrbkJxM6rY
-	RsQwzSI5dohgYp2UyVb/nJZ0LA42D0c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C71D642AD0;
-	Thu, 19 Mar 2026 07:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13048C19424;
-	Thu, 19 Mar 2026 07:40:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773906032;
-	bh=kgARICWk/x9CE46a29m+2Qcl6pq7KGjzLcdjK9IrfZ4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DBereu8ZX4zRIwgOzq6jnFRd45UKcoO6INJUpK0rgEE4H6vgNpRG/4s1bXsz/TzEv
-	 NhhbGA9liBmxUrMFHISG5m5cW7lJQfeI9iAdx5m/AWfsSfh2WZRkVplbIiRfCYTkdP
-	 ierUOwCw4r5LSLU7duyhDpXvrNn0sjiVaZ411B6CTIrMb1VIDaPT+p/zPkr3yMcaCQ
-	 9bwBZBYT1DPzjMc3fIWcEgg21Ch8SFZA/oqIciKj2BHlMgPTAyjxTkLcNovneEk1sQ
-	 qU3HbmRBio+n/0+dj9KXiU1Fxg303ft+zsFMhMItV1OmA/jIVnW4hOm9v/eYUjF6JF
-	 NZDcyJfEazVjA==
-Message-ID: <d72d5ca3-4b92-470e-9f89-9f39a3975f1e@kernel.org>
-Date: Thu, 19 Mar 2026 08:40:24 +0100
+	b=213a0Mgr/JCnOmTr/HCFo9AwRRG0sIO2JIixzV4OJV+ax8YvmKDpsHDUZE1MYCeafVGR76
+	CeJIA/sb8MfS7q1ggivW7ocQGyIUqrS45FCH0dyF2EaBiN+iJCDkE+JuNXHKEIWAcguPsy
+	eoJ++5+wzhWtp2B+kJZhKZ49OEpMTLs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=aN+ebKE8;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=md1532F6E9FC=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md1532F6E9FC=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki
+	<urezki@gmail.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH v2] mm/vmalloc: use dedicated unbound workqueue for vmap area draining
+Date: Thu, 19 Mar 2026 03:43:07 -0400
+Message-ID: <20260319074307.2325-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K
- pages
-To: Usama Arif <usama.arif@linux.dev>, ryan.roberts@arm.com, r@hev.cc
-Cc: Andrew Morton <akpm@linux-foundation.org>, ajd@linux.ibm.com,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
- dev.jain@arm.com, jack@suse.cz, kees@kernel.org, kevin.brodsky@arm.com,
- lance.yang@linux.dev, Liam.Howlett@oracle.com,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
- Al Viro <viro@zeniv.linux.org.uk>, will@kernel.org, willy@infradead.org,
- ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
- kernel-team@meta.com
-References: <20260318105203.3288727-1-usama.arif@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260318105203.3288727-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B795D100005
-X-Stat-Signature: mzk41giw7iqkzice5yhsapxb1cenorgq
+Content-Type: text/plain
+X-Originating-IP: [10.127.73.8]
+X-ClientProxiedBy: bjhj-exc9.internal.baidu.com (172.31.3.19) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1773906197;
+	bh=ZYaovtd9STTHHi4P6uKPiHfVgDEzzqsGQYk6Ozrb4I8=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=aN+ebKE82vdqMrxigLnItga9lvCFA1/Kz7EzVZfUPuYgw50xOyMEWR1SD0cmZB1u5
+	 QIDM29FnsrJU+p/Zz3PO4pv5NrsC5ZJfzhVMs2Da9vYgiHJnURIRucrF93X229fihi
+	 3tWlUjiauWZ+9aGmmVLaQhBruvopuKLUsvwCe0sM8noi+fmTETJ3+WwYIj0c/VyZ2l
+	 KNZUzy8yJZnK9LNggOcsCMMNp7YKDPr2hM5DPIJ8BTjm6n2t9xwZss7Tq/CmKSeMVJ
+	 mRN1BchIqahlEcDuKJvFn23Dp6YKZnyVTFZPAporjjay2GOVRv5n750OHY7JO82brO
+	 W5bjxlyG7XTBw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1D6898000B
+X-Stat-Signature: a9mgr9fh4ok41n1r1z58r6xke4zqffep
 X-Rspam-User: 
-X-HE-Tag: 1773906033-384459
-X-HE-Meta: U2FsdGVkX1+mTklx3mF0UVxmNH+tkXNyGeu4/xnyQpPzcvacjloMrglMAQEVsxaj/8zA3II4GAabGA8s9YhyNvKSZnhe3lE8+J9B/27COCdDIzgNgnOhXZFORfeWIT80SdL44cgqH3r1C5yv97nq6H86AZsycZHEX1Ewth2q1kcEZ2HeodKpDqQQKgQmHMBys0CYZ0CJ+fd7i/fU5Z+VQC6kOycWfw+U8zmfISp96eA4tCd5YPSLZAeZ1FOGUeKiGB7GakKtacNdcHPyglXbZMvvcoG1FJ/l7Ik9aStWfYITW9nU48osA6+/QTB1jCSZ7M2D4A9XeAzdPpdDxZqRf/2E2bywCAUZwGr09Wa+YrraSbfkjKO1LdNuSUVZe8L6pdMj+0TmqV6G9bt75poY5azPcgv1IcTXe3EpLAvp4ufjMqbYO2gx9KQEoGN+pmUoLqSOOt5liP/veJ3C3RVFliChY5y7phWPmhED9qQjk8fk3dbC8kZeQxkbgxb4PIaWGqzHo867FSHMawhVCuK01oKjiF6G/qmckZsxGO6KGrckKQZ/+Z2sUPGqZoDE+Q4XaBou05dLodTv0dJ6skQyTHpILURnRCzofvxrhtGreVkD8X0IhkqvwPWUucVj6FEadRM5l757cme59QaLqPmEednAmPNrdTji2SSoiVxIaPgqd6fdCdz9n55BVZIAHDx2Xo51hsZvtu5TXwDq1FGVZUmsT0E8vyz4jV/+tOLCXxyDWHkzYuCWDeD10CI1MwBDJRl0YxQhsYJ1tz/ze9q+0/iMoEf+dHROrGZkNFtHTsuTKAZ9xRREltq+7DsMTBRQBU0lqIiTEYHTwsn824LHHbkakd1QCz4Ch4Qhx90oGZee91NCs+ohUd60UCJ/j9vyY8+53AJFP4pJOwhTc0X6zrkJ/+Cj3G40lHe1mDElEW3vz2tKqwSdc8njuHA/285UunoKv17Cbh9Dfpqdrf7
- vjfNKLd1
- w/c8fB0k/SHbYmbQGVp0b0LrXUw3AlHOoyQvzza/bwPxDR3ov+RQEOIWt0xYCvuN63RwLfHDAoXZKL39MdYIb+E0k88pxRffBLk8h2mkS1RUwvBksmPVfjJ1+a1yfXELGniQmERG6Q64cpaRimbxBJjhUboKQqXGH8YWQI3X+/cVF1Mdn91Uw6G9uVhFQVa5VWbSGRMfhV/1K4ZRb3E1hWtljcC65RB9PrN/j0VARhjxOVrtVM2suzPDIxP8iNvhKWB9c6plF8OietJ5tVaZ0BC+2Rmk5OYPlOrjWedYaZfex+d24PvA5Km1jPWeBxM70jJe6
+X-HE-Tag: 1773906201-419796
+X-HE-Meta: U2FsdGVkX1899s16MwtC7j47NcODH++CBm3b4B3s9kVfVo3rloj8WxyX9O6K8lLmUJuGZxI+2ApENV6pRIEWETPFvmkembtEhnfM/6DYP8whP9beKstlKwk2ZofiVO6FSbYbW9d/ki5/b0S9UERJJ/gwse/iZleO3EajQC0JDl10Pd0uonvqrBIHQ8X98WsdFFycCtpdAQkYGIMxHsJWWSLl5K4jMY6LOYBgJ3lf+rMoeYcVR+H/CWNiWp29B/8LyDTXIVMwa42ltM86XlxiR3W46UbcGSkqWoA9szdwkKuClhJY/eYQGzcSEFkKYEr4V5oR8oRhi83R2GMFstC12th0kqP/TcYXUPkOSMNT4hOmjk58o6RoZYtII5zYD/uLXKzg4wXlOFcAd8CcWHjwGfT479ZeMaYNK9IcseRYKaCsF2OUlpZHHvJc7k9Wwh5yZiCMpOArVlC+cC9nb6Dzu0pPoZTU4J//1MHaTelrKTnmjpTCbJVYsapQjevEggyKERnI7kx8JaMc72UqyX64TjQrk/7pmYN2twe5iPa3bMzGr5IadKGnE+fZMf4RZuhNBugoV4t2uDJ3WWMaYMScf4gKAeP4/4aKbjDATudK9aA88F9X/otqpKocFDfq29AhUqDbjRHAG9LT12j5YVQyeTvf+hNf/hYmjtLfRQ/0v8l4M6TavOeSThupXvco8qTBiXKUyNja423/nqvqkU0c4/ncd74YYofcUQe3Ak6kD0PHq3s2Nkv0iBi4/uR0y+hUcsz823MjM1bV9GOkmySSyXAcT4I8seaaWT4B7nbjD5CcTWB5cPKKwy4/mpNUF+rWBLQC+sxBH9pnmlJoubSTd6yRgdJ1uaixrgaFxbuJjrJnYVkOvnqziljq2bUGxKfBivj7c3iyhPM7Rp2nl6osTTONDyrS88L9MNGsZLOB8TafLPXBG0g/8vysIplc3zAzvO8YAidcGcSZUp9oX7h
+ VRRqcOKi
+ VWSfB7vY2LHps3RodSMbRdQM5svupRtdoIbdaEuU8ywpQHj4i+keIXJFY9Tdwz78qblttBtc8GPu47amVwrOcZ/o+7FfiW/3SWdUqAOm0Py4Id9rAR5HsEhv2hidI+axIlE/ymtrcZvzmzn3KbnL3jSVEm5Kg3Pvzb6mdcTNB2q+PwKXTmP53iKpB3rM/QbyCtTLutv74RGUhIGSwNBZ2B94ew6Rj7HRjZbgVT6ESlqDc2qXC8wReIy9I2MRPwZpF/QjG7bQJ7arV1JOZoVhz0nm0CEwvBcyvzZrzWwTKn+wRC6kPNcWYdgl+KcL3LPyf4SSflooSDdcYT6im7XtFqa3UIhMiUceKTNmIyaeIB0fN7JPcEvlc5SOJy9Jtp0lnBktFAange6DsmnthN6uRToh1+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,50 +87,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 11:52, Usama Arif wrote:
-> On Fri, 13 Mar 2026 13:55:38 -0700 Usama Arif <usama.arif@linux.dev> wrote:
-> 
->> On Fri, 13 Mar 2026 16:33:42 +0000 Ryan Roberts <ryan.roberts@arm.com> wrote:
->>
->>>
->>> This was deliberate, although perhaps a bit conservative. I was concerned about
->>> the possibility of read amplification; pointlessly reading in a load of memory
->>> that never actually gets used. And that is independent of page size.
->>>
->>> 2M seems quite big as a default IMHO, I could imagine Android might complain
->>> about memory pressure in their 16K config, for example.
->>>
->>
->> The force_thp_readahead path in do_sync_mmap_readahead() reads at
->> HPAGE_PMD_ORDER (2M on x86) and even doubles it to 4M for
->> non VM_RAND_READ mappings (ra->size *= 2), with async readahead
->> enabled. exec_folio_order() is more conservative. a single 2M folio
->> with async_size=0, no speculative prefetch. So I think the memory
->> pressure would not be worse than what x86 has?
->>
->> For memory pressure on Android 16K: the readahead is clamped to VMA
->> boundaries, so a small shared library won't read 2M.
->> page_cache_ra_order() reduces folio order near EOF and on allocation
->> failure, so the 2M order is a preference, not a guarantee with the
->> current code?
->>
-> 
-> I am not a big fan of introducing Kconfig options, but would
-> CONFIG_EXEC_FOLIO_ORDER with the default value being 64K be a better
-> solution? Or maybe a default of 64K for 4K and 16K base page size,
-> but 2M for 64K page size as 64K base page size is mostly for servers.
-> 
-> Using a default value of 64K would mean no change in behaviour.
+From: Li RongQing <lirongqing@baidu.com>
 
-I don't think such a tunable is the right approach. We should try to do
-something smarter in the kernel.
+The drain_vmap_area_work() function can take >10ms to complete when
+there are many accumulated vmap areas in a system with a high CPU
+count, causing workqueue watchdog warnings when run via
+schedule_work():
 
-We should have access to the mapping size and whether there is currently
-real memory pressure. We might even know the estimated speed of the
-device we're loading data from :)
+[ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
+[ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
 
+Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
+run this background task on any available CPU, improving responsiveness.
+Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
+
+Create vmap_drain_wq in vmalloc_init_late() which is called after
+workqueue_init_early() in start_kernel() to avoid boot-time crashes.
+
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+Diff with v1: create dedicated unbound workqueue
+
+ include/linux/vmalloc.h |  2 ++
+ init/main.c             |  1 +
+ mm/vmalloc.c            | 14 +++++++++++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index e8e94f9..c028603 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -301,11 +301,13 @@ static inline void set_vm_flush_reset_perms(void *addr)
+ 	if (vm)
+ 		vm->flags |= VM_FLUSH_RESET_PERMS;
+ }
++void __init vmalloc_init_late(void);
+ #else  /* !CONFIG_MMU */
+ #define VMALLOC_TOTAL 0UL
+ 
+ static inline unsigned long vmalloc_nr_pages(void) { return 0; }
+ static inline void set_vm_flush_reset_perms(void *addr) {}
++static inline void __init vmalloc_init_late(void) {}
+ #endif /* CONFIG_MMU */
+ 
+ #if defined(CONFIG_MMU) && defined(CONFIG_SMP)
+diff --git a/init/main.c b/init/main.c
+index 1cb395d..50b497f 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -1099,6 +1099,7 @@ void start_kernel(void)
+ 	 * workqueue_init().
+ 	 */
+ 	workqueue_init_early();
++	vmalloc_init_late();
+ 
+ 	rcu_init();
+ 	kvfree_rcu_init();
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 61caa55..a52ccd4 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -1067,6 +1067,7 @@ static void reclaim_and_purge_vmap_areas(void);
+ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
++static struct workqueue_struct *vmap_drain_wq;
+ 
+ static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+@@ -2471,7 +2472,7 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ 
+ 	/* After this point, we may free va at any time */
+ 	if (unlikely(nr_lazy > nr_lazy_max))
+-		schedule_work(&drain_vmap_work);
++		queue_work(vmap_drain_wq, &drain_vmap_work);
+ }
+ 
+ /*
+@@ -5422,6 +5423,17 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+ 	return SHRINK_STOP;
+ }
+ 
++void __init vmalloc_init_late(void)
++{
++	vmap_drain_wq = alloc_workqueue("vmap_drain",
++						WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
++	if (!vmap_drain_wq) {
++		pr_warn("vmap_drain_wq creation failed, using system_unbound_wq\n");
++		vmap_drain_wq = system_unbound_wq;
++	}
++
++}
++
+ void __init vmalloc_init(void)
+ {
+ 	struct shrinker *vmap_node_shrinker;
 -- 
-Cheers,
+2.9.4
 
-David
 
