@@ -4,180 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 271D61090233
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65110109022C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89BF36B04D3; Thu, 19 Mar 2026 10:17:41 -0400 (EDT)
+	id AC5556B04D4; Thu, 19 Mar 2026 10:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84D726B04D4; Thu, 19 Mar 2026 10:17:41 -0400 (EDT)
+	id A9B976B04D6; Thu, 19 Mar 2026 10:21:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 714456B04D5; Thu, 19 Mar 2026 10:17:41 -0400 (EDT)
+	id 9B1E66B04D7; Thu, 19 Mar 2026 10:21:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A4606B04D3
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:17:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C0901B848D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:17:41 +0000 (UTC)
-X-FDA: 84563015922.08.11862E4
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011044.outbound.protection.outlook.com [40.107.74.44])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 069C31C000A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:17:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bp.renesas.com header.s=selector1 header.b=wwWM3lsm;
-	dmarc=pass (policy=none) header.from=renesas.com;
-	spf=pass (imf21.hostedemail.com: domain of biju.das.jz@bp.renesas.com designates 40.107.74.44 as permitted sender) smtp.mailfrom=biju.das.jz@bp.renesas.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773929858;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 888346B04D4
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:21:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 29CE416060C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:21:05 +0000 (UTC)
+X-FDA: 84563024490.03.F0BEAA9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A7806100011
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:21:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MRcM9xy6;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773930063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gw9qR3b5esJ554TQ+4PO3EuHLctK5EsgNWXliyMRLog=;
-	b=SXMeuFMUTVTegmU0Bvai6OVR7m92ibQvnsNjoSRCESwRXjXs07rSuZLiN1i9NuVoJnn6f/
-	8GOJbjPFuxuhM5gwRZ0BZeRFbX8VXAZ4dlFythTjrMqZcZMR5Mny08rWkZvjs205PlbdtN
-	HQOMfUMfN1jinz6mQoOa288GjCZk1JM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773929858; a=rsa-sha256;
-	cv=pass;
-	b=lGe2NWc/i6FG55t+MN9ASSqsKQfRQdNRKYUm+2JuYbz/biSNA8XtrOUyaJVuqsVQDNgdZy
-	Boo49jEcAnU6zMwQwv1xYyqpS66tGoFDnI5M2A+NMXOrIK/YVe3rLitk5HDhnxQ2QSnY5X
-	51N0+yU6FE3AD9+tDgiv2ba0HhNcT/E=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bp.renesas.com header.s=selector1 header.b=wwWM3lsm;
-	dmarc=pass (policy=none) header.from=renesas.com;
-	spf=pass (imf21.hostedemail.com: domain of biju.das.jz@bp.renesas.com designates 40.107.74.44 as permitted sender) smtp.mailfrom=biju.das.jz@bp.renesas.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=utM8BVB8kTWKC/071mW1Nm01lJ+JqOB3bzB7I15ImFkmdz1EcSmXTeBByhJVgldOAJq4Jw5UP4KFvKT5nLvCgm9aFNsVLDEYICUiLEFkW71tV+Fl0Y89OPctHaTGxueTfPbRHG7UORZtP7gveRBbN4h3i3TWEPEQDYD2GUZu5zwSeQCbhHH1ZMgidpAoi+jOVehXdzKNNWL+tYPKyeM0qZkSPTbSYktPWHSjo+55AGwbNLz2LRhe9R1nzIY5iiwhgkOxqLvAkWPEby7ZUUMfAj+uWLYvrPg/u8yvJ3Y8yfwBq3o6E2Tb6pjtVq6TAMhVGajvbvnXtrH9KMGZYro9mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gw9qR3b5esJ554TQ+4PO3EuHLctK5EsgNWXliyMRLog=;
- b=hGHcc1f3Sj3yOhnp5dyM9v8jeY45pfHD4OU8lXiHHFLC5ky+ftxUh6BWtc6NFCNPydsMvAUf8FcV7iWQ7QFhilP+1HTIAnRcZoDCUxiqqzasNVlfhppzz7zsnqafDQnqrCrjOSgghkl8LEkgJj4aa+UljttfLqeaT1zHL/7NojO4LrN3Rx6L6DkCoo7A/gnhZJJ+dZlRrUUeI/wI3gIbWjezqlERZN8DefQ++2mzcgP9LlhlHKT0x+s22Et1Ho0GKNqV4DFqKM0uSv3pA7ZRnr9mJIKkT2FtcMBJyH1Ky3U89U66DVlinFsi8VKtS57XKoMPWi6AmHYyXw7npwBTBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gw9qR3b5esJ554TQ+4PO3EuHLctK5EsgNWXliyMRLog=;
- b=wwWM3lsmPyB2GBcTQudkXRNY3ZII1mDoMdPSblbUNYnjgI4nf/H3W8lVwqm2eT1Xj0aLlU3Q86cGcuwuekGIF+dd7XplrJ51gWx1rdisDL6+3i3wYYSWEqvsmkOQeMQDIpPYg/1quxmqIE2sSJvTaWs7JcbXXw2CBUQXE5dfc00=
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
- by TYRPR01MB13865.jpnprd01.prod.outlook.com (2603:1096:405:215::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 14:17:31 +0000
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::87d1:4928:d55:97de]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::87d1:4928:d55:97de%4]) with mapi id 15.20.9723.019; Thu, 19 Mar 2026
- 14:17:31 +0000
-From: Biju Das <biju.das.jz@bp.renesas.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-CC: Thomas Zimmermann <tzimmermann@suse.de>, Tommaso Merciai
-	<tommaso.merciai.xr@bp.renesas.com>, "loic.molinari@collabora.com"
-	<loic.molinari@collabora.com>, "willy@infradead.org" <willy@infradead.org>,
-	"frank.binns@imgtec.com" <frank.binns@imgtec.com>, "matt.coster@imgtec.com"
-	<matt.coster@imgtec.com>, "maarten.lankhorst@linux.intel.com"
-	<maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
-	<mripard@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>,
-	"simona@ffwll.ch" <simona@ffwll.ch>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>
-Subject: RE: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-Thread-Topic: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-Thread-Index:
- AQHcp96eSUoAacjqcU2c+U96UWFVr7WrPdqAgAAB0YCAANfgAIAAPkuAgAADDoCAABhLAIAAAcHAgAAEWoCAAAbzAIAAA1KAgABRKICAAQkrQIAIKkpg
-Date: Thu, 19 Mar 2026 14:17:31 +0000
-Message-ID:
- <TY3PR01MB11346CEBB1B1A5FCB69D247EB864FA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-References: <20260227114509.165572-1-tzimmermann@suse.de>
- <20260227114509.165572-6-tzimmermann@suse.de> <abL5rcYIaFFO3GW2@tom-desktop>
- <TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <20260313111851.4c1f89f3@fedora>
- <f3384342-cdc5-4260-b670-4ffde76a2802@suse.de>
- <20260313125644.65131b27@fedora>
- <TY3PR01MB1134662A395AA0A048CEE152E8645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <20260313131835.52c5c935@fedora> <20260313134328.3166c4d0@fedora>
- <20260313135521.07823792@fedora> <20260313184549.08656eed@fedora>
- <TY3PR01MB11346AEACA195A53E54101A4D8642A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-In-Reply-To:
- <TY3PR01MB11346AEACA195A53E54101A4D8642A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TYRPR01MB13865:EE_
-x-ms-office365-filtering-correlation-id: 78442970-9b43-4900-0ca2-08de85c2421a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info:
- HSVYHOmvXxNNxYPHM3QS/nxHxWqaEEJ6j51yKce+r+zyUL+PNRu5KMXgc1XJzWWJP4s80nTseoNWOYoq47aHDzbifClFPC8ziv6uwe1XMLibu2f3tn/zVQnZ8Wyw+v1VksnlunBiPrw0049MJPoXNB8KmBGrNKHDJ+BhyXB3NmXV+YDI42KSJQLxg4ytypa2BQNqqKei9uDhMcOJJG9XEFabNnV6DQCz9faBDrBHZ02DmjrqvMwYqU6cD53ZAlGVVstXTEuwvdc0RT4LboUBULd0o0A9PVVtyFVVnGcz2DN8tCbTXSXFPFf0yTjYQPczr+Aco7/k57xQF3X0n+TX87Fuw4D6tdVA+rTE3IzI6B5PFQgMmn0ovB16n7Ra0uS+0GKsmaHQz1OVVsfu6UMnnyrniDm+h5e0lVpTu9s/EkAZJ9B1E05Y6FkJIiR/cV55dz3Rih9VV1u+BRM2tQVMHZUHfO+KsGSpbMXsCYsQWrZlBX4yWegROJCDhFVKWPWdZ9cu2nPRxRafjq3CJXkwwvmoPUo0dUdYS5BxnWQIyqJb/Gge5So1WIpi0E/uy3A5cOFCnvDe84tubbZhA7CZR8UUe7Sm3Bcp2skbA+rTrByCitG9BL2q6UTo2aDD86iQJ4iTdm87v3yCaHuJXAQZgI8Tyuk6J8mQU51nHi+zJeYq/i8FCkRLiOvqmQKpOxNJV8BIXpx9xA0xhw/b0sLYFIGVGnU8G8u2qrOXhRmZ1q04ThjCzDXagkWXVefgvaTL
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?u7OoRHjF+C9uzjueC+W8oFrHNaOrf2jhSp4JXAK+jG0XV+0HSIgWGUvmtgaS?=
- =?us-ascii?Q?J6QhePyUzE7lUbKnBNOMMRpwWQ04o9Ig7sHO2sC25hi7xzp2BrHspT9wQTn3?=
- =?us-ascii?Q?8HHb56BBmP9CT63qG/76i/++UTNKGWipeZg5495mxuc7SBXhMNbD74dwh97L?=
- =?us-ascii?Q?1o8mWjjblJEIrtlVtrj+MDQCBEh19q6F2CDjD1uEi54/sX7ryaF7j5a/abUj?=
- =?us-ascii?Q?jk3Q2W6aP+Yitzeao3ygJlVN2pLkiT3rucPGTdgN8KlSA3og6xVcr39XpKjz?=
- =?us-ascii?Q?hNmC8miUX9pJjv8ctmdcxpfPbQoH3h5t9mHVi1qqgJsES2+EIsSBYYYRSYli?=
- =?us-ascii?Q?aEaW4jx3FBOxR/Fyl+JmRuC04b9SvXv7n99G1IGO8kiQHzqKKDWR6mEA5wcN?=
- =?us-ascii?Q?N+/KsIrPY0j6x/YdF9qedwLMRCMqyIoRs4O5sxxW31zvpkcBxdh2XwoNxKUP?=
- =?us-ascii?Q?utXpO+KOjcpEOrjRR7d1JVEOOGS0DcBS/y433I8vafjIFtpolbnLGH3V3X/x?=
- =?us-ascii?Q?YScRbeP18nwp9OaWDupHYdBsPsgk9NXtKzfwJy8W8sfe4cV9TFWdVZ/ZvWLr?=
- =?us-ascii?Q?RVyabRKdHhCu9ACWNFBtxs4VHZ3/UvDW6wWYcKQ3ytvusx+t52sX61y5ap3U?=
- =?us-ascii?Q?PA1zeZTuHy+wi9YnA+xXuhtoiyPO4OwQounVMvAmAg/jY8GnDaCvzmsHUDzP?=
- =?us-ascii?Q?rh7SLJwEoYrRcusw8POAy9Uq9kiHz5Vfu4bLHI48bHc4KzwL4pmioUBGe9Bu?=
- =?us-ascii?Q?XDyZve6iwJyZM3cBKPh8s1s5yYMFmyjUIP1248l1sgi5saO/jyOvtGdD5TEY?=
- =?us-ascii?Q?89p2GH232y0Qu7IGFp1XOFO08RRB0YD3vxyNmBB1Ek8VY1HEdxTWbZeL5Fls?=
- =?us-ascii?Q?O9QNzbAd2bHOA6Dm5KynTICbok97G9UoNXr4eTJ7dPBTDZs21rOiGJoWWnNr?=
- =?us-ascii?Q?vOBCKL5mjVrjEeGYVuraSetOkW6KopZe6cF3vyB0Adx9Kvf5Jk4ME9m6tMbB?=
- =?us-ascii?Q?/A4n7hobs7Ftz9dYpF0njI7pW3MrfqoyHjTXtpPDYl+YdfmvfnzAYG8ZO/k9?=
- =?us-ascii?Q?+P2NOVw206E6wWMvm4pWiUQ2gR1/3w/zP3jSVec47/i1YnBDTZvSyWNWVlAM?=
- =?us-ascii?Q?w/M2prbKf2xmmZ9PAEbq8BEJPA2MJA7fpcpwnbnBH7pX89oE5fXqhisXdxrG?=
- =?us-ascii?Q?lMk5C7Okrpvmqv5D2++XrLsejgYbOmdSHNzgGJtMJhzzSXMxUVsR6OopO/yx?=
- =?us-ascii?Q?va6Ws8lp4lph3/lcwjZmAnCFA+DJnN+h8TqeU/INua1HQFxmPGJcVvW8bLGI?=
- =?us-ascii?Q?VYbF+r6rduda32dnldSSsRpiLQrQLOBcIHTJ++zwlxtNT1+/lFXoKkBwMw/4?=
- =?us-ascii?Q?4MkUbFaL5yP2WoNIlvnlaU5WVuQ2EQHb1bxgpWIwHI0W0NZMAFgwFpxl34q6?=
- =?us-ascii?Q?YkiV4+mhJ1VgaaOXocWWA5lpfoeeI/6/RsJdP+OisqZvjn8ergZNpQZ0W2kw?=
- =?us-ascii?Q?YUZbGxNoiy49y+yZ6VMZzK3+Ju6MrxAn8QNtlM0dxOPXpUhbMwWJZMhVC2oA?=
- =?us-ascii?Q?VhYuRYufOmgMeUl5/s+2ARX0T76peVYnKBUjsG5mKB2rDAAv+9eveulkP4E9?=
- =?us-ascii?Q?1Bhii5sY4RRCQlqBFQIFPaZssdLNHg4+YbDNoL/HKXaTcLz05U53q7hh7VU9?=
- =?us-ascii?Q?eBq9wYkSsj/bIGB3aJ7ifASkHmpOkFHRf+Aw+XMR2e6pcf9jmPZZYd8ucQWy?=
- =?us-ascii?Q?edk1lZnXNQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	bh=kfSXr4urRrjcj/S/mrZbqRGT5j7GhC0125qWzQv+Krs=;
+	b=O1fIXcKT21J9gz/KxLpd47QpN1OYUJ0PKLw6mXvFVYQD5P0C93JaDLlOOBkRNp5znV9aPS
+	kG/jjo1OBquA8q9EdbwQBfglXtqfboRAamihUdqQcIjhr3Bq3U8hkV4peHjTDm1ARtsLnU
+	5FbEDBIJhGbgMBgbMlYaKdH72TxLNR0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MRcM9xy6;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930063; a=rsa-sha256;
+	cv=none;
+	b=gOkfBydscKvrNB+Wr5WtzaJMir7ovWs7/gbzdz+fxekAwXGD4b/5FdvYcvWlAjQcizIGRM
+	ex6ZvFUHH3kFKIKr9OrSvoPwnEthIZoeVO5V1/XFHKoorwlj3bDlHcOuFJzFSvHhfl9M7V
+	x5JihUp5OI8apgnL0CsavpTTHVvQXso=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 06DE260054;
+	Thu, 19 Mar 2026 14:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E157C19424;
+	Thu, 19 Mar 2026 14:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773930062;
+	bh=hloQh1pJoXmEXMOlDUXK84ib0nwYZGczcXxlM+VCi2k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MRcM9xy67Fted5xe37sVxp3BmyygXrtfYkz5/iutI0Xh1wW8POLhKiNYc7CLq5IG0
+	 P+GSBCqz9kM8/7Od0B6KytgitXAJ7Zyqwn7ebBlIFSTlHRGIJn+VnWHhEeSX6VtMX1
+	 5FPxCVVE1JP1OIJSCGs1nIk9yrRFmXBCHOL1AshTFbmU3neog5MQ1gTe/zPJOpZr97
+	 vARSX45iEnijjaIuarm4PLvKi8UcHylPi5lk/T7f9QrT63vNBpTJQUtQiK8vpZ0JcE
+	 sQqUfbqG+6w1VOGr336sjvrPQcFlGKNBcua4fZ+FR8vD6IXSsmyOkb4oT31wV/PmJI
+	 h31d3KgoEfAxg==
+Date: Thu, 19 Mar 2026 14:20:48 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 2/2] mm: introduce CONFIG_NUMA_MIGRATION and simplify
+ CONFIG_MIGRATION
+Message-ID: <5a31d1ed-7972-4d73-a39d-b1c7ed593a02@lucifer.local>
+References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
+ <20260319-config_migration-v1-2-42270124966f@kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78442970-9b43-4900-0ca2-08de85c2421a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2026 14:17:31.1944
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2HJIR86Q2W0qxGMT+OQqLM/VMGTiOOrH3x8XDi0xOZwuQQn+loe3BDQx1ZSg53FuZDxlbnlVoF4GO5X+Zh1/t2A/NgQQW+pmTKqi7vqGieI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB13865
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 069C31C000A
-X-Stat-Signature: 9ha7wcef9t8angkpiu1d4kc4cxum76ty
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319-config_migration-v1-2-42270124966f@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A7806100011
+X-Stat-Signature: fy66nzdg5twmxhgxx688af81ew5u4d8d
 X-Rspam-User: 
-X-HE-Tag: 1773929856-531748
-X-HE-Meta: U2FsdGVkX18LJ9yiHOW6wTZNaKT5Hd6t4ekFz3rApCM/tfVUC0ZZlHz4b9PPYX26Y6+AFzHeV02P2m9NhDMzj+y2qwO9/+ew7TLeMrhwdsRT5uG8/oXmaGZ/ETjOKAGiigjG5MgyBnl4mcBXdexNozg6oiJGYbj0uQqvn4sq7hU96wjQ1rOTlc7YsCH94C39+vEf1yGV8QOvGzpPi4mKciffANGf0WMApx02uK4zmGHPiADPhclcBrffkjTbirapuS6I1B3rsEkrFN0gmxo/G8IPJnDfMVwQqOlC9rwFQbnn3WTbv5np4z7Hvm9TjOpT9rouAWA+CRXKOfV56gzaQRlNZP/FQ52+7nbdqWc2ty3h4jZTfp3QAzQWM7yqa5Zk/Fra0kdLDJT6Cs3pLaNQW8FEebPvVRBMrTUk+1V5jIYhO3YCF1i1k7+AyopTmWXtMvdPfb8S0ynWKqqKr0aoYh2OTXW5J+unpXB4tRgUzMws+ksjjN69EJH5bmZq0UcCvX52nJ5c6GM2tsAspPmuaEMAgcR7Mge8VEdoLl+nwZLt/Lt7MXYK5zcNm347Th/hVLN6vcdwIW7CjMsLdeV8ofZds6HwI3m4XJK2Xgzw0YH8l9/wHa79qPWhoPzvw1DwEIiyUGGE/ZYVcLD0WDVCJZyfimI7K+ji4eKLUugYBUDld+n85QDoDqoQZ8mU7cpcst54wQPqBznvNbSH0pnavAMXpgGwcgB+syNCXnRrw2J6f1W1DBbkDA46ch//ISxhc6KOJb7rc0HgI+EvrFH9ZmparMzXlCiiZ7mb+l4dAK0yMU6T/SWB+ht96mEy7Gif2pMuZR64bE3dDGNCYVyE4LC9yKx8MPrJIXuHmLTuMxGSFjBlFgNAGUBJ8jJGjJqjnC5sNKtPo1fOlJej4e6peZauj7jpVXgapvNLP3nwuGT1G+r8Kf6SkK81+9g5AuLcmwRABCGyKEru0GtupMj
- TGLW9TVV
- o39c1MnsWIcRxHefZWdqd6PtJHw4meOzhG6JihTkz16l98VwPCPKD10Oo/ew1Sq8MZWFswSp9LzhmF3vSKEbhdKp0bPBZGZ6g7H64GGwozOoojjEnZlVlH1fvdYR7pl/Tb7TnkbwzmAH/9moeAS6NHm1KMlipdZo+uwjSR24fFUzT/gIcvcn7bodQYktqi57cJoYV/eU2RdriM4rv9U5z/2uUQNTjobn53sze6hiPCsGtMxEYtvvSCMH/bNpz4bI0x+8UTOPRAVDkTRNcPuGvnBaFgJUmUR4rlxEjW2zhbsz3z11QnoKsKC8ypOgkwFAiuX5JYr/Uj9Hz4hDcVA4X86IPgD3oX/nBmh+gQy6Z5i24vIAuHo6EK91Gl4LrWgkCoO9/C/xEcqEjfuALoFU0Pi5oKPaKynKYCxTPiXjgXCxlbSEF2DrfuBy/imJf+61ls+zpQALFHbMKM4gyMJfqz9j8SgNTt8Urby9SsPOofUqlmT4NSD+iTfkTa35FED9zw57wGtikeNsDm5wwpIH3pISKFD+svX1mWSw3G9M+oB4VkQ1jUEaaZhCFPkeipWJHV44zjkSmilYR6ppVV1XIS+vchgFLhDYSQpNZHa9SWZ7OkGr/SPfP5gnOR/rH5VmllMc4XGZWvRzeU0TErXSekecvMy9GiVDnmVEp97kHziZGkHfyKsfq5XWcohvamJzzTPbs+kPWWwlype5YwzQV7FErzQ==
+X-HE-Tag: 1773930063-926766
+X-HE-Meta: U2FsdGVkX1+assbOLoITzk3uEOOLJPfCcl4c6rCvjreWYPqPad/Y6/C7Xu3rKXAj7/OBNfcIrJlnj/GPpADG1gChBMaCYHaf9LDcMBwiWnwJR084A64LwQ/BVIXVWV/0ovWB+gBgCS3nPsshpYSYqkllQde6sYfObhHUii3lf18n7SInP4aIqjz/d8nJwf17HKztdX/RfzF01W3F2d0NiqUts1qk/Rf52QMLIGA2cExNwGaF1Mi+UkauRzL6viEPa8u20xZUOQ7U/PgJDwPv0dLmcTJjyxhk1lXDIn4n870e55xmeibTQQbejWWoNBH3ggvIpf97uE14HYw0NZ+7RVr5S3lrOEllPKR/eQrEuVl9TQT6ZvXgy5l8L2TtHuHX8n6qNQ3PgK+d7qHkSbgucpoxfoBjXhhuUH0AeQPkagqFptuBIAd5KfIUf1z/pGf53dkrZIaQR612bmwZICGHNR51LfxKog9Qu8xe+av4ENDC4tB719tUNyEQWBV3yQ+kVPtjuPld+l4u2miuou3/Yn/87vErDWTXPObAP7uvZJyBktB1igEQfdkTMexB526YnpzEWt/pZPiy0D2IqeYMDdNoz3xTU8MiNoJvyIyD/gMmJ0hsX28LlM7UyjcX/+Wo4nmGMMjh1842UA+f2jSwYeUlusnrargWDVEClz8KeiA1qgDE2phbR33EuYqsOcaAK28EK1YPN2VLzoIekmjpPFwUMK3CFNzOrQTyo21hDojVviCmLzlw8NNWXMneo7ovMJga34AMndVUd12vvTmF9EtLd6TYxJnQApKScWP+7Umt6TZUGvhsOr+wfVMrN0aNsmU3OE07/QlXtEzBTGEseo35GIyfGhZZAs4oZPgO/PXFqxkTGilWrCIE1J4t7YJ7Y87xZ5sReZaBuXDJQHHhQ8PP/uPNx3/i2lPTGO3iiTtOeILo86RMC7FZvb6dlH+ZZXqd8Fr9gFJXWzVk7QZ
+ qEkgVEBt
+ zePx16YnHRABzJQKbEeFPCbaeW4c7jjyXyiJY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,142 +113,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi All,
+On Thu, Mar 19, 2026 at 09:19:41AM +0100, David Hildenbrand (Arm) wrote:
+> CONFIG_MEMORY_HOTREMOVE, CONFIG_COMPACTION and CONFIG_CMA all select
+> CONFIG_MIGRATION, because they require it to work (users).
+>
+> Only CONFIG_NUMA_BALANCING and CONFIG_BALLOON_MIGRATION depend on
+> CONFIG_MIGRATION. CONFIG_BALLOON_MIGRATION is not an actual user, but
+> an implementation of migration support, so the dependency is correct
+> (CONFIG_BALLOON_MIGRATION does not make any sense without
+> CONFIG_MIGRATION).
+>
+> However, kconfig-language.rst  clearly states "In general use select only
+> for non-visible symbols". So far CONFIG_MIGRATION is user-visible ...
+> and the dependencies rather confusing.
+>
+> The whole reason why CONFIG_MIGRATION is user-visible is because of
+> CONFIG_NUMA: some users might want CONFIG_NUMA but not page migration
+> support.
+>
+> Let's clean all that up by introducing a dedicated CONFIG_NUMA_MIGRATION
+> config option for that purpose only. Make CONFIG_NUMA_BALANCING that so
+> far depended on CONFIG_NUMA && CONFIG_MIGRATION to depend on
+> CONFIG_MIGRATION instead. CONFIG_NUMA_MIGRATION will depend on
+> CONFIG_NUMA && CONFIG_MMU.
+>
+> CONFIG_NUMA_MIGRATION is user-visible and will default to "y". We
+> use that default so new configs will automatically enable it, just
+> like it was the case with CONFIG_MIGRATION. The downside is that
+> some configs that used to have CONFIG_MIGRATION=n might get it
+> re-enabled by CONFIG_NUMA_MIGRATION=y, which shouldn't be a problem.
+>
+> CONFIG_MIGRATION is now a non-visible config option. Any code that
+> select CONFIG_MIGRATION (as before) must depend directly or indirectly
+> on CONFIG_MMU.
 
-> -----Original Message-----
-> From: Biju Das
-> Sent: 14 March 2026 09:43
-> Subject: RE: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty sta=
-tus in mmap
->=20
-> Hi Boris Brezillon,
->=20
-> > -----Original Message-----
-> > From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of
-> > Boris Brezillon
-> > Sent: 13 March 2026 17:46
-> > Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty
-> > status in mmap
-> >
-> > On Fri, 13 Mar 2026 13:55:21 +0100
-> > Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> >
-> > > On Fri, 13 Mar 2026 13:43:28 +0100
-> > > Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> > >
-> > > > On Fri, 13 Mar 2026 13:18:35 +0100 Boris Brezillon
-> > > > <boris.brezillon@collabora.com> wrote:
-> > > >
-> > > > > On Fri, 13 Mar 2026 12:04:25 +0000 Biju Das
-> > > > > <biju.das.jz@bp.renesas.com> wrote:
-> > > > >
-> > > > > > > -----Original Message-----
-> > > > > > > From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On
-> > > > > > > Behalf Of Boris Brezillon
-> > > > > > > Sent: 13 March 2026 11:57
-> > > > > > > Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio
-> > > > > > > accessed/dirty status in mmap
-> > > > > > >
-> > > > > > > On Fri, 13 Mar 2026 11:29:47 +0100 Thomas Zimmermann
-> > > > > > > <tzimmermann@suse.de> wrote:
-> > > > > > >
-> > > > > > > > Hi
-> > > > > > > >
-> > > > > > > > Am 13.03.26 um 11:18 schrieb Boris Brezillon:
-> > > > > > > > [...]
-> > > > > > > > >>>>> +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_off=
-set >=3D num_pages))
-> > > > > > > > >>>>> +		return VM_FAULT_SIGBUS;
-> > > > > > > > >>>>> +
-> > > > > > > > >>>>> +	file_update_time(vma->vm_file);
-> > > > > > > > >>>>> +
-> > > > > > > > >>>>> +
-> > > > > > > > >>>>> +folio_mark_dirty(page_folio(shmem->pages[page_offse
-> > > > > > > > >>>>> +t]));
-> > > > > > > > > Do we need a folio_mark_dirty_lock() here?
-> > > > > > > >
-> > > > > > > > There is a helper for that with some documentation. [1]
-> > > > > > >
-> > > > > > > This [1] seems to solve the problem for me. Still unsure
-> > > > > > > about the folio_mark_dirty_lock vs folio_mark_dirty though.
-> > > > > > >
-> > > > > > > [1]https://yhbt.net/lore/dri-devel/20260312155027.1682606-1-
-> > > > > > > pedrodemargomes@gmail.com/
-> > > > > >
-> > > > > > FYI, I used folio_mark_dirty_lock() still it does not solve the=
- issue with weston hang.
-> > > > >
-> > > > > The patch I pointed to has nothing to do with
-> > > > > folio_mark_dirty_lock(), It's a bug caused by huge page mapping c=
-hanges.
-> > > >
-> > > > Scratch that. I had a bunch of other changes on top, and it hangs
-> > > > again now that I dropped those.
-> > >
-> > > Seems like it's the combination of huge pages and mkwrite that's
-> > > causing issues, if I disable huge pages, it doesn't hang...
-> >
-> > I managed to have it working with the following diff. I still need to
-> > check why the "map-RO-split+RW- on-demand" approach doesn't work
-> > (races between huge_fault and pfn_mkwrite?), but I think it's okay to
-> > map the real thing writable on the first attempt anyway (we're not
-> > trying to do CoW here, since we're always pointing to the same page,
-> > it's just the permissions that change). Note that there's still the
-> > race fixed by
-> > https://yhbt.net/lore/dri-devel/20260312155027.1682606-1-pedrodemargom
-> > es@gmail.com/ in this diff, I just tried to keep the diffstat minimal.
->=20
-> I confirm with this diff, weston is now coming up on RZ/V2L SMARC EVK.
->=20
-> I am just using drm-misc-next + this diff + arm64 defconfig + Poky (Yocto=
- Project Reference Distro)
-> 5.0.11 + Mesa
->=20
-> Cheers,
-> Biju
->=20
-> >
-> > --->8---
-> > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > index 4500deef4127..4efdce5a60f0 100644
-> > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > @@ -561,9 +561,8 @@ static vm_fault_t drm_gem_shmem_try_insert_pfn_pmd(=
-struct vm_fault *vmf, unsigne
-> >         bool aligned =3D (vmf->address & ~PMD_MASK) =3D=3D (paddr &
-> > ~PMD_MASK);
-> >
-> >         if (aligned && pmd_none(*vmf->pmd)) {
-> > -               /* Read-only mapping; split upon write fault */
-> >                 pfn &=3D PMD_MASK >> PAGE_SHIFT;
-> > -               return vmf_insert_pfn_pmd(vmf, pfn, false);
-> > +               return vmf_insert_pfn_pmd(vmf, pfn, vmf->flags &
-> > + FAULT_FLAG_WRITE);
-> >         }
-> >  #endif
-> >
-> > @@ -597,8 +596,12 @@ static vm_fault_t drm_gem_shmem_fault(struct
-> > vm_fault *vmf)
-> >
-> >         pfn =3D page_to_pfn(page);
-> >
-> > -       if (folio_test_pmd_mappable(folio))
-> > +       if (folio_test_pmd_mappable(folio)) {
-> >                 ret =3D drm_gem_shmem_try_insert_pfn_pmd(vmf, pfn);
-> > +               if (ret =3D=3D VM_FAULT_NOPAGE && vmf->flags & FAULT_FL=
-AG_WRITE)
-> > +                       folio_mark_dirty(folio);
-> > +       }
-> > +
-> >         if (ret !=3D VM_FAULT_NOPAGE)
-> >                 ret =3D vmf_insert_pfn(vma, vmf->address, pfn);
-> >
+Nice. I always found it odd that it was optional.
 
-Any patch available to fix the weston issue? Still the issue is present wit=
-h drm-misc-next
-Please let me know.
+>
+> CONFIG_NUMA_MIGRATION is responsible for any NUMA migration code, which is
+> mempolicy migration code, memory-tiering code, and move_pages() code in
+> migrate.c. CONFIG_NUMA_BALANCING uses its functionality.
+>
+> Note that this implies that with CONFIG_NUMA_MIGRATION=n, move_pages() will
+> not be available even though CONFIG_MIGRATION=y, which is an expected
+> change.
+>
+> In migrate.c, we can remove the CONFIG_NUMA check as both
+> CONFIG_NUMA_MIGRATION and CONFIG_NUMA_BALANCING depend on it.
+>
+> With this change, CONFIG_MIGRATION is an internal config, all users of
+> migration selects CONFIG_MIGRATION, and only CONFIG_BALLOON_MIGRATION
+> depends on it.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Cheers,
-Biju
+AFAICT this all LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  include/linux/memory-tiers.h |  2 +-
+>  init/Kconfig                 |  2 +-
+>  mm/Kconfig                   | 26 +++++++++++++-------------
+>  mm/memory-tiers.c            | 12 ++++++------
+>  mm/mempolicy.c               |  2 +-
+>  mm/migrate.c                 |  5 ++---
+>  6 files changed, 24 insertions(+), 25 deletions(-)
+>
+> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+> index 96987d9d95a8..7999c58629ee 100644
+> --- a/include/linux/memory-tiers.h
+> +++ b/include/linux/memory-tiers.h
+> @@ -52,7 +52,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
+>  struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+>  						  struct list_head *memory_types);
+>  void mt_put_memory_types(struct list_head *memory_types);
+> -#ifdef CONFIG_MIGRATION
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  int next_demotion_node(int node, const nodemask_t *allowed_mask);
+>  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+>  bool node_is_toptier(int node);
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 444ce811ea67..3648e401b78b 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -997,7 +997,7 @@ config NUMA_BALANCING
+>  	bool "Memory placement aware NUMA scheduler"
+>  	depends on ARCH_SUPPORTS_NUMA_BALANCING
+>  	depends on !ARCH_WANT_NUMA_VARIABLE_LOCALITY
+> -	depends on SMP && NUMA && MIGRATION && !PREEMPT_RT
+> +	depends on SMP && NUMA_MIGRATION && !PREEMPT_RT
+>  	help
+>  	  This option adds support for automatic NUMA aware memory/task placement.
+>  	  The mechanism is quite primitive and is based on migrating memory when
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index b2e21d873d3f..bd283958d675 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -627,20 +627,20 @@ config PAGE_REPORTING
+>  	  those pages to another entity, such as a hypervisor, so that the
+>  	  memory can be freed within the host for other uses.
+>
+> -#
+> -# support for page migration
+> -#
+> -config MIGRATION
+> -	bool "Page migration"
+> +config NUMA_MIGRATION
+> +	bool "NUMA page migration"
+>  	default y
+> -	depends on (NUMA || MEMORY_HOTREMOVE || COMPACTION || CMA) && MMU
+> -	help
+> -	  Allows the migration of the physical location of pages of processes
+> -	  while the virtual addresses are not changed. This is useful in
+> -	  two situations. The first is on NUMA systems to put pages nearer
+> -	  to the processors accessing. The second is when allocating huge
+> -	  pages as migration can relocate pages to satisfy a huge page
+> -	  allocation instead of reclaiming.
+> +	depends on NUMA && MMU
+> +	select MIGRATION
+> +	help
+> +	  Support the migration of pages to other NUMA nodes, available to
+> +	  user space through interfaces like migrate_pages(), move_pages(),
+> +	  and mbind(). Selecting this option also enables support for page
+> +	  demotion for memory tiering.
+> +
+> +config MIGRATION
+> +	bool
+> +	depends on MMU
+>
+>  config DEVICE_MIGRATION
+>  	def_bool MIGRATION && ZONE_DEVICE
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> index 986f809376eb..54851d8a195b 100644
+> --- a/mm/memory-tiers.c
+> +++ b/mm/memory-tiers.c
+> @@ -69,7 +69,7 @@ bool folio_use_access_time(struct folio *folio)
+>  }
+>  #endif
+>
+> -#ifdef CONFIG_MIGRATION
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  static int top_tier_adistance;
+>  /*
+>   * node_demotion[] examples:
+> @@ -129,7 +129,7 @@ static int top_tier_adistance;
+>   *
+>   */
+>  static struct demotion_nodes *node_demotion __read_mostly;
+> -#endif /* CONFIG_MIGRATION */
+> +#endif /* CONFIG_NUMA_MIGRATION */
+>
+>  static BLOCKING_NOTIFIER_HEAD(mt_adistance_algorithms);
+>
+> @@ -273,7 +273,7 @@ static struct memory_tier *__node_get_memory_tier(int node)
+>  				     lockdep_is_held(&memory_tier_lock));
+>  }
+>
+> -#ifdef CONFIG_MIGRATION
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  bool node_is_toptier(int node)
+>  {
+>  	bool toptier;
+> @@ -519,7 +519,7 @@ static void establish_demotion_targets(void)
+>
+>  #else
+>  static inline void establish_demotion_targets(void) {}
+> -#endif /* CONFIG_MIGRATION */
+> +#endif /* CONFIG_NUMA_MIGRATION */
+>
+>  static inline void __init_node_memory_type(int node, struct memory_dev_type *memtype)
+>  {
+> @@ -911,7 +911,7 @@ static int __init memory_tier_init(void)
+>  	if (ret)
+>  		panic("%s() failed to register memory tier subsystem\n", __func__);
+>
+> -#ifdef CONFIG_MIGRATION
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  	node_demotion = kzalloc_objs(struct demotion_nodes, nr_node_ids);
+>  	WARN_ON(!node_demotion);
+>  #endif
+> @@ -938,7 +938,7 @@ subsys_initcall(memory_tier_init);
+>
+>  bool numa_demotion_enabled = false;
+>
+> -#ifdef CONFIG_MIGRATION
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  #ifdef CONFIG_SYSFS
+>  static ssize_t demotion_enabled_show(struct kobject *kobj,
+>  				     struct kobj_attribute *attr, char *buf)
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index e5528c35bbb8..fd08771e2057 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -1239,7 +1239,7 @@ static long do_get_mempolicy(int *policy, nodemask_t *nmask,
+>  	return err;
+>  }
+>
+> -#ifdef CONFIG_MIGRATION
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  static bool migrate_folio_add(struct folio *folio, struct list_head *foliolist,
+>  				unsigned long flags)
+>  {
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index fdbb20163f66..05cb408846f2 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2224,8 +2224,7 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+>  	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
+>  }
+>
+> -#ifdef CONFIG_NUMA
+> -
+> +#ifdef CONFIG_NUMA_MIGRATION
+>  static int store_status(int __user *status, int start, int value, int nr)
+>  {
+>  	while (nr-- > 0) {
+> @@ -2624,6 +2623,7 @@ SYSCALL_DEFINE6(move_pages, pid_t, pid, unsigned long, nr_pages,
+>  {
+>  	return kernel_move_pages(pid, nr_pages, pages, nodes, status, flags);
+>  }
+> +#endif /* CONFIG_NUMA_MIGRATION */
+>
+>  #ifdef CONFIG_NUMA_BALANCING
+>  /*
+> @@ -2766,4 +2766,3 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+>  	return nr_remaining ? -EAGAIN : 0;
+>  }
+>  #endif /* CONFIG_NUMA_BALANCING */
+> -#endif /* CONFIG_NUMA */
+>
+> --
+> 2.43.0
+>
 
