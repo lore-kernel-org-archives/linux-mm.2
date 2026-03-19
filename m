@@ -4,93 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A7F1090257
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:21:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0511710854D2
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E92076B055E; Thu, 19 Mar 2026 13:21:15 -0400 (EDT)
+	id 4840C6B055F; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42F96B0560; Thu, 19 Mar 2026 13:21:15 -0400 (EDT)
+	id 434EF6B0560; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7F9C6B0561; Thu, 19 Mar 2026 13:21:15 -0400 (EDT)
+	id 323786B0561; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6D6C6B055E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:21:15 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A1F913B72E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:21:15 +0000 (UTC)
-X-FDA: 84563478510.04.C0FF187
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E35C4100003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:21:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SZdx2Prs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773940873;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2071B6B055F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3085913B53A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:24:29 +0000 (UTC)
+X-FDA: 84563486658.19.E22CF15
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2D977A0013
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:24:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="G/TCtU/D";
+	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773941067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PV2sFERgk/6GDDy1Na8ccLwgsZ1nrAl/UxRErXdMHhU=;
-	b=ONwmb7pXeZfqIxcW2hi19zdsWyrNuVYcRgHkUy2nGRJygeGmocDl025MKQE8Kjode43ywA
-	OLWIefmnBl0/qyCeajSE9N36j9SIPc5r/Po0S3hfJymqGwPHJSx9KoMOTmehRrdTbdVbwl
-	ROFo2CIxt9NGMN37etxfYWJpYHc9jcY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SZdx2Prs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773940873; a=rsa-sha256;
-	cv=none;
-	b=r9AtidvOjf58Ps6fwED7MJhHfEVUzK3olRX+pRKwVrj2nM6COB6znfVvOe8V0d9IJ0lr86
-	6crtXhIREoMwjV6ZbH1Hco71YwzSba1Ntks4eCP7bp5lKxNoPg5j7KBwVcHmxqZUvaNZfB
-	KhZSdG75tFMA34GlLSKu95M/aQ9MyXQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6DA31600AD;
-	Thu, 19 Mar 2026 17:21:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C273C19424;
-	Thu, 19 Mar 2026 17:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773940873;
-	bh=3b6YqAkapmSDefp0qy4dwdPUjANX/OK7tVoPqcanxz4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SZdx2PrsXJgpbU+zzwntBo7drYhhQRyydtcfqtmVAEsmkXY7+2UhwaaC7x10LCpfE
-	 mP0SFlWNqdUwMc2eGLEt0whI2xqWw3K0UeDHirldfuA4lxdsS8qoFlu7X13/K+uS2b
-	 T028yzQuWp9PEU7X6z2FA/+wlqYCzqU0/qIXbVic8fc+RHAIMOD/LynnSqhHnw/kaN
-	 VhTEejhGk95L05hPq9XelkmzOOcP0XP+VX976DuV7nSORSQyP02R+pJiJXOJJojzYv
-	 HJ61YNSvhfV//T9wo4Lym3BUyr3g9QM3foHE0XpkAvogerRe/ZRjsF8mPGVAnsO0/8
-	 VjpYK6I4QvJAA==
-Date: Thu, 19 Mar 2026 19:21:03 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev,
-	Li Wang <liwang@redhat.com>
-Subject: Re: [PATCH v4 1/5] selftests/mm/guard-regions: skip collapse test
- when thp not enabled
-Message-ID: <abwwf6WlLwdQDBE0@kernel.org>
-References: <20260319160656.1480279-1-chuhu@redhat.com>
- <20260319160656.1480279-2-chuhu@redhat.com>
+	bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
+	b=AgOtvVpAwYt1YLGovIeCCd9/9WVipzD5hht0MZRkFSp1NZdlIZsH+e+8gkWbDiC9YnAj+O
+	TT00sOSeI+P7BiWmMALi5N5vgDhxmwTR3X+yD5sbqe6+zxNGa/LiRxK+38CGD4byOqLBeZ
+	QJlkaIOjBekVajMJ+w4ofbzjMbUwVYE=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="G/TCtU/D";
+	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773941067; a=rsa-sha256;
+	cv=pass;
+	b=ufLQy/kZu+LDQC2Mrqqn+nqymDUr5nIwoLtC1rw55sgiHKzvrlIICslYiCiZep9IHweUel
+	6fwe25hTU7PJX8lqi/qHqhENbDLZRQgtNvUMc1dYtUEe9Oe/T1pmFki+hv90vTTbHMwV80
+	J9BzOc07ekbmQumPGOEekuZKIrD65IU=
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59e4a04f059so1234458e87.2
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:24:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773941065; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AGCLz9p9rhygd7NEZECDMJAQ+vOXX/cQp4dkH+/1gpwM28yu1KJ8sj4LshZ898la4E
+         96Z1LeF2YT0rll6crOSLLb46LVrIxWfc7P4qUr+vrH4JnLyBiFPs6MYgFrL2JbJI1+i4
+         79ahXhzCrXdy/sxwjrV7qAulezqvQ0V4CDRJgrBr+jVLu8NN0yRCIFJcatG0Q/oPCfQx
+         T8atnkM3oyVlkhiC1ayBaZFXIB3kM3Oqbtc2Xu5XOPoKVp/GGD7QPr6FFUUq7HUy//Qe
+         LsaNr1uclNiU0DJNDWd7YyTNtkon6vjnFFU8UTO5jZq/x2isMUSHbNLmRKDLeTpB0d9E
+         x7yQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
+        fh=VVs5oG2bertpAIvnv+u1sGKO1RZ79Hm9Xe7AwWg9gS8=;
+        b=G5bUzcN7Qk+tVC4GfDTfgGaMX7wOxAPUR/miaAqRtX/QZJ1A9G7wlk4980Im/uKLu7
+         hCHiKIisuxPlXy8kscbR4MjGNkn0L+k5mZCls0YhtenY7nO9vyR3DFlwHhNRTQbt35T2
+         KUGKoMbUE9OrUsyxJkewB0vXRv4zVqEqxYGnU9Py2MZhEYg8NlPakUX1YWdovuUfmtdl
+         UDbRYMAfb3ssPm4+8Dja2usqsUy8w9hkJlPZJORDVad+l53x76YZB8uQfg5Iugof4HEP
+         WRE5791QdyEZOXZIwF+soAJO6485Jksl3IY2Lg5X2GlyaSAzxYhOlZFLF5b2jWymMpzx
+         mYBA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773941065; x=1774545865; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
+        b=G/TCtU/DKGlyDNfuHXBqUlhBPQBaUTcZJevi6DJX7vBr2kcTDxXI7MbM84whDpf0jw
+         uP3+eVCW2fPXRu1+YEI+1/DR+fjHoZ1Aa9UAYBdGPS3kuFVTvOJV6A+W2u+6Lulhvvzl
+         XEpXoG2WS2Fikz+S5TKnYBbGZm1M5FjpoYfq3N211xy6CHYLCR8vc4RYBUei2gjZwGhX
+         kE+/ciTJZmmb3FbVxuwgLy3v0BHywudmyTKxshc83vgiPFPxgVbTTmE1l/qDZ4WFslDh
+         EcH+LBO5u2dR8yhBEN5okHWJRx+BMdUpUksLl6gv+XJulpc0FKfBMoBVAMUbzb2DyP2N
+         zTBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773941065; x=1774545865;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
+        b=g4LyDr2UfUAJJS7ALSnNKumMCijprjSPfZcNb7s4kWaediBMHB5vFGf1y0lXqJqFVG
+         JLDoV78U0KYADhea5BYEZEovN0yNHwdQZHAth86mgUq0+wAa6xY4EGB/QSjwUu9Hokez
+         7N+a4EMaBFspbSOcrhKwwk4XTF/v67rXgGFOdjHTfL+zSWf7qOFqEGnswTqbUvdTcH3n
+         dd/ryVLljDWyKOhhcSH7U++QZkjQdcv26YXRB+lYA70tcbcq3eNKRYeoiZoLsOSrIfCZ
+         WOJEWKq7pgc5KKlBWUoDpyXyW6DOSIz145SGEaER0HOTEcXiPr1VVY5VKT9tGzJW8W/b
+         t2+w==
+X-Forwarded-Encrypted: i=1; AJvYcCURuDpsmp9yF4SkOY8I71r6MCj2PWU8YlOTritbnf0qQS2BdeASBZY7VnO7GStjQ9yTu5AATk7+gg==@kvack.org
+X-Gm-Message-State: AOJu0YygiNqH/ocbxxbUB13j+72C87NIQpcevtI33TGeV4/vZs9Xg15U
+	vZpw2CrICO2IIagVTcwaIE6k40KPpN+wSJ8YYP7pU7+ocpSNZrDni9fkHMkzfumzPkEBFcjlcpb
+	Kjs1csU1UYGXt7k3P7pE5Codk11ZrWxDQxoLbMKUB
+X-Gm-Gg: ATEYQzyzZPj3/cEqXY7Jq85xBnIKEErlNLCVKFWRyidEpftKqyy7ZRUFBXD4FouvqX8
+	MRcRQLCYEGs69qIC4/2yXRngKNHQ4Xj9xN0D3waJFdnDCPFJNa5UKfhgzB8+f69qXGlHlZmt4Un
+	XlCNI5kiZPkbcliqUhygMAI/9RPx//bIGKzH7pJkKmDBr4Eme+cTFAL0xYuIYHou7ep6KhOWY8i
+	n4pXGwP5YsLj9rpfLBBUX2bWnw91d75yYX4hW/T1xI288RA2Fz7aLYSJChQDePsTswQ5YXhtPcM
+	eK7MB/UO
+X-Received: by 2002:a05:6512:4016:b0:5a2:7e5b:5a48 with SMTP id
+ 2adb3069b0e04-5a27e5b5b70mr1566015e87.26.1773941064245; Thu, 19 Mar 2026
+ 10:24:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319160656.1480279-2-chuhu@redhat.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E35C4100003
-X-Stat-Signature: hbncr46d3t6resktd371ffb586awg1oq
+References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-11-dmatlack@google.com>
+ <20260226170030.5a938c74@shazbot.org> <aaDqhjdLyf1qSTSh@google.com>
+ <20260227084658.3767d801@shazbot.org> <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+ <20260227105720.522ca97f@shazbot.org> <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+ <abNOwcOTXqxCxNzt@google.com> <20260313083918.00005731@linux.microsoft.com>
+ <CALzav=eGLpo5nrsHq5L8bUTC=FWZ-SgrTE1FoScrWB4p+NDgnA@mail.gmail.com> <20260319093932.000078c2@linux.microsoft.com>
+In-Reply-To: <20260319093932.000078c2@linux.microsoft.com>
+From: David Matlack <dmatlack@google.com>
+Date: Thu, 19 Mar 2026 10:23:56 -0700
+X-Gm-Features: AaiRm53rqLDO8igOEPnPEHv7Le9OPlkg99gzLBiOllDBuZj0inzOHo1IukO9vNo
+Message-ID: <CALzav=fvG+s6MYNzxhuHFmQkmTRJJASXAGs=zQWWSnSv3Y=J9A@mail.gmail.com>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+To: Jacob Pan <jacob.pan@linux.microsoft.com>
+Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1773940873-420895
-X-HE-Meta: U2FsdGVkX1/FK8AphFuUNXi85DJi/A14DL/WsSuFHrUhDP5Xaq+xlFbpE4T+dJNgdg0hYbGxMe+DIDUeuHSTbz1pXc9rmzKHN4nqoPgadk0CURD5kzPB9VfR5VJwulpD6SMwCX/KTNw7Vup3SRFf3igxq1alAFK8pdOqqqYo/RxNtDzX+d3/kTM/ibc7WEPVJG3OZnZV6W/h8QNfOZ3RJbd9BSIFKSJzVohECLAwzoWNAR1RJk7svJAemf+mo4v6zBtyUBZLptBrSSSuOPDqEpzs0gFtFBL63Jg4xwEa2RXtA8ePe/bH21i7lG3ElZa4xqBASxSetFttoZinK+3KtRbGWCpb7nSrMcJ28GSiZpFryGhdDjFRHlk+ZLEVV/Fc7UucB4M/PSTzHkrsBL59rNpJ8oJhsF7vj9Iie4lf55E9TwryZBd/pmuZyraGR8DPWw5o0LVv9nqPpfJgiWSnu8HGqJmgAogG7uqcisl90fyR6P1WY+6DhFMzOIE0gnuWzxWezWByBF9h6x6MAPWIb4CqO8txLJercmvQ7DZzNYiWRxJVmPuwE/rkXuCkopxtAd6+SmIzF/ujG11HKhkEtiSzXklJUqqUOtnk++K38AwVF9BxH8QRg/+WQxjdHTJDACOJowfPqFHHj+ai7ZQJAICeICR4I8lRQM+0QssUfPtwDK7W86VczB9+UuTw+ZRZ3GZPQJxvQdmxpDHrM2Fnzycb/NBEO1sWLOcWohnpNdvVE0eYWZK+Zp++XjzyHVPTCtdngYz2GuJYfoM8egzI2T3btSX8vgFgVdMuN0ZYpp0uXGw/m/5VQYv5Ki4fMJRI0AchW1dBoyvh07U1ygLFrPx8B/3msWh8FkK8oYqqye3cliw1v1AVN7re6GmaVJeErVmtAyiL3nFDqITewXH/1BdqTPiDtnfmFsO4MPLSTgKzZfzp6wdRnm8KEfAmn3IsI5PNsxMRi2UFiH6sONI
- u7rTIk4G
- q5sQRnjmtfNNLGra1BnKCflJ0NubmvhLDy9m/Y8scxSIlSiLwX+hGgJZ0CB1HndMOgvuBCukmI/EYxBTjr5lt4dCskBl2VPXvcgzwZ6ttLxWfhWVENaZeGhc1lt5HH8xJQqYA8mtULRBxXT2sSEi8aKEa3cGqz4POWBuPo7pBwcHJOQtoHYfhthE0v+9zXUMPTyxmIYTb+HnjcgCkRdvhlCyvLMaj9lCBm5PttDsGRshjMjB/uYv5+2C+JxnH94sEKxqAiOOdT7epqSVmB5BxA+3qSD/WAMJ0ZdlJgltozdZ1nfQ=
+X-Rspamd-Queue-Id: 2D977A0013
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 8c5bi5cwous75cu59ca7kpmp5zgar3rx
+X-HE-Tag: 1773941066-278241
+X-HE-Meta: U2FsdGVkX1/NaOzDrThwAAAm5deW2qs4vusWsXDQXxUCjVVHvonmDd6R6VYDNUsgQ09hftgrQeAHslbfNejlopI/uLRUaaRuS51sVIDNciUL+1LvCRZLu8NlChy33rR3HrgFNxoGKOrRA1/eec6ZHDAwe3vynMGIG+CKIDyd8exPFBkdLtdagH3A5Med10xcR00dlMxe7oIdFNlILvf8LT1RjX6iIPgIY286/LAQKzouffgt9hNs21pVZm2aiCAKgOCH37ZMWCmjefYez+fI1+WstpS/1DxrVM5EuywOuEU9QjkREdhgzMv6Q/0wF81VZfxtxCyFFVVf++1/52VoUmxY+6yehFcgBCO+rPZcS47xakd62FkSo/bfahZkUZ33NTMXWdksI0VCyWha8FjGDgjmqRAfhNuwbCQgDC5Gl5rx5rjdPK+DwErOFoG8IvSYvbmK+2T1MwIanCq5edP6sU38BuPzWphHU7cJqFc5ygaE9HvVpntRrye7MT/4Fd6UlYqDHdPpXzPf1vW6CP66TObAkfgEr9SL7oVH4i2Oxs8+VZM8D4ZJquoJdcAoDhM/ukdrxE/cuum6pkWfuGeKcWOFrVHsQC03jzNWmKqYo9N2RYFMpwNZE2Rx3mDp2ihpoMBMKjtZawtPbyh8TVP736DFRvRUOI4A+3DzWbeViGs8QpNJOx4f+O7jJldmMcUr3BzopwRgW0G1UCvCvmlapY20CIzXs3DdHHLYGGQc/MNLeNBAm/bIY4W4P46uKnDWffOSkkiO49A1CGCFtkv351BIj0hw74LxNzGxTS//Q+cveVFmUa8aKSrEM9smBD3K8HOVwX1itPm1/RKlUL8+t0ezu5+36DTti6vjo0wGCcozErKSOnKgGPZ7C1WDPB0K2wDPbSCN97nT0gOZmNfoI9ucorHJWNI+sQHq8Cx37nsUpgpKaty89dywJVHu2/oFQW5iPo4NWP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,111 +160,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 12:06:52AM +0800, Chunyu Hu wrote:
-> When thp is not available, just skip the collape tests to avoid the false
-> negative.
-> 
-> Without the change, run with a thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard -n 1
->   <snip/>
->   #  RUN           guard_regions.anon.collapse ...
->   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
->   # collapse: Test terminated by assertion
->   #          FAIL  guard_regions.anon.collapse
->   not ok 2 guard_regions.anon.collapse
->   <snip/>
->   #  RUN           guard_regions.shmem.collapse ...
->   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
->   # collapse: Test terminated by assertion
->   #          FAIL  guard_regions.shmem.collapse
->   not ok 32 guard_regions.shmem.collapse
->   <snip/>
->   #  RUN           guard_regions.file.collapse ...
->   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
->   # collapse: Test terminated by assertion
->   #          FAIL  guard_regions.file.collapse
->   not ok 62 guard_regions.file.collapse
->   <snip/>
->   # FAILED: 87 / 90 tests passed.
->   # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
-> 
-> With this change, run with thp disabled kernel:
->   ./run_vmtests.sh -t madv_guard -n 1
->   <snip/>
->   #  RUN           guard_regions.anon.collapse ...
->   #      SKIP      Transparent Hugepages not available
->   #            OK  guard_regions.anon.collapse
->   ok 2 guard_regions.anon.collapse # SKIP Transparent Hugepages not available
->   <snip/>
->   #  RUN           guard_regions.file.collapse ...
->   #      SKIP      Transparent Hugepages not available
->   #            OK  guard_regions.file.collapse
->   ok 62 guard_regions.file.collapse # SKIP Transparent Hugepages not available
->   <snip/>
->   #  RUN           guard_regions.shmem.collapse ...
->   #      SKIP      Transparent Hugepages not available
->   #            OK  guard_regions.shmem.collapse
->   ok 32 guard_regions.shmem.collapse # SKIP Transparent Hugepages not available
->   <snip/>
->   # PASSED: 90 / 90 tests passed.
->   # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
->   # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
-> 
-> CC: Li Wang <liwang@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+On Thu, Mar 19, 2026 at 9:39=E2=80=AFAM Jacob Pan <jacob.pan@linux.microsof=
+t.com> wrote:
+>
+> Hi David,
+>
+> On Mon, 16 Mar 2026 11:11:20 -0700
+> David Matlack <dmatlack@google.com> wrote:
+>
+> > On Fri, Mar 13, 2026 at 8:39=E2=80=AFAM Jacob Pan
+> > <jacob.pan@linux.microsoft.com> wrote:
+> > > On Thu, 12 Mar 2026 23:39:45 +0000
+> > > David Matlack <dmatlack@google.com> wrote:
+> >
+> > > > +config VFIO_PCI_LIVEUPDATE
+> > > > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> > > > +       depends on LIVEUPDATE && VFIO_PCI
+> > > > +       help
+> > > > +         Support for preserving devices bound to vfio-pci across
+> > > > a Live
+> > > > +         Update. The eventual goal is that preserved devices can
+> > > > run
+> > > > +         uninterrupted during a Live Update, including DMA to
+> > > > preserved
+> > > > +         memory buffers and P2P. However there are many steps
+> > > > still needed to
+> > > > +         achieve this, including:
+> > > > +
+> > > > +          - Preservation of iommufd files
+> > > > +          - Preservation of IOMMU driver state
+> > > In the interim, what do you think about moving forward with noiommu
+> > > mode without preserving IOMMU driver state?
+> >
+> > I haven't gotten a chance to look at your noiommu patches yet, but I
+> > do think noiommu will probably be a good way to develop the VFIO and
+> > PCI support for Live Update without blocking on IOMMU driver support.
+> >
+> > > I=E2=80=99ve tested your
+> > > vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works
+> > > as expected.
+> >
+> > Would you be able to send patches to add noiommu support to VFIO
+> > selftests? That would be very helpful toward allowing us to develop
+> > and test Live Update support with noiommu.
+>
+> It is included in the noiommu patchset; the only difference is that the
+> VFIO cdev name is prefixed with noiommu, which is not strictly required
+> and is done out of caution.
+>
+> /dev/vfio/
+> |-- devices
+> |   `-- noiommu-vfio0
+>
+> https://lore.kernel.org/linux-iommu/20260312155637.376854-10-jacob.pan@li=
+nux.microsoft.com/
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
-> Changes in v4:
->   - use thp_available instead of thp_is_enabled() as when thp is set to
->     never, madvise(MADV_COLLAPSE) will still succeed by design. So a
->     failure in madvise(MADV_COLLAPSE) on guard region will verify guard
->     region denies it. This is suggested from AI.
->   - removed the 'Reviewed-by' and 'Acked-by' as the code changes. Sorry for
->     that but it seems the changes is a little huge? (1 out of 2 lines)..
-> Changes in v3:
->   - commit message: update the log snippet with where the fail happens and
->     add the '-n1' to the command.
->   - fix the 'false positive' to 'false negative'
->   - add reviwed by from Mike
-> Changes in v2:
->   - add reviewed by from Zi and Lorenzo
->   - add acked-by from David
-> ---
->  tools/testing/selftests/mm/guard-regions.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> index dbd21d66d383..48e8b1539be3 100644
-> --- a/tools/testing/selftests/mm/guard-regions.c
-> +++ b/tools/testing/selftests/mm/guard-regions.c
-> @@ -21,6 +21,7 @@
->  #include <sys/uio.h>
->  #include <unistd.h>
->  #include "vm_util.h"
-> +#include "thp_settings.h"
->  
->  #include "../pidfd/pidfd.h"
->  
-> @@ -2195,6 +2196,9 @@ TEST_F(guard_regions, collapse)
->  	char *ptr;
->  	int i;
->  
-> +	if (!thp_available())
-> +		SKIP(return, "Transparent Hugepages not available\n");
-> +
->  	/* Need file to be correct size for tests for non-anon. */
->  	if (variant->backing != ANON_BACKED)
->  		ASSERT_EQ(ftruncate(self->fd, size), 0);
-> 
-> base-commit: 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
-> -- 
-> 2.53.0
-> 
-
--- 
-Sincerely yours,
-Mike.
+This one flew under my radar. I will take a look and respond there, thanks!
 
