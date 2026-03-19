@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1910107527A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4864A107527B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3ACC66B0442; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
+	id 832BB6B0444; Thu, 19 Mar 2026 04:54:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3837F6B0444; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
+	id 7F2476B0446; Thu, 19 Mar 2026 04:54:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C1126B0445; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
+	id 72FAE6B0447; Thu, 19 Mar 2026 04:54:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B47F6B0442
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE1941A0436
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:53:46 +0000 (UTC)
-X-FDA: 84562199652.07.1496A4C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 64D4A6B0444
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:54:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E61548AEB2
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:54:54 +0000 (UTC)
+X-FDA: 84562202508.19.716139A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1A8331C0004
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:53:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ma9gXRkp;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3553A120002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:54:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O6U2cjkk;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773910425;
+	s=arc-20220608; t=1773910493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FHWa9zaqyeI2x3QHVWvSs28BEFPKIuq5I5fptgYswcE=;
-	b=Du0KjJNeb6JWeJ/zH8LiJ0tzl1+DrnFSIrHhzYGsG/9MNu1pqCnNwaYXYlWUz3rrovjzxg
-	N2v6CgejfuUGPNha7SOQfj1Vx3jcVryA6+uHZk3iWDwF1LcvBEuis//N+/MiIQG8438eBd
-	iwMvGQxRPIvRN2GoFFKWXb8c4gAUKyM=
+	bh=6z+I6483OhcYwZxA/naeEXIuM929SDkNzN2rugXmY0Q=;
+	b=t/5WI5hf1J5ul8quyYlwOLaJr5PTURHgh9sdQFlXttynYqtnkSHI/1tXD60A+f8Iy5pjdg
+	ho9smGqPdWP4ZYPqD7zSCqWwqVQxxVeCffKGOGr1mbDFVguNaDV/RiEJmeTxopLD+R7mJd
+	lfbRMsaEEEIsV7JrFoAoQjYlvJPDXxU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ma9gXRkp;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O6U2cjkk;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910425; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910493; a=rsa-sha256;
 	cv=none;
-	b=3uXyvy6btE81TXUawGm2qTDPFpuwCNcVuU9dpysqx/Pau1Vnn4/POqpbExQuWw69oCrA/S
-	WkACLx2S2pvn1lQq2+t5HfoPzJbbQKwzBb6kPEL+ydsvTB0Bz7wJAAjjBiXZE2V/0KYspC
-	Px0h2+bvIlNLKwNBojjhSYxhmknWMJE=
+	b=5x1YlsOURb8kqPi6/pQdurXhtzjd28vW13i3MCeeamTzPaDksg8xIcZJZfo9fVGPBpemzA
+	nBgjHgy4K957Xa+dH67FDy4LZq98uQLoJYH6y3M7+hhn1+8Zz1KBILsA+Wsc1dvNnSPVbW
+	3ZerlleWdGxdgyIXByI0YxuxnleZpqg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BDA843744;
-	Thu, 19 Mar 2026 08:53:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9837BC19424;
-	Thu, 19 Mar 2026 08:53:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 500B0439CC;
+	Thu, 19 Mar 2026 08:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96360C2BC87;
+	Thu, 19 Mar 2026 08:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773910424;
-	bh=b6jw1AoG/ZY7qD5fzAagFDq+iHQYA+OyAMrY3lUNXsE=;
+	s=k20201202; t=1773910492;
+	bh=AMMk6ZlxyqbYCyt4WjwUDqMkax6dZO8ndEuU0L5kld0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ma9gXRkpYVYc5+8G4bgUa9aIWqZInDmT0nwCKMYS5VT8VBepeW51CUFD0W0iyT4YW
-	 l+ZPQ7XXqqGDBJ1hmdxzricARR1wNxgRmkeMnQWPlhgmk93IPZreEg2FSXup8ARS5G
-	 l3t2aPdNJNNWW+Km+p4qTymeZ3AF01+3e2DYpGVEJr564I8BXJke6H79Bs2dAnWWqT
-	 NKcUGKBWN6verPWBGDGGa+ztmRknNvDya5Z36vUYmOeo6IrW50jq2/mQ6JCzgPt4T+
-	 qV2hgAS0VMVyNZ4m9HDF4uYMwsycd8VQYPLSRg7zwlGb87MGf1VOU9+wXZw4x5xHC2
-	 xjK/HdWw8TGPg==
-Date: Thu, 19 Mar 2026 08:53:38 +0000
+	b=O6U2cjkkjqvvzVRgPI7mrb0SH0cTEBRklGrtxT8bPJlXDT1ofkanb0tWhzziK1w1s
+	 4PA3i9hCLjN90SI0AMW2vOezl1grzFPt3T9asDtPfVkTwjDfax6AJa87BFV1vS+oRn
+	 LEvxnIuoSxl1jfswYEsMI6Q2KDiF7qhOJhfu5GhttIogXWJJ9FlFbKTuFB0J8r/BAb
+	 d8yX2NusOr+tZZ+cT7qcndPQhwrmWmvWIkTN2jxi1pQyuEzeDF4DDbb/BnNBiLeRlr
+	 SOuTDx1+L+/97EavxJIdrA17e4LY93LeGKAjpNE1AotqIvwyavO+UbZlb2pgmSUa/C
+	 mJXkq8tQraGGQ==
+Date: Thu, 19 Mar 2026 08:54:45 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>, 
-	david@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com, 
-	syzkaller-bugs@googlegroups.com, dev.jain@arm.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org
-Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
-Message-ID: <10e5f1d6-077d-4783-aa16-6c8b98cb9e74@lucifer.local>
-References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
- <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: syzbot <syzbot+de14f7701c22477db718@syzkaller.appspotmail.com>, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, npache@redhat.com, ryan.roberts@arm.com, 
+	syzkaller-bugs@googlegroups.com, ziy@nvidia.com, Harry Yoo <harry.yoo@oracle.com>
+Subject: Re: [syzbot] [mm?] general protection fault in zap_huge_pmd
+Message-ID: <2355172e-d696-47e5-839e-16f1ae5373ba@lucifer.local>
+References: <69babeba.050a0220.1b2d94.0003.GAE@google.com>
+ <6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local>
+ <abuNkfv8c1IrGk0E@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
-X-Stat-Signature: xt8ibunka3yjk3te1ym9yxppoabsgspa
-X-Rspamd-Server: rspam09
+In-Reply-To: <abuNkfv8c1IrGk0E@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A8331C0004
-X-HE-Tag: 1773910424-148825
-X-HE-Meta: U2FsdGVkX180RRHVKdoGes6jCMZt4bpG2dFXBpfd81mYnvvSsIYC0jc+Tuj1Nl89boycFEKMpp2SqfQCd1j2HFrerTmXNtc7xWG+DEDDvxArhc02Fdtxb3pzQ3e4EGEFIXj2WLFlm6eurdTKFvWdApfydJ/BjOEwRM2ShTkh6/Ncf5gmO1jvyBrxUFwyxWIV4dBqiXFgT+rOvEKS61HOfhUhEmxl1Ngb8zHIpmTPg4ZtWgXiKSoxHWM53kWMu85pu1Gm1KBG04BHHLhua0VYHgaXo9abhVKPkXNMzuKzfnR27szACsRthP7x+Ql1Y6iJfIcSaosNnuS9mGudBZyQqexU0PoicbIOc/sNkh+fGlpsDbqv0LO0x9E77dI32rmrfgjJRyVThSO9zJsZdxxRtmtiLxvFT8SOxayEeQHXKm2b0E6N4j00jyRKWdmBwBS898DZzalfqQDYZ0oVFmXBECSB37eIrSZcteYfMmcu2ggOwkgY7ti2OfSP10yOGvBmMbbviIrDHexq9xScTuia989RDquSaw2DqPRZZ9AjFSM6A+X/nHyY5foIGfBov8KGvrPZtaOR22DPg9ysDTu0TtiskO0VzHCWH6WcmGSLpZt5d/bAQqUuMLeER6lyommlFIe7r9hRmeDMRtB9NNqHbBSKi4ZlfOA8G1p66CvURvY02pkS1Fb+J/EmOqLmfRBfOpsKKnWjas8PT3xk/DxfQ3fJoiSF5+77G5WfG6BvsEHiV8uhu9W2KQOquu+HUjZOuESUFsx2SAxjtZB3rekzIWE6rOeVIC7kGtqQN5F4fhcPCR9mPFsq6PUJUANJKiRZ4F7WfXVYW+04wM+xKWB5A4+bmkrw/3/9H8MiCkq4eP3f7Xwp8YoMMRLLqkJKIEfWUU5VobOEaHQE4+WbWCEuO7RqI6yjOJzDpxaAHBp6P3EOiMkoibbUrPmDQAeQHxS7v0u5HOpw1jw02PICXZ9
- L7VMzHJO
- xed+hMq7dy63baGZpXUIfV3rxzWw8IfxKQsoTROhcOESo4bgO6ue7Cb3ZVXR8nuB236AAY6VFqOYewJz6qrqp2RKnQylBRsk78s8eY27AozoSIXpRzHnmNNjYRMflgMbqYInpEyZXjM1VRk5h6qQE3eeoQBMFpDma23zFy2RVuRXvHkE7KnXy4lJ2856NzA8cJ6EMNFGTuR3gMWiXklENhJG326QYzelww5+2IYpuNRsUQW6G0yL+p1L0QmDFQ154LQxdH632b4D0ybQPgdIe514r/kM5wVkx0lzfSfokjSh8QUXAZf9hR6LQKU2pIP29a+YzCoackC4Sw9XeHIynmNpsGgvl2bIysViNbPd5BRoWz1IJBLPMd4FuV7POBSJswPOInJ+rt+imgmiYXZyOcMoYNWTRKJzAUYLUghxHVcm6iAd82EJjKWPx57/OE/eoiTRzqbpYM95dv7O/p59fjlwU+OPK4DIzuQT8idjXLy1KN4fQ6Vs1JkjPSW+RFO/5yzY/cRA0KBzedG/1SD+edUQj73CswGZmLoX84mq7geGPuMsSQLuI0upsw+Z4TaVtJnAHZ346R7OEY15wOy7s9p7qMMGoaf5kNdcW8mZgeB/BUYfCYlfMk4u1lqAyTaHjR+WDNzZTrvtVHIpWORFsz3u9qgTeEuHiOoVs9qzDC8M/KwAHu3/SZaIWJmHvgvE6is/jMAWImH1wbDjBPyW/20b8SDmV4R9oGZ5YLKsLsDBt5KkXlL+mfzY8EC4CYeCH7JyOsVgthekWhQ4/sM8+LIePXRm58lL6M8nYLTPjPy6rwiGYLGaPnp9pJxCVSMWr603OpFdGmbsPPdDy61/QQPQAcLv7ymbfGA/1qGfxh1GZ9JBeJMk4Q2jf2qaJ9nAVlNOI2Vy3cgoNKlIfmR7oJ+Qf/rJkNaLVizxu6jlM5ZBK9Jr/ILNwJXLPrUotKYHOoITTaIIKPF3a3ncYyQhJI4Gh0lQK
- jwAPOtGN
- OgbP23Lg3N7yDTi6eSrFahEmDeSOOQi0llsUZ7Q1X6EFtPajZZBMngg20L7VOZXzU6NaAsKoomD1SgxFw7i8bXhEPBdo16JQxzDBLvIBwxE9qwtDDM5CJVlEL9j57zt0ahwKNADDeEkCrDVRTNdHqQnGvhT6GXo5QrHQ7iOZxyz8Go0B4rCp/hmZJJlvo3Qdo0efBNEGJ1Gi/HlDHsBT1yutT3iKGGWCcYdJO5qfNUzo607NEqKoIoqNXx7Oq0Hm/y1YIyM7gJk=
+X-Rspamd-Queue-Id: 3553A120002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: z4uirgb8t3id5m48m75x9go7i345n7zc
+X-HE-Tag: 1773910493-850495
+X-HE-Meta: U2FsdGVkX1/r+TeziOMW7+neiD/ZuCmq0KkzeQ8j6X7NOXqR2Jo75YbTCoM4LpwM4EdaGvMhb+2pvqRm/Rhx/aOWQpwdmJEJE+Ua/gwUQxGKV4EpPYK+WlVTQVx6yCpMaU4JNljpbFUWzXkDDNG+gOEs6x3NKjC7+OmzAXc54hXGARwVbFkDGExZGyBABUgKYWYmG4ipbRxhYFgEUa3GPcZ/JV6fyqkCP1xcQfeD7le/ugwDXyPXbdUubLt+tvaVnO+RX/YpK91qdkwubRPBbFQwW0rqQPwBrKamUfRA4606yOen5+eL4L/835toK2X6QzXfMpXISE2EXhlqHPnR5ASh0QE1c5bmLBQygiYTKoOfZ6tp6wtkV31aTWUCH9G0oYpnMGNBnGLVZCKe8bkrkItqj9chfr95MRggaO8hsQyObZkfSjizqs5FfLiwTWMWEL2d/9lv4hkAGRCsW9Ub2D1DpWNNxzvTklFyCU4PJqfdod85iCSLcB8Hpv2L2wmgE5hv8YzZSi/jYKIdNdvE1UHHbYsnk0yxUq4KOty9a++W64v6wBC766M91FZE18YliKpzz+u5/FKz6rtNyfBgFWNqERzUVcuT7n7vcB3X5FA9V02JpI1MTX4NdeYCmvfoYCboi2Szy/MtBAYpBRcYDsbCf97pzHzDj0NvyamPKinusye5zuPobecLDidiMhJO2VDKTEx6aJmxtPRn7lsad/2lkViz/hoLxjtYq6xDPSujp3s8g0HM9D3mn45XY6l9MtoQGn3QKo5jdMQPk1yUdx+ks0LXwFHYcmolxdA/S7Y1Xkof8Uapxnh2iOe+Hizyf3HgKD4obnXdZpQbdzZE4Qt+T4WnkpKxz7ss9vy0M8MIbwulyvD0YLSIb2JfVlHipaeTiyczobhcBaW89CGTsiJ/lWyut7giXfGDDhqNx19VjyHg31ksc0VmmDQEAPzWXZhgR3onzY+W3HJhFv3
+ xQjVF/x0
+ BVZmvAXol6Up/Qe52GpZm+eF41FawDaRPCxAYAOmFSMVNnFOfay2pfiyAaeEenuRuLegesIyEY2UBRAvXFLaL1FQzZ+vqAkl01zyjc4e9TgHjvfamfUZ6ggklcZdfPz91/QkPE1F7tJ1e1awsAAI23QK7BxK1dOhrqFut+4/cbha22KQtKhKDqo6TGMfwPPLkdqdXeb0C2Tpn3NbfubmqlVCe9E4m17N4XwWBDF+K0K2pN36WujgGHN733Rs5HlJqXp5Nz/GUZerw1BaaXPTLGAW4BpDP126r+9FyWOSqUno7D99pJjbtWG+7wYttEGnRR9CcUBMdQf4o9D/ZpButprupepdxoEievibnxccXe45X5knf7OEVPiENhb8b3Yfk4XIXBjwJf83cn2C7i9AzIxFiLq3L+iXjaF73cB0Yj8F8w9QRdd/5tq/lFsk+GtkKO+fpL4tKy2kyfTSAQYZ3ES73UD/nsdV5NlHzrWEcZ9W8HxWnYRv9Ibqqln1xAwDsZRFbHqkHUUO5TUf2BlcqBcgUT6UgRHJLUyRcaRj+nfCN8Tcd76BZ9JBY8dAD2hWPlY+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,167 +95,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 04:05:38PM +0800, Lance Yang wrote:
-> Ccing Willy
+On Thu, Mar 19, 2026 at 07:45:53AM +0200, Mike Rapoport wrote:
+> On Wed, Mar 18, 2026 at 05:26:32PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > +cc Mike for uffd, Harry for fix that also resolves this, see below
+> >
+> > On Wed, Mar 18, 2026 at 08:03:22AM -0700, syzbot wrote:
+> > > Hello,
+> > >
+> > > syzbot found the following issue on:
+> > >
+> > > HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
+> >
+> > For some reason I have to git pull --tags to get this... commit hash locally?
+> > Strange.
+> >
+> > > git tree:       linux-next
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=119ddd52580000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=de14f7701c22477db718
+> > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b44da580000
+> > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1537b8da580000
+> >
+> > @SYZKALLER guys:
+> >
+> > Note: the repro is incorrectly labelling;
+> >
+> >   //  ioctl$UFFDIO_CONTINUE arguments: [
+> >   //    fd: fd_uffd (resource)
+> >   //    cmd: const = 0xc020aa08 (4 bytes)
+> >
+> > as UFFDIO_CONTINUE (0x7), it's actually UFFDIO_POISION (0x8) as you can see
+> > from least-significant byte.
+> >
+> > It's also stating things like mmap flags wrong e.g.:
+> >
+> >       /*flags=MAP_UNINITIALIZED|MAP_POPULATE|MAP_NORESERVE|MAP_NONBLOCK|MAP_HUGETLB|0x8c4b815a506002b2*/
+> >       0x8c4b815a5465c2b2ul,
 >
-> IIUC, this is a dup of the earlier report[1], which I looked into back
-> in January. The root cause is the same: collapse_file() calls
-> xas_lock_irq() without resetting the xas state first, tripping the
-> XAS_INVALID() assertion:
->
-> #define xas_lock_irq(xas)	xa_lock_irq(XAS_INVALID(xas)->xa)
->
-> static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
-> {
-> 	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
-> 	return xas;
-> }
->
-> Added by commit:
->
-> commit 43b00759f21b10142094d1ae5ff65cbb368953a3
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Date:   Sun Dec 14 10:53:31 2025 -0500
->
->     XArray: Add extra debugging check to xas_lock and friends
->
->     While tracking down a recent bug, we discovered somewhere that had
->     forgotten to call xas_reset() before calling xas_lock().  Add a debug
->     check to be sure that doesn't happen in future and fix all the places in
->     the test suite which were carelessly doing just this.
->
->     Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
->     Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->
-> I posted a HACK fix at the time[2], but David pointed out that Willy
-> had mentioned it likely needs more thought[3].
+> As Andrey Vagin pointed off-list, you can run strace repro and see the
+> syscall arguments quite nicely :-)
 
-Hmm we shouldn't leave this bug in place while working for a fancier fix??
-
-Can we get _something_ going as an upstream fix? We can improve whatever we do
-later right?
-
-David, thoughts?
+Yeah, but we really shouldn't need to have to :)
 
 >
-> [1]
-> https://lore.kernel.org/all/69757ea0.a00a0220.33ccc7.0017.GAE@google.com/
-> [2] https://lore.kernel.org/all/20260125121001.32733-1-lance.yang@linux.dev/
-> [3]
-> https://lore.kernel.org/all/7bce9231-714c-424a-a4e3-dd42734fb767@kernel.org/
+> > So Harry's fix resolves this,
 >
+> and that's the important bit ;-P
+
+Yep
+
 >
-> Thanks,
-> Lance
+> > but we should handle this case better in zap_huge_pmd(), I will send a
+> > patch for that.
+
+And already did this ^ :)
+
 >
+> > Cheers, Lorenzo
+>
+> --
+> Sincerely yours,
+> Mike.
 
 Cheers, Lorenzo
-
->
-> On 2026/3/19 15:20, syzbot wrote:
-> > Hello,
-> >
-> > syzbot found the following issue on:
-> >
-> > HEAD commit:    95c541ddfb08 Add linux-next specific files for 20260316
-> > git tree:       linux-next
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=15ccc216580000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=ed431987028345c6
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=8961cb270ae74b4129fb
-> > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f778da580000
-> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cc006a580000
-> >
-> > Downloadable assets:
-> > disk image: https://storage.googleapis.com/syzbot-assets/c40f27ad73d8/disk-95c541dd.raw.xz
-> > vmlinux: https://storage.googleapis.com/syzbot-assets/bd811888f684/vmlinux-95c541dd.xz
-> > kernel image: https://storage.googleapis.com/syzbot-assets/3b72363d7dbd/bzImage-95c541dd.xz
-> >
-> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > Reported-by: syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com
-> >
-> > node ffff88805d558b00 offset 0 parent ffff88805d558840 shift 0 count 3 values 0 array ffff88807a8195c0 list ffff88805d558b18 ffff88805d558b18 marks 0 0 0
-> > ------------[ cut here ]------------
-> > kernel BUG at ./include/linux/xarray.h:1441!
-> > Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-> > CPU: 0 UID: 0 PID: 6001 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-> > RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
-> > RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
-> > RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
-> > Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
-> > RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
-> > RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
-> > RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-> > RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
-> > R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
-> > R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
-> > FS:  000055557e3c2500(0000) GS:ffff888125437000(0000) knlGS:0000000000000000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 000020000000b000 CR3: 000000007ac66000 CR4: 00000000003526f0
-> > Call Trace:
-> >   <TASK>
-> >   collapse_single_pmd+0x22b/0x4510 mm/khugepaged.c:2437
-> >   madvise_collapse+0x34c/0x820 mm/khugepaged.c:2859
-> >   madvise_vma_behavior+0x1094/0x4460 mm/madvise.c:1362
-> >   madvise_walk_vmas+0x573/0xae0 mm/madvise.c:1711
-> >   madvise_do_behavior+0x386/0x540 mm/madvise.c:1927
-> >   do_madvise+0x1fa/0x2e0 mm/madvise.c:2020
-> >   __do_sys_madvise mm/madvise.c:2029 [inline]
-> >   __se_sys_madvise mm/madvise.c:2027 [inline]
-> >   __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2027
-> >   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-> >   do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
-> >   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> > RIP: 0033:0x7f90d419c799
-> > Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> > RSP: 002b:00007ffd50711398 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-> > RAX: ffffffffffffffda RBX: 00007f90d4415fa0 RCX: 00007f90d419c799
-> > RDX: 0000000000000019 RSI: 0000000000600003 RDI: 0000200000000000
-> > RBP: 00007f90d4232c99 R08: 0000000000000000 R09: 0000000000000000
-> > R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> > R13: 00007f90d4415fac R14: 00007f90d4415fa0 R15: 00007f90d4415fa0
-> >   </TASK>
-> > Modules linked in:
-> > ---[ end trace 0000000000000000 ]---
-> > RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
-> > RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
-> > RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
-> > Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
-> > RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
-> > RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
-> > RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-> > RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
-> > R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
-> > R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
-> > FS:  000055557e3c2500(0000) GS:ffff888125537000(0000) knlGS:0000000000000000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 00007f8156602000 CR3: 000000007ac66000 CR4: 00000000003526f0
-> >
-> >
-> > ---
-> > This report is generated by a bot. It may contain errors.
-> > See https://goo.gl/tpsmEJ for more information about syzbot.
-> > syzbot engineers can be reached at syzkaller@googlegroups.com.
-> >
-> > syzbot will keep track of this issue. See:
-> > https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> >
-> > If the report is already addressed, let syzbot know by replying with:
-> > #syz fix: exact-commit-title
-> >
-> > If you want syzbot to run the reproducer, reply with:
-> > #syz test: git://repo/address.git branch-or-commit-hash
-> > If you attach or paste a git patch, syzbot will apply it before testing.
-> >
-> > If you want to overwrite report's subsystems, reply with:
-> > #syz set subsystems: new-subsystem
-> > (See the list of subsystem names on the web dashboard)
-> >
-> > If the report is a duplicate of another one, reply with:
-> > #syz dup: exact-subject-of-another-report
-> >
-> > If you want to undo deduplication, reply with:
-> > #syz undup
->
 
