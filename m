@@ -4,97 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CBE6107526C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:07:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED190107526C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:12:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E8DF6B031D; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
+	id 387946B040B; Thu, 19 Mar 2026 03:12:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99AE66B039A; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
+	id 3385F6B040C; Thu, 19 Mar 2026 03:12:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B6FA6B037D; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
+	id 2276D6B040D; Thu, 19 Mar 2026 03:12:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78CED6B0408
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A6E4C19F7
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:07:37 +0000 (UTC)
-X-FDA: 84561932154.15.AC264CD
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0CF7A40006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:07:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=fskvIZ97;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773904055;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 140F86B040B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:12:26 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9705B925D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:12:25 +0000 (UTC)
+X-FDA: 84561944250.06.96E49F8
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E223380010
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:12:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bDZsWDQL;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773904344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KstVXAu8s91wD1tzpSpjUCtaNtaqVzzDqrlbR2gPxhg=;
-	b=OPQH12KCnl8vfHeCTBMuv+06dYFakUUKWCX0X1NVE4t2UE1Tj2o6Yf2CWjHX1tICAaQrXS
-	g895PxZsGKakdPEfGS4NC2g828vvvsA/TRy3K74pyPQYF43qgQ+ZPjmDCBWGV195FXeICt
-	YFtrjThyNDqqXuT8uIG/9cDwM8S9fJ4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773904055; a=rsa-sha256;
-	cv=pass;
-	b=sTZRLmun2oNTsNK/OE+KPo+bqP711+Z1Wn0fImwsMqOY12TYwSo+rAAT7vseDlJ1P8BZjz
-	g2E83negVGEfCp+dbfP0R9JvwLzvUAA+4R7B26TqQgJThf9PI30iXZw/Aj8OhvURwXiSsp
-	trYVLFNgx38xCe531TkUPM+AH4j2VBk=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=fskvIZ97;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1773904042; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=e9ZNPiNMOo68Qkxam/C8cay3EsA7VGGltAnosDmkJEaK8Kjo3HpDTYEHw+TdsM4AKzMzPXn2nCLfgEwFM6U0q7S12A5b3ZUO2DBCM3JtfJ55e18wXncraJvPPHcK4rFxJ5w6nGxOiZvMuFLZjYLxDvyF6zGlR0gjhYPOpy07pF8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1773904042; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=KstVXAu8s91wD1tzpSpjUCtaNtaqVzzDqrlbR2gPxhg=; 
-	b=lSaqE6xk21yiR9BjYqMC8A0/Ylg5iIYDucA5u0e98GVT7CJR1FMXYKuDaWupi8+1qL/OtXprMtx5YtZVLyBBKBvSwEfLK5CraMk1N8JqE6issYdiMidgJ25QrZhnnXkVjLh5CChHu25mZ7cYsI6yjeJGKw/dxliDWj19VI+7zuw=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773904042;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=KstVXAu8s91wD1tzpSpjUCtaNtaqVzzDqrlbR2gPxhg=;
-	b=fskvIZ97/1BmLA5jpR5+dGchmAJqsjqdLNmyRNH/HfLIILLSV4evG0s+E4tmC5xB
-	BAaxIthu9mZ0Mlyo1c2ZzpKAE6rNCU0E0/4LSp/RI12G0UpDW+r+8plHk+chNFiX+wB
-	spKt6C7UGoNZxeykFGFug9wBy4u/rKdXVi36jsPI=
-Received: by mx.zoho.eu with SMTPS id 1773904038826234.8226502046814;
-	Thu, 19 Mar 2026 08:07:18 +0100 (CET)
-Date: Thu, 19 Mar 2026 07:07:18 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon/core=3A_reset_nr=5Fdests_o?=
- =?US-ASCII?Q?n_allocation_failure_in_damos=5Fcommit=5Fdests=28=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260319043309.97966-1-sj@kernel.org>
-References:  <20260319043309.97966-1-sj@kernel.org>
-Message-ID: <B08CB6C4-72EE-48AD-9AA5-16CDA175B193@objecting.org>
+	bh=gc1cC4mzj8DKUjeHQ7B77RqbJqPY4RP3mNQb6Es+S9I=;
+	b=ZWHK8KtsczNmHg2yEhM6rCjMfh6JQ6OF0qkn8aTCXgndyiNtJNrb4IJMyok6jU0Y7eSHuY
+	yzedq4EI7CVjKpGz5kmpF9G9DpAj9XUboB/cA3X+WB48MpqBstS1qqu3cFeBXYlNUj6UP+
+	CPKKEXA/OrYOIGkc2Ol+TL5qQH15x3g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904344; a=rsa-sha256;
+	cv=none;
+	b=n3xfUX+Ari0hFq9SpeZm1NNhxxverT9ToUZhpRQkF5lLeOrtNhZECwDfrL/Gw+4XmNUyo3
+	iT0lz21XxODuVhaMAsmdtTscBZ5XuRfqfneIDCYAAGJ18V49TWfvvt63OzVHTUWS7BW5e8
+	m6JslTkfBn5lcVq48nIp9kALB2Q1vbQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bDZsWDQL;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773904339; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gc1cC4mzj8DKUjeHQ7B77RqbJqPY4RP3mNQb6Es+S9I=;
+	b=bDZsWDQLBDeDN2cVYl/vDLE+KPHG+vSEgH9B5a1GTwnzB2HXji1OziSZA8WsXeOa9P+cowOG4vLv0cIZfUCDZuCIS0NHBjuqDax7yF4UpsgDtImNysehTLzE80Sin/ifFWKqPFEdTtNdULNpedDeVOX6P3Iw/Md+NZUwYEO/shc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X.HWEU1_1773904337;
+Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.HWEU1_1773904337 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Mar 2026 15:12:18 +0800
+Message-ID: <07368afd-05c3-48f4-89a0-c1349784f62b@linux.alibaba.com>
+Date: Thu, 19 Mar 2026 15:12:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0CF7A40006
-X-Stat-Signature: htiw7mqdi6i4js6uqai88hm83nbjm9mn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] mm/huge_memory: remove unnecessary VM_BUG_ON_PAGE()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1773865827.git.ljs@kernel.org>
+ <56df2cf900132ae12e8b71ed95519b5b476e1618.1773865827.git.ljs@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <56df2cf900132ae12e8b71ed95519b5b476e1618.1773865827.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ojq7fiemzfakh8jusx7zyo9rx8eqizdj
 X-Rspam-User: 
-X-HE-Tag: 1773904054-768594
-X-HE-Meta: U2FsdGVkX18GqbiZuyd3kuRA97cERy+xrSGwkzKE1o7IUqvwZ2AvjMgOIDOAENF7+2fmhfhYDY4OPduZ/IxSNCNQGeAP/HdxKObcBOjur7jl4VjQOSj5+cq5y1/j9lEJOAu0hkDXTWpO2vdXMG4J3QkIaZEIoUnTKvHKkBdySuTFv/z73koy8uTz3FDH5GnNOsthPr02kaJ76lMXIhIkQo58qo2gAFtO4DhUc+mk2x8+vi/pPaW56dwXXcFPvXOfIg0aybV/sjLz4EkpYu5THwt6qe+0YrwOcwznILZvuLB6PFmB7iQweXZ3ccaM/LeaEPIqRnJuj5djsVF3G+R1/L63WHBN3LRdrcA6XWA/iBObns5yBSvsn4L5NgQoezPKIyK2VmbASqw8NIwMi4icCpKWuunULpKvkxn17nt8fxalfQc9P0l10HOJ54uEZaeIBCGGa2MwxqFJKQaDe60k4MQ//yW1R49kW+HTTMj2NM0f0cI/VsLx+n4uPRN6xFcHXa+jp2GMahLnWOqU2r0KeU3AYUdrp65gQ9hcJKaKUwAWwru12S9g4g8snVHlCuVegtCqMTkj45QNFRW738mbTWMMWDggp2WkWG67+O6sUj7fNTmOL9yP7cV4iWFvXDUGE+YfJw2Blw+qWCw/JLfnUmeT/Lwg+Vfa2/lLpnMsfSm/yqoJeeoGysmIm1IB7ZtzAoT349SlkHDkhdBDZI7u1TlQA3N1wX/qw6L2qovUrgBmKkKlZ4rXeET/pUYMvTbumBDqkxlyvTqcw3SEg5GtGVDhTeeXn+msV/MdtI3SsfSBiG+b7Gnw9KdbkCdyONnvNg0YBYR5L9VWuYmURx4N+xSlPXWKi5Jy+4O7sqin8OY0w5tlqXSQzvbNAkzrAxYOpDxeVWFpndDh/iaMI2Eax8ZwjIqUaTihzUnNRDDW6QVUYXD2AgrqIAujWAMWI/yoNdA7QqjZ2QrWm6NUK01
- 8gNto6wJ
- PrgCFRLygm5/t+TLasgvdLZx3XCuB1OeWlXsEAMLlu6vt7D9ZMq5BNlX/iDm32H5JfqfgN8DGazTSfw47Q0zzGHT2sbTFzZfPGqVerGsxQbRo5Nn5UJYaojCoectAjl012DtrOetcJqYweYGlPgQFVsOSsve6wYcndPr/Q54Gx8ANIcaL9IbazUrCw6AFYJ0NBM/vMDcYaruyg49LN41wS35QLyDJ3MYeKUG2OiI9UtHVMGefiazx9ezQSWHLZufrN0P4QROL5x+0NWmRR+m7cUVyvoB9GVE+5D+HXdspupxRz3DSqB5cdvlRNv5oD7xmoCbhx1HTIq7twqDZI6StdWIKE8qjxTOGUdGOGAkKOVjSQLM9hTCshT8u551Qjt64Wx1PnBYHD/FZBXFKbZ866+sobTI5G9v0yxLu2uJdOLyuBnquELWAyJCrj/gXkY6jLBzvMz1YvCnMjzXYBG5GSR3yrqVhso7L3wgXU5bJO39PmMc50927HQFULxGfSuHqg7r2ynjwFw+4X4XJ8is+6XWVbL9Uldfq2K23ZGgIbG7TI2tnbAWqSYaffP2yA50EKEnasqU20rYk+NER2HLr20OV8w==
+X-Rspamd-Queue-Id: E223380010
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773904342-69805
+X-HE-Meta: U2FsdGVkX1/0xVBKF3DudY0Fypz77285abQ5DR0IAIdNlCvhAHTmF0Q8ahbJScjeNAD2+yN0CAHttMzE2tcgakWUbpe2g1vUWTr/iRfH7V6+/iKrUsbjMJZDCeUz+vCQC0+mGzcnv84ZsLxppshCpfjkDA/HnmZCD7X/93HFsgy5mia9eFqGyyFyt27vso3pCJgX0WKyzj3PNCn6Zzh09tU1PLZt4PESca+XssCHCtjrOrLElk9o0lBzVErjXSLMhP4eQnIjkNznQ1BFPR/+aRlfnrl7KFOfxBJ6Ecst4yx5LyHZjyvwpP9ibd0Huca0mWwW8+FFoygAU0p/atyhvt9+iseHoGRfYSWFNxMGaClYtG+fOrN/xBT8abmJfSE49WxlwZjzs8OatVcSo8A+NVM9lpoOAPSmFVH9hgBAYqXTUfsEVAqphP42E5echciTIwo0xfxpzJ77HniprfOcg59uPe/RyPRpxHit83rOS8C5kKVtzJI/PI3l7ttp+/EPXXaOBQrc/c6HddZMrKgtrSENIT258jlfnbzqqlHU+crcbqTHjWJQADZQVWPkp4XRRKj1TE1wS4tkKtErR9PnPLj2z2g3Y9YcyGomzZT8EUOCfYzaqgxadMdMhQ0FAJbQXRkTyexhvnDbd9e31mPbTRokrZGvRBX0Ya7Jt5jIDxWTjEY4oTjPWV71UxGLnSFHpQoQi8fr+Hg92v2QH6vYU9WWMaibuN47f3Gpuz3Zr1frdk4PwtqsloXu/aM/0ggMLQhuhpsNlrxnlGyy7czLchVF4kyl7zM6tuLUzrO55msvprjtpsp0H9w+VU13SA9cVVjP7/LaGEmT5f4tErlypWWJFfHPcM0YELWG7gN68xDqXeZPja8wFxge34TSq4/0P9DDzfJ2szPSuqACkJEVBEyHgW01OiclYuZU/hjqUcXjxMrEJJcRh5+jiyoTEZViQVSwSKgBKWYa6xhWAn9
+ JWP0CxfS
+ zlNSgpJlZMug7dmK44ngfW6uRgGTcnS90tnfvlkgLPOJ1GfskA1dzxQLIbG+O/HxvWD9cHJRqcyXjtYchdxpurwGGRvgd5FnMLkZVYrWrwUGWm0ZgW0PvXnrBkYbxKFIAZWgLRDq9+fjei/ae73ZZ9U0FFPjnOd6zvzfbSTd18akIRawbVPNgqzLmOHL/LKLvUPizaWAY3bEcfZpu8Af/zheaeYje01zGE88SXIBAKVGO2LYpPki6EvnJd4wANn3+LRJiYxhNagVzw+sHaut3r+GYLQ1VoB8moxgY92HXFcu+2NS00U2Vtz+mmEVqluYFepxTBzurl8SiifY94LpoSpsA2ULDyMvyGiTNg8SC0pFZJPhdjxUzzSfPhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,109 +96,16 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 19 March 2026 04:33:09 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->Hello Josh,
->
->On Wed, 18 Mar 2026 21:49:39 +0000 Josh Law <objecting@objecting=2Eorg> w=
-rote:
->
->> damos_commit_dests() frees the old node_id_arr and weight_arr before
->> reallocating=2E  If kmalloc_array() fails, the function returns -ENOMEM=
- but
->> leaves dst->nr_dests at its previous value=2E  A subsequent call with t=
-he
->> same nr_dests will skip the reallocation (the sizes match), and the loo=
-p
->> at the end will dereference the now-NULL array pointers=2E
->
->Nice catch=2E  But, this is a sort of intended behavior=2E
->
->The idea behind the code is that, if the function fails, the caller will
->not resue 'dst' but discard it=2E  Hence the function is only ensuring th=
-e 'dst'
->after the failure can be deallocated using the deallocation helper functi=
-on
->like 'damon_destroy_scheme()'=2E  For this, the function is setting weigh=
-t_arr as
->NULL in the allocation failure=2E
->
->>=20
->> Fix this by resetting dst->nr_dests to 0 immediately after freeing the
->> old arrays, so any later call always enters the reallocation path=2E
->>=20
->> Fixes: cbc4eea4ffb5 ("mm/damon/core: commit damos->migrate_dests")
->> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
->> ---
->>  mm/damon/core=2Ec | 1 +
->>  1 file changed, 1 insertion(+)
->>=20
->> diff --git a/mm/damon/core=2Ec b/mm/damon/core=2Ec
->> index 7f74982535ac=2E=2Ee233eb84a2d5 100644
->> --- a/mm/damon/core=2Ec
->> +++ b/mm/damon/core=2Ec
->> @@ -1060,6 +1060,7 @@ static int damos_commit_dests(struct damos_migrat=
-e_dests *dst,
->>  	if (dst->nr_dests !=3D src->nr_dests) {
->>  		kfree(dst->node_id_arr);
->>  		kfree(dst->weight_arr);
->> +		dst->nr_dests =3D 0;
->> =20
->>  		dst->node_id_arr =3D kmalloc_array(src->nr_dests,
->>  			sizeof(*dst->node_id_arr), GFP_KERNEL);
->
->Someone (including a part of myself) could argue anyway initializing the =
-field
->is better to do, for code readability and completeness of the data struct=
-ure=2E
->But I'd argue that might only encourage calllers to reuse 'dst' after the
->failure=2E  Also, the 0 nr_dests could still meaning something incorrect,=
- if the
->first kmalloc_array() for node_id_arr success but the following kmalloc_a=
-rray()
->for weight_arr failed=2E  In the case, nr_dests is zero, but the size of
->node_id_arr is not zero=2E
->
->I think the intention behind the code is not well documented and that mig=
-ht
->confused you=2E  Sorry if that was the case=2E  I think this could better=
- be
->documented by adding comments for the function=2E  The single line commen=
-t in the
->function body was for the purpose, but having more detailed comments at t=
-he top
->of the function may be better=2E  If you'd like to send such documentatio=
-n,
->please do so=2E  If not, I will do that=2E  Whatever is your preference, =
-thank you
->for finding and sharing this room to improve!
->
->=2E=2E=2E And, this patch helped me finding something actually broken=2E =
- As I
->mentioned above, callers of damos_commit_dests() are assumed to discard t=
-he
->'dst' when the function failed=2E  And the only caller, sysfs=2Ec, does s=
-o, except
->for the final commit to the running context (kdmond->damon_ctx)=2E  It ca=
-n result
->in DAMON running with the incorrect data structure, doing NULL dereferenc=
-e=2E
->Similar issue might exist for DAMON_RECLAIM and DAMON_LRU_SORT=2E  Becaus=
-e those
->modules use only limited parameters, there might be not=2E  I will double=
- check
->and make a fix soon=2E  Again, thank you for helping me finding this issu=
-e, Josh!
->
->
->Thanks,
->SJ
+On 3/19/26 4:39 AM, Lorenzo Stoakes (Oracle) wrote:
+> This has been around since the beginnings of the THP implementation. I
+> think we can safely assume that, if we have a THP folio, it will have a
+> head page.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
 
+Yes, it is under the PTL, so the PMD entry should be stable. I also 
+can't think of any case where it can be not a head page.
 
-Well, I guess hardening this patch is useful for then=2E=2E
-
-
-V/R
-
-
-Josh Law
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
