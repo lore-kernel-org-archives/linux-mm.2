@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B0C1091904
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90CF81091900
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:01:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 025CC6B0560; Thu, 19 Mar 2026 14:00:00 -0400 (EDT)
+	id 029A06B008A; Thu, 19 Mar 2026 14:01:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F18DD6B0561; Thu, 19 Mar 2026 13:59:59 -0400 (EDT)
+	id 000B96B0092; Thu, 19 Mar 2026 14:01:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07D16B0562; Thu, 19 Mar 2026 13:59:59 -0400 (EDT)
+	id E802D6B0095; Thu, 19 Mar 2026 14:01:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CEE656B0560
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:59:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 439D087788
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:59:59 +0000 (UTC)
-X-FDA: 84563576118.19.A3E5FD7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DB89F6B008A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:01:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34D701B8816
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:01:52 +0000 (UTC)
+X-FDA: 84563580864.14.91CF1B8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B3141100016
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:59:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r5qRRodo;
-	spf=pass (imf05.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9042D80023
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:01:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vC8ZbpRC;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773943197;
+	s=arc-20220608; t=1773943310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yBW47iFp6Ni1cQrpdYT4ayynV+aybSUe2zIBEB6l8Ak=;
-	b=y6C5zhiSIR0E6TRjqwScqj7XUzLQ0L05fPr//9Luy8olkxaL81D9wRTCBimV1BIwFntZ3z
-	82V+YI6s9ne79gvYcQpaAOvYzLNe9xO37ssWEA2VmHYlbYtQH167gxXPV58qVpc9LC3Ygl
-	kqCboqZjYyLVhgM+LP9yQl5yAjpUCso=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773943197; a=rsa-sha256;
-	cv=none;
-	b=zUVvugPHd+y30+ZST2h4Ewos19+FSdlILpAby04NPryAspv0ShHhXR60sBtKwrMnXiE/Tn
-	Gh7aJP6GNf7dB719+6C03aXAJ5Ysip3oKo276HyhggwPvVq2/eK+zmO/AvIn+Crvk1fQ23
-	4OLr0hb6f11tSfsLerzpyYtbIkIMd1I=
+	bh=LS3wev+eY2RmB+NFZLqCzPpcdWMpN9BLe1HlMuAMQnE=;
+	b=kZQn9WzSYztNQKEJre6JrYJtz/3f0iw0WxaRgWalElyhfvt+7FeRLbm13q6/LKpp7vnynu
+	NTAaXp+YRY1KeOyzq+BNjPFad7FEM/Me+FUbxlyFy3cbl3j9ni7/hRs15YS0yBt6nuBSqO
+	JFz9iIkJ+agNxufzgq2p9MKOMEXKik8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r5qRRodo;
-	spf=pass (imf05.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vC8ZbpRC;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773943310; a=rsa-sha256;
+	cv=none;
+	b=SL5ZISuRYwx3/9NmAr656qAM74Iiw4jtf6IUniwo8Q98LW1Gh/M80CqcN9HoVkK3FpqWo7
+	2GuD8ipnMrQm4eqX6cWP/cK+LSNFWcJ8Q8YhDQ2DeUlvbPh276TswFORzID1qc99ZQD+XR
+	ug94TyJDFzm2J3Ij6Mpva+NYMmRIUPo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23BA160137;
-	Thu, 19 Mar 2026 17:59:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D562C19425;
-	Thu, 19 Mar 2026 17:59:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 05C2D60053;
+	Thu, 19 Mar 2026 18:01:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19108C19424;
+	Thu, 19 Mar 2026 18:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773943196;
-	bh=29WlG8Dkoh4OctdaHEWHsm1UTwJFX6GFSef9CMqVITA=;
+	s=k20201202; t=1773943309;
+	bh=d8Ua+A/ZmT7ca7E47NnupRZI3JWgVY4ZVGJGbFjL6pM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r5qRRodoitaTjP8Oo49cX59bM6/ww2hHBYTb3Av7xMXj+588xDmtzRecYNetDNhFv
-	 ai9zk9r3Xzm18NmIbze5e3mQ2pBeKPP8CBLcEfQ/N5+/scOR45Ef7gyJWDMnT7u5Z+
-	 RzEd/KqSZq1jO6EgQgwz7TBgc6fpsdBNYnR1aL2lCc/jLP8tAT8VBpMHJulGGAp5LZ
-	 dQce4oSOE8yWWuFcdMJX40dA9YUhBlWywlFBBlJx31GKOj6nd834tJWVU2bvwaEvgp
-	 PLopseWmR8aLG34tjuSZXAIjmkR9+ib6/8rC7VS+7wI6qRKK2Ap2SZvRO3aYaqzly/
-	 a9BqyaBLojGLg==
-Date: Thu, 19 Mar 2026 10:59:55 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Brian Geffon <bgeffon@google.com>,
-	Richard Chang <richardycc@google.com>, linux-block@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] zram: do not slot_free() written-back slots
-Message-ID: <abw5m8Q5fFXGIweh@google.com>
-References: <20260319034912.1894770-1-senozhatsky@chromium.org>
- <abt1dsjsT9826Ewy@google.com>
+	b=vC8ZbpRCDasLUGHIy/bphnAPICpvqYVhHZnYtFWNW8grGwKzNgU6HZxuwWk43FoKd
+	 O0cegRoluqUInzy3D69im9C70FBrZUu5fhRjy/YDU2gcuEbYTqVadnoyI+0IJwf2sH
+	 tMOtJ7Dkrql095BjESNqPG+PBzFOBLZ99lDEBZL/bwzk14UEZ9buqFpOxEdmOQZUCd
+	 j5S/UkZNemidFsCodBlc4GWhydx+AnH+gLLrCKKP1fRka9bgiu91qortzioS2wpkll
+	 lmYjCkbfKI+vZQS3T9p6+M0puLhw2EmI4pYQfGvsitc2Xyk4eIpvmHONcB2FBwwPxh
+	 v5/RLVbLIFmeA==
+Date: Thu, 19 Mar 2026 20:01:43 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+	kernel@gpiccoli.net, Andrew Morton <akpm@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH v3 2/2] mm/memblock: Add reserve_mem debugfs info
+Message-ID: <abw6ByiCi9mOZQof@kernel.org>
+References: <20260318190816.1811325-1-gpiccoli@igalia.com>
+ <20260318190816.1811325-3-gpiccoli@igalia.com>
+ <abwlsdgNWtDeasLT@kernel.org>
+ <9066d011-7dd6-4d2e-26b0-72f83d3e5862@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abt1dsjsT9826Ewy@google.com>
+In-Reply-To: <9066d011-7dd6-4d2e-26b0-72f83d3e5862@igalia.com>
+X-Rspamd-Queue-Id: 9042D80023
+X-Stat-Signature: 1x63fhzqqoxc5zbp6kmbqju3bhz1azbq
 X-Rspam-User: 
-X-Stat-Signature: cqxduxqdfn8qsk5xwdrfqnrhw4n5675m
-X-Rspamd-Queue-Id: B3141100016
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773943197-183042
-X-HE-Meta: U2FsdGVkX19ySFZTBNbDzf7J8Wv9sNAKddQgZsMwX0Fm5qy2GeMzibcISFsjNM4NxSr5+wpCDeh5LZjQ+CQ0wpoXtC/gSwJyq2epbY//jmP90EpC3Z8Lx8dc7Ixlkjw+RxBFljr0EB7bE3thu3/0rAWfpnjoRZyvOSxh0DWX5vMd8jFMA3PMv3afiZPpJ4vAiUFORZACgzhtWtmppTEoVcWUiE5yiSosNrgZXX1vVTXza+BdFbvH+3cqZuF0Xin872x1+OSu669xWdPJdoLh3f3NVeVXrNS4LZWYYrOSRqGZZc7UY7ojcScxO2tnG8vOFSbrokAUio4xuf7BGvzD9p6w6nssdyjse9mu3R8rmMVM8KOOnwizWmt46AvRAgcBX9hcOdW1+MAjasN5XvsQe2BLzWPXicCxUpDGlU8MwN8MB5jLPWT3dvTVqv6aJFPgy/bLmfx91b+Bv+ICuzKmILfL4QhDf83x05Y8HpcRWLQAZDBW3q63JI/IqGIgJ1zklYFynMm89jxgQXEA4+t0/ozyzDp3F6M845IKDvjhQd21HOIy4gmEaIhgA+/gFHGaM/mESrVe9oA/BDq3cHu+kiejijHANfSDLQ3T+vEfHGVN53LMQ+lbj+FI9wgGrn/giFPXWGgV78SnaelVGNfsglvKhKhFsCP7eLgQYtZF+EPahT4JvKMUKsWRNxitSgX8Ml7/Ey/KhBYzP0/A4x3fiosONfGfiBfd2fBkfYvHz2AdvyN56g5dil/xtGJTLj8SU9AWzLZd+jw6w7Uc61CWvJx1da7x4za9Ju1mNMmgrxYeJUWHUECd6VY31T3GPb5Mp2Dl2UXhoXu/OjonGuz6ga+yl3Yb+BhYcgxLFz1b5Iq6RsXvyKnqmZZrob737Xl95ASOgz/YHTSxhQFhR5kEVNKGrmEqF+8qhuEbvPiRftT08JPiEoZ63USLCQtp2aZ7LrkUYthJNbMz9aBECPu
- cfnfVESB
- 1HL8NMaBFlwytSAfdubJ5FtAo8k6U5iNBvxtqxwnwK/s3HARaoJrCIXode7dcA65rx1mOOSrO0q5ch/JXjzjzs8o2heZhDDfZihCsg7MQK5ozya2sGUFhvt8br0rRMdobKSgnP25+ckSDGaulWLpFLL4vEiaBWQvRXbLpuQZ/Te5H/OF8QLWJ8TBfdoBkn20QSltJN+d7AhHEbyu7brIb4w4OOyxxFswD2RIvybV9k8iHVudITE9CxtcJcMGRvtyJLqWBmylNy1nqZ0eE/e/ABckYOANBuJE5G2qWIotu5mSRX2jcRbwuC17pLpI3m7/50rDpPEn/alzw+SE=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773943310-988793
+X-HE-Meta: U2FsdGVkX1/GKxyvr9HbIv45Mplv/ZiLSy2cArOjspT/m01CcBwaxrzG3F61HCYTd5vqEtlAd3eZo1vv2KA1gnxetgC9kBxGBke5Ug2N7C0IS6FwE9FxPKXIAgwPe3U8s0EW769ojRhnYaPDFsZb5RQA8ahpfqq1oFc2sjb6Qyt9pS181kKmX7ffiPUQw+lxUIHpneSrUfs1sHf6fHiYSg2zA/kaSHiRHeqCnlxQXzl4+PKFZcwwP1TPI7l47KUkV024XEAZa+P/nknfBEoHvTfLTmUfYu9Id8O/RaRO0IYdyVCmaA3n472Pcx007Qa5hyLysNHA5o93WT7+IDg6/Vnny5s8SPHGjJ8qB60/kw6tV3U2K8AxR5i1KbIDwZQdbWTckzvcRiCXlDP+ktY7zXME9wXl/B+C8dZMr/Z6017rZwn+ZEnOLAXvr719r5jIMWMOSAZvnWYrT0F2LevPNLbFiNoz3PrmDxRij9+k1/DID+zoRTBzsfUwEfJsD9UMmLrNBmq3iwCWHqKXMgRMFDEJ038MrpZ521np7n+/qkt/Pn0TwOZjjdle28tQfA01PZcLxKexy4UE4MZOroZxV4bPy0WL9Nyigo/vonpcQZukgvhI+UNQvRDHq/cX9aU/k2K0j+nsoQuQqA3Y2v41xtmUKmFBKfrJ/xWwnVg0rekxSzOZXq3lLRdVzqO08lo1+gXSlR28jkF65sWMALQJsoxUljwDa5S/O9Rkj/r5fRH9anRxlVoA/gS9Sxqoyd5GQyFKRXZ5Uy9dF6eDGG8IO5/1GfEwm/Iz9QpOw+wHVPwo9pXiJWPk0w9bl4ZZYmDKwk6BI7h4Vn4dcYi4GB1ilahB5lfIx9fSbwOm9/RJfouACUWXVmQ570L2II3bBw3v6jnsrUnBtcfP++rtCDjhAnYrbm54l6ntfKyCbQx/CaPAA1Eza2yhq48mUGe5guy9z4dPp2QUacc0pBhdy9u
+ wBZY2PYp
+ RRH6Fgcqn98MyIVsZ/dn5+suwLbihvTzOMKdBxIrMaMiSShra9Nd2jz9GVtqYFlrBnuHp6yf3ZMUq+f3yifvs3kG3N4Sx6CUzGc+PSoR+R8P612NCBojCImp0ZDXE7phv0TMTnVHfXHYGTjtHaLJtWn22wqpBXbjcIM3XtyodxYqTYMDhZy1A+FTZq0okeFjoRuTMmPBUpf0Rf6ByOBnKf73Xo/jdV0TYnHGo5NcjDWxeXY4bSMdvW4b4oGTJWoIDnkvPlliCUNEmMatF9VGZdc/VkxwVyJ2dNa2lnYkWS0Sb0fQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,19 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 01:05:55PM +0900, Sergey Senozhatsky wrote:
-> As a side note:
+On Thu, Mar 19, 2026 at 02:14:00PM -0300, Guilherme G. Piccoli wrote:
+> On 19/03/2026 13:34, Mike Rapoport wrote:
+> > [...]
+> >>  {
+> >> -	struct dentry *root = debugfs_create_dir("memblock", NULL);
+> >> -
+> >> -	debugfs_create_file("memory", 0444, root,
+> >> -			    &memblock.memory, &memblock_debug_fops);
+> >> -	debugfs_create_file("reserved", 0444, root,
+> >> -			    &memblock.reserved, &memblock_debug_fops);
+> >>  #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
+> >>  	debugfs_create_file("physmem", 0444, root, &physmem,
+> >>  			    &memblock_debug_fops);
+> >>  #endif
+> >> +	debugfs_create_file("memory", 0444, root,
+> >> +			    &memblock.memory, &memblock_debug_fops);
+> >> +	debugfs_create_file("reserved", 0444, root,
+> >> +			    &memblock.reserved, &memblock_debug_fops);
+> > 
+> > No need to move these after PHYS_MAP attribute
+> > 
 > 
-> On (26/03/19 12:44), Sergey Senozhatsky wrote:
-> > -	slot_free(zram, index);
-> [..]
-> > -		if (huge)
-> > -			set_slot_flag(zram, index, ZRAM_HUGE);
-> 
-> Original code had a bug.  slot_free() would decrement ->huge_pages,
-> then writeback completion would restore the HUGE flag, so when slot
-> would get freed for real slot_free() would decrement ->huge_pages
-> again, leading to underflow.
+> OK, your call, will change it in the respin as well.
+> Thanks,
 
-This should also go into description of the patch.
+That's actually more of a rule in the kernel: don't introduce unnecessary
+changes :)
+  
+> Guilherme
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
