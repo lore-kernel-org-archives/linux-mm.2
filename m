@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC51109024C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE563109024D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:08:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87FDA6B0530; Thu, 19 Mar 2026 12:08:23 -0400 (EDT)
+	id 2179A6B0532; Thu, 19 Mar 2026 12:08:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 856F56B0532; Thu, 19 Mar 2026 12:08:23 -0400 (EDT)
+	id 104506B0534; Thu, 19 Mar 2026 12:08:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7942D6B0533; Thu, 19 Mar 2026 12:08:23 -0400 (EDT)
+	id F0EA26B0535; Thu, 19 Mar 2026 12:08:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 624986B0530
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:08:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2ADE21B8604
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:23 +0000 (UTC)
-X-FDA: 84563294886.25.BB148AB
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0A97D18000E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vD3KZPJC;
-	spf=pass (imf06.hostedemail.com: domain of 3ch-8aQgKCPUgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ch-8aQgKCPUgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D55E86B0532
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:08:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A16831B85DE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:24 +0000 (UTC)
+X-FDA: 84563294928.26.04523AD
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C7D64C0004
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BaFqk0Jk;
+	spf=pass (imf10.hostedemail.com: domain of 3dB-8aQgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3dB-8aQgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773936501;
+	s=arc-20220608; t=1773936502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I83H7LOQRTTShg4dUTvQZW36KKHx3Zyf+FuXAIrcoEk=;
-	b=bD/wLTo6vBT6V8n2L7+X/hKzSVH/7Sl/hrSDl5BIyeX3685Iv9T7NF9UkzFDnJgFFs5CeI
-	32iTJih4pIETdcEV35SvQd6clMrhdMuxYI9CaCkx+k7GBK00I5Dbrv/kwFW+ogCAz56Maj
-	TkAmyIWJm5zr/xoPIEo3p7Pn/7z+gqw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PW5D3P/yH7ZM4fd9U5FDHBCN6E6TiesVaLAHRbrJtkU=;
+	b=0R6q4uIth981XfIfPA2hp2SkfiIVxx9Pm7dg1sj0JSR1EampKg22ZTrZyhqV/n7xHu+gQX
+	RxSWBy63sEcB5V772Dduj2M39pipHiCjPnILSghJ/tfntHPF/QA2+tA3w+gGxZ/E46fWPp
+	Efu1rwzYZXDuynwzKxv54njSaUQccJI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vD3KZPJC;
-	spf=pass (imf06.hostedemail.com: domain of 3ch-8aQgKCPUgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ch-8aQgKCPUgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BaFqk0Jk;
+	spf=pass (imf10.hostedemail.com: domain of 3dB-8aQgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3dB-8aQgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773936501; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773936502; a=rsa-sha256;
 	cv=none;
-	b=mSOR9vLYcuNBC60YFz+0RC+LfLAig2xmPNzhzORliSqiQUiZ37azSXAyxKkF1y61pyFpmu
-	IeaXxNbY5T2daB6iW5xsiUTmNcInlek5xyjcbBvdtG9Xq6qWlXlNIFXPndPuzHGJufnses
-	jhTB+OgmuJlUKFR8rQq7kHML5qLUurE=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-486f830f4e4so11321205e9.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:08:20 -0700 (PDT)
+	b=Bu4pMhhPfTq0g4edZSzEpvByk41RFgL7v3mNQ/NtWkg/fCsOznF70FmCZN7bv1VoCXs/Gy
+	xcQpoOqInSA5vMblc834CVhTlvvcEI28l5ySHDmPk0Pww6MdZ38KCEBp0w++R8lG57Qn43
+	R5Gcyt1PrefoaDxE6dRgXgRPQQGeJqA=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853466655dso13756295e9.3
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:08:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773936499; x=1774541299; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=I83H7LOQRTTShg4dUTvQZW36KKHx3Zyf+FuXAIrcoEk=;
-        b=vD3KZPJCfDus3+jUE3hmk6cw/57BCTHHhzLPbhdmJDzFlBT2wGQ8sJDmmgSvB1lAkb
-         P1arsioECC8h+PzJQ/tHyq9EAB1AoFYJZ3o5i0fgXqqdoGpZN2CMjJto6FTpG+YPPYjl
-         4yY1f+cFQ7aau2O/VCmLixtI810W7Ar+/bt6BJ4vSwFRB+3uemDI7ZKgLfEIdEmTy818
-         gr9GIPfj0c8Aa2XXLM6felyaTpOFbCpciHOIijUUW7f2wciCL8cV+XWj4ugY719SDK4Q
-         nnupT3n6j8o5zTvbJoMHMKfgJIjz30CKZU7G1uhWUHbsg09SPrt7RNfkE76IUb104bWe
-         z3VQ==
+        d=google.com; s=20251104; t=1773936501; x=1774541301; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PW5D3P/yH7ZM4fd9U5FDHBCN6E6TiesVaLAHRbrJtkU=;
+        b=BaFqk0JkZ5aOKJbgB0drT8RbpfEE6BOYXF8HKkGCcLyFIFk49XxF4SVIyir/vwoFZY
+         ZxTOfczKgOcRBN6VonLTbQkNoAkaAaHHXtlk6/BpTzifEHxWb6Msoz30996eN0m6qZ4R
+         NI1G4D3XPrc9kAGEOyyssb2vMRVsKZc6D5sWeKNP9OzEtXt4IYXoLvfFw/+BStCecma9
+         tP34Su8p+7pG8VGZAM8LTcakvgF6YhEz6fFYqWjsoilq8v+Ytf4l4sId0rrb+ipRrzcT
+         N3WaIfVRxuM7y5DMuyHwAWk8or1EDuMRT05pL63lWZ6dS64Y4zmL6Gx8nNBkyFySd9yT
+         mRLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773936499; x=1774541299;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I83H7LOQRTTShg4dUTvQZW36KKHx3Zyf+FuXAIrcoEk=;
-        b=E3HdNmFfWsVVjVYQjYduvHzL6z/sI2bkahrhjtCIVfoNYvqPdX223pTB73TmQ5tPeP
-         sP5C0nfXluXaBnE39RWk7ZE5Fx8DHSJT+WP+P+rxUIY3BMtBiTbHBGA+GtZuDrP/UIiy
-         rPbsUBT15/N3iG2sbzVxdYmti2kT2KLcr5qhi+clbhw2M42eBY1B4yz1tzh3YUYpUqmN
-         OoqgJvYNX8f3RjF2tTqVcvsELsOieYb9yPLe/aJVolkoAY6mpB1iHp1mfaeV2bTVHXF1
-         c2m+UIAz3RCVjZuHfVNMkFjj9XtSt3O/bSo+1+l9UkBumItC+hmjvn5ks2RFP8QSWVAs
-         l1+A==
-X-Forwarded-Encrypted: i=1; AJvYcCUIp94hmGsyxRfxZ52XdlPCZNTGqcYwfjy6M+pPT5soOVvO9eWU2CLzMewU+LAH+Cd6omz1RRb4rA==@kvack.org
-X-Gm-Message-State: AOJu0Yyyz54Tqh1/pcmltXusfuBKc/FumxGcc5Ex2RbAQfYJ+oJGCISo
-	nLhGOfLKO9oqT7aC0X/p9RRmVp5u88i4RLF+1XvsxilMoBtazGdYNqxYziWwpHZTnPyC54um2Xj
-	1LuMUg5Sde6o0Bw==
-X-Received: from wmdd10.prod.google.com ([2002:a05:600c:a20a:b0:485:29a1:bfbb])
+        d=1e100.net; s=20251104; t=1773936501; x=1774541301;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PW5D3P/yH7ZM4fd9U5FDHBCN6E6TiesVaLAHRbrJtkU=;
+        b=bQSFW5TZuC/OcqY0hulIsqzmymnZna1qmPYfd5PcHkevOdPz6e0rE+moBC3ToKc16m
+         +swJ8UD5Ix0iTtgsyIeiI5RZFhJpuwnaLhupVWTbiif2bdo+TiqJnD+Rqqde0NFBuHOr
+         NNJkiVimwR/2B51cjwqN3W8BprxP9Spzmlk8RYZnzRFZUCD3MyqqviPRKV+ClFnTB72n
+         YLiwctehsUVnn5Jf1rLtc71tH8y1nKLg6mptHgXnd0Vd0SVkqpso+qBjMDR3dIey8cSv
+         WLH3mgIiHkM9nbPCSiUJn5Ju/ULAjjUNddKR91kPvzU5FYYAB3dIh1kT1Zjx1i0YnaSI
+         l5jw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDWc/5dJUBfDbmKNsE4JRshcOCFXB3CS/ln3zR1AZiseOv1lBCvZ36vi3vx4rwVtRo67M0liGvag==@kvack.org
+X-Gm-Message-State: AOJu0YynQc2GKatfxOx+sADHzF8aXQ6EXJTh9dO8toWkwkPUt+AKCas3
+	5ghDNyJJkksWBOSJtKMC49goqoQHKvcSD8zYV/wJZNFxtMEJz12RpnBO1NPsYiEE+QZlbBkXICE
+	78ChAfVGiM3Npcg==
+X-Received: from wmaj7.prod.google.com ([2002:a05:600c:6c07:b0:480:4a03:7b6f])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8183:b0:486:f634:ef1 with SMTP id 5b1f17b1804b1-486f634100dmr112320615e9.17.1773936498983;
- Thu, 19 Mar 2026 09:08:18 -0700 (PDT)
-Date: Thu, 19 Mar 2026 16:03:23 +0000
+ 2002:a05:600c:1f8d:b0:485:3f65:94a1 with SMTP id 5b1f17b1804b1-486f4572a00mr138603915e9.18.1773936500294;
+ Thu, 19 Mar 2026 09:08:20 -0700 (PDT)
+Date: Thu, 19 Mar 2026 16:03:24 +0000
+In-Reply-To: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAEsevGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDY0NL3fS0AjMTXfNES3ODRAuDpESTVCWg2oKi1LTMCrA50bG1tQDBqVS 3VwAAAA==
-X-Change-Id: 20260319-gfp64-7a970a80ba4e
+References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
-Subject: [PATCH 0/5] mm: Switch gfp_t to unsigned long
+Message-ID: <20260319-gfp64-v1-1-2c73b8d42b7f@google.com>
+Subject: [PATCH 1/5] drm/managed: Use special gfp_t format specifier
 From: Brendan Jackman <jackmanb@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, 
 	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
@@ -97,16 +97,14 @@ To: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
 	Uladzislau Rezki <urezki@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 0A97D18000E
-X-Stat-Signature: hat6i4xmenw5d1y3m1mpeni5ze67dsub
+X-Rspamd-Queue-Id: C7D64C0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ekm36mwy3d4ridtj3e48xzagzbh6ia7s
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773936500-349530
-X-HE-Meta: U2FsdGVkX1+AR6CLsABsJlQHyH2keqV00H0QcPl4kkUkjrUdbSsnEgYOE85HkGJrIKD0QtEZKUPdTJYXTK5eW5U5RZYLfZze3GEDz81gJDDeotZzEBQqbwyB/0aR4Rwg6f+UqqNYH+TqrsNoyB8vigfoaEB7VLqA3OpalgzRWHcxtGU7c+PWi/MONxwmNHerTyN2L8T+XaZgGnhoru6daHJ4m0OmUoT+IUKFGR62ml36IXOsKHwNdm8W3mLjM5fNNTJdyVdO/psezqFIPDS7+1EusEKHLr1ak3t1P/c4oQbY2qdH6JtkQyW4frOvJpXhJFo5wiaKR1V8F08+MplZbJoo88PbzbBcFpXdQuX98XRhTuQaUaRBjFu8w9/ENrAL5xeu8szUDPiPKlYoYZ4z4W3Iw7ZyJS87MSVVaD2tXn++1MdVJLhg/vX78zULYdK03mK9cwS6wxKKNpl4NRG5XDbqfmkEVDll23rDRb4dhLftH7Fo+fwoh0V9cla8wpmGhR8MINgRFBnpVUNj/MsYDv60dEa9V0bKH+wN7kyB1nl296PEoxU0n2V0maKNXhYr7UAxP0EPEn/ankAWZs0FOlV9OVFkDEtsGgAqnrzYRKRFZcYnIgzzD0D+DLSSayq5cr/OVElXc07TtEKN6ECvCoGLNP7CU4qrjDIToHLwZjeubWVpmHFPEzWuw3GnFmSXG9nJZ773fYcwEIBmraT09eUuP4cGPbTfOhpi7bZWDcA/AvgOzz6kHZ1yzMjkP7maim1X9WwUF2rttvhKzT7RNjTZsekYCYOTwGMt+WLUJWs7rWeM7s6Xn9yYTSmnSASzjPj1ppai03BfBjDXmuSIgwEDNmkurL3dAP00AW922zAtayqMWMU9vTDNOFb7frZQs5COlEUNWPDkctNjedykvbBCaXXgFjDs6UZFzAJAsQtgJkddmL3D/yzr/uKuqtOOK3OHwDyUUZ9qay1nVlW
- zvpqGp58
- rz+ueC9cdoeobHuBOkdeuhkBdbfs3jgPlHRWXb2C0Q47jaicrBzW1ON+fpFzAHylW3zJ5g5wsFrQcBitB0nLYbPF47FiAaZcVv/XQ5rbz+9b2HChlhBRqwnYomn4zKUMrA1Ll/lUzkS06QwdFQ4uOV59bUpaLTI2HCPn2JYE4udQHWXP9FOhf5teHSMeaajy4aHAV5PsXO/SMlEQ+pwEi0JBYGCqKArARbw6RY7AcNZsJUL5f3PXtdk8VlI9lmaf7MXbXJ/pAOkpctkz7U5ECxj+T8Xt0Nk68y4gRh9NIIzO9w2rgmleWzfQCM/baXwy7qDe34OoI3OA0B27CnjWDjhkyZXDxkzdEyQ5qvv8pHJ4DHpeAcXlyybVUrLp4EK2yQUFuG6IXnByQ+ZTcHhVBQ//tyW48Ti2/tPcgmgLvnNeKpt1k0HMQZm4ulk6kEzfrKOhpe7FR5S2UbWZ32ewC1tqqs7/ChsBGU1T9RHt8V0hmmXm9E/3wahWtwmIqDFj7+S982YqslDAF+aPoL3QkAvng07wKh48tPHvy3Fq/r4GnFM1JVBPd+1VILTHJrEt/uhpugJ15u9hY0AvjCLbaEqcpCss5dTNrfKltf/nC5cvEiSQhz5qv1oNTGg9GRXYXpJu0G4tkfxRAlRlt+ULSb85j54OACMQlUm2Tardp83bav7x792aeZxJt+cR/3fmoCn8zGo4a7YsXz8Hu7DOufxM54Lw+mCVsvnJ8Fvfd060u9xZuca34JzS9T3rGjWd7bysFMi2N9uEMxxsqggUoqU7fXggeUvThIFgX7yqgI/ha+4g5+UvLHbBNyX2vSzjn60a27Vl5l7yolGZPu2T/bFCTakyrKvNPzGINYYK+ON7Lm081LIYfFwW18WjWkcNM2gm9TK/eTO8TdqrNjpuKZ+yIvL4ymWDyJSAFM7HwfJn58vTNiB7esEJiaUg5eMkIZ9zmBQAQpumZ8zAG3duUDnzE7ZJW
- CMZjn+1O
- ID8+EMkyLy0=
+X-HE-Tag: 1773936502-696817
+X-HE-Meta: U2FsdGVkX1+KP/HmL1KAcpPmhHP/nx2UN1jNnw7eCs3l0iSduPy+VuggcAW4FtHMxr3ibJDdRlFyPqmYhLTbPTRliNnPKniSPEjoGzTj0HhFvU4aN6vLOlFNXbkMERU6Ti60PlmJ0bWpFU/Eug7AvsNAvUOfdVmHZcaouts2EeAeGkohsEBC7v6/Mio8joalhGkdUDcJPXfdYdKiegxhsBSnjYZvb6F6UHSE3+hpzkR+wHjDE5xPJ7aU1Ie1qSFNkeT0gZhiHo/Z9SBpOY2+x4R00nw7169hJVbO9iLBKj6eB+nf5s1bgMbqFvlKtf3VQ3I+btHpqOxiJUJC2U1rHD4QOk2aK5SsrU8rTjw84zSISt2eeS2hPfQXcDOjsxEY8LexVUg9j6nu9V0UngMB8W3mKLqxOxIf+gE0YDSBFTZEoMMhhXj/TA1Fso/YkaG5PmcAy6iAyfKJYX1ao697GekvR+Y0hkE/77WLPRazlJb8HB+tmx9M71scttyn8m1CUwjUawVqkp4nBuDRELgPc0ONcsbp3LTddJ8OlovxZUAf7EFjWZl6gUySKm4n4vwmIJbeZExhLpbmUHC7F66wvrI6k0SptLDD5/krQsJPImZQ6nQbP/uXEE9+N4EOj+GJd3RAWQyl6O2aV+lJ0Goea1/1tryol5bZIdgmBU3v1brmOmQHniltp7UxUkBCCUKDd/7R59pEL1vSOp87SZ3bFfJEkaOLeKPftQVZ5ucIP0JjqZQ6WSLmmNDE+Dsu+L1wgXilOSanxQRd/N3aQ59Cm3yN+1Df4FrE41ihIBTqcier2nsDHEVMqGUAD5C4cZTePIC2klpPfjMd4kQ4wqHm6aITP+UV0v86vovJ/uOA/34XozZ5SFjQf0JFyPsIYBJNFUE2vfdEcEloMF5wiYSM8G6m34h+XVOsYPfExQ/DftNrOVAMptyAlLrZCfJwr/2Kb559tGrcD6JdAFFqHDQ
+ RpNSbbG7
+ KDU4VPNTrnci23jj9ahGt+UGC2+Zvo7rqXMbS8hm/aBUt7N5St2Tl8pD30srcnMpVfoFeRZAZbHWEHIek+Wd36A8cXHqVoj+G996UmP3XM90m8LEwTq/hM+IeCsETwi9cJ1GCCv3B+4/PBZ0IURG/C0BwbOvkXHyugDWYGwPzeVmESn4zNp+46HucyDj6VuoHZU9/Art/8tfJX4DQ/q6v7yCeu9wXjnZ15hpEshbs81SuRILHriqQuk21s1cDv/sBh+TH8CQE6CmvDkHuhUwnGKOHqmuwaPLkdfY2FoAlu5G3DTCyPqz4m7owLtJMH0Tvv6xDdyABwvworuMajahjRdySamfrYwKDbjKsKKvFfhsSMNP/tTSVSo00xkWflIqS5liBWfkZzkXeG94GYTFnV9+G5nL2dyqKk54hY/iaAlYnRdncCEQ3IVmY3NjbAnSlgLbgS6XBH7EXO1/VINjPvOP2aTyTD/GTMVZNysU5bFrJWF6ZGkvDtyjHVlCvzzpFBWfSuja4sczn1FTdVAEoCWopXnW/i/0IHkc8AF424XWvH3uFxJV+gKKr8XGS6xJNmG6wkk6cYBweISJkvSf/maYCuQihxSJnIUAVNDerH9D/YFo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,105 +112,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As pointed out by Vlastimil in [0], my proposal for __GFP_UNMAPPED is
-probably not needed for 32-bit. This offers a way out of the GFP flag
-scarcity so in preparation for this, flip gfp_t to be 64-bit on 64-bit
-machines, while leaving it 32-bit on 32-bit machines.
-
-For mm-internal code that prints raw GFP flags as hex, this just updates
-the format specifier to %lx. Presumably developers have a reason for
-wanting to see the whole flags word as a number in the log. For printks
-outside of mm/, I assume they are only using %x because the authors
-didn't know about %pGg, so they are converted to the latter as prep
-patches.
-
-Stuff I've done to try and find issues with this:
-
-- Built x86 allmodconfig and arm64 defconfig. Hopefully the 0-day bot
-  will alert me to the important builds I'm missing (I briefly tried to
-  build s390 and sparc64 but ran into tooling issues and gave up).
-
-- Ran some selftests on a x86 VM.
-
-- Poked around at stuff that refers to ___GFP_LAST_BIT to see if
-  anything looks wrong.
-
-- Ran this Coccinelle script to look for explicit casts to plain int:
-
----
-virtual report
-
-@r@
-gfp_t x;
-position p;
-@@
-
-(
-  (unsigned int)x@p
-|
-  (int)x@p
-)
-
-@script:python depends on report@
-p << r.p;
-@@
-msg = "WARNING: Explicit integer cast of gfp_t"
-coccilib.report.print_report(p[0], msg)
----
-
-Obviously this series doesn't "do anything" so maybe it doesn't make
-sense to merge it unless it goes in alongside __GFP_UNMAPPED, but it
-does seem to make sense to review it independently so I'm posting it as
-a separate series.
-
-[0] https://lore.kernel.org/all/6206d021-e6c2-4899-b426-cacd71ebd5ef@kernel.org/
-
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Michal Hocko <mhocko@suse.com>
-To: David Rientjes <rientjes@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Brendan Jackman <jackmanb@google.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-To: Hao Li <hao.li@linux.dev>
-To: Christoph Lameter <cl@gentwo.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
+%pGg produces nice readable output and decouples the format string from
+the size of gfp_t.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
-
 ---
-Brendan Jackman (5):
-      drm/managed: Use special gfp_t format specifier
-      iwlegacy: 3945-mac: Use special gfp_t format specifier
-      mm/kfence: Use special gfp_t format specifier
-      net/rds: Use special gfp_t format specifier
-      mm: Change gfp_t to unsigned long
+ drivers/gpu/drm/drm_managed.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/gpu/drm/drm_managed.c                  | 4 ++--
- drivers/net/wireless/intel/iwlegacy/3945-mac.c | 4 ++--
- include/linux/types.h                          | 2 +-
- lib/test_lockup.c                              | 2 +-
- mm/kfence/kfence_test.c                        | 2 +-
- mm/oom_kill.c                                  | 2 +-
- mm/page_alloc.c                                | 5 ++++-
- mm/page_owner.c                                | 4 ++--
- mm/slab_common.c                               | 2 +-
- mm/slub.c                                      | 2 +-
- mm/vmalloc.c                                   | 2 +-
- net/rds/tcp_recv.c                             | 2 +-
- 12 files changed, 18 insertions(+), 15 deletions(-)
----
-base-commit: 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
-change-id: 20260319-gfp64-7a970a80ba4e
+diff --git a/drivers/gpu/drm/drm_managed.c b/drivers/gpu/drm/drm_managed.c
+index 247f468731de0..a9da94319b052 100644
+--- a/drivers/gpu/drm/drm_managed.c
++++ b/drivers/gpu/drm/drm_managed.c
+@@ -232,8 +232,8 @@ void *drmm_kmalloc(struct drm_device *dev, size_t size, gfp_t gfp)
+ 
+ 	dr = alloc_dr(NULL, size, gfp, dev_to_node(dev->dev));
+ 	if (!dr) {
+-		drm_dbg_drmres(dev, "failed to allocate %zu bytes, %u flags\n",
+-			       size, gfp);
++		drm_dbg_drmres(dev, "failed to allocate %zu bytes, %pGg\n",
++			       size, &gfp);
+ 		return NULL;
+ 	}
+ 	dr->node.name = kstrdup_const("kmalloc", gfp);
 
-Best regards,
 -- 
-Brendan Jackman <jackmanb@google.com>
+2.51.2
 
 
