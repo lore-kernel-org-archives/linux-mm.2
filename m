@@ -4,135 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B73931088E74
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:38:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A65FD1088E60
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:38:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07AB46B008A; Thu, 19 Mar 2026 13:38:40 -0400 (EDT)
+	id 1B35A6B0563; Thu, 19 Mar 2026 13:38:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0532C6B0092; Thu, 19 Mar 2026 13:38:40 -0400 (EDT)
+	id 18E676B0564; Thu, 19 Mar 2026 13:38:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAA796B0095; Thu, 19 Mar 2026 13:38:39 -0400 (EDT)
+	id 0C89E6B0565; Thu, 19 Mar 2026 13:38:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA4126B008A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:38:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A710B1B86A1
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:38:39 +0000 (UTC)
-X-FDA: 84563522358.22.3B45661
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 66EF2A000B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:38:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VAVl+l+b;
-	spf=pass (imf25.hostedemail.com: domain of jackmanb@google.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=jackmanb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773941917;
+	by kanga.kvack.org (Postfix) with ESMTP id EF4566B0563
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:38:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD45C13B53A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:38:57 +0000 (UTC)
+X-FDA: 84563523114.12.EC49776
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 75ACC1C000D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:38:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bQt4o9D9;
+	spf=pass (imf21.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773941935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zxmi0b/yz0op9eymPAUdVtUuKPtdgHkFrJ50beg8bvE=;
-	b=c8LSf4XYdELrroxICzTPNMucAoawfIDruk5vrwRoCr0xRSpfI/xqZteHEO5V5qlxQt9/rj
-	XtcsrUfTaXey3ePjTya53IUAQ186CRa3zgba30ggmeztralPH25FlTBUD9s4Fu5kMrplsB
-	OkAOdlWJ2B3n2NVBjfKx/BEGcWRggdM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773941917; a=rsa-sha256;
-	cv=pass;
-	b=bhE/GV0uFHakxaCfJOLcIxdKDbI8kjlf0Xhf5oVF2xzuAGxgXd3bOMh2XoW4a2MergMBTr
-	ymBtCWkXt/9vvlRN/xU6KYx75RRLJTeOZn5ZjcdhtYAZMuCjAQ6Kgr8OPUAL1qT5c1HCrd
-	JKfhHZyI4fStpKEdP08uhmj0bXjo8n4=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VAVl+l+b;
-	spf=pass (imf25.hostedemail.com: domain of jackmanb@google.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=jackmanb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a12d3f8bb4so514e87.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:38:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773941916; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QcNqoMrGFPZLpw9QcaOm/HJVdJBSoQ4ZI4LUrm1ZQeRe7UNxatkL7ywXu2XSVWoR0N
-         v1/+9Q/Wu3vUcAL1LREWjy/gn9x+49MoksqlZ87RKCC2F3FAS8yLsfvTp6+EZ1l3gy7A
-         wOx78T7QnkWOEGR6Wzap6g/Vw9pBBsfBneDA10pJ1RKD4VgrojwXK61AUyVpwMHacZcV
-         V66udXlX6J+iYrd+2eJFv3kXbaVEbe4f5yNShf/EdJVHlIlN0BZqcpYdYL/ZhNtkwsXQ
-         RzNiYfSxxRbIJWxLx7fWQim5IMNSYMSqyUI338sjNWsdul2SbY2QNsupaRRQbKxpXok6
-         XR7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=zxmi0b/yz0op9eymPAUdVtUuKPtdgHkFrJ50beg8bvE=;
-        fh=BZscXrI4PreZKRQhFvwSTWo8c1Jc7HCX1l46dlkMBHc=;
-        b=Ng8cGk0OPpqt13viYSH7+m8rA6YnfjrQ3v1Mognh9bhkmJhlP46zHlXo7Cl68gvmRN
-         Ft67qwLo559zn032oNnOKeXTRn8mTNTYxe1Ph4mDwcXHO7lwbmIUHh78o4fHgBhGo62v
-         tQDwHEgv6Hee49WjJJzx17teeDHrUAO9e9uCDXuA2bd0U2592ALgOCwO8AUnumrJzP1v
-         xU1NtXnrwj31Wj70d5RR1Yzq+W532al+s0p2aCj++tmv/QjHzv2Yn1uRDy2HRgl7Wd5L
-         G8GazIlMF+yxXNHFSSD0WGfD8bySrwUF94DaJGoWcWZtg+23VCQWYhkSXN4y8s3TkPY2
-         yfrw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773941916; x=1774546716; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zxmi0b/yz0op9eymPAUdVtUuKPtdgHkFrJ50beg8bvE=;
-        b=VAVl+l+bBpWxHq10gGrmFGxZSXlqrW/w5sFrtoiNO3NuxNSQHDal9mS5GjQqv2YQFx
-         WrEUnEBGlDPuFI5OJ6Ae52RUfOXKsOISL522cKhA7pAgxd69t8hTKGu+YPsyYwRiXPmQ
-         ka8hEU+tCC4+6K94r3CZguFFsYg8OVmTv+hxH06T4xoBx9ElOgX8o5w2wU09cj8+EOWb
-         CEoqY2jvjPwMCRrK2uYOh7fx5VrNRsJok+mL5vCqQcDzfLKmjV1pR0GKjCUSiepILHE/
-         XO4+7AD+2g6C/PsGAEMCvA1I/S1pVhDFpQHPc2eF0gjPgJuzqQ18IY/oMBfhiteDxpLS
-         9dhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773941916; x=1774546716;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zxmi0b/yz0op9eymPAUdVtUuKPtdgHkFrJ50beg8bvE=;
-        b=G+boNBY0Z+UZbHqHDGd8V8t6S9OLRxKntBFaS4PHe1tb64YRO3EtseI36KSJVTyFs1
-         JqiBxfe5dEnyOilpAYJIxWQM8WH79Jyj8ZdjngouM5JzxVKrcQCCicdTL4cBD103DxIH
-         xR6lCMLwlKsPmeQ7G0QEfkVqzQBqRxvRREKdcP9KGPeNiDjjP1B7yTu5hT6Qd3vMpWUa
-         2QOXlRCLL3cUwjhlkh2jXzpY+/wwUhqQ8ubOowObW8ukgeQlcsvB006xNj9PR4azVAbW
-         5xFCW4escEXlYoM1NytExZ55OI6tDNwQFBQ8aCfB5IWPuaKK1Qsn58rla1FA36X67iC3
-         1tMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsWtMVIYx7Cc3iJqBNPmPHBLt5vYsHJ4o7QOFPMvmfLhS4BMyAZ0xaJc1A6WYHOjz7ANf8w8WCOA==@kvack.org
-X-Gm-Message-State: AOJu0YzUjITYF6ULw9pDPmzhFqeSxx1dfHa7+8ytLiWSiP2zBzrwW+XB
-	HyPbHL95L8V5k3b6jEUGXjieTXenRpIo4VQyCIt8R49rfGAz5nZS6hekJgHJzuWneyXtBkVN4OX
-	KgP12LSXAtZGbC+/RWc0+bPrZZx7wsPpu5JoYjaEm
-X-Gm-Gg: ATEYQzyaag8OZr7WBxb2rwSwUS/g9oPDdT27KR3XRqZFHsLQy309ADJIqv1EPgj+55w
-	w1jZcLR/KjfOrvzzHAdcZYJgijcLetT8SBx06IY6zBQrx6rM1M14bW4ttN8SfMFC9yt6GFkZU3R
-	V7gqewEhQuiSgzQr/YLaSqUXfbE6VxRbclxwAZSruHflZBp/DoyH0Lw3Q8UD4HaflJLrbTkWkfe
-	AHVYOwuISumQtZTueR+E3VIXsk7944zg8ycXoZdBKXjWwl0pH+DvmW9XaIW8Nm++bbdR3FKDAnd
-	sqqjj4Ay7JiaWmOnNv8buN7TBd+fAf3YpdM01YgBsQ==
-X-Received: by 2002:ac2:528a:0:b0:5a1:27d0:73d with SMTP id
- 2adb3069b0e04-5a2855f763fmr11330e87.0.1773941915046; Thu, 19 Mar 2026
- 10:38:35 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GolfCpcwvGX7ESq6QSakQqV8SX3HQ4CiS3Tfxd8agvs=;
+	b=n0ThbFEoRckAj+x9ZWXVFUmmrqn8jQ17/fNSEamocRaRAM4orJ9EPOkTq+LvGm12SYMjkt
+	cqtxezjgJyEGORQ3ISNyEa7u8YTZPEziVY8KwLnvyCBOr1Wug6wLLCdeTlgbAKCS+a+Ytc
+	mYHAjOjSOkZIfV7SDY9RTuHbMeS4iek=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941935; a=rsa-sha256;
+	cv=none;
+	b=FGSwKhxDWjHHvQkO3WtNN8PUEcNl6d9KP6Sv0rAu3MUMQ77mNbe1PTQg9QsTERr2KeYe5+
+	owuTc33ynpwS+nDq3wmoNBDTjeJQjMLz/K0aJV1oJaL03Iw4r9lGfcVH7bOzW+bFkyEMKQ
+	13ftGVYMFx8of4uLcmNVoFwSQBzaFvI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bQt4o9D9;
+	spf=pass (imf21.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773941934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GolfCpcwvGX7ESq6QSakQqV8SX3HQ4CiS3Tfxd8agvs=;
+	b=bQt4o9D9xZcMYHBCHuVEe2AqGX3gRINQ9b3N6oEJKE0KDk39ompnflHoFe1QP6Jx6httJH
+	h/P3YKJTY60YetbBD8RhoYtW/S0+XpMVvW1eYHTqw+axmwK97GUveqoJLNtDbRtSOeTPEG
+	9zxpASNNUGnFqgGHBe1qgAVnjtk/fT0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-oho6wAX6O5KCaQuvtplSuQ-1; Thu,
+ 19 Mar 2026 13:38:51 -0400
+X-MC-Unique: oho6wAX6O5KCaQuvtplSuQ-1
+X-Mimecast-MFC-AGG-ID: oho6wAX6O5KCaQuvtplSuQ_1773941929
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B87518002CB;
+	Thu, 19 Mar 2026 17:38:48 +0000 (UTC)
+Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.80.194])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EA7F430001A1;
+	Thu, 19 Mar 2026 17:38:43 +0000 (UTC)
+From: Waiman Long <longman@redhat.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Sebastian Chlad <sebastianchlad@gmail.com>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Li Wang <liwan@redhat.com>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 0/7] selftests: memcg: Fix test_memcontrol test failures with large page sizes
+Date: Thu, 19 Mar 2026 13:37:45 -0400
+Message-ID: <20260319173752.1472864-1-longman@redhat.com>
 MIME-Version: 1.0
-References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com> <215517e5-a49b-4eb7-824c-8c42e4db046e@kernel.org>
-In-Reply-To: <215517e5-a49b-4eb7-824c-8c42e4db046e@kernel.org>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Thu, 19 Mar 2026 18:38:23 +0100
-X-Gm-Features: AaiRm51ReH28GS8eypWtXXz5qbVr-s5lM__ht0Ottf-Wh5rZqfZBVxcZKaXtLNg
-Message-ID: <CA+i-1C1g=3_nK=Xq+OV8KU06YDo18ZaDJqbkfp21Z8G_cnkQww@mail.gmail.com>
-Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Uladzislau Rezki <urezki@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 66EF2A000B
-X-Stat-Signature: 8xozhfxxuxry5w68airunhiqmhtjoxpf
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: Qyw5csg8Q3SYGLK3fr9MNVkd7vWrlVtftP24Pj5qlWc_1773941929
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: yszdphpa3spxzqk7powtc9ikxj7xh74e
 X-Rspam-User: 
-X-HE-Tag: 1773941917-614716
-X-HE-Meta: U2FsdGVkX1+2E0+MLW8O/UJX1EdBzUHx6TAQIme+8P4TPzaJl+LY9oHaGszuRZKJAKhvJGUafZo37CG7j6wO4Tks4GwqTLMGh1ZFdMKPKs7qUrpbK0szFSK6wOSNvD40vFvRthQy+wlBTaLEGWzrBGgUISeQCqj3gbRFMyirqrWkddVTOZFcpQV68aO7zTRZpfJGwYbtwXoaZs8fDFvduQMkVunRPGBpsOZVoMuCUn5JlphZvXK8np5PshwPTuibMxeCKYTuWyE+JiIkAFfkPwMzUMxKGbJgwyJX/rz5KGbxiOJmXjwM+kzrtFOV32SBFWtt0NHc6Lxlbl/ATwhLbfJl1bJ3W93VK+8SIVK0sl88XOjXeLmNhWT9KB21Z+RN9LD4jhjmsJu6EkygRrowkPRQckbpMoLuCltbPyYNq6Gh6egXFGankLTmS5S+sg85SglSFwuA9c70oYDZCweBenTkyuq7Og7eDL8xTOEXX0n3jBcNA4iELOwQ5drSL0vDMGOPArdK6ZvEbgnIggF7dr6+GMNX2NqepH++8lXsBHHq9ZEaDjhNYehbq0MPdSeUMvSc1o0lei+RfaN8SXSXnenlj1TkAOyoT1MqLsS1SLhGloqNP6uNNXE+ktB/u4jR1cvjNCXZjVIVPNoV2KDI/P+UeqqruTan1XdnJ2mr6AAdF2xnJ4QyoEMsznuw/t3XP4UgnDuMt1Ie6Veh9XrmZDRaSZm6KD45JRF+ntnc/w2JPen8Lv2XwjD4VYf3eHpnTPiz7mYIXWHOYLRzlyq6ah1NSFVrXwhbjEaG/zigKM5nbXZRGSERFfWs6+crCQyzJVtS2OppygdKYZb/rHhvSIDCieEesOenVQONhLKQdl90zNPHoim4HRyUG/wXHmWjKf0C9CoeLYMRhxus/jHlXdAPuXoUdtmEaMZRbwAgki2QtrbvXlgjPGXQQ3sSnh6ETFZTKZpUQaQrg+In8Xn
- ljRmODp8
- PC3kqVPRk7/g1tmdNO3yq95xrCoIVhleRh0ZcDE6yzCMJ/gCbOP4jv5yi3kkgEd4cruvjOXNfaGqsbn545ETWtC9tuJc35MLpEmOzkF4vzO14ORMI76o1Mrp8pxXqaKAe+kPjnsvzjqbITjKrclxBp2dEThViTFhVyyie5I3kBTHV0TbyfbPqol9nxFktooyeL7xLjrdGqtABf7TtSpO4XK/lbu3hCFQqORKHnedRv3xJq4RsCAdauySfzyOzit/EB+sAZzyqTsVAQ7SiF7LUCae+RXiUXekKP3wvNg4TMNkJ/3NhQ/JbqzGOWrxbXaLW6ipw+c++CPwIp/5F820ex/ZQRLaRfTLg3wzr
+X-Rspamd-Queue-Id: 75ACC1C000D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773941935-164458
+X-HE-Meta: U2FsdGVkX1/gXtvGmOXz2cjcG6hTCxqEhyXEMchmRk9+JFQYHvejm+3+PxDfzZ58q3sDql0OyD+5D0IDEqo/7NbswCT0PHTUOZ9SPin7wmrwW3LkdjO2I0Mu7cOU5YckR2nZNc9wCt5409HNzmPKAwO8a7ykNqIS4MIt/ts4a8NHcZN8cDyiCT4sfdaqdCtt5Ors33TqnoTAtgrSG65iinyt2/1qcxAGj5iBki4ahyeo4AliqfhwX2IcheB4D3vmJo9xLCRAhRaMcvgUFll0qBGYRKcyovCEIGn0sp1Z7V+CdV4tQ+bQDwZHARX9wQzxbKWFQMtcBbJHqOq0fYZEs+imk1uacupnsbY096Xv4JccwG92Z1D+GeG7JEIAFTDPzO0VUL5+8Esk65vuBlzh6AbD2mj3Zl9Y3/AzMDM8iEt/ii+73h6CvQ6p97LpraDsuJexz5BWpPov9iCVn9SCxhsiw1U3CZBHSslxN6ZrF0UyBwi5p1BeU0J+f6jVa6jDdJob7SM0RjOdA+/5Y+A1C0EgLbA7WFwl25nHHqWhU6pjm+HJySUuuF0SxHUQXN/Bw+UgxNs4ahTHzPHl3XJDG+YP8d5oQC7deFBoHvmR7DriNE82z95ZkOSjpQRXqJ/QCM60+YJ+U+eXN95kBDWnSmenE1qj0u2GL8K5lnVvhhX0ODDgzYcW9bu2XB4QpAMX1mT/cjRXwolw7lDqbtYWFQsY3dKdL2VS5LV65N81d0uwvPd5klF69k4ZelC8zpqkJxaFq+gi3MlKsHfJMQQ9k2V7jDV0Cwo8s3tkA2ZKPswFyzR/wRTvYey5zPbvfLYLe9W6MFJtlQTwq4eAqsNJiypDyUrUGPJD6UFCLFj3knIZvZgSQHpkutTSVjPoXy+CaHUvZbRchrpmv6I3w9M8ZaE2yUV5TErgCipJ3ECWwuXfNsVw0GvtplrZdgYtYN/OxBLoMaiIPQHeNcizIMm
+ dYGOa3V5
+ xGzoJ11Mb1D1jEB3APW4ai1ZBL+8KjvLDS07Anvwjpd1sHQyUi6upU/A5gNYGhimq7mpMgA0wdwfraWSx9UnEm1ibwDnI415yK0ZloN/Sy8zeHDM7PA/iwndnN/W6LvmstqVe1Dqiv/I7iSWGWhDGCGoBC5Ux+36KArnOkJPbElvffvhUl6a0DttMwjH6y8/TtwmV+zya9TP0meWpQX8yqM+BU3FKzucNerkduOgu1xKOkhJPZZ5PzP8n0ouoEYURQ55zHYtjhwFpAlwj4nY9/NgTLf8SrjHHpWj7rk2C7pbQQmvPIQnsw/sF1heRSxWq6Cy0K/itoaOklmB4k+c21NYVWi3+N38iTTZdT/tNaF+aY1Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,29 +118,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Mar 2026 at 18:03, Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
->
-> On 3/19/26 17:03, Brendan Jackman wrote:
-> > As pointed out by Vlastimil in [0], my proposal for __GFP_UNMAPPED is
-> > probably not needed for 32-bit. This offers a way out of the GFP flag
-> > scarcity so in preparation for this, flip gfp_t to be 64-bit on 64-bit
-> > machines, while leaving it 32-bit on 32-bit machines.
->
-> Thanks for tackling this! But now I'm wondering, if we decide to change it,
-> would it be worth trying to add some type safety too? To help with cases
-> like the recent kmalloc_objs() footgun discussed in this comment thread
-> https://lwn.net/Articles/1063356/
+There are a number of test failures with the running of the
+test_memcontrol selftest on a 128-core arm64 system on kernels with
+4k/16k/64k page sizes. This patch series makes some minor changes to
+the kernel and the test_memcontrol selftest to address these failures.
 
-Do you mean something similar to pgprot_t?
+The first kernel patch scales the memcg vmstats flush threshold
+logarithmetically instead of linearly with the total number of CPUs. The
+second kernel patch scale down MEMCG_CHARGE_BATCH with increases in page
+size. These 2 patches help to reduce the discrepancies between the
+reported usage data with the real ones.
 
-I did that in [0] but I'm rather sheepish about it, I only went for it
-because I think it's especially needed for the specific "type" due to
-the migration path creating a high type-unsafety risk. And that was
-totally local to a few files in mm/.
+The next 5 test_memcontrol selftest patches adjust the testing code to
+greatly reduce the chance that it will report failure, though some
+occasional failures is still possible.
 
-Are there common issues with gfp_t in particular besides the
-kmalloc_objs() thing? If so then maybe it could make sense. It's not a
-problem I've ever run into myself though.
+To verify the changes, the test_memcontrol selftest was run 100
+times each on a 128-core arm64 system on kernels with 4k/16k/64k
+page sizes.  No failure was observed other than some failures of the
+test_memcg_reclaim test when running on a 16k page size kernel. The
+reclaim_until() call failed because of the unexpected over-reclaim of
+memory. This will need a further look but it happens with the 16k page
+size kernel only and I don't have a production ready kernel config file
+to use in buildinig this 16k page size kernel. The new test_memcontrol
+selftest and kernel were also run on a 96-core x86 system to make sure
+there was no regression.
 
-[0] https://lore.kernel.org/all/20260225-page_alloc-unmapped-v1-8-e8808a03cd66@google.com/
+Waiman Long (7):
+  memcg: Scale up vmstats flush threshold with log2(nums_possible_cpus)
+  memcg: Scale down MEMCG_CHARGE_BATCH with increase in PAGE_SIZE
+  selftests: memcg: Iterate pages based on the actual page size
+  selftests: memcg: Increase error tolerance in accordance with page
+    size
+  selftests: memcg: Reduce the expected swap.peak with larger page size
+  selftests: memcg: Don't call reclaim_until() if already in target
+  selftests: memcg: Treat failure for zeroing sock in test_memcg_sock as
+    XFAIL
+
+ include/linux/memcontrol.h                    |  8 +-
+ mm/memcontrol.c                               | 17 ++--
+ .../cgroup/lib/include/cgroup_util.h          |  1 +
+ .../selftests/cgroup/test_memcontrol.c        | 83 +++++++++++++++----
+ 4 files changed, 87 insertions(+), 22 deletions(-)
+
+-- 
+2.53.0
+
 
