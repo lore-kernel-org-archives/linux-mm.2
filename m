@@ -4,134 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A28E5109024E
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39C6109024E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65666B0546; Thu, 19 Mar 2026 12:24:56 -0400 (EDT)
+	id 199286B0548; Thu, 19 Mar 2026 12:28:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E15E16B0548; Thu, 19 Mar 2026 12:24:56 -0400 (EDT)
+	id 14A5B6B054A; Thu, 19 Mar 2026 12:28:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D049C6B0549; Thu, 19 Mar 2026 12:24:56 -0400 (EDT)
+	id 0603A6B054B; Thu, 19 Mar 2026 12:28:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE8376B0546
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:24:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7CF96C1FD2
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:24:56 +0000 (UTC)
-X-FDA: 84563336592.06.C400B8B
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7AAA640006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:24:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="CtAWe/VC";
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773937494;
+	by kanga.kvack.org (Postfix) with ESMTP id EAA9F6B0548
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:28:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4A841DC67
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:28:40 +0000 (UTC)
+X-FDA: 84563346000.02.3500492
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C1A6E120004
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:28:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=qVsoVvGZ;
+	spf=pass (imf29.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773937719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uRmUYJQvplrsWyhzINHBTzcIH6dU/MeHfwdfEmtD8K4=;
-	b=xy9wG/oMEXVicn30lnkfmm+QPEMVnnqT3/+cEk4muzdd4vrtUNiL0INKDtNQIJz9enMTLs
-	RUCBMCnuWhIKoM0ArcAFGTmPXZmtsZmQiqo384c27RZ3/ssIYEGgiWUwPicoxF/YrIMKID
-	rvYduJhwFpKma6WtcE4lRN1h9mJ9DTs=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="CtAWe/VC";
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773937494; a=rsa-sha256;
-	cv=pass;
-	b=qP8ZUvTrVvBFNZugW0oK/LogtQABb+lR1CIsBkd4KZ9zjgF5J5Zn4G88H5oTYvgtUMFHr+
-	qMRrtb02yMzQ78mVrV9OtJvyFFjQAM1f60MuwAK7nc8JzVjdV11UMhGBI4o9UntzpPNjza
-	rNKmNlA7a0OAKiZtLegGg6O7hVwyibI=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-667952fd262so1922838a12.2
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:24:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773937493; cv=none;
-        d=google.com; s=arc-20240605;
-        b=U6TXEJutNnF990jbG5NMBkgspQVTrtuGJVii881TAWbFx4g3NK8g+wx0uGGtG1GdKC
-         1NGub7xD1fbKj/RuHrwxdrTgBt7cm0ZrhXfub47hwtLqiEobEb97/QJRqIh786jk/l9k
-         Od8ZYk4G+zHczpqa/Oll7RDNRd86JsT4WrLOSobvUYsCaWVtQUixrowMpNLI3vpxJZP4
-         aJVsgKa+eNRBs3O0bsNmykNqy6G4KCQwDnYN2n/r9YB2fIbm8eAZ8K64H/AtGY86vjw+
-         fcrxygvc/u2gKA2M4uiy95vCUm1vbfwFszVzhI/iknRpIL8Jt9+DEeQEinRIamhuVFYS
-         v/wQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uRmUYJQvplrsWyhzINHBTzcIH6dU/MeHfwdfEmtD8K4=;
-        fh=qWce8Go3lJOYk8z23VnqEyg6cuwf6niTIn8+/Cqy1AA=;
-        b=l0z6Hbo0Ccgz1tqNj+Ni2CTyrU5ccstXfdnGKxqpaga2G6KHKHH6u3WTepyX8iuAGZ
-         KLHbq2ct3+QV16+rJdNCYb/4uh+UEiCk/rW9lEtU42y0GCggm3Rf+7tdlFcPjU76Jaqj
-         iEc0IiGLOLj8FA8cI2c8cOJeOXNvjm2TY6p0a3eJRllhp2Iwr80AYDpgIwVPEURdZr6T
-         f9SUNM/Vu63GrJreieqpMGCm/arTo+cM04l5rSJ4t5AhWGEeRHMIcK0tFhA8fRIiEf2K
-         81IcFVFqsTm4ZFzZiO4LTEBMb72O+FdTiMtm37AVyCkJKA/rO7zUzetI2Qi4nWGxgNFn
-         u3HA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1773937493; x=1774542293; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uRmUYJQvplrsWyhzINHBTzcIH6dU/MeHfwdfEmtD8K4=;
-        b=CtAWe/VCz12yFfeGMdPnynBWq5lA3HQYseXacfscT6vYAMDlBG6+EGQBpiUx2yOMs6
-         qZ6jlHJNfvBCR8+NYkGrccPGnqLpu+JkcFrK4Jne70F2BWTktgkT4EQvRon+HV6idbha
-         R4HnZZPk5OISBv7Boow3vYZpGaP7G9Qyh+emOr4OOGoxqzcAjaescK/1Ny1R244xtl2u
-         FGrZc6CwZDb8vrWBmwE4g5jHfVI3711hA0TeaRL8ENseKkTHZKXBpkwIeguAqYzxMiNe
-         PnChBxp6zDEknCvnIRQ3ogarFSnxn+LazPPQzCSGxxXisAOF6AZaUFDEgKSap8K7zkVF
-         FsBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773937493; x=1774542293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uRmUYJQvplrsWyhzINHBTzcIH6dU/MeHfwdfEmtD8K4=;
-        b=AZxWrmkM/XAcQ7J4Bs8BdX3qf1drknsJHMS0FwqjjX6ciZl9BWUOqETPBzmhGGSiz/
-         JDEShJhVP4pu/zqOSEJQfOqAmWEDb9clHSJPUEFng/TZfcSRbBEcz2p2KeRhF0nSHyOq
-         w1bUfIJK/hJCnnv6RRfWqAJyirLSdDgg/GxGanKvrgX+BhxmMoEBHneozPWqpyHpHOQZ
-         p4cEPNiVAIn6pvkyouCmHbp6jtwF4BTS18xDJP97s1+WBXOY1zxCE+dfzHJ4ryS9PlrZ
-         dumdIRYaBTdsVu1Z9ctqQmFeFOryUxxCYg2Ezwr9QAqAFGEZH7bJJPi+teIPD1QTC+jZ
-         zC9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXJPVOs8aET3/jfQ/sgDsaRrGWAHjMGIl64YHlKPm877VP1geVMcp3K+0UIJKPsRD5N8SpcbiZozg==@kvack.org
-X-Gm-Message-State: AOJu0YwRUhJprdBG1lpOQSVHKOOaZyUWGvIAp1jC1xm+uBpf+VuHMg9W
-	4v1kJhfOG66smzpZr24xGIXJPtsVPkWnM4I9fqo+XwEYVCPQa9zPX4567HVuFAj+DMogb6JDdks
-	xDYwY7HR/LTiNDjdnsxwGRmTxEJPoWaYMXzL23z55+4NFXWgZaP1hdT8=
-X-Gm-Gg: ATEYQzy2He8IVCYZYJ8M6fNA+nMu3XxDwBgHMxFAZAIquD1ebzkPOrLMGJZrs17wQjm
-	/6CaLrudScgBxW6utgXtOgVVuvAOg087KyEQ5xeW1GEZC8uwuB4JPcGFeODwSOHyYdui43o2pCZ
-	MExGhN2E2uqS0Aj6wN2VDEUWgxkEoX+O2cxErmPgbL05rMfFNiMBj/IgDrxs1c7BiMkJAR1w0xi
-	QhDq6kz1PHA6nwp7DGumVuhUeBkVX1uZvy1862L7BvoNHlJgxqvxhQ11TSlYOFW6eFCgaIigc2j
-	gjOe/RFHVIgkgASwovnLl9MLQq588CtLdNYDxg==
-X-Received: by 2002:a05:6402:270e:b0:668:6d06:be00 with SMTP id
- 4fb4d7f45d1cf-668c9b25e59mr31958a12.29.1773937492467; Thu, 19 Mar 2026
- 09:24:52 -0700 (PDT)
+	bh=H52Zybh5o34dbFpC/ZH35I3IR0TeF3CcjTZ7JtQFu2w=;
+	b=378Cflq23TiVYgkGtryQ5P+IP6gh+O2eeOGP/H6JBbapn+8ON7SIMV+A/4Gxx0Np1SFwq0
+	+J2KILgO33wYqJ2hgROLZQxKujVXpmZ921GCkG+553T0lEHX8o88lalrY8hrW4L9wfwT16
+	QWotdyKVc4ppEe7JY090U204xMGLIaI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=qVsoVvGZ;
+	spf=pass (imf29.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773937719; a=rsa-sha256;
+	cv=none;
+	b=A5UUKiMe3vKQnbtBy5udAsIXM7sURt/Hpi33CKF5ckN0h1MChZ19ciY39d2jkQNGFMvqjO
+	yW4eN8hejRV26wDOetThBHy6Iv+fTab8/TX1ALzeWg+vGzvlnbOX+WcKEk5mNJ8cWvpP4E
+	ZyRtcb+7qgTkQGu4/HHdBdAt/cg6Qwc=
+Received: from localhost (unknown [20.191.74.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3BEFF20B710C;
+	Thu, 19 Mar 2026 09:28:36 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3BEFF20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1773937717;
+	bh=H52Zybh5o34dbFpC/ZH35I3IR0TeF3CcjTZ7JtQFu2w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qVsoVvGZBgiMTYzcaPymyws/zFtGLAsJuSf42v3omgVhgy4V/7SM/UFdDfZU97k+C
+	 vY11I8eol4oictnvBu/vQMefqoMTn+2RHUiOztqmT14YgkRFwnc3yMPdzePNXNxnxC
+	 Y01VMPNtIKCj5VPxAbfZbdq9ZRMZ8zsrYw0n9y2U=
+Date: Thu, 19 Mar 2026 09:28:35 -0700
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+ Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf
+ <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple
+ <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, Ankit
+ Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li
+ <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jason Gunthorpe
+ <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet
+ <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian
+ <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org,
+ Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, =?utf-8?Q?Mich?=
+ =?utf-8?Q?a=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport
+ <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
+ <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
+ Yi Liu <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <20260319092835.00004887@linux.microsoft.com>
+In-Reply-To: <20260316162518.GB1767448.vipinsh@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+	<20260129212510.967611-11-dmatlack@google.com>
+	<20260226170030.5a938c74@shazbot.org>
+	<aaDqhjdLyf1qSTSh@google.com>
+	<20260227084658.3767d801@shazbot.org>
+	<CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+	<20260227105720.522ca97f@shazbot.org>
+	<CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+	<abNOwcOTXqxCxNzt@google.com>
+	<20260313083918.00005731@linux.microsoft.com>
+	<20260316162518.GB1767448.vipinsh@google.com>
+Organization: LSG
+X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20260319012845.29570-1-duanchenghao@kylinos.cn> <20260319012845.29570-4-duanchenghao@kylinos.cn>
-In-Reply-To: <20260319012845.29570-4-duanchenghao@kylinos.cn>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 19 Mar 2026 12:24:15 -0400
-X-Gm-Features: AaiRm51oXduFY4BoHVVSFdOsbSa2V52zrw5ohRxFbtdHvoWKheFTFWQioTkLflk
-Message-ID: <CA+CK2bD1jk7kHLZeF6n=FrmNJHbntdBA3fHZA2RYBEkBeSW+oA@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] mm/memfd_luo: use i_size_write() to set inode size
- during retrieve
-To: Chenghao Duan <duanchenghao@kylinos.cn>
-Cc: rppt@kernel.org, pratyush@kernel.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, jianghaoran@kylinos.cn
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C1A6E120004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bn7xthm8huq374hx3xoprb4g8roykkj3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AAA640006
-X-Rspamd-Server: rspam08
-X-Stat-Signature: jdmehx7coze9omzqn3hqrmifbx6zb31d
-X-HE-Tag: 1773937494-240180
-X-HE-Meta: U2FsdGVkX18sKV8fRD17H4/5mgw7WEzD46DsTX0ZJT2RQ1N7/50ajgVG7ZHf0bCxwRCG4w8Tv1RaNs0+rMuIq2IrYNJWD+oyLkHIhKwX7oba0p67voZPoXHx0+gvdX1ccVVYac9/X4DNimHARO9hQurc+rJuopcXSNVMqo96OEx3f8Qq2LCuohZZUuue9DTUeGpszdZ8Rk/4niOBKgcFK0F0gdk9yP4bWePydudwlYjIYtYoyEGbmhXLgDbA0IZWmP7V6+NNr0IkPo6ikrm3zhuhKiIjdEgpGGcKBPGZFHe8ssVqI6bnAtf21v43jFh/4H5oMNXbgFynC+RaEf8j9V4WU6i6Ybc49tiIOulUoMf0xbLuUnkuh9E4/++nxiCXWINsMmKnHyO6ZtgPzoCBBZCFFi2rMMQyYkIBH/HU9lyWK7dod9jf4gD7i04nDp9fOEsa/o4Kq+txK1se0YlHEeYfHuhh1AHUui4ma6XNiYKPueToaVbhOQCshuhV6eGObWcNtDKzaxfQ80yCmK+yxiErTKPuIlcHUL1lASjW6UcIGKx13CwNT4R+jDZzWtIuBITEijOu2F5Mg0hqL/NhixCpEHgRKOdQEmz8Pga+l4D9k/3iPqs5nhm21LxcSzHN9gXd/zmfV9L8dVXGcHBCRtkVClbYco4fWE04OFb/UV3wCqNRAMX6bwYZcyQ1eYU8NoVK1KW3uucKnVHv5CFXdRzvJElzbXkrlSKOHzMmVzX6hHqcrOB/C4Vwzh0IWzehcWnWOz1Su1X/YPaMAxNwZSRzEEHKHUMSV6dSGHM1muuLj9YCczYbqVUCXBGxne+lIjuQzaGoWiySSnoCCfNrmb+QhyDPCMLB4zgnj8BNgVhn005w4+eJXj6EBGz97XNVQeFeesqIGU34WEf+jovnG6hGQArL8EFcH4j0H3TpbSUHbuYLmHcSBcAQ8CpX/I1pDWZLK5fVWfFX/ruGIwK
- XDQ6XB5X
- BdhxvGgGRxfAYkYmqkK0hKeVcxgrFiWqu0DnQNLUwWoC/tiItdYD+6jL5K4GbMbXXAR7JFI5IDleIKuX1s1hw9SvYsCoqv0nm529wSySkLIwM/nRUvA558CJ4umqLvXlzCntJxbSB3+597Z2tQssqaogjcSQ6DjL4z3tqzvPsykQEbapfId8XoZlYUUGVQ+vk59S3M1gpKIGUBq7Voj1PhyKjcKJUo5ZI02f+2Olx55r7XRXur0jfSVBQ1MTtKGE7wfSxCgoDn0aCDsBSxOtTIzSGSwz2LAmvczzsDBJdsY9XpLy/CI123SNq1x9wnQtrgzTDpaRJokO1trjkLP1IIL1HZONr/jK0Xu8j75Nnakj3niLKtTGEsIPw02vQ64DdmcCbJcLLvzn1QGHOg7ol17Osvg==
+X-HE-Tag: 1773937718-326769
+X-HE-Meta: U2FsdGVkX18o5HammF9U8Ul1sW5Lzmejk0YnjqJZUBz/8RtMgkYSUucO3JSnT9aqQEnBtdL7mKfkDn34gQMLU220b1nblsKUKEiKBN2Sy7bQAYvXPESV+QGOPzkmgXrFRd4hoh3odrXF3SNhoc4/cA1d7iefRQufsd63VUf+gsFdk6zr6fy3Xdg41dq752ua69SsTWbimRwXDbrTUvOs0YjOIsWU/6Jyzk4H9uNZqGgJvsw9y7ihCVvJJ+jbVjgVRRkFUuecjDfS2Le3iNbxDaJisrbnzf5JX4t41nv90lWXjZs6f76kov7NHCfoc9HG8aR2uuDnYvAHoxJEL3zYbAuCo3I3W6WPv5iNpyutrRChPR5KzRwzZNKskqn06UXukjW6JEXFpVmA/d33aL/akezRW5HXbJK7coeW0cyHkNefLAs2aah+9rYYwiaZOPu0oDKsAGMXfMqXc5RQ3dL4wmnialEaaG55OCxV+6OLbt+c3zi5cu1Ql1zR1uVg1hJiNBwSO0S0RPRwLnQplrvrvn35iS+jBmGxz1OGrkZz1PWzrNvZTeEc1kKiokQoujrKl/ViH1BIZyVMkZ6mGUlHwimaf+NPCM7UUQHg56c2CMH3cwIGpYDwtxlVIsPktW8g5YYFViYr0qeSXgtUPkA2MbTNB6IrY//mkuzFriATX6qAwmWGevSxvs3/tUmirCpP5bv1UIUCMX3EK8273UiBYmbnamnustog/8AqdmePDgvhqt92xvpAZzV04pXDcsNyJs+1dMFe6wrw+hOto/8rK09YFKoS4j2dtjhzOuCeI9IMuw9SB+R3q2/YSSThzaYH0J+wp/t/b1v1JnSn7Kj9GFdZugaW9/bfwMu7aekWuFNieZG2aJ8n50giCT2de2PDb4iWGtFceRsa6SwZR1qb3ReA09W6sFch+VspMBI1ds6LESQFngxXhshXvVtFTZwZo66mpYPDwehaFa90t9j
+ hx/VrNtG
+ waP927OyMf0x0AtSOe2O8fqB90nJKHcZt2HnKydmhRQBECZVy+xI5vOS7tFaGkL7O7immjKtcXQdX2lPYry46fKCbLNFOqNbloKbyaVtZl+S1uJiANv/DEkOW7XjXxz5jTCBBMvZtX+Jqqcv2ZHltGCgW2sKsX/HwmViToHYYMs2Kx8QwRu2ItNBjcyCZrguROAGTh8nOAmI/4RqEy6LZ4AB1uNQ41lt57z5qBrY2bO78DHGWb6rpz/Kf/j8wFEe3jqGxYB6FPdTGjqX3q6etujZJTT74VAlJYzi5VWUESsDh0FwAgkp0tkYR1wzZRzlNzzXzRmomBD3xi7GCwK0CnUDj8j9N4MQomMwykPPPdNpPPbi8Fn2c6MjzOFxXXshrKGvR2WucnxS8X5RVt1gUQiIGtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,36 +121,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 9:29=E2=80=AFPM Chenghao Duan <duanchenghao@kylinos=
-.cn> wrote:
->
-> Use i_size_write() instead of directly assigning to inode->i_size
-> when restoring the memfd size in memfd_luo_retrieve().
->
-> No functional change intended.
->
-> Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-> ---
->  mm/memfd_luo.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index 413df8c75c1d..5e5971f25c68 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -500,7 +500,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_=
-op_args *args)
->         }
->
->         vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
-> -       file->f_inode->i_size =3D ser->size;
-> +       i_size_write(file_inode(file), ser->size);
+Hi Vipin,
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+On Mon, 16 Mar 2026 09:28:32 -0700
+Vipin Sharma <vipinsh@google.com> wrote:
 
-I think, smp_store_release() here is not striclty necessary, but makes
-sense to use the right function for consistency.
+> On Fri, Mar 13, 2026 at 08:39:18AM -0700, Jacob Pan wrote:
+> > Hi David,
+> >  =20
+> > > +config VFIO_PCI_LIVEUPDATE
+> > > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> > > +       depends on LIVEUPDATE && VFIO_PCI
+> > > +       help
+> > > +         Support for preserving devices bound to vfio-pci across
+> > > a Live
+> > > +         Update. The eventual goal is that preserved devices can
+> > > run
+> > > +         uninterrupted during a Live Update, including DMA to
+> > > preserved
+> > > +         memory buffers and P2P. However there are many steps
+> > > still needed to
+> > > +         achieve this, including:
+> > > +
+> > > +          - Preservation of iommufd files
+> > > +          - Preservation of IOMMU driver state =20
+> > In the interim, what do you think about moving forward with noiommu
+> > mode without preserving IOMMU driver state? I=E2=80=99ve tested your
+> > vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works
+> > as expected.
+> >  =20
+>=20
+> Just curious, are you using qemu VM without iommu device for noiommu
+> work or do you have actual system without iommu hardware for testing?
 
-Thanks,
-Pasha
+I am using a qemu VM without iommu device and with an assigned
+nvme device. I use a low level nvme userspace driver (modified to use
+iommufd noiommu mode) for testing.
+https://github.com/SamsungDS/libvfn
 
