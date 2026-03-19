@@ -4,111 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869461088E70
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 03:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 559B6FB5EAA
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 03:26:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E9606B0246; Wed, 18 Mar 2026 23:24:39 -0400 (EDT)
+	id 90EC06B03CF; Wed, 18 Mar 2026 23:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69CB86B03BB; Wed, 18 Mar 2026 23:24:39 -0400 (EDT)
+	id 898416B03D0; Wed, 18 Mar 2026 23:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F806B03CC; Wed, 18 Mar 2026 23:24:39 -0400 (EDT)
+	id 786DD6B03D1; Wed, 18 Mar 2026 23:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 427356B0246
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:24:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B3261601BD
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:24:39 +0000 (UTC)
-X-FDA: 84561370278.26.2906A48
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1069E40010
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:24:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=hZJANnuI;
-	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 630986B03CF
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:26:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E9FE1B7468
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:26:27 +0000 (UTC)
+X-FDA: 84561374814.29.FCCFA0B
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB60E180002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:26:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="boIQgSe/";
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773890677;
+	s=arc-20220608; t=1773890785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fI9rzW2aMBEATJKy6J7V1Mrvg5oTiG1wsCzQGFVE56A=;
-	b=rQUJL19WhSrjOfz7TUVrbeR0NzfyioMd1sS9+mp1SwXudw6jSoCdaDL+wVKWblJBLOvCAc
-	si6L1zqkjZeLk3POp9KWgi/LL1X+p000cVYDlsmGhrEfnT2SjNmW/+KWuTXPzt+6JZ3ybZ
-	MVTotoNxsV3g6NY0fbURpLxnSd0JLfA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773890677; a=rsa-sha256;
+	bh=X3hFeGLplj5gcJNH+nPtLsdbfdCmp+ODkITTDP1nWX8=;
+	b=STvOt8EAOr4kAYfJF/iT58wXusN9HMqEiS10QyvvsJggjTorO1bhGLjMFk5bOIL1qxrcJB
+	8s1vlURvUWdPZ3Mnu7htHreD1PG3QO84pVy6Wer2HdkFt3NYkxpvjD9/+40WZDynOEqfu2
+	NhtdTMG47QF4z8uKmSjy7ZZG7HzTAOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773890785; a=rsa-sha256;
 	cv=none;
-	b=1z019Ez2OPoj12GA7oDksWCQ+2tuZ0AQKWvnWKd2OrXXdrJM7c5smtG57085QOjVQAyXAv
-	QDH3kvyHa/JiFLKvz5Eakigtly6DE/nMdpEZr3I5PjX5E5SuZI9YH5VQpAzUBGdg/vxc2T
-	BZbwl07j7P8vDbnCpzfzs4+tEd9cKHs=
+	b=RQQwmucfThovpM3xDpID9JcSU45Qb59YmuLL46Wb/NJhtMRWJGl7qGSF+AGKS7hMWs1yd4
+	E64/OXJ8P7w4kw6uJ8Qs09+/zNhK3l7yvBUo8PZ2B4vDy/Cm8Es4UP2OOmRJ2+iKkf4Rir
+	Bif+BzHP/BeSGFMZmGStsSNT+zTWepE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=hZJANnuI;
-	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35b97ed057cso344015a91.1
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:24:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773890676; x=1774495476; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fI9rzW2aMBEATJKy6J7V1Mrvg5oTiG1wsCzQGFVE56A=;
-        b=hZJANnuIkmkIZDdeNTsxMn5DL/pV/qHF+xKZslcPH84L1LiUuZCK5lzmjfl7zaTqOD
-         mqeBNusuyEebP9cCKKnIabhrr13C10ny792nh6ptfte12cm/Q4JKzVMUsOvnREBYHa5Q
-         2PH78DcvFH3Svpa2dpM63j+z5MMH7wgJyEQwE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773890676; x=1774495476;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fI9rzW2aMBEATJKy6J7V1Mrvg5oTiG1wsCzQGFVE56A=;
-        b=GGQJqOFyO1bKH7WD8TyQbDfv9Kh+e+Tsz20RQGDeFM1g8IhFNRWEcRKAxvKgpA/th/
-         UuMZmC2r9RKEU5Mznf9ykDC59hrmLJ0wvlHSjiRxu/NdTq66wZYXhqGUmjVNXkZ5C7bZ
-         dwp4VRSkJhtgqVgF9wswxWCE0QrNB+lORZf6ThT6eDyssYfZtDOZCcHLbP2X1Ad24A5J
-         HgpozBDMdwcvjmth5uKw7H2ukaSduALg4DbC7E9gWt3hTs+Q6r5PaEpW4611Tdk+50xV
-         lS7A4kPlySMQ4Bb26RWArjACEVdoOUXM85D7w/DwxNKuh7lfoH3N5t2PlNCHTaEghJfp
-         aGlg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQKGrK9zGxD/aon7tOmKxiE5dyGXvJsV9aQZLqcOo0WZrVl3/HlZoc4oHBTBJv/W2zb9024UFwfA==@kvack.org
-X-Gm-Message-State: AOJu0YwT1c9wQF5hGaVLk9OeVK32quHyZbU7TSrCdk+Bc0coDXbnHoWh
-	eunGU+/gZaomEobiCUmu3CKXVb0iffmvH15jSwJ3xeftYVyCd30HO4t2ddJmB4yWHRyd1votOpD
-	uWWI=
-X-Gm-Gg: ATEYQzwfkVFDWb0/m70Hr8Eb8iblTtgZR4AY87uuRqqI5ynQwj1aYn5C6lohHxCSr3W
-	jg7xswdl9TKt5OawvSoGOrX5itA9c8NcIOqDEUMSF/UHhtGCSi1VKqKexWH7qxsFs4K6EZqB9Ij
-	NxGdpzbTNaiHaO3btewxBxRP3F12PSZlf+TQsBOooF0xD6e7l7qwRPn0r2p6TGiZba094QKpUM1
-	nqHZ81fsqDxe+3/AibxsaPglpASXih1bg/k025UeqPXkFZSbFxTXD+PTToyW5I+ufmg8AxXp5o5
-	Yda5tIJxPhH5XArgpb0eNaW47sQn7gmpVr2OTCNDaLAlgf4T795wDu9ONGEd7MCoF4uKUwQ6JWV
-	pjoJle+lp4+o/x2p5UogJIPaEpUvm7ImSNE8/HqQyLlgZxjtIDK+EgW8ZryHeG195WUckDyvdUY
-	EKspBB5+0eTpca1jZIDrKVWixBAa+IzRkyLcejAurp3Wy22pCGznaMkoTxl4j7MEY=
-X-Received: by 2002:a17:90b:3512:b0:35b:9a22:deb1 with SMTP id 98e67ed59e1d1-35bb9e51036mr5058277a91.8.1773890675925;
-        Wed, 18 Mar 2026 20:24:35 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:13e1:7517:52f3:cfc8])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc62f8e55sm1293261a91.9.2026.03.18.20.24.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 20:24:35 -0700 (PDT)
-Date: Thu, 19 Mar 2026 12:24:32 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	teawater <zhuhui@kylinos.cn>
-Subject: Re: [PATCH v2] zsmalloc: return -EBUSY for zspage migration lock
- contention
-Message-ID: <abtrxh5Jhrw1yHRO@google.com>
-References: <20260319030709.62556-1-hui.zhu@linux.dev>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="boIQgSe/";
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <4b2182c1-7984-4d05-ba9c-67046ed01b4b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773890781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X3hFeGLplj5gcJNH+nPtLsdbfdCmp+ODkITTDP1nWX8=;
+	b=boIQgSe/hrj3e8DqA/zupaiLd9heEa5O8FFfH8iFtSSVrRUAmBlnINl5UvX78cLMKw6caQ
+	Y+25V8khtUFQCv8QebsuSoxEzdgEM29ZOIAk16kRpx0ZqWNjlbONkQeVGczFDQUpHmWlIV
+	EEg86mBt0Zl4oOVszQuYslzQpAeMlRs=
+Date: Thu, 19 Mar 2026 11:26:11 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319030709.62556-1-hui.zhu@linux.dev>
-X-Stat-Signature: mgz6icm1sdba8dkgrurt9m75it4cbwwi
+Subject: Re: [PATCH 2/8] mm/huge: avoid big else branch in zap_huge_pmd()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+References: <cover.1773865827.git.ljs@kernel.org>
+ <10be43ead023e9f65333bcaf4064d9d197111405.1773865827.git.ljs@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <10be43ead023e9f65333bcaf4064d9d197111405.1773865827.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1069E40010
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773890676-797672
-X-HE-Meta: U2FsdGVkX1/J0F4KwJFUBLl4YtebFPXwOFJe4+S42Sr46kHUJh1pm8rWoNfMsW+Ti6xkCwag9ceqTuheN82pBDEsoka7RGYTKgfXcVfSVVuz/p0oN4/5Ln1wNg8vbCTjx4c5eXgdI/6HPV1D8D61mgfTdn96ZXlMRzce35oBiTMkZAgI2ijZWIXM5We/6U8DtmVkNpae9IKuklMOZD7uXbzSLXYxwJ4Tigz82bZ/zA5k7hWra1JNgu/bUUfOpIzuXR2blHoR8BrCxuqeHAm2IaIIWmGRr+T8RIdWXviflmaF7jw77G/CJUeuTRTKG/RHoPU1l0G7Le5iKi2BJdM1Q5luBryd5FG2vTEWnl+8WYrZdGv2kPXxG8opJrSIVC52cGZzBCkBm4rBOYVpthYlsLsrVcGw4xkuRMcsGMpL0eOPxBVheGpXE+MD1PivtfrIS17dsyK1IXNUvCOGgK+uEYwAanHarCN4ZZEnQH7wAy03O829p0l6y8kgf306PUb4/Cdk+7QSmUOgTa1rBjgyyvta8Ao6a47fupar16X10S6y3LV4bR7BaYXQ7xRNyeYav2STjKxfkAUbJbRMHd1lPO3/aB7LICoSRNU+Rzj9F4ZTPBQkPq6SFFdF4D9yR69+YJyiCp5IeT/cLavAbi0wrqALKYkoOo18cNX+Vb4oRkHgkVkayDsp9QFD0QG3/E0NWXSwQjDMwbtYsayi4Ty11BhoR3FLMKbw7UD8TttdZq9jVOIapY7Ae30k5b4yz+V+Ehce6w+8z9i1J6/KDv0dhHAo0N/c8sbyY1+3q+feq1RNmr9IVCn2ahG+Z+f/tTM1h601MBPtgY/JaM+9pofoGoPWdg+0GU4vW1lTL0Nu4mCSddR9rIbumpnP7eDk350J+IbJSYb7QAHjjS6S1mr4iwH8+GjXVudGGkTRxxMXYHZuwXmwc2LTGuHULFkDpRcCDXqoJFdxFzy83WcEVwB
- uy2XapSz
- J0YspSW+x4W2bgQWS8Y14Wp140tYIw+WAwRlHJ2ZAlgWrOOp9Lw+QOAsequgJoOtzz1IdkwBj2LfBWG+tOdwQx2SwwpcUXOT6kyBj8qH0qh8nANoB/d40FHCNtTuf49lFP9phk1XoWKW2eHTHofIq0db+8GyQyKfLjEgp0ILzbzQ0LMP2jONYqMQvslUkf1DcmGW1jkHkTe4ZrsDe+IrDEgHDEmuojMZoU+Tq9lE2Npre/mDp+gL3TmrnTzTX7uwRU24rEUjZDnVmqmqLKQZ0GLug/acjV+9Za0AzSPQjlBRCr2CzMONDwbWThsqHql2l/IuC+NN2j/3fWc+rzxv6yXCk4w==
+X-Stat-Signature: aw1r9a7muf6jmczfsthm37drrq7ehhgr
+X-Rspamd-Queue-Id: BB60E180002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773890783-501839
+X-HE-Meta: U2FsdGVkX1909/Zmluf2HruHcejwLT1mT3yL7zNJX1isFnVRrp0TL2GW5GCXzBsf7mCwqU88HxuGt/6bw6WroFMUMWaeVdI7L3dcOcVqczdNqKEGokhahZZflWqpgOTvG9QuspjbtlllYvXCQlbmXnqckDLjw+PIYEP4M8iot20zE0YaE1LgBE7rqpWqBe3fLxOCj3mvmVM1M+/N85O+smvxhTEyDXVrjEYpISqLhuAgdESHfA/WbD+IlfZJCWi2g31HV4T/lg6F4BjrryJRf3vgE23SKrEUj7OG+iGQzdJ3TNJaTA2m+ouThKLkKA4bUZAATUxU37yF7xJBUW8Z2cpRgx1EuKE916EeDdHV9S4k6++Pttl7F1wi+xq9LlgiLPOV71Q9pSvN7qmg3HXZzXPrNGRDfmj9BDg8SUjqBnf0gJwh7qwKbdarIuVijh1oHNT192rWjIzM3Dcl5FHmcuRHdlBNYqqf5Ldgn7uz19+6rBYpw182RKoObSNYmp6DkhWesZtaKke9VDcihCWjnMDhvBz/gt0vZ3ZUrd02A2vGdDmHKPa7vzj7VYYoa6BCEHz0kba24Eg21HnYmZqm4syfzlJ5gk2tadIZqpmtffqrsndzwPzRsznZ8rGoiCbcBC2uS2TTP4oo8LVTDDSh6pL+VkqflwUr5S+r5t0rXt/8KFC8vfQdFmDVCwy6PQ1Cni+6JdDLVOx/I3Ge9SThsEsbpqI70mQaZQGxkFmxFdO/x5Tr33VBeCeXh3t7ILeo/FdSKAFUcsKV8CdZVXAao/o/cLF1AnV3iQWFoV8V4SoWTBWUKhrKf8Z9iDgC1YaindxlzhVtq8c8hgxJPKEgSTHkXUHCzr4JRxkH4WBVW8uiqrC7bigv2LYntfou5YPOBc7qXwBIB15971mTWza8VEqR9e0DJxV3CKNLBMDGMhtSzixOUz615TpdZOwbzLafGjdlIsdRD1MCoX0MQD9
+ 6H4F6zLi
+ KY25Aq6vGBkTWeCYwbrDp5ciVDKFcR6SQm9NVmbyHdpjnl9CBJkBEskWxvQycipwpmJRnE6PE/0MoalhF/5eC9AvGewOHoiZBL61mMPmsQlRg9VEw4kmgz8iN15TDq2ORjrNZmpIPqoigZ6sicalYhbO4o/Caap1vC/CWcutpvRQzCDh7c+riD/Z7VaWdE0FTOQRDNHJIP1bwrZLzm/tGI0kVeXxTpOPM25yGKYFsoGQ4spVw80ZznWEv4V10mtc+dxXCAHBEYwN7QUeIshmyoYtHWvH12TqX2p+QxKVj5jdNulH2Wx75+5REaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,50 +96,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/03/19 11:07), Hui Zhu wrote:
-> movable_operations::migrate_page() should return an appropriate error
-> code for temporary migration failures so the migration core can handle
-> them correctly.
-> 
-> zs_page_migrate() currently returns -EINVAL when zspage_write_trylock()
-> fails. That path reflects transient lock contention, not invalid input,
-> so -EINVAL is clearly wrong.
-> 
-> However, -EAGAIN is also inappropriate here: the zspage's reader-lock
-> owner may hold the lock for an unbounded duration due to slow
-> decompression. Since migration retries are bounded by
-> NR_MAX_MIGRATE_PAGES_RETRY and performed with virtually no delay between
-> attempts, there is no guarantee the lock will be released in time for a
-> retry to succeed. -EAGAIN implies "try again soon", which does not hold
-> in this case.
-> 
-> Return -EBUSY instead, which more accurately conveys that the resource
-> is occupied and migration cannot proceed at this time.
-> 
-> Changelog:
-> v2:
-> According to the comments of Sergey Senozhatsky, change from -EAGAIN to
-> -EBUSY and add comments.
 
-I assume this Changelog was supposed to be under "---".
 
-> +		/*
-> +		 * Return -EBUSY but not -EAGAIN: the zspage's reader-lock
-> +		 * owner may hold the lock for an unbounded duration due to a
-> +		 * slow decompression.
-		^^^ or reader-lock owner preemption
+On 3/19/26 4:39 AM, Lorenzo Stoakes (Oracle) wrote:
+> We don't need to have an extra level of indentation, we can simply exit
+> early in the first two branches.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+>   mm/huge_memory.c | 87 +++++++++++++++++++++++++-----------------------
+>   1 file changed, 45 insertions(+), 42 deletions(-)
+> 
 
-> +		 * Since migration retries are bounded by
-> +		 * NR_MAX_MIGRATE_PAGES_RETRY and performed with virtually no
-> +		 * delay between attempts, there is no guarantee the lock will
-> +		 * be released in time for a retry to succeed.
-> +		 * -EAGAIN implies "try again soon", which does not hold here.
-> +		 * -EBUSY more accurately conveys "resource is occupied,
-> +		 * migration cannot proceed".
-> +		 */
-> +		return -EBUSY;
->  	}
+The code here isn't too complex, otherwise we can introduce the
+function like do_zap_pte_range().
 
-Otherwise,
-Acked-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+
 
