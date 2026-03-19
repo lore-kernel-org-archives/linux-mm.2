@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 842321075290
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 10:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FACE1075289
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 10:08:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B186A6B0459; Thu, 19 Mar 2026 06:05:02 -0400 (EDT)
+	id C2F256B045A; Thu, 19 Mar 2026 06:08:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF00C6B045A; Thu, 19 Mar 2026 06:05:02 -0400 (EDT)
+	id BB93D6B045C; Thu, 19 Mar 2026 06:08:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2D646B045B; Thu, 19 Mar 2026 06:05:02 -0400 (EDT)
+	id A81C56B045D; Thu, 19 Mar 2026 06:08:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 922346B0459
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:05:02 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 931206B045A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:08:53 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56DF01D5F1
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:05:02 +0000 (UTC)
-X-FDA: 84562379244.12.DA49448
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A1852140013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:05:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iTpl3wEo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38DF71B7AEF
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:08:53 +0000 (UTC)
+X-FDA: 84562388946.12.1788C90
+Received: from outbound.baidu.com (mx15.baidu.com [111.202.115.100])
+	by imf01.hostedemail.com (Postfix) with SMTP id 783EB4000A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:08:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=b54bWpIO;
+	spf=pass (imf01.hostedemail.com: domain of "prvs=md1532F6E9FC=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md1532F6E9FC=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773914700;
+	s=arc-20220608; t=1773914931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mnQEP1H03DOCUJYlm2puK3bdzRVMG/DV3LcuYZKBApk=;
-	b=BMtGH+MWK//kpyK9cQZ4AtcHlDxUArtJbz7VqC6QBFoRRyS4LgVcskPYNmNr0+jmShfVVz
-	gzlHddYbpi+QhJVC5AVt7gZNoasm8JASO+aL5qfFhhVZ0dcXrLU4AOtgVLNwgNX5afKzfg
-	ERSY6FpPWUTfIxC9LBUWxsnGi3okdoc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773914700; a=rsa-sha256;
+	bh=IMO9YakWcekx7cZMQWtzzw+P0ear/zp3uCDif8+hHLA=;
+	b=nxvM32sXeXjxxhOzrsLEGJLAz+MCLP0NnIBC7cx4S0XucTSM6dvQICI/GxEzuegqGmqJ7k
+	MTpd1mD0YlaPc00I0N28rNwYsGq7jYxkCvvDEfy7PGM09tsmugrfFIjSRtos347VN+yczs
+	4yejPSC5GcaEc/t7TZSwpBoujLSoESg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773914931; a=rsa-sha256;
 	cv=none;
-	b=hyAJ7hDyE1Q4hn92uUST6JO9ZyttRUfvyfM0GLNpq5MbZD4TTBAVbqnuAWx1CQ+GIcotWd
-	rN6a/1bJ3m6qfd4aP1zzb08os0mfdrogl3xoEJ3Hn2ZiYwjopmyQ6ACeDRatB4YU9ZGoTA
-	oTkqr5ho4MADQcRLoOEOIoMunMGMXVQ=
+	b=cjeGuul9HkNBQKTkSQIa6VRbZq4qxAGFAhPOJLmfT5MHHl/lkEClTnIPIlIdAHm6RLFXAJ
+	PlpD8lgxSUyj6WCozjHmjC0sy6EHswBAihZ2unppY3t3wiIhYgq4UFwZsrVRSk15htcXj8
+	SkytYTGIuwhQol7rlqIX04VxjHMqAtw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iTpl3wEo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8C4160133;
-	Thu, 19 Mar 2026 10:04:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42125C19424;
-	Thu, 19 Mar 2026 10:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773914699;
-	bh=m/MxVQHapgMbvAQv6cOPOB/Tw5sSwHzzgaJtqpzFbzs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iTpl3wEocZuihDCbHxMUik4K/fHABgCVgmACutLgO0yXqLL8L/QWFmmNNkBN4pVEF
-	 20JnoHgu+tJoc0e0Yn6QtFH8vWimsMB8+2AIHKZ9rGs1ifGDd4u1ss32pkMc0uGv8Q
-	 BIFNLEDlDBcElS2R2E1kafKjAan6SLQrd/lUYTaL7OKQYSQVMViQMWTfaf3umekabw
-	 PGQ/qmbBYTP1wzFlvsrV3MfejFtjgDilBOebzhpxXNhCsJM0I37sRfeSigSyZ0TC6c
-	 Cx4nTXHU0ceb2S8LvycTWlT/PlL8Ov0ZqwPkwFKB4lBbGXD8WZcefolb6WB9l0/s6h
-	 aqJ35e0LpW4/Q==
-Date: Thu, 19 Mar 2026 10:04:52 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Aleksandr Nogikh <nogikh@google.com>
-Cc: syzbot <syzbot+de14f7701c22477db718@syzkaller.appspotmail.com>, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, npache@redhat.com, ryan.roberts@arm.com, 
-	syzkaller-bugs@googlegroups.com, ziy@nvidia.com, Mike Rapoport <rppt@kernel.org>, 
-	Harry Yoo <harry.yoo@oracle.com>, syzkaller <syzkaller@googlegroups.com>
-Subject: Re: [syzbot] [mm?] general protection fault in zap_huge_pmd
-Message-ID: <44ad9ec7-7e1f-4f94-bac8-8b24a7805c7b@lucifer.local>
-References: <69babeba.050a0220.1b2d94.0003.GAE@google.com>
- <6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local>
- <CANp29Y4f0sd6fbsR9MhB_bqazLe59rsC_uRU5CH4h5wS4HficA@mail.gmail.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=b54bWpIO;
+	spf=pass (imf01.hostedemail.com: domain of "prvs=md1532F6E9FC=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md1532F6E9FC=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.48
+From: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0ggdjJdIG1tL3ZtYWxsb2M6IHVzZSBk?=
+ =?gb2312?B?ZWRpY2F0ZWQgdW5ib3VuZCB3b3JrcXVldWUgZm9yIHZtYXAgYXJlYSBkcmFp?=
+ =?gb2312?Q?ning?=
+Thread-Topic: [????] Re: [PATCH v2] mm/vmalloc: use dedicated unbound
+ workqueue for vmap area draining
+Thread-Index: AQHct3QMp/kETo0hbEihIC1lF1Yk9rW1E6OAgACG9xA=
+Date: Thu, 19 Mar 2026 10:05:42 +0000
+Message-ID: <73a0ae8d2a334777a199a1555d6fdaaa@baidu.com>
+References: <20260319074307.2325-1-lirongqing@baidu.com>
+ <abvEZehbufg4amhQ@pc636>
+In-Reply-To: <abvEZehbufg4amhQ@pc636>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.127.72.28]
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANp29Y4f0sd6fbsR9MhB_bqazLe59rsC_uRU5CH4h5wS4HficA@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A1852140013
-X-Stat-Signature: re4f8dwopf9ao864roytrbcpjdqmahbc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1773914743;
+	bh=IMO9YakWcekx7cZMQWtzzw+P0ear/zp3uCDif8+hHLA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=b54bWpIOuGvy5KbqFI1YcDZ3LWkVjcrDzpyqH3GZyRTUPo78UUlkLujkd7KXw+GvN
+	 5ZUTm494MyFchlPNaXUmbFq2V2jNX2qB9UVR1iHdXt4pn10Yqs/1LSzF70ByxNz7eb
+	 QAiMQxkw+DvA9uERj/ZbfqG6pfv3DxOxmLMl9x/mVegQhltA/8MuyoCnfhfj6h2AV4
+	 GHpUS5tsPVyFkV3e/Ck+Tlarxy/zvIMbnN+wSvsaY8AAvxwYuIumYOn9eUpUBKX+Dg
+	 kLbbI4m8BRvwla5owf/ah1zLCc2p72kfH2LkrJ5JbyxYJD9vwPfBPJEFgPv3uVahks
+	 0OmlYtEnDQYgA==
 X-Rspam-User: 
-X-HE-Tag: 1773914700-439327
-X-HE-Meta: U2FsdGVkX19JgWZqvw6g86bBjDJxHs8C0+9XvEeNaRBYBgtLz9XKKA4qkSr4DoYTS9+bIkoXrKsql+F3GeNoRyXSMgPm/qXzV+gN7nb9HJI7zPfwbSkJT9B8qCdmNEGjdNJBm82mtz+rPV22U/6tkFOM2PHlOFe9AUMdwOrWIs2ncxTCegPR4J/c6Hkg/2MuXF2MdKu0o36FFC2TBIZT5ZObAjB0rtXKepMi0z9n5yiGtqTjoEGLU/gQzBtn4q7AGgwd1f91qxRdiov8h4H8xRwzddALJhWnESRnBxfwEQRDVw/vB2OdruxzvPMKmJt1+rlA9BxrqpQjj4Il2qzkTqkrD5ffg4ad8qdhir26dCWgesje84hn3X//IUCuZONyz7Vko70dszeJ5jkOM4WJ694QWp5N4w7s6KGxylfX78HruvEWpwrSVFAJWRt9wBfCZW33CH7IJjUQURwu0+beic2zQDsTc3M6ewcgnvHaGaJkeyTeuPZ69KarvXwp6EQd+QUEwo1q31QBz1hqLUgxz8Jl9fTFl9J6aH8p4ZdL6ap/Blv6RfAZEtbFdXOex3oGe28AtgrLL/vuLvKfUGtc+ImHbwLqksXSdmgs5a65Hek0nyHzyOSiSTl63eqAWZfjH5zUlFsxtjuAaehs6k8DS7VdHZWpDCo4iz4pQ6FdJsoCUqRLu7KU67VdpQ7nZRv4PTz1Y3dLLR/MwIjp8FpeWCiMVJn951Ed91cMZnOKSSxMfbmW2KI89S44rcuojsucSGoj07mDCg8IdyfeNEGYa+LFecGImE8YFS+gXd8Jb1JKvoApUte/uLlLQFk3Xud3pZhEj7bgkMIawslq0K/TAh5s2xIe11gSlZfv8Hp9NmaCAXBDo21v44dua0+UjfLeYm2jF7qyKw516j9EYSUBwdV2DBGMLptb2Cb4VRiyNLIVhX2ELs448fdUr9Ox2+ySCc2z3lfjVyQtiUyG5YI
- 5rxJEtam
- forRQspriYGoZfw1h++JCM+02baFBU1qJRl6K0vLbKt9PJgqf/rrrzZPO6r7Qf7AWl1u4PYSrfhV5yfL4spQM9AyLYJjwXhBlDK39yujwgX3XHCOudpjp7PRdeloiWAMtxseGgV2NlQifkEXELSSa1sxKY3Mr/YKgG3kZcixp/MnwZUl9IBVnXTAx6EXuSEyB/q9RGz/2XRXP/wS1fl2PELIhpL1G1WhJIQHSMPyXPcQA5D1N6FEqy7GUeKqqANMiDKTT0XPbgRuIv1RkPxGlQgCZh6SNspER0qEabkRT8IGDJn7HneNPT43gDHhVL6eKeqQ4P/vLoVr/5vUPbsdAXKLkVA5xkUEqxiXVNtrkUBipLt86jdC3kYJWaPR8wcHrtIFiFzJb+BpQOey6qykm5poPbingMj4vKkqerpNTB2gG1NGwleQZBL+304n4qxhFQ+/5KPBl5riZGAIxpcZQZnl3bcyqNTJnQBDb8Mvcq5uFEo6dL54A6H69FqmLX8iw/I0w8j61GQjNHuj4Y/cRX9CbUkhP34RqFS0IHqfv9Q9J0TFkZEQHPJHiX/Bb4bTCg6DGpV4qoBRXrsc6uajf2V1Yau7HhG1seK7nKfJR5/BTjrHBD3BxA5pBOftxxJI7Uh7C8ZhfqLrvHo0ErZR0jDLrN8JSN4PyC4Rpkixr6CIqZaVuahfdbdck/Q==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 783EB4000A
+X-Stat-Signature: 5hki9zum9x59qh1o18x4fghyaw3ahbdn
+X-HE-Tag: 1773914930-344934
+X-HE-Meta: U2FsdGVkX1+5Ud8NBZdkwgHY/FHPzijzenN2uAs2T+FBpFZCSiHFVtrEFGYL15fB4tOKP6H+PkyqzNf42TetxUudhmooXzG07fINB1rXIRkxGiz+pbqMaqRp7gpfGHX2gM6BQmDKDcUrPwD8pkJOIEj7xfMF7nXqsrnXIAo1oFx2Hew8k1ypvrgWQ+6YK2pOOTjpzRcL7NxOWw30Fi8dEQHCg8YXVaR1P+kH6TI73C1cPfxW2yVdi3+cKZjewSUNzYLspKiDpJ2U3pby/Dg/OMCLm0Qj3ziuQlJh0H7kOamA1m4/slRMe7N66FTT28sTSpK/HaZokpP0/567sRQzMiSPfNGpDk94KnH3PGRVApgpE3AQcWlup/RFr0o5FTtk+WuWOyih6DFccBtdGIuEZkUTx/HAy3km17h4zijvGjMbY+w62LlnuXn9zNHIgdrnYsw2/nG32UlrmXT0PxUOJk57VwWmp6WPqYDK/r/qYkArZl0WqidFfyaAxTEjHpqNCqBOzNF8RIxiH1lPBHpibWZRAwBv6woTRC8D3P3jKoFp+kM0ZX8VP98WeLBPzMmTCfg7QVpV53lQFo7RDuaTD7spCp88bVhHShdR9fc96bqTeV0y5QmXO1M0Y/NoBirIlwZJcYI/0TpWG/0/ItjRKHf6b6RKaRgz3fWm/KL2bmIoz/IT1cF1zabPx08XA9ZE9Cy2M4/JNKvAkl1BghweTWmpnL6CZVzIgsRAPAx3HukbzH8k9XZq+1J2JtvXZYg7KZFO8fBB+nPVgDM+i+ZBxJkDq8Z+1u6fBalElGyfCYC3RYCe5zf5UaoGSX7VEEzcdmuOLGBtc1ppbTcZavcnhWsI34IdwIRsXq4DwTySVNODKYRICi8quf/SUZQyrbSGM8F8Q9Sws3V70eraPSTZNqdHxQGm28z3jt6bXUAvCfNZWE8tqqowISA6mP634d6TPdIo36eUugoagNWcwcN
+ WyEanrLH
+ At+/vdfKfjD0Qzq4mFwVqmPVL0e/zLUmxRzCT4MxmhRVUAiU6oSoh+VP52h3HUCKsU3anSOt7E3Q8TMXPqebudqlE0omFJuZ9DEvfVYXpg6T/33ujnsg/mF1mpZw0CK6/f/uLBwLK6aT1ValwjsrI0mMiAl+ShfrPLfghQLCzx26HO7meqIkOxAphU7mRzNF+0bezUVFCTAlBPV33s4K7ynd+QLl1RNRCL0DDQlZQ20wsh1QPy/x0buFZPB17GndysjDlRcOaV99GA4X+Mqk6NtdrLPfiq90/ia960WqTocXem/Q0UB3y+AIUB0qp5aYl5AWvKOq/HlMXNYnf24hro8RQg1bC4KMoNyId9s4gBZuqK9T0u0nzeC3q8y35in8V5gnpJgtOGW/lemgrnP3fTq2hr84vsOU3+lVV8xA12lzo6KbS6GFHPr3xLUD1bbBWLES896BngdrpWHE4eCZP06RTS1fLVkgokfL/R04BGHZ+eCYY2hd1HwJhu92X1U169ODzpp8GtEyjx7zxvogfSlguRbC+7fEf2Np3KJdne78nCTwAQ/WctqSGdp/zJpp0YmiCh18ojx2R24JUl1QI0Mb0VsixWs1IefYOM+tT/GZdv10bxhnAXjrWgE4FQqSY1w8gPUKO+O9jF0nixwi3PQgy5m5RzO9Y7QrqLrzeue7sP1coyG18CVrSlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,125 +100,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 10:54:16PM +0100, Aleksandr Nogikh wrote:
-> On Wed, Mar 18, 2026 at 6:26 PM 'Lorenzo Stoakes (Oracle)' via
-> syzkaller-bugs <syzkaller-bugs@googlegroups.com> wrote:
-> >
-> > +cc Mike for uffd, Harry for fix that also resolves this, see below
-> >
-> > On Wed, Mar 18, 2026 at 08:03:22AM -0700, syzbot wrote:
-> > > Hello,
-> > >
-> > > syzbot found the following issue on:
-> > >
-> > > HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
-> >
-> > For some reason I have to git pull --tags to get this... commit hash locally?
-> > Strange.
-> >
-> > > git tree:       linux-next
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=119ddd52580000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=de14f7701c22477db718
-> > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b44da580000
-> > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1537b8da580000
-> >
-> > @SYZKALLER guys:
-> >
-> > Note: the repro is incorrectly labelling;
-> >
-> >   //  ioctl$UFFDIO_CONTINUE arguments: [
-> >   //    fd: fd_uffd (resource)
-> >   //    cmd: const = 0xc020aa08 (4 bytes)
-> >
-> > as UFFDIO_CONTINUE (0x7), it's actually UFFDIO_POISION (0x8) as you can see
-> > from least-significant byte.
->
-> Hmmm, that shouldn't have happened. Syzkaller normally tries to avoid
-> mutating one ioctl into another.
-> I've filed https://github.com/google/syzkaller/issues/6950.
->
-> >
-> > It's also stating things like mmap flags wrong e.g.:
-> >
-> >       /*flags=MAP_UNINITIALIZED|MAP_POPULATE|MAP_NORESERVE|MAP_NONBLOCK|MAP_HUGETLB|0x8c4b815a506002b2*/
-> >       0x8c4b815a5465c2b2ul,
-> >
-> > AT LEAST MAKE THE NUMBERS MATCH :) this doesn't help with debugging.
->
-> MAP_UNINITIALIZED = 0x4000000
-> MAP_POPULATE = 0x8000
-> MAP_NORESERVE = 0x4000
-> MAP_NONBLOCK = 0x10000
-> MAP_HUGETLB = 0x40000
-> rest = 0x8c4b815a506002b2
-> print(hex(MAP_UNINITIALIZED + MAP_POPULATE + MAP_NORESERVE +
-> MAP_HUGETLB + rest))
->
-> gives me exactly 0x8c4b815a5465c2b2ul. What was the problem here? :)
-
-ugh, yeah sorry I misread that:
-
-/*flags=MAP_UNINITIALIZED|MAP_POPULATE|MAP_NORESERVE|MAP_NONBLOCK|MAP_HUGETLB|0x8c4b815a506002b2*/
-                                                                              ^^^^^^^^^^^^^^^^^^
-
-I read it that 0x8c4... value being the value that the preceding flags come
-to but obviously |x|y|z|...|<some hex val> means it's additional garbage right?
-
-But it's not really decoding properly here at all:
-
-Writing a bit of code to decode, 0x8c4b815a5465c2b2 becomes:
-
-MAP_HUGE_2MB|MAP_HUGETLB|MAP_NONBLOCK|MAP_POPULATE|MAP_NORESERVE|MAP_ANONYMOUS|MAP_FIXED|MAP_PRIVATE|unknown=0x8c4b815a00600280
-
-So I do think that your algorithm could do with some tweaking here :)
-especially MAP_FIXED, as it wasn't clear as to whether the addr passed was
-a hint or not.
-
-(MAP_UNINITIALIZED overlapping with hugetlb sizing flags is annoying, as is
-how that's encoded too.)
-
-(I put the code at https://github.com/ljskernel/mm/tree/main/tools - it may
-or may not be buggy :))
-
->
-> >
-> > AI hallucinations?
-> >
-> > It also never returns with an error if a syscall doesn't work which means the
-> > repro can run 'ok' but actually be failing on something, this really slows down repro'ing.
->
-> That's an interesting point. There will be corner cases where a
-> syscall is expected to fail or may start failing after N iterations
-> and that's fine, but the idea is totally worth exploring further.
-
-Yeah for sure, but at least outputting the information would be useful, so
-you could have the same exact behaviour just with more stderr output?
-
->
-> >
-> > Maybe hard, but be good to figure out maintainers based on the stuff the repro
-> > uses uffd -> uffd entry in MAINTAINERS :)
->
-> It's easily doable, but there's a problem: uffd maintainers will be
-> CC'd whenever uffd is used in a reproducer, which may not always mean
-> that it truly caused the crash. We do minimize reproducers, but there
-> always remain some weird cases where unrelated syscalls persist e.g.
-> only to force some specific timings or to get specific file handle
-> numbers.
-
-I don't want to speak for Mike but will anyway ;) [speak up Mike if you
-disagree :P] - I think it'd be fine to do that and just let it cc- some
-people inappropriately sometimes.
-
-Or you could narrow it down by first making sure it's an mm bug and THEN if
-uffd in repro include uffd people?
-
->
-> That's why we mostly rely on stack traces to identify subsystems.
-
-Right yeah.
-
-Cheers, Lorenzo
+DQoNCj4gT24gVGh1LCBNYXIgMTksIDIwMjYgYXQgMDM6NDM6MDdBTSAtMDQwMCwgbGlyb25ncWlu
+ZyB3cm90ZToNCj4gPiBGcm9tOiBMaSBSb25nUWluZyA8bGlyb25ncWluZ0BiYWlkdS5jb20+DQo+
+ID4NCj4gPiBUaGUgZHJhaW5fdm1hcF9hcmVhX3dvcmsoKSBmdW5jdGlvbiBjYW4gdGFrZSA+MTBt
+cyB0byBjb21wbGV0ZSB3aGVuDQo+ID4gdGhlcmUgYXJlIG1hbnkgYWNjdW11bGF0ZWQgdm1hcCBh
+cmVhcyBpbiBhIHN5c3RlbSB3aXRoIGEgaGlnaCBDUFUNCj4gPiBjb3VudCwgY2F1c2luZyB3b3Jr
+cXVldWUgd2F0Y2hkb2cgd2FybmluZ3Mgd2hlbiBydW4gdmlhDQo+ID4gc2NoZWR1bGVfd29yaygp
+Og0KPiA+DQo+ID4gWyAyMDY5Ljc5NjIwNV0gd29ya3F1ZXVlOiBkcmFpbl92bWFwX2FyZWFfd29y
+ayBob2dnZWQgQ1BVDQo+IGZvciA+MTAwMDB1cw0KPiA+IDQgdGltZXMsIGNvbnNpZGVyIHN3aXRj
+aGluZyB0byBXUV9VTkJPVU5EIFsgMjE5Mi44MjMyMjVdIHdvcmtxdWV1ZToNCj4gPiBkcmFpbl92
+bWFwX2FyZWFfd29yayBob2dnZWQgQ1BVIGZvciA+MTAwMDB1cyA1IHRpbWVzLCBjb25zaWRlcg0K
+PiA+IHN3aXRjaGluZyB0byBXUV9VTkJPVU5EDQo+ID4NCj4gPiBTd2l0Y2ggdG8gYSBkZWRpY2F0
+ZWQgV1FfVU5CT1VORCB3b3JrcXVldWUgdG8gYWxsb3cgdGhlIHNjaGVkdWxlciB0bw0KPiA+IHJ1
+biB0aGlzIGJhY2tncm91bmQgdGFzayBvbiBhbnkgYXZhaWxhYmxlIENQVSwgaW1wcm92aW5nIHJl
+c3BvbnNpdmVuZXNzLg0KPiA+IFVzZSBXUV9NRU1fUkVDTEFJTSB0byBlbnN1cmUgZm9yd2FyZCBw
+cm9ncmVzcyB1bmRlciBtZW1vcnkNCj4gcHJlc3N1cmUuDQo+ID4NCj4gPiBDcmVhdGUgdm1hcF9k
+cmFpbl93cSBpbiB2bWFsbG9jX2luaXRfbGF0ZSgpIHdoaWNoIGlzIGNhbGxlZCBhZnRlcg0KPiA+
+IHdvcmtxdWV1ZV9pbml0X2Vhcmx5KCkgaW4gc3RhcnRfa2VybmVsKCkgdG8gYXZvaWQgYm9vdC10
+aW1lIGNyYXNoZXMuDQo+ID4NCj4gPiBTdWdnZXN0ZWQtYnk6IFVsYWR6aXNsYXUgUmV6a2kgPHVy
+ZXpraUBnbWFpbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3Fp
+bmdAYmFpZHUuY29tPg0KPiA+IC0tLQ0KPiA+IERpZmYgd2l0aCB2MTogY3JlYXRlIGRlZGljYXRl
+ZCB1bmJvdW5kIHdvcmtxdWV1ZQ0KPiA+DQo+ID4gIGluY2x1ZGUvbGludXgvdm1hbGxvYy5oIHwg
+IDIgKysNCj4gPiAgaW5pdC9tYWluLmMgICAgICAgICAgICAgfCAgMSArDQo+ID4gIG1tL3ZtYWxs
+b2MuYyAgICAgICAgICAgIHwgMTQgKysrKysrKysrKysrKy0NCj4gPiAgMyBmaWxlcyBjaGFuZ2Vk
+LCAxNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
+aW5jbHVkZS9saW51eC92bWFsbG9jLmggYi9pbmNsdWRlL2xpbnV4L3ZtYWxsb2MuaCBpbmRleA0K
+PiA+IGU4ZTk0ZjkuLmMwMjg2MDMgMTAwNjQ0DQo+ID4gLS0tIGEvaW5jbHVkZS9saW51eC92bWFs
+bG9jLmgNCj4gPiArKysgYi9pbmNsdWRlL2xpbnV4L3ZtYWxsb2MuaA0KPiA+IEBAIC0zMDEsMTEg
+KzMwMSwxMyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgc2V0X3ZtX2ZsdXNoX3Jlc2V0X3Blcm1zKHZv
+aWQNCj4gKmFkZHIpDQo+ID4gIAlpZiAodm0pDQo+ID4gIAkJdm0tPmZsYWdzIHw9IFZNX0ZMVVNI
+X1JFU0VUX1BFUk1TOw0KPiA+ICB9DQo+ID4gK3ZvaWQgX19pbml0IHZtYWxsb2NfaW5pdF9sYXRl
+KHZvaWQpOw0KPiA+ICAjZWxzZSAgLyogIUNPTkZJR19NTVUgKi8NCj4gPiAgI2RlZmluZSBWTUFM
+TE9DX1RPVEFMIDBVTA0KPiA+DQo+ID4gIHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZyB2bWFs
+bG9jX25yX3BhZ2VzKHZvaWQpIHsgcmV0dXJuIDA7IH0NCj4gPiBzdGF0aWMgaW5saW5lIHZvaWQg
+c2V0X3ZtX2ZsdXNoX3Jlc2V0X3Blcm1zKHZvaWQgKmFkZHIpIHt9DQo+ID4gK3N0YXRpYyBpbmxp
+bmUgdm9pZCBfX2luaXQgdm1hbGxvY19pbml0X2xhdGUodm9pZCkge30NCj4gPiAgI2VuZGlmIC8q
+IENPTkZJR19NTVUgKi8NCj4gPg0KPiA+ICAjaWYgZGVmaW5lZChDT05GSUdfTU1VKSAmJiBkZWZp
+bmVkKENPTkZJR19TTVApIGRpZmYgLS1naXQNCj4gPiBhL2luaXQvbWFpbi5jIGIvaW5pdC9tYWlu
+LmMgaW5kZXggMWNiMzk1ZC4uNTBiNDk3ZiAxMDA2NDQNCj4gPiAtLS0gYS9pbml0L21haW4uYw0K
+PiA+ICsrKyBiL2luaXQvbWFpbi5jDQo+ID4gQEAgLTEwOTksNiArMTA5OSw3IEBAIHZvaWQgc3Rh
+cnRfa2VybmVsKHZvaWQpDQo+ID4gIAkgKiB3b3JrcXVldWVfaW5pdCgpLg0KPiA+ICAJICovDQo+
+ID4gIAl3b3JrcXVldWVfaW5pdF9lYXJseSgpOw0KPiA+ICsJdm1hbGxvY19pbml0X2xhdGUoKTsN
+Cj4gPg0KPiBObywgbm8uIFdlIHNob3VsZCBub3QgcGF0Y2ggbWFpbi5jIGZvciBzdWNoIHB1cnBv
+c2UgOikNCj4gDQo+ID4gIAlyY3VfaW5pdCgpOw0KPiA+ICAJa3ZmcmVlX3JjdV9pbml0KCk7DQo+
+ID4gZGlmZiAtLWdpdCBhL21tL3ZtYWxsb2MuYyBiL21tL3ZtYWxsb2MuYyBpbmRleCA2MWNhYTU1
+Li5hNTJjY2Q0IDEwMDY0NA0KPiA+IC0tLSBhL21tL3ZtYWxsb2MuYw0KPiA+ICsrKyBiL21tL3Zt
+YWxsb2MuYw0KPiA+IEBAIC0xMDY3LDYgKzEwNjcsNyBAQCBzdGF0aWMgdm9pZA0KPiByZWNsYWlt
+X2FuZF9wdXJnZV92bWFwX2FyZWFzKHZvaWQpOw0KPiA+ICBzdGF0aWMgQkxPQ0tJTkdfTk9USUZJ
+RVJfSEVBRCh2bWFwX25vdGlmeV9saXN0KTsNCj4gPiAgc3RhdGljIHZvaWQgZHJhaW5fdm1hcF9h
+cmVhX3dvcmsoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKTsgIHN0YXRpYw0KPiA+IERFQ0xBUkVf
+V09SSyhkcmFpbl92bWFwX3dvcmssIGRyYWluX3ZtYXBfYXJlYV93b3JrKTsNCj4gPiArc3RhdGlj
+IHN0cnVjdCB3b3JrcXVldWVfc3RydWN0ICp2bWFwX2RyYWluX3dxOw0KPiA+DQo+ID4gIHN0YXRp
+YyBfX2NhY2hlbGluZV9hbGlnbmVkX2luX3NtcCBhdG9taWNfbG9uZ190IG5yX3ZtYWxsb2NfcGFn
+ZXM7DQo+ID4gc3RhdGljIF9fY2FjaGVsaW5lX2FsaWduZWRfaW5fc21wIGF0b21pY19sb25nX3Qg
+dm1hcF9sYXp5X25yOyBAQA0KPiA+IC0yNDcxLDcgKzI0NzIsNyBAQCBzdGF0aWMgdm9pZCBmcmVl
+X3ZtYXBfYXJlYV9ub2ZsdXNoKHN0cnVjdCB2bWFwX2FyZWENCj4gPiAqdmEpDQo+ID4NCj4gPiAg
+CS8qIEFmdGVyIHRoaXMgcG9pbnQsIHdlIG1heSBmcmVlIHZhIGF0IGFueSB0aW1lICovDQo+ID4g
+IAlpZiAodW5saWtlbHkobnJfbGF6eSA+IG5yX2xhenlfbWF4KSkNCj4gPiAtCQlzY2hlZHVsZV93
+b3JrKCZkcmFpbl92bWFwX3dvcmspOw0KPiA+ICsJCXF1ZXVlX3dvcmsodm1hcF9kcmFpbl93cSwg
+JmRyYWluX3ZtYXBfd29yayk7DQo+ID4gIH0NCj4gPg0KPiA+ICAvKg0KPiA+IEBAIC01NDIyLDYg
+KzU0MjMsMTcgQEAgdm1hcF9ub2RlX3Nocmlua19zY2FuKHN0cnVjdCBzaHJpbmtlcg0KPiAqc2hy
+aW5rLCBzdHJ1Y3Qgc2hyaW5rX2NvbnRyb2wgKnNjKQ0KPiA+ICAJcmV0dXJuIFNIUklOS19TVE9Q
+Ow0KPiA+ICB9DQo+ID4NCj4gPiArdm9pZCBfX2luaXQgdm1hbGxvY19pbml0X2xhdGUodm9pZCkN
+Cj4gPiArew0KPiA+ICsJdm1hcF9kcmFpbl93cSA9IGFsbG9jX3dvcmtxdWV1ZSgidm1hcF9kcmFp
+biIsDQo+ID4gKwkJCQkJCVdRX1VOQk9VTkQgfCBXUV9NRU1fUkVDTEFJTSwgMCk7DQo+ID4gKwlp
+ZiAoIXZtYXBfZHJhaW5fd3EpIHsNCj4gPiArCQlwcl93YXJuKCJ2bWFwX2RyYWluX3dxIGNyZWF0
+aW9uIGZhaWxlZCwgdXNpbmcNCj4gc3lzdGVtX3VuYm91bmRfd3FcbiIpOw0KPiA+ICsJCXZtYXBf
+ZHJhaW5fd3EgPSBzeXN0ZW1fdW5ib3VuZF93cTsNCj4gPiArCX0NCj4gPiArDQo+ID4gK30NCj4g
+PiArDQo+ID4gIHZvaWQgX19pbml0IHZtYWxsb2NfaW5pdCh2b2lkKQ0KPiA+ICB7DQo+ID4gIAlz
+dHJ1Y3Qgc2hyaW5rZXIgKnZtYXBfbm9kZV9zaHJpbmtlcjsNCj4gPiAtLQ0KPiA+IDIuOS40DQo+
+ID4NCj4gV2h5IGNhbid0IHlvdSBhZGQgdGhpcyBpbnRvIHRoZSB2bWFsbG9jX2luaSgpPw0KPiAN
+Cg0KSWYgYWxsb2Nfd29ya3F1ZXVlKCkgaXMgYWRkZWQgaW50byB2bWFsbG9jX2luaSgpLCBzeXN0
+ZW0gd2lsbCBjcmFzaCBhbmQgZmFpbCB0byBib290LCBzaW5lIGFsbG9jYXRlIHdvcmtxdWV1ZSBk
+ZXBlbmRzIG9uIHdvcmtxdWV1ZV9pbml0X2Vhcmx5KCkNCg0KTWF5YmUgdGhpcyBjb21taXQgMzM0
+N2ZhMDkyODIxKCJ3b3JrcXVldWU6IG1ha2Ugd29ya3F1ZXVlIGF2YWlsYWJsZSBlYXJseSBkdXJp
+bmcgYm9vdCIpIHNob3dzIHRoZSByZWFzb24NCg0KDQpbTGksUm9uZ3FpbmddIA0KDQoNCj4gLS0N
+Cj4gVWxhZHppc2xhdSBSZXpraQ0K
 
