@@ -4,81 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 989D7107526B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 06:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B0B1075264
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEF926B0403; Thu, 19 Mar 2026 02:59:44 -0400 (EDT)
+	id A7BC66B0404; Thu, 19 Mar 2026 03:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA0D06B0404; Thu, 19 Mar 2026 02:59:44 -0400 (EDT)
+	id A53776B0406; Thu, 19 Mar 2026 03:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9964D6B0405; Thu, 19 Mar 2026 02:59:44 -0400 (EDT)
+	id 969B06B0407; Thu, 19 Mar 2026 03:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 85C2B6B0403
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 02:59:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 858CE6B0404
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:00:30 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0DDB11A03E4
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:59:44 +0000 (UTC)
-X-FDA: 84561912288.18.F2D32BF
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3326F40006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:59:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f77AfviT;
-	spf=pass (imf27.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 388E21D37C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:00:30 +0000 (UTC)
+X-FDA: 84561914220.18.CD194D4
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C97FF80018
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:00:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MWv1JOHy;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773903582;
+	s=arc-20220608; t=1773903627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MqgwjOgYAgCvdM+KEzOVlrYDCZwrzcZ5oUrc3PxO6ls=;
-	b=jhJ6N8CHLd+1Z9OUwkW4NxV0WZLKvXhsFibjc1itaj0OaZ24LhsHiQnjl/UytQQTYz8VA9
-	Ij6eDodouIut+69mpm0zzv5DuPgK6CSsCdGrP19JxwfVwrKHMtqM2tIN+P93bd9yLRnfVL
-	FbncfDAtuc3tUnp0StTyRtABHB1C7iY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/Tf/vnCCMR7csoiq+BQVcLU+w/pmlReZtybYZJ5pONw=;
+	b=YV6LdvQNla5SNl809+I6TWURT4cinNmB+NI1vjsjlnf8gOpvz6F1NZEcITavwKrXRTgamE
+	kjnmaNJ51sjcXuoWyNdInlHbVrnWldAeAaDZSe8rL4ioJBAaWa3zsARuISImOsNP1z68C9
+	wCpCZ8dlA7Z8fLKtLu7dk6jitl28JFE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f77AfviT;
-	spf=pass (imf27.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773903582; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MWv1JOHy;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773903627; a=rsa-sha256;
 	cv=none;
-	b=c+S/IIlHI8eVDUF3tiF2cz1hbVBVZmOd71zpQZFRRqHFqQmwdmsbnEPJFJmv3TGtVJaERz
-	UZUIb5CaT7I77YMmsKz/SLt5gIbEcn2WQcN2aETNvBUuoiTgOW7smkuQMnNgOxjSioGQwI
-	yc9e5Vstn18IppirCYnDyZgwSV9iZIE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773903578;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MqgwjOgYAgCvdM+KEzOVlrYDCZwrzcZ5oUrc3PxO6ls=;
-	b=f77AfviTCa3A2iLW9blXxrDruz8cCYgr5yLo+h5gX+KDVCyDyen+xKEyIMFeTcErPpXZDq
-	GP+/ve/NhwcNVBZlo/A/+g5O0lglmhg8Hsd8Ns63Ts7xpZpr2UxNIDvtH4cksMYyd5nAIn
-	dYcDs87YHhTdNadxnFQ+PlohXiTJOJI=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: teawater <zhuhui@kylinos.cn>
-Subject: [PATCH v3] zsmalloc: return -EBUSY for zspage migration lock contention
-Date: Thu, 19 Mar 2026 14:59:24 +0800
-Message-ID: <20260319065924.69337-1-hui.zhu@linux.dev>
+	b=36/tIK7TxEj6Nst39H93lDO5CjLpmx4judyFCFaboXAYIqlc99++1hAvMC/x4NcWcBbYhY
+	xFB4vyWhG2Gps335R2FAcXOh5OHSm2VJ4qrtxjyQZH58ygsJlFGMZT9pL5AIop7NPUeESW
+	7D0IXufx7MkFD8vUy0GrHyykekyd4Pw=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773903621; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/Tf/vnCCMR7csoiq+BQVcLU+w/pmlReZtybYZJ5pONw=;
+	b=MWv1JOHykstAwSjNKpMk7xi8s9J/eKltQb+8fvBrcKP6/1GMOz4FD7cuUrVZtFVAxuYreD8bT8frU5cI0Qks2HEr60doelpQ61nk7KOE0lJdN2nDOzrdC35TSedtYGlD/SjyTW0TXYcqwp+GNVTxaOBHVDM3VY0RFtb0GAsBrow=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X.HWASq_1773903618;
+Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.HWASq_1773903618 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Mar 2026 15:00:18 +0800
+Message-ID: <b4ad83ac-abc5-4389-bc74-70468bb77572@linux.alibaba.com>
+Date: Thu, 19 Mar 2026 15:00:17 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] mm/huge_memory: handle buggy PMD entry in
+ zap_huge_pmd()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1773865827.git.ljs@kernel.org>
+ <8ffa393ad86b9b0ecd9b001ca88706ce2f9fe003.1773865827.git.ljs@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <8ffa393ad86b9b0ecd9b001ca88706ce2f9fe003.1773865827.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3326F40006
-X-Stat-Signature: 67qfy51cgk5p9mrwejgfr14wrxikxxw9
+X-Rspamd-Queue-Id: C97FF80018
+X-Stat-Signature: d6cmtif8pmcty5th6e3hso1jmpghfz9m
 X-Rspam-User: 
-X-HE-Tag: 1773903581-167815
-X-HE-Meta: U2FsdGVkX1+SKsIN5Lxh7Y1OX4zyso3QxnOgKbtAQV5FrWNeTDewA7fwvY/P4MGI9RW/FvYzg1FLzWZqVcqBOMzeffMVUl/1TCGM6G6Rky2VNWtorY51kqmf2vWhi0txOe0n57+pdosbkqdLbZKRYbBR6aSNbMZjEJGtSI+wc5Wv4/9SBug+Q3Zae9e7N589EN4LwlxLl6XmHwFDsA7MRnqZ+a9SK5eSdi2UBGBimwPzkpy1P56IBw9cmODuwO+W5Ew+jkT2G4gBVDSK0rmjG+LssrjFoh/2yEEAG+1WUbDBs3os4qXHftfiCqYDrgHGKLuh/odEanUJ5G0ZKXldCIF2aWDhJrg0l6Spg9Szl4NiwJzYE64jCW6dyODmh0ZiNTJLQGI3mv4kOJqRiAzszPETyR/XwQHaUY/EuFaMxWzwKru4ECdtHy6r0fetJKEfwtKXehkj4lqUEUemS9y8sdF27G/3fwuWCFb3IjXlMmMHjrYp/f5sYfk1idDNZy7fLemRW2w0LbFvY/MO/9G6uD1Uylydeo42/igPBGBpjez6IiyNN3LRPFyPLfq+/zoOocWTrR+lZO+0v6OpR9goyRUVwfl3fk9VsfKtN2oKku0hsnnjwsv4yMgotG4yRzZN8BkDoxldGHJn+ynpM4uN9iOQL75y3NE62Ncnl99i8kq5mzfDBABktseON9xmekXIgts6DKvWFIRomuqwgU7lWg2ZeWxGl2KcVvnhkPwWOgk6LsSy69jPqCk2MxSIJpmF3faNqSYCfwELABTb0CafvK1c/sEzpCRTrcSjzNeKjNYOLe/FFOzo+rb1HQF+d1UA/k0YX9a8qfmV/owoFMlBU0y4vN4bbxKOmuO96r6J9ZP2YfrtHdXNIlmpdu3ua8PnFv1kZGmGfj5u2YqUBzs1dzOIHoxnapsPXdqmZmsVlorCakyygJJDKMChDFm/5ZjjVyH9UWI0SzRXMeBXOJE
- FKiQ+lDG
- 2a81+BA/wEhmEwtbn27RPTMEB0w7hPjIWyzhdehalP/6pEKLISuQzQuECLIy+V77xwSMpVfdYbt4Ci7ceWFEs5mnhic3XOuIXdpgB12RlJ8ZIuhCewvZsjc1q4Aqmmn6HfPCeInUCfHQfw7jJdeZeOGbLLCK2o10lgcbJft+Deqnb9LhsfGeJOWBiHYaPi1l1Vtq5q3RYBYOc8x7HgYXVQdtP+Omrs8s5nHpF
+X-HE-Tag: 1773903626-176016
+X-HE-Meta: U2FsdGVkX19YS3Zq/ydJ2x0/xQhce78jmr/uBxy3qTIewarUGRjcVhyD83Gr1YmzSpQkWWswRWxUkn5hh7uMMjdVkAKhUUpFezK/ojUmgI7MWF6psfC1sGnLCk9I8GbW8OGpMIkl5jX05g7FBmPKq1wbFTvuz9M2StFVVUJd/AxrebVgDtIVQ8tKY1rx6rLkIg9L65aogYokzJJOKjFkNmxsX2K0fktTDRA7TrkHjsTgeMSYzg8QEuTQx6fvAM9m5Rbhq/Hgy5jLNVA4iAel/NkYfSA6/hLBIxmaAAcqqL5unKqa8DgFyjYLiRrNLJ+bgQBiR9zGT1G5bhdkFiMytor+96+Lh/y3otnGf9Ha1zngndIDzmkBPyHjfig5LsXGIBW8+mrhe/UIZ1SveRFoCIaB/waoTFc+TGdjKqTtaR3dBdq+JvmCLkH8uWNA84eJDeKLr1B4nWUdv1562+wyuqQ8Uz946UXVbyliEA+MZ5OAxnfRT3gkI32PaFiIBBnPqN+BLIN3DpN4ot4jHHDgc94IrBKTI12CacEz8EUMYS2/NVT1ksUGlcAez+kIDNNtFfVy4D7HvzlUaaW+DPP3DveWzjjSKTkRR/O9He2+tAh4mflu48I/ZEVMxbKep6Kcv0hmV1uSGVKjfabR/JKxybEwo2nuQCAdAvbY7ehfCgf0omiU5+Dnq7lQbr8JyWPACZuhfVuurJpGlY3oZX5OoiST+wKoxrgJGFuy+/VHArQxTWwrLU8iRQvlCb/9Xts4wq6D1CKA9DGIT1nGfcCN7wfvyazjDVGoqD3yWADGgJrw6g9cOl/1UU5UJdKqy3/kUWn02fOC2jmDjbQBKeT8sKqSd58/zp1e/ujMk64a4ts2Iz7GP7iLO0fG83TPirRWFuEF1rMtDzWnCEk2+epnxcT9z66IpF9UYD9OQzRgyx5WKfDh5HPWwa1lXJEEogejYhesVuemKP3LnViaxW2
+ OAp+fb0C
+ Cb3hxRSASocR84wzWx3EBWFfBJ8O4jbC3l9yeOKyGN/f0YxmPFwEJDvypVpMbMncfDQh3HWHds539nTx/qasvAG0VhFAEQtHCUiAKtV/CollcG1e6dkSM5lSxwvkq4V++EvKU0zt9asGLjc9ygStBLSATTTIIRAdEmnWmPTa4UmWApWaFO6/LyDgn+ZgzoWFaKUfliMLgweZjxApmt03D58pp/KeKK6rd0nFb3zwO3EjWeF1iQbn08QKl5ShpvAZG9KSnHK6enDYgtGuAOtx88E5q6co1O9lqkluDNVLdOSu6rMYhN8/rY73jzxMhPFivOww8xBxle5GY/0/aop6mbTTE+DRgglBRGMeWER8US4gYYVDq7evxERTC3WDFyzmVLKTl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,66 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: teawater <zhuhui@kylinos.cn>
 
-movable_operations::migrate_page() should return an appropriate error
-code for temporary migration failures so the migration core can handle
-them correctly.
 
-zs_page_migrate() currently returns -EINVAL when zspage_write_trylock()
-fails. That path reflects transient lock contention, not invalid input,
-so -EINVAL is clearly wrong.
+On 3/19/26 4:39 AM, Lorenzo Stoakes (Oracle) wrote:
+> A recent bug I analysed [0] managed to, through a bug in the userfaultfd
+> implementation, reach an invalid point in the zap_huge_pmd() code where the
+> PMD was none of:
+> 
+> - A non-DAX, PFN or mixed map.
+> - The huge zero folio
+> - A present PMD entry
+> - A softleaf entry
+> 
+> The code at this point calls folio_test_anon() on a known-NULL
+> folio. Having logic like this explicitly NULL dereference in the code is
+> hard to understand, and makes debugging potentially more difficult.
+> 
+> Add an else branch to handle this case and WARN() and exit indicating
+> failure.
+> 
+> [0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+>   mm/huge_memory.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bba1ba1f6b67..8e6b7ba11448 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2478,6 +2478,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>   
+>   		if (!thp_migration_supported())
+>   			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+> +	} else {
+> +		WARN_ON_ONCE(true);
+> +		spin_unlock(ptl);
 
-However, -EAGAIN is also inappropriate here: the zspage's reader-lock
-owner may hold the lock for an unbounded duration due to slow
-decompression or reader-lock owner preemption.
-Since migration retries are bounded by NR_MAX_MIGRATE_PAGES_RETRY
-and performed with virtually no delay between attempts, there is no
-guarantee the lock will be released in time for a retry to succeed.
--EAGAIN implies "try again soon", which does not hold in this case.
+The warning looks reasonable to me, but ...
 
-Return -EBUSY instead, which more accurately conveys that the resource
-is occupied and migration cannot proceed at this time.
+> +		return false;
 
-Acked-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: teawater <zhuhui@kylinos.cn>
----
-Changelog:
-v3:
-According to the comments of Sergey Senozhatsky, update the comments.
-v2:
-According to the comments of Sergey Senozhatsky, change from -EAGAIN to
--EBUSY and add comments.
-
- mm/zsmalloc.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 2c1430bf8d57..e7417ece1c12 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1727,7 +1727,19 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
- 	if (!zspage_write_trylock(zspage)) {
- 		spin_unlock(&class->lock);
- 		write_unlock(&pool->lock);
--		return -EINVAL;
-+		/*
-+		 * Return -EBUSY but not -EAGAIN: the zspage's reader-lock
-+		 * owner may hold the lock for an unbounded duration due to a
-+		 * slow decompression or reader-lock owner preemption.
-+		 * Since migration retries are bounded by
-+		 * NR_MAX_MIGRATE_PAGES_RETRY and performed with virtually no
-+		 * delay between attempts, there is no guarantee the lock will
-+		 * be released in time for a retry to succeed.
-+		 * -EAGAIN implies "try again soon", which does not hold here.
-+		 * -EBUSY more accurately conveys "resource is occupied,
-+		 * migration cannot proceed".
-+		 */
-+		return -EBUSY;
- 	}
- 
- 	/* We're committed, tell the world that this is a Zsmalloc page. */
--- 
-2.43.0
-
+IIUC, if we return false here, the caller zap_pmd_range() will fall back 
+to call zap_pte_range(). Since pmd_trans_huge(pmd) returns true, 
+zap_pte_range() will simply return 'addr', causing an infinite loop in 
+zap_pmd_range(), right?
 
