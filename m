@@ -4,91 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 379B71075273
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 323E81075279
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63BAE6B043D; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
+	id 8AFB26B043E; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EC8B6B043E; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
+	id 860EC6B0440; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5290A6B043F; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
+	id 74F666B0441; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AC7C6B043D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6313D6B043E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB28D160422
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:47:37 +0000 (UTC)
-X-FDA: 84562184154.04.D0888CD
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0CE4613ABBF
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:49:42 +0000 (UTC)
+X-FDA: 84562189404.04.2190E47
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 271DB140006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:47:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QDGvhwgE;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4011DC0005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:49:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VSAluQ55;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773910056;
+	s=arc-20220608; t=1773910180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TfanbqxR+HQ8nv2uowsANH0YHLTtZx7bJohdK38qMoM=;
-	b=SSlVq72nO75tU9UAdhKghJRa5qz1YtsQ6/WlO+dladsR18HWxWVwbBMB3RrkBJWEW/KUGB
-	0SPwYjEZCzeaxUrVAgZkL1vtDSYV4ouc6cPs7PeqNHJAjKTPfhR7MZYHTtp/RRMjIxjire
-	Apsy+y+85JGeUS47z3Nk9Str6Db0lrw=
+	bh=WhfPu3qnAbA5MPoYZ3CgPIhswmpi6WtzTYz3fzA2Ki8=;
+	b=cX7MgsiHKlGoSRVNNsyVbQ7rsXEjEdiHvHoLUcL0cTHV2nNGKiiByWJj+m9MQOpFgjdO+E
+	DlP/uyorGk7nmN7d9eIZsuKxphq9ozZ+v7MKkT5uQI+L2vvwYfaS5862C9jkgD4+1+N17u
+	1hEQpk3MUzVevJXaCEhC7hzFAdZU0bA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QDGvhwgE;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VSAluQ55;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910056; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910180; a=rsa-sha256;
 	cv=none;
-	b=C02S/Ee4Cq2hTOc/c//PM/nskLjQpYBx3O6VcszVQLaGIxmVRSziLpPG4xNf4P68xalebv
-	xZ0FbZbWgVwe7p+pcObU7D5cJ9DgONRSa5/v2v3f4zZqiP3sBjv0McZTSWGYqN4t0YOD2t
-	aBdPGTl+a7lpVBiRM+UzGGXYWiZdW0U=
+	b=kX9TSx/v/uBvEWKZA4zGrs09iLW56zrBcExWbdZAIegRAUFPZq6kA+cRmV6qg1DmCOJI5m
+	SP+Kj/6xhMdIuJKQsqXvpPfOSXszTd2Ew05uFM/iTwOoj8Py0GIXSA4jav90cwdPkvlJjW
+	moc2gbIwzmOkLonbP/VJWXnqaLV7jpo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E50E44395F;
-	Thu, 19 Mar 2026 08:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B52C19424;
-	Thu, 19 Mar 2026 08:47:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4673C44474;
+	Thu, 19 Mar 2026 08:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB6DC2BCAF;
+	Thu, 19 Mar 2026 08:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773910054;
-	bh=Nqr7vJ2IkEZgCrytTt+nk08H0Nhl6m3l0yrCTDwteoQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QDGvhwgEukyMVeAzviczVkWIfQk6Vc+iDzWS/Y88bIDbDBqRdlR7QNnMrhqUgAiWH
-	 6Qdg3RyxpfXEWq7l97soydy+ZHHTrOCDcMdKsHZ2pIsFNilD66sIC7eoT6ivGSsEx4
-	 gsYF+DV9oGrcMdxGwhvSgN1FtTsQZJ0nVDjgKuXSSQuhFaPRTnvZgv8ulVhJVZTn4p
-	 zVhPCQOmCpp949dpD9QpgH7wgGaXLbWS21qaHClDmffgg7w/pLPl9ENi91ZyLDrUyY
-	 OOTO0R89d10hUbrn5iu64jRCGbtDyguzn7X+6bb0SXHM9mzbmtIn5a5cZvpMCAKRUV
-	 reeIfmkqkPl9A==
-Date: Thu, 19 Mar 2026 08:47:29 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
-Message-ID: <06625acf-ee08-45ee-bdbf-5a3157df0468@lucifer.local>
-References: <20260318200352.1039011-1-hannes@cmpxchg.org>
- <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
- <absnshL4E4iXSC1y@cmpxchg.org>
+	s=k20201202; t=1773910179;
+	bh=Ifz9SBANyiJwa/uIE9HB99AY8+id+zpQI5spFPN3LTU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VSAluQ55HJaUtEG1IsJ5NWIOkQbWebceW3r1y0lVAN1ze5DOwc8hy9yROLrEGLdBM
+	 2MSALqdm602Mb3a36SCUcQFeoMJ/f25tFxICxTaPLU6hMm07C/PQgyV1K/2Gj8OyvP
+	 eESt4Wuc6GXc1se05GfxyikSydHlpXChUNz9igLQ5mI69KB5t6AFBJdt32dazC5bQ5
+	 wS+F5hmlJcryXi1DyHdAyLrNSPLLo4gdbtvh9+QL/RQ98nFvRor5L3Hnpedglld0L0
+	 VdptgsNVO5Tb/Qz/qbGf+sbGhIVr37CKmT3sLitwCEJEthI0nKSSp1a70gIj/xTKqo
+	 NbNqGef5zVqBw==
+Message-ID: <acfc913b-c635-4795-b75b-ab8b04e7e83b@kernel.org>
+Date: Thu, 19 Mar 2026 09:49:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <absnshL4E4iXSC1y@cmpxchg.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/huge_memory: fix folio isn't locked in
+ softleaf_to_folio()
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, baohua@kernel.org,
+ ryan.roberts@arm.com, linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260319012541.4158561-1-tujinjiang@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260319012541.4158561-1-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 271DB140006
-X-Stat-Signature: d31znqyekkmwoetbzgzu39z7mq9uo8ku
+X-Rspamd-Queue-Id: 4011DC0005
+X-Stat-Signature: efnhzjmmmtfjnbig3g3y53ech56qhe64
 X-Rspam-User: 
-X-HE-Tag: 1773910055-631759
-X-HE-Meta: U2FsdGVkX18vH03JiK5rvbCtOrfyt591/LBPcbUclNNuvxcxZZQsi85A/QFNpmn/VbE7wunOFHeJ5UksDvC8c5Rpt/AqVuoysOxMFPlgW+o09Jn+d9MK6OEVJaR9NbbWuifwSGBJMpjQRI3ymLGgja50z/apwCArDU/+oZi4+5tzcfiLBx3CYoUfPvOY/+VSf8FDo5vN2mmL7nDmBrVdP578eBycHDhpZwwyCJRTjlQ6apvwP3jlWdyFm4wp8ZMMyAFQ/0RN9AP+kwOMWkkpSd37mEq2l44jGfNssHmMBel+8eVNY6S7Ym+PWeGKtxXh8mp/o6yKP2gUTvfZustwurGsC3TFpbmkyL0LTwFgI5aJ6d83NbDr4G5+RUkWEOehbIJDhA7qYkg56UUWX21EAI/cfnXgnaQbYErwaL48poTQJdaW5tIx5HgRlVB7yyiD+wdyt2nt1uCwC61Q2FJUCA9jh7GxbdyQZPRlIJl6zb5S5mga9nEzrIu5AIcstKg2b9esWZs+hs1259tejEa65V8wgXcwuMkpNrNE/5hk30QQVLNFaSb5jbUEsPbOExph0jRqEnqxgJ4g357ZpR2KsA8mYG+gnpUcPYdM0ltiSHNr2R0It9nlimZXFLSi7qx+tGrBQ+ZuLtGl3dxdGI2BU/9ssAA4kzPPSWLuNCHpML2/7irQZm6BCKJJ3PiK4v/GSrdVxPJF+d1aa4Bif5XIaYAVyzH/SpBQhc6K4mVVoknGO379WFXBzTgv0kEJS/M4Tb/iSaDhzGvdTJQAJw1FyAo+jM0bkTceSHXNM5ksj4eWoSbukw0KGFg8CF6wuyl6lnzx7YnpBNSCh4eLrts/fVXeAnb/WYzUWVdGiRQo7v9g3ASJa8DVVb694Q2LXqCa45www+WgCJiBatc8gjJcpVa9HVdT+miysKQpQ+seCIukJk2C2AYMhxGNISRhIcpPnOFL87YYCxX1lxyf1TM
- Lm8Vn4C8
- F+2F7/EJYQBjoaRwYLczoOWCCS8KNDemlL07wvLYhC5oqsxeDbefYDIJI8gcokCmIFMDXM5sYNrRRNbgXXwB22ybGykwo4C6Voe/PzPuYB2oyvpzjaQEPybKiQQwBKzlb94B7W8sWe5dk0iZw9ZJTZTWREopsmgOy7iJUUjHcHq6Kqgf/QGMl5vqXz0XkTC/y8NojBmkW3jb/5J5eqh0K2ufYyvoUGhdEuOnG0X7AOlbX4Yk2YTEb+87xfKsYdxMZTrKU3Uuruh7cwc7GMfSFKXivvPDRApzg+YjeswUV3zD5+oucJoH+c+FJoIYqQ2TUGDdsKxRaz4kWG8UhLubD0pSDd76IZXtWNf/OloN06ne1r5QJIFM1NQuKHbMwBPwbuUzp5v1vSH1J08p8lok1OLFMQaa1lbZrVMNigeELed1tEd0sIQrI9Bwz7bXYm1sR4qhw4nW8FS0/5i7D284uJ9UOeSvKUiPV6NSmCbagRpr/PmmpX4fjH17vig==
+X-HE-Tag: 1773910180-798343
+X-HE-Meta: U2FsdGVkX19hiXQUmBBnnPoBSgLUbcBRDYR9uHk2klNW0VhyO7f9hXsV3oA6UU97CSDhaPT0sYMq3jLEnXqfFbbFyAn7rBYUN4dRxayRlVnVQrzs4HbClE9N9b9cokaB8+uQm3F7cH7C1ZBSbXV4FqEfVlKjV+ZzPT6ihifG+d9cRwvZ2GoGHtLltTqZnkVOXdOK0Nxg4rj9x6oo4NU/gclZAZ0GhWiBFxioX09L4TBumllIJ0rDiVinIxXUdisoYi51n6x2OX4S0FC1b3XIOGsz4h7KP7/znLmbARHNkccEiILfpPtVT3GtyOJzPNzkzwnNJEyWDW5igb8BAbj//Zx+LnH7Ik+FAffncFhxwDK56yuwRqveo0j7B5A/Npz5JEysJ39OOWzYBZS/dTAAdkexFSMqOeb4+RoI7B5Iqj6YFTux7DSrcFfH3nB2NlwDr5i6j+MRpzfKeT/8aD9xAvELEWPuPzbLcHY5gq/yD4aOeTldcLUtk4VPySqxGqCA7H6tBGg81opwLCnlasmA3ycJiKj/0C9y/B3ko2HQqVq45fjwK8hSHtObj4DalSRLGL1RbhY5ijwlXAvDQcQw8HMUU0T//krrRt93gPDZBGfTsgvFCrcGYFyfPYfqvF6Zbvz0HrtW232WfcXLyeApCZsv79AyFYrc/CzD3W0AiUbmd9ulfTEzExEXVjiDSvCq03II1l+zRuxMLJIjfNy/vdIJWOCcZKnGLK8/BVoFo7EAWF8/Kh2jIOAVsEpT6dnhKnf4Ew8jS4DQfBoVnbGpmioPTqVjTRjj8IV9bTtXdOJr/C73R/P1AM3nW2jHZ6GpHroKKNAtsyK53oTkf+zX8ziwgqX8eGdYnM/Xz16s9ryyZgU0UGnVjjb3yYnEL+gk1cA3S4Fuw6eryso0yW5KdusmXvECFtwKWEMNw/Hl2Rla6NmnoJKAxe8IB5zg3ogiSGTTHt9rKBHDxXnGeGF
+ oNxpwMFD
+ vcY9KZNySdf2bDONcPJP2Pcsd/nPvQ3HxUD0Pk/eVn/WFNhCVg6oc5nPb4n19abUq/zlilk3kw6NYVwPp3KDK0IePzLcId6LmRu2tjxmhunPhq9rgxJW7iLC+RjAeZiJE/kVDmTyNW5/57qjYY9vomYE0F/OoZ4tpgT9fs9yqi8wB4itUS0eZkb6v4zF3XIp70M1njb1fM7c3YW0sl7QSyolSSO/6NIyTVdR/D8hSaTlcT5RHJADZrsCOa1075Kj0GnF6+AiZ0rmgtK0mEWbgR0AUu/rLy3cLAMRVKBCJwHwlb+XMK+gMHA69FxgCg2AW9Atv404RhhlfSJB3Tl8fFL4/xN7xdNZGhLqH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,81 +140,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 06:31:14PM -0400, Johannes Weiner wrote:
-> On Wed, Mar 18, 2026 at 09:00:57PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > Hi Joannes,
-> >
-> > This is at v3 and you've not cc'd the majority of THP people:
-> >
-> > MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
-> > M:	Andrew Morton <akpm@linux-foundation.org>
-> > M:	David Hildenbrand <david@kernel.org>
-> > M:	Lorenzo Stoakes <ljs@kernel.org>            <--- (!)
-> > R:	Zi Yan <ziy@nvidia.com>
-> > R:	Baolin Wang <baolin.wang@linux.alibaba.com> <---
-> > R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-> > R:	Nico Pache <npache@redhat.com>              <---
-> > R:	Ryan Roberts <ryan.roberts@arm.com>         <---
-> > R:	Dev Jain <dev.jain@arm.com>                 <---
-> > R:	Barry Song <baohua@kernel.org>              <---
-> > R:	Lance Yang <lance.yang@linux.dev>           <---
-> >
-> > I'd assume it was an oversight but you're an mm sub-maintainer yourself so
-> > I'm a little surprised...
-> >
-> > Anyway could you please make sure to do that going forward?
-> >
-> > I'd like to rely on lei's file-tracking stuff to catch cases like this, but
-> > I just haven't got new mail tracking working properly in that environment
-> > and it's really too slow.
-> >
-> > It sucks to rely on people cc-ing but email development is what it is :)
-> >
-> > Thanks, Lorenzo
->
-> I apologize, there was no ill intent here at all. get_maintainers.pl
-> gave me 27 addresses for this series and I honestly thought that was
-> too aggrandizing and self-important for what these patches are lol.
+On 3/19/26 02:25, Jinjiang Tu wrote:
+> On arm64 server, we found folio that get from migration entry isn't locked
+> in softleaf_to_folio(). This issue triggers when mTHP splitting and
+> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
+> in softleaf_to_folio(). The race is as follows:
+> 
+> 	CPU0                                             CPU1
+> 
+> deferred_split_scan()                              zap_nonpresent_ptes()
+>   lock folio
+>   split_folio()
+>     unmap_folio()
+>       change ptes to migration entries
+>     __split_folio_to_order()                         softleaf_to_folio()
+>       set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
+>       smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
+>       prep_compound_page() for tail pages
+> 
+> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
+> are visible before the tail page becomes non-compound. smp_wmb() should
+> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
+> result, if zap_nonpresent_ptes() accesses migration entry that stores
+> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
+> page before page->flags.
+> 
+> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
+> in softleaf_to_folio() and softleaf_to_page().
+> 
+> Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> ---
+> 
+> Change in v3:
+>  * move softleaf_is_migration() check out of softleaf_migration_entry_check()
+> 
+>  include/linux/leafops.h | 28 +++++++++++++++++-----------
+>  1 file changed, 17 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+> index a9ff94b744f2..dd4130b7cb7f 100644
+> --- a/include/linux/leafops.h
+> +++ b/include/linux/leafops.h
+> @@ -363,6 +363,19 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
+>  	return swp_offset(entry) & SWP_PFN_MASK;
+>  }
+>  
+> +static inline void softleaf_migration_entry_check(softleaf_t entry,
+> +			struct folio *folio)
 
-Thanks, yeah email for development is a complete pain to be honest!
+Nit: ^ should be two tabs. Likely no need to resend because of that.
 
-I wouldn't say that the cc list in any way would be perceived as
-self-aggrandizing, I mean some of the trivial stuff I've sent to larger cc
-lists :P
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-But I get your point, it's a kind of impossible balancing act :)
+-- 
+Cheers,
 
->
-> So what you're looking at is a (poor) attempt at trimming down the CC
-> list based on who I had talked to about these patches at the THP
-> meeting and who I remember had worked on shrinkers & cgroups.
->
-> I can CC everybody going forward, not a problem. Personally I don't
-> mind getting CCd generously, but my understanding is that some people
-> do...
-
-Yeah I have often sent series where the list felt... egregiously huge, but
-I _generally_ treat it as - people are used to getting tonnes of mail - so
-some more shouldn't hurt.
-
-I mean in [0] for example I really cringed at sending a 23 patch series
-that is super super mm-centric and really just updating how we manage VMA
-flags (trying to get away from system word size flags) - to a trillion
-people.
-
-TL;DR - anyway, I think get_maintainer.pl --nogit (and trim anyone who
-isn't listed as a maintainer or reviewer) is the right balance to take -
-maintainers with screwed up email set ups (*cough* naming no names
-beginning with L and ending with orenzo) and reviewers who have signed up
-for lots of mail I think are totally fine to always send to.
-
-And of course +cc anybody else you feel appropriate.
-
-The 'git' maintainers entries can absolutely be dropped though, unless
-you're explicitly say radically changing something somebody contributed and
-it makes sense to include them though all that's subjective!
-
-Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/linux-mm/cover.1773846935.git.ljs@kernel.org/
+David
 
