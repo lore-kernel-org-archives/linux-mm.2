@@ -4,106 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6BE91075274
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:56:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 104871075275
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:05:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30A896B042A; Thu, 19 Mar 2026 03:56:54 -0400 (EDT)
+	id 1DDDF6B0428; Thu, 19 Mar 2026 04:05:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E2526B042B; Thu, 19 Mar 2026 03:56:54 -0400 (EDT)
+	id 18E926B042C; Thu, 19 Mar 2026 04:05:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21F2E6B042C; Thu, 19 Mar 2026 03:56:54 -0400 (EDT)
+	id 07D5C6B042D; Thu, 19 Mar 2026 04:05:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EBC16B042A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:56:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C40658A8FF
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:56:53 +0000 (UTC)
-X-FDA: 84562056306.15.D539006
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2BDD21C0003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:56:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=kEMuBnl5;
-	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E49016B0428
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:05:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CA4113ACE6
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:05:54 +0000 (UTC)
+X-FDA: 84562079028.01.EE2CAB0
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BDF8B160006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:05:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GitlksRg;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773907012;
+	s=arc-20220608; t=1773907552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s8A69keN0dzb00KIbKoLnTjne6XlDApP9njkXdbia9M=;
-	b=yq2H7x/qbqz15tKL+pApmReNoyAA6Gospoy3V+367fLTuLg5NTWwziQpiDgbiH1krpumj5
-	dA+nEqRyQtpUEP+srt4v1fLXPOgObESoLL/hkbIIWolV7Gyk3VNE2zunUynoPIIdB7i/MH
-	qEOoJ7fx0ggADAOiPkPGS+GdpnAnhfg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773907012; a=rsa-sha256;
+	bh=2NsBe2YEaJhTZhc3cWuMJnWEhWKyY3AOJ8RnT3CIBcs=;
+	b=z+ng0nfoQbNGsn+BGyyBgdTCd1gzCdwQW/teIu7+W3c6uT0VLwuec7c0Ffk6XhWIHlZb4H
+	9KE0u5Ilc5bGUtGgCYLgaUPXd5fX29vcCbrXS6GpXLNjlFbAY8wmA7gPYIuaIAQBYE0Gbs
+	tuMieU585HpJLRzGL21Ds8e4PCi3tfY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773907552; a=rsa-sha256;
 	cv=none;
-	b=nIHGExH3oqEa7AzkGLy2pGoklNBhacBdDU/fOQZiZJhTLbdY+ywmzEwdqoLjQKYdl/9YRp
-	eGu5FTTVHAH+/ss7/ArFhwfHrNpppTpimKk7RRK7aB5KtUFoMMjxqQ48C7g5rFriOnG6wz
-	BiQbA6wR19ExwE9Dx/hXoSlL6/gtNns=
+	b=HWZZ2wJPuhSZobw3wjOZjxvxDRTfvVkEueAq0L9MtsprAVu42lUmsikqXHVgyMdqt4qoK+
+	VaUTr9pFMSPstNcFRrMfRRTCzXC2de/l5cXU2O9HH03df/WGKEVIKEvMF9VyHGcIfuZma0
+	5MqVPEyuvpz7OcPFiTqLjUZyiHTlisQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=kEMuBnl5;
-	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=s8A69keN0dzb00KIbKoLnTjne6XlDApP9njkXdbia9M=; b=kEMuBnl5QdgU2yGgwfMddW2g5p
-	VLX/fnB8GUBtoa0nqe9dfZwrYsqfbEz9RB9gGgt/P0dDr2YcnKNxfN/HMD/y21qYcO9V2lGz8QbPV
-	s4o1WzhrWSr23X18Whfz38aFl1qyitlAD0ID6MBLNDNHzrDJgQDKDWRVllbg95qKyJ1etUU7ta06+
-	Sze/wW8OLJh0rocRdaV0H2nRNLPmarQOJz3a3iCgr6NW2iqrx6D0PhA6AxnCY9aXsFPZ3A4gbvxtx
-	dOL4bASOmjGuVvXm4YOz5TYUNRco6AhAc1//laLG7EvTPVHD004g4y6nm+aqaDGYeQbpweoSVQ7wO
-	ajBWtQwg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w38Ex-0000000CyQr-2Ztq;
-	Thu, 19 Mar 2026 07:56:23 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F141F301BD5; Thu, 19 Mar 2026 08:56:21 +0100 (CET)
-Date: Thu, 19 Mar 2026 08:56:21 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com,
-	cgroups@vger.kernel.org, chengming.zhou@linux.dev,
-	chrisl@kernel.org, corbet@lwn.net, david@kernel.org,
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org,
-	hughd@google.com, jannh@google.com, joshua.hahnjy@gmail.com,
-	lance.yang@linux.dev, lenb@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev,
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com,
-	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com,
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com,
-	surenb@google.com, tglx@kernel.org, vbabka@suse.cz,
-	weixugc@google.com, ying.huang@linux.alibaba.com,
-	yosry.ahmed@linux.dev, yuanchu@google.com,
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com,
-	riel@surriel.com
-Subject: Re: [PATCH v4 09/21] mm: swap: allocate a virtual swap slot for each
- swapped out page
-Message-ID: <20260319075621.GR3738010@noisy.programming.kicks-ass.net>
-References: <20260318222953.441758-1-nphamcs@gmail.com>
- <20260318222953.441758-10-nphamcs@gmail.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GitlksRg;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773907550;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2NsBe2YEaJhTZhc3cWuMJnWEhWKyY3AOJ8RnT3CIBcs=;
+	b=GitlksRgIxyp42kdSyWrbfk+PNIiKVbuiBUlyvhgwLLqUjruQ6658bKKA1+YonHOvpbrjP
+	+6xQgrPPZQFnunkGcIHgx56iyRpBD3Qk1DXHcx8d2dw49v1ygppUi04SCGRq0VwLsRP8xk
+	Q5awulxr0WqJomswxB1il1Wi6XLrgW0=
+Date: Thu, 19 Mar 2026 16:05:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318222953.441758-10-nphamcs@gmail.com>
+Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
+Content-Language: en-US
+To: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>,
+ david@kernel.org, ljs@kernel.org, willy@infradead.org
+References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
+Cc: baolin.wang@linux.alibaba.com, npache@redhat.com, linux-mm@kvack.org,
+ baohua@kernel.org, ryan.roberts@arm.com, syzkaller-bugs@googlegroups.com,
+ dev.jain@arm.com, ziy@nvidia.com, linux-kernel@vger.kernel.org,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <69bba3c0.050a0220.227207.002b.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2BDD21C0003
-X-Stat-Signature: fshwi9b36hhophq1i6eyaxagiwmgjjak
-X-HE-Tag: 1773907010-265413
-X-HE-Meta: U2FsdGVkX18W+yp+ccjYIb0m/WWrJcHxlB31cwyz8UEKOBljxQiECvTryJu10ywvOUVNdirUfzC9fH7tZiXMjPH1cjv4oUiTB1nmvZ1goul8b+FsXmJvr9eVrLNxcgltfnlKKy71cFMYmVCthGY36XvPOhlshOg7ve4jJLoMx3fiBcDCql/aPWRULtKIZ4GtWVu18Xj5dffisKFBLrWKoqiXP21vV2XnFnA9dk6Pp99n+R+oopu/tzzDN9OSg76B+45Mr2qbJjszSfG7dOzKSeoTzBwMCjVjcMTv5jfHu3Ti+DAcHvN++aT9atyPeUebVgysWkYXSBckE5J23JO2ufau8cbhYj2q0tAbUCQGjYFyUUL6cH+t/ziy+r4y897KJZ9vqvGjQBQtoINNf03V/B7R6+f8xEa2ICSJ/PsAgCfoz6vCpo8MRzGau7BkkhOhzFQJyvPR8PNtDJgxpeAL84VzBeHU3Qn+rismE/AQMpRM2eCVd9sqMtqd5gnyjtcTXJm/SdFxXH7x6bW0Y1irMjzyOMTcwCftD026Vl0VtjYeYVORbh2K0MLuNoHVVsZW1uzsqjz7lvqsM/mrJ3CvbOIvtYLKStb528aLJ1Yvz6ChXsj72w29AiQzui03njR3Fc/4AaEPtoX1+SLH55dV+rq1FzOAkf5IlzkSdoM0dZKdj5E/GTk98bhdopcidoCIXjO2yhXUEFb1BVOnvEjo8wGjMPKj72in09lgGiRasVuPqU9pD3BMHE27loB0KxSyAINkUGRAweBh9GeK6oHLdxsn8NgcQ16DWLXOXbNUxqEGHrNLfvBF8sAPpVdE3GXUP++AjF7zbF+jyNWrDN0YxkA6qct8DgTfjc5nTmwzQERbwR6xgytQPgGXziaRXHYdxIzi/WbnZlYZ7tqD4da/xFGgOtPbqLOllTWv8n9z4a34UFKXkmp4nzV/OmUOC+hO3UqnzQEjUI0rxZZ/7j9
- bjmGwH7J
- X2ikWwLDKti6DnGzyPn6efZRh6QW+hC8FnBbOM/nY9uHG/PTx26RBdbnRx2aOpnBbDRkX1/zWqzTaXuOPw9HhmweCa/YPtxehLRm6nGff9i09ZIksNkRWytPWvf9kzyqCE6ryGM3VqjVu++bLQALLo+IGqpP2/59ca70NNWVnGcf+bQD9zgu+bVhhRXavawf6Wk8vDdfD6dEA38gjP7s7u2gqqMRsN2iBABgBxjPFMsjWm3AzOm0aUI2iwg==
+X-Rspamd-Queue-Id: BDF8B160006
+X-Stat-Signature: mboiqicdb3gcnf4xjqeoid3soroexkqh
+X-HE-Tag: 1773907552-328383
+X-HE-Meta: U2FsdGVkX18Llzp9RFHPwzwZHeQ2pZ/J82BPw+aALSl+slqyl5HlyuvxPBquIkzKkWDfUTfGSdIsEX6h2GcqPS10escKpYa8NHTRJqqaj34djo2yMhxHVg9OJEfruPHFlsZUQnmgRJxHHcQv/MN8uxxgiOLYfCV0uLF4gg4s3EkR3pdMEkkClO8plJb66rcbRKkJOtbBFTFpN9wu/lmMjoRl8EBzFzvmQqqOkwX6ko+T6CAHrjTOKubqCEatoa0pwr7NDdJ9Zf+ooj4fVsUYGQwiOUNLZvXa3Z2Heg2paucnM/4Mu+BEfjGWsd+DXK5P5O0q5u+74sRD7Wg6vIuKQP+dlhX69Aq8Re1wvgE5h+/G8KgBXVCuSKmvgMQoDfnVYM0z/05X8nS+qiYCT4AFWcsHNzWm7votLZLngsYX4X8SYFF15fn8hNLeQsZIq5hkxbMfaf6p9z12v8sZKuh8O1m6fMZUA+wb0Of418pV14YKITazDAAi/cVxAb4qtVcY+vJ6t1d6MiD4gI7QPkWxTgEV1H8wmad7BGlEq/5TIqa5gDDd7yUo++PUD/VWBdCsetKFmWQQSU8g8f1Js7wywtvBImXckW92ZgI0dQNuvKOVbMhLlx+z0KaOAOzHNrm97O77EYyQnGc9PTsxa2b5pHx1xAr24mxgcpelm25bPKGlhyVtn9Z2ygwDqWm39PmSyHQW1X9zMbhwZzF0VSdck6QeygOboxa9QOBrIsS2PtnCiN1mngJ3iLK7VC8b31WWdq25jKF9ah5EqV4bVHcjQhu0c9jCC9glEMRXk0AH9onLqm+JwTsso7v24ztTIfOyq2cLQhjy14ouIq0EREWdSCV6MTi0y6qLntsPanYy1PqSqAhOhabSXg9ryVkp/sF2s6GIh2a6ZX7BsEmJWXldF25elm1v5DMBX0KroWZiH27GMlZvfJ1HOk7SPYiy0q2gGEsUeppf+6Xp1kZzaGb
+ y8KU0QK2
+ 5M3IsE52Ug25q3By5BDY8ya0M6YPt8P1HjPQjO2zSlYuNb8ilGHvvIapVGxTbsEOtLEy7G3bCPTDLyWkCPYwWrcjf5A6EiFcG/rVfvuJ/KGk1zVmOddBTRkyb9nE2jbnCSRPlqrhcVtnTKRvMMXgY/xLB2bPzhpxSsGqX8F+enFWT4jqTRaBV3g0Li4wR/OdxbFpMO5ImM2jVDo1N2675kAazV4F8lFiYtKpAEEx9Sea1KR070MZb+lsKl0B77k32tOUko3Wi663E4yeP6fg9Zllsc1F1jeU2A/Gj9S3imW37w1lF93N1dF8XHUGd/bQLZdfw30pUo8KWjwwVz5FHQqnUcbKaQJmLKHjrKeyKkvaOcRDstcqJp/6gDjbDn+h3onsaH222EdbspfI4js2kTvSqP/dpUBjKU0lwvcSV4mLeWmT/nyVsvGbOd7S7hvt94dzmEttSD3w0B5ZAmACJSFfTjxmez/tjqgYDT1Nbn8at/69Ngnu7bNWbJb1SDMJJAGb3fr1k7oeakdno61YGcbpO4cviXpuyt7l5PESU7WXtE+lSUr5/NJKFmbGyhmc686HyRHz8Wsj+UbISKeiEcq6uZ3LyXkM/k4kua0DW/0hSq16AkmA/mm1zGC/izsY9vUYz93iYuSN/sSc9/VA83CJEF/Y9H2rACCK4nIQ+te/ZEXyFxB/mMVjwTYEMJbSQS7d7uKCb9UY52SaBRHbd+jj5gaJSN4wWCsVyZ2DoSRnazXnsmkrl1i78wLblYBayF08SPnyAzBMbi9DBkTIj9aa6t8ZcBaKbOiwP6+KyuNjXMyAnBS+2ysDMtGM9cgv+HkAJoRJSkQk+qO0psOMtGR0O5v8nn34GqDgI/mwP5VGeIbA76utOSRfx/8neXz93IyxeEKJjzZ3HVvXZpZa3mN2CvYIku/+NyzC3zoVoUggGXxrzTMm/BnC9XPnO6tgDPMOB9qHN2mS5pS+L+BbpiBWbnMPS
+ WJ8DkOYQ
+ r/tAtvJNyJ6+bAwV1IWGmZ1LO8PDQ95B4xKUm9TWgcM9irAkHj/meCxFcgxFtqQ9S4nTsOttDAZ1ok5MxATrq7Y1+OPmrbqaj3P1lv2VVG6KNBcJSBy/INDiXWFgEf1nvFTF+KGXZbluyhQfWHmiqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,76 +94,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 03:29:40PM -0700, Nhat Pham wrote:
-> diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-> index 62cd7b35a29c9..85cb45022e796 100644
-> --- a/include/linux/cpuhotplug.h
-> +++ b/include/linux/cpuhotplug.h
-> @@ -86,6 +86,7 @@ enum cpuhp_state {
->  	CPUHP_FS_BUFF_DEAD,
->  	CPUHP_PRINTK_DEAD,
->  	CPUHP_MM_MEMCQ_DEAD,
-> +	CPUHP_MM_VSWAP_DEAD,
->  	CPUHP_PERCPU_CNT_DEAD,
->  	CPUHP_RADIX_DEAD,
->  	CPUHP_PAGE_ALLOC,
+Ccing Willy
 
-> +static int vswap_cpu_dead(unsigned int cpu)
-> +{
-> +	struct vswap_cluster *cluster;
-> +	int order;
-> +
-> +	rcu_read_lock();
+IIUC, this is a dup of the earlier report[1], which I looked into back
+in January. The root cause is the same: collapse_file() calls
+xas_lock_irq() without resetting the xas state first, tripping the
+XAS_INVALID() assertion:
 
-nit:
-	guard(rcu)();
+#define xas_lock_irq(xas)	xa_lock_irq(XAS_INVALID(xas)->xa)
 
-> +	for (order = 0; order < SWAP_NR_ORDERS; order++) {
-> +		cluster = per_cpu(percpu_vswap_cluster.clusters[order], cpu);
-> +		if (cluster) {
-> +			per_cpu(percpu_vswap_cluster.clusters[order], cpu) = NULL;
-> +			spin_lock(&cluster->lock);
+static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
+{
+	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
+	return xas;
+}
 
-This breaks on PREEMPT_RT as this is ran with IRQs disabled. This must
-be a raw_spinlock_t.
+Added by commit:
 
-> +			cluster->cached = false;
-> +			if (refcount_dec_and_test(&cluster->refcnt))
-> +				vswap_cluster_free(cluster);
+commit 43b00759f21b10142094d1ae5ff65cbb368953a3
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Sun Dec 14 10:53:31 2025 -0500
 
-And this... below.
+     XArray: Add extra debugging check to xas_lock and friends
 
-> +			spin_unlock(&cluster->lock);
-> +		}
-> +	}
-> +	rcu_read_unlock();
-> +
-> +	return 0;
-> +}
+     While tracking down a recent bug, we discovered somewhere that had
+     forgotten to call xas_reset() before calling xas_lock().  Add a debug
+     check to be sure that doesn't happen in future and fix all the 
+places in
+     the test suite which were carelessly doing just this.
 
-> +static void vswap_cluster_free(struct vswap_cluster *cluster)
-> +{
-> +	VM_WARN_ON(cluster->count || cluster->cached);
-> +	VM_WARN_ON(!spin_is_locked(&cluster->lock));
+     Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+     Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-This is terrible, please use:
+I posted a HACK fix at the time[2], but David pointed out that Willy
+had mentioned it likely needs more thought[3].
 
-	lockdep_assert_held(&cluster->lock);
+[1] 
+https://lore.kernel.org/all/69757ea0.a00a0220.33ccc7.0017.GAE@google.com/
+[2] https://lore.kernel.org/all/20260125121001.32733-1-lance.yang@linux.dev/
+[3] 
+https://lore.kernel.org/all/7bce9231-714c-424a-a4e3-dd42734fb767@kernel.org/
 
-> +	xa_lock(&vswap_cluster_map);
 
-This is again broken, this cannot be from a DEAD callback with IRQs
-disabled.
+Thanks,
+Lance
 
-> +	list_del_init(&cluster->list);
-> +	__xa_erase(&vswap_cluster_map, cluster->id);
 
-Strictly speaking this can end up in xas_alloc(), which is again, not
-allowed in a DEAD callback.
-
-> +	xa_unlock(&vswap_cluster_map);
-> +	rcu_head_init(&cluster->rcu);
-> +	kvfree_rcu(cluster, rcu);
-> +}
+On 2026/3/19 15:20, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    95c541ddfb08 Add linux-next specific files for 20260316
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=15ccc216580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=ed431987028345c6
+> dashboard link: https://syzkaller.appspot.com/bug?extid=8961cb270ae74b4129fb
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f778da580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cc006a580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/c40f27ad73d8/disk-95c541dd.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/bd811888f684/vmlinux-95c541dd.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/3b72363d7dbd/bzImage-95c541dd.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com
+> 
+> node ffff88805d558b00 offset 0 parent ffff88805d558840 shift 0 count 3 values 0 array ffff88807a8195c0 list ffff88805d558b18 ffff88805d558b18 marks 0 0 0
+> ------------[ cut here ]------------
+> kernel BUG at ./include/linux/xarray.h:1441!
+> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+> CPU: 0 UID: 0 PID: 6001 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+> RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
+> RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
+> RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
+> Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
+> RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
+> RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+> RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
+> R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
+> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
+> FS:  000055557e3c2500(0000) GS:ffff888125437000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000020000000b000 CR3: 000000007ac66000 CR4: 00000000003526f0
+> Call Trace:
+>   <TASK>
+>   collapse_single_pmd+0x22b/0x4510 mm/khugepaged.c:2437
+>   madvise_collapse+0x34c/0x820 mm/khugepaged.c:2859
+>   madvise_vma_behavior+0x1094/0x4460 mm/madvise.c:1362
+>   madvise_walk_vmas+0x573/0xae0 mm/madvise.c:1711
+>   madvise_do_behavior+0x386/0x540 mm/madvise.c:1927
+>   do_madvise+0x1fa/0x2e0 mm/madvise.c:2020
+>   __do_sys_madvise mm/madvise.c:2029 [inline]
+>   __se_sys_madvise mm/madvise.c:2027 [inline]
+>   __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2027
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>   do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f90d419c799
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffd50711398 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+> RAX: ffffffffffffffda RBX: 00007f90d4415fa0 RCX: 00007f90d419c799
+> RDX: 0000000000000019 RSI: 0000000000600003 RDI: 0000200000000000
+> RBP: 00007f90d4232c99 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f90d4415fac R14: 00007f90d4415fa0 R15: 00007f90d4415fa0
+>   </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
+> RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
+> RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
+> Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
+> RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
+> RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+> RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
+> R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
+> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
+> FS:  000055557e3c2500(0000) GS:ffff888125537000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f8156602000 CR3: 000000007ac66000 CR4: 00000000003526f0
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
 
 
