@@ -4,98 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 347C11091912
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 19:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2226D1091916
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 20:12:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82A346B0535; Thu, 19 Mar 2026 15:58:43 -0400 (EDT)
+	id 3D23A6B052F; Thu, 19 Mar 2026 16:12:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DAD86B0538; Thu, 19 Mar 2026 15:58:43 -0400 (EDT)
+	id 3832A6B0531; Thu, 19 Mar 2026 16:12:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7177A6B0539; Thu, 19 Mar 2026 15:58:43 -0400 (EDT)
+	id 299026B0533; Thu, 19 Mar 2026 16:12:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FBC36B0535
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:58:43 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21EBB1DE9C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:58:43 +0000 (UTC)
-X-FDA: 84563875326.12.C589307
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4B61CA0013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:58:41 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8IjRoXA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 17BB36B052F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:12:45 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BD40140640
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 20:12:44 +0000 (UTC)
+X-FDA: 84563910648.15.76D642C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CDBD140007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 20:12:42 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Po9XJlj9;
+	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773950321;
+	s=arc-20220608; t=1773951162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dCy63MzPd2QXVwLu/vS9dzmFm6wnKEiUJeFqp6vHyt4=;
-	b=lkDGWzijdPYrCD9DbbePXdv+hfMQ+g/wpzTK27hkwY29oJ6L+bRAdJlRebTmfR5ns2qAAI
-	iHCkYBHZT1r2nBVpqPGH9+dU5keINToHE9VFXAevNbO870iobgekv6gNiHkECgDErbBRW7
-	dKaUpmQvlDhP06JMx0GgJmebtZKgAUY=
+	bh=Qy6Dw1aDPxXjtVG9+WkmxvXxxHouCCkBuOmK+4REYK4=;
+	b=JykQkINdT5XqF5PQpGl9Mq2vu9oW8qIpVyifl/RafybBWofuxpoC7KXPzegdpjLwy6yYCh
+	05Kh0lOgbH6o6Bx9ZAxgGJkwZjSaCTe+FH5OcDrEwWwPZmRrqTk+sA81cd/GiPhWNDErk6
+	V9JDGEpiwPORXWyedV4Ko02Z6k3D0B0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8IjRoXA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773950321; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Po9XJlj9;
+	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773951162; a=rsa-sha256;
 	cv=none;
-	b=43SKsFEfx4RSXjJ6QOyL2OGu4DcBUhF+OoOcGx+cY0lAmXjC7wf0n/SeR2sYOS5YbSO/9N
-	Iid0Q7QqOzA2y1Ls4ul+0gZls2gW+50QvIwJCAJj0aImjo9W/GDvGGf8/mZ8xhKx0TOLg3
-	1vtOT1NsNDGob28yInbu58fAuAW4OHc=
+	b=tya5m86ucYzKGQlt6iCJRKk7sB/plWmjuQfFC7iAdftTonvS4fKQyH46OhWabYJ4YvyXql
+	SDm4/gRE+Adi9q/JLyqPFICnoBNXhOrFfjtQacUMnWkcTGNI0ZHOAngkprm+6c0o46wq5E
+	jTehFCOXyYpPzYwMtvDCRKW4vH2KrQ4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CA7E41566;
-	Thu, 19 Mar 2026 19:58:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00986C19424;
-	Thu, 19 Mar 2026 19:58:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D6A660053;
+	Thu, 19 Mar 2026 20:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3F9C19424;
+	Thu, 19 Mar 2026 20:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773950320;
-	bh=T6BKD1tqEyuEpYK55Snf7V7YPTv2oSGQpGwo9UT6bpA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m8IjRoXAb3Zn/Q67ROj1HfcvutqDAL5M5RN5U9jIQ+MDQtwlLUhEPBHAM0gg0+vj9
-	 bRhMmk2R0w2Ss7XmKPV75OZiSRABwamNdgK+i03w9BnRUcRL3LCL1GmYUC8HUaPbBx
-	 714XFx4wuYbiYxYvymJiZ/pvn7ebpp77eClZHB4OTicuQh5dnxYWf7MM3aw4ABy+8+
-	 4jqy5YMbhMooeiEtIzOtsjS5NFA0qeEHUfuYJSBl2KV54Nqc64SzKPBwRx/PWyIYQr
-	 0PgZMICX0rP0hpEsD3wqrCOGaxgXneNtmubvl0+jiBUZUGTnmhTPT7ULd+qB9BhQMw
-	 UlXfQKFEJVS9w==
-Message-ID: <6ff14b27-a494-4faa-94ed-ebbf63116125@kernel.org>
-Date: Thu, 19 Mar 2026 20:58:34 +0100
+	s=k20201202; t=1773951162;
+	bh=RUNNQNOc9YnBPWpX2JqssxtPvNCwOlMdV1VPxAuBUTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Po9XJlj9kP/fGKJurAFjhBTmIYSFbwkerCr9J8SssGXIxLX+6yOcyqiLTkWFRXvne
+	 vemaGMU4/41Jz+0rdM8kGaItZPLZv3MoaYXIcTGHHqmwrhl2yOsE5Q8e96aOcEcH5C
+	 vMpmBPR/hxf8owgzbluLEp1YHlOwgWdCy1mvWzQxvtvNj5Kn1SGsPDQt1IRwC1GubX
+	 sshATMUFFgJ0M728l5b677zuJ6vSgfCotOOjUyXKKr2ti1R12JSkWV6CxbHHlaCeZ+
+	 X9q8FBcbk+mf/4qEYK0tj/T993Us51Po5SCK2ki6qBVR+2cjrOjvjUpckYUd3AC8xt
+	 qIMG+hSPddUKw==
+Date: Thu, 19 Mar 2026 13:12:41 -0700
+From: Kees Cook <kees@kernel.org>
+To: Alejandro Colomar <alx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, corbet@lwn.net, serge@hallyn.com,
+	Martin Uecker <uecker@tugraz.at>, linux-mm@kvack.org
+Subject: Re: kalloc_objs() may not be as safe as it seems
+Message-ID: <202603191308.ED08BC65B2@keescook>
+References: <abhGS0n_RsUG97Ni@devuan>
+ <202603171402.B2BD1B1@keescook>
+ <abnGea5Qwp3VYDda@devuan>
+ <abrRMnxzCKEuhnrS@devuan>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko
- <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
- <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Uladzislau Rezki <urezki@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
- <215517e5-a49b-4eb7-824c-8c42e4db046e@kernel.org>
- <CA+i-1C1g=3_nK=Xq+OV8KU06YDo18ZaDJqbkfp21Z8G_cnkQww@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <CA+i-1C1g=3_nK=Xq+OV8KU06YDo18ZaDJqbkfp21Z8G_cnkQww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4B61CA0013
-X-Stat-Signature: xoaknjptr6ufujkj7d9qqxqeg1rjwwef
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abrRMnxzCKEuhnrS@devuan>
+X-Rspamd-Queue-Id: CDBD140007
+X-Stat-Signature: xu7m7ik7kcaz3hyppf3kfgfdzdt3txa3
 X-Rspam-User: 
-X-HE-Tag: 1773950321-507824
-X-HE-Meta: U2FsdGVkX1+GIVzvsZZi/WweLYEWABonosZhdlT3K24EPO+EtoGQPeJrRCrdWFE0hoZDFEfkbsIpDa62qzN2D2uOdjAQB8/Fy+K44QhMMe0wPrY/Dms8S1oqXJt2eq2sr5isR9nIVvseUiPr0rFCmYb8T4LVS2K5KDnfCL2hl0l6uEihSTPMeV7QXwebnMSd89nSa//rA+fxceCk7ySz0hM/5PnMgJJlfZ0/RHrDXYBalGxoNvggMvzzfzP5xG4sQeNhDrnzaR1UQzTYlgDdpn+s4GCMBupty9UjtOvog8cHTM6EDClHXkF5Z+37j5YIg5HxfQL1HaOa+ANVK5RyI190607yK1mtnEZ2ak3BZ3w+Sixr3jhOUiCKcn0AJE3A11bT0ZPgvFgGkesue3BHvkA/0Lqk47lmTJnWw8vf2k1rdEWQMz5L5J8ER3vArc/eRd+JYyFp5YqmPdDWVZH4Eyv5T/lmk8FeNr7Si8N4DzUD02dAC2O9+0rmZFPpM52i5dk5UHK1aaHn6p+Op8y9tNLURiylNRmFFh0CxW8ACxJZDISUtjYrro9AzY7jmwr6+AzgLmmC26nFL7uU+dw3p44SbcvmhpiLqz63nf6K+pbhDfdUQ1uva8Iff66aYX32mAyX9V9WFRLJ7+m4jFfUer4UrQFkDuVNJyxF+s5TodW3nrci4WmYmRlXlUvUk0z6XoK7d3WFaUVr9lPPF62Cq2f6/ke1njT0SzxwNDLZ5VktmKi6DIuGQqwhjsWU0+4VkgVe/zp9Yy6NpHLKf3tshwXL9obH0j+HQ6o/6p8bZikLzKwgIEokQj2TK1kLpfrZlq9wnjriOXd4DgEMngdHC6POlR/yQg3adA4IEVGL0EiZAVAXJ+fuvLVgfWFZhja9pZxYS15iCNMlyClKzcIY2G89h/Z0XfwghxI3Kvf81pZNKoqJ5gpvCjfQuXnoqBQE7kwXdZFqhRxu50zqf2J
- 0Yqmxs2c
- 1nCQxrx5WlvJj+oPZidKOvg14MJowRTF/uxaZipNARIgtn0RZFhDafJZbhNhFWbPlOW/0BYBJom2u6CJsLmhkz0bahbtMOVv4l8GoOWMTDahcYh/Z3jWWHihXTfZHiFK5H5itnOoqgPYjdoRgkQiAYE8b89hDcELRfqPgtxk6oKsXfA9JmHFXkJIJL3ZCbdJ83sSo5OOPmwLPBPUDoTEBYXtRkwXEPQNsUOMivatYSv+/xOryEatIhYI7XGMFG6hGNZb/IgrHWhnhCXuqZmnKeP2xp3BW3bxXyvy0OHGFZyaxeKifBjUmiyO0+nhRcdY7wU1ITOPvT86vBAhGL7FODZnNnn7rUmh9cgwcPSUVo3XO569/dY0siNCfMA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773951162-9069
+X-HE-Meta: U2FsdGVkX19DZaeL28+Kb8gz9TjI4QZasktw0TFrw8tLbS4j3ompaDL1KZnVcFMK2POP8bGPhIzHI9nDz7p7euLKQh+udOyrzGrF6QTFHNpL+tPbVfqJQDm12tYM4cvLvJVO1Egnb1g6oxru4+fUAIf69h4Z2VAct//l6NyLSAiSvoMAXwpiV1GJAZ6DNAzm7iXwZiH3BDnqPLfh+XJFWpHe0VD7xKlKyf4JnJYyLRR37KOU9PeAl304TmKGl+9SBKHxCVVfciaZmt5IvuQkA/lBmJBfw4t3rjM0G+y9uwjyia/qQ6MjnMb2pHRRbqt3qKJ3/AwWpeJ1cusZPvGCqQC5dzzOQqIik8g2lJHQGZKdKPV+gE1lxOeuu7jjqNtBQnkxynNdCf74mq8VkMR/DoVQQqooVXcZ9RdutjLuHETC+MXjS57OJW8SzPn7kd9yX4qjxy9QMkpYoAzANcz95b2U6UjfM2mgpzelNWs4DW1RSjttXMGBU31Rf0d+CHvgShfX5FZlSuvYe6PFzW7UlRAloW9/TFvho4oC3wKdfYgEke5lVhwl0i6Qo5yHOTmpnOJeuvQ3oJqm2DZPBz8MddLyT4gWz3GqqQHuuDOYBCY2DYbfAY5SjukN8cM6T7+7Qg/iiIQJPFSbySlcUx1Trk+XB7081AHqEfkL0XYx0k9nxPJLxfQROTkyN85t2h+WCGyMCw2Ksr4aUA+mUz7wqFNRZO1Pihvu7ia55hxHB2TV06LS+Ty7Kn66tRYKTC/elYvOmQrEwTG28Euibf27g3Tkdhm5uL2Zn7F2Jn+wtemQC9NEHUrAsRqj4lZitIDqntX1IFHJMuoxnj6UH7wyVJcxdnfaq2WjUrKCjxNDMhCghbvZtE4jWMusE9E8aPhrgbAXXCV2plSlUQu6X+KgYFlvWODES5pG+2I/Jzr465YfeKSbrJZOUdGkin3OrD/wD/Zib4l/Di2dAwaS2g8
+ 00TzouFl
+ rFpggLV3R4s+fqNT4///A7nYlbPG2en9L78Q/ltM0OBgmNvsEKUgmlGdQTr33bBJldoReSMKGwVuF2tvMyyB+rjGqt/98rCUhyFVqUk0P7vWdGoan+KF3U+IcjU2oZpqNOKGkCj8nkJFwjm/6uDlKbP4905Gk9VyogjwGQ3t7ia3aBm9oeb3C32yfO1LXeQP/5AH+9CJq6eZokrTFNIzqbqjvtctvESrGN9sUwsuhDhzF5DTIi7j9obYkFi+GaVs7RVUZ+F6sPI0qqnDs29mAFsTAegnIZBt9/nuuqUZlzLm8Ha8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,45 +93,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 18:38, Brendan Jackman wrote:
-> On Thu, 19 Mar 2026 at 18:03, Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
->>
->> On 3/19/26 17:03, Brendan Jackman wrote:
->> > As pointed out by Vlastimil in [0], my proposal for __GFP_UNMAPPED is
->> > probably not needed for 32-bit. This offers a way out of the GFP flag
->> > scarcity so in preparation for this, flip gfp_t to be 64-bit on 64-bit
->> > machines, while leaving it 32-bit on 32-bit machines.
->>
->> Thanks for tackling this! But now I'm wondering, if we decide to change it,
->> would it be worth trying to add some type safety too? To help with cases
->> like the recent kmalloc_objs() footgun discussed in this comment thread
->> https://lwn.net/Articles/1063356/
+On Wed, Mar 18, 2026 at 05:33:35PM +0100, Alejandro Colomar wrote:
+> How about using a struct?  That's the idiomatic way of having
+> incompatible types.  Since these are used through macros, it wouldn't
+> change anything to users.
 > 
-> Do you mean something similar to pgprot_t?
-
-Yeah, at least I don't know a better way.
-
-> I did that in [0] but I'm rather sheepish about it, I only went for it
-
-Right.
-
-> because I think it's especially needed for the specific "type" due to
-> the migration path creating a high type-unsafety risk. And that was
-> totally local to a few files in mm/.
+> The macro definitions would have to change.  For example:
 > 
-> Are there common issues with gfp_t in particular besides the
-> kmalloc_objs() thing? If so then maybe it could make sense. It's not a
-> problem I've ever run into myself though.
+> -#define GFP_NOFS	(__GFP_RECLAIM | __GFP_IO)
+> +#define GFP_NOFS	((void)0, (struct gfp){__GFP_RECLAIM | __GFP_IO})
+> 
+> We don't need any new language features.  This is backwards compatible
+> up to C99.  And it might end up being simpler than __strict typedef.
 
-I think it's a hazard in any case where there are multiple arguments to a
-function where one is gfp flags and other some integer, and somebody gets
-the order wrong.
+Yeah, if we can convince the mm folks. (Added to CC.) It'd require some
+kind of macro to build bits in the many places where values are or'ed
+together.
 
-But I just verified that at least in the kmalloc_objs() mistake, sparse will
-flag it, thanks to the __bitwise annotation. Would be better if compiler
-did, but it makes the case for changing gfp_t smaller if it was too
-disruptive (it likely would be).
+> [...]
+> After sleeping, I had some idea.
+> 
+> We could have coccinelle add typeof() around the first parameter when
+> it's an expression (not a type).  Then, we could enforce that the first
+> parameter is a type name.
+> 
+> That is:
+> 
+> 	 p = kmalloc_objs(int, 42);  // ok
+> 	-q = kmalloc_objs(*p, 7);
+> 	+q = kmalloc_objs(typeof(*p), 7);
+> 
+> I expect this would be doable with coccinelle.
+> 
+> Then, new code would be required to pass a type name.  And people could
+> slowly replace the existing typeof() calls at their own pace.
+> 
+> What do you think?
 
-> [0] https://lore.kernel.org/all/20260225-page_alloc-unmapped-v1-8-e8808a03cd66@google.com/
+Well, it'd serve as a visual indicator, but it's redundant (typeof() is
+already used internally). Given it would only be a potential for
+confusion on integral types, I'm less convinced this needs solving.
 
+For completeness, though, this Coccinelle script:
+
+// Options: --include-headers-for-types --all-includes --include-headers --keep-comments
+virtual patch
+
+@type_not_var depends on patch@
+type TYPE;
+TYPE *VAR;
+identifier ALLOC =
+{kmalloc_obj,kzalloc_obj,kmalloc_objs,kzalloc_objs,kmalloc_flex,kzalloc_flex};
+@@
+
+        VAR = ALLOC(
+-                   *VAR
++                   TYPE
+                        , ...)
+
+Produces:
+
+ 6007 files changed, 12430 insertions(+), 11767 deletions(-)
+
+Which is a lot of churn...
+
+-- 
+Kees Cook
 
