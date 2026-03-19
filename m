@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E177E109190D
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:24:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D75109190D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:24:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A12A6B0567; Thu, 19 Mar 2026 14:24:11 -0400 (EDT)
+	id 505216B0569; Thu, 19 Mar 2026 14:24:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52ABB6B0569; Thu, 19 Mar 2026 14:24:11 -0400 (EDT)
+	id 48ECC6B056B; Thu, 19 Mar 2026 14:24:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F2C06B056B; Thu, 19 Mar 2026 14:24:11 -0400 (EDT)
+	id 3A4626B056D; Thu, 19 Mar 2026 14:24:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D9586B0567
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:11 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E993D140155
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:24:10 +0000 (UTC)
-X-FDA: 84563637060.28.8491D5E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A5506B0569
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6CD5140706
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:24:13 +0000 (UTC)
+X-FDA: 84563637186.07.8F648F2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6133414000B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:24:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xix1hbzJ;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 521DC100010
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:24:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LB2MowTg;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773944649;
+	s=arc-20220608; t=1773944652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jW3u7I9+lLjN9Ox5/qOhJqXGNGc19CSypJyyiYep6e0=;
-	b=mdj4y4ZYWlIvKgmtGUm3nyHTdTR8y8P1QzTkt/UQOaGKOqlUqL8fM9oT/G+P336SbO8H5M
-	kOiLRo3SIPRkvudUgaSxLecMIQ6lOaynbXZVTGW8RwzxLsnJ2NIocTWEPEPloFIhA9VOHa
-	H43AzRk1WNrzxTKFv1hPTeiQuGEk3zM=
+	bh=5WJAlWvMvYkS+6WYdocVnt1a4d1lO198hZRen0i5ofk=;
+	b=0I8x2CzybaF05kAiH4iSLolFI9EYk3WoTxFz51a558UxYLFKhw/ss3P+08tP9PxyZmXFqO
+	G6p1ZIDZ3BRdRpcTQ74v6vbIKPSDJNLR8T8fKgrD8yFSnJILes6T1kjacVPROjdEfoBRja
+	PmJbz0J2kXGyJYn73Fb5aJ+HkYdqZ5c=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xix1hbzJ;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LB2MowTg;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773944649; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773944652; a=rsa-sha256;
 	cv=none;
-	b=yUF9Rl6Dt+umHAYPU48eE0r0HAZ/wGxEg+3SF+SkePkU4H/EbDvZIwMIPBLkzP+UTRRL3X
-	EEFfr5SA/sJfINoTUiw3AMWC6Z2BsVku/YSHGqgYZ8at3ucT3l+YHjdIorcjc9qD/lcVYt
-	JbgxxQy+ssYgO1fjIhHQ6Ta5m6GQZtg=
+	b=tplJVudbqAFicksmEPBz3+0XMge5XLzin9um3I0lGlfe9OFDVU59LklTcrLXSYVzl5P+oY
+	NRGVKvKuim8P2EUjXmAIrwzCQqXrvdi7XwzPPvN07rZ2bQ03zeho9eCO97wV39zFTtReVU
+	iwyxtRL4o6bbFssodcBjbK0eV48YsE8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D9BDD60054;
-	Thu, 19 Mar 2026 18:24:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFCBC19425;
-	Thu, 19 Mar 2026 18:24:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D5567600AD;
+	Thu, 19 Mar 2026 18:24:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3758C2BCB1;
+	Thu, 19 Mar 2026 18:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773944648;
-	bh=LhT0XvoqFL5inoAn3uLwrHjF8WgiWC6oU1y5hKpoQX4=;
+	s=k20201202; t=1773944651;
+	bh=sJsnVE59stSeWATG7qlVuZYBseXJSjXjZYGmtSdmRzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xix1hbzJ17ib608MrpnaHLSucjdnwjosxSDyq47tfbrRhwyG7s308M1gzj3WuaQBZ
-	 mYnz0FxfmNkkvF6/w6M1GodW8m/d88eySpDOdx99xXsOo5tuwx9gaf47WhdUN3dbmm
-	 pqIqFVBuoLDjcgsq43adH3LA5d3+IYUWO+6gysnULFkCuAK5/UAHgsIi6gS277LJIm
-	 0ksjH5Git6YNho13gk0VVEKAbV+jBcbc3wRjyqxjbp74q6vxX1k15DRnzKNg1BpL7u
-	 wOUEtso4ghSPyQ5wjqiqAWPqLFPKK9g2JFcEFKOEKjeFzQA0Q8Eg9pdlakIk71kwqH
-	 44c0TBid3Al3Q==
+	b=LB2MowTg1QHbA22I0rbpNVF25MKxoRRYtAKlPHLN4dbu9KIcNEYeX7hrui1Yo60sA
+	 41POtaNmYUU93Is2iZo9VE8J3c28cODjtUaq643u93jXEsa3c9um3tn7IpGoK45+bi
+	 EDglmM3mgleEfyaKfli7dh+jwqRJarhb7LjGbgo8/j4TFO/7rEDjog0+k8I4eQOGLi
+	 DuvPNX4rSLYYSYDL8iqd2dW1o5zTfkd/slsn3TuxA1rg7kOfQFIgXhnUCzhSUXu/L0
+	 36imA2VexFto5Uac6adE5+bzC8u+yRTcsjpndkaN8rY2ajP+gpEjnqeWljn+O9UEVq
+	 4Ts4pfrM9ZIEA==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -108,22 +108,22 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH v3 08/16] hpet: replace deprecated mmap hook with mmap_prepare
-Date: Thu, 19 Mar 2026 18:23:32 +0000
-Message-ID: <aad6e8903eb4a8949f658eaf57a55a09a104c6f6.1773944114.git.ljs@kernel.org>
+Subject: [PATCH v3 09/16] mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+Date: Thu, 19 Mar 2026 18:23:33 +0000
+Message-ID: <d439d6941f4b1a3f598e6a6a95630d215152961f.1773944114.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773944114.git.ljs@kernel.org>
 References: <cover.1773944114.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6133414000B
-X-Stat-Signature: rmiwmzt3xm9wbdhfoa8ic1wx69nrktd8
+X-Rspamd-Queue-Id: 521DC100010
+X-Stat-Signature: 3u9sjjgcrn9gijkdxz3fw9acpcfbiajo
 X-Rspam-User: 
-X-HE-Tag: 1773944649-902388
-X-HE-Meta: U2FsdGVkX1/Pw+D7VIb9Ub87pk26nVZKFi02SNPEk4W5z5nCtiHi1TEGdhOoANLo3/9v1JzmXT7JmLmDiiosS9347O/SjOuEwlQMHL9GJckgXvT56o1QRIS3zu8my2+dXAkfTY8B0enT9G/UWkDbrSXUeK40fadigZOgHnDN+HbGNB4mufdwWOj+j9Tk4wvL17IuJXJ/oM+LB4bAW/LnswTCiKCxd2DakWrcEgkicgGAmwl3sk66loVrc3w76hyP2dlmBpIvRUlj0KvttN4hMEVJb8NN7+yLHGmLMicOsRzhy46sIOQr1JqzoANbhc60FP5xZUiZryzDpsAT8Bqk6ugrM7dFi+8TXgWsLdUfdNrvTia2MAJCLXSy1XaCi5wHtt/EOQhEk3BM9h1PLwnaDJ9veVSOLruUM1ce8rK0rTpNFgJT2scDjzKWdXdoDlqkyL/vFRkMOBSb8AI5ArfeFiPSQg8qdCWb4Afn2KoUVx1DY4bTGmL9llsFc/jxswCoUJQpY6EsCpxOBR5xXgQd8PyqKJe0OPPw+XIe3extu3mPaH9gdErkfMazmtz4tFktJmXN64hTUMdZMB5WP/Gvq4xllHYvKjN7v2pu6TJPccHRUORsq/Se9wXyPTWCl+zwZYuCLWZI3YF2s3u8XCBCoPMaFgbyTbl4347afdmHQNcUBUzt5kHUCUVqLjWx2qBUWa6dsG3vUYzjhSQAtlpfBg1XjdHaIBvt9czk/iMCEZn9KNwOJ+OB6MhvyUfme1x+w63gSW0dlpRT/rfGu2pBeATn1rxj4VNJYR2TYt8Qp4A3tRaCMsL/0BsFZStmu4J0+yqmNTkja41VUDW+aZeW4F5sxYzHKhfZbH1kxFH8lNDn4RqMpl2pwvbioW0N3ENUu7IiPqllgVOlFfSRlfrIOm0/DvO2gr/DnBkX2pqw70mUvsDgqPb9g+GLdcHo2PVahReFz426PaS3U69RfId
- vsOz9H19
- BVrjqbJHXJM7N1peew+zqGcdHBbCo1UPbbaCDRdG9u+rVhKG10vN/3qU1zXglp4Lr8A+HpKuuhVSBccP5SqYUaDrAVB3SNxkSqS+I6f1/c5p6hRqFwNYXJeOdMxaMHlSb1GyTiWntfAyJVZhTz6FKpZz6SPMj84mOOzvRc3nP561yH3cYwimjo6/J2jDgjyVeg6okYbAgs+43xNz3LpjFTYSy5wvX6CqB60rXc4N2UmSyeqk+y0oPCedPhxnZDVPP3Dt+5I6sPWm0O+F3xWr1j8vzYCBgrSWpsneJloKoiA0CNB+uAzsaQIvzldrnlfrDbHYXTyMPe6L1HYnV0VBA6fXlVfOx9F7IWmfTLg+3PNwU374od+rKNHzzGQ==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773944652-886258
+X-HE-Meta: U2FsdGVkX1/zHfNKjz9VOKgIrLRg5gXpCSrF5dJZGIld8rtxu0Xu5Yk1OuhpFl/oJ9ciKCO2/eDtuCja5KMS8HoaUXG+1h1HO6zvbn/4Dt3mt+N7NbnoK85E2K2wBGIWIjqil6bUEDlBWjO1sV6/2M6HF9f6Ewozm/cj+TIWgb5AkKg139InZibHon0ujxUuGuRadrOpnzMLvdBAu58L9SFhT1g7pAkQYQN0hC30/Sj0rj5ZXHSGKFolmngQPQFovAD/dHbF6QfMsMBJ9gxxD2kNAkeJkDP8E7KgU/UY739B1C/DK0mBreW1lAe3g6ECWugfaws2gtQfpZN0p0fEK9iV8+gavoUHqWzgsxteGHlRtwP0/xZR98wygoCTaRgM/oVUvF5U7MeZRxXNXPbcy3V+RaLZgUeRqdn0WabnOAejHrBiqRK6q7ZoYCkM7Au1QpZMQ8op1dwuHyWlv/HMuYXlyfXSgmelQQmk39y822iysc+aOUyMy5AaESuqnZOYWDtxHAECCZvhJIK5ZKhfFGht3kEDh5xm1V8q0EZu0MN4ipXWqYfHVcjXZPIl9D5YWlgMQtUJA9Y60+lnhU85JkJywcmL2DDLYMqn8JqdxeoorHD84RaCZpziUg6/hYow6oacTSQAX05EsipNLKV9j9HRj5Td/qFX9uy0M4RaPJ74fxzvWtIPPT1WPy6kc8p4b83V1vY41EpGTQDJ8Yr5wnu6veOG7Icr2lResDn9y1xATK3Zcq/hFlxjdn87cvOvtxgnVU/qiEVfeQ6osqywQytLzzdfoLXFBehwHnPMD0Q4JnFYmwZykYdCN0BQeheJQIUZSFcRfS4T7yYiQkNc+efqw+6Q11PYXRzhC/L95YIKLqoOXl5PHFQrxOyJPJQJEZsN5+lwpWZkGznY6DVGT/ji/bzQasca+o+wGqYQkSIFd25bEsSS6NC+7ND4QIsrVXx6rLLIrWvuS4Bj3rQ
+ bXMwfn1B
+ 0njSnrbQG6B1DseJvjStpuridsQ2qjosRdkUugYj18BL85lbSX1Ethe/Eno8laR5OGY3K+FZOxg1zPd8Sh9/Da1h++rKnDrXqyG2chnHr+mJM3TqfXmN0nebQUb30xwOWT9Fe5OM0mNpHK3SjXXj1aIajx9hDrSgqohN2CUubsXDzUSyohwbJuRbQOWJRuwVhPJ3r4WhHNOlRH9MdJuwcA4nVwewY4QbGp8iB9bWRqe9aI+QZVrTvLX8CzanukkI0e2pL/XM0ht/MCgJ4vOwIiuHMr7MdujZHBEkwQsXtuXGP/3ITvVAQDmbpEpSGS2l1URZ6PIk82KBLuoL4tYr3TqQdEY5gdaV7umitMUzkzWhYceqp8M6Pab7eM+z5XBWr29jf5uvrECUQRbEOSy7oEf9rkTAzrymQpPMUOcM2dw4HRKp88G0wOP7d7Mg3X7xkUyAcs8ugrqyX4Yfu5pVWQIbr1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,58 +131,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The f_op->mmap interface is deprecated, so update driver to use its
-successor, mmap_prepare.
+Replace the deprecated mmap callback with mmap_prepare.
 
-The driver previously used vm_iomap_memory(), so this change replaces it
-with its mmap_prepare equivalent, mmap_action_simple_ioremap().
+Commit f5cf8f07423b ("mtd: Disable mtdchar mmap on MMU systems") commented
+out the CONFIG_MMU part of this function back in 2012, so after ~14 years
+it's probably reasonable to remove this altogether rather than updating
+dead code.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Acked-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- drivers/char/hpet.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/mtd/mtdchar.c | 21 +++------------------
+ 1 file changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/char/hpet.c b/drivers/char/hpet.c
-index 60dd09a56f50..8f128cc40147 100644
---- a/drivers/char/hpet.c
-+++ b/drivers/char/hpet.c
-@@ -354,8 +354,9 @@ static __init int hpet_mmap_enable(char *str)
- }
- __setup("hpet_mmap=", hpet_mmap_enable);
- 
--static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
-+static int hpet_mmap_prepare(struct vm_area_desc *desc)
+diff --git a/drivers/mtd/mtdchar.c b/drivers/mtd/mtdchar.c
+index 55a43682c567..bf01e6ac7293 100644
+--- a/drivers/mtd/mtdchar.c
++++ b/drivers/mtd/mtdchar.c
+@@ -1376,27 +1376,12 @@ static unsigned mtdchar_mmap_capabilities(struct file *file)
+ /*
+  * set up a mapping for shared memory segments
+  */
+-static int mtdchar_mmap(struct file *file, struct vm_area_struct *vma)
++static int mtdchar_mmap_prepare(struct vm_area_desc *desc)
  {
-+	struct file *file = desc->file;
- 	struct hpet_dev *devp;
- 	unsigned long addr;
- 
-@@ -368,11 +369,12 @@ static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (addr & (PAGE_SIZE - 1))
- 		return -ENOSYS;
- 
--	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	return vm_iomap_memory(vma, addr, PAGE_SIZE);
-+	desc->page_prot = pgprot_noncached(desc->page_prot);
-+	mmap_action_simple_ioremap(desc, addr, PAGE_SIZE);
-+	return 0;
- }
+ #ifdef CONFIG_MMU
+-	struct mtd_file_info *mfi = file->private_data;
+-	struct mtd_info *mtd = mfi->mtd;
+-	struct map_info *map = mtd->priv;
+-
+-        /* This is broken because it assumes the MTD device is map-based
+-	   and that mtd->priv is a valid struct map_info.  It should be
+-	   replaced with something that uses the mtd_get_unmapped_area()
+-	   operation properly. */
+-	if (0 /*mtd->type == MTD_RAM || mtd->type == MTD_ROM*/) {
+-#ifdef pgprot_noncached
+-		if (file->f_flags & O_DSYNC || map->phys >= __pa(high_memory))
+-			vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-#endif
+-		return vm_iomap_memory(vma, map->phys, map->size);
+-	}
+ 	return -ENODEV;
  #else
--static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
-+static int hpet_mmap_prepare(struct vm_area_desc *desc)
- {
- 	return -ENOSYS;
+-	return vma->vm_flags & VM_SHARED ? 0 : -EACCES;
++	return vma_desc_test(desc, VMA_SHARED_BIT) ? 0 : -EACCES;
+ #endif
  }
-@@ -710,7 +712,7 @@ static const struct file_operations hpet_fops = {
- 	.open = hpet_open,
- 	.release = hpet_release,
- 	.fasync = hpet_fasync,
--	.mmap = hpet_mmap,
-+	.mmap_prepare = hpet_mmap_prepare,
- };
  
- static int hpet_is_known(struct hpet_data *hdp)
+@@ -1411,7 +1396,7 @@ static const struct file_operations mtd_fops = {
+ #endif
+ 	.open		= mtdchar_open,
+ 	.release	= mtdchar_close,
+-	.mmap		= mtdchar_mmap,
++	.mmap_prepare	= mtdchar_mmap_prepare,
+ #ifndef CONFIG_MMU
+ 	.get_unmapped_area = mtdchar_get_unmapped_area,
+ 	.mmap_capabilities = mtdchar_mmap_capabilities,
 -- 
 2.53.0
 
