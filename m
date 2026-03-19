@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B897B1088E78
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E82871088E7F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 203806B03F4; Thu, 19 Mar 2026 01:30:42 -0400 (EDT)
+	id 242B26B03F7; Thu, 19 Mar 2026 01:46:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B2736B03F6; Thu, 19 Mar 2026 01:30:42 -0400 (EDT)
+	id 1CC5D6B03F8; Thu, 19 Mar 2026 01:46:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C87F6B03F7; Thu, 19 Mar 2026 01:30:42 -0400 (EDT)
+	id 094606B03F9; Thu, 19 Mar 2026 01:46:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EB67E6B03F4
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:30:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CF38C13B6
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:30:41 +0000 (UTC)
-X-FDA: 84561687882.24.5519706
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 005B34000A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:30:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JkAeejlL;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E7EE06B03F7
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:46:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 850AA160219
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:46:05 +0000 (UTC)
+X-FDA: 84561726690.03.96A0A11
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E9FCD1C0005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:46:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qpH2E1M0;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773898240;
+	s=arc-20220608; t=1773899163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qG0FiHq3122N0rcYK4oCE99i2nUfs/WX8BknwBpkd04=;
-	b=vHV4cRcaztuSkt9VPyTSv/IPynO1QHe3NbHq0hRKYWJ91g7KjYg9rum+c+xRf60x4JHier
-	Cz5tARrgFjO5sOy9hS3mvFfa9WtZcsvhDrG7LLUUC8DQR5ajFeGs9Is8T6wu3ix+VdaNLL
-	MPnFQrwrlwiMhvmum0Br+ln/E0vsZ+w=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JkAeejlL;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773898240; a=rsa-sha256;
+	bh=FSec30mGZjA4WCRvlP4twDai5T6Y5USmyTkYip0iVNM=;
+	b=8W4H3OdbF7a29h2TXoYIMcrd1aWszRRgOHxUrP/g9MbMCC0taVA+1o9kFhh4SBup/qxdLb
+	5Zl8L/lJTeE3BpejaoVvsa++1v7bdgjcSgZGvqn8Vwv85n1/S7VJWOtlctKqwy4IpeY1rO
+	9aBqYMUGHba57ts5QsA5f/n3uYeaQGU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773899163; a=rsa-sha256;
 	cv=none;
-	b=p5RXtGWSGMOY54alwfjaGOTmcj9hY04vriIEizQlAeMFTVJJ8yfErhToL7vnb5SYStQNPh
-	sfz/1YNZuW4HCPI984sjaaLzoEhhKbnOvJWXSekkp9AAVWcQVWbz7iB7iKntgMG8DvLj1r
-	NLc34wTSHCFp91kDINkSpJLEqqOmxBY=
+	b=6/2AET1sBxQ4G9jDX5Zo6CDU1DfgsjHJrmu/8dNkOOLw1eEDjFEYXfshxfBKGrkDB5Lut2
+	5Af78Hxvf6krDxM+jnjKM+kjgu92MOu3DPwdKc+JjuOIGOrR3lK6d7U1UHJLIF2usr7X4w
+	56QnfswZAJS3szpW3nqftPUu0P261YQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qpH2E1M0;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABF14443D1
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B41DC2BCB7;
-	Thu, 19 Mar 2026 05:22:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4EE72600AD;
+	Thu, 19 Mar 2026 05:46:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB33C19425;
+	Thu, 19 Mar 2026 05:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773897729;
-	bh=O/0+EEFKC+kJrViTx1hpFrUcUp3ITetgY1I7Ly2ASvo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkAeejlLb2INZGMTagXHPmD0+O8ZKjh5Fd/EXV1aG2pLl/g6jZPq1Mrvo6C3VVz3j
-	 Dtoq9xah3y+18e9JrM6ZFUsBbhxCivwTPWNWIF6kjZM7na4WuYT1sGb30QQFU1uk5b
-	 1DP7vpyqeTlB91DbbkaQNDCOtT28PYNWqaoS2ZomHCPkaUKmsTteNIEgMeHcK9NXj4
-	 ONRxfJTwwUpw92w/suTNZEna0WTn3Bwso985LWfWJCHIr3HwOSSUcPlYaUd9vdHEo9
-	 F+rKzY9X/L7ayyFot0FhpuPsVyQfRUw1eWZp6UczBsqqJJAoicDXrOanc3624URkSY
-	 4hLVq2xQdY0Sw==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2 09/10] selftests/damon/sysfs.py: check pause on assert_ctx_committed()
-Date: Wed, 18 Mar 2026 22:21:52 -0700
-Message-ID: <20260319052157.99433-10-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319052157.99433-1-sj@kernel.org>
-References: <20260319052157.99433-1-sj@kernel.org>
+	s=k20201202; t=1773899163;
+	bh=3rlYRiZSQIwbTV2YgyEI1AsPMPI9LpI0pqEVU9EUyhk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qpH2E1M0hDRVkWkc6HN5OsZ9LRQwvROi0pn480R2jtbJxRw81caSggF/cYn5KvR3a
+	 5M6NSMttg14QwG2/q7q7ffOAwTpfzKGDR5GHFWSfMV1aBBCNQSga9vp8VjBz3D6O+w
+	 RZLocMg+8pQi0GmbM2RveVjonvaBypwSUzeKBbF6tljvr1XljrBKe4vAjnDugsW1zK
+	 ss1I/JDGG+AB/gfWBcwX+6f3GOgQSUmGrhA+M2jvYuLBVF96NAWGXye9ZoMmXe3L15
+	 eo/NV70c8CU60gh13KVCR9YtEbSIzigsKRJEIGnCfj21L2qaJ7dzBR5sz2/XjcR1bn
+	 HNn8L3TqPu6Mg==
+Date: Thu, 19 Mar 2026 07:45:53 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: syzbot <syzbot+de14f7701c22477db718@syzkaller.appspotmail.com>,
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org,
+	dev.jain@arm.com, lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, npache@redhat.com,
+	ryan.roberts@arm.com, syzkaller-bugs@googlegroups.com,
+	ziy@nvidia.com, Harry Yoo <harry.yoo@oracle.com>
+Subject: Re: [syzbot] [mm?] general protection fault in zap_huge_pmd
+Message-ID: <abuNkfv8c1IrGk0E@kernel.org>
+References: <69babeba.050a0220.1b2d94.0003.GAE@google.com>
+ <6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9sy1cydx5mn5apt1ghonszga8gq1y694
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local>
+X-Stat-Signature: znga99hd1jzfxj7psrk8x1b5e4o9fydn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 005B34000A
-X-HE-Tag: 1773898239-384790
-X-HE-Meta: U2FsdGVkX19j06DmmITb979lVc0cSCuxxDt9qlXCZFOSOXVU4oJZJ8P9qorYFCATscRlJDagtp0HXPdWjk+92Kc1BOz6Ac+7bng2qjQAAPpZPr62tWXCmwan/JgZ0WGFexI+XIoxmJbMqZTpiN9A4aFXRe7YH7ydBTuK90ChX/KEmr4IOBvooz3rfveg+WsjBughBrPGkhDciTB3b82Kdb1fnHcBiMD9kkiicizLK3irBTYs0YLYiqXIA8tVeSs5sfOWesQSivfdAPfdWD1yW/ZLCrpcT/9WNXEohvLVqZovMnE5rnbuA8MkE3JAPhZXbmJOPSSB59T2Ow4o1XVHEUcbPqETG9Rb80AMmxUCxpHZP7MppKp8In/h6i98AIh4YOurqmkAA4DHfm7EcTcRY0cvgpfBt19HeCif9cPzDAvynwxWUCgQYeYv/EJHVSDlZBJCwnWdbcEdsyeOLmPhiRBoccl1/t7xxjHoMmRielyWHcgjsTijP+3vqw7EukXMvuPPphHIIxJLp5vRJS8VOStDdPuIcYH7pVjzH8+zQcI/VAnomZUFXePjl//YIhlrTEihz/NJGxRQS2LdoY67ZNgPIvUP5arrf5pOox/EtrW+XZJjJrC3gi0e80S+VSUsAE+xx9grz86eblbul3add1UxANwNRiDp+AibLj/HfR7xzotOb1sx29lTnd+Ck4wYScKvzhzJDHoROHDEzR0ry98+U9qHyOwCijW1XY/E8gZQ/eE15QHJavG6FLvmWWz9n0mreTcXOlscTUiNUaiHhnrsNraH/HSndzsu6jUr9fuxMvoXcE2A7qYyinE0wQ9JBr2am6/tecRp7qAuI6HBM18OkK+juUA5Xe77qK4XCZQqjBOWvsR7CEpevRc+JPb0mAbdL1l1goVbjMD8cYaYWTZnsx2lhfApN91LD3NV2nEddgg4Dz9JEqqp3USMSnGgwoE3ifnASOgx6IwUk/b
- Id7SPtNg
- slMkBtDS7ycoRTO9kVO1pl050VkI0oWUi7rgktbPO4WKmyK7Bmt/kNggmUpdOWqKy/FvIQ5vs83/43ygQ0moTjE4jANU139DP15/bP2PFLd590g0O0/zsR7YrTSZEl1sdmkjGPbcTXTcn3XvvX/V9iiAFkQPznh4UwlLDgwW2WNHgSS4kLpBOx3deKBERWhm7tHILvf71jp3W4Z9fid0jW8MvMA0pdpmeO2MAamEXhy7/MCkDvB2xFKHwiGre9aX6WcKxbN4tpCsXehLawGQg5wIH8y+vfZkrhNHFHxp3xUhwYZpQSTr17QIwG+Z+UcGD2xefYmO1WjEEtpgkTOvvBWu+8CSiWAzbvmosKlerhbBT+fFUytjPO7lxpA==
+X-Rspamd-Queue-Id: E9FCD1C0005
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773899163-231056
+X-HE-Meta: U2FsdGVkX1+ZZZDNygr9021VQSRT1WgiphSVH+vWtH2q6rz31/AF9vs2vKZQaJ4ppTySFj0ZqrwyxV+OcFjl5CsHpU7gTZphLgnVG1Sa/v8w7YRgeunqIE5tH/aUpFDFBGBqbCR/dJo/ZHrpOb3YRL4Dz1kjmfYIbpgDu9fAXBGpdeCcuIyn+WZS6+U6Dom22qWmlh7kPcw0x/0u87kbIfmFSXR3ZUKM1k0iB4YbSpG1nCQGO87ryDcljLaUdqtkMhpkWISvwgDwN+qwvtPYZX3Nk0G4TyJrDcy79YBe7VSKt4yt2lrj2EUPEYzgOuqrxBR51tpF8zEziEJ4Ipss6MkM4ESXNaVJo6HUjJ8tX+FyzhLEqm5DRLNZJ5yTW9NTsqroZctChF81UnL5vC+Skr7Ni4SGat/E1sVsRvP1JoFjcoZGv6CNKj+Aka/syhRZggtdg8wATETEGHe7HJC/3Fe0nHnWc+4V+UjtHqbbJsNzwdw8xilP+WEOdXpaNG/0OXpVninytkciWNo/iZ3CpxerK3nRlY92mL2cFnOE2DEOwYcXWwDE3s7hWZPIgkIUCzfHEKH4wIZajcOdMApcDPL3ZB2UuAesuqJWl7Tx6Vmo1kI1eFMH9YhgxjU+mua5FhnOzwnBB+QSZTJDVON8xh4KvHMbxmuttr1fqUM/XhJ/6RvVEz/VvX0ar4RhimA+w2i9ItDpHQI/VxzzEU7a3yYvJzNyGQ4sFkbuJCkMnihKHTwVpx1vGI9/XSHUdJeNHzAu3kyPCLbwkWfhj1jFkdUbV12bPKUmTCVvYCQUGQsOOPOPA1aiz8cafWaTjehSTIzDz8bjQCcxcQIio67em96f9tf9l3sJ2ON6GFcpVbUFUa48LLS+3Gr0UgHpltoY9vi6xuyoNOA+Qx2/OhUo7QgyMA94HlXWSoowtGJTzrbtURB678Q4QYFd0Y8c6KqwJGe00eJPfp6b9JdA7Nc
+ +YS9n17L
+ ZdOEF5jkftEtQkfGE9A/aBFfwv2jofzD9AjofAhizgt6TLD+Io+/LwlPhZgMCIYQ77xECWdCkvkRYXZNtC49QBJF49esP4OAe9SOaoR6AWaLKu8KJQhVGC4zqjxYwpEeZILZCvk2LH1UGf28pSflvdUwclICQVqonkwW86fMwlZTGtGXlxrEh4/f/mTYDZh2LUmzznQnUAheNVZ52hmYO21qirviHJuHVRMdymK2/XRMv2dL2CE5Yp7L30jxnnpYMu0Oki984IJ0OoolL/2Vpp8BlKprtarYZK2j+tdSV+2YtzWD6LSKB+bTe9Ry2M5Z8TkSO0jBOCDq7jEsMNn4nbU97xpdboKzkmUot+sPtKs8XeE5XZTwqElK09XrAH7AEcOBuut1oYHE3+2Y7BmLTl3BS/G2W/Iw8/2gEmpOFIHni0Wi/2mrCI3KnftqKs7vpCOAc2t3Ii52ADiUx98AECp/XM0D087+wg7oAa9xG5B2Tvvd6/bHBAGQjaKwYEpub6S8OZ/WvmxtyMHeqbH9Tcy3QdeOXEB9JIzX/7PiRbAWze85mPeK3wiRcI8vXf2we1VLGYI6YQcs8qLeqZI2KnLY/ITlenhdrFtzq09j47MbIa+A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +96,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py tests to confirm damon_ctx->pause can be set using the
-pause sysfs file.
+On Wed, Mar 18, 2026 at 05:26:32PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> +cc Mike for uffd, Harry for fix that also resolves this, see below
+> 
+> On Wed, Mar 18, 2026 at 08:03:22AM -0700, syzbot wrote:
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
+> 
+> For some reason I have to git pull --tags to get this... commit hash locally?
+> Strange.
+> 
+> > git tree:       linux-next
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=119ddd52580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=de14f7701c22477db718
+> > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b44da580000
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1537b8da580000
+> 
+> @SYZKALLER guys:
+> 
+> Note: the repro is incorrectly labelling;
+> 
+>   //  ioctl$UFFDIO_CONTINUE arguments: [
+>   //    fd: fd_uffd (resource)
+>   //    cmd: const = 0xc020aa08 (4 bytes)
+> 
+> as UFFDIO_CONTINUE (0x7), it's actually UFFDIO_POISION (0x8) as you can see
+> from least-significant byte.
+> 
+> It's also stating things like mmap flags wrong e.g.:
+> 
+>       /*flags=MAP_UNINITIALIZED|MAP_POPULATE|MAP_NORESERVE|MAP_NONBLOCK|MAP_HUGETLB|0x8c4b815a506002b2*/
+>       0x8c4b815a5465c2b2ul,
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 3aa5c91548a53..e6d34ba05893f 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -190,6 +190,7 @@ def assert_ctx_committed(ctx, dump):
-     assert_monitoring_attrs_committed(ctx.monitoring_attrs, dump['attrs'])
-     assert_monitoring_targets_committed(ctx.targets, dump['adaptive_targets'])
-     assert_schemes_committed(ctx.schemes, dump['schemes'])
-+    assert_true(dump['pause'] == ctx.pause, 'pause', dump)
+As Andrey Vagin pointed off-list, you can run strace repro and see the
+syscall arguments quite nicely :-)
  
- def assert_ctxs_committed(kdamonds):
-     status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> So Harry's fix resolves this,
+
+and that's the important bit ;-P
+
+> but we should handle this case better in zap_huge_pmd(), I will send a
+> patch for that.
+ 
+> Cheers, Lorenzo
+
 -- 
-2.47.3
+Sincerely yours,
+Mike.
 
