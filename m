@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C881C1090225
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 13:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A6321090223
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 13:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D3C16B04B0; Thu, 19 Mar 2026 09:00:34 -0400 (EDT)
+	id E1D516B04B2; Thu, 19 Mar 2026 09:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2369A6B04B2; Thu, 19 Mar 2026 09:00:34 -0400 (EDT)
+	id DF6ED6B04B4; Thu, 19 Mar 2026 09:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 173DE6B04B3; Thu, 19 Mar 2026 09:00:34 -0400 (EDT)
+	id D0BAD6B04B5; Thu, 19 Mar 2026 09:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 044C76B04B0
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:00:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC121BA00C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:33 +0000 (UTC)
-X-FDA: 84562821546.11.127EB92
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EC79B18000E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mHFF5QM8;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BFBCE6B04B2
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:00:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E1B2140579
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:36 +0000 (UTC)
+X-FDA: 84562821672.19.0F2B12A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A34C240005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rqco5QSX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773925232;
+	s=arc-20220608; t=1773925234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k2IAvajY2KuWSe+YBYMYlFU4G7wDqXu9hSrpYjLB14A=;
-	b=2xbMEzIvpesD0ShmTxJR7/GNWleMXY4hIdW8slwpEImzEnlZRfRtuTZ/IJNiCGMci1HErb
-	SjaW8oMiWcr51pB0z62cEhfWToQfRZuOKu2ksIFmzolEYOhHsNO6j0gQRt+zJZFndTAxzb
-	epwXJ7QCeIqQROaCb3yt93+ByR5/R4s=
+	bh=sfoCsA8jJFbtQfidKWgRKj4ykR47nY9cLr9EWVdCqfk=;
+	b=rH8y9SPTy5Y6YulPhQSryHzyarzfxxCh5wxD5Rdp0oPeqylmNdTaLymdWiC80tEWWueJwD
+	k/ut5ouNNm9jca8ukh7tVuSR6RSLoVO0mnvHC9OLIPndYPCr0lWsotwmbmeHvDmyugQiqw
+	0jLFBcfeblpeObDFxWgQQ3ByOsxdz+c=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mHFF5QM8;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773925232; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rqco5QSX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773925234; a=rsa-sha256;
 	cv=none;
-	b=HF+sthOKNJk2B5s9hD5ruvPkBML7qrJFkKlDOxE6U3TWPXGnCtOWkFihAo9ibSMQA7JtTo
-	nnheJJEmnn9ZObSSizih+FPaqhKQhlb9enuxMnnptQ/9iHuT33BOmPH8CrnL2N7DzK8+l9
-	JIz7G608DIWArEjxazVqavo0HtPCUgg=
+	b=8p3B4tsBmdPViPv0Lz0qOlwPxW1+1mXxV3tIWqPPRSj0054uzMSdPiZ1d1IqLg1dcZ/F9H
+	1lP9dEUt82pR1IG7oA3V7cqSsXHGr0KXzIz1OeQsiqLg+UnFhS62L+FRzJp66H/1QO2JxP
+	cOD2txNJeZCx74Lp9NHhLO9yfwgaMZA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0829144539;
-	Thu, 19 Mar 2026 13:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74475C2BCB2;
-	Thu, 19 Mar 2026 13:00:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E70C6012A;
+	Thu, 19 Mar 2026 13:00:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56090C2BC9E;
+	Thu, 19 Mar 2026 13:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773925230;
-	bh=v8lQVzkXwOo8XYwemfH0T2OEyL/5prtqwnB27T50syc=;
+	s=k20201202; t=1773925233;
+	bh=tlTUWhNPK6pHczCJVqf9Z+TZVety3K7Ng+XiEbd0tdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHFF5QM8KYtYSTUl9vwuuKfFVITJcxtqGlTi62Obtb/ntJBkSFgkeXrXy4eKXorq1
-	 56X7Hl7ESr5wFAmWaIpIImWovr77yYH/BCSq3fPGdjv9z2NOz5WNxAPOEU10ONZpWD
-	 gUHWg6DH+pv0SuY77oNzZpUZVrSa35vLxP/v4Nai+6+b8rmugbDSU8hF8EACK/URpV
-	 D99vWxvXBuAc1POpvcy+fc+HAwuiyuTOsY2zPA8RrPuVVtqF2Ah9HhY66Uzm89Giqd
-	 r3tv4ODzOkUBDkILY1T7s2Iy7ln6VjRK9QkpfDOWl4t6aEFB3t6SUQTIcQ1DQWtnu+
-	 Gfvk8A25K/lGQ==
+	b=rqco5QSXRL2rOThabB6xWRg0bHs54Q2yKy822BvcWtOYk5p4KLkjo1KTTDm84e937
+	 GTu9uV+rBEpSv/aBmKfG4ryN+7uqtiNeq/xNEGy6UHBAMvna1UIANatgjZ3MCYaTFE
+	 bWYDdUvIXCzJVGFkZdzzPFNxlgDRoCENORV5XCKE9vP+4n8vze4EpyzsJa9/Qb+mZ+
+	 LMiCmGVeS6XBuucxH3x2FUFs89GOJlavSVhvSz6fWl2QuYUg6+zPrvI2NsftVgEyUP
+	 9ikCm5FdcENujRkOeVQAMlUWUCcZq2xYPXkOLoW5PQIafIOzhROkLm9Kb1wvD3Ky70
+	 0+mVSS7sT3Klw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -80,22 +80,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/9] mm/huge_memory: handle buggy PMD entry in zap_huge_pmd()
-Date: Thu, 19 Mar 2026 13:00:10 +0000
-Message-ID: <1ec18767b106a1ee1ed6e33e332c3ad5531dc636.1773924928.git.ljs@kernel.org>
+Subject: [PATCH v2 5/9] mm/huge_memory: add a common exit path to zap_huge_pmd()
+Date: Thu, 19 Mar 2026 13:00:11 +0000
+Message-ID: <f5d3d47da1bc1607fc01604c0e803c3248d8a1fb.1773924928.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773924928.git.ljs@kernel.org>
 References: <cover.1773924928.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EC79B18000E
-X-Stat-Signature: m3mh4dpeuk13gj93rik5kw3ucaxnuw8k
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A34C240005
+X-Stat-Signature: egta58ngwkxoaxthdorj8qjeus3quft3
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773925231-545005
-X-HE-Meta: U2FsdGVkX19cf2Kwhyd7oanZLTFNjYgcSKdHTUZQbIg10X0HaOFzHhVz73zBWbRVfzzPzAsQ3KO7I56APT4xkJHJgKx90wZc4PsqAhlBixBR8Xz1xRuE2T4wuIgmgUh2XfijYx2GsDsKFFgUFeEMQQ6iN+lCqWrzVOAX1QKobepvcKo9HcVlAYKHImBzrQmEmAlmtAsNsD6As8BGkeppXYeZ2cEnaZiQcRyyMOSXkFeJlbnQnpgtOx6Mq/W7EDVT0WVSit2g4nFDxb1FuOe/eWWuzMPcoFXtUYJj+JDclMTclozVcyNbokqeGEXL1uUz6kxrmbabxGZzSe29j0gwNpZKuvll9GlDooVQVrQMICRoTVKGD92LL7uDaB4I+VsEfa6l0IGyqbybOLLq5o+0G1TnI0+54LUNM3XAMTKtTk5/B6Cj30N/0lucOFxahCP8Aug+x+VfLBvA/Nk5aO0gQUIeLSXxizm4aDw+CDFdgE3CXYg6L2vlvPx0rbEUUNW+vKCA6JxK7+ON3BcJeeb7B4Oqbj9j+2EsHSh4Gsi/cAT6WvPdnVqRReOIZnV0xzUIhK/xzi5aIs7YQAXXV0xg+KLJ+F3v1AAy9STmHkKur2JCxRnwg5D1Zp21Oc4DFm5Ux8Kqlc25Y9DzmU1eB4kSt4lCQv+EQ/lFUnci7XGDYF53JwEDtzekC0p8aFTr7Ylg2Wwbtxh/63z+3MTseAfcF4dCwvAPnrLdKYzscasRkcv541OcU6+GDawqpTP91fv4DnxUnAFR/40IlxCHl5fcsCPulW+iLcoc/TU8/7dqWHPV3foGRgedk9O/O61o8zie1pU8DMQ06ZLjmj+1vrd7qzr/eCcOSFEEHRJ2VswJewFTeRWWXE3CGCW7F5G392wlEXkj8pzA9ekB7hQVWJ90WZcg64E25Ra4Brv9VbT23riHMjGlfjoXLMVNqSnNZSHFwN+WOZTbxu01qKKUQpT
- Vh2c0RUm
- tLwgVqbL3Zdfp6cXl3zsLBIM8NuByIYPf/E5q1ja2MUenbxWyBk1Ew8Co7CTKmbuTBSBIglnPM6Fy+r47CUiht6GcjpbPlXiwF+Hj2nkfN5cbJFOTr9tNIXqCXoFB1I4eunVGsvGqmM8xLZAvTmpmlA0sqV7xUa5Q5uBLDc0W9yyszTNAldSMqHogqAeaVnsWoOrTTXgDrHLeoPepyFpdbPoUADILXlDG8uLxFQ/MZVRNBG5GtstdaiUYndTnVNjAUoZQBPUL+dNwwW5Zqmz0iGCTnQ==
+X-HE-Tag: 1773925234-780389
+X-HE-Meta: U2FsdGVkX1/pm114lEf/B8o+JvgJHddYS71Siaulqa204AnbRlJ0v7ihS4RTiaVmg8I7t9GFTNcXPx3RckWIJJdebCfwwRATT6sHiZHrt7EJIw6RW3F3YAf0JGOebvwDBtSIPlUg0H+A2rIpjIYClbuk2orH88zddLum0AQ3Kqzv0yfBt4tYs4WEksHrKZ4xVrzCYmT065pNomC//PC/owq3Gxv26J5CRhxwImq7Z9Zfs8k61kIZy21L5AR3mGG8rEJrO5JA+erUjLGITJTGuygstbt129GKDudTKFQsJOW0zdwP5PqfDAZJIhZ5uvrLug9bxrYK10qsI21NVpr9NMClnOu3F8zt1zIjXpaNdAuAbTtSoqU+dBGJIYxCxSzfvKkvIxIsxdVMg/qkXcWZRvXEwn/wzYGKUpMadAdPuq3ALM+/aQM4uTKtbfzVOJeody6dZPwjdA/WQwqAdgoFV8R6NOODSyTuJqKdd2lRnTL1oiIweopXcttLJL0Erei0Ji4FFIgn0bGsQ6gd6I4d8iz/bnJguTTyCOhVonNDKJjNi/gU54i+eMjgnphc6Lay1mZeu6wugMD2+w3NhSitDPoYnghK9ngkYZi6/Mt5a923vsHreM0M2mGpRF+nNjmYUXn7NC7ziOFXyqsL1wkINp7agnmtmodPnf7yiNf0+Ukl3TAxz4pzWLoWGuXMEO3pgwadKeRc2/2gvRl5komYomdm0C9yh9qFA2U5YigzB+pKdo6DD8Wvwq/5aHi+Q9KrjaGg6JUxWmrVDLuupC2aOFYxg30u3CVpA9p7RJhkWaBQxLVaPodZwhbgXpBSN27lVs0C8MkYosXW4/mONv7zoBaphistdlnbZHhjsCTjir0WFpafFGRff/rtR3vpOtbQOBheBS0aqHP2EdOLjEDdGwPGObsnN5v9sTrtNknh5TwEBT3YKvDn6WPS4lGWuBnQ64t1e0B+2GHP3SEFjay
+ uwieQ+XG
+ 0rC1WohUoINMgq5mHoraFTPLovW0WzCU1hU4DEWGUqOfKkqXoz6YCWdJ7OUvUGAr5sHpM2s81EWGqyae2Qri7auwx+LQnneqKyV3FCJVhyXT9k0fLh2v2LmN7J0+Qx4SFuFMuY68bKUjpi4ARModo1oSlHlm3YbJBvujKVqkswOrAvrsCrwVuM+wE+wvQLDdaTjC2Sb0hld2/y2Rt547GQhSdW2MEAmqIK9sVKDZh91b2nabvkWah3C95ejdPLBTSJuFk0HUr8VFrqW7CusAAK27plw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,43 +103,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A recent bug I analysed [0] managed to, through a bug in the userfaultfd
-implementation, reach an invalid point in the zap_huge_pmd() code where the
-PMD was none of:
+Other than when we acquire the PTL, we always need to unlock the PTL, and
+optionally need to flush on exit.
 
-- A non-DAX, PFN or mixed map.
-- The huge zero folio
-- A present PMD entry
-- A softleaf entry
+The code is currently very duplicated in this respect, so default
+flush_needed to false, set it true in the case in which it's required, then
+share the same logic for all exit paths.
 
-The code at this point calls folio_test_anon() on a known-NULL
-folio. Having logic like this explicitly NULL dereference in the code is
-hard to understand, and makes debugging potentially more difficult.
-
-Add an else branch to handle this case and WARN().
-
-[0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
+This also makes flush_needed make more sense as a function-scope value (we
+don't need to flush for the PFN map/mixed map, zero huge, error cases for
+instance).
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/huge_memory.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/huge_memory.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index bba1ba1f6b67..a2f87315195d 100644
+index a2f87315195d..c84b30461cc5 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2478,6 +2478,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
-
+@@ -2431,7 +2431,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		 pmd_t *pmd, unsigned long addr)
+ {
+ 	struct folio *folio = NULL;
+-	bool flush_needed = true;
++	bool flush_needed = false;
+ 	spinlock_t *ptl;
+ 	pmd_t orig_pmd;
+ 
+@@ -2453,19 +2453,18 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	if (vma_is_special_huge(vma)) {
+ 		if (arch_needs_pgtable_deposit())
+ 			zap_deposited_table(tlb->mm, pmd);
+-		spin_unlock(ptl);
+-		return true;
++		goto out;
+ 	}
+ 	if (is_huge_zero_pmd(orig_pmd)) {
+ 		if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
+ 			zap_deposited_table(tlb->mm, pmd);
+-		spin_unlock(ptl);
+-		return true;
++		goto out;
+ 	}
+ 
+ 	if (pmd_present(orig_pmd)) {
+ 		struct page *page = pmd_page(orig_pmd);
+ 
++		flush_needed = true;
+ 		folio = page_folio(page);
+ 		folio_remove_rmap_pmd(folio, page, vma);
+ 		WARN_ON_ONCE(folio_mapcount(folio) < 0);
+@@ -2474,14 +2473,12 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		const softleaf_t entry = softleaf_from_pmd(orig_pmd);
+ 
+ 		folio = softleaf_to_folio(entry);
+-		flush_needed = false;
+ 
  		if (!thp_migration_supported())
  			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
-+	} else {
-+		WARN_ON_ONCE(true);
-+		spin_unlock(ptl);
-+		return true;
+ 	} else {
+ 		WARN_ON_ONCE(true);
+-		spin_unlock(ptl);
+-		return true;
++		goto out;
  	}
-
+ 
  	if (folio_test_anon(folio)) {
---
+@@ -2508,10 +2505,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		folio_put(folio);
+ 	}
+ 
++out:
+ 	spin_unlock(ptl);
+ 	if (flush_needed)
+ 		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+-
+ 	return true;
+ }
+ 
+-- 
 2.53.0
+
 
