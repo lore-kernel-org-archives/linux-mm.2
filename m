@@ -4,86 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3AD01075264
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:01:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CBE6107526C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 637276B0406; Thu, 19 Mar 2026 03:01:31 -0400 (EDT)
+	id 9E8DF6B031D; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60F2F6B0408; Thu, 19 Mar 2026 03:01:31 -0400 (EDT)
+	id 99AE66B039A; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 525306B0409; Thu, 19 Mar 2026 03:01:31 -0400 (EDT)
+	id 8B6FA6B037D; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E12D6B0406
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:01:31 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECA7A58B95
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:01:30 +0000 (UTC)
-X-FDA: 84561916740.07.5E47885
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 11969A000D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:01:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tlmZ5xiQ;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773903689;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 78CED6B0408
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:07:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A6E4C19F7
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:07:37 +0000 (UTC)
+X-FDA: 84561932154.15.AC264CD
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0CF7A40006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:07:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=fskvIZ97;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773904055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/U78KrKZVBIu5ehpuQ4/fZRhBDoWKv6D9gIIE+dCgM=;
-	b=Jsnkjp4dXvQ1dLOGMhm1AiH9kfL5NQ9l6Lfw0BnX96gmlMdDxKCUG+/sAPtCy7aM/8PjGv
-	Z2NjsX5pmDi4lDPNd4xS2CUF8EBX/C3wylIcba4nTwxaZ/V0sy1E0cdBMNym7jH98uEx08
-	qOgW70Zt7Clkwmob7EqV+o1HoB3qF10=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tlmZ5xiQ;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773903689; a=rsa-sha256;
-	cv=none;
-	b=lKt7JQfEuZ3N2pkCLkZskaRgHfkqPQRAV2IWCEBA2ZK/vRiJbDohTrXIighSbIUIbPuzQc
-	A/rvklx2kRNtySrZKRgzL3BrGUKEt/qn++yL1yZXKAb0bl2+RsAvwYEE6qIn6ioLp6VtrG
-	FY29vgticJGjlAYJkPYOi/a0LkzTiak=
-Date: Thu, 19 Mar 2026 15:01:02 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773903685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t/U78KrKZVBIu5ehpuQ4/fZRhBDoWKv6D9gIIE+dCgM=;
-	b=tlmZ5xiQ6ub1GOaKYMeZwLenoSdiiF2PhmVqr80Ar9LkIACfIMbH4S64r4nI84t3ARixkY
-	EQobgKRxsj3vrwfERp/lHG7PCkRux1VVjvHufWsZ1X1Ssls3pTrJtFezdVQXm3agl09v0W
-	sP80E1+/kdn/+Gkm4nW/N/rubaGKd8Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] slab: create barns for online memoryless nodes
-Message-ID: <jwlqiygxlch5gq6g3vkwynrpndjwcoxwice2hmvim3tvdfubp4@je5ldr7pa5f6>
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
- <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
- <4659c675-6949-4295-b385-1ab26921a975@kernel.org>
+	bh=KstVXAu8s91wD1tzpSpjUCtaNtaqVzzDqrlbR2gPxhg=;
+	b=OPQH12KCnl8vfHeCTBMuv+06dYFakUUKWCX0X1NVE4t2UE1Tj2o6Yf2CWjHX1tICAaQrXS
+	g895PxZsGKakdPEfGS4NC2g828vvvsA/TRy3K74pyPQYF43qgQ+ZPjmDCBWGV195FXeICt
+	YFtrjThyNDqqXuT8uIG/9cDwM8S9fJ4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773904055; a=rsa-sha256;
+	cv=pass;
+	b=sTZRLmun2oNTsNK/OE+KPo+bqP711+Z1Wn0fImwsMqOY12TYwSo+rAAT7vseDlJ1P8BZjz
+	g2E83negVGEfCp+dbfP0R9JvwLzvUAA+4R7B26TqQgJThf9PI30iXZw/Aj8OhvURwXiSsp
+	trYVLFNgx38xCe531TkUPM+AH4j2VBk=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=fskvIZ97;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=1; a=rsa-sha256; t=1773904042; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=e9ZNPiNMOo68Qkxam/C8cay3EsA7VGGltAnosDmkJEaK8Kjo3HpDTYEHw+TdsM4AKzMzPXn2nCLfgEwFM6U0q7S12A5b3ZUO2DBCM3JtfJ55e18wXncraJvPPHcK4rFxJ5w6nGxOiZvMuFLZjYLxDvyF6zGlR0gjhYPOpy07pF8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1773904042; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KstVXAu8s91wD1tzpSpjUCtaNtaqVzzDqrlbR2gPxhg=; 
+	b=lSaqE6xk21yiR9BjYqMC8A0/Ylg5iIYDucA5u0e98GVT7CJR1FMXYKuDaWupi8+1qL/OtXprMtx5YtZVLyBBKBvSwEfLK5CraMk1N8JqE6issYdiMidgJ25QrZhnnXkVjLh5CChHu25mZ7cYsI6yjeJGKw/dxliDWj19VI+7zuw=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773904042;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=KstVXAu8s91wD1tzpSpjUCtaNtaqVzzDqrlbR2gPxhg=;
+	b=fskvIZ97/1BmLA5jpR5+dGchmAJqsjqdLNmyRNH/HfLIILLSV4evG0s+E4tmC5xB
+	BAaxIthu9mZ0Mlyo1c2ZzpKAE6rNCU0E0/4LSp/RI12G0UpDW+r+8plHk+chNFiX+wB
+	spKt6C7UGoNZxeykFGFug9wBy4u/rKdXVi36jsPI=
+Received: by mx.zoho.eu with SMTPS id 1773904038826234.8226502046814;
+	Thu, 19 Mar 2026 08:07:18 +0100 (CET)
+Date: Thu, 19 Mar 2026 07:07:18 +0000
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>
+CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon/core=3A_reset_nr=5Fdests_o?=
+ =?US-ASCII?Q?n_allocation_failure_in_damos=5Fcommit=5Fdests=28=29?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260319043309.97966-1-sj@kernel.org>
+References:  <20260319043309.97966-1-sj@kernel.org>
+Message-ID: <B08CB6C4-72EE-48AD-9AA5-16CDA175B193@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4659c675-6949-4295-b385-1ab26921a975@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 11969A000D
-X-Stat-Signature: h6febdud445y5e654rspygc65qicbym4
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0CF7A40006
+X-Stat-Signature: htiw7mqdi6i4js6uqai88hm83nbjm9mn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773903688-816242
-X-HE-Meta: U2FsdGVkX19Saj+vwdZkSPo2XAFNUAYP9n3x3EDwzhtzn3OeuEbVz15uO6JipE7gJwSven1KGkjyP+C45N79KW3rrotoAVEzGoEEBGKr5oHWJzhLVCa6jydx5PUzwvBlyojJ9sRiTMetoZ7C7FIcTnrIwn0YIS7LDF2xovm+tlV7srdvbiD/vD9ZhKDPRbTM4hOcAZjFOWH2OjyAbjhQGFAJRZYsOopaQzBfkoFaSxXc3dxC/7eFRN9Gb5WrW8K0O4kTyv+NxvtxKC8V5klpJdOrfulbVgOssww/bhNJSm6Mj0EvkRdqZJBgvgm/SJ9CL7DjWfv2o2O9DFlwx552gvzTeGCK0UwXJrZgF5N40fBhWCZgticmQxLvXALtBDqi4jjxpAm36Oac2zZv8Ao9nCdcBI4GRyGQ7njeRBgnXP311//H2Y/h91twP2w2ct0pOCCsPrm+UWJ4QovCTPkIM3v0hRrh8nfLquf535s+0odG95HT9u8ZqoGDUNkPznojD2vkVZTAftrf1jH/t9w2TAkXXzYi1mE5dd19RHKdqq+Ap0/TNfO86nATothBxNbW0NQuTw08vpcJ9hJo26HoAOxzWf8HLvFKUtKU1kE79IHinRDtf9dSMVlp3hrRC3EifwHvIAJhEq60d0jJ16tXZ8B8bPsJxawuP0oaxF6se60Wq3/qR+1wuLsl+KPOq7a3U9bYIkud/HBa49SmDkX5PY7Jtn6hWyc6kpLlFyyMWaWVY2cRL5clDW7GgrIvDb6g1PZsni0j426uhz4z0y2yE/xHZ8MgtbFrxLr0fOPvV53BF3bVyPEf+yB1BbPdX7qXnFU05tFhLJvgeVifwc/yWMjYOFyF7lDqFOMRJK39NOHkrkOxTGFIJ8PKCz9MUYbLAabxuxgulk69l/KrWM4dtpZDWHKp+dIVSmBN4gI1V7wUu3mRRoZjr1OxBphGxYXKghmWLjjpvO2x9TIXIxK
- Ugc662bQ
- xFthrod49BuvbQkQu9+CO9C+ZHqoxuwcmz07acO1B85J1l4LCGEamSNw3+gpgyWoVSh71Fv+/BJlFcm2SCqK9Y63YkycCpdhzcQD96fW2g3HgCfCtMOankXaUCBfOj8VY+IS+57D5LsSZzymNolPI6ciXgQeOY/Vi3rhbIq5kyrYrXo1Z8ZatRBVPYIrrvgM06vDiZbjVZl9Zys+ISjjcDxk5iaZRE/2+ORmhkFysRx4ToaIVv6l5RO/b/ifNl6jl2oUYJxyvyb4x9w60o+xtIAKqqTbi8iwlamAR
+X-HE-Tag: 1773904054-768594
+X-HE-Meta: U2FsdGVkX18GqbiZuyd3kuRA97cERy+xrSGwkzKE1o7IUqvwZ2AvjMgOIDOAENF7+2fmhfhYDY4OPduZ/IxSNCNQGeAP/HdxKObcBOjur7jl4VjQOSj5+cq5y1/j9lEJOAu0hkDXTWpO2vdXMG4J3QkIaZEIoUnTKvHKkBdySuTFv/z73koy8uTz3FDH5GnNOsthPr02kaJ76lMXIhIkQo58qo2gAFtO4DhUc+mk2x8+vi/pPaW56dwXXcFPvXOfIg0aybV/sjLz4EkpYu5THwt6qe+0YrwOcwznILZvuLB6PFmB7iQweXZ3ccaM/LeaEPIqRnJuj5djsVF3G+R1/L63WHBN3LRdrcA6XWA/iBObns5yBSvsn4L5NgQoezPKIyK2VmbASqw8NIwMi4icCpKWuunULpKvkxn17nt8fxalfQc9P0l10HOJ54uEZaeIBCGGa2MwxqFJKQaDe60k4MQ//yW1R49kW+HTTMj2NM0f0cI/VsLx+n4uPRN6xFcHXa+jp2GMahLnWOqU2r0KeU3AYUdrp65gQ9hcJKaKUwAWwru12S9g4g8snVHlCuVegtCqMTkj45QNFRW738mbTWMMWDggp2WkWG67+O6sUj7fNTmOL9yP7cV4iWFvXDUGE+YfJw2Blw+qWCw/JLfnUmeT/Lwg+Vfa2/lLpnMsfSm/yqoJeeoGysmIm1IB7ZtzAoT349SlkHDkhdBDZI7u1TlQA3N1wX/qw6L2qovUrgBmKkKlZ4rXeET/pUYMvTbumBDqkxlyvTqcw3SEg5GtGVDhTeeXn+msV/MdtI3SsfSBiG+b7Gnw9KdbkCdyONnvNg0YBYR5L9VWuYmURx4N+xSlPXWKi5Jy+4O7sqin8OY0w5tlqXSQzvbNAkzrAxYOpDxeVWFpndDh/iaMI2Eax8ZwjIqUaTihzUnNRDDW6QVUYXD2AgrqIAujWAMWI/yoNdA7QqjZ2QrWm6NUK01
+ 8gNto6wJ
+ PrgCFRLygm5/t+TLasgvdLZx3XCuB1OeWlXsEAMLlu6vt7D9ZMq5BNlX/iDm32H5JfqfgN8DGazTSfw47Q0zzGHT2sbTFzZfPGqVerGsxQbRo5Nn5UJYaojCoectAjl012DtrOetcJqYweYGlPgQFVsOSsve6wYcndPr/Q54Gx8ANIcaL9IbazUrCw6AFYJ0NBM/vMDcYaruyg49LN41wS35QLyDJ3MYeKUG2OiI9UtHVMGefiazx9ezQSWHLZufrN0P4QROL5x+0NWmRR+m7cUVyvoB9GVE+5D+HXdspupxRz3DSqB5cdvlRNv5oD7xmoCbhx1HTIq7twqDZI6StdWIKE8qjxTOGUdGOGAkKOVjSQLM9hTCshT8u551Qjt64Wx1PnBYHD/FZBXFKbZ866+sobTI5G9v0yxLu2uJdOLyuBnquELWAyJCrj/gXkY6jLBzvMz1YvCnMjzXYBG5GSR3yrqVhso7L3wgXU5bJO39PmMc50927HQFULxGfSuHqg7r2ynjwFw+4X4XJ8is+6XWVbL9Uldfq2K23ZGgIbG7TI2tnbAWqSYaffP2yA50EKEnasqU20rYk+NER2HLr20OV8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,119 +102,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 01:11:58PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 3/18/26 10:27, Hao Li wrote:
-> > On Wed, Mar 11, 2026 at 09:25:56AM +0100, Vlastimil Babka (SUSE) wrote:
-> >> Ming Lei has reported [1] a performance regression due to replacing cpu
-> >> (partial) slabs with sheaves. With slub stats enabled, a large amount of
-> >> slowpath allocations were observed. The affected system has 8 online
-> >> NUMA nodes but only 2 have memory.
-> >> 
-> >> For sheaves to work effectively on given cpu, its NUMA node has to have
-> >> struct node_barn allocated. Those are currently only allocated on nodes
-> >> with memory (N_MEMORY) where kmem_cache_node also exist as the goal is
-> >> to cache only node-local objects. But in order to have good performance
-> >> on a memoryless node, we need its barn to exist and use sheaves to cache
-> >> non-local objects (as no local objects can exist anyway).
-> >> 
-> >> Therefore change the implementation to allocate barns on all online
-> >> nodes, tracked in a new nodemask slab_barn_nodes. Also add a cpu hotplug
-> >> callback as that's when a memoryless node can become online.
-> >> 
-> >> Change rcu_sheaf->node assignment to numa_node_id() so it's returned to
-> >> the barn of the local cpu's (potentially memoryless) node, and not to
-> >> the nearest node with memory anymore.
-> >> 
-> >> Reported-by: Ming Lei <ming.lei@redhat.com>
-> >> Link: https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/ [1]
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> >>  mm/slub.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
-> >>  1 file changed, 59 insertions(+), 4 deletions(-)
-> >> 
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index 609a183f8533..d8496b37e364 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> > [...]
-> >>  
-> >>  	/*
-> >> @@ -7597,7 +7648,7 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
-> >>  	if (slab_state == DOWN || !cache_has_sheaves(s))
-> >>  		return 1;
-> >>  
-> >> -	for_each_node_mask(node, slab_nodes) {
-> >> +	for_each_node_mask(node, slab_barn_nodes) {
-> >>  		struct node_barn *barn;
-> >>  
-> >>  		barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
-> >> @@ -8250,6 +8301,7 @@ static int slab_mem_going_online_callback(int nid)
-> >>  	 * and barn initialized for the new node.
-> >>  	 */
-> >>  	node_set(nid, slab_nodes);
-> >> +	node_set(nid, slab_barn_nodes);
-> > 
-> > I had a somewhat related question here.
-> > 
-> > During memory hotplug, we call node_set() on slab_nodes when memory is brought
-> > online, but we do not seem to call node_clear() when memory is taken offline. I
-> > was wondering what the reasoning behind this is.
-> 
-> Probably nobody took the task the implement the necessary teardown.
-> 
-> > That also made me wonder about a related case. If I am understanding this
-> > correctly, even if all memory of a node has been offlined, slab_nodes would
-> > still make it appear that the node has memory, even though in reality it no
-> > longer does. If so, then in patch 3, the condition
-> > "if (unlikely(!node_isset(numa_node, slab_nodes)))" in can_free_to_pcs() seems
-> > would cause the object free path to skip sheaves.
-> 
-> Maybe the condition should be looking at N_MEMORY then?
 
-Yes, that's what I was thinking too.
-I feel that, at least for the current patchset, this is probably a reasonable
-approach.
 
-> 
-> Also ideally we should be using N_NORMAL_MEMORY everywhere for slab_nodes.
-> Oh we actually did, but give that up in commit 1bf47d4195e45.
+On 19 March 2026 04:33:09 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>Hello Josh,
+>
+>On Wed, 18 Mar 2026 21:49:39 +0000 Josh Law <objecting@objecting=2Eorg> w=
+rote:
+>
+>> damos_commit_dests() frees the old node_id_arr and weight_arr before
+>> reallocating=2E  If kmalloc_array() fails, the function returns -ENOMEM=
+ but
+>> leaves dst->nr_dests at its previous value=2E  A subsequent call with t=
+he
+>> same nr_dests will skip the reallocation (the sizes match), and the loo=
+p
+>> at the end will dereference the now-NULL array pointers=2E
+>
+>Nice catch=2E  But, this is a sort of intended behavior=2E
+>
+>The idea behind the code is that, if the function fails, the caller will
+>not resue 'dst' but discard it=2E  Hence the function is only ensuring th=
+e 'dst'
+>after the failure can be deallocated using the deallocation helper functi=
+on
+>like 'damon_destroy_scheme()'=2E  For this, the function is setting weigh=
+t_arr as
+>NULL in the allocation failure=2E
+>
+>>=20
+>> Fix this by resetting dst->nr_dests to 0 immediately after freeing the
+>> old arrays, so any later call always enters the reallocation path=2E
+>>=20
+>> Fixes: cbc4eea4ffb5 ("mm/damon/core: commit damos->migrate_dests")
+>> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
+>> ---
+>>  mm/damon/core=2Ec | 1 +
+>>  1 file changed, 1 insertion(+)
+>>=20
+>> diff --git a/mm/damon/core=2Ec b/mm/damon/core=2Ec
+>> index 7f74982535ac=2E=2Ee233eb84a2d5 100644
+>> --- a/mm/damon/core=2Ec
+>> +++ b/mm/damon/core=2Ec
+>> @@ -1060,6 +1060,7 @@ static int damos_commit_dests(struct damos_migrat=
+e_dests *dst,
+>>  	if (dst->nr_dests !=3D src->nr_dests) {
+>>  		kfree(dst->node_id_arr);
+>>  		kfree(dst->weight_arr);
+>> +		dst->nr_dests =3D 0;
+>> =20
+>>  		dst->node_id_arr =3D kmalloc_array(src->nr_dests,
+>>  			sizeof(*dst->node_id_arr), GFP_KERNEL);
+>
+>Someone (including a part of myself) could argue anyway initializing the =
+field
+>is better to do, for code readability and completeness of the data struct=
+ure=2E
+>But I'd argue that might only encourage calllers to reuse 'dst' after the
+>failure=2E  Also, the 0 nr_dests could still meaning something incorrect,=
+ if the
+>first kmalloc_array() for node_id_arr success but the following kmalloc_a=
+rray()
+>for weight_arr failed=2E  In the case, nr_dests is zero, but the size of
+>node_id_arr is not zero=2E
+>
+>I think the intention behind the code is not well documented and that mig=
+ht
+>confused you=2E  Sorry if that was the case=2E  I think this could better=
+ be
+>documented by adding comments for the function=2E  The single line commen=
+t in the
+>function body was for the purpose, but having more detailed comments at t=
+he top
+>of the function may be better=2E  If you'd like to send such documentatio=
+n,
+>please do so=2E  If not, I will do that=2E  Whatever is your preference, =
+thank you
+>for finding and sharing this room to improve!
+>
+>=2E=2E=2E And, this patch helped me finding something actually broken=2E =
+ As I
+>mentioned above, callers of damos_commit_dests() are assumed to discard t=
+he
+>'dst' when the function failed=2E  And the only caller, sysfs=2Ec, does s=
+o, except
+>for the final commit to the running context (kdmond->damon_ctx)=2E  It ca=
+n result
+>in DAMON running with the incorrect data structure, doing NULL dereferenc=
+e=2E
+>Similar issue might exist for DAMON_RECLAIM and DAMON_LRU_SORT=2E  Becaus=
+e those
+>modules use only limited parameters, there might be not=2E  I will double=
+ check
+>and make a fix soon=2E  Again, thank you for helping me finding this issu=
+e, Josh!
+>
+>
+>Thanks,
+>SJ
 
-Thanks, I hadn't realized that node_clear had actually existed before.
 
-> 
-> Note in practice full memory offline of a node can only be achieved if it
-> was all ZONE_MOVABLE and thus no slab allocations ever happened on it. But
-> if it has only movable memory, it's practically memoryless for slab
-> purposes.
+Well, I guess hardening this patch is useful for then=2E=2E
 
-That's a good point! I just realized that too.
 
-> Maybe the condition should be looking at N_NORMAL_MEMORY then.
-> That would cover the case when it became offline and also the case when it's
-> online but with only movable memory?
+V/R
 
-Exactly, conceptually, N_NORMAL_MEMORY seems more precise than N_MEMORY. I took
-a quick look through the code, though, and it seems that N_NORMAL_MEMORY hasn't
-been fully handled in the hotplug code.
 
-Given that, I think it makes sense to use N_MEMORY for now, and then switch to
-N_NORMAL_MEMORY later once the handling there is improved.
-
-> 
-> I don't know if with CONFIG_HAVE_MEMORYLESS_NODES it's possible that
-> numa_mem_id() (the closest node with memory) would be ZONE_MOVABLE only.
-> Maybe let's hope not, and not adjust that part?
-> 
-
-I think that, in the CONFIG_HAVE_MEMORYLESS_NODES=y case, numa_mem_id() ends up
-calling local_memory_node(), and the NUMA node it returns should be one that
-can allocate slab memory. So the slab_node == numa_node check seems reasonable
-to me.
-
-So it seems that the issue being discussed here may only be specific to the
-CONFIG_HAVE_MEMORYLESS_NODES=n case.
-
--- 
-Thanks,
-Hao
+Josh Law
 
