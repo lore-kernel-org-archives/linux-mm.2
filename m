@@ -4,80 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA3D1091927
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:43:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDBF91091916
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3103D6B04F0; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
+	id 2D5E76B009F; Thu, 19 Mar 2026 17:47:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0116B04F5; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
+	id 286C56B00A1; Thu, 19 Mar 2026 17:47:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E5ED6B04F7; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
+	id 175AA6B00A4; Thu, 19 Mar 2026 17:47:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D0336B04F0
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0DB28C32B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:43:43 +0000 (UTC)
-X-FDA: 84564139926.30.C507A1F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 09A7A6B009F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:47:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AA78F1B88BA
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:47:03 +0000 (UTC)
+X-FDA: 84564148326.01.0274E3F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9EA6E4000C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:43:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ET/D3WYu";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id EEAB214000E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:47:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQKZ4msA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773956621;
+	s=arc-20220608; t=1773956822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ub/SdKvuQK1F+4dbMUdokt+1BWeE+so5IQ+Xm1zNtQ4=;
-	b=nB2vRFCOhtDZTqiNa9g9bnFfAAvYjX30LfwrzKfEc/KIGonHMwiwfjQs3+Ff28BdTIHAom
-	QLY60iXIh8yAVawAg1RWPrAk3FM5vFzhuad4FlVp9d16e07KWMUXjiuB/2AsN4HZ6ku7cA
-	G9Pvy7/wyKsU9HoZIR2d0vWERpRbizY=
+	bh=NA2/A56ZhtI/PoLvTlLKfrzY+NZXauzXMCa1Fkw5K2Q=;
+	b=gQU/kVB1S9PTyO8aPABWzcFhCuu3Km3fXxncGphWBbfSOvnVsS0yB8qI+XfN029UpfAQNN
+	cY5jEHqVs033zpXCGd0+rK3a3qzBGBdnm9s5vuxYtci042cl+eS6o8G2atrmfDpRu/xjG4
+	vX4MIHzX154iM0x32XN5eez+nvI2Inw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ET/D3WYu";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956621; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQKZ4msA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956822; a=rsa-sha256;
 	cv=none;
-	b=UiKCvJjmdq65WhAxXxxVvBaro6RryaVybvbmMyxNORBgPdt7xoJU5PqA5FMDwRRIszd+Q/
-	vD9cSW/NMB2bua/xzPPY4QLJOOOmb8+yXqw0BxKxAcmkgGo+yt+Lkx1DwqWEOkQ/Oyg+BC
-	oJCKgyeTUAxiwokh96Jen5ucM65+e7U=
+	b=FxVSysKemAfN5z2JHUgbWyNL9UsZO1m2BCSOBLMyP0wQ4tLIgUh8quVKDuPJzY1e+X8isK
+	FmAosBi7lgbTotLJLAiOfvYELG6GvSKon39mM+k2sJ2oZeeLaftU2+kPL123z+nIki8jhO
+	3QSufKlyQIpV3m+kbTwGJQPHcTUSvHM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE32660133;
-	Thu, 19 Mar 2026 21:43:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8915AC19424;
-	Thu, 19 Mar 2026 21:43:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2AF4F60053;
+	Thu, 19 Mar 2026 21:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245CFC19424;
+	Thu, 19 Mar 2026 21:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773956620;
-	bh=uAw2YurztQA5Fty2B9eeqKXwLRmhsRGPv/axX4+YBZM=;
+	s=k20201202; t=1773956820;
+	bh=1IBkxxVID0OqECcdtfslaXIofuQKudUDRH508pH5n2M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ET/D3WYuq275gZdLtGn6TIcVwK6gXG16ZSoxJ4xptljWXdGw9DpgJ5miOx1lqH2s/
-	 D7jiowfnKdUOQkEKt8UVFgclc7VQoeE3crhFZe0us/f6P2rC82r4Jvsh+hwZt57WUU
-	 C0JRG109UYUaMggfN+AlBtLv5wB/VlsfInuBjT168rnNpFV4znDNNlXjpQi6AICbVI
-	 Yn3Vfyx2FXraKVaIRwDw4yIaMaoYqF7ijhcnYsvuuqjYhthIx8Yj+FJ9uFxBOEZYYr
-	 29v3bzAvD95qPs+PYMuoNG85Oywcfz64n/nWo5HwMlDzevyih8XkiERKtMHQZptehU
-	 HQTDKZhlGusOg==
-Message-ID: <7cd1e50a-f5a1-42b6-9d04-4e329d338f41@kernel.org>
-Date: Thu, 19 Mar 2026 22:43:35 +0100
+	b=YQKZ4msA9Q1UVupgLQQX8vWm3a7QrdO9XU5owvbsusQVdWvjaxArz8Et/bp6ovnOs
+	 V4HRFc5TXhTPy+WL9rihFat9A7NxNhUsmKYne7rM0Ij8oDuzhoMr58/+PIR/FYiYD1
+	 dzHjoWQMJ8UnPNd2CVNKGDOaTCL+87qcEGvwEiHNxP7BFDaHZeiEhiHkoDx72Umg2e
+	 JudAWOILwmo/e0oIm3hyYcEXKJCYV9HLTcDuZA6yot54xC7QRWgWD/FWZOSXXSQKTB
+	 1MGGDP4CxlwXaGUi+0RRy9CUVPXvDu4C5KsZpNLIMzTnccQi/qlIRdrgJZ3ckpm32d
+	 mB7HhYdpglAaQ==
+Message-ID: <eeac1781-d809-4108-9abf-63a9800a9ea2@kernel.org>
+Date: Thu, 19 Mar 2026 22:46:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mm/mprotect: special-case small folios when applying
- write permissions
-To: Pedro Falcato <pfalcato@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
- jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-5-pfalcato@suse.de>
+Subject: Re: [PATCH v4 1/5] selftests/mm/guard-regions: skip collapse test
+ when thp not enabled
+To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
+ shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ Li Wang <liwang@redhat.com>
+References: <20260319160656.1480279-1-chuhu@redhat.com>
+ <20260319160656.1480279-2-chuhu@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260319183108.1105090-5-pfalcato@suse.de>
+In-Reply-To: <20260319160656.1480279-2-chuhu@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9EA6E4000C
-X-Stat-Signature: cf4pzqkrfb3ocm7f9ecnmggntyb8ux79
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EEAB214000E
+X-Stat-Signature: cdqck7ahdhb6k1qi5dw89apbhrs67cj5
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773956621-581652
-X-HE-Meta: U2FsdGVkX1/iRmIEekAUkxFHbSbKKIRrXTF8fzVSIWkglhGiiJaEcHiQAPkKoix6jR5sTnI/EoKyxu6zPIK7gON96ya24TIKzxHtJAH55ypnoMpdQOAqi+hE65TM+5Q0iugFO50VbkH8gWo1rDoiYh3MdkLxFfjQ8rrB3XpvsMmswd9/03VEcIX3Pkn6uohq0PiohZD917D3hcdGHzQcqfZGyyNXILvcbZmoCJzHm0DRd2CbZPQP36pkfqxpHoW2CFczcZ+aWW5ibDT0oVlHgE3/bsZSHV8B3PMmEi38SPz/Pn/R8K78KTtle+DwTzbxKet2dQ9s/Re7icdQQRArGhmvpg0Noia6p5gz9KPzf4rZ3J4GdsILurGzFkHWRDBIzRNF1c/6ZM96XkAyrarhxJBfeMC5KfiwvF9HjqDkuwdgvYyDTeviJprA7JMEuADzlgWpsm7XpcK/guilmMXGpQ8aPXRlbnBjkNN97ncsLyhdSA5bfWnLGiKMzfIfF0uK8nAoN5uN49Woj25lY1HqTcGuAhK7oYX4GIUPfHWrdmhLFPzFGb6zPRsAoF0DVQjpPPK/jA8TMKzenruNjZn+R/fRbIGgLhEs/Lz9SOhzvU5NYuAj6VBzChYHi6flLxTKiTlQCmAiIxpZY7I6/0UfJgY8IDDQaBTmsCx4WusCr51p3MDhzCqNGEgg10QLUUi13tj1g142JkKIMPWdGviQxvaUNOaeUVmKKIm9zI4Z8e/KsqHk4cFnU1kuTp12idj+rXGAoBH65ZsB2yvjwQXyEl3eJRaCw/1+Cj8GlBaaz6c9Lqs+mC09x58wKgwuk4a38IVEmLOmSunprIafL2bmDiZjFHyMQAZsu4s82mqSuPZlMg8mjrLcqYBfRvxmBQSGkVXWFlVPycysRHExrTSYYsA8blZu4VP0M9znfOm1hIb0FvPNk3qVhn1NnaNpPuqGh5QQp+FIZIqV+ZA5rI8
- J8098nVw
- 6D7BccZSgfsCxHCXaBZSl3FTpcBjp8H3L97iACLKuR0LVzy9jEKqcDUyofhTMN1tQEv47zfkFcDyy3JtahEu0l3EjSb3v81ilrsPotX1Cn8CrLPmP0b07cN85tqE5mgdJy9AGMKDRBggQ1bwyu3nMUUKd4cGZVukzLqdLhQ8PRwUmlgLFaQlOT2Z9r06aE5fVSuBCF/sfGrJUXAXKe4iFRqMnfBrM439ImVZlveekUZWsEjgVuIqf+Kdxkb0VG7a3z/Yq
+X-HE-Tag: 1773956821-642400
+X-HE-Meta: U2FsdGVkX19XfFaFNE44lccLpDWT6+QA31cr8RgJNbf/8HTC88BdKkkfzdY/Ibq/HQ4VTj+I8WLQ7yki6YFfx5g1OneAd1CabGyUO6J9PViONDDqIZy3YtvTaFdnFFiAgCmrvGLRx17JbX+s6uszz4Yjx+ZnrwTEFHBeTYdPSRZmB8nC9DmfkufceeCE+7WqQZQmThOgllAofParBI7mx/XLIp/zyTvvETdJvY15+LA9A/khvKHbXG0Nd6Jn7GYbCLv15hgCcU4u+rDxG43DsOmaM4D/VOqUyJ2Ie5oMxnWYe/DqhXbdAtNhB3TUlVNtgkxUpokA84r7Ov2uQ7qit5FtqwSto9+wZJmpkaQG7mSJzDGbeGDmZ7cP+LmVB4E1E2gdfmxG4VZuIvR3MRqRvQXKDLoTSx+VyzpR9QfnB0QmmQolR+fcavT0LRWsv6Z5aayymBgKCzWohsj7D7bM8AVlPlwRmV58pFkrVihRynaZj/NuPhRJFyi6hKxg1DX0VX7ZA37CfhTdG1iNfoU+ZtcvY1hM8EQLp4sE6M+aRmGzk7lzxAOZvSH/qZ++NKJQ3n/fHPlMeYMWSYpz4L2UuWtIqodKM8aXN38FTRS/pP9h/FWmgVAqIlosxOFGw10sMYRT22gKoOyIAiILvTzvA9AQCwmD07HDCQjduEvla2BRLxQTXEs43x+A0S3Xvr7cehYRhLBfyYdvT6nZkcODOZRJNxOw8Y4lYYi7bWG5cijJim87lLgtaFqUEt3hMQh2UhQsV/a1d0G8A2hsjtMkieb6mOjFr8Vu6R5/BcqJx8gohA5OeloWwap99RH2DDJca8wT4QL5TDftiAqP56BAZOn2I3u7SFjgR6edds5ZL4ltOS/Tqx86rCWETvfptBxnTGvzviC0acFTGZvWWAntFdI3EQCeBKv6Vgob+u4YvpCheVfJ5LCkvi1dnkCXfJLh4887e5s08gOdMOP/P5E
+ QcglcglV
+ Y+rlCabYcbOFYP96nEqFGTlyNeMKKakSEoJ6ps68ttuY1SAuyN3q+ATIluY2npuoXyolGbtmx8tnHyKIHZw/IGZrmVdktr5i8PlVTfNnKZb4GDdhBvC03VW0L46IXIWuAaEUkAjOMy7beB4D5sFsw99Dw2HsDbzyaN/RW8b2Yd4YImewTBaBogBRyGBXlU8tk+Y2qtnv9NfMeD2Z5FQRCtCmrjTtwPgrtMdnG8l5hxNPc9xBC4l+O9uQ3fHzDhmrUCQeIiPjEHiI00+CTbJWnVyGEG+WG+2hSV4WFAl6XvycvPMxQ2gGbwCGUxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +144,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 19:31, Pedro Falcato wrote:
-> The common order-0 case is important enough to want its own branch, and
-> avoids the hairy, large loop logic that the CPU does not seem to handle
-> particularly well.
+On 3/19/26 17:06, Chunyu Hu wrote:
+> When thp is not available, just skip the collape tests to avoid the false
+> negative.
 > 
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
->  mm/mprotect.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> Without the change, run with a thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard -n 1
+>   <snip/>
+>   #  RUN           guard_regions.anon.collapse ...
+>   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
+>   # collapse: Test terminated by assertion
+>   #          FAIL  guard_regions.anon.collapse
+>   not ok 2 guard_regions.anon.collapse
+>   <snip/>
+>   #  RUN           guard_regions.shmem.collapse ...
+>   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
+>   # collapse: Test terminated by assertion
+>   #          FAIL  guard_regions.shmem.collapse
+>   not ok 32 guard_regions.shmem.collapse
+>   <snip/>
+>   #  RUN           guard_regions.file.collapse ...
+>   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
+>   # collapse: Test terminated by assertion
+>   #          FAIL  guard_regions.file.collapse
+>   not ok 62 guard_regions.file.collapse
+>   <snip/>
+>   # FAILED: 87 / 90 tests passed.
+>   # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
 > 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index aa845f5bf14d..23a741f9a4c8 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -170,6 +170,13 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
->  	int sub_batch_idx = 0;
->  	int len;
->  
-> +	/* Optimize for the common order-0 case. */
-> +	if (likely(nr_ptes == 1)) {
-> +		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, 1,
-> +				       0, PageAnonExclusive(first_page), tlb);
-> +		return;
-> +	}
-> +
->  	while (nr_ptes) {
->  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
->  		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
+> With this change, run with thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard -n 1
+>   <snip/>
+>   #  RUN           guard_regions.anon.collapse ...
+>   #      SKIP      Transparent Hugepages not available
+>   #            OK  guard_regions.anon.collapse
+>   ok 2 guard_regions.anon.collapse # SKIP Transparent Hugepages not available
+>   <snip/>
+>   #  RUN           guard_regions.file.collapse ...
+>   #      SKIP      Transparent Hugepages not available
+>   #            OK  guard_regions.file.collapse
+>   ok 62 guard_regions.file.collapse # SKIP Transparent Hugepages not available
+>   <snip/>
+>   #  RUN           guard_regions.shmem.collapse ...
+>   #      SKIP      Transparent Hugepages not available
+>   #            OK  guard_regions.shmem.collapse
+>   ok 32 guard_regions.shmem.collapse # SKIP Transparent Hugepages not available
+>   <snip/>
+>   # PASSED: 90 / 90 tests passed.
+>   # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+>   # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+> 
+> CC: Li Wang <liwang@redhat.com>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 
-That should likely be squashed into patch #1, because only then the
-inline makes more sense.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
