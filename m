@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 497B31088E7D
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FB671088E7E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:22:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E3DD6B03DD; Thu, 19 Mar 2026 01:10:26 -0400 (EDT)
+	id 661B96B03DF; Thu, 19 Mar 2026 01:22:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1465B6B03DE; Thu, 19 Mar 2026 01:10:26 -0400 (EDT)
+	id 611FA6B03E0; Thu, 19 Mar 2026 01:22:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F29356B03DF; Thu, 19 Mar 2026 01:10:25 -0400 (EDT)
+	id 527B56B03E1; Thu, 19 Mar 2026 01:22:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA9E56B03DD
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:10:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63D2C1B77D5
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:10:25 +0000 (UTC)
-X-FDA: 84561636810.08.86F666F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 454E36B03DF
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:22:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA9CC1A0185
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:09 +0000 (UTC)
+X-FDA: 84561666378.24.40F2CFE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B90D3180002
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:10:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VdPCI4FH;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7CBDA140002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R3xmC6P6;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773897023;
+	s=arc-20220608; t=1773897728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6s5jbJ1DVHNI2fz/sJa+swXTcSE9V5+T1wI8p3g+Fs=;
-	b=Ce6ZP4KecT6WPoCCGAK7EncSMA0w2X8h6NfYGNlS9q59cLp12rOcqfc+N7Uqq8Z4mSM6tF
-	pC1lHUcHY/v4Lq+UPI5pVX/xj8VgF55KuCqbB1RwlRG8xnuxdnnuXJqbPsHSbEoozUZo8h
-	Nf/hEaapQvwZCmz7g1XExSHE15oBGN0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773897023; a=rsa-sha256;
-	cv=none;
-	b=TFSk1wGb59JWkeylj+uU5aXAU81emSSagfuNDmdGS3Io/jElne3uEJezA9Vx+YWD5yw1TL
-	Gs9c4hrMi+tyEjmqDJJMwnSJaTeukI+IUo5tSoSUwTG+rg6LiMLgPJhcxOHraWyW4j/a4e
-	jvG/6zpbA4VtOXrIyjJjzl/aDxYBDo8=
+	bh=Bs7y7h/LIA/thCuFbueKaj/4BQ0qjGHk6O4IsHQaU9Q=;
+	b=StTpsz6kjgDtt2gPZhChOF8pl0fB4lIsHWR6/f0sMh9Z3CYuiKrD917H8rvrMGtmvNNObu
+	xWSezk+c+UAG8uChBAcf/CPbK6vPGcAubPBz3HgI7+oJrbqv5oSgX2ZuElNwmRi6/EwUAJ
+	2ibgGuoQ28TPqTMIl2VG0EVMbmBcgzs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VdPCI4FH;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R3xmC6P6;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773897728; a=rsa-sha256;
+	cv=none;
+	b=DD3z/R4fljpR5nfcjSgtr5WCv5q+/d0K5/L65aXWzRReh5ACwX3kT9KD5BiIyHitD4UM2w
+	pf/sw7kwS+RhvhqQFd7LEm542dmRZpN9rreIGwD/z4mq2uceNqy4d/2+bK5ETGmnJcDW3b
+	NkygtuKbX6v6o6NkAQrzKS9Qozzb1Hg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C64C6011F;
-	Thu, 19 Mar 2026 05:10:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E596C19425;
-	Thu, 19 Mar 2026 05:10:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D323D60128;
+	Thu, 19 Mar 2026 05:22:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751ACC2BCB0;
+	Thu, 19 Mar 2026 05:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773897022;
-	bh=GP7xsX5ztcYNzeY7jiTdYXA5ELT7cnQ6/syxssXl7oQ=;
+	s=k20201202; t=1773897727;
+	bh=MqEq3gnpER/1i109FUnzNmYJCrHCG/6rdnfY8eFpkpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdPCI4FHof0PGZEuyoS2CILpHqb/DJAxvTZlLi3lCZJP1rydNTF0bajuQpzt6OaHC
-	 Ji1q1qIoF00ZqZ41ht6rg+DlXUdfrpXPh0PKZRW8ZG9pr8Z+EheSmU6rqAxIPY5wqH
-	 dR4HdQXb6gioOAQSHrgPp+Pt+lxkqtW2OJHeNVe1n7On0dfEiXmGKFy6GynkhqRlLH
-	 IIC6uWkhGmElZPvylavpcX4pvzAFcwbCKb7kfG0EKX7VKuszUlBq727K+6SMTL6EiX
-	 12Gw3kOond/vC7Jexnd5fmdK60JXOR17edfA+trJgxGw5/cDa7c575NoGd/Divi5/z
-	 lF918/d8jnWwQ==
+	b=R3xmC6P6OTHd+Fs+mCFy/jqh14jFnG3Fl4q5rjQ2c2rio5VNHnB87XL87/U51kLyb
+	 nFxYMDbfULAUqYw2HCA0U5ebdHOsRLEGimnW1d3dRsf0aQvqJKcmjXTsWzbyC0UdZL
+	 ldsFPoY6Vnvy4iSeU99JIFEyvIHPWWcNQFSR7Ggl5DrON5/LtpuxRE8s5isI+kj2O4
+	 ev/yAh9ObnSHMXiFlOGBHnC7Byd1MmL4+Bad4KiO1KiR+tfqXBufseSbcauIon5KD5
+	 yWruBU376m3NO9oWFKi5nzwtHZxkEll6vXNu65GvcUTYv6ZomuH5sqP1XCqr134E6l
+	 bUvoUggz7NKWg==
 From: SeongJae Park <sj@kernel.org>
-To: Chen Ni <nichen@iscas.ac.cn>
+To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com
-Subject: Re: [PATCH] mm/swapfile: remove duplicate include of swap_table.h
-Date: Wed, 18 Mar 2026 22:10:13 -0700
-Message-ID: <20260319051014.98845-1-sj@kernel.org>
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2 02/10] mm/damon/sysfs: add pause file under context dir
+Date: Wed, 18 Mar 2026 22:21:45 -0700
+Message-ID: <20260319052157.99433-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260318043849.399266-1-nichen@iscas.ac.cn>
-References: 
+In-Reply-To: <20260319052157.99433-1-sj@kernel.org>
+References: <20260319052157.99433-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h8iieq8fcncey4skmi1o8eiczpqgnx3x
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7CBDA140002
+X-Stat-Signature: wxzff9doxjyxm3oykpkfddqayexczcih
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B90D3180002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773897023-228766
-X-HE-Meta: U2FsdGVkX19dN6RocfbeS2GITXc/ONzUyTVZAwRiA0mI1ML7LC5SfeWCT2885IisEhkPLLSuZrxa4tY4amjIfasik8eqgOtjVK2hTZMN6voWblw9ykD8CNlq4OuiQmBgQp4GZOP/br9fNM+lpkcYUVhiqUHzRE8zXwhmSN1Vpd4ybQbiZQXo3lIOVPO66ANsYg6U1cw5uXB0OXc9NwrljgJM5BSzyPqzH8lG1ggrRfpgXL2PN51Up0BiQAj0q+qs5fBtqXPzPX+JWuB9W5gprCcxl1P11dNGpn0gO+uh6TmYB/qPYDQuCFNi0sDgZmQRpjN7/VXhYisc+bXy2P+qc62o2wswH9QjnZFFF6IqT4ibj4DGiTbvwL6AgcP/IgUtEXtz9UtYcAucSjctQEn+s/IFYLpQUzdEc5tvMXqOJIkxTny06jBts2MOULoWKTcuGfuxqNdHuuwESvTbr4HQGd09FLmXIQXWYJZP9edOe9SRyGsfdw7raRjeDB9Iy4JNXqI8jYPCFmREn1ZEliME+tfi/YM6FqMWdjy+FqHmqR5YoGt2d1ODnnHbkERrXPqsSGE2zPV/BAI0pzzNiHF1OsaGch8JJ9xE4ojJygiYV0/rRFPRfFbTEfxSWxvZs0wHXslU2Vce8dlqOxc0iCWCzDPlRz4EXdPxWhd9cQFigVGBj5jbh2kvaXqJexXCWb7u+gJrgHfnTD0hvCWbHPDQ6ctv1LU1Dxkfuow/sv0n5gNV9T7vac7hDMPvd7h1Zy21DfMYBh9i0XWdRFMj5B5x62P+kx/LaPTiL4gulH5vRtLFJTNfKQZb04RUUrTQ4XgzmXf8Z2lU+UwTUHIOqNXsgrOUuObAEI2KEoCsgsRxPTNjZDLsEY8BYhR6YaDSbuCpkBazj1OG/g8tlfsBG4U5ustAyvet5ltsRCLqDChwR+cchi5k+98vPY1/+xkv0PqE4ZpLkWF4zxEjyzdhi8X
- 6xo02YST
- w56obldE1rUXMLUxmqDk82YgBcNW+krhiPK5zBDtKeEj00vAOD9NtnYQF2VNtoA1p0vSdEA/8vhA9NZzg0WjoWVX4kpNFgt0waK9X4ptpmIW10nryRNrgHgIbeuFqQ1B79mXxeqSQqVHoee9BY986ltMVPkcRNx3ovd6p/vJouYcRPrwGnK6gRXeVBBjW7MnDxbB1bcpwQ561iCDlz8n/BNKGblWAVgcfpnhXubd/Kxq3ZuTqFIPy7SyNQg5oivKznY6qJtqE8Q3ICLEq1zIYlpwC6hUtsz4Swy8APS91Cca2wdwQglhtT6laACW+Bhns3uVrhl0kjImgX7p6MD+bHBUMCUFHRXmfdGEh
+X-HE-Tag: 1773897728-747128
+X-HE-Meta: U2FsdGVkX18Au8WwDe54ZiRO5l9Ruit1Nrqooo7ViWe2jhLJWBv0jKqoJHnHWwFxaHKkBS7U2Mbykc1cczM/YUCRSfm9AjpTzkwZaNPwOVOuRcocG4hWHPVQATLnn40C21JG8BWDteKihfeY5EreDM8smm97NFWlUHv5WVk2mPUikzo590WB4zrtxiIHenQdQKcgqpB1aNGOCZaNtLBluSpBj9ahPxQCthWQJnGti8BDnUj0Dkv+w1In0KXHcI/FX+0hlRsbsZDxEArBV15ztRgpkzesTG7Lz7kVc9V+lOGFftUQ/6R52mZ+VFnQOsSicY7OwngZRi69KUnSqKDCy9epHbVOAObBFWl5xL3Cspcl5EI3JqplOswnndXJnz1h40Y1DMIzX8NojlmQspxGwm0ZazxnVw8ywRs7H68LHKjXiSLJFqHwj2M0qOSn6eIcL/HGoiNb11w5bhWWHbM52YT3sf57kApx14YgyV/4eZRGeLdiiSQN9znHJ+d4LDlRm+FNIvrogBpmmvMdON9e5+y5dlgghO0LtUhpmgH9Kf7vy5xb/Gw3FMDSmlYSI+yr0dtgJnkendjSv9g1o4NSAM4gCqKiXPeICjSLhRvlKqRG7iwqQ4vmeW6/Bfom9DK/hkqGaccggN5z9vDsQ4p3TkfsESHWuFTpiME58SRH0oRKDiJW3nZJetbLJ7qHKkYEg+cgOGLPzBzy9YxnHhyZJsTy6RvCOXntv5syEFpCiuV3vgDDdm8+ToN5Bky8CPFcrD7hi4o/vUFCxdosABZYymhYfgYuFBFuapiEp/xVXrWs8Acn8aULAYxvL8d8f4IzbP1AcdPQQ54JF8TDuIWGlf4Rn6uqyxdaH/IRguGkLGK4wNGnHImZTBZGdXFIe9gCMtZE2V3g+QM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,39 +91,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 18 Mar 2026 12:38:49 +0800 Chen Ni <nichen@iscas.ac.cn> wrote:
+Add pause DAMON sysfs file under the context directory.  It exposes the
+damon_ctx->pause API parameter to the users so that they can use the
+pause/resume feature.
 
-> Remove duplicate inclusion of swap_table.h in swapfile.c to clean up
-> redundant code.
-> 
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-> ---
->  mm/swapfile.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 35f1b58d0bb1..9174f1eeffb0 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -48,7 +48,6 @@
->  #include <linux/swap_cgroup.h>
->  #include "swap_table.h"
->  #include "internal.h"
-> -#include "swap_table.h"
->  #include "swap.h"
-
-FWIW, I once thought it might better to remove the upper duplicate, because it
-will make the files look alphabetically sorted and therefore easier to read.
-But I realized "swap.h" should come before "swap_table.h" to really
-alphabetically sorted.  Anyway that's trivial and I don't really care that, so
-decided to just give my Reviewed-by: as above.
-
-
-Thanks,
-SJ
-
-[...]
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 576d1ddd736bf..7bd42dd8c4a73 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -866,6 +866,7 @@ struct damon_sysfs_context {
+ 	struct damon_sysfs_attrs *attrs;
+ 	struct damon_sysfs_targets *targets;
+ 	struct damon_sysfs_schemes *schemes;
++	bool pause;
+ };
+ 
+ static struct damon_sysfs_context *damon_sysfs_context_alloc(
+@@ -878,6 +879,7 @@ static struct damon_sysfs_context *damon_sysfs_context_alloc(
+ 	context->kobj = (struct kobject){};
+ 	context->ops_id = ops_id;
+ 	context->addr_unit = 1;
++	context->pause = false;
+ 	return context;
+ }
+ 
+@@ -1053,6 +1055,30 @@ static ssize_t addr_unit_store(struct kobject *kobj,
+ 	return count;
+ }
+ 
++static ssize_t pause_show(struct kobject *kobj, struct kobj_attribute *attr,
++		char *buf)
++{
++	struct damon_sysfs_context *context = container_of(kobj,
++			struct damon_sysfs_context, kobj);
++
++	return sysfs_emit(buf, "%c\n", context->pause ? 'Y' : 'N');
++}
++
++static ssize_t pause_store(struct kobject *kobj, struct kobj_attribute *attr,
++		const char *buf, size_t count)
++{
++	struct damon_sysfs_context *context = container_of(kobj,
++			struct damon_sysfs_context, kobj);
++	bool pause;
++	int err = kstrtobool(buf, &pause);
++
++	if (err)
++		return err;
++	context->pause = pause;
++	return count;
++}
++
++
+ static void damon_sysfs_context_release(struct kobject *kobj)
+ {
+ 	kfree(container_of(kobj, struct damon_sysfs_context, kobj));
+@@ -1067,10 +1093,14 @@ static struct kobj_attribute damon_sysfs_context_operations_attr =
+ static struct kobj_attribute damon_sysfs_context_addr_unit_attr =
+ 		__ATTR_RW_MODE(addr_unit, 0600);
+ 
++static struct kobj_attribute damon_sysfs_context_pause_attr =
++		__ATTR_RW_MODE(pause, 0600);
++
+ static struct attribute *damon_sysfs_context_attrs[] = {
+ 	&damon_sysfs_context_avail_operations_attr.attr,
+ 	&damon_sysfs_context_operations_attr.attr,
+ 	&damon_sysfs_context_addr_unit_attr.attr,
++	&damon_sysfs_context_pause_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_context);
+@@ -1470,6 +1500,7 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+ 	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
+ 		ctx->min_region_sz = max(
+ 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
++	ctx->pause = sys_ctx->pause;
+ 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
+ 	if (err)
+ 		return err;
+-- 
+2.47.3
 
