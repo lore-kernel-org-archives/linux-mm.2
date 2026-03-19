@@ -4,135 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09E11075276
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:35:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF10F1075275
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:36:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B34D06B0438; Thu, 19 Mar 2026 04:35:44 -0400 (EDT)
+	id E418E6B043A; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0AE36B043A; Thu, 19 Mar 2026 04:35:44 -0400 (EDT)
+	id DF29D6B043C; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1FFB6B043B; Thu, 19 Mar 2026 04:35:44 -0400 (EDT)
+	id D2F9A6B043D; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 918C86B0438
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:35:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 114481A03F9
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:35:44 +0000 (UTC)
-X-FDA: 84562154208.06.F06E4C5
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 35B3D1C0003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:35:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Z8+lNpz9;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C1F136B043A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9395E1A03F9
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:36:49 +0000 (UTC)
+X-FDA: 84562156938.10.ACDE3F4
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BE85310000A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:36:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GS0N3SU3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773909342;
+	s=arc-20220608; t=1773909407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31Icc71U+5J9ABaJwtmAWm2GzoqXy8yAq2rOU0PBch0=;
-	b=TrXOLVYbaUDeaLGWIrHR47jRR9AfhWwyCWeV9pasC7jEUsrbic4ZwXZN716HZYWNRg995I
-	ZJxN3xP3DFazYFfZ4HekHLT0JlQ210WtGO+yeh0Wjgvn1EuRALpe3jjAbdWTAbgOARMExp
-	pYxQ8DrYdqUt+DPR6rOUYzxtWrdoHNc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773909342; a=rsa-sha256;
+	bh=IwV7GqDEI38/m1BvpkV5+1r1843ywx8ur1qd4Lt12Bc=;
+	b=mUL1BdW3dg4OXAe9DHGP2dJbitMPssuVpkjYqpX0puzY7p5jZWLrOfm0bUPp4VhaLtvf9s
+	tCTUrOPUM5IHDnd5oWN+/r8ettiADKWUY1Dcsr8gca+by7QgMLnkNbKcWy+HOmdXjNoWde
+	bxx5qwliMGEa/+utkoDLHmPHSPWFPBA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773909407; a=rsa-sha256;
 	cv=none;
-	b=PUD3IZl98AyzidbMA18HOfkObFA/tHDvj/s7EyhwhAWAZFaMz3Ra4Kej5i2agxEZ09/0iS
-	YNmdfl3HwLUABS9XtjDwvI6cJ+myo27bLXlbAV7tlK8y4F8hnW6LEn03SBhHJZAadTDDlb
-	7Q/EpxNCXtdlfdjxzgEehJwxVrqSjG8=
+	b=WOZG9rYXpiiI0QPkSfwHA/O9qCa8VRoCDuqfkSfjIrMeDNGzH41dkM7dnzroNbS/dw3b6c
+	+1C5ajojrLl8OBHndKnIa0xV5rmyXYgsirms3uvYSmLFNdOODCiu5mJtwjmZ84Bc5tjkYh
+	KS8TBBmhSjj0W9YR+zJMWyy1OfIDMYA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Z8+lNpz9;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-486fb439299so2904875e9.0
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:35:41 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GS0N3SU3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35b97ed057cso465111a91.1
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:36:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773909340; x=1774514140; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=31Icc71U+5J9ABaJwtmAWm2GzoqXy8yAq2rOU0PBch0=;
-        b=Z8+lNpz9Xzs/6F0+wffDxzJ2nTt7KdkurasG1PQYDn5WJ41kQM14grg5u0Dlcc4umS
-         PQEGr82YDMv+DMZeFsj+yKrMxbNOwy3F44jQE4RPEE6B5Hi/NRPOQUL+K5fkLmzINBNf
-         k7bGVkSgBwsViEs38GU9wa0VYlZnLdZxFN5EkZRpLanSbWW57nc4mPPZJCTFwLkyOgZH
-         kH/dxynEgpccfKDaTHgUNrqbHlt+PGJz5kMu8JFse6e/dAnLQTGzw6NfR27jkCozB0vI
-         jy96ITDqy771nTnTzNb0RMqGDBSBBAKJb9EQgI812R3duV2tR2xUGhJjdDmybjUG/Dbq
-         fP4g==
+        d=gmail.com; s=20230601; t=1773909406; x=1774514206; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IwV7GqDEI38/m1BvpkV5+1r1843ywx8ur1qd4Lt12Bc=;
+        b=GS0N3SU3+Z3iwA2qTnGJfDiJdol29J9IT0e/1+HcMaGqDzpmwRe1Dqa5PEiFi2aqB4
+         PP75TZwZRs6LAIeG14cVbKPNkBMIwAcC9pM+GwFBy/Xj1bhUCxCzMzA1VmnSlJ7sAGX9
+         SLkaVPAigu1ECCWoBdOXGa9FQqwff6N/9LCH4ju2/otq4oDvC6dsg1EPaDrnZfUcGLVQ
+         jDuktUpKZwYqWRlMEHR3S//jBTEFLd4hYmg/X6PMSMPYGuACk5WQIGF7PXdlAT7Rqzme
+         qRRCUaiLPRMbAVpM8BRHb2aRD2p9mIzpyjGrDf8X4058LNStAma5lXpxBEYjT8gQ08iI
+         s61A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773909340; x=1774514140;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=31Icc71U+5J9ABaJwtmAWm2GzoqXy8yAq2rOU0PBch0=;
-        b=JvjsubHxSkOiyJQTdmyb8e0bXYq5GEEY1cQNz98jchuqVUJt8j1ofrNjwb45qgZEuC
-         JhF/ezvA0qVJua3fjTX6zvwSvfCYRLSsBdM9am1FvWogNz1qUa+0MQYZmUuiTUT2FQHw
-         cqlhMkHkbcUo8jUQ83nxz9t95xHzx2KtDwuDeKNZsebPEXnFHDZui5Dxh99XgRXBwxi+
-         KRKA5jNJvNkRHYGnnKo+YBB1VUNHncb1P+7fqouoyx40EZRG1aWSK7TAeUCoWddp2JDu
-         njdp/dPAny2V/Z2jw47HxNfPA8QLYxrGc1+pePa9toXFWSkqJrLGuWCxD3aINp3wbUlM
-         ccsg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8vDH2Yi624lgmfXGVVKXMrnGkTmLBG98wWSgVBdzmy3E9k/cAT+dMcHRZJY/vIlVekROsX/dqxQ==@kvack.org
-X-Gm-Message-State: AOJu0YwyQj4NV9+ZCiVfBh8N7DLl5tw8CDrIZY7RO3uRBjfHbouoiwOV
-	+oD8EjSb/xURzqsZPUSukJvI77Mb6/JURJd/5T7ATGj5tEJYXrbDqVZMdxjUWvqtCUk=
-X-Gm-Gg: ATEYQzx6XOLnu5oMe0bQ4QG5EdYhlwzVJfOUWxuf6AWAtM5xRk0caQuDXfL4FsdOqoa
-	qWAEV/BzbOCJ3T4xkHlufKkFg8HewTBpMunoxNkF0P+P7D+rENkPG+NEqGNyihP5ak4PnTEj1gv
-	xd7zywcTFDEEicgRLJfmxApREsKTcjQOFObIJfSvNXk3uBLKvnOAB41yEDlPsuF9WiL7bpwYTOI
-	/URs1iK9s87vPBCi0HveVw7+zeUjtbbQD4Sb9WS1vQReaCXOKnhDoMlmU/GGX1Kq8qhs5Akf0Oe
-	Yr2jAsJ84K+ZdaCro0VJ7pUq754h9SYHwfn062CBW8L9pQfIfeehiHkXk9lMNUlorlc+Z39MD+f
-	0O5/M/qISEfFvW+pdn6Ky37ixOB5eaecQtNQqVbvvIrCAMV3MV6vaadglb6WIFAtKW6sW793FMG
-	uDMZ6Z1HB/wSuO7SaNNs/pTAdH+cRwwx/eUw==
-X-Received: by 2002:a05:600c:8483:b0:485:3f72:3230 with SMTP id 5b1f17b1804b1-486f4430051mr100136185e9.15.1773909340450;
-        Thu, 19 Mar 2026 01:35:40 -0700 (PDT)
-Received: from localhost (109-81-88-11.rct.o2.cz. [109.81.88.11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8c292e2sm48894715e9.2.2026.03.19.01.35.39
+        d=1e100.net; s=20251104; t=1773909406; x=1774514206;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IwV7GqDEI38/m1BvpkV5+1r1843ywx8ur1qd4Lt12Bc=;
+        b=I4FLVx0yQqoT9rQJ3PwVf/izD+Mb/0XZosAgE21wc5TEHEMsTHi0kaI5u8zZ3H/mW+
+         3zwjFKktyDBch9w/c1b310XFlRYkGtqAUf0jmohmvSTEorsS2S9DVRUIXfU9LeKhTopP
+         boVB37t9haSjhrlxlWqujRGraRfLkHZV2xMhs0lhwN4hIsOulceje3ze5aKE9VlyrUUk
+         1jCE3yiwt/GRO6IeMJboK8Dg2+jPGnB7/S/6Qv0QridfwOK8sUOCHxHQLcH3N8EkQ8wE
+         BAh3KqBwRopfZrNVIyeylVYD1eE0rDjQmeb5s/tNfYxePCpFBmvzClo/GhSZSP6OIxUb
+         1THQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8NHlPMZMySY+RyF+4YOJH3twSF+t5ymhDyT3DfAFWZBS848TfYqf/IZaGFYxB/+2ogHeobLQigA==@kvack.org
+X-Gm-Message-State: AOJu0YzvrzYa6q9zTGh34lIu72HmGQnQiZT2dvmrnX7EeSnoTFPql9U2
+	naa1gRFhCF9MqQHY8oiclcls/Cc7RNvqMhdBqIm0n+dsBrxlysySVyZIO2hG3HDS
+X-Gm-Gg: ATEYQzxmsWv6/CWXVe/8Sk5GbkIJh6FT/PwnBr1BYZbtg0gRZL8YWPSwl/Kft/40Hdv
+	I0NhijSKdzzBUlsz6YISQ75PaTGSzoQtBJGUGUNO4V1L0czo47Uqu0OMX8sLWH+01gwD4WqZsHq
+	zsM/jsF9XyT5+zQY66ToMjjIbn79BtfF4Ic0gCjWZbq9VKpr9pNumVIEtCgVvcI6/B6+otTB09q
+	0OJhPEcii9ZwPM8Qg5P7tfSwIIz8p/oaHCnFThvNjI3vvSL21BQCnhOF3yzeDwJ1bNe+wIeRJ1e
+	pSGUYcjR5cR5kfK9NatZbgVOL8ckM0gEvQ3VRsnK2oBUkTYW1hHtxyMqUqcdwix7BioSSTNB6uS
+	2Duel4u1C8v5Wf04RoudYt6Q6+3iRwILggNSVqE55Tqzg13qQXp0BrLagecg2kBQ7P87IzRyO4+
+	ZsdZixFTp+569InjXdvStTyARO1tVhRlDSWRFhnfoS1VcAKIf1WtE=
+X-Received: by 2002:a17:90b:5350:b0:35b:9c97:3d18 with SMTP id 98e67ed59e1d1-35bb9e514c5mr5668061a91.12.1773909406429;
+        Thu, 19 Mar 2026 01:36:46 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bbae5e19asm1695794a91.7.2026.03.19.01.36.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 01:35:40 -0700 (PDT)
-Date: Thu, 19 Mar 2026 09:35:38 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
-Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
- attribute
-Message-ID: <abu1WmUNw8c3ubGO@tiehlicka>
-References: <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
- <abphjNOYaNslTA90@tiehlicka>
- <7ca9876c-f3fa-441c-9a21-ae0ee5523318@yandex-team.ru>
- <abpue_k_9mjQAP6X@tiehlicka>
- <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
- <abp3-iJbazCpygIm@tiehlicka>
- <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
- <abqQtcNqxzxiZyf1@tiehlicka>
- <fd7409a3-5f8c-492b-836d-559b001a61dd@yandex-team.ru>
- <absA_ryDAnfaKJXC@linux.dev>
+        Thu, 19 Mar 2026 01:36:45 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [Question] mm/damon: min_nr_regions constraint and inconsistent error handling
+Date: Thu, 19 Mar 2026 16:36:39 +0800
+Message-ID: <20260319083639.36440-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260319014624.97146-1-sj@kernel.org>
+References: <20260319014624.97146-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <absA_ryDAnfaKJXC@linux.dev>
-X-Stat-Signature: 96zwi3md8phd6wp5m7tikicdw5x1wfo6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BE85310000A
+X-Stat-Signature: bfrzrx16sh3epfgcxrna6ipsazced59k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 35B3D1C0003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773909341-577381
-X-HE-Meta: U2FsdGVkX1/5uVXRV49a5zF3EHpRXAk/ajzRT9BnUbag7FVe7b6QZt0vMDcnKyJbfsFY42t4w8RMoykAwF2ESyvC0YhXzGSxJC1hwkcGypeWDqfkXvUP8sm/6fjzCoH/6YW+cGvTbGKsmUWRDLbTnuQiB8wUFBc6DhTko18njeFliYgFbwQC78rt+n/hHCbGZYEmkGWm4aWbHLSCqo8MW13/VBICGC6cGkuN47c6mv7+sDL0/NS0TEvWXGZKSF2s6BZ5N8dY7apJTYzJ8Frn3jcGt/if4Uj3jXEqLdkxHIrfXXdjyKwy9Lm8Tw+NuTlhpU/a6FvxsHuw1x2C6ZU8u1/tLh8nNqeNVW45B0TxSq2ZSN4RayQ2BUNnSk4l0DlDW5JVOgl4oV0rOXASdUisDxfOnBvvKYOM/d/juawMVaM47w1so/Bz7Eaw4xwwbkyVOOb5c1odQ1IOynNd1QbR02Ivd/vnJfrrg9aGXCGo1kmx7ZDbzNP1RjmKF8R3eMLjlKk8lEORBUQIbCby1p/pnyGfqIDFEld1Sne22djRhdnh5eFqxXERxaw273dc4ssvXK/ZyTH+sMMc+jZQZfHclQZMOveNlVXPTHzpk0WsEWSAHtTAvLnNGDDeBtooJ0rpCho1kD22sOo8/1dYC5cyW4S3eta5xZynWsraAgwP945BjarHuzBMrk8zC1XoR40sfGgOChlDHPfvXizPowUZGOXVALQqAlAvONVqkkszPNA+3gdXxLJm/BxNlJMtIDYkbYo34lxCmcsq3lNmAsXoij9vQeYN4GmQPT/Uy9C3B1cEk1vm4PNxxy407nxlGXbGI2RofLcjWJlclr8M+215pBnLX5XBNZik1kWwzUG/23FOWc/hy8qdNk0Ibs+YY00+UjeHSCOx4X73GHGMKppruIiMQuV5c1H2k2uyymYrql6yYoRtO/UVAc/4TW3kpT8sXn9o82W+PHNuqwpRk04
- FNBJuwFh
- wX5/B5yUlCO9Aa61sg1D2nwMM2SUFPIxJDWly6H9owozQfF6EaGuxGMSKJvqlmI4KM2tB
+X-HE-Tag: 1773909407-120204
+X-HE-Meta: U2FsdGVkX1/x1/y/ZhD2RaBWUn8Kr209gRp8jpTx5x48iKLRHHe4USoE9tiC0ZHIFKPeUdiwDlPPHq29wHIN9VO3LNtjTdtkIVWDHF/cc/h16Q2o+l9oVCDlNle/hGTQ2GaExCaAHJKy9oUdHFbLGSaCVCOFUdfzhFl7xIoyNuxAJVPyphpCabXP6TGywpCenEIMVI5sIPjcVQbd7CJ0bDTAKkNuJEzBH3ghhNdbsDSQjc7+5NzRG4fISGFT1kxkXaf8gkmOkMD3dmvLBmxlmR0dOjMm5s5lCsn0K8KRVuOs6GpFoPmgV2LpqN1dLedoh5i27bWz88VkEEbKNVTdFiETn4247PU2F6eMS/QK/pnklyROst+/vzwrEEa+ezZDjWWPT+n/BMoF/G/RPjkIrXEOxguot0z95zVCRdd5d8UvERSMaI8+vIDICdKgfgUxi0DNDPl4fFKZCK3jVJL+s0tLw5D327tqJtotJNPUuZwsrF4InjcqccM0Jlu0lJbxs9+XvWiEhBBATGF3qZUm2Liox1y9kL4g97PwKLWmorop2F7BNGrdQt2Svf2qftcEEaY/JsNbISm/XgqPoqC4AZL8oanSrRuyCHs6xRN3g9cN4y/DoYrXVEsz5KnpZbCcQ5V1F5MFtUKU6ny1rmtla0PLz40ALrOfADgqpnULdd8rD6kbGCZ2wPIffwt2LbJNM5BPsMdhMoXqPuKc3Bx4+xOKh4e78spB1pMJBD5b9caY0RPxtFRzMoDWe1YNfdfE+E6CEoTEnjSY+xoEdpSs/tPk5Em9qIc2lSh4cSs6cIEevwP+TZwRP08qoHxx8czNnR50NWqSzq1Fy6xBrPi6OPEuVYEspEbZ75QGO0c+QpKfxqpiBNi+vBBqEbqxgqnnS7HPmksDu93e8yhqVog8Us4cWJqBt+K8y/3kIQBQu5qihezjDKRxi++lDzjHHw1yMUWIFggG3jUWREkxQM9
+ O+FctUAj
+ 0QHRIKvI+Q69XNGqIee9XCrSztvDg0bqehPxZ3gTFBbhPftuFxdF2ft64hKU3pBVHvw4GS/y6RHdiNMYevOO+xdne0RSt0PG62fwP8JPmGDqHODInH0D8KVc7mkjpEqOgrqU/dHhHPirQtL9SZQluI9Z3+Tij3+Nx+GfnzguHhaGJJT/NqKI8I5k4ZHUXV9bW8FuUyxqNs77ZwOhzKeM6ifMv+nDc0FzNumFq0tXTWqI7LL9Ut+yb9LQTG5oF8wAGgxmYWa8EXKJkDXW22Wm+Zf+NzoKys2RqIF7RL9IVfXPZfLExTd8qh3xiOcbEDMBiR+PXOpVbnF2RNfajJSp7toHPoXnSR+Kj5I8/2gGCzZ+r3Wariz1d2nTQTmsRfBOZB15YrIVbOK3jVJqwjpojvXkNCOX6MTaHBO76B9H49r/7VWzu+c+PspXpfXwM1SmR5NpyxHQ8sPyijbY+A0dsGFHqoOG4NlHiap1GYw/mpdvE0o1SPjHf0S6deA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,20 +118,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 18-03-26 12:55:49, Shakeel Butt wrote:
-[...]
-> IMO we should actually deprecate compact_unevictable_allowed and always allow
-> compaction for unevictable memory. We should decouple the notion of mlocked
-> memory from the pinned/unmovable memory. Pinned memory has much more
-> consequences on the system related to fragmentation and availability of larger
-> folios than mlocked memory. If there are applications which need unmovable
-> memory, they should request it explicitly. I don't think there is an API for
-> such memory but for such use-cases, it makes sense to have an explicit API.
+On Thu, Mar 19, 2026 at 9:46 AM SeongJae Park <sj@kernel.org> wrote:
 
-That would be really hard to do in a backward compatible way and there
-are workloads (e.g. RT) where mlock is supposed to imply even no minor
-faults.
--- 
-Michal Hocko
-SUSE Labs
+> Hi Liew,
+
+Hi SeongJae,
+
+> The initial version of DAMON was supporting only 'vaddr' operation set.  And
+> 'vaddr' is designed to have at least three regions, for the two large unmapped
+> areas on normal virtual address spaces.  Hence we enforced min_nr_regions to be
+> three or larger.
+
+Thanks for your explanation! It makes perfect sense.
+
+> Yes, I think this is a nice idea.  Maybe adding a comment on damon_set_attrs(),
+> or additional sentences to 'Monitoring' section of design.rst [2] would be
+> appropriate.
+
+Agreed. I will try to figure out which method is better, and I might
+send out a patch in the near future.
+
+> I'd like to be cautious about adding logging, as it might be a spam.  I'd
+> prefer making it documented well.  Then, users could find what is wrong.
+
+I see. I understand your concern about log spam, I will focus on
+documentation.
+
+> I believe the above command should returned an error.  If not, please let me
+> know.
+
+I re-tested it on v7.0-rc4 and it did NOT return any error when writing
+'Y' to 'commit_inputs' with an invalid 'min_nr_regions=1'.
+
+This might be unintended. Here is the full log of my session:
+
+    [root@virtme-ng x86_64]# cd /sys/module/damon_lru_sort/parameters/
+    [root@virtme-ng parameters]# cat enabled 
+    N
+    [root@virtme-ng parameters]# echo 65535 > max_nr_regions
+    [root@virtme-ng parameters]# echo 3 > min_nr_regions 
+    [root@virtme-ng parameters]# echo Y > enabled 
+    [root@virtme-ng parameters]# cat kdamond_pid 
+    89
+    [root@virtme-ng parameters]# echo 1 > min_nr_regions 
+    [root@virtme-ng parameters]# echo Y > commit_inputs 
+    [root@virtme-ng parameters]# cat kdamond_pid 
+    89
+    [root@virtme-ng parameters]# cat enabled 
+    Y
+    [root@virtme-ng parameters]# ps aux | rg "kdamond" | rg -v "rg"
+    root        89  0.0  0.0      0     0 ?        I    10:15   0:00 [kdamond.0]
+
+> Also, if you know users who depend on the old behavior and therefore hoping the
+> old behavior back, please let me know.
+
+I don't know of anyone who depends on the old behavior.
+I am a student exploring the kernel (DAMON) as a hobby, so my
+perspective is limited to individual research rather than large-scale
+production environments. However, the current behavior (staying alive
+with valid params) feels much more sensible to me. But it should return
+an error when 'commit_inputs=Y'.
+
+---
+
+Plan
+====
+Based on our discussion, my current plan is to:
+1. Document the 'min_nr_regions' constraint in admin-guide.
+2. Add the design rationale for the "at least 3 regions" rule in
+   design.rst.
+3. Remove the outdated sentences claiming DAMON will disable itself on
+   invalid parameters input.
+4. Investigate and try to fix the missing error return for
+   'commit_inputs'.
+
+Does this plan cover everything you'd expect?
+
+Best regards,
+Rui Yan
+
+[...]
 
