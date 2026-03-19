@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66DC7109190B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80A29109190B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90A2A6B0585; Thu, 19 Mar 2026 14:59:37 -0400 (EDT)
+	id E61B66B0586; Thu, 19 Mar 2026 14:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BB5E6B0586; Thu, 19 Mar 2026 14:59:37 -0400 (EDT)
+	id E393A6B0588; Thu, 19 Mar 2026 14:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0F16B0587; Thu, 19 Mar 2026 14:59:37 -0400 (EDT)
+	id D4FF86B0589; Thu, 19 Mar 2026 14:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 69DD16B0585
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:59:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12B2CC2466
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C3C3D6B0586
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:59:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71D02140706
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:59:39 +0000 (UTC)
+X-FDA: 84563726478.22.1E7D839
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C589BC000D
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:59:37 +0000 (UTC)
-X-FDA: 84563726394.04.3C53471
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0230E1A0007
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:59:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RlINErwB;
-	spf=pass (imf19.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eDXLzpm0;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773946775;
+	s=arc-20220608; t=1773946777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fsfMjIfsjtusJhQnCeKcSJI9AYx2DQ1suMzXsS8unaE=;
-	b=Uf/BreFN7rKU1AUKRunvSUf8gyh+Z/lrIXdHeJmRf7TdCasG9I6Vul9Xrlxh1bkJQFK4RR
-	Jil2bMBziFIgS9mmTF8ODImWv5y1UJXI77JTOepXLzeErWkoFSLX1Ny6HygsC5Xgs0UYDX
-	/33mt5b/kGU9HV56EXwL+O0AsKmhPqE=
+	bh=cE90Dy65vDx9i5Egvmz2RKSmYxOP6LytEQ4+latQkJI=;
+	b=DP+kwP0ExMeMqJ3RdYMSJwOd5pL+j6bwnnlIxMU4PXxsdxPEqPbcqENJmRuV1gPB4FZBAq
+	fFRmBx3Z8XGosWK3eQ08hVZeVF5Vajfltg78EKYbmFqwH/nCKsZeGhLLIBcyKJBgpNgHq5
+	MtQn0z4OOu2aMSI8Us7kGZ1kTJKQJxU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RlINErwB;
-	spf=pass (imf19.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773946775; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eDXLzpm0;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773946777; a=rsa-sha256;
 	cv=none;
-	b=jYBI2iMVg1kJsseu5M1p19hG/TuFSIxgOzGGnFqELwif6u18lGuBRA20oC+JUcIteDHgmh
-	dNncLws0OVH04GHerS6A91hml5Pam8OL4HgqNuFHjEQkZZeb9vcf6rNYTt8dN1ul5RFBxj
-	IgfvP4ltnN0/m7wL5Wgy1SmKTnNS5Rs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773946774;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fsfMjIfsjtusJhQnCeKcSJI9AYx2DQ1suMzXsS8unaE=;
-	b=RlINErwBqGVeroV9aN6Ld48u1OqJXTRCQJN9bHRg44REBbPlDJoOGx6GXgGBz4fc+gOoae
-	VIqxUKLjcqEbwGieErd7XlZnvE9NaCZfyvkOQyeFMBBj1ec8Tb/LVNLe0UxOStSxIDrMCi
-	l+bB2kS4PbjBL8aLBsOi1I882y8dxCM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-af_DePgMM2K06eY_rYCjTg-1; Thu,
- 19 Mar 2026 14:59:28 -0400
-X-MC-Unique: af_DePgMM2K06eY_rYCjTg-1
-X-Mimecast-MFC-AGG-ID: af_DePgMM2K06eY_rYCjTg_1773946766
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1802A1956089;
-	Thu, 19 Mar 2026 18:59:26 +0000 (UTC)
-Received: from fedora (unknown [10.22.80.202])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A57D1800763;
-	Thu, 19 Mar 2026 18:59:23 +0000 (UTC)
-Date: Thu, 19 Mar 2026 14:59:21 -0400
-From: Audra Mitchell <audra@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	shuah@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
-Message-ID: <abxHibvF8E5dcrUf@fedora>
-References: <20260218184210.206466-1-audra@redhat.com>
- <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
- <abludfGu4upPcyRI@fedora>
- <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org>
+	b=VBdq0t5yZGa0/C+hf1lXXAmBUr43NAwRfz91cMFvl9FwheKIQ3DWNaKY1T5Q9CP/SVVVYN
+	HAt2gVKmede5J+uCz0u2sabZ6prSEcZ+ScKsVhmkOSP31jZyWDyOAascpYvp/ZjGZK53kz
+	E2nJ9A4lStagx2WGK43SVcLj2zJlUnk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A8FF6013F;
+	Thu, 19 Mar 2026 18:59:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F26C2BC87;
+	Thu, 19 Mar 2026 18:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773946776;
+	bh=T4+wW+BE9ML0BadDhp8f1BCyI336OhYAsXdLtfCgUMI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eDXLzpm0frb6weL4G0nCG2ZWQmwkhdsnDtJOo/GLP6yPbIGp2fKj8uKYCkVZq5dvB
+	 JpdoPaJCrq+Zpp4C2xk3QoW0+4VeTn/5kiR5tl+dx5zJPstwQs3/UgzZW4abulBtUg
+	 SCOm1wP3eXYKMiqMnuDQXQRKuCJhsMcrQuoPy+gzv/79flPpnC40PPptjfprDNDzcl
+	 9NJ2bIC6jbYFcXX9aoTsrmFIwCLbSM94+0OUEBsAPnttB2VRW7Mce77J/+ASaqQyMb
+	 hLPthZ8H+jyVDtRRps1IXFhSlR77W+bQTnbskCLIU+XjTOj9FOgUSmop2QFHyKN+Yw
+	 SqEdo7Se3YIyA==
+Date: Thu, 19 Mar 2026 18:59:31 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>, 
+	Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, jhladky@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm/mprotect: encourage inlining with __always_inline
+Message-ID: <cecfa4ac-1fab-49c9-be69-0071596f78ce@lucifer.local>
+References: <20260319183108.1105090-1-pfalcato@suse.de>
+ <20260319183108.1105090-2-pfalcato@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: U4PQIn9VnKpOxiUA0pEAjhqqXcVlDx1rzGjwT2Z3bzM_1773946766
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260319183108.1105090-2-pfalcato@suse.de>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C589BC000D
+X-Stat-Signature: mwao63p1cp3yuux5jx9y6643g3xqnu5f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0230E1A0007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: pw5grf3c17dwwreyij8pdi4n9a59p5nx
-X-HE-Tag: 1773946774-309119
-X-HE-Meta: U2FsdGVkX1+ht/gdqpJoXhTP+j7gKn9lyuQ5g1GQoBrUDkZkklPcu3BVLN0nuLtibUlYs6VxkTnfqHVNbpHam4yfgU3IERmdwleXKwrRBT8WtRpgqQXJb2GsRhiXl+gjUOz9z0xE/k5SIPNl6Kc4cn69J58AoH3O3ouh7mLEwlatApcdcXkepnNKUE06ML0GtNYoc2DdqVxfUPX+8wvaqxwqDRUr+DAzO3BrI63SzTZwGk9FtREfMEmWCYtXpQUj4Dkq4nmJILfnvQWRqjrRnTXuZgxjdZHpJqH/s/V3AVMG91z4e03TS0JwMFl6up6EPh+JuwKC9WsRYYXbqPvJF7jIYKcnyCBnrUHKdWUFtzbnBgMNzowexcaR13texTBkmeW9ja/UILKyCB8Bm9gDUZI9Fabnd+qYYukDyxlxrYnsW9ByFy9SbXiPwcI5uMWtTpYsVngGdchkQk3W81BzJ7GnGQ/ZG8hVwU+txCponCV2zKIe1Yz9SeuqpvVi06LZ7OxEAdmc7xYfJkT3mrlCM79nE5FO7tNW0s/hB4fAjbHlGVDaOBDDy1d+YsuyD3FL/bY1YnEGF7m9d4e5qQ5b8ytkYQp8E01B0Rx9cVKesqPrPpmxH2Z7oBOo3F0wsICogHWwheEKZkGa2G65GsHriptEFLWRCa361xokWZTWS+UHCaLIyZwjqIdgeBWwlEZ2U+Lmp9BVyT4Wx7XPwOil4PVOu9D6s5vktTVHmnnmevR2oV/YR+ifcx4m/hJYjvipe2ELV3Lc4ZvkZnBtgQf04QYsJNP+DfZgmTJiyjq9MDk2Jjfxx3IY2zL9hug8MS7Dh4kUJyyRzucF8rSy9I1kwJ/6zVm9ddRYKyoPB3xS4ceEWZ9YI9usQi4k+QMKp4+u051OpprYsIHofFZ6gAWxoYlIWIqN3yu6h2Pvx/u87mDMa1Qgli+ZzLniaBy6703+hq3fs76wZCa550MuOF7
- sRmZ6GKY
- cD7Eo10tQ2mxYFxgHgUN3Knm/EcCVX3hKmOnxnEq28L3fZZK77ndfxBwUua9QHTsXDj6r3eBvbqhMXEO49QEgtMg1gERipryBUzhPIQP/SjwNFZPMTzFihpUtTEo0r6TQMSu0ywavhS2OMUySKprMGllmX9kVOoNylxz5JKbnQujlNmGZLj89RF+ajxNtCFjrp4651SdTHLXwdwrsXDIKKaKsZBgFLzm1Pk+sCyrgl5+Eo5RU3GIgIMUG5BkE3m+OO4j3lisz7grkDDcNHRCVJ+ON7vLbpXJYmyP7SWg9/AoY0juD/4QM6ThGLYzUEkFPaA5ff2rDvD079egXNA8AMiy/8w==
+X-HE-Tag: 1773946777-728883
+X-HE-Meta: U2FsdGVkX19A1MBu4SAqcjRPDyMCXqt96qJhIjxISPdcDdn2B+ithyFGLPO71nYKAicpk9S76LzJ5Px2rW1yVhVBC5BvV9QU6ny7zH/J01SUdWzWcSw5ridiX6pY40AdD3ROvFznSJAJwYAT75Ko8gwwJFhci/nzrGdSLDEeQqiCe4NeNLNebol4LVbxs1gAoPfAZU8DjLiIqfIQygFw23P18FjFwP5/RxngvMpdTx1ozPoMY36HtX+hHsvqnzpovHgMsDYyZiIFTdIhBxeuY+NkVGow5uM219SWHi/XrAm1eRfksZCdRl3QVU3UEDlet8Vbesk1LOXW91EmMbbgPrLObs6QhOYTiPK13IIworS6xs9RtIJ3oyJp1vUgE9J+pDJKvcWINjGYOXL+U+SzwX3zx+RFkgVDnLOBmV4TJcs8bka3g9eGMrBNDQ1EG5b+E4JMjxD6T8PpfGGTRvVWRIy4PZThXtr0He0OJ5I7BvRcImmAlCD1YRDU0nPanaBJiC71HIEz1ctTKJjNxq/DrnYg24RsWUML/Sf5uMmOjMSUNrLWtHqhz6EqEKSA1z2/mlQTLNygM4iEUB7WPHZgLQr+J5PPG9vVlQBVndKicfXh6DRYKwrz2X2wZyftubfqL+hzcWRX5BEMtj+DQKzfCvej0KfZe8+cPSARenq/hBIa0KTnrT/abvZVKCHoeq0P4UnN5z0d78coSifZlHDqxKHK9/eVblkAF4/sAJWZEVNYJezjZPiX8SiG94NV/IlXxjgZeP93SB7rESjjULjVj1PgZ307hfoji2k6/c18+Ivs0S87UE9z1Qr6AS5+8U0lRX6t/VGEnt8Vx14KEJquIguhIjVz36T5HFlUzlHor3VDNdMeuISu2Oro/emNd6Ti/iCGSz75FTZNT86QjWVDEzNcpIIIRY7GOLkhRJPQPMbhvQG4NR8F2fmq4D6th7UxMsV+JkY1H21HDXikqEk
+ IylKXtfi
+ Op+XfQ96JMOcvxtsLeoGWn0JiWKVb8tyGn3A5NwkIjEWrP7KaFAtUkO6IQh9BLqW2TWCulKnd/S9EMUflqz6naRaBpv+XNQyRqjDZvVJ13jKZhjIHmecUEAYOeaNLBXFibx8RILyMaLmx7eya/SkkU2PbtR10fVV5j6aCbIAmKM3n1o3liUC32uKNDEvOLcW8GiFq3NeV4T2pFBnlI/80WtkILJ0ALd68j0h7oTXj41xMBypOm+QYbmrOHEWS26ESiE0a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,21 +94,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> What about simply testing for success on a test area, wouldn't that be more reliable
-> and clearer?
+On Thu, Mar 19, 2026 at 06:31:05PM +0000, Pedro Falcato wrote:
+> Encourage the compiler to inline batch PTE logic and resolve constant
+> branches by adding __always_inline strategically.
 
-Hey I tested your version of this patch and it works fine on s390 and x86_64.
-I have no issue with this version at all!
+>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-Would you prefer to push this fix since you wrote it or do you want me to push
-a v2 and give you credit?
+Does this vary by compiler/arch that much?
 
-> > Fixes: 600bca580579 ("selftests/mm: check that PAGEMAP_SCAN returns correct categories")
-> 
-> Yes, please add that. We nowadays also add proper Fixes tags for tests.
+I wonder about how much ends up on the stack here too given the HUGE number of
+arguments passed around but I guess you'd be pushing and popping some even if
+these weren't inlined.
 
-Sure thing!
+I wonder if we wouldn't want to carefully check different arches for this
+though!
 
--- Audra
-
+> ---
+>  mm/mprotect.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 9681f055b9fc..1bd0d4aa07c2 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -103,7 +103,7 @@ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>  	return can_change_shared_pte_writable(vma, pte);
+>  }
+>
+> -static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+> +static __always_inline int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+>  				    pte_t pte, int max_nr_ptes, fpb_t flags)
+>  {
+>  	/* No underlying folio, so cannot batch */
+> @@ -117,9 +117,9 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+>  }
+>
+>  /* Set nr_ptes number of ptes, starting from idx */
+> -static void prot_commit_flush_ptes(struct vm_area_struct *vma, unsigned long addr,
+> -		pte_t *ptep, pte_t oldpte, pte_t ptent, int nr_ptes,
+> -		int idx, bool set_write, struct mmu_gather *tlb)
+> +static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+> +		unsigned long addr, pte_t *ptep, pte_t oldpte, pte_t ptent,
+> +		int nr_ptes, int idx, bool set_write, struct mmu_gather *tlb)
+>  {
+>  	/*
+>  	 * Advance the position in the batch by idx; note that if idx > 0,
+> @@ -169,7 +169,7 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
+>   * pte of the batch. Therefore, we must individually check all pages and
+>   * retrieve sub-batches.
+>   */
+> -static void commit_anon_folio_batch(struct vm_area_struct *vma,
+> +static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
+>  		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
+>  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
+>  {
+> --
+> 2.53.0
+>
 
