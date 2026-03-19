@@ -4,96 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 713F5109023F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 15:58:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F68A109023F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 15:59:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22F126B051E; Thu, 19 Mar 2026 11:58:03 -0400 (EDT)
+	id D55076B0520; Thu, 19 Mar 2026 11:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 206AD6B0520; Thu, 19 Mar 2026 11:58:03 -0400 (EDT)
+	id D2B586B0522; Thu, 19 Mar 2026 11:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CDB46B0521; Thu, 19 Mar 2026 11:58:03 -0400 (EDT)
+	id C413A6B0523; Thu, 19 Mar 2026 11:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E91E76B051E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:58:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8A8A1A061D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:58:02 +0000 (UTC)
-X-FDA: 84563268804.06.A4CA319
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C8955120010
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:58:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="W5gcWnu/";
-	spf=pass (imf29.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773935881;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B09296B0520
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:59:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6EF0113B2F2
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:59:09 +0000 (UTC)
+X-FDA: 84563271618.27.8A21F83
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DB0E7C0005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:59:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="U/qOknp+";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773935947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IqBZZsdChXPych6lUYI4fPOHNYXnLYcU1he98Py/HTM=;
-	b=qg1IBWiiWukhNUIton48Z2wg8cSSg4talU07yAIuMRJUqHRwcCHn0irnkhzvv1soF+gQCY
-	fIxE6YhZW+KeIGxwRPPUjySxTCCtwPVhnIhDk7mJIyYOGGlTbKs1/S9cBdbZa+dnHfuKJC
-	SnJq7SRWnr5PqF2b/uvarS/v4fpE6E8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773935881; a=rsa-sha256;
-	cv=pass;
-	b=gdnT3JNSdO3GwrUs1JbsxfmymHxhnp13lZwghbmcx5BUyu11qq+Cyj5Eh/Y6d0dhJQ0nIY
-	/rWY0HtvIfyRQRCYKr75+93nj03zDn3j+naRARanY+984rYYnzhPIAYoY9qU47GbqRaiyb
-	gEpgbycr1IVa6kOjLQwL9xH5fmyoG/M=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="W5gcWnu/";
-	spf=pass (imf29.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1773935868; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=c+tKqOHY9UPTynVSBbutAl+9RnHzVGguG2Um28Y7dXBKuOWFS1y7jnvi/52w0+QfEFHdrddMrknOOSKHCqwIPHWZ8rbXdPIpMDbWxrAfmjz/KCSue4h2kGYKHBIR7Hk4/IMRjluq4REqhbGoKI5bFDblcOHUpg00ic5bwaNZzKY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1773935868; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IqBZZsdChXPych6lUYI4fPOHNYXnLYcU1he98Py/HTM=; 
-	b=KguRJssY07DB9GtFnwQrBywG8WzY9Lmd0r4H5hR8QwsvyKAPEdOHNw2SOGaAC3HIgANTnmR8ZgK6od0S4UJm8Ss/ezcAimhUnaYlcsIguxpzIa07UGBQVS9lRUla70oo6WCIrOYprQw4vRigydSfUFfc6rWlaI5QiB6XsYBLxjo=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773935868;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=IqBZZsdChXPych6lUYI4fPOHNYXnLYcU1he98Py/HTM=;
-	b=W5gcWnu/w4EL90obqxJ2PnFbcQYOeauhiDKhqN1sO6UBQ5uZBb1ofNh0Wz5t1uOf
-	h+AJCppag9NSvtLfHBWi3q/8E2SsGvP0NypykQuMnJYa/zBqOxy1b+v5dR76b1wBvVI
-	eWIE3hzRkPLnt9EtTICS2CbkErWJ80esNjmkU4YY=
-Received: by mx.zoho.eu with SMTPS id 1773935865417260.7882034743719;
-	Thu, 19 Mar 2026 16:57:45 +0100 (CET)
-From: Josh Law <objecting@objecting.org>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Josh Law <objecting@objecting.org>
-Subject: [PATCH 2/4] mm/damon/sysfs: check contexts->nr before clear_schemes_tried_regions
-Date: Thu, 19 Mar 2026 15:57:40 +0000
-Message-Id: <20260319155742.186627-3-objecting@objecting.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260319155742.186627-1-objecting@objecting.org>
-References: <20260319155742.186627-1-objecting@objecting.org>
+	bh=YzcOkDPq6Ist1fLDHgrMP5cByNJDD5WnbJutZsJi9mg=;
+	b=1gU0Gg6Kvl/rc0q7IBb6B9OwvaMKvYvmUDu2LrBfD2qZvzS3ltXWPlF490r1OfL3i35IuJ
+	37PWGFPFrD46WicKyGY9IChiKqzjLCJOKWLOsDaOf/w2H5WWaV9PnAwNwVkKPkcVZ2dN72
+	s/hYaC1iwh4SdjejnxN7xWahunI2cug=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773935947; a=rsa-sha256;
+	cv=none;
+	b=3PLtsUOL+JwEuD7qDLYQwz1wmBkVqNhnv1qgDzd2E/BEos9nukrSjzgyMs7bkg/H5uA/Tj
+	ZjMSYaVpWbIf5WDA9BLfQ9qF7JVFT6U5oaEEfXy42YfzOac/LQXIPKcAL3IA19BqSuDn1d
+	/wgDzu7WbGWKwRaIU4B+4wsiv7leeds=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="U/qOknp+";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 317976013A;
+	Thu, 19 Mar 2026 15:59:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D16AC2BCAF;
+	Thu, 19 Mar 2026 15:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773935946;
+	bh=Lb4oqU4iPyvZ1i8PhgXMxctkWzAoFzaDDuT6Xm9wAYc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U/qOknp+NF8zfgg9EcPZ92SUhgK1wewr6thkOtev0OirSgVgo8CxM22mhI9t4olCZ
+	 F9QKHOptUpnMSX4t//ajKhF5QZVTFfWiTzSdh88rgLDPci0Uy/5jKPaSIt/ZY+woCQ
+	 1n1O3LjlaVjdze6GVVaNtuWOMomclWrAxCMWuiCtU/Xj6RODTMoR64DPCJ2wrJe3Lu
+	 5XBLLtaNWFj+NSJ+SaQsQ1OkK6AmSV+CFKKwHIvC0xSPoR0rlXgaNxqOHEkmHJfDSu
+	 m0EFEZECCKyxoGkvSvJVq8deNghNUoIIkQ3zHPRhsF2x61w5GnxOB6q4xDOrVKDUW3
+	 CYFk6ohEaWLnw==
+Date: Thu, 19 Mar 2026 15:59:04 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	aarcange@redhat.com, akpm@linux-foundation.org, anshuman.khandual@arm.com, 
+	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, 
+	hughd@google.com, jack@suse.cz, jackmanb@google.com, jannh@google.com, 
+	jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
+	Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, 
+	pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
+	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
+	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
+	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v15 11/13] mm/khugepaged: avoid unnecessary
+ mTHP collapse attempts
+Message-ID: <b4731810-2ee0-4e89-a193-9cc4ba015e3e@lucifer.local>
+References: <20260226031741.230674-1-npache@redhat.com>
+ <20260226032631.234234-1-npache@redhat.com>
+ <d8028d32-4791-4993-aae3-66506bf6d1bd@lucifer.local>
+ <a9ddfa7b-5ee4-4c68-bac0-8a0c6c355bf7@redhat.com>
+ <4774da78-8349-4eda-a09b-7248e82cb26b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4774da78-8349-4eda-a09b-7248e82cb26b@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DB0E7C0005
+X-Stat-Signature: m6b449b6you3kcunnb5qokcbz3tjpymh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C8955120010
-X-Stat-Signature: umq5h7ahyeoprdqcydiukfa1zzbt7ytf
-X-HE-Tag: 1773935880-215544
-X-HE-Meta: U2FsdGVkX19nvcUzjhXplMLjXXANVDaf7vYsW1F0coXdl/BjNdeKIH6rIo2DikCODIAWBvQazMMXI2+m49LOvNuyWNqu+Vkb8JDiGfmUWHmE6j5gW9q2BESAhMoWuWX2BDzbWYTHUiNChJ/Enz3vLDnl11QVE91NXJGhM5QJLntIfPKI4zHMoBeDP7drjIHUbq0uil3DHMG19bf3rXV7oBV1c0v4dr9pevSOO9Xrp0GM/uKKutAFuEyim1Pc6vAML+jGA0xQHNiwfqOSR4EVShzYEQVvzWxu/+qYG3NME8eklxa/vzMTBTA4csVKJlGWAnFemUYmqPVboBC0yvzHoV+CzEm37k81QH2jRhhVfW4Odbs4qKMqKP/D5k9A7+MMAdjjp/T50Vr0qu5y86MPiopIWn243z3zPZsAk29h7jje0nFgtAbOycJ0KPKlaR3PY8e2UKewLReUPo/x4F1p9fB296IFyTd3LL5Do/YGE2OeGnksftgDe51B1GJj9HFZ31QBQIOyc+GCYRKIVH+XtohTr/zqEJ3l47Q8YKnlWBwZqnUtiP2BanSWNOySDtag/dB4Y/4G2fFeYb4UAxq4lmSzfzdW2Nt4bZGUH7xLLUQCsmiFKwcZDms+h542E/EpQbdkkgXBFedphjcpH/eLD7baFLZiF2hbQduXHpHPwvkhPiF3+e2dY+ahbh5DF4wWcc94JddWgIss4pHmkXjd0VjLkFJHwC2R13JmWeuSKJjv3lDevVo4IkvZ1YldOybVn6ZHThpGfHKVdFHBsQrNX+7CdxNEu+noCuxI9jRDYgM5w7tKt9G2s9NTF4i6NidxBODijwqdgRgGOA8kdi3njegIfdc4+KAlF/ZCxZC6LvH9QGQIJ6kARsXveOx3QBg9jH+fjsJnsoaFuFgWtLIkR424DDtMgXXrPm43Nph4oGQUUJzWdWC7JJtV4ELbGV2YjIqMtqzVvjdKCcoN6ks
- xLqk1ZBH
- sxAK4gYwrdXk14+hW5rhja9kIU+fsffG1v+VEXQhk3/OWsHV4FkqDx9AsIlsXZ+cA/zfHvVOKdXWcl6bsypEXU4doI8ES2ViBvjTMc0mZEQexlJVuUnI/+hdnoniom7LYsA0qdlUouc5RQN9cTPGL1Qi4egkADBI8cD0RkDg6ClPNwdh/dVGR8fdXFR5h3Ky7bZjNZ0dFhvmdGf0ODEleo6yIvOndpXjGEKbwUaOos0g9ZKMJm/Bwhphqt00uySL1JcGuWEgO50XgtEjk7ujxnAyJneS91cxCBALxDPMu1EYOVoZmfp32I8xle+Q52qYMGwujFm2i0YEeReEQs1rCFKd1FxbSN6kU6rZBspNUwetNEGFF/ZgIxWenyysKGnkHaO703zC1FrrFziQ=
+X-HE-Tag: 1773935947-835532
+X-HE-Meta: U2FsdGVkX1/KUuvrDCGA5cz3qoc0WpQ/wFrhxQNNp2JuZ3uQjZ0RdPRoufx3YP9cHiSeXB/YsNqqtwt1BqLxYWTDZ5xzvcTdYV9p3nhV0iKxz6LLwiV5WaNl9n3Y6J9HC0LW+t2SlWEznAoFkuYNCHXfCiDR+TG6+0Y33ay5Ro0lYh1O7aG9mRAAzA7k7pXE5k5Yq34MkpkP8KeZhExbMgDaj02gyp6y8/xYEo/8V/81F2gDB8WYpzuxUcmenBoFAbujVS8uhMRF3JL8TLQ5jsw5A7L2A9RLy2F6HPOJmb34/8p4N7yH+zkbHFQx/eWBCA14KR5Qy1a0YON8Hty59/wT6aVQoHexLk2lIJKkO4kHSzac5R8ejpTylWYDQy3bT1nv6KqvN2JLODb9fzh4i3FYltmDxouQavlTYRgWDfGMdTdn04pzQQtxAoJnykGYL6GYlmdCAdfet46FGwxptDmZTxhrwo5dRrBfaCRZBemWUM7sNYctqgbijcNcuzTpHV6hR+7/iFHrODCDJ2Kaxz/SLJLYR1pkSvVIEGrFVBi7rsiRax7mGYaDm9D38y413HpbkOVcmIFMpNJT0nsuDXmXB02jvJS97XXasZqaxsUX1R2uP9sCTuIriuKX8zoTCoaJTn9gApyGvjXzP2snFArqHzCHTnjAYG1x2KkgFYbZseLRLn4353tfVHCa6tcwxXdYPd+a1FbN5gm7E/vxbAV2GqIH+0xYECGfAdQOc4X8XuYeZqOZ/5fJHuC6D2cQxN6WCrNpClUWvn4DJza9MoFKX2oy+XZB94aGJqlDQWTBY847bNX42SE2AZIoHGP09IJjAQzD5j+xzJ9tXNtrBaAxNEjWHdDnEdjcQantaI+gNhxEKA7kyLuVk9rVvUKO2MPRnpjd5IDCZIO+brh0jSDrOflCK6N7d4hS9i+QsuJhZ5jJqHNUb/fI/rk1c6mVgihz2IqD0jv7a+9QqDo
+ moUpdT8s
+ opqHfw1Wk19wldm3xBYK+tVQf4ZPYTZr08xqMOt2DAf5osRZK1mUQIDnHi2bzUSzx/gUZX5YLvxT+wPsCvvhFINHnZExgzseAsIRQcvB60x1koas4GBAWlp5tZovkEZWl0nRI79djanM64g4ofnihaJBUK+9UJQC4NeAyXhckc3R7eJ/zAiF8oS0QlkLBz7/zOB9sMgwYHW/dxb+R1rJENqCEy1SiiigN5d0EpGE7HCFRrOX5MSuJCVEGNdMX+TwxWAUN8Jm+yOFBX7usk1uWl7g2tFn53ob1YIEUSDiKeZO8MfYCgvGrfffv7G1wEK1ZM+puXWHJ4o9IlZ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,29 +109,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The CLEAR_SCHEMES_TRIED_REGIONS command accesses contexts_arr[0]
-without verifying nr_contexts >= 1, causing a NULL pointer dereference
-when no context is configured. Add the missing check.
+On Wed, Mar 18, 2026 at 08:48:30PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/18/26 19:59, Nico Pache wrote:
+> >
+> >
+> > On 3/17/26 4:35 AM, Lorenzo Stoakes (Oracle) wrote:
+> >> On Wed, Feb 25, 2026 at 08:26:31PM -0700, Nico Pache wrote:
+> >>> There are cases where, if an attempted collapse fails, all subsequent
+> >>> orders are guaranteed to also fail. Avoid these collapse attempts by
+> >>> bailing out early.
+> >>>
+> >>> Signed-off-by: Nico Pache <npache@redhat.com>
+> >>
+> >> With David's concern addressed:
+> >>
+> >> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> >>
+> >>> ---
+> >>>  mm/khugepaged.c | 35 ++++++++++++++++++++++++++++++++++-
+> >>>  1 file changed, 34 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>> index 1c3711ed4513..388d3f2537e2 100644
+> >>> --- a/mm/khugepaged.c
+> >>> +++ b/mm/khugepaged.c
+> >>> @@ -1492,9 +1492,42 @@ static int mthp_collapse(struct mm_struct *mm, unsigned long address,
+> >>>  			ret = collapse_huge_page(mm, collapse_address, referenced,
+> >>>  						 unmapped, cc, mmap_locked,
+> >>>  						 order);
+> >>> -			if (ret == SCAN_SUCCEED) {
+> >>> +
+> >>> +			switch (ret) {
+> >>> +			/* Cases were we continue to next collapse candidate */
+> >>> +			case SCAN_SUCCEED:
+> >>>  				collapsed += nr_pte_entries;
+> >>> +				fallthrough;
+> >>> +			case SCAN_PTE_MAPPED_HUGEPAGE:
+> >>>  				continue;
+> >>> +			/* Cases were lower orders might still succeed */
+> >>> +			case SCAN_LACK_REFERENCED_PAGE:
+> >>> +			case SCAN_EXCEED_NONE_PTE:
+> >>> +			case SCAN_EXCEED_SWAP_PTE:
+> >>> +			case SCAN_EXCEED_SHARED_PTE:
+> >>> +			case SCAN_PAGE_LOCK:
+> >>> +			case SCAN_PAGE_COUNT:
+> >>> +			case SCAN_PAGE_LRU:
+> >>> +			case SCAN_PAGE_NULL:
+> >>> +			case SCAN_DEL_PAGE_LRU:
+> >>> +			case SCAN_PTE_NON_PRESENT:
+> >>> +			case SCAN_PTE_UFFD_WP:
+> >>> +			case SCAN_ALLOC_HUGE_PAGE_FAIL:
+> >>> +				goto next_order;
+> >>> +			/* Cases were no further collapse is possible */
+> >>> +			case SCAN_CGROUP_CHARGE_FAIL:
+> >>> +			case SCAN_COPY_MC:
+> >>> +			case SCAN_ADDRESS_RANGE:
+> >>> +			case SCAN_NO_PTE_TABLE:
+> >>> +			case SCAN_ANY_PROCESS:
+> >>> +			case SCAN_VMA_NULL:
+> >>> +			case SCAN_VMA_CHECK:
+> >>> +			case SCAN_SCAN_ABORT:
+> >>> +			case SCAN_PAGE_ANON:
+> >>> +			case SCAN_PMD_MAPPED:
+> >>> +			case SCAN_FAIL:
+> >>> +			default:
+> >>
+> >> Agree with david, let's spell them out please :)
+> >
+> > I believe David is arguing for the opposite. To drop all these spelt out cases
+> > and just leave the default case.
+> >
+> > @david is that correct or did I misunderstand that.
+>
+> Either spell all out (no default) OR add a default.
+>
+> I prefer to just ... use the default :)
 
-Signed-off-by: Josh Law <objecting@objecting.org>
----
- mm/damon/sysfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+I mean yup that's fine too I guess, all or nothing, something in between is
+weird!
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index b573b9d60784..36ad2e8956c9 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1769,6 +1769,8 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
- 	case DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS:
- 		return damon_sysfs_update_schemes_tried_regions(kdamond, false);
- 	case DAMON_SYSFS_CMD_CLEAR_SCHEMES_TRIED_REGIONS:
-+		if (kdamond->contexts->nr != 1)
-+			return -EINVAL;
- 		return damon_sysfs_schemes_clear_regions(
- 			kdamond->contexts->contexts_arr[0]->schemes);
- 	case DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS:
--- 
-2.34.1
+>
+> --
+> Cheers,
+>
+> David
 
+Cheers, Lorenzo
 
