@@ -4,82 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD1B107526E
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:21:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D63A107526C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:22:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45A686B0414; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
+	id 45A9C6B0416; Thu, 19 Mar 2026 03:22:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 430726B0416; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
+	id 432CC6B0418; Thu, 19 Mar 2026 03:22:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3460A6B0417; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
+	id 348876B0419; Thu, 19 Mar 2026 03:22:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22FDE6B0414
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF1D4B944A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:28 +0000 (UTC)
-X-FDA: 84561967056.23.1882387
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 233416B0416
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:22:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E3B401A03E6
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:22:56 +0000 (UTC)
+X-FDA: 84561970752.03.CB5D966
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0375F20007
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AV6ddI55;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 214E780003
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:22:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N/7v+bPw";
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773904887;
+	s=arc-20220608; t=1773904975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFyiJ8GUGtbtjOmLfcA/YW745zhlRl6BAbX8Iyrbu5k=;
-	b=uWgl2/0P9RnfGt8DQwtiRZBT5DvyU+Z89wPbclxvt37Cp/eqaHMRgqk2SyFod62ARCnjwt
-	QkIyHo3+GbiBTBqsT7X1xPdoNR4Xvaa6g3MdvwLckpzCf0/tBrljDmbtCKfaPM3ojnnpUg
-	c2H8NBiF+/vMMC6FVxqib/NLW6e2HiQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904887; a=rsa-sha256;
+	bh=HC2tqt3ndEbAW41NYAhPFbd6tpa/lOQKv9gO69TpWog=;
+	b=zo9v6CQ0ye4UINp0Xz1jfQ5Qx0VoCjq+UCu/8Ia0j114FnqrGI/kvDYwwbaYdRUIY3wmE9
+	Yfk/aDzqWzzHwREKEYIi6wb1rY2Qme/A5MJqRiULiUdQFhANbik1zd+/UVvoMXvRaddnKk
+	zbQSkX51PclgrWwwxdcYiq//efzXipw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904975; a=rsa-sha256;
 	cv=none;
-	b=YDF8QMHYi2Axdq+CjyTovde5Bck6U7lodIb64skXzW9ebhbArmt4cgI6TUf3raOWGEAfjd
-	oyO6oBb/PzR/8uY3qU4bssCey5ZcPnzpEnYVGlqGI99H/ph1DpHgLLuCDyEeaKmDwHPf70
-	PqHKX9KedXxT/HBsdQ+zPb6Jvs5qVcc=
+	b=qajXYam/0xCe7NnbOrWLbC/j51Y1ro5s/nZyZnxqTI1ibirLXpvBZWK2HcDPZuQ21VueDm
+	iP6D9u2dgoNs7RHsE/IDw3Y+vPadprsv7cBk7LVLEvKYii9ptfnhwyk6R2DRtqQ3FajFs3
+	l9DRLJIMDT9I7JMAMnsXPp+qH/OT/JM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AV6ddI55;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N/7v+bPw";
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E184843F2E;
-	Thu, 19 Mar 2026 07:21:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E71AC19424;
-	Thu, 19 Mar 2026 07:21:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39234440D9;
+	Thu, 19 Mar 2026 07:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7D1C19424;
+	Thu, 19 Mar 2026 07:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773904885;
-	bh=CspEV/eL2jUsFjVlynNQZqKA/uixA05pxZrqR2Qsnx8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AV6ddI55Ndkjzzz3wu3kEgTrfY/Ql9eyIC8/LV0ef31ZjJaEEXTRmvTxeDBs3RC63
-	 c+i7DjJ8JvUNYIaj+sbA9CQJVXAzgOOVq6hYoMD9YS1Eu2yjBgcxdaGQMn6rvtNOn7
-	 iedvX0w7hROERMiK7QDZciTMlJYtxDtA2tKVmDaFe/lyODJYTx5jHEq4M2cVRYGQtQ
-	 ZGLe/Fnqpq8Yq3sSfWf9C+vUXUnicrt3Co6cXNpsxxtaVTPQgtHmUUGhPm5vL/w4+s
-	 t3rRHYWXZ1i0a21ygfU4tnchQyJmIXmGbRZthvQvo+OhD6wBj5Uu2m6N4rQEo2Zxsi
-	 exeS7+rLeE9lQ==
-Message-ID: <e9631520-857f-4f67-8944-6af7a2b47e89@kernel.org>
-Date: Thu, 19 Mar 2026 08:21:21 +0100
+	s=k20201202; t=1773904974;
+	bh=8APT3xzzowj3H1BPyY4pqnRgysNng9Ci9Gf8mZR11jk=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=N/7v+bPw6brPpDF03HP7vlSS1nF5TZl1p3jhZ0YioAXqKqJ5ZXrd0q5eMeeWDSnmq
+	 yPnvSi73rvqzbptqGrUvXzgV1PCApu5hGIFm3pygZoMyU/AilhxVbwYiBV1FWNjGmB
+	 dbf0UvZjeZujb2krx+iXs70wXYWdJNrnMsPBEnhQehgJTBTOoeV77R4+yeURq1EaLG
+	 kXCXGk0io/HC7Z+ggNwSI2odExPgFKsEbMT7+imvSeI/4TrKJZFWdjNM8zDSioRYWo
+	 O1WmNrVfrRALQIWGqKT6IHrLRSJltatSz+jHgxGP2p9NkmRmAO/JPOQJE6bUtpk+Pq
+	 hE90HTYFpWFQg==
+Message-ID: <ede0988a-a031-4d8d-82c3-ed6f3de89e6d@kernel.org>
+Date: Thu, 19 Mar 2026 08:22:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] mm: switch deferred split shrinker to list_lru
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260312205321.638053-1-hannes@cmpxchg.org>
- <20260312205321.638053-8-hannes@cmpxchg.org>
- <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
- <absr1vgNP_tM1OEP@cmpxchg.org>
+Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
+To: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ npache@redhat.com, ryan.roberts@arm.com, syzkaller-bugs@googlegroups.com,
+ ziy@nvidia.com
+References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <absr1vgNP_tM1OEP@cmpxchg.org>
+In-Reply-To: <69bba3c0.050a0220.227207.002b.GAE@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0375F20007
-X-Stat-Signature: 9jmt6iqugmn4jr34z1ajhfnfx6rmq4se
+X-Stat-Signature: 1tcazwdc9f833xgh71kiu68n6wcputfk
 X-Rspam-User: 
-X-HE-Tag: 1773904886-344575
-X-HE-Meta: U2FsdGVkX18hJ/U4QjiBY/ENIsdO1zxRtU3rQNwtm331jZHnhW2hRO9haKk5D3Y7wKc5lkUFExnz9xeUeJhOmhESkcPmc0pA1AOJ+ywXyQAJMoGj5venLXsesCg4XGJZRQmJhZiaPWundBkkiuNZPsAYjZ49BdjZJJuT3JEV5VOIvKpAZOJll7BnYrO0P+58MzOvQSZFZmEx4gXRLVy0ocbcZxYsDA6BEalseysLR9bX5njPjqcM9RzUS6AgNnuMVT8Csbw9Y4jomJ9TxETnLEAg+eESvOLBNpEhWLjkoNg++Au7lzz5+vup9QJGaLZMuP+rnWKGe92GhRumpyLPNmSuUqwaKvtHfC65nj+hke/ijDqA+RQz7Lzlf+WYE82bQcWG2xnE2bbYZHSqqcOzgshnH57jUhZ+JsZpOwo2vZ3UZjnhcAfpMNN8QY8cSHKIRjTX0dzLq6NUgig3tX7IXlbwOZV0WFoiprwIjBA59YAyhtxcLB06ryblip2T/s3HohdzMKZ7i61ZMmE4j6spa0QT+H2Zw1mjedRdYCpGL+PkKz/KXvZ6rTMspWbcD/OnWHZSVSRCvHB3eO5d7/7JU2YhKfsfNedOhQoSnIIYpdz+WUE8BpuN51HmHKvTyBffQ6OAJYJ3nFNU3squqqqjke2BI8cPYO+XTvnKuP59S7eZ0X+DaGuwIs5nSAqnzVeZpT+9Cqys0H/dTUSZrYdy1fjBoL0kkjWEbP4D6P4/f5Yjo3lHEVRC0c3nPq2TYU4drc3//1w8QOOR/EBfGSd9yHMitykVns1zIGlXBc7xUYOlHNIIUuPkRP3BetsPaZIILl34E8O6lm4gunmmDYyhsf4uFRK9vDSAi+sJ9DTlAVCSlRJ7C3tNSjocmOlgh7XvmQJkL4RcXa2t16mi4bJcwsY0aIyHVzRcV5B/KdnptBytNkRIFPNjXEM33mdSEErQow9VK+Eq3YAysBsuyYR
- gE2Vltmc
- LL0Xl1IiBWDrnrDQCKqCFD1cf+waIRBx7k7gBeZUHVRumb+l/X0oXw33aqeU1VwLJLpKQEyPNYD0JKz6lidVHGs+S0Y4ZCkEHhZOdFSQp6uOh7GNAb5SINQDsFmTF9Sr19mf9AY3kJYDb1fDvMfYfcj3IzKIbW3KY7Ut6Y4HUKqr94kfZ5op1+cxW407Vy8kkRZZJReuLxpTv+O8GRXd4IwpUe16SQQVI6U724xNQLHQCNuYO6S564FmTJ2oDYCaDLhUgJgjC5ACeDnaUHViJGa7H1OHG/ZG657I+mvoVUFrooH9+5+6tL0yU3w==
+X-Rspamd-Queue-Id: 214E780003
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773904974-174642
+X-HE-Meta: U2FsdGVkX1/EJl3W3afBhqrDycAxxaNr9KrmNcNPw/g1y4idhm0Fwn6yRhadpjXJDvjeGqEKjc6m1+/+MBxPZp+kQTJjxuE4vYNqel619VAyyAnm9PTH4vBqTcb86QsSMKBRJyYr7cWU4pGWupLa00vu9idm4/DcOvlMHQyCfcE2IaFsUbY3DcFTpFhK47sTPI2dJgDXZ7daPKvihOd0vanHVGPiItFUef24rlL6F2pp9ob75qY72ZrbyZOtMshXl4ciJ9pxurAj0TNgtluZQ/uq5CJ7OD3HyJyO7Zq2D0Ew/LFmxS44ud1q3t989rEq9rXc8JrKOEJDQreI59nnVM4qxsHfEkS64ycXkHkyNXcYvhwkRCqCcSKOluIlMkNp6KHvuf6h/OHQIhjUl7WxgiT6VZtUqM3kglKhkRtZZ/BvCE7P175OBX1EvqvLy2zP6WOLuKTStjxU4iEqsz+vZsUo+vqitbULJ64QmKS6kx4c11ARUF1Jeg5/IwFI42rD7ODeeNh5Mp4JYi4YtF0bjCCyaoZAcI3/xzp3DugWrt5i8uP6YR0pIU4KAEEKQ66BsEUQD228YgMKSfG1q8ACpc9Re3+VO468DnAQmrQOynkF+PSDfaZ5wqipSGCjjnbLe1AoKYVPkwBAKmLydC1extuewLA+/DUTMTdpyEMq+f7bcLRVCUhd6e6osrCem4xC8Xmo8k/3FKDaQ3hv8B2tZwmUtbupliaeWVGhApurZNPLicbuVv4nH/PEu1a9f4bCMuPMHg7lWbJuOz/g3dBNP59a3uv40o5fZr4N4WRc8pNC1KT4Zh1UKMqFKxCuUeQdCqMAjDfu/3STS1OcfgIIiNb1AjzairoBUfPTFFsatCUPPDuoTUCzD98VY/tMF5WFhyALibfNqCKa+W1wx3wILNUZ1cTNUZJxUO9PqT+vcdFgQT3Y1b0sxUufLHhf4/QmPS1o7uTeZrj7O4d4EFz
+ 5b3QYGua
+ qfjMY+wd0PXQrNzMaHKzeiJZsqFhp0jGIW0JoLLnh30w07nacLs+NmoqzM1kCt5aoh3DV2Jiuu+f5BT95kUMvZLHH+LT7pMuoVF96Jy+/a9eBa8W796fRXae8e+c6zsrlxwLLhzlzSfTe6KXyr1/KoiVPlI30jElMyxPQA6RctAtINj5lRxbw52HQzQ2984TMZ/KXTt3DrjOb/K8aG/x2D07nA04tLsgRZIbBKe7E/xOZylDBvzNEpPCcZSbGm9AGP+Q5Z+a8IQPFsv3idGIWjkXE1bWgPt6b5VFnPZxbZ+aZ52LxJxRFnvTBSHVbtF6ZeQ5WLtw1VLQG2Gh1oWK6gUZUDWEW+H1Ds8VKC1bVtKaD9dq+g0goC7FoZ79za7dDkfQ5aaaCBvwbDtN5JOq74yQvqtf5UsDylODv8/G4AmBHXHqcdJ+wfVT/KVkeLgcrQ8QkBBUWZkRdbVuT0YN43dliPgZUklBIyyV9IAqZgUItEtPqypZ53pKZiX7viNmdxXIgo64kOBN5kWKWx2e+kDzuH1AtsN7AgviHbb5japqShQvxtXshQVNW331kTdWXS2tAinyysHt44JerjqB2sUt9fGzpi2qMbQ+/mOo32xcRaUNcCEpmjUda3QBP4XaysjZOegwSTDna4mJ50wc1NEdxfmdF07tXhK36GVfztWwMXS/GV/ldM0lpPf2+dKzHdCZ8/mrTKVyXWpOyHYKLjR9phr3M6P2VGb+2o2/YpD1laqScA5bHp4Jf4gAU/UURxjUZX5dykW6Vjr15nAO40Pkv0yICamQZL9C4x0v5LQdMH9/bfHm9GnpBY6haHoDjqUq9DtS1fgNIqcpL+o6XmN/f1Ppdk2iNyuoI/UPJJ625D+7GMA1w+32gFi6TDXHHKHJmM36mmpq7aOhutb5Nel4u2F5PDOHaUVisgWH6ZU5rLE5c4FAlQoVVWLWsPYkO0BaX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,100 +140,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/19/26 08:20, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    95c541ddfb08 Add linux-next specific files for 20260316
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=15ccc216580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=ed431987028345c6
+> dashboard link: https://syzkaller.appspot.com/bug?extid=8961cb270ae74b4129fb
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f778da580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cc006a580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/c40f27ad73d8/disk-95c541dd.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/bd811888f684/vmlinux-95c541dd.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/3b72363d7dbd/bzImage-95c541dd.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com
 
->>
->> So, in all anon alloc paths, we essentialy have
->>
->> 1) vma_alloc_folio / __folio_alloc (khugepaged being odd)
->> 2) mem_cgroup_charge / mem_cgroup_swapin_charge_folio
->> 3) memcg_list_lru_alloc_folio
->>
->> I wonder if we could do better in most cases and have something like a
->>
->> 	vma_alloc_anon_folio()
->>
->> That wraps the vma_alloc_folio() + memcg_list_lru_alloc_folio(), but
->> still leaves the charging to the caller?
-> 
-> Hm, but it's the charging that figures out the memcg and sets
-> folio_memcg() :(
-
-Oh ... right. I guess we would then have to do all 3 things at the same
-time, which makes the helper a bit more involved.
-
-I'll note that collapse_file() also calls alloc_charge_folio(), but not
-for allocating an anonymous folio that would have to be placed on the
-deferred split queue.
-
-> 
->> The would at least combine 1) and 3) in a single API. (except for the
->> odd cases without a VMA).
->>
->> I guess we would want to skip the memcg_list_lru_alloc_folio() for
->> order-0 folios, correct?
-> 
-> Yeah, we don't use the queue for < order-1. In deferred_split_folio():
-> 
-> 	/*
-> 	 * Order 1 folios have no space for a deferred list, but we also
-> 	 * won't waste much memory by not adding them to the deferred list.
-> 	 */
-> 	if (folio_order(folio) <= 1)
-> 		return;
-> 
->>> @@ -3802,33 +3706,28 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->>>  	struct folio *new_folio, *next;
->>>  	int old_order = folio_order(folio);
->>>  	int ret = 0;
->>> -	struct deferred_split *ds_queue;
->>> +	struct list_lru_one *l;
->>>  
->>>  	VM_WARN_ON_ONCE(!mapping && end);
->>>  	/* Prevent deferred_split_scan() touching ->_refcount */
->>> -	ds_queue = folio_split_queue_lock(folio);
->>> +	rcu_read_lock();
->>
->> The RCU lock is for the folio_memcg(), right?
->>
->> I recall I raised in the past that some get/put-like logic (that wraps
->> the rcu_read_lock() + folio_memcg()) might make this a lot easier to get.
->>
->>
->> memcg = folio_memcg_lookup(folio)
->>
->> ... do stuff
->>
->> folio_memcg_putback(folio, memcg);
->>
->> Or sth like that.
->>
->>
->> Alternativey, you could have some helpers that do the
->> list_lru_lock+unlock etc.
->>
->> folio_memcg_list_lru_lock()
->> ...
->> folio_memcg_list_ru_unlock(l);
->>
->> Just some thoughts as inspiration :)
-> 
-> I remember you raising this in the objcg + reparenting patches. There
-> are a few more instances of
-> 
-> 	rcu_read_lock()
-> 	foo = folio_memcg()
-> 	...
-> 	rcu_read_unlock()
-> 
-> in other parts of the code not touched by these patches here, so the
-> first pattern is a more universal encapsulation.
-> 
-> Let me look into this. Would you be okay with a follow-up that covers
-> the others as well?
-
-Of course :) If list_lru lock helpers would be the right thing to do, it
-might be better placed in this series.
-
+@Nico, maybe related to your changes?
 -- 
 Cheers,
 
