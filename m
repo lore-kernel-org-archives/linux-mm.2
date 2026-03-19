@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E1E5109192A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 22:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F76109192F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 22:51:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 698726B0095; Thu, 19 Mar 2026 18:28:13 -0400 (EDT)
+	id 674076B04BE; Thu, 19 Mar 2026 18:51:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A5A6B009F; Thu, 19 Mar 2026 18:28:13 -0400 (EDT)
+	id 61E556B04C1; Thu, 19 Mar 2026 18:51:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55EB06B00A0; Thu, 19 Mar 2026 18:28:13 -0400 (EDT)
+	id 5333A6B04C2; Thu, 19 Mar 2026 18:51:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44D406B0095
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:28:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1A6C14077D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:28:12 +0000 (UTC)
-X-FDA: 84564252024.03.B752226
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 11C19A0012
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:28:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u2GRaSqc;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41B8D6B04BE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:51:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC34F1A0737
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:51:04 +0000 (UTC)
+X-FDA: 84564309648.17.A8F92B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 195CD4000A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:51:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=etPC9qcP;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773959291;
+	s=arc-20220608; t=1773960663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6NxRP+rNYRzKmKCBpTsg1CQrlyZqPvLPg5mV8Q39hi4=;
-	b=F6p59lwAnewlIHecYezTacQ7xF193w07E09D4btKh4a90GmagT/rNmMkxTNtS7MF6MQ+mF
-	H5rr4aosc0VjZmTVFGLgWu3EE+KO8xcHmbrdacDkl9iIc2ZNPRcrylZ4hm9z7w9kFkewEV
-	8zcUQHtWbyXkUi2Q91xIICbzCcwWaeI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773959291; a=rsa-sha256;
+	bh=5so3PZY2n887JNAefu0ds7YrtNbvr1RQ1WI871Nx2WA=;
+	b=BeYYkjY6K5ypYtBj9GNSEwABGiM8NQ1M/pZHkFSooxLHyahXLCAQbfy0QTN1lZtSvPtaN/
+	ghATSgggYWW4X3ZjwZuH2gF52+lyu2VaaXZo8cO+uwH/es0f5t7U917NGFjarmCCX1rwzx
+	tv6ABP5nDJj5sIixXazpdpMsvwMElXk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773960663; a=rsa-sha256;
 	cv=none;
-	b=HqKUn6Gr4diqg6+V9uB3YS2sLL1IspOD8+JkYBKxkdWE/LC6XGUGToorn6HGUGig4DkWRq
-	Loi3MQlGDyLu6rQk+8+1qNmZdRq62YHknBnMjHPunqOtJWMDBN9CONL97XQZvD5HQnpMsL
-	zkWrhf18+JoUS8VV3jnoDzgNrqvG/2A=
+	b=Bdr3Vdy0+KD7avF33Gsv0JYINARl4a6QTVjhk5GnUgero8V2TmJUHUeLK36Uy9opg0msFH
+	Si2mcEQ2+GqHsCYgC2jlc2YKGTXZlyTqwYN9qLfAbM47mxdGk+P/Bu+PXbCFuyvQRD63Vg
+	GCElCejQv1iNcXwy8hFzLMrdeD1hrDI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u2GRaSqc;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=etPC9qcP;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB85B43242;
-	Thu, 19 Mar 2026 22:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736A1C19424;
-	Thu, 19 Mar 2026 22:28:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4863E60053;
+	Thu, 19 Mar 2026 22:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE01C19424;
+	Thu, 19 Mar 2026 22:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773959289;
-	bh=HQBHjY6WL4dQJ8ojlBwwq31sBZ53V4/gE6x2BhV+bhM=;
+	s=korg; t=1773960662;
+	bh=vUXZ1t6L+AQena7M0H5qvtE/6leptmDNi4JCNpcaRzc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u2GRaSqcFmaR6OcoTkut2IibX2qv527mUSd91YmxtV55/w0woORr1WWAB33KRJP9K
-	 Pw3euyn9AcAzIWO7wxJy0eTesPAozDjW5+wKhbfQBQ7rEg9XfN2LoO82Y13/6hHW0z
-	 tsFCXs7woMStRrTxxy/Krwu+UiEHQpk6M9rt1vBQ=
-Date: Thu, 19 Mar 2026 15:28:08 -0700
+	b=etPC9qcPo0xzTaPrefZs4FtAfsWFLYEFfb33sEdiB8r8IK6klCxkkny4j6twe0L/S
+	 GP9L+j2Ug2Tm9djr0BGDk4rY5PVicBAB+HtI0ekwF6vDUdlmfzG0trUDbX3Abd9QVr
+	 FebV6Mt/HOJmeqgXjcRIev0zTSvLSj+4OHPAnspI=
+Date: Thu, 19 Mar 2026 15:51:01 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-Message-Id: <20260319152808.fce61386fdf2934d7a3b0edb@linux-foundation.org>
-In-Reply-To: <20260319083153.2488005-1-hao.ge@linux.dev>
-References: <20260319083153.2488005-1-hao.ge@linux.dev>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: <david@kernel.org>, <lorenzo.stoakes@oracle.com>,
+ <Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
+ <surenb@google.com>, <mhocko@suse.com>, <baohua@kernel.org>,
+ <ryan.roberts@arm.com>, <linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>,
+ <sunnanyong@huawei.com>
+Subject: Re: [PATCH v3] mm/huge_memory: fix folio isn't locked in
+ softleaf_to_folio()
+Message-Id: <20260319155101.f7a62c04a7bcfc838b63824c@linux-foundation.org>
+In-Reply-To: <20260319012541.4158561-1-tujinjiang@huawei.com>
+References: <20260319012541.4158561-1-tujinjiang@huawei.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 195CD4000A
+X-Stat-Signature: fdbz4t4xm49dqigaqdhux9dn5j4o3rmp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 11C19A0012
-X-Stat-Signature: 3yhggowbit19mfarg5ik4bqe85q6s8ia
-X-HE-Tag: 1773959290-20877
-X-HE-Meta: U2FsdGVkX199SB/lc/NNYAtK0WUFBTxg3C9MV1CR9QiKvItUTaPgZREXbfbDR6+mmlokyCnd0AOxoj3sKtxi0MhZ+gk3YJke6r3xdTSOAwfaXoScBwHHen8NSffNMMAz6Ok/C3H+KpyYJELCiBjO/d8dRwR6O1K22H4REXmcPRZuswdto1/D35Wum1BYQAiPzu4gUfjsWdYb/chC1vsxeS/itRlARKwOUBYc9t6lzLWZ9zbAZtIO4hmhFSnd1d44i7yfQqqWrFqi22gt3MoNpZU1qwz2dqqF3R9VaIs0OTIfG4ino3bjERiTBnqg7VsMctLbaeIim8HnNCnytwtRDKBKC/pon5/zW4X2lcXq3bl+Nk5I6qb0UUjmt95U4ONpYMo4NqWpUkVpucjKvtkH5JtfK0Vq7EOkPaApcgIAtPAu30MvLSAAEAwkvqktvZp5XXvGc3eG1pLw8yzWFWTarcMgHm5KOn8ah+aV+yIlu0hbLPh+XyYylDgS5x8MBbGpVmUHv5UY8Zdot2jYo+meN0PZ9REObPbYb4dylcZy8RwJcLcwi2+NKQMR6DvpPVHqTyT+M9l+xEywupbEgtX+sjC9h2LsqT+bT5I/7ADgXTQ6TSKsewPMGPJb9UEjAaKyANPkHlVPwI2jVtQmIjMyIXiSWXhN4DVI1sRD8FPHaw8dhiL8ZXmqI7Gu3HIpmI2YyO8HhytW1aPVQDyHw1J36r25bip0pKiXsn1liMD+wFzQbH8ViPaDvgQIcieKqU7grnvKNjTO4HzJsR+pyBjGrWHAzykttpj7ltYE3XRgOLXhKTAQQBV1EHfifPefM+KncxGorgJcyuynTtvgnOJXTB0KPa9/vAET51xuhXn46ioyLtSrGm/703OF+8OGrQT7LsszA7suy4kwYMR11/EaPDw0JBJAYdeUJ0A8V7zFqQo5VGAfJ6qnWrZq1U87+DbSZBJQvsPh3xayRCp7cU/
- IXJBrwNG
- Ad9RyA+SrsW9SZoiF4M9OTAgl39ii5h6oOBHtoWygqkVYapxUXdX9otDxVrQvzYG+/BPM9oVgJwNuAcFGvHHaju++klBMpG8ibfVkkQk4e+zrlToQHY3ht/tDd2TLlVUzjW6a3gvsMSa0Fh7k+PnBije66xQmgUTj7ijtcEr1v7RdDWCXocHZJtifoeJ7iQCoJbnonpQykjRRpYXL1Nv3yLHVKY/KFZ47rrDiIpq1n6n1LLB2QDxMXtAI4Kg+yEN4l/fRlzF2JWVq9yzP0/Dui2vLcI8djBoUKQik/Pxf6q4TCv9dj5mTEGsC2WSb6zhMyRd4zAh28Ta1GYc=
+X-HE-Tag: 1773960662-774901
+X-HE-Meta: U2FsdGVkX18ox6bMVz21g6FKhJZA2eiNswTihPrrWQjaqpNt3pB0pXQ3K+PWaJX+u5oq1r127jZGnfH8EjVb7eeUMD9q/udYCfj00SOr9Djs3TTxQHYcHHWRCMamf0QcFEDGuiZdpktBS88HgnHEdjmJ1e6TkcjByF5jjZyfqRgum7VurrVT/Mg8H8gHFsB9VUF+yT9X7o7aoeg1afknmekUYfkb0fW3WVsDaKNY+HjgLYDtYSjCwYJtEsfGuHQbxRuCodL4pV2CIO33lbJaeJBq41Zdn/PVmITIuhfEid30BHXcnodKMTBVI4jgMYMDgmLU5tn3s01Rlq+o5d0K708SntvjfkBzDF3rcAEaA8uPle9pSBwVA+HHe5uYueJxhRj52V+snd6zPBp98EUpb7qHiK/WeRrHXh29Rae+rgQrqXLUEx0StbmmKmYDA2pRqDs+4kmy267ia0b/O40sMlMdss6VCSh618KIT781nNOB5XyIZjI011NMQbkXiMW1Q7aZYosAwKRt41oVNIqk4WdAMXAf5rSNKVi1LcnEOjpPeqTCUTbkL69laZssCgR6sqtlh08rlqX/7eqKEaA19l0LoBkQRSi0QAVQ9icuRYCZEho+sbXA1rGjtzx5MHC7c7HarsO1Qpvz3un4fzEmdHTesSQqZfHFZuXLDhKeXAR013VoiozRMJYqFdI49ehSiIso4oqqz3B5GpxwZJqKr8WesNPNmS27ofN3VO7TwUoVb1zZrqQkunv57twByowMWAc0JkfEwMFsD9Z+dg7hct3SKJWFVZ3yUxufKQtZ28WK1RtJD4tleb6brcP9Cy022MBDhdvsxBzY7+rt34YsSQP4VNzBTs8HEtz9seuspI6mGCbTRPolkx2YAhi/3ezrDofc6m2waT4Tf4Q/oGqXNB0Ro6KmMzYq3onewhphdA6rH6sYa6+eu1x0OdtcHFbe4RR4K/43rwKrEf3mv5L
+ kgD7UMnf
+ CLYXIcIw8v0+3SGyezYPXtdrkhT57dUPK1A3UAkN8YXSbFyS4sq5xHohbpdrkfSAH44Vq85dyXvY3XAgWZZ5OdIlmZAdzO0omBaPI3Yc+mfpknIlJrRmjbgTZOuexcpTj1nXMhJKlV0ZJKTvlir/VKnGDjyIk0OlMehK3T1IlTYDR9ty4LnCRFBcc6CjyqM0Kgx6oFmvLZ4R3yM5Xjgr6Dk7Z0uRg+i0mA9rkwkHSatDj4Wzkjwgo+ob9Clx3vrsIcK5l3XEt4gWn6mj702M9FzMVrzbuJX9hP1Gdd5Hh0XRj2YkjOhe9vLdUV/htN16/0MPh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,122 +93,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+On Thu, 19 Mar 2026 09:25:41 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
 
-> Due to initialization ordering, page_ext is allocated and initialized
-> relatively late during boot. Some pages have already been allocated
-> and freed before page_ext becomes available, leaving their codetag
-> uninitialized.
+> On arm64 server, we found folio that get from migration entry isn't locked
+> in softleaf_to_folio(). This issue triggers when mTHP splitting and
+> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
+> in softleaf_to_folio(). The race is as follows:
 > 
-> A clear example is in init_section_page_ext(): alloc_page_ext() calls
-> kmemleak_alloc(). If the slab cache has no free objects, it falls back
-> to the buddy allocator to allocate memory. However, at this point page_ext
-> is not yet fully initialized, so these newly allocated pages have no
-> codetag set. These pages may later be reclaimed by KASAN,which causes
-> the warning to trigger when they are freed because their codetag ref is
-> still empty.
+> 	CPU0                                             CPU1
 > 
-> Use a global array to track pages allocated before page_ext is fully
-> initialized, similar to how kmemleak tracks early allocations.
-> When page_ext initialization completes, set their codetag
-> to empty to avoid warnings when they are freed later.
+> deferred_split_scan()                              zap_nonpresent_ptes()
+>   lock folio
+>   split_folio()
+>     unmap_folio()
+>       change ptes to migration entries
+>     __split_folio_to_order()                         softleaf_to_folio()
+>       set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
+>       smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
+>       prep_compound_page() for tail pages
 > 
-> ...
->
-> --- a/include/linux/alloc_tag.h
-> +++ b/include/linux/alloc_tag.h
-> @@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_ref *ref)
->  
->  #ifdef CONFIG_MEM_ALLOC_PROFILING
->  
-> +bool mem_profiling_is_available(void);
-> +void alloc_tag_add_early_pfn(unsigned long pfn);
-> +
->  #define ALLOC_TAG_SECTION_NAME	"alloc_tags"
->  
->  struct codetag_bytes {
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index 58991ab09d84..a5bf4e72c154 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -6,6 +6,7 @@
->  #include <linux/kallsyms.h>
->  #include <linux/module.h>
->  #include <linux/page_ext.h>
-> +#include <linux/pgalloc_tag.h>
->  #include <linux/proc_fs.h>
->  #include <linux/seq_buf.h>
->  #include <linux/seq_file.h>
-> @@ -26,6 +27,82 @@ static bool mem_profiling_support;
->  
->  static struct codetag_type *alloc_tag_cttype;
->  
-> +/*
-> + * State of the alloc_tag
-> + *
-> + * This is used to describe the states of the alloc_tag during bootup.
-> + *
-> + * When we need to allocate page_ext to store codetag, we face an
-> + * initialization timing problem:
-> + *
-> + * Due to initialization order, pages may be allocated via buddy system
-> + * before page_ext is fully allocated and initialized. Although these
-> + * pages call the allocation hooks, the codetag will not be set because
-> + * page_ext is not yet available.
-> + *
-> + * When these pages are later free to the buddy system, it triggers
-> + * warnings because their codetag is actually empty if
-> + * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
-> + *
-> + * Additionally, in this situation, we cannot record detailed allocation
-> + * information for these pages.
-> + */
-> +enum mem_profiling_state {
-> +	DOWN,			/* No mem_profiling functionality yet */
-> +	UP			/* Everything is working */
-> +};
-> +
-> +static enum mem_profiling_state mem_profiling_state = DOWN;
-> +
-> +bool mem_profiling_is_available(void)
-> +{
-> +	return mem_profiling_state == UP;
-> +}
-> +
-> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-> +
-> +#define EARLY_ALLOC_PFN_MAX		256
-> +
-> +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
+> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
+> are visible before the tail page becomes non-compound. smp_wmb() should
+> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
+> result, if zap_nonpresent_ptes() accesses migration entry that stores
+> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
+> page before page->flags.
 
-It's unfortunate that this isn't __initdata.
+Please describe the userspace-visible runtime effects of this bug.
 
-> +static unsigned int early_pfn_count;
-> +static DEFINE_SPINLOCK(early_pfn_lock);
-> +
->
-> ...
->
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
->  		alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->  		update_page_tag_ref(handle, &ref);
->  		put_page_tag_ref(handle);
-> +	} else {
-> +		/*
-> +		 * page_ext is not available yet, record the pfn so we can
-> +		 * clear the tag ref later when page_ext is initialized.
-> +		 */
-> +		if (!mem_profiling_is_available())
-> +			alloc_tag_add_early_pfn(page_to_pfn(page));
->  	}
->  }
+> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
+> in softleaf_to_folio() and softleaf_to_page().
+> 
+> Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
 
-All because of this, I believe.  Is this fixable?
-
-If we take that `else', we know we're running in __init code, yes?  I
-don't see how `__init pgalloc_tag_add_early()' could be made to work. 
-hrm.  Something clever, please.
+So we know whether a -stable backport is needed.  Thanks.
 
 
