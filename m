@@ -4,92 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA859107526F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:20:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9597E107526C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:21:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B34766B0411; Thu, 19 Mar 2026 03:20:35 -0400 (EDT)
+	id 7DA966B0413; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A977F6B030D; Thu, 19 Mar 2026 03:20:35 -0400 (EDT)
+	id 7B2336B0414; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 912596B0413; Thu, 19 Mar 2026 03:20:35 -0400 (EDT)
+	id 6C8726B0415; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 737DF6B0411
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:20:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31A631603FB
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:20:35 +0000 (UTC)
-X-FDA: 84561964830.03.0C97390
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9010940009
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:20:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 3wKO7aQkbAEs5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3wKO7aQkbAEs5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 59D1D6B0413
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 192E51B7E55
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:23 +0000 (UTC)
+X-FDA: 84561966846.13.B6C5218
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 363C3100007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="Eempxc/N";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773904833;
+	s=arc-20220608; t=1773904881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=9aR0bqkLCoE8PHisrJQXhVoZ6+9vbPWrqpSwj++hyjA=;
-	b=e8y8bpdBmnwYOMYKQPs+fAGwr+3C5fFuBGC3EarFxSDmu0HZkW7Z3zOiFdlGSPDtclwtru
-	+dT+AExQ5VwArh0PlQecjhDhpiLumdZ75pc7YfbEvgbUzhZw/i8nRCkxCEU8u34mSU2IWu
-	X6Oxm72wtEhLOwEGTynM8JTjbKJxlSM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5mT5CVxEEsQlA7iRjeSIzOh9lr8aiAprp04Qac2/CxY=;
+	b=v42iJ6XUaFccHIiAqsyLTBhvW1E4H4b20G74OYz0yz0af0SVmIXbR0GH6vByGNwr9pT8Br
+	VcN43PabKDVn4eGfCjRuBzzTNppJokm0IGgNuittt1PyunnZiwxWB4g5Sg1i6b12LIrS2t
+	xZ61CzeqaDGrBq25RkeszvCdn7aNpIs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 3wKO7aQkbAEs5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3wKO7aQkbAEs5BCxnyyr4n22vq.t11tyr75r4p106r06.p1z@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904833; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="Eempxc/N";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904881; a=rsa-sha256;
 	cv=none;
-	b=wCBv1UHvChvQRGDA2ME6e1Of686C4SBOwMhhCBeehs1yirOOw0crDr0mkrhrc7PQiBu/ou
-	Ew/xPTKNGrP7HmMl+F7W/Jadl9SYhxzOU6LsrLcgi+a3cCFWm0JcnlaC8HhRKNINR7dnhG
-	b+of/XsJTosdF8Wf4kQ2hhum2rXuFwE=
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-67bd1b31789so6624621eaf.0
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:20:33 -0700 (PDT)
+	b=5Grj3QVJxe7vWBOxuF2OyNGXAqrKpd4rntzuQFQsmBCVan24wMC6sJIz3RVfejM4IyevFC
+	IG13fOcKXTdziSh9Sgjej+yiQR9O9dpW64U4oSFU1ibDAVJdQCWT437v9QLVzgi+dr7Vlm
+	DMOWQn261HyJzDc8dZp/VDsJ/qyszhA=
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c6e2355739dso266209a12.2
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:21:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773904880; x=1774509680; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5mT5CVxEEsQlA7iRjeSIzOh9lr8aiAprp04Qac2/CxY=;
+        b=Eempxc/NYGSicZWg3RRWGWT9OnqVvBOhzO2GjN80yfoMe26QKsCTKbCSuAGHQdGsIf
+         4vKAgMCgpZWfKonmAXBNcJTrMWs7wSKIBMRL8Ijgjk/EAju0HZgHIDLTssKqJ4UVUdDc
+         v2QU7XQUcsRQoxpcQsAn8RysXNyp2orqEsGMU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773904832; x=1774509632;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9aR0bqkLCoE8PHisrJQXhVoZ6+9vbPWrqpSwj++hyjA=;
-        b=lISoIOLlulCAAOGmSNFZ4/NSLtYIXelb5PYDeXcScCE6RdcEoo96EreBvmW6HKNtlo
-         A/1Pw1t0NEwtAoevmeTXhUwQjh7w0ciOUcXnVleImRLxjawjEzhr4ugsu2eb/odC6OJm
-         jn1P8e6aU3BuIzAhBQrx1zJ89tQ2x5TjL9y4OC9z4EwedzJ7p0oRxX9efn/hh6qDhB9s
-         cLSkW5Jl3AMbqvSEkvbGUyFBPkz27LHQ8oFSzHTFOR4wyK0IkYBNogz1M7L3mnV2sYKR
-         CYhVdcRBbpYkOrfTCAR/LklzvWl+lsS8wGDxanZv6z2O9yyMtlqE5nRhPkDCpO3qzefQ
-         loBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUO96bvZzy78kG8VAwskP7quYPrZ7dlvwR/kFgbdFx4QwhRNhucHODS8vUBrViZS1DvkDUbxe3ZnQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy+eqlX2QaASZKneTRnHg53MLQVv4xFpNlE02WWvVVBkUHMevZX
-	yWfoZ39mKLJ8iUUt9x1Ae+xR0eajQTGGz6E1FU3N2a1oG9HZEqxo3jVUJfgDuqtbYYXhU7oanUD
-	3T+SvmImQStUi+vlxUnUcxxUNgPCakwceMaEmfbwc9ArDJkZLmx8ic15aUlk=
+        d=1e100.net; s=20251104; t=1773904880; x=1774509680;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5mT5CVxEEsQlA7iRjeSIzOh9lr8aiAprp04Qac2/CxY=;
+        b=OPF8Deow2e+hbZpPc2V6CtybQbsTGvTZEfe+0g6QY4Qvn6V9W+qsUXF8XHIjWul4Nv
+         B/nrLNPlJlfWxY0a/bDpVlWTMBTuG2bpg9pI70sjv5QzYECvouVz/FhgXMO/TXQl0L3l
+         e3WQcy5xGVAy7ivMjObDDCzwmj7OIMVXzXjuC9SIRF9rxFLp6J+4WQ0zM01DVpcaMpZ2
+         PToRRS+KZ8mlT6NoctzB5564zY3knuKGhuZXZ80jNpAhHjEBKiP3+ZkQEp5uHDy85MCC
+         a/vOpJFcaewuq41pECGMbYjtY264zeH19l66e819nUXq2KWMNoRzZ/uWDXjGRYhz6mBJ
+         uJRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgDkIn6l0Z5GZiTm31G2xrZij+sM73962W6FvQIzUk4mZNLOctim5iac9k9ZTd5d8PgoovyWv51w==@kvack.org
+X-Gm-Message-State: AOJu0YxciRNlUKTy3G4d/Rp+XqcRkvilHzyP360jmAzPSuGsDBL6iYtp
+	dbkfk/IXtgfo1smt7l8C7Aer35BPNpwyCjQ9ELDS1b6LBGPBQVYVpkPG6DVKwk2RsQ==
+X-Gm-Gg: ATEYQzxdTQejSeHLA4smYxeF1/Y3jqpVv/HJTCL0qf6ZGboWRD4egT9FMhhrBlpFRVh
+	fTAMZABE1YxwTAPR42YPj05G0J7Lx/cqJpD0m8nOexA+F955McW0D2h5wNL6mH9aQwNhCQ6F/ih
+	Y6/XfQYcIB4bgTpfyrYD5jlopmLefNrACvwGAfIWiSDse7Am6caxUAGerS64jrUZsuZLRMaF9w4
+	IEMaKSlj0TltXZolOY6eE0yDZs4ACLVB7rKbp4voiZX+aiU6whW+dyPcThPVsb9dBEWYHaMt+Bm
+	woRo2EMU2dnYLdCL0YsznSNIeAb0B39dHJAaFXP/0L4G5GLRH173axTkhZBYnny51RrkTsmTH2P
+	Xts6kr9Axhv7MooHydu9yJh2xss3RfmG9c6iwTN/ByLvnrBejRBIBdkngZlO+tu97cfN8PBgod6
+	4/d5TIbnySN+rF5qZ8RbftkMWpBZcZOrQuTLcWXDiF87m5ZGHMF/wqTw5LGzF+hXc=
+X-Received: by 2002:a17:903:1b4b:b0:2b0:5c0c:b9af with SMTP id d9443c01a7336-2b06e424b48mr63922315ad.53.1773904879945;
+        Thu, 19 Mar 2026 00:21:19 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:13e1:7517:52f3:cfc8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e448fa4sm48352965ad.32.2026.03.19.00.21.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 00:21:19 -0700 (PDT)
+Date: Thu, 19 Mar 2026 16:21:16 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Richard Chang <richardycc@google.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Brian Geffon <bgeffon@google.com>, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] zram: do not slot_free() written-back slots
+Message-ID: <abuj00rFtWVMThVA@google.com>
+References: <20260319034912.1894770-1-senozhatsky@chromium.org>
+ <abt1dsjsT9826Ewy@google.com>
+ <CALC_0q_2meJ7T8gvij5oR=idy9hn5rMC_RQhCbePJFVBOOd0Tw@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4d08:b0:67b:ba75:3e96 with SMTP id
- 006d021491bc7-67c0da958b8mr3876705eaf.7.1773904832592; Thu, 19 Mar 2026
- 00:20:32 -0700 (PDT)
-Date: Thu, 19 Mar 2026 00:20:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69bba3c0.050a0220.227207.002b.GAE@google.com>
-Subject: [syzbot] [mm?] kernel BUG in collapse_scan_file
-From: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, 
-	lance.yang@linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	ljs@kernel.org, npache@redhat.com, ryan.roberts@arm.com, 
-	syzkaller-bugs@googlegroups.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 9010940009
-X-Stat-Signature: 666a3thogxnh9eukxs79oa8wqwia5j1n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALC_0q_2meJ7T8gvij5oR=idy9hn5rMC_RQhCbePJFVBOOd0Tw@mail.gmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 363C3100007
+X-Stat-Signature: wn51zoaoxiqwufiq9qp1zgdzhr4rb1ob
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773904833-929047
-X-HE-Meta: U2FsdGVkX1+Yk3zCndKZ0wBfv358pOrYbFXckZf1JL7DxNF+GpkqwaGOSxusbAoS8NdQsDSdPY1d1xJOoq/j7rFAx4PY1L47hjiEBQ/IGWgTvH0Ky58ZRgPvjLkIkyP1JwG/Igqzj/QshzEBV7efSJfW6/5placd6qK7j+4ZAZ2NPUViSqHjHTwcDCRA+wS3mufX83hB4fMPXnoHKmwrzvaqUbpPF63V9gCOXuPUAKRIU9xFwIFUMd9IpWVnKxBrg3TsiR3jE7C/6vQIBrDHADKAyBDz8uoZva3p5KzrssWM4fuRwhXeTI4ei45ElLdsdtFFxYjrL31CzO400bOL7EpbtJOTR3vry2EtD/beBi+9FetnZFVud3gqWSoBriafTdNhUYI2drdZJfW//t0j/pe3/E9bFI+BUFQHSs3nv51q+ObLmOhCYNLcVeQ78ewwsevZMX0prXOJa7NzO+P0z/HXAwBdKMBERzwwICKFF1+ombGJiP61gsZ3574a9UfPcsLmL3Ks+n3Ps8WlBu2VxNilvdj7ZdATRQDgAMpFa5HQ+TEV+9UDJwTc3sflMK1po9ZgScfiTVhidqOM7wwj7C/JdspA5Cbsx55Hbl4TA7pOHTl+FPK5Hez5hWUCK0QVhvWEbaU1YX/FHnziWmRUuphJZ4q6U1/YM16/qOEKXg1z7Qtw7DU1HHlpsc+4ti2ld++B0BLolEfImcrue1MPnMnUByMKCl/VfvVyHjjH7gaBpT1jcZNHk+poTpNsRJD5c5hAJujKZhaF2vaG+1Rkp5kk3s6j9LdAAoYvrkVzwghapo6Iu3jHFi/subvItKmXOW6A3oQ9WaVemCAHkcG0rExert1brRZq4G56zaxpg4dOg99ul9625VU1TJvLRP1sRXfkY+z+oTkIde21j3DsqAlJQlikIluFeHaeRlcO/JEvSB1MvHBU4zcZJW8F97gfCXeZez9bIUJqHufkjGe
- SNZh43eN
- gCJVibzMt7yf309z01a1oIs16ZHnLdiJgKGudMUs/H+AlpabOF1IkqwSSZyxE3tGmLeR2MwKQoyd21qC0Vrp6bbV+NU28XvApVmjiPNj+iGIK56HyK4txk395V7iwb/rkZxQpkDnOgqtj1rM9vyUkbPTn9eiHriLR9RUwZ2uhAGsddRrkJKbY8sAltrW60dNhwRTUzaUox/GZgmkT5ExwPM738jocWLgGme5gEY8jCy/UDLYh9QJ0kz7dmRikFzbYti0J/1AIFJ9CcMiQzqf2zCvDsL8aktONvOkwc1LQbKuRmei0aWyygqnlnl3wNg2EEAPP8kgKWfRLZ2OaHgx7mUq6SViYV2brt1gHsDldpxeXk6OYwTF+eyqO7R4DJY3s2e5EJUfm9QSyDIQvxrQAfV5iLW4+x57uVPi0xyEn4j77YckvFj6ZezpT/5hbSADMPTE19yzDdAZExbCCQe2YZ/ydI9CKzz0ZO1OjxvSQZvudLqmBmjWRd8cT3syOIEO4tR+n+I/IBnSCF7a+x/dLcGvqZ7DCW3/G9OLNYK/CqGPYaPW1gtCsbXViA38+CMyZsrohWQVPSf7jelvJzM1M6OXPwAzYJQqBNeo6Kk+X6pXmCBk3Bgfo6sZF6VjNUaslzNPLaK10uwq5V/exF1W3TT1pjuG9vKpXmoYm4WpsOmQPm51cTUJRGUdYuMKEwYytSLokRk7rebpFuD+2iAoKyqgprr1dFVlXA+mBXx/v4J+MrPWXP/PSPaq6TMXFVikfN9LnePo3uxFlC6EcydYhrTdoqqvbI48NXOgcKttufpQ/CRdZmr1y7QdC8Fsh9fyiTcffgmoCbc7WEhOeQg7YZBkpRM26N8u1bnp/yM1TDWeszRG8lbSA4+7CtUsk7vSJyrNG+wgbqxHfQcK+yWIy7hAkgxC0fj8uUuYFdFhyOBmX5HSIplqrkY9yLNWsxk3UhUdmjtUp5LHmI0IQZ5FgcrLApYLZ
- HYRSdmJ+
- UQHBEy7mkazSQ81ONuSLumyJGUakh9+u0+SCavXisiXzD6JIrS+JfVn52tlvRRAKg8UpazG5QRr7JCCmT1tLukXW6hTcL6fDR+eT10Qtn0dCXk9oWn+32E3/2/wnRUqN45DbI1X47gKoHGKVfRHD0Qg1CTjVLOwn1P+u4VIrUdWSFDfcGttoUPrSxpgMe8Om0zqdJNvaX3TtWxXyyAMqA8VWYjpAztTQ4i7P7MTiQkyUzg6f20rpgkyL8/GWRLOQK3kALfKwOfBR8wonYwkLdnFfw/xOTRHHCNbW5Erl0FhQtjks2hSYkdDjqvCv7RSnaPMwcaOjpqFnLpuXCgoXQJE1zvRYiBfxMz/kqe3D2nOTkojDqbqR550Nd2ezWDIPqQD1HZE0q+w3uOgyvWgfTm5V+NGGNPg4bF9B5XTk5aoNgvwCyICwyhhbvd2sw0iP1a4EWfQIX2Mp8SahgxT/HBL+qvQ7WIOV
+X-HE-Tag: 1773904880-761079
+X-HE-Meta: U2FsdGVkX1+aRYJ/wcHAAS1wUn9nywq3B4p4V0av5TGm0mir7zfE51hA2+NWtH8kWHCGwzC/c9KT2iJf/LevfW4uN56IPwvl750Bl6/rmxK8b2w+3PKMkMkv8HS8BYD9M2J65dfJoOmFcDbkG6W0fXiU/vaaSYVzGcGwQ/mOAx4BQs0mO0ppeRwu8dz/064ErfhEFnuPpo1pyF7KEl8LtBFMp7jtoazlSOL06Ri7z4jJkdtzL3p6VvY3GM8vlLSwJcMbVfrrCyEMUq3MQA/pOCHIuRbMs9YXRiRkDWhOP0lbvDRuUT4XFCvoMxK9HarqNrTxEK1fom4VCRPNkGlkd8m1pRJk/pkOJm8sGEwQ1ZCNUigdk0b3S0Zsg/t7OrufigkQG9zm96ThYgajQ+RS5CMqa8t/LFnmSyzRWVrqZ/UeKJuNuq7bUC6AXrpQziJcpz+Ls8eadFE2AwgJt3COE5kGZzUdB+ABtOJo7eXrUF6T8+JjtXMi/jGhZzdjCVOpp5jcdWXFRGNC/Jw4azQ2wHp/abC2IDBm7Xb9QeKgi1O9vkcBR4zI6MVg4c+Hqs7sAb4lcZtsDl8PhueWphTw4lUlyjh0k62ZNDCUhOjjQwFVX+JFblf7QX3HXKQ30O1iCd5l/TUnGT8IOeIOeTH1QKcb2HwIv89dyLKs/B580zkBr6X+DxOrs8cZHv3nBnbGFY96gfi3WEFP3//sX6gY5EwGgw5L8n/XbIt3yQQdpAs+Dk1b9VfXhWPgmdnSX9excmjxbvKHdLH+NhqY4wMi0dhIbkilacbnHzn/97D+fV3ecyVH21cTfrnQd6tKB3ItLgeGmZiIl4WRyDNGz0AkMEvy1tAhww/Cv1q6TrtFbjb07ODwaBqKR7jNfBI4BNG0jpBTWmbXCjbnHJVe9IC1S746/dobJ+5/1/I9WVVvomLB8GAt7mb+PmhhmB3Z6ydbE+cWaKB/35ArPyjGL/Y
+ xc5SusnM
+ Dt7saqpYM6yX4kX//4f4Zc6/a/9nhF6OV+LkQJclqapoIzAaSJwYTs1qzaLNSAljEaLsfPiN+ifasOiMofenA8WnBC6sN2iwGOHvIGix0XxAtgi07C6dd9GYCED0j65VxcwemU1q+3Fpo6ESRI7kMeBH9r2xH7jPMrrAlOGS+BMJ9yuRyCwCrb279xfWxGnkn8N/vD5CZcwEi6qHqG2IPZH8M8h7xl5FipGPORd8A1WdyPq4Vnruy6IdW/Wv5FQOrdajgtwZguz5jpqBl+jim/Flcv19J+VrpS1L7kubFx39pT3/KBxy/6V4paKi7tjgGnL5F0ZO426G0ae14taEWbg6ek4YfXfcJoQyOL519sUdbQLXhFWA/l6qzCJ1dkeNRcvD3cdEyhR0Te+gcOEhzajv0JX3hyVq5uxudIIPZzxH1R01ahM65kWcaj0aPqXTMYZn5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,108 +116,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On (26/03/19 14:47), Richard Chang wrote:
+> 
+> I think we also need clear_slot_flag(zram, index, ZRAM_PP_SLOT)
 
-syzbot found the following issue on:
-
-HEAD commit:    95c541ddfb08 Add linux-next specific files for 20260316
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15ccc216580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ed431987028345c6
-dashboard link: https://syzkaller.appspot.com/bug?extid=8961cb270ae74b4129fb
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f778da580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cc006a580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/c40f27ad73d8/disk-95c541dd.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/bd811888f684/vmlinux-95c541dd.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3b72363d7dbd/bzImage-95c541dd.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com
-
-node ffff88805d558b00 offset 0 parent ffff88805d558840 shift 0 count 3 values 0 array ffff88807a8195c0 list ffff88805d558b18 ffff88805d558b18 marks 0 0 0
-------------[ cut here ]------------
-kernel BUG at ./include/linux/xarray.h:1441!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6001 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
-RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
-RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
-Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
-RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
-R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
-FS:  000055557e3c2500(0000) GS:ffff888125437000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000020000000b000 CR3: 000000007ac66000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- collapse_single_pmd+0x22b/0x4510 mm/khugepaged.c:2437
- madvise_collapse+0x34c/0x820 mm/khugepaged.c:2859
- madvise_vma_behavior+0x1094/0x4460 mm/madvise.c:1362
- madvise_walk_vmas+0x573/0xae0 mm/madvise.c:1711
- madvise_do_behavior+0x386/0x540 mm/madvise.c:1927
- do_madvise+0x1fa/0x2e0 mm/madvise.c:2020
- __do_sys_madvise mm/madvise.c:2029 [inline]
- __se_sys_madvise mm/madvise.c:2027 [inline]
- __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2027
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f90d419c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd50711398 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 00007f90d4415fa0 RCX: 00007f90d419c799
-RDX: 0000000000000019 RSI: 0000000000600003 RDI: 0000200000000000
-RBP: 00007f90d4232c99 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f90d4415fac R14: 00007f90d4415fa0 R15: 00007f90d4415fa0
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
-RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
-RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
-Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
-RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
-R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
-FS:  000055557e3c2500(0000) GS:ffff888125537000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8156602000 CR3: 000000007ac66000 CR4: 00000000003526f0
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+release_pp_slot() does that for us.
 
