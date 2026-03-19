@@ -4,123 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D0B1090239
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6941090236
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:52:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 329136B04E8; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
+	id 5C3E56B04EA; Thu, 19 Mar 2026 10:52:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D9B76B04EA; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
+	id 59A8A6B04EC; Thu, 19 Mar 2026 10:52:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C8AA6B04EB; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
+	id 4D8246B04ED; Thu, 19 Mar 2026 10:52:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 088F46B04E8
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B08CD13B51D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:51:06 +0000 (UTC)
-X-FDA: 84563100132.15.276DA1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 00A0A10000F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:51:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tlQhb5U8;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 37F5D6B04EA
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:52:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDE2C599D3
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:52:28 +0000 (UTC)
+X-FDA: 84563103576.26.38F5A2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3EE36180011
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:52:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UIZuhkS5;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773931865;
+	s=arc-20220608; t=1773931947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aInfBWWVLqS+IZS5bb9QXC0z00kfS+2upSPaZ4RfgCg=;
-	b=CIgXucb+OLklKjM/Acv1WB9MERnL/sX86L2ezSKca4DnwXRyGx/5q7gm/hnzR4VVHjBkym
-	AYVIu9WiMiNnd+AYF03goj9fgJQSz8oG602i8nSoCrvuSAyC7LVLKc59jASTchoF1iDBlZ
-	EN9UrNbBdTvd4Qv71bydZ7TreRcNGjI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2Nk4BLL2xvOfnZiK1j9eYuU1+jsmMChbm5I1Sr2AlnY=;
+	b=ZnSmz9V5RM21M+ryo8QgbgSFC8B2cRBmFdHZyNyyaEgN0IkgGQLINJRxnlJqhEJZQlbNBc
+	IlnC24JMV0gvBS1n2F3eA3aiaREz48TXZKO2i7y0+9tfmGuVRu1wkh23U4M2R6bykntFcF
+	lMJeeP1Zpp9LoqO1GK6SyXLI+XXaUyM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tlQhb5U8;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UIZuhkS5;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773931865; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773931947; a=rsa-sha256;
 	cv=none;
-	b=2KBZLTLJRjOlvuDlw1KTMypcQpsK8gu8w7XKPKxGnEK5cxVxhHlzIAPXR4g4LtFjPjT/Qf
-	jyiRcqpBBVWxeytPCG+zIAZOWl+uEH00uCuSYUnKZS87g274NOn4pvH2dG4OksWcv9b3OJ
-	0+LJnyYLtvf0KboRl87i4v/wLAyYdyY=
+	b=sqVNeJmbWN+2SFOKcEj7zQA9ghU7Zz8DCfmihFD/b7GXXAMCtYFvWfGGyKNjGq24VYNSpE
+	JtC7zqEBq7zjRPvAFX0rP8QbeiWQZ4dcyGanGfZ9AeSnX61DG4TwMq0iWGxEwH2U8tWTOV
+	PSGRMwFnyKsn6gOkuZmXyJ02jL//cVI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 492516011F;
-	Thu, 19 Mar 2026 14:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB216C19424;
-	Thu, 19 Mar 2026 14:50:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 41D8F41756;
+	Thu, 19 Mar 2026 14:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E24C19424;
+	Thu, 19 Mar 2026 14:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773931864;
-	bh=NA2DgZthntn+Bg9p76vM8EhmWgvmuxh9uchtbNyldWI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tlQhb5U8pIGZhJaEn9uhM9ipP5ZvbmouNAA4Ihk1ejHR3ke0/ewxTzj1Uka5Mlbsz
-	 pLFIkb5W+Mw6Rsis43iKa0qN6vLRn0ljIl1K4AqJpZBa80h16MTiD8oqj+iJM4WThc
-	 kusDk2vZvs4JUK3T949S1jzI/YslUIbM6gzh5sJRM/vYH93dJ4dxbk4gkNrT+X16Rx
-	 fUr3JhyrOpq3I7hQhysr+JmVqv9MscUTJ92KmOG7AbffJcsmGWC2CNA1DN6cSCgLY3
-	 7MUiaGRvcclIs1U/sbbK8uxKQlHPcpehRaRJjgR5eByOaTptAwSYsjLR7y5Yus/f0a
-	 wIhLrOmaLh76g==
-Message-ID: <ee4029ba-87e9-4ec8-9391-c2c3a96bdbc7@kernel.org>
-Date: Thu, 19 Mar 2026 15:50:50 +0100
+	s=k20201202; t=1773931946;
+	bh=S/gZgyTYvC4CrssFFtYDNp0SzgwSfvUoAiAAW+9FERk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UIZuhkS5OM2LEW/JmKTVfUX8UjkKQTrQFW8hsHgEEJV0gCH0Fb2K2a673mH23Z7VI
+	 4Jkfk37aCLhl7GyqfJU5vZw80pZx+26w/+SEDwDZ5LeGH5RkneDc5EbX+a4g8kT3k2
+	 /E9vfJCdHoJTBpEtdzZojTxtF61UiIrmcLdo0parYaLkkqz2Nkj/qINgIgiW8N/puF
+	 o5SVOAgjMDC1lT47MMaBXigGcG2fRAdKKRBN0O7tv62rEuHDpXGxohAgawdy9N16tt
+	 GUplp8P9qVS5GpnYaRbfGQn6FsI+g2M/tkTcxYGt5ofQ55iiBI0CAUnzsbwBIyb5Nw
+	 YPEJ5mh2MXhDA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 15 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: avoid use of half-online-committed context
+Date: Thu, 19 Mar 2026 07:52:17 -0700
+Message-ID: <20260319145218.86197-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/23] mm/vma: use new VMA flags for sticky flags logic
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-References: <cover.1773846935.git.ljs@kernel.org>
- <fd4276d39055290061f87e9fded20b6a6b712975.1773846935.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <fd4276d39055290061f87e9fded20b6a6b712975.1773846935.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 00A0A10000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: o1rw64s3st3opc9kfocwhpjc7bzww8h8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3EE36180011
+X-Stat-Signature: xzxwka3t3xw7aee1zius8tddhg36n5ui
 X-Rspam-User: 
-X-HE-Tag: 1773931864-554264
-X-HE-Meta: U2FsdGVkX18RH7CCFCEJwGfUFzlsycPq7tWxoMNH9XDAr3/aDM/gF5HV/CGa+UzN2DFVv76GABcEPKoy2DMw1SZUZVRyKRDMS0Dp28bCBlqY5WN27yanxzJiYi9czDDvUeWvI8gIOl5dOnajwAw7UfgWTGZNUk48ZyDFssSpu/buRabJOe9FxG7EA+27B0IsSI/ErM4O+/r2ruTkTmShFdTP4eUjO7VhTro8KYsFaiOa72uUUXB7tCILSWne7XjIZywhVJKx2YbmSZnSqOLm3AE3KEQ+gFyZOLM9ANBLnEtXCIWGUlPZwdPk2VWaSeTCPH/PPbjdvkDn5oahtS4LkGzqBhWkxQ+ENCBGFvDnFT3TO/ZNIR5l2oUEbXjBwPIJnDFSj+mvLqquu3c/xN+bwIwvtuRDfoITDyKPNKUP4nLCGaMHz7XLme/o8C4amhDMe4+GfcPzz1z3pHTAgopY8nLSW+Zm/X8TWT2S6674TNuIOivx3JP2s802aFxzFlwOvatlN0uk6ApBpjFQe+vzr6zOUj/zrS897VhXOEfW2w/3448oO0q2Jqeyz7htTbkBakZf1qVQnGQukQL0tOLHzrgOp19dDt1yZQ9EIIn35chtJ/UxOGrO8+3YvliawhLxTOUFD4jjHE9iWm46J3sJB5xJj8BZ5Q42hfm59KegNcjgVd8JZmAa3c5509kGZ3ItauH7CFC/UOYjScZ20XcY+WiRLdBE7f6Zl+ipuaBkffWh5gpsnKv9CRRzeS9Ne4sAkvuLtwHJy/zqgaiy787+9qlFJZ+Hk8YnBH+R7mAkJTrCW1RJXw8yPVXPEm8HJ++xgAxxUvgVt4EbNbwrXNDFxRpbQeJm0HxBI2FsiTm5wyI5YVEzyVZ9e6UQwp8mMscfg9ZTJI+ITdhWMYrC7FodC+6mwrKFuTryl3Bt3ONceeWWycGrSv1q0oPPEFAGGEEXvjFGymLjOJW5e5RS2Cv
- 4uRDWPPG
- TuK2fyeqjDjoHmIAwtc8g8n6EDAGYGv3qhQj38dnMRAyTPnJEfXvsQ3jYeFRGPoI3ifSimEbRqsGAIIM5n/ln/wfXmuIzmpztEfSQKCT0SqDCGKepi/f0HzqelWanve7pNHqSyOazmh77+ZHuFTGbPOYqZriDEjNedWKecEBlSqSymeY04nGzY4M/yHRVL/w9IQZjHZSG+02khzmWpscAkI+IaHfcrOZN3ZkQKRj13csUMOCA3isXT1yXwBDjdbioYA22qEvKXlScVjHbVBAAgoDIs6ZkUOD1bUqC6dk05jQMcWX2WXA2/r1JChDwWXTS+uFRc6fw4UyDCnh5AWFdRus+j5UkGHF4taJ+
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773931947-385007
+X-HE-Meta: U2FsdGVkX19Dwqzmb32O4Rn2fjpl/0Ubzfk9FgEscvBjLdqHIN/sVpU1XB3Vg/CSyi1Y2j/P93bfecS9OZ3hCcbNfNljGMW/unup07RFqBU1t/LfOMhHN9kFm901GEogyGNHFSmEBNBMHwPIIS73XkbCS54B5I4/8KnWfxPdwldNinMM54p1GLotL352fJswJe5EABZFkuwk0LBJ8de8BtZFbKTxwVBx7H4teLneQV6/tPO7AQCsfBGafuWBhcD/5tOV0ySlBG/mpwfrMUonvw2GpeJqEeIlNCbbzxm3gnCtEwiUTs2lomUpaiHyKCdWLwvy4kBUBy22xqaKF2+KQQwduEDJelaFhNM3HStoqKROy1gug8/0fOALbidH9fG6lZZO1Hpw9X8rZBafo/e+YYybp55firXDe01XPKtsHATZovoyWCOavCgJWYuSFVOkkaB58EWStGSCwn0GeEGblnpaRQpE/j3d7TuoGe9LRXpu5BCL9hcOsY4ydIkh5OI0BsDsR98/l+YDz703zUiXOl/x0FhzP/HC9JAXkIOHMjPg46CSRBxp8H3/02aXP4n8cjsfNKCBZV7tM080sI7u60VnTs2HiYSwkJ43tAU9OT/7oGuJKriPBguYpR4s8nJfwbLO/d7XqTahxoCUa0N/yh0gTSdZYyYS3ZzdruTEvqN6ivO249/i7kqLYGV67Cx2ivptUkrdZUoIKi5vR763lN1MaDGBhw6UwxrSAOp9KveRcQX/bUgwDDrSDDnXyhl/81ADF6ZHZ8YQ6p6DhQ07fm18rJShWB9MGiLvDSkB6jF/bcb4YVY54LM15SZWoH5aQaRhhmLYsMrPlhzAuuCL3fK28QwZIk+VKND4dwviuv6yviyN95BirymsPNaA8v1VWXhGQmj349bUjkuK82GBjysQ/AODXD35XMh1TKFLO4CxeKiP3yaZUIrohfOxAYUchupFPklqkbhDiX+edtP
+ mSvX4y0l
+ vvUykeSbJkorQHgNliOKapPn4ks7T7ZB09u0LWPSULgaBMndW+USihxJOBWP/Eyb2u7z+MbAn3SUiulpB3I9hMut9ojriohXSihO2qjtI79MAmBZq3NtyW1uGT/B9TLJR9yrVk9YhJKCqS1a7dlX1XyLYPNDSa0zdw8FSgxA5xaOCtrx7vA/wVOzzjQuvAfD1J32jDKjmuDxoeJgcL3Dcm2XCHf9GG/Ni+iGzJ9TyUxUOzW8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,17 +91,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
-> Use the new vma_flags_t flags implementation to perform the logic around
-> sticky flags and what flags are ignored on VMA merge.
-> 
-> We make use of the new vma_flags_empty(), vma_flags_diff_pair(), and
-> vma_flags_and_mask() functionality.
-> 
-> Also update the VMA tests accordingly.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+One major usage of damon_call() is online DAMON parameters update.  It
+is done by calling damon_commit_ctx() inside the damon_call() callback
+function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+parameters and 2) internal memory allocation failures.  In case of
+failures, the damon_ctx that attempted to be updated (commit
+destination) can be partially updated (or, corrupted from a
+perspective), and therefore shouldn't be used anymore.  The function
+only ensures the damon_ctx object can safely deallocated using
+damon_destroy_ctx().
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+The API callers are, however, calling damon_commit_ctx() only after
+asserting the parameters are valid, to avoid damon_commit_ctx() fails
+due to invalid input parameters.  But it can still theoretically fail if
+the internal memory allocation fails.  In the case, DAMON may run with
+the partially updated damon_ctx.  This can result in unexpected
+behaviors including even NULL pointer dereference in case of
+damos_commit_dests() failure [1].  Such allocation failure is arguably
+too small to fail, so the real world impact would be rare.  But, given
+the bad consequence, this needs to be fixed.
 
+Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+the damon_commit_ctx() failure on the damon_ctx object.  For this,
+introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+when it is failed.  kdamond_call() checks if the field is set after each
+damon_call_control->fn() is executed.  If it is set, ignore remaining
+callback requests and return.  All kdamond_call() callers including
+kdamond_fn() also check the maybe_corrupted field right after
+kdamond_call() invocations.  If the field is set, break the
+kdamond_fn() main loop so that DAMON sill doesn't use the context that
+might be corrupted.
+
+[1] https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org
+
+Fixes: 3301f1861d34 ("mm/damon/sysfs: handle commit command using damon_call()")
+Cc: <stable@vger.kernel.org> # 6.15.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/damon.h | 6 ++++++
+ mm/damon/core.c       | 8 ++++++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a4fea23da8576..be3d198043ff9 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -810,6 +810,12 @@ struct damon_ctx {
+ 	struct damos_walk_control *walk_control;
+ 	struct mutex walk_control_lock;
+ 
++	/*
++	 * indicate if this may be corrupted.  Currentonly this is set only for
++	 * damon_commit_ctx() failure.
++	 */
++	bool maybe_corrupted;
++
+ 	/* Working thread of the given DAMON context */
+ 	struct task_struct *kdamond;
+ 	/* Protects @kdamond field access */
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index c1d1091d307e4..37454e8c9c510 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1252,6 +1252,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	int err;
+ 
++	dst->maybe_corrupted = true;
+ 	if (!is_power_of_2(src->min_region_sz))
+ 		return -EINVAL;
+ 
+@@ -1277,6 +1278,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	dst->addr_unit = src->addr_unit;
+ 	dst->min_region_sz = src->min_region_sz;
+ 
++	dst->maybe_corrupted = false;
+ 	return 0;
+ }
+ 
+@@ -2678,6 +2680,8 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ 			complete(&control->completion);
+ 		else if (control->canceled && control->dealloc_on_cancel)
+ 			kfree(control);
++		if (ctx->maybe_corrupted)
++			break;
+ 	}
+ 
+ 	mutex_lock(&ctx->call_controls_lock);
+@@ -2707,6 +2711,8 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
+ 		kdamond_usleep(min_wait_time);
+ 
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			return -EINVAL;
+ 		damos_walk_cancel(ctx);
+ 	}
+ 	return -EBUSY;
+@@ -2790,6 +2796,8 @@ static int kdamond_fn(void *data)
+ 		 * kdamond_merge_regions() if possible, to reduce overhead
+ 		 */
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			break;
+ 		if (!list_empty(&ctx->schemes))
+ 			kdamond_apply_schemes(ctx);
+ 		else
+
+base-commit: 969615b6b5d178009a87abf4e4292f90c098978e
+-- 
+2.47.3
 
