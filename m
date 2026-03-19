@@ -4,140 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BFF21075279
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1910107527A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E58746B0440; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
+	id 3ACC66B0442; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09936B0442; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
+	id 3837F6B0444; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF8856B0443; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
+	id 2C1126B0445; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BDF6F6B0440
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7112A160406
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:52:21 +0000 (UTC)
-X-FDA: 84562196082.29.CEDA80B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B47F6B0442
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:53:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE1941A0436
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:53:46 +0000 (UTC)
+X-FDA: 84562199652.07.1496A4C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 992271C0003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:52:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iq8fqK7y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1A8331C0004
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:53:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ma9gXRkp;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773910339;
+	s=arc-20220608; t=1773910425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+CBhGCmCPvSek4nKMfxP0QZO3qvNTGdua0oZRYNKNTw=;
-	b=q4ZPaiSqdjlhz+tuuUqK3YF23aRjvp2DvckkZExx+Y4dDrsu23ss2XeH4TWOmJ3IZT//c9
-	wRncr6jrvUcpy/eZ7dpjGPIPSQ9AvgBK+IDWqu9t7lJWnLaMN7UNiJLEAlK3rRrmuMkOmw
-	fQoJAD4mpESdFROhR+hAELKlsloN3sg=
+	bh=FHWa9zaqyeI2x3QHVWvSs28BEFPKIuq5I5fptgYswcE=;
+	b=Du0KjJNeb6JWeJ/zH8LiJ0tzl1+DrnFSIrHhzYGsG/9MNu1pqCnNwaYXYlWUz3rrovjzxg
+	N2v6CgejfuUGPNha7SOQfj1Vx3jcVryA6+uHZk3iWDwF1LcvBEuis//N+/MiIQG8438eBd
+	iwMvGQxRPIvRN2GoFFKWXb8c4gAUKyM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iq8fqK7y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910339; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ma9gXRkp;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910425; a=rsa-sha256;
 	cv=none;
-	b=hGfVG9i/0mcM+xtrC2qdH6mK5C57qVzCW4YugDSwG+YMx/KJns/GoQUpuIoNz3q1BcCuy/
-	cUToMfcDfjgDlsSM50jwFcaJK2uH3RM0DwDYWx1JmfAvFgiy2SNlgGzpHDKA2lS951xj1j
-	1jQwfZohZn3LHTZ2ptgyHyMiR/HzaR4=
+	b=3uXyvy6btE81TXUawGm2qTDPFpuwCNcVuU9dpysqx/Pau1Vnn4/POqpbExQuWw69oCrA/S
+	WkACLx2S2pvn1lQq2+t5HfoPzJbbQKwzBb6kPEL+ydsvTB0Bz7wJAAjjBiXZE2V/0KYspC
+	Px0h2+bvIlNLKwNBojjhSYxhmknWMJE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9DD5742A12;
-	Thu, 19 Mar 2026 08:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9946C19424;
-	Thu, 19 Mar 2026 08:52:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BDA843744;
+	Thu, 19 Mar 2026 08:53:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9837BC19424;
+	Thu, 19 Mar 2026 08:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773910338;
-	bh=KjTih1mV7xhDt8AoXAzz2WdUR6gzCkgsXYJPv8aWXHA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iq8fqK7yyUYa4xk2bNEcjetDuYfbZKAW0SGBJeEEK/oJUh3k5l6MBI2DqqQ9wvg3C
-	 R3GaHiP01BQp3WWD4/ypw6uHwsQ5fNDNiUalsHnq+eLNyC0AHlrc2S5y5yLXh0oOUH
-	 FhDCikRdQrbEQEHR217aLmbH2F/jfJ0Qlo0NlIwwh2wtBC/5Bmq099Tse81KcnwRc+
-	 2rUvtlEVwCE7Z9WdeRvEeU1v5p+n1l5krvsgwxnH65GyovXMzeGICEaQTCcqaCQFKb
-	 zxFzIjLzmFDvxGIh5oApqNdfrZH9jZArGnWImuzgpif65DyQdzl/8Rsb3CPWBRC+pf
-	 6Vj8YluhC73Sw==
-Message-ID: <502c7928-5d60-41e3-b93d-37244d4b2443@kernel.org>
-Date: Thu, 19 Mar 2026 09:52:14 +0100
+	s=k20201202; t=1773910424;
+	bh=b6jw1AoG/ZY7qD5fzAagFDq+iHQYA+OyAMrY3lUNXsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ma9gXRkpYVYc5+8G4bgUa9aIWqZInDmT0nwCKMYS5VT8VBepeW51CUFD0W0iyT4YW
+	 l+ZPQ7XXqqGDBJ1hmdxzricARR1wNxgRmkeMnQWPlhgmk93IPZreEg2FSXup8ARS5G
+	 l3t2aPdNJNNWW+Km+p4qTymeZ3AF01+3e2DYpGVEJr564I8BXJke6H79Bs2dAnWWqT
+	 NKcUGKBWN6verPWBGDGGa+ztmRknNvDya5Z36vUYmOeo6IrW50jq2/mQ6JCzgPt4T+
+	 qV2hgAS0VMVyNZ4m9HDF4uYMwsycd8VQYPLSRg7zwlGb87MGf1VOU9+wXZw4x5xHC2
+	 xjK/HdWw8TGPg==
+Date: Thu, 19 Mar 2026 08:53:38 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>, 
+	david@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com, 
+	syzkaller-bugs@googlegroups.com, dev.jain@arm.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org
+Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
+Message-ID: <10e5f1d6-077d-4783-aa16-6c8b98cb9e74@lucifer.local>
+References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
+ <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260318200352.1039011-1-hannes@cmpxchg.org>
- <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
- <absnshL4E4iXSC1y@cmpxchg.org>
- <06625acf-ee08-45ee-bdbf-5a3157df0468@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <06625acf-ee08-45ee-bdbf-5a3157df0468@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 992271C0003
-X-Stat-Signature: xshcn67tijt6y49t1skhgdacqq5t4r9o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
+X-Stat-Signature: xt8ibunka3yjk3te1ym9yxppoabsgspa
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773910339-250647
-X-HE-Meta: U2FsdGVkX1/h0q24K5lb3Ku2EmxbaVnootUCJChxj2JlJ/r7/SGV7InDMRjgPen1u2LHQv1e9RAtyCgH+DALCSs9cx40BKDT895rbiQBzVxm3yWU3uQTxTWnlxvBehduqHq4zCwtIN8h/06XfXba4FjPDS3uc3ZZXxNcxPdzAbeKlriiGHeQn6jxg8Y0Ggs/qtzaNjCObJCwHw41ClZ5AKYAEt/hGh8YdFtCqzhqOQNb6C0rNhT0WcekCqx4oAZgSpYWKMBPqxsHySFtcm2Tf2TQyb089ZhcwwGTmiW/kG/rcev0lRXebLZ9yunYfA8sDhNdj4uwMFj6Yshv1N0loCePmUwAYqQDYBl4zq3Tt74lqMKUp3f6UXnGjMD1op3J8vZDrhTvbSyHWH7lSpFTXpmBliuonl7GBFlesox2bbRHfD25zdJ3y2/fEnO/RMDieutw0sdshT58V56iXsv2yw0rPMYnWga/jvU6HqGW0g7AAh4xG5BnJIAE3XsoBfCXlqtu02pkJGvP7xeO7CO3Qp11qrA6Vm4++s4a3Qk/yusDIYFoi3DI8OQK0xTP9gFi1O59EkG9iyOiG56vcOqTVcg8v/QnT4fnPAHvTM57e1ho9SuOCgZZUCZZ2hsK4u76kq6EmIrVXGHC8vKBHVnpRzJqqY26rKGFIrFzrGc/8ra45RhTGi8ejAiDZlwnFoHUWUMa27uVqHw198HY/kg/+Fn/+AaQ9KX3q3YoV4mkJjHg2BHxEeXvZyaO1vfg35ShQeGVkY7hLCe0BECCHpAJShKtIhVJcgN7ofGrHBzLInbGtNLdVeVhBQkpqgmXC/KWl5ZR66PG67gHVZjYM6VoaT3wFywNHSW8vHTEhfw6VeamlCT+NkfLzcNYTm/fze5XMYH0NuJmFWwSNwGwJq3DCj4ZHm+hOhZeXooN5iaTuyI8/AZewbnE/Eh5s7Ns9nM1ekWeRg5ZJISlvfbee8B
- F+4CD+hW
- 2pndFEDBllBJca/rfINzmXbE8olHDZqD36RyHrV9tGM+mNlIXBaPTKgXWKr1ZV4hvL4WQ991/3Yk3tC3KglwAmSScivjKOaFYPjGfUu0QeF9abKyMWO+00yOZJaX0HJdrYJpIFTiX2vlPZaG7L8h9ylNtZE5UpCRJxOIlbvspjHotZ2Kyb+WrO3PPxlhTCkfCYGPRjj3S0JsrERf89hD8a9K4Jl5tZ0zuT+KzvWn9yDOjI6ssBP2plF37UG6pEblghH4kZWK+ghmn2pLp7sa1/mFx4am7mWmeLywxGB5pfxaTYGl1++2MvaVrDQ==
+X-Rspamd-Queue-Id: 1A8331C0004
+X-HE-Tag: 1773910424-148825
+X-HE-Meta: U2FsdGVkX180RRHVKdoGes6jCMZt4bpG2dFXBpfd81mYnvvSsIYC0jc+Tuj1Nl89boycFEKMpp2SqfQCd1j2HFrerTmXNtc7xWG+DEDDvxArhc02Fdtxb3pzQ3e4EGEFIXj2WLFlm6eurdTKFvWdApfydJ/BjOEwRM2ShTkh6/Ncf5gmO1jvyBrxUFwyxWIV4dBqiXFgT+rOvEKS61HOfhUhEmxl1Ngb8zHIpmTPg4ZtWgXiKSoxHWM53kWMu85pu1Gm1KBG04BHHLhua0VYHgaXo9abhVKPkXNMzuKzfnR27szACsRthP7x+Ql1Y6iJfIcSaosNnuS9mGudBZyQqexU0PoicbIOc/sNkh+fGlpsDbqv0LO0x9E77dI32rmrfgjJRyVThSO9zJsZdxxRtmtiLxvFT8SOxayEeQHXKm2b0E6N4j00jyRKWdmBwBS898DZzalfqQDYZ0oVFmXBECSB37eIrSZcteYfMmcu2ggOwkgY7ti2OfSP10yOGvBmMbbviIrDHexq9xScTuia989RDquSaw2DqPRZZ9AjFSM6A+X/nHyY5foIGfBov8KGvrPZtaOR22DPg9ysDTu0TtiskO0VzHCWH6WcmGSLpZt5d/bAQqUuMLeER6lyommlFIe7r9hRmeDMRtB9NNqHbBSKi4ZlfOA8G1p66CvURvY02pkS1Fb+J/EmOqLmfRBfOpsKKnWjas8PT3xk/DxfQ3fJoiSF5+77G5WfG6BvsEHiV8uhu9W2KQOquu+HUjZOuESUFsx2SAxjtZB3rekzIWE6rOeVIC7kGtqQN5F4fhcPCR9mPFsq6PUJUANJKiRZ4F7WfXVYW+04wM+xKWB5A4+bmkrw/3/9H8MiCkq4eP3f7Xwp8YoMMRLLqkJKIEfWUU5VobOEaHQE4+WbWCEuO7RqI6yjOJzDpxaAHBp6P3EOiMkoibbUrPmDQAeQHxS7v0u5HOpw1jw02PICXZ9
+ L7VMzHJO
+ xed+hMq7dy63baGZpXUIfV3rxzWw8IfxKQsoTROhcOESo4bgO6ue7Cb3ZVXR8nuB236AAY6VFqOYewJz6qrqp2RKnQylBRsk78s8eY27AozoSIXpRzHnmNNjYRMflgMbqYInpEyZXjM1VRk5h6qQE3eeoQBMFpDma23zFy2RVuRXvHkE7KnXy4lJ2856NzA8cJ6EMNFGTuR3gMWiXklENhJG326QYzelww5+2IYpuNRsUQW6G0yL+p1L0QmDFQ154LQxdH632b4D0ybQPgdIe514r/kM5wVkx0lzfSfokjSh8QUXAZf9hR6LQKU2pIP29a+YzCoackC4Sw9XeHIynmNpsGgvl2bIysViNbPd5BRoWz1IJBLPMd4FuV7POBSJswPOInJ+rt+imgmiYXZyOcMoYNWTRKJzAUYLUghxHVcm6iAd82EJjKWPx57/OE/eoiTRzqbpYM95dv7O/p59fjlwU+OPK4DIzuQT8idjXLy1KN4fQ6Vs1JkjPSW+RFO/5yzY/cRA0KBzedG/1SD+edUQj73CswGZmLoX84mq7geGPuMsSQLuI0upsw+Z4TaVtJnAHZ346R7OEY15wOy7s9p7qMMGoaf5kNdcW8mZgeB/BUYfCYlfMk4u1lqAyTaHjR+WDNzZTrvtVHIpWORFsz3u9qgTeEuHiOoVs9qzDC8M/KwAHu3/SZaIWJmHvgvE6is/jMAWImH1wbDjBPyW/20b8SDmV4R9oGZ5YLKsLsDBt5KkXlL+mfzY8EC4CYeCH7JyOsVgthekWhQ4/sM8+LIePXRm58lL6M8nYLTPjPy6rwiGYLGaPnp9pJxCVSMWr603OpFdGmbsPPdDy61/QQPQAcLv7ymbfGA/1qGfxh1GZ9JBeJMk4Q2jf2qaJ9nAVlNOI2Vy3cgoNKlIfmR7oJ+Qf/rJkNaLVizxu6jlM5ZBK9Jr/ILNwJXLPrUotKYHOoITTaIIKPF3a3ncYyQhJI4Gh0lQK
+ jwAPOtGN
+ OgbP23Lg3N7yDTi6eSrFahEmDeSOOQi0llsUZ7Q1X6EFtPajZZBMngg20L7VOZXzU6NaAsKoomD1SgxFw7i8bXhEPBdo16JQxzDBLvIBwxE9qwtDDM5CJVlEL9j57zt0ahwKNADDeEkCrDVRTNdHqQnGvhT6GXo5QrHQ7iOZxyz8Go0B4rCp/hmZJJlvo3Qdo0efBNEGJ1Gi/HlDHsBT1yutT3iKGGWCcYdJO5qfNUzo607NEqKoIoqNXx7Oq0Hm/y1YIyM7gJk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,21 +96,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> TL;DR - anyway, I think get_maintainer.pl --nogit (and trim anyone who
-> isn't listed as a maintainer or reviewer) is the right balance to take -
-> maintainers with screwed up email set ups (*cough* naming no names
-> beginning with L and ending with orenzo) and reviewers who have signed up
-> for lots of mail I think are totally fine to always send to.
+On Thu, Mar 19, 2026 at 04:05:38PM +0800, Lance Yang wrote:
+> Ccing Willy
+>
+> IIUC, this is a dup of the earlier report[1], which I looked into back
+> in January. The root cause is the same: collapse_file() calls
+> xas_lock_irq() without resetting the xas state first, tripping the
+> XAS_INVALID() assertion:
+>
+> #define xas_lock_irq(xas)	xa_lock_irq(XAS_INVALID(xas)->xa)
+>
+> static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
+> {
+> 	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
+> 	return xas;
+> }
+>
+> Added by commit:
+>
+> commit 43b00759f21b10142094d1ae5ff65cbb368953a3
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Date:   Sun Dec 14 10:53:31 2025 -0500
+>
+>     XArray: Add extra debugging check to xas_lock and friends
+>
+>     While tracking down a recent bug, we discovered somewhere that had
+>     forgotten to call xas_reset() before calling xas_lock().  Add a debug
+>     check to be sure that doesn't happen in future and fix all the places in
+>     the test suite which were carelessly doing just this.
+>
+>     Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+>     Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>
+> I posted a HACK fix at the time[2], but David pointed out that Willy
+> had mentioned it likely needs more thought[3].
 
-On some simplistic changes (e.g., simple function rename) I sometimes
-drop the Reviewers of subsystems because the simplistic changes are
-mostly just as information to maintainers that there might be conflicts.
+Hmm we shouldn't leave this bug in place while working for a fancier fix??
 
-That helped in the past to reduce the CC lists on series that touch many
-archs / subsystems.
+Can we get _something_ going as an upstream fix? We can improve whatever we do
+later right?
 
--- 
-Cheers,
+David, thoughts?
 
-David
+>
+> [1]
+> https://lore.kernel.org/all/69757ea0.a00a0220.33ccc7.0017.GAE@google.com/
+> [2] https://lore.kernel.org/all/20260125121001.32733-1-lance.yang@linux.dev/
+> [3]
+> https://lore.kernel.org/all/7bce9231-714c-424a-a4e3-dd42734fb767@kernel.org/
+>
+>
+> Thanks,
+> Lance
+>
+
+Cheers, Lorenzo
+
+>
+> On 2026/3/19 15:20, syzbot wrote:
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    95c541ddfb08 Add linux-next specific files for 20260316
+> > git tree:       linux-next
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=15ccc216580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=ed431987028345c6
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=8961cb270ae74b4129fb
+> > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f778da580000
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cc006a580000
+> >
+> > Downloadable assets:
+> > disk image: https://storage.googleapis.com/syzbot-assets/c40f27ad73d8/disk-95c541dd.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/bd811888f684/vmlinux-95c541dd.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/3b72363d7dbd/bzImage-95c541dd.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > Reported-by: syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com
+> >
+> > node ffff88805d558b00 offset 0 parent ffff88805d558840 shift 0 count 3 values 0 array ffff88807a8195c0 list ffff88805d558b18 ffff88805d558b18 marks 0 0 0
+> > ------------[ cut here ]------------
+> > kernel BUG at ./include/linux/xarray.h:1441!
+> > Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+> > CPU: 0 UID: 0 PID: 6001 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+> > RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
+> > RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
+> > RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
+> > Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
+> > RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
+> > RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
+> > RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+> > RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
+> > R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
+> > R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
+> > FS:  000055557e3c2500(0000) GS:ffff888125437000(0000) knlGS:0000000000000000
+> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: 000020000000b000 CR3: 000000007ac66000 CR4: 00000000003526f0
+> > Call Trace:
+> >   <TASK>
+> >   collapse_single_pmd+0x22b/0x4510 mm/khugepaged.c:2437
+> >   madvise_collapse+0x34c/0x820 mm/khugepaged.c:2859
+> >   madvise_vma_behavior+0x1094/0x4460 mm/madvise.c:1362
+> >   madvise_walk_vmas+0x573/0xae0 mm/madvise.c:1711
+> >   madvise_do_behavior+0x386/0x540 mm/madvise.c:1927
+> >   do_madvise+0x1fa/0x2e0 mm/madvise.c:2020
+> >   __do_sys_madvise mm/madvise.c:2029 [inline]
+> >   __se_sys_madvise mm/madvise.c:2027 [inline]
+> >   __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2027
+> >   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >   do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+> >   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > RIP: 0033:0x7f90d419c799
+> > Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> > RSP: 002b:00007ffd50711398 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+> > RAX: ffffffffffffffda RBX: 00007f90d4415fa0 RCX: 00007f90d419c799
+> > RDX: 0000000000000019 RSI: 0000000000600003 RDI: 0000200000000000
+> > RBP: 00007f90d4232c99 R08: 0000000000000000 R09: 0000000000000000
+> > R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> > R13: 00007f90d4415fac R14: 00007f90d4415fa0 R15: 00007f90d4415fa0
+> >   </TASK>
+> > Modules linked in:
+> > ---[ end trace 0000000000000000 ]---
+> > RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
+> > RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
+> > RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
+> > Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
+> > RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
+> > RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
+> > RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+> > RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
+> > R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
+> > R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
+> > FS:  000055557e3c2500(0000) GS:ffff888125537000(0000) knlGS:0000000000000000
+> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: 00007f8156602000 CR3: 000000007ac66000 CR4: 00000000003526f0
+> >
+> >
+> > ---
+> > This report is generated by a bot. It may contain errors.
+> > See https://goo.gl/tpsmEJ for more information about syzbot.
+> > syzbot engineers can be reached at syzkaller@googlegroups.com.
+> >
+> > syzbot will keep track of this issue. See:
+> > https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> >
+> > If the report is already addressed, let syzbot know by replying with:
+> > #syz fix: exact-commit-title
+> >
+> > If you want syzbot to run the reproducer, reply with:
+> > #syz test: git://repo/address.git branch-or-commit-hash
+> > If you attach or paste a git patch, syzbot will apply it before testing.
+> >
+> > If you want to overwrite report's subsystems, reply with:
+> > #syz set subsystems: new-subsystem
+> > (See the list of subsystem names on the web dashboard)
+> >
+> > If the report is a duplicate of another one, reply with:
+> > #syz dup: exact-subject-of-another-report
+> >
+> > If you want to undo deduplication, reply with:
+> > #syz undup
+>
 
