@@ -4,97 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 351A61088E67
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 03:09:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E901088E6C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 03:14:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E3B66B03B8; Wed, 18 Mar 2026 23:09:27 -0400 (EDT)
+	id BBBA26B03BA; Wed, 18 Mar 2026 23:14:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76DB26B03BA; Wed, 18 Mar 2026 23:09:27 -0400 (EDT)
+	id B6C9D6B03BC; Wed, 18 Mar 2026 23:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6350A6B03BB; Wed, 18 Mar 2026 23:09:27 -0400 (EDT)
+	id A5B526B03BD; Wed, 18 Mar 2026 23:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F80F6B03B8
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:09:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E08DE13A7B5
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:09:26 +0000 (UTC)
-X-FDA: 84561331932.19.5E17636
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 798A9120013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:09:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NwIljfUc;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 912E46B03BA
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 23:14:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35E911B75AE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:14:21 +0000 (UTC)
+X-FDA: 84561344322.20.8E0916F
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7706B40006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:14:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Eyv7fCfR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of lenohou@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=lenohou@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773889765;
+	s=arc-20220608; t=1773890059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bZybTTbg8AAvyS6cqk7gUlRWFfSkSvTu+/1JIIo5e2U=;
-	b=8QyFFIKMils+l3YFVGxtCW0F2tJTSVSQa+n6wGffd2ZRkY8Ik74rtP3a8/nBF8SjvLYuL/
-	vv/BiLnbnh5KwVxZIl555yWRKdHcW951am3jWJgHnfgcsoMwQIntaRAkUaYlbT59pvcAwv
-	l3aKTzkDpb/dl+5x96B38R1Rg1xPNnM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773889765; a=rsa-sha256;
+	bh=VKvMcKFaJqWhdEDJm7I22Ycbq4zxryzlgrB1A0RyvyY=;
+	b=K8TXx1MK7BelxpcTYj6FD1+tHHfnlLsqJrZnton0ekElFr4TwbMgLUqMwCR20eIgm1nFe6
+	tzr2p238RxrEyV8uPSDxzTCcToE0e6o2isqM5F6gk/te1C8Ro4a6k5x7H1ELtbmOVXVg+L
+	iECP3I1iVWXl8tzrGal0U+q8vAKxiq8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773890059; a=rsa-sha256;
 	cv=none;
-	b=sC3B6vrvfeJaSeBE4gzrgqz5Nm6I9Y9glhYmAbvj5nOZGRWae/aaaghf6+5dSnoupy7LbJ
-	yJccnz0bwAr0jbJdYBYwNFebNqm3HTSSDKnBiCdw8TvqnYOWZJrie5Y60JyCiYTk/o3MMf
-	X0mCUhg2wZk4violw0Zfl7TYc64vd3Q=
+	b=NL9gvUGcVXTkK8G4ChYG7pS1C8uA6WkYD/54bO1jjuYrZ+w//0feeKAL2jbl2zXQXwLQ4z
+	93AwQJ9Lrks15Bm+xgvXfJSl1Gg7zFEj1zbY23qtGycS+zK1oPFCKkJPjrBYKrEv3Rgtan
+	Xbw/q0NNY5OpJjOQDeyu1tIJTeexQhY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NwIljfUc;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773889761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bZybTTbg8AAvyS6cqk7gUlRWFfSkSvTu+/1JIIo5e2U=;
-	b=NwIljfUcwu6sWUozpAHmhTLmjRPC8kVCnJYqYcu/eAoNJQz5EuDf8KNK0ijl9aGEmcGs38
-	6v5lDGQAqcd0lyC0J2RAmaKqHkieu6iLqAjUYtJt5stIfbKbB5gn3XxnR5VcmvTW5OYhWW
-	jBcAYtFOlHSH1aJB3NrPSqfoesEQJvo=
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org
-Cc: syzbot+de14f7701c22477db718@syzkaller.appspotmail.com,
-	Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	syzkaller-bugs@googlegroups.com,
-	ziy@nvidia.com,
-	rppt@kernel.org,
-	harry.yoo@oracle.com
-Subject: Re: [syzbot] [mm?] general protection fault in zap_huge_pmd
-Date: Thu, 19 Mar 2026 11:09:14 +0800
-Message-Id: <20260319030914.12034-1-lance.yang@linux.dev>
-In-Reply-To: <6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local>
-References: <6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local>
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Eyv7fCfR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of lenohou@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=lenohou@gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-354bc7c2c46so98661a91.0
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773890058; x=1774494858; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VKvMcKFaJqWhdEDJm7I22Ycbq4zxryzlgrB1A0RyvyY=;
+        b=Eyv7fCfRwehCEEBs+yeSe/zFj5YXNYes5a+TZb3OKjBiebPju5tSR1PaZxsI1xoH4C
+         Jd3VYJFE2b4KyGceWJB3GxZQIHjGbH1lDBR73hYK8OZ40NiwImbU04Hm9o4tiPDcMIbs
+         /Nb8leXI70/qC355iCHkjVfKQpb4K+nV0lbBXTa8I1KT/abTE8JLpll6akaKKsHW6TGB
+         VQqv7Hf4ErzpnyHV0VJtAjR0sRTZHDgI7QNoO2m8VAhxGiIVVSjk+TyAOirsRTA/C8Ut
+         xF2BR25zUMfn9T14PGSbISl31kkXVM+GbNV4Hbh9GoXAuCcQrWDhgF35GKbS65IOJ4o0
+         xeeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773890058; x=1774494858;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VKvMcKFaJqWhdEDJm7I22Ycbq4zxryzlgrB1A0RyvyY=;
+        b=emxpBavDKRTHXAaPGnXu670lhP2nGEwd4V6/pdrslGv7laVPwBJBXrtX8/rpK5Noxb
+         xNH1QbX7jo6NROShniQN9T2+g+BBujo5N1aXSvQXQ93XsFa9588uWBMaRNrxRk72ph7k
+         5NwG1vHvfaDSuPUwINtA6VFlos3maincJXXzJVYuxL3b0UtYE/kz72ZfoJs2AsmNMVcq
+         bbm48kWC1JwBMpFp9yP56T9qSIKHTXilg2/3aqZAL6wUjbbqtyWxswDkENCCvRjNRPqk
+         VoHN03zAM8IYNMHZrKucmJ2Cu3Bdw3A1BDE7CRXLVvACuDsxVF3ntU3/giXiWri+4330
+         zLwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXhiGUmt8BSO0b9WifxkEWBbfxemCoUkPLemxmYbwCbRIjV4RFyxd8X/f9zZ/h6KE+ZAc/pjJ/N8w==@kvack.org
+X-Gm-Message-State: AOJu0YzNoIdakH1Xqwm7oGkfvGFpjJ9TIPuDqzn8PMEVYGS4hahX69N1
+	aMxvX9DCL/8/4fRNvTE5+FPAhyFZH0HutwyBuqyIB8+cMKR/hR2m/tBG
+X-Gm-Gg: ATEYQzzHpMmsLVFEERjGKcwLQCfhkoB36cIn3cH0qr8AdMQrOc0XLIkBBoaO1RlM9UD
+	tVXAdCIBW3SzwdMMWQLe6EOcdUQ4vX4l2rkkFTxSk1m5b9J+3T3k0ind7qeBfq3dcPm7s6tSnq7
+	zSHWp4IKV1uWxNZooxhH0sbMzS6FSNncLRwdwh8kfgzlTV4eJWQE/rmRrJEonN/xMxWzXFPczA+
+	ajxe5uE8MwpkISN/D7boElgUSga0HGfLqRF6+NAT/VAl7ORTBpYDikcalk53lPKK1+XOjAoXzuQ
+	MQz55Kh2W9ZD60Hn+JDAdQoIm1PbIGtECX88RB5DtSujOS7PXJ1x1MePN4zplXZ48aEj3fa04mL
+	kbbgzVeSqBcik2vAjFNF8RrPsRGLuuv+CrOUBM/AUaFN3Ss88TwLfkSO4RBXMVUfUMa2qKXYpvs
+	JDcCD6WRZX7/pjj6wfeWrTT5O3UrU23oQ1LloavKry3TaJ64EJSnT4RObl6Z2leJlRzDIUaUlps
+	d2MVAHDNXZiTDnRPhxHQswooxac+/pIysdiEoT7woMq4G9aSQ==
+X-Received: by 2002:a17:90b:2d4f:b0:35b:96bb:47b5 with SMTP id 98e67ed59e1d1-35bb9e87d51mr5385781a91.15.1773890057825;
+        Wed, 18 Mar 2026 20:14:17 -0700 (PDT)
+Received: from ?IPV6:2408:840d:1c00:46ad:3de1:fd36:5f98:c03? ([2408:840d:1c00:46ad:3de1:fd36:5f98:c03])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc610c1efsm1113203a91.14.2026.03.18.20.14.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Mar 2026 20:14:17 -0700 (PDT)
+Message-ID: <f27eee3d-e8d7-420f-8525-b0f94706c0c3@gmail.com>
+Date: Thu, 19 Mar 2026 11:14:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: Barry Song <21cnbao@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Jialing Wang <wjl.linux@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Kairui Song <ryncsn@gmail.com>, Bingfang Guo <bfguo@icloud.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260318-b4-switch-mglru-v2-v4-1-1b927c93659d@gmail.com>
+ <CAGsJ_4xHvtjkPp5Ar16UXqZhQYHpdYcqCWMmFbGGUvK-kCH+uw@mail.gmail.com>
+ <8c01a707-f798-4649-8441-d82dd0dac7b9@gmail.com>
+ <CAGsJ_4y+SwwCtDu8zPYnuSdyS+1=q77d1Fwq6eHbqrnw8-6K=w@mail.gmail.com>
+ <4807e460-054c-49ed-9792-f5000d7b3820@gmail.com>
+ <CAGsJ_4yZEOS+Ht38hqeUGnzLktuVUfvCgusqS4JQCb34eYLXYQ@mail.gmail.com>
+Content-Language: en-US
+From: Leno Hou <lenohou@gmail.com>
+In-Reply-To: <CAGsJ_4yZEOS+Ht38hqeUGnzLktuVUfvCgusqS4JQCb34eYLXYQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7706B40006
+X-Stat-Signature: txe6j75rx4e8pmypfaq3if9864oxzzdh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 798A9120013
-X-Stat-Signature: i6cuj5uesomwi886oidar1kdidyqd4tu
-X-HE-Tag: 1773889763-297946
-X-HE-Meta: U2FsdGVkX18VpvY/UzXhra73XU/wVYDpnJ2MUQLG5PkTHal/LZ20+0KeE9uOEmZ/sbGIREvVbpVCALPpSqyJzVkCIuqDwX/ByBH01ZYlLcnCizUCxhqJUAnysNKH9o3D10QBIr3DsOnQFc2Ful6SXez95LGWWfzky2gs4BzrgPBf/DTv7cnTcivhdEuH0xzVH1/IImu1UIwPvELG0vyDow4i24cHXBEYN20KvmY7juWeXor2n7kt3fkBN85nBJZS5RXkrwKvh9LmQlsxyR6mGUcM4b1fgzLUZkufkMCz5vWCKYj8JNDlv7NLuQ72VzAudyrnomaWhFq7oG/EEjpykqgUm44nQeHay7kUctYpt39vSiV6urR2iXaxnKipRUk4X7+bM/VGe7Bsn/+ZlDs6uMhMzyhHYqkmfKWk2s7cO2W0sqjMtR4CbWlpDxYMKNQGVMyOsizXuoH8qrCfdmXzxfTK43T3xMMU1dXIqHgHEcN1UrY2NGHjiCNW4o1/GgjsPHwnmHek2sZsFvmr7xbnfE+H3Bq9H4sfJ8XeiLSuWW4Kwsq/VM+0u+eotWzQmRIZXAxic3dAlwphlAfQcWupdLdzuy/EXSGmboQL3r6xtmoNydrKuguxxAHSsNROSX96DkCFL52s9A7BKjGSrInxUxfomvT+qp8d/I0RsmEbgN+BFEty70vTdxyGPXu3uZEPDe7eBXegvIB4UpZNOYrxKZv0dMwEgDW/IeL9aNyFog7pYRF8Vrm9KsmrPzWPnmSwxJexGpM6PPbUaomoFgJTNRwCLaJyt4h8E55bQCac7VdNRJtKygMhjZ2qF+qffM8SFTXtWjkwM+7XO4xpJronl6wpfJzir1YFhcr9noqNJjfPovu+u6FKlxZmg3OjZLXfZXMD54rehkWqisXU3Z9bcy9CD88tvRHi9VNZXaCBakevUFAZBChWSqyBm+VVBkY1xEtzPTZOouJIXwV8mfs
- EUrYUFx/
- OPjE0Ldoe4lfXp0B5qX3vJRKuPD5rHpYIS5nvoMaMwI9jp3epmRzm+3PVlG4SeAa7/+F0m1BNKgftnJSrSyVUO/WSk54rmhE8Mv3AwYsbfyc63juEz+OUPZSjackXz0foD8HPebYGs/J6o4A3TJ7Nn/U3piBovb7Kqy0v0ZPk+oiT3NAGELKnK1nxqt1BP8316yDSwTnTAo7cz6S/nYDNNSTKP2Eh2wOUjzhlrUd7qUErMny2N8yEqY/JeO2nrLfUOpQr3q3c4nM7u3vChtZufx9qzZY2dcFMViE29iJdd9HE3SMpVI6dsVxq+5o1st06maHuI6yLwMJ7HKW7srqsfisaAc9Ck5h6drDwoqMPfDUUjkweb8M3tsPylpm7sFy1fPbsxW4aQN1/aq+gxEQ1AjyVWu4BltfGJLuSGCOGcitA0AyJyQZuMjYLIiAFxqSLj8WKaFfqkNXRQCtk2Y/6LdANejmAIGQovwyQgXCCUWQVu4qt6KwKMpXwppo36qt82qG1YlQ0RhnDtmXUN5hPEpl+R2ww41edOLI43G505pz9tvZyAQ8yiefoaDgf26k8HuINGF8u5kU1IxMR9vQ+ddpCXCIwaqIxjECkN+FOXszJ3O52za6lW5UwEjRBk8aH9yckAZBwTUz2jqDKBM+p3dpm9IYPcqMs2lnxMdODrfrHhYNwb/mLR0OA6tbmL8zbirVHHCKjelxpm9nrM/9DHbj4xMx0MpV4j1z/fl/YZAtwk/wRtZ8ThwvfOOk2dNKBsYwhScUZx/v0J6H/tsO9nCwW7IYlU7NQU8SnY8IukTMOIxVVdhcEikk1tLiTrEUu9tF2
+X-HE-Tag: 1773890059-104448
+X-HE-Meta: U2FsdGVkX1+6gxmpHaHHhGKG8rrjqVHnv3gnsLHU8ezTJQJ4uyV84II7bx2uRcZ5VmD6mNz+2SnO2JEuWcIROdqYUVXVkCHJ/sT/+TdJctS8apE/ih0h/kixr/0+njnSNNDhkSPfXIU5f1DMIEZ7CDptvpt4w+/qk0r2al72IIT3JA4Lk2CM0JyxutAWP/axAI2oT+P4N4CAitJx61m9wqa0sTBBh3mKE6hOUb/hCv2oHQI9xKebBnrSaQzCu01kFPtgvslZ8x9yiWrZT5WSaOyEiAhU/GJuJWn+hIzvVVj3MyC8OFyOZdrSYU8FTQKKuZNLmmxxZUkzKTj05FP9DhCwXgkxMK+GmZ/bMe3T7YkJIx7A+LtoTCT55oO/eJ9M1F+Aa3J8BapSrreIWEYhHIqNCVmP/KP8FBzhysUBumdotRbgN/+t5iYhEtoXH+EsZp7q8iX36dbXR5QgnntxdabLJH85V4bHP4lFwwbpcKYIaW+eAO2+8e+X7zA4R6rVySmbd9SOakQRul2jLReSfqohsIu0w95afklWiJXJyEecynQ0sia8jqOSPmwctgZ/KDZrlMdOqMqj4Zlo/jeXt3unh6rAJ6QVkb9n2iqZqMr1nfT1+T5+zNoP43XnOYOs8Oz4igruWq3rtNeqTo8192Np3xBQeyVfOGdN6YOCcZb6ldiCeEh/U5ivnVLR9BzSXSi68FsLqPPEagsy0EDYIo7ac6P9zdh9ISuSYUdl13tTMPX4cx34nM/q9CTFWIZV+wF2QOmFLvANKfPuE+aPe4pM1/uF0PQMFpET75/yhUMoMzxsAb5vIpjox5/iwFQn7FuL5ddmQXztpglj5na/MI5886w5H05dP78mri36jRQL955so/MorBeM8znRpOMmp6etJGFrNEMKZ0Ti/DyyBQFe3W/shn/Q5uHNDwPzoyyEHs7/v4axXwkJ6mkR6ORiOiWVlp64xgNqVZ8nU3L
+ ZsRTSIgY
+ ESaXtJWBnXIf5P+IAIg/bVjKdZQCkTridHnJRlBWcn7kS5s+YDV98JoMyQeYqenecNkpcYuXGvsuIfgSFwihVcSwgMr8gLF6HXbjdwNYgSonOslAG+mxoxml1eqGA0XQYSnGg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,270 +131,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Wed, Mar 18, 2026 at 05:26:32PM +0000, Lorenzo Stoakes (Oracle) wrote:
->+cc Mike for uffd, Harry for fix that also resolves this, see below
->
->On Wed, Mar 18, 2026 at 08:03:22AM -0700, syzbot wrote:
->> Hello,
+On 3/19/26 5:29 AM, Barry Song wrote:
+> On Wed, Mar 18, 2026 at 8:56 PM Leno Hou <lenohou@gmail.com> wrote:
 >>
->> syzbot found the following issue on:
+>> On 3/18/26 4:30 PM, Barry Song wrote:
+>>> On Wed, Mar 18, 2026 at 4:17 PM Leno Hou <lenohou@gmail.com> wrote:
+>> [...]
+>>>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>>>> index 33287ba4a500..88b9db06e331 100644
+>>>>>> --- a/mm/vmscan.c
+>>>>>> +++ b/mm/vmscan.c
+>>>>>> @@ -886,7 +886,7 @@ static enum folio_references folio_check_references(struct folio *folio,
+>>>>>>            if (referenced_ptes == -1)
+>>>>>>                    return FOLIOREF_KEEP;
+>>>>>>
+>>>>>> -       if (lru_gen_enabled()) {
+>>>>
+>>>> documentation as following:
+>>>>
+>>>> /*
+>>>>     * During the MGLRU state transition (lru_gen_switching), we force
+>>>>     * folios to follow the traditional active/inactive reference checking.
+>>>>     *
+>>>>     * While MGLRU is switching,the generational state of folios is in flux.
+>>>>     * Falling back to the traditional logic (which relies on PG_referenced/
+>>>>     * PG_active flags that are consistent across both mechanisms) provides
+>>>>     * a stable, safe behavior for the folio until it is fully migrated back
+>>>>     * to the traditional LRU lists. This avoids relying on potentially
+>>>>     * inconsistent MGLRU generational metadata during the transition.
+>>>>     */
+>>>>
+>>>>>> +       if (lru_gen_enabled() && !lru_gen_draining()) {
+>>>>>
+>>>>> I’m curious what prompted you to do this.
+>>>>>
+>>>>> This feels a bit odd. I assume this effectively makes
+>>>>> folios on MGLRU, as well as those on active/inactive
+>>>>> lists, always follow the active/inactive logic.
+>>>>>
+>>>>> It might be fine, but it needs thorough documentation here.
+>>>>>
+>>>>> another approach would be:
+>>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>>> index 33287ba4a500..91b60664b652 100644
+>>>>> --- a/mm/vmscan.c
+>>>>> +++ b/mm/vmscan.c
+>>>>> @@ -122,6 +122,9 @@ struct scan_control {
+>>>>>            /* Proactive reclaim invoked by userspace */
+>>>>>            unsigned int proactive:1;
+>>>>>
+>>>>> +       /* Are we reclaiming from MGLRU */
+>>>>> +       unsigned int lru_gen:1;
+>>>>> +
+>>>>>            /*
+>>>>>             * Cgroup memory below memory.low is protected as long as we
+>>>>>             * don't threaten to OOM. If any cgroup is reclaimed at
+>>>>> @@ -886,7 +889,7 @@ static enum folio_references
+>>>>> folio_check_references(struct folio *folio,
+>>>>>            if (referenced_ptes == -1)
+>>>>>                    return FOLIOREF_KEEP;
+>>>>>
+>>>>> -       if (lru_gen_enabled()) {
+>>>>> +       if (sc->lru_gen) {
+>>>>>                    if (!referenced_ptes)
+>>>>>                            return FOLIOREF_RECLAIM;
+>>>>>
+>>>>> This makes the logic perfectly correct (you know exactly
+>>>>> where your folios come from), but I’m not sure it’s worth it.
+>>>>>
+>>>>> Anyway, I’d like to understand why you always need to
+>>>>> use the active/inactive logic even for folios from MGLRU.
+>>>>> To me, it seems to work only by coincidence, which isn’t good.
+>>>>>
+>>>>> Thanks
+>>>>> Barry
+>>>>
+>>>> Hi Barry,
+>>>>
+>>>> I agree that using !lru_gen_draining() feels a bit like a fallback path.
+>>>> However, after considering your suggestion for sc->lru_gen, I’m
+>>>> concerned about the broad impact of modifying struct scan_control.Since
+>>>> lru_drain_core is a very transient state, I prefer a localized fix that
+>>>> doesn't propagate architectural changes throughout the entire reclaim stack.
+>>>>
+>>>> You mentioned that using the active/inactive logic feels like it works
+>>>> by 'coincidence'. To clarify, this is an intentional fallback: because
+>>>> the generational metadata in MGLRU becomes unreliable during draining,
+>>>> we intentionally downgrade these folios to the traditional logic. Since
+>>>> the PG_referenced and PG_active bits are maintained by the core VM and
+>>>> are consistent regardless of whether MGLRU is active, this fallback is
+>>>> technically sound and robust.
+>>>>
+>>>> I have added detailed documentation to the code to explain this design
+>>>> choice, clarifying that it's a deliberate transition strategy rather
+>>>> than a coincidence."
+>>>
+>>> Nope. You still haven’t explained why the active/inactive LRU
+>>> logic makes it work. MGLRU and active/inactive use different
+>>> methods to determine whether a folio is hot or cold. You’re
+>>> forcing active/inactive logic to decide hot/cold for an MGLRU
+>>> folio. It’s not that simple—PG_referenced isn’t maintained
+>>> by the core; it’s specific to active/inactive. See folio_mark_accessed().
+>>>
+>>> Best Regards
+>>> Barry
 >>
->> HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
->
->For some reason I have to git pull --tags to get this... commit hash locally?
->Strange.
->
->> git tree:       linux-next
->> console output: https://syzkaller.appspot.com/x/log.txt?x=119ddd52580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
->> dashboard link: https://syzkaller.appspot.com/bug?extid=de14f7701c22477db718
->> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b44da580000
->> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1537b8da580000
->
->@SYZKALLER guys:
->
->Note: the repro is incorrectly labelling;
->
->  //  ioctl$UFFDIO_CONTINUE arguments: [
->  //    fd: fd_uffd (resource)
->  //    cmd: const = 0xc020aa08 (4 bytes)
->
->as UFFDIO_CONTINUE (0x7), it's actually UFFDIO_POISION (0x8) as you can see
->from least-significant byte.
-
-#define _UFFDIO_CONTINUE		(0x07)
-#define _UFFDIO_POISON			(0x08)
-
-Ouch. I spent quite some time trying to figure out how UFFDIO_CONTINUE
-could possibly install PTE markers and push the loop past the VMA
-boundary - turns out it can't, because it was UFFDIO_POISON all along.
-
->
->It's also stating things like mmap flags wrong e.g.:
->
->      /*flags=MAP_UNINITIALIZED|MAP_POPULATE|MAP_NORESERVE|MAP_NONBLOCK|MAP_HUGETLB|0x8c4b815a506002b2*/
->      0x8c4b815a5465c2b2ul,
->
->AT LEAST MAKE THE NUMBERS MATCH :) this doesn't help with debugging.
->
->AI hallucinations?
->
->It also never returns with an error if a syscall doesn't work which means the
->repro can run 'ok' but actually be failing on something, this really slows down repro'ing.
->
->Maybe hard, but be good to figure out maintainers based on the stuff the repro
->uses uffd -> uffd entry in MAINTAINERS :)
->
->OK rants done :) got it repro'ing locally now.
->
+>> Hi Barry,
 >>
->> Downloadable assets:
->> disk image: https://storage.googleapis.com/syzbot-assets/09145161a8a9/disk-b84a0ebe.raw.xz
->> vmlinux: https://storage.googleapis.com/syzbot-assets/b64c254e474c/vmlinux-b84a0ebe.xz
->> kernel image: https://storage.googleapis.com/syzbot-assets/a7c33f5f7f45/bzImage-b84a0ebe.xz
+>> Thank you for your patience and for pointing out the version-specific
+>> nuances. You are absolutely correct—my previous assumption that the
+>> traditional reference-checking logic would serve as a robust fallback
+>> was fundamentally flawed.
 >>
->> IMPORTANT: if you fix the issue, please add the following tag to the commit:
->> Reported-by: syzbot+de14f7701c22477db718@syzkaller.appspotmail.com
+>> After re-examining the code in v7.0 and comparing it with older versions
+>> (e.g., v6.1), I see the core issue you highlighted:
 >>
->> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASAN PTI
->> KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
->> CPU: 1 UID: 0 PID: 5994 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
->> RIP: 0010:folio_test_anon include/linux/page-flags.h:718 [inline]
->
->static __always_inline bool folio_test_anon(const struct folio *folio)
->{
->	return ((unsigned long)folio->mapping & FOLIO_MAPPING_ANON) != 0; <-- NULL folio
->}
->
->
->> RIP: 0010:zap_huge_pmd+0x7b1/0x1030 mm/huge_memory.c:2463
->
->int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->		 pmd_t *pmd, unsigned long addr)
->{
->	...
->
->	if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
->		...
->	} else if (is_huge_zero_pmd(orig_pmd)) {
->		...
->	} else {
->		struct folio *folio = NULL;
->
->		...
->
->		if (pmd_present(orig_pmd)) {
->			...
->		} else if (pmd_is_valid_softleaf(orig_pmd)) {
->			...
->		}
->
->		if (folio_test_anon(folio)) { <-- if !pmd_present() && !pmd_is_valid_softleaf(orig_pmd)
->
->Yikes. We should probably put an } else { VM_WARN_ON_ONCE(1); } at least above
->this...
->
->
->
->
->> Code: 08 00 00 e8 11 e0 92 ff 48 c7 44 24 10 00 00 00 00 4c 8b 3c 24 4c 8d 75 18 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 f1 43 fc ff 49 8b 1e 48 89 de 48 83
->> RSP: 0018:ffffc90003bb7550 EFLAGS: 00010206
->> RAX: 0000000000000003 RBX: f000000000000000 RCX: dffffc0000000000
->> RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
->> RBP: 0000000000000000 R08: ffff88807cc9802f R09: 1ffff1100f993005
->> R10: dffffc0000000000 R11: ffffed100f993006 R12: ffff88807cc98028
->> R13: fffffffffffffa00 R14: 0000000000000018 R15: ffffc90003bb7ac0
->> FS:  0000000000000000(0000) GS:ffff888124ee0000(0000) knlGS:0000000000000000
->> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> CR2: 00002000000000c0 CR3: 000000000e94a000 CR4: 00000000003526f0
->> Call Trace:
->>  <TASK>
->>  zap_pmd_range mm/memory.c:1990 [inline]
->
->			else if (zap_huge_pmd(tlb, vma, pmd, addr)) { <-- here
->
->>  zap_pud_range mm/memory.c:2032 [inline]
->>  zap_p4d_range mm/memory.c:2053 [inline]
->>  __zap_vma_range+0xa82/0x4bd0 mm/memory.c:2093
->>  unmap_vmas+0x379/0x530 mm/memory.c:2162
->>  exit_mmap+0x280/0xa10 mm/mmap.c:1302
->>  __mmput+0x118/0x430 kernel/fork.c:1180
->>  exit_mm+0x18e/0x250 kernel/exit.c:581
->>  do_exit+0x8b9/0x2490 kernel/exit.c:962
->>  do_group_exit+0x21b/0x2d0 kernel/exit.c:1116
->>  __do_sys_exit_group kernel/exit.c:1127 [inline]
->>  __se_sys_exit_group kernel/exit.c:1125 [inline]
->>  __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1125
->>  x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
->>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->>  do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
->>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
->So this is on process teardown.
->
->Looking at the repro (+ trying to decode what it ACTUALLY does :) it looks like
->it's installing a PTE_MARKER_POISONED at a PMD level via hugetlb, because since
->commit 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
->this is supported.
->
->Normally this would be handled by __unmap_hugepage_range():
->
->	if (unlikely(is_vm_hugetlb_page(vma))) {
->		...
->		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
->	} else {
->		...
->		next = zap_p4d_range(tlb, vma, pgd, addr, next, details);
->	}
->
->But for some reason the zap_p4d_range() path is being used.
->
->I got a the repro reliably working locally (not sure why syzkaller didn't
->bisect) so I have bisected it to commit 7d4d4de3ac3e ("userfaultfd: introduce
->mfill_get_vma() and mfill_put_vma()").
->
->And.. of course, after spending (wasting? :) a long time on this, it's already
->fixed...
->
->It seems it's fixed by https://lore.kernel.org/linux-mm/abehBY7QakYF9bK4@hyeyoo/
->
->Before mfill_atomic() would initialise some mfill_state helper struct like this:
->
->	struct mfill_state state = (struct mfill_state){
->		.ctx = ctx,
->		.dst_start = dst_start,
->		.src_start = src_start,
->		.flags = flags,
->
->		.src_addr = src_start,
->		.dst_addr = dst_start,
->	};
->
->BUT not initialise .len = len
->
->So length from then on is assumed to be 0.
->
->OK so the repro, again, generates TOTALLY incorrect labelling:
->
->  //  ioctl$UFFDIO_CONTINUE arguments: [
->  //    fd: fd_uffd (resource)
->  //    cmd: const = 0xc020aa08 (4 bytes)
->  //    arg: ptr[in, uffdio_continue] {
->  //      uffdio_continue {
->  //        range: uffdio_range {
->  //          start: VMA[0xc00000]
->  //          len: len = 0xc00000 (8 bytes)
->  //        }
->  //        mode: uffdio_continue_mode = 0x0 (8 bytes)
->  //        mapped: int64 = 0x0 (8 bytes)
->  //      }
->  //    }
->  //  ]
->  *(uint64_t*)0x200000000280 = 0x200000400000;
->  *(uint64_t*)0x200000000288 = 0xc00000;
->  *(uint64_t*)0x200000000290 = 0;
->  syscall(__NR_ioctl, /*fd=*/r[0], /*cmd=*/0xc020aa08,
->          /*arg=*/0x200000000280ul);
->
->In reality this is:
->
->  struct uffdio_poison poison = {
->      .range = {
->          .start = 0x200000400000,
->          .len   = 0xc00000,         /* 12MB */
->      },
->      .mode = 0,
->  };
->
->(!!!)
->
->Which in the kernel calls
->
->userfaultfd_ioctl()
->-> userfaultfd_poison()
->-> validate_range() -> validate_unaligned_range() <-- would ordinarily reject 0 len!!
->-> mfill_atomic_poison()
->-> mfill_atomic() [ hits bug]
->-> mfill_get_vma()
->-> uffd_mfill_lock(..., len=0!)
->
->static struct vm_area_struct *uffd_mfill_lock(struct mm_struct *dst_mm,
->					      unsigned long dst_start,
->					      unsigned long len)
->{
->	struct vm_area_struct *dst_vma;
->
->	dst_vma = uffd_lock_vma(dst_mm, dst_start);
->	if (IS_ERR(dst_vma) || validate_dst_vma(dst_vma, dst_start + len))
->		return dst_vma;
->}
->
->Here validate_dst_vma() succeeds trivially as len is 0
->
->BUT. The rest of mfill_atomic() uses len, not state.len.
->
->So this results in ONLY the validation check using the bogus len=0, and works
->with a 12MB size.
->
->Note that in the repro, we try to map a hugetlb VMA of (weirdly) 9.36 MB.
->
->Because we align the hugetlb and round it up from this to 10mb we get VMAs like:
->
->  0x1ffffffff000                          0x200000a00000                    0x200001001000
->  |---------|------------------------------|-----------------------|---------|
->  |1pg none |  2560 pages (10 MB) hugetlb  | 1535 pages (6MB) WRX  | 1pg none|
->  |---------|------------------------------|-----------------------|---------|
->            0x200000000000                                         0x200001000000
->
->Because of the len bug, we happily try to install poison markers into 2 MB of
->the 1535 page anon WRX region which is not hugetlb and then BOOM.
->
->So Harry's fix resolves this, but we should handle this case better in
->zap_huge_pmd(), I will send a patch for that.
->
+>> 1. Evolution of PG_referenced: In older kernels, lru_gen_inc_refs()
+>> often interacted with the PG_referenced bit, which inadvertently
+>> provided a 'coincidental' hint for the legacy reclaim path. However, in
+>> v7.0+, lru_gen_inc_refs() has evolved to use set_mask_bits() on the
+>> LRU_REFS_MASK bitfield, and it no longer relies on or updates the legacy
+>> PG_referenced bit for MGLRU folios.
+>>
+>> 2. The Logic Flaw: When switching from MGLRU to the traditional LRU,
+>> these folios arrive at the legacy reclaim path with PG_referenced unset
+>> or stale. If I force them through the legacy folio_check_references()
+>> path, folio_test_clear_referenced(folio) predictably returns 0. The
+>> legacy path interprets this as a 'cold' folio, leading to premature
+>> reclamation. You are correct that forcing this active/inactive logic
+>> onto MGLRU folios is logically inconsistent.
+>>
+>>
+>> 3. My Revised Approach: Instead of attempting to patch
+>> folio_check_references() with a fallback logic, I have decided to keep
+>> the folio_check_references() logic unchanged.
+>>
+>> The system handles this transition safely through the kernel's existing
+>> reclaim loop and retry mechanisms:
+>>
+>>      a) While MGLRU is draining, folios are moved back to the traditional
+>>      LRU lists. Once migrated, these folios will naturally begin
+>> participating in the legacy reclaim path.
+>>
+>>      b) Although some folios might be initially underestimated as 'cold'
+>> in the very first reclaim pass immediately after the switch, the
+>> kernel's reclaim loop will naturally re-evaluate them. As they are
+>> accessed, the standard legacy mechanism will correctly maintain the
+>> PG_referenced bit, and the system will converge to the correct state
+>> without needing an explicit fallback path or state-checking in
+>> folio_check_references().
+>>
+>>
+>> This approach avoids the logical corruption caused by forcing
+>> incompatible evaluation methods and relies on the natural convergence of
+>> the existing reclaim loop.
+>>
+>>
+>> Does this alignment with the existing reclaim mechanism address your
+>> concerns about logical consistency?
+> 
+> My gut feeling is that we probably don’t need to worry
+> too much about the accuracy of hot/cold evaluation during
+> switching, since the system is already in a volatile state
+> at that point. So as long as we avoid introducing unusual
+> logic—such as forcing active/inactive decisions onto MGLRU
+> folios—I’m fine with it.
+> 
+> Ideally, we would add an sc->lru_gen boolean so we know
+> exactly where the folios come from, rather than relying on
+> folio_lru_gen(folio) != -1, which can be misleading.
+> However, if this doesn’t bring much improvement, it may
+> not be worth increasing the complexity.
+> 
 
-Thanks for the thorough analysis Lorenzo!
+Hi Barry,
+
+
+Thank you for the guidance~
+
+
+To address your concerns regarding readability and maintainability:
+
+1. Naming: I'll rename the transition state to lru_gen_switching 
+(instead of draining) to better reflect its purpose.
+
+2. Documentation: I'll add the documentation to explain why we disable
+look-around optimization when LRU is switching.
+
+This approach keeps the patch minimal and fix for the OOM issue during 
+switching without introducing complexity.
+
+See next v5 patch later.
+
+---
+Best regards,
+Leno Hou
+
+
 
