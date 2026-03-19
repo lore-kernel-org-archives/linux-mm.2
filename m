@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACED108E1E2
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5956A108E1E8
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:07:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A60406B0474; Thu, 19 Mar 2026 07:04:16 -0400 (EDT)
+	id A65A86B0476; Thu, 19 Mar 2026 07:07:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A37726B0476; Thu, 19 Mar 2026 07:04:16 -0400 (EDT)
+	id A3C576B0478; Thu, 19 Mar 2026 07:07:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E136B0477; Thu, 19 Mar 2026 07:04:16 -0400 (EDT)
+	id 978EB6B0479; Thu, 19 Mar 2026 07:07:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 80D5B6B0474
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:04:16 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3337313B001
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:04:16 +0000 (UTC)
-X-FDA: 84562528512.05.724EEA0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7B8A6100011
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:04:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ynonna7/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 805D86B0476
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:07:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 359F18BBCD
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:07:19 +0000 (UTC)
+X-FDA: 84562536198.10.08D2932
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8FF6D140012
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:07:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MPr0tZlk;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773918254;
+	s=arc-20220608; t=1773918437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XPMRYKkbtMbn94uZ0URw8XlccS+DCeXKW/7wiMOXUaE=;
-	b=gwVp9J0VGVtE6CEDiaWNpEEI0KHMbGOo7mVrFOB3CI0eDx4VpSsLwTGRnZjetLzWEkOO+Y
-	EiQbZznuXu4jcsgtqsk3dZQ1nTh+lZl3LbPKtLXBS9xCrnZlqUZa2/PlbXlIGl2p7/woCl
-	Cz0SnDDCKVyDiEg3wqnv0+PUIJhjP+E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773918254; a=rsa-sha256;
-	cv=none;
-	b=dcChC355bq+ShzQX4q8HICbDU60G58gvrYVmsCYJS0f83YsjZ9PuKCOmZkoiBExMOmiiyY
-	rAmTOl6N4DnvWGWWiMcTzQQ7gV2I9pjjxy4F1x1p7goFg8AdbzywZO7CICn5r2wzMXGSxh
-	Vf1uw783yMxN8Eo3uhT3bOrnBZ9jc4Y=
+	bh=CV8omsFptplFHRG3329dbSm62IiQAOIJxztrZtHZO5o=;
+	b=u0FkEUaaq4FvhDE7ILPkep4RsYAtbnV9ybElGL1Wx88ZUPr0jUKTKDR4EWUOlKx72+ghko
+	yLqvN6fridCUT6IOdh464/lxDvnFbxgTvY0zoRpX1MoZ2qirC9CyPigOQTjt8JSgSiF2Jt
+	zzUvnQ6LysyOrU7BRn7CucbFiuNr9Lc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ynonna7/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MPr0tZlk;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773918437; a=rsa-sha256;
+	cv=none;
+	b=eI42IWYphcJWrvmtTT5jdm29MaZatPD8JTYP2kS9Sy7wsbhuik8r9rojxIFWbHesQ63xv4
+	yMpFxo+COxj7KVAczF/9in/lWOmT1ryf04dXUoOzFgmZm3gL9JO0rtz0xDRtd5g8jIcl/I
+	hpTvrpsJN4KswVPB1PpdJb0EL5la0IU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76FF1434A1;
-	Thu, 19 Mar 2026 11:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96266C2BCAF;
-	Thu, 19 Mar 2026 11:04:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D2AB960127;
+	Thu, 19 Mar 2026 11:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C57C2BC87;
+	Thu, 19 Mar 2026 11:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773918253;
-	bh=tiY/jpfXZ8QsNdAtW0yG99R1cQtZtW0U4CTYDaODYfE=;
+	s=k20201202; t=1773918436;
+	bh=CV8omsFptplFHRG3329dbSm62IiQAOIJxztrZtHZO5o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ynonna7/UaJfj4Xw/2Ijh11s7+H3Eljp4etVxlZFk8G8J/k9X/C1yqZ/0aUG6iWwv
-	 NfHVjsom6xCGVSt2Oa5h/j9VvqZx/XiJClTZUomg0lJNKmZFMDhJM22cLwY3uym2rj
-	 IClgbHvxttCCFTCJkjq0Z4FtnqNb4TLiB118NAqBCRzii1SqYzgpPeuacBna3JhntF
-	 H+yr4rzAx/40b3kFFIz2lca6Nl25loP0tiL3Y10GO8PDAb0HEdO2npxJ+ibhZz0xzh
-	 XT0XRbMWVHlAz7tAvLzV/DMwCa7W0bWj2rI/iOOgzuz44OnxMFFl7j++OIiQ8aWMVB
-	 W2LVschDReDSA==
-Date: Thu, 19 Mar 2026 11:04:07 +0000
+	b=MPr0tZlkqWEPEvseOW19Cg60NMjtp5kP17U5edVqBT+fTmuI4OT9X3sZ8TO42ap2b
+	 6CR7VPouXluz3LXDcc84dLK1ScsyMw4tMTlngLzanfoxEHerVqCv9kRIaJ4dMDQbd4
+	 A/CtZ1rDJTUHrLP32GcvrH7pMt5eNL8pmUycePYgbkXzzd3q+qt49zIm7QO9I3VLUk
+	 ZtQ3x57fpGuBvHN2JKnSHmCn2scyCrAwJberaF0ywbMH3Nsm+NIeJeKsm+jsD5mQgM
+	 FBxHxRT1Ck5b2DuxfRH0BUwK3jc7mVY2aIJ3/pg5Di0hunuSqfrVPh6eY3oECH61Zg
+	 POFPtTqGJJ+Sw==
+Date: Thu, 19 Mar 2026 11:07:10 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Vlastimil Babka <vbabka@suse.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Lance Yang <lance.yang@linux.dev>, 
-	syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>, david@kernel.org, willy@infradead.org, 
-	Mark Brown <broonie@kernel.org>, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com, 
+	syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>, willy@infradead.org, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com, 
 	syzkaller-bugs@googlegroups.com, dev.jain@arm.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
 	Liam.Howlett@oracle.com, akpm@linux-foundation.org
 Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
-Message-ID: <a94ff663-1df9-4a3c-82c9-8ae8d0f8fdc3@lucifer.local>
+Message-ID: <b5e33e17-86ac-4587-903b-b277fe5b752e@lucifer.local>
 References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
  <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
- <5eaa234e-76e5-45ec-833d-64d76903d1bf@suse.com>
+ <10e5f1d6-077d-4783-aa16-6c8b98cb9e74@lucifer.local>
+ <c3defcfd-74f6-4e70-b002-85bdcba44df9@kernel.org>
+ <b963c391-8576-4351-b121-67ab9a9b2a1e@linux.dev>
+ <8ab10631-4672-4196-b32e-7c5a01707424@kernel.org>
+ <ecedbb39-2df6-4300-99de-a56c7490c3d9@lucifer.local>
+ <37b48d94-9576-4529-8576-d4ed615d4768@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5eaa234e-76e5-45ec-833d-64d76903d1bf@suse.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7B8A6100011
-X-Stat-Signature: 6dwdfdjha4o3ewf7k9cjt958en8g9jmk
+In-Reply-To: <37b48d94-9576-4529-8576-d4ed615d4768@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1773918254-392296
-X-HE-Meta: U2FsdGVkX183Dw6J2b0IPpUQlBVgSfOOUMG9IMrOBE7LMiJwEhK0Gyi8+iIKasmS4A0Tu3Vo05jxwPXJOKEfWf7SJBUhN+OjpoFDmyKRdmF4LnUwz1ToUEgJFiFdcfJ1rB8eNzEs5+GtYxFAZBkIpP1DseLMZEwIn5yGucVgfQmYERneFty4nEv9L7OMFjfg10BZoqD23YNoFLKxdk9cTO5nHLNPtpS0kE4vzPlSmS1rlHZJVjgpTRUR4Hcc9b5N9iQfJ3BmppRtkeW+L9a/zdZdUV2wMhsN0N7ELRdVdS0e+zAF51mFUS+YPBSWI2jj/TbKj/rQorPNvw1c0JkE+f1B35wS9Mh8tbe1nqSgZACansd3YiHJRy04LAju8mTqcoqpSTE8aZzqgkKn6I5oA5h0dmtXiw49wkzMJkuwWvk1h6kwaE1FSAhibumaRKJCPu+qnoJQikL5RkM8HLJJj2tnTa2JlwHde2FyzUYqXETptL83oJPembnUyAn7kapC5hh1BgSvIyTzCRMDnQfLUrjSxVBfTMZKbBMt0P56F4NUueFMWljmAgZuEBXB353Xi6o5GZtm1RjU01MOiW7RVck94WS+DNanV5IZoHVZuRP21h68YssQ0dw23mcl8yYfizbkR+Aj7qAwInU5ahQAybePdDw/DgbI2FqQ91IJ+W+Zq41xvqj5JiyRuWYay5dActRewVUiH4bZfHhkAaj98812d3G8/OBPBuLU3aA6JgYQzbcnC+C34A6PRe7PocI56v76bkV0Ks0uuNrPHHfHdtrp3KvEQK0TdiiEam18KzoQeJzH+WACNnTDulONCI/n0ubgviqm24JLFRmXb3gYUmpoK2dewvTRTz958NMAiTT0SHSw+zQPbz9rDGyBxGGbXBMHJLOUOxKlB4ZfYR1atBPZYmlu3+BNh133GAnjFWc8AfxPDc6waO/tSi2eUin1JqfYdyjHjcS/hhw5NB3
- 6vwRQLoH
- sVJNvPHNC+daufO/DtOYGjGyEp/Xv6ywv9mUJGJra25JyoN6IZEHwGcZ2kb1GRG4GHqPxKEHfH/D9+6uQezxkJ6pQL9EZnLpeHCdc+B7ZondjYtaJDHpZfTVgHWBf33dM9coWQ8ki/lYkF2ZTVxrczWcs3jfxvdvf/p3qNMT/7tAkGHOFF6b5kJlztSuekGA0Tmq9VGjZbmlTa5OhKxRFsh932e8q08KnzrSLrPtz3Flp7EEslPN3d4UGB1QZ4NYOlWHiVkr5kggyIiGV5vTjGERn1OPq5L4UwKRKZ+tViNa6GnT6u15Q6ATUp1rSKJw/Wjy8fhaYIeIhCFAzpCA9pqJ8HKAtxlPkSQn/BqSSgQnjz+VISyP3vh2o3qCDEHmFvoh0hNfQH9b2C0knnamrW79akbsqC+eWHMB0yNwYNfHlziieCseabwW9etASgigOahq6tzsYlMfsJb4kyFYwxNfAVSf4Nj2TL7KmEU+2Nwgaczr4PotEBmq7Z7KA8zBRT9hCPC0G+ltbBimgnZf1z6OOEk9ZJ/JQVmH+BGBxADgTU8FI+KT6WJnPZA==
+X-Rspamd-Queue-Id: 8FF6D140012
+X-Rspamd-Server: rspam08
+X-Stat-Signature: tzwm3p4ayy54cezfcrea5pipk3rgkk1f
+X-HE-Tag: 1773918437-618142
+X-HE-Meta: U2FsdGVkX1+sdhafTx2/VJK6Gk0iVkc2tzfBhA6t1Sc91RAo9RbtaEqgBWs8pW3AG3JIwtbyv5J4vL1Q8K7GgwS7cgh51ivBRCIG9cwgaIDboj4UJEP1H9PAoYleGJDgvjxnjMUqbetwqCIDismXlogkFktLiqwqgfl7tx6dolj+I2ubuIQ9kPTMCU6Tl5cNlHf5qUuJ4J1JnzluMjx1kAtGvoTnCZp0MJBKzeHMvaMmW1/EtovwHO7Rh+OCKQ07TK4i25m/LKeOrNSt7bKaZxJcktZ7tC0uSnOQZjkVu88IrAL8UsxbOJm4jt4M+HscmpU/gM0btjCkHVFO0QGmOYd91VEGd5lIp8EIbNHi4jcl1ZG2cf6WUsiFlXRd5xvvGmpmnLO73/yo621XQl4mYTHT2UyI5xNkhGq6Q8QOuuMZEuJaSXezA7ueEz90rNqRp+EZis7vugNPiPodfQbj7A0A5thpEhDCG1gbJEb6d5qHJAwEVEgVBWexYVeTFReYiBHfJR002rmAciS5GRtAJD8UHUykNhzD/KCJHAzRWVeggoFIVv7lPpCAqRkv3ii/VZA7S/qHmKwn1n7da7CrVMWMDM9hSBgShl9Yxb9Wm8xfhfs0zYWNgbFU6asep8l3BIxj3C/U5QnOtmcVZRASqb2hrqDT0545OYoaD09q8jI2bSrU2KCXUXgCST47W7GlUqTXPRTVO5bMdreUylR/jkzgohJnvMCr5shHzLDSpvc+jGv4PyZjvytuKqrBsCRc9h/OIdOcvfOnA1dg0Q3WwvRV4a33pRKtB4QPO0HLd4MaTFSMm1EvtLCmAOAzcVmdLjNrrTz8ekstQBxthPXy9oTUAUr8jIV7vMbUQhD49UNuKXb3ViPMHg3Mf4dpsAAWP+ZzmbktuNUWVUvjBuE9MzlRrb6Jj4YPb9ivGxjXnjVfI3hX7/bA8crZzSYqKocqFvO6a1i+cKPV07znM1b
+ qmq6gc6e
+ iWelsJP8BvXXajcCqC9ulVX614AQOiGZWrc4Pwp9H3rh3kFeR8iTc4DYSmhOT32F+kFDmy79AB1H5AuSa3a2Xw9Nt3vDNW2MPJW+xCA7Jv7w6XYIhG/raX99ROiNplqMv/IMvF6VPT2Ui0Rc4fyBinHgaxEx55jJUN+kyphVSGW0ArBnSPltMTded2w9mEZjoR0H5PSkjesVGW9E0GsAmxoS1xgJzSgfW4To7mj2tyC7rXr2wDFzeNf83gpQHO+lQt6PAUfxxxkOiCeQY64wRtVONDv66xRyuBpMcGMlVnQQ0OWb82I201DXFDfsmbGX0v2QBWAc4HIoqq4X1yvOfct8yU1DzVtV8YGCXlFlqRaeQs1kmNPses2QgtWIBfWEqHBOMa8w2INL7nPgxlsL7cYZ4QBcEtAoRK3gqsIFgiMpmz4g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,71 +100,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 11:56:21AM +0100, Vlastimil Babka wrote:
-> On 3/19/26 09:05, Lance Yang wrote:
-> > Ccing Willy
-> >
-> > IIUC, this is a dup of the earlier report[1], which I looked into back
-> > in January. The root cause is the same: collapse_file() calls
-> > xas_lock_irq() without resetting the xas state first, tripping the
-> > XAS_INVALID() assertion:
-> >
-> > #define xas_lock_irq(xas)	xa_lock_irq(XAS_INVALID(xas)->xa)
-> >
-> > static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
-> > {
-> > 	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
-> > 	return xas;
-> > }
-> >
-> > Added by commit:
-> >
-> > commit 43b00759f21b10142094d1ae5ff65cbb368953a3
-> > Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Date:   Sun Dec 14 10:53:31 2025 -0500
-> >
-> >      XArray: Add extra debugging check to xas_lock and friends
-> >
-> >      While tracking down a recent bug, we discovered somewhere that had
-> >      forgotten to call xas_reset() before calling xas_lock().  Add a debug
-> >      check to be sure that doesn't happen in future and fix all the
-> > places in
-> >      the test suite which were carelessly doing just this.
-> >
-> >      Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> >      Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> >
-> > I posted a HACK fix at the time[2], but David pointed out that Willy
-> > had mentioned it likely needs more thought[3].
-> >
-> > [1]
-> > https://lore.kernel.org/all/69757ea0.a00a0220.33ccc7.0017.GAE@google.com/
-> > [2] https://lore.kernel.org/all/20260125121001.32733-1-lance.yang@linux.dev/
-> > [3]
-> > https://lore.kernel.org/all/7bce9231-714c-424a-a4e3-dd42734fb767@kernel.org/
+On Thu, Mar 19, 2026 at 11:59:57AM +0100, David Hildenbrand (Arm) wrote:
+> > We shouldn't, really, be just ignoring splatting kernels like that. At least
+> > that's my personal point of view on it.
 >
-> That "needs more thought" was Jan 5. After 2.5 months later this is still
-> messing up linux-next testing due to a known unfixed problem. Completely
-> unnaceptable. Willy, you need to drop the new bug check until the known
-> problem is fixed.
+> Yes, we shouldn't.
 >
-> Mark, please drop https://git.infradead.org/users/willy/xarray.git from
-> linux-next until it stops breaking linux-next. Thanks.
+> >
+> > But anyway I really don't have the time or energy to try to track this down or
+> > push on this further.
+>
+> The problem I'm having is that reverting the commit might hide a real
+> problem, and understanding weather there is a real problem requires ...
+> real work.
+>
+> Willy said
+>
+> "It *might* still be safe in this instance; I'll look
+> at this carefully for a bit and decide how best to fix it."
+>
+> That likely didn't happen.
 
-Thanks, also I don't see a Link: tag or any discussion of this patch anywhere
-on-list (maybe I missed it?) the only think a search on lore brings up is a bug
-report from jan 5th [0] about it.
+Yep, and in that case given the assert is suspect, the correct thing is to drop
+the introduction of the potentially-buggy asserting logic rather than tear our
+hair out as to whether there is something real or not.
 
-If this is heading for a Linus PR, could we have the patch actually posted to
-lore somewhere so there can be some discussion?
+>
+> Later he said:
+>
+> "But this is a long and complicated function (over 400 lines!) and I
+> don't know if fixing this one way or the other would serve to make other
+> bugs more likely or expose some future problem to the debugging code."
+>
+> with
+>
+> "This isn't the kind of thing where you can just jump in with a one line
+> patch and actually be helpful, sorry."
 
-And is there a way to ensure this doesn't land in the next merge window unless
-it's fixed? Not sure through which tree it's going (Willy's?).
 
-In general I'm very uncomfortable 'just leaving' splatting kernels in the
--next tree.
+Yup, so again really I don't think the kernel should take the xarray debug patch
+until it is discussed and verified as correct on-list.
 
-[0]:https://lore.kernel.org/all/aVvz3tYdu49TGkjI@mozart.vkv.me/
+See the discussion with Vlastimil.
+
+>
+> So I am clueless if there is a real problem there or whether it's just a
+> false positive. And whether (if it's a real problem) the simple fix
+> would actually be a good temporary fix ("make other bugs more likely").
+>
+> I can try finding some time to look into that, but pagecache code is not
+> particularly the code I'm familiar with ...
+
+I don't think we should waste our time on it, willy's series should be yoinked
+until it can prove itself for-sure well behaved.
+
+>
+> --
+> Cheers,
+>
+> David
 
 Thanks, Lorenzo
 
