@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16FE31090234
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6331090233
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:24:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5216B04DC; Thu, 19 Mar 2026 10:24:29 -0400 (EDT)
+	id 685466B04DA; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0413E6B04DE; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
+	id 659AE6B04DC; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E73AC6B04DF; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
+	id 524096B04DD; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CDCB66B04DC
+	by kanga.kvack.org (Postfix) with ESMTP id 3F1FD6B04DA
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8539B8C119
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C17398C003
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:27 +0000 (UTC)
-X-FDA: 84563032974.11.ADF60D5
+X-FDA: 84563032974.13.F3E1468
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 500EA20008
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 87255140002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773930265;
+	s=arc-20220608; t=1773930266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pZzAuNYcRCTwQCccEV9fvt3KbO94i2TjA68nRsoYByk=;
-	b=z7BnJ/3Bh2vmk2GuizlMpl4gYT1uCKlexGRFhu+V8Q7AXuhQa8LgjxjelbS77rK70nSQkt
-	J6jE3F7slXwhIaVbs+ihIyi6TnKE/9d9a2cCMonmDrzrbfDYepfjcUIPh1gZiXALaUr5He
-	BS9OQWFR1k6Zh7fh0lKUN1I5x/nFTa0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930265; a=rsa-sha256;
-	cv=none;
-	b=LBAO4x5Y5W5fVfZ7RxLePc+kpJH07Lm75joML2R/fGv0Cg+bYFMi3vm3L4G1/vAbkw8ztY
-	Om2rkcetJ3TWhXPFkPRjw3w8RzNgJWuof19rIBpmBXaUXnohUM89WK56G986iEm+eO9KAl
-	Z8tPnbj409F8747jl/9BtOT+jKOgoTY=
+	bh=cjgnu95mBiJWlOTGSTEE1TkykBAopsDjiebw1pJxzCg=;
+	b=zSeb+tPumqS/UOEPlqMO7MYMYCnAYRDlWVr2oINj/of8EmZk1CzncZAaSw+XUXJm61bygs
+	fvm+b9qS2QCFXc8LowwmlL8huORL7AZAHZDK5TEr5NDZiYot5KysnD2+hgBBm9+9Jth+4I
+	wr3AjHUahKMjyZQ/7Q3Wvfcuy67WfbY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930266; a=rsa-sha256;
+	cv=none;
+	b=26c4tVGlaZEpSl56VqIWIrqu8GJck+mBohH3HLTGy1XI9GUbnpcTs1dRmv0O7GDSFBPTp0
+	h4EFeU/4bi4x4jXj+yPiURzlDk/ZzDxTq/jUKZzviAQdtc1ZBA1Nm48Cfk7ycckgQLrceH
+	s4Au5hZIDq8H07972O9SbUwFRP9I+rs=
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 19 Mar 2026 23:24:22 +0900
+	by 156.147.51.102 with ESMTP; 19 Mar 2026 23:24:23 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -66,22 +66,22 @@ Cc: chrisl@kernel.org,
 	usama.arif@linux.dev,
 	linux-mm@kvack.org,
 	linux-pm@vger.kernel.org
-Subject: [PATCH v5 2/3] mm/swap: remove redundant swap device reference in alloc/free
-Date: Thu, 19 Mar 2026 23:24:03 +0900
-Message-Id: <20260319142404.3683019-3-youngjun.park@lge.com>
+Subject: [PATCH v5 3/3] PM: hibernate: fix spurious GFP mask WARNING in uswsusp path
+Date: Thu, 19 Mar 2026 23:24:04 +0900
+Message-Id: <20260319142404.3683019-4-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260319142404.3683019-1-youngjun.park@lge.com>
 References: <20260319142404.3683019-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 87255140002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: upg3rezbx83bb43sddpe66xhospa7gt1
 X-Rspam-User: 
-X-Stat-Signature: 8scbr33gzdehzt5cpekzyqakq8i7s9ek
-X-Rspamd-Queue-Id: 500EA20008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773930264-62217
-X-HE-Meta: U2FsdGVkX19Yw+vy6lL6OsJ3BR6z8XXACNo4j4wEJBUmpofzHonuqTifnJWzuDI5Z8GO/s2iwIvlBV2w6c8aDjaJGw0OW8V70AQx416EJb/bm6id9cNN+VO53MRDcjjoLgPjhVODBX39oADE4DOLOCLDIJUwfKU17JJEayCseWy/23PiavObxsN7fIl94xTT6Eyw/t6R/AebNBoPeYGtMtbVcMFU06GB0JeE4G8fdrTsFO8l9NkHdXA8joSAMqJw1L3OoY6DjDo6TCoEjTp6pUnaENh5XXOTu7GPL5NNWhXcmjx6m+id/XQb9KLxOimfUMSG+/8W/4y0dJeDIUKaq8+0RiHFumP/mokp260caLsuhj3FvWuMuRQKvq6EGOrEU7gpW1EYzDKCFSRnMuLofvv4Ij1W2pT/y9k1Onzvc9t0ol01i4yYcy3sjglE9z1KbGQazVSIV/aG8cPG7WJa30JR767AzosLVqMb1em9C/Nc3OqRgwVEqMUzq655yZ1wqpUEhJKYHw+SX9TgznXcMjrLZZlpCvGBJFUnI1ULIMD5F3XQZOOyFhW+4e5y/dka7qhBPD5uLICYVTBLowgzEjjsC4UW2QY3Z16+9eUI6EDJdAKxl4CrZwoVwQMHG1h4jgv2PaqYAsB5wlfH/2NXXVJpSHLxPn1moKa7vu3Aogn25k2eB+i5HFDnL3j34p2VXu4tGYN0Z3s7KI0bSDA58CWz+eXOB+CBos4MeF2GmWfxA6c4sCkOxviEVFYP9/uZuTGJj8FIpOtSCBh9fYXI4e4ZyD+NsKShazT+bpnxC0R46HZMyoxZ5/QrxbP7/g4B3hVpR+DjsJn8a1gmbv8Kl1efCxLZibHh907Zgp5AWeJg15KM/kBvQDAcvoFv4O77C7I23V6Gp8W8BGAgI4A9Frw0CJwI+TyK69CXc/D6JX7vAHqC99EYh8JVuzNVN5xwbV6ffMuQLn4PUDVOpoA
- vEBDgDr/
- akZl4uaFJxm2tyyHipSP/ENN8Xd6WNP57OenvGJDLsL8tcwHCKqgGCAOp1vaMDNqd/exXosk5qYXVznCDdToIE71MSl9Lif2bfgybOQNKRbigA2TKOo0Vw31DOYhohV8U+txoU0rZC9v8eg0g/+WgoDJNqkzm5znfqrue
+X-HE-Tag: 1773930265-151798
+X-HE-Meta: U2FsdGVkX18FCYxy6d4M8+DSNGBhcTbuBPNqRgjtGucrFfVVOkPTQYvS7UJG9VcEwk9K2CfM/GL5IY0NZjcrZsg0DlJC8f9DolQCXinaKgBYL8BgcNLxVuiwyU6bCppyCtIfalWZVISoBVb2Bw4TcJ1/UKOcpf3JCg1ET5945MIOb0vFcp61UDWSWvwhe9uHVTwtadrZpDyxSRgwGuF7UxTFm4IJ//L8TzihlbozSt0UFMLKvisW1WiGElzvPJn/+9cRZ6Oaj2PnPi3T0K7epBv1a2AeyDl9ZKqu3b70vHPmXrR2qGJLuWqTo+N0agsTcMrT4OG3nTNimVRHf7Pjm9z/distiFw0GX6mZQ0Dvam4LNsJ64duzJRu5/cULtJbgAO0gRU0PWJWuyUjEypju2+DNcJD+r4O+hH34zW/djH4NkqfN+MaIQqQ8eESD+5q+6ow+DTXRyQpA4T0Jeg9XciLhnppugng39bKPIaY+tamlnr8caERCoSFkSFoO7+N7oEe9xuw+mvEDtucMVgDZsKLw9Sbmgdi1USZeXr3jrIE1Da5F4SAxo7lGuhhPYKw2bizKHHRjwLRk+H7DqdjtBEqJLEeZMlMi7tImgGjYeHlQWyt1Lkb9XPrq3+P38PhdJ82O/VZc9npKYa7tAMAj/DMikWAu57su756xxY0rv+r6FfNHbazjfDVIB4U0Sc5+4GhW7qq6b5ARwCqSp0Q3HHdCRiKyPPY1wdz/X13Q2T7IZ0J8uCbNS/KaBpvGKz7KCKgfvsXEZxXcn4ZjIeKjTM4h//XDfmNr9Frp/lTXBzgRiJa+vkt0XruNJOWonF9UI93AwVMYTwQtEHTp2gY+TqmVtLHoePym5qp7VFKeZQxEbokQyK9xJi4bzDYRfgzQlpUjvAIx/JaJz+K82g66YlazaXbhrWWV40k4gzoJLXHXyR8DSWh5APt8QC9k/hdxbiMRfsaVTXIFMKrbQK
+ kgDgLm6F
+ SOVhLrl5ySvBuX111YxWXLuZYXS/mAYOovN7q1Yg7x5rCujaQdjpdk34YNzjR3V+oyUGWIAC4sUJSXKdH0Itr2Ci3USHjTkhVJMgH397HLumC2OPPtqggqDhv6oeltqKPqyo/EIvjFiJkZg1hFqH3VLmT0+k6PbRgUs2y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,105 +89,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the previous commit, uswsusp was modified to acquire the swap device
-reference at the time of determining the swap type. As a result, it is
-no longer necessary to repeatedly acquire and release the reference to
-protect against swapoff every time a swap slot is allocated.
+Commit 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask()
+stacking") introduced refcount-based GFP mask management that warns
+when pm_restore_gfp_mask() is called with saved_gfp_count == 0:
 
-For hibernation via the sysfs interface, user-space processes are already
-frozen, making swapoff inherently impossible. Thus, acquiring and
-releasing the reference during allocation is unnecessary. Furthermore,
-even after returning from suspend, processes are not yet thawed when
-swap slots are freed, meaning reference management is not required at
-that stage either.
+  WARNING: kernel/power/main.c:44 at pm_restore_gfp_mask+0xd7/0xf0
+  CPU: 0 UID: 0 PID: 373 Comm: s2disk
+  Call Trace:
+   snapshot_ioctl+0x964/0xbd0
+   __x64_sys_ioctl+0x724/0x1320
+  ...
 
-Therefore, remove the redundant swap device reference acquire and release
-operations from the hibernation swap allocation and free functions.
+The uswsusp path calls pm_restore_gfp_mask() defensively in
+SNAPSHOT_CREATE_IMAGE and SNAPSHOT_UNFREEZE where the GFP mask may
+or may not be restricted depending on context (first call vs retry,
+hibernate vs resume). Before the stacking patch this was a silent
+no-op; now it triggers a WARNING.
 
-Additionally, remove the SWP_WRITEOK check before allocation. This check
-is redundant because the cluster allocation logic already handles it.
+Introduce pm_restore_gfp_mask_safe() that skips the call when
+saved_gfp_count is 0. This is preferred over tracking the restrict
+state in snapshot_ioctl, as incorrect tracking risks leaving the
+GFP mask permanently restricted.
 
+Fixes: 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask() stacking")
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 ---
- mm/swapfile.c | 43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ include/linux/suspend.h | 1 +
+ kernel/power/main.c     | 7 +++++++
+ kernel/power/user.c     | 4 ++--
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5069074ab11b..f1188743037a 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1923,7 +1923,12 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
- }
+diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+index b02876f1ae38..7777931d88a5 100644
+--- a/include/linux/suspend.h
++++ b/include/linux/suspend.h
+@@ -454,6 +454,7 @@ extern void pm_report_hw_sleep_time(u64 t);
+ extern void pm_report_max_hw_sleep(u64 t);
+ void pm_restrict_gfp_mask(void);
+ void pm_restore_gfp_mask(void);
++void pm_restore_gfp_mask_safe(void);
  
- #ifdef CONFIG_HIBERNATION
--/* Allocate a slot for hibernation */
-+/*
-+ * Allocate a slot for hibernation.
-+ *
-+ * Note: The caller must ensure the swap device is stable, either by
-+ * holding a reference or by freezing user-space before calling this.
-+ */
- swp_entry_t swap_alloc_hibernation_slot(int type)
+ #define pm_notifier(fn, pri) {				\
+ 	static struct notifier_block fn##_nb =			\
+diff --git a/kernel/power/main.c b/kernel/power/main.c
+index 5f8c9e12eaec..e610a8c8b7ff 100644
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -36,6 +36,13 @@
+ static unsigned int saved_gfp_count;
+ static gfp_t saved_gfp_mask;
+ 
++void pm_restore_gfp_mask_safe(void)
++{
++	if (!saved_gfp_count)
++		return;
++	pm_restore_gfp_mask();
++}
++
+ void pm_restore_gfp_mask(void)
  {
- 	struct swap_info_struct *si = swap_type_to_info(type);
-@@ -1933,43 +1938,35 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
- 	if (!si)
- 		goto fail;
- 
--	/* This is called for allocating swap entry, not cache */
--	if (get_swap_device_info(si)) {
--		if (si->flags & SWP_WRITEOK) {
--			/*
--			 * Grab the local lock to be compliant
--			 * with swap table allocation.
--			 */
--			local_lock(&percpu_swap_cluster.lock);
--			offset = cluster_alloc_swap_entry(si, NULL);
--			local_unlock(&percpu_swap_cluster.lock);
--			if (offset)
--				entry = swp_entry(si->type, offset);
--		}
--		put_swap_device(si);
--	}
-+	/*
-+	 * Grab the local lock to be compliant
-+	 * with swap table allocation.
-+	 */
-+	local_lock(&percpu_swap_cluster.lock);
-+	offset = cluster_alloc_swap_entry(si, NULL);
-+	local_unlock(&percpu_swap_cluster.lock);
-+	if (offset)
-+		entry = swp_entry(si->type, offset);
- fail:
- 	return entry;
- }
- 
--/* Free a slot allocated by swap_alloc_hibernation_slot */
-+/*
-+ * Free a slot allocated by swap_alloc_hibernation_slot.
-+ * As with allocation, the caller must ensure the swap device is stable.
-+ */
- void swap_free_hibernation_slot(swp_entry_t entry)
- {
--	struct swap_info_struct *si;
-+	struct swap_info_struct *si = __swap_entry_to_info(entry);
- 	struct swap_cluster_info *ci;
- 	pgoff_t offset = swp_offset(entry);
- 
--	si = get_swap_device(entry);
--	if (WARN_ON(!si))
--		return;
--
- 	ci = swap_cluster_lock(si, offset);
- 	swap_put_entry_locked(si, ci, offset);
- 	swap_cluster_unlock(ci);
- 
- 	/* In theory readahead might add it to the swap cache by accident */
- 	__try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
--	put_swap_device(si);
- }
- 
- static int swap_type_of(dev_t device, sector_t offset)
+ 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
+diff --git a/kernel/power/user.c b/kernel/power/user.c
+index 3e41544b99d5..41cff6a89a1c 100644
+--- a/kernel/power/user.c
++++ b/kernel/power/user.c
+@@ -306,7 +306,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+ 	case SNAPSHOT_UNFREEZE:
+ 		if (!data->frozen || data->ready)
+ 			break;
+-		pm_restore_gfp_mask();
++		pm_restore_gfp_mask_safe();
+ 		free_basic_memory_bitmaps();
+ 		data->free_bitmaps = false;
+ 		thaw_processes();
+@@ -318,7 +318,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+ 			error = -EPERM;
+ 			break;
+ 		}
+-		pm_restore_gfp_mask();
++		pm_restore_gfp_mask_safe();
+ 		error = hibernation_snapshot(data->platform_support);
+ 		if (!error) {
+ 			error = put_user(in_suspend, (int __user *)arg);
 -- 
 2.34.1
 
