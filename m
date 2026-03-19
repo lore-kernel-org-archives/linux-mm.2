@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B01031088E76
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 722DB1088E7F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:22:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A8746B03ED; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
+	id 9E89E6B03F0; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 863E46B03F1; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
+	id 975756B03F3; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B5D96B03F2; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
+	id 724666B03F0; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 42BED6B03ED
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 564106B03F1
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:22:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8577516030B
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3432583AC
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:12 +0000 (UTC)
-X-FDA: 84561666504.10.7279027
+X-FDA: 84561666504.14.A94FD8F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CC63A100002
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HP+831u3;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 45B1BC0006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eLE1gPG+;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773897730;
+	s=arc-20220608; t=1773897731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mB4UoVanGjJ0b6Z/rtgw22+7a2ViKkbvDoer3Kj9isQ=;
-	b=kEVVqKdzJ1UYFBPfHRdZfL5E+at2B2OhWzEDleBxa9g99lwZA1ZOJelqkyvS1dHaG2Zl/k
-	COr88j607RGObMqOU/zt/5q/kuwK2yMbj7Sth6aPi2djXK2kJCL6wljes4ZG0fEEI8DVul
-	slL6ceqpgnKSs/82iiw7YfM5QB2je2k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773897730; a=rsa-sha256;
-	cv=none;
-	b=CNMf2xU+puYWw6S0lePBXu1eJleVGcoIycAkaqUY4UolU7Xd5xdF86PS/tZcfbtVKimJc7
-	5pljBhqbSq3rG7Hu6Z7LQZCh94UQBUuLfXecXa9xzaOSLhEiTwABAblWuwQVRZhe6dlQfA
-	LfLx92o0UPPf7d73e0BDAsZPnHdCs3I=
+	bh=wuYArKm7FGA11Ug5lCttUISANPUQJu09ocnA7gmRt/I=;
+	b=tYAt/LmziiYeT0Nr+UkWoBF5LW5o92A4g9tlw/I1iwNPQFBPCOmXu1T/RxiIJSIIyz7sEZ
+	nY4OdhrrnWNYviftGqTGSGa0GF4RiF4TGxrEDEeZPjIgFuSB5NBC0C3KYJG7J7uUHdykIU
+	6Jo7z4Rh2IYVJdEwaG+6cKeOfvW6aeI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HP+831u3;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eLE1gPG+;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773897731; a=rsa-sha256;
+	cv=none;
+	b=30WLkyWM/rUWZSD4Qhr78K+F5I/Hsida+e7dyB5pQgCrxZ56S+hWtBi3VhkKghARm5eoI0
+	9sy1+evqsfzfYYiRz7YYCS5tCknenRWuVq+Q5VGcSGI4t3Ba5g0KzRuw9RGZsDky4mp5e8
+	DnIuDLdjDbIIsSZNaaP93oXX/N4aixc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 343D844707
+	by sea.source.kernel.org (Postfix) with ESMTP id DD46742DF6
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:22:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF939C2BCAF;
-	Thu, 19 Mar 2026 05:22:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2B2C2BCB1;
+	Thu, 19 Mar 2026 05:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773897729;
-	bh=TJXeffpmshBn5e3s77gk9ewA/YmV5afqYkZ0L4RsmNM=;
+	bh=gKzlHjNwVy7/eu8xZ7uHLGZKBMO4b6mmZ9XNI0j6RLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HP+831u3C18QuYGn+8t3T5P3MI5t8JSc7dy5v6wh8t5I2JM7wDsvYJtcnd2CG4WXb
-	 Si2jJfp7u2Y0Ucbusoj+kXFBgx5w9aRc/CP/EMtLepFRkYcs9AsXfu5r4OX6ZxFul6
-	 IL23kIeOz4DJRkZSsOFTisjdFe4/Ny9iC35R4nPcr+2yQ2CQsR4IgVZ7Mz5pg/taUs
-	 jBz5XHpoCVL4py3uf4nX+TCbB5O6G3GK7TcWKZBfBsDXhMWeS+O38lNSfvADomo/DN
-	 fizmoAkzJfawSrgRSVLM9PWp0Zfx3FDRVfDfsyUXH0PadUzjhDVz6RQZ/JpbOpxhCU
-	 AdPVJbxg5atgw==
+	b=eLE1gPG+Hya7//RWaiPAEKxtepx386lQ0Cm8RdvkucYG+iOXOFeZPuszuRWKmhmqY
+	 Hlxm5qQmMgd/Efqo63G8l2SuLp2Bxr4GnzCPV7S+DNGqdG8Q89JJ+QMbBAMNdzoeIK
+	 OzXL+h+ya25rpojtJ7Hg/DmBKzOkdSFMuw7s2gKefp9JqRLIUXm7mTtbh2QiioYEka
+	 4gWS9afrhZHM7PFTk3oiT+rnkAAeDLRe6Ix7R7uS3YviH0REcZaLVT1Z/Ug7VkjHEa
+	 01/5O4fI4zM/Io7soEAT3UH61w2LoEMW0vljBhU7MvbGN30cHB29E8t3vNMLgsG97M
+	 tr4+UyLCjhRDg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 07/10] selftests/damon/_damon_sysfs: support pause file staging
-Date: Wed, 18 Mar 2026 22:21:50 -0700
-Message-ID: <20260319052157.99433-8-sj@kernel.org>
+Subject: [RFC PATCH v2 10/10] selftets/damon/sysfs.py: pause DAMON before dumping status
+Date: Wed, 18 Mar 2026 22:21:53 -0700
+Message-ID: <20260319052157.99433-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260319052157.99433-1-sj@kernel.org>
 References: <20260319052157.99433-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 45B1BC0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: x6jw5yhbnuz3p79snoi3dhpkfzu4ct1s
 X-Rspam-User: 
-X-Stat-Signature: 5emqqjf6ib16usw1pixzyghqfr9ek11h
-X-Rspamd-Queue-Id: CC63A100002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773897730-145021
-X-HE-Meta: U2FsdGVkX18/+PgT2BrwRxjfZs8WzWwCFgxnHvlFqMgg4Ylk7rZ9J5LRuD82454nHFCgD/FahBoCZ2OfiCo9SsBdiyLVXp3LrBn3b/eOJD8zB/eaXbHSZJp7nR28CDtcXlEkCrVLVV/ipuLB4pjK6pCy4nnLvBUDkDBk1rBuDz9Uz1Q+DeuXZFHVxw4AXsmXBVW1tUJgPy8r7VN7tNMjD92jilncgENcXOoUwMVLdWpnGYLRKDu3h6diR6EJh3ACUyK4nf9o/8cdg7wtuBMIuIgKeTpX4xb8PpluZUaJaDiIoU2S6CSxKH0ROyFUit1j6H3+0xyVyEQg6ax4R6AwZL0rGkLgpvJ0EhTcpbKhCcL9so8b56iEQBnGKFu0QnhBGiMnv0y7QF7UtgDQiI0f7hA8UdqQvEJtcKGuWLW4jg6tO/UgIU2fGMt1fK5KMUrFR0rKuT8FTB8nX1iwDFbaXU/yWtn4tBZSGhaDol05q+9yMcC1G5NdImUeFdHeKPiGTX2WAYbpwwZEsj/H6OSNve+LssbVQvTdnBpWZk6+Y76vYcJ5Geo4awiXymgvLa0OkpafOYas15IiZWvLplrBbrNkaNVZJfKJC+ppyPhNc9rKLExd23OoE5R61Kc43j1m8t6ixHNDakC3l+v/I0BNqjLGrUXCIqef7kcKZIpy7jbJ0yZysH6bq2Ah5aAFDeyqxhCOq3/BfUsWkxB14qjV4UY4Un6PIOBE7HVPwfe4BDP3Uqw/FGDuegPWzdu25nLWSpLKECRXDZasAauJTFw0ui6fEHzKbdW6uZoZQBD0qMTYDKHifK35Ly21WBzceE+e/DnWpEdvsQhZuaZJOmZzXyduHLNope4ZD7uF5dHIZJRTjKwYWrkwj9ELX66rN90t6E40Cyf+WU4iAqLJWuMr3VtolRUmwDy5zKA1IX96vVKkGoMzlOTqiE+Du9jiu3qyKfT4ulDPqUh91A7oTZ8
- KRIMGcJJ
- H2E8eokxRhePzPxh84lZNUAbtuXcwkfCNzgQqyJ6d/6bR36Ti8J6oJRJOYSWkD0oSk6XLCddp0jHyjSOOwLp3swBA6q8xC4bObREEicS498TWVnO6RI+6Sm4yS/akXKmKCAeA4SstRqvjw363Lnw7Ij01l90soHpbD+BuULtKnS7h+54nOIFCpPoHAHRX0IJPupihhdKE2UyNpw4IOfcK5lmar6jRdm0BGLV3j4RjVUiVgDg01wGoZ+TenOgYsrYJHYuvR93BiBDx0QN2AqKtfrsBvRG97WPZiEdn1zUgBxJbMXvToyKrr07uBqdM0XZbau/EWRDiAp4zScG/mfDLXIqYZnn8mgaSP8u9
+X-HE-Tag: 1773897731-970004
+X-HE-Meta: U2FsdGVkX18XTNU1O4tFd6f7Pagq892yS48L+DsxgNkbihdq/PAntYZHH+wKn7BIiVG4VEgFe1mdMQ3oocD8t3gTQCFMY6eEocfMefABG5z5mK5sbHxPLSQddxcc3Si/fVjb3nRJN48OSnOFy8pnTc5SkiiVRasTcWxh6u4Gt9gAcxbkqMtJPvGnlwUmabHoa55pc1K4i2WenlosduSHHkjLrilY/HRsD75bspsuHqqFXqfExlf5bwTpgYxNM/tiNxYhCr7P7fLGgfjybEqX3zBzHahi64rizRFqahsIB4Xz43JRYwmBJCo5ZkhgM2NB5z+cBQ/g5ugpVuGHmvbBctMPKWJo0LpCQRITQ9UdNKLiH5OGSiuSMyhSy+5PmiWvWbGqvNJDDkutsLJZ5f5HGPpZvt++XysLbY06aSRKmlZqgq9vgXHN4ETDOobvEEyAOv7BfIpOYweoz9UH1RN96ukHck4+tKVKq4RacXOeHXFreoKQg+rQggLjpaa3v4S7necuwnY8+/bJcwe8PaycoGWARrkOzE7e01wkcLijqSPgncsYrMNd/114bNMuw39ih11PCkDhq1Kppr/dhr55hFM0dQYrrr0n9un2o5pGwmuKjCFEWKODZd7U3VKUftbulIDmB33NXMAUCcu6JJ6FXegglgi5QEIeXv6vFneQPGT1PIDBFT3xJlqVciooIhBGJ6PLoDVkAGq3q/VnUWkqM7aoFSwmx21X3uDNOAk5ag4iuTp9g3FBWwjEdMJKBRz6eFvIe+l+7/BxRlGBX+RAC/DEPyD/tRiQIwwdtz1x4288eNtN2/bVNR5lJAtM3FlXAk/6ywwnvRriJ5x984NM3yV88qFbk5REkcddHFOVF+OZsUWX90nZ+qKQSV7BxRXExmUXZQ6AnVLAP2zVVWNFvlE8wciTJBGn9gNGSBN/8iDhaT+G/j3FbMWk82dxUgp90dvyK6ptdtRdkfbn2NM
+ s1Ene1KW
+ BdmO+aBg6HCF9emP9ZCEJrHh81Mqb6kdUfsZLkYGzjpzzAp7iWc7Um031ntHYcrpMskLo5RTwNh5Zrcl9aSNPiEGlZlO6C4NnhjqVW2pxdlR8aMTr+Dsg1uCWtJglOaBaJCmuERabwxkLHarxXtiIjBXRmNN48JS1dgkdb/Sz8fsP8T8IaFlnC6mn82DYxPLhjP9qS9X4zpjEDHV9B4CuVYrU2E+T9DNHujIFvHVwsY0h+ohh+x91zaN3qpUco7J6k6CHNrbXpMnd829tb4muQr88pnMOEcR6Cn02jnmM/iWlCr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +94,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON test-purpose sysfs interface control Python module, _damon_sysfs,
-is not supporting the newly added pause file.  Add the support of the
-file, for future test and use of the feature.
+The sysfs.py test commits DAMON parameters, dump the internal DAMON
+state, and show if the parameters are committed as expected using the
+dumped state.  While the dumping is ongoing, DAMON is alive.  It can
+make internal changes including addition and removal of regions.  It can
+therefore make a race that can result in false test results.  Pause
+DAMON execution during the state dumping to avoid such races.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/damon/sysfs.py | 31 ++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index 2b4df655d9fd0..120b96ecbd741 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -604,10 +604,11 @@ class DamonCtx:
-     targets = None
-     schemes = None
-     kdamond = None
-+    pause = None
-     idx = None
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index e6d34ba05893f..704729c7a318e 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -193,18 +193,48 @@ def assert_ctx_committed(ctx, dump):
+     assert_true(dump['pause'] == ctx.pause, 'pause', dump)
  
-     def __init__(self, ops='paddr', monitoring_attrs=DamonAttrs(), targets=[],
--            schemes=[]):
-+            schemes=[], pause=False):
-         self.ops = ops
-         self.monitoring_attrs = monitoring_attrs
-         self.monitoring_attrs.context = self
-@@ -622,6 +623,8 @@ class DamonCtx:
-             scheme.idx = idx
-             scheme.context = self
+ def assert_ctxs_committed(kdamonds):
++    ctxs_paused_for_dump = []
++    for kd in kdamonds.kdamonds:
++        for ctx in kd.contexts:
++            if ctx.pause is False:
++                ctx.pause = True
++                err = kd.commit()
++                if err is not None:
++                    print('pause fail (%s)' % err)
++                    kdamonds.stop()
++                    exit(1)
++                ctxs_paused_for_dump.append(ctx)
++
+     status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+     if err is not None:
+         print(err)
+         kdamonds.stop()
+         exit(1)
  
-+        self.pause=pause
++    for kd in kdamonds.kdamonds:
++        for ctx in kd.contexts:
++            if ctx in ctxs_paused_for_dump:
++                ctx.pause = False
++                err = kd.commit()
++                if err is not None:
++                    print('resume fail (%s)' % err)
++                    kdamonds.stop()
++                    exit(1)
++                # restore for comparison
++                ctx.pause = True
 +
-     def sysfs_dir(self):
-         return os.path.join(self.kdamond.sysfs_dir(), 'contexts',
-                 '%d' % self.idx)
-@@ -662,6 +665,11 @@ class DamonCtx:
-             err = scheme.stage()
-             if err is not None:
-                 return err
-+
-+        err = write_file(os.path.join(self.sysfs_dir(), 'pause'), self.pause)
-+        if err is not None:
-+            return err
-+
-         return None
+     ctxs = kdamonds.kdamonds[0].contexts
+     dump = status['contexts']
+     assert_true(len(ctxs) == len(dump), 'ctxs length', dump)
+     for idx, ctx in enumerate(ctxs):
+         assert_ctx_committed(ctx, dump[idx])
  
- class Kdamond:
++    # restore for the caller
++    for kd in kdamonds.kdamonds:
++        for ctx in kd.contexts:
++            if ctx in ctxs_paused_for_dump:
++                ctx.pause = False
++
+ def main():
+     kdamonds = _damon_sysfs.Kdamonds(
+             [_damon_sysfs.Kdamond(
+@@ -302,6 +332,7 @@ def main():
+         print('kdamond start failed: %s' % err)
+         exit(1)
+     kdamonds.kdamonds[0].contexts[0].targets[1].obsolete = True
++    kdamonds.kdamonds[0].contexts[0].pause = True
+     kdamonds.kdamonds[0].commit()
+     del kdamonds.kdamonds[0].contexts[0].targets[1]
+     assert_ctxs_committed(kdamonds)
 -- 
 2.47.3
 
