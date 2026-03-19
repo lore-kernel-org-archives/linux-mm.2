@@ -4,141 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06331091907
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:18:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E6991091909
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:23:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 327436B054D; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
+	id 7C3B56B0553; Thu, 19 Mar 2026 14:23:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FEBD6B0553; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
+	id 79B1F6B055B; Thu, 19 Mar 2026 14:23:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EDE96B055B; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
+	id 689DA6B0560; Thu, 19 Mar 2026 14:23:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AF4B6B054D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 807C31B877B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:18:04 +0000 (UTC)
-X-FDA: 84563621688.06.F48B042
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A6068180003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:18:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r0RGg2ef;
-	spf=pass (imf24.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773944282;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 50B246B0553
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:23:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EBC211DE42
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:23:48 +0000 (UTC)
+X-FDA: 84563636136.16.0A497A7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4B688A0012
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:23:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k72tqnwu;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773944627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
-	b=7dQYgeglhqH6ykXxFLwFkSorV6dtHMkXbqNEcs3VMoliP4rZiSdOdny68yOmdb0XdKIsJ1
-	Oqaw501d2TAqtwlPDUBhb8Ruh/v93KyuCNRyYApXSUA811Wn7+XUPPEicdNxSHRvOqeufB
-	Lh5FCkb56JscGVtBOuksTqL+ZhXVJtw=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r0RGg2ef;
-	spf=pass (imf24.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773944282; a=rsa-sha256;
-	cv=pass;
-	b=vX4u3a026Fa7+M52V0+3uFDmLtr4Le9Xa4uXFDewrbshhnKfLqcjnqyUeXn1pvpJJRYCYP
-	goXwyNE7T3q128Y2akatgOeun8IDEJwOEC+SzB8gQDOXvZxa5NZrtxa9me2KoSGICEoyT1
-	jqmgjI70jGy5HxHNHNm5Rq2ByBzDv28=
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-126ea4e9697so960c88.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:18:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773944281; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Yl5mQhKSWwWpjtyuxREjuVcWMK28fi1vhYnGtsQTuwT3a0UXF2qkP5EqFKAlZGvFXf
-         LGafcND5ytoYymL0WJqtUtIsRIT2DVNf5mbJzeSPMY6CLp/kpICu0e4k9YY2ESVgR6lf
-         1rxpXWHEUtLDclsvmuvVI3uZIVs+pEfPpqVKtYpPM9cK84o+4OOwT42hM2j3uks1ga8F
-         Drfd1SAW5tc5hUBZ1C4i0JfoHbQZZJFti+SdVoy18cAkbWivaFbLyfg1hYdwxDy8t3kL
-         u0q98e0XHnJyfIIRaBgHFZ6z4qnT0xZ1QBBuhng61sqbVztUljXCZGv/VZ+ZB4nZtPpB
-         VnZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
-        fh=L03db5qOAp5gEmousYWwEc9swaxjhLoBod9ukh8xvhw=;
-        b=kPsAgMbouFl7uSUPMDeQ3++Hde4fBt54CI0SUbWlu+70LFgD3VenVvcIev20x/88uI
-         F7seeOtpiQROAP0tiykNml5EWUNayeVJe33SQ1GD2Tk9BuCnVPLZjLcJEPHvXDkqcBdq
-         i8vY1D5/DBNqOrizyQsikSBDlrn1CwIdO/FkhVg5soVTuqPX+o367AUc2eBrcg8FGs/C
-         t3apsJXkFX0NRjqz/dmsoa5H/pLrV9WKdirD+9q4yb4EgqPvntOGT0Vj6CYgfyU8Ku9I
-         jbGgxLtmCYfTikofHCTXjMtb1brdXJYveYM/blIdaNV5i4+ZJCpB7DMj0kDzI+xtBAIV
-         Tf/w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773944281; x=1774549081; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
-        b=r0RGg2efVKobRKNutjvZ7e20TY4UBn/bc9ut42B63z7empDPbZZMA4H2r+2ZGHlbc6
-         nCt3h6NteKdw3BOWiPLx8c0D6+P+6vXXqWBz8KvlSIv2RCWtngDgMeOzcvOpPFmRjQMJ
-         kxdAlyX7ZAw3WBJ/0MXjnwY1/gyHrD2iuk0skakioKE8GyGZxOCTtqKEmhoXQzRM0JfD
-         DS0zwef2ALQ+Zgxzps+n0I7+NJtmyW5SSnoT0IVQfKZ/HamlsSyZD6I312asW5y2dH2L
-         TjCGEgQ+T0TA8LN1ABAZiSGVYs/YOKvaq/o3FwwIQ93t+YRCLFTyLpZu4FvYdSlHigAs
-         BvYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773944281; x=1774549081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
-        b=nnx/3qNuDUAAGyXUc3j18YUhAf5kAIQFMBtG7jasw1ouyU1LfEdFxexWdXp9nbGbBF
-         tDWMG0MzJdFX5yRMuhIwKCMUK3QTSIqyeuVzsWYemuI43Q5kuP3vMT2/vA6ojhTXBjSF
-         Fy1oGFSzLmP3OXkP5kh4UYRebtHUWFg41QRDfftoWASHSc35lkMZN5i/1Yj7jhJyyscK
-         Xmg9WFguDzDdKKjwYy92OU8qPqakOhln2/mea4BkFqyZi5wiK0w0/QN7ac4zvambDLqw
-         rP0j56qjNG5y/R1QXbpDmJYwFG4D4lhDj4LsP+Gejtr8gEE3zUZ/y/bVn0ZuQBqCA0AI
-         ZvfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX3Qdvz5gcyJKk13D1qum4r4xLe2JGvvDvh5Tm+fMSWKjMEX6yDt9+fCkgfEyEZWrDIeC0NB3Wa0g==@kvack.org
-X-Gm-Message-State: AOJu0YxPfs3fN1DDj+IZA26+2ceFmUkKaJv4W/tn/T3DR8aPRi/SpUlD
-	wxtmV/jK3iYEdhQ5VPBPurKl8eV+uHDnVVV/axFBXfgPS2EJ/ykNxq5bOozpbW2Lyg5xnqhnkoh
-	v7kGbSWy7G2l/wCpN/U5Q/sqgGEmVYekZ7u2U8SB5
-X-Gm-Gg: ATEYQzwLa3hWx4uCuBjxqLFDVMUbB/caBkrvQiK5z9sh3lshMo/ccYLuYvSnPnZekI6
-	rPE1WVAq50AVpL1YjPPrvB3zFMmnUY8WGBfA2W+YgbemeI7a6nNqr4qKt45VQQBWe33XUsMp42L
-	nyyaT1nFomoxGZEa1EI09xKKg7f/2OHeGqq9ktTDL1bb56XE/1s3y7qWErDL6wwmftfElCkB13q
-	d3NfyOLFKnxQwS59ehmbuIUVbCFFA5eqfk30V67ye8aNIffmAqsW5asSVEdBV/1TGIarjg4dyxA
-	Fiylp6V2uqaAznxd
-X-Received: by 2002:a05:7022:699d:b0:128:ec96:67 with SMTP id
- a92af1059eb24-12a724be71fmr6228c88.9.1773944280502; Thu, 19 Mar 2026 11:18:00
- -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=11ma5cxWnyIdW8QqCNU3wqld03y9OSzPW47ythl8JfE=;
+	b=oafsvSJTcEqFxmeDovgSLofulNJESE6WFFC5EUpmADOJBbfv0dTthALi9MmNHkZaDH2wWS
+	YhWG7tFIl8P9av51CJCSb6o1yICAUWqpnXTHksyoC+2QY+u39uZ6K1p8yd4JEGJuAH1K0e
+	BoBNImygg3TLqo1F6JIxaVyZwcnjwkk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k72tqnwu;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773944627; a=rsa-sha256;
+	cv=none;
+	b=OzkZljwaoqgKcV8S98nMgLBageNsQSwrZKPSZ11DldT+yJNeF4f9NW2yBqYjorBm5VI6Ja
+	A8DK8rooq31yXso4elwtsGLV0z3VBzcKyS3Yz380GqymnNBq3go776a/ftes0D68jm4Q+q
+	tURmn20xYrwdobrfGMNxu5tdnNee0QQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 34C76438FA;
+	Thu, 19 Mar 2026 18:23:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF4EC19424;
+	Thu, 19 Mar 2026 18:23:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773944625;
+	bh=hUq23NX3AUF/Z/nd3f+apZh8oyr5ochA07r37x4M5ug=;
+	h=From:To:Cc:Subject:Date:From;
+	b=k72tqnwuSjAIoaoFYpnmAJc5NqF2RHzpf2m0/2v5FHjqFYrvF9hFpFABSV0ibMtjI
+	 v5ABOEragkIvhSQcUDiYsI2HJhw45Kwl3+zk237y/4tjTATs5TdNmP3sOChEeowL0j
+	 aF2jYijp2yjfKoeeFK5r4Blr/10cTIPfZxwMhCmDiuBv8H7oliqmyrAE8CKe2gk/Df
+	 hif2oRVLCDoEd+7O09ruZk1Sqb3i4NACbtkHiyNTqml2Yjk84myr5XNmRq67QmIQvh
+	 5rosWsQJMLdf0p2r46AtulRsJmHTQ5LCq29emURnbAQO3W3H4Een9shDvkQqdUHUth
+	 LEQrKOSjYWzGw==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Bodo Stroesser <bostroesser@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org,
+	linux-staging@lists.linux.dev,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH v3 00/16] mm: expand mmap_prepare functionality and usage
+Date: Thu, 19 Mar 2026 18:23:24 +0000
+Message-ID: <cover.1773944114.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260317141534.815634-1-mclapinski@google.com>
- <20260317141534.815634-3-mclapinski@google.com> <AD9E1B18-C813-480E-894C-FEEB51EE8A93@nvidia.com>
- <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
- <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com> <CAAi7L5ex+66qgFzRkLDbuOmC=cVrMyBctPZv6wd15n1rc2U9KQ@mail.gmail.com>
- <0D1F59C7-CA35-49C8-B341-32D8C7F4A345@nvidia.com> <CAAi7L5fvUPUqd3A4m6wubeYh90NH+S2KBRE1R8WKerBYhkU8kg@mail.gmail.com>
- <58A8B1B4-A73B-48D2-8492-A58A03634644@nvidia.com> <aburnbP64n9axmu_@kernel.org>
-In-Reply-To: <aburnbP64n9axmu_@kernel.org>
-From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Date: Thu, 19 Mar 2026 19:17:48 +0100
-X-Gm-Features: AaiRm505tq6vM1X9ULuY3A25VFS9p9k0Q14LqvIkt_uaKuJpyK0GLpRABpnGwjA
-Message-ID: <CAAi7L5evx8ta8BifNiGNfUoTiaBUsv4cgQRbm_15RoAfdKPcMw@mail.gmail.com>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Evangelos Petrongonas <epetron@amazon.de>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A6068180003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: q6z55db9ajkuhcca5w69o6bfthbcspwr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4B688A0012
+X-Stat-Signature: 1togejudkf9s6cbykfjn9ts1p6gcdw9k
 X-Rspam-User: 
-X-HE-Tag: 1773944282-434700
-X-HE-Meta: U2FsdGVkX1+9LUFbZt+CocfrfmwGmYW3DdoWx4Ddg1d4UArZj/+OVNij5Y19BaVQN+3h7QF0STwYbbIRTUw62FNjpGaoiZC/HM+3eJA/9QWJuVV31mSL3NTJM/KOUxK3/mkqSINTBpKZ5JOwnZVGrCuv+dqs2CinbY+4wiedL07i/P+Mu3MsQ7tANbkALnDa1qgW79Lv/tS6QYxop1uCihZkbP+1D1BPoSv9Jr5uKYB7xq8RIjTlKGnCivkaNqdbf8cNQO+HlVZ1yYb8H91qth2IGlX8wZdUNRBjT10rhzroyf29oRgj7Z151KnLYCdU0D4lpw2s81C02spfVbmj2AXob1xldvX0cqCGIiEJmk2kkxRrBicbJCg4Z9MXepRFEf415QhltHjT+CyiGPbpbO52YcWchRTgg1lXsr9bsXKDzW/JI3UiEv0MUkPmvbxW9NxCflbGExuqUUT9ta1NO70Kjs8lqyLpdxYohDcFRLw0hPxYWMUcinDw307Pb34s76BNwx4RQnexSIkZ3gafdXuHJvoVAmbjaRhVRCbQzpUbgGeWU0nKvl4lscevrmHNAsPktct+JsW05cLFg+39hINS0UoNgumR0keE2u7IrvmAecjAE27P8FoHng26xXqPqnNCI0TzzZDr2g9DeX0Ev9qhWkiQ9pH2zZNNen4xRPz6Tv6mhJ8/CGXHHBgKblBhLdqwJhhvtEui5mKy3EYtODqHl20TjpnVvgq52TEg3JJFYrnUVs51rtQa8TP7gSFLFN5lsIhjFkbRjI0rweoTGekQCeB4vgXcubV6sykVhOoyMYdrhVvdWrAzKWaOvqyPuSdcJ/GIejfnVTIWEnEtvxnzKJ54x5V/8doRX8zKBo89WGbmqTleBPAey+ULi0+XB5BHTATgXwOKmeYjmVp2PDpU1A5TbXL2rsKKjYzu33dTVB19zQON2hfCXQ2wK6weGs7sCws0dlgIdEKOCa0
- gnpFhnp9
- 3bEplJz63n2hPsrjmPVArEObXAg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773944627-969861
+X-HE-Meta: U2FsdGVkX18ufiUK/yr6mISya+GdS43EZrH/5NXYK9gEVcikFsKT1RzDBe4SDrOBXknXxqWxPATTqAvoRVCfuGRAPgGYAkHC2ZHR16pLRa++2VnrYhHCVQlpBetlw+bjfH2YeiLFJafInzybdR+cU4gjd5k/Hicz1gho22Y+bcBBCVMtZLolQz17iqBZHACARaiuTITVG54iVqFisO0IAE2gL6sut3TaVQwJeJCKeXHyr2ZI+CcmtL3W3eyUz5yBDpGc0obEELAzCMPWDyR4hNYiSyniDAejt+mWLWMSyoBe21g9beQkHjOEaBSVBDfCrCr4B7nhSHx4i+bSdVAHfUNdxkJigv2k2VbFEbeFEf6egHeZzv2uxk485QLwTW9Gs7f+/A1haXL9VG9hwiDADYXbG2Q3qxhvPfQ7tkplSnqzmZVg2GadDXE7wnglcoSTzuHoGwZnB0FdC1Z2c9wFC9xwXmxssJapD6e4I53keGEVaY5NA+xl258nGRZfirmPygGNul24vvlwimeP+2e/2/aekUdIEaPVrtD7Dwcl8AqMxcNiNiynvtpLKTAWcv5qPLwFqmUsUyDN7bRH9A4UE8itwXTtJyNxiW2prqFPeQutXOSXiDxcNV8/Xa56TemvYoLeI2Z3k0/o9leeiSN5XKHP+Qedd7olH0mQF5TWJz0XDQJs9BjwXXtQo0tq2SlGK7pF1uRc+zabM7tw5qk+kJdL160KU27h6GPn7YbQ83uRSz7zbdy+W9PqegNKjBUhmYektvyeS9g3wPBV/RIsvJOHRW5cYcXwq91U5cMD29+ANAnflaHN4tweXStRFU4xJ1dCMquCJE6+AWOhHTWfHHIqOgJncRZDTXo/QtKj3R3lDiZ4p/e/4swKda9Wd5vSi6tSEpDxxXRmDEfsxqTJVdTIzpbk1XR2kL0H8wMsEWbinhn057zFALIp8oQM7FN2MpC177fHwGt8uUaJ8hn
+ iijG/ekb
+ YD4ovQ5V428BSTwxnRgDkhZB0W7bHjIPMmY/HRQnndIH0SmjpXh4dt/FfsW1ShurA8sFBzpp4GttfnOc9rP+LFgZ51riI+HvYzIdoyBuhhqOIcIY0aCug0kdHItm3Xj9IS2V6JYFU2hHw5n6sbofyhQy4nLkcjYGSFZDJlUdlVsK5r1S9oK4+3ujA5/7UJPt7dQIwAfbExyRB2aSPD4gKt0w8flLd3f4g2zUpOwR7dhTEjuBc8sVqjUL4liBu1x4n/ug4wL22qirr/DJirxVBB0yTJHjsvqA9u+PBc47t7oL2n/X0NvGN7gbsgrn2ezhwhiccou1RqxcKLjzDmaqOH7iagOjoCZuIRvfG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,191 +129,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 8:54=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> Hi,
->
-> On Wed, Mar 18, 2026 at 01:36:07PM -0400, Zi Yan wrote:
-> > On 18 Mar 2026, at 13:19, Micha=C5=82 C=C5=82api=C5=84ski wrote:
-> > > On Wed, Mar 18, 2026 at 6:08=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote=
-:
-> > >>
-> > >> ## Call site analysis
-> > >>
-> > >> init_pageblock_migratetype() has nine call sites. The init call orde=
-ring
-> > >> relevant to scratch is:
-> > >>
-> > >> ```
-> > >> setup_arch()
-> > >>   zone_sizes_init() -> free_area_init() -> memmap_init_range()   [1]
->
-> Hmm, this is slightly outdated, but largely correct :)
->
-> > >>
-> > >> mm_init_free_all() / start_kernel():
-> > >>   kho_memory_init() -> kho_release_scratch()                     [2]
-> > >>   memblock_free_all()
-> > >>     free_low_memory_core_early()
-> > >>       memmap_init_reserved_pages()
-> > >>         reserve_bootmem_region() -> __init_deferred_page()
-> > >>           -> __init_page_from_nid()                              [3]
-> > >>   deferred init kthreads -> __init_page_from_nid()               [4]
->
-> And this is wrong, deferred init does not call __init_page_from_nid, only
-> reserve_bootmem_region() does.
->
-> And there's a case claude missed:
->
-> hugetlb_bootmem_free_invalid_page() -> __init_page_from_nid() that
-> shouldn't check for KHO. Well, at least until we have support for hugetlb
-> persistence and most probably even afterwards.
->
-> I don't think we should modify reserve_bootmem_region(). If there are
-> reserved pages in a pageblock, it does not matter if it's initialized to
-> MIGRATE_CMA. It only becomes important if the reserved pages freed, so we
-> can update pageblock migrate type in free_reserved_area().
-> When we boot with KHO, all memblock allocations come from scratch, so
-> anything freed in free_reserved_area() should become CMA again.
+This series expands the mmap_prepare functionality, which is intended to
+replace the deprecated f_op->mmap hook which has been the source of bugs
+and security issues for some time.
 
-What happens if the reserved area covers one page and that page is
-pageblock aligned? Then it won't be marked as CMA until it is freed
-and unmovable allocation might appear in that pageblock, right?
+This series starts with some cleanup of existing mmap_prepare logic, then
+adds documentation for the mmap_prepare call to make it easier for
+filesystem and driver writers to understand how it works.
 
->
-> > >> ```
-> > >
-> > > I don't understand this. deferred_free_pages() doesn't call
-> > > __init_page_from_nid(). So I would clearly need to modify both
-> > > deferred_free_pages and __init_page_from_nid.
->
-> For deferred_free_pages() we don't need kho_scratch_overlap(), we already
-> have memblock_region (almost) at hand and it's enough to check if it's
-> MEMBLOCK_KHO_SCRATCH.
->
-> Something along these lines (compile tested only) should do the trick:
->
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 3e217414e12d..b9b1e0991ec8 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -275,6 +275,8 @@ static inline void __next_physmem_range(u64 *idx, str=
-uct memblock_type *type,
->         __for_each_mem_range(i, &memblock.reserved, NULL, NUMA_NO_NODE, \
->                              MEMBLOCK_NONE, p_start, p_end, NULL)
->
-> +struct memblock_region *memblock_region_from_iter(u64 iterator);
-> +
->  static inline bool memblock_is_hotpluggable(struct memblock_region *m)
->  {
->         return m->flags & MEMBLOCK_HOTPLUG;
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index ae6a5af46bd7..9cf99f32279f 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -1359,6 +1359,16 @@ void __init_memblock __next_mem_range_rev(u64 *idx=
-, int nid,
->         *idx =3D ULLONG_MAX;
->  }
->
-> +__init_memblock struct memblock_region *memblock_region_from_iter(u64 it=
-erator)
-> +{
-> +       int index =3D iterator & 0xffffffff;
+It then importantly adds a vm_ops->mapped hook, a key feature that was
+missing from mmap_prepare previously - this is invoked when a driver which
+specifies mmap_prepare has successfully been mapped but not merged with
+another VMA.
 
-I'm not sure about this. __next_mem_range() has this code:
-/*
-* The region which ends first is
-* advanced for the next iteration.
-*/
-if (m_end <=3D r_end)
-        idx_a++;
-else
-        idx_b++;
+mmap_prepare is invoked prior to a merge being attempted, so you cannot
+manipulate state such as reference counts as if it were a new mapping.
 
-Therefore, the index you get from this might be correct or it might
-already be incremented.
+The vm_ops->mapped hook allows a driver to perform tasks required at this
+stage, and provides symmetry against subsequent vm_ops->open,close calls.
 
-> +
-> +       if (index < 0 || index >=3D memblock.memory.cnt)
-> +               return NULL;
-> +
-> +       return &memblock.memory.regions[index];
-> +}
-> +
->  /*
->   * Common iterator interface used to define for_each_mem_pfn_range().
->   */
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index cec7bb758bdd..96b25895ffbe 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1996,7 +1996,7 @@ unsigned long __init node_map_pfn_alignment(void)
->
->  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->  static void __init deferred_free_pages(unsigned long pfn,
-> -               unsigned long nr_pages)
-> +               unsigned long nr_pages, enum migratetype mt)
->  {
->         struct page *page;
->         unsigned long i;
-> @@ -2009,8 +2009,7 @@ static void __init deferred_free_pages(unsigned lon=
-g pfn,
->         /* Free a large naturally-aligned chunk if possible */
->         if (nr_pages =3D=3D MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pf=
-n)) {
->                 for (i =3D 0; i < nr_pages; i +=3D pageblock_nr_pages)
-> -                       init_pageblock_migratetype(page + i, MIGRATE_MOVA=
-BLE,
-> -                                       false);
-> +                       init_pageblock_migratetype(page + i, mt, false);
->                 __free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
->                 return;
->         }
-> @@ -2020,8 +2019,7 @@ static void __init deferred_free_pages(unsigned lon=
-g pfn,
->
->         for (i =3D 0; i < nr_pages; i++, page++, pfn++) {
->                 if (pageblock_aligned(pfn))
-> -                       init_pageblock_migratetype(page, MIGRATE_MOVABLE,
-> -                                       false);
-> +                       init_pageblock_migratetype(page, mt, false);
->                 __free_pages_core(page, 0, MEMINIT_EARLY);
->         }
->  }
-> @@ -2077,6 +2075,8 @@ deferred_init_memmap_chunk(unsigned long start_pfn,=
- unsigned long end_pfn,
->         u64 i =3D 0;
->
->         for_each_free_mem_range(i, nid, 0, &start, &end, NULL) {
-> +               struct memblock_region *region =3D memblock_region_from_i=
-ter(i);
-> +               enum migratetype mt =3D MIGRATE_MOVABLE;
->                 unsigned long spfn =3D PFN_UP(start);
->                 unsigned long epfn =3D PFN_DOWN(end);
->
-> @@ -2086,12 +2086,15 @@ deferred_init_memmap_chunk(unsigned long start_pf=
-n, unsigned long end_pfn,
->                 spfn =3D max(spfn, start_pfn);
->                 epfn =3D min(epfn, end_pfn);
->
-> +               if (memblock_is_kho_scratch(region))
-> +                       mt =3D MIGRATE_CMA;
-> +
->                 while (spfn < epfn) {
->                         unsigned long mo_pfn =3D ALIGN(spfn + 1, MAX_ORDE=
-R_NR_PAGES);
->                         unsigned long chunk_end =3D min(mo_pfn, epfn);
->
->                         nr_pages +=3D deferred_init_pages(zone, spfn, chu=
-nk_end);
-> -                       deferred_free_pages(spfn, chunk_end - spfn);
-> +                       deferred_free_pages(spfn, chunk_end - spfn, mt);
->
->                         spfn =3D chunk_end;
->
-> --
-> Sincerely yours,
-> Mike.
+The series uses this to correct the afs implementation which wrongly
+manipulated reference count at mmap_prepare time.
+
+It then adds an mmap_prepare equivalent of vm_iomap_memory() -
+mmap_action_simple_ioremap(), then uses this to update a number of drivers.
+
+It then splits out the mmap_prepare compatibility layer (which allows for
+invocation of mmap_prepare hooks in an mmap() hook) in such a way as to
+allow for more incremental implementation of mmap_prepare hooks.
+
+It then uses this to extend mmap_prepare usage in drivers.
+
+Finally it adds an mmap_prepare equivalent of vm_map_pages(), which lays
+the foundation for future work which will extend mmap_prepare to DMA
+coherent mappings.
+
+
+v3:
+* Propagated tags (thanks Suren, Richard!)
+* Updated 12/16 to correctly clear the vm_area_desc data structure in
+  set_desc_from_vma() as per Joshua Hahn (thanks! :)
+* Fixed type in 12/16 as per Suren (cheers!)
+* Fixed up 6/16 to use mmap_action_ioremap_full() in simple_ioremap_prepare() as
+  suggested by Suren.
+* Also fixed up 6/16 to call io_remap_pfn_range_prepare() direct rather than
+  mmap_action_prepare() as per Suren.
+* Also fixed up 6/16 to pass vm_len rather than vm_[start, end] to
+  __simple_ioremap_prep() as per Suren (thanks for all the above! :)
+* Fixed issue in rmap lock being held - we were referencing a vma->vm_file after
+  the VMA was unmapped, so UAF. Avoid that. Also do_munmap() relies on rmap lock
+  NOT being held or may deadlock, so extend functionality to ensure we drop it
+  when it is held on error paths.
+* Updated 'area' -> 'vma' variable in 3/16 in VMA test dup.h.
+* Fixed up reference to __compat_vma_mmap() in 12/16 commit message.
+* Updated 1/16 to no longer duplicatively apply io_remap_pfn_range_pfn().
+* Updated 1/16 to delegate I/O remap complete to remap complete logic.
+* Fixed various typos in 12/16.
+* Fixed stale comment typos in 13/16.
+* Fixed commit msg and comment typos in 14/16.
+* Removed accidental sneak peak to future functionality in 15/16 commit message
+  :).
+* Fixed up field names to be identical in VMA tests + mm_types.h in 6/16,
+  15/16.
+
+v2:
+* Rebased on
+  https://lore.kernel.org/all/cover.1773665966.git.ljs@kernel.org/ to make
+  Andrew's life easier :)
+* Folded all interim fixes into series (thanks Randy for many doc fixes!))
+* As per Suren, removed a comment about allocations too small to fail.
+* As per Randy, fixed up typo in documentation for vm_area_desc.
+* Fixed mmap_action_prepare() not returning if invalid action->type
+  specified, as updated from Andrew's interim fix (thanks!) and also
+  reported by kernel test bot.
+* Updated mmap_action_prepare() and specific prepare functions to only
+  pass vm_area_desc parameter as per Suren.
+* Fixed up whitespace as per Suren.
+* Updated vm_op->open comment in vm_operations_struct to reference forking
+  as per Suren.
+* Added a commit to check that input range is within VMA on remap as per
+  Suren (this also covers I/O remap and all other cases already asserted).
+* Updated AFS to not incorrectly reference count on mmap prepare as per
+  Usama.
+* Also updated various static AFS functions to be consistent with each
+  other.
+* Updated AFS commit message to reflect mmap_prepare being before any VMA
+  merging as per Suren.
+* Updated __compat_vma_mapped() to check for NULL vm_ops as per Usama.
+* Updated __compat_vma_mapped() to not reference an unmapped VMA's fields
+  as per Usama.
+* Updated __vma_check_mmap_hook() to check for NULL vm_ops as per Usama.
+* Dropped comment about preferring mmap_prepare as seems overly confusing,
+  as per Suren.
+* Updated the mmap lock assert in unmap_vma_locked() to a write lock assert
+  as per Suren.
+* Copied vm_ops->open comment over to VMA tests in appropriate patch as per
+  Suren.
+* Updated mmap_prepare documentation to reflect the fact that no resources
+  should be allocated upon mmap_prepare.
+* Updated mmap_prepare documentation to reference the vm_ops->mapped
+  callback.
+* Fixed stray markdown '## How to use' in documentation.
+* Fixed bug reported by kernel test bot re: overlooked
+  vma_desc_test_flags() -> vma_desc_test() in MTD driver for nommu.
+https://lore.kernel.org/linux-mm/cover.1773695307.git.ljs@kernel.org/
+
+v1:
+https://lore.kernel.org/linux-mm/cover.1773346620.git.ljs@kernel.org/
+
+Lorenzo Stoakes (Oracle) (16):
+  mm: various small mmap_prepare cleanups
+  mm: add documentation for the mmap_prepare file operation callback
+  mm: document vm_operations_struct->open the same as close()
+  mm: add vm_ops->mapped hook
+  fs: afs: correctly drop reference count on mapping failure
+  mm: add mmap_action_simple_ioremap()
+  misc: open-dice: replace deprecated mmap hook with mmap_prepare
+  hpet: replace deprecated mmap hook with mmap_prepare
+  mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+  stm: replace deprecated mmap hook with mmap_prepare
+  staging: vme_user: replace deprecated mmap hook with mmap_prepare
+  mm: allow handling of stacked mmap_prepare hooks in more drivers
+  drivers: hv: vmbus: replace deprecated mmap hook with mmap_prepare
+  uio: replace deprecated mmap hook with mmap_prepare in uio_info
+  mm: add mmap_action_map_kernel_pages[_full]()
+  mm: on remap assert that input range within the proposed VMA
+
+ Documentation/driver-api/vme.rst           |   2 +-
+ Documentation/filesystems/index.rst        |   1 +
+ Documentation/filesystems/mmap_prepare.rst | 168 ++++++++++++++
+ drivers/char/hpet.c                        |  12 +-
+ drivers/hv/hyperv_vmbus.h                  |   4 +-
+ drivers/hv/vmbus_drv.c                     |  31 ++-
+ drivers/hwtracing/stm/core.c               |  31 ++-
+ drivers/misc/open-dice.c                   |  19 +-
+ drivers/mtd/mtdchar.c                      |  21 +-
+ drivers/staging/vme_user/vme.c             |  20 +-
+ drivers/staging/vme_user/vme.h             |   2 +-
+ drivers/staging/vme_user/vme_user.c        |  51 +++--
+ drivers/target/target_core_user.c          |  26 ++-
+ drivers/uio/uio.c                          |  10 +-
+ drivers/uio/uio_hv_generic.c               |  11 +-
+ fs/afs/file.c                              |  36 ++-
+ include/linux/fs.h                         |  14 +-
+ include/linux/hyperv.h                     |   4 +-
+ include/linux/mm.h                         | 159 ++++++++++++-
+ include/linux/mm_types.h                   |  17 +-
+ include/linux/uio_driver.h                 |   4 +-
+ mm/internal.h                              |  41 ++--
+ mm/memory.c                                | 175 ++++++++++----
+ mm/util.c                                  | 251 ++++++++++++++-------
+ mm/vma.c                                   |  53 +++--
+ mm/vma.h                                   |   2 +-
+ tools/testing/vma/include/dup.h            | 152 ++++++++++---
+ tools/testing/vma/include/stubs.h          |   9 +-
+ 28 files changed, 990 insertions(+), 336 deletions(-)
+ create mode 100644 Documentation/filesystems/mmap_prepare.rst
+
+--
+2.53.0
 
