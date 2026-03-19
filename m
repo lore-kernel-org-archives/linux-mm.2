@@ -4,113 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B9011090256
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:50:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E9601090253
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58A4A6B0558; Thu, 19 Mar 2026 12:50:27 -0400 (EDT)
+	id BCEB06B055A; Thu, 19 Mar 2026 12:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 561476B055A; Thu, 19 Mar 2026 12:50:27 -0400 (EDT)
+	id B585D6B055C; Thu, 19 Mar 2026 12:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49EA76B055B; Thu, 19 Mar 2026 12:50:27 -0400 (EDT)
+	id A472B6B055D; Thu, 19 Mar 2026 12:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 393CE6B0558
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:50:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6DEC1B707F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:50:26 +0000 (UTC)
-X-FDA: 84563400852.01.9F79004
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4FC9C14000E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:50:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YgTWHgcw;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5566B055A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:52:44 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 463121DDD1
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:52:44 +0000 (UTC)
+X-FDA: 84563406648.22.BC70E1F
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 164DC18000B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:52:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="p ZMPNeZ";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=p5ZGcl5i;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773939025;
+	s=arc-20220608; t=1773939162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySKX/SdqeoTiP9pwQcgZ94qbw5sb0oTPtV3x6ZUzB64=;
-	b=VrQFzOfhVjdorxFT43NKtDTO3UuiHYFO5vM4szRNpfv68/kJu+IQAEO0j0lmKiNb8zwoQE
-	vhWXdCYCy/jTn1UKMuVx3BW8qiyTOOB/FlQOPcWF2gni4HNwBO4JjTfYSCScOi8wP3/jfp
-	uRf8br/Iju1XQtkSZ8W1fe6HK9Ka0DM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773939025; a=rsa-sha256;
-	cv=none;
-	b=QTV+1v7iOpkFlytd+5Opm5NnX6jStCSV78qoajbCw9g9UuiFKEKBwgJ2uL0Sb3jvYZyGtk
-	jc+DPLXhIJUsfMWKWy6IFG5iGYHjDxS/lPjHXWFVyBJ8gOARnd6yrgki7YrGVh/Oo9EN8u
-	P6h8/OEzNAqXqFJ+W3ByuzVExKHwZ6M=
+	bh=NiY88PiTkAC1sq3eRtNxrpg4KxKs+Hr6MzSOzgCjoJM=;
+	b=P1STV6iuGRXdLXcIFnel37yuCjsoDqZDAgx7wKO4TnNGepB8BeMTk6pQmyCQSEI+9ADKwk
+	FDdZddGE33HWm3w5FBKetI94RnPONMHGVIfFB9TlzxEQqc3xujIbdALmH4RkPsbzEsDshd
+	bwK+gl3mbNZCaYu//v5ChueOsyaEm4o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YgTWHgcw;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7AA6760097;
-	Thu, 19 Mar 2026 16:50:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41945C19424;
-	Thu, 19 Mar 2026 16:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773939024;
-	bh=ySKX/SdqeoTiP9pwQcgZ94qbw5sb0oTPtV3x6ZUzB64=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YgTWHgcwTFKs1gBYxdYW33eFt5gNoD63sWPX8mdYVejWbKUuDdrFkJsiURNl6lSLi
-	 XYkJpx/wRyyEkQGRCONtUVwp8dlhSmjpJmDCO67CtepROdANquLF914vAvs8F03t4f
-	 bTPzUwW9A/1agL8G//3eqOLaaV9TNMSiL0J0t6/c4zk5axQdTYHz2ZOVPKnbSwlk6K
-	 qocxlmnDCy6A8nO8NHNs/bLSd9OhmFGiAmqwSf3sFUuUX0nCndmYw9sGuphDXOX2tS
-	 i4TA+BApsD8Pt+tqXbprswARO/rjXi7FaX5y7BenKplS9DF3okpkWVua6BEbY/FEZi
-	 KOJGjMYMEW9VA==
-Date: Thu, 19 Mar 2026 16:50:08 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="p ZMPNeZ";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=p5ZGcl5i;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773939162; a=rsa-sha256;
+	cv=none;
+	b=tXnG54Ifh+nqQFY2A8YSnsgrYY8bPbhLAH/Zym92e9+PIiVV/oCnU0EEZa4cv8h19JkWBV
+	RFTjzgPc5QzSxH8hQX9b7tmWyJaoLwcUEavzGg1Qkt7xFBgY0qp7rQ4+Cu+dL/J52vPh8V
+	4CaxGoVUc1uLryfW4dZIFFSgbIkLhjk=
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id E95C67A0023;
+	Thu, 19 Mar 2026 12:52:39 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Thu, 19 Mar 2026 12:52:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1773939159; x=
+	1774025559; bh=NiY88PiTkAC1sq3eRtNxrpg4KxKs+Hr6MzSOzgCjoJM=; b=p
+	ZMPNeZmnV90bEtC6oitocToIkV4IIZ/dROfM/0KJPQXZZcjiK/Ut/sIt2LetOsVe
+	gg3YcpJjUvDUr50nZEmQAxzPOVmi05ocUAsgvA6fngkkNrBWPCTfoOJDpizIrDu5
+	Lvh6SZA5sb5BWztQqKbgRJtFiKVpoqsgwnWOD+XmcdR/cawS5tYD98AAbMYIAZY0
+	D3hD/6QnbCvAQdl/+dd/1W3x4lAdQ5gqUpfUT0eIEMMMhXVmVZRtvb9UlZwxCW+g
+	DzEnMGPJLwCGQXEtJ+1R8xTF10Lml2OSPlPJm4aXlso5mDwr88H0qqKU6Grqlb45
+	wL5Jok9LqlAO7/7xakRjA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1773939159; x=1774025559; bh=NiY88PiTkAC1sq3eRtNxrpg4KxKs+Hr6MzS
+	OzgCjoJM=; b=p5ZGcl5i5s0qGdFJSzKRCqdSkG+0r86q71emte4hVwMHE9kga32
+	YgJM1FY8xEOfpH03WDpxDSKEDiEiCXyTk11V14VMn9Bh95sfndXOeDyCa161HL+M
+	0Kfsg2gFwj9d6nIdllCRomdGnTSgpoU4qLw2oyjDct8bZWGIkoHlHcrIYPgyGy0m
+	le/v7fdlkTujWknTLC5d4yKtlirokiJwur9tlkbvO6lFCjcczseC6pGIevfU4lKV
+	o0gVLe56M2K1IZzFao0BhJgMXnydODTczPPV9L1r2TQh8Vvi0Hzmo5UmgsdMv/+P
+	SChijFgeF1X6O0Tc2ZC4k93s5lxo91lq5iA==
+X-ME-Sender: <xms:1im8afL0wcFbwoMPni-lOYKOzFsTaLuJjAay8GZBuixYMfdTpc9rfQ>
+    <xme:1im8aQxyXroKSf2KpKoUezASimRzrKpQIusKO4dvHkDNfk-nexEw59BtrmyeCZqCU
+    S2vfw9blUWwVdt3MCdb1sXe8CyQz9WWtWtI7swifeOe4ZTkzk1uBgs>
+X-ME-Received: <xmr:1im8afHo9Y62kvCR2WFiJBtMnAsK-awb0hMVQ2UK1IH747XKUm77-gmBn_sWuw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejheegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
+    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeef
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdp
+    rhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeiiihihse
+    hnvhhiughirgdrtghomhdprhgtphhtthhopegsrgholhhinhdrfigrnhhgsehlihhnuhig
+    rdgrlhhisggrsggrrdgtohhmpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorh
+    grtghlvgdrtghomhdprhgtphhtthhopehnphgrtghhvgesrhgvughhrghtrdgtohhmpdhr
+    tghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtohepug
+    gvvhdrjhgrihhnsegrrhhmrdgtohhm
+X-ME-Proxy: <xmx:1im8aQmBUFw62vK087u39ZUODslcuxh1BKUCRABjeVqlKxgcMT_sIQ>
+    <xmx:1im8aeG-aG62ETkF061qEPOotW0ZHWp_wq8z7-4B7oYHsoZtZ-QbjA>
+    <xmx:1im8abzsEhe7xMmByzBhCO8lIpOMWJCoOGS_R64KB-f0dyhnpnAEaQ>
+    <xmx:1im8afb-7SN0000k09lAn7Bq-z1ty_SFNpiUzMB1SJuokU_kEKkqfg>
+    <xmx:1ym8aYJ_rC8ODv2HLarQhvdGHJQD4psP6GF4wd7-MAxh-bmvy4_a04rr>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 12:52:36 -0400 (EDT)
+Date: Thu, 19 Mar 2026 16:52:31 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Kees Cook <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian Cain <bcain@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH v2 01/23] mm/vma: add vma_flags_empty(), vma_flags_and(),
- vma_flags_diff_pair()
-Message-ID: <3cf675e3-d333-45f1-bcf9-466c7b16f916@lucifer.local>
-References: <cover.1773665966.git.ljs@kernel.org>
- <ede9b0f8a2e2dc72e7fbc1a0ddbeb513364c28a2.1773665966.git.ljs@kernel.org>
- <4620167c-bcfe-414b-85f6-a5d28563b9af@kernel.org>
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/9] mm/huge_memory: simplify vma_is_specal_huge()
+Message-ID: <abwpKc6PbHiqQRg3@thinkstation>
+References: <cover.1773924928.git.ljs@kernel.org>
+ <613669b1b2082d34f5632907003ae3874eff2ed9.1773924928.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4620167c-bcfe-414b-85f6-a5d28563b9af@kernel.org>
+In-Reply-To: <613669b1b2082d34f5632907003ae3874eff2ed9.1773924928.git.ljs@kernel.org>
+X-Rspamd-Queue-Id: 164DC18000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bzcf33ka3nn97s1tp71d1apyynrfo4f1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4FC9C14000E
-X-Stat-Signature: nsgjd9h397ij4iatfxatsqaurrdsf7rc
-X-HE-Tag: 1773939025-720559
-X-HE-Meta: U2FsdGVkX18toNcvQzej/lz1BnznAXqly0WHbIOLL9+SjHBn725F/dCvdN2WiD3u+MfFtfdqIAseSVwg8LR6W0G1MQAaZ6VN0+apZ2T3mCk4Zfa1OoCwTW6Vjup3iKmPkRXyLYM3D0VaQ152MR5R7ADUI78uYjd+Ys1tdIHy9GPB98ax/vJ/3PbR61h0VyYkDJ/Fsm8hGHy0EA4kIoPqbduUpox0NH1osYM8w478WD8C8LSnzHdwTdr27RvCzAgYXMzqsxgSjP9vNAI5wyriKNUW1nYsdcwulgrcUxlZ6V7ZpwfHp9g+VkCx511luG4NChzurtmVidx5I/WiTsq3lh8gtOZf7vNYiLec1qKARkMyqIVz2uYALp9AIcN/yi03Jx98nSsGX5DnlBaOuy5G6NYiRGGgC6AL3/90IeJ5XjhyLFhwoS1y+MjrZ+wg/LawTO8NymGzdqnNEmspw2gR1COoFIAC65QT2Eq/fZpJ5aybdsYwtTxpCghgdYMg+RVyM5MjzOS1KaQsqjDDDtKF7BFcYqYZvTAdB/jWZmHzAFqQEzaGpV/yYhiWkQ+l9uyDTjIBJl5rDW9i68M4FgueJiQCv4zJsN566DHFi0/kqfdBUj5yEd8poXaXZskRGXESKXX/eYrDgVte/+IIkN6uM35a2qnmvdinLsfDeJ+7hc/Z0RPr1xxeTDh/a0JXFk3Y6hV3yaWfGnpTqd44syJq+A+4YoRVTjhqhCKpVUgdJHHQ7cqwaQ7cRgJG0UReqyLsFUQGeuaiaVaLhoMd5okCqItD55ys4v7k3Gljz1fV1ePhtHgnIzR67P+hJRQmjwT6Xj6S4n/h3PG6VcjrVMX6545++3V9cP2aEyYk8XcniAcgtnsjyRcWsciWai4sPFdKXlM+75C5bRxJqduyH/F/ga/r4ka+ctF1nlpgsPQngW6Fv5ywHh33EN3CaP4GuDMioD+bd738HOZUI65P8D7
- JsNFK3H5
- H/ZC2urBz0Lh0njKNdEOnfaRqnL1Y05kbAF1DC4kPZigfRspdyO7WTVrU8yXyVFtnRMRApl3N9HRrk/77Z3kbADETmHf5vPDe2oQL8RtTC2H5tTOnY9cNz/gyiH+8WuaeWlHi86uW7wO78zkXiyulHP+5b6RMtQrQ7b8OqU0Maaf27JV9qC6H0ANbMXXd6o6o1oiVb3ezy2adRhg1/DXNamjIf61KZHbqjKwK/sIt5o84/CxPv6b2rgUqVqWPFL9t4Yiam7h6B/WllsbVB1ulyGtvCa4P1E5CUQtZbnhwQrwPw6zRqiU3T8W/Bucif72/ZHkFxlJ5kGqnnDy7zC8wf+79fDvuaOr10nzi
+X-HE-Tag: 1773939161-10255
+X-HE-Meta: U2FsdGVkX19kDmvHCkDTZo20GJdbcKir8fkwKkOVxpKLIj2nFaG66VA8h3lWuYB/g3v48YGa0gMwIBJokMd3e00bmabXcLnMVtxDh/8XX4A0ylT0eqQou4NJvBwVgO9NkuIWv4uFJX5Qw+NuW4gJ6riSaWmjdwPOPt/wWD21VXPeGxHjLCHauE7GVYa3bTKBfVpHXyJ/S7wJecYFMywgfxX2eVCiwuTIZa/YYRpRYOXK9A6j8b+lTvBj+3HtonbAmOAAmxYC/MZ5yDsX6Uq1RexXaOEyx2V2VJF66ZFNrl106xMgqIiL2ramRE1w22fLrtz7CNXk1NHB6Gk+6EDCavHrjMwaf0fK2fiHqP+fBauQ8Pr4eBra4SYHDXIb0e4y3GaP1ExJQ5MMOLbj8wpIzdXee2rbzLsCrWhPg60yaSjTxJIRFvhP/L5lZ2CfhH4IZjRXkV55khGNhB2i3v8YGybyZYA56Q+qOBd2Dm6RAYWBWrxVkCuRzh4cpxUAyA+anZLkAygq904/q969nFf6U36UhSmVrKm2Lb3Dd/e9kLYon9cR0ZLmZJXRZ6/GwsNHaUpbCNKgVzgiLOHJzF7zJlxEAQXOTSfAMZ1cqgKGKkI5vHx9l65g/rx+K8XE2cOC+Oe0j5fZNQlbcwgefWw4Dgyh9A08NIbnoWuaeaCHwQxGttKi5OmpGULA6Ferfk5avRTrUsZ9+EPVN3qs2npLLlyLa8oAm5Ca61e347uDt7pZDk0AFnDNYmviHrUFgxN5Wo6ZM1Jo8wUo5JLf9fQCnTDzWi3oFHi1XxkYOxjNwCH/9q7rbdQoJgihBOP6rmWn2CkfMmtKIde4F9WR/V0JX66+FgIt8kNSldyttDPHZ5/1ISRxeTzjT6yZIwVrc4rs0lNXQ/uV18B1btEY4Dg+e0yFg9Jjmr7r1QPdrC59sgEpWRo7C/LFy87b/QsDy3pKtd16mpJ/SOHZlvjO8lu
+ IXqnzyX0
+ yIwoA1kioox5+PT4vxA+aYkKNjXuHLyTFN4oLLbNIk+rLPU26bPPTWdxGhcF76TTJcQCPxz3btbmuUdOcWbIz7o7F7OGFrUctSkmQEL1KpeErtB8YWVAc+1gefsS7DJF0J5xhc62NU1/enBReYb0O8YdHaNnx0LWG3zKs6Ce3SlY4QhUAbIlC9FPWct3OzsLDyzfn6K2hkm6hbBkkjHDO0zo66ETg+7xywdtEBLLkB/lc/2Vd1cqlhHXWwXd0MfXsOQxO9dL+sFNYwzfaVEFgSy73oWRDLtza8w/iqYw2AOe5lMseTezQGVD7aXCrVic3U3mP5V2ISP0x4h7bnAyS9OqmDzQHukJu/tsVXLW6rtCf34V+uiiw0R6phPpQDf7UPPuP/pE/ZjnXN1IsnB2aUdd2gHx9ztBvkSbDoq/+1VeZYtd/53WRfX4LFtye+B9RWNO3SHkmC2I+uflvGYXU2HcGm2UYwwQwoiz2zmPQL8JjVig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,40 +140,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 03:40:45PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 3/16/26 14:07, Lorenzo Stoakes (Oracle) wrote:
-> > Firstly, add the ability to determine if VMA flags are empty, that is no
-> > flags are set in a vma_flags_t value.
-> >
-> > Next, add the ability to obtain the equivalent of the bitwise and of two
-> > vma_flags_t values, via vma_flags_and().
->
-> Nit: "two values" is vma_flags_and_mask(), while vma_flags_and() takes one
-> value and list of flags, no?
+On Thu, Mar 19, 2026 at 01:00:07PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> This function is confused - it overloads the term 'special' yet again,
+> checks for DAX but in many cases the code explicitly excludes DAX before
+> invoking the predicate.
+> 
+> It also unnecessarily checks for vma->vm_file - this has to be present for
+> a driver to have set VMA_MIXEDMAP_BIT or VMA_PFNMAP_BIT.
 
-Sorry missed this. Yeah should be 'via vma_flags_and_mask()', or a better
-description of vma_flags_and() :)
+What enforces this?
 
->
-> > Next, add the ability to obtain the difference between two sets of VMA
-> > flags, that is the equivalent to the exclusive bitwise OR of the two sets
-> > of flags, via vma_flags_diff_pair().
-> >
-> > vma_flags_xxx_mask() typically operates on a pointer to a vma_flags_t
-> > value, which is assumed to be an lvalue of some kind (such as a field in a
-> > struct or a stack variable) and an rvalue of some kind (typically a
-> > constant set of VMA flags obtained e.g. via mk_vma_flags() or equivalent).
-> >
-> > However vma_flags_diff_pair() is intended to operate on two lvalues, so use
-> > the _pair() suffix to make this clear.
-> >
-> > Finally, update VMA userland tests to add these helpers.
-> >
-> > We also port bitmap_xor() and __bitmap_xor() to the tools/ headers and
-> > source to allow the tests to work with vma_flags_diff_pair().
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
