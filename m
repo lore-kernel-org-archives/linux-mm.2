@@ -4,94 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CD0109022E
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:07:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F8B41090231
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:10:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66BC56B04C8; Thu, 19 Mar 2026 10:07:41 -0400 (EDT)
+	id A3DB16B04CA; Thu, 19 Mar 2026 10:09:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 642316B04CA; Thu, 19 Mar 2026 10:07:41 -0400 (EDT)
+	id 9EEE96B04CC; Thu, 19 Mar 2026 10:09:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57E986B04CB; Thu, 19 Mar 2026 10:07:41 -0400 (EDT)
+	id 904AD6B04CD; Thu, 19 Mar 2026 10:09:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47D476B04C8
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:07:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE43EB9940
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:07:40 +0000 (UTC)
-X-FDA: 84562990680.13.9883C2B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F14A6B04CA
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:09:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1973613B4B3
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:09:59 +0000 (UTC)
+X-FDA: 84562996518.27.739280E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 29D0C1C000F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:07:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwIWMSqU;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 32DC740006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:09:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=B3FFWUfM;
+	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773929259;
+	s=arc-20220608; t=1773929397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7lhlx6qZZDFIeuzW72rhfb3+V+ZYlCPrG5vKYn9WRqc=;
-	b=yKuwZoHr3ascGcuN6xL7ShlGH2zdcNTuD2SsUaPs70cGTv/k85BjTL6pIAl2tuaoPwkLPt
-	O9IO2yNmtiSyjvY1VcPRVRYZvw+4wsl/ydg1fNHtXba92eZ7LUTePItg+rLbyVYWr6pLlw
-	PUPuViAe7QiVA9dy8TzIYp2v/10gHqs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773929259; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=8K7cb6jcdnN45EwJR6egKGW6FfNNB4pfcE4f9HwPKxk=;
+	b=VwZdNdKBzdBuGhjco0TJImeuJB08ejB85/c0CvVh0IyABw3IWjhZv2rmKSaYMFCaI3rkiH
+	ry43lauOrpM4ZUpNgOEjFqOdlPxLpkpn14vM3SQvNQPxxhFwQQLDTF4+3KwV0wz2XxtB08
+	TAPFBQyjv0ijxtMXy3q5W6+5Ct5UpW8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773929397; a=rsa-sha256;
 	cv=none;
-	b=AZeJRzXqNI69smzK3rNurFVRFliDvXDP92UpCUHs0p5qs35C3rZ6Pi0MZoybfHWuuRiwJ0
-	nL/o1xB3kfOG+OPYaSq1T6dyMqBdEfTq9Uz0c3DY8xMm3xII7ui7hgT0eLvGCIeuPIky4i
-	Gm87u+862mLk6eB1hWlkwj1MHI+vieE=
+	b=0bU8Ugdqy7/CmFMxryHJ3hGke0arrXv6MiN+StTSqcrt0utU6xJzLeVa/K4l1bFTbbyobJ
+	+0L4B6VSwdtp4WkuMd2433IlH4nxXMFj3KIeImg2mx7Y8Ja6Btf+Eags7Znk53twmWGMZI
+	Hu0/qWnFhpBkja+Ucr99LzS3pziT0OY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwIWMSqU;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=B3FFWUfM;
+	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 07991408DD;
-	Thu, 19 Mar 2026 14:07:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800B5C2BCB1;
-	Thu, 19 Mar 2026 14:07:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773929257;
-	bh=HkZRbcYV9UKIWpRqai42smC0s83PraNFAAL7cCXl3Fo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SwIWMSqUzmv/tchOI9fmLYCKdWPrNkgnYJtGz+/VxtnW6IvDJYatRbeB9+70C5rbG
-	 Xlt+elf01mYggD7fU0fJzk8lrHHB0NFkYl6kl5o7ctONaCm3Hv4TOVROxUdBYf60iN
-	 rIz41nrOcv+sUhuab5TOlEY/N7WDz6qLKDZB2R5fBRPSW31CP4Men6hgOajzU7bxhv
-	 ytiRw31fVRCreO604swZZZ9D1lsA7+zVt1j4fKuCxCtkcbDfc3OhO0kUSz+D1sbDah
-	 fBXrczmWekD0Bn+0RXBGWxYTgzXWJcXvE3jl2LEyE5BQ/JmNukOJbWIl3wSfY4jNPl
-	 a0I3epxNPaEKA==
-Date: Thu, 19 Mar 2026 14:07:35 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/8] mm/huge_memory: simplify vma_is_specal_huge()
-Message-ID: <e597ddf8-e834-4045-860b-0b6e6bee226b@lucifer.local>
-References: <cover.1773865827.git.ljs@kernel.org>
- <84712e37721c557f887e4a405759be31a4961100.1773865827.git.ljs@kernel.org>
- <5ce0932d-e8d7-4f0b-acb2-12be43a035e1@kernel.org>
- <11293efc-8c97-476f-9b65-8576c63e3275@lucifer.local>
- <cb86a286-24de-421a-b14e-8d11d4e8e89e@kernel.org>
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A99D41A53;
+	Thu, 19 Mar 2026 14:09:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4322BC19424;
+	Thu, 19 Mar 2026 14:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773929396;
+	bh=aSIgDFKLNy0vRYY5xb2iP/Cfq9fmz8HAVtG98Hr5P8Y=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=B3FFWUfMzeKMyo2bp2g+MkXbirASZXpP4bsimN8qJS7kZpyNa8xzwJBS1JNOYgOQw
+	 sjLlf6iDbngqOt6bA1obvMecu/yKVKvdgnpgf/QWRs02Zz5+7TtIV2fAXEoedV43Ae
+	 QR4/ViOytyTghNMDvOJSJ7lAIcLhYTHha/hQzBmI=
+Subject: Patch "mm/mempolicy: fix wrong mmap_read_unlock() in migrate_to_node()" has been added to the 6.6-stable tree
+To: Liam.Howlett@Oracle.com,akpm@linux-foundation.org,cl@linux.com,david@kernel.org,gourry@gourry.net,gregkh@linuxfoundation.org,linux-mm@kvack.org,liying3@sungrowpower.com,willy@infradead.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 19 Mar 2026 15:09:46 +0100
+In-Reply-To: <20260303101245.22290-1-david@kernel.org>
+Message-ID: <2026031946-transfer-ranger-7165@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb86a286-24de-421a-b14e-8d11d4e8e89e@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 29D0C1C000F
-X-Stat-Signature: jyp4ftkmh1897aznm9h3e3j6gj4raqgk
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
+X-Stat-Signature: sqkdq8is9u3pima1qispnh411s1mw5i4
 X-Rspam-User: 
-X-HE-Tag: 1773929258-614545
-X-HE-Meta: U2FsdGVkX18Ee0BuNwIvCtlpB4r+HHine1Y5TocYcbl0SzWdfKpSFsmPmBZwVbqau45ScEabj9dpbWOOQQPcqw1f+oiA6zgxShVSxT7flYkPpqQxl6Vkbp2xylbI5fyI4NfwS+8GDfrIic0lo0mi4Iq7D2XArmQ3Ba7BFNl1oOP6pXbj4kKB6CRaepoRvZGVKkVmfHRzfnzKi1tVWXqExZa3B+4jMX16P6786EJx/wb2cO6ljMcYaL14uMsmIPWhMtU/Kt29LElmG/yt29GqQIY1zlCf+7Pokbar6nyxNv91o4OeGKZbdkzbepttZqN393QlVHCFrBALpwMp4mVUFTaFRTi8xuGuFKJuld1jPPl4Mek/AZciYJBoFx8jlZDcTfvkGIirJEjFKtRdHnH0pWU7DTUOg4sqQZHxbOWXxXLwziXNbCctoDFW8b8DUh9e4VIrqeOroBH31bc6FAtfT3jAJD+SQ45QmniAU0kBmleszRupAU5Gzy+dmMEic4/oYItxxNL7D3Hyzq/fBYyzQYXFoi8j7NCA8ncIBBHjIvyKqH4gl1QJrkVCHY0gdxYpj1AA2Jx6pf4ZmcNV1kwclSUR4W0ci09Cog3t2MuJFYrV3OIz/AR0FiOpnZSx3cpo2wPZRxe0fB96ggf6uwIoNGaCeINT5/3xSkhZ8IDQ3qdAijOaZw48hrhBKewuwmw8hQLomqZscXbfeaR75klJhzS3W/b6M0TPfDcdWjbwyvSGQ3pPOEmq2amdP+RWkEvE77cSj3eyl5rNUunjvB5GYrcLOko1UO2F5PpPhZgBzqpQuNqiaVvw6PUrZXfPpiHnJUa+vPjV6Hvfclmlxhxk1mj6nO0kKdzbqleAtT7K+u4l9nuWfOjZ2be/a+6CD8HG2SIjyEk1Qe14T7RR4qoO3ypl4Epxt7OQ8mPGysGbYyzZKcueuKCmPtzuFG/hx1tVKiITMcceuviVPCuILes
- 9CR3oxlJ
- CoD7fp42pppIQG0B7967fbWsrSIkbV4wDlqRRzk8AZERNpRhKblxr/dSigaAyF+cKck2Zhu1mUggQbTcubqWMpRSiWJ3RhHFFTKGYdcrg7bdiL6EgtYhitkKa0AsFZJ6CzQu4Bo/bgefDqF1WLkzTJT0TsODDfGwG+MX7wIIT7XgYnEaKnBkWjhY8Kem3cM3oP1OjvlUsQ1gQx9LcdOoAKzo7FsmwSYu053WyBiu6r/ZoU3c+sHCSVlHuYO7klqzX5FpbCXbiIATz9J8=
+X-Rspamd-Queue-Id: 32DC740006
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773929396-734922
+X-HE-Meta: U2FsdGVkX18wXqExXPK/eDpA88Cvu5ctP6jxNBVNv6FPT4fyBX0IMjyWn25gXx/VLWvDgn5jLlw7VwoHnl8UP1bkcByza6VZf6V/9ESzDR5jOeQ1NB03bIrrcgFDZw34Kyrwku+KTiL1jHyBiL0CvQ9Is7TNz61g4jOs3jk5b/2cgUyxWa0+p3k8kViWHXO9TA0Ogy9fJQeQTYl8EHpiFXMUyeKCFejkqNCTsqV5QXxDzZ7LvLVWG9YzQ/Ni7t2+qsCIdhZb5SdlH7boy4PngvC9bR6rCB9zFj1bYcNBcrBdwi7d7w2zg9rrPPkqaBsTGEsqOjnkEe8eKuASLclESQwrG5epn21l7WAxczvV8TEs7yeEcTNG/cU89KZxUKYqj2kRR9zmenC6xECTWP15ZE7u2+G4Y4qJXUuMQ8Rulcg79XGEZywJXa7AZiv4spg1iVJ0QX4fX4Rx91Lk7du53/8V61olicov0Qkh01PWf6EXh7TDX3Mv+670NPI7aN4oKlE0f+tdV3BqChFGRVEFypaevOmyfrUSDeKdDlqSvechg3JF9efDB7m1j8JJdlaxGPWfo3FQzIH1mJmjaN5G78R4vqO+rM40DQACuZO/Kas77IPf3ShEC4GWPYFM+oK4pIVpRFxmCUcymmLdyfzzsTkC1u2V+W9TB7q+iXULUwyFbJRfpVVLhwR5NNLfZWNRz0wcfuEuIYU+mEWAQKvl4kpqWmWHkrC+8mf4o7ZhyBzwmxsrKgt9H8vjccLyx6I0CTMl+6Lq2O1PW+x9Q/0eUUqKD3c2NGFEBoU1blFJhLxlPeinReyvbkargVCKzSazZ0iE8Hqzi7jkXMDl/uDc2DOgiKiuodSDzGIAe4nluG3w4ufgJwzuJQo3mApXMk9rG7PEefFEKIzXsh8IR/m6mFVN+RVAghjQHIK1Mx13bhcDnRLWQSlmDNhq2wrMDS6/qHO3QcwGZd2Jj3gI+E3
+ DkuK81fU
+ n+xaF9eNeSjcrSNS/TdD7/7EjA5KqaUqOg/G8J5Z39QE4QmUusuK1kBLJuVqvk0IgabmOQ24x71eURbJMUf94ZI/8oxxogk9CZoUeZDXakDX5nYYK0qY8vls4+x98KBRhK1OfTo8OkTYxiEPTcYCAwoYYgCv0V9oMAQVqDF6oapDjm6FSDNhz5aHX65qEC7nasM7cqFy9OI/+8BMGKVszDOhoVk4F9/4QyUJL4qpH+Hk+KmEHX3w3q3R9O0f6D31hiVXmktxljwC6HwKbkjn8Mv+9TzI60Jf8gclkCxJxf8MAI2q8myjNpcoFQemnPXbLZ9HE51sexWFRhc4uysU9RsGtH4DZpVIaEzcloF0NhtCQrQCUICCXIdpux1lSizXUkqrZ0ggyJsKvuDg8q1538EjmJptWeg7ZOFY6gUnKshxnmlBAzsAjuEGvMSDfKAARNFHS/6f3j7gadHeFPfXMgEL9kjidjpmxEhjL2sgXb77yftDm0F2OngxEIHTLGDchtfV2/JZQVbfqeEhjmX+JumBcjAFvt0UOTjVWZOsZq+fBoSydUULdx/pV+0S2fBMWmF5AKxDvWsGJko80S31UZOmNYmKwUCFVPc+O8JKytOAwx0isIf5KBnE00nYe7vi3h/d2i37OWQ+541Wf3UVzPYz1o1HNYW3ZFBNseZrHoKLyvHb0MiB/v6r1ToKgqy0rKopFmtwSgDfPobPCdV2fzHgPzCNOGBlHB7FLlXI2ctYFUODhFA1fy/jqXV/UfaVoQKEbUZTUqCflba49sRE/BjHxGYbWqZyetfpEr+y3CSm3qk6qLU6afsNWGn9nkvj69d1Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,31 +88,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 02:03:04PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/19/26 11:34, Lorenzo Stoakes (Oracle) wrote:
-> > On Wed, Mar 18, 2026 at 09:45:31PM +0100, David Hildenbrand (Arm) wrote:
-> >>> +++ b/mm/huge_memory.c
-> >>> @@ -100,6 +100,14 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> >>>  	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
-> >>>  }
-> >>>
-> >>> +/* If returns true, we are unable to access the VMA's folios. */
-> >>> +static bool vma_is_special_huge(struct vm_area_struct *vma)
-> >>> +{
-> >>> +	if (vma_is_dax(vma))
-> >>> +		return false;
-> >>> +	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
-> >>> +}
-> >>
-> >> I was hoping that we could make this whole code look more like PTE code
-> >> by using vm_normal_page_pmd() ... :)
-> >
-> > Could that be a follow up?
->
-> I guess so, but the code is so awful :(
 
-well I udated the code to use vm_normal_folio_pmd() :) at least should get
-us closer to common logic.
+This is a note to let you know that I've just added the patch titled
 
-Cheers, Lorenzo
+    mm/mempolicy: fix wrong mmap_read_unlock() in migrate_to_node()
+
+to the 6.6-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mm-mempolicy-fix-wrong-mmap_read_unlock-in-migrate_to_node.patch
+and it can be found in the queue-6.6 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From david@kernel.org  Thu Mar 19 14:49:55 2026
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Tue,  3 Mar 2026 11:12:45 +0100
+Subject: mm/mempolicy: fix wrong mmap_read_unlock() in migrate_to_node()
+To: stable@vger.kernel.org
+Cc: linux-mm <linux-mm@kvack.org>, "David Hildenbrand (Arm)" <david@kernel.org>, Li Ying <liying3@sungrowpower.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Christoph Lameter <cl@linux.com>, "Liam R . Howlett" <Liam.Howlett@Oracle.com>
+Message-ID: <20260303101245.22290-1-david@kernel.org>
+
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+
+The backport of commit 091c1dd2d4df ("mm/mempolicy: fix migrate_to_node()
+assuming there is at least one VMA in a MM") contains an error:
+migrate_to_node() does not lock the mmap_lock itself, that is handled by
+the caller instead.
+
+So let's drop the wrong mmap_read_unlock(). Fortunately, this path is
+very hard to hit in practice.
+
+Fixes: a13b2b9b0b0b ("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM")
+Reported-by: Li Ying <liying3@sungrowpower.com>
+Closes: https://lore.kernel.org/r/aaZgUNxAyKC2IwuG@casper.infradead.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ mm/mempolicy.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1071,10 +1071,8 @@ static long migrate_to_node(struct mm_st
+ 
+ 	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
+ 	vma = find_vma(mm, 0);
+-	if (unlikely(!vma)) {
+-		mmap_read_unlock(mm);
++	if (unlikely(!vma))
+ 		return 0;
+-	}
+ 
+ 	/*
+ 	 * This does not migrate the range, but isolates all pages that
+
+
+Patches currently in stable-queue which might be from david@kernel.org are
+
+queue-6.6/mm-mempolicy-fix-wrong-mmap_read_unlock-in-migrate_to_node.patch
+queue-6.6/mm-tracing-rss_stat-ensure-curr-is-false-from-kthread-context.patch
 
