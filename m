@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE063109023F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 15:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11A50109023F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 15:27:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 402716B050A; Thu, 19 Mar 2026 11:26:28 -0400 (EDT)
+	id 7A58F6B050C; Thu, 19 Mar 2026 11:27:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B09D6B050C; Thu, 19 Mar 2026 11:26:28 -0400 (EDT)
+	id 77D116B050E; Thu, 19 Mar 2026 11:27:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 273506B050D; Thu, 19 Mar 2026 11:26:28 -0400 (EDT)
+	id 693386B050F; Thu, 19 Mar 2026 11:27:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E9426B050A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:26:28 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C111A140566
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:26:27 +0000 (UTC)
-X-FDA: 84563189214.15.F25A4A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D039B40010
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:26:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fLuaFgq8;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773933985;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 533756B050C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:27:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 08E088BA1C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:27:02 +0000 (UTC)
+X-FDA: 84563190684.05.727F5CB
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D39DA18000B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:26:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=ASntnKBE;
+	spf=pass (imf16.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773934020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RzulagucixrAq9pvmoZGhIw8ZAuzMVozPfvSNnzKHHo=;
-	b=O6+yfTVMjdltmfBe9oMWNBOfE5HoHhdVvgJouqpaYBhIriU4cMfVW8EZ6IlRGMvuxeNtm+
-	x1A44L9jrclIR72aIw3NOPqD8m+FAbIFzNpP5bKN7qpRZjzXQt4VR+Q4yCBbFIEzajNMO+
-	z72Kz+H6eF5FYwX3Zb8ZxHl1rJkjEzM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fLuaFgq8;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773933985; a=rsa-sha256;
-	cv=none;
-	b=m18xqfYIQqR8upOCQkvtcpPKhW9EA6QnhU6G/L8NPvuM0FvpWyHPbuHO1j3ePMnkzd1MaK
-	kobLDI+k4GghYSpuQZ+YagBGDm4QiNYqt/d4PuwI2PSpxn1oeRZFTZnajxFPLfWDu/hgYu
-	VXO2wXNRLVOoh0J+ugxYtsgFP7tMshs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26E2360054;
-	Thu, 19 Mar 2026 15:26:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33593C19425;
-	Thu, 19 Mar 2026 15:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773933984;
-	bh=Qd6BFYywHFyE8a9Vdt4rUHZRIFcJwJaA71ffKpPrSac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fLuaFgq8YDjMSa8f34FmvlgdtIqNTRMeX0dHfGgQKoR5Qd5I8LOY8qfSU85237nVI
-	 90YLfdGH2w9byMZcwSDhooTqVQB+QOb+1fannxJXWssuZaFnupu6nneORfWSb9JtlL
-	 RAVq+ZrdDwpZTk9fUNm05D/pa2EX5O2m3eiTP4iktmwFNO6B9gT0MLrwyCR9D06EvK
-	 fMudWXVJSoIv9s3a9kqH8Ix5ZZUY/vBZjq8ZeuTVfAWFRBWpAU7ZMhuou7iRMRrONp
-	 lQypOy6dP7+gr0dELj260U5VTVy5nOyuMg4ejzMID+wXoHe3zWn63wzsroiiwSaX14
-	 Vzmsbbh+kXPiQ==
-Date: Thu, 19 Mar 2026 15:26:22 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	yuanchu@google.com, david@kernel.org, hughd@google.com, chrisl@kernel.org, 
-	kasong@tencent.com, weixugc@google.com, Liam.Howlett@oracle.com, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com, 
-	harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de, 
-	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org, 
-	willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH 6/9] mm/swapfile: Make folio_dup_swap batchable
-Message-ID: <8e4cbb87-8146-447b-b140-6fe01672ac81@lucifer.local>
-References: <20260310073013.4069309-1-dev.jain@arm.com>
- <20260310073013.4069309-7-dev.jain@arm.com>
- <18928285-20c6-4cd9-842f-c0aef91421a2@lucifer.local>
- <26631dbf-1a3e-4d30-9a07-ff64319cbf2f@arm.com>
+	bh=H747lVbjk5GJRNLP9W0vcB2yh4cZMTEHKBCflRyF5H4=;
+	b=VeYye70xlg04qg59+1G20W2ZBLTnY19v+rUZ4A2ARHJibkCcfa3RWGv7seDJv1bEaWMtD4
+	JlAPNjm8M8V7gCZVv/ujqtP5CB5WQlTKleYIYvnWa3LyAsPVnW8US3YPhsiz6RA2ChaEsP
+	XcYKTLYW1QI3hwV4W/LYd+NAoAtHDZ4=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=ASntnKBE;
+	spf=pass (imf16.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773934020; a=rsa-sha256;
+	cv=pass;
+	b=Hgg3j0UtYNyviKvvPJhZGlc+oAsCZVacdJLyEtdY89oc8wHcj3A06XuyqNnGjf9dlmEDlJ
+	83stXkaRsBxixWEdFzHO5RlUZQsulfBTRXljDk2XSDhIc24/Qyl+eea5GHOYup8/JUHWfw
+	Hc+KNpEKGJziDi8SnGEG5vbf4RhJtJA=
+ARC-Seal: i=1; a=rsa-sha256; t=1773934007; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=eT+WFR5pU1i4ufVby1vxETD1vvWHvvh29i3vyWyfP3ZGb/QfufO2B7/mASglRF9syX/+h2CHqsAkXkDIRaWueqK1QLj2p/nsBfYkh+fWrdjVsNGqpDzBuX41QJFZj/A9o52JXc4x/ny8TxIaeK6lCw76qaeExyt+apsAPrBWIKA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1773934007; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=H747lVbjk5GJRNLP9W0vcB2yh4cZMTEHKBCflRyF5H4=; 
+	b=QAu6wwK9AbYC7ztOw2Lzjj5Vq1HFqVlhxbTfa27+j5mNebHCzDHRoByx8zConZaUD3Zj6PL5Hhu1fFXv7UaAxk/qSOcMDYypIUBk6EjR9kAech8UAIZ7nmNoXrnYJBsWAk2wjDDsV+QcASqw+IYCqsl29xQlVop5svnttqxExns=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773934007;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=H747lVbjk5GJRNLP9W0vcB2yh4cZMTEHKBCflRyF5H4=;
+	b=ASntnKBEg90anYoDtbkHthqrcCChXCV7oHSvpiIvgxjDNU8PH8o4TaKfjyzkO/Ba
+	Ko2lwiVkZxHmiDwQCzLgR8zxcUKh7mOE/m0xCAuIEA1r0PtPh6U+sCouXXx151UiBUE
+	33rjUtS6/dkb40AD0fYn7A5wjmg+jN0nTbcL15DM=
+Received: by mx.zoho.eu with SMTPS id 1773934004932632.9143077698317;
+	Thu, 19 Mar 2026 16:26:44 +0100 (CET)
+Date: Thu, 19 Mar 2026 15:26:41 +0000
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon/core=3A_document_d?=
+ =?US-ASCII?Q?amos=5Fcommit=5Fdests=28=29_failure_semantics?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260319152434.87003-1-sj@kernel.org>
+References:  <20260319152434.87003-1-sj@kernel.org>
+Message-ID: <490DD03E-C66A-40FD-8008-C846350252BF@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <26631dbf-1a3e-4d30-9a07-ff64319cbf2f@arm.com>
-X-Rspamd-Queue-Id: D039B40010
-X-Stat-Signature: myganwt8eozuoeizdi6ya81ta14pm97g
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Stat-Signature: x3d8uwpkxsdtkiaiuj7ejs5x875py4zb
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773933985-707924
-X-HE-Meta: U2FsdGVkX1++IqCaWYQFmFf7zUoIh492Kn4NluCBxc51e29urpg18R7knNbrMHWTA5fC4LWAo2OSCeGG7jD3IziI2dXivnVRfaa2UVRmznKY7DrJRO+Du941kxyThwRiayCZqM6qob9lC7+a+MtotV6puQ1W9oVudsXoirPJo/ey0xSrMGnSxk3sGCc4O5IeqQa4k+k3RZ2UfNnUgmyOKROf75m+/RWjfudarxBTORYfS3/uZb0ye5NeIPcyWctC+rU7025DU5yS/G0jNsBNmUQ7ZWUDCH8Z22Vr2LKKeRq1KN3CCZfD2Ocn6J8DAC1VmGOuJscmDauc9Lde8Bs+lLlD5GUjkbnxDrh3geLtfBffzwZh65Ys0P/xckU9Cj/KvaD91de7j+S/UKmLCZuSukc1xVXD5VooQ06cEW5EhgxEeUtsoar56F9KTv/+55LqG31j34AhFadnjTBChVbsvntPnX4mSm5tswgv4nkW4rUd2FJufUci9t3ktBrPJC7RxgyWTr8HSWtpDbiEYJ9AvQvGHeeoYBKjfr7xJWXTC1BRuhn1Iy+csIvpWMa+jsgZ6sVtNz8RTOjNv87hMeAPNfkI7uM8UATUnoomEqWL8erO2A56TSPwZUwG8/F5ff/rff9s4/siPae7qDR503FU1nCpGq7YiFzGBI60J8WOFCyfEtUU3D0EXqjSwNmYkpV6P6ns0ODVQNP/wT2N3YA/31wq4hGIbiu76/beS9BpgZccCit29ekk4fpKEasUef9VV03gXaa6Y/oKkvqYncTDH4lWXEm3tI8rALnRO+ZFu1RU8zDlwcw/r1J12AKhWRNo2Sfsiqn8EAVJ7c/nCfIVJGU2gdN7kiMXDALx1itqVyjBYBC5msTYDvtbPQ/TiPsQ9XLJlrN5TFlf1FGHjj2b6GQZWIw45ixXfJO5ZgRIPj5V98bs1MjLK8Psk+hQfNRm+sDPAGT2Ge2s+5IzZo7
- TYz0U7+8
- cZ6+Ffm2GIjED++s2SafAZ8v3H4q07ngqPMlDfzJGlCaeC0mq9b6zLBzUDMa54fZ1OW1cfuX5GBbbJPMNjLMajtk0+6WLXi+aTtCayg9ZksuYlWug72P7Vnwej8xCcMvsF+lMrkA48ZrzgrAdHm2P/CMY+a7BhVBV3KIjvn21qV8R68AVXmlRRon1tMk76IyETfl1V1ZNs/a4hVufpE2fE+lRp/+oIGNKDoVy2WBxQOiQwP7R2S1w72CFw/wJbfYDYpyBp8vNfsNr18DE6d+lQhGBYYdg4U+7uzQvuVtURNkqiWzVAM5uwJyVysg0+JDevkDd
+X-Rspamd-Queue-Id: D39DA18000B
+X-HE-Tag: 1773934019-9555
+X-HE-Meta: U2FsdGVkX18JjWn7c/ruw+APGy04LMzOg4u0VztIGEMbvOuK9oiphH1t6Pat5izL4xmxGOI5vFGT19uxrn5DgDqDGqggY2TiTNgeBvmkEMDdndUL9RD7N6l/mbun/bfsiIfVGF8TRTWQmurRYDguv8wDLqHlp9u51dFMKoq2/RvcPij3AAvbTBjBPznJPsuf69UCJkq7o63f7E2W+265J6G0mh/yus1UZfcit5uTV3F48FaE6FpH+Db77Z4uZKY2vxCg5N5sAxKbNnanjYXU0WvDn4T2s/bvK+p8r9vYfrgPN4BzfDGXAdpNPiaggp6aKARks7kxxjVgYjOI+sd6r45TGaw+sPcWz67Zwm9ksguiNuQYkId14xf2ttAcywa71Tm9yDAjj5MMxAt+Mew4haUoD5HlYnCERRrm28J44t3CYSLrIRKwZInnBnfvdTG8WBX7HtCa9Q3MFtIF1Aa5/uiVFZDnjdU/UtSSXXU50/AGyDkon1ZKox5BUN1PzKOAYeNc6EVDitsANHDYqEFHZm3b/EtZyFyD616SjQNbwnHTr2r99TBJ/vQddyj+Ja4klcBC2HgDiOY9jVpIw/pglFNsuuZp+R8f9Xd+u8HRrM/QuaPhUDizRDqQseZJlmK161cP9Ofs8EA+zYHcz8v8qrj0v2/QxDWjcrDqXOF+Wl+Oc3iUIb/H7wbit/0KpDov3KIhswapu+WN/cwCrLKb4S4iTgD6YgFJDKKbCK7YQvncmZC5b7D1SPRm00WEQparGaBBZQGqP/98D6URT60dBSifocjDoc9cg8Tm6fU0ItEYRqDH/7H6pugT7pdyAbNclUDLgdjQcB8xZJupw2JFmMv9NiHUSMwDdYduqCU7bWRlgSCP6ocEJRQ3dR8pJ4ddhKbfs743g0Lf2MtG3xOLxdtmwqU0j6F5c9rM2Vm8yWZH7FLUue6af4GlBy4JahxZFMPlOf/9RwfhGuJ0huv
+ IoI0Jqp0
+ /S+8oRzb95VfSpLD+vQJVaTfg5pk1mJh9HjxME3APAb1+a5v/vWZKvwPcigOTVZE29qgwRQe3VCFD2eBtZlLLuCoI7CKiDdCdbTkrQHrBiuujqFmGyCpsZc9ISE6uucrAxpDDEpQbKxoYCUMhQOCCa6HG0mzz8WZYZnG7TYdTXq4UZqqIbBbk5cqhLSNKOJjvp+dpYW9zVlHN7kpeEWqhTBsiWw0KGvabMca7kE6lyhM3aGkRw7AJiXRGax1zct/ts3Iuft52/J3ql/pNDphaQbqOFNZFeQaxLx5JErTdzOnwpKOuMm9wEDTiLLGnB2H9qg9FJdxVu+TQYDWPBnYwwPCEbYO24eLBTR/Vll1DuU3l6copIYYZv+/UYVGoNtXdPF7Hat/A7iCcr9GuQK22uP7/0j4E5PKORyKMAzaojZL69yF3NKEf4hUhjzlKdYeNTbIkyqLLLWLuNSCx+aAGFEPb6sLq3vSgXzL9xl+GqCaKEttdlh9O+ymdL/ArgQnWLJQPnbEZoW0ptOfL/8YBzIayK8FQsbA7mlbT2vUrAmil5+Qy19BNvEKscQk5w8aoaYSgcNEIsF3ccKdx0/yNBYGkwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,175 +102,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 11:12:22AM +0530, Dev Jain wrote:
->
->
-> On 10/03/26 2:19 pm, Lorenzo Stoakes (Oracle) wrote:
-> > On Tue, Mar 10, 2026 at 01:00:10PM +0530, Dev Jain wrote:
-> >> Teach folio_dup_swap to handle a batch of consecutive pages. Note that
-> >> folio_dup_swap already can handle a subset of this: nr_pages == 1 and
-> >> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
-> >>
-> >> Currently we have a not-so-nice logic of passing in subpage == NULL if
-> >> we mean to exercise the logic on the entire folio, and subpage != NULL if
-> >> we want to exercise the logic on only that subpage. Remove this
-> >> indirection, and explicitly pass subpage != NULL, and the number of
-> >> pages required.
-> >
-> > You've made the interface more confusing? Now we can update multiple subpages
-> > but specify only one? :)
-> >
-> > Let's try to actually refactor this into something sane... see below.
-> >
-> >>
-> >> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> >> ---
-> >>  mm/rmap.c     |  2 +-
-> >>  mm/shmem.c    |  2 +-
-> >>  mm/swap.h     |  5 +++--
-> >>  mm/swapfile.c | 12 +++++-------
-> >>  4 files changed, 10 insertions(+), 11 deletions(-)
-> >>
-> >> diff --git a/mm/rmap.c b/mm/rmap.c
-> >> index dd638429c963e..f6d5b187cf09b 100644
-> >> --- a/mm/rmap.c
-> >> +++ b/mm/rmap.c
-> >> @@ -2282,7 +2282,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
-> >>  				goto discard;
-> >>  			}
-> >>
-> >> -			if (folio_dup_swap(folio, subpage) < 0) {
-> >> +			if (folio_dup_swap(folio, subpage, 1) < 0) {
-> >>  				set_pte_at(mm, address, pvmw.pte, pteval);
-> >>  				goto walk_abort;
-> >>  			}
-> >> diff --git a/mm/shmem.c b/mm/shmem.c
-> >> index 5e7dcf5bc5d3c..86ee34c9b40b3 100644
-> >> --- a/mm/shmem.c
-> >> +++ b/mm/shmem.c
-> >> @@ -1695,7 +1695,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
-> >>  			spin_unlock(&shmem_swaplist_lock);
-> >>  		}
-> >>
-> >> -		folio_dup_swap(folio, NULL);
-> >> +		folio_dup_swap(folio, folio_page(folio, 0), folio_nr_pages(folio));
-> >>  		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
-> >>
-> >>  		BUG_ON(folio_mapped(folio));
-> >> diff --git a/mm/swap.h b/mm/swap.h
-> >> index a77016f2423b9..d9cb58ebbddd1 100644
-> >> --- a/mm/swap.h
-> >> +++ b/mm/swap.h
-> >> @@ -206,7 +206,7 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
-> >>   * folio_put_swap(): does the opposite thing of folio_dup_swap().
-> >>   */
-> >>  int folio_alloc_swap(struct folio *folio);
-> >> -int folio_dup_swap(struct folio *folio, struct page *subpage);
-> >> +int folio_dup_swap(struct folio *folio, struct page *subpage, unsigned int nr_pages);
-> >>  void folio_put_swap(struct folio *folio, struct page *subpage);
-> >>
-> >>  /* For internal use */
-> >> @@ -390,7 +390,8 @@ static inline int folio_alloc_swap(struct folio *folio)
-> >>  	return -EINVAL;
-> >>  }
-> >>
-> >> -static inline int folio_dup_swap(struct folio *folio, struct page *page)
-> >> +static inline int folio_dup_swap(struct folio *folio, struct page *page,
-> >> +				 unsigned int nr_pages)
-> >>  {
-> >>  	return -EINVAL;
-> >>  }
-> >> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> >> index 915bc93964dbd..eaf61ae6c3817 100644
-> >> --- a/mm/swapfile.c
-> >> +++ b/mm/swapfile.c
-> >> @@ -1738,7 +1738,8 @@ int folio_alloc_swap(struct folio *folio)
-> >>  /**
-> >>   * folio_dup_swap() - Increase swap count of swap entries of a folio.
-> >>   * @folio: folio with swap entries bounded.
-> >> - * @subpage: if not NULL, only increase the swap count of this subpage.
-> >> + * @subpage: Increase the swap count of this subpage till nr number of
-> >> + * pages forward.
-> >
-> > (Obviously also Kairui's point about missing entry in kdoc)
-> >
-> > This is REALLY confusing sorry. And this interface is just a horror show.
-> >
-> > Before we had subpage == only increase the swap count of the subpage.
-> >
-> > Now subpage = the first subpage at which we do that? Please, no.
-> >
-> > You just need to rework this interface in general, this is a hack.
-> >
-> > Something like:
-> >
-> > int __folio_dup_swap(struct folio *folio, unsigned int subpage_start_index,
-> > 		     unsigned int nr_subpages)
-> > {
-> > 	...
-> > }
-> >
-> > ...
-> >
-> > int folio_dup_swap_subpage(struct folio *folio, struct page *subpage)
-> > {
-> > 	return __folio_dup_swap(folio, folio_page_idx(folio, subpage), 1);
-> > }
-> >
-> > int folio_dup_swap(struct folio *folio)
-> > {
-> > 	return __folio_dup_swap(folio, 0, folio_nr_pages(folio));
-> > }
-> >
-> > Or something like that.
->
->
-> I get the essence of the point you are making.
->
-> Since most callers of folio_put_swap mean it for entire folio, perhaps
-> we can have folio_put_swap for these callers, and the ones which are
-> not sure can call folio_put_swap_subpages? Same for folio_dup_swap.
-> And since we are calling it folio_put_swap_subpages, we can retain
-> the subpage parameter?
 
-Right but I'm talking about dup variants here but the principle is the same.
 
+On 19 March 2026 15:24:33 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>On Thu, 19 Mar 2026 07:31:14 -0700 SeongJae Park <sj@kernel=2Eorg> wrote:
 >
-> >
-> > We're definitely _not_ keeping the subpage parameter like that and hacking on
-> > batching, PLEASE.
-> >
-> >>   *
-> >>   * Typically called when the folio is unmapped and have its swap entry to
-> >>   * take its place: Swap entries allocated to a folio has count == 0 and pinned
-> >> @@ -1752,18 +1753,15 @@ int folio_alloc_swap(struct folio *folio)
-> >>   * swap_put_entries_direct on its swap entry before this helper returns, or
-> >>   * the swap count may underflow.
-> >>   */
-> >> -int folio_dup_swap(struct folio *folio, struct page *subpage)
-> >> +int folio_dup_swap(struct folio *folio, struct page *subpage,
-> >> +		   unsigned int nr_pages)
-> >>  {
-> >>  	swp_entry_t entry = folio->swap;
-> >> -	unsigned long nr_pages = folio_nr_pages(folio);
-> >>
-> >>  	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-> >>  	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> >>
-> >> -	if (subpage) {
-> >> -		entry.val += folio_page_idx(folio, subpage);
-> >> -		nr_pages = 1;
-> >> -	}
-> >> +	entry.val += folio_page_idx(folio, subpage);
-> >>
-> >>  	return swap_dup_entries_cluster(swap_entry_to_info(entry),
-> >>  					swp_offset(entry), nr_pages);
-> >> --
-> >> 2.34.1
-> >>
-> >
-> > Thanks, Lorenzo
+>> Hello Josh,
+>>=20
+>> On Thu, 19 Mar 2026 07:13:32 +0000 Josh Law <objecting@objecting=2Eorg>=
+ wrote:
+>[=2E=2E=2E]=20
+>> And Sashiko comment [2]=2E  TL; DR: Good finding=2E  We aware the issue=
+ and working
+>> on the fix=2E  Nonetheless, that's out of the scope of this patch=2E
+>>=20
+>> : Does leaving dst in a torn-down state cause a NULL pointer dereferenc=
+e in
+>> : the background kdamond thread?
+>[=2E=2E=2E]
+>> Nice catch=2E  We actually figured out [3] this issue from the discussi=
+on on
+>> Josh's previous patch that motivated this one=2E  And I'm working on it=
+=2E
 >
+>I just posted the patch:
+>https://lore=2Ekernel=2Eorg/20260319145218=2E86197-1-sj@kernel=2Eorg
+>
+>
+>Thanks,
+>SJ
+>
+>[=2E=2E=2E]
 
-Cheers, Lorenzo
+
+Hello, this morning i found some big bugs in sysfs=2Ec, ill post the patch=
+e(s) soon
 
