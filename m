@@ -4,111 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9597E107526C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD1B107526E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:21:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DA966B0413; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
+	id 45A686B0414; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2336B0414; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
+	id 430726B0416; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C8726B0415; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
+	id 3460A6B0417; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 59D1D6B0413
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:21:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 192E51B7E55
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:23 +0000 (UTC)
-X-FDA: 84561966846.13.B6C5218
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 363C3100007
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="Eempxc/N";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22FDE6B0414
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:21:29 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF1D4B944A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:28 +0000 (UTC)
+X-FDA: 84561967056.23.1882387
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0375F20007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:21:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AV6ddI55;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773904881;
+	s=arc-20220608; t=1773904887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mT5CVxEEsQlA7iRjeSIzOh9lr8aiAprp04Qac2/CxY=;
-	b=v42iJ6XUaFccHIiAqsyLTBhvW1E4H4b20G74OYz0yz0af0SVmIXbR0GH6vByGNwr9pT8Br
-	VcN43PabKDVn4eGfCjRuBzzTNppJokm0IGgNuittt1PyunnZiwxWB4g5Sg1i6b12LIrS2t
-	xZ61CzeqaDGrBq25RkeszvCdn7aNpIs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="Eempxc/N";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904881; a=rsa-sha256;
+	bh=vFyiJ8GUGtbtjOmLfcA/YW745zhlRl6BAbX8Iyrbu5k=;
+	b=uWgl2/0P9RnfGt8DQwtiRZBT5DvyU+Z89wPbclxvt37Cp/eqaHMRgqk2SyFod62ARCnjwt
+	QkIyHo3+GbiBTBqsT7X1xPdoNR4Xvaa6g3MdvwLckpzCf0/tBrljDmbtCKfaPM3ojnnpUg
+	c2H8NBiF+/vMMC6FVxqib/NLW6e2HiQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773904887; a=rsa-sha256;
 	cv=none;
-	b=5Grj3QVJxe7vWBOxuF2OyNGXAqrKpd4rntzuQFQsmBCVan24wMC6sJIz3RVfejM4IyevFC
-	IG13fOcKXTdziSh9Sgjej+yiQR9O9dpW64U4oSFU1ibDAVJdQCWT437v9QLVzgi+dr7Vlm
-	DMOWQn261HyJzDc8dZp/VDsJ/qyszhA=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c6e2355739dso266209a12.2
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:21:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773904880; x=1774509680; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mT5CVxEEsQlA7iRjeSIzOh9lr8aiAprp04Qac2/CxY=;
-        b=Eempxc/NYGSicZWg3RRWGWT9OnqVvBOhzO2GjN80yfoMe26QKsCTKbCSuAGHQdGsIf
-         4vKAgMCgpZWfKonmAXBNcJTrMWs7wSKIBMRL8Ijgjk/EAju0HZgHIDLTssKqJ4UVUdDc
-         v2QU7XQUcsRQoxpcQsAn8RysXNyp2orqEsGMU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773904880; x=1774509680;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5mT5CVxEEsQlA7iRjeSIzOh9lr8aiAprp04Qac2/CxY=;
-        b=OPF8Deow2e+hbZpPc2V6CtybQbsTGvTZEfe+0g6QY4Qvn6V9W+qsUXF8XHIjWul4Nv
-         B/nrLNPlJlfWxY0a/bDpVlWTMBTuG2bpg9pI70sjv5QzYECvouVz/FhgXMO/TXQl0L3l
-         e3WQcy5xGVAy7ivMjObDDCzwmj7OIMVXzXjuC9SIRF9rxFLp6J+4WQ0zM01DVpcaMpZ2
-         PToRRS+KZ8mlT6NoctzB5564zY3knuKGhuZXZ80jNpAhHjEBKiP3+ZkQEp5uHDy85MCC
-         a/vOpJFcaewuq41pECGMbYjtY264zeH19l66e819nUXq2KWMNoRzZ/uWDXjGRYhz6mBJ
-         uJRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWgDkIn6l0Z5GZiTm31G2xrZij+sM73962W6FvQIzUk4mZNLOctim5iac9k9ZTd5d8PgoovyWv51w==@kvack.org
-X-Gm-Message-State: AOJu0YxciRNlUKTy3G4d/Rp+XqcRkvilHzyP360jmAzPSuGsDBL6iYtp
-	dbkfk/IXtgfo1smt7l8C7Aer35BPNpwyCjQ9ELDS1b6LBGPBQVYVpkPG6DVKwk2RsQ==
-X-Gm-Gg: ATEYQzxdTQejSeHLA4smYxeF1/Y3jqpVv/HJTCL0qf6ZGboWRD4egT9FMhhrBlpFRVh
-	fTAMZABE1YxwTAPR42YPj05G0J7Lx/cqJpD0m8nOexA+F955McW0D2h5wNL6mH9aQwNhCQ6F/ih
-	Y6/XfQYcIB4bgTpfyrYD5jlopmLefNrACvwGAfIWiSDse7Am6caxUAGerS64jrUZsuZLRMaF9w4
-	IEMaKSlj0TltXZolOY6eE0yDZs4ACLVB7rKbp4voiZX+aiU6whW+dyPcThPVsb9dBEWYHaMt+Bm
-	woRo2EMU2dnYLdCL0YsznSNIeAb0B39dHJAaFXP/0L4G5GLRH173axTkhZBYnny51RrkTsmTH2P
-	Xts6kr9Axhv7MooHydu9yJh2xss3RfmG9c6iwTN/ByLvnrBejRBIBdkngZlO+tu97cfN8PBgod6
-	4/d5TIbnySN+rF5qZ8RbftkMWpBZcZOrQuTLcWXDiF87m5ZGHMF/wqTw5LGzF+hXc=
-X-Received: by 2002:a17:903:1b4b:b0:2b0:5c0c:b9af with SMTP id d9443c01a7336-2b06e424b48mr63922315ad.53.1773904879945;
-        Thu, 19 Mar 2026 00:21:19 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:13e1:7517:52f3:cfc8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e448fa4sm48352965ad.32.2026.03.19.00.21.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 00:21:19 -0700 (PDT)
-Date: Thu, 19 Mar 2026 16:21:16 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Richard Chang <richardycc@google.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	Brian Geffon <bgeffon@google.com>, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] zram: do not slot_free() written-back slots
-Message-ID: <abuj00rFtWVMThVA@google.com>
-References: <20260319034912.1894770-1-senozhatsky@chromium.org>
- <abt1dsjsT9826Ewy@google.com>
- <CALC_0q_2meJ7T8gvij5oR=idy9hn5rMC_RQhCbePJFVBOOd0Tw@mail.gmail.com>
+	b=YDF8QMHYi2Axdq+CjyTovde5Bck6U7lodIb64skXzW9ebhbArmt4cgI6TUf3raOWGEAfjd
+	oyO6oBb/PzR/8uY3qU4bssCey5ZcPnzpEnYVGlqGI99H/ph1DpHgLLuCDyEeaKmDwHPf70
+	PqHKX9KedXxT/HBsdQ+zPb6Jvs5qVcc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AV6ddI55;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E184843F2E;
+	Thu, 19 Mar 2026 07:21:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E71AC19424;
+	Thu, 19 Mar 2026 07:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773904885;
+	bh=CspEV/eL2jUsFjVlynNQZqKA/uixA05pxZrqR2Qsnx8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AV6ddI55Ndkjzzz3wu3kEgTrfY/Ql9eyIC8/LV0ef31ZjJaEEXTRmvTxeDBs3RC63
+	 c+i7DjJ8JvUNYIaj+sbA9CQJVXAzgOOVq6hYoMD9YS1Eu2yjBgcxdaGQMn6rvtNOn7
+	 iedvX0w7hROERMiK7QDZciTMlJYtxDtA2tKVmDaFe/lyODJYTx5jHEq4M2cVRYGQtQ
+	 ZGLe/Fnqpq8Yq3sSfWf9C+vUXUnicrt3Co6cXNpsxxtaVTPQgtHmUUGhPm5vL/w4+s
+	 t3rRHYWXZ1i0a21ygfU4tnchQyJmIXmGbRZthvQvo+OhD6wBj5Uu2m6N4rQEo2Zxsi
+	 exeS7+rLeE9lQ==
+Message-ID: <e9631520-857f-4f67-8944-6af7a2b47e89@kernel.org>
+Date: Thu, 19 Mar 2026 08:21:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALC_0q_2meJ7T8gvij5oR=idy9hn5rMC_RQhCbePJFVBOOd0Tw@mail.gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 363C3100007
-X-Stat-Signature: wn51zoaoxiqwufiq9qp1zgdzhr4rb1ob
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/7] mm: switch deferred split shrinker to list_lru
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Dave Chinner <david@fromorbit.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260312205321.638053-1-hannes@cmpxchg.org>
+ <20260312205321.638053-8-hannes@cmpxchg.org>
+ <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
+ <absr1vgNP_tM1OEP@cmpxchg.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <absr1vgNP_tM1OEP@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0375F20007
+X-Stat-Signature: 9jmt6iqugmn4jr34z1ajhfnfx6rmq4se
 X-Rspam-User: 
-X-HE-Tag: 1773904880-761079
-X-HE-Meta: U2FsdGVkX1+aRYJ/wcHAAS1wUn9nywq3B4p4V0av5TGm0mir7zfE51hA2+NWtH8kWHCGwzC/c9KT2iJf/LevfW4uN56IPwvl750Bl6/rmxK8b2w+3PKMkMkv8HS8BYD9M2J65dfJoOmFcDbkG6W0fXiU/vaaSYVzGcGwQ/mOAx4BQs0mO0ppeRwu8dz/064ErfhEFnuPpo1pyF7KEl8LtBFMp7jtoazlSOL06Ri7z4jJkdtzL3p6VvY3GM8vlLSwJcMbVfrrCyEMUq3MQA/pOCHIuRbMs9YXRiRkDWhOP0lbvDRuUT4XFCvoMxK9HarqNrTxEK1fom4VCRPNkGlkd8m1pRJk/pkOJm8sGEwQ1ZCNUigdk0b3S0Zsg/t7OrufigkQG9zm96ThYgajQ+RS5CMqa8t/LFnmSyzRWVrqZ/UeKJuNuq7bUC6AXrpQziJcpz+Ls8eadFE2AwgJt3COE5kGZzUdB+ABtOJo7eXrUF6T8+JjtXMi/jGhZzdjCVOpp5jcdWXFRGNC/Jw4azQ2wHp/abC2IDBm7Xb9QeKgi1O9vkcBR4zI6MVg4c+Hqs7sAb4lcZtsDl8PhueWphTw4lUlyjh0k62ZNDCUhOjjQwFVX+JFblf7QX3HXKQ30O1iCd5l/TUnGT8IOeIOeTH1QKcb2HwIv89dyLKs/B580zkBr6X+DxOrs8cZHv3nBnbGFY96gfi3WEFP3//sX6gY5EwGgw5L8n/XbIt3yQQdpAs+Dk1b9VfXhWPgmdnSX9excmjxbvKHdLH+NhqY4wMi0dhIbkilacbnHzn/97D+fV3ecyVH21cTfrnQd6tKB3ItLgeGmZiIl4WRyDNGz0AkMEvy1tAhww/Cv1q6TrtFbjb07ODwaBqKR7jNfBI4BNG0jpBTWmbXCjbnHJVe9IC1S746/dobJ+5/1/I9WVVvomLB8GAt7mb+PmhhmB3Z6ydbE+cWaKB/35ArPyjGL/Y
- xc5SusnM
- Dt7saqpYM6yX4kX//4f4Zc6/a/9nhF6OV+LkQJclqapoIzAaSJwYTs1qzaLNSAljEaLsfPiN+ifasOiMofenA8WnBC6sN2iwGOHvIGix0XxAtgi07C6dd9GYCED0j65VxcwemU1q+3Fpo6ESRI7kMeBH9r2xH7jPMrrAlOGS+BMJ9yuRyCwCrb279xfWxGnkn8N/vD5CZcwEi6qHqG2IPZH8M8h7xl5FipGPORd8A1WdyPq4Vnruy6IdW/Wv5FQOrdajgtwZguz5jpqBl+jim/Flcv19J+VrpS1L7kubFx39pT3/KBxy/6V4paKi7tjgGnL5F0ZO426G0ae14taEWbg6ek4YfXfcJoQyOL519sUdbQLXhFWA/l6qzCJ1dkeNRcvD3cdEyhR0Te+gcOEhzajv0JX3hyVq5uxudIIPZzxH1R01ahM65kWcaj0aPqXTMYZn5
+X-HE-Tag: 1773904886-344575
+X-HE-Meta: U2FsdGVkX18hJ/U4QjiBY/ENIsdO1zxRtU3rQNwtm331jZHnhW2hRO9haKk5D3Y7wKc5lkUFExnz9xeUeJhOmhESkcPmc0pA1AOJ+ywXyQAJMoGj5venLXsesCg4XGJZRQmJhZiaPWundBkkiuNZPsAYjZ49BdjZJJuT3JEV5VOIvKpAZOJll7BnYrO0P+58MzOvQSZFZmEx4gXRLVy0ocbcZxYsDA6BEalseysLR9bX5njPjqcM9RzUS6AgNnuMVT8Csbw9Y4jomJ9TxETnLEAg+eESvOLBNpEhWLjkoNg++Au7lzz5+vup9QJGaLZMuP+rnWKGe92GhRumpyLPNmSuUqwaKvtHfC65nj+hke/ijDqA+RQz7Lzlf+WYE82bQcWG2xnE2bbYZHSqqcOzgshnH57jUhZ+JsZpOwo2vZ3UZjnhcAfpMNN8QY8cSHKIRjTX0dzLq6NUgig3tX7IXlbwOZV0WFoiprwIjBA59YAyhtxcLB06ryblip2T/s3HohdzMKZ7i61ZMmE4j6spa0QT+H2Zw1mjedRdYCpGL+PkKz/KXvZ6rTMspWbcD/OnWHZSVSRCvHB3eO5d7/7JU2YhKfsfNedOhQoSnIIYpdz+WUE8BpuN51HmHKvTyBffQ6OAJYJ3nFNU3squqqqjke2BI8cPYO+XTvnKuP59S7eZ0X+DaGuwIs5nSAqnzVeZpT+9Cqys0H/dTUSZrYdy1fjBoL0kkjWEbP4D6P4/f5Yjo3lHEVRC0c3nPq2TYU4drc3//1w8QOOR/EBfGSd9yHMitykVns1zIGlXBc7xUYOlHNIIUuPkRP3BetsPaZIILl34E8O6lm4gunmmDYyhsf4uFRK9vDSAi+sJ9DTlAVCSlRJ7C3tNSjocmOlgh7XvmQJkL4RcXa2t16mi4bJcwsY0aIyHVzRcV5B/KdnptBytNkRIFPNjXEM33mdSEErQow9VK+Eq3YAysBsuyYR
+ gE2Vltmc
+ LL0Xl1IiBWDrnrDQCKqCFD1cf+waIRBx7k7gBeZUHVRumb+l/X0oXw33aqeU1VwLJLpKQEyPNYD0JKz6lidVHGs+S0Y4ZCkEHhZOdFSQp6uOh7GNAb5SINQDsFmTF9Sr19mf9AY3kJYDb1fDvMfYfcj3IzKIbW3KY7Ut6Y4HUKqr94kfZ5op1+cxW407Vy8kkRZZJReuLxpTv+O8GRXd4IwpUe16SQQVI6U724xNQLHQCNuYO6S564FmTJ2oDYCaDLhUgJgjC5ACeDnaUHViJGa7H1OHG/ZG657I+mvoVUFrooH9+5+6tL0yU3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,9 +144,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/03/19 14:47), Richard Chang wrote:
-> 
-> I think we also need clear_slot_flag(zram, index, ZRAM_PP_SLOT)
 
-release_pp_slot() does that for us.
+>>
+>> So, in all anon alloc paths, we essentialy have
+>>
+>> 1) vma_alloc_folio / __folio_alloc (khugepaged being odd)
+>> 2) mem_cgroup_charge / mem_cgroup_swapin_charge_folio
+>> 3) memcg_list_lru_alloc_folio
+>>
+>> I wonder if we could do better in most cases and have something like a
+>>
+>> 	vma_alloc_anon_folio()
+>>
+>> That wraps the vma_alloc_folio() + memcg_list_lru_alloc_folio(), but
+>> still leaves the charging to the caller?
+> 
+> Hm, but it's the charging that figures out the memcg and sets
+> folio_memcg() :(
+
+Oh ... right. I guess we would then have to do all 3 things at the same
+time, which makes the helper a bit more involved.
+
+I'll note that collapse_file() also calls alloc_charge_folio(), but not
+for allocating an anonymous folio that would have to be placed on the
+deferred split queue.
+
+> 
+>> The would at least combine 1) and 3) in a single API. (except for the
+>> odd cases without a VMA).
+>>
+>> I guess we would want to skip the memcg_list_lru_alloc_folio() for
+>> order-0 folios, correct?
+> 
+> Yeah, we don't use the queue for < order-1. In deferred_split_folio():
+> 
+> 	/*
+> 	 * Order 1 folios have no space for a deferred list, but we also
+> 	 * won't waste much memory by not adding them to the deferred list.
+> 	 */
+> 	if (folio_order(folio) <= 1)
+> 		return;
+> 
+>>> @@ -3802,33 +3706,28 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+>>>  	struct folio *new_folio, *next;
+>>>  	int old_order = folio_order(folio);
+>>>  	int ret = 0;
+>>> -	struct deferred_split *ds_queue;
+>>> +	struct list_lru_one *l;
+>>>  
+>>>  	VM_WARN_ON_ONCE(!mapping && end);
+>>>  	/* Prevent deferred_split_scan() touching ->_refcount */
+>>> -	ds_queue = folio_split_queue_lock(folio);
+>>> +	rcu_read_lock();
+>>
+>> The RCU lock is for the folio_memcg(), right?
+>>
+>> I recall I raised in the past that some get/put-like logic (that wraps
+>> the rcu_read_lock() + folio_memcg()) might make this a lot easier to get.
+>>
+>>
+>> memcg = folio_memcg_lookup(folio)
+>>
+>> ... do stuff
+>>
+>> folio_memcg_putback(folio, memcg);
+>>
+>> Or sth like that.
+>>
+>>
+>> Alternativey, you could have some helpers that do the
+>> list_lru_lock+unlock etc.
+>>
+>> folio_memcg_list_lru_lock()
+>> ...
+>> folio_memcg_list_ru_unlock(l);
+>>
+>> Just some thoughts as inspiration :)
+> 
+> I remember you raising this in the objcg + reparenting patches. There
+> are a few more instances of
+> 
+> 	rcu_read_lock()
+> 	foo = folio_memcg()
+> 	...
+> 	rcu_read_unlock()
+> 
+> in other parts of the code not touched by these patches here, so the
+> first pattern is a more universal encapsulation.
+> 
+> Let me look into this. Would you be okay with a follow-up that covers
+> the others as well?
+
+Of course :) If list_lru lock helpers would be the right thing to do, it
+might be better placed in this series.
+
+-- 
+Cheers,
+
+David
 
