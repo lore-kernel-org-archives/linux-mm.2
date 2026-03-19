@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103A21088E73
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 04:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 497B31088E7D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 05:10:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 136476B0139; Thu, 19 Mar 2026 00:33:21 -0400 (EDT)
+	id 1E3DD6B03DD; Thu, 19 Mar 2026 01:10:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E6B46B03DC; Thu, 19 Mar 2026 00:33:21 -0400 (EDT)
+	id 1465B6B03DE; Thu, 19 Mar 2026 01:10:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17CD6B03DD; Thu, 19 Mar 2026 00:33:20 -0400 (EDT)
+	id F29356B03DF; Thu, 19 Mar 2026 01:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E199D6B03DB
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:33:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A889C18A9
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:33:20 +0000 (UTC)
-X-FDA: 84561543360.24.FB3ED45
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C9E8B40002
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:33:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g2eTnLoX;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA9E56B03DD
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:10:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63D2C1B77D5
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:10:25 +0000 (UTC)
+X-FDA: 84561636810.08.86F666F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B90D3180002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:10:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VdPCI4FH;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773894799;
+	s=arc-20220608; t=1773897023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1HA/wokBvO2I3jQRTvWt70R4smjQwwyE31Cx5ADoAuA=;
-	b=1Xinexf37K3kHg5Mz189BP1wikNwYWKXmIE5/hC5OrgrA3i4OefnReABiW5r/tgkEU8yTp
-	fNRa4fv3heIHZsqnoZ6F7vSoeqvUQRtll6wonKR/q9awSGU8VtBP6LAiQ88iUi/U+a9Uxn
-	NrXG61tGeUVpNPC6TdnOeEFEB3V9k30=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g2eTnLoX;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773894799; a=rsa-sha256;
+	bh=m6s5jbJ1DVHNI2fz/sJa+swXTcSE9V5+T1wI8p3g+Fs=;
+	b=Ce6ZP4KecT6WPoCCGAK7EncSMA0w2X8h6NfYGNlS9q59cLp12rOcqfc+N7Uqq8Z4mSM6tF
+	pC1lHUcHY/v4Lq+UPI5pVX/xj8VgF55KuCqbB1RwlRG8xnuxdnnuXJqbPsHSbEoozUZo8h
+	Nf/hEaapQvwZCmz7g1XExSHE15oBGN0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773897023; a=rsa-sha256;
 	cv=none;
-	b=u0HhrKmGYPo54o2mo79QSmNQKzfeeKUn+JRL23PZrR2e8HfXEPfr1lioa+HV1eCFr057yz
-	ikwXSWyqZpJ/3vsM2coi/GKwLx58M2HT54WFmfLBbT4kxqFQlh77FewDvPCmKUl/FT9nR7
-	2gXvwfj9cWfA+jBmh4SZ2p5BLN/mwkc=
+	b=TFSk1wGb59JWkeylj+uU5aXAU81emSSagfuNDmdGS3Io/jElne3uEJezA9Vx+YWD5yw1TL
+	Gs9c4hrMi+tyEjmqDJJMwnSJaTeukI+IUo5tSoSUwTG+rg6LiMLgPJhcxOHraWyW4j/a4e
+	jvG/6zpbA4VtOXrIyjJjzl/aDxYBDo8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VdPCI4FH;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 954F843798;
-	Thu, 19 Mar 2026 04:33:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5363DC19425;
-	Thu, 19 Mar 2026 04:33:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C64C6011F;
+	Thu, 19 Mar 2026 05:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E596C19425;
+	Thu, 19 Mar 2026 05:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773894797;
-	bh=mSNgVn5RpvDCA5+rZqK/Pe5nbtq8ZzrNpNEVCWcL2b8=;
+	s=k20201202; t=1773897022;
+	bh=GP7xsX5ztcYNzeY7jiTdYXA5ELT7cnQ6/syxssXl7oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2eTnLoXM7MeuOic6YYUAIoBIl+CCfhXUeLKJqY8v7eAG4dnZ0VpNaOcq/dNipV/3
-	 j6BjO+YeNVCtp7UdgUDzdLxIazTE92++kiFSZQIQjEj6yjCEX0wx8CSnDT3FTx3000
-	 qqruIXUHh525AIEfz8fGR72QsW+bMkgJhn4TYPMhk8watPcWFL/I+gLiYix7H1RN5B
-	 cvUWBTuhSTLX8YEpeGsaUsqKJk67Qr6DFh+dvx75i+5UsMN9n0Qpg9D2AJSrISpxEh
-	 sU5yCcjvrR3LpyvU0eR+5/BsWaA5I6Ewd2R3y3Cp2InlzpE+BQe+ful6NDGJD12d33
-	 wDTgLCa2gPkRg==
+	b=VdPCI4FHof0PGZEuyoS2CILpHqb/DJAxvTZlLi3lCZJP1rydNTF0bajuQpzt6OaHC
+	 Ji1q1qIoF00ZqZ41ht6rg+DlXUdfrpXPh0PKZRW8ZG9pr8Z+EheSmU6rqAxIPY5wqH
+	 dR4HdQXb6gioOAQSHrgPp+Pt+lxkqtW2OJHeNVe1n7On0dfEiXmGKFy6GynkhqRlLH
+	 IIC6uWkhGmElZPvylavpcX4pvzAFcwbCKb7kfG0EKX7VKuszUlBq727K+6SMTL6EiX
+	 12Gw3kOond/vC7Jexnd5fmdK60JXOR17edfA+trJgxGw5/cDa7c575NoGd/Divi5/z
+	 lF918/d8jnWwQ==
 From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
+To: Chen Ni <nichen@iscas.ac.cn>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/core: reset nr_dests on allocation failure in damos_commit_dests()
-Date: Wed, 18 Mar 2026 21:33:09 -0700
-Message-ID: <20260319043309.97966-1-sj@kernel.org>
+	akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com
+Subject: Re: [PATCH] mm/swapfile: remove duplicate include of swap_table.h
+Date: Wed, 18 Mar 2026 22:10:13 -0700
+Message-ID: <20260319051014.98845-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260318214939.36100-1-objecting@objecting.org>
+In-Reply-To: <20260318043849.399266-1-nichen@iscas.ac.cn>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: h8iieq8fcncey4skmi1o8eiczpqgnx3x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C9E8B40002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: cduybp47nndejdwnu39u1dsy5ugueigy
-X-HE-Tag: 1773894798-641178
-X-HE-Meta: U2FsdGVkX1+Q+d0ERavttLrjPzNbS5y4ndI6LERYLiq94Vs1DNBGm+w9aOxBQZr2nnaKXoEdmhQuMkJtmXOZllrv4dRnNCoP/QxMZiFMzYKof6FUywN3PBIjf1iJiawGrpQ34MEj9sbv17uWQxURE2vctbzaarFG1TyQz1z2tm9RTlXetm4SOpzbNrQjGRYLeqaYNZ3B52YipgG5R00rSPPpoCsRDOmv3X5Nv7B86p62dl4pieZZKyqGDV1TogWLFpurVCFP6wpz8qNVBeenvVqZT/roVD+GkzvmdkYegC3JM/Osgu+fB0riQ58p/bph66pWVmtupkQSvXc/AbqqNL8NusQKKzvVv2Tx5PjJHkR4WOFI03AxsPqutCdWPbDLbrB6mKmki6RbEszrnOV7IVutjdrFjsPbw9+q7EyMlfOVol/dXd4DXU2d/p2S+8OZTW2hsh6HTQBvuo7Rgj9OYSf4j0jSheY8rr/pBajrXFpMzO8Zl6qk/z/hgtjl2RHexI5V8EDTM3B3WcdMotImls1fbuflACPIrLypRzS/QceXcKg0BAeb/VN6n5RXJ8b+W8AdmM7SJM+dQJljjNDZpmtVUFpcgZr5CXdN3eS/lts1rDqBE9HD3DqjuZAi/hUz6R5d1T9ZPTJ3H1rg5rYhGjLXT1LGMwep0Nb9o73AzOQaSoBI3eaDLwcvlBXg1sbpe9aOIOt8Y7kOd5hev6aC1wZlvqsZbCler/LPa8Jzau7BIvrAQarn5U0rcG6XwEaxlYv6rzgPOaZ/XysCpyiYdIU66q0WKTETIkClY5UBWZAlUJFzbFoUpMt/TDQFplN1KN88cN2+K37yBNMuD1z9IN1aAvMIULvWgh8mwqvh9jQ0PP9f2tnEVeGuA3vmO8N6JRE9n5Gp7/kIjBRpMjZnZd1SUz2srAidH/C3CsolmJTUxhdyp1//VBFlrVbCpUZ5hgd1nLc0ZEkmD5iSFjQ
- 5IVJypph
- Hf7rLGT02QUjo43NnJxO/vHT3KU4rBSx3M1P6NuvMt4SPrh3Sd00LXbIvY7XqNLlruqaROGU9+nMbgxpjb8VESFnS3jmSGshmuubPn6AgSBCj7+l2W4a1J1MhNMSVYnzvD7UI+ub4WRbh7Bn6hZOkjf1kglO1+bW3wSUxH9uSkK3UHQ1Fzyqj8NHy/0hE638sA7Elt0hkpe+owyVavtxtbHI3FmYn2jNX6Cb/rYmDJ6s1CXuPd2eDd8ToKqfabJheVM2JKpccXX8E73wbcHFVsPUcrSHAtrSH3Rr79mQJDxkszpTSkRtrnwx+Qw==
+X-Rspamd-Queue-Id: B90D3180002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773897023-228766
+X-HE-Meta: U2FsdGVkX19dN6RocfbeS2GITXc/ONzUyTVZAwRiA0mI1ML7LC5SfeWCT2885IisEhkPLLSuZrxa4tY4amjIfasik8eqgOtjVK2hTZMN6voWblw9ykD8CNlq4OuiQmBgQp4GZOP/br9fNM+lpkcYUVhiqUHzRE8zXwhmSN1Vpd4ybQbiZQXo3lIOVPO66ANsYg6U1cw5uXB0OXc9NwrljgJM5BSzyPqzH8lG1ggrRfpgXL2PN51Up0BiQAj0q+qs5fBtqXPzPX+JWuB9W5gprCcxl1P11dNGpn0gO+uh6TmYB/qPYDQuCFNi0sDgZmQRpjN7/VXhYisc+bXy2P+qc62o2wswH9QjnZFFF6IqT4ibj4DGiTbvwL6AgcP/IgUtEXtz9UtYcAucSjctQEn+s/IFYLpQUzdEc5tvMXqOJIkxTny06jBts2MOULoWKTcuGfuxqNdHuuwESvTbr4HQGd09FLmXIQXWYJZP9edOe9SRyGsfdw7raRjeDB9Iy4JNXqI8jYPCFmREn1ZEliME+tfi/YM6FqMWdjy+FqHmqR5YoGt2d1ODnnHbkERrXPqsSGE2zPV/BAI0pzzNiHF1OsaGch8JJ9xE4ojJygiYV0/rRFPRfFbTEfxSWxvZs0wHXslU2Vce8dlqOxc0iCWCzDPlRz4EXdPxWhd9cQFigVGBj5jbh2kvaXqJexXCWb7u+gJrgHfnTD0hvCWbHPDQ6ctv1LU1Dxkfuow/sv0n5gNV9T7vac7hDMPvd7h1Zy21DfMYBh9i0XWdRFMj5B5x62P+kx/LaPTiL4gulH5vRtLFJTNfKQZb04RUUrTQ4XgzmXf8Z2lU+UwTUHIOqNXsgrOUuObAEI2KEoCsgsRxPTNjZDLsEY8BYhR6YaDSbuCpkBazj1OG/g8tlfsBG4U5ustAyvet5ltsRCLqDChwR+cchi5k+98vPY1/+xkv0PqE4ZpLkWF4zxEjyzdhi8X
+ 6xo02YST
+ w56obldE1rUXMLUxmqDk82YgBcNW+krhiPK5zBDtKeEj00vAOD9NtnYQF2VNtoA1p0vSdEA/8vhA9NZzg0WjoWVX4kpNFgt0waK9X4ptpmIW10nryRNrgHgIbeuFqQ1B79mXxeqSQqVHoee9BY986ltMVPkcRNx3ovd6p/vJouYcRPrwGnK6gRXeVBBjW7MnDxbB1bcpwQ561iCDlz8n/BNKGblWAVgcfpnhXubd/Kxq3ZuTqFIPy7SyNQg5oivKznY6qJtqE8Q3ICLEq1zIYlpwC6hUtsz4Swy8APS91Cca2wdwQglhtT6laACW+Bhns3uVrhl0kjImgX7p6MD+bHBUMCUFHRXmfdGEh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,73 +98,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Josh,
+On Wed, 18 Mar 2026 12:38:49 +0800 Chen Ni <nichen@iscas.ac.cn> wrote:
 
-On Wed, 18 Mar 2026 21:49:39 +0000 Josh Law <objecting@objecting.org> wrote:
-
-> damos_commit_dests() frees the old node_id_arr and weight_arr before
-> reallocating.  If kmalloc_array() fails, the function returns -ENOMEM but
-> leaves dst->nr_dests at its previous value.  A subsequent call with the
-> same nr_dests will skip the reallocation (the sizes match), and the loop
-> at the end will dereference the now-NULL array pointers.
-
-Nice catch.  But, this is a sort of intended behavior.
-
-The idea behind the code is that, if the function fails, the caller will
-not resue 'dst' but discard it.  Hence the function is only ensuring the 'dst'
-after the failure can be deallocated using the deallocation helper function
-like 'damon_destroy_scheme()'.  For this, the function is setting weight_arr as
-NULL in the allocation failure.
-
+> Remove duplicate inclusion of swap_table.h in swapfile.c to clean up
+> redundant code.
 > 
-> Fix this by resetting dst->nr_dests to 0 immediately after freeing the
-> old arrays, so any later call always enters the reallocation path.
-> 
-> Fixes: cbc4eea4ffb5 ("mm/damon/core: commit damos->migrate_dests")
-> Signed-off-by: Josh Law <objecting@objecting.org>
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
 > ---
->  mm/damon/core.c | 1 +
->  1 file changed, 1 insertion(+)
+>  mm/swapfile.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 7f74982535ac..e233eb84a2d5 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -1060,6 +1060,7 @@ static int damos_commit_dests(struct damos_migrate_dests *dst,
->  	if (dst->nr_dests != src->nr_dests) {
->  		kfree(dst->node_id_arr);
->  		kfree(dst->weight_arr);
-> +		dst->nr_dests = 0;
->  
->  		dst->node_id_arr = kmalloc_array(src->nr_dests,
->  			sizeof(*dst->node_id_arr), GFP_KERNEL);
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 35f1b58d0bb1..9174f1eeffb0 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -48,7 +48,6 @@
+>  #include <linux/swap_cgroup.h>
+>  #include "swap_table.h"
+>  #include "internal.h"
+> -#include "swap_table.h"
+>  #include "swap.h"
 
-Someone (including a part of myself) could argue anyway initializing the field
-is better to do, for code readability and completeness of the data structure.
-But I'd argue that might only encourage calllers to reuse 'dst' after the
-failure.  Also, the 0 nr_dests could still meaning something incorrect, if the
-first kmalloc_array() for node_id_arr success but the following kmalloc_array()
-for weight_arr failed.  In the case, nr_dests is zero, but the size of
-node_id_arr is not zero.
-
-I think the intention behind the code is not well documented and that might
-confused you.  Sorry if that was the case.  I think this could better be
-documented by adding comments for the function.  The single line comment in the
-function body was for the purpose, but having more detailed comments at the top
-of the function may be better.  If you'd like to send such documentation,
-please do so.  If not, I will do that.  Whatever is your preference, thank you
-for finding and sharing this room to improve!
-
-... And, this patch helped me finding something actually broken.  As I
-mentioned above, callers of damos_commit_dests() are assumed to discard the
-'dst' when the function failed.  And the only caller, sysfs.c, does so, except
-for the final commit to the running context (kdmond->damon_ctx).  It can result
-in DAMON running with the incorrect data structure, doing NULL dereference.
-Similar issue might exist for DAMON_RECLAIM and DAMON_LRU_SORT.  Because those
-modules use only limited parameters, there might be not.  I will double check
-and make a fix soon.  Again, thank you for helping me finding this issue, Josh!
+FWIW, I once thought it might better to remove the upper duplicate, because it
+will make the files look alphabetically sorted and therefore easier to read.
+But I realized "swap.h" should come before "swap_table.h" to really
+alphabetically sorted.  Anyway that's trivial and I don't really care that, so
+decided to just give my Reviewed-by: as above.
 
 
 Thanks,
 SJ
+
+[...]
 
