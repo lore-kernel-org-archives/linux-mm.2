@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E0FF1075260
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 06:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630C21075262
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 06:39:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D31736B03FB; Thu, 19 Mar 2026 02:29:21 -0400 (EDT)
+	id 63CF76B03FD; Thu, 19 Mar 2026 02:39:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE1A26B03FC; Thu, 19 Mar 2026 02:29:21 -0400 (EDT)
+	id 5C6146B03FE; Thu, 19 Mar 2026 02:39:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD09C6B03FD; Thu, 19 Mar 2026 02:29:21 -0400 (EDT)
+	id 4B4466B03FF; Thu, 19 Mar 2026 02:39:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A79746B03FB
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 02:29:21 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FAE9B8EB1
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:29:21 +0000 (UTC)
-X-FDA: 84561835722.05.EA3EF99
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8CFB74000E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:29:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lsdtv1wN;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 302736B03FD
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 02:39:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D079613AB50
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:39:08 +0000 (UTC)
+X-FDA: 84561860376.19.C356DCD
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 296C612000D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:39:05 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=eFTU2lLP;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773901759;
+	s=arc-20220608; t=1773902346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPYf4uxtoH6BBi1Vu2Iyc7v2EsgJC9iDN4L1g9XyNsk=;
-	b=Pfwsng+ptkbQi+NuyM0JEAzTsWaHNtkJDr0wzpSWCYmoOKYjaanqALXWq80f5Uy2gQPYJn
-	3VzCJVE2eKbYdC0qSOyX4r9SFUDXKDbqSEv4BuTc1z92PS8Qrm9E0ft5bWu8JsFbT4kGvb
-	0cwa2CKvhyYFaglgOE+S6D8nON7xqn8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lsdtv1wN;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773901759; a=rsa-sha256;
+	bh=cjIE6Af+vdFd9J62SKmwZapE1T6Gs2ZTmxPgKqYGLbU=;
+	b=pjpa3/gfg08gE+f7mnHUnLRPcp1ohrh+/eD/uQ3+Z45P8dISzuSG6fZfab+Aq5JUBcAegl
+	jgKLhlBJoIOlyP/Gc4sj7ipXf3skFhrIJ/Jfl4Yz0eQHkDzl4csmASyb4nXM9K10L28Pne
+	HzANS53dWPFRK/TLBmBKb6DN3Q+lTa0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773902346; a=rsa-sha256;
 	cv=none;
-	b=sErs5+TrM2N9on03y0aCMBW5Fe9N2L+ErTBADHoAYm7TwcwH42Yi432Rdc9OjF8a+3acau
-	Xt0ZYRTiDCGHEj/Y4d/niq6YEBm7umPESDwDgRC4QzFn1clpn4SBh58/2pPLNV2WIrorfD
-	1cwcGbLLKz7E+aiwJnr4QKs6vtNTEWU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBCA16011F;
-	Thu, 19 Mar 2026 06:29:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6978BC19425;
-	Thu, 19 Mar 2026 06:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773901758;
-	bh=f8KRoUgEZ6BfqFTgvZjmWr9krDqWtElmbj+tt3G8zZk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lsdtv1wNjXhyKRk5gYZ/88+Ukqgyuq3m6W3FNTVwgHS1dyfIaKNZf98lFTfkwaxLK
-	 6csCbEEXLVDO0PWcsLXZPY9JhOTNI/bh5snNTbKxDpaGhzG08DzQno6rU36EEDpV5q
-	 +hNeRxypDsuUzzYfdsaJnqk93JYOIWLJASMnEYR9j8yO/s+2S7w7l7p4lcU5+pYORK
-	 mFdhqpa7vabmZ2FeCayGdmEjhVMPrXKunisL/hnJHr//tAMoh6vQom5IEdbH/nwVIZ
-	 dfRDNHBTd1j+qRrwkAfGbIChHDZYmDQ1TIuBi1nn98ilbFLxeddh0ymyoTJ55jjrXr
-	 6HKB+scj9PZHg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 01/10] mm/damon/core: introduce damon_ctx->paused
-Date: Wed, 18 Mar 2026 23:29:10 -0700
-Message-ID: <20260319062911.77252-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319052157.99433-2-sj@kernel.org>
-References: 
+	b=Rgc78TqSXIULThG0AdYF3fqKEKLYOtnwNdKrvBKrpK1ErCfdVwDyCT6WJomXANmNJ2jaG6
+	IQ4//eheRACqVuIkEsCkGvL823ZFeeydy4dDM8IP81sSYIkHyOV9bleHurpIByF78jI2kZ
+	iEBGuYo8GJ6HFSmhPeAA9RYWBc3UfQs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=eFTU2lLP;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773902341; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=cjIE6Af+vdFd9J62SKmwZapE1T6Gs2ZTmxPgKqYGLbU=;
+	b=eFTU2lLP9XwQL1KnjUcA4CQioz5ZC7fVZMgoXImGd3+kkGnvVOmW+bJSdb7kjv8GFtWOOegdKWeMMm9w/41o8ZoLs1MJdy0A9EW6tBMwI5e0Q9Icg5pS1Ce/DkEppCpdMfm0LbtmTiIVwpwAFTrymvcy1PR73Qv43kTEhqAd0+w=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X.HUAuh_1773902339;
+Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.HUAuh_1773902339 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Mar 2026 14:39:00 +0800
+Message-ID: <3f14fcb4-e53b-47ff-b1ce-61c52f54c99f@linux.alibaba.com>
+Date: Thu, 19 Mar 2026 14:38:59 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8CFB74000E
-X-Stat-Signature: hpogg8qqh9bjar7zytywqb6szghi4y1h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] mm/huge: avoid big else branch in zap_huge_pmd()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1773865827.git.ljs@kernel.org>
+ <10be43ead023e9f65333bcaf4064d9d197111405.1773865827.git.ljs@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <10be43ead023e9f65333bcaf4064d9d197111405.1773865827.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 296C612000D
+X-Stat-Signature: w6umgskydcwpkokdx9zqc37teeyz9bwj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773901759-800685
-X-HE-Meta: U2FsdGVkX1/lpW6+bhjl/hqJVdCqfjLN6miqpVNzZmbEnW8iaX4oAbAgFWK8/ZhqNGGtTZBAaNSp4iVMUvsYPIO5zU95g83zWhj5gycY0q9FdWMbIGa0DSedvFEzysL3GqrR4vKS0U2COWUzM/RZXLBaxDBvB0+Tv55orts2OjM4SLS9wnLfP9HWO7ESCxqaw7SyJmsVOMyA3lk5ndOcqI1qxEWf284MJ+1XWmHakOzSas+HyQzubcCfSvyfU1HCdOiQFotjdB0aWKAtNs5YD2PMLBHOb8LJxexHuuTc1KzClW+wv3/Lb6RwulrORbPWIvzdC+Sa4dBMbno/csc8pdU8mV4bwGz6v5khj/RDNcTWKpaTambRlicIL0bJneoIXQoj7EPJbQqQi17ysFxFgjdXUDErmkpMsQuuBBjaA/4uil7g0lssljUiRlUd1hT6u5kBgu0xghClB84seR7zQy99jyuAdLmsSoFtoyVUECqXz1+z6zZrIowLSBcXxLjGW4whDL69nNy6NOyemP6MpCJN0exxTYxVtOU+FT/Th822xBEaIjfMLwpeiIQz3yyI42IkiTB9ZvpnDRR9YtOYEuTAJEJg0mTY4rjKspivxvVb15hIXRkmkjizzVkoCIvoyHH/HNJNLYBSqAMOs3VDyJXDIvvHJwE/JQxVBH2mnpyi7XRTdwkG8EyhB3XXJTG75ksAKTmk4vUlb0cZEeyAQhgJZS1rhjvwtm5oBBQ9ZnP66RZDFenmTsmpmjdg8aCwZzlYwvDwL51pTtAh/pjDMx+aa8MyLk3hCiw7HaO5KmMoUqQ1r+M6115wntABYLuDM4AVj1i1XoVt4D44l43zsahlNEFY1+8Ym1fFsuK/1U1vHxHBs51dQ15ELvH8BHFtOgA2hQxiq7RYE8musg10U2fLg9zW9TBzJcoiZJKmAKfFw6qLITwrLL6XLHKhL+PH5IXrKgHkrSeZEYJVAIR
- 0HVMFBJo
- HhgSIAeyrlSDNn+CqQqqtZ98yC0+cb9J6bxdteGiT++S/L+2cQNxz79Y61S4Xm1xre2k1wwK431ay5O1z+4k3HrQ8DoaSEPl80Ijzesh412mILo2F1Twqeoh1gLig6Lf9WgiuFq+s9pXLrKo762a8pIBlSvKcDnQIdU/b7YNpHBFuobtk7iANU+4vpnMcIxFeSpWGq1fZR8vCtcBPJbmdLs/fhdafRuOfpi+aeI6ucSVecroNCLPMo4dz2spq0jdoaVVhxkbFcVLbSrNntWhGUHQXlg==
+X-HE-Tag: 1773902345-5552
+X-HE-Meta: U2FsdGVkX18Z0h+v4LWV6v/uCZUB7VXR9KTb0LgS5QPS9ugcuj+7ARBWOu07xothm8QcQUFn0Bhv1/TD1ch8dCtJlRDcerJmDCYGXvfwCg2V06Cml6gKSzkKuju4hOf4ecrOFl2YDOt4UaUncNJJTJuvydo41+JfNG+JjP48RECeYQsb+vf4ih7BgQ3RpMMEkL+sRiERrZdWvl4CetRAo2bnVCUobKm6SGldrDfkZdHFm51pFvMhM/cRzFA14VaIpZg5CObFBGBK4q+ZSVwGwQ7Y+akgp6xugVdolme388VP38z1FwenVnw/h6811Vmd7WGIgtxcIXnUoaLhpj2m8I5a/j3BgJJL9IGCgDuBD70pAIJfqfxhtR3a/SryiNumx5e7aPqaqbmcme3nJHmvAqAtB09gFGjXyJ6Xz190rlOAwtoyOfJiM2+H3qIqGHE4aVP6+TFlf4bpXrLK4ZVaA2URKH/Z6Fhx9T+2n5y8r4AOLMfBzV4v6WW1zKdTvbJZyHtMdvV/NYPU9gu3T+/HSDvtuuZSjgH9sAlIbUmbdjJKLH2VOBh0ERTDrRocbrjl/2EFv1pgXHYx22iHRUmtVPy6XkKDP/FzKd5l1ru3EbNrvTIRuAp503dzPjmgRPCJsgvLAnkTndgV0CsroqYshwThgJF9KlVnOuvPkne5fS7a3t0mcMakBJSVgeNx19+81IAmfPPAdXIykfh7CfMYvwmPonDzfeRsgaUkl6HDAHRpLoCNgslWKU3NP5FRRJKDWOKP8KfM3Y2qz60B6riCj5wCcLh9d2i5ZIRECS6PPbM+7Z/xu/BMmUnG1Mg37azhkKXpwAVOzhNdd5/7XPZE8mP7GGBHwyzjqBu0/m1ran1LigtivBTvLC1EGwOpfqnS1x0a2o1F9g2crbx6TAGffs5fiwG1rIQMelcsV1Wr7YZUj42Ythc/RCey1W6kcdn/M8dCyo46pGfoGytnkk5
+ Puw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,47 +93,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 18 Mar 2026 22:21:44 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> DAMON supports only start and stop of the execution.  When it is
-> stopped, its internal data that it self-trained goes away.  It will be
-> useful if the execution can be paused and resumed with the previous
-> self-trained data.
+
+On 3/19/26 4:39 AM, Lorenzo Stoakes (Oracle) wrote:
+> We don't need to have an extra level of indentation, we can simply exit
+> early in the first two branches.
 > 
-> Introduce per-context API parameter, 'paused', for the purpose.  The
-> parameter can be set and unset while DAMON is running and paused, using
-> the online parameters commit helper functions (damon_commit_ctx() and
-> damon_call()).  Once 'paused' is set, the kdamond_fn() main loop does
-> only limited works with sampling interval sleep during the works.  The
-> limited works include the handling of the online parameters update, so
-> that users can unset the 'pause' and resume the execution when they
-> want.  It also keep checking DAMON stop conditions and handling of it,
-> so that DAMON can be stopped while paused if needed.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > ---
->  include/linux/damon.h | 2 ++
->  mm/damon/core.c       | 9 +++++++++
->  2 files changed, 11 insertions(+)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 3a441fbca170d..421e51eff3bd2 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -811,6 +811,8 @@ struct damon_ctx {
->  	 * intervals tuning
->  	 */
->  	unsigned long next_intervals_tune_sis;
-> +	/* pause kdamond main loop */
-> +	bool pause;
 
-This field will be directly set by an API caller.  But this diff is defining
-this field in the private fields section.  I will change this to be defined in
-the public fields section, and add the kernel-doc comment, in the next version.
-
-
-Thanks,
-SJ
-
-[...]
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
