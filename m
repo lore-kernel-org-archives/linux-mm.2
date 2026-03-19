@@ -4,155 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0511710854D2
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:24:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 570791075270
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4840C6B055F; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
+	id BB54D6B0545; Thu, 19 Mar 2026 13:28:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 434EF6B0560; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
+	id B3FAF6B0547; Thu, 19 Mar 2026 13:28:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 323786B0561; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
+	id A06FF6B0553; Thu, 19 Mar 2026 13:28:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2071B6B055F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:24:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3085913B53A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:24:29 +0000 (UTC)
-X-FDA: 84563486658.19.E22CF15
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2D977A0013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:24:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="G/TCtU/D";
-	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773941067;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B5236B0545
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:28:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49DF71A0622
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:28:00 +0000 (UTC)
+X-FDA: 84563495520.05.1C79F06
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A1B4640011
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:27:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ni11x5qH;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773941278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
-	b=AgOtvVpAwYt1YLGovIeCCd9/9WVipzD5hht0MZRkFSp1NZdlIZsH+e+8gkWbDiC9YnAj+O
-	TT00sOSeI+P7BiWmMALi5N5vgDhxmwTR3X+yD5sbqe6+zxNGa/LiRxK+38CGD4byOqLBeZ
-	QJlkaIOjBekVajMJ+w4ofbzjMbUwVYE=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="G/TCtU/D";
-	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773941067; a=rsa-sha256;
-	cv=pass;
-	b=ufLQy/kZu+LDQC2Mrqqn+nqymDUr5nIwoLtC1rw55sgiHKzvrlIICslYiCiZep9IHweUel
-	6fwe25hTU7PJX8lqi/qHqhENbDLZRQgtNvUMc1dYtUEe9Oe/T1pmFki+hv90vTTbHMwV80
-	J9BzOc07ekbmQumPGOEekuZKIrD65IU=
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59e4a04f059so1234458e87.2
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:24:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773941065; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AGCLz9p9rhygd7NEZECDMJAQ+vOXX/cQp4dkH+/1gpwM28yu1KJ8sj4LshZ898la4E
-         96Z1LeF2YT0rll6crOSLLb46LVrIxWfc7P4qUr+vrH4JnLyBiFPs6MYgFrL2JbJI1+i4
-         79ahXhzCrXdy/sxwjrV7qAulezqvQ0V4CDRJgrBr+jVLu8NN0yRCIFJcatG0Q/oPCfQx
-         T8atnkM3oyVlkhiC1ayBaZFXIB3kM3Oqbtc2Xu5XOPoKVp/GGD7QPr6FFUUq7HUy//Qe
-         LsaNr1uclNiU0DJNDWd7YyTNtkon6vjnFFU8UTO5jZq/x2isMUSHbNLmRKDLeTpB0d9E
-         x7yQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
-        fh=VVs5oG2bertpAIvnv+u1sGKO1RZ79Hm9Xe7AwWg9gS8=;
-        b=G5bUzcN7Qk+tVC4GfDTfgGaMX7wOxAPUR/miaAqRtX/QZJ1A9G7wlk4980Im/uKLu7
-         hCHiKIisuxPlXy8kscbR4MjGNkn0L+k5mZCls0YhtenY7nO9vyR3DFlwHhNRTQbt35T2
-         KUGKoMbUE9OrUsyxJkewB0vXRv4zVqEqxYGnU9Py2MZhEYg8NlPakUX1YWdovuUfmtdl
-         UDbRYMAfb3ssPm4+8Dja2usqsUy8w9hkJlPZJORDVad+l53x76YZB8uQfg5Iugof4HEP
-         WRE5791QdyEZOXZIwF+soAJO6485Jksl3IY2Lg5X2GlyaSAzxYhOlZFLF5b2jWymMpzx
-         mYBA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773941065; x=1774545865; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
-        b=G/TCtU/DKGlyDNfuHXBqUlhBPQBaUTcZJevi6DJX7vBr2kcTDxXI7MbM84whDpf0jw
-         uP3+eVCW2fPXRu1+YEI+1/DR+fjHoZ1Aa9UAYBdGPS3kuFVTvOJV6A+W2u+6Lulhvvzl
-         XEpXoG2WS2Fikz+S5TKnYBbGZm1M5FjpoYfq3N211xy6CHYLCR8vc4RYBUei2gjZwGhX
-         kE+/ciTJZmmb3FbVxuwgLy3v0BHywudmyTKxshc83vgiPFPxgVbTTmE1l/qDZ4WFslDh
-         EcH+LBO5u2dR8yhBEN5okHWJRx+BMdUpUksLl6gv+XJulpc0FKfBMoBVAMUbzb2DyP2N
-         zTBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773941065; x=1774545865;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bWL7Mvz3ZFb3DsvrD6klOpnMDDqkJa/pdjIb2Ow02uU=;
-        b=g4LyDr2UfUAJJS7ALSnNKumMCijprjSPfZcNb7s4kWaediBMHB5vFGf1y0lXqJqFVG
-         JLDoV78U0KYADhea5BYEZEovN0yNHwdQZHAth86mgUq0+wAa6xY4EGB/QSjwUu9Hokez
-         7N+a4EMaBFspbSOcrhKwwk4XTF/v67rXgGFOdjHTfL+zSWf7qOFqEGnswTqbUvdTcH3n
-         dd/ryVLljDWyKOhhcSH7U++QZkjQdcv26YXRB+lYA70tcbcq3eNKRYeoiZoLsOSrIfCZ
-         WOJEWKq7pgc5KKlBWUoDpyXyW6DOSIz145SGEaER0HOTEcXiPr1VVY5VKT9tGzJW8W/b
-         t2+w==
-X-Forwarded-Encrypted: i=1; AJvYcCURuDpsmp9yF4SkOY8I71r6MCj2PWU8YlOTritbnf0qQS2BdeASBZY7VnO7GStjQ9yTu5AATk7+gg==@kvack.org
-X-Gm-Message-State: AOJu0YygiNqH/ocbxxbUB13j+72C87NIQpcevtI33TGeV4/vZs9Xg15U
-	vZpw2CrICO2IIagVTcwaIE6k40KPpN+wSJ8YYP7pU7+ocpSNZrDni9fkHMkzfumzPkEBFcjlcpb
-	Kjs1csU1UYGXt7k3P7pE5Codk11ZrWxDQxoLbMKUB
-X-Gm-Gg: ATEYQzyzZPj3/cEqXY7Jq85xBnIKEErlNLCVKFWRyidEpftKqyy7ZRUFBXD4FouvqX8
-	MRcRQLCYEGs69qIC4/2yXRngKNHQ4Xj9xN0D3waJFdnDCPFJNa5UKfhgzB8+f69qXGlHlZmt4Un
-	XlCNI5kiZPkbcliqUhygMAI/9RPx//bIGKzH7pJkKmDBr4Eme+cTFAL0xYuIYHou7ep6KhOWY8i
-	n4pXGwP5YsLj9rpfLBBUX2bWnw91d75yYX4hW/T1xI288RA2Fz7aLYSJChQDePsTswQ5YXhtPcM
-	eK7MB/UO
-X-Received: by 2002:a05:6512:4016:b0:5a2:7e5b:5a48 with SMTP id
- 2adb3069b0e04-5a27e5b5b70mr1566015e87.26.1773941064245; Thu, 19 Mar 2026
- 10:24:24 -0700 (PDT)
+	bh=Yq0Z4EvpFDaoTFhe2HEhJ8Ykr3BfFmyB7X6eG+YCHX0=;
+	b=Aoo9WMewIvSsVoqKGXAoe+n2caAB4DrbE12NzpiTDnXpCXTzUIh/1JtNTxjDh9O2jSuhKX
+	KdlfCNLZ9cM0izn3mNJzRUt7PiJgpnYrBMg8RzkB57xz3pBp4pBVL6+g3hxY64sdw19b2/
+	uAVWD2Z+cp5rRZFIJrOxb12Fy6TiY5M=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ni11x5qH;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941278; a=rsa-sha256;
+	cv=none;
+	b=spkYq3ihfO66gB3VczRakL/zFPzzYPJXKdZiqK0LR6pGDMc/of5A6suvCaJOFRspqfDi+4
+	wCcSWeIhaZgZJT5GMrqvC9XW/pm96YKwlPan6rCMQMr/Th3DwEUL+Huz3rFGQBRN6w1qgX
+	m96kvUpVfaE9A3CFDzBl8W3AWZlX9Y0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C229960053;
+	Thu, 19 Mar 2026 17:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C008C19424;
+	Thu, 19 Mar 2026 17:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773941277;
+	bh=wnmsKZ1D1KfzQIEHQIk8Eq+6eKtEf+x/yXH1sCkJxLE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ni11x5qHEQ6U2LG6CI2Vjyjh8t7GcOt+96zl91V9r2Di7PZwwNlUqIZVECtb5H2w5
+	 aQAItB7sZ8iybPVrttsTi0XPAtP+zr/ASNQ1euqvkmHf5ydGP6UZqDwpxf8ALEXyxe
+	 8pCPJtXU8n7uKWcfbNhSoQVeIfHgpw1D/+DaX6oVnt1IqKlW7ofgHpLFNeb9PCwYJO
+	 z9xyzSEe9mrHUJmqAXRi85ear0h0WPeoMl9z5fS+NVNSAnh6OhiWOJtu46EqEDWHpx
+	 ropdkm9HGkEYmJPnTkidmpipti0N5Xx1ibqNhPY2cRQYPPciTZ+SLEtNcx/Gs/2xYI
+	 UmlXn7wXZROVA==
+Message-ID: <624d9f1f-656a-4a63-888c-e953b90bf56e@kernel.org>
+Date: Thu, 19 Mar 2026 18:27:44 +0100
 MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-11-dmatlack@google.com>
- <20260226170030.5a938c74@shazbot.org> <aaDqhjdLyf1qSTSh@google.com>
- <20260227084658.3767d801@shazbot.org> <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
- <20260227105720.522ca97f@shazbot.org> <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
- <abNOwcOTXqxCxNzt@google.com> <20260313083918.00005731@linux.microsoft.com>
- <CALzav=eGLpo5nrsHq5L8bUTC=FWZ-SgrTE1FoScrWB4p+NDgnA@mail.gmail.com> <20260319093932.000078c2@linux.microsoft.com>
-In-Reply-To: <20260319093932.000078c2@linux.microsoft.com>
-From: David Matlack <dmatlack@google.com>
-Date: Thu, 19 Mar 2026 10:23:56 -0700
-X-Gm-Features: AaiRm53rqLDO8igOEPnPEHv7Le9OPlkg99gzLBiOllDBuZj0inzOHo1IukO9vNo
-Message-ID: <CALzav=fvG+s6MYNzxhuHFmQkmTRJJASXAGs=zQWWSnSv3Y=J9A@mail.gmail.com>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-To: Jacob Pan <jacob.pan@linux.microsoft.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, 
-	kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/23] mm: unexport vm_brk_flags() and eliminate
+ vm_flags parameter
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773846935.git.ljs@kernel.org>
+ <297c7690f17257ba11a7b8c94fe54709a64d89fb.1773846935.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <297c7690f17257ba11a7b8c94fe54709a64d89fb.1773846935.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D977A0013
+X-Rspamd-Queue-Id: A1B4640011
 X-Rspamd-Server: rspam08
-X-Stat-Signature: 8c5bi5cwous75cu59ca7kpmp5zgar3rx
-X-HE-Tag: 1773941066-278241
-X-HE-Meta: U2FsdGVkX1/NaOzDrThwAAAm5deW2qs4vusWsXDQXxUCjVVHvonmDd6R6VYDNUsgQ09hftgrQeAHslbfNejlopI/uLRUaaRuS51sVIDNciUL+1LvCRZLu8NlChy33rR3HrgFNxoGKOrRA1/eec6ZHDAwe3vynMGIG+CKIDyd8exPFBkdLtdagH3A5Med10xcR00dlMxe7oIdFNlILvf8LT1RjX6iIPgIY286/LAQKzouffgt9hNs21pVZm2aiCAKgOCH37ZMWCmjefYez+fI1+WstpS/1DxrVM5EuywOuEU9QjkREdhgzMv6Q/0wF81VZfxtxCyFFVVf++1/52VoUmxY+6yehFcgBCO+rPZcS47xakd62FkSo/bfahZkUZ33NTMXWdksI0VCyWha8FjGDgjmqRAfhNuwbCQgDC5Gl5rx5rjdPK+DwErOFoG8IvSYvbmK+2T1MwIanCq5edP6sU38BuPzWphHU7cJqFc5ygaE9HvVpntRrye7MT/4Fd6UlYqDHdPpXzPf1vW6CP66TObAkfgEr9SL7oVH4i2Oxs8+VZM8D4ZJquoJdcAoDhM/ukdrxE/cuum6pkWfuGeKcWOFrVHsQC03jzNWmKqYo9N2RYFMpwNZE2Rx3mDp2ihpoMBMKjtZawtPbyh8TVP736DFRvRUOI4A+3DzWbeViGs8QpNJOx4f+O7jJldmMcUr3BzopwRgW0G1UCvCvmlapY20CIzXs3DdHHLYGGQc/MNLeNBAm/bIY4W4P46uKnDWffOSkkiO49A1CGCFtkv351BIj0hw74LxNzGxTS//Q+cveVFmUa8aKSrEM9smBD3K8HOVwX1itPm1/RKlUL8+t0ezu5+36DTti6vjo0wGCcozErKSOnKgGPZ7C1WDPB0K2wDPbSCN97nT0gOZmNfoI9ucorHJWNI+sQHq8Cx37nsUpgpKaty89dywJVHu2/oFQW5iPo4NWP8=
+X-Stat-Signature: cifmpxft1oknx373zn9di3a3dd8abb9t
+X-HE-Tag: 1773941278-312534
+X-HE-Meta: U2FsdGVkX1/JES6LSx/KdNfng9wlbULE8WjtuVYV9eEXcHvNyKAuyVPpMsO+kOcJRRB0ijJojkAI7wPTorgizI28LzuzlaMKD/jgc2BJuLMgKwEm8IVxxX+qyChx3XCpEA2KXl9CRbHjuPB9M/d4AmZdRU565M9inFh5u24EYC15ep5z1c2bu+TaxNz5xIroG7r/gQc4TqNfDfqJkqacsAWmkGr3sd+z9iOvyvNPSTi2BlLB8ECzaV89hPU9cKkX0YXldVqGZj08n+mBhzDO+wJDD2UctwgybWNsd5U6P4HQgR8vrTULJs/YFl0tt3fMnmG0tFxpnqXQCRNMY/m1N3AUTypvec8x7MS6Kt2r1wc0cJBd58fl+OhgH1HZW4M/AL6K5OqT6gu4HwJjIM5ty712nA8yzvSjx9VdVbpd0QRoJ84RWXQMJS7l/+OhJT5V5KnBR9QtBIKWpTSTkc6PRP9+xx76vfgl/ijw2atYA2alVHgJuS/mzOnG8NuQcyx3H2/lvQfPlOxiSeidbz92j+JZ1HlLSdFAb0disJEJm+7wd4pdTUCdNu6Rg8R9FsHDPib+xot41GrZ43BLowkazAEmo2ucSAQnRjbV43UHhAuQBxw9c7aURxHgPBp09oWcIEIs3yyT4DzB111303JH0ulYWPnlESA/+mOmBfP7l5JmH/uiKixTUccUrXZsFKqfpQmyKnxVetgzmw2MW0KbX8a2UBnfGAvJJE3GxO5tdLB+oEwJW/F/Ba8zrvvHI3YxXHR6ob5TUN7ZTkpRs0a0Xwqn3LEunUwEh3pL9Z3iXEJmEao/5ZPjTN90YQIUOw32eJnuLUHyOS+xspM+VhiNDjxsOBq6Pss1tasyNiblhdDS5I60O4cRkuvgYHMReKrWpfOIxMXo1rhnH3AyKphG8rx789DrhUbIn3sGeMEQIBmdihAZT4mPQcp5c8PhFUoOoac3nNFfWUBFBuq3jOv
+ vhf2ws5k
+ 5JghINuJ+M/cuish0xcYvXeLhb6uD3lwSdHWn1RcHf+nZnHLA0Hd5n3IDN8wOtJkBlkeRtKqMsZ8lsQH3fE830K+y26JlyKYq//sFLFzJQobG01avkWemy2lfPSh2NADnZVowQswPIXYgAG/X9KZ9zeudphCTeG29hzD8N4E65BUewT9DRY4aNO0l9cK4Vedu2KudYh+/WJx61/Y2Fh5VNW6HW0BRi0tazTfqkOWVMa5/xzYgeLzpwf59BUqDHjP3YqOJnRUhMXwGTT7SR3hYqwj4R64hC6JXSfQWCuCVuwuM0jV0wSMvny+7jXBwRVre0F78DoIDW5hNQQAD7mxbOmGM4c8KE95y8MAkLmVSeMrkiLEK9CB3/t8+/EgY0VCggJJv68bpDSl45LvT6udPyKGslncaJa8gSUhnSbbvU08RYajRDnQG/BImTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,60 +129,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 9:39=E2=80=AFAM Jacob Pan <jacob.pan@linux.microsof=
-t.com> wrote:
->
-> Hi David,
->
-> On Mon, 16 Mar 2026 11:11:20 -0700
-> David Matlack <dmatlack@google.com> wrote:
->
-> > On Fri, Mar 13, 2026 at 8:39=E2=80=AFAM Jacob Pan
-> > <jacob.pan@linux.microsoft.com> wrote:
-> > > On Thu, 12 Mar 2026 23:39:45 +0000
-> > > David Matlack <dmatlack@google.com> wrote:
-> >
-> > > > +config VFIO_PCI_LIVEUPDATE
-> > > > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> > > > +       depends on LIVEUPDATE && VFIO_PCI
-> > > > +       help
-> > > > +         Support for preserving devices bound to vfio-pci across
-> > > > a Live
-> > > > +         Update. The eventual goal is that preserved devices can
-> > > > run
-> > > > +         uninterrupted during a Live Update, including DMA to
-> > > > preserved
-> > > > +         memory buffers and P2P. However there are many steps
-> > > > still needed to
-> > > > +         achieve this, including:
-> > > > +
-> > > > +          - Preservation of iommufd files
-> > > > +          - Preservation of IOMMU driver state
-> > > In the interim, what do you think about moving forward with noiommu
-> > > mode without preserving IOMMU driver state?
-> >
-> > I haven't gotten a chance to look at your noiommu patches yet, but I
-> > do think noiommu will probably be a good way to develop the VFIO and
-> > PCI support for Live Update without blocking on IOMMU driver support.
-> >
-> > > I=E2=80=99ve tested your
-> > > vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works
-> > > as expected.
-> >
-> > Would you be able to send patches to add noiommu support to VFIO
-> > selftests? That would be very helpful toward allowing us to develop
-> > and test Live Update support with noiommu.
->
-> It is included in the noiommu patchset; the only difference is that the
-> VFIO cdev name is prefixed with noiommu, which is not strictly required
-> and is done out of caution.
->
-> /dev/vfio/
-> |-- devices
-> |   `-- noiommu-vfio0
->
-> https://lore.kernel.org/linux-iommu/20260312155637.376854-10-jacob.pan@li=
-nux.microsoft.com/
+On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> This function is only used by elf_load(), and that is a static function
+> that doesn't need an exported symbol to invoke an internal function, so
+> un-EXPORT_SYMBOLS() it.
+> 
+> Also, the vm_flags parameter is unnecessary, as we only ever set VM_EXEC,
+> so simply make this parameter a boolean.
+> 
+> While we're here, clean up the mm.h definitions for the various vm_xxx()
+> helpers so we actually specify parameter names and elide the redundant
+> extern's.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-This one flew under my radar. I will take a look and respond there, thanks!
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+>  fs/binfmt_elf.c    |  3 +--
+>  include/linux/mm.h | 12 ++++++------
+>  mm/mmap.c          |  8 ++------
+>  3 files changed, 9 insertions(+), 14 deletions(-)
+> 
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index fb857faaf0d6..16a56b6b3f6c 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
+> @@ -453,14 +453,13 @@ static unsigned long elf_load(struct file *filep, unsigned long addr,
+>  		zero_end = ELF_PAGEALIGN(zero_end);
+>  
+>  		error = vm_brk_flags(zero_start, zero_end - zero_start,
+> -				     prot & PROT_EXEC ? VM_EXEC : 0);
+> +				     prot & PROT_EXEC);
+>  		if (error)
+>  			map_addr = error;
+>  	}
+>  	return map_addr;
+>  }
+>  
+> -
+>  static unsigned long total_mapping_size(const struct elf_phdr *phdr, int nr)
+>  {
+>  	elf_addr_t min_addr = -1;
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 0c35423177bf..42d346684678 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4005,12 +4005,12 @@ static inline void mm_populate(unsigned long addr, unsigned long len) {}
+>  #endif
+>  
+>  /* This takes the mm semaphore itself */
+> -extern int __must_check vm_brk_flags(unsigned long, unsigned long, unsigned long);
+> -extern int vm_munmap(unsigned long, size_t);
+> -extern unsigned long __must_check vm_mmap(struct file *, unsigned long,
+> -        unsigned long, unsigned long,
+> -        unsigned long, unsigned long);
+> -extern unsigned long __must_check vm_mmap_shadow_stack(unsigned long addr,
+> +int __must_check vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec);
+> +int vm_munmap(unsigned long start, size_t len);
+> +unsigned long __must_check vm_mmap(struct file *file, unsigned long addr,
+> +		unsigned long len, unsigned long prot,
+> +		unsigned long flag, unsigned long offset);
+> +unsigned long __must_check vm_mmap_shadow_stack(unsigned long addr,
+>  		unsigned long len, unsigned long flags);
+>  
+>  struct vm_unmapped_area_info {
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 79544d893411..2d2b814978bf 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1201,8 +1201,9 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+>  	return ret;
+>  }
+>  
+> -int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
+> +int vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec)
+>  {
+> +	const vm_flags_t vm_flags = is_exec ? VM_EXEC : 0;
+>  	struct mm_struct *mm = current->mm;
+>  	struct vm_area_struct *vma = NULL;
+>  	unsigned long len;
+> @@ -1217,10 +1218,6 @@ int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
+>  	if (!len)
+>  		return 0;
+>  
+> -	/* Until we need other flags, refuse anything except VM_EXEC. */
+> -	if ((vm_flags & (~VM_EXEC)) != 0)
+> -		return -EINVAL;
+> -
+>  	if (mmap_write_lock_killable(mm))
+>  		return -EINTR;
+>  
+> @@ -1246,7 +1243,6 @@ int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
+>  	mmap_write_unlock(mm);
+>  	return ret;
+>  }
+> -EXPORT_SYMBOL(vm_brk_flags);
+>  
+>  static
+>  unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *vmi,
+
 
