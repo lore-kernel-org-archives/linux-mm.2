@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE701091926
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 718401091926
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:33:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D972A6B04F7; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
+	id 7A4806B008A; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D405E6B04FA; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
+	id 72F1A6B0095; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2EFC6B04FB; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
+	id 61CC06B009F; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B29E06B04F7
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 55FB51A06FC
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:28:55 +0000 (UTC)
-X-FDA: 84564102630.14.2299460
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6CECF180006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:28:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iIWABuTI;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 49B026B008A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD8E78C39A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:33:55 +0000 (UTC)
+X-FDA: 84564115230.25.0589734
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 030C34000E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:33:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lVT0r2zZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773955733;
+	s=arc-20220608; t=1773956034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZ5RxDUXhhZ/2qNWVpaP7v5sMY8n+sT+/zd9PC8R1aE=;
-	b=ghifYld0WJFxkKqDQptEso+QXgm3R0sQzrNoYKG1aX/EsqIu+PR1mxdvDWtS15EIk6EdfX
-	YEa7kFULoQhR3uExUgKg6iT1/hQ76ShEDSGFFxqjBU7hNn/KIrCZ4uxLApqDeQzduXM4FR
-	vxHS8D86Nal90QO9HlJv7RKYawpyUNI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773955733; a=rsa-sha256;
-	cv=none;
-	b=5+cKoFCyJToYuNVZ+NYutdZfuIwpowDAVndSqe7fqqEDckO0G6lJfwRWyRiceN7Fh0s389
-	rv6+fbEzdFHIeBhhce+WO9R4iF1AIn/aTVwovtFJEvLQaEuB8d5UCd/0lr0f5KB9x83kOy
-	d/qYmsFdc67gdDRolF1XehSI8oOvIFU=
+	bh=rA37h1H+t+5MIHYmWOwMvW7jtN1zx/LGYLLRVu2/OGI=;
+	b=tz7wvH426rZUQK8+mH1OBb6wT7+aCA6jymSrAIQgKZznt3ajVbVz/1PgwyjpoqI7OX4jeE
+	QSS3MR8yOmX2xE0WXQ92YMkMXrZfqGsI6EOVlJCNEv3xlrpiAqYLc6hbTTOI/HZUZll+DX
+	qIfX0Gr7Il72wFMFydQ7xvt/+kuqwpg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iIWABuTI;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lVT0r2zZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956034; a=rsa-sha256;
+	cv=none;
+	b=pjV0pOy0KmZikJWRkNj0lughKU1q9qWd78WVFqrEqCthrTE+2HY2h/g0s5CMDjYw+QSX4I
+	SyW+gfi85n0QE5tPMnkJbpOQPhpc3JuUKAGy4Rq7vjhzQthw5FBV1/eutWEAbbFxCLtV40
+	q2L3V2qXaxsFWXyv4/TvlXPpQhvouKE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6809E438D7;
-	Thu, 19 Mar 2026 21:28:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58338C19424;
-	Thu, 19 Mar 2026 21:28:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DD8C600AD;
+	Thu, 19 Mar 2026 21:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB1C2BC9E;
+	Thu, 19 Mar 2026 21:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773955732;
-	bh=/A2pi1IEpX2B/0J45JYoubtua2rh5RakAG442Dsy7Pc=;
+	s=k20201202; t=1773956033;
+	bh=xN4d73AFx0YGytHZojK+cFhok8Wstr1JBl9qe4KChuw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iIWABuTI3Iy9u45wopTGhujY252zv9MxOCTJde9C4J1yO7CwLK4U1uTJh+pS3eNFl
-	 9cC0sVwQoSggVrLNV+IbLVxdgRJf1phdj+Y/DQr46eUAGP4Y9+7BglECOz0PIR6T9e
-	 VGqY4kJZoUQVws+gVPcdm7Z8IFy7P/g7VcGZ4KGYEARAYj9UBmSJTLPvOWcAsIiFpm
-	 JcOZ0BrBfEa2WzKPRu12MxJe+0T7p+tJdlSbia9Rx2HbfdyIHDouLNaXjSAEFjZCdB
-	 y6n/upUwFG1Y8fJ7Z9n/cgiwx3qKnaeNuy3EK9NFmAwZdxg68XtiJY3U8S3l9FAWzX
-	 zSYaAtF8RGNIg==
-Message-ID: <9943a6ad-9c85-439c-ad9e-39a694a29147@kernel.org>
-Date: Thu, 19 Mar 2026 22:28:47 +0100
+	b=lVT0r2zZN4LrARNdQvbxRMTMKYCbEjQCMNGTjK/n1LEPZF7VQvpEGzqTAtIKmAPoJ
+	 ILU8nDzynbJ2RZ90zbAsd8btfuoGQxvurU4npry0Z5WCrqxQImtUYIVzCLpNiASASY
+	 kYrzOTwRP3GkTfSz1yDrVvxRfxdpE5zpUUueuN2YbA3sxbj2bGDXiTVqfoAIfqfOyR
+	 xCenGxPYqrusjm6ohzrlzqGvYAehc9f3jYf8ajcz0gOW3ahU0wSWG8O7rI44bKJI/P
+	 K9XGcQbs1bXPNsuvQeLHhT3tv6Deyx5pRpjudoUs5NzBBVExFAiI7MD2zFmg/FK62C
+	 4j3xTdPpE0LHQ==
+Message-ID: <f0ccf41d-16ca-404a-bb84-fe038bcfe0b4@kernel.org>
+Date: Thu, 19 Mar 2026 22:33:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm/mprotect: encourage inlining with __always_inline
+Subject: Re: [PATCH 2/4] mm/mprotect: move softleaf code out of the main
+ function
 To: Pedro Falcato <pfalcato@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
@@ -76,7 +77,7 @@ Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
  Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
  jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-2-pfalcato@suse.de>
+ <20260319183108.1105090-3-pfalcato@suse.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260319183108.1105090-2-pfalcato@suse.de>
+In-Reply-To: <20260319183108.1105090-3-pfalcato@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 030C34000E
+X-Stat-Signature: rm3ddpy6kxpnoj3jd58qkoyi5jgid6ej
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6CECF180006
-X-Stat-Signature: a6uo9cabrp56m9m33d869ayh95eziez6
-X-HE-Tag: 1773955733-943728
-X-HE-Meta: U2FsdGVkX1+VmpiPvMnG9NGloZ+/RhLasGjvrrYLWOywOBBPKFULppNd0p4AySEqwi5cqRvVFbTjdOcaqPUqwXh0+cOX+8imEdTnf01BPnCM+Y6hyrRlvXxjrjVS1OVquLjjZ8ACEWoQIJAHpMmNrmf/5tjqa7vef2Qlr0c7YZz9mm18V/svfo7iEfFKvc3hR2i6qYJfuydoOTUZTp/01wXjx1YuA7C7sZBz3khQd2xbejSYECBTeeShn7UZgdUdg0PZ4srpJ5WumSX7kpDYEP1nSDwL3MvP3MM+rIo2O28x+0IBfdrAGLXfzgFYrtoFQ9KmQmon+mun+6fWYTgM8x1SiS8gE2Gqy9LjTmc8QdCLl0/mvm6dXZPay1wnd3dvv67s5uBSShBaEkwToXvMNvLt8l1/3bJZk4+TQYbZLjTNJ8yS6YZK5dC8PH3bYbSXDb+bvubNc+6hQ7Vc0Mvbly+GQSxv1VZi3ZgdzYTjymCJrfR4AJEriCXtf+3YgemmusaGrlpLrnkWf3tNqBxnP+B+t6JXk9Th2Z53g0GlTZBCThWrLV35/citVgOlW3PN1vCqCajwetPpUyVzgMqBVvB16W247MASK9lXwD7UXaUEbECYzytG09HhZMVQP3yKWlw/9Xqlf0nImflgOVQweQzHqat1AFeVix8+eSca4ZbuYot69VS1xuphb9PHElK9B915PGb+jhu8qTUh0X19HRtkFlMxjlLo8nAdq+xQaiU9tdC/YqJj02o5VN7Z3zQySXswXfzfSyc6P8Z/H4DBThIQZX70pq8bDenEf9Swylf3RtN3dwbUgyUKRIinJ+Du6jX2yQPsnZeitzvDp9a1XF22Bv9gVw5mv7SVN2IqFuIxbkmPcPOix+A0Yzu+tMB4vQYvpzKK3Ox3ylSdugkGHC7E6wq/CLxNC9XmQgXbjpfJh2Z0bGXJbjMu2v8OTUSPe8xErmA410WkcXVbBZE
- 9xk/8pmk
- SK9tvZe/is2vmwHL1KUmMajcFzO3J4noOEBZ0dJkJduGr/FyEBZkA14QTBkrZYS1n2zyoD3lup3ZkK7G8D6aSK5jAtSbKWs+/Df/fjtRHeCeNzg/pdVWQ2robFQlUzSGdwCHKE5gvc9xl1CIz+ou+Y+1ffqkXf9ePm1xk2PL73GXPdkoP5YT7bouLjuYrt3QUZmjUVLgBMCpupfJcApF8J3xJ0GSWj8q5TeIrrE+Y6O4cPyL3CQH/QIiwmVvQrqCpUC/jm1H80Iqt7CW2edxxprCipoYLNtDDmeny8UBtAUDVh5xB3QdNtbDJBA==
+X-HE-Tag: 1773956033-646115
+X-HE-Meta: U2FsdGVkX19Fsjfsh+U2+jz07rCoSG7NlGtOl/faK74aiGFnEByt/X/BKJqgR/WQtrcURlARXq2gUnoa5aONUyEhjbK9DiRQpD3p2GF9xApsWkKJwTzV9MA9i8ZHQs3/t2oYnqUd4W8n8HMKEXMzOatMAziCu3vyqRtYMA0hUgTwxoCEHcYB1nmCZe8+ipUba5uwpconcS+K6+9OcbEE2x8xB71SJQpPyFHtvdqYMUmx7m5KFWFw+ts6LjsPkozBEV+xeoGh6SDT+v1Te3ZoKspaok7nXFpSx2y30Gw2+ApCX9QHBR9ksl4lY7MwNAwLTfgen2wG5PI2E9wvJ49t3mfNWXlpv9BGPT4yiP6XtBuMewst8BcHBUfjslUODqip54V93knTtex0RXMaAj/wWamjBGFFitjktOoT2F7P/N58+npFr6u3vDopnSxdjk1fpdd7AeUiHy2Sxnz4jzqB83CuuhpNl+damYLp94rOWYjR7n1BW8j6NeSXa076QEL7EtDocbB74xlQHxR8Xf4RRRNrtLR1Bq2BGBLYt5B7oEWt2dKzdGrx0vj/DCFBx4xqcVgIi9PZCwcWPulwrpZVs6ZazvucLwojG701zdG3uYAnGvf+VSiVwkq4zZ3iqx01H25vunzutIoE1d+dJKBJzm8NaOPj9svLmEPhOwi9rI/KXPtm2A7XZuxv2w6WtLKsuDLazHemUzRl8p94Ij3WCETqKNETK7UYdFG0tyLsbn3df3nDMaODSVT39F/e5vLm/xBXsOSdwpYzNmG2TjThiKexQsMg0e11h5MpHa243KXAMxVpoVenOA/4A8+srl0w8GfZrbIyzzUdzjOQrtOEwcT1K7ZsPSWhS4vqvtbrQuoHKnGIdslSqyaJML0hz9crym0melZf4ZOxVgpwzihg0AnemKnOzsW196Eet4KL9E4FldUTzDRA1zlv2EUXS2XWPqdaYkCL9XMHrhe77+E
+ 2z+uCKIg
+ 09FiB9skDwMcbAQTcef35nmv0k9F8BJNx5Oo4HP4j1cTt1NGIUgS6fJwGShu3P2DpFUIl8IuzfgICYfdkenzvIvdKuPxTpQCULVaOqAhDlyiujpTewucnKKs5sFF2ifrvVfnLI8/UQX4H9rWwmd4i2757ZZ5MnEWvdQro5zQ3PNtdRrnSeEwTMvn6uaptGs4LfRkKct8kqDKiwVzFwb/fFoAUjdcHT65WubIUckiNJbtPqcgifmfHq4kiTNyv9v1d0WIEra1n80NeGplhAuZ9C8/ZHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,58 +143,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/19/26 19:31, Pedro Falcato wrote:
-> Encourage the compiler to inline batch PTE logic and resolve constant
-> branches by adding __always_inline strategically.
+> Move softleaf change_pte_range code into a separate function. This makes
+> the change_pte_range() function (or where it inlines) a good bit
+> smaller. Plus it lessens cognitive load when reading through the
+> function.
 > 
 > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > ---
->  mm/mprotect.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  mm/mprotect.c | 128 +++++++++++++++++++++++++++-----------------------
+>  1 file changed, 68 insertions(+), 60 deletions(-)
 > 
 > diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 9681f055b9fc..1bd0d4aa07c2 100644
+> index 1bd0d4aa07c2..8d4fa38a8a26 100644
 > --- a/mm/mprotect.c
 > +++ b/mm/mprotect.c
-> @@ -103,7 +103,7 @@ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->  	return can_change_shared_pte_writable(vma, pte);
+> @@ -211,6 +211,73 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
+>  	commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
 >  }
 >  
-> -static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
-> +static __always_inline int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->  				    pte_t pte, int max_nr_ptes, fpb_t flags)
->  {
->  	/* No underlying folio, so cannot batch */
-> @@ -117,9 +117,9 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->  }
->  
->  /* Set nr_ptes number of ptes, starting from idx */
-> -static void prot_commit_flush_ptes(struct vm_area_struct *vma, unsigned long addr,
-> -		pte_t *ptep, pte_t oldpte, pte_t ptent, int nr_ptes,
-> -		int idx, bool set_write, struct mmu_gather *tlb)
-> +static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
-> +		unsigned long addr, pte_t *ptep, pte_t oldpte, pte_t ptent,
-> +		int nr_ptes, int idx, bool set_write, struct mmu_gather *tlb)
->  {
->  	/*
->  	 * Advance the position in the batch by idx; note that if idx > 0,
-> @@ -169,7 +169,7 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
->   * pte of the batch. Therefore, we must individually check all pages and
->   * retrieve sub-batches.
->   */
-> -static void commit_anon_folio_batch(struct vm_area_struct *vma,
-> +static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
->  		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
->  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
->  {
+> +static noinline long change_pte_softleaf(struct vm_area_struct *vma,
 
-From my micro-optimization work on zapping and fork, I learned that
-these batching functions are best optimized for order-0 page by
-explicitly calling them from the code with "nr_ptes == 1" and then
-force-inlining them. nr_ptes and all loops will essentially be optimized
-out.
+Why the noinline? This sounds like something that works good on some
+CPUs and bad on others, no?
 
-With no such explicit constants, is there really a real benefit to be
-had here?
+I like the cleanup, but the noinline really is odd.
+
+> +	unsigned long addr, pte_t *pte, pte_t oldpte, unsigned long cp_flags)
+
+I'd call that "change_softleaf_pte"
+
+> +{
+> +	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+> +	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+
+both can be const.
+
+> +	softleaf_t entry = softleaf_from_pte(oldpte);
+> +	pte_t newpte;
+> +
+
+[...]
 
 -- 
 Cheers,
