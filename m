@@ -4,86 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42CA71088E5C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 01:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103001088E5E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 01:29:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FDEF6B0398; Wed, 18 Mar 2026 21:23:47 -0400 (EDT)
+	id 461E86B039B; Wed, 18 Mar 2026 21:29:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 987EF6B039A; Wed, 18 Mar 2026 21:23:47 -0400 (EDT)
+	id 411AB6B039C; Wed, 18 Mar 2026 21:29:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84FBE6B039B; Wed, 18 Mar 2026 21:23:47 -0400 (EDT)
+	id 327386B039D; Wed, 18 Mar 2026 21:29:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B056B0398
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:23:47 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0211DB79D4
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:23:46 +0000 (UTC)
-X-FDA: 84561065694.06.30FA692
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5B8151C0014
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:23:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sAPuipFm;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 203FB6B039B
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:29:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C80CA160235
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:29:05 +0000 (UTC)
+X-FDA: 84561079050.20.921D8B0
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5A999140002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:29:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773883425;
+	s=arc-20220608; t=1773883743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4i70lYE3ikT4bXpejDfgyhVGs8FhJBQxEetpbIWUIXg=;
-	b=LJlQm6VjvLEq4uuZ5hmbO5YMCFIXDktdOxysRL2RswHGovNpK39oDokxiwmXFaeFHKUKxd
-	q133mZo0COdMCLQ8+uTFEGm+p8z8SqGnTcWxfognE/GXEZ5nAuQSPunt/wMTbYmTbQEDSX
-	7r0r/dibgkTsUgpPylzbcwqgtsUphVc=
+	 in-reply-to:references; bh=BQrFDy75JdV56vg++9PCPxX4locbCqledehyaverSP4=;
+	b=Jiyn5Lvnlxj6nc8/udbs3jzOa/JZwjbySwIkiQ/1eRiN6R9jsTddh22VkbtEv4LUmXFfLX
+	WHKBXo0CTDNfKR7fWI01rJLp2dCQtw8Cyy864sta5jXTWt7sjRx0Bv6avgjhNOZaipyjEV
+	4zlwG5GO0aKC++x04KcoEfpQEKg1fWM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sAPuipFm;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773883425; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773883743; a=rsa-sha256;
 	cv=none;
-	b=V4Q+B7IBxc6cGYWdfiAL8+Ezyd//Y1XDkkI9e9zih2Ms7kbQbsWg75sw4+M0ZffPavh3Lr
-	YAp0EbiIoG2x7jaomUuTQcI+mquHZB0iApoM7H3qTIDXhi+U593ZemeZ5urk3paUyU4IYJ
-	naBhoOWwIICWj+UU3Q6Ai9qG87kElP8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A04FA6011F;
-	Thu, 19 Mar 2026 01:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378E1C19421;
-	Thu, 19 Mar 2026 01:23:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773883424;
-	bh=/3AxX6eVbCyH06Y2eez24hjlaPrieJrSqToGepAelaE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAPuipFmfUEcAW7WnCMY3N6M4TDhtF3TymnzjXk/rla5o2MsX7IL2lqcXX6jJ8VEd
-	 /pURuC7PZKRb+F7HL4g0B6lG5N7CBdBfz4K8Jay0Onx2pyKE4rTqYFQ0I1jadKaQzp
-	 Y7lIKnql0orZ6fl4UDGmJnI9a+JzzLY6L86lEklxgmDTKEmfDCJSVi++aR8vtzZ93D
-	 8rMlZ5YhSaxMNmYtFNmp4V89oaAMN0P8GnWIHTUkgVl8qVGWyqntr8BvSmHJYvqS4r
-	 /semblQTA00WzDuRfTC+b+aSG2brsc06AA3t9fH8N8YR49ZU+9ktS8J9xsc7AQlgTl
-	 O7tPyceFmgeNg==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
+	b=rxVSJ0rNkNsTrwtZmaFiqf/wksZ7lgbWwbEW2IEV0HWHHYwiLPDKVryVO4DQ8dvuaNWyAl
+	a2GSVB7n6y5xoxzZKRStzywcrAQI8qNgdHQd2E52c06JeeUsyUHfMhyTPbdUvXHhhlEGP3
+	K/0oLqHZhhCbwCgKwMGLezVJJruAa20=
+X-UUID: fc35e2f2233211f1a21c59e7364eecb8-20260319
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:d57214ee-254d-4f48-a086-f99dc2228606,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.11,REQID:d57214ee-254d-4f48-a086-f99dc2228606,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:89c9d04,CLOUDID:14cc55a267e35d5a0d5e93862a8a1213,BulkI
+	D:26031909285431CHAXEQ,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
+	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
+	0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: fc35e2f2233211f1a21c59e7364eecb8-20260319
+X-User: duanchenghao@kylinos.cn
+Received: from localhost.localdomain [(183.242.174.22)] by mailgw.kylinos.cn
+	(envelope-from <duanchenghao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 995069587; Thu, 19 Mar 2026 09:28:51 +0800
+From: Chenghao Duan <duanchenghao@kylinos.cn>
+To: pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	pratyush@kernel.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [Question] mm/damon: min_nr_regions constraint and inconsistent error handling
-Date: Wed, 18 Mar 2026 18:23:36 -0700
-Message-ID: <20260319012337.96726-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260318153731.97470-1-aethernet65535@gmail.com>
-References: 
+Cc: duanchenghao@kylinos.cn,
+	jianghaoran@kylinos.cn
+Subject: [PATCH v1 0/3] Modify memfd_luo code
+Date: Thu, 19 Mar 2026 09:28:42 +0800
+Message-Id: <20260319012845.29570-1-duanchenghao@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4pw4d4q85wg6dt5kgrkdbizahcbm7c1p
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5A999140002
+X-Stat-Signature: bay1wt1anftioc9awdkottcfwgguzuzx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B8151C0014
-X-HE-Tag: 1773883425-529584
-X-HE-Meta: U2FsdGVkX1+5zravIDhFPlmBZI66ybhNz+pVswXjT3D/evVzPGfAOp+LjLfU0Xivm+30IbVW93l6kFb6EBwqRYfG6SAtK9b55EUbBRjMMl5j2xvvyHghNQ0RAzttQGKrkINPfVkD61PpgDoTBajXkJV0V1GEUn3p6z0ZxqDWDKh4Ttw9zp8rpey9yosJSaT/+Pm1fAGzFgdZZbD4vKFuN1+wEqysqjD0xINGjtnxxvnoc8968iSKCz/5a16aKdM2TUD8xYNQH8qj31imTfbOQV/QJYhDJYQua7GUUhSXEOEAr9SdJoxYinJxeWi5matFdJKm1IvfTRmwE+6sWQkDDwGJSPCJsMeKu4LWpeX56KlV5i96pXJCBwECNB9yuozDlCoHlEKu5rcF3FMxcrQ4+GkddM9Ewj9Sq5qGbH1BzQWpuZ0BcwWbA7SAiAeo8q/BTeUwgVtSw4u4+C4IlV3r2D9X3aZ9Gr6dyAWcOV6+Me5CpdRlhnqfMJMeBsJgg95aHtsoPW0PJ2gJQE1ypiae2sDYPmLHGEckwaLmobOgcR28Q020N4Czhr85yZCZBN1mEvNp0m/91wYCRq4msD1l3k7CKBojggdO9iDWNgu3Lwxpr/2WwXC4a5GoiJILeoFcquRxteZuYx4NJleJNlhEEVAXwGtIaOIvIzE4o6Ek6kzQE1YA1r5C0um55h4BokWtrxBGf0uzlLzFfCL9PRPve/95WcLy2eB6E9lQKOOqGBDfzLInSSQ/c7R+HPq3+Xef5ZQm5ugu7KSizVSUMOWcZq43qf6jvELob6oGAE+2ZBdVl1ZUe87KW7egI1MwMOoWgInllYMnMGGfzLfnNXoop4HdQMt++Ci4+rxyhs26GsTrPWL/vGy8llkFf3FYHXMMOSqbTVwb2Fch5whFC96GeVlmoIYnwTI9BJKeLb4woOV1SRpwuV6aWbK+pUJmWk4NfpRs13qzh7rN2zrZHlA
- Uc4pZvEY
- nTpEcFftcYOUybnsYk642vDaYl+LSFx+6ndv1sF0nPR7nLGlsnuUnW8fWDJRu9xs4y9syge+dFKxQWLVG2T9KUs4QWqcC8qol/0COc7eXQfWDvYLAx7blY/fuz8rrXtjScIJC1nIVH40DdgcpLwxLxNjiDwRLY7CVOYtxTYmudqiRoHpADu1BBxCKC8WNz3e3fzF0/V+IQWZJHw9jv6/UN8hwWKISMGJd5P5UkaXWd3DStLGuo7JYdqG4I1EopNdOta3CGrmeI+RjdYAeQXFKgE/0ClSHxTD4z52v0n5UQ/0SQAek8+meGd63u8DUpyAKaD/1V+dUFgu3ONcAzig3tNsYFPk11TY8PaBJ
+X-HE-Tag: 1773883741-900466
+X-HE-Meta: U2FsdGVkX19FPoPSdF78cktLoRzFoxbZMRXK/N1CiXUfNT6XsYQXcakfkDtQMdH6TtXCufjUaDsUw/nXZTWVRiSt+AAQTDQ/QJEfpwbyxdteAAzz1IjWNQ5PlYw/Bgc4CuR6gVcINx3trofyrb6iO5FCSyW83ANbR/w/kyRZygLgvzwOor2neCSEqptQsAZyewFDMdWpr414HeiBiuoDXvQpWWaJ/WeOe7kVjjgYFI6IPyBvUvMpZBBkPTDwmsx+lZE/o03G4HakEpprBcA/SRnOrZ6IthSuyNY06sjQ45wlhfCE9yeBfqy7Kq/vZhSIQYXgJtC05DqmwFwNGBa/oYp+/HGgDxnr2LXYJ4YvitFKs3jFT0cDy6+r4QOxSL/1Rr7GcP+8GYE8qCSt2WJPLJghqoAArJ+hfJzqKROqTZmTyzc+9P5FmPE/MY4QYU10xHqkleWGagNDNj5ATfdKtBLv87RO2Y7CWa1OkSFPNXj2vNjcBGI/4Eh9GjUGyYr8/2R3qII8Dp64IZP2cudbK9WSaNOXk16mH6g72eWHWrHMDS8JtTV1q9QvZOct4MhBuJw4glIl1/dIdE3jJiZldOMNDHipWUKo5t1S8fO/e2awxcT1W5XAJaevkGNKKRB0dWUDcPmWqqbu08y+vmBNGsnWZINDkv44o9k8zsa3FY+R1yqTn51To6UTun3OSqG06ekYjQIFrwoStSOoAnMRd3gCk2p9IXMPtQtVUmUf+6VG3X56rx4DRIdO3nVrImP4UrZre5av78rfQJd4fprJLPCUPpme741E67VMN1R5TjSAbuO/wdI6P1pTRD3wFtwK30FNp/Bz+cJn3OxbGxGabbqTvztdWISU/kp03+v/ZTojzYxQDOw1iq2HnPdWsaLuOIXdNHGthjHOLHykSwJbb0T4+H/RV7H95D6t4LzvA2kH/jw2gGNvdCTkDozjBrYcOWWjoU3x5LmdhuBmwfR
+ DcKRanXs
+ rkP0TV6F8N9nfs3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,189 +106,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Liew,
+I found several modifiable points while reading the code. Please review.
 
-On Wed, 18 Mar 2026 23:37:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Chenghao Duan (3):
+  mm/memfd_luo: optimize shmem_recalc_inode calls in retrieve path
+  mm/memfd_luo: remove unnecessary memset in zero-size memfd path
+  mm/memfd_luo: use i_size_write() to set inode size during retrieve
 
-> Hi SeongJae,
-> 
-> TL;DR
-> =====
-> 1. Why does DAMON require min_nr_regions >= 3? Is there a technical
->    rationale?
-> 2. Could we improve error reporting when sysfs parameter validation
->    fails? Or document it?
-> 3. [Bug?] DAMON_LRU_SORT doesn't disable itself when commit_inputs fails,
->    contrary to documentation.
+ mm/memfd_luo.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Thank you for nice questions, I will reply below in line.
+-- 
+2.25.1
 
-> 
-> Details below. Happy to help with patches if helpful.
-> 
-> Details
-> =======
-> 
-> 1. Error feedback for min_nr_regions validation
-> -----------------------------------------------
-> 
-> While configuring DAMON_LRU_SORT via sysfs, I noticed that setting
-> 'min_nr_regions' to a value < 3 (e.g., 1) succeeds at write time, but
-> the error only appears later when writing 'Y' to the 'enabled' file,
-> which returns -EINVAL.
-> 
-> Since multiple parameters (intervals, watermarks, etc.) are often
-> configured together, a generic -EINVAL at enablement makes it difficult
-> to identify which specific parameter violated constraints.
-> 
-> Code reference: mm/damon/core.c:damon_set_attrs()
-> 
->     if (attrs->min_nr_regions < 3)
->         return -EINVAL;
-> 
-> Question:
-> 1. What is the design rationale for requiring min_nr_regions >= 3? (eg.,
->    algorithmic requirements, sampling accuracy, etc.)
-
-The initial version of DAMON was supporting only 'vaddr' operation set.  And
-'vaddr' is designed to have at least three regions, for the two large unmapped
-areas on normal virtual address spaces.  Hence we enforced min_nr_regions to be
-three or larger.
-
-There is no real reason to keep it for 'fvaddr' and 'paddr'.  Maybe we can lift
-the restriction for 'fvaddr' and 'paddr' operation sets.  But, we found no real
-reason to lift it, either.  As a result, the restriction is still there.  If
-you find a reason to lift the restriction, please feel free to let me know, or
-send patches for that.
-
-The VMA-based target address range construction desgin doc [1] should explain
-more details about the two large unmapped areas.  Please feel free to ask more
-clarifications if it doesn't give you enough details.
-
-> 2. Would it be acceptable to improve user feedback? For example:
->    - Document this lower bound explicitly in
->      Documentation/admin-guide/mm/damon/lru_sort.rst
-
-Yes, I think this is a nice idea.  Maybe adding a comment on damon_set_attrs(),
-or additional sentences to 'Monitoring' section of design.rst [2] would be
-appropriate.
-
->    - Add pr_warn()/pr_debug() in damon_set_attrs() to log which
->      parameter failed validation and why
-
-I'd like to be cautious about adding logging, as it might be a spam.  I'd
-prefer making it documented well.  Then, users could find what is wrong.
-
-> 
-> I believe clearer errors or document would make DAMON tuning more
-> intuitive for sysadmins and developers.
-
-I agree, the documentation should be helpful.
-
-> 
-> ---
-> 
-> 2. Potential inconsistency in DAMON_LRU_SORT error handling
-> -----------------------------------------------------------
-> 
-> The documentation [1] states:
-> > "If invalid parameters are found while the re-reading, DAMON_LRU_SORT
->  will be disabled."
-> 
-> However, testing on v7.0-rc4 shows that when commit_inputs fails (e.g.,
-> due to min_nr_regions < 3):
-> - The 'enabled' parameter remains 'Y'
-> - The kdamond thread continues running
-> 
-> This behavior may confuse users who expect the module to safely disable
-> itself upon configuration errors. Should commit_inputs failures trigger
-> an explicit disable (enabled=N)?
-
-Nice finding!  In short, it is an intended behavior, but the document is
-outdated.
-
-In the past, the documentation was correct.  When a wrong input is committed,
-DAMON_LRU_SORT was stopped.  That's because it was using damon_callback, which
-is now removed [3].  The callback was executed inside DAMON main loop, and when
-the callback returns an error, the loop was broken.  As a result, DAMON
-execution was stopped.  DAMON_LRU_SORT was setting the parameter inside the
-callback, and was returning an error when the parameter is invalid.  Hence the
-behavior was documented as you noticed.
-
-Commit a30969436428 ("mm/damon/lru_sort: use damon_commit_ctx()") changed
-the behavior.  It changed DAMON_LRU_SORT to use damon_call() instead of
-damon_callback.  Because damon_call()'s callback function failure doesn't stop
-DAMON, the current behavior is made.
-
-Still, committing wrong DAMON_LRU_SORT parameters returns an error to the user.
-Hence user can notify it was failed.  The invalid parameters are not really be
-committed to DAMON, so DAMON continues running with valid parameters.  So this
-is technically speaking a visible user behavior change.  But we believed it is
-ok because we were unable to expect users who depend on the old behavior.  I
-think I discussed this somewhere, but I cannot find the link right now...
-
-> 
-> Reproduction steps:
-> -------------------
-> VM: virtme-ng 1.40 (x86_64)
-> Kernel: v7.0-rc4
-> 
->     cd /sys/module/damon_lru_sort/parameters
->     cat enabled 
->     N
-> 
->     # Initial setup - works fine
->     echo 65535 > max_nr_regions 
->     echo 3 > min_nr_regions 
->     echo Y > enabled 
->     cat kdamond_pid 
->     91
-> 
->     # Observed behavior:
->     echo 1 > min_nr_regions 
->     echo Y > commit_inputs 
-
-I believe the above command should returned an error.  If not, please let me
-know.
-
->     cat kdamond_pid 
->     91
->     cat enabled 
->     Y
-> 
->     # [kdamond.0] still alive
->     ps aux | rg "kdamond"
->     root        91  0.0  0.0      0     0 ?        I    22:03   0:00 [kdamond.0]
-> 
-> If this is confirmed as unintended behavior, I'd be glad to help
-> investigate and submit a fix.
-
-So, this is an intended behavior.  But the document is outdated.  It would be
-nice if you could send a patch for fixing the document.
-
-Also, if you know users who depend on the old behavior and therefore hoping the
-old behavior back, please let me know.
-
-> 
-> ---
-> 
-> Thanks for your time reviewing this!
-
-Thank you for sharing your findings and questions!
-
-> 
-> Best regards,
-> Rui Yan
-> 
-> [1] https://docs.kernel.org/admin-guide/mm/damon/lru_sort.html
-> 
-> [...]
-
-[1] https://docs.kernel.org/mm/damon/design.html#vma-based-target-address-range-construction
-[2] https://docs.kernel.org/mm/damon/design.html#monitoring
-[3] commit 5add26c0a186 ("mm/damon/core: remove damon_callback")
-
-
-Thanks,
-SJ
 
