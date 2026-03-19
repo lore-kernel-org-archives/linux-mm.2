@@ -4,150 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C699107526D
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8108107526D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86A456B0419; Thu, 19 Mar 2026 03:34:01 -0400 (EDT)
+	id 0CC076B041A; Thu, 19 Mar 2026 03:35:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ED2D6B041A; Thu, 19 Mar 2026 03:34:01 -0400 (EDT)
+	id 076366B041C; Thu, 19 Mar 2026 03:35:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6616B041B; Thu, 19 Mar 2026 03:34:01 -0400 (EDT)
+	id ECD746B041D; Thu, 19 Mar 2026 03:35:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 54B666B0419
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:34:01 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8CBD13ACF2
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:34:00 +0000 (UTC)
-X-FDA: 84561998640.08.FA14C34
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C6F1920005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:33:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=K+tQhNDK;
-	spf=pass (imf13.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.49 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D76C36B041A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:35:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96EB7B95D3
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:35:41 +0000 (UTC)
+X-FDA: 84562002882.21.DC18514
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B14FAA0002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:35:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M8Zx0AuJ;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773905638;
+	s=arc-20220608; t=1773905739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mfnoZII81lwHDQG+q8k3CqLmv9bwI5/ooG/r2BOJypo=;
-	b=uIuhHOMTn6En0nAWkxHvisbQ2WFiJ/GYCn5yAwbswsr3fKcgiTMRAg+Aoi3bjQD1Q83Oqw
-	T9IICqSZNH6ZNYGnr3hdjGxdQ5Bqas5x8f70l1+CYWl9zzu7Dz8Bqai21UiJgeI1oqvCx9
-	rT9sAepY+Bzn2DCU+q5RmXKREuza9xo=
+	bh=KkwqRp+r1pO9GjEC7DF+o4HAN8OxnNgGfkuyUapb/F4=;
+	b=t/L/imRTV/3N/p3ZltaRcC0pnPgYlXrggUqD7M0PRWWIqApmxlMpvsbaPoA/J7pUvx0MPy
+	4ehp1uc9X/DaIOCOfca+wtuwgSmRDWAAJZqy6XgHV8xfTSui+RNpCRwEicjK1qL/nx1l1w
+	0IvRvlS/xFSffaMK7++ihe6HZphzCFQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=K+tQhNDK;
-	spf=pass (imf13.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.49 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773905638; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M8Zx0AuJ;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773905739; a=rsa-sha256;
 	cv=none;
-	b=ZceWImpb2XWneOHdq4TXQDyi6jtx4Rov3nU5kdla4W9ERwyvtm0KGJLxzW8gxqVhikF4Gk
-	0ORE050YNPk6XOa87kque0palcMy9/BT50RHWYt9XTzCEwx89kppQwdeCApst9vxSrZhIj
-	6Mv0tPh80JQomJNmQ068RJvSH1GxW0Y=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-439b97a8a8cso546528f8f.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773905637; x=1774510437; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mfnoZII81lwHDQG+q8k3CqLmv9bwI5/ooG/r2BOJypo=;
-        b=K+tQhNDKuRNUkyr+7NmwNoiDPPwBZYg511X09R+IBkoZjOsdWQu20Kd5j8ckaq0/7q
-         r47STWB4FRknq8N69iOgf37lL5pDksjNw5b08oJIHxjXLFcLxwGW3/NWEFT3iG6JXsac
-         MMSgp4iuzseZ6IrzOcIEQGqfae9e1sOlknPwIjH1r52YdrqRQ5WmaYWVH+qZJj2XXmsP
-         WZHEhSsVlWfb1qVLdrvhNNvZTQnIrcMGdlp9L4k5LQgps1SY0hSw1/rGYRKQwUICR6wx
-         cefRZDh2WDAI920oTMtGmHBoUHrdCOKr8T1uU0rOHP8kIDLCzc+NmLcffI1wF7S2BetS
-         aRhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773905637; x=1774510437;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mfnoZII81lwHDQG+q8k3CqLmv9bwI5/ooG/r2BOJypo=;
-        b=A0duIo0CcGjboZKip0u3im18b09XTw7OvXRAy1O7eGPBEVJVv9F0xqYW9abhKic2SY
-         fEflOWOyTerbHARC+nwrCiqltrv3S219pIhDmsSsMa3UZMEsqgnL3kYgE/bB24Gi3JtR
-         zMD6tzbzpX0iLVZ87jPMzc4Mscpux3pD9cREqLk6Zi9I1qZr+Ma0SfmIEnxNIObrpgeO
-         86mBqF/cLuTiGCN9DWw3LfIDO3OL6TQP6WGw1DnNLLo5bEb75eeJjr79Lo4KNCeFWp/j
-         UgMN6vxt3hVdFF6vQnmTTmgzt0X19aytDglL7AqQsY934G679ut7vip3+zAj7GM9DSUu
-         fAOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ+zRF18s3HJbuEnFTZkPpU6mLMUWjsABsuO6qzelWXRnLVHCeUnfeTK68VH1o19aBaCKzOPwCJg==@kvack.org
-X-Gm-Message-State: AOJu0YxfL7n/EF9aJyYDIgz3WLDYP2H8sM5C9QLRea3IkPLHO7kzispi
-	qd0wiAgXUqv/05goVQgGzz9PRU0QjLeXbGwnHQ5X/aMg+tu3XridU1JXlGtGDRWsZX4=
-X-Gm-Gg: ATEYQzx3Bi7rdkXaJqnTzRyxO4aJ1GQjO4XaL0aAan9egbe5QXehfotcFRtmjWB9zL4
-	mRIhxic3OaU+Od7QJNSagYqfX6H+UCY3WZ4IfzGlSEzKbt8AynuexI+eWOef4az0SRxT5lc5EeZ
-	1ozjNHVCEUJGxXQMVblfQsyxBWrv9QLKpCoQFddjJ+ZgMYS2b2KDYjCamdh8fpVfBSAvTeOOh0G
-	imE5jsiUyO9rMHt0xGigm53MC5VSksZfZce+Zq6uxwCDwmX+neFuoU5+lrmlCGG1MaS9E8hylOK
-	fwZw8b8kvDl+6uvvtTXhvKF//6diHGf5AIoajs+asw5hYUZBq9gzMEGPIrD7y3IywbGt6RxXx2Z
-	EyppQwzoJa+tWMDumdtvoK2AAPCTjSM4TQ37fdlZHtXd8gqh3KtWav2ZLN2Vd89TA8ZXb2snZvY
-	LVOws6JfS72FtGBbfHvl1OxmTYvsY8h9g=
-X-Received: by 2002:a05:6000:25c6:b0:43b:4ae5:d7c8 with SMTP id ffacd0b85a97d-43b527a50cfmr10368836f8f.2.1773905636943;
-        Thu, 19 Mar 2026 00:33:56 -0700 (PDT)
-Received: from [192.168.0.34] ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b51899622sm15875212f8f.28.2026.03.19.00.33.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2026 00:33:56 -0700 (PDT)
-Message-ID: <46c47101-2672-4970-a212-71e2c8555d80@linaro.org>
-Date: Thu, 19 Mar 2026 09:33:52 +0200
+	b=GAwsOtz32mzlZTylTs1BRb3DTmrTk4mEMZ6U5/hEWfkEmVhqFV0hUa1Ksoo6vAo+tCS0UY
+	YGaPnmhDRUBPQcjFXxciJJT1JR7CkG7JKnIu0nCmrSVtFvu1vTjmlrAqB98Mm8tF5JR4q4
+	g1yfJvnHfDqn/5lKWW5p+QtpPW2bC7w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A753740719;
+	Thu, 19 Mar 2026 07:35:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2405EC19424;
+	Thu, 19 Mar 2026 07:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773905738;
+	bh=uOcmZzh8d0O0DH5CbztsLp28CPyWd3JOtYbCAi4uwVo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M8Zx0AuJEuSPkF07I/Ib4o3GDx/OLKcdDOkXqcU3T5+YDru7awKHBAqruc4v19NBh
+	 StSU8ZRucJPgwNH8201LF0ej6+1EMiJCIXBoEXMJf8a6TfGzE/bP8WQp1JHd8ZUAla
+	 qwYYfHpAfH/3vdfi0eIJt+O942Vv75P+thTYrqRSZ6L91LYZz6mHODG1A2ccSWgEYY
+	 bqL1Iui6q718lMcZmN7DmkKE7LQ1DYM4IiCXQm24u4Fy+HNwLFoseaAULcYVaiq8dq
+	 AViedRoS1YAVrRPNKDoQWeYzJ7ckZJNJwTjnWAX1cpdGwr/cgWENs/A/ENjyYgFEWo
+	 SD20UDN3q8nZw==
+Message-ID: <ed0067ce-7cb1-4d73-98f4-c5ad663577b4@kernel.org>
+Date: Thu, 19 Mar 2026 08:35:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/25] Introduce meminspect
-To: Bjorn Andersson <andersson@kernel.org>,
- Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
- <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kees Cook <kees@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Petr Mladek <pmladek@suse.com>,
- John Ogness <john.ogness@linutronix.de>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, linux-arm-msm@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-References: <20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com>
- <abdnp90cC5PI9wyz@baldur>
- <20260316181647.m7x4ncmwdjho6yvr@hu-mojha-hyd.qualcomm.com>
- <abtlUQqMOxj5PwGB@baldur>
+Subject: Re: [PATCH 1/4] arm64: request contpte-sized folios for exec memory
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, ryan.roberts@arm.com
+Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ catalin.marinas@arm.com, dev.jain@arm.com, jack@suse.cz, kees@kernel.org,
+ kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
+ Al Viro <viro@zeniv.linux.org.uk>, will@kernel.org, willy@infradead.org,
+ ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ kernel-team@meta.com
+References: <20260310145406.3073394-1-usama.arif@linux.dev>
+ <20260310145406.3073394-2-usama.arif@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Eugen Hristev <eugen.hristev@linaro.org>
-In-Reply-To: <abtlUQqMOxj5PwGB@baldur>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260310145406.3073394-2-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6F1920005
-X-Stat-Signature: u674x7kn14fwcsqe8m9uw18ein4q5pzf
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773905638-663073
-X-HE-Meta: U2FsdGVkX19gaZwECjbvNNJNv8AigiYTarieJA8cXA7sK9aS5eZJT0ZSMm9++is7x0/GiNdOWtvu3sMdmGrsg6pNvcl5nGjPQYjJJ0R9FRVnF+xapjDkeQQgtib6yiM0NYt+beWLiEJUG8SDGT1ak23xCpeUtfge2Gw669b/GluaaGQVN8VNxdrDtBZ7Kg8xIpJnIJ++mLQmkWVVW5KBmpvV1nnDnHa06yG2tRrwFM7Jrxt5Kopmpefsj3Un9xx4xgtS6puWQ8+JeTVvZgZgb4UBLoljrUSlNaveYc8b+nBwjCFe+fR/bA+R3Z/S2SUXvJ100/+0gQv46vhBy5BMgpiBT6lA53kykdYcvl4USRwcdnDxzYf56jiXZ0F6aW7PQsC5tnlC9I/4VzTBdiHUAmphx/cEqb9zMDGemQItM1yZJvcD9KibjwTF3fk+KwMi+vv4QnPDni7YuboJasEY8F0U2TGdqsqNy/+ZnEVOWT/KJ08SovpYIytS0CVJJcg9sIGCZuugAVSOjhkBZU2uxFDHtLJCaVbhjxJHOpM8ls5bniWkB1OL4z+lYebg5uc4V/Ys7crrYV7GdojQDunqKJ0gxb2x8klli+o4AgTjDXZkbr6rQRwcN8HKGz4pgnVNZaKLcD9czVoVXpidDKDhPVvXTQkzDy9RpPVtscLiL0FlXCIq6laTvSv9UcZ247Ti6puT+nsGBT64edl/4hEXK26TwZQj6ZVAamvuTNxO3e6Nz/I1VbsbxOutjh3FpVzxnzhEvmbwfLfiAYyao0jyy2iRcBZb0uy2405/m1sZLCM5d7yg6XaQpBtnvg6gM97qkMem3PYdWgF0tnvz4LMa8H42HE/io32zpgeDPgzgWchlXDgNVWcwgZ6X6okzEOQXJMyBsXbFFQoLx6aBgvfhtPoF7T6tes9MRbDE4HMQc0jjXIfXkuMj5nGCTa+mzeyFWWwdILczXlm5k1lcHIR
- 820Kl4vZ
- J4bj4B7KM8wOUUhs3Q0JXJJZc2MnhEeKbwvfEk7MQq58w6McfJmODqxPzDqkc1Y9Rmn3YOA+KJZmzBx4U0zEPKNCDqwPb2UU/LsB4ZiMfHICka/A/6MOJ2X81TsOchZ8F5wflEW1EQXhAv0S1ZYr7X+LzarmbfCoN/BP0CILuf/9PKPKfBkfkPmVIaQQnBkTSxq4x4n+z0eIwRa9ewUEfIwYsfJEocx9Lux+h2GR0cuoaNCLWBPn5WY/TrYWouWOpUMgDfycGRwImsVEN5TShuxyYwOOLH92kBeLNXe2gvxju9W9gilS1IbM+ETxy+t4tO++UBgRrCu3Llj1QPPferZejxl8nMezdeeVxGbsy4isBGMYc8N36yuLsrbMaXwzumnoDyuUODudiH+iqjM/ZxyhKrmNyULROM0xTMtvGExulXIi0qi1i3eIqitpu600H5SmfEUNb3O9oZn2HkeooM6yZidtrM//UayLhTV1tAGV9yA8ZiWe8VpfZPA==
+X-Rspamd-Queue-Id: B14FAA0002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: ciwt84apiz96bfxertr9ugrro4fww9c6
+X-HE-Tag: 1773905739-605011
+X-HE-Meta: U2FsdGVkX1/ynWdoeZEXISWIkYyxE37QhVaQGd1QkzBkpCwmhTF3iYWWn8VIHjdp+5gOvc7/+3lpONW5PO5bvkRtCnZJ3+LPXlIbnfvmvJok4xj7i+lFRMglQgUNbSpj1zJVUxHh+Rhf43yd/FR/2HVljvOHRj3Nz7FPDZ7FD9txPc4R7EgXpIfdFWPjemBQkAG2gWbrrSI2gpFn0GjCvjnextXxrQy8rRyGRhuj70AIDoGjVLtscBY0+hBe3I8ukj1b2Z2z23/swz90VGcE2KLfl0XTwGtNAZhlcmIg0nTBvlSkaLsCIJsemgyV8+O3QVrOSVeRPIRzPgNAZ42nvSpk9c88DJdJu4IbYp3OcX/stVll7dKCkh6S/kYMsQPZBeFojmrPzwDqiC3QbeMe5y7Vo8NsrRN/DstGRlGgPJT3mxPDVt3i1VMwncoP5MN7uD/s1COrofyKOApvnKBaHOFWWzraKkDZh/bJyt2+aVr7D+oaFUxyQB14wbeB3VuI8harjcJfbY4zNgL+C5Ze4BsD8WQZRvu7nDLsrhz0FJeuJxSgeKH9M2D8BFvk+CJFTFIUuBNTrhnZ6hkt0grxpQsOivQekxVzmIH8+vGjtwsqA3O+GIHNuP3F/7f44E38hzBHnTV/vvrayjoaFwdU+/odZYLdRbfBN6B/sxhJt83hNl59J8O51QHJK2Q6FEgohfT0Vytm5zskCusIDFT35nLlXB7f5lhcSRC2uhJ4RjJTPZAIM4wc4zzUP/+sEeZttSER00dfpSft70GDa9v7TDGf3BIWxxClBtAGMQu/Upg/FOc14WU1vESrri5mbcqVrGvI81RKgL2tWGGAWaOL4DSxDnHFyzqnk6pPiUGYk8Q5Cca7c6Nke620E9DaVJMxQOEkD7NF/4kGUMQgR2DKteqRNzyLFx/TYrcDHk84mNtY7l/PYeq+OKjXYG9n59NJRHn3STxYx4LU14lKk6g
+ Z1TxMksP
+ PlTNsw6mplKAXk4L63hthkzgEb7Ur+yw041C/db6pAzH2EKBKoYeS4wbuKixMRrCD6vJU/HsLFuDtP0Op0ksAy21hJ8I7XFqFJGj6LSpisxkhrHk61Qj5cG6BdVKav2smAXOBhV6+0eivD7zC+4xsCkjcQQ03nqqpvTr53gjCxyiCjIS23nlptB05xPAxKjYwt2jyaBQc2IU1Rwvuu9sOk6rwx3D9yGqNm9DgOREcoFQT9alP0DsK5yqLwAk89Ck5G7A6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,52 +147,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/19/26 04:55, Bjorn Andersson wrote:
-> On Mon, Mar 16, 2026 at 11:46:47PM +0530, Mukesh Ojha wrote:
->> On Sun, Mar 15, 2026 at 09:24:39PM -0500, Bjorn Andersson wrote:
->>> On Wed, Mar 11, 2026 at 01:45:44AM +0530, Mukesh Ojha wrote:
-> [..]
->>>> , to get all the regions as
->>>> separate files.  The tool from the host computer will list the regions
->>>> in the order they were downloaded.
->>>>
->>>> Once you have all the files simply use `cat` to put them all together,
->>>> in the order of the indexes.  For my kernel config and setup, here is my
->>>> cat command : (you can use a script or something, I haven't done that so
->>>> far):
->>>
->>> So these need to be sorted in numerical order, by that number at the end
->>> of the file name?
->>>
->>> Do you manually punch these in? How do we make this user friendly?
->>
->> Yes, manually.. but I think we can do better. We could make
->> this more user‑friendly by using the section header and string table in
->> the md_KELF binary both of which existed in the earlier implementation.
->> Then, we can write an upstream‑friendly script that reads this KELF
->> metadata file, checks whether a binary with the registered name is
->> present, and stitches everything together to form a complete ELF that
->> the crash tool can consume.  Let me know if you have any suggestion..
->>
+On 3/10/26 15:51, Usama Arif wrote:
+> exec_folio_order() was introduced [1] to request readahead of executable
+> file-backed pages at an arch-preferred folio order, so that the hardware
+> can coalesce contiguous PTEs into fewer iTLB entries (contpte).
 > 
-> Can we somehow identify that these regions belong to the minidump and
-> teach QDL to build the ELF for us?
-
-We could integrate the feature that Mukesh suggests directly into QDL as
-a separate command
-e.g. qdl download-and-build-minidump
-
-The first region (the ELF header) is mandatory, because all the regions
-themselves contain only data. To be able to use any of the regions, one
-needs to know at least the physical and virtual address of that memory.
-And this information is saved in the ELF header.
-So QDL could join together all the regions into a single crashdump-like
-file.
-
+> The current implementation uses ilog2(SZ_64K >> PAGE_SHIFT), which
+> requests 64K folios. This is optimal for 4K base pages (where CONT_PTES
+> = 16, contpte size = 64K), but suboptimal for 16K and 64K base pages:
 > 
-> Regards,
-> Bjorn
+> Page size | Before (order) | After (order) | contpte
+> ----------|----------------|---------------|--------
+> 4K        | 4 (64K)        | 4 (64K)       | Yes (unchanged)
+> 16K       | 2 (64K)        | 7 (2M)        | Yes (new)
+> 64K       | 0 (64K)        | 5 (2M)        | Yes (new)
+> 
+> For 16K pages, CONT_PTES = 128 and the contpte size is 2M (order 7).
+> For 64K pages, CONT_PTES = 32 and the contpte size is 2M (order 5).
+> 
+> Use ilog2(CONT_PTES) instead, which directly evaluates to contpte-aligned
+> order for all page sizes.
+> 
+> The worst-case waste is bounded to one folio (up to 2MB - 64KB)
+> at the end of the file, since page_cache_ra_order() reduces the folio
+> order near EOF to avoid allocating past i_size.
 
+So, if you have a smallish text segment in a larger file, we'd always
+try to allocate 2M on 16k/64k?
+
+That feels wrong.
+
+Asking the other way around: why not also use 2M on a 4k system and end
+up with a PMD?
+
+And no, I don't think we should default to that, just emphasizing my
+point that *maybe* we really want to consider mapping (vma) size as well.
+
+-- 
+Cheers,
+
+David
 
