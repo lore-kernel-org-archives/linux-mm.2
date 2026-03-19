@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A369B109192F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 23:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D783C1091930
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 23:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE85A6B04B4; Thu, 19 Mar 2026 19:44:21 -0400 (EDT)
+	id 47B8F6B04AD; Thu, 19 Mar 2026 19:49:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D98AA6B04B6; Thu, 19 Mar 2026 19:44:21 -0400 (EDT)
+	id 451106B04AE; Thu, 19 Mar 2026 19:49:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8E056B04B9; Thu, 19 Mar 2026 19:44:21 -0400 (EDT)
+	id 366E26B04B2; Thu, 19 Mar 2026 19:49:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5E516B04B4
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:44:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 516D8BAE8B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:44:21 +0000 (UTC)
-X-FDA: 84564443922.24.A74E333
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3CEAF40008
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:44:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qq20vhzb;
-	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 264C46B04AD
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:49:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C54BABB035
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:49:11 +0000 (UTC)
+X-FDA: 84564456102.16.60DCE7F
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AE44CC0003
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:49:08 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Mj6tJyKq;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773963859;
+	s=arc-20220608; t=1773964148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+uSbuBbEvwoTJfsFA5CUVKHHaR4vM8XqUDpN2lgnG8=;
-	b=d+UaTmlfV8bhNb+WctLv3awCi+1wmuLonj74BGsbkQlTYO4Uu8u7H9WA04CBV7ZNkq79M6
-	Z8RuhLX4ng0ZjSrZ2KP1oO1T1rejcBGKi96b7owgjDrQzNUtYjdND/X8KeWs/GV3wkodYB
-	saUKgwDGy1y75j/aa6Mjr6Lz1q4LAoo=
+	bh=3DlEPbCLDVpmn0/Q4nWSHyM9JBVmBy6y7Z8PevIioZU=;
+	b=fXhS/Wbv9YPNZgVjq3/9OEGlbXUDwtFaTfVRiVgJRaR2tR3qe/RofI/+jfAUjV2cgeJeSS
+	AA+cdcmXwuAFGDXkPON/zj6UoCMZLr6CilXbmV1OzX0ndhbE629WITwF4RtfCjXHoUK4LM
+	ee6PDBSIYogMsk2XddzvEtH9EsgrcGg=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qq20vhzb;
-	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Mj6tJyKq;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773963859; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773964148; a=rsa-sha256;
 	cv=pass;
-	b=QHtnujlHI4pStxYXFtvtVEFZ9LMZFtL04N5XF9tyuWmAr18o4sssWh/lHK4F5vp4Nltkcu
-	RLJVzr7/l6ojjPPrGLzX8/MszLh1XDGcCMK8d1CBphyCGOU5onrqc8G978LHYuHJSWd6Ca
-	LCLl/SMfr4xOyJ4a7cV2Gsx/HoSKdLE=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6628cc1bd69so2475a12.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:44:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773963858; cv=none;
+	b=Hs7A0exoIgv7TWiFy0t1G9U4NiRkbNYB46ZVVOmovFjGJuo0IgrAvRj0/+w4zP3GC3iU0b
+	2Flpv39CR/DQycfqEcMMXvOqO2ZuQoyJBsIiomJn7UiimRAUdt3qaMZQEEG3DHPwFwRa9V
+	fT5eRArHg8alHUjDcw48eGRwzzPe4qM=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6628cc1bd69so2493a12.1
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:49:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773964147; cv=none;
         d=google.com; s=arc-20240605;
-        b=c2WA2ODd5idLDgE9Y1rzgG+Kc6qrX8yfu9mmxWIA3Bn0iluU0Vl6r3GHpXjN9EAZrU
-         qBmGDHcERiTqThaghAvst2gPp7WCpx0BbxSK9xLEb5ANumUGKJalQ+o8mZFwB1F0TBNT
-         KkLKbA9eJfx64yhU0q1/qwOM8ku3hndR4zC6HMo3jcdKYTLSxLxYOW5JuSBO5XG09yYA
-         dhShFY26v0pK69oanW+C8QAxczckvQyntqj2AAP5dDrVSNtUvsXR9WZpjT67FrKRQgIQ
-         joGnbvuDfCPNnNNbWIj5S4pgKO9wCGr27MIatbyHOq1SJVOl18Dy8gFDxOToCoW7VYKd
-         V0xQ==
+        b=lGEoGbVg1E4Dh1IdLboM9s0m9wVGaLolJQoh8oyWYMrPxSHsHGa1nXWcB5/Cyiwtld
+         6PNsiKo04qu1wMnVujUxkvzFKePXByzxJEbv0eTlGkWJFoc3jcGdFm+O67KxEhEFOl5O
+         b/9oDRARBrdgFzlNi5V9UgLZAegyENcGp+3q1UFkqi9qyL2PZ/ePLS/1k7p584QqWqJn
+         QpzA6WtCQNM6u4tgJaNqjpWyi466FwDg9b1yjFI8YMbuEP/OKOcWI/n5i41h1tk1wyEI
+         qDryRG1dOOjnm7jwlPc+Ye4KZU4IdwmYfOb6WDZ2waW8GABurg2Jt0IT758QhSBXNX6h
+         v12Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=o+uSbuBbEvwoTJfsFA5CUVKHHaR4vM8XqUDpN2lgnG8=;
-        fh=pQW5Hdjbm2+97BRm9gy2oAmjqIo+Tt/lBHtZeq9HESc=;
-        b=HPbRVCXxoZfUInoxLlrcAw0GnEgNCmKEvA3WfCZFLDtiYdkqa0ILqSDpoK6YS3+t9u
-         uCHFMXo3ogLiHZ6aEFOY7OQYdk9RbRGDZdNvH+lFJ9T+DhmsXR2/pETtUY/q7JdvNIHv
-         GnfNrICVNsg1QQkWr1CBKEJ7twR58VsQdBR9H9PZBC+jKiJ5W8rkXtflF9AqmLq2m0vo
-         aW1IZrg6p6HXYYSQlsz9JYk6eFrXGh5wFJuQSv6yYTyIx1gS4m/S7ieZyCNoqqbucTI0
-         6KF+odia9yD9CjaVbnCpxmyG+xaYA09YOz45EYbMgXIj7mhRwJG6K9SqAS2blLoxnqcm
-         H+rQ==;
+        bh=3DlEPbCLDVpmn0/Q4nWSHyM9JBVmBy6y7Z8PevIioZU=;
+        fh=madyjFsaK8809gu0baxyQVODPh/uFrbr69EcQTgFAsM=;
+        b=dtFq6gxfDWb9Jg1jRDZw1z5A+mwG3cBaTCHK4LZNutPULCjJl7JrMPgmZq2iEGfcUi
+         g9W+HtE8yh5q6Bd+fu8q6z5FRmhGAdJmhNA6KtnKKcl7D9kucoib4SzPnbzwOfEaA5qk
+         zcgcItEyd7K4ha+xw+TSLEc1Ja4GgTE29P9Rp0mZmG2EvcGERn5LYbqj3dThbJzMV/9V
+         WWvZxM0vvcufdw2R/LzvLff6rQinMUefDR9TfWMhROq8rr7cUpQn/716aeHX2PBUCa7S
+         BajQywEhW/0rO2ETbdGzs7eKAZxqgUBKruqQ40pe8j+kcv5IBklwJOilkd/o5TGs/wTn
+         Vf1Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773963858; x=1774568658; darn=kvack.org;
+        d=google.com; s=20251104; t=1773964147; x=1774568947; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o+uSbuBbEvwoTJfsFA5CUVKHHaR4vM8XqUDpN2lgnG8=;
-        b=qq20vhzbwhmkXF5cduo8Nx+wHXQHWA9CcFwoZbZ/AjdeVIOY8xVxBnLidkD/VPJxAs
-         WRSlREbGtL8D3hZi+JN1EF9ItbY4ByP4rok5/0LjK4fKZLxtSzABu25YXqCX5LEwq8rb
-         EF26e/IutWgKP4wFkIP4uXSJgxJIfeqnyts4mDgSO7EgNy2cTlucaquIOinN+WXw7u6e
-         xWa2lLwc4JPl1p0xl6TsKM5Sj0FYqyLkdYEbjmv88GLH9ZGSm+GXwOvZ7bhL+DdoDjMc
-         qLVwMpTwhvUtmOwBwaQANd5NlxUrIBs8TxM7aFN7pTnkQAEUvouHfAiTSzHyLsQGyYyh
-         8Z6g==
+        bh=3DlEPbCLDVpmn0/Q4nWSHyM9JBVmBy6y7Z8PevIioZU=;
+        b=Mj6tJyKqZO2YUY2YeNf3fLlYCjiDWil2wqcjHaDfuAeUCTYtpMo3vIJQ+kOTHfGYtQ
+         GZ64U+cWuO5x2h6x0ilx3EjBX7zMQw9AGo9XdxyCydWFrnqo+2rmzaH+Zn3U0/XbhaT7
+         H0nEqrXZdFYSEZmHgoEvEuqMPY220ifjLgX1M8SiGnV0wVG/XD83P9ww7uEhP+AMc1VP
+         hiZu63Xo5SHRzqerceIt2/WiowuYCKPMwFyAAR7oH0CNXAAjsR9zPTxbeUnB6Raz+3Xv
+         pBWeFFFS78LpFSeTwgUA7LdFtaDg7RdaSOSy1u7Q0TXulmRCtaPalPMaUquzyx78mXMP
+         GSSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773963858; x=1774568658;
+        d=1e100.net; s=20251104; t=1773964147; x=1774568947;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=o+uSbuBbEvwoTJfsFA5CUVKHHaR4vM8XqUDpN2lgnG8=;
-        b=luFN208DDbMBwGZVwphgFqkOmOVY/NtP6v+hmu+zbPu2SGHEuNFWEy0jxR6lj340Mk
-         0hZMrRlHpdNwMyrdeFKxueeABGY8t1bqKBABPZ/yPv/DBAITMa3B01o78voW+IlpzprM
-         GdDgj3GO6DgmmBFKUwVYeRBTfwtBAaDNEpe/ddf6HPdDZQA+zuSICFjf/TSeVZZBRg0N
-         yP3WFWRqUWqwOFpPg2y+RM0M5zlU5eJEKW+sH3yu0CYkbtHhaXFQ0mG39O7/AbY73bmT
-         fyM5qF+JEwGlBu5HlSO7/TzPCu35kiPh2XRDW+Ew4JNsnmCb7ECLUUg9glt0FwcvwNNI
-         uc/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWHY0wyqfsgtEMBDiMU0IEmJQNVBePrpEviLAvHt3IA84c2e+9Q7ctkBfB8jkJqdgwBnE2fiFoiAQ==@kvack.org
-X-Gm-Message-State: AOJu0YxIQO4OLEFj/itQXS1ghhtf6Xh72E8NvW7J025F1QwSvKWfzB73
-	Gk2MLz8jRJT5Kz8J6jQnsLmXpDJsAWaXbQUwpVoq/2TGVgxCpzn2dNFfKbfGY/EX45elwsXiYrn
-	N+p3O5WyCwVOztXH34EQDwhrDLOHNdk/Ktivcfbj1
-X-Gm-Gg: ATEYQzzV9kBFBEQEQNjo3TD36g9irSP5vCzHItXkY9cqH3kpDXBrzj+X4daaBkNe+qM
-	MNC24xFqRHeKJrcRvubeCj3tKPs/E9sOJWngdcU2GeQclluItPjs+UMUamx21AHSCyNhUSzT8uv
-	MzaNE3xQS0uA477savJAppiTiswKQpUhyhiByJB0FQhUC2OTPsABLG/EtekO5FUF1vT1EoMhWJr
-	am1/CIdqirhbt9O71fHgROcJ+JMmmW4dwnDwUHcrTMVSfNKeI90o9dtyAHw1gvuZWvXs7M59bRe
-	K0Sypg==
-X-Received: by 2002:aa7:d583:0:b0:665:4aee:2091 with SMTP id
- 4fb4d7f45d1cf-668e51fcf4bmr10623a12.1.1773963857253; Thu, 19 Mar 2026
- 16:44:17 -0700 (PDT)
+        bh=3DlEPbCLDVpmn0/Q4nWSHyM9JBVmBy6y7Z8PevIioZU=;
+        b=lCrv2OkDa4zUtJorTLnlOP5PIimKtHZO6VptVvHYt3c7DDGkOVT9PjboRE6Qpzed0g
+         S6ZRRe1h0HGSn8pO1hmGmdK52n+y96qLzzTFnmx29w3gY6wmP1QKrp6FYIf96d3jd1xk
+         XSKcpafAOYWsnrEeQzERTBSW47PoktEyaksbv6Ge7zZD/QKINTUGLN3oSW8hrRHeK9FX
+         GWhG0XQi8Asa1wfYnytnrAGFpZlxueq/9CfM4qVTnNVpxs1m0X0trBnGQlpIt4EWNHgD
+         7jlCQbL/zWKOVCLZ/Kx7dydFkr9FAydvpZ169AEy6QeFHrNUVKsSuVOnjMolfUS0H9gS
+         4ZSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXFS/femHa4SzdFbXAFms1VootjE6z9jOWI52GLZN+pK2e86aCyM5barb1OYx9eqXyuxRQM2W2SsQ==@kvack.org
+X-Gm-Message-State: AOJu0YzA3CowXU9KEq79T0yjWLiDXVtZ2vxxODqh4KOObhT5dZGu91WG
+	DxkmYIhYwZf5owaDh9DxmH+saOVe0X7pj+/nwxhHPJh4/4ze0O401/IF58x+kkJ0BAtzfsrRden
+	oiSIg7en/E3P02QsodpXk/IJjWNWhY8JqChRUehdy
+X-Gm-Gg: ATEYQzycHGzybRlaXEBeNIGCGblDWq6RaKPrQDs1tIXWHfBlWiyNNlWgfnZZewWVyBa
+	b2awXqHu7IQDFMNn96m8FXIDSegWjUBEoK0HPzEbrim+ezD8U3kajvf9vkKrWzv56t87nZXlzGj
+	P1El3l4/p/4pB4HsxyD9NBN3725Td9mlNUkuasXxrAmcr6tmad7wUQ7Bt3fCTQJakz9/9uLkFId
+	1XOi+WKj6wuL9xkKoU4VS/BXQHvPQze8hpImnWugeuIw8S9crqoyxFt0I55dk0cA5FwpiQq6F9j
+	hBU0ew==
+X-Received: by 2002:a05:6402:a2c1:20b0:660:efc9:900a with SMTP id
+ 4fb4d7f45d1cf-668d05850d2mr15571a12.10.1773964146560; Thu, 19 Mar 2026
+ 16:49:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260319083153.2488005-1-hao.ge@linux.dev> <20260319152808.fce61386fdf2934d7a3b0edb@linux-foundation.org>
-In-Reply-To: <20260319152808.fce61386fdf2934d7a3b0edb@linux-foundation.org>
+ <CAJuCfpG5OG66mgfn3ez5ZXTjj7VC8yuK3L2u83uOZhyBbRH2Lw@mail.gmail.com>
+In-Reply-To: <CAJuCfpG5OG66mgfn3ez5ZXTjj7VC8yuK3L2u83uOZhyBbRH2Lw@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 19 Mar 2026 16:44:04 -0700
-X-Gm-Features: AaiRm51-Lg-rX_oGUTXwPHYQl6IMNXHbffEI4NAEaqzQkS1MaGbx_lAxoUDwDaw
-Message-ID: <CAJuCfpG5OG66mgfn3ez5ZXTjj7VC8yuK3L2u83uOZhyBbRH2Lw@mail.gmail.com>
+Date: Thu, 19 Mar 2026 16:48:52 -0700
+X-Gm-Features: AaiRm539o1m3fb1D8SMyh2uOyM5KTq-1EXJcgzUhfWSaEQm7dv3GVBlm-ysCZ4w
+Message-ID: <CAJuCfpHD4SB30oP7Bdm=ey+2W7CAsFPruedEbqgR5OumrQErxQ@mail.gmail.com>
 Subject: Re: [PATCH] mm/alloc_tag: clear codetag for pages allocated before
  page_ext initialization
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -124,14 +125,14 @@ Cc: Hao Ge <hao.ge@linux.dev>, Kent Overstreet <kent.overstreet@linux.dev>, linu
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3CEAF40008
-X-Stat-Signature: s9qbunqozf7d391hoery6my5tdrhjpoi
+X-Rspamd-Queue-Id: AE44CC0003
+X-Stat-Signature: qbcph5kxm6rfqdgqzphkxya3qcyzxwza
 X-Rspam-User: 
-X-HE-Tag: 1773963859-543664
-X-HE-Meta: U2FsdGVkX1+pPBN1RdaURBIQo+mYWS44L7K8tevzUpSwR9Uzlo2DLVs6YJF7omLXDxdRfXEmBrJxW8msa7kmFZff1h9svUsLaTkTScnr/mCGyrJi7DfTuRQ5ZLqbFjI3rXJ0TFZbDs74rCvtg6ygUMJf4cEaM1blMSe4NXcfTLGcSZgcBuPKoDCKFKLXOOT2tZTHKBykBAfC79ootIbevwR9ksq+kHneCM2Q6digLEP50nzkuf4UpEm77jr49/wncK7aGtk9Stq8oHWx3Al56a4NqoUYRwXL0Whve2XZ32X1WHgJITdCdSX/ub7JdnDe+CZ9H3pU+iMDCG2DAVB1Mdjk9FIj90XEevSZn4hfHHfVSPSBBJy1GV+JA3LARQYKsBrEZ6xQ4GNfTdA8jgF7wQmDcpOaJEPEVZdDC48BDLgY8cvEjqld35UHJYFtzSGw7dpNj97G3501DlrPWOaWmjZEJrUVJhWniq+NRKs9HlWG0igz+CZUEJi+iVivx40Nc4LhSPOCHvthUJS4MB05AbQqpix5WzhWnOa1/IUzvZv0tZVT/v3I/r1zKj3f9ZnRX7qYaDuc7J0ZwfcWVdWmXgBQEkSKZgflP2gd7vsc5r2Rf/fqzYJQq3plNbx2RcdHTzDzrFrnA3d5fjE/k4TZb0X6Zl9LJLF9f7s7XXifOVq4fH/zQS249Cw4ndILglpfAfvT0ymsSNwqJeyi8zAjTJXsYxH3ZG/8SJch8o6W/9iXXcmNQVGGzjjbaTvjb9Kyez56ZlyxAvw6BCGxTQoC2xChfNO0AAlEW232VS7riOqdwtt+12Tb4460/VRVEye96UTTXCunsJiNON32nDU7gcw4zS6GS2F2aLr+l4q/0N7Be3ZSlZbX1XceAuW5n14bUTQTliIdEjtm1mDkfT29DKLT2lLdTiE/vQg8hkXbWRtNSAhbYzfEy2RlNU2Al7pMcHzcPwC3NvZzkP8ddKB
- PJcikT+x
- uv2ip1KlUNe/RKS2K3BkfCCnRURoVDdmVSXVFuqlQkk9OEhRJdYZN2r0jwocmYL6lLTSgbOljEuVy6J5ObX8QsJVlhuIonyRfp42/hwWO0nQZSuNuqeFdFIxLHq9wEGQOvDDv2P7aZ6lqkUMVBqWYCSWF1OcrBnY/RgjmGvL90+Buml61rD8bpvCTxBuVfNjXjwC9uFBFzU4fWNebpDyQruAUKMdge1tgVWfRff90gaBUxFKdwlnAnZM5cAZ/2L+2J19Zsu4FaDV+1ISZJi4dXQRsaKX1JTyCGN4UO7rFNKcLIy7GrGr3YwZDl3nPIkNTACie6dSlpohLlPEylOn72vV4WI9wuO4qLSqrZyu4RQmdnxvmQXCDarbfPw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773964148-80707
+X-HE-Meta: U2FsdGVkX1+aKYgfLqH5ClBVJJk0jwXX52UH2p9OtQXLJAP9WgJQm5aohKZdDQY8l9+8iu5mTNeCa2g/t//GYCakS5OR5BZU/gxIySZCU5+sOV7kj8i0EFY6PUyq3qtfCzUKft865bOyijHV+HAn8+B4W6YpvO6THbTiGur05UZVMebsovE4bKliaJNUmFvhVGf1mmcFfwP9rRj+WIBJdWTTwXiZD94ryGYXAPy/WWA7taCtBQ21OrNCZ1/8zDVNSCU3VpSh/1h4WM+ACvkdJnsP1qbFIqnlp2oQ1sd2CaR2cXYJJ4AcrXO/OJEtQ27K0rd0PTJmlky0pQl8ugMRgs7caSd5e+A/XhUp8NfiaJ0SNTBdr95LnMA1ZOtJRQRlx/wha4a7ruI3WjJ1lvacE0HjoLC4osKCcvXWMSRTRV1myWtpDT/+M5hm/VBmJWt6gIHa8HITlBE7jTIg4E4Wb4C7+wQiqmEG50rJZH6ZfbAEx/uCdHEOUXm2VSldGxKY0e+yY8/x+qSV+3PSWzq/uNxtl+XE1DgAYB3zeqsu3EwDk7rc/Em1UJS6h5Js9ZePMgx2QBhU4jEwUPQ4Srf4w0L0AXBAEkQ7yYhRo3l1Zw7CbwJgVEzS89we8SP/sufaFZoCsx9tEPk444wO/4wl2Sg3bqtnuYpiSQrIqXDORIl/KjT3Gjlnj7pjqqfKUymPgaXE6hfigxIt2tiCOV7hZxEi2HJ+fPgp9G0jxdBrIak9OxgNT7zXkiXIrOGTpLV8n46h6DlJFp8pZ8J3hwhtsmQPWyUyws2Op3HI8VDI5z2tC21lIoMuM/z7TP3lZ0R8b5XosesD64+ujx5F6/yr5HFT20S7HrahPxpRJazTI1pcB5SNkhGvkYkHe1OqkTk2kDnhCbr47PCNpSTBLPPfP6DT01kyVkTjs+4/sQpopUz/kpzmkWHK8HDmOWd+krJP3JGI3eIAJx9pTxgE/XZ
+ yDECUdc4
+ pLl/a20BLPjC1FNQdcx7ij+vWNWQZU4T6Rj6rIw9leTTzWDd6mERELDYdcE2ZpydsEvCqcoTrPC20sV7IxR1Gjgy+ddsLiig/mjvp8q+YD6oiFv0HDe16E6SCIcinL92S6aMlwhAHXKe+fQM4S/0Ln49DCUw5oUdk5n2zk6MnYR08USMWEYkA05ittJ3nS7W6iqFThxoURWKZzayL/n3HxBrc2zlqrx3lusvCUzKxFMzuTCtHktT5cK8Zcr7oAY/Wdj6Ubz7Ly+2Ne0wDB3y9jB5TMvIgTouZL3W23sNpP+WJvEJNDv1w/hHLSAmMBh90lWGYzjVnUPL/s+2CrkccD3JD17qpyOejMcmdI2PfdCZ8/1as4W7q46tZ7Uhq9HYIGhgcc9RV+qhd9OY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,155 +140,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 3:28=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Thu, Mar 19, 2026 at 4:44=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
 >
-> On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+> On Thu, Mar 19, 2026 at 3:28=E2=80=AFPM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
+> >
+> > On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+> >
+> > > Due to initialization ordering, page_ext is allocated and initialized
+> > > relatively late during boot. Some pages have already been allocated
+> > > and freed before page_ext becomes available, leaving their codetag
+> > > uninitialized.
 >
-> > Due to initialization ordering, page_ext is allocated and initialized
-> > relatively late during boot. Some pages have already been allocated
-> > and freed before page_ext becomes available, leaving their codetag
-> > uninitialized.
+> Hi Hao,
+> Thanks for the report.
+> Hmm. So, we are allocating pages before page_ext is initialized...
+>
+> > >
+> > > A clear example is in init_section_page_ext(): alloc_page_ext() calls
+> > > kmemleak_alloc().
 
-Hi Hao,
-Thanks for the report.
-Hmm. So, we are allocating pages before page_ext is initialized...
+Forgot to ask. The example you are using here is for page_ext
+allocation itself. Do you have any other examples where page
+allocation happens before page_ext initialization? If that's the only
+place, then we might be able to fix this in a simpler way by doing
+something special for alloc_page_ext().
 
-> >
-> > A clear example is in init_section_page_ext(): alloc_page_ext() calls
-> > kmemleak_alloc(). If the slab cache has no free objects, it falls back
-> > to the buddy allocator to allocate memory. However, at this point page_=
-ext
-> > is not yet fully initialized, so these newly allocated pages have no
-> > codetag set. These pages may later be reclaimed by KASAN,which causes
-> > the warning to trigger when they are freed because their codetag ref is
-> > still empty.
-> >
-> > Use a global array to track pages allocated before page_ext is fully
-> > initialized, similar to how kmemleak tracks early allocations.
-> > When page_ext initialization completes, set their codetag
-> > to empty to avoid warnings when they are freed later.
-> >
-> > ...
-> >
-> > --- a/include/linux/alloc_tag.h
-> > +++ b/include/linux/alloc_tag.h
-> > @@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_re=
-f *ref)
-> >
-> >  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> >
-> > +bool mem_profiling_is_available(void);
-> > +void alloc_tag_add_early_pfn(unsigned long pfn);
-> > +
-> >  #define ALLOC_TAG_SECTION_NAME       "alloc_tags"
-> >
-> >  struct codetag_bytes {
-> > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> > index 58991ab09d84..a5bf4e72c154 100644
-> > --- a/lib/alloc_tag.c
-> > +++ b/lib/alloc_tag.c
-> > @@ -6,6 +6,7 @@
-> >  #include <linux/kallsyms.h>
-> >  #include <linux/module.h>
-> >  #include <linux/page_ext.h>
-> > +#include <linux/pgalloc_tag.h>
-> >  #include <linux/proc_fs.h>
-> >  #include <linux/seq_buf.h>
-> >  #include <linux/seq_file.h>
-> > @@ -26,6 +27,82 @@ static bool mem_profiling_support;
-> >
-> >  static struct codetag_type *alloc_tag_cttype;
-> >
-> > +/*
-> > + * State of the alloc_tag
-> > + *
-> > + * This is used to describe the states of the alloc_tag during bootup.
-> > + *
-> > + * When we need to allocate page_ext to store codetag, we face an
-> > + * initialization timing problem:
-> > + *
-> > + * Due to initialization order, pages may be allocated via buddy syste=
-m
-> > + * before page_ext is fully allocated and initialized. Although these
-> > + * pages call the allocation hooks, the codetag will not be set becaus=
+> > > If the slab cache has no free objects, it falls back
+> > > to the buddy allocator to allocate memory. However, at this point pag=
+e_ext
+> > > is not yet fully initialized, so these newly allocated pages have no
+> > > codetag set. These pages may later be reclaimed by KASAN,which causes
+> > > the warning to trigger when they are freed because their codetag ref =
+is
+> > > still empty.
+> > >
+> > > Use a global array to track pages allocated before page_ext is fully
+> > > initialized, similar to how kmemleak tracks early allocations.
+> > > When page_ext initialization completes, set their codetag
+> > > to empty to avoid warnings when they are freed later.
+> > >
+> > > ...
+> > >
+> > > --- a/include/linux/alloc_tag.h
+> > > +++ b/include/linux/alloc_tag.h
+> > > @@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_=
+ref *ref)
+> > >
+> > >  #ifdef CONFIG_MEM_ALLOC_PROFILING
+> > >
+> > > +bool mem_profiling_is_available(void);
+> > > +void alloc_tag_add_early_pfn(unsigned long pfn);
+> > > +
+> > >  #define ALLOC_TAG_SECTION_NAME       "alloc_tags"
+> > >
+> > >  struct codetag_bytes {
+> > > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> > > index 58991ab09d84..a5bf4e72c154 100644
+> > > --- a/lib/alloc_tag.c
+> > > +++ b/lib/alloc_tag.c
+> > > @@ -6,6 +6,7 @@
+> > >  #include <linux/kallsyms.h>
+> > >  #include <linux/module.h>
+> > >  #include <linux/page_ext.h>
+> > > +#include <linux/pgalloc_tag.h>
+> > >  #include <linux/proc_fs.h>
+> > >  #include <linux/seq_buf.h>
+> > >  #include <linux/seq_file.h>
+> > > @@ -26,6 +27,82 @@ static bool mem_profiling_support;
+> > >
+> > >  static struct codetag_type *alloc_tag_cttype;
+> > >
+> > > +/*
+> > > + * State of the alloc_tag
+> > > + *
+> > > + * This is used to describe the states of the alloc_tag during bootu=
+p.
+> > > + *
+> > > + * When we need to allocate page_ext to store codetag, we face an
+> > > + * initialization timing problem:
+> > > + *
+> > > + * Due to initialization order, pages may be allocated via buddy sys=
+tem
+> > > + * before page_ext is fully allocated and initialized. Although thes=
 e
-> > + * page_ext is not yet available.
-> > + *
-> > + * When these pages are later free to the buddy system, it triggers
-> > + * warnings because their codetag is actually empty if
-> > + * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
-> > + *
-> > + * Additionally, in this situation, we cannot record detailed allocati=
-on
-> > + * information for these pages.
-> > + */
-> > +enum mem_profiling_state {
-> > +     DOWN,                   /* No mem_profiling functionality yet */
-> > +     UP                      /* Everything is working */
-> > +};
-> > +
-> > +static enum mem_profiling_state mem_profiling_state =3D DOWN;
-> > +
-> > +bool mem_profiling_is_available(void)
-> > +{
-> > +     return mem_profiling_state =3D=3D UP;
-> > +}
-> > +
-> > +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-> > +
-> > +#define EARLY_ALLOC_PFN_MAX          256
-> > +
-> > +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
->
-> It's unfortunate that this isn't __initdata.
->
-> > +static unsigned int early_pfn_count;
-> > +static DEFINE_SPINLOCK(early_pfn_lock);
-> > +
+> > > + * pages call the allocation hooks, the codetag will not be set beca=
+use
+> > > + * page_ext is not yet available.
+> > > + *
+> > > + * When these pages are later free to the buddy system, it triggers
+> > > + * warnings because their codetag is actually empty if
+> > > + * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
+> > > + *
+> > > + * Additionally, in this situation, we cannot record detailed alloca=
+tion
+> > > + * information for these pages.
+> > > + */
+> > > +enum mem_profiling_state {
+> > > +     DOWN,                   /* No mem_profiling functionality yet *=
+/
+> > > +     UP                      /* Everything is working */
+> > > +};
+> > > +
+> > > +static enum mem_profiling_state mem_profiling_state =3D DOWN;
+> > > +
+> > > +bool mem_profiling_is_available(void)
+> > > +{
+> > > +     return mem_profiling_state =3D=3D UP;
+> > > +}
+> > > +
+> > > +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
+> > > +
+> > > +#define EARLY_ALLOC_PFN_MAX          256
+> > > +
+> > > +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
 > >
-> > ...
+> > It's unfortunate that this isn't __initdata.
 > >
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct=
- task_struct *task,
-> >               alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
-> >               update_page_tag_ref(handle, &ref);
-> >               put_page_tag_ref(handle);
-> > +     } else {
-
-This branch can be marked as "unlikely".
-
-> > +             /*
-> > +              * page_ext is not available yet, record the pfn so we ca=
-n
-> > +              * clear the tag ref later when page_ext is initialized.
-> > +              */
-> > +             if (!mem_profiling_is_available())
-> > +                     alloc_tag_add_early_pfn(page_to_pfn(page));
-> >       }
-> >  }
+> > > +static unsigned int early_pfn_count;
+> > > +static DEFINE_SPINLOCK(early_pfn_lock);
+> > > +
+> > >
+> > > ...
+> > >
+> > > --- a/mm/page_alloc.c
+> > > +++ b/mm/page_alloc.c
+> > > @@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, stru=
+ct task_struct *task,
+> > >               alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
+> > >               update_page_tag_ref(handle, &ref);
+> > >               put_page_tag_ref(handle);
+> > > +     } else {
 >
-> All because of this, I believe.  Is this fixable?
+> This branch can be marked as "unlikely".
 >
-> If we take that `else', we know we're running in __init code, yes?  I
-> don't see how `__init pgalloc_tag_add_early()' could be made to work.
-> hrm.  Something clever, please.
-
-We can have a pointer to a function that is initialized to point to
-alloc_tag_add_early_pfn, which is defined as __init and uses
-early_pfns which now can be defined as __initdata. After
-clear_early_alloc_pfn_tag_refs() is done we reset that pointer to
-NULL. __pgalloc_tag_add() instead of calling alloc_tag_add_early_pfn()
-directly checks that pointer and if it's not NULL then calls the
-function that it points to. This way __pgalloc_tag_add() which is not
-an __init function will be invoking alloc_tag_add_early_pfn() __init
-function only until we are done with initialization. I haven't tried
-this but I think that should work. This also eliminates the need for
-mem_profiling_state variable since we can use this function pointer
-instead.
-
-
+> > > +             /*
+> > > +              * page_ext is not available yet, record the pfn so we =
+can
+> > > +              * clear the tag ref later when page_ext is initialized=
+.
+> > > +              */
+> > > +             if (!mem_profiling_is_available())
+> > > +                     alloc_tag_add_early_pfn(page_to_pfn(page));
+> > >       }
+> > >  }
+> >
+> > All because of this, I believe.  Is this fixable?
+> >
+> > If we take that `else', we know we're running in __init code, yes?  I
+> > don't see how `__init pgalloc_tag_add_early()' could be made to work.
+> > hrm.  Something clever, please.
 >
+> We can have a pointer to a function that is initialized to point to
+> alloc_tag_add_early_pfn, which is defined as __init and uses
+> early_pfns which now can be defined as __initdata. After
+> clear_early_alloc_pfn_tag_refs() is done we reset that pointer to
+> NULL. __pgalloc_tag_add() instead of calling alloc_tag_add_early_pfn()
+> directly checks that pointer and if it's not NULL then calls the
+> function that it points to. This way __pgalloc_tag_add() which is not
+> an __init function will be invoking alloc_tag_add_early_pfn() __init
+> function only until we are done with initialization. I haven't tried
+> this but I think that should work. This also eliminates the need for
+> mem_profiling_state variable since we can use this function pointer
+> instead.
+>
+>
+> >
 
