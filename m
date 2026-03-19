@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD421091901
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC1341091900
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:39:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3624D6B0570; Thu, 19 Mar 2026 13:39:20 -0400 (EDT)
+	id 250AE6B0572; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4C56B0572; Thu, 19 Mar 2026 13:39:20 -0400 (EDT)
+	id 2291F6B0574; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA876B0573; Thu, 19 Mar 2026 13:39:20 -0400 (EDT)
+	id 166836B0575; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CEA66B0570
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:39:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B7F311C10D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:19 +0000 (UTC)
-X-FDA: 84563524038.11.C228384
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D0AA616000C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f5P5ZND+;
-	spf=pass (imf08.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 044E16B0572
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB0AFC22FA
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:23 +0000 (UTC)
+X-FDA: 84563524206.10.E0E5D2B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D8310180003
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NNIHQMpw;
+	spf=pass (imf24.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773941957;
+	s=arc-20220608; t=1773941961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=08dKphVfSTLtdpNxVh0zM+lKvwtD8+RfKPGuI2AqB10=;
-	b=RxkORvdtKtssqjLiBun1NjG3rrjam8YWtWv8GmQbIfds5efA5KMy+qmrcoxygYULLujHfE
-	NEAqWmBg9FKD4aPvcTuttc2jno62IapLUgDB0SVTOg5azDGGZFQZQR5q2SYTJEK3UjcKpt
-	W5ulmzAIsHTKVyS1d9KpRM60p0Rniic=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941957; a=rsa-sha256;
+	bh=y8AJoJFhemnk1DLT2xYvQamPJ/h63aubGqhq+ZDBiKQ=;
+	b=HAZcRQ0d864c/NwOnsrM/C3YYidhnUlw9FW9+ePyrM6BtjP0gMmlSYWkzCS4E4Axo5JCh2
+	KaAbrv64W34hl4Fy6BjMW7G2Xrf+er1sbpWCILq6MGQo+StL3ahA+KiLd7Ezq6CcGJ1wBF
+	7XSsiWAM7AsMeBk0NB/TwKqLizw0kJM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941961; a=rsa-sha256;
 	cv=none;
-	b=4IUkLfmHkgwLw4ujS/Bi6Xc7vUUP3EHi832NIGtIOLAYl3L4cx3vPnF5OSB5ZcmNNiX2eR
-	VDSXq1/6mTi1u9RWgxwddg461ZAcuelkd7dbnOf0I0IHJfarZyxTkQvzNol/o1BJNroKRc
-	X8CCp5CmnoIia4hsW+kQUL8sHAGpsTY=
+	b=8qYnV+HerAT2qq4NUH/6BJvqbZfjukFCQfv3t6XctJWtIWa15co82ZX9qMlAtQSpGcrVnG
+	1ExYmDo8T0GpFYWAnlVbsv6SHetZ/Hcf9d7kKxcsJG5POxfF4p9K3A5RBuanWVDFoISLOR
+	mbrSYSFq2Mf2/ZOBA6kK1b34X7oOsbY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f5P5ZND+;
-	spf=pass (imf08.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NNIHQMpw;
+	spf=pass (imf24.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773941957;
+	s=mimecast20190719; t=1773941961;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=08dKphVfSTLtdpNxVh0zM+lKvwtD8+RfKPGuI2AqB10=;
-	b=f5P5ZND+eHGi9J2SQSdQzHmoWZknxXnKlXEx29ciAwbYF4huSSRrd1H3O9hyo+mfuTgiVz
-	+X6ai4CTGll2yHSZeQ6LCcBuEi3rUQgDy7elNp1M2+bb2RCJpmRI00wkmxilgwtIje2ubG
-	Zwznj7h/KAv6n/Q93Ao53ZTlfakf+eQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=y8AJoJFhemnk1DLT2xYvQamPJ/h63aubGqhq+ZDBiKQ=;
+	b=NNIHQMpwi0+X4mm1Q9oh8DV+ZUaJCtd5hbyPaFbK9dT0b34j0GbWrt6PWAQMVgX+wemJnp
+	huOAQH6k2ZtNSMmyUrAjUN3HBqy8klh/BBifdkBZoX2O4bAI1ouFx98TfDug4Xjke2QQg8
+	GzkGv3aABF4gj1hNoBE4ZY8Jzlma8n4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-FclM--_NPeiuVWdz8HznfA-1; Thu,
- 19 Mar 2026 13:39:12 -0400
-X-MC-Unique: FclM--_NPeiuVWdz8HznfA-1
-X-Mimecast-MFC-AGG-ID: FclM--_NPeiuVWdz8HznfA_1773941949
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-N4MyzdgGOh-xRtock0apmA-1; Thu,
+ 19 Mar 2026 13:39:15 -0400
+X-MC-Unique: N4MyzdgGOh-xRtock0apmA-1
+X-Mimecast-MFC-AGG-ID: N4MyzdgGOh-xRtock0apmA_1773941953
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 525641955F6A;
-	Thu, 19 Mar 2026 17:39:09 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D731818005BB;
+	Thu, 19 Mar 2026 17:39:12 +0000 (UTC)
 Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.80.194])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0FE4130001A1;
-	Thu, 19 Mar 2026 17:39:05 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A7CE330001A1;
+	Thu, 19 Mar 2026 17:39:09 +0000 (UTC)
 From: Waiman Long <longman@redhat.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -96,25 +96,25 @@ Cc: linux-kernel@vger.kernel.org,
 	Guopeng Zhang <zhangguopeng@kylinos.cn>,
 	Li Wang <liwan@redhat.com>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH 6/7] selftests: memcg: Don't call reclaim_until() if already in target
-Date: Thu, 19 Mar 2026 13:37:51 -0400
-Message-ID: <20260319173752.1472864-7-longman@redhat.com>
+Subject: [PATCH 7/7] selftests: memcg: Treat failure for zeroing sock in test_memcg_sock as XFAIL
+Date: Thu, 19 Mar 2026 13:37:52 -0400
+Message-ID: <20260319173752.1472864-8-longman@redhat.com>
 In-Reply-To: <20260319173752.1472864-1-longman@redhat.com>
 References: <20260319173752.1472864-1-longman@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: 48yrgkL87NwW4JHH_4plQxT9Xjdfk2q7jG2F8HlwWaQ_1773941949
+X-Mimecast-MFC-PROC-ID: -p-mgDVw8unbmoBe9Tki18QnPr9pHOAfbKKj7iupSZg_1773941953
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: 6gxj1hfezknd7548o1mfd88c4pp91c6d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0AA616000C
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773941957-91343
-X-HE-Meta: U2FsdGVkX187qwCmNQ9l6AaiNzREyVdAicO3YmZ2Ntn4Jhe7DPCGIe6tn1g6KKDShK8kiNURwU4xi27xFqDpo8yTEdCcQ/KASdGAJEKUkwT/4Kegg/TKQJulakbvSib7r8ronBG2sXg5nQ4aJL2HIrGoFltttSoHt2tNUpQ2VtVFagcP2UV4eAl1ogMGEfKWWk11abBOGBmzFkDyIkbdF6QUUFfKNXFFO+S5MkYa/BPCwIfOJQokLtNxcIT2rR/joxPEMMJmNdnsMo5uybEnOoMAQOMcxpvEeDBjW3MMBIE7zPgkIy2Ijk/1il6D7uEEm3JHdenU0O7UcxyLpAhRrVVGZrJzU1B7amROMFvz64z8XoX4p78jnnfs76hr8q3CckFFohfNBN5GwMGkdLjhQQ1JCC0Qc0Innvihdnk7b48NAIQg9lsfiUWy+Jr6SqIBXqL3AWHJ9RsrPdBAUvYZsu8B9PzYTA2wt1YCbXhuVdzDxtRQFeuolFKfHbfj+VBnXAVjXcAYPEfYO/s9akSpr3hiNlhMnWHpBW7XQ5LryHsinJ0wLOXLoUbrfX6acjT9BzDiiW6gHRl5BrpRc3pBRujQmNWd/L/hVNv9zMidyNLKWxbqY74KRGVPSC4ljcaEBPv3q820uKY+P5f2q7F2m5TJWGbDe0ud+fbXtTz+n1mc/N25f7qRaMB9MQeVdEiFlUtfpG1f+mPhualzaNLlmzPeU2tmglEXfgyI7LEoNkFlvkSr/9AZSo8q1T8YkGXpNWZ8XUZ5RRy7xdunQ7oz0TGcjtpVbdA70e9g3xyutQp+8VdtzvVuuQ+qV66kD6UpBkUawaDa7ob9coBJQv+kkna2mEGE50CH1YnLikB3meSUrArNEW5RqL0mC1aG+aFMIdoPHJH5tE+KPDeJtUkRB+H6Bnj7nE1c1K887SA1G3rtfCJiT0zRigp+JCCDJUwUuuxodbQ91+IKtjK1Nme
- nTv7ctCF
- yla3ryE9YMwnmU7fkx09uBBysgQJTVogswUMFRl6tBW7Q1d2R3y0qykyuMJmoVAjLcNFLqAaa3kVqpE2QFAR4kkIBe9R3ozdYUOlTTvGXp7uDZZG3ROvoVHERCSzFDX8HlzZFJQ8D25+3u32gndxgDl+OlaZB//dYTyBtGZb/bpTVZR6QJUQ7kSYkBFmuhtQUwv5htBrMzu0rOIkeCx/mOCFPeOWsza/ihQbFBp+y4iT9bBVFiRw7VxX3HtjGNJ8FA4Bz7fDkvmk4amqL9wSd3QyPPPw6YlLB+VIKN06DUph8fUtS3MjdbepY3piAkyjaJ3eSMCcwLcraF6yKkuGYavcZBDG9iYWLop0vNjwrzlrWiSYsjWfZREh7FzxhBNpJngOvJLpB3twfbtM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D8310180003
+X-Stat-Signature: 76jhorup36fnzbeos6hb6oy3c4poufo3
+X-HE-Tag: 1773941961-20959
+X-HE-Meta: U2FsdGVkX18ODa7zmJHkezZULrvUk871pfnP+6brpq/pKIlaq9h1iHURX0p/uQ2VfxKpiqFWlMapAoJjQ487D+qFVf+nlMLxNUrKozbhVtSAS6mfGldDv2XFKo8oMvRqmKj59JV2gj8ulrajaC9lGXpxWZgIOay2pvCwdildO+jyiCw2D7iPiBJXwDYB4As4ABDR/D2Ub7ZCBWdU3iF92d8BpCP7AGRD7iDXDOo1m8jvQ2l9H3Ik5l50ZQHDZnIjIAMATi7QG5FCr5puuPRX+mxFAT/Q9bx1V8m/g2AEuOJHuCsCBhO9iVafRGCALaecbuTHScs6Jxz3TL9clhMbYF7RmRM2LDKTH8VqyBrhLJ+BMLBEk6YsQcmr2xla5kSFn8wwt3EsE7G659aS+v5+/ltY1BOaJM/SGX6bW41JTlQKSwNNQBTAhjkhf2tEyFYjGfwTCwYMen6aA8KJ6Soz/xLzGFZkHGhKqLGd1xLZIx2R6SynqkQ21aEBAMvwCIeJJomycOgtM6PcJ02F5bZVJbshvKqHGxlcvkZTLkb8lZ3zNodBdLLMHmaSdvCKm5+TXBIUuT/ijC7S+iJbd7qZS9Dt2HD6vXSpgS3P3zGeZRbKXqmHF4HC8euSiQpkYUt+MTxPchK9IQwBHM5BGa9BtT0KOnjamizD5j8dh550WbIA/QIVe5+Ok7w4R5eTnod4nqkF0a9iWCcUufph35RhrhqsAyOHyKeO6a1cQJpCxaxys+AIu1SFTtiF53FKlAk0svDneexWlpij4IfA5WKghQ1WoUPoTEdHdD3lFJegYKYLs6dU+HDt2j+APycNxyiIkwhNPAoN61UrQBDYwha3yTZYwJTVLeeGhxUIhuo5SZS+Aq9i4rk5LXW7C1HyhSOZgOiB/GvDwMEAKdtfcO5qGgSUVGc2jRu9wxIZlTwJMJuE5Xcef3f4rmF+whTLSKMD+vhThEt34SK25HoQYlZ
+ FzBMsjWG
+ VZdwlZcWxDRNSb0+hP4JsnHb733d7TqthZhchOanZL+aQ4troeVMA/6j7q67mEE5/6bCzqoP23Lc4Mv2rxtZGJo+F3zhEg5jm2eF/n0WppD+ov2/DjZ5FoDGyLq4za2AV0DCGSE/AFBs8BGnBSS5dO5QOvnXmlQME04ejw18obcToKzFxqDp2xYNZA73Y60ZyWClxroe21RuZnKN15ryI3OPPZ6DXJQ4Y7e1yiCJDVrH3z9wn4dKW6sljDPsppZCKdVlCs9WDRufNrYx0NhWBtOb45LuH+zDQzlep2tU2kbZxhCN2sVcUWNkuvv5u0y0G8r/hLR9g98kbNi07IiCjJNXSNnLUIRvpRJTeJ3TPT/G1KQDbAJ3tRNm9ItWExvfkFD87Wz1JmdBZAAA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,52 +122,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Near the end of test_memcg_protection(), reclaim_until() is called
-to reduce memory.current of children[0] to 10M. It was found that
-with larger page size (e.g. 64k) the various memory cgroups in
-test_memcg_protection() would deviate further from the expected values
-especially for the test_memcg_low test. As a result, children[0] might
-have reached the target already without reclamation. The will cause the
-reclaim_until() function to report failure as no reclamation is needed.
+Although there is supposed to be a periodic and asynchronous flush of
+stats every 2 seconds, the actual time lag between succesive runs can
+actually vary quite a bit. In fact, I have seen time lag of up to 10s
+of seconds in some cases.
 
-Avoid this unexpected failure by skipping the reclaim_until() call if
-memory.current of children[0] has already reached the target size for
-kernel with non-4k page size.
+At the end of test_memcg_sock, it waits up to 3 seconds for the
+"sock" attribute of memory.stat to go back down to 0. Obviously it
+may occasionally fail especially when the kernel has large page size
+(e.g. 64k). Treat this failure as an expected failure (XFAIL) to
+distinguish it from the other failure cases.
 
 Signed-off-by: Waiman Long <longman@redhat.com>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/testing/selftests/cgroup/test_memcontrol.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 4f12d4b4f9f8..0ef09bafa68c 100644
+index 0ef09bafa68c..9206da51ac83 100644
 --- a/tools/testing/selftests/cgroup/test_memcontrol.c
 +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -490,6 +490,7 @@ static int test_memcg_protection(const char *root, bool min)
- 	long current;
- 	int i, attempts;
- 	int fd;
-+	bool do_reclaim;
- 
- 	fd = get_temp_fd();
- 	if (fd < 0)
-@@ -602,7 +603,15 @@ static int test_memcg_protection(const char *root, bool min)
- 				       9 + (min ? 0 : 6) * pscale_factor))
+@@ -1486,12 +1486,20 @@ static int test_memcg_sock(const char *root)
+ 	 * Poll memory.stat for up to 3 seconds (~FLUSH_TIME plus some
+ 	 * scheduling slack) and require that the "sock " counter
+ 	 * eventually drops to zero.
++	 *
++	 * The actual run-to-run elapse time between consecutive run
++	 * of asynchronous memcg rstat flush may varies quite a bit.
++	 * So the 3 seconds wait time may not be enough for the "sock"
++	 * counter to go down to 0. Treat it as a XFAIL instead of
++	 * a FAIL.
+ 	 */
+ 	sock_post = cg_read_key_long_poll(memcg, "memory.stat", "sock ", 0,
+ 					 MEMCG_SOCKSTAT_WAIT_RETRIES,
+ 					 DEFAULT_WAIT_INTERVAL_US);
+-	if (sock_post)
++	if (sock_post) {
++		ret = KSFT_XFAIL;
  		goto cleanup;
++	}
  
--	if (!reclaim_until(children[0], MB(10)))
-+	/*
-+	 * With larger page size, it is possible that memory.current of
-+	 * children[0] is close to 10M. Skip the reclaim_until() call if
-+	 * that is the case.
-+	 */
-+	current = cg_read_long(children[0], "memory.current");
-+	do_reclaim = (page_size == KB(4)) ||
-+		     ((current > MB(10)) && !values_close(current, MB(10), 3));
-+	if (do_reclaim && !reclaim_until(children[0], MB(10)))
- 		goto cleanup;
+ 	ret = KSFT_PASS;
  
- 	if (min) {
+@@ -1753,6 +1761,9 @@ int main(int argc, char **argv)
+ 		case KSFT_SKIP:
+ 			ksft_test_result_skip("%s\n", tests[i].name);
+ 			break;
++		case KSFT_XFAIL:
++			ksft_test_result_xfail("%s\n", tests[i].name);
++			break;
+ 		default:
+ 			ksft_test_result_fail("%s\n", tests[i].name);
+ 			break;
 -- 
 2.53.0
 
