@@ -4,214 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD3E1075273
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B53131075275
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:32:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC3BB6B0435; Thu, 19 Mar 2026 04:28:39 -0400 (EDT)
+	id D78946B0436; Thu, 19 Mar 2026 04:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9B796B0436; Thu, 19 Mar 2026 04:28:39 -0400 (EDT)
+	id D50436B0438; Thu, 19 Mar 2026 04:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A63086B0437; Thu, 19 Mar 2026 04:28:39 -0400 (EDT)
+	id C8C906B0439; Thu, 19 Mar 2026 04:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 91FF66B0435
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:28:39 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4B8601B7EA2
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:28:39 +0000 (UTC)
-X-FDA: 84562136358.09.B01B9F6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A54F220005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:28:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XeGkrCVU;
-	spf=pass (imf03.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773908915;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B7EF56B0436
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:32:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 63D5413ABDE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:32:55 +0000 (UTC)
+X-FDA: 84562147110.14.EE6AA24
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 875ACA0007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:32:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnUZEgXr;
+	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773909173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=svb9ReH85WugA/rW1cQQo/O4UPdn8D48tAN8beaqkgQ=;
-	b=aJonhwkTkAEOGbBe53qPUw+qtAdXdNVUee1d5HFzLe1qcxMDy0+guCuAc7EV4OGOazpnMb
-	NPgUWz3bh9DQTodjXXXTLiVXPehLCnmwcq3QqllKkNRSMVYXNmVMXyKaLU0FMAcCsD5K1i
-	w+A8unnK2WstqOiggmZdpjHvhK/QDYI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773908915; a=rsa-sha256;
-	cv=fail;
-	b=rLBCrBva6Uf7E3iVM5kXstAbZ75O24Fy1ASmcxIv06t5yjHbKUyX0PT13UDF7VYI6KXoWT
-	drPeD3lXj7X43l5ow+t29dSd/hneFU0xZSb97dqbdaIk7zw886TNspGwuyfeYEAEPycg9S
-	szSNgfctvKsm1ERjrIKavSPtBK6peLs=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XeGkrCVU;
-	spf=pass (imf03.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773908915; x=1805444915;
-  h=message-id:date:subject:from:to:cc:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=duxkJ6QUvvXBiMeyu2ze2qGiRvzc79Ky0p3qALgxaCM=;
-  b=XeGkrCVUXuVSSiZhaOxE+zHpXNLlHkgurAglglySIVIxIbu9k6MmzJA3
-   BCqLaiFt2pdE8lk4Jae23qqNNS0NUMdbzw4BKdM86Ire+OZzeQll2Ywcu
-   xkQFVCyzgqjEN+zc2NyIXuz17OW2e1TEgA1mwQPIimFNSGW53UHiWhkzj
-   6PAR/0WB797PVsc5327dHh1GeYoQF9+BSpC+kTsIG62pXSRy7wBuSYpag
-   7CvXmnwsGqtuhyR6RFJwSaOTdDtHpQyLPBdVfueubmBJbCKL61JTfJl6h
-   LjM49pPEcrpyR6byZGBJhoDBIJAJ3N9IJ/GRPWkAM6IYZc4VjFgEVlonR
-   A==;
-X-CSE-ConnectionGUID: o0Did87fQdSjuF2s48NLIg==
-X-CSE-MsgGUID: 5xaUKvJORzyKOaP2l9sZlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="85603237"
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="85603237"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 01:28:33 -0700
-X-CSE-ConnectionGUID: w/eYrXlWS3WJDpZT1xXwcA==
-X-CSE-MsgGUID: BHBDYeu1ShqTpBqfxz09/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="245918304"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 01:28:33 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 19 Mar 2026 01:28:32 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 19 Mar 2026 01:28:32 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.4) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 19 Mar 2026 01:28:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nOhIBseKMelFt5hjtu8tVCZIZG20p2W+u6EvEMc8vGR2XFEfz/4Yi7sWIZgXrJI8gzg4gl8s0E2K/61WyziLAxB5azhfDgGnxQBockMi2aCflnp8jpuzl0ApY2toXDybPyEuNXqrt8L/DSpOVKSl7d4d6Uttr6owPtMOjfAe9tQMcDHzK8nlGU1Ilqj03gN1x/jtfKPPd4cpIAdou02OaRWuC/8/olBEqOJAd5+h+EYlPB9+XyD9WI3aDLHmL1eBm7qv+iHPSnzABRuHGa0bCbqKKz2iwlKHumHnkxgP8YVXFhFISc7HiTkHfOf0+Murn/pSDq1O/i6tw7FHBUgRcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=svb9ReH85WugA/rW1cQQo/O4UPdn8D48tAN8beaqkgQ=;
- b=C1T21kXbua9wvk0jJwe+tNtfkryBWsJw5+KaijalDbxXDkMggxHtiObzQuRWmOACKXrjfvifdTYNC+gVNnIoh9H9dLctKS9QjzivncJEjaSzQkeZq/EvEToh5a1fgWrBSPYEEStiLxdF07jEm9UFpxN36JRL2RUYStSMDHKJ8gkP0hl04rt1SV4WWnhOxuY2G3NbSVobiaHRfB0ZA6Vld4Mw/9fuUve/iarpT3BewvtE8vHKmZr7klPLfxENoydo8QAPJ3AUJHNAzzkj33VFuZ99LR9/wFw8ikU5aiQQWGmc4Q7g5IWZcyBKn71xa+DL20DU9Y+91nCREhFr3CU6zw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH8PR11MB8286.namprd11.prod.outlook.com (2603:10b6:510:1c6::15)
- by SA1PR11MB8576.namprd11.prod.outlook.com (2603:10b6:806:3b5::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 08:28:29 +0000
-Received: from PH8PR11MB8286.namprd11.prod.outlook.com
- ([fe80::4b69:94d:4eed:d920]) by PH8PR11MB8286.namprd11.prod.outlook.com
- ([fe80::4b69:94d:4eed:d920%7]) with mapi id 15.20.9745.007; Thu, 19 Mar 2026
- 08:28:29 +0000
-Message-ID: <aaf3f7f2-4e20-4210-a65d-0157ad24c958@intel.com>
-Date: Thu, 19 Mar 2026 16:28:21 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
- zone->contiguous update when changes pfn range
-From: "Li, Tianyou" <tianyou.li@intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>
-CC: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
-	Michal Hocko <mhocko@suse.com>, <linux-mm@kvack.org>, Yong Hu
-	<yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu
-	<yuan1.liu@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo
-	<qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>, Pan Deng
-	<pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	<linux-kernel@vger.kernel.org>
-References: <20260130163756.2674225-1-tianyou.li@intel.com>
- <20260130163756.2674225-3-tianyou.li@intel.com>
- <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
- <aYjmcZ4hg9bNbmiY@kernel.org>
- <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
- <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
- <aYsaBkMecDG595Xg@kernel.org>
- <b3777d0e-0b25-45bc-b387-e67fe5a0d328@kernel.org>
- <de501b65-6d02-4eeb-b50e-bfe5ab9b8d00@intel.com>
- <24ef67e7-6f0f-4544-a50c-90c4de368c40@intel.com>
- <383e1567-0966-434e-a818-f70bff1d5220@kernel.org>
- <214b2cb0-e0d9-4482-956a-5bc599bae45e@intel.com>
-Content-Language: en-US
-In-Reply-To: <214b2cb0-e0d9-4482-956a-5bc599bae45e@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TPYP295CA0037.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:7::16) To PH8PR11MB8286.namprd11.prod.outlook.com
- (2603:10b6:510:1c6::15)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TU6gcYFyqHku0PKjXCQBjJUvLxC447LGsL/t7ZXARkM=;
+	b=XHwuLmyAQfi6ISgcjmf6NG/CZwkTFste6dHKb0mFa1I6Sr7XCZpOgJ6CZaJjvtNzKYktqE
+	7SO5EgVR7cCJwid93UVIOVfsU7drNNFDP3gBxKdxeREpkYJa3OKTgd29ZDNeXHfMiAjEbj
+	OvkV/b4YOzFN5ZVnRoBqX3cQsxW96Q4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773909173; a=rsa-sha256;
+	cv=none;
+	b=65RaGFWxjNmigEPQwVVdFWrOJntM6wrUgNXvBCl+4ce4Wg3NufLRCwFOStLsykwSljIaVy
+	NE9ZLtXeAEyiS0+UtXRLhO06ftsjTXAoms4zwv8rJD3hHCKhvvWAEfiy/y1Ko5J2r9JCcs
+	QRYpKTYw3aawh+RI30APE2l8HRm+CsM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnUZEgXr;
+	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773909171;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TU6gcYFyqHku0PKjXCQBjJUvLxC447LGsL/t7ZXARkM=;
+	b=RnUZEgXrzqu9MxywVIEMBPFnDF2rnUxb1mtJZx/DQpcJ+CY0/OjVLUE26+hD+CTAeyYVM4
+	IqUBMJC4r4fzPr46OuEWR1qP8d9MB49toJrttjR5/wrBYiOXlVDP4kk4FpbfoygZqVtwPO
+	yGpHhg/7piR3rTqZfEhqT7a8HlTct/I=
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH] mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+Date: Thu, 19 Mar 2026 16:31:53 +0800
+Message-Id: <20260319083153.2488005-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8286:EE_|SA1PR11MB8576:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c9739a2-5b65-4328-7399-08de85917f64
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: sD5hMDNCzMKa2XBUr9CGUViOd6xZBnwNX435MfJ3z07Jc/gXSrXaZ1VBS5/lFSYfXfpVemAY77aUYY0lCXAZoyGJTkqnUHKVlcFeewhobhTqflb3Y28zLKJmxQvLCivIP0Uz6AVkVqwC4wm/QMuib6kKx/4F52Z5guwTa2WN66d96zBL0gf23LSio+3aK3tQTAvHzR5bxc/8vhjp8iCmBazv0Fh02y4MPM9WpaMHYOQhd3pZMreyv7Df0AvSAOmBX6uNAf++tRie7Tfw7E9uQyrLnrH57w8tg6l9bxfjHhOqFLZWUomyXhXbrwVs9wVa1PHgMYxZ6iHtCD0NMamgZiWZRlf+H189KGRAcXtS2rFVujEAZxXfzC0zz3u48JtSB69Bgi0ZafoF04Gp7udmbEmOD3akR6ZbMS7frYt/eOH8LRyDgO0srD7ajbD5maJ8hk2/It8N7BS5QLzN716J4gJ4VUT3tR0i1YTmEVuGH4cwnO+j10qYcjvFJVsiqOfemOdx8ZSDGEH4BwMefqDS61iXcr7HTAMk6jhXIXei9Da5PSGkNzTPfhKurJcRHlzMwxr6SvJ/MHVncSYq+Q6wP462wwR8bO2BU5rzSw60bLFzBLKFVI6ah8nNX0mVu1YLAH7oSsFjxMo2FomMwO4bwIbaPyIarTIkD5fiuCjA6oj1jmidnzIMBFIOCUXIRRCZFzIAn8h6CZayHgzgoYhIwWFt9Bgk9LcqUWO+skIJrsk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8286.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WitkY05WdEMyWDJZUUxtTlNWOUMrZ0JIc2lVN0RNUldySExDeVViaWZsSDZa?=
- =?utf-8?B?S2hLQmpDMEx1K2owei9zMzFReUJSYnA0emhoUjJXQlRqRENsTE5jeFpTK29O?=
- =?utf-8?B?SjNQdXhBQ0s2NTVuaHNCVWNvcVlsaTJ1cklZU3JLQVFmU3lSYlQybXErSVZ5?=
- =?utf-8?B?WHE1WDkvd0wrQTBiSy9WRGtMMkZqR2c2Zk10cXZkcEd4eVBydnVnQytIWisw?=
- =?utf-8?B?RnhBaDFWTGdXdUdLUnU5MjRDSGs5eGMrVWp1SWJVVThjcTF3UUpiYmoxN25X?=
- =?utf-8?B?enBXM1RkeDJmV3JvQTEzWE9zWFBpZ0V6UlRya3BzMmphQ3FOVTMxaDhmSjVY?=
- =?utf-8?B?MTJEL2NCcGExb0Y1cXkyeHNwT2JFc2djQjB3YkFHcXJqMW5XNTlab0Z4N2t0?=
- =?utf-8?B?c1ZUSjFpNTRFRjdSakJkVVZCWWdNbHhNTlhoU2xJaFpNL0JHT2E2cTlDcWhn?=
- =?utf-8?B?RzJkVkFyeGNQenBJdUVJRHlXamhYK0l6TU9SMmtjVXI0aHRUZm95Wi9mdExN?=
- =?utf-8?B?T05NbW40azk4QnBHM1o3d0VVSmVaYXB3ZVBHbXdrYnlDRGhtY2pUVCtwVG9z?=
- =?utf-8?B?R3k3VGYxZ2hVaVRpQ2lWeTNSNEx5NUNlRnVhcmswUXIwQ1RJM2xmTE1SOG94?=
- =?utf-8?B?Nk5HWTY4bTZRRktRWi9QUXdOVU0rV3lkMXB4MS9WU0FjTE9mdjg2cVJtMUJT?=
- =?utf-8?B?cHROSjNKSmlNdVp0cDluVndFNEovSXFJMm9GK1djbE1EcDFvbklwcWl0V01m?=
- =?utf-8?B?dU53UDhvZUczOXdKUnluRHJvRTdrSFIzdUNCcHU2NFlySTU1MHlJckF6K1c1?=
- =?utf-8?B?K0toU1VFQ0NxaXVmSFp0b2pCY1I2ZGdyMmpUSTVEVXkzWFh6ZFlqQ2I4QjhV?=
- =?utf-8?B?N2tCNmRXMjBJRzNiRWl0VjRvY25UNVNGZzBwKzdmcHFKTnFzckNDeW1ITDRk?=
- =?utf-8?B?N25zQ05uZDlIT3RPV0xEYlRFYjFnbkxpQ0ZMQXhPSjl2aitqby9qM0lGT01o?=
- =?utf-8?B?emJ5UkFxWWNkV0c2ZWYvNGlqN29QbWhNUWErSVJkVGNRaCtyRitPQ2ltNzlp?=
- =?utf-8?B?a2xmL3Z2bE1taGlRV1VSaDNoSHczRkMxM09MY2ZlZGpCbStJRDlCMk0vMUs3?=
- =?utf-8?B?NUR0TWFvQmtHNks0cWxHdXR1MUt6OTFNZnp3ZHRiNm4yL1ozMjVXc0VhSXk2?=
- =?utf-8?B?RDFKT21BT3d4cm92a3dNVnV4YUZ0anovUGdUQkFnOVdEekJxRE0yRTN4ekc2?=
- =?utf-8?B?bXloWE9ibDFoK3J3MmhocG9yOVN0S2xRYmRLam5YaDhwMWFMa1NpSG1NNGs4?=
- =?utf-8?B?Mk9BdmFmTnV2Vm1iRjNiSExjdi8xQjF1Uk9xWlQ5Y0JqMk5oMEdYd2YyNW9C?=
- =?utf-8?B?Z0FpQ05jU0hlSlhHYXlHZnZaVXhXb1dSWWp4cnBkalpLWjhUaHBGaTZyd3U0?=
- =?utf-8?B?bDlXd29GZ0VlMmxvb3NvcUJHTm5FRzhXRFJIdkM1TVdiZmRRbEVZbUgwYUU1?=
- =?utf-8?B?Z0lFRkNSaWg1c0pGd0o4aTYrVTZDdGR3enJOQlIyV2NzN0FKdjBVMUxLOXdB?=
- =?utf-8?B?T2NYbUN4bktHT0szejhqTHhVR0Z2cUtlSW5jVDRYcDVhc29Sa0dKZlJqcjhv?=
- =?utf-8?B?N1k4dFludU5iSkIwWFZZVHVTUXZIVVNCQTg0MlpjamJiTGRlbjFJemZPMjdz?=
- =?utf-8?B?N3cxR0h6Qyt3dXRVNENqcE1OMGg3S05GR2JUcDVNL1dPdDhOUEQvK21UQ0t1?=
- =?utf-8?B?QVZaVUZ5c3BqbDlmMG94UWFQalZQb01YUlRZQmF5L21vOFFPanBRT1V4akcv?=
- =?utf-8?B?WTVoeDZmOUZ5Wk04VzZDUFFyWjhGQms3cndRUlBmV3ZnamJVa0lxTlE0QXQy?=
- =?utf-8?B?VEFUMDZmbHhFWm9pRkt6cXlYR1ZDSjZaQmF1ODEycUZHMTRJS0RaOUxLTVhJ?=
- =?utf-8?B?cHA5TFN0b3o5NTR0MEZIZWZFcWp0N0cxaE1vZGZ5TXROZFd2aHJVMjlDZmlV?=
- =?utf-8?B?NFV2UG9jMkl3YUpVb21ldDZKM3R3dDExamRsVWdpTWR0THUvaW16NEx2bE0r?=
- =?utf-8?B?Sjl1Y05wK2cwcU9PVUV4Yyt3U0JRM3NUVmprSE0yU2FNN05LMkRKRDJseVR4?=
- =?utf-8?B?dnlKQ09PQjF5cHZaMVNXU3Rlc1RlUm42U0FmYkExUUNMb3dEcHNEbjd4N1cw?=
- =?utf-8?B?VEE3ejdTdGRKY1drWFpDN1dBcFVwQU95RUNEcVlPMEJYekE5dUEzSXczQkV6?=
- =?utf-8?B?WThqSWl1WHhFc3FEbE5ZVElXZlBFdlQ5V2U5NjFEeHNuQWV4OStlMmM0Y1F4?=
- =?utf-8?B?WkxXM3ZoTkFiZ0NidUo0ZTlBWDBxdlRKSis5U05ZdlI3WTRmNERHZz09?=
-X-Exchange-RoutingPolicyChecked: WQOt8yDxwTzgPhNhgYImhX7/UZF2KTculiFT6DqFqPfAmnlEO2+fT0EuKAF5p7A8boaXgC/vK9kYwZGkNvIROwWLrVdhm5+fP8HMs7mWBJURWzb9hBO/GDGhZ6LOfyr0rFWa02bWhtpxC/i9ccjD7CsDpUIhigPpva8MEKvwLtIBAe1Ubg9/KYXRxS2cUtyKyC3+WZY6F7uV/ZpzWYvTCvMjaPdRTgwcKg4ALcJSSiGggPZuAX1ICDo+rL25b6YyL5j9VPGd4zxs/xwgwpEKvPA4GanEwonNJBWobwqCmZ2rBVQWooQS134CpI8KJgQYvInwHD568WcXr4Cu891Z0A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c9739a2-5b65-4328-7399-08de85917f64
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8286.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 08:28:29.1220
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L3I6UybshXX/WmlCoo50YPJJW5Yhs3jHl4fNixtfaEEggjHbskKPSJv6+IGlqZ1rWcBdsZsRGIWUULh2/2G/tg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8576
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 875ACA0007
+X-Stat-Signature: fajxjf48zm3cxufxm1qjix4if17chb84
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A54F220005
-X-Stat-Signature: ob8ornr7uz6yzp15mwcyz48io9ut364p
-X-HE-Tag: 1773908914-20124
-X-HE-Meta: U2FsdGVkX18dEiaea+4M8ZSU4BblZAPyW3Zuh8bJY5SpHnRQR8gN0eaaup0J9u55Nu1KQ1mq94QqAI+pK7wm4gK18W/IpUUHZinrwY/2QJ1Te8ShZ5C1RcRe28pjb5ZkNGD/pHpmcc2oex1iY2zPwzWq9VAe3hf06s6Hy4AuoptrLX50zEFdp1nLNQOa45+GpbO7fi+q/HE9ryjRbZUiS4C1hxqb9Iw+GgPXAeI5qmXMpzG6iZf+IqNjPCt9dRHkdga9QuqwTESxOX5JqlzHPLCYJ9RiUFDRryA9w40NhjWA+WGTwitW8ltqN4/eNUilSYJu9eEw9GYxXjgM2ExdED35giCiXlCiFE6Nc+wkhM5Dp7wSx8FNMlXuaOFlS+KG7WrmrDOGSaT/8cn+hqFUHJWAjuv/BNv7erKoj15ixTEKZihF5BhRt8uaQ3pAoRZ6y/B9T5V/q2zDlmPPW4y548mQw1kTuIkuaNX52qVxYsHAWoa9kXBW6cBKQOcK3FjqZnpFPHP+XMz7wxCV0BAWtNUvbkXjoKfu19tu90AJ/vEPf+4BvH1FaCQS0Wtjy3HXVIWvjJFemieGFwJefK6LIodQ4QYYFG3PtefSpLmA8ICYOT1eELjfRDrZSyhn+Cb5IDx/wI5kzXpWcsLDbo5LCp+d0E04rZQhEsHW3TPpnGeWI7eo0yWkYF0tJ6Fzj52R6p3EGCLWHSgQQTzAusDhtiH9ovZwXpa58U5rsTm1vvyO5OzP/GKkRzALYfj+7oDMzUfqDF0ZADDoxmQvTwpBmT7iQs/KCdiletpPUZt/YU1tzWyLKieSIW+rjT04lMvKu5w230AHBQ+9P611a76tyAn8ZfL2onlWEub4nNSbki3uIt5mflrP8anl0twFz6xZsQCThR7bnfByQa8fTEXKpza1o/pntzR93+qXVgXK7HuxkegE97DYjZwsZRqXIXjimNT0qScc+iVljiv7kLt
- tElxiOeo
- QUusSbOqK8DZqRP9Hn4npOXtQju8Zu2BdM6SmzsONVLoCMkoEh8Iv/6NKWnRx8y859WYHjnaaPfIL8SyZKdiE8HqX2MwdqqEt0zYO2ZjBKarxaKj9Gq/DaN3umi0IOo0Z4MusHK5Foiw3BmkQveqiyKhom7x9n5aiF1tufAfqe+4VPDUgBWm/rg7pqoeyIW0YYD7Zx1o62QKLBnSyE1ZjWQ72z+CP88ezCmZS6KKwkAbQkPPTw74tJ3+4aE+psJ0UF0QXAnQMT34ngd9nEacTXYIe5C1aB0dJPhHXa1AqYM5dg9xWprohlPMiomT+qlXTcOwaldTJ5A7KwR3eE+JF4usnvUUHAWwaa8k1FH4qbtiws/daZMRlrk5PWrfz8ejF+LaGnH/T7zQObuD4gTv/z3rTdizf/R8CbHN8mvOT3GpD5mjdZ8cIuJlluzTqVv1ARZhUoizDV3+5+egawD0WVQfmUk0h2tuQWmkgR70XA0QTgDXL983yan5e53XWk5bydedOi8mnoS6mNOdskC+fwDydkyRVDLAUz8zbf1xBalF+QsU=
+X-HE-Tag: 1773909173-759178
+X-HE-Meta: U2FsdGVkX19oOHPMIh/xCD0CN3O8wurdNCAHTDOBPMjoaZ1tdQFwcPW+ItKrMaJtkHVO0gSYFpDdnkluWY05zPV/Gmy9/DUxDyUGOiTRB/44hG6ZWr87WQ6Mhflm/GhPS6gopcKV8XM5IuGA7vVPYOSffAChpDa8yOobzODeZf2vRDXQXWOiAndk5bhlDMy07eZ0X+FKM7i0HqAbb1ORYYeijU2gMGQR13ZTJ5IAKh3dQ6hB5Si++rhTYbGWgTs6GdZSp5NJBa1R0SFjQkxlmO3URilJL67AGx6/nrcia3E778sWDAvWXI1FTwuwJyA+U8psW1cqjIgGpKNKXy+MTX1NYl03IOj3f45SFxtVaHaNJPDYfNDZK6S5G3T13d+Ok9JyDVt11KdtQMDXH7t/m0I6hjC5bCua2Vj6YwEq2DcsIOK7oEaSvCaVWSN4F1Gg14TKfezk7YeHkOsuWXgC/yiTnnkBCKvYeNPZJh0KGYx16l+tLdR3+TJx/G89Y+tdNddgoauQ0hesNwZdfIRZzHK6OhbjoXH6AO03eDhUbHbbLlrUwiPxnSDyakoJbsV/yOhpla/LBW11DAhBkAI7XNqwYxRXNZINdHEEucO8eOdzHwhbeRj3RmGO6nLgKJukCqmw2uIwkvG2aLDywKNMbfGeNGWD+C+bXe6aRiXvyH8I9FoPbxOCHV3Y+ML+chFeHcRO68jeY0mxAG8sc2RXvD0HG7ajbpJmQmR6CVvGD1/0O3dlljPQdcWAr8InYTBW8314ISmYZkv9sUOA/Cbc5YUd45t4crnoXy3obdyfyOSWok4fEncJ/gisCbt0tsq98eqM7bCAlnnOgf4RIzd/n+jIk1nDIjOSIFdW/KuKbI7MkojhcWMZw9T8tfrklb1/nHSk8PZIi8WdWnrwA+mWfm/GMFTySZYLyqG+3rEFC6m7ZbetmKLiVhXdgz13rgil5s//s/3qgnxC4zWvIbA
+ NrQNqI9Z
+ AOpXzJZThIqqhTXAYJcxagOyscujmbsjB2m9+PySTKeDV/Go7Xx1DdFujF3uLX/ZK2amSZditJgQWKz2bUblqfdG0UB42PuE4Qe8XO2ss6Rc3nEiG9koNWBLeLasiGCr0UKsqj6Z1b27STgPbci5B6XHmA08WNWrfxDL8faNKIru+kmlFiEqbQpwPhAZOMnXAP4tGtegKRYiSGlHxOThHw/03G6LL7jqhIjR0hqztVQWAoXGGK0ZDx45voOJScjeqzP87j3rGVy9vauKfTOBqPtbQPeVtNeNQhNHuC2OQ47+Tjwc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -219,54 +86,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+Due to initialization ordering, page_ext is allocated and initialized
+relatively late during boot. Some pages have already been allocated
+and freed before page_ext becomes available, leaving their codetag
+uninitialized.
 
+A clear example is in init_section_page_ext(): alloc_page_ext() calls
+kmemleak_alloc(). If the slab cache has no free objects, it falls back
+to the buddy allocator to allocate memory. However, at this point page_ext
+is not yet fully initialized, so these newly allocated pages have no
+codetag set. These pages may later be reclaimed by KASAN,which causes
+the warning to trigger when they are freed because their codetag ref is
+still empty.
 
-Yuan has create another patch with test result. He will submit the patch 
-soon. Thanks in advance for your kind review.
+Use a global array to track pages allocated before page_ext is fully
+initialized, similar to how kmemleak tracks early allocations.
+When page_ext initialization completes, set their codetag
+to empty to avoid warnings when they are freed later.
 
+The following warning may be noticed:
+[    9.582133] ------------[ cut here ]------------
+[    9.582137] alloc_tag was not set
+[    9.582139] WARNING: ./include/linux/alloc_tag.h:164 at __pgalloc_tag_sub+0x40f/0x550, CPU#5: systemd/1
+[    9.582190] CPU: 5 UID: 0 PID: 1 Comm: systemd Not tainted 7.0.0-rc4 #1 PREEMPT(lazy)
+[    9.582192] Hardware name: Red Hat KVM, BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[    9.582194] RIP: 0010:__pgalloc_tag_sub+0x40f/0x550
+[    9.582196] Code: 00 00 4c 29 e5 48 8b 05 1f 88 56 05 48 8d 4c ad 00 48 8d 2c c8 e9 87 fd ff ff 0f 0b 0f 0b e9 f3 fe ff ff 48 8d 3d 61 2f ed 03 <67> 48 0f b9 3a e9 b3 fd ff ff 0f 0b eb e4 e8 5e cd 14 02 4c 89 c7
+[    9.582197] RSP: 0018:ffffc9000001f940 EFLAGS: 00010246
+[    9.582200] RAX: dffffc0000000000 RBX: 1ffff92000003f2b RCX: 1ffff110200d806c
+[    9.582201] RDX: ffff8881006c0360 RSI: 0000000000000004 RDI: ffffffff9bc7b460
+[    9.582202] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff3a62324
+[    9.582203] R10: ffffffff9d311923 R11: 0000000000000000 R12: ffffea0004001b00
+[    9.582204] R13: 0000000000002000 R14: ffffea0000000000 R15: ffff8881006c0360
+[    9.582206] FS:  00007ffbbcf2d940(0000) GS:ffff888450479000(0000) knlGS:0000000000000000
+[    9.582208] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    9.582210] CR2: 000055ee3aa260d0 CR3: 0000000148b67005 CR4: 0000000000770ef0
+[    9.582211] PKRU: 55555554
+[    9.582212] Call Trace:
+[    9.582213]  <TASK>
+[    9.582214]  ? __pfx___pgalloc_tag_sub+0x10/0x10
+[    9.582216]  ? check_bytes_and_report+0x68/0x140
+[    9.582219]  __free_frozen_pages+0x2e4/0x1150
+[    9.582221]  ? __free_slab+0xc2/0x2b0
+[    9.582224]  qlist_free_all+0x4c/0xf0
+[    9.582227]  kasan_quarantine_reduce+0x15d/0x180
+[    9.582229]  __kasan_slab_alloc+0x69/0x90
+[    9.582232]  kmem_cache_alloc_noprof+0x14a/0x500
+[    9.582234]  do_getname+0x96/0x310
+[    9.582237]  do_readlinkat+0x91/0x2f0
+[    9.582239]  ? __pfx_do_readlinkat+0x10/0x10
+[    9.582240]  ? get_random_bytes_user+0x1df/0x2c0
+[    9.582244]  __x64_sys_readlinkat+0x96/0x100
+[    9.582246]  do_syscall_64+0xce/0x650
+[    9.582250]  ? __x64_sys_getrandom+0x13a/0x1e0
+[    9.582252]  ? __pfx___x64_sys_getrandom+0x10/0x10
+[    9.582254]  ? do_syscall_64+0x114/0x650
+[    9.582255]  ? ksys_read+0xfc/0x1d0
+[    9.582258]  ? __pfx_ksys_read+0x10/0x10
+[    9.582260]  ? do_syscall_64+0x114/0x650
+[    9.582262]  ? do_syscall_64+0x114/0x650
+[    9.582264]  ? __pfx_fput_close_sync+0x10/0x10
+[    9.582266]  ? file_close_fd_locked+0x178/0x2a0
+[    9.582268]  ? __x64_sys_faccessat2+0x96/0x100
+[    9.582269]  ? __x64_sys_close+0x7d/0xd0
+[    9.582271]  ? do_syscall_64+0x114/0x650
+[    9.582273]  ? do_syscall_64+0x114/0x650
+[    9.582275]  ? clear_bhb_loop+0x50/0xa0
+[    9.582277]  ? clear_bhb_loop+0x50/0xa0
+[    9.582279]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[    9.582280] RIP: 0033:0x7ffbbda345ee
+[    9.582282] Code: 0f 1f 40 00 48 8b 15 29 38 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff c3 0f 1f 40 00 f3 0f 1e fa 49 89 ca b8 0b 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d fa 37 0d 00 f7 d8 64 89 01 48
+[    9.582284] RSP: 002b:00007ffe2ad8de58 EFLAGS: 00000202 ORIG_RAX: 000000000000010b
+[    9.582286] RAX: ffffffffffffffda RBX: 000055ee3aa25570 RCX: 00007ffbbda345ee
+[    9.582287] RDX: 000055ee3aa25570 RSI: 00007ffe2ad8dee0 RDI: 00000000ffffff9c
+[    9.582288] RBP: 0000000000001000 R08: 0000000000000003 R09: 0000000000001001
+[    9.582289] R10: 0000000000001000 R11: 0000000000000202 R12: 0000000000000033
+[    9.582290] R13: 00007ffe2ad8dee0 R14: 00000000ffffff9c R15: 00007ffe2ad8deb0
+[    9.582292]  </TASK>
+[    9.582293] ---[ end trace 0000000000000000 ]---
 
-Regards,
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ include/linux/alloc_tag.h |  3 ++
+ lib/alloc_tag.c           | 80 +++++++++++++++++++++++++++++++++++++++
+ mm/page_alloc.c           |  7 ++++
+ 3 files changed, 90 insertions(+)
 
-Tianyou
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index d40ac39bfbe8..941bb4e40d3f 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_ref *ref)
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+ 
++bool mem_profiling_is_available(void);
++void alloc_tag_add_early_pfn(unsigned long pfn);
++
+ #define ALLOC_TAG_SECTION_NAME	"alloc_tags"
+ 
+ struct codetag_bytes {
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index 58991ab09d84..a5bf4e72c154 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -6,6 +6,7 @@
+ #include <linux/kallsyms.h>
+ #include <linux/module.h>
+ #include <linux/page_ext.h>
++#include <linux/pgalloc_tag.h>
+ #include <linux/proc_fs.h>
+ #include <linux/seq_buf.h>
+ #include <linux/seq_file.h>
+@@ -26,6 +27,82 @@ static bool mem_profiling_support;
+ 
+ static struct codetag_type *alloc_tag_cttype;
+ 
++/*
++ * State of the alloc_tag
++ *
++ * This is used to describe the states of the alloc_tag during bootup.
++ *
++ * When we need to allocate page_ext to store codetag, we face an
++ * initialization timing problem:
++ *
++ * Due to initialization order, pages may be allocated via buddy system
++ * before page_ext is fully allocated and initialized. Although these
++ * pages call the allocation hooks, the codetag will not be set because
++ * page_ext is not yet available.
++ *
++ * When these pages are later free to the buddy system, it triggers
++ * warnings because their codetag is actually empty if
++ * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
++ *
++ * Additionally, in this situation, we cannot record detailed allocation
++ * information for these pages.
++ */
++enum mem_profiling_state {
++	DOWN,			/* No mem_profiling functionality yet */
++	UP			/* Everything is working */
++};
++
++static enum mem_profiling_state mem_profiling_state = DOWN;
++
++bool mem_profiling_is_available(void)
++{
++	return mem_profiling_state == UP;
++}
++
++#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++
++#define EARLY_ALLOC_PFN_MAX		256
++
++static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
++static unsigned int early_pfn_count;
++static DEFINE_SPINLOCK(early_pfn_lock);
++
++void alloc_tag_add_early_pfn(unsigned long pfn)
++{
++	unsigned long flags;
++
++	if (mem_profiling_state != DOWN)
++		return;
++
++	spin_lock_irqsave(&early_pfn_lock, flags);
++	if (early_pfn_count >= EARLY_ALLOC_PFN_MAX) {
++		spin_unlock_irqrestore(&early_pfn_lock, flags);
++		return;
++	}
++	early_pfns[early_pfn_count++] = pfn;
++	spin_unlock_irqrestore(&early_pfn_lock, flags);
++}
++
++static void __init clear_early_alloc_pfn_tag_refs(void)
++{
++	unsigned int i;
++
++	for (i = 0; i < early_pfn_count; i++) {
++		unsigned long pfn = early_pfns[i];
++
++		if (pfn_valid(pfn)) {
++			struct page *page = pfn_to_page(pfn);
++
++			clear_page_tag_ref(page);
++		}
++	}
++	early_pfn_count = 0;
++}
++#else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
++inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
++static inline void clear_early_alloc_pfn_tag_refs(void) {}
++#endif
++
+ #ifdef CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU
+ DEFINE_PER_CPU(struct alloc_tag_counters, _shared_alloc_tag);
+ EXPORT_SYMBOL(_shared_alloc_tag);
+@@ -729,6 +806,7 @@ static int __init setup_early_mem_profiling(char *str)
+ 			compressed = true;
+ 		}
+ 		mem_profiling_support = true;
++		mem_profiling_state = UP;
+ 		pr_info("Memory allocation profiling is enabled %s compression and is turned %s!\n",
+ 			compressed ? "with" : "without", str_on_off(enable));
+ 	}
+@@ -760,6 +838,8 @@ static __init bool need_page_alloc_tagging(void)
+ 
+ static __init void init_page_alloc_tagging(void)
+ {
++	mem_profiling_state = UP;
++	clear_early_alloc_pfn_tag_refs();
+ }
+ 
+ struct page_ext_operations page_alloc_tagging_ops = {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2d4b6f1a554e..336281d91d91 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 		alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
+ 		update_page_tag_ref(handle, &ref);
+ 		put_page_tag_ref(handle);
++	} else {
++		/*
++		 * page_ext is not available yet, record the pfn so we can
++		 * clear the tag ref later when page_ext is initialized.
++		 */
++		if (!mem_profiling_is_available())
++			alloc_tag_add_early_pfn(page_to_pfn(page));
+ 	}
+ }
+ 
+-- 
+2.25.1
 
-
-
-On 3/11/2026 11:02 PM, Li, Tianyou wrote:
-
->
-> On 3/9/2026 10:26 PM, David Hildenbrand (Arm) wrote:
->> On 3/9/26 01:42, Li, Tianyou wrote:
->>> Hi David, Mike & Other maintainers,
->> Hi!
->>
->>> Just a quick update: Yuan and I created a new patch based on David and
->>> Mike's code, updated the documentation as well, performed the
->>> performance test, double check all the references etc. We observed a
->>> slightly performance regression, not sure it was caused by the
->>> environment configuration or we triggered some unexpected behavior. We
->>> might need a bit more time to investigate. Will send out the patch soon
->>> once we have confirmed data for the performance regression. Thanks.
->> A performance regression would be rather unexpected, unless we somehow
->> don't ever set zone->contiguous=true any more :)
->>
->> In which test / code path did you observe a regression?
->
->
-> Sorry for the late response, I missed the email by accident. The test 
-> is simply hotplug and unplug the 256GB memory, the time became 3s 
-> instead of 2s for some reason compared to previous patch. 
-> Interestingly, for 512GB memory hotplug/unplug, the time remains as 
-> 6s. What we planned to do are: 1. double/triple check with the same 
-> and other servers; 2. collect the perf profile to see what is the diff 
-> compared with previous patch, if the regression consistently persisted.
->
-> I will work with Yuan on this and hopefully we can have more 
-> information to be shared here soon. Thanks.
->
->
-> Regards,
->
-> Tianyou
->
 
