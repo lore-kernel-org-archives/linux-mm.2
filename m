@@ -4,96 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3814C109024C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2232109024C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:18:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D7486B0541; Thu, 19 Mar 2026 12:16:40 -0400 (EDT)
+	id 1634A6B0543; Thu, 19 Mar 2026 12:18:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E5826B0543; Thu, 19 Mar 2026 12:16:40 -0400 (EDT)
+	id 0EDCE6B0544; Thu, 19 Mar 2026 12:18:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E9A56B0541; Thu, 19 Mar 2026 12:16:40 -0400 (EDT)
+	id EF8056B0545; Thu, 19 Mar 2026 12:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B71786B053E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:16:39 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82BEE1DCD6
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:16:39 +0000 (UTC)
-X-FDA: 84563315718.19.9D89520
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 824AC40013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:16:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=PZ1EAUfN;
-	spf=pass (imf17.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773936997;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D84986B0543
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:18:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 922DA1A062C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:18:44 +0000 (UTC)
+X-FDA: 84563320968.13.EA6B802
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CEA43100014
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:18:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SAhj5GuC;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773937123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kSzfJu51IfOy1UEq0KOHRM7ctnyUfpNOAlgbFOZRhU8=;
-	b=RLHomD9OfHNtrFoFOZemPsvA+FMzrLnXndjgr0yz3Alv4hO4y/D1VT974CkQm6L8UFxUgC
-	L9mbYTTDL+g1ojBT8uZSRRyDbRVpRc0a7VSSvBaoQ19BtT7I15SMnL0tSWdYGR/a4z4ZBK
-	6obeYVsCK532c02po+dxfjtaLkqawsg=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=PZ1EAUfN;
-	spf=pass (imf17.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773936997; a=rsa-sha256;
-	cv=pass;
-	b=VInvj4u9JDnzvkp5hHWDhf1W/YD/zWKaP9nsmu8NV+s+g3WRRXOJ/EhMdeaoKze4NzkkAV
-	uF5G7PTECpqu0dOmjU1P05FRY5x0PdvK+Gzie9EUAChdyXMTTonx5Hd1zh7D5TkA6ZZkmI
-	ncGJcxzXCECfkusMAF1Y33SoVJe5L+Y=
-ARC-Seal: i=1; a=rsa-sha256; t=1773936984; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=YtQ+n5adLWRhRlwMN/ButLVqI0ZbmvaM4gIG/cxPAIns1uVOQeOzWKZXRGp8VlENj/JNDx2sseAgMMmdXvRH58iiFRtgcnNImUH+HWs9OYrkYw2/ocDaCLbtnD5siUZ0uTztyznh65ajAGVffP2ib7MQfb77yi9sW89teajhSJA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1773936984; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=kSzfJu51IfOy1UEq0KOHRM7ctnyUfpNOAlgbFOZRhU8=; 
-	b=i4OEJ4irdtfNq67p49ZvD/NSOBuDo0sKHHeBAMzbko+Ov6MmRMddMlGwx2xy4hjXKG3xZV+lx9unCeP82ArIy6gq+XVyRXo4v6XbDuyf4CS9lLdT7BjSjVP77uHKRXLnvyr2ESoZOQyTuphUkGQVk1eHbu+b1SQJK6N9H3ylouM=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773936984;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=kSzfJu51IfOy1UEq0KOHRM7ctnyUfpNOAlgbFOZRhU8=;
-	b=PZ1EAUfNuAt4xkB14D2sffseN1vgACG0eDvUu8GwDycAxeSJFtCCc0+pnD7cg7ja
-	bZcNE7w3uJM1eb8Rsv1Wy460xJ1nUE4XoPYPC9njngndvZKQuj7jcyuHDmgySU6z20+
-	Aay50qDM0MVv/Vn+XKFpbCrLcHR/9FpHXkmwTiqs=
-Received: by mx.zoho.eu with SMTPS id 177393698328213.931315546403994;
-	Thu, 19 Mar 2026 17:16:23 +0100 (CET)
-From: Josh Law <objecting@objecting.org>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Josh Law <objecting@objecting.org>
-Subject: [PATCH 2/2] mm/damon/reclaim: fix min_age_region truncation from unsigned long to unsigned int
-Date: Thu, 19 Mar 2026 16:16:20 +0000
-Message-Id: <20260319161620.189392-3-objecting@objecting.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260319161620.189392-1-objecting@objecting.org>
-References: <20260319161620.189392-1-objecting@objecting.org>
+	bh=n5KWTiJCMcaH4JlQWwOeL4gWSd0MErycqbXZQ8+Z8yc=;
+	b=TkuQ73TdBAg05GGBdJPB+BTINQTe8mlvbE3wHVTwqEKshAAE1/oLwDJTuPhqN4CAOpLMIU
+	MHn16BjWWf36HiPx7UbWRSnmz1fmSppknA/ulwSiwLp4mMndU1QTRhQ3r/H5+Z9uMZrRZB
+	WEgRhKoIgHHlr7OSGrKVsWA4bS7ECvA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773937123; a=rsa-sha256;
+	cv=none;
+	b=zWlZQq34WpoZ2Hdtv+PuD21JKG1TXf5skbqmiy/szw0FyKN0B0XilREGIc9iDwlemAAoSN
+	rlk8yxynZxmcrB2NxeCc/g56oEIq2zJpjSqMcHTaRRYtdiV6OM4fDDZ+5cMuE/AsF/PCv0
+	hkWhx263GDrDqRgGU5kWtokWzZhboUQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SAhj5GuC;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CB5A44100;
+	Thu, 19 Mar 2026 16:18:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5EDC19424;
+	Thu, 19 Mar 2026 16:18:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773937121;
+	bh=+rJxXvh9jbY/cYu63rGxCHb0s8bdU5IuTtrr+qf/8ms=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SAhj5GuC0PfaoylzOpmZEg5wivkofnQ+GtRsdaeJOUJ4uAmHeX9yWUjJtJAn3it/L
+	 DtIYhs/uZLj/VchTSC0AmON6+W7EzTrZwPGqVuCyAhjCjaHPnhkABYQUeqprmOj1i/
+	 R/FWq7IVvWU1IGMy9FTlbHxdCNuIq9kR2X6GzLnLDJQbozNo/mkx2YeXRGXNiMY0o7
+	 vQpts1+55w++E8C9ighzin4xwksBwu0yd2u4NfBf4vlh8psPZ69uaMIHcyWDj4a0OE
+	 UwiaTPNnXiiVy+7V9ISLDkx2gH43hmidRMy6gz3GsbPkAVEku6PbjeRjw4rot/k9lf
+	 Rn92JSY6yNwyg==
+Date: Thu, 19 Mar 2026 18:18:22 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-mm@kvack.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 1/2] mm: remove CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE
+Message-ID: <abwhzkhM9Bk9xPIf@kernel.org>
+References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
+ <20260319-config_migration-v1-1-42270124966f@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 824AC40013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: egmijh9tqt8jah7fzwjd8diu981tjx7i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319-config_migration-v1-1-42270124966f@kernel.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CEA43100014
+X-Stat-Signature: zh19at8nix9qdh77g6cfqb7k58abapcm
 X-Rspam-User: 
-X-HE-Tag: 1773936997-488049
-X-HE-Meta: U2FsdGVkX18UfBqoWL4mTUWguDZSFHS8crDqhY9KoS7zcnHsBPIewW+ogTl1N9+WNTfYop0bkEj1sDgeyLOOiEnh2bWehnsRgPEueKnOM85KKGtY6MglvpQPstofjME/3oAAJjtJH9gdZ+Y1lBhZaIc01c13whd+MW+Ord9IomB+Wwen/s5NL/yxAN7srFq0J0rnaDhnUbTfmCnQ7Ehjkk2V2nku4gBQ3J2O+lS4QC3cFZy3kkfNn+y0IWzQNpNwp7XcLOM8cHL3hVtVkh1QcHwFDHmZIkpVXJ2KbnzC4nd4HqlTAwvobLfbv+tMVq/8NlrwZCGXNm5q6x4NDYDSOT11xXMPvlUMEvJMWnV3ijDdkeLuNtCwQrzr3jTpzwVHVK5qsLaNBhW+Gpf77jaSy5OloFfSigVB6u4MRsOECLL9kwTLVxR/GpVdhejOmKtuz8EZmnAY6gaHP0dr9DkfcO/e9jaWY3OW17mkaJEgcgNU6NFi5a0ND0Ks2WnwDynRT8jfqtiTZkIn5clZeniL3FSGDzaNgRp6ZagGdiSVmyEMcTS9iiAz4Z6HuBX+k5e+fxFtg01M1/TJ2bpLboaqKLHbsxoEpYZS4+JU2dZ8m8PwU6E/bU+/PWwWRBVIouIULiA8qMEAT56Earr5WTQEF5RdkQC9kE7x1zAA774rtGz3gPTXAyunpiMPYhh6bnrTkPqlIon3FTcAT4vmraRHQyvZF9LFWVKimhqdHQUnp/SmZ65RKVYo7nLWRghigiLVTtxk2Smb6GUdDY5twG7txD/YNKDVYRTAUCLit6bM/Bg4hsGbPwntGZge9eilSvgBRIzarGHTjJhuWvWXECJRbfuUjrwqFX2g7Ed5BZURKcdUqCTz7QMsSCExRA5zRmJWM195RSgEnUCT4RQ3cTY6TebbcC4S9IUsqSbg7YCDvdA28rFcG3mBMK6AUFqudn1DBl7K+wawGMBB8OLAjlw
- 99aF/7nj
- rXCRrbGwFXEf+kfpOXpTW/lT8T3br+ohLPa6qJRCJXIykhvlJYp0aIJWJiDGMoS64tI84YdV7xtPt8g1eZt134jT0vhewPmNrDmKTTF/xTInp3RAkDNphpunoHjMg1prvywg15R/FEL/nJzd8mtohGzUulZ/wHyPjSSRiMaPWZgVHIJCWoFBfJvAnFIsTUqukkqAkgFlyBOqkKeL2hRDxSiglqNTYfGBNrjgn2lUe+ChJwnxuT8JxvDZ+Gqb2LsOSVWP2uTffe4lHEu0m8zgcMJDQdgMVPzggD5FDh2PdrT2m+VahM/bEd8ZD052pc4Mhjyq0JeykSFmnAza/d4DrdCAti/84a4CCyEcu3SMsF8x8rKxtQz7KA5rcDGi4ZhmkPPhXdVYl+Zr1Ujk=
+X-HE-Tag: 1773937122-457209
+X-HE-Meta: U2FsdGVkX18az9C9LTtuQsvjI6LpQDYcPw7dO3gs1Y6BLY8YzoIIoidA9a5Z3/3oUnlwR+6fozKDUAa4UlqjqrgYNSImzoVyJgtO8CCASozQnfFbTAtwKKkVRGn4R3mblnb7ZwgldOSghv622G7iXyFdDhP62YCJnzzCCUJL+X/eX/u4JEfvkQKepzhhDtO+8GYZuBQMGML1T0YS8qLdFkLpr3Qfxndfjcl9Y7XvPzie608hwkWLhtgHyb/yvco+3RFZtz/S3bUdYSVztomSXRv32o6g26lMdXXR4EXY5pDubWcaDerAsBzbAC8eE10VcA2aV0XjrLF2t7NU/sAeo2OU4h4ZL/Pl53y4DAsedFo3zFRyedS8V9R6z9x9TvWt1BW77ROa86gxl3C6IrxgNLTLYdPhqZ7z2zUwLJpGsarSXUetP2g1iAgJ1udnUvWJ7w2LJlEl8rlFLUdrZDH7GTSr/2woqhZJO037MIG4PbBPrVOpxwLRcygzDrrG8fqiWaxgyubyBcn0vzrFgzQgqAO/vWym2k1QkdNSovCygaZ6yPeeCxkM1Z5Cm8lo+eswF23X6wQHV45tm+baIlygxuK1LvmXPuNbnu+4F2dYjEKFkOBfDVi/RnlivaZOGIoCmSy1a9CpLL1uqUMcH5LyU6Dw70r0AyCyioBOIy+Fyg13Gk1JV3uN0xiqhd0IBNRCpdcvy9ZDSj3QLX1Zy4tfHXEzkPf5ynd7drLzPyueSOKuLI4EDIzIDm4jDrJI9xXa02r8PbQvqufk7HqQDbJZx7wHBE2+tkhVRCcLeSfa9KDHQgyGndWSR8zaELZH1Lfm9xJ0jRLdu8TVwlGXKYBGUwkcnfw+ELUQkHQJ7/937ivErYGlqFDEamcJZBhy7TpdN22jIjCasiTbQEjGo9Rz9n3QdzD3o0kC13xmVAFxa8QvpL/xUns7p77ysAEg7KuAycnGwnKkGxXFO7GUb4O
+ 34dqv6BY
+ fVxCCn5muYGvoXeDbRPSj/aOEXNjOvwwscu9lWMSOBggRjbYxUHv4V70DUCLxUAqEdPZLYVJ1imNg7FcNqS9ig3yod0AycK+AaYR0XvoN6O8oln6uOfJgMjiNQ2voULGS/XquRkeMfbtH4Ex/E81cJ7jBQwVWa8qiwj/btJmACTVMqbkp7Ysr93hrC4PN3SFm4HwYmiTlo0m/gd5a0H8yIYwxB2DLw0+TqYIiBYZT8F6it+t13+/jZWfcbE5iP27cNfZUTqjIHt0zgSgyIj9/PMEYIjqb4+h41+7URntAgoAOIj244MjnbWk8BeYaBxnSzT6qx1AxhxM5lKr88WNQhg30kVPE2XSlNK6myzbVCcVns5d6GOi5Tfpt36jrTt/2xgpoEeuJ2VQuA3M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,32 +126,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-min_age / aggr_interval can exceed UINT_MAX with extreme but valid
-module parameter values, silently truncating min_age_region and
-lowering the cold-page age threshold below what the user intended.
-Clamp the result to UINT_MAX to match the field's type.
+On Thu, Mar 19, 2026 at 09:19:40AM +0100, David Hildenbrand (Arm) wrote:
+> All architectures that select CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE also
+> select CONFIG_ARCH_ENABLE_MEMORY_HOTPLUG. So we can just remove
+> CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE.
+> 
+> For CONFIG_MIGRATION, make it depend on CONFIG_MEMORY_HOTREMOVE instead,
+> and make CONFIG_MEMORY_HOTREMOVE select CONFIG_MIGRATION (just like
+> CONFIG_CMA and CONFIG_COMPACTION already do).
+> 
+> We'll clean up CONFIG_MIGRATION next.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Signed-off-by: Josh Law <objecting@objecting.org>
----
- mm/damon/reclaim.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 9b55df304e51..303c64a56073 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -170,8 +170,8 @@ static struct damos *damon_reclaim_new_scheme(void)
- 		.min_nr_accesses = 0,
- 		.max_nr_accesses = 0,
- 		/* for min_age or more micro-seconds */
--		.min_age_region = min_age /
--			damon_reclaim_mon_attrs.aggr_interval,
-+		.min_age_region = min_t(unsigned long, min_age /
-+			damon_reclaim_mon_attrs.aggr_interval, UINT_MAX),
- 		.max_age_region = UINT_MAX,
- 	};
- 
+> ---
+>  arch/arm64/Kconfig     | 1 -
+>  arch/loongarch/Kconfig | 1 -
+>  arch/powerpc/Kconfig   | 1 -
+>  arch/riscv/Kconfig     | 1 -
+>  arch/s390/Kconfig      | 1 -
+>  arch/x86/Kconfig       | 1 -
+>  mm/Kconfig             | 9 +++------
+>  7 files changed, 3 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+> index edc927d9e85a..d01800962d84 100644
+> --- a/arch/s390/Kconfig
+> +++ b/arch/s390/Kconfig
+> @@ -85,7 +85,6 @@ config S390
+>  	select ARCH_32BIT_USTAT_F_TINODE
+>  	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
+>  	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
+
+Not really related, but s390 does not have anything but SPARSEMEM_VMEMMAP.
+
+> -	select ARCH_ENABLE_MEMORY_HOTREMOVE
+>  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+>  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+>  	select ARCH_HAS_CC_CAN_LINK
+
 -- 
-2.34.1
-
+Sincerely yours,
+Mike.
 
