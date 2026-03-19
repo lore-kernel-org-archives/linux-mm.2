@@ -4,78 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 323E81075279
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BFF21075279
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AFB26B043E; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
+	id E58746B0440; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860EC6B0440; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
+	id E09936B0442; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74F666B0441; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
+	id CF8856B0443; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6313D6B043E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:49:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0CE4613ABBF
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:49:42 +0000 (UTC)
-X-FDA: 84562189404.04.2190E47
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BDF6F6B0440
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:52:21 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7112A160406
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:52:21 +0000 (UTC)
+X-FDA: 84562196082.29.CEDA80B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4011DC0005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:49:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VSAluQ55;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 992271C0003
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:52:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iq8fqK7y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773910180;
+	s=arc-20220608; t=1773910339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WhfPu3qnAbA5MPoYZ3CgPIhswmpi6WtzTYz3fzA2Ki8=;
-	b=cX7MgsiHKlGoSRVNNsyVbQ7rsXEjEdiHvHoLUcL0cTHV2nNGKiiByWJj+m9MQOpFgjdO+E
-	DlP/uyorGk7nmN7d9eIZsuKxphq9ozZ+v7MKkT5uQI+L2vvwYfaS5862C9jkgD4+1+N17u
-	1hEQpk3MUzVevJXaCEhC7hzFAdZU0bA=
+	bh=+CBhGCmCPvSek4nKMfxP0QZO3qvNTGdua0oZRYNKNTw=;
+	b=q4ZPaiSqdjlhz+tuuUqK3YF23aRjvp2DvckkZExx+Y4dDrsu23ss2XeH4TWOmJ3IZT//c9
+	wRncr6jrvUcpy/eZ7dpjGPIPSQ9AvgBK+IDWqu9t7lJWnLaMN7UNiJLEAlK3rRrmuMkOmw
+	fQoJAD4mpESdFROhR+hAELKlsloN3sg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VSAluQ55;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910180; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iq8fqK7y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910339; a=rsa-sha256;
 	cv=none;
-	b=kX9TSx/v/uBvEWKZA4zGrs09iLW56zrBcExWbdZAIegRAUFPZq6kA+cRmV6qg1DmCOJI5m
-	SP+Kj/6xhMdIuJKQsqXvpPfOSXszTd2Ew05uFM/iTwOoj8Py0GIXSA4jav90cwdPkvlJjW
-	moc2gbIwzmOkLonbP/VJWXnqaLV7jpo=
+	b=hGfVG9i/0mcM+xtrC2qdH6mK5C57qVzCW4YugDSwG+YMx/KJns/GoQUpuIoNz3q1BcCuy/
+	cUToMfcDfjgDlsSM50jwFcaJK2uH3RM0DwDYWx1JmfAvFgiy2SNlgGzpHDKA2lS951xj1j
+	1jQwfZohZn3LHTZ2ptgyHyMiR/HzaR4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4673C44474;
-	Thu, 19 Mar 2026 08:49:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB6DC2BCAF;
-	Thu, 19 Mar 2026 08:49:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DD5742A12;
+	Thu, 19 Mar 2026 08:52:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9946C19424;
+	Thu, 19 Mar 2026 08:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773910179;
-	bh=Ifz9SBANyiJwa/uIE9HB99AY8+id+zpQI5spFPN3LTU=;
+	s=k20201202; t=1773910338;
+	bh=KjTih1mV7xhDt8AoXAzz2WdUR6gzCkgsXYJPv8aWXHA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VSAluQ55HJaUtEG1IsJ5NWIOkQbWebceW3r1y0lVAN1ze5DOwc8hy9yROLrEGLdBM
-	 2MSALqdm602Mb3a36SCUcQFeoMJ/f25tFxICxTaPLU6hMm07C/PQgyV1K/2Gj8OyvP
-	 eESt4Wuc6GXc1se05GfxyikSydHlpXChUNz9igLQ5mI69KB5t6AFBJdt32dazC5bQ5
-	 wS+F5hmlJcryXi1DyHdAyLrNSPLLo4gdbtvh9+QL/RQ98nFvRor5L3Hnpedglld0L0
-	 VdptgsNVO5Tb/Qz/qbGf+sbGhIVr37CKmT3sLitwCEJEthI0nKSSp1a70gIj/xTKqo
-	 NbNqGef5zVqBw==
-Message-ID: <acfc913b-c635-4795-b75b-ab8b04e7e83b@kernel.org>
-Date: Thu, 19 Mar 2026 09:49:30 +0100
+	b=iq8fqK7yyUYa4xk2bNEcjetDuYfbZKAW0SGBJeEEK/oJUh3k5l6MBI2DqqQ9wvg3C
+	 R3GaHiP01BQp3WWD4/ypw6uHwsQ5fNDNiUalsHnq+eLNyC0AHlrc2S5y5yLXh0oOUH
+	 FhDCikRdQrbEQEHR217aLmbH2F/jfJ0Qlo0NlIwwh2wtBC/5Bmq099Tse81KcnwRc+
+	 2rUvtlEVwCE7Z9WdeRvEeU1v5p+n1l5krvsgwxnH65GyovXMzeGICEaQTCcqaCQFKb
+	 zxFzIjLzmFDvxGIh5oApqNdfrZH9jZArGnWImuzgpif65DyQdzl/8Rsb3CPWBRC+pf
+	 6Vj8YluhC73Sw==
+Message-ID: <502c7928-5d60-41e3-b93d-37244d4b2443@kernel.org>
+Date: Thu, 19 Mar 2026 09:52:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/huge_memory: fix folio isn't locked in
- softleaf_to_folio()
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, baohua@kernel.org,
- ryan.roberts@arm.com, linux-mm@kvack.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260319012541.4158561-1-tujinjiang@huawei.com>
+Subject: Re: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Dave Chinner <david@fromorbit.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
+ <absnshL4E4iXSC1y@cmpxchg.org>
+ <06625acf-ee08-45ee-bdbf-5a3157df0468@lucifer.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260319012541.4158561-1-tujinjiang@huawei.com>
+In-Reply-To: <06625acf-ee08-45ee-bdbf-5a3157df0468@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4011DC0005
-X-Stat-Signature: efnhzjmmmtfjnbig3g3y53ech56qhe64
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 992271C0003
+X-Stat-Signature: xshcn67tijt6y49t1skhgdacqq5t4r9o
 X-Rspam-User: 
-X-HE-Tag: 1773910180-798343
-X-HE-Meta: U2FsdGVkX19hiXQUmBBnnPoBSgLUbcBRDYR9uHk2klNW0VhyO7f9hXsV3oA6UU97CSDhaPT0sYMq3jLEnXqfFbbFyAn7rBYUN4dRxayRlVnVQrzs4HbClE9N9b9cokaB8+uQm3F7cH7C1ZBSbXV4FqEfVlKjV+ZzPT6ihifG+d9cRwvZ2GoGHtLltTqZnkVOXdOK0Nxg4rj9x6oo4NU/gclZAZ0GhWiBFxioX09L4TBumllIJ0rDiVinIxXUdisoYi51n6x2OX4S0FC1b3XIOGsz4h7KP7/znLmbARHNkccEiILfpPtVT3GtyOJzPNzkzwnNJEyWDW5igb8BAbj//Zx+LnH7Ik+FAffncFhxwDK56yuwRqveo0j7B5A/Npz5JEysJ39OOWzYBZS/dTAAdkexFSMqOeb4+RoI7B5Iqj6YFTux7DSrcFfH3nB2NlwDr5i6j+MRpzfKeT/8aD9xAvELEWPuPzbLcHY5gq/yD4aOeTldcLUtk4VPySqxGqCA7H6tBGg81opwLCnlasmA3ycJiKj/0C9y/B3ko2HQqVq45fjwK8hSHtObj4DalSRLGL1RbhY5ijwlXAvDQcQw8HMUU0T//krrRt93gPDZBGfTsgvFCrcGYFyfPYfqvF6Zbvz0HrtW232WfcXLyeApCZsv79AyFYrc/CzD3W0AiUbmd9ulfTEzExEXVjiDSvCq03II1l+zRuxMLJIjfNy/vdIJWOCcZKnGLK8/BVoFo7EAWF8/Kh2jIOAVsEpT6dnhKnf4Ew8jS4DQfBoVnbGpmioPTqVjTRjj8IV9bTtXdOJr/C73R/P1AM3nW2jHZ6GpHroKKNAtsyK53oTkf+zX8ziwgqX8eGdYnM/Xz16s9ryyZgU0UGnVjjb3yYnEL+gk1cA3S4Fuw6eryso0yW5KdusmXvECFtwKWEMNw/Hl2Rla6NmnoJKAxe8IB5zg3ogiSGTTHt9rKBHDxXnGeGF
- oNxpwMFD
- vcY9KZNySdf2bDONcPJP2Pcsd/nPvQ3HxUD0Pk/eVn/WFNhCVg6oc5nPb4n19abUq/zlilk3kw6NYVwPp3KDK0IePzLcId6LmRu2tjxmhunPhq9rgxJW7iLC+RjAeZiJE/kVDmTyNW5/57qjYY9vomYE0F/OoZ4tpgT9fs9yqi8wB4itUS0eZkb6v4zF3XIp70M1njb1fM7c3YW0sl7QSyolSSO/6NIyTVdR/D8hSaTlcT5RHJADZrsCOa1075Kj0GnF6+AiZ0rmgtK0mEWbgR0AUu/rLy3cLAMRVKBCJwHwlb+XMK+gMHA69FxgCg2AW9Atv404RhhlfSJB3Tl8fFL4/xN7xdNZGhLqH
+X-HE-Tag: 1773910339-250647
+X-HE-Meta: U2FsdGVkX1/h0q24K5lb3Ku2EmxbaVnootUCJChxj2JlJ/r7/SGV7InDMRjgPen1u2LHQv1e9RAtyCgH+DALCSs9cx40BKDT895rbiQBzVxm3yWU3uQTxTWnlxvBehduqHq4zCwtIN8h/06XfXba4FjPDS3uc3ZZXxNcxPdzAbeKlriiGHeQn6jxg8Y0Ggs/qtzaNjCObJCwHw41ClZ5AKYAEt/hGh8YdFtCqzhqOQNb6C0rNhT0WcekCqx4oAZgSpYWKMBPqxsHySFtcm2Tf2TQyb089ZhcwwGTmiW/kG/rcev0lRXebLZ9yunYfA8sDhNdj4uwMFj6Yshv1N0loCePmUwAYqQDYBl4zq3Tt74lqMKUp3f6UXnGjMD1op3J8vZDrhTvbSyHWH7lSpFTXpmBliuonl7GBFlesox2bbRHfD25zdJ3y2/fEnO/RMDieutw0sdshT58V56iXsv2yw0rPMYnWga/jvU6HqGW0g7AAh4xG5BnJIAE3XsoBfCXlqtu02pkJGvP7xeO7CO3Qp11qrA6Vm4++s4a3Qk/yusDIYFoi3DI8OQK0xTP9gFi1O59EkG9iyOiG56vcOqTVcg8v/QnT4fnPAHvTM57e1ho9SuOCgZZUCZZ2hsK4u76kq6EmIrVXGHC8vKBHVnpRzJqqY26rKGFIrFzrGc/8ra45RhTGi8ejAiDZlwnFoHUWUMa27uVqHw198HY/kg/+Fn/+AaQ9KX3q3YoV4mkJjHg2BHxEeXvZyaO1vfg35ShQeGVkY7hLCe0BECCHpAJShKtIhVJcgN7ofGrHBzLInbGtNLdVeVhBQkpqgmXC/KWl5ZR66PG67gHVZjYM6VoaT3wFywNHSW8vHTEhfw6VeamlCT+NkfLzcNYTm/fze5XMYH0NuJmFWwSNwGwJq3DCj4ZHm+hOhZeXooN5iaTuyI8/AZewbnE/Eh5s7Ns9nM1ekWeRg5ZJISlvfbee8B
+ F+4CD+hW
+ 2pndFEDBllBJca/rfINzmXbE8olHDZqD36RyHrV9tGM+mNlIXBaPTKgXWKr1ZV4hvL4WQ991/3Yk3tC3KglwAmSScivjKOaFYPjGfUu0QeF9abKyMWO+00yOZJaX0HJdrYJpIFTiX2vlPZaG7L8h9ylNtZE5UpCRJxOIlbvspjHotZ2Kyb+WrO3PPxlhTCkfCYGPRjj3S0JsrERf89hD8a9K4Jl5tZ0zuT+KzvWn9yDOjI6ssBP2plF37UG6pEblghH4kZWK+ghmn2pLp7sa1/mFx4am7mWmeLywxGB5pfxaTYGl1++2MvaVrDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,58 +145,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 02:25, Jinjiang Tu wrote:
-> On arm64 server, we found folio that get from migration entry isn't locked
-> in softleaf_to_folio(). This issue triggers when mTHP splitting and
-> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-> in softleaf_to_folio(). The race is as follows:
-> 
-> 	CPU0                                             CPU1
-> 
-> deferred_split_scan()                              zap_nonpresent_ptes()
->   lock folio
->   split_folio()
->     unmap_folio()
->       change ptes to migration entries
->     __split_folio_to_order()                         softleaf_to_folio()
->       set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
->       smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
->       prep_compound_page() for tail pages
-> 
-> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-> are visible before the tail page becomes non-compound. smp_wmb() should
-> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
-> result, if zap_nonpresent_ptes() accesses migration entry that stores
-> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
-> page before page->flags.
-> 
-> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-> in softleaf_to_folio() and softleaf_to_page().
-> 
-> Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> ---
-> 
-> Change in v3:
->  * move softleaf_is_migration() check out of softleaf_migration_entry_check()
-> 
->  include/linux/leafops.h | 28 +++++++++++++++++-----------
->  1 file changed, 17 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> index a9ff94b744f2..dd4130b7cb7f 100644
-> --- a/include/linux/leafops.h
-> +++ b/include/linux/leafops.h
-> @@ -363,6 +363,19 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->  	return swp_offset(entry) & SWP_PFN_MASK;
->  }
->  
-> +static inline void softleaf_migration_entry_check(softleaf_t entry,
-> +			struct folio *folio)
+> TL;DR - anyway, I think get_maintainer.pl --nogit (and trim anyone who
+> isn't listed as a maintainer or reviewer) is the right balance to take -
+> maintainers with screwed up email set ups (*cough* naming no names
+> beginning with L and ending with orenzo) and reviewers who have signed up
+> for lots of mail I think are totally fine to always send to.
 
-Nit: ^ should be two tabs. Likely no need to resend because of that.
+On some simplistic changes (e.g., simple function rename) I sometimes
+drop the Reviewers of subsystems because the simplistic changes are
+mostly just as information to maintainers that there might be conflicts.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+That helped in the past to reduce the CC lists on series that touch many
+archs / subsystems.
 
 -- 
 Cheers,
