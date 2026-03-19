@@ -4,117 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C971090222
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 13:23:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2672E1090220
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 13:33:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 391B36B04C0; Thu, 19 Mar 2026 09:23:44 -0400 (EDT)
+	id 6873A6B04C3; Thu, 19 Mar 2026 09:33:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 347E36B04C2; Thu, 19 Mar 2026 09:23:44 -0400 (EDT)
+	id 65EDC6B04C4; Thu, 19 Mar 2026 09:33:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 231A76B04C3; Thu, 19 Mar 2026 09:23:44 -0400 (EDT)
+	id 59C126B04C5; Thu, 19 Mar 2026 09:33:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F41C6B04C0
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:23:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA4541DBB6
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:23:43 +0000 (UTC)
-X-FDA: 84562879926.07.017E71B
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CE04F40008
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:23:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hloEogiD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49F186B04C3
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:33:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01AD61B81AE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:33:46 +0000 (UTC)
+X-FDA: 84562905294.25.18AD52D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0BBC210000E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:33:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vBWCl3aS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773926622;
+	s=arc-20220608; t=1773927225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gi1yeZfgvnivbkzQjzFZaRoJUwW3BJjiIJuxd//iTGg=;
-	b=IJu5mk5HjbujNYIK62+ys3Xjz7tbUdl42nw4WcgUYYexg8cp3EtZAzKT0ck/Yg5Y7fy+w4
-	B40EVZqfA1MhaV7e5kXsSlX9jM8NqV3vS2tG6Fd1fqdug/hus1i1KUn64PqDpOKQ1HPVnm
-	CCuLTaqDtP00yvH48PNqErbyvHMhAPw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773926622; a=rsa-sha256;
-	cv=none;
-	b=YP1nR/9jE2rq9oemDCFiDWzQCsg/fVe/QMIVPB3FsopJW52PC/rBWnA6CHLkKaQeELsgGg
-	hDw8Cub3z5fi79bZA8CmPK07KVIiMdG7rdV1w6SOoW5wzTqZSwgQdbQ14GpW+mWwTFQyBF
-	mAC5RjUDg40Wek/i8ThXzIraIvR/IPs=
+	bh=m0Z27ac0n560xbn6Sj3oUMsFiW/QLmzjDZsplSJgxV8=;
+	b=1OyXShsrXzsWwwQ8OdHyHuDU/xKLndMdA7LCx2PlvrbX4cilF8wwTD+glLv0Q5V7cviMVD
+	J/Z/sNxtPRplnUoN1+uA8YWLyfokHAm+MbOl5fM1qJmhkzoFNcSp5MtmE6viX/0UYJ2X6T
+	RYwbpNJ3/ARVafIzsE8m0jc4CoY9ZcU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hloEogiD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a133b686f7so1021205e87.0
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773926620; x=1774531420; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gi1yeZfgvnivbkzQjzFZaRoJUwW3BJjiIJuxd//iTGg=;
-        b=hloEogiDtImbUSCrqv3qbYhO6YZIHAdO6uIlXTrUcX9+MR7s1meSpS4JlVUn1g2bUu
-         dLYwD+/aBYbd84MIBcU9IEMLElrd30ud+M+V+Fftk5GxsEzk0BtD4al3rhgVgTii8J6L
-         3DieQ/elcN4WmUm676bfGq+UmAa9oyz22upZWySTB4rq13ukycw9fmZUUItQJF85W+gR
-         xL0B6/d5n9BRDE1PlNCAuEIXXfHeJ2GwKCthQKfwu9ym4OISPw2zCGtZlwQBM53t5OOO
-         HyoMYY83Uioj5pUkp9KMv0+DJSlbfWx1L7po1mWIV+ljqTWD36cfSLM3jkYPDy5/HScU
-         bbqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773926620; x=1774531420;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gi1yeZfgvnivbkzQjzFZaRoJUwW3BJjiIJuxd//iTGg=;
-        b=mEa+m4xJNg9HY4p/3LcrdTlfou9h29xrVVnDiUoR/AeNMZX02mvyT6PBvDl5I48E/6
-         DnsxEP8d0UIUfSdaxm9kHNNZZr08PwPTVCPl1uYhfnmkENHXth43g5X9YrvVIKabnVMo
-         IZSzb1+4LH10WIdImrHjEvhJVU2QSQHgQNdsfsYdDFNgym0Rcf+kUS0CAbqhslWPlDLW
-         PrwIiibKwZ6tWEzHWXXT9GyPqh1+puAkTDr+VTTvfb7u+yQWNYOWQPSyUTxW0KiOWvBd
-         OYX56gfBEuMLayXR9u0CgJybMl/0kVda0+AXqb5LA/KXXNL2iW52ZrUb1nMig45M5FmY
-         FwGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWiXST5I/uDQuKERuvELH0/k0q/CCqPFSbwhmHrRjXaViGHPc/HrBJ2leZF29qWjYKYk+95WqzVfA==@kvack.org
-X-Gm-Message-State: AOJu0Yz3oFOsStIbqhvVaAKIV3mZ21DQx8uAfHvL4YckYzFCVq0IcEDG
-	M1fdRc6fX/P86R1hE4D67/hlqfSkuzicnCaB9KxLsoq8pOJFmeMwdOTj
-X-Gm-Gg: ATEYQzxpRIMfDXPxAi0/ONSogsz1rDaNC1yQWqQf6CEwat9lEyvI1huDS20+U5AoK/F
-	McgRkNrCgcW04MenRmrI3pnoKZDqpNQGZwivHQhGZrJnaQOnW4kBr4dwgSlbVvdH1Mo5nnqKjnq
-	VkVQu6xgUsZRosENpHTrX1RbvGUGSPJ37+67uI3suMOvMlSdVyqfvaz4Fg0rDJn1k2rwUQrZ+i4
-	/3eNbT/rZbwV0KaoBQnU3tCZwcwTpzL7gpCT+X5hW9rNKW/1aR3OGaeZOQCnzFIEdjy3/sKy+b+
-	h/d4k/6qW5T+gxJw5ZFetKLh/bL5U12qjqny7dL7yPFJ2EYUSRwiagwY07QYvVgDmcDi8X8N0+p
-	iY0K+sWI9ARAwDm2YdIwEiH2GfcIwreilC0UDOtniIRKg9ePECci39IejbIP7BOmu
-X-Received: by 2002:a05:6512:14d:b0:5a1:74e3:203e with SMTP id 2adb3069b0e04-5a2796b61d5mr2389827e87.41.1773926619474;
-        Thu, 19 Mar 2026 06:23:39 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a279c2c11dsm1212391e87.22.2026.03.19.06.23.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 06:23:39 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 19 Mar 2026 14:23:37 +0100
-To: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?562U5aSNOiBbPz8/P10gUmU6IFtQ?=
- =?utf-8?Q?ATCH_v2=5D_mm=2Fvmalloc?= =?utf-8?Q?=3A?= use dedicated unbound
- workqueue for vmap area draining
-Message-ID: <abv42QtTuwJCv1St@milan>
-References: <20260319074307.2325-1-lirongqing@baidu.com>
- <abvEZehbufg4amhQ@pc636>
- <73a0ae8d2a334777a199a1555d6fdaaa@baidu.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vBWCl3aS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773927225; a=rsa-sha256;
+	cv=none;
+	b=JiIgEW4LG3wcThcwsUAVb0+ulKPeDbsHlbEkklQEY+LaRd8rfV0XrkETnuePPeeZeBmerV
+	JYTNKtgeLeLSavbqleRmSlsFypVBF5NyV4K1QTCMJupvkvAOmTg7q56g6BAA/jEfZHto9R
+	omIMLkqEFox/UJCDhvJlOvvTYgZOxfU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B8FB84427B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:33:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9331FC2BCB1
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:33:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773927223;
+	bh=Dm5NKjKvqYl+3avboOzUu7vWJxbH+jX5bwpvt7ZbXmc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vBWCl3aSlRIt9q6Ez7UQVnyLA2tz01gTMvyrUfBQUTXeb8Eyu53iq24c8yLKzqzRL
+	 qgW5hTvsTHYDjO7lU8liynoYG+bS5C1bhJlWzaHcT4bsrUwMzn+jLKcznFNElKELwE
+	 Zd89QfmUjywogG+p5ZTFAxkO8MT0POs9JTZnqjyBRLXusP87oY7fB0nZ2tatMqhCZf
+	 w3DwRcZtJ6zpDal/KDbyxVGqNi4RGIDll1QVnGGS0J8gE6VX8cFEh8ZsCvLkkNaPOa
+	 AbvPxfM/74lR2f4MFmO+BvDXxHhMOvziuqozyzlH1Wp6TN8mS3bWYjkPE9uxoxfPtB
+	 Xx3VubDVDYfUA==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-67934c83063so377312eaf.0
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:33:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUAUh0N5oqa7Gzc6+BnvbKfKVWRc1IGqdf0NK+0SBFmj/F/cB907lmDorYBwnV0vscL/vbSCbi2kA==@kvack.org
+X-Gm-Message-State: AOJu0YwbTF8aJwyT+pfNveeQVKuimkE2FZfUxkKoZVFC8AcaU9IkruDk
+	Yq+PIDkrzby6qVGWgafcS6mpLMHHD5mCIbKZ03UzV3D/qP+jF7XLkDPSmk00f9z8hvUOCq+51i9
+	ojdsvbPdmcmctgZyeUudyNXTmnHW4Cyk=
+X-Received: by 2002:a05:6820:2014:b0:67b:c368:135a with SMTP id
+ 006d021491bc7-67c0dabccf0mr5608217eaf.19.1773927222682; Thu, 19 Mar 2026
+ 06:33:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73a0ae8d2a334777a199a1555d6fdaaa@baidu.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CE04F40008
-X-Stat-Signature: y9wztwt5t3y4aqyk44bbkmmjayu4m8g6
+References: <20260317181318.2517015-1-youngjun.park@lge.com>
+In-Reply-To: <20260317181318.2517015-1-youngjun.park@lge.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 19 Mar 2026 14:33:30 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iOh46gM9YVFnvN6bYcG5_kcqASqS+38brRg2BWAtOOzw@mail.gmail.com>
+X-Gm-Features: AaiRm52jELOb6Ko_0-wwNDTuvZw8N5aHWBrJf9TOBTOkGixQcbO_z3u4Hjo8Jhc
+Message-ID: <CAJZ5v0iOh46gM9YVFnvN6bYcG5_kcqASqS+38brRg2BWAtOOzw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] mm/swap, PM: hibernate: fix swapoff race and
+ optimize swap
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: rafael@kernel.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, pavel@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev, 
+	linux-pm@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0BBC210000E
+X-Stat-Signature: 7uesfonjypcqppdcf398f9rqkd49t3e6
 X-Rspam-User: 
-X-HE-Tag: 1773926621-413178
-X-HE-Meta: U2FsdGVkX186i7o7F1i/41bcIogThQ5rFT8m87o10GYa/MSkOQ8tCcjHla7RDc0NAT9gI4iQM05RAEdEDlxuNMh4LCaYwCR48R7PzIJPGvulu/H5ia8vUvuMRdCpwVkI6YYPUsQ30QHu+CUQ2SNY6H66xHZG0EB9VbSVco7abH/4l0Vcy0r4koD0pTDJYaCU54Aw0/MWetgQ5MUYv9kmFtiHyZmPEQaJjeclK6Iqrv3s+ooVI9G6yRYWKJCmj+HT/Xdy4LDtPborEoj0V00qcuCeyz8CDdAqvXcj/gDXhXxNJSH9wOoLlNzkCwR+zKZK5vCl/a1cgr6tYXYUI+vE35s0VcTYQLOlSOz8/lxhRJyBQAGfhod/93IDOeuD9qY428BthrP0mPp0VveCHymRx/AS/nEdW45UuaMGiPhH/iPNvYkDzn+7E39PbK7MUFHqI5EmDxSNSbdObX4+7S6IZsuVrG1IynxX4nVyYI+n6+elTBsTOC6/ign77E7sLXUQORgBQc5VW8nspbm58JRcQ3w4aPZ8do00HzKqJkx4aIDGcQpqZb1U/QuDbaWAKQKT+061pHPD3etLK1AWflS7/Yo3CcVWTGmabXiMU4/d8JBqeOI7T8QiBWKQL8gLEKphAj6ABqPrbBKeTxNd3E+LVSYzGE0Zd22w+CqbHoURwlkAKY7GGdEBeM3X3cf79kGNgvGrxNpbO7UmBqKhlYgD8bTMDTTkUtqt3MOIsS5HKke+GAMK75ElXPMrJSlHfCVbQvHtJ2E4v1teo0RqmFmIEQxTqKzT1HlueZGkJuAARhOcfPcy8fIbHPLkawYl/3Uik0eH0UH+P4vDzZeNLCOAaljaZNM5fSo3jWU7Eiu2UFMidCPpCez+S+nvzeqpaLJV088dH3BDXdaSjTyc34InJCmWTno9i1kpfiJOPkVj4tsoEyskMPC7buR66Kvt4bYL3tYqI0zywXe5q071/eG
- Xomy9krY
- YAC4NdJ8IIr7AXH9zGMKgUZiwEzjq9y/lINiIvZK6X2azPRFdH1ugxwb8LBs7LitXwIFYhuBxP/oeb+FQWNXSIqyXFWjCBfQgW/xhuetsCARs4Os4cHwLjCkRFqsmorTUU/V+dPVtafKAF9DXB4k16zNEuZ3xAtLqbRhx0wnppD7Hp57OWSDsRFWiTMgZQonBoXuygkk6odtmDfCim8qqbSU0iUbgSdc7L2jPnzd76T3sPnVJCs+1YM3lmdlxt2Ro95kkk8CwadV5NSTGAOkl/YhUFV9qmsat/dJJOX/7ZNk1PGHieZyAxFaV1EfekRxk6sLX44cbTUOZY/hcAMMQJRP1MLYv/Zc0sh0d4QZazXCGyw40SNSyqQ5L34hU0CcMAhnz8l7LfChXSs0uTcXtAX9iJLReL9ihZtP9wmPblWDGCd2AyD36ZKRtsxltQDxZ5K1/BUUKzdl9q9KOGAuCtrwo57wzL9gb76cE5oP+At0zBrVyaK92OqFDpqfMc6Fe4AcZyV/al3tzR1By8uEaxERm+vaLa/fl5WXBQG1vDkTLyUGFbaGLlLzMpfKOJmmtCfb0iFoLYYKyHZXxpFbyYXEQ2XKkUMG7/w+dIegqkstxT6AhkzvquGri2w==
+X-HE-Tag: 1773927224-70340
+X-HE-Meta: U2FsdGVkX18jnTu/pgmcEHAYkK0/tHKsHjndp6KOvkxUwyrty3OTT29PLmIPy8ExN8Lq8gm7gaUMgyzXsk7oTRfArN31GIdttUlHSqlfyukvJtqg3yCPLyv8VtTpT6I8tJZK5F2Xq3R/lJ9xbYMKRpqH8VMjSVCZpWRn0ttZAjRVoac/djEcWuCtfo63CkTkEaJsV1MEaeXd02ub0aAqvhkh3Qgbgbtqwhf57afQkug8MqbJ/G3MHJU0g94o8Xq5QF2JT6NqjREuxZoZVnddufK0/bTAv/9XqZscJoCdCWPqEn+Iy2mnX1dZxtb3N26MvJuLlmvUzzgJnZyA9ri1n5msTsMwewide5NdT0dwPIjHLJoPgb+ZoWYmhr0I7cCORBjEIf+nOz7W1DDTL6GBmYszguYe1vo+MBkRsamoHUiVzGOHJmmzY8/2xSdSfFWYr967AUsZwj052+WnyagwJStEfJ5PfWAVDBeeY1NsmaQdrI/UkuAoBijKzHhGke48Ub2CUKUgd4XDg+n1ttWsWSkBqgWKlI2jkdUDD/u37XbMuY1BctuwPBE4qgENbnc8H085IJBVk5MPnPnih98mMMpJwHBGydUHAwtoq67DeqPdiiKRenWRr7oRjxezKNiHvTA7wqxyHuCmbkgsxMmtu6dEKIqiTxp6fbL2D/l+gdrFsgRsBmhL7Idcuog87O/MQEuMLJTQ83s9vlb0Hg+tehxvMZgNIgoYYzmrPxWtMoFjiJaUR7lmk5wDNu5Xf7au9EQYvIM89KKef7QSSc/KHyVRUEGHvvuA6sc7G6tR8le+92Q07dgqvLZPsyZGosrZ6Kmi6tO/s3OGQWD64At6Zb7AcRcGQrWy8t6zvwsJQOP83//DWWxVHQGCFcYm5SxtHitfQv7EExA5SUMLc1lxugXPuLAdhRU2Qtn05+yeZhwjxhioA5bwvwTxGXnG1OJY4oD9skxxMa12NA0gEco
+ o2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,186 +104,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 10:05:42AM +0000, Li,Rongqing(ACG CCN) wrote:
-> 
-> 
-> > On Thu, Mar 19, 2026 at 03:43:07AM -0400, lirongqing wrote:
-> > > From: Li RongQing <lirongqing@baidu.com>
-> > >
-> > > The drain_vmap_area_work() function can take >10ms to complete when
-> > > there are many accumulated vmap areas in a system with a high CPU
-> > > count, causing workqueue watchdog warnings when run via
-> > > schedule_work():
-> > >
-> > > [ 2069.796205] workqueue: drain_vmap_area_work hogged CPU
-> > for >10000us
-> > > 4 times, consider switching to WQ_UNBOUND [ 2192.823225] workqueue:
-> > > drain_vmap_area_work hogged CPU for >10000us 5 times, consider
-> > > switching to WQ_UNBOUND
-> > >
-> > > Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
-> > > run this background task on any available CPU, improving responsiveness.
-> > > Use WQ_MEM_RECLAIM to ensure forward progress under memory
-> > pressure.
-> > >
-> > > Create vmap_drain_wq in vmalloc_init_late() which is called after
-> > > workqueue_init_early() in start_kernel() to avoid boot-time crashes.
-> > >
-> > > Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-> > > Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> > > ---
-> > > Diff with v1: create dedicated unbound workqueue
-> > >
-> > >  include/linux/vmalloc.h |  2 ++
-> > >  init/main.c             |  1 +
-> > >  mm/vmalloc.c            | 14 +++++++++++++-
-> > >  3 files changed, 16 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h index
-> > > e8e94f9..c028603 100644
-> > > --- a/include/linux/vmalloc.h
-> > > +++ b/include/linux/vmalloc.h
-> > > @@ -301,11 +301,13 @@ static inline void set_vm_flush_reset_perms(void
-> > *addr)
-> > >  	if (vm)
-> > >  		vm->flags |= VM_FLUSH_RESET_PERMS;
-> > >  }
-> > > +void __init vmalloc_init_late(void);
-> > >  #else  /* !CONFIG_MMU */
-> > >  #define VMALLOC_TOTAL 0UL
-> > >
-> > >  static inline unsigned long vmalloc_nr_pages(void) { return 0; }
-> > > static inline void set_vm_flush_reset_perms(void *addr) {}
-> > > +static inline void __init vmalloc_init_late(void) {}
-> > >  #endif /* CONFIG_MMU */
-> > >
-> > >  #if defined(CONFIG_MMU) && defined(CONFIG_SMP) diff --git
-> > > a/init/main.c b/init/main.c index 1cb395d..50b497f 100644
-> > > --- a/init/main.c
-> > > +++ b/init/main.c
-> > > @@ -1099,6 +1099,7 @@ void start_kernel(void)
-> > >  	 * workqueue_init().
-> > >  	 */
-> > >  	workqueue_init_early();
-> > > +	vmalloc_init_late();
-> > >
-> > No, no. We should not patch main.c for such purpose :)
-> > 
-> > >  	rcu_init();
-> > >  	kvfree_rcu_init();
-> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c index 61caa55..a52ccd4 100644
-> > > --- a/mm/vmalloc.c
-> > > +++ b/mm/vmalloc.c
-> > > @@ -1067,6 +1067,7 @@ static void
-> > reclaim_and_purge_vmap_areas(void);
-> > >  static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
-> > >  static void drain_vmap_area_work(struct work_struct *work);  static
-> > > DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
-> > > +static struct workqueue_struct *vmap_drain_wq;
-> > >
-> > >  static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
-> > > static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr; @@
-> > > -2471,7 +2472,7 @@ static void free_vmap_area_noflush(struct vmap_area
-> > > *va)
-> > >
-> > >  	/* After this point, we may free va at any time */
-> > >  	if (unlikely(nr_lazy > nr_lazy_max))
-> > > -		schedule_work(&drain_vmap_work);
-> > > +		queue_work(vmap_drain_wq, &drain_vmap_work);
-> > >  }
-> > >
-> > >  /*
-> > > @@ -5422,6 +5423,17 @@ vmap_node_shrink_scan(struct shrinker
-> > *shrink, struct shrink_control *sc)
-> > >  	return SHRINK_STOP;
-> > >  }
-> > >
-> > > +void __init vmalloc_init_late(void)
-> > > +{
-> > > +	vmap_drain_wq = alloc_workqueue("vmap_drain",
-> > > +						WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-> > > +	if (!vmap_drain_wq) {
-> > > +		pr_warn("vmap_drain_wq creation failed, using
-> > system_unbound_wq\n");
-> > > +		vmap_drain_wq = system_unbound_wq;
-> > > +	}
-> > > +
-> > > +}
-> > > +
-> > >  void __init vmalloc_init(void)
-> > >  {
-> > >  	struct shrinker *vmap_node_shrinker;
-> > > --
-> > > 2.9.4
-> > >
-> > Why can't you add this into the vmalloc_ini()?
-> > 
-> 
-> If alloc_workqueue() is added into vmalloc_ini(), system will crash and fail to boot, sine allocate workqueue depends on workqueue_init_early()
-> 
-> Maybe this commit 3347fa092821("workqueue: make workqueue available early during boot") shows the reason
-> 
-That is true.
+On Tue, Mar 17, 2026 at 7:13=E2=80=AFPM Youngjun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> Currently, in the uswsusp path, only the swap type value is retrieved at
+> lookup time without holding a reference. If swapoff races after the type
+> is acquired, subsequent slot allocations operate on a stale swap device.
+>
+> Additionally, grabbing and releasing the swap device reference on every
+> slot allocation is inefficient across the entire hibernation swap path.
+>
+> This patch series addresses these issues:
+> - Patch 1: Fixes the swapoff race in uswsusp by holding the swap device
+>   reference from the point the swap device is looked up.
+> - Patch 2: Removes the overhead of per-slot reference counting in alloc/f=
+ree
+>   paths and cleans up the redundant SWP_WRITEOK check.
+> - Patch 3: Fixes a spurious WARNING in the uswsusp GFP mask restore path.
+>   (Founded during uswsusp test)
+>
+> Links:
+> RFC v1: https://lore.kernel.org/linux-mm/20260305202413.1888499-1-usama.a=
+rif@linux.dev/T/#m3693d45180f14f441b6951984f4b4bfd90ec0c9d
+> RFC v2: https://lore.kernel.org/linux-mm/20260306024608.1720991-1-youngju=
+n.park@lge.com/
+> RFC v3: https://lore.kernel.org/linux-mm/20260312112511.3596781-1-youngju=
+n.park@lge.com/
+>
+> Testing:
+> - Hibernate/resume via sysfs
+>   (echo reboot > /sys/power/disk && echo disk > /sys/power/state)
+> - Hibernate with suspend via sysfs
+>   (echo suspend > /sys/power/disk && echo disk > /sys/power/state)
+> - Hibernate/resume via uswsusp (suspend-utils s2disk/resume on QEMU)
+>   - Verified swap I/O works correctly after resume.
+>   - Verified swapoff succeeds after snapshot resume completes.
+>   - Verified pm_restore_gfp_mask() WARNING no longer triggers (Patch 3).
+> - swapoff during active uswsusp session:
+>   - Verified swapoff blocks while uswsusp holds swap reference.
+>   - Verified swapoff can be cancelled by signal (e.g. Ctrl+C).
+>   - Verified swapoff succeeds after uswsusp process terminates.
+>
+> Changelog:
+> rfc v3 -> v4:
+>  - Introduced get/find/put_hibernation_swap_type() helpers per Kairui's
+>    feedback. find_ for lookup-only, get/put for reference management.
+>  - Switched to swap_type_to_info() and added type < 0 check per
+>    Kairui's suggestion.
+>  - Fixed get_hibernation_swap_type() return when ref =3D=3D false (Review=
+d by Kairui)
+>  - Made swapoff wait interruptible to prevent hang when uswsusp
+>    holds a swap reference.
+>  - Fixed spurious WARN_ON in pm_restore_gfp_mask() by introducing
+>    pm_restore_gfp_mask_safe() (Patch 3).
+>  - Updated commit messages and added comments for clarity.
+>  - Rebased onto latest mm-new tree.
+>
+>  Note: Kairui suggested adding WARN on NULL in put_hibernation_swap_type(=
+),
+>  but kept silent return instead, as type can legitimately be -1 when
+>  snapshot_open() fails to find a matching swap device. swap_type_to_info(=
+)
+>  returns NULL for type < 0, so the cleanup path stays simple.
+>
+> rfc v2 -> rfc v3:
+>  - Split into 2 patches per Chris Li's feedback.
+>  - Simplified by not holding reference in normal hibernation path
+>    per Chris Li's suggestion.
+>  - Removed redundant SWP_WRITEOK check.
+>  - Rebased onto f543926f9d0c3f6dfb354adfe7fbaeedd1277c6b.
+>
+> rfc v1 -> rfc v2:
+>  - Squashed into single patch per Usama Arif's feedback.
+>
+> Youngjun Park (3):
+>   mm/swap, PM: hibernate: fix swapoff race in uswsusp by getting swap
+>     reference
+>   mm/swap: remove redundant swap device reference in alloc/free
+>   PM: hibernate: fix spurious GFP mask WARNING in uswsusp path
+>
+>  include/linux/suspend.h |   1 +
+>  include/linux/swap.h    |   4 +-
+>  kernel/power/main.c     |   7 ++
+>  kernel/power/swap.c     |   2 +-
+>  kernel/power/user.c     |  19 +++--
+>  mm/swapfile.c           | 154 +++++++++++++++++++++++++++-------------
+>  6 files changed, 132 insertions(+), 55 deletions(-)
+>
+> --
 
-<snip>
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 61caa55a4402..81e1e74346d5 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -1067,6 +1067,7 @@ static void reclaim_and_purge_vmap_areas(void);
- static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
- static void drain_vmap_area_work(struct work_struct *work);
- static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
-+static struct workqueue_struct *drain_vmap_wq;
- 
- static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
- static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
-@@ -2437,6 +2438,17 @@ static void drain_vmap_area_work(struct work_struct *work)
- 	mutex_unlock(&vmap_purge_lock);
- }
- 
-+static void
-+schedule_drain_vmap_work(unsigned long nr_lazy, unsigned long nr_lazy_max)
-+{
-+	if (unlikely(nr_lazy > nr_lazy_max)) {
-+		struct workqueue_struct *wq = READ_ONCE(drain_vmap_wq);
-+
-+		if (wq)
-+			queue_work(wq, &drain_vmap_work);
-+	}
-+}
-+
- /*
-  * Free a vmap area, caller ensuring that the area has been unmapped,
-  * unlinked and flush_cache_vunmap had been called for the correct
-@@ -2470,8 +2482,7 @@ static void free_vmap_area_noflush(struct vmap_area *va)
- 	trace_free_vmap_area_noflush(va_start, nr_lazy, nr_lazy_max);
- 
- 	/* After this point, we may free va at any time */
--	if (unlikely(nr_lazy > nr_lazy_max))
--		schedule_work(&drain_vmap_work);
-+	schedule_drain_vmap_work(nr_lazy, nr_lazy_max);
- }
- 
- /*
-@@ -5483,3 +5494,15 @@ void __init vmalloc_init(void)
- 	vmap_node_shrinker->scan_objects = vmap_node_shrink_scan;
- 	shrinker_register(vmap_node_shrinker);
- }
-+
-+static int __init vmalloc_init_workqueue(void)
-+{
-+	struct workqueue_struct *wq;
-+
-+	wq = alloc_workqueue("vmap_drain", WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-+	WARN_ON(wq == NULL);
-+	WRITE_ONCE(drain_vmap_wq, wq);
-+
-+	return 0;
-+}
-+early_initcall(vmalloc_init_workqueue);
-<snip>
+Which kernel version does this series apply to?
 
---
-Uladzislau Rezki
+It doesn't apply for me on top of 7.0-rc4, so please consider rebasing.
 
