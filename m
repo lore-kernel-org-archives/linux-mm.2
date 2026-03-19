@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B1F7108E1F0
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC628108E1F0
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C22816B047D; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
+	id 1D2456B047E; Thu, 19 Mar 2026 07:28:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE2DE6B047E; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
+	id 1833B6B0480; Thu, 19 Mar 2026 07:28:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1FB36B047F; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
+	id 099456B0481; Thu, 19 Mar 2026 07:28:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E3646B047D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DFFCB99D2
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:27:59 +0000 (UTC)
-X-FDA: 84562588278.07.1D83E84
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4B9D41C0005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:27:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="f/0gIRDK";
-	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E90AF6B047E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:28:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0690B99D2
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:28:13 +0000 (UTC)
+X-FDA: 84562588866.19.563F99D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DC3DE80009
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:28:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a1iRZAYB;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773919677;
+	s=arc-20220608; t=1773919692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zHg6oeL1L67eEN+OOTKjMfILFxz6m+HpynbYij4jWJY=;
-	b=6oaUqfs4l0YpeHeZkSdFVSOYB53ZAY89cbeDdzJZYIpMs+s8cntlPR3VtCk0/UaSvj+ZSy
-	Pzw0IaE9Vcv9bNVJvf6refsc3WMVatzTnIK70x8FaKenC15Tbj318HU8sBt7yq9G9bHy0t
-	nwXy82fHhhrGcEXKyq/dzs5yINMsULs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="f/0gIRDK";
-	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773919677; a=rsa-sha256;
+	bh=y1j0MCfzGZpTFacEYPci8LVbiS0cQRQJ0gEZSKNRcwI=;
+	b=wNaIp/tz1lFdIRumpCtws4DteqM1CA8CW7Ma+A2MvnhlApiVKTW35IN6IVDxpPPw7c4+c/
+	cGsGMg4jzYK4PETVyBIXlVqa92JDE86PG2ARdRQbSa4yZQae4NVhcG2/TxGzagkqJYSpRD
+	IuNoXhaFnQcOHbW++bSyfA3nNxWANmM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773919692; a=rsa-sha256;
 	cv=none;
-	b=qnpoyGZPwlFfEOKG0o2QvFXKYnOrowDHrsU9LzPV2yC28wSCeOFwS4dZAlWuAl37BnhSN2
-	ntWkKsDANeyQDGev9M9aBx8YHrJHrkI4wzVmjnhfG8GOoEdmg1zz6YU/QMJwde+nB1Yar0
-	zRnR0gPa3T/CePXjtqqCo9NeqOWeBzc=
-Date: Thu, 19 Mar 2026 19:27:28 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773919675;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zHg6oeL1L67eEN+OOTKjMfILFxz6m+HpynbYij4jWJY=;
-	b=f/0gIRDKYIGFjoBCyhy9k0oBAyFKXTaiP0YEzB/zChPb3R854LS9eegHRQMTKGFBH3W/Wv
-	mjiOYqZcGbCQUM6Ra99kfUaXyacjfh2gDQx59QvZYwacby400FXkJg76LSl0pWvbmwY8Cr
-	4HOKkfVt2ow6W/LSiCNlIsAjXsSup6U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] slab: create barns for online memoryless nodes
-Message-ID: <7uyhaxzup5b4qslhf4wnbv4qlafulvlpbn5mpalvurxrlaolvf@2tltqo2qmrsj>
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
- <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
- <4659c675-6949-4295-b385-1ab26921a975@kernel.org>
- <jwlqiygxlch5gq6g3vkwynrpndjwcoxwice2hmvim3tvdfubp4@je5ldr7pa5f6>
- <5d10a43f-15d0-4af5-bacb-9924629066a0@kernel.org>
+	b=JbFxZENUHChIzGnAHFeqLHvjm+zXHh2SzEYWtzbdDK1JKSO5/kL/0sYT/yn6yW+nyh9l0n
+	oOAkeavP47B1yziE7eJKawAXMDXs+pDSmrKaI6U/5cpjbAwSw7+vzWxUmBaA8L5YmfJjzO
+	8qIBiP5PMAaPCWInOA2FFRw47GY3Jcg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a1iRZAYB;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E6586400F6;
+	Thu, 19 Mar 2026 11:28:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACAAC2BC87;
+	Thu, 19 Mar 2026 11:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773919690;
+	bh=gwKupKmJtMf2w3Ic//RR17rxaIVEZO5ItMIA7WhbaNM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a1iRZAYB6x0ucTX78RhUqm62uLVRv5+4vHiZcFiG65MeIqmybZV8Dx/nbVc0FSnLs
+	 ajCH5ntleS1TeTexmZwYy9YUHsD+1ZrmNOsuiFCeThdAig9S2EjbPfvn9iI+0PR4wu
+	 Z1MdM4E/pIzmkMPRRry855G2cCc3KLTa0m/zGxHR8ImhJVWlQigb5UVXgc3deGuyKc
+	 dzqUBnX1kkYcXqUNBjH/V/g25zs5Bp0/GqCGR3DUgpD4Foi96h9M/okNUkxxlgNz3m
+	 AksUrHnLE8wywc22+deyPH8CzjjWvPKpMViVxc6ukWBvi9LZxdZXesfW3FJdvNvXUz
+	 14dvxco60t68w==
+Date: Thu, 19 Mar 2026 11:28:03 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, Liam.Howlett@oracle.com, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm: change to return bool for
+ ptep_test_and_clear_young()
+Message-ID: <1e664c93-603a-4c16-94f4-595a90744980@lucifer.local>
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
+ <3fa94c3c89fd93fe22c8cb59967f064787d686aa.1773890510.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5d10a43f-15d0-4af5-bacb-9924629066a0@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4B9D41C0005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: fquqxmqmffc8gap8w7trkou41rijff57
+In-Reply-To: <3fa94c3c89fd93fe22c8cb59967f064787d686aa.1773890510.git.baolin.wang@linux.alibaba.com>
 X-Rspam-User: 
-X-HE-Tag: 1773919677-873444
-X-HE-Meta: U2FsdGVkX19xJYCHKjxOBZF5gJpSvM6u7xgusCAsEVLXuh1h9mD6uMlsEOB9AwrjW5fkVcR+ZwWVSwpSu84QsZqXI1TchmXEn0hMNCBhx5IwD5Of/yS+am6u7eMYMhW64CIXqWGmc9QsRDZaZ34Q8jK3+O3C1rZg5h2klUGuoNAnM752bQX+Hz50Sze7BGYkNQNuY5zlffx2VJWNNQbmy28Ciz0z9xKBwntB7LjCMjpiirvUmsRbIozn26ki4aRmqH9fRXjli5/7gA1QuYyCei2ZlGgg0M/jfSZR9s3QdCB8lru60oi9jMjG0iYuYbnK0whAnrX5Fn+UoKHJljz0/s7EARuslVJqxfYjF/rbr4yNFDVKk4+egMeAuIsAuNTWJ4vran1vgddf5uJ8LlSLxTj8F/LyMUNTynmtZyqkVYlb7LPYpZ7njAwJPMAMcB1c0qLwNOLeqOl9zIdUHg3CI7u4obMOEU2XIXdvS6GYko/WUCoQ4YSY0SB268zvRjUZhWbsWtoMACrrwLXXj10ZkRMQiVlJnmdIOAPkaO/EXlU4aaSev1bWmZPtHtFSAo807b+IcCRu/2iWA5JI1ZB3LPx4WGrs1Tpw3pT1JDuPDcWxHQ/d4knag1Vt4bV4N3q+o+ICes+Qm5I9Yuz70y/cfIuMjuIBHmQuMEPyHi9/DNF2Uf4m4MIxHNqQ5tluJMpu2NMH6cdlGb+HxJrQCTmaYrnvtttjk/Lx/3ldlqApZh3C3e3ijapaVZJa3m+KBX2S05O0M0LABMAIw5C5tcxb80mrKMzDb7nlK7P2gvTsgex3lNbF0kuabnI9lva5EX17BSwEyUK/ltMbZ8cTxGsam6/mfZMPy8BDLBWTQs1+E+kfHhTiEu2bMYPGxnFXcz2EYyALTxGxnTENXRv/an/wU2UabPinWh0msybF/Dk9nhoNMOW45n9hFMU4PelBUlvqgGKPqT38aNK/PxcmqKT
- 2hBD5rt1
- TWOgba+zTlXKnVX54H5zTMSgHMkQapgcUDAGDrzi60Kj09M40SbsJiTkPPZZMtHdBsLieHd/Kl4kPpEMFGC4YDspUpxaukmiTqpgW9M78Z+d2hsJW3Ib6utrUb3Lv29+XbkHE+F3ekZ+ydq5373Rjz8Lm1En7DjK4FJmW1yZPKgoLgRqqyVUn5zsmGTvLZ51md6ktMto4dt+rZHZg68JftgehLvxPEHnExxphixUt/SiyQOI=
+X-Stat-Signature: 5rub1ph9r39tzg5znf4sayumgtfyp8rn
+X-Rspamd-Queue-Id: DC3DE80009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773919691-970217
+X-HE-Meta: U2FsdGVkX19RqFCBLIPDgF4NWeP2+7tiTrckFb6+7Z9U15EQnaf0ydiKLlO06mxOKnROS+r6tVnVJpTIYul9ISWImUqOGIKmpsgSCiCWO8NPbVsE2PKFpXb3s93KjtAd5rgYxeJtKAghA8YKnJoaL8vufo6bkhNzx0yganabgFZXejwWlVTHkyA5E2FGROP7yxeB6U9GUAx1QNKoQ4Ht32QquQvB1bQbwSP9MATzZAGpKe6nJeurME/mefu/OhEfx1Cug8Dc3v9vr+8jcRMdrdEbzEP6ZghBwpcsrZ/L3Ldt8j+Elbi2q4N5awcVhRAN2woiJYRKXIbsiF7D0SQD3CrhlMo2LpmyiBtpF9byNo9D1JYgbSv7wqT+86NPqtp5uCkPlp6DtMmqK4NxpiTTqHRZEco8SBFWffzq7SDH80y2tneHxzGFQdP5OfuTTT+RYpphWF7MrHzMPDoFAFWmYqkWudcZR5mu4Pz0kxrejWqW5uk6+17bskn0aKNlnh42/Yncnd3+Vjj32/1M+/OaDhUVYsm90Z6NocPef8jfSjyGj8yoWTiFZhdGYkpgHwpKk7wpxscDP/EdlI3k7xNfe37Xfd966IPjN7r9FKUfEpFlTifAOj/lyRSrRrldM3zGgTHSSNfPmDU2UtMF7U7FE6JpGwHvxYbr1GBn5N2fE4M3LjeHzt8H5HOHLf86z0ozZ94ljowAr+uysgdWdHiJtzgmZLbS8HdpuaMk8Vin6G8Y4tjXLyzU8nEfOV+MlJb+TZuDW7a5nWEoPlQqvpO7VqhR6AOBHKI/XzNs5HogEJFVm8SRQnVhFJ3Y9NMcDK+k04uUJgCVy+V8cTC3Nw9j/0PPkmbBFQfuE00j9LbdW9/zcyK7D+pGClFPEIdkbUr40xxV/b3EUptjYzxRFrN5o7rCfvP0nY1/kzsufNQqcq7IPGIbQfGtVarnxPPAT44I8Yg1S9Av50emQ9m01W+
+ 1YGFHVJ0
+ SbKN+LSuzhKGCPFf6H+iRQ+XA4QDxN7VXFyY4GDmRBqdSDC5PyH4ZsL2OwNLkhQNOQmir2OseNNoM3BR4mukCy/7kImS0eR4KOAANExVBA7HcV3ZW5/u+2bfIBhEEJYloEbbs0+pFZDqfR1lTuoPKeHaGTKNYILkdH1SofPmM3c7pjF5UJAKfBOpg9bgYUZ8ZKnPYIDfQTMHaAdkuB0B722i008lJgx7Cg92Y7EFJFcoU6JnK6HeXoYOp2y3edh70c5qKOmQzFXW1dElC/G9eSHVNqMJzCoMkCK6Gw56Jdm1Iiq6mk7FRcURZkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,116 +95,339 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 10:56:09AM +0100, Vlastimil Babka (SUSE) wrote:
-> On 3/19/26 08:01, Hao Li wrote:
-> > On Wed, Mar 18, 2026 at 01:11:58PM +0100, Vlastimil Babka (SUSE) wrote:
-> >> On 3/18/26 10:27, Hao Li wrote:
-> >> > On Wed, Mar 11, 2026 at 09:25:56AM +0100, Vlastimil Babka (SUSE) wrote:
-> >> > 
-> >> > I had a somewhat related question here.
-> >> > 
-> >> > During memory hotplug, we call node_set() on slab_nodes when memory is brought
-> >> > online, but we do not seem to call node_clear() when memory is taken offline. I
-> >> > was wondering what the reasoning behind this is.
-> >> 
-> >> Probably nobody took the task the implement the necessary teardown.
-> >> 
-> >> > That also made me wonder about a related case. If I am understanding this
-> >> > correctly, even if all memory of a node has been offlined, slab_nodes would
-> >> > still make it appear that the node has memory, even though in reality it no
-> >> > longer does. If so, then in patch 3, the condition
-> >> > "if (unlikely(!node_isset(numa_node, slab_nodes)))" in can_free_to_pcs() seems
-> >> > would cause the object free path to skip sheaves.
-> >> 
-> >> Maybe the condition should be looking at N_MEMORY then?
-> > 
-> > Yes, that's what I was thinking too.
-> > I feel that, at least for the current patchset, this is probably a reasonable
-> > approach.
-> 
-> Ack.
-> 
-> >> 
-> >> Also ideally we should be using N_NORMAL_MEMORY everywhere for slab_nodes.
-> >> Oh we actually did, but give that up in commit 1bf47d4195e45.
-> > 
-> > Thanks, I hadn't realized that node_clear had actually existed before.
-> > 
-> >> 
-> >> Note in practice full memory offline of a node can only be achieved if it
-> >> was all ZONE_MOVABLE and thus no slab allocations ever happened on it. But
-> >> if it has only movable memory, it's practically memoryless for slab
-> >> purposes.
-> > 
-> > That's a good point! I just realized that too.
-> > 
-> >> Maybe the condition should be looking at N_NORMAL_MEMORY then.
-> >> That would cover the case when it became offline and also the case when it's
-> >> online but with only movable memory?
-> > 
-> > Exactly, conceptually, N_NORMAL_MEMORY seems more precise than N_MEMORY. I took
-> > a quick look through the code, though, and it seems that N_NORMAL_MEMORY hasn't
-> > been fully handled in the hotplug code.
-> 
-> Huh you're right, the hotplug code doesn't seem to set it. How much code
-> that we have is broken by that?
+On Thu, Mar 19, 2026 at 11:24:00AM +0800, Baolin Wang wrote:
+> Callers use ptep_test_and_clear_young() to clear the young flag and check
+> whether it was set. Change the return type to bool to make the intention
+> clearer.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-This probably needs a bit more digging.
+Couple nits about dropping externs below but otherwise LGTM, so:
 
-> It seems hotplug doesn't handle it since 2007 in commit 37b07e4163f7
-> ("memoryless nodes: fixup uses of node_online_map in generic code"),
-> although the initial support in 7ea1530ab3fd ("Memoryless nodes: introduce
-> mask of nodes with memory") did set it from hotplug.
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Yes, this really is quite an old issue. It looks like we may need to dig
-through the git history a bit more carefully.
-
-I'd be happy to dig into it further.
-
-> 
-> > Given that, I think it makes sense to use N_MEMORY for now, and then switch to
-> > N_NORMAL_MEMORY later once the handling there is improved.
-> 
-> So I'll do this:
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 01ab90bb4622..fb2c5c57bc4e 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6029,7 +6029,7 @@ static __always_inline bool can_free_to_pcs(struct
-> slab *slab)
->          * point to the closest node as we would on a proper memoryless node
->          * setup.
->          */
-> -       if (unlikely(!node_isset(numa_node, slab_nodes)))
-> +       if (unlikely(!node_state(numa_node, N_MEMORY)))
-
-Looks good to me.
-
-I've gone through the full series, including the range-diff updates, and the
-rest looks good to me.
-Feel free to add my rb-tag to three updated patches. Thanks!
-
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
->                 goto check_pfmemalloc;
+> ---
+>  arch/arm64/include/asm/pgtable.h             |  8 ++++----
+>  arch/arm64/mm/contpte.c                      |  4 ++--
+>  arch/microblaze/include/asm/pgtable.h        |  2 +-
+>  arch/parisc/include/asm/pgtable.h            |  6 +++---
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  4 ++--
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  6 +++---
+>  arch/powerpc/include/asm/nohash/pgtable.h    |  4 ++--
+>  arch/riscv/include/asm/pgtable.h             |  4 ++--
+>  arch/riscv/mm/pgtable.c                      |  8 ++++----
+>  arch/s390/include/asm/pgtable.h              |  4 ++--
+>  arch/x86/include/asm/pgtable.h               |  4 ++--
+>  arch/x86/mm/pgtable.c                        |  6 +++---
+>  arch/xtensa/include/asm/pgtable.h            |  6 +++---
+>  include/linux/pgtable.h                      | 16 ++++++++--------
+>  14 files changed, 41 insertions(+), 41 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index ab451d20e4c5..8c651695204c 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1282,7 +1282,7 @@ static inline void __pte_clear(struct mm_struct *mm,
+>  	__set_pte(ptep, __pte(0));
+>  }
+>
+> -static inline int __ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+>  					      unsigned long address,
+>  					      pte_t *ptep)
+>  {
+> @@ -1646,7 +1646,7 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+>  extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>  				unsigned long addr, pte_t *ptep,
+>  				unsigned int nr, int full);
+> -int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+> +bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>  				unsigned long addr, pte_t *ptep, unsigned int nr);
+>  int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>  				unsigned long addr, pte_t *ptep, unsigned int nr);
+> @@ -1813,7 +1813,7 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+>  }
+>
+>  #define test_and_clear_young_ptes test_and_clear_young_ptes
+> -static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+> +static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
+>  					    unsigned long addr, pte_t *ptep,
+>  					    unsigned int nr)
+>  {
+> @@ -1824,7 +1824,7 @@ static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+>  }
+>
+>  #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+>  				unsigned long addr, pte_t *ptep)
+>  {
+>  	return test_and_clear_young_ptes(vma, addr, ptep, 1);
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> index 1519d090d5ea..0b88278927a4 100644
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -508,7 +508,7 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+>  }
+>  EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
+>
+> -int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+> +bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>  					unsigned long addr, pte_t *ptep,
+>  					unsigned int nr)
+>  {
+> @@ -525,7 +525,7 @@ int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+>  	 */
+>
+>  	unsigned long end = addr + nr * PAGE_SIZE;
+> -	int young = 0;
+> +	bool young = false;
+>
+>  	ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
+>  	for (; addr != end; ptep++, addr += PAGE_SIZE)
+> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
+> index ea72291de553..7678c040a2fd 100644
+> --- a/arch/microblaze/include/asm/pgtable.h
+> +++ b/arch/microblaze/include/asm/pgtable.h
+> @@ -318,7 +318,7 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
+>
+>  #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+>  struct vm_area_struct;
+> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+>  		unsigned long address, pte_t *ptep)
+>  {
+>  	return (pte_update(ptep, _PAGE_ACCESSED, 0) & _PAGE_ACCESSED) != 0;
+> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+> index f6fb99cb94d9..d5e39f2eb415 100644
+> --- a/arch/parisc/include/asm/pgtable.h
+> +++ b/arch/parisc/include/asm/pgtable.h
+> @@ -438,16 +438,16 @@ static inline pte_t ptep_get(pte_t *ptep)
+>  }
+>  #define ptep_get ptep_get
+>
+> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
+> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
+>  {
+>  	pte_t pte;
+>
+>  	pte = ptep_get(ptep);
+>  	if (!pte_young(pte)) {
+> -		return 0;
+> +		return false;
+>  	}
+>  	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
+> -	return 1;
+> +	return true;
+>  }
+>
+>  int ptep_clear_flush_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
+> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+> index 001e28f9eabc..2a889e2093e8 100644
+> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+> @@ -295,8 +295,8 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+>   * for our hash-based implementation, we fix that up here.
+>   */
+>  #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+> -static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
+> -					      unsigned long addr, pte_t *ptep)
+> +static inline bool __ptep_test_and_clear_young(struct mm_struct *mm,
+> +					       unsigned long addr, pte_t *ptep)
+>  {
+>  	unsigned long old;
+>  	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index 1a91762b455d..25e3a86943e2 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -349,13 +349,13 @@ static inline unsigned long pte_update(struct mm_struct *mm, unsigned long addr,
+>   * For radix: H_PAGE_HASHPTE should be zero. Hence we can use the same
+>   * function for both hash and radix.
+>   */
+> -static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
+> -					      unsigned long addr, pte_t *ptep)
+> +static inline bool __ptep_test_and_clear_young(struct mm_struct *mm,
+> +					       unsigned long addr, pte_t *ptep)
+>  {
+>  	unsigned long old;
+>
+>  	if ((pte_raw(*ptep) & cpu_to_be64(_PAGE_ACCESSED | H_PAGE_HASHPTE)) == 0)
+> -		return 0;
+> +		return false;
+>  	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
+>  	return (old & _PAGE_ACCESSED) != 0;
+>  }
+> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+> index e6da5eaccff6..43cf52f0c7d6 100644
+> --- a/arch/powerpc/include/asm/nohash/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
+> @@ -101,8 +101,8 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+>  }
 >  #endif
-> 
-> 
-> >> 
-> >> I don't know if with CONFIG_HAVE_MEMORYLESS_NODES it's possible that
-> >> numa_mem_id() (the closest node with memory) would be ZONE_MOVABLE only.
-> >> Maybe let's hope not, and not adjust that part?
-> >> 
-> > 
-> > I think that, in the CONFIG_HAVE_MEMORYLESS_NODES=y case, numa_mem_id() ends up
-> > calling local_memory_node(), and the NUMA node it returns should be one that
-> > can allocate slab memory. So the slab_node == numa_node check seems reasonable
-> > to me.
-> > 
-> > So it seems that the issue being discussed here may only be specific to the
-> > CONFIG_HAVE_MEMORYLESS_NODES=n case.
-> 
-> Great. Thanks!
-> 
+>
+> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -					    unsigned long addr, pte_t *ptep)
+> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +					     unsigned long addr, pte_t *ptep)
+>  {
+>  	unsigned long old;
+>
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+> index ab4ce1cc9d9c..fb010dcdf343 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -659,8 +659,8 @@ static inline void pte_clear(struct mm_struct *mm,
+>  extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+>  				 pte_t *ptep, pte_t entry, int dirty);
+>  #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG	/* defined in mm/pgtable.c */
+> -extern int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long address,
+> -				     pte_t *ptep);
+> +extern bool ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long address,
+> +				      pte_t *ptep);
+
+Let's drop the extern.
+
+>
+>  #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+>  static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+> diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
+> index b1ed2f14dc3a..de24a19e8ebd 100644
+> --- a/arch/riscv/mm/pgtable.c
+> +++ b/arch/riscv/mm/pgtable.c
+> @@ -29,12 +29,12 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
+>  	return true;
+>  }
+>
+> -int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -			      unsigned long address,
+> -			      pte_t *ptep)
+> +bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +			       unsigned long address,
+> +			       pte_t *ptep)
+>  {
+>  	if (!pte_young(ptep_get(ptep)))
+> -		return 0;
+> +		return false;
+>  	return test_and_clear_bit(_PAGE_ACCESSED_OFFSET, &pte_val(*ptep));
+>  }
+>  EXPORT_SYMBOL_GPL(ptep_test_and_clear_young);
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+> index 1c3c3be93be9..da1a7a31fa22 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -1164,8 +1164,8 @@ pte_t ptep_xchg_direct(struct mm_struct *, unsigned long, pte_t *, pte_t);
+>  pte_t ptep_xchg_lazy(struct mm_struct *, unsigned long, pte_t *, pte_t);
+>
+>  #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -					    unsigned long addr, pte_t *ptep)
+> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +					     unsigned long addr, pte_t *ptep)
+>  {
+>  	pte_t pte = *ptep;
+>
+> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+> index 54289f4587a4..563a6289ea44 100644
+> --- a/arch/x86/include/asm/pgtable.h
+> +++ b/arch/x86/include/asm/pgtable.h
+> @@ -1232,8 +1232,8 @@ extern int ptep_set_access_flags(struct vm_area_struct *vma,
+>  				 pte_t entry, int dirty);
+>
+>  #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+> -extern int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -				     unsigned long addr, pte_t *ptep);
+> +extern bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +				      unsigned long addr, pte_t *ptep);
+
+Let's drop the extern.
+
+>
+>  #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+>  extern int ptep_clear_flush_young(struct vm_area_struct *vma,
+> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+> index 2e5ecfdce73c..c594976afc5c 100644
+> --- a/arch/x86/mm/pgtable.c
+> +++ b/arch/x86/mm/pgtable.c
+> @@ -443,10 +443,10 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+>  }
+>  #endif
+>
+> -int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -			      unsigned long addr, pte_t *ptep)
+> +bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +			       unsigned long addr, pte_t *ptep)
+>  {
+> -	int ret = 0;
+> +	bool ret = false;
+>
+>  	if (pte_young(*ptep))
+>  		ret = test_and_clear_bit(_PAGE_BIT_ACCESSED,
+> diff --git a/arch/xtensa/include/asm/pgtable.h b/arch/xtensa/include/asm/pgtable.h
+> index 61f07d981a94..b962ef4652f5 100644
+> --- a/arch/xtensa/include/asm/pgtable.h
+> +++ b/arch/xtensa/include/asm/pgtable.h
+> @@ -304,15 +304,15 @@ set_pmd(pmd_t *pmdp, pmd_t pmdval)
+>
+>  struct vm_area_struct;
+>
+> -static inline int
+> +static inline bool
+>  ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long addr,
+>  			  pte_t *ptep)
+>  {
+>  	pte_t pte = *ptep;
+>  	if (!pte_young(pte))
+> -		return 0;
+> +		return false;
+>  	update_pte(ptep, pte_mkold(pte));
+> -	return 1;
+> +	return true;
+>  }
+>
+>  static inline pte_t
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 17d961c612fc..8e75dc9f7932 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -491,17 +491,17 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
+>  #endif
+>
+>  #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -					    unsigned long address,
+> -					    pte_t *ptep)
+> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +		unsigned long address, pte_t *ptep)
+>  {
+>  	pte_t pte = ptep_get(ptep);
+> -	int r = 1;
+> +	bool young = true;
+> +
+>  	if (!pte_young(pte))
+> -		r = 0;
+> +		young = false;
+>  	else
+>  		set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
+> -	return r;
+> +	return young;
+>  }
+>  #endif
+>
+> @@ -1123,10 +1123,10 @@ static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>   *
+>   * Returns: whether any PTE was young.
+>   */
+> -static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+> +static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
+>  		unsigned long addr, pte_t *ptep, unsigned int nr)
+>  {
+> -	int young = 0;
+> +	bool young = false;
+>
+>  	for (;;) {
+>  		young |= ptep_test_and_clear_young(vma, addr, ptep);
+> --
+> 2.47.3
+>
 
