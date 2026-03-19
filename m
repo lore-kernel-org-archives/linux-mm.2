@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F259107526F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:37:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0EA5107526F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 07:40:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D25256B041C; Thu, 19 Mar 2026 03:37:22 -0400 (EDT)
+	id 0F38C6B041E; Thu, 19 Mar 2026 03:40:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFCF86B041E; Thu, 19 Mar 2026 03:37:22 -0400 (EDT)
+	id 0A50F6B0420; Thu, 19 Mar 2026 03:40:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C112F6B041F; Thu, 19 Mar 2026 03:37:22 -0400 (EDT)
+	id ED60F6B0421; Thu, 19 Mar 2026 03:40:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AEADF6B041C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:37:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 480F38B713
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:37:22 +0000 (UTC)
-X-FDA: 84562007124.26.3F0B97E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DBF066B041E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 03:40:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9113C8B88E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:40:35 +0000 (UTC)
+X-FDA: 84562015230.17.769D235
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4CCC440006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:37:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YctH8PgT;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B795D100005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:40:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBereu8Z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773905840;
+	s=arc-20220608; t=1773906033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C5tnDm/ABQNsA6CFGfkj3pj6REkShAprpbEVsTtFZBs=;
-	b=Z8TBqTYagK+Nc+H634sGaitw7VDcKehcJvbhoMOd7ftqD3N851KQbr4OXvetvqYBQA+0nj
-	WAIehOwsGmnZWwE/qYuY/KSgSr5fRgjvTe1H/N040SkVQySYSsZyHHeLFUh+uYhgggiFml
-	BWsXUgeNzrqU5ixhY3h1/3lF2XgFnqo=
+	bh=JZvTKENtcCv2cSZKl3LDo5qu3izmZZmpsJiVt93OIbw=;
+	b=BVN6sFyhNaFS999xncwR/vyUF9T3P60tOqU764gFRXAuf3zrvrwWNczHik6zv99zoYomSI
+	zOB8+JbHOrz5h5dFaXl6Q/0c4PAMLbZSP/YsEiXFGJSrT+/EIv5/TK/gF59kKzLXpuxGbh
+	pzlar4xFJi0YzmrAdz7KhObUdroKQ2E=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YctH8PgT;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBereu8Z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773905840; a=rsa-sha256;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773906033; a=rsa-sha256;
 	cv=none;
-	b=EpTZgYWkX/O4EUlef/EokySjH1KS7H1L0cYjSMsELAaxTrNX95A+vQCit29rqsIgfxfnIl
-	lbiLP8dYkSmr0YF40T6TE19Jy+iJKY4TcthMaoXsck9ocGOtdWoBiwljivtbkPuOItScpE
-	ICmZf6tA8r6eFbe5SaXFScj7Tk8wPQM=
+	b=MJvJbmqIjBHAUqLb/tnIhuYrC1YgyjniM3doAk0KVm90MmAhTrXh5piI8fETGlCYcBBvx0
+	B3SwdTe5NtcieIhwW5HHEwa8Ni8RYfumxLMJryBCEY3K16uXn8RnWUbEayADvrbkJxM6rY
+	RsQwzSI5dohgYp2UyVb/nJZ0LA42D0c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A11244353;
-	Thu, 19 Mar 2026 07:37:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B68C19424;
-	Thu, 19 Mar 2026 07:37:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C71D642AD0;
+	Thu, 19 Mar 2026 07:40:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13048C19424;
+	Thu, 19 Mar 2026 07:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773905839;
-	bh=qRMfpUzApsAdbW6LZfIeTNJxNnO9wM97sAR9cQMuBA8=;
+	s=k20201202; t=1773906032;
+	bh=kgARICWk/x9CE46a29m+2Qcl6pq7KGjzLcdjK9IrfZ4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YctH8PgTgpS6wXB6v3K+szH6x9HccNE1bv+uHpSJyoU2sXQx0hQ5OgOGBSa3Pf2nm
-	 ong8+NvmImY/tAM2kRCyTGGfP9xIFQ067cR07TTgslPzQwhz7cJN0TJID/rq/C+ddG
-	 pvw3n6bp5QOvVL8V4ekLUrzUn8wkUAA6KhRWEXocepB2YmxqaJ+qYp0zbeJI2DeiF3
-	 PZLcxwNnvYV77PxZfKY6EYlzJkDxqR9R/s5AUGL3uDtdioKcfy+GUhmwc6VGBURkLE
-	 R9Y3RGplEaLwOKHy3HboLnM6CoKDSQPIJxrjC7r/eLTZSrcEmmZuyYPSzYlPpb4GeC
-	 OcTqoGnrs6mYA==
-Message-ID: <6625614e-457d-4e67-821a-8bbc10a22c0d@kernel.org>
-Date: Thu, 19 Mar 2026 08:37:11 +0100
+	b=DBereu8ZX4zRIwgOzq6jnFRd45UKcoO6INJUpK0rgEE4H6vgNpRG/4s1bXsz/TzEv
+	 NhhbGA9liBmxUrMFHISG5m5cW7lJQfeI9iAdx5m/AWfsSfh2WZRkVplbIiRfCYTkdP
+	 ierUOwCw4r5LSLU7duyhDpXvrNn0sjiVaZ411B6CTIrMb1VIDaPT+p/zPkr3yMcaCQ
+	 9bwBZBYT1DPzjMc3fIWcEgg21Ch8SFZA/oqIciKj2BHlMgPTAyjxTkLcNovneEk1sQ
+	 qU3HbmRBio+n/0+dj9KXiU1Fxg303ft+zsFMhMItV1OmA/jIVnW4hOm9v/eYUjF6JF
+	 NZDcyJfEazVjA==
+Message-ID: <d72d5ca3-4b92-470e-9f89-9f39a3975f1e@kernel.org>
+Date: Thu, 19 Mar 2026 08:40:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: bypass mmap_miss heuristic for VM_EXEC readahead
-To: Jan Kara <jack@suse.cz>, Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, ryan.roberts@arm.com,
- ajd@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
- catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
- kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+Subject: Re: [PATCH 0/4] arm64/mm: contpte-sized exec folios for 16K and 64K
+ pages
+To: Usama Arif <usama.arif@linux.dev>, ryan.roberts@arm.com, r@hev.cc
+Cc: Andrew Morton <akpm@linux-foundation.org>, ajd@linux.ibm.com,
+ anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
+ dev.jain@arm.com, jack@suse.cz, kees@kernel.org, kevin.brodsky@arm.com,
+ lance.yang@linux.dev, Liam.Howlett@oracle.com,
  linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  lorenzo.stoakes@oracle.com, npache@redhat.com, rmclure@linux.ibm.com,
  Al Viro <viro@zeniv.linux.org.uk>, will@kernel.org, willy@infradead.org,
  ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
  kernel-team@meta.com
-References: <20260310145406.3073394-1-usama.arif@linux.dev>
- <20260310145406.3073394-3-usama.arif@linux.dev>
- <wwaqkpuvvrnp4obj6nyebbgqvugjsmelbdkunoiadqtebh4zr7@ckyn5taaz4jy>
+References: <20260318105203.3288727-1-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <wwaqkpuvvrnp4obj6nyebbgqvugjsmelbdkunoiadqtebh4zr7@ckyn5taaz4jy>
+In-Reply-To: <20260318105203.3288727-1-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4CCC440006
-X-Stat-Signature: yatmj3fawh5pi38xw7ikg7um36pdcd3i
+X-Rspamd-Queue-Id: B795D100005
+X-Stat-Signature: mzk41giw7iqkzice5yhsapxb1cenorgq
 X-Rspam-User: 
-X-HE-Tag: 1773905839-270793
-X-HE-Meta: U2FsdGVkX1/8PjW832PihqF0a7lMQJsf+sqxEIYA/pBZDkwZlrOqovlnpQmIe2GqnUjHQDBlkhX6vyX8eOtqNuDeaqLZTxlwDzbCK+X1rv7E60m8mHVQIKshoMlzx1k+1iXmlDPY0MH1quxGMYpnwf9kDsLD0p8feQ/FL0VNn2a2BBTCbUjZy1/W5R9ziWvTgIEt4dOztew3a3uLFCpQyYxYxKTWElPJaYjOK/Q5zMd50KcD+OdpWkexdxHxbYpIkzZcf6U196jWta2jk6xkMunOlHuVOBSwnMeSYn7FvsLSinN3LLyyyNQwDfXKrvB1UE2ZEQOtizdVJpABjwtigVUVlGt3+K640NIuXpulG0CnkmmobQsL4tZxPqeu6f3AfPsLqnmoPXEWD5+9LjgqIPUWzTnprqLSsQdmIU6Dgu/UXVslWnPh1nM9M/LOwad/7UyCR8mIDiAZsoSuxBzs7Fmwt/VhQlMpEkIUlOznYChexUQe9E43PAQv6QzOuSs01TMruIrhbLClsuIFMvEK++sbpDitWtiuXE1jbwPySdLj2jYMKBScMem3sFP0DbbmHeDsUK++buCGPHEsGL0Uczmr4xR0chjOfycRepx2PInFF4ojoOfQyhoCZc0WUgcYVA3jQEhl7Pe1f1geCwjgYUIOyYPf/6Q4V7OpOZjqbyKKM/AbQ5eZKSJ8RfV15M0e9pI2oliopIBeCFjIZb1PunbHjfQk+eL6v1C+/Kt0fq86vcMwOGVN8g8uGnV96SU9xr5/NqOr35hz97a6VoJEQ8Z90fqk/ne9kzZp7CdoXBRbbTNNfmojrprVP2nqP8npWWVAa8DjKsTyu8o1WrKp6TAwRJAuGyf/M20aqyEGEazBLtbgBQHpS5LjfZ/Y9SR9f4qr/vE+bZojuZtwzaBpspJnZ/4RRAj/5/UjXhvbufHMW8BrAeDbLwei4QGB/+0YfdYIt2EQ7IttpwMr+PQ
- 3XAzOupE
- UAxkS7ewYbb3f9TBWxXcJCh51lBJiyBbACv7ikLM0FGGKD72WDlIqxO+sq/WcAJ33sGEbo9x9zIoLO9OE/OC+zML1s0yKp3qaFCJn8gDjvGsi1wRngQmCvXb99yqVbSqIwzwnQMj+NFVkHLwWhf8K5x3oX2VlFAmHGAytQYm3A+tOl64sbeeuKX+6WO3rrP04U6Bi7HeOepEh8BKN9OkO2qN9epHpb4LY9Sde1n/ixZTN8ffnt2daIlwYD3p768Mt6b6lasu7Qk7979Akj/4qEKRNFePJXEIk+udRAashq2xSFUzt0LHkeU5qEFMwyxcjvwQVhosIs4/UgP1wXC2bL1TVW4yRrqA8++tDzVq4SMwWj/g02feru2xYBPXryuEaqMX5jqFqwhN5rWs=
+X-HE-Tag: 1773906033-384459
+X-HE-Meta: U2FsdGVkX1+mTklx3mF0UVxmNH+tkXNyGeu4/xnyQpPzcvacjloMrglMAQEVsxaj/8zA3II4GAabGA8s9YhyNvKSZnhe3lE8+J9B/27COCdDIzgNgnOhXZFORfeWIT80SdL44cgqH3r1C5yv97nq6H86AZsycZHEX1Ewth2q1kcEZ2HeodKpDqQQKgQmHMBys0CYZ0CJ+fd7i/fU5Z+VQC6kOycWfw+U8zmfISp96eA4tCd5YPSLZAeZ1FOGUeKiGB7GakKtacNdcHPyglXbZMvvcoG1FJ/l7Ik9aStWfYITW9nU48osA6+/QTB1jCSZ7M2D4A9XeAzdPpdDxZqRf/2E2bywCAUZwGr09Wa+YrraSbfkjKO1LdNuSUVZe8L6pdMj+0TmqV6G9bt75poY5azPcgv1IcTXe3EpLAvp4ufjMqbYO2gx9KQEoGN+pmUoLqSOOt5liP/veJ3C3RVFliChY5y7phWPmhED9qQjk8fk3dbC8kZeQxkbgxb4PIaWGqzHo867FSHMawhVCuK01oKjiF6G/qmckZsxGO6KGrckKQZ/+Z2sUPGqZoDE+Q4XaBou05dLodTv0dJ6skQyTHpILURnRCzofvxrhtGreVkD8X0IhkqvwPWUucVj6FEadRM5l757cme59QaLqPmEednAmPNrdTji2SSoiVxIaPgqd6fdCdz9n55BVZIAHDx2Xo51hsZvtu5TXwDq1FGVZUmsT0E8vyz4jV/+tOLCXxyDWHkzYuCWDeD10CI1MwBDJRl0YxQhsYJ1tz/ze9q+0/iMoEf+dHROrGZkNFtHTsuTKAZ9xRREltq+7DsMTBRQBU0lqIiTEYHTwsn824LHHbkakd1QCz4Ch4Qhx90oGZee91NCs+ohUd60UCJ/j9vyY8+53AJFP4pJOwhTc0X6zrkJ/+Cj3G40lHe1mDElEW3vz2tKqwSdc8njuHA/285UunoKv17Cbh9Dfpqdrf7
+ vjfNKLd1
+ w/c8fB0k/SHbYmbQGVp0b0LrXUw3AlHOoyQvzza/bwPxDR3ov+RQEOIWt0xYCvuN63RwLfHDAoXZKL39MdYIb+E0k88pxRffBLk8h2mkS1RUwvBksmPVfjJ1+a1yfXELGniQmERG6Q64cpaRimbxBJjhUboKQqXGH8YWQI3X+/cVF1Mdn91Uw6G9uVhFQVa5VWbSGRMfhV/1K4ZRb3E1hWtljcC65RB9PrN/j0VARhjxOVrtVM2suzPDIxP8iNvhKWB9c6plF8OietJ5tVaZ0BC+2Rmk5OYPlOrjWedYaZfex+d24PvA5Km1jPWeBxM70jJe6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,62 +147,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 17:43, Jan Kara wrote:
-> On Tue 10-03-26 07:51:15, Usama Arif wrote:
->> The mmap_miss counter in do_sync_mmap_readahead() tracks whether
->> readahead is useful for mmap'd file access. It is incremented by 1 on
->> every page cache miss in do_sync_mmap_readahead(), and decremented in
->> two places:
->>
->>   - filemap_map_pages(): decremented by N for each of N pages
->>     successfully mapped via fault-around (pages found already in cache,
->>     evidence readahead was useful). Only pages not in the workingset
->>     count as hits.
->>
->>   - do_async_mmap_readahead(): decremented by 1 when a page with
->>     PG_readahead is found in cache.
->>
->> When the counter exceeds MMAP_LOTSAMISS (100), all readahead is
->> disabled, including the targeted VM_EXEC readahead [1] that requests
->> arch-preferred folio orders for contpte mapping.
->>
->> On arm64 with 64K base pages, both decrement paths are inactive:
->>
->>   1. filemap_map_pages() is never called because fault_around_pages
->>      (65536 >> PAGE_SHIFT = 1) disables should_fault_around(), which
->>      requires fault_around_pages > 1. With only 1 page in the
->>      fault-around window, there is nothing "around" to map.
->>
->>   2. do_async_mmap_readahead() never fires for exec mappings because
->>      exec readahead sets async_size = 0, so no PG_readahead markers
->>      are placed.
->>
->> With no decrements, mmap_miss monotonically increases past
->> MMAP_LOTSAMISS after 100 page faults, disabling all subsequent
->> exec readahead.
->>
->> Fix this by moving the VM_EXEC readahead block above the mmap_miss
->> check. The exec readahead path is targeted. It reads a single folio at
->> the fault location with async_size=0, not speculative prefetch, so the
->> mmap_miss heuristic designed to throttle wasteful speculative readahead
->> should not gate it. The page would need to be faulted in regardless,
->> the only question is at what order.
->>
->> [1] https://lore.kernel.org/all/20250430145920.3748738-6-ryan.roberts@arm.com/
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On 3/18/26 11:52, Usama Arif wrote:
+> On Fri, 13 Mar 2026 13:55:38 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 > 
-> I can see the problem but I'm not sure what you propose is the right fix.
-> If you move the VM_EXEC logic earlier, you'll effectively disable
-> VM_HUGEPAGE handling for VM_EXEC vmas which I don't think we want. So
-> shouldn't we rather disable mmap_miss logic for VM_EXEC vmas like:
+>> On Fri, 13 Mar 2026 16:33:42 +0000 Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>
+>>>
+>>> This was deliberate, although perhaps a bit conservative. I was concerned about
+>>> the possibility of read amplification; pointlessly reading in a load of memory
+>>> that never actually gets used. And that is independent of page size.
+>>>
+>>> 2M seems quite big as a default IMHO, I could imagine Android might complain
+>>> about memory pressure in their 16K config, for example.
+>>>
+>>
+>> The force_thp_readahead path in do_sync_mmap_readahead() reads at
+>> HPAGE_PMD_ORDER (2M on x86) and even doubles it to 4M for
+>> non VM_RAND_READ mappings (ra->size *= 2), with async readahead
+>> enabled. exec_folio_order() is more conservative. a single 2M folio
+>> with async_size=0, no speculative prefetch. So I think the memory
+>> pressure would not be worse than what x86 has?
+>>
+>> For memory pressure on Android 16K: the readahead is clamped to VMA
+>> boundaries, so a small shared library won't read 2M.
+>> page_cache_ra_order() reduces folio order near EOF and on allocation
+>> failure, so the 2M order is a preference, not a guarantee with the
+>> current code?
+>>
 > 
-> 	if (!(vm_flags & (VM_SEQ_READ | VM_EXEC))) {
-> 		...
-> 	}
+> I am not a big fan of introducing Kconfig options, but would
+> CONFIG_EXEC_FOLIO_ORDER with the default value being 64K be a better
+> solution? Or maybe a default of 64K for 4K and 16K base page size,
+> but 2M for 64K page size as 64K base page size is mostly for servers.
 > 
+> Using a default value of 64K would mean no change in behaviour.
 
-That sounds reasonable to me.
+I don't think such a tunable is the right approach. We should try to do
+something smarter in the kernel.
+
+We should have access to the mapping size and whether there is currently
+real memory pressure. We might even know the estimated speed of the
+device we're loading data from :)
 
 -- 
 Cheers,
