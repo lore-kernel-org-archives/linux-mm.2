@@ -4,101 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B01551091924
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90A161091916
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2725B6B050D; Thu, 19 Mar 2026 17:06:10 -0400 (EDT)
+	id 98E6A6B008A; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 249B86B0511; Thu, 19 Mar 2026 17:06:10 -0400 (EDT)
+	id 93AC96B0095; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186776B0515; Thu, 19 Mar 2026 17:06:10 -0400 (EDT)
+	id 8507D6B009F; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0699E6B050D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:06:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACD9713B1A5
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:06:09 +0000 (UTC)
-X-FDA: 84564045258.13.439D9FE
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F2C4EC000F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:06:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=P4uLh5th;
-	spf=pass (imf10.hostedemail.com: domain of 3PmW8aQUKCE8v2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3PmW8aQUKCE8v2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EC2E6B008A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1733E8C346
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:18:51 +0000 (UTC)
+X-FDA: 84564077262.27.5A32B0F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5AA534000B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:18:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KJ8ZnTkX;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773954368;
+	s=arc-20220608; t=1773955129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=smcAMeBF3eFvC+OZUcjPasWlZlCzzD66XLXM7VGnv/E=;
-	b=pPKeRciSbv8JDprkzehwtGKdm21ET5e4gbx3SJkKlJkzN1hmllrI59kGY0fwsijTepU8nt
-	A49NKgSaTry1xr3+WctFNepUw6YEzWj5FwFWuVzeyFqOyKF3mdNDwz4eFLOxOp8QCklUrI
-	nnDK8DFwu/gjkCVhQKGuxQfJLzzKtps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773954368; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VZQ17f0xaH5Zv5+9eKf48HmR0fItDs6lP91NPTK3GmI=;
+	b=8J02s164KpnIRShou//0qR3vGfnNIyFVFD3O8GZG/sZZ/WZxxXYsdFNjuLnz3Y4rzpmG0n
+	/6ApXqQeGPkzy/ULpLuIiFxvkYX8njh8gcerxAwf+9kQlbwQV/XLpNIZjfpFXEzAsPSteD
+	DxdHWukXb/YMuOt4yt9N7+pN7GPLwjc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773955129; a=rsa-sha256;
 	cv=none;
-	b=tDrJVcx1dmjN419Gwk7onnguAudbnxJOCKwG09Tun+TrglA6ihc5JbyMdHTnJdhRRrWFx9
-	8KHKW9uPn3m2gKKk1rWLK5eZoGcaBKeQ8tt4zf6Vpnno7zYguTAQ21O71Rfw6dThan/VKQ
-	x6zu8Na+9pqM+0UAZvG2IE7c9p8mfgo=
+	b=x5XGrIfVbe6WJvFiawE+ixQ66klbm2RingedbD+SoHPC2HvrQ70uQQpc/8Ri1b0Cj8fBk1
+	uN+xuG+5lhV2c5IkiTQKE5oFK+NyLNxTdXG3itd2cxGiG5puToulvN4CztBJAG2lOmDb6Q
+	5lHcm6piVNk+mMdxIzIKXyPVsZj53GM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=P4uLh5th;
-	spf=pass (imf10.hostedemail.com: domain of 3PmW8aQUKCE8v2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3PmW8aQUKCE8v2Cv8x55x2v.t532z4BE-331Crt1.58x@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-486fa9ea1ebso12132455e9.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:06:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773954366; x=1774559166; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=smcAMeBF3eFvC+OZUcjPasWlZlCzzD66XLXM7VGnv/E=;
-        b=P4uLh5thX3pQxU9imL30NSVFH8+QAqk0IfuLh6RtrUjpWKs15ITpyJ6Jqhf5PwuONQ
-         j7Y1/7AYZg+3lrFqibswY5pU225tdf732P5g1Fioac572kLCdS50sVRG7udwilsy83rP
-         gSYsyTU+IJFzWXlCUNpubIXRSM1LgOnnWE3zaVm0Opddw/9wpMEDv8csYn+mjjXfUfLP
-         pAiuuwwbi+muD/48A+jR46SmuR+tY2YKLazGsMSYyapkH6Vrd2wFHAx9GpjUEuIFlJN+
-         IImTjApVo6J707qs86y1GSSN3uNpl308vF+IJEi8luGsmbwXtLRct8yfTo8wAveavFSL
-         XYyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773954366; x=1774559166;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=smcAMeBF3eFvC+OZUcjPasWlZlCzzD66XLXM7VGnv/E=;
-        b=pRsX8cLSXpGnky1qVV3ntN3GzIGLPBz3ir2CwoDrQyMkk4+0jmsXnpjKGhK1wnj5IV
-         y1SuhRS03Oe7+MLJ3rNBX7NIj7BoDzx38FUS+hdUQ2e+DXC5sM1CU4VVhzHdSjfHz9OX
-         qcuyex0pyUqBdjmkdSiAaPN4jvBO3xbZQZp1q3HXVQ/lGPG0F9dSSYnXHdF2sBNKC6oV
-         MFV7+CUyigkq0FLLpEKiU03WKrdysfBmIKplsraFP0omRIo13XSrfZgZABTBbW6e/i+P
-         eY8GPOgCaf42nqc/MhYW+mafjscD/F++n7VcLcdgXBqFDRkkokk5dht8MLfWIxfZw7dc
-         m6kw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaF61iDNPxCBhKYe/HgTcUCitNRCK3PmIaJT2A0sRFUVPtlxAWIb+bmXYFzWd21rbi4Tq5hJoLmQ==@kvack.org
-X-Gm-Message-State: AOJu0YzbVIHr/Cv/UWR4XVVQk03jNo61AOHUe1n+pEpNtg7gLlnr0DPI
-	d82O9bvysB9XcU++MlcaeGikJWH3ra09iFJKC4DPFVhEiIPMvI4XCyOHmGbCu+ROurHfxrMF/WH
-	h9Q==
-X-Received: from wmjk5.prod.google.com ([2002:a7b:c305:0:b0:485:2e9a:31b4])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:468b:b0:477:54f9:6ac2
- with SMTP id 5b1f17b1804b1-486feb5f9c1mr10150515e9.0.1773954366292; Thu, 19
- Mar 2026 14:06:06 -0700 (PDT)
-Date: Thu, 19 Mar 2026 22:03:53 +0100
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260319210528.1694513-2-elver@google.com>
-Subject: [PATCH v2] kho: use checked arithmetic in deserialize_bitmap()
-From: Marco Elver <elver@google.com>
-To: elver@google.com
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KJ8ZnTkX;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BDD843706;
+	Thu, 19 Mar 2026 21:18:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89141C19424;
+	Thu, 19 Mar 2026 21:18:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773955127;
+	bh=iyGg7B3966cWSQIyN/bVLygV9d0Fu88wOZumZJmaoFs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KJ8ZnTkXzOfNvyMlO9orCkiawG4WdTBiPX6O1pGIfGS5nihGO/0S+S06AO1l/1upt
+	 7XUU/0hylinxYQ9MdWqpACBUjwV2ysAJA+mm05Kjczy44jV/MK0fg4v7Yp8mbFv9UD
+	 0ubFGXdW4umRu8ycAJEz9tH5NVuA4iC8/h1lplWRL4yVcy39ncKhT7s0LjMC1mj34E
+	 OOIc9JVTsuyl7f/60uCtG9eHyPMVs66WnQIRvHuHvF8mmDK8nxrHN02y0KCuBk5cgj
+	 INDej6+V7FzzhVJLlBJ6jX0TnZEM5Y+M8CwGI4ZYP40galHKhnCjrduIxL95SQaTkC
+	 B0Gqc+IZgSvTQ==
+Date: Thu, 19 Mar 2026 22:18:44 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, corbet@lwn.net, serge@hallyn.com, 
+	Martin Uecker <uecker@tugraz.at>, linux-mm@kvack.org
+Subject: Re: kalloc_objs() may not be as safe as it seems
+Message-ID: <abxmpctCj-E690An@devuan>
+References: <abhGS0n_RsUG97Ni@devuan>
+ <202603171402.B2BD1B1@keescook>
+ <abnGea5Qwp3VYDda@devuan>
+ <abrRMnxzCKEuhnrS@devuan>
+ <202603191308.ED08BC65B2@keescook>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vxxczh6pcbvzosks"
+Content-Disposition: inline
+In-Reply-To: <202603191308.ED08BC65B2@keescook>
+X-Stat-Signature: 441bmyzkonpej878icryk5yjpw5fgn4b
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2C4EC000F
-X-Stat-Signature: wtr6iekrkcnth8comjijczdxd8g4wi9x
-X-HE-Tag: 1773954367-268399
-X-HE-Meta: U2FsdGVkX18un1uulArmUNT06FDF03TmI0Ttct2Qm4l1G/gw3vXzzjim5aiY9u9rtCUJM5UGCXWA6nLYDLZJ61FbVcnZ4vyxLld1iWptZNVkF/69ohOtHLTx4DoDgZx0CNPkqq+GJjTGasXrHiY622d8MHsn1L5nufNUv+fcwS0RfRsdyzoxHSVgziDKqUwOInOBww87dWf0D7Wyam1PdNPZ3PduIR9dwCsDFYkQUhQ5Iu/6MqmHMwfcAlgo9ViuAkBDSan0qQSq5Dz5q1+xDF3ZDdZo7oAGyg/BWHLJDTFfFfkLjn6asg4RAHTX5+3dlW0Ucynrvc3CctUw6QhB9bK3l2PyBJieTnqKThDaOUQ8b5YSbMXvJyzEPdMluD3VPPaDXYZCJB2eMY7UEuY2xdSmAn2WOebUL+tTQria2p7K/hz4Gr5KerdxbQ/IujiKnICHB7fxxlD3EhsrHXMlGSQ/ScDhkhsF2O2sJO87Y2fF4Phh+cOWOfijdJOW+moR/FYXAuVA3yD/dETUojQ53LABXvMCuKAjcksyL6uyHOL0EM4YdLTzIFoc17IindBxXugTCp25SayKvbmUH3cW0jTzYoVvfS9ucA5fN+Nbw38XCZ2e9DwW+4Pe3ZK00TJKzdunFQcXTWgmYyiv8id8Tz3VAtKqjqHsWdxEIWQcIQSh0E1dwFvl2tHEIzSRuiPKRzLgu3WIVpYSSYOLqzU9Om3xy6BJkYSCDvCdU1XVXLYOfO3nb8bJIkzWiK4q5GBr4nJhYeE8Un3CDydbjRURgi+69UqtS3qUHoaTbbQwsZvGe3VjfRvATlNMfruDfJHy+Ous3oYyVE4wV93KjSiNwAYJ+gH5Rpu4bPmG0oV+KjXeDzqITTTY+lLR486OaxFG/jvpKrZUAFG50AqznJRvUZbvTzf+kv4HPREer+Am7X3/aHlqgNHGsyXHXr47T/MUxO6+liBHo88UzbtnJ/x
- LWiSgmWj
- ej8NX8Ni86urgw8ux9BHkVD5SNOMqaJa6k+iqtWRBunObafjDgdaaf4hU3UKvlkcKX6Nlh6d12s77p5FLudL7ZYdXgJ+DNS3+n9sq+WjJdNY0tVdq8QObz1JGDLTm56gtius6u5OC8iaijrGGlXQ+A+vzTNzeBwX//AzQAxznfezCGRIL/axAwC1XC3YiTxb8m21aRg9yT9Gr88+OgvQeYvoT2PZA3OlLODtefBTBboSzpIVIGWLgmANxEYL+8MIugHSio5YOIpMCHO31vOxBfSWAZItEKU2lk2w+tbH5u6cW1dPP2FSOqzu0YjdHu+hHxo8tf7T0Z6fwA6Upy3oLolZE28/jFM96b8Y3cwMil2Z0CGlzA1ZvJkRGwskQqeu7aZ4YeZhSGyhvxBCnNh6Dbycnwx9ze4Ubf+83VGS6XGW7wcYaD3ECTGk/jOEejM8Zqy/M5zF3mB8MPJEwuOt4/IZHA+zCSoq9n2kHFnXahjodA+1xY6BiDBksb0qGt7CydsVFeLUf7Vgw9QKJ0ZRxYt9zUlT+WrUb9NSZv4o9NF7Pob6HvQey7W/LLg4Vyo58LbN4pk0+8BVSw1hDNUZbkXkMTqXnQTIWGsaH49BeXt83bCdRjTBIQV5BC8Ku4PSLtc4y
+X-Rspamd-Queue-Id: 5AA534000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773955129-440121
+X-HE-Meta: U2FsdGVkX18PWn+gj9ITPjAvXcVNgaZ+s8cg6Z4+YVDPa33Th0OhlsOATcrS7mAgUq0VwWchP/qmybbkKzDXtoyaok5S3ObQO6ckVsYLQKYqw/xtrUseNFZRuccSGKD4d2jOubZ4z8+53Dn1wc626QP7ZVl3pb79Z/Qobq4Mh6+CCeXO4Ypr9un8kfZ/C6wW+odIihIHb+zAZWgyNe0xtGlU/LW5GUOgweGqGbET2ZRg5Ev5174LiyQyNJdh3WO0CW+xqFH2QM/9y4PSTUXRoCIXCyV4MljeB/QK1j3vWUxOmWPlGlXVv6CpxB0zmSh6ety7nFhTBAxmq80I5jtjtrzyYUPqFl2BZTrllxEKlSmY1GwIYCJWwiYRCzX4MKgb2UAAFtjp2mQLBDi6w1ShIHwwsH7MSLBVUvWn5D2lqP1kPamzdNFrcyJ3icrd/s9EXsaFvQUgED6GsPuCb4by+mTlrVDFFDhj9vJgsA+qqtSM53LNacbFNmxAJ0lBfCqAFwOmx0OQdcaX/+lYZUy53qgeBjBIeJh9xUPv/S/2mhnpNNGSNnshGXnGE/KXHDWOtARH3j1w8e4K2QP8Jzauw9UYRzFnsgwfOblIzUARgHopWZ/KQ4wv91ahrRv8rfWUIW9zcg/L9SLGjOcnd/6/zOpTLDETvJpvWDsxHQqf7JqqfipL5weYc/ythKRo/nlCcxu47gqEFzL2VLP5syp+ix8OD6fW/FMVaDJ4hI3JTubpRNK7K2IZl9QJUzfv+XMFJ8XI7exR6KPDluYeBiz041iPp+Dho7Gtq5aNsktJ/2j6I5W2gwh5jTGw69ZzV+ZSEetH8iY3vCZQnbCM91rWTwtHxHxALWYd8oAx5lv+WKcWTtGQ0v15okC5PjxKMJNIDm1ru/eH16Wn02vRRBAv5xbHh11yDHKdEwhFblhS358XVKEYAB+/c/9qypVR9mQG/4JHJv6hLEpa8Qx6P3D
+ fJCW7Cwg
+ yCo1ehLkdkt1NudztSU2y70I2PvZw5JcM8dcThECWHiAMrxco+C1ZH7//aeKGwzwmgbfJDmStaHiMtNkfnWR5FLUQekaKCCu0iT+BIZVHrIcrWCTAbbKxBddt53bW08JeHZrpM5tOSGalK7gShMqDMxdLe7vTkZLaidYgLzk0QKw/CvqkPRYn/DS+3hfVc1ni96jA8vFjXsQ0CdFhSHN8G8JJ+lOOBltUVO8Co4g+wjERlEcZp/pSYL7mL9fe4PlPCO/7fYTdAUIBi2OJbJqdAFbEl2XM9Zqjwkuj2ImRY5rfEUMnDlrnd33cLuZOtiLMPxhA+u+et6NK73g8TdJcYRJhiLr4hZhO8tbm/yiy/UnYXpu5+Ms3VpmNvvE/7nw8mxim9Hrfuj1ae4H/xkCuUaEZlwag9b+e3AXboYixPVfMXAGGBSUpZdBeIDxiUjEYAw6aVm359xaxblo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,85 +95,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The function deserialize_bitmap() calculates the reservation size using:
 
-    int sz = 1 << (order + PAGE_SHIFT);
+--vxxczh6pcbvzosks
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, corbet@lwn.net, serge@hallyn.com, 
+	Martin Uecker <uecker@tugraz.at>, linux-mm@kvack.org
+Subject: Re: kalloc_objs() may not be as safe as it seems
+Message-ID: <abxmpctCj-E690An@devuan>
+References: <abhGS0n_RsUG97Ni@devuan>
+ <202603171402.B2BD1B1@keescook>
+ <abnGea5Qwp3VYDda@devuan>
+ <abrRMnxzCKEuhnrS@devuan>
+ <202603191308.ED08BC65B2@keescook>
+MIME-Version: 1.0
+In-Reply-To: <202603191308.ED08BC65B2@keescook>
 
-If a corrupted KHO image provides an order >= 20 (on systems with 4KB
-pages), the shift amount becomes >= 32, which overflows the 32-bit
-integer. This results in a zero-size memory reservation.
+Hi Kees,
 
-Furthermore, the physical address calculation:
+On 2026-03-19T13:12:41-0700, Kees Cook wrote:
+> On Wed, Mar 18, 2026 at 05:33:35PM +0100, Alejandro Colomar wrote:
+> > [...]
+> > After sleeping, I had some idea.
+> >=20
+> > We could have coccinelle add typeof() around the first parameter when
+> > it's an expression (not a type).  Then, we could enforce that the first
+> > parameter is a type name.
+> >=20
+> > That is:
+> >=20
+> > 	 p =3D kmalloc_objs(int, 42);  // ok
+> > 	-q =3D kmalloc_objs(*p, 7);
+> > 	+q =3D kmalloc_objs(typeof(*p), 7);
+> >=20
+> > I expect this would be doable with coccinelle.
+> >=20
+> > Then, new code would be required to pass a type name.  And people could
+> > slowly replace the existing typeof() calls at their own pace.
+> >=20
+> > What do you think?
+>=20
+> Well, it'd serve as a visual indicator, but it's redundant (typeof() is
+> already used internally).
 
-    phys_addr_t phys = elm->phys_start + (bit << (order + PAGE_SHIFT));
+It is redundant now.  But my idea would be two steps:
 
-can also overflow and wrap around if the order is large. This allows a
-corrupt KHO image to cause out-of-bounds updates to page->private of
-arbitrary physical pages during early boot.
+1)  Add the redundant typeof() in the first parameter, when it's not a
+    type already.
 
-Fix this by changing 'sz' to 'unsigned long' and using checked add and
-shift to safely calculate the shift amount, size, and physical address,
-skipping malformed chunks. This allows preserving memory with an order
-larger than MAX_PAGE_ORDER.
+2)  Change the kmalloc_objs() implementation so that it doesn't do
+    typeof() internally.  This would make step 1 non-redundant.
 
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Marco Elver <elver@google.com>
----
-v2:
-* Switch to unsigned long and use checked shift and add (Mike).
+> Given it would only be a potential for
+> confusion on integral types, I'm less convinced this needs solving.
 
-v1: https://lore.kernel.org/all/20260214010013.3027519-1-elver@google.com/
----
- kernel/liveupdate/kexec_handover.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+It's directly adding safety for integral types only, yes.
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index cc68a3692905..0d8417dcd3ff 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -19,6 +19,7 @@
- #include <linux/libfdt.h>
- #include <linux/list.h>
- #include <linux/memblock.h>
-+#include <linux/overflow.h>
- #include <linux/page-isolation.h>
- #include <linux/unaligned.h>
- #include <linux/vmalloc.h>
-@@ -461,15 +462,29 @@ static void __init deserialize_bitmap(unsigned int order,
- 				      struct khoser_mem_bitmap_ptr *elm)
- {
- 	struct kho_mem_phys_bits *bitmap = KHOSER_LOAD_PTR(elm->bitmap);
-+	unsigned int shift;
- 	unsigned long bit;
-+	unsigned long sz;
-+
-+	if (check_add_overflow(order, PAGE_SHIFT, &shift) ||
-+	    check_shl_overflow(1UL, shift, &sz)) {
-+		pr_warn("invalid order %u for preserved bitmap\n", order);
-+		return;
-+	}
- 
- 	for_each_set_bit(bit, bitmap->preserve, PRESERVE_BITS) {
--		int sz = 1 << (order + PAGE_SHIFT);
--		phys_addr_t phys =
--			elm->phys_start + (bit << (order + PAGE_SHIFT));
--		struct page *page = phys_to_page(phys);
-+		phys_addr_t offset, phys;
-+		struct page *page;
- 		union kho_page_info info;
- 
-+		if (check_shl_overflow((phys_addr_t)bit, shift, &offset) ||
-+		    check_add_overflow(elm->phys_start, offset, &phys)) {
-+			pr_warn("invalid phys layout for preserved bitmap\n");
-+			return;
-+		}
-+
-+		page = phys_to_page(phys);
-+
- 		memblock_reserve(phys, sz);
- 		memblock_reserved_mark_noinit(phys, sz);
- 		info.magic = KHO_PAGE_MAGIC;
--- 
-2.53.0.1018.g2bb0e51243-goog
+But it's also improving readability.  There's no precedent of macros
+that take a variable just for its type, and it feels a bit awkward to
+read the current one.  By doing typeof(), people can relate better why
+it takes that parameter.
 
+If I read "q =3D kmalloc_objs(*q, 7)", the first thing I wonder is: why is
+this macro reading *q??  If I read "q =3D kmalloc_objs(typeof(*p), 7)",
+then all's fine in my brain.
+
+> For completeness, though, this Coccinelle script:
+>=20
+> // Options: --include-headers-for-types --all-includes --include-headers =
+--keep-comments
+> virtual patch
+>=20
+> @type_not_var depends on patch@
+> type TYPE;
+> TYPE *VAR;
+> identifier ALLOC =3D
+> {kmalloc_obj,kzalloc_obj,kmalloc_objs,kzalloc_objs,kmalloc_flex,kzalloc_f=
+lex};
+> @@
+>=20
+>         VAR =3D ALLOC(
+> -                   *VAR
+> +                   TYPE
+>                         , ...)
+>=20
+> Produces:
+>=20
+>  6007 files changed, 12430 insertions(+), 11767 deletions(-)
+>=20
+> Which is a lot of churn...
+
+Yeah, it would be a lot of churn if we were at rest.  But since the dust
+has not yet settled, it might be doable.
+
+
+Have a lovely night!
+Alex
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--vxxczh6pcbvzosks
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmm8aC0ACgkQ64mZXMKQ
+wqkKsxAAvm3vo9ihoFfURqGmOQo97zkx+trQcB2AZggsZ1YnQd0+ZM8fQUXxBIwo
+g53D/k9qfEGqdcaf/h/rdeJ1bjFvmDbw2SK5mNzTVb/4tB0g3bAVUJW0XTAG+Bu6
+iWKtC1hHLoXUbt+oU8hrEUcpLjenFc+dtw8IoeyYZvNruCCuOsyzm/mx3PwsWhve
+Y25DDt+Rb6bSTi5i76O+sUc12/sFUA8D8+iAudZfjbLzieE7VY2igAeZwzOfbD/6
+3DF0rZInmQEGEiKiKKkkaNfiYxMm4ZzYubuFMrg498YSTWjR7WD5FgBSD+L1H6vg
+CqWgK8eOiA99scpHM95XzZmVVApW2h/uqtVPG9PumvQCalUlJ13OvuY3KwCktO2o
+6yF3pG8kGbMqhQehJDY6hjjvwYtK5P6vUi4GlrS72GEJmCeDzZOiKuG8KclcuVFh
+b0WSNE8uOSo0m7wP412eSTAemc8bd7SY7fOJkG5kqwhJnfqLdwItu2n2qhEAf6R3
+wj8psmq6ywPTOJWD/itgzo9oRgBjAW1gJEbx220Wj6IeTdlUMvbYquLfoRdMxaGk
+W4vuzWG1fOzUdvX0+kgcIQS8CjIF/yZZuF7cahPFHcMgdsgt2TC4Lx945gpzucot
+ikJ7Radjd3chbAPWP/kSGNoAUPfVIvIRFxH1dkSdUABd9g005cg=
+=fEio
+-----END PGP SIGNATURE-----
+
+--vxxczh6pcbvzosks--
 
