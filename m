@@ -4,167 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32BDF1091904
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 19:04:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC2F1091904
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 19:05:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 826B36B0589; Thu, 19 Mar 2026 15:04:22 -0400 (EDT)
+	id BAA906B0581; Thu, 19 Mar 2026 15:05:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D7EA6B058A; Thu, 19 Mar 2026 15:04:22 -0400 (EDT)
+	id B5BC26B0584; Thu, 19 Mar 2026 15:05:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C68E6B058B; Thu, 19 Mar 2026 15:04:22 -0400 (EDT)
+	id A72606B0586; Thu, 19 Mar 2026 15:05:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 583336B0589
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:04:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 20AEC1A06BD
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:04:22 +0000 (UTC)
-X-FDA: 84563738364.01.01F350D
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013063.outbound.protection.outlook.com [40.107.201.63])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 521644000C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:04:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uNOjF6xI;
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.63 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 920046B0581
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:05:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 46DD61A06BD
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:05:33 +0000 (UTC)
+X-FDA: 84563741346.03.EAE897B
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012062.outbound.protection.outlook.com [52.101.43.62])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 661E44000C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:05:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I8qKr45j;
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.62 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773947059;
+	s=arc-20220608; t=1773947130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=KTO8AED8vlA8ffS8MKQw9JpuJkZojHd4BL5Az0y3IKY=;
-	b=QJ0xvuFTJMKO9Kh3TUn+NbeIMHMz7JYln3wZQY/MqDHiPYLWqraWVcinDeXHrZbPxgDyQk
-	bOUFoXQoOAoI85ThkzPts3urE+Swqu0fwd2oUmZuTmFgY3gnsG1p4GjJqggoB2OaY7trLu
-	eC4FEH1iu8G8lZ9YoEWeLGAQMqPemVE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773947059; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yj25kFCQJqFRFZQqokzMHCxlT+7im0LjVWYrdh0CSTw=;
+	b=Pg6tcraidfMqNRrSdJIitTMCtymeZhqpDHK8QCIIcWgnWEJ6uxVV0wTIbyiziQnUl1VNQ4
+	n+XrinhFOkJRzpLwZ3Be72xxFc5BqkWOHItVWjtqOLuB3gGvBWuFJgAs48xV0QzLMZoFaM
+	GhV2rB9eW43EKwc5GuceANM9xtnMWrQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773947130; a=rsa-sha256;
 	cv=pass;
-	b=CtzPY5YrIaybP1AhiLNOd4UcDZrTTeQJIfvxJC7XpZKXBmNfLADEByOfzWeRaYiIhdaxzB
-	OTQy4Te3kFko/Fb5sto21n96I6+ioGaSn3wjygTwBYpU+O3ZHuZJXd8dA7dRlbdP3C1Es1
-	l8K3FE9CsafkF1MnGK57J1qo27WxzII=
+	b=5e6zL6N+Bc1UXp0DD+yghIX2laVanp9oUl6PMqEtG0We8z6ABEyziw+J0H8UNO0AaHdNHs
+	xjp4YjXpf/gFnTxQtcJ7KHvN87rrGACHKmcZ+c43iaVr2NU9k9qLo6YzcNPCrHmzMKiqoe
+	edlnMYA1hSwDsgGHonlD+WqDUDGAU1M=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uNOjF6xI;
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.63 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I8qKr45j;
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.62 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=naCi+iOTncOr0qIqs3CJJv0dzRdwC74mUAlIhOOaAC0RuSfBzfzTIvvzWLHt/Ct8IDwuK3Mu6522+LBAOKpO/zhsCbUrdf3IrBD3ZtEua7LM1GY0EPxKHIBM+JPXOw6WWiddnLJhGM/vkvqE6DFN0VyWaYo8osJM9EL/FGZ9AQPxXz50fau+0MXOemcGk5pLzhPEWH0NmM262JxplV+TAw3UH4dPL8bgJgwxk0QpoFar03twk/pTwBkzpysvTryFbWGZnGD8tNugeEvWFV6SquoTDEWkr242+aZANaqYF5rke18Ul3xa5EPFAz2e7tz/DmccnknfbVWO97BcbfuC+A==
+ b=Z1/mdasfheNA9BGa/ecNU8ZxWTcvP8Yj7TQRi6+MBmYI1qryqZSZCAMJGja1XvoQyFwQfqlf+qj6XN7MUIIlXl3cYRU/9SutO6KVh/Lr+sxWxKysG8EVx3dM2G0Aia+wCCPtWDZeTH0778CHygM/yHPmemiKS+fq/AI9M71QHpgf58ZzUXej0YCSY69xr9sbVfDDAuUCB763KMSB73E3JmPIsdVQvS96eEX2GW+BNFvr8lyqcRg9E4HvmxUIjpOp2ySVaQ6Xw8QdlSKQ2wWDh0+U4TCL59YZQDpgV/kEKRlDzGlznZbCAW7xjfgRoxE4kTYa+VslVY3uQhXbVo22XQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KTO8AED8vlA8ffS8MKQw9JpuJkZojHd4BL5Az0y3IKY=;
- b=cykobQ4Sk+oZ+rSzhVqEZqeaN5oYmaYESYNccejhcKNL7kfY/V6PgkZhUlPOSfOFgFs/8rlfNwycUCJ3gqLArkoIZStt2msBkdMinL1jGIp4oeGq1HN1BbRTzX2PJ6LAllXGeXcRjk2jom80NhXrQixDLfM99WztR402Lv4Mei6pOZRaBWb6c3SNKOCQLEbdkPkoaXux5itaEFm0wrgy6ykb9xznvsJRgGf0yInDzHt9HfCjehtEn9FlfZkfpN3KGlH52J6KEn7vll3e76aDSrtuUlP+HPvGNN2EGykt6BafEOxkla60c37VdrG4TToEJJTSV2n/2ncsu2RDI40CLw==
+ bh=yj25kFCQJqFRFZQqokzMHCxlT+7im0LjVWYrdh0CSTw=;
+ b=E3eSq80gp26BoGbXqecPqsSZpYanUjaqWiNanYD67JlduKFiMz1wPx+ZXgiyeah87aigXY6DsMTzVKos4EgA9iBZUROBsgWtVI/D71BGBthV06LdTQMglejrY3xDA+UG4O00zKVwv8jXBezhVz6ibxdMtl7NEpV5t7UQQn1tTjTx1zyFoZZnRNFEu0vUPqFq2dT3TXHmFdUXzQTDcvmZqEI/lEx0bjsZTE1D5cKLoryJUtEjPfv6jQioPRktuVAF9e/SBkmGcGQtprAnL9ZlqYqUgWIk1raR1WkNFknCl2LI5u4JPxZmTgJHBqwEro1TkLQ2HC3JTpJPfDJ0XbiQkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KTO8AED8vlA8ffS8MKQw9JpuJkZojHd4BL5Az0y3IKY=;
- b=uNOjF6xInPTTjaetJxlAtF4b7HxSxQwR4pa9LgtJSuiJL8Bk9V7I1BnLuu3ClrhVoXW3n18PNVX32boxNahHuMU0RH60VXi5YbhMchtUG6wtFF7g8JdGaGtD2xZrrIv08xEnwE/MVXs2+UcQUrQ6dIh0SaTcef6TKlC803CZQKqZ/xBNi2omOtuIyZnoCQ/JKQ4ZqmQ/MSJ8peulY4G+GmWZbSLYvnyhRETBYbDnoHGfj2tYCVwff4WwyTiJZZ08ov6FjOq+7OvFCfWtNyKkVrsN9/CkqCxA9tum3EJdSEygOIXBbEu5HBVir6u6MPYSduqiEmuXFYvLT6Eq/xBIVA==
+ bh=yj25kFCQJqFRFZQqokzMHCxlT+7im0LjVWYrdh0CSTw=;
+ b=I8qKr45jiz300hbYXfAbO7NinrvJQEV7yXyy59WTlqw7Ontyaf1WEzKQyyxqERuI+NoASI4zD9fk7VqiXqO+Qv76SYRuJJmdQJ18XQa6qLSBKFuEtZTIc0WePAF8b6iSi/gf4a4N954pUzNHxTZSgqBkeCmVS/XSXvk/k9mv3aKs1VpVXLbRw6gnagUm64HM7SvcS0pFkC1X5Hnu4z3EOxHFWfkgTa1VYbECqndsLD8PhwqwyI8AMiHaruYkcgtFbehXg33ziUQxuYg2LqHaap9F03tdX3Wz20wPo8MJxn3OAXiIzT1F9MsksFbJSi10SR/6x9qGSz6GFN1fBP33Qw==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
  DS7PR12MB6120.namprd12.prod.outlook.com (2603:10b6:8:98::5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.9; Thu, 19 Mar 2026 19:04:11 +0000
+ 15.20.9745.9; Thu, 19 Mar 2026 19:05:18 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9723.016; Thu, 19 Mar 2026
- 19:04:11 +0000
+ 19:05:18 +0000
 From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bas van Dijk <bas@dfinity.org>,
-	Eero Kelly <eero.kelly@dfinity.org>,
-	Andrew Battat <andrew.battat@dfinity.org>,
-	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v3] selftests/mm: add folio_split() and filemap_get_entry() race test
-Date: Thu, 19 Mar 2026 15:04:08 -0400
-Message-ID: <20260319190409.294523-1-ziy@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-Content-Transfer-Encoding: 8bit
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, Li Wang <liwang@redhat.com>
+Subject: Re: [PATCH v4 1/5] selftests/mm/guard-regions: skip collapse test
+ when thp not enabled
+Date: Thu, 19 Mar 2026 15:05:12 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <6C8E73BD-E59C-46DE-8FB0-9BFF18698B6D@nvidia.com>
+In-Reply-To: <20260319160656.1480279-2-chuhu@redhat.com>
+References: <20260319160656.1480279-1-chuhu@redhat.com>
+ <20260319160656.1480279-2-chuhu@redhat.com>
 Content-Type: text/plain
-X-ClientProxiedBy: DS2PEPF00004564.namprd21.prod.outlook.com
- (2603:10b6:f:fc00::51c) To DS7PR12MB9473.namprd12.prod.outlook.com
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BY3PR05CA0053.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::28) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS7PR12MB6120:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5ef1eff-b765-4071-0ce5-08de85ea4e25
+X-MS-Office365-Filtering-Correlation-Id: a925d73f-3f8a-4968-4a06-08de85ea75cd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	krDfu+3bY8SSS4elcZQsCSPQ7nvSMUiOZueGdXW39kkpzU65c9Yz+0agnQeIgpECbwyVLPcilsFTSqivKwH5F9oa3exA2jV5yW1/TheEaEugTkmdrgQBZyFMD/C2a4LwmFuxviNnowDKcbT7cdOdnie3c4CmLeUN6JmXFmmz6Jys/mKlD1q2ZXMz4usDHE+Vb4lZfBAIXbiY1CWAqJLiJc5vk9HNO04eN/tAjC2IzBoG3vR+PbFuNKtr3UM7P48ezSzs3noWaTzWoff6kQBHRHEy9EIIEgj5v2/HOvoPc2XWQIBLUYA3glURC6AmdOb1m4iwz59FK7Ajvr7SqNAm0qoQqxyDnysl8D+iuh1k/u8E3YhLbp7gso3hL4BDrelXYLyDagiDkPMQPEUQszdDP+Ovg60Mfo/CYD/y1YmGwUvqs1ZA1CUEpqVf4WugoHctoFLBSfh9yjRNzAH5OIo4Bd77u14ABC8n7nsReQbSTb+fd89ZLpkETJtYYYApeSJGrFRwR1fO5IQj42Byu20uIEHIUWJ3fi6KFfVqttdEa4QRzFfc9Ke4FUTxjTvD9UVzwfvXkYpGJzpo9uCi4/XEqzfcShMASZ6z5/L2FOFvORC2Z1M/U0VjYly54m2ZcuI5/tCUlmk8ycPISnw+ykKDI7rt8OW75JXbUTw2h9B8s7ba1p2P4WvPPiaeNfUx6NXIGfIXS0osquNh3x+iEOT+viBde2WXgLj2WhP8qJTAtZKkoxHtf6jCLkHW4ltGHbsF
+	X5VUS6q5MdRAC7PhuRkQKhoXPbTM1MBxPg6XHKi+lmiMfpGSdKemonkDrL9CxC0P8E1JLxBbUA4Dqgk+VhoUPBXGxFG8QoTQctuK65PWzOCOj8TMaVgWGm/3KvT28qDo0ax8yY2WlN/oC2VJEfQuXvmpH00xN7ja9lPHjhxH9z5IsmegvCLqhkkn9XYMHsvSxO03HK1xwCDcy9fLu1sWlCjdYid7dWAZ1RX+LQ/Jc3rq1LLZf8T96itmDdBE7jEp4qSDpCm1/5HlfwFPND8Q3m3OVjAX5bEm5C0GEMZrS16t/N4Z8X9srJHZQlS2G0YhYcHCaPFmTKCPDV/xnoNtF+D7vuXc9xTQLdASLytEhfE0IJeJj9zwOrRhrgyuC0TJtWDqIvB6m3Z5uo0ompJn7xtPbrfcvY5sO0fjr0Nz/Izny3p0olcZ1xmhoTOSaakCI9QyAnbwOI2GSfXIorMmnzmkcdiKVcyFRSXCdwponG8oP0f37S19yJdPWRfvngSRfHfmciHhrtXeNVrNaqv+kGqZTTGvkRLMknk9gVE4xvh+sFGDzylm2orwRPlIwX3zSMVOiZbo48UA/j4U4YLvinJS3te0AADunESm0qPSHAxmyg/K1LYr5toQWDplP3G6QdxcZrMBFSh5IoPENOVm5MbWNpYMO99PEymEwXSxsNEDELT5y8y0N7yYyGUrzqHV84+ncc9uABuSoNgyjBPNXxuBan7/6zlIykaDzDY7nMU=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GIDGbxXznsRnLnJmQ4epaAS9JF9M5xPNRUCKXHslPkbfJoAsy6zzzC60tMeE?=
- =?us-ascii?Q?D2/y/MEh9xIQMuo/rMq9dkiBi6H2En9qccesV1LR2murMHZncvn+WDucNg2j?=
- =?us-ascii?Q?Ua9VkTRumLm1wKIbZhBvBDT04hNTT20VhNPu7g36hVlSE71SosgHFL0czM5R?=
- =?us-ascii?Q?3n87AxHXwQeJlPOUqg2VrhJEsFudz5uE3Yo+uTiCzyM8ty6igE3xrgjSJZXY?=
- =?us-ascii?Q?cd/24YQ4ZWuQinIfL0LglXgL3PyLcFDxLJDetT32hM/ZObH3gCqdNehD0Nwy?=
- =?us-ascii?Q?uET6qWBn7YJ5pbHldTrB7mWmR+Efg3oAOzIPpk74t7pcilHDxe2YR/bwlwp/?=
- =?us-ascii?Q?ddrnOLDrB4giyxSZuhgl3dORE0Mc/C6ISzeSD4EMS3VsoCLwZ4EyIjo+yMF4?=
- =?us-ascii?Q?YXKBUlo8NlcDvNW7Ce5RKLOSmr6ngjpfERIyPuca3paAFh8ZQkKo+CKMET16?=
- =?us-ascii?Q?BJndWPUfYEued9xMeW/ZnZ7d6f/owIOVwas0KQFrxnBcYLCu1/+N+a0lmSCM?=
- =?us-ascii?Q?RwYseqMmRp+2S5WaMpBGMAZmGDTKhdVuKofp7jCfaGOUV3jY/Y2/W2W9KyGp?=
- =?us-ascii?Q?vU5D53JfWjsoVEeXR9yTnSq4UCY5XIPPtjEVopOx23htI5sVMF46IwNvnYC+?=
- =?us-ascii?Q?d9/0Plkn1/b9kGmpUhEHob4tjIaRDMYK7BPQBkRxyBv3+k/kD/Jzt+HRQvaF?=
- =?us-ascii?Q?/gbR3syLPGjb04HOuEnq1+Xnky5y27kr0JIJG4+fhMxMSY5+1/AAbePli5kY?=
- =?us-ascii?Q?ONsvgARtXxwNF/Y+964evP8lbVLw293M3xg8Sxlxq1KODm6f6fTPF0zos0RC?=
- =?us-ascii?Q?l7WyDcEXm3FSOdHJp8j13Y0rcnCg/HfCRXDZK/M59VMWCLBZ/R8RhAeuzXZ9?=
- =?us-ascii?Q?RVzaUM+4dHiH59s6G/YrKJfhPwO0TCBUKdhCuICg0I8pKin1H0YqC4ywVUjt?=
- =?us-ascii?Q?FYs1G/9plFLl36P6BpCVfQZBkBDLOIjsSYZF4Kcv2xxxnOYvwuwwXGEJd+D6?=
- =?us-ascii?Q?Gg9DGarx9NVq0f8HY5v5FtC2hjYKqL0N9GNYrB1M/KfHFBGJUT35JTiwd6JG?=
- =?us-ascii?Q?8/iNLYTY5byTaNI0195Pue3T7nJRadyd6MSFvbKqUGhpJfcIPBVYnCL39Pwa?=
- =?us-ascii?Q?94fV/H7tW6VYvdcO+bTW+yt1Dppfa+7NCeGeF+iWUu+Ua8o2UxtV8kRKgOUQ?=
- =?us-ascii?Q?eMLPfgPWG6Sdi5m8DL2NjJdoHXEKpFvtGKi/MMLMh5IlhM9yFe2ddwRn8dQ5?=
- =?us-ascii?Q?iSM8/r2tdg/MzPVDqs6isj12qvvcP/MXcwM31orkKjsJZ4zpnClHI//BLPGb?=
- =?us-ascii?Q?1Og8qpdvLy0TjAV+4iXr4qzLLjZTItSijruoYPb7UR9yk7urnVHY7e5LKS/l?=
- =?us-ascii?Q?eNpQtiGP16bZ9KO1CpZLipGbEmgKPYYt6dl24fU4LVjcrQA2l9egc6Vk9aX4?=
- =?us-ascii?Q?W1XPIVxm+iX2mrFLn6mhzWnzQIJM76bVWI0qd15szqA2przyzqIZYe3IgbxD?=
- =?us-ascii?Q?m5gbXzo2wDE7/V/ZF6gAApndWZFHF+k+IrwTWADWl/s2c1ifXJmr2PmfTKX/?=
- =?us-ascii?Q?ssK2JN3c5KOGPsNo5QbJcSTn5Unbg4WMVxfYyj7dKNqMCpyDPFtmCftZKn6V?=
- =?us-ascii?Q?dR4jg1b0/k44/HbrlUA6uIX1HnMC23P9ZUJRW6lvlzf9D4w/2KaZLBneWTXc?=
- =?us-ascii?Q?YwBDcMgb/mo0sMKxQ2C4i+rretg8Vz2Gr9qNHREPdALqflwL?=
+	=?us-ascii?Q?FhQZgbxs079MaTDRgoZ+fV3VrlU1+hsJxvu2NQSoa3ssR19rMstKTuKiGjgx?=
+ =?us-ascii?Q?Z17ipAH+IstwJqiG2T2tSIEbxtnPW3co2vHXDni0XfdgNLMbCN/mMhoPqwJH?=
+ =?us-ascii?Q?/hGt189UGCN0vdMkCqaYyG4eYw+es5kok55s7+8SCYdUqBldWcx31pM0mdO/?=
+ =?us-ascii?Q?g2hnvDCIXzpV4kuX7DmV3aqjR/0yQtY58Zru7uCoLbdjpb1++l/Xn7qdhdiG?=
+ =?us-ascii?Q?MhzRSx/mMODXZhuBUH56U0AzkE2PrZ+O1HYEdihsxsgfK7o3rbsDHAgLy4ip?=
+ =?us-ascii?Q?hG6h0JM5Nug2e2vYPffLEEQ3dn7ZxdMKQyRV+VLYYU1h39GU/+pFt0x63kFW?=
+ =?us-ascii?Q?1SFPAyMRTuOhDbRGdm3NZOFkZyra0Jx/ElUL12XYswkxbag96WQK3GaraWLv?=
+ =?us-ascii?Q?yq4G1exn1LZJkNfcTao5praWFO9FaYxBNSY15p2R9oc9fCGcjdyShs5UGjGN?=
+ =?us-ascii?Q?PsiwSdaREZyFRpvnQPhptWUyMyw1Ih8WXhXCujxwdq9L6clEoalpy4CpdVgk?=
+ =?us-ascii?Q?UbZSH/CqifixDQ6/ms02EmJ6pzHSUvra2rednomrQAQUW7I2tYpW2J2nvCCJ?=
+ =?us-ascii?Q?dQRNbUQjZVNtgJl/4A/DeN0s/B1bx7Y5JGgKoSicV83F43cZGEScDcWYTTBm?=
+ =?us-ascii?Q?AxDxGoCsNer1Nkikm9Ubz5qklmTiBjxS0/oZ/d0a6aveQQmT3qb4Ji/EQwMw?=
+ =?us-ascii?Q?0W3uxj/CWYOMqesLrRd6O1UJYpBEjsUX+3DLmVY7OP2b2xi9EABYeJDbS724?=
+ =?us-ascii?Q?cEQqGOMxPbU04NhoPowKTvtG9sNppyIiaqm6/okNswecrhcFJXXEzvuqX+Av?=
+ =?us-ascii?Q?Kod5oMT+gGP18gcMr20F1+kcozlsnhNdALWUBZgIxbGptSelNwPL/yTOdSzv?=
+ =?us-ascii?Q?JhftNdqnAoPddLUaVFKdYSHlvSKEaIleI9nb8gIg6YmrHD3yQhiIbvkjKjJn?=
+ =?us-ascii?Q?q725pKVQbZx2bZlnsaRFDnWHnX4od1gOQXZKNKnGFmH6whQkSHhKzAROjOUR?=
+ =?us-ascii?Q?YiK0VKbPkPlrwRzsTP64pvLG1tHd1gkFJ8DMrxDfh84TMrK2OgWRm51TN/PQ?=
+ =?us-ascii?Q?tU2wUm7N9P25wkHdMGk/zuoeIhzxrZ0kqD6D9A0YM63FBwxj9eJ8Ktv8TOv0?=
+ =?us-ascii?Q?15RbCRoesnYyEeMrMANs6QkHqXKbW4EXdvMobhodM2nbGQN/snvCQna1yv7S?=
+ =?us-ascii?Q?QRSdACY1KZPPFlvzmqD4TATdkTs09dvchOHAQK6pjsl5bGOUl4eaqiK/p5zp?=
+ =?us-ascii?Q?J+Rmu90lwqlDOOfj0JmOc911V5kNdklASEnKs0Xwe37Q3TC1cKzcQKkybvO+?=
+ =?us-ascii?Q?pLyLzF/UkwZInu0qOvinpoPlfctbjjPErvypFN/1T8LeA4FjmSjWUfYnBc51?=
+ =?us-ascii?Q?mi3jAKc1eiyZ1XgD6wfjuVSsAlZWDPXR6bioeB6MJiUbq37vLCUwmGb54FKL?=
+ =?us-ascii?Q?DwyuKKdReyUKyW2NdoxH+SYeVQP1kShMXctOT2rx0qlFJVrbKdYuUFb6ZuX8?=
+ =?us-ascii?Q?89C9l14rcCGtWHtwlgvAnUlMf9nTqSv0vxhWzH3S+i3KsgOyDKqy4Y1AavWj?=
+ =?us-ascii?Q?RoX82cGLFo0x7HHQGS57tEMbFwEGojadXTlYFi6+78LyJd7tHOccEP6s5Of9?=
+ =?us-ascii?Q?fW63t1bJE1glV2g2NMQG2XBFnyVzP2jtBkk1R6Cz6yYVpp2PC+211yzkpCTD?=
+ =?us-ascii?Q?/0MO5XIx9/9WN/yixbxPsRVm2RJJ04TfU/7Z7779XmsY7tGV6Jx37Fk0OBM1?=
+ =?us-ascii?Q?4v78F2mgtg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5ef1eff-b765-4071-0ce5-08de85ea4e25
+X-MS-Exchange-CrossTenant-Network-Message-Id: a925d73f-3f8a-4968-4a06-08de85ea75cd
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 19:04:11.5319
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 19:05:17.9978
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g/n5UIkQ5CWDKbV9oyaUsfbMYt2ZwRkkx6xiQBStR5w7alFAt4fwwGAPgyb35xxJ
+X-MS-Exchange-CrossTenant-UserPrincipalName: ceeSp5/uQwBMcuSwS5qalG1WvU5HKEhW3bkwSIjy22xbx/yeWvx8Lh8U7rIX/JjH
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6120
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 521644000C
-X-Stat-Signature: r61gcjq7xxc8e1nhrjnc6ebn5pbz7669
+X-Stat-Signature: qzk5776an5pux6w5fudzwkntbdqsn6gg
 X-Rspam-User: 
-X-HE-Tag: 1773947059-500031
-X-HE-Meta: U2FsdGVkX18Xm4I+f7GqltCM3UEII2XBEMyqJQa0JemzHPawlp+ninW7DjbjPwNXRPsNVstWfneERw3wPC39Us1dHRhUDWNFZuG+H+bQWn7T9BC/4llZaIFVdbu1ZOYEJSqG4BOYgudHA+XW+fa6jQC/djgLXBtIBtWIL5Cy7CmLWRQbiIpBCl3Okba/05BnAMuWg47xY9fqkGXsXV41rJbjIkE2Fze++dY37M7uHLADfrUoREgSVt9V4nX3Yu8qWjjq7tBg8+9jsPMTCl8bfC3cafkuf4DgxgjoME+rfyMRl6mHCTT8bN+rpHVbR8UTnbKBNehV3bOvHObGnWW8CyXx7OjL5sK2FgzHqGt4IsXHD8ZNKB/pnY+IcMfC9bJ6+Ujcv6ZAow9/L2x/Gto/CM4W6pWPbonP9sa4wBIA4fYBSURze93bmVGluKq91+hy4YVZQJMZSJXrdw4ogtJzzmbKTe5yLJ6a87U/AYjSS50cNCxo2dQ9vAJjaUElcVIknH477zVTBA4LO0C/NIdkQlr1OyHjyxfL6u7EHBCAr24fZNCOpKTOVNwIRYBcW8zQBT1qXXTrFipq03CNxVmsNN1WCQ5/XPUOHyp8eF6Juw0dYN8rdkcyVg+fQcQigjJHBQAyM1uWTV7LEn1JfO9/iNAmF4RqP/AYg+W7woVLNln6zc+/QXNzB53t4cJVKheY6Jc33WbBKqUV3izp6tiZ7NnrNiwgekcSvABVlFXj3CnzX0Fc4w/GBU/NvMKSDqa2qeQjTyDJCz2b1rGVbZAoGOsl8LvEHmUGVz/P5N9Y6IdJ4avp+XXqiu0J83P8P2sBogTp5dBS1rLJ7P/3wkLXj3Q/xY0rlXR+MMS3GryILKruS6F0fAjBgd8OHgnxeX60RBj06iU7cUfKBBycHZqjoiNoL2XqxxZYH/wZrE62cdanJEgXDi1b+/zcuuSBIawOb84w+oC3e9nEjtb/hFf
- RSH28KpS
- b9NENPATuPg8oyrIk8gVc6IRO2+lEOQBDQeY3te5LS9xKb9A0jsOujs5T+stBBqNSD+i9XH/DScJoymqReTXZw3pVpv5wL+YKvKEpDtyf9YWkJ9oP4B+QWLVy+mdcfbTJI+BwevphSIQf30B7iQ0G9q3HPHp6vIA1dP4o1Qc1/L+kHsOcS5E/DgyLPXEr4oHzl7maNNft6Vw7Pu95MDbDPzd+dyk7UN/0cW6B2M3mKZR5epe6yXBg5v1/d6xHetarvDxHa1yd/EaruXHs0wfhoi9WVS7z3v1OIcmBoRu2ZkWgci8PI6Ro8DtXkvwGumHsIU0+ECMk3PDrpV9aLC354vKamI4gdp6Pa6GFOlwNyjUa+GZ+J4MFrzSHCKAKokivMr67XuIHenWRAkNGNxbn9FscloC+d0d4IysFC1q8xMgUeIj0REyJQEJEaDJyBJn7Xh3UieQdv4FwothhIplJCVPzO/jabkTtUSCfWSd0X/DHIt2w6e7jGxIXWhnkilHpvil8IguDagX1PUnV2lKDjSREcs5EWgx6WvFXWpk2C4yGi/+zMFwCWkGDDg==
+X-Rspamd-Queue-Id: 661E44000C
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773947130-799652
+X-HE-Meta: U2FsdGVkX18tFrVepQ0KBvr1UWvLCyk+TgbCDGucWNTr0d9k3NQi4nJipU9SNTOi0izI8Kj2AL5lUH8s0mq19QyHVIoE2BUlELXE1GI4MxQeuu1b9JVBPbccFaFHmsRAr/g/+5KW8yPSf2280I5iYp7qRcZz2euEGuufpH5TwFHJUDC/zY2yO+L+TRGEQsHutGR2s0GV8Duj9Czax0POV/daF6aEOsxx+I5Fa14eC4U5kNHeaXhDqrNt/gTO7Lb22nEThOv0VKLrtcbznP4+zbjpcUo0RIGFOUQi4iux/UTJ7+XLyBW0JSZUNRZM8RXaQ9zB6Y4Z/WSRnhs4TJSLG6Ll2CbAaNBosAqJL0QU56GOmHWe8+d8uel/vgdgaHXgdeOnATFIacRVJK1Tw554f3tUHeDPlJAYORFywd1ZB+xeJ6jZoHKsD3k80zf4+9LC1k7EHSw0Eylbuef1QAvLU9F6+Syk7KzU5Qvx9Yl8y96kpZaubOdEPGne4xlsWvQM06qwFAEykG65kGl8sgXRFZg86/c5FDTYCQxr77SYzd9XW4b/G3g+NGk1s8s8qWGLKuGM0k5KHsTHPXS1QkcGjFoyKAOSWHUH6j7yBelRl1edQGPpT2BfXkTC3xQA4A1FwBpT7cQKWLZ/ZfBAmBXSgoNenAP6p6Wo+2nivDsvRumrMkC6uQUnLh4aE2OMm74dJd4QICyJI6bNHDA0/RsC97ojVT3RoSGoiy+20g+HmxxKwPnb4bkB4itknNEBYQp8yoAeZUAG/vlpy4nQtKGBNoSsdiIy7C84je+xvav1GCSI5hbk+JLqbYinDIwBMXcZnanPkzTZkYGOyO8msxj8JoD33cocalf3zEVHo7RYSpUNNsai0NBogmwFdf3mZAtnfz/Rh/6gW3rlwqzAkXC3UNI9+gHTVvGdzs1lAc2sy7TTy9lH3lllPmm+DVa2dh92dmnX4VXP2auLmfIM4PA
+ IELkYejM
+ DLJ1vzfbY2dQWXMBhYYYu2Sp7dWQWXCg+WJaNtAffN+1qckqJdHEaGwC852LhSQEZ3x9553GsJXIsN3irX1WUiLPx8p5GoQjO3ha8ArjuGakUV7494XI2KvQJ+HyiygUdkJtKIsV2VYfOMSE/YENGZRMDrl8UI6etmjI+gGUjf8sq+jD/UdqkNI7gbjAh0Yu7gMEj1SECPKWTv3LjuAX1lXCxEpv9FWDJB7eDfgW2Qg069bvZh7SI2dxR+g/tjysfH/+3UmPFXoswI+c6qGCEtGEgUWbDPeMqXg+SFaNKTI/gOUHcVFkYZPUe84Nr+EfWyXXngpzbwbIbAyhfHU7IBl25YTePqC0YePTk6gQiAlEVh5wcjTlzzL1BBxtu0TRDA+qEa0++zyJOZxRnVS+hU+4uUaNc6xNMdWVp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,367 +166,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The added folio_split_race_test is a modified C port of the race condition
-test from [1]. The test creates shmem huge pages, where the main thread
-punches holes in the shmem to cause folio_split() in the kernel and
-a set of 16 threads reads the shmem to cause filemap_get_entry() in the
-kernel. filemap_get_entry() reads the folio and xarray split by
-folio_split() locklessly. The original test[2] is written in rust and uses
-memfd (shmem backed). This C port uses shmem directly and use a single
-process.
+On 19 Mar 2026, at 12:06, Chunyu Hu wrote:
 
-Note: the initial rust to C conversion is done by Cursor.
+> When thp is not available, just skip the collape tests to avoid the fal=
+se
+> negative.
+>
+> Without the change, run with a thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard -n 1
+>   <snip/>
+>   #  RUN           guard_regions.anon.collapse ...
+>   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHU=
+GEPAGE) (-1) =3D=3D 0 (0)
+>   # collapse: Test terminated by assertion
+>   #          FAIL  guard_regions.anon.collapse
+>   not ok 2 guard_regions.anon.collapse
+>   <snip/>
+>   #  RUN           guard_regions.shmem.collapse ...
+>   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHU=
+GEPAGE) (-1) =3D=3D 0 (0)
+>   # collapse: Test terminated by assertion
+>   #          FAIL  guard_regions.shmem.collapse
+>   not ok 32 guard_regions.shmem.collapse
+>   <snip/>
+>   #  RUN           guard_regions.file.collapse ...
+>   # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHU=
+GEPAGE) (-1) =3D=3D 0 (0)
+>   # collapse: Test terminated by assertion
+>   #          FAIL  guard_regions.file.collapse
+>   not ok 62 guard_regions.file.collapse
+>   <snip/>
+>   # FAILED: 87 / 90 tests passed.
+>   # 17 skipped test(s) detected. Consider enabling relevant config opti=
+ons to improve coverage.
+>   # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
+>
+> With this change, run with thp disabled kernel:
+>   ./run_vmtests.sh -t madv_guard -n 1
+>   <snip/>
+>   #  RUN           guard_regions.anon.collapse ...
+>   #      SKIP      Transparent Hugepages not available
+>   #            OK  guard_regions.anon.collapse
+>   ok 2 guard_regions.anon.collapse # SKIP Transparent Hugepages not ava=
+ilable
+>   <snip/>
+>   #  RUN           guard_regions.file.collapse ...
+>   #      SKIP      Transparent Hugepages not available
+>   #            OK  guard_regions.file.collapse
+>   ok 62 guard_regions.file.collapse # SKIP Transparent Hugepages not av=
+ailable
+>   <snip/>
+>   #  RUN           guard_regions.shmem.collapse ...
+>   #      SKIP      Transparent Hugepages not available
+>   #            OK  guard_regions.shmem.collapse
+>   ok 32 guard_regions.shmem.collapse # SKIP Transparent Hugepages not a=
+vailable
+>   <snip/>
+>   # PASSED: 90 / 90 tests passed.
+>   # 20 skipped test(s) detected. Consider enabling relevant config opti=
+ons to improve coverage.
+>   # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+>
+> CC: Li Wang <liwang@redhat.com>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> ---
+> Changes in v4:
+>   - use thp_available instead of thp_is_enabled() as when thp is set to=
 
-Link: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/ [1]
-Link: https://github.com/dfinity/thp-madv-remove-test [2]
-Signed-off-by: Bas van Dijk <bas@dfinity.org>
-Signed-off-by: Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
-From V2:
-1. simplied the program by removing fork.
+>     never, madvise(MADV_COLLAPSE) will still succeed by design. So a
+>     failure in madvise(MADV_COLLAPSE) on guard region will verify guard=
 
-From V1:
-1. added prctl(PR_SET_PDEATHSIG, SIGTERM) to avoid child looping
-   forever.
-2. removed page_idx % PUNCH_INTERVAL >= 0, since it is a nop. Added a
-   comment.
-3. added a child process status check to prevent parent looping forever
-   and record that as a failure.
-4. used ksft_exit_skip() instead of ksft_finished() when the program is
-   not running as root.
-5. restored THP settings properly when the program exits abnormally.
+>     region denies it. This is suggested from AI.
+>   - removed the 'Reviewed-by' and 'Acked-by' as the code changes. Sorry=
+ for
+>     that but it seems the changes is a little huge? (1 out of 2 lines).=
+=2E
+> Changes in v3:
+>   - commit message: update the log snippet with where the fail happens =
+and
+>     add the '-n1' to the command.
+>   - fix the 'false positive' to 'false negative'
+>   - add reviwed by from Mike
+> Changes in v2:
+>   - add reviewed by from Zi and Lorenzo
+>   - add acked-by from David
+> ---
+>  tools/testing/selftests/mm/guard-regions.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
 
- tools/testing/selftests/mm/Makefile           |   1 +
- .../selftests/mm/folio_split_race_test.c      | 292 ++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh     |   2 +
- 3 files changed, 295 insertions(+)
- create mode 100644 tools/testing/selftests/mm/folio_split_race_test.c
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 7a5de4e9bf520..cd24596cdd27e 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -105,6 +105,7 @@ TEST_GEN_FILES += droppable
- TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
- TEST_GEN_FILES += rmap
-+TEST_GEN_FILES += folio_split_race_test
- 
- ifneq ($(ARCH),arm64)
- TEST_GEN_FILES += soft-dirty
-diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
-new file mode 100644
-index 0000000000000..efe4b631edfc4
---- /dev/null
-+++ b/tools/testing/selftests/mm/folio_split_race_test.c
-@@ -0,0 +1,292 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * The test creates shmem PMD huge pages, fills all pages with known patterns,
-+ * then continuously verifies non-punched pages with 16 threads. Meanwhile, the
-+ * main thread punches holes via MADV_REMOVE on the shmem.
-+ *
-+ * It tests the race condition between folio_split() and filemap_get_entry(),
-+ * where the hole punches on shmem lead to folio_split() and reading the shmem
-+ * lead to filemap_get_entry().
-+ */
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <linux/mman.h>
-+#include <pthread.h>
-+#include <stdatomic.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <signal.h>
-+#include <unistd.h>
-+#include "vm_util.h"
-+#include "kselftest.h"
-+#include "thp_settings.h"
-+
-+uint64_t page_size;
-+uint64_t pmd_pagesize;
-+#define NR_PMD_PAGE 5
-+#define FILE_SIZE (pmd_pagesize * NR_PMD_PAGE)
-+#define TOTAL_PAGES (FILE_SIZE / page_size)
-+
-+/* Every N-th to N+M-th pages are punched; not aligned with huge page boundaries. */
-+#define PUNCH_INTERVAL 50 /* N */
-+#define PUNCH_SIZE_FACTOR 3 /* M */
-+
-+#define NUM_READER_THREADS 16
-+#define FILL_BYTE 0xAF
-+#define NUM_ITERATIONS 100
-+
-+/* Shared control block: control reading threads and record stats */
-+struct shared_ctl {
-+	atomic_uint_fast32_t stop;
-+	atomic_size_t reader_failures;
-+	atomic_size_t reader_verified;
-+};
-+
-+static void fill_page(unsigned char *base, size_t page_idx)
-+{
-+	unsigned char *page_ptr = base + page_idx * page_size;
-+	uint64_t idx = (uint64_t)page_idx;
-+
-+	memset(page_ptr, FILL_BYTE, page_size);
-+	memcpy(page_ptr, &idx, sizeof(idx));
-+}
-+
-+/* Returns true if valid, false if corrupted. */
-+static bool check_page(unsigned char *base, size_t page_idx)
-+{
-+	unsigned char *page_ptr = base + page_idx * page_size;
-+	uint64_t expected_idx = (uint64_t)page_idx;
-+	uint64_t got_idx;
-+
-+	memcpy(&got_idx, page_ptr, 8);
-+
-+	if (got_idx != expected_idx) {
-+		size_t off;
-+		int all_zero = 1;
-+
-+		for (off = 0; off < page_size; off++) {
-+			if (page_ptr[off] != 0) {
-+				all_zero = 0;
-+				break;
-+			}
-+		}
-+		if (all_zero) {
-+			ksft_print_msg(
-+				"CORRUPTED: page %zu (huge page %zu) is ALL ZEROS\n",
-+				page_idx,
-+				(page_idx * page_size) / pmd_pagesize);
-+		} else {
-+			ksft_print_msg(
-+				"CORRUPTED: page %zu (huge page %zu): expected idx %zu, got %lu\n",
-+				page_idx, (page_idx * page_size) / pmd_pagesize,
-+				page_idx, (unsigned long)got_idx);
-+		}
-+		return false;
-+	}
-+	return true;
-+}
-+
-+struct reader_arg {
-+	unsigned char *base;
-+	struct shared_ctl *ctl;
-+	int tid;
-+	atomic_size_t *failures;
-+	atomic_size_t *verified;
-+};
-+
-+static void *reader_thread(void *arg)
-+{
-+	struct reader_arg *ra = (struct reader_arg *)arg;
-+	unsigned char *base = ra->base;
-+	struct shared_ctl *ctl = ra->ctl;
-+	int tid = ra->tid;
-+	atomic_size_t *failures = ra->failures;
-+	atomic_size_t *verified = ra->verified;
-+	size_t page_idx;
-+
-+	while (atomic_load_explicit(&ctl->stop, memory_order_acquire) == 0) {
-+		for (page_idx = (size_t)tid; page_idx < TOTAL_PAGES;
-+		     page_idx += NUM_READER_THREADS) {
-+			/*
-+			 * page_idx % PUNCH_INTERVAL is in [0, PUNCH_INTERVAL),
-+			 * skip [0, PUNCH_SIZE_FACTOR)
-+			 */
-+			if (page_idx % PUNCH_INTERVAL < PUNCH_SIZE_FACTOR)
-+				continue;
-+			if (check_page(base, page_idx))
-+				atomic_fetch_add_explicit(verified, 1,
-+							  memory_order_relaxed);
-+			else
-+				atomic_fetch_add_explicit(failures, 1,
-+							  memory_order_relaxed);
-+		}
-+		if (atomic_load_explicit(failures, memory_order_relaxed) > 0)
-+			break;
-+	}
-+
-+	return NULL;
-+}
-+
-+static void create_readers(pthread_t *threads, struct reader_arg *args,
-+			   unsigned char *base, struct shared_ctl *ctl)
-+{
-+	int i;
-+
-+	for (i = 0; i < NUM_READER_THREADS; i++) {
-+		args[i].base = base;
-+		args[i].ctl = ctl;
-+		args[i].tid = i;
-+		args[i].failures = &ctl->reader_failures;
-+		args[i].verified = &ctl->reader_verified;
-+		if (pthread_create(&threads[i], NULL, reader_thread,
-+				   &args[i]) != 0)
-+			ksft_exit_fail_msg("pthread_create failed\n");
-+	}
-+}
-+
-+/* Run a single iteration. Returns total number of corrupted pages. */
-+static size_t run_iteration(void)
-+{
-+	size_t reader_failures, reader_verified;
-+	struct reader_arg args[NUM_READER_THREADS];
-+	pthread_t threads[NUM_READER_THREADS];
-+	unsigned char *mmap_base;
-+	struct shared_ctl ctl;
-+	size_t i;
-+
-+	memset(&ctl, 0, sizeof(struct shared_ctl));
-+
-+	mmap_base = mmap(NULL, FILE_SIZE, PROT_READ | PROT_WRITE,
-+			 MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+
-+	if (mmap_base == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed: %d\n", errno);
-+
-+	if (madvise(mmap_base, FILE_SIZE, MADV_HUGEPAGE) != 0)
-+		ksft_exit_fail_msg("madvise(MADV_HUGEPAGE) failed: %d\n",
-+				   errno);
-+
-+	for (i = 0; i < TOTAL_PAGES; i++)
-+		fill_page(mmap_base, i);
-+
-+	if (!check_huge_shmem(mmap_base, NR_PMD_PAGE, pmd_pagesize))
-+		ksft_exit_fail_msg("No shmem THP is allocated\n");
-+
-+	create_readers(threads, args, mmap_base, &ctl);
-+
-+	for (i = 0; i < TOTAL_PAGES; i++) {
-+		if (i % PUNCH_INTERVAL != 0)
-+			continue;
-+		if (madvise(mmap_base + i * page_size,
-+			    PUNCH_SIZE_FACTOR * page_size, MADV_REMOVE) != 0) {
-+			ksft_exit_fail_msg(
-+				"madvise(MADV_REMOVE) failed on page %zu: %d\n",
-+				i, errno);
-+		}
-+
-+		i += PUNCH_SIZE_FACTOR;
-+	}
-+
-+	atomic_store_explicit(&ctl.stop, 1, memory_order_release);
-+
-+	for (i = 0; i < NUM_READER_THREADS; i++)
-+		pthread_join(threads[i], NULL);
-+
-+	reader_failures = atomic_load_explicit(&ctl.reader_failures,
-+					       memory_order_acquire);
-+	reader_verified = atomic_load_explicit(&ctl.reader_verified,
-+					       memory_order_acquire);
-+	if (reader_failures)
-+		ksft_print_msg("Child: %zu pages verified, %zu failures\n",
-+			       reader_verified, reader_failures);
-+
-+	munmap(mmap_base, FILE_SIZE);
-+
-+	return reader_failures;
-+}
-+
-+static void thp_cleanup_handler(int signum)
-+{
-+	thp_restore_settings();
-+	/*
-+	 * Restore default handler and re-raise the signal to exit.
-+	 * This is to ensure the test process exits with the correct
-+	 * status code corresponding to the signal.
-+	 */
-+	signal(signum, SIG_DFL);
-+	raise(signum);
-+}
-+
-+static void thp_settings_cleanup(void)
-+{
-+	thp_restore_settings();
-+}
-+
-+int main(void)
-+{
-+	struct thp_settings current_settings;
-+	bool failed = false;
-+	size_t failures;
-+	size_t iter;
-+
-+	ksft_print_header();
-+
-+	if (!thp_is_enabled())
-+		ksft_exit_skip("Transparent Hugepages not available\n");
-+
-+	if (geteuid() != 0)
-+		ksft_exit_skip("Please run the test as root\n");
-+
-+	thp_save_settings();
-+	/* make sure thp settings are restored */
-+	if (atexit(thp_settings_cleanup) != 0)
-+		ksft_exit_fail_msg("atexit failed\n");
-+
-+	signal(SIGINT, thp_cleanup_handler);
-+	signal(SIGTERM, thp_cleanup_handler);
-+
-+	thp_read_settings(&current_settings);
-+	current_settings.shmem_enabled = SHMEM_ADVISE;
-+	thp_write_settings(&current_settings);
-+
-+	ksft_set_plan(1);
-+
-+	page_size = getpagesize();
-+	pmd_pagesize = read_pmd_pagesize();
-+
-+	ksft_print_msg("folio split race test\n");
-+	ksft_print_msg("===================================================\n");
-+	ksft_print_msg("Shmem size:       %zu MiB\n", FILE_SIZE / 1024 / 1024);
-+	ksft_print_msg("Total pages:     %zu\n", TOTAL_PAGES);
-+	ksft_print_msg("Child readers:   %d\n", NUM_READER_THREADS);
-+	ksft_print_msg("Punching every %dth to %dth page\n", PUNCH_INTERVAL,
-+		       PUNCH_INTERVAL + PUNCH_SIZE_FACTOR);
-+	ksft_print_msg("Iterations:      %d\n", NUM_ITERATIONS);
-+
-+	for (iter = 1; iter <= NUM_ITERATIONS; iter++) {
-+		failures = run_iteration();
-+		if (failures > 0) {
-+			failed = true;
-+			ksft_print_msg(
-+				"FAILED on iteration %zu: %zu pages corrupted by MADV_REMOVE!\n",
-+				iter, failures);
-+			break;
-+		}
-+	}
-+
-+	if (failed) {
-+		ksft_test_result_fail("Test failed\n");
-+		ksft_exit_fail();
-+	} else {
-+		ksft_test_result_pass("All %d iterations passed\n",
-+				      NUM_ITERATIONS);
-+		ksft_exit_pass();
-+	}
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 606558cc3b098..530980fdf3227 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -553,6 +553,8 @@ if [ -n "${MOUNTED_XFS}" ]; then
-     rm -f ${XFS_IMG}
- fi
- 
-+CATEGORY="thp" run_test ./folio_split_race_test
-+
- CATEGORY="migration" run_test ./migration
- 
- CATEGORY="mkdirty" run_test ./mkdirty
--- 
-2.51.0
-
+Best Regards,
+Yan, Zi
 
