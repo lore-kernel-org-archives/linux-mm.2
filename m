@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96E101091903
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0301091904
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:10:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7A346B0095; Thu, 19 Mar 2026 14:09:13 -0400 (EDT)
+	id 8C12A6B0553; Thu, 19 Mar 2026 14:10:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D51F16B009B; Thu, 19 Mar 2026 14:09:13 -0400 (EDT)
+	id 898A56B055B; Thu, 19 Mar 2026 14:10:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C67C56B009E; Thu, 19 Mar 2026 14:09:13 -0400 (EDT)
+	id 7AE9B6B0560; Thu, 19 Mar 2026 14:10:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B77946B0095
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:09:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 837071A0687
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:09:13 +0000 (UTC)
-X-FDA: 84563599386.22.F6DC4C7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AC67820002
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:09:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qX+5ATXa;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 684536B0553
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:10:23 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0BF2A140725
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:10:23 +0000 (UTC)
+X-FDA: 84563602326.23.DAB69C4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 72FF8C000F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:10:21 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X0Euv4a8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773943751;
+	s=arc-20220608; t=1773943821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s0/Rtf4mdU/0HDs0A9SNaDuzgSU+uL/VU12OEEC0CB8=;
-	b=vXvP2GjsK8ThL3yy3n3keClM2JCa/uGk6wH0Whndvnn7yVyksqw17n/n5BJdwgq84VMgB2
-	l4zjcxb/uFmRWYbTSyuO5auD+RXErbP2dyaSwmZDo8RI5Uh3BKLQVpqQce7lANG6G9u2oz
-	8ms6z1j+Tv53uN9c/gD6+AqRengzdFs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773943751; a=rsa-sha256;
-	cv=none;
-	b=bY9ge/O8eIjTVBe6hwDdEGRIIVgGf6mfBWPOWE+j25UmcSqbf4CH/GnCtioyV2AKAYSuu9
-	bgvzIv5csl7Cw3euVHQEPNxSETa2Byp0K+ZNprem3A0Y/3hC4MHyNY9JfzDxK3um0FHJFd
-	HtbkntNmTxw6ZMsauszAkHsR/EaJpCs=
+	bh=EnJPpD1HlmrCYa5F8eQoZ8HPYDU7ptWzeLwvguZaldU=;
+	b=KS4EWwht+NXNqg/dfWkE5wlGkKOj2yh9vb2f1vgKTk7Aw1963UT8P92GGVwHm/Fbwmshqi
+	qSDmmMiaM7S5kqJp6D1+Owz6s4ldFVVNY4j+1FR2xHdEO8rfvPyC4dZcuG2ChN8uqxPd0o
+	vwQJVvGn/iKh//YgSxs02MZfAYenXU4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qX+5ATXa;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X0Euv4a8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773943821; a=rsa-sha256;
+	cv=none;
+	b=gBB2xzrdiK8tzmeXw7sS/GAWZNMLKkmOFJ69iJs/AZSCY7GAHiGGr5v9uOXFeMDipera+J
+	KXvBA54WPFEyv7dlByEC9JnE41DKt6R/0lboaKeUYalud+tldeNEhZsU0qVPeUzlIOMhQW
+	DzOnhhSS43f6EKs8OkQxdCsRRhDFoN8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52D3B434F6;
-	Thu, 19 Mar 2026 18:09:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957E3C19424;
-	Thu, 19 Mar 2026 18:08:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CCE7560053;
+	Thu, 19 Mar 2026 18:10:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C03DC19424;
+	Thu, 19 Mar 2026 18:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773943750;
-	bh=6e0EEIIbFUQq892CEmzGoS89gmnjToRL3GjT58TAgu0=;
+	s=k20201202; t=1773943820;
+	bh=qiycmf8FVsKgiwJW+WF27BXoBUYgMXO2nKq2qH8/V9w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qX+5ATXaTeCVWnoq1pb3+DCvmHvgnPIAYR73j5oOUNNdhwJKMvxcxvMznp8qHd0GX
-	 xv9Nr4ET8PVsG4aPWJihjD17Yv4iSbwgqNwABsBQW9fob6yyIX9OL4T2HWsZX6uCus
-	 TFTxhLxBv3my3hJsS7WCE9HsFSKoBMrCM00nIZRsc3Cjm5vt8s5urJsnDYrzNSpl5W
-	 iLWAQ195xdMWcV+3wWlfcPK8SqBN9pQvzG7SgVOkmXFjAbrbNl7km4EVw8CntlIph+
-	 dgN4D/4rF2yXtEVk2ehm0cNMmvNiiHv2w0hPJ/ndW32TV+0f0DlGB7PdfcvTzv01cO
-	 LSmnz5V9S1qOw==
-Message-ID: <e166588e-036c-4fa3-81fc-d7aca9f02c29@kernel.org>
-Date: Thu, 19 Mar 2026 19:08:57 +0100
+	b=X0Euv4a8xyCYdsckpAbt8fT6LqhKk7IuU0UqphcoasZc2okaGlb+kQYu+uazvOUtq
+	 85f+tSHFspaDj1edmQOYfSf5Ln5e81IFaOedSogu+LxydtG1FDpGmK9cZBlZ5AYzRa
+	 3uKZfLc+Mxf0MDYXO0yxgs9q6RIzLjuRbFSenCg/KJjHEyTHUYURQrV5WpCEGCaa0E
+	 N97jKwxLfoj1ZChZKwjSPam7zTLbwQPiCGk+kCz60PShf3Pl02lf55TnKyqVR6fsWG
+	 h4sM7htBfcjdWtB4m4kvmy0dLFujX92gd2g9Mr2Log7dTfXYTuA10MgzgiWcha4EYZ
+	 7d5LBzU69n9gw==
+Message-ID: <571af145-df68-4f5d-8f21-a244552e104b@kernel.org>
+Date: Thu, 19 Mar 2026 19:10:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] mm: remove CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE
-To: Gregory Price <gourry@gourry.net>
+To: Mike Rapoport <rppt@kernel.org>
 Cc: linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
  Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
  WANG Xuerui <kernel@xen0n.name>, Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -86,12 +86,12 @@ Cc: linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
  "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
  <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
  Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
  Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
  linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
@@ -100,7 +100,7 @@ Cc: linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
  linux-rt-devel@lists.linux.dev
 References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
  <20260319-config_migration-v1-1-42270124966f@kernel.org>
- <abwVK8nLpSLVcT5G@gourry-fedora-PF4VCD3F>
+ <abwhzkhM9Bk9xPIf@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +147,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <abwVK8nLpSLVcT5G@gourry-fedora-PF4VCD3F>
+In-Reply-To: <abwhzkhM9Bk9xPIf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 72FF8C000F
+X-Stat-Signature: k91coatj3zmwdg46yfjgdb9q6e9r8fa9
 X-Rspam-User: 
-X-Stat-Signature: jdh3i95enxowxypgitgazjqjyczx9e63
-X-Rspamd-Queue-Id: AC67820002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773943751-886835
-X-HE-Meta: U2FsdGVkX19KWWheQdQ7hu32ajT5z82ALBDVx5k3V2o+14OKZVLNOdGBDzvo4rgzkiwzmNKLuF1ifouIJXYlOc8HfU12PkiTw3R1WMHJmIGxykLleZM87ZiN+uWgAH1Uc2BEA7moWkh1LVqk0UFhp9qACGTbTPjHfFmSbEQ7Ubv4sXNvZhwrzLkLNGMv5BWFgdjkLLsmm50Ofozv+iLsj0KIQhDPKtDmwLvgluU5QK1e7yys4Se3AwNDR1U03omkU0v6tZDKiT1tv2HtSbtPFxI0CdxXia/M00VkyjjYsG9dw7ZrnlhmKdA3/FjiixA6cZeoePcOPPghyReo6eMbALOjeW+f++pRKxlAptded0HWIZ2jclskQ6UJdslG1O0X7wC0zVARuicA6m2oGxpuRbwyTgKWu71x8C37sVEXHnMQjTtiHhl3AT+X0XAB5bGWbH6yI43hZUY2mRlUPQXy8zHVkvevFEqzgwWANFQaNEssv55t6Ce3z3kcM4GzeqByWIYNDF5kD6vbQHsq8F4Hk52iLWdaaW47L59aGRlAfl29z+JPnGOWCr5ZNrd4AHWNelsT7KnyuJn1WQgDWjSQeQfmizM47R2CM1hCR7iDPSCoOPBdTSaCPD3VNQ+yfC4eQfan2Db2QDKC6oGaXUBIQ3icRJqAcb+KO+wEEZWJjinCoAqgdKDajJT7LQepNza/1ZAUH2uZ9xV4ygQQTG71LNIDC1xCAnbeW9fQoeyWP2AQddTTZ8SK9kWZk9C4fzQB+wJKYIwbx7wkd0Xe0j0bJbFGdmkFp4JL6K96ZhTSyb9CODPEy77AQXmlJF8GiH6HHUPF/pLEm5vJ7x6xIGlGNuiiyy7vQoIIYwqskWdbXNnLtoNAIeHvBVgJAAWDWTLLyMN4DvNGLw8K3Ko9citj4GbLGPxFu2kkw7hj8POx/vdVXjXrGaA+sx9dc3EuGNNNQvVdffU3deh+kyVTBbG
- a7NKFwKs
- SfO9tm9TmjPJxqIj+2LM3zkICmK9BW4EkhLoFFQHf/n++zE+M77SBykRPP/rmU8w1r8kcNeS4dz2nDhKRLQwgclJmx7dFDu8JZNZBngxqYfo+zXJqHU4BS+6iQVGSvLH6NuewsSrPk+q7l4MWinh6Uy37jDXANUb7fwT7syOOO8g004eqVNyFh4VqFfHkVAG9EDdJs0YXrHqe8jHxPjI5d7L3OEKHBEnTR/VlQhMcuWSHWpMwpXd80khetO6r0uJW6JxLR7QI6ivsub+EZICWW0DKISdONFhqGhLzCVLTJg+vOv2OVNAS1Zn0y2h15YaPkGkv3kbP8bGd+eEDf7Prn0aw6C+SHd4e0QmwohZ3dY3esuCX63f7R/Ercx9iYpur7MuHO+nrjjeD+eRdUo7zo/B6mw==
+X-HE-Tag: 1773943821-995900
+X-HE-Meta: U2FsdGVkX1/5hoaHPZSGkUxCL39UuS46Ne526kcIAIcIVDqBmVydKP0CdbfUHnqe9FKbfZIp1QR2RWlQ9c9xh97vof9CM6TSbt39slLT53IgW3d5fhrjuQoeqpJqNT7R1HVzKEqyNWcpZJCyhdy8zYDskLdjv3rLfAdB8oW3eA9otburPeyolTDrJJexxceMcrND/9aOaqdtAaEKSvgmAvRmenuIxHswTQWZdj42KAo/7VbzJ+tMePZsQoylAc5Z5a82UMPkf6yLz3b/CChx2aTZZ45jWOaZr2zCdqlOYJ+Ow08YpqgojpoEMQUnZvhOBhmMiDasOPij3PmwSaBV/5Ayi/jLy39TcCvCLwISL48gvFHYlYsw+38MjJhutX2MjoBP7e/XxSmADSmys3ukJZbzepblo7D5WoJeCJWB1MLCxcbCfPQj7TiT45O96M2BpcVlqfHg7kuc1g8pJM/gY64M4UKR7XQ+5Ph3vYO2R0HlsZAf6kG6j2yDkDZCxkBTmw0/MKkdWCqgQQOVq+sg849ZqCGqw11I1DWT2ajLuSgruanaClN97IP8xLtHAHVcTCsQEaQPa281tt1RxDjw9pT2W6ZxJNnhngzCti2tGJLhAtX35UsroCJVNokyoceioLJyj+P5mWvXiv46wxDIXZUR69WjAcFIcnGHZTW3TsNk76j4tKa8z7dRDjr/rOnCYedBhqk1Q924t6hvAJI0XjjAUhkieE/lEnjr5fm+8M0kTyKH/x8N20QakB4YtsA5mRX+Ohh2CJipu7i4dMAsk1elfc45kE2RCh0+qcKdwgmkWrmHxEB4V3DBp2rFY9ML8RCrc7NiB9UrJc3rsqO9AJI9ZwUiDCcLcPB04VwDtINWRmov11Nt6e30qP/fH2oiOtmm+v2aS7q1Ro2s8ntXjLXn0HcIdrEe5RTE6AeP6cKyuPGJUVGNBqDM6YV0ggbQjShzlBaQ708ldJxt5EF
+ g2wJvPwv
+ YFqrb2DnDxRLaEZOwnpE6FhHrEX51uCuFOD0vMcg6/MtjW3uAbOxxWEFci1+K+CgBqq1i6yERM7K9B8I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,38 +165,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 16:24, Gregory Price wrote:
-> On Thu, Mar 19, 2026 at 09:19:40AM +0100, David Hildenbrand (Arm) wrote:
->> All architectures that select CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE also
->> select CONFIG_ARCH_ENABLE_MEMORY_HOTPLUG. So we can just remove
->> CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE.
+
+>>  arch/arm64/Kconfig     | 1 -
+>>  arch/loongarch/Kconfig | 1 -
+>>  arch/powerpc/Kconfig   | 1 -
+>>  arch/riscv/Kconfig     | 1 -
+>>  arch/s390/Kconfig      | 1 -
+>>  arch/x86/Kconfig       | 1 -
+>>  mm/Kconfig             | 9 +++------
+>>  7 files changed, 3 insertions(+), 12 deletions(-)
 >>
->> For CONFIG_MIGRATION, make it depend on CONFIG_MEMORY_HOTREMOVE instead,
->> and make CONFIG_MEMORY_HOTREMOVE select CONFIG_MIGRATION (just like
->> CONFIG_CMA and CONFIG_COMPACTION already do).
->>
->> We'll clean up CONFIG_MIGRATION next.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+>> index edc927d9e85a..d01800962d84 100644
+>> --- a/arch/s390/Kconfig
+>> +++ b/arch/s390/Kconfig
+>> @@ -85,7 +85,6 @@ config S390
+>>  	select ARCH_32BIT_USTAT_F_TINODE
+>>  	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
+>>  	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
 > 
-> HOTREMOVE has long been a thorn in my side, I appreciate you cleaning
-> this up.
+> Not really related, but s390 does not have anything but SPARSEMEM_VMEMMAP.
 
-On a long cardrive today I was wondering: do we still need a separate
-MEMORY_HOTREMOVE
+yeah, spotted that as well but decided to leave it as is for now.
 
-Now we'll have
-
-config MEMORY_HOTREMOVE
-	bool "Allow for memory hot remove"
-	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
-	depends on MEMORY_HOTPLUG
-	select MIGRATION
-
-I'll try to get rid of that HAVE_BOOTMEM_INFO_NODE shite next.
-
-Then it's really just MIGRATION and some sprinkled
-CONFIG_MEMORY_HOTREMOVE. Not a lot of code.
+Thanks!
 
 -- 
 Cheers,
