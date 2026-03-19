@@ -4,137 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 718401091926
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6338D1091927
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:36:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A4806B008A; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
+	id C69976B04F3; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72F1A6B0095; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
+	id BECBD6B04F5; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61CC06B009F; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
+	id AB3F86B04F7; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 49B026B008A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:33:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD8E78C39A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:33:55 +0000 (UTC)
-X-FDA: 84564115230.25.0589734
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 030C34000E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:33:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lVT0r2zZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 96B946B04F3
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 473A95ABA9
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:36:18 +0000 (UTC)
+X-FDA: 84564121236.23.AC05C05
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8165E180008
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:36:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf24.hostedemail.com: domain of 3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773956034;
+	s=arc-20220608; t=1773956176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rA37h1H+t+5MIHYmWOwMvW7jtN1zx/LGYLLRVu2/OGI=;
-	b=tz7wvH426rZUQK8+mH1OBb6wT7+aCA6jymSrAIQgKZznt3ajVbVz/1PgwyjpoqI7OX4jeE
-	QSS3MR8yOmX2xE0WXQ92YMkMXrZfqGsI6EOVlJCNEv3xlrpiAqYLc6hbTTOI/HZUZll+DX
-	qIfX0Gr7Il72wFMFydQ7xvt/+kuqwpg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lVT0r2zZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956034; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=ynbncJsLJEK7RgBrfoH+8cd27pvPqD1p1MxcDbeHsxs=;
+	b=7hvyaajAUff85gcdcTFqcqI2m3L1xAqxDjgdPW+r1PJLabnnOzXPobmliyUKtOeADodiXk
+	JnofV0BKC349wEOd+rmwIgHymL1g3CnGIb+lC6lpvEpUZJLm/WakinO3+VEuQ65JGQNQyY
+	UmK8SqFY3P1KDIjjcqdV4I82/zNYGmc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956176; a=rsa-sha256;
 	cv=none;
-	b=pjV0pOy0KmZikJWRkNj0lughKU1q9qWd78WVFqrEqCthrTE+2HY2h/g0s5CMDjYw+QSX4I
-	SyW+gfi85n0QE5tPMnkJbpOQPhpc3JuUKAGy4Rq7vjhzQthw5FBV1/eutWEAbbFxCLtV40
-	q2L3V2qXaxsFWXyv4/TvlXPpQhvouKE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DD8C600AD;
-	Thu, 19 Mar 2026 21:33:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB1C2BC9E;
-	Thu, 19 Mar 2026 21:33:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773956033;
-	bh=xN4d73AFx0YGytHZojK+cFhok8Wstr1JBl9qe4KChuw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lVT0r2zZN4LrARNdQvbxRMTMKYCbEjQCMNGTjK/n1LEPZF7VQvpEGzqTAtIKmAPoJ
-	 ILU8nDzynbJ2RZ90zbAsd8btfuoGQxvurU4npry0Z5WCrqxQImtUYIVzCLpNiASASY
-	 kYrzOTwRP3GkTfSz1yDrVvxRfxdpE5zpUUueuN2YbA3sxbj2bGDXiTVqfoAIfqfOyR
-	 xCenGxPYqrusjm6ohzrlzqGvYAehc9f3jYf8ajcz0gOW3ahU0wSWG8O7rI44bKJI/P
-	 K9XGcQbs1bXPNsuvQeLHhT3tv6Deyx5pRpjudoUs5NzBBVExFAiI7MD2zFmg/FK62C
-	 4j3xTdPpE0LHQ==
-Message-ID: <f0ccf41d-16ca-404a-bb84-fe038bcfe0b4@kernel.org>
-Date: Thu, 19 Mar 2026 22:33:47 +0100
+	b=eNnx7T44+jHugJ6431FUhcx0k7X0d4PHB+wki+V3ho9eBVWB6UmH04MktBpsd9lBAbpTu0
+	7Feos/lZ2ipfLp98/hOtrdfS6ksehmn9Eg3Ib3RogmNLi97diA3DzYqHlQ9d4sDiSORTa2
+	Lvs60hLGklV36iLH19f10RCY4VsdzPI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf24.hostedemail.com: domain of 3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-67be26d440fso23439034eaf.1
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:36:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773956175; x=1774560975;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ynbncJsLJEK7RgBrfoH+8cd27pvPqD1p1MxcDbeHsxs=;
+        b=cdypOeIJSRL4+jfZ8lgj8Ui45LsSloHsT6kLSYXFKqd/aXVn7kjECdaDqSh3tkqNyV
+         8WkYWIWf/Ze1uEvdjJJeGeHgclaB08r0H58nBIp8oqGiCbEoOccogSMgVXNsA4Kmrz0i
+         A8627b337PnSAYTDdCZcne5Rft124kq8cNFDiqQWPcv+v5SufO8KbLYP9wznS+KiccvM
+         y40eKAc07p1ZqrokVqDZwJ7CEdopUhPB3LPf4S4uMxcmioRoFnA+e3wMAQeuw7kC5OaR
+         04j2yHpzAqA6BW0GWv7lRwRYsi9g+ScFo6AgS/q9JSAI18GlLXsqf0lp39ct0QgCmda1
+         RqiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVaN9/BSPotsSaDT6ikmCdjpyf/ZzYN1ilKrL5/A+uN33kBqOmtJ93JugdKJX+JY/P83WAc8hafCg==@kvack.org
+X-Gm-Message-State: AOJu0YydkMVO3yKegSp40v0duc3h0EDQaDBViawdD3xBAs1ieEZ2FtKM
+	NKz0P6YP6P+CPaCjra7SfqUzGD0yIVA6MFpSBbgb4i94sdj6d8ghdeJ0cKqaI/H7Ne9oOfyd7Fd
+	qIRkNA+1La7ngbwftkP4aveJGjM2tksSg3tW0fLVe7xW2n/+P4Se2ILxUXqY=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm/mprotect: move softleaf code out of the main
- function
-To: Pedro Falcato <pfalcato@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
- jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-3-pfalcato@suse.de>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260319183108.1105090-3-pfalcato@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 030C34000E
-X-Stat-Signature: rm3ddpy6kxpnoj3jd58qkoyi5jgid6ej
+X-Received: by 2002:a05:6820:3104:b0:67b:a667:f51f with SMTP id
+ 006d021491bc7-67c22bcbc3emr753879eaf.6.1773956175475; Thu, 19 Mar 2026
+ 14:36:15 -0700 (PDT)
+Date: Thu, 19 Mar 2026 14:36:15 -0700
+In-Reply-To: <20260318222953.441758-1-nphamcs@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69bc6c4f.050a0220.3bf4de.0001.GAE@google.com>
+Subject: [syzbot ci] Re: Virtual Swap Space
+From: syzbot ci <syzbot+ci0215525ee2c0ed89@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, axelrasmussen@google.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, bhe@redhat.com, 
+	byungchul@sk.com, cgroups@vger.kernel.org, chengming.zhou@linux.dev, 
+	chrisl@kernel.org, corbet@lwn.net, david@kernel.org, dev.jain@arm.com, 
+	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jannh@google.com, 
+	joshua.hahnjy@gmail.com, kasong@tencent.com, kernel-team@meta.com, 
+	lance.yang@linux.dev, lenb@kernel.org, liam.howlett@oracle.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, nphamcs@gmail.com, 
+	pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, 
+	rafael@kernel.org, rakie.kim@sk.com, riel@surriel.com, 
+	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
+	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
+	ying.huang@linux.alibaba.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8165E180008
+X-Stat-Signature: 7dfkco7wznsh1875shw3ogbimjp1gr55
 X-Rspam-User: 
-X-HE-Tag: 1773956033-646115
-X-HE-Meta: U2FsdGVkX19Fsjfsh+U2+jz07rCoSG7NlGtOl/faK74aiGFnEByt/X/BKJqgR/WQtrcURlARXq2gUnoa5aONUyEhjbK9DiRQpD3p2GF9xApsWkKJwTzV9MA9i8ZHQs3/t2oYnqUd4W8n8HMKEXMzOatMAziCu3vyqRtYMA0hUgTwxoCEHcYB1nmCZe8+ipUba5uwpconcS+K6+9OcbEE2x8xB71SJQpPyFHtvdqYMUmx7m5KFWFw+ts6LjsPkozBEV+xeoGh6SDT+v1Te3ZoKspaok7nXFpSx2y30Gw2+ApCX9QHBR9ksl4lY7MwNAwLTfgen2wG5PI2E9wvJ49t3mfNWXlpv9BGPT4yiP6XtBuMewst8BcHBUfjslUODqip54V93knTtex0RXMaAj/wWamjBGFFitjktOoT2F7P/N58+npFr6u3vDopnSxdjk1fpdd7AeUiHy2Sxnz4jzqB83CuuhpNl+damYLp94rOWYjR7n1BW8j6NeSXa076QEL7EtDocbB74xlQHxR8Xf4RRRNrtLR1Bq2BGBLYt5B7oEWt2dKzdGrx0vj/DCFBx4xqcVgIi9PZCwcWPulwrpZVs6ZazvucLwojG701zdG3uYAnGvf+VSiVwkq4zZ3iqx01H25vunzutIoE1d+dJKBJzm8NaOPj9svLmEPhOwi9rI/KXPtm2A7XZuxv2w6WtLKsuDLazHemUzRl8p94Ij3WCETqKNETK7UYdFG0tyLsbn3df3nDMaODSVT39F/e5vLm/xBXsOSdwpYzNmG2TjThiKexQsMg0e11h5MpHa243KXAMxVpoVenOA/4A8+srl0w8GfZrbIyzzUdzjOQrtOEwcT1K7ZsPSWhS4vqvtbrQuoHKnGIdslSqyaJML0hz9crym0melZf4ZOxVgpwzihg0AnemKnOzsW196Eet4KL9E4FldUTzDRA1zlv2EUXS2XWPqdaYkCL9XMHrhe77+E
- 2z+uCKIg
- 09FiB9skDwMcbAQTcef35nmv0k9F8BJNx5Oo4HP4j1cTt1NGIUgS6fJwGShu3P2DpFUIl8IuzfgICYfdkenzvIvdKuPxTpQCULVaOqAhDlyiujpTewucnKKs5sFF2ifrvVfnLI8/UQX4H9rWwmd4i2757ZZ5MnEWvdQro5zQ3PNtdRrnSeEwTMvn6uaptGs4LfRkKct8kqDKiwVzFwb/fFoAUjdcHT65WubIUckiNJbtPqcgifmfHq4kiTNyv9v1d0WIEra1n80NeGplhAuZ9C8/ZHA==
+X-HE-Tag: 1773956176-548877
+X-HE-Meta: U2FsdGVkX1+WzuHHjHJp1cuCOCvDBPnpnt8dkzHvsVqu7AYoSyTHKtKotXD0c6Pl4CLqC09vH38p7NpLPRLNaUU7zpgiQzCwyz6/nFq349UiPYYtN1ruy7QAecuRH5TMbWEGOJRm6JI1yDZGwgAJtN47GTMpYq3JEZKXuU15Z04EJhdle3FLE9F6XDYgW1srr51F5LftnQuy79YkhkJvqynViUxJvtD1x3B8BSKVMNrse1xzqcOmDBvRASusIB1YG5EegkJg3zbCatFn8SR8ncxzjxR8ciF2RsdGjT772F9gk0aM31hWXsyRW+Gr8hgltWMN7u9wTjKubR7oBWEuVZCDHpnxgmsSiKGfGMx9c01DZ8xZnc1wlpSby6FlFk+/OnnNviQbMuEnikqiVfcn7x/kwYhQUDgcIGgJ+lwMcXenuj8ax3NcjmI4qES7rE4XlCRbOBNLbdjT3H65KESok5iJXvglN5Zg0Ca9US8JAaEpkHN3gXDkhwfnBfSjmU95UbuUDrxyiPB4U04bgtAdmJ7//Wkvxu8C+GAGVheknPxgk4t/3IAQWAgizQkNlbcXH3uK6ek4myiSReVFCS7XSb9MWEN4Gf3etptCC7pULnGX178Ig4N+buUTUCWuFP2Hcusc335UarXxX5+DU+T50S1h5PdN+bLht/NxIFF4AV69AONfrQgcjM9ow2vxRJkEn61yXPSsodYPv0eSk5E0NJGovKeBmb3dNgd7VVk/MRodeV1RsEWpLD6ZT1R5RvJVxL8eBBmJLd8Ihf0frxiIWoUQD8J8LkXfwn1xnYW1rTYjrU3XxCdV/zHC5PhCEnhtmd3eUupkdFqlG+3WbnnNqg37PLK4P5EKR00jKOutEbC3lpSzyDHphN9JPldnGait3YiQFGGUVPuHEWAyXR8SqY4DCy5d0Jrjh5Wzm/d+WzomT8Fj3Zsz+g7Fj72Z/J4AWntGfxm91rGMzW3xcV4
+ tVyQNvxT
+ w3Kc33k6wVKeS8r0M+zy91QJrYoKJRIpPdnTCk9VplueWAa3W8QyCn1uczSeM750x2nYw5q60pGmRWlUZWFTxMaBx9oRUeGMoFK7xEO+AyI0gcZgeSsGZJ/VFrCRsL8KrkH2w8f7gzv8RT/+2An3aiFLnkeLaCZFY3QUcQ5vSe7YvmAqYAr1pUsQ8MoeJJxxnAlEYwg7frtVld+7rVA/ESNbyFt3E8qWqZFyNTPYOiqYp4nQhf3XXGcRUG00CEpjuazJRdpqJSLlcFNGVRh+dTIimY0DdF8PESOlBXE1HfmS0Rr6aXLzgjvTxoP/qc9UXiHZdCTvlq+y9AmHNlXUQjjtCFctQgv/rFJs5SNmB0zuvsaR9FAJ1yONmUW77HjlIrjURexVuMDiu+rCctBAmEQQVpuOICEbTKtr9V4AZQZx927VN/Sy570YQw8vxLTlh0oKBRvh94q2pfueM45YvMaD+8ujdOG9LvumnxoI4HRGtYdcqcmlED14iKkCBE2rZluWtVfa37jytdqdo5Na0ILUVWF/ydqL9dOM9KuEXEUYdL5cn/satNVbgbo5fWFV74IdU33s2fLh4LR14UCDwvyqNr7PCZgBCVDU2gd7rIs1D4MgSRGhL0iwLlb0XVv/Z8tCJfZUznwIK3LWLp9eVV9CxcSIYP7/DVUCHM8W8/ROmzTcBsHzRVMBMM5LSaMHVXt//Dry5sAO0g28PA4kp//0KF40iFoCoq6COV3+YoZNq7nJBJyl92vcX5IJ8evjw8/J0c73S62byt9s/8MA1uxqKnpVIH4/tfTz+rm+vNH5bcbsz197bICUUVPLZY0ddieUUsCD8AtGQx9rzStvqSHGroaLtmhFDCXjO+CgTGMbSHNdpYKeAnNT5sxdcdVpQv+xcgurkyRzK9aeLTCCcRbRYF5KD3wxIqpYbqboETd2fzCYEEv/O1oxdF7RNxepson2u16xjOZDQMkCjOlaX157IXkBY
+ LJiLBTE9
+ hfgNqYuqQ9eHQEW2UMCmp8LG1d9IVexsTMMlIB9+iJIAl0L6Mgj4KdbJf5ChqXSuyntiyMoPaGSC3r2idnZ/9Sx+v54eywEu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,50 +111,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 19:31, Pedro Falcato wrote:
-> Move softleaf change_pte_range code into a separate function. This makes
-> the change_pte_range() function (or where it inlines) a good bit
-> smaller. Plus it lessens cognitive load when reading through the
-> function.
-> 
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
->  mm/mprotect.c | 128 +++++++++++++++++++++++++++-----------------------
->  1 file changed, 68 insertions(+), 60 deletions(-)
-> 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 1bd0d4aa07c2..8d4fa38a8a26 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -211,6 +211,73 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
->  	commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
->  }
->  
-> +static noinline long change_pte_softleaf(struct vm_area_struct *vma,
+syzbot ci has tested the following series
 
-Why the noinline? This sounds like something that works good on some
-CPUs and bad on others, no?
+[v4] Virtual Swap Space
+https://lore.kernel.org/all/20260318222953.441758-1-nphamcs@gmail.com
+* [PATCH v4 01/21] mm/swap: decouple swap cache from physical swap infrastructure
+* [PATCH v4 02/21] swap: rearrange the swap header file
+* [PATCH v4 03/21] mm: swap: add an abstract API for locking out swapoff
+* [PATCH v4 04/21] zswap: add new helpers for zswap entry operations
+* [PATCH v4 05/21] mm/swap: add a new function to check if a swap entry is in swap cached.
+* [PATCH v4 06/21] mm: swap: add a separate type for physical swap slots
+* [PATCH v4 07/21] mm: create scaffolds for the new virtual swap implementation
+* [PATCH v4 08/21] zswap: prepare zswap for swap virtualization
+* [PATCH v4 09/21] mm: swap: allocate a virtual swap slot for each swapped out page
+* [PATCH v4 10/21] swap: move swap cache to virtual swap descriptor
+* [PATCH v4 11/21] zswap: move zswap entry management to the virtual swap descriptor
+* [PATCH v4 12/21] swap: implement the swap_cgroup API using virtual swap
+* [PATCH v4 13/21] swap: manage swap entry lifecycle at the virtual swap layer
+* [PATCH v4 14/21] mm: swap: decouple virtual swap slot from backing store
+* [PATCH v4 15/21] zswap: do not start zswap shrinker if there is no physical swap slots
+* [PATCH v4 16/21] swap: do not unnecesarily pin readahead swap entries
+* [PATCH v4 17/21] swapfile: remove zeromap bitmap
+* [PATCH v4 18/21] memcg: swap: only charge physical swap slots
+* [PATCH v4 19/21] swap: simplify swapoff using virtual swap
+* [PATCH v4 20/21] swapfile: replace the swap map with bitmaps
+* [PATCH v4 21/21] vswap: batch contiguous vswap free calls
 
-I like the cleanup, but the noinline really is odd.
+and found the following issue:
+possible deadlock in vswap_iter
 
-> +	unsigned long addr, pte_t *pte, pte_t oldpte, unsigned long cp_flags)
+Full report is available here:
+https://ci.syzbot.org/series/f8238a2a-370e-404d-b3f7-5945b574bd63
 
-I'd call that "change_softleaf_pte"
+***
 
-> +{
-> +	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
-> +	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+possible deadlock in vswap_iter
 
-both can be const.
+tree:      bpf-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
+base:      05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/cf1517a6-d391-46d8-bfbe-98e6be6b93ce/config
+syz repro: https://ci.syzbot.org/findings/b4e84ae7-17d4-4bf8-9c3f-4c13b10a1e52/syz_repro
 
-> +	softleaf_t entry = softleaf_from_pte(oldpte);
-> +	pte_t newpte;
-> +
+============================================
+WARNING: possible recursive locking detected
+syzkaller #0 Not tainted
+--------------------------------------------
+syz.1.18/6001 is trying to acquire lock:
+ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: vswap_iter+0xfa/0x1b0 mm/vswap.c:274
 
-[...]
+but task is already holding lock:
+ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock_irq include/linux/spinlock.h:376 [inline]
+ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: swap_cache_lock_irq+0xe2/0x190 mm/vswap.c:1529
 
--- 
-Cheers,
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-David
+       CPU0
+       ----
+  lock(&cluster->lock);
+  lock(&cluster->lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+3 locks held by syz.1.18/6001:
+ #0: ffff8881bb523440 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:391 [inline]
+ #0: ffff8881bb523440 (&mm->mmap_lock){++++}-{4:4}, at: madvise_lock+0x152/0x2e0 mm/madvise.c:1789
+ #1: ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock_irq include/linux/spinlock.h:376 [inline]
+ #1: ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: swap_cache_lock_irq+0xe2/0x190 mm/vswap.c:1529
+ #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:867 [inline]
+ #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: vswap_cgroup_record+0x41/0x440 mm/vswap.c:1909
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 6001 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
+ check_deadlock kernel/locking/lockdep.c:3093 [inline]
+ validate_chain kernel/locking/lockdep.c:3895 [inline]
+ __lock_acquire+0x253f/0x2cf0 kernel/locking/lockdep.c:5237
+ lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
+ __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+ spin_lock include/linux/spinlock.h:351 [inline]
+ vswap_iter+0xfa/0x1b0 mm/vswap.c:274
+ vswap_cgroup_record+0xeb/0x440 mm/vswap.c:1910
+ swap_cgroup_record+0xc5/0x130 mm/vswap.c:1933
+ memcg1_swapout+0x358/0x9e0 mm/memcontrol-v1.c:623
+ __remove_mapping+0x7d4/0xa70 mm/vmscan.c:762
+ shrink_folio_list+0x287c/0x5160 mm/vmscan.c:1518
+ reclaim_folio_list+0x100/0x400 mm/vmscan.c:2198
+ reclaim_pages+0x45b/0x530 mm/vmscan.c:2235
+ madvise_cold_or_pageout_pte_range+0x1eac/0x2220 mm/madvise.c:444
+ walk_pmd_range mm/pagewalk.c:130 [inline]
+ walk_pud_range mm/pagewalk.c:224 [inline]
+ walk_p4d_range mm/pagewalk.c:262 [inline]
+ walk_pgd_range+0x1032/0x1d30 mm/pagewalk.c:303
+ __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
+ walk_page_range_vma_unsafe+0x309/0x410 mm/pagewalk.c:714
+ madvise_pageout_page_range mm/madvise.c:622 [inline]
+ madvise_pageout mm/madvise.c:647 [inline]
+ madvise_vma_behavior+0x2951/0x43c0 mm/madvise.c:1366
+ madvise_walk_vmas+0x57a/0xaf0 mm/madvise.c:1721
+ madvise_do_behavior+0x386/0x540 mm/madvise.c:1937
+ do_madvise+0x1fa/0x2e0 mm/madvise.c:2030
+ __do_sys_madvise mm/madvise.c:2039 [inline]
+ __se_sys_madvise mm/madvise.c:2037 [inline]
+ __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2037
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2b3459c799
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f2b35495028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007f2b34815fa0 RCX: 00007f2b3459c799
+RDX: 0000000000000015 RSI: 0000000000600000 RDI: 0000200000000000
+RBP: 00007f2b34632c99 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f2b34816038 R14: 00007f2b34815fa0 R15: 00007ffcfbbae8f8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
