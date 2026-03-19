@@ -4,113 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D621090236
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D0B1090239
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C293E6B04E7; Thu, 19 Mar 2026 10:50:39 -0400 (EDT)
+	id 329136B04E8; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD9FD6B04E8; Thu, 19 Mar 2026 10:50:39 -0400 (EDT)
+	id 2D9B76B04EA; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA2B46B04E9; Thu, 19 Mar 2026 10:50:39 -0400 (EDT)
+	id 1C8AA6B04EB; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 91E576B04E7
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:50:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4743459B7D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:50:39 +0000 (UTC)
-X-FDA: 84563098998.05.CB42F55
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 38A28100005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:50:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 088F46B04E8
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:51:07 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B08CD13B51D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:51:06 +0000 (UTC)
+X-FDA: 84563100132.15.276DA1F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 00A0A10000F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:51:04 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=M8WZ5Uqd;
-	spf=pass (imf14.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tlQhb5U8;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773931837;
+	s=arc-20220608; t=1773931865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vjm+3VevxYP97ctZWWpBU6ykqSUjIHlLbx+Q5HoX2yk=;
-	b=ll1NcSS/V2WjL0pobcK2WujEQTi6GFkwqxj3/20dwjFxxxwC7l/1UGY3syUDQs+xZue9hX
-	loElAo6JlkopJbLBCJquTGrZy4VRF+b4zeUX3xbPaTOZE1l65JoUICUa8v9cq5zGufxSCS
-	FtN/7Mq5jj9wKLNT7bM1ONvdba8zks4=
+	bh=aInfBWWVLqS+IZS5bb9QXC0z00kfS+2upSPaZ4RfgCg=;
+	b=CIgXucb+OLklKjM/Acv1WB9MERnL/sX86L2ezSKca4DnwXRyGx/5q7gm/hnzR4VVHjBkym
+	AYVIu9WiMiNnd+AYF03goj9fgJQSz8oG602i8nSoCrvuSAyC7LVLKc59jASTchoF1iDBlZ
+	EN9UrNbBdTvd4Qv71bydZ7TreRcNGjI=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=M8WZ5Uqd;
-	spf=pass (imf14.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773931837; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tlQhb5U8;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773931865; a=rsa-sha256;
 	cv=none;
-	b=n5nQNtiMTjV1Wo+wbLbKGWA8SRnwRFA369sSlCRBACES3mjvg8nGZBc8zOm+P/9/nBNeTs
-	zK60g/YL9B0mqs4kstpjDXzP1d5KIwCPyhnXKU71+8wg/eWxBywQGYiDe6MLKj9yzLJTlV
-	JJLeQ5tv/9Kl14sdSyMUHiYYGpQqUdY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1773931834;
-	bh=8uEKlohVDFJIreqh6b7uaXm+Pd0ZHiALqi93j4h6mxE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=M8WZ5UqdAO/Qhvi8JhChSPAToE70flx212ykDr+x/wmWttA95vqIXKY2hOF1XSsvk
-	 1ekwv07TcvHQ8TSsNkwSUfHfjTA20wQnJ94iAtCxK8Q37eCAs8Fr5qqTFXmzD9m3KF
-	 lhuGg5vbZbmvd6Z1tf+Sam6FRn2uOdMCbE2EHW99HGWjj8+Y5sg+hJXJeNc0le+h1C
-	 miXxzTIZ4rQ5FpC2fyC6X4V7Q58AlTx6FrExKim8tyfM8JnnoW+yn7lnud+8xWBRS4
-	 FYGX2zlRbpXwxfR9r4hfUFY/rGVXR5F8trzNngtfWZZ5MfxzSmfXkJ7ATD3B4kJ1aq
-	 QrhAQsYGWmDPg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B7D6617E1005;
-	Thu, 19 Mar 2026 15:50:33 +0100 (CET)
-Date: Thu, 19 Mar 2026 15:50:28 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>, Tommaso Merciai
- <tommaso.merciai.xr@bp.renesas.com>, "loic.molinari@collabora.com"
- <loic.molinari@collabora.com>, "willy@infradead.org" <willy@infradead.org>,
- "frank.binns@imgtec.com" <frank.binns@imgtec.com>, "matt.coster@imgtec.com"
- <matt.coster@imgtec.com>, "maarten.lankhorst@linux.intel.com"
- <maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
- <mripard@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>,
- "simona@ffwll.ch" <simona@ffwll.ch>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-Message-ID: <20260319155028.291f3157@fedora>
-In-Reply-To: <TY3PR01MB11346CEBB1B1A5FCB69D247EB864FA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-References: <20260227114509.165572-1-tzimmermann@suse.de>
-	<20260227114509.165572-6-tzimmermann@suse.de>
-	<abL5rcYIaFFO3GW2@tom-desktop>
-	<TY3PR01MB113460CA616D3576DA0C3FC698644A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<TY3PR01MB113461ACB668738E1952EC8898645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<20260313111851.4c1f89f3@fedora>
-	<f3384342-cdc5-4260-b670-4ffde76a2802@suse.de>
-	<20260313125644.65131b27@fedora>
-	<TY3PR01MB1134662A395AA0A048CEE152E8645A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<20260313131835.52c5c935@fedora>
-	<20260313134328.3166c4d0@fedora>
-	<20260313135521.07823792@fedora>
-	<20260313184549.08656eed@fedora>
-	<TY3PR01MB11346AEACA195A53E54101A4D8642A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	<TY3PR01MB11346CEBB1B1A5FCB69D247EB864FA@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	b=2KBZLTLJRjOlvuDlw1KTMypcQpsK8gu8w7XKPKxGnEK5cxVxhHlzIAPXR4g4LtFjPjT/Qf
+	jyiRcqpBBVWxeytPCG+zIAZOWl+uEH00uCuSYUnKZS87g274NOn4pvH2dG4OksWcv9b3OJ
+	0+LJnyYLtvf0KboRl87i4v/wLAyYdyY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 492516011F;
+	Thu, 19 Mar 2026 14:51:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB216C19424;
+	Thu, 19 Mar 2026 14:50:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773931864;
+	bh=NA2DgZthntn+Bg9p76vM8EhmWgvmuxh9uchtbNyldWI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tlQhb5U8pIGZhJaEn9uhM9ipP5ZvbmouNAA4Ihk1ejHR3ke0/ewxTzj1Uka5Mlbsz
+	 pLFIkb5W+Mw6Rsis43iKa0qN6vLRn0ljIl1K4AqJpZBa80h16MTiD8oqj+iJM4WThc
+	 kusDk2vZvs4JUK3T949S1jzI/YslUIbM6gzh5sJRM/vYH93dJ4dxbk4gkNrT+X16Rx
+	 fUr3JhyrOpq3I7hQhysr+JmVqv9MscUTJ92KmOG7AbffJcsmGWC2CNA1DN6cSCgLY3
+	 7MUiaGRvcclIs1U/sbbK8uxKQlHPcpehRaRJjgR5eByOaTptAwSYsjLR7y5Yus/f0a
+	 wIhLrOmaLh76g==
+Message-ID: <ee4029ba-87e9-4ec8-9391-c2c3a96bdbc7@kernel.org>
+Date: Thu, 19 Mar 2026 15:50:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/23] mm/vma: use new VMA flags for sticky flags logic
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773846935.git.ljs@kernel.org>
+ <fd4276d39055290061f87e9fded20b6a6b712975.1773846935.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <fd4276d39055290061f87e9fded20b6a6b712975.1773846935.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 38A28100005
-X-Stat-Signature: d59kr3qhude7j8cx57i8puhdrs4pd4w9
+X-Rspamd-Queue-Id: 00A0A10000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: o1rw64s3st3opc9kfocwhpjc7bzww8h8
 X-Rspam-User: 
-X-HE-Tag: 1773931837-421005
-X-HE-Meta: U2FsdGVkX19U+hLDPQEh6imnmarQSgGMwviTf9tU4rYJ/VfaVhHq8jBGD3E16SBDzoVdTSNLE2rfvnbFcHwy4509sp5T1Mz6QBAe6foiZVxLK3XpO9IOuFB1DkqZhkKznjMSZNd4Ht/+B+0fzvU+/ye+X/XUpMIp0Bq5lDNXIT85hsCLrx7ixNMz/nB32nJaNgl5iRMwf8EwBWuCR1CCVBigbGZk6BBwUGHg0jEEMgTBrDlk8IhqYySwipByvPIxlyLeO8qiRimLHPiAXVK5d4oY2QU//RY66kdg1rWCdyWYsz4eMlKwZKMnpEe1OeBeXtCQOMtQYkLTzzGxhlGN1e9zKvIOp2TNiw+dyyRzY2ZS+YtAkxq8bDZTJ5bsYs8LjZTJbjV/CZ1hzxS8TECZEQrOQnTFFhkUZL4dyhEok2m/CVrALuVP0WBQPUzd9CX+RQ4cmLGKns0PH2DBdYDcursKQ4hqrj/k/Lb/Id3Qpk65yJDgEeO6uOr9mvh1RK3pK9W1YNwVYwphZaikj3m8cR6zSaTSJXOqXK6Qm9HYtz/jy432rfv9so/Jon/xk4tgJA9D2ZoKfOkCb2uIHpeUcBSat4X264u8IKet4XGD2YfoqXiIB3UaEidvkBrNb/PvZa2zY15YiG0Hms5vOV3Grhd9YicNK/37pYUaLSnFS0Q2rWK30xEq1uxRLa5q+EjqjU26K0FKTnyB3SW6qAoVSM0sLDw9eC5zio4NdPf5sXthlHams71Ofkk+UeRJSaGR/UdRI8oBAIKhYv/ovk7CMbUOngJ1aRSHnce+om1+FHj76adFnNv7PokNIT46B972c0Redr5mrtx+cEQ6v6Hp6SnNIP6CZ/M7vFf6jCI+WgZLjHhqw036rxHYCYLlUu6nxR6vlwpUSyYgExIJylYR1H33z7IRHGvKtiOBkX87wh4MSebg6PLLN+dE0Xn5xxB1oN+evdc3fLJ6GVbw741
- XNjluPqI
- uDuW74hE6L0z4HGgoZvHtRd4kGDjWWdxsIk5LIyqg9nsPzbJLVeQj6fMn1ZFL9/0gm6PgATxTimdN8RKUa2xMamQdqbWGxppdakj9A3AHN9/DiCQiPsAGk4YH4qsAggMjR0tORXE2xg/slP3R3KERcsWCt3FvlHEsCVOxR0UQrPvDWjABP0A0KQV+ahdGCi7eIyOOMlN0+IOms236foIb3vO5zEZKM/blv5mBgT2VivYf/crqxQNZQyqVWzO3diC5tHObYDkuEb+CPSmgWT0SNeD5/gawr8Loq0kHTvzpFp8oqbfe47m9/1tqBje0n7hIdXnZTgW4JMHdwYTHxdJmRrYZm8NfNsfb6rStZQwfgN4/WOaxdn2kjDS7Atkbx/EQcLtShUURHJwnq1+RuHPT9ZZvcDdQ0KawTpgg4++bDBRz71vbao++8zHl0k/nuvBjRJv2upFs80ZdGoGKxMWgzIqOEG8rtkQvbpZPclP+1jyZwMZ4VQ1X/4ZN+qAUjshvfwaHc+pXoiUDRRN8Y36KpAu88uoluqcy4bG1CiSp+ooQttOYVZktCbmQry5j90AkCueh+M+k9HwkDp0=
+X-HE-Tag: 1773931864-554264
+X-HE-Meta: U2FsdGVkX18RH7CCFCEJwGfUFzlsycPq7tWxoMNH9XDAr3/aDM/gF5HV/CGa+UzN2DFVv76GABcEPKoy2DMw1SZUZVRyKRDMS0Dp28bCBlqY5WN27yanxzJiYi9czDDvUeWvI8gIOl5dOnajwAw7UfgWTGZNUk48ZyDFssSpu/buRabJOe9FxG7EA+27B0IsSI/ErM4O+/r2ruTkTmShFdTP4eUjO7VhTro8KYsFaiOa72uUUXB7tCILSWne7XjIZywhVJKx2YbmSZnSqOLm3AE3KEQ+gFyZOLM9ANBLnEtXCIWGUlPZwdPk2VWaSeTCPH/PPbjdvkDn5oahtS4LkGzqBhWkxQ+ENCBGFvDnFT3TO/ZNIR5l2oUEbXjBwPIJnDFSj+mvLqquu3c/xN+bwIwvtuRDfoITDyKPNKUP4nLCGaMHz7XLme/o8C4amhDMe4+GfcPzz1z3pHTAgopY8nLSW+Zm/X8TWT2S6674TNuIOivx3JP2s802aFxzFlwOvatlN0uk6ApBpjFQe+vzr6zOUj/zrS897VhXOEfW2w/3448oO0q2Jqeyz7htTbkBakZf1qVQnGQukQL0tOLHzrgOp19dDt1yZQ9EIIn35chtJ/UxOGrO8+3YvliawhLxTOUFD4jjHE9iWm46J3sJB5xJj8BZ5Q42hfm59KegNcjgVd8JZmAa3c5509kGZ3ItauH7CFC/UOYjScZ20XcY+WiRLdBE7f6Zl+ipuaBkffWh5gpsnKv9CRRzeS9Ne4sAkvuLtwHJy/zqgaiy787+9qlFJZ+Hk8YnBH+R7mAkJTrCW1RJXw8yPVXPEm8HJ++xgAxxUvgVt4EbNbwrXNDFxRpbQeJm0HxBI2FsiTm5wyI5YVEzyVZ9e6UQwp8mMscfg9ZTJI+ITdhWMYrC7FodC+6mwrKFuTryl3Bt3ONceeWWycGrSv1q0oPPEFAGGEEXvjFGymLjOJW5e5RS2Cv
+ 4uRDWPPG
+ TuK2fyeqjDjoHmIAwtc8g8n6EDAGYGv3qhQj38dnMRAyTPnJEfXvsQ3jYeFRGPoI3ifSimEbRqsGAIIM5n/ln/wfXmuIzmpztEfSQKCT0SqDCGKepi/f0HzqelWanve7pNHqSyOazmh77+ZHuFTGbPOYqZriDEjNedWKecEBlSqSymeY04nGzY4M/yHRVL/w9IQZjHZSG+02khzmWpscAkI+IaHfcrOZN3ZkQKRj13csUMOCA3isXT1yXwBDjdbioYA22qEvKXlScVjHbVBAAgoDIs6ZkUOD1bUqC6dk05jQMcWX2WXA2/r1JChDwWXTS+uFRc6fw4UyDCnh5AWFdRus+j5UkGHF4taJ+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,140 +128,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Mar 2026 14:17:31 +0000
-Biju Das <biju.das.jz@bp.renesas.com> wrote:
-
-> Hi All,
+On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> Use the new vma_flags_t flags implementation to perform the logic around
+> sticky flags and what flags are ignored on VMA merge.
 > 
-> > -----Original Message-----
-> > From: Biju Das
-> > Sent: 14 March 2026 09:43
-> > Subject: RE: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty status in mmap
-> > 
-> > Hi Boris Brezillon,
-> >   
-> > > -----Original Message-----
-> > > From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of
-> > > Boris Brezillon
-> > > Sent: 13 March 2026 17:46
-> > > Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio accessed/dirty
-> > > status in mmap
-> > >
-> > > On Fri, 13 Mar 2026 13:55:21 +0100
-> > > Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> > >  
-> > > > On Fri, 13 Mar 2026 13:43:28 +0100
-> > > > Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> > > >  
-> > > > > On Fri, 13 Mar 2026 13:18:35 +0100 Boris Brezillon
-> > > > > <boris.brezillon@collabora.com> wrote:
-> > > > >  
-> > > > > > On Fri, 13 Mar 2026 12:04:25 +0000 Biju Das
-> > > > > > <biju.das.jz@bp.renesas.com> wrote:
-> > > > > >  
-> > > > > > > > -----Original Message-----
-> > > > > > > > From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On
-> > > > > > > > Behalf Of Boris Brezillon
-> > > > > > > > Sent: 13 March 2026 11:57
-> > > > > > > > Subject: Re: [PATCH v4 5/6] drm/gem-shmem: Track folio
-> > > > > > > > accessed/dirty status in mmap
-> > > > > > > >
-> > > > > > > > On Fri, 13 Mar 2026 11:29:47 +0100 Thomas Zimmermann
-> > > > > > > > <tzimmermann@suse.de> wrote:
-> > > > > > > >  
-> > > > > > > > > Hi
-> > > > > > > > >
-> > > > > > > > > Am 13.03.26 um 11:18 schrieb Boris Brezillon:
-> > > > > > > > > [...]  
-> > > > > > > > > >>>>> +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
-> > > > > > > > > >>>>> +		return VM_FAULT_SIGBUS;
-> > > > > > > > > >>>>> +
-> > > > > > > > > >>>>> +	file_update_time(vma->vm_file);
-> > > > > > > > > >>>>> +
-> > > > > > > > > >>>>> +
-> > > > > > > > > >>>>> +folio_mark_dirty(page_folio(shmem->pages[page_offse
-> > > > > > > > > >>>>> +t]));  
-> > > > > > > > > > Do we need a folio_mark_dirty_lock() here?  
-> > > > > > > > >
-> > > > > > > > > There is a helper for that with some documentation. [1]  
-> > > > > > > >
-> > > > > > > > This [1] seems to solve the problem for me. Still unsure
-> > > > > > > > about the folio_mark_dirty_lock vs folio_mark_dirty though.
-> > > > > > > >
-> > > > > > > > [1]https://yhbt.net/lore/dri-devel/20260312155027.1682606-1-
-> > > > > > > > pedrodemargomes@gmail.com/  
-> > > > > > >
-> > > > > > > FYI, I used folio_mark_dirty_lock() still it does not solve the issue with weston hang.  
-> > > > > >
-> > > > > > The patch I pointed to has nothing to do with
-> > > > > > folio_mark_dirty_lock(), It's a bug caused by huge page mapping changes.  
-> > > > >
-> > > > > Scratch that. I had a bunch of other changes on top, and it hangs
-> > > > > again now that I dropped those.  
-> > > >
-> > > > Seems like it's the combination of huge pages and mkwrite that's
-> > > > causing issues, if I disable huge pages, it doesn't hang...  
-> > >
-> > > I managed to have it working with the following diff. I still need to
-> > > check why the "map-RO-split+RW- on-demand" approach doesn't work
-> > > (races between huge_fault and pfn_mkwrite?), but I think it's okay to
-> > > map the real thing writable on the first attempt anyway (we're not
-> > > trying to do CoW here, since we're always pointing to the same page,
-> > > it's just the permissions that change). Note that there's still the
-> > > race fixed by
-> > > https://yhbt.net/lore/dri-devel/20260312155027.1682606-1-pedrodemargom
-> > > es@gmail.com/ in this diff, I just tried to keep the diffstat minimal.  
-> > 
-> > I confirm with this diff, weston is now coming up on RZ/V2L SMARC EVK.
-> > 
-> > I am just using drm-misc-next + this diff + arm64 defconfig + Poky (Yocto Project Reference Distro)
-> > 5.0.11 + Mesa
-> > 
-> > Cheers,
-> > Biju
-> >   
-> > >  
-> > > --->8---  
-> > > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > > b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > > index 4500deef4127..4efdce5a60f0 100644
-> > > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > > @@ -561,9 +561,8 @@ static vm_fault_t drm_gem_shmem_try_insert_pfn_pmd(struct vm_fault *vmf, unsigne
-> > >         bool aligned = (vmf->address & ~PMD_MASK) == (paddr &
-> > > ~PMD_MASK);
-> > >
-> > >         if (aligned && pmd_none(*vmf->pmd)) {
-> > > -               /* Read-only mapping; split upon write fault */
-> > >                 pfn &= PMD_MASK >> PAGE_SHIFT;
-> > > -               return vmf_insert_pfn_pmd(vmf, pfn, false);
-> > > +               return vmf_insert_pfn_pmd(vmf, pfn, vmf->flags &
-> > > + FAULT_FLAG_WRITE);
-> > >         }
-> > >  #endif
-> > >
-> > > @@ -597,8 +596,12 @@ static vm_fault_t drm_gem_shmem_fault(struct
-> > > vm_fault *vmf)
-> > >
-> > >         pfn = page_to_pfn(page);
-> > >
-> > > -       if (folio_test_pmd_mappable(folio))
-> > > +       if (folio_test_pmd_mappable(folio)) {
-> > >                 ret = drm_gem_shmem_try_insert_pfn_pmd(vmf, pfn);
-> > > +               if (ret == VM_FAULT_NOPAGE && vmf->flags & FAULT_FLAG_WRITE)
-> > > +                       folio_mark_dirty(folio);
-> > > +       }
-> > > +
-> > >         if (ret != VM_FAULT_NOPAGE)
-> > >                 ret = vmf_insert_pfn(vma, vmf->address, pfn);
-> > >  
+> We make use of the new vma_flags_empty(), vma_flags_diff_pair(), and
+> vma_flags_and_mask() functionality.
 > 
-> Any patch available to fix the weston issue? Still the issue is present with drm-misc-next
-> Please let me know.
+> Also update the VMA tests accordingly.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Not yet. I want to land [1] first. I'll try to post an official version
-of the proposed fix tomorrow, though I'd really like to have some
-inputs from the MM maintainers before claiming this is the right fix...
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-[1]https://yhbt.net/lore/dri-devel/20260319015224.46896-1-pedrodemargomes@gmail.com/
 
