@@ -4,106 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6338D1091927
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:36:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EFFC1091926
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C69976B04F3; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
+	id BF2586B04ED; Thu, 19 Mar 2026 17:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BECBD6B04F5; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
+	id BC9536B04EF; Thu, 19 Mar 2026 17:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB3F86B04F7; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
+	id B064F6B04F0; Thu, 19 Mar 2026 17:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 96B946B04F3
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:36:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 473A95ABA9
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:36:18 +0000 (UTC)
-X-FDA: 84564121236.23.AC05C05
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8165E180008
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:36:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf24.hostedemail.com: domain of 3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C1206B04ED
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 478D81B8832
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:39:11 +0000 (UTC)
+X-FDA: 84564128502.30.3CC91B0
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8C87240010
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:39:09 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bCJoKvMr;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773956176;
+	s=arc-20220608; t=1773956349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=ynbncJsLJEK7RgBrfoH+8cd27pvPqD1p1MxcDbeHsxs=;
-	b=7hvyaajAUff85gcdcTFqcqI2m3L1xAqxDjgdPW+r1PJLabnnOzXPobmliyUKtOeADodiXk
-	JnofV0BKC349wEOd+rmwIgHymL1g3CnGIb+lC6lpvEpUZJLm/WakinO3+VEuQ65JGQNQyY
-	UmK8SqFY3P1KDIjjcqdV4I82/zNYGmc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956176; a=rsa-sha256;
-	cv=none;
-	b=eNnx7T44+jHugJ6431FUhcx0k7X0d4PHB+wki+V3ho9eBVWB6UmH04MktBpsd9lBAbpTu0
-	7Feos/lZ2ipfLp98/hOtrdfS6ksehmn9Eg3Ib3RogmNLi97diA3DzYqHlQ9d4sDiSORTa2
-	Lvs60hLGklV36iLH19f10RCY4VsdzPI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NfAvuRAkXfTh0aD8fDGDPInZ2PzmkXCAe9B+2L0obpk=;
+	b=07oGJXoTd4y8vOM52kOTLCi+gkTSfH1d3NZYMzi6h23AIi8BnV+hIV+DYZ07lk1ldUAjIP
+	smnPEY5xHGW9mHAcGi1dfdcwWxZTTQcVikU4v3+b73olQqNCVencn/iM+F+h2bWc8dKlph
+	Rm0SaXgtX5Kr33Rv8TR2rP36pZf+bPY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf24.hostedemail.com: domain of 3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3T2y8aQkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-67be26d440fso23439034eaf.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:36:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773956175; x=1774560975;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ynbncJsLJEK7RgBrfoH+8cd27pvPqD1p1MxcDbeHsxs=;
-        b=cdypOeIJSRL4+jfZ8lgj8Ui45LsSloHsT6kLSYXFKqd/aXVn7kjECdaDqSh3tkqNyV
-         8WkYWIWf/Ze1uEvdjJJeGeHgclaB08r0H58nBIp8oqGiCbEoOccogSMgVXNsA4Kmrz0i
-         A8627b337PnSAYTDdCZcne5Rft124kq8cNFDiqQWPcv+v5SufO8KbLYP9wznS+KiccvM
-         y40eKAc07p1ZqrokVqDZwJ7CEdopUhPB3LPf4S4uMxcmioRoFnA+e3wMAQeuw7kC5OaR
-         04j2yHpzAqA6BW0GWv7lRwRYsi9g+ScFo6AgS/q9JSAI18GlLXsqf0lp39ct0QgCmda1
-         RqiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVaN9/BSPotsSaDT6ikmCdjpyf/ZzYN1ilKrL5/A+uN33kBqOmtJ93JugdKJX+JY/P83WAc8hafCg==@kvack.org
-X-Gm-Message-State: AOJu0YydkMVO3yKegSp40v0duc3h0EDQaDBViawdD3xBAs1ieEZ2FtKM
-	NKz0P6YP6P+CPaCjra7SfqUzGD0yIVA6MFpSBbgb4i94sdj6d8ghdeJ0cKqaI/H7Ne9oOfyd7Fd
-	qIRkNA+1La7ngbwftkP4aveJGjM2tksSg3tW0fLVe7xW2n/+P4Se2ILxUXqY=
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bCJoKvMr;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956349; a=rsa-sha256;
+	cv=none;
+	b=I4lUjTspOOuD6EGhDohxTWFZrmuc0409WJmUBrj3mij7nZ22ST7aExuojOcVabCHrDXxqg
+	uGXNWnW3yPpTDlsTi+n4s+Ffs1jIkKqtyZcTxob1xDNOMdknX/6xChnKFNTKG+cEsUK9mQ
+	RySmBjoFJC8qjjI/wHufj+nNIHLo8E0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NfAvuRAkXfTh0aD8fDGDPInZ2PzmkXCAe9B+2L0obpk=; b=bCJoKvMrE+n7v8Phg2+6TftTSy
+	Z4gTRvb+7jTLCPTMoT2MSVfxu8FvPgYjOMl/QEe6/QPgFo/H2Hgg0S4mdNBd0GgHcmA9ND/rz+9TD
+	PPasrCNfprfNPzhvGc9gqy5NSIgiDZBfuzR3ZaSvS3lUXF4Eo/XHX1Uv8MyGEdhq+rtjY0YzbG5yw
+	XAQDeoZUkoduRWItj/Ph9u/p6qaLCihT1fStjxqZCBu8ZTyLNWuRXn4M6FePPhE+hjrUzzV8RcXf0
+	FGYUHWXT0md8JIKcLJPPEIWMsvMbkm+agFPFC465n/bddsWD8FWgPtDxsoED3LsV5Wktx1kvI+zty
+	kHIiwKRA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w3L54-00000006k3I-3VIq;
+	Thu, 19 Mar 2026 21:39:02 +0000
+Date: Thu, 19 Mar 2026 21:39:02 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
+Message-ID: <abxs9k__wWWLL2hb@casper.infradead.org>
+References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
+ <abwqq28hWXMLqa5P@casper.infradead.org>
+ <DH6Z95PTZYVF.3K64RCJC06GEJ@google.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:3104:b0:67b:a667:f51f with SMTP id
- 006d021491bc7-67c22bcbc3emr753879eaf.6.1773956175475; Thu, 19 Mar 2026
- 14:36:15 -0700 (PDT)
-Date: Thu, 19 Mar 2026 14:36:15 -0700
-In-Reply-To: <20260318222953.441758-1-nphamcs@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69bc6c4f.050a0220.3bf4de.0001.GAE@google.com>
-Subject: [syzbot ci] Re: Virtual Swap Space
-From: syzbot ci <syzbot+ci0215525ee2c0ed89@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, axelrasmussen@google.com, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, bhe@redhat.com, 
-	byungchul@sk.com, cgroups@vger.kernel.org, chengming.zhou@linux.dev, 
-	chrisl@kernel.org, corbet@lwn.net, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jannh@google.com, 
-	joshua.hahnjy@gmail.com, kasong@tencent.com, kernel-team@meta.com, 
-	lance.yang@linux.dev, lenb@kernel.org, liam.howlett@oracle.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
-	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, nphamcs@gmail.com, 
-	pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, 
-	rafael@kernel.org, rakie.kim@sk.com, riel@surriel.com, 
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8165E180008
-X-Stat-Signature: 7dfkco7wznsh1875shw3ogbimjp1gr55
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DH6Z95PTZYVF.3K64RCJC06GEJ@google.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8C87240010
+X-Stat-Signature: 9kxegmrah64nhtkpj5moaaw89ho99him
 X-Rspam-User: 
-X-HE-Tag: 1773956176-548877
-X-HE-Meta: U2FsdGVkX1+WzuHHjHJp1cuCOCvDBPnpnt8dkzHvsVqu7AYoSyTHKtKotXD0c6Pl4CLqC09vH38p7NpLPRLNaUU7zpgiQzCwyz6/nFq349UiPYYtN1ruy7QAecuRH5TMbWEGOJRm6JI1yDZGwgAJtN47GTMpYq3JEZKXuU15Z04EJhdle3FLE9F6XDYgW1srr51F5LftnQuy79YkhkJvqynViUxJvtD1x3B8BSKVMNrse1xzqcOmDBvRASusIB1YG5EegkJg3zbCatFn8SR8ncxzjxR8ciF2RsdGjT772F9gk0aM31hWXsyRW+Gr8hgltWMN7u9wTjKubR7oBWEuVZCDHpnxgmsSiKGfGMx9c01DZ8xZnc1wlpSby6FlFk+/OnnNviQbMuEnikqiVfcn7x/kwYhQUDgcIGgJ+lwMcXenuj8ax3NcjmI4qES7rE4XlCRbOBNLbdjT3H65KESok5iJXvglN5Zg0Ca9US8JAaEpkHN3gXDkhwfnBfSjmU95UbuUDrxyiPB4U04bgtAdmJ7//Wkvxu8C+GAGVheknPxgk4t/3IAQWAgizQkNlbcXH3uK6ek4myiSReVFCS7XSb9MWEN4Gf3etptCC7pULnGX178Ig4N+buUTUCWuFP2Hcusc335UarXxX5+DU+T50S1h5PdN+bLht/NxIFF4AV69AONfrQgcjM9ow2vxRJkEn61yXPSsodYPv0eSk5E0NJGovKeBmb3dNgd7VVk/MRodeV1RsEWpLD6ZT1R5RvJVxL8eBBmJLd8Ihf0frxiIWoUQD8J8LkXfwn1xnYW1rTYjrU3XxCdV/zHC5PhCEnhtmd3eUupkdFqlG+3WbnnNqg37PLK4P5EKR00jKOutEbC3lpSzyDHphN9JPldnGait3YiQFGGUVPuHEWAyXR8SqY4DCy5d0Jrjh5Wzm/d+WzomT8Fj3Zsz+g7Fj72Z/J4AWntGfxm91rGMzW3xcV4
- tVyQNvxT
- w3Kc33k6wVKeS8r0M+zy91QJrYoKJRIpPdnTCk9VplueWAa3W8QyCn1uczSeM750x2nYw5q60pGmRWlUZWFTxMaBx9oRUeGMoFK7xEO+AyI0gcZgeSsGZJ/VFrCRsL8KrkH2w8f7gzv8RT/+2An3aiFLnkeLaCZFY3QUcQ5vSe7YvmAqYAr1pUsQ8MoeJJxxnAlEYwg7frtVld+7rVA/ESNbyFt3E8qWqZFyNTPYOiqYp4nQhf3XXGcRUG00CEpjuazJRdpqJSLlcFNGVRh+dTIimY0DdF8PESOlBXE1HfmS0Rr6aXLzgjvTxoP/qc9UXiHZdCTvlq+y9AmHNlXUQjjtCFctQgv/rFJs5SNmB0zuvsaR9FAJ1yONmUW77HjlIrjURexVuMDiu+rCctBAmEQQVpuOICEbTKtr9V4AZQZx927VN/Sy570YQw8vxLTlh0oKBRvh94q2pfueM45YvMaD+8ujdOG9LvumnxoI4HRGtYdcqcmlED14iKkCBE2rZluWtVfa37jytdqdo5Na0ILUVWF/ydqL9dOM9KuEXEUYdL5cn/satNVbgbo5fWFV74IdU33s2fLh4LR14UCDwvyqNr7PCZgBCVDU2gd7rIs1D4MgSRGhL0iwLlb0XVv/Z8tCJfZUznwIK3LWLp9eVV9CxcSIYP7/DVUCHM8W8/ROmzTcBsHzRVMBMM5LSaMHVXt//Dry5sAO0g28PA4kp//0KF40iFoCoq6COV3+YoZNq7nJBJyl92vcX5IJ8evjw8/J0c73S62byt9s/8MA1uxqKnpVIH4/tfTz+rm+vNH5bcbsz197bICUUVPLZY0ddieUUsCD8AtGQx9rzStvqSHGroaLtmhFDCXjO+CgTGMbSHNdpYKeAnNT5sxdcdVpQv+xcgurkyRzK9aeLTCCcRbRYF5KD3wxIqpYbqboETd2fzCYEEv/O1oxdF7RNxepson2u16xjOZDQMkCjOlaX157IXkBY
- LJiLBTE9
- hfgNqYuqQ9eHQEW2UMCmp8LG1d9IVexsTMMlIB9+iJIAl0L6Mgj4KdbJf5ChqXSuyntiyMoPaGSC3r2idnZ/9Sx+v54eywEu
+X-HE-Tag: 1773956349-646435
+X-HE-Meta: U2FsdGVkX1/MIjX0WrnDsCzxDtuSnd9mpN80aGq+Nbo2vn1zWgffi2c5YCGnLQKZ6sGXMK3apcUeGHboBomyqVGcT0KRqxFi2wpdw/KLxqnCytGn8e0xl1aGcJWIxJ24568+N3fyyMqudAwZH+5LqmmsNaIjXJScZD1jJJY77/Dbl04NJXMtIX6Q0Hhj/DXEdnTB37tfLi+h12k3VBJYiBY2DQU+I3Pszd1t0OXJCq+U5i5Cj0C8fMpXb9aaAptEBusNq8UwPDmp0NPTCUUaNJO1t8I4dVAzyU3EcSzeh1Mfx0UrV/gsPI8C2ApIzdqQWPuiGNo5LKkNNOG41yFse9LDZFfivW80iCm+rSY3UbGUX57CSWbGMsHQXB0/qx0f6ocXcMR/t4YIe0e6+Afj+gWtYu8EGdGZgF+vzGi+FrHfrJWaokah1EgI7bMP8taZmxiqxMMCq9zrhnFTRtgG2vb+P/iKgxNijr1Ywn219NQDZJO3K3dbUlFuwbf3nFAeSobNP3FTE8Prph/rxIsPu77A9tzO/IuyD3bPSaFZdRiIZYvqVl0djTRBBeR7+kvsKP294xC62ddvSgEXc1ygP+MC/w1G6qdQ04c6OMlSyDHoXMsC9jHTZ55m3YS0zNgUqaVJK1WzL6TDIbUTt33sRyVU7eozDrmcyCv+glXASKj0dvaU7mxvEssl+kuoudLQPioy5EAXfPhLR6R52SwElVLVz71WS3ymJR1zdPRD9ocIguzephye8zGMvl627svXFUk2/YcR4yZCwUH+Te/bpZdho7x9WugX+CjaFV7hcBNCKC/82XQErFhBNRWmxjXSxqPJAp7xvyYGRfEvKl/h/YFPGEleVlAoY/qWaMCHT88YlI3tiZoG/NRcBf2rSWvRQb1lttCVQw/dI2BKNf/D209587Yn/PKBatr2FdNZPNO9r6hoX6uCyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,142 +98,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On Thu, Mar 19, 2026 at 06:40:59PM +0000, Brendan Jackman wrote:
+> I will paste the diff at the bottom. I _think_ all the problematic
+> expansions are downstream of struct xarray, but it's quite likely my
+> sense for problematic struct expansions is weak.
 
-[v4] Virtual Swap Space
-https://lore.kernel.org/all/20260318222953.441758-1-nphamcs@gmail.com
-* [PATCH v4 01/21] mm/swap: decouple swap cache from physical swap infrastructure
-* [PATCH v4 02/21] swap: rearrange the swap header file
-* [PATCH v4 03/21] mm: swap: add an abstract API for locking out swapoff
-* [PATCH v4 04/21] zswap: add new helpers for zswap entry operations
-* [PATCH v4 05/21] mm/swap: add a new function to check if a swap entry is in swap cached.
-* [PATCH v4 06/21] mm: swap: add a separate type for physical swap slots
-* [PATCH v4 07/21] mm: create scaffolds for the new virtual swap implementation
-* [PATCH v4 08/21] zswap: prepare zswap for swap virtualization
-* [PATCH v4 09/21] mm: swap: allocate a virtual swap slot for each swapped out page
-* [PATCH v4 10/21] swap: move swap cache to virtual swap descriptor
-* [PATCH v4 11/21] zswap: move zswap entry management to the virtual swap descriptor
-* [PATCH v4 12/21] swap: implement the swap_cgroup API using virtual swap
-* [PATCH v4 13/21] swap: manage swap entry lifecycle at the virtual swap layer
-* [PATCH v4 14/21] mm: swap: decouple virtual swap slot from backing store
-* [PATCH v4 15/21] zswap: do not start zswap shrinker if there is no physical swap slots
-* [PATCH v4 16/21] swap: do not unnecesarily pin readahead swap entries
-* [PATCH v4 17/21] swapfile: remove zeromap bitmap
-* [PATCH v4 18/21] memcg: swap: only charge physical swap slots
-* [PATCH v4 19/21] swap: simplify swapoff using virtual swap
-* [PATCH v4 20/21] swapfile: replace the swap map with bitmaps
-* [PATCH v4 21/21] vswap: batch contiguous vswap free calls
+Urgh, no, it's not all xarray.  There's one in address_space which we're
+trying to shrink, not grow.  There's one in struct sock too.
 
-and found the following issue:
-possible deadlock in vswap_iter
+I don't think this idea is worth it.  There are other projects of greater
+or lesser churniess which will give us some flags back.  For example,
+we could finish the GFP_NOFS and GFP_NOIO removal.  We could finish the
+radix_tree -> XArray removal and get back three bits.  That's five bits
+without even starting new projects, just finishing old ones.
 
-Full report is available here:
-https://ci.syzbot.org/series/f8238a2a-370e-404d-b3f7-5945b574bd63
-
-***
-
-possible deadlock in vswap_iter
-
-tree:      bpf-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
-base:      05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/cf1517a6-d391-46d8-bfbe-98e6be6b93ce/config
-syz repro: https://ci.syzbot.org/findings/b4e84ae7-17d4-4bf8-9c3f-4c13b10a1e52/syz_repro
-
-============================================
-WARNING: possible recursive locking detected
-syzkaller #0 Not tainted
---------------------------------------------
-syz.1.18/6001 is trying to acquire lock:
-ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:351 [inline]
-ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: vswap_iter+0xfa/0x1b0 mm/vswap.c:274
-
-but task is already holding lock:
-ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock_irq include/linux/spinlock.h:376 [inline]
-ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: swap_cache_lock_irq+0xe2/0x190 mm/vswap.c:1529
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&cluster->lock);
-  lock(&cluster->lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-3 locks held by syz.1.18/6001:
- #0: ffff8881bb523440 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:391 [inline]
- #0: ffff8881bb523440 (&mm->mmap_lock){++++}-{4:4}, at: madvise_lock+0x152/0x2e0 mm/madvise.c:1789
- #1: ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock_irq include/linux/spinlock.h:376 [inline]
- #1: ffff88811fba0018 (&cluster->lock){+.+.}-{3:3}, at: swap_cache_lock_irq+0xe2/0x190 mm/vswap.c:1529
- #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:867 [inline]
- #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: vswap_cgroup_record+0x41/0x440 mm/vswap.c:1909
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 6001 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
- check_deadlock kernel/locking/lockdep.c:3093 [inline]
- validate_chain kernel/locking/lockdep.c:3895 [inline]
- __lock_acquire+0x253f/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
- __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
- _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
- spin_lock include/linux/spinlock.h:351 [inline]
- vswap_iter+0xfa/0x1b0 mm/vswap.c:274
- vswap_cgroup_record+0xeb/0x440 mm/vswap.c:1910
- swap_cgroup_record+0xc5/0x130 mm/vswap.c:1933
- memcg1_swapout+0x358/0x9e0 mm/memcontrol-v1.c:623
- __remove_mapping+0x7d4/0xa70 mm/vmscan.c:762
- shrink_folio_list+0x287c/0x5160 mm/vmscan.c:1518
- reclaim_folio_list+0x100/0x400 mm/vmscan.c:2198
- reclaim_pages+0x45b/0x530 mm/vmscan.c:2235
- madvise_cold_or_pageout_pte_range+0x1eac/0x2220 mm/madvise.c:444
- walk_pmd_range mm/pagewalk.c:130 [inline]
- walk_pud_range mm/pagewalk.c:224 [inline]
- walk_p4d_range mm/pagewalk.c:262 [inline]
- walk_pgd_range+0x1032/0x1d30 mm/pagewalk.c:303
- __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
- walk_page_range_vma_unsafe+0x309/0x410 mm/pagewalk.c:714
- madvise_pageout_page_range mm/madvise.c:622 [inline]
- madvise_pageout mm/madvise.c:647 [inline]
- madvise_vma_behavior+0x2951/0x43c0 mm/madvise.c:1366
- madvise_walk_vmas+0x57a/0xaf0 mm/madvise.c:1721
- madvise_do_behavior+0x386/0x540 mm/madvise.c:1937
- do_madvise+0x1fa/0x2e0 mm/madvise.c:2030
- __do_sys_madvise mm/madvise.c:2039 [inline]
- __se_sys_madvise mm/madvise.c:2037 [inline]
- __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2037
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2b3459c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f2b35495028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 00007f2b34815fa0 RCX: 00007f2b3459c799
-RDX: 0000000000000015 RSI: 0000000000600000 RDI: 0000200000000000
-RBP: 00007f2b34632c99 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2b34816038 R14: 00007f2b34815fa0 R15: 00007ffcfbbae8f8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
