@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D141E1090233
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16FE31090234
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBB216B04D8; Thu, 19 Mar 2026 10:24:26 -0400 (EDT)
+	id 0E5216B04DC; Thu, 19 Mar 2026 10:24:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B898B6B04DA; Thu, 19 Mar 2026 10:24:26 -0400 (EDT)
+	id 0413E6B04DE; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91A476B04DB; Thu, 19 Mar 2026 10:24:26 -0400 (EDT)
+	id E73AC6B04DF; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F2376B04D8
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:24:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 796E91A0612
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:25 +0000 (UTC)
-X-FDA: 84563032890.28.17EB338
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CDCB66B04DC
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8539B8C119
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:27 +0000 (UTC)
+X-FDA: 84563032974.11.ADF60D5
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3045A160004
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 500EA20008
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:24 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
 	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773930263;
+	s=arc-20220608; t=1773930265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=E+KdvNXED7c6h3IWFxjbnEdNNtYX/xTo2GLPYE2QYLE=;
-	b=yAaJi4EAghPFjCqSLU+GLuyE6xla2I44GRmQgrVTI0ha3JzIe1eJ7I5Ydvo/6bdf2I1AJe
-	mxc/VdQjVXkaBVndJpQRwS3b5f5abmaq9gx2KkRb2e6KBtYuLf2if5i4nK0xb4Sr+nZb4z
-	YGAX6cfo0yk4haZhLn2erFTY9tV7rjw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930263; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=pZzAuNYcRCTwQCccEV9fvt3KbO94i2TjA68nRsoYByk=;
+	b=z7BnJ/3Bh2vmk2GuizlMpl4gYT1uCKlexGRFhu+V8Q7AXuhQa8LgjxjelbS77rK70nSQkt
+	J6jE3F7slXwhIaVbs+ihIyi6TnKE/9d9a2cCMonmDrzrbfDYepfjcUIPh1gZiXALaUr5He
+	BS9OQWFR1k6Zh7fh0lKUN1I5x/nFTa0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930265; a=rsa-sha256;
 	cv=none;
-	b=XHjvjDcTC+E62YYQuvT/I2raRoYOpZzlMzPqndqtghmVn/h8IRzLZNDoW8ozlTkcfrQvXJ
-	bBF4Ab5UeUUtclWdt7FAf4NdevnllIs5f3aVkxno00wphWCW+Gbx9QG3DnCy+Ox4j9+0zi
-	Zt7eXFi0Tq8/zLOQZmqNUIlPN2w7Q/A=
+	b=LBAO4x5Y5W5fVfZ7RxLePc+kpJH07Lm75joML2R/fGv0Cg+bYFMi3vm3L4G1/vAbkw8ztY
+	Om2rkcetJ3TWhXPFkPRjw3w8RzNgJWuof19rIBpmBXaUXnohUM89WK56G986iEm+eO9KAl
+	Z8tPnbj409F8747jl/9BtOT+jKOgoTY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
+	imf03.hostedemail.com;
 	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 19 Mar 2026 23:24:18 +0900
+	by 156.147.51.102 with ESMTP; 19 Mar 2026 23:24:22 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -65,20 +66,22 @@ Cc: chrisl@kernel.org,
 	usama.arif@linux.dev,
 	linux-mm@kvack.org,
 	linux-pm@vger.kernel.org
-Subject: [PATCH v5 0/3] Fix swapoff race and cleanup in hibernation swap path
-Date: Thu, 19 Mar 2026 23:24:01 +0900
-Message-Id: <20260319142404.3683019-1-youngjun.park@lge.com>
+Subject: [PATCH v5 2/3] mm/swap: remove redundant swap device reference in alloc/free
+Date: Thu, 19 Mar 2026 23:24:03 +0900
+Message-Id: <20260319142404.3683019-3-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260319142404.3683019-1-youngjun.park@lge.com>
+References: <20260319142404.3683019-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3045A160004
-X-Stat-Signature: gowh39qbznqobdr65nf3r1inwosfqybu
-X-HE-Tag: 1773930261-580366
-X-HE-Meta: U2FsdGVkX18O+zoPXpF3UgrjGHGLbaeVDFGFJ/u2/bGPIUeeLEc23GyQvaRac8OvyrFxL886euYtt5lSEndx+9G3hM0lTpEUZuR0uHymqYEbnqvT1DvoUBa1wYzfltzs84l8V1aAgsSyTjgRiQWbvFMVskuNTd1CSABJcLvd+WvjQTzwe55aMVOB5F+LrHxDlQq7wxzszCCQ1IBjpmuCXQFcQqtCx3X24Xuyj4MNnuNJYyK1RuaME7mT07CLX9nUpzFE9BiPq+mPF/A+FG4lKepggUDgO4sSZv5KH9PgeM9gmI580Vr5xFJqNHDPCULpXd/A6rPXOIBTt8VtqUZ2HGwOaaXpsKovWQzuYuE8zgvMwoiCGpjQnhOnl/10y2I0HMIR553DkdjbPfQpWPcl4hI2hdxwG77ejztMU9XrtGiKkcgJptbjvvJ8TrkgVkeNsANn9PGIDb/SfP2A7odtrK/qxWJfEoYrjux46DEiN565vbgMEwFTp61XZIMo9rvvoZuamGF9y2KN4jKI6lxVgxvi+ImE8uA3yxKTzaWI7VNP6Ie9IfY2ETC6DUmHHbAYxFLpgCLIQe83HiR5a3+tBSe93n+hXI19chrL745v+wQQST1XKIZLrB8OKzNznD4MnU2bwyKM0wgC4uhbmHZth+M6ZKntd9crovY2E4KnSICecLb/LKJD5zOUlbYbKLHZefSpx77h32zIuPeleN5Eea6UhrfkPcNtnkJJnlTeM2VQTze23RE3dcgnhnJGUduBBAtSa5bSxmP+c0p7tc2AbM9Yee5hziz4mFNOcXdjkVoFDgxZbqOPC+BLDJ1s2lIgveoV31/5TjN0pBkLqIGEtXU9YBWcaOmn3T7BTeW597jCKhL8heGU3LDbunveLDsNAlf3byLBFtMHxx8G8AMuV91my2BqFCN2q4ylUQsrrCMY/JyjDbbKgfcch7e0u16ZY2+OBMHTQ/LVNzyBYLy
- O5K9sVG7
- QdI0c/6PtXLqRinWyx3cB2XhoU9rKLh4S36kblK8G4rYByxZSIGMXfhaTweY8ZjCAICLhHhmvRfyErWV6pVJOuAXO8Wb366Ia2YLNHvsTIvQmmsv5K00cpffWCpf7TJ4jCQoGhq5cR1gzGw/M08anuxh2c/7243q2WYMY5nm/24iPQcI/wy842u8Nfw==
+X-Stat-Signature: 8scbr33gzdehzt5cpekzyqakq8i7s9ek
+X-Rspamd-Queue-Id: 500EA20008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773930264-62217
+X-HE-Meta: U2FsdGVkX19Yw+vy6lL6OsJ3BR6z8XXACNo4j4wEJBUmpofzHonuqTifnJWzuDI5Z8GO/s2iwIvlBV2w6c8aDjaJGw0OW8V70AQx416EJb/bm6id9cNN+VO53MRDcjjoLgPjhVODBX39oADE4DOLOCLDIJUwfKU17JJEayCseWy/23PiavObxsN7fIl94xTT6Eyw/t6R/AebNBoPeYGtMtbVcMFU06GB0JeE4G8fdrTsFO8l9NkHdXA8joSAMqJw1L3OoY6DjDo6TCoEjTp6pUnaENh5XXOTu7GPL5NNWhXcmjx6m+id/XQb9KLxOimfUMSG+/8W/4y0dJeDIUKaq8+0RiHFumP/mokp260caLsuhj3FvWuMuRQKvq6EGOrEU7gpW1EYzDKCFSRnMuLofvv4Ij1W2pT/y9k1Onzvc9t0ol01i4yYcy3sjglE9z1KbGQazVSIV/aG8cPG7WJa30JR767AzosLVqMb1em9C/Nc3OqRgwVEqMUzq655yZ1wqpUEhJKYHw+SX9TgznXcMjrLZZlpCvGBJFUnI1ULIMD5F3XQZOOyFhW+4e5y/dka7qhBPD5uLICYVTBLowgzEjjsC4UW2QY3Z16+9eUI6EDJdAKxl4CrZwoVwQMHG1h4jgv2PaqYAsB5wlfH/2NXXVJpSHLxPn1moKa7vu3Aogn25k2eB+i5HFDnL3j34p2VXu4tGYN0Z3s7KI0bSDA58CWz+eXOB+CBos4MeF2GmWfxA6c4sCkOxviEVFYP9/uZuTGJj8FIpOtSCBh9fYXI4e4ZyD+NsKShazT+bpnxC0R46HZMyoxZ5/QrxbP7/g4B3hVpR+DjsJn8a1gmbv8Kl1efCxLZibHh907Zgp5AWeJg15KM/kBvQDAcvoFv4O77C7I23V6Gp8W8BGAgI4A9Frw0CJwI+TyK69CXc/D6JX7vAHqC99EYh8JVuzNVN5xwbV6ffMuQLn4PUDVOpoA
+ vEBDgDr/
+ akZl4uaFJxm2tyyHipSP/ENN8Xd6WNP57OenvGJDLsL8tcwHCKqgGCAOp1vaMDNqd/exXosk5qYXVznCDdToIE71MSl9Lif2bfgybOQNKRbigA2TKOo0Vw31DOYhohV8U+txoU0rZC9v8eg0g/+WgoDJNqkzm5znfqrue
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,89 +89,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, in the uswsusp path, only the swap type value is retrieved at
-lookup time without holding a reference. If swapoff races after the type
-is acquired, subsequent slot allocations operate on a stale swap device.
+In the previous commit, uswsusp was modified to acquire the swap device
+reference at the time of determining the swap type. As a result, it is
+no longer necessary to repeatedly acquire and release the reference to
+protect against swapoff every time a swap slot is allocated.
 
-Additionally, grabbing and releasing the swap device reference on every
-slot allocation is inefficient across the entire hibernation swap path.
+For hibernation via the sysfs interface, user-space processes are already
+frozen, making swapoff inherently impossible. Thus, acquiring and
+releasing the reference during allocation is unnecessary. Furthermore,
+even after returning from suspend, processes are not yet thawed when
+swap slots are freed, meaning reference management is not required at
+that stage either.
 
-This patch series addresses these issues:
-- Patch 1: Fixes the swapoff race in uswsusp by holding the swap device
-  reference from the point the swap device is looked up.
-- Patch 2: Removes the overhead of per-slot reference counting in alloc/free
-  paths and cleans up the redundant SWP_WRITEOK check.
-- Patch 3: Fixes a spurious WARNING in the uswsusp GFP mask restore path.
-  (Founded during uswsusp test)
+Therefore, remove the redundant swap device reference acquire and release
+operations from the hibernation swap allocation and free functions.
 
-Links:
-RFC v1: https://lore.kernel.org/linux-mm/20260305202413.1888499-1-usama.arif@linux.dev/T/#m3693d45180f14f441b6951984f4b4bfd90ec0c9d
-RFC v2: https://lore.kernel.org/linux-mm/20260306024608.1720991-1-youngjun.park@lge.com/
-RFC v3: https://lore.kernel.org/linux-mm/20260312112511.3596781-1-youngjun.park@lge.com/
-v4: https://lore.kernel.org/linux-mm/abv+rjgyArqZ2uym@yjaykim-PowerEdge-T330/T/#m924fa3e58d0f0da488300653163ee8db7e870e4a
+Additionally, remove the SWP_WRITEOK check before allocation. This check
+is redundant because the cluster allocation logic already handles it.
 
-Testing:
-- Hibernate/resume via sysfs
-  (echo reboot > /sys/power/disk && echo disk > /sys/power/state)
-- Hibernate with suspend via sysfs
-  (echo suspend > /sys/power/disk && echo disk > /sys/power/state)
-- Hibernate/resume via uswsusp (suspend-utils s2disk/resume on QEMU)
-  - Verified swap I/O works correctly after resume.
-  - Verified swapoff succeeds after snapshot resume completes.
-  - Verified pm_restore_gfp_mask() WARNING no longer triggers (Patch 3).
-- swapoff during active uswsusp session:
-  - Verified swapoff blocks while uswsusp holds swap reference.
-  - Verified swapoff can be cancelled by signal (e.g. Ctrl+C).
-  - Verified swapoff succeeds after uswsusp process terminates.
+Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+---
+ mm/swapfile.c | 43 ++++++++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
-Changelog:
-v4 -> v5:
- - Rebased onto v7.0-rc4 (Rafael J. Wysocki comment)
- - No functional changes. rebase conflict fix.
-
-rfc v3 -> v4:
- - Introduced get/find/put_hibernation_swap_type() helpers per Kairui's
-   feedback. find_ for lookup-only, get/put for reference management.
- - Switched to swap_type_to_info() and added type < 0 check per
-   Kairui's suggestion.
- - Fixed get_hibernation_swap_type() return when ref == false (Reviewd by Kairui)
- - Made swapoff wait interruptible to prevent hang when uswsusp
-   holds a swap reference.
- - Fixed spurious WARN_ON in pm_restore_gfp_mask() by introducing
-   pm_restore_gfp_mask_safe() (Patch 3).
- - Updated commit messages and added comments for clarity.
- - Rebased onto latest mm-new tree.
-
- Note: Kairui suggested adding WARN on NULL in put_hibernation_swap_type(),
- but kept silent return instead, as type can legitimately be -1 when
- snapshot_open() fails to find a matching swap device. swap_type_to_info()
- returns NULL for type < 0, so the cleanup path stays simple.
-
-rfc v2 -> rfc v3:
- - Split into 2 patches per Chris Li's feedback.
- - Simplified by not holding reference in normal hibernation path
-   per Chris Li's suggestion.
- - Removed redundant SWP_WRITEOK check.
- - Rebased onto f543926f9d0c3f6dfb354adfe7fbaeedd1277c6b.
-
-rfc v1 -> rfc v2:
- - Squashed into single patch per Usama Arif's feedback.
-
-Youngjun Park (3):
-  mm/swap, PM: hibernate: fix swapoff race in uswsusp by getting swap
-    reference
-  mm/swap: remove redundant swap device reference in alloc/free
-  PM: hibernate: fix spurious GFP mask WARNING in uswsusp path
-
- include/linux/suspend.h |   1 +
- include/linux/swap.h    |   4 +-
- kernel/power/main.c     |   7 +++
- kernel/power/swap.c     |   2 +-
- kernel/power/user.c     |  19 ++++--
- mm/swapfile.c           | 135 ++++++++++++++++++++++++++++------------
- 6 files changed, 122 insertions(+), 46 deletions(-)
-
-base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 5069074ab11b..f1188743037a 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1923,7 +1923,12 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
+ }
+ 
+ #ifdef CONFIG_HIBERNATION
+-/* Allocate a slot for hibernation */
++/*
++ * Allocate a slot for hibernation.
++ *
++ * Note: The caller must ensure the swap device is stable, either by
++ * holding a reference or by freezing user-space before calling this.
++ */
+ swp_entry_t swap_alloc_hibernation_slot(int type)
+ {
+ 	struct swap_info_struct *si = swap_type_to_info(type);
+@@ -1933,43 +1938,35 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+ 	if (!si)
+ 		goto fail;
+ 
+-	/* This is called for allocating swap entry, not cache */
+-	if (get_swap_device_info(si)) {
+-		if (si->flags & SWP_WRITEOK) {
+-			/*
+-			 * Grab the local lock to be compliant
+-			 * with swap table allocation.
+-			 */
+-			local_lock(&percpu_swap_cluster.lock);
+-			offset = cluster_alloc_swap_entry(si, NULL);
+-			local_unlock(&percpu_swap_cluster.lock);
+-			if (offset)
+-				entry = swp_entry(si->type, offset);
+-		}
+-		put_swap_device(si);
+-	}
++	/*
++	 * Grab the local lock to be compliant
++	 * with swap table allocation.
++	 */
++	local_lock(&percpu_swap_cluster.lock);
++	offset = cluster_alloc_swap_entry(si, NULL);
++	local_unlock(&percpu_swap_cluster.lock);
++	if (offset)
++		entry = swp_entry(si->type, offset);
+ fail:
+ 	return entry;
+ }
+ 
+-/* Free a slot allocated by swap_alloc_hibernation_slot */
++/*
++ * Free a slot allocated by swap_alloc_hibernation_slot.
++ * As with allocation, the caller must ensure the swap device is stable.
++ */
+ void swap_free_hibernation_slot(swp_entry_t entry)
+ {
+-	struct swap_info_struct *si;
++	struct swap_info_struct *si = __swap_entry_to_info(entry);
+ 	struct swap_cluster_info *ci;
+ 	pgoff_t offset = swp_offset(entry);
+ 
+-	si = get_swap_device(entry);
+-	if (WARN_ON(!si))
+-		return;
+-
+ 	ci = swap_cluster_lock(si, offset);
+ 	swap_put_entry_locked(si, ci, offset);
+ 	swap_cluster_unlock(ci);
+ 
+ 	/* In theory readahead might add it to the swap cache by accident */
+ 	__try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
+-	put_swap_device(si);
+ }
+ 
+ static int swap_type_of(dev_t device, sector_t offset)
 -- 
 2.34.1
+
 
