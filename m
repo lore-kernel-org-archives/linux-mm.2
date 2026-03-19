@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4DD31091927
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA3D1091927
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:43:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 282646B008A; Thu, 19 Mar 2026 17:42:02 -0400 (EDT)
+	id 3103D6B04F0; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2587C6B0095; Thu, 19 Mar 2026 17:42:02 -0400 (EDT)
+	id 2D0116B04F5; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16E646B009F; Thu, 19 Mar 2026 17:42:02 -0400 (EDT)
+	id 1E5ED6B04F7; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 055E56B008A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:42:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70F9C1B88A6
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:42:01 +0000 (UTC)
-X-FDA: 84564135642.02.67E8B57
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D0336B04F0
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:43:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0DB28C32B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:43:43 +0000 (UTC)
+X-FDA: 84564139926.30.C507A1F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 882911C0004
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:41:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QyjmBxva;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9EA6E4000C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:43:41 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ET/D3WYu";
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773956519;
+	s=arc-20220608; t=1773956621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kYcw0CkvaHjWaOKqnM+5uGxe0+owDhwpHIYVNbC6gJg=;
-	b=TLQX4fd/zrURyQCFXxMLah7PGbhmmbNQwVQ1XyfiUUOlFBVVSR7gF8Ugb2MlZr52b0FUWC
-	Emp7jU6p3hPXlBDPQRWcw2Z5mU87NYnhl/npLejIrKXzyAYcQ+pc6/j/31MWQPRcEM8Hbw
-	XN/jhRO1mw22rbExna0OXieAPhCPEro=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956519; a=rsa-sha256;
-	cv=none;
-	b=SzkiErE+SagOlJGzHeHLCrdn2wjmQVqM5UFX6w3DhtJEuY6bod7YdRMxHjreIBZvi5b436
-	jMzxeWeAsR7vg9SSuTYcN1sCZRexWhB9nGiwEE1b1aFx+NqY6M1dtLdmKeFRpnf8z9g9io
-	Y02VP8BWG7GsV4jsgZcVrUawDK9Y01w=
+	bh=ub/SdKvuQK1F+4dbMUdokt+1BWeE+so5IQ+Xm1zNtQ4=;
+	b=nB2vRFCOhtDZTqiNa9g9bnFfAAvYjX30LfwrzKfEc/KIGonHMwiwfjQs3+Ff28BdTIHAom
+	QLY60iXIh8yAVawAg1RWPrAk3FM5vFzhuad4FlVp9d16e07KWMUXjiuB/2AsN4HZ6ku7cA
+	G9Pvy7/wyKsU9HoZIR2d0vWERpRbizY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QyjmBxva;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ET/D3WYu";
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773956621; a=rsa-sha256;
+	cv=none;
+	b=UiKCvJjmdq65WhAxXxxVvBaro6RryaVybvbmMyxNORBgPdt7xoJU5PqA5FMDwRRIszd+Q/
+	vD9cSW/NMB2bua/xzPPY4QLJOOOmb8+yXqw0BxKxAcmkgGo+yt+Lkx1DwqWEOkQ/Oyg+BC
+	oJCKgyeTUAxiwokh96Jen5ucM65+e7U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DE5FC60131;
-	Thu, 19 Mar 2026 21:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE763C19424;
-	Thu, 19 Mar 2026 21:41:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EE32660133;
+	Thu, 19 Mar 2026 21:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8915AC19424;
+	Thu, 19 Mar 2026 21:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773956518;
-	bh=x/8th3CGRYkACxozKqbZL8YTPI2BozD9MWAKK7Ww1Vk=;
+	s=k20201202; t=1773956620;
+	bh=uAw2YurztQA5Fty2B9eeqKXwLRmhsRGPv/axX4+YBZM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QyjmBxvav6K2ntcZVTw8FfOJP2Vk429cCp7E1vRKeSgfWlAuUarqHR/sEr+Dc6GEl
-	 bK/pV++cQDOAFrXnUBR+UUIfbnfeCws1dRAOJ+ky5cStoIuGYbCq6hIIPuc8SRFun9
-	 LJXvz5BJmuTZRSyuTvGofksSKaL+ujlfaMXpwR4MiZh5myqgV1lga4h3Dc0oTjd+sP
-	 dnJUa42GJK1XM1aoBxYmAZVigwwtnjB4mXuWLtVUjxY281SzLnexVILDb3rW3PSICr
-	 VX8vm+ttrZVpQZWAbMwprzmwoMOaRUoBlGlsAdsOrbAynGojwuWHhE3OOoBvbtBSVn
-	 tOz3LjIsR0t/A==
-Message-ID: <69382383-5f08-408f-8c13-d674e82c4dfd@kernel.org>
-Date: Thu, 19 Mar 2026 22:41:54 +0100
+	b=ET/D3WYuq275gZdLtGn6TIcVwK6gXG16ZSoxJ4xptljWXdGw9DpgJ5miOx1lqH2s/
+	 D7jiowfnKdUOQkEKt8UVFgclc7VQoeE3crhFZe0us/f6P2rC82r4Jvsh+hwZt57WUU
+	 C0JRG109UYUaMggfN+AlBtLv5wB/VlsfInuBjT168rnNpFV4znDNNlXjpQi6AICbVI
+	 Yn3Vfyx2FXraKVaIRwDw4yIaMaoYqF7ijhcnYsvuuqjYhthIx8Yj+FJ9uFxBOEZYYr
+	 29v3bzAvD95qPs+PYMuoNG85Oywcfz64n/nWo5HwMlDzevyih8XkiERKtMHQZptehU
+	 HQTDKZhlGusOg==
+Message-ID: <7cd1e50a-f5a1-42b6-9d04-4e329d338f41@kernel.org>
+Date: Thu, 19 Mar 2026 22:43:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm/mprotect: un-inline folio_pte_batch_flags()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+Subject: Re: [PATCH 4/4] mm/mprotect: special-case small folios when applying
+ write permissions
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
  Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
  jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-4-pfalcato@suse.de>
- <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
+ <20260319183108.1105090-5-pfalcato@suse.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
+In-Reply-To: <20260319183108.1105090-5-pfalcato@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9EA6E4000C
+X-Stat-Signature: cf4pzqkrfb3ocm7f9ecnmggntyb8ux79
 X-Rspam-User: 
-X-Stat-Signature: r4r1toy1zz8z4ffcre6of3t66xcicbfh
-X-Rspamd-Queue-Id: 882911C0004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773956519-608157
-X-HE-Meta: U2FsdGVkX18CPX6Ik8QHLEBwb9N4NOK6KgKvcbUyF9iRVzt00PTbLDfeK3m0RR/1GuLbXk19f3h9tICGJtKUUmouSJu4SRp8gKtLde7hC0aNx3IdlQh9TpPpLUudfUaLK7/IIc+bMbNPx2UP8JEco4rUyUY9fCfXM1q+wOFLQC+0/ZpzD8mTm1Wo41n8ifqrLrW+XlX1v3CHeIMRF/7d4mFIR3wU6t7otyBH6zwVKGJNJNkannYQNcC/ysh9UGRFNSjt8VARXoqWE2B81EGCkAuReRMknK5M3NKbnSvjb+82qlkpoqlFvFj7WK9xKxmQmhhVO8c4AXg/ll6PsdS/4sZaZncX1P6VRjJxViUIyPLjA+8GqoOk+58EAhSg+7LRCTjc2LeOmLQRGULae/1lKl0cMKVLJXrbu1F6NRCpKr6u9vg/F8OJtbLj3dsq2ih47aaX7Xk6HcHHGBQNDU0IA5mf3JOnWvOk/avXYhFpvro2eHG4Smq/UlQ9KuINUPHNILlcxt6xYaj1ha061XuB1uzJDob2wki+BCAS0NTLoRZidr6MCq/ThRJZ1e8xET1QCHyyIGWAifZciFHFwssywiAxNF3V4lybTsA0bdFZqbTfvT3smM6Jx9jCKGXMJyn66kjzAJVjZz8Go/dGxgPr8VAWftuGQOhgAwDsl+y3awwFyvl/jnFYtjcueC9RXPaYoOd6na8w3F0Mfi90pTxSerTh18f4aCPZar+29kIsDPRy4DCNVXyU5W6NH2CM/vDlLvEz0yRW5UIbRtCUn71BxhaHhupgrFwP+pJiTkIQ/pHVkDbW0IONleRJWg6OHBpmlpkr4EK5dKS8ry2+dcQGeL8UTHBnmN/sLxV9xESRGfYQwhINIqjbaXHdgjojXVkLIymbjSRnXSLbl4FLVm/yLe7G6b1GUrbRhbgjW01P6Tz0vmmI5SHj6YSUxr7sNTeUPyjfMBZFsljUngjkJZw
- 0k+YF1r4
- KF85bXLcRGNWfmHgLQo6QHEcH6CaMZA+L/7rwUwC1la2kgH5d4W95usfBY3cTdd879nBUocEY2PdnezaXvOzm6lGJAQRrrVESa3lrg1TRtFaIBuldrEcspj2gmaRIavcylXHT/boO9yCRnWCvXccFJxVwasGe0OPH5Sj3VkH+haJEU6EkLI/PAW74kV4gmDHB3YgT/qV2/KwH1AyrgKdLwY5zc9Kdn3YlJq5MxE1fj1X96en702us/y1P8Yxr/7LETkn5d293+7amjgtXCfH7KFBFsg7qhl2kdLb4O8reJnayUXkg1NgIlcaEWQ==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773956621-581652
+X-HE-Meta: U2FsdGVkX1/iRmIEekAUkxFHbSbKKIRrXTF8fzVSIWkglhGiiJaEcHiQAPkKoix6jR5sTnI/EoKyxu6zPIK7gON96ya24TIKzxHtJAH55ypnoMpdQOAqi+hE65TM+5Q0iugFO50VbkH8gWo1rDoiYh3MdkLxFfjQ8rrB3XpvsMmswd9/03VEcIX3Pkn6uohq0PiohZD917D3hcdGHzQcqfZGyyNXILvcbZmoCJzHm0DRd2CbZPQP36pkfqxpHoW2CFczcZ+aWW5ibDT0oVlHgE3/bsZSHV8B3PMmEi38SPz/Pn/R8K78KTtle+DwTzbxKet2dQ9s/Re7icdQQRArGhmvpg0Noia6p5gz9KPzf4rZ3J4GdsILurGzFkHWRDBIzRNF1c/6ZM96XkAyrarhxJBfeMC5KfiwvF9HjqDkuwdgvYyDTeviJprA7JMEuADzlgWpsm7XpcK/guilmMXGpQ8aPXRlbnBjkNN97ncsLyhdSA5bfWnLGiKMzfIfF0uK8nAoN5uN49Woj25lY1HqTcGuAhK7oYX4GIUPfHWrdmhLFPzFGb6zPRsAoF0DVQjpPPK/jA8TMKzenruNjZn+R/fRbIGgLhEs/Lz9SOhzvU5NYuAj6VBzChYHi6flLxTKiTlQCmAiIxpZY7I6/0UfJgY8IDDQaBTmsCx4WusCr51p3MDhzCqNGEgg10QLUUi13tj1g142JkKIMPWdGviQxvaUNOaeUVmKKIm9zI4Z8e/KsqHk4cFnU1kuTp12idj+rXGAoBH65ZsB2yvjwQXyEl3eJRaCw/1+Cj8GlBaaz6c9Lqs+mC09x58wKgwuk4a38IVEmLOmSunprIafL2bmDiZjFHyMQAZsu4s82mqSuPZlMg8mjrLcqYBfRvxmBQSGkVXWFlVPycysRHExrTSYYsA8blZu4VP0M9znfOm1hIb0FvPNk3qVhn1NnaNpPuqGh5QQp+FIZIqV+ZA5rI8
+ J8098nVw
+ 6D7BccZSgfsCxHCXaBZSl3FTpcBjp8H3L97iACLKuR0LVzy9jEKqcDUyofhTMN1tQEv47zfkFcDyy3JtahEu0l3EjSb3v81ilrsPotX1Cn8CrLPmP0b07cN85tqE5mgdJy9AGMKDRBggQ1bwyu3nMUUKd4cGZVukzLqdLhQ8PRwUmlgLFaQlOT2Z9r06aE5fVSuBCF/sfGrJUXAXKe4iFRqMnfBrM439ImVZlveekUZWsEjgVuIqf+Kdxkb0VG7a3z/Yq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,33 +142,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
+On 3/19/26 19:31, Pedro Falcato wrote:
+> The common order-0 case is important enough to want its own branch, and
+> avoids the hairy, large loop logic that the CPU does not seem to handle
+> particularly well.
 > 
-> This is all seems VERY delicate, and subject to somebody else coming along and
-> breaking it/causing some of these noinline/__always_inline invocations to make
-> things far worse.
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
+>  mm/mprotect.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> I also reserve the right to seriously rework this pile of crap software.
-> 
-> I'd rather we try to find less fragile ways to optimise!
-> 
-> Maybe there's some steps that are bigger wins than others?
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index aa845f5bf14d..23a741f9a4c8 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -170,6 +170,13 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
+>  	int sub_batch_idx = 0;
+>  	int len;
+>  
+> +	/* Optimize for the common order-0 case. */
+> +	if (likely(nr_ptes == 1)) {
+> +		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, 1,
+> +				       0, PageAnonExclusive(first_page), tlb);
+> +		return;
+> +	}
+> +
+>  	while (nr_ptes) {
+>  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
+>  		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
 
-What we can do is, collect similar folio_pte_batch_*() variants and
-centralize them in mm/utils.c.
-
-For
-
-	nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte,
-					   max_nr_ptes, /* flags = */ 0)
-
-We might just be able to use folio_pte_batch()?
-
-For the other variant (soft-dirt+write) we'd have to create a helper like
-
-	folio_pte_batch_sd_w() [better name suggestion welcome]
-
-That will reduce the code footprint overall I guess.
+That should likely be squashed into patch #1, because only then the
+inline makes more sense.
 
 -- 
 Cheers,
