@@ -4,136 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BC0F108E1F7
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80BD1108E1FB
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 12:01:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC8076B0495; Thu, 19 Mar 2026 07:59:00 -0400 (EDT)
+	id E40706B0496; Thu, 19 Mar 2026 08:01:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9E026B0496; Thu, 19 Mar 2026 07:59:00 -0400 (EDT)
+	id DEB306B0498; Thu, 19 Mar 2026 08:01:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB3B96B0497; Thu, 19 Mar 2026 07:59:00 -0400 (EDT)
+	id D00CD6B0499; Thu, 19 Mar 2026 08:01:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 959176B0495
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:59:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3344E1B8147
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:59:00 +0000 (UTC)
-X-FDA: 84562666440.07.A9198DB
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C9A39C0004
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:58:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nSKhg5D9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zwzdr+xX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nSKhg5D9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zwzdr+xX;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BE9F26B0496
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:01:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7CDD31DAAE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:01:26 +0000 (UTC)
+X-FDA: 84562672572.24.C1EFE04
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CB6581A0012
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:01:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1706h6Q3;
+	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773921538;
+	s=arc-20220608; t=1773921684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKoAmC5H5WL0MZfIguD4pR+XH+ZQMjAOOTptAPJl/Y8=;
-	b=BxhsBCCKX96EP7SlXpLYw/U3wc1kkcClapvhvlXhQckO/EDQcorIa0W3WFtmEpkvoB/5Af
-	UvqH67sBzWpH9PW4YZj1fUwRSTKlRGc7GLCd/Ov5YfgV3RdWoWxobAZtRsTr0V8OPxpBQe
-	x/Z89qoq9f0D0QYC8Fa85FgOV6Nw8d4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nSKhg5D9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zwzdr+xX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nSKhg5D9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zwzdr+xX;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773921538; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=w3fYuJlGXCMO8AIpcAmmvG97gkpD/JY12YFIkjT06RM=;
+	b=XhU6cspPLdwfqtwXtiFiBd1u3IZjR63ZCripZzS8vGraSy7nziDdNZh+YKJGiZxiScVyvA
+	kt2uW0KueAPZsRzY92CsXI737IufyrXOs+twQE78MngfZt8pFzWIrn4GD7wQY/9tj0bQtK
+	F4JbnfmqPoA/zjP/pwrsYYYkU5vcleg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773921684; a=rsa-sha256;
 	cv=none;
-	b=kM8foZZVHbzMGmZPfF4ktTders5/r2g4s0i3TGxo4o+sLLvpaWoMDF6OP278szZUiDcIso
-	StitWiGBmgF42s2mW47Fv/k9HTUer4DJWW95Dyo2sYQy8MtwbOpu3iCoCZPlA2n2r9x/Sv
-	1kqBPU+c59R7iITxUuGMaDdZFPJpIis=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B50F15BD45;
-	Thu, 19 Mar 2026 11:58:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1773921535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKoAmC5H5WL0MZfIguD4pR+XH+ZQMjAOOTptAPJl/Y8=;
-	b=nSKhg5D9cRCTMSxWiaWiUbsfNSOulM/++tiDrKjaYiWcHL6m+7V9IBkKBm9F/jZz5GjsIE
-	Y2YeBGqTzv7Z5Rp2lx+Tx54T5YqKOmjcMVoL8/tEDj2M1p+Ku/gw8tkQSfYwZIJDr34zIl
-	LDVe8tjTg3LD3BA87H5Ew7BLE3/cj0I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1773921535;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKoAmC5H5WL0MZfIguD4pR+XH+ZQMjAOOTptAPJl/Y8=;
-	b=zwzdr+xXpSPMkxZs3hlI0VJumMhkiI92xqBgRmeS4UMVCMSFNlKy+bxxRQ2qvYDrfTfywu
-	T0TsNZ3vwOLE1jBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1773921535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKoAmC5H5WL0MZfIguD4pR+XH+ZQMjAOOTptAPJl/Y8=;
-	b=nSKhg5D9cRCTMSxWiaWiUbsfNSOulM/++tiDrKjaYiWcHL6m+7V9IBkKBm9F/jZz5GjsIE
-	Y2YeBGqTzv7Z5Rp2lx+Tx54T5YqKOmjcMVoL8/tEDj2M1p+Ku/gw8tkQSfYwZIJDr34zIl
-	LDVe8tjTg3LD3BA87H5Ew7BLE3/cj0I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1773921535;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKoAmC5H5WL0MZfIguD4pR+XH+ZQMjAOOTptAPJl/Y8=;
-	b=zwzdr+xXpSPMkxZs3hlI0VJumMhkiI92xqBgRmeS4UMVCMSFNlKy+bxxRQ2qvYDrfTfywu
-	T0TsNZ3vwOLE1jBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DFFE4273B;
-	Thu, 19 Mar 2026 11:58:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gyWLJv/ku2nLVgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 19 Mar 2026 11:58:55 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 54B4CA0B32; Thu, 19 Mar 2026 12:58:51 +0100 (CET)
-Date: Thu, 19 Mar 2026 12:58:51 +0100
-From: Jan Kara <jack@suse.cz>
-To: Yunzhao Li <yunzhao@cloudflare.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Jesper Brouer <jesper@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: balance_dirty_pages() causes 40% IO PSI (full) with no drain
- benefit on 384 GB machine
-Message-ID: <z3quejtbpkiizgmvu2pjhqv6ioyach2wszen5slkau2hossj7p@rk2ftlwbdfw5>
-References: <CAAnvDSwOoEOkMEDgKUcHkx-SdmZ_ar5AbVy4Gp-XT7i04ON5fg@mail.gmail.com>
+	b=XNDbE5ARjQtLGHLTZzYEyDgIxPTO2T7KyTBF6Xg4FcxP4nU+P4cv2LC/Jzm6uGZkaGc+Mf
+	5bPy9Smx54GPWAoRH3OU7alDSwSFpUmWn/PvTvv/sLIfJBwVnVjZ8MImSlU5FtI0bwB0sO
+	0UIQaGnlnXA7HDCBS253wpeoekUiM5E=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1706h6Q3;
+	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2CE666011F;
+	Thu, 19 Mar 2026 12:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313E3C19424;
+	Thu, 19 Mar 2026 12:01:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773921683;
+	bh=lnjlgIoqOKVAYGSoe4vY2KEPYmRMOG9CxM73KMQdeXc=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=1706h6Q3z82bq+LyRm3Wub4CgDcyoXaI/7yI6bUVh3e21Kvx4boo4CryaAvWXhVOA
+	 BP+9Wm55QjTSp0Y3lEBrny/Hl8y87gys8ahcHu2zQ6EfS1HSZ+ZsrzgqdY5T6j8XJ1
+	 Gl0Th4srDEpc+wrqaFN+WHIrOWfTXiqod+bWitYg=
+Subject: Patch "binfmt_misc: restore write access before closing files opened by open_exec()" has been added to the 6.6-stable tree
+To: akpm@linux-foundation.org,brauner@kernel.org,deller@gmx.de,ebiederm@xmission.com,gregkh@linuxfoundation.org,jack@suse.cz,kees@kernel.org,linux-mm@kvack.org,liorribak@gmail.com,rob_garcia@163.com,viro@zeniv.linux.org.uk,zilin@seu.edu.cn
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 19 Mar 2026 13:01:19 +0100
+In-Reply-To: <20260305023501.4003943-1-rob_garcia@163.com>
+Message-ID: <2026031919-ounce-numbness-9a35@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAnvDSwOoEOkMEDgKUcHkx-SdmZ_ar5AbVy4Gp-XT7i04ON5fg@mail.gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: C9A39C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9x8rhb7j1s738p7ttyixj9is1t9197j8
+X-stable: commit
+X-Patchwork-Hint: ignore 
+X-Stat-Signature: 7y11zetq1j1oep15hxoekbp1zetjqma4
 X-Rspam-User: 
-X-HE-Tag: 1773921537-673390
-X-HE-Meta: U2FsdGVkX1+3t7NYPCpiND94lk8/Nj2hE0FqQyBmpwMF42Z4BoIyhQLCmyKX0mGw3dYQn2PLLwWAir3Nc+Pvi/WNHsSLmYtxFePqdOWfvJOkI0ep/ObhZKNx+JAOR1Nc/aj94XIjcVqt44G5cARFUWe2nUFaN2kM0XPJSOpPNxgGYHYHBUgSh/RbTLJN3F0pR6ED0nqaUnmNAmUqHG7+1cSXfMsSSeq5om5Ke5peEo4w1V2GkzSGVdsH/50sbv6f/luXsIzjM/k8Nj9sMIKIUiQ/GX5QUmVfyFb94WVH7r47UTLJNgUHi+5z5wWO8vmK7uHJjTlwJ7MZm+TR4pIlXjIHdN8gkcl9q7A6U99Ep1iYjCBwjMgS0TxJCgFW1lbDX9vESv6/4K/zQpFNAAHv19ySjy4KFCzjowlO1ef2/9aLCN0aTnF4LiUkSYK6vmIlziaMQq8VBUp6mW6rFwkEu5h42/Px/AxCZiRKLYR1Ad7ZKnBZdy4KmKDaial+y69RRZK3bYWJjuK5YveN8HEMForRJf4sb9q4pZwkZME+FerIhUTJ75wJrnuA/AsEDMWqIdXoizK4YK5lUuvb0A3uwa753vwC+O3wxAJf2Riqfk9BMdBoFKBcon6uoZjAV82g0GjYYI3MKM6cXQbHnH22Rxgd76ZaCYJNZmlOiZLen0SwLhafiYWJGr1+QcGHCKI9ytb88t6YX9KFRYbQI7yzqXrryRk2UhGvAseZiGkzL3x7DeI1PKZZdOdLIzLH19KkMKidv+aC4yWOdaW9MseaUksxiDn6Onr9tcQqVFHCFXAQQ0uyxt/yIPUPdEFQqhMnqSkN4bWionesNIEoLo3woYUlZBMbw9XRMpVVaAgyX+c8PKuSQHwBrFs+8HDTwb1oFlUK+cEX8VTdXEmnTxGm1uDGEMvXIrzegJrd0voIENQZJme/OL154raHgM9Kh9/WjX4PWHyYZ2PXhcVqpZi
- RFbjl6FM
- p82akLAroGOQiSsxFgZtBAE4wDxUu3QKdKEM4ZCYhX9ltPa1rUPJpNp07cJuAnIRJNjMevqN4b5SJ44H+IqxguGz969lccOjJEU1EhXdrqeuUqaY2jNxTMGhd6Rn6hfyL5PbiwvKgmz63G+5UI/6+LR4oqtdMkbVftMH2/Rt/ko59NfCEZPi9eA/O9hQeXmJ4+x2xVUXZijDiJqlXYkftWGRQMpfbhvbfgDskV/2IJ5ESWn9+i+FRAGd7yhB+vVo9YQ3O7QFztRvL58U6qFaJogL/jgRPMdAeuQt1BnGzchVFLo9fbkK48QNMB8epHVdQbbt9u7aX4NqiUGUWLTojDcuqBMRNbA/+EDThuggzNTOTtW0eR4LUiTZzqVlOSwZQHPzD66bYJKd5JxGRMAi+1xgWaVZZ0pB4gFBJ
+X-Rspamd-Queue-Id: CB6581A0012
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773921684-413086
+X-HE-Meta: U2FsdGVkX1/5AxfeZh/68eRNbLKJN+bx99UKgewMHEtc366iATaReImkfY3OCiVvBr4cBMDyOT1Wd6f9e7kEyjHDtm6bBT5KJ1n/iuJGI8E/CmYsQ1OFJjU6hStcTT/mEyNuv3/Yti+7j+Vc0ROoqOTWyiE+6l4isbhUw8y8CQO2Pyoj15SFNgCTyw32W/uZizrLoyRkox8b8Vx+a8ooacSQk3PfUNj9KWjHICU1s/QeMdv7un5lfoqYxu3KtaRYQVK9ZPjMM7AejuEQ8mfVF3H9JWBZxtzK5p/MdMxAoOQpwQ3k5TZ5NcQfBKYoSPv5SQHxJUzWV/9RyeCecAWzKH9HSIoFOQ109drSqMW6FjbstZ+XpVn7VGF5lT3MYESnocsFBRk4vXrDAhqPEP/IK0ugj3lap1zOq9Wg+5ryMqGuDs34Teo5cruXSlJNl24h0pM+LWIi9PyWhRhQO997VAkv0PAXAbNt/CYAo60eIHGuqjldrPJx0aA6C3hXpSGOKac2MLjhu/5BsrWh/XpXiqm8FuR5hlUkzfSVqjnUwdJWJ2kLmV+nLMiP1wMCm3btyc3KGLI8mqHcQqIGLQA/4jO0XwAXmIpHjRD6aEW3563aWwu6hOHsaqsm0lYhfHfTr8KDYrI6Ku6UrHYxMrVY9BjePndlJNI1ezgAaC0E9GnBdUl4jc+EP1T9bqZ7Vg83X51FXApjJIWWPUF217pVCCKtJ2oX44iiOD4VAoMyRa5+NPtn8TuCy1j7L/lBVNDbCSKqghZPIFijePmpnlVMLWrEc4La72kF4bfejk4UGSxkQLpg9Yk+U3sCOlFLSLTq5Btd0m8ZqutVXrvALX46UyZHD9UElfJH5DblIqnOYVy0VzGA+CvoYQQX0/EvTBSJyOv3i6sXcGn4k8UdNyfqHbLJK0/Hfp7+C0SX/I5Yf+C3Dyje8VP8XrHVW1U7wwS5eRTMSxGycq21+uXwgPV
+ /1Sk46EZ
+ qWpevW+uK8VSV5Na0rqKhdsNddnK20+yN2GQ+BZw3iyS/AS/ZzCYj+VVldfr5MGUlwoCINwtNk+2BjepdJc+GoNWahemxyHwXZxfb4jpu11W0N9v6GU/2aDNaYqaAE36a08qI9X9MGrXhEgq7mI3kcy5ODLX8tmr2pZbeEbS6SDQLGQbnRf5VganspVByo1NCkZvaGsexFG0T4ASscCSbzcWbP2hC2XdR2Of/cQajMfL6l316i4Kk0f9joZgXlwvW6mrkzLim7INdqeyMgLa84qqHGLUBsqJWrEq8vTC3kS9MdApWFSY1IcfrCviKxdd1lHJTf7KT2PPt1FdfthUAZfIW2xMeqQW+9tEv/l+YfF3MQUPojJhrMNgchgz7WwkF0XAxOnkgkZiBtDC7wRXbmPFIYRcjb4qVQ+sOPd3XW1vUFOrmeXxIii6avPa+EcBNGAHNGxlypJytded9JPTRMPwFMbbCBHZs4+N8Pi+9Tp+wrUH81JdO/2bEh/0N5QFrBwhnh/Aj5Fbs2WKAj94It5hZSMJPPryeHCADJDFjDXdBuYdADrN2rsz/+DCcXJe7DLWZsmpUvLn8WbaUMn3OOBTkcr1Hwr1zPWVH2pcgi/bjjy2NcG/bZqNNjWLSYlE7mlsx/LxxMszUFAPhjBYYAZeHhejJ5VbfmSYz27egZu+ayCAJTlcl7HaagD+BcX3Nuo9AJmmexeJ6icBonPzCi8Vls7ObR9P+HMR8l0Hm9m/TEGpQnSBYqztOhhUvsF+yPLBRTjzWRQio6haFzSfgeS9eha3xr4GVro0PKWu0J1g6dnQ1eBAShCu2BLlGJgZGsuQr1XK1OfDgiEh4HtD0H9A2H1NxiLaHlCPXNcq34fiXzKUerbXA1tMIag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,141 +88,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
 
-[looks more like a question about IO PSI behavior so CCing relevant people]
+This is a note to let you know that I've just added the patch titled
 
-On Tue 17-03-26 15:53:51, Yunzhao Li wrote:
-> On a 384 GB machine with NVMe storage (2x NVMe RAID0, dm-crypt,
-> XFS, kernel 6.12, AMD EPYC 9684X 96-Core), balance_dirty_pages()
-> throttles writers via io_schedule_timeout(), causing 26-40% IO PSI(full).
-> But the throttling doesn't actually drain dirty pages faster.
-> The flusher only submits ~578 MB/s of writeback regardless of
-> whether writers are throttled, and the NVMe device has ample
-> spare capacity (1,044 MB/s benchmarked).
-> 
-> I'd like to understand whether this is expected and what the
-> right approach is.
-> 
-> The setup
-> ---------
-> 
->   dirty_background_ratio=10, dirty_ratio=20 (defaults)
->   dirtyable memory: ~77 GB
->   -> bg_thresh:       10% * 77 GB         =  7.7 GB
->   -> freerun ceiling: (20%+10%)/2 * 77 GB = 11.7 GB
->   -> limit (hard):    20% * 77 GB         = 15.5 GB
-> 
->   Write generation:   ~580 MB/s (HTTP cache miss writes)
->   Flusher drain rate: ~578 MB/s (device can do 1044 MB/s
->                        flusher can't feed it fast enough)
-> 
-> Below freerun, balance_dirty_pages() returns immediately.
-> Between freerun and limit, pos_ratio ramps from 2.0 down to 0
-> via cubic polynomial that tasks sleep proportionally in
-> io_schedule_timeout(). At limit, pos_ratio=0 and all writers
-> block (max 200ms sleep).
-> 
-> Generation ≈ drain, so dirty settles at 10-14 GB — crossing
-> the freerun ceiling into the proportional throttle zone.
-> 
-> The observation
-> ---------------
-> 
->                  throughput  IO PSI full
->   dirty 5-10 GB:  494 MB/s       1.4%
->   dirty >10 GB:   578 MB/s      26.2%
->                   (dirty still accumulating at +2 MB/s)
-> 
->   Peak IO PSI full: 39.5%.
-> 
-> The proportional throttle adds 26% IO PSI (full) but dirty
-> still grows. The flusher is already at its submission ceiling
-> and sleeping writers doesn't help it submit I/O faster.
+    binfmt_misc: restore write access before closing files opened by open_exec()
 
-The throttling of the writers works as it should - the point is to not
-allow writers to dirty more memory than is the configured limit and as your
-data shows that is indeed what the code successfully does. The point of
-throttling is *not* to speed up writeback or anything like that what you
-describe above. You are correct that page writeback using single flush
-worker isn't able to saturate relatively fast storage - that is a
-limitation of current writeback subsystem and is something that is being
-worked on (by allowing more parallel writeback workers) but it isn't IMHO
-substantial for this report.
+to the 6.6-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-I cannot really comment whether IO PSI of 40% is or is not appropriate for
-this situation - I'm deferring that to PSI guys I've CCed.
+The filename of the patch is:
+     binfmt_misc-restore-write-access-before-closing-files-opened-by-open_exec.patch
+and it can be found in the queue-6.6 subdirectory.
 
-> The device is actually starved: writeback-in-flight drops from 6-8 MB
-> (baseline) to 1.8 MB (during throttle), and NVMe QD drops from 45 to 37.
-> The device could drain more if fed more, but the flusher can't feed it
-> faster.
-> 
-> Meanwhile, memory is not scarce:
-> 
->   Dirty:          16 GB
->   Clean file LRU: 57 GB  (instantly reclaimable)
->   Memory PSI:     1-2%
-> 
-> The dirty pages aren't causing memory pressure. 57 GB of clean
-> pages remain available for instant reclaim. The throttle is
-> protecting a resource that isn't scarce, at a cost of 40% IO
-> PSI (full).
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
-The configuration is that no more than 20% of you page cache can be dirty.
-The throttling code just makes sure this is the case. If you configure
-higher limit, that's what throttling code will enforce. However note that
-higher amount of dirty memory is unlikely to increase writeback speed -
-that is likely bottlenecked on CPU overhead of submitting writeback IOs.
-Also note that the limit is set to 20% because dirty memory is not possible
-to reclaim fast (you need to write it back first) and so in case of memory
-pressure the machine can easily trash for quite some time if the dirty
-limits are too high.
 
-> Our workaround plan: dirty_background_ratio=5, dirty_ratio=40.
-> This raises freerun to ~17.5 GB, keeping dirty in freerun.
-> The flusher drains identically. It runs to bg_thresh either
-> way.
-> 
-> Questions
-> ---------
-> 
-> 1. When should balance_dirty_pages() sleep writers? Currently
->    the criterion is "dirty > fraction of dirtyable memory."
->    This doesn't consider whether sleeping actually helps
->    drain dirty faster, or whether the remaining clean pages
->    are sufficient. Should the decision factor in flusher/
->    device saturation or available reclaimable memory?
+From stable+bounces-223166-greg=kroah.com@vger.kernel.org Thu Mar  5 03:35:55 2026
+From: Robert Garcia <rob_garcia@163.com>
+Date: Thu,  5 Mar 2026 10:35:01 +0800
+Subject: binfmt_misc: restore write access before closing files opened by open_exec()
+To: stable@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Robert Garcia <rob_garcia@163.com>, Jan Kara <jack@suse.cz>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>, Lior Ribak <liorribak@gmail.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <20260305023501.4003943-1-rob_garcia@163.com>
 
-I think I've answered this above.
+From: Zilin Guan <zilin@seu.edu.cn>
 
-> 2. Is tuning dirty_ratio to 30-40% the expected approach for
->    high-memory (>256 GB) systems? Documentation doesn't
->    cover this.
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
 
-No, it is actually recommened to set it lower because more dirty memory
-doesn't usually help IO throughput beyond certain amount. But it all
-depends very much on your workload and it's dirtying pattern (how much of
-the page cache gets frequently redirtied).
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
 
-> 3. The freerun ceiling gates entry into the proportional
->    throttle path. Even moderate sleeping shows up as IO PSI
->    (io_schedule_timeout is accounted as IO stall). Dirty
->    never hits the hard limit in our case. It sits in the
->    proportional zone, but cumulative PSI from many tasks
->    sleeping short durations is already 26-40% (full). Should
->    the throttle path be skipped when sleeping cannot help
->    drain?
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
 
-Perhaps bumping PSI when dirty throttling kicks in is not ideal measure
-(because it doesn't necessarily mean the storage itself is maxed out,
-besides flush worker not being able to saturate the storage there can be
-also various block layer controllers arbitrarily throttling background
-writeback) but again I'll let PSI guys to chime in here with their
-opinions.
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/binfmt_misc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -815,8 +815,10 @@ out:
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
+
+
+Patches currently in stable-queue which might be from rob_garcia@163.com are
+
+queue-6.6/rxrpc-fix-recvmsg-unconditional-requeue.patch
+queue-6.6/binfmt_misc-restore-write-access-before-closing-files-opened-by-open_exec.patch
+queue-6.6/f2fs-fix-to-avoid-migrating-empty-section.patch
 
