@@ -4,113 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF10F1075275
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 379B71075273
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E418E6B043A; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
+	id 63BAE6B043D; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF29D6B043C; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
+	id 5EC8B6B043E; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2F9A6B043D; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
+	id 5290A6B043F; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1F136B043A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:36:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9395E1A03F9
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:36:49 +0000 (UTC)
-X-FDA: 84562156938.10.ACDE3F4
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BE85310000A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:36:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GS0N3SU3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AC7C6B043D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:47:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB28D160422
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:47:37 +0000 (UTC)
+X-FDA: 84562184154.04.D0888CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 271DB140006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:47:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QDGvhwgE;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773909407;
+	s=arc-20220608; t=1773910056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IwV7GqDEI38/m1BvpkV5+1r1843ywx8ur1qd4Lt12Bc=;
-	b=mUL1BdW3dg4OXAe9DHGP2dJbitMPssuVpkjYqpX0puzY7p5jZWLrOfm0bUPp4VhaLtvf9s
-	tCTUrOPUM5IHDnd5oWN+/r8ettiADKWUY1Dcsr8gca+by7QgMLnkNbKcWy+HOmdXjNoWde
-	bxx5qwliMGEa/+utkoDLHmPHSPWFPBA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773909407; a=rsa-sha256;
-	cv=none;
-	b=WOZG9rYXpiiI0QPkSfwHA/O9qCa8VRoCDuqfkSfjIrMeDNGzH41dkM7dnzroNbS/dw3b6c
-	+1C5ajojrLl8OBHndKnIa0xV5rmyXYgsirms3uvYSmLFNdOODCiu5mJtwjmZ84Bc5tjkYh
-	KS8TBBmhSjj0W9YR+zJMWyy1OfIDMYA=
+	bh=TfanbqxR+HQ8nv2uowsANH0YHLTtZx7bJohdK38qMoM=;
+	b=SSlVq72nO75tU9UAdhKghJRa5qz1YtsQ6/WlO+dladsR18HWxWVwbBMB3RrkBJWEW/KUGB
+	0SPwYjEZCzeaxUrVAgZkL1vtDSYV4ouc6cPs7PeqNHJAjKTPfhR7MZYHTtp/RRMjIxjire
+	Apsy+y+85JGeUS47z3Nk9Str6Db0lrw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GS0N3SU3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35b97ed057cso465111a91.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:36:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773909406; x=1774514206; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IwV7GqDEI38/m1BvpkV5+1r1843ywx8ur1qd4Lt12Bc=;
-        b=GS0N3SU3+Z3iwA2qTnGJfDiJdol29J9IT0e/1+HcMaGqDzpmwRe1Dqa5PEiFi2aqB4
-         PP75TZwZRs6LAIeG14cVbKPNkBMIwAcC9pM+GwFBy/Xj1bhUCxCzMzA1VmnSlJ7sAGX9
-         SLkaVPAigu1ECCWoBdOXGa9FQqwff6N/9LCH4ju2/otq4oDvC6dsg1EPaDrnZfUcGLVQ
-         jDuktUpKZwYqWRlMEHR3S//jBTEFLd4hYmg/X6PMSMPYGuACk5WQIGF7PXdlAT7Rqzme
-         qRRCUaiLPRMbAVpM8BRHb2aRD2p9mIzpyjGrDf8X4058LNStAma5lXpxBEYjT8gQ08iI
-         s61A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773909406; x=1774514206;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IwV7GqDEI38/m1BvpkV5+1r1843ywx8ur1qd4Lt12Bc=;
-        b=I4FLVx0yQqoT9rQJ3PwVf/izD+Mb/0XZosAgE21wc5TEHEMsTHi0kaI5u8zZ3H/mW+
-         3zwjFKktyDBch9w/c1b310XFlRYkGtqAUf0jmohmvSTEorsS2S9DVRUIXfU9LeKhTopP
-         boVB37t9haSjhrlxlWqujRGraRfLkHZV2xMhs0lhwN4hIsOulceje3ze5aKE9VlyrUUk
-         1jCE3yiwt/GRO6IeMJboK8Dg2+jPGnB7/S/6Qv0QridfwOK8sUOCHxHQLcH3N8EkQ8wE
-         BAh3KqBwRopfZrNVIyeylVYD1eE0rDjQmeb5s/tNfYxePCpFBmvzClo/GhSZSP6OIxUb
-         1THQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8NHlPMZMySY+RyF+4YOJH3twSF+t5ymhDyT3DfAFWZBS848TfYqf/IZaGFYxB/+2ogHeobLQigA==@kvack.org
-X-Gm-Message-State: AOJu0YzvrzYa6q9zTGh34lIu72HmGQnQiZT2dvmrnX7EeSnoTFPql9U2
-	naa1gRFhCF9MqQHY8oiclcls/Cc7RNvqMhdBqIm0n+dsBrxlysySVyZIO2hG3HDS
-X-Gm-Gg: ATEYQzxmsWv6/CWXVe/8Sk5GbkIJh6FT/PwnBr1BYZbtg0gRZL8YWPSwl/Kft/40Hdv
-	I0NhijSKdzzBUlsz6YISQ75PaTGSzoQtBJGUGUNO4V1L0czo47Uqu0OMX8sLWH+01gwD4WqZsHq
-	zsM/jsF9XyT5+zQY66ToMjjIbn79BtfF4Ic0gCjWZbq9VKpr9pNumVIEtCgVvcI6/B6+otTB09q
-	0OJhPEcii9ZwPM8Qg5P7tfSwIIz8p/oaHCnFThvNjI3vvSL21BQCnhOF3yzeDwJ1bNe+wIeRJ1e
-	pSGUYcjR5cR5kfK9NatZbgVOL8ckM0gEvQ3VRsnK2oBUkTYW1hHtxyMqUqcdwix7BioSSTNB6uS
-	2Duel4u1C8v5Wf04RoudYt6Q6+3iRwILggNSVqE55Tqzg13qQXp0BrLagecg2kBQ7P87IzRyO4+
-	ZsdZixFTp+569InjXdvStTyARO1tVhRlDSWRFhnfoS1VcAKIf1WtE=
-X-Received: by 2002:a17:90b:5350:b0:35b:9c97:3d18 with SMTP id 98e67ed59e1d1-35bb9e514c5mr5668061a91.12.1773909406429;
-        Thu, 19 Mar 2026 01:36:46 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bbae5e19asm1695794a91.7.2026.03.19.01.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 01:36:45 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [Question] mm/damon: min_nr_regions constraint and inconsistent error handling
-Date: Thu, 19 Mar 2026 16:36:39 +0800
-Message-ID: <20260319083639.36440-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260319014624.97146-1-sj@kernel.org>
-References: <20260319014624.97146-1-sj@kernel.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QDGvhwgE;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910056; a=rsa-sha256;
+	cv=none;
+	b=C02S/Ee4Cq2hTOc/c//PM/nskLjQpYBx3O6VcszVQLaGIxmVRSziLpPG4xNf4P68xalebv
+	xZ0FbZbWgVwe7p+pcObU7D5cJ9DgONRSa5/v2v3f4zZqiP3sBjv0McZTSWGYqN4t0YOD2t
+	aBdPGTl+a7lpVBiRM+UzGGXYWiZdW0U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E50E44395F;
+	Thu, 19 Mar 2026 08:47:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B52C19424;
+	Thu, 19 Mar 2026 08:47:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773910054;
+	bh=Nqr7vJ2IkEZgCrytTt+nk08H0Nhl6m3l0yrCTDwteoQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QDGvhwgEukyMVeAzviczVkWIfQk6Vc+iDzWS/Y88bIDbDBqRdlR7QNnMrhqUgAiWH
+	 6Qdg3RyxpfXEWq7l97soydy+ZHHTrOCDcMdKsHZ2pIsFNilD66sIC7eoT6ivGSsEx4
+	 gsYF+DV9oGrcMdxGwhvSgN1FtTsQZJ0nVDjgKuXSSQuhFaPRTnvZgv8ulVhJVZTn4p
+	 zVhPCQOmCpp949dpD9QpgH7wgGaXLbWS21qaHClDmffgg7w/pLPl9ENi91ZyLDrUyY
+	 OOTO0R89d10hUbrn5iu64jRCGbtDyguzn7X+6bb0SXHM9mzbmtIn5a5cZvpMCAKRUV
+	 reeIfmkqkPl9A==
+Date: Thu, 19 Mar 2026 08:47:29 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/7] mm: switch THP shrinker to list_lru
+Message-ID: <06625acf-ee08-45ee-bdbf-5a3157df0468@lucifer.local>
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <dc95cd21-8e7e-4903-b337-03f2a39e256e@lucifer.local>
+ <absnshL4E4iXSC1y@cmpxchg.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BE85310000A
-X-Stat-Signature: bfrzrx16sh3epfgcxrna6ipsazced59k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <absnshL4E4iXSC1y@cmpxchg.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 271DB140006
+X-Stat-Signature: d31znqyekkmwoetbzgzu39z7mq9uo8ku
 X-Rspam-User: 
-X-HE-Tag: 1773909407-120204
-X-HE-Meta: U2FsdGVkX1/x1/y/ZhD2RaBWUn8Kr209gRp8jpTx5x48iKLRHHe4USoE9tiC0ZHIFKPeUdiwDlPPHq29wHIN9VO3LNtjTdtkIVWDHF/cc/h16Q2o+l9oVCDlNle/hGTQ2GaExCaAHJKy9oUdHFbLGSaCVCOFUdfzhFl7xIoyNuxAJVPyphpCabXP6TGywpCenEIMVI5sIPjcVQbd7CJ0bDTAKkNuJEzBH3ghhNdbsDSQjc7+5NzRG4fISGFT1kxkXaf8gkmOkMD3dmvLBmxlmR0dOjMm5s5lCsn0K8KRVuOs6GpFoPmgV2LpqN1dLedoh5i27bWz88VkEEbKNVTdFiETn4247PU2F6eMS/QK/pnklyROst+/vzwrEEa+ezZDjWWPT+n/BMoF/G/RPjkIrXEOxguot0z95zVCRdd5d8UvERSMaI8+vIDICdKgfgUxi0DNDPl4fFKZCK3jVJL+s0tLw5D327tqJtotJNPUuZwsrF4InjcqccM0Jlu0lJbxs9+XvWiEhBBATGF3qZUm2Liox1y9kL4g97PwKLWmorop2F7BNGrdQt2Svf2qftcEEaY/JsNbISm/XgqPoqC4AZL8oanSrRuyCHs6xRN3g9cN4y/DoYrXVEsz5KnpZbCcQ5V1F5MFtUKU6ny1rmtla0PLz40ALrOfADgqpnULdd8rD6kbGCZ2wPIffwt2LbJNM5BPsMdhMoXqPuKc3Bx4+xOKh4e78spB1pMJBD5b9caY0RPxtFRzMoDWe1YNfdfE+E6CEoTEnjSY+xoEdpSs/tPk5Em9qIc2lSh4cSs6cIEevwP+TZwRP08qoHxx8czNnR50NWqSzq1Fy6xBrPi6OPEuVYEspEbZ75QGO0c+QpKfxqpiBNi+vBBqEbqxgqnnS7HPmksDu93e8yhqVog8Us4cWJqBt+K8y/3kIQBQu5qihezjDKRxi++lDzjHHw1yMUWIFggG3jUWREkxQM9
- O+FctUAj
- 0QHRIKvI+Q69XNGqIee9XCrSztvDg0bqehPxZ3gTFBbhPftuFxdF2ft64hKU3pBVHvw4GS/y6RHdiNMYevOO+xdne0RSt0PG62fwP8JPmGDqHODInH0D8KVc7mkjpEqOgrqU/dHhHPirQtL9SZQluI9Z3+Tij3+Nx+GfnzguHhaGJJT/NqKI8I5k4ZHUXV9bW8FuUyxqNs77ZwOhzKeM6ifMv+nDc0FzNumFq0tXTWqI7LL9Ut+yb9LQTG5oF8wAGgxmYWa8EXKJkDXW22Wm+Zf+NzoKys2RqIF7RL9IVfXPZfLExTd8qh3xiOcbEDMBiR+PXOpVbnF2RNfajJSp7toHPoXnSR+Kj5I8/2gGCzZ+r3Wariz1d2nTQTmsRfBOZB15YrIVbOK3jVJqwjpojvXkNCOX6MTaHBO76B9H49r/7VWzu+c+PspXpfXwM1SmR5NpyxHQ8sPyijbY+A0dsGFHqoOG4NlHiap1GYw/mpdvE0o1SPjHf0S6deA==
+X-HE-Tag: 1773910055-631759
+X-HE-Meta: U2FsdGVkX18vH03JiK5rvbCtOrfyt591/LBPcbUclNNuvxcxZZQsi85A/QFNpmn/VbE7wunOFHeJ5UksDvC8c5Rpt/AqVuoysOxMFPlgW+o09Jn+d9MK6OEVJaR9NbbWuifwSGBJMpjQRI3ymLGgja50z/apwCArDU/+oZi4+5tzcfiLBx3CYoUfPvOY/+VSf8FDo5vN2mmL7nDmBrVdP578eBycHDhpZwwyCJRTjlQ6apvwP3jlWdyFm4wp8ZMMyAFQ/0RN9AP+kwOMWkkpSd37mEq2l44jGfNssHmMBel+8eVNY6S7Ym+PWeGKtxXh8mp/o6yKP2gUTvfZustwurGsC3TFpbmkyL0LTwFgI5aJ6d83NbDr4G5+RUkWEOehbIJDhA7qYkg56UUWX21EAI/cfnXgnaQbYErwaL48poTQJdaW5tIx5HgRlVB7yyiD+wdyt2nt1uCwC61Q2FJUCA9jh7GxbdyQZPRlIJl6zb5S5mga9nEzrIu5AIcstKg2b9esWZs+hs1259tejEa65V8wgXcwuMkpNrNE/5hk30QQVLNFaSb5jbUEsPbOExph0jRqEnqxgJ4g357ZpR2KsA8mYG+gnpUcPYdM0ltiSHNr2R0It9nlimZXFLSi7qx+tGrBQ+ZuLtGl3dxdGI2BU/9ssAA4kzPPSWLuNCHpML2/7irQZm6BCKJJ3PiK4v/GSrdVxPJF+d1aa4Bif5XIaYAVyzH/SpBQhc6K4mVVoknGO379WFXBzTgv0kEJS/M4Tb/iSaDhzGvdTJQAJw1FyAo+jM0bkTceSHXNM5ksj4eWoSbukw0KGFg8CF6wuyl6lnzx7YnpBNSCh4eLrts/fVXeAnb/WYzUWVdGiRQo7v9g3ASJa8DVVb694Q2LXqCa45www+WgCJiBatc8gjJcpVa9HVdT+miysKQpQ+seCIukJk2C2AYMhxGNISRhIcpPnOFL87YYCxX1lxyf1TM
+ Lm8Vn4C8
+ F+2F7/EJYQBjoaRwYLczoOWCCS8KNDemlL07wvLYhC5oqsxeDbefYDIJI8gcokCmIFMDXM5sYNrRRNbgXXwB22ybGykwo4C6Voe/PzPuYB2oyvpzjaQEPybKiQQwBKzlb94B7W8sWe5dk0iZw9ZJTZTWREopsmgOy7iJUUjHcHq6Kqgf/QGMl5vqXz0XkTC/y8NojBmkW3jb/5J5eqh0K2ufYyvoUGhdEuOnG0X7AOlbX4Yk2YTEb+87xfKsYdxMZTrKU3Uuruh7cwc7GMfSFKXivvPDRApzg+YjeswUV3zD5+oucJoH+c+FJoIYqQ2TUGDdsKxRaz4kWG8UhLubD0pSDd76IZXtWNf/OloN06ne1r5QJIFM1NQuKHbMwBPwbuUzp5v1vSH1J08p8lok1OLFMQaa1lbZrVMNigeELed1tEd0sIQrI9Bwz7bXYm1sR4qhw4nW8FS0/5i7D284uJ9UOeSvKUiPV6NSmCbagRpr/PmmpX4fjH17vig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,84 +96,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 9:46 AM SeongJae Park <sj@kernel.org> wrote:
+On Wed, Mar 18, 2026 at 06:31:14PM -0400, Johannes Weiner wrote:
+> On Wed, Mar 18, 2026 at 09:00:57PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > Hi Joannes,
+> >
+> > This is at v3 and you've not cc'd the majority of THP people:
+> >
+> > MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> > M:	Andrew Morton <akpm@linux-foundation.org>
+> > M:	David Hildenbrand <david@kernel.org>
+> > M:	Lorenzo Stoakes <ljs@kernel.org>            <--- (!)
+> > R:	Zi Yan <ziy@nvidia.com>
+> > R:	Baolin Wang <baolin.wang@linux.alibaba.com> <---
+> > R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> > R:	Nico Pache <npache@redhat.com>              <---
+> > R:	Ryan Roberts <ryan.roberts@arm.com>         <---
+> > R:	Dev Jain <dev.jain@arm.com>                 <---
+> > R:	Barry Song <baohua@kernel.org>              <---
+> > R:	Lance Yang <lance.yang@linux.dev>           <---
+> >
+> > I'd assume it was an oversight but you're an mm sub-maintainer yourself so
+> > I'm a little surprised...
+> >
+> > Anyway could you please make sure to do that going forward?
+> >
+> > I'd like to rely on lei's file-tracking stuff to catch cases like this, but
+> > I just haven't got new mail tracking working properly in that environment
+> > and it's really too slow.
+> >
+> > It sucks to rely on people cc-ing but email development is what it is :)
+> >
+> > Thanks, Lorenzo
+>
+> I apologize, there was no ill intent here at all. get_maintainers.pl
+> gave me 27 addresses for this series and I honestly thought that was
+> too aggrandizing and self-important for what these patches are lol.
 
-> Hi Liew,
+Thanks, yeah email for development is a complete pain to be honest!
 
-Hi SeongJae,
+I wouldn't say that the cc list in any way would be perceived as
+self-aggrandizing, I mean some of the trivial stuff I've sent to larger cc
+lists :P
 
-> The initial version of DAMON was supporting only 'vaddr' operation set.  And
-> 'vaddr' is designed to have at least three regions, for the two large unmapped
-> areas on normal virtual address spaces.  Hence we enforced min_nr_regions to be
-> three or larger.
+But I get your point, it's a kind of impossible balancing act :)
 
-Thanks for your explanation! It makes perfect sense.
+>
+> So what you're looking at is a (poor) attempt at trimming down the CC
+> list based on who I had talked to about these patches at the THP
+> meeting and who I remember had worked on shrinkers & cgroups.
+>
+> I can CC everybody going forward, not a problem. Personally I don't
+> mind getting CCd generously, but my understanding is that some people
+> do...
 
-> Yes, I think this is a nice idea.  Maybe adding a comment on damon_set_attrs(),
-> or additional sentences to 'Monitoring' section of design.rst [2] would be
-> appropriate.
+Yeah I have often sent series where the list felt... egregiously huge, but
+I _generally_ treat it as - people are used to getting tonnes of mail - so
+some more shouldn't hurt.
 
-Agreed. I will try to figure out which method is better, and I might
-send out a patch in the near future.
+I mean in [0] for example I really cringed at sending a 23 patch series
+that is super super mm-centric and really just updating how we manage VMA
+flags (trying to get away from system word size flags) - to a trillion
+people.
 
-> I'd like to be cautious about adding logging, as it might be a spam.  I'd
-> prefer making it documented well.  Then, users could find what is wrong.
+TL;DR - anyway, I think get_maintainer.pl --nogit (and trim anyone who
+isn't listed as a maintainer or reviewer) is the right balance to take -
+maintainers with screwed up email set ups (*cough* naming no names
+beginning with L and ending with orenzo) and reviewers who have signed up
+for lots of mail I think are totally fine to always send to.
 
-I see. I understand your concern about log spam, I will focus on
-documentation.
+And of course +cc anybody else you feel appropriate.
 
-> I believe the above command should returned an error.  If not, please let me
-> know.
+The 'git' maintainers entries can absolutely be dropped though, unless
+you're explicitly say radically changing something somebody contributed and
+it makes sense to include them though all that's subjective!
 
-I re-tested it on v7.0-rc4 and it did NOT return any error when writing
-'Y' to 'commit_inputs' with an invalid 'min_nr_regions=1'.
+Cheers, Lorenzo
 
-This might be unintended. Here is the full log of my session:
-
-    [root@virtme-ng x86_64]# cd /sys/module/damon_lru_sort/parameters/
-    [root@virtme-ng parameters]# cat enabled 
-    N
-    [root@virtme-ng parameters]# echo 65535 > max_nr_regions
-    [root@virtme-ng parameters]# echo 3 > min_nr_regions 
-    [root@virtme-ng parameters]# echo Y > enabled 
-    [root@virtme-ng parameters]# cat kdamond_pid 
-    89
-    [root@virtme-ng parameters]# echo 1 > min_nr_regions 
-    [root@virtme-ng parameters]# echo Y > commit_inputs 
-    [root@virtme-ng parameters]# cat kdamond_pid 
-    89
-    [root@virtme-ng parameters]# cat enabled 
-    Y
-    [root@virtme-ng parameters]# ps aux | rg "kdamond" | rg -v "rg"
-    root        89  0.0  0.0      0     0 ?        I    10:15   0:00 [kdamond.0]
-
-> Also, if you know users who depend on the old behavior and therefore hoping the
-> old behavior back, please let me know.
-
-I don't know of anyone who depends on the old behavior.
-I am a student exploring the kernel (DAMON) as a hobby, so my
-perspective is limited to individual research rather than large-scale
-production environments. However, the current behavior (staying alive
-with valid params) feels much more sensible to me. But it should return
-an error when 'commit_inputs=Y'.
-
----
-
-Plan
-====
-Based on our discussion, my current plan is to:
-1. Document the 'min_nr_regions' constraint in admin-guide.
-2. Add the design rationale for the "at least 3 regions" rule in
-   design.rst.
-3. Remove the outdated sentences claiming DAMON will disable itself on
-   invalid parameters input.
-4. Investigate and try to fix the missing error return for
-   'commit_inputs'.
-
-Does this plan cover everything you'd expect?
-
-Best regards,
-Rui Yan
-
-[...]
+[0]:https://lore.kernel.org/linux-mm/cover.1773846935.git.ljs@kernel.org/
 
