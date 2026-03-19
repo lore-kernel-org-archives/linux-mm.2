@@ -4,117 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC1341091900
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:39:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E71851091901
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:39:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 250AE6B0572; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
+	id 5D3506B0574; Thu, 19 Mar 2026 13:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2291F6B0574; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
+	id 583FA6B0576; Thu, 19 Mar 2026 13:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 166836B0575; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
+	id 473A46B0577; Thu, 19 Mar 2026 13:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 044E16B0572
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:39:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB0AFC22FA
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:23 +0000 (UTC)
-X-FDA: 84563524206.10.E0E5D2B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D8310180003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NNIHQMpw;
-	spf=pass (imf24.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773941961;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 372486B0574
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:39:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC9865A115
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:37 +0000 (UTC)
+X-FDA: 84563524794.12.B14A0CA
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012057.outbound.protection.outlook.com [52.101.53.57])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4332E4000E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Pmi2h+2R;
+	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773941975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y8AJoJFhemnk1DLT2xYvQamPJ/h63aubGqhq+ZDBiKQ=;
-	b=HAZcRQ0d864c/NwOnsrM/C3YYidhnUlw9FW9+ePyrM6BtjP0gMmlSYWkzCS4E4Axo5JCh2
-	KaAbrv64W34hl4Fy6BjMW7G2Xrf+er1sbpWCILq6MGQo+StL3ahA+KiLd7Ezq6CcGJ1wBF
-	7XSsiWAM7AsMeBk0NB/TwKqLizw0kJM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941961; a=rsa-sha256;
-	cv=none;
-	b=8qYnV+HerAT2qq4NUH/6BJvqbZfjukFCQfv3t6XctJWtIWa15co82ZX9qMlAtQSpGcrVnG
-	1ExYmDo8T0GpFYWAnlVbsv6SHetZ/Hcf9d7kKxcsJG5POxfF4p9K3A5RBuanWVDFoISLOR
-	mbrSYSFq2Mf2/ZOBA6kK1b34X7oOsbY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NNIHQMpw;
-	spf=pass (imf24.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773941961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y8AJoJFhemnk1DLT2xYvQamPJ/h63aubGqhq+ZDBiKQ=;
-	b=NNIHQMpwi0+X4mm1Q9oh8DV+ZUaJCtd5hbyPaFbK9dT0b34j0GbWrt6PWAQMVgX+wemJnp
-	huOAQH6k2ZtNSMmyUrAjUN3HBqy8klh/BBifdkBZoX2O4bAI1ouFx98TfDug4Xjke2QQg8
-	GzkGv3aABF4gj1hNoBE4ZY8Jzlma8n4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-N4MyzdgGOh-xRtock0apmA-1; Thu,
- 19 Mar 2026 13:39:15 -0400
-X-MC-Unique: N4MyzdgGOh-xRtock0apmA-1
-X-Mimecast-MFC-AGG-ID: N4MyzdgGOh-xRtock0apmA_1773941953
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D731818005BB;
-	Thu, 19 Mar 2026 17:39:12 +0000 (UTC)
-Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.80.194])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A7CE330001A1;
-	Thu, 19 Mar 2026 17:39:09 +0000 (UTC)
-From: Waiman Long <longman@redhat.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Sebastian Chlad <sebastianchlad@gmail.com>,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>,
-	Li Wang <liwan@redhat.com>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 7/7] selftests: memcg: Treat failure for zeroing sock in test_memcg_sock as XFAIL
-Date: Thu, 19 Mar 2026 13:37:52 -0400
-Message-ID: <20260319173752.1472864-8-longman@redhat.com>
-In-Reply-To: <20260319173752.1472864-1-longman@redhat.com>
-References: <20260319173752.1472864-1-longman@redhat.com>
+	bh=aB5GogGh1k8EhzujYNB3nBYa5yAvqU1upagpxS07e84=;
+	b=PohjiXGIbabspXBQfRwXVc5caXIjA/utMP0N7JgBdwYOEoLLIkGjq+0tzhBZjMZGEIvN5a
+	2onBdAK1jYhKtJ+eFRSaf9KwnyEDuDqSBjFF9izaBjKeRTqGbrIHLAV1G5Y4O/wydocFX4
+	wb3BzwLv4vY2wEpWP4enPakloZcIa+A=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Pmi2h+2R;
+	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773941975; a=rsa-sha256;
+	cv=pass;
+	b=A2iPGZigKnmHiRRj07z29ELQ53QSo0btR1Uv++fC+QJAx8lyu6hpPD2JDL3yNYEqCB0RdG
+	IWlzTPWiI8apmhI/13dGWo+0BWfr8CSH5YL8M0I8Z2ZMJ5mdBuIlbr1FlJpbTQMLNBBB78
+	E4M50+015hyEQrj+SkRnx421d/31368=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vi59yFMEVH/M2SwOJ5pLShp2RzzCQqxgjT9xxR97vN/jBxSqVPpElzycsg6VsOgNZLCV30+Ch6Twx4qWZm8DLGl0aamd6wYRaXuKZ2CIyEARvd4G8wwxo88YOZjQbUANzkXV8hTNR+AFtJxxWIMNqyszkmT34q2/2HVU3OfFbmiG+oFKg4/hs+LZUlAqurD0TdJrrI/2zNUc3ih7f8PrAlPHLSy8ES2D3PEwBRg89KZCc+O25eSyo4UIUtUUXNz8EFAKqh+bTBAt5NRlnGjlnMir3HhVBiwIjMDEoHBiBeD9834llGmI5K//wxRlWExMUrwlJuIUPzI9pwO7bHxdaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aB5GogGh1k8EhzujYNB3nBYa5yAvqU1upagpxS07e84=;
+ b=UMSKzS/S0OdYBq6Fh3vnF3lQQ7J/6WE89oVqgSORmmH75GPHqaAnvY5923IjkJcG+Y5yHlVGC4ebCzWYDPpIGdHbEcIAKuS6of+iX0oBvfYV5dPWZ2rlLlDDKfORSpO5SsWVfRyAU7nRav+ZYPEWRydBh2MAzHjtLV5G+ckIT5i8W6FI4RXjqQW4XwIxF9xAvzE8zViuKJlDhDxB791zHMBmFIoLdvF87/ooqjSKnQW+/uQWor+tADNq+I8VpaxYC9K/Q+bxTmK+4hSthzHYM1gzkGenixer7fHxYIyv2Td6GSpH6AMrdFjLZAjwCW1GBLFoeBE3KS9lZRqzwnYW9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aB5GogGh1k8EhzujYNB3nBYa5yAvqU1upagpxS07e84=;
+ b=Pmi2h+2R4bL+gXhXWe+WYqUom+EY3tw2Lr3wDO6EQFyl/OuWI09xKWKtWBzLeBMFMrmANwfryZBuUJgVvpFqxctmqH0g39uLCBO4kXp390nZxdmxrnUIJKORJexyq4ymWFGvUB0X59GmD9ISb9s1EMqB5HkWToSO70y3w/7LQt3I/2HDBfiUgu+Qyps+B57DI76o6Xj6KvwtsybWGxCZSVHpWjwLN5CkkDjhLQHYQk/24xNEpxnXWAcBajVe+lAoYazw50X6UgcnMVTtppFgvbQ3ws6SXAI8Efe/JK2D+7sSiLOVtuiLn1oIs1nO4DTPMifTiyDhO1K1RomluQp8/w==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MN6PR12MB8492.namprd12.prod.outlook.com (2603:10b6:208:472::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.10; Thu, 19 Mar
+ 2026 17:39:28 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9723.016; Thu, 19 Mar 2026
+ 17:39:27 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-mm@kvack.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 2/2] mm: introduce CONFIG_NUMA_MIGRATION and simplify
+ CONFIG_MIGRATION
+Date: Thu, 19 Mar 2026 13:39:09 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <42DD15DD-9BBD-4A65-AF76-ADEC557AF416@nvidia.com>
+In-Reply-To: <20260319-config_migration-v1-2-42270124966f@kernel.org>
+References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
+ <20260319-config_migration-v1-2-42270124966f@kernel.org>
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0195.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::20) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: -p-mgDVw8unbmoBe9Tki18QnPr9pHOAfbKKj7iupSZg_1773941953
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MN6PR12MB8492:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0502396-98c1-4ef0-1268-08de85de77e2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	6zpuQDdvB1yW5aeBK6CMilMeUWX+MZEI23Azc7ADxTbRYVlt0jdXU2/iWZkOHsOhNTkfmsj/Pz1ZDZPlfc0iEsxu5w17NGo+ClqwXFx9SVzQbi/ZyelNLxWqJNxu8+ia2bzVsIiRUuN4Zsqygz31alQUak/HhUtM8qvve55/9QEynVnnBtIjtUnIQ5S4FsPK5Tw/0/p5hxvuvktYJoJjRjqroyVblb2lQCBIJL0PnNZfyUKb0icZxokVknj5YaMMgCUKCdoRsNU3x7NArGHi60eC2Wn0BkUlKltLefSlu9qQrEfxjnm3R5ECHWMN0ON4UHmzf5UOGKYc6Ac78wjT2xmNvXCuyqsfAaHB4iO0zfFkTI/L9TSaCbxW3F5R3hBu7Ij6hXoCWmA3mD2YjmlncW1JD+aog3pEcQ1Qc5G1ULV4Rk7tFHhGdBDdZbqCsn37SBkOyT3mOfQfaD9wBNsqemYJr8Zll9S7bTeAc5ld1v85PVyltdBw1YT+TcTgIDYnZN4BPmg2jyVfMSPfmvrDPEoNNzH/b0E4TS03xqSU0yLcK+sks6AlAokeYUh7Wna0vpHV6+EUJX38LiBnrhCuSXNisDFGHK6mOIXfoMKwPGPY5Xo7S88q3ggACHqPSrrvyrLhELG6UG5cEZ5hgH0qwvUaVaRyR+lwke2rvYWO/ibS85geAjv1/MAeThyue1YKAQzyrVJiNDQpKsz7rlCffKSY/SoBxIBrTBCBC3L6AlM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vj9d5CzGm35TZS7phsBOH9ToJaEfiHH4LywbKDYhJZTbaTySmMsuDPzNUhzK?=
+ =?us-ascii?Q?oAFwHuOI+Ztv03gHlg48EyZuvJLj/mz1nub/RfOq1lUXsSEKj9hduQE8yWI/?=
+ =?us-ascii?Q?IjYO4hvJ3rt7lWuQQH3tQzHbFi9xVj2qtFBXKB1vTz2At0qAtU7dZE3A0N3O?=
+ =?us-ascii?Q?iCednXSWsP9+iaUcdgpaw0waY68MImPo3uTB4obu3L8BhB/5fi8md/Vbnyef?=
+ =?us-ascii?Q?4knvBT+9Js7TpPT4dfPm7wIQySLkzdNgq7a3NIwb2mDN2tPTbtUh9/Qe5OJv?=
+ =?us-ascii?Q?eKlSCCxq/vMKsdaIMXNV4QDrOJoYHsoHfNtUdfKiTYyb+PUhz40Vomb4/zwi?=
+ =?us-ascii?Q?IhvfUx8tmUgw4xPKM78cs389hCFLkFln3Kv86g0Pe3mzSo+n5BsrPEc3GU2B?=
+ =?us-ascii?Q?kAT05PAO16Q1lokEqTT93EPc6brALo66QXIOFze4Ur5waDmGPtU4Jn4IKh3a?=
+ =?us-ascii?Q?Axpjpf0R38hE6wzs214bYC/6TMUuYgBp4+3nfLbJ7YdxrmDPtysVvBg4gWmG?=
+ =?us-ascii?Q?ZfELIfN3bJ7HCjnGqmqhiFhLwWNFTUjDjMjukvGGau+4Xl44lw8xSCuWCK6E?=
+ =?us-ascii?Q?iuxjAQetqbNGBputFf3LxaU0Y4ULoOpnYP5bsDe4pB902bWxL3AiXhEM3gPR?=
+ =?us-ascii?Q?/vpID0coqkd6s7sOV2DqHvrGr3RDIBHlUWsCcYtJI40JSKm8+hTkTsOkmYzW?=
+ =?us-ascii?Q?QB/21f4nyCEirmsnG8LXpwnO3JFjI9aKfEhKgsql+PjQxiIxlOHqbRvv5BD6?=
+ =?us-ascii?Q?9acCowf7ECQ7OelkI4MwTIwJqutNNp2FKz6xheG4DWzruCSbYaC82R9bkeTC?=
+ =?us-ascii?Q?NvXXan7AYVHW/Nf3ZXPT6q6olEDzsww6q55lmjiTjCvIMxnUkQaSYJVLKhdr?=
+ =?us-ascii?Q?7t/n0qCH1CV5DP75EFwpYt2axcp0bIX3AtbBG9/qxQiIXo4Zy1vQQ//dkP/h?=
+ =?us-ascii?Q?Su7BCXI9kC0iw9BPE9tV1bj2BQlrSfCVygG8Tj/3TgTydyhiJLtj5VtUL//8?=
+ =?us-ascii?Q?9H+mz4vLgb0N3xIxHWIz6v4tebv0FVLnKDqXoZc1pqgllcA/T25yrCzbTkoR?=
+ =?us-ascii?Q?sytPhUZ3NEXJ5ikfKfX2vy6gZAguumY0uFwe8LzfN2zeHxDYU56viiVilvnw?=
+ =?us-ascii?Q?V7GOnGVAI/u3RNbXmlWgFaB0fYXj9xxaYaZILG5Cx6tpIKJooKD49hYvKdBl?=
+ =?us-ascii?Q?hLBCS3gTECJPUy7rWVsrN5wBAmJY3UUpapYVt98qkGpyRG4S4E+JKWMMBBNx?=
+ =?us-ascii?Q?0hfEu51DzXex7SzPXOfE40pYswLGVtZXeClEQiBt45rqJoqoFx3IuQ+mYWD5?=
+ =?us-ascii?Q?Cd7g9w+BB2Bj5GU4FHljtuLNEk620uIyd8VnyUhBt5FxdB+JD8LVjeDgmjZk?=
+ =?us-ascii?Q?MIexwmeCYX/6i9NuveB8eeLhiWDxMqhvwWOxJxiKu4NVA1EZ0Dt4zaU9vOlh?=
+ =?us-ascii?Q?70fEO1DHD0Pp4wkdS6gUG6nk1nz1ulROlBkjm5gPXG7WS3W0nsrPrFdnW4nu?=
+ =?us-ascii?Q?rzE1hDPzYtQWycctvpE792g1OMuZPzLT0oBBsF67KhuoZjxjdygPyZNgIyvI?=
+ =?us-ascii?Q?j7DNxRSswiaOGK9Ej8BQHnkS1itK1px6KTSHWepaJ+gP0GU3P9wsyaxwMy4u?=
+ =?us-ascii?Q?1TY7M4+SWzSwIFMa+cr5Xe+xEghup+O5hHYlKZ5jVtnjOcmmKJk3CIoBZWIc?=
+ =?us-ascii?Q?Xv/R2ZlZb5jKOly5J8p93rFUKxKtvwnJ7vwkwijsyz9T0fgo8PrdBbCP+PCM?=
+ =?us-ascii?Q?LBQ89XNO7A=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0502396-98c1-4ef0-1268-08de85de77e2
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 17:39:27.5656
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6oxJGO1GyFY/VC09tZfgCWYbo2sjSkrQX0km0hP5BMVjAEeVPC9sBwnuOH3jLky8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8492
+X-Rspamd-Queue-Id: 4332E4000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: rwgtocgt99ana7646aebc81gh83n4nmh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D8310180003
-X-Stat-Signature: 76jhorup36fnzbeos6hb6oy3c4poufo3
-X-HE-Tag: 1773941961-20959
-X-HE-Meta: U2FsdGVkX18ODa7zmJHkezZULrvUk871pfnP+6brpq/pKIlaq9h1iHURX0p/uQ2VfxKpiqFWlMapAoJjQ487D+qFVf+nlMLxNUrKozbhVtSAS6mfGldDv2XFKo8oMvRqmKj59JV2gj8ulrajaC9lGXpxWZgIOay2pvCwdildO+jyiCw2D7iPiBJXwDYB4As4ABDR/D2Ub7ZCBWdU3iF92d8BpCP7AGRD7iDXDOo1m8jvQ2l9H3Ik5l50ZQHDZnIjIAMATi7QG5FCr5puuPRX+mxFAT/Q9bx1V8m/g2AEuOJHuCsCBhO9iVafRGCALaecbuTHScs6Jxz3TL9clhMbYF7RmRM2LDKTH8VqyBrhLJ+BMLBEk6YsQcmr2xla5kSFn8wwt3EsE7G659aS+v5+/ltY1BOaJM/SGX6bW41JTlQKSwNNQBTAhjkhf2tEyFYjGfwTCwYMen6aA8KJ6Soz/xLzGFZkHGhKqLGd1xLZIx2R6SynqkQ21aEBAMvwCIeJJomycOgtM6PcJ02F5bZVJbshvKqHGxlcvkZTLkb8lZ3zNodBdLLMHmaSdvCKm5+TXBIUuT/ijC7S+iJbd7qZS9Dt2HD6vXSpgS3P3zGeZRbKXqmHF4HC8euSiQpkYUt+MTxPchK9IQwBHM5BGa9BtT0KOnjamizD5j8dh550WbIA/QIVe5+Ok7w4R5eTnod4nqkF0a9iWCcUufph35RhrhqsAyOHyKeO6a1cQJpCxaxys+AIu1SFTtiF53FKlAk0svDneexWlpij4IfA5WKghQ1WoUPoTEdHdD3lFJegYKYLs6dU+HDt2j+APycNxyiIkwhNPAoN61UrQBDYwha3yTZYwJTVLeeGhxUIhuo5SZS+Aq9i4rk5LXW7C1HyhSOZgOiB/GvDwMEAKdtfcO5qGgSUVGc2jRu9wxIZlTwJMJuE5Xcef3f4rmF+whTLSKMD+vhThEt34SK25HoQYlZ
- FzBMsjWG
- VZdwlZcWxDRNSb0+hP4JsnHb733d7TqthZhchOanZL+aQ4troeVMA/6j7q67mEE5/6bCzqoP23Lc4Mv2rxtZGJo+F3zhEg5jm2eF/n0WppD+ov2/DjZ5FoDGyLq4za2AV0DCGSE/AFBs8BGnBSS5dO5QOvnXmlQME04ejw18obcToKzFxqDp2xYNZA73Y60ZyWClxroe21RuZnKN15ryI3OPPZ6DXJQ4Y7e1yiCJDVrH3z9wn4dKW6sljDPsppZCKdVlCs9WDRufNrYx0NhWBtOb45LuH+zDQzlep2tU2kbZxhCN2sVcUWNkuvv5u0y0G8r/hLR9g98kbNi07IiCjJNXSNnLUIRvpRJTeJ3TPT/G1KQDbAJ3tRNm9ItWExvfkFD87Wz1JmdBZAAA=
+X-HE-Tag: 1773941975-238558
+X-HE-Meta: U2FsdGVkX1+cRO64GgGZWSbi6O6+Pb1SfUMLCZZ7HN8+rSqU1ICcwF3Vi6nUcRxukxLPLTSS09jcSepck/UlGIM/yWJelVu2o3xD6WTyh04YShCFovf1CQKOHu1KuXysLZe+0Yi0/MDFZd1DWBVbo7YgCRuPvRv6zev7J0X6stuhs9glGZA9RHR5G0IguCakfZsQePK2939ya++6tTxFFIZSy8/t4jmzVDBkW4BIW5JcPu5YOZL31CgvHNQfD+X0ed27XaOyA5Fwn+s3PB4Z1fbgqPtgwd9X3aMEBCvW9Z6Ko80pgkrlIQq7E2Dz6nmptmUKDv+0TcDu8WuQ7d7aAQ5S1xqC/fcTamDMVHvdJfH9Sun8u0pCAqMFIttnzKtmj+4dFCxC0pzzcsiTuue9CegSvsEUR6ea6hdNA4v74TJEryqvlxvlwQJKonMCyf8iduQdD9vTFSi0lfyPGlKYrq/qPldp659sYkP3h/yjSNijFQDhO19Nr4td6+z/Ddga2HfVrVadmQNTumUQcO4Ln9ChVs7lXLnVLn/SdrFusOLuN0NtCnOO/wQVM8KMgUqtCU6TPUP8tatJhkDalNzjgY3ERjAQA9ldMMp60/Y03o8jrc+VFeEPKcK5g3cZ5j+Ndf94SmZoWManrfRG/04EAFQxgk4+mE2RDyn20HPfL3JyodS4EV/7Py733Z5AGC8EgQ4wEhpFHxq/uBBN4qRtKq595OUYOd/ywYZ+J/7jWQAzS6NPSot87Clhuaw/rMeYFKrquC6gosaT2WISrj4R/BwPFGouUkLPJSSNZupy9qtaJ0z9+7FwonYe8gPXH0gGKfvjGKKFHNvQg8MpSEkzS6AS7/wnL3/eBl4bfPo1VpgGDXtnS+PO8vEm7Y3rZfzfFx+r9L544Uuqzw3IHC4N7jqN16gM34s4RkGEvxdKcgs5V6c0JjvKxtitDbMFEvbwluc5y1wzSo4WKjT3S19
+ CBay2rUU
+ lJUnMBJYVTYlvWdYDi3FCwv2J71GwQLAuiUVfg5qW13OWNE6NUxfK1GSiwJYKlOnWS9kW8Q3XXUcM0jAhCxJRMdFI+BCG1gyN4x7JFtReVAyWQOWCqer9O3T9VBDhGfBLePOH+2eUP8WYoT0uU66Dm/Cn29ojiQkVF4f2WNAqujuCbI6KQyd5y3Qk6rete6S6UVj+gH66kgL1Z90FpLPlXJHuS/TUOLE87r3orBWIZPRClqVERZWKWmNQYs6v4qIEh3cLYxSxnKOGvWQZ0nw7HnSliytrOU7t29I8biYclFi6pl/9GcOwZgHA9AFvM5/KHnk6JI7WP+VMKQfHE+oreX/WB0rn+xpTyoKBCc96X4ftfrYQdSIBhA6rSNi1mN2HiVbL+/8YmAdafmkzzlNRngmgpbccdsrR5zy1o7WMcD3rfzobwxBksG0x7jqI5ha45XGWvv1EUpbn2OkmnyKC1U08jNYh78IpY42XRL9G9UyhHQs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,59 +187,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Although there is supposed to be a periodic and asynchronous flush of
-stats every 2 seconds, the actual time lag between succesive runs can
-actually vary quite a bit. In fact, I have seen time lag of up to 10s
-of seconds in some cases.
+On 19 Mar 2026, at 4:19, David Hildenbrand (Arm) wrote:
 
-At the end of test_memcg_sock, it waits up to 3 seconds for the
-"sock" attribute of memory.stat to go back down to 0. Obviously it
-may occasionally fail especially when the kernel has large page size
-(e.g. 64k). Treat this failure as an expected failure (XFAIL) to
-distinguish it from the other failure cases.
+> CONFIG_MEMORY_HOTREMOVE, CONFIG_COMPACTION and CONFIG_CMA all select
+> CONFIG_MIGRATION, because they require it to work (users).
+>
+> Only CONFIG_NUMA_BALANCING and CONFIG_BALLOON_MIGRATION depend on
+> CONFIG_MIGRATION. CONFIG_BALLOON_MIGRATION is not an actual user, but
+> an implementation of migration support, so the dependency is correct
+> (CONFIG_BALLOON_MIGRATION does not make any sense without
+> CONFIG_MIGRATION).
+>
+> However, kconfig-language.rst  clearly states "In general use select only
+> for non-visible symbols". So far CONFIG_MIGRATION is user-visible ...
+> and the dependencies rather confusing.
+>
+> The whole reason why CONFIG_MIGRATION is user-visible is because of
+> CONFIG_NUMA: some users might want CONFIG_NUMA but not page migration
+> support.
+>
+> Let's clean all that up by introducing a dedicated CONFIG_NUMA_MIGRATION
+> config option for that purpose only. Make CONFIG_NUMA_BALANCING that so
+> far depended on CONFIG_NUMA && CONFIG_MIGRATION to depend on
+> CONFIG_MIGRATION instead. CONFIG_NUMA_MIGRATION will depend on
+> CONFIG_NUMA && CONFIG_MMU.
+>
+> CONFIG_NUMA_MIGRATION is user-visible and will default to "y". We
+> use that default so new configs will automatically enable it, just
+> like it was the case with CONFIG_MIGRATION. The downside is that
+> some configs that used to have CONFIG_MIGRATION=n might get it
+> re-enabled by CONFIG_NUMA_MIGRATION=y, which shouldn't be a problem.
+>
+> CONFIG_MIGRATION is now a non-visible config option. Any code that
+> select CONFIG_MIGRATION (as before) must depend directly or indirectly
+> on CONFIG_MMU.
+>
+> CONFIG_NUMA_MIGRATION is responsible for any NUMA migration code, which is
+> mempolicy migration code, memory-tiering code, and move_pages() code in
+> migrate.c. CONFIG_NUMA_BALANCING uses its functionality.
+>
+> Note that this implies that with CONFIG_NUMA_MIGRATION=n, move_pages() will
+> not be available even though CONFIG_MIGRATION=y, which is an expected
+> change.
+>
+> In migrate.c, we can remove the CONFIG_NUMA check as both
+> CONFIG_NUMA_MIGRATION and CONFIG_NUMA_BALANCING depend on it.
+>
+> With this change, CONFIG_MIGRATION is an internal config, all users of
+> migration selects CONFIG_MIGRATION, and only CONFIG_BALLOON_MIGRATION
+> depends on it.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/memory-tiers.h |  2 +-
+>  init/Kconfig                 |  2 +-
+>  mm/Kconfig                   | 26 +++++++++++++-------------
+>  mm/memory-tiers.c            | 12 ++++++------
+>  mm/mempolicy.c               |  2 +-
+>  mm/migrate.c                 |  5 ++---
+>  6 files changed, 24 insertions(+), 25 deletions(-)
+>
+LGTM.
 
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- tools/testing/selftests/cgroup/test_memcontrol.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 0ef09bafa68c..9206da51ac83 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1486,12 +1486,20 @@ static int test_memcg_sock(const char *root)
- 	 * Poll memory.stat for up to 3 seconds (~FLUSH_TIME plus some
- 	 * scheduling slack) and require that the "sock " counter
- 	 * eventually drops to zero.
-+	 *
-+	 * The actual run-to-run elapse time between consecutive run
-+	 * of asynchronous memcg rstat flush may varies quite a bit.
-+	 * So the 3 seconds wait time may not be enough for the "sock"
-+	 * counter to go down to 0. Treat it as a XFAIL instead of
-+	 * a FAIL.
- 	 */
- 	sock_post = cg_read_key_long_poll(memcg, "memory.stat", "sock ", 0,
- 					 MEMCG_SOCKSTAT_WAIT_RETRIES,
- 					 DEFAULT_WAIT_INTERVAL_US);
--	if (sock_post)
-+	if (sock_post) {
-+		ret = KSFT_XFAIL;
- 		goto cleanup;
-+	}
- 
- 	ret = KSFT_PASS;
- 
-@@ -1753,6 +1761,9 @@ int main(int argc, char **argv)
- 		case KSFT_SKIP:
- 			ksft_test_result_skip("%s\n", tests[i].name);
- 			break;
-+		case KSFT_XFAIL:
-+			ksft_test_result_xfail("%s\n", tests[i].name);
-+			break;
- 		default:
- 			ksft_test_result_fail("%s\n", tests[i].name);
- 			break;
--- 
-2.53.0
-
+Best Regards,
+Yan, Zi
 
