@@ -4,93 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF201090255
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57951109025A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:03:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C27B6B055D; Thu, 19 Mar 2026 12:56:23 -0400 (EDT)
+	id 725086B055C; Thu, 19 Mar 2026 13:03:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19A1F6B055E; Thu, 19 Mar 2026 12:56:23 -0400 (EDT)
+	id 6FC766B055F; Thu, 19 Mar 2026 13:03:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D7916B055F; Thu, 19 Mar 2026 12:56:23 -0400 (EDT)
+	id 5EAAE6B0560; Thu, 19 Mar 2026 13:03:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF8C36B055D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:56:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74A24BA8F6
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:56:22 +0000 (UTC)
-X-FDA: 84563415804.05.A03C0ED
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CC89B1C0002
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:56:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vQdBaC0Q;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A5B6B055C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:03:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E78025A2B6
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:03:21 +0000 (UTC)
+X-FDA: 84563433402.08.B2F5DD1
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D9E4C1C0021
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:03:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="h L1bEO4";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Rw7XgeXy;
+	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773939380;
+	s=arc-20220608; t=1773939800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rCeA8gaapekYBXGTYyy6inc745Q+Z1LM+wKjknp8DGE=;
-	b=Atim+lhBRFAR8yE0zfXupEoXlg7sdJwf5Ep5Ig6JFBNkaJQqXR/X3fMLCGOfM2Jz3VfBqb
-	koKfYk7Xhc3Rm4tqSzuPvRCLnMW8xHvFfb8OKhZz0Mm5oo6Jl4U0ejMQ/ACAhK7safAx4T
-	g7sAONudUSoGSGLvJK5n1KbmVidqHyg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vQdBaC0Q;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773939380; a=rsa-sha256;
+	bh=PJgFlTLVs0vAK6CUqcmjnq6XiC/gunSE5qOnxQgr0gk=;
+	b=bkGQZxkp6kjIpqZmXgBbrn760ZNxYPrbrzDNfYxxshpzgVSepif8s9yuWlTwEPWpBX5jvr
+	CXrRqA6i60lwyhg1p2wIHrgNok7pr4tW4HCS+1KZ1u1c6xU+U4s7OfZw3l+SJVM478q1LA
+	X97mQyl4UfT0i7N03BEdz+dIsl8QPqk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773939800; a=rsa-sha256;
 	cv=none;
-	b=2yqxLXBer24PGnJfw0MA+UUPfyS9Y9cYYmwf/FOkFpS2KHYxXhDmD0W68oMpyPRQEeavEC
-	DRN56ooGrZ54gHZN+qDuNsICtzWiWNXBhU2IJ7l8puaQ734sMy5bQAhIunvyrcSm6mB6t+
-	QRHCP4bQBXCwEnp8dHevHfJBvL92MR8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rCeA8gaapekYBXGTYyy6inc745Q+Z1LM+wKjknp8DGE=; b=vQdBaC0QVupOLntmdIDaZrn0Xg
-	121fyQDxZ+Dio6hLHiv7v9o+AE8SMLj30MEUKRC6o3LdExnLhUrL8RKRW2YRllz5pXo86pKjobU5q
-	rjKmS51loCTwT24MKISGl1Ng/eisEvfF5XTDBCMozkrHN91kAO2dvlfOi07rsG8tCeimlHIN7aTWY
-	jjEq4HW+DuyOs7HXJTeEexZq44JURy3AXG2knfOdokqjmSBETN5nA8AMNnaI3NZcwFGIB6o32rngC
-	IoFGb6NwQ1M/G2ZnMXPPSEiXHPnE/4ZWguUPBcWk59L3J/E+h9lBWCIoh9qrdJ4rGnrpFbfB7XtGs
-	53mzPz8g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3GfL-00000006Osb-1cvh;
-	Thu, 19 Mar 2026 16:56:11 +0000
-Date: Thu, 19 Mar 2026 16:56:11 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
-Message-ID: <abwqq28hWXMLqa5P@casper.infradead.org>
-References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
+	b=OFjumAMSVZcp08xP7NGrbe7N1RaEnQOChTp9zoe0WDHg2LDqj0x7uH2rxjvEgsHnRtM69S
+	/3XcGsRHQlV5TfapRykSQ1YMXiUV+QAi32gwgM9iWKPJrL6EkZPKavSACMDNjNzsugADyx
+	Omyh9IbyMeFUtOhy6bGE0nAh+0MNaqc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="h L1bEO4";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Rw7XgeXy;
+	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 5A21E1D00065;
+	Thu, 19 Mar 2026 13:03:18 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 19 Mar 2026 13:03:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1773939798; x=
+	1774026198; bh=PJgFlTLVs0vAK6CUqcmjnq6XiC/gunSE5qOnxQgr0gk=; b=h
+	L1bEO4dD7Lx+gOY+yRwvvIyh2BnMJjb7bOSZY4mjoWoklHEKsxNzUotJLubzD++K
+	bZMilB6WYniEfNeZI/gluac2B7gILmUVe2vRrnXxWKz4mol9KtmgIUUITHJkgkd6
+	ICPkXR9pNel0lq7/r+2RTfYvpkUvIlaP/iRRGMF8G4ygDBZYi5MdhUMFbQoUqXoW
+	c35T2Fu1LstcPwioEvcShQNsSKF1XApGXind4aVoqnfjrlqVOBi3H1nFqKmzhSFf
+	HhQAyMUT8PU8lPOx8JnUhuJGxeDFNA42yuLDO/hAAVZHE0OO1QfvRQOJ1fsk1YuD
+	PAtJISL59XCJw2GwIfwIg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1773939798; x=1774026198; bh=PJgFlTLVs0vAK6CUqcmjnq6XiC/gunSE5qO
+	nxQgr0gk=; b=Rw7XgeXyTStew4z7iif1EeWuQZ2xXTEVeFfIOvv7vaCDvcN6Nrq
+	1yW7OoM2GKVpziJnLcsWrG4VRGzbU7h6jL0yr70CkKwMjUPpKbvPzk9YkspXbYeh
+	uGD4V1DyPTkVv03oTbYPW93QPXEXqcgl4CLG4xYwTVFKD+YvV2YDusYg4PQx2qEm
+	alfoYgGg+jkGtl3EaIc7+GChVOGoXotFBhKfszq6GCUPitSBT2FCCAv27epnUFFr
+	vAmr7pLZOj5RktfJn9SIhmK12oj5zVuxtOLcWiTXD33PFm8jK25xPiE2lym4yogc
+	qMs7MjwCdmQbYm6O/RYAlTrBJ+ILZUJyeHw==
+X-ME-Sender: <xms:VSy8adWHjYoELCf5xwzuDp3oUqlCmKSWDewA75D837FZlOY8-ahi1g>
+    <xme:VSy8abPuR2K5tc76-RmsEzTeb5nISj6J-4DckSxQ0bm8qu9Cu9n8hRcvts9d30AcG
+    crETlTmcOmfc55i83EbzEnsWde3R6VOGbg3OHNBWLBUwuqakSOWQn0>
+X-ME-Received: <xmr:VSy8aQwGUo8SNJhjt8U-Wv1HQUkCv8q7v_ZpFeD5oflZWxIneQM5UEJ0VHsFLg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejheeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
+    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeef
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdp
+    rhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeiiihihse
+    hnvhhiughirgdrtghomhdprhgtphhtthhopegsrgholhhinhdrfigrnhhgsehlihhnuhig
+    rdgrlhhisggrsggrrdgtohhmpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorh
+    grtghlvgdrtghomhdprhgtphhtthhopehnphgrtghhvgesrhgvughhrghtrdgtohhmpdhr
+    tghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtohepug
+    gvvhdrjhgrihhnsegrrhhmrdgtohhm
+X-ME-Proxy: <xmx:VSy8aYgnk4RJ-EQjMDCDorieYgyj7w6vDcKtUdcCokfigKtIUSCEeQ>
+    <xmx:VSy8afS8cxM7iRYjve0OnX5OQhSrBv1ZvWrCGuOr-tcNtjVzmrRhog>
+    <xmx:VSy8adMsivCWPviLWROIXQmSAVv81dn87v0z4PgIcNoOcwz8mYZoGg>
+    <xmx:VSy8acHyfOal0TgxS7llI5RFQ0vbAOGQrtXn3QXMuhM_sfOXbsPKqg>
+    <xmx:Viy8afWNZ-oVCGMYSFrOmKsnzx6qH1A3kJuSUUcXcYht67cyF223UagL>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 13:03:15 -0400 (EDT)
+Date: Thu, 19 Mar 2026 17:03:10 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 7/9] mm/huge_memory: deduplicate zap deposited table
+ call
+Message-ID: <abwr3EmhNZVwOkR3@thinkstation>
+References: <cover.1773924928.git.ljs@kernel.org>
+ <29fa4129cd560681c67433b4c344b2c9a027d1b4.1773924928.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
-X-Rspamd-Queue-Id: CC89B1C0002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: wkz58ns8subsfihj1gkpz3jcry7tp8y1
+In-Reply-To: <29fa4129cd560681c67433b4c344b2c9a027d1b4.1773924928.git.ljs@kernel.org>
+X-Stat-Signature: wtcgoagoac6genri1q83kxcohem6fmh7
 X-Rspam-User: 
-X-HE-Tag: 1773939380-941184
-X-HE-Meta: U2FsdGVkX1+4/MHgwADlppwpP3SE59ow7+mKu/NzdhYhRB8xNeLZgE5rsMkHcaHZv0oP6Fojk79j+jFqYrjhHDtG7XV80mhkf+XDAJgEvdc7zExGiGk0uuNkSL/aI4TzcoF3C1lQWG//GfqCz16+UfHF3+CGDbDo4V2RZDwqJkd+3OQ+9UYl+XyUYVg6+xDMnBv1arxykajRgn6I5bIC63p5+2MQuz0l5LKOspJoiXXdVM+TnEdabOCJiC/DVo2HyPEmJPcb6nFpM3AH6i0aXLpDCJIVMYe8eJiUmyOyZqfulfxG9x8DsO0ku0LcvpCGyETdSV7RRAeQKDRmZT3P5eUCUSZrE5b17IxfB6SV9RhtEKKACJki5GFPEGoc5Z5oSS4WNQ3FaRbGYuBHoguXeiTjUcsd5Hj+spg7Wiiju58KugsxLUdMr1FHLt58eU3p/dDSf4dC8QHB+9iJ4oOBopIZELvFX3Ikd12m+ey1K29mF7gGf5+/Ex/yCVEyZdvXKSUrXG15NrgcV+b/nkgnkLCFQ8527f6s06pXBs290+42A4Ul7oNJ80WRlHu3eJuBEBm52Z+YkL9cGFIn4vNmT76Q64vrwipyszKjO2BY2Xewyo4STyzOTIBe8+I66F2Rv80K6u26CNtATKbhn4o0ef1fQyDHEZxh+nvypJzSMYWVdj5xkob/LyavUdTLMArV2rhu0KEAMsFEU86DV+z/o+2LvzxFqSXnMK1r6iTl8O6m3TNX6CtULOATuS+HgFutqSaHuER9rHjoDsC4AHku895wSGJCzBzoosL9TaomHJ9AeY+pmAVxYroT3gv1lG/udvE+Oy/sx2pKtsiukKPCVqEqEKvt6kCcLW023mEhg98zznI7PYAg2ogGziE9khF0SnPsjXblGFSU+EgqUmWGrVXtCYGNos3zSatN1GaUwrSwfzpgEF8KPUz7u0I9MoXw6lHkC6b40tXeWlGwVsW
- QrKkmUKp
- E5utfQLb8tlVNiJD66zyoQr565ojMX2KFt4516h2joBO5DCjaB3Cas6lNWmbjcTjfKsR4ZOcLXODUCOnPS3Egq46/z7sPvPs6MgI6qmZiUWJH3DkfrqYAGbGF/Fgdv2nq2+6HXUhB5KodIVO1Et9Ysp1kyg9df3ofveVEpflAejzdeKdQtqE6oBaCURh+slQas7uarYcbk8TFqm6vXzEicL7EbPbZVAEKFJfIl9T+I0rDsNajV5brcj7DU+bppegtqsqnacawmnOl2BUiT4suhBqjxKIYagcm0Dw4FrBsgQNlx4o=
+X-Rspamd-Queue-Id: D9E4C1C0021
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773939799-116428
+X-HE-Meta: U2FsdGVkX1+SUzfFU3sz5blHZlbZTJ53/ofAu9H5CUFhrTkdOnKPB8a59geBbL9Fmzd9qBuAxWbu3EU+t0ZWU2wBngXZqJB3rAQUXIo1bxQ93mWssyfaKzt89+Tg7PuqkRKVjbb3XdJJJG0S1GGAXt7qvdCCgMnb1PQcsOpamYDlJFmehSTKyNWLyhkxwzCnAk2rGndqYZh8+rwF+o4S71CbRD1YFhWpJdwDVfq369uB6XM54HkIiYG5c5MRtg4LB928v7a7T/MqIaB63kVr8DFE5VPv6Yrbtbyd/FX4ou5yBnl5MAlkZWEm8O4VVlSPcGDq8GwI0CE0BXDO6rgPk/O79rtKkYABBGm4/xwzZiyrBwFoWesM+fb/YgolZmqnjUt6K41idGoZiBlW9ps0zBU1wI8G6wVnjXttlg2CnVccXcuIm0BnpiAqqRoLuuQ9g66IaRvE+ylR+Ms7yfEoEGliRhJDdvywAG87rwgR2rMs/vIha4JXN3wdFDBDIoiwRnJPKTLd+goyzXWysmozj2UUmL5lgie/BRml2PEcwSu9dreEkVuAw4He3TzKvoRPjpfMuuXrvQ25qQE2Rgj9k+lL+p6M3IN/b7YYpPwwoazfdeoj5mLp6TYPS6QwsPMhkHOBChB/TswZCcmvtu6hMAxhqz7o4AwHvGRaASP/iIcT5ob2JQFVrclOYlNCbvuYd8kLmTvQm98H+pe/M908kuCYX/OI6BD0hjPe/YpfxsU87k6Y9yjwxwqHhrbrf7U2WZ5OR1PWQBQBUDQQFxkRFlX3NxlUb8FP+WB0gJlEPo2zoCGAt4h3ESnG8Ikn/1PS/q8su2ms4rEWg3OFivL/M5TzWO1p+0fMm3DmieYWr54+g2YCtt9xCZoig2ajnxS+5Y9kqKjVkGueCCVPwksBluzxckcSo217uu7ZkezC9lsCkSAqLQRgL8TY+S94Q9LZ5Q5T4I7qODpSSupsHF5
+ VRGYM3WR
+ 5Vvlv52geMwgRQwquUReH+q4AJm8BN//cu68Bi7IIBcNOCtu2Zbp4oWIJ/7IpQbZdgItY+WJ3IqLZDBqAA77t3pKA1nOK7sdzCnnVtBVm6QfHtMvQhj1vzx7u06g4puw6JyVLOCewMFFQFYdmu4CusNtQRembm4lSWvASjwhBFyr6nYLu5XY26F+Cla4wrX07EMqbFvebRRs1yZVeszpy2JmNMI+Xs62XWetmxQ5Gg9AB76vGrtwGfx4kEoKREnliknN3NQvWfuQ50BwPCro+ICf829S1xuL+rYa5uXejr/rSoEWGVO9pn7v1OvOCb9kuM/63KDvFJVsPU9VtC66QPzSxL5BiSIu1xRq3QC6utVhz8RLdgGSElbB3zYKUzi75EKaHSBP8UrBRs9ChGEQoZeWqpNOh1fUGwLJo81YOZ7mKb1HuWTOQqp8Xt09EqyJi6M7/oht9kHv351c3lAIn8EmshT380WdRdz5eD4LNTPRz09g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,29 +141,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 04:03:23PM +0000, Brendan Jackman wrote:
-> As pointed out by Vlastimil in [0], my proposal for __GFP_UNMAPPED is
-> probably not needed for 32-bit. This offers a way out of the GFP flag
-> scarcity so in preparation for this, flip gfp_t to be 64-bit on 64-bit
-> machines, while leaving it 32-bit on 32-bit machines.
+On Thu, Mar 19, 2026 at 01:00:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 499c31bf8f83..c4e00c645e58 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2431,6 +2431,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  		 pmd_t *pmd, unsigned long addr)
+>  {
+>  	struct folio *folio = NULL;
+> +	bool needs_deposit = false;
 
-Ugh.  This grows struct xarray:
+I think 'has_deposit' is a better name here.
 
-struct xarray {
-        spinlock_t      xa_lock;
-/* private: The rest of the data structure is not to be used directly. */
-        gfp_t           xa_flags;
-        void __rcu *    xa_head;
-};
+And initialize it to arch_needs_pgtable_deposit().
 
-which grows a lot of key data structures.
-
-It would probably have been good for you to have run pahole before/after
-this change and diff the results.
-
-Now, you're probably saying "But this makes no damn sense, why on earth
-is xa_flags of type gfp_t?"  And the short answer is "because the radix
-tree has a ridiculous API".  But you'll learn all about it with your
-new patch in this series which converts xa_flags from being gfp_t to a
-plain unsigned int ;-)
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
