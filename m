@@ -4,57 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6C56108E1F7
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:50:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DF4D108E1F7
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:50:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5293D6B048E; Thu, 19 Mar 2026 07:50:12 -0400 (EDT)
+	id 836AA6B0490; Thu, 19 Mar 2026 07:50:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 501566B0490; Thu, 19 Mar 2026 07:50:12 -0400 (EDT)
+	id 80E986B0492; Thu, 19 Mar 2026 07:50:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43E836B0491; Thu, 19 Mar 2026 07:50:12 -0400 (EDT)
+	id 7248D6B0493; Thu, 19 Mar 2026 07:50:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 325F66B048E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:50:12 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 61ED46B0490
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:50:16 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD594C1D61
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:50:11 +0000 (UTC)
-X-FDA: 84562644222.30.6C56A24
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9C4C1B8170
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:50:15 +0000 (UTC)
+X-FDA: 84562644390.30.69AABB1
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3629E100004
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:50:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5258716000E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:50:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773921010;
+	s=arc-20220608; t=1773921014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xfUC+iLqsphN+dhD9fmwtK03scsyIICxJdmCbkULZpQ=;
-	b=U8n88p72zS1yYhPsN447HT+2aXEEhi0LoiJOEbfv9eG2j4fQD4tvW6wOpYc6iHcTgfnqU+
-	aeqcSzqDQKFNo0umShXnkhM49z3JtvvBSLUuk6+MvnrOgeYawFEmhIuk9qDcCfS68azqtm
-	jh7oMbnxN3EoM2rBJCGgLYaZDMRL3s0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773921010; a=rsa-sha256;
-	cv=none;
-	b=NwzBhmfevv/K9dLCQD681KE6DKNZ+3++XJCUlvKUQNUubjWS9NK7RJ7hg37sF3zz8PYxN6
-	lWusFn225COOdpPlyuobC5u3c0XcbnM+nLZyKinjI33sxZFaOk9FqO+V1fwmUxij7ymcua
-	ZKxlwA8l+G5V7tADUOSGxLtkCT62kOU=
+	bh=VriQ7r5ujDfNl4GZJbGgoiqhx040jESdP7HiC/62+Pg=;
+	b=H9X2xvZ4VlI2HYStglS/IwUiPhykZ9/IvzH5jw8yhYYZjURkyqMWHilgrscHozAP5gesvv
+	lQ56I74j5wdUY2wN0DvwCTdu8kGkpequiKfDy6QYFXztSFF8y3xnM2GmUDsrnLkBHXNlJS
+	0gXrKXrpdWKmjTb9IsUHb2/O/S4MoAo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773921014; a=rsa-sha256;
+	cv=none;
+	b=deyrTteTZhyspcZHYivDF44ZxtKAM8y35ur2q/xE8BpPS38o9A0CRnIrUFyR+d2UywhRbr
+	ge1febq2lNuxeEN8xyp2mdq0iNKztJsI5/kSDuc+6/1w2kEm3GDsPwMiTulq53o/cSdGm9
+	MXbFx/gnKbVxGaNHyR7VBwQ/KiVxRsU=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2FDC1BD0;
-	Thu, 19 Mar 2026 04:50:02 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 74FB82050;
+	Thu, 19 Mar 2026 04:50:07 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B3FE63F778;
-	Thu, 19 Mar 2026 04:50:04 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 438E03F778;
+	Thu, 19 Mar 2026 04:50:09 -0700 (PDT)
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Arnd Bergmann <arnd@arndb.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -88,23 +87,22 @@ To: Arnd Bergmann <arnd@arndb.de>,
 	Ryan.Roberts@arm.com,
 	david.hildenbrand@arm.com
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH 1/3] vmalloc: add __GFP_SKIP_KASAN support
-Date: Thu, 19 Mar 2026 11:49:44 +0000
-Message-ID: <20260319114952.3241359-2-usama.anjum@arm.com>
+Subject: [PATCH 2/3] fork: skip MTE tagging for kernel stacks
+Date: Thu, 19 Mar 2026 11:49:45 +0000
+Message-ID: <20260319114952.3241359-3-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260319114952.3241359-1-usama.anjum@arm.com>
 References: <20260319114952.3241359-1-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5258716000E
+X-Stat-Signature: efh3i4qa9ea47i88ngrgc7upkq34jggy
 X-Rspam-User: 
-X-Stat-Signature: md61yg8cq5rxpbnygwk6ftxx7rgewmrj
-X-Rspamd-Queue-Id: 3629E100004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773921010-595039
-X-HE-Meta: U2FsdGVkX18xxzwqJHgzEyWHan9sGe5Vs0JPXCWaDXwFSUfKyGVEHDauVy2oTmEsiG6fTe0TAlZO+HOJ/eucys6AGKnSO/of9dAVbIXt+FYIf7goDm42M9G9M219msAdMSL6RpSKVEd4no1fM/Hv+nC3sAm+Ge5pUO+0ZT2OzVgPE+T/dig9DS1ohl2n76GjR0lF6AD6pn3W3P+TgOsroDOXLpFV28/85vrb0i5ZbXY9U2Kc4qDKuab+kbHCJ3h898Z5sEZOgjTWGpnFyFuJM3HZl7WV9POUnnRAlU9q0w4mV4EKxWiTsd/bU+r8tJMIGUg7/wWF1qzN9gTiseFRkJ816Oc9CwSX2GmF76rCetTqDmBVNCYu0Li4+i2UkKqfGF+di49ANKvkDr6E7RpP3lwrmfIpHiHa8Dw9aBjPsRvdqWn7WyrVMLp0WOoL8iQylHKf2V0vE7h3rn+msLAr64IrHBc5RXBzI8IiKiu3395LFpTb/cbsRCsPfi5dJJH2Ow4cX2S37J9Pkm1l9t+7brxB/eJC6/gpPauD0nZWompZVWgDB5VItMCzP6TpflAQw3/vb0CDrKWwDebiUYrDum5UCUnAZEJTIS8id+C+RSpveLZGl6JJBDmMp1SAMyWeN48t5rdtIcGv5L5KjVUYfOSr/WHC8WrJOdtOADxWTLqHm7RiH6raXf5zRrYXhUgR7elVGQtT0Su+0wqA6Z08vNNi/NnMl/4o9sjvgSlKNicne1skScJ6gHk2nPTbo7whvJrB84GyPBrKiXF3yFPeHW2+Dy4mdTyUyIp/0qoK6/QSU1ZQAKjn2/S11Krn7e6foCSQ/AmFskDnsMBds5jkOdFLzdNAPrjYgw/Nhjz8CAgAxcl8EoUkxArV9czrg3RVYJFRqFyMh0eDdswQlT0useJFfg7H7AZQhPfSn6rMPd3+u54wa8Oh4evSbPcyp1KsT11spFsaeABD+W6au8F
- RJs20vfc
- YFNZDm1MEjeUth3X3ccWl0NpTaN8+4XdULAaO5hH1kOIe3p9MRq7qWUyBs63aePyzi94TNz05j4FonqcKCCDn4mhNZc92ig4my2tSwOaEK51JIMCJbh68s/391Qb2S1CdbnnSbegqjwrEO4Lu78RixzGT+ehYtGmj5Q1wqtdSJ81F6FxY4Q7Pj9N+umiC4mnYwAKTrUzDNuD69+GCPSdRCj9SanCZwCXRKjJ6LsNgKMfuNxYWxjFQzGFaTlFjCWh0RgToQM7jejmww5QS9vJrNw5/Nw==
+X-HE-Tag: 1773921014-824959
+X-HE-Meta: U2FsdGVkX19sUL7O3d8eRckTmttn6SVvEgOsn/kclJwQZ2Xyw7Ahot9QvJ3IXUkW9T3KTekeCiZAuMqWo6clMs5X+Wub+FZi4kQdznDbSBQ5jtMjhZQff6ZWnlGlSsog8noVb0LcbAIjbgmhwC6FNEovdK4u/9oxxYW6wM3kyc1JUKUpSUrGJnLsnoZskvSPY/aOIXQOOFCcQKJkGDCgjZS6acHfdoN0KA3JK3q6HRXW0s8rOPWW3w4MKVFjMRbiTf7REnPpDWeCsD5Kr9UKGguSaXXpr0nvVDAZd/1gAO1FB0IHtuBeO2D0NYinZ9h4QiFp/EmpXj7Vx/uG+I3w1ARtHcUhUBHBveF0eWa2lY1n8GOw9QbFu8rlvr3du4DDl0aduU7qJ/5IL+WnCLR6AE1qs1uLyWCcwoizL4xuoPhgWzxZtfC+4zr6VZjxIaTTl1K6SW16Gsee7kIRY3kflmFYIq0douok/BAd3yRK/GvJRmqKDhJdQQlCijZRQxoYYxlML1FQYOG4tdL49qQRWSROQBETExCqgGIzKrNVsEoQ1XpKdMNe7rKfbzNHO1e55PrAWD1nPjZtTtAXJZaJtx2UJS6j5f/4xauxLpOHcHcQLWf6PD219NQaz3tTtucTFrDmYFiEeffOZUqFnLXqsEPU1/xhfVv+G3bNzY2aCwwXJQo+8X8EgxZpW0hw51naxQghjbM0ZrPSkgU8Fpa0J/qVifeyIV+RV6pYpM9DpqHHKhlcJdMai0hMZUHJN/klx2piOrkQCfRdIQlBSgToeavdZBy/ogj/1AuAfISFvvMI2i8MJtqyeyI5Mcyj+Nj9DEOvqTJ8Pjk6FdURjEtSUK6/+aLKFe1843ivUPQArKqmWpaTHqvrf2y5usFNtgmSSoSbQDJ5Eqaa36fDG6UXxTjvgYFsHRP6Yqea2aftzBn7tPluesyi2wACXO2RPhx64vLux6Yvoyv/cnpXHn4
+ fkb5zAl8
+ 7g4oMobBtCMd4hNn3SmOfHmlx2pOoHJxfHpR6B2WxeBbCL9tSBPTRMZRbx/pKl3FldmwMmHGgIMeAQULmLyCy9DdL/29Q9BBHurvzOHQ8n4tISfAI89VC87SGBzO3A+0wVEGtoCqJ/AIj6bBe/hgtp6xsygNNZkgerZmLiwY77ZEl+uOF0uLyJ4ZtowH/KCGRDPpz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,50 +110,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For allocations that will be accessed only with match-all pointers
-(e.g., kernel stacks), setting tags is wasted work. If the caller
-already set __GFP_SKIP_KASAN, don’t skip zeroing the pages and
-don’t set KASAN_VMALLOC_PROT_NORMAL so kasan_unpoison_vmalloc()
-returns early without tagging.
+The stack pointer always uses the match-all tag, so MTE never checks
+tags on stack accesses. Tagging stack memory on every thread creation
+is pure overhead.
 
-Before this patch, __GFP_SKIP_KASAN wasn't being used with vmalloc
-APIs. So it wasn't being checked. Now its being checked and acted
-upon. Other KASAN modes are unchanged because __GFP_SKIP_KASAN isn't
-defined there.
-
-This is a preparatory patch for optimizing kernel stack allocations.
+- Pass __GFP_SKIP_KASAN in gfp_mask for vmalloc-backed stacks so the
+  vmalloc path skips HW tag setup (see previous patch).
+- For the cached VMAP reuse path, skip kasan_unpoison_range() when HW
+  tags are enabled since the memory will only be accessed through the
+  match-all tagged SP.
+- For the normal page allocator path, pass __GFP_SKIP_KASAN directly
+  to the page allocator.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- mm/vmalloc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/fork.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index c607307c657a6..1baa602a0b9bb 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4041,7 +4041,10 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
- 	 * kasan_unpoison_vmalloc().
- 	 */
- 	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
--		if (kasan_hw_tags_enabled()) {
-+		bool skip_kasan = kasan_hw_tags_enabled() &&
-+				  (gfp_mask & __GFP_SKIP_KASAN);
-+
-+		if (kasan_hw_tags_enabled() && !skip_kasan) {
- 			/*
- 			 * Modify protection bits to allow tagging.
- 			 * This must be done before mapping.
-@@ -4057,7 +4060,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index bb0c2613a5604..2baf4db39b5a4 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -345,7 +345,8 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
  		}
  
- 		/* Take note that the mapping is PAGE_KERNEL. */
--		kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
-+		if (!skip_kasan)
-+			kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
+ 		/* Reset stack metadata. */
+-		kasan_unpoison_range(vm_area->addr, THREAD_SIZE);
++		if (!kasan_hw_tags_enabled())
++			kasan_unpoison_range(vm_area->addr, THREAD_SIZE);
+ 
+ 		stack = kasan_reset_tag(vm_area->addr);
+ 
+@@ -358,7 +359,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
  	}
  
- 	/* Allocate physical pages and map them into vmalloc space. */
+ 	stack = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN,
+-				     GFP_VMAP_STACK,
++				     GFP_VMAP_STACK | __GFP_SKIP_KASAN,
+ 				     node, __builtin_return_address(0));
+ 	if (!stack)
+ 		return -ENOMEM;
+@@ -410,7 +411,8 @@ static void thread_stack_delayed_free(struct task_struct *tsk)
+ 
+ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ {
+-	struct page *page = alloc_pages_node(node, THREADINFO_GFP,
++	struct page *page = alloc_pages_node(node,
++					     THREADINFO_GFP | __GFP_SKIP_KASAN,
+ 					     THREAD_SIZE_ORDER);
+ 
+ 	if (likely(page)) {
 -- 
 2.47.3
 
