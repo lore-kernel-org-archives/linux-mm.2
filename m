@@ -4,101 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86C63107527B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30FE1075276
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 09:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CEAE6B0446; Thu, 19 Mar 2026 04:59:14 -0400 (EDT)
+	id 0F5BD6B0448; Thu, 19 Mar 2026 05:00:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 957D66B0448; Thu, 19 Mar 2026 04:59:14 -0400 (EDT)
+	id 080CE6B044A; Thu, 19 Mar 2026 05:00:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 846FC6B0449; Thu, 19 Mar 2026 04:59:14 -0400 (EDT)
+	id EB05F6B044B; Thu, 19 Mar 2026 05:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B506B0446
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:59:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 281711C766
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:59:14 +0000 (UTC)
-X-FDA: 84562213428.10.4C56E2F
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5D950140013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:59:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kIPlorJT;
-	spf=pass (imf09.hostedemail.com: domain of 33rq7aQYKCJc8D1QLI7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--hmazur.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=33rq7aQYKCJc8D1QLI7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--hmazur.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D5BFA6B0448
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 05:00:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7734F8B96A
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:00:13 +0000 (UTC)
+X-FDA: 84562215906.13.15730DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 64B2540009
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:00:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=McPzNdsf;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773910752;
+	s=arc-20220608; t=1773910811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8r9tlNwMYzq4cthZppbvjBNc7HbpE7plIlyORF+br+M=;
-	b=s8av7ANmFiEtdS0x2bvnM2XIQ3lsMIgGSm4eHfpW0cbqgS2llvlCW7yF+NdNZ7mOyn8OsM
-	+EKq5WJQRYFu9tYI2ls6vsBi+qivpCKtLPqwffRw6JlSUNATmP4IQRTj3r3pZ8nXrg1pgh
-	8bOxXOhwO6mbn/RTaQQm8XChFvKaqnw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910752; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kLpGL8Vr0yASXj9ZY1iUl1uVwjXzOrVlN9+ZR3fg6Mw=;
+	b=gQhGSCuRTHnJVT5ivP7nm65mEIg3FzKLSRZWQF0KnjnIxo5MaObUbPSOUXBKfJYO08A44u
+	/n+SVNlP5RcZE/zXcM11H5mws7tG/AIp5rii6wPoHXTcN7kwesei3Rbnhj2J/5p8WMArfK
+	E/FTjyLHceOsBlVHPg0XYKfuKmcSSgM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773910811; a=rsa-sha256;
 	cv=none;
-	b=M2U97AiDvIxRDX9J5H84z7bnP6xIEMW2Xf73ZpMHIvxICjuaGy9GaG4htjaqe04/dWvSbh
-	JyOuFE/Te015Bz/sMIS29aUU6NkQB6VvmsmWaLBrPeiQOlbkuQ+/CVls0fixaczOQDwxrm
-	tLtTiuiF9y5Vfxee/UO6tbMs9Rr4Umg=
+	b=rm9ycs/iwul+K5jgd6tJBHg8uZQn/EE/9V8yL3CQXvtUPXFEadaWJxYzmJygQuiqTB9luN
+	OveEo7j2Rtig+cSxZjVlxHDZ9hYe67S2/IhefIxq5LApt9vIm0vKHdY7q/IQqVLETJAn07
+	NUM+SodVQEjRu8VXvWHBT9eZzqY0U1I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kIPlorJT;
-	spf=pass (imf09.hostedemail.com: domain of 33rq7aQYKCJc8D1QLI7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--hmazur.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=33rq7aQYKCJc8D1QLI7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--hmazur.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-485355493aeso4916985e9.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773910751; x=1774515551; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8r9tlNwMYzq4cthZppbvjBNc7HbpE7plIlyORF+br+M=;
-        b=kIPlorJTLIXsg8IBG4YB7gLUK4XaflHLKrKQVtzIsjRIOBr+ZkAWPy92Uyg4gIWUn+
-         s31i18TbKJjoEIB+YAHr1T4YesOwWg2IOKIjTKKoU5wd4lBfVURm4OsSLHDoziE2ofT5
-         lSnvkdfZz6axCtunUtF4TcPs1FGPovMhlasiqyIUzM3aQ+2WcUH0ooZTIu7TOVbIjjT+
-         z1+yNheveWBwfHO2IzisPOU1iM9Mws4qkLEdYiqQnE1YsoCw3y+/0067n79oT7rrM3Rx
-         4Tioaofw4kGx7yFVDWYTjK1ZO1jJC9uVZohSVri/AXstZMO7rbstwn1kzs6fvmB68xdX
-         y15w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773910751; x=1774515551;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8r9tlNwMYzq4cthZppbvjBNc7HbpE7plIlyORF+br+M=;
-        b=UvjUxSEeYKJoxqQC9DtsJuyzzeQa/Ah5js0Is21jFChSIi4mk6eK3Pk8AZSDFbPoJl
-         MGPawWn5ZAjE6fYzcDmoxqT9WeHAnT8TtNnQu9qSatosApri37hAogxM35YVEMLhvQtn
-         JTKSw9RJIGloUFi4g5zXSXpVniW64HlJc9iX2paRT0meKkjhpDJ3UsCoi+bXu1qoG6h5
-         sjjGopjVcNOFuK338L42wODq4K4mOgmoJ3gjmLZBTp8gWdSDbCLsJ3/+Gag4rO3VS/GB
-         iWe2OzRu953oeECsceeUvyWqdXrOscHX4Z9JwCxhrlRGbtIIa/VMavTjTj0Bj9z2WL40
-         VDfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUE7hXPkOYi2Ya7QA1x0gYaXm/B3U9SKl7TWXDvcOdlp9d9zZpHIZgmRtl28lDLO58t5Dov638eng==@kvack.org
-X-Gm-Message-State: AOJu0YxYw/z/cdRgWwbeifL5EZ7GZFHgAYT0ExWptwvcdWfLeDyYXpHc
-	gvt5KF6OqVwKww97EYX81oyK7SPm82w9YRyw2d9y6kCkW/oA0bzRkPzzusn7uvKg+BBImshsAl3
-	P058M4Q==
-X-Received: from wmok20.prod.google.com ([2002:a05:600c:4794:b0:485:3ddc:f27c])
- (user=hmazur job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4e09:b0:477:76bf:e1fb
- with SMTP id 5b1f17b1804b1-486f4443e8fmr93435235e9.16.1773910750524; Thu, 19
- Mar 2026 01:59:10 -0700 (PDT)
-Date: Thu, 19 Mar 2026 08:59:07 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
-Message-ID: <20260319085907.3510446-1-hmazur@google.com>
-Subject: [PATCH v3] mm/execmem: Make the populate and alloc atomic
-From: Hubert Mazur <hmazur@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stanislaw Kardach <skardach@google.com>, 
-	Michal Krawczyk <mikrawczyk@google.com>, Slawomir Rosek <srosek@google.com>, 
-	Lukasz Majczak <lmajczak@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hubert Mazur <hmazur@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=McPzNdsf;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 50155442B2;
+	Thu, 19 Mar 2026 09:00:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489E6C2BCAF;
+	Thu, 19 Mar 2026 09:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773910810;
+	bh=rutOn3YV5gTkK20mFe8/Y152SVFObowRGYBbVWX6jxo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=McPzNdsfk+0MOZqdYj77+2D1+dSQqQ0f5gUnODqByMZsfjluLsehrLlau5ZxvD3K2
+	 SmjDZ/EBvi9YuZEKPeXbc7HUX4u9FPoYSH5LSk5PzAKVxmsArKSv6SEOTz86NODZo5
+	 KVKmJnyHinzfH1vUYErfyY3XaCFnQFBIB12ulrfwsm/j6p7vsrcNZ2WOIBlBLrq41/
+	 seQ/e3i2Y8+Wrx+5UGFH/J9uYW4+3gXccSGberHmrlXVIPgbezuU/KxiGpFu/GBPi/
+	 iNOag5IvDofsp/QgyzdDzatWUDk1xTDDF6qbLOR5pLZuRReZDfr9fSzCwWPNS5qqx3
+	 XP3jQr7OUR/wA==
+Message-ID: <c3defcfd-74f6-4e70-b002-85bdcba44df9@kernel.org>
+Date: Thu, 19 Mar 2026 10:00:00 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>,
+ willy@infradead.org, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com,
+ syzkaller-bugs@googlegroups.com, dev.jain@arm.com, ziy@nvidia.com,
+ linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com,
+ akpm@linux-foundation.org
+References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
+ <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
+ <10e5f1d6-077d-4783-aa16-6c8b98cb9e74@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <10e5f1d6-077d-4783-aa16-6c8b98cb9e74@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 64B2540009
+X-Stat-Signature: jrsfurg4e3ww8h9snmgwz1hjt6tz1aiz
 X-Rspam-User: 
-X-Stat-Signature: e9w38y849okswinrpsy8po7e1g18nuwr
-X-Rspamd-Queue-Id: 5D950140013
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773910752-279065
-X-HE-Meta: U2FsdGVkX1/INDrXezjJNmUOVmi+UiPZ7t5QUkJEoZWttVRmTSn0LFSEbv5zKf0boKOlh0BijEy58pw0TL9lG9CmLQfJui+mpmRyYw9FgEU9houpgoWkkd25P2TuSIugMFzyRBIfthZK/JNbyObpUNdhFvWtNZ8hPVoe0jV0FzUbKYqi8OJFzsfapSSmjXQoKpG2iQJFLaCs361DLTsXTHYr1YL4t9Rq5fC+1oD85egjdWvI4+0QcDAKRDTpORWc9oMtnSN0ME0Z5ad0nptMD2Yit/XGCdr3c7eMM8yKnGH5qP5czrmsXVQ56kOomMc6V3mVcIdJg0MseRugwX9AiTzS0ElSyo/VNy6TysrBIUkyIf0wPHvSn8qEmZgGXI+ys4cBU3sxDn14cTDA5Bkzs6nB9glQ2bMmiy4IGmWs5y6mFvpaRctdQbCEhzx3/yDlkGD5AeHwUuHEgAEAWnxgdB2z0Ija1Hls6kmodPtlfkFu9z1TGxg3EDUJO1UZmNiKs/PyoX1o24qp11T/Egout/x+3ERrIBo6dk9w50Xu9uPFW2vc9IwSV4ItdoLVsHXTj9A+zMz5yPVq34cd26uWjrXnUUaJ7M+vSPRVMhLUMyz5fAoZ2nuAbHmizwiq0rq+OTfaCALtOOQ9laPz09cREJm0RIYxF01uFYwgrR1Bg1tu2PFkSBp9+kAVIoBmG2zp6bVNxo6sujTJhknIu37zTpn2ffgXMvZ1nHqo6nVpIWL5SQNnIZ/JQ/ezmJ/tdCwVd6fKbgDE4uBg8iycRAYMjz5T+Qtrtw4R6C0tr5pft8NbTv/aA9JJBoBL2+TzdlthuJNDF4NlA2AFGBbBT2DcxLmD09H+G4GBgzGI5Ao7H3pP+BAzinWnOoOolVz3fJYdGtXym6nZEwj0xGP/+IuZc7YaQku5ZIRL4P0H5XsGKY09AgwttsM2HbQA9DZmz1loAzTNZTU5g9P10910TL3
- mFcDdkkc
- unJSW2lCsPchufHwksSWLfbjFzi3peJedXvOv/wOLbqqZNxavOSkaz/xY9EvwiCXT5hhMg9c1Bsitjd3i8/7ixkNpcpbePg1cwDoIQnJi4KeipqFIBbVZagb3l0ISK5waGXNAEJNL5YweWpqYQvgkEgPJe0c5HN7fho7ChTVSuhd27dMYvofr55gogZT38+IhzWWATf4jWlZva+yVRce/Ltc9gEkGFEBE6haqQqez3fPRnw9jrLjK1gnZMUbzKloi3Erm7BnHExazuHGexK8BC8tC+FqtQUmeO0ZY7JDgeY1xclkZpzjGDx3Zme5wpq/cZGXONgZFRpuVVuYqrj/T9PKmCk857ldUBlNtEmZjEZne+QyBTU+2G2ng17DHxcQRf3I7+b/91g+5LIRuLy95CpgIhVGKf9DUFBWDMakSEiYqbLDyqrXUrVEh5VNkdJQJtPdZY9yBfD/VKzjRA/uSrwq+Ljw4Cp3o8r23uzdX60tAwNzDdkEhjr+mE8SoLA5stkUJAcLUxU3OP5OHVEpbvIr8oFIN9oV7qZmBkZifVTs7XqU7TLzWBeaQsyWa+CSi9DyQKXI1DohmOFTJdgj424a/jA==
+X-HE-Tag: 1773910811-85251
+X-HE-Meta: U2FsdGVkX1+F7DnkAOW3BIP0DSCBJ1OX1G+PI5AR/HlzVYTnFwsVSe0oP7TNxewP4rwzgHBNO5VQMJvRqQpvC/FsLxj3FqyJzJgRJLBs7cW3uC1BOgYkcqGy0cTVcM2Cd+3SnqVgrxeZqZ/LLoC4RddbNNBKc/ihQujzChxSQOIIVJ2wlI2OA6WWVl6VQuRwypfD2YuPA+ZUJHSsYEf+27M3lqzU6O4bQgn/HUsb64iZ3VZEOA+/QP0UoIO4+eyqejgK5X31cvIQzS+suVJYpq4zvpdLpD13gmRIAjwhSgjYbSbOGMCmv4Svp3V19lhO8TNTB5mCRWn7cbJ+/6ACevwndckONaJY8iH+oi2cdb9dc8OPN9JMz9ZqR50Y5IH+VQkbysc0PP/ArG+N1ak1i1/kgOes96tyGH7MfYdZw4nR+XZbiyGIxodApFP9fifs3+R3GlABrEF9nlqkRnCsQwvEGwg1rjekoDS+4Y3tULtBn/SsnALX+avmPnx2z8fo+wl9YbdK/Ylz/EIIahcZY0lBZp1/AikAbyjSmLPclhcIa4nLPmsssJMVIwP0jL0cpCKsYUX5l/Xd4F/DTUp5cS6E83zr4g9p6wD+n36WhITl+hnqULjAKJyuPHhbZDQlGl00UhkushHgFAHrRLmJqmO0qzyMEt7k/8xBfErXzmyZzP7p80zQNL+fT6wMAoFVD+OzZfsgTEfPuzmAZtFKMKfhP4oSo6ZEt1SilZMgNPKndqY3/Wp9qrzRtpv40MgCcmRmsLfTabIAb4lKjtTMCivZxqC5xJQZqNlCQnxxTIa/GDFHqhRyE8qqzfMsMyYHHn6UD3dkoJnO9UvMVLb2DG0IOqqRp/4UCORJCdmV6xWAUdxA0q19OxuhvuisiD7p34BWhsl3IUPJZLMkNqFW/uxz0WXlo6bSvm7QKRCPVuEPvfCUnHpDMSpyhUJL3crt3KNrD8arGgyZ5NFWHnu
+ hC/6Xh9y
+ CzWV1wIl83gfrhvBm+WvzsazR45NOrxrUfw7oBE2OU37FkNu65gYAJBRy/mbPEmQmiHlUXJX3eiChXtgMdVXmNOzb6rF2DjTiKAOtQldPmb5K91sDuemmc+c8MBtqosSPLVVmmny1g5yOx2K4mrUThdXx3gthc4P895o06e94e0KtHveiRYGXa3LLUQ8RdaFlpXUsuSYkBVQjcWevEpd0CoqdtQ9dID/2R/FqR1cazMrgvCuUestqd6XeZUoDAZL6xS/MweqMDNAFD9uvxq8r4zzyQo4zIHDlTbncO4/Wboh8XMYyzoHzpH4YH/l0wZJXZO4p70T2l2/Ub3QTkLT+CN8uTVJFchuNqYq/FaPRyG9MExSW3gergoHl/hSCW1mwycaN4FFQFrJcA9PP81uIlAfYKNlmQL9decYjCvEoEJ1PqQq6MV2fLknmTDD5DK4x/zy/emuC+NTMU0puEuxveVckkercAeg/mejFTiPfcz4k6VsNV+qU3wszFQPwTVvV0LnugaA7bQilK8lZUllLAKIix5YBCpnUSC/gKRvmcPLswGi3dyhUsWDPOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,183 +144,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a memory block is requested from the execmem manager, it tries
-to find a suitable fragment in the free_areas. In case there is no
-such block, a new memory area is added to free_areas and then
-allocated to the caller. Those two operations must be atomic
-to ensure that no other memory request consumes new block.
+On 3/19/26 09:53, Lorenzo Stoakes (Oracle) wrote:
+> On Thu, Mar 19, 2026 at 04:05:38PM +0800, Lance Yang wrote:
+>> Ccing Willy
+>>
+>> IIUC, this is a dup of the earlier report[1], which I looked into back
+>> in January. The root cause is the same: collapse_file() calls
+>> xas_lock_irq() without resetting the xas state first, tripping the
+>> XAS_INVALID() assertion:
+>>
+>> #define xas_lock_irq(xas)	xa_lock_irq(XAS_INVALID(xas)->xa)
+>>
+>> static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
+>> {
+>> 	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
+>> 	return xas;
+>> }
+>>
+>> Added by commit:
+>>
+>> commit 43b00759f21b10142094d1ae5ff65cbb368953a3
+>> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+>> Date:   Sun Dec 14 10:53:31 2025 -0500
+>>
+>>     XArray: Add extra debugging check to xas_lock and friends
+>>
+>>     While tracking down a recent bug, we discovered somewhere that had
+>>     forgotten to call xas_reset() before calling xas_lock().  Add a debug
+>>     check to be sure that doesn't happen in future and fix all the places in
+>>     the test suite which were carelessly doing just this.
+>>
+>>     Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+>>     Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>>
+>> I posted a HACK fix at the time[2], but David pointed out that Willy
+>> had mentioned it likely needs more thought[3].
+> 
+> Hmm we shouldn't leave this bug in place while working for a fancier fix??
+> 
+> Can we get _something_ going as an upstream fix? We can improve whatever we do
+> later right?
+> 
+> David, thoughts?
 
-Signed-off-by: Hubert Mazur <hmazur@google.com>
----
-Changes in v3:
-- Addressed the maintainer comments regarding style issues
-- Removed unnecessary conditional statement
+I recall Willy mentioning that the issue is likely a false positive.
 
-Changes in v2:
-The __execmem_cache_alloc_locked function (lockless version of
-__execmem_cache_alloc) is introduced and called after
-execmem_cache_add_locked from the __execmem_cache_populate_alloc
-function (renamed from execmem_cache_populate). Both calls are
-guarded now with a single mutex.
+IIUC, that commit is not upstream? So it only triggers in linux-next.
 
-Link to v2:
-https://lore.kernel.org/all/20260317125020.1293472-2-hmazur@google.com/
+Which means:
 
-Changes in v1:
-Allocate new memory fragment and assign it directly to the busy_areas
-inside execmem_cache_populate function.
+1) If it's a false positive, upstream is not effected (no XA_NODE_BUG_ON)
 
-Link to v1:
-https://lore.kernel.org/all/20260312131438.361746-1-hmazur@google.com/T/#t
+2) If it's not a false positive, upstream is effected but does not
+trigger the XA_NODE_BUG_ON
 
- mm/execmem.c | 55 +++++++++++++++++++++++++++-------------------------
- 1 file changed, 29 insertions(+), 26 deletions(-)
-
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 810a4ba9c924..4477bb9209ab 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -203,13 +203,6 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
- 	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
- }
- 
--static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
--{
--	guard(mutex)(&execmem_cache.mutex);
--
--	return execmem_cache_add_locked(ptr, size, gfp_mask);
--}
--
- static bool within_range(struct execmem_range *range, struct ma_state *mas,
- 			 size_t size)
- {
-@@ -225,18 +218,16 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
- 	return false;
- }
- 
--static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-+static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size)
- {
- 	struct maple_tree *free_areas = &execmem_cache.free_areas;
- 	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
- 	MA_STATE(mas_free, free_areas, 0, ULONG_MAX);
- 	MA_STATE(mas_busy, busy_areas, 0, ULONG_MAX);
--	struct mutex *mutex = &execmem_cache.mutex;
- 	unsigned long addr, last, area_size = 0;
- 	void *area, *ptr = NULL;
- 	int err;
- 
--	mutex_lock(mutex);
- 	mas_for_each(&mas_free, area, ULONG_MAX) {
- 		area_size = mas_range_len(&mas_free);
- 
-@@ -245,7 +236,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 	}
- 
- 	if (area_size < size)
--		goto out_unlock;
-+		return NULL;
- 
- 	addr = mas_free.index;
- 	last = mas_free.last;
-@@ -254,7 +245,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 	mas_set_range(&mas_busy, addr, addr + size - 1);
- 	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
- 	if (err)
--		goto out_unlock;
-+		return NULL;
- 
- 	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
- 	if (area_size > size) {
-@@ -268,19 +259,25 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
- 		if (err) {
- 			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
--			goto out_unlock;
-+			return NULL;
- 		}
- 	}
- 	ptr = (void *)addr;
- 
--out_unlock:
--	mutex_unlock(mutex);
- 	return ptr;
- }
- 
--static int execmem_cache_populate(struct execmem_range *range, size_t size)
-+static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
-+{
-+	guard(mutex)(&execmem_cache.mutex);
-+
-+	return execmem_cache_alloc_locked(range, size);
-+}
-+
-+static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
- {
- 	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-+	struct mutex *mutex = &execmem_cache.mutex;
- 	struct vm_struct *vm;
- 	size_t alloc_size;
- 	int err = -ENOMEM;
-@@ -294,7 +291,7 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
- 	}
- 
- 	if (!p)
--		return err;
-+		return NULL;
- 
- 	vm = find_vm_area(p);
- 	if (!vm)
-@@ -307,33 +304,39 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
- 	if (err)
- 		goto err_free_mem;
- 
--	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
-+	/*
-+	 * New memory blocks must be propagated and allocated as an atomic
-+	 * operation, otherwise it may be consumed by a parallel call
-+	 * to the execmem_cache_alloc function.
-+	 */
-+	mutex_lock(mutex);
-+	err = execmem_cache_add_locked(p, alloc_size, GFP_KERNEL);
- 	if (err)
- 		goto err_reset_direct_map;
- 
--	return 0;
-+	p = execmem_cache_alloc_locked(range, size);
-+
-+	mutex_unlock(mutex);
-+
-+	return p;
- 
- err_reset_direct_map:
-+	mutex_unlock(mutex);
- 	execmem_set_direct_map_valid(vm, true);
- err_free_mem:
- 	vfree(p);
--	return err;
-+	return NULL;
- }
- 
- static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
- {
- 	void *p;
--	int err;
- 
- 	p = __execmem_cache_alloc(range, size);
- 	if (p)
- 		return p;
- 
--	err = execmem_cache_populate(range, size);
--	if (err)
--		return NULL;
--
--	return __execmem_cache_alloc(range, size);
-+	return execmem_cache_populate_alloc(range, size);
- }
- 
- static inline bool is_pending_free(void *ptr)
 -- 
-2.53.0.851.ga537e3e6e9-goog
+Cheers,
 
+David
 
