@@ -4,97 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4321E108E1E8
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B1F7108E1F0
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 11:28:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75F966B047A; Thu, 19 Mar 2026 07:13:08 -0400 (EDT)
+	id C22816B047D; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7373F6B047C; Thu, 19 Mar 2026 07:13:08 -0400 (EDT)
+	id BE2DE6B047E; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674456B047D; Thu, 19 Mar 2026 07:13:08 -0400 (EDT)
+	id B1FB36B047F; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56EF86B047A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:13:08 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1B81D1A0494
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:13:08 +0000 (UTC)
-X-FDA: 84562550856.20.A8D6F47
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8B8B21C0010
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:13:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oGEsB6fb;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9E3646B047D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:27:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DFFCB99D2
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:27:59 +0000 (UTC)
+X-FDA: 84562588278.07.1D83E84
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4B9D41C0005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:27:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="f/0gIRDK";
+	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773918786;
+	s=arc-20220608; t=1773919677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4aGhCkvep3z4IGyK/eGTBo8Z0Wlsdk46Z7iUmouA25s=;
-	b=Wp6KMUg8AikJbPslm9ozx9Mh4xr1jNxc5AGv62M8eiyl4jMfyHCo20VvjEMS6bDUJWytK2
-	v8fRf50arRPk+lxdCbFh8ynS2D3/wh9pLXSz9DKt3P7zk4INLv+CNjTPYkjmkgU9X6lRjB
-	eVcKC6Fswu7mXfp5GxhgmF303tf8bxc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773918786; a=rsa-sha256;
-	cv=none;
-	b=D4xCknADGnrd3z8LNRUOAEHYecHgIwSf+HlVVZlnRq+0kjcBIZO6g+c3b/Me+RTwUIpTFo
-	Npo++od1pYkt+y79/E2VIXC/6g3nfxDvPar7gEuhK/Ob8QTO4QEX/bho650UL9iz31cuEo
-	xxHb+6o/60pU2HvKyuEBo+At1pHi++c=
+	bh=zHg6oeL1L67eEN+OOTKjMfILFxz6m+HpynbYij4jWJY=;
+	b=6oaUqfs4l0YpeHeZkSdFVSOYB53ZAY89cbeDdzJZYIpMs+s8cntlPR3VtCk0/UaSvj+ZSy
+	Pzw0IaE9Vcv9bNVJvf6refsc3WMVatzTnIK70x8FaKenC15Tbj318HU8sBt7yq9G9bHy0t
+	nwXy82fHhhrGcEXKyq/dzs5yINMsULs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oGEsB6fb;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0530D60126;
-	Thu, 19 Mar 2026 11:13:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEB0C2BCAF;
-	Thu, 19 Mar 2026 11:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773918785;
-	bh=4aGhCkvep3z4IGyK/eGTBo8Z0Wlsdk46Z7iUmouA25s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oGEsB6fbV/dzhN37U1+RQ28sdVXA7PV+Jhd23VCCc+m5vRC4YFVWL63sjPl5Z83UT
-	 sHcQuNkGTTugbpeJ6266kYcCVb8QGuK0LQEOzfsKwPsBtzNJWezcytbztyPa1gmuVU
-	 FnTYCjFRtbID+jp/GOdlTRMdpbmi04RQdpjF1cgvAQI/zlwGyb5E4RzCzSY9j0DDDW
-	 WbM3MsTVHumEgm9UduB1aKyeF1dvNhib7upT+Urp//4wdQ8tZC/Ycb7JeGBIi0bBGO
-	 g2W2/yJ2QSAneLThgB8/4GckV6yVcR0IKiphUzjGSnK8jsFXBv4JxKClFa3r933o+e
-	 eXabq9uB5ahtA==
-Date: Thu, 19 Mar 2026 11:12:59 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>, 
-	syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>, willy@infradead.org, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com, 
-	syzkaller-bugs@googlegroups.com, dev.jain@arm.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org
-Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
-Message-ID: <024ed30f-db2d-403d-ad3a-3e74a55c6a4a@lucifer.local>
-References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
- <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
- <10e5f1d6-077d-4783-aa16-6c8b98cb9e74@lucifer.local>
- <c3defcfd-74f6-4e70-b002-85bdcba44df9@kernel.org>
- <b963c391-8576-4351-b121-67ab9a9b2a1e@linux.dev>
- <8ab10631-4672-4196-b32e-7c5a01707424@kernel.org>
- <ecedbb39-2df6-4300-99de-a56c7490c3d9@lucifer.local>
- <37b48d94-9576-4529-8576-d4ed615d4768@kernel.org>
- <b5e33e17-86ac-4587-903b-b277fe5b752e@lucifer.local>
- <5a4fc5ba-ab0b-4294-9577-9b5ee30b2c56@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="f/0gIRDK";
+	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773919677; a=rsa-sha256;
+	cv=none;
+	b=qnpoyGZPwlFfEOKG0o2QvFXKYnOrowDHrsU9LzPV2yC28wSCeOFwS4dZAlWuAl37BnhSN2
+	ntWkKsDANeyQDGev9M9aBx8YHrJHrkI4wzVmjnhfG8GOoEdmg1zz6YU/QMJwde+nB1Yar0
+	zRnR0gPa3T/CePXjtqqCo9NeqOWeBzc=
+Date: Thu, 19 Mar 2026 19:27:28 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773919675;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zHg6oeL1L67eEN+OOTKjMfILFxz6m+HpynbYij4jWJY=;
+	b=f/0gIRDKYIGFjoBCyhy9k0oBAyFKXTaiP0YEzB/zChPb3R854LS9eegHRQMTKGFBH3W/Wv
+	mjiOYqZcGbCQUM6Ra99kfUaXyacjfh2gDQx59QvZYwacby400FXkJg76LSl0pWvbmwY8Cr
+	4HOKkfVt2ow6W/LSiCNlIsAjXsSup6U=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] slab: create barns for online memoryless nodes
+Message-ID: <7uyhaxzup5b4qslhf4wnbv4qlafulvlpbn5mpalvurxrlaolvf@2tltqo2qmrsj>
+References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
+ <20260311-b4-slab-memoryless-barns-v1-2-70ab850be4ce@kernel.org>
+ <4xvvslwdcqafc2yfthpgv7panejdgmbdoueqiqkaeikohjutgx@3imnb6zlk6ew>
+ <4659c675-6949-4295-b385-1ab26921a975@kernel.org>
+ <jwlqiygxlch5gq6g3vkwynrpndjwcoxwice2hmvim3tvdfubp4@je5ldr7pa5f6>
+ <5d10a43f-15d0-4af5-bacb-9924629066a0@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5a4fc5ba-ab0b-4294-9577-9b5ee30b2c56@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8B8B21C0010
-X-Stat-Signature: ebpm8opdj39iqcir3u6upkfjqmcfkntz
+In-Reply-To: <5d10a43f-15d0-4af5-bacb-9924629066a0@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 4B9D41C0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: fquqxmqmffc8gap8w7trkou41rijff57
 X-Rspam-User: 
-X-HE-Tag: 1773918786-32177
-X-HE-Meta: U2FsdGVkX1/6oYp177GiV7QlpD82YzdSIh6rCVYQoX2DL8bgXwLA2XVZzUVEN6EpjSCN4zKZmUfggWsjTAGzEysz8MGDd4Vl+w5Bk06BncKpw6f8IhoZg4gH1mYYjdpRREkZcGNUOYGKuIhk8ncTbiFOZH5ZLLJ0Ob8PrlcR0RH9p9J6QnySsna/XRLx/sS1LiWS/1AJEeRAkorxQj0RTxwUNj04/LCfPdW5aLRDUdllya/kXhMeTvOpEr8s+DLOmcuI6QnF7forFbMPGMdvUWSWVQi9wFxD/YUA/uu1AG6PxCbQ/BvBAwP7DVdOxW6qslOVeLSBxrGIV1UsjD9Cq2uDpQyFPPUO4Ss9/2B0mdKhi6XpLdWo6VZjq+VYDP0N8Ol7r3ADXeo0vSN1no6Ilj2mcNs4PRCWOXD1hB6UbF2gV4QiR7Ar+MJgkECQhHZn0/eYG5R6GnHUSopCLGdMiDLxME6s8ptE0Bkw1Q0Qo8meg9XlwwkHhesAV46obh7WNLFsZRcPy9M4c0dxGXU1R5CLeQ840K7u2eKaAbB+gVZ53IldwvrAV4g/cPcyZM8pt09rihMDbLLsD8bDmdXZUpeXiQjGfbZOET38+W7fDehw8lfgFjPCCqYFK4FLkFgf6wn/+cLzUFThzJe1NNooozyoAobSEjaqYj1VB6V+KzC2HoJb7TrSDb4Nq/wk8g9wnVaeZ+GbJFj/8WVGxrkEDBybaF/IjJ4FQ3BLkP6x3sZGurgvlCdocFZO1v0TZ+l8zg0Nmw8Ro9VK2/wvre88aDPohx1fQ2oNEuutT04KlXJKFSLxSg9DEuXXsoRja7eLcGJpWhJjZ60wsQX9U6FsUbr6tMGCDMpo5l4ovsewyVov7IJNKk/hOEpjo6AHUwN7AFkWwrTg4726NR7R+rzqnQ79Syc7617q9Kzb7D0koZcJbQ3Cw7QcOf9GJAjbkDSXDSCUSI8+A4A14VVpz+O
- RuRjMgSM
- g4KIw7nAAcC6KtBSJyaBCA0hlfosO+XAnXWXEZndAiSGPkYjlcVGshCzg6q/LuVYQzugVgwg1bfm25lJ0k+T3nmlRegfc6339GrbWAlYR/GPrforitwhFQYXk+SbimpfblgQOiaamRDdEytsZq/7BK6NBpJ4KDZoOETXeXGgf6PyfkZuVaRqE61vL7MMZe12tf9cTkF8xLutAD5qhGvbh3Wrm+m94nUBR3G8oEqvG4liP8gscoxrpV80UD0A4qPp6z7L/9qN3Y4nn1iZQTEBxDM7+gLbZ6icKGS1Bu2hK6Ti+FCzjtpsrBsL1PweZVi9XLc4wmwm6rpDCYTXl6PKO1jVkXgt7Tq773lXygAjluzVMft6gSS3nKLKxHDdFjTaRNFrcQplbC6yGQTKGj75GgOQjKQ==
+X-HE-Tag: 1773919677-873444
+X-HE-Meta: U2FsdGVkX19xJYCHKjxOBZF5gJpSvM6u7xgusCAsEVLXuh1h9mD6uMlsEOB9AwrjW5fkVcR+ZwWVSwpSu84QsZqXI1TchmXEn0hMNCBhx5IwD5Of/yS+am6u7eMYMhW64CIXqWGmc9QsRDZaZ34Q8jK3+O3C1rZg5h2klUGuoNAnM752bQX+Hz50Sze7BGYkNQNuY5zlffx2VJWNNQbmy28Ciz0z9xKBwntB7LjCMjpiirvUmsRbIozn26ki4aRmqH9fRXjli5/7gA1QuYyCei2ZlGgg0M/jfSZR9s3QdCB8lru60oi9jMjG0iYuYbnK0whAnrX5Fn+UoKHJljz0/s7EARuslVJqxfYjF/rbr4yNFDVKk4+egMeAuIsAuNTWJ4vran1vgddf5uJ8LlSLxTj8F/LyMUNTynmtZyqkVYlb7LPYpZ7njAwJPMAMcB1c0qLwNOLeqOl9zIdUHg3CI7u4obMOEU2XIXdvS6GYko/WUCoQ4YSY0SB268zvRjUZhWbsWtoMACrrwLXXj10ZkRMQiVlJnmdIOAPkaO/EXlU4aaSev1bWmZPtHtFSAo807b+IcCRu/2iWA5JI1ZB3LPx4WGrs1Tpw3pT1JDuPDcWxHQ/d4knag1Vt4bV4N3q+o+ICes+Qm5I9Yuz70y/cfIuMjuIBHmQuMEPyHi9/DNF2Uf4m4MIxHNqQ5tluJMpu2NMH6cdlGb+HxJrQCTmaYrnvtttjk/Lx/3ldlqApZh3C3e3ijapaVZJa3m+KBX2S05O0M0LABMAIw5C5tcxb80mrKMzDb7nlK7P2gvTsgex3lNbF0kuabnI9lva5EX17BSwEyUK/ltMbZ8cTxGsam6/mfZMPy8BDLBWTQs1+E+kfHhTiEu2bMYPGxnFXcz2EYyALTxGxnTENXRv/an/wU2UabPinWh0msybF/Dk9nhoNMOW45n9hFMU4PelBUlvqgGKPqT38aNK/PxcmqKT
+ 2hBD5rt1
+ TWOgba+zTlXKnVX54H5zTMSgHMkQapgcUDAGDrzi60Kj09M40SbsJiTkPPZZMtHdBsLieHd/Kl4kPpEMFGC4YDspUpxaukmiTqpgW9M78Z+d2hsJW3Ib6utrUb3Lv29+XbkHE+F3ekZ+ydq5373Rjz8Lm1En7DjK4FJmW1yZPKgoLgRqqyVUn5zsmGTvLZ51md6ktMto4dt+rZHZg68JftgehLvxPEHnExxphixUt/SiyQOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,49 +93,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 12:10:36PM +0100, David Hildenbrand (Arm) wrote:
-> >> "This isn't the kind of thing where you can just jump in with a one line
-> >> patch and actually be helpful, sorry."
-> >
-> >
-> > Yup, so again really I don't think the kernel should take the xarray debug patch
-> > until it is discussed and verified as correct on-list.
-> >
-> > See the discussion with Vlastimil.
->
-> Agreed.
->
-> >
-> >>
-> >> So I am clueless if there is a real problem there or whether it's just a
-> >> false positive. And whether (if it's a real problem) the simple fix
-> >> would actually be a good temporary fix ("make other bugs more likely").
-> >>
-> >> I can try finding some time to look into that, but pagecache code is not
-> >> particularly the code I'm familiar with ...
-> >
-> > I don't think we should waste our time on it, willy's series should be yoinked
-> > until it can prove itself for-sure well behaved.
->
-> I hear you. At the same time it has the smell of "test case fails, so
-> let's remove the test case" vibes.
->
-> Well, arguable, it's worse than a test case that fails :(
->
-> I'm fine with dropping that asap. At the same time, I hope we won't lose
-> our reminder that something possibly bad is broken upstream.
+On Thu, Mar 19, 2026 at 10:56:09AM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/19/26 08:01, Hao Li wrote:
+> > On Wed, Mar 18, 2026 at 01:11:58PM +0100, Vlastimil Babka (SUSE) wrote:
+> >> On 3/18/26 10:27, Hao Li wrote:
+> >> > On Wed, Mar 11, 2026 at 09:25:56AM +0100, Vlastimil Babka (SUSE) wrote:
+> >> > 
+> >> > I had a somewhat related question here.
+> >> > 
+> >> > During memory hotplug, we call node_set() on slab_nodes when memory is brought
+> >> > online, but we do not seem to call node_clear() when memory is taken offline. I
+> >> > was wondering what the reasoning behind this is.
+> >> 
+> >> Probably nobody took the task the implement the necessary teardown.
+> >> 
+> >> > That also made me wonder about a related case. If I am understanding this
+> >> > correctly, even if all memory of a node has been offlined, slab_nodes would
+> >> > still make it appear that the node has memory, even though in reality it no
+> >> > longer does. If so, then in patch 3, the condition
+> >> > "if (unlikely(!node_isset(numa_node, slab_nodes)))" in can_free_to_pcs() seems
+> >> > would cause the object free path to skip sheaves.
+> >> 
+> >> Maybe the condition should be looking at N_MEMORY then?
+> > 
+> > Yes, that's what I was thinking too.
+> > I feel that, at least for the current patchset, this is probably a reasonable
+> > approach.
+> 
+> Ack.
+> 
+> >> 
+> >> Also ideally we should be using N_NORMAL_MEMORY everywhere for slab_nodes.
+> >> Oh we actually did, but give that up in commit 1bf47d4195e45.
+> > 
+> > Thanks, I hadn't realized that node_clear had actually existed before.
+> > 
+> >> 
+> >> Note in practice full memory offline of a node can only be achieved if it
+> >> was all ZONE_MOVABLE and thus no slab allocations ever happened on it. But
+> >> if it has only movable memory, it's practically memoryless for slab
+> >> purposes.
+> > 
+> > That's a good point! I just realized that too.
+> > 
+> >> Maybe the condition should be looking at N_NORMAL_MEMORY then.
+> >> That would cover the case when it became offline and also the case when it's
+> >> online but with only movable memory?
+> > 
+> > Exactly, conceptually, N_NORMAL_MEMORY seems more precise than N_MEMORY. I took
+> > a quick look through the code, though, and it seems that N_NORMAL_MEMORY hasn't
+> > been fully handled in the hotplug code.
+> 
+> Huh you're right, the hotplug code doesn't seem to set it. How much code
+> that we have is broken by that?
 
-I mean hopefully once we have a _working_ version of this it will get reflagged
-again in any case.
+This probably needs a bit more digging.
 
-The uncertainty makes this worse than a bug report unfortunately because it's a
-maybe/maybe not and there's literally nothing we can do with that :(
+> It seems hotplug doesn't handle it since 2007 in commit 37b07e4163f7
+> ("memoryless nodes: fixup uses of node_online_map in generic code"),
+> although the initial support in 7ea1530ab3fd ("Memoryless nodes: introduce
+> mask of nodes with memory") did set it from hotplug.
 
->
-> --
-> Cheers,
->
-> David
+Yes, this really is quite an old issue. It looks like we may need to dig
+through the git history a bit more carefully.
 
-Thanks, Lorenzo
+I'd be happy to dig into it further.
+
+> 
+> > Given that, I think it makes sense to use N_MEMORY for now, and then switch to
+> > N_NORMAL_MEMORY later once the handling there is improved.
+> 
+> So I'll do this:
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 01ab90bb4622..fb2c5c57bc4e 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6029,7 +6029,7 @@ static __always_inline bool can_free_to_pcs(struct
+> slab *slab)
+>          * point to the closest node as we would on a proper memoryless node
+>          * setup.
+>          */
+> -       if (unlikely(!node_isset(numa_node, slab_nodes)))
+> +       if (unlikely(!node_state(numa_node, N_MEMORY)))
+
+Looks good to me.
+
+I've gone through the full series, including the range-diff updates, and the
+rest looks good to me.
+Feel free to add my rb-tag to three updated patches. Thanks!
+
+Reviewed-by: Hao Li <hao.li@linux.dev>
+
+>                 goto check_pfmemalloc;
+>  #endif
+> 
+> 
+> >> 
+> >> I don't know if with CONFIG_HAVE_MEMORYLESS_NODES it's possible that
+> >> numa_mem_id() (the closest node with memory) would be ZONE_MOVABLE only.
+> >> Maybe let's hope not, and not adjust that part?
+> >> 
+> > 
+> > I think that, in the CONFIG_HAVE_MEMORYLESS_NODES=y case, numa_mem_id() ends up
+> > calling local_memory_node(), and the NUMA node it returns should be one that
+> > can allocate slab memory. So the slab_node == numa_node check seems reasonable
+> > to me.
+> > 
+> > So it seems that the issue being discussed here may only be specific to the
+> > CONFIG_HAVE_MEMORYLESS_NODES=n case.
+> 
+> Great. Thanks!
+> 
 
