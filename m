@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138411091900
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:39:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6C171091902
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CE7D6B056A; Thu, 19 Mar 2026 13:39:09 -0400 (EDT)
+	id 3618C6B056C; Thu, 19 Mar 2026 13:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A6536B056C; Thu, 19 Mar 2026 13:39:09 -0400 (EDT)
+	id 339546B056E; Thu, 19 Mar 2026 13:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BC1E6B056D; Thu, 19 Mar 2026 13:39:09 -0400 (EDT)
+	id 2018A6B056F; Thu, 19 Mar 2026 13:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A1BA6B056A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:39:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18D42C177C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:09 +0000 (UTC)
-X-FDA: 84563523618.13.25A3A8D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 15BF2A0013
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bJM8tMQS;
-	spf=pass (imf25.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C6886B056C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:39:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC0325A042
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:10 +0000 (UTC)
+X-FDA: 84563523660.03.B3ABF12
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2BFC94000E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:39:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EF2BegOD;
+	spf=pass (imf01.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773941947;
+	s=arc-20220608; t=1773941949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G/jvmDsSdenM6skBubfPrd0khnqGba7F4XN6aWwL11s=;
-	b=AD5KviLNCDgt34iz8OucfB0Vj1CAy2hQ3ySWk0VCO3Tw6JnrQOuWUl2In5N8lWp0RRElkv
-	Gt1uMy6iY503szadUMtqiTW6yjpkLbcij0nksSlqEUJnn/Q6pxFjU2uBTa9xA3M0x0rC2J
-	09OtLc5m/4ApY7K32/W+HW48meymx8s=
+	bh=dNJ6Lq8/T1XPjKqwxrWp5F2Bbd2jRHO9QNryMAsqUQU=;
+	b=hDtTRcqQo34eFG1eHFrHugrGoszH+3aeZjar0629xX7l8RVAx0vDNQtyc/StGWwDJL1/Ii
+	0xuTyYpKhH6OnycD12zXhwgMKv7qlczBlEO3YdVw5xsWu/IjnYAGPxyuRLBWWJ/cEymYoB
+	6rZv8QKrjOaq5bnknHtcxNO7SXfVIiM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bJM8tMQS;
-	spf=pass (imf25.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EF2BegOD;
+	spf=pass (imf01.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941947; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773941949; a=rsa-sha256;
 	cv=none;
-	b=fPfYCt5sCC3j0LDWqhSnuPX3BQ52N/xKUeZWwCYEzKLE/uVwCy0zxYxY3I/2fTgIvzux6g
-	Tlnau+yzBg1AO4QiXiZFNiwE0e6eKwriEdgj4nTJ9rKy0tPAlUklRqrLO0x9Utz07sXzjo
-	MR0elVcwyJ7mwYoWCG+UWbOymTSVlq8=
+	b=SziA/X8BhRUxVVjn1jAAR5Msd9QA+5fCTve+HpFZFpers53mxQf4bOwSQH4Y2y6s6eLN/T
+	9oB/MHl3AGdIU7NPHSq3RvyHAcukTYjaGteppKn1xkyn2KTD/Bg2aQeIwmvqD2Ls0/q+Oq
+	/7OVkEPxeFWbina/WtDj6QzajkD+G50=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773941946;
+	s=mimecast20190719; t=1773941948;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G/jvmDsSdenM6skBubfPrd0khnqGba7F4XN6aWwL11s=;
-	b=bJM8tMQSgc6w8YG0CMzmCGjOd48rSBJNSQwO+MhOxcNh/rP/a8hN768p6QJPYpIhk4Rzqh
-	L/u4UMiGkcz5/0m4rH6UhVLJPR60tYmH3B1MZKtzU02haDikb7nTDZcrfCwWiBi7onZPlM
-	PuQM4GczXy5XWop/28v42Ugrr/LOIj0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=dNJ6Lq8/T1XPjKqwxrWp5F2Bbd2jRHO9QNryMAsqUQU=;
+	b=EF2BegODVZb0Jh4pmYXMvdDbOGQhBTzyB6+a8rL3Fz33SCPuVwo6gslNuQUNgwo3yMKipu
+	FRnmRmCEyl+tHl3IPjKPHJ8W5ZIzy7wnuAmsC8AHx0GLX2f0jKO5FnINvGyuFfcYXED9VZ
+	Lfz+pHfHQ1JwPny5ZU3YbCNwFsgv9Xk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-vOcC0yM0NdWBC-rmiE8CEw-1; Thu,
- 19 Mar 2026 13:39:02 -0400
-X-MC-Unique: vOcC0yM0NdWBC-rmiE8CEw-1
-X-Mimecast-MFC-AGG-ID: vOcC0yM0NdWBC-rmiE8CEw_1773941939
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-31Ev_X7TNdGagwe5I4LhcA-1; Thu,
+ 19 Mar 2026 13:39:05 -0400
+X-MC-Unique: 31Ev_X7TNdGagwe5I4LhcA-1
+X-Mimecast-MFC-AGG-ID: 31Ev_X7TNdGagwe5I4LhcA_1773941942
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3593E1800464;
-	Thu, 19 Mar 2026 17:38:59 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8A0481944F05;
+	Thu, 19 Mar 2026 17:39:02 +0000 (UTC)
 Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.80.194])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E99A830002DF;
-	Thu, 19 Mar 2026 17:38:55 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7068D30001A1;
+	Thu, 19 Mar 2026 17:38:59 +0000 (UTC)
 From: Waiman Long <longman@redhat.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -96,25 +96,25 @@ Cc: linux-kernel@vger.kernel.org,
 	Guopeng Zhang <zhangguopeng@kylinos.cn>,
 	Li Wang <liwan@redhat.com>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH 3/7] selftests: memcg: Iterate pages based on the actual page size
-Date: Thu, 19 Mar 2026 13:37:48 -0400
-Message-ID: <20260319173752.1472864-4-longman@redhat.com>
+Subject: [PATCH 4/7] selftests: memcg: Increase error tolerance in accordance with page size
+Date: Thu, 19 Mar 2026 13:37:49 -0400
+Message-ID: <20260319173752.1472864-5-longman@redhat.com>
 In-Reply-To: <20260319173752.1472864-1-longman@redhat.com>
 References: <20260319173752.1472864-1-longman@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: hmL-c6m0ugK7mtEFvJzM96g4WLagOtTyz11vVv3IiHw_1773941939
+X-Mimecast-MFC-PROC-ID: OnrJ5fMTU2x34mf7-dFTgNJMduLNTngoc5sqaSsGgBg_1773941942
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 15BF2A0013
-X-Stat-Signature: sqhqxh55d98kujugehs155pwfzhgz9f7
+X-Rspamd-Queue-Id: 2BFC94000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: r48o3nk6i4cn9yerraqq9u1c89ibzo94
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773941946-78254
-X-HE-Meta: U2FsdGVkX19c/iMmbauXRtyBSiMeqINFFD3IkAq44xuaj5UJdbZUsDi56io3jAQuf/y3S9+6hVYny94snNQaMwBfO+iMULn+J1aihIDFFXgwUNRJUMHTR6djzQZD1sRcfFTAh4Ef4vCUPSPtCiNBN8UZR1K59k2470YA2aQrj7YF2sqNnEzY1VwrAcjPca8T7WvthuUp2aE3aQqUHwdDP+XMHbPMNCnIRqovxS9WK9F9Nt6Ppt5470BoERr6AdfNy7V6HBtblJfnE50BQ97kjWSv5o1AqkIOCJEfZmkXu0tB7uiipQuq+G81st/ukR9qr5EjTLRC5FIikhaITwgwozKH4dhRoKyv7L2Z06jUyATqoFPM7m9JKt/AwUq66l2TDErrLI4txDI6hpctCo6Pkn/uStpAAPFOhtt1wB9co4p/aXWtIFqO19NNkrEM+uEhwhR4GV+eTD8bxjbjf7qOxXR/wD0jVvFLNwXEUOg/alKQHIyX/1QLxBNqGKFOBCvyCulwkuKwlaP5pU3jvqqRLlcEKyCY+KG7vqz6h86gl25gFCrhQgVQe32xUlgufwMezTycfI8SdzTGDr/YOxLj6koNkMnSnpmS8stp/PwU4EBDvYuQKQ2hQe53eKxI0DbeTjfiv8+xX7YzYbOyRTQXwMOfsyQIks4TiBFS1959GVlvCvZcJRYTHRwtQZBmcxSknRvcrpeOL+3WaPImTqO5QuodouJy4l4W7Poko9YeCsnh1U1Yzx7iOYdnPpNqs+kEn+IOf4O+BaZa3LbfqhedoYkkeqpnsQANj6ALeDfBvQf5a568Sf0si3TiGLfqPP8bhrjGkN3GkN3orUhmQtR/N73QCckluYOcLotQklhxPkVf+gpKz0P3ffts2Ir9F4hsRJV7rTT8jn1R5Y2CuiddSfmwF9xhSrHXNOyRiGj+nh+KxGvYJHUWULc8u4JIE1v5+qTZEspIUCUYrc+xbZ5
- iO5c9fyV
- nklH3C3GZpF2AIWViq4018eyl54cH+VakRCwvn7dywOUNwPfi+a6oif3HqeBT25DRJ1mjYM4a9tSKiEkS79DE7JshRjoZsGCOY5S1ARAouaDshv/OBV4HeqCmT9mB/yLs6hlsimbOElhOpobTG1CTpoeqn572GTfmrFUVna3kUXAy0RAD4IT9s8as/6gYPNmpVmlaGMriJ6Ns3+DSOgQgWu48HADcZls1CSelkIVFw0G6YLpAY0WAjNVgyvXQT5O+ugZIMs0dIdI5gRmRW8WpmXK5fydAYY3NNUXWzBaZaExC9YyqVVSIm1ORVOWXuEn7eMAGiBF3k2UyIfTBZCpXwb9nrQ==
+X-HE-Tag: 1773941948-878600
+X-HE-Meta: U2FsdGVkX193XZZ9RueKFZIgJWyce9gllwppGh4dmOc7x6htEDSFeBbxRN0uhkoDf1IRaLvtwmx58osW8892O/W9gYfnxuDUhF5FsTgzxXgD1Px9JjpeZdPkKMl4Exp+sGzzUTgvtlBbfKtNWgosGMuBS+FQAjvgYrUMYRfJXlefSx1z2BJY5oEhOq0XW+KE/Wb40/8rXZZZJMYAX5tfOXegbZg0tIwAWpKcPrrDcbqiuusXynRhff2b54XrvXxx6Im4JmVHkhLx0yPNkmdyi2DuBmw3Reqa2P0ncvJaWqVicLY7/fa6no/pMzfYwHZEBGwrN8xT3XcSrDRLBz+NJ3zhE130qNXngWZAMzxNPPmmmEY0K5vduEmlgjVQikIfzlrR4s8onnhjUrwULcs4lPDtJlSlQkAj2oMU2Qf1sX39aL5h45QXvHs4Mlhgbi6BwdIrUDPoFVCZ3EQBB1JZ3CFUKBfjcCNAPrR6oI3/gzmAh4Hkio1pdXZiWjbPp7SZlqvVO2haeLtgw9KNmGh/npvPromtlqWD1H4kiQLi0rok6URO0Sh8BXDveMjS9Dq7x1syvFewk5yt17uJ0h6+kWeM5ob7313/lOAxX9cCtR32syPebGzoTiP8XS79qw1IQ/XqUM4qmP4/HGc0xPBsSpDi9O/8MiGDoiHgMbv8cRnk2KdPhKjNOhaFWGlBH7x0taDSc1OVZetE1glni0i10yaLT8zpqLwKsLhfkQMg9PqpdXjSiO8brgVvi3r+KxTzv4JuaGzvKeP7i5NAIALDuUDgFCLt5CTVWARc6rJvJvmLTu5QUltz4piz6SF5WPNoi49UEA+wlR2FFimpDSQQ/MSHwRBvvkC8vQgn59DSOOFlGkVGWfdb0n0Z5fLayYnghHL8ZLmBFRlu1yBGJgw497BIf6orrIic9rhzNvC2Vz7KZkPsnZCPw61AcPntNlzDqmP75KC8JEXknL/oDbd
+ mBD9ZlWC
+ TnAcL31AZUV9atjQuG//58+O1aQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,69 +122,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current test_memcontrol test fault in memory by write a value
-to the start of a page based on the default value of 4k page size.
-Micro-optimize it by using the actual system page size to do the
-iteration.
+It was found that some of the tests in test_memcontrol can fail more
+readily if system page size is larger than 4k. It is because the actual
+memory.current value deviates more from the expected value with larger
+page size.  To avoid this failure, the error tolerance is now increased
+in accordance to the current system page size value. The page size
+scale factor is set to 2 for 64k page and 1 for 16k page.
+
+Changes are made in alloc_pagecache_max_30M(), test_memcg_protection()
+and alloc_anon_50M_check_swap() to increase the error tolerance for
+memory.current for larger page size. The current set of values are
+chosen to ensure that the relevant test_memcontrol tests no longer
+have any test failure in a 100 repeated run of test_memcontrol with a
+4k/16k/64k page size kernels on an arm64 system.
 
 Signed-off-by: Waiman Long <longman@redhat.com>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ .../cgroup/lib/include/cgroup_util.h          |  1 +
+ .../selftests/cgroup/test_memcontrol.c        | 23 ++++++++++++++-----
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
+diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+index 77f386dab5e8..c25228a78b8b 100644
+--- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
++++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+@@ -6,6 +6,7 @@
+ #define PAGE_SIZE 4096
+ #endif
+ 
++#define KB(x) (x << 10)
+ #define MB(x) (x << 20)
+ 
+ #define USEC_PER_SEC	1000000L
 diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index a25eb097b31c..3cc8a432be91 100644
+index 3cc8a432be91..2c3a838536ae 100644
 --- a/tools/testing/selftests/cgroup/test_memcontrol.c
 +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -25,6 +25,7 @@
- 
+@@ -26,6 +26,7 @@
  static bool has_localevents;
  static bool has_recursiveprot;
-+static int page_size;
+ static int page_size;
++static int pscale_factor;	/* Page size scale factor */
  
  int get_temp_fd(void)
  {
-@@ -60,7 +61,7 @@ int alloc_anon(const char *cgroup, void *arg)
- 	char *buf, *ptr;
+@@ -571,16 +572,17 @@ static int test_memcg_protection(const char *root, bool min)
+ 	if (cg_run(parent[2], alloc_anon, (void *)MB(148)))
+ 		goto cleanup;
  
- 	buf = malloc(size);
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
+-	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50), 3))
++	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50),
++				       3 + (min ? 0 : 4) * pscale_factor))
+ 		goto cleanup;
  
- 	free(buf);
-@@ -183,7 +184,7 @@ static int alloc_anon_50M_check(const char *cgroup, void *arg)
- 		return -1;
+ 	for (i = 0; i < ARRAY_SIZE(children); i++)
+ 		c[i] = cg_read_long(children[i], "memory.current");
+ 
+-	if (!values_close(c[0], MB(29), 15))
++	if (!values_close(c[0], MB(29), 15 + 3 * pscale_factor))
+ 		goto cleanup;
+ 
+-	if (!values_close(c[1], MB(21), 20))
++	if (!values_close(c[1], MB(21), 20 + pscale_factor))
+ 		goto cleanup;
+ 
+ 	if (c[3] != 0)
+@@ -596,7 +598,8 @@ static int test_memcg_protection(const char *root, bool min)
  	}
  
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
+ 	current = min ? MB(50) : MB(30);
+-	if (!values_close(cg_read_long(parent[1], "memory.current"), current, 3))
++	if (!values_close(cg_read_long(parent[1], "memory.current"), current,
++				       9 + (min ? 0 : 6) * pscale_factor))
+ 		goto cleanup;
+ 
+ 	if (!reclaim_until(children[0], MB(10)))
+@@ -684,7 +687,7 @@ static int alloc_pagecache_max_30M(const char *cgroup, void *arg)
+ 		goto cleanup;
  
  	current = cg_read_long(cgroup, "memory.current");
-@@ -413,7 +414,7 @@ static int alloc_anon_noexit(const char *cgroup, void *arg)
- 		return -1;
- 	}
+-	if (!values_close(current, MB(30), 5))
++	if (!values_close(current, MB(30), 5 + (pscale_factor ? 2 : 0)))
+ 		goto cleanup;
  
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
- 
- 	while (getppid() == ppid)
-@@ -999,7 +1000,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
- 		return -1;
- 	}
- 
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
+ 	ret = 0;
+@@ -1004,7 +1007,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
  		*ptr = 0;
  
  	mem_current = cg_read_long(cgroup, "memory.current");
-@@ -1679,6 +1680,7 @@ int main(int argc, char **argv)
- 	char root[PATH_MAX];
+-	if (!mem_current || !values_close(mem_current, mem_max, 3))
++	if (!mem_current || !values_close(mem_current, mem_max, 6 + pscale_factor))
+ 		goto cleanup;
+ 
+ 	swap_current = cg_read_long(cgroup, "memory.swap.current");
+@@ -1681,6 +1684,14 @@ int main(int argc, char **argv)
  	int i, proc_status;
  
-+	page_size = sysconf(_SC_PAGE_SIZE);
+ 	page_size = sysconf(_SC_PAGE_SIZE);
++	/*
++	 * It is found that the actual memory.current value can deviate more
++	 * from the expected value with larger page size. So error tolerance
++	 * will have to be increased a bit more for larger page size.
++	 */
++	if (page_size > KB(4))
++		pscale_factor = (page_size >= KB(64)) ? 2 : 1;
++
  	ksft_print_header();
  	ksft_set_plan(ARRAY_SIZE(tests));
  	if (cg_find_unified_root(root, sizeof(root), NULL))
