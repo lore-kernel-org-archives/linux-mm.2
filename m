@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B8C1090223
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 13:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A2E41090223
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 13:00:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9163F6B04B8; Thu, 19 Mar 2026 09:00:46 -0400 (EDT)
+	id D81EF6B04BA; Thu, 19 Mar 2026 09:00:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ED4E6B04BA; Thu, 19 Mar 2026 09:00:46 -0400 (EDT)
+	id D5B136B04BC; Thu, 19 Mar 2026 09:00:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829DD6B04BB; Thu, 19 Mar 2026 09:00:46 -0400 (EDT)
+	id C96196B04BD; Thu, 19 Mar 2026 09:00:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 70EBE6B04B8
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:00:46 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5C771405A0
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:45 +0000 (UTC)
-X-FDA: 84562822050.30.B0AF229
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B74AC6B04BA
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:00:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F4D21A04E5
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:48 +0000 (UTC)
+X-FDA: 84562822176.21.2D1646C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CEA4210001A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nkialUqi;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id A7E2420013
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:00:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OA9gxtDY;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773925244;
+	s=arc-20220608; t=1773925246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MVFsMpOYfCeLiOKZHgwfOO7Q6on97T0ELZB7Ic+zPTM=;
-	b=twokjgbrbqFz+nDVBa/SjXyNlkOW8x0DR52MsmpOqPurbAsvm1c+XSV8Vmn55TVrDRcbDi
-	u4lC8jyS5ZlyBdzVMLmXGlAfS+mma5Egc0bKqo31UhOKPFkq5cEC+uFm2ClFS6k9QQTUco
-	wWt5XfcA9MvL9lLOiIIRSpAOAH18uxo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773925244; a=rsa-sha256;
-	cv=none;
-	b=cVbErgkmuTFyQ9vR7FoTLnelKASrfI4OnMBds15F0BL313zvfgwfzL3yclodA4ktk1NWXo
-	N7O2txt6VlFnIYEKowsVzKFiJDf/Ri+KXBD2+3mAdo6/dnF/QhuTKrzOYLU5DAkEX6MH7D
-	RpLwpPowk2zk7kgONS2vfZwiPQb9CQg=
+	bh=GTrq3nvyzbNtPUQROwrYGopVFAaxZGtsWbKSU+liMKc=;
+	b=qbkMxiHKj9ieht6RPYhYd0SL7nr4YQbkLTjsPMw5hA4oR3H6YH2/v2Fd7MbeeU13ZOzd3k
+	QgXEI7buKgxTWJfCHKOkqlLZYg9W0UOOsDPwLpjYhf4EedlrGzsHpMxo00M5u9b1x1TLOL
+	m4WWQ4yMyePvUMTri9Xw3Z8TkJoZEgw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nkialUqi;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OA9gxtDY;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773925246; a=rsa-sha256;
+	cv=none;
+	b=AiqG+b1iB6NWE06oNFkuqHwEXxWw44ZykRFvbYp552XzTIY+oe5OlDnQXguzcOHOO7t/Ja
+	7J1qJIBOEMEARxqmdbEtAN0aXqOwNKDkypR1XqaP78LO8MbamYbEfXggiQ7WoCdcthLnyA
+	ejneSpP92ZfAkNrjUS1IKbKcSvkCyLA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 012FF43C59;
-	Thu, 19 Mar 2026 13:00:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E223C2BCAF;
-	Thu, 19 Mar 2026 13:00:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D25A9436A3;
+	Thu, 19 Mar 2026 13:00:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9DAC2BC9E;
+	Thu, 19 Mar 2026 13:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773925242;
-	bh=jwAcjIvj94lIaFqSDU5rGJUwe2UvHWTByimGr9pyvys=;
+	s=k20201202; t=1773925245;
+	bh=9GL71TGtr4Xl48AxLVp+Sw8hVkXKWEDVrPJDeJyAQmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkialUqirVob79VJcXVODpVto2tm0ZpXaRVx2iJtHiGVZ9MOVVMaxvmeFqBDxo7a5
-	 FvQmMrYASCI/q9JwLy2KsJH+UDaCTyu2OO/wy5a0Ouy9ZPD0F5+GF9LybkX3ifvCjf
-	 k5swhZPcrmvw9Q7rdVgFgdVjv0pZUMnX96G96lj9+hd3xUZjictASE6ENJbrMJ/mwC
-	 qy5/5wGs5oVqpLx/U1YUiige/3UllKiHQRvOGACxLyT1bfLhzKKWAwkiScuqJWmFzd
-	 G2t1N0wO17Paz8QplizaFaZox+jE2IXxkKsCzgEPW/ZbBlrsmkUzh7rjsEOE7N6vMZ
-	 gcVUBIOFrTwJA==
+	b=OA9gxtDYCARiW/xFj3Sq62/bn+4nR4RBKTIioCsZQ28gTNNA9AcNWYSFoBaWEpGas
+	 LddWivmQh6y897zbvCavLhQY8U+wF9VqufAyVfsIP/KcCpP43VuFcu27fwppyYMCRq
+	 ZmpwL6pd5CoX+a6a/TfzSb9tBw6ND/qHm2ufVxR+5H6hAtMLSvB7BKQSb7tGtPRsYz
+	 UHA9O3fRmq76zqwEex9NpH2fefSW0+bYKjCNzvxYbanyFd4ankQcsFD4fPts6tIUW2
+	 uJMQWIrTHVw33/FrL+K6yWQWUyu+e10K9vnX0fXZwvXoBwZz97LTIsVJvBrfYJMLQS
+	 bM5OYt36Az/9A==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -80,22 +80,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 8/9] mm/huge_memory: deduplicate zap_huge_pmd() further by tracking state
-Date: Thu, 19 Mar 2026 13:00:14 +0000
-Message-ID: <440f68edcb597c28918d89b0be279d498561c89a.1773924928.git.ljs@kernel.org>
+Subject: [PATCH v2 9/9] mm/huge_memory: have zap_huge_pmd() use vm_normal_folio_pmd()
+Date: Thu, 19 Mar 2026 13:00:15 +0000
+Message-ID: <d2bfe24c36ab1cc28f3dd6bea2835fd895c1ae4e.1773924928.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773924928.git.ljs@kernel.org>
 References: <cover.1773924928.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CEA4210001A
-X-Stat-Signature: jdtsi8m4m3q4uuokzy1cmt1dqkauexe1
 X-Rspam-User: 
-X-HE-Tag: 1773925243-182171
-X-HE-Meta: U2FsdGVkX189/7a4lxFzGirWnGnXJkHZyvDERz7MazFBt1OsUuMtqfE2jAykTdy8IeXfQHCNlcE6I/GrdByDMzeZ3GdaXwgYc8S50ydPuF+v9hqOKxP7Zh6brxxHa8FPLIHabJd8swzihH3F43J7+mh9BuLjkwGiQYzxH/kTzixWeC34d4VJ7uw7T2goinntkKBCTs/3VzOcipf+0dgsaXOSv0V+ign8oVtDfXYhTwY5HgHs3iADXlSeMsRB/yUf0wwtLf9w5ydUU3tNUIBPFdX/Q2fSzMjuZLFvVwehBY3UYZEyMPSTK0Ovy/jBNnfohCDgiZzGYMU2RHBV8oq0TzxkczOE9RZfDYDEWAzzHDZi2k2nsRdSLvTOf9pP9Br0Os+3QfLFKSDfialO759K3bRR4TwPq+vdsPs/jcLfju36lTQA7Y5kTErBuviqz4qcRVnGR3ATvy/Hq9z9UWJNE2CZXqyewbEl98/9kSvy9w2JTpdU6++6w9gmCThjB5n7yWlh3kY5oqV5XxitDsUseAWMphY9dx/pYqNrEM2AGK/HkS/o3poBJVd5z4G9O422Ie+Bc+793ALAXRwe6LYdyEErfQ4/50Fc+ezZe30Vuv5TH2LVdigaa7HX9tY1vs9kG+933m2X3QRdKso4GsGp7ybFsxZdfKyLB0BQrBY0BmlGy/i77h0TfUEm+oXk0WwURUdklyZrLofsv6aUxqlfL0VUZL8Jg4eY7VSfYPVxfjLSewhzBDI9S00wm7HRaNsOK29FBK1ykqJBxJZRjKzLqN2AteROl6uJNiAUXrIjiKAN5lybhXOq5NomxL+i48ubKaV86waaOvhrMffxeLEK2ua5PPMgUi09/b6Bs0h/uYVkVtUIr8inlRzNDjR25u9YXeMV/d+DAiMtWyAYzE/l3Xt3wITcrWl9JmhgQvlcNC8U9IgAIWJi5ZlsFWXp5TCkibpoXytFWmn9YkynLyj
- sCrWEj0z
- nYs2wpW/Znu28OwO4/AJl58kGJhTkwWlnj5GAk3G2zjrWSBDT6UrCG1cpShmJ1MmDIr+CkBO/6TpkBIWvCopDxUnh4yeskYSAauWstc3K1KF5UEIMca3156yDZbK8psilI7zQ0pEj93GqgLcql73IpIiwqA2NwsboHnYAw94ld9kePn7U1Qi7U+AVCFPLDOA0oqeLuUoCOAM0mGJjF3EercA+zw8Y5CD9uPuJKRlWHoVm0M6/qdjV8UXTpQ==
+X-Rspamd-Queue-Id: A7E2420013
+X-Rspamd-Server: rspam08
+X-Stat-Signature: r5h1z1oxeiwc4grugx1kfztgzi6cz53t
+X-HE-Tag: 1773925246-707986
+X-HE-Meta: U2FsdGVkX1+GtfApJNiQj1w2rQobciRh0Y4+uOOCxzKrJ90zjO1Dcy1YbQzyEEntfEbdUU8VDkToE266/lfxlidjnOIxikc50pQ+lIK+f/eBD+nsBTmzHjizUN3UNR4tn882Qo+l2jEigbhuIvs6In7UY5sapgMPTnc1nWbzOA1PVIraWU4KmgA8gsLgum6nJ23JGK8TgY1ZxOt7NBzbn7UN8xxdRVr0iBrydhozRTM2xW2Uk4F/ncoEfSOipaTEorSeaswvRbnLTwV4lqscKS2bv2rR/reVwv/ORTzUHE04TZKStJVqhnX9Zqf+QIHmCV0DbWJ/Y2++E7ocQQy8WDRw6Mr3AOM/UxxjljSSsf694273onO2wondPyITaFxSwFjo3e74yuhcPU2c0btCWTNh9zVCZ/nkRp0ttRcavss5PZQzVI9NvJ9EobnMVcR9Bb7pqbchsp1Qnf+/TS11pX0HIgBaDlIAiGRTf3S7AqhmQUCWpVHA/Yd/ZfVt4PbZVz/PIDIsuxtfJn2WEHQyYxaNp9jOVAQcBO5TQ99OHJsoKUREWx3XSV7MyaN264eVJvx2OngOBMyN3FDzlvIry/hW3NE7vcg30ZETqvOGQY/t37laH9BoxYXEOcEES7si4IGXIfjCVjNWSc4qaYdu2lzv45oodomwP/KUvfngNaTfxJZPcFvU/8jfzJqBtipycvUzEKuzzFLa/iwKspXM9ZBwJKc8lZut7RWxNWhaWiYR+k8mzXGAEzC1dwV3ASCQn8wMsAh/kWzzFW1+EHWBYVVZ6T3eLPijei3lUppNVHVYFE5JVm6fGGvHLelExmTa90J6C9g1Pv0kmYkTUAYw15FueswH7huBBmPy2a97ulXwt2H2bF+4MacWDTtQ2XyVfG4v+T+WESyYrCQp3hJx3qXy8OgJhm4iasf/sn+V7eyOjKVsHP7zIqi3p8f48dQyXJ1fu0fCqkf20F4HTzF
+ 8uW5S9KT
+ WF/fYqaMubgTmeqfaXgEbKEMnXYme2fAOQtEPylmaMY0Q/dt8ZemOZrzCoC7+QdElAhsOP8LafXuzNMW2tkBl5ponL+LytJ/nQfYD9LLdSDpfSH6apl8ViOYqFKHzl3C2ujzamEYTbSwTCtAGUtXIJ87TwhTKS5q6rjxSGhqD+dH9Y5zwgmT+VBjryI8MVf8vYhLCmDuN5rZxzdB6v9YP4jwqvshzmKf2X/Sb0cZwiE+rUo5nOJBM549EH6sQD/yeyrMPpHJGyB5ATv2bKwMzjI/tDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,100 +103,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The flush_needed boolean is really tracking whether a PMD entry is present,
-so use it that way directly and rename it to is_present.
+Rather than having special handling for the 'special huge' and huge zero
+pages, have vm_normal_folio_pmd() figure this out for us, and use the
+presence of a folio to determine whether to exit early.
 
-Deduplicate the folio_remove_rmap_pmd() and folio map count warning between
-present and device private by tracking where we need to remove the rmap.
+We can therefore delete code, move the 'present or not' logic up and make
+things clearer this way.
 
-We can also remove the comment about using flush_needed to track whether a
-PMD entry is present as it's now irrelevant.
-
+Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
  mm/huge_memory.c | 28 +++++++++++++---------------
  1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index c4e00c645e58..22715027e56c 100644
+index 22715027e56c..5ffe3334c80d 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2430,9 +2430,10 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
- bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+@@ -2431,9 +2431,9 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
  		 pmd_t *pmd, unsigned long addr)
  {
-+	bool needs_remove_rmap = false;
- 	struct folio *folio = NULL;
+ 	bool needs_remove_rmap = false;
+-	struct folio *folio = NULL;
  	bool needs_deposit = false;
--	bool flush_needed = false;
-+	bool is_present = false;
+ 	bool is_present = false;
++	struct folio *folio;
  	spinlock_t *ptl;
  	pmd_t orig_pmd;
  
-@@ -2449,6 +2450,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	 */
- 	orig_pmd = pmdp_huge_get_and_clear_full(vma, addr, pmd,
- 						tlb->fullmm);
-+
+@@ -2453,28 +2453,26 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 
  	arch_check_zapped_pmd(vma, orig_pmd);
  	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
- 	if (vma_is_special_huge(vma))
-@@ -2458,17 +2460,15 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		goto out;
- 	}
+-	if (vma_is_special_huge(vma))
+-		goto out;
+-	if (is_huge_zero_pmd(orig_pmd)) {
+-		needs_deposit = !vma_is_dax(vma);
+-		goto out;
+-	}
  
--	if (pmd_present(orig_pmd)) {
-+	is_present = pmd_present(orig_pmd);
-+	if (is_present) {
- 		folio = pmd_folio(orig_pmd);
--
--		flush_needed = true;
--		folio_remove_rmap_pmd(folio, &folio->page, vma);
--		WARN_ON_ONCE(folio_mapcount(folio) < 0);
-+		needs_remove_rmap = true;
+-	is_present = pmd_present(orig_pmd);
+-	if (is_present) {
+-		folio = pmd_folio(orig_pmd);
+-		needs_remove_rmap = true;
++	if (pmd_present(orig_pmd)) {
++		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
++		if (folio) {
++			needs_remove_rmap = true;
++			is_present = true;
++		} else if (is_huge_zero_pmd(orig_pmd)) {
++			needs_deposit = !vma_is_dax(vma);
++		}
  	} else if (pmd_is_valid_softleaf(orig_pmd)) {
- 		const softleaf_t entry = softleaf_from_pmd(orig_pmd);
- 
- 		folio = softleaf_to_folio(entry);
+-		const softleaf_t entry = softleaf_from_pmd(orig_pmd);
 -
-+		needs_remove_rmap = folio_is_device_private(folio);
+-		folio = softleaf_to_folio(entry);
++		folio = softleaf_to_folio(softleaf_from_pmd(orig_pmd));
+ 		needs_remove_rmap = folio_is_device_private(folio);
  		if (!thp_migration_supported())
  			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
  	} else {
-@@ -2483,27 +2483,25 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		add_mm_counter(tlb->mm, mm_counter_file(folio),
- 			       -HPAGE_PMD_NR);
- 
--		/*
--		 * Use flush_needed to indicate whether the PMD entry
--		 * is present, instead of checking pmd_present() again.
--		 */
--		if (flush_needed && pmd_young(orig_pmd) &&
-+		if (is_present && pmd_young(orig_pmd) &&
- 		    likely(vma_has_recency(vma)))
- 			folio_mark_accessed(folio);
+ 		WARN_ON_ONCE(true);
+-		goto out;
++		folio = NULL;
  	}
++	if (!folio)
++		goto out;
  
--	if (folio_is_device_private(folio)) {
-+	if (needs_remove_rmap) {
- 		folio_remove_rmap_pmd(folio, &folio->page, vma);
- 		WARN_ON_ONCE(folio_mapcount(folio) < 0);
--		folio_put(folio);
- 	}
- 
- out:
- 	if (arch_needs_pgtable_deposit() || needs_deposit)
- 		zap_deposited_table(tlb->mm, pmd);
- 
-+	if (needs_remove_rmap && !is_present)
-+		folio_put(folio);
-+
- 	spin_unlock(ptl);
--	if (flush_needed)
-+	if (is_present)
- 		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
- 	return true;
- }
+ 	if (folio_test_anon(folio)) {
+ 		needs_deposit = true;
 -- 
 2.53.0
 
