@@ -4,90 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90A161091916
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE701091926
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 21:28:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98E6A6B008A; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
+	id D972A6B04F7; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93AC96B0095; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
+	id D405E6B04FA; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8507D6B009F; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
+	id C2EFC6B04FB; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EC2E6B008A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:18:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1733E8C346
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:18:51 +0000 (UTC)
-X-FDA: 84564077262.27.5A32B0F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B29E06B04F7
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:28:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 55FB51A06FC
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:28:55 +0000 (UTC)
+X-FDA: 84564102630.14.2299460
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5AA534000B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:18:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KJ8ZnTkX;
-	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6CECF180006
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:28:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iIWABuTI;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773955129;
+	s=arc-20220608; t=1773955733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VZQ17f0xaH5Zv5+9eKf48HmR0fItDs6lP91NPTK3GmI=;
-	b=8J02s164KpnIRShou//0qR3vGfnNIyFVFD3O8GZG/sZZ/WZxxXYsdFNjuLnz3Y4rzpmG0n
-	/6ApXqQeGPkzy/ULpLuIiFxvkYX8njh8gcerxAwf+9kQlbwQV/XLpNIZjfpFXEzAsPSteD
-	DxdHWukXb/YMuOt4yt9N7+pN7GPLwjc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773955129; a=rsa-sha256;
+	bh=AZ5RxDUXhhZ/2qNWVpaP7v5sMY8n+sT+/zd9PC8R1aE=;
+	b=ghifYld0WJFxkKqDQptEso+QXgm3R0sQzrNoYKG1aX/EsqIu+PR1mxdvDWtS15EIk6EdfX
+	YEa7kFULoQhR3uExUgKg6iT1/hQ76ShEDSGFFxqjBU7hNn/KIrCZ4uxLApqDeQzduXM4FR
+	vxHS8D86Nal90QO9HlJv7RKYawpyUNI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773955733; a=rsa-sha256;
 	cv=none;
-	b=x5XGrIfVbe6WJvFiawE+ixQ66klbm2RingedbD+SoHPC2HvrQ70uQQpc/8Ri1b0Cj8fBk1
-	uN+xuG+5lhV2c5IkiTQKE5oFK+NyLNxTdXG3itd2cxGiG5puToulvN4CztBJAG2lOmDb6Q
-	5lHcm6piVNk+mMdxIzIKXyPVsZj53GM=
+	b=5+cKoFCyJToYuNVZ+NYutdZfuIwpowDAVndSqe7fqqEDckO0G6lJfwRWyRiceN7Fh0s389
+	rv6+fbEzdFHIeBhhce+WO9R4iF1AIn/aTVwovtFJEvLQaEuB8d5UCd/0lr0f5KB9x83kOy
+	d/qYmsFdc67gdDRolF1XehSI8oOvIFU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KJ8ZnTkX;
-	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iIWABuTI;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0BDD843706;
-	Thu, 19 Mar 2026 21:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89141C19424;
-	Thu, 19 Mar 2026 21:18:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6809E438D7;
+	Thu, 19 Mar 2026 21:28:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58338C19424;
+	Thu, 19 Mar 2026 21:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773955127;
-	bh=iyGg7B3966cWSQIyN/bVLygV9d0Fu88wOZumZJmaoFs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KJ8ZnTkXzOfNvyMlO9orCkiawG4WdTBiPX6O1pGIfGS5nihGO/0S+S06AO1l/1upt
-	 7XUU/0hylinxYQ9MdWqpACBUjwV2ysAJA+mm05Kjczy44jV/MK0fg4v7Yp8mbFv9UD
-	 0ubFGXdW4umRu8ycAJEz9tH5NVuA4iC8/h1lplWRL4yVcy39ncKhT7s0LjMC1mj34E
-	 OOIc9JVTsuyl7f/60uCtG9eHyPMVs66WnQIRvHuHvF8mmDK8nxrHN02y0KCuBk5cgj
-	 INDej6+V7FzzhVJLlBJ6jX0TnZEM5Y+M8CwGI4ZYP40galHKhnCjrduIxL95SQaTkC
-	 B0Gqc+IZgSvTQ==
-Date: Thu, 19 Mar 2026 22:18:44 +0100
-From: Alejandro Colomar <alx@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, corbet@lwn.net, serge@hallyn.com, 
-	Martin Uecker <uecker@tugraz.at>, linux-mm@kvack.org
-Subject: Re: kalloc_objs() may not be as safe as it seems
-Message-ID: <abxmpctCj-E690An@devuan>
-References: <abhGS0n_RsUG97Ni@devuan>
- <202603171402.B2BD1B1@keescook>
- <abnGea5Qwp3VYDda@devuan>
- <abrRMnxzCKEuhnrS@devuan>
- <202603191308.ED08BC65B2@keescook>
+	s=k20201202; t=1773955732;
+	bh=/A2pi1IEpX2B/0J45JYoubtua2rh5RakAG442Dsy7Pc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iIWABuTI3Iy9u45wopTGhujY252zv9MxOCTJde9C4J1yO7CwLK4U1uTJh+pS3eNFl
+	 9cC0sVwQoSggVrLNV+IbLVxdgRJf1phdj+Y/DQr46eUAGP4Y9+7BglECOz0PIR6T9e
+	 VGqY4kJZoUQVws+gVPcdm7Z8IFy7P/g7VcGZ4KGYEARAYj9UBmSJTLPvOWcAsIiFpm
+	 JcOZ0BrBfEa2WzKPRu12MxJe+0T7p+tJdlSbia9Rx2HbfdyIHDouLNaXjSAEFjZCdB
+	 y6n/upUwFG1Y8fJ7Z9n/cgiwx3qKnaeNuy3EK9NFmAwZdxg68XtiJY3U8S3l9FAWzX
+	 zSYaAtF8RGNIg==
+Message-ID: <9943a6ad-9c85-439c-ad9e-39a694a29147@kernel.org>
+Date: Thu, 19 Mar 2026 22:28:47 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vxxczh6pcbvzosks"
-Content-Disposition: inline
-In-Reply-To: <202603191308.ED08BC65B2@keescook>
-X-Stat-Signature: 441bmyzkonpej878icryk5yjpw5fgn4b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] mm/mprotect: encourage inlining with __always_inline
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
+ jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260319183108.1105090-1-pfalcato@suse.de>
+ <20260319183108.1105090-2-pfalcato@suse.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260319183108.1105090-2-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5AA534000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773955129-440121
-X-HE-Meta: U2FsdGVkX18PWn+gj9ITPjAvXcVNgaZ+s8cg6Z4+YVDPa33Th0OhlsOATcrS7mAgUq0VwWchP/qmybbkKzDXtoyaok5S3ObQO6ckVsYLQKYqw/xtrUseNFZRuccSGKD4d2jOubZ4z8+53Dn1wc626QP7ZVl3pb79Z/Qobq4Mh6+CCeXO4Ypr9un8kfZ/C6wW+odIihIHb+zAZWgyNe0xtGlU/LW5GUOgweGqGbET2ZRg5Ev5174LiyQyNJdh3WO0CW+xqFH2QM/9y4PSTUXRoCIXCyV4MljeB/QK1j3vWUxOmWPlGlXVv6CpxB0zmSh6ety7nFhTBAxmq80I5jtjtrzyYUPqFl2BZTrllxEKlSmY1GwIYCJWwiYRCzX4MKgb2UAAFtjp2mQLBDi6w1ShIHwwsH7MSLBVUvWn5D2lqP1kPamzdNFrcyJ3icrd/s9EXsaFvQUgED6GsPuCb4by+mTlrVDFFDhj9vJgsA+qqtSM53LNacbFNmxAJ0lBfCqAFwOmx0OQdcaX/+lYZUy53qgeBjBIeJh9xUPv/S/2mhnpNNGSNnshGXnGE/KXHDWOtARH3j1w8e4K2QP8Jzauw9UYRzFnsgwfOblIzUARgHopWZ/KQ4wv91ahrRv8rfWUIW9zcg/L9SLGjOcnd/6/zOpTLDETvJpvWDsxHQqf7JqqfipL5weYc/ythKRo/nlCcxu47gqEFzL2VLP5syp+ix8OD6fW/FMVaDJ4hI3JTubpRNK7K2IZl9QJUzfv+XMFJ8XI7exR6KPDluYeBiz041iPp+Dho7Gtq5aNsktJ/2j6I5W2gwh5jTGw69ZzV+ZSEetH8iY3vCZQnbCM91rWTwtHxHxALWYd8oAx5lv+WKcWTtGQ0v15okC5PjxKMJNIDm1ru/eH16Wn02vRRBAv5xbHh11yDHKdEwhFblhS358XVKEYAB+/c/9qypVR9mQG/4JHJv6hLEpa8Qx6P3D
- fJCW7Cwg
- yCo1ehLkdkt1NudztSU2y70I2PvZw5JcM8dcThECWHiAMrxco+C1ZH7//aeKGwzwmgbfJDmStaHiMtNkfnWR5FLUQekaKCCu0iT+BIZVHrIcrWCTAbbKxBddt53bW08JeHZrpM5tOSGalK7gShMqDMxdLe7vTkZLaidYgLzk0QKw/CvqkPRYn/DS+3hfVc1ni96jA8vFjXsQ0CdFhSHN8G8JJ+lOOBltUVO8Co4g+wjERlEcZp/pSYL7mL9fe4PlPCO/7fYTdAUIBi2OJbJqdAFbEl2XM9Zqjwkuj2ImRY5rfEUMnDlrnd33cLuZOtiLMPxhA+u+et6NK73g8TdJcYRJhiLr4hZhO8tbm/yiy/UnYXpu5+Ms3VpmNvvE/7nw8mxim9Hrfuj1ae4H/xkCuUaEZlwag9b+e3AXboYixPVfMXAGGBSUpZdBeIDxiUjEYAw6aVm359xaxblo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6CECF180006
+X-Stat-Signature: a6uo9cabrp56m9m33d869ayh95eziez6
+X-HE-Tag: 1773955733-943728
+X-HE-Meta: U2FsdGVkX1+VmpiPvMnG9NGloZ+/RhLasGjvrrYLWOywOBBPKFULppNd0p4AySEqwi5cqRvVFbTjdOcaqPUqwXh0+cOX+8imEdTnf01BPnCM+Y6hyrRlvXxjrjVS1OVquLjjZ8ACEWoQIJAHpMmNrmf/5tjqa7vef2Qlr0c7YZz9mm18V/svfo7iEfFKvc3hR2i6qYJfuydoOTUZTp/01wXjx1YuA7C7sZBz3khQd2xbejSYECBTeeShn7UZgdUdg0PZ4srpJ5WumSX7kpDYEP1nSDwL3MvP3MM+rIo2O28x+0IBfdrAGLXfzgFYrtoFQ9KmQmon+mun+6fWYTgM8x1SiS8gE2Gqy9LjTmc8QdCLl0/mvm6dXZPay1wnd3dvv67s5uBSShBaEkwToXvMNvLt8l1/3bJZk4+TQYbZLjTNJ8yS6YZK5dC8PH3bYbSXDb+bvubNc+6hQ7Vc0Mvbly+GQSxv1VZi3ZgdzYTjymCJrfR4AJEriCXtf+3YgemmusaGrlpLrnkWf3tNqBxnP+B+t6JXk9Th2Z53g0GlTZBCThWrLV35/citVgOlW3PN1vCqCajwetPpUyVzgMqBVvB16W247MASK9lXwD7UXaUEbECYzytG09HhZMVQP3yKWlw/9Xqlf0nImflgOVQweQzHqat1AFeVix8+eSca4ZbuYot69VS1xuphb9PHElK9B915PGb+jhu8qTUh0X19HRtkFlMxjlLo8nAdq+xQaiU9tdC/YqJj02o5VN7Z3zQySXswXfzfSyc6P8Z/H4DBThIQZX70pq8bDenEf9Swylf3RtN3dwbUgyUKRIinJ+Du6jX2yQPsnZeitzvDp9a1XF22Bv9gVw5mv7SVN2IqFuIxbkmPcPOix+A0Yzu+tMB4vQYvpzKK3Ox3ylSdugkGHC7E6wq/CLxNC9XmQgXbjpfJh2Z0bGXJbjMu2v8OTUSPe8xErmA410WkcXVbBZE
+ 9xk/8pmk
+ SK9tvZe/is2vmwHL1KUmMajcFzO3J4noOEBZ0dJkJduGr/FyEBZkA14QTBkrZYS1n2zyoD3lup3ZkK7G8D6aSK5jAtSbKWs+/Df/fjtRHeCeNzg/pdVWQ2robFQlUzSGdwCHKE5gvc9xl1CIz+ou+Y+1ffqkXf9ePm1xk2PL73GXPdkoP5YT7bouLjuYrt3QUZmjUVLgBMCpupfJcApF8J3xJ0GSWj8q5TeIrrE+Y6O4cPyL3CQH/QIiwmVvQrqCpUC/jm1H80Iqt7CW2edxxprCipoYLNtDDmeny8UBtAUDVh5xB3QdNtbDJBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,128 +141,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/19/26 19:31, Pedro Falcato wrote:
+> Encourage the compiler to inline batch PTE logic and resolve constant
+> branches by adding __always_inline strategically.
+> 
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
+>  mm/mprotect.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 9681f055b9fc..1bd0d4aa07c2 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -103,7 +103,7 @@ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>  	return can_change_shared_pte_writable(vma, pte);
+>  }
+>  
+> -static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+> +static __always_inline int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+>  				    pte_t pte, int max_nr_ptes, fpb_t flags)
+>  {
+>  	/* No underlying folio, so cannot batch */
+> @@ -117,9 +117,9 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+>  }
+>  
+>  /* Set nr_ptes number of ptes, starting from idx */
+> -static void prot_commit_flush_ptes(struct vm_area_struct *vma, unsigned long addr,
+> -		pte_t *ptep, pte_t oldpte, pte_t ptent, int nr_ptes,
+> -		int idx, bool set_write, struct mmu_gather *tlb)
+> +static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+> +		unsigned long addr, pte_t *ptep, pte_t oldpte, pte_t ptent,
+> +		int nr_ptes, int idx, bool set_write, struct mmu_gather *tlb)
+>  {
+>  	/*
+>  	 * Advance the position in the batch by idx; note that if idx > 0,
+> @@ -169,7 +169,7 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
+>   * pte of the batch. Therefore, we must individually check all pages and
+>   * retrieve sub-batches.
+>   */
+> -static void commit_anon_folio_batch(struct vm_area_struct *vma,
+> +static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
+>  		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
+>  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
+>  {
 
---vxxczh6pcbvzosks
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, corbet@lwn.net, serge@hallyn.com, 
-	Martin Uecker <uecker@tugraz.at>, linux-mm@kvack.org
-Subject: Re: kalloc_objs() may not be as safe as it seems
-Message-ID: <abxmpctCj-E690An@devuan>
-References: <abhGS0n_RsUG97Ni@devuan>
- <202603171402.B2BD1B1@keescook>
- <abnGea5Qwp3VYDda@devuan>
- <abrRMnxzCKEuhnrS@devuan>
- <202603191308.ED08BC65B2@keescook>
-MIME-Version: 1.0
-In-Reply-To: <202603191308.ED08BC65B2@keescook>
+From my micro-optimization work on zapping and fork, I learned that
+these batching functions are best optimized for order-0 page by
+explicitly calling them from the code with "nr_ptes == 1" and then
+force-inlining them. nr_ptes and all loops will essentially be optimized
+out.
 
-Hi Kees,
+With no such explicit constants, is there really a real benefit to be
+had here?
 
-On 2026-03-19T13:12:41-0700, Kees Cook wrote:
-> On Wed, Mar 18, 2026 at 05:33:35PM +0100, Alejandro Colomar wrote:
-> > [...]
-> > After sleeping, I had some idea.
-> >=20
-> > We could have coccinelle add typeof() around the first parameter when
-> > it's an expression (not a type).  Then, we could enforce that the first
-> > parameter is a type name.
-> >=20
-> > That is:
-> >=20
-> > 	 p =3D kmalloc_objs(int, 42);  // ok
-> > 	-q =3D kmalloc_objs(*p, 7);
-> > 	+q =3D kmalloc_objs(typeof(*p), 7);
-> >=20
-> > I expect this would be doable with coccinelle.
-> >=20
-> > Then, new code would be required to pass a type name.  And people could
-> > slowly replace the existing typeof() calls at their own pace.
-> >=20
-> > What do you think?
->=20
-> Well, it'd serve as a visual indicator, but it's redundant (typeof() is
-> already used internally).
+-- 
+Cheers,
 
-It is redundant now.  But my idea would be two steps:
-
-1)  Add the redundant typeof() in the first parameter, when it's not a
-    type already.
-
-2)  Change the kmalloc_objs() implementation so that it doesn't do
-    typeof() internally.  This would make step 1 non-redundant.
-
-> Given it would only be a potential for
-> confusion on integral types, I'm less convinced this needs solving.
-
-It's directly adding safety for integral types only, yes.
-
-But it's also improving readability.  There's no precedent of macros
-that take a variable just for its type, and it feels a bit awkward to
-read the current one.  By doing typeof(), people can relate better why
-it takes that parameter.
-
-If I read "q =3D kmalloc_objs(*q, 7)", the first thing I wonder is: why is
-this macro reading *q??  If I read "q =3D kmalloc_objs(typeof(*p), 7)",
-then all's fine in my brain.
-
-> For completeness, though, this Coccinelle script:
->=20
-> // Options: --include-headers-for-types --all-includes --include-headers =
---keep-comments
-> virtual patch
->=20
-> @type_not_var depends on patch@
-> type TYPE;
-> TYPE *VAR;
-> identifier ALLOC =3D
-> {kmalloc_obj,kzalloc_obj,kmalloc_objs,kzalloc_objs,kmalloc_flex,kzalloc_f=
-lex};
-> @@
->=20
->         VAR =3D ALLOC(
-> -                   *VAR
-> +                   TYPE
->                         , ...)
->=20
-> Produces:
->=20
->  6007 files changed, 12430 insertions(+), 11767 deletions(-)
->=20
-> Which is a lot of churn...
-
-Yeah, it would be a lot of churn if we were at rest.  But since the dust
-has not yet settled, it might be doable.
-
-
-Have a lovely night!
-Alex
-
---=20
-<https://www.alejandro-colomar.es>
-
---vxxczh6pcbvzosks
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmm8aC0ACgkQ64mZXMKQ
-wqkKsxAAvm3vo9ihoFfURqGmOQo97zkx+trQcB2AZggsZ1YnQd0+ZM8fQUXxBIwo
-g53D/k9qfEGqdcaf/h/rdeJ1bjFvmDbw2SK5mNzTVb/4tB0g3bAVUJW0XTAG+Bu6
-iWKtC1hHLoXUbt+oU8hrEUcpLjenFc+dtw8IoeyYZvNruCCuOsyzm/mx3PwsWhve
-Y25DDt+Rb6bSTi5i76O+sUc12/sFUA8D8+iAudZfjbLzieE7VY2igAeZwzOfbD/6
-3DF0rZInmQEGEiKiKKkkaNfiYxMm4ZzYubuFMrg498YSTWjR7WD5FgBSD+L1H6vg
-CqWgK8eOiA99scpHM95XzZmVVApW2h/uqtVPG9PumvQCalUlJ13OvuY3KwCktO2o
-6yF3pG8kGbMqhQehJDY6hjjvwYtK5P6vUi4GlrS72GEJmCeDzZOiKuG8KclcuVFh
-b0WSNE8uOSo0m7wP412eSTAemc8bd7SY7fOJkG5kqwhJnfqLdwItu2n2qhEAf6R3
-wj8psmq6ywPTOJWD/itgzo9oRgBjAW1gJEbx220Wj6IeTdlUMvbYquLfoRdMxaGk
-W4vuzWG1fOzUdvX0+kgcIQS8CjIF/yZZuF7cahPFHcMgdsgt2TC4Lx945gpzucot
-ikJ7Radjd3chbAPWP/kSGNoAUPfVIvIRFxH1dkSdUABd9g005cg=
-=fEio
------END PGP SIGNATURE-----
-
---vxxczh6pcbvzosks--
+David
 
