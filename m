@@ -4,137 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F4ED1088E5C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 00:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EBD71088E5E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 01:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9675B6B0391; Wed, 18 Mar 2026 20:56:50 -0400 (EDT)
+	id 7F3456B0393; Wed, 18 Mar 2026 21:12:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 918196B0392; Wed, 18 Mar 2026 20:56:50 -0400 (EDT)
+	id 7A4BD6B0394; Wed, 18 Mar 2026 21:12:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8071B6B0393; Wed, 18 Mar 2026 20:56:50 -0400 (EDT)
+	id 693E76B0395; Wed, 18 Mar 2026 21:12:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D4946B0391
-	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 20:56:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 22B7D8AA92
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:56:50 +0000 (UTC)
-X-FDA: 84560997780.27.0566C8A
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EC070140005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 00:56:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PHbTMQ8z;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf09.hostedemail.com: domain of jyescas@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773881808;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 560FB6B0393
+	for <linux-mm@kvack.org>; Wed, 18 Mar 2026 21:12:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF8F11C8A1
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:12:51 +0000 (UTC)
+X-FDA: 84561038142.10.5658720
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0DACE20007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:12:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EDjQCQA0;
+	spf=pass (imf13.hostedemail.com: domain of jiakaipeanut@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jiakaipeanut@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773882770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SOztz5HS7kfe0mJv/gYgM0otE4AvewQBLFhyRmLqVKA=;
-	b=qoh+pHXGJNajgRRhF3JoNQ8UT5+Jc21BLBs6mAm3I5Puh12CYm+ymCJv+2afLFnFDi8YYo
-	ocYRTzNiTUinOy7nhKMToZnLaeuvHxO+MLidh4SR8rf2Q5mzpPyCOLbyfbWwfiSFKDzf1K
-	vu/R4/vIaptIcSnc+o56GhVpg5labO8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773881808; a=rsa-sha256;
-	cv=pass;
-	b=J0zbpTmj1NwZxNqy2LVgDKBcc75TFPsn6N9kPcCjQXgZFIvoGOJyFVNZsBmjdMUL0lFt64
-	ZjZBuJQXgbHtnYfuDgnF+/B0cu66+5yTiUdnMj22z1fyMFO4Iv65WmO8V3dUmnbpgpnvVK
-	1Vobo/DK/3bHiMf/6RQVtTcmXUBIOg4=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PHbTMQ8z;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf09.hostedemail.com: domain of jyescas@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4852ef20fe8so19125e9.1
-        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 17:56:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773881806; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gRenFI8CUA+dpYanX9Cquhp0KqmujgRtpXDW0B/lyThVQ/voS1rZ03ON1rlYjfK6eO
-         mz81Hk/ygMySXvvE10mc9bKlcWkvuVWR/E8BPE3J7GYZL/Sqchn2pdaI+Y5Im8ZhJ8O6
-         xSA4+7tA13zLfnNEWIJUUEOBl/9O4qg1PKwQxwXB+4yg+hgfX233Yv2Q8pGL9vN7579J
-         s7Xt6Sv/5JyFDqLMINLS81R/LLxNPP67a042H7xay++pDYpW5ijZOA9Ts0QSm7mo4LlS
-         p7/lX1OBedjCXKKq9d9yqERsU4ze3gs6JjqsgCW/MQnK5P1PPQ37b1H+qLdhxXmh7Zfe
-         CDRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SOztz5HS7kfe0mJv/gYgM0otE4AvewQBLFhyRmLqVKA=;
-        fh=JH0eNDSO4kN8N2P4Sis2GkYSY8EiYX8Sav0jLpq9vAQ=;
-        b=KNQuJmjYYrxN/NuSUssHRIkKvpHg7vyxO18Ct7WLDtldqSpoWlGqyuUagTSknfez3L
-         IqBiaGFa5KR8J+/7vSf6yZHtKBg3xxzSNKIMLQwPvYxIkmXjsjXQt+R0v2pJOMLmGp+j
-         rxaIwWjPhNLEHRsMURwUrpR6QH+RKFueC8VipxsTyZAzDH9ObBXKWf/Tckmgoh/6rROB
-         Rkp08vbx+zGGEgVZPsIveiOzUfVjUJEKTvctnyqrmZbnmxGg84yA99UQ2CICMSNZeTO6
-         P3LftIIKwFK+JQakFtJiGh6ks16D4kqjz6eRWv4oIqZWsHsF0d8ucezPAVOgkxNzXRSa
-         56vg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VEY/9gdbRM2MjqS/0dLQIuTlut86W1qgepVu69ntd5g=;
+	b=vMK3X4461pKQVblzKgc0u7LpNEaVBcEac41oHMuzcXuFTqSjITb6vytGxmtM9TMIoOyFcv
+	t3Oy79qol3LWXcHLcJP28GbDSMJ6wkRK2yac32YrJ7QBXKehOdd2RZ0+FMW91kjojjQWAJ
+	lnPQL4EYMAZjQbb2xCfgISWv+p6UvOY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EDjQCQA0;
+	spf=pass (imf13.hostedemail.com: domain of jiakaipeanut@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jiakaipeanut@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773882770; a=rsa-sha256;
+	cv=none;
+	b=ot/xZhafESmPfY6zbRbpuScBSOZamFfDJdhYPa0h6Rzq2EJDR5xolsv9E5ptqBmNJIQvX5
+	3QTVrLTxBTdWsCsrEaZHrsK+tkvkfN5U+ixe5/bibnHYFSK1E8mXNc1I4MyScHuU2vSEcA
+	/JwLqjT+gX1k3wNSdfY9hvoQXwlaxBg=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82a73593410so218483b3a.1
+        for <linux-mm@kvack.org>; Wed, 18 Mar 2026 18:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773881806; x=1774486606; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773882769; x=1774487569; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SOztz5HS7kfe0mJv/gYgM0otE4AvewQBLFhyRmLqVKA=;
-        b=PHbTMQ8z9YELXDf2imdHPPHNCuj5ud3KVeN1hI6+TRJedU7XKj4cDJzZf/FZ0g026K
-         PcRd2krQFyVPD4aPiskcTmI/fQdvgjpdfNvfeRckdN0gE0YON45UpLzlRTd2+571ohFf
-         xx5QAHdXZPoMajYn1uC7NnQxJeaqj+Y/m2P4DlSM42U7Jm8n9wknJCq8QxZ3gXOGXdCf
-         oJVQctaVJtEdZb/AQ/NpEii5JMMROsHf68hUqyYX38QtpN9axYafsCn5UvmwwLYd3Ouh
-         sjTFD6V2SEUJ0e3Skgut+9KmkW0uQyWqD99za3MRTd5LoLiqHr2z6D8CV/cAbp/m+jIs
-         Zyfg==
+        bh=VEY/9gdbRM2MjqS/0dLQIuTlut86W1qgepVu69ntd5g=;
+        b=EDjQCQA0faozqZ9D+9h4iTMmFZ63mp0dXLSVcR5qa0CTJJjl9g06NpGWYGxBUfjDHX
+         y7t/BInvYJO6vRaUfKoYFzM4+WscPbkWorfaFHo3mK1eHjrsXyYrogFqUL2pGB4NFFWY
+         I2hzXwT6YtuhMhbkzO9w0OJDcOEDD0gYSlokkIszaipTwkhqo3+X0ynjYKLLqyOL71pt
+         R3IFian3T0fsfHR3PFbNBRxvqppd2Hs39k8N4UQlZAbQD/EgfspbQDQ3U5ygB36Y7Vdr
+         N2LI02WO1JZSRYXJxtgCiR8M+Vr7q2qN9K896iHomzvefGkX5IRYpXTVQUNoTf5Cd4id
+         XbQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773881806; x=1774486606;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1773882769; x=1774487569;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SOztz5HS7kfe0mJv/gYgM0otE4AvewQBLFhyRmLqVKA=;
-        b=rwmvLv5aiHgP/lyUJVLSit2LNOYinpCJe5lpYqmNeX6cHLHz3zCgFarr/+HxA8bf5Q
-         gdVKaA74h2ZA7/mj0MKV3AB4ITrc87iI6GGV43ABqdG73YiXv/z2uC0nIJrlVbEHgtdl
-         Q0sqEAht1ireG9IVZXMO5x1sxoXrHKi07DTgurUIFER8S/sM1EeeKFwI2jA3/fqIl8/D
-         nsvYQI+95TCCCvOcTZx/l/DFV3RVa77DjJswMx5NHtDCkrzlnjVtRfZS8G+p+bq6vg/w
-         emU7cNqVqrv86Ik/zJwZbbjAPNkGyWUDYtFRjLu/d5Ttw/CGFUA2To0Va7jeXIi/X3Xn
-         wQzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXcmCQ8b4WSRGbNGxPis07uuiicgrXO4/T4nGsc12L0Rj3c/r4AKPgDKrQlPaLH96NW8/5jBZwzlQ==@kvack.org
-X-Gm-Message-State: AOJu0YwDhsrTJNDcyqxPohk0KxBB7CIGQiTHOdIn7F4lVRLIdUzI0FbQ
-	2iQASnJ49nUkC8C40oLnuPvDCLq8cgtXwVQkGts/GCCuw1nuqmXYz/79Lothh07MMAkz0ViKdjh
-	sk5jJ9wmzDxkGHcxrOYw1YJzn0GCZPSJ4znDLszX3
-X-Gm-Gg: ATEYQzxgaZSPzaSgd99CkdgF5K6P+fCr9tDQeo54TwNCB2FG3w7qUN0a4bJze0STaXL
-	94CH8fkr/qvVRswnHU6FIiTWyaFOHZ3vVKX6OMgwpVAt7mRJ09UmbFgzc2FDsS0z83Z1cxk+xZ2
-	8rzrJRVXxjNgpQWcsUN62C5hkUyY5jwwz8/iNMV2AzS1+/I7mguzTfCD24yNptb9rtIqSf3FAh/
-	YgmBnzNmiDcRc9FIJCMrFpLbnrZK9LS4bBJnD/lGS+p/fOAP0PPldFofUWzg1GmhD1yseRWKWwv
-	0Dag97Tt7KdprO+GfnCtVsSms+Ech9MmMuaSIhw=
-X-Received: by 2002:a05:600d:111:b0:485:2ab4:c1f9 with SMTP id
- 5b1f17b1804b1-486f8e8fcdemr284745e9.4.1773881805882; Wed, 18 Mar 2026
- 17:56:45 -0700 (PDT)
+        bh=VEY/9gdbRM2MjqS/0dLQIuTlut86W1qgepVu69ntd5g=;
+        b=AiMksxOo4Vic3fGM61GSdbDHa9JIz8oP8cj4bN4UsPNs9hQqc4Hc623WJ/zETijJ/I
+         fpkIuKv2Q+40NLeQvt7vaDfOxQhbnppYB+Xe9mC6qs9dhj98PuF14O9MAwTXXPhcVR4t
+         ND2tpRO7rtruwr8BjLwK63r2OpW2xsaIikK48bLEFqztwWmUd+HPhI3/9OuOrQaZX2uq
+         BVOZLYktzITr0pf6zGqGHapKcsvDEPr0Hsv0G8jVI+dJZVUAF+iJQVN7hqYFto+qeefE
+         gP3ejdN5K2jK8AxpU+TyO9ZVbhuIEWv8t/wG/w3AqGT5BPmkBu0iKGOsH/GAjzErGv8u
+         V0Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNaaq9UWJsFuMOwx9xB06zMjeXyMrCcCFRr5xHtt4FMOg6a7RVb4CQkKtFT3g+Uy7CBLejuJv4cA==@kvack.org
+X-Gm-Message-State: AOJu0Yx/WuqF6RdhlqZqsCKle9JfQciEZf/FDR/G5EMqgopDzjA3nl7j
+	cPgRofW2jnSi5pHVdXvNd/FDQhzgAX8DIbgP/koseq9ZyLFV2VqDnwuA
+X-Gm-Gg: ATEYQzynZlyDD8yHwFvz2Hr1Ypefb1c0yCRW+Q4BuQIXhO6lafDAOqTTzqu5KnW+WK4
+	NJ707aisCkPb6CeBy/QlANu4jZO7nEWRiHIG5kCzSPC2ie20omhc1b78AFyfs5rNa7CN4YIF2Ip
+	9s478jQfWNypk72FM4U/0Ora/LUNIVHj7XhrPqunBB6jce5u3+lqIuBCsGzwxuPRKmaTDg7B0Dx
+	A/oyhGf9uao8+LhAcykNdIoAZsR9rd+egaK+WTuOLh0cicTTeUKSrXOQJfsaBcIU8iFA6yn6eQ5
+	nmAgS5N7yRYWh2mqTYorhAaccDlPIwXCeZlPrzxZZ6UDqYtii/Y726fE3yT7GKESYVBBKtX5T48
+	jHc06+M5gCdXe8cbqSAFhpRQPvO+QxJbt9zmLf4aiOtlFV/5vXFctd8ZslUWxPY76yjC+DfDYlK
+	fv0wpc6sG0cNVoVD/j8rt/neBITLnBB+I0ttClfLE36ozO
+X-Received: by 2002:a05:6a00:140b:b0:823:b1f:892e with SMTP id d2e1a72fcca58-82a6ae17b43mr4671300b3a.43.1773882768792;
+        Wed, 18 Mar 2026 18:12:48 -0700 (PDT)
+Received: from localhost.localdomain ([210.73.43.101])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6b565930sm4024243b3a.14.2026.03.18.18.12.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 18:12:48 -0700 (PDT)
+From: Jiakai Xu <jiakaipeanut@gmail.com>
+X-Google-Original-From: Jiakai Xu <jiakaiPeanut@gmail.com>
+To: ljs@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	jiakaipeanut@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	riel@surriel.com,
+	sashal@kernel.org,
+	vbabka@kernel.org,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: Re: [PATCH mm-hotfixes] mm/rmap: clear vma->anon_vma on error
+Date: Thu, 19 Mar 2026 09:12:29 +0800
+Message-Id: <20260319011229.602-1-jiakaiPeanut@gmail.com>
+X-Mailer: git-send-email 2.35.1.windows.2
+In-Reply-To: <20260318122632.63404-1-ljs@kernel.org>
+References: <20260318122632.63404-1-ljs@kernel.org>
 MIME-Version: 1.0
-References: <CAJDx_rj-fTpKjtsw1jJ0aAaC3a2Rt+zrizqY23ZHvq0Mm56uTA@mail.gmail.com>
- <00ec73d6-11d9-43ab-b1e2-d543425d19c7@kernel.org>
-In-Reply-To: <00ec73d6-11d9-43ab-b1e2-d543425d19c7@kernel.org>
-From: Juan Yescas <jyescas@google.com>
-Date: Wed, 18 Mar 2026 17:56:34 -0700
-X-Gm-Features: AaiRm50ujVQWqUuMIsLejks2TI27WTsDg48sdD7BDEqwNvEJ3jvKEAe7SLozDeg
-Message-ID: <CAJDx_rj4DVG2D8ab9O8RWDEF81a5J-fiwtDedubEnsmL-1q+sQ@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Discussion: Targeted memory allocation via debugfs
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	android-mm <android-mm@google.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, lsf-pc@lists.linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: g1sxdo6giiz7nm5x5r4346zwi1gsx99m
-X-Rspamd-Queue-Id: EC070140005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773881807-153819
-X-HE-Meta: U2FsdGVkX19s/6c5SAIEEI7tyLQbUUu0Ims7fMQraj+afqhmMXyrSVST/JIP14RODL/Y9ymj9WZJU+H8OhcvadHRRCb1xBNsorMmLjjtn4UthH0gQVan/6lg7led5ubIu3VKL5V1A0l2fy9MsL4DIFMz+7fxjoLy3OO/gAzXpK5+kj+paW46RsiJrRSNDBLuWSAH6cHW89o+kzuVHgt4jYk1Mym4TXgYxyhiD1j8uiqrFOkndIkgu82yPzTqQpPnh2sg+q/YmPGrKNpj9Yy3+YWajcV5BxX2Z1Se0p6mXzXy6NmrwWTYLuMsfE2Anw4DkYCANS3D+wpbJtCo6vqZjI6zzKVJeH6JpxPbDpg2tziIC5oT5a6MtmbJSuNa+wNk+ALvoeEBp23nGd67dBNU/XMzXhQaLcDGN4mlSAH198vIzU6A6GjZVTZT2LNPs1DDfSivA/2iV1DubVJ5gLedCVd8rl63t4xu7hJcwv/LA0rbT6Otpgcth/XPW6dMqWELcKUE2M5kQuksuKZr0t011RWhA8j6uZDk3pZI9qqOoRDMNjW13ujkumBnaexboKAX1cI1r7Z2AkGyV7E8Ka3aZMfNcV2OuxNRItfI3z/wvJ+GQO1P7PN1/06TbS3J/9AIpadzVsveDLHwjrI5YkJkEGbb2ejkl/ISI7d+Flvqchh5pI0hnGRIHmnzADpQj/+79MItHVPyIUVEszR065l2VB0D6nvH7Zm/czK3dszfEPc4xle6TE3Khas5K/Uv/ONcbkQugdsrCkbpIUoHHdnRKSriJj7W1XU76TbWr3Q5Gy3wOJVqJGVH+lznI7Lo9hpPvIiVSjW9OYJo4nFjjMtJPaTrzWM1qMLiZYl6u9ilxfbcBdMw/CQGckqoQyhwBmwrqg65ZvpKeOOJNtCBJ2RffRQ/UYKGAlSy7YSJu31Cg8gM24kJdhjippxk1rU8fS8nGTViLrBwR9B+AcFDlG+
- HD4uU7QK
- oV2/m4yXFv6fr9aLVW/Kt6heDlC/SgTFTT1WYQkiG3VPDvi2iWS2Pu8aMO+m3tUgLYI1kIAwvt6I7gFv8aWrgXfLECTiJrktv9kV5zQIUt9ppr3CbedATEA+hpwN5CL4vemzG9N+IszEoT4V+qvaW0euAwl5rB50aYOPvN0cvx4l6+NLaDd1vKx5aFtDdVjXvrQ4Csh1nxLPsVGW3QbrsuR4kSCzYH/t2sWrBx8YprDAEJCFPRGOzB4O9WTJxzt/HEGfK1kQnxesgF58=
+X-Rspamd-Queue-Id: 0DACE20007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: gwgmy6pukwy16zbu99dsumdnr17zfqn4
+X-HE-Tag: 1773882769-243759
+X-HE-Meta: U2FsdGVkX19RD5FpLF43Rwym3osdQJ79Guf1d4lqEgW8OgeXJTebj29iprKPzS6ghj/c+kvFwzevQMfEcw61UwTJVQF0whQttt6DRGaQT3jlbgzTy+dxues/kkvVVuGXnLP3Ud/wgoo/V2eOtMphT6JzT2paQ/yv83UpWDIPMGtnaZuVnge+hjstVWNNTOrqUgJDTmxKBThM6qgosYJa8Xowmnbfm/hAQWEYZHUzkt+xKZPgwLQmbnPNXrPB8fYDTYJ1KXGqoavcVTfS5C4qeJeKA6yOdRFaMRdPLSdk9fUsb6E4p8UlZI/nEyvSU493663xj1bT/MMSFdqjuGgNwzmrTGASsi25P2Sw4/hVSvJxejbqDUaPJZArSa9FefbeY44p2G/Z2E1SNyHPBgRsPhoPTsZv7Oq7ZyvR0vdUVSv7kR60vXG/477/ep9HF23e9lrd0Mu1qTqki1qXrUbzwc3WLJ7WGLud1QSxE1a0qfKHNp/ZK0PvU4Iec47Mt1Sm5x4Q5Xj6b/EhUZHp6zyVVoqtA/JP7VuKj2iRv/9GVe5NKMCqF4G1epLAUrt8XuesWOALX0ahJxsTFdh/NHyd0jpFiYvGluyPBTTssZ5FoPVix40iOe7/aaafySBzCy5HN8vOnXWG3uxysR+OFbqksNKnAUtOwBgxwBls99eiOpVJP+ZH5m2uvPYEFhnrzkM59gfR3aEy/4nV/75At9SqJnBWjTekdafFzPgEH4SDpSN+k6QmrBTDmxVXxP/K+93Q7yoBcFb905W/OUJWZ5d4yCkK8ibjh0BAgnjiUgdlB3xTJ9gbsIqq13bubgZhECTNLbSB7CARefjw9MNqtoNYOxIgqO6APuoCtwU9zeG56m6uduP3aIEkah2u4Z/ibjKnH/miff/labb5UIE681W539Gba3ccti2Q2byn/6fHD+lY9G8UZ+J6XcFQk8mW8JKOBQdCYhGIzGQGAXBpp4K
+ o6IetZ8q
+ monRatB/2Q8QjzlmJZPkitTt/cIac3cnyi/mumw9dc4kFiCVCTprPkoMmStuV4vROL/RFoU7bM0CoysKIYx7M+CFhMfGUOq2gkirD++F2PUa7P818725gOPTQky3AUEICeCVU/MrRC4wUcUP5xlfU7WA8K/OflzeN9kHPY17JANcidyVUijuXKNHP7Glabhmi4kedyult51L1jhLUnyolCWyZr72cS7dJJBnZWbdunSgiX3ZTP8EOEvrVdHMfaZJp1TR3x/YQtLp/tOhBMMn++vdm2dTp/Xu/1lyaNylUeH4dyI50Ol+a7Q0cx02nI645x4hI4eYUOEywe7LSRVOLNx5F6I0BiHILT6oWVml1hG68Az4qjhut4CF8YeUvicdTo0glNhBt9DgspCGwwZDqq07BCEq2oho3NHGGEnA8PI7Jhj5fv+cgoGF18ZKQ7bXi1dXPz5DIp7wgq2aZeuQTtVSlEMUMMJtU0Ewc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,88 +128,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks David for you comments,
-
-
-On Mon, Mar 16, 2026 at 8:52=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 2/27/26 03:42, Juan Yescas wrote:
-> > Hi LSF MM organizers
->
-> Hi,
->
-> I'm late ...
->
-> >
-> > I would like to propose a discussion on improving our ability to
-> > reproduce complex memory allocation and reclaim scenarios, and solicit
-> > feedback on a debugfs-based testing interface to help trigger these
-> > edge cases.
-> >
-> > =3D=3D The Problem =3D=3D
-> >
-> > We frequently encounter complex memory management issues in the wild, i=
-ncluding:
-> >
-> > - CMA allocation failures due to pinned MIGRATE_MOVABLE pages.
-> > - Page migration and compaction failing during reclaim.
-> > - Excessive reclaim loops triggered by specific workloads.
-> > - OOM kills.
-> >
-> > Reproducing these specific memory states for debugging is currently
-> > cumbersome. For instance, consuming most of the available
-> > MIGRATE_MOVABLE memory, or forcing MIGRATE_UNMOVABLE allocations
-> > specifically from Node 1 and Zone DMA directly from userspace,
-> > requires writing custom kernel modules or relying on unreliable
-> > userspace memory pressure tactics.
->
-> I'm wondering whether an OOT module for this purpose would be sufficient?
->
-> IOW, do we really have to have this in the upstream kernel, or could we
-> have a public OOT module to perform these allocations?
->
-> Then, there are no worries about API/Extensibility etc.
->
-You=E2=80=99re right that going OOT would bypass the strict API stability a=
-nd
-extensibility requirements that come with being in-tree.
-
-However, there are some symbols that we would need to be exported in
-order for the module to compile.
-
-> Or would you want to fire up this debugging on a production kernel? I
-> would assume now.
->
-
-Yes, that is actually one of our goals. We often encounter
-"heisenbugs" that only manifest
-under specific workloads and we want the ability to stress the memory subys=
-tem.
-
-For example, if we want to increase the unmovable allocations by 16 MiB,
-a 4 KiB kernel, we can do
-
-$ for i in {1..4} \
-do  \
-  echo 1 > /sys/kernel/debug/mm/node-1/zone-Normal/order-10/migrate-Unmovab=
-le/alloc
- \
-done
-
-And this is way more convenient than writing a test driver to make
-only unmovable allocations.
-The same apply for the other migrate types.
-
-Having this driver upstream allows us to trigger these allocations
-on-demand without the friction (or security risk) of
-loading unsigned OOT modules into a locked-down device.
-
-Thanks
-Juan
-
-> --
-> Cheers,
->
-> David
+> Commit 542eda1a8329 ("mm/rmap: improve anon_vma_clone(), unlink_anon_vmas=
+()=0D
+> comments, add asserts") alters the way errors are handled, but overlooked=
+=0D
+> one important aspect of clean up.=0D
+> =0D
+> When a VMA encounters an error state in anon_vma_clone() (that is, on=0D
+> attempted allocation of anon_vma_chain objects), it cleans up partially=0D
+> established state in cleanup_partial_anon_vmas(), before returning an=0D
+> error.=0D
+> =0D
+> However, this occurs prior to anon_vma->num_active_vmas being incremented=
+,=0D
+> and it also fails to clear the VMA's vma->anon_vma field, which remains i=
+n=0D
+> place.=0D
+> =0D
+> This is immediately an inconsistent state, because=0D
+> anon_vma->num_active_vmas is supposed to track the number of VMAs whose=0D
+> vma->anon_vma field references that anon_vma, and now that count is=0D
+> off-by-negative-1 for each VMA for which this error state has occurred.=0D
+> =0D
+> When VMAs are unlinked from this anon_vma, unlink_anon_vmas() will=0D
+> eventually underflow anon_vma->num_active_vmas, which will trigger a=0D
+> warning.=0D
+> =0D
+> This will always eventually happen, as we unlink anon_vma's at process=0D
+> teardown.=0D
+> =0D
+> It could also cause maybe_reuse_anon_vma() to incorrectly permit the reus=
+e=0D
+> of an anon_vma which has active VMAs attached, which will lead to a=0D
+> persistently invalid state.=0D
+> =0D
+> The solution is to clear the VMA's anon_vma field when we clean up partia=
+l=0D
+> state, as the fact we are doing so indicates clearly that the VMA is not=
+=0D
+> correctly integrated into the anon_vma tree and thus this field is invali=
+d.=0D
+> =0D
+> Reported-by: Sasha Levin <sashal@kernel.org>=0D
+> Closes: https://lore.kernel.org/linux-mm/20260302151547.2389070-1-sashal@=
+kernel.org/=0D
+> Reported-by: Jiakai Xu <jiakaipeanut@gmail.com>=0D
+> Closes: https://lore.kernel.org/linux-mm/CAFb8wJvRhatRD-9DVmr5v5pixTMPEr3=
+UKjYBJjCd09OfH55CKg@mail.gmail.com/=0D
+> Fixes: 542eda1a8329 ("mm/rmap: improve anon_vma_clone(), unlink_anon_vmas=
+() comments, add asserts")=0D
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>=0D
+=0D
+Tested-by: Jiakai Xu <jiakaiPeanut@gmail.com>=0D
+=0D
+Thanks!=0D
+=0D
+> ---=0D
+>  mm/rmap.c | 7 +++++++=0D
+>  1 file changed, 7 insertions(+)=0D
+> =0D
+> diff --git a/mm/rmap.c b/mm/rmap.c=0D
+> index 6398d7eef393..abe4712a220c 100644=0D
+> --- a/mm/rmap.c=0D
+> +++ b/mm/rmap.c=0D
+> @@ -457,6 +457,13 @@ static void cleanup_partial_anon_vmas(struct vm_area=
+_struct *vma)=0D
+>  		list_del(&avc->same_vma);=0D
+>  		anon_vma_chain_free(avc);=0D
+>  	}=0D
+> +=0D
+> +	/*=0D
+> +	 * The anon_vma assigned to this VMA is no longer valid, as we were not=
+=0D
+> +	 * able to correctly clone AVC state. Avoid inconsistent anon_vma tree=
+=0D
+> +	 * state by resetting.=0D
+> +	 */=0D
+> +	vma->anon_vma =3D NULL;=0D
+>  }=0D
+> =0D
+>  /**=0D
+> --=0D
+> 2.53.0=
 
