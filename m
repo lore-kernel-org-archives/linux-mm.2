@@ -4,142 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE171090233
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC9881090233
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0B016B04E0; Thu, 19 Mar 2026 10:30:04 -0400 (EDT)
+	id 2492C6B04E2; Thu, 19 Mar 2026 10:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE2AD6B04E2; Thu, 19 Mar 2026 10:30:04 -0400 (EDT)
+	id 2213F6B04E4; Thu, 19 Mar 2026 10:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFDED6B04E3; Thu, 19 Mar 2026 10:30:04 -0400 (EDT)
+	id 15DEC6B04E5; Thu, 19 Mar 2026 10:31:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5466B04E0
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:30:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 48B3D1405ED
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:30:04 +0000 (UTC)
-X-FDA: 84563047128.10.29D9E27
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2F6AE8000B
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:30:02 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JvFkzUb9;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 07ADB6B04E2
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:31:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8EC45140610
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:31:26 +0000 (UTC)
+X-FDA: 84563050572.09.62765B7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 54D65A0024
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:31:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cbkoqjlB;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773930602;
+	s=arc-20220608; t=1773930684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZ62zRGDMh84ev+ADivtxhXkIe87cWoaQL4WKudvzqg=;
-	b=fm806dVyEpUSHR6uIrspw3NDxqbE6J4jeWJuagzaGIhs4a3ZT8OUJWeUeEChmI27XkODGw
-	k/z+lj0fokPNat0Hg1iq7a++zzaKLXyLvWVR+cXXUR7IGcplEBZJqReMarblhdeQCoXMNI
-	wJLREwyh9v7rOUr6ZOSlAIDZW2h7WUs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930602; a=rsa-sha256;
-	cv=none;
-	b=NTNuH1qawGyclR5yANabaaSGE309cPtBRBq97xPVbENZelmaBlo3n+W46hMqmWW7diZXVG
-	Rgg8N9Or+kMAlwLvHMwq8Dg93ceWGqZ3wTg0KV5xKNw0mUav+oWh/euzY3fgyJHPLck35U
-	sMDTw4eOyq3sEU2vKW4EmewF//y/CUI=
+	bh=BTblAWTUi4HcbqLpRLVN4IrPvGhgnxFqV1nUkVTuy6c=;
+	b=KGBLLTXSFWJsj+YyYKCnxmq7Nb/S23p1bjuecCEY9s+uUL+8hu+YZDweQkUZnyi1oUqZth
+	R5BCF8Dq4IHd7u/8hbNzSK77cs1DpDUT77AUdPpQtjLangxIpB1cXHghAWSMvzfLVRsORZ
+	zFSGCE4qg/mvAOzUoNjOzQQCqMUBC1M=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JvFkzUb9;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cfbbdbaf3cso88037685a.0
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1773930601; x=1774535401; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MZ62zRGDMh84ev+ADivtxhXkIe87cWoaQL4WKudvzqg=;
-        b=JvFkzUb9NdGzz4dhvHpEMm+XeoUfNuV7GVyd8VGuZL7zTrnC88qttyhQ+CQRfDqmrt
-         EpcTxH8BiPGTXNouEI1zmA1v7l5dv0KyyK/DGK/NK075Rxo+Q6BqsomlFTVUwW3EEi3+
-         vA6JO1c43cv7VVaHgTb6kljVeniyA/o2yl9wfrEgZVtXX7wl8CpH9l7a3K7Z+1T1+3UK
-         eoo9+m08yqceuwefnSP6XPqr2s7Tj5/3SVLl8Hc6SFKrTiuZJWkPVJXcAtcx5q/fuyKM
-         g6QF7cq6ExrLxXVeEYvEdP7YZzA5d87qiEUP7zGrjptlj0lPeGjRunDpTgRm/85pI9nT
-         DlKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773930601; x=1774535401;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MZ62zRGDMh84ev+ADivtxhXkIe87cWoaQL4WKudvzqg=;
-        b=hMYuCeyreibZ6qlZLrheCRgFitliyVuh6mFVemNgoBF/24zGATlSOjpF8xJbuVMwsk
-         UsNG7M7vyrFhzOXY1wAZy43fe1jcQcxxfwA5s9q4sN5bRGA/AwPywx8/+S3+wegAEsvq
-         6lGjD4Uf01Hr7hKGEM1Npoi865jYhxmwDCfLgnGT1zhMeY+3F4qVDeKDBFxO6RIj90yc
-         fDDyuQC2eTZerUSq7gIMQ7tBfqG/YgHZ0Z0iPFnck0Gziq3btBHrQZvmBJKIJ6msoQpn
-         cMuI/uWhdPQq79as2KOUY09acW1u7AEXWqwKl/JsiC2Ayaa+uww2rDuXDuB0wEUTo0EB
-         4ygg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHsJUgNUeHybDIMGZYxJWNwDSCVw1DJzA/uSY9AIrRfibTkDodHcA0I9vpSvoFxDt0UvDEhh9GzQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywd9ltxvgg1haBWcFBKUU/vm8SQSYr/t2DIa/q8bTw2pEzhbLdZ
-	RAoTEhLslpqPzr7KRIWClbNx5apid6kgGsPJYZYT7Ra/VZE4qPcgBSoZ7bH5a0xW3siZBgIYX3v
-	PE3W7
-X-Gm-Gg: ATEYQzzxgImhionjFZaoTzCwrOvoeen6JPq6w9e4RAEf41sVY3cd3ytQhXCkoUYHUUh
-	IdY1X0N2QXvXeF5IglWAIvktneBXfhdQj6VU1LZwayE7DhlDrfJBeYZ4gpKnOf/FVye4dSSRq+L
-	jjPjYJxC2bJxO+TPGfI3x2tYflSlK1dOZyiFshno795hakmqPRjKvrU1+gy3zvuRIZR0OtYkljz
-	4GvsY9byoMJUK2cKzJOvFLuRPRG6VIWVgPDRzHg9BkZFNM6QvBBmUcQtiwfAl31UuIZ5D4OxnHZ
-	krA1RiVtGYggetwq+thRsh3A+0ROOstZIOHPJJ5wNdSIxk8Uirlh7ouPBEBGthWG34cJE+aALJh
-	mWlL9cPe76OwvzfROc3hUrfOvjCIJfe1SRcHWKvmjB2rNbarva5WkXZZoKdUwh1gzU9cShlJ9zx
-	uWxNyiW0N1VcgbCeliDxhsLRv59XlGS+QWrvZbOmz7H7pykrsmOxn/OktFXpnQF48E7xdQevf9Y
-	RNFJmJ0Ug==
-X-Received: by 2002:a05:620a:1a21:b0:8cd:b024:114d with SMTP id af79cd13be357-8cfb9ea6bb2mr485207585a.40.1773930600903;
-        Thu, 19 Mar 2026 07:30:00 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cfc25f0340sm87627185a.1.2026.03.19.07.29.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 07:30:00 -0700 (PDT)
-Date: Thu, 19 Mar 2026 10:29:57 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
-	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, osalvador@suse.de,
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
-	apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk,
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, tj@kernel.org,
-	hannes@cmpxchg.org, mkoutny@suse.com, jackmanb@google.com,
-	sj@kernel.org, baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <abwIZd7FNPj5YYXQ@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <c10400db-2259-4465-a07e-19d0691101a4@kernel.org>
- <aZxqP7J1kOClQUPQ@gourry-fedora-PF4VCD3F>
- <aZx7hsVNU0XOCCiG@gourry-fedora-PF4VCD3F>
- <049d056b-844b-4480-b90e-bf4c850fc70e@kernel.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cbkoqjlB;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930684; a=rsa-sha256;
+	cv=none;
+	b=p0djlwEU8W7vw0CyT6g6QDKInm5mZAJ7USVQsz8vNOjubvjHUIX949yTxKpwTXc+Y4jTCT
+	G0v3ZivTOYp2Jf5uWu2iTTLya9jOp9X8Pm7tMJc2cBJGJT+dyeC9noeUdh+01eLOVILlaP
+	JGO8cH/VREZC/LOgdOMDMMGANbU1sy4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3484542DDC;
+	Thu, 19 Mar 2026 14:31:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13EEC19424;
+	Thu, 19 Mar 2026 14:31:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773930683;
+	bh=h5Aa5pRSR7eKNJFLVE6Af15Uj6701Id7RhmHu3jhLXU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cbkoqjlBACSHhUzBH9DGqtKAeX+2K/xHxxe01kPTQVUJNF2ik9tbfXUyaRlZAqmWc
+	 j4qgcpRUnYEAprDTsczHdpo2OxjRjywi1UIzoAlk3NmS0oggdV0O8EDLV8LyVtSSdU
+	 m/3xmLXWUzHjX0sP2GXpyviT9wA/M5NlIWnYyljQNK+Mxt5mc4neynaNv1cXpJlMzH
+	 y5MsTQkMkGlAe3fDO5eG9xYLXGKjpl4AN6ubRLFlg1IaU2Qy3/BnRlf6aL2jQ0HcYx
+	 sWC0kv8D2LThrvuoQfPpFs/dmAcfNBIeG0GIr6C3Hq7+3iEUOHxl+768Fd1E36HI/z
+	 XC3ciJEzo+hlA==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/core: document damos_commit_dests() failure semantics
+Date: Thu, 19 Mar 2026 07:31:14 -0700
+Message-ID: <20260319143116.82849-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260319071332.114595-1-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <049d056b-844b-4480-b90e-bf4c850fc70e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 54D65A0024
+X-Stat-Signature: ur6oiqb58emnqqgk76ykedse9cdn6hby
 X-Rspam-User: 
-X-Stat-Signature: atyi3dp9m4ycrph9ubktcrpyjcxxjgof
-X-Rspamd-Queue-Id: 2F6AE8000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773930602-424699
-X-HE-Meta: U2FsdGVkX18zbv0pIuERIUeLPgZnz93BP662wxpgnDrpVDWO9WeTAQkMjQ2pAa7Yiopkmj1d24InihFsXbDvXLI0VPCJHSumHyCC2knvm9HD5A5ECi3bT9mjFgwCwfyFXWi2WHWeNAoMe0f6JL6wPv+Jymib2LDKSfMFqyGAXpyAPYUzL/hgu+JIAbkQVxGOpw5Qn4eVKHAoSQWQ54ROGSgJA+7pJYlmG9ISy5C5euwOtvM7c/4OPCnDif78VIISSFLF7hkFUce7SXBYRT5iJA4UoyKn5+rlZRaXYCpQi57mZ5CxliEPPGOM5LXE3pA2P80pw1rkggVYra63w3V4XyGkv0UtWvVnNcFjbE5JYUC9nETJz4iB7KVED41ri3LsZcZJM89uiCDRpygLgyAxjqsmVy/e9Ibvek6QSungYuXZRQmR9k0zTtp2ZMKCQN17N6MzSJsXUYnZv/WfdXqly4gYBg4ONasJbTN9fL3ewkaJOy6hCEA8SW3DtKwZN0mrb+o/iYzRUeu9P0O/Zk9CWdIOApIz1gOC+AYMtdIQlXVPJZu1aBpsBwkx9GPMdalRzn/tYvMSo9s4c0eOMJdCSmy/ECkilVjQnK8lbcujLADPCsweUihb7xHrhGEOcvInp2w6RBGlKwuALWGklrjSgxf0gvsLIei2lI1q4Lswx0yJH5OdfXF7n03/NjOMelm8Ydq1idEpbf88lB4ghtZLR0O7xIlqvwJqQEeeUsaBIu/kPwrEhhRYGxXJ8WuZAJvxg7mMJEPxEDZguVfk7GAN2FGwVW934+E/1HPvuwXdppK5cKK1V2uyBe7oi0g1/15Z5c+OT1QujJSEJZF5IsCQy/IW6O4rEFt5MfLA/SKFaszkZl/tbtSCL8+kFRGrJ2EmOfdjbOJ2SFG7UXl78tV1pFUjpgczenlXSzAmXS6DjINSBrFchPUKGgJ+3nb/GDqOPmfl/D2zqUtY+/01Ltg
- 840HD3kE
- idn1FDjDJ2RB5Qo0IQ13/lw3RDRl2adL/Aqe+TI/DxMgtZputPOSs25v6hkun3+pi+nsz8hTY46MJvDckZ5im6KaSKmDjgKie29a77lbc45BQ2vIhSZZCteHadt9UYOfAmG8BZYJxXTsZ6Tb2V0sUp6fkBeEetE7Q4JqXuXtejXfSjhZtlImMq8qBG/BYO+RayFZ4UPzyq+G/ENDMBbSRhIfLCTD7B6TYyrgCXKtjlgmHg2sVHRl6c3pSJf+V5mGnN1yu0IPjxL16Gyqi5YmZm/0SEJJhVsT9u17PMD3hX5zkfTGMahIgFGH7QiL6p3X+k8SOMWfa30G519YCE8Wc43dQHac3yH7MWOx+i+xKZ/XNjss/rJpNWcYUnKeM0x0ppzevtiUtZmB4BhnOUSJF8Z/iiw==
+X-HE-Tag: 1773930684-972143
+X-HE-Meta: U2FsdGVkX19GhiIEJ/5XNDT6syOOxIhnzBTH5OumjkXn3+YIid4adPlxumCrMvdtHlWrQtlEDBzmVfzUTD8/tF59pG6MjEUG0ZlC53c670MxofnnNP5Fl46XVO2sI2fHang+8zLDse+GASbdK5QSThx9Ttn29DF7zaKehfPMTiLWod9QMtDnBmZytJfCLpYXSlnpIRYPuccSu1ungJ0Q6a23qBRjI+KYZsB62B7leac061OOn0y/m8W+DoQyiyCCRwULVi502d2/ynuxwmJpaPq3kSRUWZqG6b1F1T0H3tWZco0vq94cfOVRQBbUgTRmznYeuAoRpgA5k+cSSWaLZ7JmmeSPFA7YwVFmVubP18tPX/5JP6ahaeM375PsUPmIXafJAv4YfrZBm60MXQlCH+uBLetUoUVk121I4nX0k6iR3jf2d5cuu20d1LfaiybH/0UJK3EZop9LWgRyHN7DkXfKZA2L2HUUO3caxBfZR0/qTaR96dxQl9uNp/rFnhG9ARHjLeeouP0KGc3Dfq3AZ9Vqvxslk8qzj4JSaR/roxd9pHiMOsKGabARZAwdPAZ4jyhvHVyBUsNm0PaAoUZYMqRjKKmo/CXbcypHJr/U257WrKTrCkMdOPqoUCTjgvM5h9umGBZDTGGi6MnzmSxhkWeUhzJQhcCywvULz2W8RMXbp2vVnXxHs2awqvGUaLxmkpdAqEyzICkA7Hox27IZJNbRjg/McES/xDqbGWLcdwXS+rUqBMQBv4N1XFej0OEmR780q+ai1Pbl3Blcxg1S+AXSANsxkqNEa71+AEwSlRcKHQ3MtEvNyb9JMNZ/2cMU/U0tyIlnxp7JNJOuqdJmU6ymHsIeshRQVtdO3Lg1c2FoFilyZhwz11gfWH7I0Ky3i3kSJuQyiHH9HVlEgQ13+KsRlzOKP8cTpvRO2qbbLY+HyEjhjw0GI79ovyWGOvTgOoJZvhHLmAe6UE6i5V3
+ Iy6CeC79
+ tJ0cYaWhchIRhNZwxC1i1Bf3LoJlVXmTdGGpwOGmSsAGiI/fZcKIhSFb4flY4Ni3f5SHnD/zObu9Gfwsrd6RO3FcLU2+EPPUjw/YI97edqOdU8mBynsM79Nb1U88OY3GdF84UNthayzDgcaUhCHbLb2j+KNvCuUmNN1QSX5KGozDdNKKF6hivjTF+JIyVEDiyN0mC1Ncf7aF7Gpf2+KqZgLkm8fu9ERSjhnc8Ep8psUudnHKcIkr5SL1T6VOz0HtGzB2gMgUS6jPe79+NtUNT4E+lfAdf57CDb1JxrkpjxAKI6DGisM5InZB+lke6YZlITNTlRNMbJyzCSQxy7whiLGTJRijHNMKrhY3Od11TDwWGCVHAqalzi7g+OcNby7TD5DV1WPIceWk+lUCwezAK55aOLMXSGdlhfi6goUMntIGrSr29eI4V6NLkiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,51 +95,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 17, 2026 at 02:05:53PM +0100, David Hildenbrand (Arm) wrote:
-> On 2/23/26 17:08, Gregory Price wrote:
-> > On Mon, Feb 23, 2026 at 09:54:55AM -0500, Gregory Price wrote:
-> >> On Mon, Feb 23, 2026 at 02:07:15PM +0100, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> I'm concerned about adding more special-casing (similar to what we already
-> >>> added for ZONE_DEVICE) all over the place.
-> >>>
-> >>> Like the whole folio_managed_() stuff in mprotect.c
-> >>>
-> >>> Having that said, sounds like a reasonable topic to discuss.
-> >>>
-> >>
-> >> Another option would be to add the hook to vma_wants_writenotify()
-> >> instead of the page table code - and mask MM_CP_TRY_CHANGE_WRITABLE.
-> >>
-> > 
-> > scratch all this - existing hooks exist for exactly this purpose:
-> > 
-> > 	can_change_[pte|pmd]_writable()
-> > 
-> > Surprised I missed this.
-> > 
-> > I can clean this up to remove it from the page table walks.
-> 
-> Sorry for the late reply -- sounds like we can handle this cleaner.
-> 
-> But I am wondering: why is this even required?
-> 
-> Is it just for "Services that intercept write faults (e.g., for
-> promotion tracking) need PTEs to stay read-only"
-> 
-> But that promotion tracking sounds like some orthogonal work to me. What
-> am I missing that this is required in this patch set? (is it just for
-> the special compressed RAM bits?)
-> 
+Hello Josh,
 
-Yes, this was specific to the compressed ram bits - it allows for a
-service to control where/when writes to the device can happen.  In this
-case, I've limited writes to just the demotion step. (Although I have
-since realized i need to not allow file-backed memory to be demoted).
+On Thu, 19 Mar 2026 07:13:32 +0000 Josh Law <objecting@objecting.org> wrote:
 
-There may be a better way to do this, but also it may very well be the
-case that such a hook is just a bridge too far and isn't wanted. I think
-this debate is warranted.
+> Add a kernel-doc comment to damos_commit_dests() documenting its
+> allocation failure contract: on -ENOMEM, the destination structure is
+> left in a partially torn-down state that is safe to deallocate via
+> damon_destroy_scheme(), but must not be reused for further commits.
 
-~Gregory
+Nice patch.  We intentionally do not use kernel-doc comment for static
+functions, to not encourage API document readers use the non-public functions.
+We still use kernel-doc like comment for static functions, to help developers.
+That is, starting the comment with '/*' instead of '/**'.  Maybe 'damon_call()'
+is an example.
+
+> 
+> This was unclear from the code alone and led to a separate patch
+> attempting to reset nr_dests on failure.
+
+Good point.  Adding a link [1] would be nice.
+
+> Make the intended usage
+> explicit so future readers do not repeat the confusion.
+> 
+> Signed-off-by: Josh Law <objecting@objecting.org>
+
+Other than the above trivial things,
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+I added this patch to my tree, after addressing my above comments.  If you
+don't mind, I will post it tomorrow as a v2, for mm.git inclusion.  If you have
+different opinions to my comments or you prefer to post v2 on your own, please
+feel free to do so :)
+
+> ---
+>  mm/damon/core.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index e233eb84a2d5..c884bb31c9b8 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1054,6 +1054,23 @@ static void damos_set_filters_default_reject(struct damos *s)
+>  		damos_filters_default_reject(&s->ops_filters);
+>  }
+>  
+> +/**
+> + * damos_commit_dests() - Copy migration destinations from @src to @dst.
+> + * @dst:	Destination structure to update.
+> + * @src:	Source structure to copy from.
+> + *
+> + * If the number of destinations has changed, the old arrays in @dst are freed
+> + * and new ones are allocated.  On success, @dst contains a full copy of
+> + * @src's arrays and count.
+> + *
+> + * On allocation failure, @dst is left in a partially torn-down state: its
+> + * arrays may be NULL and @nr_dests may not reflect the actual allocation
+> + * sizes.  The structure remains safe to deallocate via damon_destroy_scheme(),
+> + * but callers must not reuse @dst for further commits — it should be
+> + * discarded.
+> + *
+> + * Return: 0 on success, -ENOMEM on allocation failure.
+> + */
+>  static int damos_commit_dests(struct damos_migrate_dests *dst,
+>  		struct damos_migrate_dests *src)
+>  {
+> -- 
+> 2.34.1
+
+And Sashiko comment [2].  TL; DR: Good finding.  We aware the issue and working
+on the fix.  Nonetheless, that's out of the scope of this patch.
+
+: Does leaving dst in a torn-down state cause a NULL pointer dereference in
+: the background kdamond thread?
+: 
+: If damon_commit_ctx() fails during damos_commit_dests(), the sysfs update
+: aborts. However, the broken scheme remains active in kdamond->damon_ctx
+: because damon_commit_schemes() does not remove or destroy dst_scheme on
+: error.
+: 
+: When the background thread calls kdamond_apply_schemes() and invokes
+: damos_va_migrate_dests_add(), it iterates based on the unmodified nr_dests:
+: 
+:     for (i = 0; i < dests->nr_dests; i++)
+:         weight_total += dests->weight_arr[i];
+: 
+: Since weight_arr is NULL but nr_dests retains its old non-zero value, will
+: this unconditionally dereference the NULL pointer? It appears the previous
+: patch attempting to reset nr_dests on failure might be necessary to prevent
+: this crash.
+
+
+Nice catch.  We actually figured out [3] this issue from the discussion on
+Josh's previous patch that motivated this one.  And I'm working on it.  Because
+the issue is arguably orthogonal to this patch, I think this patch is good to
+go.
+
+[1] https://lore.kernel.org/20260318214939.36100-1-objecting@objecting.org
+[2] review url: https://sashiko.dev/#/patchset/20260319071332.114595-1-objecting@objecting.org
+[3] https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
