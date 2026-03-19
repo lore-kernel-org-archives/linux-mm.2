@@ -4,107 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB57F109022E
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D531090234
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:13:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33BD26B04CC; Thu, 19 Mar 2026 10:11:51 -0400 (EDT)
+	id 254AF6B04CE; Thu, 19 Mar 2026 10:13:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EC936B04CE; Thu, 19 Mar 2026 10:11:51 -0400 (EDT)
+	id 2057F6B04D0; Thu, 19 Mar 2026 10:13:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202D26B04CF; Thu, 19 Mar 2026 10:11:51 -0400 (EDT)
+	id 0F43C6B04D1; Thu, 19 Mar 2026 10:13:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 11F446B04CC
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:11:51 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B19CC1FF1
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:11:50 +0000 (UTC)
-X-FDA: 84563001180.05.4402500
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C5EB7C0006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:11:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UerHPcIh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F31B66B04CE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:13:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9CF041A0559
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:13:56 +0000 (UTC)
+X-FDA: 84563006472.14.1FE7E85
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2F50F180003
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:13:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qJFdgiFw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4jpB79yc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OrcSAEzL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="HXVk5/yP";
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773929508;
+	s=arc-20220608; t=1773929634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=62uEef/BkeK/5loUdRkhgtOa4Jww3WVIsDAkK87TFQ4=;
-	b=S+AAJvlDB8tcjKS7GPNL/XOvu6/5nljqiL4t5fT/w1xy7p5JYV6LkjbbhtP9jWEG9OKQoE
-	cdm0BaaiT4XGPqDdpLfhWQMIR13L5IUoMAhqE/mrd25xgSj8LpCKhtW793awkr3du/unbU
-	Q5WkuzCK9Wm+q7wrqxVtmatzDOOMmAU=
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=xD13nUwAnWXW1WWnoAkzvj/hVqT+ZLIVbKXEJ6G1tfnBgqfYGyextAswqcU3IOxspt225/
+	2kV9IxENk/rNYo2W4pMlyX4ADsosKPFJCLfz1liHwx+aZ5DaTTY/olJyjFBA1d3KI6EauZ
+	kFvz1OQ/64nWRRPh1S6wiflZ6MpBqAk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UerHPcIh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773929509; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qJFdgiFw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4jpB79yc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OrcSAEzL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="HXVk5/yP";
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773929634; a=rsa-sha256;
 	cv=none;
-	b=KMaCzY8dQCBcTHk1QXiBf7jkgJnLCbLnZyAeRBR5mXeynfVuWm1wh9j0XaTAcPwr52U5t1
-	tx45fXLklY/sc+epi39HDPA1Ue9Kqk9NExOgnJXf/WYyr0n/R5hdtULpF/a2cB0oNO2VUB
-	bNHjPxoqnbIdJfzfbTcF81pvC3B2fQg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B92D440BCE;
-	Thu, 19 Mar 2026 14:11:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664A8C19424;
-	Thu, 19 Mar 2026 14:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773929507;
-	bh=MivZjiW5NvagivYMYH70K18NXOP+4XjdCcrtxZRKzWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UerHPcIhZf5iw1L4uJ064Sm5pT3BEiIczGzptBjlWHw2pf3d+tNXIabR0FlPqyIRk
-	 i5A/s8jANJQ+6DUKj9E72Pk/lWL3jerwH8bHCa5SFCaU4jhsmeb+7/x+Ua9i0WELOr
-	 Ul+vuoba3lTnp86TRF2Gqt6t+s9MBbPodYgntONPFxSLb6c4CzdLpTzVBK9FDDgtpb
-	 GtbHzfXlvHPbrSvV7xXFxD3nRPfQ6pzF6z2CrsaJL1o1mZx8i0TVCMMHxmzlmccQr2
-	 TxqxhEmmNyEKoFOHBIAHTBuL5gqIQSxljyLvzzcUAdFWSowUlBD6xMHugYmz7rRveT
-	 VQko93pO+Dwtw==
-Date: Thu, 19 Mar 2026 14:11:34 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH 1/2] mm: remove CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE
-Message-ID: <2b23080c-0af9-4269-958b-957e7c093258@lucifer.local>
-References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
- <20260319-config_migration-v1-1-42270124966f@kernel.org>
+	b=X/ZJ/xZd0dhqSEGgonkJfy6JNMD3ONgnWyEspJU76knT30afy2ZhSivqb+jqOHvIcJrpDf
+	ezeDeQLcVpKcpVSBCTXpjd8+dd92192IQiER4X44E/hP9pCDaf2jTbyNzBoNPy4VqvvjJi
+	tBi4pnt7OKdDN/TOzWhxSKg1qV3xSXo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 233AB5BD4B;
+	Thu, 19 Mar 2026 14:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773929632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=qJFdgiFwZof840urwELAyJUPmqr5R5KSb1T4rwYuc7bb8XNbCm/kv+M5FkrKSBEOM1bZiu
+	/MGyuwm/OFnFKmJm/t/Uz/+GbEcAEAQCMtEWioCbgwKOh4DWZ0qNVZOg9g66xDY+m4U+fD
+	w9Xqoe30eNI+goFz62hSwZMzWorThdA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773929632;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=4jpB79ycXSQsxOkgtV3HKUa6Dm/vQ/wRir8pmFsiYnB6qgK3LbPe12RtulXb4tol7/E3ij
+	faYPra8B4GTfZjDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773929631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=OrcSAEzL/6c4UDB40dZmtUkHL2UKN/t418W/3/WLfRE3VUYtttdOTA1LBRs2LexriSZBXr
+	IUCLAcO9QxQoLCNXA0PSitgNb7BC5cuH9t+EXroQLbXGhfbC1mTChSWj64vc6V41FfYy8R
+	mio6pb/J12e+5TPnOnmBoDRex83ce1A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773929631;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=HXVk5/yPJtxIjyky0dtujMNvVHE9KONXRU8D1O6wb4LBxoqwDaKPYOnkGEkCrYDJmYyVOA
+	klxEA++oJw6AsaAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 14B714273B;
+	Thu, 19 Mar 2026 14:13:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TmUEBZ8EvGlPZwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 19 Mar 2026 14:13:51 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id C850FA0B32; Thu, 19 Mar 2026 15:13:46 +0100 (CET)
+Date: Thu, 19 Mar 2026 15:13:46 +0100
+From: Jan Kara <jack@suse.cz>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev, 
+	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-mm@kvack.org, linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pm@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Jan Kara <jack@suse.com>
+Subject: Re: [PATCH 12/61] quota: Prefer IS_ERR_OR_NULL over manual NULL check
+Message-ID: <ol2d7c5z7yfyuwo5tyfxurgqedruhr6bzmuv37bx5phhrmmoyh@4zjspbtexid3>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-12-bd63b656022d@avm.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260319-config_migration-v1-1-42270124966f@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C5EB7C0006
-X-Stat-Signature: knhie4oqsbtsxmonhe4cw44d8d1w7d5z
+In-Reply-To: <20260310-b4-is_err_or_null-v1-12-bd63b656022d@avm.de>
+X-Rspamd-Queue-Id: 2F50F180003
+X-Stat-Signature: e8o6qo3quowuwpo8xk975u68tjqao1ym
 X-Rspam-User: 
-X-HE-Tag: 1773929508-335156
-X-HE-Meta: U2FsdGVkX19rKBlOMUF0mpIvMYmjIpFwyXTWFFOMZULXfNdsH+f/Q94nTfkIWl8HlNlLtYU1SZ99g3ubTH2p3Vo5a4lMUNRSCCPEk33/Z4EpuijMjXeMmNQMJS4FQNFlxljGitgVoo+pGNWehata8Lu72w6bvCITiCQzhdw1ZOENICjvJBONdRSOIC/Ho7Cv9TBufoqLt5R4b7YnffDooL4aQlVP0YiBOx5vMtCFqfQ35TV78jFNL1MsWhA6s21UMuHhq3FC0oY0JTvL4JqQ333ShEsweyzrmVqTy5iNmMNd+3nYHMUWrWgZnMI6UyXR7beORWCKeSW0k36wkomTxYO1DNCfoSAB4j7D4mkBFDif4HUxWzyO1GaGleAHs8DqNzn8KvYoJD3inxQI0Wq3+QJqBwRJtsLdB5oilHitFW6feAAn4Zv5EAPMvdSMgaYnT1DW6KAXWMLJCLUf0pEcjNfu15qU7hntgaG6Mcsp4sBEH+F228w8Y3eieG7dSE0perc0pxppY1R9QZJtkxc+atgAT99+CnXJjYgSBn7sGGUyokVslVlInOlQSe3JdJoAV682tgESMXjFeQlWiT55LK2eYGVgVptzs0KS0GD6J+Xz9QAmFgbcAQuGIlZpScYXU5jcHu9IkuHIZMELzHiKivygYm1TkP6fPyJBfYaIAchK7rA3zroxhU3oB/BaDDBJNSHrRE+GWKbHSn2/nzG2BKdjna43Bf1XSU2l52Ob5xr4yGCWUIbY5aORT/aiFhpIPRyL8UClgRbvoZVP0Q0U4MY+nGgBEqbV9jCn3ePDoCGUANhxXyUI/P7aZZCU/IyFjJ0XLnnloVs2R3ClZUwipoGxwS0roA5PrZa2sKgMsnZBGDPLAi2U8K8iq0bUAayFzdAmclPMqzJzAb2X6VDTeWwe14dVeBoAng7oN8si250G73DPphRCtQ3V2WKjEVtgAmxWvOE50KNOEGK3QgB
- krsCvped
- iXKJ3xfEguv0e1WQXNCRIPHtXIdqcpfzFQ97K1yn2L7B+9R8MjJ+TWpzrSvnIl47xpLWuJy7pE7qjcjjPJdH3CJtAHQLRLVSaSBLV4nivLGpBR5a5Qkxr+JcKZntoE6I8FkqR33Gx5QQBY2O5gES8FiDfUefpZfb+jS5r7gqs7XPNtdStW+BtHjvSv2S8muSrRNXUVFXkiiPVvTxIrEGTZeFFl3Be451+eHG3La8G+htv85XUb0eCh6qKGk9TKJQ2qAzru+116xvlZ/FJ5CS4RjKu+AwIjC2v2ayo9Hy4Q3f60a5NU3oexoJJS+H14RZ2U/SFiSzcjqe7SIwbzqiSLPjtine5BVrnZP3o7UQseMkEMsiYFqnRgtWuHfxVcdzIPTC5
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773929633-194888
+X-HE-Meta: U2FsdGVkX1+Or35G0Y9iGpWkVoRuCGfLCJ1aeSnoDrgLZJ6VRJzNbHUuLbF8kysoCAAS5CcTI6QVKL4wH701fuhyxcbMgfM0AD/qef1vNOR1wCYDQnILNly+3T0+0vH1mbXzjPwCwfjZ5oAOrZ7Pjup5svVeJ2bhtB1yLpU8LBLwg9VPgtv1chuyjevMldx7N1v8l9JxEiufUqRhsGUS+uIxXOZllV/pqXbDDRBErIjcS7QfH5BRklTNOIbg3DLMn5AeNh55JMKLt/MkoC8bH4CsitsnjoDRhBXs2GsP0j8D9w6xz/1kZP/uVNoSr5+I21Ogse8jZVxtQjpVQvbOdIaxWn/8NwxrCs2Ke+lqSQ9l9SJBNM0vdIbElQ8RMTgy2ZGrofuyw4F8pvxEMRPi+YZCCSmh3vmsHfro0GsNDymEYG3VpR43FL2Slq2PsdWdS+F7ZsqhySMGXb1k20gC/hQoNgXGQ8MLhgLWel6Cjldoe2ctUqiga6Ei083TTsony8O+FUwwKqMhH+oHG+bPG11MG1uBPTpjBzvpK7dHlEZh7elTIgTw9jRr7tGkyhl90CVBqQC20MRNzUEwbBp4mYoICaAv0tzfVhAmg9Wir7NZSLfyTV1PiLoHox41Tlup0CDE4NnyWv5ANrtBg1LtmAm37TqV5zpGiozJDMKnoaess6GfJVuWD8Lh336Q0OzKgjPvATcwOPEi9ymKECb4W3/w2/J5h5bAIvevU1hTlHz2uvWnk6VlF1naPJa7j3qvL90lgocNpueFWmPcIP6ssZUuIP12K7Pac3zWea5oIPd+8NiFwBYIJGIvM+xBrXmb87a3JOzeChAO+HeSUcKdeqKaBEpA7e8BJgI6Bksuee0IZ27zTcEYR1tRCcpfqhvf8Lm/4YNcYtIIfQ26kYYDFtjewVfigLkCTrehcVWy+cV+2gdRGkBGwK8g1svrgK5GEUtwQAwj2OVpAPLTKrc
+ M292Puld
+ F6ZA3iYuVzAoR5uflQ6QqJJVwFCmLeYAVkp/wLkiN8vav2embGMv0CO02bxfd7oniy/TCFUxlkSnaAdBdIDTdxpLIN2DSPQI/Ri//PmhhThVO4sOGEzUqcynND7/ydCiudsaxNfBuIErv2Nhyh+PyLtE6Ve7B+uM/MwAOtyQbJACmB05gTL21pnVauXM0uSI1+be2hLXlBGoI9IAQfEbQIraG3dKQWThlNhiaQpA1l0D9BTiAD6IJ9bxHsb00FGfdHu2ckQ1igL3a7tQqOte8mRYVL38DcArjaBAjEU3Z1Jp9wnikzt6cvIXdYoIvhwpRYlHu7EggyTd8rs2U2cUetrooCHViMHTPjg2cRdh+rKpZ+dNh0nh2qZqXCsooDy7y/YJcxarFFq4ihOG8lZOgvFl/rXLDfx6o1mFhUkG5e7GnZ6u1wHd/AJzmlS4GQzyX39rQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,144 +149,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 09:19:40AM +0100, David Hildenbrand (Arm) wrote:
-> All architectures that select CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE also
-> select CONFIG_ARCH_ENABLE_MEMORY_HOTPLUG. So we can just remove
-> CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE.
->
-> For CONFIG_MIGRATION, make it depend on CONFIG_MEMORY_HOTREMOVE instead,
-> and make CONFIG_MEMORY_HOTREMOVE select CONFIG_MIGRATION (just like
-> CONFIG_CMA and CONFIG_COMPACTION already do).
+On Tue 10-03-26 12:48:38, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+> 
+> Change generated with coccinelle.
+> 
+> To: Jan Kara <jack@suse.com>
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 
-Makes sense!
+Thanks for the patch but frankly I find the original variant clearer wrt
+what is going on. So I prefer to keep the code as is.
 
->
-> We'll clean up CONFIG_MIGRATION next.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+								Honza
 
 > ---
->  arch/arm64/Kconfig     | 1 -
->  arch/loongarch/Kconfig | 1 -
->  arch/powerpc/Kconfig   | 1 -
->  arch/riscv/Kconfig     | 1 -
->  arch/s390/Kconfig      | 1 -
->  arch/x86/Kconfig       | 1 -
->  mm/Kconfig             | 9 +++------
->  7 files changed, 3 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 38dba5f7e4d2..bcd9f5bc66e2 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -16,7 +16,6 @@ config ARM64
->  	select ARCH_BINFMT_ELF_STATE
->  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
->  	select ARCH_ENABLE_MEMORY_HOTPLUG
-> -	select ARCH_ENABLE_MEMORY_HOTREMOVE
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_CACHE_LINE_SIZE
-> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> index d211c6572b0a..dbf65ad512f1 100644
-> --- a/arch/loongarch/Kconfig
-> +++ b/arch/loongarch/Kconfig
-> @@ -12,7 +12,6 @@ config LOONGARCH
->  	select ARCH_NEEDS_DEFER_KASAN
->  	select ARCH_DISABLE_KASAN_INLINE
->  	select ARCH_ENABLE_MEMORY_HOTPLUG
-> -	select ARCH_ENABLE_MEMORY_HOTREMOVE
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
->  	select ARCH_HAS_CPU_FINALIZE_INIT
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index ad7a2fe63a2a..9f3417b75b2b 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -126,7 +126,6 @@ config PPC
->  	select ARCH_DISABLE_KASAN_INLINE	if PPC_RADIX_MMU
->  	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
->  	select ARCH_ENABLE_MEMORY_HOTPLUG
-> -	select ARCH_ENABLE_MEMORY_HOTREMOVE
->  	select ARCH_HAS_COPY_MC			if PPC64
->  	select ARCH_HAS_CURRENT_STACK_POINTER
->  	select ARCH_HAS_DEBUG_VIRTUAL
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 90c531e6abf5..61a9d8d3ea64 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -21,7 +21,6 @@ config RISCV
->  	select ARCH_DMA_DEFAULT_COHERENT
->  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
->  	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM_VMEMMAP
-> -	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_BINFMT_FLAT
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index edc927d9e85a..d01800962d84 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -85,7 +85,6 @@ config S390
->  	select ARCH_32BIT_USTAT_F_TINODE
->  	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
->  	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
-> -	select ARCH_ENABLE_MEMORY_HOTREMOVE
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_CC_CAN_LINK
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index e2df1b147184..c290fe363f27 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -69,7 +69,6 @@ config X86
->  	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
->  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
->  	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
-> -	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if (PGTABLE_LEVELS > 2) && (X86_64 || X86_PAE)
->  	select ARCH_ENABLE_THP_MIGRATION if X86_64 && TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index c012944938a7..b2e21d873d3f 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -465,9 +465,6 @@ config HAVE_BOOTMEM_INFO_NODE
->  config ARCH_ENABLE_MEMORY_HOTPLUG
->  	bool
->
-> -config ARCH_ENABLE_MEMORY_HOTREMOVE
-> -	bool
-> -
->  # eventually, we can have this option just 'select SPARSEMEM'
->  menuconfig MEMORY_HOTPLUG
->  	bool "Memory hotplug"
-> @@ -540,8 +537,8 @@ endchoice
->  config MEMORY_HOTREMOVE
->  	bool "Allow for memory hot remove"
->  	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
-> -	depends on MEMORY_HOTPLUG && ARCH_ENABLE_MEMORY_HOTREMOVE
-> -	depends on MIGRATION
-> +	depends on MEMORY_HOTPLUG
-> +	select MIGRATION
->
->  config MHP_MEMMAP_ON_MEMORY
->  	def_bool y
-> @@ -636,7 +633,7 @@ config PAGE_REPORTING
->  config MIGRATION
->  	bool "Page migration"
->  	default y
-> -	depends on (NUMA || ARCH_ENABLE_MEMORY_HOTREMOVE || COMPACTION || CMA) && MMU
-> +	depends on (NUMA || MEMORY_HOTREMOVE || COMPACTION || CMA) && MMU
->  	help
->  	  Allows the migration of the physical location of pages of processes
->  	  while the virtual addresses are not changed. This is useful in
->
-> --
+>  fs/quota/quota.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/quota/quota.c b/fs/quota/quota.c
+> index 33bacd70758007129e0375bab44d7431195ec441..2e09fc247d0cf45b9e83a4f8a0be7ea694c8c2a1 100644
+> --- a/fs/quota/quota.c
+> +++ b/fs/quota/quota.c
+> @@ -965,7 +965,7 @@ SYSCALL_DEFINE4(quotactl, unsigned int, cmd, const char __user *, special,
+>  	else
+>  		drop_super_exclusive(sb);
+>  out:
+> -	if (pathp && !IS_ERR(pathp))
+> +	if (!IS_ERR_OR_NULL(pathp))
+>  		path_put(pathp);
+>  	return ret;
+>  }
+> 
+> -- 
 > 2.43.0
->
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
