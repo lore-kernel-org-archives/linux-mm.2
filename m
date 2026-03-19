@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9DF21090257
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 449A51075270
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 17:19:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 391736B054F; Thu, 19 Mar 2026 13:18:21 -0400 (EDT)
+	id 78A6C6B00D5; Thu, 19 Mar 2026 13:19:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3690C6B0551; Thu, 19 Mar 2026 13:18:21 -0400 (EDT)
+	id 761B46B00E0; Thu, 19 Mar 2026 13:19:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A62F6B0553; Thu, 19 Mar 2026 13:18:21 -0400 (EDT)
+	id 69FF86B00E7; Thu, 19 Mar 2026 13:19:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1855D6B054F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:18:21 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1F54C235A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:18:20 +0000 (UTC)
-X-FDA: 84563471160.18.3D24AB5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 24A4818000C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:18:18 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GyE1OotQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 591D76B00D5
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 13:19:25 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1768213B6E3
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:19:25 +0000 (UTC)
+X-FDA: 84563473890.23.79C5552
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6E3B51A0007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:19:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b+wzekxD;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773940699;
+	s=arc-20220608; t=1773940763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMyLgGwLMavHRJLYaJcRb0z+RgJAET5EPmQC+YH2llw=;
-	b=rLEpOs3+YRnTvViGhozi2GoNH+riOMk8zvqGYBSZSDH0VM1QJ0dgBM/4CrMlKsv76/hqJJ
-	MTcPdnMbLsZSYD0/wS+4Ez2QsDC3YA6t+pRZvUcy3OXvwcVSbxdrrFwmUAQlT9yvazUq06
-	bUOt0ebI1J7iBRnbaK6MsoKl+wSLzc4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GyE1OotQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773940699; a=rsa-sha256;
+	bh=fPxeA7UEwEAYOk9ri8DSAFM20l68K0j8KZqIRa7ecgc=;
+	b=0WBSLtjtqWQdSRRM+IHCnmLeeCf+QfYg8mOnR2VN6a1fDwvcVjzdYNOOjqEoa0zLnXd7Fz
+	5ODb3ctVVbsm06IqruTxJfk0Cy0bPl+JKK7h1viTFAAgVB326zjQBRRpuA6/2uEzTxvPOL
+	0VKRVFJ/VcHuZgs2sPneCyQKku0pCTs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773940763; a=rsa-sha256;
 	cv=none;
-	b=qUPDrYDRQMl7Q3R0WhU0//SlbrVcoGMJPWVdmcRrApb97n/b1/Bm2V0uVqEjx+EWow0xGR
-	bdosjvwhtyXoILGJP5XzCv76guHcCHZtlMrCInTS2J2WEPrMTIz2KaXOWHj1SjDGc7FoHE
-	h7V2CUZ2aAsTsWtzfX11M6qOqjb58K8=
+	b=MaWl0qoiG/dniBdPURCi/My0ZccWgBxUsHVf2bInE3udQte16NheoszEy/Lk/xk5eahNsg
+	JCCBWoa3zdnGeC81L7X4B11nUeVTGJXVIGSZAg16QhMgC/rHBUmA9jeaXK0zzOP/lAWMTe
+	Yr/XozNEeDSwOkOhcX7ZpcHoSpoQKMs=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b+wzekxD;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B220408DF;
-	Thu, 19 Mar 2026 17:18:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495DCC19424;
-	Thu, 19 Mar 2026 17:18:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D489360097;
+	Thu, 19 Mar 2026 17:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805AAC2BCAF;
+	Thu, 19 Mar 2026 17:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773940698;
-	bh=YAOwpycBW4bl7GnjppU5EEIluuBvfSAoerycfCrlHZw=;
+	s=k20201202; t=1773940762;
+	bh=CRe67mkIC0ESRXKT0XqoUIZu/d4VKlx16OMwh4bOfWU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GyE1OotQAS+3VGWCbSahRJe5oeEe05aV/pm9mjIdeQcmPtZyiRwiXhNaiBclivw5i
-	 BQIRT2zVSCIETwasZMxxONivVibXltFs6pOx1aVUihoKSPr0R+Bewgg7EIrC9JGVRc
-	 FGTHlOob/zPpnzkdGJtQSlxlzafXQsgmnD2MEoHitCxSCL1QuhDmIxqGkRjml4zpVp
-	 Kkcs/QKpG/+30pARtme8gicHeRykVWm0b1crDSKAgnt05/A5wxAMYuALVQFVrpPVB9
-	 PWuMVvF08/geD9pNt7cc9URj3Gy7NiPTlVB3S1DkeA3gIWsr8vP5fdW0bpD+RtSPE0
-	 rTVGg+2rrOU4Q==
-Date: Thu, 19 Mar 2026 17:18:11 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	b=b+wzekxDzyYGWpd8oVd26XrZqlejzgkU5gHUwgEyk3UYBxVd1s3wxcoofE4uru0/G
+	 CkPW70WWc8Eai1R55nSb480qEWmyHlvjuKhGSnQbQtXIFNFfAwCzPyQdKI8hvzSgGJ
+	 EE/pcfqqJiY4TRtY6NVBktWL12FERYck2tbIvp1Mp8ImeSyMa0gkSbHvJ2e5bz7OR9
+	 JaA3JPmxCdxGWQWSruKgN/SV8VsHrodfZTNv/R05Y0PsYJHmGptKtHAQhWUPAEElXo
+	 DWiAnoDhU/Bn29O5cXMPK3OiNrnocQCKss2Bh9QJz8cC44uDSq+p73TG7gEgyag0n/
+	 c1OsrJZNMKkyg==
+Date: Thu, 19 Mar 2026 19:19:15 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Hubert Mazur <hmazur@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Stanislaw Kardach <skardach@google.com>,
+	Michal Krawczyk <mikrawczyk@google.com>,
+	Slawomir Rosek <srosek@google.com>,
+	Lukasz Majczak <lmajczak@google.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 7/9] mm/huge_memory: deduplicate zap deposited table
- call
-Message-ID: <420f1b11-3b62-46dc-be33-58fbd5a4c8b3@lucifer.local>
-References: <cover.1773924928.git.ljs@kernel.org>
- <29fa4129cd560681c67433b4c344b2c9a027d1b4.1773924928.git.ljs@kernel.org>
- <abwr3EmhNZVwOkR3@thinkstation>
+Subject: Re: [PATCH v3] mm/execmem: Make the populate and alloc atomic
+Message-ID: <abwwE-yFTFHC8CMZ@kernel.org>
+References: <20260319085907.3510446-1-hmazur@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abwr3EmhNZVwOkR3@thinkstation>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 24A4818000C
-X-Stat-Signature: g7ote79uhobbgqh19jb7n3zowsqqf4js
+In-Reply-To: <20260319085907.3510446-1-hmazur@google.com>
+X-Stat-Signature: 89pxfcju59mo5nercu8nj4zii7c1by46
 X-Rspam-User: 
-X-HE-Tag: 1773940698-850068
-X-HE-Meta: U2FsdGVkX18e4FXKY755BcJzC6PzG2o3yeC8aWxOeHamSRNzpEuNGLuQKszP6aiJgRK0J7WF0EO4Dd5mCXMcl+yBcrDEM5TGNPMpyKR28bVhxHkEvWoTXgLZG13Kp7jSs258K+zIJ8k/4k0R3qo0xuHmvBhhmfCWWW6Pj95smQ45fnoLdir1zBlIOq2BGVw/apozEH/PEhfJ8b2PhfL4LeRrEAIG7mzgKNdO/GE9J+doFaU/IYe0uGfKQzBshn5qtW1LUX1wYBKeLRLgtL1MH7OHdNnvKnvk30lN5JN1gQTy8ouB2BZtJBiaKmF6cm2B9aeUn+9sNAutOunbROOF/3W4Sj/75FQt87tmFX3YPR3pGWvBUTFSzaFTgMsNJQ5XnoUDHQk6L299irl/3+dEGHyDujXeAvajqIEcIZDU+0YCdrAZMThJUvVZ4w0uONgYELKHDB1+AbvRbFe/egsNQfkuFVCif+NcE+7oMHIdYtHWw/YgeMfBesecC2dHTVKJAklTTIekoBW8d0x09UQbwgWfLKMlfJxbNX1v5bNTP8RqRpocGroOHuPQG3PWE/HfMU58tq9Ec5RJkyZIq16A3+DwdrtvAzDrLAi0CbQmP2R8HuSL8I0O+uyDHvyY769jzxmxNCbrhxWIC5gNcL5Yocinp+nNj49m9WDDqSHkA30JEJ6J1LuW/JdfcvZAal0LWNNY1ISEJKPA5XmDxWjKUn0t5nBaH4hVASViohqo/sKkvG1bhbYISrobI2U21aQbikizJp1oS8/ZYguC4KlTWaszioTXskxcvci4O6iY9IZY7EBR5uTsmB+THxeZqfKE7dyu/DfgdjmeD4cFOJB+VWWiZ5ZnpuA8cIXGhQibT9tbPh5zhnAdgDDxWqhFd2OmPiCZt82jiOBOpadt9JW7ArkwA2YZEb9QBGJdSN0z2DU/tnFbqVu/LWjkGpdPgTnen9I1PrdBFcWCd+nn1j1
- MzyMolxL
- sLSRCZKmxE298UWc9bPH+ibTDs4HLlrTx/H3Nkq33JaK6hV6b0mXgMr8Y7L3KgUcsZyV76hCLhLElQx8L4KUbLM7Szgit5tO7ORXeIO6u27/4WPL5yLRjAQSF+IA2iKVoTV296vV8uJGRkW6AlpN1mki/6JEHR9ovVIo4goUznOTl8YarYFu9hqTuRGBv1mUCWuVTKsbEJh0mq97droOqYFbYer6rUU294NL09jrXpgS6ABsPPxnRTMJlo/sTszFVPCUp4LGWnAwJMRI=
+X-Rspamd-Queue-Id: 6E3B51A0007
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773940763-531562
+X-HE-Meta: U2FsdGVkX19ip3tqFJiQFjZnZkCH+tCqZjtl8kGjph6syeL23LeG9UbZPrvmPaUEVHNnu/dWpkFu0Yc1AnGWzT5RzjczpcLDWppVpT6x3vFDV6JY7R4R4OGW0/b7nE+Q5WkE7//KTdxcxUbw43tqdJAGRIz046PDclzjQ7PHnzUyGe7WGIPZf0q2iqY6KFNyxPbxUzNF3dGAwuRlYauST02DzIxjLeitKWRMKHgjfecTYAbqFSg6vws/zaDXitVa33R9wlGC9D6vrGZG7xOtglCZMcbxU/IIvcTuunr1xYNFvQHhhdZV/jcFnOXlig90FhOJsGkUF90iA3fZSrPIhYFC6fgE9zUBDht84+GrfiMgSLINqPm0GK/rNnK9tLnWJLODWFQ9DKBJJYVYfC3sYs5fSwjxBN+n/hyGR3aLZAk+ZCB6NUVCUANNWMz1ayIeaFS62fktIkA/kj3tJIgcvhCmqyeWg8EKMEqn73sUbLzJynBEYsy1ikfAg9RHZUbpAT+4wiA/LOpDHZb+AISl6DVMTl18rPQOIREwajBh4oesV/mltSoNUh6xTM1av564OayPlCd+f3lL0tCwuBPRa+d+l0jWh/nKaMIiWlYmpeCwoMUItGbL8lvmMvwXKI/KkNqxZM9k7ZMUo+j1yAOORkedKcOBtDn0TBMM/0qXq2uW+EKJ4h3JISKvzwZ02enKSm/DjSntoWI2xFcI77StGGF1lvivM/UzKcwF/KMOYOyme0NoWjZbKRv4BWfhLrCbATA4HWuBviT5Qcrsgz5OV17xyNpBnQvtVbgLt87TClE1BybjryO36xVsu0YDb4P+r32Sy+cOsKaGT/bd27hBaqTutHD1asMrHpf+HCbfMKS0xTdCzRDOh87TTiM5fkBq5NFLQCP9IFf4YC9717XncTZ23Z0wicXp3zeZoemn1JzKzI/UcObZy3PzAc5JdEs6v1faG0YaGwxmn6HZfNZ
+ kpOrCRCK
+ GxjkQWzSkc8jr17jaPB7wzgv3ROare2z72hguJhm+GtDAhb+VPp/mTD0v4DuoXZcjWFaF/1+/ZCCTySJvb09c93yNONcAPm0Re47bQtuoyJDj2jGsarVovrq5f7dXQJuku+DDkrJYicHWP7/QW+nSuhJlQ/W0iz0yFJXnUhUREU8ONToLLT56MbftKogncUO6o/Q5jyJo81qOZ4MSNSlSkLoek0jmX/xlvO3Om4hNizBr3BjsiaWqFmvssSXG6Kpo4M0yZgYucdG0qYGSGIT3ddWEkrhn3Ui4lc1SMz0ipbI8rWsrKSZRzCG1retT36sOl1/EXAUzeGFAv+U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,42 +95,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 05:03:10PM +0000, Kiryl Shutsemau wrote:
-> On Thu, Mar 19, 2026 at 01:00:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 499c31bf8f83..c4e00c645e58 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -2431,6 +2431,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >  		 pmd_t *pmd, unsigned long addr)
-> >  {
-> >  	struct folio *folio = NULL;
-> > +	bool needs_deposit = false;
->
-> I think 'has_deposit' is a better name here.
+On Thu, Mar 19, 2026 at 08:59:07AM +0000, Hubert Mazur wrote:
+> When a memory block is requested from the execmem manager, it tries
+> to find a suitable fragment in the free_areas. In case there is no
+> such block, a new memory area is added to free_areas and then
+> allocated to the caller. Those two operations must be atomic
+> to ensure that no other memory request consumes new block.
 
-That's fine, can rename.
+Sorry if I was not clear, the motivation for the patch you had in the
+cover letter in v2 should have been put in the commit message rather than
+completely dropped.
+ 
+> Signed-off-by: Hubert Mazur <hmazur@google.com>
+> ---
+> Changes in v3:
+> - Addressed the maintainer comments regarding style issues
+> - Removed unnecessary conditional statement
+> 
+> Changes in v2:
+> The __execmem_cache_alloc_locked function (lockless version of
+> __execmem_cache_alloc) is introduced and called after
+> execmem_cache_add_locked from the __execmem_cache_populate_alloc
+> function (renamed from execmem_cache_populate). Both calls are
+> guarded now with a single mutex.
+> 
+> Link to v2:
+> https://lore.kernel.org/all/20260317125020.1293472-2-hmazur@google.com/
+> 
+> Changes in v1:
+> Allocate new memory fragment and assign it directly to the busy_areas
+> inside execmem_cache_populate function.
+> 
+> Link to v1:
+> https://lore.kernel.org/all/20260312131438.361746-1-hmazur@google.com/T/#t
+> 
+>  mm/execmem.c | 55 +++++++++++++++++++++++++++-------------------------
+>  1 file changed, 29 insertions(+), 26 deletions(-)
+> 
+> diff --git a/mm/execmem.c b/mm/execmem.c
+> index 810a4ba9c924..4477bb9209ab 100644
+> --- a/mm/execmem.c
+> +++ b/mm/execmem.c
+> @@ -203,13 +203,6 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
+>  	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
+>  }
+>  
+> -static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
+> -{
+> -	guard(mutex)(&execmem_cache.mutex);
+> -
+> -	return execmem_cache_add_locked(ptr, size, gfp_mask);
+> -}
+> -
+>  static bool within_range(struct execmem_range *range, struct ma_state *mas,
+>  			 size_t size)
+>  {
+> @@ -225,18 +218,16 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
+>  	return false;
+>  }
+>  
+> -static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+> +static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size)
+>  {
+>  	struct maple_tree *free_areas = &execmem_cache.free_areas;
+>  	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
+>  	MA_STATE(mas_free, free_areas, 0, ULONG_MAX);
+>  	MA_STATE(mas_busy, busy_areas, 0, ULONG_MAX);
+> -	struct mutex *mutex = &execmem_cache.mutex;
+>  	unsigned long addr, last, area_size = 0;
+>  	void *area, *ptr = NULL;
+>  	int err;
+>  
+> -	mutex_lock(mutex);
+>  	mas_for_each(&mas_free, area, ULONG_MAX) {
+>  		area_size = mas_range_len(&mas_free);
+>  
+> @@ -245,7 +236,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+>  	}
+>  
+>  	if (area_size < size)
+> -		goto out_unlock;
+> +		return NULL;
+>  
+>  	addr = mas_free.index;
+>  	last = mas_free.last;
+> @@ -254,7 +245,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+>  	mas_set_range(&mas_busy, addr, addr + size - 1);
+>  	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
+>  	if (err)
+> -		goto out_unlock;
+> +		return NULL;
+>  
+>  	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
+>  	if (area_size > size) {
+> @@ -268,19 +259,25 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+>  		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
+>  		if (err) {
+>  			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
+> -			goto out_unlock;
+> +			return NULL;
+>  		}
+>  	}
+>  	ptr = (void *)addr;
+>  
+> -out_unlock:
+> -	mutex_unlock(mutex);
+>  	return ptr;
+>  }
+>  
+> -static int execmem_cache_populate(struct execmem_range *range, size_t size)
+> +static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+> +{
+> +	guard(mutex)(&execmem_cache.mutex);
+> +
+> +	return execmem_cache_alloc_locked(range, size);
+> +}
+> +
+> +static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
+>  {
+>  	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> +	struct mutex *mutex = &execmem_cache.mutex;
+>  	struct vm_struct *vm;
+>  	size_t alloc_size;
+>  	int err = -ENOMEM;
+> @@ -294,7 +291,7 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
+>  	}
+>  
+>  	if (!p)
+> -		return err;
+> +		return NULL;
+>  
+>  	vm = find_vm_area(p);
+>  	if (!vm)
+> @@ -307,33 +304,39 @@ static int execmem_cache_populate(struct execmem_range *range, size_t size)
+>  	if (err)
+>  		goto err_free_mem;
+>  
+> -	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
+> +	/*
+> +	 * New memory blocks must be propagated and allocated as an atomic
 
->
-> And initialize it to arch_needs_pgtable_deposit().
+Nit:                               ^ allocated and added to the cache
 
-Yeah I considered that, but then you have to do logic like:
+> +	 * operation, otherwise it may be consumed by a parallel call
 
-has_deposit = has_deposit || <whatever>;
+                               ^ they
 
-Which is a bit ugly.
+> +	 * to the execmem_cache_alloc function.
+> +	 */
+> +	mutex_lock(mutex);
+> +	err = execmem_cache_add_locked(p, alloc_size, GFP_KERNEL);
+>  	if (err)
+>  		goto err_reset_direct_map;
+>  
+> -	return 0;
+> +	p = execmem_cache_alloc_locked(range, size);
+> +
+> +	mutex_unlock(mutex);
+> +
+> +	return p;
+>  
+>  err_reset_direct_map:
+> +	mutex_unlock(mutex);
+>  	execmem_set_direct_map_valid(vm, true);
+>  err_free_mem:
+>  	vfree(p);
+> -	return err;
+> +	return NULL;
+>  }
+>  
+>  static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
+>  {
+>  	void *p;
+> -	int err;
+>  
+>  	p = __execmem_cache_alloc(range, size);
+>  	if (p)
+>  		return p;
+>  
+> -	err = execmem_cache_populate(range, size);
+> -	if (err)
+> -		return NULL;
+> -
+> -	return __execmem_cache_alloc(range, size);
+> +	return execmem_cache_populate_alloc(range, size);
+>  }
+>  
+>  static inline bool is_pending_free(void *ptr)
+> -- 
+> 2.53.0.851.ga537e3e6e9-goog
+> 
 
-Could do
-
-has_deposit |= <whatever>
-
-But then that's weird with bools.
-
-Could be has_non_arch_deposit but that's too long and... yeah :>)
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
