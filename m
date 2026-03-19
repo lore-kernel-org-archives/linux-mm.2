@@ -4,116 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39C6109024E
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7103D109024E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:29:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 199286B0548; Thu, 19 Mar 2026 12:28:41 -0400 (EDT)
+	id D81ED6B054C; Thu, 19 Mar 2026 12:29:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14A5B6B054A; Thu, 19 Mar 2026 12:28:41 -0400 (EDT)
+	id D59346B054E; Thu, 19 Mar 2026 12:29:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0603A6B054B; Thu, 19 Mar 2026 12:28:41 -0400 (EDT)
+	id C969E6B054F; Thu, 19 Mar 2026 12:29:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EAA9F6B0548
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:28:40 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4A841DC67
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:28:40 +0000 (UTC)
-X-FDA: 84563346000.02.3500492
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1A6E120004
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:28:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=qVsoVvGZ;
-	spf=pass (imf29.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F256B054C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:29:24 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5742EC21EB
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:29:24 +0000 (UTC)
+X-FDA: 84563347848.25.554D2E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BAD764000C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:29:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aF5DbFFA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773937719;
+	s=arc-20220608; t=1773937762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H52Zybh5o34dbFpC/ZH35I3IR0TeF3CcjTZ7JtQFu2w=;
-	b=378Cflq23TiVYgkGtryQ5P+IP6gh+O2eeOGP/H6JBbapn+8ON7SIMV+A/4Gxx0Np1SFwq0
-	+J2KILgO33wYqJ2hgROLZQxKujVXpmZ921GCkG+553T0lEHX8o88lalrY8hrW4L9wfwT16
-	QWotdyKVc4ppEe7JY090U204xMGLIaI=
+	bh=4Ku+TdKpBZURjVYJYXwssaAgRT3caBmSnlPF0+O9uHs=;
+	b=CC6RSz2sobOCZa3XROuR55QNd71Wi0lCyBs1Q43rk30e7v6p9LTePXdNUGFD4qrU7JUh+y
+	X7U+LqzOC/0v6rHv9fNvaJ/PSPCKnPyFkRjZ8wUWoHMqY+CSRxlZuogSV8vpDFggtrbsW3
+	K63pYKzy3aOoA6C5JWOsMtOU/m6oON0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=qVsoVvGZ;
-	spf=pass (imf29.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773937719; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aF5DbFFA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773937762; a=rsa-sha256;
 	cv=none;
-	b=A5UUKiMe3vKQnbtBy5udAsIXM7sURt/Hpi33CKF5ckN0h1MChZ19ciY39d2jkQNGFMvqjO
-	yW4eN8hejRV26wDOetThBHy6Iv+fTab8/TX1ALzeWg+vGzvlnbOX+WcKEk5mNJ8cWvpP4E
-	ZyRtcb+7qgTkQGu4/HHdBdAt/cg6Qwc=
-Received: from localhost (unknown [20.191.74.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3BEFF20B710C;
-	Thu, 19 Mar 2026 09:28:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3BEFF20B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1773937717;
-	bh=H52Zybh5o34dbFpC/ZH35I3IR0TeF3CcjTZ7JtQFu2w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qVsoVvGZBgiMTYzcaPymyws/zFtGLAsJuSf42v3omgVhgy4V/7SM/UFdDfZU97k+C
-	 vY11I8eol4oictnvBu/vQMefqoMTn+2RHUiOztqmT14YgkRFwnc3yMPdzePNXNxnxC
-	 Y01VMPNtIKCj5VPxAbfZbdq9ZRMZ8zsrYw0n9y2U=
-Date: Thu, 19 Mar 2026 09:28:35 -0700
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
- Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf
- <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple
- <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, Ankit
- Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li
- <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jason Gunthorpe
- <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet
- <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian
- <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org,
- Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, =?utf-8?Q?Mich?=
- =?utf-8?Q?a=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport
- <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
- <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
- Yi Liu <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <20260319092835.00004887@linux.microsoft.com>
-In-Reply-To: <20260316162518.GB1767448.vipinsh@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
-	<20260129212510.967611-11-dmatlack@google.com>
-	<20260226170030.5a938c74@shazbot.org>
-	<aaDqhjdLyf1qSTSh@google.com>
-	<20260227084658.3767d801@shazbot.org>
-	<CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
-	<20260227105720.522ca97f@shazbot.org>
-	<CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
-	<abNOwcOTXqxCxNzt@google.com>
-	<20260313083918.00005731@linux.microsoft.com>
-	<20260316162518.GB1767448.vipinsh@google.com>
-Organization: LSG
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+	b=4sVxYKRW0Gp2OBfzvljSFk8GM14YMylwTjs2+U+we1Xi7owI9hpnL9F5VGSKWJatyVCVZb
+	Xo1w8ZTmDmgaES0uLQ4rB2N965YVPopFnH0jutKFz1pqr/+lgeeKZ5y/KLxy4pXmNkocai
+	1yo57qqBvKC3qrupG8NpubR/FBC01rQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0ABB0600AD;
+	Thu, 19 Mar 2026 16:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248A3C19424;
+	Thu, 19 Mar 2026 16:29:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773937761;
+	bh=i5FY2xFUG82H2mxUurUo54YyYFYdXZArEFQEN+SDOy0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aF5DbFFAnHCvzhvJhT5dGtrQoRtJ9QNrqQlmJnbfZGodcTPOczAfqoQkVJIF/LXmE
+	 NRUWZ3gYSMcre4wgwUNw09xxVKFI5Sgemkg2LAotinZjLLwX4iM1PGYkctTph/RumK
+	 vZbtY4tdz04aVkTwegcY+ogZdGqZvTefi0axkcs96JyYYbbFlBfs82HELbk8bZzpWu
+	 r3XKupXWro4jRmoWCi9Q8Sv10Og+jz9lMJHhwiLehTvhEzP5QW3ShgVjN49nGeFKrY
+	 HHr/eCyrr+oVH6Ygchgg5RWipe/5nmkCpI4UsgYg0JGgzQb2ofwBsZCXqUHlfYYlJr
+	 B/ySfzNIrgg5Q==
+Date: Thu, 19 Mar 2026 16:29:19 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
+	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-mtd@lists.infradead.org, linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org, 
+	target-devel@vger.kernel.org, linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH v2 06/16] mm: add mmap_action_simple_ioremap()
+Message-ID: <939645bf-50c3-47bd-8132-89acf95056c5@lucifer.local>
+References: <cover.1773695307.git.ljs@kernel.org>
+ <1e58aaf3cdb61cc317d890c12c9a558dfc206913.1773695307.git.ljs@kernel.org>
+ <CAJuCfpGocCSRT0yDxPOLg2NZ+W_ZSTjHGPZRKBd3U90=sQtHCw@mail.gmail.com>
+ <330f3614-7dc1-4e80-96c4-8472b25108bb@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C1A6E120004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bn7xthm8huq374hx3xoprb4g8roykkj3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <330f3614-7dc1-4e80-96c4-8472b25108bb@lucifer.local>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BAD764000C
+X-Stat-Signature: ahdnhx7a9ym5j48pfh7h7adwwjxuohj5
 X-Rspam-User: 
-X-HE-Tag: 1773937718-326769
-X-HE-Meta: U2FsdGVkX18o5HammF9U8Ul1sW5Lzmejk0YnjqJZUBz/8RtMgkYSUucO3JSnT9aqQEnBtdL7mKfkDn34gQMLU220b1nblsKUKEiKBN2Sy7bQAYvXPESV+QGOPzkmgXrFRd4hoh3odrXF3SNhoc4/cA1d7iefRQufsd63VUf+gsFdk6zr6fy3Xdg41dq752ua69SsTWbimRwXDbrTUvOs0YjOIsWU/6Jyzk4H9uNZqGgJvsw9y7ihCVvJJ+jbVjgVRRkFUuecjDfS2Le3iNbxDaJisrbnzf5JX4t41nv90lWXjZs6f76kov7NHCfoc9HG8aR2uuDnYvAHoxJEL3zYbAuCo3I3W6WPv5iNpyutrRChPR5KzRwzZNKskqn06UXukjW6JEXFpVmA/d33aL/akezRW5HXbJK7coeW0cyHkNefLAs2aah+9rYYwiaZOPu0oDKsAGMXfMqXc5RQ3dL4wmnialEaaG55OCxV+6OLbt+c3zi5cu1Ql1zR1uVg1hJiNBwSO0S0RPRwLnQplrvrvn35iS+jBmGxz1OGrkZz1PWzrNvZTeEc1kKiokQoujrKl/ViH1BIZyVMkZ6mGUlHwimaf+NPCM7UUQHg56c2CMH3cwIGpYDwtxlVIsPktW8g5YYFViYr0qeSXgtUPkA2MbTNB6IrY//mkuzFriATX6qAwmWGevSxvs3/tUmirCpP5bv1UIUCMX3EK8273UiBYmbnamnustog/8AqdmePDgvhqt92xvpAZzV04pXDcsNyJs+1dMFe6wrw+hOto/8rK09YFKoS4j2dtjhzOuCeI9IMuw9SB+R3q2/YSSThzaYH0J+wp/t/b1v1JnSn7Kj9GFdZugaW9/bfwMu7aekWuFNieZG2aJ8n50giCT2de2PDb4iWGtFceRsa6SwZR1qb3ReA09W6sFch+VspMBI1ds6LESQFngxXhshXvVtFTZwZo66mpYPDwehaFa90t9j
- hx/VrNtG
- waP927OyMf0x0AtSOe2O8fqB90nJKHcZt2HnKydmhRQBECZVy+xI5vOS7tFaGkL7O7immjKtcXQdX2lPYry46fKCbLNFOqNbloKbyaVtZl+S1uJiANv/DEkOW7XjXxz5jTCBBMvZtX+Jqqcv2ZHltGCgW2sKsX/HwmViToHYYMs2Kx8QwRu2ItNBjcyCZrguROAGTh8nOAmI/4RqEy6LZ4AB1uNQ41lt57z5qBrY2bO78DHGWb6rpz/Kf/j8wFEe3jqGxYB6FPdTGjqX3q6etujZJTT74VAlJYzi5VWUESsDh0FwAgkp0tkYR1wzZRzlNzzXzRmomBD3xi7GCwK0CnUDj8j9N4MQomMwykPPPdNpPPbi8Fn2c6MjzOFxXXshrKGvR2WucnxS8X5RVt1gUQiIGtA==
+X-HE-Tag: 1773937762-282292
+X-HE-Meta: U2FsdGVkX1/6HGfBF0qPuGbKEonAkFR9FScqCVhWoAHtaff5pb7UJdC8Tb0NpNoHJe92t+Q0rkNkq+ofPEsWg6P+MVIeN4rmuyQtklJC4uYM7o6je6yZE0SuRMCN/ipXoRPQe2V0Y7XGNyF1jKZLZzV4P7fVSYBA/pbi4sWmlyHWkZKfCOc7+IPp+nTjWL9NDydCJrrd0vb1VEqvepxYhVPBSquASv2dgbtYCCs8XthH6sssLXn7a0w3wjEOGNCxmTJSfzpckxio1n2kx5B2LDWX2Uoi97cTw8n09vLs6eQC9/D+U+HT3+kp5e6dIxl2Bu3iqCqQAWgPiCPjMJux0QWLgFqDGO40nPnBfCYtBKqNAQODVZAm2BuTGdsfCmU81NqTvxt0YwYWlh/yaZB1SamMGrQGY2sjI6foe4XEfMGYO3geXixMmP4WGvdZ7BWWa/6cyXzv7cSMa0iiDLNKs9TVAEpbSxisWDjyOqkozc++wON0vC9ICVx/oruiaPMhyu2uyhA2Kqr4cDL6SBsgw1wSJAQOjtoOTD7qVdt27yRp+EqWjfBoS+plvkuJ+s2XXtgxY3EPCFv27+eMVsxbirB0EI9luata5yNkpQtoApCsIGcx4EBF5yKOYQtYfXUuQX3h/jvICMa3hhZJ0fw9Qegce8/t+HV4l9mW7Zc4pTPP/QWsapb3lq2tOLzzfCQndjIAjiq+ol7zFnEdmIggOFoavfN2s04q4R42fdD+Zi2CDLRGonKzBF9xVLsTk6PWPb/iWQz0slNGxS/nj+UUmjhbUcZEs6piZ3LQot0y+hCU81c4Kdei0CJkwkca7ac0ILMdMLm+0e1bSv5/mIM86hbWSsmWK59WZVk28DAaRKHtewt2+d9HW0pKJXFBHKTC8kG++HqoUC1+gomPVVhd4XU2GNmoLK9VZEchdmvgIiIGpzBMjMfXfEY+ODluX2wFGC2RCtL4wVf5+/rhlbH
+ Pe4b4tKK
+ PpQPwx9RYskxPNDHoyLfrbFM7Du817vxQsa7x0m+kJIKHquBa0lI87rodCJRk7EGxpXobqoHvHM3JsanZBimWb/grOejujGq1B2AYn+rHpY9X410s6zKXcRZZqpc4lJjoA/QAzNLVRYHLI0u1nVTWW+4LCp+lKm2OJnglhNJFHBF9fp0oE0KtJHnKv3MGLOMkSh6HGN/j0O5YiRpl/Jj9zxFwF1S8yu5eLtpVqBcJ7OUfSOdlfNiz3S6HcsKB9qoikNy4YSJa81Yh48DfB3JnglC3vc8vtSVCRZ5SvvAoBuhPB8WOoBpe3dRDqx1MvAziAcOhwVZx1XBCDNM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,41 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vipin,
-
-On Mon, 16 Mar 2026 09:28:32 -0700
-Vipin Sharma <vipinsh@google.com> wrote:
-
-> On Fri, Mar 13, 2026 at 08:39:18AM -0700, Jacob Pan wrote:
-> > Hi David,
-> >  =20
-> > > +config VFIO_PCI_LIVEUPDATE
-> > > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> > > +       depends on LIVEUPDATE && VFIO_PCI
-> > > +       help
-> > > +         Support for preserving devices bound to vfio-pci across
-> > > a Live
-> > > +         Update. The eventual goal is that preserved devices can
-> > > run
-> > > +         uninterrupted during a Live Update, including DMA to
-> > > preserved
-> > > +         memory buffers and P2P. However there are many steps
-> > > still needed to
-> > > +         achieve this, including:
+On Wed, Mar 18, 2026 at 08:39:25PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Mon, Mar 16, 2026 at 09:14:28PM -0700, Suren Baghdasaryan wrote:
+> > > +int simple_ioremap_prepare(struct vm_area_desc *desc)
+> > > +{
+> > > +       struct mmap_action *action = &desc->action;
+> > > +       const phys_addr_t start = action->simple_ioremap.start_phys_addr;
+> > > +       const unsigned long size = action->simple_ioremap.size;
+> > > +       unsigned long pfn;
+> > > +       int err;
 > > > +
-> > > +          - Preservation of iommufd files
-> > > +          - Preservation of IOMMU driver state =20
-> > In the interim, what do you think about moving forward with noiommu
-> > mode without preserving IOMMU driver state? I=E2=80=99ve tested your
-> > vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works
-> > as expected.
-> >  =20
->=20
-> Just curious, are you using qemu VM without iommu device for noiommu
-> work or do you have actual system without iommu hardware for testing?
+> > > +       err = __simple_ioremap_prep(desc->start, desc->end, desc->pgoff,
+> > > +                                   start, size, &pfn);
+> > > +       if (err)
+> > > +               return err;
+> > > +
+> > > +       /* The I/O remap logic does the heavy lifting. */
+> > > +       mmap_action_ioremap(desc, desc->start, pfn, vma_desc_size(desc));
+> >
+> > nit: Looks like a perfect opportunity to use mmap_action_ioremap_full() here.
+>
+> Yeah can do!
+>
+> >
+> > > +       return mmap_action_prepare(desc);
+> >
+> > Ok, so IIUC this uses recursion:
+> > mmap_action_prepare(MMAP_SIMPLE_IO_REMAP) -> simple_ioremap_prepare()
+> > -> mmap_action_prepare(MMAP_IO_REMAP_PFN).
+>
+> Yep, it's one level, I think that should be ok? :)
 
-I am using a qemu VM without iommu device and with an assigned
-nvme device. I use a low level nvme userspace driver (modified to use
-iommufd noiommu mode) for testing.
-https://github.com/SamsungDS/libvfn
+On second thoughts, it's silly not just to call io_remap_pfn_range_prepare()
+direct so will change it to do that!
+
+Cheers, Lorenzo
 
