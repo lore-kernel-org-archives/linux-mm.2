@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9161109024C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 613FE109024C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 16:08:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 747D76B0534; Thu, 19 Mar 2026 12:08:25 -0400 (EDT)
+	id DD7126B0536; Thu, 19 Mar 2026 12:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65C186B0536; Thu, 19 Mar 2026 12:08:25 -0400 (EDT)
+	id D87936B0538; Thu, 19 Mar 2026 12:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D5396B0537; Thu, 19 Mar 2026 12:08:25 -0400 (EDT)
+	id C4E6B6B0539; Thu, 19 Mar 2026 12:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CB1E6B0536
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:08:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E9E9F13B628
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 982666B0536
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 12:08:26 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D52F1B8137
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:26 +0000 (UTC)
+X-FDA: 84563295012.15.50EDBC8
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 72E6DC0008
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:24 +0000 (UTC)
-X-FDA: 84563294928.06.9ADEA7B
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 54CF8A000E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:08:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mVMdoZEC;
-	spf=pass (imf25.hostedemail.com: domain of 3dR-8aQgKCPgofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3dR-8aQgKCPgofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fWLfi9PJ;
+	spf=pass (imf10.hostedemail.com: domain of 3dh-8aQgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3dh-8aQgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773936503;
+	s=arc-20220608; t=1773936504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RKVhsGcUMXvCBqpUK2fjK2pDbP3Z82lHVn5dhCQ+Q8s=;
-	b=7BpFGhIhGjhc41RYTy8Be52gu8yUh93WF68VN6OdfsWKJV2slgUwhd2+TpYDygyOhBAe0n
-	09jGI766AfexLgygu4rUzzrESCvW7THR/QAmvVKQUiPNqDLEKYeeQlxvVYwh9hFQLuUBJw
-	zc3m3yZaYPUGvJX+u4CoHPWXr+LBR4s=
+	bh=DCR1+XiCejEoTZukOGzTXx300luMCdEPMVOduAGAhwQ=;
+	b=shLfULMI0/1tJQkQ6M7k8e6gZhM0WlEot7xKm5xgYC/7jeycgDc6kThDuBzwDjfh6Ahlj/
+	RvgCMSHu+Z/Ou5k6WW0FuCZz1bi7WzcBMmlDjCcoxRDRehAjIPZtdCpxCrajKXx1WJczr/
+	mY9DLeX1E7A4EtSfnrKeHx/7z2rb4bc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mVMdoZEC;
-	spf=pass (imf25.hostedemail.com: domain of 3dR-8aQgKCPgofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3dR-8aQgKCPgofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fWLfi9PJ;
+	spf=pass (imf10.hostedemail.com: domain of 3dh-8aQgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3dh-8aQgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773936503; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773936504; a=rsa-sha256;
 	cv=none;
-	b=vE54bZBA5f6No59036Hfgd1h7Cj85WkaRJRvwV9WBMwEvQD0MhgfTgpkyXI+W4BvygKN0H
-	YscyfHsOJ/v5VShcCpLgcemDvhMmU4MO8+7nFHSzuauIbZlSZOMzncQbAzBSyzVF07QRDg
-	o8S2tvmcaAUm0SucJh4cWRboefNayQQ=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-486fe3b9441so775675e9.3
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:08:22 -0700 (PDT)
+	b=Snywb7kmnna6KRbjz6FxZCYCiOnEJ/S4mgVuIDK7bCa+hBaAH8b+7/27VQkf0RZ1eo5BqW
+	LdXDKYRhzrbPhzrQotLPQ2eXfscfzRibCwcDTzHeu7mxBeCTzqsBEKe4BBDdiTlizjfiBf
+	nxIxBjNJDKREjDkMYe4ylajzmc8apQQ=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43b3d3d2d22so651003f8f.0
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 09:08:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773936502; x=1774541302; darn=kvack.org;
+        d=google.com; s=20251104; t=1773936503; x=1774541303; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RKVhsGcUMXvCBqpUK2fjK2pDbP3Z82lHVn5dhCQ+Q8s=;
-        b=mVMdoZECCKyMNmq/XsQrwlf/m06wVeRRkcJhgpZPEHkHoLmXwxVUGrFspqkA8LzXYD
-         V37Yvj7W1VEmk389XsHcsTLDq+oVqHXySdA7JamyHnGgzhMDXWgqk+6LEKuTmAmKa2EQ
-         57gCuELwa/zQmKWfwAW6qM7XT2KBAZNYnKFr7RFIWDNzmZcVXamWYdH/3zH9/+viBVLD
-         kxg5IPgB1/ozC3Ai1aNa4Kr822z74LnrugD2KIHecAWpShawcaz6yE9migmT/GnY7IKx
-         wG+9PF0UEiq3MJsSpL7jrhOUuN6y45GP72zJIw5NqeQDQzcotQlC5eovnNVcFItPxAd/
-         vhHQ==
+        bh=DCR1+XiCejEoTZukOGzTXx300luMCdEPMVOduAGAhwQ=;
+        b=fWLfi9PJJJ4b1HmGXJ+0rmitnPmC+tbe+K48DU/IXlUjcjKJB84j6RDQyGL/BElTUl
+         0OXQ7tidXMTK66t7lLyCPKz8XMl/L9C2ojSmWdZaJ2vz0Yqc+geSiSkpQLtI2bCrqRek
+         Y1gX1IP72a6JH915K1oXeQZS0Tm6rnpX8O76LKdp1pn9PRBlGLF4N1/06wuPkfm3uDXE
+         2CKi/FG+GiGYDvRMAU6Rms4VTP0MUE+2ortZkBFbYa8oPJVLvzEaw/+f8/T2VzHm6XOK
+         4Pouj7AP0J/8/No1ZuTKSbDGc8e+e71iNqTmfUhvSoMhUXedgSbiGk2EUwMYR1EODUzT
+         frbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773936502; x=1774541302;
+        d=1e100.net; s=20251104; t=1773936503; x=1774541303;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RKVhsGcUMXvCBqpUK2fjK2pDbP3Z82lHVn5dhCQ+Q8s=;
-        b=NGTOqv4uE5bGUVEvFzb4eYFCyNVDkQaIh6TW+mFYG3nvSnBTqJTGynxJ9fDJrBw+l5
-         do6kI263BhiOV5L5w6jEQBLN/QL+4WMISJ4mkUAJV7Zgvuwfd+rp/+yom+WB/lYnVuhh
-         eTc67v36JraNLkbzRs4YiTqzomy42Lqr7IIY+lDcLN/YunsnqEvUbNvdtW+iyDd+nwJS
-         HiAbTbdfI6UAOyNj5P+oIkjkkxYkZe9DX+AdUdqzN69RQhzPogqqHxujbyv+WfEFo7U+
-         n8LldqtQAnPyQElB41S+3+2pdPl5sa38BQIDwhNhPjdOYduF3Vb9QUGPkexbEvhPrxsi
-         6XmA==
-X-Forwarded-Encrypted: i=1; AJvYcCUk3Dv9OKw8TgcT9g4RVF0E7HPQ4GVs4aRAKsJRtnd9F7+VL3AbunydJO+5RMhiniVwR/KKIok6Uw==@kvack.org
-X-Gm-Message-State: AOJu0YzeBz24qVlKAGiKeTk3RaGjnRyZwQpP1zy27FGas6xGbtVafNQ6
-	VPJ3X2XG/LAtGRoACm0Z9ZW0qqoLLtktSUWOZfftD9bxteYXb2hdiXAOPdsp514/J0uw9eXovou
-	yfaKEUUki04sfIw==
-X-Received: from wmfv2.prod.google.com ([2002:a05:600c:15c2:b0:47e:dc0c:276f])
+        bh=DCR1+XiCejEoTZukOGzTXx300luMCdEPMVOduAGAhwQ=;
+        b=nXgs5xYTxub6Udr7vewjSQma4GBqkEmS9J8o7/x5q/dAoulZTNIfN6UHV8MjVLXDUW
+         twtyZ0OaOgioe18YUM5xfB/8AtkBGcncZ4lCSXBtdOYvG6w0qrJtAXK83vs1Rxv69OQU
+         FoTwbCqikW+xtjhXQ/5LwBMh/erRA4O4LEgDz4vws0C7y0IqImbm9halBy8J5LDgJiq3
+         DU91rOk/yN4cpfh87RT4Erd3r3SWbN9t0B/6O1jfcFcIhrlUo1PvXWJ3q/L8tuMmxQB9
+         6bup1Qtkhs3ho8bZCAoguA87kghoPJrp/EHnT5vRz3Lk/pltxdD1B6CzrXSNDMMHY6kA
+         zetQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX3eCtKb/govoRpB9i6XE9cxjaGHg5BtXDRRifYpzQ1rTahNbQ8uMcsPw+gmoaRqQN8+u19f8i/BQ==@kvack.org
+X-Gm-Message-State: AOJu0YzmJbnK9lkiQNIYYLq0oDru+DLIn/6gG4B8B9tSP+t42OYCeVX9
+	rRN3EHJm0NS7vFCJdnajq9LfMt61PFrQf4aT6EyYOWu50YEABEvC/sRGv1mcTwFUc4A4SOoYMzT
+	Sgr+SdPK5AmvJ6Q==
+X-Received: from wrwk6.prod.google.com ([2002:a5d:66c6:0:b0:43a:5b:6a87])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b31:b0:483:78c5:d743 with SMTP id 5b1f17b1804b1-486f4460539mr130801685e9.28.1773936501670;
- Thu, 19 Mar 2026 09:08:21 -0700 (PDT)
-Date: Thu, 19 Mar 2026 16:03:25 +0000
+ 2002:a05:6000:2011:b0:43b:4e13:221f with SMTP id ffacd0b85a97d-43b527cb037mr13781774f8f.47.1773936502714;
+ Thu, 19 Mar 2026 09:08:22 -0700 (PDT)
+Date: Thu, 19 Mar 2026 16:03:26 +0000
 In-Reply-To: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
 Mime-Version: 1.0
 References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260319-gfp64-v1-2-2c73b8d42b7f@google.com>
-Subject: [PATCH 2/5] iwlegacy: 3945-mac: Use special gfp_t format specifier
+Message-ID: <20260319-gfp64-v1-3-2c73b8d42b7f@google.com>
+Subject: [PATCH 3/5] mm/kfence: Use special gfp_t format specifier
 From: Brendan Jackman <jackmanb@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, 
 	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
@@ -97,14 +97,14 @@ To: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
 	Uladzislau Rezki <urezki@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 54CF8A000E
+X-Rspamd-Queue-Id: 72E6DC0008
 X-Rspamd-Server: rspam07
-X-Stat-Signature: w1z68wimpzqyfr48tdkyuo5o3m9cqfba
+X-Stat-Signature: nwmegwxwye56xjcstrw76xsuqo9z4krb
 X-Rspam-User: 
-X-HE-Tag: 1773936503-754603
-X-HE-Meta: U2FsdGVkX1/RbJJeyJRpBXKmiI7amMTGjaFqCDgCI2NkD/55Q7JyukdJYJxTz2pshGg8VJn/Wapbfbixo1XeU9ACU43zp456Tx/AvfssUd1iBEkAg4h+eahfnrna320tl1w7SgDs1XUZSv9G0nj+j2SVb0paFzEwzCB0epogmC7t2Hlw9CzUUuZYHRYw7j53HYGFjXlkOVNHYyShYhxEbNYzVD2jS5/khBIjPeAITaBhnUUskMCbrWnAWrest3jJUz9hhnSNnJwgmwnB1dkQni3SneYxrxvh8xyr17x3CWrFRuTl5ClERm5Z31baHP3LVQRWoNsBMtdjtMfueLo1pEhOvMmR8zCugPP6q2nEBYOBpkxi/oA8iClZkLkd3ZLjU68ABp/7aqCC8rKe4ljoZIEELGBvwEE6ko8QXbS+grvtF/vOxza056hzjzvx5iWS9zL7w2rHtJ4BrqVoifV1p1sUY1mvvlVD2BEZe6DZ7P3hOpLtQ30sW3pWPfq10wykGsHGd3DHklXSPavLGyn/kFgrk7Evlah9542fq7VLiwdKbLwpGsmuU8+kHKOZMHwW4ijn5yxQDniE0cu+8VQN/YtapWFPHvpcEi90hiKyyWJMOxFXxPDFVF9/pU8Za2yLBArerSARPTgn56qO0opaHQkoSvLirOd4EaZtspu7m5XUeP4IDwRBtfNiV4zLCJO+NvVCcROv6860rkfd4tMoBg9Ju+y0LJ3zknKlJKVJGXVCJDqJrDbCZRQJbNSh83PDYmbAfy+SoownrUpZSAjur5RLqEEcLbQYOIVmJ/++XG8LNJMNpLuLw1U0rWhs+Q06xoiRY+l/Zii8tXT3vVOefRUcdkfJDBx4SH8RHwnB/94FVs+3vJfUNcYPMWJV5NIhuG1iOVn9HmpVSQ2pI0JEtFOWR30U2r0D5BGw87oVWvFjKriKs6GlxmYgJdDe3r1moKEKOS+FFKvrjYYz7HU
- xEt/FTmO
- D/0T8oCH+GogWoNR/zKz+rTH4ET2M4ejoCbDcMut5WUi6lcJx8tzMf4T+1t3RJjesQ0vjx20yR2Pl0MYDV4stICns6kyK69iiiL7/a4RIfD7iQNtBQDWypl2Qi7CiByy3ho6VW6sVYC0fWLsDOJ2NpVU3K5HgqtOBRpVResCX1IN0RiO4QsjXIfdRiLC9fP6Jdk+d7CuY3cRJB6zfvvamgiYlbgzFS3kjWtTYDTl80B6hEi06PxShDXS1e5/dOKMkIeBuwXyA93kqTgVBvZ0j/dcIUH8bc8JU5RwpXHr78NLRBnyBq/yWmVto9ZgQ80dVlVcT
+X-HE-Tag: 1773936504-209732
+X-HE-Meta: U2FsdGVkX19wiyGwn13NCMAbuWcaobIAc8tZryGHnpy0j2zFTmH3G49s+JcmkMV0nXWQhtBpUCSePwP65ueUpMPi7OwezFPBOEzwp69i2gphHSx/X50qfr/6imlgGgfbrxse6j9fOKbny9DFCdx3Dg43kluYtqJocHgV0MH4tlMU9HeG1bOlweDZrr/UNZwDRL2/+IBDdH/DekNE9j9zmvhcLMoaN862yCp04eAC+c2aiVMl/Sad5vdnylbOcTFu7OO/xSKk3CK9kIiAR/bLKb31YR5qYeVysaOfQD7ZgHWjgqpmgjHYgwQ3/AdeRlgsIJiPVrvCF9BUUh5/aRtvspJzc0QXr58HpChvIAnoHvVirABZNRVfoZirxPJsEQrLQuBD8DsHVx2fYn950CdiIvnaMad4MH4w9CFQERlFPQ6m9MttLD/WmNxqXcQu6fYF5K+Ly3jOJ4PrRDgLQoGrUN8q9Wg5TQll4VyFKBgQYmC+XSCrDFY68c6wJP7gn09k0xIu+LRMHcTSF7zsrkHisdYeTEqGQvGssAYwAEIzlsifMWVAyAkABSB2QDQv4aF97oZETfu9rQaTCabOXKEhI/hvwpaECLoX3kq1c4d7LfVqm18pJx+Q/txewBChffuEIdUm/xAd5LGi0RggGHM6VFI3oKtf9OJfZhYHougT+3/TEd7je/ywE8B6MHA8NiieGp09gF+NGEYTLoqbE/0AK9SEy71J6JFzpe0dz3praCEjOtcLJ5GAHbeS9SPo1BEIf4WUlcboj9f1hf3g8yOw7TBO/npEJ7v1R8+o+ev2j8qpCiUrqptktzW2zHFBOvShndKn/agqKvN2tosup9ofs0g6EXCV56XEP7DIMt6BGuJdP3me/ac7UNymd7syXZ2NuaB7Gc6YgLD+Exet9rraNV6VmKKxNrfg6ux72xobc7JENXTqDWkIhCQLJSqf8kxxAEWTHGSzfjoQudiyFWD
+ bBlwl60C
+ NGZ1kFWxuSRUoVVXkZWsnuOd0pULiw/pEiHIrHSpJpTtPiMsgDULXzQUrZW9L1hKB5aVv7X4ycg8aEmZ8aP9s0k8BQlzMG2hoK0zMGJWBCm7voFZnliYK0KFuBmQrVOZTfeNjCyqdtbIXpPmz3E40m/fACqnE40l1YeRwInlDT93kpWJHZZTZabYzVfRvj9Sgwulv7NvYxIn2k8H2BBg6uR7at+L3r0yy/vcVvzDjMoUXvfzq5s2BFfob3vnO3j0VAO2dH5vUgs/RzwHvHMfr4c0BW4rLeKUwr/I+RQd5yNGAodOlDfl49qehuydcgksbs0/A/qBPq29qq0YGbg/G9fb7ydLtdP3SarlkZTOFRlYKkIblo9o2oqgSla1CEDn9Mpvjks29Zjic2tFaRa+pQaQU6gZn5rC4zOUvlu/LncTxIDUiwgnvB0xF2TzAvSolhdKLpoPcKN6xzpWByIEfY8lskA+qQByoIw5BEhNoWZIHqhyWP9Ai+be3PaOj7dIqGRYNMk3A0HoqT11UrPCZDYzQvi4QQK7pKl7Qzow1AWJR9p9XEKipcd0fWQ0dzDa5uvtHTAfT3EeLWy+f6wG/AJZwBWlLC6D/TSn4KVwXOfo07bE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,25 +117,22 @@ the size of gfp_t.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- drivers/net/wireless/intel/iwlegacy/3945-mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/kfence/kfence_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-index c148654aa9533..ced85eb7522e9 100644
---- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-@@ -1002,9 +1002,9 @@ il3945_rx_allocate(struct il_priv *il, gfp_t priority)
- 				D_INFO("Failed to allocate SKB buffer.\n");
- 			if (rxq->free_count <= RX_LOW_WATERMARK &&
- 			    net_ratelimit())
--				IL_ERR("Failed to allocate SKB buffer with %0x."
-+				IL_ERR("Failed to allocate SKB buffer with %pGg."
- 				       "Only %u free buffers remaining.\n",
--				       priority, rxq->free_count);
-+				       &priority, rxq->free_count);
- 			/* We don't reschedule replenish work here -- we will
- 			 * call the restock method and if it still needs
- 			 * more buffers it will schedule replenish */
+diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
+index 5725a367246d9..10424cd25e5a6 100644
+--- a/mm/kfence/kfence_test.c
++++ b/mm/kfence/kfence_test.c
+@@ -263,7 +263,7 @@ static void *test_alloc(struct kunit *test, size_t size, gfp_t gfp, enum allocat
+ 		break;
+ 	}
+ 
+-	kunit_info(test, "%s: size=%zu, gfp=%x, policy=%s, cache=%i\n", __func__, size, gfp,
++	kunit_info(test, "%s: size=%zu, gfp=%pGg, policy=%s, cache=%i\n", __func__, size, &gfp,
+ 		   policy_name, !!test_cache);
+ 
+ 	/*
 
 -- 
 2.51.2
