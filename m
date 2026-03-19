@@ -4,162 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5533F1091908
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06331091907
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 18:18:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71A7E6B0551; Thu, 19 Mar 2026 14:15:27 -0400 (EDT)
+	id 327436B054D; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CB2A6B055B; Thu, 19 Mar 2026 14:15:27 -0400 (EDT)
+	id 2FEBD6B0553; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BA3A6B0560; Thu, 19 Mar 2026 14:15:27 -0400 (EDT)
+	id 1EDE96B055B; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A85F6B0551
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:15:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E9C98C1D6
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:15:27 +0000 (UTC)
-X-FDA: 84563615094.04.3E78B51
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0B8D040006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:15:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaPGo3Ex;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773944125;
+	by kanga.kvack.org (Postfix) with ESMTP id 0AF4B6B054D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:18:05 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 807C31B877B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:18:04 +0000 (UTC)
+X-FDA: 84563621688.06.F48B042
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A6068180003
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 18:18:02 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=r0RGg2ef;
+	spf=pass (imf24.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=mclapinski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773944282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKXcb9KIfZdVdbTQax0K3U84o2RGNNNw5DXPu+c0f90=;
-	b=g6G+0zvQomJTMpZ/zrw5xG4FTFQOP8pjCjbh88UB9Qz5KMUtfk4+faz+XBOkjSi9j1qGkd
-	oYB80w4vLovaPsXL91VDJuqlyY2pOPASQ+IJGRN4erw/N6pHKv1kVs5Nys3GFrazCOPGwb
-	qfrvcjITAEg79BN0CAsUzFSih+nFNbo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773944125; a=rsa-sha256;
-	cv=none;
-	b=kB4U2YYDx8Me3MhFC4ZzoVVuGdsBZZkiveD8s8lJEi0EToS/QVIGe4JYtVURAYtVItWSXJ
-	ZXB5rvWX1pmPklKezI5IgzGk8DijeUkuQqb7Z37JOffZ1LgIbm/67juXcs+e5dHU9ejOle
-	OstLAKOL0i0VTLIgSChDS5nIHzHqevM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaPGo3Ex;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 046A143B8B;
-	Thu, 19 Mar 2026 18:15:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FB8C19424;
-	Thu, 19 Mar 2026 18:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773944123;
-	bh=5DhJroPho5HkyxwhM6V6zbgBvmoqML8NktMl6KS/Elc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iaPGo3ExscR6X7srKmPzvgCbo6Wpln64H40NZbIw1mmdGUiO7xBzZelVKxrAP8hpi
-	 2vVOf6WBMtsAozeBlYtBYs8hdJNPqG0YZEA107tQQg9MKlLMutTpHravhxjMDcowXf
-	 tA/iFu8TjynZBG1HTrAFSqnzJN3Y7KRutMGsveHzIp74T0E/87sgOKXgNZLUoD5Qi4
-	 HPDcXpdPqOzEx7CNngfzW9FfuJzso80Brjn9rmXrL0tNOxBz73IAhGO8ChAqMSUSyr
-	 ZT7pmmQXVCL/A7n46BTPQvTC5IGpsZff4s+AaNRLL9q4IET8x86CS71Zzk954mQz7r
-	 u2kNtJEBsIsLw==
-Message-ID: <feaf8a33-c716-418a-af32-aae4f1949a4b@kernel.org>
-Date: Thu, 19 Mar 2026 19:15:10 +0100
+	bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
+	b=7dQYgeglhqH6ykXxFLwFkSorV6dtHMkXbqNEcs3VMoliP4rZiSdOdny68yOmdb0XdKIsJ1
+	Oqaw501d2TAqtwlPDUBhb8Ruh/v93KyuCNRyYApXSUA811Wn7+XUPPEicdNxSHRvOqeufB
+	Lh5FCkb56JscGVtBOuksTqL+ZhXVJtw=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=r0RGg2ef;
+	spf=pass (imf24.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=mclapinski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773944282; a=rsa-sha256;
+	cv=pass;
+	b=vX4u3a026Fa7+M52V0+3uFDmLtr4Le9Xa4uXFDewrbshhnKfLqcjnqyUeXn1pvpJJRYCYP
+	goXwyNE7T3q128Y2akatgOeun8IDEJwOEC+SzB8gQDOXvZxa5NZrtxa9me2KoSGICEoyT1
+	jqmgjI70jGy5HxHNHNm5Rq2ByBzDv28=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-126ea4e9697so960c88.1
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 11:18:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773944281; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Yl5mQhKSWwWpjtyuxREjuVcWMK28fi1vhYnGtsQTuwT3a0UXF2qkP5EqFKAlZGvFXf
+         LGafcND5ytoYymL0WJqtUtIsRIT2DVNf5mbJzeSPMY6CLp/kpICu0e4k9YY2ESVgR6lf
+         1rxpXWHEUtLDclsvmuvVI3uZIVs+pEfPpqVKtYpPM9cK84o+4OOwT42hM2j3uks1ga8F
+         Drfd1SAW5tc5hUBZ1C4i0JfoHbQZZJFti+SdVoy18cAkbWivaFbLyfg1hYdwxDy8t3kL
+         u0q98e0XHnJyfIIRaBgHFZ6z4qnT0xZ1QBBuhng61sqbVztUljXCZGv/VZ+ZB4nZtPpB
+         VnZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
+        fh=L03db5qOAp5gEmousYWwEc9swaxjhLoBod9ukh8xvhw=;
+        b=kPsAgMbouFl7uSUPMDeQ3++Hde4fBt54CI0SUbWlu+70LFgD3VenVvcIev20x/88uI
+         F7seeOtpiQROAP0tiykNml5EWUNayeVJe33SQ1GD2Tk9BuCnVPLZjLcJEPHvXDkqcBdq
+         i8vY1D5/DBNqOrizyQsikSBDlrn1CwIdO/FkhVg5soVTuqPX+o367AUc2eBrcg8FGs/C
+         t3apsJXkFX0NRjqz/dmsoa5H/pLrV9WKdirD+9q4yb4EgqPvntOGT0Vj6CYgfyU8Ku9I
+         jbGgxLtmCYfTikofHCTXjMtb1brdXJYveYM/blIdaNV5i4+ZJCpB7DMj0kDzI+xtBAIV
+         Tf/w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773944281; x=1774549081; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
+        b=r0RGg2efVKobRKNutjvZ7e20TY4UBn/bc9ut42B63z7empDPbZZMA4H2r+2ZGHlbc6
+         nCt3h6NteKdw3BOWiPLx8c0D6+P+6vXXqWBz8KvlSIv2RCWtngDgMeOzcvOpPFmRjQMJ
+         kxdAlyX7ZAw3WBJ/0MXjnwY1/gyHrD2iuk0skakioKE8GyGZxOCTtqKEmhoXQzRM0JfD
+         DS0zwef2ALQ+Zgxzps+n0I7+NJtmyW5SSnoT0IVQfKZ/HamlsSyZD6I312asW5y2dH2L
+         TjCGEgQ+T0TA8LN1ABAZiSGVYs/YOKvaq/o3FwwIQ93t+YRCLFTyLpZu4FvYdSlHigAs
+         BvYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773944281; x=1774549081;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YQeSlb7OEZ3xloMA9xhKbLU6mKFG3hm3XyxfgVq5ezM=;
+        b=nnx/3qNuDUAAGyXUc3j18YUhAf5kAIQFMBtG7jasw1ouyU1LfEdFxexWdXp9nbGbBF
+         tDWMG0MzJdFX5yRMuhIwKCMUK3QTSIqyeuVzsWYemuI43Q5kuP3vMT2/vA6ojhTXBjSF
+         Fy1oGFSzLmP3OXkP5kh4UYRebtHUWFg41QRDfftoWASHSc35lkMZN5i/1Yj7jhJyyscK
+         Xmg9WFguDzDdKKjwYy92OU8qPqakOhln2/mea4BkFqyZi5wiK0w0/QN7ac4zvambDLqw
+         rP0j56qjNG5y/R1QXbpDmJYwFG4D4lhDj4LsP+Gejtr8gEE3zUZ/y/bVn0ZuQBqCA0AI
+         ZvfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX3Qdvz5gcyJKk13D1qum4r4xLe2JGvvDvh5Tm+fMSWKjMEX6yDt9+fCkgfEyEZWrDIeC0NB3Wa0g==@kvack.org
+X-Gm-Message-State: AOJu0YxPfs3fN1DDj+IZA26+2ceFmUkKaJv4W/tn/T3DR8aPRi/SpUlD
+	wxtmV/jK3iYEdhQ5VPBPurKl8eV+uHDnVVV/axFBXfgPS2EJ/ykNxq5bOozpbW2Lyg5xnqhnkoh
+	v7kGbSWy7G2l/wCpN/U5Q/sqgGEmVYekZ7u2U8SB5
+X-Gm-Gg: ATEYQzwLa3hWx4uCuBjxqLFDVMUbB/caBkrvQiK5z9sh3lshMo/ccYLuYvSnPnZekI6
+	rPE1WVAq50AVpL1YjPPrvB3zFMmnUY8WGBfA2W+YgbemeI7a6nNqr4qKt45VQQBWe33XUsMp42L
+	nyyaT1nFomoxGZEa1EI09xKKg7f/2OHeGqq9ktTDL1bb56XE/1s3y7qWErDL6wwmftfElCkB13q
+	d3NfyOLFKnxQwS59ehmbuIUVbCFFA5eqfk30V67ye8aNIffmAqsW5asSVEdBV/1TGIarjg4dyxA
+	Fiylp6V2uqaAznxd
+X-Received: by 2002:a05:7022:699d:b0:128:ec96:67 with SMTP id
+ a92af1059eb24-12a724be71fmr6228c88.9.1773944280502; Thu, 19 Mar 2026 11:18:00
+ -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: remove CONFIG_ARCH_ENABLE_MEMORY_HOTREMOVE
-To: Zi Yan <ziy@nvidia.com>
-Cc: Gregory Price <gourry@gourry.net>, linux-kernel@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-rt-devel@lists.linux.dev
-References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
- <20260319-config_migration-v1-1-42270124966f@kernel.org>
- <abwVK8nLpSLVcT5G@gourry-fedora-PF4VCD3F>
- <e166588e-036c-4fa3-81fc-d7aca9f02c29@kernel.org>
- <1559C268-444B-4A64-A0B8-21B2FE49A5E2@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1559C268-444B-4A64-A0B8-21B2FE49A5E2@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fdhhdxsynbg4wpr9zc53ae9jr4nt6xef
+References: <20260317141534.815634-1-mclapinski@google.com>
+ <20260317141534.815634-3-mclapinski@google.com> <AD9E1B18-C813-480E-894C-FEEB51EE8A93@nvidia.com>
+ <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
+ <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com> <CAAi7L5ex+66qgFzRkLDbuOmC=cVrMyBctPZv6wd15n1rc2U9KQ@mail.gmail.com>
+ <0D1F59C7-CA35-49C8-B341-32D8C7F4A345@nvidia.com> <CAAi7L5fvUPUqd3A4m6wubeYh90NH+S2KBRE1R8WKerBYhkU8kg@mail.gmail.com>
+ <58A8B1B4-A73B-48D2-8492-A58A03634644@nvidia.com> <aburnbP64n9axmu_@kernel.org>
+In-Reply-To: <aburnbP64n9axmu_@kernel.org>
+From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
+Date: Thu, 19 Mar 2026 19:17:48 +0100
+X-Gm-Features: AaiRm505tq6vM1X9ULuY3A25VFS9p9k0Q14LqvIkt_uaKuJpyK0GLpRABpnGwjA
+Message-ID: <CAAi7L5evx8ta8BifNiGNfUoTiaBUsv4cgQRbm_15RoAfdKPcMw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Evangelos Petrongonas <epetron@amazon.de>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A6068180003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: q6z55db9ajkuhcca5w69o6bfthbcspwr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0B8D040006
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773944124-766772
-X-HE-Meta: U2FsdGVkX18LGAV1YpMGwwUOeshMXTJeUquVZotPNHTra9Te9hrd1dJ/Mnx2KQLfC6uFfFIhU3gbCmhpJWnCtQYiXYajgQBJG0y9vkAU1ktfBs8yGmimK+OyeNDDKGjzsd8qVzs507ZtB6/ODq7gQ38bhAuaS0VZW2/htFI8dA+jy4rLY7Qbi2Fg7dERHmcT3hm1C+HyTHPPSoNx5y6wvbHVRxi1snkaKQoegO51z6TWCjFxeI/Z4mhVBuabKlK94+amKh/iLCOFqAdZ/3ii4rkjcKqrCvPRtePMGfl5l+uxeVFKH/h7plcJi5/IuWosEhKVKjG9sP35MexxMdYJEyC5X+PBwMxk6Ccy7ln2xnoRVwXPRT63rhL5OPVmiN3wg5+4TywAHrT5U3nxgUmuanSp0jzfISVFmRZNqbwc72Hc7YcFfKy1Mh6fwqu1EJSwV+k5vTmGPkjg8TkIgh6E05DRYrL3c5MOXILuPHhIPh0osBThMZedwPpxDP057Tv5Z75ktoGVzczZ004Kh1oYpVgqk6Pit0wYk8Es20udA0f80mzrYQF0Oy63QRsNkoRBgiTiyBhEZFVmxhipJ8NOv2MprIpL8UTBKJFcwh9Ovbxht/jqKTxZPAtZi/m6dD/0k6QrMcTWWOuljZpmbATipe5vgbsf1szfKt6Go7ly/JexdLvtMlUevmanjqBttG85IEdM3Lmi8b7LigXuaOieHD49aHXGKyHC4KnXMFULYsBJR1wQGSCadDLxCkHLHcNSt28s3AgTh7Lwqze2gkbx8rTvYPdOinLFz9ISifVmnSlz5NLL/hT9EZgsUlQGEveLsuNa0dR+NrHzhZdULY33uVOyZ0j2sn8AA51IzST10AAu6MvztTtcemUEAWJwIHc0iPox4VjTJpqtQ/sfo2vHH8T6eVKihIWx22iSWHcnGzOHhmpPz/yKmWPH/69I+dY0FmHIaqWMCGzW5A4kyZ5
- JdNiZ4CO
- paal52AwQOaQZd5TrB10VZ0kXl/avuXuiOSmsQBpOT942KiqMW2xDdUHkK5t2kA2PYgZjKyKKHW01xN956havyJPIwJsCIPDmIpaqcsJr7ziz8znu65s5II5yZOXAdeFVkOAgao/I0bvzHgK6EfqegYJgCTojG0eMaXZMabN4nw5a/4pexQtZE1VMfGzjN25JMzNyun6iuv4xAgvbsT/uq//uA/PilaH2LQV0v0DQ5NZIG2sJNLHhR5qd/ja6jSDk7/aReKqdQGn57oGW0fq4Hmruzq6F0auMfWB475Qvm6cjCGX+fbFFw7nd9Pn7rR8ynrm60E+ryharI/0oHH+2hBUXyd7eHcMEwzk968xlQUw+wqRTApg23CWtOax2ffZzdIfl
+X-HE-Tag: 1773944282-434700
+X-HE-Meta: U2FsdGVkX1+9LUFbZt+CocfrfmwGmYW3DdoWx4Ddg1d4UArZj/+OVNij5Y19BaVQN+3h7QF0STwYbbIRTUw62FNjpGaoiZC/HM+3eJA/9QWJuVV31mSL3NTJM/KOUxK3/mkqSINTBpKZ5JOwnZVGrCuv+dqs2CinbY+4wiedL07i/P+Mu3MsQ7tANbkALnDa1qgW79Lv/tS6QYxop1uCihZkbP+1D1BPoSv9Jr5uKYB7xq8RIjTlKGnCivkaNqdbf8cNQO+HlVZ1yYb8H91qth2IGlX8wZdUNRBjT10rhzroyf29oRgj7Z151KnLYCdU0D4lpw2s81C02spfVbmj2AXob1xldvX0cqCGIiEJmk2kkxRrBicbJCg4Z9MXepRFEf415QhltHjT+CyiGPbpbO52YcWchRTgg1lXsr9bsXKDzW/JI3UiEv0MUkPmvbxW9NxCflbGExuqUUT9ta1NO70Kjs8lqyLpdxYohDcFRLw0hPxYWMUcinDw307Pb34s76BNwx4RQnexSIkZ3gafdXuHJvoVAmbjaRhVRCbQzpUbgGeWU0nKvl4lscevrmHNAsPktct+JsW05cLFg+39hINS0UoNgumR0keE2u7IrvmAecjAE27P8FoHng26xXqPqnNCI0TzzZDr2g9DeX0Ev9qhWkiQ9pH2zZNNen4xRPz6Tv6mhJ8/CGXHHBgKblBhLdqwJhhvtEui5mKy3EYtODqHl20TjpnVvgq52TEg3JJFYrnUVs51rtQa8TP7gSFLFN5lsIhjFkbRjI0rweoTGekQCeB4vgXcubV6sykVhOoyMYdrhVvdWrAzKWaOvqyPuSdcJ/GIejfnVTIWEnEtvxnzKJ54x5V/8doRX8zKBo89WGbmqTleBPAey+ULi0+XB5BHTATgXwOKmeYjmVp2PDpU1A5TbXL2rsKKjYzu33dTVB19zQON2hfCXQ2wK6weGs7sCws0dlgIdEKOCa0
+ gnpFhnp9
+ 3bEplJz63n2hPsrjmPVArEObXAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,31 +146,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 19:12, Zi Yan wrote:
-> On 19 Mar 2026, at 14:08, David Hildenbrand (Arm) wrote:
-> 
->> On 3/19/26 16:24, Gregory Price wrote:
->>>
->>> HOTREMOVE has long been a thorn in my side, I appreciate you cleaning
->>> this up.
->>
->> On a long cardrive today I was wondering: do we still need a separate
->> MEMORY_HOTREMOVE
-> 
-> You mean merge HOTREMOVE into HOTPLUG?
+On Thu, Mar 19, 2026 at 8:54=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> Hi,
+>
+> On Wed, Mar 18, 2026 at 01:36:07PM -0400, Zi Yan wrote:
+> > On 18 Mar 2026, at 13:19, Micha=C5=82 C=C5=82api=C5=84ski wrote:
+> > > On Wed, Mar 18, 2026 at 6:08=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote=
+:
+> > >>
+> > >> ## Call site analysis
+> > >>
+> > >> init_pageblock_migratetype() has nine call sites. The init call orde=
+ring
+> > >> relevant to scratch is:
+> > >>
+> > >> ```
+> > >> setup_arch()
+> > >>   zone_sizes_init() -> free_area_init() -> memmap_init_range()   [1]
+>
+> Hmm, this is slightly outdated, but largely correct :)
+>
+> > >>
+> > >> mm_init_free_all() / start_kernel():
+> > >>   kho_memory_init() -> kho_release_scratch()                     [2]
+> > >>   memblock_free_all()
+> > >>     free_low_memory_core_early()
+> > >>       memmap_init_reserved_pages()
+> > >>         reserve_bootmem_region() -> __init_deferred_page()
+> > >>           -> __init_page_from_nid()                              [3]
+> > >>   deferred init kthreads -> __init_page_from_nid()               [4]
+>
+> And this is wrong, deferred init does not call __init_page_from_nid, only
+> reserve_bootmem_region() does.
+>
+> And there's a case claude missed:
+>
+> hugetlb_bootmem_free_invalid_page() -> __init_page_from_nid() that
+> shouldn't check for KHO. Well, at least until we have support for hugetlb
+> persistence and most probably even afterwards.
+>
+> I don't think we should modify reserve_bootmem_region(). If there are
+> reserved pages in a pageblock, it does not matter if it's initialized to
+> MIGRATE_CMA. It only becomes important if the reserved pages freed, so we
+> can update pageblock migrate type in free_reserved_area().
+> When we boot with KHO, all memblock allocations come from scratch, so
+> anything freed in free_reserved_area() should become CMA again.
 
-Yes, only have a single config.
+What happens if the reserved area covers one page and that page is
+pageblock aligned? Then it won't be marked as CMA until it is freed
+and unmovable allocation might appear in that pageblock, right?
 
-> I wondered the same. Is there
-> a reason to only have HOTPLUG without HOTREMOVE?
-In the past some architectures (e.g., s390x) did not support HOTREMOVE.
-Then it made sense. I'm not sure if someone would want to build a kernel
-with HOTPLUG but not have the bit of overhead for unplug+migration.
+>
+> > >> ```
+> > >
+> > > I don't understand this. deferred_free_pages() doesn't call
+> > > __init_page_from_nid(). So I would clearly need to modify both
+> > > deferred_free_pages and __init_page_from_nid.
+>
+> For deferred_free_pages() we don't need kho_scratch_overlap(), we already
+> have memblock_region (almost) at hand and it's enough to check if it's
+> MEMBLOCK_KHO_SCRATCH.
+>
+> Something along these lines (compile tested only) should do the trick:
+>
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 3e217414e12d..b9b1e0991ec8 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -275,6 +275,8 @@ static inline void __next_physmem_range(u64 *idx, str=
+uct memblock_type *type,
+>         __for_each_mem_range(i, &memblock.reserved, NULL, NUMA_NO_NODE, \
+>                              MEMBLOCK_NONE, p_start, p_end, NULL)
+>
+> +struct memblock_region *memblock_region_from_iter(u64 iterator);
+> +
+>  static inline bool memblock_is_hotpluggable(struct memblock_region *m)
+>  {
+>         return m->flags & MEMBLOCK_HOTPLUG;
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index ae6a5af46bd7..9cf99f32279f 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -1359,6 +1359,16 @@ void __init_memblock __next_mem_range_rev(u64 *idx=
+, int nid,
+>         *idx =3D ULLONG_MAX;
+>  }
+>
+> +__init_memblock struct memblock_region *memblock_region_from_iter(u64 it=
+erator)
+> +{
+> +       int index =3D iterator & 0xffffffff;
 
-So I would guess nothing major speaks against it.
+I'm not sure about this. __next_mem_range() has this code:
+/*
+* The region which ends first is
+* advanced for the next iteration.
+*/
+if (m_end <=3D r_end)
+        idx_a++;
+else
+        idx_b++;
 
--- 
-Cheers,
+Therefore, the index you get from this might be correct or it might
+already be incremented.
 
-David
+> +
+> +       if (index < 0 || index >=3D memblock.memory.cnt)
+> +               return NULL;
+> +
+> +       return &memblock.memory.regions[index];
+> +}
+> +
+>  /*
+>   * Common iterator interface used to define for_each_mem_pfn_range().
+>   */
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index cec7bb758bdd..96b25895ffbe 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1996,7 +1996,7 @@ unsigned long __init node_map_pfn_alignment(void)
+>
+>  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+>  static void __init deferred_free_pages(unsigned long pfn,
+> -               unsigned long nr_pages)
+> +               unsigned long nr_pages, enum migratetype mt)
+>  {
+>         struct page *page;
+>         unsigned long i;
+> @@ -2009,8 +2009,7 @@ static void __init deferred_free_pages(unsigned lon=
+g pfn,
+>         /* Free a large naturally-aligned chunk if possible */
+>         if (nr_pages =3D=3D MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pf=
+n)) {
+>                 for (i =3D 0; i < nr_pages; i +=3D pageblock_nr_pages)
+> -                       init_pageblock_migratetype(page + i, MIGRATE_MOVA=
+BLE,
+> -                                       false);
+> +                       init_pageblock_migratetype(page + i, mt, false);
+>                 __free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
+>                 return;
+>         }
+> @@ -2020,8 +2019,7 @@ static void __init deferred_free_pages(unsigned lon=
+g pfn,
+>
+>         for (i =3D 0; i < nr_pages; i++, page++, pfn++) {
+>                 if (pageblock_aligned(pfn))
+> -                       init_pageblock_migratetype(page, MIGRATE_MOVABLE,
+> -                                       false);
+> +                       init_pageblock_migratetype(page, mt, false);
+>                 __free_pages_core(page, 0, MEMINIT_EARLY);
+>         }
+>  }
+> @@ -2077,6 +2075,8 @@ deferred_init_memmap_chunk(unsigned long start_pfn,=
+ unsigned long end_pfn,
+>         u64 i =3D 0;
+>
+>         for_each_free_mem_range(i, nid, 0, &start, &end, NULL) {
+> +               struct memblock_region *region =3D memblock_region_from_i=
+ter(i);
+> +               enum migratetype mt =3D MIGRATE_MOVABLE;
+>                 unsigned long spfn =3D PFN_UP(start);
+>                 unsigned long epfn =3D PFN_DOWN(end);
+>
+> @@ -2086,12 +2086,15 @@ deferred_init_memmap_chunk(unsigned long start_pf=
+n, unsigned long end_pfn,
+>                 spfn =3D max(spfn, start_pfn);
+>                 epfn =3D min(epfn, end_pfn);
+>
+> +               if (memblock_is_kho_scratch(region))
+> +                       mt =3D MIGRATE_CMA;
+> +
+>                 while (spfn < epfn) {
+>                         unsigned long mo_pfn =3D ALIGN(spfn + 1, MAX_ORDE=
+R_NR_PAGES);
+>                         unsigned long chunk_end =3D min(mo_pfn, epfn);
+>
+>                         nr_pages +=3D deferred_init_pages(zone, spfn, chu=
+nk_end);
+> -                       deferred_free_pages(spfn, chunk_end - spfn);
+> +                       deferred_free_pages(spfn, chunk_end - spfn, mt);
+>
+>                         spfn =3D chunk_end;
+>
+> --
+> Sincerely yours,
+> Mike.
 
