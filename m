@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E6E41091910
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 19:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 654F61091911
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 19:24:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D44046B008A; Thu, 19 Mar 2026 15:17:39 -0400 (EDT)
+	id 6221C6B057F; Thu, 19 Mar 2026 15:24:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1B6E6B0095; Thu, 19 Mar 2026 15:17:39 -0400 (EDT)
+	id 5D3026B0580; Thu, 19 Mar 2026 15:24:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C58226B009F; Thu, 19 Mar 2026 15:17:39 -0400 (EDT)
+	id 4E8996B0581; Thu, 19 Mar 2026 15:24:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B1AA66B008A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:17:39 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 566FA1DE96
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:17:39 +0000 (UTC)
-X-FDA: 84563771838.04.0D215FD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A10D68000F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:17:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q5w1G2MK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773947857;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FC486B057F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 15:24:24 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9E7E8C25B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:24:23 +0000 (UTC)
+X-FDA: 84563788806.02.4E2BBCB
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9810E100007
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:24:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=WQ8VgxRz;
+	spf=pass (imf14.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773948262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VRVYjwYxxWNmImovP5N6LXi4Dlcktt+S+v5JF+iP+Xc=;
-	b=65KgItoKT3g6r/SPbAYgJ3U/roNYoYOloNAEADKgu/JMZyn0vgJM/R5a4gzFFziWlW1Ig4
-	7fIOYOd82N28S9Fhwv66KKW27/YjdpbmTGpQKdCMZ87cBa28xwb377pLUEG+e4xtXi+grE
-	jZEeohWB5+1Gu9ewFHTXtX1H8OMV2kY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q5w1G2MK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773947857; a=rsa-sha256;
-	cv=none;
-	b=IL0MYnHUZ9fRUD6kh0NGhB023NMdOgCoHVGXoljcZd9qMqhrjzRTS5CBXfjGda0w1QK1et
-	WhNjDOlgO7C9M3j92FXTcbKI2Wr3qkahF+IoC4IkzuEeIA3pwyFvBAFyO7qidsR59IK6Eq
-	Vq6+ziXZ61d9mKoEI+D5ZUvXDkLYpCs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23EBD60053;
-	Thu, 19 Mar 2026 19:17:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCFEC19424;
-	Thu, 19 Mar 2026 19:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773947856;
-	bh=xLlly0zXnvK9lciidYf/eatybLs8RCfnR08RyclSc2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q5w1G2MKSsAt7mEeopWuOqcjbQz+Ew0DNHX3yM9aCOQm8QoSbQPSaXg+wQQHdlYja
-	 PmFWNyu2unQLrOWSTolwXVW9UlQKfFVP8EdQV6J05oRMhjwUHYzC7tAiaIeC36YxXb
-	 FgBXsX/p1mE7KLGsZKj/lGK4AGVOdZKs5Rp7Boh4ZDtAma1u88dtjVaA11sIKSxqDu
-	 598bOm60DwHfFMKOcQJII705SyXU9XO88HR4hsI3hV8FReKK8vcbFCydPG7HZEBC/P
-	 1e1fsW4C+459kxFUng/W9ELqGoZ2bQWmvBbg0/k0maLrB926O8WuPa85HSd07OMZyw
-	 demUq6ypNcMyw==
-Date: Thu, 19 Mar 2026 19:17:31 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>, 
-	Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, jhladky@redhat.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] mm/mprotect: special-case small folios when applying
- write permissions
-Message-ID: <1cfe61ec-a910-4cb7-9714-410e37f692c9@lucifer.local>
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-5-pfalcato@suse.de>
+	bh=33NI7AQ68Fv4tWuv6cyisEGZPSwIxMJf5Ty5eJ3x0kE=;
+	b=XZGjguWu+CtBiT0awTx//1yGnrMNOWVcGlc8ovwxcd9Ru9e+GZbBDr7HKInKwsYjpdZl8o
+	lSt5P+X9hRVsF4aYrsI72L+UCjHAB0yoSQl9C2GwOtrqQzjrHeV3alkQ0hJYToso1csirW
+	FIp73RdCemGW1IvHdaYtUtupLngFgcc=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=WQ8VgxRz;
+	spf=pass (imf14.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773948262; a=rsa-sha256;
+	cv=pass;
+	b=Ei6DM6tOccdpp9PZ0vfQQj9tiy7lX4B1N79zH7GGckumgKYeIYwUodGqmoA4uI0kQPp8a2
+	qb2UYa7BFb8HIpj8rBqrB7pFa5vuQY3qSqUjyGSGYGT9o9b1yvEFyyahY68/fqLXMjyO7d
+	3Lope+5jHD37Lj5O3v0lpkSxZN2vi5Y=
+ARC-Seal: i=1; a=rsa-sha256; t=1773948244; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=LpXiz/tFnOLoP8QiZ2R/nq7fmTNiYGJi3qCyBCowWWMRmxUZgWjcQO51sbT/oGuA3NGf8chr2rakzPqj5GCwls3kz+XCQXeivvcSrpFr3DfmI0iL6snvGj/dqQxg8oCoYgFxmrSMpfMSOHZCzfkTOGDovynoG5LBI2STDsUz4t4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1773948244; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=33NI7AQ68Fv4tWuv6cyisEGZPSwIxMJf5Ty5eJ3x0kE=; 
+	b=HoX+lQPa1jdM8dBhh8GbSWhyhQnEEdImTRp/4W750SKHUw6jp9sjn9dctNn3I5VNEVysCQm0BWPTWubc+jLCi2C0FNdj8LO/ABrG2ZDVgGosHpfRz2p5F7ME3rg+Gu4RqFDYW5RbMsfH1RWFDgwOqkShmh0vUy1y3ryTM+aL4GM=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773948244;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=33NI7AQ68Fv4tWuv6cyisEGZPSwIxMJf5Ty5eJ3x0kE=;
+	b=WQ8VgxRzBRI4BfsQJNu0TZgSuX9R+xHb2ps7HuR8ltKXrTV8EE3e6Fc4dpXm/6hC
+	KyYGK2GzBf2akrXPyKH09Cd59VoVcT+gSzkFekUJE3rw4dzz0TvBlQWaNP/DfFfcmBz
+	tczEcRrWsTjy6l55y/JmxpsPSuEdtpMYBM8HIE5A=
+Received: by mx.zoho.eu with SMTPS id 1773948242358679.734141052429;
+	Thu, 19 Mar 2026 20:24:02 +0100 (CET)
+Date: Thu, 19 Mar 2026 19:24:02 +0000
+From: Josh Law <objecting@objecting.org>
+To: sj@kernel.org, akpm@linux-foundation.org
+CC: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_0/4=5D_mm/damon/sysfs=3A_fix_res?=
+ =?US-ASCII?Q?ource_leak_and_NULL_pointer_dereferences?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260319155742.186627-1-objecting@objecting.org>
+References: <20260319155742.186627-1-objecting@objecting.org>
+Message-ID: <73D7C494-E746-499F-9EF5-A6C7F3963302@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319183108.1105090-5-pfalcato@suse.de>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A10D68000F
-X-Stat-Signature: 4qqhihoww3j4rhsebjzu6xyn679gk3mt
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 9810E100007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zezxmzy3p5owusm1xys1m8i7ybiqfmku
 X-Rspam-User: 
-X-HE-Tag: 1773947857-894659
-X-HE-Meta: U2FsdGVkX1/mAOkoRxsFQ0xDAd2awAunkHiVgSKoFZcOFzZADmRWj7ttMdqYd6NzJ9C9+u6ZA0SCpW963vv/ptWJh03J3mzXKzzFy/EEH42BauDjfpp89+qk4KpVDDAfwimXqgFv8TwPz3RXz4ixMZEexftZKxzdxbZ/CxbYBAZwFmVNWMG8LHLCHqxMHvs/aQQ0wEuXltttemAaITsMoshWBUrtJJhFaDbY20/6UTEzt0kPF5A1xzZszdJQFZJlqNsi8zjzI1Ty+19p9jVHS0T1G+g24uey0iDSdn44SsmEb612yo6pyl6JhFROIiHGx+meqjbL79IxyC8B3SAwDJoaGKvOOsOqlPiQ8L4P9ov1bXM/z1QR0ry/eR+kBDBhYGg9R0wke7X1FGTOrRTGAwg0YHe0papAw3wr/rtJH4yQ0YDfgq0PbQ7w6gFUt/bjSPKIhPMQ5Imkfgsb0TDPpFBYw1b9t3/e87XsZakGB6UhzGC9T3Kvxq3XV+fY2YtYVC3VYOC5wj7Ll6uUGqC5I+z5G5vhcr8W8DaovwQ5PpAb4JQHhA4RIbj7yVz/3YwTWiTeM/d504bzmvky2eVtV/15bTiyp/rmpsK4PybTVqldCnMF2IvvyUYMZue+oWxlPRx3Vk+8qrzFi4lrV7Yz7PKYzDGJKhoQxIbky/RdwIxfXOkbIX6excx5UgnLGUzYUzw3BcQw287wgk9M53YNlAbe6FDGIVC210cuGAJN+X+CKJIp3XG0hZZDPOMzdLeZRBnzY5a7VLT07ljAXtXi5Vjj2unRaihg1UrHy4plDMi2G8IMv8VfHAYndYjoD26LtIbz7jg97FWH+Fk0vd1ymfNXzg7/1BrAN3vsFOTyddTkRx/GFdVMXvkRv2nfVJl3hjuGwY+QrCnHSZ76KVtSs2esY5ErHbyNplLnErR+otCLCy4Wlsn6JAuej1G5maY+gSUmcMq2KhWiBW1/g/G
- GWmO2D1m
- MmZWBTKaNvQdQJAcfiqtMjV7o7uk59P/qj+8ICh1ecQbVW2j7/TE7Q4hDGeO/sDaZHBhBSCMaxH6dasoMKf9Rjftt9fSWuH3hjLOuMgQGeuUmlKi5FI0G22eZhK1Yp0YUdeMREvfSYbUhkRW924C6T88iyNleYi3GbtgMnuOJr2Bx+xFRAlY0b8me2XCKgK5xzK15YN0K3bMgU9KB1C2mOn3OKkWleDnfmPCS4XWPgN5n+Go=
+X-HE-Tag: 1773948261-710581
+X-HE-Meta: U2FsdGVkX199slvzPU9QYSM5wl4tTMlYEaB4Kev9IN2AnqM7mkHikC1vBseNRDdXqlYYx/Burmz/Z47fB8Ux1bfM0217a1Kjw5r9U76m62qOT9DXKhERkPKZbOG/+7tJonqBwoh7MfJ9te8zu1jV/iO18McmN5BHvNvEG3YkGywkaMVNyWbY2GzlE7TLQnIzvu+T7YT6GLvzjgh2AYHorNro4ytVoU/dzlmu5VX7uXR5gohioWqEJ0/H8VnOVOzvZZ9I7/ST+R9TPI9aj2MsRP4Vch3MMf3mMOMr79r4IIN1nXdWJrDPTfkjE+/ckNWAE3oKt2RvE4FnOYqNifiwdN2PFVG98wS57hkIQh4JlWMyfYt+2nOwfoyMzj0iuZMNvUb1Nyc5g+SvmOIf7Cmzk5LwhwLIAuK30Qvb4iPxHbwBa0kFALlizrd+UU1UyUmjSdOX/Vxz+qG7bMpR/ej3OqHaxDhqRXcH4jKPiMOClCQT2C0Npeblk10tbUt3fnyWAL1hF9YbecdKVZUtt5p2m5Gk1I3jALBnPpmwnn8I8d7t6/9/tQSknm9MYAOqbC2rjgQhh0S7neEggXInKFR8vvu9Vq/Fipb9gBHekgsqMRtJnXOaOkKJ1CJJ3yj3mzoiKp5IE5y38RsvVBBKq/u0xXRh21kCMOdD0ehZ1XhmBegLArUURckLZjhEH1WoNS05A7ZCx7g1Btam8ohPc25NJpxHIB0mb+ey/r7mqvrnJuo/FB8hnDdrcQCwfdqPERuUAG84g7vorHhHmzjMLGcRa2em/Vb9QsZAiOzJPzOyOlrh2RgJQmvEAsIF1JThejdsVLxpreQhutuuQzo8LnitiQaEhXr5czrZNNJvckJ/jJN40SHWi5ovTVcRWSjY9iVKA3PS8c0e9cN9U8uJlMiusX6IjQySABQhW5HfI2WQ0N7B7aIyVz6GTgtm1xfbhKsy/qmPqgFiqkmuYzL62QU
+ VbGQr3nJ
+ 74HqeCJ/3XVpR+yOns+O4fzrmJsODo1R3R0LKxXL8ks7GINAG85JzJp7/7CXld5SfqKPp9919np+4YfDakGTocp9aS4c7Tv1DQ0QiPVNlMwY1sKhjiqOfl2Z/GGKpFF8fyetZnzzerzRDL5dXjS71EhHBLVtr9ErEjx8A71qmyvptwl/g1Dgf+cMYks35pxFXWUzM8hZh437DSz2o0ug78OoIYCeMV3LtkeMYD7xuc1SS1t7j/xx0WD2kzDMtO8m9AFtMS2Y1pEL1eTtRF88xx3zPuwzuADGla8mkwLOpgfFtbz9owTOpcwaDI5IbTwiXxPjQWjayGnKOl52UE+ox3dX8IZBcAa/KKL1mDeFRSr3L+mIw24/X0et0GpOHpRdh3XxKP2u9CReu9i9pPMQvPiRbNQ5Uvi8R+3WtnRLQ4R8D/i4VT3D0ggCYh+mkvO5QZs7T0FnYrD6Ne5zDDktbUzR9PGk94nV/Zf2i2Z4/3Qm+FITUKAzO4UmNITzpL+Ottizly//kjo8eR8MSY/h8Ej1LqksYSOhp87RMZ+vVeb12g3S1bTssrPpawh1M9QBb0DIVzphO1eO45+o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,50 +101,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 06:31:08PM +0000, Pedro Falcato wrote:
-> The common order-0 case is important enough to want its own branch, and
-> avoids the hairy, large loop logic that the CPU does not seem to handle
-> particularly well.
+
+
+On 19 March 2026 15:57:38 GMT, Josh Law <objecting@objecting=2Eorg> wrote:
+>This series fixes a memory leak and three NULL pointer dereferences in
+>the DAMON sysfs interface, all in mm/damon/sysfs=2Ec=2E
+>
+>Patch 1 fixes a damon_ctx leak in damon_sysfs_commit_input() when
+>damon_sysfs_new_test_ctx() fails after param_ctx was already built=2E
+>
+>Patches 2-4 fix missing contexts->nr checks before dereferencing
+>contexts_arr[0]=2E A user can trigger these by setting nr_contexts to 0
+>via sysfs and then issuing commands that assume a context exists:
+>
+>  - Patch 2: CLEAR_SCHEMES_TRIED_REGIONS handler in damon_sysfs_handle_cm=
+d()
+>  - Patch 3: damon_sysfs_update_schemes_tried_regions(), reached via
+>    UPDATE_SCHEMES_TRIED_BYTES and UPDATE_SCHEMES_TRIED_REGIONS
+>  - Patch 4: damon_sysfs_repeat_call_fn(), reachable when nr_contexts is
+>    set to 0 while DAMON is running
+>
+>Josh Law (4):
+>  mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx()
+>    failure
+>  mm/damon/sysfs: check contexts->nr before clear_schemes_tried_regions
+>  mm/damon/sysfs: check contexts->nr in update_schemes_tried_regions
+>  mm/damon/sysfs: check contexts->nr in repeat_call_fn
+>
+> mm/damon/sysfs=2Ec | 11 ++++++++++-
+> 1 file changed, 10 insertions(+), 1 deletion(-)
 >
 
-I think it'd be good to get a sense per-commit what the perf impact is.
 
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+[0] <https://sashiko=2Edev/#/patchset/20260319155742=2E186627-1-objecting%=
+40objecting=2Eorg>
 
-I am iffy on the likely() in the same way I am always iffy on non-profile backed
-likely()/unlikely() but this change seems sensible enough so:
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-> ---
->  mm/mprotect.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index aa845f5bf14d..23a741f9a4c8 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -170,6 +170,13 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
->  	int sub_batch_idx = 0;
->  	int len;
->
-> +	/* Optimize for the common order-0 case. */
-> +	if (likely(nr_ptes == 1)) {
+I don't think this is right=2E Probably best you don't listen to that=2E=
+=2E
 
-I mean I we're likely()'ing here without data to back it, but I guess I believe
-this one :)
+V/R
 
-> +		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, 1,
-> +				       0, PageAnonExclusive(first_page), tlb);
-> +		return;
-> +	}
-> +
->  	while (nr_ptes) {
->  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
->  		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
-> --
-> 2.53.0
->
 
-Cheers, Lorenzo
+Josh Law
 
