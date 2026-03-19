@@ -4,90 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9C16108E1E2
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 10:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B56A108E1E3
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 10:41:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E32DE6B0467; Thu, 19 Mar 2026 06:39:41 -0400 (EDT)
+	id E83986B0468; Thu, 19 Mar 2026 06:41:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0A066B0468; Thu, 19 Mar 2026 06:39:41 -0400 (EDT)
+	id E5B6B6B046A; Thu, 19 Mar 2026 06:41:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D47056B0469; Thu, 19 Mar 2026 06:39:41 -0400 (EDT)
+	id D97F16B046B; Thu, 19 Mar 2026 06:41:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C14C26B0467
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:39:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 922B2140462
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:39:41 +0000 (UTC)
-X-FDA: 84562466562.07.E2D4712
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C83DE6B0468
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 06:41:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 845D816049C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:41:21 +0000 (UTC)
+X-FDA: 84562470762.02.82FBDD4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0D1DF160003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:39:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q6HaUy1m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id A6CD3C0002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:41:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PqHkXOhD;
+	spf=pass (imf28.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773916780;
+	s=arc-20220608; t=1773916879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V2sCf+XpmBXjN7W5tjuMjfNpsLooYEb+0fICURtpELI=;
-	b=WI3n6u/+SnwVjc2FOfIvoZUU8KsKlrygUJ+AUfJ8b/WGeqIclSZ0rJRI5/oYW/giTJX4zb
-	vNT5L1K9dMQGeOFEkYtwSLseglMd9OEtoHL5yFVTbUSYhXMUtiwsgos85qS+yX/FXOVoKo
-	91uKl/6lO9df3UPxc17D8Uq5DJ5FXiA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=1O600fcYCL7IhFDz/JNOZVOxD3fNlPA0JA/IKkstBqw=;
+	b=unQwox99aCd9/nVjoXS6zQXZYanzPgfLaqiPKhsWAdcbND2IT/GxdE8HiKTMTGNW/2pndh
+	V7t2yvKNoypGgR53S1MW3YMUpCtnDoXgLt6LJC/2xtQKnXd+qi3xBF7LuKd2SwWGGaB4Si
+	2C5eLM+HiVbQpnDINl0R9APikfhzJII=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q6HaUy1m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773916780; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PqHkXOhD;
+	spf=pass (imf28.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773916879; a=rsa-sha256;
 	cv=none;
-	b=LxlpXRNp39fV7S3YVMpDyLcNbzJCD8qlQBLkuBYQ3E6PSz5adTw/big93BZbmqXcsN1F2L
-	Nj9t6zW1vaxOQaSK+HVfxAyE/Wh+7N8gDHyUrgZLcFnPFXnhcj/xuybm0qLJ91oSksNj3R
-	k9To6J2vrTKbD3CQk7Oevp+j+KJwjPE=
+	b=X0UOeaUuX0iWSeUU4sJNGEEOKj1nK+u+iLMbvtdzFtEYoHa4H6oulDjKD+QXNrsHmdYDjZ
+	wLy2LIYhAaJjCiFm3+QNsJM5ggFymdxdn7x8gpRPeOsahOJPlAawP2ZW4otHVXLwRJZizC
+	rMRbAo4QI/kSc/VD9EDZip/mAXCKZaM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B68544013;
-	Thu, 19 Mar 2026 10:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D49FC19424;
-	Thu, 19 Mar 2026 10:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773916778;
-	bh=Wg7+9Y2K5YQyAEuOcnbcZyxttxGObbw3kzU8lDtgx34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q6HaUy1ml9AOF9G/OXp7Hs7j58PoXZGVhBiZYEyXbwf61DbMxN6wwejhcIgfQwr+n
-	 dRZkEXCL0Lae9PFzGWP85V8N+2JtJUTjf0k/Jgot4KlwfDmsW7CFVhMYFj2CIWn6oa
-	 DTQYu1KnEGvsM505J1IUomTzs+8KCb4QbT8vdinTva5+lIsnYO3aQqmjZlkqH7j1y7
-	 aPzsjXqfZnXFsNReiGIRgnkT1cYv+MwCEHp7/n3THJovmltsL8LHlC99eZx8EwL0vW
-	 1LId9T6gJSmvjyewIuiPUJiUlMY32PNdZ2/j8hDxxY23tcrODHGqGM/vz+vq7kgVHI
-	 DNeoWq5j4TxPQ==
-Date: Thu, 19 Mar 2026 10:39:36 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 1/8] mm/huge_memory: simplify vma_is_specal_huge()
-Message-ID: <e90ae3af-4d7a-4e46-9bdd-ec42eda18251@lucifer.local>
-References: <cover.1773865827.git.ljs@kernel.org>
- <84712e37721c557f887e4a405759be31a4961100.1773865827.git.ljs@kernel.org>
- <cdd47671-c5ac-4170-aa98-cf5e1f09368d@linux.dev>
+	by sea.source.kernel.org (Postfix) with ESMTP id AB9CB41872;
+	Thu, 19 Mar 2026 10:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F050C19424;
+	Thu, 19 Mar 2026 10:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773916878;
+	bh=6Zz6EFIhbf1OeHwU8aiQW85In3/sG5whL1gfkpAeXoA=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=PqHkXOhDlmfajjz8FDOBfKQ5WMmdAtigwXFYnRT6/6A8BXHINQb4N1mdpnnELJfLl
+	 dsoPR1/oJ9Rp9+ZuMahfdWry6eS1bgE+nNYpucF7KMZwuHdGz6PcSNzxBbcrecPxjW
+	 Hq7V2MKZ1uqQRdRelws9CwuALAS7IuMTba+j3mTs=
+Subject: Patch "binfmt_misc: restore write access before closing files opened by open_exec()" has been added to the 6.12-stable tree
+To: akpm@linux-foundation.org,brauner@kernel.org,deller@gmx.de,ebiederm@xmission.com,gregkh@linuxfoundation.org,jack@suse.cz,kees@kernel.org,linux-mm@kvack.org,liorribak@gmail.com,rob_garcia@163.com,viro@zeniv.linux.org.uk,zilin@seu.edu.cn
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 19 Mar 2026 11:41:14 +0100
+In-Reply-To: <20260304054311.108543-1-rob_garcia@163.com>
+Message-ID: <2026031913-moonlight-disburse-f8b6@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cdd47671-c5ac-4170-aa98-cf5e1f09368d@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0D1DF160003
-X-Stat-Signature: am3r3nno94fdyqfdnzcibmwinsky3p8q
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
+X-Rspamd-Queue-Id: A6CD3C0002
+X-Stat-Signature: o49mma6eynfixaxf3ygup1p37ta6dj9h
 X-Rspam-User: 
-X-HE-Tag: 1773916779-251360
-X-HE-Meta: U2FsdGVkX19qPSnraZnVQ+pyzXONKa1PhMAI0HjghGx0ALjczVSN1+HW7HcvAPmeWBpasUAEA7RLA0QV3vUPGA6e4/UasWA1ruPM1viiHwQ+V//a9UCmD3jrx3jWTYoWBf/atCJTAgujsHOzQsDKiE6FxctRyMOO8vKh+753RgvMkivfke0cnojyNobge4NDI1HFbcsSftyd3Bglj5zp54SvQIzAkV7d/KubNiGkhoF07AZlCiO8oeaCbqMDdr4bPBMhoRLeGexD4Vxz59kEpkzH8Zcq3GnxUf91LZWQqRYAt5LXiLX1vaxG0DeVQ7Pkoyqrqb7oTqDBPjvA8OHHDl03LZ30HL+jnHODboDmKi3SrBQSZMwoM8rICWT4PaKga1lqS5C3WjnmrzU1TVB1ShPtj0ulppD2jQiswKK+W3EiWwCNCfM2gr86WofYzthHkCH6jRqLe7cfAnnt+s1Lmsypml3aNKuq9y+lsiQ5xiAD+XmdtIL60Ihbhzq/0UmAfGDMZG6zPhdM+mhOI7OZ7tgWkpVn8eGh3PAjdf6xp8rHPDKy02NcePU0QmO4WBL59oa7mbZIgJPREeWTQmD6jXYlqRYIxJkiwxz8NkajtMPcE4LRLN3oi7iqow2N+DEqW0yOJt8SVrC3e6LZdM2RW4iznDbiVDKbpWo26x0vOU6UMdSquSEZ3NAsbsariNX5Vq9R/ZfFRVUHFVXAJWLqjNjF8Wk8GxHfKyt4seD5CESTyaXlfnYoPScAmRiOo+++k5Hpj77b9mgIXIqyl83iPi3AH9Zud6SVh58gAh0JAFKigazNtkpsp2tOqmBInsObdU6nfjIMUtJVDmqFmLFuunTAugcFajR/XB5JbjTnzHvvlu2oA2z3UAFGaRIYHBJancM1LTrTWS5cpBeD/FmnFQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773916879-340076
+X-HE-Meta: U2FsdGVkX19nuVY1J6hE/O6NOgYX3HrtZDp7ckeh1KYI9168pStKQ/MFWv7j3GaFmdjTt8ZF7fgyqgSv7DPsuqdfXaOzJTgKuQ1OB3PmkVknhJyX6JGeFXjDsVTWUqm728IO0VfzdP9rVjOP1S1Wp11MPXP7v9Y+lEhvxnJZqSBmf8hslYjp6EjEKZS0GkqRl9ZSRLcPOsOjfZCHZfUVfl56SQk9cuW8U8GEgwOylE2+d+Kl/A95jYutkBKUIi5vKODg+wboxK2rgVdnLvWUJfmJ39AdzNj+uQOfybCqGoTQGRQsftQYYURrIEx43dHEHmpj2ge9eECYFesR4GRzdTS31YVNBTBGC3LqPIym+4FIAF96tnSfzmwQqdQER0SzHu1YcURSNnGQvdbx1ZDGyIMnr38VSPpvqNgmbJvE8vBXvrd8tuRbB0WMFJkQd+sC3kJxqlKXadoaX68/7lImp1s6vREmaA7kwppjCwzwu5Js/NkhYo02mW8Zx3yy1+MBu9npQ3ZmWj3v5FsWdmI4u6VTqF09QnDxLziJHmnqOfxilSWU9dFVbgFSKHhLREc9yHwECZOvh1eMzw4lTkTbWhYgrbTIJNqR3YYqq8Jn0cWA4K2VD51oSp1zE8kyNu6TDKZkaiiuQBCDPhNVJVZLSo8LSWBTsO0HpweDS5IFbP5vOvenT354kLg7YNR72VAxX4rlKKErcuhdcWLDJokeYOL2hEBGo8Xpe1DXpr3F9bdliL0dFB0Fpm88Dt08SxwWOb9J2QRQPTPyjc4+gOHcKDU1K9hZM/HHaKO7WaxcbpnaDJggNWRsF7SDBfceUHzzRMvnXc45kkRGwsC0U/7zrM2sNlDGxCr/ecqp/qpkmyCev021JLjSjrZAdtjKV+rHoD9rF72HwrHVeNF8J1igAkkIy1pDwG0VAo4MGPwhEBB6Tytg5R0naFduFxKS/tj80qgESHJlXha8WoX+uBJ
+ oFEL/dBm
+ xaTapwA8wMxZjPzglv9+wELixq1a1JlZrg2yGCWZxdNlR2dkuy1ODrV34/lQzsw1+/y9bGRqXaGkMiRivTZRsqiOX2m6ADpdG1X32WQJ3OCyfglq2H2tdXKTEsCLcpHvTYHg46JcF8xuOOeh8UeT2u8knMHE14BThC11weDC0vPRassyacwSW58pkWKjj0eR+v8A7g0rVSM7uHN/BWkIjcIjd2MHae7z4ZJGLTAuhIELY7/ECm/4b7drzkZdoZ8Bes9tFEvGgq/MVX7/R+G/NaH+lqF15DgAZCG5rJVOxFFTl6Z8zbLeHm8Ma7seEJ8iEyllaetAlcDO4W9ygzpxI28zghxrojg2fKBc8gvdhpV5fBD/i6fkL8Tqfyb3LfejBuMyl2suaVmVApWuUjjfj5YXh+ZH/hQULYa+KgZ+6gSDwQAe0njr8//GOS7Z1l44CC+sHS4CRx0NvCuSskZOum1K/4lPUD/qqJbKuSMNpBMDctFwfLR2Vki9InGNl8HEAjePMbMXodvjBHZqXywvl1rAH1FX2MsuEgCq7/NXbHrr7kqeY0LqKQmmmpgHI1G+J+aF6sIJ8VBUm4tRMV5zQjcmU6gcqpC7q9JyxA30o5d9mvo4WiGUeE6p+0YnIPzJXI6Jsp5SBfWKu8l5KO41lYdrULJayoKOiWnBIFg6l0JcUHp96HI8Mo1OvnBpxCnS7BVKTQsgK9z94QnJJV0JJd6DrjODR5iNDCZ+KmS1cNYzvYZKUNOUqdVbNzKfrdW9RwVi5u2xCGUvUG1E5q0BKvB+p1ERkOcDYwL3zy3FmSPV29GmfQqJViYywnpcfQcsEpneCzXkEMBORpJYkI3qqfyv/IoLUYjegLQRgcXXJLni7D8c8UKWLvPFHLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,157 +88,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 11:16:20AM +0800, Qi Zheng wrote:
->
->
-> On 3/19/26 4:39 AM, Lorenzo Stoakes (Oracle) wrote:
-> > This function is confused - it overloads the term 'special' yet again,
-> > checks for DAX but in many cases the code explicitly excludes DAX before
-> > invoking the predicate.
-> >
-> > It also unnecessarily checks for vma->vm_file - this has to be present for
-> > a driver to have set VMA_MIXEDMAP_BIT or VMA_PFNMAP_BIT.
-> >
-> > In fact, a far simpler form of this is to reverse the DAX predicate and
-> > return false if DAX is set.
-> >
-> > This makes sense from the point of view of 'special' as in
-> > vm_normal_page(), as DAX actually does potentially have retrievable folios.
-> >
-> > Also there's no need to have this in mm.h so move it to huge_memory.c.
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> > ---
-> >   include/linux/huge_mm.h |  4 ++--
-> >   include/linux/mm.h      | 16 ----------------
-> >   mm/huge_memory.c        | 30 +++++++++++++++++++++++-------
-> >   3 files changed, 25 insertions(+), 25 deletions(-)
-> >
-> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> > index bd7f0e1d8094..61fda1672b29 100644
-> > --- a/include/linux/huge_mm.h
-> > +++ b/include/linux/huge_mm.h
-> > @@ -83,7 +83,7 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
-> >    * file is never split and the MAX_PAGECACHE_ORDER limit does not apply to
-> >    * it.  Same to PFNMAPs where there's neither page* nor pagecache.
-> >    */
-> > -#define THP_ORDERS_ALL_SPECIAL		\
-> > +#define THP_ORDERS_ALL_SPECIAL_DAX	\
->
-> As mentioned in the comments, the pfnmap case is also include in the
-> 'special' case, right?
 
-Yeah special = pfnmap, mixedmap. so renaming to SPECIAL_DAX to make clear it's
-either dax or 'special' in the meaning of vm_normal_page().
+This is a note to let you know that I've just added the patch titled
 
->
-> >   	(BIT(PMD_ORDER) | BIT(PUD_ORDER))
-> >   #define THP_ORDERS_ALL_FILE_DEFAULT	\
-> >   	((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
-> > @@ -92,7 +92,7 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
-> >    * Mask of all large folio orders supported for THP.
-> >    */
-> >   #define THP_ORDERS_ALL	\
-> > -	(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL | THP_ORDERS_ALL_FILE_DEFAULT)
-> > +	(THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL_DAX | THP_ORDERS_ALL_FILE_DEFAULT)
-> >   enum tva_type {
-> >   	TVA_SMAPS,		/* Exposing "THPeligible:" in smaps. */
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 6f0a3edb24e1..50d68b092204 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -5077,22 +5077,6 @@ long copy_folio_from_user(struct folio *dst_folio,
-> >   			   const void __user *usr_src,
-> >   			   bool allow_pagefault);
-> > -/**
-> > - * vma_is_special_huge - Are transhuge page-table entries considered special?
-> > - * @vma: Pointer to the struct vm_area_struct to consider
-> > - *
-> > - * Whether transhuge page-table entries are considered "special" following
-> > - * the definition in vm_normal_page().
-> > - *
-> > - * Return: true if transhuge page-table entries should be considered special,
-> > - * false otherwise.
-> > - */
-> > -static inline bool vma_is_special_huge(const struct vm_area_struct *vma)
-> > -{
-> > -	return vma_is_dax(vma) || (vma->vm_file &&
-> > -				   (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP)));
-> > -}
-> > -
-> >   #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
-> >   #if MAX_NUMNODES > 1
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 3fc02913b63e..f76edfa91e96 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -100,6 +100,14 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> >   	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
-> >   }
-> > +/* If returns true, we are unable to access the VMA's folios. */
-> > +static bool vma_is_special_huge(struct vm_area_struct *vma)
-> > +{
-> > +	if (vma_is_dax(vma))
-> > +		return false;
-> > +	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
-> > +}
-> > +
-> >   unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >   					 vm_flags_t vm_flags,
-> >   					 enum tva_type type,
-> > @@ -113,8 +121,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >   	/* Check the intersection of requested and supported orders. */
-> >   	if (vma_is_anonymous(vma))
-> >   		supported_orders = THP_ORDERS_ALL_ANON;
-> > -	else if (vma_is_special_huge(vma))
-> > -		supported_orders = THP_ORDERS_ALL_SPECIAL;
-> > +	else if (vma_is_dax(vma) || vma_is_special_huge(vma))
-> > +		supported_orders = THP_ORDERS_ALL_SPECIAL_DAX;
-> >   	else
-> >   		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
-> > @@ -2431,7 +2439,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >   						tlb->fullmm);
-> >   	arch_check_zapped_pmd(vma, orig_pmd);
-> >   	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
-> > -	if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
-> > +	if (vma_is_special_huge(vma)) {
-> >   		if (arch_needs_pgtable_deposit())
-> >   			zap_deposited_table(tlb->mm, pmd);
-> >   		spin_unlock(ptl);
-> > @@ -2933,7 +2941,7 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >   	orig_pud = pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
-> >   	arch_check_zapped_pud(vma, orig_pud);
-> >   	tlb_remove_pud_tlb_entry(tlb, pud, addr);
-> > -	if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
-> > +	if (vma_is_special_huge(vma)) {
-> >   		spin_unlock(ptl);
-> >   		/* No zero page support yet */
-> >   	} else {
-> > @@ -3084,7 +3092,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
-> >   		 */
-> >   		if (arch_needs_pgtable_deposit())
-> >   			zap_deposited_table(mm, pmd);
-> > -		if (!vma_is_dax(vma) && vma_is_special_huge(vma))
-> > +		if (vma_is_special_huge(vma))
-> >   			return;
-> >   		if (unlikely(pmd_is_migration_entry(old_pmd))) {
-> >   			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
-> > @@ -4645,8 +4653,16 @@ static void split_huge_pages_all(void)
-> >   static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct *vma)
-> >   {
-> > -	return vma_is_special_huge(vma) || (vma->vm_flags & VM_IO) ||
-> > -		    is_vm_hugetlb_page(vma);
-> > +	if (vma_is_dax(vma))
-> > +		return true;
-> > +	if (vma_is_special_huge(vma))
-> > +		return true;
-> > +	if (vma_test(vma, VMA_IO_BIT))
-> > +		return true;
-> > +	if (is_vm_hugetlb_page(vma))
-> > +		return true;
-> > +
-> > +	return false;
-> >   }
-> >   static int split_huge_pages_pid(int pid, unsigned long vaddr_start,
->
+    binfmt_misc: restore write access before closing files opened by open_exec()
+
+to the 6.12-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     binfmt_misc-restore-write-access-before-closing-files-opened-by-open_exec.patch
+and it can be found in the queue-6.12 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From stable+bounces-222980-greg=kroah.com@vger.kernel.org Wed Mar  4 06:44:15 2026
+From: Robert Garcia <rob_garcia@163.com>
+Date: Wed,  4 Mar 2026 13:43:11 +0800
+Subject: binfmt_misc: restore write access before closing files opened by open_exec()
+To: stable@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Robert Garcia <rob_garcia@163.com>, Jan Kara <jack@suse.cz>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>, Lior Ribak <liorribak@gmail.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <20260304054311.108543-1-rob_garcia@163.com>
+
+From: Zilin Guan <zilin@seu.edu.cn>
+
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
+
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
+
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
+
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
+
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/binfmt_misc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -875,8 +875,10 @@ out:
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
+
+
+Patches currently in stable-queue which might be from rob_garcia@163.com are
+
+queue-6.12/rxrpc-fix-recvmsg-unconditional-requeue.patch
+queue-6.12/net-dsa-properly-keep-track-of-conduit-reference.patch
+queue-6.12/binfmt_misc-restore-write-access-before-closing-files-opened-by-open_exec.patch
+queue-6.12/spi-cadence-quadspi-implement-refcount-to-handle-unbind-during-busy.patch
+queue-6.12/f2fs-fix-to-avoid-migrating-empty-section.patch
+queue-6.12/blk-throttle-fix-access-race-during-throttle-policy-activation.patch
 
