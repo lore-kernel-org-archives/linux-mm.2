@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EC17109192F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 23:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C2F1091932
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 23:31:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AB866B04B5; Thu, 19 Mar 2026 19:31:06 -0400 (EDT)
+	id 1C7716B04B7; Thu, 19 Mar 2026 19:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 437DC6B04B7; Thu, 19 Mar 2026 19:31:06 -0400 (EDT)
+	id 1A0DC6B04BB; Thu, 19 Mar 2026 19:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D8ED6B04B9; Thu, 19 Mar 2026 19:31:06 -0400 (EDT)
+	id 0B5776B04BD; Thu, 19 Mar 2026 19:31:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 146626B04B5
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:31:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9FA014076F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E1B966B04B7
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:31:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B198BBAFA4
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:31:07 +0000 (UTC)
+X-FDA: 84564410574.01.E43A3C4
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D3A7440015
 	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:31:05 +0000 (UTC)
-X-FDA: 84564410490.19.04E9BA7
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DF63F4000C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:31:03 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pUGxjnfA;
-	spf=pass (imf04.hostedemail.com: domain of 3Noe8aQYKCIsBDxwp2v33v0t.r310x29C-11zAprz.36v@flex--wyihan.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3Noe8aQYKCIsBDxwp2v33v0t.r310x29C-11zAprz.36v@flex--wyihan.bounces.google.com;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Y5SO1Y0B;
+	spf=pass (imf17.hostedemail.com: domain of 3OIe8aQYKCI0DFzyr4x55x2v.t532z4BE-331Crt1.58x@flex--wyihan.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3OIe8aQYKCI0DFzyr4x55x2v.t532z4BE-331Crt1.58x@flex--wyihan.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773963063;
+	s=arc-20220608; t=1773963065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dLN80hi+wV7RsIDgwy/tRG94iKBvpQ4g3gjUbQ44niY=;
-	b=PahRVMU9JGbsgfFtdzFTjZ0bs33f6LyacPQ18ImxYT2xLfnWA/sy3JMmhhEVcyzF1bbuwI
-	t6jjhSujlQVZbwotfoMwJH10J9N4UUC1NlwVZYnU6FJum0F5lj5nMKnmlJJLnKbAN+SVjH
-	6Qms5oOOdRIf6GNwLYWTsprl5rnnGR4=
+	bh=0XVkZljvWyJMdTaa7/apTU+xEzctUK1Me6jsTW57n1c=;
+	b=TKGBX/d+3DIUVkPH2+HOJRtRSp6pFuNr/w7gCayJ0+r16VF6MLkERKUih3TOmdMg/vW8mF
+	07nAefNvtgBkQgT/KA5g1NMINGfX5VTxTJwR5KaYr1OzMEY0TGkbISJzroHbmIWHf90mIT
+	Xb3op5FbI6VDxcSU+OjU8ucIyfqgsNQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pUGxjnfA;
-	spf=pass (imf04.hostedemail.com: domain of 3Noe8aQYKCIsBDxwp2v33v0t.r310x29C-11zAprz.36v@flex--wyihan.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3Noe8aQYKCIsBDxwp2v33v0t.r310x29C-11zAprz.36v@flex--wyihan.bounces.google.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Y5SO1Y0B;
+	spf=pass (imf17.hostedemail.com: domain of 3OIe8aQYKCI0DFzyr4x55x2v.t532z4BE-331Crt1.58x@flex--wyihan.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3OIe8aQYKCI0DFzyr4x55x2v.t532z4BE-331Crt1.58x@flex--wyihan.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773963063; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773963065; a=rsa-sha256;
 	cv=none;
-	b=V+wNV+O6icwVLlxW0gEnx7FGhQ++UMa+hHTYG6pQGpg1bu1JJ0LNfriegDjL3inLbOJDPp
-	FAsuJ2GlGfGzMjOa3zIE04Cd0rlWNeBHGmqq79rA/5nNfYDs3j8dMPRwBRQyhhLwi2i2rp
-	1VDYZuKVBy+uk4b1BNE0rHknPF7pvhA=
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b630b4d8d52so18745a12.3
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:31:03 -0700 (PDT)
+	b=djM4QB26EU4c04McSY5wUPaTn0YeUuP5urWlAoxsMHi6sAWvVkujw7f2DhOcgt7r8QaSig
+	fTPbk0FU82mwGyRc4NV8W6gD0R1P++4TTtOWupwBTvLXX8qgEE57G8DZxbAqXQdPI2Dhch
+	usMRQJuWW+mp9UIgzURGtAl0m9OIfU0=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b0565d77a6so20551405ad.2
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 16:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773963063; x=1774567863; darn=kvack.org;
+        d=google.com; s=20251104; t=1773963064; x=1774567864; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dLN80hi+wV7RsIDgwy/tRG94iKBvpQ4g3gjUbQ44niY=;
-        b=pUGxjnfAr4MosZM/Tce/ld1UY0zfuOwDF9sEBwOqaxyZC51OURqA44pffsR5qXwxhH
-         vp+J+X44cqiuc2ZtVzqB2RkXONtk5uvMBwak1vz3oaoPdDhofRtdCs0s06of3jsEGL/D
-         l2c+6t9rIQSz+AQ/yPtJNzriTHwVnSXvFBykjnNLW4S0FjcAeBdTOY2xFN5bT0WBr3qw
-         F8/uvnZN63fuGxkO1vUHmEozIa07oUfoCpejoXwn+5Ng76Tyel4ekDcY4vA65HEMNNga
-         MkwcWK4MAmFHtWStQsAge5EqgnKVzR6nA+mFuRbLYypZUPTMelwqM2j8ZD7CqfFhELHi
-         JPTw==
+        bh=0XVkZljvWyJMdTaa7/apTU+xEzctUK1Me6jsTW57n1c=;
+        b=Y5SO1Y0BT/v7o1e+NVzH87thUi+e3ijoswcygb5V4qxQTXvMzBCdri/iQH92cBvrvo
+         hsHBJfUMD9fx8rk+kr9FbS/U8DOG+OVPqf5DQCWpsezZ63TnnroAb6TM25dbBCoXDvb0
+         poX66JK72fQlKAYTb8q0DJzj2VsT87OYVxh5TEV0gPIX1U12en/KDvKZIyA5+BLvDOmQ
+         3qcp9HPxrpxJAQxy/lsibICPsye51HTwZl9X7e5+OHllWr19QLIqm6F2bWGxnusDQyz2
+         E+jc8cDaczJH3POmtRfCcX0aCHNXCqCQ48qFkoVG6wKpV5DAecCER/YfficY/eyL2Ghi
+         4FsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773963063; x=1774567863;
+        d=1e100.net; s=20251104; t=1773963064; x=1774567864;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dLN80hi+wV7RsIDgwy/tRG94iKBvpQ4g3gjUbQ44niY=;
-        b=F2vojhCvgUwuh5dMCBIudLS5P60Kx8Op1m8SZLb6zjs0StK55TLBNumrixuUGB8qMx
-         lW6/S6uw/IDYd+xPM/DEJmQIrAjo74lukTHq/XmLPnoByWxr7CFUcHmz/81sBSd5qo7H
-         zPZ7U+7gtVIY2jMrLeqHuqx46Ah7gyL670vAj9e5k+UEos7nJt+QBHkFawIlV0MuYJaf
-         n9GTHeSF27U8B9xvJjklwwWgbTYrvL0DBsJLQ+Id5yFs3lESGWW4/D61UhR5A88K/yQR
-         87lC0J/G8A14KU+Sj7BgmNERswN6QETEuOXkeVgFy5R3Pkdcx84DbCBFVeOBlj2Aj31Z
-         YYMg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7/ny2+uaPRuipHAZz4Sa0begCOCIDawqcD23bu3iNdnlR9YsJJTP/HsmRqxykaRvu+IgK1kRASw==@kvack.org
-X-Gm-Message-State: AOJu0YwZ8zQopu1OXsPD/bq0GoqfZVxpjD//TZn9YuIt830/6Sjf0VGC
-	tW5RHkMCw3xkDPPOBS4bvw93A2zEuIRcmQY5M30oEnTB7Y9bhpTufI/GsY9HT8dbcDGn6rH8hCG
-	zu0Z4lQ==
-X-Received: from pgab123.prod.google.com ([2002:a63:3481:0:b0:c73:9919:c4f8])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d81:b0:398:8546:c3fc
- with SMTP id adf61e73a8af0-39bce9b7e6emr924394637.7.1773963062623; Thu, 19
- Mar 2026 16:31:02 -0700 (PDT)
-Date: Thu, 19 Mar 2026 23:30:32 +0000
+        bh=0XVkZljvWyJMdTaa7/apTU+xEzctUK1Me6jsTW57n1c=;
+        b=Es8HkSuZQqJlg2re1P91N8Wm6yg+l170HT7ILSzNBMv3shvZ4iG+npEMosGM7ZieL7
+         j7Vx+f2KfHoyD3aLkf7Sc1eb+6YJS0okIVpKANIBjUT9L3jUVXhIQkSTFBpaHXnoeiD1
+         43IEBTYLWFbDErFX0lNgohFHZqatfMA5qPBinwyKRbn8fkJ79aq4Lpi8k1CQrU3ToJ+Y
+         5ZD+iepXJSCwDPuMy30eDQ5TM2ZYwhrtgFUk0DkLk55aowL+YyRtxMuXFnS/m4/snKjV
+         o8kyUnZC5x2aVEl0PtKsoj14xPVEIQMhpGuWnzS8KryKCqAWq8WmeVx0MsmimJ1On35W
+         rgfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVrxc6jEeEEYbNwvZoQz1uTqYgkwPuYXf/jIedTKtLv2NksD+dPezhjmkoFZY/3toCNmX3uclK3vw==@kvack.org
+X-Gm-Message-State: AOJu0Yy3FFtymx0s76eBtzR+RxhUJG7J2fM/2Rc/UDBYCpkicpD0QpWZ
+	bnMFujVmZjeHw3aUWrVQfTEI1zFjZBw45ovKGf7VytRaDrc1F2SnR1yMl+fxxAXnFM9G5Wjb6BQ
+	sQuEQ5Q==
+X-Received: from plgc17.prod.google.com ([2002:a17:902:d491:b0:2b0:6147:a0ee])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8c7:b0:2b0:5d60:7f43
+ with SMTP id d9443c01a7336-2b0826b89fbmr7160295ad.8.1773963064231; Thu, 19
+ Mar 2026 16:31:04 -0700 (PDT)
+Date: Thu, 19 Mar 2026 23:30:33 +0000
 In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
 Mime-Version: 1.0
 References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773963053; l=5121;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773963053; l=7959;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=XqXOZx8bRJ+MW3QLKZ9eLemXOW8pkkhqg+4Xehhhu34=; b=nez3ePfz2DyHfRD1EU96GSlzQoAPO6925YzKCLhpMi6Z7BSIWwpw9+JzE9uSu8N4PKdbla1ke
- 3gFKoffsCYJChdWiQqNpWcqhpXJunH0VukcDhLctTtRU/LD9KRdsv3T
+ bh=/IV7lWhsJHF0x5A2Fq993vbJ4R9Cdskri5oidvrL+zU=; b=qXdjX2Q9/G5HKD4xyXrWxsOPx0Rn2uqxCML7evRdxyatc8uCc0KSmI17m7e+7pLSD0ksRHo+C
+ w8h0S2a/h+KAmDqsho3FoLLL9CKZl1BZ7RTrb4jtLnaSxH9mgAItGtl
 X-Mailer: b4 0.14.3
-Message-ID: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-5-92c596402a7a@google.com>
-Subject: [PATCH RFC v2 5/7] mm: selftests: Add shmem memory failure test
+Message-ID: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-6-92c596402a7a@google.com>
+Subject: [PATCH RFC v2 6/7] KVM: selftests: Add memory failure tests in guest_memfd_test
 From: Lisa Wang <wyihan@google.com>
 To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -106,14 +106,14 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
 	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
 	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: DF63F4000C
-X-Stat-Signature: g1akazxe13hppypbzje7k66ua9tbx4yc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773963063-660907
-X-HE-Meta: U2FsdGVkX18R+OIv5r6RAhs7pQax2/4xl/P8Yp1vpgoZF8av+Jgh04HiJlGiJQ5BA/7uWPAXje5VW1TdWTUYewXGCDSMTcjwQ8bqw3t1lnj49X7OKUmUlTCGL3QKqzUC2i9CIW+o/5ZBfW6+PX5AzoUfyiOw2JjRo3dyI34Pvd5Elh3NagLbTuG4zJ6vD0tIcftpXs4PEYPrNktJTalyY8QjTHQlo+6o4y7gdqlPcdjDM9j0P1EEaKZaTgIUI7cOjC2U5BST4G/zeanbrSPmXfwRV9tTEh5O3kZM/+R7p9UH4Dsl8MV1vucif53c7c9sNQW1o1+cXzVAhWEDWgsoQc+qnjitbt/zUB1OhBcwjw7O+/qSWD88ItKF8ErPGEjSCh/QUyCeMP5koLpEFqCgjCubip8COLJSRHjUFP8dEop/KyPXqz1E8SCsy2YNXQIcDA2cqYRgfzLrRR+tZOCQ6IJWeYBZeqDxLiUQWnDjBj0niWysWbm/poOx06mymAwJJR03+qfBzYElgWd4S7t+nwX5eDYhl1odVCb68VdIuAgiatQuz6NcyIeienivDJQqHOrI1JuZNLEl5mlycBDZBDWirYhAQd2j3W6LgsAOShGn//B5iD29fv2v94rwM6sfPVNqit4FJrAzmRSPKjLtqT02b2e0a602ZaotcuVFClUnQZ0A1095CLg4WgXHjVFzK7rsLbFgeECHVX0bWKn5mJxaNAcunxo+UCBuOYg1o3y6h38sg1XoNfhH43xtOJoM0sWkGggrBB1ml1FfetVxdp41vYC67wJ8KWeG9tDwjRb+yWZjji+CaqRaCU4wUZ0InAkKfrn1O0myhGXnLpVaEez4Z0rbEi+8mFePBk7GgSY4pCa64VwGY8XaoRkvi9BhmhZWTY0pMmwE7nuDG0UThTt0UHFB2NTL6aAuRMqMTbhbXivcMEZ1kdVTAe7InVx7JNKIqWafDsel50qpMY7
- s9o+GW+E
- 7qI456iAAsjkgVr93VPbsBSQ1yAFktcc/VxQ643q2RiLA0zprjT9LO99MUPmVgPN5Vv7qbbTj+bf2nm1VeEPTWOI7dMYqXTiwR5caJhHq83nZHRi839/IA53Mz4W1vlhEVEuEAql+8F5Cq+BoHsDzR/+RsIXZP9YLwU6mDVou4I9Jk4OQAHHFLelOcQjVJOi6UfKN4gSaicrcKYrTKlFag1gjny/pBCXCT96aq4BPj54co7hCG9f0SIhlj1bcwVtoOY3h4UL+ruuGebl+t0pD/9qg8Rve6+NptrTTz4rCP5eP1mw0hFoRMTNaYfY9Xbpdf8qCEWmJaxybR9JwVSMdUQGXvh8TgaXv+XadeA6PBzXHoSgu+PBi8kOOU7U4HaYFHLI7AByQr1Dw8V8nLa+iwIpzHc0bT7t0egvHZVMfPXDPc9tPxC/xur+E+l/ng1qAaux0FCGDG9VuZ5SIGf6OtqhwSnj51JaL2RUox1VK9DIsVYSQOPHbefQm9Jg3f1KSpzBhgDyQeC9cf4KUxxMMJKxsY8kwdElJw9htoeXg8skoolrtZ8VrCPKN/EAzAcE+Now7iGOlut2jHIv/qSXXZ8DyYxDl7gNy/HBQydFMpuFoijP7n+yxfIenYKS/Idvuq24QhAgkn7KoBaHH04jFDwAXfsvZ70tJyuAyHiMyi2/lpq69Q1FGYRaaPqzjQJyiQVaFvmG0oo2Aokg=
+X-Rspamd-Queue-Id: D3A7440015
+X-Rspamd-Server: rspam08
+X-Stat-Signature: hb9dgezhbfsu8o1cdtdqymeqk17krgpw
+X-HE-Tag: 1773963065-524819
+X-HE-Meta: U2FsdGVkX1+QFTs7sBZIVmdugCbOaZgaFPrWndbitJtdOeYtpFFCj+MrGOQTsa/HeAYjR+Nxw14LgNPNASRX9QVvwldkhMFYCvKMNCObEe4/xsPTqIYBTIAfyDed0zHOSBv8fjxiGurPJO6aDaR1eQyLLjv/NjeFCc/7UfSOGoev9Vt5Tgd2zGjW8uU9dhz+57I+gwP/7zKrezMcd4Mw/JeDqFRzF33KxcME2lrkDS1Zzjr4e2QKn1Aq8kXSOYT9gZ5KlzYd2fjZb4y2Vplh41KyVsodpf9+lgsMPthjcM3+LtsMbwACB2H6D4VFdPcVDvsjjmSXLu1cjtvaavRrGJh7bHIj5Es8Jr9RDm7WNTlDJJhg9nCYR/c7hq8hYVQoY1D1VSrGuKaccTQuSgc8IAiqdxvBKEWgMZwac4Gq9LJInjonLRvnRDe9j9w3BKOSJel/81819gnxiB5vwCd9Vbjacyg2MxMf4Vmx3LvUd8UKIcwYFfCEBVCC7fJs41yXV/g7Tys+btyQV/AMtkwYswfvua34IsQ6oajOSxZkkJgDHF7kAbgaFVPYQHHCRHjK1SbxOfRcADQG98lAC+yhFmyR0gDP8VRHOLbkMQTAHISJlwo6rq2QoTg95VK8fuJB+sLZe5XUafBeBBn1OKGH8ZJmLzPVliVu06jXIs/2jQbh5ImF4VS5izMf61VbXSooJ4ekUOPskbmLL01Tjtq7FTVzvYmCY40wmp2jM00Fca3zoKNgtSg1pqAY2U7oYTDTMgw0SUyWyEiRYBypV+OdRDfb6ZaNwnlYWIVg2QjcQKQRHrVXXUZ/YCEthO1ZRVLuUx2EE5qTd6pwM6Zh9dVli1dh8eirr+ZraPY6BXWkPbMnOFQtoASYbzuKypfIwblg0KUBd+pfygWrVZLLcYOcRlxRLgAqPSk4+jgreGjw6mjvsNwvSHxP4lPqp3XqYrFcldC9zJSI/UHtgzW6Wid
+ lbCe2XlW
+ 7fsvECG2f+a6lqEYcktPQhR/ti1PPal2wEfO94kv3F45QuXDwpXizDNGozyiBM2svWHT0eJmXz2S40AHsaEIpznD3NSTMVOxsNEaALy1nyhTx6WI1gPsdDMfMP9DzRDOkftbQnMlL35CdAEpDScZIdVi5sDYts2L8GqT28eP4eZNFuwAS7mhKQDEvZtonJdcqXMrjSjvUF4MMKCDS+j4Ia2Q0+DmLp7HnJaXwjP+/xuOmoU3D+o9OIqwbgrpI66bH6xemK0eCX0ILMEUmTTBmrAWkHuRSCJK/mk0/JQDHhdRnSSvJG683h7kHb0tDMZv025rKO+61SGHVrwdQBpLBYRyTu54Hew0vAmFJy5E5tsI065Jf7XyrlI1KaCC3LxwNFp8S58+JzimAh7BKBNNrOTc3H74yqpjCczYQnzJ7Qq8utCgUOZeshNAx+C/BV4L7iQ4s8AiPB85pd2T6G/Uku9gjSXJqb5E/1zT4yjmb3yJqjEyoYGigWBTFg4zKsAy8p9X9ShZmD6i6ls94bBTin0POVmHpqzi8ucrQhhyWf4PRxIaGsePf5Xgq1bsS/w9BijXksS+afM+KPnX9A43sMGHSabDSeF3H66FeIZU0KAzWvM73oQwcghtSBzWNnG7Yz1PKoAngeBsils4dMiF6f/IQnJPgSnY5haPVnRUmMPq3lPfwFd/GHAHv6R/nA/iyZh07C8P/TL4QC3Wkjrl1PDNXmUtkelYOmH3hXRatkZ2H36weuHtTuU2a1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,157 +121,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a shmem memory failure selftest to test the shmem memory failure is
-correct after modifying shmem return value.
+After modifying truncate_error_folio(), we expect memory_failure() will
+return 0 instead of MF_FAILED. Also, we want to make sure memory_failure()
+signaling function is same.
 
-Test that
-+ madvise() call returns 0 at the first time
-+ trigger a SIGBUS when the poisoned shmem page is fault-in again.
+Test that memory_failure() returns 0 for guest_memfd, where
+.error_remove_folio() is handled by not actually truncating, and returning
+MF_DELAYED.
 
+In addition, test that SIGBUS signaling behavior is not changed before
+and after this modification.
+
+There are two kinds of guest memory failure injections - madvise or
+debugfs. When memory failure is injected using madvise, the
+MF_ACTION_REQUIRED flag is set, and the page is mapped and dirty, the
+process should get a SIGBUS. When memory is failure is injected using
+debugfs, the KILL_EARLY machine check memory corruption kill policy is
+set, and the page is mapped and dirty, the process should get a SIGBUS.
+
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- tools/testing/selftests/mm/Makefile                |  3 +
- tools/testing/selftests/mm/run_vmtests.sh          |  1 +
- .../selftests/mm/shmem_memory_failure_test.c       | 98 ++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
+ tools/testing/selftests/kvm/guest_memfd_test.c | 168 +++++++++++++++++++++++++
+ 1 file changed, 168 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 7a5de4e9bf52..ac033851c9eb 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -72,6 +72,7 @@ TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
-+TEST_GEN_FILES += shmem_memory_failure_test
- ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64 loongarch32 loongarch64))
- TEST_GEN_FILES += memfd_secret
- endif
-@@ -259,6 +260,8 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 618c937f3c90..445e8155ee1e 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -10,6 +10,8 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <fcntl.h>
++#include <linux/prctl.h>
++#include <sys/prctl.h>
  
- $(OUTPUT)/rmap: LDLIBS += -lnuma
+ #include <linux/bitmap.h>
+ #include <linux/falloc.h>
+@@ -193,6 +195,171 @@ static void test_fault_overflow(int fd, size_t total_size)
+ 	test_fault_sigbus(fd, total_size, total_size * 4);
+ }
  
-+$(OUTPUT)/shmem_memory_failure_test: CFLAGS += -I$(top_srcdir)/tools/include
-+
- local_config.mk local_config.h: check_config.sh
- 	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
- 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index afdcfd0d7cef..58fb959a7936 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -402,6 +402,7 @@ CATEGORY="hugetlb" run_test ./hugetlb-soft-offline
- echo "$nr_hugepages_tmp" > /proc/sys/vm/nr_hugepages
- echo "$enable_soft_offline" > /proc/sys/vm/enable_soft_offline
- CATEGORY="hugetlb" run_test ./hugetlb-read-hwpoison
-+CATEGORY="mmap" run_test ./shmem_memory_failure_test
- fi
- 
- if [ $VADDR64 -ne 0 ]; then
-diff --git a/tools/testing/selftests/mm/shmem_memory_failure_test.c b/tools/testing/selftests/mm/shmem_memory_failure_test.c
-new file mode 100644
-index 000000000000..44752024a7fc
---- /dev/null
-+++ b/tools/testing/selftests/mm/shmem_memory_failure_test.c
-@@ -0,0 +1,98 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * This test makes sure when memory failure happens, shmem can handle
-+ * successfully.
-+ */
-+#include <linux/compiler.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <signal.h>
-+#include <setjmp.h>
-+#include <errno.h>
-+#include "kselftest.h"
-+#include "vm_util.h"
-+
-+static sigjmp_buf sigbuf;
-+
-+static void signal_handler(int sig, siginfo_t *info, void *ucontext)
++static unsigned long addr_to_pfn(void *addr)
 +{
-+	siglongjmp(sigbuf, 1);
-+}
-+
-+static void set_signal_handler(int sig, void (*handler)(int, siginfo_t *, void *))
-+{
-+	struct sigaction sa = {};
-+
-+	sa.sa_sigaction = handler;
-+	sa.sa_flags = SA_SIGINFO;
-+	sigemptyset(&sa.sa_mask);
-+	if (sigaction(sig, &sa, NULL) == -1)
-+		ksft_exit_fail_msg("Failed to set SIGBUS handler: %s\n", strerror(errno));
-+}
-+
-+static unsigned long addr_to_pfn(char *addr)
-+{
++	const uint64_t pagemap_pfn_mask = BIT(54) - 1;
++	const uint64_t pagemap_page_present = BIT(63);
++	uint64_t page_info;
++	ssize_t n_bytes;
 +	int pagemap_fd;
-+	unsigned long pfn;
 +
 +	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		ksft_exit_fail_msg("Failed to open /proc/self/pagemap: %s\n", strerror(errno));
-+	pfn = pagemap_get_pfn(pagemap_fd, addr);
++	TEST_ASSERT(pagemap_fd > 0, "Opening pagemap should succeed.");
++
++	n_bytes = pread(pagemap_fd, &page_info, 8, (uint64_t)addr / page_size * 8);
++	TEST_ASSERT(n_bytes == 8, "pread of pagemap failed. n_bytes=%ld", n_bytes);
++
 +	close(pagemap_fd);
 +
-+	return pfn;
++	TEST_ASSERT(page_info & pagemap_page_present, "The page for addr should be present");
++	return page_info & pagemap_pfn_mask;
 +}
 +
-+static void test_shmem_memory_failure(size_t total_size, size_t page_size)
++static void write_memory_failure(unsigned long pfn, bool mark, int return_code)
 +{
-+	unsigned long memory_failure_pfn;
-+	char *memory_failure_mem;
-+	char *memory_failure_addr;
++	char path[PATH_MAX];
++	char *filename;
++	char buf[20];
++	int ret;
++	int len;
 +	int fd;
 +
-+	fd = memfd_create("shmem_hwpoison_test", 0);
-+	if (fd < 0)
-+		ksft_exit_skip("memfd_create failed: %s\n", strerror(errno));
++	filename = mark ? "corrupt-pfn" : "unpoison-pfn";
++	snprintf(path, PATH_MAX, "/sys/kernel/debug/hwpoison/%s", filename);
 +
-+	if (ftruncate(fd, total_size) < 0)
-+		ksft_exit_fail_msg("ftruncate failed: %s\n", strerror(errno));
++	fd = open(path, O_WRONLY);
++	TEST_ASSERT(fd > 0, "Failed to open %s.", path);
 +
-+	memory_failure_mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	if (memory_failure_mem == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed: %s\n", strerror(errno));
-+	memory_failure_addr = memory_failure_mem + page_size;
-+	READ_ONCE(memory_failure_addr[0]);
-+	memory_failure_pfn = addr_to_pfn(memory_failure_addr);
++	len = snprintf(buf, sizeof(buf), "0x%lx\n", pfn);
++	if (len < 0 || (unsigned int)len > sizeof(buf))
++		TEST_ASSERT(0, "snprintf failed or truncated.");
 +
-+	if (madvise(memory_failure_addr, page_size, MADV_HWPOISON) != 0)
-+		ksft_exit_fail_msg("MADV_HWPOISON failed: %s\n", strerror(errno));
-+
-+	if (sigsetjmp(sigbuf, 1) == 0) {
-+		READ_ONCE(memory_failure_addr[0]);
-+		ksft_test_result_fail("Read from poisoned page should have triggered SIGBUS\n");
++	ret = write(fd, buf, len);
++	if (return_code == 0) {
++		/*
++		 * If the memory_failure() returns 0, write() should be successful,
++		 * which returns how many bytes it writes.
++		 */
++		TEST_ASSERT(ret > 0, "Writing memory failure (path: %s) failed: %s", path,
++			    strerror(errno));
 +	} else {
-+		ksft_test_result_pass("SIGBUS triggered as expected on poisoned page\n");
++		TEST_ASSERT_EQ(ret, -1);
++		/* errno is memory_failure() return code. */
++		TEST_ASSERT_EQ(errno, return_code);
 +	}
 +
-+	munmap(memory_failure_mem, total_size);
 +	close(fd);
-+	if (unpoison_memory(memory_failure_pfn) < 0)
-+		ksft_exit_fail_msg("unpoison_memory failed: %s\n", strerror(errno));
 +}
 +
-+int main(int argc, char *argv[])
++static void mark_memory_failure(unsigned long pfn, int return_code)
 +{
-+	const size_t pagesize = getpagesize();
-+
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
-+	set_signal_handler(SIGBUS, signal_handler);
-+	test_shmem_memory_failure(pagesize * 4, pagesize);
-+	ksft_finished();
++	write_memory_failure(pfn, true, return_code);
 +}
++
++static void unmark_memory_failure(unsigned long pfn, int return_code)
++{
++	write_memory_failure(pfn, false, return_code);
++}
++
++enum memory_failure_injection_method {
++	MF_INJECT_DEBUGFS,
++	MF_INJECT_MADVISE,
++};
++
++static void do_test_memory_failure(int fd, size_t total_size,
++				   enum memory_failure_injection_method method, int kill_config,
++				   bool map_page, bool dirty_page, bool sigbus_expected,
++				   int return_code)
++{
++	unsigned long memory_failure_pfn;
++	char *memory_failure_addr;
++	char *mem;
++	int ret;
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
++	memory_failure_addr = mem + page_size;
++	if (dirty_page)
++		*memory_failure_addr = 'A';
++	else
++		READ_ONCE(*memory_failure_addr);
++
++	/* Fault in page to read pfn, then unmap page for testing if needed. */
++	memory_failure_pfn = addr_to_pfn(memory_failure_addr);
++	if (!map_page)
++		madvise(memory_failure_addr, page_size, MADV_DONTNEED);
++
++	ret = prctl(PR_MCE_KILL, PR_MCE_KILL_SET, kill_config, 0, 0);
++	TEST_ASSERT_EQ(ret, 0);
++
++	ret = 0;
++	switch (method) {
++	case MF_INJECT_DEBUGFS: {
++		/* DEBUGFS injection handles return_code test inside the mark_memory_failure(). */
++		if (sigbus_expected)
++			TEST_EXPECT_SIGBUS(mark_memory_failure(memory_failure_pfn, return_code));
++		else
++			mark_memory_failure(memory_failure_pfn, return_code);
++		break;
++	}
++	case MF_INJECT_MADVISE: {
++		/*
++		 * MADV_HWPOISON uses get_user_pages() so the page will always
++		 * be faulted in at the point of memory_failure()
++		 */
++		if (sigbus_expected)
++			TEST_EXPECT_SIGBUS(ret = madvise(memory_failure_addr,
++							 page_size, MADV_HWPOISON));
++		else
++			ret = madvise(memory_failure_addr, page_size, MADV_HWPOISON);
++
++		if (return_code == 0)
++			TEST_ASSERT(ret == return_code, "Memory failure failed. Errno: %s",
++							strerror(errno));
++		else {
++			/* errno is memory_failure() return code. */
++			TEST_ASSERT_EQ(errno, return_code);
++		}
++		break;
++	}
++	default:
++		TEST_FAIL("Unhandled memory failure injection method %d.", method);
++	}
++
++	TEST_EXPECT_SIGBUS(READ_ONCE(*memory_failure_addr));
++	TEST_EXPECT_SIGBUS(*memory_failure_addr = 'A');
++
++	ret = munmap(mem, total_size);
++	TEST_ASSERT(!ret, "munmap() should succeed.");
++
++	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0,
++			total_size);
++	TEST_ASSERT(!ret, "Truncate the entire file (cleanup) should succeed.");
++
++	ret = prctl(PR_MCE_KILL, PR_MCE_KILL_SET, PR_MCE_KILL_DEFAULT, 0, 0);
++	TEST_ASSERT_EQ(ret, 0);
++
++	unmark_memory_failure(memory_failure_pfn, 0);
++}
++
++static void test_memory_failure(int fd, size_t total_size)
++{
++	do_test_memory_failure(fd, total_size, MF_INJECT_DEBUGFS, PR_MCE_KILL_EARLY, true, true, true, 0);
++	do_test_memory_failure(fd, total_size, MF_INJECT_DEBUGFS, PR_MCE_KILL_EARLY, true, false, false, 0);
++	do_test_memory_failure(fd, total_size, MF_INJECT_DEBUGFS, PR_MCE_KILL_EARLY, false, true, false, 0);
++	do_test_memory_failure(fd, total_size, MF_INJECT_DEBUGFS, PR_MCE_KILL_LATE, true, true, false, 0);
++	do_test_memory_failure(fd, total_size, MF_INJECT_DEBUGFS, PR_MCE_KILL_LATE, true, false, false, 0);
++	do_test_memory_failure(fd, total_size, MF_INJECT_DEBUGFS, PR_MCE_KILL_LATE, false, true, false, 0);
++	/*
++	 * If madvise() is used to inject errors, memory_failure() handling is invoked with the
++	 * MF_ACTION_REQUIRED flag set, aligned with memory failure handling for a consumed memory
++	 * error, where the machine check memory corruption kill policy is ignored. Hence, testing with
++	 * PR_MCE_KILL_DEFAULT covers all cases.
++	 */
++	do_test_memory_failure(fd, total_size, MF_INJECT_MADVISE, PR_MCE_KILL_DEFAULT, true, true, true, 0);
++	do_test_memory_failure(fd, total_size, MF_INJECT_MADVISE, PR_MCE_KILL_DEFAULT, true, false, false, 0);
++}
++
+ static void test_fault_private(int fd, size_t total_size)
+ {
+ 	test_fault_sigbus(fd, 0, total_size);
+@@ -370,6 +537,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+ 			gmem_test(mmap_supported, vm, flags);
+ 			gmem_test(fault_overflow, vm, flags);
+ 			gmem_test(numa_allocation, vm, flags);
++			gmem_test(memory_failure, vm, flags);
+ 		} else {
+ 			gmem_test(fault_private, vm, flags);
+ 		}
 
 -- 
 2.53.0.959.g497ff81fa9-goog
