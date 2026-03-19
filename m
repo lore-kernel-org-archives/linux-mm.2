@@ -4,84 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6331090233
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:24:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A173E1090233
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 14:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 685466B04DA; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
+	id E515E6B04DE; Thu, 19 Mar 2026 10:28:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659AE6B04DC; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
+	id E02856B04E0; Thu, 19 Mar 2026 10:28:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 524096B04DD; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
+	id CF18B6B04E1; Thu, 19 Mar 2026 10:28:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F1FD6B04DA
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:24:28 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C17398C003
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:27 +0000 (UTC)
-X-FDA: 84563032974.13.F3E1468
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 87255140002
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:24:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773930266;
+	by kanga.kvack.org (Postfix) with ESMTP id BB4AE6B04DE
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 10:28:03 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 61D431A0529
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:28:03 +0000 (UTC)
+X-FDA: 84563042046.02.2CC3DA0
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D677E1A0002
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 14:28:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="fG/AdbOy";
+	spf=pass (imf19.hostedemail.com: domain of andybnac@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andybnac@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773930481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cjgnu95mBiJWlOTGSTEE1TkykBAopsDjiebw1pJxzCg=;
-	b=zSeb+tPumqS/UOEPlqMO7MYMYCnAYRDlWVr2oINj/of8EmZk1CzncZAaSw+XUXJm61bygs
-	fvm+b9qS2QCFXc8LowwmlL8huORL7AZAHZDK5TEr5NDZiYot5KysnD2+hgBBm9+9Jth+4I
-	wr3AjHUahKMjyZQ/7Q3Wvfcuy67WfbY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773930266; a=rsa-sha256;
-	cv=none;
-	b=26c4tVGlaZEpSl56VqIWIrqu8GJck+mBohH3HLTGy1XI9GUbnpcTs1dRmv0O7GDSFBPTp0
-	h4EFeU/4bi4x4jXj+yPiURzlDk/ZzDxTq/jUKZzviAQdtc1ZBA1Nm48Cfk7ycckgQLrceH
-	s4Au5hZIDq8H07972O9SbUwFRP9I+rs=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 19 Mar 2026 23:24:23 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: rafael@kernel.org,
-	akpm@linux-foundation.org
-Cc: chrisl@kernel.org,
-	kasong@tencent.com,
-	pavel@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH v5 3/3] PM: hibernate: fix spurious GFP mask WARNING in uswsusp path
-Date: Thu, 19 Mar 2026 23:24:04 +0900
-Message-Id: <20260319142404.3683019-4-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260319142404.3683019-1-youngjun.park@lge.com>
-References: <20260319142404.3683019-1-youngjun.park@lge.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wEYdsi/UQnV1ulkUEVFM3uerucLpRLXH0M0xgNStZdI=;
+	b=cCYTrZkz8YDUHm5keaeCQqNrNYPoYXICc++1Ji9FaHwEG43X2sNIvzBr6P1kuYgkDR7ae/
+	Xb6xv8bz58lUcGO0BX3HX3n3K2R2G1TPe3+zEyWQfW5R+wdnnANz+0v3xJpQc0SwwFpRZ1
+	sR/asddJmV6WWLTKKJBvWqsissxJKdk=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="fG/AdbOy";
+	spf=pass (imf19.hostedemail.com: domain of andybnac@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andybnac@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773930481; a=rsa-sha256;
+	cv=pass;
+	b=J/NUa4QlHB6efuoK8ybJ5eobW9dr4b1fA5mf49FSGfPkPlgXXvf8euM44/Rwyayii83hPd
+	vP+x3j2tOJjI69OnltgQOtV8h9BtUsVBc97PkDd1o4U+M/g0SlWU+iyYfPxhl4/6yma2C0
+	O3X0wx03WpwpaE7rUTt26nirY6km8uk=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so155788166b.2
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 07:28:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773930479; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aONeyEBbkCvMauMCyD9DT9dN2djrxjvZFruuGRmh6PITcBrJqMIgDoUp+z4UOzuZ4c
+         Gh0fAxZ6QVfcqusu/0BH+FtQqPVGB6oI+kRQulZeQbQ03RAhdzT75vGbm8lxRIrDZ4wE
+         /u6p9pcJjupD7f+qwC8XbOVWBKokUUdJh/gFy617RokEq68d0cp9CxbdK9ZV5JHyeYsB
+         2sJUsFBQnqz7/FL5DrYFxLGcruQSvmVq0c1p4oJ+SAq+It+Et5IYo0c5xjMsN+dhY8sC
+         6rCbrWWGKErBLlfj2L3KsbMcsOUtKx3eONhDMMmn9KtkQPRrlRKoiG3sIfAUf4ClWkL/
+         afjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wEYdsi/UQnV1ulkUEVFM3uerucLpRLXH0M0xgNStZdI=;
+        fh=+Vz9l/66WqfNKuxyOmy0zvjg3meIZgyDLmF55ryD/zc=;
+        b=aorVf4SKsmTuAfvqe+P656bUHlwbLrfe800vI6S1R9huHRR6in+85iXddliDea2/qq
+         7jMT0JHrJwH5yksix45AY+jhgHUi+8dKb6R/JXgl3ldoGjUYmLklSIEX/n2pS2M+pRSA
+         TJ/hooLv2RpVSbACC+7pfjZMrOTjZIMmq7L/a/0tCmJxs0yws28b7bfgQeXKAvXmkpE8
+         GH5j6C1VD0Uj1x4MdBWiIKyLKCSf8qq+OGgBYrwfC03D0l+bQoyrpDa1QQa8zbh81euM
+         rScE2jzbvl1cU/tbH/YS22MqeyZs6TYbjBDvp5tDeA1Kdn3Qjg1+7VliXRbCmpb3bCUt
+         jVUA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773930479; x=1774535279; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wEYdsi/UQnV1ulkUEVFM3uerucLpRLXH0M0xgNStZdI=;
+        b=fG/AdbOyaSkr0y5lJx8e7Xuzk1lp2E4fdUiPEOpNEhWygUafIE5XyCyuz5d8fQBDFd
+         YPWbDFi218OmsqkeF1pfJMk9LVwWovt6cRwJjifoH3zGtd3N0NVodd1T9P05gSPbyrxJ
+         aiMwynXybbr6xhfE50n6H4hM2sN0VF/R2NoEX5bGJfRYtgtT2wsK8sW8hKwClDI0/n/X
+         ySECFBAalsv8QTXGhemeccbfXqlM2Lud7ZhY7K9qt4jxvbzRXCy5KSQzQnKRYDlUjzNj
+         ULExpNK+E4m6+6DCkIXyGF6TfN5zz/EJBQhAiaz3jbRnSBZ0/5S9A3lBYICyChiUa1Xa
+         OaBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773930479; x=1774535279;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wEYdsi/UQnV1ulkUEVFM3uerucLpRLXH0M0xgNStZdI=;
+        b=hiSHdhxTfRZcdkVTRykeUK5V+5TYkcHefS7wgvseBeBHNxqXJTbEep8KzTe2PL1PKJ
+         zdMk8Xnl/d5RvKI1v1ux65qf1U+SXdoX/0v/ttNstb3BTQjuK17n3dIYOJ6rLo7u5Vm/
+         Gb2aGHvZ8UuU+r8WYBq87FVZreUPfgfNMch/6gMTg9TETb/gX4vNxDMIRVW8P0y++tMz
+         1yNwnGmrdFp0RloAaMA9pAG7crldKHvUQDjv85Lp2cMA5sJBJRosoKAKdjAvru8a4Xv1
+         t2jB4xvCUo9JQZczgpmR28skQB/OdHPB566ZNQ8qmqt8h53A3rXxfsPkhAJXvMoz8c3+
+         U7Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUjF4wCBf+s5TfkjnzDMugS74Q3eKf3hrY8lIX4FI91lZhHDNMoipsX9LVRxbGIBi24+Pj0qDZnCQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzxwx9IF7GOpn2VZXrYTc99ojgZUIr5GLcUDoRwqOjGSP+mLtio
+	lB7udIytEByfE930jC/1Uqd3R71b1bwsz56fhBn97hf0Gu1YpJ+PVTamHJLUJylciJbR4Srjcrp
+	+ENDnlVqJfwHmm2C3LJntoH9G8fQ0AyQ=
+X-Gm-Gg: ATEYQzzMmsBgLivZ8JUDnt8+5S0xIdaxv4GyyTPgsZ/xBryNcwdaWuUqjkIcz5lTW9o
+	dyA0TI2ZCkVjyj8JJTTEFooP+0NgQoZfoX53cxzL9FUGkOyRcexDNMIKFKsWl05wXq22qJ74RKi
+	yPYbe2lM9RI71zO1QRu65Yi3rJO94PjOJwhyNMpGk7C4/tOHbs+DcG9oSmeELPkEHjCBNHOzk2k
+	wWyBqTkf5Zwjtf2q+NsCqeU9K9g/criRQP1lSn5LPIwwSrHYbW9MhNLTBx06DEFfoHUEPWCmvAE
+	7OGuaxLfzg==
+X-Received: by 2002:a17:906:ee83:b0:b96:db93:5d0e with SMTP id
+ a640c23a62f3a-b97f4ab7799mr545864466b.41.1773930478856; Thu, 19 Mar 2026
+ 07:27:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 87255140002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: upg3rezbx83bb43sddpe66xhospa7gt1
+References: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de> <20260302-at-vector-size-arch-v1-7-a11f03ba2ca8@linutronix.de>
+In-Reply-To: <20260302-at-vector-size-arch-v1-7-a11f03ba2ca8@linutronix.de>
+From: Andy Chiu <andybnac@gmail.com>
+Date: Thu, 19 Mar 2026 09:27:47 -0500
+X-Gm-Features: AaiRm52wQD6uRKulnt1Y_ioaRFL-b1bqEKDLHZMA0LYwV13CAWHAV79Bf5laR-o
+Message-ID: <CAFTtA3O74BTJz8d87CJFQpa8Sub_ouKyyAB8cTXUxd=BnUzS7Q@mail.gmail.com>
+Subject: Re: [PATCH 07/15] RISC-V: Remove AT_VECTOR_SIZE_ARCH from UAPI
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-alpha@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bgiizcfcitrn3bntsnogdm5ptmqwh7p4
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773930265-151798
-X-HE-Meta: U2FsdGVkX18FCYxy6d4M8+DSNGBhcTbuBPNqRgjtGucrFfVVOkPTQYvS7UJG9VcEwk9K2CfM/GL5IY0NZjcrZsg0DlJC8f9DolQCXinaKgBYL8BgcNLxVuiwyU6bCppyCtIfalWZVISoBVb2Bw4TcJ1/UKOcpf3JCg1ET5945MIOb0vFcp61UDWSWvwhe9uHVTwtadrZpDyxSRgwGuF7UxTFm4IJ//L8TzihlbozSt0UFMLKvisW1WiGElzvPJn/+9cRZ6Oaj2PnPi3T0K7epBv1a2AeyDl9ZKqu3b70vHPmXrR2qGJLuWqTo+N0agsTcMrT4OG3nTNimVRHf7Pjm9z/distiFw0GX6mZQ0Dvam4LNsJ64duzJRu5/cULtJbgAO0gRU0PWJWuyUjEypju2+DNcJD+r4O+hH34zW/djH4NkqfN+MaIQqQ8eESD+5q+6ow+DTXRyQpA4T0Jeg9XciLhnppugng39bKPIaY+tamlnr8caERCoSFkSFoO7+N7oEe9xuw+mvEDtucMVgDZsKLw9Sbmgdi1USZeXr3jrIE1Da5F4SAxo7lGuhhPYKw2bizKHHRjwLRk+H7DqdjtBEqJLEeZMlMi7tImgGjYeHlQWyt1Lkb9XPrq3+P38PhdJ82O/VZc9npKYa7tAMAj/DMikWAu57su756xxY0rv+r6FfNHbazjfDVIB4U0Sc5+4GhW7qq6b5ARwCqSp0Q3HHdCRiKyPPY1wdz/X13Q2T7IZ0J8uCbNS/KaBpvGKz7KCKgfvsXEZxXcn4ZjIeKjTM4h//XDfmNr9Frp/lTXBzgRiJa+vkt0XruNJOWonF9UI93AwVMYTwQtEHTp2gY+TqmVtLHoePym5qp7VFKeZQxEbokQyK9xJi4bzDYRfgzQlpUjvAIx/JaJz+K82g66YlazaXbhrWWV40k4gzoJLXHXyR8DSWh5APt8QC9k/hdxbiMRfsaVTXIFMKrbQK
- kgDgLm6F
- SOVhLrl5ySvBuX111YxWXLuZYXS/mAYOovN7q1Yg7x5rCujaQdjpdk34YNzjR3V+oyUGWIAC4sUJSXKdH0Itr2Ci3USHjTkhVJMgH397HLumC2OPPtqggqDhv6oeltqKPqyo/EIvjFiJkZg1hFqH3VLmT0+k6PbRgUs2y
+X-Rspamd-Queue-Id: D677E1A0002
+X-HE-Tag: 1773930480-579956
+X-HE-Meta: U2FsdGVkX19rw1ilnCiWvgTL0K3o/nr1w1k8dKhZe3ogNeoEeGSlAJ4Umw7aR06HjX8v/oE0Uov1p7YVehXVL1ZTTbCyi7KBu/DcxaU8Y0G+PFua1OvNSYGwaS77ELg6vACi+rnm3SjKjFAV5GD+1ANLTCjApxY4qAsH2uVyIACPN+B89o3Ul5hKc2kA5OyUPMc2lmEVsE65/Pasw7C5y3YblCGb2Cae5L+zBYbqYa9rAPiOrmjZSEkbrt6eHlkLxmuyNhAz4OfTqNKNJOhyNwJWT4GrBbaLfaB2Hn/XlsQEDJ9Znp5HlrtKa4n6dJIqYjLacP+Wg3JSau8vC0Kz2zwNXLEXG26+VD54FuI9qZOJeF9rA6t79uT4iNrMG3ve7aT5ncrj3c6Ow4R5MxFwPIMcTPhCiGCUXEr2fNbmNgHIF45M4jP0ZJhQ1zQ46XsRAZw/qX/Sm6KKmPjRR0/nDg9+4WJjbVRiyr73jM1/+oGmRYIGkneg/+va08sU6AN87G2v9LuDFfwBcYEOieBakUYoDxiVWf3AqbydN+z0mMZU3SDXlm31XeIEufUXVyS8iQx8XHEfx5GqwEcAxWyZ9f+KtIU1HrmhTVdgz6xp/kKatUO+D3KJRfvYcAjyejwJ2Z5NBVZvvX1pzMInrFnxrqpTXHSUlHCc2w9Xn1dnrMmrFno09gnRKVH+TqGIgjVD4YtdXKttwrRLiuvJHnM/QFYU3n1o4K8lSLFLLm11T6qwbw26Atk/oW1wed8BWWrHhRdNQMQTBZQBtUpuBiimT7JYHt+zaoJp2BXZdsEounQuoygOpc3iGtoObPgPoZO3U35EzY9lIWKyrNw/OoE3oMDqMPKOjqfFvM3CDYuihaHUHWnt6ehbwba93JxZuE2fxWErA+7ZWc73JCk8iC66nuAIfjyae+yju1KPjEfONrUIjECs1eaibTQF6O0dE7AOlCPGlLyq49EKABicEqE
+ Tj75IRX1
+ UFylbi+R8hDwOZl5CXVKzstvFZqPPCmupfnWH6hJk6mlDs/YTZXZ3H9ZwJpLAOpw2xkNu1OF71Y8TxEwPFBftIIIb0RBHhO8sB8vYRh7dXQNPckVZgD3u1N9cMMx0xeGJ7w0V6goQirLCMzVSRYKz49OtvuX15H2g8LrANk0UFIINzxYbKm3StDI4RXv0Orwj21SkLqRSMVGskNgWSseuV9wqFRE1bNWDmmdZbO5+Mrvz9u9lLQcoBa2ZC/Pr9DQ5DFw48WpWrpwB1KoPLAAteX/onupa2oyrywCkso9/gYoyt3kRr64wJdGyJ8M6CBJBO/3O2kXklCw2lGwxRf+g8/I42r5R5bD7HxN4huQnwZGznx7mE00GYJe/4Ukm9i+tBzA0JllfYetaLciNZhsPdNmDTHXWWeB+nq8DVB5IpQr/A//asLBLhKGYmYlS7lc30Q0Px7wQKkRmCndaBY5JlYgMwnJY4umyT80l2hzrM3vICA8AlPBHWM1URDsr11Vh9UK8qfXlHtbSpaTMzpRKv49xVh3N2KseqoLo5XWAYGSbMuO2lKG0PMTj/91hVl3BP9aO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,89 +143,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask()
-stacking") introduced refcount-based GFP mask management that warns
-when pm_restore_gfp_mask() is called with saved_gfp_count == 0:
+On Mon, Mar 2, 2026 at 6:27=E2=80=AFAM Thomas Wei=C3=9Fschuh
+<thomas.weissschuh@linutronix.de> wrote:
+>
+> There is nothing userspace can do with this value. In the kernel is
+> always combined with AT_VECTOR_SIZE_BASE, which is not exposed to
+> userspace and also changes from time to time.
+>
+> Move the symbol to a kernel-internal header.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 
-  WARNING: kernel/power/main.c:44 at pm_restore_gfp_mask+0xd7/0xf0
-  CPU: 0 UID: 0 PID: 373 Comm: s2disk
-  Call Trace:
-   snapshot_ioctl+0x964/0xbd0
-   __x64_sys_ioctl+0x724/0x1320
-  ...
+Reviewed-by: Andy Chiu <andybnac@gmail.com>
 
-The uswsusp path calls pm_restore_gfp_mask() defensively in
-SNAPSHOT_CREATE_IMAGE and SNAPSHOT_UNFREEZE where the GFP mask may
-or may not be restricted depending on context (first call vs retry,
-hibernate vs resume). Before the stacking patch this was a silent
-no-op; now it triggers a WARNING.
-
-Introduce pm_restore_gfp_mask_safe() that skips the call when
-saved_gfp_count is 0. This is preferred over tracking the restrict
-state in snapshot_ioctl, as incorrect tracking risks leaving the
-GFP mask permanently restricted.
-
-Fixes: 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask() stacking")
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- include/linux/suspend.h | 1 +
- kernel/power/main.c     | 7 +++++++
- kernel/power/user.c     | 4 ++--
- 3 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-index b02876f1ae38..7777931d88a5 100644
---- a/include/linux/suspend.h
-+++ b/include/linux/suspend.h
-@@ -454,6 +454,7 @@ extern void pm_report_hw_sleep_time(u64 t);
- extern void pm_report_max_hw_sleep(u64 t);
- void pm_restrict_gfp_mask(void);
- void pm_restore_gfp_mask(void);
-+void pm_restore_gfp_mask_safe(void);
- 
- #define pm_notifier(fn, pri) {				\
- 	static struct notifier_block fn##_nb =			\
-diff --git a/kernel/power/main.c b/kernel/power/main.c
-index 5f8c9e12eaec..e610a8c8b7ff 100644
---- a/kernel/power/main.c
-+++ b/kernel/power/main.c
-@@ -36,6 +36,13 @@
- static unsigned int saved_gfp_count;
- static gfp_t saved_gfp_mask;
- 
-+void pm_restore_gfp_mask_safe(void)
-+{
-+	if (!saved_gfp_count)
-+		return;
-+	pm_restore_gfp_mask();
-+}
-+
- void pm_restore_gfp_mask(void)
- {
- 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 3e41544b99d5..41cff6a89a1c 100644
---- a/kernel/power/user.c
-+++ b/kernel/power/user.c
-@@ -306,7 +306,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 	case SNAPSHOT_UNFREEZE:
- 		if (!data->frozen || data->ready)
- 			break;
--		pm_restore_gfp_mask();
-+		pm_restore_gfp_mask_safe();
- 		free_basic_memory_bitmaps();
- 		data->free_bitmaps = false;
- 		thaw_processes();
-@@ -318,7 +318,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 			error = -EPERM;
- 			break;
- 		}
--		pm_restore_gfp_mask();
-+		pm_restore_gfp_mask_safe();
- 		error = hibernation_snapshot(data->platform_support);
- 		if (!error) {
- 			error = put_user(in_suspend, (int __user *)arg);
--- 
-2.34.1
-
+> ---
+>  arch/riscv/include/asm/auxvec.h      | 13 +++++++++++++
+>  arch/riscv/include/uapi/asm/auxvec.h |  2 --
+>  2 files changed, 13 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/auxvec.h b/arch/riscv/include/asm/aux=
+vec.h
+> new file mode 100644
+> index 000000000000..fb4233445276
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/auxvec.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2012 ARM Ltd.
+> + * Copyright (C) 2015 Regents of the University of California
+> + */
+> +
+> +#ifndef _ASM_RISCV_AUXVEC_H
+> +#define _ASM_RISCV_AUXVEC_H
+> +
+> +/* entries in ARCH_DLINFO */
+> +#define AT_VECTOR_SIZE_ARCH    10
+> +
+> +#endif /* _UAPI_ASM_RISCV_AUXVEC_H */
+> diff --git a/arch/riscv/include/uapi/asm/auxvec.h b/arch/riscv/include/ua=
+pi/asm/auxvec.h
+> index 95050ebe9ad0..0a725f2aa2e7 100644
+> --- a/arch/riscv/include/uapi/asm/auxvec.h
+> +++ b/arch/riscv/include/uapi/asm/auxvec.h
+> @@ -33,8 +33,6 @@
+>  #define AT_L3_CACHESIZE                46
+>  #define AT_L3_CACHEGEOMETRY    47
+>
+> -/* entries in ARCH_DLINFO */
+> -#define AT_VECTOR_SIZE_ARCH    10
+>  #define AT_MINSIGSTKSZ         51
+>
+>  #endif /* _UAPI_ASM_RISCV_AUXVEC_H */
+>
+> --
+> 2.53.0
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
