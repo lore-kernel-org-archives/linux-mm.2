@@ -4,116 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2B81075274
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:20:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B0581075273
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Mar 2026 08:24:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A58386B0430; Thu, 19 Mar 2026 04:20:43 -0400 (EDT)
+	id 708506B0433; Thu, 19 Mar 2026 04:24:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2F776B0432; Thu, 19 Mar 2026 04:20:43 -0400 (EDT)
+	id 68BB56B0434; Thu, 19 Mar 2026 04:24:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 945F16B0433; Thu, 19 Mar 2026 04:20:43 -0400 (EDT)
+	id 552D66B0435; Thu, 19 Mar 2026 04:24:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 844436B0430
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:20:43 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1FC6B0433
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 04:24:20 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E4A313AB6A
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:20:43 +0000 (UTC)
-X-FDA: 84562116366.18.1C1800E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 77391C0006
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:20:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=siMioE97;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EAEEC8B74B
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:24:19 +0000 (UTC)
+X-FDA: 84562125438.18.FDA89D9
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D95464000C
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 08:24:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=TRSeCyDA;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773908441;
+	s=arc-20220608; t=1773908658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ezpg7w5q4XnNfDvDAitPA6Fnpfes/ZiPnx45JraZYPo=;
-	b=SerkXuPSe2Sqst2L9UFWSgPcmJbE0nJBKCnJtPNgNeuB5vCTL9v7icn8ob1mmyl8BTngnB
-	fz7ilwSaKZxvA81P7csnTziiloxyQh0cTM3PEIVAOU3SIVugOEo9fYfj39G7ygYAN9IgPi
-	yECThb0usJiWtYLAYBiLfHrpfQN0I0U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773908441; a=rsa-sha256;
+	bh=5V6YAkrWNnqXNX+5hq6I3lGeubcpIYjE1TNWAVeFtuk=;
+	b=g3M4RyYt/4WIXV/CCGZpeJcEHJBtU/GhyANEWTmFNS3X+K5eKQ77FW0d+gkVlPhYGLTqGK
+	X+vIvKJ0Y+24prDc4S926d61aVagdt4oIHCJi3HYGs1hiUU8t2PlZObYyvGi9dIXt1LKlX
+	N41TnQ7WWgZnTE68scZYi7SV4vfp3bk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773908658; a=rsa-sha256;
 	cv=none;
-	b=pWwvyzXqVFXU/fWySrZV2RUwjR+TJKBCfUANvOXcV6OZ+ln7hT2X4/LUdGNmprbk/snX7V
-	srReTjO4uslDqZzsNJWqdfiNWkS95OWVjfXLIi8lepd6MVF4BR3XvyNfp+l2czqDILWrcm
-	fsm6mhL/y/CxpqVuA4aX/ayGtN8v0U0=
+	b=m6qaY4PjiqHJpBs1WtyNt5/k5kz7ahC9G7IMZbEr48fA71rH4j0rEd3dNxMrkb/pCDGTLt
+	V5H7rq6i/nk47/xIDAALp2teaudx8eEVioKkVG319IjSHPrVIxZqQC8p8oNLGoSvq/krEp
+	PUdBCCrF+IAFIqVmJCIcQ8gnauc0vog=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=siMioE97;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D558E6011F;
-	Thu, 19 Mar 2026 08:20:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B22C19425;
-	Thu, 19 Mar 2026 08:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773908440;
-	bh=XZSmlU5qQZSk3ikAK6msWkB0C1hCUr2T8dbTi52alcU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=siMioE97YWmWg3dsdee3PkKgH+n8pqPcHCbnc6EAggNIaenWaU7afq+6ydhGwa1BV
-	 A1iG9LJmU8Lw5Tyz4SQpmVDsf+kP8nwdPtOu2fYoKB7hmSN+p6wqjYPSjuRjkpCvAu
-	 yuoo5OzG1ERSTgAj2PzV7QqiSHxS6taM56a0Cg+9bqTj6qeXnvjSmxGHAZ4tkb/Wtw
-	 X265+BTIO1cRd7v9TnTwUz5dk9/alFXI0lrS9w9uSVwU17/ghw21lOa64OHs+SuJQc
-	 0lM+E29w+qg+o9jxGyY/qD2fpzZewxKBhdYf2j2PJ3cWdle21nX3QEdot45buM5NqD
-	 +/zAc5cFalR8A==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 19 Mar 2026 09:19:41 +0100
-Subject: [PATCH 2/2] mm: introduce CONFIG_NUMA_MIGRATION and simplify
- CONFIG_MIGRATION
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=TRSeCyDA;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-483487335c2so4683295e9.2
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 01:24:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773908656; x=1774513456; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5V6YAkrWNnqXNX+5hq6I3lGeubcpIYjE1TNWAVeFtuk=;
+        b=TRSeCyDAMZh7BYyc9rOtFSdJVU0jNEErULh/1k1CyyGWXowW0b4mzObzDxzzMpWu4m
+         6LH+Uxrt5XzvzSM9hWzPATVlqD/u2UzGEbcNmn/GJ0uyGg7973cXip7MoG1sH47zerIq
+         U4I66FSSG0MHdP9Qlg8HThaWMReewcVO1JaZCGjEX98+vwDawhpuLoEzAI7UFz8WXoMF
+         UlvVhm6GIDKrfDEUM/tU7SqeqBX18eIlHXl4R8xYWJxvT7dYKOQHcBO2J4zRpoYRYXOc
+         A/VHHAM5Azjf4FUAy2McZMxR5jAZ/Ul3/lgXG+QGioDk8BitOvQyhCkb3E0hrCMD2gV2
+         iBXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773908656; x=1774513456;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5V6YAkrWNnqXNX+5hq6I3lGeubcpIYjE1TNWAVeFtuk=;
+        b=W4GY+9lsnfFJde2xSlJXn4YxMBJD4SRI6hbiCi1Lu4EqPjV/uddnk9XydWWl3dje21
+         NrhHfURsbb/CURPwH4H/wvBRziGyGRyixYyaDfo6VO3xZgKYygObTNzzl1a0ARNke/xx
+         6pVpHRvwI99H/JadGqq6hSzrX0E9l9kW8fPqU7gkkCN1QpandFJy2CpF7BzBrrscdCqV
+         qgvwVEfYDOjsu4i9aUl09ory2eRk8L4zBZRaSppaDNejBavYkfloDHm4Lh/VjkaWPq0s
+         UNWMfK3wDOi3OnF4XJIpQ5eufI20itkyuUtVaLdb1V6C7hHVQc5yJ4Hnbr2D7V+jpZ1Q
+         E9IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXeqGV5Dg642QXV2/v1/JdZbONRsSoO9OO4JgqhK2PbJUPekea7gZ4Zlt8LcX5mf1pGIWkWhw9zFQ==@kvack.org
+X-Gm-Message-State: AOJu0YwOfqM369pOosvafa8ToJ3RZrgfQYhYjBxxYlPQ3AywHBRmFEGP
+	2+2if5mJsm953c3/Mbc4AxOvZIwkvisxKXz1PZaEvFxYOcHypixVrSOBZ0gZ1+7cSmY=
+X-Gm-Gg: ATEYQzzYyPDwH9UCoBV1gZZWK3GkqOs1RBjlgtu26wVpQblQ6HVqc7HboaEi2RFFNRm
+	+eUFPxNMBYpM0RxQShr0fThOxLTUeE7yXbpTh8EPN8oU5QCfSmMdroUWpHNV7UJ28RzcMXwiyna
+	+W/QDvGWjO1Ci3w/8vxrHJKWlnuJ2q1xc9bilstsYY1/DDaGuk49MbfzA1eMplvW6Bobh7dWCKP
+	OWSPuIOzqr4Urq0au6LWUSDw2YyTtsuv7Icq0w5TwdGJGxuSKWUMWD4oPu+NfR0MuQHSRv6lIO6
+	upXviRyOg8PtTR0zjOIcbTOM58XF7iL1KRFgZ72Fhm57p7VTk5lsod8BRXBgmD3SUafjEW4pyVY
+	Qu+IxiWZMD6C+xdgEsjeOG5K6YoR6nlDmELWUODPd8TQIlg99WDafKyMPrIg1Py7WRGwbk1iDsq
+	Nn9Lg5ERl1TAmyabZ6Fd0nxeDqpeMg4Ba6pA==
+X-Received: by 2002:a05:600c:3f14:b0:486:f8d6:5dea with SMTP id 5b1f17b1804b1-486f8d65df5mr32233575e9.19.1773908656221;
+        Thu, 19 Mar 2026 01:24:16 -0700 (PDT)
+Received: from localhost (109-81-88-11.rct.o2.cz. [109.81.88.11])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8bd5f7csm52663255e9.0.2026.03.19.01.24.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 01:24:15 -0700 (PDT)
+Date: Thu, 19 Mar 2026 09:24:14 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, yc-core@yandex-team.ru
+Subject: Re: [PATCH] mm: add memory.compact_unevictable_allowed cgroup
+ attribute
+Message-ID: <abuyrvVfWJKV7CKC@tiehlicka>
+References: <20260317121736.f73a828de2a989d1a07efea1@linux-foundation.org>
+ <3db237d0-1ee8-44b7-a356-f3015173f7c2@yandex-team.ru>
+ <abphjNOYaNslTA90@tiehlicka>
+ <7ca9876c-f3fa-441c-9a21-ae0ee5523318@yandex-team.ru>
+ <abpue_k_9mjQAP6X@tiehlicka>
+ <73322279-c6f8-4319-827b-938c20c96b9b@yandex-team.ru>
+ <abp3-iJbazCpygIm@tiehlicka>
+ <b9ceff32-1f8f-454e-84ce-b8788b3a4952@yandex-team.ru>
+ <abqQtcNqxzxiZyf1@tiehlicka>
+ <fd7409a3-5f8c-492b-836d-559b001a61dd@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-config_migration-v1-2-42270124966f@kernel.org>
-References: <20260319-config_migration-v1-0-42270124966f@kernel.org>
-In-Reply-To: <20260319-config_migration-v1-0-42270124966f@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
- WANG Xuerui <kernel@xen0n.name>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, linux-mm@kvack.org, 
- linux-rt-devel@lists.linux.dev, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd7409a3-5f8c-492b-836d-559b001a61dd@yandex-team.ru>
+X-Stat-Signature: ntt9ho9t4b5kd8skzfo83mb7gysi4y1j
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 77391C0006
-X-Stat-Signature: 5fbhxpm7pqihwk6ap5hdub8mna13n8gq
-X-HE-Tag: 1773908441-38796
-X-HE-Meta: U2FsdGVkX19Iq+9E1rPlrHiXUc1rc24e4Fd/OMEvoO76XGXNTjh/SgXNEuRrhM5n6yZSLTAhCdJDU5pf/7oLYcgsZONe3m4lUhlc58ynUAj57ZUIDwg9l6b4W2KMaYXpDbwyBubCqckW0aXwHB7VHiSQiqMTlT/dpukb+LYUoax+wsIdzWIBSshg+/MfavYjWt2ymZ4Nl9j1Pmdf1L6XZOfw6wUg98T5FxgDrqV5ySJifC6UG8EZ3IADYFVI7hKRQyGDWEZPv8AZEgj1et4YHWf38vLoJVC5x1o0tVD9tRhbJ/GPHgt5Dxa7n/e4INyfe2RD4n8WMfs4pdUnqyQfdDevzLoIJJfblHaOu8A9M5kTP318QWjjHG1As2bQ20+c8cZQI0paw5AKG86/NZb2EYkZsVdYeVhCaI30jUs7X85ciNVPpqjBGSeVguXqVc/mRUz6gotVhz+xJSDPg1cOiTSLaMba4W/H2aX9KFgbMOeQ1uMebuROy3906wX+sonlIH5F/IQUkmiV1Vv0keSB1T5qVyAwdvZw+aGiLq2EloHTUVlokUTdFVFSu/pa2YiOjMYY1+1QQu8jObEXSqajdqSPbpDJSwXvJMw6ql1JFga8bh+JrrD+JH7jR7OZWfBEFNBWPiwg/5+sdvYgZS9X7zZn3QpwgdYPRGDDF6uJpawvSVOQyqah/l7L4b6SrkpMRc339txHkV7k+UaNcXdd5X7dq0XPoexzb2hx12pv793WcPSXW5isnoi3NYJjcdDM+OvTT4DDqMgtVJm0bGpQruf3FIrYlA/CscnCqhFA30bM/Px1q2XH71feT0hfr12szPs0EpUshgZKHJ8NsJ7bkfBLEe6m9H5Gcchka8LcdycKSQvqtQ8N/jXtmLDtCJwEaZ/sBjbe3b/mU/YNCzn5UPVIszTzSBQDeLSi/DBSzJQUGZmc3bB7wT+EovdLc+OLyh0dU8qTAu8odNowAnC
- 3be3Smcf
- g2SfvxtJBtd+ZdQus3dUA/4Lgw7deaYEj6tm6MRQ3MUZ44QBjABGyeLIPrO9W2q2+BknvznnAzyOeiMXhp4Nr2+CRJMwhhiJXJcv/Syz+fFP7hKWgoe7dq59gBNMY+3q6af2MBepBE+C/oc++91UXYkLfLEzfrdqBY/GSXBMEanQSK/jqDDIt9DqhDLmCrUsy7AnXTtYXk51WVqkvPOVs7fxerCo+HggEH3ICkzfNnj3al7kbvnKXWf94rblR7xV6BFPHQWOMZjaly17ziy0UxSSD2UFOedL/gOrU4ARFEjMnKuKgCHVyWooogQHIRxMo9dBd+Ol4GfpN0EuLqsDgHcsPiL5WIHbn/DoCTm5Pm5ScXLQ=
+X-Rspamd-Queue-Id: D95464000C
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773908657-991004
+X-HE-Meta: U2FsdGVkX1/MN/gPOXlg+njAlNMdL4uDiwmNR6IevmRxObJ2jV89shidtEaUl1aDsmw25Z5fNQPt1zucULgFrr/2y4Z8e6kqYSULhK96UswWJSemWl4GDq8ltMsZvnQVZGSJN8bVy1MLUtwUDJN1EJvAJ0DoMUY1AxP00MGBAy5O7XSjd8KGRGOMI+9fHVIF0dPbx/mC4+7UFuXMMDAVPG8a07ROxoyOiWEEexs6N604gW2EPE8L31/7zvjP9772CpsDHv/pAkxwi+q1++Nd+AYUNCbwV5dLIW/sPP4knN/l5fW9NVkNbaP9IWn9nPXmuqkJC6nz78lfZw7aJF/V7Ddx0V5o/DAFbl+V6v9y+fSFbN+TSTY3KPba+AO/DhkJGye5qEmQh72fohnUD/ToY6x7ZnyP0lcecMIhNOeG5GTwDTBCSTFBfUNw0nI2V8t6hGrc/PUZSoT1xELoqmjSMSjDgs39K4ZwvvBZqRwS52kEbTPmoRxri/D6R9cmD/mKljza8qg6X56qqP4LqonSH0j9CTp2jJuimGSjeg3nE7OcrAD3ftVovn5QznVOGMB/WodFxdYohT7xHKlsJcjHfKbDI8N1Y3MwnLtd5KRJ4ACiLVssQsV0kbHYbHhGj+73DLifzGtm12MfZBDYa7UCP1AfS6UmG+SfiRUJV+2xYVWRUjBP8Jdln4naS8ZEqJ8xBEJv4qpwZF2OqyXw2AuZf3nhV5Gj22WV5mx6o14uR61kP6pBWCKD6TNkSq2AG1fAPdv3uAtK6K8ywt/1Lqp5BevtjGjIPrZIPuwyJnWwMYD70m75WzUlSRMzzrubzF89M6vC7fO+Qs0pRD1d8XW0cRJtuewiBmO1yMo4bfpMt60SeA45KGFqxgIf9Tfw5PzCXlo79cLTyJuEKDIM0NzGMzZruJfmY40JSyrd1lnAas6lr7U1B3xGwAke44DZmqLKtAxWMC+1EaUTZgqZ84c
+ bEGPQsEu
+ CinxjJlnk/Jo5d3Eje7rrT1vYxnC7XMbc+Sc4ZOLfkJE+a2a/fTwRlHDwCNq7H8Ik3mq2tEAs+asdaW4XbpW+QuslL8ZIQKR5aMQt6kD1a3PbZpHy5OuS9BWW3lHtxHLRFyiz+yGzaHluLEfznhxV+k5HHHhKEitAnhRbRmd99A/fdgW1puVsKrVON3BIJH98jTw0Z+Hmx5SXs0Z/FNpyH3xQXeZLHEITn09K91UD7zj4HKguIJU/+yBSRDUWkoRJUIBKQJQCfMnnohpldYH/KZZm00vHDY39YnII7tJBsiIJXFSjvoUJQWov7CodNccZRq4qb7FcEj35oQc1k581I7u0SR/lm30dBCbpIuHtbdXaJ98yTAi9FI/jog6Iv2xTBRydmCupbLK2QRzkFqtWSuEMvH23XQx+lhgeEf9HRXND0ckQwwtVXT/dsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,228 +140,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CONFIG_MEMORY_HOTREMOVE, CONFIG_COMPACTION and CONFIG_CMA all select
-CONFIG_MIGRATION, because they require it to work (users).
+On Wed 18-03-26 17:03:53, Daniil Tatianin wrote:
+> 
+> On 3/18/26 2:47 PM, Michal Hocko wrote:
+> > On Wed 18-03-26 13:08:31, Daniil Tatianin wrote:
+> > > On 3/18/26 1:01 PM, Michal Hocko wrote:
+> > > > On Wed 18-03-26 12:25:17, Daniil Tatianin wrote:
+> > > > > On 3/18/26 12:20 PM, Michal Hocko wrote:
+> > > > [...]
+> > > > > > Shouldn't those use mlock?
+> > > > > Absolutely, mlock is required to mark a folio as unevictable. Note that
+> > > > > unevictable folios are still
+> > > > > perfectly eligible for compaction. This new property makes it so a cgroup
+> > > > > can say whether its
+> > > > > unevictable pages should be compacted (same as the global
+> > > > > compact_unevictable_allowed sysctl).
+> > > > If the mlock is already used then why do we need a per memcg control as
+> > > > well? Do we have different classes of mlocked pages some with acceptable
+> > > > compaction while others without?
+> > OK, I have misread the intention and this is exactly focused at mlock
+> > rather than general protection of all memcg charged memory. Now
+> > 
+> > > The way it works is mlock(2) only prevents pages from being evicted
+> > > from the page cache by setting unevictable | mlocked flags on the
+> > > page. Such pages, however, are still allowed for compaction by
+> > > default, unless /proc/sys/vm/compact_unevictable_allowed is set to 0.
+> > > That property essentially "promotes" ALL such (unevictable) pages to a
+> > > new synthetic tier by making compaction skip them. The per-cgroup
+> > > property works similarly, however, it allows the scope to be much
+> > > smaller: from a global setting that promotes literally ALL unevictable
+> > > (mlocked) pages to this tier, to only promoting pages belonging to the
+> > > cgroup that has memory.compact_unevictable_allowed as 0.
+> > This is clear but what is not really clear to me is whether this is
+> > worth having as mlock workloads are already quite specific, the amount
+> > of mlocked memory shouldn't really consume huge portion of the memory so
+> > you still need to have a solid usecase where such a micro management
+> > really is worth it. In other words why a global
+> > compact_unevictable_allowed is not sufficient.
+> 
+> In my opinion both mlocked memory and non-compactible memory have the right
+> to
+> co-exist on the same host without a global switch that turns one into the
+> other. I agree
+> that it's not a super common thing, but I still think it can be beneficial.
+> 
+> Some examples include but not limited to: security: so that sensitive data
+> is never swapped
+> to disk yet we have no problem if it gets compacted and the actual physical
+> page gets replaced,
+> performance for some apps: so that we can e.g. memlock a large binary in
+> memory to keep it in
+> page cache and improve startup time, but again don't care much if the actual
+> backing pages are
+> replaced via compaction.
+> 
+> On the other hand, some critically important/real time applications do need
+> protection from compaction
+> as well on top of the regular mlock, so that they have predictable latency
+> and response time, which can
+> really fluctuate during heavy compaction. Both of these cases can coexist on
+> the same physical machine.
 
-Only CONFIG_NUMA_BALANCING and CONFIG_BALLOON_MIGRATION depend on
-CONFIG_MIGRATION. CONFIG_BALLOON_MIGRATION is not an actual user, but
-an implementation of migration support, so the dependency is correct
-(CONFIG_BALLOON_MIGRATION does not make any sense without
-CONFIG_MIGRATION).
-
-However, kconfig-language.rst  clearly states "In general use select only
-for non-visible symbols". So far CONFIG_MIGRATION is user-visible ...
-and the dependencies rather confusing.
-
-The whole reason why CONFIG_MIGRATION is user-visible is because of
-CONFIG_NUMA: some users might want CONFIG_NUMA but not page migration
-support.
-
-Let's clean all that up by introducing a dedicated CONFIG_NUMA_MIGRATION
-config option for that purpose only. Make CONFIG_NUMA_BALANCING that so
-far depended on CONFIG_NUMA && CONFIG_MIGRATION to depend on
-CONFIG_MIGRATION instead. CONFIG_NUMA_MIGRATION will depend on
-CONFIG_NUMA && CONFIG_MMU.
-
-CONFIG_NUMA_MIGRATION is user-visible and will default to "y". We
-use that default so new configs will automatically enable it, just
-like it was the case with CONFIG_MIGRATION. The downside is that
-some configs that used to have CONFIG_MIGRATION=n might get it
-re-enabled by CONFIG_NUMA_MIGRATION=y, which shouldn't be a problem.
-
-CONFIG_MIGRATION is now a non-visible config option. Any code that
-select CONFIG_MIGRATION (as before) must depend directly or indirectly
-on CONFIG_MMU.
-
-CONFIG_NUMA_MIGRATION is responsible for any NUMA migration code, which is
-mempolicy migration code, memory-tiering code, and move_pages() code in
-migrate.c. CONFIG_NUMA_BALANCING uses its functionality.
-
-Note that this implies that with CONFIG_NUMA_MIGRATION=n, move_pages() will
-not be available even though CONFIG_MIGRATION=y, which is an expected
-change.
-
-In migrate.c, we can remove the CONFIG_NUMA check as both
-CONFIG_NUMA_MIGRATION and CONFIG_NUMA_BALANCING depend on it.
-
-With this change, CONFIG_MIGRATION is an internal config, all users of
-migration selects CONFIG_MIGRATION, and only CONFIG_BALLOON_MIGRATION
-depends on it.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/memory-tiers.h |  2 +-
- init/Kconfig                 |  2 +-
- mm/Kconfig                   | 26 +++++++++++++-------------
- mm/memory-tiers.c            | 12 ++++++------
- mm/mempolicy.c               |  2 +-
- mm/migrate.c                 |  5 ++---
- 6 files changed, 24 insertions(+), 25 deletions(-)
-
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 96987d9d95a8..7999c58629ee 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -52,7 +52,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
- struct memory_dev_type *mt_find_alloc_memory_type(int adist,
- 						  struct list_head *memory_types);
- void mt_put_memory_types(struct list_head *memory_types);
--#ifdef CONFIG_MIGRATION
-+#ifdef CONFIG_NUMA_MIGRATION
- int next_demotion_node(int node, const nodemask_t *allowed_mask);
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
- bool node_is_toptier(int node);
-diff --git a/init/Kconfig b/init/Kconfig
-index 444ce811ea67..3648e401b78b 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -997,7 +997,7 @@ config NUMA_BALANCING
- 	bool "Memory placement aware NUMA scheduler"
- 	depends on ARCH_SUPPORTS_NUMA_BALANCING
- 	depends on !ARCH_WANT_NUMA_VARIABLE_LOCALITY
--	depends on SMP && NUMA && MIGRATION && !PREEMPT_RT
-+	depends on SMP && NUMA_MIGRATION && !PREEMPT_RT
- 	help
- 	  This option adds support for automatic NUMA aware memory/task placement.
- 	  The mechanism is quite primitive and is based on migrating memory when
-diff --git a/mm/Kconfig b/mm/Kconfig
-index b2e21d873d3f..bd283958d675 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -627,20 +627,20 @@ config PAGE_REPORTING
- 	  those pages to another entity, such as a hypervisor, so that the
- 	  memory can be freed within the host for other uses.
- 
--#
--# support for page migration
--#
--config MIGRATION
--	bool "Page migration"
-+config NUMA_MIGRATION
-+	bool "NUMA page migration"
- 	default y
--	depends on (NUMA || MEMORY_HOTREMOVE || COMPACTION || CMA) && MMU
--	help
--	  Allows the migration of the physical location of pages of processes
--	  while the virtual addresses are not changed. This is useful in
--	  two situations. The first is on NUMA systems to put pages nearer
--	  to the processors accessing. The second is when allocating huge
--	  pages as migration can relocate pages to satisfy a huge page
--	  allocation instead of reclaiming.
-+	depends on NUMA && MMU
-+	select MIGRATION
-+	help
-+	  Support the migration of pages to other NUMA nodes, available to
-+	  user space through interfaces like migrate_pages(), move_pages(),
-+	  and mbind(). Selecting this option also enables support for page
-+	  demotion for memory tiering.
-+
-+config MIGRATION
-+	bool
-+	depends on MMU
- 
- config DEVICE_MIGRATION
- 	def_bool MIGRATION && ZONE_DEVICE
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 986f809376eb..54851d8a195b 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -69,7 +69,7 @@ bool folio_use_access_time(struct folio *folio)
- }
- #endif
- 
--#ifdef CONFIG_MIGRATION
-+#ifdef CONFIG_NUMA_MIGRATION
- static int top_tier_adistance;
- /*
-  * node_demotion[] examples:
-@@ -129,7 +129,7 @@ static int top_tier_adistance;
-  *
-  */
- static struct demotion_nodes *node_demotion __read_mostly;
--#endif /* CONFIG_MIGRATION */
-+#endif /* CONFIG_NUMA_MIGRATION */
- 
- static BLOCKING_NOTIFIER_HEAD(mt_adistance_algorithms);
- 
-@@ -273,7 +273,7 @@ static struct memory_tier *__node_get_memory_tier(int node)
- 				     lockdep_is_held(&memory_tier_lock));
- }
- 
--#ifdef CONFIG_MIGRATION
-+#ifdef CONFIG_NUMA_MIGRATION
- bool node_is_toptier(int node)
- {
- 	bool toptier;
-@@ -519,7 +519,7 @@ static void establish_demotion_targets(void)
- 
- #else
- static inline void establish_demotion_targets(void) {}
--#endif /* CONFIG_MIGRATION */
-+#endif /* CONFIG_NUMA_MIGRATION */
- 
- static inline void __init_node_memory_type(int node, struct memory_dev_type *memtype)
- {
-@@ -911,7 +911,7 @@ static int __init memory_tier_init(void)
- 	if (ret)
- 		panic("%s() failed to register memory tier subsystem\n", __func__);
- 
--#ifdef CONFIG_MIGRATION
-+#ifdef CONFIG_NUMA_MIGRATION
- 	node_demotion = kzalloc_objs(struct demotion_nodes, nr_node_ids);
- 	WARN_ON(!node_demotion);
- #endif
-@@ -938,7 +938,7 @@ subsys_initcall(memory_tier_init);
- 
- bool numa_demotion_enabled = false;
- 
--#ifdef CONFIG_MIGRATION
-+#ifdef CONFIG_NUMA_MIGRATION
- #ifdef CONFIG_SYSFS
- static ssize_t demotion_enabled_show(struct kobject *kobj,
- 				     struct kobj_attribute *attr, char *buf)
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index e5528c35bbb8..fd08771e2057 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1239,7 +1239,7 @@ static long do_get_mempolicy(int *policy, nodemask_t *nmask,
- 	return err;
- }
- 
--#ifdef CONFIG_MIGRATION
-+#ifdef CONFIG_NUMA_MIGRATION
- static bool migrate_folio_add(struct folio *folio, struct list_head *foliolist,
- 				unsigned long flags)
- {
-diff --git a/mm/migrate.c b/mm/migrate.c
-index fdbb20163f66..05cb408846f2 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2224,8 +2224,7 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
- 	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
- }
- 
--#ifdef CONFIG_NUMA
--
-+#ifdef CONFIG_NUMA_MIGRATION
- static int store_status(int __user *status, int start, int value, int nr)
- {
- 	while (nr-- > 0) {
-@@ -2624,6 +2623,7 @@ SYSCALL_DEFINE6(move_pages, pid_t, pid, unsigned long, nr_pages,
- {
- 	return kernel_move_pages(pid, nr_pages, pages, nodes, status, flags);
- }
-+#endif /* CONFIG_NUMA_MIGRATION */
- 
- #ifdef CONFIG_NUMA_BALANCING
- /*
-@@ -2766,4 +2766,3 @@ int migrate_misplaced_folio(struct folio *folio, int node)
- 	return nr_remaining ? -EAGAIN : 0;
- }
- #endif /* CONFIG_NUMA_BALANCING */
--#endif /* CONFIG_NUMA */
+This is a very weak justification for adding a user API.
+NAK to this.
 
 -- 
-2.43.0
-
+Michal Hocko
+SUSE Labs
 
