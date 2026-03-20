@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D56151099B32
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:12:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC051099B32
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4ACEE6B00F4; Fri, 20 Mar 2026 14:12:28 -0400 (EDT)
+	id 0B93D6B00A1; Fri, 20 Mar 2026 14:14:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45D9E6B00F5; Fri, 20 Mar 2026 14:12:28 -0400 (EDT)
+	id 091F16B00AE; Fri, 20 Mar 2026 14:14:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39A916B00F8; Fri, 20 Mar 2026 14:12:28 -0400 (EDT)
+	id F10186B00AF; Fri, 20 Mar 2026 14:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 29DA96B00F4
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:12:28 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEA671A02AF
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:12:27 +0000 (UTC)
-X-FDA: 84567236334.11.C29636D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 48CB9C000A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:12:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gGwTdQ66;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E202B6B00A1
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:14:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82DE6140278
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:58 +0000 (UTC)
+X-FDA: 84567242676.22.40C74FA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BF7EC4000E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ee5VGMoe;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774030346;
+	s=arc-20220608; t=1774030496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=UazR68XOuLecnGtfc2ve+iiIocfq1tzn2+f0XGQx8z0=;
-	b=5YvOyUBzrFhjEWvVITGadOVjP11ildSssJKacpPEyV9JQ2NvUpvKUJb/k2c70IsBDVWT7P
-	UscjH/VZMxN8arYX/kGDGOUWTaktft882oe8JHbrL+dtqmanBHbEvCfUq4dJSRil7W/QXY
-	RRhwC4jBwKwZ0ZaJgEVd2tnRHF90BmU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030346; a=rsa-sha256;
-	cv=none;
-	b=xpOYVfvWBilNB2KaHD/i2mOyG/q4eKA6Bgqr3icEjzwcSNPvKdcRKN8DRrchsczifFhAtV
-	c3s1hl6wsWlfJp/2inSNA3qopYSrUBhGzDTmRzsyi+rcR3bXeqK/L6xQCM3UmDlyfHbqHZ
-	r+LGuamExGqIRe1AT373da3kPtaOckQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JUxdoo4poRF4jK1QqjZctec0Mtz1WV0V+FrsQzJBpog=;
+	b=r0PiKGHDhnL1H/Hv5xXO8QWn1S233CQBigwUHdS5vw1sdCKBUoszFH2rN47GQ3L3vkciXs
+	8Znl2S9Lw/6IFPmotUwcjmy9hHB3D7A3udVZZEb2ZlOhxjWPS0YaPysIx8K+ejJml2G8oa
+	jrLpWew7H5Ggqlu8ys3H9PvXleszgSA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gGwTdQ66;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774030345; x=1805566345;
-  h=date:from:to:cc:subject:message-id;
-  bh=yVcj7mj+ZqayH04d1YOsOFjcXHIueBawLUDy4CtHBJc=;
-  b=gGwTdQ66S6RSKIjwD2OB3vkfJFOvG/R0bJsOxvWk/2zE8sbYas+tgsDM
-   ypws925jXseU0VKxiWF2d1HWSU0Ku/3r/u8cFb3oyGB2yRf9NXOtUzbY1
-   IRDXBzd+nVGt9IIR5bJatXws0Q95WYD+WK6cylDUzE5u/oQ48csrc5is6
-   nuS5cEGilZC5ctST/qPfqLlN+52Lt7Mp+J0m89pvbLLzlrz8HScFiEE9r
-   WuvOJVepKUnHPCBB+NFjJveNstSEQPn4ktepbbh3cBVZWIOr+4Je/hRgf
-   7LYLbZoh4B74j2QEm/zOWEahscRDpHlN2yR9lLIEoYHCce2TRBbwO/hDZ
-   A==;
-X-CSE-ConnectionGUID: 3xEduf4jRviQ4UG+3O2Edw==
-X-CSE-MsgGUID: aa2fax7rSc6/9Pz4e/rcJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="86196666"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="86196666"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 11:12:24 -0700
-X-CSE-ConnectionGUID: j1vkBHouTA+lwYCEoURdqA==
-X-CSE-MsgGUID: u2vTkQFxSwaA7AWh0Y5Trw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="228298019"
-Received: from lkp-server02.sh.intel.com (HELO ef9b23065726) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 20 Mar 2026 11:12:19 -0700
-Received: from kbuild by ef9b23065726 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w3eK6-0000000004b-0hUB;
-	Fri, 20 Mar 2026 18:11:55 +0000
-Date: Sat, 21 Mar 2026 02:11:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 7602/7971] clang: error: optimization
- flag '-fno-inline-functions-called-once' is not supported
-Message-ID: <202603210208.5TW7E8WX-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ee5VGMoe;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030497; a=rsa-sha256;
+	cv=none;
+	b=0tq5KQrFjflnJ0fAhzyCK4aKbppGvVt4mMoegGF3kzehsc4z+DlxZETFWujU8VxqnYWm6l
+	+v65BTLA7BLTewVYyQxgaXrzJL3/WCsAvA5k+I1fLgbx6VOYAICp/kMmSW4N4VcqdXfI1+
+	UjZLnvqOz+aGhyzgIcE10RNhB6CNW+o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ED5E43B13;
+	Fri, 20 Mar 2026 18:14:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E187C4CEF7;
+	Fri, 20 Mar 2026 18:14:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774030495;
+	bh=2ud9VVAGIb5J70qS+Aq6s18YBJv2+0N0qOqGnKGdgDk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ee5VGMoe+t1f0NUSaMeg/sco6qzmM6ZNRxu4N8IG5OP4PVX5FiPArqac31P1/7EtH
+	 HZz2E+aTuhNaRchPmfEjZI7clp9RAxbklKrbXDDIyK/rbb49IUqtKvB+7ldapRt/4R
+	 +W/NHE386gOb5/wnEgIOqkgtbWMU3EJTMvVNm/zxrtATibPBZBO+XHxddlu2BOCXlU
+	 DqFjzcraHrG7Y8sWJDkQ+LY5Av05wozxumH8l+VCcJ8KJ0DRUeXD+Aue8vFLiTxkhQ
+	 15LtpqCPguOUxuidWaulPkClTGQtHjnOgMqIfyL+cKu741hcJud1OHbtAE/dmWAg2E
+	 ZbyklwE5H2MFw==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/13] mm/huge_memory: refactor zap_huge_pmd()
+Date: Fri, 20 Mar 2026 18:14:50 +0000
+Message-ID: <cover.1774029655.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 48CB9C000A
-X-Stat-Signature: h8z9zjdq59r3j9u4r9acgs96kyyrppkp
-X-HE-Tag: 1774030345-108207
-X-HE-Meta: U2FsdGVkX19KzO8HeL/Y7HS2zPvnaiDD1E1ivbflhquWDvOL8h0U0Qbyg1B15aE0flW5Y5opB16F9wphTzk/Y8k1yzQUVA6OsIJ0RyNOJaUtzILOQ9mN7kx5nK9+NnvYLbSfveBMJdsIMxaeAfgMoWDgi4jXw5nSaLD3r6VsQOrNIobCRfLJZNc47CXpzmZMGZubjjnb2uLNZI2dKgSqcO/29BuvYW7fwtOy352FsK8HECUAoDLUvf3EPZkPlBkhru0Id7YFO/Aalmy/7rUNkxMld8nEpBhcjb6dyppM/xpbvCQY+DSL0YhT15QvPGp0fiCBukr1Vs1EH0MEixstq7mb9Hs5cFJVfhxW6OANMXbB5rcNaduOXwx9ATjy6btMF/MGYmpNa0NrOZ6k6HSMiP5U0lOhUECrlFD5rBMWD5hJ5hJVqUIVkH5v1a5mP3TAUW6DF73HGvIGeERRJD+4CXSmXwIaZxeToT2aKLqfg9MXBrPUYpaNqUtOPW490JbHy53Y5mLAACbIf/Hmc/jadW9DUi+AeLzkZyw7CqNw4sT6B5eiq3S45KoxO5wDagJzrVMV7rWcVkw4AcuUBc+Gx23kyXPwI59SfMnEHw7LarS0NzdO1yaYFc4XGmI5Bsg6/OF2dzBXk+/Apk7bTtLZzxjiQoQ9FNNnNM54p/mxSb0ZsS7x1Yho2D8+sI/uR2L3iAO1ivGV84z/3manGCLHAXhQPbvyPcZoz7fJv4DjcQFOSMSq2Op9PZf4X5Ls8Y8VlbqWFE6/hfRGiVBv7/jZs5jRE+FixKwfBMlDlo+vBjcvOg44/g1jZV8gfCJwhe/T9tnbR2FSF7ASfrGPfhka5SJRJNmlWzwNb+GECbqwXkYINj46mWbooy5fRFHF+Uges0QAILg9QSE1sGE61Oky82uByI76nGcKrm02E/BZeMScoYR6n23KnpjRX2jdB57yUkQV1SuZoJ57DdzDZ9V
- ICsE/zUD
- bwfMXcUE/eRKr5sA0VlMVsxP1gyT1vpAdN4KdyK8kkj+4CnNOM8xNaLvgqS+MCXXJvWDtxbms4Gg3+DPb7x8QOGg562df+DaBPrw7FsVHmsWMgs0P+V/RcZ0T97srbSLVIpsZuv+UzW7jCBhuHt1LuNXtKkGFamz47nPRp/x+SyRoEGzcll02mvbjjkT/f2suwKCcCfA7axMnuYB6HmX27pjBIrgyEmL6jW8fPPmBk0rIj3IsyavP/9jSlDdG6VaYTmkjq6JUMRxTPW+mFMfjEl9ZOA==
+X-Rspamd-Queue-Id: BF7EC4000E
+X-Rspamd-Server: rspam08
+X-Stat-Signature: djs8z356yziukfu4skq34w869kmutrpn
+X-HE-Tag: 1774030496-50684
+X-HE-Meta: U2FsdGVkX1/mOkZyfeMCaxlIxngQ7Yad0pO/ybrXAwX5ULqqjFn8mgQ6xcUAL4m8Bc3mkaSWuVzc/9iMycwmKF0XbL9D/qSGivtBp2YDT2pBgrmHq5fZxYFyrZaqeFafQD4/l9pbTbjdHRR3ECFbTTfwFsKd2HUcjaZVzQ9d7JFCPETeBMtT+axUGTz0n/oQbpDbx4RwFYyfHuDiENbqIhf00CoUwZJpqyBfhbeXdk6ff9x5HAUgfTq/iCH4P+/8cHG89U1rjMnhtr33nWW7eFV8bU19yudH3JZbKd8CQjXNvJB4fCKeANm9BJXGFP2lF37/EyhcSmeU101jPOORKjlTclnLlJeMDJtAFzN8D4lKcMSLM9oyBNqBohmyY7PoQuqv/SQ3AruX7ZOi0e1IGlAq3h/1wT2gQs0T1zSoGzuloii8ki4sTMOtIVCMhxDbGa7m9E5PR6u870luTQQG1+Pm8AYvnmpVotwo2r2vxwe2UYeYJtpzfEUG2Vl7q1Tvk7t5v5yCbMSLxvvSc8i+znQK+bn0iC6sM7x6YX/rC6rEPnsX8wKTg8DK8VKrueLKT5pD8WrfYrJ9hkisNljHJJOViW/5UXnFP1aPKZQ1bnspHV8lS9F5PVn3GmGIUvGvEDwWmKaDXllmQVFGG6CYXmxS1ygcdgDI0lzrp8peguB32ZlwY1gAik6O4mp09HQ9BxZ3v4YV+YK/pxDnZXRjeJPY++PL36TxxURRIVAQepG37JSzINLDO1hLQnLX1nKIGWv8aJpwtMsdOixev+SsayHHAP8Lj4KlQlR7Nh91NiVbkPCsYsxfilmRJyedFJys6DMhuQOYTOydeHlsu2gL0J8Rl+bcMJPuuaa6Du/lS3YM5MLBvKOrkGFi31ojcGOElKTVEtbSP1+dmZjBAnE+AKX9yiJo6EEMp8Aw5BF2BLRFtQBU9TPApf9oo2usDSth6ntOySZ44Q36dkeJcg0
+ dS+dRzvp
+ tQTNSFrz/4A5fIcVOuVM1uMjASjCJMNX0lUOGvNxpz4ty3iUrxchitsan/LdupWFhvzVoklbnQNb1xlLiLlLVT8BNVEBeQ7fuOMquq2tZ5QEMQhWIwqvMJjqx240QbDwU5mnLOY0XlRzUSheQULWUdDK8DoGBNHpve/mPc/ItZt3t0+FGcO67yaRVlMUPHxqpp2GUWo909FlwjvsWN2Jz3ASaw4ojJpMlkVOKBskLrIOvvZzR44FB9cC2MN7CdCnp6mRPDaFLc/nYuFJGI5qFuqiZzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,24 +102,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
-commit: ed597c460186e314ddf85c37634f260eec4a3879 [7602/7971] kallsyms: add KUnit tests for lineinfo feature
-config: sparc64-randconfig-r072-20260320 (https://download.01.org/0day-ci/archive/20260321/202603210208.5TW7E8WX-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 4abb927bacf37f18f6359a41639a6d1b3bffffb5)
-smatch: v0.5.0-9004-gb810ac53
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260321/202603210208.5TW7E8WX-lkp@intel.com/reproduce)
+The zap_huge_pmd() function is overly complicated, clean it up and also add
+an assert in the case that we encounter a buggy PMD entry that doesn't
+match expectations.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603210208.5TW7E8WX-lkp@intel.com/
+This is motivated by a bug discovered [0] where the PMD entry was none of:
 
-All errors (new ones prefixed by >>):
+* A non-DAX, PFN or mixed map.
+* The huge zero folio
+* A present PMD entry
+* A softleaf entry
 
->> clang: error: optimization flag '-fno-inline-functions-called-once' is not supported [-Werror,-Wignored-optimization-argument]
+In zap_huge_pmd(), but due to the bug we manged to reach this code.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+It is useful to explicitly call this out rather than have an arbitrary NULL
+pointer dereference happen, which also improves understanding of what's
+going on.
+
+The series goes further to make use of vm_normal_folio_pmd() rather than
+implementing custom logic for retrieving the folio, and extends softleaf
+functionality to provide and use an equivalent softleaf function.
+
+[0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
+
+
+v3:
+* Propagated tags, thanks everybody!
+* Fixed const vma parameter in vma_is_special_huge() in 1/13 as per
+  Sashiko.
+* Renamed needs_deposit -> has_deposit as per Kiryl, better describing the
+  situation as we're zapping deposited tables, not depositing them.
+* Initialised has_deposit to arch_needs_pgtable_deposit(), and updated huge
+  zero page case to account for that as per Kiryl.
+* Dropped separated logic approach as per Baolin.
+* Added 'No functional change intended.' caveats.
+* Removed seemingly superfluous, inconsistent pot-folio_remove_rmap_pmd()
+  mapcount sanity checks.
+* De-duplicated tlb->mm's.
+* Separated folio-specific logic into another function.
+* Added softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio() functions.
+* Add and use normal_or_softleaf_folio_pmd() to make use of
+  vm_normal_folio_pmd() and pmd_to_softleaf_folio() for obtaining the
+  folio.
+* Add and use has_deposited_pgtable() to figure out deposits.
+* Added a bunch of explanatory comments as per Baolin.
+
+v2:
+* Added tags thanks everybody!
+* Fixed issue with returning false on bug case potentially looping forever as
+  per Baolin.
+* Fixed further issue in bug path in 5/8 with double pte unlock.
+* Add patch to use vm_normal_folio_pmd() as per David.
+https://lore.kernel.org/all/cover.1773924928.git.ljs@kernel.org/
+v1:
+https://lore.kernel.org/all/cover.1773865827.git.ljs@kernel.org/
+
+Lorenzo Stoakes (Oracle) (13):
+  mm/huge_memory: simplify vma_is_specal_huge()
+  mm/huge: avoid big else branch in zap_huge_pmd()
+  mm/huge_memory: have zap_huge_pmd return a boolean, add kdoc
+  mm/huge_memory: handle buggy PMD entry in zap_huge_pmd()
+  mm/huge_memory: add a common exit path to zap_huge_pmd()
+  mm/huge_memory: remove unnecessary VM_BUG_ON_PAGE()
+  mm/huge_memory: deduplicate zap deposited table call
+  mm/huge_memory: remove unnecessary sanity checks
+  mm/huge_memory: use mm instead of tlb->mm
+  mm/huge_memory: separate out the folio part of zap_huge_pmd()
+  mm: add softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio()
+  mm/huge_memory: add and use normal_or_softleaf_folio_pmd()
+  mm/huge_memory: add and use has_deposited_pgtable()
+
+ include/linux/huge_mm.h |   8 +-
+ include/linux/leafops.h |  39 +++++++++-
+ include/linux/mm.h      |  16 ----
+ mm/huge_memory.c        | 168 +++++++++++++++++++++++++---------------
+ 4 files changed, 143 insertions(+), 88 deletions(-)
+
+--
+2.53.0
 
