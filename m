@@ -4,88 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB981093168
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:59:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 093CE109316E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:03:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E225D6B0429; Thu, 19 Mar 2026 22:59:54 -0400 (EDT)
+	id 43C8E6B0429; Thu, 19 Mar 2026 23:03:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3816B042D; Thu, 19 Mar 2026 22:59:54 -0400 (EDT)
+	id 3EDDD6B042D; Thu, 19 Mar 2026 23:03:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEA986B042E; Thu, 19 Mar 2026 22:59:54 -0400 (EDT)
+	id 32A716B042E; Thu, 19 Mar 2026 23:03:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BBA5A6B0429
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:59:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BFCB13BAC0
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:59:54 +0000 (UTC)
-X-FDA: 84564936708.09.6C49A0F
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 83601100002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:59:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=qOq85rmZ;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E016B0429
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:03:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC203140823
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:03:30 +0000 (UTC)
+X-FDA: 84564945780.25.5599AB9
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 17EB640005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:03:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=BRd9A7fj;
+	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773975592;
+	s=arc-20220608; t=1773975808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhUcYGT74pFt2SXoDhdjrHorGD5n36pkyqXtT2iygtA=;
-	b=Z3NkfCClWfXqIN2hkPSXpHYnsLszsHFrTJFoOMLA9XTqPIz9oYaaQNPpA3qNctHTA5CHzP
-	BCvfHiUGaisusMcICxIiEheGr0CpTEFmIsz5hLUu1NU2opkuyCE+6eUTiQiHrFJGdCpyoI
-	K18PpkufDhFfWqw+9J9U/gCLh8qgii0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=qOq85rmZ;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773975592; a=rsa-sha256;
+	bh=EObcbvrVo41/3tmJNsRZYj7EDtAcf9QhF9iFM53hREo=;
+	b=UsM4zeOP4Bp+5L1YKM4gTW8rVTb9Op2+2od3SY23cOjM60tjuzkB78fQJjpbeI1PAlV6Wc
+	pqsVCVXlX6otHH+K1HrEiQgyHMxZe8P1vE2V6wE+eG3bVJ9IcMFiUNABlR1lrxj0T5A8T5
+	2Y1uTeCTxq0co22ZTY7x00075+f4vfQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773975808; a=rsa-sha256;
 	cv=none;
-	b=NqKwOuJ+LrLR6jpL6viiJzFxZzHMbmrJdZvmJU2hLVp3ZBt5AVhwBZN4nUyPt7zcQ14vfF
-	MxmWGec66EuvhBntwhYkeLUyZCQ/xI24Xiwaj0ZtQ4gOywTgV1yLCpz8D2IROjLyatJwXn
-	G6SOt39QT2si1ZqDLMUXMAGTuNRJFpY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773975587; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=lhUcYGT74pFt2SXoDhdjrHorGD5n36pkyqXtT2iygtA=;
-	b=qOq85rmZwOIVTdVqr6Yak8xSkbjs9YevMrBHIjXyBujf7Ro+f35lSUQ+PPKxWkXtlYqtQyQZ1GBiflFDzM5rt/Vn/vmq7dKYCC+fkM+f7oOIFbtBEQN8SjoTNMWz9k+hxRM9oPHMZ8n7gNoi03VeLFKnWqaw+oyxpUJqH0RkpGI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.KDEFk_1773975585;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.KDEFk_1773975585 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 20 Mar 2026 10:59:46 +0800
-Message-ID: <c01087cc-0e81-4284-850a-992c0abd5d32@linux.alibaba.com>
-Date: Fri, 20 Mar 2026 10:59:45 +0800
+	b=Ulrd87iB52CKr6sMPvLc6Yqdze5gkUFvQgsAjM11KpxBhIdmhY21LcfhkLjQmG+Abwv45M
+	kyeg86bLm+jI95EtyGdmxrJu6JYONVkuRPLsN9OZaCebqAg19h3L1Sjcy20BOkFpUVlwBs
+	KjTsnUeoAK4hoHeT3msjcppMSaGawlU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=BRd9A7fj;
+	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=EObcbvrVo41/3tmJNsRZYj7EDtAcf9QhF9iFM53hREo=;
+	b=BRd9A7fjmerLz1nXPfyPhSLZmL12DVBDcLzbyF0AvaKuz639kXcbhX99vzA5zYCgcioh2kLEy
+	c58DWJLD3HupNKDPgE1WCazmaIckJhnAIEUdUemycGBZUUujw1PQIwEQVd8H0NEzhYSkag5BCgG
+	VWKJKVYi3kbxLyrQFYrtKa8=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fcS1R5X9vz1prL9;
+	Fri, 20 Mar 2026 10:58:19 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9F05A4056C;
+	Fri, 20 Mar 2026 11:03:22 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 20 Mar 2026 11:03:20 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 20 Mar 2026 11:03:19 +0800
+Subject: Re: [PATCH] mm/hugetlb: fix memory offline failure due to hwpoisoned
+ file hugetlb
+To: Jinjiang Tu <tujinjiang@huawei.com>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <osalvador@suse.de>,
+	<david@kernel.org>, <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>
+References: <20260318020711.3596947-1-tujinjiang@huawei.com>
+ <0374ef8e-0da1-ad3c-c669-4946f5268881@huawei.com>
+ <693316db-3279-48c4-ad33-b02f95a4ba9e@huawei.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <209474bd-b6de-ffc2-bb48-f1e4ce000c6f@huawei.com>
+Date: Fri, 20 Mar 2026 11:03:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] mm: change to return bool for
- ptep_test_and_clear_young()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
-References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
- <3fa94c3c89fd93fe22c8cb59967f064787d686aa.1773890510.git.baolin.wang@linux.alibaba.com>
- <1e664c93-603a-4c16-94f4-595a90744980@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <1e664c93-603a-4c16-94f4-595a90744980@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 83601100002
-X-Stat-Signature: p5nx6fuqjyzb1zj3gg9hkcj9k9siyr6n
+In-Reply-To: <693316db-3279-48c4-ad33-b02f95a4ba9e@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773975591-902862
-X-HE-Meta: U2FsdGVkX18qvOCIZRE8s8YQze18eDPH/+HRxT0NHBy//ieFPlwjFS9ullc37MdLQxTmoHPhYa3qOAH6GpPQYKwweaP8brvwfhXLUrJj80Abgi/uPksLdjMTE7XnRMr2E6WBN0tdYC09PBWMYZXJlUzU9xwkH7BVea3WSBcSCyLs/UuCxhwgfNO8ipwt5qOCALlz+grS42KunQoJU3HFFJs7IphUzQ91Uz5sbB4cSCWeWFkKExLIxXKKiXs3uvrj8oNjhboQbNYYH5CKXmrmwtkLap6ksOd3n2zHMTZ9t9paqqJJApDgbQZBFfolVTbGbk0qlMGL1OrTEjDF3dp4M3cpfzmHmg/mBWea9GgKbz/NZbHXDlwozYrN3ye5pCIyZxZdeTjdngxSRFBINup2k9qCggvl8BSGpVVUJ028WhqWBHKh8GCWe6PCGnVrVezWuTAXUusYEpP8MSSsni9Ndta87jalPg5P0Td+xBSQbBScUaXv+XxDKXTgO+UdGV8Esuj8qVFdOuZgxeDJt32w+AMJXLGqnmDbX2JdUKBBjhU6Q5E6BRzWUKa+Q1LTJRIBmW+5dKa8OrrU4nb4Vfo/b7teJJr8alz2/e7Mr89rrFGiLdpp4Q0CzOsFfhvDVLevTkkETwU2A1K+9MW4yiuj+4s6vuK7Pwf5isUf6lj4L7ZvGDiv1dE9CiY0ZHXgBpdJH4WylZJQv24+HDvm0O75lNU9lZpFI/9hz499rAbKWdRuUVj8tefYNMfRDzRSGI5pb3pCsFKGQ9RRgwIVd5SAFO8bHjCkQoRICNhVwDCwlwsSXBZPJK2XAmdZD/p9wD4U0xNQe7CL8VYC8s5ygiYVg/lcaqO58NP+kd0HNe26aLXcMQOwPBt8OnQHhTvWptcYyxzwiE4i9g9SNn1l8CznnI3CIB9DmDz2N7IXW71lX8Ub1xq78GnbvMB1d5X67V23nKlBnHG1U8Bo5lhXgDc
- 5Xs0nU1R
- M55a/2T6JJtO3Vdip21vBa5JxkbhGzPgybYC6seTaiaY28GEOI32yHsKqSanKPWKHyExRTgOV/lJ0uVHFZtoSirR1aj4JBlcHFxNFrEwnM1Gx39e+Q3B65Tymp/UR6vTJ5c8lrwlxadBJSaDu3mFXFcQrwSzqVmWAnI1EEj2eMg+uhTg1+XvIoivXXKVfPzqUcaduNDiYzNL7wulRmlqwNW4mA2CCNFQSs8NpjpZ//zZUjJhGpxJv/X9t8VoPUdeFTXzLO72ALkM+yEMi57knEO0H+9oD1uTodl+zb45oTGXvNLB0nbfvgTowJ/OAiyJaeF3MRcathCd+3dxKa882zTyquNhnl+oC0ydwzpU4D1rq7/ezoqnmN/wOEroBvrz8HV/EagMt/i8hxrDONrQQQkTqdw==
+X-Stat-Signature: 5z5rsf1d37ry41e1s6n5o6o8e8hwnwid
+X-Rspamd-Queue-Id: 17EB640005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773975806-49458
+X-HE-Meta: U2FsdGVkX1+7GQExngKKcl4qTO/APrJf9d8yY5Yea8vz/EsmB1qFT3autwWAxxBICusJFtHVzkfwJvu5moy4kJvQSNdZ9TZb5ZAtv+uTbY7YtORyzaEMziQAlgvwplISRroZcdc6PLmRub/6fSQMRTZpGbxYc15Qvd/VnbnRoPbgws+Pwjf1f1nWEjXhnh2fP8n+xF+TqddGz2RsFXqV6ksjiBS8R/Omm9j81s1scPEEl/yLhI7X+f/rQHOM+Qxue8VLQ+WlmYpE55kLrxUvf3R9j/d4YTfPuMlFA6JfJjdZGRyNUWhGN07d4xomE2Q/SfZGomEWpU6Do8PH1Rr/CWowJqY1DQv5hF3cQPZQYBL6D8KPqIVlglatJXewJVn1N9hwlC+HvnRwraR81e77A6Nk1f82fRpVfJMtvFt6AQB2TU4RlG1X+kK0kkoUcyoDpUPYV+YkAiCfKCH2vZ9KQtBgQ1IGog7bK4+k5Kcc/TTZCwtq40kSjd6PlCzS3dTAX6m53E0ZLMTm/ilpqr0zIZ2o9A1F7f1CR2jLjAvKZSBbTPeynjaIdGfwubDurOkQEmDQT5gaDYgurNkvTuroMhuEeH60dLjhZRvSbYpibac1B55VyFwTSqQQY0UF0quo9pF4bBECkWMrRwOCk88HZkTC7ab+5AzBBlNC6OHHaVNX8ZjAe3keSlcOjnuk4CCJ4gVCd9QptQNnQ6kP6aDhETlcE16blKVqQN2dH6m6lFOVSvhhvCInwdFamVGWpngK6ZlTu2EENUI4Vgs33WgZhHTl/jIFZ7KBoky/fzZDDT7oenQ5h1mlSu0mbiWNviSJOMrTz38cSsCO6xcD1zPoTlqukn9/TdddkPwbq7Tidq25B3J9/r8SK4IUOczMCVukqnlbAC/lE5VP5P5hiR9Nv1DVHUyuOlu8J9x4LjFwu9geh8fWV2KQViKsvgRZRZMQLB++obOuMw1aSnN5kHD
+ LUCdRqTj
+ UIv4+CC7ctk+07l9+FcHXQry2IBuby1bdriDKq7i0Zj62WB8Qlij3DoOAgBjPTrmVJl9lV7ZkPQfmJDAjY2ieW4v7+BIDIIwhYgjYeNduI7924PjXMjofLiKMS1tDawJT5OH1GkWLWC5iPSEwl2HbnyWiipsf9ykWg/ocKSd7yjfxw9zwv8I00vU50RJ7bSMaQXR1adMWUXvM77FrNyR6Oj0NB2vToedNlesZQQLlSONwJbBIv3mNyyuX8qtdbx+OnXO+xjPUEuCr0yjRJmGhKfmXY36H5GywhMry0OaCLWhXfX6Yd2D1PJoDsdgUHDAlXdojb2aHlXJ+4oPhzzwu3Mew+ibP9OPv8H2golXbTCFDL6PbdSh1cIFrFwD2o3xSLm7NFe34MQpIU6iQIGGueyseHr1wlkh1+WFBSLCV5+htu38Z7zY5CvL/Gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,259 +107,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/19/26 7:28 PM, Lorenzo Stoakes (Oracle) wrote:
-> On Thu, Mar 19, 2026 at 11:24:00AM +0800, Baolin Wang wrote:
->> Callers use ptep_test_and_clear_young() to clear the young flag and check
->> whether it was set. Change the return type to bool to make the intention
->> clearer.
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+On 2026/3/20 10:43, Jinjiang Tu wrote:
 > 
-> Couple nits about dropping externs below but otherwise LGTM, so:
+> 在 2026/3/20 10:34, Miaohe Lin 写道:
+>> On 2026/3/18 10:07, Jinjiang Tu wrote:
+>>> When a file hugetlb folio triggers UCE, me_huge_page() will keep the
+>>> hugetlb folio in pagcahe with refcount increased and PG_hwpoison set. Even
+>>> after the hugetlb file is deleted, the hugetlb folio is still leaked.
+>>>
+>>> If we want to offline the memory block that the hwpoisoned hugetlb folio
+>>> belongs to, it fails in dissolve_free_hugetlb_folios() due to the
+>>> hwpoisoned hugetlb folio isn't free.
+>>>
+>>> I can reproduce this issue with the following steps in qemu:
+>>>   1) echo offline >/sys/devices/system/memory/auto_online_blocks
+>>>   2) in qemu monitor:
+>>>         object_add memory-backend-ram,id=mem10,size=1G
+>>>         device_add pc-dimm,id=dimm1,memdev=mem10,node=2
+>>>   3) echo online_movable > /sys/devices/system/node/node2/memory136/state
+>>>   4) echo 5 > /sys/devices/system/node/node2/hugepages/hugepages-2048kB/nr_hugepages
+>>>   5) run ./hugetlb_file. This process will receive SIGBUS.
+>>>   6) remove the hugetlbfs file.
+>>>   7) echo offline > /sys/devices/system/node/node2/memory136/state
+>>>
+>>> hugetlb_file.c:
+>>>    fd = open("/dev/hugepages/my_hugepage_file", O_CREAT | O_RDWR, 0755);
+>>>    fallocate(fd, 0, 0, HUGEPAGE_SIZE * 2);
+>>>    addr = mmap(NULL, HUGEPAGE_SIZE * 2, PROT_READ | PROT_WRITE,
+>>>         MAP_SHARED | MAP_HUGETLB, fd, 0);
+>>>    memset(addr, 0xaa, HUGEPAGE_SIZE * 2);
+>>>    madvise(addr, HUGEPAGE_SIZE, MADV_HWPOISON);
+>>>
+>>> To fix it, when deleting hugetlb folio from pagecache, mark the hugetlb
+>>> folio temporary, and put the refcount increased by memory-failure. After
+>>> the hugetlb folio is deleted from pagecache, the refcount is decreased to
+>>> zero and the hugetlb folio is dissolved.
+>> Thanks for your patch.
+>>
+>>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>>> ---
+>>>   fs/hugetlbfs/inode.c | 5 +++++
+>>>   1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+>>> index 3f70c47981de..6bebe2e67f3e 100644
+>>> --- a/fs/hugetlbfs/inode.c
+>>> +++ b/fs/hugetlbfs/inode.c
+>>> @@ -603,6 +603,11 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+>>>                               index, truncate_op))
+>>>                   freed++;
+>>>   +            if (unlikely(folio_test_hwpoison(folio))) {
+>>> +                folio_set_hugetlb_temporary(folio);
+>> I think it is not needed to mark the hugetlb folio as temporary because
+>> offline_pages() will call dissolve_free_hugetlb_folios().
 > 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-Thanks for reviewing.
-
->> ---
->>   arch/arm64/include/asm/pgtable.h             |  8 ++++----
->>   arch/arm64/mm/contpte.c                      |  4 ++--
->>   arch/microblaze/include/asm/pgtable.h        |  2 +-
->>   arch/parisc/include/asm/pgtable.h            |  6 +++---
->>   arch/powerpc/include/asm/book3s/32/pgtable.h |  4 ++--
->>   arch/powerpc/include/asm/book3s/64/pgtable.h |  6 +++---
->>   arch/powerpc/include/asm/nohash/pgtable.h    |  4 ++--
->>   arch/riscv/include/asm/pgtable.h             |  4 ++--
->>   arch/riscv/mm/pgtable.c                      |  8 ++++----
->>   arch/s390/include/asm/pgtable.h              |  4 ++--
->>   arch/x86/include/asm/pgtable.h               |  4 ++--
->>   arch/x86/mm/pgtable.c                        |  6 +++---
->>   arch/xtensa/include/asm/pgtable.h            |  6 +++---
->>   include/linux/pgtable.h                      | 16 ++++++++--------
->>   14 files changed, 41 insertions(+), 41 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index ab451d20e4c5..8c651695204c 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -1282,7 +1282,7 @@ static inline void __pte_clear(struct mm_struct *mm,
->>   	__set_pte(ptep, __pte(0));
->>   }
->>
->> -static inline int __ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
->>   					      unsigned long address,
->>   					      pte_t *ptep)
->>   {
->> @@ -1646,7 +1646,7 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
->>   extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>   				unsigned long addr, pte_t *ptep,
->>   				unsigned int nr, int full);
->> -int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->> +bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>   				unsigned long addr, pte_t *ptep, unsigned int nr);
->>   int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
->>   				unsigned long addr, pte_t *ptep, unsigned int nr);
->> @@ -1813,7 +1813,7 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
->>   }
->>
->>   #define test_and_clear_young_ptes test_and_clear_young_ptes
->> -static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
->> +static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
->>   					    unsigned long addr, pte_t *ptep,
->>   					    unsigned int nr)
->>   {
->> @@ -1824,7 +1824,7 @@ static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
->>   }
->>
->>   #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
->> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->>   				unsigned long addr, pte_t *ptep)
->>   {
->>   	return test_and_clear_young_ptes(vma, addr, ptep, 1);
->> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->> index 1519d090d5ea..0b88278927a4 100644
->> --- a/arch/arm64/mm/contpte.c
->> +++ b/arch/arm64/mm/contpte.c
->> @@ -508,7 +508,7 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
->>   }
->>   EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
->>
->> -int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->> +bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>   					unsigned long addr, pte_t *ptep,
->>   					unsigned int nr)
->>   {
->> @@ -525,7 +525,7 @@ int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
->>   	 */
->>
->>   	unsigned long end = addr + nr * PAGE_SIZE;
->> -	int young = 0;
->> +	bool young = false;
->>
->>   	ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
->>   	for (; addr != end; ptep++, addr += PAGE_SIZE)
->> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
->> index ea72291de553..7678c040a2fd 100644
->> --- a/arch/microblaze/include/asm/pgtable.h
->> +++ b/arch/microblaze/include/asm/pgtable.h
->> @@ -318,7 +318,7 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
->>
->>   #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
->>   struct vm_area_struct;
->> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->>   		unsigned long address, pte_t *ptep)
->>   {
->>   	return (pte_update(ptep, _PAGE_ACCESSED, 0) & _PAGE_ACCESSED) != 0;
->> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
->> index f6fb99cb94d9..d5e39f2eb415 100644
->> --- a/arch/parisc/include/asm/pgtable.h
->> +++ b/arch/parisc/include/asm/pgtable.h
->> @@ -438,16 +438,16 @@ static inline pte_t ptep_get(pte_t *ptep)
->>   }
->>   #define ptep_get ptep_get
->>
->> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
->> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
->>   {
->>   	pte_t pte;
->>
->>   	pte = ptep_get(ptep);
->>   	if (!pte_young(pte)) {
->> -		return 0;
->> +		return false;
->>   	}
->>   	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
->> -	return 1;
->> +	return true;
->>   }
->>
->>   int ptep_clear_flush_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
->> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
->> index 001e28f9eabc..2a889e2093e8 100644
->> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
->> @@ -295,8 +295,8 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
->>    * for our hash-based implementation, we fix that up here.
->>    */
->>   #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
->> -static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
->> -					      unsigned long addr, pte_t *ptep)
->> +static inline bool __ptep_test_and_clear_young(struct mm_struct *mm,
->> +					       unsigned long addr, pte_t *ptep)
->>   {
->>   	unsigned long old;
->>   	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
->> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> index 1a91762b455d..25e3a86943e2 100644
->> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> @@ -349,13 +349,13 @@ static inline unsigned long pte_update(struct mm_struct *mm, unsigned long addr,
->>    * For radix: H_PAGE_HASHPTE should be zero. Hence we can use the same
->>    * function for both hash and radix.
->>    */
->> -static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
->> -					      unsigned long addr, pte_t *ptep)
->> +static inline bool __ptep_test_and_clear_young(struct mm_struct *mm,
->> +					       unsigned long addr, pte_t *ptep)
->>   {
->>   	unsigned long old;
->>
->>   	if ((pte_raw(*ptep) & cpu_to_be64(_PAGE_ACCESSED | H_PAGE_HASHPTE)) == 0)
->> -		return 0;
->> +		return false;
->>   	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
->>   	return (old & _PAGE_ACCESSED) != 0;
->>   }
->> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
->> index e6da5eaccff6..43cf52f0c7d6 100644
->> --- a/arch/powerpc/include/asm/nohash/pgtable.h
->> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
->> @@ -101,8 +101,8 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
->>   }
->>   #endif
->>
->> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
->> -					    unsigned long addr, pte_t *ptep)
->> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +					     unsigned long addr, pte_t *ptep)
->>   {
->>   	unsigned long old;
->>
->> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
->> index ab4ce1cc9d9c..fb010dcdf343 100644
->> --- a/arch/riscv/include/asm/pgtable.h
->> +++ b/arch/riscv/include/asm/pgtable.h
->> @@ -659,8 +659,8 @@ static inline void pte_clear(struct mm_struct *mm,
->>   extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->>   				 pte_t *ptep, pte_t entry, int dirty);
->>   #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG	/* defined in mm/pgtable.c */
->> -extern int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long address,
->> -				     pte_t *ptep);
->> +extern bool ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long address,
->> +				      pte_t *ptep);
+> Indeed. I was intended to avoid this hugetlb allocated again, but
+> dequeue_hugetlb_folio_node_exact() will check PG_hwpoison.
 > 
-> Let's drop the extern.
-
-Yes, I followed the original code style, but dropping the extern looks 
-reasonable to me. Will do.
-
->>   #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
->>   static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
->> diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
->> index b1ed2f14dc3a..de24a19e8ebd 100644
->> --- a/arch/riscv/mm/pgtable.c
->> +++ b/arch/riscv/mm/pgtable.c
->> @@ -29,12 +29,12 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
->>   	return true;
->>   }
 >>
->> -int ptep_test_and_clear_young(struct vm_area_struct *vma,
->> -			      unsigned long address,
->> -			      pte_t *ptep)
->> +bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +			       unsigned long address,
->> +			       pte_t *ptep)
->>   {
->>   	if (!pte_young(ptep_get(ptep)))
->> -		return 0;
->> +		return false;
->>   	return test_and_clear_bit(_PAGE_ACCESSED_OFFSET, &pte_val(*ptep));
->>   }
->>   EXPORT_SYMBOL_GPL(ptep_test_and_clear_young);
->> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
->> index 1c3c3be93be9..da1a7a31fa22 100644
->> --- a/arch/s390/include/asm/pgtable.h
->> +++ b/arch/s390/include/asm/pgtable.h
->> @@ -1164,8 +1164,8 @@ pte_t ptep_xchg_direct(struct mm_struct *, unsigned long, pte_t *, pte_t);
->>   pte_t ptep_xchg_lazy(struct mm_struct *, unsigned long, pte_t *, pte_t);
->>
->>   #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
->> -static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
->> -					    unsigned long addr, pte_t *ptep)
->> +static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +					     unsigned long addr, pte_t *ptep)
->>   {
->>   	pte_t pte = *ptep;
->>
->> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
->> index 54289f4587a4..563a6289ea44 100644
->> --- a/arch/x86/include/asm/pgtable.h
->> +++ b/arch/x86/include/asm/pgtable.h
->> @@ -1232,8 +1232,8 @@ extern int ptep_set_access_flags(struct vm_area_struct *vma,
->>   				 pte_t entry, int dirty);
->>
->>   #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
->> -extern int ptep_test_and_clear_young(struct vm_area_struct *vma,
->> -				     unsigned long addr, pte_t *ptep);
->> +extern bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->> +				      unsigned long addr, pte_t *ptep);
+>>> +                folio_put(folio);
+>> __get_huge_page_for_hwpoison() will always set hwpoison for hugetlb folio
+>> even without page refcnt increased. So this folio_put() might be unexpected.
+>> Please see [1] for detail.
 > 
-> Let's drop the extern.
+> When memory-failure races with migration, __get_huge_page_for_hwpoison()
+> will set hwpoison without page refcnt increased. In common case, ref is
+> increased before setting hwpoison.
 
-Ack.
+Right. And in those rare cases, VM_BUG_ON_PAGE(page_ref_count(page) == 0, page) will be triggered
+in folio_put().
+
+Thanks.
+.
 
