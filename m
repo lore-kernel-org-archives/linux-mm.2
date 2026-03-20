@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF0421099B4C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 490921099B4C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:40:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54CF16B011B; Fri, 20 Mar 2026 18:40:18 -0400 (EDT)
+	id ACC176B011F; Fri, 20 Mar 2026 18:40:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FEB36B011F; Fri, 20 Mar 2026 18:40:18 -0400 (EDT)
+	id AA3F46B0123; Fri, 20 Mar 2026 18:40:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413BB6B0121; Fri, 20 Mar 2026 18:40:18 -0400 (EDT)
+	id 9E0AE6B0124; Fri, 20 Mar 2026 18:40:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 33A566B011B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B78BAB8F86
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:17 +0000 (UTC)
-X-FDA: 84567911274.09.7A57961
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 065A3C0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dA9XZnpB;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 912E06B011F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:20 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 56514140408
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:20 +0000 (UTC)
+X-FDA: 84567911400.07.C9F21E9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C2197180003
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFVvmSaq;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774046416;
+	s=arc-20220608; t=1774046418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oX/9l7GBuPvJMchf5XKThVYHe+i8ZfivN6ck87129sE=;
-	b=TLFcU3e3ZpNpxL/6j5BjLw1kgynTvzefUwzvFMq+5LfWQZ0nm8j9f4gLetKSKOhMlzXWUQ
-	Hgl3DdyrTem2/uTiEI2tVPh5inEY+2a6LLALq6S16x+kUb/eekzwrtzyUtYiPvYCJsQWJf
-	VXFHOboylk62eNb6btHKrsM4NCWTp2s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774046416; a=rsa-sha256;
-	cv=none;
-	b=awxQQcB5k8vCxjhdgX3onVhizvkT+LZlSgH/Z3csgTF/J0e2BFwj8gkjEhA2iYQk87rZM5
-	o3GSIEHVybyKfOiw9xg67NI6ibA17bFcChK5i6ns5yK3QMziPw6fa0iW/Tbtgr2/8eCa/n
-	I1R0VPBTtrUpVh8AUL1yQ69jeh8OTng=
+	bh=vjmAJmRriGIkjTJEXlps/glrnONwGx7qrrGBi55DrfU=;
+	b=A/oeYvZTp05bUxsgSoOR0ZOgyeGETo5l62xzHJ/f6zwRvoMWrj7dU9F36x46daxItSNsOG
+	DkItHsNRMlJ1RjGNjV5rDOGfilQG44h+i4UWHlB6nStq1huv78w5sUooacOLz2vVP8qXie
+	JORu2elpLES7ARsFk9XZdKNMYs1C3Hk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dA9XZnpB;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFVvmSaq;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774046418; a=rsa-sha256;
+	cv=none;
+	b=gSKqj61GpHCQgFDBfjZ/+mcYm7kxUCUWzY7qRmzyHZLbkMxpUlO9qwjq8GsDcM5r9oiOCC
+	WqvnlyICuqsrrO9uKFEHv05W9rBobyJBmYtikuhc4BwM5KJtP7DdFGF6VgpXTomaZwt11V
+	33N4WghTaIzdmmTFlyzFrneYHy7hypo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A6934454F;
-	Fri, 20 Mar 2026 22:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40016C2BC87;
-	Fri, 20 Mar 2026 22:40:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B97F60154;
+	Fri, 20 Mar 2026 22:40:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A85C2BC9E;
+	Fri, 20 Mar 2026 22:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774046414;
-	bh=KGyUqER+1KMemEPNwb05yxF1iWQpDSjowRQtc3QKLCs=;
+	s=k20201202; t=1774046417;
+	bh=L0GQ2G+rRvGPAFrt5sDMa8oj/FKKHLhal+DfkgK7NEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dA9XZnpBcEJcM42a6vjSFyPET/ma7T86PWJqOQGw7Jyg+kRd+83nlRoqc0O7v96SK
-	 YvRsSOeFduElA2i9LlLPBrveszNKsV/wEHNPDsjTRuTRE3cLy3G5NskTN8/H53cVFn
-	 3Ywq6aUqH5SvMgIF0ep7yj4Snw0UswftBXcYfPQrdKctrim6TYzDgn/Qtd4p5XDqAn
-	 ksYAYdoClblLQQ4HNNMt+rmiwkQjH309dGenzWTjBN0noIg1HDWbSeRrCCp0QY7i1+
-	 Q3/R3MYNQe23Nn9QayxJ05lxx2gjnsKg3UDM1l+cacq1VVEFTuAkz0zBxU0O822v1t
-	 h+KOY6lq/0WEQ==
+	b=bFVvmSaqDqJLoDlg+6noI1Wxcf1pqHJkBZjp3o48gNpg4DH44rSaBGPbLYz/qYZkM
+	 Nd8QwUFV1MaXSsj8jMMIjACmWtdO9Y/w9/2x+JJoanOvv9XyP9qFBdKZZkxb1A4iHC
+	 tkLQhKpN3alMVayVyEb9I/udX19c+sGN7XDtcaIOMLn6nekaglVJYw11nFmLwGrBc4
+	 hsCpEv1VvOJUhXrUrciA2il+pJ/sMHTGafOaYgDrjovh6SCT8n/MXsfdX3tgBGQOS2
+	 ldB6CM957Gunm1xRN2e3elhZJR5PM4eGqJVCx4WeRxsCBdQ44ZurTnPnt2jh0taBlN
+	 sszGTQBOqqiOA==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -108,22 +108,22 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH v4 03/21] mm: document vm_operations_struct->open the same as close()
-Date: Fri, 20 Mar 2026 22:39:29 +0000
-Message-ID: <7d0ca833c12014320f0fa00f816f95e6e10076f2.1774045440.git.ljs@kernel.org>
+Subject: [PATCH v4 04/21] mm: avoid deadlock when holding rmap on mmap_prepare error
+Date: Fri, 20 Mar 2026 22:39:30 +0000
+Message-ID: <d44248be9da68258b07c2c59d4e73485ee0ca943.1774045440.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1774045440.git.ljs@kernel.org>
 References: <cover.1774045440.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: t8tmiznhiwnj4ufj3e71pkjnk1dgkc1x
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Stat-Signature: 1p4by98otgb8bsmkfd18n4z4er959cqf
-X-Rspamd-Queue-Id: 065A3C0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774046415-396988
-X-HE-Meta: U2FsdGVkX1/qA2r9hAtFOBtWLtjC1kdODrnVBOyDiCIPeP43wkV6waFNBdm23yjfLC23MediUi3m0KWQ042/D6Qp+8f2Kf09SbMJjeyMV4OeTvrtuIX2PM7EIpR2G5nmS8tQr34qX1/eaFnbUNy1hmMJXAlnrXq+Gzjy+alAqU3N9sNM0S6J4ZEO0TfcJ3Q0kaT716um54kAK8OVZz4WH9Ohow7Fg2PVPBEQbIuqikkeDgQ0XPiqYTTuI9uAuAbChT+bzdKyL6T6+5+a8lF8gDLF9jj2L9guZXzvqLSI1C9MSKY/MLySuk4NePJA/Aug8FLk1ByPPyjBENdHikBej9Ftw6OoCWtsIP4ARs6VyWexx3FoffXmXoN7/HgcxlkeG68ziYktku5Es0zN6cTVFe7hUtLVbiyAEgznMErfYLVbaQJN/RzXtPa2FxdOueD7dKgJmateliWRVh4tEwhBtpPDIzBrIMxmbpnACM1MrCpswV7aKnZpCmTNeezpf8JrKHDV9V42xALGNFLh3Y4qL5SAT26qDXftdlQqGwX2cD8qcoEODtM74jB+L2Vmnc6O4tw5nb3WlIMhUQpNfVcocWbQV6RWNZhKUlnv7NLfg+xMNlTJ0JmeZq/Mai2ool6iHQSGtkCLG7dr0QH9VXot2AHr8Ul2qvRKGE3Jd74oNYlz3s9Yaj0bZc8OA0ClnM8FbyoeGYQM3tZroowuUKAAlAV4h7rP5zYbg3yZjySNvZpQBjods2Bb+HWmRcT4O4itF0ucGhrnUMzL1fFj9B5gwgW3BhQdCzFz7OgEytiKHf01VfIH9Q7bYbF8DoOlXw2cL/FpFl+RCQvFdNiJ/jJttqQK8qs9ZDr0VaVdZx1S5zaVvo1Cs1u+wWwrYrTkOyW/7tI+Pk81UlqfaWH2k4VfIfwSoH5W2Kvxvcz+gHH7ozEoY8JAwkLJaBUxsQifngjNUgnJFtaOUCQ4nJQdwwp
- LUoNuHq/
- KpSD782Lnwni8idTrzAyrUDliS4himO5g4u08nNsm7mmTj/1nodZuwbh1K1+7BwCsyhjJvLRDxEn8nUl9Co/w+SFBUQQUmljUeP6OgaLGLl0EHpNen3MIi2AuGDAYM+NKCZHeFv22Yj5/k02kGwgwi6mDfSuF+MTLuqXPCH2/i61DZ/LubQb/Tv2ky/9JEq1cZLNx3BOdXV6b9iTGEQjOhuNxnljsHF8dvNnIb8XyKLNvU2Xs6tGM5JIUt2Sf+hx/XZxzYXs2sC6+TF4seIdag6nfPu7OhqnufWvfFjXTQnrD7CSED28ze3N7u5AsWoWCRR2hAt5QNonBUcV1ueg7E5vPoocsqhRXIHQJ
+X-Rspamd-Queue-Id: C2197180003
+X-HE-Tag: 1774046418-932671
+X-HE-Meta: U2FsdGVkX18oHXGhS3fKoUhjbmYfL8fC7t5vO8J8V4AE/ZZAzJWliU3WdDLapVr5UjHwoUMulh/nNOj2Slg+2gbFSt6pp8QiHssDr/a0a+dGTJnXDq/OZvPbg2M3ihZKYOlnSuRbst+viqeNwIBnknOXKeAOJjhtIVrCCO/c+UuGNxgRx0K6ACdyOW+Br+UZAHP+lMdDJd42Uf+1TkW95Vs9F6Q6JaFAOtmlcYEXZIHZQqzS0oJ5fLjuKsiyff3ti5M/ihsXaMt3O7r1Ux2BnlSytOvyGyPMunI+7+N3lARNhBxerjHAHli/u9g/6aLOn2NYtL2xAfgvoELjO2HwdyPAzM5vcyU3WZI81KwHxvb7EFQv9/sIe9WnUaH1wP8EmG1WqgsfG7sHHPgH0xlLBlWyPqSyUHntxfac44wzrmoF8D5nr9LQvOrztgfAzFyLDFBkE7EJ8W2ftEKx1y5ykcTlD4wK4Uvjn4Jmpse43+mqs3mTv0utGqSWdRJDrJvypA0tONoycEOPSSM7+u7+Kc7KVF7odLq1szVsibUQftZL4nCaUnatXUO6Gtf3BzUZfTJQuV//VSpyWnh6bfCNfFJOpJPQibgKdz5L2pK+DsxeLwlLj6EHxbNwrFnBt1/WMF3+HmM6CoNYPoroq6O9tDwuH6BWEg56/QEnPCMIdeHc9Pbv38/xjN6OwrcK12ZD4PeJ3XV9T39sZbrrdNUyRDJF3EranHEUQ8xdOkVExtY+yMfw1Zar7b5BPM/YzcjbOzjpmJoj92lGUgs0QK1HQo+iVvS93TXMS5HFZImfb323TlrkkCG4c2FcxDAjn+LcyPeRVs3A7zhK0ojz1ePG27yUKrwrjzWbaQ5Hz4azNJBrzB8Qa3Uy7Pk1tHBGQ6Dlge8CVNIilImvY6KdcVaI3rYXDYX/LLAH1AM9xCR2rgjwsRepmF/uW898CnIk4xWk5JpojU3JzyTAo+wNaD6
+ EavgOUnn
+ HLGl2CMRSqQComeLuvFH1ztFAEEOZt+jrKVmKXup23WPuZKHJoJZ0e7fj5oQ/+fet9PERR1arSZvBUrmEC+8rObGqMM90o9szTB2YeGRdsUbpt52YyZim5DFb/KbsmAbMLCuYoQF8hjEg+0tlXTcwDwsMxfL7vtio9oRwU7PCfT8nGKNoM+gJ6w5i5m1SQWXjK/+0nc1p6bs8g3naOUon3TPwwyFXqlddQE1gbvfx2wtfKI858xfaXoJzfMJfcI2jXufhIuHPA4M2d3yGYZksbjlX0fjxbzoXWUL2aDVHY1xWFfsFUrmQneWSXsA5dYK14gFvtuTPBHRDjyfb7YXfVT+oWHYGT4G9v8SU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,95 +131,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Describe when the operation is invoked and the context in which it is
-invoked, matching the description already added for vm_op->close().
+Commit ac0a3fc9c07d ("mm: add ability to take further action in
+vm_area_desc") added the ability for drivers to instruct mm to take actions
+after the .mmap_prepare callback is complete.
 
-While we're here, update all outdated references to an 'area' field for
-VMAs to the more consistent 'vma'.
+To make life simpler and safer, this is done before the VMA/mmap write lock
+is dropped but when the VMA is completely established.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+So on error, we simply munmap() the VMA.
+
+As part of this implementation, unfortunately a horrible hack had to be
+implemented to support some questionable behaviour hugetlb relies upon -
+that is that the file rmap lock is held until the operation is complete.
+
+The implementation, for convenience, did this in mmap_action_finish() so
+both the VMA and mmap_prepare compatibility layer paths would have this
+correctly handled.
+
+However, it turns out there is a mistake here - the rmap lock cannot be
+held on munmap, as free_pgtables() -> unlink_file_vma_batch_add() ->
+unlink_file_vma_batch_process() takes the file rmap lock.
+
+We therefore currently have a deadlock issue that might arise.
+
+Resolve this by leaving it to callers to handle the unmap.
+
+The compatibility layer does not support this rmap behaviour, so we simply
+have it unmap on error after calling mmap_action_complete().
+
+In the VMA implementation, we only perform the unmap after the rmap lock is
+dropped.
+
+This resolves the issue by ensuring the rmap lock is always dropped when
+the unmap occurs.
+
+Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- include/linux/mm.h              | 15 ++++++++++-----
- tools/testing/vma/include/dup.h | 15 ++++++++++-----
- 2 files changed, 20 insertions(+), 10 deletions(-)
+ mm/util.c | 12 +++++++-----
+ mm/vma.c  | 13 ++++++++++---
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1e63b3a44a47..da94edb287cd 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -766,15 +766,20 @@ struct vm_uffd_ops;
-  * to the functions called when a no-page or a wp-page exception occurs.
-  */
- struct vm_operations_struct {
--	void (*open)(struct vm_area_struct * area);
-+	/**
-+	 * @open: Called when a VMA is remapped, split or forked. Not called
-+	 * upon first mapping a VMA.
-+	 * Context: User context.  May sleep.  Caller holds mmap_lock.
-+	 */
-+	void (*open)(struct vm_area_struct *vma);
- 	/**
- 	 * @close: Called when the VMA is being removed from the MM.
- 	 * Context: User context.  May sleep.  Caller holds mmap_lock.
+diff --git a/mm/util.c b/mm/util.c
+index 73c97a748d8e..a2cfa0d77c35 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1215,7 +1215,13 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+ 		return err;
+ 
+ 	set_vma_from_desc(vma, &desc);
+-	return mmap_action_complete(vma, &desc.action);
++	err = mmap_action_complete(vma, &desc.action);
++	if (err) {
++		const size_t len = vma_pages(vma) << PAGE_SHIFT;
++
++		do_munmap(current->mm, vma->vm_start, len, NULL);
++	}
++	return err;
+ }
+ EXPORT_SYMBOL(compat_vma_mmap);
+ 
+@@ -1316,10 +1322,6 @@ static int mmap_action_finish(struct vm_area_struct *vma,
+ 	 * invoked if we do NOT merge, so we only clean up the VMA we created.
  	 */
--	void (*close)(struct vm_area_struct * area);
-+	void (*close)(struct vm_area_struct *vma);
- 	/* Called any time before splitting to check if it's allowed */
--	int (*may_split)(struct vm_area_struct *area, unsigned long addr);
--	int (*mremap)(struct vm_area_struct *area);
-+	int (*may_split)(struct vm_area_struct *vma, unsigned long addr);
-+	int (*mremap)(struct vm_area_struct *vma);
- 	/*
- 	 * Called by mprotect() to make driver-specific permission
- 	 * checks before mprotect() is finalised.   The VMA must not
-@@ -786,7 +791,7 @@ struct vm_operations_struct {
- 	vm_fault_t (*huge_fault)(struct vm_fault *vmf, unsigned int order);
- 	vm_fault_t (*map_pages)(struct vm_fault *vmf,
- 			pgoff_t start_pgoff, pgoff_t end_pgoff);
--	unsigned long (*pagesize)(struct vm_area_struct * area);
-+	unsigned long (*pagesize)(struct vm_area_struct *vma);
+ 	if (err) {
+-		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+-
+-		do_munmap(current->mm, vma->vm_start, len, NULL);
+-
+ 		if (action->error_hook) {
+ 			/* We may want to filter the error. */
+ 			err = action->error_hook(err);
+diff --git a/mm/vma.c b/mm/vma.c
+index ee91f2b76acf..3fc5fe4f1a7c 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2736,9 +2736,9 @@ static int call_action_complete(struct mmap_state *map,
+ 				struct mmap_action *action,
+ 				struct vm_area_struct *vma)
+ {
+-	int ret;
++	int err;
  
- 	/* notification that a previously read-only page is about to become
- 	 * writable, if an error is returned it will cause a SIGBUS */
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 477a5be65dd2..26c6c3255a94 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -632,15 +632,20 @@ struct vm_area_struct {
- } __randomize_layout;
+-	ret = mmap_action_complete(vma, action);
++	err = mmap_action_complete(vma, action);
  
- struct vm_operations_struct {
--	void (*open)(struct vm_area_struct * area);
-+	/**
-+	 * @open: Called when a VMA is remapped, split or forked. Not called
-+	 * upon first mapping a VMA.
-+	 * Context: User context.  May sleep.  Caller holds mmap_lock.
-+	 */
-+	void (*open)(struct vm_area_struct *vma);
- 	/**
- 	 * @close: Called when the VMA is being removed from the MM.
- 	 * Context: User context.  May sleep.  Caller holds mmap_lock.
- 	 */
--	void (*close)(struct vm_area_struct * area);
-+	void (*close)(struct vm_area_struct *vma);
- 	/* Called any time before splitting to check if it's allowed */
--	int (*may_split)(struct vm_area_struct *area, unsigned long addr);
--	int (*mremap)(struct vm_area_struct *area);
-+	int (*may_split)(struct vm_area_struct *vma, unsigned long addr);
-+	int (*mremap)(struct vm_area_struct *vma);
- 	/*
- 	 * Called by mprotect() to make driver-specific permission
- 	 * checks before mprotect() is finalised.   The VMA must not
-@@ -652,7 +657,7 @@ struct vm_operations_struct {
- 	vm_fault_t (*huge_fault)(struct vm_fault *vmf, unsigned int order);
- 	vm_fault_t (*map_pages)(struct vm_fault *vmf,
- 			pgoff_t start_pgoff, pgoff_t end_pgoff);
--	unsigned long (*pagesize)(struct vm_area_struct * area);
-+	unsigned long (*pagesize)(struct vm_area_struct *vma);
+ 	/* If we held the file rmap we need to release it. */
+ 	if (map->hold_file_rmap_lock) {
+@@ -2746,7 +2746,14 @@ static int call_action_complete(struct mmap_state *map,
  
- 	/* notification that a previously read-only page is about to become
- 	 * writable, if an error is returned it will cause a SIGBUS */
+ 		i_mmap_unlock_write(file->f_mapping);
+ 	}
+-	return ret;
++
++	if (err) {
++		const size_t len = vma_pages(vma) << PAGE_SHIFT;
++
++		do_munmap(current->mm, vma->vm_start, len, NULL);
++	}
++
++	return err;
+ }
+ 
+ static unsigned long __mmap_region(struct file *file, unsigned long addr,
 -- 
 2.53.0
 
