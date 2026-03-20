@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 385001093163
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 01:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37881109316E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:01:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 625CE6B042E; Thu, 19 Mar 2026 21:58:04 -0400 (EDT)
+	id 985A66B042D; Thu, 19 Mar 2026 22:01:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AF946B042F; Thu, 19 Mar 2026 21:58:04 -0400 (EDT)
+	id 9368E6B042F; Thu, 19 Mar 2026 22:01:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 477076B0431; Thu, 19 Mar 2026 21:58:04 -0400 (EDT)
+	id 84CB26B0431; Thu, 19 Mar 2026 22:01:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30A416B042E
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:58:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCB695AE25
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 01:58:03 +0000 (UTC)
-X-FDA: 84564780846.23.31A17D4
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CFB49C0004
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 01:58:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="EyAf/WzX";
-	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F3186B042D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:01:02 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F6D45B3CB
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:01:02 +0000 (UTC)
+X-FDA: 84564788364.20.58312FB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6D01F18000E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:01:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PAuVR5In;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773971882;
+	s=arc-20220608; t=1773972060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjMDeZ2Ulep7MywN58U5RP/oxisMX4b7XA6ysuWgJeI=;
-	b=ZNeaUCel2QMjWlfOTZVoBjpesDO0OwHm4tsAeRjhN/kOHtwtEtW8ENXdD8LlQYa2EuoA7e
-	kSsXbtrPWCGKxq757Ei/5AkGZqaeOUxxExhWIUUnVuo8Xk9ZCJPBTbvb9IGbSuNEYvJ3lw
-	RBYYmH9yhgmoJJVFI8BhqUal+E3WmmI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="EyAf/WzX";
-	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773971882; a=rsa-sha256;
+	bh=d+uU1DbdeviTeq31zOdMQnz29iYskonK2Y4BSqeM31k=;
+	b=fkgHDlFaDzvl6G2ZZan7ROXuq9/3d/7hvjtIc9yLQ9oMlrpN/hi+e2ExROtN3gLjw3gCyc
+	HnsjvY7rkzelA06XWX0nMZRTA7DKJCfTFktQZ3v9t/OkLX5ALD4/KCPM8Iswc0ip+Stjtf
+	J7iaYYEorl5RZWTGOH9y5BDnQJfowf8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773972060; a=rsa-sha256;
 	cv=none;
-	b=tR6C4WEcx+AmH313//MSUoD9pJfVdSg+L/xwuidf6/hwa2kvFTpaOK7p2zDSjDl0fIy4Bd
-	SETXd4I3RXASgXxVcMgH5om6YXIcCdjUiiI/kqNNyFK74xLPqmD6cSFGZ6DYlf8lwQpClo
-	19gVn6ZZFzmE+iwd5JIELJbXW8hZrts=
-Message-ID: <9ef1c798-a30f-4458-9684-900136ae8b7d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773971879;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjMDeZ2Ulep7MywN58U5RP/oxisMX4b7XA6ysuWgJeI=;
-	b=EyAf/WzXoIj3rQ73RcECAPMhL/xPsYXAjaH7OwNCO0PjlmKvk77TZ7LUtfoiCF/cQPVKeW
-	r/LxBdTK+1Y1NnUpcqVcEAOJkqV3gLLeOZSF5AJ+sX1KAXhOQbB7JMTGpgNFJeyLLkJx2D
-	Qum4cxfs3zKaq8eGLme46Faay7LlO7o=
-Date: Fri, 20 Mar 2026 09:57:03 +0800
+	b=vniIOUpootahDoYYQZMu8Mg4mSH40kT16SSZsSnxuz5nNkcuzM8kt6aU6zGFcDa8BguIhz
+	+EX9OdzkIs8tp8EDWgekuBP+23qWCGbpTmTNwM+Fr+Ca/PRjaKB/5yVYS1bR+XpSO3fZZT
+	IzvYxrw9a1XcEhxNVr5UaaJt8MKx2gQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PAuVR5In;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A0E3E60130;
+	Fri, 20 Mar 2026 02:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F723C19424;
+	Fri, 20 Mar 2026 02:00:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773972059;
+	bh=OradEm4zShh8J5nFxSUtOySkpjsYIi4uei72JjD05AQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PAuVR5InUxHN1otPcHeOXsOMHzuamEHIiJZkY/FvUupDRiBoo9IY9XfbQK143C0T2
+	 uU8nDMLM4vY2I4DlmHg4/oWD/jpf2LVcQmsBXamZY94qnBAjh3b6P9KblRrinwiUqo
+	 DVtweS3pUPq9SA0GPMiG/CYS8XzGuoiDeiGv9MaFul0VamsWNkzsk9KcNkD4y2rtTx
+	 ZKEU565XnYd86fNlfl6n2ejBfkNthFTDS/OdrXWEY4RG5lu8h/3/j1Hgp2uBC5iE1V
+	 zyl494t/yqlNpYVBFGxxaFOumtlLzckIS0+ckFA+UJaMq7flSaI/XrsKQ4dK56ovB0
+	 9im6sXoDxxyyA==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Thu, 19 Mar 2026 19:00:54 -0700
+Message-ID: <20260320020056.835-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260319155742.186627-2-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-To: Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260319083153.2488005-1-hao.ge@linux.dev>
- <20260319152808.fce61386fdf2934d7a3b0edb@linux-foundation.org>
- <CAJuCfpG5OG66mgfn3ez5ZXTjj7VC8yuK3L2u83uOZhyBbRH2Lw@mail.gmail.com>
- <CAJuCfpHD4SB30oP7Bdm=ey+2W7CAsFPruedEbqgR5OumrQErxQ@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpHD4SB30oP7Bdm=ey+2W7CAsFPruedEbqgR5OumrQErxQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6D01F18000E
+X-Stat-Signature: zhp64wu36k94jwnydwkc98dotas8etzd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFB49C0004
-X-Rspamd-Server: rspam08
-X-Stat-Signature: m7qngqetsoxfyd63wct9hbwpem4jp6s9
-X-HE-Tag: 1773971881-142586
-X-HE-Meta: U2FsdGVkX1+Ovn/pAuQk4lFxqBnYgP3huOCZQfhau0SVbboAUTVEQ4FXQfu+kU8X7yUgGeDw5h6SYSo8byCktStAoIcaeLU5wBbm8ufKzxIo6CveXZzLECVukMcannHU/PwkgYY9n5u+GmLiiqyNdd3907oQDhPfISfgwm3tHc9EWE9+ffqWllsEAV6Da3JHMC24JeMwzn8c93icFiiirer2LQWWazuco8SmxcYC/EdnQcoWb3PuiekvCCdFpqBzO2ZCe+eJFAgquVoUX4ImHA7W+p2VqVdFDPrA+8Gulvf4LFq8/Zvd8A43qdDBetzcMaiqielfGRtaa2P07Nd5Swlu/7CWYuivzZ/W2YZrGo14A+ApLlbmzIg7hzcMvw4/RmOXtKgTuS7wgCyqW28juhl8xCkbIB3vNLQpTJHbIrfxQuZnQkbOV6I6a3Gsz7T+P/jp/Zi0aul7dAw3Yf7iCcm+IXIJYDTclqDqiP/nY8nvK/exfxXrqCUAWOahFtZbXmS2Bd/EvXDnNCD0haXbI/Pbbp8UbGFnhRaNGtJVJhzJSdYWz4WXmFhx9vqVu/vEySjqSG0H+FQnPP0TNiWFm6dur+9SF9J51g1IxQefh+dLG8w3IBZwOJ87izyuzjMFAaR8N4Fy+lyJE+Gg3C37yXPCstOKXChA3qanWlCmBcAIT2cZzoEaNy9ZKQQAUsFj+UnyHU+bdAa6vBH6YOpQefZf48RzHRTSv5dK5YzcflpGU9l/mK1o5I48JFDcJsltS+GyhVKQMfMG1wkouGJBcXo/rY2U3h2mx5pJHIQVORM2Ja7BIXgy0rJl7I9008OH/aYxX9Rhfq+TnoZ+SvCEWnFOryH4fb+rg4os38zbojxgopM0lPZX1dZ02frg7EauZIDTVkHDWeUezR0xit3+wieWokGagC8no5czEaZlvIJP5R5uIa4AMhRBMuDrbGd9JzqMdac7mP0yGfggazr
- fCnaRHSM
- kRr0Wiea7bOEv3QJhMEl8CHumrWoLv+T13nLI40oGynYYEcL4ynOP9EH3kJLvkApzjdnAHh/qFDCTg4QrDxTUxen6RXTUr4X+YWCvhoeG79fDmfmafyAlQzugXciqZw4G/xL2MGsVd3JCOz55wjPB+YaD1MCoaiJFq1x1MXFL/z+J2mqZ2zrF/t/zKFRQrvvcCxMdmQbC0+szINkO9aMahCj6SPj15KZL0c5bhrH5QyZJ6UUFGEuFxDgPaSDoaAot/81FNym5K63zVq/qJH3ykJd/5dL1RJfHwXZluLR2Tl1oCHCfIp1YPEvyHxvStdURVgodAozg2UVG5XT4ZgsNaHINFjoWoy8hSsCXMy6V1+Nau/3KZr5abbAG3oI6f0qQR9JLZAjkZv3TH2RhAOPbARsEI8oXVQV8JOG/54ttRNAJNkU=
+X-HE-Tag: 1773972060-275644
+X-HE-Meta: U2FsdGVkX1/wNOSqy2BoA+AtZ3pVSx02sKGyralO0Jh7Rltd9d/V2OyBqpRWYoWjRYL+qqlh5e5OVk7aLqlmHufx23ZzFfzCNOqrFmb2okIiI1rZrCLeAppdHKGajNIILUhJc/P1uKfRAGrLlnZv2LRIXhPpmdc0im92qHalAx7z2PdObDv2bWdceB+Aow+R7c0qDZLoJZpl+gCRAs/FmoJsjEkVGdxHZLxFGtLEz/rh596D4YJwHuCNC48bLRRFP3n9edNyjQKsfyFR53Kob0aRQgaahhX4YfJO0sjA71yr/4soxAGn5tqUyvLjZtKIeizolv1MwNZmvFqAyASYyMmI1ykclsnNuO3y7T+MHb5w+JPZvF80pXjvNuzj3RaFJdrc9JEO9uJ1iGdjpR5CwVT+L1otX0ExCLGhYrQDUJcVSYcw8jQdL26m9Do2G6KJir+7jFK46dUqu4DoJh1hcOqNPCS/sn5T6XNasvZjPtbJyzDxmk20ZAf9AWCoW23nBczHmLx4ieM9sSwKoUBGzR4MaYTEeUCuxafsaK5DKXdphBhMBYI/brAaqBGuMLjKiZ7vOYWP7rHevxOfITl4dHJ7KETDPmL9ZuDkWX2B7oiL0J2kzhdzLos3ZYZ9U0FiSrjLIjJHOOZZ8Y1PeKkSAYfrjVHnDaMbX+olmTRLv9OtZsTUYpgwXQRt8HMcBKL2/ax8cUPXkJmjbiEfnaeVWhkORZLGCJHKH1I1nFDn0phvMPiIUUwXNDWV96fHqmiYVKEOH+zi/yBhoU70EcSnJHoyNVukO9dD5GzXA36X72cP8ghJs0b127FDZ2jMD2DxNoGcXXXPNd0HRL/gdzxbOxOlw35W3SOOwtWVS1eWXFOJRT2UPGCHsiPJT3viN8oddv13HzD2pUPNViSHeXmJizjB6KvKBynZJKIYHYfxN13mS62uK1urPc5dCXny5NJpaTyfzRdxQ+GhuHauVf6
+ 0Zjifq3Z
+ OniofPPVHo30Yf0EffOOr7aap0mC3UukAapEaLgQ1MDuUw46YhgLPDQTVhmuVEnYnl0L93C0fKWb7XBQlMpUTiVHKOHXWrQT8oOKrK9lxYqGWvIvXlHtwi8uu+7t6Tp3Coy5ukdx5c9xab9Pnqi/f4toj19ynUMO1ccIASXFdxkts6bWubGdAKJm+nyCEZQfyTfmK3CAtqXTtLnXseKlTUcHzue8B7N6HRJ6YPrlmwg2Mi7Ya1whTOBSVJAjMAvbj3pxVbefXsvCjaQ2toPiS1CXPkm9gGrQ99FD4gcoXT8S84hxvavq9HFkMrEU9amMrIO2QD+HJvK7yhXWHQCupapfc4O2iJxVW4kCXPSnop1OZNeOVSNgSOMpdRQ+loUyrq4VJ0+E/PsKw3xE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,300 +94,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 19 Mar 2026 15:57:39 +0000 Josh Law <objecting@objecting.org> wrote:
 
-On 2026/3/20 07:48, Suren Baghdasaryan wrote:
-> On Thu, Mar 19, 2026 at 4:44 PM Suren Baghdasaryan <surenb@google.com> wrote:
->> On Thu, Mar 19, 2026 at 3:28 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>> On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>>
->>>> Due to initialization ordering, page_ext is allocated and initialized
->>>> relatively late during boot. Some pages have already been allocated
->>>> and freed before page_ext becomes available, leaving their codetag
->>>> uninitialized.
->> Hi Hao,
->> Thanks for the report.
->> Hmm. So, we are allocating pages before page_ext is initialized...
->>
->>>> A clear example is in init_section_page_ext(): alloc_page_ext() calls
->>>> kmemleak_alloc().
-> Forgot to ask. The example you are using here is for page_ext
-> allocation itself. Do you have any other examples where page
-> allocation happens before page_ext initialization? If that's the only
-> place, then we might be able to fix this in a simpler way by doing
-> something special for alloc_page_ext().
+> When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
+> param_ctx is leaked because the early return skips the cleanup at the
+> out label. Destroy param_ctx before returning.
 
-Hi Suren
+Nice catch, thank you!
 
-To help illustrate the point, here's the debug log I added:
+The problematic failure can happen only when the arguably too small to fail
+allocations fail.  So, the user impact may be not big.  But, still the
+consequence is bad.  I think it is better to add Fixes: and Cc stable@, as
+below.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554e..ebfe636f5b07 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1293,6 +1293,9 @@ void __pgalloc_tag_add(struct page *page, struct 
-task_struct *task,
-                 alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
-                 update_page_tag_ref(handle, &ref);
-                 put_page_tag_ref(handle);
-+       } else {
-+               pr_warn("__pgalloc_tag_add: get_page_tag_ref failed! 
-page=%p pfn=%lu nr=%u\n", page, page_to_pfn(page), nr);
-+               dump_stack();
-         }
-  }
+Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
+Cc: <stable@vger.kernel.org> # 6.18.x
 
+> 
+> Signed-off-by: Josh Law <objecting@objecting.org>
 
-And I caught the following logs:
+Other than the above,
 
-[    0.296399] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea000400c700 pfn=1049372 nr=1
-[    0.296400] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 
-7.0.0-rc4-dirty #12 PREEMPT(lazy)
-[    0.296402] Hardware name: Red Hat KVM, BIOS 
-rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[    0.296402] Call Trace:
-[    0.296403]  <TASK>
-[    0.296403]  dump_stack_lvl+0x53/0x70
-[    0.296405]  __pgalloc_tag_add+0x3a3/0x6e0
-[    0.296406]  ? __pfx___pgalloc_tag_add+0x10/0x10
-[    0.296407]  ? kasan_unpoison+0x27/0x60
-[    0.296409]  ? __kasan_unpoison_pages+0x2c/0x40
-[    0.296411]  get_page_from_freelist+0xa54/0x1310
-[    0.296413]  __alloc_frozen_pages_noprof+0x206/0x4c0
-[    0.296415]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
-[    0.296417]  ? stack_depot_save_flags+0x3f/0x680
-[    0.296418]  ? ___slab_alloc+0x518/0x530
-[    0.296420]  alloc_pages_mpol+0x13a/0x3f0
-[    0.296421]  ? __pfx_alloc_pages_mpol+0x10/0x10
-[    0.296423]  ? _raw_spin_lock_irqsave+0x8a/0xf0
-[    0.296424]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[    0.296426]  alloc_slab_page+0xc2/0x130
-[    0.296427]  allocate_slab+0x77/0x2c0
-[    0.296429]  ? syscall_enter_define_fields+0x3bb/0x5f0
-[    0.296430]  ___slab_alloc+0x125/0x530
-[    0.296432]  ? __trace_define_field+0x252/0x3d0
-[    0.296433]  __kmalloc_noprof+0x329/0x630
-[    0.296435]  ? syscall_enter_define_fields+0x3bb/0x5f0
-[    0.296436]  syscall_enter_define_fields+0x3bb/0x5f0
-[    0.296438]  ? __pfx_syscall_enter_define_fields+0x10/0x10
-[    0.296440]  event_define_fields+0x326/0x540
-[    0.296441]  __trace_early_add_events+0xac/0x3c0
-[    0.296443]  trace_event_init+0x24c/0x460
-[    0.296445]  trace_init+0x9/0x20
-[    0.296446]  start_kernel+0x199/0x3c0
-[    0.296448]  x86_64_start_reservations+0x18/0x30
-[    0.296449]  x86_64_start_kernel+0xe2/0xf0
-[    0.296451]  common_startup_64+0x13e/0x141
-[    0.296453]  </TASK>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  mm/damon/sysfs.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index 576d1ddd736b..b573b9d60784 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
+>  	if (IS_ERR(param_ctx))
+>  		return PTR_ERR(param_ctx);
+>  	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
+> -	if (!test_ctx)
+> +	if (!test_ctx) {
+> +		damon_destroy_ctx(param_ctx);
+>  		return -ENOMEM;
+> +	}
+>  	err = damon_commit_ctx(test_ctx, param_ctx);
+>  	if (err)
+>  		goto out;
+
+Sashiko added below comment.  But that's orthogonal to this patch, so never a
+blocker of this patch.
+
+: If damon_commit_ctx() fails midway through damon_commit_targets(), could
+: struct pid references be leaked?
+: 
+: When transitioning a DAMON context from DAMON_OPS_PADDR to DAMON_OPS_VADDR,
+: param_ctx is built with VADDR ops, while test_ctx inherits PADDR ops from
+: the running context.
+: 
+: Inside damon_commit_targets(), it iterates over targets and calls get_pid()
+: for each target since param_ctx has VADDR ops, adding them to test_ctx.
+: 
+: If a subsequent target fails to allocate memory (like -ENOMEM in
+: damon_commit_target_regions()), damon_commit_ctx() returns early and skips
+: the dst->ops = src->ops assignment.
+: 
+: This leaves test_ctx->ops as PADDR, which lacks a cleanup_target callback.
+: 
+: When the error path jumps to the out label and calls
+: damon_destroy_ctx(test_ctx), put_pid() is skipped for the partially
+: committed targets because the context still has PADDR ops, permanently
+: leaking the struct pid references.
+: 
+: Is there a way to ensure test_ctx is cleaned up with the correct ops
+: if damon_commit_ctx() fails?
+
+# review url: https://sashiko.dev/#/patchset/20260319155742.186627-2-objecting@objecting.org
+
+Sounds like correct.  But defninitely orthogonal to this patch, so no blocker
+for this patch.  I will work on this later.
 
 
-[    0.312234] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea000400f900 pfn=1049572 nr=1
-[    0.312234] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 
-7.0.0-rc4-dirty #12 PREEMPT(lazy)
-[    0.312236] Hardware name: Red Hat KVM, BIOS 
-rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[    0.312236] Call Trace:
-[    0.312237]  <TASK>
-[    0.312237]  dump_stack_lvl+0x53/0x70
-[    0.312239]  __pgalloc_tag_add+0x3a3/0x6e0
-[    0.312240]  ? __pfx___pgalloc_tag_add+0x10/0x10
-[    0.312241]  ? rmqueue.constprop.0+0x4fc/0x1ce0
-[    0.312243]  ? kasan_unpoison+0x27/0x60
-[    0.312244]  ? __kasan_unpoison_pages+0x2c/0x40
-[    0.312246]  get_page_from_freelist+0xa54/0x1310
-[    0.312248]  __alloc_frozen_pages_noprof+0x206/0x4c0
-[    0.312250]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
-[    0.312253]  alloc_slab_page+0x39/0x130
-[    0.312254]  allocate_slab+0x77/0x2c0
-[    0.312255]  ? alloc_cpumask_var_node+0xc7/0x230
-[    0.312257]  ___slab_alloc+0x46d/0x530
-[    0.312259]  __kmalloc_node_noprof+0x2fa/0x680
-[    0.312261]  ? alloc_cpumask_var_node+0xc7/0x230
-[    0.312263]  alloc_cpumask_var_node+0xc7/0x230
-[    0.312264]  init_desc+0x141/0x6b0
-[    0.312266]  alloc_desc+0x108/0x1b0
-[    0.312267]  early_irq_init+0xee/0x1c0
-[    0.312268]  ? __pfx_early_irq_init+0x10/0x10
-[    0.312271]  start_kernel+0x1ab/0x3c0
-[    0.312272]  x86_64_start_reservations+0x18/0x30
-[    0.312274]  x86_64_start_kernel+0xe2/0xf0
-[    0.312275]  common_startup_64+0x13e/0x141
-[    0.312277]  </TASK>
+Thanks,
+SJ
 
-[    0.312834] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea000400fc00 pfn=1049584 nr=1
-[    0.312835] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 
-7.0.0-rc4-dirty #12 PREEMPT(lazy)
-[    0.312836] Hardware name: Red Hat KVM, BIOS 
-rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[    0.312837] Call Trace:
-[    0.312837]  <TASK>
-[    0.312838]  dump_stack_lvl+0x53/0x70
-[    0.312840]  __pgalloc_tag_add+0x3a3/0x6e0
-[    0.312841]  ? __pfx___pgalloc_tag_add+0x10/0x10
-[    0.312842]  ? rmqueue.constprop.0+0x4fc/0x1ce0
-[    0.312844]  ? kasan_unpoison+0x27/0x60
-[    0.312845]  ? __kasan_unpoison_pages+0x2c/0x40
-[    0.312847]  get_page_from_freelist+0xa54/0x1310
-[    0.312849]  __alloc_frozen_pages_noprof+0x206/0x4c0
-[    0.312851]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
-[    0.312853]  alloc_pages_mpol+0x13a/0x3f0
-[    0.312855]  ? __pfx_alloc_pages_mpol+0x10/0x10
-[    0.312856]  ? xas_find+0x2d8/0x450
-[    0.312858]  ? _raw_spin_lock+0x84/0xe0
-[    0.312859]  ? __pfx__raw_spin_lock+0x10/0x10
-[    0.312861]  alloc_pages_noprof+0xf6/0x2b0
-[    0.312862]  __change_page_attr+0x293/0x850
-[    0.312864]  ? __pfx___change_page_attr+0x10/0x10
-[    0.312865]  ? _vm_unmap_aliases+0x2d0/0x650
-[    0.312868]  ? __pfx__vm_unmap_aliases+0x10/0x10
-[    0.312869]  __change_page_attr_set_clr+0x16c/0x360
-[    0.312871]  ? spp_getpage+0xbb/0x1e0
-[    0.312872]  change_page_attr_set_clr+0x220/0x3c0
-[    0.312873]  ? flush_tlb_one_kernel+0xf/0x30
-[    0.312875]  ? set_pte_vaddr_p4d+0x110/0x180
-[    0.312877]  ? __pfx_change_page_attr_set_clr+0x10/0x10
-[    0.312878]  ? __pfx_set_pte_vaddr_p4d+0x10/0x10
-[    0.312881]  ? __pfx_mtree_load+0x10/0x10
-[    0.312883]  ? __pfx_mtree_load+0x10/0x10
-[    0.312884]  ? __asan_memcpy+0x3c/0x60
-[    0.312886]  ? set_intr_gate+0x10c/0x150
-[    0.312888]  set_memory_ro+0x76/0xa0
-[    0.312889]  ? __pfx_set_memory_ro+0x10/0x10
-[    0.312891]  idt_setup_apic_and_irq_gates+0x2c1/0x390
-
-and more.
-
-off topic -  if we were to handle only alloc_page_ext() specifically, 
-what would be the most straightforward
-
-solution in your mind? I'd really appreciate your insight.
-
-Thanks.
-
-
->>>> If the slab cache has no free objects, it falls back
->>>> to the buddy allocator to allocate memory. However, at this point page_ext
->>>> is not yet fully initialized, so these newly allocated pages have no
->>>> codetag set. These pages may later be reclaimed by KASAN,which causes
->>>> the warning to trigger when they are freed because their codetag ref is
->>>> still empty.
->>>>
->>>> Use a global array to track pages allocated before page_ext is fully
->>>> initialized, similar to how kmemleak tracks early allocations.
->>>> When page_ext initialization completes, set their codetag
->>>> to empty to avoid warnings when they are freed later.
->>>>
->>>> ...
->>>>
->>>> --- a/include/linux/alloc_tag.h
->>>> +++ b/include/linux/alloc_tag.h
->>>> @@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_ref *ref)
->>>>
->>>>   #ifdef CONFIG_MEM_ALLOC_PROFILING
->>>>
->>>> +bool mem_profiling_is_available(void);
->>>> +void alloc_tag_add_early_pfn(unsigned long pfn);
->>>> +
->>>>   #define ALLOC_TAG_SECTION_NAME       "alloc_tags"
->>>>
->>>>   struct codetag_bytes {
->>>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
->>>> index 58991ab09d84..a5bf4e72c154 100644
->>>> --- a/lib/alloc_tag.c
->>>> +++ b/lib/alloc_tag.c
->>>> @@ -6,6 +6,7 @@
->>>>   #include <linux/kallsyms.h>
->>>>   #include <linux/module.h>
->>>>   #include <linux/page_ext.h>
->>>> +#include <linux/pgalloc_tag.h>
->>>>   #include <linux/proc_fs.h>
->>>>   #include <linux/seq_buf.h>
->>>>   #include <linux/seq_file.h>
->>>> @@ -26,6 +27,82 @@ static bool mem_profiling_support;
->>>>
->>>>   static struct codetag_type *alloc_tag_cttype;
->>>>
->>>> +/*
->>>> + * State of the alloc_tag
->>>> + *
->>>> + * This is used to describe the states of the alloc_tag during bootup.
->>>> + *
->>>> + * When we need to allocate page_ext to store codetag, we face an
->>>> + * initialization timing problem:
->>>> + *
->>>> + * Due to initialization order, pages may be allocated via buddy system
->>>> + * before page_ext is fully allocated and initialized. Although these
->>>> + * pages call the allocation hooks, the codetag will not be set because
->>>> + * page_ext is not yet available.
->>>> + *
->>>> + * When these pages are later free to the buddy system, it triggers
->>>> + * warnings because their codetag is actually empty if
->>>> + * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
->>>> + *
->>>> + * Additionally, in this situation, we cannot record detailed allocation
->>>> + * information for these pages.
->>>> + */
->>>> +enum mem_profiling_state {
->>>> +     DOWN,                   /* No mem_profiling functionality yet */
->>>> +     UP                      /* Everything is working */
->>>> +};
->>>> +
->>>> +static enum mem_profiling_state mem_profiling_state = DOWN;
->>>> +
->>>> +bool mem_profiling_is_available(void)
->>>> +{
->>>> +     return mem_profiling_state == UP;
->>>> +}
->>>> +
->>>> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
->>>> +
->>>> +#define EARLY_ALLOC_PFN_MAX          256
->>>> +
->>>> +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
->>> It's unfortunate that this isn't __initdata.
->>>
->>>> +static unsigned int early_pfn_count;
->>>> +static DEFINE_SPINLOCK(early_pfn_lock);
->>>> +
->>>>
->>>> ...
->>>>
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>>                alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->>>>                update_page_tag_ref(handle, &ref);
->>>>                put_page_tag_ref(handle);
->>>> +     } else {
->> This branch can be marked as "unlikely".
->>
->>>> +             /*
->>>> +              * page_ext is not available yet, record the pfn so we can
->>>> +              * clear the tag ref later when page_ext is initialized.
->>>> +              */
->>>> +             if (!mem_profiling_is_available())
->>>> +                     alloc_tag_add_early_pfn(page_to_pfn(page));
->>>>        }
->>>>   }
->>> All because of this, I believe.  Is this fixable?
->>>
->>> If we take that `else', we know we're running in __init code, yes?  I
->>> don't see how `__init pgalloc_tag_add_early()' could be made to work.
->>> hrm.  Something clever, please.
->> We can have a pointer to a function that is initialized to point to
->> alloc_tag_add_early_pfn, which is defined as __init and uses
->> early_pfns which now can be defined as __initdata. After
->> clear_early_alloc_pfn_tag_refs() is done we reset that pointer to
->> NULL. __pgalloc_tag_add() instead of calling alloc_tag_add_early_pfn()
->> directly checks that pointer and if it's not NULL then calls the
->> function that it points to. This way __pgalloc_tag_add() which is not
->> an __init function will be invoking alloc_tag_add_early_pfn() __init
->> function only until we are done with initialization. I haven't tried
->> this but I think that should work. This also eliminates the need for
->> mem_profiling_state variable since we can use this function pointer
->> instead.
->>
->>
+[...]
 
