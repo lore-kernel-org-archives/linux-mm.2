@@ -4,107 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8497B1093194
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 09:15:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC4C109319C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 09:20:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9805D6B0364; Fri, 20 Mar 2026 05:15:34 -0400 (EDT)
+	id BF7DE6B0363; Fri, 20 Mar 2026 05:20:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90BDD6B0366; Fri, 20 Mar 2026 05:15:34 -0400 (EDT)
+	id BA8D06B0366; Fri, 20 Mar 2026 05:20:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2066B0368; Fri, 20 Mar 2026 05:15:34 -0400 (EDT)
+	id A96F76B0368; Fri, 20 Mar 2026 05:20:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 64A386B0364
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:15:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D55BA1B8BB6
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:15:33 +0000 (UTC)
-X-FDA: 84565883346.28.A65FD9D
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1D55F20005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:15:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=pSrpsAnM;
-	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773998131;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9590F6B0363
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:20:16 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3C94A1A0890
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:20:16 +0000 (UTC)
+X-FDA: 84565895232.09.A53044E
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3BAE680014
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:20:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hQNE7bD0;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773998414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhrhAWTDLCv4QpWslCOMFZjZp7w7pCo7mghOdDhsrrU=;
-	b=abHFOkCtRBgfhq672NIHvURbtpitX/nog6EhomCp6CYv2ynobAAKJLX71Z0B8m1oYkoVzF
-	ToHIBnVwW0tFUnKuor/qZbojB+co8l2RIIjt0stkDmXUChbbs94YrWYa75Cnp7bcXvlwpm
-	Z672PH/CX7nWNtQEICZaQAAPf8lpuJ0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773998131; a=rsa-sha256;
-	cv=none;
-	b=eCyHrwA6kLDyDy/+wG2f4RVBAm6XRnRSfrzh0SUk/wsqI0KtS1MzYHSwlw2mpOVk7bjG1M
-	lR02AXAYF2R5+EGzUmVtZvkrL2MKs4e1YXnhBhukz5K40rkwF/25kd5T6ReGFvPZ612Ci5
-	W6HbNC4Cd031Zq51AmDuBDtv0+cwXqQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=pSrpsAnM;
-	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260320091528euoutp014c9a7983dd5eff6356798bdf100ed4b7~egeYlQASm0639006390euoutp01O
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:15:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260320091528euoutp014c9a7983dd5eff6356798bdf100ed4b7~egeYlQASm0639006390euoutp01O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1773998128;
-	bh=FhrhAWTDLCv4QpWslCOMFZjZp7w7pCo7mghOdDhsrrU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=pSrpsAnM3G02TX/+KzwU0cjPdmiqWZN49h48fzpVHgzD9F3sNIPW+VNiDtv6q3N0F
-	 i7rPBfgER7dwIDvL9hIl18IVHKqfM2ZSieiRmOoH1Wa6BLYlgK6DhCqGsno/IxUMia
-	 I/bGMRIfy7PHEZmg7ZVJLHl16kUwFU2aeCEVbIi8=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace~egeYI1ZHq1593615936eucas1p1c;
-	Fri, 20 Mar 2026 09:15:28 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260320091527eusmtip124a7aacd9e9a03c52228bba3dcc39044~egeXHj7801699616996eusmtip15;
-	Fri, 20 Mar 2026 09:15:26 +0000 (GMT)
-Message-ID: <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
-Date: Fri, 20 Mar 2026 10:15:26 +0100
+	bh=ZuGZ391DUfS6FpPdQqJz0ZnNZFZyHq8nHxd9XEXSXvE=;
+	b=IFvTUpvR9I+++Cl4rvDNM9BQhA2e8Mw+0DvxE2jyyRGzroJ1xo8IMAm1nNBMqRsAOM+bMo
+	HRjzZh/KG0lcYXP4InRqg7RDLNwai4W8ZX1H8Y9kXW1vRcsc/B1t1tb0BHSO2XvpqTVIJH
+	TmFTSO7MSH25Xr0neSdXCdilHBOOYjU=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hQNE7bD0;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773998414; a=rsa-sha256;
+	cv=pass;
+	b=rlhrQu/lrcaWJVEj1dG7oroOPkdH85IJAZjcUvv7E71KG3zXi0Y634v4vIw05QNcqx9FN3
+	Uiyvw936/1k2eOS3YeMxlL7QFXp3aN08HkGBKQIuDKzjkwKwQb3jiALrXUbGv8r3mrERXx
+	KtZJbbDviFr+gebI/9eExsD/BI9xLrE=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-667acaeae82so2537261a12.3
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:20:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773998412; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VESK23548QZfDKUPnl3yxdCqKQUWPy62Ruq/EzYNX3XRE7lOdKo2qufw4G/MjX+tV6
+         xYndIZ1+yc77HJawb9d69PDJnPyeCJmu0yePJcb060eIRwAuXhHDWiCI0Bql+e2EotVU
+         +HTdO1bXOG61u/qWItOfJ9sN0S04DRdhM+wfiue9d728OKOY7oPV58PRNkgwzkwMa/FJ
+         QXEW2QGORkZbmjyqvlGHBYX0tpxs6Lab62tXriGhZkU7oMmiQN4tT7OjbAifx1EMxT8k
+         lRzmzVHXWc7lBmtXHJKQZG16AvT+IRcZdCSBOAlbQkjxzlRto9rWIXiO8m2McicTNkCV
+         3vEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZuGZ391DUfS6FpPdQqJz0ZnNZFZyHq8nHxd9XEXSXvE=;
+        fh=KuOtfIO5nB0+DWA4HPDvV4WdmSwsE/IPlCAuKGarC5Y=;
+        b=E9cFLcB21wOwkhLhPGkjHXmc+v3BXNrILtdZr0liwTrQIDDM+zQdSoJOJAsxm71NDT
+         WLldNbU/UZl0ts26mSiH6mO+3JURnq8qcdZ9nc7YKUS29HATMcNpAiFEYp90lxF26cWE
+         1H/aphOEUP5na+VC/BqXcL5ISYs376higlojUSjMBY+NWZVG4iYkEiBmqBTpalGaZNkr
+         w9N6LWD4iwXGwRdp/Eer3o5yw+qDEPtk+mTJKodmRUI3wX6TjCMjpoHFqJq1ykQLw2j/
+         28EP6PLl6i7meOfjfe7qLLlC8idVYeWc8EVBrxruUrhLt1yomqeJUPNQ1s/h+FElywSF
+         wuPQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773998412; x=1774603212; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZuGZ391DUfS6FpPdQqJz0ZnNZFZyHq8nHxd9XEXSXvE=;
+        b=hQNE7bD0GXfqzJRCas24uax5vWfVM+NEOLwRIZnz4ZNUKLQwPzLf4/Mqj02yfBczfL
+         fRhwGko1uZtxYFvDj/dMPtYab+xgt9vR7ej9RdUCta8Ze12FiZVukhw0qIEVk+fUSmRD
+         Ug0mV9yT44uCZJBSLiwPnRhNV7hJAxV6HqGbhyk1epSKQwSMuGadB6CtB3glq+BypBqx
+         m9+jIbUUPdNCLwD43PJS8KxoXREJgYg9v+hXHJ1udbnijMv2nUsiNx579BOWPXcpIBQQ
+         P8CqBphImCaaw1xMj3nHEO0CLuCyeJ2SPiYTnb0rAAuE+ouho3+0FvyAu5IOxXmjDEjT
+         Kjow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773998412; x=1774603212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZuGZ391DUfS6FpPdQqJz0ZnNZFZyHq8nHxd9XEXSXvE=;
+        b=C7YsJQ6JFPLiTDCI2ui3s8BNk/9J+Z0Vq51vD0UwRKNMtkssw5i21zjvKG3tvsIz08
+         UImLpqqGRF9qGEnbh6iq+Uqa9nkIrDS3esjlP3V0ggyjPiaVXZTYvtzD5bMuB2aCf2+z
+         w5fztbTyzlzs7T/ycOWUVZ+eMqbNZ2Qglx1PnSLw7Xi3vynqBqOubIBB7uZIe+gEV9YG
+         jTTt7KtiB4svD4LE65IDbbpghfVkLSA4lemrCBtGq1vATbQmW50clvPQQ9QmhQxSpfaO
+         6/vR4Pju//XwPIRCXU5BkkNv/83TYYuDs/fmlqiQMiCYuPdUbbtRoMFbw7zTBuf1e3k/
+         2T1A==
+X-Forwarded-Encrypted: i=1; AJvYcCU8Ny1R/Zimp0S1vXhTVV8D3bTFuJKO6snAfyuOrTYkU6IEU1EmQqzacq6nwjZ40u/nHAe5AAB4tQ==@kvack.org
+X-Gm-Message-State: AOJu0YwYt2Lc8DD22+GQ+TUhw5JjDefpRWPjngZpB1B8SRJEdCz8lTgN
+	2eXDe97xuAi2ZTtzjq+TWZYjktlvX3nOtNMGWMX/B3GlbmSQcZyhur3ItQwwoZ2SnRK9KPdBHDD
+	NyqBYwLCJZzscYlbvQRQaBNKDGWyIbfU=
+X-Gm-Gg: ATEYQzwh//i42RlRxvC5/xi4v/3F5po5N7bdG+3RhDogNbVKBdrZhGgitYnVOna3FLr
+	WqvU83aC/zln4WrBkWqF7ooKZHn7iqms+UGV4u3AqepSYrDd8qFU8mWGuQZQwbex7fdrk/sbHbp
+	XEj41Y5wyQsfb3fDxlsTEAEf+uoyJqMXdcdOU9AbxfYhgjc+/YyhFwSvfUAcgkGU8CSEF2rv6lT
+	E9rE6XJLmxYA2MfhBzGvtUwRH2WrSj0fds2QXoycuz/pU1lqWWSxWChiFfr+ckgD7pqJz/y1JqP
+	ZGDqoUzN2pmD4vGxoEwDXub3+DlCyQHlOeeAwd6L
+X-Received: by 2002:a05:6402:146a:b0:65c:23f0:a80d with SMTP id
+ 4fb4d7f45d1cf-668c9719556mr1755407a12.19.1773998412057; Fri, 20 Mar 2026
+ 02:20:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 2/4] exec: inherit HWCAPs from the parent process
-To: Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>, Andrew
-	Morton <akpm@linux-foundation.org>
-Cc: Cyrill Gorcunov <gorcunov@gmail.com>, Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev, Chen Ridong
-	<chenridong@huawei.com>, Christian Brauner <brauner@kernel.org>, David
-	Hildenbrand <david@kernel.org>, Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Koutny
-	<mkoutny@suse.com>, Alexander Mikhalitsyn
-	<aleksandr.mikhalitsyn@futurfusion.io>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260217180108.1420024-3-avagin@google.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace
-X-EPHeader: CA
-X-CMS-RootMailID: 20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace
-References: <20260217180108.1420024-1-avagin@google.com>
-	<20260217180108.1420024-3-avagin@google.com>
-	<CGME20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace@eucas1p1.samsung.com>
+References: <20260320083339.1813195-1-zhaoyang.huang@unisoc.com>
+In-Reply-To: <20260320083339.1813195-1-zhaoyang.huang@unisoc.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 20 Mar 2026 17:19:35 +0800
+X-Gm-Features: AaiRm50TXmHjr5UV1R6hdQXy4kq_kWcX4tukg6-iJ1Y7wv2OOm_lmvSeJnnWPYs
+Message-ID: <CAMgjq7Bhi_2cgWUWpW+nh4dK2B9N_AbtUf+EJCwBF-d5rvFySw@mail.gmail.com>
+Subject: Re: [PATCH] mm: skip dirty file folios during isolation of legacy LRU
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Matthew Wilcox <willy@infradead.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>, 
+	steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: g14c3q58btciin5e35ri1badexrqy6xe
-X-Rspamd-Queue-Id: 1D55F20005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773998130-256391
-X-HE-Meta: U2FsdGVkX19PoV9QFyAz7JCxd1l2uWz4xG+qQWDjO9UJ4llHj8lV6g7vlHhuvmd7k7WxpQuqRyp6Sai5UtTugLsTFxRBHA7UHKUwQIzkXHSF0ppActVwIOA15hn8VSUeFQBngskUgSZmdR1LWvS6obKPWy3dxdvgxcg7b/kFn+4tiwcYSqvSYbB1l+ifbLDCztTRVUlCPzU51BiXUuPkVja82SYGK4DtAMhzi0DT5YN4nCuk6FwQNwUbdyQGyaz8uXQHViBTGmwZDLV2GVd89lxkNhx6NlfL+U26eSNKnW5atZwp0FSo453yPIYvMjAWfq+30+KMzcEQ5A42KihyBxXD0Nj/XJQE2Dy7+e3RzeIaozIjfwsNoqAQjAU+6j0LrtngEaW43r9hQsyqaXKtcRN+jhXLbw1P3wdeYzYZ5pUx0NhzaIdWaL2KNAzB/I8UyXRddBy7TUwydjGufKm2HzESHdFKcylngIx7VRovT3O2TdKE9oJM8zwIsYg+ifJLfj7KxnxvCSQMgoIZhW6MctOLtyUZfC9rA+6OoU5xE7Err/m98lXn85ablxi8rmr7Wvb25asdCbsAr60YklFqSVx/Ow4sEu+y2qh70Hh+yKc7vgFZDosRYqxP6B6PQ5XtU1kNhZK8GV1Gtq2fTiynl0J/Ez0+VZLwIWFgqhGD+arWH63ji6OuG2l8OU4jOTSlQ3+upNQbJq4JSwcQUYU/QcOuLgwxf1FYFUKyLAQNV1mXGOj7h19vWVC5MzGXaNColcmfSg+D668riOatPlYnLZ70zZnSS3CcA18wggpmoPugo98COK0ykPvSON/0/1gKSq4rhPNM8jWfdIbD/dxpu3NuIup1/q2US9Rp0Ph6q4w1PY1gKEu4MWALWJrFcyBo+DNfRNPxp1YqYWgkTvnDu9TVaMljAOswbK21UaanLmtwaCuKTVKdXF1LY89Heauv9RVAN1c49Ee2/O5oHvL
- mogQ/wQ1
- KKqwqBpD/2B5DRGocmvEeq/orvfLokIK0JV1imqaHYo+jqh5kwn7godqm1AdTl0FPp0qC1m1K9jy8T6Iee+D0+UFXag6/MD4J+AL8wlVvSNIg9uTqkfupJCIHYu+WqZu8wealwrhv2HMD+0M7HN+uuT0ncn+mewu9yoE9
+X-Rspamd-Queue-Id: 3BAE680014
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 84ozk6phnu9u5an959t1co45uqga8crm
+X-HE-Tag: 1773998414-448111
+X-HE-Meta: U2FsdGVkX1+LhMr5wp0ExbPcLNLyXO6OTRHDuZZO/JJEqnIrGbBy+BQxgpi5Lxi8KCMUHo4S4Lxw6wp6QBnOTDj8i8Swo6IYc4xMYYBCTjMEIfqAoftHbmAfQ/XND7eJT7MBXu5nu6HfsAnl9AgyWNSq7AAWt3mYfvMY2WWvvRTW//J6vgpuDWLJtROYN3jiadfQ1jzIQfxwGrqhntKF7RBxEJqDhIRaxrVc7wGzNBe7noiMaYiZX1d43v4uru9HI6+WDs1cIrxBNUP+JbyhDeJru+xNdxY7k73z2IWqZX3gOzkiF8y2hz84oP/PUfc8Xiy5SYf7ZqqLEx2Gj6nnV1z9HoyS8UiufAHj/d+wFt1gjgaZHHsJIULyOojLSmb94tARxgKJ1ZEBT9PZXSRaSai3LXtKbuoqjAeEgKF31BKDdbs7/Vw9tYJwfNbUoNt67iPs4kUSEDrlONU1AxyFygND6sXX9reUduspzXf9ThnMd3FtX6hHh4zhIk6nd2jO9SxVoKNNOcTLtdywp7f6zBV+xYFe4M3YjAVNDk21KA1Me8C91ZiSZ7RGFnZofpKONo1pNH/p9mNVdN96Hvvtw56noq3agO+qqu3CW1xv9spKXo5URd0+rIcE+l5cdYPhgsZ5v4M2eDuUtoQMjERP6UwY7HrxyEaVAg4p2LKGV15CbWeu8mj30yhVXN3b2jZQy1mhdxn/GLNta81tsll4QziS8Z0kyk3y5zKanrWKy3xXzr9Tw0wGLaCE0LmG49fAW6On9mRrg+rZLWWBg4up8zhHY9GZ9ACKlbFovDXqlfiN+Mt7rNTvqDzAQ1Dp04x/XT57wJNCUoedvTI7yV9sN+BW9tuWtdvw/VzXeA0Z99xyUcAEaGKMhi17Nh6cEihYB0aAm+yuqVK/6OAw/8NpC+L8hLyAJd4HKFrmzOnpSO3N8UqnSzQIMbJaVZUpLN7XShvnJcvjNSB8IChd8/B
+ j3rM4pT7
+ g05ojU3MimhVjJw9x2wvQ7qpX+bJCQw4oHnyHk8Akt6sL70PtQ2tJRAHDe9pq0dYdQgvjm7jidP5cbBxG7C9p3GBVPYgm41xFDVC+gf8hycA36/1MBspF8gzK2Jerzmsj7aeUoTO9P17JfPxcgNtSoSUNJwLz2phViWNI8s57vA1g1m9enJMJo8LwS4dZ3AMZAQl14UrfJcHGCXO+IdJd+a6+AP6ag94PoJf9w8Xc25Tvl2J4v1QPns2EjvhjEUW9NLU5iPjsPpo/xO8EvopuEO3IeFXA3BzkBPhyOxR0Rf9Mu85y1a/RwiqC79Y+kGw2jOr29NyjQJFVcb2EpovuHdsMAO2KSt+zadArQcGEG7GTrF7R9GXuPIAeW8jCw38hWEGs4md/k98TZGRKMcGcLFAFxcZ5I6V0gOIqvLlKhF4lFJuaUxQy4OS19caKjiE1F8u6agEh+9NEg1qWFzHU8Wm09Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,292 +143,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On 17.02.2026 19:01, Andrei Vagin wrote:
-> Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
-> AT_HWCAP2, etc.) from a parent process when they have been modified via
-> prctl.
+On Fri, Mar 20, 2026 at 4:34=E2=80=AFPM zhaoyang.huang
+<zhaoyang.huang@unisoc.com> wrote:
 >
-> To support C/R operations (snapshots, live migration) in heterogeneous
-> clusters, we must ensure that processes utilize CPU features available
-> on all potential target nodes. To solve this, we need to advertise a
-> common feature set across the cluster.
+> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+
+Hi Zhaoyang,
+
+> Since dirty file folios are no longer writeout in reclaiming after
+> 'commit 84798514db50 ("mm: Remove swap_writepage() and
+> shmem_writepage()")', there is no need to isolate them which could help
+> to improve the scan efficiency and decrease the unnecessary TLB flush.
+
+But you are still isolating them with this patch, you just adjusted
+where the statistical update happens.
+
+And this is kind of opposite thing to what I'm trying to do here:
+https://lore.kernel.org/linux-mm/20260318-mglru-reclaim-v1-0-2c46f9eb0508@t=
+encent.com/
+
+> This commit would like to bring the dirty file folios detection forward
+> to isolation phase as well as the statistics which could affect wakeup
+> the flusher thread under legacy LRU. In terms of MGLRU, the dirty file
+> folios have been brought to younger gen when sort_folios.
+
+If you really just skip isolating them, it could cause a regression:
+skipping the isolate and put it back will cause some ping pong effect
+on writeback / dirty folios as they will be stuck at inactive list. It
+will instead decrease scan efficiency.
+
+Currently shrink_folio_list will reactivate them and set the
+PG_reclaim flag. They will be deactivated by writeback callback.
+Simply changing that and the flusher wakeup logic could be a bad idea.
+You can check the link above and see the benchmark result.
+
+And for under writeback folios, there is no IPI flush or unmap as it
+was returned early. For dirty file folios they are unmapped indeed,
+but following flush should reclaim them anyway.
+
+It might be a good idea to skip the unmmap part for dirty file folio?
+Maybe, some benchmark is needed.
+
+>         while (scan < nr_to_scan && !list_empty(src)) {
+>                 struct list_head *move_to =3D src;
+> +               bool dirty, writeback;
+>                 struct folio *folio;
 >
-> This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
-> auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  When
-> execve() is called, if the current process has MMF_USER_HWCAP set, the
-> HWCAP values are extracted from the current auxiliary vector and stored
-> in the linux_binprm structure. These values are then used to populate
-> the auxiliary vector of the new process, effectively inheriting the
-> hardware capabilities.
+>                 folio =3D lru_to_folio(src);
+> @@ -1749,6 +1731,30 @@ static unsigned long isolate_lru_folios(unsigned l=
+ong nr_to_scan,
+>                  */
+>                 scan +=3D nr_pages;
 >
-> The inherited HWCAPs are masked with the hardware capabilities supported
-> by the current kernel to ensure that we don't report more features than
-> actually supported. This is important to avoid unexpected behavior,
-> especially for processes with additional privileges.
->
-> Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-> Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-> Signed-off-by: Andrei Vagin <avagin@google.com>
+> +               if (!folio_trylock(folio))
+> +                       goto move;
+> +               /*
+> +                * The number of dirty pages determines if a node is mark=
+ed
+> +                * reclaim_congested. kswapd will stall and start writing
+> +                * folios if the tail of the LRU is all dirty unqueued fo=
+lios.
+> +                */
+> +               folio_check_dirty_writeback(folio, &dirty, &writeback);
+> +               folio_unlock(folio);
 
-This patch landed in yesterday's linux-next as commit ac8c259ce0d5 
-("exec: inherit HWCAPs from the parent process"). In my tests I found 
-that it causes regression on my Khadas VIM3L board, which is based 
-on Amlogic Meson SM1 (S905D3) SoC 
-(arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l.dts). Running init 
-process fails after this patch:
+For LRU contention, to force active you always have to take it off the
+LRU first, folio_activate will take them off and touch LRU lock
+anyway. And now here, there is more work under lruvec lock and it is
+also trying to lock the folio under the lruvec lock. The LRU
+contention might get worse.
 
-Freeing unused kernel memory: 13696K
-Run /sbin/init as init process
-Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000004
-CPU: 1 UID: 0 PID: 1 Comm: init Not tainted 7.0.0-rc4-next-20260319 
-#12369 PREEMPT
-Hardware name: Khadas VIM3L (DT)
-
-What is probably important here, this board (for some internal, 
-historical reasons) uses armv7l rootfs, but other boards used in my 
-tests, based on different SoCs, also use such rootfs and boot fine with 
-yesterday's linux-next. Reverting ac8c259ce0d5 commit (together with 
-0ea77bbf3b98 due to dependencies) on top of next-20260319 fixes this issue.
-
-
-> ---
->   fs/binfmt_elf.c          |  8 ++---
->   fs/binfmt_elf_fdpic.c    |  8 ++---
->   fs/exec.c                | 63 ++++++++++++++++++++++++++++++++++++++++
->   include/linux/binfmts.h  | 11 +++++++
->   include/linux/mm_types.h |  2 ++
->   kernel/fork.c            |  3 ++
->   kernel/sys.c             |  5 +++-
->   7 files changed, 91 insertions(+), 9 deletions(-)
->
-> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> index 3eb734c192e9..aec129e33f0b 100644
-> --- a/fs/binfmt_elf.c
-> +++ b/fs/binfmt_elf.c
-> @@ -246,7 +246,7 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
->   	 */
->   	ARCH_DLINFO;
->   #endif
-> -	NEW_AUX_ENT(AT_HWCAP, ELF_HWCAP);
-> +	NEW_AUX_ENT(AT_HWCAP, bprm->hwcap);
->   	NEW_AUX_ENT(AT_PAGESZ, ELF_EXEC_PAGESIZE);
->   	NEW_AUX_ENT(AT_CLKTCK, CLOCKS_PER_SEC);
->   	NEW_AUX_ENT(AT_PHDR, phdr_addr);
-> @@ -264,13 +264,13 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
->   	NEW_AUX_ENT(AT_SECURE, bprm->secureexec);
->   	NEW_AUX_ENT(AT_RANDOM, (elf_addr_t)(unsigned long)u_rand_bytes);
->   #ifdef ELF_HWCAP2
-> -	NEW_AUX_ENT(AT_HWCAP2, ELF_HWCAP2);
-> +	NEW_AUX_ENT(AT_HWCAP2, bprm->hwcap2);
->   #endif
->   #ifdef ELF_HWCAP3
-> -	NEW_AUX_ENT(AT_HWCAP3, ELF_HWCAP3);
-> +	NEW_AUX_ENT(AT_HWCAP3, bprm->hwcap3);
->   #endif
->   #ifdef ELF_HWCAP4
-> -	NEW_AUX_ENT(AT_HWCAP4, ELF_HWCAP4);
-> +	NEW_AUX_ENT(AT_HWCAP4, bprm->hwcap4);
->   #endif
->   	NEW_AUX_ENT(AT_EXECFN, bprm->exec);
->   	if (k_platform) {
-> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-> index a3d4e6973b29..55b482f03c82 100644
-> --- a/fs/binfmt_elf_fdpic.c
-> +++ b/fs/binfmt_elf_fdpic.c
-> @@ -629,15 +629,15 @@ static int create_elf_fdpic_tables(struct linux_binprm *bprm,
->   	 */
->   	ARCH_DLINFO;
->   #endif
-> -	NEW_AUX_ENT(AT_HWCAP,	ELF_HWCAP);
-> +	NEW_AUX_ENT(AT_HWCAP,	bprm->hwcap);
->   #ifdef ELF_HWCAP2
-> -	NEW_AUX_ENT(AT_HWCAP2,	ELF_HWCAP2);
-> +	NEW_AUX_ENT(AT_HWCAP2,	bprm->hwcap2);
->   #endif
->   #ifdef ELF_HWCAP3
-> -	NEW_AUX_ENT(AT_HWCAP3,	ELF_HWCAP3);
-> +	NEW_AUX_ENT(AT_HWCAP3,	bprm->hwcap3);
->   #endif
->   #ifdef ELF_HWCAP4
-> -	NEW_AUX_ENT(AT_HWCAP4,	ELF_HWCAP4);
-> +	NEW_AUX_ENT(AT_HWCAP4,	bprm->hwcap4);
->   #endif
->   	NEW_AUX_ENT(AT_PAGESZ,	PAGE_SIZE);
->   	NEW_AUX_ENT(AT_CLKTCK,	CLOCKS_PER_SEC);
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 2e3a6593c6fd..9c70776fca9e 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1454,6 +1454,17 @@ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename, int fl
->   	 */
->   	bprm->is_check = !!(flags & AT_EXECVE_CHECK);
->   
-> +	bprm->hwcap = ELF_HWCAP;
-> +#ifdef ELF_HWCAP2
-> +	bprm->hwcap2 = ELF_HWCAP2;
-> +#endif
-> +#ifdef ELF_HWCAP3
-> +	bprm->hwcap3 = ELF_HWCAP3;
-> +#endif
-> +#ifdef ELF_HWCAP4
-> +	bprm->hwcap4 = ELF_HWCAP4;
-> +#endif
-> +
->   	retval = bprm_mm_init(bprm);
->   	if (!retval)
->   		return bprm;
-> @@ -1775,6 +1786,55 @@ static int bprm_execve(struct linux_binprm *bprm)
->   	return retval;
->   }
->   
-> +static void inherit_hwcap(struct linux_binprm *bprm)
-> +{
-> +	struct mm_struct *mm = current->mm;
-> +	int i, n;
-> +
-> +#ifdef ELF_HWCAP4
-> +	n = 4;
-> +#elif defined(ELF_HWCAP3)
-> +	n = 3;
-> +#elif defined(ELF_HWCAP2)
-> +	n = 2;
-> +#else
-> +	n = 1;
-> +#endif
-> +
-> +	for (i = 0; n && i < AT_VECTOR_SIZE; i += 2) {
-> +		unsigned long type = mm->saved_auxv[i];
-> +		unsigned long val = mm->saved_auxv[i + 1];
-> +
-> +		switch (type) {
-> +		case AT_NULL:
-> +			goto done;
-> +		case AT_HWCAP:
-> +			bprm->hwcap = val & ELF_HWCAP;
-> +			break;
-> +#ifdef ELF_HWCAP2
-> +		case AT_HWCAP2:
-> +			bprm->hwcap2 = val & ELF_HWCAP2;
-> +			break;
-> +#endif
-> +#ifdef ELF_HWCAP3
-> +		case AT_HWCAP3:
-> +			bprm->hwcap3 = val & ELF_HWCAP3;
-> +			break;
-> +#endif
-> +#ifdef ELF_HWCAP4
-> +		case AT_HWCAP4:
-> +			bprm->hwcap4 = val & ELF_HWCAP4;
-> +			break;
-> +#endif
-> +		default:
-> +			continue;
-> +		}
-> +		n--;
-> +	}
-> +done:
-> +	mm_flags_set(MMF_USER_HWCAP, bprm->mm);
-> +}
-> +
->   static int do_execveat_common(int fd, struct filename *filename,
->   			      struct user_arg_ptr argv,
->   			      struct user_arg_ptr envp,
-> @@ -1843,6 +1903,9 @@ static int do_execveat_common(int fd, struct filename *filename,
->   			     current->comm, bprm->filename);
->   	}
->   
-> +	if (mm_flags_test(MMF_USER_HWCAP, current->mm))
-> +		inherit_hwcap(bprm);
-> +
->   	return bprm_execve(bprm);
->   }
->   
-> diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-> index 65abd5ab8836..94a3dcf9b1d2 100644
-> --- a/include/linux/binfmts.h
-> +++ b/include/linux/binfmts.h
-> @@ -2,6 +2,7 @@
->   #ifndef _LINUX_BINFMTS_H
->   #define _LINUX_BINFMTS_H
->   
-> +#include <linux/elf.h>
->   #include <linux/sched.h>
->   #include <linux/unistd.h>
->   #include <asm/exec.h>
-> @@ -67,6 +68,16 @@ struct linux_binprm {
->   	unsigned long exec;
->   
->   	struct rlimit rlim_stack; /* Saved RLIMIT_STACK used during exec. */
-> +	unsigned long hwcap;
-> +#ifdef ELF_HWCAP2
-> +	unsigned long hwcap2;
-> +#endif
-> +#ifdef ELF_HWCAP3
-> +	unsigned long hwcap3;
-> +#endif
-> +#ifdef ELF_HWCAP4
-> +	unsigned long hwcap4;
-> +#endif
->   
->   	char buf[BINPRM_BUF_SIZE];
->   } __randomize_layout;
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 8731606d8d36..2f3c6ad48c0a 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1918,6 +1918,8 @@ enum {
->   #define MMF_TOPDOWN		31	/* mm searches top down by default */
->   #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
->   
-> +#define MMF_USER_HWCAP		32	/* user-defined HWCAPs */
-> +
->   #define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
->   				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
->   				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index e832da9d15a4..4c92a2bc3cbb 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1104,6 +1104,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
->   
->   		__mm_flags_overwrite_word(mm, mmf_init_legacy_flags(flags));
->   		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
-> +
-> +		if (mm_flags_test(MMF_USER_HWCAP, current->mm))
-> +			mm_flags_set(MMF_USER_HWCAP, mm);
->   	} else {
->   		__mm_flags_overwrite_word(mm, default_dump_filter);
->   		mm->def_flags = 0;
-> diff --git a/kernel/sys.c b/kernel/sys.c
-> index cdbf8513caf6..e4b0fa2f6845 100644
-> --- a/kernel/sys.c
-> +++ b/kernel/sys.c
-> @@ -2157,8 +2157,10 @@ static int prctl_set_mm_map(int opt, const void __user *addr, unsigned long data
->   	 * not introduce additional locks here making the kernel
->   	 * more complex.
->   	 */
-> -	if (prctl_map.auxv_size)
-> +	if (prctl_map.auxv_size) {
->   		memcpy(mm->saved_auxv, user_auxv, sizeof(user_auxv));
-> +		mm_flags_set(MMF_USER_HWCAP, mm);
-> +	}
->   
->   	mmap_read_unlock(mm);
->   	return 0;
-> @@ -2190,6 +2192,7 @@ static int prctl_set_auxv(struct mm_struct *mm, unsigned long addr,
->   
->   	task_lock(current);
->   	memcpy(mm->saved_auxv, user_auxv, len);
-> +	mm_flags_set(MMF_USER_HWCAP, mm);
->   	task_unlock(current);
->   
->   	return 0;
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+And the wakeup below seems very wrong, you just can't throttle or wait
+or sleep under LRU lock.
 
