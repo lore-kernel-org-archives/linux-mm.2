@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE403108B8F7
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C93A108B905
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 182346B008A; Fri, 20 Mar 2026 07:45:45 -0400 (EDT)
+	id AB4EA6B0005; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 132B86B008C; Fri, 20 Mar 2026 07:45:45 -0400 (EDT)
+	id A66086B0088; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06FF46B0092; Fri, 20 Mar 2026 07:45:45 -0400 (EDT)
+	id 97B966B0089; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E8AD16B008A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:45:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E88614019A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:45:44 +0000 (UTC)
-X-FDA: 84566261808.03.BD8B00C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E196E12000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:45:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BMNDdYBV;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 870786B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF8A21B6D8D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:52:20 +0000 (UTC)
+X-FDA: 84566278440.26.2711D13
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EDA5540009
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:52:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pDdnElzp;
+	spf=pass (imf07.hostedemail.com: domain of 38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774007142;
+	s=arc-20220608; t=1774007539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kwLLq3QmrLWB5AzSReR2gD8eKTdNOjwY2/3ZSS6yUr8=;
-	b=i5Yz9zN30qbGU4UR8EsA9trV6vT9xVJntR76u0MDxX3/0kw5fnFu4UQosmrtdg+ifRWfmD
-	A6rqbS8bh+phD506yj+1x3UYg07S1UjWgqf3slh1i1O+/EGQi64RpQeW9a3Fw6UPcbeC0l
-	wkOLAxtWEHWgdFkeWoxkOx5YyIl5ZPE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BMNDdYBV;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774007142; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gU69MYAltTpsVwDKd9QeUs/oT95TyhbpJovXUD5z/eo=;
+	b=eUbqVQAVij4VaFhw/AUA4UX3CEMrX41qgyCyEL3p0GXTHny3P/SlYXSdIYX0vp1ID+tTTq
+	jJM5Yp/ozFWMu+jvg+f13CUe7NUU7VtCdwe10GxP2Hoa2qGGS6Pw4z9l8ptF5X3YDTMBsA
+	5ORMqd2mZg6pgX4du+dod0j3G+Vnw9E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774007539; a=rsa-sha256;
 	cv=none;
-	b=6G0VMUKvCTn8AUGH0GrdLuDQNGTj5FY706VOtB1AeDlguLXULiwATPDyNhAYEr5/wXdfJp
-	eOPjgb4zPrQYmKup74USJjDLPMZpQaTF3pPtomWop0Fs7YBke1L/nA1WAc96uYIHna8Rc1
-	ZFBR2ijfJZHklsfCjfb7kjpkJQ9k/Pc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C27960121;
-	Fri, 20 Mar 2026 11:45:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61018C4CEF7;
-	Fri, 20 Mar 2026 11:45:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774007141;
-	bh=9uYSpemjFc02l0BJoev5VXaeMVr+pvhj4ZI4N7TRYqY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BMNDdYBVDRf4/rsEZDI6utjufu/E6f2DJlRkhVEXdQjNlL0A1FwPypLQU44/OTnAQ
-	 WUdATRIAFL/vhZxklW/uOPlahqHV4fP0Dk2LQxQR++CiffsK712fR72ytyogsZFtVp
-	 n93QeAXiOjY3lUjYYrszwbJ1stidv5XJuqxJC1xbsxjETFj7QC01GQRVr8PtYFDidE
-	 SPPnrSrI1MYhU1QxDmH18n8j7qkqiGS/gs0WnFjojXDfDJxcx5G9/1SRx4canOclDU
-	 XoeFhhh5m5DoL3IFeHRgw75aScqPoaBFR9lZsE+M7VV+dAYCZFxC2GMdmc/DX31mdB
-	 p9zrAc9eDWOPg==
-Date: Fri, 20 Mar 2026 11:45:37 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
-	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] mm/mprotect: un-inline folio_pte_batch_flags()
-Message-ID: <11929205-d0dd-4e8f-8a99-2d0b02cfd5bd@lucifer.local>
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-4-pfalcato@suse.de>
- <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
- <69382383-5f08-408f-8c13-d674e82c4dfd@kernel.org>
- <fcc2665f-014b-490f-8451-ca907730e60c@lucifer.local>
- <9b0aaa19-b839-4ebb-a312-097b869154c1@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b0aaa19-b839-4ebb-a312-097b869154c1@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E196E12000C
-X-Stat-Signature: 8dz5a49ck8o796d1f3jj9kqcpf5714yj
+	b=XhDfwwbgqzcwOOtjVCO2fm8Vt8kylT2B9kl3jnyh9y7iW/NEu1cNJz2cVoNrDqIjrPj9v0
+	b+SZEG12RhdGG3qOpau6Jp98WsAukWA2pPWUn7hZKWzpMmNCiVOrK/zbfFt1oHCWtHup34
+	dW2BAV76eAhd0lIYYeiLLVV/AMXyitg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pDdnElzp;
+	spf=pass (imf07.hostedemail.com: domain of 38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35842aa350fso9349875a91.0
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774007538; x=1774612338; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gU69MYAltTpsVwDKd9QeUs/oT95TyhbpJovXUD5z/eo=;
+        b=pDdnElzpYKtQBguH8YeToR0wxqY1wXKhJkt612MPIqf+SlAy7n1uUs8moa9g1otbvL
+         dVQOVixnOjqSXQHl78KuF5O7GuzdNKW9swLUzLQ87xt1WhrDnaDrn9n7FzQwOBrWEjeC
+         tgFhaNGW4CtzeqS10NiJuuJfD731vKS+UZGaXgds7nY/r143p5aDmRNpyWyYIRCpkW5W
+         S2dFw1+6cS9lvAmoVEPmEPYuVsOSyMrTv/xjFTq1SHHtpyEDFKTfhDVVn+voXATX58JP
+         tHVYXlo6SPjqqSaCAM7KSqjALKcTrvMRCBxzmTNc8avWSGzSM6A4v6yw6kp1sLWQ0H80
+         UrVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774007538; x=1774612338;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gU69MYAltTpsVwDKd9QeUs/oT95TyhbpJovXUD5z/eo=;
+        b=kfIY2JfqW1N4Ij7kzIxM3hLMCPWhwAua6RabJOdD+5WFch2hsJUqfflEgO5UrFK4Ge
+         ElvxFCNd6MSE815Kaa3I9oME1UC5P06t9prVjPTOFq89xbvlomBV6GcfIDTyoDzcpqOt
+         bBJa8A95BzmQe4GPOM4HirK7ZbBdGY0gL+IVq0LlAHwQaFnZp12cEjouIg5Jy0e9ydSL
+         VEhT/bMwl4BqNdp+dBCpeH5gpQWQLo4G+YqYvOt7G1+8jaILuL1fY8Yxi9Ni1JeGepwh
+         vcQsa0zA6phqlTim4z3v+PnWrMKXiT/ILBb2eZ2u8fKbqPEiqm8fXZm2wUxshwx4fMc/
+         L70A==
+X-Forwarded-Encrypted: i=1; AJvYcCUspraSdjc5fDzftC3pCVIkZdozjgJePNeTKAfnbsEFuub17S10YZJpnioEiqeO8U7HpCV5FZcfCQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy7XgCmuzqPJektEE0Q0icpAUzr4wREhDgPGMd5vress8h6NFR/
+	l9/8CDGSCYT3Z/HmriIYsabqQmMDxNNC3spewgsfhffE2J5Qr8QI3nFo236VnPUVw8naxweJgeG
+	bDixs2x2JhS1Lkx2TOtv5L0N5Zw==
+X-Received: from pjzd9.prod.google.com ([2002:a17:90a:e289:b0:356:1f2b:7ea1])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:4c8e:b0:35b:93d8:6aaa with SMTP id 98e67ed59e1d1-35bd2cf8065mr2240997a91.19.1774007537556;
+ Fri, 20 Mar 2026 04:52:17 -0700 (PDT)
+Date: Fri, 20 Mar 2026 11:52:14 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <20260320115214.143933-1-joonwonkang@google.com>
+Subject: [PATCH] percpu: Fix hint invariant breakage
+From: Joonwon Kang <joonwonkang@google.com>
+To: dennis@kernel.org, tj@kernel.org, cl@gentwo.org
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Joonwon Kang <joonwonkang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1774007142-14364
-X-HE-Meta: U2FsdGVkX18tQXcp6b5rBtHacXgwH4bH0s+BEN/JfgD8WHbdcbYgOtW8+H9ZQSOxdrQRs8DJHhP3O0MzALYPz4bLbvaC3SzDONVWdvdkWefcdwyT1QiYorzUKpx9AidPWBoPhQttcQNThriknsEVfmASoTBX1wVGZcQnBZqmQtYxYy6rcqaE9DP38Y8R8kCbcDhQ8DLNDKbmftDVbmpI8zAFQKsapH5ubJsFsXgnHew3fDncZ8Lln3miIkEBy9GvdNDEG+xENt7fAeNV8PK1e1jBobsli8DKjT/F4AfmATHUyyR3aH+cY5eqGjP7i3rLaNVYaRB3gcV7r5XWIXKbM7A/qt8da1COsjQbc7XCS3OO4IxOEGiE/Dge+BdUq3dMYkWvkn0oq6kLnz0m+GnG/tsr0M8kcX7LQovSzxjUrwOSD5K4gj82Zb6WjUMyJEptid2/pyyXKZcqBURaVyhqjFDts1hA4aKp55eie4rXoZOFuzNcOfno4Zd3o/s0MFU8tKnqcA5iA+dA1pYdY6pbKXzowsDo5IbzdLD2E2T2NKD4JWR2W6Zh+wk4e8oZs7Vpu7eoZWO0krmXYplH3Zp2q0wMnCSmZTx98w/NiDl0m5tiaGtNxgcxGip/GRq62LDaaA3elOi/HqKtJImymivJX2+O1e1fo5RitS16a47ItqkXePxlgEK4OkUTyR/AseL20VpX9NtIrtQGqW8C1g502tn5KK/S+zY2U+hAcHcOLM2X7dRBSiXb8fnzQLmFYoAVN/bef4LSFelEUze/SvR4kxf47+By8ZkA40sHflxIeqvovxb64eR9lFT6hjsAMees0iwMh+yEs6Eba/yi7Fzlb+iTIo61fJ9aDo2fQBP5AvDJY4+r+ZupMvrXzdNOmJabv+gAoqPKC2xpDlB1X1luri0fK/2yrdH5r8xApm9GBKI2GcBG/DlXjycUrVV3PMKEsg4ab5aLaYpdM1hMqwM
- g9mSseHD
- 7czmU6ZzQPEOQWeHg1neMMxMPg7CJxKVJeiukd0XvxeiceIMLmssLAZZNPZN9+6fDJcbNrjKv7tuj3GACYeiGCcdtecaNDyrioUyy/b9ZZww4+h+hQK9DPS+DPrfyPlPE1DU02b7hXZMS80BvgKLUbxUdjrEDPpOkomE2QVt7HJoK942yGsA1RBS0LL1Dp6bZeJPGo7naNmVBnAOKyCL/FdPNdXIjP9913OybSZFBAniolznUiLfD9hzvBWba5cuuB6FfxWpXMv2QIH4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EDA5540009
+X-Stat-Signature: s37a5ff9an5ebpjruekmdft81hbdajwy
+X-HE-Tag: 1774007538-14581
+X-HE-Meta: U2FsdGVkX1/GqeNWbc3LYpP47S7zqnHIMdU/A/y60hXbl60OR2x46nuVeni0GehBuUR82DSpmNtGTiEGhWVBJUn4EJpFtUXfU3Tn60iYdxqd5GXF3yyp+UtAUhnK5xWrbZKjz+z2T+aYKoAN4GocrUiFdhGwjx1akBKYZFJTaY20j5Y5NwDswVFf6Dji9NudZFyd8eMZklYgTNz4HEJHQdscZ4vVN0b6JzDYZuWgaTY9+q8rLnTQakSjcRcrnt6gl/O59UYDmE+NMLalrrc9D8v6/BDGLzbWtGcJjA/h9hByDC28JwqpZooXUrwX1AWoNinAC+hlDeCdrT3Xmixfx/5tUew+BR06Ijz9Ewy+v2mo9m4B7DlXEWzATOydlZXFuPW0+70QACzSkpPJ0E+gnjOGSp58m7u5fBYIB2uSrIMOGyaSFAmIQZTHzMzoupN3q5rNXqGHWBW56gJKp36RbKuEZL8KuD39Q7efhDXnmqxSqUpsZT5yl6rMI8G7Wpns6/DuF2xEoEisqmT3lX6Rf3g7D4DBpoAQ+9MKe4BQjrkFgnesOPOw5UDivOuNqhA+0A6mWbrkViPzRa7T/D+Cb809JPf/XmLIw5bdDmGNKeahFKvC522Tr7V29rDWwhf8vTcSsQEE4m2v85loZ5LUVMuFH2Xo6niIaXQFQdI+qR38usbHSluTqCAry9EFm8XtongqhTucjF1T5V/OjnYZTEGDqRU+9ZKgnwOcU6tP7RN1Xm3eeXiuh5cbYYU2ysy7pPY6DYqtb7UV/5nENPwUD3YY5RxCtlN7UWbUy0H1y7ovW9jWoDGXX1iEkT371bq5MoJa1+t2XcW0UmatFU9IDu6L+GUAwYd5fB7W2Je0XrrH11Q5GqxpLvmbIFnqajlLcqn7R85QNP/bjqgVqzL6sYGsRM48BLIZJ76m4lvpMI2Xs/Xjk0ltCdBpL1sTyZR5/rdiwCtdgeYcHxdkkNK
+ kFzs1+00
+ OGOCHGZ9rBFIx3Aw1kM0Lwfs6fBfYFGmvcDypsmqtKSyZPIcx4kqaqY5c7RhJw2U76Vo/2BR3y7xHRrPMdLgzIjAFP81nvfvVq2hBZN/G4idor4f8hXRBT+TfpGafYg74cc8Glj7KvI1b/ecs1PtJpbEn8iC96nanCbatQzYanNMMQt3kXHR7NkUpWKjhnKxUq2IiONlwdpVKi3WOxYn7LV7XLqeuKjRYo5froHqJCjcVVWtJXznHAMDQxM/1yAI8IFrJIFFBC6Y3+Mu9ItbVuwxUYmN6K6wyXffw5grzTeeZh9SIeFrL43fVw1hWCSyey/Ta+yv1mc04+n5FD7WFVNXoZZfa2ZTlAj/UIonV8Ue9YjkY31HIrOKVH4pdxxJXMjbvUEaslOD12dTL4A9GAZXysr9yqV2ly2YWz5zJORs/n5sy+Vmv4T2fDoON7piDrQXsJ3H6PxjnreKtmjF/m6ZNZSnlcacyySYGGzF6mfWZ7to4SN2wGNSXj3VN7qpM24IeQA+8c0UJ+awpjBUKYQFe+pse+muyFejlIMDVyj9vR1Uiwk0fewmW22/N6UxBpaZoMCBrsshTUvb+2hYyHPai0JtCq6L3aivRbO9rvs1MgN/qrGCK4UqyiOevYw/tq6BBhmnaBtJfcKel1qKFVPjt0rHi/TS9Eodv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,221 +104,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 12:01:09PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/20/26 11:36, Lorenzo Stoakes (Oracle) wrote:
-> > On Thu, Mar 19, 2026 at 10:41:54PM +0100, David Hildenbrand (Arm) wrote:
-> >>
-> >>>
-> >>> This is all seems VERY delicate, and subject to somebody else coming along and
-> >>> breaking it/causing some of these noinline/__always_inline invocations to make
-> >>> things far worse.
-> >>>
-> >>> I also reserve the right to seriously rework this pile of crap software.
-> >>>
-> >>> I'd rather we try to find less fragile ways to optimise!
-> >>>
-> >>> Maybe there's some steps that are bigger wins than others?
-> >>
-> >> What we can do is, collect similar folio_pte_batch_*() variants and
-> >> centralize them in mm/utils.c.
-> >
-> > I'm not sure that addresses any of the comments above?
->
-> Well, the point is that you still end up with an optimized variant
-> regarding flags, and you don't have to play games in this file with
-> "inline".
+The invariant "scan_hint_start > contig_hint_start if and only if
+scan_hint == contig_hint" should be kept for hint management. However,
+it could be broken in some cases:
 
-Right, I mean maybe we're talking across purposes here, if the variants are say
-generalised specific sets of behaviour rather than 'mprotect folio pte batch' or
-'mremap folio pte batch' or whatever then that's fine.
+  - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
+    scan_hint_start < new contig start) && the new contig is to become a
+    new contig_hint due to its better alignment, then scan_hint should
+    be invalidated instead of keeping it.
 
->
-> >
-> > Putting logic specific to components of mm away from where those components
-> > are and into mm/util.c seems like a complete regression in terms of
-> > fragility and code separation.
->
-> My point is that in mm/rmap.c we have another caller that passes
-> FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY, that could use the same
-> optimized function.
->
-> For folio_pte_batch_flags() we primarily care about propagating the
-> flags such that __pte_batch_clear_ignored() will become as short and
-> small as possible.
->
-> How much that matters in practice? For fork() and unmap() it was
-> measurable. So I'd assume for mprotect() it would matter as well.
+  - if (new contig == contig_hint > scan_hint) && (start <
+    contig_hint_start) && the new contig is not to become a new
+    contig_hint, then scan_hint should be invalidated instead of being
+    updated to the new contig.
 
-Yeah I think this was a misunderstanding, that's fine.
+This commit fixes this invariant breakage and also optimizes scan_hint
+by keeping it or updating it when acceptable:
 
->
-> >
-> > And for what reason would you want to do that? To force a noinline of an
-> > inline and people 'just have to know' that's why you randomly separated the
-> > two?
->
-> Again, I don't want the noinline. But providing a single optimized
-> instance for two users that care about the same flags makes perfect
-> sense to me.
+  - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
+    contig start < contig_hint_start), then keep scan_hint instead of
+    invalidating it.
 
-Yup, that's fine! I agree with you now I realise this was a
-misunderstanding :p
+  - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
+    new contig start < scan_hint_start), then update scan_hint to the
+    old contig_hint instead of invalidating it.
 
->
-> >
-> > Doesn't sound appealing overall.
-> >
-> > I'd rather we find a way to implement the batching such that it doesn't
-> > exhibit bad inlining decisions in the first place.
-> >
-> > I mean mprotect_folio_batch() having !folio, !folio_test_large() checks
-> > only there is already silly, we should have a _general_ function that does
-> > optimisations like that.
-> >
-> > Isn't the issue rather than folio_pte_batch_flags() shouldn't be an inline
-> > function in internal.h but rather a function in mm/util.c?
->
-> No, we want specialized code for fork and zapping. That's the whole
-> purpose: optimize out the flag checks in the loop.
+  - if (new contig == contig_hint > scan_hint) && (new contig start <
+    contig_hint_start) && the new contig is to become a new contig_hint
+    due to its better alignment, then update scan_hint to the old
+    contig_hint instead of invalidating or keeping it.
 
-Yeah, I think something isn't quite working right there though if we're
-seeing measureable improvements by doing:
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+---
+ mm/percpu.c | 60 ++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 39 insertions(+), 21 deletions(-)
 
-static noinline unsigned int blahdy_blah()
-{
-	...
-	return folio_pte_batch_flags(...);
-}
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 81462ce5866e..a0e4f8acb7c2 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -641,19 +641,13 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
+ 	if (contig > block->contig_hint) {
+ 		/* promote the old contig_hint to be the new scan_hint */
+ 		if (start > block->contig_hint_start) {
+-			if (block->contig_hint > block->scan_hint) {
++			if (block->contig_hint > block->scan_hint ||
++			    start < block->scan_hint_start) {
+ 				block->scan_hint_start =
+ 					block->contig_hint_start;
+ 				block->scan_hint = block->contig_hint;
+-			} else if (start < block->scan_hint_start) {
+-				/*
+-				 * The old contig_hint == scan_hint.  But, the
+-				 * new contig is larger so hold the invariant
+-				 * scan_hint_start < contig_hint_start.
+-				 */
+-				block->scan_hint = 0;
+ 			}
+-		} else {
++		} else if (start < block->scan_hint_start) {
+ 			block->scan_hint = 0;
+ 		}
+ 		block->contig_hint_start = start;
+@@ -662,20 +656,44 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
+ 		if (block->contig_hint_start &&
+ 		    (!start ||
+ 		     __ffs(start) > __ffs(block->contig_hint_start))) {
++			if (block->contig_hint > block->scan_hint) {
++				if (start < block->contig_hint_start) {
++					block->scan_hint = block->contig_hint;
++					block->scan_hint_start = block->contig_hint_start;
++				}
++			} else if (start > block->scan_hint_start) {
++				/*
++				 * old contig_hint == old scan_hint == contig.
++				 * But, the new contig is farther than the old
++				 * scan_hint so hold the invariant
++				 * scan_hint_start > contig_hint_start iff
++				 * scan_hint == contig_hint.
++				 */
++				block->scan_hint = 0;
++			}
++
+ 			/* start has a better alignment so use it */
+ 			block->contig_hint_start = start;
+-			if (start < block->scan_hint_start &&
+-			    block->contig_hint > block->scan_hint)
+-				block->scan_hint = 0;
+-		} else if (start > block->scan_hint_start ||
+-			   block->contig_hint > block->scan_hint) {
+-			/*
+-			 * Knowing contig == contig_hint, update the scan_hint
+-			 * if it is farther than or larger than the current
+-			 * scan_hint.
+-			 */
+-			block->scan_hint_start = start;
+-			block->scan_hint = contig;
++		} else {
++			if (block->contig_hint > block->scan_hint) {
++				if (start < block->contig_hint_start) {
++					/*
++					 * old scan_hint < contig == old
++					 * contig_hint. But, the new contig is
++					 * before the old contig_hint so hold
++					 * the invariant
++					 * scan_hint_start > contig_hint_start
++					 * iff scan_hint == contig_hint.
++					 */
++					block->scan_hint = 0;
++				} else {
++					block->scan_hint_start = start;
++					block->scan_hint = contig;
++				}
++			} else if (start > block->scan_hint_start) {
++				block->scan_hint_start = start;
++				block->scan_hint = contig;
++			}
+ 		}
+ 	} else {
+ 		/*
+-- 
+2.53.0.1018.g2bb0e51243-goog
 
-But we need to figure out exactly what via actual perf analysis, as perf is
-an area that totally confounds developer expectation and 'going with your
-gut' is a perfect way of doing completely the wrong thing.
-
-(And I've repeatedly seen otherwise smart developers do this OVER and OVER
-again, it's like a honey trap for the clever).
-
-Not saying any of that applies to you or Pedro :) just a general point.
-
-I don't _love_ that function being inline like that, but I will cede to the
-data, but right now it seems, at least for I guess order-0 folios that it's
-not quite doing what we want.
-
-Anyway we're agreed the best way forwards here, for now, is to specialise
-order-0 which just seems like an all-round win, and maybe the rest is not
-as much of a contributor?
-
->
-> >
-> >>
-> >> For
-> >>
-> >> 	nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte,
-> >> 					   max_nr_ptes, /* flags = */ 0)
-> >>
-> >> We might just be able to use folio_pte_batch()?
-> >
-> > Yup.
-> >
-> >>
-> >> For the other variant (soft-dirt+write) we'd have to create a helper like
-> >>
-> >> 	folio_pte_batch_sd_w() [better name suggestion welcome]
-> >>
-> >> That will reduce the code footprint overall I guess.
-> >
-> > I mean yeah that's a terrible name so obviously it'd have to be something
-> > better.
-> >
-> > But again, this seems pretty stupid, now we're writing a bunch of duplicate
-> > per-case code to force noinline because we made the central function inline
-> > no?
-> >
-> > That's also super fragile, because an engineer might later decide that
-> > pattern is horrible and fix it, and we regress this.
-> >
-> > But I mean overall, is the perf here really all that important? Are people
-> > really that dependent on mprotect() et al. performing brilliantly fast?
->
-> For basic primitives like mprotect/zap/fork I think yes. For other stuff
-> like rmap.c, maybe not.
-
-Well on big ranges of mprotect() it could be, and I know often databases
-like to do this kind of thing potentially, so yeah sure.
-
-But more so the microbenchmark stuff of *a million protect() invocations*
-is not something to optimise for so much.
-
-Rather I'd say mprotect() over larger ranges is what we should look to.
-
-Fork of course is utterly critical despite fork being both a terrible
-mistake and a great idea at the exact same time in OS development history
-:)
-
->
-> >
-> > Couldn't we do this with any mm interface and end up making efforts that
-> > degrade code quality, increase fragility for dubious benefit?
->
-> I don't see a big issue here like you do.
-
-As I've said to Pedro elsewhere here, I guess my concern is nuanced:
-
-So if we introduce stuff like carefully chosen __always_inline or noinline
-or other things that have characteristics like:
-
-- They're beneficial for the code AS-IS.
-- They're based on compiler codegen that can easily be altered by other
-  changes.
-- It is not obvious how other changes to the code might break them.
-
-We are asking for trouble - because people WILL change that code and WILL
-break that, OR a possibly worse outcome - something like a noinline sticks
-around when it makes sense, but everybody's scared to remove it + _doesn't
-know why it's there_ - so it becomes a part of 'oh yeah we don't touch
-that' lore that exists for a lot of 'weird' stuff in the kernel.
-
-Then it might end up actually _worsening_ the performance in future
-accidentally because nobody dare touch it.
-
-Or another hellish future is one in which such things cause bot perf
-regression reports for otherwise fine series, on microoptimisations we're
-not even clear matter, and cause developers to have to spend hours figuring
-out how to avoid them, meanwhile potentially making it even more difficult
-to understand why the code is the way it is.
-
-So what is the solution?
-
-1. Focus on the changes that are NOT brittle like this, e.g. special casing
-   order-0 is fine, adding profile/benchmark-proven likely()/unlikely(),
-   etc. - these are not things that have the above characteristics and are
-   just wins.
-
-2. For cases where things MIGHT have the characteristics listed above,
-   avoid the issue by abstracting it as much as possible, adding lengthily
-   comments and making it as hard as possible to screw it up/misunderstand
-   it.
-
-3. Often times perf issues coming up might be an indication that the
-   underlying mechanism is itself not well abstracted/already adding
-   unnecessary complexity that manifests in perf issues, so in that case -
-   rework first.
-
-mm/mprotect.c is a good example of case 3 I think in that it's a big ball
-of mud with overly long functions (e.g. change_pte_range(),
-do_mprotect_pkey()) that likely refactoring code actually see perf gains
-just from the compiler not having to heuristically determine inlining/other
-optimisations due to functions being in smalle rchunks.
-
-Anwyay in this case, we can pull out an example of approach 3 (the softleaf
-specialisation), and approach 1 (order-0) handling easily, and defer
-considering taking approach 2 if it makes sense to later, if we get most of
-the wins by doing the former 2 things.
-
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
 
