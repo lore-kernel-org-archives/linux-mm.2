@@ -4,126 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10BDE108B906
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A190D108B907
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 678156B0005; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
+	id C1F436B0005; Fri, 20 Mar 2026 07:58:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627BD6B0088; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
+	id BF6D36B0088; Fri, 20 Mar 2026 07:58:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 516686B0089; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
+	id B0D2E6B0089; Fri, 20 Mar 2026 07:58:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E27B6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CAE7388415
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:57:13 +0000 (UTC)
-X-FDA: 84566290746.22.BC6395E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 04619120004
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:57:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cuDpamLL;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 9BA0A6B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:58:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 68385138E6D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:58:37 +0000 (UTC)
+X-FDA: 84566294274.17.41D6678
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B234D1C000C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:58:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UZj1TehD;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774007832;
+	s=arc-20220608; t=1774007915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f0Avv2YVnMjut1nZHkcEN2Xio1w9aceLXv7p5r9+qm4=;
-	b=cF+PCtg9TbVo2dS2jj+CI3YcNB798qvxh7TXhg1Z6opHtDgJywTzcTez9HiCiaZrDtiWPH
-	gPWHKN36DYqO6EmsSTZFvTKlGzyVbdQ/a8ymPgJqCyXj3M4zbc6JheK1QT001WihTxjYPw
-	lGbth1I0+nF6jCeKiOutMRnv5CbIBys=
+	bh=IuOrlUVKMSeFJsBtTFh7rDB0DmiEb3eMh3APhlpmr5g=;
+	b=jP6SkjuTqa5TWUBSP4HUQxNG5BKeJm/7+sPN60IxV2vrT8cjGne+1xMg6PrOzOtr1YCZ9X
+	sDUE7OxcA65Uc8OHK2aJbe2AgJUGasfe8dfc3wYX0zBOyuhaVZEj6eKKEaAQXPXMX7Wu3o
+	ekU7A/Fx/pSUWqTBw9z4qLHhH0DtG2w=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cuDpamLL;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UZj1TehD;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774007832; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774007915; a=rsa-sha256;
 	cv=none;
-	b=LYyTzvlwz4VfmdnBu5/pgpc+R01zSdeiAVvpzFfobbW60ra8B7KvFyjrCS52MTvmKfgV1Q
-	PAcP3Mc7P0K0AdY4a8cjmFoCwfOi3508KCY41VRdhkEHxFhgWV0zS+WhOWZVCosRXr+e+e
-	n0nxb76j/zqRq4hDTMF+H5t7CgM44wk=
+	b=b7k3pSMNpw/ehub3xK9+P5hGwEHwOXt9QePU80S33a5JoUv9OhRfpQ6HddG8wJPZbsK17G
+	xqUvOzDeT4Ao3/BFKCXj/Rbt50WcSrMAHGCpb8uTIC4AmdIXh3CGe9n91CtieHmvsGbRSv
+	zBatQwzTDcGjyaIoO73PaZtFfl9NJoA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0223C4090D;
-	Fri, 20 Mar 2026 11:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12487C4CEF7;
-	Fri, 20 Mar 2026 11:56:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F280560126;
+	Fri, 20 Mar 2026 11:58:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C356C4CEF7;
+	Fri, 20 Mar 2026 11:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774007830;
-	bh=Mf6a4DBjpHPIv99A+jyu38p3Ewxs7HRLba8NEsfOQGI=;
+	s=k20201202; t=1774007914;
+	bh=Ryo1Qk3L6fhEy2jkfzXaQ5d40PDZj2eheNRbmld+wIc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cuDpamLL0C3greMzg3QB3iyxDWrB+iPjvn/sWXP2e2e9/imSZKeqLOJuj86hB5fR5
-	 MpMlIXyYEJ3MpstWS2TNTxc7fPtpr78amYFwSOMT/Z4EbHpHbONMyV4YsJuR3t98Nb
-	 FEbnlbwER8qae1AsGU6GnwW4+9cfxLDAC0qs0oHPsO7egT+TylsTJvINu9itZrSjl7
-	 EPJyLWEeAHwlxiL2kwGHiSjDsnGPHWFbJdp6Rbm6cCGki04+T39gZ1hT16wjCd1Gxr
-	 c3zL8LsHoRAxuJJWym+LonC/toJ20E1OUQ+JRmG7wDErFQEtivfSVdjL3z2Qo7++7u
-	 jKz30Jywr94ww==
-Message-ID: <373186fb-5000-47ba-85a3-4085658a7101@kernel.org>
-Date: Fri, 20 Mar 2026 12:56:56 +0100
+	b=UZj1TehDLwaJJfofAcz9/qeUE9czNEiAtXFAu65TdU3+3yPMd6v7XpRwGbj1afsQR
+	 XNPJMfCfwHlXEtTY+0WJqstX9r2SfqQZaxxdG0jXtrl9bK5NsD/spqw5yq8tbOYPF4
+	 wifxJj4R7hvAsH/bxI9LTuH7wNEXOqpnR//PYH8xe5czt73pGE2B1lQPqI2c9hzMgP
+	 52e+opofUym8AxByKc+/d7Jh56E9gAIv0peRbAR8WJpgZOpK49ogawWfn4bpBaz1JB
+	 dRHvp4tKCgw218V8vWAckR0HlgsZc8EeXq7t2dB2MgvORpfzCIXItBG5K+L7etRlW6
+	 AQilL/An/hVZw==
+Message-ID: <3beda8ac-4611-4908-a90e-8c91e3df7f2c@kernel.org>
+Date: Fri, 20 Mar 2026 12:58:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 22/23] mm/vma: convert vma_modify_flags[_uffd]() to use
- vma_flags_t
+Subject: Re: [PATCH v2 01/15] userfaultfd: introduce mfill_copy_folio_locked()
+ helper
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-2-rppt@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-References: <cover.1773846935.git.ljs@kernel.org>
- <98a004bf89227ea9abaef5fef06ea7e584f77bcf.1773846935.git.ljs@kernel.org>
- <0b5765da-67e9-4e2e-99d8-08501730bf76@kernel.org>
- <7e22cc48-aa04-406d-b4d0-8ebb182b34b9@lucifer.local>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <7e22cc48-aa04-406d-b4d0-8ebb182b34b9@lucifer.local>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260306171815.3160826-2-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 04619120004
-X-Stat-Signature: jjfpkick61ywmc68m999am8fpiik4j5y
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774007831-686779
-X-HE-Meta: U2FsdGVkX18duIglVoUubV8tl/c2vPmVBn588CT/Op/GtlozjocczE8E3hDyYVh9a/1MBuWyE3EUYT9YCu2aKDjMjxcouDcqAHKiBtV36SZ0ndXm0xJP1+Ut1pJSQ/jLpa8yfOLT+uBtioY3ggFJh3WJ3Aj9Lq7EE3dWl5O6o41KY2YXX9BeH/NdXS4fzHtG3UU+9eVjrrFebDqQK9+AlN3R7YEFFqCZZTbhPK6ZtYUQuPzbY1EuDMLXDB6wKf/iFPoVitG3Y0/05nCApWxaYbOBkVUTWFRI0FeHfu3Ai09rXO6GduyUElMznWWEVVVB0MYxG+K+6yxIIyC18akEcBRDUlAqMCd9rThwmA3a3E/les4zz6mcE/f7pxF8mlMAsYycsvElsEGCRohmQB3012I3J3cI+WYviR5SzqEPIbygZApO66zZ4HXCbOKTJWfIAhcqWZcKIszwgdMUIqqmG4koaNyOnxNpMsNqmGMCtrRM10rjLFPXS1SipMqKG5wC/CAnYu4Pos7DvbpzwxSzuyakODIpgCi0IPB1GYTjg5CS3Mo8jYfGBzzFZYIZMnKS0L9XKlZo4N4GmrYlXaB1kAOhA/suFSEj3RA9RwnI0QU3f95T9/s/lScwa7iBcJrx/asoJaids1UINlurWUWwxC5rC2PBvByNi9mQ6G4HgMTGOvqRirn0ntiwZv/EJ8e2MPG1hybmVoknR3L9szWnMZ0xdIcfnd3/csfHKZMC/C6LUrwMVYpXYPb8BR8ccJc8QctCb81DQVRqm/GTab/Drw0h0KJPz3eoWJ2IRMpwxTOOlL5ZXIAyJOUKCqGmifSbXuW1TxjQ/ilatHmmtGhiJP1KoCGS6zKDuO8gNBjHUyDSHFBNz45AKRv5pEd7apQrCcFAGq+3nua+BNeL3OkqkrUBo4yn54ARbfVJP2CgenV9s2FiLTS4cqzBbRi6ojP9/19xWERZ4+ZWvvwDUDx
- tMwHc7hz
- TKYG6WNbLhdjvU2GqfohYjr+nFN8lNmQw7+eLxuuBB/AvcyGeRfeFJZRWqTk8U4s9PWrAqYiY0NxtSAuHsmnUzSf3aKaAcccietTveUAvNOtnrIFmDT0LTqNLIRs3zQrhSHSZJVF0dnwm+3fU1ZVSFkXjKQQPPNjoCyOjiketa1afjzjeQh9wnLNDrepWIkTJBII4ZUxI/qgVaZyNv65idJ2QsTLasOuNoQdIBCeuQhEPlSxEhsF7vA8wsyBgC738GqD5c+NPC3HTZBMLjd62c7FkB7YfkEOT9CDzvemCGoyc+TDYyDzqmBaPj7DvuLsELv3bUl0Ze6A4ZhlcZ4pAS4UxcaSCXFWmLGon2mM9CxyPgtjqDDc2clc9fzxZRSNvXXUvRotJN/gBc4sesVVp3WqM9w==
+X-Rspamd-Queue-Id: B234D1C000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: xaznotix9oym5yy4tj5dr78ic18cs1mc
+X-HE-Tag: 1774007915-294603
+X-HE-Meta: U2FsdGVkX18Hym1HsLAkx12HReVSCYN85kn8eoIbrmgkQznccaT2wkdFiFlGWXEGss/YR5ajv+4semer7+xWUY2fWe2GfB2X0CucEJnclDCxR/1K+8SSqTZHIrl2/sFGan1a3fYH3NDLBD/fpsUKMxUW7wgtVtZWYll0hYN/aHi/FyfxHD9sdBxcuknjF3wnV33bC/7jqEEpPJSxmMm/tMoHZck+5Hae8/T+EEK95yOGyEytTbz1P3IyGaQtw70uFVvRWuRD3kpjEz4mM1/xtCK0CwV/zhFz1JqCZV106d/i6gUgh8axNTrlAWtZOsTyxuSW7unUuwc5tqXp8OHqKUosw1H2GxE53nqPz5SanTylU1nj+Y02gHPPHbmB4xyWcvoynY2Eft4Hhvlju4dBUAK1sGilHtKMiIfqZiwdvROKRWp/uNoqET3Z+th+uTVWgKYqfr8e/pDPpkpwUkklXiq1ANwJCf4mU6b9S9hnIyBfTlJ4N22AtMvmZinjmwgYRSu8iK8OBJJNvp5i5eJKr8wm8mwmhuRrepiZ+rI7u+0QbmxeBhQYtTUU12V0bt+s40/feY3VWCb/X4aGrxuEIBc5rnqnIDwORlTPGgdhdLhX0jwKxa8SJwc/f5YH1n+t52pJGVjKPvGLoP6wmqzWigHaIHXafNbFx5BTrhYRpElYjFuJgFU+og6HFMea0WI/9LnWMdVNxJe83yMfb5pkxXJqEdY7BGDekW+DtKV6JqxQVJoFt6Bm+6BjJhgeuO+50RWimCQPnCMSzQMW4uwt1O5qv55X6KKfWQYliYyxBX1po7JjKcuig4AJS6+4CBtV/tm2av+67XtrYRXuhm3o025QNVka+lxQs9A62V/QhEcACBDbdP5KNCVvuUtL5GkPKOEEDvIu7Q1Zg5ueZII3AJqS3TM8Ws8xa0v6wn235aTOXWYbpOyKoZNnZl9vhcnUHNkOMwUhq+7+aw7oTvy
+ N7Yz8yB8
+ J3ypAinz1nEVQKsvMzGnzk5pffGvJ2wwAdgZ22n73Ksj81wgKG2Gg7nAPAl/5Vf59ol7UdmUwzCh/1XQ1ppRc417IZUZN3LUc/ZDWVfHUgtOwMiNX0r02EIx9rk7oiwHZ/JK7ZA+w0AoXNbhTlTCNDxGaC+0webQBB2/6wxnz+GHkA47tp8Ha+nBuwWaIQCqsyb4fYL0gw80XQ+o92mHKno2rIS9g6RGMxjICWVHTCsz0l2mJew1xv1qo8f6qb1o4wUl256dwFcmjKbGQczb5k2tVtvPfEfSlHyQdqMcvoRtM4gNyScrT9FswdKzHj0XLL1205ueqjjKG2chDC/Grl+FStmqw7vvJSudd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,235 +152,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 12:08, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 20, 2026 at 11:39:58AM +0100, Vlastimil Babka (SUSE) wrote:
->> On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
->> > Update the vma_modify_flags() and vma_modify_flags_uffd() functions to
->> > accept a vma_flags_t parameter rather than a vm_flags_t one, and propagate
->> > the changes as needed to implement this change.
->> >
->> > Finally, update the VMA tests to reflect this.
->> >
->> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>
->> > --- a/mm/mlock.c
->> > +++ b/mm/mlock.c
->> > @@ -415,13 +415,14 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
->> >   * @vma - vma containing range to be mlock()ed or munlock()ed
->> >   * @start - start address in @vma of the range
->> >   * @end - end of range in @vma
->> > - * @newflags - the new set of flags for @vma.
->> > + * @new_vma_flags - the new set of flags for @vma.
->> >   *
->> >   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
->> >   * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
->> >   */
->> >  static void mlock_vma_pages_range(struct vm_area_struct *vma,
->> > -	unsigned long start, unsigned long end, vm_flags_t newflags)
->> > +	unsigned long start, unsigned long end,
->> > +	vma_flags_t *new_vma_flags)
->> >  {
->> >  	static const struct mm_walk_ops mlock_walk_ops = {
->> >  		.pmd_entry = mlock_pte_range,
->> > @@ -439,18 +440,18 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->> >  	 * combination should not be visible to other mmap_lock users;
->> >  	 * but WRITE_ONCE so rmap walkers must see VM_IO if VM_LOCKED.
->> >  	 */
->> > -	if (newflags & VM_LOCKED)
->> > -		newflags |= VM_IO;
->> > +	if (vma_flags_test(new_vma_flags, VMA_LOCKED_BIT))
->> > +		vma_flags_set(new_vma_flags, VMA_IO_BIT);
->> >  	vma_start_write(vma);
->> > -	vm_flags_reset_once(vma, newflags);
->> > +	WRITE_ONCE(vma->flags, *new_vma_flags);
->>
->> It's not clear to me, how is switching from vm_flags_t to vma_flags_t
->> allowing us to simply do WRITE_ONCE() instead of the full logic of
->> vm_flags_reset_once()? Won't it fail to compile once once flags are more
->> than single word? Or worse, will compile but silently allow tearing?
+On 3/6/26 18:18, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> We only care about tearing in the flags that can be contained within a
-> system word, but true we should probably do this more carefully, as I did
-> for vm_flags_reset_once().
+> Split copying of data when locks held from mfill_atomic_pte_copy() into
+> a helper function mfill_copy_folio_locked().
 > 
-> I will reimplement this as a new, hideous, helper function.
+> This makes improves code readability and makes complex
+> mfill_atomic_pte_copy() function easier to comprehend.
 > 
-> I am not a fan of this being a thing to handle races, it's a hack. But I
-> guess that should be addressed separately.
+> No functional change.
+> 
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Right, thanks!
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
->>
->> >  	}
->> >  }
->> >
->> > @@ -467,20 +468,22 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
->> >  	       struct vm_area_struct **prev, unsigned long start,
->> >  	       unsigned long end, vm_flags_t newflags)
->> >  {
->> > +	vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
->> > +	const vma_flags_t old_vma_flags = vma->flags;
->> >  	struct mm_struct *mm = vma->vm_mm;
->> >  	int nr_pages;
->> >  	int ret = 0;
->> > -	vm_flags_t oldflags = vma->vm_flags;
->> >
->> > -	if (newflags == oldflags || vma_is_secretmem(vma) ||
->> > -	    !vma_supports_mlock(vma))
->> > +	if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags) ||
->> > +	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
->> >  		/*
->> >  		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
->> >  		 * For secretmem, don't allow the memory to be unlocked.
->> >  		 */
->> >  		goto out;
->> > +	}
->> >
->> > -	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
->> > +	vma = vma_modify_flags(vmi, *prev, vma, start, end, &new_vma_flags);
->> >  	if (IS_ERR(vma)) {
->> >  		ret = PTR_ERR(vma);
->> >  		goto out;
->> > @@ -490,9 +493,9 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
->> >  	 * Keep track of amount of locked VM.
->> >  	 */
->> >  	nr_pages = (end - start) >> PAGE_SHIFT;
->> > -	if (!(newflags & VM_LOCKED))
->> > +	if (!vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT))
->> >  		nr_pages = -nr_pages;
->> > -	else if (oldflags & VM_LOCKED)
->> > +	else if (vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT))
->> >  		nr_pages = 0;
->> >  	mm->locked_vm += nr_pages;
->> >
->> > @@ -501,12 +504,13 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
->> >  	 * It's okay if try_to_unmap_one unmaps a page just after we
->> >  	 * set VM_LOCKED, populate_vma_page_range will bring it back.
->> >  	 */
->> > -	if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
->> > +	if (vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT) &&
->> > +	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT)) {
->> >  		/* No work to do, and mlocking twice would be wrong */
->> >  		vma_start_write(vma);
->> > -		vm_flags_reset(vma, newflags);
->> > +		vma->flags = new_vma_flags;
->>
->> This also does lot less than vm_flags_reset()?
-> 
-> Well let's look:
-> 
-> 	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
-> 
-> Are we really at a point where this is problematic? Do we hit this? Why are
-> we specifically checking only this case on every single instance of
-> resetting VMA flags?
+-- 
+Cheers,
 
-I'll admit I don't know, but sounds like we can stop being so paranoid when
-converting code to the new API.
-
-> 
-> 	vma_assert_write_locked(vma);
-> 
-> Note the vma_start_write() line above. I want to separate vma_flags_t
-> helpers from asserts like that, because:
-> 
-> 1. We might be operating on a VMA that is not yet added to the tree
-> 2. We might be operating on a VMA that is now detached
-> 3. Really in all but core code, you should be using vma_desc_xxx().
-> 4. Other VMA fields are manipulated with no such checks.
-> 5. It'd be egregious to have to add variants of flag functions just to
->    account for cases such as the above, especially when we don't do so for
->    other VMA fields. Drivers are the problematic cases and why it was
->    especially important (and also for debug as VMA locks were introduced),
->    the mmap_prepare work is solving this generally.
-
-Perfectly reasonable!
-
-> 	vm_flags_init(vma, flags);
-> 
-> Analysing what's in this function:
-> 
-> 	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
-> 
-> Duplicated.
-> 
-> 	vma_flags_clear_all(&vma->flags);
-> 
-> Only necessary while you're only setting the first system word of
-> vma->flags.
-> 
-> 	vma_flags_overwrite_word(&vma->flags, flags);
-> 
-> Again only necessary when you're only setting the first system word.
-> 
-> So yeah it's doing the equivalent and (intentionally) eliminating some
-> noise.
-
-Ack.
-
-> But I'll add the S/D check back I guess.
-
-Thanks for the detailed explanation. It's fine to drop legacy stuff, it just
-wasn't obvious if intentional or by mistake. Maybe just mention the
-intention in the changelog?
-
-Thanks!
-
->>
->> >  	} else {
->> > -		mlock_vma_pages_range(vma, start, end, newflags);
->> > +		mlock_vma_pages_range(vma, start, end, &new_vma_flags);
->> >  	}
->> >  out:
->> >  	*prev = vma;
->> > diff --git a/mm/mprotect.c b/mm/mprotect.c
->> > index eaa724b99908..2b8a85689ab7 100644
->> > --- a/mm/mprotect.c
->> > +++ b/mm/mprotect.c
->> > @@ -756,13 +756,11 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->> >  		vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
->> >  	}
->> >
->> > -	newflags = vma_flags_to_legacy(new_vma_flags);
->> > -	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
->> > +	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &new_vma_flags);
->> >  	if (IS_ERR(vma)) {
->> >  		error = PTR_ERR(vma);
->> >  		goto fail;
->> >  	}
->> > -	new_vma_flags = legacy_to_vma_flags(newflags);
->> >
->> >  	*pprev = vma;
->> >
->> > @@ -771,7 +769,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->> >  	 * held in write mode.
->> >  	 */
->> >  	vma_start_write(vma);
->> > -	vm_flags_reset_once(vma, newflags);
->> > +	WRITE_ONCE(vma->flags, new_vma_flags);
->>
->> Ditto.
-> 
-> I mean overall these cases are hacks in my opinion to work around code that
-> should have solved their problem another way.
-> 
-> But sure, as above I'll add a helper function or such.
-
-Great.
-
->>
->> >  	if (vma_wants_manual_pte_write_upgrade(vma))
->> >  		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
->> >  	vma_set_page_prot(vma);
->> > @@ -796,6 +794,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->> >  	}
->> >
->> >  	vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
->> > +	newflags = vma_flags_to_legacy(new_vma_flags);
->> >  	vm_stat_account(mm, newflags, nrpages);
->> >  	perf_event_mmap(vma);
->> >  	return 0;
->> > diff --git a/mm/mseal.c b/mm/mseal.c
->> > index 316b5e1dec78..603df53ad267 100644
-
+David
 
