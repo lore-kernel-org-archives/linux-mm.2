@@ -4,85 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEF151098783
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:00:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4E8D1098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B62A6B0005; Fri, 20 Mar 2026 09:00:36 -0400 (EDT)
+	id 052C16B0088; Fri, 20 Mar 2026 09:09:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2672D6B0088; Fri, 20 Mar 2026 09:00:36 -0400 (EDT)
+	id 003506B0089; Fri, 20 Mar 2026 09:09:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17CCD6B0089; Fri, 20 Mar 2026 09:00:36 -0400 (EDT)
+	id E5BE46B008A; Fri, 20 Mar 2026 09:09:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 063F16B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:00:36 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3BA71A020B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:00:35 +0000 (UTC)
-X-FDA: 84566450430.04.28E1306
+	by kanga.kvack.org (Postfix) with ESMTP id D4D116B0088
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:09:54 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E67414024E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:09:54 +0000 (UTC)
+X-FDA: 84566473908.23.044ADE7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E2EAA40015
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:00:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrLp5IAN;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id AC6E5C0010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:09:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UhusO7Ir;
+	spf=pass (imf10.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774011634;
+	s=arc-20220608; t=1774012192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZqkfpddEc48CH4Q+GIssdffBaK7vARVEQUExaMtVOGQ=;
-	b=4ix3aeThktpf7bLnMkI9NNnzF3YD9ufVXFppI7r5F6LCMlHzHpuvk4ePllpD6zBo3k2JtQ
-	yKiPLHRNPKQOF9nqHvWu/xwdixG0e0D9Rf3l3TJbWXU0PphIJbZWFpdnFpmPayGRAWtX67
-	Yx7Z8LqYuCp5hg4kTKCXUjAeceiAvc4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774011634; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KtyqkgdW2N+tGuiRRGwfaJSw9/wwP3BDlPbzeD6Tf8s=;
+	b=gmtJbrmC+s3hihdpmwwGZMTL7fiOkU7gWCl4WB0UpLU9Iy9UiXXHiLtqDOnigmh+L7/Caz
+	Suu4p1Q0Cpw1AOxOoehrBHijROau64Q/QTxg/P4iSieSfFz18hYCkMbTCsSMvrNZWsqN7f
+	qtZzG0q2A7/Z3HdY7POwNkrfbnCV950=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774012192; a=rsa-sha256;
 	cv=none;
-	b=3gtPEbTiskSOowDLK75iUl/nkdjYh0E8FCDVsqt0es2a+mYpo4VFrl9TRFrOC3189u4LsY
-	yjN02hKNa5WODzgTct+Mw/M8nuDglV0z6NJ9Sie0ERQIzeyluGcSdNMJH2Rqus1Qjq/Owz
-	E73wrvzMPmheR5bj/xsQZ5Hy0rUng5o=
+	b=OfMCF9fAhNPH4vOeLskRisoe/pRTWnYG452uui5kQBQC8ZfOKd6+LRqf5L+aYqxUkmJV8Q
+	1Ru1sx/Y54A2aZGer/kUwUqCQNz2bLPH6+TWEYH27UjNwvfGvyKDLK2Wnc3T9ZPsabb087
+	4f0aK2iGU+KpcaMtoeC51P2xyCAq8Q4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrLp5IAN;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UhusO7Ir;
+	spf=pass (imf10.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0055C44379;
-	Fri, 20 Mar 2026 13:00:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2F7C4CEF7;
-	Fri, 20 Mar 2026 13:00:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A84E8443E5;
+	Fri, 20 Mar 2026 13:09:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3263CC4CEF7;
+	Fri, 20 Mar 2026 13:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774011632;
-	bh=SFedwV2oEAm6rkFP9fGtF2Boej3NRSE73fzAFwnjCyo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PrLp5IANSOuZkKLqz9UKA7U6Y5nR/XtOsO+YYSdBtpUFljG0ikw+WuI6oZ7Q4yFvW
-	 u1WU4kGTzxlI2VULjdhOXERR7l9fv2pAmRq/v4cg+rh9fez6gPHX7tCGDan9PO2NUW
-	 kdH4mP6Ue//pEU6L4eq6ZXGq5tjRUq6UBVZvHB4p3DTN8l8rMxPsuVT98qAHVqkt0K
-	 xb1GRG1ibE7Vn3VbzyTe5uV/dsKwpOCXDAU5Mg4mIKkPKAw3r9GlHQ5KavjoZ1jfpB
-	 WOLU/Q3hdv2j/bGd2hWqr85rK2cgSzC5t/KxnNh33k7+7fNydbGUOwImqXYFvvILzP
-	 8B2HHM+pDeoKA==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Harry Yoo (Oracle)" <harry@kernel.org>
-Subject: [PATCH] MAINTAINERS, mailmap: update email address for Harry Yoo
-Date: Fri, 20 Mar 2026 21:59:25 +0900
-Message-ID: <20260320125925.2259998-1-harry@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1774012191;
+	bh=KtyqkgdW2N+tGuiRRGwfaJSw9/wwP3BDlPbzeD6Tf8s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UhusO7Ir2EBydsGHlZyj5vew5uqx3LL62vko5Nvx7uYqnN8LXpvVu0HBg4Jb3rN11
+	 6S73M9ojHqYjBNhrbqF5Hh7jyCfzHErGHu3L1R6mUu7iSqAUdNpYycA6t0Y2JGCu7I
+	 azCPpzorM0ShT1moymtT/RU9iLPZHEFywsckNnX3po4/g+RkOux39sHfuVFqfrhI0x
+	 6K5iBG0kBNAiB0VJi3u6qKegr8Nd04DhRa7oBU/Df5hCAnlurweBz5L4KTZSQstN+h
+	 7+aKbBVLQnUQbRckkQHUOiKXHr8jcSwXklaf2DF4sTPlOxHzV7mqlaSl370vp3i1VV
+	 OQBJzASK6ggNg==
+Date: Fri, 20 Mar 2026 14:09:48 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Albert Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/8] dma-buf: heaps: Turn heaps into modules
+Message-ID: <20260320-cryptic-industrious-otter-5b696a@houat>
+References: <CGME20260303101320eucas1p2eb4fea499364ef20825d0d73585a2555@eucas1p2.samsung.com>
+ <20260303-dma-buf-heaps-as-modules-v3-0-24344812c707@kernel.org>
+ <c60a3f30-6fc3-41ab-835a-2fdd887e18fd@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E2EAA40015
-X-Stat-Signature: bgj9yastec5nwkh7ywh69sxufok8p6i7
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="zs66qpw74bbg7irl"
+Content-Disposition: inline
+In-Reply-To: <c60a3f30-6fc3-41ab-835a-2fdd887e18fd@samsung.com>
+X-Stat-Signature: t4oghc6rf4y8hkf3x6pihp7773z8irxg
 X-Rspam-User: 
-X-HE-Tag: 1774011633-891953
-X-HE-Meta: U2FsdGVkX1+KY4GX3/ZixgAmTjFlxs0497DyQLFpx4xHdYAFbZbwBX4Tykm6Mv02/8YqzGzYXv5b8vior6fRqo067V3uuyx6rUk26WtYTuqUfT9vRgCKctE7mIGlO4T8jPabWcZQGQ2rFL06Ne5MF8W0TWZfO/TXxjlPCUn1qS9U31iPC2a34inWACJuWFB+RBCYfN7rdL0kMrmwWPnowzY0eLzkUEvfTdvImLzgLr4JMvwG+xQTAa/bqiNsHyZkZKwL/A/RoU/FXCXIlXN9qwpiCJYJF60m3hFeXYFvLzpGgXOpHKfOSfYnvv0lotfCBty/GVkMC0S8bnsLyfwrHLnap0zAWPLT3sqcGIzpItK706uYYWpOIFwGE6Ia7ycYeoQRecoWRekLEvCHCQhrbOXwBq5UWO8ndZehcKGgevf4B2iD4i6GkiVFKM8ca61wrE0YM2SQdcXW0rIoMigKPBd2T8qpGENRWagxcxyOwXtQWBoDzVdWDH/cj4Gf6wOuC24gLbbrkCkAXCUe689qmK7FOmNvLzYN/jQt8fxJlb0gTitlsqWmUCGtzcndnGvxlH91QFNz2CI/5+9pPibkHJI1Iggl56EDAG4lFECNyJGmnxC0bV70OCNHrzFLkIyxb6d7ong8ghrXHC3wAolhUGh8e30s7MC9ujrkpifoDYNBOyRL0IijmcJE13Yvn1tNACxCp943853WTEE0EwP8WdHsKeJywJzau2BNwiXNBVgeEfL639F3uT3QSjtFDVZNust68yaAWFHCW4bmPDbaIRUCYGmub/wNDTH6kdgBizOHrZvuiGG60VD74DInxKNoSNiOx6EgrCIylN/0tVUgMwIcImJIqUahNVz5oy/psxslzxCV4cPnQjbY6FrWOgNSqJ5dvvwiMdEVqXazLXlg4zJpE7HarvE/GyXwj2dVOOqlhBrcW5SIoaUcv+szRoaUkjBhILL7b16TDPgzA85
- GA2dQYzJ
- Umq9e6MiUS/3Rcc8cT2cD8WCpDGhgk5bCJ8UCuz60tU4snyAJyYEQ08NPYANdShS6jZIt4otKIhtb1ITbhfCxOLOnt3xZ+JTASN77lTTERbNxHOTtkFzZTGMnmaFeh97oLWNo1yHC45LtoMmE3FMqN/9Q5UCoTX6k2FNu3Jix6hLGT+UQKvZBjs7tGlmD30LvJJ32iBXxL4I8mrqss5yOxEwDY5EqbCTFEOSMhNFzsFmU4hKBl5M5haXI6svOv07QlFGUMV6EYKymofu0ffR/hNIc9VQCQNMg87QhF5Ss3hHAqI5udjaEpjjPBEejVbvBBL/7/1+f5UPNcjKrcEpqq2RjI0d1iNy1PowffANBlnQzk8IPZqv76BIelwP3/vsvIK/2BiuFlWkK7yHaQ7mFYD9IdkdJYeJovYPBqu2Trzw9k+1ThtBUAKb6pGNbAbf6lbg7CpAGG40qEuaj8v20Pdh11DjcYC5jc76k9CZH/Ay5aE5I+mo7iU3PXimNCxghPebyJMYPWEbvIQ6fsQGjiIbRoXr6DjxoC6d/BD2+wbpdInTSy/C1mhLpFFy4FUUx+ZZ1quoo+Mm4AAVNOZT98UzUhWIw7g4+BTuFN8o4VvYQnZHOMzPVnW/R4qeRlmRndPSBbKacBB7iFP0GKy2ZFi7UnkeX5zLpYQf9
+X-Rspamd-Queue-Id: AC6E5C0010
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774012192-138716
+X-HE-Meta: U2FsdGVkX1/uy/Cc7QVHxL3PLD8U1TZBwGOo7BZKG/IZO3PCADEZ0cDidukyS0r4Ua0Zh1oxpsT5q0sF4XAQ3KQeRy+qmMHqNLrwCOo4bBUJ/X7pbUd4q4cx8wHBcfEYoujFI5chQNjD2tZ57J2u3+eO8690GWJHKE1Q5I592mTLDo2UXkVeU+SYcK3jKlZFG/u2w+WOvzX0N92QjFpbB75scLw3Kaz6DyTscaut5wgHVIxKXbY+qrLAHDI3b2cdX8we75OUat0zUKwIMtFEwAR/m7SAfjvFQpkGb16dxt6ar5NhF+Jrn+knOPci2L+y6QM6djthixCZb7O9htoXb1+zRi4GTaMWw40tQWypREsln7ZW61Z0SmngIuK4B2lc/uI4jFHqreRR6pnR0PFYvYwAWw9sQK0SrMy2aCfIWX/6ZltqhqzkCobXtfe/ZKQHi4lu3RjJhrkK7mB26aWhk96NZiHk1IHHmMR4xQ1iYIb0xV/qHqXPmcOkDkDUWFJ8jJCXms2F8rD3jMJsXCNQHiMEBx+XeahezMnVY7JkY0INZWGgpuM260VQh39x/duWwYiZLljCpC8QSFRt+435SGzwNo0hIH/ymCuMvqtFa5G6M8Puo1bDa+Z/hYNh23QzeWeHVPkUt5OYsYUNEP6R7nVEw1fOHhsV83GmdtmBMUSZbDZl7enrv/mOmuNwHHcj0fqe1UghBKams764VRyb1xZXBvYnTxNr9dYMhcSo8fGjOvYij7aZt/4MLjeWrR6i2N453dYzZCYaX2dg74DsOVKZBJz/jDWUbz82agEmtfPiITWp1qxRZpzrbWUKknKc4S4GPbtRDRRYiejShb+45XX+59QBDFpmiDLA9rqBccp77ZFs6UdIKhhdHE1LGixbi/INBuhl6xw9pwNUopSrAx7XkeSlMUFK2qztiasbz0EuoRRXo0lt1Y1y5KGA80Besb1L3cLahup2oJogdKe
+ rAiPbkgM
+ LBovVj1sg9P/oMQ6dVWd3tKI4U2Evc03F0/cLd5EofGwSQ6aFZeYqJmvh9FlFyWqlB2gvbp5kpYGwDmjk5NYh5k75pNI9WkZ54Qw8g462NwMDE91ekfC6ulM58o0sx9LLHC5wXm9XY+NfLWiDAAgUZa/o4lCPu2T3tF3Tm2w/zUzs81GMNg6q/1Y4x8h+EK6P3ZmEt3X1pnXaznC0aokU7ZKqaXjSNqHPheC4O3jHyBNOZQCT3s87xW4NmtFAqhoy/FnXOKKvfk/lKyZexbJH97gui8oll7dHonWYQH9mEh/ioxzVnsQdtet529mSVmKndVEbslsMcI7Mk7I8dLT9UwNPTsnO2hZSWXPt/5vNZYIqAQvLS3wYFqhwl/E0XKn3XBsoLsC17W4XlphzW15DNM3YZeZN9nCwGCuQBP049iKmlMY0rmeLp6zbEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,49 +102,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update my email address to harry@kernel.org.
 
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- .mailmap    | 1 +
- MAINTAINERS | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+--zs66qpw74bbg7irl
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 0/8] dma-buf: heaps: Turn heaps into modules
+MIME-Version: 1.0
 
-diff --git a/.mailmap b/.mailmap
-index 7d14504daf24..2d04aeba68b4 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -316,6 +316,7 @@ Hans Verkuil <hverkuil@kernel.org> <hverkuil-cisco@xs4all.nl>
- Hans Verkuil <hverkuil@kernel.org> <hansverk@cisco.com>
- Hao Ge <hao.ge@linux.dev> <gehao@kylinos.cn>
- Harry Yoo <harry.yoo@oracle.com> <42.hyeyoo@gmail.com>
-+Harry Yoo <harry@kernel.org> <harry.yoo@oracle.com>
- Heiko Carstens <hca@linux.ibm.com> <h.carstens@de.ibm.com>
- Heiko Carstens <hca@linux.ibm.com> <heiko.carstens@de.ibm.com>
- Heiko Stuebner <heiko@sntech.de> <heiko.stuebner@bqreaders.com>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d7241695df96..5158a7e76c97 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16875,7 +16875,7 @@ M:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Rik van Riel <riel@surriel.com>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- R:	Vlastimil Babka <vbabka@kernel.org>
--R:	Harry Yoo <harry.yoo@oracle.com>
-+R:	Harry Yoo <harry@kernel.org>
- R:	Jann Horn <jannh@google.com>
- L:	linux-mm@kvack.org
- S:	Maintained
-@@ -24341,7 +24341,7 @@ F:	drivers/nvmem/layouts/sl28vpd.c
- 
- SLAB ALLOCATOR
- M:	Vlastimil Babka <vbabka@kernel.org>
--M:	Harry Yoo <harry.yoo@oracle.com>
-+M:	Harry Yoo <harry@kernel.org>
- M:	Andrew Morton <akpm@linux-foundation.org>
- R:	Hao Li <hao.li@linux.dev>
- R:	Christoph Lameter <cl@gentwo.org>
--- 
-2.43.0
+Hi Marek,
 
+On Fri, Mar 20, 2026 at 01:24:18PM +0100, Marek Szyprowski wrote:
+> On 03.03.2026 11:13, Maxime Ripard wrote:
+> > The recent introduction of heaps in the optee driver [1] made possible
+> > the creation of heaps as modules.
+> >
+> > It's generally a good idea if possible, including for the already
+> > existing system and CMA heaps.
+> >
+> > The system one is pretty trivial, the CMA one is a bit more involved,
+> > especially since we have a call from kernel/dma/contiguous.c to the CMA
+> > heap code. This was solved by turning the logic around and making the
+> > CMA heap call into the contiguous DMA code.
+> >
+> > Let me know what you think,
+> > Maxime
+> >
+> > 1: https://lore.kernel.org/dri-devel/20250911135007.1275833-4-jens.wikl=
+ander@linaro.org/
+> >
+> > Signed-off-by: Maxime Ripard <mripard@kernel.org>
+>=20
+> I'm okay with the kernel/dma/contiguous.c changes. I only wonder how to=
+=20
+> properly merge them. There are other pending changes to=20
+> kernel/dma/contiguous.c file [1] and if they finally get reviewed, I=20
+> would like to merge=A0both via dma-mapping-for-next tree. Then I can=20
+> provide a stable branch for merging the remaining dma-buf pathes. Is it=
+=20
+> okay for You?
+
+That sounds reasonable to media
+Thanks!
+Maxime
+
+--zs66qpw74bbg7irl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCab1HHAAKCRAnX84Zoj2+
+dtHjAYCni65LYJfONrHzX1+dmTg8jR62Up22RXPxSlYyod1hB1tdIw9izCD0G6Yd
+tTFaIwEBgJvjLz3SwBA1sbRbznr8PQjslZc5ZJNJzdGupJIT8b7KJryJWaeGjrY9
+oc+2U5qZsA==
+=0xTf
+-----END PGP SIGNATURE-----
+
+--zs66qpw74bbg7irl--
 
