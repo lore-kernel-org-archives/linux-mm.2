@@ -4,97 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B8A81093177
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 07:07:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EF501093181
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 07:24:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C34A6B03AA; Fri, 20 Mar 2026 03:07:19 -0400 (EDT)
+	id 4DBBA6B0095; Fri, 20 Mar 2026 03:24:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 273B46B03AD; Fri, 20 Mar 2026 03:07:19 -0400 (EDT)
+	id 4B2BD6B009B; Fri, 20 Mar 2026 03:24:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 189816B03B0; Fri, 20 Mar 2026 03:07:19 -0400 (EDT)
+	id 3C8916B009D; Fri, 20 Mar 2026 03:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 050646B03AA
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:07:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 994C28C671
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:07:18 +0000 (UTC)
-X-FDA: 84565560156.14.018DCE8
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7CDDA180002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:07:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=NOt+Fn1o;
-	spf=pass (imf16.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773990436;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CD076B0095
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:24:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC2A3BB9CC
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:24:45 +0000 (UTC)
+X-FDA: 84565604130.04.06813A9
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1583E20003
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:24:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dn8Ol/Wn";
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773991484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8oK5RCe9uCIwAhJ1Bo5VEmx8tjlc5XR8v7u8F6fzXM=;
-	b=1d6s0qIzsydGGuf4HEME+A4Z6dr/ZqfxQunZQEn2ONWiF0ZeQftmSlVizyQnNU4BsIT4Qa
-	PebXwuAMlI0Q/NmAfaIL5Bhfc0DgO+eKVplK3Xnbuqn8B+zirTDeovNrhBg+pxz3W0CpHV
-	KeT7AUqzLvBtdyV+sNHPHD5GmGfRpsc=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=NOt+Fn1o;
-	spf=pass (imf16.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773990436; a=rsa-sha256;
-	cv=pass;
-	b=G1rdCsYfNUIm5ZttGDodkjm9pZV7IY5Qj1KiTnCzoqTY0N32bV4nfCc6+3HJsybN8d07wK
-	c9pdLANuiTkO1hejBwNgy5HY/PwHXQpTpaSYm7284Og3DpswEqXPhoF3rh9IqgvAMhg1we
-	MJ5fOeEBhDjEKBCacFYTKeWMKRKarU0=
-ARC-Seal: i=1; a=rsa-sha256; t=1773990410; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=k5CguAlxOCS5xMApFoTv9ZuoSWHIB+mQjjSdXJIZ1gd55C3xW8Y0QVjukOmN/Ee4tWKV1aWCHfFMhDFdLF8JGWeQN8F1N4WmmjE6830Upv33kPQuVhhGqVXjW6Vh1g9NdzrfwFB+hpRSJ/xJo7Tk8Ea8aS4/uRzV+jPDHxrLY8g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1773990410; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Z8oK5RCe9uCIwAhJ1Bo5VEmx8tjlc5XR8v7u8F6fzXM=; 
-	b=hmrmdKrFf1z4EBOrKhyNvWubCIeqLqhyyRGhK0/fZ5fjHii6weFmUzg4tMkq9M/RUALNCm+C4NvGPvZBumVqePXQXleOsvF1ZAwWjXkicCiv5/vgo9yPD9CMbTC9FvvpVeuFQTQ9wl9yua53MHaGtdlNxdfVX4efVRI3zpxIb90=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773990410;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=Z8oK5RCe9uCIwAhJ1Bo5VEmx8tjlc5XR8v7u8F6fzXM=;
-	b=NOt+Fn1oBhfhfW0ws0Q/WT60QDumBxumtZ5mJgAmUPXFd+jl3VYpDLB7E43xA9A5
-	PHVwB8tL6XM4pmT2uV19RFRay6orZV9X3dZlmh/Y+eJx4pxLaZ9V1NN4rMQRktHj24R
-	wWO2XkAGYi+nFigDnR87WEKdyGUUNW58QU69MbSw=
-Received: by mx.zoho.eu with SMTPS id 1773990408143822.1742080429242;
-	Fri, 20 Mar 2026 08:06:48 +0100 (CET)
-Date: Fri, 20 Mar 2026 07:06:48 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/4=5D_mm/damon/sysfs=3A_check_cont?=
- =?US-ASCII?Q?exts-=3Enr_before_clear=5Fschemes=5Ftried=5Fregions?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260320021318.1117-1-sj@kernel.org>
-References:  <20260320021318.1117-1-sj@kernel.org>
-Message-ID: <8F30B2A1-240C-43D3-B756-20E327F5BCF3@objecting.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=j3oO0H+IHOvckZ4fHjT6ZGAeH2S4hcY0XM+PwetfF5I=;
+	b=iMMyj/5CZdHzzabkDLfm3SnUPPbVQG/c/DDFFEyeIy9wyY2iVmrWuRkuNlqaeRs0QmEHeP
+	3IDWxjLOauJxwLOs6cWxg/KSOqpn9d52gUpsbMsBE92db1UPvYfw0lT46rdAy82lRu8LIS
+	5bxA5SvBbbU1uUTuujowl7P/BapzjEc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dn8Ol/Wn";
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773991484; a=rsa-sha256;
+	cv=none;
+	b=d3/HXocWjzf7WBJDGr0rZ3IEyL/JzfAuKH6DbJUZFj1AkXL//M/xoYRfdyRjE/9YVswmZ/
+	/tLGS8uTFNv9+g6gIhxL1/fdzKBL2Ao7+EehIhp8W5+o8YYWlVRdOJ/93Ki0ba6jkUApJm
+	X9HdLanrKWPE+U54xHdCPPG/k2KIlrE=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b0586d5bb8so11017045ad.3
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773991483; x=1774596283; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=j3oO0H+IHOvckZ4fHjT6ZGAeH2S4hcY0XM+PwetfF5I=;
+        b=dn8Ol/WnchuCLwYOHFaS3RsPX/H1VtwvneLTm+64Ti7qo2JwJ8tGiY5ckXQkXRnQ+4
+         8KloX3HpHjBhMBS5zzn5CvgAaAktPFX5CbeNYsmOe3biFUefEa5Jt7C8zt9KNUG3Yv9n
+         cfOe53CoZwyLvwA5YRpqwa0ttPP8TlyLwwUGsOGdAildEnqw7itws0fMs0e/97cwBgZU
+         g+0UEEq9a0eYhDuzytP1FqEMgU7Q7E6B7L5sdMpRj/cUNV8JgKIRrfioU0dUNDqBJFQV
+         TPclYG+DrHaAGtbXws8ev5rpAsyB4hHoLLoF9KgAG54caZCDdSQjgI0+qjdG92c2ZG3z
+         JCDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773991483; x=1774596283;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j3oO0H+IHOvckZ4fHjT6ZGAeH2S4hcY0XM+PwetfF5I=;
+        b=P24+tV/JjaZiM51zZTi57uoV/goDFy9NxdnoAQH2h9pKfbN6rv/XT77YxM90Sh8nxs
+         +I2Bp3UZ+wd9lZJzROhqPjRtBJ/Lkf4Wr/chq0DWNvDR28nIHF2Z9+671yQnb9g/PyVw
+         giT685HHmvSRn7BoD3tW7uhEKDAT8Fc4UMOpql8H5Rm94+XYD62C2BSsZ4hUjO4VfofU
+         D6Np94VdLW3QYt89ez7nd+TBPUexKe74lPxStY7rft6ACJ0AqWf5SAqagY5rUFUmh44y
+         9gp3G4YGpEL0r8pRrwF+2y4a/aCPEC/BZFe9FqFos7DOnAjCQ5UZBTQsf/X4zVTE/N+9
+         a6lg==
+X-Forwarded-Encrypted: i=1; AJvYcCVk4HqkkEvW0NZX4G1AARwf66hszubILMezcATaMhf5ok92z0GShzmYC7XZfO3rv8xhtV4Xwj4C0Q==@kvack.org
+X-Gm-Message-State: AOJu0YyNGwo5jIgorVN/Q+kHS1Zf8gG5SgLav6IQ5/TR5mWw8izHqd0O
+	4d93JXCU6kiZM/C78jOkkFgOhNHGWtsmKbKiQ6437a2dR3XloBwZE9Da
+X-Gm-Gg: ATEYQzxNi8ShLfgmFN8afXXPF81aT4gxBaiB/QVDiUUQea3oN903XlG4vlZq8me8WZB
+	ByF/5GLHeLfLYbnweo1G8hMf/acugmHS3+Vtzxhbds3iFiBFKvNbaW+3e8PanQpY2RzoO7DRUGK
+	cjYr/ccaqBC9oDH0SNwFh9ysu48yPl7s1T9sUp/ZPMuuix8G3dWY4k6LARapFE82KvXBWZfC59x
+	KJqobTfL9Y6FY6wn4xcWuXEk49+DWHTgb/UPqcBO4x7BTchpU8jrrOvka9VCVRmXSOGH1XJRE9d
+	erj5XopoZ6Ixm8HiXSyarh+bcAkB89pIJjAQE5cI+g9e/FdbxqLPn/KvxJCNEOeNEKOm0kkFG0n
+	w7OD3cdNYZNCUIIjfv2zRXIJXNyPcpk+UMImtVXauQbXVp2VcOo+rxJe/usuuO14lXJhGEVhDXU
+	cwiVDUTfMNgKm6wxMFj198cC6g8+E=
+X-Received: by 2002:a17:902:f549:b0:2ab:230d:2d96 with SMTP id d9443c01a7336-2b0826c6909mr22728955ad.11.1773991482819;
+        Fri, 20 Mar 2026 00:24:42 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516908sm17542935ad.1.2026.03.20.00.24.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 00:24:42 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [RFC PATCH] mm/damon/ops-common: optimize damon_hot_score()  using fls()
+Date: Fri, 20 Mar 2026 15:24:31 +0800
+Message-ID: <20260320072431.248235-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 7CDDA180002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4kw9sa88our6xr93tjoomuzkq8g6ny4g
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1583E20003
+X-Stat-Signature: pu1rrqipbk7qoewhbdids4q9qq5yjw8o
 X-Rspam-User: 
-X-HE-Tag: 1773990436-905424
-X-HE-Meta: U2FsdGVkX19PvnKEQX2TsYpUfDj2lOYrUWgQOqYfHHIe6ATdMpj2I6auYxcmvpZbkkIHsxafSvtsr56LFE2BMgdHi1fnCm780+9ImWr7vGr0Kl1uN8ZOS3s677f16Tt4tQ8kPv+5gtnzpFH+RaGtAin8r/vo5vC384U60CQpd7odOca8FJTujViX3mz+xt0xwbsRHeKw1unEAocw7yoRW9U2oKBw65cwRtV0+3mA1yUEqfNXXl44tDFuI2VBreIxlzdsQrCDb06CVUmXk1n7mHQLCXzWRllOkfYCoTAvhEIPJ3GFKZLvy/uGUXgj/DCwg+dfnTi60t5NJQjgb1gSJh3/TTzsi5ynRAmZpRlJQ9bhhoM8N96d0ZnxberEJf7Hh2ZeDt7JrBFriT4bra/cyJuvgmkRyLu0C2xinxmwQ1yx4uFenwYwB/l53Sb0qscB1tJrmaZVox6EVaU0AyK6euyJtDLbtmMrxNzwngpfHxxJA6Au1m/R22yzRji6RZZGJC+R+nBWc13qGy7buggbpZ6n2cS7KY67KSeFEexZCXjzeEYr6Mkxl2f/nHkUjwr5+/ZZ3b8GF7WeLRXAzz4+NcPUuhJz3iP75mh+GSx/HV9ARTyMhVC1a+tbvf+d8YCu8GTs+RgZZD2q5emIJf5lSkuBVw22h4T6wNYQ0UfVIadA2pp32OE1K9Q6IxnRiN8IvOc0Go+SksvbHgDqzslcowxdq2DaRFuzrdezwbiwxyppnNfCpxU0FNPoaHMwAOO0L06uRMwfQAgyRNQgKMVdfVP0ubWCj7YFOo2ifdmvbJ6UPfdFaN0BKqwP8bTLmdwNDVjolj2c+GTlQuDq2lb+P0y4ApCSOlhVbzUHC+VhnrBusdoMmYxjP524UWCOgjSHI0YpP5yM6zzScqECvdbKh0taI7wUVQ3M8mG02IVgMiWUjYrgvQO+ibFijvv4vUUaqAn+BbNY2STWxJA/HJw
- 5acKnhIz
- 9JuxvKbFs4NfLfEF7dkXdBaM7yNskmkEe9yW/O7Bf76qX7QPdiknsNAqAsCbWmqZxX1U9+6aBu8KmMY6JvqioESnFTlvhY+kSlHJmjQJDdcSSlSOoXyl/8yoHIVtBJoTTnKCDVGTIt4LemqS4qNX+1JR/Ri+1cAF3CTPMxv5V86gfGCEcqI1gaWwsKAOnp6vzYwOKn7Qqk5+jACcfmBZI+g3rYXy/RTqEYRl62ijj80O/6Bh+trXEs7907zBs+J52Cbji8UH2uQbRB1OqmfzPIpw2acNlJotRnaPtrRnyvL5mVf2xxtBA6sJVjC1Cv8oS5+Jb/8XPP9QXoUGOa83+OFcXfHMPvwZ3noY4qxLswT0lIaFQQ1PzXOXcaFreboG8RDYDldXTn3MsFMiOX9UK86c0D/aRAUmnzTbj8cTSLIchYFOpjiNzRYaOj9gDGniQRDR1Sh7v9+1x4JB0tgbjMQO6T62DkEVTkGbaug5lw/U3DCAjwSgx+Sc/HlEDbBG7UZJdkSSIjkZM8d405Iy+bDeRUVKljkVvAVmaJs1Zo56DpqdQK456VM8l/DMLGgf98fgPliXE/hE+aj1sot1dzuXECQBGqjWLm8VlQqWlsIufwA3T0I6knaZrsbsBpN+b/WoN0krjtFLHuIc=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773991483-959224
+X-HE-Meta: U2FsdGVkX19A6AY4bCdUDYtB2svwA6kyb7925iS6ASfWAX7npBH0ggeQDQv48EHEi0xqpEpLRGXq5bxgJOqF1uloC552SL72yewV+t/pUDEj1bSZ8TO4fKXPTn83DdtJh5Q9oNkAbChpCUldxhCCYEgkeF02suN6t19Y2C0L8SvbrE9ls98INtYavmHBhbfyEu4t2Yjttx45i+2cE2k9NtyeRSMEQjtkh67R1VGuBQ7jUMB79twEDDP3O4ocxyvpf6Avfljdej/qmN1eb+3mONWa6OmVnbjeEJufOxPY7K3OkGgBiVWBpNMJ/HeeCQXaLTIFwtZ8W+nfqT/NwvU6tU4P2mfTayj1jhFFaU52s3d44i5tBG2KqVqdxzorxQRSFD8yuH1+8umHqBmmZ2md/7MToyA4o1BM/r00cgdkihl/rlJpR1ARj1POi7tJzxc+MCSchU7lHAnHJzxCpCEoRdS8QlWX2Gq/YyhxsqpsyvzmI8zjf7wiaswxNhjjGPMI7LOcpixyIbVUnmFGKzM0EcujXFy1u22/14StxsslCwaoawMMVcM15LFS1eYPaVrKE/w7lt6lTSh7Vtqcwis1sdokVrBrnxsypn0I5DTKf4xWsb/u1cYFGPLcRNGBHcl0HKNbatxMmEjBOFJkDUA6fHZlp8SYj5QSkK3htLvJN3U0a0fvRrbyyAedlPpCuGfp0RSEsFrDMrt6XvrDVRxzO7Hye/w0T0Jj2Gh1pN9fI0e7kafwo4CaRW4/d0fbbosahd0+ssJ2JNuKXdM7QhJqy7c3DPYKjrh+0s5fYX0DpTe6j/eT+jdjLkT+UcgMbZqqNc7vbWsbv4CAdH7lErZRl9dwRDzUqvzT1coNPAGK8hyj0IovuBkItlgZhkggt9NHBfE3a4U8ar8eVuYByUMKyiZWchJIev2W7rLd7mE3J2AH1vjJdPSV5tIHjD/zspTeVggmxl0VJb1TAIwA/r5
+ JYh/KON9
+ r+cYIP9mEhCH42F/GMpIjzHY5bAAR3RFgIqe5niC7YoVGMJp+n0C16cBpdX8knsor9GcuE23tcDnw2ik1+FVWUAWKMbi9cL1XEiZhaVu1dYFWog+MhYbl1lwL6RY+i9uhLECpMYETgc/i8zTi+GxrWA+GUsChNAF/KB/Gp2UihrhYYJ8ecthSJbOQW6YXiT4JIUcsceJm2QDs3CxWldC8plOMRAHncgjt86g2Oxop3uUXH/k2btC8uoljfza8f1FL0KQzTNhBh1vA8HIfiP9MXwWy5emd4iNaEgllSOMp5xbrXH5rbx15wHFNfl1wM+Or/INSdLh5jb7XLPJLEsk4MPtVhdcxe1+Azux2rE1Du/4APIHmreDqpd7xffGqu1it59RbmU+P2XbqhnZBm0vjcGrrO1UmauW8UZcEGDHQ4Yq1Ebroj/yLNxE0hqX+IUsf1BQlUdDJNNb2vZS2EHJXKryHWof+A62+oLpU78s6s7DykreO3IvSvXlaSrngPnWCMa8kVvp+bswj6rchzOhmYP3WikZjMRu5gfcHKfTlo/XPF5M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,146 +115,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The current implementation of damon_hot_score() uses a manual for-loop
+to calculate the value of 'age_in_log'. This can be efficiently replaced
+by the fls().
 
+In a simulated performance test with 10,000,000 iterations, this
+optimization showed a significant reduction in latency:
+- Average Latency: Reduced from ~9ns to ~1ns.
+- P99 Latency: Reduced from ~60ns to ~41ns.
+- Throughput: The loop-based version mostly fell into the 40-50ns range,
+  while the fls-based version shifted significantly towards the 20-39ns
+  range in the test environment.
 
-On 20 March 2026 02:13:17 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Thu, 19 Mar 2026 15:57:40 +0000 Josh Law <objecting@objecting=2Eorg> w=
-rote:
->
->> The CLEAR_SCHEMES_TRIED_REGIONS command accesses contexts_arr[0]
->> without verifying nr_contexts >=3D 1, causing a NULL pointer dereferenc=
-e
->> when no context is configured=2E Add the missing check=2E
->
->Nice catch, thank you!
->
->Privileged users can trigger this using DAMON sysfs interface=2E  E=2Eg=
-=2E,
->
->    # cd /sys/kernel/mm/damon/admin/kdamonds/
->    # echo 1 > nr_kdamonds
->    # echo clear_schemes_tried_regions > state
->    killed
->    # dmesg
->    [=2E=2E=2E]
->    [63541=2E377604] BUG: kernel NULL pointer dereference, address: 00000=
-00000000000
->    [=2E=2E=2E]
->
->Privileged users can do anything even worse than this, but they might als=
-o do
->this by a mistake=2E
->
->So this deserves Fixes: and Cc stable=2E
->
->>
->> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
->> ---
->>  mm/damon/sysfs=2Ec | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/mm/damon/sysfs=2Ec b/mm/damon/sysfs=2Ec
->> index b573b9d60784=2E=2E36ad2e8956c9 100644
->> --- a/mm/damon/sysfs=2Ec
->> +++ b/mm/damon/sysfs=2Ec
->> @@ -1769,6 +1769,8 @@ static int damon_sysfs_handle_cmd(enum damon_sysf=
-s_cmd cmd,
->>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS:
->>               return damon_sysfs_update_schemes_tried_regions(kdamond, =
-false);
->>       case DAMON_SYSFS_CMD_CLEAR_SCHEMES_TRIED_REGIONS:
->> +             if (kdamond->contexts->nr !=3D 1)
->> +                     return -EINVAL;
->>               return damon_sysfs_schemes_clear_regions(
->>                       kdamond->contexts->contexts_arr[0]->schemes);
->>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS:
->> --
->> 2=2E34=2E1
->
->So this patch looks good as an individual fix for the individual bug, but=
-=2E=2E=2E
->
->Sashiko commented=2E
->
-># review url: https://sashiko=2Edev/#/patchset/20260319155742=2E186627-3-=
-objecting@objecting=2Eorg
->
->: Does this missing check also affect other manual commands?
->:
->: If a user writes UPDATE_SCHEMES_STATS, UPDATE_SCHEMES_EFFECTIVE_QUOTAS,
->: or UPDATE_TUNED_INTERVALS to the state file after setting nr_contexts
->: to 0, damon_sysfs_handle_cmd() queues the corresponding callback via
->: damon_sysfs_damon_call()=2E
->:
->: When the kdamond thread executes the callback, it appears functions lik=
-e
->: damon_sysfs_upd_schemes_stats() access contexts_arr[0] without verifyin=
-g
->: contexts->nr:
->:
->: static int damon_sysfs_upd_schemes_stats(void *data)
->: {
->:         struct damon_sysfs_kdamond *kdamond =3D data;
->:         struct damon_ctx *ctx =3D kdamond->damon_ctx;
->:
->:         damon_sysfs_schemes_update_stats(
->:                         kdamond->contexts->contexts_arr[0]->schemes, ct=
-x);
->:         return 0;
->: }
->:
->: Could this result in a similar NULL pointer dereference if these comman=
-ds
->: are triggered while no context is configured?
->
->Sashiko is correct=2E  Privileged users can trigger the issues like below=
-=2E
->
-># damo start
-># cd /sys/kernel/mm/damon/admin/kdamonds/0
-># echo 0 > contexts/nr_contexts
-># echo update_schemes_stats > state
-># echo update_schemes_effective_quotas > state
-># echo update_tuned_intervals > state
->
->Not necessarily blocker of this patch, but seems all the issues are in a =
-same
->category=2E  The third patch of this series is also fixing one of the cat=
-egory
->bugs=2E  How about fixing all at once by checking kdamond->contexts->nr a=
-t the
->beginning of damon_sysfs_handle_cmd(), like below?
->
->--- a/mm/damon/sysfs=2Ec
->+++ b/mm/damon/sysfs=2Ec
->@@ -2404,6 +2404,9 @@ static int damon_sysfs_update_schemes_tried_regions=
-(
-> static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
->                struct damon_sysfs_kdamond *kdamond)
-> {
->+       if (cmd !=3D DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr !=3D 1)
->+               return -EINVAL;
->+
->        switch (cmd) {
->        case DAMON_SYSFS_CMD_ON:
->                return damon_sysfs_turn_damon_on(kdamond);
->
->If we pick this, Fixes: would be deserve to the oldest buggy commit that
->introduced the first bug of this category=2E  It is indeed quite old=2E
->
->Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
->Cc: <stable@vger=2Ekernel=2Eorg> # 5=2E18=2Ex
->
->
->Thanks,
->SJ
+Although these results are based on a simulated kernel module test
+environment [1], they indicate a clear instruction-level optimization.
 
+[1] https://github.com/aethernet65535/damon-hot-score-fls-optimize/blob/master/test-kernel-module/fls.c
 
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
+Note on testing methodology:
+I attempted to measure the performance directly within the kernel using
+bpftrace, perf, and ktime inside damon_hot_score(). However, the results
+were highly unstable (ktime), and in some cases (perf/bpftrace) the
+function was difficult to trace reliably (likely due to my own tracing
+limitations).
 
-Hello, did you give Reviewed by you? Or not=2E=2E
+Despite the instability of in-kernel ktime measurements, one thing
+remained consistent: the fls-based version significantly improves the
+"long tail" latency compared to the for-loop.
 
-V/R
+Test results from the simulated module:
+- fls-based:
+    DAMON Perf Test: Starting 10000000 iterations
+    =============================================
+     Total Iterations : 10000000
+     Average Latency  : 1 ns
+     P95 Latency      : 40 ns
+     P99 Latency      : 41 ns
+    ---------------------------------------------
+     Range (ns)      | Count    | Percent
+    ---------------------------------------------
+     20-39           | 3522000  |   35%
+     40-59           | 6478000  |   64%
+     60-79           | 0        |    0%
+    =============================================
 
+- for-loop:
+    DAMON Perf Test: Starting 10000000 iterations
+    =============================================
+     Total Iterations : 10000000
+     Average Latency  : 9 ns
+     P95 Latency      : 51 ns
+     P99 Latency      : 60 ns
+    ---------------------------------------------
+     Range (ns)      | Count    | Percent
+    ---------------------------------------------
+     20-39           | 0        |    0%
+     40-59           | 9894000  |   98%
+     60-79           | 98000    |    0%
+    =============================================
 
-Josh Law
+Full raw benchmark results can be found at [2].
+
+If anyone could suggest a more robust way to profile this specific
+function within live DAMON context, I would greatly appreciate the
+guidance.
+
+[2] https://github.com/aethernet65535/damon-hot-score-fls-optimize/tree/master/result-raw
+
+ mm/damon/ops-common.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 8c6d613425c1..0294de61a23a 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -117,9 +117,7 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 		damon_max_nr_accesses(&c->attrs);
+ 
+ 	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
+-	for (age_in_log = 0; age_in_log < DAMON_MAX_AGE_IN_LOG && age_in_sec;
+-			age_in_log++, age_in_sec >>= 1)
+-		;
++	age_in_log = min_t(int, fls(age_in_sec), DAMON_MAX_AGE_IN_LOG);
+ 
+ 	/* If frequency is 0, higher age means it's colder */
+ 	if (freq_subscore == 0)
+-- 
+2.53.0
+
 
