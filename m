@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134C7109878D
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A06D91098796
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79BAE6B0098; Fri, 20 Mar 2026 10:47:45 -0400 (EDT)
+	id DE2AE6B0096; Fri, 20 Mar 2026 10:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7733C6B0099; Fri, 20 Mar 2026 10:47:45 -0400 (EDT)
+	id D93766B0099; Fri, 20 Mar 2026 10:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6897D6B00A0; Fri, 20 Mar 2026 10:47:45 -0400 (EDT)
+	id CD0976B00A0; Fri, 20 Mar 2026 10:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C6436B0098
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:47:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0ADCEB6C1E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:47:45 +0000 (UTC)
-X-FDA: 84566720490.28.57A5937
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B97A86B0096
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:51:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 538531B7078
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:51:23 +0000 (UTC)
+X-FDA: 84566729646.22.B96A33B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6AC6E140014
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:47:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UnBL06xQ;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id BB49E40012
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:51:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NH0QAtEL;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774018063;
+	s=arc-20220608; t=1774018281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZq1cW/sqT9Pg+RwpnonA0kSbvdgUhu8wln+Ko+2Sh4=;
-	b=ViVgOqKpwfe3A4uY1szt6HeNZQuVwy8mPnuTXCd/h4y6cdP3UOnjsYLJPFNYAuVaXRFTJd
-	UL7hJGfFFJtNrLWnvGQKedtyu8OSa3b7vrqjtxC4SmOO2wiSCE2TQkqfuFLChDul5eUgYd
-	sd559uZ+wbuyWMSyrO5poKhUKJjfq/4=
+	bh=ilccG99mKFgHDBWIZkzQR4ja+B9nSe0o2icGi0WT6FA=;
+	b=wYOkaLguyDL/vgKvnkuvt2OXIUpBPIFrLptTNzPKa3mduBZ1fka0qTbDvrDZSftM+Ifadb
+	kECBXXxRQt3gzDUTOAHzFFBGegQb80WJAYN4+iy+X6f7LnWUPV3HN8X3Z3f1/7r3BHWmAm
+	weTI14lsg9aete+bIwYcfYl9Tk+rMqc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UnBL06xQ;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NH0QAtEL;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774018063; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774018281; a=rsa-sha256;
 	cv=none;
-	b=ZSzn/2ysJsQIOCQ82xgdtvOJjH8H0Lcet3L9+qDv9xvH92XsBf2ka2574LOQ5sOMxUe1fz
-	F9GCjINwUSEj1y7vHr1dcnXYDwNwq3JryrjG2aAEitHQM/jNy5wodywGupkoTuyACXPCe4
-	Bh2VJ8D2FoDLBsVF0kOFJYNYn1Zi5mw=
+	b=oB/oph3fPd5feaY0WLYh7WwGy0Cp4Mfz3qXx7Rmfzd5IJP/5mWy5cclJU5m/v97+lXKwx/
+	t0HdQ2/V+VFJXd0CGR/hb8kJBMFoSwUd7Qg+6qK9r7RE1WmOHWwBsOGbYqgojGFkIKyIAo
+	hfcr4VclFXXv9pTT8/oyMut0+K5DWko=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C87326185C;
-	Fri, 20 Mar 2026 14:47:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7B8C4CEF7;
-	Fri, 20 Mar 2026 14:47:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1583A61854;
+	Fri, 20 Mar 2026 14:51:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1636C2BCAF;
+	Fri, 20 Mar 2026 14:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774018062;
-	bh=xJo2T4vc+YcK0Zp0uhjPMvQz9+xZATwcssrwN2pYBAA=;
+	s=k20201202; t=1774018280;
+	bh=BRLCjsYp/OSdtKDfU9Ghzw6aJ4iOYpw1n+juPU6+/Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnBL06xQzPc5XvlnrVn4NDvd8X+YFlTc/+xOq8Y+z/xBCzb4FFIy7PGInTy12pQGz
-	 RfWdT6uiyt921qgEvimwLWKgRxVkX2SXGctJ93xh7hlfoILxeer9vvh+x3+Lobt/r7
-	 v61g4JwXjHVsyRXefeaOtLHXGfKpvxDV95pKgrXvOgwvvNNHasnXdoa6RewHVaoLiT
-	 F9JjfVfnCKwjkHAK4dIKdxhWc6P6qZkrG7jMb6ix3GpK0YFnktSyGbQFCqe1OSdKhi
-	 sbVeGWBWdlQg5wpm+MQNKllgT4ZPmc6E5Bii7xz7UBX47nFQVfkMrCFElumW+CQl6H
-	 5gh1uFWBtiCBg==
+	b=NH0QAtELB4v6jLFw8JsoLyBxlKe6/9q6TmleL3TvXy5G6jXfJnZuzfWgPulPWA1rL
+	 2W0NUx28emQVlz1REcT5GV1KBSMe7SIU7loEHRb6vSMJ6E7PBuiKxdGqvPzEYDI+2H
+	 SHpdXQV0HQTgtUrH/OBY9ZXuLZLkZcnyjPkGB0UfBaVv3aHT4cNxs015FqtdAELF4w
+	 rZkIohTiAJMyeHXkvdVZbCNmOyk8NHrjBwd829Ula+EhMvb70oeY0R2z90yAnkj8xA
+	 m6W0QKPEdaM8x5q2qIfs8LQN5wfDUufkOygjjXmdxdFXaNZoNHKTMLJCP9nWRTPZiq
+	 UA8o7yywDc/+w==
 From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/damon/sysfs: check contexts->nr before clear_schemes_tried_regions
-Date: Fri, 20 Mar 2026 07:47:40 -0700
-Message-ID: <20260320144741.91848-1-sj@kernel.org>
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] Docs/mm/damon: document min_nr_regions constraint and rationale
+Date: Fri, 20 Mar 2026 07:51:18 -0700
+Message-ID: <20260320145119.91960-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <8F30B2A1-240C-43D3-B756-20E327F5BCF3@objecting.org>
+In-Reply-To: <20260320054145.213945-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t1m88pb8sup7zr7a8c4cc4rdtugf5fcr
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BB49E40012
+X-Stat-Signature: q9oam54kq9dr5a7y983o4g9yr4apbybh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6AC6E140014
-X-HE-Tag: 1774018063-58148
-X-HE-Meta: U2FsdGVkX1/eV+m7N8zkBcxsWKGb2E4pxqK5T0jMYGAykwHaFibIX8fmgJeKxbWlBxFlj7jWtk14QG+qU5tTj248FV7I4E8vU2wfq8YQWwKgsRzy3kPBaqGrjiwuhGvvjeK1krVoJdhNjIq433E00wwlDvAYWVjosCMJmCONPFWP2DR+X9cSOo/Va9B1etDsaIkbJbYqVW7UgiUmRlSXzJ76MadIkv4M0JfrTaEWJhiaH1BsWN0JLYOXeQ66+zF622lvnrhK3XiMVx62DEP4ka9QtvHrGZzgMvuzqzxiCvTbZnwZsT5YE4lIVrVdsjaPoFdv7kVRux7nKVYz/vOcgOOHW07jK/OswGE5f4hrSVFOWi8AQsGfC4+dvcsN365G/TklUlPFGU4Ew8N6+PJSxPNdLnJg2/TXObkeUrJ6Hmkiy/QQTe/bIcxoU8PbCt5MbQ1inOyn5cBuXRjQH4qfhgEsQlxG9644rzRpNvkW6oCYXWFEhGpCf4hnGiZjgDB0QmHfRslrPaOWdXeussAY8DcvNx7TE1szwAmEh1pJfRLhpBCh+eQrMJ/3n700CwuvGsDieb9qOj/ooOmzMGjF6K1eOammTCnhqCtxHdD2CZsU3aZU8YOeN3B9y1bm0l7MbEU2bATlIJFigoO4gME9DR+JRWiaStj7IyJ6t7fVyYawo0S6VDhvRUvJx4PNko9AR9cKgweFKyCsQ8IxifRuSx6E865RWVkQHQtXHEGNXoghJJtbuhOsbjGDPlUrXor+KhLpGSnSOffwgQdcXKJrZJdrPMgRaF5K7IEFa5wGbL4iszwRmQzsckYA47ptDzOKJEh3SUHocNS1haUgBISDKoTIyfPYslr5S9AX+CKiwsUhRvf8O0j0Sf873FJS7AQrpvxDUSOJWkcDsEkhglWw5paA75264hmQyhHacYOmrHzFCfKHyLDZ93FCBGp78FHaWQXsNGcKwpvtVYrws7r
- iUjqMr/H
- gpXeB+Zg54UiRm0AhrJLjn/TXPwmq5yzqnAt7iCMMd8Tycdhd9h7GnnnX+M/OlDmq+SMa970f+TLreneABk9y+JGEx2w11TM1txqudYtKHLtMHznF/2iABJ/xNRg+/nUmNNb+uFq3flizhKjQhAtfJGOcQP0b/XQZX96DrBdswdurAUR/+tpEk+NwKG0xB2vXRoAlbWSypFq/ppCnYGdmUV4xGeL74kZ0p8UvxBxfoDu69n0MzTB3Xnyw2CD6TfKn3mjCFZZxBMTw/Gy1RYGun/rr0K4sK3iTC+KnqM4/NOzQERO2vRmICzYYedCMWHLxXw+Q1XbvhAA6QjzEeoQLPZmIs9piyMbCP/k7wyfdrFoHA6eJzr+1lHy+TRv7Z02sPpKtPrcqiC5lZag=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774018281-79403
+X-HE-Meta: U2FsdGVkX18eKyuPlidQqGV+TTamuq26jPmpspmBy0dwIu5OZz9W9tH2WrornyAynP/uFVDJPIGg/OOfziJPBL59pzlLL0b4VfcFNQk1++WJgWUcDVZVX4r3v3CuQbEBSLqKtqAsmAW2qpEXU7y+zGTkTfD5D+7WEqDl98MnHbW4mh6Wb/X5DtWhM5zIZc9RysQYJAuvQJ8Lal3KPOLUCOJo++Wf7Nz9Q2U4AUmR0LHkZcjQd30QvuF0l2Ts8eP3rRn3oo0iKCAB6isUuzQE/yHVIjlcfSFS7M/2+ZhWskx/OFfPG/rnCxLZy4Q/bWRrqvrZ9db6YB6JsH0F1pF7C3BzMM/tvfP59+az+VFKq3es4WwFGaaJZB3w0WWG85fBgybKhdqzNU5ZiFAzXj06HyK1JiLtYxh+gD97TCKrHJhM/BV32wCZAjfBszeFFcLvuoyWzg9NjSdG494T26MTmYcJorVwhxfSHAn5W5i4eXeR6zgGeDqoXpZtR79X/EFb1H1FKZj53+0BKhP3cE2MQPfRYx4qMK1BAiOTNG7eirImdlw1+iNf19wIydzCqIC2W2PHi3c8xuV6RUCiY/C1oIOyCljw+CAdVIklEdjH3ffLlA77pWrYoIL1OnqsPeLpS50aZ8r5YR+FQgsm2hvpcSLJEBIga2hyVGb4u2aKejlaqW7JYdCg2xCWuIPkmCvK4oIRtR0nc9N2XYIzo+4al1gdpkSuivGoXMe8WC8KiLcz9foK0m36AFEJlDUZNL0YcZa0kK7RbX4fZm4hOXoj9kPiBcZWwyT1Na/eJ5v6Mw0sINMBN3xmUWpgyHVW3U2JHL9zlvYyjwq4Ovvn4xqZTQeqWQ2/alWVxJkvKzvknH8vxcVOzkokK1r40Vuy36aKRMAgMjW0g4KiMe2GuUhxEJVzUDveikccylfGNcRp2FroW4fT6bfFdYKbZ11QyOqopE065Sq2oop3t3D2o0x
+ KvvhsFs0
+ +1Gms9N1L2yGnubFLQ5yG4DwuHtLiKZm2tRt+HILuuf5Rzha+p71c2E8H2S8AEFY26H0fLxeKpwtZwnXHKfdO0E8A/rCUkqd33MS+Kg0daA6lzSdbNia1vB3CZLRj+wvdW/MvBX10fBx3ushVpvypc0QhPu+1EqHlWNXLQSTn2pBiQuSfcrTOmOw1M8v0t7IUFRXQaM/gkA7sbgVzItfPviENB8NQ2wl9d1AobaK9ZIVFHb/Mvi6FKEvlkkrVvmGCo89hE+n/orIwyqbkv3fwnj7mr56dq4wNMoPFK4PsGOrY6wo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,130 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 07:06:48 +0000 Josh Law <objecting@objecting.org> wrote:
+On Fri, 20 Mar 2026 13:41:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> Hi SeongJae,
+> 
+> I'm sorry for the noise; please ignore my previous reply. I accidentally
+> sent the commit message instead of my intended message.
+
+No problem!
 
 > 
-> 
-> On 20 March 2026 02:13:17 GMT, SeongJae Park <sj@kernel.org> wrote:
-> >On Thu, 19 Mar 2026 15:57:40 +0000 Josh Law <objecting@objecting.org> wrote:
-> >
-> >> The CLEAR_SCHEMES_TRIED_REGIONS command accesses contexts_arr[0]
-> >> without verifying nr_contexts >= 1, causing a NULL pointer dereference
-> >> when no context is configured. Add the missing check.
-> >
-> >Nice catch, thank you!
-> >
-> >Privileged users can trigger this using DAMON sysfs interface.  E.g.,
-> >
-> >    # cd /sys/kernel/mm/damon/admin/kdamonds/
-> >    # echo 1 > nr_kdamonds
-> >    # echo clear_schemes_tried_regions > state
-> >    killed
-> >    # dmesg
-> >    [...]
-> >    [63541.377604] BUG: kernel NULL pointer dereference, address: 0000000000000000
-> >    [...]
-> >
-> >Privileged users can do anything even worse than this, but they might also do
-> >this by a mistake.
-> >
-> >So this deserves Fixes: and Cc stable.
-> >
-> >>
-> >> Signed-off-by: Josh Law <objecting@objecting.org>
-> >> ---
-> >>  mm/damon/sysfs.c | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> >> index b573b9d60784..36ad2e8956c9 100644
-> >> --- a/mm/damon/sysfs.c
-> >> +++ b/mm/damon/sysfs.c
-> >> @@ -1769,6 +1769,8 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
-> >>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS:
-> >>               return damon_sysfs_update_schemes_tried_regions(kdamond, false);
-> >>       case DAMON_SYSFS_CMD_CLEAR_SCHEMES_TRIED_REGIONS:
-> >> +             if (kdamond->contexts->nr != 1)
-> >> +                     return -EINVAL;
-> >>               return damon_sysfs_schemes_clear_regions(
-> >>                       kdamond->contexts->contexts_arr[0]->schemes);
-> >>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS:
-> >> --
-> >> 2.34.1
-> >
-> >So this patch looks good as an individual fix for the individual bug, but...
-> >
-> >Sashiko commented.
-> >
-> ># review url: https://sashiko.dev/#/patchset/20260319155742.186627-3-objecting@objecting.org
-> >
-> >: Does this missing check also affect other manual commands?
-> >:
-> >: If a user writes UPDATE_SCHEMES_STATS, UPDATE_SCHEMES_EFFECTIVE_QUOTAS,
-> >: or UPDATE_TUNED_INTERVALS to the state file after setting nr_contexts
-> >: to 0, damon_sysfs_handle_cmd() queues the corresponding callback via
-> >: damon_sysfs_damon_call().
-> >:
-> >: When the kdamond thread executes the callback, it appears functions like
-> >: damon_sysfs_upd_schemes_stats() access contexts_arr[0] without verifying
-> >: contexts->nr:
-> >:
-> >: static int damon_sysfs_upd_schemes_stats(void *data)
-> >: {
-> >:         struct damon_sysfs_kdamond *kdamond = data;
-> >:         struct damon_ctx *ctx = kdamond->damon_ctx;
-> >:
-> >:         damon_sysfs_schemes_update_stats(
-> >:                         kdamond->contexts->contexts_arr[0]->schemes, ctx);
-> >:         return 0;
-> >: }
-> >:
-> >: Could this result in a similar NULL pointer dereference if these commands
-> >: are triggered while no context is configured?
-> >
-> >Sashiko is correct.  Privileged users can trigger the issues like below.
-> >
-> ># damo start
-> ># cd /sys/kernel/mm/damon/admin/kdamonds/0
-> ># echo 0 > contexts/nr_contexts
-> ># echo update_schemes_stats > state
-> ># echo update_schemes_effective_quotas > state
-> ># echo update_tuned_intervals > state
-> >
-> >Not necessarily blocker of this patch, but seems all the issues are in a same
-> >category.  The third patch of this series is also fixing one of the category
-> >bugs.  How about fixing all at once by checking kdamond->contexts->nr at the
-> >beginning of damon_sysfs_handle_cmd(), like below?
-> >
-> >--- a/mm/damon/sysfs.c
-> >+++ b/mm/damon/sysfs.c
-> >@@ -2404,6 +2404,9 @@ static int damon_sysfs_update_schemes_tried_regions(
-> > static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
-> >                struct damon_sysfs_kdamond *kdamond)
-> > {
-> >+       if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
-> >+               return -EINVAL;
-> >+
-> >        switch (cmd) {
-> >        case DAMON_SYSFS_CMD_ON:
-> >                return damon_sysfs_turn_damon_on(kdamond);
-> >
-> >If we pick this, Fixes: would be deserve to the oldest buggy commit that
-> >introduced the first bug of this category.  It is indeed quite old.
-> >
-> >Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
-> >Cc: <stable@vger.kernel.org> # 5.18.x
-> >
-> >
-> >Thanks,
-> >SJ
-> 
-> 
-> 
-> Hello, did you give Reviewed by you? Or not..
+> What I wanted to ask is regarding tasks 3 and 4 from our earlier plan
+> [1]: should I wait to start both of them later? Or is it only task 3
+> that needs to wait until your fix is merged or abandoned?
 
-Are you meaning Reviewed-by: tag?  If so, no, not yet.  I want to get your
-answer to above question first.  Could you please answer?
+I want only task 3 to wait :)
+
+> 
+> Also, I'm preparing to post an RFC patch for 'damon_hot_score'
+> optimization soon. It aims to provide a significant performance
+> improvement.
+
+Thank you, I'll check!
+
+> 
+> [1] https://lore.kernel.org/damon/20260319151528.86490-1-sj@kernel.org/T/#t
+
+FYI, you don't really need to add the 'damon/' and '/T/#t' part on the link.
 
 
 Thanks,
