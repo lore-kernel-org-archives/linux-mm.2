@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C965710987A4
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 16:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B19410987AB
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 16:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61AA6B009D; Fri, 20 Mar 2026 12:26:26 -0400 (EDT)
+	id 41F956B00AA; Fri, 20 Mar 2026 12:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D12256B00A4; Fri, 20 Mar 2026 12:26:26 -0400 (EDT)
+	id 3CFF06B00BC; Fri, 20 Mar 2026 12:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4F116B00A8; Fri, 20 Mar 2026 12:26:26 -0400 (EDT)
+	id 2BEB16B00BD; Fri, 20 Mar 2026 12:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B339D6B009D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:26:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 54C221D47B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:26:26 +0000 (UTC)
-X-FDA: 84566969172.10.1D6A39E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 93A11C000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:26:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="09/G+fnS";
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774023984;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1622E6B00AA
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:35:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2CDAB7A54
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:35:12 +0000 (UTC)
+X-FDA: 84566991264.25.3BDC11A
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B273214000A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:35:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=nu4X1zZT;
+	spf=pass (imf26.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774024511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tu20ycLJMSEPILOZtHMmLwg2sS5RK+UEOzg9qkfpFzM=;
-	b=sjQizlcM4yoyj980ikNQOQHzsmCSiopx3w1pAxxuPgP6YE9pbshP+4Ze/UZGODwH1yZURL
-	rt03j+Rk19UtvKOY4AvzpVqc6tDgFZako6YLivXpAgrgit78XmzY4oZZu1QkfqUn7YKN9T
-	B3YvAXIiSz7QVjr9NWI8014kBZlrfAk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="09/G+fnS";
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774023984; a=rsa-sha256;
-	cv=none;
-	b=3pto7HIsrK04FXDNcfWcIZETHVLbh0GmuGi3MD4eVCjgM57NGS2Ns65giQjxtEjRmGG3JG
-	ZjglHq85q/UQy1qx75TY8IXXgM/EG4tCporAfrNSnyB4GGf2TqDga3T8TQ8ljeMsdWjDjH
-	ajMAP3dEBxAjGNo84Bq9dlCDT64wDWY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D787435BA;
-	Fri, 20 Mar 2026 16:26:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38B5C4CEF7;
-	Fri, 20 Mar 2026 16:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774023983;
-	bh=WN1vrlRzzntzx2h731DA67/8e1a0KGEgvQkZaMrWl9U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=09/G+fnSMt0ifbpViak5U8Q8uUx0pIk7SuO1rMP4wqwYfCRYj1rwLXTmJlCj+64of
-	 n06ScFRITAhoT4vRzGxVScpoDfclBQkrfvuH+cjkaOEFX4/ADk/z61lYUwaeAP3Tfr
-	 OFiW9AII6EEnCfHZJiJLgtuhxuWw5rKZh8ixNtJk=
-Date: Fri, 20 Mar 2026 09:26:22 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Harry Yoo
- <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, Uladzislau
- Rezki <urezki@gmail.com>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>
-Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
-Message-Id: <20260320092622.4b56e9f67a89400292768ed3@linux-foundation.org>
-In-Reply-To: <DH7IBUV7758T.10XWQ2VX6KCR3@google.com>
-References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
-	<DH7IBUV7758T.10XWQ2VX6KCR3@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kyt9uunw397bk3tqk7y8o3ga5nc5gdyz
-X-Rspamd-Server: rspam09
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HdwGly0+BqBUHkF/IVpHh4nGFQLNRDEsFnAVEweW3Yw=;
+	b=o9Ibe2OpIJZRtpx0savsmz6NDVD86VFWMfxaq8rjX7h38je9xWjR5wbVxGawTybxXbgIZM
+	ZFBV9TOPV+gAPanMCi8vcCOfLsEnFfYVLy3jew14+w//6xsKsGvggZADhJD0sIgGXH/K0k
+	sQM6KIBMuKQcSaMUXQu/GBDNLiYC40w=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=nu4X1zZT;
+	spf=pass (imf26.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774024511; a=rsa-sha256;
+	cv=pass;
+	b=HusD94IOxomTiAWm3EGp8/HBrwy5V4APWgsD+GtJNA1mfX1U4aXY2r5TorguUeSOC5SW/y
+	oIiuNy0BYRNCdaQghb+LS9rdcaixk2xlA5Qi2jXeI/76lPxwF1rFBroufZbzWO+tsmSDyq
+	3f4eG0/Z8b/PpvR29ilCM63c4WgIOyM=
+ARC-Seal: i=1; a=rsa-sha256; t=1774024499; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=kL6TU9SxXmYW0Zx/+kJIt50C7x7C6YJ7xEUjn0GG5n4am89gtGvS20RM8baJngnMB3WLNtnXp7nx8CLFgsymyYdVtDLjBpoEj5SP1DELvHi8kgTSe0wBpNB2bZKaIt5DgIigOrkEqfXE0d2ZH5VyqIPTVYOhnnzYJsrAbRkkeBc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774024499; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HdwGly0+BqBUHkF/IVpHh4nGFQLNRDEsFnAVEweW3Yw=; 
+	b=TPcN1HWQ4epDGEcV3r9qKeumPHdQc8aQDqXLiWI6VdaTMIki2UhlHejhxzlATnVhntrG5D0B6ZJ7lkYRM9bHjxN/Sjzy09oSB69sF/8Dg8/HjHDH5qHHcwnwserD8Zud22pPE5LM15LKHp+1V3OdDXCB2jz44nTwWcNi0hC3PME=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774024499;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=HdwGly0+BqBUHkF/IVpHh4nGFQLNRDEsFnAVEweW3Yw=;
+	b=nu4X1zZTA9hBK5Ld6MOv5wyDoT6VFY1Ca5zfBveSnqaAz3PidQoayHblWpazYaAZ
+	VSgmId83ABif1FBfTXgCLLuWdvBbI/6+BSgfCwhel77epINNP8tspt6q+KpO3LurHRH
+	EqTVCT47MbvMtjgx2RCWgVRVUGWN+aee6Aj1KOzE=
+Received: by mx.zoho.eu with SMTPS id 1774024497826601.5397544812834;
+	Fri, 20 Mar 2026 17:34:57 +0100 (CET)
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Josh Law <objecting@objecting.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Fri, 20 Mar 2026 16:34:54 +0000
+Message-Id: <20260320163456.177750-1-objecting@objecting.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: B273214000A
+X-Stat-Signature: xudfjen6ahrjiiyy8q45a8aqgd73w5u3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 93A11C000C
-X-HE-Tag: 1774023984-559766
-X-HE-Meta: U2FsdGVkX1+VSnvpI3f3stQvc25tkjOeYVmPBHe5BBPZONhcGwGpiPeUIlYttcN5pVB5C4kDCW/wr3bxBa0vDBf4z2cr+qRlrE/arteFdXGz9DJ1ea7iyiL8fIqX6dP3+hP26TyVAwWDaU5P9k9fHCc20YqUtYMajpeEO31iBvRF1EQ+CGqXV1xP0ICFWP3pIZu/o8ApneX4XlzBq3ti2lt70h3nHcuqDtVZgKEYMv1/QtsrezZqGctH4o3hBWJDwwcgTLOVyzr09CNXmyvxo6PycTmbkN1Z4/qGxqO2IEygvCZI7bX1ZfoqlgT1ZZMriAkHTDKJPiXd4u7WjPITRKmEPPEDeVoxh6jMET3r+2LZ6grRehtMLBmKXII8kLDG2C3SataZCo0wK9SKmCHHMKWCUQq5kfNR9A+Bcb+rSzoVyYF+XLksG3PH9/28SiIEeq5zN8NbI5kIiCpAtjHCCekm82065Varb+eIUnjchw6TT9iXGQfKQrYgUDD1v3BgOoeFgyi4W3WF6S/jtGeyahSkbiLk5+qnVKs2cnBOyLk0GKaF97xiyiNC1scz4YEJh3GPTtDHIDsHmoO45ZSxVg7S2CebyKPa2ji7p/Sg2O8vTH21s3QOHP43ooz+CWnxzakJuuzhPdeTf0/Go8cOICStoVMKO+kzeLCu77P3FYMupdX/vXqvkJ3NLHiW+UO56jyWSnDiuhdgsWFR3eEWOeZHKPoiLYf30dZmqdYLnUGb7Wu9TYuwLjnQV9nnLgqX8Ts+IG9PwCe+Gc4ZK2ux2akIB/6V3Qx4YrsbdWc2b37ItiXsdojj40zQkGUn1FZD0I5aHTqHWvA+Vzpkzvhpq8gT/iNpr8aKskR58kFOqET77tGRhnr7bA2FCTNf+U3vnRkh6Twa3dTuRNgbAI3A4JvbWZeCc4gGCuAQOkpCjRKp0x+h4VqNmx0TREQF2/oFmSDhTBZcmmArzBHSMJO
- mf3WSxiB
- gGhEbKPZEO9iid9UrIHtT2FYZ/jl1V2DaBmcqpkySmDVJzGZsVlLuFAcf5XBLvPQc1OEI6rubdM62QmmBlRRW9QEsGF58MvbkJ7rxr+VjbbOrpMNUqH4IntYBpr6wI0QqstVe/QxJdnhg1FjjZqmUvrQi19flfgD8wBl+oaJfM8aDLnOkGJg87+bKAWoLzma7K96x4lwjHKkzu6vFDR05voJhNT8fFWvXNhXlrw9DvwJvutosGAM3EcvQKgMSzOIEQ4B+DjZoa1lh+KqUfyFtZf1fvSAJjH6gZROry7t1VaBR4+O3OU0zzJOUgi5fW4ZD8yWE
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774024510-186089
+X-HE-Meta: U2FsdGVkX1+GZgzJ9JD6InFRYZu6mlPEvOy7JE+f8Hwv66O9CDNMpClRQ3NpBDnEjnlJBifwWmV3mouHgea5RebWCaZkuajBg+Nci4uaGQRNLhN6pXIzdrSakTOelh1rUcbO087/u8mSyuc3R68Z4/fbQAkR0RpH85ISOCzuWVHDlw8K/7pyUNCdZIwAz9FIOxWIXBYHLLDd/8o034g/7pWWCZm19zmPdZXxm3oi4HDLLUKETbFlWGMwMvrCDjdHgcZigrAk5P01K0Znm6X6+fj0kPs81sCWEg6yB6eATWV0CJmB/tHwGvPjw4hfOxghHohSUn3MDeaOJjvtlbN9gZ3DMOhGqegg6HCEsXMD1oyFMtidx2LbMTFzZK4xYGrW5shRXkgVTISl1/Y1JUEbbnbM5bgaPg7zRtjmwedCR+4aSa4YTgCUKWWuue/CgvT0gzbDLX1dcFkbDgNvHl/gsqu475tMqPRsczWOjxtf6lw5LL/ANz+SW3PcCJ1wa8a8FcxUhHyheYo/olJIZJxZsQYzzZ/RltOwe4F1P2WFuUF/Dx9yxflKnEEkbaUgS+PyV6VSDtzY5h8I6LVp2E5j9xXesTqWbsGnpgiAI8KZBhyLypKxuZI/uHstgQ5WmGbYMj6Q698jo17DNaLcUKR2j+rros2vWWD4iQRKjCHtTtuNXGSnZytZUheOgNtR3Gt/mzCUXfb5C/dXVAVxjeusw4/r2NdwO4SBftycCHNa2YT/txVBVgurcbd/5t7jcAyge26rRLlRL0TU0qfADp9G2WDTTskbaRZRJ1zR8m5QiAQoD2VBsG7+rEH770caFSurfHD5Gf61zK9ouvA3kklSI3rEV1miEnMa3D+b0rn8XKzx7Q1940j3SPfiPatrpTWZn5pUBe/jUnnBfz2+OiWa7GGprcIDZezpAR9rSRJYklWCLPWmpg/1qTF4l/z3SMzrSSSbGbv5SP/iTXz34Sb
+ 7jE6NhR9
+ EX+4WwPn7SZNrdsNrgx4m+RtnpzUAfjdCf/qTMzEahSCHC2v6i5zjrUeI9BFlcFBf1ON7MOEmG+qTYXpDc+QHotkvmeo+zCU/AJRK3ZeD897LEXrLOu4iPa2f01wE40RlSo0n+t5jcdw4g8Lv5J1N6ny7gz4hLBq27Cc6quXEymxjvKgR54GgBYr2rUXWZFB8BcsRcoyXDLd5lC/H1s14b+N4sQ7EQEZ92W1La6rKR97DjOG4Q6sW1huyksq5tRSPXjxcIl5af5MXRNcpdtXfSdiciyV3VrTNDDu+qS8TiG6aWLo645zNevsYIpIT2WR/1LqlSDYKqH+/nXpdWy17/34Xz2k29efUpfSm8tc+6GVBf3gfF2oW0nAHfzbqcy1+hLwxl4Iy8wuWvwsh3XyLmylLjOklDHrYiviyOc5B52fclTo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,26 +100,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 09:37:52 +0000 Brendan Jackman <jackmanb@google.com> wrote:
+When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
+param_ctx is leaked because the early return skips the cleanup at the
+out label. Destroy param_ctx before returning.
 
-> Human summary of Sashiko (AI) review [0]
-> 
-> [PATCH 2/5] iwlegacy: 3945-mac: Use special gfp_t format specifier
-> 
->   Just identifying pre-existing (and low-stakes) issues in the code. I
->   can add a patch to fix them up.
-> 
->   Andrew, I think it probably makes sense to merge these cleanup patches
->   regardless of the gfp_t change, as Zi said. Would you take them
->   through mm or would they need to go via the more specific branches?
+Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-In an ideal world the subsystem trees would take such changes.
-
-In the real world it's more reliable for me to take them all, make sure
-the relevant maintainers are cc'ed.  If they ack the patch then great. 
-If they merge the patch then I'll drop the mm.git duplicate.  If they
-say nothing and it has decent linux-next exposure then ho hum, in it
-goes.
-
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 576d1ddd736b..b573b9d60784 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
+ 	if (IS_ERR(param_ctx))
+ 		return PTR_ERR(param_ctx);
+ 	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
+-	if (!test_ctx)
++	if (!test_ctx) {
++		damon_destroy_ctx(param_ctx);
+ 		return -ENOMEM;
++	}
+ 	err = damon_commit_ctx(test_ctx, param_ctx);
+ 	if (err)
+ 		goto out;
+-- 
+2.34.1
 
 
