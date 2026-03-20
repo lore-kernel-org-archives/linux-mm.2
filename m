@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F8C1093170
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B499F1093168
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:21:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A9476B0005; Thu, 19 Mar 2026 23:20:11 -0400 (EDT)
+	id 012EA6B0420; Thu, 19 Mar 2026 23:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2802F6B0418; Thu, 19 Mar 2026 23:20:11 -0400 (EDT)
+	id F2CCD6B0429; Thu, 19 Mar 2026 23:21:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BE326B0420; Thu, 19 Mar 2026 23:20:11 -0400 (EDT)
+	id E6A4D6B042D; Thu, 19 Mar 2026 23:21:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C8EA6B0005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:20:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AAF8313BB28
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:20:10 +0000 (UTC)
-X-FDA: 84564987780.18.C3D22C4
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 782DD4000D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:20:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=foZ1Zvt5;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D738C6B0420
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:21:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F85F5B400
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:21:45 +0000 (UTC)
+X-FDA: 84564991770.02.576C96E
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 54244140013
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:21:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WNeekJYP;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773976809;
+	s=arc-20220608; t=1773976903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6kvcdOy8PHd748Znf9GoXMatn6ilXfT0VuUn/Hau19o=;
-	b=umxIRPXR7xWRhSZIZXEsXRaWzzw83WteltYlgtvSQqSBqRfQ5uqbPHx6/cOL7w6TK0gkrW
-	wkexo3czITTNZVo37iwvLJLYVb1c9bSspDE+JmazoyJ6Nn6eUxzFrP2ffs/AyBC7dxgE8G
-	F/qzmGKa9y8LvFqEcu02agGfbC7CxZk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773976809; a=rsa-sha256;
+	bh=euot9GX9Psoi1WN6TxY1zgk1VpiBJA8QKwf2sKbBPeo=;
+	b=nL8jbOAI+UQhXLJbXudZLSAOZSKpmyKomYX15r6ittAcya4SHe9DDIerxeVyUpROt1ktjt
+	XhGjfCPc9u51ChKeTwkJL0/Iiz7/9xTxTgsUTkwqlewdvySN6IGgXUkF3E6UFLbvn57txS
+	q9EvsvPJrHsS6m2p9t8O4qosYefP64E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773976903; a=rsa-sha256;
 	cv=none;
-	b=gVOa4SnHnUlsH27PbBdeWUJ0aeKlRCGIfxnLKs39PDgALYQBjOd3jozkAA9LhJt2f4/2+T
-	uWwWBVai/vaqU94W1L315hqVpoiny23ypy5uQP1Jz1iE/N7XjOoPyJ8OA2eyHL+Ijpat9a
-	k0CLPUhT05e2PE82yLAgHW+jp8KGq00=
+	b=TaXiu+0pv4BcdkX25gU+1lgHBwEAp+83U9havR5oZnjKEujH7yBDw6I0HGtfjvRV3zCkPS
+	9+g/yJpTB8VVu31dpT8vdYd2R2/V/FZzUd8lD+xzmD5omifsjNv/hgq1ra92VmaQwIyX+7
+	SxEGPlTNGlK45/Va1uYPImX4JSZ1ZQY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=foZ1Zvt5;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WNeekJYP;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1773976805; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6kvcdOy8PHd748Znf9GoXMatn6ilXfT0VuUn/Hau19o=;
-	b=foZ1Zvt5PXUYcDMsftHTHdrpLrX1KmQkA7KYZ0toftm06dPzP8u1SRBAJ7B9yk4eS5gk0ku7nhmUNSsXG+byUaORQ7ltC/5fSd8xgZDKKQkR66/qWgSjmAaBcj0yUDUiIkufCB2xc+Dn745ADXojtdYLgKNamwUf93Ov/AswvtE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X.K7mdY_1773976803;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.K7mdY_1773976803 cluster:ay36)
+	t=1773976900; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=euot9GX9Psoi1WN6TxY1zgk1VpiBJA8QKwf2sKbBPeo=;
+	b=WNeekJYPe0LKc7+v9ue9xJzoy/1iNkg2xnRG8rycFRmOAcDCvEQsAQ0CQzS/6+oaUiTxpExgwKSfnvwdGZZ7Zujav7KNpIgreUqDVFsK83f+cN6ibGRGv0kroILGiMJ3Rlf+IWeJEPdTXoW5vdep2pM2PeNuTGNN2LbbZGrkbxs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.K7P-S_1773976899;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.K7P-S_1773976899 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 20 Mar 2026 11:20:04 +0800
-Message-ID: <87a5618e-3ae8-43f7-b0a2-3c1e808277df@linux.alibaba.com>
-Date: Fri, 20 Mar 2026 11:20:03 +0800
+          Fri, 20 Mar 2026 11:21:40 +0800
+Message-ID: <ab7ea070-47c8-447a-8e9e-ac471063cf8d@linux.alibaba.com>
+Date: Fri, 20 Mar 2026 11:21:39 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] mm/huge_memory: handle buggy PMD entry in
- zap_huge_pmd()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1773924928.git.ljs@kernel.org>
- <1ec18767b106a1ee1ed6e33e332c3ad5531dc636.1773924928.git.ljs@kernel.org>
+Subject: Re: [PATCH 0/6] change young flag check functions to return bool
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
+ <20260319201839.2dfa704041b8f13d8dbbfd3b@linux-foundation.org>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <1ec18767b106a1ee1ed6e33e332c3ad5531dc636.1773924928.git.ljs@kernel.org>
+In-Reply-To: <20260319201839.2dfa704041b8f13d8dbbfd3b@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3dis788oo6awyo8xokeaciw6gcu5yh63
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 782DD4000D
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773976808-280408
-X-HE-Meta: U2FsdGVkX1+7Ya8ZgljVBIwlXB0BXKly0BVZfqug71nk8v7UX2chjF+uMXrbz4drBs0cuVd0vZ4F69oopn6hL7WWZfnj5/EhOxF2Q7ortJouPpajbrilL41/po9Hozl4xfyQDskxtX8uzD+eNWOqhj+m/cWnVecmr+01gUVKAUKs7HiL6Gf61FPqs+EmFPhSRkuF5F1Wnku6ARHSjymN+CfaNqjSH9LjwYUljTX1cyQGXLUKyfUivvCNGmGHn9+0cSBpgzbfXmwVutMQSiUJBfX6/2Juaolykgg24/t8MGPRGC/YT45koj8ba3PQEfMPQBiMo6BOqXt+02CZUUSKha5ScC1/MDHF5iB9rUOVrmCQSDFx3VkIQ6914I8L5qARhkqgl+xb6pwrSVe89cIDhuzMKK7klNyZu6WZgKX9rTNyI/1hDByejM8W9Kcuufo1+0sZWyqh2EX0WKXrnMX8N23WMYgm+CVjux+Xq5moRGzJ9a+DTWQE8sMVWxcxa+qkqFrtem3kgqOIo6iM70Weyxiqt+LXZBg6GauZIqiCnlK1iOjaMJkl/EZwoSLvhpSgPOzDtZvghDzEs9DLqSyezE7A8+V+2ntPKDSYs2WNtqWCMMldobvaoJL1ehVchfGApP6s7Gebo1orNHqIBLOEI2kk+Nche3nlejWX4dg+UOLXvXJx1r9MYAqSgpKkvPCdGsDgnYxc21TN5p+cV+3uoGt9DZ05AYVLAdPRqlxG0EAVcQdPjUmM69HdbbCmSW6gC0S35hHxDgYIgfoXsd7av13y0ell71svEMvpMkHQQVQS5GmLrcnu+L5/D3cwLRRoM4GrHRt+x0h9pAOSSX//BpzEu7dLoXp5AFM6KW2pyeExGbgz0ngeEtO2DBhpcWYhdE8qsyTZRL0ydG/U2yI/0R5MEk1tdzpXJgwocpXDOkyMoabSLSh693tcm06pOTtpAmyuKk9d+o4ugzpP7xw
- NRP23+JT
- h/JWqgSdKwizkkohJi/XpDMsxF6kHFxAbz9LctO+ldpG4GrLD1XB0rmzDKpR7uLwOzFeXvwN7gwIdDwcTvTJw/9qLFz4kugHmxDQ+KCOqLYOvkhKUQSpQwrGhF4ako0YL9PEb5I/0m3FF1sDCTC1wZ5GZSQIr7MRB9rdT50iPKOhjoiKr/okyPI2mZFLxoFgrJrjpmkEylELjYydvfJ+ux2eiy4aikIr+a66ToXkC/ACtYsWAKGDGHeIB8ITBsisX0qNaf4f0Iaq2jttTqphRn0l4N7eWVHGsKOtAaLElGIPJNzTLxjwl+uHCY9BIncJwzZm8d38LLq3AJkUwigXshhXzEoJfqikSZDZPC3VVquxhJ76Te3wWpPD+Gg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 54244140013
+X-Stat-Signature: s4q9h6yagjuo99bokn9doe36kd4opxr3
+X-HE-Tag: 1773976902-14306
+X-HE-Meta: U2FsdGVkX18N78VDI/F8qBIXVqaZ0wc/2UwAYNl946fBCfOkbsRVCkjkg/ML84UYnZkxjx6tRqev6V9GCXPdTLwWiqBzc49NXfU3PsedKvX5RT0dnZJKoG8MNa0/4JLT0CC7eac2KyAzHqhNJFM+bnGFqnHZdr5iEzOeVZfT9Zdl/ZzI612v2fAsv4eTpt7diSL2k/CI9LytsrLplLdTcO74Its+LxTya81CGjqozVxFqBzGmk0H/pBGrm8uYxAvL/W+AavX/crwfCiNbxVgQW1HWc59zzKxpDntrwcPJfig0Y49lb/7sQdHzsjDWzrEl+1+N5Do9xeZl9wC/6B33ijLS2BFTZRVdJVSZRwyVrq5af2cskySgcX2GdtOyb2ytwnc2vwSHCQZXFQhkD5PcxyjlDjMC7R3W8sk0DHv6P7gJW3MTE7XMkZkZE+wua4WOx3++/2mf1m/J67ldgHkwmXjJamZslWKh0J1SaJ8jIWQ12Mcs/h5Rxd+hcl0s84GhjO/EpdbnRN04AyJqTQG3r0gqJWKYk6oRTVFAc/A9tdS6fXCRzWahfPQvrZgss2KFlCoV4HNvi1PrKtZ6WbMlYjjqIMGc/0LYIwr2Noldj9tIWU+LphNz6mKdWz9dxkVoWdr4yAHXnyPkAmdF46Q9wLNc6kLijvuIvxj17AP/Zo6Z6aYVvvdQFGgw/+VRiJfYrHutdW2qSYtjhWknWxkbLmakX11RGdpnAphw7jFwnSSvJ6tvdXGfFAqbP5obYz+fLo1Hl2bg5TvXV5mSAnnnDDfgMPlmM7rBzaSd1bwGBcAIdQvYhpjGSWI7YfM7zhlR7Fx4agVxLUtJKX06zebyxiQNz2PgBVffkbm5bX//8TGsgZt2a49FxMFDT6E0J1zJ9U2pNdwy7cJ1M72hepuHj08eFuc9pjSETAkG2smrgpwZnPnVuwDOHAw8cGHqFh9B4vpRcEq17H0wQJklq0
+ 7hD8eMMf
+ H0R/1xEoyBaMobMFyH7KArnTq0TuiVPjPAJ9TjJHzKoliUKZswkAoPLiWwiqmXjf+cWrqCk6BX2KPxXMNrIUh1C5Qawp+4Id+Pz9wJhWgIH1A6CpFL3uQHIeJKMTJyOeppsMfxRxDmISx8UcGhWAkS6i+5MNUqDxvJfM6LDwKmlMiIn6CVgmZ4LATf1LmhgYj0sOwtbgPtOYqxAatmXX+ougyBEj9SkDiL/ulOW8P2qamtDrU/yR0dh60DuS1qQyciPd6LY+ctP/+p/+TUyIIfV68+LIeFwGYj8SngR0wRdhBL1Cmq6FUw7goQvMcWummA1qXW2s2oUw8alVS6XCW1nZDFDLD6CWwbgg1iBkCPJnzAWChbd6BlkzTX32Hkv9OiLDrHDFDw45pL9SC07z9fXALKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,27 +93,16 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 3/19/26 9:00 PM, Lorenzo Stoakes (Oracle) wrote:
-> A recent bug I analysed [0] managed to, through a bug in the userfaultfd
-> implementation, reach an invalid point in the zap_huge_pmd() code where the
-> PMD was none of:
+On 3/20/26 11:18 AM, Andrew Morton wrote:
+> On Thu, 19 Mar 2026 11:23:59 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 > 
-> - A non-DAX, PFN or mixed map.
-> - The huge zero folio
-> - A present PMD entry
-> - A softleaf entry
+>> This is a cleanup patchset to change all young flag check functions to
+>> return bool, as discussed with David in the previous thread[1]. Since
+>> callers only care about whether the young flag was set, returning bool
+>> makes the intention clearer. No functional changes intended.
 > 
-> The code at this point calls folio_test_anon() on a known-NULL
-> folio. Having logic like this explicitly NULL dereference in the code is
-> hard to understand, and makes debugging potentially more difficult.
-> 
-> Add an else branch to handle this case and WARN().
-> 
-> [0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> One observation from Sashiko.  Minorish, worth addressing:
+> 	https://sashiko.dev/#/patchset/cover.1773890510.git.baolin.wang%40linux.alibaba.com
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
+Yes, good catch. Will fix in next version. Thanks.
 
