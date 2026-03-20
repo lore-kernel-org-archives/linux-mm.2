@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A77D1099B30
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 20:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 243831099B30
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 21:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81A596B00E7; Fri, 20 Mar 2026 16:59:30 -0400 (EDT)
+	id 891966B012F; Fri, 20 Mar 2026 17:01:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CB066B00E8; Fri, 20 Mar 2026 16:59:30 -0400 (EDT)
+	id 869AC6B0130; Fri, 20 Mar 2026 17:01:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BA566B00E9; Fri, 20 Mar 2026 16:59:30 -0400 (EDT)
+	id 780126B0131; Fri, 20 Mar 2026 17:01:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B38B6B00E7
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:59:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 024008B53B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:59:29 +0000 (UTC)
-X-FDA: 84567657300.05.4D76FCE
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 106AB20003
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:59:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RkWV+ZJk;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 64FF16B012F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:01:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1676258775
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:01:00 +0000 (UTC)
+X-FDA: 84567661080.26.C087B25
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1194D1C0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:00:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eq4TJ61+;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=axelrasmussen@google.com
+	spf=pass (imf18.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774040368;
+	s=arc-20220608; t=1774040458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kD2oiXKOGMMQtFfgVKhW5VJAqQSDWQO7P8JTSfR75k8=;
-	b=qn5FjPZ45X7n22zyShCs+FsDQUv+ayrrTSEm/vaLq4icVlwOAgb/ZaB3cU9IIvcR3CEQrK
-	B4Ijtg8Mc1xMBA57hXJvDKuiWbVYFlEUpIj7tTDg2slbBFej1bOQdRsRupNr0kHRZAdlBE
-	C0fxdhT52QXQbiZYqf3lonPGxUBAP+w=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RkWV+ZJk;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=axelrasmussen@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774040368; a=rsa-sha256;
+	bh=9Td22Nguf6oElD8TYee87KyVv8CC+6yr9W1jc6lZErI=;
+	b=lHCmNLHd+RbXKci28J3vaJa6PSmJ3y/QYA0rHv21hiyVXhNDyrSMVEjwOBFPkehYcdCdCT
+	NbFXzcdqPsrSDTcWbUhIcEf6Vxva53tznbecd+F64y48aVPMyypx+xxwPdA8+Pn7Obo1Q2
+	TqIaFC0aJAGwKfeTZOhcGTDOIezaCEs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774040458; a=rsa-sha256;
 	cv=pass;
-	b=VeHVySGjGix+Y1WTOJo0LPKlCXBAxbrDfBIxmIqPcWHYTPz5UjFK+k8wDwTlEjmmYCjYfW
-	Du/cLTFJfyj+SHESTTJIt1ozEU8qS/dUfC+FbGxu7wB1Ldd3iCxY4sjrS3dtlnM4I24bGT
-	7rYZrIqO5wh5OoyCOdJRkHoiZ0FOHFg=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-128ce536fe0so2210c88.0
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:59:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774040367; cv=none;
+	b=1tLi9eSMTDkvpWidgD0xk0BiN+gNwANn54bEtthNdX6PmuJy70nM35s3P/GTAtknjUdW0R
+	G/jAO6vD5qgJiLXTeovi+mCGdmskqOWBCk64gehiA5PsSY6Cm8/MwZvCd4mGMMI3PO/JeW
+	YU2zPn7YyORSb8J1nytu5TerVmMC790=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eq4TJ61+;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf18.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-126ea4e9697so1066c88.1
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:00:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774040457; cv=none;
         d=google.com; s=arc-20240605;
-        b=AyYRCarKNoRRDAPltkc1O6r70dJt7wLUiBInxUMsvdBKsDvad1/bJUCvWNtZVyh0HS
-         Ua9/7+WJI+3wogPN8Vi++7kvJTv57zB4XVDlYL41CxTk5HAGzozvVpNkp8RzT9M/mDIq
-         hp8OoRG8BwjT1IVkSFKz9y+JQNOcEjbO/R9Sk0+QMJCReWj3Q1yzDVCwuMfIbxV1hn9P
-         EWEv2YpjGV3uXylGHzaPikB9QBryRC5MVuBSPP8/92KSLwX3MfQ7IWolGCmpH8/6XM8H
-         IzcwZ6NhzHsB12dsWnI3rbYeCdZd5VDQEA0uJx8kHt1wZnXsZZcWlhmH6O4lYzb7E68U
-         l8bQ==
+        b=dbEwt3pqm0hmvQXttfXqRF4hltO9hO0pvC5zFgz32SZpO0XXrvIko63u9M5AsBh9eK
+         Uqe9tj5e7tOxz+AC7xKEAYRvcD2ikxjvchNnBl83aBsjG19cMDsNBtZqrwcCI1LuvKPt
+         Wggz/5g9KLuE2WqVoZHhi9KMRTFoJ0IDj8W34tRi4y8UTunzkBYoJQJuql/Um4vYQ5I2
+         82ShYeqydMp0ciTz7hMxFaP7vumzFLCMsvHNzYnbOqZ521iGCEyYxbazuavIppTwU2WN
+         43i0Mq2WOidEK0czbEFLVJbbRYv0Veeou3F+Jf3qHUnDpOper3LEMPJJOABXvbK76zb2
+         dSPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kD2oiXKOGMMQtFfgVKhW5VJAqQSDWQO7P8JTSfR75k8=;
+        bh=9Td22Nguf6oElD8TYee87KyVv8CC+6yr9W1jc6lZErI=;
         fh=vjmlo65dT3bwujOwu4be5PnOTUPYF/zNrpV078uiamg=;
-        b=QEjBopA/m8YWGvmXZgi0v4A2P0LBk6HI86/DJ0MgVy4+eKDVgLkdqjR9tgsxwmGX8/
-         tMyI7Q3CriQZdrN+8yDobsj4aBSaaRC+2dUHP0dW/zdEcdrGwylRdm+MX2OusP7QyrUH
-         I0LO+CzzlhMzEypbrnnyWv2+9UuJZA7rVDd2Aa2EhR3oyivewb3Dh0ZqKVkj2cS8MYlM
-         EBE+JZ1NSt+AMBdrUbzj64+oMJ+fbdAQDkgRivBpFIXnGjJ7SLvNqM4rk0TbdPXtGRSW
-         kQGl273ErKaA55LcN5Is/HuF5f01D83c1WUns9aqqRrFWCiXfP+5Y6e1qeNQSEUFeqpB
-         NTKQ==;
+        b=hUOq100zvbGhgCU6ljUzWDzLv3MBBg2lP7OTyVjninMBT59j3LjGnTrSUX/rd7q+ty
+         223/+f1PxwPYj0/ms+I4ih+WE8/82nd4irMDxSSv5sZ7QV7Yquty2eO43p3GXeCaMsOF
+         VQ+exlpqWbRmrIgpj5SjRG3PvSYFMKJjOGt978Q/ZaEG7JvwqnFnJA5+6YuOFl7WwRYe
+         cWAv4RPxPKATXWbVJJdk9/OKK67QvBh/ll2+9dc3BoBHowyEjJCZSEwgbzvtT6Gmu1ye
+         RWE9+44U5FeDTzLgHslImQL5qwN6oZvFRH1k+N4ySWkk1eQKzOSvKefsBkp3pJaeYTkX
+         bukA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774040367; x=1774645167; darn=kvack.org;
+        d=google.com; s=20251104; t=1774040457; x=1774645257; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kD2oiXKOGMMQtFfgVKhW5VJAqQSDWQO7P8JTSfR75k8=;
-        b=RkWV+ZJkhb1bqtbSTIURxkPoBuYatzJqh2+jt5uoHx/kbColxNbRUto0rwRNWupauL
-         j6HzF/4UASjGkFJcGDQNDiP1cgMcTwArJbMmYH8M2wkljizBVcM8rtu+h95hP5un7ZHO
-         8hRvVz3KISWSwMJ3HAGwD3U8i3B0uY+hcit/52Cw+ioqV+SulGfWr7QtSI+G1lK+8cRi
-         N1Ze+sdzDfljTkLgm4qNXhpNtOZCupuxadvtqa+/o0+kMggttT/5DvGNPWsqrEu2FAfW
-         LKKiPnZJh4kPClxj4hmkmTZBH85pSq1BiHmSKW3QEGpL+5iJ9asXkjBt4VdKLYGzEXbz
-         ypEw==
+        bh=9Td22Nguf6oElD8TYee87KyVv8CC+6yr9W1jc6lZErI=;
+        b=eq4TJ61+iSQ5fJ05dnOoI+0AwAtFofTH1HUa7Smq8WW5e64VXQ4iRHObqN5r3jgwtH
+         5TVx+EejU6AuNR0Re9NSsoxunJR4kDdpbsbHLTSFNu4HHqHqqitpwmFd4IiFhJ9TSweU
+         umH61ZBGaH7ERNC28A91S/DDVae80TVVQETnG6Kwlq/iWEY+J9X2LZxyCQBNvxYEmpBP
+         F8tYzhR4hj+nBisKqjpfDiiMG2R9iWkeI6FQQDo/5+wNkz2RXp8xfgMIQFGwZNbcTlfv
+         hBylUzSJ+ocR66niDHF++Tne8ziNHNlxhtEpmKrfEB1ha4Y2PKseyMipthVosJRNrQRK
+         MA7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774040367; x=1774645167;
+        d=1e100.net; s=20251104; t=1774040457; x=1774645257;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kD2oiXKOGMMQtFfgVKhW5VJAqQSDWQO7P8JTSfR75k8=;
-        b=fSn7ApMP1IwTtjjmBomdRWHIHXG3MuX52q7OOqztmxDhPPDKMoc5cACg7mXsWi+vH4
-         ZcR5bxvsrS0XsTTiLGX7oZCxLt/UqaFj+nsz9I6vFd/8RcHYUC9TWozkL/mYVGee5pML
-         g4uWGL4T+6TGq0z1GZEGfvj2E5TClWrx+UDj2CBCnhxC3md89ON6cwyEZtP+/86Q18vu
-         ZjAz5TupGx4AZZeoSzisFD+SfFXqWAi0yeIw3wQSd5vqM6TR4CSrXTiYKOnDrDPSRYSD
-         OIVHJzQL5pPTLeO5YNmyLmQyaZZEb9KgaKiAzlWvfS/k0tgbVnPB0Jp27wBZqRKc7JZz
-         j25w==
-X-Gm-Message-State: AOJu0Yw4n6MlEO9iOCtS/fCmwAkr/IUkZQUlsnp7Huk1MLE32zbV91UU
-	39LBZD+Ov782qM0+Gu5nrjhh3vJHi8mQ11K16LoyXioYPcJB6Z9odjMr6dgJYlFHX4BOwK5xyQ+
-	x3RKZOFGnooM+05OC5wLOBkwZalohvtyl9FBEiky9
-X-Gm-Gg: ATEYQzw0+hcOxLm+fEJDSwKIhD+t8igIrtN+pmFVRHNOwWTb0xHTADzCfM++xDTF4N6
-	WlI+yHlJf5tXL7rECFT7vsI3VS7xu0qPP6D7VeV4tkujXqbMVwDkOxxOzbC/rAxINLW85fvU4JE
-	T5plyElIspp57YzQpEMp3V/tLodlsiDwIeBJrOJxIhOlztRBMDp3+kXnYD2AoKQKBVEMOFVO1P1
-	glwpqMQ07WetGrsj/PkUYNd9VBpxbIw8+ivr5RmQgjOLPzgXKy0UqaL6998fLPUFGPby9KUAoPt
-	EZjxr2IS
-X-Received: by 2002:a05:7023:b82:b0:120:5719:624c with SMTP id
- a92af1059eb24-12a7ba182f6mr8229c88.19.1774040366269; Fri, 20 Mar 2026
- 13:59:26 -0700 (PDT)
+        bh=9Td22Nguf6oElD8TYee87KyVv8CC+6yr9W1jc6lZErI=;
+        b=VNqROIlaqRFkUkH8J1bIh8YwOS+JQDrS4+EFajmjjPxccFO+JWbWN8dTiNdBvh9HGF
+         5ZcAc1E0JYtc8O6UDJs7ImqiLwvVaT0p0ASk1dn72T3d6sXLp2T+lbD6wP+rwDV7DNfs
+         aTtfira+LzFoELM/UToXO9iWUaLBuAYlivob2bq798GpUJQW0zHhW/oVg6/OTdXikJp1
+         4NniZaFH5NAkb+lOktTBe6z1BlT9l9WtJ7Ot/YSmq8sJW/+x4xc3PdU0KyJA39pW0hwr
+         IMazMiaqfs+Dm+5V5h6BsFt0jYtcRPynf1H344U6hyHsXnoEyMYZ5N7FmD7LQCk/VXZ2
+         Auvg==
+X-Gm-Message-State: AOJu0YytNxueAo5CWejFYDgXdFHczsoDc8iAv11kR1d858u9ysjWopQ1
+	BKuXqNnhoBUjPqYNVbcbyDmxv+3p/i3bdyKDJVwdFB6CjbRcff+AHmgsAJYv/i2J1ZykX7BfEOY
+	bWYhSoXjPfDK4FKPDSU6lFufsm5Dj+DDsORZjFXYj
+X-Gm-Gg: ATEYQzzlOKOX0ycqeK7dEfTfB/wMVY5bxFX5STxH7u8qI3URaUDwefi/dp3v2WRYn/1
+	2bgzWoMB/1hW4l0+KbMcpHOfW1kV0EanGGMsmz/QgSKoGesjT1nIxL0CUezQBYvRLDnhk8P5uzQ
+	QXzVeUZDESAV4UWguvwwj9YKlBbtu4M/QIhWdqXafrWVbMTRZbPnSwqWBcuqIVgdaUIabgwg3X6
+	5cBSPlBjLHEN425cHSDha2ZMZvKiBzMp4h6Ra38UG77cSQEz8o2167ie1qXiT2u3N9Jz+ek6K3g
+	zNlEcZBr5Cv2PIJxam8=
+X-Received: by 2002:a05:7022:698c:b0:119:e55a:8087 with SMTP id
+ a92af1059eb24-12a7afb263emr27528c88.4.1774040456088; Fri, 20 Mar 2026
+ 14:00:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com> <20260318-mglru-reclaim-v1-5-2c46f9eb0508@tencent.com>
-In-Reply-To: <20260318-mglru-reclaim-v1-5-2c46f9eb0508@tencent.com>
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com> <20260318-mglru-reclaim-v1-2-2c46f9eb0508@tencent.com>
+In-Reply-To: <20260318-mglru-reclaim-v1-2-2c46f9eb0508@tencent.com>
 From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Fri, 20 Mar 2026 13:58:49 -0700
-X-Gm-Features: AaiRm50Ydmirajsbwt7vQ6k_hCF3c_J3YD6NjlI-f21DFV7xpTJc-e-2fR7R9JQ
-Message-ID: <CAJHvVcj7bnyxLgc3xxmd9MXajge4kZ-MERQjWm6+xpWyFf8eiQ@mail.gmail.com>
-Subject: Re: [PATCH 5/8] mm/mglru: use a smaller batch for reclaim
+Date: Fri, 20 Mar 2026 14:00:19 -0700
+X-Gm-Features: AaiRm52nutGgdtZL7QL0vPEUp6MWism5f6hM2BLECCn5iZ8-fSHAN8IYaAlYcWY
+Message-ID: <CAJHvVch+S6MDoBp0SRhPC-v5nVpizF2Y9NEYn6B9bCVqR9Mv-w@mail.gmail.com>
+Subject: Re: [PATCH 2/8] mm/mglru: relocate the LRU scan batch limit to callers
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
@@ -130,14 +130,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 106AB20003
-X-Stat-Signature: pagzyg3fbrkkt3p3ts8y1mffqh9f5nx8
 X-Rspam-User: 
-X-HE-Tag: 1774040367-751833
-X-HE-Meta: U2FsdGVkX19Bcd+wFB0FdYtA2u2w/JkbSZKyZP0x/vMyLkjpSBhSyvgVY6olaFFuX/D+rrv770TT50jvIxepKQKV68Kvs3PcYwkOmjf9kMBwEK6OpGLC9i0UVeUdL9qenc08CTX8bLYNQ35E5lBdTE4w/ZnwwlDB67EgVAolEa+tMYd+KTCimcz4q7jNM7Zp051EvCj6je5VIQosyWCs7m9bRb8XZWtYd+qYxb1Vnef98qv4LJXuh3YqQeX1QveG1u7jSfbXoi71k/2obwpeTJlRqeZMbHaPJYLkt4SCRJ51pESHdGw76gl9xrNHww1FzbW2NBA/+wfRhbGZ9f89PiA0HOlYskAwVjmxdCuEZeU9xEtrx+aABwI8/8s0iOem9Tsbd71NFuLbfLgGSPmIqCW7sW6j2uwjlylkuYXvykUit4l3/24aZGeV7MvUG/DMosRyqCSgMGwAxNTB099lXzMlfRUKYhinJg8F6ePrHdXpkH1v+sOtSXfAnzL57d4S4/pHc7Z99PSkYsdlgkWkuLRJy1XQ8yyB+zWUBV7Z+5e9X+lPFF2aZ3KxAqqUYsFcG8so/o16SBunZfpvWyp2walsiJaVZdlTarmYkci8hF/RuSYPxSEoDpOl2Ci2LszLmLjbGb0ciR1gY6KVvOt9UiYrJoFze0q6znMc2OjJzvSw0xMPGF0fDUUbkd5YAEZ0iegWcxuK3RKdRsrPvtaE+in/WtZ9u5IEfP9CIgKr6H1Duvoke8MsqlOWIDtTjeyBCb5uTJD1oyUeiphY7go4lMpOyZfuDFhpRiUC/yseLiNA3zPpQ/b75lY7xlkwwFRkRYM+l120/aV6LpdUbYj6zETtrl++iLnccuPvZmZqR83rVxz4LnSk3kLHyiOxNTUDmosE0B7xX9jsrEx9RJzcl0ZVSD13vOLjiD73htfRkzndjTnAobzQfwEtLFqwDz+8SZBW6U+GYKagtXhK4wR
- 0sIj2SYX
- RxvOuxwTeYtJtbiFPlT314F70dFbponxHOMnKl9L/YTiQOMx+YVWa/XdD0eklutlOYrgdfkBc+MVeW+9KsKHwTQQ1pPtyeGLPZ3jkTNLHgeHHKjHUvUNLbmKZaju3sfWHE865bINyupbAG87hZy7xIkqS60FMfzuVyTYkMkNB/x2aMIJ/j6snWriMx5fQsIFACI3s9zIn1U2WYxqHml80p2ito1owBavKHIpGq//3zmAXjNEAkaAwCaFvarfLt8p2cduQJxlacslV/7I8lejNec68nCGYEF0lmW/d75r+vn5zFtEc78w2UuJtidGLa4aXh/DzI3yvlcZhOBznQQNCvg+yfkCf0zfY5rfd/gU+T1xjlZtbrpignxO2tLmXSqQI2gG1ANfkwDvicXHBqFHxNwJMwA==
+X-Stat-Signature: 8zib53yri6nb7fahfww9w9nzwuqu64qb
+X-Rspamd-Queue-Id: 1194D1C0005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774040457-810330
+X-HE-Meta: U2FsdGVkX190zx5JE+ISsu1TBcenHiloGK5/9czuqO31sIEISPAYUfrx9MThaFR4JFtSv/PayjiK7xrZLmklHjiSXw1xphaZEWxAY4r/9r1KtYLRIzAc/HSj0jCdSzaZighFVOiwhF5GnwxdUaQRwIY/UxfDQoFH+uWBOZv/CAFUC1njS18CaDTnJOpKZRixjEdCxN68ZsHSGZx4OYA65GACkXkSQdpDv+JLSxx+PisoxH5hfpaI4LhHVYwgLyDSvEqe2tNV1AROqrtWpet5ukV4wObOxv+Mt9pkzazWoTS6wGVtzZIYxK4kM8jD8+GrxCf6Web/YEbUMQLAB3tLUqbzVV02JuDmdgkEvtgJA13vEXJxXrevMvfVVVjEWRntcLSohL/dTAWSm1XCfRVaWku4CADYNmtJwN7l0RY2QstZygHqarMB8ty914DGSYz3VuqZ2jOxHx5QyJPs6cYycVRIS4Ngr71o+m4kQjyf8wHY0kioh3QmmuzqNiTr0M5QER9fgTbAWwihCI/ta65CAccGO/QkRctTNScTuh+fTULVAvlFi7kTFmv/j5w/LdeNZ/ZyuWsXJ2eLOeFHHhoXdCfSPvf0iTxTOMAIISYL7d7fQ1ypPH0JgyFNHoaK2ZtzqFBSPTq9+qwvsOkNea8uBJ6COmocIxlFmP/T3ehmGuH+4sNirrSK9SamtUR4cjKkEYI2NxOQgXU9l1hNLT6f+apRSplBU3KSLKCp5ikttOt4wx2wPetwL0gQO1jXcBcPYMUNpd7VAlHDbVsS4EtLQ2mCddhbwaExjg+b1xleuKKFTNY3EUJI2c6Kfi7kOiNttdIyILfrX8/qJMrfQcrMo5NuqqNYzcf00CXcyF6OOTe6RhVHUQ09EZEAmTkQVtKj57tFHYe10GxlfJszFN1C8p6qCNGxetzUomx/u6mY064GcLaxHl9JpYbFoCPTiAAFGeegmTDvaI72e3rfe5i
+ 8OGmS14b
+ T6peRbrR3FHH1mLYmeTH24p5xLH2bt4ymjaGdB4MdzDWA00YLEV07961qU9AFKmTDbfTmjrl/3vGcrkW0jzRmIcbBLe032Va8J6TL1zZUZGmaryZHo2AXAE6JpMx5B8xYVy5+kkARdWjQjXEwnz9yw9gRZk8DAX7yTDW9wGoDTdV0nJDfJxDGEohPGLcGdCR37ZRVKyFRBx+IgaeizTdikPRLnJZz/aqVRXcH1X9V1jOxqvlv2LJsFPrH2UM5XVxXx3n5Kj3NK+wpEXcnOt12SvldNwFQ3lreKWg0FKsGHOEWXi6k5LEQh/RkSHFpQmSvwcAToKxW8hKgLuuKyZccwm/Q8kSLiC6I63tDWr93O53ix2LJDpMV4xK1WA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,33 +150,120 @@ On Tue, Mar 17, 2026 at 12:11=E2=80=AFPM Kairui Song via B4 Relay
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> With a fixed number to reclaim calculated at the beginning, making each
-> following step smaller should reduce the lock contention and avoid
-> over-aggressive reclaim of folios, as it will abort earlier when the
-> number of folios to be reclaimed is reached.
+> Same as active / inactive LRU, MGLRU isolates and scans folios in
+> batches.  The batch split is done hidden deep in the helper, which
+> makes the code harder to follow.  The helper's arguments are also
+> confusing since callers usually request more folios than the batch
+> size, so the helper almost never processes the full requested amount.
+>
+> Move the batch splitting into the top loop to make it cleaner, there
+> should be no behavior change.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
 Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
 
+To Chen's concern, I see patch 5 makes use of this refactor for example.
+
+I don't have a super strong opinion on keeping this separate here vs.
+squashing into patch 5. I slightly prefer keeping this
+no-functional-change part separate, then patch 5 becomes very easy to
+review.
+
 > ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/vmscan.c | 19 +++++++++++--------
+>  1 file changed, 11 insertions(+), 8 deletions(-)
 >
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 4f4548ff3a17..2ff1609ff4de 100644
+> index d7fc7f1fe06d..d48074f9bd87 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -5007,7 +5007,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lru=
-vec, struct scan_control *sc)
->                         break;
->                 }
+> @@ -4689,10 +4689,10 @@ static int scan_folios(unsigned long nr_to_scan, =
+struct lruvec *lruvec,
+>         int scanned =3D 0;
+>         int isolated =3D 0;
+>         int skipped =3D 0;
+> -       int scan_batch =3D min(nr_to_scan, MAX_LRU_BATCH);
+> -       int remaining =3D scan_batch;
+> +       unsigned long remaining =3D nr_to_scan;
+>         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
 >
-> -               nr_batch =3D min(nr_to_scan, MAX_LRU_BATCH);
-> +               nr_batch =3D min(nr_to_scan, MIN_LRU_BATCH);
->                 delta =3D evict_folios(nr_batch, lruvec, sc, swappiness);
+> +       VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+>         VM_WARN_ON_ONCE(!list_empty(list));
+>
+>         if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
+> @@ -4745,7 +4745,7 @@ static int scan_folios(unsigned long nr_to_scan, st=
+ruct lruvec *lruvec,
+>         mod_lruvec_state(lruvec, item, isolated);
+>         mod_lruvec_state(lruvec, PGREFILL, sorted);
+>         mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
+> -       trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batc=
+h,
+> +       trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_sca=
+n,
+>                                 scanned, skipped, isolated,
+>                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE_A=
+NON);
+>         if (type =3D=3D LRU_GEN_FILE)
+> @@ -4827,7 +4827,8 @@ static int isolate_folios(unsigned long nr_to_scan,=
+ struct lruvec *lruvec,
+>
+>                 *type_scanned =3D type;
+>
+> -               scanned =3D scan_folios(nr_to_scan, lruvec, sc, type, tie=
+r, list);
+> +               scanned =3D scan_folios(nr_to_scan, lruvec, sc,
+> +                                     type, tier, list);
+>                 if (scanned)
+>                         return scanned;
+>
+> @@ -4999,7 +5000,7 @@ static bool should_abort_scan(struct lruvec *lruvec=
+, struct scan_control *sc)
+>
+>  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_cont=
+rol *sc)
+>  {
+> -       long nr_to_scan;
+> +       long nr_batch, nr_to_scan;
+>         unsigned long scanned =3D 0;
+>         int swappiness =3D get_swappiness(lruvec, sc);
+>
+> @@ -5010,7 +5011,8 @@ static bool try_to_shrink_lruvec(struct lruvec *lru=
+vec, struct scan_control *sc)
+>                 if (nr_to_scan <=3D 0)
+>                         break;
+>
+> -               delta =3D evict_folios(nr_to_scan, lruvec, sc, swappiness=
+);
+> +               nr_batch =3D min(nr_to_scan, MAX_LRU_BATCH);
+> +               delta =3D evict_folios(nr_batch, lruvec, sc, swappiness);
 >                 if (!delta)
 >                         break;
+>
+> @@ -5615,6 +5617,7 @@ static int run_aging(struct lruvec *lruvec, unsigne=
+d long seq,
+>  static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct=
+ scan_control *sc,
+>                         int swappiness, unsigned long nr_to_reclaim)
+>  {
+> +       int nr_batch;
+>         DEFINE_MAX_SEQ(lruvec);
+>
+>         if (seq + MIN_NR_GENS > max_seq)
+> @@ -5631,8 +5634,8 @@ static int run_eviction(struct lruvec *lruvec, unsi=
+gned long seq, struct scan_co
+>                 if (sc->nr_reclaimed >=3D nr_to_reclaim)
+>                         return 0;
+>
+> -               if (!evict_folios(nr_to_reclaim - sc->nr_reclaimed, lruve=
+c, sc,
+> -                                 swappiness))
+> +               nr_batch =3D min(nr_to_reclaim - sc->nr_reclaimed, MAX_LR=
+U_BATCH);
+> +               if (!evict_folios(nr_batch, lruvec, sc, swappiness))
+>                         return 0;
+>
+>                 cond_resched();
 >
 > --
 > 2.53.0
