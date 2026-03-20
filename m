@@ -4,143 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92C541099B37
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:51:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27F41099B37
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:56:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060306B018A; Fri, 20 Mar 2026 15:51:46 -0400 (EDT)
+	id F360A6B011C; Fri, 20 Mar 2026 15:56:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 037ED6B018B; Fri, 20 Mar 2026 15:51:45 -0400 (EDT)
+	id F0D266B011E; Fri, 20 Mar 2026 15:56:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8FF86B018C; Fri, 20 Mar 2026 15:51:45 -0400 (EDT)
+	id E22CE6B011F; Fri, 20 Mar 2026 15:56:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D68A86B018A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:51:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74A351B7788
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:51:45 +0000 (UTC)
-X-FDA: 84567486570.25.EC04B3B
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5595620002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:51:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="tgKoH/7Z";
-	spf=pass (imf03.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774036303;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D29ED6B011C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:56:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78D7B1DBCE
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:56:52 +0000 (UTC)
+X-FDA: 84567499464.06.2E1D0CC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C630F4000C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:56:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oHu1iIaD;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774036611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0fTbswDUhCytbSjyU/dbAvolz05MXUeSGYJ/0aVmQR0=;
-	b=RIJIUsetOw1ehD99BfFKLkd35alDtJjoN+P7AX9j3P64YGb+7nTBP5f/J3QqWGN2dmz8OZ
-	fRbueLjh26g7SbojK3lXMHvD8Ape91cLD+NMu4x5wAWToiR42x2QcxChJd3g3EY101ub2d
-	oHrgY2rj6F95I2ZMDziSdeqK7BjHv8w=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774036303; a=rsa-sha256;
-	cv=pass;
-	b=i+oKCJ872kuVkCdTSfd9CFUwMvnAj5qYvIh56cvygvndO9JgCVaRn3nVNQ8r2ZNz2EGEZd
-	TZyAdCkVGk0cQtzbwNeguA+/MpOoLTGPVyyflqvx4MkeTjipkeCVo9p/tXlX7A+FFcRvLZ
-	onMH3BOiXlTXCOAdaMZS61WtTqUHfEE=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="tgKoH/7Z";
-	spf=pass (imf03.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1270f10a774so516c88.1
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:51:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774036302; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E++2w2YaCNHh+y9yp57Z770pS9WWOlyowXkQblYAVgjXTgEop9iCR6LFt1Pk0HMdOe
-         lRhEsiaz163zC4mdd+xf2oy4S3hS43rIxndk5p24t3mbHl5v26pYp4vT5M+TNoefu3Xv
-         ccNuAWicnEArL22FakUB0sbdpVunh+SzAOsANIC251TSx8sLeEOPa07gIJM+4xHVAK1d
-         RLP2yylfMVEYXp861iixac4/o2Adxzpi3DNzTU1GJHzayVW4TU2tqoJBW3N9mwPhYVZp
-         OCuDQj10MG7GWVvmFUcbaQb/DgerUWePmFxnYu74hBtGzVegXMcNnQvxZ/+0o/us2hcx
-         lQ5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0fTbswDUhCytbSjyU/dbAvolz05MXUeSGYJ/0aVmQR0=;
-        fh=HxOdvjJC71PO8sVimAUKR0KeyMXGVmcnGs8Ej1fP3pg=;
-        b=U8ovfFClXy33Cufj3YSAs0nINYVQM/UVJ3KXAC9/3F54GQwjANuVtDEtQvjP7iDaPj
-         48R90p7AsGyRrkpa3/CE54n+vxVt9D5cOYEbuvh1iSwaF5YZj5v4Eu3A5HyKSRr/BvkI
-         0G1cS1J/G2Y7U996Q9dDEwwZJFl/ZaexXt64vOiAkvttt9OyDOKU94Ud5MmMrj90Jpnz
-         axqxH8xdIRgQpo+pY6XOvy253CWv/ekLWqfz4af5OO+S499jF8gMY3WjZDKuvGD+L6Gu
-         x3OeeCeMuiDaBvMk8+xFIQ0B1OaXV5rVbMS0BJSvSgzsdbrNKh3oPaaRMkqER8rUMI3y
-         B7wA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774036302; x=1774641102; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0fTbswDUhCytbSjyU/dbAvolz05MXUeSGYJ/0aVmQR0=;
-        b=tgKoH/7ZvZnBvlyGvEm6tmhRPu7Pwayx3ksW9IZPXqa4d6R2Y549Ik+71/xIxTsR6f
-         COo7QpREZkCITPt1ewgnRiKG4CgBqGIMbYNlH7yJLk9ECra5GfLWgfrDOF23RdwU6nVV
-         QVsflfLo+3JpZNovdVdNhK5ag/WdvmnNeiG9GQG/a5UZtdvyw6pyQIoZoSlybBScxcL8
-         YYlabvQzr+psgmz/M2UFm7wP0CWEGbmHixVIMQ5FRFP614E/wyRfjHUXsrfB1Y5hIqtc
-         Mn7ZpKJ9DSnW1RyTObUWP9sVrqGXPkopvCAmlt/DtCYVpohei9IXv78oFha0gmg7QOtH
-         kvdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774036302; x=1774641102;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0fTbswDUhCytbSjyU/dbAvolz05MXUeSGYJ/0aVmQR0=;
-        b=fGeyTNiQ6NJDCx602oZ1T1naZqGce88ydDZkfZRngsHyor91zCFYWoovKOTxhJbNxL
-         4ft42XnRPVq4i0xdKV7rCRnDD32UaFWQmEnIjLvvLngxQRF+au6jJkmnNauhqkfkop5C
-         u/cQywTOpF1fE5Xtox1ixQghoO9wGjXyxCcs9IO4vajNRJHugW6lNCjL5suloG42AqmT
-         iO211rz4yHQAqsqMoDepQ5AFrs5Dol3qSqL4C52cW5EAeeEaBOvT4FiSER91uZ3592ls
-         yYZJ7gT5eo2wj2wGelnXvlACkhX8e5BPdXrIGxwe2hLaeLWBNqHFKqhjmeiN5hpH1mYe
-         CCFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQyu6ekTasxqEE6hYg7NvPRMcOcPInbDuVmptXjtKB7rKZUKEHcoYMYqcGoG3PBVpR52xWmghcBA==@kvack.org
-X-Gm-Message-State: AOJu0YxJDOWtEDSl5lcYK5X/Vm+SLRYS9W84Yf3UQ8JZ8hvMisUzmze3
-	8Uu4IU4ynKBn2mIMpSt4/gpPN57oBIHOmDfnCCjbkPNO4W4zJZHHAvud9WehUCGT+Gqasu46Vpr
-	5APFK1+Ni48Nlgx1femSh5/ZAWpGBZH0bmPL1Enwn
-X-Gm-Gg: ATEYQzwNJfuoJQkJtlXoXlX5pQOxQdgjtAdLiybMQLN95FKY3GmwwFEJe4/87n1JKGd
-	dFLKIaVJjS9so0oY63yJjxQVE2R4ssV6I+kLKBNHlDGjUMuzf/vCTg93xSBQR4mVaSDp+AcyOo1
-	cB634KUHUs7mN2VAPK7immzRcAbRLCLO05Itf9ghbQ4q7OEjn5JgQld+suS2VLv8culMvauiAhc
-	BjLBaJU8SsyMxDtpnSYmhDO3a0r6hKiEjLum++P3Yc4DHGneJxS9QCGXD34aVxO8maj+reQJYWK
-	atw1mfuVQ9nl6CrVPV8=
-X-Received: by 2002:a05:7022:ea33:b0:11a:61f0:6e6d with SMTP id
- a92af1059eb24-12a7afaf6demr22010c88.10.1774036301294; Fri, 20 Mar 2026
- 12:51:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
- <20260318-mglru-reclaim-v1-1-2c46f9eb0508@tencent.com> <9f982344-1137-4d8a-9186-b1b130dc15a6@huaweicloud.com>
-In-Reply-To: <9f982344-1137-4d8a-9186-b1b130dc15a6@huaweicloud.com>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Fri, 20 Mar 2026 12:51:05 -0700
-X-Gm-Features: AaiRm50uxliVfzXfQiJvxhRVrp55E6hg9TjzHVZ5BXagR5anXuz84KgKhmMmToc
-Message-ID: <CAJHvVcgTxcZCACyniBuQeoGzgAyQzszHYWo+vj2i8TUC41t85Q@mail.gmail.com>
-Subject: Re: [PATCH 1/8] mm/mglru: consolidate common code for retrieving
- evitable size
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=eH+lF3DsYQg10YJACe8d4HP9oKGSpGl0WwoSsVRRUzI=;
+	b=xjPBNzkjBjxseaK82f7lg5BeGeUthOMASe+MYQPz+/RYBloFncHuoV0HuDJcMnDK9RiKsd
+	PP3kkr7GlVcCeRKGuWbaCBs1iHIAzFP3oTXB/GzalttWBBnAnQmvNPLUj/aoqXzkDiibyo
+	sBaOk7W9E0BsTECesMK7p0SElDe6138=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oHu1iIaD;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774036611; a=rsa-sha256;
+	cv=none;
+	b=7cbmPZGwiMaoe/ch/jQHGUIC2YMxmhZhYreXTjI/rc++suhCReaIVkNLq8aF3L7/WO4n3D
+	L/05VQBvNRCEfqf55oFv4uiiZ+rzVr6oKc3K7oeztTklSKIrhdQIDtrpo3qOmWxEhM9rrB
+	pozk5B/fCC719+1ixITas70LS1My/aA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F60841784;
+	Fri, 20 Mar 2026 19:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5EEC4CEF7;
+	Fri, 20 Mar 2026 19:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774036609;
+	bh=LKrgpfKwmWI5Hg0tjL/sG/ayUWE0EjUljcbdrX6qjaA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oHu1iIaD1c8+N5EEXiAifxJInrM70H4yjmiFgxSXgLi+71ohYV12gifq8+a2nU2px
+	 p48V9CZfD1mp4jyrfUp9eEy3Ga3ofXBh3zTM64zIa4xHEgSIzKpQTILlbDP/adsioC
+	 0Q1vxPdJ7/9HXC2iUZCdf9e1QCnOUsvW7RLc5H7o=
+Date: Fri, 20 Mar 2026 12:56:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Kees Cook
+ <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Vineet
+ Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian
+ Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh
+ Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
+ <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Michal
+ Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, Stephen Smalley
+ <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ selinux@vger.kernel.org
+Subject: Re: [PATCH v4 00/25] mm/vma: convert vm_flags_t to vma_flags_t in
+ vma code
+Message-Id: <20260320125647.f6be89a9f40b37b71e511423@linux-foundation.org>
+In-Reply-To: <cover.1774034900.git.ljs@kernel.org>
+References: <cover.1774034900.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C630F4000C
+X-Stat-Signature: 37hjphme9frmaregkgrjthz64qx3cffd
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5595620002
-X-Stat-Signature: shgwdbwry9qgwehn6zo43m795r9bfm91
-X-HE-Tag: 1774036303-705608
-X-HE-Meta: U2FsdGVkX181oKE6p3Oo2IgF1wuooKNoZchE9cOe4vaVPRD92B5Yi4r8zmxOhNMsWYrwxRzCasCbEp1W3Iq5LMFiVSvUlgM5MQUhG+GSmnpz9j6WxXK77bK7lyP9WEFYGE64R1378jBQDGxC/X+r1/j9jMsVJhHIrFCr/Zx+GBjHl57PTGt7XrEGPERNHj+7Glc3wV7/KbJyGlVCwWeJHk7LJB8TkglBjJeu0ApLjJOVirkWGCMhZnjdVWps483MoDBc4fJw1g9dkFXJ5wVSe66GgIFuAfsL2y68gTqMVE97tP7+l49SACnn9qRDK6/O5dk4wUfYkP9j9RN6Ihz/wXjpBC2pgtdxcm7NpNuqt7amrlcxWPgit7dn6NDQvSaoKFpjc/H1s0Tt4CvA42UKX6JgJXFLBUJsDas9CGViQ8wL7RZ9059J5S8RnCUoTr8q921j+B2S+jMFYKdHo490S70T3xgfNWmIq3xVnxourrZiLvBvoeoU2SaCvZmqUAEOT3LNpZMDCNfXQDSQ+4NAPCkSu5vQ4+y72viBX97zNmIWAm1F/A/c+PHclV5mHgZ55DLnyjm6I/eizUyZE3wb1kMgNsZ29JSAK+NSb5wYbaB7caj1SwhYxmzcr+hLgqfL9buQH/wffvyMz6cchFuAU03X3CLyfl4+r6LLaarC1RbpGnbhOxI1LN4XpDiwkzzAh6yKHvJmnAp+OyLwrIEkvFQZphi9ChY/ShexS+W8GXNTZ42xLz+ZGR6gILZk/vlCL6/KRJJOhyGo35wI+GKq7mLJCXMVOjcplbA6/Abmp8BIQfIBg3SaWl50+Odju3rd+jfJh0sjA+WYVOWg2l9yYJpgyfNy9Fic4N2WcNAdyrdsv/RvIIu72JP1eXttV1j5XF5+gCWc4Uz0GvUr5UcUoa2uo1igEf6QG4zgsqRcPi2k8LFovts1GLeZIelrSl08txIlnlW9dGUjcdRyUK8
- UVl9FgBy
- YqxmzaV5jP0g52KSe6W3fy0S+uH6y9kQ2pXKZksxSFmcm1jz9IQn8tn6Ww1UKtIB/o1nu0AqwIIx2U3th2OzzX3h3JS2ft37LVrQhHX02a57tbmqObuNzqDvffslVSrTwndUoFacmFrl3esNCP5KJ0RI0bBJr2xfKFRGy2jtj+n0x+/nwpnmj/IeUpbD0qCZvXvZ3jHS2nojAf7H4vZSBDU9sLQekDbhhf6vmFkufuyQ1vAFjaQ+vBz4ReEx0Yhzm1h905gSV2AYgq1rYL5Wc+kvGJ3a6y5ZAojmgz83r7+2OsE4Rf6qOOHmCQ4tUYt8gc8YzqhmapeXslaZFkD2GSCi7kuuobIhv3HiodTVP33Hj331jQ8sA2t0BiQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774036610-22438
+X-HE-Meta: U2FsdGVkX19nxsCzPF7gZXJZScz9RRk4qPg6PFIaOq7p+VXaXAz9QjeLxTLGQl0vmXiVvc85lgjYNd7xF6Oe33RsFKk6jC1S3Bo1Hbn9hSZAvvOowtnUj9Xg/9oeCirh1nqEjRc94ZS+B5ol0hL4Vanon5N+aqxwxOIt9paJ++tK0oXeWPHUzyLPs1aDvuZv/Kyu3M/BM+Rv1VMGRhA0X7T7ZqKCZx14CenZuKb+qfGGqaCxXpdzOyzki8y74U0FkH1DoYTYr5oBPaO30S8ZJMNSbD79kKAoK0g1OTJkbSI6YjWv0+H8gbLHzV9/uQJjlJWhQaVJC8qjiAFjwPyZOnTxSvz7AenVx2eD2MQtOa49IcabKOQF34nZO3GJ5pdbNzZutasusB7Ok0HMm6ITMscGEtYHwVCrZkW6i7/vt+TAioIJ/858a9Hwcj3FH+uGvOXxDGXExr5GJTNZVVO/qi1c69crqeAypchzOJik08UFJtYyEaEIBBfqyTZrSQR6ngpbsdxVAKg7ts1wNIIiGk+CxaQJwS3sc7Zn470OCX4H2sd9XeCrJsRT+aTV1oHn0YCD1PthDQ6qXfRxDxIxdPInX8HonUFOCKfo4D3Y9+d3nl5BwFpuOCYPdqwTgmFEGyWqhVxfrIeGt5gU55Go84Yxd4sprHczLaGJd4gSLEmfPVvyBaAhrk94mBkE1gWK8FA6CKr71qF9/QSe/uQ+kFh6QwlSnWS3bwkRaaBbQaWxN2b4pLa2z6mjDkgJC9h7CEQY9RBzQqjjtNYSVcuL5FqYAtw/icb+C+tUkKCUp/H5f6uyNdyw6VSBY3rk3O9uWlmUJsWMuEbfQmPyjhav26OXNwxMlt/2nqK/qRJxRv/pjzmFsSxEqSgjym+3oqkA0YMgvXKkL7Zv9twFK/EejSo6CMtClngMbsYdml0KhvsBDovAgcLHRxPesu9OAXpgS7a3coqElZrsGP7nEp1
+ A4tjJ8rv
+ YdeDpyev4C0pPwEsBOccxSgqo57FcYEWZDLggPDbpZOHpksAu4xdxbxEZbZYpoSwzoOPkU5tMC0LssHridCqV6JHQ6SqC8RhhBjGeU8enlZtPdaM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,172 +120,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For what it's worth, I applied the full series and ran it through some
-basic functional testing, I didn't see any bugs or regressions from
-that.
+On Fri, 20 Mar 2026 19:38:17 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-Unfortunately, the best signal would be actually deploying it under
-some real serving workloads, but the latency for me to do that + get
-results is like order(weeks) and I suspect you don't want to wait that
-long. :)
+> This series converts a lot of the existing use of the legacy vm_flags_t
+> data type to the new vma_flags_t type which replaces it.
 
-This particular commit looks good besides one minor nitpick:
+Thanks, I updated mm.git's mm-unstable branch to this version.
 
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> v4:
+> * Propagated tags, thanks Vlasta!
+> * Removed superfluous parens around vma_test_any_mask() as per Vlasta.
+> * Converted masked functions into more understandable equivalent form as
+>   per Vlasta in 24/25.
+> * Redefined VM_SPECIAL using vma_flags_to_legacy() as per Vlasta.
+> * Fixed whitespace as per Vlasta.
+> * Added vma_flags_reset_once() as per Vlasta.
+> * Expanded 22/23 commit message to describe why I'm replacing things as
+>   per Vlasta.
+> * Added bitmap_copy() to test headers in order to implement
+>   vma_flags_reset_once().
 
-On Wed, Mar 18, 2026 at 7:19=E2=80=AFPM Chen Ridong <chenridong@huaweicloud=
-.com> wrote:
->
->
->
-> On 2026/3/18 3:08, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Merge commonly used code for counting evictable folios in a lruvec.
-> >
-> > No behavior change.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
->
-> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
->
-> > ---
-> >  mm/vmscan.c | 42 +++++++++++++++++-------------------------
-> >  1 file changed, 17 insertions(+), 25 deletions(-)
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 33287ba4a500..d7fc7f1fe06d 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4078,27 +4078,33 @@ static void set_initial_priority(struct pglist_=
-data *pgdat, struct scan_control
-> >       sc->priority =3D clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
-> >  }
-> >
-> > -static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_contr=
-ol *sc)
-> > +static long lruvec_evictable_size(struct lruvec *lruvec, int swappines=
-s)
-> >  {
+Here's how v4 altered mm.git:
 
-Since `total` is unsigned long, should this function likewise return
-`unsigned long`? It seems ideal to avoid conversions unless there's a
-good reason to do so.
 
-> >       int gen, type, zone;
-> > -     unsigned long total =3D 0;
-> > -     int swappiness =3D get_swappiness(lruvec, sc);
-> > +     unsigned long seq, total =3D 0;
-> >       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> > -     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >       DEFINE_MAX_SEQ(lruvec);
-> >       DEFINE_MIN_SEQ(lruvec);
-> >
-> >       for_each_evictable_type(type, swappiness) {
-> > -             unsigned long seq;
-> > -
-> >               for (seq =3D min_seq[type]; seq <=3D max_seq; seq++) {
-> >                       gen =3D lru_gen_from_seq(seq);
-> > -
-> >                       for (zone =3D 0; zone < MAX_NR_ZONES; zone++)
-> >                               total +=3D max(READ_ONCE(lrugen->nr_pages=
-[gen][type][zone]), 0L);
-> >               }
-> >       }
-> >
-> > +     return total;
-> > +}
-> > +
-> > +static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_contr=
-ol *sc)
-> > +{
-> > +     unsigned long total;
-> > +     int swappiness =3D get_swappiness(lruvec, sc);
-> > +     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> > +
-> > +     total =3D lruvec_evictable_size(lruvec, swappiness);
-> > +
-> >       /* whether the size is big enough to be helpful */
-> >       return mem_cgroup_online(memcg) ? (total >> sc->priority) : total=
-;
-> >  }
-> > @@ -4921,9 +4927,6 @@ static int evict_folios(unsigned long nr_to_scan,=
- struct lruvec *lruvec,
-> >  static bool should_run_aging(struct lruvec *lruvec, unsigned long max_=
-seq,
-> >                            int swappiness, unsigned long *nr_to_scan)
-> >  {
-> > -     int gen, type, zone;
-> > -     unsigned long size =3D 0;
-> > -     struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> >       DEFINE_MIN_SEQ(lruvec);
-> >
-> >       *nr_to_scan =3D 0;
-> > @@ -4931,18 +4934,7 @@ static bool should_run_aging(struct lruvec *lruv=
-ec, unsigned long max_seq,
-> >       if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_se=
-q)
-> >               return true;
-> >
-> > -     for_each_evictable_type(type, swappiness) {
-> > -             unsigned long seq;
-> > -
-> > -             for (seq =3D min_seq[type]; seq <=3D max_seq; seq++) {
-> > -                     gen =3D lru_gen_from_seq(seq);
-> > -
-> > -                     for (zone =3D 0; zone < MAX_NR_ZONES; zone++)
-> > -                             size +=3D max(READ_ONCE(lrugen->nr_pages[=
-gen][type][zone]), 0L);
-> > -             }
-> > -     }
-> > -
-> > -     *nr_to_scan =3D size;
-> > +     *nr_to_scan =3D lruvec_evictable_size(lruvec, swappiness);
-> >       /* better to run aging even though eviction is still possible */
-> >       return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=
-=3D max_seq;
-> >  }
-> > @@ -4954,7 +4946,7 @@ static bool should_run_aging(struct lruvec *lruve=
-c, unsigned long max_seq,
-> >   */
-> >  static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control =
-*sc, int swappiness)
-> >  {
-> > -     bool success;
-> > +     bool need_aging;
->
-> I have suffered a lot because of this name. Thank you.
->
-> >       unsigned long nr_to_scan;
-> >       struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >       DEFINE_MAX_SEQ(lruvec);
-> > @@ -4962,7 +4954,7 @@ static long get_nr_to_scan(struct lruvec *lruvec,=
- struct scan_control *sc, int s
-> >       if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
-> >               return -1;
-> >
-> > -     success =3D should_run_aging(lruvec, max_seq, swappiness, &nr_to_=
-scan);
-> > +     need_aging =3D should_run_aging(lruvec, max_seq, swappiness, &nr_=
-to_scan);
-> >
-> >       /* try to scrape all its memory if this memcg was deleted */
-> >       if (nr_to_scan && !mem_cgroup_online(memcg))
-> > @@ -4971,7 +4963,7 @@ static long get_nr_to_scan(struct lruvec *lruvec,=
- struct scan_control *sc, int s
-> >       nr_to_scan =3D apply_proportional_protection(memcg, sc, nr_to_sca=
-n);
-> >
-> >       /* try to get away with not aging at the default priority */
-> > -     if (!success || sc->priority =3D=3D DEF_PRIORITY)
-> > +     if (!need_aging || sc->priority =3D=3D DEF_PRIORITY)
-> >               return nr_to_scan >> sc->priority;
-> >
-> >       /* stop scanning this lruvec as it's low on cold folios */
-> >
->
-> --
-> Best regards,
-> Ridong
->
+ include/linux/mm.h              |   26 ++++++++++++--------------
+ mm/mlock.c                      |    4 ++--
+ mm/mprotect.c                   |   14 +++++---------
+ mm/vma.c                        |   11 +++++------
+ mm/vma.h                        |    6 ++----
+ tools/include/linux/bitmap.h    |   11 +++++++++++
+ tools/testing/vma/include/dup.h |   22 +++++++++++++---------
+ 7 files changed, 50 insertions(+), 44 deletions(-)
+
+--- a/include/linux/mm.h~b
++++ a/include/linux/mm.h
+@@ -554,10 +554,10 @@ enum {
+ /*
+  * Special vmas that are non-mergable, non-mlock()able.
+  */
+-#define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
+ 
+ #define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
+ 				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
++#define VM_SPECIAL vma_flags_to_legacy(VMA_SPECIAL_FLAGS)
+ 
+ /*
+  * Physically remapped pages are special. Tell the
+@@ -959,22 +959,20 @@ static inline void vm_flags_reset(struct
+ 	vm_flags_init(vma, flags);
+ }
+ 
+-static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+-				       vm_flags_t flags)
++static inline void vma_flags_reset_once(struct vm_area_struct *vma,
++					vma_flags_t *flags)
+ {
+-	vma_assert_write_locked(vma);
+-	/*
+-	 * If VMA flags exist beyond the first system word, also clear these. It
+-	 * is assumed the write once behaviour is required only for the first
+-	 * system word.
+-	 */
++	const unsigned long word = flags->__vma_flags[0];
++
++	/* It is assumed only the first system word must be written once. */
++	vma_flags_overwrite_word_once(&vma->flags, word);
++	/* The remainder can be copied normally. */
+ 	if (NUM_VMA_FLAG_BITS > BITS_PER_LONG) {
+-		unsigned long *bitmap = vma->flags.__vma_flags;
++		unsigned long *dst = &vma->flags.__vma_flags[1];
++		const unsigned long *src = &flags->__vma_flags[1];
+ 
+-		bitmap_zero(&bitmap[1], NUM_VMA_FLAG_BITS - BITS_PER_LONG);
++		bitmap_copy(dst, src, NUM_VMA_FLAG_BITS - BITS_PER_LONG);
+ 	}
+-
+-	vma_flags_overwrite_word_once(&vma->flags, flags);
+ }
+ 
+ static inline void vm_flags_set(struct vm_area_struct *vma,
+@@ -1442,7 +1440,7 @@ static __always_inline void vma_desc_set
+  * vm_area_desc object describing a proposed VMA, e.g.:
+  *
+  * vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
+- *              VMA_DONTDUMP_BIT);
++ * 		VMA_DONTDUMP_BIT);
+  */
+ #define vma_desc_set_flags(desc, ...) \
+ 	vma_desc_set_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
+--- a/mm/mlock.c~b
++++ a/mm/mlock.c
+@@ -443,7 +443,7 @@ static void mlock_vma_pages_range(struct
+ 	if (vma_flags_test(new_vma_flags, VMA_LOCKED_BIT))
+ 		vma_flags_set(new_vma_flags, VMA_IO_BIT);
+ 	vma_start_write(vma);
+-	WRITE_ONCE(vma->flags, *new_vma_flags);
++	vma_flags_reset_once(vma, new_vma_flags);
+ 
+ 	lru_add_drain();
+ 	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
+@@ -451,7 +451,7 @@ static void mlock_vma_pages_range(struct
+ 
+ 	if (vma_flags_test(new_vma_flags, VMA_IO_BIT)) {
+ 		vma_flags_clear(new_vma_flags, VMA_IO_BIT);
+-		WRITE_ONCE(vma->flags, *new_vma_flags);
++		vma_flags_reset_once(vma, new_vma_flags);
+ 	}
+ }
+ 
+--- a/mm/mprotect.c~b
++++ a/mm/mprotect.c
+@@ -769,7 +769,7 @@ mprotect_fixup(struct vma_iterator *vmi,
+ 	 * held in write mode.
+ 	 */
+ 	vma_start_write(vma);
+-	WRITE_ONCE(vma->flags, new_vma_flags);
++	vma_flags_reset_once(vma, &new_vma_flags);
+ 	if (vma_wants_manual_pte_write_upgrade(vma))
+ 		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+ 	vma_set_page_prot(vma);
+@@ -784,14 +784,10 @@ mprotect_fixup(struct vma_iterator *vmi,
+ 	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+ 	 * fault on access.
+ 	 */
+-	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+-		const vma_flags_t mask =
+-			vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
+-				      VMA_SHARED_BIT, VMA_LOCKED_BIT);
+-
+-		if (vma_flags_same(&mask, VMA_LOCKED_BIT))
+-			populate_vma_page_range(vma, start, end, NULL);
+-	}
++	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT) &&
++	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT) &&
++	    !vma_flags_test_any(&old_vma_flags, VMA_WRITE_BIT, VMA_SHARED_BIT))
++		populate_vma_page_range(vma, start, end, NULL);
+ 
+ 	vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+ 	newflags = vma_flags_to_legacy(new_vma_flags);
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -2343,7 +2343,6 @@ void mm_drop_all_locks(struct mm_struct
+ static bool accountable_mapping(struct mmap_state *map)
+ {
+ 	const struct file *file = map->file;
+-	vma_flags_t mask;
+ 
+ 	/*
+ 	 * hugetlb has its own accounting separate from the core VM
+@@ -2352,9 +2351,9 @@ static bool accountable_mapping(struct m
+ 	if (file && is_file_hugepages(file))
+ 		return false;
+ 
+-	mask = vma_flags_and(&map->vma_flags, VMA_NORESERVE_BIT, VMA_SHARED_BIT,
+-			     VMA_WRITE_BIT);
+-	return vma_flags_same(&mask, VMA_WRITE_BIT);
++	return vma_flags_test(&map->vma_flags, VMA_WRITE_BIT) &&
++		!vma_flags_test_any(&map->vma_flags, VMA_NORESERVE_BIT,
++				    VMA_SHARED_BIT);
+ }
+ 
+ /*
+@@ -3001,7 +3000,7 @@ retry:
+ 	gap += (info->align_offset - gap) & info->align_mask;
+ 	tmp = vma_next(&vmi);
+ 	/* Avoid prev check if possible */
+-	if (tmp && (vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS))) {
++	if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
+ 		if (vm_start_gap(tmp) < gap + length - 1) {
+ 			low_limit = tmp->vm_end;
+ 			vma_iter_reset(&vmi);
+@@ -3054,7 +3053,7 @@ retry:
+ 	gap_end = vma_iter_end(&vmi);
+ 	tmp = vma_next(&vmi);
+ 	 /* Avoid prev check if possible */
+-	if (tmp && (vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS))) {
++	if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
+ 		if (vm_start_gap(tmp) < gap_end) {
+ 			high_limit = vm_start_gap(tmp);
+ 			vma_iter_reset(&vmi);
+--- a/mm/vma.h~b
++++ a/mm/vma.h
+@@ -529,10 +529,8 @@ static inline bool is_data_mapping(vm_fl
+ 
+ static inline bool is_data_mapping_vma_flags(const vma_flags_t *vma_flags)
+ {
+-	const vma_flags_t mask = vma_flags_and(vma_flags,
+-			VMA_WRITE_BIT, VMA_SHARED_BIT, VMA_STACK_BIT);
+-
+-	return vma_flags_same(&mask, VMA_WRITE_BIT);
++	return vma_flags_test(vma_flags, VMA_WRITE_BIT) &&
++		!vma_flags_test_any(vma_flags, VMA_SHARED_BIT, VMA_STACK_BIT);
+ }
+ 
+ static inline void vma_iter_config(struct vma_iterator *vmi,
+--- a/tools/include/linux/bitmap.h~b
++++ a/tools/include/linux/bitmap.h
+@@ -55,6 +55,17 @@ static inline void bitmap_fill(unsigned
+ 	dst[nlongs - 1] = BITMAP_LAST_WORD_MASK(nbits);
+ }
+ 
++static __always_inline
++void bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
++{
++	unsigned int len = bitmap_size(nbits);
++
++	if (small_const_nbits(nbits))
++		*dst = *src;
++	else
++		memcpy(dst, src, len);
++}
++
+ static inline bool bitmap_empty(const unsigned long *src, unsigned int nbits)
+ {
+ 	if (small_const_nbits(nbits))
+--- a/tools/testing/vma/include/dup.h~b
++++ a/tools/testing/vma/include/dup.h
+@@ -871,16 +871,20 @@ static inline void vm_flags_reset(struct
+ 	vm_flags_init(vma, flags);
+ }
+ 
+-static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+-				       vm_flags_t flags)
++static inline void vma_flags_reset_once(struct vm_area_struct *vma,
++					vma_flags_t *flags)
+ {
+-	vma_assert_write_locked(vma);
+-	/*
+-	 * The user should only be interested in avoiding reordering of
+-	 * assignment to the first word.
+-	 */
+-	vma_flags_clear_all(&vma->flags);
+-	vma_flags_overwrite_word_once(&vma->flags, flags);
++	const unsigned long word = flags->__vma_flags[0];
++
++	/* It is assumed only the first system word must be written once. */
++	vma_flags_overwrite_word_once(&vma->flags, word);
++	/* The remainder can be copied normally. */
++	if (NUM_VMA_FLAG_BITS > BITS_PER_LONG) {
++		unsigned long *dst = &vma->flags.__vma_flags[1];
++		const unsigned long *src = &flags->__vma_flags[1];
++
++		bitmap_copy(dst, src, NUM_VMA_FLAG_BITS - BITS_PER_LONG);
++	}
+ }
+ 
+ static inline void vm_flags_set(struct vm_area_struct *vma,
+_
+
 
