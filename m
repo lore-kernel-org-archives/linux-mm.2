@@ -4,100 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 066D4108B8E7
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:03:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B7B2108B8E7
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:04:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DA606B0088; Fri, 20 Mar 2026 06:03:03 -0400 (EDT)
+	id B48536B008A; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B1806B0089; Fri, 20 Mar 2026 06:03:03 -0400 (EDT)
+	id B21BD6B0093; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C8AD6B008A; Fri, 20 Mar 2026 06:03:03 -0400 (EDT)
+	id A635F6B0095; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EB186B0088
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:03:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA9831A0145
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:03:02 +0000 (UTC)
-X-FDA: 84566003004.06.7B50D18
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1F87D140005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:03:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9832C6B008A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E38086E54
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:11 +0000 (UTC)
+X-FDA: 84566005902.09.5E5B6D4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B04C3140002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:09 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oUy4Hb5+;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vAzNcrs8;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774000981;
+	s=arc-20220608; t=1774001049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AVJElhSzPSicKKu2s9NgUTcNAotHNyEzrk5YEGoouv8=;
-	b=2PEMfXiCm6+bO7JbtMMQF24hF8jgPaAH85NbBzh+wUMJDDW4ujAXiCUilNeSs6JH5XYOWK
-	SHKSN9j6gShlhzakTB/q/IJzKElMVZfL/b0vcCN7onDmxH8PvyrkCnm9j833tPckgZyDXF
-	o14Hg1hH+jcgobvcDFAehskBsXsJG24=
+	bh=TO1zuzNcun0kkWR0GSCmWT/+8q/5K9hCcXkZoI8wkhM=;
+	b=MgMX49HoonDPruaWtdmUzliTNEk1z6O0HssZ9MIL65ZZ5u/o/Vlqmnf/tkewHe6709iE9r
+	z94jvQhh6eAHJsziST1iVCsjWFYiVjsw9Gb6XzZ0tZabDc8gxys332bULEPPLNsHvF2JEg
+	cuBp32Uh9VP1jeVIt7aV2i1B7Np4cO4=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oUy4Hb5+;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vAzNcrs8;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774000981; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001049; a=rsa-sha256;
 	cv=none;
-	b=lHFWlHc1uPuaWyQ5X9EFNc5nsmga1m/H66PLOy/tZsbxc9kt2aP9Phg/mKFmrIWSrDdbhW
-	a9xpkFBHnmJHT7Q7JcMTBevuy5hsioKG+FHrhW/gxUKDTaz9ijZ34wfuZABw8GduM9DUN5
-	WHYt8CapIqA4MnTd63xJUnwjuA6OCjk=
+	b=C4lhRQ9hiJLuAY8FOuVPxJqXsypcg71vqQh1QwfIMNqRDgJeYKY8ZROkAiCL2EyYSD9d5A
+	kEOaVBpailM4MUnVHoQvLTq1QN8N7uBS8nHpE7VhTRjvVoUSCnwn2/i5We5d6Y+YlVIzQU
+	6kN5D00FZAbdcuREbo09f5o3dRyxLuo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4359E443A9;
-	Fri, 20 Mar 2026 10:03:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F705C4CEF7;
-	Fri, 20 Mar 2026 10:02:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC3CF60127;
+	Fri, 20 Mar 2026 10:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ADDC4CEF7;
+	Fri, 20 Mar 2026 10:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774000980;
-	bh=biwiaMzX/KeICnsebZ6pl4sMZMlXYFRAJ83TtXxoqV8=;
+	s=k20201202; t=1774001048;
+	bh=NQpsBeY5EaadXVFBxdOq2KBH0GUNgPBbX8h8P+4LcqI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oUy4Hb5+/P8MX/PrlvRLQVq8G2rjpxqY9PXgxaJx8GMWTufvB36jG2M//fkYsl3vw
-	 tF2XSVIwtNHSP1rfDrvKvjU8ASrWo9oTvrCOmk69sEm+vSSn9Jfn60GqytYviA3fur
-	 E/0/TrwbHZe6gQxqDQWFE99h53YiQYuhap7EQqE+L543eA/Ji9/xC//wZR5heo25Kj
-	 HC8J08N1mMcPoiMNpiob9oJXsFSGAiSUJ0byFR+1bZuyUKweQJCl3po0dK12XTfShP
-	 0tQnXYuNv+IqS7zZYSPpAVASYn0HPUClCemJ5HevF29fArmGQvk6qT3eVCWGS2U3qR
-	 P7hwWo9eP+NDg==
-Message-ID: <a68497d7-7541-4587-a9fe-74ca680f820c@kernel.org>
-Date: Fri, 20 Mar 2026 11:02:55 +0100
+	b=vAzNcrs8BNxVujqkG0WrRcxfbGidYf6UY2B9j2wpPS73gPa9CErzvvHuXkHT5s3MR
+	 5mWouqCj4ulvQYSX2gQ0oeuYWbQhMr3B0IR/nJS4TcF+OEjR+zmBU/sIjqSVVSsL0W
+	 C/IK4z4Z23+U0QSh28UkwodQL+Mr6P7XEcQVKXPrnIIRz+UunLW9iJ2nh7O8NTsA3L
+	 MG3EwvZtxvk5AOmzYxXXkBtommmTKLw070xlnQs0ejRB5W/N+Ch44k1T2oEWB2N2GH
+	 SJc6rzEWEiFmEyb28TIZla0WZ1PJY1+D/NNbiLn70ecSKmqZcRVkafJSgmy4rT5CHS
+	 kIduEphstAAdA==
+Message-ID: <1105e346-e850-45c2-92be-6c255a110658@kernel.org>
+Date: Fri, 20 Mar 2026 11:03:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
+Subject: Re: [PATCH v3 18/23] mm: update vma_supports_mlock() to use new VMA
+ flags
 Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko
- <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
- <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com>
- <abwqq28hWXMLqa5P@casper.infradead.org>
- <DH6Z95PTZYVF.3K64RCJC06GEJ@google.com>
- <abxs9k__wWWLL2hb@casper.infradead.org>
- <DH7IJRSKJFFH.36UW4MCZXCYWC@google.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773846935.git.ljs@kernel.org>
+ <8bd076169508ea4640f66f91c4b84b433a3476f1.1773846935.git.ljs@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <DH7IJRSKJFFH.36UW4MCZXCYWC@google.com>
+In-Reply-To: <8bd076169508ea4640f66f91c4b84b433a3476f1.1773846935.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1F87D140005
-X-Stat-Signature: 1dczxwk4g8i9ks4bqxtboxfuam9cdngt
+X-Rspamd-Queue-Id: B04C3140002
+X-Stat-Signature: 3x3f1ydxh4d6awixhrya8acdzqaqmph3
 X-Rspam-User: 
-X-HE-Tag: 1774000980-345135
-X-HE-Meta: U2FsdGVkX19nomTGvQLdK0x2IY/WIHZYn1uGrodRtui9okcd79zN8PgpbdLX0tW3cWI6Ejf9FtNGSzEyFJ0Mo4kLmoe6Ro5rVBL5LuNEmQ7Nxgz0pkGKkm51Lax5Nva7bY27nHXCxECAUBX83aF4X17xOwUsHHN9HxIi7CwuieQBPUtZ+5vbJsjmrOA8V7rWB/H0MZpYuhLCgggWAVu50i0dKrxQNtR9gZ9sqGrE7M4FWmShpu0TA5lCYdpUdRLl9FTcnJntMQxhlT7tl9ZLRZIjyEsO3s6KRk4PUsAQQ4RLXFT65ruEPUWfReEH49E4TEuVKRzKyoEnuSghIU/2q6Y2bDaLFTNxKDMxjuR3YXpWk2YTnOZO51yzfTUoFSJoiymD6D3AiJlLpfru+9meQyE1E5uVXXdg6LEUc1X68fiwMdSH+3l1OQw9hnJf1BoyGVx8qcvX1muLpKYmRFKCe/b0lw75LpP5Oq1VHgOFWR/bHSCCa2JQHLjLdquzJ5vEpTkAS7rCxweUnkih8E8BzUlurOunAF2nimZxnKs84Z8NJXFuoJBfgLlLVby0I0nQJbes0FS600QZgS1QGx3x0zEjwUOBTJMPKBz6stUaB0SBYm9c7Ihxfs75cIWGaMfpsIqj0K8BCtip3B6PxovUkjs6mQE5jH1GGvwneRvwYgl1FJQGBRK9IplZJ3sdicHtLUHFbtFU6bnmQcSxUSWCXqviQxoua1L9pMM8vvur2x6PSkY4Pm0THPtOWr8c1GV8T4cJyccfByVDm509rYvvW//CaWQVoMRefb7C7TCpPctsD0XI9VVycougzds5ERXL+Soz6HGBjoB3pmn5rIOsusYvEBkBJnrStUscZ54VyBr4qXo4/xK28J5wHs721TpI6gzmvi/W6Is7qQjaXuB0u2t+W9SzC5SM76CKoS/7J36cZYQBBuhTFlT1h01oH6mDSLTTgyvvjE8rqOUdu4Q
- aLtLUggg
- Qu1Nrr6/8UP4Oow30vxeU8ziefLx5nVcExdXD3nJpTylQtOgJ0JabjmZETGOiRK8ckNYvRCPQeINc7l4ooA3NuuwVF1+waxTpjhNtRmkOmlnBEdtLuOXrMzqBdZmybV62hJ5SOLyBWkTkB0SJZKiyEWoVOQtXvj47qjoE384aP1Z6QCa4b9MTKNOhuLYZa55XupqbxiaO/LCmlp5AsOmv46ncgBwhYNZ3h9pTrSbGpqK0qKYKWSoHFMJ9pwnlpZYmR1s79zNd8JCavPl541iwrCXtD+EHU/HNumJfCJNm6ZQqdydR9oPAzSUYrw==
+X-HE-Tag: 1774001049-484247
+X-HE-Meta: U2FsdGVkX1+VmGevAPNedUSWdSZhObDYCl5gW0PNeB1ZQTI9t164uXib9wTPHg+My8OVY3QW7KALnWDpNsIvkw4sioi1tLDFycJUpJwGAxr2MwxkoIcp31cfT73wDp8LUWcNjaWI2vFLZuDr9I844DAvSjLSttLejA35fm+FruWfcJzpVdLI46HQNoJdwGeMhBAKU+XhHkLzLNNFXqjQcqlgAI3mXFwEVDffOmih4Y66qn89TVRZnCrYi9/G4jlONKxLXO3/ubu9OAYMcGVJKzUviiTEsFKyqEM0ulQ2i+PxwtRb0JH9PqEW6Uu7/qOWt2FsnYAlej+R4UdNOMBcyIGsrrltnoB6AaEPIjZp524ZDpZJYypAfH88wQaMoqEK1ftsR/7swPRpPBboOFbtqnFpsorg4thdp/jMQ8/P0l7kUpguaBz9WvgRkR9+RYCR/pYYW1DEupWC+vRbee7NJ1+mw64Hr+xwK4kVQu0AKQHBhJyLBqtDwKC2kSAjbFzqU+6R8LLRJoPrFu1rQ2A45APIsecGzSmqS2a1RF3sKAoLJtQJ59OPQ+Uv3QT5ztjqyYD/vFBtWwsldw5jrG9hgsf8TsGjXHeFl/0+qaiyd0vkCBwjaS27ucY8L/ENufrElU7i65pF/7D0ykE+JsQlWtNjjRx47v9reKS9vCoEOzMCb+daaPua7itqjEXUStDmsfh+chppE3WLRxAjWFw2isCjdxOqtyHZ4yD201K82pm48h3NPJ6uITupPScPZpYz5nhWAsYoQL2pQyvO+DkMFTROPKy+pMEjdVBQmXlEVcOfrffcK1o/aqVVWIk3tpHw7YWwqn7cP+Sju6v6XnZ3UG2+RdX/3Xafcfjz9pAEh/5EkL+kHNko2IqptoaybWYw53gZqpGFPUxZjsTY3kWo6fk94tgPe/W5mAitGFZ2C+Oy2hWbDg8QofgDvnRJVIYH+eZxAV0i9Dlmr7Iz9Mz
+ 0C44aw5P
+ 3TK8dhnQhDzgUld+QYcyAHW3BEHOf0J53GtLcQlwmXAfKtmAQpfkQs0OT8YSgBio7riIVR8diFtkNlSIAv1T/87HWDunwXH3x7Zri6naQY/d+c7zqW/Lk8wHDxy1oKfvklTnrrPoeJrvyQDmlEZJ3J13RJBZci6nTOdYhxbwBHbZnOyV3B+FfHbqnCMZsWebYlfzqOzy9it8NdNhQqjYMrn1uWd1IGqAXrrgKjTtNTy2fVZP4EqSGA2/sT0xzvkL9eVXbNx3LBzyyobHFBzulVhTVBlwd7mTdbJVSYWJY9vvkhlRzyOOPI7UnJjZgpMbgbc2nl0Ewa1F0Areb7zdHcWRt7g3Hwz7f+W8fGPigH4RiIfGaBUAIpKeEkuWriH/Z8/EH6mgy3bCaWLM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,38 +129,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 10:48, Brendan Jackman wrote:
-> On Thu Mar 19, 2026 at 9:39 PM UTC, Matthew Wilcox wrote:
->> On Thu, Mar 19, 2026 at 06:40:59PM +0000, Brendan Jackman wrote:
->>> I will paste the diff at the bottom. I _think_ all the problematic
->>> expansions are downstream of struct xarray, but it's quite likely my
->>> sense for problematic struct expansions is weak.
->>
->> Urgh, no, it's not all xarray.  There's one in address_space which we're
->> trying to shrink, not grow.  
+On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> We now have the ability to test all of this using the new vma_flags_t
+> approach, so let's do so.
 > 
-> Oh sorry I just assumed that one was xa_flags.
-> 
->> There's one in struct sock too.
-> 
-> Huh, I suspect I am embarassing myself with this question, but why are
-> we sensitive to the size of struct sock? It's currently 784 bytes in my
-> build. Are the adjacent fields very hot, and we need to look up the GFP
-> flags from hot paths?
-> 
->> I don't think this idea is worth it.  There are other projects of greater
->> or lesser churniess which will give us some flags back.  For example,
->> we could finish the GFP_NOFS and GFP_NOIO removal.  We could finish the
->> radix_tree -> XArray removal and get back three bits.  That's five bits
->> without even starting new projects, just finishing old ones.
-> 
-> Anyway, this also makes sense. But, Vlastimil, I guess you had an
-> ulterior motive for this suggestion?
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Partially. After seeing various issues with kmalloc_nolock() relying on lack
-of __GFP_KSWAPD_RECLAIM to indicate the nolock, it would be great to just
-add another gfp flag for it, but with only few left, I didn't dare.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-But I'll admit it wasn't well thought idea out wrt consequences. Sorry that
-nobody shot it down before you actually tried to implement it.
+
+> ---
+>  mm/internal.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 80d8651441a7..708d240b4198 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1252,7 +1252,9 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
+>  
+>  static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
+>  {
+> -	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
+> +	if (vma_test_any_mask(vma, VMA_SPECIAL_FLAGS))
+> +		return false;
+> +	if (vma_test_single_mask(vma, VMA_DROPPABLE))
+>  		return false;
+>  	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
+>  		return false;
+
 
