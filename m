@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A5A31098787
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:00:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CAF1098786
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4CF56B0098; Fri, 20 Mar 2026 10:00:06 -0400 (EDT)
+	id 0A4796B00B6; Fri, 20 Mar 2026 10:04:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFE126B0132; Fri, 20 Mar 2026 10:00:06 -0400 (EDT)
+	id 07BF56B00C9; Fri, 20 Mar 2026 10:04:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A13986B0133; Fri, 20 Mar 2026 10:00:06 -0400 (EDT)
+	id EFA8D6B00CA; Fri, 20 Mar 2026 10:03:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4116B0098
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:00:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2EB59140201
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:00:06 +0000 (UTC)
-X-FDA: 84566600412.22.B919A08
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7876940006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:00:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RIWoHSTl;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DD4266B00B6
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:03:59 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BEBB160258
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:03:59 +0000 (UTC)
+X-FDA: 84566610198.28.98AED7B
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BEFE9120021
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:03:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tc4H5TGa;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774015204;
+	s=arc-20220608; t=1774015438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/0+Yw+Ry+S992jW7ss1XRMsR04gFAwKEv4/QMaJE9gw=;
-	b=Tlcmx+NGdKM7fnu5TMjIdegljOMb9rMqhyNbGfD5EXlu9dQo3Fn5BpOelKNBKbLa1rxOgx
-	N6hFigirZqZLHR4u92YOGkPXn6fiVrWeoIuFJwEzm0B5vWgDNoF39YUq7phgTpJxyX0vnH
-	VFhrH33UWROONP4cmxEwtN/7m2h9DnI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774015204; a=rsa-sha256;
-	cv=none;
-	b=nDC6fXRO1ap4UBiT1oR9bbG6mC+reNoBxTxXh/N1+YH4OO0DpNQLQVIluKkmG/hWWew+SG
-	ViyFe3KWoiu33eHUv8v1B3/9vAolTnDxWXIqqfyp07//4KFlzbo32JbPjN3YRNUWBm5iHl
-	S0jRj9Gdy1vTD0HTxjsOagkSjnK6gdw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BQlel+6dtoxswtHUU01IUBagcMsTT/u/Ie50MY6ZLbc=;
+	b=FFYQoMWOmdjDMdEEo4ay5RCUWAUQcyiLBh3+1B++6vSUUmSi0R6G+mjeWzo/yaaPDOY/7L
+	wXzsvjiWbEOCRXx7zSOF5qs56zO8xdng4ZU6Lt9SlcINGPeibpe/XEzWRYrL4/ip30uJxN
+	ILFYNvRoaDano+3Ow2um/EIpzhVpctk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RIWoHSTl;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D16A36185C;
-	Fri, 20 Mar 2026 14:00:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECACC2BCB0;
-	Fri, 20 Mar 2026 13:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774015203;
-	bh=s60f1w5E6WMH4ey5gx+hmeq9SdnSAAmyj2RTplBL7IA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RIWoHSTlFFw2MFbo5M5gi+uUJisBLa0wzbG9bFC+1dQYGhbKlC8KAhrIaGWC91bmQ
-	 BgL3hv5NY1PVyhlF6Hl+gsYY8FOTR/tBllaSKcxm/gO0dLSAOwF5bzqubXfCrAyksh
-	 mQCb/w5A/UEmvCnsOo/utyNhPoqOEzl/XP3Y5T6YyawDcx/ipeSXMDFMkkZJ6HEYkJ
-	 k4vRCLHLbgAWvuzC7LLNCHUXxE3pIAPUfkdmfjdWKHpyJ+6Da6fiaXlNruRYUqNrUa
-	 ABx520hSU50L8p5zQDVgNcjHuyKsTKavZY+a3rl++PkFzKg2Ub/cTXHkOZCtug3JmD
-	 y3z5+y4Rw7hew==
-Date: Fri, 20 Mar 2026 13:59:57 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 7/9] mm/huge_memory: deduplicate zap deposited table
- call
-Message-ID: <81116647-1f3c-4ce9-8aea-cbe6214f7c4d@lucifer.local>
-References: <cover.1773924928.git.ljs@kernel.org>
- <29fa4129cd560681c67433b4c344b2c9a027d1b4.1773924928.git.ljs@kernel.org>
- <abwr3EmhNZVwOkR3@thinkstation>
- <420f1b11-3b62-46dc-be33-58fbd5a4c8b3@lucifer.local>
- <abxwNW_kKakiYvsp@thinkstation>
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tc4H5TGa;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774015438; a=rsa-sha256;
+	cv=none;
+	b=06rtOVSk8xjVDSDbrhQddcgtJEeWK8mD1IdIxyR14/vWg2LVW7r4+M2Jw4JLupGtcacFfz
+	yNGrE8z5HBOft/A2iVG60NhGgwAtw2s+4SjwUuJCOLP3fBfd1vscmSLJIfq5tiGTaA5ExA
+	2/vc9Y8cpNFUPJKAcVmn+HsYIjYOWm4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774015435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BQlel+6dtoxswtHUU01IUBagcMsTT/u/Ie50MY6ZLbc=;
+	b=Tc4H5TGa1InXyh4vPLhjJgYqKP6CKEGnb/v313Fr+gMkn4PrAhCfqSk/TZIoe+QcU9WTn2
+	nrnO3Z9ZeOl/Dm/qu+yr2Z4iUAddehyYbEyD7oWGABzmY5Vx7nrCBh8oH3aEiIdBlYPp40
+	IDhxBJfN4f4fFBp051wzopRpOn54ocA=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	willy@infradead.org,
+	ryan.roberts@arm.com,
+	linux-mm@kvack.org
+Cc: r@hev.cc, jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+	kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
+	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+	wilts.infradead.org@kvack.org,
+	"linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+	kernel-team@meta.com, Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v2 0/4] mm: improve large folio readahead and alignment for exec memory
+Date: Fri, 20 Mar 2026 06:58:50 -0700
+Message-ID: <20260320140315.979307-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abxwNW_kKakiYvsp@thinkstation>
-X-Stat-Signature: bqsg8y3jteqokpf77zs9brf6dj6sa79k
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: BEFE9120021
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 89n58n7rqggn3qosdt49dk5w3q94opui
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7876940006
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774015204-368111
-X-HE-Meta: U2FsdGVkX192ir50fJJNQxrVj9ld/J+rL+kTvKOo7odL9nFLnL6l7aSH55vc3/a8zJizhETmgrZzcmpG/zPsqWgWu7DSOM+kPQZ2Ui1Rzi7IO7g7RyyPUC1yrkXZhYpzBxNkhX2tD1cbELbBFU3kOfDtAQBIqiGiKvCgF/MFcWgeVTSWLnjaiUAu/6jeOSQ4W4TZRsd2H8la7/hmEB8yVjlfL490E5gOmsMCxpUn5nPXLYJGzWqeTLmPHRcD+YX8veN56IWC/HGflXZSWTii7scN+zjNzCMOwxDAUE2ocxjkGqmFYxt+V52Bq2wnkOGQTgkLYPRylQpMdV2yaeYCK5cBqp8lEo4AaETP99JVb6SiLUDqpIAIyGoCtDUyH9UpsYz73RZqDvQ4O0HNNwQ4cWDTP4KDkHMRmIZyAj2qRd0XUPkuGbF+ek4F24d/FEtCd6/3xtgOapItsH7jM8PXI4rDPLnx+ae2Er1NnPF6hsK4dxxkkJGwkXDlmPSN9jeJEhlYqtmiD+fudXJlA28wkUg1/B0etMLer6/UAtDptCCJ9ShEWuC29c19S8RqoZuX2bQVkOLPJ8SCm49nlCaViahAtYUuVbZUYBelxXbfbngiVzR0t+OSdWYEES/joXCd0g/d15VvNVtMtbZLe5mfvzD1Z2TXHBPGFaE3L/d5haVORpZstX3GfFbpg9VGS1dfljtYx8fy2N0ZRA53L5NS9O5IDVpmerGaAg1Yx3mZTkDz8PR2lyyLmGS1wUxxktRz6qWizIobQNEpY6ZK4bqEEMVM1eSLz7uL6WaYTgfSUzQKeVQHos+gZSfuiH3Zy5VUWmvynGkHQBSB8odRvEs/NzDISxOAmvBkxjakwiGugxMLJ6dYrGyteIWScOIXgahy3QT/2xnNxdFgp/rCO1616x70PfepZi9S1D1/VrDC9yfrET/Cs3taWoCm8dW7ud6cQEITNqGfiGQpfgfJBQq
- u5FyPplD
- LBtiaQThilOtuSPi7UlGLXxNaDOcaWFjWeSP3J/cvpomipmCGsQgpNHrp1RO8DbbuYvRTdknLlYsSoj6y6cVceUWCnNXobGj1ZD9En5ixCZ9q7RnKqxRvf+DQA4GhFW40aCr7n4fqA3kQJEObOMvJJSa1G7nLKHpnUs41N3zMZGQEIxverMqfsoQ8dVLcHjHrfN5vTRRSyf08pD+kmclKlPx04ol8RbvJEA7T4NHnwncERS1tweTgCTs+R0F6LGrwfqPkhWTVvZ3EzHk=
+X-HE-Tag: 1774015437-54917
+X-HE-Meta: U2FsdGVkX195xvcrYUOKxF9kLOa7M683YCyyc5/+ZX2NKH8wYovgAxkFWq2W1Z6o1UOeQGbbSiyKamAjBYvCalGrCVQ7vnan+1oiXqVkpRJ6wcZqwBXuO4HH3vuFkG2RQj7lqGnS0Ihipqqkb5n48KIrm28AmfiHmwI+aBghOMkXmkvhWw//52AtW6YURnG3KoJC7i0+lkcXmfYQiryM6IqRRmYcsIH98JYso3dNECqiR/ua6LCvj20Q6otpLrTpGQ3qMPXM8Q4BAkTP5tIKrZfPx/kqotpuVxQKJtmnj+ageuo5HBt3i2CZ4CHXZtzqbYPtZO8Yo27n/lAVX8CMW6/xxV65YPUmVa0MgG4Pyl4w91UfLQXT9k2JfYMMSYMg3IKL9f+Q0Ob7f4+hRXZjAWzMFDSE6NcCpqcUkwL115xEuQQbu24PijZ4RMqCibW9JEaKh6q3RhPzn4/uVfqWasYXdf9QpuVR1fvITbRM0c+2nx6z0qidj/Sz3ctjppG1pQg6mlbYZjhUN+VcFSVDAoo9rrNzSIohnsa9bCSi4BArgfuHKjWWFFNb7yww+oQAuIifD2YRAt+SvWZ9hqtpS+eW9RYzIkHU9Y747wRkNhtRZDM4/FwV36Bxu9l8qpAIBevhonJ7nb31ZhMNhDSTKhoyunbxlwoFUm5+T3VBc0gX7xEUgLS8rPkTYm8d9DzrJGH1go0aTy3MbvkWZHeEUDtlQ1Wyf4MJ7AubkadYLGO7eLU/0Oc+qlFz3NDE3vXOH+BwMcWOBXfAFfVnG+KcQrhPlwuYxbVYH6+QZIz1bOBJulL4OXC+hq3hrYt/UK9q9fjmnwRvMKsIFIzaxQ5LZjozNq7LvE9FsUv3+O/zEmoVzPcFlBs61oU1rkruASqiXE+/HlZtKwIvyhQUrDFIOyoeCiccPtYE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,56 +96,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 09:56:53PM +0000, Kiryl Shutsemau wrote:
-> On Thu, Mar 19, 2026 at 05:18:11PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > On Thu, Mar 19, 2026 at 05:03:10PM +0000, Kiryl Shutsemau wrote:
-> > > On Thu, Mar 19, 2026 at 01:00:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > > > index 499c31bf8f83..c4e00c645e58 100644
-> > > > --- a/mm/huge_memory.c
-> > > > +++ b/mm/huge_memory.c
-> > > > @@ -2431,6 +2431,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> > > >  		 pmd_t *pmd, unsigned long addr)
-> > > >  {
-> > > >  	struct folio *folio = NULL;
-> > > > +	bool needs_deposit = false;
-> > >
-> > > I think 'has_deposit' is a better name here.
-> >
-> > That's fine, can rename.
-> >
-> > >
-> > > And initialize it to arch_needs_pgtable_deposit().
-> >
-> > Yeah I considered that, but then you have to do logic like:
-> >
-> > has_deposit = has_deposit || <whatever>;
-> >
-> > Which is a bit ugly.
->
-> You are overthinking it. Just do
+v2 takes a different approach from v1 trying to move away from
+exec_folio_order() and comeup with a generic arch independent solution
+which is what I think David was suggesting in [1].
+I thought I would send it as code rather than try and discuss it in v1
+as its easier :)
 
-Well I would argue you're overthinking the review comments here ;)
+v1 -> v2: https://lore.kernel.org/all/20260310145406.3073394-1-usama.arif@linux.dev/
+- disable mmap_miss logic for VM_EXEC (Jan Kara)
+- Align in elf only when segment VA and file offset are already aligned (Rui)
+- preferred_exec_order() for VM_EXEC sync mmap_readahead which takes into
+  account zone high watermarks (as an approximation of memory pressure)
+  (David, or atleast my approach to what David suggested in [1] :))
+- Extend max alignment to mapping_max_folio_size() instead of
+  exec_folio_order()
 
->
-> 	if (!vma_is_dax(vma))
-> 		has_deposit = true;
->
-> No need in squeezing it into single line.
+Motiviation
+===========
+exec_folio_order() was introduced [2] to request readahead at an
+arch-preferred folio order for executable memory, enabling hardware PTE
+coalescing (e.g. arm64 contpte) and PMD mappings on the fault path.
 
-Well part of the point here was to avoid ugly:
+However, several things prevent this from working optimally:
 
-	Indent
-		Indent
-			Indent
+1. The mmap_miss heuristic in do_sync_mmap_readahead() silently disables
+   exec readahead after 100 page faults. The mmap_miss counter tracks
+   whether readahead is useful for mmap'd file access:
 
-And that worsens the situation.
+   - Incremented by 1 in do_sync_mmap_readahead() on every page cache
+     miss (page needed IO).
 
-Let me think about this again on respin.
+   - Decremented by N in filemap_map_pages() for N pages successfully
+     mapped via fault-around (pages found in cache without faulting,
+     evidence that readahead was useful). Only non-workingset pages
+     count and recently evicted and re-read pages don't count as hits.
 
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+   - Decremented by 1 in do_async_mmap_readahead() when a PG_readahead
+     marker page is found (indicates sequential consumption of readahead
+     pages).
 
-Thanks, Lorenzo
+   When mmap_miss exceeds MMAP_LOTSAMISS (100), all readahead is
+   disabled. On arm64 with 64K pages, both decrement paths are inactive:
+
+   - filemap_map_pages() is never called because fault_around_pages
+     (65536 >> PAGE_SHIFT = 1) disables should_fault_around(), which
+     requires fault_around_pages > 1. With only 1 page in the
+     fault-around window, there is nothing "around" to map.
+
+   - do_async_mmap_readahead() never fires for exec mappings because
+     exec readahead sets async_size = 0, so no PG_readahead markers
+     are placed.
+
+   With no decrements, mmap_miss monotonically increases past
+   MMAP_LOTSAMISS after 100 faults, disabling exec readahead
+   for the remainder of the mapping. Patch 1 fixes this by excluding
+   VM_EXEC VMAs from the mmap_miss logic, similar to how VM_SEQ_READ
+   is already excluded.
+
+2. exec_folio_order() is an arch-specific hook that returns a static
+   order (ilog2(SZ_64K >> PAGE_SHIFT)), which is suboptimal for non-4K
+   page sizes and doesn't adapt to runtime conditions. Patch 2 replaces
+   it with a generic preferred_exec_order() that targets min(PMD_ORDER,
+   2M), which naturally gives the right answer across architectures and
+   different page sizes: contpte on arm64 (2M for all page sizes), PMD
+   mapping on x86 (2M), and smaller PMDs like s390 (1M). The 2M cap also
+   avoids requesting excessively large folios on configurations where
+   PMD_ORDER is much larger (32M on arm64 16K pages, 512M on arm64 64K
+   pages), which would cause unnecessary memory pressure. The function
+   adapts at runtime based on VMA size and memory pressure (zone
+   watermarks), stepping down the order when memory is tight.
+
+3. Even with correct folio order and readahead, hardware PTE coalescing
+   (e.g. contpte) and PMD mapping require the virtual address to be
+   aligned to the folio size. The readahead path aligns file offsets and
+   the buddy allocator aligns physical memory, but the virtual address
+   depends on the VMA start. For PIE binaries, ASLR randomizes the load
+   address at PAGE_SIZE granularity, so on arm64 with 64K pages only
+   1/32 of load addresses are 2M-aligned. When misaligned, contpte
+   cannot be used for any folio in the VMA.
+
+   Patch 3 fixes this for the main binary by extending maximum_alignment()
+   in the ELF loader to consider mapping_max_folio_size(), aligning
+   load_bias to the largest folio the filesystem will allocate.
+
+   Patch 4 fixes this for shared libraries by adding a folio-size
+   alignment fallback in thp_get_unmapped_area_vmflags(). The existing
+   PMD_SIZE alignment (512M on arm64 64K pages) is too large for typical
+   shared libraries, so this smaller fallback succeeds where PMD fails.
+
+I created a benchmark that mmaps a large executable file and calls
+RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
+fault + readahead cost. "Random" first faults in all pages with a
+sequential sweep (not measured), then measures time for calling random
+offsets, isolating iTLB miss cost for scattered execution.
+
+The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
+512MB executable file on ext4, averaged over 3 runs:
+
+  Phase      | Baseline     | Patched      | Improvement
+  -----------|--------------|--------------|------------------
+  Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
+  Random     | 76.0 ms      | 58.3 ms      | 23% faster
+
+[1] https://lore.kernel.org/all/d72d5ca3-4b92-470e-9f89-9f39a3975f1e@kernel.org/
+[2] https://lore.kernel.org/all/20250430145920.3748738-6-ryan.roberts@arm.com/
+ 
+Usama Arif (4):
+  mm: bypass mmap_miss heuristic for VM_EXEC readahead
+  mm: replace exec_folio_order() with generic preferred_exec_order()
+  elf: align ET_DYN base to max folio size for PTE coalescing
+  mm: align file-backed mmap to max folio order in thp_get_unmapped_area
+
+ arch/arm64/include/asm/pgtable.h |  8 -----
+ fs/binfmt_elf.c                  | 38 ++++++++++++++++++--
+ include/linux/pgtable.h          | 11 ------
+ mm/filemap.c                     | 59 ++++++++++++++++++++++++++++----
+ mm/huge_memory.c                 | 14 ++++++++
+ 5 files changed, 102 insertions(+), 28 deletions(-)
+
+-- 
+2.52.0
+
 
