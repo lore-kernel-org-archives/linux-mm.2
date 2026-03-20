@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A618F1099B23
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF001099B23
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:03:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FADF6B00E2; Fri, 20 Mar 2026 13:03:24 -0400 (EDT)
+	id 817A66B00E4; Fri, 20 Mar 2026 13:03:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ACD56B00E4; Fri, 20 Mar 2026 13:03:24 -0400 (EDT)
+	id 7EEE06B00E7; Fri, 20 Mar 2026 13:03:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 075D86B00E5; Fri, 20 Mar 2026 13:03:24 -0400 (EDT)
+	id 6DE0E6B00E8; Fri, 20 Mar 2026 13:03:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA8586B00E2
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:03:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85CAE140319
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:03:23 +0000 (UTC)
-X-FDA: 84567062286.16.B36742A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 606C36B00E4
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:03:27 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F22EF160320
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:03:26 +0000 (UTC)
+X-FDA: 84567062412.19.CBC148B
 Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C9A661A0008
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:03:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id CDA5A4000E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:03:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774026202;
+	s=arc-20220608; t=1774026205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o2svQ9eqsqM52SpWUiIfuUR2eVB0Kctq9QTipJhibDI=;
-	b=gfm06eJRGiJEj9ZhuYBOTmFqoPMjNxQKVaGCtNKyPB6gPrscymNdMGXd7z/BdZoN8yJKN+
-	3E6a6r/lIFapjI5azWpFBdt11/+jrRQP4cafi5sUSd5HzvUQXq2glmClyom9om/12B0fNH
-	bZxWSLZ1P/AIZCgujAdl0E1i2gKSGpo=
+	bh=OMPMt9kZ7lI0ejkeJIu6VM3g+BgsGgYlwONj9cANWD8=;
+	b=Sx91AbQ5m65X6v/VBGjIxKheHOFGBnPs7tc1KJaLbndb4iUOPfa0CIi18fnYGsDS9pSfZn
+	C/0AnPdZonljTLBq/X49Mdfzwtd1d6BW9qC3o3IBWMYPDQ2qzZf4+jAsjPikBh6thKxz7L
+	38PeiYs4GYDqwxW8vj4lUpK4M6UYBjs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
+	imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774026202; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774026205; a=rsa-sha256;
 	cv=none;
-	b=fNIAbMeYPbNCQCuFhnax3OTn/vVjhefXlnyxx+Qqt1ZMk6Kb5CQEVfYEItIBUvhmKHtkhj
-	LcKOGWkJABcDuyWf6ZjjMjTKACrQ/oAMmp7HimqooYtX9ICnUbTxberbt8MBGumig+vGeV
-	RS/J1ViYxwBd2X+U1uDcBueiqM0VzvI=
+	b=YUxNIfDYtBxfEEsck9e+gQ2ykxZnlYuugXX9e1SLDBe8U7UaR2vT6gd+4hPybGa2TobZBX
+	OlDP+1HFDn61P1uE8SZyoTuvYrdGhXlTbl3GU6WgK1YeAcnlinGLmGoGCMnvQ/SY6hEmsf
+	jQZRFblaXixl1zLtNloslVuFZc5TbZY=
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 21 Mar 2026 02:03:18 +0900
+	by 156.147.51.103 with ESMTP; 21 Mar 2026 02:03:21 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -66,20 +66,22 @@ Cc: chrisl@kernel.org,
 	usama.arif@linux.dev,
 	linux-pm@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v6 1/3] mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap device
-Date: Sat, 21 Mar 2026 02:03:11 +0900
-Message-Id: <20260320170313.163386-2-youngjun.park@lge.com>
+Subject: [PATCH v6 3/3] PM: hibernate: fix spurious GFP mask WARNING in uswsusp path
+Date: Sat, 21 Mar 2026 02:03:13 +0900
+Message-Id: <20260320170313.163386-4-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260320170313.163386-1-youngjun.park@lge.com>
 References: <20260320170313.163386-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1djbbzzfuonne7z983cfxeohrx9osonb
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C9A661A0008
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 1wpeymu7jeij1qx6egcmgjrr6dsitqeh
-X-HE-Tag: 1774026200-257594
-X-HE-Meta: U2FsdGVkX1+8rX4UIOF6R7sYikBoH7ziXq4MMM9ol++QEZgJydkIpaTJCr5JV0zhi0TW7R2zhH8cK3wbqkvkunTQLtY46/mIrZzLT7uC0IYic3LDeRfZpo7ZNlSvnw2G5yG6pKNq4EwXuCIK6XDLHg9fgj1fozFtCEP2dxPfLG3JLHatLwDV/TRopRxh9pxpFYYshDlbUpFHbWevgk3fsNDOEeLw52nsXcMC5tzkbag6gnJL+rtlMzyDKca7q2ZiyV5Meja98ZH2dZeJ8syEArLe9Gx5pQn2iKF3nMYHh9fPWkWq6tUjJUSxV5mw1NvXcRsEDHYm84eI6TKLOtoxKtJDEHzItidNl5EFqD6ovDI8rz8eK6mOXKIU97/r/CWnVq03pIQSAMvc1Di5WAhWDB94GlosCedikE9xC2oSuTz/or+07me7d5ISLk7zC7LBfyrlih7XxVa5RRBcg2N6gea6PhL9l3l5q0ZUGSw/QcldpJVBLaJi6KRqTkp5c7PuGNb7xIfZLFxvKtLbTk5cY9m+YEBjRJPoFV5qQkSb3R+7K9iBVRl8exQY9FIfMXbQ5/U9i9NqVT5YMXCO443bp2El7C7D/1R8MTxBVLHGqwt1I5kuo39scQnpifvb5B38CaVX6nqiFczhFcMQlaj0aWOBl593LjEGVK4rT5eZj9O3/eE+/mZZwRw/1xtrpERMaVMLFNtjGnN8VGjMUczKk6ZpaS8z5KLyJktxsjetkUf/3nV+9p3EmjNr4xpE88HTASDtDUxzuIVd7HliuLh1mfJKQWFb4laeGFbA4bWf9EAp/9COParpMNms8KZxGy9eClR021ZXmzQqq2AU+sLANw==
+X-Rspamd-Queue-Id: CDA5A4000E
+X-HE-Tag: 1774026204-789094
+X-HE-Meta: U2FsdGVkX1/H4eKvlFx2+PbLbXG25WJfz5VuMm8NYWXKd/W5egZ3jpTm9I7rQtIxs6RuYepCWJYsMWig1NiWm9gwPukksd+kK7KKp5OLHP3IFfZ94JU30yud6BoH1QhHDfUq0v6TaTOdKx+NuX2Mr/Tamqj5kV0u7CPiShKsKfqvlz9QuBeP4/csHc/YlQ1K4uaIYypL5aKygsRCS/Sae1oNgi1KSonRFtu441sus/PS5zt3PYfghTWCQmUNvCnwUY1FQRfNaATFexqsJC6F0HDj9EbaWeAGEObjxqQEA1A1EGJWasxOvRLF0ReE7EnLoeq4yLyM6cO6E3DGUWvQZKhX1wenK6QvoU1BfsHkS3uVbDONVjE5gbMsVHIBLo8hf1lS9mK0ExhB/4qdlm6UV7vJH40TQyMI9/al9xQT84IP0LiJWEaV5LGjzZ3xV8JNWLqXNHNo84WNbFYU39Zepf0Fzj9jEygco+NRGwMdw18icvLi3pbkyTyGoOkdTJGmImGArZo5ebnVsgo7lUHGOY6GsIkmQrDPQCMkzRS9mAh7yktgfsI5NuTCyPzqLTFp/1Lvntw2M38yRIDahT1vO7BWtR3BTTGk+TxX+QdEykYh8xbsWEK5RcipWGbtwqU1ivJQp6eO3v0TIbbuYVjPeroEY5HU9h2AzpcQ3HYDapr7FMU19NOtCJ1jbhunY7BqVKuqo7WrWlzVHWZUFATTN9174+0AWZ4Jm4wpnsNRcI0rnBNgUxoW1LTvaS0e3a07z99i9TS08G0hyOLQPxSx5ILwUbYdcbw2R1lTCSX4M2EfzGle7KwskFmN1hdS4XJQkhZuPMS3nWWxn90G56mY8p7pcJD1kpVOrNF/l61W7T7i8wInvEje8BGVlSjL35cFmmcTuNY2N5ysF6K2FpOnaDFbo8LbzfSxhqvwVBj6YVmVLqYrHuDd5xZFABTjLx8aCmGndp4wagF4FJh+teN
+ 3SVnKjqx
+ HZY9+ENR5AAEIlEI7G8DxO/cG1OBTe76rW/EkjEudFk9Ra1R3+mmucE6RFjAZukyjITXoCTwjM9MuQnFm05SSJ7ky5eamE0eq55lG0ZRZs8n2W4GsfQ3ZuNyGN7rueHpC4QB0akcGR2EbSF9wvaTeVwiqfZOuXwa66axz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,301 +89,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hibernation via uswsusp (/dev/snapshot ioctls) has a race window:
-after selecting the resume swap area but before user space is frozen,
-swapoff may run and invalidate the selected swap device.
+Commit 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask()
+stacking") introduced refcount-based GFP mask management that warns
+when pm_restore_gfp_mask() is called with saved_gfp_count == 0:
 
-Fix this by pinning the swap device with SWP_HIBERNATION while it is
-in use.  The pin is exclusive, which is sufficient since
-hibernate_acquire() already prevents concurrent hibernation sessions.
+  WARNING: kernel/power/main.c:44 at pm_restore_gfp_mask+0xd7/0xf0
+  CPU: 0 UID: 0 PID: 373 Comm: s2disk
+  Call Trace:
+   snapshot_ioctl+0x964/0xbd0
+   __x64_sys_ioctl+0x724/0x1320
+  ...
 
-The kernel swsusp path (sysfs-based hibernate/resume) uses
-find_hibernation_swap_type() which is not affected by the pin.  It
-freezes user space before touching swap, so swapoff cannot race.
+The uswsusp path calls pm_restore_gfp_mask() defensively in
+SNAPSHOT_CREATE_IMAGE, SNAPSHOT_UNFREEZE, and snapshot_release(),
+where the GFP mask may or may not be restricted depending on the
+execution path.
 
-Introduce dedicated helpers:
-- pin_hibernation_swap_type(): Look up and pin the swap device.
-  Used by the uswsusp path.
-- find_hibernation_swap_type(): Lookup without pinning.
-  Used by the kernel swsusp path.
-- unpin_hibernation_swap_type(): Clear the hibernation pin.
+Before the stacking change this was a silent no-op; it now triggers
+a WARNING when saved_gfp_count is 0.
 
-While a swap device is pinned, swapoff is prevented from proceeding.
+Introduce pm_restore_gfp_mask_safe(), which skips the call if
+saved_gfp_count is 0. This avoids the warning without requiring
+state tracking in snapshot_ioctl, which could otherwise leave the
+GFP mask permanently restricted if mismanaged.
 
+Fixes: 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask() stacking")
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 ---
- include/linux/swap.h |   5 +-
- kernel/power/swap.c  |   2 +-
- kernel/power/user.c  |  15 ++++-
- mm/swapfile.c        | 135 ++++++++++++++++++++++++++++++++++++++-----
- 4 files changed, 136 insertions(+), 21 deletions(-)
+ include/linux/suspend.h |  1 +
+ kernel/power/main.c     | 18 ++++++++++++++++++
+ kernel/power/user.c     |  6 +++---
+ 3 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 62fc7499b408..82bfc965c3f8 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -216,6 +216,7 @@ enum {
- 	SWP_PAGE_DISCARD = (1 << 10),	/* freed swap page-cluster discards */
- 	SWP_STABLE_WRITES = (1 << 11),	/* no overwrite PG_writeback pages */
- 	SWP_SYNCHRONOUS_IO = (1 << 12),	/* synchronous IO is efficient */
-+	SWP_HIBERNATION = (1 << 13),	/* pinned for hibernation */
- 					/* add others here before... */
- };
+diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+index b02876f1ae38..7777931d88a5 100644
+--- a/include/linux/suspend.h
++++ b/include/linux/suspend.h
+@@ -454,6 +454,7 @@ extern void pm_report_hw_sleep_time(u64 t);
+ extern void pm_report_max_hw_sleep(u64 t);
+ void pm_restrict_gfp_mask(void);
+ void pm_restore_gfp_mask(void);
++void pm_restore_gfp_mask_safe(void);
  
-@@ -452,7 +453,9 @@ static inline long get_nr_swap_pages(void)
+ #define pm_notifier(fn, pri) {				\
+ 	static struct notifier_block fn##_nb =			\
+diff --git a/kernel/power/main.c b/kernel/power/main.c
+index 5f8c9e12eaec..90e9bd56a433 100644
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -36,6 +36,24 @@
+ static unsigned int saved_gfp_count;
+ static gfp_t saved_gfp_mask;
  
- extern void si_swapinfo(struct sysinfo *);
- extern int add_swap_count_continuation(swp_entry_t, gfp_t);
--int swap_type_of(dev_t device, sector_t offset);
-+int pin_hibernation_swap_type(dev_t device, sector_t offset);
-+void unpin_hibernation_swap_type(int type);
-+int find_hibernation_swap_type(dev_t device, sector_t offset);
- int find_first_swap(dev_t *device);
- extern unsigned int count_swap_pages(int, int);
- extern sector_t swapdev_block(int, pgoff_t);
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index 2e64869bb5a0..cc4764149e8f 100644
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -341,7 +341,7 @@ static int swsusp_swap_check(void)
- 	 * This is called before saving the image.
- 	 */
- 	if (swsusp_resume_device)
--		res = swap_type_of(swsusp_resume_device, swsusp_resume_block);
-+		res = find_hibernation_swap_type(swsusp_resume_device, swsusp_resume_block);
- 	else
- 		res = find_first_swap(&swsusp_resume_device);
- 	if (res < 0)
++/**
++ * pm_restore_gfp_mask_safe - Conditionally restore the GFP mask
++ *
++ * Call pm_restore_gfp_mask() only if a GFP restriction is active.
++ *
++ * After GFP mask stacking was introduced, calling
++ * pm_restore_gfp_mask() without a matching restriction triggers a
++ * warning. Some hibernation paths invoke restore defensively, so this
++ * helper avoids spurious warnings when no restriction is in place.
++ */
++void pm_restore_gfp_mask_safe(void)
++{
++	WARN_ON(!mutex_is_locked(&system_transition_mutex));
++	if (!saved_gfp_count)
++		return;
++	pm_restore_gfp_mask();
++}
++
+ void pm_restore_gfp_mask(void)
+ {
+ 	WARN_ON(!mutex_is_locked(&system_transition_mutex));
 diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 4401cfe26e5c..aab9aece1009 100644
+index aab9aece1009..88de4b76a9dc 100644
 --- a/kernel/power/user.c
 +++ b/kernel/power/user.c
-@@ -71,7 +71,7 @@ static int snapshot_open(struct inode *inode, struct file *filp)
- 	memset(&data->handle, 0, sizeof(struct snapshot_handle));
- 	if ((filp->f_flags & O_ACCMODE) == O_RDONLY) {
- 		/* Hibernating.  The image device should be accessible. */
--		data->swap = swap_type_of(swsusp_resume_device, 0);
-+		data->swap = pin_hibernation_swap_type(swsusp_resume_device, 0);
- 		data->mode = O_RDONLY;
- 		data->free_bitmaps = false;
- 		error = pm_notifier_call_chain_robust(PM_HIBERNATION_PREPARE, PM_POST_HIBERNATION);
-@@ -90,8 +90,10 @@ static int snapshot_open(struct inode *inode, struct file *filp)
- 			data->free_bitmaps = !error;
- 		}
- 	}
--	if (error)
-+	if (error) {
-+		unpin_hibernation_swap_type(data->swap);
- 		hibernate_release();
-+	}
- 
- 	data->frozen = false;
- 	data->ready = false;
-@@ -115,6 +117,7 @@ static int snapshot_release(struct inode *inode, struct file *filp)
- 	data = filp->private_data;
- 	data->dev = 0;
+@@ -119,7 +119,7 @@ static int snapshot_release(struct inode *inode, struct file *filp)
  	free_all_swap_pages(data->swap);
-+	unpin_hibernation_swap_type(data->swap);
+ 	unpin_hibernation_swap_type(data->swap);
  	if (data->frozen) {
- 		pm_restore_gfp_mask();
+-		pm_restore_gfp_mask();
++		pm_restore_gfp_mask_safe();
  		free_basic_memory_bitmaps();
-@@ -235,11 +238,17 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
- 		offset = swap_area.offset;
- 	}
- 
-+	/*
-+	 * Pin the swap device if a swap area was already
-+	 * set by SNAPSHOT_SET_SWAP_AREA.
-+	 */
-+	unpin_hibernation_swap_type(data->swap);
-+
- 	/*
- 	 * User space encodes device types as two-byte values,
- 	 * so we need to recode them
- 	 */
--	data->swap = swap_type_of(swdev, offset);
-+	data->swap = pin_hibernation_swap_type(swdev, offset);
- 	if (data->swap < 0)
- 		return swdev ? -ENODEV : -EINVAL;
- 	data->dev = swdev;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 94af29d1de88..ac1574acade7 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -133,7 +133,7 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
- /* May return NULL on invalid type, caller must check for NULL return */
- static struct swap_info_struct *swap_type_to_info(int type)
- {
--	if (type >= MAX_SWAPFILES)
-+	if (type < 0 || type >= MAX_SWAPFILES)
- 		return NULL;
- 	return READ_ONCE(swap_info[type]); /* rcu_dereference() */
- }
-@@ -1972,22 +1972,15 @@ void swap_free_hibernation_slot(swp_entry_t entry)
- 	put_swap_device(si);
- }
- 
--/*
-- * Find the swap type that corresponds to given device (if any).
-- *
-- * @offset - number of the PAGE_SIZE-sized block of the device, starting
-- * from 0, in which the swap header is expected to be located.
-- *
-- * This is needed for the suspend to disk (aka swsusp).
-- */
--int swap_type_of(dev_t device, sector_t offset)
-+static int __find_hibernation_swap_type(dev_t device, sector_t offset)
- {
- 	int type;
- 
-+	lockdep_assert_held(&swap_lock);
-+
- 	if (!device)
--		return -1;
-+		return -EINVAL;
- 
--	spin_lock(&swap_lock);
- 	for (type = 0; type < nr_swapfiles; type++) {
- 		struct swap_info_struct *sis = swap_info[type];
- 
-@@ -1997,16 +1990,118 @@ int swap_type_of(dev_t device, sector_t offset)
- 		if (device == sis->bdev->bd_dev) {
- 			struct swap_extent *se = first_se(sis);
- 
--			if (se->start_block == offset) {
--				spin_unlock(&swap_lock);
-+			if (se->start_block == offset)
- 				return type;
--			}
+ 		thaw_processes();
+ 	} else if (data->free_bitmaps) {
+@@ -306,7 +306,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+ 	case SNAPSHOT_UNFREEZE:
+ 		if (!data->frozen || data->ready)
+ 			break;
+-		pm_restore_gfp_mask();
++		pm_restore_gfp_mask_safe();
+ 		free_basic_memory_bitmaps();
+ 		data->free_bitmaps = false;
+ 		thaw_processes();
+@@ -318,7 +318,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+ 			error = -EPERM;
+ 			break;
  		}
- 	}
--	spin_unlock(&swap_lock);
- 	return -ENODEV;
- }
- 
-+/**
-+ * pin_hibernation_swap_type - Pin the swap device for hibernation
-+ * @device: Block device containing the resume image
-+ * @offset: Offset identifying the swap area
-+ *
-+ * Locate the swap device for @device/@offset and mark it as pinned
-+ * for hibernation. While pinned, swapoff() is prevented.
-+ *
-+ * Only one uswsusp context may pin a swap device at a time.
-+ * If already pinned, this function returns -EBUSY.
-+ *
-+ * Return:
-+ * >= 0 on success (swap type).
-+ * -EINVAL if @device is invalid.
-+ * -ENODEV if the swap device is not found.
-+ * -EBUSY if the device is already pinned for hibernation.
-+ */
-+int pin_hibernation_swap_type(dev_t device, sector_t offset)
-+{
-+	int type;
-+	struct swap_info_struct *si;
-+
-+	spin_lock(&swap_lock);
-+
-+	type = __find_hibernation_swap_type(device, offset);
-+	if (type < 0) {
-+		spin_unlock(&swap_lock);
-+		return type;
-+	}
-+
-+	si = swap_type_to_info(type);
-+	if (WARN_ON_ONCE(!si)) {
-+		spin_unlock(&swap_lock);
-+		return -ENODEV;
-+	}
-+
-+	/*
-+	 * hibernate_acquire() prevents concurrent hibernation sessions.
-+	 * This check additionally guards against double-pinning within
-+	 * the same session.
-+	 */
-+	if (WARN_ON_ONCE(si->flags & SWP_HIBERNATION)) {
-+		spin_unlock(&swap_lock);
-+		return -EBUSY;
-+	}
-+
-+	si->flags |= SWP_HIBERNATION;
-+
-+	spin_unlock(&swap_lock);
-+	return type;
-+}
-+
-+/**
-+ * unpin_hibernation_swap_type - Unpin the swap device for hibernation
-+ * @type: Swap type previously returned by pin_hibernation_swap_type()
-+ *
-+ * Clear the hibernation pin on the given swap device, allowing
-+ * swapoff() to proceed normally.
-+ *
-+ * If @type does not refer to a valid swap device, this function
-+ * does nothing.
-+ */
-+void unpin_hibernation_swap_type(int type)
-+{
-+	struct swap_info_struct *si;
-+
-+	spin_lock(&swap_lock);
-+	si = swap_type_to_info(type);
-+	if (!si) {
-+		spin_unlock(&swap_lock);
-+		return;
-+	}
-+	si->flags &= ~SWP_HIBERNATION;
-+	spin_unlock(&swap_lock);
-+}
-+
-+/**
-+ * find_hibernation_swap_type - Find swap type for hibernation
-+ * @device: Block device containing the resume image
-+ * @offset: Offset within the device identifying the swap area
-+ *
-+ * Locate the swap device corresponding to @device and @offset.
-+ *
-+ * Unlike pin_hibernation_swap_type(), this function only performs a
-+ * lookup and does not mark the swap device as pinned for hibernation.
-+ *
-+ * This is safe in the sysfs-based hibernation path where user space
-+ * is already frozen and swapoff() cannot run concurrently.
-+ *
-+ * Return:
-+ * A non-negative swap type on success.
-+ * -EINVAL if @device is invalid.
-+ * -ENODEV if no matching swap device is found.
-+ */
-+int find_hibernation_swap_type(dev_t device, sector_t offset)
-+{
-+	int type;
-+
-+	spin_lock(&swap_lock);
-+	type = __find_hibernation_swap_type(device, offset);
-+	spin_unlock(&swap_lock);
-+
-+	return type;
-+}
-+
- int find_first_swap(dev_t *device)
- {
- 	int type;
-@@ -2803,6 +2898,14 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 		spin_unlock(&swap_lock);
- 		goto out_dput;
- 	}
-+
-+	/* Refuse swapoff while the device is pinned for hibernation */
-+	if (p->flags & SWP_HIBERNATION) {
-+		err = -EBUSY;
-+		spin_unlock(&swap_lock);
-+		goto out_dput;
-+	}
-+
- 	if (!security_vm_enough_memory_mm(current->mm, p->pages))
- 		vm_unacct_memory(p->pages);
- 	else {
+-		pm_restore_gfp_mask();
++		pm_restore_gfp_mask_safe();
+ 		error = hibernation_snapshot(data->platform_support);
+ 		if (!error) {
+ 			error = put_user(in_suspend, (int __user *)arg);
 -- 
 2.34.1
 
