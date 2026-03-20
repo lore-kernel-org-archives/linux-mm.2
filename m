@@ -4,116 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C45AA1099B20
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 439B21099B25
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:11:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F5A76B00DE; Fri, 20 Mar 2026 13:10:28 -0400 (EDT)
+	id 983206B0113; Fri, 20 Mar 2026 13:11:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A6B46B00DF; Fri, 20 Mar 2026 13:10:28 -0400 (EDT)
+	id 933786B0116; Fri, 20 Mar 2026 13:11:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED7A86B00E3; Fri, 20 Mar 2026 13:10:27 -0400 (EDT)
+	id 822C66B0118; Fri, 20 Mar 2026 13:11:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D70B26B00DE
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:10:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 843395813C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:10:27 +0000 (UTC)
-X-FDA: 84567080094.06.B41EF3D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A94C04000E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:10:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bXKnbe/Z";
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70FE66B0113
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:11:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CF281A0279
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:11:55 +0000 (UTC)
+X-FDA: 84567083790.11.9691F9D
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6FB3620008
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:11:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=tA6Z33F1;
+	spf=pass (imf13.hostedemail.com: domain of r@hev.cc designates 209.85.216.44 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774026625;
+	s=arc-20220608; t=1774026713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m9gGuiyQLPdmvv2/7LJRMDUMWYouWFgZfsnWMBTd7W4=;
-	b=RycxJmJHsMZ8hmx/tPkRQvA4HIZNL427Gfofsg2p8Nq9JwTUtJWZwHJFWK2kCtZOWCXEz7
-	thksbZcV7V73D4NLkCim9GtI7ZVXZcQ+F70+RBu5mb3KuYSc8WWwpn3rf9yW3jyVrSesQD
-	5BsRNeFB6F433YqhVNhivBxfzIRxqnM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774026625; a=rsa-sha256;
-	cv=none;
-	b=gkqurNo9fEkbbZbl/rQ740NLbc8lJZzmPoVZb2ltCphWb1+qgoRvyksqy5hSKmiRuSHfMa
-	9n3TLXuKmC+qh97aQHXjIrOtgsg2Ba0L9MzDgGnO/VyF6TPFW26t3bYfoDFScHdLcGwxXn
-	7E0wRxtyDfbnjX2BxrmV2upaO+337lU=
+	bh=ahNTPAefQMpYMnBF9fjbq40PKYiHzlPr//dFmraZ1KU=;
+	b=zlAENJD2hQzmy+yE3LL9dXewqaU1wI/glrtZbC4WYRnDZW1pyu3xFfy5o0Y2yRXzxIS6UW
+	FYx7P2hqB0xe90OZtXqFf+nVFAnR1uo5RgEXj+b8H4fACM+rXTjxmNq3L6+RWaWGphXjR4
+	07qopxlJu7L/KF3jJqpRMEsP7RolFiQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bXKnbe/Z";
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B220843249;
-	Fri, 20 Mar 2026 17:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920B9C19425;
-	Fri, 20 Mar 2026 17:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774026624;
-	bh=r+p0YZoMVI7AcM9fsFhpiDTl7RR8STO6srhIbYMdrEs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bXKnbe/ZTMZYKmKswyp7UUNW73CC8ocNdqBGJpBjO2IEcg9klGYzKBTbn7wS6145o
-	 bDx6yp6E9EoRlfZ1nChN/6xzDyc02EPnVKbzAT5MkJBM1x9r0U7ISiFB9ZK42TeeEV
-	 NPQS0N+PInTeLONogYKmUybb5i5U5KXxX1g3XFI6v4Zk+gmrInpHhro/V78ZwgDZBl
-	 PDIKv//vs1fkzlQQJXNTgc0NCf5mfA5lg8S5iRTjU72SybGYa8zUxK1T+5C/DsgByO
-	 n+gWOBmyWdE+bwHdB8VdEbJ4rsjPU2AaNHeRHUcpRTiT8ZcyJgwkIBZUDTaCXbxgBy
-	 oLeo5Gj5w1IGw==
-Message-ID: <e3ecf76a-4490-415d-9d52-dae478ad43d7@kernel.org>
-Date: Fri, 20 Mar 2026 18:10:14 +0100
+	imf13.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=tA6Z33F1;
+	spf=pass (imf13.hostedemail.com: domain of r@hev.cc designates 209.85.216.44 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774026713; a=rsa-sha256;
+	cv=none;
+	b=ee6jy/sgTk+nfPVLgVZZXmZ4/lqXovu7Zcu81jqRStns5ElzH47C9GqgOCIcyXjpnIAmgs
+	MfI1JGEO2kHA7IvRjdSS5XcnOcoQ5WhhJ2UxP1kv+13ww1iiWk+1PAgFroLJzqXHgVh/iz
+	INmmOyTlUhOV//uzJbhlGGHwNmzRuhU=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3591cc98871so943669a91.3
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:11:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1774026712; x=1774631512; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ahNTPAefQMpYMnBF9fjbq40PKYiHzlPr//dFmraZ1KU=;
+        b=tA6Z33F1fE/2tp3oAIPpfmetLFyO1bloo2D4WjCGgGiWOYEIv76Q8A7kxanS/EvWCH
+         GLQKJO+7xQad5Bi7IjeDR+GnYqz6HSBBhxIVsGuNRwTuJUXZojgGR2YGi5EvBUSjN4B+
+         irx3SozUk5JDZ0G3l6TZDLrd9ytYViAdtr8Gvg4FnFl0pz1ht92kRCE8tBFRh1XAWOtN
+         o9XZp4T1TEvHXvmD8wXExU4l1HDHGHYfyoMgcHsOVJarZCfaY9lZqVU3j0I67OPGtznY
+         J7DDK/UtRmvT/0zqzCx6eXbAARZnmQXn21xPeVWtUi+nE7ZDXa+os2mxbnxYs5Nfdx60
+         0P9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774026712; x=1774631512;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ahNTPAefQMpYMnBF9fjbq40PKYiHzlPr//dFmraZ1KU=;
+        b=KywOqlu/dxP1dDW+cG3Qs5c+xW2PdrX5nwKSOCCKxnW14IRCmvijOq4SfQTdFWenIl
+         LvLTqYQtv0W89W/XPZzGWoD+TW/fYl8YJ0lBWpohKlGAbV3YCUGcxCG9vXqxmtmOlTwj
+         CQhUxtzxj2Cfv3Slor3qWS8gtG2M7DYoaJlETfp/VEEy00i4dk5CQwa9rXX+uo6mrNDk
+         DXa7XS1ZU8yElTN4Jg0b12GITNe9ZJwwNdGRY91nn8Oi4refOiPjavO0qHIFT9RaOWOv
+         RuioVEJzFjYBb6TylpY6uCnhJQKP9TM3lj2kyzuqgTY5VDip7hY13/69s9jSlOTKNEOK
+         XE6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUWONJGu/ilTJBRXRWl6j1T3g5aLyd3qj8pQ2hkn5yQPWtr4RDc2O4D/HwCBNf1xgttGTsEsY7ArQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx0UIOUUT2551pVtNwNEivKg/XtfS2+Bw0LCvoYsDEZTsfToFVs
+	GTTArphKkBB8wPM/pb9xn+oMFwLgLqRT/iUhq2cd6PEZm7PKn6RzN6dIi3bAKnn5Z60=
+X-Gm-Gg: ATEYQzxNbmWqhOEjbGiA5qbV9Dr6JK0KlXOk2aq624Fbl4ACN9UWKUQhiEzH5Rxa58P
+	xS/ADyxsriboiQ9y632MXoygB9w77jhgd3CRGMHzsmy2qop6JGO9nV11XzxVdqRnPJMuDZhsS42
+	wC+kVhfenvTZifl1KF9JmcWFsuYFoXrE2yQTfvCg97zjl32469b0R0w9EzYQBOsCvJIVWNISZSQ
+	XxTlZ0sWJTaREcofIeNUQeg+t9PK93atSCkO9fsZjnr9IfV53Lv9pCY9nq7EC7OUX0g9vfBkrw7
+	RJflTv2VwAFaK2OBf/I24C0lRX38T/WFDwmLFGpsGrxmQR0Npx9XAacd1XlnJyShpqnuOzwtPBh
+	PONheFIFwiIUNsrWgkTEvCHAkH6ePYdj3szIpZl+T76ZXGXQJMwkKJeFaOw54MMtFjpq2LsFrNP
+	Er
+X-Received: by 2002:a17:90b:5108:b0:35b:9cd5:232e with SMTP id 98e67ed59e1d1-35bd2ce4493mr3220503a91.29.1774026712038;
+        Fri, 20 Mar 2026 10:11:52 -0700 (PDT)
+Received: from gpc ([2400:8902:e002:ded5:78c1:8178:95c1:6ca3])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc5ff7056sm6018617a91.4.2026.03.20.10.11.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 10:11:51 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: david@kernel.org,
+	usama.arif@linux.dev
+Cc: baolin.wang@linux.alibaba.com,
+	brauner@kernel.org,
+	jack@suse.cz,
+	kees@kernel.org,
+	lance.yang@linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	r@hev.cc,
+	ryan.roberts@arm.com,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org,
+	Liam.Howlett@oracle.com,
+	ajd@linux.ibm.com,
+	akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	catalin.marinas@arm.com,
+	dev.jain@arm.com,
+	kevin.brodsky@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	npache@redhat.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH v5] binfmt_elf: Align eligible read-only PT_LOAD segments to PMD_SIZE for THP
+Date: Sat, 21 Mar 2026 01:11:14 +0800
+Message-ID: <20260320171115.93235-1-r@hev.cc>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <024d2480-df23-4c2c-9f2a-1c4a130f71b1@kernel.org>
+References: <024d2480-df23-4c2c-9f2a-1c4a130f71b1@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/16] mm: various small mmap_prepare cleanups
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1773944114.git.ljs@kernel.org>
- <498a579bfbcbb8b0e4a9c39243b4454347f03a46.1773944114.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <498a579bfbcbb8b0e4a9c39243b4454347f03a46.1773944114.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6FB3620008
+X-Stat-Signature: z7yq1xwzkca336snjj6refmc3np9at7t
 X-Rspam-User: 
-X-Stat-Signature: 17jkqtgyu73emo13amguzmq7r96rjtb9
-X-Rspamd-Queue-Id: A94C04000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774026625-876991
-X-HE-Meta: U2FsdGVkX18ihDmq9OFO7P0xmo0bcVN229gYXWfRn1Kz50JaoCeBLq1KZ+iAc0BcHPgzgu1ZOBW93ntYC/1xVO00cIPGrIXjm7alPPN3BCLBzpLxC+Qyq+58gv5YNeYctGPetud+WJWwq0UVqEtE1ZBtOhT2QGcEntDFK1IC4sW5jIDsNYppBzCpGLlKkp8zhBBlVGroGWsnxziXtorZ+caDJce1ypVJKMuCcfEh8LkYzv/PFfeVOiwjUFUaWhsCzGhDMoM1Q3K7UzhdM8by/fT1PX7auxSq39kIjvGh53O7JpNQfojT644sSbxkz/XePTqheSXF0K6VYnaOzG2lOeYoowbFRgYexgWCg4277PjFYl3rvz/VQdtJgKKl9U3YEh7FgQxC1+tBmyphdyFvfoqhNMohDsV8B3jAVfV4VTwQjMo8UoYYBJnv32X1UV6pkOu5GeINhvRdRbz9FqB49aE/NqBa0dcAqfDaratvmrAJlJ2u0R8vr0lB4v4ft0yfjwpPUw+6e9DIz/OE7Izy2htgw8eOmRNYRtsYbT/1jshwUBo/ZC1MzzD9rdWCA96KojudYJPurm0Rd8g0v3b7/GDI2K7MDYU1MxeUKtGsdYGdtYFd8m6wO9xPhwG5od2mxzj/u50xMW4mnyLYZnJjspR8HRoN4klpsRtMVVsC2uXBFVMbl3yxz6EvHHt23UYOFk1hR5aC0d3fve1aiQjjZuXJlXV4WcIPkGcRgfuMMDR6kQGZceKtpKuL/MRpKMygX4CZ/GY6hsJ0bZiWFy92wN+BvNRuiuXRLgIc83oOmcYjE1hKprnQM4yFPdCNZwilMnAGrFAtywUE5HgAbowwTBOboPKRZfa54m30JhAZt1/tixtDBLRch+L/i8+6PmBhKL1dkFPRPXdZt4a9wjDOUPiuTNo4xLEH4WEJjfcDELi5pyC/4LlxQuNZqbZm1UYRPikGZFkGhgrTEiDRJTu
- iooTEiT6
- 6tZF9+fiw+IDS6PbJo0zU6P3qtJeElnTunWsmEl/GA5orVO9C3SoC1iAGkci84+6mrvjmlMQAHj3K+keoH3Z7gufgO+w2XS4uhCQbtbASn0qJ4fNeSEovsfGEF+oG3iGtWQiAf3DpLrto8FhcIPNGSTrgQbG43x931BXfIxXf2NwoyCsCaZvR/rcllwuPa8KR67eHCNlVCFH5iFNGOwELSKteaIZl6WsvpwM31G8wlbXlaxwvVsE9L7eDR1hcylf2LbRcfZe5KA/Zmcyt6QvIi6Gfn6XKBG6Xh2fqWnnNZno7fgCC6GLMKGYU9nmNVGFzLU0JqNXZZpYjRPYTeqlRYoDf4KXVd0/G4ccqKjbWZZDy50kyeYpKE32RA3/EOqbk0Q7/QGNc3mvrt1LnxXW0Z3yVBA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774026713-872743
+X-HE-Meta: U2FsdGVkX1+mk83r8v0c6uxrY2zaa4EishbJD0w0cyYrfYUGs2toINxTzmQdctLJ0s0+edC4orOrw3RtGx0FXr4O1OSUXv9NTAUwmBOVRcl1kkNoux4vYOP+NV5ej303AZ3qO46OKaHoCqFJSQ0jCm9G1nIZbzmZ6blQLDdOBIZefRWAqssX7Dh5em+bs1y9iL9fgaKH30O/x5cTdg8ZRtww+1C4NBeh1c+0y+gDeTCAD5I0Tx/eyB/yivEO1x5h9JngXw1Cq6JT8tn/ba0X2L5Hg7MbVGIwNQ5CKTz1pCYBjHYy8uY+PS8LlxY7n7Jk/m5fwx58oOyyTQNIs0YuiohEVHYfxFDUCXPDvR6H3tS/hgXkEKWSBhjh7God/jlUx7yEeRTfotFysBViHlyiHPgRRyEkMrOJ258PHJDxJw+tDmt+xbCWh+COneNywDKJW5VjCVcoLFy3z30zIBifKrJvc0KPAd5ZURzbfbPmjuIDezFB5yhanEa6HJwn8MyR9CJMYfFSzQebYYVKibguy4OKSyyyqwFQdmZNWgLWl8QFjqyDDirkCUvdVYBFq9bEHMUDVnAWfMkb1kW8OeMHPwxshzOwWyG/GNcC8F+jcxX9Kst3rCoolWJKW185gWQG5SXTu6IG1WLBynBDNin/UzKpOJSEBxJGeKjHHj3j9Esq/ZOTYdZwxSknky5fJCkOpJvak4ILmCPrLAcU34JeFVbQ/vfvzoXq5kVYr3fQwB54We7pfYvNyGhwd/QbdPKNUI5waumRfFmEXaijgEt3trlSG7HE6YaH6W4FRK5UuUfCHhUzhSlSJyTMIRgzUQEvcCARwfLeUlDXQimh3GLFr/HxzASjQ4OHNxA4AmzvxRjBRo9WTNbXk1CSGKL4RL1mPqah1GzdSoutdsSNBEkyf/rSVCN0QopvzIUzz89QsrddXygT2/XGxu2x7q80YjQKszyHKdBnwPtGaCf6ZFL
+ D6uqLNeO
+ XiCqgkwjf1OUVkldp4zb9sje6Urp88RI9/lZY2oWs0kdZ4cnr2yWQY8lypw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,36 +147,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 19:23, Lorenzo Stoakes (Oracle) wrote:
-> Rather than passing arbitrary fields, pass a vm_area_desc pointer to mmap
-> prepare functions to mmap prepare, and an action and vma pointer to mmap
-> complete in order to put all the action-specific logic in the function
-> actually doing the work.
-> 
-> Additionally, allow mmap prepare functions to return an error so we can
-> error out as soon as possible if there is something logically incorrect in
-> the input.
-> 
-> Update remap_pfn_range_prepare() to properly check the input range for the
-> CoW case.
-> 
-> Also remove io_remap_pfn_range_complete(), as we can simply set up the
-> fields correctly in io_remap_pfn_range_prepare() and use
-> remap_pfn_range_complete() for this.
-> 
-> While we're here, make remap_pfn_range_prepare_vma() a little neater, and
-> pass mmap_action directly to call_action_complete().
-> 
-> Then, update compat_vma_mmap() to perform its logic directly, as
-> __compat_vma_map() is not used by anything so we don't need to export it.
-> 
-> Also update compat_vma_mmap() to use vfs_mmap_prepare() rather than
-> calling the mmap_prepare op directly.
-> 
-> Finally, update the VMA userland tests to reflect the changes.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>> Thanks! Also adding Ryan who did the exec_folio_order() work for ARM,
+>> and also raised good concerns in [1]
+>>
+>> The problem is not just alignment for elf, we need to fix more things like
+>> mmap heuristics [2] and how unmapped areas are gotten [3].
+>
+> I agree, ideally, that would all be tackled in one go.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+From Usama’s v2 [1], it looks like we may be operating under slightly
+different assumptions. His approach seems to key off page cache
+characteristics when deciding segment alignment, while my patch is more
+about proactively making things THP-friendly so that more code can end
+up backed by large mappings. That helps in cases where a segment size is
+just over a large mapping boundary.
 
+Maybe what we really need here is to make sure the virtual address is
+properly aligned, while avoiding overly aggressive alignment (e.g. capping
+it at something like 32M, which is fairly common across architectures).
+Beyond that, we can just leave it to THP in “always” mode. THP already has
+its own heuristics to decide whether collapsing into large pages makes sense.
+
+It also looks like this approach would work fine with Usama’s cont-pte
+mappings. If so, would it make sense to implement [1] along these lines
+instead?
+
+[1] https://lore.kernel.org/linux-fsdevel/20260320140315.979307-4-usama.arif@linux.dev
+
+Thanks,
+Rui
 
