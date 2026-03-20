@@ -4,88 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81BF3109316E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29AD91093163
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F306B0420; Thu, 19 Mar 2026 22:29:07 -0400 (EDT)
+	id 879A56B041E; Thu, 19 Mar 2026 22:31:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCFE86B0421; Thu, 19 Mar 2026 22:29:07 -0400 (EDT)
+	id 803C96B041F; Thu, 19 Mar 2026 22:31:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0C9D6B0422; Thu, 19 Mar 2026 22:29:07 -0400 (EDT)
+	id 6CAFD6B0420; Thu, 19 Mar 2026 22:31:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A258B6B0420
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:29:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45B751B86C2
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:29:07 +0000 (UTC)
-X-FDA: 84564859134.24.5FE8046
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 940594000A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:29:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aGF5eAg5;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 57B416B041E
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:31:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C597C285A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:31:55 +0000 (UTC)
+X-FDA: 84564866190.29.2FD379E
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 483B7A000D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:31:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Xy0RQwdB;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773973745;
+	s=arc-20220608; t=1773973913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/ouKt1SGR9EHv3qk24ktyb5YILtNf61TkwXSal0gYw=;
-	b=wjo8dKxG9s3fepiR6N4Psq0x8GXcrU+wyk0QGbzdCZPxe1gSdVis/CQzCZ4BBSbNw6JH71
-	yDbNC683f7PrquUeD+9ZBjyOeayWOax+LF29worKC9RhZWuf6Yi7edircYn6vttJO6xzda
-	ZpBSgUTvJqEx1+xgrC+a/8H4kQS2p8I=
+	 in-reply-to:references:dkim-signature;
+	bh=1b3I8g3+9/WU3GqIQO3em4o8Xa6BctjWUjYBwk/WMMs=;
+	b=2G9IZG0xgsIuCoHjBIsMwA9mefoF9BZ8m18+LAJCWbvf3Y7065TyipgYqdCcIRXdyUVQxS
+	wl6DSANBpYjLXX+/U3n6l+ZJJ/2PWp1qt+HLEGYMI8HRBhP1OnTMYMzC6CcLseGhop0RfG
+	lsV8+vHVKA4/VjtrT28U6S772Rk3HgM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aGF5eAg5;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773973745; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Xy0RQwdB;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773973913; a=rsa-sha256;
 	cv=none;
-	b=q5eb7Uc/5eEjDTQB7UoWuXGlL3EEhiS515+Wa2/AGXk9TtjaNHqbNzE1+c6EMC+k+nqlPY
-	wvPoSXLR6cuvfbnGmrVmeFBNapsaUtQsqIhG8uEiESklImQRnQvUaMSrK0SiRzoD8ZckbM
-	X5hM4bvHPmaBgNm6gS6gIFTcQ2d9DGQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8FB3941957;
-	Fri, 20 Mar 2026 02:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4827AC19424;
-	Fri, 20 Mar 2026 02:29:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773973744;
-	bh=tpGT9HIxfVro2qvhVyVnekgS2KunpsS2ClCk/o5mBAo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGF5eAg51gxaSCwv03t28Y1RWmgpy1R7a0mHkHkusJwftawbe4qhBII3q10sQsiUd
-	 8jad/EPLHnZ3WYpHCx5YMmSUaaVewlWiEbKsDPaw511sEWCvKXjl6LsZUsEJwmPHYg
-	 FJqAzlT4pI+ZRNGR4sJWlymKvqwLrWAbq6E+81Ej/U7B5P3gOyYfZ/iwqGxJGYcZHe
-	 rX161w6PBiLmOErh5qR97eFiN845YdWWfp1fT1sMpgtZ2TMTj+jXV18QwAymwRm++t
-	 iDaTYA6AXcgaU4fDbif9fQ0F2V57SjwCzGn6u4iCLlviHL0QDxmol7bhJWQy11Mo5r
-	 BWVvtXuXtVNRw==
-From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
+	b=URa2Wyf80zU/LanlHXDhNq9/2UQjW1XX8JtGX7032hq9X50g6GkaBMoF6bh4+OHIyRaWFL
+	ZmNJiXaVIsZDWIvl5Jy/LrR2tiQP9fCnIAkZDIu5OKOA59AAkLpKZJs661Hasddkeoub2y
+	K7G1oHqEOSm2lrhJ8zGEUfewtvKFg0Q=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-829b2018c94so80813b3a.0
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 19:31:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773973912; x=1774578712; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1b3I8g3+9/WU3GqIQO3em4o8Xa6BctjWUjYBwk/WMMs=;
+        b=Xy0RQwdB8YwviZDATolRpGI6/mnlq1JkgoZuaaAWWxRoXYHDV3lEHEjgBXlQpkb53K
+         +4lLnbITzB6jvbabOWJzuPNEqYvkL8vXVc+vHMRT7n2YGYD6D0Z9n+5KPCx65N3F3bPP
+         8tML9pEiaes8Cp2+2qGduQtT4XDSOQtlv2Gy8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773973912; x=1774578712;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1b3I8g3+9/WU3GqIQO3em4o8Xa6BctjWUjYBwk/WMMs=;
+        b=cebFwwhypkR35eoyYF1uO4XgJQU2lTQ2VzYsk6ExeJZVy3URRIxh+PADgEkMLEjLu6
+         1G2s69F2isuviA+WS1exVdCA9LCGAO1fpjY2W3sy2Jo+sCcarzQg950r+sKnbxnhcCQw
+         NS/a9zGzzwXb2xFkinGM8DrdxjzJfjKRCOtlE16BOcc/V7KgrnMisEbGXdDlm/r3axKJ
+         HH2HyjfYZ8b93vDl6dSC6o9KgGmaeMkpS5yDWUHKGcEAX5Z7JaRFkAN8qhoVa1RkkRDn
+         a07TSYGYirf4TqOXxMa3lYJb272UGbvu3ph+zFI1hkGSAqcF4c42jKpKjhmMcR1k+GOE
+         Yiog==
+X-Forwarded-Encrypted: i=1; AJvYcCX+fOClR/IWm7CvY6I3ysd8XNv6UCLKn52NrfD7UqLz5chttyacnPMb/p9Fz9+tRHIgs/LzywXCfg==@kvack.org
+X-Gm-Message-State: AOJu0YyAV1yRV4S++NP0W3Lvz+QsUshoLUdwhLOTzYDGSPb8NFVlk0rW
+	VnIr6+z7Oj9mbSDWlSe69lAHEQIc1agE0hjaq/Hw+xTAJU8Piv3V1ImsKI18ZVIaqg==
+X-Gm-Gg: ATEYQzwm1OURPEOuKR505kTtyofxJt1RMSWcdZ8Hy6WsRwX2Zv5ewHEhTLPZxP0NWp6
+	RTsuhNTluTnZQ3cJAj9Qf8ve0MsdVt27luy+i6QnePfEw5CdkF1g7rBBzGNjK1+UxTAhKcBKNpE
+	JN/FDh+S/STtfZg41wkVZhnv51rlp4HGZLNaoJFFjEcwHayJKN5XpkAxamQIOdOhLGkvSJ7BkSv
+	lTbd03z1qDagLJyvPNc3kigFUxCEjA7qf2QybXB8oXf9ayhOEH3woWsH5bCF5CUwjMq3iVP1yoZ
+	CDXw+H/MOBu56NjhmF+lI5r1ervuk3ppFLATC788e2akiCNBQ9EFxqRvs6IVNanku90S7s6Zf6i
+	k+pPxBTLkp79Ou+rCMbgf8j7HJyRxzsmIhxpbL58u3dQjwpDaARBQP4jRPP85FXf4/IVlq61K66
+	cuBpfCOytBNlpwhBh9tTeMaSzzM40Kxcj0lNCBb+wAzbpaDbgWZTZcz1nnF28SCHiaaIe342RA/
+	CbsgU17PDcW
+X-Received: by 2002:a05:6a00:9089:b0:829:8969:b8b4 with SMTP id d2e1a72fcca58-82a8c237aa1mr1066056b3a.11.1773973911764;
+        Thu, 19 Mar 2026 19:31:51 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:65ca:c086:eef:123e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03bc6881sm562042b3a.22.2026.03.19.19.31.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 19:31:51 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Richard Chang <richardycc@google.com>,
+	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/reclaim: reject non-power-of-2 addr_unit
-Date: Thu, 19 Mar 2026 19:29:01 -0700
-Message-ID: <20260320022902.1415-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319161620.189392-2-objecting@objecting.org>
-References: 
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH v2] zram: do not slot_free() written-back slots
+Date: Fri, 20 Mar 2026 11:31:31 +0900
+Message-ID: <20260320023143.2372879-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 940594000A
-X-Stat-Signature: qx9684uzdsoy7jiau7eiri5bmpjpkjb3
+X-Rspamd-Queue-Id: 483B7A000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dn7d6ana8ksd9dqjbjwp6fi9k1oenrc4
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773973745-695515
-X-HE-Meta: U2FsdGVkX18+pR9nXk4OnTsoJSkhVjLs486IzWqJspxUcmbA2t+oiPWR60OsiaRM3OK4LWPo/PFSAvicDZXSMGWmxYw/yNzHOQqSRbrrvjcAeZOriWQ9zHK3f7QADpMe5/mntFBUAL9jbyw0st8Fm6s2+WoY62G2ijI6zmQbXPu4hkxIO9NaTzmqZsNVJAhpIT8PoA7qbF5NAWya2Uu3FDf/13OE4OAzoNvk77fle1z1RcvyKud/faGRbQ3Tj5BrtHEYSIdQFHBb1QasUyqtiixeXLY2SdnxKqcdX0LzbjyetXISTKDAUC0ouDmjZcHOX70r+lHVcX1RB6yanzGtPPnr0igR5wYFMWnvP83EdJ6PCm85QORJxtFDFz53VlREs+sk1ju6/r6ZVnUNQsRZyv7dEiNUgtLVlvZDQq6n0f4jYkkvTgrP7SE7vtNtgUGzhEP282JOC0ltjjb6vQ9TYRa2WxYYicKOhuAUWnSXsNvFaJtlpAK2RWBqSrRRp2cbUGLy/zxSuaX+dr4jqrlhrfL84ncS/HByeV6aKQoBXnI6uUHpbRhgNbPX1R8GMyN0xpsVuUszexOx0LOOo2+5/KKsFAcDTBWaCmJRmfThcBASFujcNGVCqwGkYLksY63T0ORTJkizrFXUCdH1Z0SpxOeVXfYKRBjINRTB5gqG6RP1EJNUET3ALYksv/jr6BkjFraRhx6Fu/gVHp5iGvtet6OzzsqXfKpgdqBoU2ApaTvbkgiKi63A4kdhg4oEI3KF2wc8LwKAVPDF2Jigcy8g+iAjQVAQky35OX1D1IN8YAH3vQpLULpn46lStlMYqr8eriCzNiKSBBFqsXmtcwpWDacF/DKO3ne+gd0YzWjyRVeeiegp0m0pUeQq9/m99UTnEfuxqGJT/3gG/GZqwhkFSSrr7VOF3ic4svNfwJEKr03jvQ8g8V+OT9qj0ZaXfPLDncc8URGGwSCDyFoW1U3
- eQUr81/G
- ZiVGkqmyUZVa6HdPtL9td8NLJkz7n7NxeMUKQwGApuU2M0uIP3NDSc9lr8f+YTGrHi8w3pV86T2dljr+/ZWdGqCBJ7QIGOJoFIglWe5Sb5ttVqtahIwelV2yAL37AI9Muj73YYvc0MB5gg9lXEHkv1OcC6FDGZWxLlydwUCemYC/KR5rhmPo/aM5sIqHa3ay3oxCuYpvsQzRbKD3Y8W7Um4/jKVIC0khL1orcn4DZOiFreWr9Rco1k+646p3YmvPH/HgI32Z1NFxwp44Wfcw2JMmAg75V3syMpXS0PQddxx/vWUxJ2fKkahRAgEvV3MAQ6IYyXetBWKpWSR0=
+X-HE-Tag: 1773973913-27902
+X-HE-Meta: U2FsdGVkX19BMNEy2HYfpmnu7RVxOESI52wv6JtvPiRIGnbAx3qB2apwrh8v5/a0t54hFJqKfxHHG37HHKsb2Kgyskktzz8AOMdkc1zv1Rk9y2Z4LjIagp74pmSKBUGzlc04JXNQpJGF67vLWyr0rfrs7tl+RvmpPIDa9fsyapDp28jCCDXFHCGkSzaO/WM2YFod07FFGi2RMLqbUJDi1k08xnGOT9WUgSp//OwFYjXWBNkDlqnRvMLCyrjdxe3uzttxWz9fR4ve4O0K+vwb/k4UWLGCl5g+cKVTlR3J5H01dXJ3GfisyQSrl97steHIg0ZgKq/dG9GaNS5zl9RZx5pD49tx4TeWAjP6kIEDr9Kd9hdc+N9R+zu11Aaf2gAUowgwiXGgVCDixzLcddRwUL+jaH0uYbn8QlPOCQB3AiXzpLnjl5k5yg5IL7B6sAbbAKFX9n6Lw2P96p8wo3bpWjmzSXAHiU9ZwUQcMCVOupMY1PCYLm6wHQLKr5ez213+iY9kH5QSTA6rMJUcd/CvQoOPV5pknUPasdUz5zvbHsLfb6LjirdgHGEtbe4EcZo/eYuMiL5AGekUTXSnghXXDNwvMIVDrIsvZcPB2jX1DLj7XHrr+HN7BB8U6TKYp3D91t9mXsoOc0juZ5cRFMZJ6M89jWuKDpapOFxGxqXFwrZ0HvyoGdKspFXwD7vpWLCRIYeBIL2pDSkO9NX7h8haXaWJ5UfA2WmrUtD5DhbsrdY3owBDgn3pzV+KsrW1hTCvB8jD2+H2AfEe4QoPUQG8uqLD/yIV6dmlxndHg5pQyEzdPPPt+79dYV+YPFyAsCnZkA5WbPsnWpMFGWvbdDa/CGrR9wPE/R5d58F3gp4so85/mOqnO2vg/Q2nETv0qbFhyF8ykdQq/J6qPO0Ax5Z4KcT4HcDiJRsVLLMk/7c6N9OYRYonx7NyVlCAgVQ0iUtAty3X0F+JPl3++aMgXtB
+ T3dl6QTM
+ TlpVSnnqcKYNeb8hlwrwwv4bGITSSijBjQIBo6x0ZGhDukW0qwt4KxC/tool/bpZLdYAX1Tta2oVtyBMePPQhn57bgcLdFo2YggJe91pTdfI4p3N8G3/aOBHsRrFDGzSqdYsfyzyiXq/9x/NIoyl3/4pVFNQyTXAp4AR5u9vi3cUGMFe0ODLaTN2sN92f2U6Wov32oR2yi/TsMX3ULBiy62KiAQa4fbhDn5HJ5om1W5RFqnqZUItPIf9nphU2PSFH12VEBMQAep9kPKAJiTXca0M9TFrRjgSN9MYPkXe4mxNQDAqhdhwB9QnOW89ORsxcu3n+pKKILvuo+ol6JGxJxPEp0gZf/w5PhXHZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,83 +116,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Mar 2026 16:16:19 +0000 Josh Law <objecting@objecting.org> wrote:
+slot_free() basically completely resets the slots by clearing
+all of its flags and attributes.  While zram_writeback_complete()
+restores some of flags back (those that are necessary for async
+read decompression) we still lose a lot of slot's metadata.  For
+example, slot's ac-time, or ZRAM_INCOMPRESSIBLE.
 
-> DAMON_MIN_REGION_SZ / addr_unit is used as min_region_sz, which is
-> passed to ALIGN() and ALIGN_DOWN() in core.c. These macros require
-> power-of-2 alignment. When addr_unit is not a power of 2 (e.g., 3),
-> the division produces a non-power-of-2 min_region_sz, causing silent
-> undefined behavior in ALIGN before damon_commit_ctx() gets a chance
-> to reject it.
+More importantly, restoring flags/attrs requires extra attention
+as some of the flags are directly affecting zram device stats.
+And the original code did not pay that attention.  Namely ZRAM_HUGE
+slots handling in zram_writeback_complete().  The call to slot_free()
+would decrement ->huge_pages, however when zram_writeback_complete()
+restored the slot's ZRAM_HUGE flag, it would not get reflected in
+an incremented ->huge_pages.  So when the slot would finally get freed,
+slot_free() would decrement ->huge_pages again, leading to underflow.
 
-But the non-power-of-2 min_region_sz makes no effect or be used anywhere unless
-damon_commit_ctx() is completed without the rejection.  So this is not a real
-issue?  Am I missing something?
+Fix this by open-coding the required memory free and stats updates
+in zram_writeback_complete(), rather than calling the destructive
+slot_free().  Since we now preserve the ZRAM_HUGE flag on written-back
+slots (for the deferred decompression path), we also update
+slot_free() to skip decrementing ->huge_pages if ZRAM_WB is set.
 
-> 
-> Validate that addr_unit is a power of 2 in the store function so the
-> user gets immediate -EINVAL feedback instead of a silent failure.
-> 
-> Signed-off-by: Josh Law <objecting@objecting.org>
-> ---
->  mm/damon/reclaim.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Fixes: d38fab605c667 ("zram: introduce compressed data writeback")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
 
-And, I'm adding Sashiko comment with my comments in line.
+v1 - >v2:
+- Updated commit message.
 
-# review url: https://sashiko.dev/#/patchset/20260319161620.189392-2-objecting@objecting.org
+ drivers/block/zram/zram_drv.c | 39 +++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 25 deletions(-)
 
-> 
-> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> index 43d76f5bed44..9b55df304e51 100644
-> --- a/mm/damon/reclaim.c
-> +++ b/mm/damon/reclaim.c
-> @@ -321,7 +321,7 @@ static int damon_reclaim_addr_unit_store(const char *val,
->  
->  	if (err)
->  		return err;
-> -	if (!input_addr_unit)
-> +	if (!input_addr_unit || !is_power_of_2(input_addr_unit))
->  		return -EINVAL;
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 1b0e1c02ece7..5ecc4ba40e9d 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -917,9 +917,8 @@ static void zram_account_writeback_submit(struct zram *zram)
+ 
+ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ {
+-	u32 size, index = req->pps->index;
+-	int err, prio;
+-	bool huge;
++	u32 index = req->pps->index;
++	int err;
+ 
+ 	err = blk_status_to_errno(req->bio.bi_status);
+ 	if (err) {
+@@ -946,28 +945,13 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ 		goto out;
+ 	}
+ 
+-	if (zram->compressed_wb) {
+-		/*
+-		 * ZRAM_WB slots get freed, we need to preserve data required
+-		 * for read decompression.
+-		 */
+-		size = get_slot_size(zram, index);
+-		prio = get_slot_comp_priority(zram, index);
+-		huge = test_slot_flag(zram, index, ZRAM_HUGE);
+-	}
+-
+-	slot_free(zram, index);
+-	set_slot_flag(zram, index, ZRAM_WB);
++	clear_slot_flag(zram, index, ZRAM_IDLE);
++	if (test_slot_flag(zram, index, ZRAM_HUGE))
++		atomic64_dec(&zram->stats.huge_pages);
++	atomic64_sub(get_slot_size(zram, index), &zram->stats.compr_data_size);
++	zs_free(zram->mem_pool, get_slot_handle(zram, index));
+ 	set_slot_handle(zram, index, req->blk_idx);
+-
+-	if (zram->compressed_wb) {
+-		if (huge)
+-			set_slot_flag(zram, index, ZRAM_HUGE);
+-		set_slot_size(zram, index, size);
+-		set_slot_comp_priority(zram, index, prio);
+-	}
+-
+-	atomic64_inc(&zram->stats.pages_stored);
++	set_slot_flag(zram, index, ZRAM_WB);
+ 
+ out:
+ 	slot_unlock(zram, index);
+@@ -2030,8 +2014,13 @@ static void slot_free(struct zram *zram, u32 index)
+ 	set_slot_comp_priority(zram, index, 0);
+ 
+ 	if (test_slot_flag(zram, index, ZRAM_HUGE)) {
++		/*
++		 * Writeback completion decrements ->huge_pages but keeps
++		 * ZRAM_HUGE flag for deferred decompression path.
++		 */
++		if (!test_slot_flag(zram, index, ZRAM_WB))
++			atomic64_dec(&zram->stats.huge_pages);
+ 		clear_slot_flag(zram, index, ZRAM_HUGE);
+-		atomic64_dec(&zram->stats.huge_pages);
+ 	}
+ 
+ 	if (test_slot_flag(zram, index, ZRAM_WB)) {
+-- 
+2.53.0.959.g497ff81fa9-goog
 
-: This isn't a bug, but should <linux/log2.h> be explicitly included for the
-: is_power_of_2() macro to avoid relying on implicit transitive includes?
-
-Unless it causes a build error, I'd say no.
-
-: 
-: Does this same undefined behavior still exist in other DAMON interfaces?
-: Looking at damon_lru_sort_addr_unit_store() in mm/damon/lru_sort.c and
-: addr_unit_store() in mm/damon/sysfs.c, they appear to still only check
-: (!input_addr_unit). Could a user writing a non-power-of-2 value to the
-: lru_sort module parameters or sysfs interfaces successfully bypass validation
-: and produce a malformed min_region_sz?
-
-Josh already mentioned similar fix may needed on DAMON_LRU_SORT.  I am doubting
-if this is a real issue, though, as mentioned above.
-
->  
->  	addr_unit = input_addr_unit;
-
-: Since addr_unit is a global variable updated here without locks, could there
-: be a race condition when it is read during parameter application?
-: 
-: For instance, in damon_reclaim_apply_parameters() and
-: damon_lru_sort_apply_parameters(), addr_unit is read twice sequentially:
-: 
-:     param_ctx->addr_unit = addr_unit;
-:     param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
-: 
-: If a concurrent write updates addr_unit between these two loads (e.g., from 2
-: to 4096), could the context's addr_unit get 2 while min_region_sz gets 1,
-: creating a mismatched configuration state? Should READ_ONCE() be used to
-: securely cache the global state into a local variable?
-
-Agree.  Nonetheless, orthogonal to this patch.  I will work on this.
-
-
-Thanks,
-SJ
-
-[...]
 
