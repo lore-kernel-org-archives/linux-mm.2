@@ -4,130 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B5B108B8E4
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:04:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA6C108B8E4
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CB036B008C; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
+	id A5EC96B0096; Fri, 20 Mar 2026 06:04:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A32B6B0095; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
+	id A37246B0098; Fri, 20 Mar 2026 06:04:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B7A76B0098; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
+	id 9740D6B0099; Fri, 20 Mar 2026 06:04:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 33C606B008C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0604A1A0143
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:35 +0000 (UTC)
-X-FDA: 84566006910.15.E25EEF7
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D3868C0012
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JrAm9Aet;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NauPAB9I;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JrAm9Aet;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NauPAB9I;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8929E6B0096
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:04:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4BC3C1BEEC
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:54 +0000 (UTC)
+X-FDA: 84566007708.07.A1F43C5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7275540016
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D+ceYj6Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774001073;
+	s=arc-20220608; t=1774001092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hx8aYZBhNpgr88F+KNS83FRYqr+PRYSxaGdz/pedq3k=;
-	b=MR62XtSzxu/Nzs+A1OHV/I9akvjMv/3WjkaSgi4CE7DaXN0K4EbEwug/E55z2kTVI4Yb7B
-	FMjTfhUnCRI29OebXJSpGGkYDz/6DKiSH/+zANeVOfOWtyIc9khAtcL7sHD3v0HexaKXDB
-	LGnfQWKVkcQY+Ijj2PmFqT9Cxfy67x8=
+	bh=rLnu6l4LZw7GzCP4ph/UkgXaEggcROJGe4czPjVlOqc=;
+	b=neueiprL7Ch8rIUGgDUyxQhTCZQ9/9Xp1oST+LdbYNunNwatKXy8adRAC0DULd5iKG/xii
+	pJZk0G9prxrxVOy0KxzVIfBT/blGghwXsv0HMTHyLe/yyVsYodACaGX5tR6BlJIi+2augE
+	hZOxlAr5yZrIVGTEnXQiSzj0MR6DcpA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JrAm9Aet;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NauPAB9I;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JrAm9Aet;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NauPAB9I;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001073; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D+ceYj6Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001092; a=rsa-sha256;
 	cv=none;
-	b=r9hBcxoEDutw/VNczRComtbcCDNQv8228yEmS0Jl2QZGTsYohwgR6pWVOuYmmPkIpLj6nH
-	HR4pja8vK8DAdlrOZ8YRgIWUQTfPqe1JUYvkW+oH99IXy2lTIX2t0P+XSmd/GNhpmzciow
-	RrOw6/8AhHo13SLQySj7B5DJ29QKqpw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 51EB34D21F;
-	Fri, 20 Mar 2026 10:04:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774001071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hx8aYZBhNpgr88F+KNS83FRYqr+PRYSxaGdz/pedq3k=;
-	b=JrAm9Aetvt0nadsia8DsPrrXsTRd/Pr29ZkRQay5DY0IotfnHlbuflrwgO1yi8/B/4vqj0
-	qvdFKEIuyDY9RL+BhP3BByJOg5byN2ms7iyp6f/s06FgTb/EkSMjRpXbFEMsH/JUIEbz4A
-	TRmNeiro0DG49Nz+Iv/2JwZ+3Catfkk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774001071;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hx8aYZBhNpgr88F+KNS83FRYqr+PRYSxaGdz/pedq3k=;
-	b=NauPAB9IT3omQ2VWRrNFx/IYGpbUoW+oENcOAgEsSV/rLI1x3UcOAVzhzLcHwJpov24AKs
-	48kOXn+5Uv7eh7Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774001071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hx8aYZBhNpgr88F+KNS83FRYqr+PRYSxaGdz/pedq3k=;
-	b=JrAm9Aetvt0nadsia8DsPrrXsTRd/Pr29ZkRQay5DY0IotfnHlbuflrwgO1yi8/B/4vqj0
-	qvdFKEIuyDY9RL+BhP3BByJOg5byN2ms7iyp6f/s06FgTb/EkSMjRpXbFEMsH/JUIEbz4A
-	TRmNeiro0DG49Nz+Iv/2JwZ+3Catfkk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774001071;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hx8aYZBhNpgr88F+KNS83FRYqr+PRYSxaGdz/pedq3k=;
-	b=NauPAB9IT3omQ2VWRrNFx/IYGpbUoW+oENcOAgEsSV/rLI1x3UcOAVzhzLcHwJpov24AKs
-	48kOXn+5Uv7eh7Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 89B004273B;
-	Fri, 20 Mar 2026 10:04:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jiQ0Hq4bvWn+JQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 20 Mar 2026 10:04:30 +0000
-Date: Fri, 20 Mar 2026 10:04:28 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
-	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/mprotect: move softleaf code out of the main
- function
-Message-ID: <ypaiecdbqmma4imr3euccouexs4uecaacjr4aucv4vynz3xbrm@4xa343ivvazy>
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-3-pfalcato@suse.de>
- <f0ccf41d-16ca-404a-bb84-fe038bcfe0b4@kernel.org>
+	b=Eg48SAhQhHYtAGLXwmyjxKrPtPdx1i/ysnDHtHGj/XG62fJ5WYBshXjKiX4G1tTyo2PcB1
+	LZlUUBQexH9rIRbTb2OPho4W3mA5rO43PIrIdttsJaaHvSbmPvahM9mxO1yZKHK3/KZmlu
+	sAwD4NiFo+J5fkltxTw6LUc8ZClgCiU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 96C7D4172F;
+	Fri, 20 Mar 2026 10:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5136FC2BCB1;
+	Fri, 20 Mar 2026 10:04:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774001091;
+	bh=SlqXACEW1bvWaBbKKIpFc5l9X0bOJT5QGbTI1CG7U9Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D+ceYj6QItOJroZYLEyyE2MBeFVEH6IM75Vi5G/PN8ZodL7Zj2nolMyC/N6rcOzkO
+	 gTCj46ngQl60VkkqPpRigcsp0XQiO42A067h6OTJgyefrwGzF90ZZtEs132xst3EGv
+	 ke8Hl2sGVHG/IkTdRc9G/zU6xxL8fF4oFp0Ar2N9JRwlsGuLC+7u/6vxBxw09AWcEj
+	 wZJweQNUPpvxCo1otppn/Rx/k/XQG4Ouo5iXXkmaQrjxicqq3obmIZPMt/6B5YVhLa
+	 1Sl2cxlTleUBCVRG3Iv6gjwGNTfScFbagjQpLmpHaNteEB95xldtKJALrkvf9Y3A4/
+	 y7TCZZbtJpalA==
+Message-ID: <17a34a6d-8fb0-4010-8318-faca575823e1@kernel.org>
+Date: Fri, 20 Mar 2026 11:04:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f0ccf41d-16ca-404a-bb84-fe038bcfe0b4@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 19/23] mm/vma: introduce vma_clear_flags[_mask]()
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773846935.git.ljs@kernel.org>
+ <b2edda6f00c10ef63013257f282cf155fb371b06.1773846935.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <b2edda6f00c10ef63013257f282cf155fb371b06.1773846935.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7275540016
+X-Stat-Signature: de5gest3zrcwbt3syyedfgr3ztbi891k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3868C0012
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 6d3qk5zac1b9ntz8e7qwryzde3q7ptxh
-X-HE-Tag: 1774001072-710240
-X-HE-Meta: U2FsdGVkX18J8W6Dw1SYB1xVVIR2SDvvExnh/k878l5X0qru4kra8W0NvF3ZN4tGC1Epb5lJBpJYxssWSqYdiJ3XLBVT5+tgMe/x+Wq+Zbh5XTx/Z6D+gYXr87Bn6H/fzRZbX4DmdCM69MrBl60noNOA+jBlyhRsDzPrj50uvk5Zq8BKzM++cx6DNqOIh1uSba5y+qBe0+xa3yzEw7Mvr3uLHV2IpDWJ107W1NqHD11rj+ivPMYDrz+nN8aTTVNvsKDDFyXqrGUPuWWKS4xiy1RzeUDiq9cJtFZGTSPOFXRGbG3kkfOPAm3HBEwTXXwVBSsnL7C2Fi5TXzK1zjjBv9BElKcFezAFziMevi7yD7XOWk+oyrJaBQaDh6c2tDIzMXXqvo6XzzrKmFVQD+DBI7sh6TlOuTD41DUEzApOaBzpUjU1grnrQpFkgK8wf2aJLcDdHWw7GDzw/PQrRAvKXD7Psjt2zxiTA+wKFNtBqQX/wspyBgaMJdAKm3fMohOywZh+aGaoTJ+7Rzw27CwtY605tbgE86jCzf4Vymg411vzqN3RV7dKSD7bHYQj3WGIJn3Ol/g435p+BrlFIt2KcgfnICsJ35TnCH842b5l7Mx2AoupsJSAh/PX4T7/vYPDTQ48NVY3U+NOAd4C74obDKQPMDoiU4XvfwtD+RRQUWv8vbnA9kVZaJJ/H98sqtBVLSy8ubtY/gKShnvIdg4wVbrhhzRAxjlhZOfPa48fCRahA4ExAU8KnB0z0HhXjLgip2Vx6jC+k/xGw+Y5ZsFi9aAFV6LUsUzYofSGvuNOjOLpSMqxKbCtWKnalh5kGA2wNaboWPAZImBK5blK1ZBSeawkjWv8j9j5pHbDU8YdhMB2TS3cx570xUMZ7atAul4LFkUQJWilCjkUsaBioZj62Vr/Y33SHwUwq9Kb5ug+3reKy7WP9ac9LdNbVfxY+6Wayhj3r8KUB7kN3uTv6Sa
- xN4d2QzA
- rVHt1hb7DjVrvHlq1uK3I8frl/fWXoKkwJV+vYIqcmzPt0L1qPLRhOzfjDuZdQ3UcLJlhMKQBfEg6PjczSzaCWlVks37Xnswp25y/U4oYalQVb0XjCIbCYZKPz8Ti4XHG4HBn3vyUQlMnyBenJhxVbOcXCnTC7rc9dVvDGx0d8S8iAiHl2ZRK1pz4l5UyhQ57RB4m8Sz/TWFLkWp/Uc2vdlbGyqcUh9aivIN74kbdSqaYJRi5YzLchFx9Fi5Buzf2XGFcbBdCnPxuqFlnsOzpP6wpCK4Q7vgZSAdeLqZy22c+Sce1nccp2HcPYIPaUHY32U4lTS5LPe1h1OU=
+X-HE-Tag: 1774001092-572091
+X-HE-Meta: U2FsdGVkX1/wPJvm9qvixAOCJwM9SEmkxGFFHerz8pt1mWxRxTMNread3WiXB8CUNZqM6rj+Gu6TCd7/W6bwYFEZyUcxnWi2a8ZS7hUPO0NfCZGx+IHpGfPb4tCozvJAH6Jtcgj+OpyEpHgA7Ehe2VVC2XZtcKKvjSwRqZDtAAZ3YdCw6azrNjzrolT+2C7V/oi986Jz8b4KiPh8LQICwo8Y2F5mSmZ182BXKcnc7kzhb2yMhkFykowr0tTr3805PgxH29UaU71BHYeuw7o1/IePr6ptY8UCaanTTE3kobiKiIJOxnd1SIyasTuxLKCcVA5vJTT/r/6W8BAMXFAdFpcw7FX76Bxoqcd8nagIhgYWqsNHwu1AxO8YET5vstS+a02qXjGmz3Vc2ZFgASMp7bm36RUtHn/HbspL5CQ47TLRw1C5smcnE4Vpu/IxqRVmIB78A4ZOjV3aPY4BcekRFUHAmvcixVO4xqJb2dfmXi2Eiyuump7qNh/+lBSpiMHFMIaqLeLanB7aH/80N/bTASHzq3cmlICjZyAcvNo3PL+sh27eYDDR7wvgG1bKn3NtDEYhOWjOYJO/hNXjDGs3TcHQq+Dlk8pnQBL+pIWIldPKvnmKfGWUeNz0yd3E4Mb4lm6xo+63jxhiINBRvFCwkHyKX3bCtbc6D+noj9jDciGIyiPDF1A3hyUBW2ZlfnyFrI8Q1T12hNuJBpAnDVKo0r3N5QF+gZ0wSw6TgyowUy17Imqq5hHQTVeysP5gg4l40khOTu+4JetxiuvZOMgAUoBmHtxvAjI9NMJdT+Ct8D6M2GPRcyPXdyAHZukDGGN6GqK9PWxfC3NuYjUURz48skddFt3dr52HOIGtB2bEoBjDmgT9OCGW496Fdrdniu2zTmj+wIYYZUv4BfYus/WbTKyagT8spkcHkHODqI9yoQ81gri+k0SDIzGliVMAWgu84Or17mgnF3DbKvLiNrv
+ PjfteCOP
+ 9aG1XI3xHER1TyQsm8RXpzBmYZcAHWAsWq9lUctzU6v9PDzjj31HXjdsZJJUmcfNtR8nWOhStjZzduGPC0ss2pzYgZc47YZBAV5PB4tXcfh93PiyhwgO8ofc6uqWs+sfM/pvewlHNmKJcBtc6KGSpRfRrkqB3CBm8LiFpvjFUWchV5jeWQvWoJPx6W3T4jeF6ldTbsOXjNUCH+Y4c2l8KEzHMsu53vMPcPHk6l34daBQ/vB1KIAYWTHvGK9wF5V7EL+2uKgakFKsRJfUH2sFB9zB1juK2gZcpdhLIp06AjMMAEme6gmeMG6V8a/xRZ/nqNVi/OOpvCGy3JAFlLP9ADZVNnnWGbxuIMP4yp7c1sFA4bn33Gf8n2QTwtyya1TxR/cYXU5HV6hsaIuzkyYH0EHxK2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,54 +128,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 10:33:47PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/19/26 19:31, Pedro Falcato wrote:
-> > Move softleaf change_pte_range code into a separate function. This makes
-> > the change_pte_range() function (or where it inlines) a good bit
-> > smaller. Plus it lessens cognitive load when reading through the
-> > function.
-> > 
-> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> > ---
-> >  mm/mprotect.c | 128 +++++++++++++++++++++++++++-----------------------
-> >  1 file changed, 68 insertions(+), 60 deletions(-)
-> > 
-> > diff --git a/mm/mprotect.c b/mm/mprotect.c
-> > index 1bd0d4aa07c2..8d4fa38a8a26 100644
-> > --- a/mm/mprotect.c
-> > +++ b/mm/mprotect.c
-> > @@ -211,6 +211,73 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
-> >  	commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
-> >  }
-> >  
-> > +static noinline long change_pte_softleaf(struct vm_area_struct *vma,
+On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> Introduce a helper function and helper macro to easily clear a VMA's flags
+> using the new vma_flags_t vma->flags field:
 > 
-> Why the noinline? This sounds like something that works good on some
-> CPUs and bad on others, no?
->
-
-If you don't like the noinline I can always remove it, but see my other email
-for the justification for most code movement here. In this case, I don't see
-how softleaf is the common case (at all) and it's a sizeable amount of code.
-
-Note that the results don't show improvement here (in fact, the opposite),
-but we are also spinning on the mprotect() system call, so it's hard for
-the icache, branch predictors not to be primed.
-
-> I like the cleanup, but the noinline really is odd.
+> * vma_clear_flags_mask() - Clears all of the flags in a specified mask in
+> 			   the VMA's flags field.
+> * vma_clear_flags() - Clears all of the specified individual VMA flag bits
+> 		      in a VMA's flags field.
 > 
-> > +	unsigned long addr, pte_t *pte, pte_t oldpte, unsigned long cp_flags)
+> Also update the VMA tests to reflect the change.
 > 
-> I'd call that "change_softleaf_pte"
-> 
-> > +{
-> > +	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
-> > +	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-> 
-> both can be const.
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-ACK, will do!
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
--- 
-Pedro
+
 
