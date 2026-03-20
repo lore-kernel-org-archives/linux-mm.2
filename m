@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32FC51099B2D
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6ABC1099B2D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:53:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65CAE6B0122; Fri, 20 Mar 2026 13:47:33 -0400 (EDT)
+	id CA7F46B0093; Fri, 20 Mar 2026 13:53:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60DC16B0123; Fri, 20 Mar 2026 13:47:33 -0400 (EDT)
+	id C80136B009D; Fri, 20 Mar 2026 13:53:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 523746B0124; Fri, 20 Mar 2026 13:47:33 -0400 (EDT)
+	id BBCB26B00A0; Fri, 20 Mar 2026 13:53:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DE266B0122
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:47:33 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4C9C160331
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:47:32 +0000 (UTC)
-X-FDA: 84567173544.26.4636B51
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5E69240006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:47:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=T605LByc;
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id AA3B86B0093
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:53:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 544CF8B269
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:53:48 +0000 (UTC)
+X-FDA: 84567189336.10.77B739B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9ECC714001B
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:53:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uiEYv2bo;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774028851;
+	s=arc-20220608; t=1774029226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YBrE+ETl3QSBu97biTA3vK5m68jytBBGssPNHhBNDT4=;
-	b=nZANZyXrb0c01AQun4jx0Li8xYnkZ3s8J9j20VKPTYqJLakqKQpoZkAvi8qEFwO71icRul
-	4g2YzhqfFTjcn9+tdp+NkKupC4XfHOetPnvj4MK6b2eeLwTAiPaHXAJrDOQjqrhJhfn6SI
-	fH6Gg2soP01QGC/WrB+s5zfwk8dqG4k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774028851; a=rsa-sha256;
-	cv=none;
-	b=0exKL1naevpMGY2zfosHz3DJ5GPuma1OIpQKzInXtjaLm3YjEBkLJPQcuuMqsB8v9JO9Ir
-	TZUT/T9mQqVRMnoA1yzugcED91jIQtTjMuGROgWIc9vwMhV59IzVKjgB01gkkhKICXKWxo
-	yz8E0k6RmZsQbP3WOGOwFrEAtoh8MeE=
+	bh=h//oGyLG5CzZJ3ZAYHDx9XZrR0UhXsRRj9FiPsHwWsY=;
+	b=Ot1Jz0rilSVHXYRgxF+05X3TnUvQTuFjuMcw4+SLOfZdBdJLWM7z5nEslV32v9CWTIcS/x
+	oS/89cC+rEBLvKk1wOpkq1+/TGS3w+9hET/oDWKeAgbp+gjMgTOfncRpVypiSvcR3908zk
+	6p4DBsWlZD4/Ao9Qiiql6SzRwBJ9XEU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=T605LByc;
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YBrE+ETl3QSBu97biTA3vK5m68jytBBGssPNHhBNDT4=; b=T605LBycL3rI4RFN580+M7TbGh
-	aCtU6vIGOVxGUwytuHLYp/1ZLkr27qP8DQeq4BOYtdqrVVL7wqOyT5X593nCLlATcEz6u0jOP573S
-	Ui6lMu0pcx0mOEggwfgy/xeErgiLPY6i5Atl+6FZuDnHJf/jVwDXtFVk28OQjIvLgQLqnccrJC1il
-	ptJwQFvaNBAZEPXJGG6jm1esBTUZ7TfOux7cY9wHxOz0GGaGeCZLrlw58J4aim0VjVLtWzxZKjMv4
-	ISz7tyHvSHWMmQuU03PUvGHLpCMGBRVES9neSGXWnsFJ6ZI/TZNJY3nCKyBuPApHpwPAmkHEihWgV
-	BjW0+lsg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3dwK-000000088lh-00QQ;
-	Fri, 20 Mar 2026 17:47:16 +0000
-Date: Fri, 20 Mar 2026 17:47:15 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: WANG Rui <r@hev.cc>
-Cc: usama.arif@linux.dev, Liam.Howlett@oracle.com, ajd@linux.ibm.com,
-	akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, brauner@kernel.org,
-	catalin.marinas@arm.com, david@kernel.org, dev.jain@arm.com,
-	jack@suse.cz, kees@kernel.org, kevin.brodsky@arm.com,
-	lance.yang@linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.l, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com, mhocko@suse.com, npache@redhat.com,
-	pasha.tatashin@soleen.com, rmclure@linux.ibm.com, rppt@kernel.org,
-	ryan.roberts@arm.com, surenb@google.com, vbabka@kernel.org,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH v2 3/4] elf: align ET_DYN base to max folio size for PTE
- coalescing
-Message-ID: <ab2IIwKzmK9qwIlZ@casper.infradead.org>
-References: <20260320140315.979307-4-usama.arif@linux.dev>
- <20260320160519.80962-1-r@hev.cc>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uiEYv2bo;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774029226; a=rsa-sha256;
+	cv=none;
+	b=qJUZx3IHocMYxfm9hFY2+eB2XJvWKatGPwufbqKrryGdlafTl3JF1tAZ1fwoJR0wwBU8Wg
+	w2M12YTBHnLcOfp0KhTKNJKbfuhdnzwLTnS65pWb32VP6IR0lHRpI8PJqcWQss843DEGLv
+	C32Vl3x6iDCHo6RBSb4Y/1zlJ8tzafQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7EE1543251;
+	Fri, 20 Mar 2026 17:53:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEBFC4CEF7;
+	Fri, 20 Mar 2026 17:53:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774029225;
+	bh=h//oGyLG5CzZJ3ZAYHDx9XZrR0UhXsRRj9FiPsHwWsY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uiEYv2bopFQyYcQTTmao16YHY0s25gTILH0j4Uo/jjcc1jQYIeERrtFpWhHUC8llk
+	 1Ivpn0/V4XRXI/ebxqkI+w00aHnOyD6OLBbLiioWe8ikCZxOgwcn6jUDJf9+zEMtY5
+	 aerSNmGAA4+YCrYkPDAq+McY+vRNZRaSXuKlRMI1dEfKo14kPd6ELQOZ5s+lSKb6rC
+	 twzYcePHq10w7+pUyb6m431OXO6YA+zEDvZ8pS9kgCmfGHwEyheiOGdNqBwvccPZef
+	 s3+MOy8YdY+YCgiLvIZ36jeoG/NqOAQEMhcO19dFmHftXh6EO8syhFT2J9kmPnP8HT
+	 NHD1pKtb4gA3Q==
+Date: Fri, 20 Mar 2026 17:53:43 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>, 
+	Eero Kelly <eero.kelly@dfinity.org>, Andrew Battat <andrew.battat@dfinity.org>, 
+	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3] selftests/mm: add folio_split() and
+ filemap_get_entry() race test
+Message-ID: <6b087c27-a5d5-4f49-81e6-1204209b0c89@lucifer.local>
+References: <20260319190409.294523-1-ziy@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320160519.80962-1-r@hev.cc>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5E69240006
-X-Stat-Signature: rz4jik8q61bdxpbicu56xs145joc8fdo
+In-Reply-To: <20260319190409.294523-1-ziy@nvidia.com>
+X-Stat-Signature: 6tp9u6qoiqmwd7rz61k9gth6kc4d33uo
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774028850-545769
-X-HE-Meta: U2FsdGVkX18HoLsLAqCq12iwNBaFn1lNZiFPOnKqfpGf8F3VFh9GsNT4Wt1DTzr83EV/lPi9lAOdUywOXL2lrmLWZOlSvlYtBKRQMpqYRciZ5w155vSaFOD/hYHTz1OpQzTZ1YdEf8WlhaFLuRsLM3u0sB2JiW94xk8I6VWQTQ602AHer3xNGoQ/oDycRiEByRtx8sdAxj/eujqRAxPWFV1Rv+u8nFfjXoqRTR1P8OZlX6K01TeD/VhMmHgsYif3G+sFIfKjVaFNTi1yIlgrbJ1eKGj8nTcl1HpTqgNRndApYJlrgcnPclmz3+zWiVr/esRAGvMzi0X0h9jzXVjUGTaywdSkfG1GoJoW7uQv1ICuy+zvzdIjrDRawVV6Jcbu0AUbZDLwCDiE/T+YGu3kC3LLWWbKjXFjxxrUbINVvE2FGHvGOGX6pU2hwSlNRXruKz+y85kWnv7yS78m5mn/xTXs4xLfvRApqsmEEZ1xYtQonrZtaZZ5lVtWDJoe3emlKaVH1z1XLlH0hPeIqsYRFIi+GoNuquVMmmADhXgfuMZwCba3zHrrNt6sIQOKFaBUSFwYBEG+kvibKPgLXPAO69XjJLbKnfbnyTt9IUALe1bl1Oj3rFHtQ5qgkQj7ITkcfeB9fAzjHTEvR0JW46jhMz+UHRMDwSV19PmlvHRWLdow+SEEAKEdK5p8nuc1mZQJLKnGYNC+Q+XrCVcT4DA0CDoDj9eukFac/Isb5hdUUAO4tvuhoFtE8jIztMaxul8WAiUY/wPE0VZAKbKXDEfY2z7E3PZeQW0q7dyJOMv41YNxMLVN7oY7JCpvy3n2avuJNpyScTHmFotFw/ThOU50ZThNUIkDDD4axnQGFuoyJxwEc+f2hksf+SY9pLNhh+EfL0v5LiTPLerUnuc2RrWo3SFSLxlwvi/9iJ0QoV7jIrZ2L9su9Z83f1cYTQTFW8008mKZAIy9811i5THKkyT
- 7Huz5jwz
- 9Z8feYuElr4YmxpMQ06Wwfz/rivOiEVWc/HOBR5fPntdxrThqfxm0udz0kB/xzZSxRLsM7qgZ1ewx07gmzlp2InCaKrlMhOcjGjDUNby+I45S60y5b9FOMV/MiNCbNIGFtoODlCOjOJ4mGLBlaRSQ7wyPRSg438uG0cog7PjJVcylHDLTBPyIjWIKU1rnHCTiEFi1k2K76RqSjzJCA9QTGpFmvQD4E033lQGlM4k+nV+A9pHti1uMFDbcjPWLZlvAFDxwBCNwR1+Zi00y9fV9sjzxDaqDVK3jRrZ2YZiCqs3MQI4=
+X-Rspamd-Queue-Id: 9ECC714001B
+X-HE-Tag: 1774029226-110717
+X-HE-Meta: U2FsdGVkX1/NLnMXsbjoobmb3JnvfFYaMObZvP2DEXFrGp8cHbplUX/nEDwsjj1kAcyN5gyWGchvcyXO5rMHVogrTeyhMZbLzGzO4hTTEfiA2nLflpdQJt7vassf4HeghYCO6ozArmSbKPbFgdtXsiQapD+BiIg0t/32DbHUPbjPnv3F4o0s5rkaBTxofKn+k3/Zu8JF14JtY/OvcM7HIxtqi+2Vzz5f7OyoRSpK/ESdMk6cbx2fSrpeUk0j0T+wMnFFquk6KJb5wI1xyhyVS0/W4pgcHZDHN7N+BiSbPqhGcJ7Hsurl2ASOud27dHWHDo+RpSmHhOiBQLOH6p85v1gx8948oPJxTd7afPMsv9R+SNut5JMGzfkgyzYPXmu4/oCPt1/2Bq4MpfWNsIYWkTDxmBwcYKYdASa+K7C3Cm5hW6iVWVUNWlTjSfTC1fqgQuq5WWyR5SaprnwiWIfoL2+hWzzrFdiwDun/Aj87SPVeso5rJQ1Yu9pBpNDzmZ6LxJMq6a+fiVtaSWNaSID3Ihtm7iasUi1R1YpA5d6Lozkog1Jia0A6v9psVgKsO+MbwqwHrq+H6HrxyrQEfwZqVJ7G3z4GfzETsm1Tk625fTrlpan/JbYz28fSwoTplgz8dK+EYtBKBmyIFYP9bDLVpBWNbjaNrZwpDSrnG27vIE3RGibjUuviqVCeQDziAT4baUy89x2b1P2hSUtEpdnkiG24LUvbWKgoBNtGT1VQGD7twrIWe/eWJ8QoJdxo2ts3ntIB2V4GPkaPCePmsdabIM82LxOsaJ4SJxSarKkoHFOz9AbSLcdTn9Aj85otJI/tfva5L4qc7Kyc2QUrJTUTs58I/GcrQWmBsZjzTW/e6omt+5ski74vxstjzqZvaY5sdiXgj57JcpcbUoBDpjeG+ltecpdHa7Wu/2wMlkpQCUe6EJmDQkCB04VqcrpX0vvxlPYDKa9aaJWhbuQu9/Q
+ s9MIsgjs
+ oXWLYkmxHiaoIki1dxjT+qklbWwLVecLUeIUrbrEnDusoQQ2eEq8uKo0YUXpXd1hXnCPJi2wKOPt43wtUr92sn+pPPS9eLA3Z7+xwfi0WML/yFnRsuPvFzHVyxhaMKASfb6+RqcR2C8oWO/XBhX0LF0o5UU8cpjgway3iOyBmY8737iWlc46Vez4/nJmAoWv6ggnUGc0dyAArS6sQWpj+V5VzR3Wm9lfmKGNaWff0aFFecb08tKWvZ7hJI3Lcj1bqIeAV94OCKIE9xYcNBsdikNUssxp6Dg/s5Agy4cX1GUHxMlau9XvHzlvfzf2G3/rqG3kjcYE9aclaHn7kZ9XAJMBh8WxVSsFYcL3V/B7oeUdvDijaNJc7v9JPdsiLXxMgDx+iXgJangNCGkgYuYc7xqoaU1aY2LG7+Z5d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,14 +98,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 21, 2026 at 12:05:18AM +0800, WANG Rui wrote:
-> >From experiments (with 16K base pages), mapping_max_folio_size() appears to
-> depend on the filesystem. It returns 8M on ext4, while on btrfs it always
-> falls back to PAGE_SIZE (it seems CONFIG_BTRFS_EXPERIMENTAL=y may change this).
-> This looks overly conservative and ends up missing practical optimization
-> opportunities.
+(-cc old email)
 
-btrfs only supports large folios with CONFIG_BTRFS_EXPERIMENTAL.
-I mean, it's only been five years since it was added to XFS, can't rush
-these things.
+On Thu, Mar 19, 2026 at 03:04:08PM -0400, Zi Yan wrote:
+> The added folio_split_race_test is a modified C port of the race condition
+> test from [1]. The test creates shmem huge pages, where the main thread
+> punches holes in the shmem to cause folio_split() in the kernel and
+> a set of 16 threads reads the shmem to cause filemap_get_entry() in the
+> kernel. filemap_get_entry() reads the folio and xarray split by
+> folio_split() locklessly. The original test[2] is written in rust and uses
+> memfd (shmem backed). This C port uses shmem directly and use a single
+> process.
+>
+> Note: the initial rust to C conversion is done by Cursor.
+>
+> Link: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/ [1]
+> Link: https://github.com/dfinity/thp-madv-remove-test [2]
+> Signed-off-by: Bas van Dijk <bas@dfinity.org>
+> Signed-off-by: Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+
+No .gitignore entry? :)
+
+(Just saw it flag up locally in git status)
+
+Linus says don't remove, but he doesn't say don't add :P
+
+Cheers, Lorenzo
 
