@@ -4,75 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6868F1099B40
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:13:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B544C1099B40
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52C486B00D2; Fri, 20 Mar 2026 18:13:47 -0400 (EDT)
+	id 1A9EA6B00D6; Fri, 20 Mar 2026 18:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 504496B00D6; Fri, 20 Mar 2026 18:13:47 -0400 (EDT)
+	id 181A36B00D8; Fri, 20 Mar 2026 18:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 441306B00D7; Fri, 20 Mar 2026 18:13:47 -0400 (EDT)
+	id 0BEE86B00D9; Fri, 20 Mar 2026 18:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3378B6B00D2
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:13:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC5FF1B771B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:13:46 +0000 (UTC)
-X-FDA: 84567844452.23.36429A3
+	by kanga.kvack.org (Postfix) with ESMTP id EE8F76B00D6
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:13:50 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B844B1DCBE
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:13:50 +0000 (UTC)
+X-FDA: 84567844620.10.2B4ADA1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 43A7A40007
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:13:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=edSADuQC;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 24A5A40006
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:13:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tQfW0O52;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774044825;
+	s=arc-20220608; t=1774044829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=kHeX5+YEAAQ5ktdSsuMecwqZwetnx8PqmydD5c5G9Ig=;
-	b=c9uKBwWfVZbCyuIPYKfHcXMUARsVRwCh8sckOgWRxpQtzYeGTQjr7BikGUaastZPNg6b6g
-	nPirLtk+iQnzzKm3AGhjM8CWxxGqDkS2rGESB5WXOwmTIQ6Z8ypNrPGrLCMKEr8zNktazZ
-	+0So9otAQzpRszkT3r1XzzXG9EUazzg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=edSADuQC;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774044825; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hrA05a2u3X/0Wfb2w9RRLIbyab2FHg+1yjUIIMIh8xU=;
+	b=3CPNHvMhmGsHTdZxFVu7+1YRPdI+n/0kkH0oylPUIPFoRO76syss7yJtFfe84zB+HEDCPO
+	+35t42QIid4BxE6qUcEHeCyzkuZSDKQrKYBy05wR+H6u1X/EFcfq8tq4dgakAfYYTkA1Bg
+	VXCTTvM7ovhNSb9W4lRNYMMC0CGPM9E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774044829; a=rsa-sha256;
 	cv=none;
-	b=ikxa70kgEU5qjcEnRrOS6gmoVdM6zhe6t9DsSeTMOtAetn6Wrl07qkf8Z1LLFzBnb0Bgri
-	96skmEh+PD6i5TvxuKvJVyiVqT7FOSlxIFp0O2c3gLiWVyLexWU9EwxCT1apQyojPXFG+B
-	Js+VxG1ZjIbrrAlGLUG6Mm/vz/qP14E=
+	b=R29LXrF5hokanrOPg4dOkLFryVsfULrJPtLI1dw9sJCpEc/HX01bqJgDEZz3ugtZrAlFwS
+	ezx7suh5wctaK/eoC5vOFZnPf27CHrDXuht1ZyiApI3AxcjwO79TmpHc8r9o6bcPOlJjYP
+	hEbJn0lGPH7E84ej/t31MS7HRFCEvcg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tQfW0O52;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7EF9160128;
+	by tor.source.kernel.org (Postfix) with ESMTP id A55C960126;
+	Fri, 20 Mar 2026 22:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74D4C4CEF7;
 	Fri, 20 Mar 2026 22:13:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B76C4CEF7;
-	Fri, 20 Mar 2026 22:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774044824;
-	bh=37kqOOQ/gFodAPx12yyeumULM8pbIZCoL7z8zOpqXf0=;
-	h=From:Subject:Date:To:Cc:From;
-	b=edSADuQC1oEMW8dWWkRDylnwWgm554uxai5oA30QCHdfBcxx4gOYFfiqWlcULOlqU
-	 ncAaN3x4odTUE7sqhieG30e+G5T5QVoPrf7LOtIJ7zwdc+jYAjo3uQVMqrNJJeh1LB
-	 DefP7y/8KZQ3EQqwTivr2WJB8+ThJMSrvnvqxjBK48P30+vR6WyYgGnKflj4PDoN20
-	 fc+1htlMz3x4PfxkDaXOgkjLuHxDzWNJrNrvLmOg4S39caX01QjKalCc28jgt4VjTQ
-	 9M5CShjf0Cxm8//D6d5EnadKWZp4/rpCDYo+myXErcH2J+u377GWSp5NAWjvaKVldb
-	 +dnQ/VfibsdLA==
+	s=k20201202; t=1774044828;
+	bh=nHbTHkZVPmgr07xrNZlc6QBoO7DF8u1xsHWbyTYeiTQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=tQfW0O52ZtyktIiPAk6j94DCE/TASe1TGKNwSCHH/AqiVoKikGBfFF3W4UcBK/nfw
+	 8V7Vb27Vcmrr0XvfznjhmwdnhGVPlZCBt7c1tUzBlzwi7wYWY0KR84ObQEtEz6uESv
+	 dRzL5KUAy9mEFD4GI/QVpkY+cklyuLv1v1lmUNE7D7i6zqVl2H/QaLAOr83tthbwZl
+	 jIT3N5KVDUM3OYBhJFn5GCC1nY/SIvLbps9ZcbkHdoN80Bzuh8s1eM7pV8Bva0XXDY
+	 h8kXTpPAdxsUhuyQ3Sg8Xd7BkRgiNQ4pgqYN84AN08nzdlaoP9hShigTqDXP9QruqH
+	 SbtczXznDUijA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH v2 00/15] mm: memory hot(un)plug and SPARSEMEM cleanups
-Date: Fri, 20 Mar 2026 23:13:32 +0100
-Message-Id: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
+Date: Fri, 20 Mar 2026 23:13:33 +0100
+Subject: [PATCH v2 01/15] mm/memory_hotplug: fix possible race in
+ scan_movable_pages()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIzGvWkC/x3MQQqEMBAF0atIrycQekTBq8ggMflqg2ZCGkUQ7
- 25w+RZVFymyQKmrLso4ROUfC/hTkV9cnGEkFBNbbuyXrdHksmLDNvgVLu5JjUcdwsi+bgOohCl
- jkvOd9r/7fgDwqvASZAAAAA==
+Message-Id: <20260320-sparsemem_cleanups-v2-1-096addc8800d@kernel.org>
+References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
+In-Reply-To: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
  Oscar Salvador <osalvador@suse.de>, 
@@ -85,14 +86,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 43A7A40007
-X-Stat-Signature: hersqus9mymxt9wn13d1157jjh37afux
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774044825-449946
-X-HE-Meta: U2FsdGVkX1+WvB96egOh/ueycpkGfLo2GCPMwrRmgDcwwNtJKt+mYfQHhWCiIlIEbwwuQtQx/P110jzTpwusIk6uHhC/Kp2UKvViOnGU6hFHpXop2/TjiEKMAIxo2kp9CRel9leUXLRqP5LZYRxM+c0CFmpeon/JrTxx6LK4INCQV9821u7wR1BSP9LB/nyvm/vVTy/FnaFh1hQJFJwM+gyPo5Pz4FCvQg5N1z60SDAjquYVujwkm8rv2uG9rzDxz9OX0z2wQEnxgYmdziLLvRmf44kecJsNtisS3m93ReeY3xXE0rFzHKpvNmYjjXckfBcoXyMtmjpU2HDqBiDNdwBB+0guqrWWt2wHh8V1XbHKia0Y7pAUGbCcEnkwGlt4pC9md5oNjici9MQRu4bcj0gcuUpx3cpsHCdRrjPSdxxbxv75RtbU2IUTLnexoysGFQkqavnjXRoxH9n4j35PwmDltOC/TlYakAS4uSh9Pc7//SuSrwK5QZsHdXotzSZj5ddHZ0B+jlLpfWX8OfQIQCkRcAHFnfFySkJBpbkI3UeayZ8RcwgTdapamCV4ZTUGFuEMPdyuMvTjtEdVLv1wAyEbSewVqCP8p7gcL035q3h9KROo0CB/hFu2K0i+I+HxisdOBAPBWKLFY6cWou1ghcQPoiKzE0XhFMyUGRrad3CsDc9pY4N1Rec5/UCGd3f3m8VNzdPW7EVDx+ekAhKhfqdApHmUoVeuZ4NFXoA6RnD6pjXtEf6O/hMLFWnOVvHfdFv5lQL9AfdZ3N6YyMhBvjr0m5Cw/yOVhNsTFnDU2wzY5kcdsCqmiQPHZ3Xvr195fvlCOD3zMjwmRybjkvxw9aumFV3GGBjmIMYqA7JjXF+gaQA4tHTZGbBgU8R0IjWGgbfOCcuwkCon9pai+rfsqtA4xPkYteY6sIX4OZPvBrcYKloVrDd3s31ZQlnRDFvIraBZqtir4zll97MjulJ
- fqr3Q+WO
- LNzWq6D3fHQUmgACIrCD2N+wYjTeoHuIAx4Ru+eaKZpM2+QSgcr7JrzgZqPm1/lO9TNkpN/rAGHp0oPGa5WS216VHjV+hZMP+nheaUGI+fuuIO9c9jtNk6Tbh1+v8PJ6V/flWOdRNb2BKNiM22UY3tBnjjK7PW1GqqcRsTuZedYXA0W8p3P6iwE8PgrKlpdF9ZKQbP3dUEYO5cCTqkYCeNtXjMgHsr8HgMaZryENyBBxo6RT6vBL1+nZlUg==
+X-Stat-Signature: as1dwddiirg7ed9nyifb9ip35iuhqurf
+X-Rspamd-Queue-Id: 24A5A40006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774044828-628760
+X-HE-Meta: U2FsdGVkX18oYA348N0lEt7MrTfC5WEsI+ulONJfjLScBr3UB9H9uV1eqS15/FmceDtUHAftlEYtsHqdyvotAEBBX4eR3uzC3lJA0ORrF8Ewa1COdaZSDDpIyFVcwLZgsp0mnIq1y5dFFcjbof01tqehtmRT7Io8rKqEXBwNmNrtJObRgw+TH8hrzc880ewPsXoYR4IqdGMOf8MEdZ8bIrO0gSJpdJYu6sMoKIYqaelvCbB+SVKrovG6PMVUm9Q7DSTJqwbt3UYGXxRVcbl0WLL19YLQ4C7w/wHrZ/ULMIVEkTXkpnqCr5j+z2++nL8ImZ0yhWYxMffQs0fGoFyUU45d7bKGMEIHAycjT36UqBXedI6D1eYDEEk6/kH+ySHpSLkO5fQqeT1weo0woI40c1sALoosPAl/itA4Q+nKKjRXGf+59+uv3F0WByUKK9brhgE9PrmADAyQqayXXLfstBnXfwC5OlGPyZy+CGpc6f/J5IfzJMcuT98vizTiKafbV5/28z7crFRGDkig4vS4tp1QzDNO/UClrT0dVZPB37YPHoY02GsG/112RCttokJlq1KA17ol/5vvdIuENRosGbeM5Ap1GZe9wkIYX2sSP7WAcdta7THbCAr8FrIUGdXI26E6+O6wB573cb0tfmQ3HbZ1K+4+ahilzrmvr7y9w6Dxeo+fRMExVqaEq4kUmbHxEm65NncH/77AGMadIjWRNE5G7jXE8ksJadlRLsLotifppgY0xI4plwtv5nMdkFjl7z9E6BakA3CnjAK97tg4D/6xvFyzHvL20R9YcwBim2IPtSmh4S12kbjMI0t9ZpPkpOOQt942OA2E2g0ogMnHh8f3rfs7F+cA9+Yihq+//Il2edZ3E3Lt6tyQKbiOKRMg4l1p8mHnSrLo4ttaz9CLG8my01XLeTZlrzdaMdXFjA0Hrcn5szUjk8IAMmW7kWE2UqvG2h9QVlp35cnwgLP
+ 2y6uMFl+
+ x7C/4SY5hOX5JdJgOu8k4PbHevOkOERj99i+QKZNg6LFmmHU+bDF7XPdx1I56NR/lF1ETYNDkLXnt+RU/R2NEWS4Vb7rkYLRhlncmYf1w2mBvuuEqsYAzaT3+TvyKqqZGdDHVQhBtTpN7J/hmdLEHQq7ol1pEgXiqvS3TklJsKgJgI9C4HKRd/hEpmIKmjzqh16Q2ej2N+nMwiqt9uwS4po0bKGpl83bhnDzeKcnFJMIkmlgGYvcKYDJrkLc+xkl0JqJfGFyAHv5y8TXxHbCawW8Uxcpq3DB+Fg6r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,59 +101,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some cleanups around memory hot(un)plug and SPARSEMEM. In essence,
-we can limit CONFIG_MEMORY_HOTPLUG to CONFIG_SPARSEMEM_VMEMMAP,
-remove some dead code, and move all the hotplug bits over to
-mm/sparse-vmemmap.c.
+If a hugetlb folio gets freed while we are in scan_movable_pages(),
+folio_nr_pages() could return 0, resulting in or'ing "0 - 1 = -1"
+to the PFN, resulting in PFN = -1. We're not holding any locks or
+references that would prevent that.
 
-Some further/related cleanups around other unnecessary code
-(memory hole handling and complicated usemap allocation).
+for_each_valid_pfn() would then search for the next valid PFN, and could
+return a PFN that is outside of the range of the original requested
+range. do_migrate_page() would then try to migrate quite a big range,
+which is certainly undesirable.
 
-I have some further sparse.c cleanups lying around, and I'm planning
-on getting rid of bootmem_info.c entirely.
+To fix it, simply test for valid folio_nr_pages() values. While at it,
+as PageHuge() really just does a page_folio() internally, we can just
+use folio_test_hugetlb() on the folio directly.
 
-Cross-compiled on a bunch of machines. Hot(un)plug tested with virtio-mem.
+scan_movable_pages() is expected to be fast, and we try to avoid taking
+locks or grabbing references. We cannot use folio_try_get() as that does
+not work for free hugetlb folios. We could grab the hugetlb_lock, but
+that just adds complexity.
 
-v1 -> v2:
-* Added "mm/memory_hotplug: fix possible race in scan_movable_pages()"
-* Update the comment above section_deactivate()
-* Reordered the flags in sparse_init_one_section()
-* Patch description improvements
+The race is unlikely to trigger in practice, so we won't be CCing
+stable.
 
+Fixes: 16540dae959d ("mm/hugetlb: mm/memory_hotplug: use a folio in scan_movable_pages()")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-David Hildenbrand (Arm) (15):
-      mm/memory_hotplug: fix possible race in scan_movable_pages()
-      mm/memory_hotplug: remove for_each_valid_pfn() usage
-      mm/sparse: remove WARN_ONs from (online|offline)_mem_sections()
-      mm/Kconfig: make CONFIG_MEMORY_HOTPLUG depend on CONFIG_SPARSEMEM_VMEMMAP
-      mm/memory_hotplug: simplify check_pfn_span()
-      mm/sparse: remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for CONFIG_MEMORY_HOTPLUG
-      mm/bootmem_info: remove handling for !CONFIG_SPARSEMEM_VMEMMAP
-      mm/bootmem_info: avoid using sparse_decode_mem_map()
-      mm/sparse: remove sparse_decode_mem_map()
-      mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific usemap allocation handling
-      mm: prepare to move subsection_map_init() to mm/sparse-vmemmap.c
-      mm/sparse: drop set_section_nid() from sparse_add_section()
-      mm/sparse: move sparse_init_one_section() to internal.h
-      mm/sparse: move __section_mark_present() to internal.h
-      mm/sparse: move memory hotplug bits to sparse-vmemmap.c
+ mm/memory_hotplug.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
- include/linux/memory_hotplug.h |   2 -
- include/linux/mmzone.h         |   6 +-
- mm/Kconfig                     |   2 +-
- mm/bootmem_info.c              |  46 +---
- mm/internal.h                  |  47 ++++
- mm/memory_hotplug.c            |  35 ++-
- mm/mm_init.c                   |   2 +-
- mm/sparse-vmemmap.c            | 304 +++++++++++++++++++++++
- mm/sparse.c                    | 539 +----------------------------------------
- 9 files changed, 377 insertions(+), 606 deletions(-)
----
-base-commit: 3f4f1faa33544d0bd724e32980b6f211c3a9bc7b
-change-id: 20260320-sparsemem_cleanups-ce4ddb2c47de
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 86d3faf50453..969cd7ddf68f 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1747,6 +1747,7 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+ 	unsigned long pfn;
+ 
+ 	for_each_valid_pfn(pfn, start, end) {
++		unsigned long nr_pages;
+ 		struct page *page;
+ 		struct folio *folio;
+ 
+@@ -1763,9 +1764,9 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+ 		if (PageOffline(page) && page_count(page))
+ 			return -EBUSY;
+ 
+-		if (!PageHuge(page))
+-			continue;
+ 		folio = page_folio(page);
++		if (!folio_test_hugetlb(folio))
++			continue;
+ 		/*
+ 		 * This test is racy as we hold no reference or lock.  The
+ 		 * hugetlb page could have been free'ed and head is no longer
+@@ -1775,7 +1776,11 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+ 		 */
+ 		if (folio_test_hugetlb_migratable(folio))
+ 			goto found;
+-		pfn |= folio_nr_pages(folio) - 1;
++		nr_pages = folio_nr_pages(folio);
++		if (unlikely(nr_pages < 1 || nr_pages > MAX_FOLIO_NR_PAGES ||
++			     !is_power_of_2(nr_pages)))
++			continue;
++		pfn |= nr_pages - 1;
+ 	}
+ 	return -ENOENT;
+ found:
 
-Best regards,
 -- 
-David Hildenbrand (Arm) <david@kernel.org>
+2.43.0
 
 
