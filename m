@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A6F108B901
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 626F3108B901
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:37:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31F4B6B0088; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
+	id C98866B0089; Fri, 20 Mar 2026 07:37:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0206B0089; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
+	id C49336B008C; Fri, 20 Mar 2026 07:37:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 197FF6B008A; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
+	id B64526B0089; Fri, 20 Mar 2026 07:37:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 087716B0088
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6E741401A0
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:35:30 +0000 (UTC)
-X-FDA: 84566236020.21.9A5A64D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 202DA14000F
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:35:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4ETvcgG;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A1E8E6B0089
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:37:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4446A139079
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:37:10 +0000 (UTC)
+X-FDA: 84566240220.27.3D872F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BC0211C0003
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:37:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATiMesD5;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774006529;
+	s=arc-20220608; t=1774006628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xycleNK2sIci1vynO6W7JkfEo0hraNqpapd6SkyQhBI=;
-	b=SURn0Wx46ndrldTAHIWTXbpVq9lW0Zuw17E6S3EndACUXr6WgdGAT5lSWcJfIpB+pivwrn
-	cAkcLPxMIqmZrNr5q6EDAnAnE7y+Ak/AtdmjZCaH9XkOUB251qwBNIVwQuZpG/Zawqs3qK
-	6jfIk1IDco9met8SsDU0YqwzjaF2uts=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4ETvcgG;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006529; a=rsa-sha256;
+	bh=JaPgSluvwp/ijj7VXv49o68dSdpBNbhcKJTSqa7ZvmU=;
+	b=GMdNv4E4Xc6dRqmbb7lgsi5v1nOVyZ1xC4/LY31H/+2jaQ9jddeC1VY2IkgKX6ExpvEHsN
+	FqHqlkRkahYR0+SKXVHkgdtjrsZR5EG9Mz6U1Gt+zyI5+na5PrDxA+uVb6CCb/c+SWND91
+	ywQJRAHoGSx9xUBaIRutA49Xg7MtZyM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006628; a=rsa-sha256;
 	cv=none;
-	b=Mq+xeeb7i/py/vvqT43IRoZ72N7za8NSxfrHDm0GubzJ97rQC7Akb4ZbueZ3zPtcJVh9Uv
-	VBPzHAQAe8vjdKdJIQs9QZXsBYxfY+6VqFQ697htyvkgmgrU+xYP0opDz+yFj3avY98ARZ
-	G1fMYXxF/FkY3/f3x3LsQTSzfIy8IDY=
+	b=8O+BEAsUKTs1RA9KIo1v6G/dkE12ncsOr1o9tiQfUSDSsfcf/WX5fI3IKMnhIAPk0lEWxc
+	f8XK+GFWmdbUDOy8Zz7i7DVygIMJ6uLbWbNeRKuxO7QTdDOGJYp/fa2/lPd0rTcmy9bzKI
+	P2AUEch29ogT69Bigk8OCTPb8HoTbjM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATiMesD5;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80D4C60126;
-	Fri, 20 Mar 2026 11:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1331C2BC9E;
-	Fri, 20 Mar 2026 11:35:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C100B42A86;
+	Fri, 20 Mar 2026 11:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CDC4CEF7;
+	Fri, 20 Mar 2026 11:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774006528;
-	bh=9pNvu6S6oDhM5h9WgjMrUwgzjvJ+ZdQO7AyPrErzbh8=;
+	s=k20201202; t=1774006627;
+	bh=ODUX2J4py669jbR3MwFlsEzBfVh9nwBiRsgKM8tmtBM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t4ETvcgG+DtBZacynsUwUuZzc9gslv6ATrxqYuzM5SYDxYfMTJwJDAsaphiO+bvvO
-	 OICL23t3UAxusfjHjVPExe4XEhAXpYpoOdlmD5QaRgAoXbGt/+EU1rx4kdZui/NOSJ
-	 oEGXus0qrZn9Mu47YVU9qp2UUNi3kVi2ss0cmW8LbGfxEz4wc4/HRpost/ZSflILHB
-	 rD3hTQAh7fiymU01Hv+QWJg80hKaQ4b2uEY3XwFrWPkHiOy5rBU3msgnspXcikMgT2
-	 VMvXXysLtGhQ6LOTSijog2x7X8hA5lpL2caBJ588S+wvIMyL8V7pF3NM5Gfy6SCArG
-	 b5FdpcagKWM+A==
-Date: Fri, 20 Mar 2026 13:35:21 +0200
+	b=ATiMesD5y01atO3/tS3Hw5QUIcvIspmzjXBNvUHBDF4ttzIxVhVAIM+RZiryMqH0j
+	 em8L9FX0QnowlymU12ASvGnZsKMDaDGRGNx0WhWUmezu7eC/sfjiX8oyHPc7t9e927
+	 q1AbpOZWH+m0lWlnqEEOHjAeoVWO7FaTUHLVY9YMDAboozyFjS5aDAfjT9NXB72Veo
+	 CBBHARERFsuQPgbX0z11B7Iv0ImW0kcfb97Zt/fnucfG3NT0QbIV+DzpYK0QYy13G3
+	 kVpF6nYMRZt9V0adKOJ7b3ejPFT3SL3msJ3XERIcMdV9wlsSWM1oxQto6OR55n9jka
+	 S80mHWrVxEp0A==
+Date: Fri, 20 Mar 2026 13:37:01 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Chenghao Duan <duanchenghao@kylinos.cn>, pasha.tatashin@soleen.com,
+To: Chenghao Duan <duanchenghao@kylinos.cn>
+Cc: pasha.tatashin@soleen.com, pratyush@kernel.org,
 	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, jianghaoran@kylinos.cn
-Subject: Re: [PATCH v1 3/3] mm/memfd_luo: use i_size_write() to set inode
- size during retrieve
-Message-ID: <ab0w-XnXgosQLOKc@kernel.org>
+Subject: Re: [PATCH v1 2/3] mm/memfd_luo: remove unnecessary memset in
+ zero-size memfd path
+Message-ID: <ab0xXX051uk9S1rl@kernel.org>
 References: <20260319012845.29570-1-duanchenghao@kylinos.cn>
- <20260319012845.29570-4-duanchenghao@kylinos.cn>
- <2vxzqzpebzi2.fsf@kernel.org>
+ <20260319012845.29570-3-duanchenghao@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2vxzqzpebzi2.fsf@kernel.org>
+In-Reply-To: <20260319012845.29570-3-duanchenghao@kylinos.cn>
+X-Stat-Signature: jqycirypa36x64nn6ym1enar7jkjqmq4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 202DA14000F
-X-Rspamd-Server: rspam08
-X-Stat-Signature: chr5xfhrzmw6xuuprfzytuschs9ietc6
-X-HE-Tag: 1774006528-844027
-X-HE-Meta: U2FsdGVkX18hAFtNI9QhcPWCn/E+MasdGzTm8MtPhrqFlWZLX/pQIRlqqshBDpm+7ect478MyHX+By8SaFpmJa+O6q7A3mQIOaxjF9bn+/OaIK8Kf+6FZ5bSuywrX87o/AsH+as7DA0rbID3Mulgscvu+Ne9zNve2x5Gq5MJltLb/i0sXzChm94vMesbhkHHRH+4kCXKycujKQ5eoy65vcXXiMzt+tlYk9dLSFq+cLBADNTRa+4Wh5gkccjvs5K7t4z3sU/EONqNYewslzoE3CjM5l5EaZ580Ojg6lKlPuvHpdGSjewzCBi2TztZmSnB9dJ2uNGbtg8HehCPNWdlnMjtlDPMdaE5StIXSdJV7Nrb3ehIxPQ3fJxXhLTPZWeizX4/UFynYsSRSDyVqlXnrej/ZIyQEX2eCmJKakgMOrzd9E5BdDK5LWIFBjYqeMgauUVxMb1pMXJQsNOWqD8ZI4VxEtpgVAo7iVEvvqh0HvZO4VuOAovXWXPl5ocvqNMpIWvPp8DXZZLSpaaM+K8lUd6jtPmXNl7krZUhmwxw8KTfYSXbEZ9YVYlTzV46al51aenWcV0c9UpXtj3Twed8iih1tVV5oD6hucGt5Us4cZYhbIg7A86m08rUtpGBmFBqCfcI1LpcM+pwaclsTO5ZdweMl6hSufE+7p1NOvDqmBg/tTZNr0Daf7Zx+qAj5vV6ErbCktISz2SQSKlRdIhnnvFAKGFypbkJMX/IOz+WSFxwLA5EC81wUS5PTUkSqX2V04hTz/JyLu0bbMHc1Khn1d/XJzz7BNT+XjoASocJnLwq0Z5+9K5Tg7fnqLk2H17k9tQBou08YHC5NV5+m1+sipHg40TgZ6/6KekBJhHIextVcSz80MQDpgpUbXW1XnqRUMApkUiOllY/+6FfhLk6sPCSizz1lKiL8nLbvexO1gHLnpWrcL91FG5kM2qhoizTjGJ/RcVX3fFxCcbFfC5
- vehJ0aFA
- ZzvOjgjYhVD6vnDcJHUF2yYcZE1fFamRAna3KKUQf9OMuZ9yOuo/V6QcQQERAlBOUeaWZSaYlCfjbYBq2auI8uUwr0/U5BeN3hx0c1iAUfw3YRzI2tPr1DbxsJLOkw7bNBoqEI+v6c/eN6xuKETINo33iBb7USq8RE6FrJSRlGeLyQZ9E5Cj8W+Au3p1cB4jMuy25+2t8WFXA3LO1hj1gBEFgQUgyGbJFbNX2OTCiLJG5wk36WQG648P5ylI1GbAJximpVY0Unz3qokhKqmxUEstz9DzwycucoupMM2pV8wHqJzg=
+X-Rspamd-Queue-Id: BC0211C0003
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774006628-238061
+X-HE-Meta: U2FsdGVkX19ZjUDnJMYRhM/3h4x/RnuL+pue1V0qLd5p+2zEguFyomKhS/EksZXkSG6Xn+yaj/Ryfn996CuxIj9IxFlGYPmutALCRcDHW03jz/LJCuVzoR9nwhOQ7gvxctLbaHq6/VbJkm/Ks/rwF87uIoHLMIaDdyb+awglJnCY+1CQ6mnqwf4GDqXTaLmKdVvbcFyoqF2LC3wn89UJ7sse4+9FVS9DJG13S1oRYOrYFxeA5XGx/wthoZAlZaIdwQlsh+HpAxTPeEi8OTN8Z656pnxk+dyZFbmZVyUoWV/ePtyX7bEj+5YTkXfaKtwjZ+exDDVBDxGsxE+zB0RStCCwyuEP1RY4y0bfzfhkAWHJQQGo3pNhs1bO8tmqEzqKOG+BBCgJaFpsDTRQxPpgmwFla667jdQvW53MV5ZlpSGc1COM/1O4zbSIs7778siyNSTEqPkIEIxTxN7NKulAZFtinhni+hPIlAnyNrTznvig9bpLgw0Hmx3/j1AWiJhpUwOkU7pa0cmLM1n+gy4E1N0bNH7xe7KjfJt87cd6hA7VH0fBNUCE6XotG8uSBfzwg9CIM4jiYDFHYtEHKshVFIcvak03qmI4yTJTGrTA2aQ4WIdmmqCbdByPjoRrILztsz2Aupi53ixaSOKqx5pNOAJHDYkfHwoTaWWPHaVgY1es5d5ttJD05RRc7NlljZqgGKTIS29F3sF+Vlss5sXnytl7tNQ/x/ltpvXzecDNssJEacJ3EdKiPcHpVmUaAGR0s+842NDo//f3CkaHsWawrZOHvmgX8TabzseVzdgRWiuJMO1yL0prp+oaRiJohrUvVKxzFTSimDnhJEZpdNKPVm46tXEpE5Vx4DdJstq/0gE+pSL8nTrgpqY+5ExqQ3mrUw3wHDyAzBAvJBe8RrWFTTuKVxxrkdrlb8wWJfUxtbCLo0AcbkqNj5U0tGKUKjp2vLarHJrGdbfEj06XFpS
+ aq6Q16GT
+ 4NCq+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +93,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 09:51:01AM +0000, Pratyush Yadav wrote:
-> On Thu, Mar 19 2026, Chenghao Duan wrote:
+On Thu, Mar 19, 2026 at 09:28:44AM +0800, Chenghao Duan wrote:
+> The memset(kho_vmalloc, 0, sizeof(*kho_vmalloc)) call in the zero-size
+> file handling path is unnecessary because the allocation of the ser
+> structure already uses the __GFP_ZERO flag, ensuring the memory is
+> already zero-initialized.
 > 
-> > Use i_size_write() instead of directly assigning to inode->i_size
-> > when restoring the memfd size in memfd_luo_retrieve().
-> 
-> The commit message can be improved. It only explains _what_ the patch
-> does. Readers can see that by looking at the code. So it just repeats
-> information that is already there.
-> 
-> To be fair, for more complex patches explaining the what does make sense
-> since it might not always be obvious. But what is almost always be a lot
-> more useful is to explain _why_ this change is made.
-> 
-> I intentionally assigned i_size directly here. The reason for that being
-> that no one has access to the inode yet so there is no need for the
-> smp_store_release() since there won't be racy accesses. So my first
-> reaction on reading this was to check if I missed some sort of race
-> condition. I don't see any, but this is exactly the kind of thing the
-> commit message should say.
-> 
-> So please, explain why you made this change. The reason can be as simple
-> as "for consistency", but there should be one so reviewers aren't left
-> guessing.
-> 
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-> > ---
-> >  mm/memfd_luo.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> > index 413df8c75c1d..5e5971f25c68 100644
-> > --- a/mm/memfd_luo.c
-> > +++ b/mm/memfd_luo.c
-> > @@ -500,7 +500,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
-> >  	}
-> >  
-> >  	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
-> > -	file->f_inode->i_size = ser->size;
-> > +	i_size_write(file_inode(file), ser->size);
-> 
-> For the code change, I am neutral. I don't suppose it makes much of a
-> difference, but if people think this is cleaner fine by me.
+> Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 
-I'd also add a comment here explaining that i_size_write() is for
-consistency :)
- 
-> >  
-> >  	if (ser->nr_folios) {
-> >  		folios_ser = kho_restore_vmalloc(&ser->folios);
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> ---
+>  mm/memfd_luo.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index 5ddd3657d8be..413df8c75c1d 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+> @@ -103,7 +103,6 @@ static int memfd_luo_preserve_folios(struct file *file,
+>  	if (!size) {
+>  		*nr_foliosp = 0;
+>  		*out_folios_ser = NULL;
+> -		memset(kho_vmalloc, 0, sizeof(*kho_vmalloc));
+>  		return 0;
+>  	}
+>  
 > -- 
-> Regards,
-> Pratyush Yadav
+> 2.25.1
+> 
 
 -- 
 Sincerely yours,
