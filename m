@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F9861093168
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:46:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D28A5109316E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:48:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0D636B0005; Thu, 19 Mar 2026 22:46:08 -0400 (EDT)
+	id 1DC106B009D; Thu, 19 Mar 2026 22:48:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBE096B0095; Thu, 19 Mar 2026 22:46:08 -0400 (EDT)
+	id 18D276B009F; Thu, 19 Mar 2026 22:48:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD3FC6B009D; Thu, 19 Mar 2026 22:46:08 -0400 (EDT)
+	id 0A3346B00A0; Thu, 19 Mar 2026 22:48:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFA586B0005
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:46:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F691C285A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:46:08 +0000 (UTC)
-X-FDA: 84564902016.08.DB24085
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F11D66B009D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:48:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9FD8F140841
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:18 +0000 (UTC)
+X-FDA: 84564907476.12.7C748E8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AF858C0006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:46:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=czaTvFVh;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf28.hostedemail.com (Postfix) with ESMTP id 14638C000D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G89sXyH2;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773974766;
+	s=arc-20220608; t=1773974897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8tR50/5Z1gzd4rEE758+lTBwQZp32+NjCqpI7YkIYM0=;
-	b=Z1hR88GBrgkDuGxQXf3Xxy+kGL7z27pcnXd5mjFEETP+kTDP+belZAc9O5/+BxX9MLejsT
-	3wXMix6WXPbWWPSFGiZaMp4cGm6+RWKr2EsgPZ5O9IahlamdfdGL1R4yR0A+NBSsphn1Gs
-	trE6/75zXHCCdfYERsteNnOQdW+PXnc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773974766; a=rsa-sha256;
-	cv=none;
-	b=zrUKeyv21wrp3yUkhE99LisDOU8kxGrwxh1iOO+fDaVpkQBjRURkIArEYHWHWB5kOL4paP
-	PdYX/lr6A9wf3sjTz8LBZSEAjdDewkih0vHJUm5iF3qOgyt2rQ1BN2lfI7f1DcFg+m1ECp
-	KICdV6ZnKxyA1Vcv87BxdIwZKFkzUCs=
+	bh=1n/mKYSJSaME5mxogRmBKIVJdPgwSkj/MGdZmTZt9lk=;
+	b=wmhjWVHbj2FFZx4OLKcQQU2LsdvM2bmxTp+nwZxxuxvPwD8Q56nrSHBmfwE9E10lO4HHyq
+	+I6Gv4VpN09l+Mzl/MNLMff3FYqY3wKVmW+ofgB8KsdZjj7fyZqz+fqqiy4vYw6dWa0Aq0
+	PySKNkFActpCwIWGHrWafzAD+1xAWyc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=czaTvFVh;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G89sXyH2;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773974897; a=rsa-sha256;
+	cv=none;
+	b=ILbSBveWQfukd+tdzzDW+Mc3lu9yUhDwhqoMfySZJLTmuSi9MWF/Sr4Adt5T7aaby6Mja8
+	8H+DlNBKb056GvL5klgCiXueJDIfNuHlC3PTqAIvEfweXAflwK7PYG6kl/r4jKt+RoGCAj
+	DIUvAbCm4Q73D+0VT9VgabXvqicItfM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1924160097;
-	Fri, 20 Mar 2026 02:46:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CDDC19424;
-	Fri, 20 Mar 2026 02:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773974765;
-	bh=YunpBLhttoCZ/wIAcy4nfrL4p7VGWHFXXCquZN24h8o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=czaTvFVhyni42YpuVBn1vWRh3Ky008Qc+XQuV8/+XFzKKmLC4NNt+pmObYqOsPzqK
-	 yh8tyZF4bDmbUAUWMBZ/hcGG+vgyAVxgnPloZ0wgZwj/PxinC+3kAEOQZY8h/2UFMo
-	 NRO4j9fuAShXnW+lMiJxKYTnE90r7LTXL5dGkcXs=
-Date: Thu, 19 Mar 2026 19:46:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH v4 0/5] selftests/mm: skip several tests when thp is not
- available
-Message-Id: <20260319194604.0a9a733f521caf2dc2bf18c8@linux-foundation.org>
-In-Reply-To: <20260319160656.1480279-1-chuhu@redhat.com>
-References: <20260319160656.1480279-1-chuhu@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AF858C0006
-X-Stat-Signature: agorm6dh7wbw6sf85mekqw1b5b55qeae
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F04A60097;
+	Fri, 20 Mar 2026 02:48:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40ACC19425;
+	Fri, 20 Mar 2026 02:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773974896;
+	bh=/MJZfpkxLYSLTMw4fqVA5bUBJsT3txP8IPH/KELwiHA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G89sXyH2fDZVtSEe3H+47YIQSJXtr8wIa23HCK5ebn/1zfTX0RypRyrkcpga9Qnvd
+	 R6eibAaBpV0yUuru4tddKxWNRXmANQZW5/mR80XMZju8EZ3hmVpgJmCbOKYz4WjYry
+	 WQF9pEvwp1CpJqfa8lHq/y7y6XUn1uUTZyXh29/CZgiXBMEhg5tnT/H3W9NH0dGsKW
+	 jYUv0LQqd13BxAd86okQORVbgGKHG0Lg5qlDZ2NEpRYW+HPlFp76GCoE0xYhcAaoDB
+	 Gbv2JdLj4MbK0srj1EZB3iMxBfvPDHeComtOzFW31PGiOUH+LFnO8qDzrf1wtJktKY
+	 TjAwQABq/0A2A==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/damon/reclaim: fix min_age_region truncation from unsigned long to unsigned int
+Date: Thu, 19 Mar 2026 19:48:13 -0700
+Message-ID: <20260320024814.1922-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260319161620.189392-3-objecting@objecting.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 14638C000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n9kbfpa5377jqct6jarbz7w4ufikapgx
 X-Rspam-User: 
-X-HE-Tag: 1773974766-269056
-X-HE-Meta: U2FsdGVkX19H523iWGc13UxH/ttFx2JfKV6GutjWvJWiq7TZFbeLYNHgM/QwQ589d4teQD51Yk0hVpVTm7VlaWTqTL2VX07hWrcC066DgKEasJeXsaMyxr30aHNVQ4sVDAANdaehzJIr7T0F00EqRicik3OiH03QwHaiThrHySL2q2kZlLPh5FPBj5DciSvQ+wyyO5ic3owr6anSCNnrJ5FkeF1BgsgayOoP7MzVtVFbEaXBQ97fG0YnZsCJ5faNiBcubwimkllxqxbOYSgXuB+cOxbiP/phcv9xpYcUEnNo3TlL/zdgfMrhW/marGHyJKX7XJ/D2y6VrR08dBHc5o3OVkNBdHZ02K9mNo3KXb0MwIBUHN8HZKVAOTAMcrNPy3pHvaBYMHOFnI8RGnyacLkPsnvi2H8cHgr/BMnUFuKYhgXPSlC2sPvKwHh4+JeQ2BXVageWsetxq9R4ZJPNhDHZKSUDV9571jGPyYPiGL3rdlrKSt9UhOr2vnT1GuzP6YXLGoo+i0EnMARStFIn2DN1seiwFsOKM0DjRrLbGVvNF8+p5SqpyWNaXzSYSTFnZXNe55HTrSnAHSaz/fL/19iR9/7zjc2ZkIT3uDkm/Pyjp3HAqNS+ZTYe6fQsh2/h55MQXnP72oXQqru3AaBoaw7Lm05p6izWFuPqUPMwgG/TKqukQEOVfq503XaGtwGa+jVIjNEsoLZC575nJ3cmRR6VAGQ+XSniMmieSKvsJ1jeyXfEHkoN+8PxveDgozx/E2T2wXuhxxyiLbHqm8hycmeTv1G1gslTiPooIJ11WuDWm7QwHINj/XqrVmnx2Hkv99S55w3bq6ldiNPzPhYV4wf6PY7V1KLh9xW4YAwRfXLZtl+OG3Cvw1nukVJyYhysXucaazqHB7Kj9wtC9TnkyfLPJ+scSWv1N+/EgUQLWXrgBc4AtsHVz4I4lfy++FgjfSfpY25G6QrkMHovITb
- 84830fhS
- 4fIvcdA4D1+xbgM8aWJpngs/P159yoP8dqXJGg1iTHhgEzXcXDpkbsm/pZFKY91ipcreZCsAEPMvKYbYvuAEPdPu85/ATog4YZl9wdTxO7Q+w3XPQSNMfx2Trgc5135NBrW/Izxa818ma0dhSLW5pUiubL7+uWqCvhowMsqSau2kar6CfGpvWE+0zqoMv87DuX3+q8+SgeunuinejY2b5ePwIfcsuNDJVMyKQNrfynkF6GkEMdiyehvsaH4gjVoiSqKsuqtAVxnHtrrJh5CEsJ0RLrNFDA8DWMth1WCNoxAYB8UrlQzie7/g93wSyI9auM2ag+yxGUCW1CkU=
+X-HE-Tag: 1773974896-704633
+X-HE-Meta: U2FsdGVkX1+nrLT/n9zJEza8NLm11epPGZuDohiUXC2oQAGQdkc4QaFebx3+yp2Bb7cFFYMWC9lamoEa9e0z7WEtOdWEXKBMbHN5X+AeTpaq10TlkQJ3lswF/j74VH+56e6/TdO6qYtX3qRcQTLRTMzK9Xd5mbgYdqMoXnLVUr/fj5k17C0MJyE0Qnubp5FvP5l8PZxx2U5iUEJL9ASQ/Bq9grjYgYKaXh9IKHXY5EbWZhOi+HDOn0b/GHwlcRwSeOeYIJeI85XFq1+EkHhGqzP3nFMPILk00AH/0pisvvD9WyND+UkSexmPMfg8zSUhCB9M0PnCDUY9+jz0PgzDm/YU9iBqaE4+hME3djSXA93jOgpZbnpp2OcCUgVkJ18in0o42GGrGMgoD0CyohCw/k3X53gAuhbC+N1yGqpn3WnVHUDFUK6y5DaIkXwHKeBFDF6uiwur94+nGQgoqV2aM7bpGJaMDuPHYV1MAStSjMWt9EuFDU3d/BMIADrN2K94qtN3ZpSw9sAvsQQ0qo8kbO/AagMMspMbbOMSe93te+mRVt8LbKJQiQh6TwcNwAgrEDvY+8iVZ3zcD7F9tGs8qWPruJ5KMu0mqFrKYRJEXcmd7hwna5+wd/UjkX8MH7/x9frJgkQBBHXhFG7FI+Gp70AFk40WlikA0WEhWvT6CO9RnN2hiBEXobQe7mJv49HuN6n6fCct2qGbGKvXRFiMGH5EUYZHaytOb15WnZ9SBBjtdHu1FWI+v9ZYv8jMfqLvELl/GzPgjlVfJoaEpL/eo2N6dc7RNYvmudLNWXo0BbpuF6+2nMKNZMQ9D5B4M9sIyWYD1vLKj38yy+R31f7ojg5ZPeByAh4QFAOKLwkJoBdYXAjWvY+4bY4BpMnEGFNQjJwVeawpLZyzE2bn/gWGj97bsLXD7F1hmQqinUvBv81yXtO2uX7VL7K2fJ1Jb9NLwhJairveHlOSJAJdpcy
+ D7B34Tzm
+ qwVEoeRumPS4vAXrj80GTViScY58fMfyYwIols7uXYiqW3IjUJ+t7EIqNFPTI/8fkFiaPdjo3Pn476cagunRL3Ou64VJGOk8/BJcfahabnvX9nfrgYCWxxL7CMbx4RHOeKaPajWCAZtXBteVYRQggq1gVW04/9xuIwSSCBP3SxjP4iuHyxXT4f9gx/0PMa2Ryi3VSR50GpeC7y8zIH9TaQixxDm6KIncHSBY0ShQj9b33ZWwnbwNcZ1OMtondT2zb4v+f2q62mrjN4fgQs6mPfJiyBmE43pomQSOy7UX39u2wfWDI0TQEFRr6FyU+UqUvCw7CFyG8Qlq1f9pNy1sdtBVebN5tcGzl4eBp29JBuKWtstY5PeyZSfTNG0BHtjNHiVt+UIy9VtaErBo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,12 +93,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 00:06:51 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
+On Thu, 19 Mar 2026 16:16:20 +0000 Josh Law <objecting@objecting.org> wrote:
 
-> There are several tests requires transprarent hugepages, when run on thp
-> disabled kernel such as realtime kernel, there will be false negative.
-> Mark those tests as skip when thp is not available.
+> min_age / aggr_interval can exceed UINT_MAX with extreme but valid
+> module parameter values, silently truncating min_age_region and
+> lowering the cold-page age threshold below what the user intended.
+> Clamp the result to UINT_MAX to match the field's type.
 
-A couple of questions from Sashiko:
-	https://sashiko.dev/#/patchset/20260319160656.1480279-1-chuhu%40redhat.com
+I believe the issue is not making real issue in real life.  But fixing this
+makes the code cleaner to read, so I think this is better to have.  Thank you!
+
+> 
+> Signed-off-by: Josh Law <objecting@objecting.org>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  mm/damon/reclaim.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> index 9b55df304e51..303c64a56073 100644
+> --- a/mm/damon/reclaim.c
+> +++ b/mm/damon/reclaim.c
+> @@ -170,8 +170,8 @@ static struct damos *damon_reclaim_new_scheme(void)
+>  		.min_nr_accesses = 0,
+>  		.max_nr_accesses = 0,
+>  		/* for min_age or more micro-seconds */
+> -		.min_age_region = min_age /
+> -			damon_reclaim_mon_attrs.aggr_interval,
+> +		.min_age_region = min_t(unsigned long, min_age /
+> +			damon_reclaim_mon_attrs.aggr_interval, UINT_MAX),
+>  		.max_age_region = UINT_MAX,
+>  	};
+
+Sashiko comment.
+# review url: https://sashiko.dev/#/patchset/20260319161620.189392-3-objecting@objecting.org
+
+: Could direct access to damon_reclaim_mon_attrs.aggr_interval result in a
+: division by zero? If a user writes 0 to the module parameter concurrently via
+: sysfs between the validation step and this division, it appears the interval
+: could be zero here.
+
+Makes sense, but orthogonal to this patch.  I will work on this.
+
+: 
+: Also, since both min_age_region and max_age_region are now clamped or set to
+: UINT_MAX, the target matching condition becomes exactly UINT_MAX. In
+: mm/damon/core.c (kdamond_merge_regions), a region's age increments on each
+: interval via r->age++ without bounds checking.
+: 
+: Does this mean a region's age will hit UINT_MAX, match for a single interval,
+: and then wrap around to 0, effectively defeating the "reclaim if older than
+: X" logic?
+
+Good point.  But such case may be too rare to consider...?  Anyway irrelevant
+to this patch.  I will take more time to think about this.
+
+: 
+: Finally, should similar clamping be applied to other DAMON modules? For
+: example, in mm/damon/lru_sort.c, cold_thres and hot_thres are computed from
+: unsigned long parameters but typed as unsigned int. Similarly, in
+: mm/damon/sysfs-schemes.c, damon_sysfs_mk_scheme assigns unsigned long
+: boundaries to the damos_access_pattern fields, which could also result in
+: silent truncation.
+
+Yes, similar issue may exist in DAMON_LRU_SORT.  But definitely it is
+orthogonal to this patch.  Also, as I mentioned above, I think this change is
+good to have but not really fixing real critical issue.  If a nice person send
+a patch for this, I'd appreciate.
+
+
+Thanks,
+SJ
 
