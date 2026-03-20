@@ -4,84 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6EB31099B25
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 276281099B2B
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:24:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DACFC6B00A8; Fri, 20 Mar 2026 13:18:25 -0400 (EDT)
+	id 68A296B011C; Fri, 20 Mar 2026 13:24:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84136B00AC; Fri, 20 Mar 2026 13:18:25 -0400 (EDT)
+	id 661106B011D; Fri, 20 Mar 2026 13:24:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C99676B00AD; Fri, 20 Mar 2026 13:18:25 -0400 (EDT)
+	id 59DE36B011E; Fri, 20 Mar 2026 13:24:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B887A6B00A8
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:18:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D5F7C177E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:18:25 +0000 (UTC)
-X-FDA: 84567100170.15.5233124
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3D410C000F
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:18:21 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2536B011C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:24:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16982C17B9
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:24:02 +0000 (UTC)
+X-FDA: 84567114324.14.ACF3CC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 80DD24000E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:24:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATswcWl7;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774027103;
+	s=arc-20220608; t=1774027440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cTh3SjyQV9zVIHrEEyzDbGNBD7xaCu8FNq5LhVeb820=;
-	b=en9vKyqectzp46yAEXzRoDPW9lZaaeVqhyr/Ktehx3ZIiq/osCklPVyOQ5RIGnbBkDkEZW
-	u52ZjGCPYuaxXuDZRvOO38WEFXfdCmTm7ATOEPE/jxmVymNlNNOdOFm7jo1WlrLNCFAfEC
-	TbkhI6/TRtkn4MUvCpkLKNxROSrWfbc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774027103; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GOZ9iikVb+7SHcLJC20iKdpw/HGgz7IGT2++bx15Fio=;
+	b=VroF3IJ5ngfg6c0oV4tkPQHEyBAo4xpECWesBhzDLLgKpESQuyusH1lSXuZsbQZGQwMfnU
+	0dW9n7qqkbrk0LbkImgRPOGJhybb2ar43nl/s4GMcqJjtkDN3xPpM2FjBDFrRC4v/5gSYq
+	nyI0gtTPXeKo6O3rlbwe5pFw0Lnt7Fk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774027440; a=rsa-sha256;
 	cv=none;
-	b=sMM6CoFExQZlMqA8lGEXLB/Te6BJIFoWawdrDectiTaaCJb22EZiaNGm6MjG/h6vG7TOWk
-	vqPhy3/5B/Fzfiy1nav8M0hxUjhS0sW9e+S7cfXGw9s6jfwPvYP7x1j46kdyNqC1HsQ+Xa
-	9a+26SWibPkoQ63uK7MPfnMZpHKJ7n8=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 21 Mar 2026 02:03:19 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: rafael@kernel.org,
-	akpm@linux-foundation.org
-Cc: chrisl@kernel.org,
-	kasong@tencent.com,
-	pavel@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	usama.arif@linux.dev,
-	linux-pm@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v6 2/3] mm/swap: remove redundant swap device reference in alloc/free
-Date: Sat, 21 Mar 2026 02:03:12 +0900
-Message-Id: <20260320170313.163386-3-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260320170313.163386-1-youngjun.park@lge.com>
-References: <20260320170313.163386-1-youngjun.park@lge.com>
+	b=vI9V9UXlMWgJCwCTxvvJOD5M2u96REVG/KWz11DwfCSpzYra2oQYuWN3qtj72tImIcBXmy
+	rhodGfLDQY2P5CgwybtwQRDUTzDLoxd1PMwLUS8geI2Ce8dlxUTFMSxn/O/ggu1PAtzR0Z
+	bZDj9ZYmuz2vb6Ik/4ofSPl64dgq/IM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATswcWl7;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CDAE43F9B;
+	Fri, 20 Mar 2026 17:23:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952EDC4CEF7;
+	Fri, 20 Mar 2026 17:23:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774027439;
+	bh=lkMH+Fs61pHyUrN0N7PA7Smmgeamo1Ed8V7OOsLNBN8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ATswcWl7MXWHHj389gFxOlECgcgQeJYv1wKqdExtZHqinVM8C1iUlLVry9OwlEG+s
+	 hQm57r7Pk+ZpJ3t0nw1/vvLOsQgKwispPEvcju2E9P/9JEP3v3yKvGkvycL7b0J2eK
+	 ezcqS/hxxM9fVO52XT/cmWkPIx24fW0C1LS9PL8IDJR6j8X/JoZ8s36B+4wxYvx/7M
+	 P98bC7b6fLvX4lzSxnJYRzQmThW9ckw1V9os4pxuNV73Z4BucD39QRODtyzANsRpNK
+	 4W1hTmWPTL9W0bOriXcoFpQK+v+c1Mbp60aVI67dnQEaAkyxZ6w2Qp0mXlzveN3nC0
+	 CSmw5tCHpFg1g==
+Message-ID: <b917813f-78fb-4c31-913c-5e343c52cab7@kernel.org>
+Date: Fri, 20 Mar 2026 18:23:49 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3D410C000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rdkewxejut1uxyfdub7cidp9nzyzrr56
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/16] mm: add documentation for the mmap_prepare file
+ operation callback
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-staging@lists.linux.dev,
+ linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
+References: <cover.1773944114.git.ljs@kernel.org>
+ <172ef809d9976b067bba4cd9d2b78410c6c6d03d.1773944114.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <172ef809d9976b067bba4cd9d2b78410c6c6d03d.1773944114.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1774027101-139906
-X-HE-Meta: U2FsdGVkX1/1IxuJOgeqLy154ppIMP9XY6ce5F3MoPkNdk8bcz/0Ge42SHp+3UpWQzLa0yTkfJGsjCIm6pgD9lhCX73SOalR2EB9+R62eYCWROezZRchY1ZTgV+LUynah0Ol4cBQ4+j4YZ/rgK7JMWVbPTMXhaeQOfcdhQmOsOiNej8vk+PyuLl45BAcBiwjUMZ5ynStNG4Q2k4097y0aIDA6U9zv9Y5sg2qTPjSXawB8QdlpixYMPLE1+sIEwPfGhpEdbtqZoVToqNsfcfHh5s8kTBRAm+vT/9XmmjPrmvbjUPyKKVg9Wq57qS2g/NzPjkfITX/5j1YNecBxxTeGZq7KSu0NIX4S4+Hb0rLkMQoJLRu6GDkwZjspcPQAPDuGoGOXFna6stgdXNOrBFYRk0nCqmDurnyhGFZx0FahtmYYUUW8Kh3HM7DscX4Gp9T9IxA/XLQ4aZpwCH+YC1WlHlGQUWgwyFv0YuaO/pE7LJJ7WCzrCEkRwKjCuGb40pkQCk9nuhQ4cnt0oGe3DjfAVTG0ZyF/33Ysvjif4lksJX2bAcWctHeVlIpuCfeXVJvxoYteUstDgZAZ0pYrUC95YBbiqiSNZXNK+qkhNZUVDVAJN2Rtq6QmdfV/KRn2xwYyEuMBI7ClzqzfcaBD2uRxXZqae4wCPkBWbmodPvLRP0o/Pjlyh0B1GgNk2DiCqdzo49vcUXWdiLKb7bWckEllTLe+1keooKcWejXqkmvmLOSHqLxSTDEwL6RSrF+LHkfiXJOs65RK2l1NQLBGLdENetNFA1ljX5KR9alyU90S1TdJmrwjBdj+ymzuan9ivfa5g/oltWEvMrsOEw2lj3z/7T+GYTMODyFD59eMJ9y90iXvAMNmkAz/V8SQlWN+LDxRLL8BRpbIT8lnLVOavYmVR5JPiMVcI6R7RPL3KALIy3RPY9HeDpWrYuBWFalK6xkWtBBjCSjFjbAXPe96kN
- dRVaBAFZ
- W5llKmSTPEOUDlmkv3W1e1Lovz+83VLtXkm7Ccp7guSP/4cA5HFog4G5qdDdzpRD1y1DuhkB7A59Tx9n5MUWIgnEuwUFLY27kaYBxxFNUf9jg3vlAOd1rDx0kAzVTPc4bxURuTpbyUsE2FbvCP+SCy3QkU8cfcv3upUZc
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 80DD24000E
+X-Stat-Signature: iswiqwob88er3epq5h63m8csbze9pk38
+X-HE-Tag: 1774027440-218973
+X-HE-Meta: U2FsdGVkX1+TZqUDJPHXy/hLLkcDzCTSpd3KM+s8odG+8vHsTgvqfjuWCHHcBhEktnAP6Z9WSP7LYLpBODaSnudUwLof8X/pbFN4EKpgqxZHzXipoBfMxwhfyP8F2f6VlVceBbeglqMoz0vQbOKbz8rs4Tb66EcyC0OgMSeEEAamsFalRAKM0E7xrqQPOQTjCGITJH09LKkbLpIcrnH0NKXrs7uVLQ5e01CxK6OALTrgKItzH/rt2ohNB4i9Yia6pPyMVR/Mv9H2uHWmH3PT8HtIzbttmdC65naoT7bviobaTzqrCqzNR4Q6Ia1WaVjNyMspvgjYnc2av0icBEr+7CVPEfMsRFptRjdudou1n+OWr4GI4dojacdrFVJ/GaeJKro5lkGLlPhci4xqjjNwGYVs29tvrtnIO47Re2rha+bKscm2jdkQrmwsUndDyJ9p8IIa3bMi7leuGMBn207jnAslrQ3lvxN9rS7i0oYD5dZL+fHVgV2/E9EwgrVcw9ByhT3QvPeBJze3xthjbuXJnvJmbk6t8sxCBvfdqKiEIvUoxiBnUGyE9xmkiX/cxWzgzBq9r6ATYGNBfYIWDePw0Xhcwv83oGJYBOA9Cgltu4bfuMurOdHm6llS47bj+/qJWjyrVp+CkaGtKIRHiMAxVRvq7fVq/M3O046YwxDAcnS834HEBCfHSwAQKNXD77jeOxHy4IuNRRbxh8sJYIx1i+pIWTPgmTdR92sBQGg0ONyH+dsAV9qK2/ZkaUpoF4pc5Imiw4baDfx9uhdWTXfWswHjTbnx0L4nPlvTzPLzilAOxXHYl5SyzfLOPuwxyQNAFjkYQPSJhSm3LKLaH/n5bOWuvF8dVE1OlyoThysrhT8rmPzAHurKSmUgikinHBAHkdxrT+dIZGgTQEPP4NJ6G6ITpSyj/DvovtEz/LCGUO9ZuaYcqGhgx3OcPvCz6FD4GMcG7+RzLE6U85nPL7J
+ /3uO8A6w
+ 1afolVxlq3zZouo4oqKGD1vran3Zj1LJxpYgdPlEiFLOKJ+Usl4JvfX4e4awpsOnfQuNQPcBIooDmFkQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,106 +120,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the previous commit, uswsusp was modified to pin the swap device
-when the swap type is determined, ensuring the device remains valid
-throughout the hibernation I/O path.
+On 3/19/26 19:23, Lorenzo Stoakes (Oracle) wrote:
+> This documentation makes it easier for a driver/file system implementer to
+> correctly use this callback.
+> 
+> It covers the fundamentals, whilst intentionally leaving the less lovely
+> possible actions one might take undocumented (for instance - the
+> success_hook, error_hook fields in mmap_action).
+> 
+> The document also covers the new VMA flags implementation which is the
+> only one which will work correctly with mmap_prepare.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Therefore, it is no longer necessary to repeatedly get and put the swap
-device reference for each swap slot allocation and free operation.
-
-For hibernation via the sysfs interface, user-space tasks are frozen
-before swap allocation begins, so swapoff cannot race with allocation.
-After resume, tasks remain frozen while swap slots are freed, so
-additional reference management is not required there either.
-
-Remove the redundant swap device get/put operations from the
-hibernation swap allocation and free paths.
-
-Also remove the SWP_WRITEOK check before allocation, as the cluster
-allocation logic already validates the swap device state.
-
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swapfile.c | 43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index ac1574acade7..dd9631658808 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1923,7 +1923,12 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
- }
- 
- #ifdef CONFIG_HIBERNATION
--/* Allocate a slot for hibernation */
-+/*
-+ * Allocate a slot for hibernation.
-+ *
-+ * Note: The caller must ensure the swap device is stable, either by
-+ * holding a reference or by freezing user-space before calling this.
-+ */
- swp_entry_t swap_alloc_hibernation_slot(int type)
- {
- 	struct swap_info_struct *si = swap_type_to_info(type);
-@@ -1933,43 +1938,35 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
- 	if (!si)
- 		goto fail;
- 
--	/* This is called for allocating swap entry, not cache */
--	if (get_swap_device_info(si)) {
--		if (si->flags & SWP_WRITEOK) {
--			/*
--			 * Grab the local lock to be compliant
--			 * with swap table allocation.
--			 */
--			local_lock(&percpu_swap_cluster.lock);
--			offset = cluster_alloc_swap_entry(si, NULL);
--			local_unlock(&percpu_swap_cluster.lock);
--			if (offset)
--				entry = swp_entry(si->type, offset);
--		}
--		put_swap_device(si);
--	}
-+	/*
-+	 * Grab the local lock to be compliant
-+	 * with swap table allocation.
-+	 */
-+	local_lock(&percpu_swap_cluster.lock);
-+	offset = cluster_alloc_swap_entry(si, NULL);
-+	local_unlock(&percpu_swap_cluster.lock);
-+	if (offset)
-+		entry = swp_entry(si->type, offset);
- fail:
- 	return entry;
- }
- 
--/* Free a slot allocated by swap_alloc_hibernation_slot */
-+/*
-+ * Free a slot allocated by swap_alloc_hibernation_slot.
-+ * As with allocation, the caller must ensure the swap device is stable.
-+ */
- void swap_free_hibernation_slot(swp_entry_t entry)
- {
--	struct swap_info_struct *si;
-+	struct swap_info_struct *si = __swap_entry_to_info(entry);
- 	struct swap_cluster_info *ci;
- 	pgoff_t offset = swp_offset(entry);
- 
--	si = get_swap_device(entry);
--	if (WARN_ON(!si))
--		return;
--
- 	ci = swap_cluster_lock(si, offset);
- 	swap_put_entry_locked(si, ci, offset);
- 	swap_cluster_unlock(ci);
- 
- 	/* In theory readahead might add it to the swap cache by accident */
- 	__try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
--	put_swap_device(si);
- }
- 
- static int __find_hibernation_swap_type(dev_t device, sector_t offset)
--- 
-2.34.1
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
