@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F2A91098784
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F7E1098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A21936B00CB; Fri, 20 Mar 2026 09:42:52 -0400 (EDT)
+	id C982F6B00D0; Fri, 20 Mar 2026 09:42:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D2DE6B00CC; Fri, 20 Mar 2026 09:42:52 -0400 (EDT)
+	id C1C3E6B00CC; Fri, 20 Mar 2026 09:42:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FE986B00CE; Fri, 20 Mar 2026 09:42:52 -0400 (EDT)
+	id 981A46B00CC; Fri, 20 Mar 2026 09:42:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 55CA66B00CB
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:42:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 25ECD1A0200
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:52 +0000 (UTC)
-X-FDA: 84566556984.19.836AC4E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C8B8880018
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B9326B00CE
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:42:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 30C0BC106D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:58 +0000 (UTC)
+X-FDA: 84566557236.23.9CA353E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D379C100015
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774014170;
+	s=arc-20220608; t=1774014176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CT96S4tH9al06cTh68ySZsyxIYDQSszZc+Xp6SlwUwA=;
-	b=CLOzKuiOLAemdyCXRw/pGtb94FI7PSdZuRuLJlUrPvqYaWOL/os6w9vicqb5LfyvZa5bC1
-	r64iDgAaXFXAfkjvEAHLVDY1oIi8BxdynJf/vidMVaTrCEL20ZFbmut61iO4XwnPqBzRKU
-	AHYmxUqehIr2liLeMs/3vVw0fr4Nj58=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014170; a=rsa-sha256;
-	cv=none;
-	b=Tf1GJgxW1p3UBkrM8+F1JDK4AQf+RixXZDXVfZcgwtazoLCdd20Trci15XWcougRcZfEXO
-	8vi+8wpKhHeDlRLr4hwQDetUamDHSGtHtAGSrj+6VAW/Hkg5elD9WC+A9ghJTMMlXKYOzw
-	LTzt+yvqoEGZ97pygcNTrGbGH8E9Gx4=
+	bh=BZf2ZBFpRjnWHatooisRljOocXg8yOtT5Jsbi6q6OWo=;
+	b=wkQ86xoeY5qLT74695lo5w8NvUky41kiJHqLU0vYdqG/TqgoiscK64eQ7708Y5GhBOk5wz
+	X+K6a9prH+9eIqXPI1CSYuaR0Fe+l08oQ1ZjEZIE5Aoj0SiEig1ni8kBfbumsD6rfeeBkP
+	Iae8qDed5pSfSM5D7hfqgln1lUZ59eU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf05.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014176; a=rsa-sha256;
+	cv=none;
+	b=yuygodJgW1XRsCLeCI0gleraOjXpSGIDwGKApl63apTvHMBTdEizIzfcdL7Ri4+Lvm3HAb
+	/hdWYWkItBndJ9vCXndCbAgHalnT5sSJk+C1a5EoCFLUhixT/7OEVwyQ93eInuZy5uTqWq
+	KbA/92f1rPYeSod1jGT+JI611Rc8Uu8=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 698FE5BEDC;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8B9454D423;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 523B34281C;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E5DA42819;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5TYSFJlOvWlzCQAAD6G6ig
+	id 9xHZHplOvWmFCQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:45 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id F359EA0B3C; Fri, 20 Mar 2026 14:41:44 +0100 (CET)
+	id 49596A0B51; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -81,14 +81,14 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 20/41] fs: Ignore inode metadata buffers in inode_lru_isolate()
-Date: Fri, 20 Mar 2026 14:41:15 +0100
-Message-ID: <20260320134100.20731-61-jack@suse.cz>
+Subject: [PATCH 28/41] fs: Move metadata bhs tracking to a separate struct
+Date: Fri, 20 Mar 2026 14:41:23 +0100
+Message-ID: <20260320134100.20731-69-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260320131728.6449-1-jack@suse.cz>
 References: <20260320131728.6449-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4530; i=jack@suse.cz; h=from:subject; bh=1NKDncz6Z7546ej0732+hXSWl17G06Ctb725RLacGIs=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU59nMMCriSqYDkQ+rIxKnPPuxayrxzgjDtg5 Npw+AarQEuJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OfQAKCRCcnaoHP2RA 2TL7B/9+3M09G8xKSiyYXHTJO/TNRoEGH/s/2BP9I+Z/jzcafAw0j66C0G8g+WjoY5ggjOKV5Ci oi6MpNhW+kmcj3j/qWfQpU7A09glQ43CB5XbDJ2jHzIMtILDN9oYKwVCEcS2ha7JRwNfStB/QAE TT4u78pgrWYuIRUO7aCIHYgT6Kjk+C70UUqfqNuh2XpipH+COC7YXq1NUxA9MfUmICcOLUsbF+0 bLBA2QGR7vv4ZD0bt3Ox1XSHqvyvVmjjM2q4g6LhJPD+AUcogOgEu5Ccewgfd75ddsMIuVttHdc yoB1nmkmk9obTCrzz/aAg4Rh7PqTbgRAG6VkcVuiqOov0rLD
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11936; i=jack@suse.cz; h=from:subject; bh=d4wfbnQsGzeBo94sho0FVhxTGYKJVm6lS2ISpL9b2VQ=; b=owGbwMvMwME4Z+4qdvsUh5uMp9WSGDL3+rVcvbrAaU6pzK6TNf6GtUv/FbG1iHgW9IssfdPZI f2T4XtlJ6MxCwMjB4OsmCLL6siL2tfmGXVtDdWQgRnEygQyhYGLUwAm8tyN/b//zTh2gzVMEl1v e/uyzSdw7Pv/T3F79AKr1/7Lbs/ilVOW42lcKaDlVvezvix7ZYxH/atcSeFo7dx9Yhc4ee/YsHx cU10Wcci0kVFi6ZTTdkZnszm3fMnXsTuuelZ4z61eYR1ZrZ4CA/dgHXeOe1K3VCzW7s92SNzyVa vaav1dfe6794O27rqjbHDjnS/vZh9mi6lLpvtsXtv9uqL2vKHGlL1Vqp0//nJVxntV739qvWrHZ zGzNomFb/5zbeu2cE2W+eWxUvpDOc9uu6UqByoOJ5yTVVvG4c2WeEmu1v+GdvbjW8nxU1cJBxtu 7DSo3vXCYFKz23c3sx4pnyt8B75vY2kP+LnRQ/pEUk4pAA==
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
@@ -98,14 +98,14 @@ X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C8B8880018
-X-Stat-Signature: 6dmpd1dwsim51cd7w66m67nz6kx1zbmr
+X-Stat-Signature: 4ru9m4gm4zqjq8fy4tdgachm11rqnssw
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774014169-190392
-X-HE-Meta: U2FsdGVkX18YVTNLJbO3UXd6rdSxm9Jw6w9uTzbcpjwbGSo6gCay0w0xVLHroQItit7QqjhANolrzY6JgPWMDszCkWxgKZAV+6DfurU2zyf1wkHxFvtDR+LOoDQR6wOyLfIDnOKvXxZJdzlRemWSLr88p/HEXZoNWVe6Ka1ggOSbpTVNwdcIMs+2ntWZZuZT53ON9UFja435i+QBSINB7IS6wElHsbxp80flbjQgldq5AKmeJ3YdDGhXl8L68e5svioYOr+0qSOsir5rAv9EAhME//XbTLfCrkOFWvMh8/SCapaJHxScUt6AAjWHkNHg4D3NPzwXT9hxFtm4GhRPKHixpUHVM4Xn3gwVtIXyWfQSHC2rJ/6sQ/gQ20pcnPAulYdJvWA6u8HabnUiUNiFjv2+f1N67oOHUttN4CiI4eqMFgXwScVhlIrq4LiOUq3Kg/nohB9vo6PhHb49AcwbKaE0FeSnQ6XawzyVRNYRTC02KpOD9rJloD87SRoUBY3qjoUtSewkv5XEmktnHugNHZod6HlsOrhc/nGzZ1hCaSVjnfFVC9zR5xqWoQF2vCOCd2ltgdNL80JM0UKY/dhVjd7fq7GQpMspBObqSM/x3yiZ2QnvVfj3RXz6Zapf3l+Uk6TzqDbuTy53e9oESpeC5XCXSdSZBWz8ZHJz/piUuYj6WmuD5bVNk8FSURbgKKhkco4QhwRcxPXEzZCWzxDcXWHFHCcy2DPJcKul0GjaJyScUZW1WmAmjeErV+Wg7mKd4HM0RQYSvFiCSjMuzzdvOyYAe2JHPRdkoTkMAwDcBKrxZEY1o3dKTcH6X7GTneNrS3VOqDE1UaxbmBWD3m2MVPBOwtuQ5km487E52XjXWn3QA0BAgQHDcjHBbFL6sJIObOkB5SrFdZuOWSUYZyTH+RQWWYFFMrPZjgzc7YVjqJnYN7nu37gwJozP3fkkT48jWkSkDji7cfizD7YrTxz
- Dw6acc+h
- 4k78wiy/gF+s6dROcj46r9VYtm6fRJySXdkSDfy/VRcrP4Scg2YdvrhiL58YDihPkf5ZlDQT8+q7SHpPbtZxfsck5AeC6JNyh5DXCAqtOOGde3Zv0Sd5rZzFippp/ibYEkikHNTDhlHg/+ojuy6tgEcf/zl8GTZzAtOwK73gEEDSJSEFTPeAW5SvqIms6s853uyEupjWOVK3wUtWzxcmsHUu8TuCglsWSspsauqnnco7qtgM=
+X-Rspamd-Queue-Id: D379C100015
+X-HE-Tag: 1774014175-122689
+X-HE-Meta: U2FsdGVkX1/xjQt29kc7vK2aSNK0PrLvPK64LkjfqU2gRcG7qoKrV71eWj/alfBmY4Zz0sK06uQXOUZ/tFevmo6YlqmtE+LvvOXsq71NnRUVGmIRhsHe1BupwULKI15H90nxQc8zVHWMiYzxbbrJ8Et60qmUq/k/Jy+OA8dA2F7WerQkGAY/Ql50hBZocD0e8BWJDpT+lX+Kr/b0kLg2S1tZefI2kWI4L24QKFHiavPzgiJwP/GXPh8GL17V4bGCUNyV0RfPV5rKh7rmpVKEwvFnGpGUzKohUavY6gTt2daPIHXVR8CK69PbQIwAfBSOYD5ZOY8RP9mtVgKdM2NVpQxgz5Fy4iTPSFYefEIQ34rPbHgM/0LWWZro5tE9U+vQkoGI/cj8I3nP2v4TSzr/olJYpLybM4czgLfaEqCjAnI52GJdHodQoNIvSamAtVKOh9NeQ3ccF8QWC6+X4I0PYhyGRJqZwH5T2fqCaYK58KOD5o6eTwZn06yoVCnGk41j84YODuD0O2NPyEXwJ0kDMGw/SrEIWy5eEIcpgngW+zbBq3W6Igls8sRWe1MaQFGONBIWRnXlNRp3Oeeb1VW3V32CcqdxWirrhmc4ndbdOxVCkznosZ2M6KbX2BGQS+nHuTivzfdxJwu1oyw1rLPuhwCqKfoMSQro9jgjbNyNQE5lI4S1etDTLvl+gJR/AAI7gKEsEUAtiezGAqRmFNzA7EAehMNXKW6r/uiIbgM98VtCyfkDbDDHsXMQeLHNoMQyDKa1clPLPvmXcgam28wS6ExhyX7iljcJnG1EbeMj25quK6FibsXyxBuz8tgSzzVpBIEaqhQbJHAvemEesBu/3hEd9z/RGD6cb1vLsAhZHeosKyyGObddSPHxu1e8CaSiDJNzfZiZIA2GrwCnZ81arp8MuLcNpW2Ujo5MbvT2XLXNLXGkMCfEQkw3LaufXA94s2COay04Ty0VJdNoh4H
+ ZUH8Uuka
+ fgq3smWSPESzjnxcywutljSKsPsVRxMeBRiXCFM8ObPOoTlUzinbBrc6IdjagCTMQKVl4WFYR92Z5ly6ljrixWIWKqO+tKLna8dOGB97y1rgkwWSEmUcHc5DRomLwJqoJFoMpBkEXN3VLZebqFn+61g/RtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,129 +113,321 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are only a few filesystems that use generic tracking of inode
-metadata buffer heads. As such it is mostly pointless to verify such
-attached buffer heads during inode reclaim. Drop the handling from
-inode_lru_isolate().
+Instead of tracking metadata bhs for a mapping using i_private_list and
+i_private_lock we create a dedicated mapping_metadata_bhs struct for it.
+So far this struct is embedded in address_space but that will be
+switched for per-fs private inode parts later in the series. This also
+changes the locking from bdev mapping's i_private_lock to lock embedded
+in mapping_metadata_bhs to untangle the i_private_lock locking for
+maintaining lists of metadata bhs and the locking for looking up /
+reclaiming bdev's buffer heads. The locking in remove_assoc_map()
+gets more complex due to this but overall this looks like a reasonable
+tradeoff.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/buffer.c                 | 29 -----------------------------
- fs/inode.c                  | 21 +++++++++------------
- include/linux/buffer_head.h |  3 ---
- 3 files changed, 9 insertions(+), 44 deletions(-)
+ fs/buffer.c        | 138 +++++++++++++++++++++------------------------
+ fs/inode.c         |   2 +
+ include/linux/fs.h |   7 +++
+ 3 files changed, 74 insertions(+), 73 deletions(-)
 
 diff --git a/fs/buffer.c b/fs/buffer.c
-index 1bc0f22f3cc2..bd48644e1bf8 100644
+index fa3d84084adf..d39ae6581c26 100644
 --- a/fs/buffer.c
 +++ b/fs/buffer.c
-@@ -878,35 +878,6 @@ void invalidate_inode_buffers(struct inode *inode)
- }
- EXPORT_SYMBOL(invalidate_inode_buffers);
+@@ -469,30 +469,13 @@ EXPORT_SYMBOL(mark_buffer_async_write);
+  *
+  * The functions mark_buffer_dirty_inode(), fsync_inode_buffers(),
+  * inode_has_buffers() and invalidate_inode_buffers() are provided for the
+- * management of a list of dependent buffers at ->i_mapping->i_private_list.
+- *
+- * Locking is a little subtle: try_to_free_buffers() will remove buffers
+- * from their controlling inode's queue when they are being freed.  But
+- * try_to_free_buffers() will be operating against the *blockdev* mapping
+- * at the time, not against the S_ISREG file which depends on those buffers.
+- * So the locking for i_private_list is via the i_private_lock in the address_space
+- * which backs the buffers.  Which is different from the address_space 
+- * against which the buffers are listed.  So for a particular address_space,
+- * mapping->i_private_lock does *not* protect mapping->i_private_list!  In fact,
+- * mapping->i_private_list will always be protected by the backing blockdev's
+- * ->i_private_lock.
+- *
+- * Which introduces a requirement: all buffers on an address_space's
+- * ->i_private_list must be from the same address_space: the blockdev's.
+- *
+- * address_spaces which do not place buffers at ->i_private_list via these
+- * utility functions are free to use i_private_lock and i_private_list for
+- * whatever they want.  The only requirement is that list_empty(i_private_list)
+- * be true at clear_inode() time.
+- *
+- * FIXME: clear_inode should not call invalidate_inode_buffers().  The
+- * filesystems should do that.  invalidate_inode_buffers() should just go
+- * BUG_ON(!list_empty).
++ * management of a list of dependent buffers in mapping_metadata_bhs struct.
++ *
++ * The locking is a little subtle: The list of buffer heads is protected by
++ * the lock in mapping_metadata_bhs so functions coming from bdev mapping
++ * (such as try_to_free_buffers()) need to safely get to mapping_metadata_bhs
++ * using RCU, grab the lock, verify we didn't race with somebody detaching the
++ * bh / moving it to different inode and only then proceeding.
+  *
+  * FIXME: mark_buffer_dirty_inode() is a data-plane operation.  It should
+  * take an address_space, not an inode.  And it should be called
+@@ -509,19 +492,45 @@ EXPORT_SYMBOL(mark_buffer_async_write);
+  * b_inode back.
+  */
  
 -/*
-- * Remove any clean buffers from the inode's buffer list.  This is called
-- * when we're trying to free the inode itself.  Those buffers can pin it.
-- *
-- * Returns true if all buffers were removed.
+- * The buffer's backing address_space's i_private_lock must be held
 - */
--int remove_inode_buffers(struct inode *inode)
--{
--	int ret = 1;
--
--	if (inode_has_buffers(inode)) {
+-static void __remove_assoc_queue(struct buffer_head *bh)
++static void __remove_assoc_queue(struct mapping_metadata_bhs *mmb,
++			         struct buffer_head *bh)
+ {
++	lockdep_assert_held(&mmb->lock);
+ 	list_del_init(&bh->b_assoc_buffers);
+ 	WARN_ON(!bh->b_assoc_map);
+ 	bh->b_assoc_map = NULL;
+ }
+ 
++static void remove_assoc_queue(struct buffer_head *bh)
++{
++	struct address_space *mapping;
++	struct mapping_metadata_bhs *mmb;
++
++	/*
++	 * The locking dance is ugly here. We need to acquire lock
++	 * protecting metadata bh list while possibly racing with bh
++	 * being removed from the list or moved to a different one.  We
++	 * use RCU to pin mapping_metadata_bhs in memory to
++	 * opportunistically acquire the lock and then recheck the bh
++	 * didn't move under us.
++	 */
++	while (bh->b_assoc_map) {
++		rcu_read_lock();
++		mapping = READ_ONCE(bh->b_assoc_map);
++		if (mapping) {
++			mmb = &mapping->i_metadata_bhs;
++			spin_lock(&mmb->lock);
++			if (bh->b_assoc_map == mapping)
++				__remove_assoc_queue(mmb, bh);
++			spin_unlock(&mmb->lock);
++		}
++		rcu_read_unlock();
++	}
++}
++
+ int inode_has_buffers(struct inode *inode)
+ {
+-	return !list_empty(&inode->i_data.i_private_list);
++	return !list_empty(&inode->i_data.i_metadata_bhs.list);
+ }
+ EXPORT_SYMBOL_GPL(inode_has_buffers);
+ 
+@@ -529,7 +538,7 @@ EXPORT_SYMBOL_GPL(inode_has_buffers);
+  * sync_mapping_buffers - write out & wait upon a mapping's "associated" buffers
+  * @mapping: the mapping which wants those buffers written
+  *
+- * Starts I/O against the buffers at mapping->i_private_list, and waits upon
++ * Starts I/O against the buffers at mapping->i_metadata_bhs and waits upon
+  * that I/O. Basically, this is a convenience function for fsync().  @mapping
+  * is a file or directory which needs those buffers to be written for a
+  * successful fsync().
+@@ -548,23 +557,22 @@ EXPORT_SYMBOL_GPL(inode_has_buffers);
+  */
+ int sync_mapping_buffers(struct address_space *mapping)
+ {
+-	struct address_space *buffer_mapping =
+-				mapping->host->i_sb->s_bdev->bd_mapping;
++	struct mapping_metadata_bhs *mmb = &mapping->i_metadata_bhs;
+ 	struct buffer_head *bh;
+ 	int err = 0;
+ 	struct blk_plug plug;
+ 	LIST_HEAD(tmp);
+ 
+-	if (list_empty(&mapping->i_private_list))
++	if (list_empty(&mmb->list))
+ 		return 0;
+ 
+ 	blk_start_plug(&plug);
+ 
+-	spin_lock(&buffer_mapping->i_private_lock);
+-	while (!list_empty(&mapping->i_private_list)) {
+-		bh = BH_ENTRY(mapping->i_private_list.next);
++	spin_lock(&mmb->lock);
++	while (!list_empty(&mmb->list)) {
++		bh = BH_ENTRY(mmb->list.next);
+ 		WARN_ON_ONCE(bh->b_assoc_map != mapping);
+-		__remove_assoc_queue(bh);
++		__remove_assoc_queue(mmb, bh);
+ 		/* Avoid race with mark_buffer_dirty_inode() which does
+ 		 * a lockless check and we rely on seeing the dirty bit */
+ 		smp_mb();
+@@ -573,7 +581,7 @@ int sync_mapping_buffers(struct address_space *mapping)
+ 			bh->b_assoc_map = mapping;
+ 			if (buffer_dirty(bh)) {
+ 				get_bh(bh);
+-				spin_unlock(&buffer_mapping->i_private_lock);
++				spin_unlock(&mmb->lock);
+ 				/*
+ 				 * Ensure any pending I/O completes so that
+ 				 * write_dirty_buffer() actually writes the
+@@ -590,35 +598,34 @@ int sync_mapping_buffers(struct address_space *mapping)
+ 				 * through sync_buffer().
+ 				 */
+ 				brelse(bh);
+-				spin_lock(&buffer_mapping->i_private_lock);
++				spin_lock(&mmb->lock);
+ 			}
+ 		}
+ 	}
+ 
+-	spin_unlock(&buffer_mapping->i_private_lock);
++	spin_unlock(&mmb->lock);
+ 	blk_finish_plug(&plug);
+-	spin_lock(&buffer_mapping->i_private_lock);
++	spin_lock(&mmb->lock);
+ 
+ 	while (!list_empty(&tmp)) {
+ 		bh = BH_ENTRY(tmp.prev);
+ 		get_bh(bh);
+-		__remove_assoc_queue(bh);
++		__remove_assoc_queue(mmb, bh);
+ 		/* Avoid race with mark_buffer_dirty_inode() which does
+ 		 * a lockless check and we rely on seeing the dirty bit */
+ 		smp_mb();
+ 		if (buffer_dirty(bh)) {
+-			list_add(&bh->b_assoc_buffers,
+-				 &mapping->i_private_list);
++			list_add(&bh->b_assoc_buffers, &mmb->list);
+ 			bh->b_assoc_map = mapping;
+ 		}
+-		spin_unlock(&buffer_mapping->i_private_lock);
++		spin_unlock(&mmb->lock);
+ 		wait_on_buffer(bh);
+ 		if (!buffer_uptodate(bh))
+ 			err = -EIO;
+ 		brelse(bh);
+-		spin_lock(&buffer_mapping->i_private_lock);
++		spin_lock(&mmb->lock);
+ 	}
+-	spin_unlock(&buffer_mapping->i_private_lock);
++	spin_unlock(&mmb->lock);
+ 	return err;
+ }
+ EXPORT_SYMBOL(sync_mapping_buffers);
+@@ -715,15 +722,14 @@ void write_boundary_block(struct block_device *bdev,
+ void mark_buffer_dirty_inode(struct buffer_head *bh, struct inode *inode)
+ {
+ 	struct address_space *mapping = inode->i_mapping;
+-	struct address_space *buffer_mapping = bh->b_folio->mapping;
+ 
+ 	mark_buffer_dirty(bh);
+ 	if (!bh->b_assoc_map) {
+-		spin_lock(&buffer_mapping->i_private_lock);
++		spin_lock(&mapping->i_metadata_bhs.lock);
+ 		list_move_tail(&bh->b_assoc_buffers,
+-				&mapping->i_private_list);
++				&mapping->i_metadata_bhs.list);
+ 		bh->b_assoc_map = mapping;
+-		spin_unlock(&buffer_mapping->i_private_lock);
++		spin_unlock(&mapping->i_metadata_bhs.lock);
+ 	}
+ }
+ EXPORT_SYMBOL(mark_buffer_dirty_inode);
+@@ -796,22 +802,16 @@ EXPORT_SYMBOL(block_dirty_folio);
+  * Invalidate any and all dirty buffers on a given inode.  We are
+  * probably unmounting the fs, but that doesn't mean we have already
+  * done a sync().  Just drop the buffers from the inode list.
+- *
+- * NOTE: we take the inode's blockdev's mapping's i_private_lock.  Which
+- * assumes that all the buffers are against the blockdev.
+  */
+ void invalidate_inode_buffers(struct inode *inode)
+ {
+ 	if (inode_has_buffers(inode)) {
 -		struct address_space *mapping = &inode->i_data;
 -		struct list_head *list = &mapping->i_private_list;
--		struct address_space *buffer_mapping = mapping->i_private_data;
+-		struct address_space *buffer_mapping =
+-				mapping->host->i_sb->s_bdev->bd_mapping;
 -
 -		spin_lock(&buffer_mapping->i_private_lock);
--		while (!list_empty(list)) {
--			struct buffer_head *bh = BH_ENTRY(list->next);
--			if (buffer_dirty(bh)) {
--				ret = 0;
--				break;
--			}
--			__remove_assoc_queue(bh);
--		}
+-		while (!list_empty(list))
+-			__remove_assoc_queue(BH_ENTRY(list->next));
+-		spin_unlock(&buffer_mapping->i_private_lock);
++		struct mapping_metadata_bhs *mmb = &inode->i_data.i_metadata_bhs;
++
++		spin_lock(&mmb->lock);
++		while (!list_empty(&mmb->list))
++			__remove_assoc_queue(mmb, BH_ENTRY(mmb->list.next));
++		spin_unlock(&mmb->lock);
+ 	}
+ }
+ EXPORT_SYMBOL(invalidate_inode_buffers);
+@@ -1155,14 +1155,7 @@ EXPORT_SYMBOL(__brelse);
+ void __bforget(struct buffer_head *bh)
+ {
+ 	clear_buffer_dirty(bh);
+-	if (bh->b_assoc_map) {
+-		struct address_space *buffer_mapping = bh->b_folio->mapping;
+-
+-		spin_lock(&buffer_mapping->i_private_lock);
+-		list_del_init(&bh->b_assoc_buffers);
+-		bh->b_assoc_map = NULL;
 -		spin_unlock(&buffer_mapping->i_private_lock);
 -	}
--	return ret;
--}
--
- /*
-  * Create the appropriate buffers when given a folio for data area and
-  * the size of each buffer.. Use the bh->b_this_page linked list to
++	remove_assoc_queue(bh);
+ 	__brelse(bh);
+ }
+ EXPORT_SYMBOL(__bforget);
+@@ -2810,8 +2803,7 @@ drop_buffers(struct folio *folio, struct buffer_head **buffers_to_free)
+ 	do {
+ 		struct buffer_head *next = bh->b_this_page;
+ 
+-		if (bh->b_assoc_map)
+-			__remove_assoc_queue(bh);
++		remove_assoc_queue(bh);
+ 		bh = next;
+ 	} while (bh != head);
+ 	*buffers_to_free = head;
 diff --git a/fs/inode.c b/fs/inode.c
-index cc12b68e021b..4f98a5f04bbd 100644
+index d5774e627a9c..393f586d050a 100644
 --- a/fs/inode.c
 +++ b/fs/inode.c
-@@ -17,7 +17,6 @@
- #include <linux/fsverity.h>
- #include <linux/mount.h>
- #include <linux/posix_acl.h>
--#include <linux/buffer_head.h> /* for inode_has_buffers */
- #include <linux/ratelimit.h>
- #include <linux/list_lru.h>
- #include <linux/iversion.h>
-@@ -367,7 +366,6 @@ struct inode *alloc_inode(struct super_block *sb)
+@@ -483,6 +483,8 @@ static void __address_space_init_once(struct address_space *mapping)
+ 	init_rwsem(&mapping->i_mmap_rwsem);
+ 	INIT_LIST_HEAD(&mapping->i_private_list);
+ 	spin_lock_init(&mapping->i_private_lock);
++	spin_lock_init(&mapping->i_metadata_bhs.lock);
++	INIT_LIST_HEAD(&mapping->i_metadata_bhs.list);
+ 	mapping->i_mmap = RB_ROOT_CACHED;
+ }
  
- void __destroy_inode(struct inode *inode)
- {
--	BUG_ON(inode_has_buffers(inode));
- 	inode_detach_wb(inode);
- 	security_inode_free(inode);
- 	fsnotify_inode_delete(inode);
-@@ -994,19 +992,18 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
- 	 * page cache in order to free up struct inodes: lowmem might
- 	 * be under pressure before the cache inside the highmem zone.
- 	 */
--	if (inode_has_buffers(inode) || !mapping_empty(&inode->i_data)) {
-+	if (!mapping_empty(&inode->i_data)) {
-+		unsigned long reap;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 10b96eb5391d..64771a55adc5 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -445,6 +445,12 @@ struct address_space_operations {
+ 
+ extern const struct address_space_operations empty_aops;
+ 
++/* Structure for tracking metadata buffer heads associated with the mapping */
++struct mapping_metadata_bhs {
++	spinlock_t lock;	/* Lock protecting bh list */
++	struct list_head list;	/* The list of bhs (b_assoc_buffers) */
++};
 +
- 		inode_pin_lru_isolating(inode);
- 		spin_unlock(&inode->i_lock);
- 		spin_unlock(&lru->lock);
--		if (remove_inode_buffers(inode)) {
--			unsigned long reap;
--			reap = invalidate_mapping_pages(&inode->i_data, 0, -1);
--			if (current_is_kswapd())
--				__count_vm_events(KSWAPD_INODESTEAL, reap);
--			else
--				__count_vm_events(PGINODESTEAL, reap);
--			mm_account_reclaimed_pages(reap);
--		}
-+		reap = invalidate_mapping_pages(&inode->i_data, 0, -1);
-+		if (current_is_kswapd())
-+			__count_vm_events(KSWAPD_INODESTEAL, reap);
-+		else
-+			__count_vm_events(PGINODESTEAL, reap);
-+		mm_account_reclaimed_pages(reap);
- 		inode_unpin_lru_isolating(inode);
- 		return LRU_RETRY;
- 	}
-diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
-index b16b88bfbc3e..631bf971efc0 100644
---- a/include/linux/buffer_head.h
-+++ b/include/linux/buffer_head.h
-@@ -517,7 +517,6 @@ void buffer_init(void);
- bool try_to_free_buffers(struct folio *folio);
- int inode_has_buffers(struct inode *inode);
- void invalidate_inode_buffers(struct inode *inode);
--int remove_inode_buffers(struct inode *inode);
- int sync_mapping_buffers(struct address_space *mapping);
- void invalidate_bh_lrus(void);
- void invalidate_bh_lrus_cpu(void);
-@@ -528,9 +527,7 @@ extern int buffer_heads_over_limit;
- 
- static inline void buffer_init(void) {}
- static inline bool try_to_free_buffers(struct folio *folio) { return true; }
--static inline int inode_has_buffers(struct inode *inode) { return 0; }
- static inline void invalidate_inode_buffers(struct inode *inode) {}
--static inline int remove_inode_buffers(struct inode *inode) { return 1; }
- static inline int sync_mapping_buffers(struct address_space *mapping) { return 0; }
- static inline void invalidate_bh_lrus(void) {}
- static inline void invalidate_bh_lrus_cpu(void) {}
+ /**
+  * struct address_space - Contents of a cacheable, mappable object.
+  * @host: Owner, either the inode or the block_device.
+@@ -484,6 +490,7 @@ struct address_space {
+ 	errseq_t		wb_err;
+ 	spinlock_t		i_private_lock;
+ 	struct list_head	i_private_list;
++	struct mapping_metadata_bhs i_metadata_bhs;
+ 	struct rw_semaphore	i_mmap_rwsem;
+ } __attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 	/*
 -- 
 2.51.0
 
