@@ -4,81 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF0D1093188
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 08:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E01561093188
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 08:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CD5E6B036C; Fri, 20 Mar 2026 04:18:41 -0400 (EDT)
+	id 15EE86B036D; Fri, 20 Mar 2026 04:20:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A4616B036D; Fri, 20 Mar 2026 04:18:41 -0400 (EDT)
+	id 1368A6B0371; Fri, 20 Mar 2026 04:20:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E11E6B036F; Fri, 20 Mar 2026 04:18:41 -0400 (EDT)
+	id 073A86B0373; Fri, 20 Mar 2026 04:20:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FFB16B036C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:18:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E9A0BBA92
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:18:40 +0000 (UTC)
-X-FDA: 84565740000.14.952473B
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 79307120010
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:18:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ECFA46B036D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:20:42 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 987E61E15A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:20:42 +0000 (UTC)
+X-FDA: 84565745124.04.1CB3B94
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EE135100010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:20:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sVVKrriJ;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773994719;
+	s=arc-20220608; t=1773994840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9+my7b/kNn8G0Fz8MY3spPyaX8gEEsNNfj3FQ36adCo=;
-	b=fhovGhd30sIhLL7RcgKyLPd5BhFK8/miWbNwTcwdhEKiJJQbzHGzmSMDi24hbm6CWwGeIF
-	jtXH82y2Zx+ACL3YYvotxHbd8+S2j0J9VdEHMwD4nNVDwvRoyKEXyzYEF5+RpeXTGYGo8b
-	AF2vl+Ec1lV+B/eXAggMshkRo5fePLU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DYaDBSA91g02WO7qT1pNGxsomyBFSH3HHgvfprOeOT4=;
+	b=NU4/oFayuHK2V5q1VmICp1jWvg/cBbzvTwoohBNbtlipHOoqa8ydS/pGEA0k166pZ4+gX3
+	1YOBGr2Di3pHT10xAqXJuNY+CqyAcah7t5kPdD5INI9YmUmX9B4se2S7iwVq5Gf24Jvv60
+	0kmXoMZoyLeKfQQwbnwk9cz1FiaCG08=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773994719; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sVVKrriJ;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773994840; a=rsa-sha256;
 	cv=none;
-	b=agn1IocfgxgIEPEEKQt8iUl3CI3owTjEb9H7VVVVw/Zz14AyZo8u4ddHa2VwE6SaWBz2zF
-	9qe2ttZoiDtbJL3/IFG0VAixNXNVgyQVmq1UFe40Ia9a4+267mNryKmYpI2KbVgGO0iZS3
-	VRAexsu3r4D6y0Qz+0lZCgAC5jD6XTg=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 20 Mar 2026 17:18:34 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 20 Mar 2026 17:18:34 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev,
-	linux-mm@kvack.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] PM: hibernate: fix spurious GFP mask WARNING in
- uswsusp path
-Message-ID: <ab0C2gPW0zj2JPf3@yjaykim-PowerEdge-T330>
-References: <20260319142404.3683019-1-youngjun.park@lge.com>
- <20260319142404.3683019-4-youngjun.park@lge.com>
- <CAJZ5v0i+KdG1FFTrrpt4fV_DDbY833yDzDs42Me7qmzxfCi73A@mail.gmail.com>
+	b=GWAGDEc+yvvgPeJs2wclgCfXPfdyIJx3faBHiGvP21h0gJ7i5ezNqMPQ0+WrMETHWKiBXj
+	sYGefIpNWSPstMFM48x6rABEDaI3/aiJypx61l6FEIi3iWub4bFzlc0Ad0pocU6rUOC+ww
+	UovZrL1mljmRkIBgU8vmpa5jnsrovZo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3ED2960121;
+	Fri, 20 Mar 2026 08:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED99BC4CEF7;
+	Fri, 20 Mar 2026 08:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773994839;
+	bh=xmN3vJPx4psTV4lUdM11H+sjGA+/qbfQGglSkhWCFXU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sVVKrriJ9G+ROdnhpqVTsRBG75244B0r8i51tEG/l/pJlDysqNkAqU7LjLcKf2byT
+	 aYDHzFWdLLrPR3jbjHZH3WAHmAJRNLmYkD9ZUyYrLJztAEO8F/RDEBYNaE2xMty5rl
+	 7J/FWkIPGaEpVL6Oh5/j6z7hs+7CHE7V6qYbM6sbkBIT9gwe88tN9DYXocjnDAXA5e
+	 GVrExLH/HTgA5CvBh55NuxeDCbA226p16BzUHP6UdYhQ5NGe/mpNJ1XisI5aQyA93M
+	 fWg/hh6sUyYnmRpcsxEWjcxWgaN1wvdFHASnNqpl5Vav3x4POTU9HjShh6yz1DGYJj
+	 bZOQlqsEU4i5A==
+Message-ID: <8cf1b799-c02c-466d-9212-0e12a99bfd8b@kernel.org>
+Date: Fri, 20 Mar 2026 09:20:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0i+KdG1FFTrrpt4fV_DDbY833yDzDs42Me7qmzxfCi73A@mail.gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 79307120010
-X-Stat-Signature: bdce3stihei5u55essjo1o3cnzubwoze
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm/page_alloc: Optimize free_contig_range()
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>, Ryan.Roberts@arm.com,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, david.hildenbrand@arm.com
+References: <20260316113209.945853-1-usama.anjum@arm.com>
+ <20260316113209.945853-2-usama.anjum@arm.com>
+ <220e97f0-dc82-4f37-b833-7160aee46cea@suse.cz>
+ <703BB8CD-23D9-4012-8333-366837D7E95A@nvidia.com>
+ <fde63978-d632-4196-b032-4cc20041fd90@kernel.org>
+ <2AE5B748-C57B-4BC1-BF9E-6299CCBF295B@nvidia.com>
+ <3883abcd-426d-4211-ae76-b5601ee728de@kernel.org>
+ <54364b65-ffeb-4d91-918a-c1e4b0c92816@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <54364b65-ffeb-4d91-918a-c1e4b0c92816@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EE135100010
+X-Stat-Signature: nj6czberwwpamykwjnf6nh4kgw49qnxs
 X-Rspam-User: 
-X-HE-Tag: 1773994717-223454
-X-HE-Meta: U2FsdGVkX1+dYPHU5p58xF1cJmWXUkeeELAJ6DerFsZ3mO9KiAfu9mT/s7AjSlHQtcjvMK/G2pZ724g1w/PCrofXxTTOEcZkoAMDcJR4sk7VsyHr2zdAntqQY31XYN83UIVD+1aVAgg7KdsA7Bglb+abm7wHreipLlUpjdIOFlhItSUf1zQGdlRWjbWhSTv6Rxn7Vn2eaS+JUm0KyxgtCt/yYr/sP1YSss/HOzrrZa8fcBx51uMxQxdIzYOhdkpsNDBWydGNF3+FaFQjPuWYAtG5KzOrJmiOyYmdf2+ABQrDGfYph76WreDEys5Mob2mNH3POw6DEe50zVPbR8R7hEzEGMO9jhRPSibenE2zs0cRvqP+f+BGSRPTR6T6CAciNKIKfDo4iNQ/bolwYMwgnf/NsRWilhkuYwhECUQeNfIEO8Zck8RkayEV39/2yhsL5KNFL4T/PvnPAhRJpKXib96cqD2wWc2TLodWie1zu/DwcSrQNtfKTx7CYWJ4wbj02fcbUkDgqDij09TNQi2/df8DYE7dc8MmJ1ppuUIYclF89Dz3vwBb9i83I8zsKqbDaHcR6JT20VPX8/dq4hChM+4ALR/HtNfUnIbbZpr1XtTAjS+tAl6nDKvEtRN3iL1EUw4qO5mtVtTOJrQvfMc4FTZ4BT+1RlyD8lXNtZgu9q59TdyijSOFhmTVvbqLVnJeUztbKLGaniKLLz3oEmVuIZWlBGD/5giEgaz+ffOrspV7wiF/ie5ct4ATcVQggAczjJDBu5QGnFLhtXXLUmZhsz7/sGvnVuJNgzfcxxOG2DBjcCxspJyrPNJUENnjzzy5VPVcIqxEjjDDhdzvRMyLy+9okgrlVqnckavrJZrFK8Th8mtUmHYE8M0qjaPuEecY+mJEt2+s06bjXc4cJoUaas2eIw0FU4tJR2mHd+lipNdiM40K0hnPdAT1FWFJaQjwWNS2KvZ9UTUtO92VPpt
- DimsnTY1
- O+gh0LzCf3GE+9lYV2MIPySLbFaKOVan2AH8VeGxLqlMmOtyCznsE4Bhk0oeqFfpk6UvPYq4Xnct2prGt06Qbm+3oJqeCFzMsk5bpUrh/9b+8xmmRDqF4GGrBodS36eEx4/8EGncgVnWTzUd2sqdZNoQ3GN5Yz5EzdL9p64WKKhDAqZNJ+Im92t+Brdhmh0wKNZ+xH6+fImv9AaDeu5J1kl5LFaaX7zYzGagIcCLmdzt73X49IOHvvBCUKuVGrETNTPaFJn5HFsnIGtQtwBaRyR8J/ghwWwH4rquaID7XhAYaUZ8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773994840-579733
+X-HE-Meta: U2FsdGVkX1/gFyxEYs4VOMGCCf9DlNBOrSd2bKAvkSpXNMMOW5Fv+rVcLpfuUIEcQwu4YkNMJdgzR64L2my1ComxW8N+fQTtYYlvbTousX98KoyKF7t5dIdLvdKUJ+0bppm2i5BrsVfeBttuAT3DHHyUnjRY775MhfPtVREb+6haFgYhpVl14p/ADcKYd+0d60Cn+WKuxUSSyEFPgCCKItcA2D4u9qQlZ1Q0kZdbqStvZti3rpZNW6IyY25ChI/0mEgitmR0cn4F9q6tSY83OcqE0/mRsfP3P6uzQs/fYXlCCh35q1pNxIKNmH119VgXFB9U+a5gHEjK8FOpygnR5RPKzGNm0I/30qCB1ac6acG0R7XxuqxvFmgd3Kczy0KW7651yvKJdHTRq609A9Uqq9GRJf8VGpteNGM2Kz2XIQ/f5bteLs/q/qc/+Jx1mK6YaFYMA70gZKIbD/QRVoOsPd0hJWrW1kPHZUNYLniOeKRXGROAy6CWxnzSTiiNuPY9VlpZXavn1hcl7UfZotM6yfFbGDk2xoibORgVfcemVqoWA49fyH+Ihx7cAyxRjCjTWVM8UhEnFofCPwbHPM1bNyorfFYVUCmpHJB/aiOzat1Hetl20UhRcZE7Lan8Idhg4pnCL+qHOXJc9CRI43YhXy2x6iCHr3a0yAywWAyXLRahCF70hkuZM7MfluZxv69t0KLzTfwFCxXDSAxi3ezbTUVStBtc+Bp/boVmq5NzecBLGiEgwZuKOsD45wym46xIRevRTJGGbwX2g3LUfvuLA9Gau5/s3PObf8fXFJZZ/Z2cndjo8YE850HgBmW4mvlxa84AEz1HfF65i9zBPsH9BshXZTwJ+zRlwOyDH1a0qkCilMgDUWzjt4/SJY7WBIK+lsZvBmIPMkp/cXIU2GYTQbRIaEyVTGT6G6Mer1QuOp46ZH3GaKvveYrooxCv9BzIbzQRAZ8NmRkI6M+rFyI
+ H+cJMrcK
+ bvCy0nTlPYNzTQ9bgV9NVAgdMuTrpXED5sx3xYt/OqjqW+x4gRfddnkLgp3xxWkJ3ih0kFu2yBGBFSGKq24zke1lWRIhtWqf4UKKAwUdz38EcDW7KWfMPj7dGClkMHO9KQb/AUPzNEmJ2SrjCjIIvK6w1ERT6kQkfrBT9Ws84qUQoMl2PS5+sm6TmANng+KM5nlkKjMWk3YEcLLP2MzEZP/LgbEi7DZorjubiXQxg6IET5M22E3sxIDiTQ0KDMBrqA/XX6jC2KR+b9iEPPNC0L3IsUPLZCo+mHpbg8k2x/KptswWSPLxVzsv8zg1R2Bkp3GmAShXec73cFZ/7o/cyuEU/uKpVPz5YtQHvKdFheMMPpM09lweRXQPz3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,122 +107,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 08:55:43PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Mar 19, 2026 at 3:24 PM Youngjun Park <youngjun.park@lge.com> wrote:
-> >
-> > Commit 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask()
-> > stacking") introduced refcount-based GFP mask management that warns
-> > when pm_restore_gfp_mask() is called with saved_gfp_count == 0:
-> >
-> >   WARNING: kernel/power/main.c:44 at pm_restore_gfp_mask+0xd7/0xf0
-> >   CPU: 0 UID: 0 PID: 373 Comm: s2disk
-> >   Call Trace:
-> >    snapshot_ioctl+0x964/0xbd0
-> >    __x64_sys_ioctl+0x724/0x1320
-> >   ...
-> >
-> > The uswsusp path calls pm_restore_gfp_mask() defensively in
-> > SNAPSHOT_CREATE_IMAGE and SNAPSHOT_UNFREEZE where the GFP mask may
-> > or may not be restricted depending on context (first call vs retry,
-> > hibernate vs resume). Before the stacking patch this was a silent
-> > no-op; now it triggers a WARNING.
-> >
-> > Introduce pm_restore_gfp_mask_safe() that skips the call when
-> > saved_gfp_count is 0. This is preferred over tracking the restrict
-> > state in snapshot_ioctl, as incorrect tracking risks leaving the
-> > GFP mask permanently restricted.
-> >
-> > Fixes: 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask() stacking")
-> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > ---
-> >  include/linux/suspend.h | 1 +
-> >  kernel/power/main.c     | 7 +++++++
-> >  kernel/power/user.c     | 4 ++--
-> >  3 files changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-> > index b02876f1ae38..7777931d88a5 100644
-> > --- a/include/linux/suspend.h
-> > +++ b/include/linux/suspend.h
-> > @@ -454,6 +454,7 @@ extern void pm_report_hw_sleep_time(u64 t);
-> >  extern void pm_report_max_hw_sleep(u64 t);
-> >  void pm_restrict_gfp_mask(void);
-> >  void pm_restore_gfp_mask(void);
-> > +void pm_restore_gfp_mask_safe(void);
-> >
-> >  #define pm_notifier(fn, pri) {                         \
-> >         static struct notifier_block fn##_nb =                  \
-> > diff --git a/kernel/power/main.c b/kernel/power/main.c
-> > index 5f8c9e12eaec..e610a8c8b7ff 100644
-> > --- a/kernel/power/main.c
-> > +++ b/kernel/power/main.c
-> > @@ -36,6 +36,13 @@
-> >  static unsigned int saved_gfp_count;
-> >  static gfp_t saved_gfp_mask;
-> >
-> > +void pm_restore_gfp_mask_safe(void)
-> > +{
-> > +       if (!saved_gfp_count)
-> > +               return;
-> > +       pm_restore_gfp_mask();
-> > +}
-> > +
-> >  void pm_restore_gfp_mask(void)
-> >  {
-> >         WARN_ON(!mutex_is_locked(&system_transition_mutex));
-> > diff --git a/kernel/power/user.c b/kernel/power/user.c
-> > index 3e41544b99d5..41cff6a89a1c 100644
-> > --- a/kernel/power/user.c
-> > +++ b/kernel/power/user.c
-> > @@ -306,7 +306,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
-> >         case SNAPSHOT_UNFREEZE:
-> >                 if (!data->frozen || data->ready)
-> >                         break;
-> > -               pm_restore_gfp_mask();
-> > +               pm_restore_gfp_mask_safe();
-> >                 free_basic_memory_bitmaps();
-> >                 data->free_bitmaps = false;
-> >                 thaw_processes();
-> > @@ -318,7 +318,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
-> >                         error = -EPERM;
-> >                         break;
-> >                 }
-> > -               pm_restore_gfp_mask();
-> > +               pm_restore_gfp_mask_safe();
-> >                 error = hibernation_snapshot(data->platform_support);
-> >                 if (!error) {
-> >                         error = put_user(in_suspend, (int __user *)arg);
-> > --
+On 3/19/26 23:07, David Hildenbrand (Arm) wrote:
+>>> the allocation of non-compound order>0, like you suggested in 3, we basically
+>> 
+>> I suggested we'd take it away in the sense of not producing order>0 where
+>> head is refcounted, tails are not, and it's not a compound page. I'd rather
+>> have an API that applies split_page() before and returns it as order-0
+>> refcounted pages, but not the intermediate order>0 non-compound anymore.
 > 
-> AFAICS, this patch doesn't depend on the rest of the series, so I can
-> apply it separately unless there is a problem with that.
+> Are you talking about external API or internal API?
+
+In this case of alloc+split, external, and that would make sense to me.
+
+In case of freeing, the current free_pages(order>0) is also external and I
+would prefer not to augment it for this free_contig_range() usecase.
+
+> Regarding external interface: I think the crucial part is that an
+> external interface (free_contig_range) should always get a range of
+> individual order-0 pages: neither compound nor non-compound order > 0.
+
+Ack.
+
+> The individual order-0 pages can either be frozen or refcounted
+> (depending on the interface).
+
+Ack.
+
+> Regarding internal interface: To me that implies that FPI_PREPARED will
+> never ever have to do any kind of "subpage" (page) free_pages_prepare()
+> checks. It must already have been performed on all order-0 pages.
 > 
-> However, for the other 2 patches in the series, I'd need some tags
-> (preferably Reviewed-by) from mm people.
-> 
-> Thanks!
+> So the TODO should indeed be dropped.
 
-Hi Rafael,
+Agreed. But maybe I misunderstood Zi, so that's why I tried to add so much
+detail about what I mean by what.
 
-While double-checking the code based on Andrew’s AI-assisted review,
-I noticed I missed one case.
+> I'm not sure I understood whether you think using the
+> __free_frozen_pages() with order > 0 is okay, or whether we need a
+> different (internal) interface.
 
-If userspace issues SNAPSHOT_FREEZE and then closes the device,
-snapshot_release() may call pm_restore_gfp_mask() without a matching
-restriction, which reproduces the same WARN. So we should switch
-snapshot_release() to pm_restore_gfp_mask_safe() as well.
-
-Also, since the safe wrapper may return early when saved_gfp_count == 0,
-the locking assertion would be skipped in that path. To preserve the
-invariant, it is better to keep:
-
-    WARN_ON(!mutex_is_locked(&system_transition_mutex));
-
-in the wrapper too.
-This modification is intentional, but after review I think this is better.
-
-I will update the patch and resend.
-
-Best regards,
-Youngjun park
+I think this is fine. But I agree with you above that this assumes
+FPI_PREPARED and will not have to deal with subpages.
 
