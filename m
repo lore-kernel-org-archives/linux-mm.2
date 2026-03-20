@@ -4,140 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD451099B35
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:07:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BE5F1099B32
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:08:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA13F6B011D; Fri, 20 Mar 2026 15:07:44 -0400 (EDT)
+	id 6AFFE6B00B8; Fri, 20 Mar 2026 15:08:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C51EF6B0123; Fri, 20 Mar 2026 15:07:44 -0400 (EDT)
+	id 6874C6B014E; Fri, 20 Mar 2026 15:08:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B67F26B0124; Fri, 20 Mar 2026 15:07:44 -0400 (EDT)
+	id 5C4BD6B014F; Fri, 20 Mar 2026 15:08:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A86296B011D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:07:44 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FD15C196A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:07:44 +0000 (UTC)
-X-FDA: 84567375648.10.01F9004
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5D4732000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:07:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=prxrI6QV;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EBB56B00B8
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:08:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E50AB56139
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:08:51 +0000 (UTC)
+X-FDA: 84567378462.29.B2C8979
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4053C140010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:08:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FinYUhQY;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774033662;
+	s=arc-20220608; t=1774033730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jdU8PRNWZj5x+JmLzZ+T8IEck3EtXRtZnFNwzGdWh6s=;
-	b=wRmYQvQt/ZRv+VzX7/M+ddQrbxMWaGn1dKSnW3DYucmytGcHmjWiywg8MSk30697Y4pS6U
-	PpP86tQjmOxD/W/77CbpBOq2iMwL9P0vUNuBNkrd2E1DCLr2DRHbys34+FYbazmwlQ/LB0
-	gquBbj5hOm53Ym5kv1bs+lj+WlqyPIY=
+	bh=DMMTKvWQyBQMusiMaGv6uhSsy/JGgw6koItJIPNbdGI=;
+	b=iO+3guDS+CsGDD/myr+3V698jaL6cmLO+cduz/vppod01K7lvly1qsvXZLFaR1R0tvZGsX
+	rVeNqIqev8GJyV1f3m2Wgq5E/feihguYR7aQfvvW+/kRr6l+fYNKl+qcI9G2iwNlEpeXUz
+	lY2fQHpJNsaCzYWijEZ2gmtddm6MqUE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=prxrI6QV;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774033662; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FinYUhQY;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774033730; a=rsa-sha256;
 	cv=none;
-	b=iho0S9yYMRBO7ak9i1Yf7O+D251QjgQI8hSvlBlq61UF//erJ/6XwQkzgwSgEzlAMGmuqG
-	aGfryB84RMqJNZqlEHuEKROzvLMC+PHjhCdoLivjRfZmWOaQsT/4qYKBKtmgK116/wbXiC
-	Yb0Jt3DBvCs+oyrJnFPJ+XmANxtKa2E=
+	b=ylOSRV2zkGFK28FPkapuLocPeOToa93rNQOGnAVMBGWg/4izBEtc69ZWfcRYdwb3pyLv83
+	/imtg47V/rh/k7Z+/PU7S3Se9HKQp4jlRuJV5QGWcYmNjpOedcZogbAVEegmNEGYxbuAkU
+	UnGoc8koVhtAph2gSZbrNMxUz7ZQbQs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 624A842A09;
-	Fri, 20 Mar 2026 19:07:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1646C4CEF7;
-	Fri, 20 Mar 2026 19:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774033661;
-	bh=Yooz8jcbCajwp3f1Eq2+lyBrRvTbOuBB2ZolCkflxFY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=prxrI6QVywyF1spuGDD1fJQ8UpkSkloRCG8PG+bFh7/OCLFk2DR6fkjw9InAJNok2
-	 XV+/9tPD3BSFoeWBUTA+snAtdPgfjsmq64ieWksuYg4+9R4WOaX4htjw2Cb8vBLRTd
-	 MofiTsF4Aj0PrpOCplcqt3UWHLKcw3UMsgvGBhElslSKXBuRuLpI2Lma/ZRQTH60ac
-	 FMstYniWnoR+9vEuDR+d5PJRPhJyWGIn4W+PzrIwavmzXMw39R9SQ3/QScy1tYFtlt
-	 9dHpTOradV2O9/9GsOk3vLHDRAlYS6iK5WSTEaQtmt3WlZ1PhwTMVJmM16wAkNXe0i
-	 rGN72UassgTiw==
-Message-ID: <6e58d40b-d0c2-46cc-9ab6-f3b1fe5ab40b@kernel.org>
-Date: Fri, 20 Mar 2026 20:07:34 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/14] mm/sparse: move memory hotplug bits to
- sparse-vmemmap.c
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-15-david@kernel.org>
- <c880bda9-486c-41ab-b8f2-f0329392bbf6@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <c880bda9-486c-41ab-b8f2-f0329392bbf6@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
+	by tor.source.kernel.org (Postfix) with ESMTP id 996B460126;
+	Fri, 20 Mar 2026 19:08:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DE2C19425;
+	Fri, 20 Mar 2026 19:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774033729;
+	bh=m0jZbqQJCMjrXNpCUM1V9JA/iSapyeJjj3jNqnE9qe8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FinYUhQYLMVCHVDnIOPHoRyqEv/B9UN37GqnpWWUJoD5ovOprusiYYoRVqJjnk1Ut
+	 B/+FjL9W2U6G2iQoEd7ZApycx093vLuHJDN9cv8VBAwvyhRcSbCyJMZy/AeXyBokjN
+	 ue3SWlXnNiBUhStbD3RvV4nI7vOcs6JID7prDKzA=
+Date: Fri, 20 Mar 2026 12:08:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joonwon Kang <joonwonkang@google.com>
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] percpu: Fix hint invariant breakage
+Message-Id: <20260320120848.ba7ddc21aaa4edab8c2b5b58@linux-foundation.org>
+In-Reply-To: <20260320115214.143933-1-joonwonkang@google.com>
+References: <20260320115214.143933-1-joonwonkang@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5D4732000C
-X-Stat-Signature: 55e1acca6weyicgca9m3orn91gmh4mz9
+X-Stat-Signature: c91j4gi75dpesc3e41npyuk66tfixdug
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774033662-147411
-X-HE-Meta: U2FsdGVkX1/cWwnydzjpt0bUHjTi0hZZbivAVLg8pdRFAsUx6AA9L4EuLi2MoNBo1tzPF73J6gtBq53AUm9b9L/zbS8XC7u+UjeRCRl2Y2Ttt9sJYfZEKiBl2zjsWtzhUBPLG575+cenpaHtKC44maiGLI0Q8XOkeUKkheayl1Xh3v4CRZZM+g4w86Z8tKFpPXqu1zLMoJ9mFboto9sGcFJT/kdPaCDDpFbqNzXa3lNQM48DLmIM6l8Ke87YP0eUoXLiCYfyw5BAW0j/d6JrjM5XeLMyi0eN6i2nslcVDfs6rjdzXIUDAPPNvUzCpbKpc5nYu3KwTZQwPjwpx/rp6/Arje6bDRtd4KDd6Djfb+bQu1QZ5UWPyiTEdYdA6tO3wR4VjcyiYESjWT7RrS5D4Yc6P80wpaEEu3fXw3HoEkexKqP84F3tZj/bg2n3rqOQAgEqjxs8cin1cTN2HvJOZBasxXyaSt6Uy9s+Rii35FVWg1/YkRcVykm1CQ3+EEhuQRStJbMwEgvYeHHd2hVmPQPZ9fppgOOWaTOEa0Lv1Zui+Pou0udLXIqIL+Lu6rfLOKUN07vM1zFYzIaV5vAw6qL+RZw6mkWmFrPGDcXlYDduC2A2W8FPc5dH6adX2VsnVi3hhmEfirQdQ7gBPYVgz2NKhbvKyvgDUNNxqBfkXFckVvq0pWGkzqswhiAbRreoRpoAeySDrQ7EgrBwkljYqdCEWRgEiy7hIro0QJ3D0NoPtUJ5iXk9RG81OUgmiIAecrnpG6550N9HKteBUxEcyUUOTe73VbNHSAc+vEyxq3HSWx2QE2HTiWVqqkdcpXEnW3Bj5H8i4XjiSR7d+PT1pgcrkyKfWQs4+nxAky9Fa+YD2hu1i1x6fl8FK8gGKCgeTahq0+mBbwZ38LliO05HyApa6+fE4EotM9oVB4UkOGYzntL58fYapKvz+2XK+1tqCt++VVE8VqJ2Ko5Aufn
- 2O/ZX3Bk
- gCrD0m0blRy/hLeZogba/qEa6Rleh7MPpx3Hf1spQuwMhgCHc/0NRmEXj0HwZ4bMGhG6DwO/XUk6ZR7QN5MTU/auyhcMF8c7w6KlLteapN92Stup8SiMqb/gesW/nyt4T50I+3ORIVregpvBqKp+yexRJZeTLFX8Fkyf6Sf/5fY5fhAWlDos0p7UnauKDGD3jy0g0aMJualKgMPFvB8UBM3Pd3iPzw9PSyVBndfAONDftRi86aOwbnMS937RrtCJJFOQHwhGLpbg7D0WNVYLZRJcMEj9yewcua+Lb
+X-Rspamd-Queue-Id: 4053C140010
+X-HE-Tag: 1774033730-476781
+X-HE-Meta: U2FsdGVkX1/LJMBby39O2YqadF/gGIKjU7eavPD6HeVqiCrEV8Dolz+VCYHhaG4fDv6nKyIlawIJdjAaAuBxSeLXV4TPu9EgkuRLrdK4get9sTc1F4HFgnmuReEA5mzISGQ1On3G7/AzssTPz1NesZymnE6fngL+EjgfVwDs5p1kdpvGjJNStgHgvBYO/UcwSitZMKcuvryRc3HlxG4MfDIkO0cAuGqSYtUjYc+O3UnMEEqEvabBTbE2Tsan1BM2aoga9i+wE94a9OwEAGRcKdT0wRDT3UFqOApIMiRyBHteRoZm0ivRcEbB2tPxdz3PZnuMal1eXpJGRsyXcjr2M7N/Ss0N9yQ5td4RtzXVuHNMlnXx3ECMMosvrEq/pJY1tN0bVR6jR8KoiKlB4WQt+6nULneKKIcaL0qq8eWyvqr5N0Kz2vxAuKBaAjA/FUjOnNJT22UAHyTYDcM3JfP1x5FgYXd0gSn6XQ0l+BH0DRcj9q1tMRuz6JgltvDXJPS2hjcZqbzTvX1aSr1eaU12E9xapZnCPH7/ysKMbZxNjsHsy7eAt1jHx2TVyVNDqDJZoWTVkCVFCGGOGfT1AJYOEzOctYrH5MRAfZZw81126A2y7UnhofUyyOWTX0S0I3BUJqwlIG+AMMNVDm7cNPpI1ZFD7ZCitY7kiT7zImrbzDiNoHb164vcN69pKa5k+DwXLlJhxi9M845diwoUzLsyefU3Qt0bKrYadbGInLi8JWpGWLA25yB4jOQIae+hpTiOydOm0c4CH6WHzHJNJwOsIkCKzbwSwq+/uVCH13m9z532uwiCJ5L0mFCw4Ps+A0a+vPa1JHS+NH8z/zTVS0K3NtePGBMWwHkollX6rIEq8bcsuE34d6Fwct4gjp9Huu1Wzo9IYl9YXcVHWjAgEZkZUPKrrrXWzi47AIfZQfKa2MErAzU4aDnoF1cGOW2PInRnKBYECDM+PgGEG7B7v60
+ MCpkP0/A
+ wQwPp2sZAaTvA7N8qOd+IwiJSnTkB9i47ef/B8i2biu6A1mFOPr5uVIQ8MUcw18OpNyXIA3B/CHE9vw3YAu224Mq6uYKxUE8SJFjrGeYf3OFmqCy0Cuexl8NOBYJrONvEqGaIVMESHKpRFhtaGHDZGjGf10AfNG63HHJJycyuA9BA4J3hTbWJBEVf19TQZEOOmWsEBuF15KfKlOwFaD//8kXMOjoWBE2NXjiugOHPUQXFfzZIYLhFxnonyvUoIX3ac1auAWxJAqzpcACrDaL6t5QOsDkf61h/aQyzY0MOCYJzyCE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,35 +89,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/17/26 21:09, Lorenzo Stoakes (Oracle) wrote:
-> On Tue, Mar 17, 2026 at 05:56:52PM +0100, David Hildenbrand (Arm) wrote:
->> Let's move all memory hoptplug related code to sparse-vmemmap.c.
->>
->> We only have to expose sparse_index_init(). While at it, drop the
->> definition of sparse_index_init() for !CONFIG_SPARSEMEM, which is unused,
->> and place the declaration in internal.h.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Fri, 20 Mar 2026 11:52:14 +0000 Joonwon Kang <joonwonkang@google.com> wrote:
+
+> The invariant "scan_hint_start > contig_hint_start if and only if
+> scan_hint == contig_hint" should be kept for hint management. However,
+> it could be broken in some cases:
 > 
-> Looking through this it looks like it is just a code move modulo the other bits
-> you metion, overall very nice cleanup, so let me hotplug my:
-
-:)
-
+>   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
+>     scan_hint_start < new contig start) && the new contig is to become a
+>     new contig_hint due to its better alignment, then scan_hint should
+>     be invalidated instead of keeping it.
 > 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>   - if (new contig == contig_hint > scan_hint) && (start <
+>     contig_hint_start) && the new contig is not to become a new
+>     contig_hint, then scan_hint should be invalidated instead of being
+>     updated to the new contig.
 > 
-> Into this review!
+> This commit fixes this invariant breakage and also optimizes scan_hint
+> by keeping it or updating it when acceptable:
 > 
-> OK I've actually cringed terribly at the puns here and maybe I'm cured for life
-> from doing that again ;)
+>   - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
+>     contig start < contig_hint_start), then keep scan_hint instead of
+>     invalidating it.
+> 
+>   - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
+>     new contig start < scan_hint_start), then update scan_hint to the
+>     old contig_hint instead of invalidating it.
+> 
+>   - if (new contig == contig_hint > scan_hint) && (new contig start <
+>     contig_hint_start) && the new contig is to become a new contig_hint
+>     due to its better alignment, then update scan_hint to the old
+>     contig_hint instead of invalidating or keeping it.
+> 
 
-Never say never ;)
+Thanks.  Does the change have any observable runtime effects?
 
-Thanks!
+Was this patch inspired by code inspection?
 
--- 
-Cheers,
-
-David
 
