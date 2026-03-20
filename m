@@ -4,94 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC7661099B43
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 478BC1099B4C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57C866B00F8; Fri, 20 Mar 2026 18:14:50 -0400 (EDT)
+	id 7BE0D6B00CA; Fri, 20 Mar 2026 18:40:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5537E6B00FA; Fri, 20 Mar 2026 18:14:50 -0400 (EDT)
+	id 76F5B6B0116; Fri, 20 Mar 2026 18:40:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 469C66B00FB; Fri, 20 Mar 2026 18:14:50 -0400 (EDT)
+	id 65DDF6B0118; Fri, 20 Mar 2026 18:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 317856B00F8
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:50 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEFBE1B7AFE
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:14:49 +0000 (UTC)
-X-FDA: 84567847098.07.6D74295
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C3E0FC000B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:14:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fOZqms56;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 568246B00CA
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:09 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D7DDA140403
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:08 +0000 (UTC)
+X-FDA: 84567910896.08.7840B06
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 642E540007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IyQwSOAj;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774044887;
+	s=arc-20220608; t=1774046407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+qKfxo/S/neakHF4Pe8K6B5u7yRY/XP7jLE8cxMrrp4=;
-	b=V/9gy50rWjyJ8tq0LMctEWacwSsyps4lqj54tsO0VeECUMzt63tLeOcF5R93r5efLiHAMB
-	xdpvkduX3kqZD7z90NRPsgAt2kG7EAHi7rSSw0m3QkvrRuzGHh+ktddBqHmfz5QH/ZPLxZ
-	U9NSsrp4Tb/5ewxAlJYlsBxM2UKvjlc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/9uJv5XCgVZy4p1cdqkhYZlWF5SWIYwOmunU03vXMyE=;
+	b=wUBUVBIb3RjguRSKotGyBBtkr77bmD1ezioUP+Nqv0tbXi8iljcyZF+rKBJlePpwKUSdI5
+	S7koc1VZC9DvMxfRcsLbALFlLFqrmebLYNwXfc0dUAqCZWZuu3pZAYBCo6fKKmaGMXVPpP
+	zRaVK4GuCT1MJwhWqn9styutvUBS+b4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fOZqms56;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IyQwSOAj;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774044887; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774046407; a=rsa-sha256;
 	cv=none;
-	b=5WcKbK5jGVkFhX2MFBsVG+iaO2rmYCHCXivY0ICC5ttL+JyMPHcZVksKjvWvHNJ2to/7Ad
-	CldsYGUwAWKKNVNMRILkYLhe5H8NZ50iEQ0fyLkpUZsRyEHCIt6p1/QC4H4yjXRv31KLQv
-	lanQjSLuK4zcfC3KUKfooIMlvXsEPCs=
+	b=H89Obo9qTSB+aeEFY9O71IkIm4pUCu82klBWFMVfdne1JTmX/ezrkg13VR4HQRrjNwPhfg
+	QMAtpK0+gGeEihJIzr5IfW9izZvZBy4Sk5saKrvwaJgKl94nRs+drqPHvLl3KwrQIrG1Tn
+	Ae1IZ7qVYr/sdAJa9wyiwHj9gmr+OPY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE42043503;
-	Fri, 20 Mar 2026 22:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0415BC2BC9E;
-	Fri, 20 Mar 2026 22:14:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5CD360130;
+	Fri, 20 Mar 2026 22:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E20C4CEF7;
+	Fri, 20 Mar 2026 22:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774044886;
-	bh=eJ5LJmBygj38sotSWrTqqnRQBxx9S09xuHHuoQllTf4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fOZqms56Detoy7Ovql6hpqyFtIeGu2lGm8UYHQTWjXWW07wX+NrF400TJE7KR77iF
-	 9iCuUdABYnU76QMfikTfpFzS/Hvt6CBqZniMNHd19YOw1xDd5XMqF14wdMiaekrhhz
-	 qhnwaetcd3jJkelgH1rnPvfWuZFFqGIbxeENC9nn/Kr3ltIHWKUzBzTZ+CaB2kf7lZ
-	 1xKdVDw2rqCl0Pjlqj0t4KrOwpm43JEyKX/DBfvImIOe2FHRCwwvZG0Ldi6xHpAoUN
-	 Mnl5e4sno4aqrQ87l6rQMAXZF4brrhoHmbWYxQ5CAjXrgaVbepoHy29TJZ3Es+E1n9
-	 Sh9ug6YAQ3Iog==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 20 Mar 2026 23:13:47 +0100
-Subject: [PATCH v2 15/15] mm/sparse: move memory hotplug bits to
- sparse-vmemmap.c
+	s=k20201202; t=1774046406;
+	bh=P2mslC++0zk+mcj13b8jLsDA4S5ZGJbmZDQiowDGZDE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IyQwSOAjCQNvWLi99FsyWyA9GCrN68275qcV2+Tebm9ZMvRz6KuIghiKEY8GsySsm
+	 I17pFqJyqx9rr5vYHO7P0EAPefKlWABUW/DpvDLLFVYxnJH6+RN0m34os5KpKYH8qF
+	 nCQ3jz7X0qeQDqnQnYv1rZx9FChvzhpWLF0s0u13j9FQJDup/n4agriaxrDV6qtv7T
+	 I7WtUvonBYeBUCjvB9OcdzUF73Vzn0eAw6rxoc4W6bcHign7vDKR74EgB76KnDm9Vp
+	 P32kO5lkRTlpmDwHpbqyWFSHU8irzhWpP5y6RLH2agII8/XtTrdZWyXcCPKGoPS5RQ
+	 kAAclJMcwaA8g==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Bodo Stroesser <bostroesser@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org,
+	linux-staging@lists.linux.dev,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH v4 00/21] mm: expand mmap_prepare functionality and usage
+Date: Fri, 20 Mar 2026 22:39:26 +0000
+Message-ID: <cover.1774045440.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-sparsemem_cleanups-v2-15-096addc8800d@kernel.org>
-References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
-In-Reply-To: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Oscar Salvador <osalvador@suse.de>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
- linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 642E540007
+X-Stat-Signature: u8uqmto54k3hk7yc6ezhcmqu1dat6g9i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C3E0FC000B
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 5ej8n1nfm37s1xpsm8ffdtra81dz7ci5
-X-HE-Tag: 1774044887-530149
-X-HE-Meta: U2FsdGVkX1+UBTutt8MH4LA2RYT4IfboKkzDLAyaLOXfZ5Gb8ESDSROsqIOwG+XcSOGk+RPMD7N4tb4qdjUZ34qOtFuKnWoOM6scQ5HvNSkTgwjQ8Cstp2dqIggkXTUV0rH14R9O4cB9M1VBHVcbs3VJ/zZg4eK/LuTmA+Pk0I5qjJCbfgrbf0J0Ve5mJXZJlSUwh2Kku5vTfXIFC71vhrw1fllIXwyJBev3IBo80NdQ6vM16UoZNOsW4pRR+8bQlO2GRBspMxHpa/a4PWemCyQtR0/rnNkF2g61bJ2xl+E3plKft0I8c2cvt0JakWMPe587opv7guniG2aJlY9Q9JJK07chI9GtyZdpk75yLvhAseDuBa1rzHFeTj8tMssUF9rNriCaXUzYinSNu2j7r4PrH/p5qntdmh2BDDHR4nCtH3F+wgN8xU2+FpG1pawT2Iu30vaB5PVGtPgn/S5UdaHC9IVeL8uj5Dfhb4TM2EdZqTf0PNdmW1JSCoxiKBbzzOCNUE3ISesjVtGE/ogBMFFJ7SJGMR3giiIUMMp7WDzOy9OKVgbfBc4EXgiUF4046Q3duamWW4LupB5zEs8ANic9VxYGNCTkm7Qbnh7rkSZu4InLeuRWZ4gfjvUgl7fTaGzNEwxhwJqOFtgqEjOUr9f7Bw0saBysTP149V5GCDdy8FNoOtPMYWo8b1YnCya1vPbqblqXuYqT2NOZKyvV2FQBkA8zzlHvyT1VE4BLPTRSL3ebXDtDQ1eS7mTpznKiDQxJ0XRrQ9DmFsDub5hhf/abE/wCfES65OkQmxpeN5B1T9n4ZQIfl7t9YYhCwSYOzg7dCnd0QAO835OhItaAcRD7i0ajFQGPxUASNWrfYCMGgu6883/I182UYd3veJdkz2uMDLDWnKfjbbOEGgocEQ==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774046407-385691
+X-HE-Meta: U2FsdGVkX18S0TVnDeGYXeoiH2rx1UITGdWhsGuQfmTmCSdd/AQAwnsl2xs+yAg0541r8a3NXqK6IU6Sq70YO0kVhcGtWOOBRkrbifho6f0ESgvm7B3RBQHynDs6lHBE1EVPev9Kix0ef0m4HAHCbL2MbBcQlM0lMc/b+c3xfxhJdWsNybEZbDwjT82XZATaSy77owaLP8s+LVug7zP1URLLx/SaRsitif1NYOYvkTA5WM5PhUxUo8kgPPusgSq3MYNq4N24iDcQwLAUE8My7u3tpNPBybZgltlQ/5+wk8a8i+GJ5Z5SL/1via4apQ1/QnpaaQcThg3Z0bSODjs/PB51wijYhaNMGeyGiT22kD0bcDArKAR0x/pCbAUQqYMJNU5sNQTM1N7mo7qnbtvPBXwC+Chm00DfBAN9rNn1ZZuZZy0Cw0iJTOYbKXXF/8IzgCfolJOXuJyuX1MGE4+uEaQ2pvd78kMwGjHduULuWtuNnNMcfQQ9jEUl3nmrW149xiJb6S261q23cA0x4MJ4qy5CeGfxizbhDNrip53UcKq0ibK6V2eD6TLuKOyTYGRsYF6OzOHGVPeIGB1FtDPhlyAx8BX9UXIJNa8cLemHUCct8on77QtAx6jhih9KOLS/YQwiPxkNYu0iaderW3TUVfIBSD8AxIC3u4sjpfEu9beiUSgQ3j1iZqP1e73EAqL0FT5mdEkgfQSNFf+5zb7XuKMh79sAN5VwjGoC2bdfamgbhwjHp4/0VavFILHhNrFaiJ4U1M76cZkUvSoGyKsiCV+9PpGnleANfC4g0VCZB6u0IZsRnnlSKVFjlW42JlsdYZ64MNGreqsUp/14DTlHfkH+xdFkTjzd7Vf7RArrVOkK/lAjRHlRvLAVVSquvzkH0Hu+bnvMHD8QvAb4Q7oSN452XNE2xRwHmihZ6+ZEZvuFesU1vVzSteM7+SQFtJ6ArZUB/SGSLbdnAh4lVI4
+ KHw8k93i
+ XOrxeOQppK0vJhb1HfYk0vvFa6N4iNDXLk1AVDl6hH+wET7LpH5Gx9untThaE9Ya4pS/aT2A1LTTFciMP7acgv8fwcpcb0Zoi91fpOfCIDPQSb5xIoQsNoS1OSYTSi3CpbECSvuz/dJtu3u/4/mxDaWEHe0xovv0sLEl7zSaKzDcTPesPHknF9E07+1vOJZVulnBYi4eNhnACoUKEpw0/csw+8w9A3iLqReCwhzvVKl1SNXxUM9hG83c4iu5p9IIEWzBLCwVZVvrDX9Buo+2gHGIqjyqdnOl2mTutVd3U0XMrYxZlnFNMTwFiShr+nuwXD+V3UWD7Ouz1yzXQcUHG/BCGN4wEwqOIfSkr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,709 +129,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's move all memory hoptplug related code to sparse-vmemmap.c.
+This series expands the mmap_prepare functionality, which is intended to
+replace the deprecated f_op->mmap hook which has been the source of bugs
+and security issues for some time.
 
-We only have to expose sparse_index_init(). While at it, drop the
-definition of sparse_index_init() for !CONFIG_SPARSEMEM, which is unused,
-and place the declaration in internal.h.
+This series starts with some cleanup of existing mmap_prepare logic, then
+adds documentation for the mmap_prepare call to make it easier for
+filesystem and driver writers to understand how it works.
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/mmzone.h |   1 -
- mm/internal.h          |   4 +
- mm/sparse-vmemmap.c    | 304 ++++++++++++++++++++++++++++++++++++++++++++++++
- mm/sparse.c            | 310 +------------------------------------------------
- 4 files changed, 310 insertions(+), 309 deletions(-)
+It then importantly adds a vm_ops->mapped hook, a key feature that was
+missing from mmap_prepare previously - this is invoked when a driver which
+specifies mmap_prepare has successfully been mapped but not merged with
+another VMA.
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index dcbbf36ed88c..e11513f581eb 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -2390,7 +2390,6 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
- #endif
- 
- #else
--#define sparse_index_init(_sec, _nid)  do {} while (0)
- #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
- #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
- #define pfn_in_present_section pfn_valid
-diff --git a/mm/internal.h b/mm/internal.h
-index b002c91e40a5..83e781147a28 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -965,6 +965,7 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
-  */
- #ifdef CONFIG_SPARSEMEM
- void sparse_init(void);
-+int sparse_index_init(unsigned long section_nr, int nid);
- 
- static inline void sparse_init_one_section(struct mem_section *ms,
- 		unsigned long pnum, struct page *mem_map,
-@@ -1000,6 +1001,9 @@ static inline void __section_mark_present(struct mem_section *ms,
- static inline void sparse_init(void) {}
- #endif /* CONFIG_SPARSEMEM */
- 
-+/*
-+ * mm/sparse-vmemmap.c
-+ */
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
- void sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages);
- #else
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index f0690797667f..08fef7b5c8b0 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -591,3 +591,307 @@ void __init sparse_vmemmap_init_nid_late(int nid)
- 	hugetlb_vmemmap_init_late(nid);
- }
- #endif
-+
-+static void subsection_mask_set(unsigned long *map, unsigned long pfn,
-+		unsigned long nr_pages)
-+{
-+	int idx = subsection_map_index(pfn);
-+	int end = subsection_map_index(pfn + nr_pages - 1);
-+
-+	bitmap_set(map, idx, end - idx + 1);
-+}
-+
-+void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages)
-+{
-+	int end_sec_nr = pfn_to_section_nr(pfn + nr_pages - 1);
-+	unsigned long nr, start_sec_nr = pfn_to_section_nr(pfn);
-+
-+	for (nr = start_sec_nr; nr <= end_sec_nr; nr++) {
-+		struct mem_section *ms;
-+		unsigned long pfns;
-+
-+		pfns = min(nr_pages, PAGES_PER_SECTION
-+				- (pfn & ~PAGE_SECTION_MASK));
-+		ms = __nr_to_section(nr);
-+		subsection_mask_set(ms->usage->subsection_map, pfn, pfns);
-+
-+		pr_debug("%s: sec: %lu pfns: %lu set(%d, %d)\n", __func__, nr,
-+				pfns, subsection_map_index(pfn),
-+				subsection_map_index(pfn + pfns - 1));
-+
-+		pfn += pfns;
-+		nr_pages -= pfns;
-+	}
-+}
-+
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+
-+/* Mark all memory sections within the pfn range as online */
-+void online_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
-+{
-+	unsigned long pfn;
-+
-+	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
-+		unsigned long section_nr = pfn_to_section_nr(pfn);
-+		struct mem_section *ms = __nr_to_section(section_nr);
-+
-+		ms->section_mem_map |= SECTION_IS_ONLINE;
-+	}
-+}
-+
-+/* Mark all memory sections within the pfn range as offline */
-+void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
-+{
-+	unsigned long pfn;
-+
-+	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
-+		unsigned long section_nr = pfn_to_section_nr(pfn);
-+		struct mem_section *ms = __nr_to_section(section_nr);
-+
-+		ms->section_mem_map &= ~SECTION_IS_ONLINE;
-+	}
-+}
-+
-+static struct page * __meminit populate_section_memmap(unsigned long pfn,
-+		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
-+		struct dev_pagemap *pgmap)
-+{
-+	return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-+}
-+
-+static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
-+		struct vmem_altmap *altmap)
-+{
-+	unsigned long start = (unsigned long) pfn_to_page(pfn);
-+	unsigned long end = start + nr_pages * sizeof(struct page);
-+
-+	vmemmap_free(start, end, altmap);
-+}
-+static void free_map_bootmem(struct page *memmap)
-+{
-+	unsigned long start = (unsigned long)memmap;
-+	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
-+
-+	vmemmap_free(start, end, NULL);
-+}
-+
-+static int clear_subsection_map(unsigned long pfn, unsigned long nr_pages)
-+{
-+	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
-+	DECLARE_BITMAP(tmp, SUBSECTIONS_PER_SECTION) = { 0 };
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+	unsigned long *subsection_map = ms->usage
-+		? &ms->usage->subsection_map[0] : NULL;
-+
-+	subsection_mask_set(map, pfn, nr_pages);
-+	if (subsection_map)
-+		bitmap_and(tmp, map, subsection_map, SUBSECTIONS_PER_SECTION);
-+
-+	if (WARN(!subsection_map || !bitmap_equal(tmp, map, SUBSECTIONS_PER_SECTION),
-+				"section already deactivated (%#lx + %ld)\n",
-+				pfn, nr_pages))
-+		return -EINVAL;
-+
-+	bitmap_xor(subsection_map, map, subsection_map, SUBSECTIONS_PER_SECTION);
-+	return 0;
-+}
-+
-+static bool is_subsection_map_empty(struct mem_section *ms)
-+{
-+	return bitmap_empty(&ms->usage->subsection_map[0],
-+			    SUBSECTIONS_PER_SECTION);
-+}
-+
-+static int fill_subsection_map(unsigned long pfn, unsigned long nr_pages)
-+{
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
-+	unsigned long *subsection_map;
-+	int rc = 0;
-+
-+	subsection_mask_set(map, pfn, nr_pages);
-+
-+	subsection_map = &ms->usage->subsection_map[0];
-+
-+	if (bitmap_empty(map, SUBSECTIONS_PER_SECTION))
-+		rc = -EINVAL;
-+	else if (bitmap_intersects(map, subsection_map, SUBSECTIONS_PER_SECTION))
-+		rc = -EEXIST;
-+	else
-+		bitmap_or(subsection_map, map, subsection_map,
-+				SUBSECTIONS_PER_SECTION);
-+
-+	return rc;
-+}
-+
-+/*
-+ * To deactivate a memory region, there are 3 cases to handle:
-+ *
-+ * 1. deactivation of a partial hot-added section:
-+ *      a) section was present at memory init.
-+ *      b) section was hot-added post memory init.
-+ * 2. deactivation of a complete hot-added section.
-+ * 3. deactivation of a complete section from memory init.
-+ *
-+ * For 1, when subsection_map does not empty we will not be freeing the
-+ * usage map, but still need to free the vmemmap range.
-+ */
-+static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
-+		struct vmem_altmap *altmap)
-+{
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+	bool section_is_early = early_section(ms);
-+	struct page *memmap = NULL;
-+	bool empty;
-+
-+	if (clear_subsection_map(pfn, nr_pages))
-+		return;
-+
-+	empty = is_subsection_map_empty(ms);
-+	if (empty) {
-+		/*
-+		 * Mark the section invalid so that valid_section()
-+		 * return false. This prevents code from dereferencing
-+		 * ms->usage array.
-+		 */
-+		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
-+
-+		/*
-+		 * When removing an early section, the usage map is kept (as the
-+		 * usage maps of other sections fall into the same page). It
-+		 * will be re-used when re-adding the section - which is then no
-+		 * longer an early section. If the usage map is PageReserved, it
-+		 * was allocated during boot.
-+		 */
-+		if (!PageReserved(virt_to_page(ms->usage))) {
-+			kfree_rcu(ms->usage, rcu);
-+			WRITE_ONCE(ms->usage, NULL);
-+		}
-+		memmap = pfn_to_page(SECTION_ALIGN_DOWN(pfn));
-+	}
-+
-+	/*
-+	 * The memmap of early sections is always fully populated. See
-+	 * section_activate() and pfn_valid() .
-+	 */
-+	if (!section_is_early) {
-+		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
-+		depopulate_section_memmap(pfn, nr_pages, altmap);
-+	} else if (memmap) {
-+		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
-+							  PAGE_SIZE)));
-+		free_map_bootmem(memmap);
-+	}
-+
-+	if (empty)
-+		ms->section_mem_map = (unsigned long)NULL;
-+}
-+
-+static struct page * __meminit section_activate(int nid, unsigned long pfn,
-+		unsigned long nr_pages, struct vmem_altmap *altmap,
-+		struct dev_pagemap *pgmap)
-+{
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+	struct mem_section_usage *usage = NULL;
-+	struct page *memmap;
-+	int rc;
-+
-+	if (!ms->usage) {
-+		usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
-+		if (!usage)
-+			return ERR_PTR(-ENOMEM);
-+		ms->usage = usage;
-+	}
-+
-+	rc = fill_subsection_map(pfn, nr_pages);
-+	if (rc) {
-+		if (usage)
-+			ms->usage = NULL;
-+		kfree(usage);
-+		return ERR_PTR(rc);
-+	}
-+
-+	/*
-+	 * The early init code does not consider partially populated
-+	 * initial sections, it simply assumes that memory will never be
-+	 * referenced.  If we hot-add memory into such a section then we
-+	 * do not need to populate the memmap and can simply reuse what
-+	 * is already there.
-+	 */
-+	if (nr_pages < PAGES_PER_SECTION && early_section(ms))
-+		return pfn_to_page(pfn);
-+
-+	memmap = populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-+	if (!memmap) {
-+		section_deactivate(pfn, nr_pages, altmap);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-+
-+	return memmap;
-+}
-+
-+/**
-+ * sparse_add_section - add a memory section, or populate an existing one
-+ * @nid: The node to add section on
-+ * @start_pfn: start pfn of the memory range
-+ * @nr_pages: number of pfns to add in the section
-+ * @altmap: alternate pfns to allocate the memmap backing store
-+ * @pgmap: alternate compound page geometry for devmap mappings
-+ *
-+ * This is only intended for hotplug.
-+ *
-+ * Note that only VMEMMAP supports sub-section aligned hotplug,
-+ * the proper alignment and size are gated by check_pfn_span().
-+ *
-+ *
-+ * Return:
-+ * * 0		- On success.
-+ * * -EEXIST	- Section has been present.
-+ * * -ENOMEM	- Out of memory.
-+ */
-+int __meminit sparse_add_section(int nid, unsigned long start_pfn,
-+		unsigned long nr_pages, struct vmem_altmap *altmap,
-+		struct dev_pagemap *pgmap)
-+{
-+	unsigned long section_nr = pfn_to_section_nr(start_pfn);
-+	struct mem_section *ms;
-+	struct page *memmap;
-+	int ret;
-+
-+	ret = sparse_index_init(section_nr, nid);
-+	if (ret < 0)
-+		return ret;
-+
-+	memmap = section_activate(nid, start_pfn, nr_pages, altmap, pgmap);
-+	if (IS_ERR(memmap))
-+		return PTR_ERR(memmap);
-+
-+	/*
-+	 * Poison uninitialized struct pages in order to catch invalid flags
-+	 * combinations.
-+	 */
-+	page_init_poison(memmap, sizeof(struct page) * nr_pages);
-+
-+	ms = __nr_to_section(section_nr);
-+	__section_mark_present(ms, section_nr);
-+
-+	/* Align memmap to section boundary in the subsection case */
-+	if (section_nr_to_pfn(section_nr) != start_pfn)
-+		memmap = pfn_to_page(section_nr_to_pfn(section_nr));
-+	sparse_init_one_section(ms, section_nr, memmap, ms->usage, 0);
-+
-+	return 0;
-+}
-+
-+void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
-+			   struct vmem_altmap *altmap)
-+{
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+
-+	if (WARN_ON_ONCE(!valid_section(ms)))
-+		return;
-+
-+	section_deactivate(pfn, nr_pages, altmap);
-+}
-+#endif /* CONFIG_MEMORY_HOTPLUG */
-diff --git a/mm/sparse.c b/mm/sparse.c
-index ecd4c41c0ff0..007fd52c621e 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -79,7 +79,7 @@ static noinline struct mem_section __ref *sparse_index_alloc(int nid)
- 	return section;
- }
- 
--static int __meminit sparse_index_init(unsigned long section_nr, int nid)
-+int __meminit sparse_index_init(unsigned long section_nr, int nid)
- {
- 	unsigned long root = SECTION_NR_TO_ROOT(section_nr);
- 	struct mem_section *section;
-@@ -103,7 +103,7 @@ static int __meminit sparse_index_init(unsigned long section_nr, int nid)
- 	return 0;
- }
- #else /* !SPARSEMEM_EXTREME */
--static inline int sparse_index_init(unsigned long section_nr, int nid)
-+int sparse_index_init(unsigned long section_nr, int nid)
- {
- 	return 0;
- }
-@@ -167,40 +167,6 @@ static inline unsigned long first_present_section_nr(void)
- 	return next_present_section_nr(-1);
- }
- 
--#ifdef CONFIG_SPARSEMEM_VMEMMAP
--static void subsection_mask_set(unsigned long *map, unsigned long pfn,
--		unsigned long nr_pages)
--{
--	int idx = subsection_map_index(pfn);
--	int end = subsection_map_index(pfn + nr_pages - 1);
--
--	bitmap_set(map, idx, end - idx + 1);
--}
--
--void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages)
--{
--	int end_sec_nr = pfn_to_section_nr(pfn + nr_pages - 1);
--	unsigned long nr, start_sec_nr = pfn_to_section_nr(pfn);
--
--	for (nr = start_sec_nr; nr <= end_sec_nr; nr++) {
--		struct mem_section *ms;
--		unsigned long pfns;
--
--		pfns = min(nr_pages, PAGES_PER_SECTION
--				- (pfn & ~PAGE_SECTION_MASK));
--		ms = __nr_to_section(nr);
--		subsection_mask_set(ms->usage->subsection_map, pfn, pfns);
--
--		pr_debug("%s: sec: %lu pfns: %lu set(%d, %d)\n", __func__, nr,
--				pfns, subsection_map_index(pfn),
--				subsection_map_index(pfn + pfns - 1));
--
--		pfn += pfns;
--		nr_pages -= pfns;
--	}
--}
--#endif
--
- /* Record a memory area against a node. */
- static void __init memory_present(int nid, unsigned long start, unsigned long end)
- {
-@@ -482,275 +448,3 @@ void __init sparse_init(void)
- 	sparse_init_nid(nid_begin, pnum_begin, pnum_end, map_count);
- 	vmemmap_populate_print_last();
- }
--
--#ifdef CONFIG_MEMORY_HOTPLUG
--
--/* Mark all memory sections within the pfn range as online */
--void online_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
--{
--	unsigned long pfn;
--
--	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
--		unsigned long section_nr = pfn_to_section_nr(pfn);
--		struct mem_section *ms = __nr_to_section(section_nr);
--
--		ms->section_mem_map |= SECTION_IS_ONLINE;
--	}
--}
--
--/* Mark all memory sections within the pfn range as offline */
--void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
--{
--	unsigned long pfn;
--
--	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
--		unsigned long section_nr = pfn_to_section_nr(pfn);
--		struct mem_section *ms = __nr_to_section(section_nr);
--
--		ms->section_mem_map &= ~SECTION_IS_ONLINE;
--	}
--}
--
--static struct page * __meminit populate_section_memmap(unsigned long pfn,
--		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
--		struct dev_pagemap *pgmap)
--{
--	return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
--}
--
--static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
--		struct vmem_altmap *altmap)
--{
--	unsigned long start = (unsigned long) pfn_to_page(pfn);
--	unsigned long end = start + nr_pages * sizeof(struct page);
--
--	vmemmap_free(start, end, altmap);
--}
--static void free_map_bootmem(struct page *memmap)
--{
--	unsigned long start = (unsigned long)memmap;
--	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
--
--	vmemmap_free(start, end, NULL);
--}
--
--static int clear_subsection_map(unsigned long pfn, unsigned long nr_pages)
--{
--	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
--	DECLARE_BITMAP(tmp, SUBSECTIONS_PER_SECTION) = { 0 };
--	struct mem_section *ms = __pfn_to_section(pfn);
--	unsigned long *subsection_map = ms->usage
--		? &ms->usage->subsection_map[0] : NULL;
--
--	subsection_mask_set(map, pfn, nr_pages);
--	if (subsection_map)
--		bitmap_and(tmp, map, subsection_map, SUBSECTIONS_PER_SECTION);
--
--	if (WARN(!subsection_map || !bitmap_equal(tmp, map, SUBSECTIONS_PER_SECTION),
--				"section already deactivated (%#lx + %ld)\n",
--				pfn, nr_pages))
--		return -EINVAL;
--
--	bitmap_xor(subsection_map, map, subsection_map, SUBSECTIONS_PER_SECTION);
--	return 0;
--}
--
--static bool is_subsection_map_empty(struct mem_section *ms)
--{
--	return bitmap_empty(&ms->usage->subsection_map[0],
--			    SUBSECTIONS_PER_SECTION);
--}
--
--static int fill_subsection_map(unsigned long pfn, unsigned long nr_pages)
--{
--	struct mem_section *ms = __pfn_to_section(pfn);
--	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
--	unsigned long *subsection_map;
--	int rc = 0;
--
--	subsection_mask_set(map, pfn, nr_pages);
--
--	subsection_map = &ms->usage->subsection_map[0];
--
--	if (bitmap_empty(map, SUBSECTIONS_PER_SECTION))
--		rc = -EINVAL;
--	else if (bitmap_intersects(map, subsection_map, SUBSECTIONS_PER_SECTION))
--		rc = -EEXIST;
--	else
--		bitmap_or(subsection_map, map, subsection_map,
--				SUBSECTIONS_PER_SECTION);
--
--	return rc;
--}
--
--/*
-- * To deactivate a memory region, there are 3 cases to handle:
-- *
-- * 1. deactivation of a partial hot-added section:
-- *      a) section was present at memory init.
-- *      b) section was hot-added post memory init.
-- * 2. deactivation of a complete hot-added section.
-- * 3. deactivation of a complete section from memory init.
-- *
-- * For 1, when subsection_map does not empty we will not be freeing the
-- * usage map, but still need to free the vmemmap range.
-- */
--static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
--		struct vmem_altmap *altmap)
--{
--	struct mem_section *ms = __pfn_to_section(pfn);
--	bool section_is_early = early_section(ms);
--	struct page *memmap = NULL;
--	bool empty;
--
--	if (clear_subsection_map(pfn, nr_pages))
--		return;
--
--	empty = is_subsection_map_empty(ms);
--	if (empty) {
--		/*
--		 * Mark the section invalid so that valid_section()
--		 * return false. This prevents code from dereferencing
--		 * ms->usage array.
--		 */
--		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
--
--		/*
--		 * When removing an early section, the usage map is kept (as the
--		 * usage maps of other sections fall into the same page). It
--		 * will be re-used when re-adding the section - which is then no
--		 * longer an early section. If the usage map is PageReserved, it
--		 * was allocated during boot.
--		 */
--		if (!PageReserved(virt_to_page(ms->usage))) {
--			kfree_rcu(ms->usage, rcu);
--			WRITE_ONCE(ms->usage, NULL);
--		}
--		memmap = pfn_to_page(SECTION_ALIGN_DOWN(pfn));
--	}
--
--	/*
--	 * The memmap of early sections is always fully populated. See
--	 * section_activate() and pfn_valid() .
--	 */
--	if (!section_is_early) {
--		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
--		depopulate_section_memmap(pfn, nr_pages, altmap);
--	} else if (memmap) {
--		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
--							  PAGE_SIZE)));
--		free_map_bootmem(memmap);
--	}
--
--	if (empty)
--		ms->section_mem_map = (unsigned long)NULL;
--}
--
--static struct page * __meminit section_activate(int nid, unsigned long pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap,
--		struct dev_pagemap *pgmap)
--{
--	struct mem_section *ms = __pfn_to_section(pfn);
--	struct mem_section_usage *usage = NULL;
--	struct page *memmap;
--	int rc;
--
--	if (!ms->usage) {
--		usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
--		if (!usage)
--			return ERR_PTR(-ENOMEM);
--		ms->usage = usage;
--	}
--
--	rc = fill_subsection_map(pfn, nr_pages);
--	if (rc) {
--		if (usage)
--			ms->usage = NULL;
--		kfree(usage);
--		return ERR_PTR(rc);
--	}
--
--	/*
--	 * The early init code does not consider partially populated
--	 * initial sections, it simply assumes that memory will never be
--	 * referenced.  If we hot-add memory into such a section then we
--	 * do not need to populate the memmap and can simply reuse what
--	 * is already there.
--	 */
--	if (nr_pages < PAGES_PER_SECTION && early_section(ms))
--		return pfn_to_page(pfn);
--
--	memmap = populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
--	if (!memmap) {
--		section_deactivate(pfn, nr_pages, altmap);
--		return ERR_PTR(-ENOMEM);
--	}
--	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
--
--	return memmap;
--}
--
--/**
-- * sparse_add_section - add a memory section, or populate an existing one
-- * @nid: The node to add section on
-- * @start_pfn: start pfn of the memory range
-- * @nr_pages: number of pfns to add in the section
-- * @altmap: alternate pfns to allocate the memmap backing store
-- * @pgmap: alternate compound page geometry for devmap mappings
-- *
-- * This is only intended for hotplug.
-- *
-- * Note that only VMEMMAP supports sub-section aligned hotplug,
-- * the proper alignment and size are gated by check_pfn_span().
-- *
-- *
-- * Return:
-- * * 0		- On success.
-- * * -EEXIST	- Section has been present.
-- * * -ENOMEM	- Out of memory.
-- */
--int __meminit sparse_add_section(int nid, unsigned long start_pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap,
--		struct dev_pagemap *pgmap)
--{
--	unsigned long section_nr = pfn_to_section_nr(start_pfn);
--	struct mem_section *ms;
--	struct page *memmap;
--	int ret;
--
--	ret = sparse_index_init(section_nr, nid);
--	if (ret < 0)
--		return ret;
--
--	memmap = section_activate(nid, start_pfn, nr_pages, altmap, pgmap);
--	if (IS_ERR(memmap))
--		return PTR_ERR(memmap);
--
--	/*
--	 * Poison uninitialized struct pages in order to catch invalid flags
--	 * combinations.
--	 */
--	page_init_poison(memmap, sizeof(struct page) * nr_pages);
--
--	ms = __nr_to_section(section_nr);
--	__section_mark_present(ms, section_nr);
--
--	/* Align memmap to section boundary in the subsection case */
--	if (section_nr_to_pfn(section_nr) != start_pfn)
--		memmap = pfn_to_page(section_nr_to_pfn(section_nr));
--	sparse_init_one_section(ms, section_nr, memmap, ms->usage, 0);
--
--	return 0;
--}
--
--void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
--			   struct vmem_altmap *altmap)
--{
--	struct mem_section *ms = __pfn_to_section(pfn);
--
--	if (WARN_ON_ONCE(!valid_section(ms)))
--		return;
--
--	section_deactivate(pfn, nr_pages, altmap);
--}
--#endif /* CONFIG_MEMORY_HOTPLUG */
+mmap_prepare is invoked prior to a merge being attempted, so you cannot
+manipulate state such as reference counts as if it were a new mapping.
 
--- 
-2.43.0
+The vm_ops->mapped hook allows a driver to perform tasks required at this
+stage, and provides symmetry against subsequent vm_ops->open,close calls.
 
+The series uses this to correct the afs implementation which wrongly
+manipulated reference count at mmap_prepare time.
+
+It then adds an mmap_prepare equivalent of vm_iomap_memory() -
+mmap_action_simple_ioremap(), then uses this to update a number of drivers.
+
+It then splits out the mmap_prepare compatibility layer (which allows for
+invocation of mmap_prepare hooks in an mmap() hook) in such a way as to
+allow for more incremental implementation of mmap_prepare hooks.
+
+It then uses this to extend mmap_prepare usage in drivers.
+
+Finally it adds an mmap_prepare equivalent of vm_map_pages(), which lays
+the foundation for future work which will extend mmap_prepare to DMA
+coherent mappings.
+
+v4:
+* Added partial revert of AFS as per Vlasta. Labelled as hotfix.
+* Updated subsequent afs patch to apply against this version of AFS.
+* Reverted rmap_lock_held changes to util.c, mm.h mmap_action_complete()
+  etc. as per Vlasta.
+* Added hotfix to fix issue with rmap lock held over munmap() as per
+  Vlasta. Labelled as hotfix.
+* Force-disable the rmap lock hold feature in the compatbility layer
+  because being run under the mmap hook eliminates the need for it.
+* Removed superfluous map->hold_file_rmap_lock field.
+* Moved handling of rmap lock and unmapping to mmap_action_complete().
+* Removed unmap_vma_locked() as previous added patches render it
+  unnecessary.
+* Removed __compat_vma_mapped() from compatibility layer and
+  call_vma_mapped() from VMA layer and made it part of mmap_action_finish()
+  for all callers.
+* Propagated changes to VMA tests.
+* Updated mmap_action_map_kernel_pages[_full]() patch to add missing
+  mmap_complete() noop switch enum value as per Nathan.
+* Fixed a doc issue in the mmap_prepare docs - reference
+  vma_desc_test_flags() rather than _any().
+* Rearranged logic so the vm_ops->mapped hook is called before the success
+  hook, but this should have no impact.
+
+v3:
+* Propagated tags (thanks Suren, Richard!)
+* Updated 12/16 to correctly clear the vm_area_desc data structure in
+  set_desc_from_vma() as per Joshua Hahn (thanks! :)
+* Fixed type in 12/16 as per Suren (cheers!)
+* Fixed up 6/16 to use mmap_action_ioremap_full() in simple_ioremap_prepare() as
+  suggested by Suren.
+* Also fixed up 6/16 to call io_remap_pfn_range_prepare() direct rather than
+  mmap_action_prepare() as per Suren.
+* Also fixed up 6/16 to pass vm_len rather than vm_[start, end] to
+  __simple_ioremap_prep() as per Suren (thanks for all the above! :)
+* Fixed issue in rmap lock being held - we were referencing a vma->vm_file after
+  the VMA was unmapped, so UAF. Avoid that. Also do_munmap() relies on rmap lock
+  NOT being held or may deadlock, so extend functionality to ensure we drop it
+  when it is held on error paths.
+* Updated 'area' -> 'vma' variable in 3/16 in VMA test dup.h.
+* Fixed up reference to __compat_vma_mmap() in 12/16 commit message.
+* Updated 1/16 to no longer duplicatively apply io_remap_pfn_range_pfn().
+* Updated 1/16 to delegate I/O remap complete to remap complete logic.
+* Fixed various typos in 12/16.
+* Fixed stale comment typos in 13/16.
+* Fixed commit msg and comment typos in 14/16.
+* Removed accidental sneak peak to future functionality in 15/16 commit message
+  :).
+* Fixed up field names to be identical in VMA tests + mm_types.h in 6/16,
+  15/16.
+https://lore.kernel.org/all/cover.1773944114.git.ljs@kernel.org/
+
+v2:
+* Rebased on
+  https://lore.kernel.org/all/cover.1773665966.git.ljs@kernel.org/ to make
+  Andrew's life easier :)
+* Folded all interim fixes into series (thanks Randy for many doc fixes!))
+* As per Suren, removed a comment about allocations too small to fail.
+* As per Randy, fixed up typo in documentation for vm_area_desc.
+* Fixed mmap_action_prepare() not returning if invalid action->type
+  specified, as updated from Andrew's interim fix (thanks!) and also
+  reported by kernel test bot.
+* Updated mmap_action_prepare() and specific prepare functions to only
+  pass vm_area_desc parameter as per Suren.
+* Fixed up whitespace as per Suren.
+* Updated vm_op->open comment in vm_operations_struct to reference forking
+  as per Suren.
+* Added a commit to check that input range is within VMA on remap as per
+  Suren (this also covers I/O remap and all other cases already asserted).
+* Updated AFS to not incorrectly reference count on mmap prepare as per
+  Usama.
+* Also updated various static AFS functions to be consistent with each
+  other.
+* Updated AFS commit message to reflect mmap_prepare being before any VMA
+  merging as per Suren.
+* Updated __compat_vma_mapped() to check for NULL vm_ops as per Usama.
+* Updated __compat_vma_mapped() to not reference an unmapped VMA's fields
+  as per Usama.
+* Updated __vma_check_mmap_hook() to check for NULL vm_ops as per Usama.
+* Dropped comment about preferring mmap_prepare as seems overly confusing,
+  as per Suren.
+* Updated the mmap lock assert in unmap_vma_locked() to a write lock assert
+  as per Suren.
+* Copied vm_ops->open comment over to VMA tests in appropriate patch as per
+  Suren.
+* Updated mmap_prepare documentation to reflect the fact that no resources
+  should be allocated upon mmap_prepare.
+* Updated mmap_prepare documentation to reference the vm_ops->mapped
+  callback.
+* Fixed stray markdown '## How to use' in documentation.
+* Fixed bug reported by kernel test bot re: overlooked
+  vma_desc_test_flags() -> vma_desc_test() in MTD driver for nommu.
+https://lore.kernel.org/linux-mm/cover.1773695307.git.ljs@kernel.org/
+
+v1:
+https://lore.kernel.org/linux-mm/cover.1773346620.git.ljs@kernel.org/
+
+Lorenzo Stoakes (Oracle) (21):
+  mm: various small mmap_prepare cleanups
+  mm: add documentation for the mmap_prepare file operation callback
+  mm: document vm_operations_struct->open the same as close()
+  mm: avoid deadlock when holding rmap on mmap_prepare error
+  mm: switch the rmap lock held option off in compat layer
+  mm/vma: remove superfluous map->hold_file_rmap_lock
+  mm: have mmap_action_complete() handle the rmap lock and unmap
+  mm: add vm_ops->mapped hook
+  fs: afs: revert mmap_prepare() change
+  fs: afs: restore mmap_prepare implementation
+  mm: add mmap_action_simple_ioremap()
+  misc: open-dice: replace deprecated mmap hook with mmap_prepare
+  hpet: replace deprecated mmap hook with mmap_prepare
+  mtdchar: replace deprecated mmap hook with mmap_prepare, clean up
+  stm: replace deprecated mmap hook with mmap_prepare
+  staging: vme_user: replace deprecated mmap hook with mmap_prepare
+  mm: allow handling of stacked mmap_prepare hooks in more drivers
+  drivers: hv: vmbus: replace deprecated mmap hook with mmap_prepare
+  uio: replace deprecated mmap hook with mmap_prepare in uio_info
+  mm: add mmap_action_map_kernel_pages[_full]()
+  mm: on remap assert that input range within the proposed VMA
+
+ Documentation/driver-api/vme.rst           |   2 +-
+ Documentation/filesystems/index.rst        |   1 +
+ Documentation/filesystems/mmap_prepare.rst | 168 ++++++++++++++
+ drivers/char/hpet.c                        |  12 +-
+ drivers/hv/hyperv_vmbus.h                  |   4 +-
+ drivers/hv/vmbus_drv.c                     |  31 ++-
+ drivers/hwtracing/stm/core.c               |  31 ++-
+ drivers/misc/open-dice.c                   |  19 +-
+ drivers/mtd/mtdchar.c                      |  21 +-
+ drivers/staging/vme_user/vme.c             |  20 +-
+ drivers/staging/vme_user/vme.h             |   2 +-
+ drivers/staging/vme_user/vme_user.c        |  51 +++--
+ drivers/target/target_core_user.c          |  26 ++-
+ drivers/uio/uio.c                          |  10 +-
+ drivers/uio/uio_hv_generic.c               |  11 +-
+ fs/afs/file.c                              |  36 ++-
+ include/linux/fs.h                         |  14 +-
+ include/linux/hyperv.h                     |   4 +-
+ include/linux/mm.h                         | 158 ++++++++++++-
+ include/linux/mm_types.h                   |  17 +-
+ include/linux/uio_driver.h                 |   4 +-
+ mm/internal.h                              |  46 +++-
+ mm/memory.c                                | 175 ++++++++++----
+ mm/util.c                                  | 251 ++++++++++++++-------
+ mm/vma.c                                   |  48 ++--
+ mm/vma.h                                   |   2 +-
+ tools/testing/vma/include/dup.h            | 134 +++++++----
+ tools/testing/vma/include/stubs.h          |   8 +-
+ 28 files changed, 956 insertions(+), 350 deletions(-)
+ create mode 100644 Documentation/filesystems/mmap_prepare.rst
+
+--
+2.53.0
 
