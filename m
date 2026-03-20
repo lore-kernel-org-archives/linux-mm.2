@@ -4,129 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F40A108B8E9
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 879DE108B8E9
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76E86B0089; Fri, 20 Mar 2026 06:37:30 -0400 (EDT)
+	id ED9C76B0005; Fri, 20 Mar 2026 06:40:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4E326B008A; Fri, 20 Mar 2026 06:37:30 -0400 (EDT)
+	id EB2656B0088; Fri, 20 Mar 2026 06:40:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3CB36B008C; Fri, 20 Mar 2026 06:37:30 -0400 (EDT)
+	id DC6C46B008A; Fri, 20 Mar 2026 06:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B2BF06B0089
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:37:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5225C86125
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:37:30 +0000 (UTC)
-X-FDA: 84566089860.12.B28E39E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 30D3D20010
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:37:27 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ettoXUll;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD6AsqWd;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ettoXUll;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD6AsqWd;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CD2F76B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:40:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69C4586864
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:40:09 +0000 (UTC)
+X-FDA: 84566096538.19.908C949
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3F1B94000C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:40:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D+YvyVpd;
+	spf=pass (imf27.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774003048;
+	s=arc-20220608; t=1774003207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zsoGz04enqZTkNgfCr46wNoG4jtDeE7xMBPnJaLoNFQ=;
-	b=mcfV9yFfVINeXTsvltkH76DufPaSlicQXRA1Z3C8/K9tFzBKkeGaDIXB0raDRQeSVaJEBR
-	JaSTFZASpN9YE3eDBTihc87X4s7e2AeYyXMAXHTZkjlLmErZ4txRK+f5adlA4jA+cMMZ68
-	bM4lqbAW8iA+n4OwXYGSDK28+ZkSR9c=
+	bh=x3EfRhA4fDW6Hdtad/Pghe6EEW3AEZgUxlL1m715MFE=;
+	b=6/AsOVudcVi5rudRUjT4uLAJDNvbI7DCiiivPpe066UyH6/qKdggPIv3tJE6zRkF83dQ8/
+	ECxyDplFQhUIsTWNy1AKp2ct1F5cZPzgvl347ZM7uqQjERXAr6zhRC2mG79Ib55qybLTsB
+	oM6DUKpA3IB4R6n6Hz8fb2fSOh3cv0Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ettoXUll;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD6AsqWd;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ettoXUll;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD6AsqWd;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774003048; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D+YvyVpd;
+	spf=pass (imf27.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774003207; a=rsa-sha256;
 	cv=none;
-	b=NQkg0b1hV0J4gz8U/Zv9rNxBegrNlJiNhCQGSs0yqo6F4J5np2RzRy+NUPajfyUXe19ZjR
-	esdrnCqXIGWD0ORS3/QRnCXhmGx+tG52Ut9UsFl3iGINcwT3I1oTMcO8i1cS0j46Ln3Ej7
-	rVxMzQdQG7IdETQyK31b8fL3ZZNNWNM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A4A564D248;
-	Fri, 20 Mar 2026 10:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774003046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=6E/SqcuD0tZiW/IxXfNU9TifPU2xbsDGPsrZZo8XbLVt0HBdxkjjUTgLr8pLh9QAv1qprX
+	mpFPLhQG/2IxGz1lS43j6pSEBeNJspRqODHUh/MjRnO+Z7pXbkHp6zJCjTRw/MMfnBkJbN
+	OLMCsQj0X7VIZVFFOPhX910CRtAwqwo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774003206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zsoGz04enqZTkNgfCr46wNoG4jtDeE7xMBPnJaLoNFQ=;
-	b=ettoXUllM6FzsRKqYfBwe3oHupPrR7k6FXBAPz6u6gUBPfFdLR6AhIscWNt3gkc0Si8EIJ
-	EZimk9FyDkgAkltDSyvICd7iHO6u+ueR1Ogvdw4gZMqpD7W1KNUEwmQrqBPqoAjOskuwM2
-	sxUj5tQIIl9Jk4PibSsWn63tT54sK7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774003046;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsoGz04enqZTkNgfCr46wNoG4jtDeE7xMBPnJaLoNFQ=;
-	b=YD6AsqWdhKKf3IVBDCqGTCkBrQMCr73qt8K1gC1CNDjjf31lWWBtvViBhTss+1au1ugm29
-	idqGVIm1mgXd7wDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774003046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsoGz04enqZTkNgfCr46wNoG4jtDeE7xMBPnJaLoNFQ=;
-	b=ettoXUllM6FzsRKqYfBwe3oHupPrR7k6FXBAPz6u6gUBPfFdLR6AhIscWNt3gkc0Si8EIJ
-	EZimk9FyDkgAkltDSyvICd7iHO6u+ueR1Ogvdw4gZMqpD7W1KNUEwmQrqBPqoAjOskuwM2
-	sxUj5tQIIl9Jk4PibSsWn63tT54sK7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774003046;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsoGz04enqZTkNgfCr46wNoG4jtDeE7xMBPnJaLoNFQ=;
-	b=YD6AsqWdhKKf3IVBDCqGTCkBrQMCr73qt8K1gC1CNDjjf31lWWBtvViBhTss+1au1ugm29
-	idqGVIm1mgXd7wDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D448C4273B;
-	Fri, 20 Mar 2026 10:37:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id a51BMGUjvWkVSAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 20 Mar 2026 10:37:25 +0000
-Date: Fri, 20 Mar 2026 10:37:24 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
-	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] mm/mprotect: special-case small folios when applying
- write permissions
-Message-ID: <qsrrjeosttys2yo2x47kuvazz7tjc6euqbikdofqhjajcwhqyo@qx4yorotuhif>
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-5-pfalcato@suse.de>
- <7cd1e50a-f5a1-42b6-9d04-4e329d338f41@kernel.org>
+	bh=x3EfRhA4fDW6Hdtad/Pghe6EEW3AEZgUxlL1m715MFE=;
+	b=D+YvyVpdufFFkX3ltikMY5kAMBAl1Wh+fvQAjfIu0FAgK7HidVcs+hyvRXBwXuwP0kGV3P
+	iJsxFocHZTCqWOHq2QIyEKAjKMehCRzGm4PSQ64en6c6cYWBqb8Hwp0mM8YRzKeU4f9J8C
+	oZInWDSYedWr1F9fO9UaFkxyu3P53tI=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-252-6sS8x87FOYWHAU3WFYuUOA-1; Fri, 20 Mar 2026 06:40:05 -0400
+X-MC-Unique: 6sS8x87FOYWHAU3WFYuUOA-1
+X-Mimecast-MFC-AGG-ID: 6sS8x87FOYWHAU3WFYuUOA_1774003204
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2aad5fec175so87605675ad.2
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:40:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774003204; x=1774608004;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x3EfRhA4fDW6Hdtad/Pghe6EEW3AEZgUxlL1m715MFE=;
+        b=qAsC67o4kH9Ro5QfKPH0kqwmPXN3al7e2Lvye5v45m0Ng7U9YJD18AN7LlKOnxX4mc
+         PoTTwS33ULX2h0uz3VKVrjFn1ty7b69ynD/02Gf7S9cM1NtqpPCrE8vuW0pFYtuVtj/E
+         p3PiispDBftUnN4i+LUy5Y0JbzNLD4gu94jvwZspxlXr06NnI2Ovs+ggaRQOMHTAfkER
+         PTeqNK2LQrFZS1xTCyIWq3Whu6E8wIuLIL1UYaOiiaaYIkLlskvaxxgERpxgCv1IPW2n
+         QyqGHLMj8cmlfCE/oPDbkW37LyP92wd0q2S1tCCKOEmAs14HaNDdqzjVrJ3IAV9R1S9x
+         htoA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3Jx5ghdBydxbcH2itwHhR0Q15XZrVzqAF2pAA7NpgfQyzWk5hJcCOnWIbXE20Zkc0/Xmw7/hzjw==@kvack.org
+X-Gm-Message-State: AOJu0YwVkz5LFGnWxk9RD1jqjNoz4wjZG3FBee8PjnNmZMdQ2l16fpFp
+	NHU40U1cS8EHL+lmlc3LNKWjfWti3IzeJmNSRP20eH+Ig0xhiOnAh0XoDtGMSroIZZ26BvZ0pNr
+	A43WLw2q8UDOcil81+URz3xL6OtKkzegafKeovgsaYRbNL9QsnjYc
+X-Gm-Gg: ATEYQzyYdLRmu570kjmgaW0oZQkYHaKTxUH9Zltxf+/bZh2NOMmlZiPkSpZn4KBU6/s
+	qIU4goCnQkbn8hMk7n012JxO61b7IoZnKH9L0GT9TpdoQGiO5LSG/OWNnbUrM6/PzaZ/ZKUm6vz
+	VFSqmgJNeauis9NvaoqRY9PwjVFGR3UDj+OC8BxJwVB5SOx35+OgrvnKbLsVfzf7/Oe10K8YKCw
+	WrGLw+eL/4KqhSrYivw+DiENhZkgwEfewhdZh5ipRCvJZ7pPPBHxV/H8w3f8a/rsdmncAmRkowf
+	ZjTiSa/qRdgBvLprE8ag0sfS0tiptT2/m6tk5aLbQf76V9It8X2WiduYsCBQAzxaRsduMNazLD+
+	9bDu3tGgxdApYlAmjyw==
+X-Received: by 2002:a17:903:acb:b0:2b0:44da:6245 with SMTP id d9443c01a7336-2b082797679mr24677855ad.31.1774003204413;
+        Fri, 20 Mar 2026 03:40:04 -0700 (PDT)
+X-Received: by 2002:a17:903:acb:b0:2b0:44da:6245 with SMTP id d9443c01a7336-2b082797679mr24677495ad.31.1774003203994;
+        Fri, 20 Mar 2026 03:40:03 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083679867sm23410205ad.65.2026.03.20.03.40.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 03:40:03 -0700 (PDT)
+Date: Fri, 20 Mar 2026 18:40:00 +0800
+From: Li Wang <liwang@redhat.com>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Sebastian Chlad <sebastianchlad@gmail.com>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+Subject: Re: [PATCH 1/7] memcg: Scale up vmstats flush threshold with
+ log2(nums_possible_cpus)
+Message-ID: <ab0kAE7mJkEL9kWb@redhat.com>
+References: <20260319173752.1472864-1-longman@redhat.com>
+ <20260319173752.1472864-2-longman@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <20260319173752.1472864-2-longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: HPcUVZWutg3JMkwds0tBGbICMoTZlmYSp2tpYxHpTlc_1774003204
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7cd1e50a-f5a1-42b6-9d04-4e329d338f41@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 30D3D20010
-X-Stat-Signature: zmj94q3r4j1djs956nigqkb38x81s3wi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774003047-333306
-X-HE-Meta: U2FsdGVkX1+1Sc1dIItXr+pBYMms2CE5ly6ZOYSWYWbVIG86rEjM+5Wg4oc8s1aAs0cyp2TJrsVXE9q5GnlKZWS48tGWkhUuZpyrnBGEMj49BhM7naBYtigzrHkx/OjQZA865Szt1KqlBP7FF4W20YgUhz7Zztjhmwp74SzH1TGJ2oaWKOaAc97nJtYcXZpBAmb2YhZ0bHjXiYLrTJt6JoG0zSOrEM+nF15228FPF9DfVy11V8RRv7u50H8rVRuDb5MrpE+0WETGNo2QYHvUbeuK6EWC8ZSsp3iN+QWVGHxa09/eMyFCk8/5fy8po0wLR+1j0hQ2WtonqQgibQPFCrWM2jRhoJTz2p+sClW32MhGJfeQgZKVpoJ4YsruFSr5wp1aybbNussBVmDg69gDyjWZXojgAJKtxEnzZRttCbgrJXuCTds6tFvbgwx0kNJi5u4q+5sKHVnR+KzTU6xdN+ISHPSia0Wxyf7jA/lE8cNmklVSORjbAkmX1ZcSAebPQETLXPZ+TABKqavo6Tx+qwLMrGIkDciaX3gla/HTbCaCujRpiht+uRa4NJPMjdLD549v1N2xBoVSmV1eiaPfoL1rP1q3sP31vJClJAv8XuQliLJdbTPSb4g0spsudFk4SZiORWDo2QOtYmOSPFPLSQYD4WvwcItBJTdNXsllSx2eXWJdQNDLwTG/r1qehX46SKiNA70z9z2sDHo0k0khUXvBF30p5Lhh2QbKKtL0xl2q281bb/5y0H3V/trxllhzGH1WE0T2geI1epQ7rtIjwujYWOI3vn/HjI6mUSWoj6bWbs8uKCV7ZEzSQMSXGkGt46zoDFsGaq+6WrYTLKa0FntqF9VI2z5kJjjbTs9i8Q1KAyx60ulZ8EaBvH+A9Pp/elR8lcgIUVNnseaR9e98dsM3eKWlQs6WVC8o+e4cuO8Vn4H8LE+SYnAngPAAYKYvLDPxRx8gUBo=
+X-Rspamd-Queue-Id: 3F1B94000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 15rs66ognhzi7p61s1w3g587m8qm37if
+X-HE-Tag: 1774003207-413458
+X-HE-Meta: U2FsdGVkX189LE8haqx4iuxAmVJWEnNO/KPg8NEfIrFw9I3mkwqHTjR1wPa53F/EjLO92SvxPP//M4zuk1OO6VLUe01AAfeUcacpnts4SRkELpndpACuPdOUMksjAEutV+7txRWezwGj1WUqE5cl0F+ajSyKzcrONfrkp1/Eh3x54yF1BRfgKFJ/z0UZ1u6ng3oik1bTqEY+WiBSI7Gg6p6dDTI2uYcZ4mL523dp/6pZclhkJCuol+OwdYPtap9EFOZJduEC+R5Px8ELpWZhNMLFfcd4BPz/VURz1XgDgaOANpYFyH+mcAMl664BOUjxSvcIF3jPbDOQpBmxdLWOqOY9pBJRdgfeVuKb5wBVZkumut0a5FAKmafRUKIPX8Pxu3CYZ7JC4JiDSxpBK9F4R83KrmCDSXPDfrhLakmsaBsrBiQjBo7Y+H6qa3ySZgc69cobXAKWodKjkm6vu0SDqUX/OK8BU6qgpnRfiLen/XH/9KZ8RTdQfJ/2BJHwdSSeRIP+XVsLdg15sAZs2lmsSLCqbJbl/T3XZEpz6EeL1DiYDdwTl0xWK1aYCafR/3lwJKqsimiu4Ydr53JY6+MKEQlYQUyMVEWxkRi9zZoJkDcD7kUmdliOxktHplYm3UBY7YhxGvPpI3o2OfTW5Wkh1ip0qYpw6ZzsfaedxVLtbtfoU0tS4ORrBgpxFADGo+Hzf2YHYD0pj5fOcq7KQF7TBNz0Ozm4WG2v+ThgLjeGP/6Dq23CIeFkdJJf2CLiVJWcM8MZVCr7Yp1kS6u1WUrncFXEmU5AhvSTRQBKN9VOCCaO8iWCwPVqtAkz9M4YjqfomvyxOkv5ELp8BevdjsfIvE0eF7oe7sjEnrkNqvYv+QSg/E6sKRSxhTbLEoXY+i2KDamUDM8cUvwHfEWrFzD3A8da+YA+cbosHAe83HcQyeMwUxD6jPLqz0hGMj4162yLGVYY4zxAM0H97mLqWcY
+ xMVyBSvd
+ 0twhZD2z2OlTlA0+SrGKVzY4Y0jRLRvY3CYRkuBVfM3ZcE5rBLRJ5kwxvEKP3Jku+LwxUUaXgwdmqFmfDg7rYzNTQX68bvWZ44YAJ3GCfPTH85/tCFOgHfRX6pEeKSc/GTfAkoAO3Pi/6ROKoPhqfxY5bPQHkxm/wJCQtnI2jS8gJTk/b8dJGEL/Spg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,41 +139,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 10:43:35PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/19/26 19:31, Pedro Falcato wrote:
-> > The common order-0 case is important enough to want its own branch, and
-> > avoids the hairy, large loop logic that the CPU does not seem to handle
-> > particularly well.
-> > 
-> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> > ---
-> >  mm/mprotect.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> > 
-> > diff --git a/mm/mprotect.c b/mm/mprotect.c
-> > index aa845f5bf14d..23a741f9a4c8 100644
-> > --- a/mm/mprotect.c
-> > +++ b/mm/mprotect.c
-> > @@ -170,6 +170,13 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
-> >  	int sub_batch_idx = 0;
-> >  	int len;
-> >  
-> > +	/* Optimize for the common order-0 case. */
-> > +	if (likely(nr_ptes == 1)) {
-> > +		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, 1,
-> > +				       0, PageAnonExclusive(first_page), tlb);
-> > +		return;
-> > +	}
-> > +
-> >  	while (nr_ptes) {
-> >  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
-> >  		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
+On Thu, Mar 19, 2026 at 01:37:46PM -0400, Waiman Long wrote:
+> The vmstats flush threshold currently increases linearly with the
+> number of online CPUs. As the number of CPUs increases over time, it
+> will become increasingly difficult to meet the threshold and update the
+> vmstats data in a timely manner. These days, systems with hundreds of
+> CPUs or even thousands of them are becoming more common.
 > 
-> That should likely be squashed into patch #1, because only then the
-> inline makes more sense.
+> For example, the test_memcg_sock test of test_memcontrol always fails
+> when running on an arm64 system with 128 CPUs. It is because the
+> threshold is now 64*128 = 8192. With 4k page size, it needs changes in
+> 32 MB of memory. It will be even worse with larger page size like 64k.
+> 
+> To make the output of memory.stat more correct, it is better to
+> scale up the threshold logarithmically instead of linearly with the
+> number of CPUs. With the log2 scale, we can use the possibly larger
+> num_possible_cpus() instead of num_online_cpus() which may change at
+> run time.
+> 
+> Although there is supposed to be a periodic and asynchronous flush of
+> vmstats every 2 seconds, the actual time lag between succesive runs
+> can actually vary quite a bit. In fact, I have seen time lags of up
+> to 10s of seconds in some cases. So we couldn't too rely on the hope
+> that there will be an asynchronous vmstats flush every 2 seconds. This
+> may be something we need to look into.
+> 
+> Signed-off-by: Waiman Long <longman@redhat.com>
+> ---
+>  mm/memcontrol.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 772bac21d155..8d4ede72f05c 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -548,20 +548,20 @@ struct memcg_vmstats {
+>   *    rstat update tree grow unbounded.
+>   *
+>   * 2) Flush the stats synchronously on reader side only when there are more than
+> - *    (MEMCG_CHARGE_BATCH * nr_cpus) update events. Though this optimization
+> - *    will let stats be out of sync by atmost (MEMCG_CHARGE_BATCH * nr_cpus) but
+> - *    only for 2 seconds due to (1).
+> + *    (MEMCG_CHARGE_BATCH * (ilog2(nr_cpus) + 1)) update events. Though this
+> + *    optimization will let stats be out of sync by up to that amount but only
+> + *    for 2 seconds due to (1).
+>   */
+>  static void flush_memcg_stats_dwork(struct work_struct *w);
+>  static DECLARE_DEFERRABLE_WORK(stats_flush_dwork, flush_memcg_stats_dwork);
+>  static u64 flush_last_time;
+> +static int vmstats_flush_threshold __ro_after_init;
+>  
+>  #define FLUSH_TIME (2UL*HZ)
+>  
+>  static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
+>  {
+> -	return atomic_read(&vmstats->stats_updates) >
+> -		MEMCG_CHARGE_BATCH * num_online_cpus();
+> +	return atomic_read(&vmstats->stats_updates) > vmstats_flush_threshold;
+>  }
+>  
+>  static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+> @@ -5191,6 +5191,13 @@ int __init mem_cgroup_init(void)
+>  
+>  	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
+>  				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
+> +	/*
+> +	 * Logarithmically scale up vmstats flush threshold with the number
+> +	 * of CPUs.
+> +	 * N.B. ilog2(1) = 0.
+> +	 */
+> +	vmstats_flush_threshold = MEMCG_CHARGE_BATCH *
+> +				  (ilog2(num_possible_cpus()) + 1);
 
-Will do, thanks.
+Changing the threashold from linearly to logarithmically looks smarter,
+but my concern is that, on large systems (hundreds/thousands of CPUs),
+the threshold drops dramatically.
+
+For example, 1024 CPUs it goes from 65536 (256MB) to only 704 (2.7MB),
+that's almost 100x. Could this potentially raise a performance issue
+as frequently read 'memory.stat' on a heavily loaded system?
+
+Maybe go with MEMCG_CHARGE_BATCH * int_sqrt(num_possible_cpus()),
+which sits between linear and log2?
 
 -- 
-Pedro
+Regards,
+Li Wang
+
 
