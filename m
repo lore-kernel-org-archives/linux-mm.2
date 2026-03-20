@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF6C10987AB
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 16:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760A010987B2
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 16:42:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 008AE6B012D; Fri, 20 Mar 2026 12:41:16 -0400 (EDT)
+	id DC5C36B012F; Fri, 20 Mar 2026 12:42:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F22C76B012F; Fri, 20 Mar 2026 12:41:15 -0400 (EDT)
+	id D9D466B0131; Fri, 20 Mar 2026 12:42:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5FAE6B0130; Fri, 20 Mar 2026 12:41:15 -0400 (EDT)
+	id CDAF36B0132; Fri, 20 Mar 2026 12:42:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D56D36B012D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:41:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92D101A0295
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:41:15 +0000 (UTC)
-X-FDA: 84567006510.20.00C86A9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCE9E6B012F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:42:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7522B8937C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:42:18 +0000 (UTC)
+X-FDA: 84567009156.18.1844C30
 Received: from toronto-edge.smtp.mymangomail.com (toronto-edge.smtp.mymangomail.com [209.38.81.170])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E66D6140011
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:41:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=CVlr5fcb;
-	spf=pass (imf23.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9BBC020015
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:42:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=dVAnV60L;
+	spf=pass (imf03.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
 	dmarc=pass (policy=quarantine) header.from=gerlicz.space
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774024873;
+	s=arc-20220608; t=1774024936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zFcjBe+mvrvbkiJzQPLvMjEPcNe5xRrIkckbRoMHOoU=;
-	b=SdVvFWk6JVe1517O8qZPfRouHosk1EslIILvDZPV8GEM6ojBG6WEsD1zWwmhgx1KUhKofu
-	GLBedor6Bb0oGTw8WJNsEHp2N6FQ1stEQcVdoZgmu9Jg9LzjcZp/5QkaiOD4v8rkD5eg4q
-	FqbR5ec7h0HITd/hJW7EVsm2fYsSux4=
+	bh=12eV5O9XU1QG2j4V22rptbcLrLlRG2N4Np2JBHQuFzY=;
+	b=IJBNE9MLQpFurtCz1Ka3Afnl/Tai3cK0Jzj3dQG1ffBg1AopS5Kxv/hrLHME7BjzreZjPJ
+	1JFAvI365gaVAFuj0a2TQSPvoEUZluua8S+/9/qyFj464+rpayhASM5QCEyvgB895QpbW1
+	fWEyCvte3Jhmo1a0wswj3unYJWiaTq0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=CVlr5fcb;
-	spf=pass (imf23.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=dVAnV60L;
+	spf=pass (imf03.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
 	dmarc=pass (policy=quarantine) header.from=gerlicz.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774024873; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774024936; a=rsa-sha256;
 	cv=none;
-	b=XVjdCdCzkxmAB0CBE4OtZeEO9yKjv7K8ZImug81DAYX5qhNdi//BvDRturimo0LbHw32qn
-	yt7wbRZUFH2JOaeqZQK4hNqS7AN4U5RlpZVy+PdKvwwqMXz08b80JDFBlt4lx24+94f4jy
-	m8Pijc/iyvNzLXYVID7tIUq5nekMp8A=
+	b=XvZe0JIGZevNvezk2JZKeXydyrP8XmBD6gHREdYSnOB2skFz1rpPQQzS+brjNNFxkkSksA
+	DyD5cA6p5HXqs4L5GLV0MmgIGMAudIG9zbIUEijRuc6RxKA77blgEePrX8A5SZGRUVktNh
+	Uxb/k0O39eA16f0gSq7MNcheIsZEa7g=
 Received: from [127.0.1.1] (localhost [127.0.0.1])
-	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id CA6965D9CF;
-	Fri, 20 Mar 2026 12:40:49 -0400 (EDT)
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id C36FA5D9D7;
+	Fri, 20 Mar 2026 12:41:58 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
-	s=mango-1; t=1774024849;
-	bh=QWzd64L8DpR90a0dwQiBIkOjZTFKBpBjyJYEA80DZcA=;
+	s=mango-1; t=1774024918;
+	bh=J/1BiQbwlvxBt7cWoacVDZkl2V/E1R2YIIE3+5yf7DA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVlr5fcb4wlv/TtO3vW3AC/Jm6ICTm/eyKjhDPV/8VMUuIjXTpJsD0mdi8g71aYpf
-	 0JIxHH9sE2RXzitN6IGUmCNVCy2ZwMms3/ZFHO0kL/QzBc2i/kETtbp69tnH8JJtOg
-	 7T4KVWl6vtg2ax/fKQpnQizf1s2t4Gah5V5DMuq4=
+	b=dVAnV60LpMdbV2dsHvLTbSJOu0JGMLqhSycUN9zBO960h4lvQ7WRi15lZSHl6gbsW
+	 7D1IEeCJCiitk/0LoHCgi415L2LrwOvDMholQ8nJsRIj75Y7WPEZa6WScOmsYbCFU8
+	 Bv2ID5wYc9JHzMqvNOof7QjR8p6OFsZ7P+1SAtTY=
 X-Mango-Origin: 1
 X-Mango-Origin: 1
 X-Mango-Origin: 1
@@ -72,8 +72,8 @@ Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits)
  server-digest SHA256)
 	(No client certificate requested)
-	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id 92A775D9B1;
-	Fri, 20 Mar 2026 12:39:37 -0400 (EDT)
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id 8CBD65D9B1;
+	Fri, 20 Mar 2026 12:40:52 -0400 (EDT)
 From: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -84,21 +84,22 @@ Cc: Pratyush Yadav <pratyush@kernel.org>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
-Subject: [PATCH 2/5] kexec: abort liveupdate handover on kernel_kexec() unwind
-Date: Fri, 20 Mar 2026 17:37:17 +0100
-Message-ID: <20260320163720.100456-2-oskar@gerlicz.space>
+Subject: [PATCH 3/5] liveupdate: fail session restore on file deserialization
+ errors
+Date: Fri, 20 Mar 2026 17:37:18 +0100
+Message-ID: <20260320163720.100456-3-oskar@gerlicz.space>
 In-Reply-To: <20260320163720.100456-1-oskar@gerlicz.space>
 References: <20260320163720.100456-1-oskar@gerlicz.space>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E66D6140011
-X-Stat-Signature: k8g9o79skocibwkeo4tqq756fwm7yczx
+X-Stat-Signature: 9borhbspup4rfgc9jf8t8iac3b93f31k
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774024872-745433
-X-HE-Meta: U2FsdGVkX1/5EHtszKFVh7NNKy7JtCcc0zOLD/NXNRzSYAUu04g7oJUiKBSid34JqJxPuBsf4HqioltlGzFnuZ8V8M3kjyZuG4GUDtqBkINf0iE5V+uyhE15F9omOhpKxgpK22fnBzAxA5154YM2rl/j5whA7BD3gnBYqElT66bo/gy6IdPa+hkpad5MXUVZjGtN7tgdJihuIOpo6Zdb2/5Djgif001Vf6Gut8ai6NEwELRDZ1ejTNVmQ+/rn+aRRdd7hf06+lamVxhWdWEMti3ZILg1bXfH+gH97NW0Hws9VtOOtmO5NZdPyGyaDnAn4rf30zUTTu8gslKwe9hUM/m4vfUmkCL/no2ov2urt0dQ6l8/YZtr3c1n6Du6CyA4290Qvn5MFxVSNWOWAHdu5Rp+dD9kGObAH9CFCsuk5dBjv0jOsTraVemR2VHNo+wbG8kgaUeZihDzrZfhv44C6atYwobkicSxhHbnUBvgD9VR0bmNV5RbpUCj9BldpmSiPqMefdrStScdWv9p6U5KNfk1UnNo3OdBpFd0KBBQeg5NR5NRAA42uX1EIp9S9LXIpYYmhSTxdogglqOyAq4pjIcdnfywWWKSTgKUkerxO+n/oBalh+Z2fL45AdqLCqkS3mAUNErn6mBdeXf0G8MyhNJnX3eblLCCyUj32+G7MxPEForhk1utGcA0DvDxuDwcc3j3Fl0Is/knit4MtnvqKyhlj6Th3jNiC9d0wSYRL+UNrB8Vy7dB4xoQPeugdk2Zo8K6tNVLpxTOvSZUZVOjNuAmlMh9A6b6QYbPKWXtuvSCFui1EGXdLN5WqZF94G74r05C+G8lCOqtOlR6F20uHuSNuhm8cKH+qR1Zhr+2oBEo7rpA9rk3jxMwmarmdkyk2EDg7iWWv9dzq5g2BKV9lB4NdSa2Wy63zpaRwWxZvhGvCJGh6H3hDVFEzrN0vcE4lpLg1hUAoA2Tx/Ewpj/
- T10Y47oz
- Z9IaHIE45O4AzhnrcchyTtBXT/QdbpsUsj8Y0zWqF0YXyKmncpNtHx1YojvohlDF2g8rOpsnd1u06NdzkFAx2FzgxD5kPYsmVEmryqiJOtGeDue20tqFKLrPRstPCXPnBAVGh1wmXgch7qFrEtGPUg23xNTAf63RYbK4GkTT0aZoj9bz9dXHJV8ThifyjLAOAfpNXlDdqdD51qxau1yDppEU4w2t8hFDvcAt4lFibj9tDyflSlxpj/7sdW0RFF+WUFodg+8SJGxrsdCj58tfkUEloWXok5dHEJ7pAjX80fZBC5clOaGqGOieO8MuckqbdiJGhvWw1mw2gGbmUSNy4wDFstdNVUTF/uZ9P4Gh99J7OxF41Sd/Z1bEAXfXWUmQBfZn3QMS7WMi8tausIfh7xjxpZm7A+mLHjSO6NRG0XVstNdn/6XcAhcWKq26RMUaxW8/SoCOo7dXhAz5+wsFeAWMCR5y0pJ3H6YW/
+X-Rspamd-Queue-Id: 9BBC020015
+X-HE-Tag: 1774024935-729288
+X-HE-Meta: U2FsdGVkX199SZhJiZSxTsUQBkbKZcIutzfCUBRTH46lTAOlbegC79d/zjn6I3/4IBOHL1kB0SvFZIeVEM+WjV7UM1v/lStrS6gBQ9bgLJj3L6GFf7r1VqOlriX/zcz7QQB5dOerKXBL+6a+n/SeoFj4HUdi7NDFfBFqkBwJ7szLBcm51MNdv3kseG6p9H86VIwZXLxSyCxMcKYvM8Cl2DTI5sPb9jRR2UKcLnIHMMIw6rGTQ8n9rtotjaKOidFkZs660XbyOTPP+N8qvKRpHjkC6jw03RhWP/VgR7PytfHQCR7xGOdF1gef/UUCovent8P8iwPJsAMMvPj7982A7CcUxeC4JuJ7nrqkMNEkOZhgOqIEtcaDinCBepEA5UZll/x/M2a2/7811rGME1sLMHI+AoUIeTFG1vsZHaFzCesF43oaSFNygZS8SEBtgp61NGzlGYjLk68b6o9zCQ5Zu804HVVk2cIh3lMOFaj2I9NXvGM06qBmbUNLFXzJyyVTSdrLMJrQV5NiDT/c2w+UazzgRn1wFzbtS5ee/og4tc/lZhGydvhlYLOwGAXmzgafEo8XEwRExfiCy0Hqr/eEIhRkdR0DqaUJdnZgRWQ4C/1tQdI5q6nVNASJqRwO67jVbTxIOxuQDyfZ/cQZTngrHee2zpEqbTFolmTZAawJ4Jh19DSLxokO3xxpeETpok8dPZKKC1aGkDM+Xz8zmzknPRJLV3ECtNwKlVbq2p84hVa0XoSqK7Rb0QRgqniyApb+wcM3ivJGBu164XHa7t6vtps7gZi9nYUIEjEfjQ+kIMApIfHZTi+iUJp+jArH1uo1Yte6k2C7zkXc4D1QawPUCbuZsg0ugqv4VnX5L4R0pu/sCNEqxJXPje9PnBt9imJbaqBdLja7W33bG5NHlSkdvzla6KKZnk0i6N65Uo3xl2iMiLYUP7VjPMw8y1CxGNP29qTtV6M16XTTPlUID+7
+ urDefZJH
+ mJJ7ah3mFnwnDd6F/gryQuFGDOdEe5Rl2vRDZmDEw72NyMxrTUxhecqQMAA1OpPIno+95JdQtVz/Z3K0ymfCOOg3Txu5yYX1D6TzajQIsTbg2sgsLQZ6yFbPHfrsOmsSn/GwWlF/zyXN1H7HA/k0LPB/r0YoQUx3b/bam7vW5KUgRSY0GWs1BfigThKJUFzXNwp2KpDCD2wHdE9hLP0xHGtja0ar9Ee8F76wNU+C8USm0p9wM2jwF6wm/tY0NKS+wHItuhRYQSP/tKxitCL/PY6HTV+HAZmT0P8RswaqkPEXdIsjBqDEcvSrHF1AxEiG48kZahagfnM6+gxqoFfJFMmTGXB9FDfrzv/1eCKZBdD/xyvxflVsOa2mmjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,159 +107,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Once outgoing sessions are blocked during reboot, every failure path
-after liveupdate_reboot() must release that state again. Today
-kernel_kexec() sets liveupdate_prepared only after
-liveupdate_reboot() returns successfully, so a partial failure inside
-liveupdate_reboot() skips the abort path entirely. The
-kho_finalize() failure path also leaves the LUO session state frozen.
+luo_session_deserialize() calls luo_file_deserialize() but ignores its
+return value. If file restore fails part-way through, the incoming
+session still gets inserted and the caller still sees success.
 
-This is dangerous because a failed kexec attempt can leave userspace
-with outgoing sessions stuck in reboot state, blocking release and
-preserve paths until the next reboot.
+Leaving a partially restored session on the incoming list is dangerous
+because later retrieve or finish operations can walk half-built file
+state and operate on uninitialized or stale entries.
 
-Export a liveupdate_reboot_abort() helper, call it from the
-kho_finalize() error path, and mark liveupdate as prepared before
-entering liveupdate_reboot(). That makes every failed handover attempt
-unwind the session state and wake blocked waiters.
+Propagate file deserialization failures back to session restore,
+remove the partially restored session, and free any struct luo_file
+objects that were already allocated before returning the error.
 
 Signed-off-by: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
 ---
- include/linux/liveupdate.h       |  5 +++++
- kernel/kexec_core.c              |  4 ++++
- kernel/liveupdate/luo_core.c     | 11 ++++++++++-
- kernel/liveupdate/luo_internal.h |  1 +
- kernel/liveupdate/luo_session.c  | 23 +++++++++++++++++++++++
- 5 files changed, 43 insertions(+), 1 deletion(-)
+ kernel/liveupdate/luo_file.c    | 45 ++++++++++++++++++++-------------
+ kernel/liveupdate/luo_session.c | 27 +++++++-------------
+ 2 files changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index dd11fdc76a5f..d93b043a0421 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -226,6 +226,7 @@ bool liveupdate_enabled(void);
- 
- /* Called during kexec to tell LUO that entered into reboot */
- int liveupdate_reboot(void);
-+void liveupdate_reboot_abort(void);
- 
- int liveupdate_register_file_handler(struct liveupdate_file_handler *fh);
- int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh);
-@@ -250,6 +251,10 @@ static inline int liveupdate_reboot(void)
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index 5acee4174bf0..cc0fd7e9c332 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -717,6 +717,22 @@ int luo_file_finish(struct luo_file_set *file_set)
  	return 0;
  }
  
-+static inline void liveupdate_reboot_abort(void)
++static void luo_file_discard_deserialized(struct luo_file_set *file_set)
 +{
-+}
++	struct luo_file *luo_file;
 +
- static inline int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- {
- 	return -EOPNOTSUPP;
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index 2fea396d29b9..492c17f7e96f 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -1139,6 +1139,7 @@ bool kexec_load_permitted(int kexec_image_type)
- int kernel_kexec(void)
- {
- 	int error = 0;
-+	bool liveupdate_prepared = false;
- 
- 	if (!kexec_trylock())
- 		return -EBUSY;
-@@ -1147,6 +1148,7 @@ int kernel_kexec(void)
- 		goto Unlock;
- 	}
- 
-+	liveupdate_prepared = true;
- 	error = liveupdate_reboot();
- 	if (error)
- 		goto Unlock;
-@@ -1231,6 +1233,8 @@ int kernel_kexec(void)
- #endif
- 
-  Unlock:
-+	if (error && liveupdate_prepared)
-+		liveupdate_reboot_abort();
- 	kexec_unlock();
- 	return error;
- }
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index dda7bb57d421..95a0b81ce60d 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -233,8 +233,9 @@ int liveupdate_reboot(void)
- 	err = kho_finalize();
- 	if (err) {
- 		pr_err("kho_finalize failed %d\n", err);
-+		liveupdate_reboot_abort();
- 		/*
--		 * kho_finalize() may return libfdt errors, to aboid passing to
-+		 * kho_finalize() may return libfdt errors, to avoid passing to
- 		 * userspace unknown errors, change this to EAGAIN.
- 		 */
- 		err = -EAGAIN;
-@@ -243,6 +244,14 @@ int liveupdate_reboot(void)
- 	return err;
- }
- 
-+void liveupdate_reboot_abort(void)
-+{
-+	if (!liveupdate_enabled())
-+		return;
-+
-+	luo_session_abort_reboot();
-+}
-+
- /**
-  * liveupdate_enabled - Check if the live update feature is enabled.
-  *
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 8083d8739b09..ad09ea756156 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -82,6 +82,7 @@ int luo_session_retrieve(const char *name, struct file **filep);
- int __init luo_session_setup_outgoing(void *fdt);
- int __init luo_session_setup_incoming(void *fdt);
- int luo_session_serialize(void);
-+void luo_session_abort_reboot(void);
- int luo_session_deserialize(void);
- bool luo_session_quiesce(void);
- void luo_session_resume(void);
-diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-index ee5ea2a8ed3f..39215e5eda7a 100644
---- a/kernel/liveupdate/luo_session.c
-+++ b/kernel/liveupdate/luo_session.c
-@@ -649,6 +649,29 @@ int luo_session_serialize(void)
- 	return err;
- }
- 
-+void luo_session_abort_reboot(void)
-+{
-+	struct luo_session_header *sh = &luo_session_global.outgoing;
-+	struct luo_session *session;
-+	int i = 0;
-+
-+	guard(rwsem_write)(&sh->rwsem);
-+	if (!READ_ONCE(sh->rebooting))
-+		return;
-+
-+	list_for_each_entry(session, &sh->list, list) {
-+		if (i >= sh->header_ser->count)
-+			break;
-+
-+		luo_session_unfreeze_one(session, &sh->ser[i]);
-+		memset(&sh->ser[i], 0, sizeof(sh->ser[i]));
-+		i++;
++	while (!list_empty(&file_set->files_list)) {
++		luo_file = list_last_entry(&file_set->files_list,
++					   struct luo_file, list);
++		list_del(&luo_file->list);
++		mutex_destroy(&luo_file->mutex);
++		kfree(luo_file);
 +	}
 +
-+	sh->header_ser->count = 0;
-+	luo_session_reboot_done(sh);
++	file_set->count = 0;
++	file_set->files = NULL;
 +}
 +
  /**
-  * luo_session_quiesce - Ensure no active sessions exist and lock session lists.
-  *
+  * luo_file_deserialize - Reconstructs the list of preserved files in the new kernel.
+  * @file_set:     The incoming file_set to fill with deserialized data.
+@@ -747,6 +763,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+ {
+ 	struct luo_file_ser *file_ser;
+ 	u64 i;
++	int err;
+ 
+ 	if (!file_set_ser->files) {
+ 		WARN_ON(file_set_ser->count);
+@@ -756,21 +773,6 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+ 	file_set->count = file_set_ser->count;
+ 	file_set->files = phys_to_virt(file_set_ser->files);
+ 
+-	/*
+-	 * Note on error handling:
+-	 *
+-	 * If deserialization fails (e.g., allocation failure or corrupt data),
+-	 * we intentionally skip cleanup of files that were already restored.
+-	 *
+-	 * A partial failure leaves the preserved state inconsistent.
+-	 * Implementing a safe "undo" to unwind complex dependencies (sessions,
+-	 * files, hardware state) is error-prone and provides little value, as
+-	 * the system is effectively in a broken state.
+-	 *
+-	 * We treat these resources as leaked. The expected recovery path is for
+-	 * userspace to detect the failure and trigger a reboot, which will
+-	 * reliably reset devices and reclaim memory.
+-	 */
+ 	file_ser = file_set->files;
+ 	for (i = 0; i < file_set->count; i++) {
+ 		struct liveupdate_file_handler *fh;
+@@ -787,12 +789,15 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+ 		if (!handler_found) {
+ 			pr_warn("No registered handler for compatible '%s'\n",
+ 				file_ser[i].compatible);
+-			return -ENOENT;
++			err = -ENOENT;
++			goto err_discard;
+ 		}
+ 
+ 		luo_file = kzalloc_obj(*luo_file);
+-		if (!luo_file)
+-			return -ENOMEM;
++		if (!luo_file) {
++			err = -ENOMEM;
++			goto err_discard;
++		}
+ 
+ 		luo_file->fh = fh;
+ 		luo_file->file = NULL;
+@@ -803,6 +808,10 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+ 	}
+ 
+ 	return 0;
++
++err_discard:
++	luo_file_discard_deserialized(file_set);
++	return err;
+ }
+ 
+ void luo_file_set_init(struct luo_file_set *file_set)
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index 39215e5eda7a..77afa913d6c7 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -565,21 +565,6 @@ int luo_session_deserialize(void)
+ 	if (!sh->active)
+ 		return 0;
+ 
+-	/*
+-	 * Note on error handling:
+-	 *
+-	 * If deserialization fails (e.g., allocation failure or corrupt data),
+-	 * we intentionally skip cleanup of sessions that were already restored.
+-	 *
+-	 * A partial failure leaves the preserved state inconsistent.
+-	 * Implementing a safe "undo" to unwind complex dependencies (sessions,
+-	 * files, hardware state) is error-prone and provides little value, as
+-	 * the system is effectively in a broken state.
+-	 *
+-	 * We treat these resources as leaked. The expected recovery path is for
+-	 * userspace to detect the failure and trigger a reboot, which will
+-	 * reliably reset devices and reclaim memory.
+-	 */
+ 	for (int i = 0; i < sh->header_ser->count; i++) {
+ 		struct luo_session *session;
+ 
+@@ -598,9 +583,15 @@ int luo_session_deserialize(void)
+ 			return err;
+ 		}
+ 
+-		scoped_guard(mutex, &session->mutex) {
+-			luo_file_deserialize(&session->file_set,
+-					     &sh->ser[i].file_set_ser);
++		scoped_guard(mutex, &session->mutex)
++			err = luo_file_deserialize(&session->file_set,
++						   &sh->ser[i].file_set_ser);
++		if (err) {
++			pr_warn("Failed to deserialize session [%s] files %pe\n",
++				session->name, ERR_PTR(err));
++			luo_session_remove(sh, session);
++			luo_session_free(session);
++			return err;
+ 		}
+ 	}
+ 
 -- 
 2.53.0
 
