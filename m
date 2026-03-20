@@ -4,110 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 257D41098782
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0211F1098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F846B00F4; Fri, 20 Mar 2026 09:43:30 -0400 (EDT)
+	id A50596B00F2; Fri, 20 Mar 2026 09:43:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA8FE6B00F2; Fri, 20 Mar 2026 09:43:30 -0400 (EDT)
+	id A21656B00F3; Fri, 20 Mar 2026 09:43:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48326B00F3; Fri, 20 Mar 2026 09:43:30 -0400 (EDT)
+	id 874076B00F5; Fri, 20 Mar 2026 09:43:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 832EB6B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:43:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55B171C96A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:30 +0000 (UTC)
-X-FDA: 84566558580.30.EE9C888
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 00A1D1A0015
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m8G9ent1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Do5n+BIc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m8G9ent1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Do5n+BIc;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 708676B00F2
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:43:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 445D71C96A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:32 +0000 (UTC)
+X-FDA: 84566558664.21.DEC7C16
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D739414000F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774014208;
+	s=arc-20220608; t=1774014210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ih/LSfzfUTul03zRfWemc9NlyPTmO34RzLYWY0S+QYM=;
-	b=HVRb4rTzfOK1gegKGa1YOz97tGb2VfQPl17AiSpZOQFeBoOofYTWC7AcAZpsMcUsg7iRfu
-	e9ypt/UTh4wrc7XdMTvHd8INXF1Fi6ArDg8b6JXfnN2DPhPE2FX/6W7btLh8X2mC0N73zI
-	bEv/JqT0n2cVgVmAxCHaUVOE522T+oA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014208; a=rsa-sha256;
-	cv=none;
-	b=f0h4FiBA1RshH0cz6Bd2QMca7b4m4DRp9TvchTJjXnrHxdsH0g68VAM97DpMWf6BRwQaNU
-	VKMiDDcSgyv1if4u2sHSOZbQjMG57Gh8MVI82Ztpl8+9c4CCMlqYaSKdzvzqF2VO89rIqp
-	uIcPI83FO2GkcpVUK98/8/srt5RivBA=
+	 in-reply-to:in-reply-to:references:references;
+	bh=JOOzCvaFwguUIIHHjI/Y+YbrIZCUhoXzSq6aFTKbjg4=;
+	b=MhFjmafIrEZm8SlO+eFdQqTlL5XjXLQWRpv3gUZ4nTE5JRqCfkh1ka/5RYSJHfNUIkrV9u
+	Yk23XHQyJAehs05l+HDpE0oQdtmo0Uh3pE02HLb/dU9Fc2+TdVUh1wFH4qw+Gb9DdFkE9l
+	liVtPGxuhQR9aprSQ0OzWv4JT63C9IE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m8G9ent1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Do5n+BIc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m8G9ent1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Do5n+BIc;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014210; a=rsa-sha256;
+	cv=none;
+	b=T8S1pMn7WxjoceCONBjY0OHKW6cy0loBOujkjgR1eU7lOgRdFcxX0QSBYjlCm6B69nJfu7
+	rXu/MLD181gUYSEGwB9IBugl4EE+vm8E3mt4hddFppLK6K63M1e0DPQS2E1uypmNaAzpF0
+	L/b46giVta4RyPdqKALT5I6trIYKzQc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B68B04D428;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B637E5BEE9;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774014105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ih/LSfzfUTul03zRfWemc9NlyPTmO34RzLYWY0S+QYM=;
-	b=m8G9ent18Hr51S1MO1GBbVci/SYlK4Kp8G1jWCTdhZ8frR9mmzB2sL2eIlN/GTCgNvujKx
-	HModd3zoGtxodt/x5nsb0Yirzk5I4ze9y3T6Q2ey/Qz2H95v0PrE8HG2UDOAZDSA4WPC2C
-	m6SVRclEgNeM7qyxf2U0NMpTusdZSXM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774014105;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ih/LSfzfUTul03zRfWemc9NlyPTmO34RzLYWY0S+QYM=;
-	b=Do5n+BIcfQAoPpkKy3HZRs2YApSdH88Wfu4p+tkWC9Iikehe16RlRty+TsOfez5Pl3bM5R
-	RAXC/iMOfHISsNDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774014105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ih/LSfzfUTul03zRfWemc9NlyPTmO34RzLYWY0S+QYM=;
-	b=m8G9ent18Hr51S1MO1GBbVci/SYlK4Kp8G1jWCTdhZ8frR9mmzB2sL2eIlN/GTCgNvujKx
-	HModd3zoGtxodt/x5nsb0Yirzk5I4ze9y3T6Q2ey/Qz2H95v0PrE8HG2UDOAZDSA4WPC2C
-	m6SVRclEgNeM7qyxf2U0NMpTusdZSXM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774014105;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ih/LSfzfUTul03zRfWemc9NlyPTmO34RzLYWY0S+QYM=;
-	b=Do5n+BIcfQAoPpkKy3HZRs2YApSdH88Wfu4p+tkWC9Iikehe16RlRty+TsOfez5Pl3bM5R
-	RAXC/iMOfHISsNDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9EA5E4281F;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A962F42819;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fCC6JplOvWmNCQAAD6G6ig
+	id btRaKZlOvWmQCQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:45 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6A2DAA0B3C; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
+	id 72C3DA0A81; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -125,24 +81,31 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 32/41] ext2: Track metadata bhs in fs-private inode part
-Date: Fri, 20 Mar 2026 14:41:27 +0100
-Message-ID: <20260320134100.20731-73-jack@suse.cz>
+Subject: [PATCH 33/41] affs: Track metadata bhs in fs-private inode part
+Date: Fri, 20 Mar 2026 14:41:28 +0100
+Message-ID: <20260320134100.20731-74-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260320131728.6449-1-jack@suse.cz>
 References: <20260320131728.6449-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4156; i=jack@suse.cz; h=from:subject; bh=aRvj4AtIW+ddyd7UxwbPw41jZ9lNjYBY0OWJr0OT+ZQ=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU6H7CaeB32tQjJNhqeawy4/l/6sm7mJJ+IL7 /s5ToIoGN+JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OhwAKCRCcnaoHP2RA 2QHZB/9+wZG/S4W1bL987nyIE4g21LzXGKf9ozYzcj8lrO9KHnal5LDi+7tfr41ET2QNORSkw59 VEih7xn49DZ6lmBCFxEVSI2NVIIay/Ua741x+g7dpohVclYnboKtLzwA/VA7f+uzLLabH/7kR0y ITGOB3aUTQtUGVad7mt6AtAnP8CjTx5DtJW3AHiLEneIBPz5JP0G9AwqJYJA5UgxdQ+fgqfnnsY gSMpr7IJ0BNofn+Yo8l4CsG90EJ+Qh3FLEFaG1IulNx5CfxHqKopZOgJ70HZ99wKMs6PtYQ+Tzn ZjfFJFrg0CDLrvhw3ZZs/Gm33X8VLAf9aZOn/OspsJ5fv1e0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10976; i=jack@suse.cz; h=from:subject; bh=xBY2Mm+/VMqLFvDbzz3/FawAAeTJnZRG1KDfb/3GiL8=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU6IyXvlF8UM49m12fr6Fpn7sL83gLmOU4cRl WPD5VuywE+JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OiAAKCRCcnaoHP2RA 2eSwB/9BMh8YOe9XdDgzdBJI4fqGP3y8GNqIld4OdGQdkLQOCRK3vOqWx5qERnpAGupq5UXVrvy HV+MTm2lWFqKOQBl/e3JfL6ZCyCUeulB63kzcBUzVZpQQSaM9CrVY/S/QXpiJyeyz672uDnwK+n yIfNhYAbUXPgKF9hwIurSZU/rEt0p4+OdnqrhEW3dXm/O7JCBEdAec26GC1syEI9OyJjpCd10lR CFTLAzJuibdVPq1EArmIAnt6xxmPmOYblvwiR4YbWzxmIVnsPInpefsiVflF04OGm//PN5I9/rh OG0p3z0oC/s/hOhpXDeOCYFe6Wv2Nje6OO1/ukLghFigF/Qn
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: aj15uhhop63z15bdqp4esfuorqsna88i
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: D739414000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cudnp85hgygw1iiauwnx94i9sj8jkcwo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 00A1D1A0015
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774014207-830561
-X-HE-Meta: U2FsdGVkX19lmEOFcSxdRRf4VXWW05sTnzirZBsNUy+9x7jh6d0kf2ftc7lcXK/5Rq4vENuoS0NWoUsmbND2X0eKfBFNfrAAv7zpzahG+sP+Af5MOHUvVqERmD9blDSzEhZ5kCl0aXhmDH8E7yg0bz3nH3pEXwu4ex6HE9eA3BNvWRAth01oAbYiAP71c4BWXSCETPWB7FlXfD4q5fFW+G//Y8gAAaH9Ep7R1FLEP3LuOaBojaoWPVZnhCE3XpCQA+vkne/DC2s9DhJ9QVcMH6B8w2l4t1fNWGL4qLrWpvb5ah04vXnWVSRe5lENY1OOY/ca7G1T6NFWzr0bmwoLvl7GVjHt5zfPJriaTFVLaLDos3aBnTnFHiiffuNewm4wcVxUiRLc/yljQGoDLulFIcrR2gsjPiMpZIoXU4+zTsTT7fHe25s15WnmYAD1zcriBYp3/AbmYscHJhGyyJWJHH2yWIbeGs2dK1YC1SWZLD4YnXduE11y2YvMzwoltjcks9K44xZ5ut2aAmI3na9SCe5Y7wQiXSbqlTHTuEbfwNxBs/OJUMYk2YVz9nB+uwLC29nRYTvRFO/44GaZcZQnP7OFvO4mDPGtT3/aQhqNIpINwA3ljtDKibjBwqb0WyqQV30ziGoXm+14wMJG6kgL3+QyjyQKJLBAPO9Cs0KdNDP8AY3K6+TaYZkAcpmhp2ypA7P32XiCXZYpxcv0APu0/9HRd8WZP7tx7kl++GTLR6yD/9xk3m2Y4S1IL91sthwRlZ67jqx713HXrJwtB98kj4e0CPSUITckhsqqXOBoED7hmZIumJ+C5rivcH5r7Uj47L2EznjZBNb2vqacbfJixPNwOFVDb8CKd6NDM5ZyaW7QmvOncGqJG/nK56v4iI5eLXC0ZVQUYJQqTtNPHSsZko36/d5VS650PAGfjjd/77+ZNhpJsu9EPIZF13kzxAufhsVwLjBWBNcPPhQYpph
- ofnAumJ3
- TXzsj5yijYtTF77vykRPQnvEhL1ndidZWvyZIQH8XdYa58A9E3skFe2F2fofgJzbQcvQSouzltbeem7BjV6sDZOGTWfrMH0uVZoyiLPgB7BiYiPOiPkmfD5dQyCbho/Nl3Jix9qR2FzhvyzIjmfYWN5SbLmD7EwtQkSNWDQKFm6H6ADCxc6rwyF+CvuOklyskjNQP34X6rP5gtmMRk10MnvXVnbLxkLnZqExwJZ/Mq1BnN+91XryZZj6KiuVpvGUejN/ZLELob/BzaPcuTcNYxn7jDZBJNa0pkxCTheI8o1Cz/JHmaiDaSWTqeA==
+X-HE-Tag: 1774014209-378085
+X-HE-Meta: U2FsdGVkX1+3dSjDyBVDuWJNWWpdioD1JIvzZXnD0+F374WDnmyIikV1AOjI9knYW09lVLSIrQ6kpjy6QIgmca/JywBrTeEKWDC0tH2urM9FIWWm63Jg0CrR5MZdqE4k8hF6jRF6j+M4NXap7DLey9YmYQf0xt2bAllKlswJILf+jpD1eU0aoGtI434kddlOnjnOvU/Dx/WlGSg+TtzKsKwTYMHaya1S1PtOAqVn27UXe8TgVBrpTOBuWzo68KyyBxh5zrfuCxZUaWhUMN3yy8w/90ARAqGa+OmZ19XbeF3w5bRZ0wy3T628H4Gf3/JKmUP7EnJwxyWv/w09+35BJNSrppZmgvgbvSG7IMUnnJZCrxMmqm8MxRtU02IL/kTk1wCIsXwNHo7tvmVRZOBkO9GT0/56yVJxaLFjbt+b+sLJ1ZHZq4QehoIIbf+C2d0y+qrdzv9xgur1X++2VTAe4ZQgpinnvJ6Xl7b8R+Bv7hAPTlhOJIGrGbZA45kyIRGUP80eH/bWC4vAYGkYoUjktBCBpV/bZT+wGLAgHYchjbfZ5ZXOrJqNMtLrK5r0xFNGae4En1T+EtargDbv9nFIhDb63thl9SeLOCtjrQdJWKmKi7GnKpGnrT/qS77NeyZpAyHB4903Ro/FpgJXtLKly5a7Yf6YlzY5/IDge3MznlwC/+SIM9Hxr8tLx3MvaNmmEUivFxFmPCOEbGDlWmdOSE3CT2DCQCNwZKu5FRfStlacpk0kH13qoRHJqA69V4M3CFdLWFm2DKTNd2p2qUYA8nw9+T2Mt0p0eUdDTwznn1kKNjgofxVTVHtmKK9nhO68zS0k1/QqF3SG77aLklxqmuFG8K/J9Afc6Ozw1pD5IgNz79LOAN21ygnbjDoDekp4GB96cGFQFOdFhpdEbtc/KVg9+p8TnjfdKPPHotNEMP5wZDeoRT6mEj/W1Bcx9PeMftvH4YSmQDbewShcDOj
+ io1BZEZK
+ /7m53yV0425WtgwqYXEFNX2noKrrW6EWDBbnw1OQv6so8X1D8kvByLYW4S2nAquHTuuDLTmSIqEmY+7kRyTmYMf+UGDsffeHnkxhCd4CrXtD4IOMpZZxjoVjG6DTD+R83V+kwMDbeIwA58pMuo648/2h71Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,116 +117,293 @@ Track metadata bhs for an inode in fs-private part of the inode.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/ext2/ext2.h  |  1 +
- fs/ext2/file.c  |  6 ++++--
- fs/ext2/inode.c | 16 +++++++++-------
- fs/ext2/super.c |  1 +
- 4 files changed, 15 insertions(+), 9 deletions(-)
+ fs/affs/affs.h     |  2 ++
+ fs/affs/amigaffs.c | 12 ++++++------
+ fs/affs/file.c     | 25 ++++++++++++++-----------
+ fs/affs/inode.c    | 14 +++++++-------
+ fs/affs/namei.c    |  9 +++++----
+ fs/affs/super.c    |  1 +
+ 6 files changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/fs/ext2/ext2.h b/fs/ext2/ext2.h
-index 5e0c6c5fcb6c..3eb1f342645c 100644
---- a/fs/ext2/ext2.h
-+++ b/fs/ext2/ext2.h
-@@ -676,6 +676,7 @@ struct ext2_inode_info {
- #ifdef CONFIG_QUOTA
- 	struct dquot __rcu *i_dquot[MAXQUOTAS];
- #endif
+diff --git a/fs/affs/affs.h b/fs/affs/affs.h
+index ac4e9a02910b..a1eb400e1018 100644
+--- a/fs/affs/affs.h
++++ b/fs/affs/affs.h
+@@ -44,6 +44,7 @@ struct affs_inode_info {
+ 	struct mutex i_link_lock;		/* Protects internal inode access. */
+ 	struct mutex i_ext_lock;		/* Protects internal inode access. */
+ #define i_hash_lock i_ext_lock
 +	struct mapping_metadata_bhs i_metadata_bhs;
- };
+ 	u32	 i_blkcnt;			/* block count */
+ 	u32	 i_extcnt;			/* extended block count */
+ 	u32	*i_lc;				/* linear cache of extended blocks */
+@@ -151,6 +152,7 @@ extern bool	affs_nofilenametruncate(const struct dentry *dentry);
+ extern int	affs_check_name(const unsigned char *name, int len,
+ 				bool notruncate);
+ extern int	affs_copy_name(unsigned char *bstr, struct dentry *dentry);
++struct mapping_metadata_bhs *affs_get_metadata_bhs(struct inode *inode);
  
- /*
-diff --git a/fs/ext2/file.c b/fs/ext2/file.c
-index ebe356a38b18..629133f0e8ae 100644
---- a/fs/ext2/file.c
-+++ b/fs/ext2/file.c
-@@ -156,9 +156,11 @@ static int ext2_release_file (struct inode * inode, struct file * filp)
- int ext2_fsync(struct file *file, loff_t start, loff_t end, int datasync)
- {
- 	int ret;
--	struct super_block *sb = file->f_mapping->host->i_sb;
-+	struct inode *inode = file->f_mapping->host;
-+	struct super_block *sb = inode->i_sb;
+ /* bitmap. c */
  
--	ret = generic_buffers_fsync(file, start, end, datasync);
-+	ret = generic_mmb_fsync(file, &EXT2_I(inode)->i_metadata_bhs,
-+				start, end, datasync);
- 	if (ret == -EIO)
- 		/* We don't really know where the IO error happened... */
- 		ext2_error(sb, __func__,
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index fb91c61aa6d6..dfed87fbbccd 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -95,9 +95,9 @@ void ext2_evict_inode(struct inode * inode)
- 			ext2_truncate_blocks(inode, 0);
- 		ext2_xattr_delete_inode(inode);
+diff --git a/fs/affs/amigaffs.c b/fs/affs/amigaffs.c
+index fd669daa4e7b..13a914c1d8b7 100644
+--- a/fs/affs/amigaffs.c
++++ b/fs/affs/amigaffs.c
+@@ -57,7 +57,7 @@ affs_insert_hash(struct inode *dir, struct buffer_head *bh)
+ 		AFFS_TAIL(sb, dir_bh)->hash_chain = cpu_to_be32(ino);
+ 
+ 	affs_adjust_checksum(dir_bh, ino);
+-	mark_buffer_dirty_inode(dir_bh, dir);
++	mmb_mark_buffer_dirty(dir_bh, &AFFS_I(dir)->i_metadata_bhs);
+ 	affs_brelse(dir_bh);
+ 
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+@@ -100,7 +100,7 @@ affs_remove_hash(struct inode *dir, struct buffer_head *rem_bh)
+ 			else
+ 				AFFS_TAIL(sb, bh)->hash_chain = ino;
+ 			affs_adjust_checksum(bh, be32_to_cpu(ino) - hash_ino);
+-			mark_buffer_dirty_inode(bh, dir);
++			mmb_mark_buffer_dirty(bh, &AFFS_I(dir)->i_metadata_bhs);
+ 			AFFS_TAIL(sb, rem_bh)->parent = 0;
+ 			retval = 0;
+ 			break;
+@@ -180,7 +180,7 @@ affs_remove_link(struct dentry *dentry)
+ 			affs_unlock_dir(dir);
+ 			goto done;
+ 		}
+-		mark_buffer_dirty_inode(link_bh, inode);
++		mmb_mark_buffer_dirty(link_bh, &AFFS_I(inode)->i_metadata_bhs);
+ 
+ 		memcpy(AFFS_TAIL(sb, bh)->name, AFFS_TAIL(sb, link_bh)->name, 32);
+ 		retval = affs_insert_hash(dir, bh);
+@@ -188,7 +188,7 @@ affs_remove_link(struct dentry *dentry)
+ 			affs_unlock_dir(dir);
+ 			goto done;
+ 		}
+-		mark_buffer_dirty_inode(bh, inode);
++		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 
+ 		affs_unlock_dir(dir);
+ 		iput(dir);
+@@ -203,7 +203,7 @@ affs_remove_link(struct dentry *dentry)
+ 			__be32 ino2 = AFFS_TAIL(sb, link_bh)->link_chain;
+ 			AFFS_TAIL(sb, bh)->link_chain = ino2;
+ 			affs_adjust_checksum(bh, be32_to_cpu(ino2) - link_ino);
+-			mark_buffer_dirty_inode(bh, inode);
++			mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 			retval = 0;
+ 			/* Fix the link count, if bh is a normal header block without links */
+ 			switch (be32_to_cpu(AFFS_TAIL(sb, bh)->stype)) {
+@@ -306,7 +306,7 @@ affs_remove_header(struct dentry *dentry)
+ 	retval = affs_remove_hash(dir, bh);
+ 	if (retval)
+ 		goto done_unlock;
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 
+ 	affs_unlock_dir(dir);
+ 
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index 6c9258359ddb..606630d6f5f7 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -140,14 +140,14 @@ affs_alloc_extblock(struct inode *inode, struct buffer_head *bh, u32 ext)
+ 	AFFS_TAIL(sb, new_bh)->parent = cpu_to_be32(inode->i_ino);
+ 	affs_fix_checksum(sb, new_bh);
+ 
+-	mark_buffer_dirty_inode(new_bh, inode);
++	mmb_mark_buffer_dirty(new_bh, &AFFS_I(inode)->i_metadata_bhs);
+ 
+ 	tmp = be32_to_cpu(AFFS_TAIL(sb, bh)->extension);
+ 	if (tmp)
+ 		affs_warning(sb, "alloc_ext", "previous extension set (%x)", tmp);
+ 	AFFS_TAIL(sb, bh)->extension = cpu_to_be32(blocknr);
+ 	affs_adjust_checksum(bh, blocknr - tmp);
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 
+ 	AFFS_I(inode)->i_extcnt++;
+ 	mark_inode_dirty(inode);
+@@ -581,7 +581,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
+ 		memset(AFFS_DATA(bh) + boff, 0, tmp);
+ 		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
+ 		affs_fix_checksum(sb, bh);
+-		mark_buffer_dirty_inode(bh, inode);
++		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 		size += tmp;
+ 		bidx++;
+ 	} else if (bidx) {
+@@ -603,7 +603,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
+ 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
+ 		affs_fix_checksum(sb, bh);
+ 		bh->b_state &= ~(1UL << BH_New);
+-		mark_buffer_dirty_inode(bh, inode);
++		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 		if (prev_bh) {
+ 			u32 tmp_next = be32_to_cpu(AFFS_DATA_HEAD(prev_bh)->next);
+ 
+@@ -613,7 +613,8 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
+ 					     bidx, tmp_next);
+ 			AFFS_DATA_HEAD(prev_bh)->next = cpu_to_be32(bh->b_blocknr);
+ 			affs_adjust_checksum(prev_bh, bh->b_blocknr - tmp_next);
+-			mark_buffer_dirty_inode(prev_bh, inode);
++			mmb_mark_buffer_dirty(prev_bh,
++					      &AFFS_I(inode)->i_metadata_bhs);
+ 			affs_brelse(prev_bh);
+ 		}
+ 		size += bsize;
+@@ -732,7 +733,7 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
+ 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
+ 			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
+ 		affs_fix_checksum(sb, bh);
+-		mark_buffer_dirty_inode(bh, inode);
++		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 		written += tmp;
+ 		from += tmp;
+ 		bidx++;
+@@ -765,12 +766,13 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
+ 						     bidx, tmp_next);
+ 				AFFS_DATA_HEAD(prev_bh)->next = cpu_to_be32(bh->b_blocknr);
+ 				affs_adjust_checksum(prev_bh, bh->b_blocknr - tmp_next);
+-				mark_buffer_dirty_inode(prev_bh, inode);
++				mmb_mark_buffer_dirty(prev_bh,
++					&AFFS_I(inode)->i_metadata_bhs);
+ 			}
+ 		}
+ 		affs_brelse(prev_bh);
+ 		affs_fix_checksum(sb, bh);
+-		mark_buffer_dirty_inode(bh, inode);
++		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 		written += bsize;
+ 		from += bsize;
+ 		bidx++;
+@@ -799,13 +801,14 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
+ 						     bidx, tmp_next);
+ 				AFFS_DATA_HEAD(prev_bh)->next = cpu_to_be32(bh->b_blocknr);
+ 				affs_adjust_checksum(prev_bh, bh->b_blocknr - tmp_next);
+-				mark_buffer_dirty_inode(prev_bh, inode);
++				mmb_mark_buffer_dirty(prev_bh,
++						&AFFS_I(inode)->i_metadata_bhs);
+ 			}
+ 		} else if (be32_to_cpu(AFFS_DATA_HEAD(bh)->size) < tmp)
+ 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
+ 		affs_brelse(prev_bh);
+ 		affs_fix_checksum(sb, bh);
+-		mark_buffer_dirty_inode(bh, inode);
++		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 		written += tmp;
+ 		from += tmp;
+ 		bidx++;
+@@ -942,7 +945,7 @@ affs_truncate(struct inode *inode)
+ 	}
+ 	AFFS_TAIL(sb, ext_bh)->extension = 0;
+ 	affs_fix_checksum(sb, ext_bh);
+-	mark_buffer_dirty_inode(ext_bh, inode);
++	mmb_mark_buffer_dirty(ext_bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	affs_brelse(ext_bh);
+ 
+ 	if (inode->i_size) {
+diff --git a/fs/affs/inode.c b/fs/affs/inode.c
+index 84afa862f220..e62c5a79efd6 100644
+--- a/fs/affs/inode.c
++++ b/fs/affs/inode.c
+@@ -206,7 +206,7 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 		}
+ 	}
+ 	affs_fix_checksum(sb, bh);
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	affs_brelse(bh);
+ 	affs_free_prealloc(inode);
+ 	return 0;
+@@ -268,10 +268,10 @@ affs_evict_inode(struct inode *inode)
+ 		inode->i_size = 0;
+ 		affs_truncate(inode);
  	} else {
 -		sync_mapping_buffers(&inode->i_data);
-+		mmb_sync_buffers(&EXT2_I(inode)->i_metadata_bhs);
++		mmb_sync_buffers(&AFFS_I(inode)->i_metadata_bhs);
  	}
+ 
 -	invalidate_inode_buffers(inode);
-+	mmb_invalidate_buffers(&EXT2_I(inode)->i_metadata_bhs);
++	mmb_invalidate_buffers(&AFFS_I(inode)->i_metadata_bhs);
  	clear_inode(inode);
+ 	affs_free_prealloc(inode);
+ 	cache_page = (unsigned long)AFFS_I(inode)->i_lc;
+@@ -306,7 +306,7 @@ affs_new_inode(struct inode *dir)
+ 	bh = affs_getzeroblk(sb, block);
+ 	if (!bh)
+ 		goto err_bh;
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	affs_brelse(bh);
  
- 	ext2_discard_reservation(inode);
-@@ -527,7 +527,7 @@ static int ext2_alloc_branch(struct inode *inode,
- 		}
- 		set_buffer_uptodate(bh);
- 		unlock_buffer(bh);
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &EXT2_I(inode)->i_metadata_bhs);
- 		/* We used to sync bh here if IS_SYNC(inode).
- 		 * But we now rely upon generic_write_sync()
- 		 * and b_inode_buffers.  But not for directories.
-@@ -598,7 +598,7 @@ static void ext2_splice_branch(struct inode *inode,
+ 	inode->i_uid     = current_fsuid();
+@@ -394,17 +394,17 @@ affs_add_entry(struct inode *dir, struct inode *inode, struct dentry *dentry, s3
+ 		AFFS_TAIL(sb, bh)->link_chain = chain;
+ 		AFFS_TAIL(sb, inode_bh)->link_chain = cpu_to_be32(block);
+ 		affs_adjust_checksum(inode_bh, block - be32_to_cpu(chain));
+-		mark_buffer_dirty_inode(inode_bh, inode);
++		mmb_mark_buffer_dirty(inode_bh, &AFFS_I(inode)->i_metadata_bhs);
+ 		set_nlink(inode, 2);
+ 		ihold(inode);
+ 	}
+ 	affs_fix_checksum(sb, bh);
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	dentry->d_fsdata = (void *)(long)bh->b_blocknr;
  
- 	/* had we spliced it onto indirect block? */
- 	if (where->bh)
--		mark_buffer_dirty_inode(where->bh, inode);
-+		mmb_mark_buffer_dirty(where->bh, &EXT2_I(inode)->i_metadata_bhs);
+ 	affs_lock_dir(dir);
+ 	retval = affs_insert_hash(dir, bh);
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	affs_unlock_dir(dir);
+ 	affs_unlock_link(inode);
  
- 	inode_set_ctime_current(inode);
+diff --git a/fs/affs/namei.c b/fs/affs/namei.c
+index f883be50db12..23d00d85cf21 100644
+--- a/fs/affs/namei.c
++++ b/fs/affs/namei.c
+@@ -373,7 +373,7 @@ affs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	}
+ 	*p = 0;
+ 	inode->i_size = i + 1;
+-	mark_buffer_dirty_inode(bh, inode);
++	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	affs_brelse(bh);
  	mark_inode_dirty(inode);
-@@ -1211,7 +1211,8 @@ static void __ext2_truncate_blocks(struct inode *inode, loff_t offset)
- 		if (partial == chain)
- 			mark_inode_dirty(inode);
- 		else
--			mark_buffer_dirty_inode(partial->bh, inode);
-+			mmb_mark_buffer_dirty(partial->bh,
-+					      &EXT2_I(inode)->i_metadata_bhs);
- 		ext2_free_branches(inode, &nr, &nr+1, (chain+n-1) - partial);
- 	}
- 	/* Clear the ends of indirect blocks on the shared branch */
-@@ -1220,7 +1221,8 @@ static void __ext2_truncate_blocks(struct inode *inode, loff_t offset)
- 				   partial->p + 1,
- 				   (__le32*)partial->bh->b_data+addr_per_block,
- 				   (chain+n-1) - partial);
--		mark_buffer_dirty_inode(partial->bh, inode);
-+		mmb_mark_buffer_dirty(partial->bh,
-+				      &EXT2_I(inode)->i_metadata_bhs);
- 		brelse (partial->bh);
- 		partial--;
- 	}
-@@ -1303,7 +1305,7 @@ static int ext2_setsize(struct inode *inode, loff_t newsize)
  
- 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	if (inode_needs_sync(inode)) {
--		sync_mapping_buffers(inode->i_mapping);
-+		mmb_sync_buffers(&EXT2_I(inode)->i_metadata_bhs);
- 		sync_inode_metadata(inode, 1);
- 	} else {
- 		mark_inode_dirty(inode);
-diff --git a/fs/ext2/super.c b/fs/ext2/super.c
-index 603f2641fe10..4118a3a1f620 100644
---- a/fs/ext2/super.c
-+++ b/fs/ext2/super.c
-@@ -215,6 +215,7 @@ static struct inode *ext2_alloc_inode(struct super_block *sb)
- #ifdef CONFIG_QUOTA
- 	memset(&ei->i_dquot, 0, sizeof(ei->i_dquot));
- #endif
-+	mmb_init(&ei->i_metadata_bhs, &ei->vfs_inode.i_data);
+@@ -443,7 +443,8 @@ affs_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	/* TODO: move it back to old_dir, if error? */
  
- 	return &ei->vfs_inode;
+ done:
+-	mark_buffer_dirty_inode(bh, retval ? old_dir : new_dir);
++	mmb_mark_buffer_dirty(bh,
++			&AFFS_I(retval ? old_dir : new_dir)->i_metadata_bhs);
+ 	affs_brelse(bh);
+ 	return retval;
+ }
+@@ -496,8 +497,8 @@ affs_xrename(struct inode *old_dir, struct dentry *old_dentry,
+ 	retval = affs_insert_hash(old_dir, bh_new);
+ 	affs_unlock_dir(old_dir);
+ done:
+-	mark_buffer_dirty_inode(bh_old, new_dir);
+-	mark_buffer_dirty_inode(bh_new, old_dir);
++	mmb_mark_buffer_dirty(bh_old, &AFFS_I(new_dir)->i_metadata_bhs);
++	mmb_mark_buffer_dirty(bh_new, &AFFS_I(old_dir)->i_metadata_bhs);
+ 	affs_brelse(bh_old);
+ 	affs_brelse(bh_new);
+ 	return retval;
+diff --git a/fs/affs/super.c b/fs/affs/super.c
+index 8451647f3fea..079f36e1ddec 100644
+--- a/fs/affs/super.c
++++ b/fs/affs/super.c
+@@ -108,6 +108,7 @@ static struct inode *affs_alloc_inode(struct super_block *sb)
+ 	i->i_lc = NULL;
+ 	i->i_ext_bh = NULL;
+ 	i->i_pa_cnt = 0;
++	mmb_init(&i->i_metadata_bhs, &i->vfs_inode.i_data);
+ 
+ 	return &i->vfs_inode;
  }
 -- 
 2.51.0
