@@ -4,98 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 715461099B3C
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 04:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7489E1093170
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 05:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B98F6B0005; Sat, 21 Mar 2026 00:49:10 -0400 (EDT)
+	id 99A4B6B0005; Sat, 21 Mar 2026 01:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 669E96B0089; Sat, 21 Mar 2026 00:49:10 -0400 (EDT)
+	id 94B496B0088; Sat, 21 Mar 2026 01:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57FDB6B008A; Sat, 21 Mar 2026 00:49:10 -0400 (EDT)
+	id 83A006B0089; Sat, 21 Mar 2026 01:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 49B2C6B0005
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:49:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E79158876
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:49:09 +0000 (UTC)
-X-FDA: 84568840818.30.370E2AD
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3288EC0004
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:49:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WfuY1ZXM;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4A26B0005
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:11:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 279B81604E4
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 05:11:16 +0000 (UTC)
+X-FDA: 84568896552.04.7955E73
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 748CF1C000C
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 05:11:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bkggv2X6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774068547;
+	s=arc-20220608; t=1774069874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=a9RT3kn6Texe7XOZdc3vL8WrxS8qtrVuTIsbF8LfqMQ=;
-	b=QadfZtmBUjtu1QTlWAyBMPPmiAXTLplxamFw/HkJ9qzLqmEz2sZfMuWQ+6nm8FMO8+db9Q
-	KuAjQAJ/8GNwMR8NYtcf0tqt0pSVkbF5qSu14tceUPZYzVSa0KgfHuoe94P7EpnCrOu3DF
-	l26lnVcKzHUtOSkrBv3Uv5vrHJnW6Gk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WfuY1ZXM;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774068547; a=rsa-sha256;
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=7QxDv7wA5vy2wx/iALi99txiEfbwQ3ENlpnWZYhHz0A=;
+	b=2zsG98m2Jz1qlwnFrClOpXeCVOcReeHoljHx+osAx1AYPxZfnOIG+jYWEAN2dXr/r0NFV7
+	/iGsL2mSOe2SKVTjnbYQUEPwIkb6vlry3BnYbTzbXfCozSVGnAmsCx7AQV+jQUfR/B3gop
+	hjNYLlVj1QqZpAao+31h2QtAyRehpQ0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774069874; a=rsa-sha256;
 	cv=none;
-	b=BSuoSBo2xrXwMWiZ3enewiiMomb8q72pg2bNQbqR7G8yRNEl5oMI+vsWd5UDQ9RYjCvFGl
-	BQNDLIvBWX+ZW+d3JoijXlxxqNaHuTVu3/WC/Cw+KbYnS7ABNLjs9zelI5QpbuhWJaf3RN
-	wBrXOPIEi0Z/rbF/1s11kCY23osChb4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774068547; x=1805604547;
-  h=date:from:to:cc:subject:message-id;
-  bh=YpsLFUQdnRxAKWUHhi2dFhscdeXowHwGUXVwOe2VciY=;
-  b=WfuY1ZXMMv0O22U27Sm3cvKGNDYt7UITJwObcyqMMKHEgJdZ5m6Q/e7L
-   pkGrFea1USK9bLvwBn8c8AeDKMkxfaNFVbNkEEJ6o9sDRw3x4OwLRKzLX
-   /oOedHjikLGn0KbCmol+aYv/OL1E2RCnf+Ni8xbw+KPGPfYAltlqKGePc
-   E1NGMpuMtqqagf+Ytqu7tq9Z9rxcviKc5RCLJVxrff7Vcv29TXg2M0FR/
-   hV9zdp56+onqH2yfF5wjig3ONUEc2jYwQ5ct2+lDhJjbesD8IKezHf3Rg
-   6nHh1H2UiTeyLMx/pXkiEYIBh3a5+8E5PjgPzQXrSkltUTFN+mVf7hG3A
-   Q==;
-X-CSE-ConnectionGUID: GRHgPpi1S9uyDZT0AD2JxQ==
-X-CSE-MsgGUID: dG3GNh5mSIWnZiM9XNETzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="86518216"
-X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
-   d="scan'208";a="86518216"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 21:49:05 -0700
-X-CSE-ConnectionGUID: TSdFnOx6QSm8OZXZ42VZdg==
-X-CSE-MsgGUID: LI7KgFEwReqfDpiqvii4fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
-   d="scan'208";a="223528275"
-Received: from lkp-server02.sh.intel.com (HELO d7fefbca0d04) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 20 Mar 2026 21:49:03 -0700
-Received: from kbuild by d7fefbca0d04 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w3oGG-000000000JN-33mL;
-	Sat, 21 Mar 2026 04:48:43 +0000
-Date: Sat, 21 Mar 2026 12:48:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Nicolas Pitre <npitre@baylibre.com>
-Subject: div64.c:(.text.mul_u64_add_u64_div_u64+0x40): undefined
- reference to `__multi3'
-Message-ID: <202603211216.YTKRdi1b-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 3288EC0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ngej333ziit7fwzrisn5a64aomgeayzw
+	b=lRK6/HQioPoEgZ0SBJCcoMbfoYSHtTdkDOic01ettUk4cL1+4S933wtjplZJTRPiWpgwXI
+	P1TXoWXJSg57QDsJfIhOr5ypg7ghyLMhqr7xxcoeTYmShETt06LXmYYubdyD3PGiP5rr5N
+	myv/vdpvp9J+tSy2gvZ/bq5qi19UvOs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bkggv2X6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c742d4df00cso1069275a12.1
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:11:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774069873; x=1774674673; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7QxDv7wA5vy2wx/iALi99txiEfbwQ3ENlpnWZYhHz0A=;
+        b=Bkggv2X67Um1H84GGUxlVAtfpmqF1H+YmE6k9PF1VLSeDwPqn8UlQ5lFOKr74q5J2P
+         7lxngUsSaLKypScNZZLg/pMjxUUO3CNRncVRDO9cPQoApfUMUL/CLla7Yai/doIEIbkm
+         R0ptOpPHsmBdIZPUI2BZhgsMUMVIkOvRh8atQLJosZjG0E6ssvmU5n1OxWaEuTG9OWew
+         dFSSy+AFbbKwj4y2HwXTTjCpxM/+xH3EkmJ1qASEVHZcS+AGKhVRRRC2XOmoUsaGgm+2
+         XMHHKgPX7/NK2urHVKyp++dsKI6szvNzsEMTozkD7nsy3V1WczjdXxitPxy6kKGkp74I
+         XgZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774069873; x=1774674673;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7QxDv7wA5vy2wx/iALi99txiEfbwQ3ENlpnWZYhHz0A=;
+        b=FxZVEpw1/BKBwdcVRTSXas+7wf7rkfAynKK4N/eRwU4aKDAPuSBz5MM6lFSa2KpCkQ
+         3KMkdz8yVQi5zqb/52DaF92Zwm4+U+0DKGbubqvzRcIp6o+Y7dO2NJTd+LpNyAN8bdBS
+         NaA62hGhRmZTtvS/lk56AiEaryyNGnqHXiWNzabS07KwWHHuUri/Pe7WiUsyiGPjOEqA
+         LeHUaBcyc2+nucIrw1SVheRyAu1xnanXBEJmpP1P5RN7O5AEgbWo5qLRc4aByUsJOOCJ
+         T8S0cisT9zy+f/GKbmX5YSKd4lea8aI2mhkrzndb7R78E/jqUkeEeZQ+8EIOgaxU67ML
+         Fg4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWifoD3k3rZbWVx9oTi60znorzuMcioWH5Km5D4yj6iFHaqRSu+yXxxf47pzgDIba9p08q+4KFNrQ==@kvack.org
+X-Gm-Message-State: AOJu0YyaxMoU1hkwtGn+IsbKTM6PnnjpMKnQ5VsR2SeWRCS24rjLooS5
+	nEuMXR0K0n2+czRJJjr5Mv27KP2sMBFEah0SX54apgBxUHLYhBst+BTA
+X-Gm-Gg: ATEYQzwFCFFxJuswSi+f0n7Kcl4zu54i6Knrv0xghDHZajauFut4zna7je4ePXDZIYG
+	O6pQhIBZbReQ1OumPgJ31GfjMGCaeYSxJa2Beyy5PrXxlvvl6OE0vyJ00BhZrtDKbnjOSJ6r5sj
+	RGuiuRUDyuucga0X682EPMIcRRRgGDgrlCEDzdyInPtT3HnyPNbmNJt5VlTm8/VB9lSoAh8230N
+	mZbZdhjjrVn6AaKytW4+Jmc0vQZ9dbg073o8akt3ry2vnkksnG1i5Qs4NUtD4c1HESoMDSJ/8L8
+	f0PqUhHFTpR2I62MWkh1rlr4/xRX7UY1sSj6NgyLYoveGx2sMIxdoPAPxBsRFJLUxgOnXLSKNx9
+	0Iv8rsmjMtA5CaBL2Ulw/HjYkw+jDZi6/wNBZbUcSTz1nYpSvm8Vltcuhhoy6lj88laqpd4AkIh
+	Q3+Ihr6EXAEw95zkZbBjSALQ==
+X-Received: by 2002:a05:6a21:4cca:b0:39b:9c3a:f54f with SMTP id adf61e73a8af0-39bb25e7511mr8216718637.32.1774069873215;
+        Fri, 20 Mar 2026 22:11:13 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c743a939af0sm2729778a12.16.2026.03.20.22.11.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 22:11:12 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, baolin.wang@linux.alibaba.com, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm: change to return bool for ptep_test_and_clear_young()
+In-Reply-To: <3fa94c3c89fd93fe22c8cb59967f064787d686aa.1773890510.git.baolin.wang@linux.alibaba.com>
+Date: Fri, 20 Mar 2026 11:27:48 +0530
+Message-ID: <ikarxctf.ritesh.list@gmail.com>
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com> <3fa94c3c89fd93fe22c8cb59967f064787d686aa.1773890510.git.baolin.wang@linux.alibaba.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 748CF1C000C
+X-Stat-Signature: adfjcjt5zmykbb8apcf46tqj8cndk59s
 X-Rspam-User: 
-X-HE-Tag: 1774068546-596753
-X-HE-Meta: U2FsdGVkX1+BEPoCx2JvjURCGfJv+bxRLFf9J6UZPHLuOtwkgspWaig8v48/6W6lkZVIxtZ2dT/pRGDdyDpMTaEbYYB5NiOjEW/Hscb51HN9NhmxTy+ubYOhpykE0iBX5cvFl1rWAjt9InmPLLpIiRVvvYaBQdh/xFxa5p+CpoEgf31w5gfOn55IhYGvHxXmtQSAR70iRNNNtgF+FNGJ9pBN7U2C+vDJtwqHdE/CdOhwvEQ2iUm76zDnU2SygvfC5djE3TFl6nM2vspwEaVvCXV44x71V1uslKszxC0J6UC/nqSCV4XMsyhsd9/Y7kBp/ZO/Pd9QipSVbinI5pn12pTctUyPSYgBz9o4zkkIQNvDEfeQoIpz1d5GIXg1/7HhSigXQm9Q8uC4Sgzt0qYWIEt14sNuxrRPLIM0V45ClZEzHvo9dTQN66nHaDpkXQ/ZDabf6ZIQnJBBGoN06KB6yN1twnXFjuNK6Uw4q1Dvdd5TQxFghgV5mpu82uAdU6Dmn/q2BxJmmje0Q+84Evkd3Dvt6wnmiZu165xCFB5i8lCr8/os3COpcY/08yKVyJqq32jLwptYtabVT6ojCQLcXCjU2tQK7MZTo9l+0GlCzbu/pHP697D+JRydTYLONJVrlO5hZyRrgMjRZwFUX5tFUuUjpnaDsT5R9Gs9Jk4f66inge8qYVsa0RfKMTXVN/w7+At8bAdlGqXDV2GswEXzDv6ouAE9lQl9lylPkw/yD19Oir6FVInXefVaYiU7WGrUFv7LI3pdYz+mmU7DyRabBOW2sTqZJlEhYw1SNe98nGSpxL++4fyspP3uaA9fQ/j4FmEwKdxWR6Sj34TfLSmCjwSB97BcRXSAbYm3oiHpYnSkMmpGeXwmdRETlhBkCyBXEAOD+EuVc6dGcu0hcA0xGO68T44eE6afUEOjlMgPm+lBw1eQSQ1wgS9E6XMNXxiu8bYYVJGV60UH7TmBeX6
- 7YNd48gB
- NalIorMrwgv0n2+hL0k3oSXbE1Q0DsnL9wIDRlb2QurUgjFGqsL1nHn1Dm6lyzAuPFFM8pvRv59d2CNZuN0Qav+LX7RhkpnnSkY04O8z2BLCaCy4oRCLF+SQkBjuQMwBhmJ6wX0whTZdPG0k9nAQRUAwqI0G1cm/V+oEnb2V2uMHZBM9hlZcFEdniazaMISrrQfUBiPf2vlbgwXd7TSrp2UMIFwhU9sdxWR8Wn/steEbWxPxg8oopqcLPyaMec4WvaqQuLmVVC0ErAwW2Wyyv0i/22RjotMOzneoagvtki+KvRUmtXbGaej4WS2Obk0b+T2T/r85S3RvLfXdjBSX9vroUwjsvO4RGJxuG9bntGYUQeaO9IrYpcWYyqfSDzy3BI8nk/LY3Y+rrN9jTuSeayev0/IGj4djgq/dAmp7+/Vn1Oio=
+X-HE-Tag: 1774069874-452997
+X-HE-Meta: U2FsdGVkX1/03fAE8TP+xgUKPDrVhBLDPGld4vyACFn8iTzSwYH01G5fiAE85P0z6w4Ac7rzLA+ttsDnYtMpU+3Wiy7tfDH59u0riG9UUHJI30CufGVlHKzNpZ7Iek+HcSrNCZgEIT+aoYI/+/8nIMjp8ajDpLwjXag2JxjviTu7rPIjxcLcrUa2iFVu7Ig55n5Vpfe37IT5excSi1zoO5EhGTATZHBSGErjoBUv3LosZQIaLPopEp40nzNRx4JItokjMMa3za6FmlIZbKZ8HNtLM0hBwAQjg4CfAcJF4Ba1ahc0PFhBI1oCgxKjuFeSxARlfUkZ+K7E/JWPkvZ3W3cGcLWA1kc5QQQ9p1XffXrXTpDeOpKFkcaErk6iYIRlIF90jxzxx9Bt/xe55JrybwmgF8AxP9PSF6YZz9Z8EFTqWADZ8uHucdckVzYE4CAweVnButt+SFhN9gUTTHeYJDGdcKZjoxyH0dFUbfxWryi5M0ErwsCP1EdNuMznF+S4VZoQlJNezssu7uZskVsfU8SLGmtdJUlmO4HMUifxsOIMg+Fvo6hX/tdiEPhSpCe9WhDroz7Gcdau29kmWng6cRs+4IPRaFLgfKiYYiEFIM49+4QlT7gJIqe2NCXsRG/7/MwohsHXEmA9wX4Vwu3nf+iVe3AWYiqwviu3Su/fUtciyjcmuLOs9ComGOPd8tYFqJ1drdDN8s/w/DRz1I3exFlUcEXENkNgyFcK2opI5lw1EEh3RIVP0lZGvssRIjMaNo5ClTvgFPyRI9RrJq72/2u/yd6Q+dkL758KtkVH8aNUC7N+mjCtMMHbcOJCUi8qvDS/aDwkKPDLQYEp/8B/DVUbNH60XKq8yeziKHYS9xE8lll1UxVT99b5PHJXL6iT8RobPTF3pM/iIx4LOebMgKJERw1HfY5i+BgAZ3/m8sdDaBm7nVaYn+wSBjT/yabNndDZKS9cbQVCQN1GdEa
+ /+dHbR8I
+ c4zjP2UQIlPiR12A8XDnuu7RtgQCCl6YuMp5JQFa3C3DlcTQOCCUy/RAX82es1v6rirHNH3O62qv9LKORjTEZtHrzCQWu4UgyUMfVg3YLDyD56k0DC8wPDeHyL/vrKodbHs3CSy7BKB0w5F5gMcJ0TudJq/z68IUAMn5CcT1Asv0WmvoGVi58yT9cNBTxHGLb5kuysH50FQtRVryALS/j9e7Z7rQtqUJRzrBKAo9e+GXBbEDJN8B0lEP7VMF6l8b04tYx5oUR2w2dWR3VXer7P5JNQZYzbjANgLXW3Xi1qG8W0SjUZ1OzdoiHqCaLdCbIu+as9jJnFUpxx2VLBEd7y5E/gpjYaAiIqnQhy3vsPX9NLFKE2u9DkhyKIyW9F0nIbR+l1poqoAD6RYW7MJt+Q6tBQMvw1gUoROAWlx8JeEXcKygQI53Hf7RANEaypMKlCNvdiltgIFhyQDyZKhjjkC91JCRry885FYc9snioupFx38jhJ06/KFE0iBmdXi0soEvy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,26 +111,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   42bddab0563fe67882b2722620a66dd98c8dbf33
-commit: 6480241f31f543333ed0c7a209962412461f6e41 lib: add mul_u64_add_u64_div_u64() and mul_u64_u64_div_u64_roundup()
-date:   4 months ago
-config: mips-randconfig-r122-20260321 (https://download.01.org/0day-ci/archive/20260321/202603211216.YTKRdi1b-lkp@intel.com/config)
-compiler: mips64-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260321/202603211216.YTKRdi1b-lkp@intel.com/reproduce)
+Baolin Wang <baolin.wang@linux.alibaba.com> writes:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603211216.YTKRdi1b-lkp@intel.com/
+> Callers use ptep_test_and_clear_young() to clear the young flag and check
+> whether it was set. Change the return type to bool to make the intention
+> clearer.
+>
 
-All errors (new ones prefixed by >>):
+Right I checked all callers of ptep_test_and_clear_young(). I agree, we
+only need bool here. 
 
-   mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
->> div64.c:(.text.mul_u64_add_u64_div_u64+0x40): undefined reference to `__multi3'
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h             |  8 ++++----
+>  arch/arm64/mm/contpte.c                      |  4 ++--
+>  arch/microblaze/include/asm/pgtable.h        |  2 +-
+>  arch/parisc/include/asm/pgtable.h            |  6 +++---
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  4 ++--
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  6 +++---
+>  arch/powerpc/include/asm/nohash/pgtable.h    |  4 ++--
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I looked at it because of powerpc changes, but ended up looking into all
+call sites anyways. So overall it LGTM (and I agree that we can remove
+the unnecessary externs from function declarations)
+
+With that please feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
