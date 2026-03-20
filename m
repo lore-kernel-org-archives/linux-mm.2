@@ -4,88 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89011108B8E9
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:13:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 919B1108B8EB
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:16:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDD886B0088; Fri, 20 Mar 2026 06:13:40 -0400 (EDT)
+	id F2C086B0005; Fri, 20 Mar 2026 06:16:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8FC56B0089; Fri, 20 Mar 2026 06:13:40 -0400 (EDT)
+	id EDD516B0089; Fri, 20 Mar 2026 06:16:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4DD6B008C; Fri, 20 Mar 2026 06:13:40 -0400 (EDT)
+	id DCB656B008A; Fri, 20 Mar 2026 06:16:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7AF76B0088
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:13:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5636314011C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:13:40 +0000 (UTC)
-X-FDA: 84566029800.27.05C2EC4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CBEA06B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:16:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69F4313865E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:16:12 +0000 (UTC)
+X-FDA: 84566036184.07.0B9B471
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 99BCAC000E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:13:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m/WpkM7y";
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 910A01C000A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:16:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VpGnIYfO;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774001618;
+	s=arc-20220608; t=1774001770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SXWb8jyhOqqvyBgM6/E/8rxGou98J+rWk6sZlOnWDL8=;
-	b=A/ihwK8WK9J3x2IP7DxJJGUH/gxbr4fXiAV5HaJ6xblhlBXTykxAoSKmVDZlFw0HIXfNeh
-	g99jOnc+O3pGdvoInfwnGA5IYIwZ2xrJDkN+rV/BWEM7/aMAnyDljCXj0vT6gT+v9XXTRS
-	vSxZy5DZ+Ye3icztHuqyIoFKPNAiZ40=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m/WpkM7y";
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001618; a=rsa-sha256;
+	bh=TycOeWVZquacUlciRj5W3aWhpreqS3TXqwdxrkjDt0w=;
+	b=a299IkJGNFtKtDCthwHp4+n+4ThmjDvnhovPMYIPeBwibzJEyTPSKBNcKf7jRdGqDK/Osf
+	UNLpKITDYUZjn8AEA6pYSTYJcpxjiASceJXwUUyciAcBgHuONjItin7Qwnv+d2v9jamhZn
+	8knaaaKwg153mgI459UHZPnueHWvK5Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001770; a=rsa-sha256;
 	cv=none;
-	b=wcw4G+Eq0ovPBPVdETTVIDSVhmEx61DqEWMBzE60IYXdiopmUMaPyROBtj1dPivVPQ+B/C
-	oDFomUZOnnNiMuz88U8WzofbRSh0G91/6+Cn2ja7YIOWD984HT1UsQdruXlWxE2XbYBlr/
-	DRUi9yDLLMs2I2YvJ7PfvZaxq40OGfI=
+	b=IBvwehYMsrtlbkXnCDz0tBqG/YA7BQ9KuSilaws3UqAJavek7OLGYZLaEqZg4repslhtq7
+	QS9kWxZ6cRFx2vqvohbO0lMbTm1K9m0CnXdt2UbspOhXCX7FCr7vzZ/GvqehW4g82IeXpu
+	d6tH227GpjC+fekkTa0i8FgSyqVy8TI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VpGnIYfO;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5F70844174;
-	Fri, 20 Mar 2026 10:13:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2F5C4CEF7;
-	Fri, 20 Mar 2026 10:13:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A6B0436C8;
+	Fri, 20 Mar 2026 10:16:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FF9C4CEF7;
+	Fri, 20 Mar 2026 10:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774001617;
-	bh=8Cux4Or9KBz8E1bbQ/G37aCVREYFbbZo9kf7MyLOF4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m/WpkM7yXsPrj+XS090ErPj5z6XrZ+vYpuCUuf2GOk8/xN0ZoqH5x4JhyK+YyiE6M
-	 Cm+gtAkO/Gzkin1ue/MBR3ZUEjNNxhGY/UH/WaGXOLxS+xEgiaqgCAyGYpAQeJK3TC
-	 3jhL80M+MneKdkEOon73DI/gu044cgE78S7rJjXTeVLyR7dSUDveM59p5o4hAHtQv6
-	 ESfmxNyj9EuJeRXNJYAmJJaWbt19x6FoNCU7RMO6l/2qB0nd2rtIV7I1v1r4aTAkas
-	 x7txEN1h2zIDdMPOaKEyKjrlAr0zuilZFR9pold24lMS9BuP+NDxNIzxROwqgZPS79
-	 W2KrZ2MOKk8GQ==
-Date: Fri, 20 Mar 2026 10:13:34 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, baohua@kernel.org, ryan.roberts@arm.com, 
-	linux-mm@kvack.org, wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-Subject: Re: [PATCH v3] mm/huge_memory: fix folio isn't locked in
- softleaf_to_folio()
-Message-ID: <63266e52-2644-4f4e-aca5-6db64052455f@lucifer.local>
-References: <20260319012541.4158561-1-tujinjiang@huawei.com>
+	s=k20201202; t=1774001769;
+	bh=ap9t23GAznSjlYBwe3WH7nSlcvQ4uwkCMM8JPtwfdBU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VpGnIYfOhfS5un78DFGTJ5loTHw41DGnYvLF83kfJLhLDtl86vDxsK7+kZYUzaYnE
+	 5V9zcIkNRIqSzj4tbwQLydHMYDPmXOCMLIySJ4ULjxFk/lefzNfI9hnLeFOCIGnnDl
+	 mAxr5fguFL4uy3itIhWz2Fy0cYKrzKJpZhkuV6STy5rmqivM3mA46b4dMOAVIm8aX5
+	 aL1J/e+lrGnyidQShydB7ZP25CoL8lbUtLPYsSX+m708iSuLKQWfBy+aNV3CStt/8O
+	 sw5JQcZVkYlp6nZd/W4kU0jl8JC6+CIhgGnco8oF5shbFK5ws3inZ7cQkjFITK2eiJ
+	 D0/iPE2qO9fcw==
+Message-ID: <a7535063-abaa-4f67-a090-4a47098f10e7@kernel.org>
+Date: Fri, 20 Mar 2026 11:15:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319012541.4158561-1-tujinjiang@huawei.com>
-X-Stat-Signature: ncrubrrf8j4y9wqorafw6cceepu7grmc
-X-Rspamd-Server: rspam09
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 21/23] mm/vma: convert as much as we can in mm/vma.c to
+ vma_flags_t
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773846935.git.ljs@kernel.org>
+ <44a952b98d68fc231ab231de6de04b077866bab8.1773846935.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <44a952b98d68fc231ab231de6de04b077866bab8.1773846935.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uhfpi7y7ato1ch1ckz6us61dshdd4hzx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99BCAC000E
-X-HE-Tag: 1774001618-898112
-X-HE-Meta: U2FsdGVkX19SAj9J2vnvBChbUrR0Nrn9rKoYB29d5d8iASqr0VxYOTt1xYvU2zRfeYO2H81+WJRNJwnTrgdQJmVQ4E230A9pLrxtMMwBgDcoeSftVI6efHUO8qj4EmVhreJ09vSo0igoWuvLeZbJN7Dr2NdlnS9p23x2sFihol2qAPfNjEGFKu0KCrhUFTQqBE12oLg7xZ9U2jnjD7+5aV4VJjxwpGdsLaQlNlDT7iM2KqDfFQqK1YFL2Jz4NmzZKKs3md3FhonrB2u8BLk273jEHrJEHBvk+2DTJPChGQUM9QzTGQUIl2O8zU+INaL1CvDzTzCwovclLFiVXsy1VSEWrSbivQIgHTSWMv3CzOEsQhAllLgCZcN2xBTM1Le3DM08NGcFJqHmFFAyDi5uFQ8J7wQeK123A8z7+OkotKps3pXRhauPRpea+EH5zzOKleEmPHrTNuxWRjBDXZzNvJwG4G6a+bsyIeQxnrvihIrNDdCr2xfEYBBIM+M4UvHK9jAUjpCjiSwk/UmFuTsACzJ5HrxgRouYv0WtvUQVTtEIh8RWXhOk/nPpArBWYojWyC3yXhuXl2Jzt405K0AylkL8OOCzhWIvtThZNwTjbUN7z/BZTXP0bV8+0fjPM/CVh/bSF2MBOmpDXmSWUhWOUdP7fJ/mF1oVUSne6log3Gq/bj/v1At+JX59Zdc+2eNAJEimjc5YgKnBzAqzmMCsCp1AnMEhffqExZB27avSWJkxQ6qDQkbvkzhy7b7E9cG8ST6tdlFy6NI8xza5T5z+pDXu9jCLc2cJO1Zu3hmKjIs1J0pMAp8betzBbPNyKm0Y/CJyHyVfT7abX7EWsRnD+715/dBKgYlwcADdUu11dOXE4jXPidM8sM4zRia8AcWa/LdOF3xj42eg/KWFjeug4+aGuREj9bajFbIGzx762a7DJSeFoDl0Vx7vDUULVjxpYOWUJrWaucMdwBQy6Rm
- +mZLwe4y
- 7NNKWWrRGWneYHtUSbtIZWBsw8bNZ3s5QJ95xuF90B2HQR4z6gJhl3CKUJpIY1gbgV+DAgixG13lcsueGclEJ/H2tC/vkrnhsnle5J4r9iEQEuia9M8Syhqg511X9aUmAas4yXDXDGROYkME1Vwi25DKqsBeGJ4unDVs9LbA3AVLXJI/2fHIVMXcj1kl4xq8iMLZWNfyxffXGYyOX9ieYf4F9kNLQoX/cXMjyfQMvXHsTodq2+gFvq4waPVLtpG+TqmzM71JxX0Autf7t7anvg2Rq8q25f+ig3EPBNHDMqTYYXSbg3cXYXCWC0g==
+X-Rspamd-Queue-Id: 910A01C000A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774001770-562337
+X-HE-Meta: U2FsdGVkX197EB+e2dqE4jxYUTlvYuNEweTPeCChrw2pWSQ5+2FoYHVhvQUdtq0msbcfB5HvwQjCqVOMuNNpxU/YO/9DJQ8dV+q0PHZf80v7vx3kcxC4ZiAewlg5eeNHKKUPDd6RQuJclFBH3ynWxCzgbuuIzVq5K2csndY8InArKEq+Jb+a3sPNOhgApnzY/VvwqpVyJdUihJzZBwYP0QTGUek6rzITckQ74jxmvKZqNH2T5JXsmUjXzT5TCYgwUvunLgMrUbp+qqotjqadg1jy2XqbGF6Ly2qquI4651xWMngOMqzFzaE5dfc+ZEINCM4e6diIR6QyqjyjNkaCrG6JTL3JNpjJAfodt+C8D8BUWlUoYs/SupkYmWYwyLUPoq5/ZJD66gEMYer50wsDLpahQhjjDKt73StpSdnkSb2ovkw1mFX9NUSB/+JgvsqXAC5nsPvmGSiQQy62sfbTWryC0UkZb59LQMKcBkCCqq7hLQbuy2KaGNFBracBceWh44nvJ6ZDmx+FZaZJPl+xByZWG9SIIv48j7s+3+XRK4PpUHNLffV8/i0Z02uQehmxg3B/z3Iso4jiAilMzPWuhtigCe4oQqGhYnmwWh2j01ZjzFOSBOL6oo1yJfEo127nh7zJJXFtyxjGGWuO0jzv8Sk+jabQZaQKZl6YXCmf/6V8Q8Uzq4TTkHMp8GNGtpWYEjgPcyAfSHDANgrJXnIl4+iXOICE/S4MEobF4cgBWGDH8LqeGnJB0F1CWQ5Je9uNCncNVI7g0hfos995lGFQaYi48AjM2IEHnXEB7Fbos3jQjkalE6fmITJiyLW9VehKZIDJt5UPUNlK5oRqaZbUb2OBuIzhZH48lG6eSi10ea7SWGxcjJ1W9bA3XC6DRmPLoojo48YxfRvuukq2eIL69d1OAaHpA3fKifTJdU2kUO+l7oan5vc2sdEWb5yNT6a0dQafREUXA+QUcHJIDOX
+ qjEQkoVp
+ 4lYtyMJMukXmNSTtdFU0nPU4dyyLmH2idE3s5uWNW2gPgE3t7a+PoCR6G+528/E5j09lRV2g2g6Ur4DYa5g30litPch+rtDiUkvxyttSgWFWBLYfkwopzDdxVNAK70lIIfKg1OaK6QJfejITjiaTxwVqmI3u6yq58PiQnfbxap/HVxDb3wylJgCWAod/Qt5BFon0cchX03UIjauHz9YYX67SbudO0UFaiuhhu16fp6dYQn7YRbL+R2KZUZSvBBB4BQrcfEV+AySZkZ5SRy3BdKpGHfqsb4mZe2EBilRk5azHWssL/WngXJaif9sdn5clAdmuEYj7UBvxUZS2ZzOTVp1gOALVvxAuR1wxNn4xW2DyU04LoCg5xeAq5uZ1U5hofK6si2Ln+Chp+9AVasNdk7GFXyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,138 +129,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 09:25:41AM +0800, Jinjiang Tu wrote:
-> On arm64 server, we found folio that get from migration entry isn't locked
-> in softleaf_to_folio(). This issue triggers when mTHP splitting and
-> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-> in softleaf_to_folio(). The race is as follows:
->
-> 	CPU0                                             CPU1
->
-> deferred_split_scan()                              zap_nonpresent_ptes()
->   lock folio
->   split_folio()
->     unmap_folio()
->       change ptes to migration entries
->     __split_folio_to_order()                         softleaf_to_folio()
->       set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
->       smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
->       prep_compound_page() for tail pages
->
-> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-> are visible before the tail page becomes non-compound. smp_wmb() should
-> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
-> result, if zap_nonpresent_ptes() accesses migration entry that stores
-> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
-> page before page->flags.
->
-> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-> in softleaf_to_folio() and softleaf_to_page().
->
-> Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> Now we have established a good foundation for vm_flags_t to vma_flags_t
+> changes, update mm/vma.c to utilise vma_flags_t wherever possible.
+> 
+> We are able to convert VM_STARTGAP_FLAGS entirely as this is only used in
+> mm/vma.c, and to account for the fact we can't use VM_NONE to make life
+> easier, place the definition of this within existing #ifdef's to be
+> cleaner.
+> 
+> Generally the remaining changes are mechanical.
+> 
+> Also update the VMA tests to reflect the changes.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-I absolutely could have sworn I replied to this before, but I looked and it
-seems like I didn't :) am I getting old or something? :P
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Anyway the logic looks good, thanks for this, but some nits on the
-naming/comments below.
+Nits:
 
-With those addressed:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->
-> Change in v3:
->  * move softleaf_is_migration() check out of softleaf_migration_entry_check()
->
->  include/linux/leafops.h | 28 +++++++++++++++++-----------
->  1 file changed, 17 insertions(+), 11 deletions(-)
->
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> index a9ff94b744f2..dd4130b7cb7f 100644
-> --- a/include/linux/leafops.h
-> +++ b/include/linux/leafops.h
-> @@ -363,6 +363,19 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->  	return swp_offset(entry) & SWP_PFN_MASK;
->  }
->
-> +static inline void softleaf_migration_entry_check(softleaf_t entry,
-> +			struct folio *folio)
-
-I'm not sure this is correctly named, you're doing a debug-only check here
-but the barrier is a LOT more important.
-
-Maybe softleaf_migration_sync()?
-
-The fact there's a check there is implied by the VM_WARN_ON_ONCE().
-
-> +{
-> +	/* See __split_folio_to_order() comment */
-
-NIT: reads better as '/* See comment in __split_folio_to_order() */'.
-
-But you're referencing a 1 line comment from __split_folio_to_order();
-
-		/* Page flags must be visible before we make the page non-compound. */
-		smp_wmb();
-
-Which also doesn't give sufficient context in my view.
-
-So I think overall better as:
-
-/*
- * Ensure we do not race with split, which might alter tail pages into new
- * folios and thus result in observing an unlocked folio.
- * This matches the write barrier in __split_folio_to_order().
- */
-
-> +	smp_rmb();
+> @@ -2338,8 +2339,11 @@ void mm_drop_all_locks(struct mm_struct *mm)
+>   * We account for memory if it's a private writeable mapping,
+>   * not hugepages and VM_NORESERVE wasn't set.
+>   */
+> -static bool accountable_mapping(struct file *file, vm_flags_t vm_flags)
+> +static bool accountable_mapping(struct mmap_state *map)
+>  {
+> +	const struct file *file = map->file;
+> +	vma_flags_t mask;
 > +
-> +	/*
-> +	 * Any use of migration entries may only occur while the
-> +	 * corresponding page is locked
-> +	 */
-> +	VM_WARN_ON_ONCE(!folio_test_locked(folio));
-> +}
-> +
->  /**
->   * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
->   * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
-> @@ -374,11 +387,8 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
->  	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
->
->  	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
-> -	/*
-> -	 * Any use of migration entries may only occur while the
-> -	 * corresponding page is locked
-> -	 */
-> -	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
-> +	if (softleaf_is_migration(entry))
-> +		softleaf_migration_entry_check(entry, page_folio(page));
->
->  	return page;
->  }
-> @@ -394,12 +404,8 @@ static inline struct folio *softleaf_to_folio(softleaf_t entry)
->  	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
->
->  	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
-> -	/*
-> -	 * Any use of migration entries may only occur while the
-> -	 * corresponding folio is locked.
-> -	 */
-> -	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
-> -			!folio_test_locked(folio));
-> +	if (softleaf_is_migration(entry))
-> +		softleaf_migration_entry_check(entry, folio);
->
->  	return folio;
->  }
-> --
-> 2.43.0
->
->
+>  	/*
+>  	 * hugetlb has its own accounting separate from the core VM
+>  	 * VM_HUGETLB may not be set yet so we cannot check for that flag.
+> @@ -2347,7 +2351,9 @@ static bool accountable_mapping(struct file *file, vm_flags_t vm_flags)
+>  	if (file && is_file_hugepages(file))
+>  		return false;
+>  
+> -	return (vm_flags & (VM_NORESERVE | VM_SHARED | VM_WRITE)) == VM_WRITE;
+> +	mask = vma_flags_and(&map->vma_flags, VMA_NORESERVE_BIT, VMA_SHARED_BIT,
+> +			     VMA_WRITE_BIT);
+> +	return vma_flags_same(&mask, VMA_WRITE_BIT);
 
-Cheers, Lorenzo
+Another case of possible refactor, if you agree with those pointed out in
+earlier patch.
+
+>  }
+>  
+>  /*
+
+> @@ -2993,7 +2998,8 @@ unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+>  	gap = vma_iter_addr(&vmi) + info->start_gap;
+>  	gap += (info->align_offset - gap) & info->align_mask;
+>  	tmp = vma_next(&vmi);
+> -	if (tmp && (tmp->vm_flags & VM_STARTGAP_FLAGS)) { /* Avoid prev check if possible */
+> +	/* Avoid prev check if possible */
+> +	if (tmp && (vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS))) {
+
+The parentheses around function call not necessary?
+
+>  		if (vm_start_gap(tmp) < gap + length - 1) {
+>  			low_limit = tmp->vm_end;
+>  			vma_iter_reset(&vmi);
+> @@ -3045,7 +3051,8 @@ unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+>  	gap -= (gap - info->align_offset) & info->align_mask;
+>  	gap_end = vma_iter_end(&vmi);
+>  	tmp = vma_next(&vmi);
+> -	if (tmp && (tmp->vm_flags & VM_STARTGAP_FLAGS)) { /* Avoid prev check if possible */
+> +	 /* Avoid prev check if possible */
+> +	if (tmp && (vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS))) {
+
+Same.
+
+>  		if (vm_start_gap(tmp) < gap_end) {
+>  			high_limit = vm_start_gap(tmp);
+>  			vma_iter_reset(&vmi);
 
