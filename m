@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163A31099B31
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:04:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94651099B2D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:07:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DDD06B00CB; Fri, 20 Mar 2026 14:04:50 -0400 (EDT)
+	id EB7C06B008C; Fri, 20 Mar 2026 14:07:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B5AD6B00CD; Fri, 20 Mar 2026 14:04:50 -0400 (EDT)
+	id E8F316B0095; Fri, 20 Mar 2026 14:07:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F21A6B00CE; Fri, 20 Mar 2026 14:04:50 -0400 (EDT)
+	id DCC296B0096; Fri, 20 Mar 2026 14:07:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 18F1C6B00CB
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:04:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B080D8B3AA
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:04:49 +0000 (UTC)
-X-FDA: 84567217098.18.B823FD0
+	by kanga.kvack.org (Postfix) with ESMTP id C99156B008C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:07:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 968CE1C4CA
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:07:35 +0000 (UTC)
+X-FDA: 84567224070.22.7A390CB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 13915A0009
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:04:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QZ27rco1;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2AE2A40007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:07:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b6dcDxkA;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774029888;
+	s=arc-20220608; t=1774030054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcQ0Sdq7MubbYaFxKqat7D7t1mE9+R5njCQKtCJ9D7I=;
-	b=A+cnqw+UkY/sFnZBV1eSysU64TEgVvIyfIdTe0VLzw0NFtZZ6LzfndrL6PuhrQL8Pw0epr
-	Wzzn5E6yXuMq+qUTii7MDAXzCFlTY+sOixoc3iekfDAIGfY5f88HToyx0gl6KJSSEWzxwh
-	DJDUhIZ1gES8/oZaeHHI0ytvMVHkPB0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JUxdoo4poRF4jK1QqjZctec0Mtz1WV0V+FrsQzJBpog=;
+	b=RgwSxQc36xhv9Ndp8okHj6sHc8ZRQ/W2o6NlvYOMjBru+CR83CA1xNh43ljCaZMYY4nwzD
+	6uslEA0DShUopqhlQMIw5ZUlHowp12YQQpkECmLlhQ2yKPFxAKuJf5kg4xl7N659IZpjIz
+	T/FuvJBSF/nisbqEvUlXk1qA4O2Iig8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QZ27rco1;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b6dcDxkA;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774029888; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030054; a=rsa-sha256;
 	cv=none;
-	b=5/UBSpO6g6bqSIG/oYigsh7wlGM7zXmaCSpzz7M5rTTJaiwcushaBguibY+1JWfk2MmjlO
-	4wmWicx0VveNXT7PwnmpJBZytNoYavL8a68UuXEwxfaWwq54mooEpgAmRPBZZwUqN/t+7O
-	BmLaqe+ejbR1qF9mz5K6lsQJ+Rk9PxA=
+	b=V67pDJhvoXJfZSw6owcI6WXff6AYoi1kRPY1ElycYb3BoW5g8Bzk4zNZL1ELMQhI3qAwRQ
+	78jOfDZFC0AeSYpKE4SO9C6++caolrK/f7SRhLSx0mkR49g9Bp/3dT9DliG296NADhPbuY
+	exn4T0RP0OIjcClfSyIBO7ulqWwKT+g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 557AC60128;
-	Fri, 20 Mar 2026 18:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72E3C4CEF7;
-	Fri, 20 Mar 2026 18:04:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 979B360128;
+	Fri, 20 Mar 2026 18:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8669C4CEF7;
+	Fri, 20 Mar 2026 18:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774029887;
-	bh=unEPL0G7kl0V7ExcXjxu9/JvZIzmQqH2o3lcKsyYewA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QZ27rco17AvaGnAfGjFv9fbjrnbNb/BfO9dekg+xvlPU72urVZEkIzQpheARdN7oX
-	 Vs+NgmZp+tgmAcl/lUCr2UacLZ4Wxpf7npLq9DnOZT3HVnH5Yk4s4isbLmGzDB4MvF
-	 oKCYhNOBcuUByFR8bTJ6KnUKKU5lIxVvKIpQfayYigwTI55RVHFL5ZQ4weHd7bGSqd
-	 SygD3bA0+6GCLc0tbuV2U5dpwx1KjI2k0/7rKvD9CqKVfCZCWfWGU5abrkU1SRTj2u
-	 4RkQ5sTSvE/IAINSi62Vr5lR00XN1qvOb+/BEVRBRspH02p8UXpvsau70MqGNd3rOq
-	 T8IxDYaCzldog==
-Date: Fri, 20 Mar 2026 18:04:40 +0000
+	s=k20201202; t=1774030053;
+	bh=2ud9VVAGIb5J70qS+Aq6s18YBJv2+0N0qOqGnKGdgDk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b6dcDxkA3aq73+vP5AXtjBPFTU94ovgtEUytvu1yRCcbeTFd3Iuu3j58A9xa48cXV
+	 wnIsQ5c94I2pina6cm4lT43yzF5SQdrlxS0e0BaSIlWl3qFAOujOf94382c+BX7bHS
+	 GEWT5bSSxfDBtnIvp7FVrhjGRKMlksxIh7qEpkPDoQ92K7E6vowb/OHoxiJxz7N+5A
+	 z9aShAoWw5icQBdFFuVY6Bd4yIqpzR9Whq9wSvLBxHm8U4F3dCGf5Te9yuYVCTJpw2
+	 j2p+JhxtWDHQ5us7eEZCGIzcsNWSCXw4XwVFyvNnocucY9RJXC7uhl02G02f67FncF
+	 TRd9pDSBvsnSA==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>, 
-	Eero Kelly <eero.kelly@dfinity.org>, Andrew Battat <andrew.battat@dfinity.org>, 
-	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3] selftests/mm: add folio_split() and
- filemap_get_entry() race test
-Message-ID: <def912db-ea7e-4cac-afa2-8e0b9c279549@lucifer.local>
-References: <20260319190409.294523-1-ziy@nvidia.com>
- <6b087c27-a5d5-4f49-81e6-1204209b0c89@lucifer.local>
- <D60C0C65-11E3-4060-9295-B67F90E9D774@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: rom f9db59ca90937e39913d50ecb4f662e2bad17bbb Mon Sep 17 00:00:00 2001
+Date: Fri, 20 Mar 2026 18:07:17 +0000
+Message-ID: <20260320180730.303568-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D60C0C65-11E3-4060-9295-B67F90E9D774@nvidia.com>
-X-Rspamd-Queue-Id: 13915A0009
-X-Stat-Signature: ryhpmpyco4h893t7ztubcwch3i4tm145
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: eppsgd58g59kz7daam7xz5kc4jaipzbr
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774029887-88738
-X-HE-Meta: U2FsdGVkX19AycSQRmT/+EK/iwc9hfczxekbr0/imbd18/NkCKN2dq0mU7BopoO6n4gACgPRGnizQq088d+2V6wWUeTGp9eZSGzpuar9mjVbpjHPpBlQTR/4DFWCNHd4rpr+zUN4ngtnSOTCASx8QRlt3QeE6XIHzen7PUVm6CUzMDwzXeVziZJfBw3jq51lLhrnW7Lpoo3npDb4Y9cMbchzGEHZopJF2kPH8MHz5GTrh4Dkvs7iLpuQhX94bP56lOLASERXPJAIe3hJOKZMAyMldteNZ8XKTi4QWlyqB4vRQd46iCrjEdl2U2vpa+40rV2/aXWIofVQ/RTjKmgkyce++5VMeCWouqvtQOBDcitLPrM+Hl4SyjigqzLzVmd5pRtQcWepqTdwB4MCZ57y3A+zEvEdW9mzDnbIMMocBCl3m4nQyKvhIeG0l7P6POyaIK74ZTMtxRYdlP0PXGmd76wkeTdgZOAf1Q+TFTkp9SmJie3MS/NJWhgO2obIGI7E8SRK3dVBmgkpZF27WcVXgDnEBWUIhA+HqtQzgEgQtqCh4teMvRp6nglVKP+CFzYYLvYleS7Kt18kTDqz9vl7GF6yFE62rKB5IFIcl7F1bqTqQJfaJIst9hyKomhrrTBuYh6crEqa2R9imOh3Emfz8K/LtoppcAdhNd2gBFOpikJqv/WSy8LYYemMbzYnVzPigkuAivr54nAapmtrDUr/UNFRb4Mmoks2zhkYw/GamuJa351IUgeM0hPicNyr9Sh4QlMeez8UqJ0g39MbYYUBYK3EWzcflfbA5ECz7SIQJeSW7hwFGf+cXAVYLvxGZ2bHjyrrMW7tBymPEo5hqK9Pq/g8zIGvCJqoIiamvcjv9Av9hIK7oVXOWh1uzmM6gENSkP9hchi6O58S5vf3DcmPQhnj406DfHOF/nxfD6wWmbbRVcFj/mqXEfHwJygXJzEoEuPAp68XPIk9OFBusnO
- AadJ1LVj
- rR/Rywu+DLhUy1XoTOWzCA/NXImpjM9X6/2MmGuY/Sxonf+O/2XYrX643qbITIy87iMe24diHU3jWleeR/RMBpg1RXiAUzaG3OeryCEMsIP0vmU+cesytNmdKkcpwRFcGdL/j5IFnLTTZGBag9o5ddDnBicum3FopBnQi8Ja6UqEeO0jGT4GXUp1epu0aOu++ZW706qx9O0vWTQrMeirhpIdwaG6B2SCx2Et/fAhhhLYnhX18PJkcQgRsAoosZojPdknKNyzC+woyg7fnPxpS2EAH8I9UqjkOQcw56KU8PMGEXdPuWQgnBQWMeRzrMr79eTj0joxmA0sTexg6sun9YbuKMxyNzvVI+A7zHZvxC9qeb7XWzO4s8n/Q8B+IsGv97OKZ8dkheUkladIjhhSqmusyqz8xKaigozZm
+X-Rspamd-Queue-Id: 2AE2A40007
+X-HE-Tag: 1774030054-873691
+X-HE-Meta: U2FsdGVkX19dm2wAzJhq+tF2fGUO6cCeAyKWL6x0yCJccvHvQR10bUNIid/5hLyW1vKDYyjuUUT8sTDNgqTYCZpbRkA40cFleVL7+ACJI7+cm7loj5p/hRf5cAf+0KWPfwnCnR/u2T926XZY8QwHZwupPSgS7OUUu9JO14EZq92SOi8d8uyu/vdHB2aft4HFAJQJZ40G850QYhKuNSk8gxI+RVrH4ZfGrPKAnl5zBbUwpqqAptSpI/qyp6jiCMDR+scsGX+z1Q8M7kOGGgM6PB8BknwyxCmzjbjuGA/pUedLJxkm7q0wH04zHaQWIPvYFOP1fNc/avq5P2vaz8WmM6b+ZgCKs3I2gMDff8nRUVdiK5kibm0dfiu0v6D+wKbbDigXCASH5WIWBUGzqx85X3Z51SGr5HIAnHrFtR+y0ygqj+7QkW97xpSSVE1Gg1V4rRz7qUbtwsn91GUCZniLJBUkGxQ3WoL9mSBlHQ2UoB09FtvUrEXm0ZdOql6xgSTKK3EXsq5LAuY3BjHzESDA0eQbXVtLrDob70/wI6GWza4q8YdCrbh5MJDaelWLkcktHqh+Y2fFJc1hGAS6np1sYkHuneiC4eUZS/RvLSisjXsBddcD+KH9yrgWepMtAP1xQmxUpkN5HffttH9+tzh2wO0iwwmdcwonz1Sj1nEro3rhLA0JZlu5Kvb/l6UbpLtr/mrsAp3MJhhBEtNNV7pvrsKkZY2eEn5Gp4j1y6C6d629oqKg9y1Zs66oaLLZbTGKBwiBL8WdkNUylQFFmIUDh/RwrdvT1K5KPS7F/CinJTqMCO3uVQ/DibJIl4RXBzH4ThQxStkyg9bE2e/msfZudpt2rZDfWIROYCcvKBtTawHZYwyiv8RUb202/1OFTEGeOEH9LHns7B6psgrlb44w8yTu8EMGIQHnkHdMWJCUH6cRCnX4iJ1IO9JcvWeh15eAeNh39IIiHKi8JTenylQ
+ ATo7QNrA
+ tfDycLLqZ/1Izybd8ff2yFO2DUpK8robWJwio3tOe+F86ozw6AkRmZixcBU3NR/Dpa2rQPSLED5cFiJ/vNV/7sm4IHzJquv6Vu8dtpEpqsTBsGe4KGRgdFgkasn9nBfO6w5hO0gXVCy0itL7PuuHxrpSZ7qrZGI3iu3RAriRbS8qtsLawrzKdJEuKSCWTrtosNzQBwQZ4dlxehniQgL9OIrWSr738+hLH7DjHndknyeD3ono=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,70 +102,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 01:58:18PM -0400, Zi Yan wrote:
-> On 20 Mar 2026, at 13:53, Lorenzo Stoakes (Oracle) wrote:
->
-> > (-cc old email)
-> >
-> > On Thu, Mar 19, 2026 at 03:04:08PM -0400, Zi Yan wrote:
-> >> The added folio_split_race_test is a modified C port of the race condition
-> >> test from [1]. The test creates shmem huge pages, where the main thread
-> >> punches holes in the shmem to cause folio_split() in the kernel and
-> >> a set of 16 threads reads the shmem to cause filemap_get_entry() in the
-> >> kernel. filemap_get_entry() reads the folio and xarray split by
-> >> folio_split() locklessly. The original test[2] is written in rust and uses
-> >> memfd (shmem backed). This C port uses shmem directly and use a single
-> >> process.
-> >>
-> >> Note: the initial rust to C conversion is done by Cursor.
-> >>
-> >> Link: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/ [1]
-> >> Link: https://github.com/dfinity/thp-madv-remove-test [2]
-> >> Signed-off-by: Bas van Dijk <bas@dfinity.org>
-> >> Signed-off-by: Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >
-> > No .gitignore entry? :)
-> >
-> > (Just saw it flag up locally in git status)
-> >
-> > Linus says don't remove, but he doesn't say don't add :P
->
-> I did not know about that. The fixup is below. Thank you for pointing it out.
+The zap_huge_pmd() function is overly complicated, clean it up and also add
+an assert in the case that we encounter a buggy PMD entry that doesn't
+match expectations.
 
-To be clear I'm referencing this re: the .gitignore _removals_ ;)
+This is motivated by a bug discovered [0] where the PMD entry was none of:
 
-https://lore.kernel.org/linux-mm/CAHk-=wiHK5_oBUdUiNAaevmN9f-ORe+QBqbRefAZaw-RbgEn3w@mail.gmail.com/
+* A non-DAX, PFN or mixed map.
+* The huge zero folio
+* A present PMD entry
+* A softleaf entry
 
-Thanks! :)
+In zap_huge_pmd(), but due to the bug we manged to reach this code.
 
->
-> From bd164a7090c0e8b6e3013502c64c161214e38714 Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Fri, 20 Mar 2026 13:56:04 -0400
-> Subject: [PATCH] git: add generated binary into gitignore
->
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  tools/testing/selftests/mm/.gitignore | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-> index 83ad9454dd9d1..b0c30c5ee9e30 100644
-> --- a/tools/testing/selftests/mm/.gitignore
-> +++ b/tools/testing/selftests/mm/.gitignore
-> @@ -61,3 +61,4 @@ guard-regions
->  merge
->  prctl_thp_disable
->  rmap
-> +folio_split_race_test
-> --
-> 2.51.0
->
->
->
-> Best Regards,
-> Yan, Zi
+It is useful to explicitly call this out rather than have an arbitrary NULL
+pointer dereference happen, which also improves understanding of what's
+going on.
 
-Cheers, Lorenzo
+The series goes further to make use of vm_normal_folio_pmd() rather than
+implementing custom logic for retrieving the folio, and extends softleaf
+functionality to provide and use an equivalent softleaf function.
+
+[0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
+
+
+v3:
+* Propagated tags, thanks everybody!
+* Fixed const vma parameter in vma_is_special_huge() in 1/13 as per
+  Sashiko.
+* Renamed needs_deposit -> has_deposit as per Kiryl, better describing the
+  situation as we're zapping deposited tables, not depositing them.
+* Initialised has_deposit to arch_needs_pgtable_deposit(), and updated huge
+  zero page case to account for that as per Kiryl.
+* Dropped separated logic approach as per Baolin.
+* Added 'No functional change intended.' caveats.
+* Removed seemingly superfluous, inconsistent pot-folio_remove_rmap_pmd()
+  mapcount sanity checks.
+* De-duplicated tlb->mm's.
+* Separated folio-specific logic into another function.
+* Added softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio() functions.
+* Add and use normal_or_softleaf_folio_pmd() to make use of
+  vm_normal_folio_pmd() and pmd_to_softleaf_folio() for obtaining the
+  folio.
+* Add and use has_deposited_pgtable() to figure out deposits.
+* Added a bunch of explanatory comments as per Baolin.
+
+v2:
+* Added tags thanks everybody!
+* Fixed issue with returning false on bug case potentially looping forever as
+  per Baolin.
+* Fixed further issue in bug path in 5/8 with double pte unlock.
+* Add patch to use vm_normal_folio_pmd() as per David.
+https://lore.kernel.org/all/cover.1773924928.git.ljs@kernel.org/
+v1:
+https://lore.kernel.org/all/cover.1773865827.git.ljs@kernel.org/
+
+Lorenzo Stoakes (Oracle) (13):
+  mm/huge_memory: simplify vma_is_specal_huge()
+  mm/huge: avoid big else branch in zap_huge_pmd()
+  mm/huge_memory: have zap_huge_pmd return a boolean, add kdoc
+  mm/huge_memory: handle buggy PMD entry in zap_huge_pmd()
+  mm/huge_memory: add a common exit path to zap_huge_pmd()
+  mm/huge_memory: remove unnecessary VM_BUG_ON_PAGE()
+  mm/huge_memory: deduplicate zap deposited table call
+  mm/huge_memory: remove unnecessary sanity checks
+  mm/huge_memory: use mm instead of tlb->mm
+  mm/huge_memory: separate out the folio part of zap_huge_pmd()
+  mm: add softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio()
+  mm/huge_memory: add and use normal_or_softleaf_folio_pmd()
+  mm/huge_memory: add and use has_deposited_pgtable()
+
+ include/linux/huge_mm.h |   8 +-
+ include/linux/leafops.h |  39 +++++++++-
+ include/linux/mm.h      |  16 ----
+ mm/huge_memory.c        | 168 +++++++++++++++++++++++++---------------
+ 4 files changed, 143 insertions(+), 88 deletions(-)
+
+--
+2.53.0
 
