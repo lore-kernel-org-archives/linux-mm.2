@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0779D109316E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F1421093163
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:13:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A91D6B042C; Thu, 19 Mar 2026 22:08:05 -0400 (EDT)
+	id 2B9146B0427; Thu, 19 Mar 2026 22:13:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65A586B042D; Thu, 19 Mar 2026 22:08:05 -0400 (EDT)
+	id 26A2F6B0429; Thu, 19 Mar 2026 22:13:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5976F6B042E; Thu, 19 Mar 2026 22:08:05 -0400 (EDT)
+	id 17FD96B042B; Thu, 19 Mar 2026 22:13:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 49A5F6B042C
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:08:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D93E81E06C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:08:04 +0000 (UTC)
-X-FDA: 84564806088.22.B053750
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2CAC5C0002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:08:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p7gazw7S;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 0A2986B0427
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:13:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A81E3140826
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:13:28 +0000 (UTC)
+X-FDA: 84564819696.30.6B2CD25
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E46C5120010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:13:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmkscYX9;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773972483;
+	s=arc-20220608; t=1773972807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uqC2n4jtYgB5WUI932AbJPwrEp5yFTXjiuWiQl2OLvg=;
-	b=XpQaKF7nAxynndblaHQWf2XVhSTC9eVXUq3LSK/Y0qBQ6fGkdQpvx1qoKIB8hJT5YMqG+2
-	waKQrFF5vn41UkOmAT96z0Pbz74vl7ECa1mi3UUrk0HYN80rcPDFwcQI3vtEoFEQTc6WEf
-	7dCZal6lueJS5BIE0FOuNWLqGWHCiLQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p7gazw7S;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773972483; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=941DVfXRyG6EWPInEPIW2ckITwtu6cMJ2I3ZHfPDmUk=;
+	b=HutRlAVb0VbX5sewNP+f6YF1a43lJxB3BIszhTd7accSAPgdlAFa+MtlW586EP7w+MqaV+
+	tcjbyyDB7AaT4n8UPNvFHbdmPiwq3bm5C5sDZUGKF/dkkDYWCHp6lXSYUv0HTwVrDldAMF
+	RVJLFgvX4NaVC20N83STWI7p7D2dnvI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773972807; a=rsa-sha256;
 	cv=none;
-	b=zYKDjqFeIXFhRPzVqhOfD9V+/qI8mymJseKVqCWlF25PllgBHm5dehNtlyHT77IDNx1slG
-	SG2sg5RQjbW/OaXIpWbhcbtqoe/DNPLtedaRWqmiC7KbqlgyAIx4uinaf+lkCUuziMtGD7
-	q4RwId4gKbVj+yrr+6Qpafwf0JAFFSg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773972480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uqC2n4jtYgB5WUI932AbJPwrEp5yFTXjiuWiQl2OLvg=;
-	b=p7gazw7Sd5DvqjmrmCeeYyG+kF0rT7XzsytLSmfQ6QmPI4oYDSPX/cFGW6gajPcCqYxtRP
-	7XHxOgkJiDZ5VmnVo5/Z0UZyEer5xbjbWuBuCFzdbE1MpHJ4oRzWsySeEAA7ebVgbb/rw+
-	MEBapoa2/iU3PuPeI4RewH3Bgmdx8Hw=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
+	b=f/sBp1OM3yBo5FrpOPeBZwk8YQFfXHcMjOuxiFv9rsEEetqcA4awgfXle6BTnZU/2AQqmB
+	JBkPDbwT/wqSTg8cJzFHLMIF2RNWlyhMRoNlv3DGbnTDUAyjH4jRy/2MjLxFcW+FUouGDR
+	XmujNOqLYV+K0/3t8qfiDQqjmg8Mp4k=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmkscYX9;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ACC5C43A97;
+	Fri, 20 Mar 2026 02:13:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C88C19424;
+	Fri, 20 Mar 2026 02:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773972805;
+	bh=Vi/b99yYNUlENEYL5J63cn44y04E5N4WpBICGa/lzpY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RmkscYX9tcdt9a/9lgS1OCThyHM6sMQCkE8vGxzHEHuQ9NPxv2EI+qz3aTWaBfm2V
+	 m0UiWOB1C8wlCDXHOOM5nmEzgHacA2XbmWwLAFacE73Dq++Hwr5jzqUWWFDQJgFqLl
+	 aAv6zBvbXXLs3ni1Bx2P5L6cFsULMzKFMAMYRF1yboKUwIi8FRfpA4ixk06fO5EOYC
+	 pXaq1VzFDrp4D9gdNmBZaj04JgDUeTHKz/fyl6e7c4dmshw9xMhGJwbK0qyamnWbbo
+	 gHG6YnQfnKPfwwP19oOKtUUIjLAlIxkgnryXdAVK9H1UcKKOCryRujH68VBjAyQo0p
+	 OsH5ag1QGrPRg==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: teawater <zhuhui@kylinos.cn>
-Subject: [PATCH mm-unstable v2] mm/memcontrol: batch memcg charging in __memcg_slab_post_alloc_hook
-Date: Fri, 20 Mar 2026 10:07:45 +0800
-Message-ID: <20260320020745.833792-1-hui.zhu@linux.dev>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm/damon/sysfs: check contexts->nr before clear_schemes_tried_regions
+Date: Thu, 19 Mar 2026 19:13:17 -0700
+Message-ID: <20260320021318.1117-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260319155742.186627-3-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2CAC5C0002
-X-Stat-Signature: afop75f7st7tff9uytuqawrmpbfbiaos
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E46C5120010
+X-Stat-Signature: 4fjk965est6us3psd1zr467a1aedperp
 X-Rspam-User: 
-X-HE-Tag: 1773972482-43146
-X-HE-Meta: U2FsdGVkX19s1CyB4Fo+cKp3T84jHe79oHpUZcDO+HRVkLj3hM1c3vsxUW3sUS+jN9tS0tSHErdLSiEHLS6ft5wM9GRhR4tlgyZfAy9/z/5Y0eJrkmui3hAWMZE/4nbf7i16YxNeQ/1YTBcTDbFdUB3Mqh0zCjjJ/zRWzccVCh6KTnTOuDKrpD9wTqsf+VgQl/zZsV+4FMDQ8QNuWFP62azwTcaBQzJgV8lk1wLwwL64bkXzu1Uo9moIwLKlqnBOlBDi7HAz6KEHu85y/8ZWwB7zLO/saGNhs2y/lbhMEb974bFCSNmQituJtyeej8CtcXhZOo/811wbFan1YsqOpRB6lnsvRaEl3Zy5rvNsNtBpfGGrVmppe3+qtehv+Dlqy5M/x0NDblv0urGAj/WiL2Gz5zhJ3mIBbzIBDuAN01Xnrqhy9vlHbg67bWhMdWYCoi0IDtDZNm7A6aLIsgsXe1bH4r7tUCr0kLBJuREt/XXGrqo7FJdySwZFUttTlhm33nsUmLSC+8jMc+6J/eQ2/17kybqAUFRxqUBo85Kccjib0Y5EOa9Pnmq4me0Yr/yBXxjAODDV+f0rOxuAI6Q9Vt5NOh4QhTFIkSuqyaQ7Ea5GY7yzjlb4xn/IZXVZUD0DP2o+/mOeoJaR0gPnSgCO1xXRS1pI+AelxcLKnexlL7zeYtLaZkmu2KD6FX8prB0/Ae7EePpuRDVBSeedLLTBjw4c3UCLo13Jg80/3agvOoMudndaTAdh5bfHEqeCsKzBR2AGyoHf3JG9HIsiWyasMCzDd5VbsdtIBOsdp1vX+y7xpA1u69418xGfQXgD3fglnCTztjDojddAsQLrjyIgkPwu6Yqd9Cu+PU3zwJaxFuO2WKnv4g6lPR9lhT/TszhGAj+k2CE5jyzL7AFMDazlx/5BPmElVLi2DNICWq8hEBsURfe17oQLekHJjy81StR0kJDa81mI9kK6L6LpTGK
- sjeJw75t
- oPFmPKKHnbcxSiOlh3z1kv6/ysc4wC4mpmhKLOuvH04hRtV/t3GDCdld/2kHcFQ21JR+0sfWsn7ZTnzbH7w4C911PMfzUdE4VQzqAntBp/swReSYmvosUEhDiuPS95rzixvsof8zpTPxBPjUePlz9v75ADoVCuVle5sKvXXhOrrfGobeiyFq2lhwbB2OhFFg638YHVyiLeWZNni/2a0MiqRsFZeAjEnx6fu3vf6u5UGc8Ej8wUNApIVp42EliP+DkyynryaQlo1cZdC3QVg+kCYl9N4iX8edWWMWsqnnVu3PKGf8A7UnA8rCXfg==
+X-HE-Tag: 1773972806-218630
+X-HE-Meta: U2FsdGVkX1+90trEI+FowXvbZZp0Iht8+aKx6CajfHMCXdRBER5hZJFg1IgL0OVwbI2jodaobAXG+O5fDG8fjI3Ca2dbGwEf+KzQnREnaU/mwWwHxYr/L+/u3alrSvvjs5c8WM0sIRlykBA2jRWUYFJ3yZi2C4gP2I8Pods0IE9Vvajfd6Y1J2tpi3pRPt13tKtWhXrDF0g8IPje06QNzgL9hPRlE2rAc0g/9LaZ98BvFFVCMzrkyjdhAmMaPOunhUvBpK5EDM+piRxpJ0yN+bIZNHEZkprTCJejL3aGYslE/Ix3phDcbPpfcZsJN9UfO8vmk9r+1lxAtCLWb8u90VSqxaWfq3NcXpIz+vtQdB604dHeT4Y2xA0M89NM1zAs5MVlT9bBXv+BfizjtDeSgi0p+cUKSoQdVa4ouHrKx0aXI+WNB+TVwTEginmDtEElCThhHFDQQ9+c8y5cWeFvEWb4j2jlPQvkykUDPC9Ixwc+TiALv0qsLJuMwy0TkvZ3P+AGeXhHTujt95mW/xiU1sMrj4yytajQr9jopJ/WL0uer44HwtMPhHOzutoG8Lp31lgP9USIAjwNQsLb30xkT02I8Y8NS0q8NLF8RQlsdYCdpxtV8XM+AQZwP5lzGfaHOh30extzLvNKTDvCpURd59Fvd4hVo8WG9HnA6YE/cM+ZZrI6OLyHXyKhjEDiLHCUtlrs+cISI2tZApDS/joz1LE3r7jc58uCtXyUh+jyI8b2D+oHjSiOVBp8/fSqmQ8khmSL9qEj4kev7NIA5k7ckQhFUXyILq32klD55GbjnQw7uQyLss1RomfStEpBOO6B/Gb3PkluSb+u1OJ7NaBPejGCCDTIhUzwBbFUX7BzkImfMIj4vIUOdrWwb/qTRMmJj3m958BHwSJQbbJnmz0/P8irKGmdr2E68u2q4le8cjcWl7/lnvNEQ+8+0zRvYTVKZHWS9I7TjcP/xdePbNm
+ chweoJdu
+ GVkaj58jW+8T64YBswBoQhK1czrkTCJaraNwBuqudeCbG4j+dpmHdvOwR1H3rVg971RgOyvnXg3O2nBQ+IzNd30hHtpd6zjZ3ASXPvdbivBmAXY8W8iCCm25KMHxFfyQYt0DrzifMhLukG+q88WQ76Y1J9qP7MpLB0pmlPKpVB6DkO0L0wY88JKsJbPrsfYNeZ+h/qyBrmm2RHsDT9zTAb7ak5VRr4Q79I3+A4mCblvdiMekRIU7Cqt68YoC13aJKLxvlaCOSKFwNjvoBSTIZuZomRLt1g/gCMcBH99uvEBwZCWXalyIB2LQ/xM4wh67Dg7dU1RyfAIZNH2kWkz5d/6GK9D/Tt9z3amR6TIOhZHQzbw2pf/C+SYTz4dvwxAbA75NC+6XFYdDdJ1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,162 +94,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: teawater <zhuhui@kylinos.cn>
+On Thu, 19 Mar 2026 15:57:40 +0000 Josh Law <objecting@objecting.org> wrote:
 
-When kmem_cache_alloc_bulk() allocates multiple objects, the post-alloc
-hook __memcg_slab_post_alloc_hook() previously charged memcg one object
-at a time, even though consecutive objects may reside on slabs backed by
-the same pgdat node.
+> The CLEAR_SCHEMES_TRIED_REGIONS command accesses contexts_arr[0]
+> without verifying nr_contexts >= 1, causing a NULL pointer dereference
+> when no context is configured. Add the missing check.
 
-Batch the memcg charging by scanning ahead from the current position to
-find a contiguous run of objects whose slabs share the same pgdat, then
-issue a single __obj_cgroup_charge() / __consume_obj_stock() call for
-the entire run. The per-object obj_ext assignment loop is preserved as-is
-since it cannot be further collapsed.
+Nice catch, thank you!
 
-This implements the TODO comment left in commit bc730030f956 ("memcg:
-combine slab obj stock charging and accounting").
+Privileged users can trigger this using DAMON sysfs interface.  E.g.,
 
-The existing error-recovery contract is unchanged: if size == 1 then
-memcg_alloc_abort_single() will free the sole object, and for larger
-bulk allocations kmem_cache_free_bulk() will uncharge any objects that
-were already charged before the failure.
+    # cd /sys/kernel/mm/damon/admin/kdamonds/
+    # echo 1 > nr_kdamonds
+    # echo clear_schemes_tried_regions > state
+    killed
+    # dmesg
+    [...]
+    [63541.377604] BUG: kernel NULL pointer dereference, address: 0000000000000000
+    [...]
 
-Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
-(iters=100000):
+Privileged users can do anything even worse than this, but they might also do
+this by a mistake.
 
-  bulk=32  before: 215 ns/object   after: 174 ns/object  (-19%)
-  bulk=1   before: 344 ns/object   after: 335 ns/object  (  ~)
+So this deserves Fixes: and Cc stable.
 
-No measurable regression for bulk=1, as expected.
+>
+> Signed-off-by: Josh Law <objecting@objecting.org>
+> ---
+>  mm/damon/sysfs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index b573b9d60784..36ad2e8956c9 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1769,6 +1769,8 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS:
+>               return damon_sysfs_update_schemes_tried_regions(kdamond, false);
+>       case DAMON_SYSFS_CMD_CLEAR_SCHEMES_TRIED_REGIONS:
+> +             if (kdamond->contexts->nr != 1)
+> +                     return -EINVAL;
+>               return damon_sysfs_schemes_clear_regions(
+>                       kdamond->contexts->contexts_arr[0]->schemes);
+>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS:
+> --
+> 2.34.1
 
-Signed-off-by: teawater <zhuhui@kylinos.cn>
----
-Changelog:
-v2:
-According to the comments in [1], add code to handle the integer
-overflow issue.
+So this patch looks good as an individual fix for the individual bug, but...
 
-[1] https://sashiko.dev/#/patchset/20260316084839.1342163-1-hui.zhu%40linux.dev
+Sashiko commented.
 
- mm/memcontrol.c | 77 +++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 58 insertions(+), 19 deletions(-)
+# review url: https://sashiko.dev/#/patchset/20260319155742.186627-3-objecting@objecting.org
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a47fb68dd65f..e65130d521d7 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3448,51 +3448,90 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 			return false;
- 	}
- 
--	for (i = 0; i < size; i++) {
-+	for (i = 0; i < size; ) {
- 		unsigned long obj_exts;
- 		struct slabobj_ext *obj_ext;
- 		struct obj_stock_pcp *stock;
-+		struct pglist_data *pgdat;
-+		int batch_bytes;
-+		size_t run_len = 0;
-+		size_t j;
-+		size_t max_size;
-+		bool skip_next = false;
- 
- 		slab = virt_to_slab(p[i]);
- 
- 		if (!slab_obj_exts(slab) &&
- 		    alloc_slab_obj_exts(slab, s, flags, false)) {
-+			i++;
- 			continue;
- 		}
- 
-+		pgdat = slab_pgdat(slab);
-+		run_len = 1;
+: Does this missing check also affect other manual commands?
+:
+: If a user writes UPDATE_SCHEMES_STATS, UPDATE_SCHEMES_EFFECTIVE_QUOTAS,
+: or UPDATE_TUNED_INTERVALS to the state file after setting nr_contexts
+: to 0, damon_sysfs_handle_cmd() queues the corresponding callback via
+: damon_sysfs_damon_call().
+:
+: When the kdamond thread executes the callback, it appears functions like
+: damon_sysfs_upd_schemes_stats() access contexts_arr[0] without verifying
+: contexts->nr:
+:
+: static int damon_sysfs_upd_schemes_stats(void *data)
+: {
+:         struct damon_sysfs_kdamond *kdamond = data;
+:         struct damon_ctx *ctx = kdamond->damon_ctx;
+:
+:         damon_sysfs_schemes_update_stats(
+:                         kdamond->contexts->contexts_arr[0]->schemes, ctx);
+:         return 0;
+: }
+:
+: Could this result in a similar NULL pointer dereference if these commands
+: are triggered while no context is configured?
+
+Sashiko is correct.  Privileged users can trigger the issues like below.
+
+# damo start
+# cd /sys/kernel/mm/damon/admin/kdamonds/0
+# echo 0 > contexts/nr_contexts
+# echo update_schemes_stats > state
+# echo update_schemes_effective_quotas > state
+# echo update_tuned_intervals > state
+
+Not necessarily blocker of this patch, but seems all the issues are in a same
+category.  The third patch of this series is also fixing one of the category
+bugs.  How about fixing all at once by checking kdamond->contexts->nr at the
+beginning of damon_sysfs_handle_cmd(), like below?
+
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2404,6 +2404,9 @@ static int damon_sysfs_update_schemes_tried_regions(
+ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+                struct damon_sysfs_kdamond *kdamond)
+ {
++       if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
++               return -EINVAL;
 +
-+		/*
-+		 * The value of batch_bytes must not exceed
-+		 * (INT_MAX - PAGE_SIZE) to prevent integer overflow in
-+		 * the final accumulation performed by __account_obj_stock().
-+		 */
-+		max_size = min((size_t)((INT_MAX - PAGE_SIZE) / obj_size),
-+			       size);
-+
-+		for (j = i + 1; j < max_size; j++) {
-+			struct slab *slab_j = virt_to_slab(p[j]);
-+
-+			if (slab_pgdat(slab_j) != pgdat)
-+				break;
-+
-+			if (!slab_obj_exts(slab_j) &&
-+			    alloc_slab_obj_exts(slab_j, s, flags, false)) {
-+				skip_next = true;
-+				break;
-+			}
-+
-+			run_len++;
-+		}
-+
- 		/*
--		 * if we fail and size is 1, memcg_alloc_abort_single() will
-+		 * If we fail and size is 1, memcg_alloc_abort_single() will
- 		 * just free the object, which is ok as we have not assigned
--		 * objcg to its obj_ext yet
--		 *
--		 * for larger sizes, kmem_cache_free_bulk() will uncharge
--		 * any objects that were already charged and obj_ext assigned
-+		 * objcg to its obj_ext yet.
- 		 *
--		 * TODO: we could batch this until slab_pgdat(slab) changes
--		 * between iterations, with a more complicated undo
-+		 * For larger sizes, kmem_cache_free_bulk() will uncharge
-+		 * any objects that were already charged and obj_ext assigned.
- 		 */
-+		batch_bytes = obj_size * run_len;
- 		stock = trylock_stock();
--		if (!stock || !__consume_obj_stock(objcg, stock, obj_size)) {
-+		if (!stock || !__consume_obj_stock(objcg, stock, batch_bytes)) {
- 			size_t remainder;
- 
- 			unlock_stock(stock);
--			if (__obj_cgroup_charge(objcg, flags, obj_size, &remainder))
-+			if (__obj_cgroup_charge(objcg, flags, batch_bytes, &remainder))
- 				return false;
- 			stock = trylock_stock();
- 			if (remainder)
- 				__refill_obj_stock(objcg, stock, remainder, false);
- 		}
--		__account_obj_stock(objcg, stock, obj_size,
--				    slab_pgdat(slab), cache_vmstat_idx(s));
-+		__account_obj_stock(objcg, stock, batch_bytes,
-+				    pgdat, cache_vmstat_idx(s));
- 		unlock_stock(stock);
- 
--		obj_exts = slab_obj_exts(slab);
--		get_slab_obj_exts(obj_exts);
--		off = obj_to_index(s, slab, p[i]);
--		obj_ext = slab_obj_ext(slab, obj_exts, off);
--		obj_cgroup_get(objcg);
--		obj_ext->objcg = objcg;
--		put_slab_obj_exts(obj_exts);
-+		for (j = 0; j < run_len; j++) {
-+			slab = virt_to_slab(p[i + j]);
-+			obj_exts = slab_obj_exts(slab);
-+			get_slab_obj_exts(obj_exts);
-+			off = obj_to_index(s, slab, p[i + j]);
-+			obj_ext = slab_obj_ext(slab, obj_exts, off);
-+			obj_cgroup_get(objcg);
-+			obj_ext->objcg = objcg;
-+			put_slab_obj_exts(obj_exts);
-+		}
-+
-+		if (skip_next)
-+			i = i + run_len + 1;
-+		else
-+			i += run_len;
- 	}
- 
- 	return true;
--- 
-2.43.0
+        switch (cmd) {
+        case DAMON_SYSFS_CMD_ON:
+                return damon_sysfs_turn_damon_on(kdamond);
 
+If we pick this, Fixes: would be deserve to the oldest buggy commit that
+introduced the first bug of this category.  It is indeed quite old.
+
+Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
+Cc: <stable@vger.kernel.org> # 5.18.x
+
+
+Thanks,
+SJ
 
