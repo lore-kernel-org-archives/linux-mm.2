@@ -4,89 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C05081098781
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0C51098781
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:17:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E19B56B0088; Fri, 20 Mar 2026 09:17:53 -0400 (EDT)
+	id 937AE6B0089; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCA396B0089; Fri, 20 Mar 2026 09:17:53 -0400 (EDT)
+	id 8E7966B008A; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDF5C6B008A; Fri, 20 Mar 2026 09:17:53 -0400 (EDT)
+	id 7FE406B008C; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BFFD76B0088
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:17:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 764A51A01C4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BDDD6B0089
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 144ED1394E9
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:17:56 +0000 (UTC)
+X-FDA: 84566494152.22.885D856
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C0275160004
 	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:17:53 +0000 (UTC)
-X-FDA: 84566494026.26.C764BFD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E05DF180011
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:17:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CtYoB3y3;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=AqKQ8rYK;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf08.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774012671;
+	s=arc-20220608; t=1774012674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HlmfTtyiH5gdbbADDpPY8SlsXeBHiWyWEiFnhuAEVDI=;
-	b=OppsPJB6Sv8kVjtSHj0157O2jEE9ZLFkgJBWNQY47Lw/9R7DRUpLX+lq/kAP+U8Sa8rDXd
-	66ifAGV7l+6IC0d5NK7mUd9rc26DGLPM74wxGtxhydG2/xnJa/N3CBgzFUloBgQK7lyhaa
-	x+UGoZUkKDktSZ2u/7pvTjTPM7zMsuo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774012671; a=rsa-sha256;
+	bh=MKtpZf5K46Wg1Wx2V5ibY1Yk67Tz3/1joNKoFOtonG0=;
+	b=MtpRcak2j5CedkPQlevAeGVEp0Bq0YoMqZSfot2YEJkdyYvo1iQU0cqy8LwAbSeg/lRdrU
+	PVXrcGW1d0wVTbH6z61w1HIYODKXZdFSGhYWEDcorLl9yqd1OxAS09Xjp8+3ifduGLG90/
+	NvnT5xXDNY+iLNul/R8gz53rBL/o884=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774012674; a=rsa-sha256;
 	cv=none;
-	b=7wxa2Umop6hIIeh4BkU0zJet1KawGrSN5Kc74mXPU+yAwkAdW46E3BghQNt9a4XKudYt7Y
-	4lk/uX1p98ZkzCQlJ9wpExfi7QEdcSf0l0MyNexYvyS+zi661EwGTdB30qKGTTTGydPEuc
-	Hgx/YcexrcODvQyg6dnB+yclPUG86qU=
+	b=t7Z9PMPYDAA+DY9UOmPmMk7FPA43X1ycyBk5vQj1PR91X2T9p866FCh8X1rnEaepy8hhGJ
+	hrZTVVMRwG/TbKcV5UQYuQVdluW8ltfSUpHi2yX/TVamrPdtjH6MQkDVkMOXXLdd18R102
+	sCYywUsIjRpNHLb3RScThlMpwsgPUPY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CtYoB3y3;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3936D60121;
-	Fri, 20 Mar 2026 13:17:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6014C4CEF7;
-	Fri, 20 Mar 2026 13:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774012670;
-	bh=sS5dUb8WPlOcj7M/qOAafAQepwZu/bfgqgNiCm6w+8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CtYoB3y30j9TjJgMFoD49UfnFLrlSld+STHYXHy0kRMzHdzwtT/+xIxEqfftEBSnz
-	 3DqkuE1x+k/A+eqjJuNUH+8+FQUUeKhqsCUNx5hufzBFednrY57n5JiYHeWuJL8o8n
-	 GLPeDzmo8D4o2BU8f8LAMYufwoaoeVM1EMyR1D356Q5Cl3dHUFS+X4G5Bfar5rZAeV
-	 VKHu3CuUGXHAKpS5iAWaGPe7Hf4xtXCa/QtNcWKn5WEv03mICCkIpDvlqFsaMZW3f5
-	 ElHConVDeXdd/GvU+HPLu0UnNmdW2DJ1J/WWP9bUN9ogq1szr8uIqhNrOQzulA0thG
-	 3E2mZfQpyGCUw==
-Date: Fri, 20 Mar 2026 13:17:45 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, npache@redhat.com, ryan.roberts@arm.com, 
-	syzkaller-bugs@googlegroups.com, ziy@nvidia.com
-Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
-Message-ID: <6ff97738-33f9-4450-adf8-c3cf251d82c7@lucifer.local>
-References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=AqKQ8rYK;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf08.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JNZYPj2776227;
+	Fri, 20 Mar 2026 13:17:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MKtpZf
+	5K46Wg1Wx2V5ibY1Yk67Tz3/1joNKoFOtonG0=; b=AqKQ8rYKx75GaEInNd+aiv
+	Ok+UO0jNxgLi4h3Yff3Q1YyNFeWb9ihh50ydZ3ulrXqRrLSbU6AvPk3Vy9fR5wyH
+	O3uhYVrPqtdp+DEgXB89U6qoBQjXYn8TvIo3ECPQSrgsB8VTz114JsFTSoAnfYro
+	ls+WtFCcmZE0UXBVxyLWiYLU3il/PVFf4M9FkUxJqOh2yYtTbCAIMliqDmYcEvnN
+	ji2gkcDFv763GVlfNbJrAtGx6LufuS/+7XnbLMB+gONMTDvUU3aBudIzMYKCsLmh
+	jxGzHea9YHiAkg8IEGRpy6TIZu69N3MfZwAGkxsOmBP/7J1TK6ZAF9D9KtZpdArQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybskqc0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Mar 2026 13:17:28 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62K8OBJM032397;
+	Fri, 20 Mar 2026 13:17:27 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7k73pp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Mar 2026 13:17:26 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62KDHQbE22282890
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Mar 2026 13:17:26 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 78BAB5805F;
+	Fri, 20 Mar 2026 13:17:26 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6CD9158051;
+	Fri, 20 Mar 2026 13:17:16 +0000 (GMT)
+Received: from [9.39.27.18] (unknown [9.39.27.18])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Mar 2026 13:17:16 +0000 (GMT)
+Message-ID: <380c52cb-fc8d-4fbe-8d2a-f153bd179816@linux.ibm.com>
+Date: Fri, 20 Mar 2026 18:47:14 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69bba3c0.050a0220.227207.002b.GAE@google.com>
-X-Stat-Signature: nwp8gdaatz6b5q9w7c8wxzn6iux7bcy3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] mm/memcontrol: disable demotion in memcg direct
+ reclaim
+To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>, Yosry Ahmed <yosry@kernel.org>,
+        cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>,
+        David Hildenbrand <david@kernel.org>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <20260317230720.990329-1-bingjiao@google.com>
+ <20260317230720.990329-3-bingjiao@google.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260317230720.990329-3-bingjiao@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69bd48e8 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=1XWaLZrsAAAA:8
+ a=VnNF1IyMAAAA:8 a=wwFiQfuXH1A37782mjUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: HGCOXiYaQMaSzoyKnKZenlLJDdyWg1EF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDEwNCBTYWx0ZWRfXyroHE1Hm43OA
+ AobdbkflHXxYFhg/ihgDW/MwfX2E6ZwMS9GTOMh12x4cnHDUyJRqr0ncvkTAjxKFYdEZRV6cPIl
+ YfC947Ty+iAmzTvzizuHJQHNXNY8pQRZSfh9KXGeBsE0A5RkQGYMIzy7C35z2F8JZya+MNQ8XrD
+ Ylv6vPxjJ/wfaiePa2gVFkJAPSDqquofDGtyhY1B54W6W1wE5hbP3pmPu7DbXQBQry82qhcRNaA
+ oK+KiYinqvYNKgY7po2BoSnzzCP72Up03RlevcpabnfR8TY1Vgiyc4429xKea7bRowDeinczDHF
+ BlMuBPuCxcf5O2rZnhqB1GjI7qlRMX8WketnURRB9De06GOAXhLPfrL+fYPwKJhb2AgVLD9XHoP
+ xcVJTkzmta4TTYsphv5r5IYhYPdkZxrmwgYatdNShQ/yVuqGBwDOBSsmTBq0+bbaUmq7PxT5ccM
+ V+l9KFLjkzJgDaCxY0Q==
+X-Proofpoint-GUID: 4ktA1E3URIvtzNrvGo4hhyVJJxXiGbnk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-20_02,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1011
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603200104
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C0275160004
+X-Stat-Signature: aqy7paqo7xmkanbt7gipwqen6znxabjc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E05DF180011
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774012671-549526
-X-HE-Meta: U2FsdGVkX19s1wlPZP1qscfV1h+T1fUD0ajx5F+P35a9mzRhh+58ohVE8rklBV02S9NgrcSyWb9vJv6JK2rTcCmhyLQdMR/t76kkizq7d6uj3etRsaCI7WfZsdYk1BL1017+w5MeRx8+Hmc0zyu29pmKHaU+ul8iVxYITNFocEmMbwoMWsHaNfIEUYMwAczAmoHLfHgUg1TWVro2t63EPvgxmzWFRtlkQHnHw0AwKuMVEtvX62hj9qONiQ3hyj4VyNxrCnsm0GyUDMxZ1BA3Ez8Uwt+85IN/7pf+e1nM/viJklKcS/674QBXR9r2P8X7etSna5r1TGAgmiwXANIgdRvtG0rYaUWbIZbBHtCNXKSSPPYUh2IHQy/X0tnUz+DCP2ag5g8Dv9s5sxljtfhAwxoacsJf95tCF8txlWsr9k7GwKgmdf50LOu3x2eyZl32kQNENFQu7C79Wk2TIciZ7VW9iavr7EGIaOWeFEq6j+nhtRCSA9vgoOtJ7wHQzJsVsC7rsdD2yCrF78xfGGWCfDAfuuLed6Nz8v55q99Q6qkBGyl/TyQltPL2zzKFdrTxYJ7EKNY7Ge6cTuBFWQTefl4EjJGxyc9tm7tHXjsxzNWqe7qtuZUyOq/LmzwFRFqS5kN+Fu2bzfhkqHTVIcbzkeHoACMPeyomLNscXjPbUE4f/xSV4gwIGPd0HJesdxBDO7B6gv02ZkXRv6gSX1FoyauqNbO1/E1BS1qK0Pw4iaDLSlVxCDmnsE6UyqMbfR2FpvVP7CUzwdMmW9Xr9qwnJe9IXNS99iZnIcIFoIG7VZgRBRNyRZBjSbEuahNqaAnq3ly3XdfHNcLZVAbc3SE73c2jz/q2RemO/prutQWb7NX1/abp9Xh41LV/VA10MPsR1D1Yj6keis/uLhMfEZoosJYmzfpj5wgRWh492z9bC0Lr3vTN4go6O4Od/rJK8TVAy4IpJ2Pd1foR7ddKOoX
- YcCNy1iq
- F/jMDRpsYBpx9mQ6BHf7NDRf/OSgaw+TwrtZ68nITAPCzrUrvwBEcMkD3G6z1okzacSVq9h4ctyUU+QSrltCI2UynW++tLqd8vCBBt7h5dmYnFv+uoQL9h25llfRaeyznzIE8DE83wiBKIqyMscB0meGba2VPWAPviwalmGZfU1u5fBq9h0JQ+q1NN3ToaDmGJvnQXtQkhXMfSzQYErzjplhZzayekiR9VC0tOUplEdW0zS+jkLaI+2ZuVpAeXMXby0XjK2XqRB4LBBkEGGvvC4KKvxOyivnu/ny4t75RknSkRoIrol08WRSm6O/VUOrdgcIMXKMaVKQ7TgX/GpFYu72hzI/30PfbAIMgupDetjwF4P6Od6Mcz49nnYKxAeHKNXRnwSd7auAP97RHnaAOPdi02xRDSuxo7Cjg6zsGR2pPI0IsOMrfdQtJcLN0a1e3fddDLA40R5bgEDt6eS3jJSbvpW7rpJZplTYl9bogFsCgu8JsJoiNbq49vnRDpUSt4Pvr0UzNK4n6tKDpoF653Jn5hXKtQu0jcfrnaetL0ja4id6PKdRpouOjcj3oG1y4TgBXM4TWjVyh+/gyBEejWJCGu9ZVJSciWqvTO8B1b9Lx45sGFOydTyVbOPPdlLvWHAOwb3rxuotXQaUnRn+CL47qq+ejoqall7wQw0h9EeDURx0xjxCOUP2pSwGdShiuawWi6P8to9o4oIQs/dfdiKch9/KAXrYwgQH7u6X+S3Gjly3JP13w6X/Sbk1j3HOD8VRQlotZpl1+iD/F3EXDB/QnMNyqQ4v6MHiSTFQToikcDrNrk5EGUNOVbhmB1gL1Ai8DcQNrxwWFPYDB5xpEFZ5AHUruQZ11xTjcnIR+wfilp0gOYejjsAWY8ZII5tS08jAHxM2zgtdNOyhE41r3nPO9uVCWLiEGnAppHsHeTuoiq2910s20qgJ/xjJY8puHD+51iQR1YpnugA900pKnH9kA155r
- +EjVC9Q5
- 6donbXmRZjjrNoBXnoLqz8/5GPNG2PU2PUken/KA6gyFN/nI5fiz27sblkjRokgC/zeVvOxq8baB0XkocpERzbtLVjuvWTkVlkegPZYXsJl76LDZD9aVEpPoZylN5NCuytFh0dbv0iI=
+X-HE-Tag: 1774012673-224516
+X-HE-Meta: U2FsdGVkX18IyMdWQupABapGVYf2e5q3v3fLE0VpZxqtK7mr6f9jAfhCz73iQpwIq94liu7F2xjOkerDSxFr8gpkx89BA+ossT8/eBug7W89NWH6FtaIe2vKj8BULxDHPs6X8gDFDVLqIjHIZB15iPeNopfSF8QNfPBNZnb3Q7crBJtoKToV88fSKo6mbfgeVvOTcGzw2DfhP9ygtVj/K+ZNfWI6bOLD9/f5o6Ph4wyU/UBSmn4lb2sMzPqp6LS92QXTCQOJZTLVOIcNmBvsAqcu2wzlS89uoYy3AupSkaOTIswQeuc/LY92BcQE04r1HYi/HlS6AfpObtWwsbpG9VzXFLwynZgfxc8iz01UBy3tA3+CuZnsCtwXgqOtwnKvpl98Q2/nSYDpC6RiHEDZww9VrngX2OTXWtl85WuPDar+JGkvgGRQReb1uENey3vZKWcILO72FmEY4xLB+t3yEuM8gUp//RbfaXssSVYVg0wTb+pUS6+PWnevYbAN75fdxvmRyBOY87lnyB6SyVca5ICKxTPt4a+LrVbLDc7G/fI/x2+fXvCN2BoWo6v9TTfMwLIqIz5TvomOUhAEIMeZkvfqamcSoWgXSKUf0QDc1nXkH2QO3ViquQRJailS12zCHnMDfrb/dKISQQGRc8eQoxUyJiE9L8i5ZXbadAcN/K5mjUkD3WndfO8/PDn9RXcY1VxWwOHEyVswtANFiYo6IlXV0ESPc7O/cthKKpCS65i2FwAemVPt2C+Pacaiv8uuk91OjO2vXsXalfHRB4z7wNrNAc0RJ4E79L3Nk/ACADbtiu9sRfRoBc9gnGoZKIviKMmyRseTZOVItgTmuZMhrCUgVh2TPhJjT1i1FRCNbmt0412L9YHSlx4+0T1HrDGyoRzBl3FP20W76KSsbMQFaPlfle13/itf04GdK/vU0VsmYGOPmpC/iH3Aohx7wBkulsxboFHA9QVwzvBNgUx
+ Oc6iAuNq
+ yK0fEk/pR3uLSAq6/3RyzULrsokSsNPs89fRv/1mXOBsx87RiQoEMkgD+vA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,120 +158,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 12:20:32AM -0700, syzbot wrote:
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    95c541ddfb08 Add linux-next specific files for 20260316
+Hi Bing
 
-This is pre- Mark dropping the xarray thing from the tree....
-
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=15ccc216580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=ed431987028345c6
-> dashboard link: https://syzkaller.appspot.com/bug?extid=8961cb270ae74b4129fb
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f778da580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cc006a580000
+On 3/18/26 4:37 AM, Bing Jiao wrote:
+> NUMA demotion counts towards reclaim targets in shrink_folio_list(), but
+> it does not reduce the total memory usage of a memcg. In memcg direct
+> reclaim paths (e.g., charge-triggered or manual limit writes), where
+> demotion is allowed, this leads to "fake progress" where the reclaim
+> loop concludes it has satisfied the memory request without actually
+> reducing the cgroup's charge.
 >
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/c40f27ad73d8/disk-95c541dd.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/bd811888f684/vmlinux-95c541dd.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/3b72363d7dbd/bzImage-95c541dd.xz
+> This could result in inefficient reclaim loops, CPU waste, moving all
+> pages to far-tier nodes, and potentially premature OOM kills when the
+> cgroup is under memory pressure but demotion is still possible.
 >
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com
+> Introduce the MEMCG_RECLAIM_NO_DEMOTION flag to disable demotion in
+> these memcg-specific reclaim paths. This ensures that reclaim
+> progress is only counted when memory is actually freed or swapped out.
+
+Thanks for the patch. With this change, are we completely disabling 
+memory tiering in memcg?
+
 >
-> node ffff88805d558b00 offset 0 parent ffff88805d558840 shift 0 count 3 values 0 array ffff88807a8195c0 list ffff88805d558b18 ffff88805d558b18 marks 0 0 0
-> ------------[ cut here ]------------
-> kernel BUG at ./include/linux/xarray.h:1441!
-
-...Presumably the same potentially broken xarray debug we were discussing in [0].
-
-[0]:https://lore.kernel.org/linux-mm/69bba3c0.050a0220.227207.002b.GAE@google.com/
-
-Cheers, Lorenzo
-
-
-> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-> CPU: 0 UID: 0 PID: 6001 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-> RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
-> RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
-> RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
-> Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
-> RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
-> RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-> RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
-> R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
-> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
-> FS:  000055557e3c2500(0000) GS:ffff888125437000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000020000000b000 CR3: 000000007ac66000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  collapse_single_pmd+0x22b/0x4510 mm/khugepaged.c:2437
->  madvise_collapse+0x34c/0x820 mm/khugepaged.c:2859
->  madvise_vma_behavior+0x1094/0x4460 mm/madvise.c:1362
->  madvise_walk_vmas+0x573/0xae0 mm/madvise.c:1711
->  madvise_do_behavior+0x386/0x540 mm/madvise.c:1927
->  do_madvise+0x1fa/0x2e0 mm/madvise.c:2020
->  __do_sys_madvise mm/madvise.c:2029 [inline]
->  __se_sys_madvise mm/madvise.c:2027 [inline]
->  __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2027
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f90d419c799
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffd50711398 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-> RAX: ffffffffffffffda RBX: 00007f90d4415fa0 RCX: 00007f90d419c799
-> RDX: 0000000000000019 RSI: 0000000000600003 RDI: 0000200000000000
-> RBP: 00007f90d4232c99 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f90d4415fac R14: 00007f90d4415fa0 R15: 00007f90d4415fa0
->  </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
-> RIP: 0010:collapse_file mm/khugepaged.c:2055 [inline]
-> RIP: 0010:collapse_scan_file+0x4f98/0x5230 mm/khugepaged.c:2404
-> Code: ff 4c 89 e7 48 c7 c6 60 b2 dc 8b e8 82 62 f1 fe 90 0f 0b 48 85 db 0f 84 03 01 00 00 e8 71 e5 8f ff 48 89 df e8 a9 20 7b 09 90 <0f> 0b e8 61 e5 8f ff 48 89 df 48 c7 c6 60 b2 dc 8b e8 52 62 f1 fe
-> RSP: 0018:ffffc90003826e20 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff88805d558b00 RCX: a13f20bd39c5a100
-> RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-> RBP: ffffc90003827130 R08: ffffc90003826ba7 R09: 1ffff92000704d74
-> R10: dffffc0000000000 R11: fffff52000704d75 R12: ffffea0001b678f0
-> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffc90003827010
-> FS:  000055557e3c2500(0000) GS:ffff888125537000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f8156602000 CR3: 000000007ac66000 CR4: 00000000003526f0
->
->
+> Signed-off-by: Bing Jiao <bingjiao@google.com>
 > ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>   include/linux/swap.h |  1 +
+>   mm/memcontrol-v1.c   | 10 ++++++++--
+>   mm/memcontrol.c      | 16 +++++++++++-----
+>   mm/vmscan.c          |  1 +
+>   4 files changed, 21 insertions(+), 7 deletions(-)
 >
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 7a09df6977a5..e83897a6dc72 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -356,6 +356,7 @@ unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone
 >
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
+>   #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+>   #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+> +#define MEMCG_RECLAIM_NO_DEMOTION (1 << 3)
+>   #define MIN_SWAPPINESS 0
+>   #define MAX_SWAPPINESS 200
 >
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index 433bba9dfe71..3cb600e28e5b 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -1466,6 +1466,10 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
+>   	int ret;
+>   	bool limits_invariant;
+>   	struct page_counter *counter = memsw ? &memcg->memsw : &memcg->memory;
+> +	unsigned int reclaim_options = MEMCG_RECLAIM_NO_DEMOTION;
+> +
+> +	if (!memsw)
+> +		reclaim_options |= MEMCG_RECLAIM_MAY_SWAP;
 >
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
+>   	do {
+>   		if (signal_pending(current)) {
+> @@ -1500,7 +1504,7 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
+>   		}
 >
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
+>   		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
+> -				memsw ? 0 : MEMCG_RECLAIM_MAY_SWAP, NULL)) {
+> +						 reclaim_options, NULL)) {
+>   			ret = -EBUSY;
+>   			break;
+>   		}
+> @@ -1520,6 +1524,8 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
+>   static int mem_cgroup_force_empty(struct mem_cgroup *memcg)
+>   {
+>   	int nr_retries = MAX_RECLAIM_RETRIES;
+> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
+> +				       MEMCG_RECLAIM_NO_DEMOTION;
 >
-> If you want to undo deduplication, reply with:
-> #syz undup
+>   	/* we call try-to-free pages for make this cgroup empty */
+>   	lru_add_drain_all();
+> @@ -1532,7 +1538,7 @@ static int mem_cgroup_force_empty(struct mem_cgroup *memcg)
+>   			return -EINTR;
+>
+>   		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
+> -						  MEMCG_RECLAIM_MAY_SWAP, NULL))
+> +						  reclaim_options, NULL))
+>   			nr_retries--;
+>   	}
+>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 303ac622d22d..fcf1cd0da643 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2287,6 +2287,8 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+>   				  gfp_t gfp_mask)
+>   {
+>   	unsigned long nr_reclaimed = 0;
+> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
+> +				       MEMCG_RECLAIM_NO_DEMOTION;
+>
+>   	do {
+>   		unsigned long pflags;
+> @@ -2300,7 +2302,7 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+>   		psi_memstall_enter(&pflags);
+>   		nr_reclaimed += try_to_free_mem_cgroup_pages(memcg, nr_pages,
+>   							gfp_mask,
+> -							MEMCG_RECLAIM_MAY_SWAP,
+> +							reclaim_options,
+>   							NULL);
+>   		psi_memstall_leave(&pflags);
+>   	} while ((memcg = parent_mem_cgroup(memcg)) &&
+> @@ -2572,7 +2574,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>   		/* Avoid the refill and flush of the older stock */
+>   		batch = nr_pages;
+>
+> -	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+> +	reclaim_options = MEMCG_RECLAIM_MAY_SWAP | MEMCG_RECLAIM_NO_DEMOTION;
+>   	if (!do_memsw_account() ||
+>   	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+>   		if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> @@ -2610,7 +2612,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>
+>   	psi_memstall_enter(&pflags);
+>   	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+> -						    gfp_mask, reclaim_options, NULL);
+> +					gfp_mask, reclaim_options, NULL);
+>   	psi_memstall_leave(&pflags);
+>
+>   	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
+> @@ -4638,6 +4640,8 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+>   {
+>   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+>   	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
+> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
+> +				       MEMCG_RECLAIM_NO_DEMOTION;
+>   	bool drained = false;
+>   	unsigned long high;
+>   	int err;
+> @@ -4669,7 +4673,7 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+>   		}
+>
+>   		reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages - high,
+> -					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL);
+> +					GFP_KERNEL, reclaim_options, NULL);
+>
+>   		if (!reclaimed && !nr_retries--)
+>   			break;
+> @@ -4690,6 +4694,8 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+>   {
+>   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+>   	unsigned int nr_reclaims = MAX_RECLAIM_RETRIES;
+> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
+> +				       MEMCG_RECLAIM_NO_DEMOTION;
+>   	bool drained = false;
+>   	unsigned long max;
+>   	int err;
+> @@ -4721,7 +4727,7 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+>
+>   		if (nr_reclaims) {
+>   			if (!try_to_free_mem_cgroup_pages(memcg, nr_pages - max,
+> -					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL))
+> +					GFP_KERNEL, reclaim_options, NULL))
+>   				nr_reclaims--;
+>   			continue;
+>   		}
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 33287ba4a500..7a8617ba1748 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -6809,6 +6809,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+>   		.may_unmap = 1,
+>   		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
+>   		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
+> +		.no_demotion = !!(reclaim_options & MEMCG_RECLAIM_NO_DEMOTION),
+>   	};
+>   	/*
+>   	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
+
+
+Did you run any performance benchmarks with this patch?
+
+
+This patch looks good to me. Feel free to add
+
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
+
+
+> --
+> 2.53.0.851.ga537e3e6e9-goog
+>
+>
 
