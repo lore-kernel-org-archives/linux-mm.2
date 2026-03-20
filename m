@@ -4,130 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2732B109878A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399FD1098789
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 754246B010D; Fri, 20 Mar 2026 10:26:57 -0400 (EDT)
+	id A3BDF6B0152; Fri, 20 Mar 2026 10:28:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72C0F6B010E; Fri, 20 Mar 2026 10:26:57 -0400 (EDT)
+	id A13C36B0153; Fri, 20 Mar 2026 10:28:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6424E6B010F; Fri, 20 Mar 2026 10:26:57 -0400 (EDT)
+	id 929D96B0154; Fri, 20 Mar 2026 10:28:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 54E4C6B010D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:26:57 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E2C31B70CE
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:26:57 +0000 (UTC)
-X-FDA: 84566668074.03.90CB370
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 292661C0007
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:26:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pvKHz0yv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774016815;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 859206B0152
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:28:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BF5A1C923
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:28:00 +0000 (UTC)
+X-FDA: 84566670720.27.0B24029
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 37152C0004
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:27:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hbgvL5jA;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774016878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OThQKp893LphSr3Eh3o12D7pythV7l0TMffC5k3P0g8=;
-	b=m5hDSzQNkzAm6noNeAumZ9kw4QqfzTQuAUguGmOk1zBfhcdyfH5kjsWyD16536FjbKMoc6
-	5cBJ+bnX5he42WKCyjNHXGN2/MLb9XltQHW5QZCpU3nDE3qQwrpdmbToF10tf6KX0bkmh8
-	DlawIy/7kgcWwDa3uWh06v7SE8VwOR4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pvKHz0yv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774016815; a=rsa-sha256;
-	cv=none;
-	b=blzB+lKv8BNIiO5Rr+vXFLeDwkiJYueauyr1TSdaAtmwPD0TjrJPjed7dua46VxN8etL5v
-	sGp72iiFx5V+/w+6Js/68o3rKiPop8fNbbuH1yGxCsGpoxMWzonBkwgwvdVvTR5+aGRTvM
-	fWVxgZDXpd/MbgFib+vmtGzMgQQ/Nn0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 623636185C;
-	Fri, 20 Mar 2026 14:26:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57211C4AF0B;
-	Fri, 20 Mar 2026 14:26:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774016814;
-	bh=0A3E8OFKs0O9ILXNdXWvmGC5H7JP8qHQNC5ofyYrUPM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pvKHz0yvaHt7yXjkgycz+Mh6vQI/FtlyH5zkdPe9fX8OLgpxBlJQ+5g688D+xo4EB
-	 boPXgnXBIjx2PLKFFLWfBG6a5n9Ns9bNfoevs8tWypTGgAd3KAoHwG83XxmbWlaPe8
-	 bJ6QZ/1X68mtWRbF15uCLRJEvTgQyBFMN6GbJ2pBi24hV4MSwKhP9ahYm+o/adWidK
-	 PYiWp4ea9WFVfanPvEiTHxIbXvqOB+0m/1mSkVGAbCUEA1s/2X1H2YmvMKZWxmQyYO
-	 BsPLYHdkfsFYIbYp84qoTr0XMh1fv3ZInf9WC/ZUvCultXNbBT9Gc0CFSa1sRYBJd/
-	 Ix8mMA137gMTA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3ED2FF40068;
-	Fri, 20 Mar 2026 10:26:52 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 20 Mar 2026 10:26:52 -0400
-X-ME-Sender: <xms:LFm9aeSBuUCrHINfbPMjDM5NOuwsec15zikcAYsd_e1YaxhM5GSKdg>
-    <xme:LFm9afc4eZo5eHohZD66T-vSSuX-HZ3oMZf64h09IN15YVDqSmzUpbAwr8xmufPZy
-    m9xB9-AseZUQRroFN4BU8VtHYnUlMWxjWrbe7T-cDTYDk72t7X1_pfN>
-X-ME-Received: <xmr:LFm9aXcQ62hYHa5fAZpD3wct0dWtIrMStLzszKWngoHcqbAciXOgrBpktvbA_w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtudegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepjedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehushgrmhgrrdgrrhhifheslhhinhhugidruggvvhdprhgtphhtthhopegrkhhpmh
-    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiuges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdroh
-    hrghdprhgtphhtthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphht
-    thhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehrsehhvghvrd
-    gttgdprhgtphhtthhopehjrggtkhesshhushgvrdgtiidprhgtphhtthhopegrjhgusehl
-    ihhnuhigrdhisghmrdgtohhm
-X-ME-Proxy: <xmx:LFm9aWJL-Ss4VdQh9OttEJlT8Zf4nVQblfCHB4NkuN0R0ulAXU5f5Q>
-    <xmx:LFm9ad2S784Cw2CLErVJ-CsAKIS3XDTHQ04Fl2vvan8jvQZHTc5XSA>
-    <xmx:LFm9acrITVLMbY1A7gbnjs8AZ8JtpLketSqNd9lSaUs7Gf9fzI0muw>
-    <xmx:LFm9aVq2Y2vgmS6pQU4GVPJtd_34daD2fwzbHPhe5kJTjNutWkIeWA>
-    <xmx:LFm9aTzlGZD1DjptI-AgFUkbuM-4axTLedVlLdmnC_tWJRhkBKwYAZUf>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 10:26:49 -0400 (EDT)
-Date: Fri, 20 Mar 2026 14:26:43 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc, jack@suse.cz, 
-	ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, 
-	kees@kernel.org, kevin.brodsky@arm.com, lance.yang@linux.dev, 
-	Liam.Howlett@oracle.com, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, wilts@infradead.org, ziy@nvidia.com, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/4] mm: bypass mmap_miss heuristic for VM_EXEC
- readahead
-Message-ID: <ab1Y5fLNJ466kK-7@thinkstation>
-References: <20260320140315.979307-1-usama.arif@linux.dev>
- <20260320140315.979307-2-usama.arif@linux.dev>
+	bh=D5anaHbzdYbs1EudtIkOl9bSB2SSJTEzjzjFR/hSjgE=;
+	b=sg+xNzEFwHo3kiG8cEA9X+0alrBHp8BUZqvBjE+rU2m+i4WPnG0Qq1md/TgCcNddoxZXHA
+	k3ouEr8ywEJ6Jpdfri6OcVehypivR/Eldfor3pQbGZyO2sGaHk7hMr7hDeiyTwTr2LRqzg
+	xx1+1KypMNw66G8X6VEFgAUWR5qDDTQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hbgvL5jA;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774016878; a=rsa-sha256;
+	cv=pass;
+	b=oNdxabC/XohQCrZRpVH1G46QamN05rmwxaExZ2ay8YSwgqr6dAtK3GUh8v6F+lMgG6X5Fa
+	I/WyIA7+psOGVqRYyNu0k7ITvMYZ+RXO16THzy3fSnwQ6bMUWGidiHuxbJi85eMAt9SuHs
+	xz/+1YswZpNFcMoo9qBFxqWh8Ejx5/s=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6611f41eebcso910672a12.2
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:27:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774016876; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GEfc0fbfINDvsQOExTT1ZCzGvXvhQv1ZE/n7DLUl65+wBbnbrLJusAKGKH/lHCEti+
+         j+ZgcJag6p/xeo+E5NbdoyliUsN79RJNQPdE3EdsxFY2f+r49QfJM1VAhoJk9ihM8GiF
+         jFMYPRzykmE0Ltag1GTCiWPe17TVlq4jIJIVCd7/0C4ATvOfvvMkKfWJJ1OZ8vF+QB2J
+         kKQbV3+nGTGXmhhIayBZ1uDWdQFQu2luLRcetO44BU55BWHe9IpjjTahRA8XexdV9rgZ
+         LFgcu6PMJzug4Ouer9W4ISHb2OqJkecYneNkRDvxy8NYWU3JGj8X1BbVkrG7nRcPLM+a
+         XPdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D5anaHbzdYbs1EudtIkOl9bSB2SSJTEzjzjFR/hSjgE=;
+        fh=QCUIgDchWmB6yslFW8In51iqsXkseLhVP6vZ8rlXigo=;
+        b=bHdnmfJF1xy38ZmNEEgjxAFpgWGovJoyE0bF3hQaFLIdkyHO9NDLoqmsAU1KyyJU59
+         ENt0ZF7QXYzJdk401CffEYfj0DumDAqWpCH1sFNnNRCeUDwkaBs+0CzKzLadyKpoZ8Hi
+         bIRxigeg6FHdJsdHP4aYlnJLZuSUJ1lJWBUQr2V6na3DFFh3VHTlfRseOi6SpCYkECs6
+         iZm7+/lkiFlM4Z7M2db7TwW5Aq1z/ZwGqx5atn8eJKT95Eh4GKHIz2X0VMGQLVVVnhci
+         9fmEuJw0vdUb9J85p6paTfLF3GIJxC0DNpPTAStcAIM7fQR1hM69fHnnA80SjEQ804HF
+         9eVw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1774016876; x=1774621676; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D5anaHbzdYbs1EudtIkOl9bSB2SSJTEzjzjFR/hSjgE=;
+        b=hbgvL5jAr+AxV6kdU45ENCNs8oMxTbQhShdVD3e5PDqBWR4agoDr/GCAM94tmW2x/W
+         U9ugXJWYqaHWgghzHs8exhh3LH0TjJ+Rqc0eg9WvYKY+qa8KLHqR++9PZ6srn+L0psAu
+         1kKoxIdV5+Pr6kkDUpFpr4FP6eetyTwSWKtyAr5wcOk4S4tEIGTWCtulnm3zWR31pZev
+         Tumxg3HukyLVsKm4oSw99B1WcN1izarLrHmO5nMhlnAXLHMVJNSvgMEHrTyDWJtmemoF
+         Fpq6ngJ/1kWuGgf5NeFDt3SqCdLJajvNBIt6zk2IyZ0DVecR45PZZ8lAEZXXxGUNfe+F
+         rYfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774016876; x=1774621676;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D5anaHbzdYbs1EudtIkOl9bSB2SSJTEzjzjFR/hSjgE=;
+        b=oMxLzcO8dX5JONLfAcfl+DzL1CN+sXka4uF78pynP0tZa+9Nw7EQaIHw4SMbly9oyC
+         qV1Hq1AIdnDXSCszV4LL1YQy2tYfii3/zu+aMZz2OvPfCBNe8U07vSWhA/0A8eUsgZPF
+         4BHAPweXt2FfmzrVLApLTL2SQfZgp0HOYsr4SyLYltd68jhgB/OIkhR80l2rnhJNtZYx
+         Di+Go40pr4mDp9x5my21ret0IXvV1njcaB6fvlSWdhqlPgA7G8hj08v09OpL/9A/z5DP
+         3gqOYLHilb0EBHYU9DvpYVW6vS9MCiwzZlMQlO2/VHHp1Y3E5DV+YjI7KAGofbCjUc4o
+         9/zA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZjq8lr3Tul2ygmpjTwc/39cAZBceDtdfCKV9MgnOQ2JQ/NadmnlMe2slQTf+1klmPzmRG4dxxFQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyg0iw9Yz3CRsttJhiixnJSIl13VxOb1avS/GbNK7TTVKZzef8A
+	mXjurPXXEe9e+uVgOKfnz5bjaiYhFx6t6VpZ5F+todh++J7rKZ6Fb4Z25/xOBjBi5GPzDT9vmS9
+	Yvc6d8h1gxUS3zzNv2GQ5WoI5ZJvxxjHXD6iSvnay4A==
+X-Gm-Gg: ATEYQzyls+vJWxDAxVW710vKLhsGRz2fbKdDwynLOF3uJcHnmjfojON4OM3kf937JzM
+	FJQU/e0Ip4nP7/e9xAX1n4VsxqA6Cta9vStiiU88WSHbzbdfyfh/HiAX6Q+wO+EHkKRSvqhXyd8
+	Mb+D1rMilzCiVKX80zMYMr0/sktvpeSlmYZagMCMt4jeM5bq0bnS4nltwjyXKkRPBulK19pIs4v
+	TOfIxOM2HP+Uk7k+yZJkS68wJXFyTNCdVDDzMXF0vmhGh3XfnKcK5QmTOXVOdfcck5m4c59BCuV
+	LdtNbsFO7ALAR3zLyNLjigPVS9e4TOG3Nh64kQU5kxpo7LQu
+X-Received: by 2002:a05:6402:4542:b0:667:ddf7:7d9d with SMTP id
+ 4fb4d7f45d1cf-668c971954bmr2121321a12.10.1774016876376; Fri, 20 Mar 2026
+ 07:27:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320140315.979307-2-usama.arif@linux.dev>
+References: <20260317023834.487682-1-pasha.tatashin@soleen.com> <gdu6kqpymqgkzbw2yrvvsrububimn2ocuyi533d6llofqu32kd@sqc6d6hsuzic>
+In-Reply-To: <gdu6kqpymqgkzbw2yrvvsrububimn2ocuyi533d6llofqu32kd@sqc6d6hsuzic>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 20 Mar 2026 10:27:19 -0400
+X-Gm-Features: AaiRm53KwLS0dZ_0F2E6R9Ka7xHwPaNadXUdllrLPjUjJCiW_fFG9VxgEmZKncE
+Message-ID: <CA+CK2bDGvesu85nODXTbHQDy_UndWyGO-bNHcq5gDReX+fyz0A@mail.gmail.com>
+Subject: Re: [RFC] liveupdate: prevent double preservation
+To: Jan Kara <jack@suse.cz>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, rppt@kernel.org, 
+	pratyush@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 292661C0007
-X-Stat-Signature: ophecxz95sd1mb1qsirgagfymwnpcf57
+X-Rspamd-Queue-Id: 37152C0004
+X-Stat-Signature: wj3x856xdzkypowf87qbqbrskq337jw7
 X-Rspam-User: 
-X-HE-Tag: 1774016814-3261
-X-HE-Meta: U2FsdGVkX1+qElwCbj7EQecQwZkVUrs3FyBgtBt2yDXsKzg6JT0PROToHAVoaoghyVZHFaChhphdtCtp0bX14ZPxJ8jtsHNja4XXU9CvK2JBESGJX3OYqUTsEI2dT5mRS8DrW9s0Wk6sIviBi+DTFM2SK/PFoJHAhIYX3JLYViI49+JApGORtakFYcL4B4dx9GIB8p+a6VBysL+CN45Go7wEDVWIyaqKwJwfT//BotEf70QOVO8SbbJB41dScRQGfBA7hC1BZty0/dVVYb6J5OtW56RgCn/SCklfhkqSObGQMa14D4RlVSEP+ZAhIwS4QEdb/RylVtl2ks/2QBV7O+ImkzxT/EYA6BShoo3BJ2YWQtuNeFWoWosDOgBPFWC53czZcxkb7S552HwCWQ/YRxLkq04wL7UonznHwdZDOuH1wJrvo8YLeVO0QVAcUTOyZj/79lukE3CmSFyC3BHJBxtlaVUsDPoo+Il0pPnTszMICsFLEkVujGJIA3/nEezxecsCFr3ymXDEgfkX0nKjh0Qo8TTpdXbws+aIfwHDN3cbRuUBaAL0lS48nvxgyhoDzI+NboZ0b6fOk4BWF1ZvPHqwhlq4whLxPFSZH04cO/5LtOjF2WZxS4PTOEU9tZdYDUjdTVQKV0sFmFsDbfFakcQBpr8nrgiJWU32SS3RZgM62KVJy31Y5/uuDiJ1iO1mMw8hrERH6JIMNlpQxt8VGzqQuX8SXBpHPTbrV98iN7FkD5gih23FWVT05mZOMYpXQIOblLG86jvM2da0uTSxF/JO5wtIGUMHgoPTanCEnZsiU2NJFbDVqYcGgnEco4WBIm/FmqJ91qiZzRp093pkWTSwQUsH6XCH+6p1jpLgQnbAIPnExdL838LaDk5V/6hyA1GJFMT2ZicfJDJvQmBG/xqwYlkbr1EWJpMzbeuZ5kn0GNCK0di4lHuU9T2j8rcgM0ToO9CK7diKWXVu0us
- zK1eTEDd
- iiW7roJSCQ9MYfiM/UknDYXrNfY94tRXc3gwSuMDP2TDQVMWTwcTBEacDSJijW/GTjDmf/l6lcPGwwyrmdUlrrdDC8O7zWUbUg2hcPKxvUSFw4mdtBxsxr+VqB1Dm+Fprla/cA8ZG/8cpEJOMBPweH40jqLkP7sqsFY3RvZLfuRl6M8Qw6pkwxROgN/Vy8YQ194yQxh0/Vlu9AxBskgj+cIng1jeva+cBP9jjNaSRh80VgmVcZtDU26q65WnWGt8cw5vaup4rYZV4bzZ/TDJBmzNDFm4WcvFn3Qf/8accAWPaD+0io/0hiZmHCSQ1tUl5Xioz+IbNBOmzct3+a9NtxNKFl1PZzjyIPgoD
+X-HE-Tag: 1774016877-751941
+X-HE-Meta: U2FsdGVkX18PTltmhVHFztN6oal8kkn/h6E7PTrWvVyXGuSXDiljEw1Gc2dfS3/yDWpa7KKQwJ/spV8Xni5UQutmwGPSfLi4/oBNFI0ZV9UFOPM+KukDH3KB5tylzxUF6bJgs8XZdi6MqN2JZdeyGdZRVFPNmTWgCXYlkde03yfIOP8cYON2l8RenHA1dYfvYhUjBfT1GU857YgWyzpKr0zCHCNUOdv5FwlhCQK/Kdbdo1x+C9JLm4wl91SXD35z/GDlxbcz2PLTA/aoze3PpCKmu6EWmPc5DXdvjzYEH/Gk2iaXGqSn/fqRs4+0gcmYHtqs+juQklDrLBhfsIBf4wXW0rljQ78bGzVgfwU78vtc76OB+z0vGcNDWhAz5B766WgQ6+R5pctXKnOzEVAjVuwuRNTNgC2Kg5aJ0zw31+BYEhpHdaCq7zvoZHMRfVOcwdj0QJQVPohEcluI2ov0UCYcc24E3ky7ptimuRMK+GaESjvLIVnKHqKpQ83owh0NO9Zf4mWUIzsvrxysF2vRhWO/WGM6KsclqUE2/P18NxIrqWxWkMAy1tTgSOJwdqCl16J0fVxkMbmDkqUhteWyqWAUEGaHPq0pN7hbEib/vBjBgVE6J8Mnk6lhB9oCSfTcZX4yNhaRFr+EjDg4nel84gSusXSIrds8+jVqNJiwZsoQuOMB+MlHqkojfT9T9RD5TGHl41/l8d5+QSpkABE+aomq/aI+Od6OVwiGGwIhM4NDUDOtVWF0H9zCAjS8NJNIdgOsOn+ksaOOCY3O3b2ccd5PlOhkjwxEZlTzLkQj3uJC6eSJ3mKXNZJIfQ0jpI+sJP16oDeBOFDXZKDyCuv2CPacLNwKbefcFgg9/Y6P/oisOWYTLT4RNU1E45rrCw4ZmeEtISXUS19xMO4t73PR49JEVmIDEtGkhvokOGs0eTO37GuYAvMaPUpj0US3dwPztDuRayEMxH8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,28 +137,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 06:58:51AM -0700, Usama Arif wrote:
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 6cd7974d4adab..7d89c6b384cc4 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3331,7 +3331,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		}
->  	}
->  
-> -	if (!(vm_flags & VM_SEQ_READ)) {
-> +	if (!(vm_flags & (VM_SEQ_READ | VM_EXEC))) {
+On Fri, Mar 20, 2026 at 9:47=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+> On Mon 16-03-26 22:38:34, Pasha Tatashin wrote:
+> > Currently, LUO does not prevent the same file from being preserved twic=
+e
+> > across different active sessions.
+> >
+> > Add a new i_state flag I_LUO_PRESERVED and update luo_preserve_file()
+> > to check and set this flag when a file is preserved, and clear it in
+> > luo_file_unpreserve_files() when it is released. This ensures that the
+> > same file (inode) cannot be preserved by multiple sessions. If another
+> > session attempts to preserve an already preserved file, it will now
+> > fail with -EBUSY.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >
+> > Background:
+> > Because LUO preserves files of absolutely different types: memfd, and
+> > upcoming  vfiofd [1], iommufd [2], guestmefd (and possible kvmfd/cpufd)=
+.
+> > There is no common private data or guarantee on how to prevent that the
+> > same file is not preserved twice beside using inode or some slower and
+> > expensive method like hashtables.
+>
+> OK, I guess since this is a single bit, we can live with that although it
+> seems a bit wrong that LUO needs this in generic struct inode. But all
+> other "cleaner" variants I could think of were just an overkill. So feel
+> free to add:
+>
+> Acked-by: Jan Kara <jack@suse.cz>
+>
+> Just one nit below:
+>
+> > [1] https://lore.kernel.org/all/20260129212510.967611-1-dmatlack@google=
+.com
+> > [2] https://lore.kernel.org/all/20260203220948.2176157-1-skhawaja@googl=
+e.com
+> >
+> > @@ -744,7 +746,8 @@ enum inode_state_flags_enum {
+> >       I_CREATING              =3D (1U << 15),
+> >       I_DONTCACHE             =3D (1U << 16),
+> >       I_SYNC_QUEUED           =3D (1U << 17),
+> > -     I_PINNING_NETFS_WB      =3D (1U << 18)
+> > +     I_PINNING_NETFS_WB      =3D (1U << 18),
+> > +     I_LUO_PRESERVED         =3D (1U << 19)
+>
+> Add comma at the end of line here please so that we don't have to modify
+> the last line again.
 
-Strictly speaking the fact that the file mapped as executable doesn't
-mean we are serving instruction fetch page fault.
+Will do.
 
-FAULT_FLAG_INSTRUCTION would be the signal, but it is only provided by
-handful of architectures.
+Thank you,
+Pasha
 
-VM_EXEC is good enough proxy.
-
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>
+>                                                                 Honza
+>
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
