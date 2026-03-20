@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7924C109316E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 966141093168
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:15:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEB916B0420; Thu, 19 Mar 2026 23:14:37 -0400 (EDT)
+	id 0A62F6B0005; Thu, 19 Mar 2026 23:15:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2286B042E; Thu, 19 Mar 2026 23:14:37 -0400 (EDT)
+	id 0573D6B0421; Thu, 19 Mar 2026 23:15:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFFFE6B042F; Thu, 19 Mar 2026 23:14:37 -0400 (EDT)
+	id EAEE66B042E; Thu, 19 Mar 2026 23:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BEDC76B0420
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:14:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6AE078C53F
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:14:37 +0000 (UTC)
-X-FDA: 84564973794.27.E5E2DF3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C5AE840006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:14:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=o1wA1ZmS;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id D8E966B0005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:15:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A44A48C548
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:15:58 +0000 (UTC)
+X-FDA: 84564977196.23.1C07F3E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E44A840009
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:15:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g/KLyr1V";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773976475;
+	s=arc-20220608; t=1773976557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aVJQbKEfor+RxmQcFK97BTwdfEIJFHktsF6U5NupqIo=;
-	b=ff9BhAQKkKapbbNgzJTr68ESsPFuA0o3TSl2sX9zy+8LzWF1JYTzfG1DaFYfxLLKIU3lzb
-	YZm7adqi+MnGfq63vk52hh1ABDS+snaibvT3sGcKGDRBSEcbOHrKQVewsD+YFYAj1pm3Ee
-	imvbp+HCxIMADrd95I5FdkyZ8xOJttU=
+	bh=kIOlgTmWs0wQQuAz+SnoRJvMn933HepZE9pUlt+OByE=;
+	b=YOsgSXv8gemfBVidR/Wq+y2283PP0Zp43sa3sVSHVt81y0Q8FNHPrdRefmuV9Yc+wmQBzZ
+	IoWdywCgsXdcWbjXBRqUXd0P14O7XKDZTZbT7UFDYPMtcLLY3VsUmEPVBveaCchXJTZJbN
+	APrVfdDDo1JSkXFLK+jD9VUIyyADhME=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=o1wA1ZmS;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773976475; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g/KLyr1V";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773976557; a=rsa-sha256;
 	cv=none;
-	b=kL9TqHRXw3ysilfmE5l/PdMS80SAZ8/mH1WDEb5LjcwK8XgLeirw82VztYof370zjkj0g2
-	sEXvlKwMAdXGsG+LAI4clj5G39RHGyytJohJgpOBqq0rUNING2T1aUUCVFwIbJb1nJYiCk
-	lE3xJberD7OcoT3bK/jwazNl+ilJsWo=
+	b=wTMsbPXKtStbLlZeqNifvrcyBg7j0hb6pLAcyshJnHCUT7GZbv20R8b5vWWhfC3JJqPvJX
+	wZVliD5/qFXUkQEnvVH1GqXFa5ItMBCKeXyoqeXHz4HJkQODRMIdy/zCbuFA6qLuUbP6DZ
+	7EkzkyI6sS7oOgFUFguQZnzZmQ5WZGE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12FCF60097;
-	Fri, 20 Mar 2026 03:14:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F43C19424;
-	Fri, 20 Mar 2026 03:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773976474;
-	bh=1ldpoIJJPrstSo7P+uHcHJMsXGhDf6QFzETNfcD8JmU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o1wA1ZmS2n1U/a7/+G5dzNWCWW02PcdZ1i1f1hnH4Yx/UFtzuij7AxCt9D/7vunfK
-	 RYMQ5fgggQVSL/sesJzy7eFjfAzbwzfHbTpbwfm8C6fzywK1xCK3d/8K9JKQjB8lZB
-	 M/aa0TN73tcSF97ejcTfl9m+9LcYyg7blP1FQzAI=
-Date: Thu, 19 Mar 2026 20:14:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-Message-Id: <20260319201434.b51833a0fea2801a2b220ee5@linux-foundation.org>
-In-Reply-To: <20260319083153.2488005-1-hao.ge@linux.dev>
-References: <20260319083153.2488005-1-hao.ge@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BB1443EAC;
+	Fri, 20 Mar 2026 03:15:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD83AC19424;
+	Fri, 20 Mar 2026 03:15:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773976555;
+	bh=c5SOlNAOAR6OFkxJkGh3j24Vwi+ZKbz8x5WFx0lPK0I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g/KLyr1VFAFLErYWLwwlICfRuQ791uyq7AxLA9drqoktor4arUOIvZ+0dFn6IAk6X
+	 x0PMfMpb0QCmpIc+tSY4hVXZnvU3J04/cvXBCLAa/FmPc+m1N5LyYErOaBjflkSWqT
+	 GZs16IZX8F4qr4tOaopbAZp5SfOBjb+ojG/j/POLjMqxukcedrP0zQ5/1C79+z3XQP
+	 e+SpOvu1j1kRpPPy4bna75Jgj+oP8MtqyE1aFcwogUTBVhoqr5N46HIr44NvvekmIy
+	 mPaIh+zqNA0GW1CDFujEy0oD+Hqwu0pE6Bn9pwl1hpao1ubT6NAS5nquklapjXl91/
+	 dui3NyLhk8f/w==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 15 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/core: avoid use of half-online-committed context
+Date: Thu, 19 Mar 2026 20:15:53 -0700
+Message-ID: <20260320031553.2479-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260319194849.64b0911e2a7a6d8b1c22005a@linux-foundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C5AE840006
-X-Stat-Signature: tien5c759ns97u78p8k1jxioim4wfk3a
+X-Rspamd-Queue-Id: E44A840009
+X-Stat-Signature: 4qobyj5p3bw7zgd75cjawh93yxw6ob4p
 X-Rspam-User: 
-X-HE-Tag: 1773976475-282308
-X-HE-Meta: U2FsdGVkX1/9u8Hfs0g5du0PZrvY6me5PY6SDq/bRXz84NkPr1hKm0VCJ7pSKMwUehfPv8NEPal/qClGk0E52Cj4LWCobhdPnXMzZ0pIjC+0gdpLgSvjvAlXmGkHinBoHJRcK9Yb/4Q/boYzFRZ2s74DIvsf4waf/moaMXBPtBbO5gv2upoIAWooh9hr6IDvupwjeOfRNIG7BNfg8oMoyxcE/O6sFu8zEsOoKtiybNqYTDhhkcyPQpjsD5Mmu3o6gLIyz5CFnZJcXjWEl/tn0nhXiDhRTkfCHaawe9Tf6caBVImH74bZaJxpZDSuU1fvYwI0C3kr9XjNPLQkIKujpXXHFGF0VGCHTr6mUI/snYUAVeCnG0Ie6phAr4LwO9KUTPzA6DdXze6tKih/YWPPDhkVXho+9bOb3+FIeC/cp7sgzHnHTSpa+PB2vmw6jZN9g9/X+sCmTQAHhYOltjo0QooMWdXMHUq7xRXVAeI1xY5X3MLo01blNTev51bT6g61MSbUYjoPCUnTnkLgOGAxVSuzinwJXTTdy518dcBeNm0oxQNR4kdzVuDWrB8jxQ4ngbInVsKJbX7TfE0l0MMGiEadv0KGidbq+Wg9yXJeI10Rjd2ajk3gfSgQav4cdHGFj+WI7ZXXALQYFlTBjnXtFxaQZplRlIUA6Y8SDE0CA9meow+K4rsJXHmIWJmUFPk4db58yhZTIxU9e8yIcbGggPQG/dfWRnt3t2aGrQaeWhYcQB+KIN/EfAL2cHELZooRx2N3gts4jjm2vocrgABXk21Rco3nxeLwvpu688UdAbM4YWZ5xbwWrmpJ1+Jq30SLO6B117c31gGOS2Brf8KSFWbzarcfNnpUAlhLxbmUhUAlKRAFAKkyWg7nq7PYVMQ0q3n6wK/1mNrsxNjCPAm3m5/2WfH3S01HQbo6rjvCrZHDVywQEboxdcu9sdXyd6KRvfhmk1g2ZBgYmgPOQ2e
- y97f/glk
- v7oAaNrs9vanlhp6WI8KwCxu+QyNdGzHuzsUJf18ylawUuN4Pmrn2ID18mbdXPlnRHsD+kKd6P8hC0UCZsNqzGNBT+jx8EMUb3h9JRNYSfVi2KIqcekzM4tEeDhZU5jFPPGWR7m5YgCejvmooeNBuf3pVD+780q5+nwm2sNMNXNYGJhDNhsTQpU2AEKSoMLJXOl5UXFWPjax++9euRW7oh4aBuO8d5nXudtHZq8v0xdu+a6pvIptbxFf42MxSFt5wHU0ru4vGYhqnfhHi2efYiMXhoVf/wK8silhzA7QgNZMW0utfieDzvXi1X44m9vd34dmac0q9A5rzI+GDtGSkMC3C8lH+Lj0Ck4I+
+X-HE-Tag: 1773976556-111451
+X-HE-Meta: U2FsdGVkX1+arLVo7JcHHdGDrPBuGvwIeE1pP/HpcKGUYuBpe1M0UChQYALqYNpus33F+yq3t8ryC2nbwLj6SKzJSN0DW00CAo6YaE8NSMFcRC31XSO5OHmRBCJbmttOUmDODekIm5OjWGK8kujD5XNpYSXvWbZ3daGgLwkLznRiTBRfHn9FMPhdBixwpDIfiho7sc/epLVPTuEVR39Ff+bFhEXhzR6HVzWxPeGsIOA6Y/N4rlYMmytbgAMWurFy5bufMI0Hl1GZbGshMVlfzD9ABD6UaxKm2dMHGCLpo/MpkfWcISMT3RGTP3H0uZBgq3CrKiFCCJijXo2DseDdSIm6zCP+0plM3FVrd8UpAS2BrrlHq5ND33bzUWVSREFuobX/57DtWwXy0SGAZ4wnUxpdTic9EnbupRWIegJqNLI2yL15vyE9xf3hUKK4ECdpwC74qnTjKYG1DYbxi9UpcqIs9fo6KALvpavMdAfmGk6d/AvMI+RUE0rR4R6ntvFqU1BpltbOkEqyQ4qcpmbkR8TR/eAzOpoZK8qSPokhzyTpYVthrdmFAbHpAOHLhy7NoSh0tYWcHVw0DdY9eC7Ob9rulNH8YMOTCVFgE6DC8F/RLYZA21j/qnZqtYn7gyGz39Cukw/llXqb5znP6oMxOAQBoGuEAcc0AGX68tslMsDXLEIz1HC0hCZGOyUsEOvgkXQCFQvuTRbitVDvhlR8kRHXEf0CZawocSh+HjuYqp7tsLC51PX3+DMiVpUu2MZTew9m4Cxdn3BQu+NjvPNlwp4O9vuGHYcPKNBXfWPuGCKib/cGQjgYryzaqIubafGldJlIF0hEfutdbzEeXXBkRlGr/t6/EyD3KcfFpCP0xACyK2v+KKGKx70dYHZ0HiwjsoCcQC79+k4mP5OCKvSQW7Fnfj4a6gII6sztDp+dnIkJ0bq35jwY8RAuOQmlpwsmIakKTZ+F/KiLcnatOZw
+ 0U97PgJL
+ Dt5blCHmn7bCqo7hYqi4YtwBriivdXKk938Cw96d0blejfRocA2Gr+XAZClOS3x6zN5mZbAQ5k7Qcy6h8xNUvaKIGV1vt3YC1Cg79Bw1+lWzNQ6ITuSqMijgv1TrZr8U0MXJjfUcEGnwwmiICGYKusGzecBviEnwy+JJw6UKVmAcluWcx6XU5CBl7ZWF8EJkEq4QmIIiD9ZThniEo0hN8UTM/cZ0bcCxBZjsMHHWLm9zZuTsaKBPyylbAe0usBxkeSe2kz6IKu7w60cxaBQo6yDKRLlW958Es9+cVLPJgsjBzmHE8mWcElHTP9oxTEPZ10pd+K6C/nraHRK7Hus7ieR4AcNfpnfpSsOR6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,26 +93,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+On Thu, 19 Mar 2026 19:48:49 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> Due to initialization ordering, page_ext is allocated and initialized
-> relatively late during boot. Some pages have already been allocated
-> and freed before page_ext becomes available, leaving their codetag
-> uninitialized.
+> On Thu, 19 Mar 2026 07:52:17 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> A clear example is in init_section_page_ext(): alloc_page_ext() calls
-> kmemleak_alloc(). If the slab cache has no free objects, it falls back
-> to the buddy allocator to allocate memory. However, at this point page_ext
-> is not yet fully initialized, so these newly allocated pages have no
-> codetag set. These pages may later be reclaimed by KASAN,which causes
-> the warning to trigger when they are freed because their codetag ref is
-> still empty.
+> > One major usage of damon_call() is online DAMON parameters update.  It
+> > is done by calling damon_commit_ctx() inside the damon_call() callback
+> > function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+> > parameters and 2) internal memory allocation failures.  In case of
+> > failures, the damon_ctx that attempted to be updated (commit
+> > destination) can be partially updated (or, corrupted from a
+> > perspective), and therefore shouldn't be used anymore.  The function
+> > only ensures the damon_ctx object can safely deallocated using
+> > damon_destroy_ctx().
+> > 
+> > The API callers are, however, calling damon_commit_ctx() only after
+> > asserting the parameters are valid, to avoid damon_commit_ctx() fails
+> > due to invalid input parameters.  But it can still theoretically fail if
+> > the internal memory allocation fails.  In the case, DAMON may run with
+> > the partially updated damon_ctx.  This can result in unexpected
+> > behaviors including even NULL pointer dereference in case of
+> > damos_commit_dests() failure [1].  Such allocation failure is arguably
+> > too small to fail, so the real world impact would be rare.  But, given
+> > the bad consequence, this needs to be fixed.
+> > 
+> > Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+> > the damon_commit_ctx() failure on the damon_ctx object.  For this,
+> > introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+> > when it is failed.  kdamond_call() checks if the field is set after each
+> > damon_call_control->fn() is executed.  If it is set, ignore remaining
+> > callback requests and return.  All kdamond_call() callers including
+> > kdamond_fn() also check the maybe_corrupted field right after
+> > kdamond_call() invocations.  If the field is set, break the
+> > kdamond_fn() main loop so that DAMON sill doesn't use the context that
+> > might be corrupted.
 > 
-> Use a global array to track pages allocated before page_ext is fully
-> initialized, similar to how kmemleak tracks early allocations.
-> When page_ext initialization completes, set their codetag
-> to empty to avoid warnings when they are freed later.
+> I guess you saw the AI review?
+> 	https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
 
-AI review asks questions:
-	https://sashiko.dev/#/patchset/20260319083153.2488005-1-hao.ge%40linux.dev
+Yes :)  Pasting it and my reply in line below.  TL; DR: We need a fixup that
+attached below.
+
+: > --- a/mm/damon/core.c
+: > +++ b/mm/damon/core.c
+: > @@ -1252,6 +1252,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+: >  {
+: >       int err;
+: >
+: > +     dst->maybe_corrupted = true;
+: >       if (!is_power_of_2(src->min_region_sz))
+: >               return -EINVAL;
+: 
+: Could this prematurely mark the context as corrupted?
+: 
+: If the power-of-2 validation fails, the function returns -EINVAL without
+: modifying dst at all. However, because maybe_corrupted is already set to
+: true, wouldn't the kdamond thread assume its state is corrupted and
+: unconditionally shut down?
+: 
+: Should the flag be set immediately prior to the first mutating operation
+: like damon_commit_schemes() instead?
+
+Good suggestion.  But marking it as corrupted here doesn't make something
+really bad.  Meanwhile, ksensKeep being aware of what function here is really
+making change to the struct will make it complicated to maintain in long term.
+I'd prefer keeping the code as is for the simplicity.
+
+: 
+: [ ... ]
+: 
+: > @@ -2678,6 +2680,8 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+: >                       complete(&control->completion);
+: >               else if (control->canceled && control->dealloc_on_cancel)
+: >                       kfree(control);
+: > +             if (ctx->maybe_corrupted)
+: > +                     break;
+: >       }
+: 
+: Does this early break cause a deadlock during cancellation?
+: 
+: When damon_commit_ctx() fails, it sets ctx->maybe_corrupted = true.
+: This corruption triggers an exit from the main loop in kdamond_fn() to the
+: done: label, which invokes kdamond_call(ctx, true) to cancel and complete
+: all remaining pending callbacks.
+: 
+: However, inside kdamond_call(), this loop now unconditionally checks
+: if (ctx->maybe_corrupted) break; at the end of each iteration. Because
+: the flag is true, won't the loop process exactly one callback and then
+: break, leaving the rest of the callbacks in ctx->call_controls unprocessed?
+: 
+: If the worker thread then exits, wouldn't any callers waiting on
+: wait_for_completion(&control->completion) for those remaining callbacks
+: hang indefinitely?
+: 
+: Would it make sense to bypass this break condition when cancel is true?
+
+Good catch!  Andrew, could you please add below attaching fixup?
+
+
+Thanks,
+SJ
+
+[...]
+=== >8 ===
+From cafd5152c6d42e4153c54569b44b249e27939ad6 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Thu, 19 Mar 2026 20:09:27 -0700
+Subject: [PATCH] mm/damon/core: let kdamond_call() with cancel regardless of
+ maybe_corrupted
+
+Otherwise, damon_call() callers could indefinitely wait [1].
+
+[1] https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
+
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 37454e8c9c510..3e1890d64d067 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2680,7 +2680,7 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ 			complete(&control->completion);
+ 		else if (control->canceled && control->dealloc_on_cancel)
+ 			kfree(control);
+-		if (ctx->maybe_corrupted)
++		if (!cancel && ctx->maybe_corrupted)
+ 			break;
+ 	}
+ 
+-- 
+2.47.3
+
 
