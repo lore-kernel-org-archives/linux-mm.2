@@ -4,102 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C3501099B33
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:19:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE961099B33
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:20:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAC466B009D; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
+	id EF3C26B00FD; Fri, 20 Mar 2026 14:20:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5C6E6B00A6; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
+	id EA41F6B00FE; Fri, 20 Mar 2026 14:20:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94B576B00BD; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
+	id D93746B00FF; Fri, 20 Mar 2026 14:20:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FD1F6B009D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 322F1584C8
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:19:30 +0000 (UTC)
-X-FDA: 84567254100.11.08F3FA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 456951A0010
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:19:28 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cet4N38q;
-	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C49DE6B00FD
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:20:39 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5345814032C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:20:39 +0000 (UTC)
+X-FDA: 84567256998.23.3C0937E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 74D8A140009
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:20:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qVMqG1mC;
+	spf=pass (imf26.hostedemail.com: domain of rafael@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rafael@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774030768;
+	s=arc-20220608; t=1774030837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fAqmIpfQANEAuEJCQspIG3/xHFA3afWxbUMTE97V27Y=;
-	b=JsIuNzIwv0UT9xoU2Nv082UP9QW4rtTRiA6RRYsXbGEvOhJ8zJopC59dxJmLd0KYkv4P1l
-	5KH0DTSVUYkx+0e/umeH/pCwNa92raViJKkHCLQahy47C86ACM2TUu/yYj1hrXhMgWb61S
-	fe6jAulyVD0x1yh41VqpHI6d2xE0btg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030768; a=rsa-sha256;
-	cv=none;
-	b=FWz/eyaL8AuFMFDVxqZpfGtRGp7m5u2/BxNbxrUL+DZI138LCh4p2PV9fjR57eQw+Lvxu/
-	PUfaJFbp40X9OLLxlhH3pE6a/m6VnIRN1bRp+Hkj2O/FGYGeAXf1a/+X015KDi+yRf0Url
-	dRW7IS99BGUXxmVN5qKtFjp4z0EZbHw=
+	bh=yiczHS10H+pmcmPNvctJQGu/Q2TRPPG25Vl7gUjSRes=;
+	b=ZNQDZ8TZn18N064Dm2Gq18xzx7MvgGwmRMjEoAIPssD6hrG+THrKOKMw6PWOALrn0+twOO
+	n2a1hQmNhN1e20cI5/0SsYnHYPm3vjMLNOC0IvwFhsLxolSN5uODJ7TXmjF37NRnFPmF9g
+	NxIo/QW0sAvtuQ/DmU3RIiPcqMp72IY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cet4N38q;
-	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qVMqG1mC;
+	spf=pass (imf26.hostedemail.com: domain of rafael@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rafael@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030837; a=rsa-sha256;
+	cv=none;
+	b=4tm4Z8owhgpPIeHLX75rqlis3358zW5mawYwy+awIBxukpcnlhrPDmIf3gf9puQpx5HwGp
+	CCwQ5fJQ1u5An2ya/g76ot3tZUAdJ8rafzB0Lg2wVDoFNJVuYuWqrIoXYkuYdEmezZ2OOA
+	jts1C1nNJ7T2Gn/AKSaKbawkoLabDno=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10A9E4375C;
-	Fri, 20 Mar 2026 18:19:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC792C4CEF7;
-	Fri, 20 Mar 2026 18:19:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF39C60141
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:20:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAA6C2BCB2
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774030766;
-	bh=fhynckOY3YNY5Z7Vmj+3M9LO934fJkg+0qdwtO++Nsk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cet4N38qjcfMf1hg2fBVK/3J0TcvK5Mk9XFV6riNA9guHnYQ3YgtOKsHP+rmkWYr6
-	 rYXRmsM2aZqSY1A/mFeiQVZ07NhSrrijL6gq9mf3rgmQDl9FZZSzK/4Yr/Y6A8fPm5
-	 OEyBvZnOwUeTv9YxnI7x5f9WeYlMWV7UBnIkfT1gVY+PIvDElJUBkTOflo85rfxBVs
-	 nAKTPslk4lGymjYpEAxIBj9hHs21k2R8ATq9mp8G1ZbRZTFA4K1rT10A9RaFvBJry8
-	 zSNh2xS7oOi3lGYzxWkSLd/Fb9gPDybtiMzuM7yOYte0zRAgXpqEc/8vCk8YLItg5C
-	 rxtx+Rh4ZwmpA==
-Date: Fri, 20 Mar 2026 11:19:26 -0700
-From: Kees Cook <kees@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Andrei Vagin <avagin@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Koutny <mkoutny@suse.com>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-Subject: Re: [PATCH 2/4] exec: inherit HWCAPs from the parent process
-Message-ID: <202603201118.2F75F8D@keescook>
-References: <20260217180108.1420024-1-avagin@google.com>
- <20260217180108.1420024-3-avagin@google.com>
- <CGME20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace@eucas1p1.samsung.com>
- <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
+	s=k20201202; t=1774030836;
+	bh=/2FmF1+s9+JnUik8tx08R8i2DCSkv7HYbO/lzTxtn9o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qVMqG1mCerSIzYCTuYFicWV18EMmjuYGgjXj1gFLkmqNKhYmfOpzbDvL8pk4lKZEo
+	 t+sgjiQUYKtMSaFZ9JDu4IITHwDFHMGbKYwlSyNR8qurIyTp/nGn+kN03BKKq1jKtY
+	 Ow0Dnsf+ZxbAZIovTbiewSShLyruuRfdF49MqnA1vFjkYHF4xBbTak1UlUMgQZlgHL
+	 nZ6kKk1DkqCbNAMcZhzQuq+L6PONmDUntUiqS0PN4cZnk7C2+Oirj+nYlPhIxwqXvD
+	 CXwU/Fiqjk+Fw43KTnMzUK1y/W7myHVvCs016y4us934SnGaaY66ExLNlHOmhICOCT
+	 Kz6jZa5lMCsQg==
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-4670bcc40d7so758546b6e.2
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:20:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXObo4odPQGj9kL2y2FcuhUbAZPpaDYPHv2E6IQQLtepsyJuPJK/o2zxrWHucO+xW3CwmsKGxTqmg==@kvack.org
+X-Gm-Message-State: AOJu0YxoxkxJVUZz45O591WspSCcuNjzmZy3DIDUJxsp8/lZrH6NQ5CF
+	4c+AL5YatS9Vh39Kn++hug/vTldcXTx7g93QvTww2ic3PEgxeMsGQSMr6rDAa//ajknQSk/+2Ei
+	Z48BnzZB3lQOX2wdkFoY+0i2aREDouVI=
+X-Received: by 2002:a05:6808:1645:b0:462:dc57:f8ba with SMTP id
+ 5614622812f47-467e5f095d0mr2208888b6e.27.1774030835503; Fri, 20 Mar 2026
+ 11:20:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 456951A0010
-X-Stat-Signature: cyiop7o11t5jyshcxofeyramfrhbxycs
+References: <20260320170313.163386-1-youngjun.park@lge.com> <20260320170313.163386-4-youngjun.park@lge.com>
+In-Reply-To: <20260320170313.163386-4-youngjun.park@lge.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 20 Mar 2026 19:20:24 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gHTPCkVySAuPBkPoV=SwmBRG_c-TtPbz0CNsUUPEkY8w@mail.gmail.com>
+X-Gm-Features: AaiRm51AjAgtOUbYQswu1KWiSaj81rVMqfYBli5jqjANmDWpKKnCsKuexQlpqPY
+Message-ID: <CAJZ5v0gHTPCkVySAuPBkPoV=SwmBRG_c-TtPbz0CNsUUPEkY8w@mail.gmail.com>
+Subject: Re: [PATCH v6 3/3] PM: hibernate: fix spurious GFP mask WARNING in
+ uswsusp path
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: rafael@kernel.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, pavel@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev, 
+	linux-pm@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 74D8A140009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: uyqynchsk6pnadkgr3gcqauktp6ekfj7
 X-Rspam-User: 
-X-HE-Tag: 1774030768-592660
-X-HE-Meta: U2FsdGVkX1+GxQyZJErIpQwx6bMwyMmJPYGTftknI88tWc+5wZLYKK+iLTqSd9IZOJFapWRH86eFCoX7FLfJAgw8uMv4orGKDLr0lCgLVhuN+1AsIihTVALvaMYSI4qne8Zy4q8H7UHCubERjFt9lSa/TE3XEmisXj3LPYHbDkbF5MvO2Lm5zaX2vGbSLYtR9c7WFf8iyt1geYS6Kn9KcTNXOteoCqhPuRiiwIMm6W6OrmynbtAphLoYUFyUFsFq0vHiZr4xWN2vcyaNe5Br2X4Y3mJAfxb3ka41mUOKMCz603+24PfFeOIo+dv5nNRp9YlhRAKh0xwZxNfI4IBXHRq/ESTjT0Hfy6u7oKhG9UuFWFo8VRpXBiBMRYtvb7Fl4PhegeYSJNqW40+CCd23J9WdYsbQg7JDS4wxCTkENSEG2vQBdQLUskWoO/oKurvhFVwJoJoUzXG7CLF2ozJjXLOv12X1xzewaUv6T6uF+w5pLEx088uKS+X8strUHu1HzqG4SjxRdgPPPTXyIGyNEZvZzRNz27PUiwIfHbwKbSQK4iIlU3sKI/odxPypuadkYNQ7XQlvmRKG2MzIeSCzTV1MXruAn9WP+A6tn6A8Uia26SuFmxEQS/3iTlhgOmCjO8Teax6wlV8wUUG0QuCmO2kevKhmz2hlLgu9oto+mZuylltgxwwNBNUE0je6kXvUc8gHVg68gt5689NRyX3lPUODse62q49LgJlFViFqnUsyNIkV8Ih2HZFB8/XCTUz3UkHO6v1By6RqK/lDiTd7R11i/tZeyUa5cqhTWqeMPqtaRLMFGoxz/hU1ur3vG96FM1Jt7D6IzHn2lUvVKQeGb1aMj/TWo/DnxNvA2NZPa72Max8JoC0o9vdwHMHHROSWedIAWjyj9ZXLYrbvGSQDPjQ/Fd78GD/7z27UWEFHNCTqJe8SyL/gyDhfqBrVk01lxeGJF8wLKILEDzryif+
- lkaHsSdZ
- fteg1NR5l4cLxdk+HXgN8f5m7CHJz7sJqcFphMVuwqUCYid/GWPNZuAtDrHHns4YxBKGQ0IZS5IDTb5jdnR70+haG7u643yJqFza85bGpztJEosqnM6XiE2qKvwb2LHbeMzwxu9e/to3Ma2Z9APXud59kJHh544GRbGgxmf2v79bAIMYXR7sKAEUSo3dDaDU0j/MAg9PtXTj5+xtqV9KBaoBGXkrkVizJnuBItHfEMSo8zHwEFm1ym0ZPPR3KT6vRLRo1VyCr89Eb+rfnXekz09sKcmEFAIwdpacY1e7Rk94SJVoxxFcZWJK0FeX58Qt1K9q7fYsDxrLgia8=
+X-HE-Tag: 1774030837-633438
+X-HE-Meta: U2FsdGVkX190O8XbiBC+RTA0kcohH5PUsBnsjsZavzLwro0PO62fNnvLFDvBwhdxVlbsmHrOhGHUN9n29bO+cvt7YpAO2nOmo5Gqx4EyvMQnbarDYNFbjVk7z4pO4+0GDhm5L4+/GxzPO5Qua8Mv52ZBCN7MlMWDhqARWmGMTQDyive3d+Wiq01Eps+F+cLsuN+I8c6Cz/CIE8ivYwmWtDlCWxse083ecfPICHhTDhG4MJBwjUs55wgDrJM36lADhFWJC7qQXT4XdOKFPw/etkhFXUgIdykuBHRy217JmoAVpzIcysrv3XgjcXAPCsAVT0mknZR51FmVfkgv2Pno5cd3kiV0o2irQbLyYSPKg+oSEtanSDlu3ppKF8SodO+IV4l/72qUAVn5YcwlCkZ36xiBDIGHTkJy4qWR3X3VkLTac0qahSUkWcwvtcs9NVv9gKDEHoVLE6YK+VJLTDtZP8iCmMQeK3yeXeWs6xojGIdxYP+pHIC00AogN4SMTOLSZfnaHDeoAvkZj5F7q5gW9xxcBP7JvI+tly7lLvdAjJ6qtRcqTiau5lpVXjrdK7J0jrPPdwRwM2uUT7AZeRsJ6xSGcJ9GfuB/f+pJzP7UMrqFIPV7k1+Gntnp2KsWNjAozo6kxdwYHs3MumtUieW1fTzt34msIsCRtmm+AYNElPn8EeQfYO1IFgarg5ydlMVhVIfjKANrZRdKrGsZf5txDZZvDVrJBw7rxmuoIpb5Dzx/9BIlvz+yq7An5PdrswlmGHQBYKDLb1MmdEzqVBb2kjrxeVGBeDQFSvMzsPayurfgPe6qfGVQM39e/qhHC/jLsZ+CXBS8/nYvLi6pM9Rhjacj3yGXdElzaZpY8AfMIC31DSTHnSjGHwinsKIGKspMONtTTQTJYLSEKPYCdkWjT3fYVrcBgbZhVBLHpTPyeJV44s4gwONA9j2xz/3cuQKG6Zq6w7i55zwRIXm4wlV
+ T5NUU1lD
+ GDueu+qLV24wdSlZN45V7FWhf72S1A3GevGtSDOYrykDZQmiwutx6+AUGn7Zeo6167wAJIKaN+mllRzDrb7h/mo6Q5QHZDJ0HG16+A304gJiJVTaVJcV7N9DjqucDyWjRYYS1u30yr2eV2nM9Ra5byxc8lBa0vL5M3phi4CO6Zpkp634hkfE8Ct1wbsLMGiB8/pWKBbIcQ9+xD0MO7m4LcyU42rCrugmZNGt2HPu3PblDTY7v6TIw2kBoiM5632HbDFcpDPq+wN351ZwSoSFJN8+GsndnnrjotT9psBPQJ+B5y5kB50pMBDFrAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,63 +105,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 10:15:26AM +0100, Marek Szyprowski wrote:
-> Hi,
-> 
-> On 17.02.2026 19:01, Andrei Vagin wrote:
-> > Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
-> > AT_HWCAP2, etc.) from a parent process when they have been modified via
-> > prctl.
-> >
-> > To support C/R operations (snapshots, live migration) in heterogeneous
-> > clusters, we must ensure that processes utilize CPU features available
-> > on all potential target nodes. To solve this, we need to advertise a
-> > common feature set across the cluster.
-> >
-> > This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
-> > auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  When
-> > execve() is called, if the current process has MMF_USER_HWCAP set, the
-> > HWCAP values are extracted from the current auxiliary vector and stored
-> > in the linux_binprm structure. These values are then used to populate
-> > the auxiliary vector of the new process, effectively inheriting the
-> > hardware capabilities.
-> >
-> > The inherited HWCAPs are masked with the hardware capabilities supported
-> > by the current kernel to ensure that we don't report more features than
-> > actually supported. This is important to avoid unexpected behavior,
-> > especially for processes with additional privileges.
-> >
-> > Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-> > Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-> > Signed-off-by: Andrei Vagin <avagin@google.com>
-> 
-> This patch landed in yesterday's linux-next as commit ac8c259ce0d5 
-> ("exec: inherit HWCAPs from the parent process"). In my tests I found 
-> that it causes regression on my Khadas VIM3L board, which is based 
-> on Amlogic Meson SM1 (S905D3) SoC 
-> (arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l.dts). Running init 
-> process fails after this patch:
-> 
-> Freeing unused kernel memory: 13696K
-> Run /sbin/init as init process
-> Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000004
-> CPU: 1 UID: 0 PID: 1 Comm: init Not tainted 7.0.0-rc4-next-20260319 
-> #12369 PREEMPT
-> Hardware name: Khadas VIM3L (DT)
-> 
-> What is probably important here, this board (for some internal, 
-> historical reasons) uses armv7l rootfs, but other boards used in my 
-> tests, based on different SoCs, also use such rootfs and boot fine with 
-> yesterday's linux-next. Reverting ac8c259ce0d5 commit (together with 
-> 0ea77bbf3b98 due to dependencies) on top of next-20260319 fixes this issue.
+Again, this patch does not appear to depend on the rest of the series,
+in which case there's no need to send the other patches along with it.
 
-Thanks for the report! I've dropped these patches from -next for now.
-Andrei can you investigate what is needed to fix this?
+Please send the next version separately unless there is a dependency
+on the other two patches, but in that case that dependency should be
+explained in the changelog.
 
-Thanks!
+On Fri, Mar 20, 2026 at 6:03=E2=80=AFPM Youngjun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> Commit 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask()
+> stacking") introduced refcount-based GFP mask management that warns
+> when pm_restore_gfp_mask() is called with saved_gfp_count =3D=3D 0:
+>
+>   WARNING: kernel/power/main.c:44 at pm_restore_gfp_mask+0xd7/0xf0
+>   CPU: 0 UID: 0 PID: 373 Comm: s2disk
+>   Call Trace:
+>    snapshot_ioctl+0x964/0xbd0
+>    __x64_sys_ioctl+0x724/0x1320
+>   ...
+>
+> The uswsusp path calls pm_restore_gfp_mask() defensively in
+> SNAPSHOT_CREATE_IMAGE, SNAPSHOT_UNFREEZE, and snapshot_release(),
+> where the GFP mask may or may not be restricted depending on the
+> execution path.
+>
+> Before the stacking change this was a silent no-op; it now triggers
+> a WARNING when saved_gfp_count is 0.
+>
+> Introduce pm_restore_gfp_mask_safe(), which skips the call if
 
--Kees
+It would be better to call this pm_restore_gfp_mask_nowarn() IMV.
 
--- 
-Kees Cook
+> saved_gfp_count is 0. This avoids the warning without requiring
+> state tracking in snapshot_ioctl, which could otherwise leave the
+> GFP mask permanently restricted if mismanaged.
+>
+> Fixes: 35e4a69b2003f ("PM: sleep: Allow pm_restrict_gfp_mask() stacking")
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> ---
+>  include/linux/suspend.h |  1 +
+>  kernel/power/main.c     | 18 ++++++++++++++++++
+>  kernel/power/user.c     |  6 +++---
+>  3 files changed, 22 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+> index b02876f1ae38..7777931d88a5 100644
+> --- a/include/linux/suspend.h
+> +++ b/include/linux/suspend.h
+> @@ -454,6 +454,7 @@ extern void pm_report_hw_sleep_time(u64 t);
+>  extern void pm_report_max_hw_sleep(u64 t);
+>  void pm_restrict_gfp_mask(void);
+>  void pm_restore_gfp_mask(void);
+> +void pm_restore_gfp_mask_safe(void);
+>
+>  #define pm_notifier(fn, pri) {                         \
+>         static struct notifier_block fn##_nb =3D                  \
+> diff --git a/kernel/power/main.c b/kernel/power/main.c
+> index 5f8c9e12eaec..90e9bd56a433 100644
+> --- a/kernel/power/main.c
+> +++ b/kernel/power/main.c
+> @@ -36,6 +36,24 @@
+>  static unsigned int saved_gfp_count;
+>  static gfp_t saved_gfp_mask;
+>
+> +/**
+> + * pm_restore_gfp_mask_safe - Conditionally restore the GFP mask
+> + *
+> + * Call pm_restore_gfp_mask() only if a GFP restriction is active.
+> + *
+> + * After GFP mask stacking was introduced, calling
+> + * pm_restore_gfp_mask() without a matching restriction triggers a
+> + * warning. Some hibernation paths invoke restore defensively, so this
+> + * helper avoids spurious warnings when no restriction is in place.
+> + */
+> +void pm_restore_gfp_mask_safe(void)
+> +{
+> +       WARN_ON(!mutex_is_locked(&system_transition_mutex));
+
+Could this be changed to lockdep_assert_held()?
+
+> +       if (!saved_gfp_count)
+> +               return;
+
+Please add an empty line here.
+
+> +       pm_restore_gfp_mask();
+> +}
+> +
+>  void pm_restore_gfp_mask(void)
+>  {
+>         WARN_ON(!mutex_is_locked(&system_transition_mutex));
+> diff --git a/kernel/power/user.c b/kernel/power/user.c
+> index aab9aece1009..88de4b76a9dc 100644
+> --- a/kernel/power/user.c
+> +++ b/kernel/power/user.c
+> @@ -119,7 +119,7 @@ static int snapshot_release(struct inode *inode, stru=
+ct file *filp)
+>         free_all_swap_pages(data->swap);
+>         unpin_hibernation_swap_type(data->swap);
+>         if (data->frozen) {
+> -               pm_restore_gfp_mask();
+> +               pm_restore_gfp_mask_safe();
+>                 free_basic_memory_bitmaps();
+>                 thaw_processes();
+>         } else if (data->free_bitmaps) {
+> @@ -306,7 +306,7 @@ static long snapshot_ioctl(struct file *filp, unsigne=
+d int cmd,
+>         case SNAPSHOT_UNFREEZE:
+>                 if (!data->frozen || data->ready)
+>                         break;
+> -               pm_restore_gfp_mask();
+> +               pm_restore_gfp_mask_safe();
+>                 free_basic_memory_bitmaps();
+>                 data->free_bitmaps =3D false;
+>                 thaw_processes();
+> @@ -318,7 +318,7 @@ static long snapshot_ioctl(struct file *filp, unsigne=
+d int cmd,
+>                         error =3D -EPERM;
+>                         break;
+>                 }
+> -               pm_restore_gfp_mask();
+> +               pm_restore_gfp_mask_safe();
+>                 error =3D hibernation_snapshot(data->platform_support);
+>                 if (!error) {
+>                         error =3D put_user(in_suspend, (int __user *)arg)=
+;
+> --
 
