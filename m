@@ -4,124 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B7B2108B8E7
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A20108B8E7
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 10:04:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48536B008A; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
+	id 3FB966B0093; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B21BD6B0093; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
+	id 3F4606B0096; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A635F6B0095; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
+	id 2E4086B0095; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9832C6B008A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:04:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E38086E54
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:11 +0000 (UTC)
-X-FDA: 84566005902.09.5E5B6D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B04C3140002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vAzNcrs8;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 231726B008C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:04:35 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D48CCB4D26
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:34 +0000 (UTC)
+X-FDA: 84566006868.02.D85043C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 36AE38000E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:04:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnKdhq7Z;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774001049;
+	s=arc-20220608; t=1774001073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TO1zuzNcun0kkWR0GSCmWT/+8q/5K9hCcXkZoI8wkhM=;
-	b=MgMX49HoonDPruaWtdmUzliTNEk1z6O0HssZ9MIL65ZZ5u/o/Vlqmnf/tkewHe6709iE9r
-	z94jvQhh6eAHJsziST1iVCsjWFYiVjsw9Gb6XzZ0tZabDc8gxys332bULEPPLNsHvF2JEg
-	cuBp32Uh9VP1jeVIt7aV2i1B7Np4cO4=
+	bh=ZkaK0jp8AURaVjtoPDIt3ra4kvTLcpvtqoz14lJCvvA=;
+	b=PQUILYZYjqPJFYniQwNdXQIKW8blLVVxxX8U9TcfrlTlUwTlEO1rAOjc0oSz+lNrnfYylR
+	wXBmbOMCwKlR7JqXEFlvMwqXLH+LLLw4NPnySw/EoGpQwRF1+U9ua7iKan0N1HkwUf92vn
+	jdFNy0ZWMIH/Sq2p7v7vQLoq3Udz42c=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vAzNcrs8;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnKdhq7Z;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001049; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774001073; a=rsa-sha256;
 	cv=none;
-	b=C4lhRQ9hiJLuAY8FOuVPxJqXsypcg71vqQh1QwfIMNqRDgJeYKY8ZROkAiCL2EyYSD9d5A
-	kEOaVBpailM4MUnVHoQvLTq1QN8N7uBS8nHpE7VhTRjvVoUSCnwn2/i5We5d6Y+YlVIzQU
-	6kN5D00FZAbdcuREbo09f5o3dRyxLuo=
+	b=Na57UIbxNwUc95V1UY555t9BQlhNVrebtUdyrKODABqTJAKMHBfChIvZfEp6PrE0jMNFKN
+	X+LJaR/As0sVBzSrIQdjrZNt0jXCFCU5ikTkTWJx1luJjBT7nSo1UWXEZAUR4Jkxw4YHCl
+	RUBQb24/DVvonnU0u+sk+rMd59m3EpQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BC3CF60127;
-	Fri, 20 Mar 2026 10:04:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ADDC4CEF7;
-	Fri, 20 Mar 2026 10:03:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 47B3A43616;
+	Fri, 20 Mar 2026 10:04:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681BBC4CEF7;
+	Fri, 20 Mar 2026 10:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774001048;
-	bh=NQpsBeY5EaadXVFBxdOq2KBH0GUNgPBbX8h8P+4LcqI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vAzNcrs8BNxVujqkG0WrRcxfbGidYf6UY2B9j2wpPS73gPa9CErzvvHuXkHT5s3MR
-	 5mWouqCj4ulvQYSX2gQ0oeuYWbQhMr3B0IR/nJS4TcF+OEjR+zmBU/sIjqSVVSsL0W
-	 C/IK4z4Z23+U0QSh28UkwodQL+Mr6P7XEcQVKXPrnIIRz+UunLW9iJ2nh7O8NTsA3L
-	 MG3EwvZtxvk5AOmzYxXXkBtommmTKLw070xlnQs0ejRB5W/N+Ch44k1T2oEWB2N2GH
-	 SJc6rzEWEiFmEyb28TIZla0WZ1PJY1+D/NNbiLn70ecSKmqZcRVkafJSgmy4rT5CHS
-	 kIduEphstAAdA==
-Message-ID: <1105e346-e850-45c2-92be-6c255a110658@kernel.org>
-Date: Fri, 20 Mar 2026 11:03:54 +0100
+	s=k20201202; t=1774001072;
+	bh=LDVybf42Q2KTdg7Be2F4XoTTGe+eeaDsULIItrWRECs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qnKdhq7ZC+G68GWkOy0XtdMNfq+cE1+I4PhfcucyCKNZDbeR4nyhl2iS+k+EuZLxH
+	 Tu0BPdwCMZe1DRvY5CvHPb4F80ALcXQJ2hs7xWpNsqDWTVSG5YMnUCz0SSilqQGf/T
+	 +E62zCUu83rI6F7u/V9+tRjeiyansR+NEdfraVWXwdHtd4w/KmxKP/Ia2cKaUQIZ/C
+	 zn+l0gO/cBBykGd/2iQS51w4USoW3jqJetOhIYxn5XDuEa3nCpNVifiBhe+OH3nLYb
+	 hiDfHH0M8JCruDUFwIAwY2VLXBg11ol4LV1f7r6Y1+ZlWZodxeGxr61rVdNsrZx7b8
+	 sxQvA/ku8tqOw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Chenghao Duan <duanchenghao@kylinos.cn>
+Cc: pasha.tatashin@soleen.com,  rppt@kernel.org,  pratyush@kernel.org,
+  akpm@linux-foundation.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  jianghaoran@kylinos.cn
+Subject: Re: [PATCH v1 2/3] mm/memfd_luo: remove unnecessary memset in
+ zero-size memfd path
+In-Reply-To: <20260319012845.29570-3-duanchenghao@kylinos.cn> (Chenghao Duan's
+	message of "Thu, 19 Mar 2026 09:28:44 +0800")
+References: <20260319012845.29570-1-duanchenghao@kylinos.cn>
+	<20260319012845.29570-3-duanchenghao@kylinos.cn>
+Date: Fri, 20 Mar 2026 10:04:28 +0000
+Message-ID: <2vxzeclebyvn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 18/23] mm: update vma_supports_mlock() to use new VMA
- flags
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-References: <cover.1773846935.git.ljs@kernel.org>
- <8bd076169508ea4640f66f91c4b84b433a3476f1.1773846935.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <8bd076169508ea4640f66f91c4b84b433a3476f1.1773846935.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B04C3140002
-X-Stat-Signature: 3x3f1ydxh4d6awixhrya8acdzqaqmph3
+Content-Type: text/plain
+X-Stat-Signature: ssifppj3qzz1ho6i381axtzidooekdah
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774001049-484247
-X-HE-Meta: U2FsdGVkX1+VmGevAPNedUSWdSZhObDYCl5gW0PNeB1ZQTI9t164uXib9wTPHg+My8OVY3QW7KALnWDpNsIvkw4sioi1tLDFycJUpJwGAxr2MwxkoIcp31cfT73wDp8LUWcNjaWI2vFLZuDr9I844DAvSjLSttLejA35fm+FruWfcJzpVdLI46HQNoJdwGeMhBAKU+XhHkLzLNNFXqjQcqlgAI3mXFwEVDffOmih4Y66qn89TVRZnCrYi9/G4jlONKxLXO3/ubu9OAYMcGVJKzUviiTEsFKyqEM0ulQ2i+PxwtRb0JH9PqEW6Uu7/qOWt2FsnYAlej+R4UdNOMBcyIGsrrltnoB6AaEPIjZp524ZDpZJYypAfH88wQaMoqEK1ftsR/7swPRpPBboOFbtqnFpsorg4thdp/jMQ8/P0l7kUpguaBz9WvgRkR9+RYCR/pYYW1DEupWC+vRbee7NJ1+mw64Hr+xwK4kVQu0AKQHBhJyLBqtDwKC2kSAjbFzqU+6R8LLRJoPrFu1rQ2A45APIsecGzSmqS2a1RF3sKAoLJtQJ59OPQ+Uv3QT5ztjqyYD/vFBtWwsldw5jrG9hgsf8TsGjXHeFl/0+qaiyd0vkCBwjaS27ucY8L/ENufrElU7i65pF/7D0ykE+JsQlWtNjjRx47v9reKS9vCoEOzMCb+daaPua7itqjEXUStDmsfh+chppE3WLRxAjWFw2isCjdxOqtyHZ4yD201K82pm48h3NPJ6uITupPScPZpYz5nhWAsYoQL2pQyvO+DkMFTROPKy+pMEjdVBQmXlEVcOfrffcK1o/aqVVWIk3tpHw7YWwqn7cP+Sju6v6XnZ3UG2+RdX/3Xafcfjz9pAEh/5EkL+kHNko2IqptoaybWYw53gZqpGFPUxZjsTY3kWo6fk94tgPe/W5mAitGFZ2C+Oy2hWbDg8QofgDvnRJVIYH+eZxAV0i9Dlmr7Iz9Mz
- 0C44aw5P
- 3TK8dhnQhDzgUld+QYcyAHW3BEHOf0J53GtLcQlwmXAfKtmAQpfkQs0OT8YSgBio7riIVR8diFtkNlSIAv1T/87HWDunwXH3x7Zri6naQY/d+c7zqW/Lk8wHDxy1oKfvklTnrrPoeJrvyQDmlEZJ3J13RJBZci6nTOdYhxbwBHbZnOyV3B+FfHbqnCMZsWebYlfzqOzy9it8NdNhQqjYMrn1uWd1IGqAXrrgKjTtNTy2fVZP4EqSGA2/sT0xzvkL9eVXbNx3LBzyyobHFBzulVhTVBlwd7mTdbJVSYWJY9vvkhlRzyOOPI7UnJjZgpMbgbc2nl0Ewa1F0Areb7zdHcWRt7g3Hwz7f+W8fGPigH4RiIfGaBUAIpKeEkuWriH/Z8/EH6mgy3bCaWLM=
+X-Rspamd-Queue-Id: 36AE38000E
+X-HE-Tag: 1774001073-348387
+X-HE-Meta: U2FsdGVkX18fDIOFOsWtCkKip9w/e1VEXuTZlMlhXY4DcJ0khtyziEc0DphamKrICPborruY0w9IxctzL4a/3MTON+Re3ui9Bs1KcGfHw2FY1Eoh2DEF9NVqPbMCS0rVN8fV4udQmSuV3SOhw/FzssQt63Uy66AuKWhcrbmAzSBXtKezIzFZan5IcnvmGKsXxBWCMOYouRZAqC6YifYETOwTweST3Bucx7hYl1zwLbFD9VqC+Bho7udt3x/P9FyWE6/bVc4CT7GIsp/6Dl1jzGOEhfTNPlzxtKxMZ4VAkg/kLkEwqWV7umy4crrniknXNS9bo69Oz3tsUlyNiMGVv91Ny8ekejEP6bbbezbaqTMh6xREA+rRow8tRBEq9vUm9NJVwmFQLJhnzb4KbYVFBZpmlVbbuwbgOYi2ih+L3IR4mzOxyA7b3cqBVDRja399ZNy0B49FjWNWaJtU2hRasFeGMlf4710fEAqcSLDNjPhMxMMEy7nb4fmzR+QdAT/pBV9aZfCmLsZ3ARcLhKvKaGEiUACu7OyhhwnQygW6Ie0rd2o4kdWiyOXxH77TG4IybLqMj8mwVGqHsC56+KSzweNOaCyoF8TIjsT8djjs3UMXgHI+1DNAJgl79v6pjmP9rnm7NGH37dXfKRkHSbCxeCcT2r3N7pPAZIIpjHIe0DlOHcTZpTPCHJ8u8NtIeYZ3YBpDl2I9NdT0sZhrK9+XVKeeqFHN+rFWHe5u8fAgRj4ctqEJi5sBY/mLmrnvuvC4NSlVQ4s4CvJ2xX3NKCtCsDmCKth8ecB3TVNgWWG5NrTSdm2zxKcP+LBKr6IVWBhCwufuu61vxsAXsv0VHzg4em4O/700K9EqiKV552dPl4jt8rucH8GDbj/zSb6CAG6De7bOaYOVdTTWeLC06lDIGpTBfxquecxyOndo8lBzYVj8CzE6VSbl626jEGVnQhYgvPoIAfUWA5XA1CxnYzZ
+ 15pb56Af
+ HWa7d/QSFpcEzD2Ot+aDI45TcyUz3sSHa1jZsqaHKhL4As0SdT7jYLpdm00FoIoJFNXQ6ADuqmI6kj/8uJUDdknOEG/oMBJb99j0WFLOSmHK4gi7SFLV7VnKO57aJpdfeaXK6bS2nf0PEVED11BvaEO1dek7gSr8hpvEEfN9B2UU5gzwngBVPwFRPKYK1Ghw77zwxJ2vHVa+lTfZn4xwPq5xRrlVYpKNRlgYJT8KBCyUNKNEbZ5L3+9m1Ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,33 +94,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
-> We now have the ability to test all of this using the new vma_flags_t
-> approach, so let's do so.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Thu, Mar 19 2026, Chenghao Duan wrote:
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> The memset(kho_vmalloc, 0, sizeof(*kho_vmalloc)) call in the zero-size
+> file handling path is unnecessary because the allocation of the ser
+> structure already uses the __GFP_ZERO flag, ensuring the memory is
+> already zero-initialized.
+>
+> Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-> ---
->  mm/internal.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 80d8651441a7..708d240b4198 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1252,7 +1252,9 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
->  
->  static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
->  {
-> -	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
-> +	if (vma_test_any_mask(vma, VMA_SPECIAL_FLAGS))
-> +		return false;
-> +	if (vma_test_single_mask(vma, VMA_DROPPABLE))
->  		return false;
->  	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
->  		return false;
+[...]
 
+-- 
+Regards,
+Pratyush Yadav
 
