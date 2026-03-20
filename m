@@ -4,97 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0EDB1098796
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E421098799
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:19:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECBA56B0113; Fri, 20 Mar 2026 11:17:39 -0400 (EDT)
+	id 35DAE6B00D5; Fri, 20 Mar 2026 11:19:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA34C6B0114; Fri, 20 Mar 2026 11:17:39 -0400 (EDT)
+	id 334E16B00DC; Fri, 20 Mar 2026 11:19:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB8EB6B0115; Fri, 20 Mar 2026 11:17:39 -0400 (EDT)
+	id 24A2D6B00DE; Fri, 20 Mar 2026 11:19:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CB6006B0113
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:17:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80DD81D3A9
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:17:39 +0000 (UTC)
-X-FDA: 84566795838.12.2F85DE3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B6F7C140002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:17:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sAZHewiW;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 151346B00D5
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:19:30 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B56151C7D6
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:19:29 +0000 (UTC)
+X-FDA: 84566800458.18.9FE4355
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E74A44000C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:19:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="NpHGCt/b";
+	spf=pass (imf11.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774019857;
+	s=arc-20220608; t=1774019968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y81w8+nWcYaavUrsZIUEB1oSlxDqwkIWlr6MKQodSI0=;
-	b=Ly8GbKjpOqES14k4ZeLr0ET5Zb+6yeTu/yfIbts/KwfOx8T6cM3iW/7MFWS3oT003Y8y0I
-	bFYXX0m7mRe4bMryPu9wdQRIrCXkoauk/JzkVFu5+9ILWbcu5zyv5KFCTx6WlRDsxvS3BB
-	xb7Htgm5601zXBLam6jmF0QMBp6wX/g=
+	 in-reply-to:references:dkim-signature;
+	bh=gJXfrJM5Axcs4mIPcLUpwZQRQCYj4MeMmndNb0jmT6g=;
+	b=C6Qw5CybBwJMrT6Bvbmc4DWjvCkQ7EoewDqnvgpnXSFFbXPRV6W0RUKKQRFycALzopyl2r
+	8o7Av80mVSrLYrl2LCCCimLSZtfWOHbNzLcmnpCMDTt0WZ8a1WfIend0uNkAdpZSv8rJfw
+	rK2eUGjYSyCfXKV4CkZAdUOUofpqszc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sAZHewiW;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774019857; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="NpHGCt/b";
+	spf=pass (imf11.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774019968; a=rsa-sha256;
 	cv=none;
-	b=YsKdYC7uwH1x9avL4FhQLd30SbVQJJtIUhs3W/4nWAWXyyi+fTBUb6H9xIfmjAVhkAVuSY
-	xZZEnCtAKJknoFtmGJRzo/NVhLHcH7yzZtlcyaR4n95B1uZ6JZdRM5lK9POW9Xw1CMrasy
-	XTm2i+NcPAGTAPLFCENLNdnH54Jf2Qw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1F4340C1A;
-	Fri, 20 Mar 2026 15:17:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D489C4CEF7;
-	Fri, 20 Mar 2026 15:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774019856;
-	bh=grkTVeJT4rKD+G/1Q+egwehQigyFRB+VPVj+azdo7e0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAZHewiWExVTt/zyFbzLIdCJD/bpTcUx3fFXkZjbR6wKEsW7ip/YwFCzNC3CwykXJ
-	 w5UpXWdWe93cL6g+gJP9CVwYzxK8GOTOvJ3lF6Wf0AI99wfokjkUr4VCd2AJBtj7AD
-	 pa5VlsXzi8qcT9RN/YdnAypXmVremhTxo3nY7+Ttpxh1U/0D3oBJUqjmUzn2ju/SAl
-	 6YEffy743Q1F9GS390x2hrnmTUIitsfIoIPLHulvQOHVVDK8kDbIn6CoF0Pfx8KynQ
-	 iVY/NTMjmlGIlL3O8xkQBxLmSg5GkZSjX0JEmvcvLlPOD9x/FCx97QX8Gu/v4cDPrQ
-	 hQJlnR4iloMjQ==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	b=b8WiuPVw7y6U+oWqoNQHggKGWIW1QFDL/lkuakkZMXp1OGXRDeKUDVJyBwGIaSHAXXJABz
+	Tqv2ijsRWtcPZzxREyONvBMFdqsAlgpEe8IL4cKTJS3b2RMyYnYrWDxPN1ev12qoBEzQJU
+	ENs//uWontSRPlY+ajmTs1v3zgG716k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1774019964;
+	bh=3oG15JOGt3yWldT/mndyrAyBX9KOSHWNpA76HB1szSE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NpHGCt/baiEmmxeAswhRZVW9QRMz2k/if2v9ItV/tYOWAycWnpIfCT74z4kyzwteD
+	 yBcuxQ9sB+MREJxp0ssPSvQXQV9NyQGmtWf1opnlOZFHJ4HG4Zp/U2YafR3MrIQaSf
+	 FIK5saD1KL9uSZAorBJIfr5m1tRTybVaxyELe4jR4VzvvFrWb3DQ3//fWVbDt91vQX
+	 mA0BIHPan5fDBBBm8hzF+BRzD41tQrkv28a60mFNThIwE7HSQgJGLEYPl02v5+MZxw
+	 tbG1T4qArs2OI3TRKSODl22UkZE4kvAN5REnFT538tJ4l8mBNdWMlLyHjFdrCooxVs
+	 xbfYni2PdbPFA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id DA26917E026C;
+	Fri, 20 Mar 2026 16:19:23 +0100 (CET)
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org
+Cc: David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 03/10] Docs/mm/damon/design: update for context pause/resume feature
-Date: Fri, 20 Mar 2026 08:17:28 -0700
-Message-ID: <20260320151729.99156-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319052157.99433-4-sj@kernel.org>
-References: 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	kernel@collabora.com,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Subject: [PATCH] drm/shmem_helper: Make sure PMD entries get the writeable upgrade
+Date: Fri, 20 Mar 2026 16:19:13 +0100
+Message-ID: <20260320151914.586945-1-boris.brezillon@collabora.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E74A44000C
+X-Stat-Signature: oyxbaynckbf9zfcehydmywj7b3djy1tj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B6F7C140002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: hpjddermubuf35q1cdprofatgpepkbtg
-X-HE-Tag: 1774019857-438175
-X-HE-Meta: U2FsdGVkX18KrRuOLd445rHUiLzAY7eLaf4JyQxuis9pw/sCkP7MFcV4HkyHCz9dkg0gCL14Gc08+ftl6Hz/IN5MEzKwrjqQpD8thRBJktYMXJPOYYIGE9PVKX2TmiJn2gdrZhO+4tQA8t3NK2x4l6nf+QS6Hmum+HjAWkOgfd5hyTkknvICF5YjEGQ/WBFVQy+uz4yUCK9b1DfmdVCxwtgcDAygDkO6zdSlDPn5E2WH07wOqG38VW0EUxQglRLGYgEmdid2VkqMRYGemJ9YadbjITcXD7jTtu9qKdxSkGzjz3+IriW955lZ7Az23AHG743uy20ieKwKwzr1NHW5xkC3UR5FO1mcObcGWcF5QqcMRtrxhW8hQQcb+KHkIKZzaTSDn4KVm0T46gx4D2G/idHrv0u2RGP0Td4LqJrwrVSHdc/oZULzF7drMVaRQjbG5F3p0Rvi3qo+4V1okBVcQJ/7g1FvH6A2awDBhxGe5nWuQYqNqAhL5XqIg4siPdi9l19VaI8fZfN2tQnEeUIwJBxaMbRCHUA4WZvfukN3MSkBiLZI/sw6o+8DMHjsLQTwY5eVMFL985BFPe/18MczWgcWrS6uGUymcJHr+o7kxwrHqc785viRf0683uaqv54xmXAF9tjb4+ty5XFZ20uftojRD9KxARFZKLjseJtyhwOEuvvWVMGUt5BjssTezBp83erdjXzPREZ2XnMPduWs2h56gMgTM64WxvMzwGzjVp9TSqvTQkxQxjYUy8xPhzIL6pd1Rp9vlR7ULEr/gpG17cdYFAEvghqx2zwro0o9YdNjnHc6E+4p/lkHtJWP1L0ilV9QNIuTkU29leKJZGaFkKxE02d/ESm9qRL5Ed3dTwi0Lis4TNTdDkLdlZWu2XpWFDtmxEw70lpHoicGh5NVHVXM5RZQOzIk//CFp9ripoKDC/b7dM2o447bGFA5HyFzzemWxKGXUFF+Wc92kA4
- aNurfwvU
- 3T6IlDAPb13pv69Q1bBxg6UUcm5pPawECtKc32u02Y6FipmOV43EJEDJPWXmnOK1VRxADVYJwSEP4pIQ2B7mytZn23NkZFKBw1L0ydLaHj4T2zTWOVZLKhiW6KwgfJ/BUDMnTIjsJViixSTheMDVkTWU2nLpDLfMxq3FOwoO47AqCssQvxO+0ypUWw/LQdHWaXc2296enOc+/4A4qywyJsMu2zFImTxIYg6fEb1BYBxyPgDUukzkqt7HhIQXl6I8AEO7fUQT7GANmM03n4JNcJ0VNVhTk+5lpiQAH
+X-HE-Tag: 1774019967-648527
+X-HE-Meta: U2FsdGVkX1//LGAekqDknDsEhISPeJJUw3FDforBaXKBwNphIT9nf+nXhQK+HY63hICT5m1kJLC4nQdmRL+qpmwARGA6c2wAR9e95rz5PiXNEZr5VADCS4AzBTewiVZ57TLh5ycRF22pobFMyoEPIrGdRsnfdd506ZtlhkCU2Laxc33jdq6URv0PbbxLncG8wvl1JxMTD/VzCG5UminlUhSnYtZUYv0mJIxO/78xljBS8v/Pu2/cwx1W1sOHILFBq6ks6fyHuQNggf/hfIeYOB0t9crPs4sWLqXM3gaNsmQJRKe/WX9dqKHnBA3ImBmYSTc1cPK2y4ebOUAm+H+KxiuPBSlzwkKhZR+r4Hkz0ip7tqUwHNA0bqvDcTEGv5/jRQFafawYFklzB9FC5Os89CvG3dMGP34VoiVQq21gzLShlR53Jkc4AAUZ2qz3A4jHBgzQMARE3TNXkSlspnFdZDdVX5vjyKGv52C976ER8JyfLifPKASd3Ry2sDuiN4PipvtCodXnQiUc/AYj+ey2LnSQ4xM2tPW6MHOSeDiVbhyU+K/zBhMVAA040AqQ5ZJ1AqxDlfJUT9SJPcgUAON2ldIZjdUUb3X43mmUURmwQ0ag7L8cG54GMCzto7rSCDXt3qFos8KZONEDNlhFQmPKzc4PqbJJt2qjgEIyK1lVQVRFqDKnseE9urfc9D1enchGUtqavuJtn7d2DU8L0tUOTFQrjGGh9yD8s5pL56KFFekd53QHpzx3CW+0twJLORGaJBrBtS2WhMvXCWiBOoyhLC8itm5yE3JmwAWvYhD4g26xb5pAJbcgvHxCw2sF6MMHAh5LcJMB/E2HuNIrcsOJUEJldGPyOGoUUwjkkqsMMtyWj5hYdY4BYCi+9CIJb6a7bCr93DwMNo2zAKuunCJjertoPUsJzcH2QarB6EH2ViPsKWAq0bC9RXS7JJlQdYlVFyMaBdiy9/NW4nspbXY
+ 2QKEDhYo
+ p1dh1BRH9hgiHfuviFjvNGouLYwlXqzkne/9LaKbNzzoYJNv2nfzyDWeQ8Rfx7ZQhhIspaE2VwG9yMMU/Tr1d5RaqAFjriKUxMkjhoNXP98/JLSGSfD9NmFwdc9IhiPs67rJl8NBJpBL3yYHZBsBTboVvbK5004+4Mq8wtwyC+i+0XezB103PcTsvaQVsZndim2ZpP5pmuYb3j//JP3RA+/IgSIfF1RuObM+Am0LT8q+9aAFwgBpmhA7I6FJv3PvYbOE3au38z6aSepteNN0XKW9uJhzeyD/x5acpwk1yGSoG18oxVfGpKfCGgyW2/OAjogyCaveoeKHjgLcMaohHs8JBvfxpct2Q9oBnW4tbcH8RviyyH/BRv/8eB0pKGTZZtXc3BOrdJ52plrsU1nHJhSB978fO8jen2OOQmtsitl9kpLDM+ssrn2B+9TChYHWlME6FJ2Jyk2aXCapqaqNbVSurE4SWd5zVs1j68hUGaj12diA0XvUwssb4dqzLq27vUpLYKZbQyYnbbd6ucsmbP/vlXy7uNBYaKnmx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,43 +110,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 18 Mar 2026 22:21:46 -0700 SeongJae Park <sj@kernel.org> wrote:
+Unlike PTEs which are automatically upgraded to writeable entries if
+.pfn_mkwrite() returns 0, the PMD upgrades go through .huge_fault(),
+and we currently pretend to have handled the make-writeable request
+even though we only ever map things read-only. Make sure we pass the
+proper "write" info to vmf_insert_pfn_pmd() in that case.
 
-> Update DAMON design document for the context execution pause/resume
-> feature.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  Documentation/mm/damon/design.rst | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-> index 838b14d225193..e2e4fe3fb3986 100644
-> --- a/Documentation/mm/damon/design.rst
-> +++ b/Documentation/mm/damon/design.rst
-> @@ -19,6 +19,13 @@ types of monitoring.
->  To know how user-space can do the configurations and start/stop DAMON, refer to
->  :ref:`DAMON sysfs interface <sysfs_interface>` documentation.
->  
-> +Users can also request each context execution to be paused and resumed.  When
-> +it is paused, the kdamond does nothing but only online parameters updates
-> +including resume request handling.
+This also means we have to record the mkwrite event in the .huge_fault()
+path now. Move the dirty tracking logic to a
+drm_gem_shmem_record_mkwrite() helper so it can also be called from
+drm_gem_shmem_pfn_mkwrite().
 
-Sashiko comment
-(https://sashiko.dev/#/patchset/20260319052157.99433-4-sj@kernel.org) below.
+Note that this wasn't a problem before commit 28e3918179aa
+("drm/gem-shmem: Track folio accessed/dirty status in mmap"), because
+the pgprot were not lowered to read-only before this commit (see the
+vma_wants_writenotify() in vma_set_page_prot()).
 
-: This isn't a bug, but the phrasing "does nothing but only online parameters
-: updates" is a bit awkward. Could this be reworded for clarity, perhaps to
-: something like "does nothing other than apply online parameter updates"?
+Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+---
 
-I pretty sure Sashiko is more English fluent than I.  But, shouldn't
-'s/apply/applying/' ?  I will update the sentence to "When it is paused, the
-kdamond does nothing other than applying online parameter update" in the next
-revision.
+This patch is based on drm-tip [2], because that's the only branch
+that has both [1] and the dirty tracking changes that live in
+drm-misc-next.
 
+Also added the THP maintainers in Cc, so I can hopefully get some
+feedback on the fix. For instance, I'm still unsure
+drm_gem_shmem_pfn_mkwrite() is race-free (do we need some locking
+there? should we call folio_mark_dirty_lock()? should we call the
+fault handler directly from there and have all the dirty tracking
+in this .[huge_]fault path?).
 
-Thanks,
-SJ
+[1]https://yhbt.net/lore/dri-devel/20260319015224.46896-1-pedrodemargomes@gmail.com/
+[2]https://gitlab.freedesktop.org/drm/tip
+---
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 46 ++++++++++++++++++--------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
-[...]
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index 2062ca607833..545933c7f712 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -554,6 +554,21 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
+ }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
+ 
++static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
++{
++	struct vm_area_struct *vma = vmf->vma;
++	struct drm_gem_object *obj = vma->vm_private_data;
++	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
++	loff_t num_pages = obj->size >> PAGE_SHIFT;
++	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
++
++	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
++		return;
++
++	file_update_time(vma->vm_file);
++	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
++}
++
+ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+ 				 unsigned long pfn)
+ {
+@@ -566,8 +581,23 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+ 
+ 		if (aligned &&
+ 		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
++			vm_fault_t ret;
++
+ 			pfn &= PMD_MASK >> PAGE_SHIFT;
+-			return vmf_insert_pfn_pmd(vmf, pfn, false);
++
++			/* Unlike PTEs which are automatically upgraded to
++			 * writeable entries, the PMD upgrades go through
++			 * .huge_fault(). Make sure we pass the "write" info
++			 * along in that case.
++			 * This also means we have to record the write fault
++			 * here, instead of in .pfn_mkwrite().
++			 */
++			ret = vmf_insert_pfn_pmd(vmf, pfn,
++						 vmf->flags & FAULT_FLAG_WRITE);
++			if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
++				drm_gem_shmem_record_mkwrite(vmf);
++
++			return ret;
+ 		}
+ #endif
+ 	}
+@@ -655,19 +685,7 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
+ 
+ static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
+-	struct drm_gem_object *obj = vma->vm_private_data;
+-	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+-	loff_t num_pages = obj->size >> PAGE_SHIFT;
+-	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
+-
+-	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
+-		return VM_FAULT_SIGBUS;
+-
+-	file_update_time(vma->vm_file);
+-
+-	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
+-
++	drm_gem_shmem_record_mkwrite(vmf);
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
