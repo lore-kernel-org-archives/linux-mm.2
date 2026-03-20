@@ -4,97 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC051099B32
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:14:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C3501099B33
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:19:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B93D6B00A1; Fri, 20 Mar 2026 14:14:59 -0400 (EDT)
+	id AAC466B009D; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 091F16B00AE; Fri, 20 Mar 2026 14:14:59 -0400 (EDT)
+	id A5C6E6B00A6; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F10186B00AF; Fri, 20 Mar 2026 14:14:58 -0400 (EDT)
+	id 94B576B00BD; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E202B6B00A1
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:14:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82DE6140278
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:58 +0000 (UTC)
-X-FDA: 84567242676.22.40C74FA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FD1F6B009D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:19:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 322F1584C8
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:19:30 +0000 (UTC)
+X-FDA: 84567254100.11.08F3FA1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF7EC4000E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ee5VGMoe;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 456951A0010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:19:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cet4N38q;
+	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774030496;
+	s=arc-20220608; t=1774030768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JUxdoo4poRF4jK1QqjZctec0Mtz1WV0V+FrsQzJBpog=;
-	b=r0PiKGHDhnL1H/Hv5xXO8QWn1S233CQBigwUHdS5vw1sdCKBUoszFH2rN47GQ3L3vkciXs
-	8Znl2S9Lw/6IFPmotUwcjmy9hHB3D7A3udVZZEb2ZlOhxjWPS0YaPysIx8K+ejJml2G8oa
-	jrLpWew7H5Ggqlu8ys3H9PvXleszgSA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ee5VGMoe;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030497; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fAqmIpfQANEAuEJCQspIG3/xHFA3afWxbUMTE97V27Y=;
+	b=JsIuNzIwv0UT9xoU2Nv082UP9QW4rtTRiA6RRYsXbGEvOhJ8zJopC59dxJmLd0KYkv4P1l
+	5KH0DTSVUYkx+0e/umeH/pCwNa92raViJKkHCLQahy47C86ACM2TUu/yYj1hrXhMgWb61S
+	fe6jAulyVD0x1yh41VqpHI6d2xE0btg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030768; a=rsa-sha256;
 	cv=none;
-	b=0tq5KQrFjflnJ0fAhzyCK4aKbppGvVt4mMoegGF3kzehsc4z+DlxZETFWujU8VxqnYWm6l
-	+v65BTLA7BLTewVYyQxgaXrzJL3/WCsAvA5k+I1fLgbx6VOYAICp/kMmSW4N4VcqdXfI1+
-	UjZLnvqOz+aGhyzgIcE10RNhB6CNW+o=
+	b=FWz/eyaL8AuFMFDVxqZpfGtRGp7m5u2/BxNbxrUL+DZI138LCh4p2PV9fjR57eQw+Lvxu/
+	PUfaJFbp40X9OLLxlhH3pE6a/m6VnIRN1bRp+Hkj2O/FGYGeAXf1a/+X015KDi+yRf0Url
+	dRW7IS99BGUXxmVN5qKtFjp4z0EZbHw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cet4N38q;
+	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8ED5E43B13;
-	Fri, 20 Mar 2026 18:14:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E187C4CEF7;
-	Fri, 20 Mar 2026 18:14:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 10A9E4375C;
+	Fri, 20 Mar 2026 18:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC792C4CEF7;
+	Fri, 20 Mar 2026 18:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774030495;
-	bh=2ud9VVAGIb5J70qS+Aq6s18YBJv2+0N0qOqGnKGdgDk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ee5VGMoe+t1f0NUSaMeg/sco6qzmM6ZNRxu4N8IG5OP4PVX5FiPArqac31P1/7EtH
-	 HZz2E+aTuhNaRchPmfEjZI7clp9RAxbklKrbXDDIyK/rbb49IUqtKvB+7ldapRt/4R
-	 +W/NHE386gOb5/wnEgIOqkgtbWMU3EJTMvVNm/zxrtATibPBZBO+XHxddlu2BOCXlU
-	 DqFjzcraHrG7Y8sWJDkQ+LY5Av05wozxumH8l+VCcJ8KJ0DRUeXD+Aue8vFLiTxkhQ
-	 15LtpqCPguOUxuidWaulPkClTGQtHjnOgMqIfyL+cKu741hcJud1OHbtAE/dmWAg2E
-	 ZbyklwE5H2MFw==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	s=k20201202; t=1774030766;
+	bh=fhynckOY3YNY5Z7Vmj+3M9LO934fJkg+0qdwtO++Nsk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cet4N38qjcfMf1hg2fBVK/3J0TcvK5Mk9XFV6riNA9guHnYQ3YgtOKsHP+rmkWYr6
+	 rYXRmsM2aZqSY1A/mFeiQVZ07NhSrrijL6gq9mf3rgmQDl9FZZSzK/4Yr/Y6A8fPm5
+	 OEyBvZnOwUeTv9YxnI7x5f9WeYlMWV7UBnIkfT1gVY+PIvDElJUBkTOflo85rfxBVs
+	 nAKTPslk4lGymjYpEAxIBj9hHs21k2R8ATq9mp8G1ZbRZTFA4K1rT10A9RaFvBJry8
+	 zSNh2xS7oOi3lGYzxWkSLd/Fb9gPDybtiMzuM7yOYte0zRAgXpqEc/8vCk8YLItg5C
+	 rxtx+Rh4ZwmpA==
+Date: Fri, 20 Mar 2026 11:19:26 -0700
+From: Kees Cook <kees@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Andrei Vagin <avagin@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
 	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 00/13] mm/huge_memory: refactor zap_huge_pmd()
-Date: Fri, 20 Mar 2026 18:14:50 +0000
-Message-ID: <cover.1774029655.git.ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, criu@lists.linux.dev,
+	Chen Ridong <chenridong@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Koutny <mkoutny@suse.com>,
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+Subject: Re: [PATCH 2/4] exec: inherit HWCAPs from the parent process
+Message-ID: <202603201118.2F75F8D@keescook>
+References: <20260217180108.1420024-1-avagin@google.com>
+ <20260217180108.1420024-3-avagin@google.com>
+ <CGME20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace@eucas1p1.samsung.com>
+ <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 456951A0010
+X-Stat-Signature: cyiop7o11t5jyshcxofeyramfrhbxycs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF7EC4000E
-X-Rspamd-Server: rspam08
-X-Stat-Signature: djs8z356yziukfu4skq34w869kmutrpn
-X-HE-Tag: 1774030496-50684
-X-HE-Meta: U2FsdGVkX1/mOkZyfeMCaxlIxngQ7Yad0pO/ybrXAwX5ULqqjFn8mgQ6xcUAL4m8Bc3mkaSWuVzc/9iMycwmKF0XbL9D/qSGivtBp2YDT2pBgrmHq5fZxYFyrZaqeFafQD4/l9pbTbjdHRR3ECFbTTfwFsKd2HUcjaZVzQ9d7JFCPETeBMtT+axUGTz0n/oQbpDbx4RwFYyfHuDiENbqIhf00CoUwZJpqyBfhbeXdk6ff9x5HAUgfTq/iCH4P+/8cHG89U1rjMnhtr33nWW7eFV8bU19yudH3JZbKd8CQjXNvJB4fCKeANm9BJXGFP2lF37/EyhcSmeU101jPOORKjlTclnLlJeMDJtAFzN8D4lKcMSLM9oyBNqBohmyY7PoQuqv/SQ3AruX7ZOi0e1IGlAq3h/1wT2gQs0T1zSoGzuloii8ki4sTMOtIVCMhxDbGa7m9E5PR6u870luTQQG1+Pm8AYvnmpVotwo2r2vxwe2UYeYJtpzfEUG2Vl7q1Tvk7t5v5yCbMSLxvvSc8i+znQK+bn0iC6sM7x6YX/rC6rEPnsX8wKTg8DK8VKrueLKT5pD8WrfYrJ9hkisNljHJJOViW/5UXnFP1aPKZQ1bnspHV8lS9F5PVn3GmGIUvGvEDwWmKaDXllmQVFGG6CYXmxS1ygcdgDI0lzrp8peguB32ZlwY1gAik6O4mp09HQ9BxZ3v4YV+YK/pxDnZXRjeJPY++PL36TxxURRIVAQepG37JSzINLDO1hLQnLX1nKIGWv8aJpwtMsdOixev+SsayHHAP8Lj4KlQlR7Nh91NiVbkPCsYsxfilmRJyedFJys6DMhuQOYTOydeHlsu2gL0J8Rl+bcMJPuuaa6Du/lS3YM5MLBvKOrkGFi31ojcGOElKTVEtbSP1+dmZjBAnE+AKX9yiJo6EEMp8Aw5BF2BLRFtQBU9TPApf9oo2usDSth6ntOySZ44Q36dkeJcg0
- dS+dRzvp
- tQTNSFrz/4A5fIcVOuVM1uMjASjCJMNX0lUOGvNxpz4ty3iUrxchitsan/LdupWFhvzVoklbnQNb1xlLiLlLVT8BNVEBeQ7fuOMquq2tZ5QEMQhWIwqvMJjqx240QbDwU5mnLOY0XlRzUSheQULWUdDK8DoGBNHpve/mPc/ItZt3t0+FGcO67yaRVlMUPHxqpp2GUWo909FlwjvsWN2Jz3ASaw4ojJpMlkVOKBskLrIOvvZzR44FB9cC2MN7CdCnp6mRPDaFLc/nYuFJGI5qFuqiZzA==
+X-HE-Tag: 1774030768-592660
+X-HE-Meta: U2FsdGVkX1+GxQyZJErIpQwx6bMwyMmJPYGTftknI88tWc+5wZLYKK+iLTqSd9IZOJFapWRH86eFCoX7FLfJAgw8uMv4orGKDLr0lCgLVhuN+1AsIihTVALvaMYSI4qne8Zy4q8H7UHCubERjFt9lSa/TE3XEmisXj3LPYHbDkbF5MvO2Lm5zaX2vGbSLYtR9c7WFf8iyt1geYS6Kn9KcTNXOteoCqhPuRiiwIMm6W6OrmynbtAphLoYUFyUFsFq0vHiZr4xWN2vcyaNe5Br2X4Y3mJAfxb3ka41mUOKMCz603+24PfFeOIo+dv5nNRp9YlhRAKh0xwZxNfI4IBXHRq/ESTjT0Hfy6u7oKhG9UuFWFo8VRpXBiBMRYtvb7Fl4PhegeYSJNqW40+CCd23J9WdYsbQg7JDS4wxCTkENSEG2vQBdQLUskWoO/oKurvhFVwJoJoUzXG7CLF2ozJjXLOv12X1xzewaUv6T6uF+w5pLEx088uKS+X8strUHu1HzqG4SjxRdgPPPTXyIGyNEZvZzRNz27PUiwIfHbwKbSQK4iIlU3sKI/odxPypuadkYNQ7XQlvmRKG2MzIeSCzTV1MXruAn9WP+A6tn6A8Uia26SuFmxEQS/3iTlhgOmCjO8Teax6wlV8wUUG0QuCmO2kevKhmz2hlLgu9oto+mZuylltgxwwNBNUE0je6kXvUc8gHVg68gt5689NRyX3lPUODse62q49LgJlFViFqnUsyNIkV8Ih2HZFB8/XCTUz3UkHO6v1By6RqK/lDiTd7R11i/tZeyUa5cqhTWqeMPqtaRLMFGoxz/hU1ur3vG96FM1Jt7D6IzHn2lUvVKQeGb1aMj/TWo/DnxNvA2NZPa72Max8JoC0o9vdwHMHHROSWedIAWjyj9ZXLYrbvGSQDPjQ/Fd78GD/7z27UWEFHNCTqJe8SyL/gyDhfqBrVk01lxeGJF8wLKILEDzryif+
+ lkaHsSdZ
+ fteg1NR5l4cLxdk+HXgN8f5m7CHJz7sJqcFphMVuwqUCYid/GWPNZuAtDrHHns4YxBKGQ0IZS5IDTb5jdnR70+haG7u643yJqFza85bGpztJEosqnM6XiE2qKvwb2LHbeMzwxu9e/to3Ma2Z9APXud59kJHh544GRbGgxmf2v79bAIMYXR7sKAEUSo3dDaDU0j/MAg9PtXTj5+xtqV9KBaoBGXkrkVizJnuBItHfEMSo8zHwEFm1ym0ZPPR3KT6vRLRo1VyCr89Eb+rfnXekz09sKcmEFAIwdpacY1e7Rk94SJVoxxFcZWJK0FeX58Qt1K9q7fYsDxrLgia8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,82 +107,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The zap_huge_pmd() function is overly complicated, clean it up and also add
-an assert in the case that we encounter a buggy PMD entry that doesn't
-match expectations.
+On Fri, Mar 20, 2026 at 10:15:26AM +0100, Marek Szyprowski wrote:
+> Hi,
+> 
+> On 17.02.2026 19:01, Andrei Vagin wrote:
+> > Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
+> > AT_HWCAP2, etc.) from a parent process when they have been modified via
+> > prctl.
+> >
+> > To support C/R operations (snapshots, live migration) in heterogeneous
+> > clusters, we must ensure that processes utilize CPU features available
+> > on all potential target nodes. To solve this, we need to advertise a
+> > common feature set across the cluster.
+> >
+> > This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
+> > auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  When
+> > execve() is called, if the current process has MMF_USER_HWCAP set, the
+> > HWCAP values are extracted from the current auxiliary vector and stored
+> > in the linux_binprm structure. These values are then used to populate
+> > the auxiliary vector of the new process, effectively inheriting the
+> > hardware capabilities.
+> >
+> > The inherited HWCAPs are masked with the hardware capabilities supported
+> > by the current kernel to ensure that we don't report more features than
+> > actually supported. This is important to avoid unexpected behavior,
+> > especially for processes with additional privileges.
+> >
+> > Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+> > Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+> > Signed-off-by: Andrei Vagin <avagin@google.com>
+> 
+> This patch landed in yesterday's linux-next as commit ac8c259ce0d5 
+> ("exec: inherit HWCAPs from the parent process"). In my tests I found 
+> that it causes regression on my Khadas VIM3L board, which is based 
+> on Amlogic Meson SM1 (S905D3) SoC 
+> (arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l.dts). Running init 
+> process fails after this patch:
+> 
+> Freeing unused kernel memory: 13696K
+> Run /sbin/init as init process
+> Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000004
+> CPU: 1 UID: 0 PID: 1 Comm: init Not tainted 7.0.0-rc4-next-20260319 
+> #12369 PREEMPT
+> Hardware name: Khadas VIM3L (DT)
+> 
+> What is probably important here, this board (for some internal, 
+> historical reasons) uses armv7l rootfs, but other boards used in my 
+> tests, based on different SoCs, also use such rootfs and boot fine with 
+> yesterday's linux-next. Reverting ac8c259ce0d5 commit (together with 
+> 0ea77bbf3b98 due to dependencies) on top of next-20260319 fixes this issue.
 
-This is motivated by a bug discovered [0] where the PMD entry was none of:
+Thanks for the report! I've dropped these patches from -next for now.
+Andrei can you investigate what is needed to fix this?
 
-* A non-DAX, PFN or mixed map.
-* The huge zero folio
-* A present PMD entry
-* A softleaf entry
+Thanks!
 
-In zap_huge_pmd(), but due to the bug we manged to reach this code.
+-Kees
 
-It is useful to explicitly call this out rather than have an arbitrary NULL
-pointer dereference happen, which also improves understanding of what's
-going on.
-
-The series goes further to make use of vm_normal_folio_pmd() rather than
-implementing custom logic for retrieving the folio, and extends softleaf
-functionality to provide and use an equivalent softleaf function.
-
-[0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
-
-
-v3:
-* Propagated tags, thanks everybody!
-* Fixed const vma parameter in vma_is_special_huge() in 1/13 as per
-  Sashiko.
-* Renamed needs_deposit -> has_deposit as per Kiryl, better describing the
-  situation as we're zapping deposited tables, not depositing them.
-* Initialised has_deposit to arch_needs_pgtable_deposit(), and updated huge
-  zero page case to account for that as per Kiryl.
-* Dropped separated logic approach as per Baolin.
-* Added 'No functional change intended.' caveats.
-* Removed seemingly superfluous, inconsistent pot-folio_remove_rmap_pmd()
-  mapcount sanity checks.
-* De-duplicated tlb->mm's.
-* Separated folio-specific logic into another function.
-* Added softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio() functions.
-* Add and use normal_or_softleaf_folio_pmd() to make use of
-  vm_normal_folio_pmd() and pmd_to_softleaf_folio() for obtaining the
-  folio.
-* Add and use has_deposited_pgtable() to figure out deposits.
-* Added a bunch of explanatory comments as per Baolin.
-
-v2:
-* Added tags thanks everybody!
-* Fixed issue with returning false on bug case potentially looping forever as
-  per Baolin.
-* Fixed further issue in bug path in 5/8 with double pte unlock.
-* Add patch to use vm_normal_folio_pmd() as per David.
-https://lore.kernel.org/all/cover.1773924928.git.ljs@kernel.org/
-v1:
-https://lore.kernel.org/all/cover.1773865827.git.ljs@kernel.org/
-
-Lorenzo Stoakes (Oracle) (13):
-  mm/huge_memory: simplify vma_is_specal_huge()
-  mm/huge: avoid big else branch in zap_huge_pmd()
-  mm/huge_memory: have zap_huge_pmd return a boolean, add kdoc
-  mm/huge_memory: handle buggy PMD entry in zap_huge_pmd()
-  mm/huge_memory: add a common exit path to zap_huge_pmd()
-  mm/huge_memory: remove unnecessary VM_BUG_ON_PAGE()
-  mm/huge_memory: deduplicate zap deposited table call
-  mm/huge_memory: remove unnecessary sanity checks
-  mm/huge_memory: use mm instead of tlb->mm
-  mm/huge_memory: separate out the folio part of zap_huge_pmd()
-  mm: add softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio()
-  mm/huge_memory: add and use normal_or_softleaf_folio_pmd()
-  mm/huge_memory: add and use has_deposited_pgtable()
-
- include/linux/huge_mm.h |   8 +-
- include/linux/leafops.h |  39 +++++++++-
- include/linux/mm.h      |  16 ----
- mm/huge_memory.c        | 168 +++++++++++++++++++++++++---------------
- 4 files changed, 143 insertions(+), 88 deletions(-)
-
---
-2.53.0
+-- 
+Kees Cook
 
