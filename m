@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEDCF1099B3A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 255EE1099B37
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:27:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D8EC6B0155; Fri, 20 Mar 2026 15:27:50 -0400 (EDT)
+	id 210B46B0158; Fri, 20 Mar 2026 15:27:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B10A6B0158; Fri, 20 Mar 2026 15:27:49 -0400 (EDT)
+	id 1E9726B015A; Fri, 20 Mar 2026 15:27:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBD6B6B0159; Fri, 20 Mar 2026 15:27:49 -0400 (EDT)
+	id 0FE5C6B015B; Fri, 20 Mar 2026 15:27:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4546B0155
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:27:49 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6EEB2C132D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:27:49 +0000 (UTC)
-X-FDA: 84567426258.24.E7F5683
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A22E61C0004
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:27:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hRzWcnGm;
-	spf=pass (imf21.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 036876B0158
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:27:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFB44B6E9F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:27:50 +0000 (UTC)
+X-FDA: 84567426300.16.B10AAC6
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1D824C000E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:27:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=U+kqdhZf;
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774034867;
+	s=arc-20220608; t=1774034869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=augNyOBtiYJ0dgm3cOulQaqdWfbdzgL3KEY1IT/V5Xs=;
-	b=yVq4NT67yvAM5QDCK/eIYPBA2LyC+pIlfid1ppq7G3HD6O+YFOx1fAf1nri0rP8yPm/NHU
-	CmdNHMZydjOO5AgghWUZLMpeMHR3wGDsHhf/RKpr2fCE5V/x2ffGl3zfE1trBUx1r0pkLG
-	U3LOjNb0nB7lffM3rP0f5TRP18B6r9I=
+	bh=KY7NTF4Dm0MfL8/0ZISsKMQQ1GHAv90xIRFAuLv54rc=;
+	b=TO5g9x+4cqa6vQ9Uj4epLC62nloY3AaAxfytAjLl1aBSkE9c7SLyJIyysTp2+cREL6rKtZ
+	oyorsYECAc4MbcpLlG4gCoQa2ctyhxjCdzRm0BwEK2TXdOOOm8uF5T9bZfpEteJOR/x9OI
+	nD1du3J87eqhaodNbO1cuOtxEJFQGj0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hRzWcnGm;
-	spf=pass (imf21.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=U+kqdhZf;
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774034867; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774034869; a=rsa-sha256;
 	cv=none;
-	b=kUiOuVt1V5MHPUgS+Y160B+4DJyhrGiQJM7ECibPKYlwWKSbUmgE/WOmumV29vJ1rTDS+s
-	QDgrtcZaiOL21sauAbvy3E0lW75+eZVkz11aRX/19TlAvW8872bnJnuqQjIVsdqMF2quQO
-	L6nuC9/CdFro+VBlMDghy8edWD0xCRk=
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-467e044082dso352316b6e.1
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:27:47 -0700 (PDT)
+	b=VXKbzADMNf/K+3FbY9h3M28PHwQ8JvZ2JGMYpa8l9ZzVyBBlMISTsq7U3oHU8n0a8HKVg8
+	K61sa5UxSozfPldZbRQU3BhllSYNl3352DELKe9gtXVlw0fBhM0VMmV6xfHsgE20TW7RWp
+	wr3beViCV9XuYxO7ti1x+kewrUNcqTQ=
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-466f1c3c627so584191b6e.1
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774034867; x=1774639667; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1774034868; x=1774639668; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=augNyOBtiYJ0dgm3cOulQaqdWfbdzgL3KEY1IT/V5Xs=;
-        b=hRzWcnGmespPHXcpUP7rrrJMebrE3O3TYVZVJjhpD13NASby+F+cQD4iqmdu+OLXOj
-         t0eY2pdEJvr/+eybdplOzhBMGmlMdsgqGHYTpSJ2lmkA88/ZP7qT1VkP+OGc65eyV6QW
-         quYuxyKeM30cO+hfjD9KmVEqAJlKlDcSAheOxz4MZEZyO7dSTeaOH72CTcxWSIfLKyjv
-         XnZD8h4Iy0Pe+M9EG78XBS1ATYPoPgEQW7VOwurNYUm5M2U0w4R+F7m1Evsb1iVaUV0p
-         cHwKxpHcqYFuGr9/dUoGFvmKPYsbRQdN4WBJxXD/bYp+samA1lZM7w26KwhdIVjoNzSL
-         xf0A==
+        bh=KY7NTF4Dm0MfL8/0ZISsKMQQ1GHAv90xIRFAuLv54rc=;
+        b=U+kqdhZfBx79mEDk2i/Sx690l6TbL7x9/H4wYMFkI68HfqjetGpvh+rtBWRLK7WTTf
+         n/CN49shVn+2tdkwCtNlnWmfiIC3BSpXFTS6+ykBILLKp1/XkbepOlAIKyiaDOFlyoYi
+         gQTzRTRSSHVAlgBlo0hQs7y3gPxnlVdRn3NfJmgCMYm79V9gWghKp3tWp8xrNAdnawJj
+         lyp6qi4W9EvX652SBTMbecmQBrznIJMu4vhpJFDyVwr2Ewi6dIT+JighihXAfgx0I+lq
+         C3wH1MKX6g4LYd5K0k1SlqF0ZZytxq/jzrYBjXGjqE84+bLjEqjY9CmtvLiVe/mrrJI3
+         gmzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774034867; x=1774639667;
+        d=1e100.net; s=20251104; t=1774034868; x=1774639668;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=augNyOBtiYJ0dgm3cOulQaqdWfbdzgL3KEY1IT/V5Xs=;
-        b=YvWGBwVt9c8dKZVFNUzyh5XEi3LgDPT9LVR++qTegjYYzDlgHKRk8bisfspTpcAVES
-         Mp6GZCG8IgaRY64YJFwQ1Gs+SJ4n1dfK0DYsCIgkrp9mcWacFiJANl/lMfNL7Df4a+DL
-         K0DTdp5lbFr2d0vIbpv9HND4gEFe6knUC56NHP8w7kJnv3/t6ruqNgwCRSryux+nYvCH
-         U8SIAxyjhDpNYWu6V1tnCeWzlVrbEZk47MW3jfHbjGJtT6nJenI6rPdEgerspxRK6ldm
-         YtbN1w2jel+H2mqLi+N2kekFIoyqwV9qB7LfOjFFpxrM7p3Y7/1g5xtn9MmjR/zBORSI
-         jpRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXW88PtjogipNFF4tCd96E49++DJSpSbgXO58ZPFkdaVqaqM4u070qPZgQC1UIRHDW0nNo7QbAG+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxNVbBeJdaYD/Q+thiiEQ+MN3FIgnvm3bJ108GbyaaEhuYeYAtl
-	zPt/nLmCLdmzQa3WG4Lqvaoc8cnBBwQczXQQcxmfV30ma4cP9ac+JTKi
-X-Gm-Gg: ATEYQzxuDqsL3CsuhkCQt150+eBDclGb+XQURCB0d86NOrtW0TQK4UZ4KVQjbLd3GWC
-	iHOBbJgpsScjAsEEoCcPOZTqYx5JG8U7DwUaSV+TTo70LcbjYq2PzU4LTStBeqErvm0DQH60u8O
-	1hHb68ZdJuaa5zuDaIqWTVbVp2QFZDRoqVAuDHi9B/gGv945EZGwi7hQNpaM8es7+k2g//td55+
-	BjYF7Ku0SuwPXdnhU0gZm1b7wlcJH0DWtGS5Cswvmbrz/+nEvQFFqgnOGN+djfBIjKGjxVOuo3W
-	w/nkD8UAHwnJLLF150MRmlkF44nLhVhwiCCAMFP2hL9+8XPgCOOdw0M59Y9+N0/OVQ85+bkRzQR
-	M2npHk+Kr7TPIMzdHvDUxtrL5avwduUoJJ/sqLO6jZ9bQY2GDGOFAkpBlOUYOmh1K7yhl6FVT8e
-	cKPo1HVl6i9TK3aKathmR/jXO/q/8o7Y75uzr8DVGRnG+OeA==
-X-Received: by 2002:a05:6808:190d:b0:466:f054:c3b6 with SMTP id 5614622812f47-467e5fe7105mr2485514b6e.59.1774034866661;
-        Fri, 20 Mar 2026 12:27:46 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:48::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-467e7d19abfsm1824746b6e.2.2026.03.20.12.27.46
+        bh=KY7NTF4Dm0MfL8/0ZISsKMQQ1GHAv90xIRFAuLv54rc=;
+        b=Mce/S4wdVidpDCeXeGlparsU2O6k/QLBYn3/2L3Qk8xG9Xqh+VX9vD5MnTQoblJELJ
+         h5hH0c75Hlv+0SY6HwVjFmQ6pXAclN9ca7ioZYRNzH3/zHJbeQjdNoGJhSubd3ihE2i3
+         4IfuifN3aI1MplOKNTNcP0PkP4HwcA6xHquV2CaClu6r94s+sfZHZCWBp25MzW8iEhOv
+         2Yj8pK4ZOvUDLarAoyTuuFouz/DFganfGQ3Q/mSRjM4i8UenAOSrViTIajMwxvxN36uf
+         FSY8OenS1TQW58RXYwSdsGQsKV6UE7yVFoW0QMRSP1/31D+KAU19NPDBIfk3hwDWQmTX
+         iLCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWERRAKrH6YJYO5cyw9O7wnAMNbLIro5weleL9VHzbtoSCmqpGnxQAOaB0ecBLkQyafEW9cx4YBgQ==@kvack.org
+X-Gm-Message-State: AOJu0YzRqhmwnEFKCMr6xi7r9CHrduz7wt9upHOjgDCYS3Yhf0ExlNde
+	crGLZBN7oPGO99FxlTxVsOD1j0fkvESfXRpqssHDA0X45qnxOWMwB/NS
+X-Gm-Gg: ATEYQzwkIpn8VsCti0X9a0+T01oY/XuZ94bPwOqzjGVj/J32qV8vnerhVhOriSFfVFl
+	GkHYVsaKRwOX8ht4fWSAmeBrhncZNjVcVyB9f0QdKmEjmziwNJrheZJriEFGWiTX+Q9gt2tsS3y
+	oUvJeNLEKYiJnuG++aJd7bPbFG+hBhx8/ODErnITK81KHtSCetqQ9KkV8FHMiELYZXNo1X55IUR
+	eWy1CSaQuVpp1TtB8SII5wLerk0eQsQTDhxjimJbA4nYeXVq8KtJOa6O5oT460Xi8n1kY5mQ9vo
+	YLSI/1h0g3t0SfWEwR3VHn9eTU5SGG4GwKh7EO+kAS8vWf+7pEiVVmLs+YZIaczoMVQMWeOYt8z
+	2il0krpd+rs7n/2xmpRHUQIgjfoPNBH/KGJWiPMuVi7rjSC4rocYeaLl5uh9JU+aNvqf2aLM8+/
+	4IkoqsG5g4ilIdZdzVu4EUHhAJRQX54iaQlvdpzkS98P3o+g==
+X-Received: by 2002:a05:6870:45a6:b0:3ec:4f31:42a with SMTP id 586e51a60fabf-41c10eff5ddmr3006039fac.7.1774034867967;
+        Fri, 20 Mar 2026 12:27:47 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:72::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41c14d63aa9sm2729687fac.10.2026.03.20.12.27.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 12:27:46 -0700 (PDT)
+        Fri, 20 Mar 2026 12:27:47 -0700 (PDT)
 From: Nhat Pham <nphamcs@gmail.com>
 To: kasong@tencent.com
 Cc: Liam.Howlett@oracle.com,
@@ -145,22 +145,22 @@ Cc: Liam.Howlett@oracle.com,
 	ziy@nvidia.com,
 	kernel-team@meta.com,
 	riel@surriel.com
-Subject: [PATCH v5 07/21] mm: create scaffolds for the new virtual swap implementation
-Date: Fri, 20 Mar 2026 12:27:21 -0700
-Message-ID: <20260320192735.748051-8-nphamcs@gmail.com>
+Subject: [PATCH v5 08/21] zswap: prepare zswap for swap virtualization
+Date: Fri, 20 Mar 2026 12:27:22 -0700
+Message-ID: <20260320192735.748051-9-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
 References: <20260320192735.748051-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A22E61C0004
-X-Stat-Signature: rpxxs9cpqo3qridye53srbpoxbi5j678
+X-Rspamd-Queue-Id: 1D824C000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: itjrq77onq3twkc4zuxsdwyi1qr5tfhg
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774034867-723695
-X-HE-Meta: U2FsdGVkX18FRkvEdHw1NQixjZJV4WRC6BCoDV2aOSHxMxtzdr3IbhOTl8LyRWHkfemxZgiLkFZc3s4DoCVG/b2e/vfqMdLbtDIHwWbsjRO+ZcTC9iERktkxOp7CD1bjuIYf2heX8mAyanlvFNxF1FluYlFSlfOKNTztWqkgNj/mokpq8U3myaHv+7UGPGuvsFNcgDkrpeJoY/ScnBW/omVnzdT4tgygydWHbRPucruniezKSVbiqt1ggTt6Y+aAg0H7zA1eLzvQ6BNhpwZfW1IuHPQqGfa8wpZPMwlU65OLkhvBaoIb9jS1MfHfepSMta7rNK1++kKkusQabg47KM+a8rIDvBQp8fETs/uk9L/nl9PsXreu7dg1X10mK0IZ7dJ7rqsR06a6iMYmb++wY/N/WPjUBfaNhHMjoyuqXn0u5Sqbw2M0H6Cux85+wEchl2ijJWt2d3ahxF3NP7FPQghkHS9GWAng7RmClQnt+Bvp5FA5AEIfaElQUPOZNwl+t1kctlF92mW/Yrsc4nV//G/lSwh/13WXSOPeYGMu//bpVSZcxse7BCP/Fo/4IcyUo5G96AIouMgq0G3vvF+xTghTgbUox7+crlOJDJ0ObcProSTMNrdOkLGOQ98wiwq/I+2b6bDx3dVm1yDXusrqvh/ho32kteUgxAFO9pdwjAm4lF40H2K9UE3A8Hu2igOUcXQl52tqq79mPbE44P8lmx3C5QHMrfVktCnQG0NTE5Y7/E+6wce4IfDezWOFYu1zNQDheNvGIpI/T7U77YdQEE2eNaW0tbk6+IXlvPakek5FLWTxyWiZ4Z3bOn2LsCzjKEap7TssEQazWC22tHLkjB16nIBNM424FOnyQgKTjZ0FsbkKHbWGxDunstx3dvlwD5PyhRkThdfnCMa6a72XhAvQH6i02Gd27x2T0O64BygE02doLSHLoMxN9E6u2sAQuhxbhL6AaHs+k1TTTDB
- lbsNcWcu
- r2x7Y2jeB/0uJuSx5vp8Ya8Y5fSYX9WMVhSVdPhBj76zNJlk5OJ7VxoZS2+TAFLXeb5wEKRyhvL2OVkFeTxb+J1IEwklbS/xxJRmYEzsijL+c/zAQh+YnroC3/DvOUs0XA0GAj4wYkV/RzBEvxqPmiL0IXj6JMnyv4llGVvWol3gqAHA+pwtMeikraWhO2G2kCRf5H/9h3RNUM4w9maMqaFDxZfdIX0mezKoMrAgo9rOKYvr6LN5n6InOXkbWvDzBvhA5qhPKcnZEImqJlDBUJGSokn4hhgetDxlExKrtqePcDGIWw7qXbSNRTelrW8fa0UHQipcDGvslUxLQpk6b5YNbpIlVCxz3jEA5sGti9oaewcL1bzS8xiPS++0IWMFm7AR7ywYgqAwKitYhZo8jKYt0TEUyBRZUS++/rpgHJDJffSCZYXzBz/pk+r8qhcQDf3UJ1kwHJNIvdLl9VG8tz9gmxBZZ+Gh/Uff8my05WGeoJoWBzIU67V/fCUggeUYqF7h7C1OJzudhE4frLIv9p14ZY8MWDiRwZ2OLAUpv+C7Avjmv4eZkHk2bQEcO/CY+DTqhPPq/fdoli3ZjxvLuArpqWye+2yciT7N9mVuyEJsB1Pg9d+zikKkkd8dmB6fB2X1zTQ4wBvDO8/CZa2quvIgmKYBa8GWS3fa/444DCSAjKmUCJPJ+utwmPHDK397yhbXgrwvg2kv3Kc9O7k+Xt4zhV82cvBs6/tECIbby9iWdGxmCQUUR+plP54Fw5PfIfWH4M5T3NygKQ77FXgTbYS6GuA==
+X-HE-Tag: 1774034868-250212
+X-HE-Meta: U2FsdGVkX1+4qjVMB+iZ7x6zGERMpVRxcDG4j9JYOoDIJCsNKw2gGA7IEt/kMgnmf2XXPu3g/KlOzd+VQrkdKv1jOv4wZrEOWt5w8Qszs8qznwle0UpFMJkx4I7f0fUMjEmOIdasPl2nDf8ACEmzewNWGi62NCJ8OcbhPbHaQa2c02p4QIfALwzGolUY56wVymm1Iy4V+uraVVFAuARh3izu5yB96sGrlw8MNoegANTQyM7ySZ58txvCox/DdyhZo9FWden19lpgiUKtzPm6y7e5Bel0WwPcGolBg3HZ/sMdEwG3tKMfIIclslEysKeQlywE5lxZ07GnSWnbAo8bAPoHQKLMp5o7BaiH+EhUZdhI9Y/RYfde3qjfzB/yfmDgfHja6usCsbUycb0w0TJjvCGpdVCtL4l75GhXmMMZRfHgIF/mbFMMGsgTRzL86ou3yIUQPWHBJPM5AOqts8ViQv7Fp7LK8uGkzj3cgOB82Hi0QM0Y4ucB4w5o5vawj86HIFpfWj/XeyJXglgmOh7d0aj+EU5JsYgOAaisEbbZTlN4JTJ+tEzhsbfz02Nty7tXSgYY4hgHKhYa6wOVzCGXNyKyBqmTjLEmpeLUm1R51DE1DWR+LNMi72Ze3lPSSIE+DL4vtHlow1cbKvyzDP7g3n23lvhzofUe9zlBgrnjOCKw58l7MtT4QIJj71WQT0rPIXIslo62r+HIKgx8/j0hvr5G3Pefo7QCbqqpV9U35v1Cxl9GKjmxWFSguqyVr9A02vNAkMQSCAwT+eTa5zryzxDG6+hyekJujR+ofECLQ/e9Xw6TOHnV9Ypipsqdv5Ea0vp8ErsIQwmEnk0S4woGaBccyqENw8Qy2gPr3vSbO2zLiZyQ8iJDyHnVpks0SfDW5eS/HNEfGyK2mN9s7meJx21Fc2UmLXkPF9Y811Qhkmhdwb1W7Q4wxGXcY0dL4XNH4l1X7VrHCk6nkBeasWK
+ cFxjadME
+ 71pBU/M49p8ABAnayXxjRU+l9A8De644etM906Y+dMOa/mSceGjfWH0hFgkK99xilyr6oA4s80qIlx5avNSfEE99O8e+IQ35JMbzHcs1naW2LYZ47ZSP/NOrrSr9XGVD03kmCMWSut9dhqwNWUSSWMmJWeBNcMZJyQJdTFy7PV2Ljuj6vKdgARa2Z07uQMl3QKc/eg7X0gnXZAhLuMX1E3TJfVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,132 +168,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In prepration for the implementation of swap virtualization, add new
-scaffolds for the new code: a new mm/vswap.c source file, which
-currently only holds the logic to set up the (for now, empty) vswap
-debugfs directory. Hook this up in the swap setup step in
-mm/swap_state.c, and set up vswap compilation in the Makefile.
-
-Other than the debugfs directory, no behavioral change intended.
-
-Finally, make Johannes a swap reviewer, given that he has contributed
-majorly to the developments of virtual swap.
+The zswap tree code, specifically the range partition logic, can no
+longer easily be reused for the new virtual swap space design. Use a
+simple unified zswap tree in the new implementation for now.
 
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- MAINTAINERS          |  2 ++
- include/linux/swap.h |  3 +++
- mm/Makefile          |  2 +-
- mm/swap_state.c      |  6 ++++++
- mm/vswap.c           | 35 +++++++++++++++++++++++++++++++++++
- 5 files changed, 47 insertions(+), 1 deletion(-)
- create mode 100644 mm/vswap.c
+ include/linux/zswap.h |  7 -----
+ mm/swapfile.c         |  9 +-----
+ mm/zswap.c            | 69 +++++++------------------------------------
+ 3 files changed, 11 insertions(+), 74 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d3780bb330378..042dbc06c3d3c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16728,6 +16728,7 @@ R:	Kemeng Shi <shikemeng@huaweicloud.com>
- R:	Nhat Pham <nphamcs@gmail.com>
- R:	Baoquan He <bhe@redhat.com>
- R:	Barry Song <baohua@kernel.org>
-+R:	Johannes Weiner <hannes@cmpxchg.org>
- L:	linux-mm@kvack.org
- S:	Maintained
- F:	include/linux/swap.h
-@@ -16739,6 +16740,7 @@ F:	mm/swap.h
- F:	mm/swap_table.h
- F:	mm/swap_state.c
- F:	mm/swapfile.c
-+F:	mm/vswap.c
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 30c193a1207e1..1a04caf283dc8 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -28,8 +28,6 @@ unsigned long zswap_total_pages(void);
+ bool zswap_store(struct folio *folio);
+ int zswap_load(struct folio *folio);
+ void zswap_invalidate(swp_entry_t swp);
+-int zswap_swapon(int type, unsigned long nr_pages);
+-void zswap_swapoff(int type);
+ void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
+ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+@@ -50,11 +48,6 @@ static inline int zswap_load(struct folio *folio)
+ }
  
- MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
- M:	Andrew Morton <akpm@linux-foundation.org>
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 918b47da55f44..df0771903a952 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -423,6 +423,9 @@ extern void __meminit kswapd_stop(int nid);
+ static inline void zswap_invalidate(swp_entry_t swp) {}
+-static inline int zswap_swapon(int type, unsigned long nr_pages)
+-{
+-	return 0;
+-}
+-static inline void zswap_swapoff(int type) {}
+ static inline void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg) {}
+ static inline void zswap_lruvec_state_init(struct lruvec *lruvec) {}
+ static inline void zswap_folio_swapin(struct folio *folio) {}
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 6b155471941c9..0372062743ef7 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2972,7 +2972,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	spin_unlock(&p->lock);
+ 	spin_unlock(&swap_lock);
+ 	arch_swap_invalidate_area(p->type);
+-	zswap_swapoff(p->type);
+ 	mutex_unlock(&swapon_mutex);
+ 	kfree(p->global_cluster);
+ 	p->global_cluster = NULL;
+@@ -3615,10 +3614,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		}
+ 	}
  
- #ifdef CONFIG_SWAP
+-	error = zswap_swapon(si->type, maxpages);
+-	if (error)
+-		goto bad_swap_unlock_inode;
+-
+ 	/*
+ 	 * Flush any pending IO and dirty mappings before we start using this
+ 	 * swap device.
+@@ -3627,7 +3622,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	error = inode_drain_writes(inode);
+ 	if (error) {
+ 		inode->i_flags &= ~S_SWAPFILE;
+-		goto free_swap_zswap;
++		goto bad_swap_unlock_inode;
+ 	}
  
-+/* Virtual swap space API (mm/vswap.c) */
-+int vswap_init(void);
-+
- /* Lifecycle swap API (mm/swapfile.c) */
- int folio_alloc_swap(struct folio *folio);
- bool folio_free_swap(struct folio *folio);
-diff --git a/mm/Makefile b/mm/Makefile
-index 2d0570a16e5be..67fa4586e7e18 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -75,7 +75,7 @@ ifdef CONFIG_MMU
- 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
- endif
+ 	mutex_lock(&swapon_mutex);
+@@ -3650,8 +3645,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
  
--obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
-+obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o vswap.o
- obj-$(CONFIG_ZSWAP)	+= zswap.o
- obj-$(CONFIG_HAS_DMA)	+= dmapool.o
- obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o hugetlb_sysctl.o
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index e2e9f55bea3bb..29ec666be4204 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -882,6 +882,12 @@ static int __init swap_init(void)
- 	int err;
- 	struct kobject *swap_kobj;
+ 	error = 0;
+ 	goto out;
+-free_swap_zswap:
+-	zswap_swapoff(si->type);
+ bad_swap_unlock_inode:
+ 	inode_unlock(inode);
+ bad_swap:
+diff --git a/mm/zswap.c b/mm/zswap.c
+index a5a3f068bd1a6..f7313261673ff 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -197,8 +197,6 @@ struct zswap_entry {
+ 	struct list_head lru;
+ };
  
-+	err = vswap_init();
-+	if (err) {
-+		pr_err("failed to initialize virtual swap space\n");
-+		return err;
-+	}
+-static struct xarray *zswap_trees[MAX_SWAPFILES];
+-static unsigned int nr_zswap_trees[MAX_SWAPFILES];
+ 
+ /* RCU-protected iteration */
+ static LIST_HEAD(zswap_pools);
+@@ -225,45 +223,35 @@ static bool zswap_has_pool;
+ * helpers and fwd declarations
+ **********************************/
+ 
+-/* One swap address space for each 64M swap space */
+-#define ZSWAP_ADDRESS_SPACE_SHIFT 14
+-#define ZSWAP_ADDRESS_SPACE_PAGES (1 << ZSWAP_ADDRESS_SPACE_SHIFT)
+-static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
+-{
+-	return &zswap_trees[swp_type(swp)][swp_offset(swp)
+-		>> ZSWAP_ADDRESS_SPACE_SHIFT];
+-}
++static DEFINE_XARRAY(zswap_tree);
 +
- 	swap_kobj = kobject_create_and_add("swap", mm_kobj);
- 	if (!swap_kobj) {
- 		pr_err("failed to create swap kobject\n");
-diff --git a/mm/vswap.c b/mm/vswap.c
-new file mode 100644
-index 0000000000000..e68234f053fc9
---- /dev/null
-+++ b/mm/vswap.c
-@@ -0,0 +1,35 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Virtual swap space
-+ *
-+ * Copyright (C) 2024 Meta Platforms, Inc., Nhat Pham
-+ */
-+#include <linux/swap.h>
-+
-+#ifdef CONFIG_DEBUG_FS
-+#include <linux/debugfs.h>
-+
-+static struct dentry *vswap_debugfs_root;
-+
-+static int vswap_debug_fs_init(void)
-+{
-+	if (!debugfs_initialized())
-+		return -ENODEV;
-+
-+	vswap_debugfs_root = debugfs_create_dir("vswap", NULL);
-+	return 0;
-+}
-+#else
-+static int vswap_debug_fs_init(void)
-+{
-+	return 0;
-+}
-+#endif
-+
-+int vswap_init(void)
-+{
-+	if (vswap_debug_fs_init())
-+		pr_warn("Failed to initialize vswap debugfs\n");
-+
-+	return 0;
-+}
++#define zswap_tree_index(entry)	(entry.val)
+ 
+ static inline void *zswap_entry_store(swp_entry_t swpentry,
+ 		struct zswap_entry *entry)
+ {
+-	struct xarray *tree = swap_zswap_tree(swpentry);
+-	pgoff_t offset = swp_offset(swpentry);
++	pgoff_t offset = zswap_tree_index(swpentry);
+ 
+-	return xa_store(tree, offset, entry, GFP_KERNEL);
++	return xa_store(&zswap_tree, offset, entry, GFP_KERNEL);
+ }
+ 
+ static inline void *zswap_entry_load(swp_entry_t swpentry)
+ {
+-	struct xarray *tree = swap_zswap_tree(swpentry);
+-	pgoff_t offset = swp_offset(swpentry);
++	pgoff_t offset = zswap_tree_index(swpentry);
+ 
+-	return xa_load(tree, offset);
++	return xa_load(&zswap_tree, offset);
+ }
+ 
+ static inline void *zswap_entry_erase(swp_entry_t swpentry)
+ {
+-	struct xarray *tree = swap_zswap_tree(swpentry);
+-	pgoff_t offset = swp_offset(swpentry);
++	pgoff_t offset = zswap_tree_index(swpentry);
+ 
+-	return xa_erase(tree, offset);
++	return xa_erase(&zswap_tree, offset);
+ }
+ 
+ static inline bool zswap_empty(swp_entry_t swpentry)
+ {
+-	struct xarray *tree = swap_zswap_tree(swpentry);
+-
+-	return xa_empty(tree);
++	return xa_empty(&zswap_tree);
+ }
+ 
+ #define zswap_pool_debug(msg, p)			\
+@@ -1691,43 +1679,6 @@ void zswap_invalidate(swp_entry_t swp)
+ 		zswap_entry_free(entry);
+ }
+ 
+-int zswap_swapon(int type, unsigned long nr_pages)
+-{
+-	struct xarray *trees, *tree;
+-	unsigned int nr, i;
+-
+-	nr = DIV_ROUND_UP(nr_pages, ZSWAP_ADDRESS_SPACE_PAGES);
+-	trees = kvcalloc(nr, sizeof(*tree), GFP_KERNEL);
+-	if (!trees) {
+-		pr_err("alloc failed, zswap disabled for swap type %d\n", type);
+-		return -ENOMEM;
+-	}
+-
+-	for (i = 0; i < nr; i++)
+-		xa_init(trees + i);
+-
+-	nr_zswap_trees[type] = nr;
+-	zswap_trees[type] = trees;
+-	return 0;
+-}
+-
+-void zswap_swapoff(int type)
+-{
+-	struct xarray *trees = zswap_trees[type];
+-	unsigned int i;
+-
+-	if (!trees)
+-		return;
+-
+-	/* try_to_unuse() invalidated all the entries already */
+-	for (i = 0; i < nr_zswap_trees[type]; i++)
+-		WARN_ON_ONCE(!xa_empty(trees + i));
+-
+-	kvfree(trees);
+-	nr_zswap_trees[type] = 0;
+-	zswap_trees[type] = NULL;
+-}
+-
+ /*********************************
+ * debugfs functions
+ **********************************/
 -- 
 2.52.0
 
