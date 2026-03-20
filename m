@@ -4,134 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 823DD108B91E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 12:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05AF91098781
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 12:55:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B381A6B0005; Fri, 20 Mar 2026 08:53:55 -0400 (EDT)
+	id 6CD666B0088; Fri, 20 Mar 2026 08:55:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE81B6B0088; Fri, 20 Mar 2026 08:53:55 -0400 (EDT)
+	id 67E5C6B0089; Fri, 20 Mar 2026 08:55:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D7906B0089; Fri, 20 Mar 2026 08:53:55 -0400 (EDT)
+	id 5949C6B008A; Fri, 20 Mar 2026 08:55:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BE166B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:53:55 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 480E7B6880
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:53:55 +0000 (UTC)
-X-FDA: 84566433630.16.B25A1C4
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1E7741C0004
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:53:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="Y/HlYxmd";
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774011233;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A616B0088
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:55:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8C5E1C1A9
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:55:38 +0000 (UTC)
+X-FDA: 84566437956.20.7F06E8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1FA09140003
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:55:36 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TERs092U;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774011337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sxb40RyXjBOvkVq2MrBV1Eo8DmTziCzGNtpBWcwYXIc=;
-	b=MmGH2f+JzEjmNTKrCNndvLbxwIZ4JvJ3fOrBuAMGKRJmkmjJgx5/7xZ6BUxB5YZw4VnXYE
-	FDvKkPeWLZ3pLHoW8qUPE3cwlHaJZT5cuGlCKez4KRwWqG28kTA176OONZwrr9iBmUxunO
-	xPv7uu6/TBhKR5zlNIvgqbYlRDAmGxU=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="Y/HlYxmd";
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774011233; a=rsa-sha256;
-	cv=pass;
-	b=DBEKNmEEfd0grbqj2R0W5imqB3PjRKtNzlKHN+3JDo4UdxlImbtvPOovLMpBPKW/cPUYqR
-	rV/YxFlrnilacHlss189YatDxX7AiOQNpPgNmqylrmEKOOdQWGLvLK0GHyuCqeekMzjEQE
-	YO/VWEWbCCJcR7CH7pzsEKfF3P4j3/c=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6611d20c026so774553a12.1
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:53:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774011231; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I+FBskjUjtkHhGBBBzKpjWG1CYHGKXMJgW+1t+62q4D7/rbVsT//WUY0rcBWLvq14x
-         Qj3PmgW7met/rXLnk0Lq4rukoHw6o/fc2I6TjA5IlLequ2GGhahztwtAW0Xka55WktEg
-         dGLkKYziBhzHQ2BVDfP2osrU53EyRi83VWn2aImAYRkpPqLiuRnOt0JmkFtkON+dso4E
-         rlr6L89drsW8msQYSMoIKOSYEOXrgrRJZB4RJjXKSBu5UNJciZKE4NRS30P198+XU+aa
-         olGi3LKeQ7gS3OGo103kk4vkoEJTFT0+n+TwVooOsoGgBBq5qde/jXnzV7z5occS+A3S
-         jqYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sxb40RyXjBOvkVq2MrBV1Eo8DmTziCzGNtpBWcwYXIc=;
-        fh=hbhWuJPLKNcC9muOgM7Rf1/Pq5wpTYOqPp9euPh1Sis=;
-        b=DO9Rw6+2REQYqreqbve0Fa75gJ1FPMHUTAQBTzwtJuJhkNnt/itHXDqpo5Mjpqv37o
-         UbhiqjynlhA2KryDhO82cNFskPp4PMIjos9ckU6+PE6UBjG4ZJRfOAz2s5AKM6m4UCor
-         hWh+Y9BSGRChgq+OgLqdFz65RB0PRpL+V3Dwuz1GvZu88PJV65VipqxtUtMwsR/sRMSi
-         BcjoGL5fuH+JpylkJRdr3MV0A16fD0m3+OjChkQ4TtCyB7DzL+nND1Il/J71oS6lmsZ0
-         FoREAo7sEWfJUptfJhdzALTtFkrKhEJKrMFoulP/TnS0R6ED3F6FOVANOA3J9niuEv6x
-         Xz0A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774011231; x=1774616031; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sxb40RyXjBOvkVq2MrBV1Eo8DmTziCzGNtpBWcwYXIc=;
-        b=Y/HlYxmdHC4UfcpsAvr08T8bEXxvIg2U6G6MepMmgPQcZt8NRcF6LwSPwZd2iHKREG
-         tlh5JMpqouZJKf+v87MAJQUDU72Z5e4jFm8RK0bNk4El6nxPkbYhrGkfECWwus4jXyRL
-         39qqf0QWTrNmAr+O/rU6sqPuZPauUPpSmD839/bzUDfQoUvz2ReyxwC36d7ifhRCsVGp
-         I4ZlgSjmfngrn4rgztKRO4bGQ8Ht7zKCGW+gVvPernx7/yX0UVuSu++AqpoROuFQyTLQ
-         2lxT0IS410VV416PNxBpTWyNzgpL8RF5JpjjRwAt7JW4Huml+TflDNdpuFy0oEBw/fct
-         ++AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774011231; x=1774616031;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sxb40RyXjBOvkVq2MrBV1Eo8DmTziCzGNtpBWcwYXIc=;
-        b=r/tN/qOaweGxhw7UoVoCjQi7JXKseGwT6hCS0GYyebYe2Wr4GY1bbQdbaxKdvc5za8
-         inGPJtrd+puffczh0kthnIhBn+n8VbNTNum32FTeLTUs6gHGVd89chRce1geEH802e7J
-         NyCoaSmd0Ez1+9rXxZJAm/f28yMoWhopdXtC7Qfa2b1LyZHh6mPkyvsib9+T/Dji3pxJ
-         3EgS8TB4o9XrUFWbnK2DqciPap+8uErO2+AoTIVL3Rs1UAS7H3hUsXObpQ1elYqt8EzF
-         /wwlrbNqeolbpzk0ysBKXYQBnHpfjbepUld6Uig3Tlj9m1FMNt/Qk02b3K827HnIfmjU
-         0tLw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+/wNZWihp1xRWx2C1fT03p8UnAt6lhYZSwfRGFc9XS34Hwxgih+RyA+iB67pq2T2G/BWUE/LMsA==@kvack.org
-X-Gm-Message-State: AOJu0Yy8mK0B0aM639YpOZV8bx1L0v4fn+uubXU/r8FF5NyhOr5sRrO2
-	Sg1R2Bozi1/OPo7D55l8CfUIWz4NRiYI6mMKAgSF4mIK/+J2IUdotKKx7Xeq9ZIZZII2TIyVmso
-	2jT0mOXjna64+nvomzhEIsi+toDq+Roo1ITUfIsKXdw==
-X-Gm-Gg: ATEYQzzBuK9lMoiCX4JRlOrWNf4v1h+HLYALOjt6TKE6AnJ03GpoJSL7j8et0wgpbt0
-	RFq5tyIJZX98NAiPibfTxaBzP8y8u0xIg4U4vzngYx3w5n8gqCzuSPJFWnvhRB3gYtpYWl/tRGv
-	sVvp6egxg/L1wGyFP7Wsky4xUVman5baOV3iLqTxPCkex+Oq+EIwAAzMUuLDy4qlVCE8vsq2XVl
-	ZCYdcHUvV1Xg1ZuwCDfeMtdmti4P6S+idETSHT9TmVqLsFgoCkl5l6R91+6bHSZnrk6cyIe7xno
-	S3lpsve+OW098+hV1YPUSB1LZRhFHnA7nPMCfQ==
-X-Received: by 2002:a05:6402:4542:b0:662:b884:d1c with SMTP id
- 4fb4d7f45d1cf-668c9420fc6mr1899113a12.10.1774011231281; Fri, 20 Mar 2026
- 05:53:51 -0700 (PDT)
+	bh=QcA8noZYHhVwOf2PLwKW/624aKucRqQo1P8kKxKrvng=;
+	b=VOtZ4viFAuiWVqQA5Mz72sPeggyikvJrEnCKMa9YneazQqVG6Lc+MCmIdYXXx+RSaCusAc
+	a2JFJFEufSTFe29SZTlqxxQse9RPoYqHxNfaOdX5BaAE9+/6QpQrlGQLQEPZvl3uqz3J98
+	iKrntoRL3FNwfNsd1KbEYrVOoqz81QI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TERs092U;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774011337; a=rsa-sha256;
+	cv=none;
+	b=1ESFGrgX7KMmMzLmTNwiQDT1OF8wLm/IpTK+b2y3qGnvcyzKeG10Cui+VWHaEKcDrrp9aE
+	Vwh9qBpiMkuLxQnwTl4Kbs31e8eGLl/xxvw8gTxhfyHB/rqWku5YmYUH5ILKiaeb7j1Hxm
+	BgGQ+1O6hz9Vimv/rpXM6ACxNJ0r+rg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 203D943DD7;
+	Fri, 20 Mar 2026 12:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C86C4CEF7;
+	Fri, 20 Mar 2026 12:55:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774011336;
+	bh=x2Ny+tySB/kVv3CHXuFUaXt/pcvgPiB8gk4xB8tYNME=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TERs092UahZEq4jjzMNizqn0nsc1Vpeb/XxyK4Grhudmgyb5fXb+fl1RtkcRuCoNj
+	 nL+HEM4DH+nMELtouqvqX2lr3HNzyjWuXDSFiKrIU8cwQ59NSHl2iyBF7OLjrY+cO3
+	 8J6M3W8AWwpSCJWbbsnpNNIRfklviwcht5ytuaz2eAskh+67MrPzZlkiucpDGvLEeq
+	 dBfdJ0S2xZpd8DPUqn3TxND1IExaSBMlR0wK2uA1+b0hNZvyBruOGrzulE9vF+EDBL
+	 ULe9kkrQO0eXiR3hQaXan+lM/U1arWK69K+kGbHGHsc2px+5Qd5xFb8GxW4vuR5bQF
+	 /rKnzp9LGma6Q==
+Message-ID: <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
+Date: Fri, 20 Mar 2026 13:55:29 +0100
 MIME-Version: 1.0
-References: <20260317023834.487682-1-pasha.tatashin@soleen.com> <2vxzqzpeaj1s.fsf@kernel.org>
-In-Reply-To: <2vxzqzpeaj1s.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 20 Mar 2026 08:53:14 -0400
-X-Gm-Features: AaiRm52JEkyZm6b_G1RRMaL21J4AyKm75SR_joFkY5PERgm0yr9pb9DptmMSN6c
-Message-ID: <CA+CK2bC+U9BfPAScE4pvtd4BVbEZohy1xH9BT+_gN57_NQ-rZw@mail.gmail.com>
-Subject: Re: [RFC] liveupdate: prevent double preservation
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, rppt@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: z9bgbi4guzjo4ihg1cxszi1fh63tfukp
-X-Rspamd-Server: rspam09
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/15] userfaultfd: introduce mfill_get_pmd() helper.
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-4-rppt@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260306171815.3160826-4-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1FA09140003
+X-Stat-Signature: d1rgof5xdwneb8c45org8sohrc848je1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E7741C0004
-X-HE-Tag: 1774011232-160832
-X-HE-Meta: U2FsdGVkX1/GQxgnZp5vpRKrVXLJSH/WCyPsvcId4O40cb22WvGJRkp9G2Ag4NxTrMyNB6BoN1tTW5j38zudYcfnv1OxzRTvuZiu+KLCvmsUNJSGErkwTfQb81rmZOEjbfrqBjE6nUdIpZQlGTXnmYagQoYB0Kifnk8cB5lUqdJEFLa2H4mC7HCFmPdQ+NqS7mJLVHfuwwhkVEDIfKaqN1z+OK15DF0mVPyRTAPdDQaRAckVp31XvQyrXSNnjhKcAMAKiT8FBbvqJRcV5LDd7e5Z/o0YMvCJoaWnX31ZEy8WhzoCbkl3Vi8ZQu/PKZQnq6afyXyhOc2Cx/fJc46R5/NtjF8MayYbfVXaNZSInH/fV+NUl4vDcBpljxadczUcIZ7EHXpJT7bOW0zUNnClWD/Ir4mtcbXlhDmOJg3APTO9qAfiEROnXaFYC7SIS8wy6bXY+2l0TJBW8k++U2FJYcYJJKCCNwx60dlfmOv/TGDedyaVZtIf/ZL2UysEDU43WMpDAY+siuTTGYwegBIEQUm+EaE1COuj3/xiOp+46vAFWkAG1pfUAY5Yjoh32IUMOy6vGvxuXE0p4JK414eXTZ9oMzOplOwaXIZbj8xzrPW3DMc8EeCOOHuUyB4c4Omy2wS3BAur5LrXGNnyN7wNSMslWv11sH3yZ60oW5gEULNkFASAHU+HWPj29si6C7NPJLE7GlhoZ2ULmf58YB4n5/LJnHaKNXBfNGAsEGYkBIXTVlc6SGguaYF5DASWoSYrYFx6yE83q5p1+YOORP8EbF49EjBnOjFemhOYkAIXPzIeBE+7AmT9gdoK1mOvFAWnXTAOto3pt0q3UbeHTv572UbQF6hdxq/QtFrkaJocSf4wTmCB/7sCvz6+G7fmteU1bmR7dXTwZVH1nhwkDa6Q6xltmxzHn0Zwcr2Hc8UE73JoOsRR86Cn9pnzapfbObecF/O5u7LJRjcFG44x1OD
- 27pihuBa
- 6OLUFQOiXTTQWFc9QCnY8Q5XalV/OprDa8NbkRTVvIEJXI7miqSG8s17dBmtSNldVwjs5D/2KEfh37si81O4YdTsZTGEykZunzQLSaUePmTfQsxJo2xVMVUZO9cAo05viSz++/luSUvK7m6jjAAeJ2NZbkO+erxIsLI6ofv/w8t/iYncHJavX4c/or7zhr3T3ox6K0vvdY9dMKEt+BYPq1Q64a8+BijZlhAqt/rRG3LbvS0ybXk1tWzapbU5As/Ue4CqH
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774011336-725192
+X-HE-Meta: U2FsdGVkX1/9l/8rM+SSoDQyN0femHL4YkF/S5RHl4owIekb2zinpUYoqMwBuPywqOky0GiKYf3Jkf4Fyxg/51Q1uzwLIRbY2n2s+431j5neg0JzXILodcvXtmHgCWQiBL3SNaGcil9Gn0YPaPhtZGoCmY3yP6L/K06zWHHrnPNBW2gPVSZdbMRvuzRJo2a+tmE/9gTL/xn4jYANKAN4HTA8vda2YIsrtkDfeeqVP4iOKV0W7q+Fhjf0ndI5oXjMC6OPXYXtxBhe+NmlURLPg17eqktOAAKbczmbq82oVoe/la8yapBnYtFw2y2q4FSzkUosbtv23TyjrYuYtCouGXpNhwR0GiioG+CSEzRp7RZyUFdpLOyKYjhbjv95XMpq+z+GpDcyCHEEGZTM2D/CKINmDrV4KvYlS7GaxSUmECgn9BScbLFCTekk6LjYZ1i0POy6AB7/h9e2Px4N9EZayNUdoqzzWnK6kumojRsW1qV83R6c00VhC/FXDpxIGGVt4XJTFbaQy8GHD1IOn43/5urXEocvzoehE65ztly9rGiSra4HG4+//qEZg/4GdFl62lU0YbrPTIEL189wV3Dn9O2FxxM4gfOQksKtvfM0Zg03r6jOFLbwwfCiY082WOi4Dn2PEyXne/Fnh7KCQkoDdJgmS7YtKjO+SF3ZeJiBA6jwdOtt3kgqCfJ6UMF4aJv3WrTgFLNIIAl7/2+batjdzy+CClh6KkFFayFEN/kwfNswHN0sv7MD6aOhmYYuvEUsHpdkkypbw5up7pQ+8YDgf19W3cNQvlA/goao2ULbvKFjWne5mcLzfzQHZ4b5bktyJ0RT25yFuZ2+TBNu26f3CM4AvHfOTz0jX0Zy5o2OvbbKo1HYSgvdPjhaxScMcuRHV+ZPeYAroqMSL1ybkvULk3riYa8sAZZxzEJnrP0y3cm+2QVU2xHqjx0x7iDJAcw0aJnmxjfLOoPbgjIr0zD
+ XyUyaN2S
+ 1351D7rnyNzjZbj44IAjzP5LXORFdxeyz12FoZevW8m87acr7lmNxLhcw6LcLJK9LIY8/BR5p3t+CDyGsLQ/J6VbmWJh1ULy/+lr/Mxk7xC9QdqUAttkqCPoy013oz0IItBcc/koet8le6uEPepkvsHLbprrpl4D8WlwYU+MSu9+gnKKBr1BZLUoOcMYIKRTFj8CKBiGO7mRJgOb/fUfVKJSxO4vKmMXrhBj3EjOUS32q09iXVcFiON68rcWsPr3J7bDUNKJp/W7py5DPHBsVoU/7bJNZsig+cKvRBM8nAe5yIWEEW5xuTaEMbnlGVex2eZFdTafxScU8LY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,49 +151,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 6:31=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> Hi Pasha,
->
-> On Mon, Mar 16 2026, Pasha Tatashin wrote:
->
-> > Currently, LUO does not prevent the same file from being preserved twic=
-e
-> > across different active sessions.
-> >
-> > Add a new i_state flag I_LUO_PRESERVED and update luo_preserve_file()
-> > to check and set this flag when a file is preserved, and clear it in
-> > luo_file_unpreserve_files() when it is released. This ensures that the
-> > same file (inode) cannot be preserved by multiple sessions. If another
-> > session attempts to preserve an already preserved file, it will now
-> > fail with -EBUSY.
->
-> For consistency, would it be a good idea to also set this flag after
-> retrieve? And then clear it on finish? If we do that then I suppose we
-> should rename the flag to I_LUO_MANAGED or something similar.
+On 3/6/26 18:18, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi Pratyush,
+Nit: "." at the end of the patch subject
 
-That is a good idea. Between the retrieve and finish operations, the
-file still has limitations due to LUO ownership, so keeping it flagged
-as managed is useful. For example, in memfd the memory should remain
-pinned, and in iommu the DMA mappings cannot be resized until finish,
-VFIO also has some limitations.
+> 
+> There is a lengthy code chunk in mfill_atomic() that establishes the PMD
+> for UFFDIO operations. This code may be called twice: first time when
+> the copy is performed with VMA/mm locks held and the other time after
+> the copy is retried with locks dropped.
+> 
+> Move the code that establishes a PMD into a helper function so it can be
+> reused later during refactoring of mfill_atomic_pte_copy().
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  mm/userfaultfd.c | 103 ++++++++++++++++++++++++-----------------------
+>  1 file changed, 53 insertions(+), 50 deletions(-)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index e68d01743b03..224b55804f99 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -157,6 +157,57 @@ static void uffd_mfill_unlock(struct vm_area_struct *vma)
+>  }
+>  #endif
+>  
+> +static pmd_t *mm_alloc_pmd(struct mm_struct *mm, unsigned long address)
+> +{
+> +	pgd_t *pgd;
+> +	p4d_t *p4d;
+> +	pud_t *pud;
+> +
+> +	pgd = pgd_offset(mm, address);
+> +	p4d = p4d_alloc(mm, pgd, address);
+> +	if (!p4d)
+> +		return NULL;
+> +	pud = pud_alloc(mm, p4d, address);
+> +	if (!pud)
+> +		return NULL;
+> +	/*
+> +	 * Note that we didn't run this because the pmd was
+> +	 * missing, the *pmd may be already established and in
+> +	 * turn it may also be a trans_huge_pmd.
+> +	 */
+> +	return pmd_alloc(mm, pud, address);
+> +}
+> +
+> +static int mfill_get_pmd(struct mfill_state *state)
+> +{
+> +	struct mm_struct *dst_mm = state->ctx->mm;
+> +	pmd_t *dst_pmd;
+> +	pmd_t dst_pmdval;
 
-I will rename the flag to I_LUO_MANAGED and update the retrieve and
-finish paths in the next version.
+I'd just have both on a single line.
 
-Pasha
+> +
+> +	dst_pmd = mm_alloc_pmd(dst_mm, state->dst_addr);
+> +	if (unlikely(!dst_pmd))
+> +		return -ENOMEM;
+> +
+> +	dst_pmdval = pmdp_get_lockless(dst_pmd);
+> +	if (unlikely(pmd_none(dst_pmdval)) &&
+> +	    unlikely(__pte_alloc(dst_mm, dst_pmd)))
+> +		return -ENOMEM;
+> +
+> +	dst_pmdval = pmdp_get_lockless(dst_pmd);
+> +	/*
+> +	 * If the dst_pmd is THP don't override it and just be strict.
+> +	 * (This includes the case where the PMD used to be THP and
+> +	 * changed back to none after __pte_alloc().)
+> +	 */
+> +	if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval)))
 
->
-> Other than this, LGTM from LUO perspective.
->
-> Acked-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->
-> [...]
->
-> --
-> Regards,
-> Pratyush Yadav
+Can we directly switch to pmd_leaf() while touching that?
+
+> +		return -EEXIST;
+> +	if (unlikely(pmd_bad(dst_pmdval)))
+> +		return -EFAULT;
+> +
+> +	state->pmd = dst_pmd;
+> +	return 0;
+> +}
+
+
+[...]
+
+>  	/*
+>  	 * Sanitize the command parameters:
+> @@ -809,41 +838,15 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+>  	while (state.src_addr < src_start + len) {
+>  		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+>  
+> -		pmd_t dst_pmdval;
+> -
+> -		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
+> -		if (unlikely(!dst_pmd)) {
+> -			err = -ENOMEM;
+> +		err = mfill_get_pmd(&state);
+> +		if (err)
+
+
+It's a bit odd that a "get" function doesn't return a PMD pointer but
+instead stores it in the state.
+
+Maybe more like "mfill_prepare_pmd" ? But actually you want to have a
+pte table.
+
+mfill_prepare_pte_table() or alternatively mfill_alloc_pte_table() /
+mfill_alloc_dst_pte_table()
+
+-- 
+Cheers,
+
+David
 
