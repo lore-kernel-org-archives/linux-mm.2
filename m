@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03CE1098784
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E871098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:42:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12756B00BC; Fri, 20 Mar 2026 09:42:40 -0400 (EDT)
+	id F04556B00C4; Fri, 20 Mar 2026 09:42:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A49556B00C3; Fri, 20 Mar 2026 09:42:40 -0400 (EDT)
+	id CB9796B00C5; Fri, 20 Mar 2026 09:42:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739DB6B00BC; Fri, 20 Mar 2026 09:42:40 -0400 (EDT)
+	id AE2FC6B00C6; Fri, 20 Mar 2026 09:42:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 42B4C6B00BF
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:42:40 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13342139B5E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:40 +0000 (UTC)
-X-FDA: 84566556480.19.25B5F14
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DCE7A140007
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D4176B00C4
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:42:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B9BBB6FC1
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:45 +0000 (UTC)
+X-FDA: 84566556690.04.A81465C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 51A964000F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774014158;
+	s=arc-20220608; t=1774014163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PIk+3PM+jG2PiQ44UnRCyz0Pc5nehV9CBwg+OwnTyLw=;
-	b=mM5IfHkIBuDpUkBnfA/8Nz6kDzGhXOoGXGwaFXh1+Jj+KfFbJGACNCsbIFUYJAZ73hy/Ug
-	PNfHAUTgYOhQbwqKJLJUvKZyYk9pRT+0PVHkpHyUKgpqEcTFSx9mBYNY3SwbYgcfLwiv83
-	Axnhz+qD1w7YQQPc7wpNsmO5L0zE26E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014158; a=rsa-sha256;
-	cv=none;
-	b=jlaeOAvvS84i1gi4JdAWxY1bqVrCRlG22MgLaQu5hu2SOjx8xOOQIaFat/FujUIAQtniPn
-	EyQJlXpfTTPbbx61EuVPvcoFI+Yx0YZ9s/uBKYpFGm1qpt+1UHcPddcVOFS8IgBQ9XtD6C
-	ZczM6Pi6s4Nx0aDXTZR4ywVxDUAJOQo=
+	bh=ZfpWi8mDNyBOMa2tfuFTBqwvX2eA5Kp1+U3DtplQ7SI=;
+	b=R3hxhv1qlSBnlP0ORftcqWbZnvSXYoA98o6riUqC9O5X5Re0Ju1EX7FFFKHtCZo3g+IVzJ
+	naOAkK+hxocHlFyYQ0PHZG3Ip+H2YXMdqP1LKBKiMfoR3TLxwtakyjJ80nzdbgFVbW04Vf
+	cI/+iw7wWOeavkzZS0wAACkMSBpNBrM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014163; a=rsa-sha256;
+	cv=none;
+	b=wX0tgRA2ncLpUtAIVuxbtormA/jK1tzoVuvRopy35FUf+ibGBjwBj4lDBUPJuIR5oksnPA
+	su/rkbfvG9T1GR5ve00uImvItP6RGSih77xeDLHQMpJeBHtLoMxRSCSDiaYghUWL/OfM3x
+	VISRQVSAfx7Q9X6R+EeZTd8KuLpXQVw=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5C70B4D294;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 64DBA5BEDB;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5069B4281B;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59A414281A;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PZagE5lOvWlyCQAAD6G6ig
+	id j13hFZlOvWl2CQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:45 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E1DD0A0B57; Fri, 20 Mar 2026 14:41:44 +0100 (CET)
+	id 07438A0B4A; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -81,14 +81,14 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 18/41] bfs: Sync and invalidate metadata buffers from bfs_evict_inode()
-Date: Fri, 20 Mar 2026 14:41:13 +0100
-Message-ID: <20260320134100.20731-59-jack@suse.cz>
+Subject: [PATCH 21/41] fs: Stop using i_private_data for metadata bh tracking
+Date: Fri, 20 Mar 2026 14:41:16 +0100
+Message-ID: <20260320134100.20731-62-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260320131728.6449-1-jack@suse.cz>
 References: <20260320131728.6449-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=801; i=jack@suse.cz; h=from:subject; bh=K9wrCKmeO7BfHLYf4wsyZtDcyuSx9fmOTys9wQHOC9M=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU57ZOEr4SoMR6litD6xJZ9vyOu7Qv8MRlaIP MceIDomSlWJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OewAKCRCcnaoHP2RA 2c3sB/9m9TZqiM8eDGPMcq+rKM3PXafvjHga/QNDB8hTrqSEQ/3iD+JOV9tZLe42768TP3T60aL 2pZcZwDnO0mBm+nwL5UJjVRAYp0202vqciT738fNOr2J0/GmCW2vPnvXsr8GsKQQKHCOGbKH8jZ FdoX4qubiKQqfCSpctN1L2bhSthGpjttQX9HiQmhVvqhymLnTXV+IL9Bv34LSce19IyFVpB5Qul i/i6BtWdCZZy/lbeMeC87I7PZ0imM/vCTKmYlBVBQeR4tEVIZMwPbKyqUzAdUDx9Pz7gXOVGNAX I3uIuyIPKMrTNXEaRaPgWMBM6X3jaW0TEa9x9zVTFaqYTIzK
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1862; i=jack@suse.cz; h=from:subject; bh=21rbptBohvHLbIzoeM8IfhTkwdubfon9k5dpdTlpgfs=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU5+RXfvEFOavnw88KSkCELSYzUGb6FJxDza0 lFuc/BYWXOJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OfgAKCRCcnaoHP2RA 2cVdCADcHKi3nENibDjh07t9tbXyUjkh5c1Polgi3FSaCQm47zS25K8aFptUxE2/oY8ejx7lyWp A+8xQcd21feMFPNOSI5mebAUxEmRB8Lgx1x6CHLQd0D6LlajkimXDuNt96nf+oklVRD/H8BcwDK HRgqbSaj0IJAwDNPgEPIn1y9JtSheML/XPlQP9uLuqfTP7I8JnfxyBS/9FxWrPTG+BbNyXNBQjV FHoiSlj/Uz9ZJlTG+NsU2p2A2akXMddVm3za2fBHhQLK5HWuK+eIeL7LD3J/FOxBNTBu6jRl9bA H+LgpsYFNtKQC0n8Q7/8/hIR9zPmkIaTfAtDesjgnuGLH1Mr
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
@@ -98,14 +98,12 @@ X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DCE7A140007
-X-Stat-Signature: w8we1q77bgaqcat59pu96sesshsici4h
+X-Stat-Signature: n67qwga33rwn8qnf7ggfz1e8jhqekmwc
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774014157-359766
-X-HE-Meta: U2FsdGVkX18JbVEIXMryQK9BKNkaZ0SbS1vsjnhvR4trP4cphovYdON/njyaSwkrdSxyN+7Zx9dZzsDG2i6+1X62DpmjHjdMMjnJDEevunE2zGYEGewUwnXz6+BoYAQsnFGYEY2zVsIzWvSynukF+Cjcd+DPRbH6GUFNLWViM+Thwf1nlyx8Y7jTlEF/MQZ5es5CS/Q3WJXhyeUzVVvjOgGo0UjV7eqgfjkfibVVr0IBkbby1T5lrHIP/+ipXh4fghdd/2soOFbJ0ITl7Ot9jdoCkrcjOwPxuQhqSvo+d35GgqpwVhrk5wTelzwXLnpqwuOIFJDPkVixPP8qNtHqRF7BBT2Fk72GDH3UVsHvUAlbAtmbhDB7Gr3IWoA7CkOfu2N3jMjtfzUDunW53UULm77bCIYXC6sf/wO919MxQLyPNiDu13EFn8NJxUQ8hThs0JwEfSnuQsnPtR9CTbjhZgXOXw/4iAovNHqJ0mhcSfFuW0sUS4pNMcChJg84OmVNKxpwvw1dccZgpoyzcGc0IAkz4diYJR7/GeELWJJlJ3JEsVa3cF11aI11EuALB3ZQHeYcCI4q6l1pwtNeFBuLU9BEgqDjXy66aT4jVNdzVAsoTyvGwy1tTMSOJpR8to4yDEx9i4uNqlYclBG3MK70Ef9Eqi/MhDSb8AxDoEh7OdhOHa4YK26mpmbvI+NySSzYbLRKLV3GhVKCVpSZjweifAai82GFOwg5ixTo2gZ6TO+0IQ8Hm8lId2GVRLt42zvJu5FdQK1Rw0tac9XI0acr61kCubagugI58BxHn+x4Of8Z4zaaCzOp/MrxQlR49TFnfeAole1+VRKQ8rwWxiICc+EAQsdclDraPjgNhRurGJO5aO1UL/CVMyG9ejSqoIMNd5R533WRjNt6yUt/WBK7PMzU/LA1QsnY9XZGLPEJ59Aqp5iKg2x6ImAJNK2YCkrrgzncgvxU6c9IBABw3+5
- bBKgk1kb
- 4NNieGJyENpSY1lSYeQMvZzSu5TlrMsih+WtUDe1hKW/L77hGhLnl7xKCYDr0F48H/+UuxCAUUA/codZqS1rGlVpI9b2zaJtgcOcJCWYGVv02dIOcbtVBcGO0OyBdWZkSgaIkQfFGTbfQJjUYfBoKBh/9cX4RoxZjbjr98VBxCysz6zlbvrZPOg0mKJ7Lp0CR6QEx
+X-Rspamd-Queue-Id: 51A964000F
+X-HE-Tag: 1774014163-739944
+X-HE-Meta: U2FsdGVkX18bcbi4iQBQFSQc1hAxn1K9kZPwkn602jvM/Pxd5C8TbSo67dtjDUqtUAzM1hP8cBr6Bl4nU4GxyhF2SPcxralZIX11YginT3MAt9/L/sI0FfhgAkUx4QjERZj/sRw4B0YmXpLK+MHHYCT/ttOZw2RLUHk8E+zfQxJaiGv83mqIlHD7xpg9TqxdeKKz9+qFM1S+GtwbJ9abNs0b+b9kJhv/vwl4FPu4Q+hDinpK9rixmlvn4T8HlbBJctB/yM8LeOpV8wNIDsW0+cJkJS/JHvhFTNwV7YF8L/3aKCDcA2kVrQk0ZbT3NYihhxFSGRswqYUD6OatPblX4ubSKmY/2rnyraDYNpl+zTYmJnZ0rNepNrHncIVtGVhnsB0ss8M3t74fW+gnavRaybmuJlAkE3p2bNn433FpO4GCNqubqdU1hAmQnrWftRp3T3SdtW4VmvsgvPhqbZ2govKRguKIpM+bLONZ36pxPuX7MHd1RZwqPWhb9wqX3qCkS+Zz68gW4w6hijI9KT3vx8b8gjZkD5ojvHiN2OYCBuQCio9L9Y6c7UK/u2T6wJmirZZ6nrWQxyaHat9Pm/akdNP0ByMFi0B18yPfm+k9cLorg3XfkdqAZzIgkt1egb6jXkjuC6lWYclO/j7Ptae+Bc66McxdtiAw+OaxnxgJDSc0ouwIIIY+nT2gowNLaHxy94U2WzrFWs0S9cvv1l7+QeYHojQ2SwG5kX3appN+DbrvDEzAFWGpEZvWHzi/pvii4OPbG2FU65XI2Vq6lK12HeZYk3jcrPhqF3+Z5WrsiES++Z99DHy59xauVB7dJkbtHeXlvCTdrYRBDwkKJzWEQ4lfj84vsN+vUo2mzDTFhV/ssUfW7SP+cnydIDZv/TJ45yShYDvSvSs5A3oFgIjG+u9tcyHAL72Nj6pSw+cT23o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,29 +111,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are only very few filesystems using generic metadata buffer head
-tracking and everybody is paying the overhead. When we remove this
-tracking for inode reclaim code .evict will start to see inodes with
-metadata buffers attached so write them out and prune them.
+All filesystem using generic metadata bh tracking are using bdev mapping
+as a backing for these bhs. Stop using i_private_data for it and get to
+bdev mapping directly.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/bfs/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/buffer.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
-index 9da02f5cb6cd..e0e50a9dbe9c 100644
---- a/fs/bfs/inode.c
-+++ b/fs/bfs/inode.c
-@@ -187,6 +187,8 @@ static void bfs_evict_inode(struct inode *inode)
- 	dprintf("ino=%08lx\n", ino);
+diff --git a/fs/buffer.c b/fs/buffer.c
+index bd48644e1bf8..c85ccfb1a4ec 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -574,9 +574,10 @@ static int osync_buffers_list(spinlock_t *lock, struct list_head *list)
+  */
+ int sync_mapping_buffers(struct address_space *mapping)
+ {
+-	struct address_space *buffer_mapping = mapping->i_private_data;
++	struct address_space *buffer_mapping =
++				mapping->host->i_sb->s_bdev->bd_mapping;
  
- 	truncate_inode_pages_final(&inode->i_data);
-+	if (inode->i_nlink)
-+		sync_mapping_buffers(&inode->i_data);
- 	invalidate_inode_buffers(inode);
- 	clear_inode(inode);
+-	if (buffer_mapping == NULL || list_empty(&mapping->i_private_list))
++	if (list_empty(&mapping->i_private_list))
+ 		return 0;
  
+ 	return fsync_buffers_list(&buffer_mapping->i_private_lock,
+@@ -679,11 +680,6 @@ void mark_buffer_dirty_inode(struct buffer_head *bh, struct inode *inode)
+ 	struct address_space *buffer_mapping = bh->b_folio->mapping;
+ 
+ 	mark_buffer_dirty(bh);
+-	if (!mapping->i_private_data) {
+-		mapping->i_private_data = buffer_mapping;
+-	} else {
+-		BUG_ON(mapping->i_private_data != buffer_mapping);
+-	}
+ 	if (!bh->b_assoc_map) {
+ 		spin_lock(&buffer_mapping->i_private_lock);
+ 		list_move_tail(&bh->b_assoc_buffers,
+@@ -868,7 +864,8 @@ void invalidate_inode_buffers(struct inode *inode)
+ 	if (inode_has_buffers(inode)) {
+ 		struct address_space *mapping = &inode->i_data;
+ 		struct list_head *list = &mapping->i_private_list;
+-		struct address_space *buffer_mapping = mapping->i_private_data;
++		struct address_space *buffer_mapping =
++				mapping->host->i_sb->s_bdev->bd_mapping;
+ 
+ 		spin_lock(&buffer_mapping->i_private_lock);
+ 		while (!list_empty(list))
 -- 
 2.51.0
 
