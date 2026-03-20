@@ -4,90 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 516261099B36
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86B11099B35
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:49:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B688A6B0139; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
+	id 078826B0118; Fri, 20 Mar 2026 14:49:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B40CA6B013A; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
+	id 04FB26B0119; Fri, 20 Mar 2026 14:49:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A566A6B013B; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
+	id EA7926B011A; Fri, 20 Mar 2026 14:49:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 944426B0139
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32E5C8AFAB
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:42:07 +0000 (UTC)
-X-FDA: 84567311094.16.467A486
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7E28DA0013
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:42:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M5oOwz0D;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id D92476B0118
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:49:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8579F1398C3
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:49:55 +0000 (UTC)
+X-FDA: 84567330750.30.00C73BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A940E20005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:49:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgPgwcmz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774032125;
+	s=arc-20220608; t=1774032593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5rN4D+NzQsYNbSxB+JvjqFly7NPVq6QkCg8cLNr+Qzw=;
-	b=WBvXZ83R2m+s2AneQzJT3stRt8KODSKT5v/fj6w5J3RE0DpD82FZFTNmN34hf6VVqRoUQ7
-	mFgddQt+dz8WOkoBM/5YGGYe85+3ZrVFtoM6ww0EJgyTYObcDASP/F1Iq6GoFv06b55m5N
-	5KJ7mM9dkRtBkWhHvaPOMMTiAjiPvXA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M5oOwz0D;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774032125; a=rsa-sha256;
+	bh=oKvf6mTHq+N9gjRLc3v+IFIUhtg0pRtPJcH5zeCiN0U=;
+	b=FYgwQD+qAcV8IZp/IdzpLHJqEvkJBHXRp1MZ2qNHd+h5mbP5p0L7VixbMHWUHc3OEY6lLZ
+	aq7jWGmoKHdKPCyo88eLJ2k2OolMbDub7ftz97unXR1+gwJE9/af/dm5k7oaGV1ghNPeyn
+	q7pxpZw8H1l5CH3WXk6gA0ChVHefwzk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774032593; a=rsa-sha256;
 	cv=none;
-	b=Br5KdpH00g1TuPjHGLmIfZe+XSitYZem1oYqfS3HquJUDrNXV7pKhkKhoEpb9446ba9vj5
-	d+lfowD6rVTza3I8DU8I1mLGV5cIQz6FmssXY2CrgC6S+pDq5tqPkxNV5OvOX/RTSAjuyD
-	ge/+RkcD4OS0/ReVP7XQrBMQwfu0VRg=
+	b=R/YjzXW4wKipreWRS6cPu7QOsDDc/vZbHI/ll8Q1h43oPW2zVJ+HuMoOIuzDyqSoMy758B
+	6DRLKv97zk7yWgt7XQp4vp3XQ9G2xzVYE1J99KQ87eMMjgCQQRg1foLkz9rbWfWTbJzPOx
+	o/YhFlKVZ1WZBfPYXxIBY957MMMXT/8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgPgwcmz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E9C2A60126;
-	Fri, 20 Mar 2026 18:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24243C4CEF7;
-	Fri, 20 Mar 2026 18:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774032124;
-	bh=k60VAliyD9e7Jl3y8MTPF7eUTQbTmx5vspuyZkF1b7Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=M5oOwz0DIXcF++ngTUjv/9dAJbzfA6WH8yBsnWcfBXFBcC2Xt0n2w6+yo+yZf6rmZ
-	 oE35H3aTlgNP6bRaw77kuybonV36iYt6+pPb1OWIqvwBK/5a4g8QXFtluy4yO8sDSl
-	 YDbGtIvzCYzE8/74q2y5oGgKLqU2dCrgZGqoFWJM=
-Date: Fri, 20 Mar 2026 11:42:03 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
+	by sea.source.kernel.org (Postfix) with ESMTP id 98CC440E4E;
+	Fri, 20 Mar 2026 18:49:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1EBC4CEF7;
+	Fri, 20 Mar 2026 18:49:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774032592;
+	bh=CZPats9e/xIykQ0p6beR56p5pT3SBFNJcBRMlbIFXJ8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HgPgwcmzuu4IHGVR8cx6TSvo6cBfxT/Zora5SGzhglKRzYmLMnRkAp41Lu3rXXGDe
+	 CQvykMQFTA/jVXGx50Krg5uoA42bhJCh4B8fAs84jFW7Qa233Fl2U4Fpj5cMp1rPtW
+	 ix2NSc1xwV7NR3Ed3qcs5FwIgNYlNc59eiirnv1REb9SWMbAMEeozSLs/6tTbBoQfa
+	 AsjqG2STRS1m24JkkjnL+3q2UBEIghZOY6qkRpZ/2LVckJDPQ+BYXfbAh/ZHxfFvJm
+	 H0iSTwulSmW0juJMkizsWIkqiKoI22h1WLsAi9aZzdMWnNmE/adMLK3CU0n6mc3vov
+	 wYcYxyl/xzwiw==
+Message-ID: <306f0fd2-cba1-4f48-af05-248be2bc9506@kernel.org>
+Date: Fri, 20 Mar 2026 19:49:46 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/14] mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific
+ usemap allocation handling
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin
- Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau
- <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 00/13] mm/huge_memory: refactor zap_huge_pmd()
-Message-Id: <20260320114203.b1d0e565162c68b965aa5cb1@linux-foundation.org>
-In-Reply-To: <cover.1774029655.git.ljs@kernel.org>
-References: <cover.1774029655.git.ljs@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+References: <20260317165652.99114-1-david@kernel.org>
+ <20260317165652.99114-10-david@kernel.org>
+ <f23aa64a-d78f-4c57-a08b-5c589889b7fc@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <f23aa64a-d78f-4c57-a08b-5c589889b7fc@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A940E20005
+X-Stat-Signature: xqq4wix4pxjomed8jorj46on4hkerqmy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7E28DA0013
-X-Rspamd-Server: rspam08
-X-Stat-Signature: zpptqnwtkqt8ou17h1mnjfwdpif3whww
-X-HE-Tag: 1774032125-620773
-X-HE-Meta: U2FsdGVkX19lvFXpQYNCo5QoTuiVX0k4PdZXlGsc1H1WgcVAtp0mAW6VpyT+I5Tmgba+Jkd2QoCmd2fGXAAdE32YUJy6IZnht2BVHFk6JqJfG4m1cHNEwkBhGsodoVdNItZysekfg07ibj1ZUn6rTR24pcIDMhE03IZlI2XI3N6A0NPiexn1RZQMMjvEZCZXY/i4oSc+kRHJw7JVyxPqiqEkB8WtoRaBpq2GXwmL/uX0JAwxLuuD4v4KB1T/sx+GL15wk1unTmKz/7hRbBxA5HBtYUT+TVj8w7oo6DXtAATYE5T4iRkcIhG23erIuAxZRZT2fv9uqrcwFNnWM4bSdH4Es6T9/A1NU9X5Pv+AFahU8lHnqQqzQEUs6mgKW+cHD8ZXKgM6OqdCP3J9hmq/RH6VYPiS4YU042r2YiQ1c1SWrjCAgne6Fh/FDJ34EwiFRFAiUGz5glZdllLkD1avBEK8JDKKIyy89Z7+FdD2aSZpJsYJeAX91um+N8AhBfUVZwR0cR2LDuHmUx9XAGM6paiHsgrl38QdUmMmHvenBrAGKoibCvkd+PHygirvQ4uJD3nZXsIdh4dUYB6+AkBKszxrS6DDdYYotRSocQ8hCcxgSLsi/YSThZ81r2+zfwOy5FeJNrRjHv9olBXP8PsHEy4JWSeadDkVFvybZ+5XQsrnE5HQ3R/Itu79XBr7IOmfu/A4domB+URQl0n3ib0peBUPVmPwAvrI1+BH/65c7AgEbMlFfWX0OJ69l2lyoCgO6BPAnL57lX/fjj7iPWFGl0DSI6Cs3nzMAmDfqzpFXzpqDaldF6CzakPCo9m/2qdVGvGjV1z09sXFPMeZ6BkMBRruDYR07ItmLd5nRP7Nwze7sYKXiA+TgADArvb8b2meKjycDt9oPWEIZzxMZ0/gwyC+HHSPO5PROklfITmS0/V/FmR5VqeKajlVs/DUZbYHNh1CCkiSbqiztwaJlKL
- dRpD0Luw
- 7DDJiUFIhEc3Lyy9mg8K9Yc1IpjZMgyeZzvdWwglwxMIdjDyfAUO9d5ya30Ai/pY18DDOX1de6s9H1Ehk2/2Fe/bur3fsK20cIMGIdpZn534zPErtIeZavPoI4g9zTs74KsJj+ZTxQdOJUl6rbhCK7fI9/BsAUIBNN2yFFonA6OK5O+XkSEoLF2r80bsfKr0K86ti8JR8AGKrd2SY2AzWd222taJcAM1gaDCHkmOsk1pKgyUTUUkxEdc0sB7a0KQB3Z0HNhgSHgfGCTSr4MG83CMrlfdeiZhHpOEpMqjJGqrjmEb25Sb4Oknx24ja2tGagx7v
+X-HE-Tag: 1774032593-909387
+X-HE-Meta: U2FsdGVkX1/S1NcI9koH5LW8AqThrmSpTbKimaoDHNj2hIDN7JcUZu6slvcACwTm078Zmzsoxso6FJxQ/cqP1ex3/3j+1+c8p8rL/6FHu4wYY+wCksDNfgb7vYcA3HrFCOB1O/4Zq55GDLmL3pB0mJ/lKDo5PFR3hyMgacewRIZ3/7qCxGzUgME9Fb4EljyjhwcGX2EbRgjvUxm35VKQCBuoCTfDfpkCXHR/MlL6wqexvbVFqg0oUMCo9LI/oMGGWT7OTq821Dc/7TTKxSznEpxF4c2nkZihUpFym4Ig0LgVFd4hUfnDjCcBP35FNNCpaFewt1Td0eLqAQIfgZ+Cj2uPo0IP22wtJRJJ+oaLw6T2ZU+8xJrYjLuWHE5VLv3rZ+bA0XcQPVrox+GN2NMG2UQ4wOozoaESyRt/JkGv9YS6oBru99atCHH5gdE8OvbCUq73Ud9O+CroKE/w2fq859l++yjP6nHstd4GsEPsHv6OOkY7tv6ckqyn9DqxQyhuCznzePCwHoI6LfTFY6A6Xo4qz8p5IZEvmbYg2rcvu+73TZJiQsOvlBhsoHsLUggyq1aopynRtvP9SGJRR+ZEEJT4ney+TxXoMVcm3cx44D8CSh0Y2j+dCP7qdeOUVS+ssHuwr4JTvWfvjXym6Pls3KDlKcJpMjj3cD9/D6ZUMeNs1dQbmZ/X+Thp4hAthH3wkxjodNoU+r9alpBVwGGOWKJxGChFjBFvqXNWNDbSgGGKrgxHzAgcgLa0F4CUr8fCcibNEhjudDOeaiot9RATDnWHHOB3Iw14Z++gYYsefSb+a+AMrtwRHYu7vgDYGrwVH4OTrmqkeEt4mkGEXLCGeMKK9HV/pDYxTN7Fdep8rbt8IgsDHo03YLm44IMwCsZvR1Q9doR2rglQO4ocwgzBVemnHGc0tnYKAjtBxY6hb540lM08p/HMWKcb4BXPvd/6kG9LQfTwgtB1Abs7BFV
+ rNbwME6/
+ g4OQ4g6deNAORcpQxR8yeMlrtlnfJGAWKc49kRnNM7AKwCJRUBUE+/LBb/JPJU4BM2XLYKc0gEYadRMfbayYdWjl/qruzl4oLLVJAi1QI4DsbDQw1H0r5XvS8DgeF8tsKQ8qXmG735jyArswLzaMKlHOJTboZ2NGgclH0lgNSPGgVjM+2m9BvW0MZUDHE33tAs2SGj/uIYICmyr3eIR0kc6X1Ro4lyeu/bV5GPiES8Etd4G0mr4lfkx9Zx9d2X16yTU5KsMsXOFyaiOw0jSxuici0vu61wmRMR3Q8/Z5w21eJ+SDTN/4SOm1Zt++B1GJugDJCZBqOZgOX8wI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,268 +145,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 18:14:50 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-
-> The zap_huge_pmd() function is overly complicated, clean it up and also add
-> an assert in the case that we encounter a buggy PMD entry that doesn't
-> match expectations.
+On 3/17/26 20:48, Lorenzo Stoakes (Oracle) wrote:
+> On Tue, Mar 17, 2026 at 05:56:47PM +0100, David Hildenbrand (Arm) wrote:
+>> In 2008, we added through commit 48c906823f39 ("memory hotplug: allocate
+>> usemap on the section with pgdat") quite some complexity to try
+>> allocating memory for the "usemap" (storing pageblock information
+>> per memory section) for a memory section close to the memory of the
+>> "pgdat" of the node.
+>>
+>> The goal was to make memory hotunplug of boot memory more likely to
+>> succeed. That commit also added some checks for circular dependencies
+>> between two memory sections, whereby two memory sections would contain
+>> each others usemap, turning bot memory sections un-removable.
 > 
-> This is motivated by a bug discovered [0] where the PMD entry was none of:
+> Typo: bot -> both. Presumably you are not talking about memory a bot of some
+> kind allocated :P
 > 
-> * A non-DAX, PFN or mixed map.
-> * The huge zero folio
-> * A present PMD entry
-> * A softleaf entry
+>>
+>> However, in 2010, commit a4322e1bad91 ("sparsemem: Put usemap for one node
+>> together") started allocating the usemap for multiple memory
+>> sections on the same node in one chunk, effectively grouping all usemap
+>> allocations of the same node in a single memblock allocation.
+>>
+>> We don't really give guarantees about memory hotunplug of boot memory, and
+>> with the change in 2010, it is pretty much impossible in practice to get
+>> any circular dependencies.
 > 
-> In zap_huge_pmd(), but due to the bug we manged to reach this code.
+> Pretty much impossible? :) We can probably go so far as to so impossible no?
+
+Yes.
+
 > 
-> It is useful to explicitly call this out rather than have an arbitrary NULL
-> pointer dereference happen, which also improves understanding of what's
-> going on.
+>>
+>> commit 48c906823f39 ("memory hotplug: allocate usemap on the section with
+>> pgdat") also added the comment:
+>>
+>> 	"Similarly, a pgdat can prevent a section being removed. If
+>> 	 section A contains a pgdat and section B
+>> 	 contains the usemap, both sections become inter-dependent."
+>>
+>> Given that we don't free the pgdat anymore, that comment (and handling)
+>> does not apply.
 > 
-> The series goes further to make use of vm_normal_folio_pmd() rather than
-> implementing custom logic for retrieving the folio, and extends softleaf
-> functionality to provide and use an equivalent softleaf function.
+> Isn't pgdat synonymous with a node and that's the data structure that describes
+> a node right? Confusingly typedef'd from pglist_data to pg_data_t but then
+> referred to as pgdat because all that makes so much sense :)
+
+Yeah, in general we refer to the NODE_DATA as pgdat (grep for it and
+you'll be surprised).
+
+> 
+> But I'm confused, does a section containing a pgdat mean a section having the
+> pgdat data structure literally allocated in it?
+
+Yes. "struct pgdat" placed in some memory section.
+
+> 
+> A usemap is... something that tracks pageblock metadata I think right?
+
+Yes. Essentially a large array of bytes, whereby each byte describes a
+pageblock data (migratetype etc)
+
+> 
+> Anyway I'm also confused by 'given we don't free the pgdat any more', but the
+> comment says a 'pgdat can prevent a section being removed' rather than anything
+> about it being removed?
+
+Well, if a pgdat resides in some memory section, given that it is
+unmovable turns the whole memory section unremovable -> hotunplug fails.
+
+Assuming you could free the pgdat when the node goes offlining, you
+would turn that memory section removable.
+
+And I think that commit somehow assumed that the last memory section
+could be removed if all it contains is the corresponding pgdat (which
+was never the case).
+
+> 
+> I guess it means the OTHER section could be prevented from being removed even
+> after it's gone.. somehow?
+> 
+> Anyway! I think maybe this could be clearer, somehow :)
+
+I'm afraid the whole purpose of the original patch was sketchy, which is
+also while I fail to even explain the original motivation clearly.
+
+Now it's fortunately no longer required. :)
+
+> 
+>>
+>> So let's simply remove this complexity.
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> I think what you've done in the patch is right though, we're not doing any of
+> these dances after a4322e1bad91 and pgdats sitting around mean we don't really
+> care about where the usemap goes anyway I don't think so...
+> 
+> I usemap and I find myself in a place where I give you a:
+> 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > 
 
-Thanks, I updated mm-unstable to this version.
+Thanks ;)
 
-> v3:
-> * Propagated tags, thanks everybody!
-> * Fixed const vma parameter in vma_is_special_huge() in 1/13 as per
->   Sashiko.
-> * Renamed needs_deposit -> has_deposit as per Kiryl, better describing the
->   situation as we're zapping deposited tables, not depositing them.
-> * Initialised has_deposit to arch_needs_pgtable_deposit(), and updated huge
->   zero page case to account for that as per Kiryl.
-> * Dropped separated logic approach as per Baolin.
-> * Added 'No functional change intended.' caveats.
-> * Removed seemingly superfluous, inconsistent pot-folio_remove_rmap_pmd()
->   mapcount sanity checks.
-> * De-duplicated tlb->mm's.
-> * Separated folio-specific logic into another function.
-> * Added softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio() functions.
-> * Add and use normal_or_softleaf_folio_pmd() to make use of
->   vm_normal_folio_pmd() and pmd_to_softleaf_folio() for obtaining the
->   folio.
-> * Add and use has_deposited_pgtable() to figure out deposits.
-> * Added a bunch of explanatory comments as per Baolin.
+[...]
 
-Here's how v3 altered mm.git:
+>> -
+>>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>>  unsigned long __init section_map_size(void)
+>>  {
+>> @@ -486,7 +390,6 @@ void __init sparse_init_early_section(int nid, struct page *map,
+>>  				      unsigned long pnum, unsigned long flags)
+>>  {
+>>  	BUG_ON(!sparse_usagebuf || sparse_usagebuf >= sparse_usagebuf_end);
+>> -	check_usemap_section_nr(nid, sparse_usagebuf);
+>>  	sparse_init_one_section(__nr_to_section(pnum), pnum, map,
+>>  			sparse_usagebuf, SECTION_IS_EARLY | flags);
+>>  	sparse_usagebuf = (void *)sparse_usagebuf + mem_section_usage_size();
+>> @@ -497,8 +400,7 @@ static int __init sparse_usage_init(int nid, unsigned long map_count)
+>>  	unsigned long size;
+>>
+>>  	size = mem_section_usage_size() * map_count;
+>> -	sparse_usagebuf = sparse_early_usemaps_alloc_pgdat_section(
+>> -				NODE_DATA(nid), size);
+>> +	sparse_usagebuf = memblock_alloc_node(size, SMP_CACHE_BYTES, nid);
+> 
+> I guess nid here is the same node as the pgdat?
 
+Yes! before we used NODE_DATA(nid)->node_id, which is really just ... nid :)
 
+-- 
+Cheers,
 
- include/linux/leafops.h |   39 +++++++++++-
- mm/huge_memory.c        |  115 ++++++++++++++++++++++----------------
- 2 files changed, 102 insertions(+), 52 deletions(-)
-
---- a/include/linux/leafops.h~b
-+++ a/include/linux/leafops.h
-@@ -603,7 +603,20 @@ static inline bool pmd_is_migration_entr
- }
- 
- /**
-- * pmd_is_valid_softleaf() - Is this PMD entry a valid leaf entry?
-+ * softleaf_is_valid_pmd_entry() - Is the specified softleaf entry obtained from
-+ * a PMD one that we support at PMD level?
-+ * @entry: Entry to check.
-+ * Returns: true if the softleaf entry is valid at PMD, otherwise false.
-+ */
-+static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
-+{
-+	/* Only device private, migration entries valid for PMD. */
-+	return softleaf_is_device_private(entry) ||
-+		softleaf_is_migration(entry);
-+}
-+
-+/**
-+ * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
-  * @pmd: PMD entry.
-  *
-  * PMD leaf entries are valid only if they are device private or migration
-@@ -616,9 +629,27 @@ static inline bool pmd_is_valid_softleaf
- {
- 	const softleaf_t entry = softleaf_from_pmd(pmd);
- 
--	/* Only device private, migration entries valid for PMD. */
--	return softleaf_is_device_private(entry) ||
--		softleaf_is_migration(entry);
-+	return softleaf_is_valid_pmd_entry(entry);
-+}
-+
-+/**
-+ * pmd_to_softleaf_folio() - Convert the PMD entry to a folio.
-+ * @pmd: PMD entry.
-+ *
-+ * The PMD entry is expected to be a valid PMD softleaf entry.
-+ *
-+ * Returns: the folio the softleaf entry references if this is a valid softleaf
-+ * entry, otherwise NULL.
-+ */
-+static inline struct folio *pmd_to_softleaf_folio(pmd_t pmd)
-+{
-+	const softleaf_t entry = softleaf_from_pmd(pmd);
-+
-+	if (!softleaf_is_valid_pmd_entry(entry)) {
-+		VM_WARN_ON_ONCE(true);
-+		return NULL;
-+	}
-+	return softleaf_to_folio(entry);
- }
- 
- #endif  /* CONFIG_MMU */
---- a/mm/huge_memory.c~b
-+++ a/mm/huge_memory.c
-@@ -104,7 +104,7 @@ static inline bool file_thp_enabled(stru
- }
- 
- /* If returns true, we are unable to access the VMA's folios. */
--static bool vma_is_special_huge(struct vm_area_struct *vma)
-+static bool vma_is_special_huge(const struct vm_area_struct *vma)
- {
- 	if (vma_is_dax(vma))
- 		return false;
-@@ -2325,6 +2325,63 @@ static inline void zap_deposited_table(s
- 	mm_dec_nr_ptes(mm);
- }
- 
-+static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-+		pmd_t pmdval, struct folio *folio, bool is_present)
-+{
-+	const bool is_device_private = folio_is_device_private(folio);
-+
-+	/* Present and device private folios are rmappable. */
-+	if (is_present || is_device_private)
-+		folio_remove_rmap_pmd(folio, &folio->page, vma);
-+
-+	if (folio_test_anon(folio)) {
-+		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-+	} else {
-+		add_mm_counter(mm, mm_counter_file(folio),
-+			       -HPAGE_PMD_NR);
-+
-+		if (is_present && pmd_young(pmdval) &&
-+		    likely(vma_has_recency(vma)))
-+			folio_mark_accessed(folio);
-+	}
-+
-+	/* Device private folios are pinned. */
-+	if (is_device_private)
-+		folio_put(folio);
-+}
-+
-+static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
-+		unsigned long addr, pmd_t pmdval, bool is_present)
-+{
-+	if (is_present)
-+		return vm_normal_folio_pmd(vma, addr, pmdval);
-+
-+	if (!thp_migration_supported())
-+		WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
-+	return pmd_to_softleaf_folio(pmdval);
-+}
-+
-+static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
-+		struct folio *folio)
-+{
-+	/* Some architectures require unconditional depositing. */
-+	if (arch_needs_pgtable_deposit())
-+		return true;
-+
-+	/*
-+	 * Huge zero always deposited except for DAX which handles itself, see
-+	 * set_huge_zero_folio().
-+	 */
-+	if (is_huge_zero_pmd(pmdval))
-+		return !vma_is_dax(vma);
-+
-+	/*
-+	 * Otherwise, only anonymous folios are deposited, see
-+	 * __do_huge_pmd_anonymous_page().
-+	 */
-+	return folio && folio_test_anon(folio);
-+}
-+
- /**
-  * zap_huge_pmd - Zap a huge THP which is of PMD size.
-  * @tlb: The MMU gather TLB state associated with the operation.
-@@ -2337,10 +2394,9 @@ static inline void zap_deposited_table(s
- bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		 pmd_t *pmd, unsigned long addr)
- {
--	bool needs_remove_rmap = false;
--	bool needs_deposit = false;
-+	struct mm_struct *mm = tlb->mm;
-+	struct folio *folio = NULL;
- 	bool is_present = false;
--	struct folio *folio;
- 	spinlock_t *ptl;
- 	pmd_t orig_pmd;
- 
-@@ -2357,56 +2413,19 @@ bool zap_huge_pmd(struct mmu_gather *tlb
- 	 */
- 	orig_pmd = pmdp_huge_get_and_clear_full(vma, addr, pmd,
- 						tlb->fullmm);
--
- 	arch_check_zapped_pmd(vma, orig_pmd);
- 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
- 
--	if (pmd_present(orig_pmd)) {
--		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
--		if (folio) {
--			needs_remove_rmap = true;
--			is_present = true;
--		} else if (is_huge_zero_pmd(orig_pmd)) {
--			needs_deposit = !vma_is_dax(vma);
--		}
--	} else if (pmd_is_valid_softleaf(orig_pmd)) {
--		folio = softleaf_to_folio(softleaf_from_pmd(orig_pmd));
--		needs_remove_rmap = folio_is_device_private(folio);
--		if (!thp_migration_supported())
--			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
--	} else {
--		WARN_ON_ONCE(true);
--		folio = NULL;
--	}
--	if (!folio)
--		goto out;
--
--	if (folio_test_anon(folio)) {
--		needs_deposit = true;
--		add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
--	} else {
--		add_mm_counter(tlb->mm, mm_counter_file(folio),
--			       -HPAGE_PMD_NR);
--
--		if (is_present && pmd_young(orig_pmd) &&
--		    likely(vma_has_recency(vma)))
--			folio_mark_accessed(folio);
--	}
-+	is_present = pmd_present(orig_pmd);
-+	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
-+	if (folio)
-+		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
- 
--	if (needs_remove_rmap) {
--		folio_remove_rmap_pmd(folio, &folio->page, vma);
--		WARN_ON_ONCE(folio_mapcount(folio) < 0);
--	}
--
--out:
--	if (arch_needs_pgtable_deposit() || needs_deposit)
--		zap_deposited_table(tlb->mm, pmd);
--
--	if (needs_remove_rmap && !is_present)
--		folio_put(folio);
-+	if (has_deposited_pgtable(vma, orig_pmd, folio))
-+		zap_deposited_table(mm, pmd);
- 
- 	spin_unlock(ptl);
--	if (is_present)
-+	if (is_present && folio)
- 		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
- 	return true;
- }
-_
-
+David
 
