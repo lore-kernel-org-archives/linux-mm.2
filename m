@@ -4,153 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0C51098781
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCEF1098783
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:19:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 937AE6B0089; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
+	id 8C4356B0088; Fri, 20 Mar 2026 09:19:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E7966B008A; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
+	id 89B8F6B0092; Fri, 20 Mar 2026 09:19:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FE406B008C; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
+	id 7B3786B0088; Fri, 20 Mar 2026 09:19:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BDDD6B0089
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:17:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 144ED1394E9
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:17:56 +0000 (UTC)
-X-FDA: 84566494152.22.885D856
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C0275160004
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:17:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=AqKQ8rYK;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AB0B6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:19:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13614139AC0
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:19:17 +0000 (UTC)
+X-FDA: 84566497554.02.4E25CE4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DD7BD1C000B
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:19:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cMJEPqUI;
+	spf=pass (imf20.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774012674;
+	s=arc-20220608; t=1774012755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MKtpZf5K46Wg1Wx2V5ibY1Yk67Tz3/1joNKoFOtonG0=;
-	b=MtpRcak2j5CedkPQlevAeGVEp0Bq0YoMqZSfot2YEJkdyYvo1iQU0cqy8LwAbSeg/lRdrU
-	PVXrcGW1d0wVTbH6z61w1HIYODKXZdFSGhYWEDcorLl9yqd1OxAS09Xjp8+3ifduGLG90/
-	NvnT5xXDNY+iLNul/R8gz53rBL/o884=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774012674; a=rsa-sha256;
-	cv=none;
-	b=t7Z9PMPYDAA+DY9UOmPmMk7FPA43X1ycyBk5vQj1PR91X2T9p866FCh8X1rnEaepy8hhGJ
-	hrZTVVMRwG/TbKcV5UQYuQVdluW8ltfSUpHi2yX/TVamrPdtjH6MQkDVkMOXXLdd18R102
-	sCYywUsIjRpNHLb3RScThlMpwsgPUPY=
+	bh=43pI9Rxx7g/U6KWY+aHGDiY4UP4hzBP1C6y0vyJ/NMo=;
+	b=YBsUEF9eMVH9QMdENv57gyjgsJDtTvlGZLi7J8A7spsdYLtjkLDNJlKvN0tS3Ba83LZ0Rl
+	NJsqT4x31aUDI5p3s0+Se/fOyED/fVyxfJLoH54sdOlnUjTxLT0zIp/Gc1EPdJt1mW1lCp
+	zRWcP+2NEF6mjNbW7oe1APKeKeR1M0E=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=AqKQ8rYK;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JNZYPj2776227;
-	Fri, 20 Mar 2026 13:17:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=MKtpZf
-	5K46Wg1Wx2V5ibY1Yk67Tz3/1joNKoFOtonG0=; b=AqKQ8rYKx75GaEInNd+aiv
-	Ok+UO0jNxgLi4h3Yff3Q1YyNFeWb9ihh50ydZ3ulrXqRrLSbU6AvPk3Vy9fR5wyH
-	O3uhYVrPqtdp+DEgXB89U6qoBQjXYn8TvIo3ECPQSrgsB8VTz114JsFTSoAnfYro
-	ls+WtFCcmZE0UXBVxyLWiYLU3il/PVFf4M9FkUxJqOh2yYtTbCAIMliqDmYcEvnN
-	ji2gkcDFv763GVlfNbJrAtGx6LufuS/+7XnbLMB+gONMTDvUU3aBudIzMYKCsLmh
-	jxGzHea9YHiAkg8IEGRpy6TIZu69N3MfZwAGkxsOmBP/7J1TK6ZAF9D9KtZpdArQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybskqc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 13:17:28 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62K8OBJM032397;
-	Fri, 20 Mar 2026 13:17:27 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7k73pp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 13:17:26 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62KDHQbE22282890
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Mar 2026 13:17:26 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 78BAB5805F;
-	Fri, 20 Mar 2026 13:17:26 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CD9158051;
-	Fri, 20 Mar 2026 13:17:16 +0000 (GMT)
-Received: from [9.39.27.18] (unknown [9.39.27.18])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Mar 2026 13:17:16 +0000 (GMT)
-Message-ID: <380c52cb-fc8d-4fbe-8d2a-f153bd179816@linux.ibm.com>
-Date: Fri, 20 Mar 2026 18:47:14 +0530
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cMJEPqUI;
+	spf=pass (imf20.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774012755; a=rsa-sha256;
+	cv=none;
+	b=pH/+n5XqwCoOkX2XuQo4r4SGjL/39Dm/8ZMsdhTsFW2JDx/4JBOL2o3hcSRFDcSs3j5FgM
+	8smVNMPeOaPqY2xiqTsRYeJPBylWUzlRRCn3YeIy+YY8ozNmOCDo5G8DJ+6JIVgf9v7Hrx
+	HvOEHzV0NtPWjuOJFOWnTbkCmT8Kj5o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774012754;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=43pI9Rxx7g/U6KWY+aHGDiY4UP4hzBP1C6y0vyJ/NMo=;
+	b=cMJEPqUIYURmb3ow6OLba9nduPNVdsxFXSNdVdewvxfvE9AUB/ev1r/6d3cnH5vh+HODCM
+	0/JhUiuyFt9Q/scGdxNioG6pkwuY6Bw1UEfxTwwfns3xYE7flkE8fqK+cbLPYnbueaCgvy
+	sjXrUeABQr3jDnZz6bIoHrXa3s7mvyg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-CeVCNg7WP_inUj0MZw47nw-1; Fri,
+ 20 Mar 2026 09:19:10 -0400
+X-MC-Unique: CeVCNg7WP_inUj0MZw47nw-1
+X-Mimecast-MFC-AGG-ID: CeVCNg7WP_inUj0MZw47nw_1774012748
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CBBF51944F01;
+	Fri, 20 Mar 2026 13:19:07 +0000 (UTC)
+Received: from [10.22.65.139] (unknown [10.22.65.139])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B29951955F25;
+	Fri, 20 Mar 2026 13:19:03 +0000 (UTC)
+Message-ID: <bf33746b-46ae-47ec-a735-d2a29226bf9c@redhat.com>
+Date: Fri, 20 Mar 2026 09:19:01 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm/memcontrol: disable demotion in memcg direct
- reclaim
-To: Bing Jiao <bingjiao@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH 1/7] memcg: Scale up vmstats flush threshold with
+ log2(nums_possible_cpus)
+To: Li Wang <liwang@redhat.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>, Yosry Ahmed <yosry@kernel.org>,
-        cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>,
-        David Hildenbrand <david@kernel.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Lorenzo Stoakes <ljs@kernel.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <20260317230720.990329-1-bingjiao@google.com>
- <20260317230720.990329-3-bingjiao@google.com>
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+ James Houghton <jthoughton@google.com>,
+ Sebastian Chlad <sebastianchlad@gmail.com>,
+ Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+References: <20260319173752.1472864-1-longman@redhat.com>
+ <20260319173752.1472864-2-longman@redhat.com> <ab0kAE7mJkEL9kWb@redhat.com>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <ab0kAE7mJkEL9kWb@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: lmjdvxApl6C7fk-OVKM42Uo1ddOkTEeiQLNVSCzafQY_1774012748
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260317230720.990329-3-bingjiao@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69bd48e8 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=1XWaLZrsAAAA:8
- a=VnNF1IyMAAAA:8 a=wwFiQfuXH1A37782mjUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: HGCOXiYaQMaSzoyKnKZenlLJDdyWg1EF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDEwNCBTYWx0ZWRfXyroHE1Hm43OA
- AobdbkflHXxYFhg/ihgDW/MwfX2E6ZwMS9GTOMh12x4cnHDUyJRqr0ncvkTAjxKFYdEZRV6cPIl
- YfC947Ty+iAmzTvzizuHJQHNXNY8pQRZSfh9KXGeBsE0A5RkQGYMIzy7C35z2F8JZya+MNQ8XrD
- Ylv6vPxjJ/wfaiePa2gVFkJAPSDqquofDGtyhY1B54W6W1wE5hbP3pmPu7DbXQBQry82qhcRNaA
- oK+KiYinqvYNKgY7po2BoSnzzCP72Up03RlevcpabnfR8TY1Vgiyc4429xKea7bRowDeinczDHF
- BlMuBPuCxcf5O2rZnhqB1GjI7qlRMX8WketnURRB9De06GOAXhLPfrL+fYPwKJhb2AgVLD9XHoP
- xcVJTkzmta4TTYsphv5r5IYhYPdkZxrmwgYatdNShQ/yVuqGBwDOBSsmTBq0+bbaUmq7PxT5ccM
- V+l9KFLjkzJgDaCxY0Q==
-X-Proofpoint-GUID: 4ktA1E3URIvtzNrvGo4hhyVJJxXiGbnk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-20_02,2026-03-19_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1011
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603200104
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C0275160004
-X-Stat-Signature: aqy7paqo7xmkanbt7gipwqen6znxabjc
+X-Rspamd-Queue-Id: DD7BD1C000B
+X-Stat-Signature: wrxu7t7ru63dn8pmhafu4fujnkgfrd5f
 X-Rspam-User: 
-X-HE-Tag: 1774012673-224516
-X-HE-Meta: U2FsdGVkX18IyMdWQupABapGVYf2e5q3v3fLE0VpZxqtK7mr6f9jAfhCz73iQpwIq94liu7F2xjOkerDSxFr8gpkx89BA+ossT8/eBug7W89NWH6FtaIe2vKj8BULxDHPs6X8gDFDVLqIjHIZB15iPeNopfSF8QNfPBNZnb3Q7crBJtoKToV88fSKo6mbfgeVvOTcGzw2DfhP9ygtVj/K+ZNfWI6bOLD9/f5o6Ph4wyU/UBSmn4lb2sMzPqp6LS92QXTCQOJZTLVOIcNmBvsAqcu2wzlS89uoYy3AupSkaOTIswQeuc/LY92BcQE04r1HYi/HlS6AfpObtWwsbpG9VzXFLwynZgfxc8iz01UBy3tA3+CuZnsCtwXgqOtwnKvpl98Q2/nSYDpC6RiHEDZww9VrngX2OTXWtl85WuPDar+JGkvgGRQReb1uENey3vZKWcILO72FmEY4xLB+t3yEuM8gUp//RbfaXssSVYVg0wTb+pUS6+PWnevYbAN75fdxvmRyBOY87lnyB6SyVca5ICKxTPt4a+LrVbLDc7G/fI/x2+fXvCN2BoWo6v9TTfMwLIqIz5TvomOUhAEIMeZkvfqamcSoWgXSKUf0QDc1nXkH2QO3ViquQRJailS12zCHnMDfrb/dKISQQGRc8eQoxUyJiE9L8i5ZXbadAcN/K5mjUkD3WndfO8/PDn9RXcY1VxWwOHEyVswtANFiYo6IlXV0ESPc7O/cthKKpCS65i2FwAemVPt2C+Pacaiv8uuk91OjO2vXsXalfHRB4z7wNrNAc0RJ4E79L3Nk/ACADbtiu9sRfRoBc9gnGoZKIviKMmyRseTZOVItgTmuZMhrCUgVh2TPhJjT1i1FRCNbmt0412L9YHSlx4+0T1HrDGyoRzBl3FP20W76KSsbMQFaPlfle13/itf04GdK/vU0VsmYGOPmpC/iH3Aohx7wBkulsxboFHA9QVwzvBNgUx
- Oc6iAuNq
- yK0fEk/pR3uLSAq6/3RyzULrsokSsNPs89fRv/1mXOBsx87RiQoEMkgD+vA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774012754-751514
+X-HE-Meta: U2FsdGVkX1/A7WPKIU/Y5GCMYtXGc2S65RGWUDwpWN1HoLftP2tFMF4QVKo29ld+3j7ePVQF2/S+TaoAnUhaw5rlu+cu2Dug/NhXnyNcXeIK4DO0gFOlwzO3OZVqHH2MNnP3ioxgz37NulsFsRBJ63pxxLpKJ+KMrkTwhkQigFs1Co9dA36g77xOFoAAA08S4y0KgyszRY5Cgp/btukn5EaB3SkuktLUP/qF1fyd10LJYf3vNsrS4y/xItqiMrKia2RoSHoRPw6TAa9gSyluU8RuIPN0NbVYLravlksSwelkWB0Mr3nXm9AERATSAIhSDSBsSb+g931TGUi498asq++VpV7Up5n0tXpO0srYU7PFEKJTiJUZwp8gQy+y9tUs2oDL+XDU5HAz9tEHAaWuGopTPzOSwW+sMreQSKMzk/85s0DSBL3gVtvi9Jdiku1h2pKq4l1dxv7SPzSiXzRv1Wr622rHe8zw/LndTNFazlf2ja6dT/zr8AZby5korLjRFoVuRvs+Zkg4EX+wuxw1sydKPNXh0wYoPRWNRBGqt1ImTw9y7iOeyHl8fVLU8DV/ql8icv/d9WmFEu8DpknZ1SpMsC+3FbWopodduZ05ZXkBlGivukAlHCDaEakwlmVE6+mIMvRJxw5ktqweX0nk9p3XW/wpTsUr5jmTKDdUglP/DTx3n6gdQD9XnuvZQxgeRxnPgsOXNa7M7eLgkevKau8IMetmBSq0BOCOusUXt/Dt4NIT+ocRMGZAlpXpdpYoBxm2hH21vVX16o8w1q17Cv2V6aA96HKaBf70vo/gEh+/9bCK9YxgUH2Z8HC0vxRljopqkJkmcV1KWWfeg6Goeosldys1XRzfHKeFwGk2WiMtXSPJcvXHn4CjWEZ/OWk3PKqSp0uw9XMCUPmqxnjgaNlzDolINAJXJVsuvTn3CHw3GzjAqVxL8yssu0JJ8+z7L4/FEckdFLlRKI9aAQE
+ 16jDC0PJ
+ AOnDCrwuqjNCSXZc57bJTfEJYQfkcInBZfczHH6VmJtW9NhD3o6DhA690Ki2x/0zatKdZhjbmlQojDvcLjADIYtkXqzqzbKZaEL1NzgJRs4SgN+HKU370g5DdtU9/QDq2xN7NqvXo9Y6HVYk58N1h39OzxNkrwayh2kp0AVaEBlsUR8KiJ+DtNTAd+gE5oM+hfVCDCmSkM73M/m2mEApnPCX2zLn1K/Pq9Qz7KR4Gj2jO8uYROvoHi+BdvsDPXtSywOH3G7oGRWD/rz6aDA0zWxKe8Il0ksNVLklS3RDc55bA/FnD8VsskqWz90zH12XTDzAMy5dyIlNXDeeRY055/76IjaaR0xXzMd7JOMNbgxdELJXa1Fb4rANERhwIkihTxmQ7HIwGfZeMRyA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,190 +118,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bing
 
-On 3/18/26 4:37 AM, Bing Jiao wrote:
-> NUMA demotion counts towards reclaim targets in shrink_folio_list(), but
-> it does not reduce the total memory usage of a memcg. In memcg direct
-> reclaim paths (e.g., charge-triggered or manual limit writes), where
-> demotion is allowed, this leads to "fake progress" where the reclaim
-> loop concludes it has satisfied the memory request without actually
-> reducing the cgroup's charge.
+On 3/20/26 6:40 AM, Li Wang wrote:
+> On Thu, Mar 19, 2026 at 01:37:46PM -0400, Waiman Long wrote:
+>> The vmstats flush threshold currently increases linearly with the
+>> number of online CPUs. As the number of CPUs increases over time, it
+>> will become increasingly difficult to meet the threshold and update the
+>> vmstats data in a timely manner. These days, systems with hundreds of
+>> CPUs or even thousands of them are becoming more common.
+>>
+>> For example, the test_memcg_sock test of test_memcontrol always fails
+>> when running on an arm64 system with 128 CPUs. It is because the
+>> threshold is now 64*128 = 8192. With 4k page size, it needs changes in
+>> 32 MB of memory. It will be even worse with larger page size like 64k.
+>>
+>> To make the output of memory.stat more correct, it is better to
+>> scale up the threshold logarithmically instead of linearly with the
+>> number of CPUs. With the log2 scale, we can use the possibly larger
+>> num_possible_cpus() instead of num_online_cpus() which may change at
+>> run time.
+>>
+>> Although there is supposed to be a periodic and asynchronous flush of
+>> vmstats every 2 seconds, the actual time lag between succesive runs
+>> can actually vary quite a bit. In fact, I have seen time lags of up
+>> to 10s of seconds in some cases. So we couldn't too rely on the hope
+>> that there will be an asynchronous vmstats flush every 2 seconds. This
+>> may be something we need to look into.
+>>
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>   mm/memcontrol.c | 17 ++++++++++++-----
+>>   1 file changed, 12 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 772bac21d155..8d4ede72f05c 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -548,20 +548,20 @@ struct memcg_vmstats {
+>>    *    rstat update tree grow unbounded.
+>>    *
+>>    * 2) Flush the stats synchronously on reader side only when there are more than
+>> - *    (MEMCG_CHARGE_BATCH * nr_cpus) update events. Though this optimization
+>> - *    will let stats be out of sync by atmost (MEMCG_CHARGE_BATCH * nr_cpus) but
+>> - *    only for 2 seconds due to (1).
+>> + *    (MEMCG_CHARGE_BATCH * (ilog2(nr_cpus) + 1)) update events. Though this
+>> + *    optimization will let stats be out of sync by up to that amount but only
+>> + *    for 2 seconds due to (1).
+>>    */
+>>   static void flush_memcg_stats_dwork(struct work_struct *w);
+>>   static DECLARE_DEFERRABLE_WORK(stats_flush_dwork, flush_memcg_stats_dwork);
+>>   static u64 flush_last_time;
+>> +static int vmstats_flush_threshold __ro_after_init;
+>>   
+>>   #define FLUSH_TIME (2UL*HZ)
+>>   
+>>   static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
+>>   {
+>> -	return atomic_read(&vmstats->stats_updates) >
+>> -		MEMCG_CHARGE_BATCH * num_online_cpus();
+>> +	return atomic_read(&vmstats->stats_updates) > vmstats_flush_threshold;
+>>   }
+>>   
+>>   static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+>> @@ -5191,6 +5191,13 @@ int __init mem_cgroup_init(void)
+>>   
+>>   	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
+>>   				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
+>> +	/*
+>> +	 * Logarithmically scale up vmstats flush threshold with the number
+>> +	 * of CPUs.
+>> +	 * N.B. ilog2(1) = 0.
+>> +	 */
+>> +	vmstats_flush_threshold = MEMCG_CHARGE_BATCH *
+>> +				  (ilog2(num_possible_cpus()) + 1);
+> Changing the threashold from linearly to logarithmically looks smarter,
+> but my concern is that, on large systems (hundreds/thousands of CPUs),
+> the threshold drops dramatically.
 >
-> This could result in inefficient reclaim loops, CPU waste, moving all
-> pages to far-tier nodes, and potentially premature OOM kills when the
-> cgroup is under memory pressure but demotion is still possible.
+> For example, 1024 CPUs it goes from 65536 (256MB) to only 704 (2.7MB),
+> that's almost 100x. Could this potentially raise a performance issue
+> as frequently read 'memory.stat' on a heavily loaded system?
 >
-> Introduce the MEMCG_RECLAIM_NO_DEMOTION flag to disable demotion in
-> these memcg-specific reclaim paths. This ensures that reclaim
-> progress is only counted when memory is actually freed or swapped out.
+> Maybe go with MEMCG_CHARGE_BATCH * int_sqrt(num_possible_cpus()),
+> which sits between linear and log2?
 
-Thanks for the patch. With this change, are we completely disabling 
-memory tiering in memcg?
+I have also been thinking about scaling faster than log2 but still below 
+linear. I believe int_sqrt() is a good suggestion and I will adopt it in 
+the next version.
 
->
-> Signed-off-by: Bing Jiao <bingjiao@google.com>
-> ---
->   include/linux/swap.h |  1 +
->   mm/memcontrol-v1.c   | 10 ++++++++--
->   mm/memcontrol.c      | 16 +++++++++++-----
->   mm/vmscan.c          |  1 +
->   4 files changed, 21 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 7a09df6977a5..e83897a6dc72 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -356,6 +356,7 @@ unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone
->
->   #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
->   #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
-> +#define MEMCG_RECLAIM_NO_DEMOTION (1 << 3)
->   #define MIN_SWAPPINESS 0
->   #define MAX_SWAPPINESS 200
->
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index 433bba9dfe71..3cb600e28e5b 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -1466,6 +1466,10 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
->   	int ret;
->   	bool limits_invariant;
->   	struct page_counter *counter = memsw ? &memcg->memsw : &memcg->memory;
-> +	unsigned int reclaim_options = MEMCG_RECLAIM_NO_DEMOTION;
-> +
-> +	if (!memsw)
-> +		reclaim_options |= MEMCG_RECLAIM_MAY_SWAP;
->
->   	do {
->   		if (signal_pending(current)) {
-> @@ -1500,7 +1504,7 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
->   		}
->
->   		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
-> -				memsw ? 0 : MEMCG_RECLAIM_MAY_SWAP, NULL)) {
-> +						 reclaim_options, NULL)) {
->   			ret = -EBUSY;
->   			break;
->   		}
-> @@ -1520,6 +1524,8 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
->   static int mem_cgroup_force_empty(struct mem_cgroup *memcg)
->   {
->   	int nr_retries = MAX_RECLAIM_RETRIES;
-> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
-> +				       MEMCG_RECLAIM_NO_DEMOTION;
->
->   	/* we call try-to-free pages for make this cgroup empty */
->   	lru_add_drain_all();
-> @@ -1532,7 +1538,7 @@ static int mem_cgroup_force_empty(struct mem_cgroup *memcg)
->   			return -EINTR;
->
->   		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
-> -						  MEMCG_RECLAIM_MAY_SWAP, NULL))
-> +						  reclaim_options, NULL))
->   			nr_retries--;
->   	}
->
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 303ac622d22d..fcf1cd0da643 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2287,6 +2287,8 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
->   				  gfp_t gfp_mask)
->   {
->   	unsigned long nr_reclaimed = 0;
-> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
-> +				       MEMCG_RECLAIM_NO_DEMOTION;
->
->   	do {
->   		unsigned long pflags;
-> @@ -2300,7 +2302,7 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
->   		psi_memstall_enter(&pflags);
->   		nr_reclaimed += try_to_free_mem_cgroup_pages(memcg, nr_pages,
->   							gfp_mask,
-> -							MEMCG_RECLAIM_MAY_SWAP,
-> +							reclaim_options,
->   							NULL);
->   		psi_memstall_leave(&pflags);
->   	} while ((memcg = parent_mem_cgroup(memcg)) &&
-> @@ -2572,7 +2574,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->   		/* Avoid the refill and flush of the older stock */
->   		batch = nr_pages;
->
-> -	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
-> +	reclaim_options = MEMCG_RECLAIM_MAY_SWAP | MEMCG_RECLAIM_NO_DEMOTION;
->   	if (!do_memsw_account() ||
->   	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
->   		if (page_counter_try_charge(&memcg->memory, batch, &counter))
-> @@ -2610,7 +2612,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->
->   	psi_memstall_enter(&pflags);
->   	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
-> -						    gfp_mask, reclaim_options, NULL);
-> +					gfp_mask, reclaim_options, NULL);
->   	psi_memstall_leave(&pflags);
->
->   	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
-> @@ -4638,6 +4640,8 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
->   {
->   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
->   	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
-> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
-> +				       MEMCG_RECLAIM_NO_DEMOTION;
->   	bool drained = false;
->   	unsigned long high;
->   	int err;
-> @@ -4669,7 +4673,7 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
->   		}
->
->   		reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages - high,
-> -					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL);
-> +					GFP_KERNEL, reclaim_options, NULL);
->
->   		if (!reclaimed && !nr_retries--)
->   			break;
-> @@ -4690,6 +4694,8 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
->   {
->   	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
->   	unsigned int nr_reclaims = MAX_RECLAIM_RETRIES;
-> +	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
-> +				       MEMCG_RECLAIM_NO_DEMOTION;
->   	bool drained = false;
->   	unsigned long max;
->   	int err;
-> @@ -4721,7 +4727,7 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
->
->   		if (nr_reclaims) {
->   			if (!try_to_free_mem_cgroup_pages(memcg, nr_pages - max,
-> -					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL))
-> +					GFP_KERNEL, reclaim_options, NULL))
->   				nr_reclaims--;
->   			continue;
->   		}
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 33287ba4a500..7a8617ba1748 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -6809,6 +6809,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
->   		.may_unmap = 1,
->   		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
->   		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
-> +		.no_demotion = !!(reclaim_options & MEMCG_RECLAIM_NO_DEMOTION),
->   	};
->   	/*
->   	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
+Thanks,
+Longman
 
-
-Did you run any performance benchmarks with this patch?
-
-
-This patch looks good to me. Feel free to add
-
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-
-
-> --
-> 2.53.0.851.ga537e3e6e9-goog
->
->
 
