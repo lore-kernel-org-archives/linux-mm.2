@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D28A5109316E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC6391093168
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DC106B009D; Thu, 19 Mar 2026 22:48:19 -0400 (EDT)
+	id 0F2996B009F; Thu, 19 Mar 2026 22:48:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18D276B009F; Thu, 19 Mar 2026 22:48:19 -0400 (EDT)
+	id 07C186B00A0; Thu, 19 Mar 2026 22:48:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A3346B00A0; Thu, 19 Mar 2026 22:48:19 -0400 (EDT)
+	id EAD6A6B00A1; Thu, 19 Mar 2026 22:48:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F11D66B009D
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:48:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9FD8F140841
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:18 +0000 (UTC)
-X-FDA: 84564907476.12.7C748E8
+	by kanga.kvack.org (Postfix) with ESMTP id D3FC06B009F
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:48:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A198E13BAC8
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:52 +0000 (UTC)
+X-FDA: 84564908904.17.89D9794
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 14638C000D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G89sXyH2;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0F773120002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BjGNWz7F;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773974897;
+	s=arc-20220608; t=1773974931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1n/mKYSJSaME5mxogRmBKIVJdPgwSkj/MGdZmTZt9lk=;
-	b=wmhjWVHbj2FFZx4OLKcQQU2LsdvM2bmxTp+nwZxxuxvPwD8Q56nrSHBmfwE9E10lO4HHyq
-	+I6Gv4VpN09l+Mzl/MNLMff3FYqY3wKVmW+ofgB8KsdZjj7fyZqz+fqqiy4vYw6dWa0Aq0
-	PySKNkFActpCwIWGHrWafzAD+1xAWyc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G89sXyH2;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773974897; a=rsa-sha256;
+	bh=YSFVHUgeZzox5OgmuKywUxQt5O1gJp934Dw7MAs4W4s=;
+	b=2NJHaGlpXwscEmbwHqXqJrafoTY9GAqlsM443J80ndJ1eVEglrLqAkkPtuNjavJrNkjwIJ
+	8nu0U+pVZytwt3kAYt/CUb+4UZudKA2r5ZkX937y9zgtg7znseDx++cfDR3/dli3tzXl4t
+	5v+LfWsuUxDg4fnVaI3ClhWwva/ADpE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773974931; a=rsa-sha256;
 	cv=none;
-	b=ILbSBveWQfukd+tdzzDW+Mc3lu9yUhDwhqoMfySZJLTmuSi9MWF/Sr4Adt5T7aaby6Mja8
-	8H+DlNBKb056GvL5klgCiXueJDIfNuHlC3PTqAIvEfweXAflwK7PYG6kl/r4jKt+RoGCAj
-	DIUvAbCm4Q73D+0VT9VgabXvqicItfM=
+	b=NWkJ2rB81c189yoYg9aK8LxddFV7D4GBz+TR6F8m5p739CNcpgaWlkHIiMvWEF6fjXHo/3
+	078SAw4nxqxGnrDiE76Vr7LmuHw1Nalm9B5ZOVkRf6cbbAY/b4XB3kwHhV7MekBOTh2r+9
+	OhPT/qU+XWkm/n3kMGdIj9DWrxr+y2U=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BjGNWz7F;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F04A60097;
-	Fri, 20 Mar 2026 02:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40ACC19425;
-	Fri, 20 Mar 2026 02:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773974896;
-	bh=/MJZfpkxLYSLTMw4fqVA5bUBJsT3txP8IPH/KELwiHA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G89sXyH2fDZVtSEe3H+47YIQSJXtr8wIa23HCK5ebn/1zfTX0RypRyrkcpga9Qnvd
-	 R6eibAaBpV0yUuru4tddKxWNRXmANQZW5/mR80XMZju8EZ3hmVpgJmCbOKYz4WjYry
-	 WQF9pEvwp1CpJqfa8lHq/y7y6XUn1uUTZyXh29/CZgiXBMEhg5tnT/H3W9NH0dGsKW
-	 jYUv0LQqd13BxAd86okQORVbgGKHG0Lg5qlDZ2NEpRYW+HPlFp76GCoE0xYhcAaoDB
-	 Gbv2JdLj4MbK0srj1EZB3iMxBfvPDHeComtOzFW31PGiOUH+LFnO8qDzrf1wtJktKY
-	 TjAwQABq/0A2A==
-From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/damon/reclaim: fix min_age_region truncation from unsigned long to unsigned int
-Date: Thu, 19 Mar 2026 19:48:13 -0700
-Message-ID: <20260320024814.1922-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319161620.189392-3-objecting@objecting.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 14638C000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: n9kbfpa5377jqct6jarbz7w4ufikapgx
+	by tor.source.kernel.org (Postfix) with ESMTP id A269360130
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:48:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3095FC19425;
+	Fri, 20 Mar 2026 02:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773974930;
+	bh=ZwzkqrrfmnwzSwwehE9MFr/f1r47yObrEGfeUmVXDLM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BjGNWz7FRCFlJKphV2wMLCwL/9jERXlzggS1owTY5OU7rCYTJDogUWtxO1TDi3tEO
+	 LlAMxnBepVoIOzcHpUiuD3+KREjdThvJqzkb8cY4IJwYaI87qCc8EwneRXtxWcE2ki
+	 6pJvMVrlcRTvbdjtmtHvfdcvfWXEMl0urNlsH2Ws=
+Date: Thu, 19 Mar 2026 19:48:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 15 . x" <stable@vger.kernel.org>, damon@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/core: avoid use of half-online-committed
+ context
+Message-Id: <20260319194849.64b0911e2a7a6d8b1c22005a@linux-foundation.org>
+In-Reply-To: <20260319145218.86197-1-sj@kernel.org>
+References: <20260319145218.86197-1-sj@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0F773120002
+X-Stat-Signature: kcdpamknn1b58ju993h9k559emkk4bmh
 X-Rspam-User: 
-X-HE-Tag: 1773974896-704633
-X-HE-Meta: U2FsdGVkX1+nrLT/n9zJEza8NLm11epPGZuDohiUXC2oQAGQdkc4QaFebx3+yp2Bb7cFFYMWC9lamoEa9e0z7WEtOdWEXKBMbHN5X+AeTpaq10TlkQJ3lswF/j74VH+56e6/TdO6qYtX3qRcQTLRTMzK9Xd5mbgYdqMoXnLVUr/fj5k17C0MJyE0Qnubp5FvP5l8PZxx2U5iUEJL9ASQ/Bq9grjYgYKaXh9IKHXY5EbWZhOi+HDOn0b/GHwlcRwSeOeYIJeI85XFq1+EkHhGqzP3nFMPILk00AH/0pisvvD9WyND+UkSexmPMfg8zSUhCB9M0PnCDUY9+jz0PgzDm/YU9iBqaE4+hME3djSXA93jOgpZbnpp2OcCUgVkJ18in0o42GGrGMgoD0CyohCw/k3X53gAuhbC+N1yGqpn3WnVHUDFUK6y5DaIkXwHKeBFDF6uiwur94+nGQgoqV2aM7bpGJaMDuPHYV1MAStSjMWt9EuFDU3d/BMIADrN2K94qtN3ZpSw9sAvsQQ0qo8kbO/AagMMspMbbOMSe93te+mRVt8LbKJQiQh6TwcNwAgrEDvY+8iVZ3zcD7F9tGs8qWPruJ5KMu0mqFrKYRJEXcmd7hwna5+wd/UjkX8MH7/x9frJgkQBBHXhFG7FI+Gp70AFk40WlikA0WEhWvT6CO9RnN2hiBEXobQe7mJv49HuN6n6fCct2qGbGKvXRFiMGH5EUYZHaytOb15WnZ9SBBjtdHu1FWI+v9ZYv8jMfqLvELl/GzPgjlVfJoaEpL/eo2N6dc7RNYvmudLNWXo0BbpuF6+2nMKNZMQ9D5B4M9sIyWYD1vLKj38yy+R31f7ojg5ZPeByAh4QFAOKLwkJoBdYXAjWvY+4bY4BpMnEGFNQjJwVeawpLZyzE2bn/gWGj97bsLXD7F1hmQqinUvBv81yXtO2uX7VL7K2fJ1Jb9NLwhJairveHlOSJAJdpcy
- D7B34Tzm
- qwVEoeRumPS4vAXrj80GTViScY58fMfyYwIols7uXYiqW3IjUJ+t7EIqNFPTI/8fkFiaPdjo3Pn476cagunRL3Ou64VJGOk8/BJcfahabnvX9nfrgYCWxxL7CMbx4RHOeKaPajWCAZtXBteVYRQggq1gVW04/9xuIwSSCBP3SxjP4iuHyxXT4f9gx/0PMa2Ryi3VSR50GpeC7y8zIH9TaQixxDm6KIncHSBY0ShQj9b33ZWwnbwNcZ1OMtondT2zb4v+f2q62mrjN4fgQs6mPfJiyBmE43pomQSOy7UX39u2wfWDI0TQEFRr6FyU+UqUvCw7CFyG8Qlq1f9pNy1sdtBVebN5tcGzl4eBp29JBuKWtstY5PeyZSfTNG0BHtjNHiVt+UIy9VtaErBo=
+X-HE-Tag: 1773974930-40666
+X-HE-Meta: U2FsdGVkX19v6XZIMZc3zNs7B2ycUn5gH9EeGHez3rJuVE7ZeEc0Gy/Giirv2T9nvDFD8wFjXZTZEn90s1H/1X41izfHPZOCZLlmrbloaLgLkhHm9Aj1wsfBrOnuScNkW4HAuoK65nJUwCyKAS2z8swG6VvuuueZjl3zYo5P7CTdv/00h8DJlac68xHvUIPdoVoIAMkuIm2jXvhejZHWUeygBx3k/+e5lRX/fUKwK/z1w9mHLoqT4mcFFeTQVptwoYMGoNTE9k7vDMNfdrStJN77wd9ACjkGXRRO46ATR63s0Ivt+cnkNYQ7M5vGITDZnU696/mLSIi2jVn8j366sqRrR64C/NloCWXu2xe3JXh2sq3Xo/pUbn+XgX8+L6O+xvoFTXyV4dLPP/DUxKIRnJZYyhsluETbxJe3KGHGXraO43sme57HE9Og29kKOyYP1lxnfIaqKFtIe4tBsTC1ScYwtVy7umlxqOTDtmqzsX8Sd8bqQeDl0HJ+u4vp0/kX8/AHGENUoyYLqv/wIXzGfhLSf0nLFa1JrqxRXLp1bdf1sIg9Cd530REbAmVU1fz+8nCCsb17ePA+/a3RbbPuVSvxooxSsytQ3CQrg1dctr/J6I8NG1rlg2gsnLRpuqoSghXaj/m45zGyfn69cWwuKnrEuY8zgtIcUsnp0gGxuWWdMUxSiOgpw78WsB/62IIjMAp/vfjNJz0k3MKjOuohxkQOPt0brKNXKD0t0oYR47XSNDnID93RG37wNgOS1gtgJ6iGx9/jcPrhILcW3kaFKjY2/tWPEzB8FAL/4fCVo9Ge2oHHaTvXaWWGX4k7lNrkWG2tjsihCnca/NaLcFrirtuTuyQOP/hnEIHrQAwJTuEPhDB+aZCkXRrGAhiojv0XOg2n31HG3ZPvRu0XDSPDFuWDwFCfLv0fU6wp3QM9y8kGY5jbgvZ84/A/VrXaxpQ7I3SqAMbunoUusKp+Lkw
+ sBNpXGnR
+ WiNcHJBGC1CKn7wXy4+g2Lgi7zimpEXH+WDYlAODED3hjHNGDnFYyIWGHSBVbJMKW50miSTzJD25ATj03xaxRuIA01b1g78JZSwzfYEmUN/lPuaZCHAZPJPjB3IHqiWZBmg/MWnAprTDLFy+P+HwVY7cPl/cobooO5kJx27tGpcAai17dMn1D83XJPgRJhvZav6lZaoBOafnEd0MVIdEwmwOwQLa8N5mvy2lg+hnGFsD+VMrhc9H77rcmzsacUka7MxDrZvdzHY06SWExwuAowAtGBEzaJAdQm2UAbijIscVIA3FSE1lp4EfZMAonPS7DZKRYsZbEOyfp06ik5PIDLPnF8HppjTp2fFXy0YyJQ+fIPYMA7m5j7l0voNepgvASQrQZ4QNjON1ZZYw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,77 +90,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Mar 2026 16:16:20 +0000 Josh Law <objecting@objecting.org> wrote:
+On Thu, 19 Mar 2026 07:52:17 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> min_age / aggr_interval can exceed UINT_MAX with extreme but valid
-> module parameter values, silently truncating min_age_region and
-> lowering the cold-page age threshold below what the user intended.
-> Clamp the result to UINT_MAX to match the field's type.
-
-I believe the issue is not making real issue in real life.  But fixing this
-makes the code cleaner to read, so I think this is better to have.  Thank you!
-
+> One major usage of damon_call() is online DAMON parameters update.  It
+> is done by calling damon_commit_ctx() inside the damon_call() callback
+> function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+> parameters and 2) internal memory allocation failures.  In case of
+> failures, the damon_ctx that attempted to be updated (commit
+> destination) can be partially updated (or, corrupted from a
+> perspective), and therefore shouldn't be used anymore.  The function
+> only ensures the damon_ctx object can safely deallocated using
+> damon_destroy_ctx().
 > 
-> Signed-off-by: Josh Law <objecting@objecting.org>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-> ---
->  mm/damon/reclaim.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> The API callers are, however, calling damon_commit_ctx() only after
+> asserting the parameters are valid, to avoid damon_commit_ctx() fails
+> due to invalid input parameters.  But it can still theoretically fail if
+> the internal memory allocation fails.  In the case, DAMON may run with
+> the partially updated damon_ctx.  This can result in unexpected
+> behaviors including even NULL pointer dereference in case of
+> damos_commit_dests() failure [1].  Such allocation failure is arguably
+> too small to fail, so the real world impact would be rare.  But, given
+> the bad consequence, this needs to be fixed.
 > 
-> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> index 9b55df304e51..303c64a56073 100644
-> --- a/mm/damon/reclaim.c
-> +++ b/mm/damon/reclaim.c
-> @@ -170,8 +170,8 @@ static struct damos *damon_reclaim_new_scheme(void)
->  		.min_nr_accesses = 0,
->  		.max_nr_accesses = 0,
->  		/* for min_age or more micro-seconds */
-> -		.min_age_region = min_age /
-> -			damon_reclaim_mon_attrs.aggr_interval,
-> +		.min_age_region = min_t(unsigned long, min_age /
-> +			damon_reclaim_mon_attrs.aggr_interval, UINT_MAX),
->  		.max_age_region = UINT_MAX,
->  	};
+> Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+> the damon_commit_ctx() failure on the damon_ctx object.  For this,
+> introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+> when it is failed.  kdamond_call() checks if the field is set after each
+> damon_call_control->fn() is executed.  If it is set, ignore remaining
+> callback requests and return.  All kdamond_call() callers including
+> kdamond_fn() also check the maybe_corrupted field right after
+> kdamond_call() invocations.  If the field is set, break the
+> kdamond_fn() main loop so that DAMON sill doesn't use the context that
+> might be corrupted.
 
-Sashiko comment.
-# review url: https://sashiko.dev/#/patchset/20260319161620.189392-3-objecting@objecting.org
-
-: Could direct access to damon_reclaim_mon_attrs.aggr_interval result in a
-: division by zero? If a user writes 0 to the module parameter concurrently via
-: sysfs between the validation step and this division, it appears the interval
-: could be zero here.
-
-Makes sense, but orthogonal to this patch.  I will work on this.
-
-: 
-: Also, since both min_age_region and max_age_region are now clamped or set to
-: UINT_MAX, the target matching condition becomes exactly UINT_MAX. In
-: mm/damon/core.c (kdamond_merge_regions), a region's age increments on each
-: interval via r->age++ without bounds checking.
-: 
-: Does this mean a region's age will hit UINT_MAX, match for a single interval,
-: and then wrap around to 0, effectively defeating the "reclaim if older than
-: X" logic?
-
-Good point.  But such case may be too rare to consider...?  Anyway irrelevant
-to this patch.  I will take more time to think about this.
-
-: 
-: Finally, should similar clamping be applied to other DAMON modules? For
-: example, in mm/damon/lru_sort.c, cold_thres and hot_thres are computed from
-: unsigned long parameters but typed as unsigned int. Similarly, in
-: mm/damon/sysfs-schemes.c, damon_sysfs_mk_scheme assigns unsigned long
-: boundaries to the damos_access_pattern fields, which could also result in
-: silent truncation.
-
-Yes, similar issue may exist in DAMON_LRU_SORT.  But definitely it is
-orthogonal to this patch.  Also, as I mentioned above, I think this change is
-good to have but not really fixing real critical issue.  If a nice person send
-a patch for this, I'd appreciate.
-
-
-Thanks,
-SJ
+I guess you saw the AI review?
+	https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
 
