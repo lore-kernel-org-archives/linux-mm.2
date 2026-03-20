@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CA1E1099B34
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:24:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DDEE1099B28
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:24:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77E916B00D9; Fri, 20 Mar 2026 14:24:06 -0400 (EDT)
+	id 8B8416B00DA; Fri, 20 Mar 2026 14:24:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72FB46B00DA; Fri, 20 Mar 2026 14:24:06 -0400 (EDT)
+	id 88EBD6B00DB; Fri, 20 Mar 2026 14:24:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61FBD6B00DB; Fri, 20 Mar 2026 14:24:06 -0400 (EDT)
+	id 77EB46B00DC; Fri, 20 Mar 2026 14:24:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5086B6B00D9
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:24:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9F16160348
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:24:05 +0000 (UTC)
-X-FDA: 84567265650.14.F54D9DA
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 64E8D6B00DA
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:24:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F87516033C
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:24:08 +0000 (UTC)
+X-FDA: 84567265776.22.DFDA5A3
 Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DF094180015
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:24:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kqPwrK7J;
-	spf=pass (imf16.hostedemail.com: domain of 3wpC9aQgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3wpC9aQgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 578081C0002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:24:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GTEThLmg;
+	spf=pass (imf20.hostedemail.com: domain of 3xJC9aQgKCDEWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3xJC9aQgKCDEWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774031044;
+	s=arc-20220608; t=1774031046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LYutBkNzGTjSKKTNrswnBU+hV/hIHGIX2yw2puv+rhw=;
-	b=D+5VinDpdEQDC4Gx9veE/X3wbMsMGO3T8dCxEfpq0Phmb6sUxraDLZPn15aZfpPY1ypmdS
-	oF2yuwmf0RyT1bjT9TT7aZYaOZZwt4WMEYyHlKgJYP4WQNBtCCAAGwIOn6ldUOajYtjSo3
-	NZempduiimziDmCcPSFrMTSg6uUyVl0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774031044; a=rsa-sha256;
-	cv=none;
-	b=xl0lT9Ty5Ydsnp0jL0QLGWO13KkBhfPmbp7ZBDULF8UIos0MiJ/TWsNzbPBw5Z4BvcPtX+
-	TRqPQ+GWd9EWWvgAfHLtc528RaD1FTJ25qaFHBMAoyEfhEnhkdtO8XRnSX2uTovGrPYSFg
-	4kspM99WxTWu6UQ04xixmm29wgu7duQ=
+	bh=KIXd6RUsC2Lxd3qD7TF0ldS7pRck+5tE9VDE+BeCdGQ=;
+	b=pA/VXTLpTImtuiYc6Gy0V8OGKlHDnX5I2WKAWucrlqv59uTBqaCFdbKiJ2vfwZNwkivGyZ
+	6SAQhQht0OiyWbPpWJqHbSCyDNnjPYQoKo8B8OyFF+4uala+cT+xRAZylmlBfaoxQkW8Sq
+	EAp8Z7zfFBrqEik9CunrmYFuuSWnZAo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kqPwrK7J;
-	spf=pass (imf16.hostedemail.com: domain of 3wpC9aQgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3wpC9aQgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GTEThLmg;
+	spf=pass (imf20.hostedemail.com: domain of 3xJC9aQgKCDEWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3xJC9aQgKCDEWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439bab2d095so1319208f8f.3
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:24:03 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774031046; a=rsa-sha256;
+	cv=none;
+	b=OTHbluXlUtrmMAbIQQx/GNhuQQl5rQdhpNm56j/FJvJXVugKiOqFyjMWn4SSaeGahhFB35
+	XjDFHTD+4cQhtF4HN+/JKiRVnuLMROY68k9bKurop0iFPUTDTAXJgVMwkbL/8jui9X8W+Z
+	O8YgMHNu/qT9A1Hy1fX9soUQ5ETdNH8=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439c112b1a4so509959f8f.3
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:24:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774031042; x=1774635842; darn=kvack.org;
+        d=google.com; s=20251104; t=1774031045; x=1774635845; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYutBkNzGTjSKKTNrswnBU+hV/hIHGIX2yw2puv+rhw=;
-        b=kqPwrK7JxSbFW7JwQBDhRUcJ9fPD5IDtlDBDsYbfsnefTjOeLk4Fb9RZ8ZU+1vPFCo
-         Kp6ycyTD5SbJ2ymdfV6109DBHiW9RnGxzZUp+M1yt04LErTzUPb4Rm39aFTAWFWZOGHa
-         3ZxfXwA5iB6mhZkrj2QYGyAiZ6kPzQr8FpoCtxxEH0iqU0b2MFWjHsUMMlUhcuH7D5FB
-         pwyJnfBvgLQUdS1ISpF3GH/MmrpTa6FoXRnOZrW2O9CJCeGbOd4fZH9KwZIFhsJnQP4i
-         OdqOv8spE/WuOkIch7NOdd33FQipQStZ4OA97c33R3tlV/VfGahBA2nSGp90eLCiOU6S
-         3Fig==
+        bh=KIXd6RUsC2Lxd3qD7TF0ldS7pRck+5tE9VDE+BeCdGQ=;
+        b=GTEThLmgLGj85KbBrORhLuV0Re6JNozXQfQkEIzNJ5OcoGjaCJMbhqaZus4Bpcz8nL
+         KlUkO4uDbo5qkwPO6NFpfalngomgT04SLKYPBlqw9xCArPLxELgJz3YI9P8IDPIlIddJ
+         Ctqw3CS82LFQOxZE9hs8j5k+KT5iSAgOVIY13HyVYN9ObfmZXliPd3M0IyrD+ZP41FuL
+         I6S7TCY8uGXIfr/u/eK7VEeaWWJ2WWu7LjrKhxW8kK2ju7FozmchGWPWX9uM2Sw79pD2
+         kvPiBGYjA0m4jC5M5vzjYDDBpKo9Pd8zW8CI6kRAUfSjmJ7RXsPtjy11hNU2fz7dsfq2
+         qcYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774031042; x=1774635842;
+        d=1e100.net; s=20251104; t=1774031045; x=1774635845;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYutBkNzGTjSKKTNrswnBU+hV/hIHGIX2yw2puv+rhw=;
-        b=mamrqvVDPEeeQrgXTRB3ooHdZxTylH3/0L6sdiDA7TJYdJNXetaVhi0wLDsVqubdiY
-         G8HNfLidxVKAlrq7UWg6+7VF8qovGt6lj8VpK6seHBQxPhrCqn2WyYPi28Q2W8PBfBaj
-         jQ163V5pYsUEdwPvmDoLGH21ck3/bimtsmTYyioJGHYUAHkKi5FCua/RN6tkjyQn/Qne
-         gw37eThYdjzZVVpBjeAv8Nkz7m6QpisB+hCf3Rtqvehy46kBLT3YiHs+dgR82fOEKXsG
-         JO3i8tBUA3CbK7y6mLIeukH8ve/fh26chxSgkwG8cTVJ9Ew4d2XqxW3EZQR5D5MeV5Pz
-         MuQQ==
-X-Gm-Message-State: AOJu0Yy4JQvld4HW4kS6oqVWiDha/xh6esBL0WFAqjwogDbyVQNwC2jI
-	TraFhf7Pye4N602bsnmcKDNmEoFfgjUYU/ZqrGEZWBLsBUbqLDhG5QoOSFhZ6TkP9YHI1HPdOZs
-	6dPbCdFEMAYHdlA==
-X-Received: from wrsy7.prod.google.com ([2002:a5d:4ac7:0:b0:43b:4eb4:e4ea])
+        bh=KIXd6RUsC2Lxd3qD7TF0ldS7pRck+5tE9VDE+BeCdGQ=;
+        b=S4Z2HmdIn46ful3TB1vBEk6zvH/y1KuDzFpxzsaEGQLKnRFa/hajwtUl6NnC1UFqQP
+         YuQeIfUo96QQzD48QREXGpYLPiGC5d5tMv6OyMKGc4Ypmt89L41DQCbL6A2P6nvQ9m2G
+         /Xw6CmqvMk/sl19xYzKN5AmOBTFzB19ZvYYPOsHtL4wBj+7SZHngxOwGvBi9PKMZOUyY
+         /EKInpw+VFf3nL9npyBu9SbfHqCwLS1e+QAluuwgbfiGixjFjkcNwqm/62392EMVSh/7
+         IgHk2SyLxZkvNT3epWcy5vnCGSaEE+Nq7zE642yXnsACfuQtCbtDiQar4UHQW06eChhT
+         Xn2Q==
+X-Gm-Message-State: AOJu0Yxtm9BQyLKWkiEJAayGuDL8jZFHOEjdzqgAWiA/ji0TXRhR7/kM
+	+X5z0CDQWrqfZ2Qra3D9YjhZ/vR4MG6728r36BVPNhqI+BDrye6EnCNjvWzCdS9zI2j7ntxIo+S
+	KJUq3SHjyqln3Kg==
+X-Received: from wmma2.prod.google.com ([2002:a05:600c:2242:b0:486:fdc0:fa81])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4203:b0:43b:47ee:4586 with SMTP id ffacd0b85a97d-43b642755e8mr6997133f8f.29.1774031042331;
- Fri, 20 Mar 2026 11:24:02 -0700 (PDT)
-Date: Fri, 20 Mar 2026 18:23:40 +0000
+ 2002:a05:600c:4a13:b0:487:1e7:8e7 with SMTP id 5b1f17b1804b1-48701e70a2fmr20888135e9.33.1774031044829;
+ Fri, 20 Mar 2026 11:24:04 -0700 (PDT)
+Date: Fri, 20 Mar 2026 18:23:41 +0000
 In-Reply-To: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
 Mime-Version: 1.0
 References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260320-page_alloc-unmapped-v2-16-28bf1bd54f41@google.com>
-Subject: [PATCH v2 16/22] mm/page_alloc: separate pcplists by freetype flags
+Message-ID: <20260320-page_alloc-unmapped-v2-17-28bf1bd54f41@google.com>
+Subject: [PATCH v2 17/22] mm/page_alloc: rename ALLOC_NON_BLOCK back to _HARDER
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,14 +99,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
 	Brendan Jackman <jackmanb@google.com>, Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DF094180015
-X-Stat-Signature: fcxguiihxr4frxsyff3fuf9s3g7qwnd1
+X-Rspamd-Queue-Id: 578081C0002
+X-Stat-Signature: 3w43tz8on4dy8itdjogadag3r57m9o1g
 X-Rspam-User: 
-X-HE-Tag: 1774031043-265191
-X-HE-Meta: U2FsdGVkX18i7goJrkuOhxTcOWnPv2dAUhFGz0Pl6yTnkzHyZJhm/GuWW1J1UitY9HJ7kTEMeWI8AzISuu4ghzIiXvloxhcaXWJED45tUnQ5HIafBlTFfN6cHDqHCJICE38WR1vS7oEVySaPRtSrmUbsqC1uxL8N5+r1X+GEgO69+5wgTVezsgx3NjycmrqDrVGNHaKTfqFkycthJWEvPnNthRopPjbXLvzRu62arLscFz5Aks3Qk0+B6yEcCpjS9cpAjpySTuIJCqNSSVPGuCtZulKbTKewlnjapYvcUuUnpM4v5tqQ2SxoKMH5j6SDZ37OdEMLodkS+YgZpx1lOd/71ejSyXENfqqAIgyQ68LjsWf2jGbHKTAJJbYIuPOh16PxEealDjs69GhWzMv9ZUjRJNzph6PxYIOZSExfIfdlu3cs3CyesXPYIz4vyzmos38BFQA7So2HQzyAh6+Ii2IAG7+5QC/6zzur1oDtEAXLb6yrc2VvPqnTt8vEDwZa5yj75/cyN699QUO9jqTAgKexl+mKAcsiPxj5ExJYlp1to+JMgkbOn3Ci7rEQaSx0Cvb+sJqPv73PH0u+gAmY3CaQVi1Ra84XOLpv6yb3DfgSO3CPSgXySW/SHT3vdWl39q9dqHXImvDdX++hAPPklekrGr5q1S/A1pz/xDp7fqD8cgZvGkeghEr+HT+kwuWeeQHcP0EcUuwhFMz3LEcq+Mm31z2qgs8eECwM4dekIBkUmDOw7qDnoWyBRYnuLKv17FSD+fOFhIFbN/c6Pru61NyraaD5kxJB0qYtMFUQTnxL71of6zaFf9STih93yQik/SppE3BZqOfZ6S1e4y5coZyaUhJsRD4jQrAhi79re6UyPrB7OHPAcyke1u1dhnXnHJuYbTvUSuWL3ZS982OvKoQ0wtIsCCpurggy4gipsqZii7S6bc//HfbLDMdma0D7N5DpJEzflD7H7vF/M6F
- aRxX00vO
- cs7ddh//u6aR+iYfoJM38qPMbD+oftUkpeGvezjllHdJ89Rln49DQbdNu9vu6p0FVc8KMpaXEhKuFSYFUbLHDTVfiJe2DfxAlJVCCVwsFU0zmy2GfJ2g2O2xIsa3lFxqpk2Jc/fYD6lPavDQlM2MkAh2c15+f0JnKLKNtCcy5FJqz9l4H8FGR3uvUn3doT78KHFfAy0WJ6zvMp0GBeft/y0fxX3I8XUW8UGFrla31xVeE4oaaI+xPZXxdXox6jlJYcPAYQ3Bm6GtCVIh9DslfRrp2SiSCdhON7RZCULgqf5tkbgGHlKqlLqNDHrDt70NTFcC8IXmbkM1ByCyb0MEeu7BZayhEiR8HZoRPRgM66oRWJLFFTcy0I55u54gPwyM9XRLb/M2Ql6ryrowldgKfTOVR/bFIPkfQKHt+kbCWuZqq+EulalkHaRiMNDDSJb3vIqM16pHw631he1wn9LzBTP0GCq0PZ90PKdymj1DyNE05K3Wvk2rHRrhiGKFUVBkkOuoBXfTcNrw2FPrZfqB8u1tmy9m8wR1DjfDswkbN95hxRmEQAXVMKi1vX2PXNwZFm2K//gCgfEuuYvYQIZUnyYXqfApxNWJJQMkes9RDIw9eIFa5jZLc8lfwrkpu/H9EJZZSLGgzlpwiyjc=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774031046-386445
+X-HE-Meta: U2FsdGVkX1+lYMuv2cLLWLx0ZKN1rtSYapbgoNi+52GXSWrzpB7WlL9l3vVvXAg1mFjcIQsi8KStlI4tM/MPIp5dkZF3VSLP2Tw1cPZrgKADGeYciLsQvXLiNz4GQfvU5dAFbfcGX/A/mRgyvpZqGMbBvCnVzBKNl9zLWFD0PETdxJ9871Pc2aZYv9gB2jAhWZnGEHlQhFlsGo+aXznu0T9H8gq8pNDR/RGaf4gZ6fctow70V5Jsaqx9EGJEOaPB3xdFT39/lQyOxpsB+i1TVXVCtrFKrZNIUxpHSGVWmJDMWrDKcc0ZFT/EP9jAaqwW74hsvX1OSrIl5OUcCabwGy15GUkCL3MbeYbx036e6WFf3sP8r6ENXL35wsSCXbqDoSxH+XuFgbb4D2MZr6bLdScI818Tgso7w6fExiX73jE4J7P9YDl8aK+mjUMNT/r+gJxxaIe5hG0RsvuadkIl775nOqNC9ZiYZzKIn6KJL89jyIxai93QLThiFgsbEoVoZ2ZOQ1t+5UwUhtuM4enN+VqmKVy7QAXdDwnfYCDSl8MIpL/nvk7pueFq/+zEaIZsGk2sMjykrQVAKdL5avzUPvOicvrBCAzvRicirFSipf2FN6olc+MTuISdm6o1fu2UPZRwGAtFRhCRmXJmsQp9ckbF/Q8Ddun0R5d0gMr1kl1SpN71lb3quiLD5AXGnHNoUD3JtXu6Ws6nBAAbawNYuzjRbDObmfq1eORLfA06do5n08U8suJN+AE7pXFjYBjwCTWcpPUoYrVoRL3OC68aA5z4OkZFgTQMei8gUfhVod9m34blGlggUJiheI3p3Y1QLkaC3bHnK276fqiXXtrNtuoF3+l3iDV/QJxqfc7b4/Qo7x+ymMOnLOB8YpvVBJapOxDQpCBf6KhTCjk2eqfSUNaHAY1TNuQRsmm27C+AikNBAzpXh/85vS143Q87/SVmD53eFGn9MD8wBTw+Q6Q
+ +DfBrgBe
+ ahZok0ohnz5RTaqLfO6e0ABFuXT/vLB4ps5j+t4JvtKmRHWVKwSqRZrQplBuWPGhVxJMdtEu1sgtd1sXgHyKHS6luB6bqoTV/m+jN6bdkDdR3+sqTNoESLiloixlukVvRSUHU/iWP3ledVDuzKtEApFAwURulpB+MTALqKLbbPaS5O90bByYcpBdlrXRHGvfB2f2ESGhzJ8/b06W+n1+W/LZByksYUp802inDuD6/t1h0va387hEdJDK88YULIbLhKWMy3X2HjX/vFxx+kzjhNSDoQanPYm4wnxKvy9btcSxTdI6cLrcJaqJSpUAC5urppJLtJa8GC0mH9c8aKYoR8w3ZULAD4uHr83DWKBUReJPfEqZte3OGfcD4wadRU/tZxwKCMH4AYcyiYCwbXmVcEQ1CGuyeYnictGsnft2e5mRtpwmeWautjUjuOgOc3M9BqZl4paq9rREfc1HnZVoaTbUWaZrpI/rRBGKbfeZ600IeyyGOMUaWYc/EWjpneUpVOznE7Zw9F15B1dmQPuwblFuatFyAoDLl2+XprnMAMg/0NkOjBIY8CJt3ims0vePdgYO3k0YngDjIS8drsYfkuWOj9U/478PoSR1llXFi/KMt4GM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,141 +114,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The normal freelists are already separated by this flag, so now update
-the pcplists accordingly. This follows the most "obvious" design where
-__GFP_UNMAPPED is supported at arbitrary orders.
+Commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+non-blocking allocations accesses reserves") renamed ALLOC_HARDER to
+ALLOC_NON_BLOCK because the former is "a vague description".
 
-If necessary, it would be possible to avoid the proliferation of
-pcplists by restricting orders that can be allocated from them with this
-FREETYPE_UNMAPPED.
+However, vagueness is accurate here, this is a vague flag. It is not set
+for __GFP_NOMEMALLOC. It doesn't really mean "allocate without blocking"
+but rather "allow dipping into atomic reserves, _because_ of the need
+not to block".
 
-On the other hand, there's currently no usecase for movable/reclaimable
-unmapped memory, and constraining the migratetype doesn't have any
-tricky plumbing implications. So, take advantage of that and assume that
-FREETYPE_UNMAPPED implies MIGRATE_UNMOVABLE.
-
-Overall, this just takes the existing space of pindices and tacks
-another bank on the end. For !THP this is just 4 more lists, with THP
-there is a single additional list for hugepages.
+A later commit will need an alloc flag that really means "don't block
+here", so go back to the flag's old name and update the commentary
+to try and give it a slightly clearer meaning.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- include/linux/mmzone.h | 11 ++++++++++-
- mm/page_alloc.c        | 44 +++++++++++++++++++++++++++++++++-----------
- 2 files changed, 43 insertions(+), 12 deletions(-)
+ mm/internal.h   | 9 +++++----
+ mm/page_alloc.c | 8 ++++----
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index af662e4912591..65efc08152b0c 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -778,8 +778,17 @@ enum zone_watermarks {
- #else
- #define NR_PCP_THP 0
+diff --git a/mm/internal.h b/mm/internal.h
+index d929274d73b92..cc19a90a7933f 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1413,9 +1413,10 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #define ALLOC_OOM		ALLOC_NO_WATERMARKS
  #endif
-+/*
-+ * FREETYPE_UNMAPPED can currently only be used with MIGRATE_UNMOVABLE, no for
-+ * those there's no need to encode the migratetype in the pindex.
-+ */
-+#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
-+#define NR_UNMAPPED_PCP_LISTS (PAGE_ALLOC_COSTLY_ORDER + 1 + !!NR_PCP_THP)
-+#else
-+#define NR_UNMAPPED_PCP_LISTS 0
-+#endif
- #define NR_LOWORDER_PCP_LISTS (MIGRATE_PCPTYPES * (PAGE_ALLOC_COSTLY_ORDER + 1))
--#define NR_PCP_LISTS (NR_LOWORDER_PCP_LISTS + NR_PCP_THP)
-+#define NR_PCP_LISTS (NR_LOWORDER_PCP_LISTS + NR_PCP_THP + NR_UNMAPPED_PCP_LISTS)
  
- /*
-  * Flags used in pcp->flags field.
+-#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. Allow access
+-				       * to 25% of the min watermark or
+-				       * 62.5% if __GFP_HIGH is set.
++#define ALLOC_HARDER		 0x10 /* Because the caller cannot block,
++				       * allow access * to 25% of the min
++				       * watermark or 62.5% if __GFP_HIGH is
++				       * set.
+ 				       */
+ #define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
+ 				       * of the min watermark.
+@@ -1432,7 +1433,7 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #define ALLOC_KSWAPD		0x800 /* allow waking of kswapd, __GFP_KSWAPD_RECLAIM set */
+ 
+ /* Flags that allow allocations below the min watermark. */
+-#define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
++#define ALLOC_RESERVES (ALLOC_HARDER|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+ 
+ enum ttu_flags;
+ struct tlbflush_unmap_batch;
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index f125eae790f73..53848312a0c21 100644
+index 53848312a0c21..9a07c552a1f8a 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -694,18 +694,30 @@ static void bad_page(struct page *page, const char *reason)
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
- }
+@@ -3355,7 +3355,7 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 			 * reserves as failing now is worse than failing a
+ 			 * high-order atomic allocation in the future.
+ 			 */
+-			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
++			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_HARDER)))
+ 				page = __rmqueue_smallest(zone, order, ft_high);
  
--static inline unsigned int order_to_pindex(int migratetype, int order)
-+static inline unsigned int order_to_pindex(freetype_t freetype, int order)
- {
-+	int migratetype = free_to_migratetype(freetype);
-+
-+	VM_BUG_ON(migratetype >= MIGRATE_PCPTYPES);
-+	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER &&
-+		(!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) || order != HPAGE_PMD_ORDER));
-+
-+	/* FREETYPE_UNMAPPED currently always means MIGRATE_UNMOVABLE. */
-+	if (freetype_flags(freetype) & FREETYPE_UNMAPPED) {
-+		int order_offset = order;
-+
-+		VM_BUG_ON(migratetype != MIGRATE_UNMOVABLE);
-+		if (order > PAGE_ALLOC_COSTLY_ORDER)
-+			order_offset = PAGE_ALLOC_COSTLY_ORDER + 1;
-+
-+		return NR_LOWORDER_PCP_LISTS + NR_PCP_THP + order_offset;
-+	}
-+
- 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 		bool movable = migratetype == MIGRATE_MOVABLE;
+ 			if (!page) {
+@@ -3717,7 +3717,7 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+ 			 * or (GFP_KERNEL & ~__GFP_DIRECT_RECLAIM) do not get
+ 			 * access to the min reserve.
+ 			 */
+-			if (alloc_flags & ALLOC_NON_BLOCK)
++			if (alloc_flags & ALLOC_HARDER)
+ 				min -= min / 4;
+ 		}
  
--		if (order > PAGE_ALLOC_COSTLY_ORDER) {
--			VM_BUG_ON(!is_pmd_order(order));
--
-+		if (order > PAGE_ALLOC_COSTLY_ORDER)
- 			return NR_LOWORDER_PCP_LISTS + movable;
--		}
--	} else {
--		VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
- 	}
- 
- 	return (MIGRATE_PCPTYPES * order) + migratetype;
-@@ -713,8 +725,18 @@ static inline unsigned int order_to_pindex(int migratetype, int order)
- 
- static inline int pindex_to_order(unsigned int pindex)
- {
--	int order = pindex / MIGRATE_PCPTYPES;
-+	unsigned int unmapped_base = NR_LOWORDER_PCP_LISTS + NR_PCP_THP;
-+	int order;
- 
-+	if (pindex >= unmapped_base) {
-+		order = pindex - unmapped_base;
-+		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-+		    order > PAGE_ALLOC_COSTLY_ORDER)
-+			return HPAGE_PMD_ORDER;
-+		return order;
-+	}
-+
-+	order = pindex / MIGRATE_PCPTYPES;
- 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 		if (pindex >= NR_LOWORDER_PCP_LISTS)
- 			order = HPAGE_PMD_ORDER;
-@@ -2935,7 +2957,7 @@ static bool free_frozen_page_commit(struct zone *zone,
+@@ -4602,7 +4602,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ 	 * The caller may dip into page reserves a bit more if the caller
+ 	 * cannot run direct reclaim, or if the caller has realtime scheduling
+ 	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
+-	 * set both ALLOC_NON_BLOCK and ALLOC_MIN_RESERVE(__GFP_HIGH).
++	 * set both ALLOC_HARDER and ALLOC_MIN_RESERVE(__GFP_HIGH).
  	 */
- 	pcp->alloc_factor >>= 1;
- 	__count_vm_events(PGFREE, 1 << order);
--	pindex = order_to_pindex(free_to_migratetype(freetype), order);
-+	pindex = order_to_pindex(freetype, order);
- 	list_add(&page->pcp_list, &pcp->lists[pindex]);
- 	pcp->count += 1 << order;
+ 	alloc_flags |= (__force int)
+ 		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
+@@ -4613,7 +4613,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ 		 * if it can't schedule.
+ 		 */
+ 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+-			alloc_flags |= ALLOC_NON_BLOCK;
++			alloc_flags |= ALLOC_HARDER;
  
-@@ -3452,7 +3474,7 @@ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
- 	 * frees.
- 	 */
- 	pcp->free_count >>= 1;
--	list = &pcp->lists[order_to_pindex(free_to_migratetype(freetype), order)];
-+	list = &pcp->lists[order_to_pindex(freetype, order)];
- 	page = __rmqueue_pcplist(zone, order, freetype, alloc_flags, pcp, list);
- 	pcp_spin_unlock(pcp);
- 	if (page) {
-@@ -5236,7 +5258,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 		goto failed;
- 
- 	/* Attempt the batch allocation */
--	pcp_list = &pcp->lists[order_to_pindex(free_to_migratetype(ac.freetype), 0)];
-+	pcp_list = &pcp->lists[order_to_pindex(ac.freetype, 0)];
- 	while (nr_populated < nr_pages) {
- 
- 		/* Skip existing pages */
+ 			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+ 				alloc_flags |= ALLOC_HIGHATOMIC;
 
 -- 
 2.51.2
