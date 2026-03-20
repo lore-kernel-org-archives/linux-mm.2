@@ -4,134 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A922D108B901
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 577BC108B8F7
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:27:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 201A46B0005; Fri, 20 Mar 2026 07:26:59 -0400 (EDT)
+	id BEE546B0005; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D8836B0088; Fri, 20 Mar 2026 07:26:59 -0400 (EDT)
+	id BC5586B0088; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EEBA6B0089; Fri, 20 Mar 2026 07:26:59 -0400 (EDT)
+	id B02876B0089; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F0EC66B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:26:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 942A3138E37
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:26:58 +0000 (UTC)
-X-FDA: 84566214516.03.159C753
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1673A120010
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:26:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iwpY4F0E;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E39E6B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1FBA6C07D4
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:27:41 +0000 (UTC)
+X-FDA: 84566216322.11.7B99940
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3ADF11C0002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:27:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DANRyTA1;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774006017;
+	s=arc-20220608; t=1774006059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WDO0zw63Af1I9tfHghuVBXvOM8hKUhU/ec2D/SWFVEY=;
-	b=OsInRK6TIk1MnSiO63QDs/dQfKQXnEWMhpjE/y6xP7a6ZQBwz7csI8dwUrJWWCk7zK3JUV
-	NxVqWqRPog7U6ElGf4Uz/I9aO5enqP0pUbgxcbOQi3Wzbc1c8eqb7fu885hv17VNAuXJV1
-	suEDWJBTs4TFCHpZ+dpFvKYqwqjQQhQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iwpY4F0E;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006017; a=rsa-sha256;
+	bh=kT5yFeL+gDvTON2O10niF1oYxXjGyj6Ksro/yEkhc08=;
+	b=eUJl2ScvNVT2+Tz2QKS9ByUN268pnuRPyv4MVLttqEr2HPaZlO1GXrpeqSEUE/lLeyBsNU
+	eoRuXB9uoqRt3ue+6CNmq0dbTS/w/3sAnv38gC44s/kPA+I1ZSG6WGH7Ao8X5CBpqFFqbr
+	W5AJceIeJ377wB/o9R0qqyycbhS/MtM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006059; a=rsa-sha256;
 	cv=none;
-	b=JAWZhG/L0R+0uaqPoEFEr3VQ420hqx0WFTEgvxnrOECeapXsuuGKAY3Tal5ZiPMkEl5JIc
-	rXdq1+w2Fk2RE6zq3mEVG6nidlbt2Jo31BL1dfeJ4NlD5h8TdERZOGQeL6qI9VJXMGTWyQ
-	zNMSqtuoQFE4xy73wo89DNy9ytE84Ao=
+	b=CDKc/NHKcRq1Ide0rZuNrAMpiGIOZfFVa4ZvGx3SxMt9WniGNtf4MLNCyy3waEdlCg4E2e
+	sigBlwKXCCYOvqEIhNRJAa5RD9KI5rEJVf5MaEx7nKuNIDgEo+2imfw3hCh4imgJHEvqBD
+	VOrSy5uV49qD+lElnZbMbhx/Ic5Mg7U=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DANRyTA1;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8DF5A60053;
-	Fri, 20 Mar 2026 11:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C257C4CEF7;
-	Fri, 20 Mar 2026 11:26:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 214CD4033A;
+	Fri, 20 Mar 2026 11:27:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A90DC2BC9E;
+	Fri, 20 Mar 2026 11:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774006016;
-	bh=162dit8g8/7CY8fNPwJVXoMvncY0FTaddvmuQ6lnsVg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iwpY4F0ElgB7R6ZfLqDV67akJiYWw79mDZfWcusfNaR2Fz247iqqm4EJGUpKHI3SU
-	 t9UrGVSb2LGr+lZGqrKdsXK3+DkiUpmoUc06IRnM6A1+ZQ7c5TGMtjNdREc22Hz1rf
-	 dQxs5+q6u2ehwf4NauPemFW6JjeZIrp5bP8roFYkUoJSyZb51q11n952Hat9+YImjH
-	 IJfRN1bUP+TNuGCe+4XoyrLuquXk9X8fMOAHZNUZSUgmfQLlc54DG9NJIcGo1+Xc+5
-	 EgwnI0qt5ByW5dTkbaQvqioDSgUW5o9Lj7TKugfu/W6qJDqh8/4mZ2azBBsgnUblx6
-	 S+f10ws4IsEYQ==
-Message-ID: <f7fef55d-4334-4d1d-b6c6-b409fea7e2a1@kernel.org>
-Date: Fri, 20 Mar 2026 12:26:50 +0100
+	s=k20201202; t=1774006058;
+	bh=IJKvox6QaTG0mgCKG6pc9awot4JDTa3WVfzN1VU/eFA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DANRyTA1Ro5gqbIJBoXEAOXZTSFb5/RS0WG7t0ZdvMl5bj3yYFNa7PwgFCUoUskwX
+	 WrNvAoAlYJKasFXxqXncsiWF9rsMRHxFafsMuuKnQFOEVBle4PHVOYO+awxkVONDbB
+	 eoCotQIopA90QAdiW2lbghfU/fFNZGfZDHmCeSOA3Pe1DN3RKQNrzU7hOAQVnL9zyC
+	 jBohVlLrmpUz5OfVA38cH+2hcPKFjtbqnCDhwjaXQkKn6ItdwkONOZ+X9nGqVFwxsU
+	 EmNnGay2JI/KbSqM21v2bIMYiwifQlP17wg/fiSVixLYfY8QXNJpyB/P8shtB2Xl10
+	 MjTScUpBb4Rmw==
+Date: Fri, 20 Mar 2026 11:27:32 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
+	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] mm/mprotect: un-inline folio_pte_batch_flags()
+Message-ID: <a9d6947e-f1f1-4053-adde-189b5546dbb1@lucifer.local>
+References: <20260319183108.1105090-1-pfalcato@suse.de>
+ <20260319183108.1105090-4-pfalcato@suse.de>
+ <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
+ <69382383-5f08-408f-8c13-d674e82c4dfd@kernel.org>
+ <fcc2665f-014b-490f-8451-ca907730e60c@lucifer.local>
+ <tv6pcikk456ynfx7lz3lrql3yafg4njuy3bzi4v6yi5hpe27gi@hakvdy2jmewu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
-To: Audra Mitchell <audra@redhat.com>
-Cc: linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260218184210.206466-1-audra@redhat.com>
- <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org> <abludfGu4upPcyRI@fedora>
- <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org> <abxHibvF8E5dcrUf@fedora>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <abxHibvF8E5dcrUf@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1673A120010
-X-Stat-Signature: oftd6bokdg1wcgow4m7bdpzmc1sokdgn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tv6pcikk456ynfx7lz3lrql3yafg4njuy3bzi4v6yi5hpe27gi@hakvdy2jmewu>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774006016-908385
-X-HE-Meta: U2FsdGVkX1+wgKXBt17/M+qP0wbtxST1lfG5ZpmQ7rLASCX8yEcSkTDLFzPMk59lKn1UP/QC1VqBsr6gcd4IouR2VIZqM8cHWzjxJ23ccdFUfgDagpzWce3GYPWLyuOShzcpT0PC4XMDJaTQwdpJSN3vi+LgscOtf22WmDgPpx18WdgwAvj0IO73V7kTVte5cmEs3YOg/LxPi+Yj+uCy/oum7JUmSoOb7IoBSSkitAvPp45p/j2wjNJj/oTiWePEd03tfkBXPIuBskE0vDnWpc2SUV0SB1XMPMB4DhNM+VeabQ5Bi2V/MUJ7WmAsQgBcM7ovFZkkcabp/RatE9yVc8BgohLu/s8dgt8Qul3gFkFV+SY9mPrP9IEOzsA3zSrLsBvbY8MLRmeVk3+NqBUZmsTuCEsip8rycH5zUlCSqknDb61jOulYqH6/u3ht91wHHpkUWKc08nhueVomgjreY+lPZpA9jXweF4S+ND1D5kKaIeQFn0JLi8QQCTpdvzKPg0wunnHJloOZgYUyr7xqtKz/aafXH3zDnyUDW97omNPYOoFpF5o20hUi5vEjuxtzOdeLL8UbbW0J2NR4QhycL5SIkKSL4lraT5bgDpcCKmdqZLBGsD2Hhj+3Zvky2QtPkYqZexLH4UsXL0lhTX+ESXm+UEg83QLoXzLbg/Ajq8IsdtRveZRQAcn7bOoZiImq6QDD18slKNUqNH5Bxe+EDQ/ypLP7/OUARCSmQLO4zoxK/LwPtlLfIgjcALqswuYvSNOYwgvm4hpWgcXAdttgKeEm2WDQgExjNmAQcN9oLSIOx38e7R9Uc6hoE83oghElAoJdGeFKni2B4le/2qPEjqGJDq8++uil1wkIR8/WsvY+6t+qD4Re7MdYiuasvCxcCmudzBfQDEeDzP+C77ebcbZTtOmwAjK36SYi3H3W89s6jmoRfIxZdA==
+X-Stat-Signature: qtzouh4egnjrd7fuynx74nzbm6ip1ccg
+X-Rspamd-Queue-Id: 3ADF11C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774006058-102514
+X-HE-Meta: U2FsdGVkX1/wown9g9Fs0kErn4HHpptUbZ5GU5gYu2CfF0rBrgYCGj92QLzi8935RwZAS5BnqYitcHMuGNFO15nFS+kIHQB94I+6lhVr6bfZ88N8Tvyjj2he0rq+n1XRupzbN0OmEy/Mt3wqkpDal+N8chq245EXZ/JEsfsAQMGVEpmzOH7Uu86EOLS32F87Ukq/JyeoLOg3Q0e1Cbk+d5dqh1Qs1CgQHttyaAB5jZKahwjggpznyRy0fxYReYqRW6RwZDWhZeBuMAcnrjcnn06Khhb/rwbc47wKxhZsIvewElxuksMYpLZEIVBiOsQpWswX2rbcITsYtLVM3arRrVm8B8hfI9Ro4C1eRm0aM20JINKzGAbnawTR2pglm4LfLilUc6Y/cXNwMG4wtnq6CSy73M6kr6pYGjnqigC868xJjtn9xb8JVxImF9CIBr2FSuJyu6Cj9j28aDsy+kuNEMA+RoKrl0+HqkFrpoF2IGEe3+zDC/SZV3wA+LN5Y81lXhch9vygr7E/z49OuQrgBEIodU0zItjL4G/JpedS60Q++5KtkM1fYeaK98nfXw+o/TeYvddvG8sr/OawAhOWBB481b04m2FnPKSfNboTxizd6Tkn5JLtaCjoXb2jDwb/Wd8Y3rZoGy8x9IAx+0ukPcNZMAjc3od4BZ7TNuo+3U2sKBn+IGqGMfq5EWcCy/XlZ/6s6o4DqzrbwQM738p7RLQgLZeCg3YDcpn6rtlU25NNRPnpwXbuTXLGyuyN7UWOJlvrOiwdSbSHoXz1kRoH29jy2gmWKqGlDD/1hdCMtFOVgnc90d6HXf8LyoJ66BVUfC11f+rV60IlktFPdni7qE/AWnO7gBYM7XKxHe05OvwJHJgCy7hF4dTFK6JcjPawoZdW6bTP+epTMFgOv7jfJ6m1colIVnsh0ZDLLK+djfFDzeJuviV149BPVWOnrbya/ML647WRyO9nuTkJ0CK
+ MfCsU14E
+ h+FJLdg1OyO9R4DYWEf8LQSf7qeO0WCCxY1qthsp0Lr1XznpTlSxtnXw/cGh8DG1gRFPcs4gztoQN5vpZD3MsNjWZQY+hLRqWlo4/N1HSLHbtlPlPcXH9Q4rmTeROi6OTBMvv5hLi17GeRnwTZ1eJzkk59nwlQZwQPw4c7FKgJy9wvdNS+zhnlakgYef8L/DloBc0sS+zCZflNcSoGsjOVsveN2FiPx8awH0SQQ7oPY1G1DDBnuDTDDeZacA+UQmWZMZc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,21 +98,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 19:59, Audra Mitchell wrote:
->> What about simply testing for success on a test area, wouldn't that be more reliable
->> and clearer?
-> 
-> Hey I tested your version of this patch and it works fine on s390 and x86_64.
-> I have no issue with this version at all!
-> 
-> Would you prefer to push this fix since you wrote it or do you want me to push
-> a v2 and give you credit?
+On Fri, Mar 20, 2026 at 10:59:55AM +0000, Pedro Falcato wrote:
+> On Fri, Mar 20, 2026 at 10:36:59AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > On Thu, Mar 19, 2026 at 10:41:54PM +0100, David Hildenbrand (Arm) wrote:
+> > >
+> > > >
+> > > > This is all seems VERY delicate, and subject to somebody else coming along and
+> > > > breaking it/causing some of these noinline/__always_inline invocations to make
+> > > > things far worse.
+> > > >
+> > > > I also reserve the right to seriously rework this pile of crap software.
+> > > >
+> > > > I'd rather we try to find less fragile ways to optimise!
+> > > >
+> > > > Maybe there's some steps that are bigger wins than others?
+> > >
+> > > What we can do is, collect similar folio_pte_batch_*() variants and
+> > > centralize them in mm/utils.c.
+> >
+> > I'm not sure that addresses any of the comments above?
+> >
+> > Putting logic specific to components of mm away from where those components
+> > are and into mm/util.c seems like a complete regression in terms of
+> > fragility and code separation.
+> >
+> > And for what reason would you want to do that? To force a noinline of an
+> > inline and people 'just have to know' that's why you randomly separated the
+> > two?
+> >
+> > Doesn't sound appealing overall.
+> >
+> > I'd rather we find a way to implement the batching such that it doesn't
+> > exhibit bad inlining decisions in the first place.
+>
+> Yes, you make a good point. At the end of the day (taking change_protection()
+> as the example at hand here), after these changes:
+> change_protection()
+>  loop over p4ds
+>    loop over puds
+>      loop over pmds
+>        loop over ptes
+>          nr_ptes = loop over ptes and find out how many we have
+>          if (making write) {
+>            loop over nr_ptes
+>               loop over ptes and find out how many are anonexclusive or not, in a row
+>               loop over ptes and set them
+>          } else {
+> 	      loop over ptes and set them
+>          }
+>
+> which the compiler FWIW tries to inline it all into one function, but then
+> does a poor job at figuring things out. And the CPU gets confused too. It
+> was frankly shocking how much performance I could squeeze out of a
+>
+> if (nr_ptes == 1) {
+> 	/* don't bother with the loops and the funny logic */
+> }
 
-The credit is all yours :) Please polish the patch description to make
-it clearer why the current check is problematic.
+Let's maybe focus on generalising this then to start?
 
--- 
-Cheers,
+I think David + I are in agreement that these are obvious (TM) improvements. But
+let's see if we can generalise them?
 
-David
+>
+> I would not be surprised if the other syscalls have similar problems.
+>
+> >
+> > I mean mprotect_folio_batch() having !folio, !folio_test_large() checks
+> > only there is already silly, we should have a _general_ function that does
+> > optimisations like that.
+> >
+> > Isn't the issue rather than folio_pte_batch_flags() shouldn't be an inline
+> > function in internal.h but rather a function in mm/util.c?
+> >
+> > >
+> > > For
+> > >
+> > > 	nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte,
+> > > 					   max_nr_ptes, /* flags = */ 0)
+> > >
+> > > We might just be able to use folio_pte_batch()?
+> >
+> > Yup.
+> >
+> > >
+> > > For the other variant (soft-dirt+write) we'd have to create a helper like
+> > >
+> > > 	folio_pte_batch_sd_w() [better name suggestion welcome]
+> > >
+> > > That will reduce the code footprint overall I guess.
+> >
+> > I mean yeah that's a terrible name so obviously it'd have to be something
+> > better.
+> >
+> > But again, this seems pretty stupid, now we're writing a bunch of duplicate
+> > per-case code to force noinline because we made the central function inline
+> > no?
+>
+> Yeah.
+
+I guess we can discuss on other part of thread :)
+
+>
+> >
+> > That's also super fragile, because an engineer might later decide that
+> > pattern is horrible and fix it, and we regress this.
+> >
+> > But I mean overall, is the perf here really all that important? Are people
+> > really that dependent on mprotect() et al. performing brilliantly fast?
+>
+> Obviously no one truly depends on mprotect, but I believe in fast primitives :)
+>
+> > Couldn't we do this with any mm interface and end up making efforts that
+> > degrade code quality, increase fragility for dubious benefit?
+>
+> Yes, which is why I don't want to degrade code quality :) It would be ideal to
+> find something that works both ways. Per my description of the existing code
+> above, you can tell that it's neither fast, nor beautiful :p
+
+I mean the code is terrible in most of these places (mremap() is much better
+because I put a lot of time into de-insane-it-ising it), but it's less degrading
+quality but rather:
+
+static noinline void blahdy_blah(a trillion parameters)
+{
+	... lots of code ...
+}
+
+Developer comes along, modifies code/params/etc. or uses function in another
+place and degrades perf somehow and suddenly what made sense at X point of time
+no longer makes sense at Y point of time, but develoeprs don't understand it so
+are scared to remove it and etc.
+
+Which is why it's better to try to abstract as much as possible and have some
+way of then putting the sensitive stuff in a specific place like:
+
+/*
+ * Lorenzo-style overly long comment with lots of exposition, a beginning,
+ * middle and end, ASCII diagrams and all sorts...
+ *
+ * ...
+ */
+static noinline void __super_special_perf_bit_of_whatever_dont_touch_please(...)
+{
+}
+
+That's wrapped up in some saner interface that people can use at will with the
+perf-y component safely locked away in an insane asylum^W^W another compilation
+unit or header.
+
+>
+> --
+> Pedro
+
+Cheers, Lorenzo
 
