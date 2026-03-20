@@ -4,110 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4303B1093178
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 05:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0391093177
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 05:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44D1F6B03DC; Fri, 20 Mar 2026 01:24:39 -0400 (EDT)
+	id 19F746B03D8; Fri, 20 Mar 2026 01:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDF46B03DE; Fri, 20 Mar 2026 01:24:39 -0400 (EDT)
+	id 1505B6B03D9; Fri, 20 Mar 2026 01:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 313E36B03E0; Fri, 20 Mar 2026 01:24:39 -0400 (EDT)
+	id 065FD6B03DA; Fri, 20 Mar 2026 01:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 229796B03DC
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 01:24:39 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C56AE1DF9D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:24:38 +0000 (UTC)
-X-FDA: 84565301436.27.578CC04
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1ACD220005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:24:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BDwYV8Wm;
-	spf=pass (imf03.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id EA9DC6B03D8
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 01:37:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94F541A023A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:37:36 +0000 (UTC)
+X-FDA: 84565334112.16.DC16AA4
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C39E8180007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 05:37:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HccoEVNr;
+	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773984277;
+	s=arc-20220608; t=1773985054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dMXG2iiWDtSJZMsB11hiOBrR4Hw4ibVnoY6QikWleZY=;
-	b=JkKnNDABDzWH3Uvhva5q5s8CWme6UL6Lu0FMkL67iKo6GOBCwM0nQUs56jXUeYf1Y6nS3k
-	LfLiGmZSPHvTMb0X1LvkgzR91TCKKJAu0TMYDStsODMlabWU83lMU+poYk9ITjJIBl0n5A
-	okC5FaTbo9GHYK6TSgVhC6ap05f69hk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BDwYV8Wm;
-	spf=pass (imf03.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773984277; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t7AUkyahrA7jetaNYrGD367jzrlPTnRWAlYOYrOS3To=;
+	b=z+jpCTJzm42nNy5yqemgcD5N1Tk6CnGFeYj4YFDVgqshK5BCuPulH/bFEf/lXY/L7PY3cP
+	QKPdXktw+hibQG64ACpzn7je685uC7eTYTAmanC/jjWjzoJnjTPwL8JB+r6CMep/x20u7c
+	vip+yJVwThXa0OBse1KVXzA8ljiiGBk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773985054; a=rsa-sha256;
 	cv=none;
-	b=FjegQiPkYAT7lk0b4iO+7zFu346u4vir5GtcSmPMeKqEgEgMz/TSHv+FW+f234SsPszaK2
-	+6mN0kD/3QUi6pqFHlAyoQUoO7Rvj7V43jW4mvNEJPMcZKmppMx6Pcy/Pl7m/fbtiQ3uiw
-	a16KE3p57C3YW1kulvI3Fe9BEi3moY8=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35a04d6aeb0so217507a91.0
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:24:36 -0700 (PDT)
+	b=I3zG1xhIANThvEoO8IFFEMW8sRdNxeckXiKa8kzMfbghPvUpL+ve6TidpB6qOlBqDQu5Ee
+	BlrlFAJ05943FeqHkXB0TGa1K5YBV5A9zVclOz6O+c2qla+PVPQ8Haq6rajs1Fi3SC5eqI
+	gvv5ojCLr7sIbUSGNicRYka2vuPxoiY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HccoEVNr;
+	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2aaf43014d0so9595875ad.2
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:37:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773984276; x=1774589076; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dMXG2iiWDtSJZMsB11hiOBrR4Hw4ibVnoY6QikWleZY=;
-        b=BDwYV8Wm21h2+ZriQjB6nEH60gwGAU5RiZ1+C+jpdJIdTUiHvngCTRLwgRjRjNzP4V
-         m6uLBPAshR65NJUPI+Rug3KApGvelZvtHZ/l29ihRGQ5E/8lFKRlMI2TQ5uWwgithyMH
-         UHdaAwGycUybQG0jGDi6dP7/TNpRDf+J3WXkf41R0VLY6v7BZaD1PPVmWSQPPnPvKnOz
-         Ft9Tripijas204wuTeny51e5i/pl6NS6ufFU/A9frO1aQ83n/ZLE229Ed8g+fhd8wO3X
-         BM8AnYIfz3ehMjQkB9OGAvQA0AOMyKWqfvFXL9ztoByy7GhZNXvYCNEOtcv0aRo/gmVD
-         dnpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773984276; x=1774589076;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773985053; x=1774589853; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dMXG2iiWDtSJZMsB11hiOBrR4Hw4ibVnoY6QikWleZY=;
-        b=eexxEOfF/50mgvLaY1QgXpXwr+72l43voLsp3Q952D3x8U4qe/rcyuMrf4Tu+wIWGM
-         OUwf+FGWyGGveofCEWqd4r26RH8BXkLZGFuoqox4HWAhGMF/wKX5J3Lxg9Kqjw30ac1P
-         N7BvrwHFqiWH3nroH2WlJ75OEY4N16gPie2YMm0vGdKcGE7fkpWpj2a7SQVHkriYtlKJ
-         A3G4uUoGlW5rVZD2xH174kLc7AL+DbgwW7HVkjcG0SWzYLwFPVj3o2W5+d/E5umBQVzO
-         y8IsGk1hX5xlyIqfEkk+MFCDpPM7N0L0VdseEFFDbUpexZxikwAwhnH6lo48r+CYMjNI
-         u9UQ==
-X-Gm-Message-State: AOJu0YwfcxpNS/Ib/Yd8VsF5+IzEUiLTJ7fB50PjMkJJ7TqO7bSt4spB
-	NuHgrRTb36bussonT249uphhlo0fN0oBrLVvO8Yf1AtVSue3ME4WcgNj
-X-Gm-Gg: ATEYQzwdvr/AdN0mWT0+jikIpdeQCAbUdadyndfzgJgKBzarEoRpttI0R9bFlc/gSCm
-	GVT6+aVTtd/GRwETZKMDDnIzZn4gi8KJ/bgMefw0NSl54XdxTPhzrfcNK4Q99w7s/2yxNfpuujK
-	VJJvvtnqiA1Ipf70nkx8m7UEBhsa7vGp18KVLal9CM40JZCY8fUPIu7OFxn8/0+jHmQ8+h7RLj/
-	ozsBxjQSJSpQTrmhxOkr9w6YnWYOWb7S6RzVBt1BU9CaNqOzfUT2ZOGWgT89nW9ldVVvQT/xC6J
-	M7Nk8G/xOnH+Odz1NTNCl8NLNzGsMlD1EmE+O2x7B2/istfAWR4JO1umUR6dYTzcxAOuD+YxkCv
-	XEs39pn2/sZOoQ/R5ztfnLNBr20Nf3ImeY7LWGxSzxsriNLJ8J8X+B3i7F3WHW/YIjW8SBz9nlH
-	0QCcLMxj8t24U25XipXxpcC32Q3mmcvLOdEcJJYfancbtknmIvcFE=
-X-Received: by 2002:a17:903:191:b0:2ae:8272:deb0 with SMTP id d9443c01a7336-2b0826feb3dmr17511375ad.15.1773984275780;
-        Thu, 19 Mar 2026 22:24:35 -0700 (PDT)
+        bh=t7AUkyahrA7jetaNYrGD367jzrlPTnRWAlYOYrOS3To=;
+        b=HccoEVNreSn9Q0V8wJsXhpx/vxYHRpTPii+jhM3CInrfiJ/PZ3lEj+YWv0UMGNzh4P
+         pJ9OTk4oJZNieX26hryVrDCx6l/BU/aMTgX6ykeKXwt45Z1ok4Sz/CJC3C5gDZ+kD49+
+         zQxYis9orC6dHoQ7uokRprLxCKxUwVRaClDHVuQxFJM17pvjHdPHj2sUHz1di4uLwMuw
+         vP5m+E7Uv9Mzva2RuPax4ApRaj8Clki/IVfrrDaNBdIZn5yrJiiodflx/7eSpE5USWUs
+         oNvKu1bMGieU5bwCd2WL8bP4kcBjgK6WlaZglMuFXKE3cHa4Vj/1wjzU9PmmbZjGWW6u
+         z1Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773985053; x=1774589853;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=t7AUkyahrA7jetaNYrGD367jzrlPTnRWAlYOYrOS3To=;
+        b=jsl6rsNAE7Vi/tAlAl+yKEJfQzewRyU0pxTctOrbn05eA1wx1SzQwg2MY+tobu0OHl
+         cXsFOn8IurxG7QT2AmE2qBinJPZrbCS3yjcM0HxWxO3TvUSJ5z0idBXPCTsr/y3LsbKx
+         oHuAzEBw2TVmG4oyNJcTcoxIevWS9/J20nypKxRbXwvFJMa5FJNBPfF5LLMb1Fp+f63S
+         5U1IoDUjjgtAm/dezRR/WZG+zPgE6kEQAcQqD4us+qu9MdDIJB7hHujxDR85umcMNtDw
+         NtBaEB2L6lQQE/LZ+rGdwTg6bijtrzpywGyD5bOM0n22TFWtdQs9ZDUZLKxAOXFxvhHV
+         87YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWAEmEMOsOJu+KkfIY1NmlNBgC5fsMMBvHkKDBPvdeprCBlw378FGCJt/9ypxNqxs+1YgNm44LEsg==@kvack.org
+X-Gm-Message-State: AOJu0YySzWw9dez50A+rAeIPwfrVuLnP0yMJrssidZL1bfs/YU9/wsiC
+	MptpHSj6b1a6zysNJEBb4e/6g90P1osRD+oyoDZDbVYnx61Y0j7t+AlAXNCgpZbt
+X-Gm-Gg: ATEYQzyo40LWW2q02uJbmqXpGdwIvGL2RSGsbIPGa8LPnzMMjkqpf0svhT6yERp0eoq
+	A5SzqWxbjgh7UgGR0L+vlAcfK+xFMy/C2FKyywyd7jbwMbbsVvsIqMwBQSv4ZXauAFs8w5zXBnP
+	Wrd65JB5XV9FgxZ1WqS45VX9aNZV5iTUcQ9AuklrZtLDsb5gO9FiO3DuwCzRNHn4lcDQn/HwucY
+	jSv0Q0BCZumGiTKFf+oJAF63KfEvnJAb4a8jQylO80cnD1PfsZZyvNeHJqG+Ps2gRzVCPUlT3w6
+	fzEYZfuv1QJkxMMNEDjVJtAG0hQ7Afm+xnMXYGm9MVVNORis22MlbbO2HAlYI/NxXHgr01Ez+H6
+	nm/CnU47KMepE6fmgSCX/jsTyBVfoI3dxhsmrCtzBdpAsl82RrC7ms4WCLwVysEeZGG2ANhBo4g
+	DJyKI8YY+UbTJaeh584/H75RQwMWscu9WD4qOYHT1wB+Z1IDEBpDX0DsDNOEaP2A==
+X-Received: by 2002:a17:902:e850:b0:2b0:58a8:5f9b with SMTP id d9443c01a7336-2b0827de53fmr18104835ad.49.1773985053460;
+        Thu, 19 Mar 2026 22:37:33 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08352ae70sm10024185ad.23.2026.03.19.22.24.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08354bcf0sm10226655ad.33.2026.03.19.22.37.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 22:24:35 -0700 (PDT)
+        Thu, 19 Mar 2026 22:37:33 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: sj@kernel.org
-Cc: linux-mm@kvack.org,
+Cc: aethernet65535@gmail.com,
 	damon@lists.linux.dev,
 	linux-doc@vger.kernel.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH] Docs/mm/damon: document min_nr_regions constraint and rationale
-Date: Fri, 20 Mar 2026 13:24:28 +0800
-Message-ID: <20260320052428.213230-1-aethernet65535@gmail.com>
+	linux-mm@kvack.org
+Subject: Re: [PATCH] Docs/mm/damon: document min_nr_regions constraint and rationale
+Date: Fri, 20 Mar 2026 13:37:28 +0800
+Message-ID: <20260320053728.213664-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260320052428.213230-1-aethernet65535@gmail.com>
+References: <20260320052428.213230-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1ACD220005
-X-Stat-Signature: kystwjih59kdhofknqb7gg9jdkjo8owi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773984276-780481
-X-HE-Meta: U2FsdGVkX19EvM6GEJmArvSv1zNGCjaaHFEcGbJFdQjKyyjjYHAMu/FmTMCwLKR94Px4AQMMYFVNVRUh4lX7feGJX95NKPybeT1BuY8CROn4/OH45hPLlxW+rhafytNMifAIU1Wv+yFudvRII2bXvLLuPOvOfyn2hUyNltVWKGjiZxni8Y+1P2uODYhcNBqcDs3Q64t+CySJkDeMWXdwhRljxAWFVZpkz9mS/0iVryrhlZDuBWsfqsdlcmfNz8oGWLZt+UFaL+wSoVYyhajkHPzstYkBt13nnMbEgqRBy1iIWFGfe6GdvaM6z/JWlQGqd0VvR9ghbD5uk1KCjRDpEwadFctaYQ2ehvj1DbAO25dVGh3tKj/Qp4vxn+nN/FDVZA7d6Dr1QrTSBBmdDZ3qvnbcIEya0uZon86upM5tYzEH1io2dg9tLwLSQWr6h+phI39vslvTVoZ9gfOmrmA++GLtE9YFdFBPxf5w8J8iLGCkweycqVloiT9cFfxtB6up5/RhGDy6d1CxVflg0yhTCOI5dDbtZ9W6AobC0Y1fzAF3o1ffGOw9miaWcOyOTEzDiNevKXXjH/aBECRVBNaCJEapOzeIqfGeM9Gd0BIWNRoNu5K5M3Dx5OsQgsL58MmrjCteJ7bvPu9btZgAhanog638dlHuVYQHQXvUBrSgW46OZp5kURDoF90ZwCFXAe8sB32yp/CNeHn4WF54XwJwZvgyaysKK7tvIejcBCFXMU3jLUDDQxk2LvzN3tnrJdvgSQu1Rw7STyRN8JC+0uHeorUf7bogoFWz5UZWsCMGVWHCFo+ZXvII3q6GBbWXG5rDL4eo9EVLRZh+SQ5V0US84ZOa2jshAAcnjT1JEWGvRLkGZ1IanS61edak1JjwoIR48q66Sg5d9quA6NCdZi7fa64QQnwVU+QuwQA8Go0IZwxBOSF+7Eq4eTuyoGM5vwOYN5GlSMuNe1wsoUboQJk
- 62N7L2GJ
- 5V0Xstp9vmTYY+SzZGfPJJA8W9h0qhseXN4+K6Z5qy0sWMeWXriZ/T7OJsLHFIBa474+2S4YSIgW1PsVcnbGS8itsHJpbjw3eLsZ2eYZStJFOAJpHoh9VyezBDu+F/JubYo4T4oY3gtAZRHkUGQsIjsKFG5wUih9ZkH7Bu+3OjerxqLfI6+UF3iM+u3yqa79s2A9ouEy837WrspoWkQIGl9II1S5ZfJCg7DV+v3tlFFIA7uAo83m27b5LT/CcJMJm70BcALYTxqWO5oryPuOLjV13/JPKsceN7T7ft/RR5s1Mg/ihAWyZKJ7gtvJEGueNZHeMqx+dYn/uX8XjHzoGJOYmpTzsqYm0TKHBo19fiZVG7RvCgI/JeCvbC1Y6bzFBjA3MEbpnjSdkZCovbb0xw9JJr2G8UeoxOTMvVeZRQ34T5OeZYkDHwrTz3VeJgpi3ohzMGIfNyqwl2UiU/maNGowabx0b5cRjYBQmlyXLJXHrlIc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C39E8180007
+X-Stat-Signature: wo1e5tg8tzx5cbsurzx41611xnetnn5g
+X-HE-Tag: 1773985054-31931
+X-HE-Meta: U2FsdGVkX19Ytw57FoNdbeoQW0SDeOMWQgB4mGtz8XLG58XLZqSKaAKW3zbNuI2cPVDC9LWHCpXrB7nmcJCU88hR4I6U9SFT0BHOzCFaIxT5DgE04nc122FzZ5LWnrqRT4PEs+iNtKevqeuX61QWkGQqVNwUWvDFujFOvV597NlC5IxxOO9xvvrffaTD1DYSRM6UL7BPnbNjrPK5YLhl//DoV7axumLwUPGgV8Jd6tKDEgHCbBXG2XBYBk89EXrfvXX74VZCGaJKKOmnHTdX9d3c/6z+4AZC/FfMqVP2DBvEgpI6iVEdIjJ3ig0FD1MvE8W+r8358yfKNpGNGq8yaYRr8FPT5Z1B6u6gUNKN5d3aQjAUkxYeUbEexrTmxkIQeE1wWmahydvcbReJ+i3SbODXP408JZ8YbNix1iIktFv/Q557ZIpceUC2fRcAf8cyavZj9vW1W0+UHKrcoDYhhJm5weG47oWw1p0FDSXQF8gMwCHzQGRwzq4H+cujiJemjl9mVjFe0E4L90aEH0c94ojnEf13nCkXIuVbncJUYpyTM8twvDbOBw1QGaCf7LeJUqBE8g1hEVqU4Kl/sDV5krN9ro7O0lkhmDia3qvk0R/epOrvG1Na59roDf+xlioT9bNeTM3NeLxzDkl3OEKG0wljyTiG3+4oGAMD3ufRggDfD1+T21RxvzTvdtZJjveXGJ/1DcKcr4xJ8Q2YiYDaEGKm1+nybCxi/Z6+piu35D8pT+6DpwJwatLdOhV/ojOuD3M40Ljq06ocEH+YDSVCYVpHg35Ii3FS+YE7MVj2MzaqY/+jlQR8A9m8qxmpM5VYzowvBJFWycTURxvx5VZQ5627b0z62KKdzXQa/2eFOPTx/3GqxnyzmVtDdEm/CtG4azHWv8AnMAsCU1MKn4NMAvNguXOazQEDBUgitL37X0cuP+3s8djD340yh92uU2+/nCBa7zHFLN9nuEaMNNJ
+ l3CLL2VM
+ P5Wu2iCO+PhIURyoBWK/SWVTFWUYbrJNTbexcDOQkT8gs80kNPy1ISXvbNAUxTaZ8ojqbq1EkOqfJY1WnyOUqCPnwGNkNlGKcex2NfzL+d2gxj1ccvKYGsT/M4Y92YQoQD34hmSxiFnctgaKfbl4kWF4oNgnAqbMWu8B2MV3RBS0PKLKN1itW8aH5PouHUebLDbMffmUVs9/KHDfKtu00tBgmm+j6qXlM2CxlakWWet8517k+C/8HH9J/MVVYcOtCJ8vlneAiqj4w31zsqqP5ghIXB3zRlzmVV18Hlhgl7NgjZjHQeiSQtAk5GEpyNNpmR1EpIkP/BNdQ0I1acJrVuiiLULd1iHJqkPVn31BUw3lC1mwCxeAj/i0D59bmzIUX6706F/+6KBnM7C5zoIgYSWL7o+YJtj++ITQVvBDzZunaqhd726dtu+8STQp+jnLJjmIKlSsHq9BCPQiQTxUM6lThLEEN5HJCqD8avK6k3CevmFOlWubMjvD0EA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,69 +131,10 @@ to accommodate two large unmapped areas. While this is specific to
 consistency.
 
 Also update reclaim.rst and lru_sort.rst by adding cross-references to
-this constraint within their respective 'min_nr_regions' parameter
-description sections, ensuring users are aware of the lower bound.
+this constraint at the end of their respective parameter description or
+usage sections, ensuring users are aware of the lower bound.
 
 This change is motivated from a recent discussion [1].
 
 [1] https://lore.kernel.org/damon/20260319151528.86490-1-sj@kernel.org/T/#t
-
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
- Documentation/admin-guide/mm/damon/lru_sort.rst | 4 ++++
- Documentation/admin-guide/mm/damon/reclaim.rst  | 4 ++++
- Documentation/mm/damon/design.rst               | 7 +++++++
- 3 files changed, 15 insertions(+)
-
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index 20a8378d5a94..3d08baf9802c 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -221,6 +221,10 @@ But, setting this too high could result in increased monitoring overhead.
- Please refer to the DAMON documentation (:doc:`usage`) for more detail.  10 by
- default.
- 
-+Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
-+<damon_design_monitoring>` section of the design document for the rationale
-+behind this lower bound.
-+
- max_nr_regions
- --------------
- 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index 8eba3da8dcee..153bf42645dd 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -204,6 +204,10 @@ monitoring.  This can be used to set lower-bound of the monitoring quality.
- But, setting this too high could result in increased monitoring overhead.
- Please refer to the DAMON documentation (:doc:`usage`) for more detail.
- 
-+Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
-+<damon_design_monitoring>` section of the design document for the rationale
-+behind this lower bound.
-+
- max_nr_regions
- --------------
- 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index dd64f5d7f319..68a25e07203c 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -165,6 +165,13 @@ monitoring attributes, ``sampling interval``, ``aggregation interval``,
- ``update interval``, ``minimum number of regions``, and ``maximum number of
- regions``.
- 
-+Note that ``minimum number of regions`` must be 3 or higher. This is because the
-+virtual address space monitoring is designed to handle at least three regions to
-+accommodate two large unmapped areas commonly found in normal virtual address
-+spaces. While this restriction might not be strictly necessary for other
-+operation sets like ``paddr``, it is currently enforced across all DAMON
-+operations for consistency.
-+
- To know how user-space can set the attributes via :ref:`DAMON sysfs interface
- <sysfs_interface>`, refer to :ref:`monitoring_attrs <sysfs_monitoring_attrs>`
- part of the documentation.
--- 
-2.53.0
-
 
