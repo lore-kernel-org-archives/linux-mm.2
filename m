@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0351099B4B
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:40:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6CCF1099B4F
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:40:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8FAC6B0123; Fri, 20 Mar 2026 18:40:23 -0400 (EDT)
+	id 1F3196B0125; Fri, 20 Mar 2026 18:40:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B679B6B0125; Fri, 20 Mar 2026 18:40:23 -0400 (EDT)
+	id 1CA8B6B0128; Fri, 20 Mar 2026 18:40:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A55A46B0127; Fri, 20 Mar 2026 18:40:23 -0400 (EDT)
+	id 0B9DA6B0129; Fri, 20 Mar 2026 18:40:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97B476B0123
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DF2513A29D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:23 +0000 (UTC)
-X-FDA: 84567911526.19.93602D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 943144000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="gjT5OfG/";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE8156B0125
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C12031A0423
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:25 +0000 (UTC)
+X-FDA: 84567911610.11.AC102DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 40D2840002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KUQ4yJnN;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774046421;
+	s=arc-20220608; t=1774046424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qNZ0cSW5tVKwJdkc+8VZnUhYg3Myxx6O/VK3EewvUNU=;
-	b=Jjp6d/ZxyiQzamXyEK16jLpkmyLeTc/gt0if0XrRKi6lDJECLghiKAMqVc8kWcz9DjH+EL
-	ONP2z1AbXYaMJ5TqfiR7/HFO+g0CaUSS3Lm72kKlAsNgB+lGAxFqsU1gsLTz73HfiS8LYx
-	11K/ASrQQ088A4jsJuf2m2jok82dt38=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="gjT5OfG/";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774046421; a=rsa-sha256;
+	bh=NZyonGh3pYuncKNqDG1N1iOelEUZSz6yWkO1vXIE4Hg=;
+	b=NhZ7+llAIj/akiVeayxDo7xFWEtArJAz6F9JRLHi2FdeaavtrEaKLsIIp0z/i/CedeqKdC
+	oJyYsBVaw3G9Ifp9CbEgTHhhQaZXM2Ohut84yj8GUyq8JIoyNsckDhkPsn48StOMc1Y0LR
+	7IDpvMW5heHEJkqB6u0udzrzo2GE2Ic=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774046424; a=rsa-sha256;
 	cv=none;
-	b=qXw3AdQ5W9QRh4GwA0iP6hnGrLrTnjHio/KNvJ1Gwe4W6lW7oaof45nQTNLTPRssr1b+X4
-	n9hAVu1RwuQww5zUTHxzlrH48+MY8w3gSSNBTwo6move359DFKnwfNDKlS9QKBaPeuRHIm
-	hy4kGxep6I5TevGeTnr+r4ooY0J72BI=
+	b=Td24dAQml+G2NS4mXSvIuV5Cg+KuIoMYRgxIG870w8XIzpB1P1SL3ullXkh6HJCW/8kMTL
+	oIuMoab0pePcW3ob+S6wANsX3G4KrrF++KFg+lJC33iT/V+vChW/GYOx5z5x7byjEIFsxR
+	IloTgyCxuU8APHG5EuXk+u3m/LH8h+I=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KUQ4yJnN;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B65744452A;
-	Fri, 20 Mar 2026 22:40:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E63C2BCB0;
-	Fri, 20 Mar 2026 22:40:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BD65B61118;
+	Fri, 20 Mar 2026 22:40:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF76C2BCB0;
+	Fri, 20 Mar 2026 22:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774046420;
-	bh=nTMi7MwgWhsqzEL3innRO8x3UGd+wS99PKV5J1/IH6A=;
+	s=k20201202; t=1774046423;
+	bh=5B0UudB5t6IvoUSjas4gSsitxv5wljP/xv5/LMRSwMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjT5OfG/LeaNBmLBTUcJPgnFfktEPzYQp1DS+lVjzFF9mviCzUaOB/pv5EHU0EsMM
-	 0WimX7637MvnHvbDM5ijVu4+dtO8s0Vvfj0NenkAY/HaB3Ad88bN2u1mlJ0c1QIkvA
-	 cIxW5OOMSphnCBkiQSwasBNYmIRGz9qUDAFkFdd6pzQVCWVUiupz5jZCRHZs5XTkYp
-	 DB/EkEvfD1Afqqzo+MwllMaR4ktnrqaRLNCUlkajLtTYHG7nILemLEO/ih0qWLXHHT
-	 sHtHoecxEP3lZPCejF3YNgU1Tz5BXICj27Ua1a6alZHwlWd+3T5ga9RjPT/WeFhCgB
-	 Wbo/bkpNIqoog==
+	b=KUQ4yJnN/WuHnEHkwKNXjPL29+3niu71Tepf6T8MO4WkDdogsFLE72V8PeJFDVlF4
+	 Bgq2IUCnGX2DqjqxgG9VU/AJ9tvaRvZoXCJ/edOpA2ecyHNMPx/827tzdtxUxlno1b
+	 kB/jx2f29BxgqysOfNJm2thngFQSBiZldAHGABhZEbYYZtllNjGAzqunIUk7syMpWE
+	 q4F2EYNQ3xjEpxq+z70oW/TZyTdZnIe3eNlH70hr0fh7kvql3+XaNSIzX6J9joDX/J
+	 Wo7adkEJHy2wBoh1A0sfY4bHYjqE6KjPrlgSkBE1+cXFhZzg9cVq3BIUNXtQCYbYf7
+	 VMR8sVXp9E6aw==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -108,22 +108,22 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH v4 05/21] mm: switch the rmap lock held option off in compat layer
-Date: Fri, 20 Mar 2026 22:39:31 +0000
-Message-ID: <dda74230d26a1fcd79a3efab61fa4101dd1cac64.1774045440.git.ljs@kernel.org>
+Subject: [PATCH v4 06/21] mm/vma: remove superfluous map->hold_file_rmap_lock
+Date: Fri, 20 Mar 2026 22:39:32 +0000
+Message-ID: <42c3fbb701e361a17193ecda0d2dabcc326288a5.1774045440.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1774045440.git.ljs@kernel.org>
 References: <cover.1774045440.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 943144000C
-X-Stat-Signature: petupdreunf9zr6df8q3c669jh3179cb
+X-Stat-Signature: 6zpgcyb9o6y97w7iwqnibcayfkpgnx5x
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774046421-992373
-X-HE-Meta: U2FsdGVkX1/VTAdb6yJOdYE77vyxl2wlR3tWAXrL5+nZJQIzMNmX/Mo5g4+sOJGESz6/oWhuHaHT58CGyY580sxb9FNj1CyFOhX889L+kVmmZf6CPW9rPNpfeK68qAY1hgWjNwwrv+n/8M3lx99KU76uoRfIiBDXkqCcIC50Ry4SxawAekwhHV/cYKhxBIkidTXNSMwBDCkKl6JG/RjIarIgjgdxalDzf6Qoom8wKTKex0Fbbw7fvhfIeUJ2QRId2UZCN11+6yKk3nZyyfT0A/Kojhs+ZIIyTVvsfbx4W5qOhy7XAOYzWLXZBGM6CjTqTOTlNPXy318uhxg0lkF7xk320pxI21kvTXB8GQuexWMVDGbr1ubfC5PYD1vcroIKMXjlS7qrLtArE6J6Ob8omVD8WmczuA7YIhx1kka4hpsocMGfIW3SngvDR6ar+lP2sVKAnaQavtq9FYM6BWD+XqqodaeDS3pxpmkvAGrOuUolHUENZPjzod7yhR3R9KaUh5BOpVL1534bv7HULF/sImnx+UiufbFi36kHtYEcTNtUbTfskF8JTdoClHEnkLakf/gT5pZLmk5eaJ+yZnYl68HYoiE6PyLWwbNWf4wpczFXgLRCgQv57HTBAADRWnw+1FZ2xQnIox/RflT1nsrrCjj6hgWIn3w3ovWzX3NmwABD4UsVJb1xlbk1lMA8gDuClSFZf5ytpkWmdxHxu1W+6eS8YxKSCduavg+bsl42t4O4JJhhfY9IA5CrUkSLV8tkOSbrrilH6bZAPD5YoT3kvoektHNcsrvFv6LuEbEHRhhgmeNoQbaZixskTOgcUrr6byONcNmqVxpm/gFVC56g/hKpp6JVFTVnq5KoE2X10UHu0BS0cvCr84n5PGdJwW5rI477kzilLpWHIVJORHTKQ8zKrqMU+HbUaGqmeczHm+7Mrt+U1QBRakfdtW1y/Yc7AKE+TObXFJYMUpvCupH
- A4iWfF13
- wnsauqmBneCU/1TA4QLXLOq3jnPk9bvrENJvcbov9MPlQnP8Nn/PTQS92/tHcU/nicOiVwoAlnqubteuggZtDKJKf+9ttLhhqkL9/Q9EkEnEn5svE5oSnJrp1lVV+A33iNMy+35WqlIEcYwSdaJDqLf08ilEs7g/3Hno0GzxC+qThKLH3OJu5b/orSfiQnz8LD9ZDkZPAHvUpI7tqfQkCksGuBeUYwYntaMVhx7rhnsVtcgPa6Qs7aUhEdYgrZt09YSO4WeemtYF0BXERntioLzFKVWVUPLeU3YMFC7P6Zy552hQy9vhHAOgrIQ==
+X-Rspamd-Queue-Id: 40D2840002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774046424-307914
+X-HE-Meta: U2FsdGVkX1/kynFGelSqhjKQ9tJmRZP4cEa1Dz5ysyShBmz/nMBV6GbSvOUaqQ1cW2ul+pQp62H+QmJ7jz06zHVEf1g0H286rPHtfPVPiy5VbDAwki1Gcwpa4RMTr9YQVCgCt18tj2IsqD69G78rqr51A1JBAJxIAIXVq5TVpsrU82QIb2lVBQSUsLSx0Nn6igPixywmqYElxDTRmo1SuniPttd9EXo6avLoyrvKSEZqi6JMLK0Qj6dsrQwU86LmAmbjYUOxJdbGObhhXVraQutSBRvMsjFTkiX0FQxNzKsN7oJrUmGrFzXTGVeHhQT+p/jLP+Colx2uazht5jLVSoh6he1X9qn+OuAfLt/V6zMyuqGx5q82Q8/ekEAuHwb4aKbfH4Pqvn5nIFzykOAybuabjFeO0l6Azoz37zmeaVyZducfnmst1yG4ISBc/IWgbwrqteumtEj+09X4ZSz8VCmG4r/l965aH7Ym4SMIa2LarHChcc9J+ko35Bx1ihm50YRgCaXcotveYoFYZDXwxnM0a6h8Ny5tawIu44g25v04JDetNZs0Ypi23Xa6rYm8CtcXaP2xSx19exLsPSbsvWp1VOqi9HjbcDhNzpPI5MIBzSBe4peuE1aHb26TtXxDhn0qtXI5lYFoNtEZ0gTU0x/A5THkLs4Kn35GdEQ9e1CGxGDrVXzIDweTUymDOJSazgOWXH8Mg/ws759az17isxo/mEs/uWMfKTXR15HAbzg5JfdPLVDMAYrx6pz9+Bh6Rp5vzpR+dKY0slqSluC7bekT6ezVJwH7uxfWSQfwcP5MITj7DhRZoPcgVcJX7law4xexX5oUVLeTCMee5ZQ1gI47T5/cx0H0zJkCyMMwTXgxyxcPPovzGQnUbVfTkCmOd4SsdCUWd/NjYg6sxj7O0mfBC28/x4tkiWHpR4PcRimtCWZFkEr/Pr+XxiJhn0QMSt8aQqXwmTgd29i0+Yz
+ 9b7fCcBm
+ ftGdIEZU0JJUbfaDbZLcn6fOAwDBiuWUFCzBw8+wqwu6sJ5yJqqARaFD6p/3HAsQwgTUDeebFYiXvL4DJxeK8wk3Usjz/atxprCRzfID9WNXATQPbUaD7hMIt8NaIl59zNm03UWWqcgNx3jX168Bs8z8JgCHGs8P+0C/sHPtDoYfk2nh/VbP8IkezYwOjoHJqNYDh0X3Ls0jYH0J+rJBHCkPsmNIPcaungaq7KsgL4SoD5gN/oIdyciy0JUEepqtRQ83xfQUrbQWkqdsevs+dUWfL4dVsz4XL/MacFe+LFXDb/FweOtCuwaMc584b4+12jYpdyZTBK78T7/QA9yXjM7EzW5tFUT9Mev/N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,137 +131,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the mmap_prepare compatibility layer, we don't need to hold the rmap
-lock, as we are being called from an .mmap handler.
-
-The .mmap_prepare hook, when invoked in the VMA logic, is called prior to
-the VMA being instantiated, but the completion hook is called after the VMA
-is linked into the maple tree, meaning rmap walkers can reach it.
-
-The mmap hook does not link the VMA into the tree, so this cannot happen.
-
-Therefore it's safe to simply disable this in the mmap_prepare
-compatibility layer.
-
-Also update VMA tests code to reflect current compatibility layer state.
+We don't need to reference this field, it's confusing as it duplicates
+mmap_action->hide_from_rmap_until_complete, so thread the mmap_action
+through to __mmap_new_vma() instead and use the same field consistently.
 
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/util.c                       |  6 ++++-
- tools/testing/vma/include/dup.h | 42 +++++++++++++++++----------------
- 2 files changed, 27 insertions(+), 21 deletions(-)
+ mm/vma.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/mm/util.c b/mm/util.c
-index a2cfa0d77c35..182f0f5cc400 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1204,6 +1204,7 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
-
- 		.action.type = MMAP_NOTHING, /* Default */
- 	};
-+	struct mmap_action *action = &desc.action;
- 	int err;
-
- 	err = vfs_mmap_prepare(file, &desc);
-@@ -1214,8 +1215,11 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+diff --git a/mm/vma.c b/mm/vma.c
+index 3fc5fe4f1a7c..6105f54cea61 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -38,8 +38,6 @@ struct mmap_state {
+ 
+ 	/* Determine if we can check KSM flags early in mmap() logic. */
+ 	bool check_ksm_early :1;
+-	/* If we map new, hold the file rmap lock on mapping. */
+-	bool hold_file_rmap_lock :1;
+ 	/* If .mmap_prepare changed the file, we don't need to pin. */
+ 	bool file_doesnt_need_get :1;
+ };
+@@ -2531,10 +2529,12 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+  *
+  * @map:  Mapping state.
+  * @vmap: Output pointer for the new VMA.
++ * @action: Any mmap_prepare action that is still to complete.
+  *
+  * Returns: Zero on success, or an error.
+  */
+-static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
++static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
++	struct mmap_action *action)
+ {
+ 	struct vma_iterator *vmi = map->vmi;
+ 	int error = 0;
+@@ -2583,7 +2583,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
+ 	vma_start_write(vma);
+ 	vma_iter_store_new(vmi, vma);
+ 	map->mm->map_count++;
+-	vma_link_file(vma, map->hold_file_rmap_lock);
++	vma_link_file(vma, action->hide_from_rmap_until_complete);
+ 
+ 	/*
+ 	 * vma_merge_new_range() calls khugepaged_enter_vma() too, the below
+@@ -2650,8 +2650,6 @@ static int call_action_prepare(struct mmap_state *map,
  	if (err)
  		return err;
-
-+	/* being invoked from .mmmap means we don't have to enforce this. */
-+	action->hide_from_rmap_until_complete = false;
-+
- 	set_vma_from_desc(vma, &desc);
--	err = mmap_action_complete(vma, &desc.action);
-+	err = mmap_action_complete(vma, action);
- 	if (err) {
- 		const size_t len = vma_pages(vma) << PAGE_SHIFT;
-
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 26c6c3255a94..c62d3998e922 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -1256,8 +1256,17 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
- static inline void set_vma_from_desc(struct vm_area_struct *vma,
- 		struct vm_area_desc *desc);
-
--static inline int __compat_vma_mmap(const struct file_operations *f_op,
--		struct file *file, struct vm_area_struct *vma)
-+static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
-+{
-+	return file->f_op->mmap_prepare(desc);
-+}
-+
-+static inline unsigned long vma_pages(struct vm_area_struct *vma)
-+{
-+	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
-+}
-+
-+static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	struct vm_area_desc desc = {
- 		.mm = vma->vm_mm,
-@@ -1272,9 +1281,10 @@ static inline int __compat_vma_mmap(const struct file_operations *f_op,
-
- 		.action.type = MMAP_NOTHING, /* Default */
- 	};
-+	struct mmap_action *action = &desc.action;
- 	int err;
-
--	err = f_op->mmap_prepare(&desc);
-+	err = vfs_mmap_prepare(file, &desc);
- 	if (err)
- 		return err;
-
-@@ -1282,28 +1292,25 @@ static inline int __compat_vma_mmap(const struct file_operations *f_op,
- 	if (err)
- 		return err;
-
-+	/* being invoked from .mmmap means we don't have to enforce this. */
-+	action->hide_from_rmap_until_complete = false;
-+
- 	set_vma_from_desc(vma, &desc);
--	return mmap_action_complete(vma, &desc.action);
--}
-+	err = mmap_action_complete(vma, action);
-+	if (err) {
-+		const size_t len = vma_pages(vma) << PAGE_SHIFT;
-
--static inline int compat_vma_mmap(struct file *file,
--		struct vm_area_struct *vma)
--{
--	return __compat_vma_mmap(file->f_op, file, vma);
-+		do_munmap(current->mm, vma->vm_start, len, NULL);
-+	}
-+	return err;
+ 
+-	if (desc->action.hide_from_rmap_until_complete)
+-		map->hold_file_rmap_lock = true;
+ 	return 0;
  }
-
--
- static inline void vma_iter_init(struct vma_iterator *vmi,
- 		struct mm_struct *mm, unsigned long addr)
- {
- 	mas_init(&vmi->mas, &mm->mm_mt, addr);
- }
-
--static inline unsigned long vma_pages(struct vm_area_struct *vma)
--{
--	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
--}
--
- static inline void mmap_assert_locked(struct mm_struct *);
- static inline struct vm_area_struct *find_vma_intersection(struct mm_struct *mm,
- 						unsigned long start_addr,
-@@ -1473,11 +1480,6 @@ static inline int vfs_mmap(struct file *file, struct vm_area_struct *vma)
- 	return file->f_op->mmap(file, vma);
- }
-
--static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
--{
--	return file->f_op->mmap_prepare(desc);
--}
--
- static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
- {
- 	/* Changing an anonymous vma with this is illegal */
---
+ 
+@@ -2741,7 +2739,7 @@ static int call_action_complete(struct mmap_state *map,
+ 	err = mmap_action_complete(vma, action);
+ 
+ 	/* If we held the file rmap we need to release it. */
+-	if (map->hold_file_rmap_lock) {
++	if (action->hide_from_rmap_until_complete) {
+ 		struct file *file = vma->vm_file;
+ 
+ 		i_mmap_unlock_write(file->f_mapping);
+@@ -2795,7 +2793,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 
+ 	/* ...but if we can't, allocate a new VMA. */
+ 	if (!vma) {
+-		error = __mmap_new_vma(&map, &vma);
++		error = __mmap_new_vma(&map, &vma, &desc.action);
+ 		if (error)
+ 			goto unacct_error;
+ 		allocated_new = true;
+-- 
 2.53.0
+
 
