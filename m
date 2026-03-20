@@ -4,108 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB5251098785
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 997571098786
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78A466B00DC; Fri, 20 Mar 2026 09:43:13 -0400 (EDT)
+	id 344CF6B00DF; Fri, 20 Mar 2026 09:43:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 762046B00DF; Fri, 20 Mar 2026 09:43:13 -0400 (EDT)
+	id 2CE2F6B00E1; Fri, 20 Mar 2026 09:43:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630346B00E0; Fri, 20 Mar 2026 09:43:13 -0400 (EDT)
+	id 196766B00E2; Fri, 20 Mar 2026 09:43:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CF2B6B00DF
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:43:13 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 149FF1A01AB
+	by kanga.kvack.org (Postfix) with ESMTP id F28026B00E1
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:43:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB0D6888FB
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:14 +0000 (UTC)
+X-FDA: 84566557908.02.7991C8F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 27EB3A0015
 	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:13 +0000 (UTC)
-X-FDA: 84566557866.08.42A568D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C11BF2000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gK3cDFvh;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774014191;
+	s=arc-20220608; t=1774014193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kJ44H9LMT3ZivYXZKVdv7mDydiQUgrzVMei5uY3rH04=;
-	b=dPpg8z/CD0u8Ah1Tfw3ykgSwXvs25vlNbHSeAHpA4eDS94dcwa6kwHnPF1iv3VIGA/cWM4
-	R3hjUvvVQTrGg+ag331yAjRDewUj7B3Yo49Do2hMoMMuE7p0Kf3v/rOdEFxUfKKK4mPN9g
-	awchqphMaCli1nhrcYCu6eCML5/nUxs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014191; a=rsa-sha256;
-	cv=none;
-	b=GrG7mPSOMzGLZzz6RBUPTkj8Jyl+P3TCjdYQv2SnlbMqf/3lKHeydn9zXIAc6BO3oV4vEx
-	HMg/P4O4WUOxdZ8XX/i8/tlJgAcUYizbpCZVdW479ReRImGtILwiXkt7HIY+mq9HDTWxjy
-	EdUMZMmrayiGZNPBfDmISLumZy3oY3A=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v/GF5cWba+z/Oi/4Q2mOyFeXrJeBcJW7/GUHv41K0pA=;
+	b=NDHY17/17jnJK1Z07YPXFM0PKhPC34knM56NbuP15ka9iAwFa5UwNqSSncYu2StGuzET47
+	VnbW2wqdwX6FLa7RqhMGWH01MVGKVOkJdg0E4K4X06Vp++kH/jMagwL+CSmsm2F2V2bKUi
+	tzF1l2b8PDmQpjq3uWNSqjjTZ7SSvtU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7CA1D5BEE1;
-	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 720F34281C;
-	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bprXG5lOvWmCCQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:45 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3446EA0A9E; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: <linux-fsdevel@vger.kernel.org>
-Cc: <linux-block@vger.kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	<linux-ext4@vger.kernel.org>,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org,
-	linux-aio@kvack.org,
-	Benjamin LaHaise <bcrl@kvack.org>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 26/41] fs: Drop osync_buffers_list()
-Date: Fri, 20 Mar 2026 14:41:21 +0100
-Message-ID: <20260320134100.20731-67-jack@suse.cz>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260320131728.6449-1-jack@suse.cz>
-References: <20260320131728.6449-1-jack@suse.cz>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gK3cDFvh;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014193; a=rsa-sha256;
+	cv=none;
+	b=AC1nTIFulTqjfUuuPvBqcF3uq+wtQl+bn4u8jtUnHwnMYflUTzUxoPqVYjpr3U3rVnCwMo
+	WtrZyceBHIaKlpvklwGIS5bXUQ4fdlgvYc8eKbLRAZOQ3DPezKEFia5ypxOF33jVJJF0Xf
+	yKEZf5gEI9U186soHvAc7xR5nA29Scw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 575AB61860;
+	Fri, 20 Mar 2026 13:43:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD9AC2BCB2;
+	Fri, 20 Mar 2026 13:42:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774014192;
+	bh=DyFuJFml7YVo8+/hTBGS9GQt/nh4Xv5125sbhWsDy3w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gK3cDFvh7dEcs9L3VC7fj0P6IM5YMZ5Mdb7e1aiwqcjRMNtOygIPq2gaIILFuUtTM
+	 vmqMlCjBU/8YqWSrn8GlSD1mbnyZvleBSG4NBi3zJJ69IUJMAI0DEdStZKy+UW0TaS
+	 RKgp2laFc8jVyXbKre2JResrGO8+VbexZHvQVEUDnIaYf1/UBEaFtXzWQkyAGtWvAC
+	 EC8EOzLMExEfD4QvcP/5iHkGjSQVu/uJiaSVg5HYyjsbtJBNdghidoAN6SiQA2nRu6
+	 m51U9AIWacLgoG0wrPS7G6Dn4d7v54+3rpqqUTSWe8f3RYfxZqr7UHrfRbAGSUWvmM
+	 y4Zk3Ov3DoF0w==
+Date: Fri, 20 Mar 2026 13:42:57 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Kees Cook <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian Cain <bcain@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH v3 17/23] mm: convert do_brk_flags() to use vma_flags_t
+Message-ID: <f47e24c4-3a11-4a58-96f5-871443660246@lucifer.local>
+References: <cover.1773846935.git.ljs@kernel.org>
+ <981ed1afcd19115432e61778e7d226a36f8f5c2b.1773846935.git.ljs@kernel.org>
+ <1d300b3b-2476-4381-b8df-a680f486b284@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2464; i=jack@suse.cz; h=from:subject; bh=2/a9eqgQlz/3Mb1WXg09pHnceFw4nNkq4pR2iqKrJoM=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU6C3a5/P0oUM3bDlZR3EzEk1N3kzljC9F9eH VlmIijoJKmJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OggAKCRCcnaoHP2RA 2atiCADHbFrgbVpWv9NVZTcZXfG2z55SjOTpG8Q5RJZHnVhy7IxVgM9VuhxzUg/FR3cTgaxSFIc GjI16zjLWZpfTYBPto1eKQPvUMmOpUpqyFd7fwA6B3J0AuJMkh7F5xS+eZ5MvUtcs05rhzO3lGR FpTt0wrNPsJz7Jg6q5WbQZTltnamlkF4ZG9fGrnf0F2hAf/bDG3BSid4Sb/sReh6JkPvbOUJczP TjSH1Bt0SRJMnsL3xGw/Dj+8hFzdvz2S15972F3M/ON3C0gcDxqUj1m07ir1YosmCZ52AgON3oA zn1RhDf0YG8GG7PDaRqQrlCwd/CLTqBKdJJBBGGFmKMGodhY
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C11BF2000C
-X-Stat-Signature: 7a83die1fkuksck9tgfobt6rpdw94fkf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1d300b3b-2476-4381-b8df-a680f486b284@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1774014190-686250
-X-HE-Meta: U2FsdGVkX183y56fEKTGIAaVvvs486N8saaYeVwM/XG/6/KPYS16g3Y5tgWgtDM76qCAQ6P2ZuvGMMQJklj8TpqQ+hYxriCORHDmplVOTsPSb/J2te+jP7wnppootLDJk5u32HQPrshqv4RCxiJrg07ImbSuqVlJsysLUoPqFHbTfvCWTXVaRaEomfuiDrtBb/qRKVe+AZD4ySYLDn7luUcxyimKdfQFYvhCMoTxUHrKtET5LEcr1AEs47I9NC/ON9Txtya1urvcxyA7UK1XKDOUP2J++ETuHzLyguk8C93Y+J8vU9DiWgE1gT/veD7K4YTKMJ5kG5jp4+e7HsMputL7gIZrhqVTYdOHV2PIBPKs8HMjFInBOumQOCEWbMAnBfebFHCj+klA2UvQzilbc43Fz8Dwoj+7niaUPknksfGcEW+5idz/3MPAPNSUdfJl2rM6hkvxx7xBPEmHq1OQ50fH1ezuJd1tQ3LS2sUIb6EDfRV/Hl8TctawzhDdQOHMiw6ypYV7JYdCJ7fmjLfh3wu95kd1XN+ur/2wioKjQk7yvYxYC6N9kc6euoDPzHkH39AOxXO1xiDzgtkI0I8dxlyGcXyKWrkFPOSekqqIB3iSY8Prm+sFw+3to+mrsdOcQoeqIG5xFOCztVwRVGdNANmDoc5rLBLzwhCAuD0+XxxEbFK8jvVbxHcpdfIV5HDMQp2SqkyWikKK/zqufcLnlfuliI5ggt7Tk79qHpc9NxCLazkypseISm70ndcJdhCoyfPhGlzrSENGyZLj4Pc2f9AA6p0L8Vxjah76ljlQk1E58+oSR14AWb13gHIm/rHvEl0iNB25Y8QDW45RANsfkWU5SILW/ugGZQzYNSiTF3DMSJSsbqCz+ROjcVdWaWFC8rkp1WP79XH93thQ4ztTcoJXC3L8+S8fNkUL1oFJCjut4qcTcZn8jKeWiLd/+F3mS/ymenwNO+3azUHLADQ
- 2lzvqiJF
- dq5cXoGHgJdcUZbjPa0/PXcZP7DG7GmyGFfAYa7BPuavGYvX+uOgdVQeLbZT9NYxhRdtRJ5q2HnB+bzySzaAxS22zDjEGI9bfXBfiVKTVh2o3CtmD7y2u1jmwvgTMdWdg40HTcXyQ3Z1jjddlUd4aAQj3DPv/bOM/mE/P7s9MVtNY2rLiPz/6ec8gMJ6c5zBxaEHm
+X-Rspamd-Queue-Id: 27EB3A0015
+X-Rspamd-Server: rspam08
+X-Stat-Signature: aafoych6qsyx3igo3o59rhm6h46tm46m
+X-HE-Tag: 1774014193-631075
+X-HE-Meta: U2FsdGVkX1+NWbihfXJSs4ocf73AIjEH1nyJYe8skEpitj7o3gheJMvfOGCSc2Bh+Gi+YsEgqLZKqxUDZAIYEV1/69ddaPhlh155jprnTgzZGccvZkxCPoS05Lx3jkCz9ocvqvxLGMpEEO6MboYqeExGsFNdMFexw7qoK2daO4+/Ooc47ZltufRKuxctp4WTsgVu/tKb5qbjx3kuf1uUJj0sRwBDxUjBi/0hQEyBUKoUtRWmgAbqW4qJ8BRBOwE0kTulQqVZ0WMv+rhwBpS9SSMwqSIrYWJbHg4Uhcf97Ob2BzjfrEAofcIHHxe0JrWE/nPqSIf7noQBbVhIjWk+Lr0s3mhUH7gN7dz28V9+UjC10SM419Vk4uDvftHihYT82TQEHkcfBQjAeZYl07tJ9yUc+thiD/meQ9Yh7ess1uT/ZGjZlGSa0EKscnAwUOybkIrGfwmR2SHQjt/QOMUgEw8q/L/br4VXtfpHp0NcA/LMI5/LV0Kw2tNYsMFaQ97xulivoHso275IYU27MHdsJICZnByeenc+N0ss4XNXAyGnoEYNfZZJmoHRyiC4a15JekOvcn3x2m+hszG/0v0914io6JSlcszp9sm5Dc9MW8c9v0FB0lBrkk+wE5WLFJaWqYTdTFywWhsdpJiFZLcEX8b7maoNFrUevMgcBgwLhQxKb7WrxfqiF8hn9Y9MW9oIHyZa58TuWBtQYC5RM+zPHa51N+IMcNNn+uv37fmmBmP5Ko7zdRswePPPE19+CmFTOARHXLrxazrTKFq2WaXi//ILZGCHM4q51PjfoOPEkbTOYM5NjX4aSl0nX8OOZHuJ+JNK2YIohs8ZWgfKecFRoayaZfvcmJLJ+aNAhJAdLmUrqfaFC+wylR1v/tc4weHcfmIq7+v0zSb/aOMXN5s6zERFqgn/MjhcEFJzEQLNpWhQick/whpvSN4UIfbPccyfcvQzEtG9gGaHOrPZeSV
+ 9r7dWS+1
+ 3wTQBPWNOYHA8euDohh7yf1SfxAbQRycz3EzV18dg6Wv2btmgYDdbRvc6sIlJjg8H5WPbLz1gy1YgX+/WQBqIxKVZ9NdYKoN2/F7PM6nIvKnUmPIhkzTaQgBADYWE3mTYVjP6corTwo9HVFauGIcUO/EETZHav4/ynYBgFUF+yq/Y/jQ4IOW6dLToLJtiUTviFTp+O65PMUHs9TaRpmq+bVI+x7Bj+4xRhaisuf3X6DBSX7k7U+YdZY72wVPBM6dCuT/BkecDcQni/FPb2SIi9j2vCT6iodDrCSglWFeP2PAxKb0F3kSa8WdnbspmSSIrGU55dmPvrahKY6pPgCRFKLijD8/0lb+eBsTsCaSu2390hb9w9z17OLE5n+DybHBq4QNNyCNsN4t3BMX+pxX9wXV0gFY3e220uGjn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,88 +117,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The function only waits for already locked buffers in the list of
-metadata bhs. fsync_buffers_list() has just waited for all outstanding
-IO on buffers so this isn't adding anything useful. Comment in front of
-fsync_buffers_list() mentions concerns about buffers being moved out
-from tmp list back to mappings i_private_list but these days
-mark_buffer_dirty_inode() doesn't touch inodes with b_assoc_map set so
-that cannot happen. Just delete the stale code.
+On Fri, Mar 20, 2026 at 10:57:32AM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> > In order to be able to do this, we need to change VM_DATA_DEFAULT_FLAGS
+> > and friends and update the architecture-specific definitions also.
+> >
+> > We then have to update some KSM logic to handle VMA flags, and introduce
+> > VMA_STACK_FLAGS to define the vma_flags_t equivalent of VM_STACK_FLAGS.
+> >
+> > We also introduce two helper functions for use during the time we are
+> > converting legacy flags to vma_flags_t values - vma_flags_to_legacy() and
+> > legacy_to_vma_flags().
+>
+> Nit: this was done by an earlier patch.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/buffer.c | 43 ++-----------------------------------------
- 1 file changed, 2 insertions(+), 41 deletions(-)
+Ack will fix up.
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index c85ccfb1a4ec..1c0e7c81a38b 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -526,41 +526,6 @@ int inode_has_buffers(struct inode *inode)
- }
- EXPORT_SYMBOL_GPL(inode_has_buffers);
- 
--/*
-- * osync is designed to support O_SYNC io.  It waits synchronously for
-- * all already-submitted IO to complete, but does not queue any new
-- * writes to the disk.
-- *
-- * To do O_SYNC writes, just queue the buffer writes with write_dirty_buffer
-- * as you dirty the buffers, and then use osync_inode_buffers to wait for
-- * completion.  Any other dirty buffers which are not yet queued for
-- * write will not be flushed to disk by the osync.
-- */
--static int osync_buffers_list(spinlock_t *lock, struct list_head *list)
--{
--	struct buffer_head *bh;
--	struct list_head *p;
--	int err = 0;
--
--	spin_lock(lock);
--repeat:
--	list_for_each_prev(p, list) {
--		bh = BH_ENTRY(p);
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(lock);
--			wait_on_buffer(bh);
--			if (!buffer_uptodate(bh))
--				err = -EIO;
--			brelse(bh);
--			spin_lock(lock);
--			goto repeat;
--		}
--	}
--	spin_unlock(lock);
--	return err;
--}
--
- /**
-  * sync_mapping_buffers - write out & wait upon a mapping's "associated" buffers
-  * @mapping: the mapping which wants those buffers written
-@@ -777,7 +742,7 @@ static int fsync_buffers_list(spinlock_t *lock, struct list_head *list)
- {
- 	struct buffer_head *bh;
- 	struct address_space *mapping;
--	int err = 0, err2;
-+	int err = 0;
- 	struct blk_plug plug;
- 	LIST_HEAD(tmp);
- 
-@@ -844,11 +809,7 @@ static int fsync_buffers_list(spinlock_t *lock, struct list_head *list)
- 	}
- 	
- 	spin_unlock(lock);
--	err2 = osync_buffers_list(lock, list);
--	if (err)
--		return err;
--	else
--		return err2;
-+	return err;
- }
- 
- /*
--- 
-2.51.0
+>
+> > This enables us to iteratively make changes to break these changes up into
+> > separate parts.
+> >
+> > We use these explicitly here to keep VM_STACK_FLAGS around for certain
+> > users which need to maintain the legacy vm_flags_t values for the time
+> > being.
+> >
+> > We are no longer able to rely on the simple VM_xxx being set to zero if
+> > the feature is not enabled, so in the case of VM_DROPPABLE we introduce
+> > VMA_DROPPABLE as the vma_flags_t equivalent, which is set to
+> > EMPTY_VMA_FLAGS if the droppable flag is not available.
+> >
+> > While we're here, we make the description of do_brk_flags() into a kdoc
+> > comment, as it almost was already.
+> >
+> > We use vma_flags_to_legacy() to not need to update the vm_get_page_prot()
+> > logic as this time.
+> >
+> > Note that in create_init_stack_vma() we have to replace the BUILD_BUG_ON()
+> > with a VM_WARN_ON_ONCE() as the tested values are no longer build time
+> > available.
+> >
+> > We also update mprotect_fixup() to use VMA flags where possible, though we
+> > have to live with a little duplication between vm_flags_t and vma_flags_t
+> > values for the time being until further conversions are made.
+> >
+> > Finally, we update the VMA tests to reflect these changes.
+> >
+> > Acked-by: Paul Moore <paul@paul-moore.com>	[SELinux]
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
+Thanks!
+
+>
+> More nits below:
+>
+> > diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+> > index b39cc1127e1f..e25d0d18f6d7 100644
+> > --- a/arch/arm64/include/asm/page.h
+> > +++ b/arch/arm64/include/asm/page.h
+> > @@ -46,7 +46,12 @@ int pfn_is_map_memory(unsigned long pfn);
+> >
+> >  #endif /* !__ASSEMBLER__ */
+> >
+> > -#define VM_DATA_DEFAULT_FLAGS	(VM_DATA_FLAGS_TSK_EXEC | VM_MTE_ALLOWED)
+> > +#ifdef CONFIG_ARM64_MTE
+> > +#define VMA_DATA_DEFAULT_FLAGS	append_vma_flags(VMA_DATA_FLAGS_TSK_EXEC, \
+> > +						 VMA_MTE_ALLOWED_BIT)
+>
+> I wonder what's the bloat-o-meter impact of these #define's (this
+> arm64-specific one isn't the only one) being no longer compile-time-constants?
+
+I mean there's a precedent for this, but the compiler _should_ figure out this
+as a constant value, I have repeatedly confirmed that it's good at that in
+godbolt, via make foo/bar.S etc.
+
+So it should have no measureable impact at 64-bit VMA flags anyway, but I can
+give it a go and see before/after.
+
+>
+> > +#else
+> > +#define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+> > +#endif
+> >
+> >  #include <asm-generic/getorder.h>
+> >
+>
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+>
+> >
+> > +#define VMA_STACK_FLAGS	append_vma_flags(VMA_STACK_DEFAULT_FLAGS,	\
+> > +		VMA_STACK_BIT, VMA_ACCOUNT_BIT)
+> > +
+> > +/* Temporary until VMA flags conversion complete. */
+> > +#define VM_STACK_FLAGS vma_flags_to_legacy(VMA_STACK_FLAGS)
+> > +
+> >  #define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
+> >
+> >  #ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
+> > @@ -536,8 +547,6 @@ enum {
+> >  #define VM_SEALED_SYSMAP	VM_NONE
+> >  #endif
+> >
+> > -#define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
+> > -
+> >  /* VMA basic access permission flags */
+> >  #define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
+> >  #define VMA_ACCESS_FLAGS mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT)
+> > @@ -547,6 +556,9 @@ enum {
+> >   */
+> >  #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
+> >
+> > +#define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
+> > +				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
+>
+> Should VM_SPECIAL be also redefined using vma_flags_to_legacy()?
+
+Could do! It should be a pretty clear indicator this is legacy.
+
+>
+> > +
+> >  /*
+> >   * Physically remapped pages are special. Tell the
+> >   * rest of the world about it:
+> > @@ -1412,7 +1424,7 @@ static __always_inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
+> >   * vm_area_desc object describing a proposed VMA, e.g.:
+> >   *
+> >   * vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
+> > - *		VMA_DONTDUMP_BIT);
+> > + *              VMA_DONTDUMP_BIT);
+>
+> Looks like spurious tabs-to-space change inconsistent with other instances.
+
+Yeah that's a mistake, will fixup.
+
+>
+> >   */
+> >  #define vma_desc_set_flags(desc, ...) \
+> >  	vma_desc_set_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
+> > @@ -4059,7 +4071,6 @@ extern int replace_mm_exe_file(struct mm_struct *mm, struct file *new_exe_file);
+> >  extern struct file *get_mm_exe_file(struct mm_struct *mm);
+> >  extern struct file *get_task_exe_file(struct task_struct *task);
+> >
+> > -extern bool may_expand_vm(struct mm_struct *, vm_flags_t, unsigned long npages);
+> >  extern void vm_stat_account(struct mm_struct *, vm_flags_t, long npages);
+> >
+> >  extern bool vma_is_special_mapping(const struct vm_area_struct *vma,
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index f98f4746ac41..80d8651441a7 100644
+>
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 9681f055b9fc..eaa724b99908 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+>
+> > @@ -773,19 +778,24 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> >
+> >  	change_protection(tlb, vma, start, end, mm_cp_flags);
+> >
+> > -	if ((oldflags & VM_ACCOUNT) && !(newflags & VM_ACCOUNT))
+> > +	if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
+> > +	    !vma_flags_test(&new_vma_flags, VMA_ACCOUNT_BIT))
+> >  		vm_unacct_memory(nrpages);
+> >
+> >  	/*
+> >  	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+> >  	 * fault on access.
+> >  	 */
+> > -	if ((oldflags & (VM_WRITE | VM_SHARED | VM_LOCKED)) == VM_LOCKED &&
+> > -			(newflags & VM_WRITE)) {
+> > -		populate_vma_page_range(vma, start, end, NULL);
+> > +	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+> > +		const vma_flags_t mask =
+> > +			vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
+> > +				      VMA_SHARED_BIT, VMA_LOCKED_BIT);
+> > +
+> > +		if (vma_flags_same(&mask, VMA_LOCKED_BIT))
+>
+> That converts the original logic 1:1, but I wonder if it's now feasible to
+> write it more obviously as "VMA_LOCKED_BIT must be set, VM_WRITE_BIT and
+> VM_SHARED_BIT must not" ?
+
+Hmm, I'm not sure if I can express this more clearly, it's a pain either
+way. Could do:
+
+	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT) &&
+	    !vma_flags_test_any(&old_vma_flags, VMA_WRITE_BIT, VMA_SHARED_BIT))
+		populate_vma_page_range(vma, start, end, NULL);
+
+>
+> > +			populate_vma_page_range(vma, start, end, NULL);
+> >  	}
+> >
+> > -	vm_stat_account(mm, oldflags, -nrpages);
+> > +	vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+> >  	vm_stat_account(mm, newflags, nrpages);
+> >  	perf_event_mmap(vma);
+> >  	return 0;
+>
+> > diff --git a/mm/vma.h b/mm/vma.h
+> > index cf8926558bf6..1f2de6cb3b97 100644
+> > --- a/mm/vma.h
+> > +++ b/mm/vma.h
+>
+> > +static inline bool is_data_mapping_vma_flags(const vma_flags_t *vma_flags)
+> > +{
+> > +	const vma_flags_t mask = vma_flags_and(vma_flags,
+> > +			VMA_WRITE_BIT, VMA_SHARED_BIT, VMA_STACK_BIT);
+> > +
+> > +	return vma_flags_same(&mask, VMA_WRITE_BIT);
+>
+> Ditto?
+
+I may do both as a follow up patch given the series is a pain to rework at this point
+and I want at least the first version to be like-for-like intentionally.
+
+>
+> > +}
+> >
+> >  static inline void vma_iter_config(struct vma_iterator *vmi,
+> >  		unsigned long index, unsigned long last)
+> > diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+> > index 8134e1afca68..5cee8b7efa0f 100644
+
+Thanks, Lorenzo
 
