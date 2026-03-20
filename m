@@ -4,90 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6F691093172
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:49:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A96C2FB5EA9
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 04:06:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 127956B0413; Thu, 19 Mar 2026 23:49:29 -0400 (EDT)
+	id D4E9F6B0095; Fri, 20 Mar 2026 00:06:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D99D6B0415; Thu, 19 Mar 2026 23:49:29 -0400 (EDT)
+	id CFF896B009D; Fri, 20 Mar 2026 00:06:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F309D6B0417; Thu, 19 Mar 2026 23:49:28 -0400 (EDT)
+	id BEF096B009F; Fri, 20 Mar 2026 00:06:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E0AAC6B0413
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:49:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8884A8C3CC
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:49:28 +0000 (UTC)
-X-FDA: 84565061616.20.C83DB62
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C86671C000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:49:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VZWNRl8h;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id ACDFF6B0095
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:06:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CBE38C5C4
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:06:58 +0000 (UTC)
+X-FDA: 84565105716.30.2BE715E
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4DAD820005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:06:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TF0XcbSw;
+	spf=pass (imf13.hostedemail.com: domain of groeck7@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=groeck7@gmail.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773978566;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773979616;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCAfDsA4NBFgOqaizYqrOyWkTF9ekbPg4USKuuG8xsg=;
-	b=YFfE563yfAMRRn8TULPJerFFttBPjj0nCPA+ctIIHGwlNvIIIhnC0WS9T3rIatlfmvxQFH
-	NQjHxF2729LAqLEI2TzcIAcs01WV7plhS8x4Bp7LetxKuj6G7wjwS//xm0oAlD7uRl/zqG
-	jOp3UWOzfU4ZfPh02jy7ujr3q7sGweA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VZWNRl8h;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773978566; a=rsa-sha256;
+	bh=grz9eWJ1ps3EBDuJN2bzyVHKIzdPvtiDT74qagFiumU=;
+	b=tSNCpTTF/SN0OwbEWaPNDKUO2q77a4jn77P+S+iNCf3JiaGgjmwYV/ucQ6O/2+SB9MhmDy
+	7mgw1mFTt7eJVPuOqv0bU+BFHDVLyuOtuYV1Kzj59Foc5tJXqLbmA43EQxOXXH4zroeBIQ
+	jbOYj03fZThayKH5L1Y5q5QpccAODb4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773979616; a=rsa-sha256;
 	cv=none;
-	b=QFJjASkS0uZ4TMk2wJnD3i46ro/5FdlkVCXglKQOgt/5g3E3pD3xPVI4tAvG/ClysbQLVI
-	NFNb4nr1hDCQMq0rpQlw1RAuMPFIFunh6gK2aPYrti+k8zZWoTQK/tpmjTtSOclaeqG+K+
-	OkK+NXCNFVRR5+Phs8J93JTT5096DJY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773978561; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=cCAfDsA4NBFgOqaizYqrOyWkTF9ekbPg4USKuuG8xsg=;
-	b=VZWNRl8hF42adLO2ssA+4W/7dsomIXuMYWOmN30DgbkT/oEaK9+kDf2xS3SaxEsK+AA5WfHuCxGCT0Qs1AdPzUGwFs+eAOZ4//qdqadCf47cfaGdAIt6y0hyviYB8G7liIvGjD4KKbUlBlaX/gAD550W5yvltVZw0iYUCVdfRmg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X.KMQ4a_1773978559;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.KMQ4a_1773978559 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 20 Mar 2026 11:49:20 +0800
-Message-ID: <d67ff262-a627-4cd3-b126-dd82eb8d3412@linux.alibaba.com>
-Date: Fri, 20 Mar 2026 11:49:18 +0800
+	b=MTpGfRl9n/8GsmBazR1rUs7WnIMdMlDMKopa+V6XvNmBJAWKwisOFfs5XsK6CA6YlVdgNr
+	dGBH4suTNyASzt+nUBMBDMvnPwfvHNlP9eAlYklD4C2iGNAXxWxZsqnmcAJwZjW8IzDfhk
+	w+3AofAaZI0zv0u6+8O4eJV00a05cDk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TF0XcbSw;
+	spf=pass (imf13.hostedemail.com: domain of groeck7@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=groeck7@gmail.com;
+	dmarc=none
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-823c56765fdso913559b3a.1
+        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773979615; x=1774584415; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=grz9eWJ1ps3EBDuJN2bzyVHKIzdPvtiDT74qagFiumU=;
+        b=TF0XcbSw9jC9M76ufdioVXZu65nu8Dum2s3fB54DIlKgS/TVyfZOuy3VncrDbVkFwS
+         dQ+jf3SP9FJ7L2Q59P96BISkSGBtEuXsDdLUXJtwdvlQwFASjS6aPkRRlkb/ntNLQbae
+         Qft2zjKHX1fjKjnStkQc/Yfx9cxV4c2jKeMgiuV5gDDR3XYKN8aEV6yFRQEnfp0L8AAj
+         996Rfmz/66rWMy8QJWmf92dcFOoYaZSyyAkkqLd6tYm6G1+EI3IHvROImcN0N9anuWyW
+         /2jsgBJCJBLRSJ8noYHIDO/9t3whhV7qgUPI/k9i/YDCwJhoxzqx5/4zJkj80bFQ5tEn
+         LB3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773979615; x=1774584415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=grz9eWJ1ps3EBDuJN2bzyVHKIzdPvtiDT74qagFiumU=;
+        b=dhVe8aI24Y/rw30GHVaUmdNbMvqt5y2OlPR2L7BRuQqQ9UhDRzqPBplVgGzrMsHCV8
+         syuzZx0PtpGhWBDiP6ovBKfAwJyzQw0w2Y4jIGBBB9muvQE2zW5iS8BTNWjol0+I+D4S
+         nBHMFA8GG9WdIbNqZYs62MsceATA2HQ2JeW3ywOKnn1s+i7BqijzHt3a5uzspCXPLJfg
+         6FJblEb827giLitTLTyVJTl1DDV154t2o+4H6ECcPJJuVFdapZdKhM/AMO/Fj15s1erU
+         TKeDeaAPDAD2CZJrIF/y6BjysDgQ+yKyW4FDuSujaufJPMR/ipQXhuZQNj+Z7963nX+n
+         mpIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVnKEVVBq5P+v/RsXttJIRmqRok1xpU6Z0gEZU3jBCbmGVifOnIByMiOS/yu34fTtw8E32XC+kpQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyea/po+oGcdpfzNL3pkvBVoJ9/FcPVUHyDZiRREWD8oPmm9EHz
+	UR0fLaUVTiOu2cUqWgxkLMQtxYwcGqte2mIPSXVgHBIsYCAB45Te5AW8
+X-Gm-Gg: ATEYQzxc2PpUx9f+nD7WZI/MtSGSgEOsnJU3xjsXJ1jV9k/kWHXQuQaUGNeF8mrHePS
+	y6a5A9XdKGcXsnll24M5wQTnlyOyz/a6dLv473JI6RhsiXSfJ6OQy+MtkHbASTUAUBeS8u8lFzl
+	OVy1HaxabUWqFmKKgZ477NXXj19ZCiD37vMQM/BFdY0t9HLYDJrH2mTHBts9N91+bNEDytmE46I
+	bLianS2PFeZU3kyEgm5GocYX7hf8YKWa90j5DVysBG+aG3pSeECh+Ry7RFy9HazJk7E681gGuLy
+	AWrSJXyNEqliZqHv8ExbA1nipv5y+Gn0kQ6hCU499viKlDcTzLcCHMHAxsMiUnKeTGeryWqdXia
+	FPStPXIPDmysBthtJZoVmfVZE6EhR8BIwhWFSFXEx8VbsZ8WcSzVINTvltag72JfMmoO6gdQJ6u
+	fdlG1Qq1p8wSiPhOPhIUlwhna8Ap+XQRmxZh8f
+X-Received: by 2002:a05:6a20:7f8d:b0:398:71e4:6282 with SMTP id adf61e73a8af0-39bce9b7e04mr1530953637.4.1773979614683;
+        Thu, 19 Mar 2026 21:06:54 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74443ccb56sm650198a12.25.2026.03.19.21.06.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 21:06:54 -0700 (PDT)
+Date: Thu, 19 Mar 2026 21:06:52 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
+Message-ID: <100b9ae1-74cc-48b3-ba63-1a72cfa2ebbd@roeck-us.net>
+References: <20260225065555.2471844-1-rppt@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/9] mm/huge_memory: deduplicate zap_huge_pmd() further
- by tracking state
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1773924928.git.ljs@kernel.org>
- <440f68edcb597c28918d89b0be279d498561c89a.1773924928.git.ljs@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <440f68edcb597c28918d89b0be279d498561c89a.1773924928.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C86671C000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rj3mm3gptqp1kddw13krb7x48yg3h3j8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225065555.2471844-1-rppt@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1773978565-884777
-X-HE-Meta: U2FsdGVkX1993qj2vOid7f2ammeKGUppaQiQyD3vFLaZpfQNplQ0V/cgH/xD5JS0KUTLMgNZOY9qZBryOGVED41sl1klqsQX65zOYRz09FMgSeNgI3elfAWQepasWnunDsPt9o8/oMTiootW3ACxFgwRHnx6OkslBQ3zalX1JjUoiduoLDpwZR8VQ5v1mUWbgVg25CC8Nwbf0KlAL8s1EbuS5tVsZUH3KlctUJs8/bVXExPrpUmMsaP0Vm0JGgl7T1WsX3wOwI2PyRCqQiq3X/WNEw7MG/WlC4bnRrfY/lp6656+u9rz/6lCbLxb8DN8UjmaU6y+8F62kZKyS6ZUGjRiShrVPBhEhe4PcAaKrT2PjSWhteMR3irbE/NA7WI74ZtV25InncXnxg3zMJFT2bvYyMR21uwz+E36cYzLuI+F5fAycBLB27+b0N6Qx5tKo8HXVOTeRjd9y3SSfKAD0nN2RuutDHSgiK7dUUJ6pBySUy7wqlg/0NQ+kpQhfeCdO5lyK0PdtoPDzxQC2V84k1vzR8kbuljwLq/+Olt5Q3BjyWL+SIXenGf8FpfKaVRjI+TBeFK8p+cJb/+MiH9GDS7vc6y9FZxLuC8Sx/Tuvw6R7bLAuRI0GmLYANBcMiwRh8DiZ2WsZM0dRDsJ68E0bGBzvjhByqorWMUB6SscEvIi4wUtjIQx3QfDzWaX3EVR5+v6RgtZlUglbSujbmXwmqU8jfqqtgPCrfyWqq0sS2m2qjsLtPPoOMUQT9G0PMDLsQGuNNAW7jkFZJaDw1n3cL7NiHL3d/50KM58SWgjsp2DfhIdmH0jWX3YTw3C7ZipZgnrwUdzwiSfk2JLkPArL4AFE+wevhFCGiolfjaP4x7eNlh35NaCCrvpfrV5LsjA7WiIEYyXrStiVVi5F1yXm4TbP2MbFh75yuhO5HYykdE/r0xxfYI666PYD8Q7h9sQdro/Ymu+ydiXZCTl2u1
- 3JFHGloX
- men5Yop62J4aQnu5aQkreidZlkSib11TAVNaFewMlIsTShF43yFWCEg8dBO7T0G3yAl0EbxZYrsFQhe8+hMWFfG6pXRb3X4udcJCnUC6oXBp851u9u6vdxssfWgmaHHrb/b7NIxxHCqGDK2IkHRiKl5HCS1jVovtvKXf6DG4Jhb1+xrfOey2haWjqL0fBCY2amtu9HUccqDg+nPSzhvu3xaMoJpe/KaIUx4UrzclxTSROViCAZ56Oiv5ylZq2KOlBFcWK/cPrCeeZ7Ci0YT5PqrNMlWg43cgAIWIAD/w2fihrFDzS4yxtf4d6PshnmkrzE71UkwICGWG5wXCrkZAlEqIt7Dqbvvlh+mpraOU+ck2WwN2ZgcR5wKgIaxLiI5sXNEtf
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4DAD820005
+X-Stat-Signature: 781s55s346h1957ek97riicenhkxbsop
+X-HE-Tag: 1773979616-937687
+X-HE-Meta: U2FsdGVkX19qh8OamD7n+vXfQ2HX5zpdibeY5hrMsYy4zM/aea22rCdoavz/tsMSfCrPXTwERvmHG+kUzKDvNfzqu9hR1wu5RJPulliuUj/N2KKE55SMi00O4cTdsmrn4dY24LSO5Nw05nWmmVCpcW4C5dVyD2sdPxHrQ/lIWz976Ftg2+DJ42vS1ZYzbX5orEe6QefSgAV9BvcXI+oohOEdj6N1BrbapzS84ngRURmf1b8cktftZDjdTgavGGtDR2TAbjDGiBwWD+D154ht6qlM1WeYW6L+MGJkExbeutYitP5CpZScZX0+Jl3c1LUYZsyu0k/223mq6LSw3SLISw4/kt6II8kShf+wPVb++AX3XC7lyuZX1xjc3HHETfWdA5n1ZhHbxHAZIMOt/lrVZbgF67Aye/FHNYtlTSbMgJGPVYatVLYovnynMvKTekdcTtelwnhmjobb5zzHlTOi4SI9FDCZyvgNKIgHDI/Zf0rHNOuuSuuM8wyqlxNsryxj9pmgYgzw8C4yLQzWnYSV7Yw1/qA/AO5ooK1eLrBaxte+HLq/AbDTIsN26S0mHEc1EoQNV6Y2MCHVF6J35DYfEAGTTXaQ00r1CUscIjrgTffs5XfhovhmBga+xZhiiMQwf+Rp1Wm0kZvv/QV7IMfqt3zdUMntPrUQMjQEiJjv5cGpPzdJNkwHB7rw3+b84f5k8bPoIRWe69wO+31MkmwSUGCviwAv/os4BHvYuhiSNlglqS32Rv9VkisEHUCbFYo80XGLQmBXuUurVk5eEiCDEDuGBub3o/qS87pJNd2dk0ntEgmdfXFhTwxa6SGFCIqmyiLZhRaYYrr6dUs8O6ZgeS3rYbmp4PtQ8qCh4AIzgooF9u5LuuQMAioJywPd+96G5NdUaaqLRpAASaiulAjh+618GnsKWWw/kre6cdQNDXk+FZPe8YTakeu/o7w/763WMkMaDGra2EcPc/4MIEg
+ qpRvDEI2
+ KBMN1dfBQ6PWfMeGdn5BRndCxZVd6rTn+nMA7KNEuBgHIo4sjj3d3L02MYFKqrm2qmdBosLuFzGX0Ntcv5x1KS/rLdfZ7VGu3hFEzfi7OhOJRT8I3roWJgK5/uqtyxb9elHqDbugvALp5aywqCXWzTTJKjzwWdSxP22Ye08g6LepE7A4j8YLqzgQH+cbLZ3QBcpG3gAlE3xUggIQE7Fj7JzvjPs3V+UTatg9JcvJaiDSeEP8sfU+NpdcwTRBib0XRgYBUkXU6BmuYCkrqD6SoM4Ua++l2PkihVYt4aH9W0VE4/AhVluG0PlFKsWNrXN4BO4yKzLvlDO4Jl/DdQOIgCHSO+PtaPo0bV3ytKYvetbFTN3r42ZDY6RBHRqEpqEQlWIDYhAu80uDDUIMfm03+0NnuCcsf7l2zOrG/tvjecY4mfOqklh+U4xk7HegjNeVhIKbgl+DvrdOsvxnmwNbwZ/SxlT9krz//+bSm4qsaeDRmQxLfJkqarUbZCrXvyr4st/nhl/1SDSOsbbd8TdUOSCmvU3VihX5o3L6Y9YNK4AJbiqprONPk9fiosE1S5VFseegxwtufPB1L0ZcerufMivGOgN3EDuW9fsRU8o6D7T0BZtJz3uEy0HYKcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,104 +124,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
-
-On 3/19/26 9:00 PM, Lorenzo Stoakes (Oracle) wrote:
-> The flush_needed boolean is really tracking whether a PMD entry is present,
-> so use it that way directly and rename it to is_present.
+On Wed, Feb 25, 2026 at 08:55:55AM +0200, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Deduplicate the folio_remove_rmap_pmd() and folio map count warning between
-> present and device private by tracking where we need to remove the rmap.
+> efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> and EFI_BOOT_SERVICES_DATA using memblock_free_late().
 > 
-> We can also remove the comment about using flush_needed to track whether a
-> PMD entry is present as it's now irrelevant.
+> There are two issue with that: memblock_free_late() should be used for
+> memory allocated with memblock_alloc() while the memory reserved with
+> memblock_reserve() should be freed with free_reserved_area().
 > 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> efi_free_boot_services() is called before deferred initialization of the
+> memory map is complete.
+> 
+> Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+> 
+> If the freed memory resides in the areas that memory map for them is
+> still uninitialized, they won't be actually freed because
+> memblock_free_late() calls memblock_free_pages() and the latter skips
+> uninitialized pages.
+> 
+> Using free_reserved_area() at this point is also problematic because
+> __free_page() accesses the buddy of the freed page and that again might
+> end up in uninitialized part of the memory map.
+> 
+> Delaying the entire efi_free_boot_services() could be problematic
+> because in addition to freeing boot services memory it updates
+> efi.memmap without any synchronization and that's undesirable late in
+> boot when there is concurrency.
+> 
+> More robust approach is to only defer freeing of the EFI boot services
+> memory.
+> 
+> Split efi_free_boot_services() in two. First efi_unmap_boot_services()
+> collects ranges that should be freed into an array then
+> efi_free_boot_services() later frees them after deferred init is complete.
+> 
+> Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
+> Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 > ---
->   mm/huge_memory.c | 28 +++++++++++++---------------
->   1 file changed, 13 insertions(+), 15 deletions(-)
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index c4e00c645e58..22715027e56c 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2430,9 +2430,10 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
->   bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->   		 pmd_t *pmd, unsigned long addr)
->   {
-> +	bool needs_remove_rmap = false;
->   	struct folio *folio = NULL;
->   	bool needs_deposit = false;
-> -	bool flush_needed = false;
-> +	bool is_present = false;
->   	spinlock_t *ptl;
->   	pmd_t orig_pmd;
->   
-> @@ -2449,6 +2450,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->   	 */
->   	orig_pmd = pmdp_huge_get_and_clear_full(vma, addr, pmd,
->   						tlb->fullmm);
+> v1: https://lore.kernel.org/all/20260223075219.2348035-1-rppt@kernel.org
+> * update the commit message with correct function names (Ben)
+> 
+>  arch/x86/include/asm/efi.h          |  2 +-
+>  arch/x86/platform/efi/efi.c         |  2 +-
+>  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
+>  drivers/firmware/efi/mokvar-table.c |  2 +-
+>  4 files changed, 55 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index f227a70ac91f..51b4cdbea061 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
+>  extern int __init efi_reuse_config(u64 tables, int nr_tables);
+>  extern void efi_delete_dummy_variable(void);
+>  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
+> -extern void efi_free_boot_services(void);
+> +extern void efi_unmap_boot_services(void);
+>  
+>  void arch_efi_call_virt_setup(void);
+>  void arch_efi_call_virt_teardown(void);
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index d00c6de7f3b7..d84c6020dda1 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
+>  	}
+>  
+>  	efi_check_for_embedded_firmwares();
+> -	efi_free_boot_services();
+> +	efi_unmap_boot_services();
+>  
+>  	if (!efi_is_mixed())
+>  		efi_native_runtime_setup();
+> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> index 553f330198f2..35caa5746115 100644
+> --- a/arch/x86/platform/efi/quirks.c
+> +++ b/arch/x86/platform/efi/quirks.c
+> @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
+>  
+>  		/*
+>  		 * Because the following memblock_reserve() is paired
+> -		 * with memblock_free_late() for this region in
+> +		 * with free_reserved_area() for this region in
+>  		 * efi_free_boot_services(), we must be extremely
+>  		 * careful not to reserve, and subsequently free,
+>  		 * critical regions of memory (like the kernel image) or
+> @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+>  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+>  }
+>  
+> -void __init efi_free_boot_services(void)
+> +struct efi_freeable_range {
+> +	u64 start;
+> +	u64 end;
+> +};
 > +
->   	arch_check_zapped_pmd(vma, orig_pmd);
->   	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
->   	if (vma_is_special_huge(vma))
-> @@ -2458,17 +2460,15 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->   		goto out;
->   	}
->   
-> -	if (pmd_present(orig_pmd)) {
-> +	is_present = pmd_present(orig_pmd);
-> +	if (is_present) {
->   		folio = pmd_folio(orig_pmd);
-> -
-> -		flush_needed = true;
-> -		folio_remove_rmap_pmd(folio, &folio->page, vma);
-> -		WARN_ON_ONCE(folio_mapcount(folio) < 0);
-> +		needs_remove_rmap = true;
->   	} else if (pmd_is_valid_softleaf(orig_pmd)) {
->   		const softleaf_t entry = softleaf_from_pmd(orig_pmd);
->   
->   		folio = softleaf_to_folio(entry);
-> -
-> +		needs_remove_rmap = folio_is_device_private(folio);
->   		if (!thp_migration_supported())
->   			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
->   	} else {
-> @@ -2483,27 +2483,25 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->   		add_mm_counter(tlb->mm, mm_counter_file(folio),
->   			       -HPAGE_PMD_NR);
->   
-> -		/*
-> -		 * Use flush_needed to indicate whether the PMD entry
-> -		 * is present, instead of checking pmd_present() again.
-> -		 */
-> -		if (flush_needed && pmd_young(orig_pmd) &&
-> +		if (is_present && pmd_young(orig_pmd) &&
->   		    likely(vma_has_recency(vma)))
->   			folio_mark_accessed(folio);
->   	}
->   
-> -	if (folio_is_device_private(folio)) {
-> +	if (needs_remove_rmap) {
->   		folio_remove_rmap_pmd(folio, &folio->page, vma);
->   		WARN_ON_ONCE(folio_mapcount(folio) < 0);
-> -		folio_put(folio);
->   	}
->   
->   out:
->   	if (arch_needs_pgtable_deposit() || needs_deposit)
->   		zap_deposited_table(tlb->mm, pmd);
->   
-> +	if (needs_remove_rmap && !is_present)
-> +		folio_put(folio);
+> +static struct efi_freeable_range *ranges_to_free;
 > +
+> +void __init efi_unmap_boot_services(void)
+>  {
+>  	struct efi_memory_map_data data = { 0 };
+>  	efi_memory_desc_t *md;
+>  	int num_entries = 0;
+> +	int idx = 0;
+> +	size_t sz;
+>  	void *new, *new_md;
+>  
+>  	/* Keep all regions for /sys/kernel/debug/efi */
+>  	if (efi_enabled(EFI_DBG))
+>  		return;
+>  
+> +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
 
-This kind of deduplication splits the device folio handling into three 
-places, which is not easy to understand (at least for me), since the 
-device folio has some special handling.
+Was this possibly supposed to be
+	sz = sizeof(*ranges_to_free) * (efi.memmap.nr_map + 1);
+				       ^		     ^
+?
 
-Especially here, without looking closely at the if condition, it is 
-unclear why we need to call folio_put(). Maybe some comments?
+Thanks,
+Guenter
 
-Anyway, I don't have a strong opinion. Let's wait for others' preferences.
+> +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+> +	if (!ranges_to_free) {
+> +		pr_err("Failed to allocate storage for freeable EFI regions\n");
+> +		return;
+> +	}
+> +
+>  	for_each_efi_memory_desc(md) {
+>  		unsigned long long start = md->phys_addr;
+>  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+> @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
+>  			start = SZ_1M;
+>  		}
+>  
+> -		memblock_free_late(start, size);
+> +		/*
+> +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+> +		 * map are still not initialized and we can't reliably free
+> +		 * memory here.
+> +		 * Queue the ranges to free at a later point.
+> +		 */
+> +		ranges_to_free[idx].start = start;
+> +		ranges_to_free[idx].end = start + size;
+> +		idx++;
+>  	}
+>  
+>  	if (!num_entries)
+> @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
+>  	}
+>  }
+>  
+> +static int __init efi_free_boot_services(void)
+> +{
+> +	struct efi_freeable_range *range = ranges_to_free;
+> +	unsigned long freed = 0;
+> +
+> +	if (!ranges_to_free)
+> +		return 0;
+> +
+> +	while (range->start) {
+> +		void *start = phys_to_virt(range->start);
+> +		void *end = phys_to_virt(range->end);
+> +
+> +		free_reserved_area(start, end, -1, NULL);
+> +		freed += (end - start);
+> +		range++;
+> +	}
+> +	kfree(ranges_to_free);
+> +
+> +	if (freed)
+> +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
+> +
+> +	return 0;
+> +}
+> +arch_initcall(efi_free_boot_services);
+> +
+>  /*
+>   * A number of config table entries get remapped to virtual addresses
+>   * after entering EFI virtual mode. However, the kexec kernel requires
+> diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+> index 4ff0c2926097..6842aa96d704 100644
+> --- a/drivers/firmware/efi/mokvar-table.c
+> +++ b/drivers/firmware/efi/mokvar-table.c
+> @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
+>   * as an alternative to ordinary EFI variables, due to platform-dependent
+>   * limitations. The memory occupied by this table is marked as reserved.
+>   *
+> - * This routine must be called before efi_free_boot_services() in order
+> + * This routine must be called before efi_unmap_boot_services() in order
+>   * to guarantee that it can mark the table as reserved.
+>   *
+>   * Implicit inputs:
+> 
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> -- 
+> 2.51.
 
