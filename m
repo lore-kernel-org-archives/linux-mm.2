@@ -4,140 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86B11099B35
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:49:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6700F1099B36
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:57:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 078826B0118; Fri, 20 Mar 2026 14:49:56 -0400 (EDT)
+	id 9ABBF6B011B; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04FB26B0119; Fri, 20 Mar 2026 14:49:56 -0400 (EDT)
+	id 982A06B011C; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA7926B011A; Fri, 20 Mar 2026 14:49:55 -0400 (EDT)
+	id 877076B011D; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D92476B0118
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:49:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8579F1398C3
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:49:55 +0000 (UTC)
-X-FDA: 84567330750.30.00C73BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A940E20005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:49:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgPgwcmz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7261F6B011B
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29CE01A0347
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:57:43 +0000 (UTC)
+X-FDA: 84567350406.14.6DAC0AC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6AC7B4000A
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:57:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="d1UmBx/K";
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774032593;
+	s=arc-20220608; t=1774033061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKvf6mTHq+N9gjRLc3v+IFIUhtg0pRtPJcH5zeCiN0U=;
-	b=FYgwQD+qAcV8IZp/IdzpLHJqEvkJBHXRp1MZ2qNHd+h5mbP5p0L7VixbMHWUHc3OEY6lLZ
-	aq7jWGmoKHdKPCyo88eLJ2k2OolMbDub7ftz97unXR1+gwJE9/af/dm5k7oaGV1ghNPeyn
-	q7pxpZw8H1l5CH3WXk6gA0ChVHefwzk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774032593; a=rsa-sha256;
+	bh=yOCeyT41RQ4q0Ldt4caCTxCUQgxrA4Vf7UCRbnq694c=;
+	b=EGU4ehs8g5dZ01IA2tUZ4upK/hleZ9wn7QvGmlGRKOBWAsfqYAvnXC5R+rZUZqRiH8ESzs
+	lpWSix8Yx9hZMZtBTKp4l8eBQhigF7kV/eJmrulB9CLvE/11YKistBhq0M2l3uuv3ox8j4
+	uMosKXWpncVPwYrbIy9x4wRq6BjyFOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774033061; a=rsa-sha256;
 	cv=none;
-	b=R/YjzXW4wKipreWRS6cPu7QOsDDc/vZbHI/ll8Q1h43oPW2zVJ+HuMoOIuzDyqSoMy758B
-	6DRLKv97zk7yWgt7XQp4vp3XQ9G2xzVYE1J99KQ87eMMjgCQQRg1foLkz9rbWfWTbJzPOx
-	o/YhFlKVZ1WZBfPYXxIBY957MMMXT/8=
+	b=Rj3nIbZqeVgHCSaiH3M/yOAT+BrjhLom7WMuzobXhjVqwpzU5IuF9sqiY08iW4/R3aP5Ei
+	5kGFwE/UOIAceIO94x/o9jTImIv5cX7bTvfQ9ZvwnYJPDK6kLxxmCYtMj9nl/iPYLdfXNS
+	klTjLJoHo0Y34oXcI+J/hCxhcU665L0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgPgwcmz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="d1UmBx/K";
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98CC440E4E;
-	Fri, 20 Mar 2026 18:49:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1EBC4CEF7;
-	Fri, 20 Mar 2026 18:49:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 80C8060126;
+	Fri, 20 Mar 2026 18:57:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C94C4CEF7;
+	Fri, 20 Mar 2026 18:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774032592;
-	bh=CZPats9e/xIykQ0p6beR56p5pT3SBFNJcBRMlbIFXJ8=;
+	s=k20201202; t=1774033060;
+	bh=a8ys166E/M77dCSrucnKwE5heGp6aoVZbHs9H3pgrKI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HgPgwcmzuu4IHGVR8cx6TSvo6cBfxT/Zora5SGzhglKRzYmLMnRkAp41Lu3rXXGDe
-	 CQvykMQFTA/jVXGx50Krg5uoA42bhJCh4B8fAs84jFW7Qa233Fl2U4Fpj5cMp1rPtW
-	 ix2NSc1xwV7NR3Ed3qcs5FwIgNYlNc59eiirnv1REb9SWMbAMEeozSLs/6tTbBoQfa
-	 AsjqG2STRS1m24JkkjnL+3q2UBEIghZOY6qkRpZ/2LVckJDPQ+BYXfbAh/ZHxfFvJm
-	 H0iSTwulSmW0juJMkizsWIkqiKoI22h1WLsAi9aZzdMWnNmE/adMLK3CU0n6mc3vov
-	 wYcYxyl/xzwiw==
-Message-ID: <306f0fd2-cba1-4f48-af05-248be2bc9506@kernel.org>
-Date: Fri, 20 Mar 2026 19:49:46 +0100
+	b=d1UmBx/KAU+ZajRc0Utu3iGMoA6qXkfpo2A3GmQu8VB00T2ciUsv0bUxBPTN6cpTm
+	 m3xxfTtoFLkqoxFN2UkxrqdyEtIRum9BSaNPu6j+994kGaQQ67cuDJi2oDwvWgDmKh
+	 6PWVHSUzCXkNdeUl6lKfFgj/jcJTsJl9L7GIzzLjsbklBRc7rOGYW4Fn923e39Uvvr
+	 ttgPeY3wAum2TPoqAT48arege0caAn/E8yJkUN7Up2QA4ZleyQSJbDwORXj7psDga2
+	 /GC2DRXLDgEDvmGPPLRO944+KOeHvwAeZxrk9FTglWfQhRpZGclw4Gn1hTFIShfbwA
+	 AZE7RKjyLC7dQ==
+Message-ID: <608ba54c-f19e-4e27-8142-0870f91d6514@kernel.org>
+Date: Fri, 20 Mar 2026 19:57:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/14] mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific
- usemap allocation handling
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260317165652.99114-1-david@kernel.org>
- <20260317165652.99114-10-david@kernel.org>
- <f23aa64a-d78f-4c57-a08b-5c589889b7fc@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 05/16] fs: afs: correctly drop reference count on
+ mapping failure
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f23aa64a-d78f-4c57-a08b-5c589889b7fc@lucifer.local>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-staging@lists.linux.dev,
+ linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
+References: <cover.1773944114.git.ljs@kernel.org>
+ <018cd0d8b2dae44de6d3952527e754e52ef02da8.1773944114.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <018cd0d8b2dae44de6d3952527e754e52ef02da8.1773944114.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A940E20005
-X-Stat-Signature: xqq4wix4pxjomed8jorj46on4hkerqmy
 X-Rspam-User: 
-X-HE-Tag: 1774032593-909387
-X-HE-Meta: U2FsdGVkX1/S1NcI9koH5LW8AqThrmSpTbKimaoDHNj2hIDN7JcUZu6slvcACwTm078Zmzsoxso6FJxQ/cqP1ex3/3j+1+c8p8rL/6FHu4wYY+wCksDNfgb7vYcA3HrFCOB1O/4Zq55GDLmL3pB0mJ/lKDo5PFR3hyMgacewRIZ3/7qCxGzUgME9Fb4EljyjhwcGX2EbRgjvUxm35VKQCBuoCTfDfpkCXHR/MlL6wqexvbVFqg0oUMCo9LI/oMGGWT7OTq821Dc/7TTKxSznEpxF4c2nkZihUpFym4Ig0LgVFd4hUfnDjCcBP35FNNCpaFewt1Td0eLqAQIfgZ+Cj2uPo0IP22wtJRJJ+oaLw6T2ZU+8xJrYjLuWHE5VLv3rZ+bA0XcQPVrox+GN2NMG2UQ4wOozoaESyRt/JkGv9YS6oBru99atCHH5gdE8OvbCUq73Ud9O+CroKE/w2fq859l++yjP6nHstd4GsEPsHv6OOkY7tv6ckqyn9DqxQyhuCznzePCwHoI6LfTFY6A6Xo4qz8p5IZEvmbYg2rcvu+73TZJiQsOvlBhsoHsLUggyq1aopynRtvP9SGJRR+ZEEJT4ney+TxXoMVcm3cx44D8CSh0Y2j+dCP7qdeOUVS+ssHuwr4JTvWfvjXym6Pls3KDlKcJpMjj3cD9/D6ZUMeNs1dQbmZ/X+Thp4hAthH3wkxjodNoU+r9alpBVwGGOWKJxGChFjBFvqXNWNDbSgGGKrgxHzAgcgLa0F4CUr8fCcibNEhjudDOeaiot9RATDnWHHOB3Iw14Z++gYYsefSb+a+AMrtwRHYu7vgDYGrwVH4OTrmqkeEt4mkGEXLCGeMKK9HV/pDYxTN7Fdep8rbt8IgsDHo03YLm44IMwCsZvR1Q9doR2rglQO4ocwgzBVemnHGc0tnYKAjtBxY6hb540lM08p/HMWKcb4BXPvd/6kG9LQfTwgtB1Abs7BFV
- rNbwME6/
- g4OQ4g6deNAORcpQxR8yeMlrtlnfJGAWKc49kRnNM7AKwCJRUBUE+/LBb/JPJU4BM2XLYKc0gEYadRMfbayYdWjl/qruzl4oLLVJAi1QI4DsbDQw1H0r5XvS8DgeF8tsKQ8qXmG735jyArswLzaMKlHOJTboZ2NGgclH0lgNSPGgVjM+2m9BvW0MZUDHE33tAs2SGj/uIYICmyr3eIR0kc6X1Ro4lyeu/bV5GPiES8Etd4G0mr4lfkx9Zx9d2X16yTU5KsMsXOFyaiOw0jSxuici0vu61wmRMR3Q8/Z5w21eJ+SDTN/4SOm1Zt++B1GJugDJCZBqOZgOX8wI=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6AC7B4000A
+X-Stat-Signature: uoqqgjimg4gpkefkw7fqbzhroowgeu3b
+X-HE-Tag: 1774033061-263903
+X-HE-Meta: U2FsdGVkX1+dMCgYSR4I9vvUZ6B8jD01zFvCbAY30Mi5Poc6WXdzr6u/s62d6pBbSdm48I2sPN5qsmhbwGCbYkDc7lOGZUs3pHu74egotPN5qVc6q+oF+6h055O264lxXBDyTh0hB875xjG2/l2/CxVCczUFmLcNARSzuOGDxEo7G6Zp+RE9KXNoICYlxpzalgab1sljA0CjKZur8JpE86K3UlfYOF4Cdp/Ld+MX22YRmbHSTJ9ZmNEtWINOkh4QmfOVpMEnlLECKugbbCzxz8kh1nNt2eGf3hi+oo2bgeMqo2HX0wHEqbyFW7hG1QiSmBondC8duZdB28S73akGyrTODD0XAs2nHfAxJDVzZQTbYfXvJt5/GpJIMKLiUjk2sNZjMZBgaphEr/McCR8RKvbKGla0cIYHADgslaU9c4Am3d67hyhMKjBPMlatLuKP497mAP8gK2k5qHVXYQdE8qIMov/r4MrRL1O598TRxuJU8W90Q7vCYC65pRvKGsomeTiLrLWDUoXFn1d2gVUguR6Yu8WjI0TZygKEK0yiitNYIWqJPcflKVS4pbJy/PXWIZKGalrGadoFSdcpozFmyTIohWfrn0tCy8X6Sup7t/YxCxEsKHUnZ7zMqkGWqPARLalE+RboYMwm2xBcTbY8IJ5S3LDrEQ0xxqD8dY9EWZoxCpmTeXMDM2wIrlK2A0qEaLN6XePclYVVJZQhlK1dgGHBlannHDSvjEmp5ck9qh7M4F7Gye1/tc7EiMe85l0RqeF70unw1K3W6+ZsiW8PVXLzcRjdMjWPyBjc4ZlMEE319b0ZfSOBqsT7VvwgDXFdXLT14vCU/getW6Fy36uX5o8SmvKmekmkn1WQKfiDLIkBgzFBXEnUoYEzqKdMHrJuysdQ0BtzJJiXKtaTUHyAwoon/Lzw1Ct/1cQYDzok3CjQ4r536beKearOfDafI1PXffbCfemSNG39U1U4D67
+ 9g229nWW
+ QpVyjuKz4qxQHs/TDCn8k5qf7/YR6wN2a5YuQtp7jCq2NKRQOOiHrwY3a4B4F9MaWW3YIS6lWcX3awuh3yS3TSkae5B5bKTEUcGO+3gt4NHjHd0gR/ervowO9mQ1TpeCLJ9l+lrcNNJ8FyDznWRp9JNWO7ER1NM71f9Koh4YrRXXSu0n9jGas0tEdfEVoA6u/gsCte8yR/Vn7ehnJzQK8BI1mYwa7fgmRk6vNOLO0RV2VcO8KNzfMKB23MAkFl4I4thCZLuNq6tt5OvL5CSoDfygp+h32CBJgqIhXTCrQyecerHyY2nXGwHZStLtDojrkg2Aet0kzRwFG1W3ofml3FOxwK2S7tx1CGocD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,138 +120,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/17/26 20:48, Lorenzo Stoakes (Oracle) wrote:
-> On Tue, Mar 17, 2026 at 05:56:47PM +0100, David Hildenbrand (Arm) wrote:
->> In 2008, we added through commit 48c906823f39 ("memory hotplug: allocate
->> usemap on the section with pgdat") quite some complexity to try
->> allocating memory for the "usemap" (storing pageblock information
->> per memory section) for a memory section close to the memory of the
->> "pgdat" of the node.
->>
->> The goal was to make memory hotunplug of boot memory more likely to
->> succeed. That commit also added some checks for circular dependencies
->> between two memory sections, whereby two memory sections would contain
->> each others usemap, turning bot memory sections un-removable.
+On 3/19/26 19:23, Lorenzo Stoakes (Oracle) wrote:
+> Commit 9d5403b1036c ("fs: convert most other generic_file_*mmap() users to
+> .mmap_prepare()") updated AFS to use the mmap_prepare callback in favour
+> of the deprecated mmap callback.
 > 
-> Typo: bot -> both. Presumably you are not talking about memory a bot of some
-> kind allocated :P
+> However, it did not account for the fact that mmap_prepare is called
+> pre-merge, and may then be merged, nor that mmap_prepare can fail to map
+> due to an out of memory error.
+
+So that means a file can become pinned forever? OOM is probably only a
+problem with fault injection in practice, but the merge case can happen. And
+9d5403b1036c is pre-6.18 LTS. Are we going to need Fixes: and Cc: stable then?
+
+> Both of those are cases in which we should not be incrementing a reference
+> count.
 > 
->>
->> However, in 2010, commit a4322e1bad91 ("sparsemem: Put usemap for one node
->> together") started allocating the usemap for multiple memory
->> sections on the same node in one chunk, effectively grouping all usemap
->> allocations of the same node in a single memblock allocation.
->>
->> We don't really give guarantees about memory hotunplug of boot memory, and
->> with the change in 2010, it is pretty much impossible in practice to get
->> any circular dependencies.
+> With the newly added vm_ops->mapped callback available, we can simply
+> defer this operation to that callback which is only invoked once the
+> mapping is successfully in place (but not yet visible to userspace as the
+> mmap and VMA write locks are held).
 > 
-> Pretty much impossible? :) We can probably go so far as to so impossible no?
-
-Yes.
-
+> Therefore add afs_mapped() to implement this callback for AFS, and remove
+> the code doing so in afs_mmap_prepare().
 > 
->>
->> commit 48c906823f39 ("memory hotplug: allocate usemap on the section with
->> pgdat") also added the comment:
->>
->> 	"Similarly, a pgdat can prevent a section being removed. If
->> 	 section A contains a pgdat and section B
->> 	 contains the usemap, both sections become inter-dependent."
->>
->> Given that we don't free the pgdat anymore, that comment (and handling)
->> does not apply.
+> Also update afs_vm_open(), afs_vm_close() and afs_vm_map_pages() to be
+> consistent in how the vnode is accessed.
 > 
-> Isn't pgdat synonymous with a node and that's the data structure that describes
-> a node right? Confusingly typedef'd from pglist_data to pg_data_t but then
-> referred to as pgdat because all that makes so much sense :)
-
-Yeah, in general we refer to the NODE_DATA as pgdat (grep for it and
-you'll be surprised).
-
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+>  fs/afs/file.c | 36 ++++++++++++++++++++++++++----------
+>  1 file changed, 26 insertions(+), 10 deletions(-)
 > 
-> But I'm confused, does a section containing a pgdat mean a section having the
-> pgdat data structure literally allocated in it?
+> diff --git a/fs/afs/file.c b/fs/afs/file.c
+> index f609366fd2ac..85696ac984cc 100644
+> --- a/fs/afs/file.c
+> +++ b/fs/afs/file.c
+> @@ -28,6 +28,8 @@ static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
+>  static void afs_vm_open(struct vm_area_struct *area);
+>  static void afs_vm_close(struct vm_area_struct *area);
+>  static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff);
+> +static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
+> +		      const struct file *file, void **vm_private_data);
+>  
+>  const struct file_operations afs_file_operations = {
+>  	.open		= afs_open,
+> @@ -61,6 +63,7 @@ const struct address_space_operations afs_file_aops = {
+>  };
+>  
+>  static const struct vm_operations_struct afs_vm_ops = {
+> +	.mapped		= afs_mapped,
+>  	.open		= afs_vm_open,
+>  	.close		= afs_vm_close,
+>  	.fault		= filemap_fault,
+> @@ -494,32 +497,45 @@ static void afs_drop_open_mmap(struct afs_vnode *vnode)
+>   */
+>  static int afs_file_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(desc->file));
+>  	int ret;
+>  
+> -	afs_add_open_mmap(vnode);
+> -
+>  	ret = generic_file_mmap_prepare(desc);
+> -	if (ret == 0)
+> -		desc->vm_ops = &afs_vm_ops;
+> -	else
+> -		afs_drop_open_mmap(vnode);
+> +	if (ret)
+> +		return ret;
+> +
+> +	desc->vm_ops = &afs_vm_ops;
+>  	return ret;
+>  }
+>  
+> +static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
+> +		      const struct file *file, void **vm_private_data)
+> +{
+> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+> +
+> +	afs_add_open_mmap(vnode);
+> +	return 0;
+> +}
+> +
+>  static void afs_vm_open(struct vm_area_struct *vma)
+>  {
+> -	afs_add_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
+> +	struct file *file = vma->vm_file;
+> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+> +
+> +	afs_add_open_mmap(vnode);
+>  }
+>  
+>  static void afs_vm_close(struct vm_area_struct *vma)
+>  {
+> -	afs_drop_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
+> +	struct file *file = vma->vm_file;
+> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+> +
+> +	afs_drop_open_mmap(vnode);
+>  }
+>  
+>  static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff)
+>  {
+> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(vmf->vma->vm_file));
+> +	struct file *file = vmf->vma->vm_file;
+> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+>  
+>  	if (afs_check_validity(vnode))
+>  		return filemap_map_pages(vmf, start_pgoff, end_pgoff);
 
-Yes. "struct pgdat" placed in some memory section.
-
-> 
-> A usemap is... something that tracks pageblock metadata I think right?
-
-Yes. Essentially a large array of bytes, whereby each byte describes a
-pageblock data (migratetype etc)
-
-> 
-> Anyway I'm also confused by 'given we don't free the pgdat any more', but the
-> comment says a 'pgdat can prevent a section being removed' rather than anything
-> about it being removed?
-
-Well, if a pgdat resides in some memory section, given that it is
-unmovable turns the whole memory section unremovable -> hotunplug fails.
-
-Assuming you could free the pgdat when the node goes offlining, you
-would turn that memory section removable.
-
-And I think that commit somehow assumed that the last memory section
-could be removed if all it contains is the corresponding pgdat (which
-was never the case).
-
-> 
-> I guess it means the OTHER section could be prevented from being removed even
-> after it's gone.. somehow?
-> 
-> Anyway! I think maybe this could be clearer, somehow :)
-
-I'm afraid the whole purpose of the original patch was sketchy, which is
-also while I fail to even explain the original motivation clearly.
-
-Now it's fortunately no longer required. :)
-
-> 
->>
->> So let's simply remove this complexity.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> I think what you've done in the patch is right though, we're not doing any of
-> these dances after a4322e1bad91 and pgdats sitting around mean we don't really
-> care about where the usemap goes anyway I don't think so...
-> 
-> I usemap and I find myself in a place where I give you a:
-> 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> 
-
-Thanks ;)
-
-[...]
-
->> -
->>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
->>  unsigned long __init section_map_size(void)
->>  {
->> @@ -486,7 +390,6 @@ void __init sparse_init_early_section(int nid, struct page *map,
->>  				      unsigned long pnum, unsigned long flags)
->>  {
->>  	BUG_ON(!sparse_usagebuf || sparse_usagebuf >= sparse_usagebuf_end);
->> -	check_usemap_section_nr(nid, sparse_usagebuf);
->>  	sparse_init_one_section(__nr_to_section(pnum), pnum, map,
->>  			sparse_usagebuf, SECTION_IS_EARLY | flags);
->>  	sparse_usagebuf = (void *)sparse_usagebuf + mem_section_usage_size();
->> @@ -497,8 +400,7 @@ static int __init sparse_usage_init(int nid, unsigned long map_count)
->>  	unsigned long size;
->>
->>  	size = mem_section_usage_size() * map_count;
->> -	sparse_usagebuf = sparse_early_usemaps_alloc_pgdat_section(
->> -				NODE_DATA(nid), size);
->> +	sparse_usagebuf = memblock_alloc_node(size, SMP_CACHE_BYTES, nid);
-> 
-> I guess nid here is the same node as the pgdat?
-
-Yes! before we used NODE_DATA(nid)->node_id, which is really just ... nid :)
-
--- 
-Cheers,
-
-David
 
