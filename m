@@ -4,130 +4,213 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C091093168
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 00:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF63B1093163
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 01:02:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B75CB6B0467; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
+	id 22A2A6B0005; Thu, 19 Mar 2026 21:02:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4DBC6B0468; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
+	id 200C16B0095; Thu, 19 Mar 2026 21:02:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A63786B0469; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
+	id 0EF5E6B009D; Thu, 19 Mar 2026 21:02:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 95BFA6B0467
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E01CA13BA7B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:35:29 +0000 (UTC)
-X-FDA: 84564572778.17.36D8113
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C83031C0004
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:35:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=invisiblethingslab.com header.s=fm1 header.b=o9iRXE22;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aHcOmJ7z;
-	spf=pass (imf20.hostedemail.com: domain of marmarek@invisiblethingslab.com designates 103.168.172.150 as permitted sender) smtp.mailfrom=marmarek@invisiblethingslab.com;
-	dmarc=pass (policy=none) header.from=invisiblethingslab.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773966927;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 03E626B0005
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 21:02:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9D18C1607BF
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 01:01:59 +0000 (UTC)
+X-FDA: 84564639558.09.96C0DEA
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3C4FB40007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 01:01:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=LI2DIF5F;
+	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=IpgGap6n;
+	spf=pass (imf12.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773968516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JcONGwatR7I2a2nbnBcn4nDdjiD848qctkczcd/135I=;
-	b=Gn9oGSacJEeEnQN+jk44fsm3Tut7b6vYpGaD2x0SqmX82HKbqJj9nJ0UTUmD3J0PjI569E
-	hiwggDiWne1gr6qX4bZFhvQU/2Y7RQ+6YfjBrUB4HTwdiKX/xiLRZVflv89Jvvl931dlWr
-	y/cqG/CJ0sMGYOeLfw37mNJoPjoo3tQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=invisiblethingslab.com header.s=fm1 header.b=o9iRXE22;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aHcOmJ7z;
-	spf=pass (imf20.hostedemail.com: domain of marmarek@invisiblethingslab.com designates 103.168.172.150 as permitted sender) smtp.mailfrom=marmarek@invisiblethingslab.com;
-	dmarc=pass (policy=none) header.from=invisiblethingslab.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773966927; a=rsa-sha256;
-	cv=none;
-	b=cl2VdfPw/fjYIOBAbS2+5iMV9rPNe8RDerckm8dX/adw3MsdNu5PRWg/PCAe5SlrRyM0yo
-	Gpp7yuK53fOwBtFXFVfmnWU5sFYBUf67py3uAZPd52T4/Vsy2fIi5ms8+dpt0FD1yST+wH
-	Mv3KnEtsrdjAqEopSzVHqccDfX9xtl8=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 3405DEC01DD;
-	Thu, 19 Mar 2026 20:35:27 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 20:35:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1773966927;
-	 x=1774053327; bh=JcONGwatR7I2a2nbnBcn4nDdjiD848qctkczcd/135I=; b=
-	o9iRXE22s4v3SibxaC9hpc6A6uyuS+CaFY0enqTN+htegyVqj9n4jY5e5KjzSG/5
-	G8AKSWMNKCAY2RX93lNRZl+5LG571pYpQVGaJpFkAu3ySjaw0bz/DuyeMqW25II5
-	+JnoI+tVg1jrLTQsvPaejhxeMcfOzZ1bU7Ei6PSyUBv7zWHaxDEK3MBadIjBCaYc
-	YmIhF8FFm7OqTwiGsZtKQiwekGCxX+Z+BkSC10ATaHxLlHVKz9BNevbCGHWld8cI
-	yM9hx1+U0Nxpg9Z92ADffOiOWsl5EVyYODmLjpIAAxht/kFB8afE+QUHCIBAnOe5
-	SqCQy42dAKMPD5dPXJSzPg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1773966927; x=1774053327; bh=JcONGwatR7I2a2nbnBcn4nDdjiD848qctkc
-	zcd/135I=; b=aHcOmJ7z78hfcHqG88kU0UoJ7OiJ9gSWCciMgCIW9Oe1aj12F/w
-	sz4BhUijpJi+6Mg9B1QwFNMMzEKP2cVL2kbQj5Pq4tKtN8FM1Cu5v92XtOTg3JNa
-	tWKrdTWaNuqBOz+SCl1u3UUQKUAPUfD35ZL/39vqFJgWyW/heuXiy6TRPAVqP6K8
-	x7W66zvshvDLNJS4acOdSpgnBFzYrf4jBv+j2BT1gRRA+eMZDs3+KDYrdw87hG9V
-	OjUbXXwg/rVUvx53/ZYdfeKBPoK3CkRKbuOjTgqAubXzd9dO/18dquC0xtHXn02k
-	7rxxDr234hGp/90mGkDCgWrmwRLgsZAcvfg==
-X-ME-Sender: <xms:Tpa8abB1Mh9xKU831dYLGOf9C6-gOg3F4gGiSC4ZzPJNsq8ASPu5qA>
-    <xme:Tpa8aYYipdefJhwZUgg9VnTbVPWFfnPSk6QjTER9tU9__Mq2UEftTwVH_7J_UgB3f
-    PJqfs-Ta6za4abhtRdeCEahiaKWzty_68_7KWMSCQPdFHo2ADQ>
-X-ME-Received: <xmr:Tpa8ae6p7thI7tVHbo1jUP2kbaB1sUfFzAOQy_SIsWpkmyeIxlZyTilAutZTMnAGKVg33a5wSwW7bdXNe9I5M6V0vhKr0Ycitbw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekgeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgvkhcu
-    ofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinhhvih
-    hsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfduleet
-    feevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghksehi
-    nhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdpnhgspghrtghpthhtohephedpmh
-    houggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhisggrlhgurgestghhrhhomhhiuhhm
-    rdhorhhgpdhrtghpthhtoheplhgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsoh
-    hnsghorghrugdrtghomhdprhgtphhtthhopehhrghnshhgsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehlihhnuhigqdhmvgguihgrsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
-X-ME-Proxy: <xmx:Tpa8aZZYU1sq9eJFrSdXRSVwLvv9Ra_1e_pgcZJaGC8RxTbeXsJ04w>
-    <xmx:Tpa8adg4cbdZ8QxKyglo3HzlpH5EOEdSMvXAnAihPwcPjYQJw_bFtQ>
-    <xmx:Tpa8aa-dY4_QFgHrmps0ESRVoKKZUWVqM_oaffD2gPFbo3vYCPqwAA>
-    <xmx:Tpa8aYqlogKH7xeGqaaxibNI2Ay9Wa3qsF9MWY-piWy6YG2cSpx8Uw>
-    <xmx:T5a8aaK5f7tdsb7Fqw207TKEnVi7mG-7YR-leIYSvDsFGigO3TratenH>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Mar 2026 20:35:25 -0400 (EDT)
-Date: Fri, 20 Mar 2026 01:35:24 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
+	bh=crZK3cfBmWcX7yrEmbWXProba4hOPqv8Ols7vVPE534=;
+	b=P/RglZWbCg3K+y8KmZk+m8hDfcdasHSNBLyxPsX0jXKTfi/meh728VVTK+WNCMQjvGa5FV
+	3ggtskwT4mcSU/3on94bAhjCyHpixcoI9sBt0JSXDB2e3Q6xtERqtYgp9Ov28RtDGAvAE3
+	oppPt80N075hpBvIvXpkOSeDCn/JnpE=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=LI2DIF5F;
+	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=IpgGap6n;
+	spf=pass (imf12.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773968516; a=rsa-sha256;
+	cv=fail;
+	b=Oiy7yMMzsVBmg1GIMXycygx7uFCjwahfSyG7Cj4wHRU/uyhT7piEULxgBCrUsyqa8VwX1+
+	r1FUhbjCprArqi5ItkvyBy9dEuwzKT0/6t3K/z42PYks+1LcN127M6AdSIITYu/kSTrGjX
+	0fCud78NkV7z41MDDCKgsuufpm6YAk4=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JG6h4l3797743;
+	Fri, 20 Mar 2026 01:01:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=crZK3cfBmWcX7yrEmbWXProba4hOPqv8Ols7vVPE534=; b=
+	LI2DIF5F7qKjZFrie1YoMO6M92Ev0MFNCrAldAsv024v4f0xP5/J9RlXqyZAs0Sn
+	xoyPmg1wWOW+sZDDs3YoGXb1DXVB1FHp2Cn/A+l21/uzkbsjw2gxxxtH7dEJtgmj
+	8DKH/WUQuH3EynBP8Caj4GKGD89mQlWa0zjTiOMj6qm2K+BZ+eTo3Fk5iVR9k509
+	raforKttblEqB/KOalUdYk+FB1a3db0u3nXtBMPNUY6IbhqS6dnrjlLxXDpnZVUI
+	dHJrBpIfxrp6IebtxLu+dUk9JKYMhppPD59K0+S9lscr+GoQO+QNSXSrT7LeX78G
+	/IFo4cF/PXU5+HIGGPb3EQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cvyqc0tg3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Mar 2026 01:01:49 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62JNQLu5030497;
+	Fri, 20 Mar 2026 01:01:48 GMT
+Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cvx4dnpur-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Mar 2026 01:01:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NH86IHz2bzAaFFZaNF8YPozlFuH4SQ7xL9PAdchu09OdkacwRESYI3NLSjPktVjuEaVNAQ2XDANhBpgjIX5knZXWoNa40J9b0IVi63Wwx6NI3WylMuqnvoB9Wr8t1xEO1TFVP8epMOHwDGocXp2N4eUWyjVJs8uU8jVYUzMXKjR1qKYbdlIwLtvUQesh6SaBhG30tGrdf3TxBdMOmsOtLUSF0IYgB9ts2+KUdoW4KCBMA2FKHjemhwWJLynZq66/u1HAr9OfuhOKj6Lv7aZJWICie/kH83MlEKb9l26YlfH77+hC7bTWSi7cGT5CC/6zfVTj14UgXj8zm+pIYlgOHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uRZpGgHUDQRZrWcZdFjkgr9Jj9obGN5K6X2rITcpFFQ=;
+ b=LHwRXt3Ls8PxmIo2wXiy1K1lrE2ozVjfU1X8WBbpmJjHG50PAFyYOxBT2BpwNC9M5UBgxXC1/YJ4EQm5wI61pAnbPDCuTIUpYLpAfgZdzcHqU6hVamDK/IyLtdhxe7W+Ec4h8MWiPPYKsK76FjFJzNsC3jVbyIPr/dSGsYtuoqhGZwNfg0c7+RcK3DvmtMgJMk916xrIF8xInS4Rt3yV6NxTUBuH6kRaOvFNRDpOl8u7gmixdf96XEa7KLZhXxj5KGJpIogAioRfBkYOmftkrigqjgPzVjWm/ODShii4AeO/d5K+XzcSh/blOEBO0Fql9lbnf4HAictNCsWa1tAoBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uRZpGgHUDQRZrWcZdFjkgr9Jj9obGN5K6X2rITcpFFQ=;
+ b=IpgGap6n+6W/l6RpnaE2OcN4hc6CgKAGn9nuv9dhZcFVDlYl44YeI2PCz3447RF3zmXu3i9rwqxTTuSQPLqpVsClopOV5NZUMqB9BZD3mBq8JuryCJxaTgfayTTTyyAb6/0znnyuJW+yZGoZ67mYcyKwIm50Dn98bBaEcpU9lKM=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by IA3PR10MB8162.namprd10.prod.outlook.com (2603:10b6:208:513::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.20; Fri, 20 Mar
+ 2026 01:01:42 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9723.019; Fri, 20 Mar 2026
+ 01:01:42 +0000
+Date: Fri, 20 Mar 2026 10:01:33 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Marek =?iso-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>
 Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>, linux-media@vger.kernel.org,
-	linux-mm@kvack.org
+        Hans de Goede <hansg@kernel.org>, linux-media@vger.kernel.org,
+        linux-mm@kvack.org
 Subject: Re: Linux 7.0-rc4: v4l2src0:src: page allocation failure - increased
  memory usage in 7.0?
-Message-ID: <abyWTGIlD_rncMds@mail-itl>
+Message-ID: <abycbXzYupZpGkvR@hyeyoo>
 References: <abtAylIlW3I8s1T-@mail-itl>
- <CANiDSCvqt574XbMAz0qUunu7xDY=oScL+sx533X6ke=fcEdr+g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3Wmh7zzAptM1+3iD"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CANiDSCvqt574XbMAz0qUunu7xDY=oScL+sx533X6ke=fcEdr+g@mail.gmail.com>
-X-Stat-Signature: tpsesaom1wkru6j4fouany898t6gsk7f
-X-Rspamd-Server: rspam09
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abtAylIlW3I8s1T-@mail-itl>
+X-ClientProxiedBy: SL2P216CA0199.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:19::22) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|IA3PR10MB8162:EE_
+X-MS-Office365-Filtering-Correlation-Id: b980359b-08f0-45a8-eb56-08de861c3fb0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	NYzyetFev6WkNGB/EIs3QSO1JYojsIyHTFdFD0nRzVHCbwMdsg5fY1EwM6OfmBEKlDWv9LgsXX60nUO6pBS/DcbRx3CPAxGLmCoHFSa+5n2hskTlCwi+Q0Qd5XO2A8A3nwYuR0HiLdU3xkWYV4md5yLUrRX42EwPzNpH5ICUpbu6MWe+/35kM9G3j/w8t1+m04XoQYg5ajcOLtmtj2JQZtoo4XlWpcQGtZaJdJJimsDoqc8nk1S/Y4gzEEf4YpY/C6Dsi/hiUUyrn/cZ0Ek6mTfiuaF39W7aVtEtJRMpa7LQT8PElYz7yn3GN3niDB8tyNsMNGHkGdUXL2JOnr5y1VbP4t0YWZgCWfZ8qyRiHtKEHroHUiuAgjVdC/9N+B93gW2+u9gxo2mlA+CvNL3sF2IQp1mWij5S1R68nnTOT0o6ArW0SZmzJXeoEb0RrL8quqUp6MhH5M69dRoMx8JrX/uWUhp0ekT1t/t84bHstpWBXe/ndetNPPAKTd2Qw4Rmf4UHOIw1KHoVwwD4219Ie6nG0myuEXFQ7wgp1f90K8HdUruXIVMkYoSywnPCk853Bz+sxoJJgb5k34RrPUwPCFSW9VmIOdR0HCPOGVe/bREBfEAwdQ7nEa/omVfy2lxpDt22aQOf6sp/2Iidf+NXBsIcxhW8M88ViwNrtChIfm/petU/4EFhzwSNrfGjVxdJCD1Mc+d3Jp/bUPk+Gw/h2cvAi59zSvlfu26ixkSCqmZq8QddmiHGCP0ezcWvLvOL
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?q/DNGtD79adKLWIRPo5T/elQJaMAMPhJE2mwlfmBydRpKT89DljNgvVF7t?=
+ =?iso-8859-1?Q?PMOZwa3REDCZ8k0L7iZsY8qv2v0XvfOYO/dNKZNmrWZU3QEnlJoQ+2N2XR?=
+ =?iso-8859-1?Q?3pcudOjAhlG1sQaPZNwF7Z7fPDE+/VJ/44JiEhS4MxpbfcBaAvieIWb+K2?=
+ =?iso-8859-1?Q?9pZZuzpq/aoYFkSbbg6ZYaDuuESxtigUhtsR4SU0ne//gIkBxmL2HX6VAC?=
+ =?iso-8859-1?Q?/DE/AaT4M7JhW+/geV9oCMM3543BKFRjaR7bcTrpVruU6a7Grunb7grCtt?=
+ =?iso-8859-1?Q?JU2N3pFbFrTMy1URNcrzmKj5pHNsIgwzQPugIeuFeXrkNZPAfpdZxxV0kM?=
+ =?iso-8859-1?Q?PkBUTBM4+btT5Gso6q2cRxcMa88ipJziAAGW0dehLkpQ/LUa2XOCQSOLLH?=
+ =?iso-8859-1?Q?ZjPE74xOCUQzW04QGBhxY0kabjGhEXQF8M9hR+/QzxNPuKV9trAM/MOgDF?=
+ =?iso-8859-1?Q?Ylt/GIs12ju1ZZk8u59gn7YDaXkmobQ0IWFOUNMEiD9iuapSEq2QapqIQg?=
+ =?iso-8859-1?Q?2jK/n2IItC2SasMo80gCscxzEkm+MwKSCkNTZyksCdlymLoD2vxaJfZX9N?=
+ =?iso-8859-1?Q?Ns1lWnOLjhRcupbrCSig6SbfVplo6uFOe7ekSjH3NjpeL78ynkvBAgQjZr?=
+ =?iso-8859-1?Q?4vzRBczv6j9YPFiD68I4hELgLZSlyKqiqoZlixwWGweEwxfqwJ28j7MoqW?=
+ =?iso-8859-1?Q?wy0eFq2hFDPNDcgcHFOZSOpIQCKv8NKlvw29RbhM4jtrVWYkgOI0EnWrIr?=
+ =?iso-8859-1?Q?oD750wQHf2gdMTei9MQG03ci1Uk0AOaCVy7lA+zoi7OZIUkMjwDQA6AYuP?=
+ =?iso-8859-1?Q?VgAFI0wDGxA5RaQ7CWxtg2NPG4i3ffQKAa2NECwUxKh4Yfz3KT/aNoFzPh?=
+ =?iso-8859-1?Q?sn2bCUeoaTNwXHsBbMm/Fov5dFlto+vLX5zKylWzdq4qP3kBvkBdT46cYf?=
+ =?iso-8859-1?Q?D2zytPkWURLjnNr0N6f1+aOfiyvZzi/dh+25z0VZp/rwzTr1wJxjyQbyCq?=
+ =?iso-8859-1?Q?Z7N9iqn4FZB495QNHQw59h+/OOXIugPkL6z0BW7VSMWM31cB6ZjYEglsB5?=
+ =?iso-8859-1?Q?rXvGWQcdFDBkdh4V2QDMjZZ3SpiB5nHwEuw6XQ74tCauT2Odb0t9PnO4jr?=
+ =?iso-8859-1?Q?bR2u2Feo5RJETmzbZsBfyI6wlopPBhUKQU754u4YX4iYPAIEbEFr2BKiQc?=
+ =?iso-8859-1?Q?VvJZ6/MJvBwt7jWAd2w2qASOZ+pH8zVrXmKCb97PgSZWMRH8CEgEZJhTH0?=
+ =?iso-8859-1?Q?md9E64bTvtGWi4koeBAZlcvFmh4ZVSKLCNOLxyV/2ABelTv7rr2jYHuh/r?=
+ =?iso-8859-1?Q?JTyd0RtgiOJ/yWxFPsls38JctWVBmJuf7QKP6lFetED5usmyVQJrPGk+Sm?=
+ =?iso-8859-1?Q?DM4MUzUt0LzM6DDtnzu3LsL4fB8qHRVY6yZDMmQqYTHv9G5TzqEQm5h8o0?=
+ =?iso-8859-1?Q?vi2s8jVWUF5KVmnWGSVTQ+QXOzhiLPeUKd+CvpeHNdsG7sw5CvN3M3kFYm?=
+ =?iso-8859-1?Q?IqFrrrhe5u6oTHez1o0KoeOkLq52Jig2J0C9rGSQi9Fb7lF/jJYScCKXqF?=
+ =?iso-8859-1?Q?Z7CfLgWRFv9S7CrGScG2TOMWG1vxYIuFM0petAFHNzqkkkcWT4aUwes0Lv?=
+ =?iso-8859-1?Q?YPgzMJpWE2+CRYAKuS8tazG96UOLV+ubz89tNnWxTqicqPGeUD3L2efm6n?=
+ =?iso-8859-1?Q?EF6a72eQEQUjNbrCZQ8rUf0QHkpkJmwr29zG1Fi9T/La74vABjjQBq0ju6?=
+ =?iso-8859-1?Q?Fxa+I9JiYKOgWnWJUC1i3YFYw0D8CyNbDF1tf3MI4zsni/BExrQ+WP9Vur?=
+ =?iso-8859-1?Q?KX7RGdVebw=3D=3D?=
+X-Exchange-RoutingPolicyChecked:
+	Y29iOoSUjf+cXLe2GM4peRy1bmtAkuiCqUV/8lOESIxW8RopD92KE95F4yDjNqoiaaAfwKlX39eDi2welQH3NtGtqofu8Fx+axxr7L2AyqgaE1TKXszYeduOYjJReKxeiy2jzpDuTaupTGyA2A+RG3vH+PTjvK/wYWY89TWNDHCwNb2TkjMOfIeg+ULTz6ZhiHXdT+fmDMr+dKyk3IsD43JQqIK3bMuWJhb6OD2Uk5zgiIJqjZWVcKhQpkviHO3oEobwG2XbN3Uz/EN6SpTW4YrNjxRGhayJJ6j2PlC7TvK12fVSRJKvvlryiMZ8A8ZTDxt7z+R3LS7eQZvJgCzHQA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	8fkEAyvwpO8D6McCn/psXczHcBufUdCYhARpgqZmhbPX1gHRKGV5Nfl2J9KgqzKYa7GL/SFXROP5+KrOkg/s9VQVjjYzgfCVjAoyc9nolcBypgjOqNVJlGA60MU82WEsA/Xy72e27Tj3xFGCR70hYfFi5MiLew7jzLWkv33R9WSQjzgEQnMwVD6dG2xDboa8VZLfySX7CReVX1PzZXhWVyrBbEW7LLp8Fe6rucS2KAzrVXZo9vWYliY3jaT7RdQDZuA54UOwUhKQSAdOxgk/cMKuyNSBmgw54yNnMBUI7wF5D6hAsrMs+rZzehnCPrhRwio649CK4owwW3aDfWYY+DuZJ+1cV7kuTPul7kS67pkfgxZaoGfpzrItLrxPpO/toNfg+/3ceLlNNXPb7C0wVgEGesqnijOTuiyVedWxzvf9BUprbutArahMpZERgrbpj3+uF+YYDdVHVm3aX3/tE5vYbGO/dgsmDoulbcKsjOh7tWqtbYf7jNCRUrG7S3Y26DNWYx+1TYplL98ui261gvGLPWueuelZKt7qD5sAab7Tk1h8dv5GqQYLvHA4yFMoZiNk+Tr6LdSbk8xVY3jJylT3KXRHamyZqvyeneLeprw=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b980359b-08f0-45a8-eb56-08de861c3fb0
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 01:01:42.1143
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1Cas4s0iHCEjPBS0vgRFBlS6X7VG8aMhznSDFK0ce/d3w8V4MaiM9SwsGwObniNiXGVeWDwo9igGQrnZp8i+vA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8162
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_04,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
+ definitions=main-2603200005
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDAwNSBTYWx0ZWRfX77ajkhpPc5sN
+ cfhUEGlAUlgiB7hr48TBhbvHrAVCauLH7D4Ic9Y6UkZN9vqvjc2H2ctwinCHbX2equ+ZOl3y9Db
+ QjMq1PoFOjIpVyDOKwMCSPDv7rM+wDjarBK4/pzGHYMNZQBSzJZk38IEYqsBWM/GJUWZ9WKvc4g
+ /Kf33UUWLxL7khg9vXfhza5v3ml748nDp58RH7CjXeVzOnPBTRYBrSjPEYM5vaJKMAuIbZ14gPA
+ U//ZX+oiuEh9simA2CRiOZH7ble3J4eXnCeQkJ6JNYEEefcqXbmjNjNYPKWvZx2QNEymLwA8KOe
+ cWGBXkzc+Ew2z/i3yAwJ1BRneHyg2lqJuLR3kctZOYwLi90tTfPKoX5+6oHgLzVQ/33HWaOFahr
+ 88GXdKy0v5D7QpDpNwTcmLVReOJPzPsHqF08Ty1Vjh865a0plPxSCUbwGjG4D7XSyvVs6rXssVc
+ MtuADwRyB/4Zyq0Lmgg==
+X-Authority-Analysis: v=2.4 cv=J8WnLQnS c=1 sm=1 tr=0 ts=69bc9c7d b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=VwQbUJbxAAAA:8
+ a=yZlKdwYgL9x5HG_F3WQA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-GUID: vgLMxHnIs7KovlsaV6zlCxVtvLbjZ0h9
+X-Proofpoint-ORIG-GUID: vgLMxHnIs7KovlsaV6zlCxVtvLbjZ0h9
+X-Rspamd-Queue-Id: 3C4FB40007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cs65jsquspuucpkd6jxyy7mpmhhcewo8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C83031C0004
-X-HE-Tag: 1773966927-490401
-X-HE-Meta: U2FsdGVkX1+HGJj5uqzFQfnxzYdWvLm8bXXl/GGOLiySLtaVmd/wSK8IeHCC4LpeVEM2uYmvPPTGvlLJCDe47+ySNkeDraJHO6+CXxkW9vC9WBsBdswcduEfHVMO8yAUZpO4EBHGbyf+I9BGzFYXpbPfJPea5HscrONvo48HGgxXV8nR2owFzhAtoDP8bWNb/yTZR5kIemz6PKB2yuI3nTiCcPUMNEoo2VyJluGlsVni1zb0/2K4HI/6i7AM53/Uj2UadOyEtfuW8M/8veR6vElIZgPeTKWPwa9zD8lGP3zmrqwefUx1LKSpuhq06xLKXDslhRnfY8FPhn1i26EP4ly6qYFpbslyX7u98tZ58Hc0QoAtnFJInTNFGGUHB+W61P8l4p5wLYcEcoLzSS2+Zoxfd8Y6tmcZPas47t/da9EXuhXuRle8ILSCUmdcbkDH/+EwDBEJ7oa1K31G9b6e787yWkVO5H9rPCWLKBRhQw0XRKqRAiRGM1epFfhehSTlNCsIwmIv5gwOXaG9fnQ73QlhJkNJet4ivJYyON+ln5HB9W8Kyt/O5EeDKpWc0XLWwmGqSyLsZngxCCVzOqAfjucOWFZIAKDvoY0VPkGsmBntbvQnYTbdL2/nhrbo9uY7QnLbOuryteMWF5nVhNeX9gI6BzkuB4LYQscdPLRZJvYbtC726c7O/wWymYGrCp3r2i7HoH6N4jJyd0ysezmUY3m49kNXoi9vVMIeHBXudjcSov90se4+Jd9o4svzqQZ0OKopcNbGd5MdwmhiniM+BeewtPhab60L026ilBybaf4k7PlgwHX4dZbbNWr+ALm5kjL7CbPd4IwwF4YjconVQq21n2uUoONHurf1z/7JKR8jTq7GWKmy7nmezgLLm/d3f32d4OREmrQxK9B2ZgAaQUHPo5B4+dZfZbH0zwRuw2iTD27tuni8wakXrp6VqCtj6f8PASfaj4ZUZaJjrjN
- dj9jnImi
- 3MObnOrlFVhKntW16nn4SDD20LiQ/8qY0gXBOYFIrQX13CQm8gHBPQq1f4sbg20uH0Ez19QKgYLM85RZNCq90XsD3OKuwbBwddEj+KQq6txof9BqEfZXmlf7YeCK0j/gZUfcN7zLph1R0rjVtrI4MGvKY+GjhKfcEL0zmofJTehcU+mPquq/odmbGmlq4tItWEASwPZ4YEuxOAb0guhSealpzUfbe6H3tvvqJPqs+JE7HER03oJ8P9TPaYiSj0zqRG3oc75hQHwN3BVZypypaXgca3Ruw/iZQOPtCqGmw9QEPTOLWqsbdaud2xCg/9d0k6O8r9D6/3844bKQvAwVP5a418hi9/YI9hvjJBdaRfQ1yX8pCqIgzTsk0p/wrqtOGUa+oF1LGAsnCcd5XDOs+OMK06GnXgVDobCDIge+Xkkv4O3qPZiHf1OeGdj8AM2FmmOqd5jY5NKhGeC3PySc2eXYD+D1KKtK7NcD5vBXbd7tVOz03BLBZSGd7LqtTlfp/vX/my9mCCqcYucf0jHkciSvsxyUmI4qnhj97TEWyHI5HHAQ=
+X-HE-Tag: 1773968516-226091
+X-HE-Meta: U2FsdGVkX1+2jzFJotX/lavQyBmHhIadZgbIxj5dE1jv9SafIJ90eFCqXB9QSPtdnqHQl0mzIOqyE94YvYSEpGm8qb2wxybrk13zwYbyQ0+aI40NLEsXsQmObksHLj73T9VA7XjHkx5CdoT5ulRl1ZMJZGbYcDtCyuB9DNXjQtb28XS1Oievjt1w9pai/L/RXjxJ2Fd/HzyZoVtaTMdlwVpNie/Cp3fqxftXcWub7YXSr0LpPXlGJdS5mR/2D5uraMpK4Vlnn7rwpwbb/kg0OI4PDCantlQnt4De02I6MN0hIGIJarCAz4mG4eKhC1OoxDeMmtitNRlS5qQeZ6WInfSkMidwoqP5x4+xq8YZZa2tqD3rcUm17bBa7v4zogEQcjGke0Rj6u/CyVMTeHZJeDwLO2nBpwWrBDQfjKhm5+oBet/Wnl8H24UTNs8fP9RNrJ2DsVim/zFKRYUt9BySrsyGk9UqBKSulkHJmUIJA9++W0xBC6m7yOoGByKSSLEALntNv7fmkwHIhHOLeWCx+/i191bdda7zQlODx18ScXb1L4yBX/CDINWyWdsddyYKNnJTbkkoRX6je84HCKbesROSO1pkfeGM4hFP28BsSSYRKk+9rYP2NyJviflZ6MAVnvFrLxEiGmCr1QVqbSdOK5zJFlpNJ7VMyacGAkkj0+J4H5v1My+PpKRk2oPZ2rP0jSwjfOWolsJNPWZS3g7wn0s+aSPp0QS4TSJ5oDdeK4zyjEGilsPqDpCRG4MvJ9rWmE+2FULA4/RRHNqpAItDc8p+AogGP1e3EMNepK5h0wfqRDuDudLddgXy6aM8uDeCK8s551zJ6ZxOQ61/TPBRxAnih8d/nY2QlgjiyMHZe0hUp4uD4qM4E+jpADNWdFFI3lHd9ozKFyX737jVUVqHvMw756yI7jTO5nv/rEGDKPna+skg1CzErrIj/oOXWbaclqVBzGh0tj3C3nZoSlD
+ gDZCIfwT
+ 7Ukt8ujggSh+MR2PPSUyjCuRGaqc8TpgLr+J6gGi7CDMaHXV62FlwnA6cFHg8E8TtPO//irIgVcMxmPbfpn/SeXIZuNaeweQDw//Z01N8Rgis+2rJwC3IPYuNslBx1XYKXyxiZktteTyCJgXjUfpo+ptxFJY18QXgc5pYt4/hx6TwCTbooDutKGmkucq6T5PfaOAXFZYH17ZZABkJ+Zafp8tG3NUZ2GwmCAmq8iZgRb9iFBQtvYM3dBqkAcVs6s3UgmpAOGGJeO/bTHOLOes/TyfUwW/OhuE3iE8COOlN9Z1Lurvfm4WyedeAAH67nt8RdMrcUfCKFOFLdT3hjXJt61qmsJ6TkghzctEklC2TdXYVhivt+MY1IJWD4/5kK4mO8gzPSnpk3Yyllc1HklACMcUKugHyS5FvFySOxkO4AeRkv1xdi9n28rRpOspYgdPKAQ9XGUt9iJ//8+9VghMItNxisNS234yxfmBfM5N42TssPC2+xe3xevaB02NeXBZcx5mFsw9bcz2ToWzkYsSKAagLnIXLT0xyqgMqKTBvabeZB0AsRUgiG+v5Qnh/NmC/nsEdFQnzDqfYc6EdVkQ+Bffjmgmwdxn98rl7jx1SqlWK1DIQzRaRFz8/qYNLcmfdPjs7UTvztiAVf8Dtm5h/bxvy36GL8ezgMFMPv0FmP+1k7bqbZXQOOCCb2f/Xe+WhdsH9CHMCp8/PprIgie33JVrRKTjNbujdaGUSFkcRzJgD03iqAf4/TOwwapFxvsKS020U93qFd2YIqS53Cv+HT5co1+OLQjuWaqNGalMs6UQzmEPOsu/y6baLkjiV4aDRnXuNIIb6yKzAPLEFkvIT5wgN2fbQcBZ7WuXkw21/+AXxrwhe935q3nX3OEF/Sy58a1Zg1NbgxMqP18H1oejSyIFXLew78PbFxDZiEWr6u64KiK5L0JPnEw/jEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,48 +218,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Mar 19, 2026 at 01:18:18AM +0100, Marek Marczykowski-Górecki wrote:
+> Hello,
+> 
+> When testing 7.0-rc4 (and also got it with 7.0-rc1), I got page
+> allocation failure in uvcvideo when using v4l2 camera in a VM. The setup
+> is rather memory constrained - it's a HVM with just 300MB of memory
+> running on Xen, with PCI passthrough of USB controllers (to which an USB
+> camera is connected). But the very same setup works just fine with older
+> kernel (last known good is 6.19.5, built with the same config).
 
---3Wmh7zzAptM1+3iD
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Mar 2026 01:35:24 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>, linux-media@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: Linux 7.0-rc4: v4l2src0:src: page allocation failure - increased
- memory usage in 7.0?
+Could you please share what /proc/meminfo looks like on v6.19, and
+also enable memory allocation profiling feature [1] and see
+what has changed between v6.19 and v7.0?
 
-On Thu, Mar 19, 2026 at 11:19:38AM +0100, Ricardo Ribalda wrote:
-> On Thu, 19 Mar 2026 at 01:18, Marek Marczykowski-G=C3=B3recki
-> > Additionally, this failure isn't handled gracefully, it's followed with:
->=20
-> That should not happen.... Could you check if this fixes it:
+On v6.19, you should be able to see how much memory is allocated by
+reading /proc/allocinfo.
 
-Yes, while the page allocation failure still happens, it doesn't result
-in follow up errors anymore.
+On v7.0-rc4, warn_alloc() should let memory allocation profiling
+print top users.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+[1] https://docs.kernel.org/mm/allocation-profiling.html
 
---3Wmh7zzAptM1+3iD
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmm8lkwACgkQ24/THMrX
-1yzZqgf6A1X1/vuRf+H4NNzBAsVYrRbNQzGgQKlEkx/IG/lvr3pV3QaNCxsgpHyi
-rMbm1sd7/PSW5kmL4TcqeozhJcH+RSE26nGL2PfTsGu9vG+u1C3J3x4EszM86Via
-7P8rj9uc4bESWCDsIvPevH5o6f7YRN2idp4YpOfm2e5iVMDFclSN/N3PAT/TZEmM
-Jir4SEiuu1C1tXlrsB5FTzipvS2oJUpOTD+A0f6PEhqzKVaCbnFYvSz38IVmk1Kz
-voPL8FtD1fopAWdFIuDCF1Y+oJLSPbz4AAxVt818xMmcIzXi35NgdGX8th+9Tv0G
-9gBAr80v3xSVPv7peCA742lU1bUsww==
-=uE5Z
------END PGP SIGNATURE-----
-
---3Wmh7zzAptM1+3iD--
+-- 
+Cheers,
+Harry / Hyeonggon
 
