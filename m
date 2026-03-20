@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E064A1099B3F
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575471099B3D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF37E6B0163; Fri, 20 Mar 2026 15:39:05 -0400 (EDT)
+	id BE4F66B0167; Fri, 20 Mar 2026 15:39:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC9A16B0167; Fri, 20 Mar 2026 15:39:05 -0400 (EDT)
+	id BBCE86B016B; Fri, 20 Mar 2026 15:39:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1C946B016A; Fri, 20 Mar 2026 15:39:05 -0400 (EDT)
+	id AD2EF6B016D; Fri, 20 Mar 2026 15:39:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BBB446B0163
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:39:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7888BC1941
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:05 +0000 (UTC)
-X-FDA: 84567454650.20.A82817D
+	by kanga.kvack.org (Postfix) with ESMTP id 9D2D36B0167
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:39:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F24211DC15
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:07 +0000 (UTC)
+X-FDA: 84567454734.10.4DAA9A2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A75ED14000E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TX9TqBiv;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4209010000F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QktC/L4w";
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774035543;
+	s=arc-20220608; t=1774035546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DSr9YPtTBFmCcV3Iu6aATRNXdarTgI5pv1P0501wtPM=;
-	b=QL92oJeQC3rhlUeT5D74FCrIxNa12Q3+GrKxm3VRnhaVDslA8lMQvy+5ONNLvnYXrlhf8Y
-	x0JABdV8FYMNw2eWYwofzLSbquS3R+YA3r/faiBTIoac4SI8/4gtxWLuadzZXa5jkaBS0z
-	Nn1KWdedAaG6V7qgs1TXzMsoo0FW5/o=
+	bh=qw1fJgZxAmJTvtiklKZgUvTgS9NPkNuogar+KC9Y62Q=;
+	b=MTKw6PAcAw7n5zfEBLzaPL8Cv0tYa+e9r7QHtmMlQSTx5smvDZonkH0qcfvGpBTSq5j3Ww
+	QR9DK/frAxdS+P8Sn9+iCb82np8VHlXidnNqkEtVWUYgu8tVsmHkt+CM/5edbvY+075feh
+	GPZlmGeDO6dJvaC7z0Z2Ess/s7tzku4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TX9TqBiv;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QktC/L4w";
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774035543; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774035546; a=rsa-sha256;
 	cv=none;
-	b=X4a+iFAXLHwMsgJWpeGCeAh8JiGWX+uVqb0n/B444iAXnF/nXoKwpcyBRRJCXktcLLpyqw
-	WfcLe00k7KBDFZPfzkpLVLnelJpw9vEOTlye9rbWgBCz/fGCdsIhZdB9g5GYzyioKF6pVp
-	RHk8+xHkT78E679MdAIrxrPwTuPQfF0=
+	b=ngIf/oDNpuOpYWOj5Ba6VqObcJ0sjrc2z44nfH1zNxnPo2/hBMJ13ARKzA78I0D1+7IxH4
+	Emxgmww+MFS/TOxWnB7aCOOKF2Wphs34la3d6gVQjl9VDF9Dqu9Nk4Yt9DUkxVwjdmWrXL
+	NPK0FEK2dEVLRW3tSFROjJTVCVVFBdw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C01D0419CE;
-	Fri, 20 Mar 2026 19:39:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3EBC4CEF7;
-	Fri, 20 Mar 2026 19:39:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A40F437CE;
+	Fri, 20 Mar 2026 19:39:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD63C19425;
+	Fri, 20 Mar 2026 19:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774035542;
-	bh=cITTwW3KtjNI3MI2f1qiU0MXGmAz47+sw5hIa4ck1qE=;
+	s=k20201202; t=1774035545;
+	bh=CbVUiCL/t2srd5zwtc07H5gs2GSHrFH2Iq8wD8euBls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TX9TqBiv9cENPf+e1h/UWHy9x4ct4D/qEGGX4oOHx2bgG2GzAlngxHUa9MnlkWinH
-	 g+zuP7nkWsANmyNcWEiactmB/P2AEvzfuLoewMrG1N6IxVjoHiZj+TM4exxBWkcClO
-	 ZedxIYfLnHJGIdkEgHs+y/mCrk+k/8iyIOCUFWIn4dZkK9M4iGebSiqvUyDmgG00Pu
-	 wIZaEyUEdesRoF/Wrag5Vyks71F8VboQcxXN3s+11g839Xq+8LQVeqmggg7EsQZCI0
-	 Pw+oqvaTi2KZLK2ze4GF0iuQo4p7eAfFaafc26QBLYTXc5nCRa7+1Ckx/BN8K68TeT
-	 PnPzPiaZVh2xw==
+	b=QktC/L4wbp/1+jtfvzyaC1YBaaZ405j3FT+qY9c8DzyHjrYSCgARzIsttYxQPXSTF
+	 5IP6bO5/V5uODmlPlfjCFSdI+1k3IG9yCmcE4rVzoN5BwTjPXle515+puXYIQupNfM
+	 NexDI03mM3zGtWpW/rpXnII+GPh9iVy8wH5RmoR4tmEIya15IT3DNr+qc6s9YtuHxL
+	 rP1DO3D+mLGRQkQ7s20ECO3loi/z3vnHR/SLZ+zENHsCku3jj45DSx2Md693rpiCFM
+	 0W+FH6YAWVualTLsfTSIUPcdNgzfjAB3I1/VIyKBsATPPSOnGCuvIDxCt8/8foWR4d
+	 1RNiBZcMRRo3Q==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,22 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH v4 07/25] mm/vma: add append_vma_flags() helper
-Date: Fri, 20 Mar 2026 19:38:24 +0000
-Message-ID: <9f928cd4688270002f2c0c3777fcc9b49cc7a8ea.1774034900.git.ljs@kernel.org>
+Subject: [PATCH v4 08/25] tools/testing/vma: add simple test for append_vma_flags()
+Date: Fri, 20 Mar 2026 19:38:25 +0000
+Message-ID: <eebd946c5325ad7fae93027245a562eb1aeb68a2.1774034900.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1774034900.git.ljs@kernel.org>
 References: <cover.1774034900.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A75ED14000E
-X-Stat-Signature: fs1x94oqcaqy83bbepmm34aeaaocruqk
+X-Stat-Signature: rdyh3bbpqpfb89a9y45u6y58dja68kem
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774035543-488721
-X-HE-Meta: U2FsdGVkX1+571Bz0p3CH6r8QoiBjjHjKZztQ9xRXz/P7Ce50fLHZekYcC95Mqu9wD+QQgdzPa/ppw3thfseh4CVJeCRnaCxMeCElHZR5d9vsD3suAwsFg/EflHjn0Gr3pGwufszTCAzkzQ+GPJkqF5X8bbSm0EVP4gRK4J6BNExDF+VNSCTcM0807n/OkSO0pJIszvHNAg09KC0hnlgWDmdQNgNKcDAMGj/AFLrmteiljbvlW+QHvz418+dgpvz+Jpt0xdzCAUKAEx/Mnwn0ty0TQURGLUfXP6hnFh6Ee7bJyQvdDxCFekMN2FgfRjMPxnQkDgBwgmGtQDmbdcTESTd0DiIIfgREOLcm661YS18VjN+WmafkwKz9YrInzzGe9Jb+oI+ZgQ+24fYQpUz4dLPvod7OZ2jfS8DLJN4Cee02d+vIo6gMYrsR08g/GDP2Gf78oXlNYyCidUCXahLp5znXrQj3m7Zl7bC/kc8JdUlp1Vheu6KsAS1r0MgdhoSiJ2h7ApMY9cs8x+Vb7ry3YuXeR9mdf29rlKbdpGVaWk/gXPYdXQYhqR5vK9yIL+s8+/3z4f5sAnbc+9ioTbf4Zr0atuoppmHW55+yoK6pEFE+NeJHGDzuDHWwL23SzDvFrwfYnjB3gG0hpVjNKum91v/zunkcUdKYaQjj1VPD8/+LgAJXAcC8sln7ukBp1duSUFNZSxSLwyrWCZQBHIcmUvACoRqG6zn98biZ1HvL/UGG5+3VuzHqI9Kmn8SQmK6juEbps118qRpvlVBCUypZb3VoK8FHmOCqTgnHS+33J4RMuFO6z9cmk+oHmbp1Q1QGVofWj/jL7N0DV63sJG3t87w9HRxJ29uM8B9rjsFRUYMXjalQt05cXgLoATm83koO11CjZ1vmXgv0NrZkFh0fT9HrO/vYwRhXZhr0ffG0YkJGJrKPmkDxFt6gDs+WEk3ZxAeDLbQsM9EFmCEjL9
- lZsRM8io
- uzBRQjzuE5Bk95UR/o1hehqw77ZsJKd8OOn8htiYjRTGZVPLl/rCzb1+gx6ll0ueOuILqVY9kd59eRfi9xvO9NBeChtAcRJWID/ZBqKm2TwYi+qAlsABey70G6xg5YWTRVcYgU1WZCT+3I7gv5HCHUlCYqaJno+zRoCbghOwUo0AbFbZP/B+DhLscN6rwcJg1Y0KtHJFhBDsr0HCfXWJPkT7lR8wyenH5/FXmXSnToKDm7qXNF0Az/EqIYMJ+fnTPwKWF2iJyWEvW7NGi4uBQDCChRMdCHIPynj9v3Iaoq+A+gJDMeKLrXfcv5zTcRY6L0tzYNhZ3qO5nNf7KFVmbuL/c+DUPzeRCifOY
+X-Rspamd-Queue-Id: 4209010000F
+X-HE-Tag: 1774035546-760010
+X-HE-Meta: U2FsdGVkX19Gm1WJ7OFOuYT3X0em+m95GRS80AC7Da/r8y231iahafx+ZVzoCVmOKoo+6e7CGJTkPcgM0xcs9nCN7wZoYlO/Qjz96pWlHd38yEAk4F9nF5aXNd4bIR5U4b+McRz+UsX+w1yfbb4P+kdbM0rUSGpH6iY7kmhSZRSETgSlG+LrtlO0/loD5D7rODuUELmvPtuDDMk6RBVr4/CBFyRWb+cHTamk7WwU7wq+G2CD/nJ5yA7OWj7zUvgw+2PZ1EwU+M6GZjsjlFLibwFM0UxA7/S+a2SNSp4LzT3rzRNjAO91cHhgT17lNJOtoTZeEZQDjrPCbmwo7RJOgV10fajIqddVMhCsfFu3PT9KPMqPb0VxLm6RLOUG9kFcOjE2AjBIeFrkWv1lspTYjzVAmWCOdabp8mGDMa9xdZ1NtxU47539/G0VA2egIk/HvKTZ2HMpgjSraToiPEWqb15kdW5DoPeLMkjUgDbDrVd1pjf8aRPnt5oUy5xtxjT062JHtC2jy+ClsYNyDHa+zdR1zGbgLitEHL/wMAEwmUUTgLNfI2FmOAk0bUVU1iZqGi6P1ASRmJyjZk4QWIH/R8EZfV6fhtwLnfL1a8ySt9FAiePRvEEe38dLlQox8AQjCUP7dahBpTFhyJNwHCPvq4wdAtQTKiTuZvAOSVIAhrfhV7cuuJgYfSO5GFOF6/PkzH09ERnLZPGRM2YY3msSjY3SgMwwqDuEMzIiZ24vL8zDVupKnDK1Tk9kFs14wTQsq3t9KWrn6iYINnOJTyeGg/7N3gNdfgOHFnVfHww9P7jP59Cp4baOm+x3q9nILalXiHwfAUfVNcJL8oL8gHBm2oPdfAhUV/wx0YY8hnRmWLt1/scmV7FX1Z67p/0bf/Wj2N7c920ClhH22srMKUt2kqzwWUj4FeRqrICuUbVd1+iviZnm8+XbMzaWmcxAMZZMG3TLyOuZl8WSMphqlrn
+ OrPFJCcQ
+ XqffalRcsOq1nhJrHzScFa6RqE+2xHUvwDc6VNDXCjV6mLYrHwICPwyECp5bcHys9fxpYniYQp/wOCLk8HXPAVLcwJuWK2Yk9UZWAX88oEDwj2p6aln854PuRS/sXiQdAiEcfS8giu5gOc38F0aeT8JljgubNg6TkPtl+GehiFaeM54gaeT2d/Sr7bojWiDNnw+kg2pBpPvH9dBXWbA0OWv4UqMDaw/n7r9KZn1T5oRiVaRKj4wE0WyKmkU6fKFKV4t4+W/NgKk9mR55FjpqMLbSSNt6ypKAILnTsgGsK7He1mQr5L7PWd8UE9lolLE8to8yIJpv7Jb+z5xT+vQG/D6Mef2Rmdd7/UvpP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,98 +149,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to be able to efficiently combine VMA flag masks with additional
-VMA flag bits we need to extend the concept introduced in mk_vma_flags()
-and __mk_vma_flags() by allowing the specification of a VMA flag mask to
-append VMA flag bits to.
+Add a simple test for append_vma_flags() to assert that it behaves as
+expected.
 
-Update __mk_vma_flags() to allow for this and update mk_vma_flags()
-accordingly, and also provide append_vma_flags() to allow for the caller
-to specify which VMA flags mask to append to.
+Additionally, include the VMA_REMAP_FLAGS definition in the VMA tests to
+allow us to use this value in the testing.
 
-Finally, update the VMA flags tests to reflect the change.
-
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- include/linux/mm.h              | 20 ++++++++++++++------
- tools/testing/vma/include/dup.h | 14 +++++++-------
- 2 files changed, 21 insertions(+), 13 deletions(-)
+ tools/testing/vma/include/dup.h |  3 +++
+ tools/testing/vma/tests/vma.c   | 25 +++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b75e089dfd65..0c35423177bf 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1047,13 +1047,11 @@ static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
- 	__set_bit((__force int)bit, bitmap);
- }
- 
--static __always_inline vma_flags_t __mk_vma_flags(size_t count,
--		const vma_flag_t *bits)
-+static __always_inline vma_flags_t __mk_vma_flags(vma_flags_t flags,
-+		size_t count, const vma_flag_t *bits)
- {
--	vma_flags_t flags;
- 	int i;
- 
--	vma_flags_clear_all(&flags);
- 	for (i = 0; i < count; i++)
- 		vma_flags_set_flag(&flags, bits[i]);
- 	return flags;
-@@ -1069,8 +1067,18 @@ static __always_inline vma_flags_t __mk_vma_flags(size_t count,
-  * The compiler cleverly optimises away all of the work and this ends up being
-  * equivalent to aggregating the values manually.
-  */
--#define mk_vma_flags(...) __mk_vma_flags(COUNT_ARGS(__VA_ARGS__), \
--					 (const vma_flag_t []){__VA_ARGS__})
-+#define mk_vma_flags(...) __mk_vma_flags(EMPTY_VMA_FLAGS,			\
-+		COUNT_ARGS(__VA_ARGS__), (const vma_flag_t []){__VA_ARGS__})
-+
-+/*
-+ * Helper macro which acts like mk_vma_flags, only appending to a copy of the
-+ * specified flags rather than establishing new flags. E.g.:
-+ *
-+ * vma_flags_t flags = append_vma_flags(VMA_STACK_DEFAULT_FLAGS, VMA_STACK_BIT,
-+ *              VMA_ACCOUNT_BIT);
-+ */
-+#define append_vma_flags(flags, ...) __mk_vma_flags(flags,			\
-+		COUNT_ARGS(__VA_ARGS__), (const vma_flag_t []){__VA_ARGS__})
- 
- /*
-  * Test whether a specific VMA flag is set, e.g.:
 diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 3005e33d1ede..a2f311b5ea82 100644
+index a2f311b5ea82..802b3d97b627 100644
 --- a/tools/testing/vma/include/dup.h
 +++ b/tools/testing/vma/include/dup.h
-@@ -854,21 +854,21 @@ static inline void vm_flags_clear(struct vm_area_struct *vma,
- 	vma_flags_clear_word(&vma->flags, flags);
- }
+@@ -345,6 +345,9 @@ enum {
+  */
+ #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
  
--static __always_inline vma_flags_t __mk_vma_flags(size_t count,
--		const vma_flag_t *bits)
-+static __always_inline vma_flags_t __mk_vma_flags(vma_flags_t flags,
-+		size_t count, const vma_flag_t *bits)
- {
--	vma_flags_t flags;
- 	int i;
- 
--	vma_flags_clear_all(&flags);
- 	for (i = 0; i < count; i++)
- 		vma_flags_set_flag(&flags, bits[i]);
--
- 	return flags;
- }
- 
--#define mk_vma_flags(...) __mk_vma_flags(COUNT_ARGS(__VA_ARGS__),	\
--		(const vma_flag_t []){__VA_ARGS__})
-+#define mk_vma_flags(...) __mk_vma_flags(EMPTY_VMA_FLAGS,			\
-+		COUNT_ARGS(__VA_ARGS__), (const vma_flag_t []){__VA_ARGS__})
++#define VMA_REMAP_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,	\
++				     VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT)
 +
-+#define append_vma_flags(flags, ...) __mk_vma_flags(flags,			\
-+		COUNT_ARGS(__VA_ARGS__), (const vma_flag_t []){__VA_ARGS__})
+ #define DEFAULT_MAP_WINDOW	((1UL << 47) - PAGE_SIZE)
+ #define TASK_SIZE_LOW		DEFAULT_MAP_WINDOW
+ #define TASK_SIZE_MAX		DEFAULT_MAP_WINDOW
+diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+index feea6d270233..98e465fb1bf2 100644
+--- a/tools/testing/vma/tests/vma.c
++++ b/tools/testing/vma/tests/vma.c
+@@ -555,6 +555,30 @@ static bool test_vma_flags_and(void)
+ 	return true;
+ }
  
- static __always_inline bool vma_flags_test(const vma_flags_t *flags,
- 		vma_flag_t bit)
++/* Ensure append_vma_flags() acts as expected. */
++static bool test_append_vma_flags(void)
++{
++	vma_flags_t flags = append_vma_flags(VMA_REMAP_FLAGS, VMA_READ_BIT,
++					     VMA_WRITE_BIT
++#if NUM_VMA_FLAG_BITS > 64
++					     , 64, 65
++#endif
++		);
++
++	ASSERT_FLAGS_SAME(&flags, VMA_IO_BIT, VMA_PFNMAP_BIT,
++			  VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT, VMA_READ_BIT,
++			  VMA_WRITE_BIT
++#if NUM_VMA_FLAG_BITS > 64
++					     , 64, 65
++#endif
++		);
++
++	flags = append_vma_flags(EMPTY_VMA_FLAGS, VMA_READ_BIT, VMA_WRITE_BIT);
++	ASSERT_FLAGS_SAME(&flags, VMA_READ_BIT, VMA_WRITE_BIT);
++
++	return true;
++}
++
+ static void run_vma_tests(int *num_tests, int *num_fail)
+ {
+ 	TEST(copy_vma);
+@@ -569,4 +593,5 @@ static void run_vma_tests(int *num_tests, int *num_fail)
+ 	TEST(vma_flags_empty);
+ 	TEST(vma_flags_diff);
+ 	TEST(vma_flags_and);
++	TEST(append_vma_flags);
+ }
 -- 
 2.53.0
 
