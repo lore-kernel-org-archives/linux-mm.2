@@ -4,130 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C3F109878D
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 14:55:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52CF71098797
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:05:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B3B86B0088; Fri, 20 Mar 2026 10:55:23 -0400 (EDT)
+	id 67CCB6B00D3; Fri, 20 Mar 2026 11:05:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18BCD6B0095; Fri, 20 Mar 2026 10:55:23 -0400 (EDT)
+	id 606E36B00D4; Fri, 20 Mar 2026 11:05:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0533A6B00D4; Fri, 20 Mar 2026 10:55:22 -0400 (EDT)
+	id 4F5656B00D5; Fri, 20 Mar 2026 11:05:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E758F6B0099
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 10:55:22 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9B2DB738B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:55:22 +0000 (UTC)
-X-FDA: 84566739684.23.B8FDBF4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id ABBBE14000A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:55:20 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 39DA76B00D3
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:05:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4C321B7115
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:05:41 +0000 (UTC)
+X-FDA: 84566765682.19.6974CE5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3947C140010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:05:40 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BVCcVgcK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jNZCnAqj;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774018520;
+	s=arc-20220608; t=1774019140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4qGwCJGEGWrGTjW8pf9/IIlX3yAZzjdHMWZu2HgvAeg=;
-	b=jAxQxTrzmrHH54VZyPzpGzCfz58LtXVzL2FND3ynMRhDu3uWEwfLjhDHodOrMlEhWwOrZV
-	56YBxb9HT6k2fP8ZHBcZNQJ97vPo6PNshhc4Fq+mQAY58wDsNHSZrQzJQVo93E38lMD9Mq
-	r7ZgDyT9AIiwRtVpNNUsO6Y0fhBDIQg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774018520; a=rsa-sha256;
+	bh=CCuXufbrmQdKpLLe5J7RyocoMqhBYcUtLOH+h/klFSI=;
+	b=q8i7N+Wnr1g1W+9BZJeXhZe2j5LInn7x+3pwNNLSiMHTCW2Lejnm5BzAidtVukP5HT+7JU
+	exCyK2SJ8KDBVD91wTIJtWbM04gzLFkMgrYdMzDRuT/B5IsMS1RF09rl+7UUxPP7TZjtHy
+	T5RFF0VVzg91/AwA7953dLQVT4FrjN4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774019140; a=rsa-sha256;
 	cv=none;
-	b=Xeg5jsyz9bL5meWbzD/tacrW/fyzSFKAba169JWnUrcmDqx8jlwXPUfYAsar+4WFrVGXCE
-	jTgplXuVUwpnCFT8dgqyJe9fYG9uoJCMJ4qZ5b5Ho6qJDFuKDO0X6ly52XdNpkmyVNTaqN
-	Bh103tl8BKHvBsUbxe3D4Rd/xmd1tQc=
+	b=B+5gXvhhGsRdZr6M4fvDVpuH9h3IUmq5tWfXHPCEAnbUp/xXS13s1LtH2SwWZCWRVFX+17
+	QdoBmZ6OT7PCeJ/fU1tHoKRR1qKI3dv9WUymAqFRpMMjkuF6SBIsjQXdf/8gCg/UxG24I5
+	m8OszNZAlEa0IJdERDdyII1IDjLT9ac=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BVCcVgcK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jNZCnAqj;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8728643FB6;
-	Fri, 20 Mar 2026 14:55:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AF2C2BCAF;
-	Fri, 20 Mar 2026 14:55:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A99616012A;
+	Fri, 20 Mar 2026 15:05:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FECC4CEF7;
+	Fri, 20 Mar 2026 15:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774018519;
-	bh=O3kRy3P5OtBeHmM5/xruXYwzutxlo/f+EkNqcRA/w5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BVCcVgcKt3ENBDOXfD/60Mu9JraNJ2WvkNnJPLDxcLpHQTLXDNARrOidqFmec0PJE
-	 yVX1W72YSY4FPiVwzr/ZZLT3Ks7PMrYQsxJmPxQ9LKlgzKGFbt3Hut/RU5zMcJqMVa
-	 vGjXkqa7OVHKziaQ17Ou0ly4kIsD2kZfQFTavyoIDQF6kFCYpWNz4WYlo7JUscgUzI
-	 h1uDMO+B46JkBdUu2L43tNR6zmaqUThorJmcbIZrJgrMIakV+wwRzHzJjnqdz9Zd50
-	 mzzi/amooHZh68eKX7aADaySN/4Gx0mAiN20/Xg7Lh95emwHaBAPvg5HhWlFVZ5i6A
-	 I+9dUNjLZKG4Q==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6FEE1F4008C;
-	Fri, 20 Mar 2026 10:55:17 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Fri, 20 Mar 2026 10:55:17 -0400
-X-ME-Sender: <xms:1V-9aaSTVTLEJPaFtMfcA9OOQSLk6qtER_2mvgUbfF3fQpIbCDd91w>
-    <xme:1V-9abdH345Wj_d1EkOyJYfZtrNL3QOR91X4KS2F-d0a3XE01QeuoYEtJHrRGFmio
-    UlstYHdVto1xFUMavPzUq8FilejKFr1oa0HhRdqNVX2yayhuefTV98>
-X-ME-Received: <xmr:1V-9aTfYn0Kud8Hgybz5tkAILzW6y7K-6lDlJViE8CHzIInCavWwUHWChV9qRQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtvddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepjedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehushgrmhgrrdgrrhhifheslhhinhhugidruggvvhdprhgtphhtthhopegrkhhpmh
-    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiuges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdroh
-    hrghdprhgtphhtthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphht
-    thhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehrsehhvghvrd
-    gttgdprhgtphhtthhopehjrggtkhesshhushgvrdgtiidprhgtphhtthhopegrjhgusehl
-    ihhnuhigrdhisghmrdgtohhm
-X-ME-Proxy: <xmx:1V-9aSLYaO6kt-4n-RVsJqON1ip8AjtaH_Pt27AjXHKRrFN1Pvqa8w>
-    <xmx:1V-9aZ0A4xGzllAxFHCPwmld6prMiihpMM3Y0RTtW3tR4Z5viCZseg>
-    <xmx:1V-9aYoDjjXvmIC1gpUFWF1PXwx9w_DdKHu1fvkuetZfscplB_4rWQ>
-    <xmx:1V-9aRo6hYvorNf3SXqjnpLn9K1cmaKVdAbWqEdB7skdA7USK4-Ypg>
-    <xmx:1V-9afx9vU-5uv-9QmNxaLtg9yZTtGG520E3KGSXRr2754fS-0oCwACz>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 10:55:16 -0400 (EDT)
-Date: Fri, 20 Mar 2026 14:55:14 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc, jack@suse.cz, 
-	ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, 
-	kees@kernel.org, kevin.brodsky@arm.com, lance.yang@linux.dev, 
-	Liam.Howlett@oracle.com, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, wilts@infradead.org, ziy@nvidia.com, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v2 3/4] elf: align ET_DYN base to max folio size for PTE
- coalescing
-Message-ID: <ab1fvJxFYQP-ByQG@thinkstation>
-References: <20260320140315.979307-1-usama.arif@linux.dev>
- <20260320140315.979307-4-usama.arif@linux.dev>
+	s=k20201202; t=1774019139;
+	bh=0JzefbnFDDUAaPXmhGXPuuosVEsGt8ZsfIx+ICZ5XIU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jNZCnAqjl1CLFi85I0hi+AXYLvnD+QnKeBuACo1Qy2c5EcFGBofio5O8jrMcYMj21
+	 vYuJj4LOI5dWYK9UUPN7gY76gTAu3Ko4OCvk5uJ5X/7/1pKueJEDZI5cnTUKNYUjyc
+	 DH2pSAOWbr004DEN+2seNW3xHkhv4P74DPN6B/Aog9S1ECpic85DD1/xmhYz7pILEZ
+	 Ht8ANtsURPfdh6ge2D1yK45F/n6G84PSYXd4R2K9LSs779y5TRBoDU/ZghRMV/rDxr
+	 zyD/Z2KurpgLVL4gZV43bbEzOU/eHxej+bFLMKONXo1pfYYWevns7ITnX7N/buvBMz
+	 8Rb/aHQuLVkzA==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon/ops-common: optimize damon_hot_score()  using fls()
+Date: Fri, 20 Mar 2026 08:05:36 -0700
+Message-ID: <20260320150536.98893-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260320072431.248235-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320140315.979307-4-usama.arif@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: ABBBE14000A
-X-Stat-Signature: sifcr3cxzi5whnpebdebcway3gznh5sx
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3947C140010
+X-Stat-Signature: hwnmz9g8snrdfghesdeesrw8kj1s8zyd
 X-Rspam-User: 
-X-HE-Tag: 1774018520-134433
-X-HE-Meta: U2FsdGVkX197P8xBaKHasgd+z2UX0iBDjQ+EDgChwyzuA72DTaBg2W6ohs8RQR0SbLcZfGn12UEmCDt9MwsUaaNtxNu5OS23McAf4NVkZk/CGxVJ5sZ5OIKna+k4winhs+0ox42eLscDrees8EojEVq1LjldTI6/hiFqTmgGgkde1lsn9wE6c2ydOsZ2aXwS7trj3Vh7/Rc/JTjZBwmrsLwzZO0v12inJJR1QhvZZvNhEn8dN0PP8Opj7wsvzHhghGz8o9MkGeM618xqZm7vwlMgANQ0E/gQwcazBplgHjjZrxtk7it9X13MHq/2Iqdkor+yBozvFASYsw8S+7q1ijsOM5ccfiZH0B4OHDRLhDkGikKRZfPrg58+6ABxF+3N9ReXdkt8MtsdSR3ilFuLJfx35s2D5D7WFAG+5gp9oV2PdYPvgGeCrM4skSkis3p4Eb4R3sKMeR6slDYKkPRNzZIlwDla9XlBSxJd+rR00mhmqsWh7YHvistq4597Dr4ZONmQ42Q+QA/U4frXDoCN0cNj/oR+mqpAt3YOsBuw3Ol2M5puqOYfPZDS+jMiNnQD4nl3Gj3sjVuMKqlFktFLZ7MvsOeVvaH6q6xPy2rTvH+Vxwx/T+IVnHbOQJwcdmjC6cwdc6fKkNYxlayRiLU5/iAXxO0tELyL5PbOydTr6na2paGChFo1oAaAsGGSD/QyAWLjxu7aFCjOYCEaNrrW0NzuO4gfYP8DWc2HypFfvSdLy0rNCQv8A2bk1ApYVQqUC4TT7UNZjNp2mdboaI42YSMS/xS1Z22KslnAsaujWTONZvakvl/e8uUKEUGdLlphg4deh6l0UsCEIKrPAIIkklCXV2h+fhwOWF59PQzbHaelwq6hppBdQUvgUpr3dE2P/zpF5LivkBhCEmHKIuWluChJPvQgqQUJqNtPfPBlgYQ20HY7YaOlVKjVYditWGOaus16vs3fcaG5/dYSLir
- CO/+7Exc
- Adw/3DPGGgDd6CrGNgd/eSTfEPYI/SsasQV5BH0TRgi4CLbZMjAeRQXryamFBzhrkhXgIhlG8QA4ZcP1MsxL4NSDNba4M7epp/06MleJx/9Pt9EgaiERQRe8mXNjRjCnNV7bwZcGqE5jGTbKgptSd81sjGLbWIMHUgSB4N0VFQ3R/XKaaxh/OOFrlCkhOUd+uksSLeU6Tl0szeRTZ3AK9vZrk9bAhsoMGcWNUmHBALpJ1fI0Sc7RLeTAkQv0ayj40YXN3tqWRF5Tp0lmQBKzcXSV8fvdLQtG75VdbBSAhvz/XRVe1CbgdU9L/yY9UpZDfDo/GfHyhKpZPGWkUCOYbZBWRf8HNtg5yjF1H
+X-HE-Tag: 1774019140-601004
+X-HE-Meta: U2FsdGVkX1/4W7saix5CbMvfppflYI7p9ALv6hInhPJhUr0PAv09lEDyCF7Dy0oo/mko0g2In5kGfRf4S5g06aQyXs0nUlmqsqYlmb+/zPttVXKYhvLDhySt+Iu7ReBp2YxBX4UpqvTtIGVGPHUtDgyM8QHuPs6HOGAt5MVztjsIrYNy7iOSIQmaQ3rBEZ5zzHgESmxz2ilDaNiox50V+u2NCt1PPshZl/0paKS/g6k+LV90iRC9XeoHLJ9ZkfWOWUZ/nrkvZPbvFpEg3ZLIL0GC5hwAn2PMJ0xPATd3OvLiRpcRcrnnM1HaFKJ4N8tgeXTCV48TuYQcr5D4wOkYWVq+qnm93KPfZOudD8YBUqDkXna4owncA4xvA+DLpAgkdmTmOScV6RxhIds4T02JuyHA0U/fSS0QM7WdSbqcWt4YKJerAfW++nCULsQ+f1JFXvrRqyBgmoxfxN6Q7gHmPcPtjSGZX+DrUaDOxXUxCqAWeHEcHOD8PsX2nwU3ogeGF/2kVuK/N6jO3UioX+Xtq6Xwfm6cnNeKr1wn3ZDq4OvKlfw/iGKoa+R3JaKBTBgsa2Kc+1Y6bUpdqg0UgVKSgzLFH2dUANSRGutVEQf01F/1QBAV/ZGezRSTC/RG0fnJKmY8rvQEqecBHn/24J3UBlrW6e272DlGoHXFZinVGupqwmHnqUIRpg+TzoF4WjDbbBGUlR83VMtkLcOh+vVag5WOv8onraaBVXWzQxbZICbBG2FXU77YFAgnshyclZeoGt0ekYCujrJf7lqQtA7ZyR9t4+IkiFHOgwr/SsFwIVRfY0UQvf9sOBZTcDfCWJqh2bEBF6DWNLw1bqKPKAie1oi54Ck9tj6mTtQEOtjVOf/9RrFNWaO4Qwq8RUMLN/nBia5dewZm+7G3d/8x6e4davdPYW6JquLHs8DWzmCcJTqofgbP4MAuNB6iU4M4AlX6tSYU2g5oqfwGHgNdsVR
+ T8F9l8/f
+ 1LY8ltq4CUIiAe75yHEbLfBi9fg0PjS5KoGiHqK9rFWC/XvRbDh8k9y/3Ziqat+PRqV2mjYtVbuHX9iIebBoeJaPQ+mgosWG18TVzOfaoLlxhIeBT5tJrdZP9I0b8/zlINRcWjD3S+kXKtv3njkqTFHROf9aueqA7scbY8RNRwohbYb3xpk3Wy2XMUO0c1AGuXQOQjRO3ONuX4ASuLZX+VABlHLnqSP5nLzIg39YxyB6fHLNs5tdP22KtMFA5xcmMBG1MTGQmTU0XopxyXRQ1Wor2xWE2BMeR5nCBBaGBKkFec93IrfZuyuSRUTBbBjxDmrWoBNo4S3ufnknKB9dgRZUMqzpWEyWLUJqMSbU9/yn65og=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,38 +91,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 06:58:53AM -0700, Usama Arif wrote:
-> For PIE binaries (ET_DYN), the load address is randomized at PAGE_SIZE
-> granularity via arch_mmap_rnd(). On arm64 with 64K base pages, this
-> means the binary is 64K-aligned, but contpte mapping requires 2M
-> (CONT_PTE_SIZE) alignment.
-> 
-> Without proper virtual address alignment, readahead patches that
-> allocate 2M folios with 2M-aligned file offsets and physical addresses
-> cannot benefit from contpte mapping, as the contpte fold check in
-> contpte_set_ptes() requires the virtual address to be CONT_PTE_SIZE-
-> aligned.
-> 
-> Fix this by extending maximum_alignment() to consider the maximum folio
-> size supported by the page cache (via mapping_max_folio_size()). For
-> each PT_LOAD segment, the alignment is bumped to the largest
-> power-of-2 that fits within the segment size, capped by the max folio
-> size the filesystem will allocate, if:
-> 
->   - Both p_vaddr and p_offset are aligned to that size
->   - The segment is large enough (p_filesz >= size)
-> 
-> This ensures load_bias is folio-aligned so that file-offset-aligned
-> folios map to properly aligned virtual addresses, enabling hardware PTE
-> coalescing (e.g. arm64 contpte) and PMD mappings for large folios.
-> 
-> The segment size check avoids reducing ASLR entropy for small binaries
-> that cannot benefit from large folio alignment.
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Hello Liew,
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+On Fri, 20 Mar 2026 15:24:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> The current implementation of damon_hot_score() uses a manual for-loop
+> to calculate the value of 'age_in_log'. This can be efficiently replaced
+> by the fls().
+
+This makes sense.  But, it seems ilog2() looks more same to what the current
+code is trying to do.  How about using ilog2() instead of fls()?
+
+> 
+> In a simulated performance test with 10,000,000 iterations, this
+> optimization showed a significant reduction in latency:
+> - Average Latency: Reduced from ~9ns to ~1ns.
+> - P99 Latency: Reduced from ~60ns to ~41ns.
+> - Throughput: The loop-based version mostly fell into the 40-50ns range,
+>   while the fls-based version shifted significantly towards the 20-39ns
+>   range in the test environment.
+> 
+> Although these results are based on a simulated kernel module test
+> environment [1], they indicate a clear instruction-level optimization.
+> 
+> [1] https://github.com/aethernet65535/damon-hot-score-fls-optimize/blob/master/test-kernel-module/fls.c
+
+Makes sense!
+
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> ---
+> Note on testing methodology:
+> I attempted to measure the performance directly within the kernel using
+> bpftrace, perf, and ktime inside damon_hot_score(). However, the results
+> were highly unstable (ktime), and in some cases (perf/bpftrace) the
+> function was difficult to trace reliably (likely due to my own tracing
+> limitations).
+> 
+> Despite the instability of in-kernel ktime measurements, one thing
+> remained consistent: the fls-based version significantly improves the
+> "long tail" latency compared to the for-loop.
+> 
+> Test results from the simulated module:
+> - fls-based:
+>     DAMON Perf Test: Starting 10000000 iterations
+>     =============================================
+>      Total Iterations : 10000000
+>      Average Latency  : 1 ns
+>      P95 Latency      : 40 ns
+>      P99 Latency      : 41 ns
+>     ---------------------------------------------
+>      Range (ns)      | Count    | Percent
+>     ---------------------------------------------
+>      20-39           | 3522000  |   35%
+>      40-59           | 6478000  |   64%
+>      60-79           | 0        |    0%
+>     =============================================
+> 
+> - for-loop:
+>     DAMON Perf Test: Starting 10000000 iterations
+>     =============================================
+>      Total Iterations : 10000000
+>      Average Latency  : 9 ns
+>      P95 Latency      : 51 ns
+>      P99 Latency      : 60 ns
+>     ---------------------------------------------
+>      Range (ns)      | Count    | Percent
+>     ---------------------------------------------
+>      20-39           | 0        |    0%
+>      40-59           | 9894000  |   98%
+>      60-79           | 98000    |    0%
+>     =============================================
+> 
+> Full raw benchmark results can be found at [2].
+> 
+> If anyone could suggest a more robust way to profile this specific
+> function within live DAMON context, I would greatly appreciate the
+> guidance.
+> 
+> [2] https://github.com/aethernet65535/damon-hot-score-fls-optimize/tree/master/result-raw
+
+Nice test results!  I think this deserves to be in the git history.  Could you
+please add this on the commit message area, rather than this commentary area in
+the next version?
+
+> 
+>  mm/damon/ops-common.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 8c6d613425c1..0294de61a23a 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -117,9 +117,7 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+>  		damon_max_nr_accesses(&c->attrs);
+>  
+>  	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
+> -	for (age_in_log = 0; age_in_log < DAMON_MAX_AGE_IN_LOG && age_in_sec;
+> -			age_in_log++, age_in_sec >>= 1)
+> -		;
+> +	age_in_log = min_t(int, fls(age_in_sec), DAMON_MAX_AGE_IN_LOG);
+>  
+>  	/* If frequency is 0, higher age means it's colder */
+>  	if (freq_subscore == 0)
+> -- 
+> 2.53.0
+
+
+Thanks,
+SJ
 
