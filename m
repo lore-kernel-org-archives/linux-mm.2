@@ -4,118 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17ADD1099B30
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 21:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D211099B30
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 21:09:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B6416B00EA; Fri, 20 Mar 2026 17:08:26 -0400 (EDT)
+	id B36C06B00F8; Fri, 20 Mar 2026 17:09:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58D9A6B00EC; Fri, 20 Mar 2026 17:08:26 -0400 (EDT)
+	id B0DF96B00FA; Fri, 20 Mar 2026 17:09:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CAA06B00EE; Fri, 20 Mar 2026 17:08:26 -0400 (EDT)
+	id A240B6B00FB; Fri, 20 Mar 2026 17:09:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B5D46B00EA
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:08:26 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E192413A741
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:08:25 +0000 (UTC)
-X-FDA: 84567679770.06.223F201
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5A4B340011
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:08:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qC8HBmDJ;
-	spf=pass (imf17.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 93EB46B00F8
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:09:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90EEF8B59F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:09:43 +0000 (UTC)
+X-FDA: 84567683046.28.54C6A76
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 98E151A0002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:09:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WhFREyC8;
+	spf=pass (imf19.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774040904;
+	s=arc-20220608; t=1774040982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v0z5q5BkScD0Vv0DWxEkIMwRkHxRdQhd9pZjMXjr2l4=;
-	b=frBWzmrEJNpCs8G+UWp5Na1XR4ZKXJgUUi8lyoqwW8/6VM4ywST/TUHBK70eH6BU0VAV4m
-	4svaI9+ODwmvHJmrylTFlCQv9fdo4FjUq717EEqMDBdEGHIvVGR9W7+ynksI3wFS8cZ14w
-	Kz25+X7PBa/4CcAlkT9LQj3daay/63s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774040904; a=rsa-sha256;
+	bh=LdazZRUKPM4vpFTCoVH7q3Sgf/OigaeYxeWW6aTMgO8=;
+	b=i/aofPBPJPXoRWYXL/eEW+s0k1WOOPpeBLu4l3ALaPJia9XVBtq5VJJLjYAA87ro1Q7UMv
+	Q+fUAupNRs4aUGLWvDbay4fpc62qf/i69n2WZkexTjORdwxpkOtVntsOo1wDiomsyf2NJ9
+	GdYC96xWiRfEdjoQCMtK3qn9xvj6b7s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774040982; a=rsa-sha256;
 	cv=none;
-	b=R+flI1ih4rb+fNN//dgpr3upBT8TR9bdluImX1Oc2vTdJyqLmBb91Q1rhwxHmvzcgTL3f5
-	rqxg34sBzcjDlkw3Wovz6cAoMtwR2saCdsEcFhgFqVQd6cGa7foL/hJPHou3Ua6nbiG/uZ
-	YWUCypLI3GGdS8vrmVFPTkhvUcrukLY=
+	b=p4dxxq6de3DESvDVtjPKZcAbB5TDRtsUzyK82Pcb7CvX+B3jkADEGl0KujlJ9QGc1ckBfp
+	qPmpFxJxtEpUXoCatMUd88F3RNldYAF98bXddo7zTYBpU6gddClnmRtetWtJN5Sg1Zqdmv
+	BsOdAxoW53JaDLe7W5gTeruCdM8/fU4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qC8HBmDJ;
-	spf=pass (imf17.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF0F760126;
-	Fri, 20 Mar 2026 21:08:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E28C4CEF7;
-	Fri, 20 Mar 2026 21:08:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774040903;
-	bh=u0zdmPIhkicnjjaekGwGuaSnl24uNp/SD6pTY4tTyoI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qC8HBmDJbc3QTlANvhaLjcn0O5ay5GqzDEvYHXsOkZQejTAbOkx+bkEo+ki3/IcqS
-	 2zxeTAiPAA/ZnIrs1vWkKIH1qQM6hWWWHXeyTtkY/GTcJVwCwrNv3c5QnInC7yBUEZ
-	 Emq3X5gGUqXLf66MStAVqC5m2WCTfSbnlpAHXDlhTtb1Ap6h4AtLg1EuCVIYnM3U2k
-	 9XYMGV8lFcVQ3Ofo63x/aFk8UD8Gt0FgB8ThIniVMGJGtCnjMclwn9hpHtv2VORGXx
-	 vrpZQBmOIITR6wCUusRaEbZoc8REFtZupMT7Shny3yqCThx6DNBFOpK9/XXBVuE7o9
-	 ZHBuzLHK9WgAw==
-Date: Fri, 20 Mar 2026 14:08:12 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Bodo Stroesser <bostroesser@gmail.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
-	linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v3 15/16] mm: add mmap_action_map_kernel_pages[_full]()
-Message-ID: <20260320210812.GA3988975@ax162>
-References: <cover.1773944114.git.ljs@kernel.org>
- <54ff3670662e10a66ce0c1a13c0ae93b99a5f201.1773944114.git.ljs@kernel.org>
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WhFREyC8;
+	spf=pass (imf19.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774040979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LdazZRUKPM4vpFTCoVH7q3Sgf/OigaeYxeWW6aTMgO8=;
+	b=WhFREyC8EnejfQg0iYOyCaFeE33b9AE6YqRim1Rhn9Wbph6l+wN0VeURU3qVaNhQV41mgQ
+	FyzgM8JaReUxeqVyGfXoOBZojJgz98by+LeJkBVkplS47HDa+KDx0rAHO+ieGqnfj+k7Nx
+	BDZevr1nxMjXvNghK7H5iFKYuuIt4wU=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "John Hubbard" <jhubbard@nvidia.com>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>,  "Alexandre Courbot"
+ <acourbot@nvidia.com>,  "Zi Yan" <ziy@nvidia.com>,  "Andrew Morton"
+ <akpm@linux-foundation.org>,  "Jason Gunthorpe" <jgg@nvidia.com>,  "Leon
+ Romanovsky" <leonro@nvidia.com>,  "linux-mm@kvack.org"
+ <linux-mm@kvack.org>
+Subject: Re: Sashiko.dev for Rust for Linux
+In-Reply-To: <DH7W8TLZAKUB.2E0Q2VS546HBS@garyguo.net> (Gary Guo's message of
+	"Fri, 20 Mar 2026 20:32:10 +0000")
+References: <1f94cf47-9898-405d-bdf2-29e21cd87528@nvidia.com>
+	<87ldfmtfk7.fsf@linux.dev> <DH7W8TLZAKUB.2E0Q2VS546HBS@garyguo.net>
+Date: Fri, 20 Mar 2026 14:09:33 -0700
+Message-ID: <87a4w2tdgy.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54ff3670662e10a66ce0c1a13c0ae93b99a5f201.1773944114.git.ljs@kernel.org>
-X-Stat-Signature: oqoxx5y8jso3cgpi641ud137d5djo3gg
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A4B340011
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774040904-953320
-X-HE-Meta: U2FsdGVkX19hzygn8zIwaGgTT6MsxBE7s3X81uBhHUtkKIJa1IJMnGuWyjvKBCOl5BcD7LVHFwgK803BnsaS/7WRkum3AKPwNoaoeUlMJUPiH4AfDXZDOSU+1XYqEafv7z+MOt8fjD+YqmFNY+ul1kUCMEBx5tOjKyj/YMacn5kPEK4waYZho7gP1RntzWu+LwnqoLUCGsCaSneTspeQYNC0/cJHm0ooywZT7otVcNpR2DRBD1EzYt5aOZAjSHznNLm9oKFbTV35eBP5f1BDxOc+5mFfx746X0/7yaqkxlZANuFYbHOgivFb43whSbYziyLmdgnTzHgpP5EFE6VijFo8mF41YT6MaSQVwe+7FVw2lHTiCozrQcxvegNPFAFnFuEOpoXNA5GPTkE/VQV3gY9tqcg3UcCfokipHLctrCzOb5tsACIwETeBvapUKhiqcAPuRKvy4crhjQyvc39aGhf71ooI7BcNwnxv4Yj7bhKf3fhSNICv8+RP1ckfgMu3pyHznK5Omj2njWBSFfNTrlwc04UkEEU+4uHyTN0bUpahmi4R3WWcBZeSHHk6nSd5OjO6gMQJn//4ZZl47SCQ40BRSH1nzVSxu34o8Mkb6ztCgutlc0unbhaMQS6cZsfMkhQChWIW2/1CgFtiyVqbwiEZN1xSg08KULv9h1Ju/nzh3WvRCoXoc/nGFmHadUo/JjBYNvUDJpHZ3ZmJzYTEnoWGWXXZP2E+wbmExY+qeAjob7hMeooGiBIWI8Q/kqN7CpgD7fMaM0TaO85PLBQPl6EfVhiwUTOy93baOZXRLfJBtPuGAaFiCM5zn1WURkKcfORc8KV9s9uzxeu6idIpVkP8VhsosAhSTq3Sm9mqK47F30edvxeicbJ/y6Ws9bGo4lgchfycxQ1LpAVmriFUn2cXVGOOU6rZl4dqmQoDSVmiveIs8CGuakGKJpK8Vj3Q1Mbh9CW4RBgbeBGEwvk
- L3xXNeHE
- 3DjWzAxO7M2G1BI1giRKijrTe78NXR32e1iyaQm/74lYdZM12IhEZR/z/pSJ8nCuXZCIaRWolz4g5/gpoYStw4Y6+HDuT1Fz/p+CHU91nu7AU0BaYug+5Ycc+Qy1uMQ6AoOJ2rr1JPJQiDts7fBTtX5RZHDIcFG//GLYqi81T3gxO4LDVhqYvA6VQQKWOIBbQreeX03dYCgXgEqU2DcJb9ynJDH85Ucu9e0L2u+J0/0wiwwYqTMnij3ocYo/nP8xIxxUCNhV3n+JwNTSdvFiOu1chwzZ433Fbwm0F6XNxhMvEWOLwEFFsKiYyc9GwBeyQHZc6IIeFnUidungCnANnLQSaS+8ZOiLgxPPIQ9zqvHuZ7Dx6gYGFB0Sj2m77mPqODz3r2cvJ8PppC1QoEriPavT22MAE+bvbhVK4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 98E151A0002
+X-Stat-Signature: qymjosd8rze8orsmi6kfhgm66i7ctef6
+X-HE-Tag: 1774040981-209043
+X-HE-Meta: U2FsdGVkX19XTzFsdJr6eeH8OMn61rwkrKLOPb85kpxF+AKQhK+n4cls7eIu9P7UzZCFnbzBgByfBN6xJwmv4BnanrR8tRbkGLt+r0tjq+Zfg65SbhJ5YxtT/vKTTs6efhwMziGcL7P0hJ+hghau3FyxBzDTZRf/kZJHRvIOwd2Hypen5dXyDz//TGIOY4Dix2M/s0K92cbgZFrhs/UTbJJauxu46lblEU3LquqwfjwoOhRHKvE7mqmFBmEGEbMD6ulwcIMpdlEsgtmDvT+UL9nnX+6fpi8QMT5Wl4WTHAGJHh18PLghCiGuoRqR7McS2b46xz1ZB7l7fY41ZONCTLEkfUtVZhl9NuFJE7i8HL1zXixEPgsJbg2+Bg8WovWVhj2YO2Sok2MrWDo3KnjJyNZlARmBkgjwZyF1nLOA3/LU2foGLvnwZnVe8fKfYtBz80clqFqLYuWOmIRWNWkKA51OEEgxzfFmBkor9wCbIUBe/WkzKs0Yy0n0U0J9Pp6x8sePMUs3Hulg8pemACrvuG7qy27xGt5ouT3b6Z58SGm+D0yp1lT4rVyK3YWJm+sRegWSVkmwA9L6FiEAhhVjKdXuGLKol3AnHEq2nlHyBYm4StHOA4kk2edWiJZg8zF5XBXEzdB6WI/EcDGZminYYVsnq/rwJQP4TD15xsR18FGs+ZGYroxCT3uP5+Gx5OcEiq7lvUHspiIOt6fke8ai/afzEg4zTsGZAuLDFb1OKzuz8ppGdLKW1VKXPwSPBHtdrP3HWv9YHb2cRs9MFVxtWGP0MHf/U83FHGDGP1I3d4kdvs6ifWQBXl4++P6KqxVDKGNq3F4pVua96YKBvKn0BhPmOj96P6P9CDj/1IYfWH7yyDy5pcShyofNvR3Z5fZDiWEYhUhAhb0B8WlVgqsa64Sh2q6dY+FGxdCPNLRGOHxukL9Ok5DkymIsgaHwtqyRG+HlEceBRXfnb1LlT6t
+ 76g1PBcG
+ hWG4rGB7htU3ZoODQjRGk3Ofl90AxPHFhPxIUd1x5cOuToXaIzNU7ORkhW2kP8PBTyU+8ftvq/vzjomualAH9XF9DivWypvxvAekLNOLiGztWpFXSPf7U9mhQV9XBMAC1YyHkrJt5XVWfbQoediY9au021o/K8P+Hcu4UqIh1DsLcKcvHE+cV97wehL+gmHDFbj0s3vCGDSFmtVsms9anUGFflCVnWAiiZWwuiHAVlR9WIoOtljvpwuzZVmuZKjgG/dxEwbmjo0TR0v4DMeqMKEWnZcaUza+AMgOj17bK+1tqN8PhyUX/4FocLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,92 +92,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+"Gary Guo" <gary@garyguo.net> writes:
 
-On Thu, Mar 19, 2026 at 06:23:39PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> A user can invoke mmap_action_map_kernel_pages() to specify that the
-> mapping should map kernel pages starting from desc->start of a specified
-> number of pages specified in an array.
-> 
-> In order to implement this, adjust mmap_action_prepare() to be able to
-> return an error code, as it makes sense to assert that the specified
-> parameters are valid as quickly as possible as well as updating the VMA
-> flags to include VMA_MIXEDMAP_BIT as necessary.
-> 
-> This provides an mmap_prepare equivalent of vm_insert_pages().  We
-> additionally update the existing vm_insert_pages() code to use
-> range_in_vma() and add a new range_in_vma_desc() helper function for the
-> mmap_prepare case, sharing the code between the two in range_is_subset().
-> 
-> We add both mmap_action_map_kernel_pages() and
-> mmap_action_map_kernel_pages_full() to allow for both partial and full VMA
-> mappings.
-> 
-> We update the documentation to reflect the new features.
-> 
-> Finally, we update the VMA tests accordingly to reflect the changes.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-...
-> diff --git a/mm/util.c b/mm/util.c
-> index 8cf59267a9ac..682d0d24e1c6 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1446,6 +1446,8 @@ int mmap_action_prepare(struct vm_area_desc *desc)
->  		return io_remap_pfn_range_prepare(desc);
->  	case MMAP_SIMPLE_IO_REMAP:
->  		return simple_ioremap_prepare(desc);
-> +	case MMAP_MAP_KERNEL_PAGES:
-> +		return map_kernel_pages_prepare(desc);
->  	}
->  
->  	WARN_ON_ONCE(1);
-> @@ -1476,6 +1478,9 @@ int mmap_action_complete(struct vm_area_struct *vma,
->  	case MMAP_REMAP_PFN:
->  		err = remap_pfn_range_complete(vma, action);
->  		break;
-> +	case MMAP_MAP_KERNEL_PAGES:
-> +		err = map_kernel_pages_complete(vma, action);
-> +		break;
->  	case MMAP_IO_REMAP_PFN:
->  	case MMAP_SIMPLE_IO_REMAP:
->  		/* Should have been delegated. */
-> @@ -1497,6 +1502,7 @@ int mmap_action_prepare(struct vm_area_desc *desc)
->  	case MMAP_REMAP_PFN:
->  	case MMAP_IO_REMAP_PFN:
->  	case MMAP_SIMPLE_IO_REMAP:
-> +	case MMAP_MAP_KERNEL_PAGES:
->  		WARN_ON_ONCE(1); /* nommu cannot handle these. */
->  		break;
->  	}
+> On Fri Mar 20, 2026 at 8:24 PM GMT, Roman Gushchin wrote:
+>> John Hubbard <jhubbard@nvidia.com> writes:
+>>
+>>> Hi Roman, Miguel,
+>>
+>> Hi John!
+>>
+>>> I was delighted with sashiko.dev after just a very quick peek at a
+>>> few of its linux-mm reviews. Up until now, the AI code reviewers
+>>> have often fixated on trivia, but this one goes right to real
+>>> issues that actually matter. Sweeeet!
+>>
+>> Thank you!
+>>
+>>> So what would it take to get similar results for Rust for Linux?
+>>> (A bunch of us are working on drivers/gpu/nova-core and 
+>>> drivers/gpu/drm/nova, which are written in Rust.)
+>>>
+>>> I'm guessing a combination of "add rust-for-linux to the list
+>>> of mailing lists", and a whole bunch of new Rules/Skills?
+>>
+>> Yes, I'm going to add rust-for-linux (will appear ~tomorrow), but a
+>> bunch of patchsets which cc'ed lkml have already been reviewed, please,
+>> take a look.
+>>
+>> We don't need any rules/skills to get *some* reviews, but we certainly
+>> might need some prompts to get *better* reviews, both in terms of bug
+>> discovery and false positives. If you'll master something, I'm more than
+>> happy to give it a try.
+>>
+>> Thanks,
+>> Roman
+>
+> Hi Roman,
+>
+> First of all, great work. It has already produced useful review on my
+> patchsets.
 
-Not sure if it has been reported/addressed yet but it looks like
-mmap_action_complete() was missed here, as pointed out by clang:
+Thanks!
 
-  $ make -skj"$(nproc)" ARCH=arm LLVM=1 mrproper allnoconfig mm/util.o
-  mm/util.c:1520:10: warning: enumeration value 'MMAP_MAP_KERNEL_PAGES' not handled in switch [-Wswitch]
-   1520 |         switch (action->type) {
-        |                 ^~~~~~~~~~~~
+> I've seen a few false positives on Sashiko which seems to be that it understands
+> the Rust code from an userspace Rust perspective and doesn't know some of our
+> unique constructs (most notably, the way we handling bindings/FFI).
 
-I assume
+Yeah, I'd imagine that adding some rust-for-kernel prompts should help a lot.
+>
+> I'm preparing some prompt changes locally and am testing these out, to see if it
+> reduces false positives. It appears to me that the prompt for Sashiko is from
+> https://github.com/masoncl/review-prompts? If I made a PR there it would
+> eventually land in Sashiko, too, right?
 
-diff --git a/mm/util.c b/mm/util.c
-index 682d0d24e1c6..c41c119a5a74 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1523,6 +1523,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
- 	case MMAP_REMAP_PFN:
- 	case MMAP_IO_REMAP_PFN:
- 	case MMAP_SIMPLE_IO_REMAP:
-+	case MMAP_MAP_KERNEL_PAGES:
- 		WARN_ON_ONCE(1); /* nommu cannot handle this. */
- 
- 		err = -EINVAL;
---
+Yes, I'm using some prompts from Chris's repository, but not all of
+them. We're in touch with Chris and thinking how to better share them.
+As of now, anything works, send them either way, we'll figure out the
+syncing part.
 
-should be the fix?
-
-Cheers,
-Nathan
+Thanks,
+Roman
 
