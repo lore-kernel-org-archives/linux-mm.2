@@ -4,112 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6C41091931
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 00:21:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C091093168
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 00:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 174D36B0475; Thu, 19 Mar 2026 20:21:10 -0400 (EDT)
+	id B75CB6B0467; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1266B6B0477; Thu, 19 Mar 2026 20:21:10 -0400 (EDT)
+	id B4DBC6B0468; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03C646B0478; Thu, 19 Mar 2026 20:21:09 -0400 (EDT)
+	id A63786B0469; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E59CC6B0475
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 20:21:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 969C55ACA3
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:21:09 +0000 (UTC)
-X-FDA: 84564536658.18.066FAA8
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B01F320005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:21:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vee+ZMpj;
-	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 95BFA6B0467
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 20:35:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E01CA13BA7B
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:35:29 +0000 (UTC)
+X-FDA: 84564572778.17.36D8113
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C83031C0004
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 00:35:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=invisiblethingslab.com header.s=fm1 header.b=o9iRXE22;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aHcOmJ7z;
+	spf=pass (imf20.hostedemail.com: domain of marmarek@invisiblethingslab.com designates 103.168.172.150 as permitted sender) smtp.mailfrom=marmarek@invisiblethingslab.com;
+	dmarc=pass (policy=none) header.from=invisiblethingslab.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773966067;
+	s=arc-20220608; t=1773966927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bSWC2c+6ov5jVqWIkd0yhypYy89vs1IKdCrAW1Ebqvc=;
-	b=ABK0MhuIE0YDuU8RtI3E2SekBj4X2CjGDIWXGk2ogowpcU0yGGnFY0F6pvWYpTKxMGu5lo
-	8xUT1ZHxMoJ4erXcipXtj+drgr+Cye1u6FCrl5zudQz/SxRcRlt61UX56DcihWyMvCbULG
-	E2kc9AZWFKE6KvCozQRXNpX1YluzM5c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773966067; a=rsa-sha256;
-	cv=none;
-	b=t5DFSUx+DvBpKPjwIJu6NQg22XJxPJgSlTpBULBxtXsVvUcT1e2MeFg+bxK/AOYw8eJyvb
-	CSUE2KsCTIz34GbkEyFjVJXkRXsma4JXoitzl5+UjQHqlgKifTmNzCTpFklvWaAJKBoyXy
-	b01BdEolbkxYdmUApqptCXwBIgnO/hc=
+	bh=JcONGwatR7I2a2nbnBcn4nDdjiD848qctkczcd/135I=;
+	b=Gn9oGSacJEeEnQN+jk44fsm3Tut7b6vYpGaD2x0SqmX82HKbqJj9nJ0UTUmD3J0PjI569E
+	hiwggDiWne1gr6qX4bZFhvQU/2Y7RQ+6YfjBrUB4HTwdiKX/xiLRZVflv89Jvvl931dlWr
+	y/cqG/CJ0sMGYOeLfw37mNJoPjoo3tQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vee+ZMpj;
-	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b052ec7176so22455ad.1
-        for <linux-mm@kvack.org>; Thu, 19 Mar 2026 17:21:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773966066; x=1774570866; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bSWC2c+6ov5jVqWIkd0yhypYy89vs1IKdCrAW1Ebqvc=;
-        b=vee+ZMpjtIUBIlIRb0uvPb3A1r//Lhi1DOuvwlhboISe0CZnsmM4Bb3+AUgdXNlwkb
-         ci2prBfWHRnU5sz8vAuMHk+8gBYuJSqtOcs6lL0u2IFZytrtIz0a1IygeJrzmk4nV6O8
-         V2hpPoE+55EtbNQ4mAlBd9N2oXU82nPwQ0jRv3vllBTvLwgw7JMHv8CyGQHJZvLN10LZ
-         axlvIHg0b5NfoRtBF1AN/hswUn9MNzvcpmOR5L6PBieGgTqCGOOEYSzq6pLlVJC52QHf
-         WD6X90BdVXvez8oh0P2XoMJphY1WcDvQbn9JkXWmABBsgHjgRDB9C7MRkxHo9064uGwJ
-         TwLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773966066; x=1774570866;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bSWC2c+6ov5jVqWIkd0yhypYy89vs1IKdCrAW1Ebqvc=;
-        b=cQlpJDlqssEvVaE+gBUL+zepE4rt5MbJnNkou+EuSv9WhyMuVv609VmFEUwk2jlmI4
-         LsdC+1xS1XTxvLUmD+pJXFrEDMlexDIwLV7Ythtf5FdF6tTTvGsMkpu7DdOZ3FN+RUZj
-         Rr/VGQ5mrsTTuySALwEyos8CfDJlFlu2Aod+GPG4zYPMF0vSXz3NuKOnb95kNTi/yNDr
-         5AN67BrYny8YrMGhyvqAL0DZH1MLGKf7eOCGPoV5vu3RcEy/k6ZK/rur/mZ9cLYKxGYv
-         ofp6rOl+k97YrNfTxW1bbc1DOYaflKtMeyoj5DtNy8JUiK8CXGOHJ9YFLCPFJYyYskhk
-         czMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgzFzQs5E3jxT23BSJ5xaVHmQp22s92RkeG/jud+8dKQCMRxajuT2I/+YFTtRw6V0oCqr3bvKjxQ==@kvack.org
-X-Gm-Message-State: AOJu0YyIbYJBL3F5H0vR8yh1xY0wVosZPQu2A6woa6xL+h1McH3foWPC
-	O4otEKUdszL5zKg7+cp+i/5Ee+1H8XsdwNMbKXEib9yXi8JtflvDAUySlhuiPJWEAA==
-X-Gm-Gg: ATEYQzztc69Q3a3mtRMbuaF76Q30dFbr2ImSQDB9hdrIpcgbars0yLG4tod/vKqP7KI
-	6gB3/G/CfvZwo15Kfnw5+OwOskNSueiYoDbA0NAp8RoOHQ1eg+60+/9IMlcWKfVUHnS1HQeo1R7
-	gkTLI4S5sB7XYqDR1n2EwSM3oIog0vBrEWaw+3+p6tCiBKJXM2D4ov0ulGCdVuqc5aG/0wzLvQv
-	gOEPFj5dCiinWd97ZxT3UN2WvSKeMs/AEVF/0+9nHJiU3XsJuYkpFcOGFi2FwpRAGha4MKhKcP4
-	lbgnzP642yoxYykZeI+l0LYPWEogf/Xbalsatu72q2n3ARJ8cPtLw3FZNcb8Auf7Uerj0Hqfk7g
-	3q7Oct+gCmfCMxwrqnSIn05fDTh7juZidfR7L4Qm2K4NHs8M16MfU2w+6JgriVTFv0Lxxr9QaBb
-	QB6t0mjYjD9YMfhTB1cj/arfAqPuw5uziVaeJviBbgfU2HacMxTTqreSE8KYdMvg==
-X-Received: by 2002:a17:902:cccc:b0:2b0:4d40:ce18 with SMTP id d9443c01a7336-2b0828a92e1mr1264855ad.14.1773966065751;
-        Thu, 19 Mar 2026 17:21:05 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b040da3easm319482b3a.41.2026.03.19.17.21.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 17:21:05 -0700 (PDT)
-Date: Fri, 20 Mar 2026 00:21:01 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dmatlack@google.com, pratyush@kernel.org
-Subject: Re: [PATCH v2 2/8] liveupdate: Protect FLB lists with rwsem
-Message-ID: <abyQJ_9xDg6GrU4X@google.com>
-References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
- <20260318141637.1870220-12-pasha.tatashin@soleen.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=invisiblethingslab.com header.s=fm1 header.b=o9iRXE22;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aHcOmJ7z;
+	spf=pass (imf20.hostedemail.com: domain of marmarek@invisiblethingslab.com designates 103.168.172.150 as permitted sender) smtp.mailfrom=marmarek@invisiblethingslab.com;
+	dmarc=pass (policy=none) header.from=invisiblethingslab.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773966927; a=rsa-sha256;
+	cv=none;
+	b=cl2VdfPw/fjYIOBAbS2+5iMV9rPNe8RDerckm8dX/adw3MsdNu5PRWg/PCAe5SlrRyM0yo
+	Gpp7yuK53fOwBtFXFVfmnWU5sFYBUf67py3uAZPd52T4/Vsy2fIi5ms8+dpt0FD1yST+wH
+	Mv3KnEtsrdjAqEopSzVHqccDfX9xtl8=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3405DEC01DD;
+	Thu, 19 Mar 2026 20:35:27 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 20:35:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1773966927;
+	 x=1774053327; bh=JcONGwatR7I2a2nbnBcn4nDdjiD848qctkczcd/135I=; b=
+	o9iRXE22s4v3SibxaC9hpc6A6uyuS+CaFY0enqTN+htegyVqj9n4jY5e5KjzSG/5
+	G8AKSWMNKCAY2RX93lNRZl+5LG571pYpQVGaJpFkAu3ySjaw0bz/DuyeMqW25II5
+	+JnoI+tVg1jrLTQsvPaejhxeMcfOzZ1bU7Ei6PSyUBv7zWHaxDEK3MBadIjBCaYc
+	YmIhF8FFm7OqTwiGsZtKQiwekGCxX+Z+BkSC10ATaHxLlHVKz9BNevbCGHWld8cI
+	yM9hx1+U0Nxpg9Z92ADffOiOWsl5EVyYODmLjpIAAxht/kFB8afE+QUHCIBAnOe5
+	SqCQy42dAKMPD5dPXJSzPg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1773966927; x=1774053327; bh=JcONGwatR7I2a2nbnBcn4nDdjiD848qctkc
+	zcd/135I=; b=aHcOmJ7z78hfcHqG88kU0UoJ7OiJ9gSWCciMgCIW9Oe1aj12F/w
+	sz4BhUijpJi+6Mg9B1QwFNMMzEKP2cVL2kbQj5Pq4tKtN8FM1Cu5v92XtOTg3JNa
+	tWKrdTWaNuqBOz+SCl1u3UUQKUAPUfD35ZL/39vqFJgWyW/heuXiy6TRPAVqP6K8
+	x7W66zvshvDLNJS4acOdSpgnBFzYrf4jBv+j2BT1gRRA+eMZDs3+KDYrdw87hG9V
+	OjUbXXwg/rVUvx53/ZYdfeKBPoK3CkRKbuOjTgqAubXzd9dO/18dquC0xtHXn02k
+	7rxxDr234hGp/90mGkDCgWrmwRLgsZAcvfg==
+X-ME-Sender: <xms:Tpa8abB1Mh9xKU831dYLGOf9C6-gOg3F4gGiSC4ZzPJNsq8ASPu5qA>
+    <xme:Tpa8aYYipdefJhwZUgg9VnTbVPWFfnPSk6QjTER9tU9__Mq2UEftTwVH_7J_UgB3f
+    PJqfs-Ta6za4abhtRdeCEahiaKWzty_68_7KWMSCQPdFHo2ADQ>
+X-ME-Received: <xmr:Tpa8ae6p7thI7tVHbo1jUP2kbaB1sUfFzAOQy_SIsWpkmyeIxlZyTilAutZTMnAGKVg33a5wSwW7bdXNe9I5M6V0vhKr0Ycitbw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekgeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgvkhcu
+    ofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinhhvih
+    hsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfduleet
+    feevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghksehi
+    nhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdpnhgspghrtghpthhtohephedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhisggrlhgurgestghhrhhomhhiuhhm
+    rdhorhhgpdhrtghpthhtoheplhgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsoh
+    hnsghorghrugdrtghomhdprhgtphhtthhopehhrghnshhgsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdhmvgguihgrsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
+X-ME-Proxy: <xmx:Tpa8aZZYU1sq9eJFrSdXRSVwLvv9Ra_1e_pgcZJaGC8RxTbeXsJ04w>
+    <xmx:Tpa8adg4cbdZ8QxKyglo3HzlpH5EOEdSMvXAnAihPwcPjYQJw_bFtQ>
+    <xmx:Tpa8aa-dY4_QFgHrmps0ESRVoKKZUWVqM_oaffD2gPFbo3vYCPqwAA>
+    <xmx:Tpa8aYqlogKH7xeGqaaxibNI2Ay9Wa3qsF9MWY-piWy6YG2cSpx8Uw>
+    <xmx:T5a8aaK5f7tdsb7Fqw207TKEnVi7mG-7YR-leIYSvDsFGigO3TratenH>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 20:35:25 -0400 (EDT)
+Date: Fri, 20 Mar 2026 01:35:24 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>, linux-media@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: Linux 7.0-rc4: v4l2src0:src: page allocation failure - increased
+ memory usage in 7.0?
+Message-ID: <abyWTGIlD_rncMds@mail-itl>
+References: <abtAylIlW3I8s1T-@mail-itl>
+ <CANiDSCvqt574XbMAz0qUunu7xDY=oScL+sx533X6ke=fcEdr+g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3Wmh7zzAptM1+3iD"
 Content-Disposition: inline
-In-Reply-To: <20260318141637.1870220-12-pasha.tatashin@soleen.com>
-X-Stat-Signature: xim1d7aakjz9bgy37qmac71y7718xogz
+In-Reply-To: <CANiDSCvqt574XbMAz0qUunu7xDY=oScL+sx533X6ke=fcEdr+g@mail.gmail.com>
+X-Stat-Signature: tpsesaom1wkru6j4fouany898t6gsk7f
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B01F320005
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773966067-898025
-X-HE-Meta: U2FsdGVkX1/Chhu5YeLJLauQiBe4DzBsIqyz6bVTsvrQTnWVrC8mP9OD6izMfP9EaUcU8OZNITueqVnQdGd8UHdGlJBsP1rRUz5cvn/STglHnxTJaF1SYAlx1P9fl4MfIK56SiQvaETcG3h8oAdEu546XHc8wsccqwzwqcd56kqqnZfehMozga6kc6/RC7cvT8OasugOQ6U3VXXm559H4tsmmQpvFTWfeR4Vd7tnhvgROxLxuTVjjoxTDKv66MqjZVzZxFGDSEjOMfyefZDwXeOFFkfltsHaMVwG02oV4f84XxcMoHf/tVjoBrJhYXzcN8VD61dW/9t1O0qHVLkfQ7fux7gEPpa71houd8onGCevh4kgaxh9ZR+SK0N3yIc1sVo3zAjMaOpf7oUV1sNldZnxo/P17e8m5bR86MWTugmIOMvY85VVIkn14HAnTldPfWGF31rXxjjHfXMVUoakeIYSIbCmsePUqUXSB8k9mUlHH0Qau5joUTG3i6O8may1aTZgp8aS/tzKPVLkNh+qr5sNmhBn5ktiFgwPgmj1mPfgOR4bBj0TMgq/Nr656VnmK5oxL8JdkpIADgya+P8owgjwann61wnMXDiiXm8ctQnM+vTgKLkXLMrhek7EgpEt4m+0TpB/paWbao8Lc0wgHgtmw/7alzOgfDcOM4AYdC2C4YusViC9zoB9iY8SizOPy0l6wjGebUPrIOU3/P47jxcCRgcfeqAGeLvrPjWM4EokfAn2Zny1iZSOUEu5z8HO4I1IILMsoixUFKjYxC4oAK5HL38mLlb0kLkHUNAV7nWeoanoz7Vq+I8zjQMqBX3oMMJ/XuZFsOEZg8TiyjKELCm6lQTiNHO1cEHmfZY2pLJs71ArUK8Q9cMRZhZKQBc2sp6jrtyYaD8CT2ohIlXA0rYd+G++qmiNnUt5K9j/KMIbZInGBCQhNc5Hxllb0JQexkic6/gsg3pHb5uxPWo
- zNLzi5Fp
- pBYzdvJ4zoF7uvNfbHiajsgoTKiZM53PYKBRVzdDcXaL8nfjwvBaX7ynfxrJkrQOf6BU/bxzlG9EZuLm9uUQaCaAGO1si7IgRnq89E9mqjt2ujH6QhOWGScyROGlAFDXKVf24D0abmqwaaOOGcmcsCC8W3XPdNtH/OyXhUvp7l5IE4gUzKBopr8xBcAs50DmzTOIJjxYj0ybLnoOB+4U5vKrc5nDOFK94aZQqvIpbINLg10fYu1AAtDOnugldntCeto8IjwS1SWFdq7AnCk3hgnmzBVN1P2PiymBcINwhHHJE28KBYmY5JJ2Vtru4NEay7j3EHtEYOa5SHkyQ0Q0vzAyvwH1e0JxT/IlV1X2K6/t4RU1J8i2s4lHPZ+g5p3j7qJSlr+gAGEUXAwAOr3uIA2O3Pifx3fd/vLD72G8YvdS4Z3TPvJCxMzDpI7s3yLcQfArzjFusQhbympc=
+X-Rspamd-Queue-Id: C83031C0004
+X-HE-Tag: 1773966927-490401
+X-HE-Meta: U2FsdGVkX1+HGJj5uqzFQfnxzYdWvLm8bXXl/GGOLiySLtaVmd/wSK8IeHCC4LpeVEM2uYmvPPTGvlLJCDe47+ySNkeDraJHO6+CXxkW9vC9WBsBdswcduEfHVMO8yAUZpO4EBHGbyf+I9BGzFYXpbPfJPea5HscrONvo48HGgxXV8nR2owFzhAtoDP8bWNb/yTZR5kIemz6PKB2yuI3nTiCcPUMNEoo2VyJluGlsVni1zb0/2K4HI/6i7AM53/Uj2UadOyEtfuW8M/8veR6vElIZgPeTKWPwa9zD8lGP3zmrqwefUx1LKSpuhq06xLKXDslhRnfY8FPhn1i26EP4ly6qYFpbslyX7u98tZ58Hc0QoAtnFJInTNFGGUHB+W61P8l4p5wLYcEcoLzSS2+Zoxfd8Y6tmcZPas47t/da9EXuhXuRle8ILSCUmdcbkDH/+EwDBEJ7oa1K31G9b6e787yWkVO5H9rPCWLKBRhQw0XRKqRAiRGM1epFfhehSTlNCsIwmIv5gwOXaG9fnQ73QlhJkNJet4ivJYyON+ln5HB9W8Kyt/O5EeDKpWc0XLWwmGqSyLsZngxCCVzOqAfjucOWFZIAKDvoY0VPkGsmBntbvQnYTbdL2/nhrbo9uY7QnLbOuryteMWF5nVhNeX9gI6BzkuB4LYQscdPLRZJvYbtC726c7O/wWymYGrCp3r2i7HoH6N4jJyd0ysezmUY3m49kNXoi9vVMIeHBXudjcSov90se4+Jd9o4svzqQZ0OKopcNbGd5MdwmhiniM+BeewtPhab60L026ilBybaf4k7PlgwHX4dZbbNWr+ALm5kjL7CbPd4IwwF4YjconVQq21n2uUoONHurf1z/7JKR8jTq7GWKmy7nmezgLLm/d3f32d4OREmrQxK9B2ZgAaQUHPo5B4+dZfZbH0zwRuw2iTD27tuni8wakXrp6VqCtj6f8PASfaj4ZUZaJjrjN
+ dj9jnImi
+ 3MObnOrlFVhKntW16nn4SDD20LiQ/8qY0gXBOYFIrQX13CQm8gHBPQq1f4sbg20uH0Ez19QKgYLM85RZNCq90XsD3OKuwbBwddEj+KQq6txof9BqEfZXmlf7YeCK0j/gZUfcN7zLph1R0rjVtrI4MGvKY+GjhKfcEL0zmofJTehcU+mPquq/odmbGmlq4tItWEASwPZ4YEuxOAb0guhSealpzUfbe6H3tvvqJPqs+JE7HER03oJ8P9TPaYiSj0zqRG3oc75hQHwN3BVZypypaXgca3Ruw/iZQOPtCqGmw9QEPTOLWqsbdaud2xCg/9d0k6O8r9D6/3844bKQvAwVP5a418hi9/YI9hvjJBdaRfQ1yX8pCqIgzTsk0p/wrqtOGUa+oF1LGAsnCcd5XDOs+OMK06GnXgVDobCDIge+Xkkv4O3qPZiHf1OeGdj8AM2FmmOqd5jY5NKhGeC3PySc2eXYD+D1KKtK7NcD5vBXbd7tVOz03BLBZSGd7LqtTlfp/vX/my9mCCqcYucf0jHkciSvsxyUmI4qnhj97TEWyHI5HHAQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,148 +135,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 10:16:40AM -0400, Pasha Tatashin wrote:
->Because liveupdate FLB objects will soon drop their persistent module
->references when registered, list traversals must be protected against
->concurrent module unloading.
->
->Introduce two read-write semaphores to provide this protection:
->1. A global luo_flb_lock protects the global registry of FLBs.
->2. A per-handler flb_lock protects the handler's specific list of FLB
->   dependencies.
->
->Read locks are used during concurrent list traversals (e.g., during
->preservation and serialization). Write locks are taken during registration
->and unregistration. When both locks are required, the global luo_flb_lock
->is strictly acquired before the per-handler flb_lock to prevent deadlocks.
->
->Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->---
-> include/linux/liveupdate.h   |  3 +++
-> kernel/liveupdate/luo_file.c |  1 +
-> kernel/liveupdate/luo_flb.c  | 16 ++++++++++++++++
-> 3 files changed, 20 insertions(+)
->
->diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
->index dd11fdc76a5f..8394fb2d8774 100644
->--- a/include/linux/liveupdate.h
->+++ b/include/linux/liveupdate.h
->@@ -12,6 +12,7 @@
-> #include <linux/kho/abi/luo.h>
-> #include <linux/list.h>
-> #include <linux/mutex.h>
->+#include <linux/rwsem.h>
-> #include <linux/types.h>
-> #include <uapi/linux/liveupdate.h>
->
->@@ -107,6 +108,8 @@ struct liveupdate_file_handler {
-> 	struct list_head __private list;
-> 	/* A list of FLB dependencies. */
-> 	struct list_head __private flb_list;
->+	/* Protects flb_list */
->+	struct rw_semaphore __private flb_lock;
-> };
->
-> /**
->diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
->index 6a0ae29c6a24..96fdd5790dcc 100644
->--- a/kernel/liveupdate/luo_file.c
->+++ b/kernel/liveupdate/luo_file.c
->@@ -873,6 +873,7 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
-> 		}
->
-> 		INIT_LIST_HEAD(&ACCESS_PRIVATE(fh, flb_list));
->+		init_rwsem(&ACCESS_PRIVATE(fh, flb_lock));
-> 		INIT_LIST_HEAD(&ACCESS_PRIVATE(fh, list));
-> 		list_add_tail(&ACCESS_PRIVATE(fh, list), &luo_file_handler_list);
-> 	}
->diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
->index f52e8114837e..91910d806d1d 100644
->--- a/kernel/liveupdate/luo_flb.c
->+++ b/kernel/liveupdate/luo_flb.c
->@@ -49,6 +49,7 @@
-> #include <linux/liveupdate.h>
-> #include <linux/module.h>
-> #include <linux/mutex.h>
->+#include <linux/rwsem.h>
-> #include <linux/slab.h>
-> #include <linux/unaligned.h>
-> #include "luo_internal.h"
->@@ -70,6 +71,7 @@ struct luo_flb_global {
-> 	long count;
-> };
->
->+static DECLARE_RWSEM(luo_flb_lock);
-> static struct luo_flb_global luo_flb_global = {
-> 	.list = LIST_HEAD_INIT(luo_flb_global.list),
-> };
->@@ -240,6 +242,8 @@ int luo_flb_file_preserve(struct liveupdate_file_handler *fh)
-> 	struct luo_flb_link *iter;
-> 	int err = 0;
->
->+	guard(rwsem_read)(&ACCESS_PRIVATE(fh, flb_lock));
->+
-> 	list_for_each_entry(iter, flb_list, list) {
-> 		err = luo_flb_file_preserve_one(iter->flb);
-> 		if (err)
->@@ -272,6 +276,8 @@ void luo_flb_file_unpreserve(struct liveupdate_file_handler *fh)
-> 	struct list_head *flb_list = &ACCESS_PRIVATE(fh, flb_list);
-> 	struct luo_flb_link *iter;
->
->+	guard(rwsem_read)(&ACCESS_PRIVATE(fh, flb_lock));
->+
-> 	list_for_each_entry_reverse(iter, flb_list, list)
-> 		luo_flb_file_unpreserve_one(iter->flb);
-> }
->@@ -292,6 +298,8 @@ void luo_flb_file_finish(struct liveupdate_file_handler *fh)
-> 	struct list_head *flb_list = &ACCESS_PRIVATE(fh, flb_list);
-> 	struct luo_flb_link *iter;
->
->+	guard(rwsem_read)(&ACCESS_PRIVATE(fh, flb_lock));
->+
-> 	list_for_each_entry_reverse(iter, flb_list, list)
-> 		luo_flb_file_finish_one(iter->flb);
-> }
->@@ -355,6 +363,9 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
-> 	if (!luo_session_quiesce())
-> 		return -EBUSY;
->
->+	guard(rwsem_write)(&luo_flb_lock);
->+	guard(rwsem_write)(&ACCESS_PRIVATE(fh, flb_lock));
 
-Since FLBs are linked with file handlers and the file_handler can be
-unregistered/registered while this is running, should the luo_file_lock
-write be taken here? I think maybe we don't need a separate luo_flb_lock
-and the luo_file_lock should provide enough protection if we acquire it
-here, as a file_handler is supposed to be registered first and then flb
-needs to be registered against it?
+--3Wmh7zzAptM1+3iD
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 20 Mar 2026 01:35:24 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>, linux-media@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: Linux 7.0-rc4: v4l2src0:src: page allocation failure - increased
+ memory usage in 7.0?
 
-Maybe we can have one luo_register_lock?
->+
-> 	/* Check that this FLB is not already linked to this file handler */
-> 	err = -EEXIST;
-> 	list_for_each_entry(iter, flb_list, list) {
->@@ -444,6 +455,9 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-> 	if (!luo_session_quiesce())
-> 		return -EBUSY;
->
->+	guard(rwsem_write)(&luo_flb_lock);
->+	guard(rwsem_write)(&ACCESS_PRIVATE(fh, flb_lock));
->+
-> 	/* Find and remove the link from the file handler's list */
-> 	list_for_each_entry(iter, flb_list, list) {
-> 		if (iter->flb == flb) {
->@@ -638,6 +652,8 @@ void luo_flb_serialize(void)
-> 	struct liveupdate_flb *gflb;
-> 	int i = 0;
->
->+	guard(rwsem_read)(&luo_flb_lock);
->+
-> 	list_private_for_each_entry(gflb, &luo_flb_global.list, private.list) {
-> 		struct luo_flb_private *private = luo_flb_get_private(gflb);
->
->-- 
->2.53.0.851.ga537e3e6e9-goog
->
->
+On Thu, Mar 19, 2026 at 11:19:38AM +0100, Ricardo Ribalda wrote:
+> On Thu, 19 Mar 2026 at 01:18, Marek Marczykowski-G=C3=B3recki
+> > Additionally, this failure isn't handled gracefully, it's followed with:
+>=20
+> That should not happen.... Could you check if this fixes it:
+
+Yes, while the page allocation failure still happens, it doesn't result
+in follow up errors anymore.
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--3Wmh7zzAptM1+3iD
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmm8lkwACgkQ24/THMrX
+1yzZqgf6A1X1/vuRf+H4NNzBAsVYrRbNQzGgQKlEkx/IG/lvr3pV3QaNCxsgpHyi
+rMbm1sd7/PSW5kmL4TcqeozhJcH+RSE26nGL2PfTsGu9vG+u1C3J3x4EszM86Via
+7P8rj9uc4bESWCDsIvPevH5o6f7YRN2idp4YpOfm2e5iVMDFclSN/N3PAT/TZEmM
+Jir4SEiuu1C1tXlrsB5FTzipvS2oJUpOTD+A0f6PEhqzKVaCbnFYvSz38IVmk1Kz
+voPL8FtD1fopAWdFIuDCF1Y+oJLSPbz4AAxVt818xMmcIzXi35NgdGX8th+9Tv0G
+9gBAr80v3xSVPv7peCA742lU1bUsww==
+=uE5Z
+-----END PGP SIGNATURE-----
+
+--3Wmh7zzAptM1+3iD--
 
