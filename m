@@ -4,96 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB7AE108B913
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 12:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2965F108B91C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 12:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2E586B0005; Fri, 20 Mar 2026 08:39:58 -0400 (EDT)
+	id 692F96B0089; Fri, 20 Mar 2026 08:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E06296B0088; Fri, 20 Mar 2026 08:39:58 -0400 (EDT)
+	id 669FE6B008A; Fri, 20 Mar 2026 08:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D43236B0089; Fri, 20 Mar 2026 08:39:58 -0400 (EDT)
+	id 5804C6B008C; Fri, 20 Mar 2026 08:43:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C68BE6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:39:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DD56B6880
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:39:58 +0000 (UTC)
-X-FDA: 84566398476.03.149AE65
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4902F6B0089
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 08:43:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC2F214015E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:43:12 +0000 (UTC)
+X-FDA: 84566406624.20.A2AED2D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A44614000C
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:39:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LFLSYUpD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0B1D61C0007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:43:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MbsJYEaf;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774010396;
+	s=arc-20220608; t=1774010591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oj7sXbeo0DQ6fVekpJ4aIEkL3Ivz9VMDUrNZ5gZpa04=;
-	b=i9SCgj9vpLW3JGvbDvM4z7VrmIswKNRnltQT1eyOW9lYf0kHTDLRjcZxWbJ83wke+5auna
-	YCQDXzvcQ5w9P7U/hT1gqX7IYxZB1IjlZONIM4cm6h8HOXjGFs00UIO2N99ekhcEES+HdV
-	HjsBs3MewonH/WvV+20LnbpvHaWbs+4=
+	bh=/FRuC1ooTniKyZ4t9QIby2phm8SpZXS4nkl6+MWe55w=;
+	b=gqFetCjDAMeBf/prdTVKPsLOvNllH8dfR7x2BW82r9rdjkHuO3JY2vLvF1Mhbv3Vx7U/fV
+	6Ad8Dg3Q+QFh1c3diXvOYGQyb+GAi//9VfXGqyOO742W7K5EMtE5Flr1rKJLynuP40DKNh
+	JFU3kE5MhhvDK7ZyvEjbwbH7DJoJkJU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LFLSYUpD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774010396; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MbsJYEaf;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774010591; a=rsa-sha256;
 	cv=none;
-	b=eBELR8prSBZWzjg6qSYQewCoxdos6YcADNOlkOsuKHNbHm2fLjF6pDdlahq/90U6TuqRjP
-	5moQa1dYeSO/RbiuYLuXQMUlmdsM0OZer7sIKERmHGz8YUAbiVzAkl2ERhr3LCtvrc7xh7
-	Wvkc4yDR28nWfEAAQr37rCF/mNEe3dc=
+	b=bSAFPQOLKL0LZReNfprelAyWupdGv9nqd84xiZR5eEf08WUq2+Q8E6vU6fxpTOOrwR/IxY
+	HsAVVhMQoPJ1Ee8/8oB2MHaW3g5O7EwVX3yKvyLMUl0xWG9SVRYHeUDXhiZs+qyZBPLIQt
+	M/iwXpXMNJUvWVEempJl2PI+KX2iBCE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6055A43692;
-	Fri, 20 Mar 2026 12:39:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099E2C4CEF7;
-	Fri, 20 Mar 2026 12:39:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 23F4543982;
+	Fri, 20 Mar 2026 12:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC3AC4CEF7;
+	Fri, 20 Mar 2026 12:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774010395;
-	bh=kLImuZo+G1Y0fhj06VkAqwT+qra4RFbNidP3jdkzDrQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LFLSYUpDXlejstxSbDCKoVAHNj39NDPR/4TI/tqBisgNRHI9nzqOAfrKMS0iAXnPe
-	 BFZRH4lHQativ8RX9p29O6K2mmoKKfSHCNl5Ege5p4ppd/CX2AOCUpZzdJbSDuzYZc
-	 uIWMltQZn2xw//WgJ9r6oWfRrgBTPwtEAYvQHyvzAArJWhzEzs0pcRy2Bwzqg0APJQ
-	 xP5F9uQq8ewqBeW2dMqhZUe7t93vDM9iSyjIiynvuHCXb25Xd08PafH9iwLbwhoXVf
-	 u4bgv8yIeFkEmcIwRNiOnvTp499YpTUbbSgfJAoYqhjRvLoBojGVxanQHJSheDk1sO
-	 jhTUci9yIVngA==
-Date: Fri, 20 Mar 2026 12:39:49 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Vlastimil Babka <vbabka@suse.com>
-Cc: Lance Yang <lance.yang@linux.dev>,
-	syzbot <syzbot+8961cb270ae74b4129fb@syzkaller.appspotmail.com>,
-	david@kernel.org, ljs@kernel.org, willy@infradead.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	linux-mm@kvack.org, baohua@kernel.org, ryan.roberts@arm.com,
-	syzkaller-bugs@googlegroups.com, dev.jain@arm.com, ziy@nvidia.com,
-	linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org
-Subject: Re: [syzbot] [mm?] kernel BUG in collapse_scan_file
-Message-ID: <4f1e1560-eb13-471d-a051-cd62c7d169ba@sirena.org.uk>
-References: <69bba3c0.050a0220.227207.002b.GAE@google.com>
- <e92ca212-9ada-4cd0-8d54-2f433d6d47a1@linux.dev>
- <5eaa234e-76e5-45ec-833d-64d76903d1bf@suse.com>
- <44cb1295-c2d4-4b94-a9d7-9ad369d0f2f2@sirena.org.uk>
+	s=k20201202; t=1774010590;
+	bh=9e/Btx0YFRFKC21pnkUbnvkuOGkqidzpB8uwJ5aHo+M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MbsJYEafGQcgi0CIm/IhXRs1E/dRqUnHQhLQWI8uSPNo7vXEpMEx7VMeMbSwSfoPr
+	 we+RH7A5Fl5UmaVGz6iFvCuLb4PUlkj2/imsRa6vbCLbYQU6K5WBaHs4S04jHvzFIx
+	 8KtAZe08vXmsD5w58I+HJUYroTiWysNql/QMxXFQ+t4zZ5l2pKnDCcLUOVEZCZ90CU
+	 FiAlZzjmR8YSbQ+VtSsKOIJznigfEaVak4nOY0FPz4lN6+ZWhoLm61NBKcoeaGottG
+	 YRLdcOEkgELJyW+tgap2s+pHmaixBlAkktovvtBf4B9p1LK1V6+cqKWlDkDHkT4Uwc
+	 uoF3OisVCUc5w==
+Message-ID: <cf190f78-3f5f-499a-aa78-35261850b01a@kernel.org>
+Date: Fri, 20 Mar 2026 13:43:02 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vzcA7YqmIVwbJPjD"
-Content-Disposition: inline
-In-Reply-To: <44cb1295-c2d4-4b94-a9d7-9ad369d0f2f2@sirena.org.uk>
-X-Cookie: Who's on first?
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A44614000C
-X-Stat-Signature: ejdf7nikxw7ts76e7crs41npeuz41don
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/15] userfaultfd: introduce struct mfill_state
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-3-rppt@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260306171815.3160826-3-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0B1D61C0007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: h8bkzz8jbuupaqtts4gxeq48ni9buuuo
 X-Rspam-User: 
-X-HE-Tag: 1774010396-633067
-X-HE-Meta: U2FsdGVkX18J5akOiBTsAoGAahrmwLurDbtiVdiqZT+5ZdsPvf5MdEtDrn7s/VP8UV8tXsNlCWzhKDyZX90xp6h017lrBx9VrqfmKXhfUWSKgbVnW2dlNogFUnP+CACgW6ZItfihbzV1Eno7zfAtAwn8hwGU//29c+P2Cn0g3i2W/SsIFVLWcXtW4YgLfuF4aVAPjJ/VraiOit5BpDGI/kPD5pTckX1hsKQdsazbcXbfnvKFIJEdxdwenWPD/BeLdHbpH5IrZENfhIPEn12B0qyR4OglNTqPxatFg5H2kUjuW49rD5Oa1fWR/M+ZeI9Zu7gXryikyU6KbtyUUWr4qyu0vvvuMUQbkUQLOYexvz+/nP5SsmpgMHwO1DpUG4Xq26n7CiYddproh2JnWe9vwMLqpYclo8PibJKYzLWFZajiglo61LDPJeiIJy7ibwHPqoQ05JC9a6fJ8T8nP9lCuO+ntqXXoVrIcjKusZ07nVC7Cm7WNKOeXrHnaDbfCEgPG2BjIT7fL80dS7KiXNBUS6/2rVmiC4yKSfImdY1OKLzp3qKBtmiZZM33X/2yo8sctTZO22BrCCtVn6dak8FYAuN7sIa+FCcKO9lYFjn+TTf157F8LnK1d7FSr0d8FVeeo9bXLTMvlu3+h+B/GvK58dUmM3NbqRt1phGrGI9f0g55Cr5Wb6h233oivrXHaXZg8dVgVkosOBcAvHYEP093HPrvIk/znsSVxBOWu1siJ0wvzzXIwd5354T8/6l+jq3pCDQssbc7XZ0tMcJ7h+gr//l58rnE9wz6te71SDMub5gbQfjFQbmZMc9hjF71IKHau7/p49jQHsWSMzOZKWyM7ntVwXQiZ8Sgt6mQUar99fhzmTOC43SbIZmvKjmFpQzn4g61wFatZaS/l1t5sBUg+r5flFk4wWHG8ufQj8mId8KzmL4NBcwWaL3LgKPhFMPPU/sMnCDKS1+HtT0flDQ
- gQaz8z4B
- x5GS5Wf0+AUyd/TAbr3P8zg919KrqvySZoTcWQvUo160fsNi3Ad/xKg+/y9C7nQFBEt9WCrlpweY5Qbjl66Zqr3bgyXWJgGb9JwQMy7JnVPLReNCzy7u+QxtA1H6sil7vwgzfMnu4c8MhcrULwFZElKcvKdmDK6pxMV+ZEDd4eTXM5GGsst5DTPUeep2+ybNSSpdheuftft9u9zH0I/zQm2ff1oZu3mqJARTFWYDgzh2wDwk0zDa83LF0CXw9/DZwGxTaOnZsOTvpAECg+N0ZzMMf25hXLrZdP2o6reTSvYJBPsFd0aWWgQRAn33qbwEoYlRjYw+kY5aRw9POnRwQX0gQzi3RZ61f0uu9SsYiTCZ1bmDcR3aPSOG1qxC7mKe4nAmWzuKHRvTQpOcXowEK7eyBYANFpiHzYcsBYAeS0JwoR0QNQBZSmXt7dv2BzD8y7tTGidTD/JHbjS4rBuzG1rzuOuTgfcPjR/xjwI9h2yNosdyByvuc7wCM3YI87OmJ76FaAtIgJtS2h7Rb3ClJbwHRjz0hwWvNrPMFyCicIWmmBSsfH3O4Qaf9EA==
+X-HE-Tag: 1774010590-857591
+X-HE-Meta: U2FsdGVkX1/Gf4jdYkyYebJWWpxk4lIU6Fk1sAEDMW8HGp4Lm3YRD20Vu/jMQTR4NJiju9LTkkM/9tacWgamhsSOX5Kqk4F1f5yGeHKaoWbU9N1ChEZAMonUF36tCARw5+Lk9sMgpCQ4xS0SvXh11y7Rc2WYKCB/Jvs2DgJ1vrwnXqhDCJi5pdMobUbix9j1ahNgyBDL6wGd9BYFhg3Pw4/1i9XW/fDL5EDyJlG/G+X3KeTbYtoIWR1gyptn2Cbtb/QNPrZ2enK/gvwisrh8+hhvNHsq9E0Q+TbQxPQdDijDRfydpw+wMhayW+pDQjG4OJrqsXIUrJkXJz4GPSczfmoe6tUS0A0hN5QhB78h4fXhybX3bDv1mhGox0DiTTrrnDJHGch/YXM1cSd019sLfiqpk/QUSOyeLcOuqK6zmAqi1OJ9qrUuGcCZIh/3Kq7aqWiF6NNKAaZqUKFY0KfowlDPwH7H7gsh/RFHYHYN2nLFRL/957UlKLUrR6LXhkFEaeM5Q1vqOt4lQy/llAvD5IY0fFHBta/boORUEJ4BFwa6B8QnsKMIULUkZJAowu8dlbpKS7MEPpr7TN0+svgHp2YeaPCDBiqSYLOlbsbruMUYXs3kCjEkRqrFGvn3aICAtDyePNmtGJTIqqFfCqdc5yv4T5MakQGIgyZ5RMXp5T/ecctn1ejOlsK7lh0fW66E7If+vInizY7vOjUtX5oiXCtWHdUDKyDjmlDL3lJ0M14dtIw+8dgevRKw1AQ0jttUWEunmCDu7z8pUopVxz9354zqIncHlux9rRpwgS6ZDqnCf6CqOrHr8rS78S70MVVdJnwV1P4NxQQc4oQTWBr3PtDOcA6j9ZdQKwmQw+8r5VL1xrMD+3SqHzyHtdeq5XLFr8nRp+bCA2i4LtYmdj6rly/BzZXD+22oe80A8GCvyXjpHKtIzDTr5G3kZdNHrnScl7KPsTUBQgYjIyxjlqN
+ MaQewHkr
+ t9kNbYlaTFdqp53oXQdAtqaDC7SSYsrW4euWDVGYaMHrJRHUs50vKfyyajdtGBKi14t3kQJSxxF6g4tlLrTb2J04OVikNfeDo+7cCKmwUziRiDRjHjaOTawnKc4YCe9hIByCKBcrj1v0MRO9H+Lrn1QKvJI2US8JPpqYQ3kWtDE3f0ugVYGhpOd49LLBLDTi4uUzw2thO27/3tqeZEDQpG47Gzb6CdkhJpOXYWEfhWXpQpvyd5ZGqO5kGrat0/yaTUbvWxzzdhIka6k9w/R4pnmBDnMkoc1kzQGqVR5j5TM56OwYpm7aHlGa7pnQaxykz7L6NznP50PiLWA8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,39 +151,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/6/26 18:18, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> mfill_atomic() passes a lot of parameters down to its callees.
+> 
+> Aggregate them all into mfill_state structure and pass this structure to
+> functions that implement various UFFDIO_ commands.
+> 
+> Tracking the state in a structure will allow moving the code that retries
+> copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
+> loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
+> memory.
+> 
+> The mfill_state definition is deliberately local to mm/userfaultfd.c, hence
+> shmem_mfill_atomic_pte() is not updated.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
---vzcA7YqmIVwbJPjD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[...]
 
-On Thu, Mar 19, 2026 at 12:17:12PM +0000, Mark Brown wrote:
-> On Thu, Mar 19, 2026 at 11:56:21AM +0100, Vlastimil Babka wrote:
+>  			if (fatal_signal_pending(current))
+> @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+>  
+>  out_unlock:
+>  	up_read(&ctx->map_changing_lock);
+> -	uffd_mfill_unlock(dst_vma);
+> +	uffd_mfill_unlock(state.vma);
+>  out:
+> -	if (folio)
+> -		folio_put(folio);
+> +	if (state.folio)
+> +		folio_put(state.folio);
+>  	VM_WARN_ON_ONCE(copied < 0);
+>  	VM_WARN_ON_ONCE(err > 0);
+>  	VM_WARN_ON_ONCE(!copied && !err);
 
-> > Mark, please drop https://git.infradead.org/users/willy/xarray.git from
-> > linux-next until it stops breaking linux-next. Thanks.
+I guess, "copied" could be easily avoided by
+comparing state.src_addr with start_addr.
 
-> I just saw this mail, I already started running the merge beforehand and
-> don't 100% trust the scripts not to fall over if I make a change at this
-> point - I can drop from tomorrow if things aren't sorted by then.  I see
-> the xarray tree hasn't been updated since before Christmas.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-OK, I've dropped it today.  Willy, let me know if you want me to add the
-tree again.
+-- 
+Cheers,
 
---vzcA7YqmIVwbJPjD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm9QBQACgkQJNaLcl1U
-h9CXUwf/d3ZMK02PmFBuznuTf53ciCc48176LPVgCO1keeiRfuu0PbYEfuMTfTmh
-M/J1dfseUYK+fi1VSijjZSvg+AIEU49kwSy/hIdSCPJpcxhTexGvQoo6i2ofZGnr
-knaJrYZQm8H8SyJvjdKX4RGAZBqu9jO2yv+BeY8CpFz80d6P+0FzMe5UTAa6G4zR
-iQ2T01g5hZJXCSVwcS4owsPn30yPZDW61+VOmzmZItQ4pOmQ1p+Bve6ERiAXXtcU
-pRmmogLqLatc1Nw+9Q7wlVPM30f07Fds/hKb6v6Umk+amn4h0MTq8zblNd3alrmh
-n8aLZoWKdzeP6+q8FJoELdPDmtNKbg==
-=ehzM
------END PGP SIGNATURE-----
-
---vzcA7YqmIVwbJPjD--
+David
 
